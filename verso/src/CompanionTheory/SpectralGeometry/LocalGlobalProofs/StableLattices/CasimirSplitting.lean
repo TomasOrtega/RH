@@ -12,6 +12,9 @@ open PI.UpqRep (InLieHpk)
 
 variable {k r : ℕ}
 
+/- English proof (translation)
+Use extensionality with `i j`. Establish `hi` using `i.2`. Establish `hj` using `j.2`. Simplify using `only [Matrix.conjTranspose_apply, Formalism.QuantumDeterminants.Hpk, Fin.ext_iff]`. Apply the tactic sequence `split_ifs <;> first | omega | simp`.
+-/
 theorem hpk_herm (k r : ℕ) : (Formalism.QuantumDeterminants.Hpk k r)ᴴ = Formalism.QuantumDeterminants.Hpk k r := by
   ext i j
   have hi := i.2
@@ -19,6 +22,11 @@ theorem hpk_herm (k r : ℕ) : (Formalism.QuantumDeterminants.Hpk k r)ᴴ = Form
   simp only [Matrix.conjTranspose_apply, Formalism.QuantumDeterminants.Hpk, Fin.ext_iff]
   split_ifs <;> first | omega | simp
 
+/- English proof (translation)
+Establish `hi` using `i.2`. Distinguish the cases in `h : r ≤ i.1 ∧ i.1 ≤ r + k`. Apply the tactic sequence `refine ⟨i, if i.1 = r + k then -1 else 1, by split_ifs <;> simp, fun j => ?_, fun j => ?_⟩ <;>`. Establish `hj` using `j.2`. Simplify using `only [Formalism.QuantumDeterminants.Hpk, Fin.ext_iff]`.
+
+Apply the tactic sequence `split_ifs <;> first | rfl | omega`. Apply the tactic sequence `refine ⟨⟨2 * r + k - i.1, by omega⟩, 1, by simp, fun j => ?_, fun j => ?_⟩ <;>`. Establish `hj` using `j.2`. Simplify using `only [Formalism.QuantumDeterminants.Hpk, Fin.ext_iff]`. Apply the tactic sequence `split_ifs <;> first | rfl | omega`.
+-/
 theorem hpk_row (k r : ℕ) (i : Fin (2 * r + k + 1)) :
     ∃ (j₀ : Fin (2 * r + k + 1)) (s : ℂ), s * s = 1 ∧ (∀ j, Formalism.QuantumDeterminants.Hpk k r i j = if j = j₀ then s else 0) ∧
       ∀ j, Formalism.QuantumDeterminants.Hpk k r j₀ j = if j = i then s else 0 := by
@@ -33,6 +41,11 @@ theorem hpk_row (k r : ℕ) (i : Fin (2 * r + k + 1)) :
       simp only [Formalism.QuantumDeterminants.Hpk, Fin.ext_iff]
       split_ifs <;> first | rfl | omega
 
+/- English proof (translation)
+Use extensionality with `i j`. Take `⟨j₀, s, hs, h1, h2⟩` from `hpk_row k r i`. Simplify using `only [Matrix.mul_apply, h1, ite_mul, zero_mul, Finset.sum_ite_eq', Finset.mem_univ, if_true, h2, Matrix.one_apply]`. Distinguish the cases in `hij : i = j`. Simplify using `[hij, hs]`.
+
+Simplify using `[hij, Ne.symm hij]`.
+-/
 theorem hpk_sq (k r : ℕ) : Formalism.QuantumDeterminants.Hpk k r * Formalism.QuantumDeterminants.Hpk k r = 1 := by
   ext i j
   obtain ⟨j₀, s, hs, h1, h2⟩ := hpk_row k r i
@@ -42,6 +55,9 @@ theorem hpk_sq (k r : ℕ) : Formalism.QuantumDeterminants.Hpk k r * Formalism.Q
   · simp [hij, hs]
   · simp [hij, Ne.symm hij]
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Simplify using `only [Matrix.conjTranspose_mul, h1, Matrix.conjTranspose_conjTranspose, Matrix.mul_assoc, h2, Matrix.mul_one]`. Rewrite using `[← Matrix.mul_assoc, ← Matrix.mul_assoc, h2, Matrix.one_mul]`.
+-/
 theorem flip_facts {n : ℕ} (Hm Y : Matrix (Fin n) (Fin n) ℂ) (h1 : Hmᴴ = Hm) (h2 : Hm * Hm = 1) :
     (Hm * Yᴴ * Hm)ᴴ * Hm = Hm * Y ∧ Hm * (Hm * Yᴴ * Hm) = Yᴴ * Hm := by
   constructor
@@ -49,6 +65,11 @@ theorem flip_facts {n : ℕ} (Hm Y : Matrix (Fin n) (Fin n) ℂ) (h1 : Hmᴴ = H
       Matrix.mul_one]
   · rw [← Matrix.mul_assoc, ← Matrix.mul_assoc, h2, Matrix.one_mul]
 
+/- English proof (translation)
+Take `⟨h3, h4⟩` from `flip_facts _ Y (hpk_herm k r) (hpk_sq k r)`. Use `show (reH k r Y)ᴴ * Formalism.QuantumDeterminants.Hpk k r + Formalism.QuantumDeterminants.Hpk k r * reH k r Y = 0`. Simplify using `only [reH, Matrix.conjTranspose_smul, Matrix.conjTranspose_add, Matrix.conjTranspose_neg, Matrix.smul_mul, Matrix.mul_smul, Matrix.add_mul, Matrix.mul_add, Matrix.neg_mul, Matrix.mul_neg, h3, h4]`. Establish `: star (1 / 2 : ℂ) = 1 / 2` using `by simp`. Rewrite using `[this, ← smul_add]`.
+
+Use `abel_nf`. Simplify using the standard rewrite rules.
+-/
 theorem reH_lie (Y : Mx k r) : InLieHpk k r (reH k r Y) := by
   obtain ⟨h3, h4⟩ := flip_facts _ Y (hpk_herm k r) (hpk_sq k r)
   show (reH k r Y)ᴴ * Formalism.QuantumDeterminants.Hpk k r + Formalism.QuantumDeterminants.Hpk k r * reH k r Y = 0
@@ -59,6 +80,11 @@ theorem reH_lie (Y : Mx k r) : InLieHpk k r (reH k r Y) := by
   abel_nf
   simp
 
+/- English proof (translation)
+Take `⟨h3, h4⟩` from `flip_facts _ Y (hpk_herm k r) (hpk_sq k r)`. Use `show (imH k r Y)ᴴ * Formalism.QuantumDeterminants.Hpk k r + Formalism.QuantumDeterminants.Hpk k r * imH k r Y = 0`. Simplify using `only [imH, sub_neg_eq_add, Matrix.conjTranspose_smul, Matrix.conjTranspose_add, Matrix.smul_mul, Matrix.mul_smul, Matrix.add_mul, Matrix.mul_add, h3, h4]`. Establish `: star (1 / (2 * Complex.I) : ℂ) = -(1 / (2 * Complex.I))`. Simplify using the standard rewrite rules.
+
+Rewrite using `[this, neg_smul, add_comm (Yᴴ * _), neg_add_cancel]`.
+-/
 theorem imH_lie (Y : Mx k r) : InLieHpk k r (imH k r Y) := by
   obtain ⟨h3, h4⟩ := flip_facts _ Y (hpk_herm k r) (hpk_sq k r)
   show (imH k r Y)ᴴ * Formalism.QuantumDeterminants.Hpk k r + Formalism.QuantumDeterminants.Hpk k r * imH k r Y = 0
@@ -69,6 +95,9 @@ theorem imH_lie (Y : Mx k r) : InLieHpk k r (imH k r Y) := by
   rw [this, neg_smul, add_comm (Yᴴ * _), neg_add_cancel]
 
 attribute [local instance] Matrix.normedAddCommGroup Matrix.normedSpace in
+/- English proof (translation)
+Establish `h1 : PI.UpqRep.inUH (PI.UpqRep.Hpk k r) 1` using `by simp [PI.UpqRep.inUH]`. Take `⟨U, G, hU, h1U, hG, hfG⟩` from `hF.smooth c d 1 h1`. Establish `hd : HasDerivAt (fun t => ex X t) X 0`. Simplify using `using hasDerivAt_mul_ex 1 X`. Conclude with `(hasDerivAt_local (A := {g | PI.UpqRep.inUH (PI.UpqRep.Hpk k r) g}) (f := fun g => F.ρ g c d) (ex_mem_of_lie hX) (ex_zero X) hd hU h1U hG hfG).differentiableAt.hasDerivAt`.
+-/
 theorem diff_entry {F : FRep k r} (hF : F.OK) {X : Mx k r} (hX : InLieHpk k r X) (c d : F.ι) :
     HasDerivAt (fun t : ℝ => F.ρ (NormedSpace.exp ((t : ℂ) • X)) c d) (F.dR X c d) 0 := by
   have h1 : PI.UpqRep.inUH (PI.UpqRep.Hpk k r) 1 := by simp [PI.UpqRep.inUH]
@@ -78,6 +107,9 @@ theorem diff_entry {F : FRep k r} (hF : F.OK) {X : Mx k r} (hX : InLieHpk k r X)
   exact (hasDerivAt_local (A := {g | PI.UpqRep.inUH (PI.UpqRep.Hpk k r) g}) (f := fun g => F.ρ g c d)
     (ex_mem_of_lie hX) (ex_zero X) hd hU h1U hG hfG).differentiableAt.hasDerivAt
 
+/- English proof (translation)
+Use extensionality with `⟨c, c'⟩ ⟨d, d'⟩`. Apply the tactic sequence `have h := ((diff_entry hF hX c d).mul (diff_entry hF' hX c' d')).deriv`. Simplify using `only [Complex.ofReal_zero, zero_smul, NormedSpace.exp_zero, hF.one, hF'.one] at h`. Conclude with `h`.
+-/
 theorem dR_tens {F F' : FRep k r} (hF : F.OK) (hF' : F'.OK) {X : Mx k r} (hX : InLieHpk k r X) :
     (F.tens F').dR X = F.dR X ⊗ₖ (1 : Matrix F'.ι F'.ι ℂ) + (1 : Matrix F.ι F.ι ℂ) ⊗ₖ F'.dR X := by
   ext ⟨c, c'⟩ ⟨d, d'⟩
@@ -85,6 +117,9 @@ theorem dR_tens {F F' : FRep k r} (hF : F.OK) (hF' : F'.OK) {X : Mx k r} (hX : I
   simp only [Complex.ofReal_zero, zero_smul, NormedSpace.exp_zero, hF.one, hF'.one] at h
   exact h
 
+/- English proof (translation)
+Simplify using `only [FRep.dC, dR_tens hF hF' (reH_lie Y), dR_tens hF hF' (imH_lie Y), Matrix.add_kronecker, Matrix.kronecker_add, Matrix.smul_kronecker, Matrix.kronecker_smul, smul_add]`. Normalize the expressions using the abelian group laws.
+-/
 theorem dC_tens {F F' : FRep k r} (hF : F.OK) (hF' : F'.OK) (Y : Mx k r) :
     (F.tens F').dC Y = F.dC Y ⊗ₖ (1 : Matrix F'.ι F'.ι ℂ) + (1 : Matrix F.ι F.ι ℂ) ⊗ₖ F'.dC Y := by
   simp only [FRep.dC, dR_tens hF hF' (reH_lie Y), dR_tens hF hF' (imH_lie Y), Matrix.add_kronecker,
@@ -97,67 +132,118 @@ set_option linter.unusedSectionVars false
 
 variable {ι κ V : Type} [Fintype ι] [Fintype κ] [DecidableEq ι] [DecidableEq κ] [AddCommGroup V] [Module ℂ V]
 
+/- English proof (translation)
+Simplify using `[mAct]`.
+-/
 theorem mAct_apply (A : Matrix κ ι ℂ) (x : ι → V) (c : κ) : mAct A x c = ∑ d, A c d • x d := by
   simp [mAct]
 
+/- English proof (translation)
+Use `LinearMap.ext fun x => funext fun c => ?_` and prove the remaining obligations. Simplify using `[mAct_apply, add_smul, Finset.sum_add_distrib]`.
+-/
 theorem mAct_add (A B : Matrix ι ι ℂ) : (mAct (A + B) : Module.End ℂ (ι → V)) = mAct A + mAct B := by
   refine LinearMap.ext fun x => funext fun c => ?_
   simp [mAct_apply, add_smul, Finset.sum_add_distrib]
 
+/- English proof (translation)
+Use `LinearMap.ext fun x => funext fun c => ?_` and prove the remaining obligations. Simplify using `only [mAct_apply, Matrix.sum_apply, LinearMap.sum_apply, Finset.sum_apply, Finset.sum_smul]`. Conclude with `Finset.sum_comm`.
+-/
 theorem mAct_sum {α : Type} (s : Finset α) (A : α → Matrix ι ι ℂ) :
     (mAct (∑ a ∈ s, A a) : Module.End ℂ (ι → V)) = ∑ a ∈ s, mAct (A a) := by
   refine LinearMap.ext fun x => funext fun c => ?_
   simp only [mAct_apply, Matrix.sum_apply, LinearMap.sum_apply, Finset.sum_apply, Finset.sum_smul]
   exact Finset.sum_comm
 
+/- English proof (translation)
+Use `LinearMap.ext fun x => funext fun c => ?_` and prove the remaining obligations. Simplify using `only [Module.End.mul_apply, mAct_apply, Matrix.mul_apply, Finset.sum_smul, Finset.smul_sum, mul_smul]`. Conclude with `Finset.sum_comm`.
+-/
 theorem mAct_mul (A B : Matrix ι ι ℂ) : (mAct A * mAct B : Module.End ℂ (ι → V)) = mAct (A * B) := by
   refine LinearMap.ext fun x => funext fun c => ?_
   simp only [Module.End.mul_apply, mAct_apply, Matrix.mul_apply, Finset.sum_smul, Finset.smul_sum, mul_smul]
   exact Finset.sum_comm
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem dOp_mul (S T : Module.End ℂ V) : (dOp ι (S * T) : Module.End ℂ (ι → V)) = dOp ι S * dOp ι T := rfl
 
+/- English proof (translation)
+Use `LinearMap.ext fun x => funext fun c => ?_` and prove the remaining obligations. Simplify using `[dOp]`.
+-/
 theorem dOp_sum {α : Type} (s : Finset α) (T : α → Module.End ℂ V) :
     (dOp ι (∑ a ∈ s, T a) : Module.End ℂ (ι → V)) = ∑ a ∈ s, dOp ι (T a) := by
   refine LinearMap.ext fun x => funext fun c => ?_
   simp [dOp]
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem left_factor_action_mul (f g : Module.End ℂ (ι → V)) :
     (on1 (f * g) : Module.End ℂ (ι × κ → V)) = on1 f * on1 g := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem right_factor_action_mul (f g : Module.End ℂ (κ → V)) :
     (on2 (f * g) : Module.End ℂ (ι × κ → V)) = on2 f * on2 g := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem left_factor_action_add (f g : Module.End ℂ (ι → V)) :
     (on1 (f + g) : Module.End ℂ (ι × κ → V)) = on1 f + on1 g := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem right_factor_action_add (f g : Module.End ℂ (κ → V)) :
     (on2 (f + g) : Module.End ℂ (ι × κ → V)) = on2 f + on2 g := rfl
 
+/- English proof (translation)
+Use `LinearMap.ext fun x => funext fun c => ?_` and prove the remaining obligations. Simplify using `[on1]`.
+-/
 theorem left_factor_action_sum {α : Type} (s : Finset α) (T : α → Module.End ℂ (ι → V)) :
     (on1 (∑ a ∈ s, T a) : Module.End ℂ (ι × κ → V)) = ∑ a ∈ s, on1 (T a) := by
   refine LinearMap.ext fun x => funext fun c => ?_
   simp [on1]
 
+/- English proof (translation)
+Use `LinearMap.ext fun x => funext fun c => ?_` and prove the remaining obligations. Simplify using `[on2]`.
+-/
 theorem right_factor_action_sum {α : Type} (s : Finset α) (T : α → Module.End ℂ (κ → V)) :
     (on2 (∑ a ∈ s, T a) : Module.End ℂ (ι × κ → V)) = ∑ a ∈ s, on2 (T a) := by
   refine LinearMap.ext fun x => funext fun c => ?_
   simp [on2]
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem left_factor_action_diag_op (T : Module.End ℂ V) : (on1 (dOp ι T) : Module.End ℂ (ι × κ → V)) = dOp (ι × κ) T := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem right_factor_action_diag_op (T : Module.End ℂ V) : (on2 (dOp κ T) : Module.End ℂ (ι × κ → V)) = dOp (ι × κ) T := rfl
 
+/- English proof (translation)
+Use `LinearMap.ext fun x => funext fun c => ?_` and prove the remaining obligations. Simplify using `[on1, mAct_apply, Fintype.sum_prod_type, Matrix.one_apply, LinearMap.funLeft_apply, kroneckerMap]`.
+-/
 theorem left_factor_action_kronecker (A : Matrix ι ι ℂ) :
     (on1 (mAct A) : Module.End ℂ (ι × κ → V)) = mAct (A ⊗ₖ (1 : Matrix κ κ ℂ)) := by
   refine LinearMap.ext fun x => funext fun c => ?_
   simp [on1, mAct_apply, Fintype.sum_prod_type, Matrix.one_apply, LinearMap.funLeft_apply, kroneckerMap]
 
+/- English proof (translation)
+Use `LinearMap.ext fun x => funext fun c => ?_` and prove the remaining obligations. Simplify using `[on2, mAct_apply, Fintype.sum_prod_type, Matrix.one_apply, LinearMap.funLeft_apply, kroneckerMap]`.
+-/
 theorem right_factor_action_kronecker (A : Matrix κ κ ℂ) :
     (on2 (mAct A) : Module.End ℂ (ι × κ → V)) = mAct ((1 : Matrix ι ι ℂ) ⊗ₖ A) := by
   refine LinearMap.ext fun x => funext fun c => ?_
   simp [on2, mAct_apply, Fintype.sum_prod_type, Matrix.one_apply, LinearMap.funLeft_apply, kroneckerMap]
 
+/- English proof (translation)
+Use `nth_rewrite 1 [← h1]`. Rewrite using `[← h2]`. Simplify using `only [mul_add, add_mul, Finset.sum_add_distrib]`. Normalize the expressions using the abelian group laws.
+-/
 theorem expand {R α : Type} [Ring R] [Fintype α] (E A B : α → α → R) (Q : R)
     (h1 : ∑ a, ∑ b, A a b * B b a = Q) (h2 : ∑ a, ∑ b, B a b * A b a = Q) :
     ∑ a, ∑ b, (E a b + (A a b + B a b)) * (E b a + (A b a + B b a)) =
@@ -170,6 +256,11 @@ theorem expand {R α : Type} [Ring R] [Fintype α] (E A B : α → α → R) (Q 
 
 end Lin
 
+/- English proof (translation)
+Introduce `k r F F' U hF hF'`. Simplify using `only [cas, cas1, cas2, casR, L, left_factor_action_sum, right_factor_action_sum, left_factor_action_mul, right_factor_action_mul, left_factor_action_add, right_factor_action_add, left_factor_action_diag_op, right_factor_action_diag_op, left_factor_action_kronecker, right_factor_a …`. Use `expand (fun a b => dOp (F.ι × F'.ι) (U.dC (Matrix.single a b 1))) (fun a b => mAct (F.dC (Matrix.single a b 1) ⊗ₖ (1 : Matrix F'.ι F'.ι ℂ))) (fun a b => mAct ((1 : Matrix F.ι F.ι ℂ) ⊗ₖ F'.dC (Matrix.single a b 1))) _ ?_ ?_` and prove the remaining obligations. Simplify using `only [mAct_mul, ← Matrix.mul_kronecker_mul, Matrix.mul_one, Matrix.one_mul, qMat, mAct_sum]`. Rewrite using `[Finset.sum_comm]`.
+
+Simplify using `only [mAct_mul, ← Matrix.mul_kronecker_mul, Matrix.mul_one, Matrix.one_mul, qMat, mAct_sum]`.
+-/
 theorem casSplit : CasSplit := by
   intro k r F F' U hF hF'
   simp only [cas, cas1, cas2, casR, L, left_factor_action_sum, right_factor_action_sum, left_factor_action_mul, right_factor_action_mul, left_factor_action_add, right_factor_action_add, left_factor_action_diag_op, right_factor_action_diag_op,

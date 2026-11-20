@@ -13,6 +13,13 @@ open GlobalTheory.IndefiniteRowSideFullHecke.UnitCharTriangle (Tri)
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 open GlobalTheory.RowEx MeasureTheory
 namespace GlobalTheory.BotAlgI'
+/- English proof (translation)
+Introduce `D T _ L μ₀ sc G W i j A A' WW X hP hI hL hX`. Take `⟨Ω, hΩ, H⟩` from `_root_.GlobalTheory.T.bottomClassSum_eq_formula hP hI hL hX`. Use `⟨Ω, hΩ, fun t h hh k => ?_⟩` and prove the remaining obligations. Take `⟨n, c, z, hc, hz, he⟩` from `H t h hh k`. Rewrite using `[he, mul_div_cancel_left₀ _ hΩ]`.
+
+Establish `hz' : ∀ l, IsAlgebraic ℚ (z l)` using `fun l => by`. Take `⟨δ, t0, Q, P, h', U, e⟩` from `hz l`. Rewrite using `[e]`. Conclude with `_root_.GlobalTheory.T.normSum_coefficients_isAlgebraic hP hI D δ t0 Q P h' U`. Establish `: ∀ l, (c l * z l) ∈ algebraicClosure ℚ ℂ` using `fun l => mul_mem (mem_algebraicClosure_iff.2 (hc l)) (mem_algebraicClosure_iff.2 (hz' l))`.
+
+Conclude with `mem_algebraicClosure_iff.1 (sum_mem fun l _ => this l)`.
+-/
 theorem twistedClassSums_isAlgebraic : ∀ {D : D7} {T : Type} [Finite T] {L : LevCh D T} {μ₀ : T} {sc : Consts} {G : GridData L sc} {W : G.Weil}
     {i j : Fin D.R.m} {A A' WW : HSp D} {X : Tri T A A' WW}, _root_.GlobalTheory.FunPr.ThetaLocalInputs → (∀ D, GlobalTheory.NormSum.Inp D) → L.Is μ₀ →
     IsBottomTri W i j X →
@@ -39,6 +46,9 @@ open GlobalTheory.IndefiniteRowSideFullHecke.UnitCharTriangle (Tri)
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 open GlobalTheory.RowEx MeasureTheory
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @_root_.GlobalTheory.BotAlgI'.twistedClassSums_isAlgebraic | exact _root_.GlobalTheory.BotAlgI'.twistedClassSums_isAlgebraic | (intros; apply _root_.GlobalTheory.BotAlgI'.twistedClassSums_isAlgebraic <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.bottom_twistedClassSums_algebraic : ∀ {D : D7} {T : Type} [Finite T] {L : LevCh D T} {μ₀ : T} {sc : Consts} {G : GridData L sc} {W : G.Weil}
     {i j : Fin D.R.m} {A A' WW : HSp D} {X : Tri T A A' WW}, _root_.GlobalTheory.FunPr.ThetaLocalInputs → (∀ D, GlobalTheory.NormSum.Inp D) → L.Is μ₀ →
     IsBottomTri W i j X →

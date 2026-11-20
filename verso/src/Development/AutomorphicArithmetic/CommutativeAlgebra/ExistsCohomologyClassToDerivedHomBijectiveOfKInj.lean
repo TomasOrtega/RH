@@ -5,6 +5,23 @@ import Development.AutomorphicArithmetic.CommutativeAlgebra.ExtFreeEtaleSheafYon
 open CategoryTheory Limits AlgebraicGeometry Opposite GlobalTheory.EtC CochainComplex CochainComplex.HomComplex
 open LateralTheory.E.EtaleTopologySheaves LateralTheory.E.LeafGhostCut UpperTheory.Et.Loc
 
+/- English proof (translation)
+Introduce `q B I`. Take `⟨y, hwd, hK, hU, hT⟩` from `UpperTheory.ext_free_etale_sheaf_yoneda B q`. Establish `cz : ∀ (C : B.Etale ⥤ Cx (ZMod q)) (h : ∀ n, Presheaf.IsSheaf (EtTop B) (TP C I n)) (U : B.Etale) (n : ℤ) (z : Cocycle (C.obj U) I n), dS (TC C I h) n (n + 1) U (z : Cochain (C.obj U) I n) = 0` using `fun C h U n z => Cocycle.δ_eq_zero z (n + 1)`. Establish `wd : ∀ (C : B.Etale ⥤ Cx (ZMod q)) (h : ∀ n, Presheaf.IsSheaf (EtTop B) (TP C I n)) (U : B.Etale) (n : ℤ) (z z' : Cocycle (C.obj U) I n), CohomologyClass.mk z = CohomologyClass.mk z' → y (TC C I h) U n (z : Cochain (C.obj U) I n) (cz C h U n z) = y (TC C I h) U n (z' : Cochain (C …`. Introduce `C h U n z z' hzz`.
+
+Apply `hwd` to reduce the goal to its premises. Establish `h0 : CohomologyClass.mk (z - z') = 0`. Rewrite using `[CohomologyClass.mk_sub, hzz, sub_self]`. Rewrite `h0` using `[CohomologyClass.mk_eq_zero_iff, mem_coboundaries_iff _ (n - 1) (by omega)]`. Take `⟨β, hβ⟩` from `h0`.
+
+Conclude with `⟨β, hβ⟩`. Establish `lmk : ∀ (C : B.Etale ⥤ Cx (ZMod q)) (h : ∀ n, Presheaf.IsSheaf (EtTop B) (TP C I n)) (U : B.Etale) (n : ℤ) (z : Cocycle (C.obj U) I n), y (TC C I h) U n ((CohomologyClass.mk_surjective (CohomologyClass.mk z)).choose : Cochain (C.obj U) I n) (cz C h U n _) = y (TC C I h) U n (z : …` using `fun C h U n z => wd C h U n _ _ (CohomologyClass.mk_surjective _).choose_spec`. Use `⟨fun C h U n x => y (TC C I h) U n ((CohomologyClass.mk_surjective x).choose : Cochain (C.obj U) I n) (cz C h U n _), ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `C h hKI U n`. Prove the components needed by the constructor for the conclusion.
+
+Introduce `x x' hxx`. Take `⟨z, rfl⟩` from `CohomologyClass.mk_surjective x`. Take `⟨z', rfl⟩` from `CohomologyClass.mk_surjective x'`. Simplify using `only at hxx`. Rewrite `hxx` using `[lmk, lmk]`.
+
+Take `⟨b, hb⟩` from `(hK (TC C I h) hKI U n).1 _ _ _ _ hxx`. Rewrite using `[← sub_eq_zero, ← CohomologyClass.mk_sub, CohomologyClass.mk_eq_zero_iff, mem_coboundaries_iff _ (n - 1) (by omega)]`. Conclude with `⟨b, hb⟩`. Introduce `x`. Take `⟨s, hs, hsx⟩` from `(hK (TC C I h) hKI U n).2 x`.
+
+Use `⟨CohomologyClass.mk (Cocycle.mk s (n + 1) rfl hs), ?_⟩` and prove the remaining obligations. Simplify using `only`. Rewrite using `[lmk]`. Conclude with `hsx`. Introduce `C h U U' a n x`.
+
+Take `⟨z, rfl⟩` from `CohomologyClass.mk_surjective x`. Simplify using `only`. Rewrite using `[cpre_mk, lmk, lmk]`. Conclude with `hU (TC C I h) U U' a n (z : Cochain (C.obj U) I n) (cz C h U n z) _`. Introduce `C C' h h' φ U n x`.
+
+Take `⟨z, rfl⟩` from `CohomologyClass.mk_surjective x`. Simplify using `only`. Rewrite using `[cpre_mk, lmk, lmk]`. Conclude with `hT (TC C I h) (TC C' I h') (TM φ I h h') U n (z : Cochain (C.obj U) I n) (cz C h U n z) _`.
+-/
 theorem UpperTheory.exists_cohomologyClass_to_derivedHom_bijective_of_kInjective :
     ∀ (q : ℕ) (B : Scheme.{0}) (I : Cx (ZMod q)), ∃ l : ∀ (C : B.Etale ⥤ Cx (ZMod q)) (h : ∀ n, Presheaf.IsSheaf (EtTop B) (TP C I n)) (U : B.Etale) (n : ℤ), CohomologyClass (C.obj U) I n → ((OU B q).obj U ⟶ (CategoryTheory.shiftFunctor _ n).obj (DerivedCategory.Q.obj (TC C I h))), (∀ C h, (TC C I h).IsKInjective → ∀ U n, Function.Bijective (l C h U n)) ∧ (∀ C h (U U' : B.Etale) (a : U' ⟶ U) n x, l C h U' n (cpre (Cocycle.ofHom (C.map a)) I n n (zero_add n) x) = (OU B q).map a ≫ l C h U n x) ∧ ∀ (C C' : B.Etale ⥤ Cx (ZMod q)) h h' (φ : C' ⟶ C) U n x, l C' h' U n (cpre (Cocycle.ofHom (φ.app U)) I n n (zero_add n) x) = l C h U n x ≫ (CategoryTheory.shiftFunctor _ n).map (DerivedCategory.Q.map (TM φ I h h')) := by
   intro q B I

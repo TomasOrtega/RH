@@ -17,6 +17,13 @@ open GlobalTheory.Mum
 noncomputable section
 namespace GlobalTheory.Mum
 
+/- English proof (translation)
+Introduce `R _ _ _ hR D C k hk b₀ hb₀ F₀ hF₀`. Take `⟨s₀, hs₀, h⟩` from `GlobalTheory.T.exists_unit_adic_sum_origin_values_integral_family R hR D C k hk b₀ hb₀ F₀ hF₀`. Use `⟨s₀, hs₀, fun W _ _ _ T b σ hσ => ?_⟩` and prove the remaining obligations. Take `⟨σ', f', hc, hp, he⟩` from `hσ`. Take `⟨ε, hε⟩` from `GlobalTheory.T.carries_unitSection_rigidification_unit R D C W T k b σ' σ hc`.
+
+Use `⟨ε, fun J hJ => ?_⟩` and prove the remaining obligations. Take `⟨J', hJ', -⟩` from `exists_good T.U.LG.L T.U.LG.isLB (cpt W) (K := Empty) (fun e => e.elim) (fun e => e.elim) (fun e => e.elim) (fun e => e.elim)`. Establish `e1` using `hε J J' hJ hJ'`. Rewrite `e1` using `[h W T σ' f' hp he J' hJ']`. Use `mul_right_cancel₀ (pow_ne_zero k (Units.ne_zero (val T.U.LG.rig (idW W) (cpt W) J'))) ?_` and prove the remaining obligations.
+
+Rewrite using `[e1]`. Simplify using `only [map_mul]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem exists_unit_value_at_unit : ∀ (R : Type) [CommRing R] [IsDomain R] [IsLocalRing R], Base R → ∀ (D : DegData R (maximalIdeal R)) (C : LabCover D) (k : ℕ), 1 ≤ k → ∀ b₀ : D.toPre.SecB k 0, eSec D.toPre.P.A (closedPoint R) ∈ nonzeroLocus b₀ → ∀ F₀ : IntFam (maximalIdeal R) D.toPre k, F₀.Lead 0 b₀ → ∃ s₀ : R, IsUnit s₀ ∧ ∀ (W : Type) [CommRing W] [IsDomain W] [IsLocalRing W] (T : Trait C W) (b : W) (σ : SecK C.P.L.L T.β k), T.ExpBy b σ F₀ → ∃ ε : Wˣ, ∀ J, Good C.P.L.L (cpt W) J → sval σ (unitW T.G) (cpt W) J = stalkOf (cpt W) (b * ε * T.φ s₀) * (val C.P.L.rig T.ξ (cpt W) J).val ^ k := by
   intro R _ _ _ hR D C k hk b₀ hb₀ F₀ hF₀
   obtain ⟨s₀, hs₀, h⟩ := GlobalTheory.T.exists_unit_adic_sum_origin_values_integral_family R hR D C k hk b₀ hb₀ F₀ hF₀
@@ -33,6 +40,19 @@ theorem exists_unit_value_at_unit : ∀ (R : Type) [CommRing R] [IsDomain R] [Is
   simp only [map_mul]
   ring
 
+/- English proof (translation)
+Introduce `R _ _ _ hR D C k hk b₀ hb₀ F₀ hF₀ s`. Take `⟨x, y, hy, h1⟩` from `GlobalTheory.T.value_unitSection_smul_genericFibre_section R hR D C k s`. Take `⟨s₀, hs₀, h2⟩` from `exists_unit_value_at_unit R hR D C k hk b₀ hb₀ F₀ hF₀`. Establish `key : ∀ (W : Type) [CommRing W] [IsDomain W] [IsLocalRing W] (T : Trait C W) (a b : W), T.Exp a b s F₀ → ∃ ε : Wˣ, T.φ y * (b * ε * T.φ s₀) = a * T.φ x`. Introduce `W _ _ _ T a b hE`.
+
+Take `⟨σ, hσ, hgen⟩` from `hE`. Take `⟨ε, hε⟩` from `h2 W T b σ hσ`. Take `⟨J, hJ, -⟩` from `exists_good C.P.L.L C.P.L.isLB (cpt W) (K := Empty) (fun e => e.elim) (fun e => e.elim) (fun e => e.elim) (fun e => e.elim)`. Establish `e1` using `h1 W T a σ hgen J hJ`. Rewrite `e1` using `[hε J hJ, ← _root_.mul_assoc, ← map_mul]`.
+
+Use `⟨ε, stalkOf_injective (cpt W) (mul_right_cancel₀ ?_ e1)⟩` and prove the remaining obligations. Conclude with `pow_ne_zero _ (Units.ne_zero _)`. Distinguish the cases in `hx : x = 0`. Use `⟨0, 1, one_ne_zero, fun W _ _ _ T a b ha hb hE => ?_⟩` and prove the remaining obligations. It suffices to derive a contradiction.
+
+Take `⟨ε, e⟩` from `key W T a b hE`. Rewrite `e` using `[hx, map_zero, mul_zero]`. Establish `hφy : T.φ y ≠ 0` using `fun h => hy (T.inj (h.trans (map_zero _).symm))`. Establish `hφs : T.φ s₀ ≠ 0` using `(hs₀.map T.φ).ne_zero`. Conclude with `mul_ne_zero hφy (mul_ne_zero (mul_ne_zero hb (Units.ne_zero ε)) hφs) e`.
+
+Use `⟨s₀ * y, x, hx, fun W _ _ _ T a b ha hb hE => ?_⟩` and prove the remaining obligations. Take `⟨ε, e⟩` from `key W T a b hE`. Use `⟨ε⁻¹, ?_⟩` and prove the remaining obligations. Rewrite using `[map_mul]`. Establish `hinv : (ε : W) * ((ε⁻¹ : Wˣ) : W) = 1` using `Units.mul_inv ε`.
+
+Take the linear combination `(-(((ε⁻¹ : Wˣ) : W))) * e + (T.φ y * b * T.φ s₀) * hinv`.
+-/
 theorem exists_norm_const : ∀ (R : Type) [CommRing R] [IsDomain R] [IsLocalRing R], Base R → ∀ (D : DegData R (maximalIdeal R)) (C : LabCover D) (k : ℕ), 1 ≤ k → ∀ b₀ : D.toPre.SecB k 0, eSec D.toPre.P.A (closedPoint R) ∈ nonzeroLocus b₀ → ∀ F₀ : IntFam (maximalIdeal R) D.toPre k, F₀.Lead 0 b₀ → ∀ s : SecK C.P.L.L C.α k, ∃ c₁ c₂ : R, c₂ ≠ 0 ∧ ∀ (W : Type) [CommRing W] [IsDomain W] [IsLocalRing W] (T : Trait C W) (a b : W), a ≠ 0 → b ≠ 0 → T.Exp a b s F₀ → ∃ u : Wˣ, T.φ c₂ * (u : W) * a = T.φ c₁ * b := by
   intro R _ _ _ hR D C k hk b₀ hb₀ F₀ hF₀ s
   obtain ⟨x, y, hy, h1⟩ := GlobalTheory.T.value_unitSection_smul_genericFibre_section R hR D C k s

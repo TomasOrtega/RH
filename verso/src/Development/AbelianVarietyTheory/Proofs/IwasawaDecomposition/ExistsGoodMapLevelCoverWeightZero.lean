@@ -4,6 +4,13 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.S
 
 namespace GlobalTheory.LvCover
 
+/- English proof (translation)
+Introduce `E _ _ _ H D hD l l' Xo Xo' c c' h Y Y'`. Take `⟨hs, hG⟩` from `GlobalTheory.Models.RankZero.isIso_moduli GlobalTheory.card_torsion_abelianVariety hD Xo`. Take `⟨hs', hG'⟩` from `GlobalTheory.Models.RankZero.isIso_moduli GlobalTheory.card_torsion_abelianVariety hD Xo'`. Use `haveI := c.fin`. Set `r : Xo.XF c ⟶ Xo'.XF c'` to `pullback.snd _ _ ≫ spMap (IntermediateField.inclusion h).toRingHom ≫ inv (pullback.snd Xo'.s (spMap (IntermediateField.inclusion c'.le).toRingHom))`.
+
+Establish `hY : IsIso Y.oF.t.G.hom` using `MorphismProperty.of_isPullback (P := MorphismProperty.isomorphisms _) Y.m0.cart.1 hG`. Establish `hY' : IsIso Y'.oF.t.G.hom` using `MorphismProperty.of_isPullback (P := MorphismProperty.isomorphisms _) Y'.m0.cart.1 hG'`. Take `⟨m⟩` from `GlobalTheory.Models.RankZero.nonempty_sabMap hY hY' r`. Use `haveI : Surjective (spMap (IntermediateField.inclusion h).toRingHom) := (GlobalTheory.LevelQuotRep.finite_etale_onto_spMap _).2.2`. Use `⟨r, ⟨(GlobalTheory.ShFam.TwMap.reflEquiv _ _ _).symm m⟩, (inferInstance : Surjective r).surj, ?_⟩` and prove the remaining obligations.
+
+Simplify using `only [r, Category.assoc, IsIso.inv_hom_id, Category.comp_id]`.
+-/
 theorem exists_goodMap_rankZero : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (D : Datum H), D.p + D.q = 0 →
     ∀ (l l' : Level H) (Xo : Moduli D l) (Xo' : Moduli D l') (c : Coeff l) (c' : Coeff l') (h : c'.F ≤ c.F)
       (Y : GlobalTheory.TorRef.GMod Xo c) (Y' : GlobalTheory.TorRef.GMod Xo' c'), ∃ r, GlobalTheory.LvCover.GoodMap h Y Y' r := by

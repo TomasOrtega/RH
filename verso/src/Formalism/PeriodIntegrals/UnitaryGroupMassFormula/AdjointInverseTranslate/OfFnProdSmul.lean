@@ -11,6 +11,13 @@ namespace AAInvW
 
 open Formalism.REAL
 
+/- English proof (translation)
+Introduce `t`. Proceed by induction on `t with`. Consider the case `zero => intro F`. Simplify using the standard rewrite rules. Consider the case `succ t ih`.
+
+Introduce `F`. Rewrite using `[List.ofFn_succ, List.prod_cons, ih (fun k => F k.succ), Finset.sum_mul_sum]`. Use `first`. Consider the case `(rw [← (Fin.consEquiv fun _ => ι).sum_comp, Fintype.sum_prod_type]`. Simplify using `[List.ofFn_succ, Fin.consEquiv])`.
+
+Consider the case `(rw [← (Equiv.piFinSucc t ι).symm.sum_comp, Fintype.sum_prod_type]`. Simplify using `[List.ofFn_succ, Equiv.piFinSucc])`.
+-/
 theorem ofFn_prod_sum {A : Type*} [Ring A] {ι : Type*} [Fintype ι] :
     ∀ (t : ℕ) (F : Fin t → ι → A),
       (List.ofFn fun k => ∑ i, F k i).prod = ∑ c : Fin t → ι, (List.ofFn fun k => F k (c k)).prod := by
@@ -26,6 +33,11 @@ theorem ofFn_prod_sum {A : Type*} [Ring A] {ι : Type*} [Fintype ι] :
     | (rw [← (Equiv.piFinSucc t ι).symm.sum_comp, Fintype.sum_prod_type]
        simp [List.ofFn_succ, Equiv.piFinSucc])
 
+/- English proof (translation)
+Introduce `t`. Proceed by induction on `t with`. Consider the case `zero => intro w X`. Simplify using the standard rewrite rules. Consider the case `succ t ih`.
+
+Introduce `w X`. Rewrite using `[List.ofFn_succ, List.prod_cons, ih (fun k => w k.succ) (fun k => X k.succ), Fin.prod_univ_succ, List.ofFn_succ, List.prod_cons]`. Simplify using `only [smul_mul_assoc, mul_smul_comm, smul_smul]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem ofFn_prod_smul {A : Type*} [Ring A] [Algebra ℂ A] :
     ∀ (t : ℕ) (w : Fin t → ℂ) (X : Fin t → A),
       (List.ofFn fun k => w k • X k).prod = (∏ k, w k) • (List.ofFn X).prod := by
@@ -40,6 +52,13 @@ theorem ofFn_prod_smul {A : Type*} [Ring A] [Algebra ℂ A] :
     congr 1
     ring
 
+/- English proof (translation)
+Simplify using `only [Tm]`. Simplify using `only [smul_add, Finset.sum_add_distrib, Fintype.sum_prod_type]`. Use `congr 1`. Simplify using `only [smul_ite, smul_zero, Finset.sum_ite_eq, Finset.mem_univ, ite_true]`. Rewrite using `[← Finset.sum_smul]`.
+
+Establish `hsum : ∑ c, P c i * Q j c = (Q * P) j i`. Rewrite using `[Matrix.mul_apply]`. Conclude with `Finset.sum_congr rfl (fun c _ => mul_comm _ _)`. Rewrite using `[hsum, hQP, Matrix.one_apply]`. Distinguish the cases in `h : i = j`.
+
+Substitute `h` using the available equality. Simplify using the standard rewrite rules. Simplify using `[h, Ne.symm h]`.
+-/
 theorem tm_conj {A : Type*} [Ring A] [Algebra ℂ A] {n : ℕ} (E : Fin n → Fin n → A)
     (P Q : Matrix (Fin n) (Fin n) ℂ) (hQP : Q * P = 1) (x : ℂ) (i j : Fin n) :
     Tm (fun i j => ∑ c, ∑ d, (P c i * Q j d) • E c d) x i j =
@@ -57,6 +76,13 @@ theorem tm_conj {A : Type*} [Ring A] [Algebra ℂ A] {n : ℕ} (E : Fin n → Fi
   · subst h; simp
   · simp [h, Ne.symm h]
 
+/- English proof (translation)
+Establish `h1 : ∀ σ : Equiv.Perm (Fin t), ∑ cd : Fin t → Fin n × Fin n, (∏ k, w1 (cd k).1 (σ k) * w2 k (cd k).2) • G (fun k => (cd k).1) (fun k => (cd k).2) = ∑ c : Fin t → Fin n, ∑ d : Fin t → Fin n, ((∏ j, w1 (c j) j) * ∏ j, w2 j (d j)) • G (fun k => c (σ k)) d`. Introduce `σ`. Rewrite using `[← (Equiv.arrowProdEquivProdArrow _ _ _).symm.sum_comp, Fintype.sum_prod_type]`. Rewrite using `[← (Equiv.arrowCongr σ.symm (Equiv.refl (Fin n))).sum_comp]`. Use `Finset.sum_congr rfl (fun c _ => Finset.sum_congr rfl (fun d _ => ?_))` and prove the remaining obligations.
+
+Simplify using `only [Equiv.arrowProdEquivProdArrow, Equiv.arrowCongr_apply, Equiv.symm_symm, Equiv.coe_refl, Equiv.coe_fn_symm_mk, Function.comp_apply, id]`. Use `congr 1`. Rewrite using `[Finset.prod_mul_distrib]`. Use `congr 1`. Conclude with `Equiv.prod_comp σ (fun j => w1 (c j) j)`.
+
+Simplify using `only [h1, Finset.mul_sum, Finset.smul_sum, mul_smul_comm]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl (fun c _ => ?_)` and prove the remaining obligations. Rewrite using `[Finset.sum_comm]`.
+-/
 private theorem sum_perm_mul_sum_prod_smul_eq_sum_sum {A : Type*} [Ring A] [Algebra ℂ A] {t n : ℕ}
     (s : Equiv.Perm (Fin t) → A) (w1 : Fin n → Fin t → ℂ) (w2 : Fin t → Fin n → ℂ)
     (G : (Fin t → Fin n) → (Fin t → Fin n) → A) :
@@ -83,6 +109,9 @@ private theorem sum_perm_mul_sum_prod_smul_eq_sum_sum {A : Type*} [Ring A] [Alge
   refine Finset.sum_congr rfl (fun c _ => ?_)
   rw [Finset.sum_comm]
 
+/- English proof (translation)
+Unfold `QExpand`. Introduce `A _ _ n t E P Q a b u hQP`. Simplify using `only [qminor]`. Simplify using `only [tm_conj E P Q hQP, ofFn_prod_sum, ofFn_prod_smul]`. Conclude with `sum_perm_mul_sum_prod_smul_eq_sum_sum (fun σ => ((Equiv.Perm.sign σ : ℤ) : A)) (fun x j => P x (a j)) (fun k y => Q (b k) y) (fun c1 d => (List.ofFn fun k => Tm E (u - ((k : ℕ) : ℂ)) (c1 k) (d k)).prod)`.
+-/
 theorem q_expansion : QExpand := by
   unfold QExpand
   intro A _ _ n t E P Q a b u hQP

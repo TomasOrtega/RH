@@ -8,6 +8,31 @@ open Finset MvPolynomial
 
 namespace UpperTheory.Gal.Schur
 
+/- English proof (translation)
+Introduce `hS hE hX hC O K ι _ _ _ _ τ hτ n P hP`. Take `⟨k₀, hk₀⟩` from `hS K ι n P hP`. Use `⟨k₀, fun k hk N hN a Q hQ => ?_⟩` and prove the remaining obligations. Take `⟨w, hw⟩` from `hk₀ k hk`. Set `A` to `{α : Fin k → O // (∀ s, N ∣ α s - a s) ∧ eval (pt τ α) Q ≠ 0}`.
+
+Set `x : A → ι × Fin k → K` to `fun α => pt τ α.1`. Establish `hdense : ZDense (Set.range x)`. Establish `hset : Set.range x = {z | ∃ α, (∀ s, N ∣ α s - a s) ∧ eval (pt τ α) Q ≠ 0 ∧ z = pt τ α}`. Use extensionality with `z`. Prove the components needed by the constructor for the conclusion.
+
+Introduce and unpack `⟨α, rfl⟩`. Conclude with `⟨α.1, α.2.1, α.2.2, rfl⟩`. Introduce and unpack `⟨α, h1, h2, rfl⟩`. Conclude with `⟨⟨α, h1, h2⟩, rfl⟩`. Rewrite using `[hset]`.
+
+Conclude with `hC O K ι τ hτ N hN k a Q hQ`. Establish `he : Function.Injective (fun (m : ι × Fin k → Fin (n + 1)) (p : ι × Fin k) => (m p : ℕ))`. Introduce `m₁ m₂ h`. Use function extensionality and compare the values at `p`. Conclude with `Fin.ext (congrFun h p)`.
+
+Take `⟨c, hc⟩` from `hX K (ι × Fin k) A (ι × Fin k → Fin (n + 1)) x hdense _ he w`. Use `⟨c.mapDomain Subtype.val, ?_, ?_⟩` and prove the remaining obligations. Introduce `α hα`. Take `⟨β, -, rfl⟩` from `Finset.mem_image.mp (Finsupp.mapDomain_support hα)`. Conclude with `β.2`.
+
+Introduce `R _ _ g`. Set `F : (Fin k → O) → R` to `fun α => ∏ t, ∏ s, detOne (algebraMap K R (τ t (α s))) (g t)`. Establish `hmd : ((c.mapDomain Subtype.val).sum fun α (r : K) => r • F α) = c.sum fun β (r : K) => r • F β.1`. Apply `Finsupp.sum_mapDomain_index` to reduce the goal to its premises. Introduce `_`.
+
+Conclude with `zero_smul K _`. Introduce `_ r₁ r₂`. Conclude with `add_smul r₁ r₂ _`. Express the relevant statement in the definitionally equal form `((c.mapDomain Subtype.val).sum fun α (r : K) => r • F α) = _`. Rewrite using `[hmd]`.
+
+Establish `hexp : ∀ β : A, F β.1 = ∑ m : ι × Fin k → Fin (n + 1), algebraMap K R (∏ p, x β p ^ (m p : ℕ)) * ∏ p : ι × Fin k, (-1) ^ (m p : ℕ) * aeval (g p.1) (esymm (Fin n) K (m p : ℕ))`. Introduce `β`. Establish `h` using `hE K R (ι × Fin k) n (fun p => algebraMap K R (pt τ β.1 p)) (fun p => g p.1)`. Rewrite `h` using `[Fintype.prod_prod_type]`. Simplify using `only [pt] at h`.
+
+Simplify using `only [F]`. Rewrite using `[h]`. Apply `Finset.sum_congr rfl` to reduce the goal to its premises. Introduce `m _`. Simplify using `only [x, pt, map_prod, map_pow]`.
+
+Simplify using `only [Finsupp.sum, hexp]`. Rewrite using `[hw R g]`. Repeatedly rewrite using `[Finset.smul_sum]`. Rewrite using `[Finset.sum_comm]`. Apply `Finset.sum_congr rfl` to reduce the goal to its premises.
+
+Introduce `m _`. Rewrite using `[← hc m, Finsupp.sum, Finset.sum_smul]`. Apply `Finset.sum_congr rfl` to reduce the goal to its premises. Introduce `β _`. Rewrite using `[Algebra.smul_def, Algebra.smul_def, map_mul]`.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem interp_of : SpanProd → Expand → Extract → DenseCoset → Interp := by
   intro hS hE hX hC O K ι _ _ _ _ τ hτ n P hP
   classical

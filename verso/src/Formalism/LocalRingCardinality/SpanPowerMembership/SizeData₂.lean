@@ -19,6 +19,11 @@ def scBig (B : ℕ) : Scale where
   J := 1
   one_le_J := le_rfl
 
+/- English proof (translation)
+Establish `h0 : (0 : ℝ) ≤ ((B + 2 : ℕ) : ℝ)` using `by positivity`. Establish `ee : (scBig B).ez = (scBig B).eps` using `div_one _`. Rewrite using `[ee]`. Simplify using `only [scBig]`. Rewrite using `[← Real.rpow_mul h0]`.
+
+Establish `e : (500 : ℝ) * (1 / 100 / 5) = 1` using `by norm_num`. Rewrite using `[e, Real.rpow_one, Nat.floor_natCast]`.
+-/
 theorem scBig_floor (B : ℕ) : ⌊(scBig B).x ^ ((scBig B).ez / 5)⌋₊ = B + 2 := by
   have h0 : (0 : ℝ) ≤ ((B + 2 : ℕ) : ℝ) := by positivity
   have ee : (scBig B).ez = (scBig B).eps := div_one _
@@ -28,6 +33,9 @@ theorem scBig_floor (B : ℕ) : ⌊(scBig B).x ^ ((scBig B).ez / 5)⌋₊ = B + 
   have e : (500 : ℝ) * (1 / 100 / 5) = 1 := by norm_num
   rw [e, Real.rpow_one, Nat.floor_natCast]
 
+/- English proof (translation)
+Introduce `D h`. Take `⟨L, hL⟩` from `h (scBig D.host.splitBound)`. Establish `h1` using `L.split_tie`. Rewrite `h1` using `[hL, scBig_floor]`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem sizeData_sc_not_surjective : ∀ D : D7, ¬ ∀ sc : Scale, ∃ L : SizeData₂ D, L.sc = sc := by
   intro D h
   obtain ⟨L, hL⟩ := h (scBig D.host.splitBound)
@@ -35,11 +43,17 @@ theorem sizeData_sc_not_surjective : ∀ D : D7, ¬ ∀ sc : Scale, ∃ L : Size
   rw [hL, scBig_floor] at h1
   omega
 
+/- English proof (translation)
+Unfold `Scale.a Scale.b`. Use `sc.one_lt_alt` as an intermediate fact. Check the signs of the components of the expression.
+-/
 theorem scale_a_nonneg (sc : Scale) : 0 ≤ sc.a := by
   unfold Scale.a Scale.b
   have := sc.one_lt_alt
   positivity
 
+/- English proof (translation)
+Unfold `Scale.L`. Conclude with `Real.rpow_pos_of_pos (by linarith [sc.one_lt_alt]) _`.
+-/
 theorem scale_L_pos (sc : Scale) : 0 < sc.L := by
   unfold Scale.L
   exact Real.rpow_pos_of_pos (by linarith [sc.one_lt_alt]) _
@@ -170,6 +184,9 @@ def toySizeData (D : D7) (sc : Scale)
   wPart_ge := fun _ _ _ _ => le_rfl
   lenMN := fun _ _ => 0
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem toySizeData_sc (D : D7) (sc : Scale) (hTT hEta hTu hb hsplit ho hQS j0 hj0 hLw hT2 hmu η Cc hη hthick hthin
     hcg hcv hcu hbe) :
     (toySizeData D sc hTT hEta hTu hb hsplit ho hQS j0 hj0 hLw hT2 hmu η Cc hη hthick hthin hcg hcv hcu hbe).sc = sc :=
@@ -184,19 +201,36 @@ def sc0 : Scale where
   J := 1
   one_le_J := le_rfl
 
+/- English proof (translation)
+The claim follows from `div_one _`.
+-/
 theorem exampleScale_ez_eq : sc0.ez = sc0.eps := div_one _
 
+/- English proof (translation)
+The claim follows from `Real.one_le_rpow sc.one_lt_alt.le (by have := sc.eps_pos; positivity)`.
+-/
 theorem scale_one_le_rpow (sc : Scale) : 1 ≤ sc.x ^ (sc.eps / 100) :=
   Real.one_le_rpow sc.one_lt_alt.le (by have := sc.eps_pos; positivity)
 
+/- English proof (translation)
+Simplify using `only [Scale.L, sc0]`. Rewrite using `[← Real.rpow_mul (by norm_num)]`. Evaluate the numerical expressions.
+-/
 theorem exampleScale_L : sc0.L = 4 := by
   simp only [Scale.L, sc0]
   rw [← Real.rpow_mul (by norm_num)]
   norm_num
 
+/- English proof (translation)
+Simplify using `only [Scale.b, exampleScale_L]`.
+-/
 theorem exampleScale_b_eq_exp : sc0.b = Real.exp 4 := by
   simp only [Scale.b, exampleScale_L]
 
+/- English proof (translation)
+Apply `Nat.floor_le_of_le` to reduce the goal to its premises. Rewrite using `[exampleScale_ez_eq]`. Simplify using `only [sc0]`. Rewrite using `[← Real.rpow_mul (by norm_num)]`. Establish `: (2 : ℝ) ^ ((200 : ℝ) * (1 / 100 / 5)) ≤ 2 ^ (1 : ℝ)` using `Real.rpow_le_rpow_of_exponent_le (by norm_num) (by norm_num)`.
+
+Simplify using `using this`.
+-/
 theorem exampleScale_split_le_two : ⌊sc0.x ^ (sc0.ez / 5)⌋₊ ≤ 2 := by
   apply Nat.floor_le_of_le
   rw [exampleScale_ez_eq]
@@ -206,6 +240,11 @@ theorem exampleScale_split_le_two : ⌊sc0.x ^ (sc0.ez / 5)⌋₊ ≤ 2 := by
     Real.rpow_le_rpow_of_exponent_le (by norm_num) (by norm_num)
   simpa using this
 
+/- English proof (translation)
+Establish `h` using `Real.exp_one_lt_d9`. Establish `e : Real.exp 4 = Real.exp 1 ^ 4` using `by rw [← Real.exp_nat_mul]; norm_num`. Rewrite using `[e]`. Establish `h0 : 0 < Real.exp 1` using `Real.exp_pos 1`. Establish `: Real.exp 1 ^ 4 < 2.7182818286 ^ 4` using `by gcongr`.
+
+Combine the linear relations using `[show (2.7182818286 : ℝ) ^ 4 < 55 by norm_num]`.
+-/
 theorem exp_four_lt : Real.exp 4 < 55 := by
   have h := Real.exp_one_lt_d9
   have e : Real.exp 4 = Real.exp 1 ^ 4 := by rw [← Real.exp_nat_mul]; norm_num
@@ -214,6 +253,9 @@ theorem exp_four_lt : Real.exp 4 < 55 := by
   have : Real.exp 1 ^ 4 < 2.7182818286 ^ 4 := by gcongr
   linarith [show (2.7182818286 : ℝ) ^ 4 < 55 by norm_num]
 
+/- English proof (translation)
+Establish `h` using `Real.exp_one_gt_d9`. Establish `e : Real.exp 4 = Real.exp 1 ^ 4` using `by rw [← Real.exp_nat_mul]; norm_num`. Rewrite using `[e]`. Establish `: (2.7182818283 : ℝ) ^ 4 < Real.exp 1 ^ 4` using `by gcongr`. Combine the linear relations using `[show (54 : ℝ) < 2.7182818283 ^ 4 by norm_num]`.
+-/
 theorem exp_four_gt : 54 < Real.exp 4 := by
   have h := Real.exp_one_gt_d9
   have e : Real.exp 4 = Real.exp 1 ^ 4 := by rw [← Real.exp_nat_mul]; norm_num
@@ -221,13 +263,26 @@ theorem exp_four_gt : 54 < Real.exp 4 := by
   have : (2.7182818283 : ℝ) ^ 4 < Real.exp 1 ^ 4 := by gcongr
   linarith [show (54 : ℝ) < 2.7182818283 ^ 4 by norm_num]
 
+/- English proof (translation)
+Rewrite using `[exampleScale_b_eq_exp]`. Conclude with `⟨exp_four_gt, exp_four_lt⟩`.
+-/
 theorem exampleScale_b_bounds : 54 < sc0.b ∧ sc0.b < 55 := by
   rw [exampleScale_b_eq_exp]; exact ⟨exp_four_gt, exp_four_lt⟩
 
+/- English proof (translation)
+Use `exampleScale_b_bounds.1` as an intermediate fact. Use the polynomial consequences of the given equalities and inequalities.
+-/
 theorem exampleScale_b_sq_ge : 2900 ≤ sc0.b ^ 2 := by
   have := exampleScale_b_bounds.1
   nlinarith
 
+/- English proof (translation)
+Establish `hx : 0 < sc.x` using `by linarith [sc.one_lt_alt]`. Establish `hb : 0 < sc.b` using `Real.exp_pos _`. Establish `hX : 1 ≤ sc.X'` using `Real.one_le_exp (by positivity)`. Establish `hn' : (1 : ℝ) ≤ n` using `by exact_mod_cast hn`. Establish `e : sc.w'' n = sc.b / (n * sc.X')`.
+
+Simplify using `only [Scale.w'', Scale.b', Scale.a]`. Clear the denominators using the available nonvanishing facts. Rewrite using `[e]`. Use `⟨by positivity, ?_⟩` and prove the remaining obligations. Rewrite using `[div_le_iff₀ (by positivity)]`.
+
+Establish `h1 : (1 : ℝ) ≤ n * sc.X'` using `one_le_mul_of_one_le_of_one_le hn' hX`. Use the polynomial consequences of the given equalities and inequalities.
+-/
 theorem scale_w''_bounds (sc : Scale) (n : ℕ) (hn : 1 ≤ n) : 0 ≤ sc.w'' n ∧ sc.w'' n ≤ sc.b := by
   have hx : 0 < sc.x := by linarith [sc.one_lt_alt]
   have hb : 0 < sc.b := Real.exp_pos _
@@ -242,12 +297,22 @@ theorem scale_w''_bounds (sc : Scale) (n : ℕ) (hn : 1 ≤ n) : 0 ≤ sc.w'' n 
   have h1 : (1 : ℝ) ≤ n * sc.X' := one_le_mul_of_one_le_of_one_le hn' hX
   nlinarith
 
+/- English proof (translation)
+Substitute `hm` using the available equality. Establish `h8 : (55 : ℝ) ≤ T` using `by exact_mod_cast hT`. Evaluate the numerical expressions. Combine the linear relations using `[exampleScale_b_bounds.2]`.
+-/
 theorem exampleScale_pow_le_level (m T : ℕ) (hm : m = 2) (hT : 55 ≤ T) : sc0.b ^ ((m : ℝ) / 2) ≤ (T : ℝ) := by
   subst hm
   have h8 : (55 : ℝ) ≤ T := by exact_mod_cast hT
   norm_num
   linarith [exampleScale_b_bounds.2]
 
+/- English proof (translation)
+Establish `e : ((R0.n : ℝ) * R0.N R0.m / R0.m) = 80`. Simplify using `[exampleRanks_N_formula]`. Evaluate the numerical expressions. Rewrite using `[e]`. Establish `: Real.logb 5 80 ≤ Real.logb 5 125` using `Real.logb_le_logb_of_le (by norm_num) (by norm_num) (by norm_num)`.
+
+Establish `e2 : Real.logb 5 125 = 3`. Rewrite using `[show (125 : ℝ) = 5 ^ (3 : ℕ) by norm_num, Real.logb_pow]`. Rewrite using `[Real.logb_self_eq_one (by norm_num)]`. Evaluate the numerical expressions. Use `push_cast`.
+
+Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem exampleRanks_jetIndex_bound : Real.logb 5 ((R0.n : ℝ) * R0.N R0.m / R0.m) ≤ (3 : ℕ) := by
   have e : ((R0.n : ℝ) * R0.N R0.m / R0.m) = 80 := by
     simp [exampleRanks_N_formula]
@@ -336,6 +401,9 @@ def sizeDataAt0 (D : D7) (hR : D.R = R0) (hTT : D.host.TT = ∅)
       rw [abs_le]
       constructor <;> linarith)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem sizeDataAt0_sc (D : D7) (hR hTT hEta hT hsb hQS hLw hT2 hmu hDel hv hu0 hu hb he) :
     (sizeDataAt0 D hR hTT hEta hT hsb hQS hLw hT2 hmu hDel hv hu0 hu hb he).sc = sc0 := rfl
 

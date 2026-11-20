@@ -14,6 +14,9 @@ namespace UpperTheory.Gal.Int.Geo.Pl.Tj
 
 variable {E : Type} [Field E] [NumberField E] [IsCMField E]
 
+/- English proof (translation)
+Establish `h : HeightOneSpectrum.under (𝓞 ℚ) (cj u) = HeightOneSpectrum.under (𝓞 ℚ) u` using `GlobalTheory.DefU.ClassFin.under_conjSrc (F := ℚ) (E := E) _ (fun x => by simp) u`. Establish `h2 : ((q : 𝓞 ℚ) ∈ (HeightOneSpectrum.under (𝓞 ℚ) (cj u)).asIdeal) ↔ ((q : 𝓞 ℚ) ∈ (HeightOneSpectrum.under (𝓞 ℚ) u).asIdeal)` using `by rw [h]`. Simplify `h2` using `[HeightOneSpectrum.under, Ideal.under_def, Ideal.mem_comap]`.
+-/
 private lemma nat_mem_cj (u : Plc E) (q : ℕ) : (q : 𝓞 E) ∈ (cj u).asIdeal ↔ (q : 𝓞 E) ∈ u.asIdeal := by
   have h : HeightOneSpectrum.under (𝓞 ℚ) (cj u) = HeightOneSpectrum.under (𝓞 ℚ) u :=
     GlobalTheory.DefU.ClassFin.under_conjSrc (F := ℚ) (E := E) _ (fun x => by simp) u
@@ -21,12 +24,23 @@ private lemma nat_mem_cj (u : Plc E) (q : ℕ) : (q : 𝓞 E) ∈ (cj u).asIdeal
       ((q : 𝓞 ℚ) ∈ (HeightOneSpectrum.under (𝓞 ℚ) u).asIdeal) := by rw [h]
   simpa [HeightOneSpectrum.under, Ideal.under_def, Ideal.mem_comap] using h2
 
+/- English proof (translation)
+The claim follows from `Ideal.subset_span (by simp)`.
+-/
 private lemma q_mem_uId {p : ℕ} [Fact p.Prime] (D : Datum p) (q : ℕ) (r : ℤ) : (q : 𝓞 D.F) ∈ uId D q r :=
   Ideal.subset_span (by simp)
 
+/- English proof (translation)
+The claim follows from `Ideal.subset_span (by simp)`.
+-/
 private lemma ω_mem_uId {p : ℕ} [Fact p.Prime] (D : Datum p) (q : ℕ) (r : ℤ) : D.ω - (r : 𝓞 D.F) ∈ uId D q r :=
   Ideal.subset_span (by simp)
 
+/- English proof (translation)
+Introduce `h`. Take `⟨a, b, hab⟩` from `Nat.isCoprime_iff_coprime.2 hm`. Establish `h1 : ((a * (m : ℤ) + b * (q : ℤ) : ℤ) : 𝓞 E) = 1` using `by rw [hab]; simp`. Establish `h2 : (1 : 𝓞 E) ∈ u.asIdeal`. Rewrite using `[← h1]`.
+
+Use `push_cast`. Conclude with `add_mem (Ideal.mul_mem_left _ _ h) (Ideal.mul_mem_left _ _ hq)`. Conclude with `u.isPrime.ne_top ((Ideal.eq_top_iff_one _).2 h2)`.
+-/
 private lemma natCast_not_mem (u : Plc E) {q m : ℕ} (hm : m.Coprime q) (hq : (q : 𝓞 E) ∈ u.asIdeal) :
     (m : 𝓞 E) ∉ u.asIdeal := by
   intro h
@@ -37,6 +51,15 @@ private lemma natCast_not_mem (u : Plc E) {q m : ℕ} (hm : m.Coprime q) (hq : (
     exact add_mem (Ideal.mul_mem_left _ _ h) (Ideal.mul_mem_left _ _ hq)
   exact u.isPrime.ne_top ((Ideal.eq_top_iff_one _).2 h2)
 
+/- English proof (translation)
+Use `((hD E A n p S F g).2.2.1 𝔟 hb).2 ?_` and prove the remaining obligations. Introduce `u _ i k`. Break down `hu u with h1 | ⟨hqu, s, hs, hsu⟩` into its components or cases. Establish `h0 : F.cmp u g = 1` using `by simp [Frame.cmp, h1]`. Rewrite using `[h0]`.
+
+Conclude with `⟨0, zero_mem _, by simp⟩`. Take `⟨ha, ha'⟩` from `GlobalTheory.EulerTwRestr.mem_KGL_iff.1 (F.a_int u q hq hG hqu)`. Establish `hc : ∀ i k, F.cmp u g i k ∈ u.adicCompletionIntegers E`. Introduce `i k`. Simplify using `only [Frame.cmp, Units.val_mul, Matrix.mul_apply]`.
+
+Use `sum_mem fun l _ => mul_mem (sum_mem fun l' _ => mul_mem (ha _ _) (hint u _ _)) (ha' _ _)` and prove the remaining obligations. Establish `hy : (F.cmp u g - 1) i k ∈ u.adicCompletionIntegers E`. Rewrite using `[Matrix.sub_apply, Matrix.one_apply]`. Use `split_ifs`. Conclude with `sub_mem (hc i k) (one_mem _)`.
+
+Simplify using `using hc i k`. Rewrite using `[← Ideal.top_mul 𝔟]`. Use `(inIdUnit_holds E u ⊤ 𝔟 ⟨s, hs, hsu⟩ _).2 ?_` and prove the remaining obligations. Conclude with `⟨⟨_, hy⟩, by simp [Ideal.map_top], rfl⟩`.
+-/
 private lemma cong_of {A : Arith E} {n p : ℕ} [Fact p.Prime] (S : Setup A n p) (F : Frame S) (hD : Dict)
     {q : ℕ} (hq : q.Prime) (hG : A.Good q) (g : GUf E n) (hint : ∀ u, IntM u (comp u g).val)
     (𝔟 : Ideal (𝓞 E)) (hb : 𝔟 ≠ ⊥)
@@ -64,6 +87,25 @@ private lemma cong_of {A : Arith E} {n p : ℕ} [Fact p.Prime] (S : Setup A n p)
 
 end UpperTheory.Gal.Int.Geo.Pl.Tj
 
+/- English proof (translation)
+Introduce `hS hD hL E _ _ _ A n p _ S F x hx N w σ i hi g hg`. Establish `hq : σ.q.Prime` using `σ.atp.prime`. Establish `hG : A.Good σ.q` using `σ.good`. Establish `hqw : (σ.q : 𝓞 E) ∈ w.asIdeal` using `σ.atp.le (q_mem_uId S.D _ _)`. Establish `hrw : A.ω - (σ.r : 𝓞 E) ∈ w.asIdeal` using `σ.atp.le (ω_mem_uId S.D _ _)`.
+
+Take `⟨s1, -, -, -, s5, -, s7⟩` from `hS E A x hx σ.q hq hG.1 w hqw`. Establish `tri : ∀ u : Plc E, comp u g = 1 ∨ ((σ.q : 𝓞 E) ∈ u.asIdeal ∧ (u = w ∨ SameK x (cj u) w))`. Introduce `u`. Distinguish the cases in `h1 : u = w`. Conclude with `Or.inr ⟨h1 ▸ hqw, Or.inl h1⟩`.
+
+Distinguish the cases in `h2 : SameK x (cj u) w`. Establish `h3 : (σ.q : 𝓞 E) ∈ (cj u).asIdeal` using `(h2 _ (by simpa using natCast_mem _ σ.q)).2 hqw`. Conclude with `Or.inr ⟨(nat_mem_cj u _).1 h3, Or.inr h2⟩`. Conclude with `Or.inl (hg.off u h1 h2)`. Establish `hω : ∀ u : Plc E, (σ.q : 𝓞 E) ∈ u.asIdeal → SameK x (cj u) w → A.ω - (σ.r : 𝓞 E) ∉ u.asIdeal`.
+
+Introduce `u hqu h1 h2`. Establish `h3` using `s5 u w ((s7 σ.r hrw u).2 ⟨hqu, h2⟩)`. Conclude with `s1 fun y hy => (h3 y hy).symm.trans (h1 y hy)`. Use `⟨fun m hm => ?_, fun 𝔞 h𝔞 ⟨e, he⟩ => ?_⟩` and prove the remaining obligations. Use `((hL p S.D S.G S.L).2.2.2.1 m (F.j g)).2 ?_` and prove the remaining obligations.
+
+Establish `hm0 : (m : 𝓞 E) ≠ 0`. Use `Nat.cast_ne_zero.2 ?_` and prove the remaining obligations. Introduce and unpack `rfl`. Conclude with `hq.one_lt.ne' ((Nat.coprime_zero_left _).1 hm)`. Use `cong_of S F hD hq hG g hg.int (Ideal.span {(m : 𝓞 E)}) (Ideal.span_singleton_eq_bot.not.2 hm0) fun u => ?_` and prove the remaining obligations.
+
+Break down `tri u with h | ⟨h, -⟩` into its components or cases. Conclude with `Or.inl h`. Conclude with `Or.inr ⟨h, _, Ideal.mem_span_singleton_self _, natCast_not_mem u hm h⟩`. Establish `hq0 : (σ.q : 𝓞 E) ^ e ∈ 𝔞` using `he (Ideal.pow_mem_pow (q_mem_uId S.D _ _) e)`. Establish `hb : 𝔞 ≠ ⊥`.
+
+Introduce and unpack `rfl`. Conclude with `pow_ne_zero e (Nat.cast_ne_zero.2 hq.ne_zero) ((Ideal.mem_bot).1 hq0)`. Use `cong_of S F hD hq hG g hg.int 𝔞 hb fun u => ?_` and prove the remaining obligations. Break down `tri u with h | ⟨h, rfl | h'⟩` into its components or cases. Conclude with `Or.inl h`.
+
+Use `Or.inr ⟨h, ?_⟩` and prove the remaining obligations. Assume the negation of the conclusion as `hc`. Use `push_neg at hc`. Establish `h1 : 𝔞 ≤ u.asIdeal` using `hc`. Rewrite `h𝔞` using `[sup_eq_right.2 h1]`.
+
+Conclude with `u.isPrime.ne_top h𝔞`. Use `Or.inr ⟨h, (A.ω - (σ.r : 𝓞 E)) ^ e, he (Ideal.pow_mem_pow (ω_mem_uId S.D _ _) e), ?_⟩` and prove the remaining obligations. Conclude with `fun h2 => hω u h h' (u.isPrime.mem_of_pow_mem e h2)`.
+-/
 theorem UpperTheory.Gal.Int.Geo.Pl.Tj.tCong :
     UpperTheory.Gal.Int.Geo.Pl.Tj.TCong := by
   intro hS hD hL E _ _ _ A n p _ S F x hx N w σ i hi g hg

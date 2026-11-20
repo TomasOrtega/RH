@@ -11,6 +11,9 @@ namespace GlobalTheory.LamF
 open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalCategory MonObj NumberField IsDedekindDomain in
 open scoped CategoryTheory.Obj ComplexOrder in
 
+/- English proof (translation)
+Introduce `O _ S G _ _`. Conclude with `⟨fun a => ⟨_root_.ReciprocityTheory.ChartRestriction.G.Geo.Tor.ofRingAct a, rfl⟩, fun b => ⟨b.toRingAct, rfl⟩⟩`.
+-/
 theorem _root_.GlobalTheory.LamF.ringAct_iff_oAct :
     ∀ (O : Type) [CommRing O] (S : Scheme.{0}) (G : Over S) [GrpObj G] [IsCommMonObj G],
       (∀ a : _root_.ReciprocityTheory.ChartRestriction.G.Out.RingAct G O, ∃ b : _root_.ReciprocityTheory.ChartRestriction.G.Geo.Tor.OAct O G, b.act = a.act) ∧

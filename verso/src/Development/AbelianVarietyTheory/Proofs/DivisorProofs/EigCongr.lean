@@ -17,10 +17,16 @@ def colChar (ψ : AddChar F ℂ) (b : Fin r → ℕ) (k : Fin r) (l : Fin r → 
   ψ (∑ i, l i * ((p : GL (Fin r) F) : Matrix (Fin r) (Fin r) F) i k +
     edgeSum (fun i j => blkEdge b i j ∧ k < j) (p : GL (Fin r) F))
 
+/- English proof (translation)
+Simplify using `[eig, Submodule.mem_iInf, sub_eq_zero]`.
+-/
 theorem mem_eig {G V : Type} [Group G] [AddCommGroup V] [Module ℂ V] (τ : Representation ℂ G V) (S : Set G)
     (χ : G → ℂ) (v : V) : v ∈ eig τ S χ ↔ ∀ g ∈ S, τ g v = χ g • v := by
   simp [eig, Submodule.mem_iInf, sub_eq_zero]
 
+/- English proof (translation)
+Use extensionality with `v`. Simplify using `only [mem_eig]`. Conclude with `forall₂_congr fun g hg => by rw [h g hg]`.
+-/
 theorem eig_congr {G V : Type} [Group G] [AddCommGroup V] [Module ℂ V] (τ : Representation ℂ G V) (S : Set G)
     (χ χ' : G → ℂ) (h : ∀ g ∈ S, χ g = χ' g) : eig τ S χ = eig τ S χ' := by
   ext v

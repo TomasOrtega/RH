@@ -13,6 +13,15 @@ open GlobalTheory.LowestKTypeDetermines (rhoC_perm lowK_add strictAnti_add_rho n
 
 variable {n : ℕ}
 
+/- English proof (translation)
+Take `⟨h1, h2⟩` from `h`. Use `⟨fun a => ?_, fun a b hab he => ?_⟩` and prove the remaining obligations. Use `h1 (s'.symm (s a))` as an intermediate fact. Simplify using `using this`. Establish `hlt` using `hs a b hab he`.
+
+Establish `key : s'.symm (s a) < s'.symm (s b)`. Assume the negation of the conclusion as `hn`. Establish `hle` using `not_lt.1 hn`. Break down `hle.lt_or_eq with hl | he'` into its components or cases. Use `hs' _ _ hl (by simpa using he.symm)` as an intermediate fact.
+
+Simplify using `only [Equiv.apply_symm_apply] at this`. Conclude with `absurd this (not_lt.2 hlt.le)`. Use `s'.symm.injective he'` as an intermediate fact. Conclude with `absurd this hlt.ne'`. Use `h2 _ _ key (by simpa using he)` as an intermediate fact.
+
+Simplify using `using this`.
+-/
 theorem kHighest_renumber {V : Type} [AddCommGroup V] [Module ℂ V] (ε : Fin n → Bool)
     (E : Fin n → Fin n → Module.End ℂ V) {s s' : Equiv.Perm (Fin n)}
     (hs : ∀ a b, a < b → ε (s a) = ε (s b) → s a < s b)
@@ -36,6 +45,33 @@ theorem kHighest_renumber {V : Type} [AddCommGroup V] [Module ℂ V] (ε : Fin n
     have := h2 _ _ key (by simpa using he)
     simpa using this
 
+/- English proof (translation)
+Introduce `n ε X s s' mu mu' h hc h'`. Take `⟨hl, hs, -, v, hv0, hv⟩` from `h`. Take `⟨hl', hs', hmin', v', hv0', hv'⟩` from `h'`. Establish `add : ∀ (ε : Fin n → Bool) (lam : Fin n → ℝ), PI.UpqRep.lowK ε lam + (2 : ℝ) • Formalism.REAL.rhoC ε = lam + Formalism.QuantumDeterminants.rhoStd n` using `fun ε lam => lowK_add ε lam`. Establish `k1` using `kHighest_renumber ε X.E hs hs' hv'`.
+
+Establish `k2` using `kHighest_renumber ε X.E hs' hs hv`. Take `⟨c, hc1, e⟩` from `hc _ v' hv0' k1`. Establish `m2` using `hmin' _ v hv0 k2`. Use `set x := mu + Formalism.QuantumDeterminants.rhoStd n with hx`. Use `set x' := mu' + Formalism.QuantumDeterminants.rhoStd n with hx'`.
+
+Use `set Q : Fin n → ℝ := ∑ a, ∑ b, (c a b : ℝ) • Formalism.REAL.root a b with hQ`. Establish `hsx : StrictAnti x` using `strictAnti_add_rho hl.1`. Establish `hsx' : StrictAnti x'` using `strictAnti_add_rho hl'.1`. Establish `r1 : x' ∘ s'.symm ∘ s = x + Q`. Establish `e1 : x = PI.UpqRep.lowK (ε ∘ s) mu + (2 : ℝ) • Formalism.REAL.rhoC (ε ∘ s)` using `(add _ _).symm`.
+
+Establish `e2 : x' = PI.UpqRep.lowK (ε ∘ s') mu' + (2 : ℝ) • Formalism.REAL.rhoC (ε ∘ s')` using `(add _ _).symm`. Use function extensionality and compare the values at `a`. Establish `ea` using `congrFun e a`. Rewrite using `[e1, e2, rhoC_perm s hs, rhoC_perm s' hs']`. Simplify using `only [Function.comp_apply, Pi.add_apply, Pi.smul_apply, Equiv.apply_symm_apply] at ea ⊢`.
+
+Rewrite using `[ea]`. Expand and normalize the polynomial expressions, which then agree. Establish `r2 : x ∘ s.symm ∘ s' = PI.UpqRep.lowK (ε ∘ s) mu ∘ s.symm ∘ s' + (2 : ℝ) • Formalism.REAL.rhoC (ε ∘ s')`. Establish `e1 : x = PI.UpqRep.lowK (ε ∘ s) mu + (2 : ℝ) • Formalism.REAL.rhoC (ε ∘ s)` using `(add _ _).symm`. Rewrite using `[e1, rhoC_perm s hs, rhoC_perm s' hs']`.
+
+Use function extensionality and compare the values at `a`. Simplify using the standard rewrite rules. Establish `m3 : Formalism.REAL.nsq x' ≤ Formalism.REAL.nsq x`. Establish `a1 : Formalism.REAL.nsq x' = PI.UpqRep.vNormSq (ε ∘ s') (PI.UpqRep.lowK (ε ∘ s') mu')`. Rewrite using `[hx', ← add]`.
+
+Both sides reduce to the same expression. Establish `a2 : Formalism.REAL.nsq x = PI.UpqRep.vNormSq (ε ∘ s') (PI.UpqRep.lowK (ε ∘ s) mu ∘ s.symm ∘ s')`. Use `nsq_comp (s.symm * s') x` as an intermediate fact. Establish `e3 : x ∘ ⇑(s.symm * s') = x ∘ s.symm ∘ s'` using `rfl`. Rewrite `this` using `[e3, r2]`.
+
+Rewrite using `[← this]`. Both sides reduce to the same expression. Rewrite using `[a1, a2]`. Conclude with `m2`. Establish `m4 : Formalism.REAL.nsq (x + Q) = Formalism.REAL.nsq x'`.
+
+Rewrite using `[← r1]`. Conclude with `nsq_comp (s'.symm * s) x'`. Establish `h4` using `nsq_add_cone hsx.antitone hc1`. Establish `hQ0 : Q = 0` using `eq_zero_of_nsq (by linarith)`. Rewrite `r1` using `[hQ0, add_zero]`.
+
+Establish `hm : StrictMono (s'.symm * s)` using `fun a b hab => by`. Establish `h5` using `hsx hab`. Rewrite `h5` using `[← r1]`. Conclude with `hsx'.lt_iff_gt.1 h5`. Establish `h6 : s'.symm * s = 1`.
+
+Use `Subsingleton.elim (hm.orderIsoOfSurjective _ (s'.symm * s).surjective) (OrderIso.refl _)` as an intermediate fact. Conclude with `Equiv.ext fun a => DFunLike.congr_fun this a`. Establish `h7 : s = s'`. Use `Equiv.ext fun a => ?_` and prove the remaining obligations. Use `congrArg (fun t : Equiv.Perm (Fin n) => s' (t a)) h6` as an intermediate fact.
+
+Simplify using `using this`. Substitute `h7` using the available equality. Use `⟨rfl, ?_⟩` and prove the remaining obligations. Establish `h8 : x' = x`. Simplify using `using r1`.
+
+Conclude with `(add_right_cancel h8).symm`.
+-/
 theorem dataUniq : CompanionTheory.RgExh.Fin.DataUniq := by
   intro n ε X s s' mu mu' h hc h'
   obtain ⟨hl, hs, -, v, hv0, hv⟩ := h

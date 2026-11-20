@@ -15,10 +15,16 @@ section U
 
 variable {E : Type} [Field E] [NumberField E] [StarRing E] {n : ℕ}
 
+/- English proof (translation)
+Establish `h` using `TE.matT_apply (ι := Unit) (fun _ => RingHom.id E) γ () i j`. Simplify `h` using `[TE.matT]`.
+-/
 theorem TE.ufGL_apply' (γ : UF E n) (i j : Fin n) : ((ufGL E n γ : GL (Fin n) E) : Matrix (Fin n) (Fin n) E) i j = γ.1 (Pi.single j 1) i := by
   have h := TE.matT_apply (ι := Unit) (fun _ => RingHom.id E) γ () i j
   simpa [TE.matT] using h
 
+/- English proof (translation)
+Establish `h : hStd E n (γ.1 (Pi.single i 1)) (γ.1 (γ.1.symm (Pi.single k 1))) = hStd E n (Pi.single i 1) (γ.1.symm (Pi.single k 1))` using `γ.2 _ _`. Rewrite `h` using `[LinearEquiv.apply_symm_apply, hStd_single_left]`. Rewrite using `[← h, hStd_apply]`. Simplify using `[Pi.single_apply]`.
+-/
 theorem TE.ufInv_apply (γ : UF E n) (i k : Fin n) : γ.1.symm (Pi.single k 1) i = star (γ.1 (Pi.single i 1) k) := by
   have h : hStd E n (γ.1 (Pi.single i 1)) (γ.1 (γ.1.symm (Pi.single k 1))) = hStd E n (Pi.single i 1) (γ.1.symm (Pi.single k 1)) :=
     γ.2 _ _
@@ -32,11 +38,27 @@ section Eq
 
 variable {D : D7} {X : Fields} (s : Seam D X) {cc : Ideal (𝓞 D.host.K)} {δ : ℂ} (B : Base D cc δ) (χ : TaylorLogMetric.IdE D → ℂ) (cD : D.what₂.Tau → ℂ)
 
+/- English proof (translation)
+Set `_` to `D.host.cmStar`. Use `show s.σ₀ (X.emb τ (star x)) = star (s.σ₀ (X.emb τ x))`. Rewrite using `[hok.1, hok.1, hok.2, ← Formalism.L2.GlobalTheoryTheory.IntegralLatticeDensity.CU.star_conj, Formalism.L2.PairingIndexBounds.Eq.embT_star']`.
+-/
 theorem ambOf_conj (hok : s.Ok) (τ : X.Tau) (x : X.E) : X.embC (ambOf s B χ cD).σ₀ τ (star x) = star (X.embC (ambOf s B χ cD).σ₀ τ x) := by
   let _ := D.host.cmStar
   show s.σ₀ (X.emb τ (star x)) = star (s.σ₀ (X.emb τ x))
   rw [hok.1, hok.1, hok.2, ← Formalism.L2.GlobalTheoryTheory.IntegralLatticeDensity.CU.star_conj, Formalism.L2.PairingIndexBounds.Eq.embT_star']
 
+/- English proof (translation)
+Take `⟨hcc, hδ, -, hχ, -, hok, -⟩` from `hN`. Set `_` to `D.host.cmStar`. Introduce `γ γ' N N' hN hN' z`. Establish `hE` using `(Formalism.L2.PairingIndexBounds.Eq.SqG.eqP_outright B hcc hδ (B.stdOK hcc hδ) χ hχ).1 a b ⟨s.lat N, s.sd_lat hok hN⟩ ⟨s.lat N', s.sd_lat hok hN'⟩ ha hb ⟨s.matU γ, s.matU_mem hok γ⟩ ⟨s.matU γ', s.matU_mem hok γ'⟩`. Use `show B.eNat χ a b (s.lat (gmap γ.1 N)) (s.lat (gmap γ'.1 N')) (fun τ => z (s.iT.symm τ)) = B.eNat χ a b (s.lat N) (s.lat N') (fun τ => (ambOf s B χ cD : Amb X).pullV a b γ.1 γ'.1 z (s.iT.symm τ))`.
+
+Rewrite using `[s.lat_gmap, s.lat_gmap]`. Establish `hE'` using `congrFun hE (fun τ => z (s.iT.symm τ))`. Rewrite using `[← hE']`. Unfold `TaylorLogMetric.pull`. Use `congr 1`.
+
+Use function extensionality and compare the values at `τ i j`. Take `⟨τ', rfl⟩` from `s.iT.surjective τ`. Simplify using `only [Equiv.symm_apply_apply, Matrix.mul_apply, Matrix.conjTranspose_apply, Matrix.map_apply, Matrix.of_apply, Finset.sum_mul]`. Rewrite using `[Finset.sum_comm]`. Unfold `Amb.pullV`.
+
+Use `Finset.sum_congr rfl fun k _ => Finset.sum_congr rfl fun l _ => ?_` and prove the remaining obligations. Establish `e1 : ∀ y : X.E, TaylorLogMetric.embT D (s.iT τ') (s.iE y) = X.embC s.σ₀ τ' y` using `fun y => (hok.1 τ' y).symm`. Establish `f1 : star ((B.tor).emb (s.iT τ') (s.matU γ' k i)) = X.embC s.σ₀ τ' (γ'.1.symm (Pi.single k 1) i)`. Rewrite using `[TE.ufInv_apply, Seam.matU, Matrix.map_apply, TE.ufGL_apply']`. Use `show star (TaylorLogMetric.embT D (s.iT τ') (s.iE _)) = _`.
+
+Rewrite using `[← Formalism.L2.PairingIndexBounds.Eq.embT_star', Formalism.L2.GlobalTheoryTheory.IntegralLatticeDensity.CU.star_conj, ← hok.2, e1]`. Establish `f2 : (B.tor).emb (s.iT τ') (s.matU γ l j) = X.embC s.σ₀ τ' (γ.1 (Pi.single j 1) l)`. Rewrite using `[Seam.matU, Matrix.map_apply, TE.ufGL_apply']`. Conclude with `e1 _`. Rewrite using `[f1, f2]`.
+
+Both sides reduce to the same expression.
+-/
 theorem eqLaw_ambOf {σ₀ : X.K →+* ℂ} (hN : NatOk s cc δ χ cD σ₀) {a b : ℕ} (ha : Even a) (hb : Even b) : (ambOf s B χ cD : Amb X).EqLaw a b := by
   obtain ⟨hcc, hδ, -, hχ, -, hok, -⟩ := hN
   let _ := D.host.cmStar
@@ -67,6 +89,9 @@ theorem eqLaw_ambOf {σ₀ : X.K →+* ℂ} (hN : NatOk s cc δ χ cD σ₀) {a 
   rw [f1, f2]
   rfl
 
+/- English proof (translation)
+The claim follows from `hT X _ a b Sall D' (ambOf_conj s B χ cD hN.2.2.2.2.2.1) hD hLa (eqLaw_ambOf s B χ cD hN ha hb)`.
+-/
 theorem thIndEq_ambOf_of (hT : ThIndOfEq) {σ₀ : X.K →+* ℂ} (hN : NatOk s cc δ χ cD σ₀) {a b : ℕ} (ha : Even a) (hb : Even b)
     (Sall : Finset (HeightOneSpectrum (𝓞 X.E))) {D' : ℕ} (hD : 0 < D') (hLa : (ambOf s B χ cD : Amb X).LaHyp a b Sall) :
     (ambOf s B χ cD : Amb X).ThIndEq a b Sall D' :=

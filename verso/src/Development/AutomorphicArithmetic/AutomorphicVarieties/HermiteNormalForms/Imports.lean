@@ -7,6 +7,13 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.HermiteNormalForms
 open NumberField Matrix UpperTheory.V UpperTheory.V.KT
 open scoped ComplexOrder
 
+/- English proof (translation)
+Introduce `L _ _ _ N`. Take `⟨hc, hs, hp, hd⟩` from `psdcone L N`. Use `⟨fun h hh => ?_, ?_, hc, hs, ?_, hd⟩` and prove the remaining obligations. Rewrite `hh` using `[poly_qc]`. Take `⟨S, hS, hev⟩` from `locfin L N h (rypos L N hh) 1`.
+
+Use `⟨Subtype.val ⁻¹' S, hS.preimage Subtype.val_injective.injOn, ?_⟩` and prove the remaining obligations. Use `filter_upwards [hev] with k hk y hy`. Conclude with `hk y.1 hy`. Rewrite using `[poly_qc]`. Conclude with `ryne L N`.
+
+Rewrite using `[poly_qc]`. Conclude with `(rypos L N).trans hp`.
+-/
 theorem UpperTheory.V.KT.good :
     ∀ (L : Type) [Field L] [NumberField L] [IsTotallyComplex L] (N : ℕ), ConeExtensionAcyclic.Good (qc L N) (Psd L N) := by
   intro L _ _ _ N

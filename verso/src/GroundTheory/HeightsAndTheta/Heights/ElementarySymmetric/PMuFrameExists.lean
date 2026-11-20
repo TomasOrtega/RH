@@ -13,6 +13,15 @@ variable {II : IntersectionSystem} {Ψ : Type} [Fintype Ψ] {K : Type} [Fintype 
   [∀ k, Fintype (ι k)] {Ω : Type} [Field Ω] [Algebra ℚ Ω] {E : Ψ → Type} [∀ τ, AddCommGroup (E τ)]
   [∀ τ, Module Ω (E τ)]
 
+/- English proof (translation)
+Introduce `z hz`. Use `choose c hc using hz.1`. Establish `hx : segreCoord D.y c ≠ 0` using `HermMetricEq.segreCoord_ne_zero hz hc`. Take `⟨m, f, cc, hf, hcc, hsum, hdat⟩` from `H.locally c hx`. Use `choose vf hvf using fun l => IndefiniteRowSideFullHecke.LowerBoundFree.regularAt_of_mem_chartRing hz hc (hf l)`.
+
+Use `choose vc hvc using fun l => IndefiniteRowSideFullHecke.LowerBoundFree.regularAt_of_mem_chartRing hz hc (hcc l)`. Establish `hS : IndefiniteRowSideFullHecke.LowerBoundFree.IsValueAt D.y (∑ l, cc l * f l) z (∑ l, vc l * vf l)` using `IndefiniteRowSideFullHecke.LowerBoundFree.IsValueAt.sum _ fun l _ => (hvc l).mul (hvf l)`. Rewrite `hS` using `[hsum]`. Establish `h1 : (∑ l, vc l * vf l) = 1` using `IndefiniteRowSideFullHecke.LowerBoundFree.IsValueAt.unique hz hS IndefiniteRowSideFullHecke.LowerBoundFree.isValueAt_one`. Establish `hex : ∃ l, vf l ≠ 0`.
+
+Assume the negation of the conclusion as `hne`. Simplify using `only [not_exists, not_not] at hne`. Simplify using `[hne] at h1`. Take `⟨l, hl⟩` from `hex`. Take `⟨b, hb, u, hu, heq⟩` from `hdat l`.
+
+Conclude with `⟨⟨c, f l, ⟨hc, vf l, HermMetricEq.isValueAt_iff.2 (hvf l), hl⟩, b, hb, u, hu, heq⟩⟩`.
+-/
 theorem MuFrameExists.proof (D : ComponentData II Ψ K ι Ω E) (H : HodgeData D) :
     MuFrameExists.Statement D H := by
   intro z hz

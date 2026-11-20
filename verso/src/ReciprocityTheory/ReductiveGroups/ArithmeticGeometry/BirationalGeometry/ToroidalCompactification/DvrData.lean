@@ -39,9 +39,15 @@ def DvrDataAt (P : ValPt Y) : Prop :=
 def SplitsAt (P : ValPt Y) : Prop :=
   ∃ (W : UnramExt P.V) (t : SAB H (Sp W.W)) (_ : SABMap t Y.t (P.ξ W)), SplitOver W t
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 private theorem comp_apply_point {A B C : Scheme.{0}} (f : A ⟶ B) (g : B ⟶ C) (x : A) :
     (f ≫ g) x = g (f x) := rfl
 
+/- English proof (translation)
+Rewrite using `[← P.ext]`. Simplify using `only [ValPt.ξ, spMap, ← Category.assoc, ← Spec.map_comp, ← CommRingCat.ofHom_comp, hlift]`.
+-/
 private theorem spMap_comp_xi_eq_spMap_lift_comp_y_comp_j (P : ValPt Y) (W : UnramExt P.V) (lift : P.K' →+* FractionRing W.W)
     (hlift : lift.comp (algebraMap P.V P.K') =
       (algebraMap W.W (FractionRing W.W)).comp (algebraMap P.V W.W)) :
@@ -49,14 +55,25 @@ private theorem spMap_comp_xi_eq_spMap_lift_comp_y_comp_j (P : ValPt Y) (W : Unr
   rw [← P.ext]
   simp only [ValPt.ξ, spMap, ← Category.assoc, ← Spec.map_comp, ← CommRingCat.ofHom_comp, hlift]
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨(⟨⊥, Ideal.bot_prime⟩ : PrimeSpectrum R)⟩`.
+-/
 private theorem sp_nonempty_of_field (R : Type) [Field R] : Nonempty (Sp R) :=
   ⟨(⟨⊥, Ideal.bot_prime⟩ : PrimeSpectrum R)⟩
 
+/- English proof (translation)
+Rewrite using `[Y.ab_gen]`. Conclude with `Set.mem_range_self _`.
+-/
 private theorem jQ_mem_preimage_abLocus (p : Xo.XF c) :
     Y.jQ p ∈ pullback.fst Y.s (spMap β) ⁻¹' abLocus Y.t.G := by
   rw [Y.ab_gen]
   exact Set.mem_range_self _
 
+/- English proof (translation)
+Use `haveI := P.frac`. Establish `hinj : Function.Injective ((algebraMap W.W (FractionRing W.W)).comp (algebraMap P.V W.W))`. Rewrite using `[RingHom.coe_comp]`. Conclude with `(IsFractionRing.injective W.W (FractionRing W.W)).comp W.inj`. Use `⟨IsFractionRing.lift hinj, RingHom.ext fun x => ?_⟩` and prove the remaining obligations.
+
+Simplify using `only [RingHom.comp_apply, IsFractionRing.lift_algebraMap]`.
+-/
 private theorem exists_lift_fractionRing_comp_algebraMap (P : ValPt Y) (W : UnramExt P.V) :
     ∃ f : P.K' →+* FractionRing W.W, f.comp (algebraMap P.V P.K') =
       (algebraMap W.W (FractionRing W.W)).comp (algebraMap P.V W.W) := by
@@ -68,6 +85,9 @@ private theorem exists_lift_fractionRing_comp_algebraMap (P : ValPt Y) (W : Unra
   refine ⟨IsFractionRing.lift hinj, RingHom.ext fun x => ?_⟩
   simp only [RingHom.comp_apply, IsFractionRing.lift_algebraMap]
 
+/- English proof (translation)
+Rewrite using `[← comp_apply_point, spMap_comp_xi_eq_spMap_lift_comp_y_comp_j P W lift hlift, comp_apply_point, comp_apply_point, Model.j, comp_apply_point]`.
+-/
 private theorem xi_spMap_eq_pullback_fst_jQ (P : ValPt Y) (W : UnramExt P.V) (lift : P.K' →+* FractionRing W.W)
     (hlift : lift.comp (algebraMap P.V P.K') =
       (algebraMap W.W (FractionRing W.W)).comp (algebraMap P.V W.W))
@@ -76,6 +96,9 @@ private theorem xi_spMap_eq_pullback_fst_jQ (P : ValPt Y) (W : UnramExt P.V) (li
       pullback.fst Y.s (spMap β) (Y.jQ (P.y (spMap lift z))) := by
   rw [← comp_apply_point, spMap_comp_xi_eq_spMap_lift_comp_y_comp_j P W lift hlift, comp_apply_point, comp_apply_point, Model.j, comp_apply_point]
 
+/- English proof (translation)
+Take `⟨lift, hlift⟩` from `exists_lift_fractionRing_comp_algebraMap P W`. Take `⟨z⟩` from `sp_nonempty_of_field (FractionRing W.W)`. Use `⟨spMap (algebraMap W.W (FractionRing W.W)) z, ?_⟩` and prove the remaining obligations. Rewrite using `[Set.mem_preimage, xi_spMap_eq_pullback_fst_jQ P W lift hlift z]`. Conclude with `Set.mem_preimage.mp (jQ_mem_preimage_abLocus (Y := Y) _)`.
+-/
 theorem ValPt.ξ_ab (P : ValPt Y) (W : UnramExt P.V) : (P.ξ W ⁻¹' abLocus Y.t.G).Nonempty := by
   obtain ⟨lift, hlift⟩ := exists_lift_fractionRing_comp_algebraMap P W
   obtain ⟨z⟩ := sp_nonempty_of_field (FractionRing W.W)
@@ -83,6 +106,11 @@ theorem ValPt.ξ_ab (P : ValPt Y) (W : UnramExt P.V) : (P.ξ W ⁻¹' abLocus Y.
   rw [Set.mem_preimage, xi_spMap_eq_pullback_fst_jQ P W lift hlift z]
   exact Set.mem_preimage.mp (jQ_mem_preimage_abLocus (Y := Y) _)
 
+/- English proof (translation)
+Take `⟨W, t, m, hsp⟩` from `hs`. Use `haveI : CharZero P.K' := P.char0`. Use `haveI : CharZero P.V := (algebraMap P.V P.K').charZero`. Use `haveI : CharZero W.W := ⟨fun a b h => by`. Apply `Nat.cast_injective (R := P.V)` to reduce the goal to its premises.
+
+Apply `W.inj` to reduce the goal to its premises. Simplify using `using h⟩`. Conclude with `⟨W, t, m, hsp, h3 W.W inferInstance inferInstance W.complete (P.ξ W) t m (ValPt.ξ_ab P W) hsp⟩`.
+-/
 theorem dvrData_of_splitting (h3 : Y.N3) (P : ValPt Y) (hs : SplitsAt P) : DvrDataAt P := by
   obtain ⟨W, t, m, hsp⟩ := hs
   haveI : CharZero P.K' := P.char0

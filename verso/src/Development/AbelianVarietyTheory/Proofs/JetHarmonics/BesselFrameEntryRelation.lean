@@ -12,6 +12,13 @@ open scoped InnerProductSpace ENNReal
 
 namespace GlobalTheory.BesselIntertwine
 
+/- English proof (translation)
+Establish `hd` using `(GlobalTheory.T.frechetContinuous_continuousOn_orbit_hasDerivAt hK k r ε mu R hR Wp l hl.1 hl.2.1 hl.2.2.2 v hv).2 X hX'`. Establish `h1 : (1 : Mx k r) ∈ Formalism.QuantumDeterminants.Nset k r`. Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Simplify using `[Formalism.QuantumDeterminants.UH]`. Introduce `a i _`.
+
+Simplify using `[Matrix.one_apply]`. Introduce `i j _ _ _`. Simplify using `[Matrix.one_apply]`. Establish `he : (fun t : ℝ => l (R.σ (NormedSpace.exp ((t : ℂ) • X)) v)) = fun t : ℝ => π (NormedSpace.exp ((t : ℂ) • X)) (l v)`. Use function extensionality and compare the values at `t`.
+
+Use `hl.2.2.1 _ (Formalism.FourierDecayAlt.P.QrD.exp_uw hX t) 1 h1 v hv` as an intermediate fact. Rewrite `this` using `[Matrix.mul_one, Formalism.FourierDecayAlt.P.Qx8.psi_one hz, one_smul]`. Conclude with `this`. Rewrite `hd` using `[he]`. Conclude with `hd.deriv.symm`.
+-/
 theorem bessel_dsig (hK : PI.KFinSmooth) {k r : ℕ} {ε : Fin (2 * r + k + 1) → Bool} {mu : Fin (2 * r + k + 1) → ℝ}
     {R : Rep k r} (hR : R.IsDS ε mu) {Wp : Type} [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp] [CompleteSpace Wp]
     {z : Fin (2 * r + k + 1) → ℂ} {π : Mx k r → (Wp →L[ℂ] Wp)} {l : R.H → Wp} (hz : Formalism.QuantumDeterminants.inWb k r z)
@@ -35,6 +42,15 @@ theorem bessel_dsig (hK : PI.KFinSmooth) {k r : ℕ} {ε : Fin (2 * r + k + 1) �
   rw [he] at hd
   exact hd.deriv.symm
 
+/- English proof (translation)
+Introduce `hK k r ε mu R hR Wp _ _ _ _ z π l g hz hT hg hl i j v hv`. Take `⟨hF, hU⟩` from `(GlobalTheory.T.frameW_conj_matrix_units k r z g hz hT hg).2.2.1`. Rewrite using `[← hU i j]`. Take `⟨h1, h2⟩` from `Formalism.FourierDecayAlt.P.QrD.frame_lie hF i j`. Use `set Y := Formalism.FourierDecayAlt.Q.unitB (Formalism.QuantumDeterminants.Hpk k r) _ i j with hY`.
+
+Establish `hinv : (Formalism.QuantumDeterminants.Hpk k r)⁻¹ = Formalism.QuantumDeterminants.Hpk k r` using `Matrix.inv_eq_left_inv (Formalism.QuantumDeterminants.hpkFacts k r).2.1`. Establish `e1 : (1 / 2 : ℂ) • (Y + -(Formalism.QuantumDeterminants.Hpk k r * Yᴴ * Formalism.QuantumDeterminants.Hpk k r)) = Formalism.QuantumDeterminants.hpart1 (Formalism.QuantumDeterminants.Hpk k r) Y`. Rewrite using `[Formalism.QuantumDeterminants.hpart1, hinv, sub_eq_add_neg]`. Establish `e2 : (1 / (2 * Complex.I)) • (Y - -(Formalism.QuantumDeterminants.Hpk k r * Yᴴ * Formalism.QuantumDeterminants.Hpk k r)) = Formalism.QuantumDeterminants.hpart2 (Formalism.QuantumDeterminants.Hpk k r) Y`. Rewrite using `[Formalism.QuantumDeterminants.hpart2, hinv, sub_neg_eq_add]`.
+
+Establish `l1 : PI.UpqRep.InLieHpk k r (Formalism.QuantumDeterminants.hpart1 (Formalism.QuantumDeterminants.Hpk k r) Y)` using `h1.1.1`. Establish `l2 : PI.UpqRep.InLieHpk k r (Formalism.QuantumDeterminants.hpart2 (Formalism.QuantumDeterminants.Hpk k r) Y)` using `h2.1.1`. Establish `s1` using `((GlobalTheory.DerivedAction.derived_action hK k r ε mu R hR _ l1).1 v hv).1`. Establish `s2` using `((GlobalTheory.DerivedAction.derived_action hK k r ε mu R hR _ l2).1 v hv).1`. Rewrite using `[Rep.dC, e1, e2, hl.1 _ s1 _ (Formalism.FourierDecayAlt.P.DDSmoothness.smooth_smul _ s2), hl.2.1 _ _ s2, bessel_dsig hK hR hz hl h1 l1 hv, bessel_dsig hK hR hz hl h2 l2 hv]`.
+
+Both sides reduce to the same expression.
+-/
 theorem bessel_intertwines_glW : PI.KFinSmooth → ∀ (k r : ℕ) (ε : Fin (2 * r + k + 1) → Bool) (mu : Fin (2 * r + k + 1) → ℝ) (R : Rep k r), R.IsDS ε mu → ∀ (Wp : Type) [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp] [CompleteSpace Wp] [FiniteDimensional ℂ Wp] (z : Fin (2 * r + k + 1) → ℂ) (π : Mx k r → (Wp →L[ℂ] Wp)) (l : R.H → Wp) (g : Mx k r), Formalism.QuantumDeterminants.inWb k r z → 0 < Formalism.QuantumDeterminants.Tz k r z → PI.UpqRep.IsFrameW k r z g → IsBes R z π l → ∀ i j : Fin k, ∀ v ∈ R.sm, l (R.dC (g * Matrix.single ((fun i : Fin k => (⟨r + i.val, by omega⟩ : Fin (2 * r + k + 1))) i) ((fun i : Fin k => (⟨r + i.val, by omega⟩ : Fin (2 * r + k + 1))) j) 1 * g⁻¹) v) = Formalism.FourierDecayAlt.Q.EcRep (Formalism.QuantumDeterminants.Hpk k r) π (g * Matrix.single ((fun i : Fin k => (⟨r + i.val, by omega⟩ : Fin (2 * r + k + 1))) i) ((fun i : Fin k => (⟨r + i.val, by omega⟩ : Fin (2 * r + k + 1))) j) 1 * g⁻¹) (l v) := by
   intro hK k r ε mu R hR Wp _ _ _ _ z π l g hz hT hg hl i j v hv
   obtain ⟨hF, hU⟩ := (GlobalTheory.T.frameW_conj_matrix_units k r z g hz hT hg).2.2.1

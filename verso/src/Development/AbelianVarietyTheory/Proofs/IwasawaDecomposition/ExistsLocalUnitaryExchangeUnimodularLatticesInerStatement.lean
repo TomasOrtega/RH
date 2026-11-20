@@ -6,6 +6,9 @@ open NumberField IsDedekindDomain Formalism.L2.Col Formalism.HermitianLatticesTh
 open Classical
 
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.InertExchange.exchange | exact GlobalTheory.InertExchange.exchange | (intros; apply GlobalTheory.InertExchange.exchange <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.exists_local_unitary_exchange_unimodular_lattices_inert : ∀ {E : Type} [Field E] [NumberField E] [StarRing E] {n : ℕ} (P : HeightOneSpectrum (𝓞 E)),
   conjPrime₂ P = P → (∃ x : 𝓞 E, cO E x - x ∉ P.asIdeal) →
   ∀ (X Z : Submodule (𝓞 E) (Sp E n)), Submodule.IsLattice E X → Submodule.IsLattice E Z →

@@ -18,6 +18,29 @@ open GlobalTheory.WeilM GlobalTheory.AdelicU GlobalTheory.LFun GlobalTheory.Inde
 
 namespace GlobalTheory.ThKFrameModel
 
+/- English proof (translation)
+Establish `hA1` using `@GlobalTheory.T.symplectic_basis_of_unitary_frame`. Establish `hA2` using `@GlobalTheory.T.symplectic_block_basis_orthogonal`. Introduce `_ F E _ _ _ _ _ σ B n d X W M χX χW om r s r' s' hpair q x y hxy`. Establish `hB` using `hpair.base`. Establish `hX` using `hpair.herm`.
+
+Establish `hW` using `hpair.skew`. Take `⟨w⟩ : Nonempty (InfinitePlace F)` from `inferInstance`. Establish `hσ : ∀ a, σ (σ a) = a` using `fun a => by`. Apply `((B.emb w).1 : E →+* ℂ).injective` to reduce the goal to its premises. Rewrite using `[hB.cm.2.2.2, hB.cm.2.2.2, star_star]`.
+
+Establish `hXd : X.J.det ≠ 0` using `fun h0 => by`. Apply `GlobalTheory.RatDarboux.det_ne_zero_of_isCartan (hX.cartan w)` to reduce the goal to its premises. Use `((B.emb w).1 : E →+* ℂ).map_det X.J` as an intermediate fact. Rewrite `this` using `[h0, map_zero]`. Conclude with `this.symm`.
+
+Establish `hWd : W.J.det ≠ 0` using `fun h0 => by`. Apply `GlobalTheory.RatDarboux.det_ne_zero_of_isCartan (hW.cartan w)` to reduce the goal to its premises. Use `((B.emb w).1 : E →+* ℂ).map_det W.J` as an intermediate fact. Rewrite `this` using `[h0, map_zero]`. Rewrite using `[Matrix.det_smul]`.
+
+Conclude with `mul_eq_zero_of_right _ this.symm`. Take `⟨b, blk, h1, h2, h3, h4, h5, h6, h7, h8⟩` from `hA1 σ X.J W.J x y hσ hB.cm.2.2.1 hX.herm hXd hW.skew hWd hxy`. Take `⟨co, hco, hfr⟩` from `hA2 σ X.J W.J x y b blk h1 h2 h3 h4 h5 h6 h7 h8`. Take `⟨e, ei, ev, hei, hmaps, hheis, hSB, hvac, hstd, hpure, hbij⟩` from `GlobalTheory.T.darboux_coords_good_model F E σ B n d X W M r s r' s' hpair.base hpair.herm hpair.skew hpair.good co hco`. Set `M₁ : Model σ X W` to `⟨co, fun v => ev v (M.vac v), M.μ, M.dom⟩`.
+
+Establish `hM₁ : M₁.IsGood B.ψ` using `⟨hco, hvac, hstd, hpair.good.haar, hpair.good.dom⟩`. Establish `hne : ∃ f : SInf F (Fin n × Fin d), f ≠ 0`. Assume the negation of the conclusion as `hall`. Use `push_neg at hall`. Take `⟨φ, hφ, hθ⟩` from `GlobalTheory.ThetaSumNe.exists_mem_schA_thetaSum_ne_zero F (Fin n × Fin d)`.
+
+Establish `hle : schA F (Fin n × Fin d) ≤ ⊥`. Use `Submodule.span_le.2 ?_` and prove the remaining obligations. Introduce and unpack `Φ ⟨f, g, -, rfl⟩`. Rewrite using `[hall f]`. Use `show pureA F 0 g = 0`.
+
+Use function extensionality and compare the values at `x`. Simplify using `[pureA]`. Establish `h0 : φ = 0` using `(Submodule.mem_bot ℂ).1 (hle hφ)`. Conclude with `hθ (by rw [h0]; simp [thetaSum])`. Establish `hev : IsEv B M M₁ 1 1 ∅ e`.
+
+Use `⟨hmaps, fun z Φ hΦ => ?_, fun u hu => hu.elim, ei, ev, ?_, fun v => ⟨rfl, hSB v⟩, hpure⟩` and prove the remaining obligations. Establish `h1 : incM F (1 : Matrix (Fin n) (Fin n) E) = 1` using `Matrix.map_one _ (map_zero _) (map_one _)`. Establish `h1' : incM F (1 : Matrix (Fin d) (Fin d) E) = 1` using `Matrix.map_one _ (map_zero _) (map_one _)`. Rewrite using `[h1, h1', Matrix.one_mul, Matrix.transpose_one, Matrix.mul_one]`. Conclude with `hheis z Φ hΦ`.
+
+Take `⟨f, hf⟩` from `hne`. Take `⟨g, rfl⟩` from `hei f`. Introduce `h`. Conclude with `hf (by rw [h]; rfl)`. Take `⟨c₀, hc₀, hth⟩` from `GlobalTheory.T.weil_eigen_schwartz_surjective F E σ B n d X W M χX χW om r s r' s' hpair M₁ hM₁ e hev hbij`.
+
+Conclude with `⟨M₁, blk, e, c₀, hM₁, hfr, hev, hc₀, hth⟩`.
+-/
 theorem exists_frame_model : GlobalTheory.ThK.KP → ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E)
     (n d : ℕ) (X : Spc F E n) (W : Spc F E d) (M : Model σ X W) (χX χW : Chr F E) (om : Rep σ X W) (r s r' s' : ℕ),
     IsPair B M χX χW om r s r' s' → ∀ (q : ℕ) (x y : Fin q → Fin n → E), IsFrameU σ X.J x y →

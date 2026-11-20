@@ -21,6 +21,9 @@ namespace GlobalTheory.ChartField
 section Sections
 variable {X Z : Scheme.{0}} {A : Over X} [GrpObj A] {L : LB A.left} {T T' : Over X}
 
+/- English proof (translation)
+Establish `hy` using `hJ.mem (fun _ : Fin 1 => x.left) r`. Rewrite using `[sval_of (φ := fun _ : Fin 1 => (snd T A).left) (ε := fun _ => a) s (r ≫ (ptSecT A x).left) z J (fun _ => J (r ≫ x.left)) (fun _ => by rw [Category.assoc, ← Over.comp_left, ptSecT, lift_snd])]`. Use `Eq.trans ?_ ((congrArg (gs r z _) (H _)).trans ((gs_mul _ z _ hy _ _).trans (congrArg₂ (· * ·) (gs_res _ z _ hy _) (gs_unit _ z _ hy _))))` and prove the remaining obligations. Conclude with `((gs_res _ z _ hy _).trans (gs_pull r (ptSecT A x).left z (LB.wchart L (fun _ : Fin 1 => (snd T A).left) (fun _ => J (r ≫ x.left))) (val_le A L x _ hy) _)).symm`.
+-/
 theorem sval_valueAt {a : ℤ} {s : LB.Sec (LPow A L a T)} {x : T ⟶ A}
     {τ : LB.Gen (LB.LinComb L (Y := T.left) (K := Fin 1) (fun _ => x.left) (fun _ => a))} {v : Γ(T.left, ⊤)}
     (H : IsValueAt A L a s x τ v) (r : Z ⟶ T.left) {z : Z} {J} (hJ : Good L z J) :
@@ -34,6 +37,9 @@ theorem sval_valueAt {a : ℤ} {s : LB.Sec (LPow A L a T)} {x : T ⟶ A}
   exact ((gs_res _ z _ hy _).trans (gs_pull r (ptSecT A x).left z
     (LB.wchart L (fun _ : Fin 1 => (snd T A).left) (fun _ => J (r ≫ x.left))) (val_le A L x _ hy) _)).symm
 
+/- English proof (translation)
+Establish `hy` using `hJ.mem (fun _ : Fin 1 => (snd T' A).left) r`. Rewrite using `[sval_of (φ := fun _ : Fin 1 => (snd T A).left) (ε := fun _ => a) s (r ≫ h.left) z J (fun _ => J (r ≫ (snd T' A).left)) (fun _ => by rw [Category.assoc, ← Over.comp_left, hh])]`. Use `(congrArg (gs r z _) (H _)).trans ((gs_res _ z _ hy _).trans ?_)` and prove the remaining obligations. Conclude with `gs_pull r h.left z (LB.wchart L (fun _ : Fin 1 => (snd T A).left) (fun _ => J (r ≫ (snd T' A).left))) (chart_le_res A L h hh a _ hy) _`.
+-/
 theorem sval_pull {a : ℤ} {h : T' ⊗ A ⟶ T ⊗ A} {hh : h ≫ snd T A = snd T' A} {s : LB.Sec (LPow A L a T)}
     {s' : LB.Sec (LPow A L a T')} (H : IsPullSec A L a h hh s s') (r : Z ⟶ (T' ⊗ A).left) {z : Z} {J}
     (hJ : Good L z J) :
@@ -52,6 +58,15 @@ variable {S : Type} [CommRing S] {d : ℕ}
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {X0 : Scheme.{0}} {t : SAB H X0}
   {x0 : Sp S ⟶ X0} {x x' : ∀ m, jOG x0 d m 1 ⟶ t.G}
 
+/- English proof (translation)
+Take `⟨F', τ, h1, h2, h3⟩` from `h m`. Establish `v` using `sval_valueAt h3 (Formalism.L2.Pj.homAt x0 (jQ m ![u])).left hJ`. Rewrite `v` using `[sval_pull h1 _ hJ]`. Establish `e1 : ((Formalism.L2.Pj.homAt x0 (jQ m ![u])).left ≫ (ptSecT t.G (x m)).left) ≫ (jBaseG x0 d m 1 ▷ t.G).left = (lift (jBaseG x0 d m n) (PP m x u)).left`. Rewrite using `[← Over.comp_left, ← Over.comp_left]`.
+
+Use `congr 1`. Use `ext1`. Simplify using `only [Category.assoc, whiskerRight_fst, ptSecT, lift_fst_assoc, Category.id_comp, lift_fst]`. Conclude with `Over.OverMorphism.ext (spMap_comp_alg _)`. Simplify using `only [Category.assoc, whiskerRight_snd, ptSecT, lift_snd, PP]`.
+
+Rewrite `v` using `[e1]`. Establish `e₀` using `val_peG x hJ e ![u] ![fun j => MvPolynomial.X ((0 : Fin 1), j), fun j => psIn d m ![0] (A.act H.w0 j)] (gen 0) (ac (AQ A H.w0) (gen 0)) (by rintro ⟨l, j⟩; fin_cases l; exacts [hX 0 j, hA _ 0 j]) (by rintro ⟨l, j⟩; fin_cases l; exacts [MvPolynomial.constantCoeff_X _ _, (cc_psIn d …`. Rewrite `e₀` using `[sq_ac, sq_gen]`. Use `v.trans (congrArg₂ (· * ·) ?_ (congrArg Units.val ((val_corr hJ h2 _).trans ((map_pow _ _ _).trans (congrArg (· ^ k) ((val_mul hJ _ _ _).trans (congrArg₂ (· * ·) (val_pull hJ _ _ _) e₀)))))))` and prove the remaining obligations. Rewrite using `[VV, ← jQ_psJet]`.
+
+Use `Eq.trans ?_ (cst_comp (𝟙 _) (jQ m ![u] : Jet S (Fin 1 × Fin d) m →+* Jet S (Fin n × Fin d) m) y _)` and prove the remaining obligations. Rewrite using `[Category.id_comp]`. Both sides reduce to the same expression.
+-/
 theorem germ_val {G : FGLaw S d} (A : Germ.OAct (𝓞 E) G) {e : ∀ m, FrTyG t x0 d x m} {wP : PrimTyG t} {k : ℕ}
     {F : LB.Sec (LPow t.G t.PP.L k (Over.mk x0))} {f : PS S 1 d} (h : IsGermG t x0 d x A.act e wP k F f)
     {m n : ℕ} {y : (jOG x0 d m n).left} {J} (hJ : Good t.PP.L y J) (u : Q S d n) :
@@ -80,6 +95,19 @@ theorem germ_val {G : FGLaw S d} (A : Germ.OAct (𝓞 E) G) {e : ∀ m, FrTyG t 
   refine Eq.trans ?_ (cst_comp (𝟙 _) (jQ m ![u] : Jet S (Fin 1 × Fin d) m →+* Jet S (Fin n × Fin d) m) y _)
   rw [Category.id_comp]; rfl
 
+/- English proof (translation)
+Set `b : Fin 2 → Q S d 2` to `![ac Φ (gen 0), ac Φ (gen 1)]`. Establish `hfam : cφG t ![jptG t x0 d x' m (0 : Fin 2), jptG t x0 d x' m (1 : Fin 2)] = fun I => (Formalism.L2.Pj.homAt x0 (jQ m b)).left ≫ cφG t ![jptG t x0 d x m (0 : Fin 2), jptG t x0 d x m (1 : Fin 2)] I`. Use function extensionality and compare the values at `I`. Rewrite using `[cφG, cφG, ← Over.comp_left, FrameRatio.comp_psum']`. Use `congr 2`.
+
+Use function extensionality and compare the values at `k`. Use `fin_cases k`. Use `show jptG t x0 d x' m 0 = _ ≫ jptG t x0 d x m 0`. Rewrite using `[PP_gen, PP_gen, PP_sq, sq_gen, hco]`. Both sides reduce to the same expression.
+
+Use `show jptG t x0 d x' m 1 = _ ≫ jptG t x0 d x m 1`. Rewrite using `[PP_gen, PP_gen, PP_sq, sq_gen, hco]`. Both sides reduce to the same expression. Take `⟨U, hU⟩` from `FrameRatio.exists_corr_scaled t.PP.L t.PP.isLB _ _ hfam (cε 2) (e' m) (LB.pullGen t.PP.L _ _ (e m) (Formalism.L2.Pj.homAt x0 (jQ m b)).left) (he' m) (DVR.pullGen_isGen _ _ _ _ (he m) _)`. Take `⟨u, rfl⟩` from `FrameRatio.unitΓ_surj U`.
+
+Take `⟨ε, hε⟩` from `FrameRatio.psJet_surj m (u : Jet S (Fin 2 × Fin d) m)`. Use `⟨ε, ?_, fun n y J hJ p q => ?_⟩` and prove the remaining obligations. Rewrite using `[← GaugeR.jetAug_psJet m ε, hε]`. Conclude with `u.isUnit.map _`. Establish `e₀ : val (LB.pullGen t.PP.L (cφG t ![jptG t x0 d x m (0 : Fin 2), jptG t x0 d x m (1 : Fin 2)]) (cε 2) (e m) (Formalism.L2.Pj.homAt x0 (jQ m b)).left) (Formalism.L2.Pj.homAt x0 (jQ m ![p, q])).left y J = ee x e y J (ac Φ p) (ac Φ q)`.
+
+Use `(val_pull hJ _ _ _).trans ?_` and prove the remaining obligations. Rewrite using `[← Over.comp_left, GermD.homAt_comp, jQ_comp]`. Use `congrArg (fun a => val (L := t.PP.L) (φ := cφG t ![jptG t x0 d x m (0 : Fin 2), jptG t x0 d x m (1 : Fin 2)]) (ε := cε 2) (e m) (Formalism.L2.Pj.homAt x0 (jQ m a)).left y J) (funext fun j => ?_)` and prove the remaining obligations. Use `fin_cases j`. Conclude with `(sq_ac _ _ _).trans (congrArg (ac Φ) (sq_gen _ _))`.
+
+Conclude with `(sq_ac _ _ _).trans (congrArg (ac Φ) (sq_gen _ _))`. Establish `k : ee x' e' y J p q = _` using `(val_corr hJ hU (Formalism.L2.Pj.homAt x0 (jQ m ![p, q])).left).trans ((val_scale hJ (unitΓ u) _ _).trans (congrArg₂ (· * ·) rfl e₀))`. Conclude with `(gm_unit (y := y) u ![p, q] _ hε.symm).symm.trans (congrArg Units.val (eq_mul_inv_of_mul_eq k.symm))`.
+-/
 theorem exists_ratio (Φ : Q S d 1) (hco : ∀ m n (u : Q S d n), PP m x' u = PP m x (ac Φ u))
     (e : ∀ m, FrTyG t x0 d x m) (e' : ∀ m, FrTyG t x0 d x' m) (he : ∀ m, (e m).IsGen) (he' : ∀ m, (e' m).IsGen)
     (m : ℕ) : ∃ ε : PS S 2 d, IsUnit (MvPowerSeries.constantCoeff ε) ∧
@@ -120,12 +148,46 @@ theorem exists_ratio (Φ : Q S d 1) (hco : ∀ m n (u : Q S d n), PP m x' u = PP
       ((val_scale hJ (unitΓ u) _ _).trans (congrArg₂ (· * ·) rfl e₀))
     exact (gm_unit (y := y) u ![p, q] _ hε.symm).symm.trans (congrArg Units.val (eq_mul_inv_of_mul_eq k.symm))
 
+/- English proof (translation)
+The claim follows from `RatioPh1.jeq_of_psJet (cst_ext fun y => by choose J hJ using fun ψ : (jOG x0 d m n).left ⟶ t.G.left => exists_chart t.PP.isLB (ψ y) exact h y J hJ)`.
+-/
 theorem jeq_of_VV (t : SAB H X0) (x0 : Sp S ⟶ X0) {m n : ℕ} {f g : PS S n d}
     (h : ∀ (y : (jOG x0 d m n).left) J, Good t.PP.L y J → VV m y f = VV m y g) : JEq m f g :=
   RatioPh1.jeq_of_psJet (cst_ext fun y => by
     choose J hJ using fun ψ : (jOG x0 d m n).left ⟶ t.G.left => exists_chart t.PP.isLB (ψ y)
     exact h y J hJ)
 
+/- English proof (translation)
+Take `⟨ε, hε, hE⟩` from `exists_ratio Φ hco e e' hf.gen hf'.gen m`. Establish `hΦΨ : ac Φ Ψ = gen 0` using `Subtype.ext ((ac_val Φ Ψ).trans hinv.2.2.1)`. Establish `hA : ∀ (b : 𝓞 E) {n} (u : Q S d n), ac Φ (ac (AQ B'.A b) u) = ac (AQ B.A b) (ac Φ u)` using `fun b n u => by`. Establish `: AQ B'.A b = ac Ψ (ac (AQ B.A b) Φ)` using `Subtype.ext (by rw [ac_val, ac_val]; exact hact b)`. Rewrite using `[this, FrameRatioAdj.ac_ac, FrameRatioAdj.ac_ac, ← FrameRatioAdj.ac_ac Φ Ψ, hΦΨ]`.
+
+Conclude with `sq_gen _ _`. Establish `g2 : ∀ f : PS S 2 d, ev (n` using `2) ![pt S d 0, pt S d 1] f = f := fun f => (formalSeriesValueAtTwoPoints_eq_ev f (gen 0) (gen 1)).symm.trans (formalSeriesValueAtTwoPoints_genericPoints f)`. Use `⟨ε, ⟨hinv, hε, hl, hact, ?_, ?_, ?_, fun a => ?_⟩, fun k F f f' hg hg' => ?_⟩` and prove the remaining obligations. Use `jeq_of_VV t x0 (m := m) (f := E3 B'.ph1 (gen 0 : Q S d 3) (gen 1) (gen 2) * E2 ε (op (FQ B'.G) (gen 0) (gen 1)) (gen 2)) (g := E3 B.ph1 (ac Φ (gen 0 : Q S d 3)) (ac Φ (gen 1)) (ac Φ (gen 2)) * (E2 ε (gen 0) (gen 2) * E2 ε (gen 1) (gen 2))) fun y J hJ => by` as an intermediate fact. Simplify using `only [VV_mul, frame_biext_dictionary_first_partial_law hJ hf, frame_biext_dictionary_first_partial_law hJ hf', hE _ y J hJ, ← Units.val_mul, hco, RatioPh1.ac_op_trans Φ Ψ hinv.2.2.1 hl]`.
+
+Use `congrArg Units.val (Additive.ofMul.injective ?_)` and prove the remaining obligations. Simplify using `only [ofMul_mul, ofMul_inv]`. Normalize the expressions using the abelian group laws. Rewrite `this` using `[formalSeriesValueAtThreePoints_genericPoints]`. Simplify `this` using `only [formalSeriesValueAtTwoPoints_eq_ev, formalSeriesValueAtThreePoints_eq_ev, op_val, ac_val, gen_val]`.
+
+Use `jeq_of_VV t x0 (m := m) (f := E3 B'.ph2 (gen 0 : Q S d 3) (gen 1) (gen 2) * E2 ε (gen 0) (op (FQ B'.G) (gen 1) (gen 2))) (g := E3 B.ph2 (ac Φ (gen 0 : Q S d 3)) (ac Φ (gen 1)) (ac Φ (gen 2)) * (E2 ε (gen 0) (gen 1) * E2 ε (gen 0) (gen 2))) fun y J hJ => by` as an intermediate fact. Simplify using `only [VV_mul, frame_biext_dictionary_second_partial_law hJ hf, frame_biext_dictionary_second_partial_law hJ hf', hE _ y J hJ, ← Units.val_mul, hco, RatioPh1.ac_op_trans Φ Ψ hinv.2.2.1 hl]`. Use `congrArg Units.val (Additive.ofMul.injective ?_)` and prove the remaining obligations. Simplify using `only [ofMul_mul, ofMul_inv]`. Normalize the expressions using the abelian group laws.
+
+Rewrite `this` using `[formalSeriesValueAtThreePoints_genericPoints]`. Simplify `this` using `only [formalSeriesValueAtTwoPoints_eq_ev, formalSeriesValueAtThreePoints_eq_ev, op_val, ac_val, gen_val]`. Use `jeq_of_VV t x0 (m := m) (f := E2 B'.sy (gen 0 : Q S d 2) (gen 1) * E2 ε (gen 0) (gen 1)) (g := E2 B.sy (ac Φ (gen 0 : Q S d 2)) (ac Φ (gen 1)) * E2 ε (gen 1) (gen 0)) fun y J hJ => by` as an intermediate fact. Simplify using `only [VV_mul, dict_sy hJ hf, dict_sy hJ hf', hE _ y J hJ, ← Units.val_mul]`. Use `congrArg Units.val (Additive.ofMul.injective ?_)` and prove the remaining obligations.
+
+Simplify using `only [ofMul_mul, ofMul_inv]`. Normalize the expressions using the abelian group laws. Rewrite `this` using `[formalSeriesValueAtTwoPoints_genericPoints, formalSeriesValueAtTwoPoints_genericPoints, formalSeriesValueAtTwoPoints_eq_ev, formalSeriesValueAtTwoPoints_eq_ev, ac_val, ac_val]`. Conclude with `this`. Take `⟨w, hw, hU⟩` from `hf.ad a`.
+
+Take `⟨w', hw', hU'⟩` from `hf'.ad a`. Take `⟨U, h₁, h₂⟩` from `hU m`. Take `⟨U', h₁', h₂'⟩` from `hU' m`. Take `⟨c₀, hc₀⟩` from `exists_const t.PP.L t.PP.isLB (t.G ⊗ t.G).hom hs (LB.mulGen t.PP.L _ _ _ _ w' (LB.invGen t.PP.L _ _ w)) (mulGen_isGen _ _ _ _ _ _ _ hw' (invGen_isGen _ _ _ _ hw)) (fun U _ h => by`. Rewrite using `[Fintype.prod_sum_type]`.
+
+Simplify using `only [Sum.elim_inl, Sum.elim_inr, Pi.neg_apply, zpow_neg, Finset.prod_inv_distrib, mul_inv_cancel])`. Use `jeq_of_VV t x0 (m := m) (f := E2 (B'.ad a) (gen 0 : Q S d 2) (gen 1) * E2 ε (gen 0) (ac (AQ B'.A (H.bar a)) (gen 1))) (g := E2 (B.ad a) (ac Φ (gen 0)) (ac Φ (gen 1)) * E2 ε (ac (AQ B'.A a) (gen 0)) (gen 1)) fun y J hJ => by` as an intermediate fact. Establish `dA` using `dict_ad (A := B.A) (ad := B.ad) hJ a w U h₁ h₂`. Establish `dB` using `dict_ad (A := B'.A) (ad := B'.ad) hJ a w' U' h₁' h₂'`. Establish `k : ∀ p q : jOG x0 d m 2 ⟶ t.G, (val₂ w' y J p q * (val₂ w y J p q)⁻¹).val = gs (jOG x0 d m 2).hom y ⊤ c₀` using `fun p q => by`.
+
+Use `hc₀ _ (lift p q).left y J hJ` as an intermediate fact. Rewrite `this` using `[val_mul hJ, val_inv, Over.w]`. Conclude with `this`. Establish `a₀` using `dA 0 0`. Establish `b₀` using `dB 0 0`.
+
+Rewrite `a₀` using `[FrameRatioAdj.formalSeriesValueAtTwoPoints_zero_zero _ (B.adjoint_zero_fst a), VV_one, ac0, ac0, mul_inv_cancel_right, PP_zero hc]`. Rewrite `b₀` using `[FrameRatioAdj.formalSeriesValueAtTwoPoints_zero_zero _ (B'.adjoint_zero_fst a), VV_one, ac0, ac0, mul_inv_cancel_right, PP_zero hc']`. Establish `k₁` using `Units.ext ((k (PP m x (ac Φ (gen 0))) (PP m x (ac Φ (gen 1)))).trans (k 1 1).symm)`. Rewrite `k₁` using `[Units.ext a₀.symm (v := 1), Units.ext b₀.symm (v := 1), mul_inv_cancel, mul_inv_eq_one]`. Simplify using `only [VV_mul, dA, dB, hE _ y J hJ, hA, hco, k₁, ← Units.val_mul]`.
+
+Use `congrArg Units.val (Additive.ofMul.injective ?_)` and prove the remaining obligations. Simplify using `only [ofMul_mul, ofMul_inv]`. Normalize the expressions using the abelian group laws. Rewrite using `[hstar a]`. Simplify `this` using `only [formalSeriesValueAtTwoPoints_eq_ev, ac_val, gen_val, g2]`.
+
+Use `jeq_of_VV t x0 (m := m) (f := sb ![ac Φ (gen 0 : Q S d 1)] f) (g := sb ![(gen 0 : Q S d 1)] f' * E2 ε (gen 0) (ac (AQ B'.A H.w0) (gen 0)) ^ k) fun y J hJ => by` as an intermediate fact. Establish `v` using `germ_val B.A hg hJ (ac Φ (gen 0))`. Establish `v'` using `germ_val B'.A hg' hJ (gen 0)`. Rewrite `v'` using `[hco, v]`. Establish `hp : ∀ (g : PS S 1 d) (k : ℕ), VV m y (g ^ k) = VV m y g ^ k` using `fun g k => by`.
+
+Proceed by induction on `k with`. Consider the case `zero => rw [pow_zero, pow_zero, VV_one]`. Consider the case `succ k ih => rw [pow_succ, pow_succ, VV_mul, ih]`. Rewrite using `[VV_mul, hp, hE _ y J hJ, hA, ← Units.val_pow_eq_pow_val, (Units.eq_mul_inv_iff_mul_eq _).2 v', _root_.mul_assoc, ← Units.val_mul]`. Use `congr 2`.
+
+Rewrite using `[← inv_pow, ← mul_pow]`. Use `congr 1`. Use `Additive.ofMul.injective ?_` and prove the remaining obligations. Simplify using `only [ofMul_mul, ofMul_inv]`. Normalize the expressions using the abelian group laws.
+
+Establish `e1 : ac Φ (gen 0 : Q S d 1) = Φ` using `Subtype.ext (funext fun i => (congrArg (sb · (Φ.1 i)) (funext fun j => by fin_cases j; rfl)).trans (sb_gen _))`. Establish `e2 : sb ![(gen 0 : Q S d 1)] f' = f'` using `(congrArg (sb · f') (funext fun j => by fin_cases j; rfl)).trans (sb_gen _)`. Establish `e3 : sb ![Φ] f = ev ![Φ.1] f` using `(sb_apply _ _).trans (congrArg (ev · f) (funext fun j => by fin_cases j; rfl))`. Rewrite `this` using `[e1, e2, e3, formalSeriesValueAtTwoPoints_eq_ev, ac_val, gen_val]`. Conclude with `this`.
+-/
 theorem exists_jRel [StarRing (𝓞 E)] (hstar : ∀ a : 𝓞 E, star a = H.bar a)
     (hs : Function.Surjective (t.G ⊗ t.G).hom.appTop.hom) (B B' : FB S d (𝓞 E)) {κ : Type} [Fintype κ]
     {tg tg' : κ → (Sp (DualNumber S) ⟶ t.G.left)} {uv uv' : κ → Fin d → S}

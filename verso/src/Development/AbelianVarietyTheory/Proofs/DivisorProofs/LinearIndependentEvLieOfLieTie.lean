@@ -19,6 +19,11 @@ namespace GlobalTheory.CompHt.TieIndep
 variable {p : ℕ} [Fact p.Prime] {C : Type} [Field C] {v : Valuation C ℝ≥0} {O : Type} [CommRing O]
   [Algebra O C] {Λ : Type} [CommRing Λ] [StarRing Λ] {P : Point p v O Λ}
 
+/- English proof (translation)
+Take `⟨xG, w, h1, h2, h3⟩` from `h`. Take `⟨xG', w', h1', h2', h3'⟩` from `h'`. Use `⟨lieAdd xG xG', w * w', h1.mul h1', (hψ.2 _ w w' u u' h2.symm h2'.symm).symm, ?_⟩` and prove the remaining obligations. Set `d : Over.mk ((specO C (DualNumber C)).hom ≫ spMap (algebraMap O C)) ⟶ specO O (DualNumber O)` to `Over.homMk (spMap (dualMap (algebraMap O C))) (by`. Use `(spMap_spMap _ _).trans (Eq.trans (congrArg _ ?_) (spMap_spMap _ _).symm)` and prove the remaining obligations.
+
+Apply the tactic sequence `ext s <;> simp [dualMap, TrivSqZeroExt.algebraMap_eq_inl])`. Use `(P.gen_pull.2 _ w w' (d ≫ xG.1) (d ≫ xG'.1) h3.symm h3'.symm).symm.trans ?_` and prove the remaining obligations. Rewrite using `[← MonObj.comp_mul]`. Both sides reduce to the same expression.
+-/
 theorem lieTie_add {S : Scheme.{0}} {G : Over S} [GrpObj G] {y : Sp C ⟶ S} {ψ : P.A.A.left ⟶ G.left}
     (hψ : IsGrpPullback P.A.A G y ψ) {x x' : LieG P.Gt}
     {u u' : Over.mk (spMap (algebraMap C (DualNumber C)) ≫ y) ⟶ G}
@@ -36,6 +41,11 @@ theorem lieTie_add {S : Scheme.{0}} {G : Over S} [GrpObj G] {y : Sp C ⟶ S} {ψ
 
 variable [Fact ¬IsUnit (p : O)] [IsAdicComplete (Ideal.span {(p : O)}) O]
 
+/- English proof (translation)
+Take `⟨xG, w, h1, h2, h3⟩` from `h`. Take `⟨xG', w', h1', h2', h3'⟩` from `h'`. Use `haveI := P.isLocalRing`. Use `haveI := HodgeTateCompare.isLocalRing_dualNumber (O := O)`. Establish `hp : ¬ IsUnit (p : DualNumber O)` using `fun h => (Fact.out : ¬ IsUnit (p : O)) (by`.
+
+Simplify using `using h.map (TrivSqZeroExt.fstHom O O O))`. Establish `e : xG.1 = xG'.1` using `(existsUnique_right hp (isAdicComplete_dualNumber p) x.1).unique h1 h1'`. Establish `e1 : w.left = w'.left` using `P.gen_pull.1.hom_ext (by rw [h3, h3', e]) ((Over.w w).trans (Over.w w').symm)`. Rewrite using `[← h2, ← h2', e1]`.
+-/
 theorem lieTie_unique_right {Y : Scheme.{0}} {ψ : P.A.A.left ⟶ Y} {x : LieG P.Gt} {u u' : Sp (DualNumber C) ⟶ Y}
     (h : LieTie P ψ x u) (h' : LieTie P ψ x u') : u = u' := by
   obtain ⟨xG, w, h1, h2, h3⟩ := h
@@ -51,6 +61,15 @@ theorem lieTie_unique_right {Y : Scheme.{0}} {ψ : P.A.A.left ⟶ Y} {x : LieG P
 
 omit [Fact ¬IsUnit (p : O)] [IsAdicComplete (Ideal.span {(p : O)}) O] in
 
+/- English proof (translation)
+Use `haveI : IsDomain O := P.integers.hom_inj.isDomain (algebraMap O C)`. Use `haveI : IsFractionRing O C := P.integers.isFractionRing`. Rewrite using `[Fintype.linearIndependent_iff]`. Introduce `g hg j`. Take `⟨b, hb⟩` from `IsLocalization.exist_integer_multiples_of_finite (nonZeroDivisors O) g`.
+
+Use `choose a ha using hb`. Establish `h0` using `h a (fun f => P.integers.hom_inj (by`. Establish `h1` using `congrArg (fun L : P.OmC →ₗ[C] C => (b : O) • L ((1 : C) ⊗ₜ f)) hg`. Simplify using `only [LinearMap.sum_apply, LinearMap.smul_apply, LinearMap.zero_apply, smul_zero, Finset.smul_sum] at h1`. Rewrite using `[map_zero, map_sum, ← h1]`.
+
+Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[map_mul, ha, ← smul_assoc, smul_eq_mul]`. Use `congr 1`. Simplify using `[evLie])) j`. Establish `h2` using `ha j`.
+
+Rewrite `h2` using `[h0, map_zero, Algebra.smul_def]`. Conclude with `(mul_eq_zero.1 h2.symm).resolve_left ((map_ne_zero_iff _ P.integers.hom_inj).2 (nonZeroDivisors.ne_zero b.2))`.
+-/
 theorem linearIndependent_evLie {n : ℕ} (x : Fin n → LieG P.Gt)
     (h : ∀ a : Fin n → O, (∀ f : omega P.Gt, ∑ j, a j * f.1 (x j) = 0) → ∀ j, a j = 0) :
     LinearIndependent C (fun j => evLie P (x j)) := by
@@ -79,6 +98,21 @@ namespace GlobalTheory.CompHt
 
 open TieIndep in
 
+/- English proof (translation)
+Introduce `E _ _ _ H Dw l Xo c p _ C _ _ _ v O _ _ _ _ _ _ _ _ _ T io y₀ k kO P ψ z hP hz τ x hx`. Use `letI := io.toAlgebra`. Establish `hψ : IsGrpPullback P.A.A Xo.univ.t.G z.x ψ` using `hz.1 ▸ hP.isGrpPullback`. Take `⟨N, _, _, w, ρ, -, htan, hcomb, hρ, hsm⟩` from `GlobalTheory.TanMod.exists_tangent_module E H Dw l Xo C z.x`. Use `choose b hb using fun j => (htan _).1 (z.tan τ j)`.
+
+Establish `hadd : ∀ {y y' : LieG P.Gt} {m m' : N}, LieTie P ψ y (w m) → LieTie P ψ y' (w m') → LieTie P ψ (lieAdd y y') (w (m + m'))` using `fun {y y' m m'} h h' => by`. Take `⟨u, h1, h2⟩` from `(hcomb 2 ![m, m'] ![1, 1] (w (m + m'))).2 (by simp)`. Establish `e0 : (u 0).left = w m` using `(h1 0).trans ((hsm 1 m).symm.trans (by rw [one_smul]))`. Establish `e1 : (u 1).left = w m'` using `(h1 1).trans ((hsm 1 m').symm.trans (by rw [one_smul]))`. Rewrite using `[← h2, show (List.ofFn u).prod = u 0 * u 1 by simp]`.
+
+Conclude with `lieTie_add hψ (e0 ▸ h) (e1 ▸ h')`. Establish `hsc : ∀ (a : O) j, LieTie P ψ (AvDefs.lieScale P.Gt a (x j)) (w (algebraMap O C a • b j))` using `fun a j => by`. Rewrite using `[hsm, hb]`. Conclude with `(hx j).scale a`. Use `linearIndependent_evLie x fun a ha j => ?_` and prove the remaining obligations.
+
+Establish `h0` using `hsc 0 j`. Rewrite `h0` using `[map_zero, zero_smul]`. Establish `hs : ∀ s : Finset (Fin (Dw.mult τ)), ∃ y, LieTie P ψ y (w (∑ i ∈ s, algebraMap O C (a i) • b i)) ∧ ∀ f : omega P.Gt, f.1 y = ∑ i ∈ s, a i * f.1 (x i)` using `fun s => by`. Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => exact ⟨_, h0, fun f => by rw [omega_lieScale, zero_mul, Finset.sum_empty]⟩`.
+
+Consider the case `insert i s hi ih`. Take `⟨y, h1, h2⟩` from `ih`. Rewrite using `[Finset.sum_insert hi]`. Conclude with `⟨_, hadd (hsc (a i) i) h1, fun f => by rw [omega_lieAdd, omega_lieScale, h2, Finset.sum_insert hi]⟩`. Take `⟨y, h1, h2⟩` from `hs Finset.univ`.
+
+Establish `e : y = AvDefs.lieScale P.Gt 0 (x j)` using `(Point.omega_free_finite_bijective p C v O (𝓞 E) P).2.2.1 (LinearMap.ext fun f => by`. Express the relevant statement in the definitionally equal form `f.1 y = f.1 _`. Rewrite using `[h2, ha, omega_lieScale, zero_mul])`. Establish `e2` using `lieTie_unique_right h0 (e ▸ h1)`. Establish `hu : z.u τ = fun i => w (b i)` using `funext fun i => (hb i).symm`.
+
+Establish `e3` using `(z.basis τ (w 0) ((htan _).2 ⟨0, rfl⟩) fun t => by rw [← hρ, ← hsm, map_zero, smul_zero]).unique (y₁ := fun i => algebraMap O C (a i)) (y₂ := 0) (by rw [hu, hcomb]; exact e2) (by rw [hu, hcomb]; simp)`. Conclude with `P.integers.hom_inj ((congrFun e3 j).trans (map_zero _).symm)`.
+-/
 theorem linearIndependent_evLie_of_lieTie : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l) (p : ℕ) [Fact p.Prime] (C : Type) [Field C] [IsAlgClosed C] [CharZero C] (v : Valuation C ℝ≥0) (O : Type) [CommRing O] [Algebra O C] [Fact ¬IsUnit (p : O)] [IsAdicComplete (Ideal.span {(p : O)}) O] [Algebra ℤ_[p] O] [Algebra ℤ_[p] C] [IsScalarTower ℤ_[p] O C] [Algebra c.F C] [StarRing (𝓞 E)] (T : CDVR) (io : c.F →+* T.Fr) (y₀ : IntFr Xo c T io) (k : letI := io.toAlgebra; T.Fr →ₐ[c.F] C) (kO : T.V →+* O) (P : Point p v O (𝓞 E)) (ψ : P.A.A.left ⟶ Xo.univ.t.G.left) (z : FrPt Xo c C), (letI := io.toAlgebra; PointOver P y₀.1.x k.toRingHom kO ψ) → (letI := io.toAlgebra; FrMap k y₀.1 z) → ∀ (τ : E →+* ℂ) (x : Fin (Dw.mult τ) → LieG P.Gt), (∀ j, LieTie P ψ (x j) (z.u τ j)) → LinearIndependent C (fun j => evLie P (x j)) := by
   intro E _ _ _ H Dw l Xo c p _ C _ _ _ v O _ _ _ _ _ _ _ _ _ T io y₀ k kO P ψ z hP hz τ x hx
   letI := io.toAlgebra

@@ -13,6 +13,15 @@ open ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestrictio
 variable {X Y Y' Z : Scheme.{0}} (L : LB X) {K₁ K₂ K₃ K K' : Type} [Fintype K₁] [Fintype K₂] [Fintype K₃]
   [Fintype K] [Fintype K']
 
+/- English proof (translation)
+Establish `hOb : O ≤ q ⁻¹ᵁ (LB.wchart L φ₁ j₁ ⊓ LB.wchart L (fun k => h ≫ φ₂ k) j₂ ⊓ LB.wchart L φ₃ j₃)`. Introduce `z hz`. Use `⟨⟨h₁ hz, Set.mem_iInter.2 fun k => ?_⟩, h₃ hz⟩` and prove the remaining obligations. Use `Set.mem_iInter.1 (h₂ hz) k` as an intermediate fact. Simplify `this` using `[Scheme.Hom.comp_apply]`.
+
+Establish `key : rs (inf_le_left.trans inf_le_left : _ ≤ LB.wchart L φ₁ j₁) (s₁.f j₁) = rs ((inf_le_left.trans inf_le_right).trans (wchart_comp_le φ₂ h j₂)) ((h.app _).hom (s₂.f j₂)) * rs (inf_le_right : _ ≤ LB.wchart L φ₃ j₃) (u.s j₃).val` using `hrel j₁ j₂ j₃ hcoh`. Establish `ha : LB.wchart L φ₁ j₁ ⊓ LB.wchart L (fun k => h ≫ φ₂ k) j₂ ⊓ LB.wchart L φ₃ j₃ ≤ LB.wchart L φ₁ j₁` using `inf_le_left.trans inf_le_left`. Establish `hb : LB.wchart L φ₁ j₁ ⊓ LB.wchart L (fun k => h ≫ φ₂ k) j₂ ⊓ LB.wchart L φ₃ j₃ ≤ h ⁻¹ᵁ LB.wchart L φ₂ j₂` using `(inf_le_left.trans inf_le_right).trans (wchart_comp_le φ₂ h j₂)`. Establish `hc : LB.wchart L φ₁ j₁ ⊓ LB.wchart L (fun k => h ≫ φ₂ k) j₂ ⊓ LB.wchart L φ₃ j₃ ≤ LB.wchart L φ₃ j₃` using `inf_le_right`. Establish `e1 : rs hOb ((q.app _).hom (rs ha (s₁.f j₁))) = rs h₁ ((q.app _).hom (s₁.f j₁))` using `(congrArg (rs hOb) (app_rs q ha (s₁.f j₁))).trans (rs_rs _ _ _)`.
+
+Establish `e2 : rs hOb ((q.app _).hom (rs hb ((h.app _).hom (s₂.f j₂)))) = rs h₂ (((q ≫ h).app _).hom (s₂.f j₂))`. Rewrite using `[app_rs, rs_rs]`. Both sides reduce to the same expression. Establish `e3 : rs hOb ((q.app _).hom (rs hc (u.s j₃).val)) = rs h₃ ((q.app _).hom (u.s j₃).val)` using `(congrArg (rs hOb) (app_rs q hc (u.s j₃).val)).trans (rs_rs _ _ _)`. Rewrite using `[← e1, ← e2, ← e3, ← rs_mul, ← map_mul]`.
+
+Conclude with `congrArg (fun x => rs hOb ((q.app _).hom x)) key`.
+-/
 theorem secRel_pull (φ₁ : K₁ → (Y' ⟶ X)) (ε₁ : K₁ → ℤ) (s₁ : LB.Sec (LB.LinComb L φ₁ ε₁))
     (φ₂ : K₂ → (Y ⟶ X)) (ε₂ : K₂ → ℤ) (s₂ : LB.Sec (LB.LinComb L φ₂ ε₂)) (h : Y' ⟶ Y)
     (φ₃ : K₃ → (Y' ⟶ X)) (ε₃ : K₃ → ℤ) (u : LB.Gen (LB.LinComb L φ₃ ε₃))
@@ -49,6 +58,11 @@ theorem secRel_pull (φ₁ : K₁ → (Y' ⟶ X)) (ε₁ : K₁ → ℤ) (s₁ :
   rw [← e1, ← e2, ← e3, ← rs_mul, ← map_mul]
   exact congrArg (fun x => rs hOb ((q.app _).hom x)) key
 
+/- English proof (translation)
+Establish `hO : O ≤ q ⁻¹ᵁ (LB.wchart L φ j ⊓ LB.wchart L φ' j')` using `fun z hz => ⟨h₁ hz, h₂ hz⟩`. Establish `key : rs (inf_le_left : _ ≤ LB.wchart L φ j) (t.s j).val = rs (inf_le_right : _ ≤ LB.wchart L φ' j') (t'.s j').val`. Conclude with `congrArg Units.val (hc j j' hj hj' hjj)`. Establish `e1 : rs hO ((q.app _).hom (rs (inf_le_left : _ ≤ LB.wchart L φ j) (t.s j).val)) = rs h₁ ((q.app _).hom (t.s j).val)` using `(congrArg (rs hO) (app_rs q (inf_le_left : _ ≤ LB.wchart L φ j) (t.s j).val)).trans (rs_rs _ _ _)`. Establish `e2 : rs hO ((q.app _).hom (rs (inf_le_right : _ ≤ LB.wchart L φ' j') (t'.s j').val)) = rs h₂ ((q.app _).hom (t'.s j').val)` using `(congrArg (rs hO) (app_rs q (inf_le_right : _ ≤ LB.wchart L φ' j') (t'.s j').val)).trans (rs_rs _ _ _)`.
+
+Rewrite using `[← e1, ← e2]`. Conclude with `congrArg (fun x => rs hO ((q.app _).hom x)) key`.
+-/
 theorem corr_pull (φ : K → (Y' ⟶ X)) (ε : K → ℤ) (φ' : K' → (Y' ⟶ X)) (ε' : K' → ℤ)
     (t : LB.Gen (LB.LinComb L φ ε)) (t' : LB.Gen (LB.LinComb L φ' ε'))
     (hc : LB.Gen.Corr L φ ε φ' ε' t t') (j : K → L.ι) (j' : K' → L.ι) (hj : LB.Coh L φ j)
@@ -68,12 +82,18 @@ theorem corr_pull (φ : K → (Y' ⟶ X)) (ε : K → ℤ) (φ' : K' → (Y' ⟶
   rw [← e1, ← e2]
   exact congrArg (fun x => rs hO ((q.app _).hom x)) key
 
+/- English proof (translation)
+Rewrite using `[app_rs, rs_rs, Scheme.Hom.comp_app]`. Both sides reduce to the same expression.
+-/
 lemma rs_app_comp' {Z Y X : Scheme.{0}} (h : Z ⟶ Y) (ψ : Y ⟶ X) {U : X.Opens} {W : Y.Opens}
     {V : Z.Opens} (hW : W ≤ ψ ⁻¹ᵁ U) (hV : V ≤ h ⁻¹ᵁ W) (hV' : V ≤ (h ≫ ψ) ⁻¹ᵁ U) (x : Γ(X, U)) :
     rs hV ((h.app W).hom (rs hW ((ψ.app U).hom x))) = rs hV' (((h ≫ ψ).app U).hom x) := by
   rw [app_rs, rs_rs, Scheme.Hom.comp_app]
   rfl
 
+/- English proof (translation)
+Simplify using `only [LB.mulGen, Units.val_mul, map_mul, rs_mul]`. Use `congr 1`. Conclude with `(congrArg (rs h) (app_rs q _ (t.s (j ∘ Sum.inl)).val)).trans (rs_rs _ _ _)`. Conclude with `(congrArg (rs h) (app_rs q _ (t'.s (j ∘ Sum.inr)).val)).trans (rs_rs _ _ _)`.
+-/
 theorem rs_app_mulGen (φ : K → (Y' ⟶ X)) (ε : K → ℤ) (φ' : K' → (Y' ⟶ X)) (ε' : K' → ℤ)
     (t : LB.Gen (LB.LinComb L φ ε)) (t' : LB.Gen (LB.LinComb L φ' ε')) (j : K ⊕ K' → L.ι)
     (q : Z ⟶ Y') {O : Z.Opens} (h : O ≤ q ⁻¹ᵁ LB.wchart L (Sum.elim φ φ') j)
@@ -85,6 +105,9 @@ theorem rs_app_mulGen (φ : K → (Y' ⟶ X)) (ε : K → ℤ) (φ' : K' → (Y'
   · exact (congrArg (rs h) (app_rs q _ (t.s (j ∘ Sum.inl)).val)).trans (rs_rs _ _ _)
   · exact (congrArg (rs h) (app_rs q _ (t'.s (j ∘ Sum.inr)).val)).trans (rs_rs _ _ _)
 
+/- English proof (translation)
+The claim follows from `(congrArg (rs h) (app_rs q (wchart_comp_le φ g j) ((g.app _).hom (c.s j).val))).trans (rs_rs _ _ _)`.
+-/
 theorem rs_app_pullGen {W : Scheme.{0}} (φ : K → (Y ⟶ X)) (ε : K → ℤ) (c : LB.Gen (LB.LinComb L φ ε))
     (g : W ⟶ Y) (j : K → L.ι) (q : Z ⟶ W) {O : Z.Opens}
     (h : O ≤ q ⁻¹ᵁ LB.wchart L (fun k => g ≫ φ k) j) (h' : O ≤ (q ≫ g) ⁻¹ᵁ LB.wchart L φ j) :

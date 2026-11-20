@@ -15,6 +15,9 @@ open scoped ComplexOrder
 open GlobalTheory.HodgeLocGeo
 
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.HodgeLocGeo.lnN_root_local | exact GlobalTheory.HodgeLocGeo.lnN_root_local | (intros; apply GlobalTheory.HodgeLocGeo.lnN_root_local <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.divisor_generates_local_period_matrix : Hypotheses2 → HypothesesH → OnObj fun D O _ T _ h => ∀ (c : O.Y.Comp) (a : Fin ((T.M c).n + 1)) (j : Fin ((T.M c).A a).n),
   ∀ y ∈ (((T.M c).A a).chart j).target, (((T.M c).A a).chart j).symm y ∉ (T.M c).Z a →
   ∀ f : DV.Rt D.what₂.Tau O.N → (O.var c).Fn,

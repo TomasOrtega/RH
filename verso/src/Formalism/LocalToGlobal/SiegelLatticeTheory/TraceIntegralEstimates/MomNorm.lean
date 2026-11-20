@@ -7,6 +7,9 @@ namespace Formalism.L2.S.Pv.Mom
 
 open Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotions.S
 
+/- English proof (translation)
+The claim follows from `Formalism.MainNotions.S.Pv.Mom.momF'_of_schur Fm Cg cb Cu cT CT C0 hBS hM1 Formalism.L2.SG.Pf.k_finite_smooth_bessel`.
+-/
 theorem momF' {eps : ℝ} (Fm : Formalism.MainNotions.FamP eps) (Cg cb Cu cT CT C0 : ℝ)
     (hBS : Formalism.MainNotions.S.Pv.Mom.BesselSchurF' Fm Cg cb Cu cT CT C0) (hM1 : Formalism.MainNotions.DiscreteSeriesWeylDimension.LowKMultOne) :
     Formalism.MainNotions.S.Pv.Mom.MomF' Fm Cg cb Cu cT CT C0 :=

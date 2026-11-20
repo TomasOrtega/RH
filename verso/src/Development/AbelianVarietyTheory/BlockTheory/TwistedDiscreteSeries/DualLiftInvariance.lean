@@ -66,6 +66,15 @@ variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchim
   {n n' n'' : Type} [Fintype n] [Fintype n'] [Fintype n''] in
 omit [Fintype n''] in
 
+/- English proof (translation)
+Unfold `_root_.GlobalTheory.IndefiniteRowSideFullHecke.AppendedVectorData.lastKer`. Rewrite using `[Submodule.mem_sup]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨_, ⟨x, hx, rfl⟩, z, hz, rfl⟩`. Take `⟨s, rfl⟩` from `Submodule.mem_span_singleton.mp hz`.
+
+Use `⟨?_, ?_⟩` and prove the remaining obligations. Establish `hcomp : ((_root_.GlobalTheory.LatPair.inX k n'' 1) x + s • _root_.GlobalTheory.LatPair.avec k n'' 1 1) ∘ Sum.inl = x`. Use function extensionality and compare the values at `i`. Simplify using `[_root_.GlobalTheory.LatPair.inX, _root_.GlobalTheory.LatPair.avec]`. Rewrite using `[hcomp]`.
+
+Conclude with `hx`. Simplify `s.2` using `[_root_.GlobalTheory.LatPair.inX, _root_.GlobalTheory.LatPair.avec, Subring.smul_def]`. Introduce and unpack `⟨h1, h2⟩`. Use `⟨_, ⟨_, h1, rfl⟩, (⟨y (Sum.inr 0), h2⟩ : 𝒪[k]) • _root_.GlobalTheory.LatPair.avec k n'' 1 1, Submodule.smul_mem _ _ (Submodule.mem_span_singleton_self _), ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `i`.
+
+Break down `i with i | i` into its components or cases. Simplify using `[_root_.GlobalTheory.LatPair.inX, _root_.GlobalTheory.LatPair.avec]`. Use `fin_cases i`. Simplify using `[_root_.GlobalTheory.LatPair.inX, _root_.GlobalTheory.LatPair.avec, Subring.smul_def]`.
+-/
 theorem _root_.GlobalTheory.IndefiniteRowSideFullHecke.AppendedVectorData.mem_lastKer {L : Submodule 𝒪[k] (n'' → k)} {y : n'' ⊕ Fin 1 → k} :
     y ∈ _root_.GlobalTheory.IndefiniteRowSideFullHecke.AppendedVectorData.lastKer L ↔ y ∘ Sum.inl ∈ L ∧ y (Sum.inr 0) ∈ 𝒪[k] := by
   unfold _root_.GlobalTheory.IndefiniteRowSideFullHecke.AppendedVectorData.lastKer
@@ -96,6 +105,11 @@ variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchim
   {n n' n'' : Type} [Fintype n] [Fintype n'] [Fintype n''] in
 omit [Fintype n''] in
 
+/- English proof (translation)
+Use extensionality with `y`. Rewrite using `[_root_.GlobalTheory.IndefiniteRowSideFullHecke.AppendedVectorData.mem_lastKer, _root_.GlobalTheory.LatPair.mem_gluedLat]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨h1, h2⟩`. Use `⟨0, by simpa using h1, fun i => ?_⟩` and prove the remaining obligations.
+
+Use `fin_cases i`. Conclude with `⟨fun _ => h2, fun h => by norm_num at h, fun h => by norm_num at h⟩`. Introduce and unpack `⟨s, h1, h2⟩`. Conclude with `⟨by simpa using h1, (h2 0).1 (by norm_num)⟩`.
+-/
 theorem _root_.GlobalTheory.IndefiniteRowSideFullHecke.AppendedVectorData.lastKer_eq (q : _root_.GlobalTheory.LatPair.Unif k)
     (L : Submodule 𝒪[k] (n'' → k)) :
     _root_.GlobalTheory.IndefiniteRowSideFullHecke.AppendedVectorData.lastKer L = _root_.GlobalTheory.LatPair.gluedLat q 1 2 L 0 := by
@@ -115,6 +129,15 @@ variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchim
   {n n' n'' : Type} [Fintype n] [Fintype n'] [Fintype n''] in
 omit [Fintype n''] in
 
+/- English proof (translation)
+Rewrite using `[_root_.GlobalTheory.LatPair.isGlue_iff q]`. Use `⟨_root_.GlobalTheory.IndefiniteRowSideFullHecke.AppendedVectorData.lastKer_eq q L ▸ _root_.GlobalTheory.LatPair.gluedLat_isLattice q 1 2 L 0, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[_root_.GlobalTheory.IndefiniteRowSideFullHecke.AppendedVectorData.mem_lastKer]`. Introduce and unpack `⟨-, h⟩`. Establish `hinv : (((q : 𝒪[k]) : k))⁻¹ ∈ 𝒪[k]`.
+
+Simplify `h` using `[_root_.GlobalTheory.LatPair.avec, _root_.GlobalTheory.LatPair.Unif.inv]`. Apply `q.mem_max` to reduce the goal to its premises. Conclude with `IsUnit.of_mul_eq_one (b := ⟨_, hinv⟩) (Subtype.ext (by simp [mul_inv_cancel₀ q.ne_zero]))`. Rewrite using `[_root_.GlobalTheory.LatPair.Unif.smul_inv_smul, _root_.GlobalTheory.IndefiniteRowSideFullHecke.AppendedVectorData.mem_lastKer]`. Use `⟨?_, ?_⟩` and prove the remaining obligations.
+
+Establish `hzero : _root_.GlobalTheory.LatPair.avec k n'' 1 1 ∘ Sum.inl = 0`. Use function extensionality and compare the values at `i`. Simplify using `[_root_.GlobalTheory.LatPair.avec]`. Rewrite using `[hzero]`. Conclude with `L.zero_mem`.
+
+Simplify `one_mem 𝒪[k]` using `[_root_.GlobalTheory.LatPair.avec]`.
+-/
 theorem _root_.GlobalTheory.IndefiniteRowSideFullHecke.AppendedVectorData.isGlue_last (q : _root_.GlobalTheory.LatPair.Unif k) (L : Submodule 𝒪[k] (n'' → k)) [L.IsLattice k] :
     _root_.GlobalTheory.LatPair.IsGlue (_root_.GlobalTheory.IndefiniteRowSideFullHecke.AppendedVectorData.lastKer L) (q.inv • _root_.GlobalTheory.LatPair.avec k n'' 1 1) := by
   rw [_root_.GlobalTheory.LatPair.isGlue_iff q]
@@ -248,16 +271,28 @@ section Examples
 variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
   {n n' n'' : Type} [Fintype n] [Fintype n'] [Fintype n'']
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨glue_ker _, glue_hasVal _⟩`.
+-/
 example (q : Unif k) (L : Submodule 𝒪[k] (n'' → k)) [L.IsLattice k] :
     (lastPair q L).ker = lastKer L ∧ (lastPair q L).HasVal (q.inv • avec k n'' 1 1) 1 :=
   ⟨glue_ker _, glue_hasVal _⟩
 
+/- English proof (translation)
+The claim follows from `if_pos ⟨fun _ _ => by simp, by simp⟩`.
+-/
 example (q : Unif k) (P : Pair k n') (LY : Submodule 𝒪[k] (n → k)) : datum q P LY 0 0 = 1 :=
   if_pos ⟨fun _ _ => by simp, by simp⟩
 
+/- English proof (translation)
+The claim follows from `if_pos ⟨0, fun _ => ⟨0, by simp, by simp⟩, fun _ _ => by simp⟩`.
+-/
 example (q : Unif k) (L : Submodule 𝒪[k] (n → k)) : cosetInd q L 0 0 = 1 :=
   if_pos ⟨0, fun _ => ⟨0, by simp, by simp⟩, fun _ _ => by simp⟩
 
+/- English proof (translation)
+Simplify using `[resUnit]`.
+-/
 example : (resUnit (-1 : 𝒪[k]ˣ) : 𝓀[k]) = -1 := by simp [resUnit]
 
 end Examples

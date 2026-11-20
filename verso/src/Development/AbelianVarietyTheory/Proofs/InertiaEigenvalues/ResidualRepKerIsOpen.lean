@@ -7,6 +7,15 @@ namespace GlobalTheory.TypeLeaf
 
 open Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotions.N Formalism.MainNotions.ArithmeticCylinders Formalism.ConjugateSelfDual ReciprocityTheory.Gal Polynomial NumberField IsDedekindDomain
 
+/- English proof (translation)
+Set `U : Set (Matrix (Fin n) (Fin n) A)` to `{M | ∀ i j, M i j - (1 : Matrix (Fin n) (Fin n) A) i j ∈ RingHom.ker f}`. Establish `hU : IsOpen U`. Establish `: U = ⋂ i, ⋂ j, (fun M : Matrix (Fin n) (Fin n) A => M i j - (1 : Matrix (Fin n) (Fin n) A) i j) ⁻¹' ((RingHom.ker f : Ideal A) : Set A)`. Use extensionality with `M`. Simplify using `[U]`.
+
+Rewrite using `[this]`. Use `isOpen_iInter_of_finite fun i => isOpen_iInter_of_finite fun j => ?_` and prove the remaining obligations. Conclude with `hf.preimage ((continuous_id.matrix_elem i j).sub continuous_const)`. Establish `hker : (((Matrix.GeneralLinearGroup.map f).comp ρ).ker : Set Γ) = (fun g => ((ρ g : GL _ _) : Matrix (Fin n) (Fin n) A)) ⁻¹' U`. Use extensionality with `g`.
+
+Simplify using `only [SetLike.mem_coe, MonoidHom.mem_ker, MonoidHom.comp_apply, Set.mem_preimage, U, Set.mem_ofPred_eq, RingHom.mem_ker, map_sub, sub_eq_zero]`. Rewrite using `[Units.ext_iff]`. Express the relevant statement in the definitionally equal form `f.mapMatrix ((ρ g : GL _ _) : Matrix (Fin n) (Fin n) A) = ((1 : GL (Fin n) B) : Matrix (Fin n) (Fin n) B) ↔ _`. Rewrite using `[Units.val_one, ← Matrix.ext_iff]`. Use `forall_congr' fun i => forall_congr' fun j => ?_` and prove the remaining obligations.
+
+Simplify using `only [RingHom.mapMatrix_apply, Matrix.map_apply, Matrix.one_apply]`. Apply the tactic sequence `split_ifs <;> simp`. Rewrite using `[hker]`. Conclude with `hU.preimage hρ`.
+-/
 theorem isOpen_ker_map_of_isOpen_ker {Γ A B : Type} [Group Γ] [TopologicalSpace Γ] [CommRing A] [CommRing B]
     [TopologicalSpace A] [IsTopologicalRing A] {n : ℕ} (f : A →+* B) (hf : IsOpen ((RingHom.ker f : Ideal A) : Set A))
     (ρ : Γ →* GL (Fin n) A) (hρ : Continuous (fun g => ((ρ g : GL _ _) : Matrix (Fin n) (Fin n) A))) :
@@ -38,6 +47,11 @@ theorem isOpen_ker_map_of_isOpen_ker {Γ A B : Type} [Group Γ] [TopologicalSpac
   rw [hker]
   exact hU.preimage hρ
 
+/- English proof (translation)
+Establish `hk : ((RingHom.ker ((D.naut.kFbar i).comp (IsLocalRing.residue (D.nd.O i))) : Ideal (D.nd.O i)) : Set (D.nd.O i)) = (IsLocalRing.maximalIdeal (D.nd.O i) : Set (D.nd.O i))`. Use extensionality with `x`. Simplify using `[RingHom.mem_ker, IsLocalRing.residue_eq_zero_iff]`. Establish `hm : IsOpen (IsLocalRing.maximalIdeal (D.nd.O i) : Set (D.nd.O i))`. Simplify using `using (isAdic_iff.mp (D.nd.O_adic i)).1 1`.
+
+Conclude with `isOpen_ker_map_of_isOpen_ker _ (hk ▸ hm) ρ hρ`.
+-/
 theorem redF_ker_isOpen (D : D7) (i : D.nd.Loc) (ρ : G D.host.E D.nd.Om →* GL (Fin D.R.r) (D.nd.O i))
     (hρ : Continuous (fun g => ((ρ g : GL _ _) : Matrix (Fin D.R.r) (Fin D.R.r) (D.nd.O i)))) :
     IsOpen ((redF D i ρ).ker : Set (G D.host.E D.nd.Om)) := by

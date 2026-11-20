@@ -7,6 +7,13 @@ open NumberField IsDedekindDomain Formalism.BasicNotions Formalism.MainNotions F
 
 namespace GlobalTheory.Mem.Col2
 
+/- English proof (translation)
+Introduce `X Pr R sel S mu cst u j p p' h2 hfr hloc`. Establish `hF : ∀ P, frsF sel mu p.1.1 P = frsF sel mu p'.1.1 P`. Introduce `P`. Unfold `frsF`. Use `split_ifs with h`.
+
+Establish `e1` using `(hloc ⟨P.1, h⟩).1`. Establish `e2` using `(hloc ⟨P.1, h⟩).2`. Unfold `Deco.liftFr Deco.at`. Rewrite using `[e1, e2]`. Rewrite using `[hfr]`.
+
+Use function extensionality and compare the values at `P`. Unfold `cosetIn`. Rewrite using `[h2, hF P]`.
+-/
 theorem cosetIn_congr : ∀ {X : Fields} {Pr : Primes X} {R : Ranks} {sel : HeightOneSpectrum (𝓞 X.F) → HeightOneSpectrum (𝓞 X.E)} {S : Set ℕ} {mu : Tup X.F X.E X.K S} {cst : LocCst X (rowSG Pr sel mu)} {u : Pr.Word} {j : ℕ} (p p' : PtAt R sel mu cst u j), p.1.2 = p'.1.2 → p.1.1.fr = p'.1.1.fr → (∀ w : Pr.vGs, localization₂ w.1.asIdeal p.1.1.deco.1.N = localization₂ w.1.asIdeal p'.1.1.deco.1.N ∧ p.1.1.deco.1.be w = p'.1.1.deco.1.be w) → cosetIn p = cosetIn p' := by
   intro X Pr R sel S mu cst u j p p' h2 hfr hloc
   have hF : ∀ P, frsF sel mu p.1.1 P = frsF sel mu p'.1.1 P := by

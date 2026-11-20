@@ -31,6 +31,25 @@ noncomputable section
 
 namespace GlobalTheory.FlatPoint
 
+/- English proof (translation)
+Introduce `F _ _ Y V e M I ε π hD w hw g f hgf`. Use `GlobalTheory.Mean4O.CoverHt.isPreimmersion_j V` as an intermediate fact. Establish `inner (σ : F →+* ℂ) : ∑ᶠ x ∈ {x : GlobalTheory.CxPts V.p (σ.comp (algebraMap (𝓞 F) F)) | x.1 (IsLocalRing.closedPoint ℂ) = V.j w}, M.pull ε π g (σ.comp (algebraMap (𝓞 F) F)) x = (V.π.residueDegree w : ℝ) * ∑ᶠ (y : Pts Y σ) (_ : under y = V.π w), f σ y`. Establish `hs : spMap (σ.comp (algebraMap (𝓞 F) F)) = spMap σ ≫ spMap (algebraMap (𝓞 F) F)`. Rewrite using `[← Spec.map_comp]`.
+
+Both sides reduce to the same expression. Take `⟨hε, hπ⟩` from `hD (σ.comp (algebraMap (𝓞 F) F))`. Establish `hτ : I.ε (ε (σ.comp (algebraMap (𝓞 F) F))) = σ` using `(HtModel.bijective_comp F).1 hε`. Establish `hg₂ : ∀ (τ σ : F →+* ℂ) (_ : τ = σ) (p : Pts Y τ) (q : Pts Y σ), p.1 = q.1 → f τ p = f σ q`. Introduce and unpack `τ σ rfl p q h`.
+
+Rewrite using `[Subtype.ext h]`. Set `Φ : {z : {z : Sp ℂ ⟶ V.G // z ≫ V.π ≫ Y.str = spMap σ} // below z.1 = w} → ↥{x : GlobalTheory.CxPts V.p (σ.comp (algebraMap (𝓞 F) F)) | x.1 (IsLocalRing.closedPoint ℂ) = V.j w}` to `fun z => ⟨⟨z.1.1 ≫ V.j, by rw [Category.assoc, V.pb.w, ← Category.assoc, z.1.2, hs]⟩, (Scheme.Hom.comp_apply _ _ _).trans (congrArg V.j z.2)⟩`. Establish `hΦ : Function.Bijective Φ`. Use `⟨fun a b h => ?_, ?_⟩` and prove the remaining obligations. Establish `h' : a.1.1 ≫ V.j = b.1.1 ≫ V.j` using `congrArg (fun t => t.1.1) h`.
+
+Conclude with `Subtype.ext (Subtype.ext (V.pb.hom_ext h' (a.1.2.trans b.1.2.symm)))`. Introduce and unpack `⟨x, hx'⟩`. Establish `e1 : x.1 ≫ V.p = spMap σ ≫ spMap (algebraMap (𝓞 F) F)` using `x.2.trans hs`. Use `⟨⟨⟨V.pb.lift x.1 (spMap σ) e1, V.pb.lift_snd _ _ _⟩, ?_⟩, ?_⟩` and prove the remaining obligations. Apply `V.j.isEmbedding.injective` to reduce the goal to its premises.
+
+Conclude with `(Scheme.Hom.comp_apply _ _ _).symm.trans ((congrArg (fun t : Sp ℂ ⟶ V.X => t (IsLocalRing.closedPoint ℂ)) (V.pb.lift_fst _ _ e1)).trans hx')`. Conclude with `Subtype.ext (Subtype.ext (V.pb.lift_fst _ _ _))`. Rewrite using `[← finsum_set_coe_eq_finsum_mem, ← finsum_eq_of_bijective Φ hΦ (f := fun z => f σ ⟨z.1.1 ≫ V.π, (Category.assoc _ _ _).trans z.1.2⟩) fun z => ?_]`. Rewrite using `[GlobalTheory.Mean4O.CoverHt.finsum_lifts σ V.π Y.str w hw (f σ)]`. Use `congr 1`.
+
+Conclude with `finsum_subtype_eq_finsum_cond (fun y : Pts Y σ => under y = V.π w)`. Take `⟨w', h1, h2⟩` from `hπ (Φ z).1`. Establish `hb : under (I.pt _ (π _ (Φ z).1)) = V.π w`. Establish `e3 : w' = z.1.1`. Use `V.pb.hom_ext h1 ?_` and prove the remaining obligations.
+
+Rewrite using `[← Category.assoc, h2, (I.pt _ _).2, z.1.2, hτ]`. Use `show below (I.pt _ (π _ (Φ z).1)).1 = V.π w`. Rewrite using `[← h2, e3]`. Conclude with `(Scheme.Hom.comp_apply _ _ _).trans (congrArg V.π z.2)`. Use `show f σ _ = g _ _`.
+
+Rewrite using `[hgf _ _ hb]`. Use `(hg₂ _ _ hτ _ _ ?_).symm` and prove the remaining obligations. Rewrite using `[← h2]`. Use `congr 1`. Use `V.pb.hom_ext h1 ?_` and prove the remaining obligations.
+
+Rewrite using `[← Category.assoc, h2, (I.pt _ _).2, z.1.2, hτ]`. Rewrite using `[← finsum_eq_of_bijective _ (HtModel.bijective_comp F) fun σ => (inner σ).symm, finsum_eq_sum_of_fintype, ← Finset.mul_sum]`.
+-/
 theorem sum_over_cover : ∀ (F : Type) [Field F] [NumberField F] (Y : Var F) (V : Cover Y) (e : ℕ) (M : Man e) (I : ManIs M Y)
     (ε : (𝓞 F →+* ℂ) → Fin (M.n + 1)) (π : ∀ σ, GlobalTheory.CxPts V.p σ → M.X (ε σ)), V.IsDown I ε π →
     ∀ (w : V.G), IsClosed ({w} : Set V.G) → ∀ (g : M.Fun) (f : ∀ σ : F →+* ℂ, Pts Y σ → ℝ),
@@ -88,6 +107,9 @@ theorem sum_over_cover : ∀ (F : Type) [Field F] [NumberField F] (Y : Var F) (V
   rw [← finsum_eq_of_bijective _ (HtModel.bijective_comp F) fun σ => (inner σ).symm,
     finsum_eq_sum_of_fintype, ← Finset.mul_sum]
 
+/- English proof (translation)
+Introduce `D O hO A T H h B c τ b hb hbd`. Rewrite using `[GlobalTheory.T.adelic_height_off_boundary_decomposition D O hO _ c τ b hb hbd, O.setB_eq, GlobalTheory.T.determinant_symbol_height_root_sum D O hO A T H h _ c τ b hb]`.
+-/
 theorem ht_det_eq : ∀ (D : D7) (O : Setup D), O.Core → ∀ (A : SlopeTestRemainingChoices O.Y) (T : Real0 O.Y) (H : Ht O.Y), O.Reads A T H →
     ∀ (B : ℝ) (c : O.s.Comp) (τ : D.what₂.Tau) (b : (O.var c).X), IsClosed ({b} : Set (O.var c).X) →
     (O.Φ.C c).π b ∉ GlobalTheory.Toroidal.genBd O.s.T.Z →
@@ -99,6 +121,35 @@ theorem ht_det_eq : ∀ (D : D7) (O : Setup D), O.Core → ∀ (A : SlopeTestRem
   intro D O hO A T H h B c τ b hb hbd
   rw [GlobalTheory.T.adelic_height_off_boundary_decomposition D O hO _ c τ b hb hbd, O.setB_eq, GlobalTheory.T.determinant_symbol_height_root_sum D O hO A T H h _ c τ b hb]
 
+/- English proof (translation)
+Introduce `hP _ _ D O hO _ A T Ht0 h B hB τ c g _ hgZ ε π hd hu hc`. Establish `hE : GlobalTheory.Published.ArExists` using `hP.p4.arExists`. Take `⟨hb, hbd⟩` from `GlobalTheory.ShFam.KitCheck.innerPt_spec O.Φ c`. Establish `hman` using `h.an c`. Use `revert π hd hu hc`.
+
+Generalize the expression as in `h.mdl (GlobalTheory.FlagAr.setB O.Y B) c = W`. Introduce `π hd hu hc`. Take `⟨w, hw, hwb⟩` from `GlobalTheory.Mean4O.OnModel.exists_closed_over W.V hb`. Establish `halg` using `GlobalTheory.Mean4O.CoverHt.isAlgPt _ w hw`. Use `⟨_, halg, fun hh HH => ?_⟩` and prove the remaining obligations.
+
+Establish `hF` using `GlobalTheory.T.point_height_weighted_fiber_sum _ _ W.V _ hu hc w hw hE`. Establish `hR (r : DV.Rt D.what₂.Tau O.N) : IsPtHt (W.gens (GlobalTheory.FlagAr.setB O.Y B) (some r)) (W.V.j w) (-(O.root0 c (GlobalTheory.FlagAr.setB O.Y B) r).ht (innerPt O.s O.Φ c))`. Establish `h1` using `(GlobalTheory.Mean4O.CoverHt.main hE _ _ _ W.V _ _ _ w hw (GlobalTheory.T.lattice_model_induces_root_metric D O hO.dualRef _ c W _ subset_rfl r)).2`. Establish `h2` using `(GlobalTheory.T.point_height_dual_and_linear_comb hE _ _ _ _ W.V.ar _ halg).1 _ _ h1`. Rewrite `h2` using `[hwb]`.
+
+Use `show IsPtHt (W.root _ r).dual _ _`. Use `h2 using 2` and compare the differences between its conclusion and the goal. Simplify using `[Setup.root0, Setup.adl0, adlOf]`. Take `⟨Nn, hNn, hcN⟩` from `HtTwist.exists_card (O.var c).str (innerPt O.s O.Φ c) hb`. Establish `hNA : Nat.card {y : AlgPt (O.var c) // below y.1 = innerPt O.s O.Φ c} = Nn` using `hcN _ _`.
+
+Establish `hcnt : ∀ σ : D.what₂.LL →+* ℂ, ∑ᶠ (z : Pts (O.var c) σ) (_ : under z = innerPt O.s O.Φ c), (1:ℝ) = Nn`. Introduce `σ`. Establish `h1 : Nat.card {z : Pts (O.var c) σ // under z = innerPt O.s O.Φ c} = Nn` using `hcN ℂ σ`. Establish `: Finite {z : Pts (O.var c) σ // under z = innerPt O.s O.Φ c}` using `Nat.finite_of_card_ne_zero (h1 ▸ hNn)`. Use `Fintype.ofFinite {z : Pts (O.var c) σ // under z = innerPt O.s O.Φ c}` as an intermediate fact.
+
+Rewrite using `[← finsum_subtype_eq_finsum_cond, finsum_eq_sum_of_fintype]`. Simplify using `[← h1, Nat.card_eq_fintype_card]`. Establish `hcard` using `GlobalTheory.Mean4O.CoverHt.card_emb W.V w hw`. Rewrite `hcard` using `[hwb, hNA]`. Establish `hres : 0 < W.V.π.residueDegree w`.
+
+Set `` to `(W.V.π.residueFieldMap w).hom.toAlgebra`. Establish `: Module.Finite ((O.var c).X.residueField (W.V.π w)) (W.V.G.residueField w)` using `residueFieldMap_finite_of_locallyQuasiFinite W.V.π _`. Conclude with `Module.finrank_pos`. Establish `hdeg : (0 : ℝ) < Module.finrank ℚ D.what₂.LL` using `Nat.cast_pos.2 Module.finrank_pos`. Establish `hNr : (0 : ℝ) < Nn` using `Nat.cast_pos.2 (Nat.pos_of_ne_zero hNn)`.
+
+Establish `hrr : (0 : ℝ) < W.V.π.residueDegree w` using `Nat.cast_pos.2 hres`. Establish `hK0 : (Nat.card (W.V.X.residueField (W.V.j w) →+* ℂ) : ℝ) ≠ 0`. Rewrite using `[hcard]`. Check the signs of the components of the expression. Take `⟨hA, -⟩` from `hE _ W.V.X W.V.p _ W.V.ar`.
+
+Take `⟨ha, Ha⟩` from `hA (W.gens (GlobalTheory.FlagAr.setB O.Y B) none)`. Establish `hAm : IsPtHt (W.gens (GlobalTheory.FlagAr.setB O.Y B) none) (W.V.j w) (ha (W.V.j w) / Nat.card (W.V.X.residueField (W.V.j w) →+* ℂ))`. Use `⟨ha, Ha, ?_⟩` and prove the remaining obligations. Clear the denominators using the available nonvanishing facts. Establish `hall` using `(GlobalTheory.T.point_height_dual_and_linear_comb hE _ _ _ _ W.V.ar _ halg).2 _ (fun o : Option (Option (D.what₂.Tau × Fin O.N)) => o.elim (fnB ((T.M c).pull ε π ((2 : ℝ) • (g - (fun _ _ => O.Y.htDetT B c τ : (T.M c).Fun)))) hu hc) (W.gens (GlobalTheory.FlagAr.setB O.Y B))) (fun …`.
+
+Take `⟨h', H', e'⟩` from `hall`. Rewrite using `[congrFun (HH.unique W.V.ar H') (W.V.j w), e']`. Establish `hzoff : ∀ a (z : (T.M c).X a), under ((h.man c).pt a z) = W.V.π w → z ∉ (T.M c).Z a`. Introduce `a z hz hm`. Conclude with `hbd (by rw [← hwb, ← hz]; exact (hman.Z a z).1 hm)`.
+
+Establish `hsum` using `sum_over_cover _ _ W.V _ _ (h.man c) ε π hd w hw ((2 : ℝ) • (g - (fun _ _ => O.Y.htDetT B c τ : (T.M c).Fun))) (fun σ z => 2 * (O.chg c none (fun σ' _ => if σ' = τ then (-1 : ℝ) else 0) σ z - O.Y.htDetT B c τ)) (by`. Introduce `a z hz`. Establish `hzZ` using `hzoff a z hz`. Simplify using `only [Pi.smul_apply, Pi.sub_apply, smul_eq_mul]`. Rewrite using `[hgZ a z hzZ]`.
+
+Conclude with `congrArg (fun s => 2 * (s - O.Y.htDetT B c τ)) (hman.ph _ a z hzZ))`. Rewrite `hsum` using `[hwb]`. Establish `hσ (σ : D.what₂.LL →+* ℂ) : ∑ᶠ (z : Pts (O.var c) σ) (_ : under z = innerPt O.s O.Φ c), 2 * (O.chg c none (fun σ' _ => if σ' = τ then (-1 : ℝ) else 0) σ z - O.Y.htDetT B c τ) = 2 * ∑ᶠ (z : Pts (O.var c) σ) (_ : under z = innerPt O.s O.Φ c), O.chg c none (fun σ' _ => if σ' = τ the …`. Rewrite using `[← hcnt σ, ← finsum_under_mul σ hb, ← finsum_under_mul σ hb, ← finsum_under_add σ hb]`. Conclude with `finsum_congr fun z => finsum_congr fun _ => by ring`.
+
+Simplify using `only [hσ, Finset.sum_add_distrib, ← Finset.mul_sum, Finset.sum_const, Finset.card_univ, NumberField.Embeddings.card, nsmul_eq_mul] at hsum`. Establish `hdet` using `ht_det_eq D O hO A T Ht0 h B c τ _ hb hbd`. Establish `ht : O.Y.htDetT B c τ = (adlOf (O.Φ.C c) (O.met.hm c) (detSym O.S.Dw (ArIn.ind (Pad.setB O.κ B)) none (DV.tauEmb D τ))).ht (innerPt O.s O.Φ c)` using `rfl`. Rewrite `hdet` using `[hNA]`. Simplify using `only [Fintype.sum_option, Option.elim, Int.cast_ite, Int.cast_neg, Int.cast_one, Int.cast_zero, ite_mul, neg_one_mul, zero_mul, neg_neg, one_mul, zero_add]`.
+
+Rewrite using `[hsum, hcard]`. Rewrite using `[ht, hdet]`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem exists_algPt_height_zero : Hypotheses2 → HypothesesH → GlobalTheory.Published.ScholzeWeinsteinB → ∀ (D : D7) (O : Setup D), O.Core → 2 < D.R.f * (O.N - 1) →
     ∀ (A : SlopeTestRemainingChoices O.Y) (T : Real0 O.Y) (H : Ht O.Y) (h : O.Reads A T H) (B : ℝ), 2 ≤ B → ∀ (τ : D.what₂.Tau) (c : O.s.Comp)
     (g : (T.M c).Fun), (T.M c).Smooth g →

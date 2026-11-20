@@ -33,6 +33,11 @@ section stab
 
 variable (c : Fin r → ℂ) (μ : Matrix (Fin (k + 1)) (Fin (k + 1)) ℂ)
 
+/- English proof (translation)
+Rewrite using `[Matrix.mul_apply, Finset.sum_eq_single (esI k r ⟨j.val, hj⟩)]`. Unfold `bigCell`. Rewrite using `[dif_pos hj, if_pos rfl]`. Introduce `l _ hl`. Unfold `bigCell`.
+
+Rewrite using `[dif_pos hj, if_neg hl, mul_zero]`. Simplify using the standard rewrite rules.
+-/
 theorem mul_bigCell_low (M : B.Mat k r) (i j : Fin (2 * r + k + 1)) (hj : j.val < r) :
     (M * bigCell k r c μ) i j = M i (esI k r ⟨j.val, hj⟩) * c ⟨j.val, hj⟩ := by
   rw [Matrix.mul_apply, Finset.sum_eq_single (esI k r ⟨j.val, hj⟩)]
@@ -40,6 +45,11 @@ theorem mul_bigCell_low (M : B.Mat k r) (i j : Fin (2 * r + k + 1)) (hj : j.val 
   · intro l _ hl; unfold bigCell; rw [dif_pos hj, if_neg hl, mul_zero]
   · simp
 
+/- English proof (translation)
+Unfold `bigCell`. Use `split_ifs with h1 h2 h3 h4 h5`. Use `congrArg Fin.val h2` as an intermediate fact. Simplify using `only [esI] at this`. Use linear arithmetic over natural numbers and integers.
+
+Both sides reduce to the same expression. Use linear arithmetic over natural numbers and integers. Both sides reduce to the same expression. Use linear arithmetic over natural numbers and integers. Both sides reduce to the same expression.
+-/
 theorem bigCell_row (i j : Fin (2 * r + k + 1)) (hi : i.val < r) (h : i.val + j.val ≠ 2 * r + k) :
     bigCell k r c μ i j = 0 := by
   unfold bigCell
@@ -53,11 +63,41 @@ theorem bigCell_row (i j : Fin (2 * r + k + 1)) (hi : i.val < r) (h : i.val + j.
   · omega
   · rfl
 
+/- English proof (translation)
+Unfold `bigCell`. Rewrite using `[dif_neg (by omega), dif_neg (by omega), if_neg (by omega)]`.
+-/
 theorem bigCell_col (i j : Fin (2 * r + k + 1)) (hj : r + k < j.val) (h : i.val + j.val ≠ 2 * r + k) :
     bigCell k r c μ i j = 0 := by
   unfold bigCell
   rw [dif_neg (by omega), dif_neg (by omega), if_neg (by omega)]
 
+/- English proof (translation)
+Establish `hu` using `WeylGroupFacts.isUnit_of_uh hg`. Use `set g := bigCell k r c μ with hgdef`. Use extensionality with `a`. Rewrite using `[Set.mem_singleton_iff]`. Use `⟨fun ⟨ha, hb⟩ => ?_, ?_⟩` and prove the remaining obligations.
+
+Use `swap`. Introduce and unpack `rfl`. Conclude with `⟨(nSubgroup k r).1, by rw [Matrix.mul_one, Matrix.nonsing_inv_mul _ hu]; exact (nSubgroup k r).1⟩`. Use `set b := g⁻¹ * a * g with hbdef`. Establish `e : a * g = g * b`.
+
+Rewrite using `[hbdef, Matrix.mul_assoc, Matrix.mul_nonsing_inv_cancel_left _ _ hu]`. Establish `ua` using `fun i j h => UnipotentUpperFacts.N_upper ha i j h`. Establish `ub` using `fun i j h => UnipotentUpperFacts.N_upper hb i j h`. Establish `hrow : ∀ i j : Fin (2 * r + k + 1), i.val < r → (a * g) i j = g i j`. Introduce `i j hi`.
+
+Break down `le_or_gt (i.val + j.val) (2 * r + k) with h | h` into its components or cases. Rewrite using `[e, Matrix.mul_apply, Finset.sum_eq_single (esI k r ⟨i.val, hi⟩)]`. Rewrite using `[ub _ _ (by rw [Fin.le_def]; simp only [esI]; omega)] split_ifs with h1`. Rewrite using `[h1, mul_one]`. Rewrite using `[mul_zero, hgdef, bigCell_row c μ i j hi]`.
+
+Introduce `h2`. Conclude with `h1 (Fin.ext (by simp only [esI]; omega))`. Introduce `l _ hl`. Rewrite using `[hgdef, bigCell_row c μ i l hi (fun h2 => hl (Fin.ext (by simp only [esI]; omega))), zero_mul]`. Simplify using the standard rewrite rules.
+
+Rewrite using `[Matrix.mul_apply, hgdef, bigCell_row c μ i j hi h.ne']`. Use `Finset.sum_eq_zero fun l _ => ?_` and prove the remaining obligations. Distinguish the cases in `hl : l.val + j.val = 2 * r + k`. Rewrite using `[ua i l (by rw [Fin.le_def]; omega), if_neg (by rw [Fin.ext_iff]; omega), zero_mul]`. Rewrite using `[bigCell_col c μ l j (by omega) hl, mul_zero]`.
+
+Use extensionality with `i j`. Rewrite using `[Matrix.one_apply]`. Distinguish the cases in `hi : i.val < r`. Establish `: a = a * g * g⁻¹` using `(Matrix.mul_nonsing_inv_cancel_right _ _ hu).symm`. Rewrite using `[this, Matrix.mul_apply, ← Matrix.one_apply, ← Matrix.mul_nonsing_inv _ hu, Matrix.mul_apply]`.
+
+Conclude with `Finset.sum_congr rfl fun l _ => by rw [hrow i l hi]`. Break down `le_or_gt j i with hji | hji` into its components or cases. Conclude with `ua i j hji`. Rewrite `hji` using `[Fin.lt_def]`. Distinguish the cases in `hj : j.val ≤ r + k`.
+
+Conclude with `ha.2.2 i j (by omega) hj (by omega)`. Establish `hjl` using `j.isLt`. Establish `hm : 2 * r + k - j.val < r` using `by omega`. Set `m : Fin (2 * r + k + 1)` to `⟨2 * r + k - j.val, by omega⟩`. Establish `h1` using `mul_bigCell_low c μ a i m hm`.
+
+Establish `e1 : esI k r ⟨m.val, hm⟩ = j` using `Fin.ext (by simp only [esI, m]; omega)`. Rewrite `h1` using `[e1, ← hgdef, e, Matrix.mul_apply, Finset.sum_eq_zero]`. Rewrite using `[if_neg (by rw [Fin.ext_iff]; omega)]`. Conclude with `(mul_eq_zero.1 h1.symm).resolve_right (hc _)`. Introduce `l _`.
+
+Break down `le_or_gt l m with hl | hl` into its components or cases. Rewrite `hl` using `[Fin.le_def]`. Establish `hl' : l.val < r` using `lt_of_le_of_lt hl hm`. Establish `: g i l = 0`. Rewrite using `[hgdef]`.
+
+Unfold `bigCell`. Rewrite using `[dif_pos hl', if_neg]`. Rewrite using `[Fin.ext_iff]`. Simplify using `only [esI, m] at hl ⊢`. Use linear arithmetic over natural numbers and integers.
+
+Rewrite using `[this, zero_mul]`. Rewrite using `[ub l m hl.le, if_neg hl.ne', mul_zero]`.
+-/
 theorem rStab_bigCell (hc : ∀ a, c a ≠ 0) (hg : bigCell k r c μ ∈ UH (Hpk k r)) :
     RStab k r (bigCell k r c μ) = {1} := by
   have hu := WeylGroupFacts.isUnit_of_uh hg
@@ -126,6 +166,11 @@ theorem rStab_bigCell (hc : ∀ a, c a ≠ 0) (hg : bigCell k r c μ ∈ UH (Hpk
 
 end stab
 
+/- English proof (translation)
+Rewrite using `[Measure.smul_apply, h.conc, smul_zero] left a ha := by rw [Measure.map_smul, h.left a ha] right a ha := by rw [Measure.map_smul, h.right a ha] finite_compact K hK := by`. Rewrite using `[Measure.smul_apply, smul_eq_mul]`. Conclude with `ENNReal.mul_lt_top ENNReal.ofReal_lt_top (h.finite_compact K hK)`. Use `ne_zero h0 := h.ne_zero <| by`. Establish `h1` using `Measure.measure_univ_eq_zero.2 h0`.
+
+Rewrite `h1` using `[Measure.smul_apply, smul_eq_mul]`. Conclude with `Measure.measure_univ_eq_zero.1 ((mul_eq_zero.1 h1).resolve_left (ENNReal.ofReal_pos.2 hx).ne')`.
+-/
 theorem haar_smul {U : Set (B.Mat k r)} {μ : Measure (Mt k r)} (h : B.IsHaarOn U μ) {x : ℝ} (hx : 0 < x) :
     B.IsHaarOn U (ENNReal.ofReal x • μ) where
   conc := by rw [Measure.smul_apply, h.conc, smul_zero]
@@ -139,6 +184,11 @@ theorem haar_smul {U : Set (B.Mat k r)} {μ : Measure (Mt k r)} (h : B.IsHaarOn 
     rw [Measure.smul_apply, smul_eq_mul] at h1
     exact Measure.measure_univ_eq_zero.1 ((mul_eq_zero.1 h1).resolve_left (ENNReal.ofReal_pos.2 hx).ne')
 
+/- English proof (translation)
+Use `set f : (Fin r → ℂ) × ℂ → ℝ≥0∞ := fun q => ENNReal.ofReal (bcWeight k r T T' q * F q) with hf`. Establish `hpt : ∀ q, ENNReal.ofReal (bcWeight k r T T' q * F (B7.d_S r s q)) = ENNReal.ofReal ((s ^ B7.halfDimensionBlockSummand k r)⁻¹) * f (B7.d_S r s q)`. Introduce `q`. Simplify using `only [hf]`. Rewrite using `[B7.d_weight T T' s hs q, ← ENNReal.ofReal_mul (by positivity)]`.
+
+Use `congr 1`. Clear the denominators using the available nonvanishing facts. Repeatedly rewrite using `[hpt]`. Rewrite using `[lintegral_const_mul' _ _ ENNReal.ofReal_ne_top, ← (B7.d_emb_S s hs).lintegral_map, B7.d_map_S s hs, lintegral_smul_measure, smul_eq_mul, ← mul_assoc, ← ENNReal.ofReal_mul (by positivity), B7.d_kap, pow_add, mul_inv]`.
+-/
 theorem lintegral_weight_scale (T T' s : ℝ) (hs : 0 < s) (F : (Fin r → ℂ) × ℂ → ℝ) :
     ∫⁻ q, ENNReal.ofReal (bcWeight k r T T' q * F (B7.d_S r s q)) =
       ENNReal.ofReal ((s ^ B.kap k r)⁻¹) * ∫⁻ q, ENNReal.ofReal (bcWeight k r T T' q * F q) := by
@@ -160,15 +210,24 @@ section side
 variable {Wp Wq : Type} [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp] [NormedAddCommGroup Wq]
   [InnerProductSpace ℂ Wq]
 
+/- English proof (translation)
+Unfold `hsNormSq Formalism.MainNotions.S.hsInner B.hsVec`. Rewrite using `[PiLp.norm_sq_eq_of_L2, Complex.re_sum]`. Conclude with `Finset.sum_congr rfl fun i _ => inner_self_eq_norm_sq (𝕜 := ℂ) _`.
+-/
 theorem hsNormSq_eq [FiniteDimensional ℂ Wq] (A : Wq →L[ℂ] Wp) : hsNormSq A = ‖B.hsVec A‖ ^ 2 := by
   unfold hsNormSq Formalism.MainNotions.S.hsInner B.hsVec
   rw [PiLp.norm_sq_eq_of_L2, Complex.re_sum]
   exact Finset.sum_congr rfl fun i _ => inner_self_eq_norm_sq (𝕜 := ℂ) _
 
+/- English proof (translation)
+Rewrite using `[hsNormSq_eq, hsNormSq_eq, show B.hsVec (t • A) = t • B.hsVec A from rfl, norm_smul, mul_pow]`.
+-/
 theorem hsNormSq_smul [FiniteDimensional ℂ Wq] (t : ℂ) (A : Wq →L[ℂ] Wp) :
     hsNormSq (t • A) = ‖t‖ ^ 2 * hsNormSq A := by
   rw [hsNormSq_eq, hsNormSq_eq, show B.hsVec (t • A) = t • B.hsVec A from rfl, norm_smul, mul_pow]
 
+/- English proof (translation)
+Establish `h1` using `congrArg (fun A : Wp →L[ℂ] Wp => ‖⟪x, A x⟫_ℂ‖) h`. Simplify using `only [ContinuousLinearMap.smulRight_apply, innerSL_apply_apply, inner_smul_right, norm_mul] at h1`. Rewrite `h1` using `[norm_inner_symm x y]`. Conclude with `(mul_self_inj (norm_nonneg _) (norm_nonneg _)).1 h1`.
+-/
 theorem norm_inner_of_rankOne {x y : Wp} (h : (innerSL ℂ y).smulRight y = (innerSL ℂ x).smulRight x) :
     ‖⟪y, x⟫_ℂ‖ = ‖⟪x, x⟫_ℂ‖ := by
   have h1 := congrArg (fun A : Wp →L[ℂ] Wp => ‖⟪x, A x⟫_ℂ‖) h
@@ -176,6 +235,15 @@ theorem norm_inner_of_rankOne {x y : Wp} (h : (innerSL ℂ y).smulRight y = (inn
   rw [norm_inner_symm x y] at h1
   exact (mul_self_inj (norm_nonneg _) (norm_nonneg _)).1 h1
 
+/- English proof (translation)
+Use `B7.sf hW` as an intermediate fact. Use `B7.sf hN` as an intermediate fact. Establish `hu` using `WeylGroupFacts.isUnit_of_uh ha`. Establish `hai` using `WeylGroupFacts.uh_inv ha`. Establish `hm : Measurable (conjM (k` using `k) (r := r) a) := (BesselUnitaryEquiv.conjE a hu).measurable`.
+
+Establish `hΦe : MeasurableEmbedding (Prod.map id (conjM a) : Mt k r × Mt k r → Mt k r × Mt k r)` using `((MeasurableEquiv.refl _).prodCongr (BesselUnitaryEquiv.conjE a hu)).measurableEmbedding`. Establish `hΦ : MeasurePreserving (Prod.map id (conjM a) : Mt k r × Mt k r → Mt k r × Mt k r) (μW.prod μN) (μW.prod (μN.map (conjM a)))` using `MeasurePreserving.prod (MeasurePreserving.id _) ⟨hm, rfl⟩`. Establish `q1` using `(Measure.quasiMeasurePreserving_fst (μ := μW) (ν := μN)).ae (B7.ae_mem hW)`. Establish `q2` using `(Measure.quasiMeasurePreserving_snd (μ := μW) (ν := μN)).ae (B7.ae_mem hN)`. Unfold `ThreeDimData.be`.
+
+Rewrite using `[← hΦ.integral_comp hΦe]`. Use `integral_congr_ae ?_` and prove the remaining obligations. Use `filter_upwards [q1, q2] with p hK hM`. Take `⟨y, b⟩` from `p`. Use `set K : B.Mat k r := Matrix.of y`.
+
+Use `set M : B.Mat k r := Matrix.of b`. Use `show (⟪v, R.σ (K * (a * M * a⁻¹)) x⟫_ℂ * star (psi k r z c (a * M * a⁻¹))) • π K⁻¹ = (⟪R.σ a⁻¹ v, R.σ (K * M) (R.σ a⁻¹ x)⟫_ℂ * star (psi k r z c' M)) • π K⁻¹`. Establish `hKM : K * M ∈ GG k r` using `WeylGroupFacts.uh_mul hK.1 hM.1`. Rewrite using `[hp M hM, ← hun a ha (R.σ a⁻¹ v), ← hmul _ ha _ hai, Matrix.mul_nonsing_inv _ hu, h1, ← hmul _ hKM _ hai, ← hmul _ ha _ (WeylGroupFacts.uh_mul hKM hai), ← Matrix.mul_assoc K, ← Matrix.mul_assoc K, ← hc K hK]`. Simplify using `only [Matrix.mul_assoc]`.
+-/
 theorem be_conj [CompleteSpace Wp] (R : Rep k r)
     (hmul : ∀ g ∈ GG k r, ∀ h ∈ GG k r, ∀ v, R.σ (g * h) v = R.σ g (R.σ h v)) (h1 : ∀ v, R.σ 1 v = v)
     (hun : ∀ g ∈ GG k r, ∀ v w, ⟪R.σ g v, R.σ g w⟫_ℂ = ⟪v, w⟫_ℂ)
@@ -211,6 +279,15 @@ theorem be_conj [CompleteSpace Wp] (R : Rep k r)
 
 end side
 
+/- English proof (translation)
+Establish `hOm` using `BigCellHermitian.gqDom D hq`. Use `Model.cellData_open L μG _ hOm.1 (Matrix.nonsing_inv_mul _ (WeylGroupFacts.isUnit_of_uh hOm.1)) (hz ▸ hz' ▸ hOm.2.2) ?_ (rStab_bigCell _ _ hq.1 hOm.1)` and prove the remaining obligations. Rewrite using `[← hz, ← hz']`. Establish `hZ` using `bigCellZhat k r D.z D.z' q.1 (D.μsec q.2) D.z_mem D.z'_mem`. Rewrite `hZ` using `[BigCellHermitian.herm_bigCell _ _ D.z_mem D.z'_mem, (D.sec.2 q.2 hq.2).2]`.
+
+Use `⟨1, fun a => if h : a.val < r then q.1 ⟨a.val, h⟩ else q.2, fun a => ?_, ?_⟩` and prove the remaining obligations. Simplify using `only split_ifs`. Conclude with `hq.1 _`. Introduce `h0`. Use `hq.2` as an intermediate fact.
+
+Rewrite `this` using `[h0, map_zero]`. Conclude with `absurd (mul_pos D.T_pos D.T'_pos) this.not_gt`. Use `hZ.trans ?_` and prove the remaining obligations. Use extensionality with `i j`. Rewrite using `[Matrix.diagonal_apply]`.
+
+Use `show _ = if i = j then _ else _`. Distinguish the cases in `h : i = j`. Rewrite using `[if_pos h, if_pos h, h]`. Rewrite using `[if_neg h, if_neg h]`.
+-/
 theorem cellData_bigCell (L : LocBessel k r) (μG : Measure (Mt k r)) (D : B.RealPlaceData k r L.Wp L.Wq)
     (hz : D.z = L.z) (hz' : D.z' = L.z') {q : (Fin r → ℂ) × ℂ} (hq : q ∈ B7.Q0 D) :
     CellData L μG (B.gq D q) (Measure.dirac (fun i j => (1 : MatKR k r) i j)) μG (pairMeas L) := by
@@ -236,6 +313,9 @@ theorem cellData_bigCell (L : LocBessel k r) (μG : Measure (Mt k r)) (D : B.Rea
     · rw [if_pos h, if_pos h, h]
     · rw [if_neg h, if_neg h]
 
+/- English proof (translation)
+The claim follows from `FiniteDimensional.complete ℂ L.Wp; haveI := FiniteDimensional.complete ℂ L.Wq; R.IsDS L.ε mu → GapAtLeast L.ε mu h → Formalism.FourierDecayAlt.ThreeDimData.GapOK k r h → GapCell k r h → (∀ x ∈ R.sm, ∀ v ∈ R.TK, Formalism.FourierDecayAlt.ThreeDimData.be L.z L.c L.π R.σ L.μW L.μN x …`.
+-/
 theorem lintegral_hsNormSq_amp : Hyps → AmpKF → CellConv → ∀ (k r : ℕ) (L : LocBessel k r) (μG : Measure (Mt k r)) (μsec : ℂ → Matrix (Fin (k + 1)) (Fin (k + 1)) ℂ), 2 ≤ k → L.c ≠ 0 → L.κN ≠ 0 → L.κN ≠ ⊤ → IsHaarOn (UH (Hpk k r)) μG → IsSection k r L.z L.z' μsec → ∃ c : ℝ, 0 < c ∧ ∀ (R : Rep k r) (mu : Fin (2 * r + k + 1) → ℝ) (h : ℝ) (l : R.H → L.Wp) (l' : R.H → L.Wq) (w : R.H), haveI := FiniteDimensional.complete ℂ L.Wp; haveI := FiniteDimensional.complete ℂ L.Wq; R.IsDS L.ε mu → GapAtLeast L.ε mu h → Formalism.FourierDecayAlt.ThreeDimData.GapOK k r h → GapCell k r h → (∀ x ∈ R.sm, ∀ v ∈ R.TK, Formalism.FourierDecayAlt.ThreeDimData.be L.z L.c L.π R.σ L.μW L.μN x v = (innerSL ℂ (l v)).smulRight (l x)) → (∀ x ∈ R.sm, ∀ v ∈ R.TK, Formalism.FourierDecayAlt.ThreeDimData.be L.z' L.c L.π' R.σ L.μW' L.μN x v = (innerSL ℂ (l' v)).smulRight (l' x)) → (∃ v, R.KFin v ∧ l v ≠ 0) → (∃ v, R.KFin v ∧ l' v ≠ 0) → PI.UpqRep.IsLowUnitH k r L.ε mu R.σ w → ∫⁻ q : (Fin r → ℂ) × ℂ, ENNReal.ofReal (bcWeight k r (Tz k r L.z) (Tz k r L.z') q * hsNormSq (amp R l l' w μG (bigCell k r q.1 (μsec q.2)))) = ENNReal.ofReal (c / PI.BesselPeriodGGP.fdegH μG R.σ w ^ 3) := by
   intro hH hAmp hConv k r L μG μsec hk hc hκ0 hκt hG hsec
   have := FiniteDimensional.complete ℂ L.Wp

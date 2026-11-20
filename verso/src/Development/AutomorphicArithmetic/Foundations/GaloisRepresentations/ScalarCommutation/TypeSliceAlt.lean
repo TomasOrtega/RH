@@ -25,8 +25,18 @@ private def lreg (G : Type) [Group G] : Representation ℂ G (G → ℂ) where
     ext F x
     simp [mul_assoc]
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 private theorem lreg_apply {G : Type} [Group G] (g : G) (F : G → ℂ) (x : G) : lreg G g F x = F (g⁻¹ * x) := rfl
 
+/- English proof (translation)
+Establish `hc : ∀ g g' : G, (g : G ⧸ K) = g' → Φ g = Φ g'`. Introduce `g g' h`. Establish `h1 : g⁻¹ * g' ∈ K` using `QuotientGroup.eq.1 h`. Use `hΦ g _ h1` as an intermediate fact. Rewrite `this` using `[mul_inv_cancel_left]`.
+
+Conclude with `this.symm`. Establish `h2 : ∀ q : G ⧸ K, Φ (z * q.out) = Φ (z • q).out`. Introduce `q`. Apply `hc` to reduce the goal to its premises. Rewrite using `[QuotientGroup.out_eq']`.
+
+Use `conv_rhs => rw [← QuotientGroup.out_eq' q]`. Both sides reduce to the same expression. Simplify using `only [h2]`. Conclude with `(finsum_comp_equiv (MulAction.toPerm z : Equiv.Perm (G ⧸ K)) (f := fun q => Φ q.out)).symm`.
+-/
 private theorem finsum_shift {G : Type} [Group G] (K : Subgroup G) (Φ : G → ℂ) (hΦ : ∀ g, ∀ k ∈ K, Φ (g * k) = Φ g) (z : G) :
     ∑ᶠ q : G ⧸ K, Φ q.out = ∑ᶠ q : G ⧸ K, Φ (z * q.out) := by
   have hc : ∀ g g' : G, (g : G ⧸ K) = g' → Φ g = Φ g' := by
@@ -44,6 +54,9 @@ private theorem finsum_shift {G : Type} [Group G] (K : Subgroup G) (Φ : G → �
   simp only [h2]
   exact (finsum_comp_equiv (MulAction.toPerm z : Equiv.Perm (G ⧸ K)) (f := fun q => Φ q.out)).symm
 
+/- English proof (translation)
+Use `haveI : DiscreteTopology (G ⧸ K) := QuotientGroup.discreteTopology hK`. Establish `hcomp : IsCompact ((QuotientGroup.mk : G → G ⧸ K) '' tsupport F)` using `hF.isCompact.image QuotientGroup.continuous_mk`. Use `hcomp.finite_of_discrete.subset ?_` and prove the remaining obligations. Introduce `q hq`. Conclude with `⟨q.out, subset_tsupport _ hq, QuotientGroup.out_eq' q⟩`.
+-/
 private theorem finite_cosets {G : Type} [Group G] [TopologicalSpace G] [IsTopologicalGroup G] (K : Subgroup G)
     (hK : IsOpen (K : Set G)) (F : G → ℂ) (hF : HasCompactSupport F) :
     (Function.support fun q : G ⧸ K => F q.out).Finite := by
@@ -74,9 +87,17 @@ private def transl (e : G → ℂ) : Subrepresentation (lreg G) :=
       rw [map_smul]
       exact Submodule.smul_mem _ c hx⟩
 
+/- English proof (translation)
+The claim follows from `Submodule.subset_span ⟨1, by simp⟩`.
+-/
 private theorem mem_transl_self (e : G → ℂ) : e ∈ (transl e).toSubmodule :=
   Submodule.subset_span ⟨1, by simp⟩
 
+/- English proof (translation)
+Proceed by induction on `hF using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨t, rfl⟩` from `hx`. Use `⟨hc.comp (continuous_const.mul continuous_id), ?_⟩` and prove the remaining obligations. Conclude with `hs.comp_homeomorph (Homeomorph.mulLeft t⁻¹)`.
+
+Consider the case `zero => exact ⟨continuous_const, HasCompactSupport.zero⟩`. Consider the case `add x y _ _ hx hy => exact ⟨hx.1.add hy.1, hx.2.add hy.2⟩`. Consider the case `smul c x _ hx => exact ⟨continuous_const.mul hx.1, hx.2.smul_left⟩`.
+-/
 private theorem transl_cont {e : G → ℂ} (hc : Continuous e) (hs : HasCompactSupport e) {F : G → ℂ}
     (hF : F ∈ (transl e).toSubmodule) : Continuous F ∧ HasCompactSupport F := by
   induction hF using Submodule.span_induction with
@@ -88,6 +109,19 @@ private theorem transl_cont {e : G → ℂ} (hc : Continuous e) (hs : HasCompact
   | add x y _ _ hx hy => exact ⟨hx.1.add hy.1, hx.2.add hy.2⟩
   | smul c x _ hx => exact ⟨continuous_const.mul hx.1, hx.2.smul_left⟩
 
+/- English proof (translation)
+Use `isSmooth_of_nhds fun F => ?_` and prove the remaining obligations. Establish `key : ∀ x ∈ (transl e).toSubmodule, {g : G | lreg G g x = x} ∈ nhds (1 : G)`. Introduce `x hx`. Proceed by induction on `hx using Submodule.span_induction with`. Consider the case `mem x hx`.
+
+Take `⟨t, rfl⟩` from `hx`. Establish `hcont : Continuous fun g : G => t⁻¹ * g * t` using `(continuous_const.mul continuous_id).mul continuous_const`. Establish `h1 : (fun g : G => t⁻¹ * g * t) ⁻¹' (K : Set G) ∈ nhds (1 : G)` using `(hK.preimage hcont).mem_nhds (by simp [K.one_mem])`. Use `Filter.mem_of_superset h1 fun g hg => ?_` and prove the remaining obligations. Establish `h2` using `hKe _ hg`.
+
+Use `show lreg G g (lreg G t e) = lreg G t e`. Establish `h3 : lreg G g (lreg G t e) = lreg G t (lreg G (t⁻¹ * g * t) e)`. Simplify using `only [← Module.End.mul_apply, ← map_mul]`. Use `congr 2`. Use `group`.
+
+Rewrite using `[h3]`. Conclude with `congrArg _ h2`. Consider the case `zero => simp`. Consider the case `add x y _ _ hx hy`. Use `Filter.mem_of_superset (Filter.inter_mem hx hy) fun g hg => ?_` and prove the remaining obligations.
+
+Use `show lreg G g (x + y) = x + y`. Rewrite using `[map_add, hg.1, hg.2]`. Consider the case `smul c x _ hx`. Use `Filter.mem_of_superset hx fun g hg => ?_` and prove the remaining obligations. Use `show lreg G g (c • x) = c • x`.
+
+Rewrite using `[map_smul, hg]`. Use `Filter.mem_of_superset (key F.1 F.2) fun g hg => ?_` and prove the remaining obligations. Conclude with `Subtype.ext hg`.
+-/
 private theorem transl_smooth {e : G → ℂ} (K : Subgroup G) (hK : IsOpen (K : Set G)) (hKe : ∀ k ∈ K, lreg G k e = e) :
     IsSmooth (transl e).toRepresentation := by
   refine isSmooth_of_nhds fun F => ?_
@@ -148,6 +182,65 @@ section Core2
 
 variable {G A : Type} [Group G] [TopologicalSpace G] [IsTopologicalGroup G] [T2Space G] [MeasurableSpace A]
 
+/- English proof (translation)
+Establish `hKo : IsOpen ((χ.ker.map J.subtype : Subgroup G) : Set G)`. Rewrite using `[Subgroup.coe_map]`. Conclude with `hJo.isOpenMap_subtype_val _ hχ`. Establish `hR : ∀ g, ∀ k ∈ χ.ker.map J.subtype, e (g * k) = e g`. Introduce and unpack `g _ ⟨y, hy, rfl⟩`.
+
+Establish `h1 : χ y = 1` using `hy`. Use `show e (g * (y : G)) = e g`. Distinguish the cases in `hg : g ∈ J`. Establish `hm : g * (y : G) ∈ J` using `J.mul_mem hg y.2`. Rewrite using `[he1 _ hm, he1 g hg]`.
+
+Establish `: (⟨g * (y : G), hm⟩ : J) = ⟨g, hg⟩ * y` using `rfl`. Rewrite using `[this, map_mul, h1, mul_one]`. Rewrite using `[he0 g hg, he0 _ (fun h => hg ((J.mul_mem_cancel_right y.2).1 h))]`. Establish `hL : ∀ (j : J) (g : G), e ((j : G)⁻¹ * g) = ((χ j : ℂˣ) : ℂ) * e g`. Introduce `j g`.
+
+Distinguish the cases in `hg : g ∈ J`. Establish `hm : (j : G)⁻¹ * g ∈ J` using `J.mul_mem (J.inv_mem j.2) hg`. Rewrite using `[he1 _ hm, he1 g hg]`. Establish `: (⟨(j : G)⁻¹ * g, hm⟩ : J) = j⁻¹ * ⟨g, hg⟩` using `rfl`. Rewrite using `[this, map_mul, map_inv, mul_inv, inv_inv, Units.val_mul]`.
+
+Rewrite using `[he0 g hg, he0 _ (fun h => hg ((J.mul_mem_cancel_left (J.inv_mem j.2)).1 h)), mul_zero]`. Establish `hlc : IsLocallyConstant e`. Rewrite using `[IsLocallyConstant.iff_exists_open]`. Introduce `g`. Use `⟨(fun x => g⁻¹ * x) ⁻¹' ((χ.ker.map J.subtype : Subgroup G) : Set G), hKo.preimage (continuous_const.mul continuous_id), ?_, ?_⟩` and prove the remaining obligations.
+
+Simplify using `only [Set.mem_preimage, inv_mul_cancel, SetLike.mem_coe]`. Conclude with `Subgroup.one_mem _`. Introduce `x hx`. Use `hR g _ hx` as an intermediate fact. Rewrite `this` using `[mul_inv_cancel_left]`. Then use the resulting hypothesis.
+
+Establish `hcont : Continuous e` using `hlc.continuous`. Establish `hcs : HasCompactSupport e` using `HasCompactSupport.intro' hJc (J.isClosed_of_isOpen hJo) (fun g hg => he0 g hg)`. Establish `hKe : ∀ k ∈ χ.ker.map J.subtype, lreg G k e = e`. Introduce and unpack `_ ⟨y, hy, rfl⟩`. Establish `h1 : χ y = 1` using `hy`.
+
+Use function extensionality and compare the values at `x`. Rewrite using `[lreg_apply]`. Use `hL y x` as an intermediate fact. Rewrite `this` using `[h1]`. Simplify using `using this`.
+
+Use `set S := transl e with hS`. Use `set T := noTerm e hcont hcs μ U hint with hT`. Establish `hSs : IsSmooth S.toRepresentation` using `transl_smooth _ hKo hKe`. Establish `hQs : IsSmooth (subQuot S T)` using `(IsSubquotient.of_surjective (σ := subQuot S T) (ρ := S.toRepresentation) ⟨Submodule.mkQ _, fun _ => rfl⟩ (Submodule.Quotient.mk_surjective _)).isSmooth hSs`. Set `ê : S.toSubmodule` to `⟨e, mem_transl_self e⟩`.
+
+Set `w : S.toSubmodule ⧸ T.toSubmodule.comap S.toSubmodule.subtype` to `Submodule.Quotient.mk ê`. Establish `hw : w ≠ 0`. Introduce `h0`. Establish `h1 : ê ∈ T.toSubmodule.comap S.toSubmodule.subtype` using `(Submodule.Quotient.mk_eq_zero _).1 h0`. Conclude with `hne (h1.2 1)`.
+
+Establish `hgen : Submodule.span ℂ (Set.range fun p : G × ({w} : Finset _) => subQuot S T p.1 (p.2 : _)) = ⊤` using `by set M := Submodule.span ℂ (Set.range fun p : G × ({w} : Finset _) => subQuot S T p.1 (p.2 : _)) with hM`. Establish `hmem : ∀ g, subQuot S T g w ∈ M` using `fun g => Submodule.subset_span ⟨(g, ⟨w, by simp⟩), rfl⟩`. Establish `hall : ∀ (F : G → ℂ) (hF : F ∈ S.toSubmodule), (Submodule.Quotient.mk ⟨F, hF⟩ : S.toSubmodule ⧸ T.toSubmodule.comap S.toSubmodule.subtype) ∈ M`. Introduce `F hF`. Proceed by induction on `hF using Submodule.span_induction with`.
+
+Consider the case `mem x hx`. Take `⟨t, rfl⟩` from `hx`. Conclude with `hmem t`. Consider the case `zero => exact Submodule.zero_mem _`. Consider the case `add x y hx hy ihx ihy => exact Submodule.add_mem _ ihx ihy`.
+
+Consider the case `smul c x hx ih => exact Submodule.smul_mem _ c ih`. Use `eq_top_iff.2 fun x _ => ?_` and prove the remaining obligations. Take `⟨⟨F, hF⟩, rfl⟩` from `Submodule.Quotient.mk_surjective _ x`. Conclude with `hall F hF`. Use `haveI : Nontrivial (S.toSubmodule ⧸ T.toSubmodule.comap S.toSubmodule.subtype) := ⟨⟨w, 0, hw⟩⟩`.
+
+Take `⟨σ, p, hp, hpi⟩` from `GlobalTheory.DZero.exists_irrRep_quotient_of_finite_gen G _ (subQuot S T) hQs inferInstance {w} hgen`. Use `⟨σ, p w, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `h0`. Establish `hker : Submodule.span ℂ (Set.range fun p : G × ({w} : Finset _) => subQuot S T p.1 (p.2 : _)) ≤ LinearMap.ker p`. Use `Submodule.span_le.2 ?_` and prove the remaining obligations.
+
+Introduce and unpack `_ ⟨⟨g, y⟩, rfl⟩`. Establish `hy : (y : _) = w` using `Finset.mem_singleton.1 y.2`. Simplify using `only [SetLike.mem_coe, LinearMap.mem_ker, hy, hpi, h0, map_zero]`. Rewrite `hker` using `[hgen]`. Use `nontrivial_of_irreducible σ.irr` as an intermediate fact.
+
+Take `⟨x, hx⟩` from `exists_ne (0 : σ.V)`. Take `⟨y, rfl⟩` from `hp x`. Conclude with `hx (hker Submodule.mem_top)`. Introduce `g`. Rewrite using `[← hpi, ← map_smul]`.
+
+Use `congr 1`. Establish `: S.toRepresentation (g : G) ê = ((χ g : ℂˣ) : ℂ) • ê`. Apply `Subtype.ext` to reduce the goal to its premises. Use function extensionality and compare the values at `x`. Conclude with `hL g x`.
+
+Use `show Submodule.Quotient.mk (S.toRepresentation (g : G) ê) = _`. Rewrite using `[this]`. Both sides reduce to the same expression. Introduce `K₂ hK₂ hK₂o f hfc hfs hfR hfZ l Sf hSf`. Set `Θ : S.toSubmodule` to `∑ q ∈ Sf, f q.out • S.toRepresentation q.out ê`.
+
+Establish `hB` using `finite_cosets K₂ hK₂o (fun t => e t⁻¹) (hcs.comp_homeomorph (Homeomorph.inv G))`. Establish `hval : ∀ z, (Θ : G → ℂ) z = ∑ q ∈ hB.toFinset, e q.out⁻¹ * f (z * q.out)`. Introduce `z`. Establish `h1 : (Θ : G → ℂ) z = ∑ q ∈ Sf, f q.out * e (q.out⁻¹ * z)`. Simplify using `only [Θ, Submodule.coe_sum, Finset.sum_apply]`.
+
+Both sides reduce to the same expression. Set `Φ : G → ℂ` to `fun t => f t * e (t⁻¹ * z)`. Establish `hΦ : ∀ g, ∀ k ∈ K₂, Φ (g * k) = Φ g`. Introduce `g k hk`. Establish `h2` using `congrFun (hKe k (hK₂ hk)) (g⁻¹ * z)`.
+
+Rewrite `h2` using `[lreg_apply]`. Simplify using `only [Φ, hfR g k hk, _root_.mul_inv_rev, mul_assoc, h2]`. Rewrite using `[h1, show (∑ q ∈ Sf, f q.out * e (q.out⁻¹ * z)) = ∑ᶠ q : G ⧸ K₂, Φ q.out from ?_, finsum_shift K₂ Φ hΦ z]`. Rewrite using `[finsum_eq_sum_of_support_subset (s := hB.toFinset)]`. Use `Finset.sum_congr rfl fun q _ => ?_` and prove the remaining obligations.
+
+Simplify using `only [Φ, _root_.mul_inv_rev, mul_assoc, inv_mul_cancel, mul_one]`. Rewrite using `[mul_comm]`. Introduce `q hq`. Simplify using `only [Set.Finite.coe_toFinset, Function.mem_support] at hq ⊢`. Introduce `h0`.
+
+Apply `hq` to reduce the goal to its premises. Simplify using `only [Φ, _root_.mul_inv_rev, mul_assoc, inv_mul_cancel, mul_one, h0, mul_zero]`. Use `symm`. Use `finsum_eq_sum_of_support_subset _ fun q hq => ?_` and prove the remaining obligations. Assume the negation of the conclusion as `hqS`.
+
+Conclude with `hq (by simp only [Φ, hSf q hqS, zero_mul])`. Establish `hΘ : (Θ : G → ℂ) ∈ T.toSubmodule`. Use `⟨Θ.2, fun x => ?_⟩` and prove the remaining obligations. Simplify using `only [hval]`. Rewrite using `[integral_finset_sum]`.
+
+Use `Finset.sum_eq_zero fun q _ => ?_` and prove the remaining obligations. Rewrite using `[integral_const_mul]`. Use `hfZ x q.out` as an intermediate fact. Simplify using `only [mul_one]`. Rewrite using `[this, mul_zero]`.
+
+Introduce `q _`. Use `(hint f hfc hfs x q.out).const_mul (e q.out⁻¹)` as an intermediate fact. Simplify `this` using `only [mul_one]`. Establish `hz : p (Submodule.Quotient.mk Θ) = 0`. Establish `: (Submodule.Quotient.mk Θ : S.toSubmodule ⧸ T.toSubmodule.comap S.toSubmodule.subtype) = 0` using `(Submodule.Quotient.mk_eq_zero _).2 hΘ`.
+
+Rewrite using `[this, map_zero]`. Establish `hexp : p (Submodule.Quotient.mk Θ) = ∑ q ∈ Sf, f q.out • σ.ρ q.out (p w)`. Establish `: (Submodule.Quotient.mk Θ : S.toSubmodule ⧸ T.toSubmodule.comap S.toSubmodule.subtype) = ∑ q ∈ Sf, f q.out • subQuot S T q.out w`. Simplify using `only [Θ]`. Rewrite using `[← Submodule.mkQ_apply, map_sum]`.
+
+Both sides reduce to the same expression. Rewrite using `[this, map_sum]`. Use `Finset.sum_congr rfl fun q _ => ?_` and prove the remaining obligations. Rewrite using `[map_smul, hpi]`. Use `congrArg l (hexp.symm.trans hz)` as an intermediate fact.
+
+Simplify `this` using `only [map_sum, map_smul, smul_eq_mul, map_zero]`.
+-/
 private theorem core (μ : Measure A) (U : A → G)
     (hint : ∀ F : G → ℂ, Continuous F → HasCompactSupport F → ∀ z w : G, Integrable (fun X => F (z * U X * w)) μ)
     (J : Subgroup G) (hJo : IsOpen (J : Set G)) (hJc : IsCompact (J : Set G)) (χ : J →* ℂˣ) (hχ : IsOpen (χ.ker : Set J))
@@ -314,6 +407,9 @@ section Slice
 
 variable {k : Type} [Field k] [TopologicalSpace k] [IsTopologicalRing k] {n a b : ℕ}
 
+/- English proof (translation)
+Apply `Units.ext` to reduce the goal to its premises. Rewrite using `[hu]`. Establish `h0 : (Matrix.of (0 : Fin a → Fin b → k)) = 0` using `rfl`. Rewrite using `[h0, Matrix.fromBlocks_one]`. Simplify using the standard rewrite rules.
+-/
 private theorem u_zero (ε : Fin n ≃ Fin a ⊕ Fin b) (u : (Fin a → Fin b → k) → GL (Fin n) k)
     (hu : ∀ X, (u X : Matrix (Fin n) (Fin n) k) = Matrix.reindex ε.symm ε.symm (Matrix.fromBlocks 1 (Matrix.of X) 0 1)) :
     u 0 = 1 := by
@@ -323,6 +419,9 @@ private theorem u_zero (ε : Fin n ≃ Fin a ⊕ Fin b) (u : (Fin a → Fin b �
   rw [h0, Matrix.fromBlocks_one]
   simp
 
+/- English proof (translation)
+Establish `h` using `GlobalTheory.typeFunction_unip_add ε u hu X (-X)`. Rewrite `h` using `[neg_add_cancel, u_zero ε u hu]`. Conclude with `inv_eq_of_mul_eq_one_right h.symm`.
+-/
 private theorem u_neg (ε : Fin n ≃ Fin a ⊕ Fin b) (u : (Fin a → Fin b → k) → GL (Fin n) k)
     (hu : ∀ X, (u X : Matrix (Fin n) (Fin n) k) = Matrix.reindex ε.symm ε.symm (Matrix.fromBlocks 1 (Matrix.of X) 0 1))
     (X : Fin a → Fin b → k) : (u X)⁻¹ = u (-X) := by
@@ -330,6 +429,11 @@ private theorem u_neg (ε : Fin n ≃ Fin a ⊕ Fin b) (u : (Fin a → Fin b →
   rw [neg_add_cancel, u_zero ε u hu] at h
   exact inv_eq_of_mul_eq_one_right h.symm
 
+/- English proof (translation)
+Use `continuous_matrix fun i j => ?_` and prove the remaining obligations. Simplify using `only [hu, Matrix.reindex_apply, Matrix.submatrix_apply, Equiv.symm_symm]`. Apply the tactic sequence `rcases ε i with p | p <;> rcases ε j with q | q`. Simplify `continuous_const` using `only [Matrix.fromBlocks_apply₁₁]`. Simplify using `only [Matrix.fromBlocks_apply₁₂, Matrix.of_apply]`.
+
+Conclude with `(continuous_apply q).comp (continuous_apply p)`. Simplify `continuous_const` using `only [Matrix.fromBlocks_apply₂₁]`. Simplify `continuous_const` using `only [Matrix.fromBlocks_apply₂₂]`.
+-/
 private theorem u_val_cont (ε : Fin n ≃ Fin a ⊕ Fin b) (u : (Fin a → Fin b → k) → GL (Fin n) k)
     (hu : ∀ X, (u X : Matrix (Fin n) (Fin n) k) = Matrix.reindex ε.symm ε.symm (Matrix.fromBlocks 1 (Matrix.of X) 0 1)) :
     Continuous fun X => (u X : Matrix (Fin n) (Fin n) k) := by
@@ -342,6 +446,9 @@ private theorem u_val_cont (ε : Fin n ≃ Fin a ⊕ Fin b) (u : (Fin a → Fin 
   · simpa only [Matrix.fromBlocks_apply₂₁] using continuous_const
   · simpa only [Matrix.fromBlocks_apply₂₂] using continuous_const
 
+/- English proof (translation)
+Use `Units.continuous_iff.2 ⟨u_val_cont ε u hu, ?_⟩` and prove the remaining obligations. Establish `h1 : (fun X => (((u X)⁻¹ : GL (Fin n) k) : Matrix (Fin n) (Fin n) k)) = (fun X => (u X : Matrix (Fin n) (Fin n) k)) ∘ Neg.neg`. Use function extensionality and compare the values at `X`. Simplify using `only [Function.comp_apply, u_neg ε u hu]`. Conclude with `h1 ▸ (u_val_cont ε u hu).comp continuous_neg`.
+-/
 private theorem u_cont (ε : Fin n ≃ Fin a ⊕ Fin b) (u : (Fin a → Fin b → k) → GL (Fin n) k)
     (hu : ∀ X, (u X : Matrix (Fin n) (Fin n) k) = Matrix.reindex ε.symm ε.symm (Matrix.fromBlocks 1 (Matrix.of X) 0 1)) :
     Continuous u := by
@@ -351,6 +458,11 @@ private theorem u_cont (ε : Fin n ≃ Fin a ⊕ Fin b) (u : (Fin a → Fin b �
     simp only [Function.comp_apply, u_neg ε u hu]
   exact h1 ▸ (u_val_cont ε u hu).comp continuous_neg
 
+/- English proof (translation)
+Set `ψ : GL (Fin n) k → Fin a → Fin b → k` to `fun g p q => ((h * z⁻¹ * g * w⁻¹ * h⁻¹ : GL (Fin n) k) : Matrix (Fin n) (Fin n) k) (ε.symm (Sum.inl p)) (ε.symm (Sum.inr q))`. Establish `hψ : Continuous ψ`. Use `continuous_pi fun p => continuous_pi fun q => ?_` and prove the remaining obligations. Establish `h1 : Continuous fun g : GL (Fin n) k => h * z⁻¹ * g * w⁻¹ * h⁻¹` using `((continuous_const.mul continuous_id).mul continuous_const).mul continuous_const`. Conclude with `(Units.continuous_val.comp h1).matrix_elem _ _`.
+
+Use `⟨ψ '' C, hC.image hψ, fun X hX => ⟨_, hX, ?_⟩⟩` and prove the remaining obligations. Use function extensionality and compare the values at `p q`. Establish `h2 : h * z⁻¹ * (z * (h⁻¹ * u X * h) * w) * w⁻¹ * h⁻¹ = u X` using `by group`. Simplify using `only [ψ, h2, hu, Matrix.reindex_apply, Matrix.submatrix_apply, Equiv.symm_symm, Equiv.apply_symm_apply, Matrix.fromBlocks_apply₁₂, Matrix.of_apply]`.
+-/
 private theorem slice_compact (ε : Fin n ≃ Fin a ⊕ Fin b) (u : (Fin a → Fin b → k) → GL (Fin n) k)
     (hu : ∀ X, (u X : Matrix (Fin n) (Fin n) k) = Matrix.reindex ε.symm ε.symm (Matrix.fromBlocks 1 (Matrix.of X) 0 1))
     (h z w : GL (Fin n) k) (C : Set (GL (Fin n) k)) (hC : IsCompact C) :
@@ -370,6 +482,61 @@ private theorem slice_compact (ε : Fin n ≃ Fin a ⊕ Fin b) (u : (Fin a → F
 
 end Slice
 
+/- English proof (translation)
+Introduce `k _ _ _ _ _ n J hJo hJc χ hχ hcusp a b ε ha hb u hu h`. Assume the negation of the conclusion as `hcon`. Use `push_neg at hcon`. Use `borelize k`. Use `haveI : SecondCountableTopology k := GlobalTheory.SplitWeil.secondCountable k`.
+
+Set `μ : Measure (Fin a → Fin b → k)` to `Measure.addHaar`. Use `haveI : μ.IsAddHaarMeasure := inferInstanceAs (Measure.addHaar).IsAddHaarMeasure`. Set `U : (Fin a → Fin b → k) → GL (Fin n) k` to `fun X => h⁻¹ * u X * h`. Establish `hUc : Continuous U` using `(continuous_const.mul (u_cont ε u hu)).mul continuous_const`. Establish `hint : ∀ F : GL (Fin n) k → ℂ, Continuous F → HasCompactSupport F → ∀ z w : GL (Fin n) k, Integrable (fun X => F (z * U X * w)) μ`.
+
+Introduce `F hFc hFs z w`. Establish `hc : Continuous fun X => F (z * U X * w)` using `hFc.comp ((continuous_const.mul hUc).mul continuous_const)`. Take `⟨D, hD, hDX⟩` from `slice_compact ε u hu h z w (tsupport F) hFs.isCompact`. Use `hc.integrable_of_hasCompactSupport (HasCompactSupport.intro hD fun X hX => ?_)` and prove the remaining obligations. Conclude with `image_eq_zero_of_notMem_tsupport fun hm => hX (hDX X hm)`.
+
+Set `e : GL (Fin n) k → ℂ` to `fun g => if hg : g ∈ J then (((χ ⟨g, hg⟩)⁻¹ : ℂˣ) : ℂ) else 0`. Establish `he1 : ∀ g (hg : g ∈ J), e g = (((χ ⟨g, hg⟩)⁻¹ : ℂˣ) : ℂ)` using `fun g hg => dif_pos hg`. Establish `he0 : ∀ g, g ∉ J → e g = 0` using `fun g hg => dif_neg hg`. Establish `hne : ∫ X, e (1 * U X * 1) ∂μ ≠ 0`. Set `W : Set (Fin a → Fin b → k)` to `U ⁻¹' (J : Set (GL (Fin n) k))`.
+
+Establish `hWo : IsOpen W` using `hJo.preimage hUc`. Establish `h0 : (0 : Fin a → Fin b → k) ∈ W` using `by show U 0 ∈ J`. Simplify using `only [U, u_zero ε u hu, mul_one, inv_mul_cancel]`. Conclude with `J.one_mem`. Establish `hpos : 0 < μ W` using `hWo.measure_pos μ ⟨0, h0⟩`.
+
+Take `⟨D, hD, hDX⟩` from `slice_compact ε u hu h 1 1 J hJc`. Establish `hfin : μ W < ⊤` using `lt_of_le_of_lt (measure_mono fun X hX => hDX X (by simpa [U, W] using hX)) hD.measure_lt_top`. Establish `heq : (fun X => e (1 * U X * 1)) = W.indicator fun _ => (1 : ℂ)`. Use function extensionality and compare the values at `X`. Distinguish the cases in `hX : X ∈ W`.
+
+Establish `hX' : U X ∈ J` using `hX`. Rewrite using `[Set.indicator_of_mem hX]`. Simplify using `only [one_mul, mul_one]`. Rewrite using `[he1 _ hX']`. Use `hcon X hX'` as an intermediate fact.
+
+Use `show (((χ ⟨h⁻¹ * u X * h, hX'⟩)⁻¹ : ℂˣ) : ℂ) = 1`. Rewrite using `[this]`. Simplify using the standard rewrite rules. Establish `hX' : U X ∉ J` using `hX`. Rewrite using `[Set.indicator_of_notMem hX]`.
+
+Simplify using `only [one_mul, mul_one]`. Conclude with `he0 _ hX'`. Rewrite using `[heq, integral_indicator_const _ hWo.measurableSet]`. Establish `hr : μ.real W ≠ 0`. Rewrite using `[Measure.real, ENNReal.toReal_ne_zero]`.
+
+Conclude with `⟨hpos.ne', hfin.ne⟩`. Simplify using `using hr`. Take `⟨σ, v, hv0, hχv, hσ⟩` from `core μ U hint J hJo hJc χ hχ e he1 he0 hne`. Set `σ' : GlobalTheory.CuspRep.SmIrr (GL (Fin n) k)` to `⟨σ.V, σ.ρ, σ.smooth, σ.irr⟩`. Establish `hc : GlobalTheory.SmGL.IsCuspidal σ.ρ` using `hcusp σ' v hv0 hχv`.
+
+Establish `hKo : IsOpen ((χ.ker.map J.subtype : Subgroup (GL (Fin n) k)) : Set (GL (Fin n) k))`. Rewrite using `[Subgroup.coe_map]`. Conclude with `hJo.isOpenMap_subtype_val _ hχ`. Establish `hKc : IsCompact ((χ.ker.map J.subtype : Subgroup (GL (Fin n) k)) : Set (GL (Fin n) k))`. Use `hJc.of_isClosed_subset (Subgroup.isClosed_of_isOpen _ hKo) ?_` and prove the remaining obligations.
+
+Introduce and unpack `_ ⟨y, -, rfl⟩`. Conclude with `y.2`. Establish `hfix : ∀ g ∈ χ.ker.map J.subtype, σ.ρ g v = v`. Introduce and unpack `_ ⟨y, hy, rfl⟩`. Establish `h1 : χ y = 1` using `hy`.
+
+Use `hχv y` as an intermediate fact. Rewrite `this` using `[h1]`. Simplify using `using this`. Choose the witnesses or unpack the hypotheses as in `⟨l₀, hl₀⟩ : ∃ l₀ : Module.Dual ℂ σ.V, l₀ v ≠ 0 := by`. Assume the negation of the conclusion as `H`.
+
+Use `push_neg at H`. Conclude with `hv0 ((Module.forall_dual_apply_eq_zero_iff ℂ v).1 H)`. Take `⟨l, hl, hlv⟩` from `GlobalTheory.SuperCusp.exists_smooth_form_eq (N := ⊥) σ.smooth hKo hKc 1 ((χ.ker.map J.subtype : Subgroup (GL (Fin n) k)) : Set (GL (Fin n) k)) (fun c hc => hc) (fun g hg => ⟨1, Subgroup.one_mem _, g, hg, by simp⟩) (fun c hc => by simpa using hc) hfix l₀ (fun x hx y => by rw [Sub …`. Establish `hl1 : l v ≠ 0`. Use `hlv 0` as an intermediate fact.
+
+Simplify using `only [pow_zero, map_one, Module.End.one_apply] at this`. Rewrite using `[this]` and apply the resulting hypothesis. Set `c : GL (Fin n) k → ℂ` to `fun g => if ValuativeRel.valuation k (g : Matrix (Fin n) (Fin n) k).det = 1 then l (σ.ρ g v) else 0`. Take `⟨hlc, hcs, K0, K0o, -, hbi, hz⟩` from `GlobalTheory.CuspCutCoef.isCuspFn_cutCoef k n σ.V σ.ρ hc v l hl c (fun _ => rfl)`. Set `f : GL (Fin n) k → ℂ` to `fun g => starRingEnd ℂ (c g)`.
+
+Establish `hfc : Continuous f` using `Complex.continuous_conj.comp hlc.continuous`. Establish `hfs : HasCompactSupport f` using `hcs.comp_left (map_zero _)`. Set `K₂ : Subgroup (GL (Fin n) k)` to `χ.ker.map J.subtype ⊓ K0`. Establish `hK₂o : IsOpen (K₂ : Set (GL (Fin n) k))`. Rewrite using `[Subgroup.coe_inf]`.
+
+Conclude with `hKo.inter K0o`. Establish `hcR : ∀ g, ∀ y ∈ K₂, c (g * y) = c g`. Introduce `g y hy`. Use `hbi 1 K0.one_mem y hy.2 g` as an intermediate fact. Rewrite `this` using `[one_mul]`. Then use the resulting hypothesis.
+
+Establish `hfR : ∀ g, ∀ y ∈ K₂, f (g * y) = f g` using `fun g y hy => by`. Simplify using `only [f, hcR g y hy]`. Establish `hfZ : ∀ z w : GL (Fin n) k, ∫ X, f (z * U X * w) ∂μ = 0`. Introduce `z w`. Establish `h1 : ∀ X, z * U X * w = (z * w) * ((h * w)⁻¹ * u X * (h * w))` using `fun X => by`.
+
+Simplify using `only [U]`. Use `group`. Simplify using `only [f, h1]`. Rewrite using `[integral_conj, hz a b ε ha hb μ inferInstance u hu (z * w) (h * w), map_zero]`. Establish `hfin` using `finite_cosets K₂ hK₂o f hfs`.
+
+Set `q₁ : GL (Fin n) k ⧸ K₂` to `((1 : GL (Fin n) k) : GL (Fin n) k ⧸ K₂)`. Set `Sf : Finset (GL (Fin n) k ⧸ K₂)` to `insert q₁ hfin.toFinset`. Establish `hoff : ∀ q, q ∉ Sf → f q.out = 0`. Introduce `q hq`. Assume the negation of the conclusion as `h0`.
+
+Conclude with `hq (Finset.mem_insert_of_mem (hfin.mem_toFinset.2 h0))`. Establish `hsum` using `hσ K₂ inf_le_left hK₂o f hfc hfs hfR hfZ l Sf hoff`. Establish `hterm : ∀ q : GL (Fin n) k ⧸ K₂, f q.out * l (σ.ρ q.out v) = ((‖c q.out‖ ^ 2 : ℝ) : ℂ)`. Introduce `q`. Distinguish the cases in `hd : ValuativeRel.valuation k ((q.out : GL (Fin n) k) : Matrix (Fin n) (Fin n) k).det = 1`.
+
+Establish `hcq : c q.out = l (σ.ρ q.out v)` using `if_pos hd`. Simplify using `only [f]`. Rewrite using `[hcq, Complex.conj_mul']`. Use `push_cast`. Both sides reduce to the same expression.
+
+Establish `hcq : c q.out = 0` using `if_neg hd`. Simplify using `only [f]`. Rewrite using `[hcq]`. Simplify using the standard rewrite rules. Simplify using `only [hterm] at hsum`.
+
+Rewrite `hsum` using `[← Complex.ofReal_sum, Complex.ofReal_eq_zero, Finset.sum_eq_zero_iff_of_nonneg (fun _ _ => by positivity)]`. Establish `h1` using `hsum q₁ (Finset.mem_insert_self _ _)`. Establish `h2 : c q₁.out = 0`. Use `pow_eq_zero_iff (two_ne_zero) |>.1 h1` as an intermediate fact. Conclude with `norm_eq_zero.1 this`.
+
+Establish `h3 : c q₁.out = c 1`. Establish `hmem : q₁.out ∈ K₂`. Establish `: ((q₁.out : GL (Fin n) k) : GL (Fin n) k ⧸ K₂) = ((1 : GL (Fin n) k) : GL (Fin n) k ⧸ K₂)` using `QuotientGroup.out_eq' q₁`. Establish `h5 : (q₁.out)⁻¹ * 1 ∈ K₂` using `QuotientGroup.eq.1 this`. Rewrite `h5` using `[mul_one]`.
+
+Conclude with `K₂.inv_mem_iff.1 h5`. Use `hcR 1 _ hmem` as an intermediate fact. Rewrite `this` using `[one_mul]`. Then use the resulting hypothesis. Establish `h4 : c 1 = l v`. Simplify using `[c]`.
+
+Conclude with `hl1 (by rw [← h4, ← h3, h2])`.
+-/
 theorem typeSlice : TypeSlice := by
   intro k _ _ _ _ _ n J hJo hJc χ hχ hcusp a b ε ha hb u hu h
   by_contra hcon

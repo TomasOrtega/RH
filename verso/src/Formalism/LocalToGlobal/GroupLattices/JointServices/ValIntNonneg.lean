@@ -9,6 +9,11 @@ noncomputable section
 
 namespace Formalism.L2.G.ServJoint
 
+/- English proof (translation)
+Distinguish the cases in `h : μ = D.what₂.mu0`. Substitute `h` using the available equality. Use `⟨((D.mem u).P.period ((D.mem u).P.lowerMap ((D.mem u).P.evz ((D.mem u).C.col ↑(D.eMu u φ))))).comp (D.eMt u).symm.toLinearMap, fun F => ?_⟩` and prove the remaining obligations. Rewrite using `[D.perCol_base_eq_PtilCol]`. Both sides reduce to the same expression.
+
+Use `⟨((D.PTw u μ).period ((D.PTw u μ).lowerMap ((D.PTw u μ).evz ((D.chTw u μ).col (D.e0Tw u μ ↑(D.eMu u φ)))))).comp (D.eMtTw u μ).symm.toLinearMap, fun F => ?_⟩` and prove the remaining obligations. Rewrite using `[D.perCol_tie u μ h]`. Both sides reduce to the same expression.
+-/
 theorem perCol_lin (D : D7) (u : D.what₂.Word) (μ : D.what₂.Tup) (φ : D.what₂.Mu u) :
     ∃ f : D.what₂.Amb μ →ₗ[ℂ] ℂ, ∀ F, D.what₂.perCol u μ φ F = f F := by
   by_cases h : μ = D.what₂.mu0
@@ -22,11 +27,31 @@ theorem perCol_lin (D : D7) (u : D.what₂.Word) (μ : D.what₂.Tup) (φ : D.wh
     rw [D.perCol_tie u μ h]
     rfl
 
+/- English proof (translation)
+Introduce `D hO μ hU x hx hV`. Take `⟨ι, hι, hιO⟩` from `hO.int`. Conclude with `(cut_tensorUp_row (RowSide.sharp D) hO.ded ι hι hιO hO.aint μ (hO.form μ hU) x).2 ⟨hx, hV⟩`.
+-/
 theorem cutUpOfOTie : CutUpOfOTie := by
   intro D hO μ hU x hx hV
   obtain ⟨ι, hι, hιO⟩ := hO.int
   exact (cut_tensorUp_row (RowSide.sharp D) hO.ded ι hι hιO hO.aint μ (hO.form μ hU) x).2 ⟨hx, hV⟩
 
+/- English proof (translation)
+Introduce `D B hB u t hcut z s N h φ hφ F hF`. Take `⟨s0, hOk⟩` from `hB.ok`. Establish `hV0 : B.I.jA t ((rV0 D B.A B.Ps B.ψs t).mulVec F) ∈ D.what₂.V0 (B.I.tup t)`. Use `⟨B.I.jA t ((rV0 D B.A B.Ps B.ψs t).mulVec F), ?_⟩` and prove the remaining obligations. Establish `h1` using `(hB.sharp.forms t).op_eq ((rV0 D B.A B.Ps B.ψs t).mulVec F)`.
+
+Rewrite `h1` using `[level_operator_fixes_image hOk B.Ps B.ψs B.Zs t F]`. Conclude with `h1`. Establish `hgen` using `((hB.sharp.Mtilde t).2 _).1 ((image_mem_nabla_iff hOk B.Ps B.ψs B.Zs t F).2 hF)`. Take `⟨S, c, hS, hx0⟩` from `hcut _ hgen hV0`. Establish `key : ∀ φ ∈ Submodule.span (𝓞 D.what₂.LL) N, VGeq z s (B.Dc.Pt (B.I.wU u) t φ F)`.
+
+Introduce `φ hφ`. Proceed by induction on `hφ using Submodule.span_induction with`. Consider the case `mem x hx`. Establish `hex : ∀ y : D.what₂.Amb (B.I.tup t), ∃ a : D.what₂.LL, y ∈ S → (D.what₂.embLL a = D.what₂.perCol u (B.I.tup t) (D.jN u (B.I.eNu u x)) y ∧ (a = 0 ∨ s ≤ (vAdd z a : ℝ)))`. Introduce `y`.
+
+Distinguish the cases in `hy : y ∈ S`. Take `⟨a, ha⟩` from `h x hx y (hS hy).1 (hS hy).2`. Conclude with `⟨a, fun _ => ha⟩`. Conclude with `⟨0, fun h' => absurd h' hy⟩`. Use `choose a ha using hex`.
+
+Take `⟨f, hf⟩` from `perCol_lin D u (B.I.tup t) (D.jN u (B.I.eNu u x))`. Establish `heq : B.Dc.Pt (B.I.wU u) t x F = ∑ y ∈ S, ((c y : 𝓞 D.what₂.LL) : D.what₂.LL) * a y`. Apply `D.what₂.embLL.injective` to reduce the goal to its premises. Rewrite using `[hB.dcPt u t x F, hf]`. Use `(congrArg f hx0).trans ?_` and prove the remaining obligations.
+
+Rewrite using `[map_sum, map_sum]`. Use `Finset.sum_congr rfl fun y hy => ?_` and prove the remaining obligations. Rewrite using `[map_smul, smul_eq_mul, map_mul, (ha y hy).1, hf]`. Rewrite using `[heq]`. Conclude with `VGeq.sum S _ fun y hy => VGeq.int_mul (c y) (ha y hy).2`.
+
+Consider the case `zero`. Rewrite using `[map_zero, LinearMap.zero_apply]`. Conclude with `VGeq.zero z s`. Consider the case `add x y _ _ hx hy`. Rewrite using `[map_add, LinearMap.add_apply]`.
+
+Conclude with `hx.add hy`. Consider the case `smul a x _ hx`. Rewrite using `[← algebraMap_smul D.what₂.LL a x, map_smul, LinearMap.smul_apply, smul_eq_mul]`. Conclude with `VGeq.int_mul a hx`. Conclude with `(key φ hφ).vw`.
+-/
 theorem perToVal2 : PerToVal2 := by
   intro D B hB u t hcut z s N h φ hφ F hF
   obtain ⟨s0, hOk⟩ := hB.ok
@@ -70,6 +95,13 @@ theorem perToVal2 : PerToVal2 := by
       exact VGeq.int_mul a hx
   exact (key φ hφ).vw
 
+/- English proof (translation)
+Introduce `D L B hB hcut h u Nu hNu z`. Establish `hμ` using `hB.mu (D.plEq.symm z)`. Rewrite `hμ` using `[Equiv.apply_symm_apply]`. Establish `h2 : ∀ μ, D.what₂.muAt (D.plEq.symm z) = μ → ∀ φ ∈ L.NuLat u, ∀ F ∈ (D.what₂.Mtilde μ).carrier, F ∈ D.what₂.V0 μ → ∃ y : D.what₂.LL, D.what₂.embLL y = D.what₂.perCol u μ (D.jN u φ) F ∧ (y = 0 ∨ ((⌊ur D (D.plEq.symm z) (L.sg u (D.plEq.symm z))⌋ : ℤ) : ℝ) ≤ (vAdd (D.plEq (D.plEq.sy …`. Introduce and unpack `μ rfl`.
+
+Conclude with `h u (D.plEq.symm z)`. Establish `h3` using `perToVal2 D B hB u (B.S1.μ z) (hcut _ (hμ ▸ used_muAt D (D.plEq.symm z))) z ((⌊ur D (D.plEq.symm z) (L.sg u (D.plEq.symm z))⌋ : ℤ) : ℝ) (Nu : Set _) (fun x hx F hF1 hF0 => by`. Establish `h4` using `h2 _ hμ _ (hNu x hx) F hF1 hF0`. Rewrite `h4` using `[Equiv.apply_symm_apply]`. Conclude with `h4)`.
+
+Rewrite `h3` using `[Submodule.span_eq]`. Conclude with `h3`.
+-/
 theorem val2AllAtR : SecondLevelValuationAtRestricted := by
   intro D L B hB hcut h u Nu hNu z
   have hμ := hB.mu (D.plEq.symm z)

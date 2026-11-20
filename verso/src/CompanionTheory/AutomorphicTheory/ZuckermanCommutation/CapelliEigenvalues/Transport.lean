@@ -11,6 +11,9 @@ section rel
 
 variable {n : ℕ} {E E' : Type*} [NormedAddCommGroup E] [NormedSpace ℂ E] [NormedAddCommGroup E'] [NormedSpace ℂ E']
 
+/- English proof (translation)
+The claim follows from `| 0, _, _, _ => by simpa using h | t + 1, u, a, b => by rw [List.ofFn_succ, List.ofFn_succ, List.foldr_cons, List.foldr_cons] exact hT _ _ _ _ _ (foldr_rel Rel hT h t (fun k => u k.succ) (fun k => a k.succ) (fun k => b k.succ))`.
+-/
 theorem foldr_rel
     {Eop : Fin n → Fin n → (Matrix (Fin n) (Fin n) ℂ → E) → (Matrix (Fin n) (Fin n) ℂ → E)}
     {Eop' : Fin n → Fin n → (Matrix (Fin n) (Fin n) ℂ → E') → (Matrix (Fin n) (Fin n) ℂ → E')}
@@ -25,6 +28,9 @@ theorem foldr_rel
     rw [List.ofFn_succ, List.ofFn_succ, List.foldr_cons, List.foldr_cons]
     exact hT _ _ _ _ _ (foldr_rel Rel hT h t (fun k => u k.succ) (fun k => a k.succ) (fun k => b k.succ))
 
+/- English proof (translation)
+Unfold `qminorOp`. Simplify using `only [Finset.sum_apply, Pi.smul_apply, map_sum, map_smul]`. Use `Finset.sum_congr rfl fun σ _ => ?_` and prove the remaining obligations. Use `congr 1`. Conclude with `hg _ _ (foldr_rel Rel hT h t (fun k => u - ((k : ℕ) : ℂ)) (fun k => a (σ k)) b)`.
+-/
 theorem qminorOp_rel
     {Eop : Fin n → Fin n → (Matrix (Fin n) (Fin n) ℂ → E) → (Matrix (Fin n) (Fin n) ℂ → E)}
     {Eop' : Fin n → Fin n → (Matrix (Fin n) (Fin n) ℂ → E') → (Matrix (Fin n) (Fin n) ℂ → E')}
@@ -47,12 +53,20 @@ section uj
 variable {n : ℕ} {ε : Fin n → Bool} {E E' : Type} [NormedAddCommGroup E] [NormedSpace ℂ E]
   [NormedAddCommGroup E'] [NormedSpace ℂ E']
 
+/- English proof (translation)
+Take `⟨h1, h2, -, -⟩` from `cpartMem n ε Z`. Unfold `EcV`. Rewrite using `[io_rd_congr h h1 hg, io_rd_congr h h2 hg]`.
+-/
 theorem ec_congr {f f' : Matrix (Fin n) (Fin n) ℂ → E} (h : ∀ g, inUJ ε g → f g = f' g)
     (Z : Matrix (Fin n) (Fin n) ℂ) {g : Matrix (Fin n) (Fin n) ℂ} (hg : inUJ ε g) : EcV ε Z f g = EcV ε Z f' g := by
   obtain ⟨h1, h2, -, -⟩ := cpartMem n ε Z
   unfold EcV
   rw [io_rd_congr h h1 hg, io_rd_congr h h2 hg]
 
+/- English proof (translation)
+Unfold `Formalism.QuantumDeterminants.Top`. Distinguish the cases in `hab : a = b`. Simplify using `only [if_pos hab]`. Conclude with `io_smooth_add (io_smooth_smul u hf) (io_eab_smooth hf a b)`. Simplify using `only [if_neg hab]`.
+
+Conclude with `io_smooth_add io_smooth_zero (io_eab_smooth hf a b)`.
+-/
 theorem top_smooth {f : Matrix (Fin n) (Fin n) ℂ → E} (hf : SmoothOnGV ε f) (u : ℂ) (a b : Fin n) :
     SmoothOnGV ε (Top (EabV ε) u a b f) := by
   unfold Formalism.QuantumDeterminants.Top
@@ -62,12 +76,20 @@ theorem top_smooth {f : Matrix (Fin n) (Fin n) ℂ → E} (hf : SmoothOnGV ε f)
   · simp only [if_neg hab]
     exact io_smooth_add io_smooth_zero (io_eab_smooth hf a b)
 
+/- English proof (translation)
+Take `⟨h1, h2, -, -⟩` from `cpartMem n ε (Matrix.single a b 1)`. Unfold `EabV EcV`. Rewrite using `[map_add, map_smul, (rdVPair n ε E E' φ f _ g hf h1 hg).2, (rdVPair n ε E E' φ f _ g hf h2 hg).2]`.
+-/
 theorem eab_clm (φ : E →L[ℂ] E') {f : Matrix (Fin n) (Fin n) ℂ → E} (hf : SmoothOnGV ε f) (a b : Fin n)
     {g : Matrix (Fin n) (Fin n) ℂ} (hg : inUJ ε g) : φ (EabV ε a b f g) = EabV ε a b (fun x => φ (f x)) g := by
   obtain ⟨h1, h2, -, -⟩ := cpartMem n ε (Matrix.single a b 1)
   unfold EabV EcV
   rw [map_add, map_smul, (rdVPair n ε E E' φ f _ g hf h1 hg).2, (rdVPair n ε E E' φ f _ g hf h2 hg).2]
 
+/- English proof (translation)
+Unfold `capelli qdetOp`. Use `qminorOp_rel (fun f f' => SmoothOnGV ε f ∧ ∀ x, inUJ ε x → φ (f x) = f' x) ?_ φ g (fun _ _ h => h.2 g hg) ⟨hf, fun _ _ => rfl⟩ id id u` and prove the remaining obligations. Introduce and unpack `u a b f f' ⟨hs, he⟩`. Use `⟨top_smooth hs u a b, fun x hx => ?_⟩` and prove the remaining obligations. Unfold `Formalism.QuantumDeterminants.Top`.
+
+Rewrite using `[map_add, eab_clm φ hs a b hx, io_eab_congr he a b hx]`. Use `congr 1`. Use `split_ifs`. Rewrite using `[map_smul, he x hx]`. Conclude with `map_zero φ`.
+-/
 theorem capelli_clm (φ : E →L[ℂ] E') {f : Matrix (Fin n) (Fin n) ℂ → E} (hf : SmoothOnGV ε f) (u : ℂ)
     {g : Matrix (Fin n) (Fin n) ℂ} (hg : inUJ ε g) : φ (capelli ε u f g) = capelli ε u (fun x => φ (f x)) g := by
   unfold capelli qdetOp
@@ -84,6 +106,11 @@ theorem capelli_clm (φ : E →L[ℂ] E') {f : Matrix (Fin n) (Fin n) ℂ → E}
 
 end uj
 
+/- English proof (translation)
+Introduce `n ε E _ _ H P Q F₁ F₂ u g hQP hPQ hH hF hg`. Unfold `capelliH qdetOp`. Rewrite using `[ioh_qminor ε H P Q hQP hPQ hH, ioh_qminor ε H P Q hQP hPQ hH]`. Establish `hg'` using `ioh_inUJ ε H P Q g hPQ hH hg`. Use `qminorOp_rel (fun f f' => ∀ x, inUJ ε x → f x = f' x) ?_ (ContinuousLinearMap.id ℂ E) _ (fun _ _ h => h _ hg') (fun x hx => hF _ (ioh_inUH ε H P Q x hPQ hH hx)) id id u` and prove the remaining obligations.
+
+Introduce `u a b f f' he x hx`. Unfold `Formalism.QuantumDeterminants.Top`. Use `beta_reduce`. Rewrite using `[he x hx, ec_congr he _ hx]`.
+-/
 theorem capelli_localization : PI.UnitaryGroupMassFormula.CapelliEig.Loc := by
   intro n ε E _ _ H P Q F₁ F₂ u g hQP hPQ hH hF hg
   unfold capelliH qdetOp
@@ -96,6 +123,11 @@ theorem capelli_localization : PI.UnitaryGroupMassFormula.CapelliEig.Loc := by
   beta_reduce
   rw [he x hx, ec_congr he _ hx]
 
+/- English proof (translation)
+Introduce `n ε E _ _ H P Q F u g hQP hPQ hH hsm hg`. Establish `hg'` using `ioh_inUJ ε H P Q g hPQ hH hg`. Take `⟨x, hx⟩` from `io_rep_mk hsm`. Establish `h1` using `ioh_qminor_rep (ioh_repr (ε := ε) (E := E) P Q) id id u hx _ hg'`. Establish `h2` using `io_qminor_rep id id u hx _ hg'`.
+
+Establish `hc` using `(Formalism.FourierDecayAlt.P.contractions_covariant (Module.End ℂ (ioS ε E)) n (ioE ε E) P Q (io_gl ε E) hQP hPQ u 0 0 0 0).1`. Unfold `capelliH capelli qdetOp`. Rewrite using `[ioh_qminor ε H P Q hQP hPQ hH, h1, h2]`. Conclude with `congrArg (fun T : Module.End ℂ (ioS ε E) => (T x).1 ⟨_, hg'⟩) hc`.
+-/
 theorem capelli_transport : PI.UnitaryGroupMassFormula.CapelliEig.CapTransport := by
   intro n ε E _ _ H P Q F u g hQP hPQ hH hsm hg
   have hg' := ioh_inUJ ε H P Q g hPQ hH hg

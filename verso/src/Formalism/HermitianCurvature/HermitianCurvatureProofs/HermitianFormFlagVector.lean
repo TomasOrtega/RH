@@ -9,11 +9,19 @@ namespace C2x5
 
 variable {k r : ℕ}
 
+/- English proof (translation)
+Simplify using `only [herm, Matrix.mulVec_sum, Matrix.mulVec_smul, dotProduct_sum, dotProduct_smul, smul_eq_mul]`.
+-/
 lemma herm_sum_smul {n : ℕ} {ι : Type*} [Fintype ι] (H : Matrix (Fin n) (Fin n) ℂ) (x : ι → ℂ)
     (v : ι → Fin n → ℂ) (w : Fin n → ℂ) :
     herm H (∑ c, x c • v c) w = ∑ c, x c * herm H (v c) w := by
   simp only [herm, Matrix.mulVec_sum, Matrix.mulVec_smul, dotProduct_sum, dotProduct_smul, smul_eq_mul]
 
+/- English proof (translation)
+Establish `h` using `ggHerm_swap (Hpk k r) (GBasic.Hpk_herm k r) z z`. Apply `Complex.ext` to reduce the goal to its premises. Simplify using `[Tz]`. Establish `h2` using `congrArg Complex.im h`. Simplify using `only [Complex.star_def, Complex.conj_im] at h2`.
+
+Simplify using `only [Complex.ofReal_im]`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 lemma hzz_real (z : Fin (2 * r + k + 1) → ℂ) : herm (Hpk k r) z z = ((-(Tz k r z) : ℝ) : ℂ) := by
   have h := ggHerm_swap (Hpk k r) (GBasic.Hpk_herm k r) z z
   apply Complex.ext
@@ -22,9 +30,17 @@ lemma hzz_real (z : Fin (2 * r + k + 1) → ℂ) : herm (Hpk k r) z z = ((-(Tz k
     simp only [Complex.star_def, Complex.conj_im] at h2
     simp only [Complex.ofReal_im]; linarith
 
+/- English proof (translation)
+Rewrite using `[hzz_real]`. Conclude with `(neg_ne_zero.mpr hz.ne')` after adjusting the coercions.
+-/
 lemma hzz_ne {z : Fin (2 * r + k + 1) → ℂ} (hz : 0 < Tz k r z) : herm (Hpk k r) z z ≠ 0 := by
   rw [hzz_real]; exact_mod_cast (neg_ne_zero.mpr hz.ne')
 
+/- English proof (translation)
+Rewrite using `[bvec, ggHerm_bvec_right]`. Establish `hlt : r + k < (esI k r a).val` using `by simp [esI]; omega`. Rewrite using `[gn_Hpk_mulVec, dif_pos (Or.inr hlt)]`. Establish `e : (⟨2 * r + k - (esI k r a).val, by omega⟩ : Fin (2 * r + k + 1)) = ⟨a.val, by omega⟩`. Apply `Fin.ext` to reduce the goal to its premises.
+
+Simplify using `[esI]`. Use linear arithmetic over natural numbers and integers. Rewrite using `[e, fvec_apply_lt z hz c _ (by simp)]`.
+-/
 lemma herm_f_es {z : Fin (2 * r + k + 1) → ℂ} (hz : inWb k r z) (c : Fin (r + 1)) (a : Fin r) :
     herm (Hpk k r) (fvec k r z c) (bvec (esI k r a)) = if c.val = a.val then 1 else 0 := by
   rw [bvec, ggHerm_bvec_right]
@@ -34,11 +50,19 @@ lemma herm_f_es {z : Fin (2 * r + k + 1) → ℂ} (hz : inWb k r z) (c : Fin (r 
     apply Fin.ext; simp [esI]; omega
   rw [e, fvec_apply_lt z hz c _ (by simp)]
 
+/- English proof (translation)
+Rewrite using `[ggHerm_swap (Hpk k r) (GBasic.Hpk_herm k r), bvec, ggHerm_bvec_right, ggHpk_mulVec_Wb k r z hz, hz x hx, mul_zero, star_zero]`.
+-/
 lemma herm_e_alt {z : Fin (2 * r + k + 1) → ℂ} (hz : inWb k r z) (x : Fin (2 * r + k + 1))
     (hx : x.val < r ∨ r + k < x.val) : herm (Hpk k r) (bvec x) z = 0 := by
   rw [ggHerm_swap (Hpk k r) (GBasic.Hpk_herm k r), bvec, ggHerm_bvec_right, ggHpk_mulVec_Wb k r z hz,
     hz x hx, mul_zero, star_zero]
 
+/- English proof (translation)
+Unfold `fvec`. Use `split_ifs with h1 h2 h2`. Use linear arithmetic over natural numbers and integers. Conclude with `herm_e_alt hz _ (Or.inl (by simp [eI, h1]))`. Both sides reduce to the same expression.
+
+Use linear arithmetic over natural numbers and integers.
+-/
 lemma hermitian_form_flag_vector {z : Fin (2 * r + k + 1) → ℂ} (hz : inWb k r z) (c : Fin (r + 1)) :
     herm (Hpk k r) (fvec k r z c) z = if c.val = r then herm (Hpk k r) z z else 0 := by
   unfold fvec
@@ -48,6 +72,17 @@ lemma hermitian_form_flag_vector {z : Fin (2 * r + k + 1) → ℂ} (hz : inWb k 
   · rfl
   · omega
 
+/- English proof (translation)
+Use extensionality with `a b`. Unfold `C2.uMap`. Rewrite using `[h b]`. Use `split_ifs with ha`. Rewrite using `[herm_sum_smul]`.
+
+Simplify using `only [herm_f_es hz.1]`. Rewrite using `[Finset.sum_eq_single a]`. Simplify using the standard rewrite rules. Introduce `c _ hc`. Rewrite using `[if_neg (fun e => hc (Fin.ext e)), mul_zero]`.
+
+Simplify using the standard rewrite rules. Rewrite using `[herm_sum_smul]`. Simplify using `only [hermitian_form_flag_vector hz.1]`. Rewrite using `[Finset.sum_eq_single a]`. Rewrite using `[if_pos (by have := a.isLt; omega)]`.
+
+Clear denominators, using `[hzz_ne hz.2]` for the nonvanishing conditions. Introduce `c _ hc`. Rewrite using `[if_neg, mul_zero]`. Introduce `e`. Apply `hc` to reduce the goal to its premises.
+
+Apply `Fin.ext` to reduce the goal to its premises. Use `a.isLt` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Simplify using the standard rewrite rules.
+-/
 lemma uMap_eq {z : Fin (2 * r + k + 1) → ℂ} (hz : C2.StdZ k r z) (s : B.Mat k r)
     (U : Matrix (Fin (r + 1)) (Fin (r + 1)) ℂ) (h : ∀ b, s *ᵥ fvec k r z b = ∑ c, U c b • fvec k r z c) :
     C2.uMap k r z s = U := by
@@ -71,6 +106,11 @@ lemma uMap_eq {z : Fin (2 * r + k + 1) → ℂ} (hz : C2.StdZ k r z) (s : B.Mat 
       intro e; apply hc; apply Fin.ext; have := a.isLt; omega
     · simp
 
+/- English proof (translation)
+Use function extensionality and compare the values at `i`. Use `congrFun (congrFun h i) b` as an intermediate fact. Simplify using `only [Matrix.mul_apply, Fm, Matrix.of_apply] at this`. Simplify using `only [Matrix.mulVec, dotProduct, Finset.sum_apply, Pi.smul_apply, smul_eq_mul]`. Rewrite using `[this]`.
+
+Conclude with `Finset.sum_congr rfl (fun c _ => mul_comm _ _)`.
+-/
 lemma colEq {z : Fin (2 * r + k + 1) → ℂ} {s : B.Mat k r} {U : Matrix (Fin (r + 1)) (Fin (r + 1)) ℂ}
     (h : s * Fm k r z = Fm k r z * U) (b : Fin (r + 1)) :
     s *ᵥ fvec k r z b = ∑ c, U c b • fvec k r z c := by
@@ -85,6 +125,13 @@ end C2x5
 
 open C2x5
 
+/- English proof (translation)
+Introduce `k r z hz`. Use `⟨fun s hs => ?_, fun h hh => ?_⟩` and prove the remaining obligations. Take `⟨U, hU1, hU2, hsF⟩` from `S_F hz.1 hs`. Establish `hu` using `uMap_eq hz s U (colEq hsF)`. Use `⟨by rw [hu]; exact colEq hsF, by rw [hu]; exact ⟨fun i j h => hU1 i j h, hU2⟩, fun t ht => ?_⟩` and prove the remaining obligations.
+
+Take `⟨Ut, _, _, htF⟩` from `S_F hz.1 ht`. Establish `hut` using `uMap_eq hz t Ut (colEq htF)`. Establish `hst : s * t * Fm k r z = Fm k r z * (U * Ut)`. Rewrite using `[Matrix.mul_assoc, htF, ← Matrix.mul_assoc, hsF, Matrix.mul_assoc]`. Rewrite using `[uMap_eq hz (s * t) (U * Ut) (colEq hst), hu, hut]`.
+
+Establish `h1 : h * Fm k r z = Fm k r z * (1 : Matrix (Fin (r + 1)) (Fin (r + 1)) ℂ)`. Rewrite using `[UW_F hh, Matrix.mul_one]`. Conclude with `uMap_eq hz h 1 (colEq h1)`.
+-/
 theorem unipotent_map_frame : C2.UMapFrame := by
   intro k r z hz
   refine ⟨fun s hs => ?_, fun h hh => ?_⟩
@@ -100,6 +147,13 @@ theorem unipotent_map_frame : C2.UMapFrame := by
       rw [UW_F hh, Matrix.mul_one]
     exact uMap_eq hz h 1 (colEq h1)
 
+/- English proof (translation)
+Introduce `k r z z' hz hz' s hs s' hs' g`. Take `⟨U, _, _, hsF⟩` from `S_F hz.1 hs`. Take `⟨U', _, _, hs'F⟩` from `S_F hz'.1 hs'`. Rewrite using `[uMap_eq hz s U (colEq hsF), uMap_eq hz' s' U' (colEq hs'F), Zhat_eq, Zhat_eq]`. Establish `hsU : sᴴ * Hpk k r * s = Hpk k r` using `Sset_UH hs`.
+
+Establish `hu : IsUnit s.det` using `WeylGroupFacts.isUnit_of_uh hsU`. Establish `hHs : Hpk k r * s⁻¹ = sᴴ * Hpk k r`. Combine the equalities or inequalities in the displayed calculation. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Matrix.conjTranspose_mul]`.
+
+Simplify using `only [Matrix.mul_assoc]`. Use `_ = (Fm k r z * U)ᴴ * Hpk k r * g * Fm k r z' * U' := by rw [hsF]`. Use `_ = Uᴴ * ((Fm k r z)ᴴ * Hpk k r * g * Fm k r z') * U' := by`. Rewrite using `[Matrix.conjTranspose_mul]`. Simplify using `only [Matrix.mul_assoc]`.
+-/
 theorem zhat_equivalence : C2.ZhatEquiv := by
   intro k r z z' hz hz' s hs s' hs' g
   obtain ⟨U, _, _, hsF⟩ := S_F hz.1 hs

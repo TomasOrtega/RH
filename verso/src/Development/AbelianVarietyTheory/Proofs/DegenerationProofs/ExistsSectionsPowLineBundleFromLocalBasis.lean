@@ -25,8 +25,24 @@ open GlobalTheory.Points
 variable {o Ω : Type} [CommRing o] [Field Ω] [Algebra o Ω] {S : ThetaSys o Ω} {ρ : S.Real} {M : RatModel o Ω}
   {U₀ : M.Z.Opens} {Q : ZHPre ρ M U₀}
 
+/- English proof (translation)
+The claim follows from `Spec.map_id _`.
+-/
 theorem spMap_id (Ω : Type) [Field Ω] : spMap (RingHom.id Ω) = 𝟙 (Sp Ω) := Spec.map_id _
 
+/- English proof (translation)
+Establish `he : eSec Q.G ≫ Q.G.hom = 𝟙 M.Z` using `Over.w η[Q.G]`. Take `⟨g, r, jP, h1, h2, h3, hj⟩` from `exists_data' Q hU (M.pt ≫ eSec Q.G) (RingHom.id Ω) (by rw [spMap_id, Category.id_comp]; exact (Category.assoc _ _ _).trans ((congrArg (M.pt ≫ ·) he).trans (Category.comp_id _)))`. Establish `: Mono Q.φ` using `(MorphismProperty.monomorphisms _).of_isPullback Q.cart.1.flip (inferInstanceAs (Mono U₀.ι))`. Establish `h2' : (g ≫ pullback.snd _ _) ≫ U₀.ι = M.pt`. Rewrite using `[Category.assoc, h2, spMap_id, Category.id_comp]`.
+
+Choose the witnesses or unpack the hypotheses as in `⟨e', c1, c2⟩ : ∃ e' : U₀.toScheme ⟶ pullback ρ.P.A.hom Q.u₀, e' ≫ Q.φ = U₀.ι ≫ eSec Q.G ∧ e' ≫ pullback.fst _ _ = Q.u₀ ≫ eSec ρ.P.A := by`. Establish `c1` using `PolBaseChange.eSec_comm Q.cart`. Establish `c2` using `PolBaseChange.eSec_comm (isGrpPullback_pullback ρ.P.A Q.u₀)`. Conclude with `⟨_, c1, c2⟩`. Establish `e1 : g = (g ≫ pullback.snd _ _) ≫ e'`.
+
+Use `(cancel_mono Q.φ).1 (h1.trans (Eq.symm ((Category.assoc _ _ _).trans ?_)))` and prove the remaining obligations. Use `(congrArg ((g ≫ pullback.snd _ _) ≫ ·) c1).trans ?_` and prove the remaining obligations. Conclude with `(Category.assoc _ _ _).symm.trans (congrArg (· ≫ eSec Q.G) h2')`. Establish `e2 : g ≫ pullback.fst ρ.P.A.hom Q.u₀ = spMap S.R.val.toRingHom ≫ eSec ρ.P.A`. Use `(congrArg (· ≫ pullback.fst ρ.P.A.hom Q.u₀) e1).trans ((Category.assoc _ _ _).trans ?_)` and prove the remaining obligations.
+
+Use `(congrArg ((g ≫ pullback.snd _ _) ≫ ·) c2).trans ?_` and prove the remaining obligations. Conclude with `(Category.assoc _ _ _).symm.trans (congrArg (· ≫ eSec ρ.P.A) (Q.u₀_gen _ h2'))`. Establish `ha' : ⊤ ≤ (g ≫ Q.φ) ⁻¹ᵁ Q.L.L.U a` using `h1 ▸ ha`. Take `⟨ξ, hξ, hs⟩` from `GlobalTheory.basis_value_at_origin o Ω S ρ Ω S.R.val.toRingHom r jP (h3.trans e2) ((top_le_preimage_iff _ _).1 (h3 ▸ hj))`. Use `⟨ξ, hξ, fun c v H => ?_⟩` and prove the remaining obligations.
+
+Establish `e` using `H _ g r jP h1 h2 h3 hj`. Establish `hw` using `Q.w_rig Ω g M.pt _ jP a h1 e2 ((top_le_preimage_iff _ _).1 hj) ((top_le_preimage_iff _ _).1 ha')`. Simplify using `only [hs, hw, zpow_natCast] at e`. Use `mul_left_cancel₀ (pow_ne_zero S.N (val_unit_ne g (le_w Q hj ha') (Q.w.s (fun _ => jP, fun _ => a)))) (Eq.trans ?_ e)` and prove the remaining obligations. Rewrite using `[dotProduct, Finset.sum_mul, Finset.mul_sum]`.
+
+Use `Finset.sum_congr rfl fun l _ => ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `_ = c l * (S.ev 0 l * _)`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem exists_origin (hU : (U₀ : Set M.Z).Nonempty) {a : Q.L.L.ι}
     (ha : ⊤ ≤ (M.pt ≫ eSec Q.G) ⁻¹ᵁ Q.L.L.U a) : ∃ ξ : Ω, ξ ^ ((S.r * S.N) ^ 2) = 1 ∧
       ∀ (c : S.J → Ω) (v : Ω), GV Q c a Ω (M.pt ≫ eSec Q.G) v →
@@ -70,16 +86,31 @@ section Open
 variable {W : M.Z.Opens} {j : Sp Ω ⟶ W.toScheme} (hj : j ≫ W.ι = M.pt)
 include hj
 
+/- English proof (translation)
+The claim follows from `top_le_preimage_of_specializes (fun w => W.ι.isOpenEmbedding.isInducing.specializes_iff.1 (by rw [← Scheme.Hom.comp_apply, hj]; exact M.pt_specializes w _)) hz`.
+-/
 theorem le_of_mem {z : W.toScheme} {V : W.toScheme.Opens} (hz : z ∈ V) : ⊤ ≤ j ⁻¹ᵁ V :=
   top_le_preimage_of_specializes (fun w => W.ι.isOpenEmbedding.isInducing.specializes_iff.1 (by
     rw [← Scheme.Hom.comp_apply, hj]; exact M.pt_specializes w _)) hz
 
+/- English proof (translation)
+Take `⟨V, f, hz, hf⟩` from `h`. Rewrite using `[← hf Ω j (le_of_mem hj hz), ← NormGlue.valF_comp_appIso W.ι V f j, hj]`. Conclude with `RatModel.valF_mem_O (U := W.ι ''ᵁ V) ⟨z, hz, rfl⟩ _`.
+-/
 theorem Reg.mem_O {z : W.toScheme} {F : ∀ (K : Type) [Field K], (Sp K ⟶ W.toScheme) → K} (h : Reg z F) :
     F Ω j ∈ M.O (W.ι z) := by
   obtain ⟨V, f, hz, hf⟩ := h
   rw [← hf Ω j (le_of_mem hj hz), ← NormGlue.valF_comp_appIso W.ι V f j, hj]
   exact RatModel.valF_mem_O (U := W.ι ''ᵁ V) ⟨z, hz, rfl⟩ _
 
+/- English proof (translation)
+Distinguish the cases in `hV : ⊤ ≤ j ⁻¹ᵁ V`. Use `swap`. Conclude with `⟨1, fun h => (hV h).elim⟩`. Establish `hz : j (IsLocalRing.closedPoint Ω) ∈ V` using `hV trivial`. Establish `hne : ((W.ι ''ᵁ V : M.Z.Opens) : Set M.Z).Nonempty` using `⟨_, _, hz, rfl⟩`.
+
+Take `⟨f, hf⟩` from `(RatModel.mem_ringOn_iff_exists hne).1 ((RatModel.mem_ringOn (x := c)).2 (by`. Introduce and unpack `_ ⟨z, hz, rfl⟩`. Conclude with `(h z hz).2.1))`. Take `⟨f', hf'⟩` from `(RatModel.mem_ringOn_iff_exists hne).1 ((RatModel.mem_ringOn (x := c⁻¹)).2 (by`. Introduce and unpack `_ ⟨z, hz, rfl⟩`.
+
+Conclude with `(h z hz).2.2))`. Establish `hu : IsUnit f` using `IsUnit.of_mul_eq_one f' (M.res_injective _ hne (by`. Rewrite using `[map_mul, map_one, M.res_apply, M.res_apply, hf, hf', mul_inv_cancel₀ (h _ hz).1]))`. Use `⟨(hu.map (W.ι.appLE _ V (W.ι.preimage_image_eq V).ge).hom).unit, fun _ => ?_⟩` and prove the remaining obligations. Use `(valR_appLE j W.ι _ hV f).trans ?_` and prove the remaining obligations.
+
+Rewrite using `[hj]`. Conclude with `hf`.
+-/
 theorem exists_unit_val (V : W.toScheme.Opens) (c : Ω)
     (h : ∀ z ∈ V, c ≠ 0 ∧ c ∈ M.O (W.ι z) ∧ c⁻¹ ∈ M.O (W.ι z)) :
     ∃ u : Γ(W.toScheme, V)ˣ, ⊤ ≤ j ⁻¹ᵁ V → valF j V u.val = c := by
@@ -101,6 +132,47 @@ theorem exists_unit_val (V : W.toScheme.Opens) (c : Ω)
 
 end Open
 
+/- English proof (translation)
+Use `ArithBase.ded (o := o) (Ω := Ω)` as an intermediate fact. Use `M.lft` as an intermediate fact. Establish `: IsLocallyNoetherian M.Z` using `LocallyOfFiniteType.isLocallyNoetherian M.s`. Use `Q.semi.smooth` as an intermediate fact. Use `Q.semi.geomConnected` as an intermediate fact.
+
+Establish `: GeometricallyIntegral Q.G.hom` using `grpObj_geometricallyIntegral_of_smooth _ Q.G`. Use `IsNormalScheme.of_pred hS.normal` as an intermediate fact. Use `EndoExtend.isPreimmersion_pt M` as an intermediate fact. Use `EndoExtend.flat_pt M` as an intermediate fact. Use `set ν := (Q.G.hom ⁻¹ᵁ W).ι with hν`.
+
+Set `p` to `Q.G.hom ∣_ W`. Establish `hp' : p ≫ W.ι = ν ≫ Q.G.hom` using `morphismRestrict_ι _ _`. Establish `: GeometricallyIntegral p` using `MorphismProperty.of_isPullback (P := @GeometricallyIntegral) (isPullback_morphismRestrict Q.G.hom W).flip ‹_›`. Set `j : Sp Ω ⟶ W.toScheme` to `IsOpenImmersion.lift W.ι M.pt (by`. Rewrite using `[Scheme.Opens.range_ι]`.
+
+Conclude with `(top_le_preimage_iff _ _).1 (M.top_le_preimage_pt hW))`. Establish `hj : j ≫ W.ι = M.pt` using `IsOpenImmersion.lift_fac _ _ _`. Establish `sq : IsPullback (𝟙 _) j M.pt W.ι` using `.of_horiz_isIso_mono ⟨(Category.id_comp _).trans hj.symm⟩`. Establish `: IsPreimmersion j` using `MorphismProperty.of_isPullback (P := @IsPreimmersion) sq ‹_›`. Establish `: Flat j` using `MorphismProperty.of_isPullback (P := @Flat) sq ‹_›`.
+
+Establish `: IsDominant j` using `⟨dense_iff_inter_open.2 fun V hV ⟨z, hz⟩ => ⟨_, le_of_mem hj (V := ⟨V, hV⟩) hz (x := IsLocalRing.closedPoint Ω) trivial, _, rfl⟩⟩`. Establish `he₀ : eSec Q.G ≫ Q.G.hom = 𝟙 M.Z` using `Over.w η[Q.G]`. Set `e : W.toScheme ⟶ (Q.G.hom ⁻¹ᵁ W).toScheme` to `(isPullback_morphismRestrict Q.G.hom W).lift (𝟙 _) (W.ι ≫ eSec Q.G) (by`. Conclude with `(Category.id_comp _).trans ((Category.assoc _ _ _).trans ((congrArg (W.ι ≫ ·) he₀).trans (Category.comp_id _))).symm)`. Establish `he : e ≫ p = 𝟙 _` using `IsPullback.lift_fst _ _ _ _`.
+
+Establish `he' : e ≫ ν = W.ι ≫ eSec Q.G` using `IsPullback.lift_snd _ _ _ _`. Establish `: IsIntegral (pullback p j)` using `GeometricallyIntegral.geometrically_isIntegral j _ _ (.of_hasPullback p j)`. Set `N` to `LB.div (LB.LinComb Q.L.L (K := Fin 1) (fun _ => ν) (fun _ => (S.N : ℤ))) O`. Establish `hJ : (pullback.fst p j ≫ ν) ≫ Q.G.hom = pullback.snd p j ≫ M.pt`. Rewrite using `[Category.assoc, ← hp', pullback.condition_assoc, hj]`.
+
+Use `choose t ht using fun a : N.ι => exists_unit hS.ne hτ (hp (a.1 0) a.2) (pullback.fst p j) _ hJ (pullback.fst p j ⁻¹ᵁ N.U a) (fun _ hy => Set.mem_iInter.1 hy.1 0) (fun _ hy => hy.2)`. Establish `hov : ∀ {K : Type} [Field K] (h : Sp K ⟶ pullback p j), ((h ≫ pullback.fst p j) ≫ ν) ≫ Q.G.hom = spMap (Spec.preimage (h ≫ pullback.snd p j)).hom ≫ M.pt` using `fun h => by`. Rewrite using `[show spMap (Spec.preimage (h ≫ pullback.snd p j)).hom = h ≫ pullback.snd p j from Spec.map_preimage _, Category.assoc h _ M.pt, ← hJ]`. Simplify using `only [Category.assoc]`. Take `⟨σ, hσ⟩` from `GenericExtend.exists_unit_extend_of_generic W.toScheme _ Ω j ((isNormalScheme_iff_pred _).1 inferInstance) ‹_› ‹_› ‹_› p e N he inferInstance ‹_› (LB.isLB_div (LB.isLB_linComb Q.L.isLB _ _) hO) t (by`.
+
+Introduce and unpack `⟨a, k⟩ ⟨a', k'⟩ K _ h h1 h2`. Take `⟨a, rfl⟩ : ∃ jL, a = fun _ => jL` from `⟨a 0, funext fun i => by rw [Subsingleton.elim i 0]⟩`. Take `⟨a', rfl⟩ : ∃ jL, a' = fun _ => jL` from `⟨a' 0, funext fun i => by rw [Subsingleton.elim i 0]⟩`. Use `replace h1 := (top_le_preimage_iff _ _).2 h1`. Use `replace h2 := (top_le_preimage_iff _ _).2 h2`.
+
+Establish `a1` using `of_le_wchart (le_preimage_mono _ inf_le_left h1) 0`. Establish `a2` using `of_le_wchart (le_preimage_mono _ inf_le_left h2) 0`. Establish `k1` using `le_preimage_mono _ inf_le_right h1`. Establish `k2` using `le_preimage_mono _ inf_le_right h2`. Use `((ht _ K h h1).unique hS.ne hτ (hov h) a1 k1 ((ht _ K h h2).chart a2 k2 a1 k1)).trans (congrArg (· * _) (Eq.symm ((val_div_g _ _ _ _ _ h1 h2).trans (congrArg (· * _) ?_))))` and prove the remaining obligations.
+
+Conclude with `val_linComb_g (I := Fin 1) _ _ _ _ _ _ a1 a2) (by`. Introduce `a`. Set `h₀ : Sp Ω ⟶ pullback p j` to `pullback.lift (j ≫ e) (𝟙 _) (by simp [he])`. Establish `hh₀ : h₀ ≫ pullback.fst p j = j ≫ e` using `pullback.lift_fst _ _ _`. Establish `hh₁ : (j ≫ e) ≫ ν = M.pt ≫ eSec Q.G`.
+
+Rewrite using `[Category.assoc, he']`. Conclude with `(Category.assoc _ _ _).symm.trans (congrArg (· ≫ eSec Q.G) hj)`. Take `⟨u, hu⟩` from `exists_unit_val hj (e ⁻¹ᵁ N.U a) (valF h₀ _ (t a).val) (fun z hz => by`. Establish `m0 : ⊤ ≤ (j ≫ e) ⁻¹ᵁ N.U a` using `le_of_mem hj hz`. Establish `H` using `ht a Ω h₀ (by rw [← hh₀] at m0; exact m0)`.
+
+Rewrite `H` using `[hh₀]`. Establish `m1` using `of_le_wchart (le_preimage_mono _ inf_le_left m0) 0`. Take `⟨ξ, hξ, hv⟩` from `exists_origin (Q := Q) hS.ne (a := a.1 0) (hh₁ ▸ m1)`. Establish `hv'` using `fun i => hv _ _ (hh₁ ▸ H.2 i)`. Establish `hn : (S.r * S.N) ^ 2 ≠ 0` using `pow_ne_zero _ (Nat.mul_ne_zero (by have := S.r_pos; omega) (by have := S.N_ge; omega))`.
+
+Establish `hroot : ∀ x : Ω, x ^ ((S.r * S.N) ^ 2) = 1 → x ∈ M.O (W.ι z)` using `fun x hx => by`. Use `RatModel.isIntegrallyClosed_O hS.normal (W.ι z)` as an intermediate fact. Take `⟨y, hy⟩` from `IsIntegrallyClosed.isIntegral_iff.1 (IsIntegral.of_pow (R := M.O (W.ι z)) (Nat.pos_of_ne_zero hn) (hx ▸ isIntegral_one))`. Conclude with `hy ▸ y.2`. Establish `m2 : W.ι z ∈ (Q.L.L.pull (eSec Q.G)).U (fun _ => a.1 0)` using `Set.mem_iInter.2 fun _ => by`.
+
+Establish `: (e ≫ ν) z ∈ Q.L.L.U (a.1 0)` using `Set.mem_iInter.1 hz.1 0`. Rewrite `this` using `[he']`. Conclude with `this`. Establish `r1` using `(Reg.val W.ι (Q.L.rig.s fun _ => a.1 0).val m2).mem_O hj`. Establish `r2` using `(Reg.inv W.ι (Q.L.rig.s fun _ => a.1 0).val (by`.
+
+Rewrite using `[Scheme.basicOpen_of_isUnit _ (Units.isUnit _)]`. Conclude with `m2)).mem_O hj`. Establish `r3` using `val_unit_ne M.pt (M.top_le_preimage_pt ⟨_, m2⟩) (Q.L.rig.s fun _ => a.1 0)`. Simplify using `only [hj] at r1 r2`. Establish `x0 : ξ ≠ 0` using `fun h => by rw [h, zero_pow hn] at hξ; exact zero_ne_one hξ`.
+
+Take `⟨hA1, i', hA2, hA3⟩` from `hA (W.ι z) z.2`. Use `⟨H.1, ?_, ?_⟩` and prove the remaining obligations. Take `⟨i, hi⟩` from `exists_mem_basicOpen hτ (e z) hz.2`. Establish `q : valF (j ≫ e) _ ((τ i).f a.2) ≠ 0` using `((le_preimage_basicOpen_iff (j ≫ e) (le_preimage_mono _ inf_le_right m0) _).1 (le_of_mem hj (V := e ⁻¹ᵁ Scheme.basicOpen _ ((τ i).f a.2)) hi)).ne_zero`. Rewrite using `[(eq_mul_inv_iff_mul_eq₀ q).2 (hv' i).symm]`.
+
+Conclude with `mul_mem (mul_mem (hA1 i) (pow_mem (mul_mem (hroot ξ hξ) r1) _)) ((Reg.inv e _ hi).mem_O hj)`. Establish `q` using `mul_ne_zero hA2 (pow_ne_zero S.N (mul_ne_zero x0 r3))`. Establish `key : ∀ A c t : Ω, A ≠ 0 → A = c * t → c⁻¹ = t * A⁻¹`. Introduce and unpack `_ c t h rfl`. Use `left_ne_zero_of_mul h` as an intermediate fact.
+
+Use `right_ne_zero_of_mul h` as an intermediate fact. Clear the denominators using the available nonvanishing facts. Rewrite using `[key _ _ _ q (hv' i'), mul_inv, ← inv_pow, mul_inv]`. Conclude with `mul_mem ((Reg.val e _ hz.2).mem_O hj) (mul_mem hA3 (pow_mem (mul_mem (hroot _ (by rw [inv_pow, hξ, inv_one])) r2) _)))`. Use `⟨u, fun h hh hr => ?_⟩` and prove the remaining obligations.
+
+Take `rfl : h = h₀` from `(cancel_mono (pullback.fst p j)).1 (hh.trans hh₀.symm)`. Conclude with `(hu ((top_le_preimage_iff (j ≫ e) _).2 hr)).symm)`. Use `⟨σ (fun _ => a, k), fun K _ β h h1 h2 h3 => ?_⟩` and prove the remaining obligations. Take `⟨h, rfl⟩ : ∃ h' : Sp K ⟶ pullback p j, h' ≫ pullback.fst p j = h` from `⟨pullback.lift h (spMap β) ((cancel_mono W.ι).1 (by`. Rewrite using `[Category.assoc, Category.assoc, hp', hj, ← h1, Category.assoc])), pullback.lift_fst _ _ _⟩`.
+
+Establish `m : ⊤ ≤ (h ≫ pullback.fst p j) ⁻¹ᵁ N.U (fun _ => a, k)` using `le_inf' (le_wchart _ _ _ fun _ => h2) h3`. Use `ht (fun _ => a, k) K h m` as an intermediate fact. Rewrite `this` using `[← hσ _ K h ((top_le_preimage_iff _ _).1 m)]`. Conclude with `this`.
+-/
 theorem exists_local [ArithBase o Ω] (hS : S.Over₀ M U₀) {W : M.Z.Opens} (hW : (W : Set M.Z).Nonempty)
     {O : LB (Q.G.hom ⁻¹ᵁ W).toScheme} {τ : S.J → O.Sec} (hO : O.IsLB) (hτ : ⨆ i, nonzeroLocus (τ i) = ⊤)
     {b : S.J → S.J → Ω}
@@ -226,6 +298,23 @@ theorem exists_local [ArithBase o Ω] (hS : S.Over₀ M U₀) {W : M.Z.Opens} (h
   rw [← hσ _ K h ((top_le_preimage_iff _ _).1 m)] at this
   exact this
 
+/- English proof (translation)
+Take `⟨O, τ, hO, hτ, hp, hind, -⟩` from `hQ W b haff hb`. Use `⟨O, τ, hO, hτ, exists_local hS hW hO hτ (fun a k K _ β h h1 h2 h3 => ?_) (fun z hz => ?_), ?_⟩` and prove the remaining obligations. Take `⟨g, r, jP, g1, g2, g3, gj⟩` from `exists_data' Q hS.ne _ β h1`. Take `⟨c, hc, H⟩` from `hp K β g h r jP k g2 g1.symm g3 ((top_le_preimage_iff _ _).1 gj) ((top_le_preimage_iff _ _).1 h3)`. Establish `z1` using `zpow_ne_zero (S.N : ℤ) (val_unit_ne g (le_w Q gj (g1 ▸ h2)) (Q.w.s (fun _ => jP, fun _ => a)))`.
+
+Establish `z2 : β d ≠ 0` using `(map_ne_zero β).2 hd`. Use `⟨c / β d / _, div_ne_zero (div_ne_zero hc z2) z1, fun i => GV.of_one h2 g1 g2 g3 gj ?_⟩` and prove the remaining obligations. Simplify using `only [map_div₀, div_mul_eq_mul_div, ← Finset.sum_div, H]`. Clear the denominators using the available nonvanishing facts. Establish `e : ∀ i, (fun l => b i l / d) ⬝ᵥ S.ev 0 = (b i ⬝ᵥ S.ev 0) / d` using `fun i => by`.
+
+Simplify using `only [dotProduct, div_mul_eq_mul_div, Finset.sum_div]`. Simplify `hA z hz` using `only [e]`. Introduce `K _ _ x hx c hc`. Use `ArithBase.ft (o := o) (Ω := Ω)` as an intermediate fact. Use `MinorModel.locallyOfFiniteType_int M` as an intermediate fact.
+
+Use `jacobsonSpace_of_locallyOfFiniteType_int (M.s ≫ spMap (algebraMap ℤ o))` as an intermediate fact. Use `Q.semi.smooth` as an intermediate fact. Establish `hp' : Q.G.hom ∣_ W ≫ W.ι = (Q.G.hom ⁻¹ᵁ W).ι ≫ Q.G.hom` using `morphismRestrict_ι _ _`. Set `e` to `Fintype.equivFin S.J`. Establish `hl : ∀ {K : Type} [Field K] (x : Sp K ⟶ M.Z), Set.range x ⊆ W → ∃ x' : Sp K ⟶ W.toScheme, x' ≫ W.ι = x` using `fun x hx => ⟨IsOpenImmersion.lift W.ι x (by rwa [Scheme.Opens.range_ι]), IsOpenImmersion.lift_fac _ _ _⟩`.
+
+Establish `hr : ∀ {K : Type} [Field K] (x : Sp K ⟶ W.toScheme), Set.range x = {x (IsLocalRing.closedPoint K)}` using `fun x => Set.eq_singleton_iff_unique_mem.2 ⟨⟨_, rfl⟩, by`. Introduce and unpack `_ ⟨w, rfl⟩`. Conclude with `congrArg x (Subsingleton.elim (α := PrimeSpectrum _) _ _)⟩`. Take `⟨x, rfl⟩` from `hl x hx`. Establish `key` using `FibreLinInd.linearIndependent_on_fibres_of_closedPoints _ _ (W.ι ≫ M.s ≫ spMap (algebraMap ℤ o)) (Q.G.hom ∣_ W) O hO _ (fun i => τ (e.symm i)) (fun z hz => by`.
+
+Establish `h1 : IsClosed ({W.ι z} : Set M.Z)` using `isClosed_singleton_of_isLocallyClosed_singleton (by`. Use `hz.isLocallyClosed.image W.ι.isOpenEmbedding.isInducing W.ι.isOpenEmbedding.isOpen_range.isLocallyClosed` as an intermediate fact. Rewrite using `[Set.image_singleton] at this)` and apply the resulting hypothesis. Take `⟨K, _, y, hy, H⟩` from `hind (W.ι z) z.2 h1`. Take `⟨y, rfl⟩` from `hl y (by rw [hy]; exact Set.singleton_subset_iff.2 z.2)`.
+
+Establish `h2 : y (IsLocalRing.closedPoint K) = z` using `W.ι.isOpenEmbedding.injective (show (y ≫ W.ι) _ ∈ ({W.ι z} : Set M.Z) from hy ▸ ⟨_, rfl⟩)`. Use `⟨K, inferInstance, y, h2 ▸ hr y, fun c hc => ?_⟩` and prove the remaining obligations. Use `H (c ∘ e) fun g k hg => by` as an intermediate fact. Rewrite using `[← hc g k ((cancel_mono W.ι).1 (by rw [Category.assoc, hp', hg])), ← e.sum_comp]`. Simplify using `only [Function.comp_apply, Equiv.symm_apply_apply]`.
+
+Conclude with `funext fun i => by simpa using congrFun this (e.symm i)) _ K x (hr x) (c ∘ e.symm) (fun g k hg => by`. Rewrite using `[← hc g k (by rw [Category.assoc, ← hp', ← Category.assoc, hg])]`. Conclude with `e.symm.sum_comp fun i => c i * valF g _ ((τ i).f k))`. Conclude with `funext fun i => by simpa using congrFun key (e i)`.
+-/
 theorem exists_pack [ArithBase o Ω] (hS : S.Over₀ M U₀) {EE : M.Lat S.J} (hQ : Q.SecO EE) {W : M.Z.Opens}
     (haff : IsAffineOpen W) (hW : (W : Set M.Z).Nonempty) {b : Matrix S.J S.J Ω} {d : Ω} (hd : d ≠ 0)
     (hb : ∀ z ∈ W, EE.E z = Submodule.span (M.O z) (Set.range b))
@@ -286,6 +375,37 @@ theorem exists_pack [ArithBase o Ω] (hS : S.Over₀ M U₀) {EE : M.Lat S.J} (h
         exact e.symm.sum_comp fun i => c i * valF g _ ((τ i).f k))
     exact funext fun i => by simpa using congrFun key (e i)
 
+/- English proof (translation)
+Introduce `h1 h2 h3 h4 h5 o Ω _ _ _ _ S ρ M U₀ EE Q hS hE hQ W x₀ b hb`. Establish `hloc` using `fun (z : M.Z) (hz : z ∈ W) => (exists_isAffineOpen_mem_and_subset hz).imp fun W' (h : IsAffineOpen W' ∧ z ∈ W' ∧ (W' : Set M.Z) ⊆ W) => And.intro h (exists_pack hS hQ h.1 ⟨z, h.2.1⟩ (hb z hz).1.1 (fun y hy => (hb y (h.2.2 hy)).2) fun y hy => basis_origin_values_regular_and_unit h …`. Take `⟨F, _, β, g, r, jP, g2, -, -, hξ⟩` from `Q.exists_generic hS.ne`. Establish `hβ : (g ≫ Q.φ) ≫ Q.G.hom = spMap β ≫ M.pt`. Rewrite using `[Category.assoc, Q.cart.1.w]`.
+
+Conclude with `g2`. Generalize the expression as in `g ≫ Q.φ = ξ at hξ hβ`. Use `clear g2 g r jP`. Establish `hid : ∀ {K : Type} [Field K] {g : Sp K ⟶ Q.G.left} {j : Fin 1 → Q.L.L.ι}, ⊤ ≤ g ⁻¹ᵁ (Q.G.hom ⁻¹ᵁ W ⊓ LB.wchart Q.L.L (fun _ => 𝟙 Q.G.left) j) → ⊤ ≤ g ⁻¹ᵁ Q.L.L.U (j 0)` using `fun h _ hz => Set.mem_iInter.1 (h hz).2 0`. Use `choose σ hσ using fun (i : S.J) (j : Fin 1 → Q.L.L.ι) => exists_glue (Q.G.hom ⁻¹ᵁ W ⊓ LB.wchart Q.L.L (fun _ => 𝟙 Q.G.left) j) (GV Q (fun l => b i l / S.th x₀) (j 0)) ξ hξ (fun h v v' H H' => H.unique hS.ne hβ (hid h) H') (fun y hy => by`.
+
+Take `⟨W', ⟨-, hz, -⟩, O, τ, hO, -, hu, -⟩` from `hloc _ hy.1`. Set `y' : (Q.G.hom ⁻¹ᵁ W').toScheme` to `⟨y, hz⟩`. Take `⟨k, hk⟩` from `exists_chart hO y'`. Take `⟨u, hu⟩` from `hu (j 0) k`. Establish `hy' : y' ∈ LB.wchart Q.L.L (fun _ : Fin 1 => (Q.G.hom ⁻¹ᵁ W').ι) (fun _ => j 0) ⊓ O.U k` using `⟨Set.mem_iInter.2 fun _ => Set.mem_iInter.1 hy.2 0, hk⟩`.
+
+Use `⟨_, ((Q.G.hom ⁻¹ᵁ W').ι.appIso _).inv.hom (u.val * resG _ inf_le_right ((τ i).f k)), ⟨y', hy', rfl⟩, fun K _ g q1 q2 => ?_⟩` and prove the remaining obligations. Take `⟨h, rfl⟩ : ∃ h : Sp K ⟶ (Q.G.hom ⁻¹ᵁ W').toScheme, h ≫ (Q.G.hom ⁻¹ᵁ W').ι = g` from `⟨IsOpenImmersion.lift _ g (by`. Introduce and unpack `_ ⟨w, rfl⟩`. Take `⟨v, -, hv⟩` from `q1 (x := w) trivial`. Conclude with `⟨v, hv⟩), IsOpenImmersion.lift_fac _ _ _⟩`.
+
+Rewrite `q1` using `[Scheme.Hom.comp_preimage, Scheme.Hom.preimage_image_eq]`. Rewrite using `[NormGlue.valF_comp_appIso]`. Introduce `β' g' r' jP' k1 k2 k3 kj`. Use `((hu K β' h (by rw [← k1, Category.assoc, Q.cart.1.w]; exact k2) (hid q2) (le_preimage_mono h inf_le_right q1)).2 i β' g' r' jP' k1 k2 k3 kj).trans (congrArg (_ * ·) ?_)` and prove the remaining obligations. Conclude with `((valR_mul h _ q1 _ _).trans (congrArg (_ * ·) (valR_res h _ q1 _))).symm)`.
+
+Use `⟨σ, fun i => ⟨fun j j' => eq_of_valF_generic ξ hξ fun h => ?_, ?_⟩, fun K _ _ x hx => ?_⟩` and prove the remaining obligations. Take `⟨a, rfl⟩ : ∃ a, j = fun _ => a` from `⟨j 0, funext fun i => by rw [Subsingleton.elim i 0]⟩`. Take `⟨a', rfl⟩ : ∃ a, j' = fun _ => a` from `⟨j' 0, funext fun i => by rw [Subsingleton.elim i 0]⟩`. Establish `q1` using `le_preimage_mono ξ inf_le_left h`. Establish `q2` using `le_inf' (le_preimage_mono ξ inf_le_left q1) (le_preimage_mono ξ inf_le_right h)`.
+
+Use `(valR_res ξ _ h _).trans (Eq.trans ?_ ((valR_mul ξ _ h _ _).trans (congrArg₂ (· * ·) (valR_res ξ _ h _) (valR_res ξ _ h _))).symm)` and prove the remaining obligations. Use `((hσ i _ F ξ q1).unique hS.ne hβ (hid q1) ((hσ i _ F ξ q2).chart (hid q2) (hid q1))).trans (congrArg (· * _) ?_)` and prove the remaining obligations. Conclude with `(val_linComb_g (I := Fin 1) Q.L.L (𝟙 _) _ a a' ξ (hid q1) (hid q2)).symm`. Introduce `K _ β' g r jP jL k1 k2 k3 k4 k5`. Conclude with `hσ i (fun _ => jL) K _ (le_inf' ((top_le_preimage_iff _ _).2 k5) (le_wchart _ _ _ fun _ => (top_le_preimage_iff _ _).2 k4)) β' g r jP rfl k1 k2 ((top_le_preimage_iff _ _).2 k3)`.
+
+Take `⟨W', ⟨-, hz, hle⟩, O, τ, hO, hτ, hu, hind⟩` from `hloc _ (hx ⟨IsLocalRing.closedPoint K, rfl⟩)`. Establish `hx' : ⊤ ≤ x ⁻¹ᵁ W'` using `(le_preimage_iff x _).2 hz`. Establish `hne : genericPoint Q.G.left ∈ Q.G.hom ⁻¹ᵁ W'`. Express the relevant statement in the definitionally equal form `Q.G.hom _ ∈ W'`. Rewrite using `[Q.hom_genericPoint]`.
+
+Conclude with `(genericPoint_specializes _).mem_open W'.isOpen hz`. Establish `: Nonempty (Q.G.hom ⁻¹ᵁ W').toScheme` using `⟨⟨_, hne⟩⟩`. Establish `: IsIntegral (Q.G.hom ⁻¹ᵁ W').toScheme` using `isIntegral_of_isOpenImmersion (Q.G.hom ⁻¹ᵁ W').ι`. Take `⟨ξ, rfl⟩ : ∃ h : Sp F ⟶ (Q.G.hom ⁻¹ᵁ W').toScheme, h ≫ (Q.G.hom ⁻¹ᵁ W').ι = ξ` from `⟨IsOpenImmersion.lift _ ξ (by`. Introduce and unpack `_ ⟨w, rfl⟩`.
+
+Conclude with `⟨⟨_, hne⟩, (hξ w).symm⟩), IsOpenImmersion.lift_fac _ _ _⟩`. Establish `hξ' : ∀ w, ξ w = genericPoint _` using `fun w => (Q.G.hom ⁻¹ᵁ W').ι.isOpenEmbedding.injective ((hξ w).trans (genericPoint_eq_of_isOpenImmersion _).symm)`. Establish `hrel : ∀ (a : Q.L.L.ι) (k : O.ι) (h : Sp K ⟶ (Q.G.hom ⁻¹ᵁ W').toScheme), ⊤ ≤ (h ≫ (Q.G.hom ⁻¹ᵁ W').ι) ⁻¹ᵁ Q.L.L.U a → ⊤ ≤ h ⁻¹ᵁ O.U k → ∃ v : K, v ≠ 0 ∧ ∀ i, valF (h ≫ (Q.G.hom ⁻¹ᵁ W').ι) _ (σ i fun _ => a) = v * valF h _ ((τ i).f k)` using `fun a k h q1 q2 => by`. Take `⟨u, hu⟩` from `hu a k`. Establish `q` using `le_inf' (le_wchart Q.L.L _ (fun _ : Fin 1 => a) fun _ => q1) q2`.
+
+Establish `hl : LB.wchart Q.L.L (fun _ : Fin 1 => (Q.G.hom ⁻¹ᵁ W').ι) (fun _ => a) ⊓ O.U k ≤ (Q.G.hom ⁻¹ᵁ W').ι ⁻¹ᵁ (Q.G.hom ⁻¹ᵁ W ⊓ LB.wchart Q.L.L (fun _ : Fin 1 => 𝟙 Q.G.left) fun _ => a)` using `fun y hy => ⟨hle y.2, Set.mem_iInter.2 fun _ => Set.mem_iInter.1 hy.1 0⟩`. Use `⟨_, val_unit_ne h q u, fun i => ?_⟩` and prove the remaining obligations. Establish `e : ((Q.G.hom ⁻¹ᵁ W').ι.appLE _ _ hl).hom (σ i fun _ => a) = u.val * resG _ inf_le_right ((τ i).f k)` using `eq_of_valF_generic ξ hξ' fun q => by`. Establish `q'` using `le_preimage_comp ξ _ hl q`. Use `(valR_appLE ξ _ hl q _).trans (Eq.trans ?_ ((valR_mul ξ _ q _ _).trans (congrArg (_ * ·) (valR_res ξ _ q _))).symm)` and prove the remaining obligations.
+
+Conclude with `(hσ i _ F _ q').unique hS.ne hβ (hid q') ((hu F β ξ hβ (hid q') (le_preimage_mono ξ inf_le_right q)).2 i)`. Conclude with `(valR_appLE h _ hl q _).symm.trans ((congrArg (valR h _) e).trans ((valR_mul h _ q _ _).trans (congrArg (_ * ·) (valR_res h _ q _))))`. Use `⟨fun g hg => ?_, fun c hc => hind K x ((top_le_preimage_iff _ _).1 hx') c fun g k hg => ?_⟩` and prove the remaining obligations. Substitute `hg` using the available equality. Take `⟨h, rfl⟩ : ∃ h : Sp K ⟶ (Q.G.hom ⁻¹ᵁ W').toScheme, h ≫ (Q.G.hom ⁻¹ᵁ W').ι = g` from `⟨IsOpenImmersion.lift _ g (by`.
+
+Introduce and unpack `_ ⟨w, rfl⟩`. Conclude with `⟨⟨_, hx' (x := w) trivial⟩, rfl⟩), IsOpenImmersion.lift_fac _ _ _⟩`. Take `⟨a, ha⟩` from `exists_le_preimage_of_iSup_eq_top (h ≫ (Q.G.hom ⁻¹ᵁ W').ι) Q.L.isLB.cover`. Take `⟨k, hk⟩` from `exists_le_preimage_of_iSup_eq_top h hO.cover`. Take `⟨v, hv, H⟩` from `hrel a k h ha hk`.
+
+Take `⟨i, hi⟩` from `exists_ne hτ h hk`. Conclude with `⟨i, fun _ => a, (H i).trans_ne (mul_ne_zero hv hi)⟩`. Distinguish the cases in `hk : ⊤ ≤ g ⁻¹ᵁ O.U k`. Take `⟨a, ha⟩` from `exists_le_preimage_of_iSup_eq_top (g ≫ (Q.G.hom ⁻¹ᵁ W').ι) Q.L.isLB.cover`. Take `⟨v, hv, H⟩` from `hrel a k g ha hk`.
+
+Use `mul_left_cancel₀ hv ((Finset.mul_sum _ _ _).trans (Eq.trans (Finset.sum_congr rfl fun i _ => ?_) ((hc _ (fun _ => a) hg).trans (mul_zero v).symm)))` and prove the remaining obligations. Conclude with `(mul_left_comm _ _ _).trans (congrArg (c i * ·) (H i).symm)`. Conclude with `Finset.sum_eq_zero fun i _ => by rw [val_junk g hk, mul_zero]`.
+-/
 theorem exists_sections : GlobalTheory.Published.SemistableReductionSt → ThmUSt → Laws → Laws2 → UTorsSt → ∀ (o Ω : Type) [CommRing o] [Field Ω] [Algebra o Ω] [ArithBase o Ω] (S : ThetaSys o Ω) (ρ : S.Real) (M : RatModel o Ω) (U₀ : M.Z.Opens) (EE : M.Lat S.J) (Q : ZHPre ρ M U₀), S.Over₀ M U₀ → S.IsEE M U₀ EE → Q.SecO EE → ∀ (W : M.Z.Opens) (x₀ : S.Gam) (b : Matrix S.J S.J Ω), (∀ z ∈ W, x₀ ∈ S.supI M z ∧ EE.E z = Submodule.span (M.O z) (Set.range b)) → ∃ σ : S.J → ∀ j, Γ(Q.G.left, Q.G.hom ⁻¹ᵁ W ⊓ (LB.LinComb Q.L.L (K := Fin 1) (fun _ => 𝟙 Q.G.left) (fun _ => (S.N : ℤ))).U j), (∀ i, σ i ∈ secOn (LB.LinComb Q.L.L (K := Fin 1) (fun _ => 𝟙 Q.G.left) (fun _ => (S.N : ℤ))) (Q.G.hom ⁻¹ᵁ W) ∧ GenVal ρ M U₀ Q.u₀ Q.G Q.φ Q.L.L Q.w S.N ρ.s (fun l => b i l / S.th x₀) _ (σ i)) ∧ ∀ (K : Type) [Field K] [IsAlgClosed K] (x : Sp K ⟶ M.Z), Set.range x ⊆ W → (∀ g : Sp K ⟶ Q.G.left, g ≫ Q.G.hom = x → ∃ i j, valF g _ (σ i j) ≠ 0) ∧ ∀ c : S.J → K, (∀ (g : Sp K ⟶ Q.G.left) (j : _), g ≫ Q.G.hom = x → ∑ i, c i * valF g _ (σ i j) = 0) → c = 0 := by
   intro h1 h2 h3 h4 h5 o Ω _ _ _ _ S ρ M U₀ EE Q hS hE hQ W x₀ b hb
   have hloc := fun (z : M.Z) (hz : z ∈ W) => (exists_isAffineOpen_mem_and_subset hz).imp

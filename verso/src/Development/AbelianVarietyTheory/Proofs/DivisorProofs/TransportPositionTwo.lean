@@ -21,6 +21,17 @@ section Levi
 
 variable {n n₁ : ℕ} {Y : Spc F E n} {Y₁ : Spc F E n₁} {H : Plane E n n₁}
 
+/- English proof (translation)
+Use `show ∀ c : AF F, evFin F v c = 0 → c • (mat m - 1) = 0`. Introduce `c hc`. Establish `h2 : c • (cA σ (t⁻¹ : (AE F E)ˣ).1 - 1) = 0`. Rewrite using `[← map_one (cA σ), ← map_sub, ← map_smul, ht' c hc, map_zero]`. Establish `hx : (c • (mat m - 1)) *ᵥ incV F H.x = 0`.
+
+Rewrite using `[Matrix.smul_mulVec, Matrix.sub_mulVec, Matrix.one_mulVec, hL.1]`. Conclude with `GlobalTheory.LeviLoc.smul_sub_eq_zero (ht c hc) _`. Establish `hy : (c • (mat m - 1)) *ᵥ incV F H.y = 0`. Rewrite using `[Matrix.smul_mulVec, Matrix.sub_mulVec, Matrix.one_mulVec, hL.2.1]`. Conclude with `GlobalTheory.LeviLoc.smul_sub_eq_zero h2 _`.
+
+Establish `hι : (c • (mat m - 1)) * incM F H.ι = 0`. Establish `h0 : c • (mat h₁ - 1) = 0` using `hh c hc`. Establish `e : (mat m - 1) * incM F H.ι = incM F H.ι * (mat h₁ - 1)`. Rewrite using `[Matrix.sub_mul, Matrix.one_mul, hL.2.2, Matrix.mul_sub, Matrix.mul_one]`. Rewrite using `[Matrix.smul_mul, e, ← Matrix.mul_smul, h0, Matrix.mul_zero]`.
+
+Use extensionality with `i j`. Take `⟨s, r, u, e⟩` from `hspan (Pi.single j 1)`. Establish `hcol : (c • (mat m - 1)) *ᵥ incV F (Pi.single j (1 : E)) = 0`. Rewrite using `[e, GlobalTheory.LeviLoc.incV_decomp, Matrix.mulVec_add, Matrix.mulVec_add, Matrix.mulVec_smul, Matrix.mulVec_smul, Matrix.mulVec_mulVec, hx, hy, hι, Matrix.zero_mulVec, smul_zero, smul_zero, add_zero, add_zero]`. Rewrite `hcol` using `[GlobalTheory.LeviUniqueCartan.incV_single, Matrix.mulVec_single_one]`.
+
+Use `congrFun hcol i` as an intermediate fact. Simplify `this` using `[Matrix.col]`.
+-/
 theorem levi_mem_UAt (hspan : ∀ z : Fin n → E, ∃ (s r : E) (u : Fin n₁ → E), z = s • H.x + H.ι *ᵥ u + r • H.y)
     {v : Pl F} {t : (AE F E)ˣ} {h₁ : UA σ Y₁.J} {m : UA σ Y.J} (hL : IsLevi (W₁ := Y₁) H t h₁ m)
     (ht : ∀ c : AF F, evFin F v c = 0 → c • ((t : AE F E) - 1) = 0)
@@ -50,6 +61,13 @@ theorem levi_mem_UAt (hspan : ∀ z : Fin n → E, ∃ (s r : E) (u : Fin n₁ �
   have := congrFun hcol i
   simpa [Matrix.col] using this
 
+/- English proof (translation)
+Set `S : Submodule E (Fin n → E)` to `{ carrier := {z | ∃ (s t : E) (u : Fin n₁ → E), z = s • H.x + H.ι *ᵥ u + t • H.y} add_mem' := by`. Introduce and unpack `_ _ ⟨s, t, u, rfl⟩ ⟨s', t', u', rfl⟩`. Conclude with `⟨s + s', t + t', u + u', by rw [add_smul, add_smul, Matrix.mulVec_add]; abel⟩`. Use the proof step `zero_mem' := ⟨0, 0, 0, by simp⟩`. Use the proof step `smul_mem' := by`.
+
+Introduce and unpack `c _ ⟨s, t, u, rfl⟩`. Conclude with `⟨c * s, c * t, c • u, by rw [Matrix.mulVec_smul, smul_add, smul_add, mul_smul, mul_smul]⟩ }`. Establish `hsub : (Y.L : Set (Fin n → E)) ⊆ S` using `fun z hz => by`. Take `⟨s, t, u, -, -, -, e⟩` from `hA.split z hz`. Conclude with `⟨s, t, u, e⟩`.
+
+Establish `hz : z ∈ Submodule.span E (Y.L : Set (Fin n → E))`. Rewrite using `[hL]`. Discharge the goal by the elementary cases of `trivial`. Conclude with `Submodule.span_le.2 hsub hz`.
+-/
 theorem adapted_spans (B : Base F E) {i₀ i₁ : ℕ} (hA : H.IsAdapted σ B Y Y₁ i₀ i₁)
     (hL : Submodule.span E (Y.L : Set (Fin n → E)) = ⊤) (z : Fin n → E) :
     ∃ (s r : E) (u : Fin n₁ → E), z = s • H.x + H.ι *ᵥ u + r • H.y := by

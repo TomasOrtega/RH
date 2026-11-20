@@ -12,6 +12,11 @@ noncomputable section
 namespace GlobalTheory.AdjScalar
 variable {D : D7}
 
+/- English proof (translation)
+Proceed by induction on `z using TensorProduct.induction_on with`. Consider the case `zero => rw [RingHom.map_zero, RingHom.map_zero]`. Consider the case `add x y hx hy => rw [RingHom.map_add, RingHom.map_add, hx, hy]`. Consider the case `tmul a x`. Express the relevant statement in the definitionally equal form `a ⊗ₜ[D.host.F] star (star x) = _`.
+
+Rewrite using `[star_star]`.
+-/
 theorem cA_cA (z : AE D) : cA D (cA D z) = z := by
   induction z using TensorProduct.induction_on with
   | zero => rw [RingHom.map_zero, RingHom.map_zero]
@@ -20,6 +25,11 @@ theorem cA_cA (z : AE D) : cA D (cA D z) = z := by
     change a ⊗ₜ[D.host.F] star (star x) = _
     rw [star_star]
 
+/- English proof (translation)
+Establish `h1 : (a • X).map σ = σ a • X.map σ`. Use extensionality with `i j`. Simplify using `[Matrix.map_apply, Matrix.smul_apply, smul_eq_mul, map_mul]`. Establish `h2 : ∀ (M : Matrix (Fin m) (Fin n) R) (b : R), (b • M).map f = f b • M.map f`. Introduce `M b`.
+
+Use extensionality with `i j`. Simplify using `[Matrix.map_apply, Matrix.smul_apply, smul_eq_mul, map_mul]`. Rewrite using `[h1, Matrix.transpose_smul, Matrix.mul_smul, Matrix.smul_mul, h2, Matrix.mul_smul, Matrix.smul_mul]`.
+-/
 theorem map_adj_smul {R K : Type} [CommRing R] [CommRing K] (f : R →+* K) (σ : R →+* R) {m n : ℕ}
     (G1 : Matrix (Fin m) (Fin m) R) (G2 : Matrix (Fin n) (Fin n) R) (P : Matrix (Fin m) (Fin m) K)
     (Q : Matrix (Fin n) (Fin n) K) (X : Matrix (Fin n) (Fin m) R) (a : R) :
@@ -30,17 +40,31 @@ theorem map_adj_smul {R K : Type} [CommRing R] [CommRing K] (f : R →+* K) (σ 
     intro M b; ext i j; simp [Matrix.map_apply, Matrix.smul_apply, smul_eq_mul, map_mul]
   rw [h1, Matrix.transpose_smul, Matrix.mul_smul, Matrix.smul_mul, h2, Matrix.mul_smul, Matrix.smul_mul]
 
+/- English proof (translation)
+The claim follows from `map_adj_smul (toEAf D) (cA D) _ _ _ _ x a`.
+-/
 theorem frMapAdj_smul (S T : HSp D) (βS : GL (Fin S.rank) (EAf D)) (βT : GL (Fin T.rank) (EAf D))
     (a : AE D) (x : WO S T) :
     frMapAdj S T βS βT (a • x) = toEAf D (cA D a) • frMapAdj S T βS βT x :=
   map_adj_smul (toEAf D) (cA D) _ _ _ _ x a
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem cA_incA' (c : D.host.E) : cA D (incA D c) = incA D (star c) := rfl
 
+/- English proof (translation)
+Rewrite using `[one_smul, Matrix.mul_smul, mul_comm, mul_smul, ← Matrix.mul_smul B u F, hF]`.
+-/
 theorem smul_absorb {K : Type} [CommRing K] {m n : ℕ} (B : Matrix (Fin m) (Fin m) K) (F : Matrix (Fin m) (Fin n) K)
     (u v : K) (hF : u • F = F) : (u * v) • (B * F) = (1 : K) • (B * (v • F)) := by
   rw [one_smul, Matrix.mul_smul, mul_comm, mul_smul, ← Matrix.mul_smul B u F, hF]
 
+/- English proof (translation)
+Establish `hx : cA D e • x = x`. Use extensionality with `i j`. Conclude with `h i j`. Establish `hF : toEAf D e • frMapAdj S T βS βT x = frMapAdj S T βS βT x` using `by conv_rhs => rw [← hx]`. Rewrite using `[frMapAdj_smul, cA_cA]`.
+
+Unfold `adjA`. Rewrite using `[frMapAdj_smul, cA_incA', map_one, map_mul]`. Conclude with `smul_absorb _ _ _ _ hF`.
+-/
 theorem adjA_half_smul (D : D7) (S T : HSp D) (βS : GL (Fin S.rank) (Lev.EAf D)) (βT : GL (Fin T.rank) (Lev.EAf D))
     (e : AE D) (c : D.host.E) (x : WO S T) (h : IsHalf (cA D e) x) :
     adjA S T βS βT (e * incA D (star c)) x = adjA S T βS βT 1 (incA D c • x) := by

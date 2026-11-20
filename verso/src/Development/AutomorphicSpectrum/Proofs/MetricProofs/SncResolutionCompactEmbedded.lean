@@ -9,11 +9,19 @@ open MvPolynomial ReciprocityTheory.AnForm.R
 
 variable {K : Type} [Fintype K] {ι : K → Type} [∀ k, Fintype (ι k)]
 
+/- English proof (translation)
+Take `⟨i, hi⟩` from `h`. Conclude with `Finset.sum_pos' (fun j _ => by positivity) ⟨i, Finset.mem_univ _, by positivity⟩`.
+-/
 theorem normSq_pos {z : (Σ k, ι k) → ℂ} {k : K} (h : ∃ i, z ⟨k, i⟩ ≠ 0) :
     0 < ∑ i, ‖z ⟨k, i⟩‖ ^ 2 := by
   obtain ⟨i, hi⟩ := h
   exact Finset.sum_pos' (fun j _ => by positivity) ⟨i, Finset.mem_univ _, by positivity⟩
 
+/- English proof (translation)
+Use function extensionality and compare the values at `q`. Take `⟨k, i, j⟩` from `q`. Simplify using `only [proj, norm_mul, mul_pow, ← Finset.mul_sum, map_mul]`. Establish `h1 : ((‖c k‖ ^ 2 : ℝ) : ℂ) = c k * starRingEnd ℂ (c k)`. Rewrite using `[Complex.mul_conj, Complex.normSq_eq_norm_sq]`.
+
+Establish `h2 : c k * starRingEnd ℂ (c k) ≠ 0` using `mul_ne_zero (hc k) (by simpa using hc k)`. Rewrite using `[Complex.ofReal_mul, h1, ← mul_div_mul_left (z ⟨k, i⟩ * starRingEnd ℂ (z ⟨k, j⟩)) _ h2]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem proj_smul (c : K → ℂ) (hc : ∀ k, c k ≠ 0) (z : (Σ k, ι k) → ℂ) :
     proj (fun q => c q.1 * z q) = proj z := by
   funext q
@@ -26,12 +34,30 @@ theorem proj_smul (c : K → ℂ) (hc : ∀ k, c k ≠ 0) (z : (Σ k, ι k) → 
   congr 1
   ring
 
+/- English proof (translation)
+Use `continuousOn_pi.2 fun q => ?_` and prove the remaining obligations. Use `ContinuousOn.div (by fun_prop) (by fun_prop) fun z hz => ?_` and prove the remaining obligations. Conclude with `Complex.ofReal_ne_zero.2 (normSq_pos (hz q.1)).ne'`.
+-/
 theorem continuousOn_proj :
     ContinuousOn (proj (ι := ι)) {z | ∀ k, ∃ i, z ⟨k, i⟩ ≠ 0} := by
   refine continuousOn_pi.2 fun q => ?_
   refine ContinuousOn.div (by fun_prop) (by fun_prop) fun z hz => ?_
   exact Complex.ofReal_ne_zero.2 (normSq_pos (hz q.1)).ne'
 
+/- English proof (translation)
+Set `S : Set ((Σ k, ι k) → ℂ)` to `{z | (∀ k, ∑ i, ‖z ⟨k, i⟩‖ ^ 2 = 1) ∧ ∀ f ∈ P, eval z f = 0}`. Establish `hne : ∀ z ∈ S, ∀ k, ∃ i, z ⟨k, i⟩ ≠ 0`. Introduce `z hz k`. Assume the negation of the conclusion as `h`. Use `push Not at h`.
+
+Use `hz.1 k` as an intermediate fact. Simplify using `[h] at this`. Establish `hS : IsCompact S`. Apply `Metric.isCompact_of_isClosed_isBounded` to reduce the goal to its premises. Simplify using `only [S, Set.setOf_and, Set.setOf_forall]`.
+
+Use `IsClosed.inter (isClosed_iInter fun k => isClosed_eq (by fun_prop) continuous_const) (isClosed_iInter fun f => isClosed_iInter fun _ => isClosed_eq (MvPolynomial.continuous_eval f) continuous_const)` and prove the remaining obligations. Use `(Metric.isBounded_closedBall (x := (0 : (Σ k, ι k) → ℂ)) (r := 1)).subset fun z hz => ?_` and prove the remaining obligations. Rewrite using `[mem_closedBall_zero_iff, pi_norm_le_iff_of_nonneg zero_le_one]`. Introduce and unpack `⟨k, i⟩`. Establish `h1 : ‖z ⟨k, i⟩‖ ^ 2 ≤ 1`.
+
+Rewrite using `[← hz.1 k]`. Conclude with `Finset.single_le_sum (f := fun j => ‖z ⟨k, j⟩‖ ^ 2) (fun j _ => by positivity) (Finset.mem_univ i)`. Use polynomial arithmetic with `[norm_nonneg (z ⟨k, i⟩)]`. Establish `hE : Pts P = proj '' S`. Apply `Set.Subset.antisymm` to reduce the goal to its premises.
+
+Introduce and unpack `_ ⟨z, hz, rfl⟩`. Establish `hpos : ∀ k, 0 < ∑ i, ‖z ⟨k, i⟩‖ ^ 2` using `fun k => normSq_pos (hz.1 k)`. Set `c : K → ℂ` to `fun k => (((√(∑ i, ‖z ⟨k, i⟩‖ ^ 2))⁻¹ : ℝ) : ℂ)`. Establish `hc : ∀ k, c k ≠ 0` using `fun k => Complex.ofReal_ne_zero.2 (inv_ne_zero (Real.sqrt_pos.2 (hpos k)).ne')`. Use `⟨fun q => c q.1 * z q, ⟨fun k => ?_, eval_eq_zero_of_smul hP c z hz.2⟩, proj_smul c hc z⟩` and prove the remaining obligations.
+
+Simplify using `only [norm_mul, mul_pow, ← Finset.mul_sum, c, Complex.norm_real, Real.norm_eq_abs, sq_abs, inv_pow]`. Rewrite using `[Real.sq_sqrt (hpos k).le, inv_mul_cancel₀ (hpos k).ne']`. Introduce and unpack `_ ⟨z, hz, rfl⟩`. Conclude with `⟨z, ⟨hne z hz, hz.2⟩, rfl⟩`. Rewrite using `[← isCompact_iff_compactSpace, hE]`.
+
+Conclude with `hS.image_of_continuousOn (continuousOn_proj.mono hne)`.
+-/
 theorem compactSpace_pts {P : Ideal (MvPolynomial (Σ k, ι k) ℂ)} (hP : IsMultiHomogIdeal P) :
     CompactSpace (Pts P) := by
   let S : Set ((Σ k, ι k) → ℂ) := {z | (∀ k, ∑ i, ‖z ⟨k, i⟩‖ ^ 2 = 1) ∧ ∀ f ∈ P, eval z f = 0}
@@ -73,6 +99,9 @@ theorem compactSpace_pts {P : Ideal (MvPolynomial (Σ k, ι k) ℂ)} (hP : IsMul
 
 variable {P : Ideal (MvPolynomial (Σ k, ι k) ℂ)}
 
+/- English proof (translation)
+Use `forall_congr' fun k => ?_` and prove the remaining obligations. Establish `h : ((∑ i, ‖rep x ⟨k, i⟩‖ ^ 2 : ℝ) : ℂ) ≠ 0` using `Complex.ofReal_ne_zero.2 (normSq_pos ((rep_mem x).1 k)).ne'`. Rewrite using `[← proj_rep x]`. Simplify using `only [proj, ne_eq, div_eq_zero_iff, h, or_false, mul_eq_zero, map_eq_zero, or_self]`.
+-/
 theorem mem_src_iff (p : (k : K) → ι k) (x : Pts P) :
     x ∈ src P p ↔ ∀ k, x.1 ⟨k, (p k, p k)⟩ ≠ 0 := by
   refine forall_congr' fun k => ?_
@@ -81,12 +110,20 @@ theorem mem_src_iff (p : (k : K) → ι k) (x : Pts P) :
   rw [← proj_rep x]
   simp only [proj, ne_eq, div_eq_zero_iff, h, or_false, mul_eq_zero, map_eq_zero, or_self]
 
+/- English proof (translation)
+Establish `: src P p = ⋂ k, {x : Pts P | x.1 ⟨k, (p k, p k)⟩ ≠ 0}`. Use extensionality with `x`. Simplify using `[mem_src_iff]`. Rewrite using `[this]`. Conclude with `isOpen_iInter_of_finite fun k => isOpen_ne_fun ((continuous_apply _).comp continuous_subtype_val) continuous_const`.
+-/
 theorem isOpen_alt_bis (p : (k : K) → ι k) : IsOpen (src P p) := by
   have : src P p = ⋂ k, {x : Pts P | x.1 ⟨k, (p k, p k)⟩ ≠ 0} := by
     ext x; simp [mem_src_iff]
   rw [this]
   exact isOpen_iInter_of_finite fun k => isOpen_ne_fun ((continuous_apply _).comp continuous_subtype_val) continuous_const
 
+/- English proof (translation)
+Take `⟨k, i⟩` from `q`. Establish `h : ((∑ i, ‖rep x ⟨k, i⟩‖ ^ 2 : ℝ) : ℂ) ≠ 0` using `Complex.ofReal_ne_zero.2 (normSq_pos ((rep_mem x).1 k)).ne'`. Establish `h1 : rep x ⟨k, p k⟩ ≠ 0` using `hx k`. Establish `h2 : starRingEnd ℂ (rep x ⟨k, p k⟩) ≠ 0` using `by simpa using h1`. Rewrite using `[← proj_rep x]`.
+
+Simplify using `only [proj, affCoord]`. Rewrite using `[div_div_div_cancel_right₀ h, mul_div_mul_right _ _ h2]`.
+-/
 theorem affCoord_rep (p : (k : K) → ι k) (x : Pts P) (hx : x ∈ src P p) (q : Σ k, ι k) :
     affCoord p (rep x) q = x.1 ⟨q.1, (q.2, p q.1)⟩ / x.1 ⟨q.1, (p q.1, p q.1)⟩ := by
   obtain ⟨k, i⟩ := q
@@ -98,12 +135,22 @@ theorem affCoord_rep (p : (k : K) → ι k) (x : Pts P) (hx : x ∈ src P p) (q 
   simp only [proj, affCoord]
   rw [div_div_div_cancel_right₀ h, mul_div_mul_right _ _ h2]
 
+/- English proof (translation)
+Establish `hA : affCoord p (rep x) = fun q => (rep x ⟨q.1, p q.1⟩)⁻¹ * rep x q`. Use function extensionality and compare the values at `q`. Simplify using `[affCoord, div_eq_inv_mul]`. Rewrite using `[hA, proj_smul (fun k => (rep x ⟨k, p k⟩)⁻¹) (fun k => inv_ne_zero (hx k)), proj_rep]`.
+-/
 theorem proj_affCoord (p : (k : K) → ι k) (x : Pts P) (hx : x ∈ src P p) :
     proj (affCoord p (rep x)) = x.1 := by
   have hA : affCoord p (rep x) = fun q => (rep x ⟨q.1, p q.1⟩)⁻¹ * rep x q := by
     funext q; simp [affCoord, div_eq_inv_mul]
   rw [hA, proj_smul (fun k => (rep x ⟨k, p k⟩)⁻¹) (fun k => inv_ne_zero (hx k)), proj_rep]
 
+/- English proof (translation)
+Establish `hc : Continuous (fun x : src P p => affCoord p (rep x.1))`. Use `continuous_pi fun q => ?_` and prove the remaining obligations. Simplify using `only [affCoord_rep p _ (Subtype.prop _)]`. Establish `hv : ∀ r : (Σ k, ι k × ι k), Continuous fun a : src P p => a.1.1 r` using `fun r => (continuous_apply r).comp (continuous_subtype_val.comp continuous_subtype_val)`. Conclude with `Continuous.div (hv _) (hv _) fun x => (mem_src_iff p x.1).1 x.2 q.1`.
+
+Set `U : Set ((Σ k, ι k) → ℂ)` to `{z | ∀ k, ∃ i, z ⟨k, i⟩ ≠ 0}`. Establish `hU : ∀ x : src P p, affCoord p (rep x.1) ∈ U` using `fun x k => ⟨p k, by simpa [affCoord] using x.2 k⟩`. Set `f : src P p → U` to `fun x => ⟨_, hU x⟩`. Establish `hf : Continuous f` using `hc.subtype_mk _`. Establish `hg : Continuous (U.restrict proj)` using `continuousOn_proj.restrict`.
+
+Establish `hgf : U.restrict proj ∘ f = Subtype.val ∘ Subtype.val`. Use function extensionality and compare the values at `x`. Conclude with `proj_affCoord p x.1 x.2`. Establish `he : Topology.IsEmbedding f` using `Topology.IsEmbedding.of_comp hf hg (hgf ▸ Topology.IsEmbedding.subtypeVal.comp Topology.IsEmbedding.subtypeVal)`. Conclude with `Topology.IsEmbedding.subtypeVal.comp he`.
+-/
 theorem isEmbedding_affCoord (p : (k : K) → ι k) :
     Topology.IsEmbedding (fun x : src P p => affCoord p (rep x.1)) := by
   have hc : Continuous (fun x : src P p => affCoord p (rep x.1)) := by
@@ -125,6 +172,9 @@ theorem isEmbedding_affCoord (p : (k : K) → ι k) :
       (hgf ▸ Topology.IsEmbedding.subtypeVal.comp Topology.IsEmbedding.subtypeVal)
   exact Topology.IsEmbedding.subtypeVal.comp he
 
+/- English proof (translation)
+Establish `h : Topology.IsEmbedding (fun y : (Σ k, ι k) → ℂ => (renPt y : Fin (Fintype.card (Σ k, ι k)) → ℂ))` using `Function.LeftInverse.isEmbedding (f := fun t => t ∘ Fintype.equivFin (Σ k, ι k)) (fun y => by funext q; simp [renPt]) (by fun_prop) (by fun_prop)`. Conclude with `h.comp (isEmbedding_affCoord p)`.
+-/
 theorem isEmbedding_coord (p : (k : K) → ι k) :
     Topology.IsEmbedding (fun x : src P p => coord P p x) := by
   have h : Topology.IsEmbedding
@@ -133,6 +183,9 @@ theorem isEmbedding_coord (p : (k : K) → ι k) :
       (fun y => by funext q; simp [renPt]) (by fun_prop) (by fun_prop)
   exact h.comp (isEmbedding_affCoord p)
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨compactSpace_pts hP, fun p => ⟨isOpen_alt_bis p, isEmbedding_coord p⟩⟩`.
+-/
 theorem compact_open_embedding (K : Type) [Fintype K] (ι : K → Type) [∀ k, Fintype (ι k)]
     (P : Ideal (MvPolynomial (Σ k, ι k) ℂ)) (hP : IsMultiHomogIdeal P) :
     CompactSpace (Pts P) ∧ ∀ p : (k : K) → ι k,

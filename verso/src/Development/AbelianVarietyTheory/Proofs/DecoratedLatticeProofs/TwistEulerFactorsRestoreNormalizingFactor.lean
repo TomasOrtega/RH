@@ -23,6 +23,11 @@ namespace GlobalTheory.ChainTw
 
 open GlobalTheory.LFun in
 
+/- English proof (translation)
+Establish `hI : Finset.Icc (t + 1) (t + a) = Finset.Ioc t (a + t)`. Use extensionality with `n`. Simplify using `only [Finset.mem_Icc, Finset.mem_Ioc]`. Use linear arithmetic over natural numbers and integers. Establish `he : etaU E v = 1` using `by unfold etaU; exact if_pos hv`.
+
+Rewrite using `[dv_center, hI, ← Finset.prod_inv_distrib]`. Use `Finset.prod_congr rfl fun n _ => ?_` and prove the remaining obligations. Rewrite using `[locL, etaFam_of_unram (isUnram_of_isSplit h2 hv), he, one_pow, eulerFac_singleton, Units.val_one, one_mul, npow, Complex.cpow_neg, Complex.cpow_natCast]`.
+-/
 theorem dv_center_of_isSplit {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
     (h2 : Module.finrank F E = 2) {v : HeightOneSpectrum (𝓞 F)} (hv : Formalism.MainNotions.SchurIrreducible.IsSplit (E := E) v) (a t : ℕ) :
     dv E a (a + t) v ((t : ℂ) / 2) =
@@ -35,6 +40,27 @@ theorem dv_center_of_isSplit {F E : Type} [Field F] [NumberField F] [Field E] [N
   rw [locL, etaFam_of_unram (isUnram_of_isSplit h2 hv), he, one_pow, eulerFac_singleton, Units.val_one, one_mul,
     npow, Complex.cpow_neg, Complex.cpow_natCast]
 
+/- English proof (translation)
+Introduce `D c w hw a`. Take `⟨hS, hQS₀, hinj, hsplit, -⟩` from `GlobalTheory.T.chainTwistPlaces_split_unramifiedQuotients D c w hw`. Establish `ht : 0 < ((D.R.t : ℂ) / 2).re`. Establish `h3` using `D.R.three_m_lt_t`. Establish `h1 : (1 : ℝ) ≤ D.R.t` using `by exact_mod_cast (by omega : 1 ≤ D.R.t)`.
+
+Simplify using `only [Complex.div_ofNat_re, Complex.natCast_re]`. Combine the linear equalities and inequalities to obtain the conclusion. Use `set s : ℂ := (D.R.t : ℂ) / 2 with hs_def`. Use `set f : HeightOneSpectrum (𝓞 D.host.F) → ℂ := fun v => GlobalTheory.LFun.dv D.host.E a (a + D.R.t) v s with hf`. Use `set Qv : Finset (HeightOneSpectrum (𝓞 D.host.F)) := w.Q.image fun PP => PP.under (𝓞 D.host.F) with hQv`.
+
+Establish `h0` using `(hasProd_subtype_iff_mulIndicator (s := {v | v ∉ w.S₀}) (f := f)).1 (GlobalTheory.LFun.hasProd_dv w.S₀ a (a + D.R.t) ht).multipliable.hasProd`. Establish `h1` using `(hasProd_subtype_iff_mulIndicator (s := {v | v ∉ (c.S : Set (HeightOneSpectrum (𝓞 D.host.F)))}) (f := f)).1 (GlobalTheory.LFun.hasProd_dv (c.S : Set (HeightOneSpectrum (𝓞 D.host.F))) a (a + D.R.t) ht).multipliable.hasProd`. Establish `h2` using `(hasProd_subtype_iff_mulIndicator (s := (Qv : Set (HeightOneSpectrum (𝓞 D.host.F)))) (f := f)).1 (Finset.hasProd Qv f)`. Establish `hmem : ∀ v, v ∈ Qv ↔ ∃ PP ∈ w.Q, PP.under (𝓞 D.host.F) = v` using `fun v => by simp [hQv]`. Establish `hsplitf : Set.mulIndicator {v | v ∉ w.S₀} f = Set.mulIndicator {v | v ∉ (c.S : Set (HeightOneSpectrum (𝓞 D.host.F)))} f * Set.mulIndicator (Qv : Set _) f`.
+
+Use function extensionality and compare the values at `v`. Simplify using `only [Pi.mul_apply, Set.mulIndicator_apply, Set.mem_ofPred_eq, Finset.mem_coe]`. Distinguish the cases in `hq : v ∈ Qv`. Take `⟨PP, hPP, rfl⟩` from `(hmem _).1 hq`. Establish `hc : PP.under (𝓞 D.host.F) ∈ c.S` using `(hS _).2 (Or.inr ⟨PP, hPP, rfl⟩)`.
+
+Simplify using `[hQS₀ PP hPP, hc, hq]`. Distinguish the cases in `h0' : v ∈ w.S₀`. Establish `hc : v ∈ c.S` using `(hS _).2 (Or.inl h0')`. Simplify using `[h0', hc, hq]`. Establish `hc : v ∉ c.S` using `fun hc => ((hS _).1 hc).elim h0' fun hx => hq ((hmem _).2 hx)`.
+
+Simplify using `[h0', hc, hq]`. Rewrite `h0` using `[hsplitf]`. Establish `key : GlobalTheory.LFun.dSfun D.host.E w.S₀ a (a + D.R.t) s = GlobalTheory.LFun.dSfun D.host.E (c.S : Set (HeightOneSpectrum (𝓞 D.host.F))) a (a + D.R.t) s * ∏ v ∈ Qv, f v` using `h0.unique (h1.mul h2)`. Establish `hloc : ∀ PP ∈ w.Q, f (PP.under (𝓞 D.host.F)) = ((zinv PP D.R.t (a + D.R.t) : ℝ) : ℂ)⁻¹`. Introduce `PP hPP`.
+
+Take `⟨hsp, hN, -⟩` from `hsplit PP hPP`. Use `show GlobalTheory.LFun.dv D.host.E a (a + D.R.t) (PP.under (𝓞 D.host.F)) ((D.R.t : ℂ) / 2) = _`. Rewrite using `[dv_center_of_isSplit D.sp.cm.deg2 hsp, hN, zinv]`. Use `push_cast`. Both sides reduce to the same expression.
+
+Establish `hprod : ∏ v ∈ Qv, f v = (((∏ PP ∈ w.Q, zinv PP D.R.t (a + D.R.t) : ℝ)) : ℂ)⁻¹`. Rewrite using `[hQv, Finset.prod_image (fun x hx y hy h => hinj hx hy h), Finset.prod_congr rfl hloc, Finset.prod_inv_distrib]`. Use `push_cast`. Both sides reduce to the same expression. Establish `hne : GlobalTheory.LFun.dSfun D.host.E w.S₀ a (a + D.R.t) s ≠ 0` using `GlobalTheory.LFun.dSfun_ne_zero_of_re_pos _ _ _ ht`.
+
+Rewrite `key` using `[hprod]`. Establish `hZ : (((∏ PP ∈ w.Q, zinv PP D.R.t (a + D.R.t) : ℝ)) : ℂ) ≠ 0`. Introduce `h0`. Apply `hne` to reduce the goal to its premises. Rewrite using `[key, h0, _root_.inv_zero, mul_zero]`.
+
+Use `⟨hne, ?_⟩` and prove the remaining obligations. Rewrite using `[key, mul_assoc, inv_mul_cancel₀ hZ, mul_one]`.
+-/
 theorem dSfun_twist_restore : ∀ (D : D7) (c : Com D) (w : Twist D), w.Is c → ∀ a : ℕ, GlobalTheory.LFun.dSfun D.host.E w.S₀ a (a + D.R.t) ((D.R.t : ℂ) / 2) ≠ 0 ∧ GlobalTheory.LFun.dSfun D.host.E (c.S : Set (HeightOneSpectrum (𝓞 D.host.F))) a (a + D.R.t) ((D.R.t : ℂ) / 2) = GlobalTheory.LFun.dSfun D.host.E w.S₀ a (a + D.R.t) ((D.R.t : ℂ) / 2) * ((∏ PP ∈ w.Q, zinv PP D.R.t (a + D.R.t) : ℝ) : ℂ) := by
   intro D c w hw a
   classical

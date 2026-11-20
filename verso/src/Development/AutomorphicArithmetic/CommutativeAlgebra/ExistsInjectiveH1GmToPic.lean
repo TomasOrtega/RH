@@ -22,6 +22,9 @@ private def SF (F : Shv ℤ) : CommRingCat.{0} ⥤ AddCommGrpCat.{1} :=
 private def SFd {F G : Shv ℤ} (φ : F ⟶ G) : SF F ⟶ SF G :=
   Functor.whiskerLeft _ (Functor.whiskerRight φ.hom _)
 
+/- English proof (translation)
+Use `show (F.obj.map (Spec.map g).op).hom ((F.obj.map (Spec.map f).op).hom x) = (F.obj.map (Spec.map (f ≫ g)).op).hom x`. Rewrite using `[Spec.map_comp, op_comp, Functor.map_comp, ModuleCat.hom_comp, LinearMap.comp_apply]`.
+-/
 private theorem res_res (F : Shv ℤ) {R S T : CommRingCat.{0}} (f : R ⟶ S) (g : S ⟶ T) (x : Sec F (Spec R)) :
     (Sec.res (Spec.map g) (Sec.res (Spec.map f) x) : Sec F (Spec T)) = Sec.res (Spec.map (f ≫ g)) x := by
   show (F.obj.map (Spec.map g).op).hom ((F.obj.map (Spec.map f).op).hom x) =
@@ -31,10 +34,18 @@ private theorem res_res (F : Shv ℤ) {R S T : CommRingCat.{0}} (f : R ⟶ S) (g
 private def uS (R : CommRingCat.{0}) (u : Rˣ) : Sec Gm (Spec R) :=
   unitSec (Units.map (Scheme.ΓSpecIso R).inv.hom.toMonoidHom u)
 
+/- English proof (translation)
+Unfold `uS`. Rewrite using `[map_mul, unitSec_mul]`.
+-/
 private theorem uS_mul (R : CommRingCat.{0}) (u v : Rˣ) : uS R (u * v) = uS R u + uS R v := by
   unfold uS
   rw [map_mul, unitSec_mul]
 
+/- English proof (translation)
+Unfold `uS`. Rewrite using `[unitSec_res]`. Use `congr 1`. Use `ext`. Express the relevant statement in the definitionally equal form `((Scheme.ΓSpecIso R).inv ≫ (Spec.map f).appTop).hom (u : R) = (f ≫ (Scheme.ΓSpecIso S).inv).hom (u : R)`.
+
+Rewrite using `[Scheme.ΓSpecIso_inv_naturality]`.
+-/
 private theorem uS_res {R S : CommRingCat.{0}} (f : R ⟶ S) (u : Rˣ) :
     Sec.res (Spec.map f) (uS R u) = uS S (Units.map f.hom.toMonoidHom u) := by
   unfold uS
@@ -45,6 +56,9 @@ private theorem uS_res {R S : CommRingCat.{0}} (f : R ⟶ S) (u : Rˣ) :
     (f ≫ (Scheme.ΓSpecIso S).inv).hom (u : R)
   rw [Scheme.ΓSpecIso_inv_naturality]
 
+/- English proof (translation)
+Establish `h2 : Function.Bijective (Units.map (Scheme.ΓSpecIso R).inv.hom.toMonoidHom)`. Set `e : R ≃+* Γ(Spec R, ⊤)` to `(Scheme.ΓSpecIso R).symm.commRingCatIsoToRingEquiv`. Conclude with `(Units.mapEquiv e.toMulEquiv).bijective`. Establish `h1 : Function.Bijective (unitSec (U` using `Spec R)) := UpperTheory.unitSections_multiplicativeGroup_bijective_affine R`. Conclude with `h1.comp h2`.
+-/
 private theorem uS_bij (R : CommRingCat.{0}) : Function.Bijective (uS R) := by
   have h2 : Function.Bijective (Units.map (Scheme.ΓSpecIso R).inv.hom.toMonoidHom) := by
     let e : R ≃+* Γ(Spec R, ⊤) := (Scheme.ΓSpecIso R).symm.commRingCatIsoToRingEquiv
@@ -99,6 +113,17 @@ end UpperTheory.PicD
 
 set_option maxHeartbeats 1000000 in
 open UpperTheory.PicD in
+/- English proof (translation)
+Introduce `A _`. Set `X` to `Spec (CommRingCat.of A)`. Set `Z : AddSubgroup (PD.S1.obj (CommRingCat.of A))` to `((SFd ((res ℤ Gm).d 1 2)).app (CommRingCat.of A)).hom.ker`. Establish `hZ : ∀ z ∈ Z, PD.LocEx z` using `fun z hz => UpperTheory.multiplicativeGroup_oneCocycle_etaleLocally_coboundary A z hz`. Take `⟨ψ, hψ⟩` from `PD.main A Z hZ`.
+
+Establish `hT` using `GlobalTheory.T.cocycle_ev_d_eq_zero_and_mk_eq_zero_iff ℤ X (res ℤ Gm) 0 1 2 (by norm_num) (by norm_num)`. Set `e : Cocycle ((chains ℤ).obj (sp A)) (res ℤ Gm) 1 → Sec ((res ℤ Gm).X 1) X` to `fun α => ev (α : Cochain ((chains ℤ).obj (sp A)) (res ℤ Gm) 1) 0 1 (by norm_num) X (𝟙 X)`. Establish `hmem : ∀ α, e α ∈ Z` using `fun α => AddMonoidHom.mem_ker.mpr (hT.2 α).1`. Set `τ : Cocycle ((chains ℤ).obj (sp A)) (res ℤ Gm) 1 →+ Z` to `{ toFun := fun α => ⟨e α, hmem α⟩ map_zero' := by`. Use `ext`.
+
+Conclude with `((GlobalTheory.T.etaleCochainEvalOnSimplex_basic_properties ℤ).1 (0 : Cochain ((chains ℤ).obj (sp A)) (res ℤ Gm) 1) 0 0 1 (by norm_num) X (𝟙 X)).2.2.1`. Use the proof step `map_add' := by`. Introduce `α β`. Use `ext`. Conclude with `((GlobalTheory.T.etaleCochainEvalOnSimplex_basic_properties ℤ).1 (α : Cochain ((chains ℤ).obj (sp A)) (res ℤ Gm) 1) β 0 1 (by norm_num) X (𝟙 X)).1 }`.
+
+Establish `hf : coboundaries ((chains ℤ).obj (sp A)) (res ℤ Gm) 1 ≤ (ψ.comp τ).ker`. Introduce `α hα`. Rewrite using `[AddMonoidHom.mem_ker, AddMonoidHom.comp_apply, hψ]`. Conclude with `((hT.2 α).2.mp ((CohomologyClass.mk_eq_zero_iff α).mpr hα))`. Use `⟨CohomologyClass.descAddMonoidHom (ψ.comp τ) hf, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[injective_iff_map_eq_zero]`. Introduce `c hc`. Take `⟨α, rfl⟩` from `CohomologyClass.mk_surjective c`. Rewrite `hc` using `[CohomologyClass.descAddMonoidHom_cohomologyClass, AddMonoidHom.comp_apply, hψ]`. Conclude with `(hT.2 α).2.mpr hc`.
+-/
 theorem UpperTheory.exists_injective_h1_gm_to_pic :
     ∀ (A : Type) [CommRing A], ∃ φ : H ℤ (sp A) Gm 1 →+ Additive (CommRing.Pic A), Function.Injective φ := by
   intro A _

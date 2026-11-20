@@ -18,6 +18,9 @@ open GlobalTheory.IndefiniteRowSideFullHecke.SkewGramHalfModule GlobalTheory.Kap
 
 variable {D : D7} {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
 
+/- English proof (translation)
+Use extensionality with `i j`. Simplify using `only [Matrix.mul_apply, Matrix.map_apply, rat, map_sum]`. Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Rewrite using `[mul_comm, BoxModel.incA_mul_ι, mul_comm]`.
+-/
 theorem ι_mul_rat (p : Place D k) {l m r : ℕ} (N : Matrix (Fin r) (Fin l) k) (M : Matrix (Fin l) (Fin m) D.host.E) :
     (N.map p.ι : Mx D r l) * rat M = (N * M.map p.pr).map p.ι := by
   ext i j
@@ -25,6 +28,13 @@ theorem ι_mul_rat (p : Place D k) {l m r : ℕ} (N : Matrix (Fin r) (Fin l) k) 
   refine Finset.sum_congr rfl fun a _ => ?_
   rw [mul_comm, BoxModel.incA_mul_ι, mul_comm]
 
+/- English proof (translation)
+Establish `hm : ∀ {a b : ℕ} (M : Matrix (Fin a) (Fin b) D.host.E), M.map p.pr = M.map (BoxModel.prH p)` using `fun _ => rfl`. Use extensionality with `r c`. Break down `c with a | ⟨⟨⟩⟩` into its components or cases. Establish `: (B.o.qB.map p.pr * F.β) r (Sum.inl a) = (B.o.qB.map p.pr * (B.o.iA.map p.pr * FA.β)) r a`. Simplify using `only [Matrix.mul_apply (M := B.o.qB.map p.pr), h.1]`.
+
+Rewrite using `[this, ← Matrix.mul_assoc, ← BoxModel.map_pr_mul, B.o.qB_iA, hm]`. Simplify using the standard rewrite rules. Establish `h1 : B.o.qB *ᵥ vecB B.o B.ζ = B.ζ`. Rewrite using `[vecB, Matrix.mulVec_mulVec, B.o.qB_iB, Matrix.one_mulVec]`. Establish `h2 : p.pr (B.ζ r) = ∑ j, p.pr (B.o.qB r j) * p.pr (vecB B.o B.ζ j)` using `by conv_lhs => rw [← h1]`.
+
+Express the relevant statement in the definitionally equal form `BoxModel.prH p (∑ j, B.o.qB r j * vecB B.o B.ζ j) = ∑ j, BoxModel.prH p _ * BoxModel.prH p _`. Simplify using `only [map_sum, map_mul]`. Rewrite using `[fromCols_apply_inr, Matrix.of_apply, h2, Finset.mul_sum, Matrix.mul_apply]`. Simplify using `only [h.2, Matrix.map_apply]`. Conclude with `Finset.sum_congr rfl fun j _ => by ring`.
+-/
 theorem qB_β (p : Place D k) {n : Type} [Fintype n] [DecidableEq n] {ρ : ℕ} (B : BesLev D ρ) (s : k)
     (FA : Frame k B.A.rank n) (F : Frame k B.V₀.rank (n ⊕ Unit)) (h : p.IsCoreFrame B s FA F) :
     B.o.qB.map p.pr * F.β = fromCols 0 (Matrix.of fun r _ => s * p.pr (B.ζ r)) := by
@@ -46,6 +56,11 @@ theorem qB_β (p : Place D k) {n : Type} [Fintype n] [DecidableEq n] {ρ : ℕ} 
     simp only [h.2, Matrix.map_apply]
     exact Finset.sum_congr rfl fun j _ => by ring
 
+/- English proof (translation)
+Establish `h1 : fromCols (0 : Matrix m n k) y * F.γ * B.o.iA.map p.pr * FA.β = 0`. Use extensionality with `r a`. Establish `: (fromCols (0 : Matrix m n k) y * F.γ * B.o.iA.map p.pr * FA.β) r a = (fromCols (0 : Matrix m n k) y * F.γ * F.β) r (Sum.inl a)`. Rewrite using `[Matrix.mul_assoc (_ * F.γ)]`. Simplify using `only [Matrix.mul_apply (M := fromCols (0 : Matrix m n k) y * F.γ), h.1]`.
+
+Rewrite using `[this, Matrix.mul_assoc, F.γβ, Matrix.mul_one]`. Simplify using the standard rewrite rules. Rewrite using `[← Matrix.mul_one (_ * B.o.iA.map p.pr), ← FA.βγ, ← Matrix.mul_assoc, h1, Matrix.zero_mul]`.
+-/
 theorem line_γ_iA (p : Place D k) {n m : Type} [Fintype n] [DecidableEq n] {ρ : ℕ} (B : BesLev D ρ) (s : k)
     (FA : Frame k B.A.rank n) (F : Frame k B.V₀.rank (n ⊕ Unit)) (h : p.IsCoreFrame B s FA F)
     (y : Matrix m Unit k) :
@@ -60,12 +75,24 @@ theorem line_γ_iA (p : Place D k) {n m : Type} [Fintype n] [DecidableEq n] {ρ 
     simp
   rw [← Matrix.mul_one (_ * B.o.iA.map p.pr), ← FA.βγ, ← Matrix.mul_assoc, h1, Matrix.zero_mul]
 
+/- English proof (translation)
+Use `conv_rhs => rw [← starAdj_ofAdj L S z]`. Rewrite using `[hO_eq_trace, starAdj, Matrix.smul_mul, Matrix.trace_smul, smul_eq_mul]`. Simplify using `only [Matrix.mul_assoc]`.
+-/
 theorem xi_mul_hO (L S : HSp D) (Y : WO L S) (z : Mx D L.rank S.rank) :
     incA D D.host.xi0 * hO L S Y (ofAdj L S z) = (z * Y).trace := by
   conv_rhs => rw [← starAdj_ofAdj L S z]
   rw [hO_eq_trace, starAdj, Matrix.smul_mul, Matrix.trace_smul, smul_eq_mul]
   simp only [Matrix.mul_assoc]
 
+/- English proof (translation)
+Rewrite using `[qB_β p B' _ FA' F₀' h', ← Matrix.mul_assoc, ← BoxModel.map_pr_mul]`. Establish `h1 : (B.o.iB * l.τ) *ᵥ B'.ζ = -vecB B.o B.ζ`. Rewrite using `[← Matrix.mulVec_mulVec, l.map, Matrix.mulVec_neg, vecB]`. Use extensionality with `r c`. Break down `c with a | ⟨⟨⟩⟩` into its components or cases.
+
+Simplify using `[Matrix.mul_apply, Matrix.single_apply]`. Establish `h2 : ∑ j, p.pr ((B.o.iB * l.τ) r j) * p.pr (B'.ζ j) = -p.pr (vecB B.o B.ζ r)`. Use `congrArg (fun v => BoxModel.prH p (v r)) h1` as an intermediate fact. Simplify using `only [Matrix.mulVec, dotProduct, map_sum, map_mul, Pi.neg_apply, map_neg] at this`. Conclude with `this`.
+
+Establish `h3 : (F₀.β * (Matrix.single (Sum.inr ()) (Sum.inr ()) (-p.xi) : Matrix (n' ⊕ Unit) (n'' ⊕ Unit) k)) r (Sum.inr ()) = F₀.β r (Sum.inr ()) * -p.xi`. Simplify using `[Matrix.mul_apply, Matrix.single_apply]`. Rewrite using `[h3, h.2, Matrix.mul_apply]`. Simplify using `only [fromCols_apply_inr, Matrix.of_apply, Matrix.map_apply]`. Combine the equalities or inequalities in the displayed calculation.
+
+Rewrite using `[Finset.mul_sum]; exact Finset.sum_congr rfl fun j _ => by ring`. Use `_ = _ := by rw [h2]; ring`.
+-/
 theorem link_frames (p : Place D k) {ρ σ : ℕ} (B : BesLev D ρ) (B' : BesLev D σ) (l : Link B B'.L B'.ζ) (s : k)
     {n' n'' : Type} [Fintype n'] [DecidableEq n'] [Fintype n''] [DecidableEq n'']
     (FA : Frame k B.A.rank n') (F₀ : Frame k B.V₀.rank (n' ⊕ Unit))
@@ -92,6 +119,27 @@ theorem link_frames (p : Place D k) {ρ σ : ℕ} (B : BesLev D ρ) (B' : BesLev
           rw [Finset.mul_sum]; exact Finset.sum_congr rfl fun j _ => by ring
       _ = _ := by rw [h2]; ring
 
+/- English proof (translation)
+Introduce `D k _ _ _ _ p ψ hψ ψk hk ρ σ B B' l S s _ n n' n'' _ _ _ _ _ _ FA F₀ FS FA' F₀' h h' y₀`. Establish `hxi : p.xi ≠ 0` using `(GlobalTheory.LocChar.weil_char_split D k p ψ hψ).2.2.1`. Establish `hτ : l.τ ≠ 0`. Introduce `h0`. Establish `h1` using `l.map`.
+
+Rewrite `h1` using `[h0, Matrix.zero_mulVec, eq_comm, neg_eq_zero]`. Conclude with `B.line.2 (by rw [h1, Matrix.mulVec_zero, dotProduct_zero])`. Take `⟨τi, -, hi⟩` from `LinkGram.exists_inv_of_rank_one B.line.1 B'.line.1 l.τ hτ`. Use `set M : Matrix n (n' ⊕ Unit) k := fromCols 0 (Matrix.of fun r _ => y₀ r) with hM`. Use `set Y : WO B.L S := p.up F₀ FS M * B.o.jB with hY`.
+
+Establish `hYh : IsHalf p.e Y` using `isHalf_mul_right _ (GlobalTheory.LocSympl.up_half p F₀ FS M)`. Establish `hκ : l.κ S (rat τi * starAdj B.L S Y) = Y`. Rewrite using `[Link.κ, ← Matrix.mul_assoc, ← rat_mul, hi, rat_one, Matrix.one_mul, LinkGram.ofAdj_starAdj]`. Use `⟨rat τi * starAdj B.L S Y, ?_, ?_, fun t => ?_⟩` and prove the remaining obligations. Rewrite using `[hκ, AddEquiv.eq_symm_apply, OrthDec.resS_apply]`.
+
+Use `Prod.ext ?_ rfl` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `(FS.β * M * F₀.γ).map p.ι * rat B.o.iA = 0`. Rewrite using `[ι_mul_rat, Matrix.mul_assoc FS.β, Matrix.mul_assoc FS.β, hM, line_γ_iA p B s FA F₀ h]`. Simplify using the standard rewrite rules. Rewrite using `[OrthDec.resT_symm_apply, Matrix.mul_zero, zero_add]`.
+
+Conclude with `isHalf_mul_left _ (isHalf_mul_left _ (isHalf_smul _ (isHalf_mul_left _ (isHalf_mul_right _ (isHalf_cA_adj hYh)))))`. Rewrite using `[GlobalTheory.LocSympl.psi_sympl_up p FS F₀' ψ ψk hk, OrthDec.hO_resT _ S, AddEquiv.apply_symm_apply, OrthDec.resT_apply]`. Establish `hg` using `(LinkGram.link_gram D ρ B B'.L B'.ζ B'.line l).1`. Establish `h0 : ∀ u : WO S B'.A, hO S B'.A u 0 = 0` using `fun u => by`. Rewrite using `[hO_eq_trace, adj_zero, Matrix.zero_mul, Matrix.mul_zero, Matrix.trace_zero]`.
+
+Establish `h1` using `GlobalTheory.LinkKappa.hO_ofAdj B.L B'.L S l.τ _ hg (rat τi * starAdj B.L S Y) (B'.o.pB * p.up FS F₀' t)`. Rewrite `h1` using `[Int.cast_one, map_one, one_mul]`. Express the relevant statement in the definitionally equal form `hO B.L S (l.κ S _) _ = _ at h1`. Rewrite `h1` using `[hκ]`. Establish `h2` using `congrArg p.π (xi_mul_hO B.L S Y (rat l.τ * (B'.o.pB * p.up FS F₀' t)))`.
+
+Rewrite `h2` using `[h1, map_mul]`. Establish `h3 : p.π (rat l.τ * (B'.o.pB * p.up FS F₀' t) * Y).trace = p.xi * -(t (Sum.inr ()) ⬝ᵥ y₀)`. Establish `e1 : rat l.τ * (B'.o.pB * p.up FS F₀' t) = (l.τ.map p.pr * (B'.o.qB.map p.pr * (F₀'.β * t * FS.γ))).map p.ι`. Rewrite using `[← BoxModel.rat_mul_ι, ← BoxModel.rat_mul_ι]`. Both sides reduce to the same expression.
+
+Establish `e2 : Y = (FS.β * M * F₀.γ * B.o.iB.map p.pr).map p.ι`. Rewrite using `[← ι_mul_rat]`. Both sides reduce to the same expression. Establish `e3 : ∀ {a b : ℕ} (N : Matrix (Fin a) (Fin b) k), (N.map p.ι).map p.π = N` using `fun N => by`. Use extensionality with `i j`.
+
+Conclude with `p.π_ι _`. Rewrite using `[AddMonoidHom.map_trace p.π, Matrix.map_mul, e1, e2, e3, e3, ← Matrix.mul_assoc _ _ (B.o.iB.map p.pr), Matrix.trace_mul_comm]`. Establish `e4 : B.o.iB.map p.pr * (l.τ.map p.pr * (B'.o.qB.map p.pr * (F₀'.β * t * FS.γ)) * (FS.β * M * F₀.γ)) = (B.o.iB.map p.pr * (l.τ.map p.pr * (B'.o.qB.map p.pr * F₀'.β))) * (t * (FS.γ * FS.β) * M) * F₀.γ`. Simplify using `only [Matrix.mul_assoc]`. Rewrite using `[e4, link_frames p B B' l s FA F₀ FA' F₀' h h', FS.γβ, Matrix.mul_one, Matrix.trace_mul_comm, ← Matrix.mul_assoc F₀.γ, ← Matrix.mul_assoc F₀.γ F₀.β, F₀.γβ, Matrix.one_mul, Matrix.trace_single_mul]`.
+
+Simplify using `[hM, Matrix.mul_apply, dotProduct]`. Rewrite `h2` using `[h3]`. Rewrite using `[h0, zero_add, mul_left_cancel₀ hxi h2]`.
+-/
 theorem frame_col : ∀ (D : D7) (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] (p : Place D k) (ψ : AddChar (AF D.host.F) ℂ), IsStdChar D ψ (-1) → ∀ (ψk : AddChar k Circle), p.IsChar ψ ψk → ∀ (ρ σ : ℕ) (B : BesLev D ρ) (B' : BesLev D σ) (l : Link B B'.L B'.ζ) (S : HSp D) (s : k), s ≠ 0 → ∀ (n n' n'' : Type) [Fintype n] [DecidableEq n] [Fintype n'] [DecidableEq n'] [Fintype n''] [DecidableEq n''] (FA : Frame k B.A.rank n') (F₀ : Frame k B.V₀.rank (n' ⊕ Unit)) (FS : Frame k S.rank n) (FA' : Frame k B'.A.rank n'') (F₀' : Frame k B'.V₀.rank (n'' ⊕ Unit)), p.IsCoreFrame B s FA F₀ → p.IsCoreFrame B' (s * p.xi) FA' F₀' → ∀ y₀ : n → k, ∃ x : WO S B'.L, p.up F₀ FS (fromCols 0 (Matrix.of fun r _ => y₀ r)) = (B.o.resS S).symm (0, l.κ S x) ∧ IsHalf (cA D p.e) ((B'.o.resT S).symm (0, x)) ∧ ∀ t : Matrix (n'' ⊕ Unit) n k, ψ (symplO S B'.V₀ (p.up FS F₀' t) ((B'.o.resT S).symm (0, x))) = ((ψk (-(t (Sum.inr ()) ⬝ᵥ y₀)) : Circle) : ℂ) := by
   intro D k _ _ _ _ p ψ hψ ψk hk ρ σ B B' l S s _ n n' n'' _ _ _ _ _ _ FA F₀ FS FA' F₀' h h' y₀
   have hxi : p.xi ≠ 0 := (GlobalTheory.LocChar.weil_char_split D k p ψ hψ).2.2.1

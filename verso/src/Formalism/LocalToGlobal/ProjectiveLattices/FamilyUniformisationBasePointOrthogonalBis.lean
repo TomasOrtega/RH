@@ -21,6 +21,9 @@ def muPin (V : HSp D) {X : Comp → Data E r} (dict : GA D V → Σ k, Frame (X 
     (c : Comp → ℂ) : GA D V → ℂ :=
   fun g => c (dict g).1 * mu g
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem adel_muPin (V : HSp D) {X : Comp → Data E r} (dict : GA D V → Σ k, Frame (X k).Ψ r) (mu : GA D V → ℂ)
     (c : Comp → ℂ) (P : FDSec X) (g : GA D V) :
     adel V dict (muPin V dict mu c) P g = c (dict g).1 * mu g * P (dict g).1 (dict g).2 := rfl
@@ -28,6 +31,11 @@ theorem adel_muPin (V : HSp D) {X : Comp → Data E r} (dict : GA D V → Σ k, 
 def MuVal (V : HSp D) (χ : (AE D)ˣ →* Circle) (mu : GA D V → ℂ) : Prop :=
   (∀ g, ∃ x, IsDetRoot V g x) ∧ ∀ g x, IsDetRoot V g x → mu g = ((χ x : Circle) : ℂ)
 
+/- English proof (translation)
+Take `⟨x, hx⟩` from `h.1 g`. Rewrite using `[h.2 g x hx]`. Use `first`. Consider the case `exact Circle.norm_coe _`. Consider the case `exact Circle.abs_coe _`.
+
+Consider the case `exact mem_sphere_zero_iff_norm.mp (χ x).2`.
+-/
 theorem MuVal.norm {V : HSp D} {χ : (AE D)ˣ →* Circle} {mu : GA D V → ℂ} (h : MuVal V χ mu) (g : GA D V) :
     ‖mu g‖ = 1 := by
   obtain ⟨x, hx⟩ := h.1 g
@@ -133,6 +141,9 @@ def phiJ (j : ℕ) (σ : T.Q.c.F →+* ℂ) (a : (D.host.E →+* ℂ) × ℕ →
   (lieFac (T.Q.Dw j) (xiR D) a : ℂ) •
     adel (T.V j σ) (T.dict j σ) (muPin (T.V j σ) (T.dict j σ) (T.mu j σ) (T.cE j σ)) (rdU (T.U j σ) f)
 
+/- English proof (translation)
+Establish `h1 : adel (T.V j σ) (T.dict j σ) (T.mu j σ) (rdU (T.U j σ) f) g = T.mu j σ g * rdU (T.U j σ) f (T.dict j σ g).1 (T.dict j σ g).2` using `rfl`. Simplify using `only [phiJ, Core.phiAd, Pi.smul_apply, smul_eq_mul, adel_muPin, h1]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem phiJ_apply (j : ℕ) (σ : T.Q.c.F →+* ℂ) (a : (D.host.E →+* ℂ) × ℕ → ℕ) (f : T.R j) (g : GA D (T.V j σ)) :
     T.phiJ j σ a f g = T.cE j σ (T.dict j σ g).1 * T.toCore.phiAd j σ a f g := by
   have h1 : adel (T.V j σ) (T.dict j σ) (T.mu j σ) (rdU (T.U j σ) f) g =

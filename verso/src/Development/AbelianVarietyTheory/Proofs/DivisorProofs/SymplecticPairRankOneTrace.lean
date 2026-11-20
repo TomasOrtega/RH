@@ -12,6 +12,9 @@ noncomputable section
 
 namespace GlobalTheory.SympPure
 
+/- English proof (translation)
+Establish `h1 : a ⊗ₜ[F] e = a • ((1 : R) ⊗ₜ[F] e)`. Rewrite using `[TensorProduct.smul_tmul', smul_eq_mul, mul_one]`. Rewrite using `[h1, map_smul, Algebra.trace_apply, Algebra.trace_apply, ← Algebra.baseChange_lmul, LinearMap.trace_baseChange, smul_eq_mul]`.
+-/
 private theorem trace_tmul_base_change {F E : Type} [Field F] [Field E] [Algebra F E] [FiniteDimensional F E] (R : Type) [CommRing R] [Algebra F R] (a : R) (e : E) :
     Algebra.trace R (R ⊗[F] E) (a ⊗ₜ[F] e) = a * algebraMap F R (Algebra.trace F E e) := by
   have h1 : a ⊗ₜ[F] e = a • ((1 : R) ⊗ₜ[F] e) := by
@@ -19,6 +22,11 @@ private theorem trace_tmul_base_change {F E : Type} [Field F] [Field E] [Algebra
   rw [h1, map_smul, Algebra.trace_apply, Algebra.trace_apply, ← Algebra.baseChange_lmul,
     LinearMap.trace_baseChange, smul_eq_mul]
 
+/- English proof (translation)
+Simplify using `only [form, dotProduct, Matrix.mulVec, Finset.sum_mul, Finset.mul_sum]`. Use `trans ∑ j, ∑ i, ∑ k, ∑ l, ξ i * y j * J i k * K j l * (σ (β k) * σ (x l))`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[Finset.sum_comm]`. Conclude with `Finset.sum_congr rfl fun k _ => Finset.sum_congr rfl fun l _ => by ring`. Conclude with `Finset.sum_comm`.
+-/
 private theorem form_mul_form {F E : Type} [Field F] [Field E] [Algebra F E] (σ : E →ₐ[F] E) {n d : ℕ}
     (J : Matrix (Fin n) (Fin n) E) (K : Matrix (Fin d) (Fin d) E) (ξ β : Fin n → E) (x y : Fin d → E) :
     form σ J ξ β * form σ K y x = ∑ i, ∑ j, ∑ k, ∑ l, ξ i * y j * J i k * K j l * (σ (β k) * σ (x l)) := by
@@ -31,6 +39,11 @@ private theorem form_mul_form {F E : Type} [Field F] [Field E] [Algebra F E] (σ
     exact Finset.sum_congr rfl fun k _ => Finset.sum_congr rfl fun l _ => by ring
   · exact Finset.sum_comm
 
+/- English proof (translation)
+Establish `hc : ∀ e : E, cA σ (inclR (AF F) e) = inclR (AF F) (σ e)` using `fun e => by simp [cA, inclR]`. Establish `hs : ∀ k, (t • incV F β) k = algebraMap (AF F) (AE F E) t * inclR (AF F) (β k)` using `fun k => by`. Rewrite using `[Pi.smul_apply, Algebra.smul_def]`. Both sides reduce to the same expression. Rewrite using `[form_mul_form]`.
+
+Simplify using `only [hTens, Matrix.vecMulVec_apply, hs, incM, Matrix.map_apply, map_mul, AlgHom.commutes, hc, map_sum, Finset.mul_sum]`. Simplify using `only [incV, hc]`. Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => Finset.sum_congr rfl fun k _ => Finset.sum_congr rfl fun l _ => by ring` and prove the remaining obligations.
+-/
 theorem hTens_pure {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) {n d : ℕ}
     (J : Matrix (Fin n) (Fin n) E) (K : Matrix (Fin d) (Fin d) E) (ξ β : Fin n → E) (x y : Fin d → E) (t : AF F) :
     hTens (cA σ) (incM F J) (incM F K) (Matrix.vecMulVec (incV F ξ) (incV F y))
@@ -46,6 +59,9 @@ theorem hTens_pure {F E : Type} [Field F] [NumberField F] [Field E] [NumberField
   refine Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => Finset.sum_congr rfl fun k _ =>
     Finset.sum_congr rfl fun l _ => by ring
 
+/- English proof (translation)
+Rewrite using `[symp, hTens_pure, neg_one_mul, ← mul_neg, ← map_neg, ← Algebra.smul_def, map_smul, smul_eq_mul]`. Use `congr 1`. Conclude with `(trace_tmul_base_change (AF F) 1 _).trans (one_mul _)`.
+-/
 theorem symp_pure {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) {n d : ℕ}
     (J : Matrix (Fin n) (Fin n) E) (K : Matrix (Fin d) (Fin d) E)
     (ξ β : Fin n → E) (x y : Fin d → E) (t : AF F) :

@@ -29,6 +29,11 @@ variable {D : D7} (i : D.nd.Loc) (r : D.nd.X i → (GE D.nd →* GL (Fin D.R.nV)
 set_option maxHeartbeats 4000000 in
 set_option synthInstance.maxHeartbeats 400000 in
 
+/- English proof (translation)
+Introduce `v`. Break down `QS.coverClause i dc Dd v with h | h | ⟨w, hw, J, hJ, hI⟩` into its components or cases. Conclude with `Or.inl h`. Conclude with `Or.inr (Or.inl h)`. Use `Or.inr (Or.inr ⟨w, hw, J, ?_, hI⟩)` and prove the remaining obligations.
+
+Rewrite using `[FS_pos i r π dc g0 eB e₁ s Dd hD hc QS.c1 (by intro h0; have := congrArg Fin.val h0; simp [QS.c1] at this) w]`. Conclude with `hJ`.
+-/
 theorem cover_FS : ∀ v, (∃ a, Ine (F := D.host.E) (Av (D := D) v) ≤ QS.Io i a) ∨
       (∃ a, Ine (F := D.host.E) (Av (D := D) v) ≤ QS.IS i a) ∨
         ∃ w ∈ rowsN i dc ∪ qsN i dc ∪ univ.image (colIdx i dc), ∃ J : Subgroup ((decs D.host.E (Aw i dc)) w),
@@ -131,6 +136,9 @@ def SelmerInequalityTwo : Prop :=
       (FS i r π dc g0 eB e₁ s Dd hD hc QS.c1) (QS.Io i) (QS.IS i) (QS.I i dc) (QS.γQ i dc) (QS.ζ i dc Dd) (QS.ζO i dc) (QS.nQ i dc)) ∧
       (TieRow i dc (rowLenS i r π dc g0 eB e₁ s Dd hD hc hT hrk) lenRow)
 
+/- English proof (translation)
+Take `⟨κ, κz, u, uz, hUz, hUnr, hL1, hL2, hLx, hRho, hBKa, hTB, hChi, hU1, hLoc1, hTie⟩` from `hO`. Conclude with `selmer_inequality_of_inputs i r ρ π dc g0 eB e₁ s Dd hD hc hT hrk hN hP u0 hcyc hK lenRow e' cB κ κz u uz hUz hUnr hL1 hL2 (QS.no_fixed_vector_off_z i r π Dd (QS.ev_of hD) hg6) hLx hRho hBKa hTB hChi hU1 hLoc1 (cover_FS i r π dc g0 eB e₁ s Dd hD hc) (col_not_row i dc) (row_not_q …`.
+-/
 theorem selmer_inequality_two [IsNoetherian Dd.R' Dd.R']
     [∀ x', IsScalarTower Dd.T' Dd.R' (EvalSp (D.nd.O i) (Fin D.R.nV) Dd.R' x')]
     [∀ k, IsScalarTower Dd.T' Dd.R' (blockRestrictedRepresentationType (RepresentationBoundsCohomology.blk D.R) Dd.ρk k)]

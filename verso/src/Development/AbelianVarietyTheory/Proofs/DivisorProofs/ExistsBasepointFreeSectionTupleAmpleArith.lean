@@ -14,6 +14,23 @@ open GlobalTheory GlobalTheory.ArInt GlobalTheory.CxPts GlobalTheory.Cartier Glo
 
 namespace GlobalTheory.HSAmp.NoethGens
 
+/- English proof (translation)
+Proceed by induction on `d with`. Consider the case `zero`. Introduce `Z _ h`. Use `⟨1, Fin.elim0, one_pos, fun l => l.elim0, fun z hz => ?_⟩` and prove the remaining obligations. It suffices to derive a contradiction.
+
+Establish `h₁` using `h (ringChar (X.residueField z))`. Establish `hne : Nonempty ↥(Z ∩ fib X (ringChar (X.residueField z)))` using `⟨⟨z, hz, rfl⟩⟩`. Take `⟨w⟩` from `hne`. Establish `hne' : Nonempty (IrreducibleCloseds ↥(Z ∩ fib X (ringChar (X.residueField z))))` using `⟨⟨closure {w}, isIrreducible_singleton.closure, isClosed_closure⟩⟩`. Establish `h₂ : (0 : WithBot ℕ∞) ≤ topologicalKrullDim ↥(Z ∩ fib X (ringChar (X.residueField z)))` using `Order.krullDim_nonneg`.
+
+Conclude with `absurd h₁ (not_lt.2 (by simpa using h₂))`. Consider the case `succ d ih`. Introduce `Z hZ h`. Take `⟨e, he, f, hf, hlt⟩` from `GlobalTheory.T.exists_section_lowering_fibre_dimension k X p D hX P hP d Z hZ fun ℓ => ENat.WithBot.lt_add_one_iff.1 (by simpa using h ℓ)`. Establish `hnf` using `GlobalTheory.T.regularNonvanishingLocusSection_properties k X p P e 0 f hf`.
+
+Take `⟨e', x, he', hx, hc⟩` from `ih (Z \ NV P e 0 f) (hZ.sdiff hnf.1) hlt`. Establish `c₁ : ((e' * e : ℕ) : ℤ) = (e' : ℤ) * (e : ℤ)` using `Nat.cast_mul _ _`. Establish `c₂ : ((e' * e : ℕ) : ℤ) = (e : ℤ) * (e' : ℤ)` using `by rw [c₁, mul_comm]`. Use `⟨e' * e, Fin.cons (f ^ e') fun l => x l ^ e, Nat.mul_pos he' he, fun l => ?_, fun z hz => ?_⟩` and prove the remaining obligations. Use `Fin.cases ?_ (fun l => ?_) l` and prove the remaining obligations.
+
+Use `(GlobalTheory.VolBr.NuPow.pow_mem_H_and_nu_pow k X p P e 0 f hf e').1` as an intermediate fact. Rewrite `this` using `[mul_zero, ← c₁]`. Simplify `this` using `only [Fin.cons_zero]`. Use `(GlobalTheory.VolBr.NuPow.pow_mem_H_and_nu_pow k X p P e' 0 (x l) (hx l) e).1` as an intermediate fact. Rewrite `this` using `[mul_zero, ← c₂]`.
+
+Simplify `this` using `only [Fin.cons_succ]`. Distinguish the cases in `hzf : z ∈ NV P e 0 f`. Use `⟨0, ?_⟩` and prove the remaining obligations. Use `hnf.2.2.1 e' he'` as an intermediate fact. Rewrite `this` using `[mul_zero, ← c₁]`.
+
+Rewrite using `[Fin.cons_zero, this]`. Conclude with `hzf`. Take `⟨l, hl⟩` from `hc z ⟨hz, hzf⟩`. Use `⟨l.succ, ?_⟩` and prove the remaining obligations. Use `(GlobalTheory.T.regularNonvanishingLocusSection_properties k X p P e' 0 (x l) (hx l)).2.2.1 e he` as an intermediate fact.
+
+Rewrite `this` using `[mul_zero, ← c₂]`. Rewrite using `[Fin.cons_succ, this]`. Conclude with `hl`.
+-/
 theorem exists_cover (k : Type) [CommRing k] (X : Scheme.{0}) [IsIntegral X] (p : X ⟶ Sp k) (D : ℕ)
     (hX : IsArithVar p D) (P : Pair p) (hP : IsAmpleLB P.L.B) (d : ℕ) :
     ∀ Z : Set X, IsClosed Z → (∀ ℓ : ℕ, topologicalKrullDim ↥(Z ∩ fib X ℓ) < d) →
@@ -60,6 +77,9 @@ theorem exists_cover (k : Type) [CommRing k] (X : Scheme.{0}) [IsIntegral X] (p 
         rw [Fin.cons_succ, this]
         exact hl
 
+/- English proof (translation)
+Take `⟨e, x, he, hx, hc⟩` from `exists_cover k X p D hX P hP (D + 1) Set.univ isClosed_univ fun ℓ => by`. Rewrite using `[Set.univ_inter, Nat.cast_add_one]`. Conclude with `ENat.WithBot.lt_add_one_iff.2 ((GlobalTheory.T.projArith_residueCharFibre_structure k X p D hX).2.2.2.1 ℓ)`. Conclude with `⟨e, x, he, hx, fun z => hc z trivial⟩`.
+-/
 theorem exists_gens (k : Type) [CommRing k] (X : Scheme.{0}) [IsIntegral X] (p : X ⟶ Sp k) (D : ℕ)
     (hX : IsArithVar p D) (P : Pair p) (hP : IsAmpleLB P.L.B) :
     ∃ (e : ℕ) (x : Fin (D + 1) → X.functionField), Gens P D e x := by

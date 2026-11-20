@@ -13,6 +13,13 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 variable {D : D7}
 
+/- English proof (translation)
+Take `⟨K, hK, hFK⟩` from `Formalism.IndefR.PHeisFC.FD_sub_compact T S`. Take `⟨B, hB⟩` from `hK.exists_bound_of_continuousOn (hf.cont.norm.continuousOn)`. Use `⟨B, fun w => ?_⟩` and prove the remaining obligations. Take `⟨g, hg, -⟩` from `Formalism.IndefR.PHeisFC.exU T S w`. Take `⟨γ, hγ⟩` from `g.2`.
+
+Establish `h1 : f (g +ᵥ w) = ψ (-(symplOH S T (ratW T S γ) w)) * f w`. Rewrite using `[AddSubgroup.vadd_def, vadd_eq_add, ← hγ]`. Conclude with `hf.quasi γ w`. Establish `h2` using `hB _ (hFK hg)`. Rewrite `h2` using `[h1, norm_mul, Formalism.IndefR.Fin.psi_norm hψ, one_mul, norm_norm]`.
+
+Conclude with `h2`.
+-/
 theorem theta_bounded (ψ : AddChar (AF D.host.F) ℂ) (hψ : IsStdChar D ψ (-1)) (S T : HSp D) {f : WO S T → ℂ}
     (hf : IsThetaFunO ψ S T f) : ∃ B : ℝ, ∀ w, ‖f w‖ ≤ B := by
   obtain ⟨K, hK, hFK⟩ := Formalism.IndefR.PHeisFC.FD_sub_compact T S

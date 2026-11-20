@@ -5,6 +5,11 @@ open scoped TensorProduct Classical
 
 namespace GlobalTheory.LKMid.Pair
 
+/- English proof (translation)
+Establish `hint : IsIntegral G.F (P.γ : G.C)` using `Algebra.IsIntegral.isIntegral _`. Establish `hmon : P.pol.Monic` using `minpoly.monic hint`. Use `⟨?_, hmon⟩` and prove the remaining obligations. Establish `hsep : (P.pol.map φ).Separable` using `P.reg.2.map`. Establish `hdeg : (P.pol.map φ).natDegree = G.n`.
+
+Rewrite using `[Polynomial.natDegree_map]`. Conclude with `P.reg.1`. Rewrite using `[Multiset.toFinset_card_of_nodup (Polynomial.nodup_roots hsep), ← hdeg]`. Conclude with `IsAlgClosed.card_roots_eq_natDegree`.
+-/
 theorem card_roots_map_pol (p : ℕ) [Fact p.Prime] (G : HTGroup p) (P : Pair G) (φ : G.F →+* ℂ) :
     ((P.pol.map φ).roots.toFinset).card = G.n ∧ P.pol.Monic := by
   have hint : IsIntegral G.F (P.γ : G.C) := Algebra.IsIntegral.isIntegral _

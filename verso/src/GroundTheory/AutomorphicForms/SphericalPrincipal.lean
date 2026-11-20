@@ -22,6 +22,9 @@ def charRep (χ : levi F n (id : Fin n → Fin n) →* ℂ) :
   twist χ (Representation.trivial ℂ _ ℂ)
 
 @[simp]
+/- English proof (translation)
+Simplify using `[charRep]`.
+-/
 theorem charRep_apply (χ : levi F n (id : Fin n → Fin n) →* ℂ) (t : levi F n (id : Fin n → Fin n))
     (z : ℂ) : charRep χ t z = χ t * z := by
   simp [charRep]
@@ -45,10 +48,16 @@ def borelChar (χ : levi F n (id : Fin n → Fin n) →* ℂ) : blockUpper F n (
     simp only [map_mul]
     ring
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem borelChar_apply (χ : levi F n (id : Fin n → Fin n) →* ℂ)
     (p : blockUpper F n (id : Fin n → Fin n)) :
     borelChar χ p = sqrtModular F n id p * χ (leviProj F n id p) := rfl
 
+/- English proof (translation)
+Rewrite using `[mem_parabolicIndSpace]`. Simplify using `only [charRep_apply, smul_eq_mul, borelChar_apply, mul_assoc]`.
+-/
 theorem mem_principalSeriesSpace {χ : levi F n (id : Fin n → Fin n) →* ℂ} {f : GL (Fin n) F → ℂ} :
     f ∈ principalSeriesSpace F n χ ↔
       (∀ p : blockUpper F n (id : Fin n → Fin n), ∀ g, f (p * g) = borelChar χ p * f g) ∧
@@ -57,6 +66,13 @@ theorem mem_principalSeriesSpace {χ : levi F n (id : Fin n → Fin n) →* ℂ}
   rw [mem_parabolicIndSpace]
   simp only [charRep_apply, smul_eq_mul, borelChar_apply, mul_assoc]
 
+/- English proof (translation)
+Rewrite `hp`, the goal using `[mem_integralGL_iff]`. Use `⟨fun i j => ?_, fun i j => ?_⟩` and prove the remaining obligations. Rewrite using `[leviProj_apply] split_ifs`. Conclude with `hp.1 i j`. Conclude with `(𝒪[F]).zero_mem`.
+
+Establish `: ((leviProj F n id p : levi F n (id : Fin n → Fin n)) : GL (Fin n) F)⁻¹ = ((leviProj F n id p⁻¹ : levi F n (id : Fin n → Fin n)) : GL (Fin n) F)`. Rewrite using `[map_inv, Subgroup.coe_inv]`. Rewrite using `[this, leviProj_apply]`. Use `split_ifs`. Conclude with `hp.2 i j`.
+
+Conclude with `(𝒪[F]).zero_mem`.
+-/
 theorem leviProj_mem_integralGL {p : blockUpper F n (id : Fin n → Fin n)}
     (hp : (p : GL (Fin n) F) ∈ integralGL F n) :
     ((leviProj F n id p : levi F n (id : Fin n → Fin n)) : GL (Fin n) F) ∈ integralGL F n := by
@@ -76,6 +92,9 @@ theorem leviProj_mem_integralGL {p : blockUpper F n (id : Fin n → Fin n)}
 
 variable {χ : levi F n (id : Fin n → Fin n) →* ℂ}
 
+/- English proof (translation)
+Rewrite using `[borelChar_apply, hχ _ (leviProj_mem_integralGL hp), mul_one]`. Use `show ((NNReal.sqrt (Measure.modularCharacter p) : ℝ) : ℂ) = 1`. Rewrite using `[Measures.modularCharacter_eq_one_of_mem_integralGL p hp]`. Simplify using the standard rewrite rules.
+-/
 theorem borelChar_eq_one (hχ : IsUnramified χ) {p : blockUpper F n (id : Fin n → Fin n)}
     (hp : (p : GL (Fin n) F) ∈ integralGL F n) : borelChar χ p = 1 := by
   rw [borelChar_apply, hχ _ (leviProj_mem_integralGL hp), mul_one]
@@ -83,6 +102,13 @@ theorem borelChar_eq_one (hχ : IsUnramified χ) {p : blockUpper F n (id : Fin n
   rw [Measures.modularCharacter_eq_one_of_mem_integralGL p hp]
   simp
 
+/- English proof (translation)
+Establish `hm : ((b'⁻¹ * b : blockUpper F n (id : Fin n → Fin n)) : GL (Fin n) F) ∈ integralGL F n`. Establish `: ((b'⁻¹ * b : blockUpper F n (id : Fin n → Fin n)) : GL (Fin n) F) = k' * k⁻¹`. Rewrite using `[Subgroup.coe_mul, Subgroup.coe_inv, inv_mul_eq_iff_eq_mul, ← mul_assoc, ← h, mul_inv_cancel_right]`. Rewrite using `[this]`. Conclude with `mul_mem hk' (inv_mem hk)`.
+
+Use `borelChar_eq_one hχ hm` as an intermediate fact. Rewrite `this` using `[map_mul, map_inv]`. Establish `hne : borelChar χ b' ≠ 0`. Introduce `h0`. Establish `h1 : borelChar χ (b'⁻¹ * b') = 1` using `by rw [inv_mul_cancel, map_one]`.
+
+Rewrite `h1` using `[map_mul, h0, mul_zero]`. Conclude with `zero_ne_one h1`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[← mul_assoc, mul_inv_cancel₀ hne, one_mul]`. Use `_ = borelChar χ b' := by rw [this, mul_one]`.
+-/
 theorem borelChar_eq_of_mul_eq (hχ : IsUnramified χ) {b b' : blockUpper F n (id : Fin n → Fin n)}
     {k k' : GL (Fin n) F} (hk : k ∈ integralGL F n) (hk' : k' ∈ integralGL F n)
     (h : (b : GL (Fin n) F) * k = b' * k') : borelChar χ b = borelChar χ b' := by
@@ -103,6 +129,9 @@ theorem borelChar_eq_of_mul_eq (hχ : IsUnramified χ) {b b' : blockUpper F n (i
         rw [← mul_assoc, mul_inv_cancel₀ hne, one_mul]
     _ = borelChar χ b' := by rw [this, mul_one]
 
+/- English proof (translation)
+Take `⟨p, hp, k, hk, h⟩` from `exists_blockUpper_mul_integralGL F n (β := (id : Fin n → Fin n)) monotone_id g`. Conclude with `⟨⟨p, hp⟩, k, hk, h⟩`.
+-/
 theorem exists_borel_mul (g : GL (Fin n) F) :
     ∃ p : blockUpper F n (id : Fin n → Fin n), ∃ k ∈ integralGL F n, g = (p : GL (Fin n) F) * k := by
   obtain ⟨p, hp, k, hk, h⟩ := exists_blockUpper_mul_integralGL F n (β := (id : Fin n → Fin n))
@@ -114,19 +143,33 @@ variable (χ) in
 def sphericalFun (g : GL (Fin n) F) : ℂ :=
   borelChar χ (exists_borel_mul g).choose
 
+/- English proof (translation)
+Take `⟨k', hk', h⟩` from `(exists_borel_mul ((b : GL (Fin n) F) * k)).choose_spec`. Conclude with `borelChar_eq_of_mul_eq hχ hk' hk h.symm`.
+-/
 theorem sphericalFun_mul (hχ : IsUnramified χ) (b : blockUpper F n (id : Fin n → Fin n))
     {k : GL (Fin n) F} (hk : k ∈ integralGL F n) :
     sphericalFun χ ((b : GL (Fin n) F) * k) = borelChar χ b := by
   obtain ⟨k', hk', h⟩ := (exists_borel_mul ((b : GL (Fin n) F) * k)).choose_spec
   exact borelChar_eq_of_mul_eq hχ hk' hk h.symm
 
+/- English proof (translation)
+Simplify using `using sphericalFun_mul hχ b (integralGL F n).one_mem`.
+-/
 theorem sphericalFun_borel (hχ : IsUnramified χ) (b : blockUpper F n (id : Fin n → Fin n)) :
     sphericalFun χ (b : GL (Fin n) F) = borelChar χ b := by
   simpa using sphericalFun_mul hχ b (integralGL F n).one_mem
 
+/- English proof (translation)
+Simplify using `using sphericalFun_borel hχ 1`.
+-/
 theorem sphericalFun_one (hχ : IsUnramified χ) : sphericalFun χ 1 = 1 := by
   simpa using sphericalFun_borel hχ 1
 
+/- English proof (translation)
+Rewrite using `[mem_principalSeriesSpace]`. Use `⟨fun p g => ?_, integralGL F n, isOpen_integralGL F n, fun k hk g => ?_⟩` and prove the remaining obligations. Take `⟨b, k, hk, rfl⟩` from `exists_borel_mul g`. Rewrite using `[← mul_assoc, ← Subgroup.coe_mul, sphericalFun_mul hχ _ hk, sphericalFun_mul hχ _ hk, map_mul]`. Take `⟨b, k', hk', rfl⟩` from `exists_borel_mul g`.
+
+Rewrite using `[mul_assoc, sphericalFun_mul hχ _ (mul_mem hk' hk), sphericalFun_mul hχ _ hk']`.
+-/
 theorem sphericalFun_mem (hχ : IsUnramified χ) : sphericalFun χ ∈ principalSeriesSpace F n χ := by
   rw [mem_principalSeriesSpace]
   refine ⟨fun p g => ?_, integralGL F n, isOpen_integralGL F n, fun k hk g => ?_⟩
@@ -140,9 +183,17 @@ def sphericalVector (hχ : IsUnramified χ) : principalSeriesSpace F n χ :=
   ⟨sphericalFun χ, sphericalFun_mem hχ⟩
 
 @[simp]
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem coe_sphericalVector (hχ : IsUnramified χ) :
     ((sphericalVector hχ : principalSeriesSpace F n χ) : GL (Fin n) F → ℂ) = sphericalFun χ := rfl
 
+/- English proof (translation)
+Introduce `k hk`. Use `Subtype.ext (funext fun g => ?_)` and prove the remaining obligations. Rewrite using `[coe_indRep_apply]`. Take `⟨b, k', hk', rfl⟩` from `exists_borel_mul g`. Simplify using `only [coe_sphericalVector]`.
+
+Rewrite using `[mul_assoc, sphericalFun_mul hχ _ (mul_mem hk' hk), sphericalFun_mul hχ _ hk']`.
+-/
 theorem sphericalVector_mem_fixedVectors (hχ : IsUnramified χ) :
     sphericalVector hχ ∈ fixedVectors (principalSeries F n χ) (integralGL F n) := by
   intro k hk
@@ -152,6 +203,9 @@ theorem sphericalVector_mem_fixedVectors (hχ : IsUnramified χ) :
   simp only [coe_sphericalVector]
   rw [mul_assoc, sphericalFun_mul hχ _ (mul_mem hk' hk), sphericalFun_mul hχ _ hk']
 
+/- English proof (translation)
+Introduce `h`. Use `congrFun (congrArg Subtype.val h) 1` as an intermediate fact. Simplify using `only [coe_sphericalVector, Submodule.coe_zero, Pi.zero_apply] at this`. Rewrite `this` using `[sphericalFun_one hχ]`. Conclude with `one_ne_zero this`.
+-/
 theorem sphericalVector_ne_zero (hχ : IsUnramified χ) : sphericalVector hχ ≠ 0 := by
   intro h
   have := congrFun (congrArg Subtype.val h) 1
@@ -159,6 +213,13 @@ theorem sphericalVector_ne_zero (hχ : IsUnramified χ) : sphericalVector hχ �
   rw [sphericalFun_one hχ] at this
   exact one_ne_zero this
 
+/- English proof (translation)
+Establish `hmem` using `(mem_principalSeriesSpace.1 f.2).1`. Use `Subtype.ext (funext fun g => ?_)` and prove the remaining obligations. Take `⟨b, k, hk, rfl⟩` from `exists_borel_mul g`. Establish `hfk : (f : GL (Fin n) F → ℂ) ((b : GL (Fin n) F) * k) = (f : GL (Fin n) F → ℂ) b`. Use `congrFun (congrArg Subtype.val (hf k hk)) (b : GL (Fin n) F)` as an intermediate fact.
+
+Rewrite `this` using `[coe_indRep_apply]`. Conclude with `this`. Rewrite using `[Submodule.coe_smul, Pi.smul_apply, coe_sphericalVector, sphericalFun_mul hχ _ hk, hfk, smul_eq_mul]`. Use `hmem b 1` as an intermediate fact. Rewrite `this` using `[mul_one]`.
+
+Rewrite using `[this, mul_comm]`.
+-/
 theorem eq_smul_sphericalVector (hχ : IsUnramified χ) {f : principalSeriesSpace F n χ}
     (hf : f ∈ fixedVectors (principalSeries F n χ) (integralGL F n)) :
     f = (f : GL (Fin n) F → ℂ) 1 • sphericalVector hχ := by
@@ -175,6 +236,9 @@ theorem eq_smul_sphericalVector (hχ : IsUnramified χ) {f : principalSeriesSpac
   rw [mul_one] at this
   rw [this, mul_comm]
 
+/- English proof (translation)
+Use `le_antisymm (fun f hf => ?_) ?_` and prove the remaining obligations. Rewrite using `[Submodule.mem_span_singleton]`. Conclude with `⟨_, (eq_smul_sphericalVector hχ hf).symm⟩`. Rewrite using `[Submodule.span_singleton_le_iff_mem]`. Conclude with `sphericalVector_mem_fixedVectors hχ`.
+-/
 theorem fixedVectors_eq_span (hχ : IsUnramified χ) :
     fixedVectors (principalSeries F n χ) (integralGL F n) = ℂ ∙ sphericalVector hχ := by
   refine le_antisymm (fun f hf => ?_) ?_
@@ -196,6 +260,11 @@ variable (μ χ) in
 def sphericalEigen (h : SphericalHecke μ (F := F) (n := n)) : ℂ :=
   ∫ g, (h : HeckeAlgebra μ) g * sphericalFun χ g ∂μ
 
+/- English proof (translation)
+Establish `hs` using `isSmooth_parabolicInd (F := F) (n := n) (β := (id : Fin n → Fin n)) (charRep χ)`. Establish `hmem : heckeAct μ (principalSeries F n χ) (h : HeckeAlgebra μ) (sphericalVector hχ) ∈ fixedVectors (principalSeries F n χ) (integralGL F n)` using `heckeAct_mem_fixedVectors (h : HeckeAlgebra μ).mem (fun _ hk x => HeckeAlgebraLevel.apply_mul_left _ _ h hk x) (hs _)`. Rewrite using `[eq_smul_sphericalVector hχ hmem]`. Use `congr 1`. Use `dual_heckeAct μ (h : HeckeAlgebra μ).mem (hs (sphericalVector hχ)) (evalOne (blockUpper F n (id : Fin n → Fin n)) (inflateTwist F n id (charRep χ)))` as an intermediate fact.
+
+Simplify using `only [evalOne_apply, coe_indRep_apply, one_mul, coe_sphericalVector] at this`. Conclude with `this`.
+-/
 theorem heckeAct_sphericalVector (hχ : IsUnramified χ) (h : SphericalHecke μ (F := F) (n := n)) :
     heckeAct μ (principalSeries F n χ) (h : HeckeAlgebra μ) (sphericalVector hχ) =
       sphericalEigen χ μ h • sphericalVector hχ := by
@@ -239,6 +308,9 @@ def sphericalCharacter (hχ : IsUnramified χ) : SphericalHecke μ (F := F) (n :
         heckeAct_idem_of_mem _ _ (sphericalVector_mem_fixedVectors hχ)]
       rfl) }
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem sphericalCharacter_apply (hχ : IsUnramified χ) (h : SphericalHecke μ (F := F) (n := n)) :
     sphericalCharacter μ hχ h = sphericalEigen χ μ h := rfl
 

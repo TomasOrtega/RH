@@ -23,6 +23,9 @@ open GlobalTheory.GoodMetric
 def topExp (ι : Type) [Fintype ι] (N : ℕ) : Root (fun _ : ι => N) →₀ ℕ :=
   Finsupp.equivFunOnFinite.symm fun x => N - 1 - (x.2 : ℕ)
 
+/- English proof (translation)
+Establish `hd : d = Finsupp.mapDomain e (Finsupp.equivMapDomain e.symm d)`. Rewrite using `[Finsupp.equivMapDomain_eq_mapDomain, ← Finsupp.mapDomain_comp]`. Simplify using the standard rewrite rules. Use `conv_lhs => rw [hd]`. Conclude with `coeff_rename_mapDomain _ e.injective _ _`.
+-/
 theorem coeff_rename_equiv {α β : Type} (e : α ≃ β) (p : MvPolynomial α ℝ) (d : β →₀ ℕ) :
     coeff d (rename e p) = coeff (Finsupp.equivMapDomain e.symm d) p := by
   have hd : d = Finsupp.mapDomain e (Finsupp.equivMapDomain e.symm d) := by
@@ -31,6 +34,13 @@ theorem coeff_rename_equiv {α β : Type} (e : α ≃ β) (p : MvPolynomial α �
   conv_lhs => rw [hd]
   exact coeff_rename_mapDomain _ e.injective _ _
 
+/- English proof (translation)
+Rewrite using `[coeff_mul, Finset.sum_eq_single ((0 : σ →₀ ℕ), d)]`. Both sides reduce to the same expression. Introduce and unpack `⟨a, b⟩ hab hne`. Rewrite `hab` using `[Finset.HasAntidiagonal.mem_antidiagonal]`. Establish `hb : coeff b A = 0`.
+
+Use `hA.coeff_eq_zero fun h1 => ?_` and prove the remaining obligations. Establish `h2 : a.degree + b.degree = d.degree` using `by rw [← hab, map_add]`. Establish `ha : a = 0` using `(Finsupp.degree_eq_zero_iff a).1 (by omega)`. Apply `hne` to reduce the goal to its premises. Substitute `ha` using the available equality.
+
+Simplify using `at hab`. Simplify using `[hab]`. Simplify using `[hb]`. Introduce `h`. Simplify using `at h`.
+-/
 theorem coeff_mul_of_isHomogeneous {σ : Type} (P A : MvPolynomial σ ℝ) (d : σ →₀ ℕ)
     (hA : A.IsHomogeneous d.degree) : coeff d (P * A) = constantCoeff P * coeff d A := by
   rw [coeff_mul, Finset.sum_eq_single ((0 : σ →₀ ℕ), d)]
@@ -49,6 +59,11 @@ theorem coeff_mul_of_isHomogeneous {σ : Type} (P A : MvPolynomial σ ℝ) (d : 
   · intro h
     simp at h
 
+/- English proof (translation)
+Break down `Nat.eq_zero_or_pos k with rfl | hk` into its components or cases. Simplify using `[esymm_zero]`. Rewrite using `[if_neg hk.ne', esymm, map_sum]`. Use `Finset.sum_eq_zero fun t ht => ?_` and prove the remaining obligations. Rewrite `ht` using `[Finset.mem_powersetCard]`.
+
+Take `⟨i, hi⟩ : t.Nonempty` from `Finset.card_pos.1 (ht.2 ▸ hk)`. Rewrite using `[map_prod]`. Conclude with `Finset.prod_eq_zero hi (by simp)`.
+-/
 theorem constantCoeff_esymm (n k : ℕ) :
     constantCoeff (esymm (Fin n) ℝ k) = if k = 0 then 1 else 0 := by
   rcases Nat.eq_zero_or_pos k with rfl | hk
@@ -60,6 +75,11 @@ theorem constantCoeff_esymm (n k : ℕ) :
     rw [map_prod]
     exact Finset.prod_eq_zero hi (by simp)
 
+/- English proof (translation)
+Establish `h : (constantCoeff : MvPolynomial (Root m) ℝ →+* ℝ).comp (chernRoots m).toRingHom = eval (fun x : ι × ℕ => if x.2 = 0 then (1 : ℝ) else 0)`. Apply `MvPolynomial.ringHom_ext` to reduce the goal to its premises. Introduce `a`. Simplify using `[chernRoots]`. Introduce `x`.
+
+Simplify using `[chernRoots, constantCoeff_rename, constantCoeff_esymm]`. Conclude with `RingHom.congr_fun h R`.
+-/
 theorem constantCoeff_chernRoots {ι : Type} (m : ι → ℕ) (R : MvPolynomial (ι × ℕ) ℝ) :
     constantCoeff (chernRoots m R) = eval (fun x : ι × ℕ => if x.2 = 0 then (1 : ℝ) else 0) R := by
   have h : (constantCoeff : MvPolynomial (Root m) ℝ →+* ℝ).comp (chernRoots m).toRingHom =
@@ -71,12 +91,18 @@ theorem constantCoeff_chernRoots {ι : Type} (m : ι → ℕ) (R : MvPolynomial 
       simp [chernRoots, constantCoeff_rename, constantCoeff_esymm]
   exact RingHom.congr_fun h R
 
+/- English proof (translation)
+Unfold `GoodMetric.antisymm`. Use `(mem_homogeneousSubmodule n _).1 (Submodule.sum_mem _ fun w _ => ?_)` and prove the remaining obligations. Conclude with `zsmul_mem ((mem_homogeneousSubmodule n _).2 (hF.rename_isHomogeneous)) _`.
+-/
 theorem antisymm_isHomogeneous {ι : Type} [Fintype ι] (m : ι → ℕ) (F : MvPolynomial (Root m) ℝ) (n : ℕ)
     (hF : F.IsHomogeneous n) : (GoodMetric.antisymm F).IsHomogeneous n := by
   unfold GoodMetric.antisymm
   refine (mem_homogeneousSubmodule n _).1 (Submodule.sum_mem _ fun w _ => ?_)
   exact zsmul_mem ((mem_homogeneousSubmodule n _).2 (hF.rename_isHomogeneous)) _
 
+/- English proof (translation)
+Unfold `fibrePoint`. Apply `IsHomogeneous.prod` to reduce the goal to its premises. Introduce `x _`. Simplify using `using ((isHomogeneous_X ℝ x).neg).pow (m x.1 - 1 - (x.2 : ℕ))`.
+-/
 theorem fibrePoint_isHomogeneous {ι : Type} [Fintype ι] (m : ι → ℕ) :
     (fibrePoint m).IsHomogeneous (∑ x : Root m, (m x.1 - 1 - (x.2 : ℕ))) := by
   unfold fibrePoint
@@ -84,16 +110,29 @@ theorem fibrePoint_isHomogeneous {ι : Type} [Fintype ι] (m : ι → ℕ) :
   intro x _
   simpa using ((isHomogeneous_X ℝ x).neg).pow (m x.1 - 1 - (x.2 : ℕ))
 
+/- English proof (translation)
+Rewrite using `[Finsupp.degree_eq_sum]`. Both sides reduce to the same expression.
+-/
 theorem degree_topExp (ι : Type) [Fintype ι] (N : ℕ) :
     (topExp ι N).degree = ∑ x : Root (fun _ : ι => N), (N - 1 - (x.2 : ℕ)) := by
   rw [Finsupp.degree_eq_sum]
   rfl
 
+/- English proof (translation)
+Rewrite using `[← FibreAntisymm.antisymm_fibrePoint, degree_topExp]`. Conclude with `antisymm_isHomogeneous _ _ _ (fibrePoint_isHomogeneous _)`.
+-/
 theorem rootDiscr_isHomogeneous (ι : Type) [Fintype ι] (N : ℕ) :
     (rootDiscr (fun _ : ι => N)).IsHomogeneous (topExp ι N).degree := by
   rw [← FibreAntisymm.antisymm_fibrePoint, degree_topExp]
   exact antisymm_isHomogeneous _ _ _ (fibrePoint_isHomogeneous _)
 
+/- English proof (translation)
+Unfold `degFl GoodMetric.antisymm`. Use `congr 1`. Rewrite using `[coeff_sum]`. Use `Finset.sum_congr rfl fun w _ => ?_` and prove the remaining obligations. Establish `e1 : rename (fun x : Root (fun _ : ι => N) => (x.1, x.2)) Q = rename (Equiv.sigmaEquivProd ι (Fin N)) Q` using `rfl`.
+
+Establish `e2 : rename (fun x : Root (fun _ : ι => N) => (⟨x.1, w x.1 x.2⟩ : Root (fun _ : ι => N))) Q = rename (Equiv.sigmaCongrRight w) Q` using `rfl`. Rewrite using `[e1, e2, coeff_smul, coeff_rename_equiv, coeff_rename_equiv]`. Establish `e3 : Finsupp.equivMapDomain (Equiv.sigmaEquivProd ι (Fin N)).symm (permExp w) = Finsupp.equivMapDomain (Equiv.sigmaCongrRight w).symm (topExp ι N)`. Use extensionality with `x`. Simplify using `[Finsupp.equivMapDomain_apply, permExp, topExp]`.
+
+Rewrite using `[e3]`. Simplify using `[zsmul_eq_mul]`.
+-/
 theorem degFl_rename_eq {ι : Type} [Fintype ι] {N : ℕ} (Q : MvPolynomial (Root (fun _ : ι => N)) ℝ) :
     degFl ι N (rename (fun x : Root (fun _ : ι => N) => (x.1, x.2)) Q) =
       (-1) ^ dimFl ι N * coeff (topExp ι N) (GoodMetric.antisymm Q) := by
@@ -113,6 +152,13 @@ theorem degFl_rename_eq {ι : Type} [Fintype ι] {N : ℕ} (Q : MvPolynomial (Ro
   rw [e3]
   simp [zsmul_eq_mul]
 
+/- English proof (translation)
+Establish `h` using `degFl_rename_eq (ι := ι) (N := N) (fibrePoint _)`. Rewrite `h` using `[FibreAntisymm.antisymm_fibrePoint]`. Establish `hp : rename (fun x : Root (fun _ : ι => N) => (x.1, x.2)) (fibrePoint (fun _ : ι => N)) = ∏ x : ι × Fin N, (-X x) ^ (N - 1 - (x.2 : ℕ))`. Unfold `fibrePoint`. Rewrite using `[map_prod]`.
+
+Simplify using `only [map_pow, map_neg, rename_X]`. Conclude with `Fintype.prod_equiv (Equiv.sigmaEquivProd ι (Fin N)) _ _ fun x => rfl`. Establish `hpt : degFl ι N (∏ x : ι × Fin N, (-X x) ^ (N - 1 - (x.2 : ℕ))) = 1` using `degreePoint ι N`. Rewrite `h` using `[hp, hpt]`. Establish `h2 : ((-1 : ℝ) ^ dimFl ι N) * (-1) ^ dimFl ι N = 1` using `by rw [← mul_pow]; simp`.
+
+Combine the equalities or inequalities in the displayed calculation. Rewrite using `[h2, one_mul]`. Use `_ = (-1) ^ dimFl ι N * ((-1) ^ dimFl ι N * coeff (topExp ι N) (rootDiscr (fun _ : ι => N))) := by ring`. Use `_ = (-1) ^ dimFl ι N := by rw [← h, mul_one]`.
+-/
 theorem coeff_topExp_rootDiscr (ι : Type) [Fintype ι] (N : ℕ) :
     coeff (topExp ι N) (rootDiscr (fun _ : ι => N)) = (-1) ^ dimFl ι N := by
   have h := degFl_rename_eq (ι := ι) (N := N) (fibrePoint _)
@@ -132,6 +178,11 @@ theorem coeff_topExp_rootDiscr (ι : Type) [Fintype ι] (N : ℕ) :
     _ = (-1) ^ dimFl ι N * ((-1) ^ dimFl ι N * coeff (topExp ι N) (rootDiscr (fun _ : ι => N))) := by ring
     _ = (-1) ^ dimFl ι N := by rw [← h, mul_one]
 
+/- English proof (translation)
+Introduce `ι _ N Q R h`. Rewrite using `[degFl_rename_eq, h, coeff_mul_of_isHomogeneous _ _ _ (rootDiscr_isHomogeneous ι N), coeff_topExp_rootDiscr, constantCoeff_chernRoots]`. Establish `h2 : ((-1 : ℝ) ^ dimFl ι N) * (-1) ^ dimFl ι N = 1` using `by rw [← mul_pow]; simp`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[h2, one_mul]`.
+
+Use `_ = _ := by ring`.
+-/
 theorem eval_chernRoots_eq_degFl : ∀ (ι : Type) [Fintype ι] (N : ℕ) (Q : MvPolynomial (GlobalTheory.GoodMetric.Root (fun _ : ι => N)) ℝ) (R : MvPolynomial (ι × ℕ) ℝ), GlobalTheory.GoodMetric.antisymm Q = GlobalTheory.GoodMetric.chernRoots (fun _ : ι => N) R * GlobalTheory.GoodMetric.rootDiscr (fun _ : ι => N) → MvPolynomial.eval (fun x : ι × ℕ => if x.2 = 0 then (1 : ℝ) else 0) R = degFl ι N (MvPolynomial.rename (fun x : GlobalTheory.GoodMetric.Root (fun _ : ι => N) => (x.1, x.2)) Q) := by
   intro ι _ N Q R h
   rw [degFl_rename_eq, h, coeff_mul_of_isHomogeneous _ _ _ (rootDiscr_isHomogeneous ι N),

@@ -33,6 +33,9 @@ def IsGr (γ : G ⟶ B) (E : B.Modules) (m : ℕ) {P : G.Modules} (j : P ⟶ (Sc
 
 variable {g : T ⟶ B} {k : S ⟶ B} {A A' : T.Modules}
 
+/- English proof (translation)
+The claim follows from `have ⟨_, s, hs⟩ := hi ⟨inferInstance, s, hs.of_iso (cokernelCompIsIso i e).symm⟩`.
+-/
 theorem isSubbundle_comp_isIso {X : Scheme.{0}} {F F' H : X.Modules} {i : H ⟶ F} (hi : IsSubbundle i) (e : F ⟶ F')
     [IsIso e] : IsSubbundle (i ≫ e) :=
   have ⟨_, s, hs⟩ := hi

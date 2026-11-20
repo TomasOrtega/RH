@@ -16,6 +16,19 @@ noncomputable section
 
 variable {K : Type*} [Field K] [NumberField K] {n : ℕ}
 
+/- English proof (translation)
+Use `set U' : Set (AdelicGLn.FiniteAdelicGL K n) := Subtype.val '' (U : Set (AdelicGLn.integralFiniteGL K n))`. Establish `hU' : IsOpen U'` using `(AdelicGLn.isOpen_integralFiniteGL K n).isOpenMap_subtype_val _ hU`. Establish `h1U' : (1 : AdelicGLn.FiniteAdelicGL K n) ∈ U'` using `⟨1, U.one_mem, rfl⟩`. Use `continuous_iff_continuousAt.2 fun g₀ => ?_` and prove the remaining obligations. Set `e : AdelicGLn.AdelicGL K n → AdelicGLn.InfiniteAdelicGL K n × AdelicGLn.FiniteAdelicGL K n` to `fun g => AdelicGLn.prodEquiv K n (g₀⁻¹ * g)`.
+
+Establish `he : Continuous e` using `(AdelicGLn.prodEquiv K n).continuous.comp (continuous_const.mul continuous_id)`. Set `F : AdelicGLn.InfiniteAdelicGL K n × AdelicGLn.FiniteAdelicGL K n → ℂ` to `fun p => φ (g₀ * infEmb K n (archEquiv K n p.1) * finEmb K n p.2)`. Establish `hφF : φ = F ∘ e`. Use function extensionality and compare the values at `g`. Simplify using `only [F, e, Function.comp_apply, mul_assoc]`.
+
+Rewrite using `[infEmb_mul_finEmb, mul_inv_cancel_left]`. Establish `hslice : Continuous (archSlice φ g₀)`. Use `letI := (isExpLieAlgebra K n).chartedSpace`. Conclude with `(hs g₀).continuous`. Establish `hF : ContinuousAt F (e g₀)`.
+
+Establish `hFeq : F =ᶠ[𝓝 (e g₀)] fun p => archSlice φ g₀ (archEquiv K n p.1)`. Establish `he1 : e g₀ = 1` using `by simp only [e, inv_mul_cancel, map_one]`. Establish `hmem : (univ ×ˢ U') ∈ 𝓝 (e g₀)`. Rewrite using `[he1]`. Conclude with `prod_mem_nhds univ_mem (hU'.mem_nhds h1U')`.
+
+Use `filter_upwards [hmem] with p hp`. Take `⟨u, hu, hup⟩` from `hp.2`. Simplify using `only [F, archSlice_apply]`. Rewrite using `[← hup]`. Conclude with `hinv _ ⟨u, hu⟩`.
+
+Use `ContinuousAt.congr ?_ hFeq.symm` and prove the remaining obligations. Conclude with `(hslice.comp ((archEquiv K n).continuous.comp continuous_fst)).continuousAt`. Rewrite using `[hφF]`. Conclude with `hF.comp he.continuousAt`.
+-/
 theorem continuous_of_rightInvariant {φ : AdelicGLn.AdelicGL K n → ℂ} (hs : IsArchSmooth φ)
     {U : Subgroup (AdelicGLn.integralFiniteGL K n)}
     (hU : IsOpen (U : Set (AdelicGLn.integralFiniteGL K n)))
@@ -56,6 +69,11 @@ theorem continuous_of_rightInvariant {φ : AdelicGLn.AdelicGL K n → ℂ} (hs :
   rw [hφF]
   exact hF.comp he.continuousAt
 
+/- English proof (translation)
+Establish `h1` using `infEmb_mul_finEmb (K := K) (n := n) (x⁻¹ * unipGL P * x)`. Rewrite `h1` using `[prodEquiv_conj_snd x P hP, map_one, mul_one]`. Use `h1.symm.trans ?_` and prove the remaining obligations. Rewrite using `[archExp]`. Use `congr 1`.
+
+Use `Subtype.ext (Units.ext ?_)` and prove the remaining obligations. Rewrite using `[coe_expG_top, exp_eq_one_add_of_mul_self_eq_zero (conjArch_mul_conjArch x P P)]`. Express the relevant statement in the definitionally equal form `archMat K n ((x⁻¹ * unipGL P * x : AdelicGLn.AdelicGL K n) : Matrix (Fin n) (Fin n) 𝔸[K]) = _`. Rewrite using `[coe_conj_unipGL, map_add, map_one]`. Both sides reduce to the same expression.
+-/
 theorem conj_unipGL_eq_archExp {r : ℕ} (x : AdelicGLn.AdelicGL K n) (P : UPos n r → 𝔸[K])
     (hP : ∀ p, (P p).2 = 0) :
     x⁻¹ * unipGL P * x = archExp (conjArch K n x P) := by
@@ -71,6 +89,19 @@ theorem conj_unipGL_eq_archExp {r : ℕ} (x : AdelicGLn.AdelicGL K n) (P : UPos 
   rw [coe_conj_unipGL, map_add, map_one]
   rfl
 
+/- English proof (translation)
+Use `set H : (UPos n r → 𝔸[K]) → ℂ := fun s => φ (unipGL s * x)`. Establish `hHc : Continuous H` using `hφc.comp (continuous_unipGL.mul continuous_const)`. Establish `hper : ∀ ξ ∈ unipLattice K n r, ∀ s, H (ξ + s) = H s` using `fun ξ hξ s => hφ.unipGL_vadd x ⟨ξ, hξ⟩ s`. Establish `hD` using `isAddFundamentalDomain_scaledUnipFD (K := K) (n := n) (r := r) hM`. Take `⟨C, hC, hDC⟩` from `exists_isCompact_superset_scaledUnipFD (K := K) (n := n) r hM`.
+
+Establish `hint : ∀ t, IntegrableOn (fun y => H (t + y)) (scaledUnipFD K n r M) (unipMeasure K n r)` using `fun t => ((hHc.comp (continuous_const.add continuous_id)).continuousOn.integrableOn_compact hC).mono_set hDC`. Establish `hmean : ∫ y in scaledUnipFD K n r M, H y ∂unipMeasure K n r = 0`. Rewrite using `[← constantTerm_eq_setIntegral hφ hD x]`. Conclude with `hct`. Establish `h0` using `norm_le_of_forall_altSum_le hD (unipMeasure_scaledUnipFD hM) k H hper hint hmean B (fun y hy => ?_)`.
+
+Simplify `h0` using `[H, unipGL_zero]`. Establish `key : ∀ ε : Fin k → Bool, H (0 + altPoint y ε) = φ (unipGL (truncInf (0 + altPoint y ε)) * x)`. Introduce `ε`. Rewrite using `[zero_add]`. Establish `hfinP` using `hfin (truncFin (altPoint y ε)) (fun p => rfl) fun p => by`.
+
+Take `⟨a, ha, hPa⟩` from `exists_finite_altPoint_eq_natCast_mul hM y hy ε p`. Conclude with `⟨a, ha, hPa⟩`. Establish `hP : unipGL (altPoint y ε) * x = unipGL (truncInf (altPoint y ε)) * x * (x⁻¹ * unipGL (truncFin (altPoint y ε)) * x)`. Simplify using `only [mul_assoc, mul_inv_cancel_left]`. Rewrite using `[← mul_assoc, ← unipGL_add, truncInf_add_truncFin]`.
+
+Simplify using `only [H]`. Rewrite using `[hP]`. Conclude with `hfinP _`. Establish `heq : altSum k H y 0 = altSum k (fun s => φ (unipGL (truncInf s) * x)) y 0`. Rewrite using `[altSum_eq_sum, altSum_eq_sum]`.
+
+Conclude with `Finset.sum_congr rfl fun ε _ => congrArg (altSign ε • ·) (key ε)`. Rewrite using `[heq]`. Conclude with `hB y hy`.
+-/
 theorem norm_le_of_altSum_inf {φ : AdelicGLn.AdelicGL K n → ℂ} (hφc : Continuous φ)
     (hφ : IsLeftInvariant φ) {r : ℕ} {M : ℕ} (hM : 0 < M) (x : AdelicGLn.AdelicGL K n)
     (hct : constantTerm r φ x = 0)
@@ -117,6 +148,11 @@ theorem norm_le_of_altSum_inf {φ : AdelicGLn.AdelicGL K n → ℂ} (hφc : Cont
   rw [heq]
   exact hB y hy
 
+/- English proof (translation)
+Rewrite using `[altSum_eq_sum, diffSum]`. Use `Finset.sum_congr rfl fun ε _ => ?_` and prove the remaining obligations. Rewrite using `[zero_add, zsmul_eq_mul]`. Use `congr 2`. Establish `h1` using `conj_unipGL_eq_archExp x (truncInf (altPoint y ε)) fun p => rfl`.
+
+Establish `h2 : conjArch K n x (truncInf (altPoint y ε)) = altPoint (fun i => conjArch K n x (truncInf (y i))) ε`. Rewrite using `[← truncInfHom_apply, map_altPoint (truncInfHom n r), map_altPoint (conjArch K n x)]`. Both sides reduce to the same expression. Rewrite using `[← h2, ← h1]`. Use `group`.
+-/
 theorem altSum_truncInf_eq_diffSum {r : ℕ} (φ : AdelicGLn.AdelicGL K n → ℂ)
     (x : AdelicGLn.AdelicGL K n) {k : ℕ} (y : Fin k → UPos n r → 𝔸[K]) :
     altSum k (fun s => φ (unipGL (truncInf s) * x)) y 0 =
@@ -133,6 +169,15 @@ theorem altSum_truncInf_eq_diffSum {r : ℕ} (φ : AdelicGLn.AdelicGL K n → �
   rw [← h2, ← h1]
   group
 
+/- English proof (translation)
+Establish `hn : n ≠ 0` using `(Fin.pos i).ne'`. Establish `hR0 : 0 ≤ R` using `by linarith`. Establish `hprodR : ∀ f : Fin n → ℝ, (∀ j, 0 ≤ f j) → (∀ j, f j ≤ R) → ∏ j, f j ≤ R ^ n`. Introduce `f hf0 hfR`. Combine the equalities or inequalities in the displayed calculation.
+
+Prove the components needed by the constructor for the conclusion. Establish `e1 : ρ i ^ n = ∏ j, (ρ i / ρ j)`. Rewrite using `[Finset.prod_div_distrib, Finset.prod_const, Finset.card_univ, Fintype.card_fin, hprod, div_one]`. Establish `h1 : ρ i ^ n ≤ R ^ n`. Rewrite using `[e1]`.
+
+Conclude with `hprodR _ (fun j => (div_pos (hρ i) (hρ j)).le) fun j => hR i j`. Conclude with `le_of_pow_le_pow_left₀ hn hR0 h1`. Establish `e1 : (ρ i)⁻¹ ^ n = ∏ j, (ρ j / ρ i)`. Rewrite using `[Finset.prod_div_distrib, Finset.prod_const, Finset.card_univ, Fintype.card_fin, hprod, one_div, inv_pow]`. Establish `h1 : (ρ i)⁻¹ ^ n ≤ R ^ n`.
+
+Rewrite using `[e1]`. Conclude with `hprodR _ (fun j => (div_pos (hρ j) (hρ i)).le) fun j => hR j i`. Conclude with `le_of_pow_le_pow_left₀ hn hR0 h1`.
+-/
 theorem rho_le_of_ratio_le {ρ : Fin n → ℝ} (hρ : ∀ i, 0 < ρ i) (hprod : ∏ i, ρ i = 1) {R : ℝ}
     (hR1 : 1 ≤ R) (hR : ∀ i j : Fin n, ρ i / ρ j ≤ R) (i : Fin n) : ρ i ≤ R ∧ (ρ i)⁻¹ ≤ R := by
   have hn : n ≠ 0 := (Fin.pos i).ne'
@@ -159,6 +204,43 @@ theorem rho_le_of_ratio_le {ρ : Fin n → ℝ} (hρ : ∀ i, 0 < ρ i) (hprod :
 
 end
 
+/- English proof (translation)
+Introduce `K _ _ n φ hs hL ⟨U, hU, hinv⟩ hcusp hHC hbox ω hω hωB _ t ht r hr0 hrn`. Establish `hφc : Continuous φ` using `continuous_of_rightInvariant hs hU hinv`. Take `⟨N, hN⟩` from `hbox ω hω`. Use `⟨N, fun k => ?_⟩` and prove the remaining obligations. Use `letI : MeasurableSpace (archGroup K n) := borel _`.
+
+Use `haveI : BorelSpace (archGroup K n) := ⟨rfl⟩`. Take `⟨μ, hμ⟩ : ∃ μ : Measure (archGroup K n), μ.IsHaarMeasure` from `⟨Measure.haar, inferInstance⟩`. Take `⟨M, hM, hMconj⟩` from `exists_natCast_conj_unipGL_mem U hU hω r`. Take `⟨C₁, hC₁⟩` from `exists_norm_archMat_conj_le hω hωB ht hr0 hrn (isCompact_scaledInfSet (K := K) M)`. Use `set C₁' := max C₁ 0`.
+
+Establish `hC₁'0 : 0 ≤ C₁'` using `le_max_right _ _`. Use `set T : ℝ := (k : ℝ) * (C₁' * t⁻¹)`. Take `⟨c, hc0, hc⟩` from `exists_abs_archBasis_repr_le (K := K) (n := n)`. Use `set S : Set (archGroup K n) := (fun Z : ArchMatrix K n => (isExpLieAlgebra K n).expG ⟨Z, Submodule.mem_top⟩) '' Metric.closedBall 0 T`. Establish `hS : IsCompact S` using `(isCompact_closedBall _ _).image ((isExpLieAlgebra K n).continuous_expG.comp (continuous_id.subtype_mk _))`.
+
+Use `choose D hDc hDs hDrep using hHC μ k`. Establish `hQ : ∀ J, IsCompact (S * tsupport (D J))` using `fun J => hS.mul (hDs J)`. Use `choose CJ hCJ using fun J => hN (S * tsupport (D J)) (hQ J)`. Use `set Cs : ℝ := ∑ J, |CJ J| * ∫ y, ‖D J y‖ ∂μ`. Establish `hInt0 : ∀ J, 0 ≤ ∫ y, ‖D J y‖ ∂μ` using `fun J => integral_nonneg fun y => norm_nonneg _`.
+
+Establish `hCs : 0 ≤ Cs` using `Finset.sum_nonneg fun J _ => mul_nonneg (abs_nonneg _) (hInt0 J)`. Establish `hd0 : 0 ≤ (archDim K n : ℝ) * c` using `mul_nonneg (Nat.cast_nonneg _) hc0`. Use `⟨((archDim K n : ℝ) * c) ^ k * C₁' ^ k * Cs, ?_⟩` and prove the remaining obligations. Introduce `b hb ρ hρ hsieg hprod kk hkk R hR1 hR`. Establish `hρb` using `rho_le_of_ratio_le hρ hprod hR1 hR`.
+
+Use `set x : AdelicGLn.AdelicGL K n := b * diagUnits n (fun i => posIdele (K := K) (ρ i) (hρ i)) * kk with hx`. Use `set gain := ρ ⟨r, hrn⟩ / ρ ⟨r - 1, lt_of_le_of_lt (Nat.sub_le r 1) hrn⟩`. Establish `hgain0 : 0 ≤ gain` using `div_nonneg (hρ _).le (hρ _).le`. Establish `hgain : gain ≤ t⁻¹`. Establish `h1` using `hsieg ⟨r - 1, lt_of_le_of_lt (Nat.sub_le r 1) hrn⟩ ⟨r, hrn⟩ (by simp; omega)`.
+
+Rewrite using `[div_le_iff₀ (hρ _), ← div_eq_inv_mul, le_div_iff₀ ht, mul_comm]`. Conclude with `h1`. Establish `hRN : 0 ≤ R ^ N` using `pow_nonneg (by linarith) _`. Use `set B₀ : ℝ := Cs * R ^ N`. Establish `hB₀ : 0 ≤ B₀` using `mul_nonneg hCs hRN`.
+
+Establish `hfinal : ‖φ x‖ ≤ ((archDim K n : ℝ) * c) ^ k * (C₁' * gain) ^ k * B₀`. Use `norm_le_of_altSum_inf hφc hL hM x (hcusp r hr0 hrn x) ?_ k ?_` and prove the remaining obligations. Introduce `z hz1 hz2 w`. Take `⟨u, hu⟩` from `hMconj b hb ρ hρ kk hkk z hz1 hz2`. Establish `hu' : x⁻¹ * unipGL z * x = finEmb K n ((u : AdelicGLn.integralFiniteGL K n) : AdelicGLn.FiniteAdelicGL K n)` using `hu`.
+
+Rewrite using `[hu']`. Conclude with `hinv w u`. Introduce `y hy`. Rewrite using `[altSum_truncInf_eq_diffSum]`. Use `set Y : Fin k → ArchMatrix K n := fun i => conjArch K n x (truncInf (y i))`.
+
+Establish `hYY : ∀ i j, Y i * Y j = 0` using `fun i j => conjArch_mul_conjArch _ _ _`. Establish `hcomm : ∀ i j, Commute (Y i) (Y j)` using `fun i j => (hYY i j).trans (hYY j i).symm`. Establish `hYn : ∀ i, ‖Y i‖ ≤ C₁' * gain` using `fun i => (hC₁ b hb ρ hρ hsieg kk hkk (truncInf (y i)) (fun p => rfl) (fun p => infinite_mem_scaledInfSet hM (hy i) p)).trans (mul_le_mul_of_nonneg_right (le_max_left _ _) hgain0)`. Establish `hYT : ∀ i, ‖Y i‖ ≤ C₁' * t⁻¹` using `fun i => (hYn i).trans (mul_le_mul_of_nonneg_left hgain hC₁'0)`. Establish `hder : ∀ (J : Fin k → Fin (archDim K n)) (τ : Fin k → ℝ), (∀ i, τ i ∈ Icc (0 : ℝ) 1) → ‖(uAction (uJ k J) ⟨φ, hs⟩ : AdelicGLn.AdelicGL K n → ℂ) (x * archExp (∑ i, τ i • Y i))‖ ≤ B₀`.
+
+Introduce `J τ hτ`. Establish `hZ : ‖∑ i, τ i • Y i‖ ≤ T`. Use `(norm_sum_le _ _).trans ?_` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[norm_smul, Real.norm_of_nonneg (hτ i).1]`.
+
+Combine the equalities or inequalities in the displayed calculation. Use `_ = T := by rw [Finset.sum_const, Finset.card_univ, Fintype.card_fin, nsmul_eq_mul]`. Use `set Z := ∑ i, τ i • Y i`. Use `set e : archGroup K n := (isExpLieAlgebra K n).expG ⟨Z, Submodule.mem_top⟩`. Establish `he : e ∈ S` using `⟨Z, mem_closedBall_zero_iff.2 hZ, rfl⟩`.
+
+Establish `hbd : ∀ w : archGroup K n, ‖φ (x * archExp Z * infEmb K n w) * D J w‖ ≤ |CJ J| * R ^ N * ‖D J w‖`. Introduce `w`. Distinguish the cases in `hw : w ∈ tsupport (D J)`. Rewrite using `[norm_mul]`. Use `mul_le_mul_of_nonneg_right ?_ (norm_nonneg _)` and prove the remaining obligations.
+
+Establish `e1 : x * archExp Z * infEmb K n w = x * infEmb K n (e * w)`. Rewrite using `[map_mul, mul_assoc]`. Both sides reduce to the same expression. Rewrite using `[e1]`. Conclude with `(hCJ J b hb ρ hρ kk hkk (e * w) (Set.mul_mem_mul he hw) R hR1 hρb).trans (mul_le_mul_of_nonneg_right (le_abs_self _) hRN)`.
+
+Rewrite using `[image_eq_zero_of_notMem_tsupport hw, mul_zero, norm_zero, mul_zero]`. Establish `hint : Integrable (fun w => ‖D J w‖) μ` using `(hDc J).norm.integrable_of_hasCompactSupport (hDs J).norm`. Rewrite using `[hDrep J (x * archExp Z)]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[integral_const_mul]`.
+
+Expand and normalize the polynomial expressions, which then agree. Use `_ ≤ B₀ := mul_le_mul_of_nonneg_right (Finset.single_le_sum (f := fun J => |CJ J| * ∫ y, ‖D J y‖ ∂μ) (fun J _ => mul_nonneg (abs_nonneg _) (hInt0 J)) (Finset.mem_univ J)) hRN`. Establish `h` using `norm_diffSum_le hc0 hc k ⟨φ, hs⟩ x Y hcomm B₀ hB₀ hder`. Use `h.trans ?_` and prove the remaining obligations. Establish `hprodY : ∏ i, ‖Y i‖ ≤ (C₁' * gain) ^ k`.
+
+Rewrite using `[← Fin.prod_const]`. Conclude with `Finset.prod_le_prod (fun i _ => norm_nonneg _) fun i _ => hYn i`. Conclude with `mul_le_mul_of_nonneg_right (mul_le_mul_of_nonneg_left hprodY (pow_nonneg hd0 _)) hB₀`. Use `hfinal.trans (le_of_eq ?_)` and prove the remaining obligations. Simplify using `only [B₀, mul_pow]`.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem smooth_automorphic_open_invariant : ∀ (K : Type) [Field K] [NumberField K] (n : ℕ) (φ : AdelicGLn.AdelicGL K n → ℂ) (hs : φ ∈ AutomorphicForm.archSmooth K n),
   AutomorphicForm.IsLeftInvariant φ → (∃ U : Subgroup (AdelicGLn.integralFiniteGL K n), IsOpen (U : Set (AdelicGLn.integralFiniteGL K n)) ∧
     ∀ (g : AdelicGLn.AdelicGL K n) (u : U), φ (g * AutomorphicForm.finEmb K n ((u : AdelicGLn.integralFiniteGL K n) : AdelicGLn.FiniteAdelicGL K n)) = φ g) → AutomorphicForm.IsCuspidal φ →
@@ -289,6 +371,9 @@ theorem smooth_automorphic_open_invariant : ∀ (K : Type) [Field K] [NumberFiel
 
 end GlobalTheory.CompanionTheory.GGPS
 
+/- English proof (translation)
+The claim follows from `GlobalTheory.CompanionTheory.GGPS.smooth_automorphic_open_invariant`.
+-/
 theorem GlobalTheory.CompanionTheory.GGPS.ggps_bound : ∀ (K : Type) [Field K] [NumberField K] (n : ℕ) (φ : AdelicGLn.AdelicGL K n → ℂ) (hs : φ ∈ AutomorphicForm.archSmooth K n),
   AutomorphicForm.IsLeftInvariant φ → (∃ U : Subgroup (AdelicGLn.integralFiniteGL K n), IsOpen (U : Set (AdelicGLn.integralFiniteGL K n)) ∧
     ∀ (g : AdelicGLn.AdelicGL K n) (u : U), φ (g * AutomorphicForm.finEmb K n ((u : AdelicGLn.integralFiniteGL K n) : AdelicGLn.FiniteAdelicGL K n)) = φ g) → AutomorphicForm.IsCuspidal φ →

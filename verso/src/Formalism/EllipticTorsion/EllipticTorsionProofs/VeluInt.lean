@@ -26,8 +26,14 @@ def ball : Subring K where
     simp only [Set.mem_ofPred_eq] at *
     rwa [norm_neg]
 
+/- English proof (translation)
+Unfold both sides. The equivalence is reflexive.
+-/
 theorem mem_ball {x : K} : x ∈ (ball : Subring K) ↔ ‖x‖ ≤ 1 := Iff.rfl
 
+/- English proof (translation)
+Take `⟨h1, h2, h3, h4, h6⟩` from `hW`. Unfold `veluGx`. Use `sub_mem (add_mem (add_mem (mul_mem (ofNat_mem _ 3) (pow_mem hx 2)) (mul_mem (mul_mem (ofNat_mem _ 2) h2) hx)) h4) (mul_mem h1 hy)` and prove the remaining obligations.
+-/
 theorem veluGx_mem (W : WeierstrassCurve K) (hW : IntegralModel W) {x y : K}
     (hx : x ∈ (ball : Subring K)) (hy : y ∈ (ball : Subring K)) :
     veluGx W x y ∈ (ball : Subring K) := by
@@ -36,6 +42,9 @@ theorem veluGx_mem (W : WeierstrassCurve K) (hW : IntegralModel W) {x y : K}
   refine sub_mem (add_mem (add_mem (mul_mem (ofNat_mem _ 3) (pow_mem hx 2))
     (mul_mem (mul_mem (ofNat_mem _ 2) h2) hx)) h4) (mul_mem h1 hy)
 
+/- English proof (translation)
+Take `⟨h1, h2, h3, h4, h6⟩` from `hW`. Unfold `veluGy`. Conclude with `sub_mem (sub_mem (mul_mem (neg_mem (ofNat_mem _ 2)) hy) (mul_mem h1 hx)) h3`.
+-/
 theorem veluGy_mem (W : WeierstrassCurve K) (hW : IntegralModel W) {x y : K}
     (hx : x ∈ (ball : Subring K)) (hy : y ∈ (ball : Subring K)) :
     veluGy W x y ∈ (ball : Subring K) := by
@@ -43,6 +52,11 @@ theorem veluGy_mem (W : WeierstrassCurve K) (hW : IntegralModel W) {x y : K}
   unfold veluGy
   exact sub_mem (sub_mem (mul_mem (neg_mem (ofNat_mem _ 2)) hy) (mul_mem h1 hx)) h3
 
+/- English proof (translation)
+Establish `gx` using `veluGx_mem W hW hx hy`. Establish `gy` using `veluGy_mem W hW hx hy`. Unfold `veluV`. Use `split_ifs`. Conclude with `gx`.
+
+Conclude with `sub_mem (mul_mem (ofNat_mem _ 2) gx) (mul_mem hW.1 gy)`.
+-/
 theorem veluV_mem (W : WeierstrassCurve K) (hW : IntegralModel W) {x y : K}
     (hx : x ∈ (ball : Subring K)) (hy : y ∈ (ball : Subring K)) :
     veluV W x y ∈ (ball : Subring K) := by
@@ -53,6 +67,9 @@ theorem veluV_mem (W : WeierstrassCurve K) (hW : IntegralModel W) {x y : K}
   · exact gx
   · exact sub_mem (mul_mem (ofNat_mem _ 2) gx) (mul_mem hW.1 gy)
 
+/- English proof (translation)
+Unfold `veluU`. Conclude with `pow_mem (veluGy_mem W hW hx hy) 2`.
+-/
 theorem veluU_mem (W : WeierstrassCurve K) (hW : IntegralModel W) {x y : K}
     (hx : x ∈ (ball : Subring K)) (hy : y ∈ (ball : Subring K)) :
     veluU W x y ∈ (ball : Subring K) := by
@@ -62,6 +79,13 @@ theorem veluU_mem (W : WeierstrassCurve K) (hW : IntegralModel W) {x y : K}
 end VeluIntegrality
 
 open VeluIntegrality in
+/- English proof (translation)
+Introduce `K _ _ W k S hW hS`. Establish `hx : ∀ i, (S i).1 ∈ (ball : Subring K)` using `fun i => (hS i).1`. Establish `hy : ∀ i, (S i).2 ∈ (ball : Subring K)` using `fun i => (hS i).2`. Establish `hv : (∑ i, veluV W (S i).1 (S i).2) ∈ (ball : Subring K)` using `sum_mem fun i _ => veluV_mem W hW (hx i) (hy i)`. Establish `hw : (∑ i, (veluU W (S i).1 (S i).2 + (S i).1 * veluV W (S i).1 (S i).2)) ∈ (ball : Subring K)` using `sum_mem fun i _ => add_mem (veluU_mem W hW (hx i) (hy i)) (mul_mem (hx i) (veluV_mem W hW (hx i) (hy i)))`.
+
+Take `⟨h1, h2, h3, h4, h6⟩` from `hW`. Use `⟨h1, h2, h3, ?_, ?_⟩` and prove the remaining obligations. Use `show W.a₄ - 5 * (∑ i, veluV W (S i).1 (S i).2) ∈ (ball : Subring K)`. Conclude with `sub_mem h4 (mul_mem (ofNat_mem _ 5) hv)`. Use `show W.a₆ - (W.a₁ ^ 2 + 4 * W.a₂) * (∑ i, veluV W (S i).1 (S i).2) - 7 * (∑ i, (veluU W (S i).1 (S i).2 + (S i).1 * veluV W (S i).1 (S i).2)) ∈ (ball : Subring K)`.
+
+Conclude with `sub_mem (sub_mem h6 (mul_mem (add_mem (pow_mem h1 2) (mul_mem (ofNat_mem _ 4) h2)) hv)) (mul_mem (ofNat_mem _ 7) hw)`.
+-/
 theorem velu_integral_model : VeluIntegralModel := by
   intro K _ _ W k S hW hS
   have hx : ∀ i, (S i).1 ∈ (ball : Subring K) := fun i => (hS i).1

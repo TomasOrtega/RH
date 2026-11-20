@@ -13,6 +13,13 @@ namespace GlobalTheory.BCT.KapMul
 section Generic
 open Topology
 
+/- English proof (translation)
+Rewrite using `[← Nat.card_prod]`. Use `(Nat.card_congr ((Setoid.prodQuotientEquiv (DoubleCoset.setoid (H₁ : Set A) K₁) (DoubleCoset.setoid (H₂ : Set B) K₂)).trans (Quotient.congr e.toEquiv ?_))).symm` and prove the remaining obligations. Introduce and unpack `⟨x, y⟩ ⟨x', y'⟩`. Express the relevant statement in the definitionally equal form `(DoubleCoset.setoid (H₁ : Set A) K₁ x x' ∧ DoubleCoset.setoid (H₂ : Set B) K₂ y y') ↔ DoubleCoset.setoid (H : Set T) K (e (x, y)) (e (x', y'))`. Simplify using `only [DoubleCoset.rel_iff]`.
+
+Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨⟨a, ha, b, hb, rfl⟩, ⟨c, hc, d, hd, rfl⟩⟩`. Conclude with `⟨e (a, c), (hH _ _).2 ⟨ha, hc⟩, e (b, d), (hK _ _).2 ⟨hb, hd⟩, by rw [← map_mul, ← map_mul]; rfl⟩`. Introduce and unpack `⟨s, hs, t, ht, h⟩`. Take `⟨⟨a, c⟩, rfl⟩` from `e.surjective s`.
+
+Take `⟨⟨b, d⟩, rfl⟩` from `e.surjective t`. Rewrite `h` using `[← map_mul, ← map_mul]`. Establish `h'` using `e.injective h`. Conclude with `⟨⟨a, ((hH _ _).1 hs).1, b, ((hK _ _).1 ht).1, congrArg Prod.fst h'⟩, ⟨c, ((hH _ _).1 hs).2, d, ((hK _ _).1 ht).2, congrArg Prod.snd h'⟩⟩`.
+-/
 theorem card_dc_prod {A B T : Type} [Group A] [Group B] [Group T] (e : A × B ≃* T) (H₁ K₁ : Subgroup A)
     (H₂ K₂ : Subgroup B) (H K : Subgroup T) (hH : ∀ x y, e (x, y) ∈ H ↔ x ∈ H₁ ∧ y ∈ H₂)
     (hK : ∀ x y, e (x, y) ∈ K ↔ x ∈ K₁ ∧ y ∈ K₂) :
@@ -40,12 +47,18 @@ theorem card_dc_prod {A B T : Type} [Group A] [Group B] [Group T] (e : A × B �
 variable {G₁ G₂ G : Type} [Group G₁] [Group G₂] [Group G] [TopologicalSpace G₁] [TopologicalSpace G₂]
   [TopologicalSpace G]
 
+/- English proof (translation)
+Use `(h.image hf).of_isClosed_subset isClosed_closure (closure_minimal ?_ (h.image hf).isClosed)` and prove the remaining obligations. Rewrite using `[← MonoidHom.map_zpowers, Subgroup.coe_map]`. Conclude with `Set.image_mono subset_closure`.
+-/
 theorem isCompact_zpowers_map [T2Space G] (f : G₁ →* G) (hf : Continuous f) {x : G₁}
     (h : IsCompact (closure (Subgroup.zpowers x : Set G₁))) : IsCompact (closure (Subgroup.zpowers (f x) : Set G)) := by
   refine (h.image hf).of_isClosed_subset isClosed_closure (closure_minimal ?_ (h.image hf).isClosed)
   rw [← MonoidHom.map_zpowers, Subgroup.coe_map]
   exact Set.image_mono subset_closure
 
+/- English proof (translation)
+Use `⟨fun h => ⟨isCompact_zpowers_map (MonoidHom.fst G₁ G₂) continuous_fst (x := (x, y)) h, isCompact_zpowers_map (MonoidHom.snd G₁ G₂) continuous_snd (x := (x, y)) h⟩, fun h => ?_⟩` and prove the remaining obligations. Use `(h.1.prod h.2).of_isClosed_subset isClosed_closure (closure_minimal ?_ (isClosed_closure.prod isClosed_closure))` and prove the remaining obligations. Introduce and unpack `_ ⟨k, rfl⟩`. Conclude with `⟨subset_closure ⟨k, rfl⟩, subset_closure ⟨k, rfl⟩⟩`.
+-/
 theorem isCompact_zpowers_prod [T2Space G₁] [T2Space G₂] (x : G₁) (y : G₂) :
     IsCompact (closure (Subgroup.zpowers (x, y) : Set (G₁ × G₂))) ↔
       IsCompact (closure (Subgroup.zpowers x : Set G₁)) ∧ IsCompact (closure (Subgroup.zpowers y : Set G₂)) := by
@@ -55,6 +68,13 @@ theorem isCompact_zpowers_prod [T2Space G₁] [T2Space G₂] (x : G₁) (y : G�
   rintro _ ⟨k, rfl⟩
   exact ⟨subset_closure ⟨k, rfl⟩, subset_closure ⟨k, rfl⟩⟩
 
+/- English proof (translation)
+Unfold `cptPart`. Rewrite using `[MonoidHom.map_closure]`. Use `congr 1`. Establish `hk : ∀ t, IsCompact (closure (Subgroup.zpowers (ι t) : Set G)) ↔ IsCompact (closure (Subgroup.zpowers t : Set G₁))`. Introduce `t`.
+
+Rewrite using `[← MonoidHom.map_zpowers, Subgroup.coe_map, hι.closure_image_eq, ← hι.isInducing.isCompact_iff]`. Use extensionality with `x`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨⟨t, ht, rfl⟩, hc⟩`. Conclude with `⟨t, ⟨ht, (hk t).1 hc⟩, rfl⟩`.
+
+Introduce and unpack `⟨t, ⟨ht, hc⟩, rfl⟩`. Conclude with `⟨⟨t, ht, rfl⟩, (hk t).2 hc⟩`.
+-/
 theorem cptPart_map_closed (ι : G₁ →* G) (hι : IsClosedEmbedding ι) (T : Subgroup G₁) :
     cptPart (T.map ι) = (cptPart T).map ι := by
   unfold cptPart
@@ -71,6 +91,11 @@ theorem cptPart_map_closed (ι : G₁ →* G) (hι : IsClosedEmbedding ι) (T : 
   · rintro ⟨t, ⟨ht, hc⟩, rfl⟩
     exact ⟨⟨t, ht, rfl⟩, (hk t).2 hc⟩
 
+/- English proof (translation)
+Unfold `cptPart`. Rewrite using `[← Subgroup.closure_prod]`. Use `congr 1`. Use extensionality with `⟨x, y⟩`. Simplify using `only [Set.mem_setOf_eq, Set.mem_prod, isCompact_zpowers_prod, Subgroup.mem_prod]`.
+
+The claim follows by propositional logic. Conclude with `⟨T₁.one_mem, by simp⟩`. Conclude with `⟨T₂.one_mem, by simp⟩`.
+-/
 theorem cptPart_prod [T2Space G₁] [T2Space G₂] (T₁ : Subgroup G₁) (T₂ : Subgroup G₂) :
     cptPart (T₁.prod T₂) = (cptPart T₁).prod (cptPart T₂) := by
   unfold cptPart
@@ -83,10 +108,22 @@ theorem cptPart_prod [T2Space G₁] [T2Space G₂] (T₁ : Subgroup G₁) (T₂ 
   · exact ⟨T₂.one_mem, by simp⟩
 
 omit [TopologicalSpace G₁] [TopologicalSpace G₂] [TopologicalSpace G] in
+/- English proof (translation)
+Rewrite using `[Subgroup.mem_map_iff_mem hι, Subgroup.mem_prod]`.
+-/
 theorem mem_map_prod (ι : G₁ × G₂ →* G) (hι : Function.Injective ι) (H₁ : Subgroup G₁) (H₂ : Subgroup G₂)
     (x : G₁) (y : G₂) : ι (x, y) ∈ (H₁.prod H₂).map ι ↔ x ∈ H₁ ∧ y ∈ H₂ := by
   rw [Subgroup.mem_map_iff_mem hι, Subgroup.mem_prod]
 
+/- English proof (translation)
+Unfold `mass`. Rewrite using `[hT]`. Generalize the expression as in `twCent θ₁ δ₁ = T₁`. Generalize the expression as in `twCent θ₂ δ₂ = T₂`. Rewrite using `[cptPart_map_closed ι hι, cptPart_prod]`.
+
+Generalize the expression as in `cptPart T₁ = C₁`. Generalize the expression as in `cptPart T₂ = C₂`. Set `e : T₁ × T₂ ≃* (T₁.prod T₂).map ι` to `(T₁.prodEquiv T₂).symm.trans ((T₁.prod T₂).equivMapOfInjective ι hι.injective)`. Establish `he : ∀ (x : T₁) (y : T₂), ((e (x, y) : (T₁.prod T₂).map ι) : G) = ι (x.1, y.1)` using `fun _ _ => rfl`. Establish `h2 : Γ ⊓ (C₁.prod C₂).map ι = ((Γ₁ ⊓ C₁).prod (Γ₂ ⊓ C₂)).map ι`.
+
+Use extensionality with `z`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨hz, ⟨x, y⟩, hxy, rfl⟩`. Conclude with `⟨(x, y), ⟨⟨((hΓ x y).1 hz).1, hxy.1⟩, ⟨((hΓ x y).1 hz).2, hxy.2⟩⟩, rfl⟩`. Introduce and unpack `⟨⟨x, y⟩, hxy, rfl⟩`.
+
+Conclude with `⟨(hΓ x y).2 ⟨hxy.1.1, hxy.2.1⟩, (x, y), ⟨hxy.1.2, hxy.2.2⟩, rfl⟩`. Rewrite using `[card_dc_prod e (Γ₁.subgroupOf T₁) (C₁.subgroupOf T₁) (Γ₂.subgroupOf T₂) (C₂.subgroupOf T₂) _ _ (fun x y => by simp only [Subgroup.mem_subgroupOf, he, hΓ]) (fun x y => by simp only [Subgroup.mem_subgroupOf, he, mem_map_prod ι hι.injective]), h2, ← Nat.card_congr (Subgroup.equivMa …`. Use `push_cast`. Rewrite using `[mul_div_mul_comm]`.
+-/
 theorem mass_prod [T2Space G₁] [T2Space G₂] (ι : G₁ × G₂ →* G) (hι : IsClosedEmbedding ι) (θ₁ : G₁ →* G₁)
     (θ₂ : G₂ →* G₂) (θ : G →* G) (Γ₁ : Subgroup G₁) (Γ₂ : Subgroup G₂) (Γ : Subgroup G) (δ₁ : G₁) (δ₂ : G₂) (δ : G)
     (hT : twCent θ δ = ((twCent θ₁ δ₁).prod (twCent θ₂ δ₂)).map ι)
@@ -125,6 +162,11 @@ variable {R : Type} [CommRing R] {n a b : ℕ}
 def NormOne (c : R →+* R) (N : GL (Fin n) R) (g : Matrix (Fin n) (Fin n) R) : Prop :=
   ∃ f : R[X], g = aeval N.val f ∧ g * aeval (N⁻¹).val (f.map c) = 1
 
+/- English proof (translation)
+Establish `hadd : ∀ x y : Matrix (Fin n) (Fin n) R, GlobalTheory.Tw.adj δ.val (x + y) = GlobalTheory.Tw.adj δ.val x + GlobalTheory.Tw.adj δ.val y` using `fun x y => by simpa using GlobalTheory.Tw.CentralizerAdjoin.adj_semi δ.val 1 x y`. Proceed by induction on `f using Polynomial.induction_on with`. Consider the case `C e => rw [aeval_C, GlobalTheory.Tw.CentralizerAdjoin.adj_algebraMap δ.isUnit, Polynomial.map_C, aeval_C]`. Both sides reduce to the same expression. Consider the case `add p q hp hq => rw [map_add, hadd, hp, hq, Polynomial.map_add, map_add]`.
+
+Consider the case `monomial k e ih`. Rewrite using `[pow_succ, ← mul_assoc, map_mul, aeval_X, GlobalTheory.Tw.CentralizerAdjoin.adj_mul' δ.isUnit, ih, GlobalTheory.Tw.CentralizerAdjoin.adj_nrm δ.isUnit, mul_comm _ (X : R[X]), Polynomial.map_mul (p := X), Polynomial.map_X, map_mul, aeval_X]`.
+-/
 theorem adj_aeval [StarRing R] (δ : GL (Fin n) R) (f : R[X]) :
     GlobalTheory.Tw.adj δ.val (aeval (GlobalTheory.Tw.nrm δ.val) f) = aeval (GlobalTheory.Tw.nrm δ.val)⁻¹ (f.map (starRingEnd R)) := by
   have hadd : ∀ x y : Matrix (Fin n) (Fin n) R, GlobalTheory.Tw.adj δ.val (x + y) = GlobalTheory.Tw.adj δ.val x + GlobalTheory.Tw.adj δ.val y :=
@@ -136,6 +178,15 @@ theorem adj_aeval [StarRing R] (δ : GL (Fin n) R) (f : R[X]) :
     rw [pow_succ, ← mul_assoc, map_mul, aeval_X, GlobalTheory.Tw.CentralizerAdjoin.adj_mul' δ.isUnit, ih,
       GlobalTheory.Tw.CentralizerAdjoin.adj_nrm δ.isUnit, mul_comm _ (X : R[X]), Polynomial.map_mul (p := X), Polynomial.map_X, map_mul, aeval_X]
 
+/- English proof (translation)
+Establish `hN : (δ * thetaGL n (starRingEnd R) δ).val = GlobalTheory.Tw.nrm δ.val`. Rewrite using `[Units.val_mul, thetaGL_val]`. Both sides reduce to the same expression. Unfold `NormOne`. Rewrite `hs` using `[hN]`.
+
+Rewrite using `[Matrix.coe_units_inv, hN]`. Use `⟨fun g => ?_, fun f hf => ?_⟩` and prove the remaining obligations. Establish `h1 : g ∈ twCent (thetaGL n (starRingEnd R)) δ ↔ g.val ∈ GlobalTheory.Tw.cent δ.val`. Express the relevant statement in the definitionally equal form `g * δ = δ * _ ↔ IsUnit g.val ∧ _`. Rewrite using `[Units.ext_iff, Units.val_mul, Units.val_mul, thetaGL_val]`.
+
+Conclude with `(and_iff_right g.isUnit).symm`. Rewrite using `[h1, GlobalTheory.Tw.CentralizerAdjoin.cent_eq ⟨δ.isUnit, hs⟩]`. Simplify using `only [Set.mem_setOf_eq, Algebra.adjoin_singleton_eq_range_aeval, AlgHom.mem_range]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨⟨f, hf⟩, h⟩`.
+
+Conclude with `⟨f, hf.symm, by rw [← adj_aeval, hf, h]⟩`. Introduce and unpack `⟨f, hf, h⟩`. Conclude with `⟨⟨f, hf.symm⟩, by rw [← adj_aeval, ← hf] at h; exact h⟩`. Rewrite using `[← adj_aeval, hf]`. Simplify using `[GlobalTheory.Tw.adj]`.
+-/
 theorem twCent_star [StarRing R] (δ : GL (Fin n) R)
     (hs : (δ * thetaGL n (starRingEnd R) δ).val.charpoly.Separable) :
     (∀ g, g ∈ twCent (thetaGL n (starRingEnd R)) δ ↔
@@ -161,6 +212,9 @@ theorem twCent_star [StarRing R] (δ : GL (Fin n) R)
       exact ⟨⟨f, hf.symm⟩, by rw [← adj_aeval, ← hf] at h; exact h⟩
   · rw [← adj_aeval, hf]; simp [GlobalTheory.Tw.adj]
 
+/- English proof (translation)
+Use `letI : StarRing R := { star := c star_involutive := hc star_mul := fun x y => by rw [mul_comm y x |>.symm]; exact (map_mul c y x).trans (by rfl) |>.trans rfl star_add := map_add c }`. Establish `e : c = starRingEnd R` using `RingHom.ext fun _ => rfl`. Rewrite `hs`, the goal using `[e]`. Conclude with `twCent_star δ hs`.
+-/
 theorem twCent_iff (c : R →+* R) (hc : ∀ x, c (c x) = x) (δ : GL (Fin n) R)
     (hs : (δ * thetaGL n c δ).val.charpoly.Separable) :
     (∀ g, g ∈ twCent (thetaGL n c) δ ↔ NormOne c (δ * thetaGL n c δ) g.val) ∧
@@ -196,13 +250,22 @@ def blkHom (h : Matrix (Fin n) (Fin a ⊕ Fin b) R) (h' : Matrix (Fin a ⊕ Fin 
 variable (h : Matrix (Fin n) (Fin a ⊕ Fin b) R) (h' : Matrix (Fin a ⊕ Fin b) (Fin n) R) (h1 : h * h' = 1)
     (h2 : h' * h = 1)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem blkHom_apply (p) : blkHom h h' h1 h2 p = h * fromBlocks p.1 0 0 p.2 * h' := rfl
 
+/- English proof (translation)
+Rewrite using `[blkHom_apply]`. Simplify using `only [Matrix.mul_assoc]`. Rewrite using `[h2, Matrix.mul_one, ← Matrix.mul_assoc, h2, Matrix.one_mul]`.
+-/
 theorem blkHom_left (p) : h' * blkHom h h' h1 h2 p * h = fromBlocks p.1 0 0 p.2 := by
   rw [blkHom_apply]
   simp only [Matrix.mul_assoc]
   rw [h2, Matrix.mul_one, ← Matrix.mul_assoc, h2, Matrix.one_mul]
 
+/- English proof (translation)
+Introduce `p` and use `by simp only [blkHom_left, toBlocks_fromBlocks₁₁, toBlocks_fromBlocks₂₂]`.
+-/
 theorem blkHom_leftInverse : Function.LeftInverse
     (fun z : Matrix (Fin n) (Fin n) R => ((h' * z * h).toBlocks₁₁, (h' * z * h).toBlocks₂₂)) (blkHom h h' h1 h2) :=
   fun p => by simp only [blkHom_left, toBlocks_fromBlocks₁₁, toBlocks_fromBlocks₂₂]
@@ -210,8 +273,14 @@ theorem blkHom_leftInverse : Function.LeftInverse
 def blkGL : GL (Fin a) R × GL (Fin b) R →* GL (Fin n) R :=
   (Units.map (blkHom h h' h1 h2).toRingHom.toMonoidHom).comp MulEquiv.prodUnits.symm.toMonoidHom
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem blkGL_val (x y) : (blkGL h h' h1 h2 (x, y)).val = blkHom h h' h1 h2 (x.val, y.val) := rfl
 
+/- English proof (translation)
+Use `Topology.IsClosedEmbedding.of_comp (Units.isEmbedding_embedProduct (M := B)) ?_` and prove the remaining obligations. Conclude with `(hf.prodMap ((MulOpposite.opHomeomorph.isClosedEmbedding.comp hf).comp MulOpposite.opHomeomorph.symm.isClosedEmbedding)).comp Units.isClosedEmbedding_embedProduct`.
+-/
 theorem isClosedEmbedding_unitsMap {A B : Type} [Monoid A] [Monoid B] [TopologicalSpace A] [TopologicalSpace B]
     [T1Space A] [ContinuousMul A] (f : A →* B) (hf : Topology.IsClosedEmbedding f) :
     Topology.IsClosedEmbedding (Units.map f) := by
@@ -219,6 +288,9 @@ theorem isClosedEmbedding_unitsMap {A B : Type} [Monoid A] [Monoid B] [Topologic
   exact (hf.prodMap ((MulOpposite.opHomeomorph.isClosedEmbedding.comp hf).comp
     MulOpposite.opHomeomorph.symm.isClosedEmbedding)).comp Units.isClosedEmbedding_embedProduct
 
+/- English proof (translation)
+Use `(isClosedEmbedding_unitsMap (blkHom h h' h1 h2).toRingHom.toMonoidHom ?_).comp Homeomorph.prodUnits.symm.isClosedEmbedding` and prove the remaining obligations. Use `(blkHom_leftInverse h h' h1 h2).isClosedEmbedding ?_ ?_` and prove the remaining obligations. Establish `: Continuous fun z : Matrix (Fin n) (Fin n) R => h' * z * h` using `(continuous_const.matrix_mul continuous_id).matrix_mul continuous_const`. Conclude with `(continuous_matrix fun i j => this.matrix_elem _ _).prodMk (continuous_matrix fun i j => this.matrix_elem _ _)`. Conclude with `(continuous_const.matrix_mul (continuous_fst.matrix_fromBlocks continuous_const continuous_const continuous_snd)).matrix_mul continuous_const`.
+-/
 theorem isClosedEmbedding_blkGL [TopologicalSpace R] [IsTopologicalRing R] [T2Space R] :
     Topology.IsClosedEmbedding (blkGL h h' h1 h2) := by
   refine (isClosedEmbedding_unitsMap (blkHom h h' h1 h2).toRingHom.toMonoidHom ?_).comp
@@ -230,10 +302,24 @@ theorem isClosedEmbedding_blkGL [TopologicalSpace R] [IsTopologicalRing R] [T2Sp
   · exact (continuous_const.matrix_mul (continuous_fst.matrix_fromBlocks continuous_const continuous_const
       continuous_snd)).matrix_mul continuous_const
 
+/- English proof (translation)
+Rewrite using `[blkGL_val, aeval_algHom_apply, aeval_prod_apply]`.
+-/
 theorem aeval_blkGL (x : GL (Fin a) R) (y : GL (Fin b) R) (f : R[X]) :
     aeval (blkGL h h' h1 h2 (x, y)).val f = blkHom h h' h1 h2 (aeval x.val f, aeval y.val f) := by
   rw [blkGL_val, aeval_algHom_apply, aeval_prod_apply]
 
+/- English proof (translation)
+Establish `hinv : (blkGL h h' h1 h2 (N₁, N₂))⁻¹ = blkGL h h' h1 h2 (N₁⁻¹, N₂⁻¹)` using `(map_inv _ _).symm`. Unfold `NormOne`. Simplify using `only [hinv, aeval_blkGL]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨f, hf, hg⟩`.
+
+Rewrite `hg` using `[hf, ← map_mul, ← map_one (blkHom h h' h1 h2)]`. Establish `hg'` using `(blkHom_leftInverse h h' h1 h2).injective hg`. Establish `g1 : aeval N₁.val f * aeval (N₁⁻¹).val (f.map c) = 1` using `congrArg Prod.fst hg'`. Establish `g2 : aeval N₂.val f * aeval (N₂⁻¹).val (f.map c) = 1` using `congrArg Prod.snd hg'`. Conclude with `⟨⟨_, _, g1, mul_eq_one_comm.1 g1⟩, ⟨_, _, g2, mul_eq_one_comm.1 g2⟩, ⟨f, rfl, g1⟩, ⟨f, rfl, g2⟩, Units.ext hf.symm⟩`.
+
+Introduce and unpack `⟨x, y, ⟨f₁, hx, hx'⟩, ⟨f₂, hy, hy'⟩, rfl⟩`. Take `⟨u, v, huv⟩` from `hP`. Establish `k1 : f₁ + (f₂ - f₁) * u * P₁ = f₂ + (f₁ - f₂) * v * P₂` using `by linear_combination (f₂ - f₁) * huv`. Establish `a1 : aeval N₁.val (f₁ + (f₂ - f₁) * u * P₁) = x.val`. Rewrite using `[map_add, map_mul, e₁, mul_zero, add_zero, hx]`.
+
+Establish `a2 : aeval N₂.val (f₁ + (f₂ - f₁) * u * P₁) = y.val`. Rewrite using `[k1, map_add, map_mul, e₂, mul_zero, add_zero, hy]`. Establish `a3 : aeval (N₁⁻¹).val ((f₁ + (f₂ - f₁) * u * P₁).map c) = aeval (N₁⁻¹).val (f₁.map c)`. Rewrite using `[Polynomial.map_add, Polynomial.map_mul, map_add, map_mul, e₁', mul_zero, add_zero]`. Establish `a4 : aeval (N₂⁻¹).val ((f₁ + (f₂ - f₁) * u * P₁).map c) = aeval (N₂⁻¹).val (f₂.map c)`.
+
+Rewrite using `[k1, Polynomial.map_add, Polynomial.map_mul, map_add, map_mul, e₂', mul_zero, add_zero]`. Use `⟨f₁ + (f₂ - f₁) * u * P₁, by rw [a1, a2, blkGL_val], ?_⟩` and prove the remaining obligations. Rewrite using `[a3, a4, blkGL_val, ← map_mul, Prod.mk_mul_mk, hx', hy']`. Conclude with `map_one _`.
+-/
 theorem normOne_blk (c : R →+* R) (N₁ : GL (Fin a) R) (N₂ : GL (Fin b) R) (P₁ P₂ : R[X]) (hP : IsCoprime P₁ P₂)
     (e₁ : aeval N₁.val P₁ = 0) (e₂ : aeval N₂.val P₂ = 0) (e₁' : aeval (N₁⁻¹).val (P₁.map c) = 0)
     (e₂' : aeval (N₂⁻¹).val (P₂.map c) = 0) (g : GL (Fin n) R) :
@@ -269,6 +355,15 @@ end Torus
 
 section Exist
 
+/- English proof (translation)
+Establish `hd : IsUnit A.det`. Rewrite using `[isUnit_iff_ne_zero]`. Introduce `h0`. Establish `: (0 : ℂ) ∈ A.charpoly.roots`. Rewrite using `[mem_roots A.charpoly_monic.ne_zero, IsRoot, Matrix.eval_charpoly, map_zero, zero_sub, Matrix.det_neg, h0, mul_zero]`.
+
+Simplify using `using h 0 this`. Use `⟨hd, eq_of_monic_of_dvd_of_natDegree_le A.charpoly_monic (Matrix.charpoly_monic _) ?_ (by simp)⟩` and prove the remaining obligations. Use `(IsAlgClosed.splits _).dvd_of_roots_le_roots A.charpoly_monic.ne_zero ?_` and prove the remaining obligations. Rewrite using `[Multiset.le_iff_subset (nodup_roots hs)]`. Introduce `z hz`.
+
+Establish `h1 : star z * z = 1`. Use `Complex.conj_mul' z` as an intermediate fact. Rewrite `this` using `[h z hz]`. Simplify using `using this`. Rewrite `hz`, the goal using `[mem_roots (Matrix.charpoly_monic _).ne_zero, IsRoot, Matrix.eval_charpoly]`.
+
+Establish `e : Matrix.scalar (Fin n) z - (A⁻¹)ᴴ = ((-star z) • ((Matrix.scalar (Fin n) z - A) * A⁻¹))ᴴ`. Rewrite using `[Matrix.sub_mul, Matrix.mul_nonsing_inv _ hd, Matrix.scalar_apply, ← Matrix.smul_one_eq_diagonal, Matrix.smul_mul, Matrix.one_mul, smul_sub, smul_smul, neg_mul, h1]`. Simplify using `[sub_eq_neg_add, add_comm]`. Rewrite using `[e, Matrix.det_conjTranspose, Matrix.det_smul, Matrix.det_mul, hz]`. Simplify using the standard rewrite rules.
+-/
 theorem charpoly_inv_conjTranspose_complex {n : ℕ} (A : Matrix (Fin n) (Fin n) ℂ) (hs : A.charpoly.Separable)
     (h : ∀ z ∈ A.charpoly.roots, ‖z‖ = 1) : IsUnit A.det ∧ (A⁻¹)ᴴ.charpoly = A.charpoly := by
   have hd : IsUnit A.det := by
@@ -294,6 +389,19 @@ theorem charpoly_inv_conjTranspose_complex {n : ℕ} (A : Matrix (Fin n) (Fin n)
   rw [e, Matrix.det_conjTranspose, Matrix.det_smul, Matrix.det_mul, hz]
   simp
 
+/- English proof (translation)
+Take `⟨x, hx⟩` from `GlobalTheory.Orb.IsRegSS.exists_conj (M := (N⁻¹)ᴴ) (N := N) (by rwa [GlobalTheory.Orb.IsRegSS, hN]) hN.symm`. Establish `h1 : N * x.val * Nᴴ = x.val`. Rewrite using `[hx, Matrix.mul_assoc, ← conjTranspose_mul, Matrix.mul_nonsing_inv _ hd, conjTranspose_one, Matrix.mul_one]`. Take `⟨ε, hε⟩ : ∃ ε : K, ε = (-1) ^ (n - 1)` from `⟨_, rfl⟩`. Establish `hεs : star ε = ε` using `by simp [hε]`.
+
+Establish `hεε : ε * ε = 1` using `by rw [hε, ← mul_pow]; simp`. Set `B` to `(-ε) • (N * x.valᴴ * (x⁻¹).val)`. Take `⟨u, ⟨c, hc, huc⟩, hu⟩` from `hinf.exists_notMem_finset B.charpoly.roots.toFinset`. Rewrite `hu` using `[Multiset.mem_toFinset, mem_roots B.charpoly_monic.ne_zero, IsRoot, Matrix.eval_charpoly]`. Set `M` to `c • x.val + (ε * star c) • (N * x.valᴴ)`.
+
+Establish `hM : M = star c • ((Matrix.scalar (Fin n) u - B) * x.val)`. Simplify using `only [M, B]`. Rewrite using `[Matrix.sub_mul, Matrix.smul_mul, Matrix.mul_assoc _ _ x.val, Units.inv_mul, Matrix.mul_one, Matrix.scalar_apply, ← Matrix.smul_one_eq_diagonal, Matrix.smul_mul, Matrix.one_mul, smul_sub, smul_smul, smul_smul, mul_comm (star c) u, huc, mul_neg, neg_smul, sub_neg_eq_add, mul_comm …`. Establish `hMd : IsUnit M.det`. Rewrite using `[hM, Matrix.det_smul, Matrix.det_mul, isUnit_iff_ne_zero]`.
+
+Conclude with `mul_ne_zero (pow_ne_zero _ hc) (mul_ne_zero hu ((Matrix.isUnit_iff_isUnit_det _).1 x.isUnit).ne_zero)`. Establish `hNM : N * Mᴴ = ε • M`. Simplify using `only [M, conjTranspose_add, conjTranspose_smul, conjTranspose_mul, conjTranspose_conjTranspose, Matrix.mul_add, Matrix.mul_smul, ← Matrix.mul_assoc, h1, star_mul', star_star, hεs, smul_add, smul_smul]`. Rewrite using `[add_comm, ← mul_assoc, hεε, one_mul]`. Establish `hPP : GlobalTheory.Tw.Phi n K * (GlobalTheory.Tw.Phi n K)ᵀ = 1` using `Phi_mul_transpose n K`.
+
+Establish `hPP' : (GlobalTheory.Tw.Phi n K)ᵀ * GlobalTheory.Tw.Phi n K = 1` using `mul_eq_one_comm.1 hPP`. Establish `hTT : (GlobalTheory.Tw.Phi n K)ᵀ * (GlobalTheory.Tw.Phi n K)ᵀ = ε • 1` using `by conv_lhs => lhs; rw [GlobalTheory.Tw.Model.Phi_transpose, ← hε]`. Rewrite using `[Matrix.smul_mul, hPP]`. Establish `hinv : M * (GlobalTheory.Tw.Phi n K)ᵀ * (GlobalTheory.Tw.Phi n K * M⁻¹) = 1`. Rewrite using `[Matrix.mul_assoc, ← Matrix.mul_assoc _ _ M⁻¹, hPP', Matrix.one_mul, Matrix.mul_nonsing_inv _ hMd]`.
+
+Use `⟨⟨_, _, hinv, mul_eq_one_comm.1 hinv⟩, ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `M * (GlobalTheory.Tw.Phi n K)ᵀ * (GlobalTheory.Tw.Phi n K * ((M * (GlobalTheory.Tw.Phi n K)ᵀ)⁻¹)ᴴ * (GlobalTheory.Tw.Phi n K)ᵀ) = N`. Rewrite using `[Matrix.inv_eq_right_inv hinv, conjTranspose_mul, GlobalTheory.Tw.Model.Phi_conjTranspose]`. Simplify using `only [Matrix.mul_assoc]`. Rewrite using `[hTT, ← Matrix.mul_assoc _ (GlobalTheory.Tw.Phi n K), hPP', Matrix.one_mul, Matrix.mul_smul, Matrix.mul_one, Matrix.mul_smul, ← Matrix.smul_mul, ← hNM, Matrix.mul_assoc, ← conjTranspose_mul, Matrix.nonsing_inv_mul _ hMd, conjTranspose_one, Matrix.mul_one]`.
+-/
 theorem exists_nrm_eq {K : Type} [Field K] [StarRing K] {n : ℕ}
     (hinf : {u : K | ∃ c : K, star c ≠ 0 ∧ u * star c = c}.Infinite) (N : Matrix (Fin n) (Fin n) K)
     (hs : N.charpoly.Separable) (hd : IsUnit N.det) (hN : (N⁻¹)ᴴ.charpoly = N.charpoly) :
@@ -335,6 +443,13 @@ theorem exists_nrm_eq {K : Type} [Field K] [StarRing K] {n : ℕ}
     Matrix.mul_smul, ← Matrix.smul_mul, ← hNM, Matrix.mul_assoc, ← conjTranspose_mul, Matrix.nonsing_inv_mul _ hMd,
     conjTranspose_one, Matrix.mul_one]
 
+/- English proof (translation)
+Take `⟨w, hw⟩ : ∃ w, w = z - star z` from `⟨_, rfl⟩`. Establish `h0 : w ≠ 0` using `hw ▸ sub_ne_zero.2 hz.symm`. Establish `hs : star w = -w` using `by simp [hw]`. Establish `hk : ∀ k : ℕ, (k : K) - w ≠ 0` using `fun k h => by`. Establish `h1 : w = k` using `(sub_eq_zero.1 h).symm`.
+
+Establish `h2 : star w = w` using `by rw [h1, star_natCast]`. Conclude with `h0 (self_eq_neg.1 (h2.symm.trans hs))`. Use `Set.infinite_of_injective_forall_mem (f := fun k : ℕ => (k + w) / (k - w)) (fun k l h => ?_) fun k => ?_` and prove the remaining obligations. Establish `h1` using `(div_eq_div_iff (hk k) (hk l)).1 h`. Establish `h2 : 2 * w * ((l : K) - k) = 0` using `by linear_combination h1`.
+
+Simplify using `only [mul_eq_zero, two_ne_zero, h0, false_or, sub_eq_zero, Nat.cast_inj] at h2`. Conclude with `h2.symm`. Establish `e : star ((k : K) + w) = k - w` using `by rw [star_add, star_natCast, hs, sub_eq_add_neg]`. Conclude with `⟨k + w, e ▸ hk k, by rw [e, div_mul_cancel₀ _ (hk k)]⟩`.
+-/
 theorem infinite_quot {K : Type} [Field K] [CharZero K] [StarRing K] (z : K) (hz : star z ≠ z) :
     {u : K | ∃ c : K, star c ≠ 0 ∧ u * star c = c}.Infinite := by
   obtain ⟨w, hw⟩ : ∃ w, w = z - star z := ⟨_, rfl⟩
@@ -352,11 +467,27 @@ theorem infinite_quot {K : Type} [Field K] [CharZero K] [StarRing K] (z : K) (hz
   · have e : star ((k : K) + w) = k - w := by rw [star_add, star_natCast, hs, sub_eq_add_neg]
     exact ⟨k + w, e ▸ hk k, by rw [e, div_mul_cancel₀ _ (hk k)]⟩
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨_, (charpoly_leftMulMatrix (AdjoinRoot.powerBasis hP.ne_zero)).trans (AdjoinRoot.minpoly_powerBasis_gen_of_monic hP)⟩`.
+-/
 theorem exists_charpoly_eq {K : Type} [Field K] (P : K[X]) (hP : P.Monic) :
     ∃ N : Matrix (Fin P.natDegree) (Fin P.natDegree) K, N.charpoly = P :=
   ⟨_, (charpoly_leftMulMatrix (AdjoinRoot.powerBasis hP.ne_zero)).trans
     (AdjoinRoot.minpoly_powerBasis_gen_of_monic hP)⟩
 
+/- English proof (translation)
+Take `⟨hm, hn, hs, hr⟩` from `hP`. Take `⟨N, hN⟩ : ∃ N : Matrix (Fin n) (Fin n) E, N.charpoly = P` from `hn ▸ exists_charpoly_eq P hm`. Use `letI : StarRing E := { star := IsCMField.complexConj E star_involutive := IsCMField.complexConj_apply_apply E star_mul := fun x y => by rw [mul_comm x y]; exact map_mul (IsCMField.complexConj E) y x star_add := map_add (IsCMField.complexConj E) }`. Take `⟨τ⟩ : Nonempty (E →+* ℂ)` from `inferInstance`. Establish `hA : (N.map τ).charpoly = P.map τ` using `by rw [Matrix.charpoly_map, hN]`.
+
+Take `⟨h1, h2⟩` from `charpoly_inv_conjTranspose_complex (N.map τ) (by rw [hA]; exact hs.map) (by rw [hA]; exact hr τ)`. Establish `hd : IsUnit N.det`. Rewrite `h1`, the goal using `[isUnit_iff_ne_zero]`. Introduce `h0`. Apply `h1` to reduce the goal to its premises.
+
+Rewrite using `[show N.map τ = τ.mapMatrix N from rfl, ← RingHom.map_det, h0, map_zero]`. Establish `hi : (N.map τ)⁻¹ = (N⁻¹).map τ` using `Matrix.inv_eq_right_inv (by rw [← Matrix.map_mul, Matrix.mul_nonsing_inv _ hd, Matrix.map_one _ τ.map_zero τ.map_one])`. Establish `h3 : (N⁻¹)ᴴ.charpoly = N.charpoly`. Apply `Polynomial.map_injective τ τ.injective` to reduce the goal to its premises. Rewrite using `[← Matrix.charpoly_map, ← Matrix.charpoly_map, ← h2, hi]`.
+
+Use `congr 1`. Use extensionality with `i j`. Conclude with `IsCMField.complexEmbedding_complexConj E τ _`. Choose the witnesses or unpack the hypotheses as in `⟨z, hz⟩ : ∃ z : E, star z ≠ z := by`. Assume the negation of the conclusion as `h`.
+
+Use `push_neg at h`. Conclude with `IsCMField.complexConj_ne_one E (AlgEquiv.ext h)`. Take `⟨δ, hδ⟩` from `exists_nrm_eq (infinite_quot z hz) N (by rw [hN]; exact hs) hd h3`. Use `⟨δ, ?_⟩` and prove the remaining obligations. Establish `e : thE E n = thetaGL n (starRingEnd E)` using `rfl`.
+
+Rewrite using `[e, Units.val_mul, thetaGL_val]`. Conclude with `(congrArg Matrix.charpoly hδ).trans hN`.
+-/
 theorem exists_norm (E : Type) [Field E] [NumberField E] [IsCMField E] {n : ℕ} {P : E[X]} (hP : P ∈ Ell E n) :
     ∃ δ : GL (Fin n) E, (δ * thE E n δ).val.charpoly = P := by
   obtain ⟨hm, hn, hs, hr⟩ := hP
@@ -396,6 +527,11 @@ end Exist
 
 section Main
 
+/- English proof (translation)
+Use `⟨fun ⟨y, hy⟩ => ⟨y.val, hy ▸ rfl⟩, fun ⟨M, hM⟩ => ?_⟩` and prove the remaining obligations. Establish `hd : M.det ≠ 0` using `fun h0 => by`. Establish `h1` using `(Matrix.isUnit_iff_isUnit_det _).1 x.isUnit`. Rewrite `h1` using `[← hM, show M.map p = p.mapMatrix M from rfl, ← RingHom.map_det, h0, map_zero]`. Conclude with `not_isUnit_zero h1`.
+
+Conclude with `⟨GeneralLinearGroup.mkOfDetNeZero M hd, Units.ext hM⟩`.
+-/
 theorem mem_range_map {K R : Type} [Field K] [CommRing R] [Nontrivial R] {n : ℕ} (p : K →+* R) (x : GL (Fin n) R) :
     x ∈ (GeneralLinearGroup.map p : GL (Fin n) K →* GL (Fin n) R).range ↔ ∃ M : Matrix (Fin n) (Fin n) K, M.map p = x.val := by
   refine ⟨fun ⟨y, hy⟩ => ⟨y.val, hy ▸ rfl⟩, fun ⟨M, hM⟩ => ?_⟩
@@ -405,6 +541,9 @@ theorem mem_range_map {K R : Type} [Field K] [CommRing R] [Nontrivial R] {n : �
     exact not_isUnit_zero h1
   exact ⟨GeneralLinearGroup.mkOfDetNeZero M hd, Units.ext hM⟩
 
+/- English proof (translation)
+Rewrite using `[fromBlocks_map, Matrix.map_zero _ p.map_zero, Matrix.map_zero _ p.map_zero]`.
+-/
 theorem map_fromBlocks_zero {K R : Type} [CommRing K] [CommRing R] {a b : ℕ} (p : K →+* R)
     (x : Matrix (Fin a) (Fin a) K) (y : Matrix (Fin b) (Fin b) K) :
     (fromBlocks x 0 0 y).map p = fromBlocks (x.map p) 0 0 (y.map p) := by
@@ -412,16 +551,45 @@ theorem map_fromBlocks_zero {K R : Type} [CommRing K] [CommRing R] {a b : ℕ} (
 
 variable {E : Type} [Field E] [NumberField E] [IsCMField E]
 
+/- English proof (translation)
+Rewrite using `[map_mul]`. Use `congr 1`. Conclude with `(GlobalTheory.ThetaPull.map_thetaGL _ _ _ (fun x => (conjFin_algebraMap (IsCMField.complexConj E).toRingEquiv x).symm) δ).symm`.
+-/
 theorem ratF_norm {n : ℕ} (δ : GL (Fin n) E) :
     ratF E n δ * thF E n (ratF E n δ) = ratF E n (δ * thE E n δ) := by
   rw [map_mul]
   congr 1
   exact (GlobalTheory.ThetaPull.map_thetaGL _ _ _ (fun x => (conjFin_algebraMap (IsCMField.complexConj E).toRingEquiv x).symm) δ).symm
 
+/- English proof (translation)
+Rewrite using `[ratF_norm, ← Matrix.charpoly_map]`. Both sides reduce to the same expression.
+-/
 theorem charpoly_ratF_norm {n : ℕ} (δ : GL (Fin n) E) :
     (ratF E n δ * thF E n (ratF E n δ)).val.charpoly = (δ * thE E n δ).val.charpoly.map (algebraMap E (Af E)) := by
   rw [ratF_norm, ← Matrix.charpoly_map]; rfl
 
+/- English proof (translation)
+Use `haveI : T2Space (Af E) := inferInstanceAs (T2Space (RestrictedProduct (fun v : HeightOneSpectrum (𝓞 E) => v.adicCompletion E) (fun v => (v.adicCompletionIntegers E : Set (v.adicCompletion E))) Filter.cofinite))`. Use `haveI : Nontrivial (Af E) := by`. Take `⟨P, hP⟩` from `Ideal.exists_maximal (𝓞 E)`. Conclude with `(pLoc E ⟨P, hP.isPrime, Ring.ne_bot_of_isMaximal_of_not_isField hP (RingOfIntegers.not_isField _)⟩).domain_nontrivial`. Set `e : Fin a ⊕ Fin b ≃ Fin n` to `finSumFinEquiv.trans (finCongr hn)`.
+
+Set `p` to `algebraMap E (Af E)`. Take `⟨x, hx⟩` from `GlobalTheory.Orb.IsRegSS.exists_conj (M := (δ * thE E n δ).val) (N := reindex e e (fromBlocks (δ₁ * thE E a δ₁).val 0 0 (δ₂ * thE E b δ₂).val)) hs (by rw [charpoly_reindex, charpoly_fromBlocks_zero₁₂, h])`. Take `⟨g, hg⟩ : ∃ g, g = (x⁻¹).val.submatrix id e` from `⟨_, rfl⟩`. Take `⟨g', hg'⟩ : ∃ g', g' = x.val.submatrix e id` from `⟨_, rfl⟩`. Establish `g1 : g * g' = 1` using `by rw [hg, hg', submatrix_mul_equiv, Units.inv_mul, submatrix_id_id]`.
+
+Establish `g2 : g' * g = 1`. Rewrite using `[hg, hg', ← submatrix_mul _ _ _ _ _ Function.bijective_id, Units.mul_inv, submatrix_one_equiv]`. Establish `g3 : g * fromBlocks (δ₁ * thE E a δ₁).val 0 0 (δ₂ * thE E b δ₂).val * g' = (δ * thE E n δ).val`. Establish `: fromBlocks (δ₁ * thE E a δ₁).val 0 0 (δ₂ * thE E b δ₂).val = (reindex e e (fromBlocks (δ₁ * thE E a δ₁).val 0 0 (δ₂ * thE E b δ₂).val)).submatrix e e` using `by simp`. Rewrite using `[this, hg, hg', Matrix.mul_assoc, submatrix_mul_equiv, hx, submatrix_mul_equiv, Units.inv_mul_cancel_left, submatrix_id_id]`.
+
+Establish `h1 : g.map p * g'.map p = 1` using `by rw [← Matrix.map_mul, g1, Matrix.map_one _ p.map_zero p.map_one]`. Establish `h2 : g'.map p * g.map p = 1` using `by rw [← Matrix.map_mul, g2, Matrix.map_one _ p.map_zero p.map_one]`. Establish `hb : ∀ u v, blkHom _ _ h1 h2 (Matrix.map u p, Matrix.map v p) = (g * fromBlocks u 0 0 v * g').map p`. Introduce `u v`. Rewrite using `[blkHom_apply, Matrix.map_mul, Matrix.map_mul, map_fromBlocks_zero]`.
+
+Establish `hN : ratF E n δ * thF E n (ratF E n δ) = blkGL _ _ h1 h2 (ratF E a δ₁ * thF E a (ratF E a δ₁), ratF E b δ₂ * thF E b (ratF E b δ₂))`. Simplify using `only [ratF_norm]`. Conclude with `Units.ext ((congrArg (Matrix.map · p) g3).symm.trans (hb _ _).symm)`. Establish `hs'` using `hs`. Rewrite `hs'` using `[h]`.
+
+Take `⟨t, -⟩` from `twCent_iff _ GlobalTheory.ThetaPull.cFin_cFin (ratF E n δ) (charpoly_ratF_norm δ ▸ hs.map)`. Take `⟨t₁, s₁⟩` from `twCent_iff _ GlobalTheory.ThetaPull.cFin_cFin (ratF E a δ₁) (charpoly_ratF_norm δ₁ ▸ hs'.of_mul_left.map)`. Take `⟨t₂, s₂⟩` from `twCent_iff _ GlobalTheory.ThetaPull.cFin_cFin (ratF E b δ₂) (charpoly_ratF_norm δ₂ ▸ hs'.of_mul_right.map)`. Establish `hc'` using `hc.map (Polynomial.mapRingHom p)`. Simplify using `only [Polynomial.coe_mapRingHom, p, ← charpoly_ratF_norm] at hc'`.
+
+Use `mass_prod (blkGL _ _ h1 h2) (isClosedEmbedding_blkGL _ _ h1 h2) _ _ _ _ _ _ _ _ _ ?_ fun u v => ?_` and prove the remaining obligations. Use extensionality with `y`. Use `(t y).trans ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `NormOne _ (ratF E n δ * thF E n (ratF E n δ)) _ ↔ _`. Rewrite using `[hN]`.
+
+Use `(normOne_blk _ _ h1 h2 _ _ _ _ _ hc' (Matrix.aeval_self_charpoly _) (Matrix.aeval_self_charpoly _) (s₁ _ (Matrix.aeval_self_charpoly _)) (s₂ _ (Matrix.aeval_self_charpoly _)) y).trans ?_` and prove the remaining obligations. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨u, v, hu, hv, rfl⟩`. Conclude with `⟨(u, v), ⟨(t₁ u).2 hu, (t₂ v).2 hv⟩, rfl⟩`. Introduce and unpack `⟨⟨u, v⟩, ⟨hu, hv⟩, rfl⟩`.
+
+Conclude with `⟨u, v, (t₁ u).1 hu, (t₂ v).1 hv, rfl⟩`. Simplify using `only [ratF, mem_range_map, blkGL_val]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨M, hM⟩`. Establish `k` using `blkHom_leftInverse _ _ h1 h2 (u.val, v.val)`.
+
+Rewrite `k` using `[← hM]`. Express the relevant statement in the definitionally equal form `((_ * M.map p * _ : Matrix _ _ _).toBlocks₁₁, (_ * M.map p * _ : Matrix _ _ _).toBlocks₂₂) = _ at k`. Simplify using `only [← Matrix.map_mul] at k`. Conclude with `⟨⟨(g' * M * g).toBlocks₁₁, congrArg Prod.fst k⟩, ⟨(g' * M * g).toBlocks₂₂, congrArg Prod.snd k⟩⟩`. Introduce and unpack `⟨⟨u₀, hu⟩, ⟨v₀, hv⟩⟩`.
+
+Conclude with `⟨_, by rw [← hu, ← hv, hb]⟩`.
+-/
 theorem mass_mul {n a b : ℕ} (hn : a + b = n) (δ : GL (Fin n) E) (δ₁ : GL (Fin a) E) (δ₂ : GL (Fin b) E)
     (hc : IsCoprime (δ₁ * thE E a δ₁).val.charpoly (δ₂ * thE E b δ₂).val.charpoly)
     (hs : (δ * thE E n δ).val.charpoly.Separable)
@@ -492,6 +660,9 @@ theorem mass_mul {n a b : ℕ} (hn : a + b = n) (δ : GL (Fin n) E) (δ₁ : GL 
       exact ⟨_, by rw [← hu, ← hv, hb]⟩
 
 omit [NumberField E] [IsCMField E] in
+/- English proof (translation)
+Take `⟨m₁, d₁, s₁, r₁⟩` from `h₁`. Take `⟨m₂, d₂, s₂, r₂⟩` from `h₂`. Use `⟨m₁.mul m₂, by rw [m₁.natDegree_mul m₂, d₁, d₂], s₁.mul s₂ hc, fun τ z hz => ?_⟩` and prove the remaining obligations. Rewrite `hz` using `[Polynomial.map_mul, roots_mul ((m₁.map τ).mul (m₂.map τ)).ne_zero, Multiset.mem_add]`. Conclude with `hz.elim (r₁ τ z) (r₂ τ z)`.
+-/
 theorem mul_mem_Ell {a b : ℕ} {P₁ P₂ : E[X]} (h₁ : P₁ ∈ Ell E a) (h₂ : P₂ ∈ Ell E b) (hc : IsCoprime P₁ P₂) :
     P₁ * P₂ ∈ Ell E (a + b) := by
   obtain ⟨m₁, d₁, s₁, r₁⟩ := h₁
@@ -500,6 +671,11 @@ theorem mul_mem_Ell {a b : ℕ} {P₁ P₂ : E[X]} (h₁ : P₁ ∈ Ell E a) (h�
   rw [Polynomial.map_mul, roots_mul ((m₁.map τ).mul (m₂.map τ)).ne_zero, Multiset.mem_add] at hz
   exact hz.elim (r₁ τ z) (r₂ τ z)
 
+/- English proof (translation)
+Introduce `E _ _ _ _ a b P₁ P₂ h₁ h₂ hc`. Establish `h` using `mul_mem_Ell h₁ h₂ hc`. Use `⟨?_, exists_norm E h₁, h⟩` and prove the remaining obligations. Establish `hn : P₁.natDegree + P₂.natDegree = (P₁ * P₂).natDegree` using `(h₁.1.natDegree_mul h₂.1).symm`. Establish `e₁` using `exists_norm E (n := P₁.natDegree) ⟨h₁.1, rfl, h₁.2.2⟩`.
+
+Establish `e₂` using `exists_norm E (n := P₂.natDegree) ⟨h₂.1, rfl, h₂.2.2⟩`. Establish `e` using `exists_norm E (n := (P₁ * P₂).natDegree) ⟨h.1, rfl, h.2.2⟩`. Unfold `kap`. Rewrite using `[dif_pos e, dif_pos e₁, dif_pos e₂, mass_mul hn e.choose e₁.choose e₂.choose (by rw [e₁.choose_spec, e₂.choose_spec]; exact hc) (by rw [e.choose_spec]; exact h.2.2.1) (by rw [e.choose_spec, e₁.choose_spec, e₂.choose_spec]), UniqueFactorizationMonoid.normalizedFactors_mul h₁.1.ne_ …`.
+-/
 theorem kap_mul : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E], Unr E → ∀ (a b : ℕ) (P₁ P₂ : E[X]), P₁ ∈ Ell E a → P₂ ∈ Ell E b → IsCoprime P₁ P₂ → kap (P₁ * P₂) = kap P₁ * kap P₂ ∧ (∃ δ : GL (Fin a) E, (δ * thE E a δ).val.charpoly = P₁) ∧ P₁ * P₂ ∈ Ell E (a + b) := by
   intro E _ _ _ _ a b P₁ P₂ h₁ h₂ hc
   have h := mul_mem_Ell h₁ h₂ hc

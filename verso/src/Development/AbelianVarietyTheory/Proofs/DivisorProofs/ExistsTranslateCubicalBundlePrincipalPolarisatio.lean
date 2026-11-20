@@ -32,10 +32,20 @@ def genPoint (G : Over (Sp R)) (a : Over.mk (jK R) ⟶ G) :
     𝟙_ (Over (Sp (FractionRing R))) ⟶ (Over.pullback (jK R)).obj G :=
   Over.homMk (pullback.lift a.left (𝟙 _) (by rw [Category.id_comp]; exact Over.w a)) (pullback.lift_snd _ _ _)
 
+/- English proof (translation)
+The claim follows from `pullback.lift_fst _ _ _`.
+-/
 theorem genPoint_fst (G : Over (Sp R)) (a : Over.mk (jK R) ⟶ G) :
     (genPoint G a).left ≫ pullback.fst G.hom (jK R) = a.left :=
   pullback.lift_fst _ _ _
 
+/- English proof (translation)
+Establish `H` using `isGrpPullback_pullback G (jK R)`. Set `c : Over.mk (T.hom ≫ jK R) ⟶ G` to `Over.homMk ((1 : T ⟶ (Over.pullback (jK R)).obj G).left ≫ pullback.fst G.hom (jK R)) (by`. Rewrite using `[Category.assoc, pullback.condition, ← Category.assoc]`. Use `erw [Over.w (1 : T ⟶ (Over.pullback (jK R)).obj G)]`. Use the proof step `rfl)`.
+
+Establish `hc : c * c = c`. Apply `Over.OverMorphism.ext` to reduce the goal to its premises. Rewrite using `[H.2 T 1 1 c c rfl rfl, _root_.mul_one]`. Both sides reduce to the same expression. Establish `: c = 1` using `mul_eq_left.mp hc`.
+
+Conclude with `congrArg (fun q => q.left) this`.
+-/
 theorem one_left_fst (G : Over (Sp R)) [GrpObj G] (T : Over (Sp (FractionRing R))) :
     (1 : T ⟶ (Over.pullback (jK R)).obj G).left ≫ pullback.fst G.hom (jK R) =
       (1 : Over.mk (T.hom ≫ jK R) ⟶ G).left := by
@@ -52,6 +62,13 @@ theorem one_left_fst (G : Over (Sp R)) [GrpObj G] (T : Over (Sp (FractionRing R)
   have : c = 1 := mul_eq_left.mp hc
   exact congrArg (fun q => q.left) this
 
+/- English proof (translation)
+Establish `H` using `isGrpPullback_pullback G (jK R)`. Set `T` to `𝟙_ (Over (Sp (FractionRing R)))`. Set `U : Over.mk (T.hom ≫ jK R) ⟶ Over.mk (jK R)` to `Over.homMk (𝟙 _) (by simp [T])`. Establish `hx : (U ≫ a).left = (genPoint G a).left ≫ pullback.fst G.hom (jK R)`. Rewrite using `[genPoint_fst, Over.comp_left]`.
+
+Conclude with `Category.id_comp _`. Establish `e` using `H.2 T (genPoint G a) (genPoint G a) (U ≫ a) (U ≫ a) hx hx`. Rewrite `e` using `[← MonObj.comp_mul, ha, MonObj.comp_one]`. Apply `Over.OverMorphism.ext` to reduce the goal to its premises. Apply `pullback.hom_ext` to reduce the goal to its premises.
+
+Rewrite using `[← e, one_left_fst]`. Use `erw [Over.w (genPoint G a * genPoint G a), Over.w (1 : T ⟶ (Over.pullback (jK R)).obj G)]`.
+-/
 theorem genPoint_mul_self (G : Over (Sp R)) [GrpObj G] (a : Over.mk (jK R) ⟶ G) (ha : a * a = 1) :
     genPoint G a * genPoint G a = 1 := by
   have H := isGrpPullback_pullback G (jK R)
@@ -67,6 +84,11 @@ theorem genPoint_mul_self (G : Over (Sp R)) [GrpObj G] (a : Over.mk (jK R) ⟶ G
   · rw [← e, one_left_fst]
   · erw [Over.w (genPoint G a * genPoint G a), Over.w (1 : T ⟶ (Over.pullback (jK R)).obj G)]
 
+/- English proof (translation)
+Establish `H` using `isGrpPullback_pullback G (jK R)`. Use `(H.2 _ (𝟙 _) (toUnit _ ≫ genPoint G a) (genPr G) (genPt G a) ?_ ?_).symm` and prove the remaining obligations. Conclude with `(Category.id_comp _).symm`. Use `show pullback.snd G.hom (jK R) ≫ a.left = _`. Rewrite using `[Over.comp_left, Category.assoc, genPoint_fst]`.
+
+Both sides reduce to the same expression.
+-/
 theorem transl_genPoint_fst (G : Over (Sp R)) [GrpObj G] (a : Over.mk (jK R) ⟶ G) :
     (transl (genPoint G a)).left ≫ pullback.fst G.hom (jK R) = (genPr G * genPt G a).left := by
   have H := isGrpPullback_pullback G (jK R)
@@ -80,6 +102,31 @@ end GlobalTheory.GenTranslPkg
 
 open GlobalTheory.RigidTranslate GlobalTheory.PolTranslate GlobalTheory.GenTransl GlobalTheory.GenTranslPkg in
 
+/- English proof (translation)
+Introduce `R _ _ _ hR G _ _ hG P A gen hgen hL a ha`. Take `⟨hdvr, -, -⟩` from `hR`. Use `haveI := hdvr`. Use `haveI := hG.smooth`. Use `haveI := hG.separated`.
+
+Use `haveI := hG.quasiCompact`. Use `haveI : GeometricallyIntegral G.hom := @GlobalTheory.geometricallyIntegral_of_isSemiAbelian _ G _ hG`. Use `haveI := A.isAb.comm`. Use `haveI := A.isAb.proper`. Set `b` to `genPoint G a`.
+
+Establish `hb : b * b = 1` using `genPoint_mul_self G a ha`. Set `b' : 𝟙_ _ ⟶ A.A` to `b ≫ gen.hom`. Establish `hb' : b' * b' = 1` using `by show (b ≫ gen.hom) * (b ≫ gen.hom) = 1`. Rewrite using `[← MonObj.mul_comp, hb, MonObj.one_comp]`. Set `L₁ : LB A.A.left` to `rigTransl A.L b'`.
+
+Establish `hL₁ : L₁.IsLB` using `DVR.linComb_isLB _ A.isLB _ _`. Set `A₁ : PolAV (Sp (FractionRing R))` to `{ A := A.A, isAb := A.isAb, g := A.g, smoothDim := A.smoothDim, L := L₁, isLB := hL₁, rigid := rigidified_rigTransl A.isLB, sym := sym_rigTransl hb' A.isLB A.sym, ample := relAmple_rigTransl hb' A.isLB A.ample, ktriv := kTriv_rigTransl hb' A.isLB A.ktriv }`. Set `LG` to `L₁.pull gen.hom.left`. Establish `hLG : LG.IsLB` using `pull_isLB hL₁ _`. Take `⟨L', hL', hLL'⟩` from `GlobalTheory.T.lineBundle_generic_fibre_extends_over_dvr R G LG hLG`.
+
+Establish `hpr : IsProper (pullback.snd G.hom (jK R))`. Establish `e : pullback.snd G.hom (jK R) = gen.hom.left ≫ A.A.hom` using `(Over.w gen.hom).symm`. Establish `: IsIso gen.hom.left` using `inferInstanceAs (IsIso ((Over.forget _).map gen.hom))`. Rewrite using `[e]`. Use `infer_instance`.
+
+Establish `hsym : Out.Sym ((Over.pullback (jK R)).obj G) (L'.pull (pullback.fst G.hom (jK R)))` using `GlobalTheory.T.symmetric_of_lineBundleIso_pull_groupHom _ _ _ gen.hom hgen L₁ _ hL₁ (pull_isLB hL' _) A₁.sym hLL'`. Take `⟨P₁, hP₁⟩` from `GlobalTheory.T.exists_cubicalSymmetricStructure_of_genericSymmetric R G hG hpr L' hL' hsym`. Establish `hPL` using `P.L.isLB`. Establish `htr : LBIso LG (P.L.L.pull (genPr G * genPt G a).left)` using `by haveI hU : Unique (Sp (FractionRing R)) := inferInstanceAs (Unique (PrimeSpectrum (FractionRing R)))`. Set `p0 : (𝟙_ (Over (Sp (FractionRing R)))).left` to `hU.default`.
+
+Take `⟨i, hi⟩` from `exists_chart A.isLB (b'.left p0)`. Establish `h1 : LBIso LG (A.L.pull (gen.hom.left ≫ (transl b').left))` using `lbIso_diff_pull A.isLB _ _ _ i fun z => by show b'.left ((gen.hom.left ≫ A.A.hom) z) ∈ A.L.U i`. Establish `: (gen.hom.left ≫ A.A.hom) z = p0` using `hU.uniq _`. Rewrite using `[this]`. Conclude with `hi`.
+
+Establish `e : gen.hom.left ≫ (transl b').left = (transl b).left ≫ gen.hom.left`. Rewrite using `[← Over.comp_left, ← Over.comp_left, comp_transl, transl, MonObj.mul_comp, Category.id_comp, Category.assoc]`. Rewrite `h1` using `[e]`. Establish `h2` using `GlobalTheory.ZM.SiegClause.lbIso_pull_pull (LBIso.symm hL) (transl b).left`. Establish `h3` using `GlobalTheory.ZM.SiegClause.lbIso_pull_pull (GlobalTheory.PolBaseChange.lbIso_refl (pull_isLB hPL (pullback.fst G.hom (jK R)))) (transl b).left`.
+
+Rewrite `h3` using `[transl_genPoint_fst]`. Conclude with `LBIso.trans hLG (pull_isLB A.isLB _) (pull_isLB hPL _) h1 (LBIso.trans (pull_isLB A.isLB _) (pull_isLB (pull_isLB hPL _) _) (pull_isLB hPL _) (LBIso.symm h2) h3)`. Establish `hext : ExtLam G LG (abelian₂ G P.L.L)`. Use `⟨DVR.linComb_isLB _ hPL _ _, fun κ₂ hκ => ?_⟩` and prove the remaining obligations. Take `⟨c, hc⟩` from `GlobalTheory.Moduli.cube_of_isLB _ A A.L A.isLB`.
+
+Establish `e1 : LBIso (abelian₂ _ LG) ((abelian₂ A.A L₁).pull (gen.hom ⊗ₘ gen.hom).left)` using `GlobalTheory.ZM.SiegClause.lbIso_lam_pull gen.hom hLG hL₁ (GlobalTheory.PolBaseChange.lbIso_refl hLG)`. Establish `e2 : LBIso (abelian₂ _ (P.L.L.pull (pullback.fst G.hom (jK R)))) ((abelian₂ A.A A.L).pull (gen.hom ⊗ₘ gen.hom).left)` using `GlobalTheory.ZM.SiegClause.lbIso_lam_pull gen.hom (pull_isLB hPL _) A.isLB (LBIso.symm hL)`. Establish `e3` using `GlobalTheory.ZM.SiegClause.lbIso_pull_pull (lam_rigTransl (t := b') A.isLB c hc) (gen.hom ⊗ₘ gen.hom).left`. Rewrite `e3` using `[Category.comp_id]`. Establish `e4 : LBIso (abelian₂ _ (P.L.L.pull (pullback.fst G.hom (jK R)))) ((abelian₂ G P.L.L).pull κ₂)` using `GlobalTheory.LamPull.lbIso_lam_pull (isGrpPullback_pullback G (jK R)) hPL (pull_isLB hPL _) (GlobalTheory.PolBaseChange.lbIso_refl (pull_isLB hPL _)) hκ`.
+
+Establish `lb : ∀ {S : Scheme.{0}} (H : Over S) [GrpObj H] {M : LB H.left}, M.IsLB → (abelian₂ H M).IsLB` using `fun _ _ _ h => DVR.linComb_isLB _ h _ _`. Conclude with `LBIso.trans (lb _ hLG) (pull_isLB (lb _ hL₁) _) (pull_isLB (lb _ hPL) _) e1 (LBIso.trans (pull_isLB (lb _ hL₁) _) (pull_isLB (lb _ A.isLB) _) (pull_isLB (lb _ hPL) _) e3 (LBIso.trans (pull_isLB (lb _ A.isLB) _) (lb _ (pull_isLB hPL _)) (pull_isLB (lb _ hPL) _) (LBIso.symm e2) e4) …`. Use `⟨P₁, A₁, gen, hgen, ?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[hP₁]`. Conclude with `hLL'`.
+
+Rewrite using `[hP₁]`. Conclude with `GlobalTheory.T.lineBundleIso_mumford_of_generic_extension R G hG L' LG (abelian₂ G P.L.L) hL' hLG hLL' hext`. Use `show LBIso _ _`. Rewrite using `[hP₁]`. Conclude with `LBIso.trans (pull_isLB hL' _) hLG (pull_isLB hPL _) (LBIso.symm hLL') htr`.
+-/
 theorem GlobalTheory.Mum.exists_transl_pkg : ∀ (R : Type) [CommRing R] [IsDomain R] [IsLocalRing R], GlobalTheory.LN.CDvr R → ∀ (G : Over (Sp R)) [GrpObj G] [IsCommMonObj G], IsSemiAbelian G → ∀ (P : GlobalTheory.UU.CP G) (A : PolAV (Sp (FractionRing R))) (gen : ((Over.pullback (jK R)).obj G) ≅ A.A), IsMonHom gen.hom → LBIso (A.L.pull gen.hom.left) (P.L.L.pull (pullback.fst G.hom (jK R))) → ∀ a : Over.mk (jK R) ⟶ G, a * a = 1 → ∃ (P₁ : GlobalTheory.UU.CP G) (A₁ : PolAV (Sp (FractionRing R))) (gen₁ : (Over.pullback (jK R)).obj G ≅ A₁.A), IsMonHom gen₁.hom ∧ LBIso (A₁.L.pull gen₁.hom.left) (P₁.L.L.pull (pullback.fst G.hom (jK R))) ∧ LBIso (abelian₂ G P₁.L.L) (abelian₂ G P.L.L) ∧ GlobalTheory.GenTransl.IsGenTransl G P.L.L P₁.L.L a := by
   intro R _ _ _ hR G _ _ hG P A gen hgen hL a ha
   obtain ⟨hdvr, -, -⟩ := hR

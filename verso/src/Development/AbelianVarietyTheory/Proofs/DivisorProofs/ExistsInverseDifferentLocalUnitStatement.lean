@@ -12,6 +12,9 @@ open NumberField IsDedekindDomain MeasureTheory Filter Topology Formalism.MainNo
 open GlobalTheory.WeilM GlobalTheory.AdelicU GlobalTheory.LFun GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels GlobalTheory.ThK
 open GlobalTheory.Doubling GlobalTheory.ThK.DblKer
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.ImagDifferent.exists_imag_generator | exact GlobalTheory.ImagDifferent.exists_imag_generator | (intros; apply GlobalTheory.ImagDifferent.exists_imag_generator <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.exists_inverse_different_local_unit : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E),
     IsCMExt F E σ → Algebra.Unramified (𝓞 F) (𝓞 E) → ∀ v : HeightOneSpectrum (𝓞 F), ∃ δ : E, δ ≠ 0 ∧ σ δ = -δ ∧
     ∃ s : 𝓞 F, s ∉ v.asIdeal ∧

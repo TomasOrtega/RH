@@ -21,6 +21,9 @@ def avgForm (μ : Measure G) (φ : G → ℝ) (ρ : G → (H →L[ℂ] H)) (x y 
 
 variable {μ : Measure G} {φ B : G → ℝ} {ρ : G → (H →L[ℂ] H)}
 
+/- English proof (translation)
+Simplify using `only [avgForm, map_smul, inner_smul_right]`. Rewrite using `[← integral_const_mul]`. Use `congr 1`. Use function extensionality and compare the values at `g`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem avg_smul (c : ℂ) (x y : H) : avgForm μ φ ρ x (c • y) = c * avgForm μ φ ρ x y := by
   simp only [avgForm, map_smul, inner_smul_right]
   rw [← integral_const_mul]
@@ -28,6 +31,11 @@ theorem avg_smul (c : ℂ) (x y : H) : avgForm μ φ ρ x (c • y) = c * avgFor
   funext g
   ring
 
+/- English proof (translation)
+Use `show _ = (starRingEnd ℂ) _`. Simplify using `only [avgForm]`. Rewrite using `[← integral_conj]`. Use `congr 1`. Use function extensionality and compare the values at `g`.
+
+Rewrite using `[map_mul, Complex.conj_ofReal, inner_conj_symm]`.
+-/
 theorem avg_conj (x y : H) : avgForm μ φ ρ y x = star (avgForm μ φ ρ x y) := by
   show _ = (starRingEnd ℂ) _
   simp only [avgForm]
@@ -36,6 +44,11 @@ theorem avg_conj (x y : H) : avgForm μ φ ρ y x = star (avgForm μ φ ρ x y) 
   funext g
   rw [map_mul, Complex.conj_ofReal, inner_conj_symm]
 
+/- English proof (translation)
+Rewrite using `[avgForm, ← integral_complex_ofReal]`. Use `congr 1`. Use function extensionality and compare the values at `g`. Rewrite using `[inner_self_eq_norm_sq_to_K]`. Use `push_cast`.
+
+Both sides reduce to the same expression.
+-/
 theorem avg_self (x : H) : avgForm μ φ ρ x x = ((∫ g, φ g * ‖ρ g x‖ ^ 2 ∂μ : ℝ) : ℂ) := by
   rw [avgForm, ← integral_complex_ofReal]
   congr 1
@@ -49,23 +62,37 @@ variable (hφ : Continuous φ) (hφ0 : ∀ g, 0 < φ g) (hρ : ∀ v, Continuous
 
 include hφ hφ0 hρ hB hb
 
+/- English proof (translation)
+Use `(hB.mul_const (‖x‖ * ‖y‖)).mono' ?_ (.of_forall fun g => ?_)` and prove the remaining obligations. Conclude with `((Complex.continuous_ofReal.comp hφ).mul ((hρ x).inner (hρ y))).aestronglyMeasurable`. Rewrite using `[norm_mul, Complex.norm_real, Real.norm_of_nonneg (hφ0 g).le]`. Conclude with `(mul_le_mul_of_nonneg_left (norm_inner_le_norm _ _) (hφ0 g).le).trans (hb g x y)`.
+-/
 theorem integrable_avg (x y : H) : Integrable (fun g => (φ g : ℂ) * ⟪ρ g x, ρ g y⟫_ℂ) μ := by
   refine (hB.mul_const (‖x‖ * ‖y‖)).mono' ?_ (.of_forall fun g => ?_)
   · exact ((Complex.continuous_ofReal.comp hφ).mul ((hρ x).inner (hρ y))).aestronglyMeasurable
   · rw [norm_mul, Complex.norm_real, Real.norm_of_nonneg (hφ0 g).le]
     exact (mul_le_mul_of_nonneg_left (norm_inner_le_norm _ _) (hφ0 g).le).trans (hb g x y)
 
+/- English proof (translation)
+Use `(hB.mul_const (‖x‖ * ‖x‖)).mono' ?_ (.of_forall fun g => ?_)` and prove the remaining obligations. Conclude with `(hφ.mul ((hρ x).norm.pow 2)).aestronglyMeasurable`. Rewrite using `[Real.norm_of_nonneg (mul_nonneg (hφ0 g).le (sq_nonneg _)), sq]`. Conclude with `hb g x x`.
+-/
 theorem integrable_sq (x : H) : Integrable (fun g => φ g * ‖ρ g x‖ ^ 2) μ := by
   refine (hB.mul_const (‖x‖ * ‖x‖)).mono' ?_ (.of_forall fun g => ?_)
   · exact (hφ.mul ((hρ x).norm.pow 2)).aestronglyMeasurable
   · rw [Real.norm_of_nonneg (mul_nonneg (hφ0 g).le (sq_nonneg _)), sq]
     exact hb g x x
 
+/- English proof (translation)
+Simplify using `only [avgForm, map_add, inner_add_right, mul_add]`. Conclude with `integral_add (integrable_avg hφ hφ0 hρ hB hb x y) (integrable_avg hφ hφ0 hρ hB hb x z)`.
+-/
 theorem avg_add (x y z : H) :
     avgForm μ φ ρ x (y + z) = avgForm μ φ ρ x y + avgForm μ φ ρ x z := by
   simp only [avgForm, map_add, inner_add_right, mul_add]
   exact integral_add (integrable_avg hφ hφ0 hρ hB hb x y) (integrable_avg hφ hφ0 hρ hB hb x z)
 
+/- English proof (translation)
+Establish `h` using `norm_integral_le_of_norm_le (μ := μ) (f := fun g => (φ g : ℂ) * ⟪ρ g x, ρ g y⟫_ℂ) (hB.mul_const (‖x‖ * ‖y‖)) (.of_forall fun g => by`. Rewrite using `[norm_mul, Complex.norm_real, Real.norm_of_nonneg (hφ0 g).le]`. Conclude with `(mul_le_mul_of_nonneg_left (norm_inner_le_norm _ _) (hφ0 g).le).trans (hb g x y))`. Rewrite `h` using `[integral_mul_const]`. Rewrite using `[mul_assoc]`.
+
+Conclude with `h`.
+-/
 theorem avg_norm_le (x y : H) : ‖avgForm μ φ ρ x y‖ ≤ (∫ g, B g ∂μ) * ‖x‖ * ‖y‖ := by
   have h := norm_integral_le_of_norm_le (μ := μ)
     (f := fun g => (φ g : ℂ) * ⟪ρ g x, ρ g y⟫_ℂ) (hB.mul_const (‖x‖ * ‖y‖)) (.of_forall fun g => by
@@ -75,6 +102,13 @@ theorem avg_norm_le (x y : H) : ‖avgForm μ φ ρ x y‖ ≤ (∫ g, B g ∂μ
   rw [mul_assoc]
   exact h
 
+/- English proof (translation)
+Establish `hI` using `integrable_sq hφ hφ0 hρ hB hb x`. Rewrite using `[avg_self, Complex.ofReal_re]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[integral_mul_const]`. Expand and normalize the polynomial expressions, which then agree.
+
+Use `_ ≤ ∫ g in S, φ g * ‖ρ g x‖ ^ 2 ∂μ := by`. Use `setIntegral_mono_on (hφI.integrableOn.mul_const _) hI.integrableOn hS fun g hg => ?_` and prove the remaining obligations. Use `mul_le_mul_of_nonneg_left ?_ (hφ0 g).le` and prove the remaining obligations. Rewrite using `[div_le_iff₀ (by positivity)]`. Use `pow_le_pow_left₀ (norm_nonneg _) (hDS g hg x) 2` as an intermediate fact.
+
+Rewrite `this` using `[mul_pow]`. Combine the linear equalities and inequalities to obtain the conclusion. Use `_ ≤ ∫ g, φ g * ‖ρ g x‖ ^ 2 ∂μ := setIntegral_le_integral hI (.of_forall fun g => mul_nonneg (hφ0 g).le (sq_nonneg _))`.
+-/
 theorem avg_lower (hφI : Integrable φ μ) {S : Set G} (hS : MeasurableSet S) {D : ℝ} (hD : 0 < D)
     (hDS : ∀ g ∈ S, ∀ x, ‖x‖ ≤ D * ‖ρ g x‖) (x : H) :
     (∫ g in S, φ g ∂μ) / D ^ 2 * ‖x‖ ^ 2 ≤ (avgForm μ φ ρ x x).re := by
@@ -92,6 +126,11 @@ theorem avg_lower (hφI : Integrable φ μ) {S : Set G} (hS : MeasurableSet S) {
     _ ≤ ∫ g, φ g * ‖ρ g x‖ ^ 2 ∂μ :=
         setIntegral_le_integral hI (.of_forall fun g => mul_nonneg (hφ0 g).le (sq_nonneg _))
 
+/- English proof (translation)
+Establish `hI` using `integrable_sq hφ hφ0 hρ hB hb x`. Rewrite using `[avg_self, avg_self, Complex.ofReal_re, Complex.ofReal_re]`. Establish `e : ∫ g, φ g * ‖ρ g (ρ h x)‖ ^ 2 ∂μ = ∫ g, φ (g * h⁻¹) * ‖ρ g x‖ ^ 2 ∂μ`. Use `Eq.trans (integral_congr_ae (.of_forall fun g => ?_)) (integral_mul_right_eq_self (μ := μ) (fun g => φ (g * h⁻¹) * ‖ρ g x‖ ^ 2) h)` and prove the remaining obligations. Simplify using `[hmul]`.
+
+Rewrite using `[e, ← integral_const_mul]`. Use `integral_mono_of_nonneg (.of_forall fun g => mul_nonneg (hφ0 _).le (sq_nonneg _)) (hI.const_mul c) (.of_forall fun g => ?_)` and prove the remaining obligations. Use `show φ (g * h⁻¹) * ‖ρ g x‖ ^ 2 ≤ c * (φ g * ‖ρ g x‖ ^ 2)`. Rewrite using `[← mul_assoc]`. Conclude with `mul_le_mul_of_nonneg_right (hφc g) (sq_nonneg _)`.
+-/
 theorem avg_growth [MeasurableMul G] [μ.IsMulRightInvariant]
     (hmul : ∀ g g', ρ (g * g') = (ρ g).comp (ρ g')) (h : G) {c : ℝ}
     (hφc : ∀ g, φ (g * h⁻¹) ≤ c * φ g) (x : H) :
@@ -115,9 +154,19 @@ section Mat
 
 variable {n : ℕ}
 
+/- English proof (translation)
+Rewrite using `[← UnitaryRecombination.tInner_self, wt, UnitaryRecombination.tInner, trace_mul_comm]`.
+-/
 theorem wt_eq_hs_sq (g : Matrix (Fin n) (Fin n) ℂ) : wt g = UnitaryRecombination.hs g ^ 2 := by
   rw [← UnitaryRecombination.tInner_self, wt, UnitaryRecombination.tInner, trace_mul_comm]
 
+/- English proof (translation)
+Establish `hm : 0 ≤ mnorm X` using `Finset.sum_nonneg fun _ _ => Finset.sum_nonneg fun _ _ => norm_nonneg _`. Establish `hij : ∀ i j, ‖X i j‖ ≤ mnorm X` using `fun i j => (Finset.single_le_sum (f := fun b => ‖X i b‖) (fun _ _ => norm_nonneg _) (Finset.mem_univ j)).trans (Finset.single_le_sum (f := fun a => ∑ b, ‖X a b‖) (fun _ _ => Finset.sum_nonneg fun _ _ => norm_nonneg _) (Finset.mem_univ i))`. Use `(sq_le_sq₀ (UnitaryRecombination.hs_nonneg X) hm).1 ?_` and prove the remaining obligations. Rewrite using `[UnitaryRecombination.hs_sq]`. Combine the equalities or inequalities in the displayed calculation.
+
+Rewrite using `[sq]`. Conclude with `mul_le_mul_of_nonneg_left (hij i j) (norm_nonneg _)`. Use `_ = mnorm X ^ 2 := by`. Simplify using `only [← Finset.sum_mul]`. Rewrite using `[sq]`.
+
+Both sides reduce to the same expression.
+-/
 theorem hs_le_mnorm (X : Matrix (Fin n) (Fin n) ℂ) : UnitaryRecombination.hs X ≤ mnorm X := by
   have hm : 0 ≤ mnorm X := Finset.sum_nonneg fun _ _ => Finset.sum_nonneg fun _ _ => norm_nonneg _
   have hij : ∀ i j, ‖X i j‖ ≤ mnorm X := fun i j =>
@@ -133,9 +182,15 @@ theorem hs_le_mnorm (X : Matrix (Fin n) (Fin n) ℂ) : UnitaryRecombination.hs X
         simp only [← Finset.sum_mul]
         rw [sq]; rfl
 
+/- English proof (translation)
+The claim follows from `Complex.continuous_re.comp ((continuous_id.matrix_conjTranspose.matrix_mul continuous_id).matrix_trace)`.
+-/
 theorem continuous_wt : Continuous (wt : Matrix (Fin n) (Fin n) ℂ → ℝ) :=
   Complex.continuous_re.comp ((continuous_id.matrix_conjTranspose.matrix_mul continuous_id).matrix_trace)
 
+/- English proof (translation)
+Simplify using `[wt]`.
+-/
 theorem wt_one : wt (1 : Matrix (Fin n) (Fin n) ℂ) = n := by
   simp [wt]
 
@@ -143,10 +198,16 @@ section L2
 
 open scoped Matrix.Norms.L2Operator
 
+/- English proof (translation)
+Rewrite using `[wt_eq_hs_sq, wt_eq_hs_sq, ← mul_pow]`. Conclude with `pow_le_pow_left₀ (UnitaryRecombination.hs_nonneg _) (UnitaryRecombination.hs_mul_right_le A h) 2`.
+-/
 theorem wt_mul_le (A h : Matrix (Fin n) (Fin n) ℂ) : wt (A * h) ≤ wt A * ‖h‖ ^ 2 := by
   rw [wt_eq_hs_sq, wt_eq_hs_sq, ← mul_pow]
   exact pow_le_pow_left₀ (UnitaryRecombination.hs_nonneg _) (UnitaryRecombination.hs_mul_right_le A h) 2
 
+/- English proof (translation)
+Use `haveI : Nonempty (Fin n) := ⟨⟨0, hn⟩⟩`. Use `haveI : NormOneClass (Matrix (Fin n) (Fin n) ℂ) := ⟨by rw [← l2_opNorm_toEuclideanCLM, map_one]; exact norm_one⟩`. Use `(PI.IwaMeasEx.Gauge.ZetaZeros.norm_exp_le' _).trans (Real.exp_le_exp.2 ?_)` and prove the remaining obligations. Rewrite using `[norm_smul, Real.norm_eq_abs]`. Conclude with `mul_le_mul_of_nonneg_left ((UnitaryRecombination.opNorm_le_hs X).trans (hs_le_mnorm X)) (abs_nonneg _)`.
+-/
 theorem norm_exp_smul_le (hn : 0 < n) (X : Matrix (Fin n) (Fin n) ℂ) (t : ℝ) :
     ‖NormedSpace.exp (t • X)‖ ≤ Real.exp (|t| * mnorm X) := by
   haveI : Nonempty (Fin n) := ⟨⟨0, hn⟩⟩
@@ -158,6 +219,11 @@ theorem norm_exp_smul_le (hn : 0 < n) (X : Matrix (Fin n) (Fin n) ℂ) (t : ℝ)
 
 end L2
 
+/- English proof (translation)
+Use `open scoped Matrix.Norms.L2Operator in`. Use `(wt_mul_le _ _).trans (mul_le_mul_of_nonneg_left ?_ ?_)` and prove the remaining obligations. Rewrite using `[two_mul, Real.exp_add, ← sq]`. Conclude with `pow_le_pow_left₀ (norm_nonneg _) (norm_exp_smul_le hn X t) 2`. Rewrite using `[wt_eq_hs_sq]`.
+
+Check the signs of the components of the expression.
+-/
 theorem wt_mul_exp_le (hn : 0 < n) (A X : Matrix (Fin n) (Fin n) ℂ) (t : ℝ) :
     wt (A * NormedSpace.exp (t • X)) ≤ wt A * Real.exp (2 * (|t| * mnorm X)) := by
   open scoped Matrix.Norms.L2Operator in
@@ -166,6 +232,13 @@ theorem wt_mul_exp_le (hn : 0 < n) (A X : Matrix (Fin n) (Fin n) ℂ) (t : ℝ) 
     exact pow_le_pow_left₀ (norm_nonneg _) (norm_exp_smul_le hn X t) 2
   · rw [wt_eq_hs_sq]; positivity
 
+/- English proof (translation)
+Use `haveI : Nonempty (Fin n) := ⟨⟨0, hn⟩⟩`. Establish `hne : uMat g ≠ 0` using `Units.ne_zero (g : (Matrix (Fin n) (Fin n) ℂ)ˣ)`. Choose the witnesses or unpack the hypotheses as in `⟨i, j, hij⟩ : ∃ i j, uMat g i j ≠ 0 := by`. Assume the negation of the conclusion as `h`. Use `push_neg at h`.
+
+Conclude with `hne (Matrix.ext h)`. Rewrite using `[wt_eq_hs_sq, UnitaryRecombination.hs_sq]`. Establish `h1 : 0 < ‖uMat g i j‖ ^ 2` using `by positivity`. Establish `h2` using `Finset.single_le_sum (f := fun b => ‖uMat g i b‖ ^ 2) (fun _ _ => sq_nonneg _) (Finset.mem_univ j)`. Establish `h3` using `Finset.single_le_sum (f := fun a => ∑ b, ‖uMat g a b‖ ^ 2) (fun _ _ => Finset.sum_nonneg fun _ _ => sq_nonneg _) (Finset.mem_univ i)`.
+
+Conclude with `h1.trans_le (h2.trans h3)`.
+-/
 theorem wt_pos {ε : Fin n → Bool} (hn : 0 < n) (g : UJ ε) : 0 < wt (uMat g) := by
   haveI : Nonempty (Fin n) := ⟨⟨0, hn⟩⟩
   have hne : uMat g ≠ 0 := Units.ne_zero (g : (Matrix (Fin n) (Fin n) ℂ)ˣ)
@@ -181,6 +254,9 @@ theorem wt_pos {ε : Fin n → Bool} (hn : 0 < n) (g : UJ ε) : 0 < wt (uMat g) 
     (fun _ _ => Finset.sum_nonneg fun _ _ => sq_nonneg _) (Finset.mem_univ i)
   exact h1.trans_le (h2.trans h3)
 
+/- English proof (translation)
+Establish `hc' : cᴴ * Jm ε * c = Jm ε` using `hc`. Establish `hl : (Jm ε * cᴴ * Jm ε) * c = 1`. Rewrite using `[mul_assoc (Jm ε * cᴴ), mul_assoc (Jm ε), ← mul_assoc cᴴ, hc', Jm_mul_self]`. Conclude with `⟨⟨⟨c, Jm ε * cᴴ * Jm ε, mul_eq_one_comm.1 hl, hl⟩, hc⟩, rfl⟩`.
+-/
 theorem exists_uMat_eq {ε : Fin n → Bool} {c : Matrix (Fin n) (Fin n) ℂ} (hc : c ∈ UJset ε) :
     ∃ h : UJ ε, uMat h = c := by
   have hc' : cᴴ * Jm ε * c = Jm ε := hc
@@ -188,11 +264,55 @@ theorem exists_uMat_eq {ε : Fin n → Bool} {c : Matrix (Fin n) (Fin n) ℂ} (h
     rw [mul_assoc (Jm ε * cᴴ), mul_assoc (Jm ε), ← mul_assoc cᴴ, hc', Jm_mul_self]
   exact ⟨⟨⟨c, Jm ε * cᴴ * Jm ε, mul_eq_one_comm.1 hl, hl⟩, hc⟩, rfl⟩
 
+/- English proof (translation)
+The claim follows from `Units.continuous_val.comp continuous_subtype_val`.
+-/
 theorem continuous_uMat {ε : Fin n → Bool} : Continuous (uMat : UJ ε → Matrix (Fin n) (Fin n) ℂ) :=
   Units.continuous_val.comp continuous_subtype_val
 
 end Mat
 
+/- English proof (translation)
+Break down `Nat.eq_zero_or_pos n with rfl | hn` into its components or cases. Use `⟨fun x y => ⟪x, y⟫_ℂ, 1, 1, 0, one_pos, zero_le_one, le_rfl, fun x y z => inner_add_right _ _ _, fun c x y => inner_smul_right _ _ _, fun x y => (inner_conj_symm y x).symm, fun x => ?_, fun x y => ?_, fun X _ t x => ?_⟩` and prove the remaining obligations. Rewrite using `[one_mul]`. Conclude with `(inner_self_eq_norm_sq (𝕜 := ℂ) x).ge`. Rewrite using `[one_mul]`.
+
+Conclude with `norm_inner_le_norm _ _`. Establish `h1 : NormedSpace.exp (t • X) = 1` using `Subsingleton.elim _ _`. Rewrite using `[h1, hrep.1]`. Simplify using the standard rewrite rules. Take `⟨C, b, hC, hb, hgr⟩` from `hg`.
+
+Take `⟨b0, hb0, hint⟩` from `hv`. Establish `hw : Continuous fun g : UJ ε => wt (uMat g)` using `continuous_wt.comp continuous_uMat`. Establish `hwp : ∀ g : UJ ε, 0 < wt (uMat g)` using `wt_pos hn`. Take `⟨b', hb'⟩ : ∃ b' : ℝ, b' = b0 + 2 * b` from `⟨_, rfl⟩`. Establish `hb'0 : 0 ≤ b'` using `by rw [hb']; positivity`.
+
+Establish `hb0' : b0 ≤ b'` using `by rw [hb']; linarith`. Set `φ : UJ ε → ℝ` to `fun g => wt (uMat g) ^ (-b')`. Set `Bf : UJ ε → ℝ` to `fun g => C ^ 2 * wt (uMat g) ^ (-b0)`. Set `ρ : UJ ε → (H →L[ℂ] H)` to `fun g => π (uMat g)`. Establish `hφ : Continuous φ` using `hw.rpow_const fun g => Or.inl (hwp g).ne'`.
+
+Establish `hφ0 : ∀ g, 0 < φ g` using `fun g => Real.rpow_pos_of_pos (hwp g) _`. Establish `hρ : ∀ v, Continuous fun g => ρ g v` using `fun v => (hc v).comp_continuous continuous_uMat fun g => g.2`. Establish `hB : MeasureTheory.Integrable Bf (Formalism.REAL.muG ε).inv` using `(hint b0 le_rfl).const_mul _`. Establish `hφI : MeasureTheory.Integrable φ (Formalism.REAL.muG ε).inv` using `hint b' hb0'`. Establish `hbd : ∀ g x y, φ g * (‖ρ g x‖ * ‖ρ g y‖) ≤ Bf g * (‖x‖ * ‖y‖)`.
+
+Introduce `g x y`. Establish `hwb : 0 ≤ wt (uMat g) ^ b` using `(Real.rpow_pos_of_pos (hwp g) _).le`. Establish `h1` using `hgr _ g.2 x`. Establish `h2` using `hgr _ g.2 y`. Establish `e : φ g * (wt (uMat g) ^ b * wt (uMat g) ^ b) = wt (uMat g) ^ (-b0)`.
+
+Simplify using `only [φ]`. Rewrite using `[← Real.rpow_add (hwp g), ← Real.rpow_add (hwp g), hb']`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree. Combine the equalities or inequalities in the displayed calculation.
+
+Set `S : Set (UJ ε)` to `{g | wt (uMat g) < n + 1} ∩ {g | wt (uMat g⁻¹) < n + 1}`. Establish `hSo : IsOpen S` using `(isOpen_lt hw continuous_const).inter (isOpen_lt (hw.comp continuous_inv) continuous_const)`. Establish `hS1 : (1 : UJ ε) ∈ S`. Establish `h1 : wt (uMat (1 : UJ ε)) = n` using `wt_one`. Use `⟨?_, ?_⟩` and prove the remaining obligations.
+
+Use `show wt (uMat (1 : UJ ε)) < n + 1`. Combine the linear equalities and inequalities to obtain the conclusion. Use `show wt (uMat (1 : UJ ε)⁻¹) < n + 1`. Rewrite using `[inv_one]`. Combine the linear equalities and inequalities to obtain the conclusion.
+
+Take `⟨D, hDdef⟩ : ∃ D : ℝ, D = C * ((n : ℝ) + 1) ^ b` from `⟨_, rfl⟩`. Establish `hD : 0 < D` using `by rw [hDdef]; positivity`. Establish `hDS : ∀ g ∈ S, ∀ x, ‖x‖ ≤ D * ‖ρ g x‖`. Introduce `g hgS x`. Establish `e : π (uMat g⁻¹) (π (uMat g) x) = x`.
+
+Establish `h1 : π (uMat g⁻¹ * uMat g) = (π (uMat g⁻¹)).comp (π (uMat g))` using `hrep.2 _ (g⁻¹).2 _ g.2`. Establish `h2 : uMat g⁻¹ * uMat g = 1` using `by show uMat (g⁻¹ * g) = 1`. Rewrite using `[inv_mul_cancel]`. Both sides reduce to the same expression. Rewrite `h1` using `[h2, hrep.1]`.
+
+Conclude with `(DFunLike.congr_fun h1 x).symm`. Establish `h3` using `hgr _ (g⁻¹).2 (π (uMat g) x)`. Rewrite `h3` using `[e]`. Use `h3.trans ?_` and prove the remaining obligations. Use `mul_le_mul_of_nonneg_right ?_ (norm_nonneg _)` and prove the remaining obligations.
+
+Rewrite using `[hDdef]`. Conclude with `mul_le_mul_of_nonneg_left (Real.rpow_le_rpow (hwp _).le (le_of_lt hgS.2) hb) hC.le`. Establish `hmS : 0 < ∫ g in S, φ g ∂(Formalism.REAL.muG ε).inv`. Rewrite using `[MeasureTheory.setIntegral_pos_iff_support_of_nonneg_ae (.of_forall fun g => (hφ0 g).le) hφI.integrableOn]`. Establish `hsupp : Function.support φ = Set.univ` using `Set.eq_univ_of_forall fun g => (hφ0 g).ne'`.
+
+Rewrite using `[hsupp, Set.univ_inter]`. Conclude with `hSo.measure_pos _ ⟨1, hS1⟩`. Use `⟨avgForm (Formalism.REAL.muG ε).inv φ ρ, (∫ g in S, φ g ∂(Formalism.REAL.muG ε).inv) / D ^ 2, ∫ g, Bf g ∂(Formalism.REAL.muG ε).inv, 2 * b', by positivity, MeasureTheory.integral_nonneg fun g => mul_nonneg (sq_nonneg _) (Real.rpow_pos_of_pos (hwp g) _).le, by positivity, avg_add …` and prove the remaining obligations. Introduce `X hX t x`. Take `⟨h, hh⟩` from `exists_uMat_eq (hX t)`.
+
+Establish `hmul : ∀ g g', ρ (g * g') = (ρ g).comp (ρ g')` using `fun g g' => hrep.2 _ g.2 _ g'.2`. Take `⟨l, hl⟩ : ∃ l : ℝ, l = 2 * (|t| * mnorm X)` from `⟨_, rfl⟩`. Establish `hφc : ∀ g, φ (g * h⁻¹) ≤ Real.exp (b' * l) * φ g`. Introduce `g`. Establish `h1 : wt (uMat g) ≤ wt (uMat (g * h⁻¹)) * Real.exp l`.
+
+Establish `h2` using `wt_mul_exp_le hn (uMat (g * h⁻¹)) X t`. Rewrite `h2` using `[← hh, ← hl]`. Establish `h3 : uMat (g * h⁻¹) * uMat h = uMat g` using `by show uMat (g * h⁻¹ * h) = uMat g`. Rewrite using `[inv_mul_cancel_right]`. Rewrite `h2` using `[h3]`. Then use the resulting hypothesis.
+
+Establish `h4 : wt (uMat g) * Real.exp (-l) ≤ wt (uMat (g * h⁻¹))`. Rewrite using `[Real.exp_neg, ← div_eq_mul_inv, div_le_iff₀ (Real.exp_pos _)]`. Conclude with `h1`. Establish `h5 : 0 < wt (uMat g) * Real.exp (-l)` using `mul_pos (hwp g) (Real.exp_pos _)`. Combine the equalities or inequalities in the displayed calculation.
+
+Rewrite using `[Real.mul_rpow (hwp g).le (Real.exp_pos _).le, ← Real.exp_mul, mul_comm]`. Use `congr 2`. Expand and normalize the polynomial expressions, which then agree. Establish `key` using `avg_growth (μ := (Formalism.REAL.muG ε).inv) hφ hφ0 hρ hB hbd hmul h hφc x`. Establish `e : ρ h = π (NormedSpace.exp (t • X))`.
+
+Simplify using `only [ρ]`. Rewrite using `[hh]`. Rewrite `key` using `[e]`. Use `key.trans (le_of_eq ?_)` and prove the remaining obligations. Use `congr 2`.
+
+Rewrite using `[hl]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem almostIsom_of_growth {n : ℕ} {ε : Fin n → Bool} {H : Type} [NormedAddCommGroup H]
     [InnerProductSpace ℂ H] [CompleteSpace H] {π : Matrix (Fin n) (Fin n) ℂ → (H →L[ℂ] H)}
     (hrep : Formalism.QuantumDeterminants.IsCRepOn (UJset ε) π) (hc : ∀ v, ContinuousOn (fun g => π g v) (UJset ε))

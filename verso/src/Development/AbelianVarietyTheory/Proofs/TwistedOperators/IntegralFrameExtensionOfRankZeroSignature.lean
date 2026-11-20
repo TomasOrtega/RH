@@ -19,6 +19,11 @@ open GlobalTheory.Models GlobalTheory.Models.RankZero
 
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {Dw : Datum H} {l : Level H}
 
+/- English proof (translation)
+Take `⟨h₁, h₂⟩` from `isIso_moduli GlobalTheory.card_torsion_abelianVariety hD Xo`. Set `k` to `spMap (IntermediateField.inclusion c.le).toRingHom`. Set `β` to `Int.castRingHom c.F`. Establish `hk : IsIso (pullback.snd Xo.s k)` using `inferInstance`. Set `j : Xo.XF c ⟶ pullback (𝟙 (Sp ℤ)) (spMap β)` to `pullback.snd Xo.s k ≫ inv (pullback.snd _ _)`.
+
+Establish `hj : IsIso j` using `inferInstance`. Establish `hs : Function.Surjective j` using `(inferInstance : Surjective j).1`. Use `⟨{ X := Sp ℤ, s := 𝟙 _, normal := ZJ.isNormalScheme_sp ℤ, proj := Inhab.isProjOver_id ℤ flat := inferInstance, jQ := j, jQ_over := (Category.assoc _ _ _).trans ((congrArg (_ ≫ ·) (IsIso.inv_hom_id _)).trans (Category.comp_id _)) jQ_open := inferInstance jQ_dense := hs.denseRange, …` and prove the remaining obligations. Rewrite using `[hs.range_eq, Inhab.abLocus_eq_univ _ (Inhab.isProper_zeroTriple _), Set.preimage_univ] }, ?_⟩`. Conclude with `PushInv.pushInvertible_any GlobalTheory.allSixLaws.2.1.secBaseChangeAny GlobalTheory.allSixLaws.1.globalSectionsRank _ (Out.Inh.zeroPolAV (Sp ℤ))`.
+-/
 theorem exists_model_int (hD : Dw.p + Dw.q = 0) (Xo : Moduli Dw l) (c : Coeff l) :
     ∃ Y : Model Xo c (Int.castRingHom c.F), PushInvertible Y.t.G Y.t.PP.L := by
   obtain ⟨h₁, h₂⟩ := isIso_moduli GlobalTheory.card_torsion_abelianVariety hD Xo
@@ -39,6 +44,13 @@ theorem exists_model_int (hD : Dw.p + Dw.q = 0) (Xo : Moduli Dw l) (c : Coeff l)
   exact PushInv.pushInvertible_any GlobalTheory.allSixLaws.2.1.secBaseChangeAny GlobalTheory.allSixLaws.1.globalSectionsRank _
     (Out.Inh.zeroPolAV (Sp ℤ))
 
+/- English proof (translation)
+Introduce `E _ _ _ H Dw l Xo c hD T io hfin x hx`. Establish `hL` using `GlobalTheory.lawsFieldsSeparately`. Establish `hB : Out.SecBaseChangeSt` using `hL.2.1`. Establish `hT : Out.SecTwistSt` using `hL.2.2.2.2.2.2.2.2.2.2.2.2.2.2.2.2.2.2.2.1`. Take `⟨Y, hPI⟩` from `exists_model_int hD Xo c`.
+
+Establish `hIF` using `GlobalTheory.intFrames_of_laws hB hT E H Dw l Xo c`. Set `_` to `io.toAlgebra`. Take `⟨y₀, -, h0, -, -⟩` from `gfp_frPt_gen (Xo := Xo) (c := c) (L := T.Fr) (L' := T.Fr) hT (fun _ => rfl) x hx (fun _ i j => if i = j then 1 else 0) (fun _ _ => if_pos rfl) (fun _ _ _ h => if_neg h.ne')`. Take `⟨y, t, hbor⟩` from `intFr_of_model hIF T io Y hPI (Int.castRingHom T.V) (RingHom.ext_int _ _) y₀`. Use `⟨T, RingHom.id _, 1, one_pos, fun z => by simp, hfin, y, ?_⟩` and prove the remaining obligations.
+
+Establish `h1 : y.1.x = y₀.x` using `hbor.1`. Establish `h2 : spMap (RingHom.id T.Fr) = 𝟙 _` using `Spec.map_id _`. Use `show y.1.x = _`. Rewrite using `[h2, Category.id_comp, h1, h0]`.
+-/
 theorem intFrExt_of_rank_zero : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l), Dw.p + Dw.q = 0 → IntFrExt Xo c := by
   intro E _ _ _ H Dw l Xo c hD T io hfin x hx
   have hL := GlobalTheory.lawsFieldsSeparately

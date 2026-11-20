@@ -14,6 +14,13 @@ def NormOrdStatement : Prop :=
     IsLocalHomeomorph z → Holo n z f → VanishesBeyond n z f x m →
     Norm.VanishOrder n z f x (m + 1)
 
+/- English proof (translation)
+Introduce `n M _ z f x m hz hf hv`. Take `⟨e, he, hx⟩` from `exists_chart n z hz x`. Establish `hzx : z x ∈ e.target` using `by rw [he hx]; exact e.map_source hx`. Take `⟨C, hC⟩` from `Y.bound_of_iteratedFDeriv_eq_zero (f ∘ e.symm) e.target (z x) e.open_target hzx (hf e he) m (hv e he hx)`. Establish `h1 : ∀ᶠ y in 𝓝 x, ‖(f ∘ e.symm) (z y)‖ ≤ C * ‖z y - z x‖ ^ (m + 1)` using `hz.continuous.continuousAt.tendsto.eventually hC`.
+
+Establish `h2 : ∀ᶠ y in 𝓝 x, y ∈ e.source` using `e.open_source.mem_nhds hx`. Rewrite using `[Norm.VanishOrder, Asymptotics.isBigO_iff]`. Use `⟨C, ?_⟩` and prove the remaining obligations. Use `filter_upwards [h1, h2] with y hy hys`. Establish `hy' : e.symm (z y) = y` using `by rw [he hys]; exact e.left_inv hys`.
+
+Simplify using `only [Function.comp_apply, hy'] at hy`. Rewrite using `[norm_pow, norm_norm]`. Conclude with `hy`.
+-/
 theorem normOrd : NormOrdStatement.{u} := by
   intro n M _ z f x m hz hf hv
   obtain ⟨e, he, hx⟩ := exists_chart n z hz x

@@ -12,6 +12,9 @@ import Development.AbelianVarietyTheory.Proofs.TwistedOperators.FlathFactorisati
 
 namespace PositivityTheory.Prw
 
+/- English proof (translation)
+The claim follows from `GlobalTheory.flathFactorisation_of_tensorProduct h₁ h₂`.
+-/
 theorem flathFactorisation_of (h₁ : GlobalTheory.Published.FlathTensorProduct) (h₂ : GlobalTheory.Published.UnitaryIrreducibleAdmissible) :
     GlobalTheory.Published.FlathFactorisation :=
   GlobalTheory.flathFactorisation_of_tensorProduct h₁ h₂

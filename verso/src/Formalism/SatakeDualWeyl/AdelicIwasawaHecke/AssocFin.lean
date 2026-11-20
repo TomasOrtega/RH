@@ -8,10 +8,23 @@ open Formalism.UG
 
 variable {G : Type} [Group G] (K : Subgroup G)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 private lemma smul_quotient_mk (g x : G) : (g • (x : G ⧸ K)) = ((g * x : G) : G ⧸ K) := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 private lemma subgroup_smul_quotient_mk (k : K) (x : G) : (k • (x : G ⧸ K)) = (((k : G) * x : G) : G ⧸ K) := rfl
 
+/- English proof (translation)
+Use extensionality with `k`. Rewrite using `[MulAction.mem_stabilizer_iff, Subgroup.mem_subgroupOf, Subgroup.mem_map, subgroup_smul_quotient_mk, QuotientGroup.eq]`. Prove the components needed by the constructor for the conclusion. Introduce `hk`. Use `⟨s⁻¹ * k * s, ?_, ?_⟩` and prove the remaining obligations.
+
+Use `K.inv_mem hk` as an intermediate fact. Simplify `this` using `[mul_assoc]`. Simplify using `[MulAut.conj_apply, mul_assoc]`. Introduce and unpack `⟨t, ht, hts⟩`. Rewrite using `[← hts]`.
+
+Simplify `K.inv_mem ht` using `[MulAut.conj_apply, mul_assoc]`.
+-/
 theorem stabilizer_coset_eq (s : G) :
     MulAction.stabilizer K ((s : G ⧸ K)) = (K.map (MulAut.conj s).toMonoidHom).subgroupOf K := by
   ext k
@@ -27,6 +40,9 @@ theorem stabilizer_coset_eq (s : G) :
     rw [← hts]
     simpa [MulAut.conj_apply, mul_assoc] using K.inv_mem ht
 
+/- English proof (translation)
+Establish `h1 : ((K.map (MulAut.conj s).toMonoidHom).subgroupOf K).index ≠ 0` using `hK s`. Rewrite `h1` using `[← stabilizer_coset_eq]`. Use `haveI : Finite (K ⧸ MulAction.stabilizer K ((s : G ⧸ K))) := Nat.finite_of_card_ne_zero h1`. Conclude with `Set.finite_coe_iff.mp ((MulAction.orbitEquivQuotientStabilizer K _).finite_iff.mpr this)`.
+-/
 theorem orbit_coset_finite (hK : IsCommensurated K) (s : G) :
     (MulAction.orbit K ((s : G ⧸ K))).Finite := by
   have h1 : ((K.map (MulAut.conj s).toMonoidHom).subgroupOf K).index ≠ 0 := hK s
@@ -34,6 +50,13 @@ theorem orbit_coset_finite (hK : IsCommensurated K) (s : G) :
   haveI : Finite (K ⧸ MulAction.stabilizer K ((s : G ⧸ K))) := Nat.finite_of_card_ne_zero h1
   exact Set.finite_coe_iff.mp ((MulAction.orbitEquivQuotientStabilizer K _).finite_iff.mpr this)
 
+/- English proof (translation)
+Take `⟨S, hS⟩` from `hf`. Use `(S.finite_toSet.biUnion fun s _ => (orbit_coset_finite K hK s).image (fun y : G ⧸ K => h⁻¹ • y)).subset ?_` and prove the remaining obligations. Introduce `x hx`. Take `⟨s, hs, a, b, hab⟩` from `hS _ hx`. Use `Set.mem_biUnion (Finset.mem_coe.2 hs) ⟨a • ((s : G ⧸ K)), ⟨a, rfl⟩, ?_⟩` and prove the remaining obligations.
+
+Simplify using `only [smul_quotient_mk, subgroup_smul_quotient_mk]`. Rewrite using `[← QuotientGroup.out_eq' x, QuotientGroup.eq]`. Establish `hx' : x.out = h⁻¹ * ((a : G) * s * b)` using `by rw [← hab]; group`. Rewrite using `[hx']`. Use `b.2 using 1` and compare the differences between its conclusion and the goal.
+
+Use `group`.
+-/
 theorem finite_supp_translate (hK : IsCommensurated K) {k : Type} [Zero k] (f : G → k)
     (hf : FinDosetSupp K f) (h : G) :
     {x : G ⧸ K | f (h * x.out) ≠ 0}.Finite := by
@@ -50,6 +73,13 @@ theorem finite_supp_translate (hK : IsCommensurated K) {k : Type} [Zero k] (f : 
   convert b.2 using 1
   group
 
+/- English proof (translation)
+Take `⟨S, hS⟩` from `hf`. Use `(S.finite_toSet.biUnion fun s _ => (orbit_coset_finite K hK s⁻¹).image (fun y : G ⧸ K => g • y)).subset ?_` and prove the remaining obligations. Introduce `y hy`. Take `⟨s, hs, a, b, hab⟩` from `hS _ hy`. Use `Set.mem_biUnion (Finset.mem_coe.2 hs) ⟨b⁻¹ • (((s⁻¹ : G)) : G ⧸ K), ⟨b⁻¹, rfl⟩, ?_⟩` and prove the remaining obligations.
+
+Simplify using `only [smul_quotient_mk, subgroup_smul_quotient_mk, Subgroup.coe_inv]`. Rewrite using `[← QuotientGroup.out_eq' y, QuotientGroup.eq]`. Establish `hy' : y.out = g * ((a : G) * s * b)⁻¹` using `by rw [← hab]; group`. Rewrite using `[hy']`. Use `K.inv_mem a.2 using 1` and compare the differences between its conclusion and the goal.
+
+Use `group`.
+-/
 theorem finite_supp_inv (hK : IsCommensurated K) {k : Type} [Zero k] (f : G → k)
     (hf : FinDosetSupp K f) (g : G) :
     {y : G ⧸ K | f (y.out⁻¹ * g) ≠ 0}.Finite := by

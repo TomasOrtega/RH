@@ -13,6 +13,23 @@ attribute [local instance] Matrix.normedAddCommGroup Matrix.normedSpace
 
 variable {n : ℕ}
 
+/- English proof (translation)
+Use `haveI : LocallyCompactSpace (Mat n) := inferInstanceAs (LocallyCompactSpace (Fin n → Fin n → ℂ))`. Use `haveI : FirstCountableTopology (Mat n) := inferInstanceAs (FirstCountableTopology (Fin n → Fin n → ℂ))`. Introduce `y₀ hy₀`. Take `⟨K, hKn, hKs, hK⟩` from `local_compact_nhds (isOpen_GLs.mem_nhds hy₀)`. Take `⟨M, hM⟩` from `hK.bddAbove_image (lg_contOn.mono hKs)`.
+
+Use `set S : Set N := {u : N | lg ((u : G n) : Mat n) ≤ R + M} with hSdef`. Establish `hS : IsCompact S` using `cptN hLg hNc (R + M)`. Establish `hcu : Continuous (fun u : N => ((u : G n) : Mat n))` using `by fun_prop`. Use `set T : Set (Mat n) := (fun p : N × Mat n => ((p.1 : G n) : Mat n) * p.2) '' (S ×ˢ K) with hTdef`. Establish `hT : IsCompact T` using `(hS.prod hK).image (by fun_prop)`.
+
+Establish `hTs : T ⊆ GLs n`. Introduce and unpack `_ ⟨p, hp, rfl⟩`. Conclude with `mul_memGL _ _ (hKs hp.2)`. Take `⟨C, hC⟩` from `hT.exists_bound_of_continuousOn (hc.mono hTs)`. Establish `hlc : Continuous (fun u : N => lg ((u : G n) : Mat n))` using `lg_contOn.comp_continuous hcu (fun u => memGL _)`.
+
+Establish `hSm : MeasurableSet S` using `(isClosed_le hlc continuous_const).measurableSet`. Establish `hbound : ∀ y ∈ K, ∀ u : N, ‖h (((u : G n) : Mat n) * y)‖ ≤ S.indicator (fun _ => C) u`. Introduce `y hy u`. Distinguish the cases in `hu : u ∈ S`. Rewrite using `[Set.indicator_of_mem hu]`.
+
+Conclude with `hC _ ⟨(u, y), ⟨hu, hy⟩, rfl⟩`. Rewrite using `[Set.indicator_of_notMem hu]`. Establish `hu' : ¬ lg ((u : G n) : Mat n) ≤ R + M` using `hu`. Establish `hyM : lg y ≤ M` using `hM ⟨y, hy, rfl⟩`. Establish `h1` using `lg_le_of_mul ((u : G n) : Mat n) y (hKs hy)`.
+
+Establish `h2 : R + M < lg ((u : G n) : Mat n)` using `lt_of_not_ge hu'`. Rewrite using `[hR _ (mul_memGL _ _ (hKs hy)) (by linarith), norm_zero]`. Apply `continuousWithinAt_of_dominated (bound := S.indicator (fun _ => C))` to reduce the goal to its premises. Use `filter_upwards [self_mem_nhdsWithin] with y hy`. Conclude with `(integrable_N hLg hNc ν h hc R hR y hy).aestronglyMeasurable`.
+
+Use `filter_upwards [mem_nhdsWithin_of_mem_nhds hKn] with y hy`. Conclude with `Filter.Eventually.of_forall (hbound y hy)`. Conclude with `(integrable_indicator_iff hSm).2 (integrableOn_const hS.measure_ne_top)`. Use `Filter.Eventually.of_forall (fun u => ?_)` and prove the remaining obligations. Establish `hm : Continuous (fun y : Mat n => ((u : G n) : Mat n) * y)` using `by fun_prop`.
+
+Conclude with `(hc.comp hm.continuousOn (fun y hy => mul_memGL _ _ hy)) y₀ hy₀`.
+-/
 theorem contOn_avg (hLg : LgCpt) [MeasurableSpace (G n)] [BorelSpace (G n)] {N : Subgroup (G n)}
     (hNc : IsClosed (N : Set (G n))) (ν : Measure N) [IsFiniteMeasureOnCompacts ν] {X : Type} [NormedAddCommGroup X]
     [NormedSpace ℝ X] (h : Mat n → X) (hc : ContinuousOn h (GLs n)) (R : ℝ)
@@ -56,6 +73,33 @@ theorem contOn_avg (hLg : LgCpt) [MeasurableSpace (G n)] [BorelSpace (G n)] {N :
     have hm : Continuous (fun y : Mat n => ((u : G n) : Mat n) * y) := by fun_prop
     exact (hc.comp hm.continuousOn (fun y hy => mul_memGL _ _ hy)) y₀ hy₀
 
+/- English proof (translation)
+Use `haveI : SecondCountableTopology (Matrix (Fin n) (Fin n) ℂ) := inferInstanceAs (SecondCountableTopology (Fin n → Fin n → ℂ))`. Use `haveI : SecondCountableTopology (Matrix (Fin n) (Fin n) ℂ)ᵐᵒᵖ := (MulOpposite.opHomeomorph (M := Matrix (Fin n) (Fin n) ℂ)).symm.isEmbedding.secondCountableTopology`. Use `haveI : SecondCountableTopology (G n) := Units.isEmbedding_embedProduct.secondCountableTopology`. Use `haveI : SigmaCompactSpace (G n) := ⟨⟨fun m : ℕ => {y : G n | lg y.val ≤ m}, fun m => hLg n m, by`. Use extensionality with `y`.
+
+Simplify using `only [Set.mem_iUnion, Set.mem_setOf_eq, Set.mem_univ, iff_true]`. Conclude with `exists_nat_ge _⟩⟩`. Use `haveI : SigmaCompactSpace N := ⟨⟨fun m : ℕ => {u : N | lg ((u : G n) : Mat n) ≤ m}, fun m => cptN hLg hNc m, by`. Use extensionality with `y`. Simplify using `only [Set.mem_iUnion, Set.mem_setOf_eq, Set.mem_univ, iff_true]`.
+
+Conclude with `exists_nat_ge _⟩⟩`. Establish `iφ : ∀ y : G n, Integrable (fun u : N => φ ((u : G n).val * y.val)) ν` using `fun y => integrable_N hLg hNc ν φ hφc Rφ hφR y.val (memGL y)`. Establish `ik : ∀ y : G n, Integrable (fun u : N => k ((u : G n).val * y.val)) ν` using `fun y => integrable_N hLg hNc ν k hkc Rk hkR y.val (memGL y)`. Use `set F : G n → N → E.V := fun y u => k y.val (B y.val (φ ((u : G n).val * y.val))) with hF`. Use `set H : G n → N → E.V := fun y u => k ((u : G n).val * y.val) (B y.val (φ y.val)) with hH`.
+
+Establish `cu1 : Continuous (fun p : G n × N => p.1.val)` using `Units.continuous_val.comp continuous_fst`. Establish `cu2 : Continuous (fun p : G n × N => ((p.2 : G n).val * p.1.val))` using `by fun_prop`. Establish `hB1 : Continuous (fun p : G n × N => B p.1.val)` using `hBc.comp_continuous cu1 (fun p => memGL _)`. Establish `iF : Integrable (Function.uncurry F) (μ.prod ν)`. Establish `cF : Continuous (Function.uncurry F)` using `(hkc.comp_continuous cu1 (fun p => memGL _)).clm_apply (hB1.clm_apply (hφc.comp_continuous cu2 (fun p => mul_memGL _ _ (memGL _))))`.
+
+Establish `KF : IsCompact ({y : G n | lg y.val ≤ Rk} ×ˢ {u : N | lg ((u : G n) : Mat n) ≤ Rk + Rφ})` using `(hLg n Rk).prod (cptN hLg hNc (Rk + Rφ))`. Use `cF.integrable_of_hasCompactSupport (HasCompactSupport.intro KF ?_)` and prove the remaining obligations. Introduce and unpack `⟨y, u⟩ hp`. Simplify using `only [Set.mem_prod, Set.mem_setOf_eq, not_and_or, not_le] at hp`. Use `show k y.val (B y.val (φ ((u : G n).val * y.val))) = 0`.
+
+Distinguish the cases in `hy : lg y.val ≤ Rk`. Establish `hu : Rk + Rφ < lg ((u : G n) : Mat n)`. Break down `hp with h | h` into its components or cases. Conclude with `absurd hy (not_le.mpr h)`. Conclude with `h`.
+
+Establish `h1` using `lg_le_of_mul ((u : G n) : Mat n) y.val (memGL y)`. Rewrite using `[hφR _ (mul_memGL _ _ (memGL y)) (by linarith), map_zero, map_zero]`. Rewrite using `[hkR _ (memGL y) (lt_of_not_ge hy), ContinuousLinearMap.zero_apply]`. Establish `iH : Integrable (Function.uncurry H) (μ.prod ν)`. Establish `cH : Continuous (Function.uncurry H)` using `(hkc.comp_continuous cu2 (fun p => mul_memGL _ _ (memGL _))).clm_apply (hB1.clm_apply (hφc.comp_continuous cu1 (fun p => memGL _)))`.
+
+Establish `KH : IsCompact ({y : G n | lg y.val ≤ Rφ} ×ˢ {u : N | lg ((u : G n) : Mat n) ≤ Rk + Rφ})` using `(hLg n Rφ).prod (cptN hLg hNc (Rk + Rφ))`. Use `cH.integrable_of_hasCompactSupport (HasCompactSupport.intro KH ?_)` and prove the remaining obligations. Introduce and unpack `⟨y, u⟩ hp`. Simplify using `only [Set.mem_prod, Set.mem_setOf_eq, not_and_or, not_le] at hp`. Use `show k ((u : G n).val * y.val) (B y.val (φ y.val)) = 0`.
+
+Distinguish the cases in `hy : lg y.val ≤ Rφ`. Establish `hu : Rk + Rφ < lg ((u : G n) : Mat n)`. Break down `hp with h | h` into its components or cases. Conclude with `absurd hy (not_le.mpr h)`. Conclude with `h`.
+
+Establish `h1` using `lg_le_of_mul ((u : G n) : Mat n) y.val (memGL y)`. Rewrite using `[hkR _ (mul_memGL _ _ (memGL y)) (by linarith), ContinuousLinearMap.zero_apply]`. Rewrite using `[hφR _ (memGL y) (lt_of_not_ge hy), map_zero, map_zero]`. Establish `s1 : ∀ y : G n, k y.val (B y.val (∫ u : N, φ ((u : G n).val * y.val) ∂ν)) = ∫ u : N, F y u ∂ν`. Introduce `y`.
+
+Conclude with `(ContinuousLinearMap.integral_comp_comm ((k y.val).comp (B y.val)) (iφ y)).symm`. Establish `s6 : ∀ y : G n, (∫ u : N, k ((u : G n).val * y.val) ∂ν) (B y.val (φ y.val)) = ∫ u : N, H y u ∂ν` using `fun y => ContinuousLinearMap.integral_apply (ik y) _`. Establish `s3 : ∀ u : N, ∫ y : G n, F y u ∂μ = ∫ y : G n, H y u⁻¹ ∂μ`. Introduce `u`. Rewrite using `[← integral_mul_left_eq_self (μ := μ) (fun x : G n => H x u⁻¹) (u : G n)]`.
+
+Use `congr 1`. Use extensionality with `x`. Establish `e1 : (((u⁻¹ : N) : G n)).val * (((u : G n) * x)).val = x.val`. Rewrite using `[← Units.val_mul, Subgroup.coe_inv, inv_mul_cancel_left]`. Establish `e2 : B (((u : G n) * x)).val = B x.val`.
+
+Rewrite using `[Units.val_mul]`. Conclude with `hBN u x.val (memGL x)`. Simplify using `only [hF, hH]`. Rewrite using `[e1, e2, Units.val_mul]`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem key (hLg : LgCpt) [MeasurableSpace (G n)] [BorelSpace (G n)] (μ : Measure (G n)) [μ.IsHaarMeasure]
     (E : KMod n) (k B : Mat n → (E.V →L[ℂ] E.V)) (hkc : ContinuousOn k (GLs n)) (Rk : ℝ)
     (hkR : ∀ y ∈ GLs n, Rk < lg y → k y = 0) {N : Subgroup (G n)} (hNc : IsClosed (N : Set (G n)))

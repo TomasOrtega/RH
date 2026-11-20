@@ -5,6 +5,13 @@ open GlobalTheory.CuspRep GlobalTheory.WeilDeligne GlobalTheory.Pst GlobalTheory
 open GlobalTheory.GalCut GlobalTheory.UnitaryBC GlobalTheory.Cong GlobalTheory.DefU
 open UpperTheory.Gal.Gen
 
+/- English proof (translation)
+Introduce `hdeg hblk hdet hsize E _ _ _ l _ ι a W A R hR hA x hx m`. Establish `hx' : (x : MvPolynomial (InfinitePlace E × Fin a × Fin a) ℂ).totalDegree ≤ ∑ τ, ∑ i, (W τ).natW i` using `hdeg (InfinitePlace E) a W x x.2`. Establish `hb` using `hblk l ι (InfinitePlace E) a (fun τ => ((A τ : Matrix (Fin a) (Fin a) ℂ)).transpose) R hR (fun τ i j => (hA τ j i).1) _ x hx' hx m`. Establish `hd` using `hdet l ι (InfinitePlace E) a W A R hR hA`. Establish `hs` using `hsize E a W`.
+
+Establish `hcoe : (((Formalism.L2.DIV.rhoK W) A) x : MvPolynomial (InfinitePlace E × Fin a × Fin a) ℂ) = Formalism.L2.DIV.detTwK W A • Formalism.L2.DIV.trAct A (x : MvPolynomial (InfinitePlace E × Fin a × Fin a) ℂ)` using `rfl`. Rewrite using `[hcoe, MvPolynomial.coeff_smul, smul_eq_mul, map_mul, norm_mul]`. Establish `hR0 : (0 : ℝ) ≤ R` using `le_trans zero_le_one hR`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[← pow_add, add_comm]`.
+
+Use `_ ≤ R ^ (a * GlobalTheory.CongW.wtSize W.at) := pow_le_pow_right₀ hR hs`.
+-/
 theorem UpperTheory.Gal.Gen.rhoBound_pf :
     UpperTheory.Gal.Gen.DegLe → UpperTheory.Gal.Gen.BlockBound → UpperTheory.Gal.Gen.DetBound → UpperTheory.Gal.Gen.SizeLe → UpperTheory.Gal.Gen.RhoBound := by
   intro hdeg hblk hdet hsize E _ _ _ l _ ι a W A R hR hA x hx m

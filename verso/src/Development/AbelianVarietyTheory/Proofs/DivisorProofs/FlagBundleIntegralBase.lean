@@ -12,6 +12,17 @@ open GlobalTheory.QCoh
 
 namespace GlobalTheory.FlagBase
 
+/- English proof (translation)
+Introduce `Y Y₁ ρ E₁ fl₁ hY hE hfl`. Establish `hsurj : Function.Surjective ρ` using `GlobalTheory.FlagSurj.isFlagBundle_surjective Y₁ Y ρ Unit (fun _ => E₁) (fun _ => 2) (fun _ => fl₁) (fun _ => hE) hfl`. Establish `: IrreducibleSpace Y₁` using `Function.Surjective.irreducibleSpace ρ.continuous hsurj`. Establish `: IsReduced Y₁`. Use `@isReduced_of_isReduced_stalk Y₁ ?_` and prove the remaining obligations.
+
+Introduce `x`. Take `⟨U, e, hb, he⟩` from `hE x`. Establish `hfr` using `(isFrame_restrict_iff U.ι _).2 (he.res (U.ι_image_le ⊤))`. Set `φ : freeModule U.toScheme (Fin 2) ≅ (Scheme.Modules.pullback U.ι).obj E₁` to `(isFrame_freeFrame _ _).iso hfr ≪≫ (Scheme.Modules.restrictFunctorIsoPullback U.ι).app E₁`. Take `⟨g', ⟨w, -⟩, -⟩` from `hfl U.toScheme U.ι (fun _ => (GlobalTheory.FlagSurj.freeFlag U.toScheme 2).ofIso φ)`.
+
+Set `x' : U.toScheme` to `⟨x, hb⟩`. Establish `hopen : IsOpenImmersion (g' ≫ ρ)` using `w ▸ inferInstance`. Establish `hiso : IsIso ((g' ≫ ρ).stalkMap x')` using `(IsOpenImmersion.iff_isIso_stalkMap.1 hopen).2 x'`. Establish `h1 : Function.Injective ((g' ≫ ρ).stalkMap x').hom` using `(ConcreteCategory.bijective_of_isIso ((g' ≫ ρ).stalkMap x')).1`. Rewrite `h1` using `[Scheme.Hom.stalkMap_comp]`.
+
+Establish `hinj : Function.Injective (ρ.stalkMap (g' x')).hom` using `Function.Injective.of_comp (f := (g'.stalkMap x').hom) h1`. Establish `hred : _root_.IsReduced (Y₁.presheaf.stalk (ρ (g' x')))` using `isReduced_of_injective _ hinj`. Establish `hx : ρ (g' x') = x`. Establish `h : (g' ≫ ρ) x' = U.ι x'` using `by rw [w]`. Conclude with `(Scheme.Hom.comp_apply g' ρ _).symm.trans (h.trans (Scheme.Opens.ι_apply U _))`.
+
+Conclude with `hx ▸ hred`. Conclude with `isIntegral_of_irreducibleSpace_of_isReduced Y₁`.
+-/
 theorem isIntegral_base : ∀ (Y Y₁ : Scheme.{0}) (ρ : Y ⟶ Y₁) (E₁ : Y₁.Modules)
     (fl₁ : Vert.Flag ((Scheme.Modules.pullback ρ).obj E₁) 2),
     IsIntegral Y → GlobalTheory.VB.IsVB E₁ 2 → IsFlagBundle ρ (fun _ : Unit => E₁) (fun _ => 2) (fun _ => fl₁) →

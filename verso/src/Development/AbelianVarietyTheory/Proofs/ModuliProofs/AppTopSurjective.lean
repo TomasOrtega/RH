@@ -12,6 +12,11 @@ open scoped CategoryTheory.Obj TensorProduct
 
 namespace GlobalTheory.BaseChangeFns
 
+/- English proof (translation)
+Use `first`. Consider the case `exact (ConcreteCategory.bijective_of_isIso e.hom.appTop).2`. Consider the case `exact (ConcreteCategory.bijective_of_isIso (e.hom.app ⊤)).2`. Consider the case `exact fun a => ⟨e.inv.appTop.hom a, by`. Rewrite using `[← CommRingCat.comp_apply, ← Scheme.comp_appTop, e.inv_hom_id, Scheme.id_appTop]`.
+
+Use the proof step `rfl⟩`.
+-/
 private theorem surjective_appTop_of_iso {X Y : Scheme.{0}} (e : X ≅ Y) : Function.Surjective e.hom.appTop.hom := by
   first
   | exact (ConcreteCategory.bijective_of_isIso e.hom.appTop).2
@@ -19,6 +24,9 @@ private theorem surjective_appTop_of_iso {X Y : Scheme.{0}} (e : X ≅ Y) : Func
   | exact fun a => ⟨e.inv.appTop.hom a, by
       rw [← CommRingCat.comp_apply, ← Scheme.comp_appTop, e.inv_hom_id, Scheme.id_appTop]; rfl⟩
 
+/- English proof (translation)
+Use `first`. Consider the case `exact hp.comp hq`. Consider the case `(rw [Scheme.comp_appTop, CommRingCat.hom_comp, RingHom.coe_comp]; exact hp.comp hq)`. Consider the case `exact surj_comp hp hq`.
+-/
 private theorem surjective_appTop_comp {X Y Z : Scheme.{0}} (p : X ⟶ Y) (q : Y ⟶ Z)
     (hp : Function.Surjective p.appTop.hom) (hq : Function.Surjective q.appTop.hom) :
     Function.Surjective (p ≫ q).appTop.hom := by
@@ -27,12 +35,18 @@ private theorem surjective_appTop_comp {X Y Z : Scheme.{0}} (p : X ⟶ Y) (q : Y
   | (rw [Scheme.comp_appTop, CommRingCat.hom_comp, RingHom.coe_comp]; exact hp.comp hq)
   | exact surj_comp hp hq
 
+/- English proof (translation)
+Introduce `y`. Take `⟨x, hx⟩` from `h (m.hom y)`. Conclude with `⟨x, hm hx⟩`.
+-/
 private theorem surjective_of_comp_surjective_of_injective {A B C : CommRingCat} (g : A ⟶ B) (m : B ⟶ C)
     (hm : Function.Injective m.hom) (h : Function.Surjective (g ≫ m).hom) : Function.Surjective g.hom := by
   intro y
   obtain ⟨x, hx⟩ := h (m.hom y)
   exact ⟨x, hm hx⟩
 
+/- English proof (translation)
+Substitute `p` using the available equality. Use `first`. Consider the case `(intro a b hab; simpa using hab)`. Consider the case `(simp only [eqToHom_refl, op_id, Functor.map_id, CommRingCat.hom_id]; exact Function.injective_id)`.
+-/
 private theorem injective_presheaf_map_eqToHom {X : Scheme.{0}} {V W : X.Opens} (p : V = W) :
     Function.Injective (X.presheaf.map (eqToHom p).op).hom := by
   subst p
@@ -40,6 +54,15 @@ private theorem injective_presheaf_map_eqToHom {X : Scheme.{0}} {V W : X.Opens} 
   | (intro a b hab; simpa using hab)
   | (simp only [eqToHom_refl, op_id, Functor.map_id, CommRingCat.hom_id]; exact Function.injective_id)
 
+/- English proof (translation)
+Establish `h1` using `hB.smooth`. Establish `h2` using `hB.proper`. Establish `h3` using `hB.geomConnected`. Establish `h4` using `hB.comm`. Prove the components needed by the constructor for the conclusion.
+
+Use `case comm => first`. Consider the case `infer_instance`. Consider the case `exact Functor.obj.instIsCommMonObj _`. Use `case smooth => show Smooth (pullback.snd B.hom t) first`. Consider the case `infer_instance`.
+
+Consider the case `exact MorphismProperty.pullback_snd _ _ h1`. Use `case proper => show IsProper (pullback.snd B.hom t) first`. Consider the case `infer_instance`. Consider the case `exact MorphismProperty.pullback_snd _ _ h2`. Use `case geomConnected => show GeometricallyConnected (pullback.snd B.hom t) first`.
+
+Consider the case `infer_instance`. Consider the case `exact MorphismProperty.pullback_snd _ _ h3`.
+-/
 private theorem isAbelianScheme_pullback' {S₀ S : Scheme.{0}} {B : Over S₀} [GrpObj B] (t : S ⟶ S₀)
     (hB : IsAbelianScheme B) : IsAbelianScheme ((Over.pullback t).obj B) := by
   have h1 := hB.smooth
@@ -67,6 +90,9 @@ private theorem isAbelianScheme_pullback' {S₀ S : Scheme.{0}} {B : Over S₀} 
     | infer_instance
     | exact MorphismProperty.pullback_snd _ _ h3
 
+/- English proof (translation)
+Establish `key : Function.Surjective (pullback.snd B.hom t).appTop.hom` using `(hG S ((Over.pullback t).obj B) (isAbelianScheme_pullback' t hB)).2`. Rewrite using `[← h.isoPullback_hom_snd]`. Conclude with `surjective_appTop_comp _ _ (surjective_appTop_of_iso _) key`.
+-/
 theorem appTop_surjective (hG : Out.GlobalFnsSt) {S₀ : Scheme.{0}} {B : Over S₀} [GrpObj B]
     (hB : IsAbelianScheme B) {S X : Scheme.{0}} {t : S ⟶ S₀} {π : X ⟶ B.left} {f : X ⟶ S}
     (h : IsPullback π f B.hom t) : Function.Surjective f.appTop.hom := by
@@ -75,6 +101,11 @@ theorem appTop_surjective (hG : Out.GlobalFnsSt) {S₀ : Scheme.{0}} {B : Over S
   rw [← h.isoPullback_hom_snd]
   exact surjective_appTop_comp _ _ (surjective_appTop_of_iso _) key
 
+/- English proof (translation)
+Introduce `hG S₀ B _ hB S X t π f h U`. Establish `hP : IsPullback ((f ⁻¹ᵁ U).ι ≫ π) (f ∣_ U) B.hom (U.ι ≫ t)` using `(isPullback_morphismRestrict f U).flip.paste_horiz h`. Establish `hres` using `appTop_surjective hG hB hP`. Rewrite `hres` using `[morphismRestrict_appTop]`. Establish `hV` using `surjective_of_comp_surjective_of_injective _ _ (injective_presheaf_map_eqToHom _) hres`.
+
+Express the relevant statement in the definitionally equal form `Function.Surjective (f.app (U.ι ''ᵁ ⊤)).hom at hV`. Rewrite `hV` using `[Scheme.Opens.ι_image_top]`. Then use the resulting hypothesis.
+-/
 theorem app_surjective : Out.GlobalFnsSt → ∀ (S₀ : Scheme.{0}) (B : Over S₀) [GrpObj B], IsAbelianScheme B → ∀ (S X : Scheme.{0}) (t : S ⟶ S₀) (π : X ⟶ B.left) (f : X ⟶ S), IsPullback π f B.hom t → ∀ U : S.Opens, Function.Surjective (f.app U).hom := by
   intro hG S₀ B _ hB S X t π f h U
   have hP : IsPullback ((f ⁻¹ᵁ U).ι ≫ π) (f ∣_ U) B.hom (U.ι ≫ t) :=

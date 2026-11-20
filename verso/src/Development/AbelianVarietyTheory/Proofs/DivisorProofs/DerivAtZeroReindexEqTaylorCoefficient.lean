@@ -10,11 +10,17 @@ namespace GlobalTheory.DerivReindex
 
 open GlobalTheory.IndefiniteRowSideFullHecke.WordBlockPolynomials
 
+/- English proof (translation)
+Substitute `h` using the available equality. Both sides reduce to the same expression.
+-/
 theorem wordDeriv_eq {Λ W : Type} [NormedAddCommGroup W] [NormedSpace ℂ W] (dir : Λ → W) (l : List Λ)
     (F : W → ℂ) (p : W) {n : ℕ} (h : l.length = n) :
     iteratedFDeriv ℂ n F p (fun i => dir (l.get ⟨i, by rw [h]; exact i.2⟩)) = wordDeriv dir l F p := by
   subst h; rfl
 
+/- English proof (translation)
+Rewrite using `[← wordDeriv_eq dir' (l.map g) F 0 (n := l.length) (by simp), wordDeriv, T.iteratedFDeriv_comp_right hF 0 le_rfl, map_zero, ContinuousMultilinearMap.compContinuousLinearMap_apply]`. Use `congr 1`. Use function extensionality and compare the values at `i`. Simplify using `[hT]`.
+-/
 theorem wordDeriv_comp {Λ Λ' W W' : Type} [NormedAddCommGroup W] [NormedSpace ℂ W]
     [NormedAddCommGroup W'] [NormedSpace ℂ W'] (dir : Λ → W) (dir' : Λ' → W') (g : Λ → Λ')
     (T : W →L[ℂ] W') (hT : ∀ x, T (dir x) = dir' (g x)) (l : List Λ) (F : W' → ℂ)
@@ -27,6 +33,15 @@ theorem wordDeriv_comp {Λ Λ' W W' : Type} [NormedAddCommGroup W] [NormedSpace 
   funext i
   simp [hT]
 
+/- English proof (translation)
+Introduce `D ι _ e a b F hF m`. Establish `han : AnalyticOnNhd ℂ F Set.univ` using `GlobalTheory.SCV.analyticOnNhd_of_differentiable hF _`. Use `set g := e.prodCongr (Equiv.refl (Fin b × Fin a)) with hg`. Set `T : VCx ι a b →L[ℂ] TaylorLogMetric.VC D a b` to `ContinuousLinearMap.pi fun τ => ContinuousLinearMap.proj (e.symm τ)`. Establish `hT : ∀ x, T (coordX x) = TaylorLogMetric.coordV D (g x)`.
+
+Introduce `x`. Use function extensionality and compare the values at `τ i j`. Express the relevant statement in the definitionally equal form `coordX x (e.symm τ) i j = _`. Unfold `coordX TaylorLogMetric.coordV`. Conclude with `@if_congr _ _ _ (_) (_) _ _ _ _ (and_congr_left' e.symm_apply_eq) rfl rfl`.
+
+Establish `hne : (m.prod fun _ n => (n.factorial : ℂ)) ≠ 0` using `Finset.prod_ne_zero_iff.2 fun _ _ => Nat.cast_ne_zero.2 (Nat.factorial_ne_zero _)`. Establish `h1 : derivAt0 (fun z : VCx ι a b => F fun τ => z (e.symm τ)) m = wordDeriv coordX m.toMultiset.toList (F ∘ T) 0` using `wordDeriv_eq coordX m.toMultiset.toList (F ∘ T) 0 (Multiset.length_toList _)`. Establish `h2 : TaylorLogMetric.taylor D F (Finsupp.equivMapDomain g m) = wordDeriv (TaylorLogMetric.coordV D) (Finsupp.equivMapDomain g m).toMultiset.toList F 0 / (m.prod fun _ n => (n.factorial : ℂ))`. Rewrite using `[TaylorLogMetric.taylor, Finsupp.prod_equivMapDomain]`. Use `congr 1`.
+
+Conclude with `wordDeriv_eq _ _ F 0 (Multiset.length_toList _)`. Rewrite using `[h1, h2, mul_div_cancel₀ _ hne, wordDeriv_comp coordX (TaylorLogMetric.coordV D) g T hT _ F han.contDiff]`. Use `wordDeriv_perm _ (han 0 trivial) ?_` and prove the remaining obligations. Rewrite using `[← Multiset.coe_eq_coe, ← Multiset.map_coe, Multiset.coe_toList, Multiset.coe_toList, Finsupp.toMultiset_map, Finsupp.equivMapDomain_eq_mapDomain]`.
+-/
 theorem derivAt0_reindex : ∀ (D : D7) (ι : Type) [Fintype ι] (e : ι ≃ D.what₂.Tau) (a b : ℕ) (F : TaylorLogMetric.VC D a b → ℂ), Differentiable ℂ F → ∀ m : DVar ι a b →₀ ℕ, derivAt0 (fun z : VCx ι a b => F fun τ => z (e.symm τ)) m = (m.prod fun _ n => (n.factorial : ℂ)) * TaylorLogMetric.taylor D F (Finsupp.equivMapDomain (e.prodCongr (Equiv.refl (Fin b × Fin a))) m) := by
   intro D ι _ e a b F hF m
   have han : AnalyticOnNhd ℂ F Set.univ := GlobalTheory.SCV.analyticOnNhd_of_differentiable hF _

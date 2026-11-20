@@ -6,6 +6,9 @@ import Development.AbelianVarietyTheory.PublishedTheorems.TwistedTraceFormula.Ha
 import Development.AbelianVarietyTheory.PublishedTheorems.TwistedTraceFormula.BernsteinUnitaryProductIrreducible
 open GlobalTheory.PRep GlobalTheory.SmGL Matrix
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.JacLineFiltration.jacquet_line_filtration | exact GlobalTheory.JacLineFiltration.jacquet_line_filtration | (intros; apply GlobalTheory.JacLineFiltration.jacquet_line_filtration <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.jacquet_mirabolic_induction_character : ∀ {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k],
     GlobalTheory.Published.GeometricLemmaFiltration → ∀ {n m : Type} [Fintype n] [DecidableEq n] [Fintype m] [DecidableEq m]
     (e : Fin 1 ⊕ m ≃ n) {Y : Type} [AddCommGroup Y] [Module ℂ Y] (τ : Representation ℂ (GL m k) Y),

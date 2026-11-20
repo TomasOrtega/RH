@@ -22,6 +22,11 @@ namespace GlobalTheory.FamDimension
 
 open ReciprocityTheory.ChartRestriction.G.Geo.Tor
 
+/- English proof (translation)
+Use `choose f hf hf' using h₁`. Set `g : M →ₗ[F] N` to `{ toFun := f map_add' := fun m m' => (hf' _ _ (ha _ _ _ _ (hf m) (hf m'))).symm map_smul' := fun c m => (hf' _ _ (hs c _ _ (hf m))).symm }`. Use `⟨LinearEquiv.ofBijective g ⟨fun m m' e => ?_, fun n => ?_⟩⟩` and prove the remaining obligations. Establish `e' : f m = f m'` using `e`. Conclude with `(h₂ (f m')).unique (e' ▸ hf m) (hf m')`.
+
+Take `⟨m, hm, -⟩` from `h₂ n`. Conclude with `⟨m, (hf' _ _ hm).symm⟩`.
+-/
 theorem nonempty_linearEquiv_of_rel {F M N : Type*} [Semiring F] [AddCommMonoid M] [AddCommMonoid N] [Module F M]
     [Module F N] (P : M → N → Prop) (h₁ : ∀ m, ∃! n, P m n) (h₂ : ∀ n, ∃! m, P m n)
     (ha : ∀ m n m' n', P m n → P m' n' → P (m + m') (n + n')) (hs : ∀ (c : F) m n, P m n → P (c • m) (c • n)) :
@@ -44,6 +49,9 @@ variable {X Y : Scheme.{0}} {n : ℕ}
 def IsComb {M : LB Y} (b : Fin n → LB.Sec M) (a : Fin n → Γ(Y, ⊤)) (s : LB.Sec M) : Prop :=
   ∀ j, s.f j = ∑ i, resTop _ (a i) * (b i).f j
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨⟨fun j => ∑ i, resTop _ (a i) * (b i).f j, fun j j' => by rw [map_sum, map_sum, Finset.mul_sum] exact Finset.sum_congr rfl fun i _ => (SecOps.secScale (a i) (b i)).compat j j'⟩, fun _ => rfl⟩`.
+-/
 theorem exists_isComb {M : LB Y} (b : Fin n → LB.Sec M) (a : Fin n → Γ(Y, ⊤)) : ∃ s, IsComb b a s :=
   ⟨⟨fun j => ∑ i, resTop _ (a i) * (b i).f j, fun j j' => by
     rw [map_sum, map_sum, Finset.mul_sum]
@@ -51,6 +59,9 @@ theorem exists_isComb {M : LB Y} (b : Fin n → LB.Sec M) (a : Fin n → Γ(Y, �
 
 variable {L : LB X} {K K' : Type} [Fintype K] [Fintype K']
 
+/- English proof (translation)
+Use `⟨fun h y J hJ => SectionScalarValuation.sval_lin a b h _ y hJ, fun h j => ?_⟩` and prove the remaining obligations. Take `⟨t, ht⟩` from `exists_isComb b a`. Rewrite using `[← ht j]`. Conclude with `sec_ext_val hL (fun y J hJ => (h y J hJ).trans (SectionScalarValuation.sval_lin a b ht _ y hJ).symm) j`.
+-/
 theorem isComb_iff_sval (hL : L.IsLB) {φ : K → (Y ⟶ X)} {ε : K → ℤ} (b : Fin n → LB.Sec (LB.LinComb L φ ε))
     (a : Fin n → Γ(Y, ⊤)) (s : LB.Sec (LB.LinComb L φ ε)) :
     IsComb b a s ↔ ∀ y J, Good L y J →
@@ -60,6 +71,13 @@ theorem isComb_iff_sval (hL : L.IsLB) {φ : K → (Y ⟶ X)} {ε : K → ℤ} (b
   rw [← ht j]
   exact sec_ext_val hL (fun y J hJ => (h y J hJ).trans (SectionScalarValuation.sval_lin a b ht _ y hJ).symm) j
 
+/- English proof (translation)
+Establish `h' : FormEq (Sum.elim (fun k => 𝟙 Y ≫ φ' k) φ₃) (Sum.elim ε' fun k => -ε₃ k) φ ε` using `fun U _ w => by`. Use `h U w` as an intermediate fact. Simplify using `only [Fintype.prod_sum_type, Sum.elim_inl, Sum.elim_inr, Category.id_comp] at this ⊢`. Rewrite using `[← this]`. Simplify using `only [zpow_neg, Finset.prod_inv_distrib, mul_inv_cancel_right]`.
+
+Use `choose b' hb' using fun i => exists_sec hL h (pullMulSec (b i) (𝟙 Y) u hu)`. Use `⟨b', fun s => ?_⟩` and prove the remaining obligations. Establish `hu'` using `invGen_isGen L _ _ u hu`. Take `⟨t, ht⟩` from `exists_sec hL h' (pullMulSec s (𝟙 Y) (LB.invGen L _ _ u) hu')`. Use `(existsUnique_congr fun c => ?_).1 (hb t)` and prove the remaining obligations.
+
+Rewrite using `[isComb_iff_sval hL, isComb_iff_sval hL]`. Use `forall₃_congr fun y J hJ => ?_` and prove the remaining obligations. Rewrite using `[ht _ _ y J hJ, sval_pullMulSec _ _ _ hu' _ y hJ, val_inv, Category.id_comp, Units.mul_inv_eq_iff_eq_mul, Finset.sum_mul]`. Use `Eq.congr_right (Finset.sum_congr rfl fun i _ => ?_)` and prove the remaining obligations. Rewrite using `[hb' i _ _ y J hJ, sval_pullMulSec _ _ _ hu _ y hJ, Category.id_comp, _root_.mul_assoc]`.
+-/
 theorem exists_basis_of_gen (hL : L.IsLB) {K₃ : Type} [Fintype K₃] {φ : K → (Y ⟶ X)} {ε : K → ℤ}
     {φ' : K' → (Y ⟶ X)} {ε' : K' → ℤ} {φ₃ : K₃ → (Y ⟶ X)} {ε₃ : K₃ → ℤ}
     (u : LB.Gen (LB.LinComb L φ₃ ε₃)) (hu : u.IsGen)
@@ -88,6 +106,15 @@ end Comb
 
 variable {R : Type} [CommRing R] [IsDomain R] {D : DegPre R} {F : Type} [Field F] [Algebra (FractionRing R) F]
 
+/- English proof (translation)
+Take `⟨⟨b, hb⟩, -⟩` from `hT _ D.P k hk F (jFK (R := R) F ≫ jK R) (cP D (TF (R := R) F) α)`. Set `q : (DegPre.BF D F).left ⟶ (TK R).left` to `(fst (TF (R := R) F) D.P.A).left ≫ jFK (R := R) F`. Set `u` to `LB.pullGen D.P.L _ _ (LB.mulGen D.P.L _ _ _ _ (D.psi α) D.rigK) q`. Establish `hu : u.IsGen` using `pullGen_isGen _ _ _ _ (mulGen_isGen _ _ _ _ _ _ _ (D.psi_gen α) (pullGen_isGen _ _ _ _ D.rig_gen _)) _`. Use `exists_basis_of_gen D.P.isLB (φ' := DegPre.famφ D F α) (ε' := DegPre.famε k) u hu (fun U _ h => by` and prove the remaining obligations.
+
+Establish `p` using `prod_fam D F (𝟙 _) α k h`. Simplify using `only [Over.id_left, Category.id_comp] at p`. Rewrite using `[p]`. Establish `a₁ : q ≫ D.xK α = (cP D (DegPre.BF D F) α).left` using `congrArg (fun x => x.left) (comp_cP D (fst (TF (R := R) F) D.P.A) α)`. Establish `a₂ : q ≫ (toUnit (TK R)).left ≫ eSec D.P.A = (1 : DegPre.BF D F ⟶ D.P.A).left` using `congrArg (fun x : DegPre.BF D F ⟶ D.P.A => x.left) (MonObj.comp_one (M := D.P.A) (fst (TF (R := R) F) D.P.A))`.
+
+Establish `a₃ : translPt D.P.A (cP D (TF (R` using `R) F) α) = cP D (DegPre.BF D F) α * DegPre.prB D F := by`. Rewrite using `[translPt, comp_cP]`. Both sides reduce to the same expression. Simplify using `only [Fintype.prod_sum_type, Sum.elim_inl, Sum.elim_inr, Fintype.prod_unique, Fin.prod_univ_two, Category.id_comp, a₁, a₂, a₃, Matrix.cons_val_zero, Matrix.cons_val_one, zpow_one, zpow_neg_one]`. Rewrite using `[← _root_.mul_assoc]) (gF D F) b (fun s => ?_)`.
+
+Conclude with `(Equiv.existsUnique_congr (Equiv.piCongrRight fun _ : Fin (k ^ D.P.g) => (Scheme.ΓSpecIso (CommRingCat.of F)).symm.commRingCatIsoToRingEquiv.toEquiv) fun _ => Iff.rfl).2 (hb s)`.
+-/
 theorem exists_basis_famSec (hT : SecTwistSt) {k : ℕ} (hk : 1 ≤ k) (α : D.X) :
     ∃ b : Fin (k ^ D.P.g) → FamFree.FamSec D F k α,
       ∀ s, ∃! c : Fin (k ^ D.P.g) → F, IsComb b (fun i => gF D F (c i)) s := by
@@ -113,6 +140,15 @@ theorem exists_basis_famSec (hT : SecTwistSt) {k : ℕ} (hk : 1 ≤ k) (α : D.X
   exact (Equiv.existsUnique_congr (Equiv.piCongrRight fun _ : Fin (k ^ D.P.g) =>
       (Scheme.ΓSpecIso (CommRingCat.of F)).symm.commRingCatIsoToRingEquiv.toEquiv) fun _ => Iff.rfl).2 (hb s)
 
+/- English proof (translation)
+Set `rep : D.X ⧸ FamFree.multiples D k → D.X` to `Quotient.out`. Establish `hrep : ∀ c, QuotientAddGroup.mk (rep c) = c` using `fun c => Quotient.out_eq c`. Use `choose b hb using fun c => exists_basis_famSec (D := D) (F := F) hT hk (rep c)`. Use `nonempty_linearEquiv_of_rel (fun s z => ∀ c, IsComb (b c) (fun i => gF D F (z c i)) (s.s (rep c))) (fun s => ?_) (fun z => ?_) ?_ ?_` and prove the remaining obligations. Use `choose z hz hz' using fun c => hb c (s.s (rep c))`.
+
+Conclude with `⟨z, hz, fun z' h => funext fun c => hz' c _ (h c)⟩`. Use `choose σ hσ using fun c => exists_isComb (b c) (fun i => gF D F (z c i))`. Use `(existsUnique_congr fun s => forall_congr' fun c => ?_).1 (FamFree.existsUnique_fam hG hB hk rep hrep σ)` and prove the remaining obligations. Conclude with `⟨fun h => h ▸ hσ c, fun h => SecOps.sec_ext fun j => (h j).trans (hσ c j).symm⟩`. Introduce `s z s' z' h h' c j`.
+
+Rewrite using `[add_f, h c j, h' c j, ← Finset.sum_add_distrib]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Simplify using `only [Pi.add_apply, map_add, resTop, add_mul]`. Introduce `a s z h c j`. Rewrite using `[smul_f, h c j, Finset.mul_sum]`.
+
+Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Simplify using `only [Pi.smul_apply, smul_eq_mul, map_mul, resTop, _root_.mul_assoc]`.
+-/
 theorem nonempty_fam_equiv (hG : GlobalFnsSt) (hT : SecTwistSt) (hB : D.TauBimult) {k : ℕ} (hk : 1 ≤ k) :
     Nonempty (Fam D F k ≃ₗ[F] (D.X ⧸ FamFree.multiples D k → Fin (k ^ D.P.g) → F)) := by
   let rep : D.X ⧸ FamFree.multiples D k → D.X := Quotient.out
@@ -135,6 +171,11 @@ theorem nonempty_fam_equiv (hG : GlobalFnsSt) (hT : SecTwistSt) (hB : D.TauBimul
     refine Finset.sum_congr rfl fun i _ => ?_
     simp only [Pi.smul_apply, smul_eq_mul, map_mul, resTop, _root_.mul_assoc]
 
+/- English proof (translation)
+Take `⟨e⟩` from `nonempty_fam_equiv (D := D) (F := F) hG hT hB hk`. Establish `hc : Nat.card (D.X ⧸ FamFree.multiples D k) = k ^ D.rank` using `AddSubgroup.index_range_nsmul D.X k`. Establish `: Finite (D.X ⧸ FamFree.multiples D k)` using `Nat.finite_of_card_ne_zero (by rw [hc]; positivity)`. Use `Fintype.ofFinite (D.X ⧸ FamFree.multiples D k)` as an intermediate fact. Use `⟨Module.Finite.equiv e.symm, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[e.finrank_eq, Module.finrank_pi_fintype, Finset.sum_const, Module.finrank_fin_fun, Finset.card_univ, ← Nat.card_eq_fintype_card, hc, smul_eq_mul, pow_add]`.
+-/
 theorem finrank_fam (hG : GlobalFnsSt) (hT : SecTwistSt) (hB : D.TauBimult) {k : ℕ} (hk : 1 ≤ k) :
     Module.Finite F (Fam D F k) ∧ Module.finrank F (Fam D F k) = k ^ (D.rank + D.P.g) := by
   obtain ⟨e⟩ := nonempty_fam_equiv (D := D) (F := F) hG hT hB hk
@@ -145,6 +186,9 @@ theorem finrank_fam (hG : GlobalFnsSt) (hT : SecTwistSt) (hB : D.TauBimult) {k :
   rw [e.finrank_eq, Module.finrank_pi_fintype, Finset.sum_const, Module.finrank_fin_fun, Finset.card_univ,
     ← Nat.card_eq_fintype_card, hc, smul_eq_mul, pow_add]
 
+/- English proof (translation)
+Introduce `hG _ _ hT _ _ _ _ D _ _ _ _ hk` and use `finrank_fam hG hT D.tau_bimult hk`.
+-/
 theorem main : GlobalFnsSt → CubeSt → SquareSt → SecTwistSt → ∀ (R : Type) [CommRing R] [IsDomain R] (I : Ideal R) (D : DegData R I) (F : Type) [Field F] [Algebra (FractionRing R) F] (k : ℕ), 1 ≤ k → Module.Finite F (Fam D.toPre F k) ∧ Module.finrank F (Fam D.toPre F k) = k ^ (D.toPre.rank + D.toPre.P.g) :=
   fun hG _ _ hT _ _ _ _ D _ _ _ _ hk => finrank_fam hG hT D.tau_bimult hk
 

@@ -15,6 +15,15 @@ namespace GlobalTheory.Ex.OneGen
 
 open ReciprocityTheory.ChartRestriction.G.H1.SectionArithmetic in
 
+/- English proof (translation)
+Establish `l : ∀ j : Fin 1 → L.ι, LB.wchart L (fun _ : Fin 1 => φ) j ≤ φ ⁻¹ᵁ L.U (j 0)` using `fun j => LB.wchart_le L _ j 0`. Establish `v : ∀ (j : Fin 1 → L.ι) (z : Y), z ∈ LB.wchart L (fun _ : Fin 1 => φ) j → gs (𝟙 Y) z _ ((Y.presheaf.map (homOfLE (l j)).op).hom ((φ.app _).hom (s.f (j 0)))) = gs (𝟙 Y ≫ φ) z (L.U (j 0)) (s.f (j 0))` using `fun j z hj => (gs_res _ z _ hj _).trans (gs_pull _ φ z _ (l j hj) _)`. Set `s' : LB.Sec (LB.LinComb L (K` to `Fin 1) (fun _ => φ) (fun _ => 1)) := { f := fun j => (Y.presheaf.map (homOfLE (l j)).op).hom ((φ.app _).hom (s.f (j 0))) compat := fun j j' => fn_ext fun z hz => by`. Establish `hm : (𝟙 Y ≫ φ) z ∈ L.U (j 0) ⊓ L.U (j' 0)` using `⟨l j hz.1, l j' hz.2⟩`. Establish `g : (trF (L` using `L) (fun _ : Fin 1 => φ) (fun _ => 1) (𝟙 Y) z j j').val = gs (𝟙 Y ≫ φ) z (L.U (j 0) ⊓ L.U (j' 0)) (L.g (j 0) (j' 0)).val := by`.
+
+Use `Eq.trans ?_ (gs_unit _ z _ hm _).symm` and prove the remaining obligations. Conclude with `congrArg Units.val ((Fin.prod_univ_one _).trans (zpow_one _))`. Use `((gs_res (𝟙 Y) z _ hz _).trans (v j z hz.1)).trans (Eq.trans ?_ ((gs_mul (𝟙 Y) z _ hz _ _).trans (congrArg₂ (· * ·) ((gs_unit (𝟙 Y) z _ hz _).trans ((congrArg Units.val (gm_linComb L _ _ (𝟙 Y) z j j' hz.1 hz.2)).trans g)) ((gs_res (𝟙 Y) z _ hz _).trans (v j' z hz.2)))).symm)` and prove the remaining obligations. Conclude with `(gs_res _ z _ hm _).symm.trans ((congrArg (gs _ z _) (s.compat (j 0) (j' 0))).trans ((gs_mul _ z _ hm _ _).trans (congrArg _ (gs_res _ z _ hm _)))) }`. Establish `b : ∀ (j : Fin 1 → L.ι) (y : Y), y ∈ Y.basicOpen (s'.f j) ↔ y ∈ LB.wchart L (fun _ : Fin 1 => φ) j ∧ φ y ∈ X.basicOpen (s.f (j 0))` using `fun j y => by`.
+
+Express the relevant statement in the definitionally equal form `y ∈ Y.basicOpen ((Y.presheaf.map (homOfLE (l j)).op).hom ((φ.app _).hom (s.f (j 0)))) ↔ _`. Rewrite using `[Scheme.basicOpen_res]`. Conclude with `and_congr_right fun _ => (SetLike.ext_iff.1 (Scheme.preimage_basicOpen φ (s.f (j 0))) y).symm`. Use `⟨s', SetLike.ext fun y => ⟨fun h => ?_, fun h => ?_⟩⟩` and prove the remaining obligations. Take `⟨j, hj⟩` from `TopologicalSpace.Opens.mem_iSup.1 h`.
+
+Conclude with `TopologicalSpace.Opens.mem_iSup.2 ⟨j 0, ((b j y).1 hj).2⟩`. Take `⟨i, hi⟩` from `TopologicalSpace.Opens.mem_iSup.1 (show φ y ∈ nonzeroLocus s from h)`. Conclude with `TopologicalSpace.Opens.mem_iSup.2 ⟨fun _ => i, (b _ y).2 ⟨Set.mem_iInter.2 fun _ => X.basicOpen_le _ hi, hi⟩⟩`.
+-/
 theorem exists_sec_pull_locus {X Y : Scheme.{0}} {L : LB X} (s : LB.Sec L) (φ : Y ⟶ X) :
     ∃ s' : LB.Sec (LB.LinComb L (K := Fin 1) (fun _ => φ) (fun _ => 1)),
       nonzeroLocus s' = φ ⁻¹ᵁ nonzeroLocus s := by
@@ -50,6 +59,9 @@ theorem exists_sec_pull_locus {X Y : Scheme.{0}} {L : LB X} (s : LB.Sec L) (φ :
     exact TopologicalSpace.Opens.mem_iSup.2 ⟨fun _ => i, (b _ y).2
       ⟨Set.mem_iInter.2 fun _ => X.basicOpen_le _ hi, hi⟩⟩
 
+/- English proof (translation)
+Establish `key : ∀ (U : Y.Opens) (_ : r z ∈ U) (f : Γ(Y, U)), IsUnit (gs r z U f) ↔ IsUnit (gs (𝟙 Y) (r z) U f)` using `fun U h f => by rw [gs_stalkMap r z U h, isUnit_map_iff]`. Use `⟨fun h => (mem_nonzeroLocus s _).2 ⟨_, hJ.mem φ r, (key _ (hJ.mem φ r) _).1 h⟩, fun h => ?_⟩` and prove the remaining obligations. Take `⟨j, hj, hu⟩` from `(mem_nonzeroLocus s _).1 h`. Rewrite using `[sval, sec_trans s r z (hJ.mem φ r) hj]`. Conclude with `(Units.isUnit _).mul ((key _ hj _).2 hu)`.
+-/
 theorem isUnit_sval_iff {X Y Z : Scheme.{0}} {L : LB X} {K : Type} [Fintype K] {φ : K → (Y ⟶ X)} {ε : K → ℤ}
     (s : LB.Sec (LB.LinComb L φ ε)) (r : Z ⟶ Y) (z : Z) {J} (hJ : Good L z J) :
     IsUnit (sval s r z J) ↔ r z ∈ nonzeroLocus s := by
@@ -60,6 +72,13 @@ theorem isUnit_sval_iff {X Y Z : Scheme.{0}} {L : LB X} {K : Type} [Fintype K] {
   rw [sval, sec_trans s r z (hJ.mem φ r) hj]
   exact (Units.isUnit _).mul ((key _ hj _).2 hu)
 
+/- English proof (translation)
+Take `⟨g, hg, hn⟩` from `hσ (h.left (closedPoint V))`. Establish `P : IsPullback (h ▷ G).left (fst (Over.mk χ) G).left (fst T G).left h.left`. Use `IsPullback.of_right (h₁₂ := (snd T G).left) (v₁₃ := G.hom) (h₂₂ := T.hom) ?_ ?_ (IsPullback.of_hasPullback T.hom G.hom).flip` and prove the remaining obligations. Rewrite using `[VVRank.whisker_snd_left, Over.w h]`. Conclude with `(IsPullback.of_hasPullback χ G.hom).flip`.
+
+Rewrite using `[← Over.comp_left, whiskerRight_fst, Over.comp_left]`. Take `⟨g', h₁, h₂⟩` from `Scheme.exists_preimage_of_isPullback P g (closedPoint V) hg`. Use `⟨g', h₂, ?_⟩` and prove the remaining obligations. Take `⟨J, hJ⟩` from `exists_good' hL g'`. Establish `u` using `(isUnit_sval_iff (φ := fun _ : Fin 1 => (snd T G).left) σ (𝟙 _ ≫ (h ▷ G).left) g' hJ).2 (by rw [Category.id_comp, h₁]; exact hn)`.
+
+Conclude with `(isUnit_sval_iff (φ := fun _ : Fin 1 => (snd (Over.mk χ) G).left) _ (𝟙 _) g' hJ).1 ((congrArg IsUnit (VVRank.sv_pullS G _ h σ (𝟙 _) g' hJ)).mpr u)`.
+-/
 theorem nz_pullS {S : Scheme.{0}} (G : Over S) [GrpObj G] {L : LB G.left} (hL : L.IsLB) {T : Over S}
     (σ : LB.Sec (LPow G L ((1 : ℕ) : ℤ) T)) (hσ : ∀ y : T.left, ∃ g, (fst T G).left g = y ∧ g ∈ nonzeroLocus σ)
     {V : Type} [CommRing V] [IsLocalRing V] (χ : Sp V ⟶ S) (h : Over.mk χ ⟶ T) :
@@ -79,6 +98,17 @@ theorem nz_pullS {S : Scheme.{0}} (G : Over S) [GrpObj G] {L : LB G.left} (hL : 
   exact (isUnit_sval_iff (φ := fun _ : Fin 1 => (snd (Over.mk χ) G).left) _ (𝟙 _) g' hJ).1
     ((congrArg IsUnit (VVRank.sv_pullS G _ h σ (𝟙 _) g' hJ)).mpr u)
 
+/- English proof (translation)
+Take `⟨θ, hθ⟩` from `h`. Set `T : Over S'` to `Over.mk (𝟙 S')`. Take `⟨s, hs⟩` from `exists_sec_pull_locus θ (snd T A).left`. Establish `hτ : (𝟙 S' : T.left ⟶ (Over.mk f).left) ≫ (Over.mk f).hom = T.hom ≫ f` using `rfl`. Establish `: IsIso (𝟙 S' : T.left ⟶ (Over.mk f).left)` using `IsIso.id S'`.
+
+Take `⟨σ, hσ⟩` from `exists_secRel_up (T := T) (T₀ := Over.mk f) hp (𝟙 S') hτ hw hL₀ hL₁ (a := ((1 : ℕ) : ℤ)) s`. Use `⟨σ, fun y => ?_⟩` and prove the remaining obligations. Take `⟨g, i, hg, hi⟩` from `hθ y`. Take `⟨z, h₁, h₂⟩` from `Scheme.exists_preimage_of_isPullback (IsPullback.of_hasPullback T.hom A.hom) y g hg.symm`. Establish `hz : z ∈ nonzeroLocus s`.
+
+Rewrite using `[hs]`. Express the relevant statement in the definitionally equal form `pullback.snd T.hom A.hom z ∈ nonzeroLocus θ`. Rewrite using `[h₂]`. Conclude with `TopologicalSpace.Opens.mem_iSup.2 ⟨i, hi⟩`. Take `⟨J, hJ⟩` from `exists_good' hL₀ z`.
+
+Take `⟨J', hJ'⟩` from `exists_good' hL₁ z`. Establish `e₁` using `psi_fst' (T := T) (T₀ := Over.mk f) hp (𝟙 S') hτ`. Use `⟨psi (T := T) (T₀ := Over.mk f) hp (𝟙 S') hτ z, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[← Scheme.Hom.comp_apply, e₁]`. Conclude with `h₁`.
+
+Establish `u` using `(isUnit_sval_iff (φ := fun _ : Fin 1 => (snd T A).left) s (𝟙 _) z hJ').2 hz`. Establish `e` using `hσ _ (𝟙 _) z J J' hJ hJ'`. Rewrite `e` using `[Category.id_comp]`. Conclude with `(isUnit_sval_iff (φ := fun _ : Fin 1 => (snd (Over.mk f) G).left) σ _ z hJ).1 ((congrArg IsUnit e).mpr ((Units.isUnit _).mul u))`.
+-/
 theorem exists_sec_nz_up {S S' : Scheme.{0}} {G : Over S} [GrpObj G] {A : Over S'} [GrpObj A]
     {f : S' ⟶ S} {φ : A.left ⟶ G.left} (hp : IsGrpPullback A G f φ) {L₀ : LB G.left} {L₁ : LB A.left}
     {w : LB.Iso L₁ (L₀.pull φ)} (hw : w.IsGen) (hL₀ : L₀.IsLB) (hL₁ : L₁.IsLB) (h : GlobalTheory.LN.ThetaNZ A L₁) :
@@ -110,6 +140,9 @@ theorem exists_sec_nz_up {S S' : Scheme.{0}} {G : Over S} [GrpObj G] {A : Over S
   exact (isUnit_sval_iff (φ := fun _ : Fin 1 => (snd (Over.mk f) G).left) σ _ z hJ).1
     ((congrArg IsUnit e).mpr ((Units.isUnit _).mul u))
 
+/- English proof (translation)
+Introduce `h₁ h₂ E _ _ _ H S t W _ _ _ χ t' m hp`. Take `⟨w, hw, -⟩` from `m.lin`. Take `⟨σ, hσ⟩` from `exists_sec_nz_up m.cart hw t.PP.isLB t'.PP.isLB (GlobalTheory.ThetaDvr.thetaNZ_of_polAt h₁ h₂ E H W t' hp)`. Conclude with `⟨σ, fun W' _ _ i χ' h => nz_pullS t.G t.PP.isLB σ hσ χ' _⟩`.
+-/
 theorem exists_nz_of_polAt : Laws → Laws2 → ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (S : Scheme.{0}) (t : SAB H S) (W : Type) [CommRing W] [IsDomain W] [IsDiscreteValuationRing W] (χ : Sp W ⟶ S) (t' : SAB H (Sp W)) (_ : SABMap t' t χ), GlobalTheory.LN.PolAt t' (jK W) → ∃ σ : LB.Sec (LPow t.G t.PP.L ((1 : ℕ) : ℤ) (Over.mk χ)), ∀ (W' : Type) [CommRing W'] [IsLocalRing W'] (i : W →+* W') (χ' : Sp W' ⟶ S) (h : spMap i ≫ χ = χ'), NZ t.G t.PP.L χ' (VVRank.pullS t.G _ (Over.homMk (spMap i) h : Over.mk χ' ⟶ Over.mk χ) σ) := by
   intro h₁ h₂ E _ _ _ H S t W _ _ _ χ t' m hp
   obtain ⟨w, hw, -⟩ := m.lin

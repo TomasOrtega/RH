@@ -13,9 +13,15 @@ variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algeb
 
 open PositivityTheory.ThKCT PositivityTheory.ThKG.Tow
 
+/- English proof (translation)
+The claim follows from `anyBig hG hA hK hS hI hP hPl hC`.
+-/
 theorem bigAny_of (hG : GenBig) (hA : GenAniso) (hK : KFinData) (hS : StabEx) (hI : IwaEx) (hP : PairEx) (hPl : PlaneHerm)
     (hC : EvCone) : BigAny := anyBig hG hA hK hS hI hP hPl hC
 
+/- English proof (translation)
+The claim follows from `anySmall hG hA hK hS hI hP hPl hC`.
+-/
 theorem smallAny_of (hG : GenSmall) (hA : GenAniso) (hK : KFinData) (hS : StabEx) (hI : IwaEx) (hP : PairEx) (hPl : PlaneHerm)
     (hC : EvCone) : SmallAny := anySmall hG hA hK hS hI hP hPl hC
 

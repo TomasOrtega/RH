@@ -5,6 +5,33 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.S
 
 namespace GlobalTheory.UPel.HT.ES
 
+/- English proof (translation)
+Introduce `p _ D r w hw hu`. Establish `htr` using `D.tr_eq`. Establish `hnm` using `D.nm_eq`. Establish `hbb : ∀ a, D.bar (D.bar a) = a` using `fun a => by`. Apply `Subtype.ext` to reduce the goal to its premises.
+
+Establish `h1` using `D.bar_eq (D.bar a)`. Rewrite `h1` using `[D.bar_eq a]`. Conclude with `h1.trans (by simp; rfl)`. Use `set u := uIdeal D r with hu_def`. Establish `hp : Prime (p : ℤ)` using `Nat.prime_iff_prime_int.1 Fact.out`.
+
+Establish `hα : D.ω - (r : 𝓞 D.F) ∈ u` using `sub_mem_uIdeal D r`. Establish `hpu : (p : 𝓞 D.F) ∈ u` using `p_mem_uIdeal D r`. Establish `hn0 : (D.ω - r) * (D.bar D.ω - r) = ((r ^ 2 - D.tr * r + D.nm : ℤ) : 𝓞 D.F)`. Use `push_cast`. Take the linear combination `hnm - (r : 𝓞 D.F) * htr`.
+
+Establish `hdvd : (p : ℤ) ∣ r ^ 2 - D.tr * r + D.nm`. Assume the negation of the conclusion as `hnd`. Take `⟨x, y, hxy⟩` from `hp.coprime_iff_not_dvd.2 hnd`. Apply `hw` to reduce the goal to its premises. Rewrite using `[Ideal.eq_top_iff_one]`.
+
+Establish `h1 : ((x * p + y * (r ^ 2 - D.tr * r + D.nm) : ℤ) : 𝓞 D.F) ∈ u`. Rewrite using `[Int.cast_add, Int.cast_mul, Int.cast_mul, Int.cast_natCast, ← hn0]`. Conclude with `u.add_mem (u.mul_mem_left _ hpu) (u.mul_mem_left _ (u.mul_mem_right _ hα))`. Rewrite `h1` using `[hxy, Int.cast_one]`. Conclude with `hu h1`.
+
+Take `⟨k0, hk0⟩` from `hdvd`. Establish `hvb : D.bar D.ω - (r : 𝓞 D.F) ∈ Ideal.comap D.bar u`. Rewrite using `[Ideal.mem_comap, map_sub, map_intCast, hbb]`. Conclude with `hα`. Prove the components needed by the constructor for the conclusion.
+
+Rewrite using `[Ideal.eq_top_iff_one]`. Establish `ht : ¬ (p : ℤ) ∣ D.tr - 2 * r`. Introduce `h`. Apply `D.disc_p` to reduce the goal to its premises. Establish `h2` using `(dvd_pow h two_ne_zero).sub (dvd_mul_of_dvd_right (⟨k0, hk0⟩ : (p : ℤ) ∣ r ^ 2 - D.tr * r + D.nm) 4)`.
+
+Establish `e2 : D.tr ^ 2 - 4 * D.nm = (D.tr - 2 * r) ^ 2 - 4 * (r ^ 2 - D.tr * r + D.nm)` using `by ring`. Rewrite using `[e2]`. Conclude with `h2`. Take `⟨x, y, hxy⟩` from `hp.coprime_iff_not_dvd.2 ht`. Establish `h1 : ((x * p + y * (D.tr - 2 * r) : ℤ) : 𝓞 D.F) ∈ u ⊔ Ideal.comap D.bar u`.
+
+Establish `e1 : ((x * p + y * (D.tr - 2 * r) : ℤ) : 𝓞 D.F) = (x : 𝓞 D.F) * p + ((y : 𝓞 D.F) * (D.ω - r) + (y : 𝓞 D.F) * (D.bar D.ω - r))`. Use `push_cast`. Take the linear combination `(-(y : 𝓞 D.F)) * htr`. Rewrite using `[e1]`. Conclude with `Ideal.add_mem _ (Ideal.mul_mem_left _ _ (Ideal.mem_sup_left hpu)) (Ideal.add_mem _ (Ideal.mul_mem_left _ _ (Ideal.mem_sup_left hα)) (Ideal.mul_mem_left _ _ (Ideal.mem_sup_right hvb)))`.
+
+Rewrite `h1` using `[hxy, Int.cast_one]`. Then use the resulting hypothesis. Rewrite using `[Ideal.mul_le]`. Introduce `a ha b hb`. Take `⟨a1, a2, rfl⟩` from `Ideal.mem_span_pair.1 ha`. Rewrite `hb` using `[Ideal.mem_comap]`.
+
+Take `⟨b1, b2, hb12⟩` from `Ideal.mem_span_pair.1 hb`. Establish `hb' : b = D.bar b1 * p + D.bar b2 * (D.bar D.ω - r)`. Use `congrArg D.bar hb12` as an intermediate fact. Rewrite `this` using `[hbb, map_add, map_mul, map_mul, map_natCast, map_sub, map_intCast]`. Conclude with `this.symm`.
+
+Substitute `hb'` using the available equality. Establish `h0` using `hn0`. Rewrite `h0` using `[hk0]`. Move the coercions through the operations in `at h0`. Rewrite using `[Ideal.mem_span_singleton']`.
+
+Use `⟨a1 * (D.bar b1 * p + D.bar b2 * (D.bar D.ω - r)) + a2 * D.bar b1 * (D.ω - r) + a2 * D.bar b2 * (k0 : 𝓞 D.F), ?_⟩` and prove the remaining obligations. Take the linear combination `(-(a2 * D.bar b2)) * h0`.
+-/
 theorem uIdeal_sup_comap_bar_and_mul_le : ∀ (p : ℕ) [Fact p.Prime] (D : Datum p) (r : ℤ) (w : Ideal (𝓞 D.F)), w ≠ ⊤ → uIdeal D r ≤ w → uIdeal D r ⊔ Ideal.comap D.bar (uIdeal D r) = ⊤ ∧ uIdeal D r * Ideal.comap D.bar (uIdeal D r) ≤ Ideal.span {(p : 𝓞 D.F)} := by
   intro p _ D r w hw hu
   have htr := D.tr_eq
@@ -71,6 +98,21 @@ theorem uIdeal_sup_comap_bar_and_mul_le : ∀ (p : ℕ) [Fact p.Prime] (D : Datu
     refine ⟨a1 * (D.bar b1 * p + D.bar b2 * (D.bar D.ω - r)) + a2 * D.bar b1 * (D.ω - r) + a2 * D.bar b2 * (k0 : 𝓞 D.F), ?_⟩
     linear_combination (-(a2 * D.bar b2)) * h0
 
+/- English proof (translation)
+Introduce `M _ _ k _ _ _ e eadd1 eadd2 endeg K z hz`. Assume the negation of the conclusion as `hzK`. Establish `e0r : ∀ x, e x 0 = 1` using `fun x => by`. Establish `h` using `eadd2 x 0 0`. Rewrite `h` using `[add_zero]`.
+
+Conclude with `left_eq_mul.mp h`. Set `Φ : M → (Multiplicative M →* kˣ)` to `fun y => { toFun := fun x => e y (Multiplicative.toAdd x) map_one' := e0r y map_mul' := fun a b => eadd2 _ _ _ }`. Establish `hΦ : Function.Injective Φ`. Introduce `y y' h`. Establish `: y - y' = 0` using `endeg _ fun x => by`.
+
+Establish `h1 : e y x = e y' x` using `DFunLike.congr_fun h (Multiplicative.ofAdd x)`. Establish `h2` using `eadd1 (y - y') y' x`. Rewrite `h2` using `[sub_add_cancel, h1]`. Conclude with `right_eq_mul.mp h2`. Conclude with `sub_eq_zero.1 this`.
+
+Establish `: NeZero (Monoid.exponent (Multiplicative M) : k)` using `⟨Nat.cast_ne_zero.2 Monoid.exponent_ne_zero_of_finite⟩`. Establish `h₁ : Nat.card (Multiplicative M →* kˣ) = Nat.card (Multiplicative M)` using `CommGroup.card_monoidHom_of_hasEnoughRootsOfUnity _ _`. Establish `: Finite (Multiplicative M →* kˣ)` using `Nat.finite_of_card_ne_zero (by rw [h₁]; exact Nat.card_pos.ne')`. Establish `hsurj : Function.Surjective Φ` using `(hΦ.bijective_of_nat_card_le (by rw [h₁]; rfl)).2`. Establish `: NeZero (Monoid.exponent (Multiplicative (M ⧸ K)) : k)` using `⟨Nat.cast_ne_zero.2 Monoid.exponent_ne_zero_of_finite⟩`.
+
+Establish `hz0 : Multiplicative.ofAdd (z : M ⧸ K) ≠ 1`. Rewrite using `[Ne, ofAdd_eq_one, QuotientAddGroup.eq_zero_iff]`. Conclude with `hzK`. Take `⟨χ0, hχ0⟩` from `CommGroup.exists_apply_ne_one_of_hasEnoughRootsOfUnity (Multiplicative (M ⧸ K)) k hz0`. Set `χ : Multiplicative M →* kˣ` to `χ0.comp (AddMonoidHom.toMultiplicative (QuotientAddGroup.mk' K))`.
+
+Take `⟨y, hy⟩` from `hsurj χ`. Establish `hχ : ∀ x, e y x = χ0 (Multiplicative.ofAdd (x : M ⧸ K))` using `fun x => DFunLike.congr_fun hy (Multiplicative.ofAdd x)`. Use `hχ0 ?_` and prove the remaining obligations. Rewrite using `[← hχ]`. Use `hz y fun x hx => ?_` and prove the remaining obligations.
+
+Rewrite using `[hχ, (QuotientAddGroup.eq_zero_iff x).2 hx, ofAdd_zero, map_one]`.
+-/
 theorem mem_addSubgroup_of_double_orthogonal : ∀ (M : Type) [AddCommGroup M] [Finite M] (k : Type) [Field k] [IsAlgClosed k] [CharZero k] (e : M → M → kˣ), (∀ x x' y, e (x + x') y = e x y * e x' y) → (∀ x y y', e x (y + y') = e x y * e x y') → (∀ x, (∀ y, e x y = 1) → x = 0) → ∀ (K : AddSubgroup M) (z : M), (∀ y, (∀ x ∈ K, e y x = 1) → e y z = 1) → z ∈ K := by
   intro M _ _ k _ _ _ e eadd1 eadd2 endeg K z hz
   by_contra hzK
@@ -111,6 +153,19 @@ theorem mem_addSubgroup_of_double_orthogonal : ∀ (M : Type) [AddCommGroup M] [
   refine hz y fun x hx => ?_
   rw [hχ, (QuotientAddGroup.eq_zero_iff x).2 hx, ofAdd_zero, map_one]
 
+/- English proof (translation)
+Introduce `R _ w hw hpos M _ _ _ j hj`. Use `haveI := hw`. Use `letI : Field (R ⧸ w) := Ideal.Quotient.field w`. Use `set T := Submodule.torsionBySet R M (w : Set R) with hT`. Establish `hTm : ∀ x : M, x ∈ T ↔ ∀ a ∈ w, a • x = 0` using `fun x => by`.
+
+Rewrite using `[Submodule.mem_torsionBySet_iff]`. Conclude with `⟨fun h a ha => h ⟨a, ha⟩, fun h a => h a a.2⟩`. Establish `hcT : Nat.card {x : M // ∀ a ∈ w, a • x = 0} = Nat.card T` using `Nat.card_congr (Equiv.subtypeEquivRight fun x => (hTm x).symm)`. Use `haveI : Finite (R ⧸ w) := Nat.finite_of_card_ne_zero hpos.ne'`. Use `haveI : Module.Finite (R ⧸ w) T := Module.Finite.of_finite`.
+
+Establish `hd` using `Module.natCard_eq_pow_finrank (K := R ⧸ w) (V := T)`. Establish `hq : 1 < Nat.card (R ⧸ w)` using `Finite.one_lt_card`. Establish `hjd : j ≤ Module.finrank (R ⧸ w) T` using `(Nat.pow_le_pow_iff_right hq).1 (by rw [← hd, ← hcT]; exact hj)`. Set `b` to `Module.finBasis (R ⧸ w) T`. Set `f : Fin j → T` to `fun i => b (Fin.castLE hjd i)`.
+
+Establish `hf : LinearIndependent (R ⧸ w) f` using `b.linearIndependent.comp _ (Fin.castLE_injective hjd)`. Set `S : Submodule (R ⧸ w) T` to `Submodule.span (R ⧸ w) (Set.range f)`. Establish `hS : Module.finrank (R ⧸ w) S = j` using `by rw [finrank_span_eq_card hf, Fintype.card_fin]`. Establish `hcS : Nat.card S = Nat.card (R ⧸ w) ^ j`. Rewrite using `[Module.natCard_eq_pow_finrank (K := R ⧸ w) (V := S), hS]`.
+
+Use `⟨(S.restrictScalars R).map T.subtype, ?_, ?_⟩` and prove the remaining obligations. Introduce `x hx`. Take `⟨y, -, rfl⟩` from `Submodule.mem_map.1 hx`. Conclude with `(hTm _).1 y.2`. Rewrite using `[← hcS, ← Nat.card_congr (Submodule.equivMapOfInjective _ (Submodule.injective_subtype T) (S.restrictScalars R)).toEquiv]`.
+
+Conclude with `Nat.card_congr (Equiv.subtypeEquivRight fun _ => Iff.rfl)`.
+-/
 theorem exists_submodule_killed_card_eq_pow : ∀ (R : Type) [CommRing R] (w : Ideal R), w.IsMaximal → 0 < Nat.card (R ⧸ w) → ∀ (M : Type) [AddCommGroup M] [Module R M] [Finite M] (j : ℕ), Nat.card (R ⧸ w) ^ j ≤ Nat.card {x : M // ∀ a ∈ w, a • x = 0} → ∃ K : Submodule R M, (∀ x ∈ K, ∀ a ∈ w, a • x = 0) ∧ Nat.card K = Nat.card (R ⧸ w) ^ j := by
   intro R _ w hw hpos M _ _ _ j hj
   haveI := hw
@@ -141,6 +196,53 @@ theorem exists_submodule_killed_card_eq_pow : ∀ (R : Type) [CommRing R] (w : I
   · rw [← hcS, ← Nat.card_congr (Submodule.equivMapOfInjective _ (Submodule.injective_subtype T) (S.restrictScalars R)).toEquiv]
     exact Nat.card_congr (Equiv.subtypeEquivRight fun _ => Iff.rfl)
 
+/- English proof (translation)
+Introduce `p _ D r w j c hw hu ⟨E0, hc⟩ M _ _ _ hM k _ _ _ e eadd1 eadd2 eadj eskew endeg hcard`. Establish `e0r : ∀ x, e x 0 = 1` using `fun x => by`. Establish `h` using `eadd2 x 0 0`. Rewrite `h` using `[add_zero]`. Conclude with `left_eq_mul.mp h`.
+
+Establish `einv : ∀ x y, e y x = (e x y)⁻¹` using `fun x y => eq_inv_of_mul_eq_one_right (eskew x y)`. Establish `hbb : ∀ a, D.bar (D.bar a) = a` using `fun a => by`. Apply `Subtype.ext` to reduce the goal to its premises. Establish `h1` using `D.bar_eq (D.bar a)`. Rewrite `h1` using `[D.bar_eq a]`.
+
+Conclude with `h1.trans (by simp; rfl)`. Use `set u := uIdeal D r with hu_def`. Use `set v := Ideal.comap D.bar u with hv_def`. Use `set E := E0 + 1 with hE`. Take `⟨hcop, hprod⟩` from `uIdeal_sup_comap_bar_and_mul_le p D r w hw.ne_top hu`.
+
+Establish `hpE : ∀ x : M, ((p : 𝓞 D.F) ^ E) • x = 0`. Introduce `x`. Rewrite using `[← Nat.cast_pow, Nat.cast_smul_eq_nsmul, hE, pow_succ', mul_smul, ← hc, hM x, smul_zero]`. Establish `hprodE : ∀ a ∈ u ^ E, ∀ b ∈ v ^ E, ∀ x : M, (a * b) • x = 0`. Introduce `a ha b hb x`.
+
+Establish `h1 : a * b ∈ (u * v) ^ E` using `by rw [mul_pow]; exact Ideal.mul_mem_mul ha hb`. Establish `h2` using `Ideal.pow_right_mono hprod E h1`. Rewrite `h2` using `[Ideal.span_singleton_pow, Ideal.mem_span_singleton']`. Take `⟨d, hd⟩` from `h2`. Rewrite using `[← hd, mul_smul, hpE, smul_zero]`.
+
+Establish `hcopE : ∀ i, ∃ a ∈ u ^ i, ∃ b ∈ v ^ E, a + b = 1` using `fun i => Ideal.isCoprime_iff_exists.mp ((Ideal.isCoprime_iff_sup_eq.mpr hcop).pow)`. Take `⟨ε', hε'u, ε, hεv, hsum⟩` from `hcopE E`. Establish `barv : ∀ a ∈ v ^ E, D.bar a ∈ u ^ E` using `fun a ha => Ideal.le_comap_pow _ E ha`. Establish `baru : ∀ a ∈ u ^ E, D.bar a ∈ v ^ E`. Introduce `a ha`.
+
+Establish `h1 : Ideal.map D.bar u ≤ v`. Rewrite using `[Ideal.map_le_iff_le_comap]`. Introduce `x hx`. Use `show D.bar (D.bar x) ∈ u`. Rewrite using `[hbb]`.
+
+Conclude with `hx`. Establish `h2 : D.bar a ∈ Ideal.map D.bar (u ^ E)` using `Ideal.mem_map_of_mem _ ha`. Rewrite `h2` using `[Ideal.map_pow]`. Conclude with `Ideal.pow_right_mono h1 E h2`. Establish `hsplit : ∀ x : M, ε • x + ε' • x = x` using `fun x => by rw [← add_smul, add_comm, hsum, one_smul]`.
+
+Establish `hεε' : ∀ x : M, ε • ε' • x = 0` using `fun x => by rw [← mul_smul, mul_comm]; exact hprodE _ hε'u _ hεv x`. Establish `hε'ε : ∀ x : M, ε' • ε • x = 0` using `fun x => by rw [← mul_smul]; exact hprodE _ hε'u _ hεv x`. Establish `isoε : ∀ a b : M, e (ε • a) (ε • b) = 1` using `fun a b => by`. Rewrite using `[eadj, ← mul_smul]`. Rewrite using `[hprodE _ (barv _ hεv) _ hεv b, e0r]`.
+
+Establish `isoε' : ∀ a b : M, e (ε' • a) (ε' • b) = 1` using `fun a b => by`. Rewrite using `[eadj, ← mul_smul, mul_comm]`. Rewrite using `[hprodE _ hε'u _ (baru _ hε'u) b, e0r]`. Establish `hN : Ideal.absNorm w = Nat.card (𝓞 D.F ⧸ w)` using `by rw [Ideal.absNorm_apply, Submodule.cardQuot_apply]`. Establish `hwp : (p : 𝓞 D.F) ∈ w` using `hu (p_mem_uIdeal D r)`.
+
+Establish `hNpos : 0 < Nat.card (𝓞 D.F ⧸ w)`. Rewrite using `[← hN, Nat.pos_iff_ne_zero]`. Introduce `h0`. Rewrite `hwp` using `[Ideal.absNorm_eq_zero_iff.1 h0, Ideal.mem_bot]`. Conclude with `(Nat.cast_ne_zero.2 (Fact.out : p.Prime).ne_zero) hwp`.
+
+Rewrite `hcard` using `[hN]`. Take `⟨K, hKw, hKc⟩` from `exists_submodule_killed_card_eq_pow (𝓞 D.F) w hw hNpos M j hcard`. Establish `hε'K : ∀ x ∈ K, ε' • x = 0` using `fun x hx => hKw x hx ε' (hu (Ideal.pow_le_self (by omega) hε'u))`. Establish `hεK : ∀ x ∈ K, ε • x = x` using `fun x hx => by`. Use `hsplit x` as an intermediate fact.
+
+Rewrite `this` using `[hε'K x hx, add_zero]`. Then use the resulting hypothesis. Set `K' : Submodule (𝓞 D.F) M` to `{ carrier := {y | ε • y = 0 ∧ ∀ x ∈ K, e x y = 1} add_mem' := fun {y y'} hy hy' => ⟨by rw [smul_add, hy.1, hy'.1, add_zero], fun x hx => by rw [eadd2, hy.2 x hx, hy'.2 x hx, _root_.mul_one]⟩ zero_mem' := ⟨smul_zero _, fun x _ => e0r x⟩ smul_mem' := fun a y hy => ⟨by rw [← mul_smu …`. Establish `h` using `eadj (D.bar.symm a) x y`. Rewrite `h` using `[RingEquiv.apply_symm_apply]`. Rewrite using `[← h]`.
+
+Conclude with `hy.2 _ (K.smul_mem _ hx)⟩ }`. Establish `memK' : ∀ y, y ∈ K' ↔ ε • y = 0 ∧ ∀ x ∈ K, e x y = 1` using `fun y => Iff.rfl`. Establish `hK'ε' : ∀ y ∈ K', ε' • y = y` using `fun y hy => by`. Use `hsplit y` as an intermediate fact. Rewrite `this` using `[hy.1, zero_add]`. Then use the resulting hypothesis.
+
+Establish `hε'mem : ∀ y : M, (∀ x ∈ K, e y x = 1) → ε' • y ∈ K'`. Introduce `y hy`. Use `⟨hεε' y, fun x hx => ?_⟩` and prove the remaining obligations. Establish `h1 : e x y = 1` using `by rw [einv, hy x hx, inv_one]`. Establish `h2` using `h1`.
+
+Rewrite `h2` using `[← hsplit y, eadd2]`. Establish `h3 : e x (ε • y) = 1` using `by rw [← hεK x hx]; exact isoε x y`. Rewrite `h2` using `[h3, _root_.one_mul]`. Then use the resulting hypothesis. Establish `hinK : ∀ x ∈ K ⊔ K', (∃ i : ℕ, ∀ a ∈ u ^ i, a • x = 0) → x ∈ K`. Introduce and unpack `x hx ⟨i, hi⟩`.
+
+Take `⟨y, hy, z, hz, rfl⟩` from `Submodule.mem_sup.1 hx`. Establish `hz' : z = ε' • (y + z)` using `by rw [smul_add, hε'K y hy, zero_add, hK'ε' z hz]`. Take `⟨a, ha, b, hb, hab⟩` from `hcopE i`. Establish `h1 : a • z = 0`. Rewrite using `[hz', ← mul_smul, mul_comm, mul_smul, hi a ha, smul_zero]`.
+
+Establish `h2 : b • z = 0`. Rewrite using `[hz', ← mul_smul, mul_comm]`. Conclude with `hprodE _ hε'u _ hb _`. Establish `h3 : z = 0` using `by rw [← one_smul (𝓞 D.F) z, ← hab, add_smul, h1, h2, add_zero]`. Rewrite using `[h3, add_zero]`.
+
+Conclude with `hy`. Use `⟨K ⊔ K', ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `x hx y hy`. Take `⟨k1, hk1, k1', hk1', rfl⟩` from `Submodule.mem_sup.1 hx`. Take `⟨k2, hk2, k2', hk2', rfl⟩` from `Submodule.mem_sup.1 hy`.
+
+Establish `a1 : e k1 k2 = 1` using `by rw [← hεK k1 hk1, ← hεK k2 hk2]; exact isoε _ _`. Establish `a2 : e k1 k2' = 1` using `hk2'.2 k1 hk1`. Establish `a3 : e k1' k2 = 1` using `by rw [einv, hk1'.2 k2 hk2, inv_one]`. Establish `a4 : e k1' k2' = 1` using `by rw [← hK'ε' k1' hk1', ← hK'ε' k2' hk2']; exact isoε' _ _`. Rewrite using `[eadd1, eadd2, eadd2, a1, a2, a3, a4, _root_.mul_one, _root_.mul_one]`.
+
+Introduce `g hg`. Establish `hg' : ε' • g ∈ K'`. Use `hε'mem g fun x hx => hg x (Submodule.mem_sup_left hx)` and prove the remaining obligations. Establish `hgK : ε • g ∈ K`. Use `mem_addSubgroup_of_double_orthogonal M k e eadd1 eadd2 endeg K.toAddSubgroup (ε • g) fun y hy => ?_` and prove the remaining obligations.
+
+Establish `hy' : ε' • y ∈ K'` using `hε'mem y hy`. Establish `h1 : e g (ε' • y) = 1` using `hg _ (Submodule.mem_sup_right hy')`. Rewrite `h1` using `[← hsplit g, eadd1, isoε' g y, _root_.mul_one]`. Rewrite using `[← hsplit y, eadd1, isoε y g, _root_.one_mul, einv, h1, inv_one]`. Rewrite using `[← hsplit g]`.
+
+Conclude with `Submodule.add_mem_sup hgK hg'`. Introduce `x hx hi`. Conclude with `hKw x (hinK x hx (hi.imp fun i h a ha => h a ha))`. Establish `e1 : {x : M // x ∈ K ⊔ K' ∧ ∀ a ∈ w, a • x = 0} ≃ K` using `Equiv.subtypeEquivRight fun x => ⟨fun h => hinK x h.1 ⟨1, fun a ha => h.2 a (hu (by rwa [pow_one] at ha))⟩, fun h => ⟨Submodule.mem_sup_left h, hKw x h⟩⟩`. Rewrite using `[Nat.card_congr e1, hKc, hN]`.
+-/
 theorem exists_maximal_isotropic_of_type : ∀ (p : ℕ) [Fact p.Prime] (D : Datum p) (r : ℤ) (w : Ideal (𝓞 D.F)) (j c : ℕ), w.IsMaximal → uIdeal D r ≤ w → (∃ e : ℕ, c = p ^ e) → ∀ (M : Type) [AddCommGroup M] [Module (𝓞 D.F) M] [Finite M], (∀ x : M, c • x = 0) → ∀ (k : Type) [Field k] [IsAlgClosed k] [CharZero k] (e : M → M → kˣ), (∀ x x' y, e (x + x') y = e x y * e x' y) → (∀ x y y', e x (y + y') = e x y * e x y') → (∀ (a : 𝓞 D.F) x y, e (a • x) y = e x (D.bar a • y)) → (∀ x y, e x y * e y x = 1) → (∀ x, (∀ y, e x y = 1) → x = 0) → Ideal.absNorm w ^ j ≤ Nat.card {x : M // ∀ a ∈ w, a • x = 0} → ∃ H : Submodule (𝓞 D.F) M, (∀ x ∈ H, ∀ y ∈ H, e x y = 1) ∧ (∀ x, (∀ y ∈ H, e x y = 1) → x ∈ H) ∧ (∀ x ∈ H, (∃ i : ℕ, ∀ a ∈ uIdeal D r ^ i, a • x = 0) → ∀ a ∈ w, a • x = 0) ∧ Nat.card {x : M // x ∈ H ∧ ∀ a ∈ w, a • x = 0} = Ideal.absNorm w ^ j := by
   intro p _ D r w j c hw hu ⟨E0, hc⟩ M _ _ _ hM k _ _ _ e eadd1 eadd2 eadj eskew endeg hcard
   have e0r : ∀ x, e x 0 = 1 := fun x => by

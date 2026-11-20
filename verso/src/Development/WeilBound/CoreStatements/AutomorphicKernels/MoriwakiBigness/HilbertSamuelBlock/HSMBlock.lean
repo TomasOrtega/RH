@@ -39,6 +39,15 @@ namespace PositivityTheory.LocalParametersCuspidal.MB.HSM
 open GroundTheory.Heights₂.Heights GroundTheory.Heights₂.Heights.HilbertSamuel ReciprocityTheory.ChartRestriction.G.Geo ReciprocityTheory.ChartRestriction.G.AI.I4
   ReciprocityTheory.ChartRestriction.G.AI.I1
 
+/- English proof (translation)
+Establish `hGr : GraphStatement` using `GlobalTheory.T.graph_statement_holds`. Establish `hAI3 : Inter.PushforwardArithIntersection.Statement` using `GlobalTheory.T.generic_degree_of_arith_system hAIS`. Establish `hRes : ResExistsStatement` using `GlobalTheory.T.resolution_exists_of_resolution_statement hResK`. Establish `hPts : PtsIntegrableStatement` using `GlobalTheory.T.points_integrable_of_resolution_statement hResK`. Establish `hPF : PFCoordStatement` using `(GlobalTheory.T.degree_and_coordinates_of_resolution hRes).2`.
+
+Establish `hEU : ∀ (F : Type) [Field F] (K : Type) [Fintype K] (ι : K → Type) [∀ k, Fintype (ι k)], ExistsUniqueStatement F ι` using `Targets.existsUniqueAll`. Establish `hGF : GenFibreExistsStatement` using `Targets.genFibreExists`. Establish `hIso : IsomInvariance.Statement` using `IsomInvariance.proof (Inter.RatR.proof hPts)`. Establish `hCM : ChangeOfModelStatement` using `Targets.ChangeOfModel.of_found hAI3 hGr hIso GraphIsometric.proof`. Establish `hDim : FibreDimStatement` using `GlobalTheory.CompanionTheory.Ar.Giv.fibreDim`.
+
+Establish `hDG : Inter.DegreeGeneric.Statement` using `GlobalTheory.CompanionTheory.Ar.Giv.degreeGeneric_of_degree (GlobalTheory.CompanionTheory.Ar.Giv.degree_of_system hAIS)`. Establish `hAbs : Inter.PtsAbsIntegrable.Statement` using `Inter.PtsAbsIntegrable.proof hPts (Inter.PtsAbsMeasurable.proof hRes)`. Establish `h6 : ProjFrameGraphDeg.Statement` using `ProjFrameGraphDeg.proof hEU ProjFrameFibrePt.full ProjFrameFibreDeg.full`. Establish `h15 : GraphChangeOfModel.Statement` using `GraphChangeOfModel.proof hAI3 hGr hGF hEU hIso GraphIsometricForms.full`. Establish `h16 : BlockGraphDeg.Statement` using `BlockGraphDeg.proof hGr BlockGraphImage.full hGF hDim hEU Closed.Inter.ChartRankAdjoin BlockGraphFibreRatio.full`.
+
+Establish `h18 : VeroneseGraphDeg.Statement` using `VeroneseGraphDeg.proof hGr VeroneseGraphImage.full hDim hEU`. Conclude with `TheoremHSMBlock.of_open TwoBlockPieceIndex.proof TwoBlockModuleFinite.proof ModulePieceHilbert.proof TwoBlockModuleCycle.proof hPF hCM h6 (HSMTransport.proof KrullDimMatAct.proof) (ResolutionDegree.proof PullFSExtension.full ProjFSMass.proof) ResolutionMixedBridge.full (BlockReso …`.
+-/
 theorem theoremHSMBlock (hAIS : ArithIntersectionSystemStatement) (hResK : ResK.ResKStatement) :
     TheoremHSMBlock.Statement := by
   have hGr : GraphStatement := GlobalTheory.T.graph_statement_holds

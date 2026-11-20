@@ -6,6 +6,13 @@ open GlobalTheory.CuspRep GlobalTheory.WeilDeligne GlobalTheory.Pst GlobalTheory
 open GlobalTheory.GalCut GlobalTheory.UnitaryBC GlobalTheory.Cong GlobalTheory.DefU
 open MeasureTheory GroundTheory.Automorphic.Spherical UpperTheory.Gal.Gen
 
+/- English proof (translation)
+Introduce `E _ _ _ a w₀ x g hx hg`. Take `⟨hxf, hxa⟩` from `(GlobalTheory.Cong.LevelExt.mem_locU_iff x).1 hx`. Establish `hxi : cInf x = 1` using `hxf`. Use `Subtype.ext (GlobalTheory.DefU.LocRet.ga_ext' ?_ fun u => ?_)` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `cInf (x * g) = cInf (g * x)`.
+
+Rewrite using `[map_mul, map_mul, hxi, one_mul, mul_one]`. Express the relevant statement in the definitionally equal form `cLoc u (x * g) = cLoc u (g * x)`. Rewrite using `[map_mul, map_mul]`. Distinguish the cases in `hu : Apart u w₀`. Rewrite using `[hxa u hu, one_mul, mul_one]`.
+
+Rewrite using `[hg u hu, one_mul, mul_one]`.
+-/
 theorem UpperTheory.Gal.Gen.locComm_pf :
     UpperTheory.Gal.Gen.LocComm := by
   intro E _ _ _ a w₀ x g hx hg

@@ -16,6 +16,9 @@ variable {A O M : Type} [CommRing A] [CommRing O] [AddCommGroup M] [Module O M] 
   (hR : ∀ s : ι → A, (∀ i, θ (s i) = 0) → R s = 0)
 
 include hR in
+/- English proof (translation)
+Rewrite using `[← sub_eq_zero, ← map_sub]`. Conclude with `hR _ fun i => by rw [Pi.sub_apply, map_sub, h, sub_self]`.
+-/
 theorem eq_of_theta_eq {s s' : ι → A} (h : ∀ i, θ (s i) = θ (s' i)) : R s = R s' := by
   rw [← sub_eq_zero, ← map_sub]
   exact hR _ fun i => by rw [Pi.sub_apply, map_sub, h, sub_self]
@@ -34,6 +37,9 @@ def descend : (ι → O) →ₗ[O] M where
     exact eq_of_theta_eq θ R hR fun i => by
       simp [Function.surjInv_eq hs]
 
+/- English proof (translation)
+The claim follows from `eq_of_theta_eq θ R hR fun i => Function.surjInv_eq hs _`.
+-/
 theorem descend_comp (s : ι → A) : descend θ hs R hR (fun i => θ (s i)) = R s :=
   eq_of_theta_eq θ R hR fun i => Function.surjInv_eq hs _
 
@@ -44,12 +50,74 @@ def dotL (ρ : ι → O) : (ι → O) →ₗ[O] O where
   map_add' := dotProduct_add ρ
   map_smul' c w := by rw [dotProduct_smul, RingHom.id_apply]
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem dotL_apply (ρ w : ι → O) : dotL ρ w = ρ ⬝ᵥ w := rfl
 
 end GlobalTheory.LattIota
 
 namespace GlobalTheory.LattIota
 
+/- English proof (translation)
+Introduce `p _ C _ _ _ v O _ _ _ _ _ hv ε hε G hG M _ _ r π hrs hker hπ`. Take `⟨D, e, fil, lie, hal, hb⟩` from `hG`. Take `⟨L, hL⟩` from `GlobalTheory.T.hodgeTate_lattice_eq_rowSpace_of_sandwich_datum p C v O hv ε hε G G.height D e fil hal`. Establish `hε1 : IsPrimitiveRoot (root ε).untilt p`. Simplify `hε 1` using `[zeta]`.
+
+Take `⟨hdom, -, hkerθ, hsθ, hν, hξ, -⟩` from `GlobalTheory.T.fontaineAinf_localDomain_xiAdic_order p C v O hv ε hε1`. Take `⟨hFG, hrangeFil, -, hνFil, -, -⟩` from `GlobalTheory.Sandwich.HodgeTateBound.bound p C v O hv ε hε1 ℤ_[p] G.height D`. Take `⟨hFin, hProj⟩` from `GlobalTheory.PDiv.omega_finite_projective p C v O hv G`. Establish `hθξ : WittVector.fontaineTheta O p (xi ε) = 0`. Rewrite using `[← RingHom.mem_ker, hkerθ]`.
+
+Conclude with `Ideal.mem_span_singleton_self _`. Set `R : (Fin G.height → Ainf p O) →ₛₗ[WittVector.fontaineTheta O p] M` to `r.comp (L : (Fin G.height → Ainf p O) →ₗ[Ainf p O] latt G)`. Establish `hR : ∀ s : Fin G.height → Ainf p O, (∀ i, WittVector.fontaineTheta O p (s i) = 0) → R s = 0`. Introduce `s hs0`. Establish `hu : ∀ i, ∃ u, u * xi ε = s i` using `fun i => by`.
+
+Rewrite using `[← Ideal.mem_span_singleton', ← hkerθ]`. Conclude with `hs0 i`. Use `choose u hu using hu`. Establish `hsu : s = xi ε • u` using `funext fun i => by rw [Pi.smul_apply, smul_eq_mul, mul_comm, hu]`. Express the relevant statement in the definitionally equal form `r (L s) = 0`.
+
+Rewrite using `[hker, hsu, map_smul]`. Conclude with `⟨_, rfl⟩`. Set `Φ` to `descend _ hsθ R hR`. Establish `hΦ : ∀ s, Φ (fun i => WittVector.fontaineTheta O p (s i)) = r (L s)` using `fun s => descend_comp _ hsθ R hR s`. Establish `hlift : ∀ ρ : Fin G.height → O, ∃ s : Fin G.height → Ainf p O, (fun i => WittVector.fontaineTheta O p (s i)) = ρ` using `fun ρ => ⟨fun i => Function.surjInv hsθ (ρ i), funext fun i => Function.surjInv_eq hsθ _⟩`.
+
+Establish `hΦs : Function.Surjective Φ`. Introduce `m`. Take `⟨y, rfl⟩` from `hrs m`. Take `⟨s, rfl⟩` from `L.surjective y`. Conclude with `⟨_, hΦ s⟩`.
+
+Establish `hΦi : Function.Injective Φ`. Rewrite using `[← LinearMap.ker_eq_bot, LinearMap.ker_eq_bot']`. Introduce `ρ hρ`. Take `⟨s, rfl⟩` from `hlift ρ`. Rewrite `hρ` using `[hΦ, hker]`.
+
+Take `⟨n, hn⟩` from `hρ`. Establish `hs : s = xi ε • L.symm n`. Apply `L.injective` to reduce the goal to its premises. Rewrite using `[map_smul, L.apply_symm_apply, hn]`. Use function extensionality and compare the values at `i`.
+
+Rewrite using `[hs, Pi.smul_apply, smul_eq_mul, map_mul, hθξ, zero_mul, Pi.zero_apply]`. Establish `hπHT : ∀ s t, π (r (L s)) (hodgeTate G t) = (fun i => WittVector.fontaineTheta O p (s i)) ⬝ᵥ (fil (hodgeTate G t) : Fin G.height → O)`. Introduce `s t`. Rewrite using `[hπ, hL, ← hal, RingHom.map_dotProduct]`. Use `congr 1`.
+
+Use function extensionality and compare the values at `i`. Rewrite using `[Function.comp_apply, RingHom.map_mulVec]`. Both sides reduce to the same expression. Establish `hsingle : ∀ i, toO e (e.symm (Pi.single i 1)) = Pi.single i 1`. Introduce `i`.
+
+Use function extensionality and compare the values at `j`. Distinguish the cases in `hij : j = i`. Substitute `hij` using the available equality. Simplify using `[toO]`. Simplify using `[toO, Pi.single_apply, hij]`.
+
+Establish `hext : ∀ f₁ f₂ : G.dual.omega →ₗ[O] O, (∀ t, f₁ (hodgeTate G t) = f₂ (hodgeTate G t)) → f₁ = f₂`. Introduce `f₁ f₂ hf`. Set `g : (G.dual.omega →ₗ[O] O) → (Fin G.height → O) →ₗ[O] O` to `fun f => f ∘ₗ fil.symm.toLinearMap ∘ₗ (D.al.codRestrict D.Fil (fun w => hrangeFil ⟨w, rfl⟩))`. Establish `key : ∀ f t, g f (toO e t) = f (hodgeTate G t)`. Introduce `f t`.
+
+Establish `h1 : D.al.codRestrict D.Fil (fun w => hrangeFil ⟨w, rfl⟩) (toO e t) = fil (hodgeTate G t)` using `Subtype.ext (hal t)`. Simplify using `only [g, LinearMap.comp_apply, LinearEquiv.coe_coe, h1, LinearEquiv.symm_apply_apply]`. Establish `hg : g f₁ = g f₂`. Use `LinearMap.pi_ext' fun i => LinearMap.ext_ring ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `g f₁ (Pi.single i 1) = g f₂ (Pi.single i 1)`.
+
+Rewrite using `[← hsingle, key, key, hf]`. Use `LinearMap.ext fun x => ?_` and prove the remaining obligations. Take `⟨w, hw⟩` from `hνFil _ (fil x).2`. Establish `hgx : ∀ f, g f w = WittVector.fontaineTheta O p (nu ε) * f x`. Introduce `f`.
+
+Establish `h1 : D.al.codRestrict D.Fil (fun w => hrangeFil ⟨w, rfl⟩) w = WittVector.fontaineTheta O p (nu ε) • fil x` using `Subtype.ext hw`. Simplify using `only [g, LinearMap.comp_apply, LinearEquiv.coe_coe, h1, map_smul, LinearEquiv.symm_apply_apply, smul_eq_mul]`. Conclude with `mul_left_cancel₀ hν (by rw [← hgx, ← hgx, hg])`. Establish `hπΦ : ∀ ρ x, π (Φ ρ) x = ρ ⬝ᵥ (fil x : Fin G.height → O)`. Introduce `ρ`.
+
+Take `⟨s, rfl⟩` from `hlift ρ`. Use `hext (π (Φ (fun i => WittVector.fontaineTheta O p (s i)))) (dotL (fun i => WittVector.fontaineTheta O p (s i)) ∘ₗ D.Fil.subtype ∘ₗ fil.toLinearMap) (fun t => by rw [hΦ, hπHT]; rfl)` as an intermediate fact. Introduce `x`. Conclude with `LinearMap.congr_fun this x`. Set `κ : G.omega →ₗ[O] (Fin G.height → O)` to `LinearMap.pi fun i => lie (D.Fil.mkQ (Pi.single i 1))`.
+
+Establish `hκ : ∀ w i, κ w i = lie (D.Fil.mkQ (Pi.single i 1)) w` using `fun w i => rfl`. Establish `hk : ∀ w m, κ w ⬝ᵥ m = lie (D.Fil.mkQ m) w`. Introduce `w`. Establish `: dotL (κ w) = (LinearMap.applyₗ w : Module.Dual O G.omega →ₗ[O] O) ∘ₗ lie.toLinearMap ∘ₗ D.Fil.mkQ`. Use `LinearMap.pi_ext' fun i => LinearMap.ext_ring ?_` and prove the remaining obligations.
+
+Simplify using `[hκ]`. Introduce `m`. Conclude with `LinearMap.congr_fun this m`. Establish `hκi : Function.Injective κ`. Rewrite using `[← LinearMap.ker_eq_bot, LinearMap.ker_eq_bot']`.
+
+Introduce `w hw`. Use `(Module.forall_dual_apply_eq_zero_iff O w).1 fun φ => ?_` and prove the remaining obligations. Take `⟨q, rfl⟩` from `lie.surjective φ`. Take `⟨m, rfl⟩` from `D.Fil.mkQ_surjective q`. Rewrite using `[← hk, hw, zero_dotProduct]`.
+
+Use `⟨Φ ∘ₗ κ, hΦi.comp hκi, fun m => ⟨fun h0 => ?_, ?_⟩, ?_⟩` and prove the remaining obligations. Take `⟨ρ, rfl⟩` from `hΦs m`. Establish `hρ : D.Fil ≤ LinearMap.ker (dotL ρ)` using `fun f hf => by`. Take `⟨x, hx⟩` from `fil.surjective ⟨f, hf⟩`. Use `LinearMap.congr_fun h0 x` as an intermediate fact.
+
+Rewrite `this` using `[hπΦ, hx]`. Conclude with `this`. Set `ψ : ((Fin G.height → O) ⧸ D.Fil) →ₗ[O] O` to `D.Fil.liftQ (dotL ρ) hρ`. Set `w` to `(Module.evalEquiv O G.omega).symm (ψ ∘ₗ lie.symm.toLinearMap)`. Establish `hw : ∀ φ : G.Lie, φ w = ψ (lie.symm φ)` using `fun φ => by`.
+
+Express the relevant statement in the definitionally equal form `(Module.evalEquiv O G.omega w) φ = _`. Rewrite using `[LinearEquiv.apply_symm_apply]`. Both sides reduce to the same expression. Use `⟨w, ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `Φ (κ w) = Φ ρ`.
+
+Use `congr 1`. Use function extensionality and compare the values at `i`. Rewrite using `[hκ, hw, LinearEquiv.symm_apply_apply]`. Simplify using `[ψ]`. Introduce and unpack `⟨w, rfl⟩`.
+
+Use `LinearMap.ext fun x => ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `π (Φ (κ w)) x = 0`. Rewrite using `[hπΦ, hk, Submodule.mkQ_apply, (Submodule.Quotient.mk_eq_zero _).2 (fil x).2, map_zero]`. Both sides reduce to the same expression. Introduce `χ y hy`.
+
+Set `sχ : Fin G.height → Ainf p O` to `fun i => ofPadic p O (epsPairing hε G (e.symm (Pi.single i 1)) χ)`. Establish `hpair : ∀ t, sχ ⬝ᵥ (fun i => ofPadic p O (e t i)) = ofPadic p O (epsPairing hε G t χ)`. Introduce `t`. Establish `ht : t = ∑ i, e t i • e.symm (Pi.single i 1)`. Apply `e.injective` to reduce the goal to its premises.
+
+Rewrite using `[map_sum]`. Use extensionality with `j`. Simplify using `[Finset.sum_apply, Pi.single_apply]`. Establish `hlin : epsPairing hε G t χ = ∑ i, e t i * epsPairing hε G (e.symm (Pi.single i 1)) χ` using `by conv_lhs => rw [ht]`. Simplify using `only [epsPairing, map_sum, map_smul, LinearMap.sum_apply, LinearMap.smul_apply, smul_eq_mul]`.
+
+Rewrite using `[hlin, map_sum]`. Simplify using `only [dotProduct, sχ, map_mul]`. Conclude with `Finset.sum_congr rfl fun i _ => mul_comm _ _`. Establish `hyL : y = L (sχ ᵥ* D.G)`. Apply `Subtype.ext` to reduce the goal to its premises.
+
+Use `LinearMap.ext fun t => ?_` and prove the remaining obligations. Rewrite using `[hL, hy, ← dotProduct_mulVec, mulVec_mulVec, D.G_mul_F, smul_mulVec, one_mulVec, dotProduct_smul, hpair, smul_eq_mul]`. Rewrite using `[hyL, ← hΦ]`. Express the relevant statement in the definitionally equal form `Φ (κ (dlog G χ)) = _`. Use `congr 1`.
+
+Use function extensionality and compare the values at `i`. Rewrite using `[hκ, ← hb, LinearEquiv.symm_apply_apply, RingHom.map_vecMul]`. Simplify using `[bQuot, pairingO, Datum.bb, Matrix.toLin'_apply, vecMul, dotProduct, padicToO, sχ, mul_comm]`.
+-/
 theorem iota_exists : ∀ (p : ℕ) [Fact p.Prime] (C : Type) [Field C] [IsAlgClosed C] [CharZero C] (v : Valuation C NNReal) (O : Type) [CommRing O] [Algebra O C] [Fact ¬IsUnit (p : O)] [IsAdicComplete (Ideal.span {(p : O)}) O] [IsDomain O], v.Integers O → ∀ (ε : PreTilt O p) (hε : IsPrimitiveSystem ε), ∀ (G : PDivGroup p O), HasDatum hε G → ∀ (M : Type) [AddCommGroup M] [Module O M] (r : latt G →ₛₗ[WittVector.fontaineTheta O p] M) (π : M →ₗ[O] G.dual.Lie), Function.Surjective r → (∀ m, r m = 0 ↔ ∃ n, m = xi ε • n) → (∀ (y : latt G) t, π (r y) (hodgeTate G t) = WittVector.fontaineTheta O p (y.1 t)) → ∃ ι : G.omega →ₗ[O] M, Function.Injective ι ∧ Function.Exact ι π ∧ (∀ (χ : G.dual.Tate) (y : latt G), (∀ t, y.1 t = Sandwich.mu ε * ofPadic p O (epsPairing hε G t χ)) → ι (dlog G χ) = r y) := by
   intro p _ C _ _ _ v O _ _ _ _ _ hv ε hε G hG M _ _ r π hrs hker hπ
   obtain ⟨D, e, fil, lie, hal, hb⟩ := hG

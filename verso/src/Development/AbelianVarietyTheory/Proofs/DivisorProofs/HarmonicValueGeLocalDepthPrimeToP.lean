@@ -21,6 +21,21 @@ attribute [local instance] Over.cartesianMonoidalCategory
 
 namespace GlobalTheory.RefSum.TermLoc
 
+/- English proof (translation)
+Introduce `E _ _ _ H Dw l Xo c`. Use `letI := H.starRing`. Introduce `T io y C hC nab hnab e ρ w n he P hP hloc N hN hu x₂ F hF`. Use `letI := io.toAlgebra`. Establish `hst : ∀ a : 𝓞 E, star a = H.bar a` using `fun _ => rfl`.
+
+Establish `hone : ∀ {Z : Over Xo.X} (t : Z ⟶ Xo.univ.t.G), t ≫ Xo.univ.t.act.act 1 = t` using `fun t => by`. Rewrite using `[Xo.univ.t.act.one, Category.comp_id]`. Establish `hmix` using `fun b => (GlobalTheory.T.mixed_translate_pullback_eq_reached_section E H Dw l Xo T.Fr (xOf y) N N 1 1 1 1 hN (by simp) (by simp) (by simp) (sOf1 y) 1 (x₂ b) (F b) (one_pow _) (hF b).1 (by rw [_root_.mul_one, hone, one_pow]) (by rw [hone, _root_.mul_one]; exact (hF b).1) (hF b).2) …`. Use `choose hh hre hpl using hmix`. Establish `hg` using `fun b => (GlobalTheory.T.regular_section_integral_germ_unique_scale E H Dw l Xo c hst T io y C hC.1 _ (hh b)).1 (GlobalTheory.T.reachedSection_regular_on_integralModel E H Dw l Xo c hst T io y C hC _ (hh b) (hre b))`.
+
+Use `choose f hf using hg`. Take `⟨B, hB1, -⟩` from `GlobalTheory.T.integralChart_formalBiextension_gauge_bound E H Dw l Xo c hst T io y C`. Establish `hHH : P ∈ HH c w n` using `hP.1`. Establish `hni` using `GlobalTheory.T.harmonicValue_integralPoint_eq_value_on_biextensionCopies E H Dw l Xo c hst T io y C nab hnab B hB1 _ n hh f hf w P hHH`. Establish `hch` using `GlobalTheory.T.harmonic_value_chain_rule_normalized_pullback E H Dw l Xo c hst nab hnab T.Fr y.1 1 1 (N ^ 2 * 1) (N ^ 2) (by simp) (by ring) n hh (fun b => sqN Xo N (F b)) hpl w P hHH`.
+
+Establish `hn1 : nrm Dw c w (1 : 𝓞 E) = 1` using `by simp [nrm]`. Rewrite using `[hch, hn1, map_one, _root_.one_mul, hni]`. Take `⟨hF', hA', -, -, -, -, -⟩` from `C.gen.1`. Take `⟨e1, e2, -, -, -, -⟩` from `hB1`. Establish `eF : B.FK T.Fr = C.ch.B.FK T.Fr`.
+
+Use function extensionality and compare the values at `i`. Express the relevant statement in the definitionally equal form `MvPowerSeries.map _ (B.G.F i) = MvPowerSeries.map _ (C.ch.B.G.F i)`. Rewrite using `[GlobalTheory.ChartBiext.toK_self, hF', e1]`. Establish `eA : ∀ a, B.actK T.Fr a = C.ch.B.actK T.Fr a`. Introduce `a`.
+
+Use function extensionality and compare the values at `i`. Express the relevant statement in the definitionally equal form `MvPowerSeries.map _ (B.A.act a i) = MvPowerSeries.map _ (C.ch.B.A.act a i)`. Rewrite using `[GlobalTheory.ChartBiext.toK_self, hA', e2]`. Rewrite using `[GlobalTheory.ChartBiext.nabValN_congr B C.ch.B eF eA]`. Use `(hloc (N ^ 2 * 1)).trans ?_` and prove the remaining obligations.
+
+Unfold `nuLocOf`. Use `iInf_le_of_le (FB.toK T.Fr (∏ b, evV (n := n) ![pt T.V (chD C.ch) b] (f b))) (iInf_le_of_le ?_ le_rfl)` and prove the remaining obligations. Introduce `m`. Conclude with `⟨_, (MvPowerSeries.coeff_map _ _ _).symm⟩`.
+-/
 theorem harmonic_value_ge_local_depth : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (Dw : Datum H) (l : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Level H) (Xo : Moduli Dw l) (c : Coeff l), letI := H.starRing; ∀ (T : CDVR) (io : c.F →+* T.Fr) (y : IntFr Xo c T io) (C : IntegralChartA3 Xo c T io y), Good3 C → ∀ nab : NabV Xo c, IsNab Xo c nab → ∀ (e : ℕ) (ρ : ℝ) (w : (E →+* ℂ) × ℕ → ℕ) (n : ℕ), 0 < e → ∀ P : MvPolynomial (LtN Dw n) c.F, P ∈ harmA (Dw := Dw) c w n → (∀ k, (ρ : EReal) ≤ nuLocOf C e k (MvPolynomial.map io P)) → ∀ (N : ℕ), Odd N → IsUnit (N : T.V) → ∀ (x₂ : Fin n → (ptO Xo (xOf y) ⟶ Xo.univ.t.G)) (F : Fin n → LB.Sec (LPow Xo.univ.t.G Xo.univ.t.PP.L ((N : ℤ) ^ 2) (ptO Xo (xOf y)))), (∀ b, x₂ b ^ (N ^ 2) = 1 ∧ IsUUOver Xo.univ.t.G Xo.univ.t.PP N (sOf1 y) 1 (x₂ b) (F b)) → letI := io.toAlgebra; (ρ : EReal) ≤ nval T.V e (hv Xo c nab y.1 (N ^ 2) (fun b => sqN Xo N (F b)) P) := by
   intro E _ _ _ H Dw l Xo c
   letI := H.starRing

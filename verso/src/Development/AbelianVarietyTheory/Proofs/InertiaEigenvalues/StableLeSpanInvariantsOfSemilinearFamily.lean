@@ -6,6 +6,19 @@ open scoped LaurentSeries PowerSeries TensorProduct
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Assume the negation of the conclusion as `hne`. Take `⟨f, hf0, hle⟩` from `Submodule.exists_le_ker_of_lt_top _ (lt_top_iff_ne_top.mpr hne)`. Establish `hli : LinearIndependent F (fun d : D => ((σ d : F →* F) : F → F))`. Use `(linearIndependent_monoidHom F F).comp (fun d => (σ d : F →* F)) ?_` and prove the remaining obligations. Introduce `a b h`.
+
+Apply `hσ` to reduce the goal to its premises. Use extensionality with `x`. Conclude with `congrArg (fun g : F →* F => g x) h`. Rewrite `hli` using `[Fintype.linearIndependent_iff]`. Establish `hzero : ∑ d, f (Pi.single d 1) • ((σ d : F →* F) : F → F) = 0`.
+
+Use function extensionality and compare the values at `c`. Establish `hc : (fun d : D => σ d c) ∈ LinearMap.ker f` using `hle (Submodule.subset_span ⟨c, rfl⟩)`. Rewrite `hc` using `[LinearMap.mem_ker]`. Establish `hdecomp : (fun d : D => σ d c) = ∑ d, σ d c • Pi.single d (1 : F)`. Use extensionality with `e`.
+
+Simplify using `[Finset.sum_apply, Pi.single_apply]`. Rewrite `hc` using `[hdecomp, map_sum]`. Simplify using `only [map_smul, smul_eq_mul] at hc`. Simplify using `only [Finset.sum_apply, Pi.smul_apply, smul_eq_mul, Pi.zero_apply]`. Rewrite using `[← hc]`.
+
+Use `Finset.sum_congr rfl fun d _ => ?_` and prove the remaining obligations. Simplify using `[mul_comm]`. Establish `hall` using `hli _ hzero`. Apply `hf0` to reduce the goal to its premises. Use extensionality with `d`.
+
+Simplify using `using hall d`.
+-/
 private lemma span_range_eval_embeddings_eq_whole (F D : Type) [Field F] [Fintype D] (σ : D → (F →+* F))
     (hσ : Function.Injective σ) :
     Submodule.span F (Set.range (fun c : F => fun d : D => σ d c)) = ⊤ := by
@@ -38,6 +51,19 @@ private lemma span_range_eval_embeddings_eq_whole (F D : Type) [Field F] [Fintyp
   ext d
   simpa using hall d
 
+/- English proof (translation)
+Introduce and unpack `F M D _ _ _ _ σ t V hσ hsemi hV hinv ⟨d₀, hd₀⟩ y hy`. Set `W` to `Submodule.span F {y | y ∈ V ∧ ∀ d, t d y = y}`. Set `Φ : (D → F) →ₗ[F] M` to `{ toFun := fun w => ∑ d, w d • t d y map_add' := by`. Introduce `a b`. Simplify using `[add_smul, Finset.sum_add_distrib]`.
+
+Use the proof step `map_smul' := by`. Introduce `c a`. Simplify using `[Finset.smul_sum, smul_smul] }`. Establish `hmem : ∀ c : F, (∑ d, σ d c • t d y) ∈ W`. Introduce `c`.
+
+Apply `Submodule.subset_span` to reduce the goal to its premises. Establish `hcy : c • y ∈ V` using `V.smul_mem c hy`. Establish `heq : ∑ d, σ d c • t d y = ∑ d, t d (c • y)` using `Finset.sum_congr rfl fun d _ => (hsemi d c y hy).symm`. Rewrite using `[heq]`. Conclude with `⟨V.sum_mem fun d _ => hV d _ hcy, fun d => hinv d _ hcy⟩`.
+
+Establish `hle : Submodule.span F (Set.range (fun c : F => fun d : D => σ d c)) ≤ W.comap Φ`. Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨c, rfl⟩`. Conclude with `hmem c`. Rewrite `hle` using `[span_range_eval_embeddings_eq_whole F D σ hσ]`.
+
+Establish `h1 : Φ (Pi.single d₀ 1) ∈ W` using `hle Submodule.mem_top`. Establish `h2 : Φ (Pi.single d₀ 1) = y` using `by show ∑ d, (Pi.single d₀ (1 : F) : D → F) d • t d y = y`. Rewrite using `[Finset.sum_eq_single d₀]`. Simplify using `[hd₀ y hy]`. Introduce `b _ hb`.
+
+Simplify using `[Pi.single_apply, hb]`. Introduce `h`. Conclude with `absurd (Finset.mem_univ _) h`. Rewrite `h1` using `[h2]`. Conclude with `h1`.
+-/
 theorem stable_le_span_invariants_of_semilinear_family :
     ∀ (F M D : Type) [Field F] [AddCommGroup M] [Module F M] [Fintype D] (σ : D → (F →+* F)) (t : D → (M →+ M)) (V : Submodule F M), Function.Injective σ → (∀ d (c : F), ∀ y ∈ V, t d (c • y) = σ d c • t d y) → (∀ d, ∀ y ∈ V, t d y ∈ V) → (∀ d, ∀ y ∈ V, t d (∑ d', t d' y) = ∑ d', t d' y) → (∃ d, ∀ y ∈ V, t d y = y) → V ≤ Submodule.span F {y | y ∈ V ∧ ∀ d, t d y = y} := by
   classical

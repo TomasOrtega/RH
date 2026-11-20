@@ -9,6 +9,9 @@ open Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotions.G Formal
 open scoped TensorProduct
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
+/- English proof (translation)
+Introduce `D Gt c g C full hh hf u`. Rewrite using `[hh, hf]`. Establish `e : full.1.to0.lev0 = C.herm.base.lev0` using `congrArg (fun X : Formalism.L2.Herm.ColsHermS D => X.base.lev0) full.2`. Rewrite using `[e]`. Conclude with `C.joint0 u`.
+-/
 theorem GlobalTheory.hServTwoSidesJoint0 : ∀ {D : D7} (Gt : GatTies D) (c : LatCmp D) (g : GroupCompatibilityAll D Gt c) (C : ColsTiedSym D) (full : ColsFullS C), g.herm = full.1.to0 → (g.forms = fun u => (C.forms u).to0) → ∀ u, Joint0 g.herm.lev0 u (g.forms u) := by
   intro D Gt c g C full hh hf u
   rw [hh, hf]

@@ -22,6 +22,13 @@ namespace GlobalTheory.AbTriv
 
 variable {X X' S S' : Scheme.{0}} {N : LB X}
 
+/- English proof (translation)
+Take `⟨t, ht⟩` from `ht`. Set `n : X' ⟶ X'` to `h.lift ((π ≫ p) ≫ e) p' (by rw [Category.assoc, he, Category.comp_id, h.w])`. Establish `n₁ : n ≫ π = (π ≫ p) ≫ e` using `h.lift_fst _ _ _`. Establish `n₂ : n ≫ p' = p'` using `h.lift_snd _ _ _`. Take `⟨t', ht', hv⟩` from `exists_gen hN (K' := PUnit) (φ' := fun _ => π) (ε' := fun _ => 1) (fun V _ k => by`.
+
+Use `(Fintype.prod_sum_type _).trans ?_` and prove the remaining obligations. Rewrite using `[Fintype.prod_sum_type]`. Simplify using `only [Sum.elim_inl, Sum.elim_inr, zpow_neg, Finset.prod_inv_distrib, n₁, mul_inv_cancel, _root_.mul_one])`. Use the proof step `(LB.mulGen N _ _ _ _ t (LB.mulGen N _ _ _ _ (LB.pullGen N _ _ c (π ≫ p)) (LB.invGen N _ _ (LB.pullGen N _ _ t n))))`. Use the proof step `(DVR.mulGen_isGen _ _ _ _ _ _ _ ht (DVR.mulGen_isGen _ _ _ _ _ _ _ (DVR.pullGen_isGen _ _ _ _ hc _) (DVR.invGen_isGen _ _ _ _ (DVR.pullGen_isGen _ _ _ _ ht n))))`.
+
+Use `⟨t', ht', fun Z r b z J hJ hr => ?_⟩` and prove the remaining obligations. Establish `hb : r ≫ π ≫ p = b` using `by rw [← Category.assoc, hr, Category.assoc, he, Category.comp_id]`. Establish `hn : r ≫ n = r` using `h.hom_ext (by rw [Category.assoc, n₁, ← Category.assoc, hb, hr]) (by rw [Category.assoc, n₂])`. Rewrite using `[hv Z r z J hJ, val_mul hJ, val_mul hJ, val_inv, val_pull hJ, val_pull hJ, hn, hb, mul_comm (val c b z J), mul_inv_cancel_left]`.
+-/
 theorem exists_normalised (hN : N.IsLB) {p : X ⟶ S} {e : S ⟶ X} (he : e ≫ p = 𝟙 S)
     (c : LB.Gen (N.pull e)) (hc : c.IsGen) {π : X' ⟶ X} {p' : X' ⟶ S'} {g : S' ⟶ S}
     (h : IsPullback π p' p g) (ht : Triv (N.pull π)) :
@@ -48,6 +55,11 @@ theorem exists_normalised (hN : N.IsLB) {p : X ⟶ S} {e : S ⟶ X} (he : e ≫ 
   rw [hv Z r z J hJ, val_mul hJ, val_mul hJ, val_inv, val_pull hJ, val_pull hJ, hn, hb, mul_comm (val c b z J),
     mul_inv_cancel_left]
 
+/- English proof (translation)
+Take `⟨t, ht⟩` from `h`. Establish `le : ∀ i, N.U i ≤ (N.pull (𝟙 X)).U (fun _ => i)` using `fun i x hx => mem_pull.2 hx`. Use `⟨⟨fun i => res (le i) (t.s fun _ => i)⟩, fun i j => unit_ext fun x hx => ?_⟩` and prove the remaining obligations. Establish `e` using `gen_trans ht (𝟙 X) x (le i hx.1) (le j hx.2)`. Simplify using `only [trF, Finset.univ_unique, Finset.prod_singleton, zpow_one, Category.id_comp] at e`.
+
+Use `((gm_res _ x _ hx _).trans (gm_res _ x _ hx.1 _)).trans (e.trans (Eq.symm ?_))` and prove the remaining obligations. Conclude with `(map_mul _ _ _).trans (congrArg₂ (· * ·) rfl ((gm_res _ x _ hx _).trans (gm_res _ x _ hx.2 _)))`.
+-/
 theorem triv_of_pull_id (h : Triv (N.pull (𝟙 X))) : Triv N := by
   obtain ⟨t, ht⟩ := h
   have le : ∀ i, N.U i ≤ (N.pull (𝟙 X)).U (fun _ => i) := fun i x hx => mem_pull.2 hx
@@ -57,6 +69,11 @@ theorem triv_of_pull_id (h : Triv (N.pull (𝟙 X))) : Triv N := by
   refine ((gm_res _ x _ hx _).trans (gm_res _ x _ hx.1 _)).trans (e.trans (Eq.symm ?_))
   exact (map_mul _ _ _).trans (congrArg₂ (· * ·) rfl ((gm_res _ x _ hx _).trans (gm_res _ x _ hx.2 _)))
 
+/- English proof (translation)
+Establish `hc : IsClosed (p '' (U : Set X)ᶜ)` using `p.isClosedMap _ U.isOpen.isClosed_compl`. Use `DVR.eq_top_of_closedPoint_mem (V := V) ⟨_, hc.isOpen_compl⟩ (by` as an intermediate fact. Introduce and unpack `⟨x, hx, e⟩`. Conclude with `hx (h x e))`. Use `eq_top_iff.2 fun x _ => by_contra fun hx => ?_` and prove the remaining obligations.
+
+Establish `hm : p x ∈ (⊤ : (Spec (CommRingCat.of V)).Opens)` using `trivial`. Rewrite `hm` using `[← this]`. Conclude with `hm ⟨x, hx, rfl⟩`.
+-/
 theorem eq_top_of_closed_fibre {V : Type} [CommRing V] [IsLocalRing V] (p : X ⟶ Spec (CommRingCat.of V))
     [UniversallyClosed p] (U : X.Opens) (h : ∀ x, p x = IsLocalRing.closedPoint V → x ∈ U) : U = ⊤ := by
   have hc : IsClosed (p '' (U : Set X)ᶜ) := p.isClosedMap _ U.isOpen.isClosed_compl
@@ -68,6 +85,9 @@ theorem eq_top_of_closed_fibre {V : Type} [CommRing V] [IsLocalRing V] (p : X �
   rw [← this] at hm
   exact hm ⟨x, hx, rfl⟩
 
+/- English proof (translation)
+Establish `h` using `range_comap_of_surjective _ _ (Ideal.Quotient.mk_surjective (I := IsLocalRing.maximalIdeal V ^ (e + 1)))`. Use `h.ge ?_` and prove the remaining obligations. Rewrite using `[Ideal.mk_ker]`. Conclude with `Ideal.pow_le_self (Nat.succ_ne_zero e)`.
+-/
 theorem closedPoint_mem_range {V : Type} [CommRing V] [IsLocalRing V] (e : ℕ) :
     IsLocalRing.closedPoint V ∈ Set.range (thick V (IsLocalRing.maximalIdeal V) e) := by
   have h := range_comap_of_surjective _ _
@@ -76,6 +96,19 @@ theorem closedPoint_mem_range {V : Type} [CommRing V] [IsLocalRing V] (e : ℕ) 
   rw [Ideal.mk_ker]
   exact Ideal.pow_le_self (Nat.succ_ne_zero e)
 
+/- English proof (translation)
+Introduce `hG V _ _ _ hV B _ hB hp N hN ht`. Set `I` to `IsLocalRing.maximalIdeal V`. Set `o : Spec (CommRingCat.of V) ⟶ B.left` to `(η[B]).left`. Establish `ho : o ≫ B.hom = 𝟙 _` using `Over.w η[B]`. Take `⟨c, hc⟩` from `DVR.exists_gen_of_local N hN (K := PUnit) (fun _ => o) (fun _ => 1)`.
+
+Establish `pb : ∀ e, IsPullback (fstG I e B).left (thickObj V I e B).hom B.hom (thick V I e)` using `fun e => IsPullback.of_hasPullback B.hom (thick V I e)`. Use `choose t tg tv using fun e => exists_normalised hN ho c hc (pb e) (ht e)`. Establish `tm : ∀ e, thickMap V I e B ≫ (fstG I (e + 1) B).left = (fstG I e B).left` using `fun e => (pullback.lift_fst _ _ _).trans (Category.comp_id _)`. Establish `compat : ∀ e z J, Good N z J → val (t (e + 1)) (thickMap V I e B) z J = val (t e) (𝟙 _) z J`. Introduce `e z J hJ`.
+
+Set `a` to `(pb e).lift (thick V I e ≫ o) (𝟙 _) (by rw [Category.assoc, ho, Category.comp_id, Category.id_comp])`. Establish `a₁ : a ≫ (fstG I e B).left = thick V I e ≫ o` using `(pb e).lift_fst _ _ _`. Establish `key` using `gen_unique' hN (fun U _ k => by simp only [tm e]) (thickObj V I e B).hom a ((pb e).lift_snd _ _ _) (hG _ _ (TLinPf.isAb_pullback (thick V I e) B hB)).2 (tg e) (DVR.pullGen_isGen _ _ _ _ (tg (e + 1)) (thickMap V I e B)) (fun y J hJ => (tv e _ a _ y J hJ a₁).trans ((val_pull hJ _ _ …`. Rewrite `key` using `[val_pull hJ, Category.id_comp]`. Conclude with `key.symm`.
+
+Take `⟨s, hs, -⟩` from `GlobalTheory.SecAlg.existsUnique_sec V I hV B hB.smooth hp N hN (fun e => genSec (t e) (tg e)) (fun e z J hJ => (sval_genSec _ _ _ z hJ).trans ((congrArg Units.val (compat e z J hJ)).trans (sval_genSec _ _ _ z hJ).symm))`. Use `hB.proper` as an intermediate fact. Establish `top : nonzeroLocus s = ⊤` using `eq_top_of_closed_fibre B.hom _ fun x hx => by`. Establish `hm : x ∈ Set.range (pullback.fst B.hom (thick V I 0))`. Rewrite using `[Scheme.Pullback.range_fst, Set.mem_preimage, hx]`.
+
+Conclude with `closedPoint_mem_range 0`. Take `⟨z, rfl⟩` from `hm`. Use `choose J hJ using fun ψ : ((Over.map (thick V I 0)).obj (thickObj V I 0 B)).left ⟶ B.left => exists_chart hN (ψ z)`. Use `(TwistZero.mem_nonzeroLocus_iff s (fstG I 0 B).left z hJ).2 ?_` and prove the remaining obligations. Rewrite using `[hs 0 z J hJ, sval_genSec _ _ _ z hJ]`.
+
+Conclude with `Units.isUnit _`. Use `triv_of_pull_id (TwistZero.triv_of_sec hN s fun y J hJ => ?_)` and prove the remaining obligations. Conclude with `(TwistZero.mem_nonzeroLocus_iff s (𝟙 _) y hJ).1 (by rw [top]; trivial)`.
+-/
 theorem triv_of_forall_thick : GlobalFnsSt → ∀ (V : Type) [CommRing V] [IsDomain V] [IsDiscreteValuationRing V] [IsAdicComplete (IsLocalRing.maximalIdeal V) V] (B : Over (Spec (CommRingCat.of V))) [GrpObj B], IsAbelianScheme B → IsProjBy B.hom → ∀ N : LB B.left, N.IsLB → (∀ e, Triv (N.pull (fstG (IsLocalRing.maximalIdeal V) e B).left)) → Triv N := by
   intro hG V _ _ _ hV B _ hB hp N hN ht
   let I := IsLocalRing.maximalIdeal V

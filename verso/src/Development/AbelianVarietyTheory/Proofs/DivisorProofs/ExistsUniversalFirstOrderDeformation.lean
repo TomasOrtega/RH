@@ -30,9 +30,15 @@ variable (c) in
 def horMap (Φ : Finset (E →+* ℂ)) : TrivSqZeroExt K (HIx Dw Φ → K) →ₐ[c.F] TrivSqZeroExt K (TIx Dw Φ → K) :=
   (TrivSqZeroExt.map (horExt Dw K Φ)).restrictScalars c.F
 
+/- English proof (translation)
+The claim follows from `fst_map _ a`.
+-/
 theorem fst_horMap {Φ : Finset (E →+* ℂ)} (a : TrivSqZeroExt K (HIx Dw Φ → K)) : (horMap c Φ a).fst = a.fst :=
   fst_map _ a
 
+/- English proof (translation)
+Use `ext`. Simplify using `[fst_horMap]`. Simplify using `[snd_dir, horMap, horExt, Fintype.sum_sum_type]`.
+-/
 theorem dir_horMap {Φ : Finset (E →+* ℂ)} (m : TIx Dw Φ → K) (a : TrivSqZeroExt K (HIx Dw Φ → K)) :
     dir c m (horMap c Φ a) = dir c (m ∘ Sum.inl) a := by
   ext
@@ -48,6 +54,41 @@ set_option maxHeartbeats 1000000 in
 open GlobalTheory.FlagTan GlobalTheory.Frames GlobalTheory.AllWt in
 open TrivSqZeroExt hiding map lift in
 
+/- English proof (translation)
+Introduce `E _ _ _ H Dw l Xo c Y X K _ _ P hK`. Take `⟨XH, h1, h2, hU⟩` from `hK`. Take `⟨WH, rfl, hWH⟩` from `exists_lift P XH h1 h2`. Take `⟨W₀, hW₀⟩` from `exists_frMap (horMap c (K := K) (Dw := Dw) (psiSet H)) WH`. Set `n : FIx Dw → TIx Dw (psiSet H) → K` to `vertDirs (psiSet H)`.
+
+Take `⟨W, hW, -⟩` from `existsUnique_frChg E H Dw l Xo c _ W₀ _ (isUnit_unip₀ (K := K) n).unit (isUnit_det_unip n)`. Establish `key : ∀ (m : TIx Dw (psiSet H) → K) (z₀ z : FrPt Xo c (DualNumber K)), FrMap (dir c m) W₀ z₀ → IsShift (fun k => ∑ b, n k b * m b) z₀ z → FrMap (dir c m) W z` using `fun m z₀ z k₀ k => by`. Use `(frMap_iff_frChg hW k₀).2 ?_` and prove the remaining obligations. Unfold `IsShift at k`. Use `k using 2 with τ` and compare the differences between its conclusion and the goal.
+
+Apply the tactic sequence `ext i j <;> simp [unip]`. Apply the tactic sequence `ext <;> simp [unip₀]`. Establish `shift : ∀ (m : TIx Dw (psiSet H) → K) (u : FrPt Xo c (DualNumber K)), FrMap (dir c m) W u → ∃ z₀, FrMap (dir c m) W₀ z₀ ∧ IsShift (fun k => ∑ b, n k b * m b) z₀ u` using `fun m u hu => by`. Take `⟨z₀, hz₀⟩` from `exists_frMap (dir c m) W₀`. Take `⟨z, hz, -⟩` from `existsUnique_isShift (fun k => ∑ b, n k b * m b) z₀`.
+
+Conclude with `⟨z₀, hz₀, frMap_unique (key m z₀ z hz₀ hz) hu ▸ hz⟩`. Establish `hbase : ∀ (m : TIx Dw (psiSet H) → K) (z₀ : FrPt Xo c (DualNumber K)), FrMap (dir c m) W₀ z₀ → FrMap (dir c (m ∘ Sum.inl)) WH z₀` using `fun m z₀ h => frMap_comp hW₀ h fun a => dir_horMap m a`. Establish `hfst : FrMap (fstHom c.F K (TIx Dw (psiSet H) → K)) W P`. Establish `h0 : FrMap (fstHom c.F K (TIx Dw (psiSet H) → K)) W₀ P` using `frMap_of_comp hW₀ hWH fun a => fst_horMap (c := c) a`. Use `(frMap_iff_frChg hW h0).2 ?_` and prove the remaining obligations.
+
+Use `(frChg_calculus E H Dw l Xo c _).2.1 P using 2 with τ` and compare the differences between its conclusion and the goal. Apply the tactic sequence `ext i j; by_cases h : i = j <;> simp [unip, Matrix.one_apply, h]`. Simplify using `[unip₀]`. Establish `hdef : ∀ (m : TIx Dw (psiSet H) → K) (u : FrPt Xo c (DualNumber K)), FrMap (dir c m) W u → IsDef P u` using `fun m u h => frMap_of_comp h hfst fun a => fst_dir (c := c) m a`. Use `choose v hv using fun b : TIx Dw (psiSet H) => exists_frMap (dir c (Pi.single b (1 : K))) W`.
+
+Use `⟨W, v, hfst, hv, ⟨fun k => ?_, fun w => ?_⟩, fun m u P₀ hu hP₀ hpt => ?_⟩` and prove the remaining obligations. Take `⟨z₀, hz₀, hs⟩` from `shift _ _ (hv (.inl k))`. Establish `e0 : (fun k' => ∑ b, n k' b * (Pi.single (Sum.inl k) (1 : K) : TIx Dw (psiSet H) → K) b) = 0`. Use function extensionality and compare the values at `k'`. Simplify using `[n, vertDirs, Fintype.sum_sum_type, Pi.single_apply]`.
+
+Rewrite `hs` using `[e0]`. Establish `ev : v (.inl k) = z₀` using `(existsUnique_isShift 0 z₀).unique hs (isShift_zero z₀)`. Establish `e1 : (Pi.single (Sum.inl k) (1 : K) : TIx Dw (psiSet H) → K) ∘ Sum.inl = Pi.single k 1`. Use function extensionality and compare the values at `h`. Simplify using `[Pi.single_apply]`.
+
+Establish `hb` using `hbase _ _ hz₀`. Rewrite `hb` using `[e1]`. Establish `hd` using `hdef _ _ (hv (.inl k))`. Use `⟨hd, ((hU _ hd.isTanX).2 _).2 ?_⟩` and prove the remaining obligations. Rewrite using `[ev]`.
+
+Conclude with `hb.1`. Take `⟨z₀, hz₀, hs⟩` from `shift _ _ (hv (.inr w))`. Establish `e0 : (fun k' => ∑ b, n k' b * (Pi.single (Sum.inr w) (1 : K) : TIx Dw (psiSet H) → K) b) = Pi.single w.toF 1`. Use function extensionality and compare the values at `k'`. Simplify using `[n, vertDirs, Fintype.sum_sum_type, Pi.single_apply]`.
+
+Rewrite `hs` using `[e0]`. Establish `hc : FrMap (GlobalTheory.FlagTan.cst c K) P z₀`. Establish `hb` using `hbase _ _ hz₀`. Use `frMap_of_comp (ψ := GlobalTheory.FlagTan.cst c K) hWH hb fun a => ?_` and prove the remaining obligations. Apply the tactic sequence `ext <;> simp [snd_dir, Pi.single_apply]`.
+
+Conclude with `⟨z₀, hc, hs⟩`. Take `⟨z₀, hz₀, hs⟩` from `shift m u hu`. Establish `hH` using `hbase m z₀ hz₀`. Choose the witnesses or unpack the hypotheses as in `⟨t, hB⟩ : ∃ t, FrBor t P₀ u := by`. Take `⟨k, hz⟩` from `GlobalTheory.FlagMod.exists_chart_of_isLocalRing X.F.cover (X.ptY P₀)`.
+
+Take `⟨Q, hQ⟩` from `X.top.exists_chartFr (GlobalTheory.FlagMod.frX_snd P₀) (X.lies_ptY P₀).1 k hz`. Take `⟨t, ht⟩` from `hQ.exists_frBor (X.lies_ptY P₀)`. Take `⟨t', ht'⟩` from `hQ.exists_frBor (hpt ▸ X.lies_ptY u)`. Take `⟨-, g1, g2, -⟩` from `GlobalTheory.Reg.BorelGroupoid.frBor_groupoid E H Dw l Xo c (DualNumber K)`. Conclude with `⟨_, g1 _ _ _ _ _ (g2 _ _ _ ht) ht'⟩`.
+
+Establish `hd` using `hdef m u hu`. Establish `e0 : m ∘ Sum.inl = 0`. Use `(hU u.x hd.isTanX).1.unique (hs.1.trans hH.1) ?_` and prove the remaining obligations. Apply the tactic sequence `have ed : dir c (0 : HIx Dw (psiSet H) → K) = (cst c K).comp (fstHom c.F K (HIx Dw (psiSet H) → K)) := AlgHom.ext fun a => by ext <;> simp [snd_dir]`. Rewrite using `[hB.1, hP₀.1, ed, GlobalTheory.FlagMod.spMap_algComp, h2]`.
+
+Establish `e0' : ∀ h, m (Sum.inl h) = 0` using `fun h => congrFun e0 h`. Establish `hz : z₀ = P₀`. Use `frMap_unique (frMap_of_comp hWH hH fun a => ?_) hP₀` and prove the remaining obligations. Apply the tactic sequence `ext <;> simp [snd_dir, e0']`. Rewrite `hs` using `[hz]`.
+
+Take `⟨g, hup, -, hc⟩` from `(frBor_iff_frChg _ _ _).1 hB`. Take `⟨hg, -⟩` from `(frChg_exists_unique E H Dw l Xo c _ P₀ u).2 _ _ _ _ hc hs`. Establish `hsum : ∀ w₀ : VIx Dw, ∑ b, n w₀.toF b * m b = m (Sum.inr w₀)` using `fun w₀ => by`. Simplify using `[n, vertDirs, Fintype.sum_sum_type, VIx.toF_injective.eq_iff]`. Establish `ev : ∀ w₀ : VIx Dw, m (Sum.inr w₀) = 0`.
+
+Introduce and unpack `⟨σ, ⟨i, j⟩, hij⟩`. Use `congrArg (fun g => (g σ i j).snd) hg` as an intermediate fact. Rewrite using `[← hsum]`. Simplify using `only [VIx.toF]`. Simplify `this.symm` using `[hup σ i j hij, unip]`.
+
+Use function extensionality and compare the values at `b`. Break down `b with b | b` into its components or cases. Conclude with `e0' b`. Conclude with `ev b`.
+-/
 theorem GlobalTheory.FlagTan.KSIso.tanFrame_of_universal_injective : ∀ {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {Dw : Datum H} {l : Level H} {Xo : Moduli Dw l} {c : Coeff l} {Y : Model Xo c (RingHom.id c.F)} (X : FlagCover Y) (K : Type) [Field K] [Algebra c.F K] (P : FrPt Xo c K), GlobalTheory.FlagTan.KSIso (psiSet H) P → ∃ (W : FrPt Xo c (TrivSqZeroExt K (TIx Dw (psiSet H) → K))) (v : TIx Dw (psiSet H) → FrPt Xo c (DualNumber K)), FrMap (TrivSqZeroExt.fstHom c.F K (TIx Dw (psiSet H) → K)) W P ∧ (∀ b, FrMap (GlobalTheory.FlagTan.dir c (Pi.single b (1 : K))) W (v b)) ∧ IsTanFrame (psiSet H) P v ∧ ∀ (m : TIx Dw (psiSet H) → K) (u P₀ : FrPt Xo c (DualNumber K)), FrMap (GlobalTheory.FlagTan.dir c m) W u → FrMap (GlobalTheory.FlagTan.cst c K) P P₀ → X.ptY u = X.ptY P₀ → m = 0 := by
   intro E _ _ _ H Dw l Xo c Y X K _ _ P hK
   obtain ⟨XH, h1, h2, hU⟩ := hK

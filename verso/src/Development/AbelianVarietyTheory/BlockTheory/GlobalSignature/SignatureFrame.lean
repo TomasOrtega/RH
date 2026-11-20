@@ -18,6 +18,11 @@ structure SignFrame {n : ℕ} (ε : Fin n → Bool) (P Q : ℕ) where
 
 variable {n P Q : ℕ} {ε : Fin n → Bool}
 
+/- English proof (translation)
+Use extensionality with `a b`. Take `⟨x, rfl⟩` from `F.e.surjective a`. Take `⟨y, rfl⟩` from `F.e.surjective b`. Apply the tactic sequence `rcases x with x | x <;> rcases y with y | y <;>`. Simplify using `[Formalism.UG.Jpq, Jm, Matrix.diagonal_apply, Matrix.one_apply, F.pos, F.neg]`.
+
+Apply the tactic sequence `split_ifs <;> simp`.
+-/
 theorem SignFrame.reindex_J (F : SignFrame ε P Q) :
     Matrix.reindex F.e F.e (Formalism.UG.Jpq P Q) = Jm ε := by
   ext a b
@@ -31,10 +36,18 @@ def SignFrame.unitsMap (F : SignFrame ε P Q) :
     GL (Fin P ⊕ Fin Q) ℂ →* (Matrix (Fin n) (Fin n) ℂ)ˣ :=
   Units.map (Matrix.reindexAlgEquiv ℂ ℂ F.e).toMulEquiv.toMonoidHom
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem SignFrame.unitsMap_val (F : SignFrame ε P Q) (g : GL (Fin P ⊕ Fin Q) ℂ) :
     (F.unitsMap g : Matrix (Fin n) (Fin n) ℂ) =
       Matrix.reindex F.e F.e (g : Matrix (Fin P ⊕ Fin Q) (Fin P ⊕ Fin Q) ℂ) := rfl
 
+/- English proof (translation)
+Unfold `inUJ`. Rewrite using `[← F.reindex_J]`. Establish `h : Formalism.UG.cT (starRingEnd ℂ) m = mᴴ`. Use extensionality with `i j`. Simplify using `[Formalism.UG.cT]`.
+
+Rewrite using `[h]`. Simplify using `only [Matrix.reindex_apply, Matrix.conjTranspose_submatrix, Matrix.submatrix_mul_equiv]`. Conclude with `(Matrix.reindex F.e F.e).injective.eq_iff (a := mᴴ * Formalism.UG.Jpq P Q * m) (b := Formalism.UG.Jpq P Q)`.
+-/
 theorem SignFrame.inUJ_reindex (F : SignFrame ε P Q)
     (m : Matrix (Fin P ⊕ Fin Q) (Fin P ⊕ Fin Q) ℂ) :
     inUJ ε (Matrix.reindex F.e F.e m) ↔
@@ -51,23 +64,40 @@ def SignFrame.toDiag (F : SignFrame ε P Q) (g : UpqT P Q) : UJ ε :=
   let g' : Formalism.UG.Upq P Q := g
   ⟨F.unitsMap g'.1, (F.inUJ_reindex _).2 g'.2⟩
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem SignFrame.umat_toDiag (F : SignFrame ε P Q) (g : UpqT P Q) :
     umat (F.toDiag g) = Matrix.reindex F.e F.e (UpqT.mat g) := rfl
 
+/- English proof (translation)
+Use `Continuous.subtype_mk ?_ _` and prove the remaining obligations. Use `Continuous.comp (g := F.unitsMap) ?_ continuous_subtype_val` and prove the remaining obligations. Use `Continuous.units_map _ ?_` and prove the remaining obligations. Conclude with `continuous_id.matrix_reindex F.e F.e`.
+-/
 theorem SignFrame.continuous_toDiag (F : SignFrame ε P Q) : Continuous F.toDiag := by
   refine Continuous.subtype_mk ?_ _
   refine Continuous.comp (g := F.unitsMap) ?_ continuous_subtype_val
   refine Continuous.units_map _ ?_
   exact continuous_id.matrix_reindex F.e F.e
 
+/- English proof (translation)
+Use `haveI : BorelSpace (UpqT P Q) := ⟨rfl⟩`. Conclude with `F.continuous_toDiag.measurable`.
+-/
 theorem SignFrame.measurable_toDiag (F : SignFrame ε P Q) : Measurable F.toDiag := by
   haveI : BorelSpace (UpqT P Q) := ⟨rfl⟩
   exact F.continuous_toDiag.measurable
 
+/- English proof (translation)
+The claim follows from `Subtype.ext (map_mul F.unitsMap _ _)`.
+-/
 theorem SignFrame.toDiag_mul (F : SignFrame ε P Q) (g h : UpqT P Q) :
     F.toDiag (g * h) = F.toDiag g * F.toDiag h :=
   Subtype.ext (map_mul F.unitsMap _ _)
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce `g h hgh`. Establish `h1 : umat (F.toDiag g) = umat (F.toDiag h)` using `by rw [hgh]`. Rewrite `h1` using `[F.umat_toDiag, F.umat_toDiag]`. Conclude with `Subtype.ext (Units.ext ((Matrix.reindex F.e F.e).injective h1))`.
+
+Introduce `a`. Set `u : GL (Fin P ⊕ Fin Q) ℂ` to `Units.map (Matrix.reindexAlgEquiv ℂ ℂ F.e.symm).toMulEquiv.toMonoidHom a.1`. Establish `hu : Matrix.reindex F.e F.e (u : Matrix (Fin P ⊕ Fin Q) (Fin P ⊕ Fin Q) ℂ) = umat a` using `(Matrix.reindex F.e F.e).apply_symm_apply (umat a)`. Establish `hmem : u ∈ Formalism.UG.Upq P Q` using `(F.inUJ_reindex _).1 (by rw [hu]; exact a.2)`. Conclude with `⟨(⟨u, hmem⟩ : Formalism.UG.Upq P Q), Subtype.ext (Units.ext hu)⟩`.
+-/
 theorem SignFrame.bijective_toDiag (F : SignFrame ε P Q) : Function.Bijective F.toDiag := by
   constructor
   · intro g h hgh
@@ -85,6 +115,9 @@ theorem SignFrame.bijective_toDiag (F : SignFrame ε P Q) : Function.Bijective F
 def cdMeasure (c : CDHaar) (F : SignFrame ε P Q) : Measure (UJ ε) :=
   Measure.map F.toDiag (c.cd P Q)
 
+/- English proof (translation)
+The claim follows from `Measure.map_apply F.measurable_toDiag hA`.
+-/
 theorem cdMeasure_apply (c : CDHaar) (F : SignFrame ε P Q) {A : Set (UJ ε)} (hA : MeasurableSet A) :
     cdMeasure c F A = c.cd P Q (F.toDiag ⁻¹' A) :=
   Measure.map_apply F.measurable_toDiag hA
@@ -92,6 +125,13 @@ theorem cdMeasure_apply (c : CDHaar) (F : SignFrame ε P Q) {A : Set (UJ ε)} (h
 def SignFrame.mulEquiv (F : SignFrame ε P Q) : UpqT P Q ≃* UJ ε :=
   { Equiv.ofBijective F.toDiag F.bijective_toDiag with map_mul' := F.toDiag_mul }
 
+/- English proof (translation)
+Set `u : (Matrix (Fin n) (Fin n) ℂ)ˣ →* GL (Fin P ⊕ Fin Q) ℂ` to `Units.map (Matrix.reindexAlgEquiv ℂ ℂ F.e.symm).toMulEquiv.toMonoidHom`. Establish `hu : Continuous u` using `Continuous.units_map _ (continuous_id.matrix_reindex F.e.symm F.e.symm)`. Establish `h : ∀ a : UJ ε, (F.mulEquiv.symm a : Formalism.UG.Upq P Q).1 = u a.1`. Introduce `a`. Take `⟨g, rfl⟩` from `F.mulEquiv.surjective a`.
+
+Rewrite using `[MulEquiv.symm_apply_apply]`. Conclude with `Units.ext ((Matrix.reindex F.e F.e).symm_apply_apply _).symm`. Use `continuous_induced_rng.2 ?_` and prove the remaining obligations. Establish `: (Subtype.val ∘ fun a : UJ ε => (F.mulEquiv.symm a : Formalism.UG.Upq P Q)) = fun a => u a.1`. Use function extensionality and compare the values at `h`.
+
+Conclude with `this ▸ hu.comp continuous_subtype_val`.
+-/
 theorem SignFrame.continuous_symm (F : SignFrame ε P Q) : Continuous F.mulEquiv.symm := by
   let u : (Matrix (Fin n) (Fin n) ℂ)ˣ →* GL (Fin P ⊕ Fin Q) ℂ :=
     Units.map (Matrix.reindexAlgEquiv ℂ ℂ F.e.symm).toMulEquiv.toMonoidHom
@@ -106,6 +146,9 @@ theorem SignFrame.continuous_symm (F : SignFrame ε P Q) : Continuous F.mulEquiv
     funext h
   exact this ▸ hu.comp continuous_subtype_val
 
+/- English proof (translation)
+Use `haveI : BorelSpace (UpqT P Q) := ⟨rfl⟩`. Use `haveI : IsTopologicalGroup (UpqT P Q) := inferInstanceAs (IsTopologicalGroup (Formalism.UG.Upq P Q))`. Use `haveI := c.haar P Q`. Conclude with `F.mulEquiv.isHaarMeasure_map (c.cd P Q) F.continuous_toDiag F.continuous_symm`.
+-/
 theorem cdMeasure_isHaar (c : CDHaar) (F : SignFrame ε P Q) : (cdMeasure c F).IsHaarMeasure := by
   haveI : BorelSpace (UpqT P Q) := ⟨rfl⟩
   haveI : IsTopologicalGroup (UpqT P Q) := inferInstanceAs (IsTopologicalGroup (Formalism.UG.Upq P Q))
@@ -116,6 +159,9 @@ def dimV {n : ℕ} (lam : Fin n → ℝ) : ℝ :=
   (∏ a : Fin n, ∏ b ∈ Ioi a, (lam a - lam b)) /
     ∏ a : Fin n, ∏ b ∈ Ioi a, (((b : ℕ) : ℝ) - ((a : ℕ) : ℝ))
 
+/- English proof (translation)
+Unfold `dimV fdegHC`. Simplify using `only [Finset.filter_lt_eq_Ioi]`. Use `congr 1`. Use `Finset.prod_congr rfl fun a _ => Finset.prod_congr rfl fun b hb => ?_` and prove the remaining obligations. Rewrite using `[abs_of_pos (sub_pos.2 (h (Finset.mem_Ioi.1 hb)))]`.
+-/
 theorem dimV_eq_fdegHC {n : ℕ} {lam : Fin n → ℝ} (h : StrictAnti lam) : dimV lam = fdegHC lam := by
   unfold dimV fdegHC
   simp only [Finset.filter_lt_eq_Ioi]
@@ -130,6 +176,9 @@ def HCFormalDegree : Prop :=
       (σ : Matrix (Fin n) (Fin n) ℂ → (H →L[ℂ] H)), IsDS ε lam σ →
       ∀ w : H, w ≠ 0 → fdegOf (cdMeasure c F) σ w = dimV lam
 
+/- English proof (translation)
+Use `⟨⟨(Equiv.sumCongr (Fintype.equivFin _).symm (Fintype.equivFin _).symm).trans (Equiv.sumCompl fun a => ε a = true), fun i => ?_, fun j => ?_⟩⟩` and prove the remaining obligations. Simplify using `using ((Fintype.equivFin {a // ε a = true}).symm i).2`. Simplify using `using ((Fintype.equivFin {a // ¬ ε a = true}).symm j).2`.
+-/
 theorem exists_signFrame (ε : Fin n → Bool) :
     Nonempty (SignFrame ε (Fintype.card {a // ε a = true}) (Fintype.card {a // ¬ ε a = true})) := by
   refine ⟨⟨(Equiv.sumCongr (Fintype.equivFin _).symm (Fintype.equivFin _).symm).trans
@@ -137,9 +186,15 @@ theorem exists_signFrame (ε : Fin n → Bool) :
   · simpa using ((Fintype.equivFin {a // ε a = true}).symm i).2
   · simpa using ((Fintype.equivFin {a // ¬ ε a = true}).symm j).2
 
+/- English proof (translation)
+Simplify using `[dimV, Fin.prod_univ_succ]`.
+-/
 example (x y : ℝ) : dimV ![x, y] = x - y := by
   simp [dimV, Fin.prod_univ_succ]
 
+/- English proof (translation)
+Simplify using `[dimV, Fin.prod_univ_succ, Fin.prod_Ioi_zero, Fin.prod_Ioi_succ]`. Evaluate the numerical expressions.
+-/
 example (x y z : ℝ) : dimV ![x, y, z] = (x - y) * (x - z) * (y - z) / 2 := by
   simp [dimV, Fin.prod_univ_succ, Fin.prod_Ioi_zero, Fin.prod_Ioi_succ]
   norm_num

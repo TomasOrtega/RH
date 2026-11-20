@@ -16,6 +16,15 @@ open UpperTheory.BaseChangeIdentities.FrameWordIdentity
 
 attribute [local instance] borelG borelF borelA GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField
 
+/- English proof (translation)
+Introduce `hA hH hR E _ _ _ n π S T F₀ F hE p`. Establish `hB : ∀ {w : Pl E}, F.d.Good w → w ∉ F.d.B`. Introduce `w hw`. Take `⟨-, hT, hS, hB, -⟩` from `hw`. Simplify using `[LocData.B, hT, hS, hB]`.
+
+Establish `hok : ∀ x, (F.ug x).Ok F₀.Sec F.d.B`. Introduce `x`. Break down `x with _ | x | x` into its components or cases. Conclude with `trivial`. Conclude with `trivial`.
+
+Conclude with `⟨x.1.2.1, hB x.1.2.2, hH E n F.d F.ok _ x.1.2.2 x.2.1⟩`. Take `⟨x, b⟩` from `p`. Establish `hadj` using `hA E hE n F₀.Sec F₀.lam F.d.KU F.fam F.d.B (F.d.gU F.m) F.R F.levOff (F.ug x) (hok x)`. Consider the cases of `b`. Simplify `hok x` using `[ul]`.
+
+Simplify `hadj` using `[ul]`.
+-/
 theorem _root_.UpperTheory.BaseChangeIdentities.FrameWordIdentity.uok_pf :
     U.UAdj → HuHecke → UOk := by
   intro hA hH hR E _ _ _ n π S T F₀ F hE p

@@ -57,6 +57,9 @@ def LiteratureBoundAbsoluteOnClass (𝒞 : ∀ D : D7, VData D → Prop) : Prop 
 def LiteratureBoundAbsoluteAtPoints : Prop :=
   ∀ (C₃ : ℝ) (B₃ : ℕ) (C₂ : ℝ) (B₂ : ℕ), ∃ C₁ C₂' : ℝ, ∀ (D : D7) (V : VData D), LiteratureBoundAtPoints D V C₃ B₃ C₂ B₂ C₁ C₂'
 
+/- English proof (translation)
+Introduce `C₃ B₃ C₂ B₂` and use `let ⟨C₁, C₂', h'⟩ := h C₃ B₃ C₂ B₂; ⟨C₁, C₂', fun D V _ => h' D V⟩`.
+-/
 theorem LiteratureBoundAbsoluteAtPoints.on (h : LiteratureBoundAbsoluteAtPoints) (𝒞 : ∀ D : D7, VData D → Prop) : LiteratureBoundAbsoluteOnClass 𝒞 :=
   fun C₃ B₃ C₂ B₂ => let ⟨C₁, C₂', h'⟩ := h C₃ B₃ C₂ B₂; ⟨C₁, C₂', fun D V _ => h' D V⟩
 

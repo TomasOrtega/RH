@@ -5,6 +5,17 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.S
 open scoped Matrix
 open GlobalTheory.HodgeCoh GlobalTheory.CechDR Polynomial UpperTheory.Gal.W2
 
+/- English proof (translation)
+Set `f : I → Module.End ℂ (Fin g → ℂ)` to `fun i => Matrix.toLinAlgEquiv' (M i)`. Establish `hss : ∀ i, (f i).IsFinitelySemisimple`. Introduce `i`. Take `⟨p, hsep, hpz⟩` from `hp i`. Apply `Module.End.IsSemisimple.isFinitelySemisimple` to reduce the goal to its premises.
+
+Apply `Module.End.isSemisimple_of_squarefree_aeval_eq_zero hsep.squarefree` to reduce the goal to its premises. Use `show aeval (Matrix.toLinAlgEquiv' (M i)) p = 0`. Rewrite using `[Polynomial.aeval_algEquiv]`. Simplify using `[hpz]`. Establish `hcomm : Pairwise fun i j => Commute (f i) (f j)`.
+
+Introduce `i j _`. Use `show Matrix.toLinAlgEquiv' (M i) * Matrix.toLinAlgEquiv' (M j) = Matrix.toLinAlgEquiv' (M j) * Matrix.toLinAlgEquiv' (M i)`. Rewrite using `[← map_mul, ← map_mul, hc]`. Establish `htop : ∀ i, iSup (fun t => (f i).maxGenEigenspace t) = ⊤` using `fun i => Module.End.iSup_maxGenEigenspace_eq_top (f i)`. Establish `hall` using `Module.End.iSup_iInf_maxGenEigenspace_eq_top_of_iSup_maxGenEigenspace_eq_top_of_commute f hcomm htop`.
+
+Rewrite using `[eq_top_iff, ← hall]`. Use `iSup_le fun χ => ?_` and prove the remaining obligations. Introduce `v hv`. Apply `Submodule.subset_span` to reduce the goal to its premises. Use `⟨χ, fun i => ?_⟩` and prove the remaining obligations.
+
+Establish `hvi : v ∈ (f i).maxGenEigenspace (χ i)` using `(Submodule.mem_iInf _).1 hv i`. Rewrite `hvi` using `[(hss i).maxGenEigenspace_eq_eigenspace, Module.End.mem_eigenspace_iff]`. Simplify `hvi` using `[f]`.
+-/
 private theorem span_joint (g : ℕ) (I : Type) (M : I → Matrix (Fin g) (Fin g) ℂ)
     (hc : ∀ i j, M i * M j = M j * M i)
     (hp : ∀ i, ∃ p : ℂ[X], p.Separable ∧ aeval (M i) p = 0) :
@@ -37,6 +48,17 @@ private theorem span_joint (g : ℕ) (I : Type) (M : I → Matrix (Fin g) (Fin g
   rw [(hss i).maxGenEigenspace_eq_eigenspace, Module.End.mem_eigenspace_iff] at hvi
   simpa [f] using hvi
 
+/- English proof (translation)
+Introduce `g I M hc hp`. Establish `hspan` using `span_joint g I M hc hp`. Take `⟨b, hbS, hbspan, hli⟩` from `exists_linearIndependent ℂ {v : Fin g → ℂ | ∃ c : I → ℂ, ∀ i, (M i).mulVec v = c i • v}`. Set `B` to `Module.Basis.mk hli (le_of_eq (by rw [Subtype.range_coe, hbspan, hspan]))`. Set `B'` to `B.reindex (B.indexEquiv (Pi.basisFun ℂ (Fin g)))`.
+
+Establish `hmem : ∀ k, ∃ c : I → ℂ, ∀ i, (M i).mulVec (B' k) = c i • B' k`. Introduce `k`. Establish `: B' k ∈ b`. Simplify using `only [B', B, Module.Basis.reindex_apply, Module.Basis.mk_apply]`. Conclude with `Subtype.mem _`.
+
+Conclude with `hbS this`. Use `choose c hc' using hmem`. Use `⟨(Pi.basisFun ℂ (Fin g)).toMatrix B', fun i k => c k i, ?_, fun i => ?_⟩` and prove the remaining obligations. Rewrite using `[← Module.Basis.det_apply]`. Conclude with `((Pi.basisFun ℂ (Fin g)).isUnit_det B').ne_zero`.
+
+Use extensionality with `r k`. Rewrite using `[Matrix.mul_diagonal]`. Establish `h` using `congr_fun (hc' k i) r`. Simplify using `only [Matrix.mulVec, dotProduct, Pi.smul_apply, smul_eq_mul] at h`. Simplify using `only [Matrix.mul_apply, Module.Basis.toMatrix_apply, Pi.basisFun_repr]`.
+
+Rewrite using `[h, mul_comm]`.
+-/
 theorem UpperTheory.Gal.W2.simDiag_of :
     UpperTheory.Gal.W2.SimDiag := by
   intro g I M hc hp

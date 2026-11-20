@@ -11,6 +11,9 @@ namespace GlobalTheory.EtC.HomotopyInv
 
 variable {R : Type} [CommRing R]
 
+/- English proof (translation)
+Introduce `n` and use `by have h : (pull R (f ≫ g) F n : H R E'' F n → H R E F n) = pull R f F n ∘ pull R g F n := funext fun x => pull_comp R f g F n x rw [h] exact (hf n).comp (hg n)`.
+-/
 theorem eqv_comp {E E' E'' : Spc} {f : E ⟶ E'} {g : E' ⟶ E''} {F : Shv R} (hf : Eqv R f F) (hg : Eqv R g F) :
     Eqv R (f ≫ g) F := fun n => by
   have h : (pull R (f ≫ g) F n : H R E'' F n → H R E F n) = pull R f F n ∘ pull R g F n :=
@@ -20,6 +23,11 @@ theorem eqv_comp {E E' E'' : Spc} {f : E ⟶ E'} {g : E' ⟶ E''} {F : Shv R} (h
 
 attribute [local instance] Polynomial.algebra
 
+/- English proof (translation)
+Use `first`. Consider the case `exact @_root_.GlobalTheory.PolynomialPushoutEquivalence.main`. Consider the case `exact _root_.GlobalTheory.PolynomialPushoutEquivalence.main`. Consider the case `(apply _root_.GlobalTheory.PolynomialPushoutEquivalence.main <;> assumption)`. Consider the case `(intros; apply _root_.GlobalTheory.PolynomialPushoutEquivalence.main <;> assumption)`.
+
+Consider the case `(intros; apply @_root_.GlobalTheory.PolynomialPushoutEquivalence.main <;> first | assumption | infer_instance)`. Consider the case `(intros; exact _root_.GlobalTheory.PolynomialPushoutEquivalence.main ..)`.
+-/
 theorem eqv_baseChange (q : ℕ) (A : Type) [CommRing A] (i : ℤ) (A' : Type) [CommRing A']
     (s : Spec (CommRingCat.of A') ⟶ Spec (CommRingCat.of A))
     (h : Eqv _ (spMap (Polynomial.C : A' →+* Polynomial A')) (tw q i)) :
@@ -33,6 +41,11 @@ theorem eqv_baseChange (q : ℕ) (A : Type) [CommRing A] (i : ℤ) (A' : Type) [
   | (intros; apply @_root_.GlobalTheory.PolynomialPushoutEquivalence.main <;> first | assumption | infer_instance)
   | (intros; exact _root_.GlobalTheory.PolynomialPushoutEquivalence.main ..)
 
+/- English proof (translation)
+Introduce `q _ A _ hq i`. Establish `hqΓ : IsUnit ((q : ℕ) : Γ(Spec (CommRingCat.of A), ⊤))`. Simplify using `using hq.map (Scheme.ΓSpecIso (CommRingCat.of A)).inv.hom`. Use `GlobalTheory.T.etC_b3 q (Spec.map (CommRingCat.ofHom (Polynomial.C : A →+* Polynomial A))) (𝟙 (Spec (CommRingCat.of A))) hqΓ i ?_` and prove the remaining obligations. Introduce `A' _ s hA'`.
+
+Use `eqv_baseChange q A i A' s ?_` and prove the remaining obligations. Establish `hq' : IsUnit (q : A')` using `by simpa using hq.map (Spec.preimage s).hom`. Conclude with `GlobalTheory.T.homotopyInvariance_tateTwist_strictlyHenselian q A' hA' hq' i`.
+-/
 theorem homotopy_invariance_etale : GlobalTheory.EtC.C4 := by
   intro q _ A _ hq i
   have hqΓ : IsUnit ((q : ℕ) : Γ(Spec (CommRingCat.of A), ⊤)) := by

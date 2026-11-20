@@ -17,6 +17,11 @@ def NormOne (d M p : ℕ) : Prop := ∃ π : ℤ × ℤ, π.1 ^ 2 + (d : ℤ) * 
 def ModRow (s : Scale) (N d : ℕ) : Prop :=
   d.Prime ∧ d % 4 = 3 ∧ 100 ≤ d ∧ 0 < N ∧ d ∣ N ∧ Real.log N ≤ 3 * s.x ^ (s.eps / 5) * Real.log s.x ^ 2
 
+/- English proof (translation)
+Establish `hd : H.d % 16 = 7` using `H.hyp.2.2.2.1`. Establish `h1` using `H.qd_big.2`. Establish `h2` using `R.rank_add_five_le`. Establish `h3` using `R.m_add_three_le_k`. Establish `h4` using `R.two_le_m`.
+
+Establish `hr : 6 ≤ R.r` using `by unfold Ranks.r; omega`. Establish `ht : 11 ≤ R.t` using `by omega`. Establish `h5 : 4 * 11 * 6 ≤ 4 * R.t * R.r` using `by gcongr`. Use `⟨H.hyp.2.1, by omega, by omega, H.condN_pos, Dvd.intro_left _ rfl, ?_⟩` and prove the remaining obligations. Simplify `h` using `[Formalism.HC.HostRaw.condN]`.
+-/
 theorem modRow_host {s : Scale} {R : Ranks} (H : Host R)
     (h : Real.log ((H.QS : ℝ) * H.q * H.d) ≤ 3 * s.x ^ (s.eps / 5) * Real.log s.x ^ 2) : ModRow s H.condN H.d := by
   have hd : H.d % 16 = 7 := H.hyp.2.2.2.1
@@ -30,6 +35,9 @@ theorem modRow_host {s : Scale} {R : Ranks} (H : Host R)
   refine ⟨H.hyp.2.1, by omega, by omega, H.condN_pos, Dvd.intro_left _ rfl, ?_⟩
   simpa [Formalism.HC.HostRaw.condN] using h
 
+/- English proof (translation)
+Establish `h0 : 0 ≤ s.x ^ (s.eps / 5) * Real.log s.x ^ 2` using `mul_nonneg (Real.rpow_nonneg (by linarith [s.one_lt_alt]) _) (sq_nonneg _)`. Use `h.log_cond_le` as an intermediate fact. Use the polynomial consequences of the given equalities and inequalities.
+-/
 theorem HostVal.log_cond_le_three {s : Scale} {C8 : ℝ} {R : Ranks} {H : Host R} (h : HostVal s C8 H) :
     Real.log ((H.QS : ℝ) * H.q * H.d) ≤ 3 * s.x ^ (s.eps / 5) * Real.log s.x ^ 2 := by
   have h0 : 0 ≤ s.x ^ (s.eps / 5) * Real.log s.x ^ 2 :=
@@ -37,9 +45,17 @@ theorem HostVal.log_cond_le_three {s : Scale} {C8 : ℝ} {R : Ranks} {H : Host R
   have := h.log_cond_le
   nlinarith
 
+/- English proof (translation)
+The claim follows from `modRow_host H h.log_cond_le_three`.
+-/
 theorem HostVal.modRow {s : Scale} {C8 : ℝ} {R : Ranks} {H : Host R} (h : HostVal s C8 H) : ModRow s H.condN H.d :=
   modRow_host H h.log_cond_le_three
 
+/- English proof (translation)
+Take `⟨hq, -, -, -, hd', hd16, -, -, -, -, hN⟩` from `h`. Establish `h0 : 0 ≤ s.x ^ (s.eps / 5) * Real.log s.x ^ 2` using `mul_nonneg (Real.rpow_nonneg (by linarith [s.one_lt_alt]) _) (sq_nonneg _)`. Establish `h1` using `hY.z_log_sq_le`. Establish `hq0` using `hq.pos`. Use `⟨hd', by omega, hd, by positivity, Dvd.intro_left _ rfl, ?_⟩` and prove the remaining obligations.
+
+Use `push_cast`. Use the polynomial consequences of the given equalities and inequalities.
+-/
 theorem modRow_of_rowq {s : Scale} {Y : ℝ} {n q d : ℕ} (hY : PairWin s Y) (hn : 1 ≤ n) (hd : 100 ≤ d)
     (h : Rowq Y s.eps n q d) : ModRow s (4 * n * q * d) d := by
   obtain ⟨hq, -, -, -, hd', hd16, -, -, -, -, hN⟩ := h
@@ -55,9 +71,15 @@ def RealBox {φ : Formalism.HC.Frame} (H : Formalism.HC.HostRaw φ) : Prop :=
   ∀ (N : ℕ) [NeZero N] (χ : DirichletCharacter ℂ N), H.IsCharE χ → GlobalTheoryTheory.IsRealChar χ → (H.q ∣ N ∨ H.d ∣ N) →
     ∀ β : ℝ, 1 - 1 / 400 < β → β < 1 → DirichletCharacter.LFunction χ β ≠ 0
 
+/- English proof (translation)
+Introduce `_ _ χ hχ hr hN β hβ _` and use `h.real_ne_zero χ ((isCharH_iff H χ).2 hχ) hr hN β hβ`.
+-/
 theorem BoxH.realBox {R : Ranks} {H : Host R} {Y eps : ℝ} (h : BoxH H Y eps) : RealBox H.toHostRaw :=
   fun _ _ χ hχ hr hN β hβ _ => h.real_ne_zero χ ((isCharH_iff H χ).2 hχ) hr hN β hβ
 
+/- English proof (translation)
+Introduce `_ _ χ hχ hr hN β hβ _` and use `h.real_ne_zero χ hχ hr hN β hβ`.
+-/
 theorem BoxW.realBox {s : Scale} {R : Ranks} {H : Host R} (h : BoxW s H) : RealBox H.toHostRaw :=
   fun _ _ χ hχ hr hN β hβ _ => h.real_ne_zero χ hχ hr hN β hβ
 

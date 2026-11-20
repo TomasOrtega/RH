@@ -11,6 +11,15 @@ noncomputable section
 namespace GlobalTheory.UnipCTLevi
 open GlobalTheory.UnipCT
 
+/- English proof (translation)
+Set `e : N ≃ᵐ N` to `⟨φ.toEquiv, c1.measurable, c2.measurable⟩`. Use `haveI : (μ.map e).IsHaarMeasure := MulEquiv.isHaarMeasure_map μ φ c1 c2`. Establish `hpre : e ⁻¹' (e.symm ⁻¹' 𝓕) = 𝓕` using `by ext u; simp`. Establish `hq : Measure.QuasiMeasurePreserving e.symm (μ.map e) μ` using `⟨e.symm.measurable, by rw [e.map_symm_map]⟩`. Establish `hS : IsFundamentalDomain Γ (e.symm ⁻¹' 𝓕) (μ.map e)`.
+
+Use `h𝓕.preimage_of_equiv hq (e := fun γ : Γ => (⟨φ γ, (hφ _).2 γ.2⟩ : Γ)) ⟨?_, ?_⟩ ?_` and prove the remaining obligations. Introduce `a b hab`. Conclude with `Subtype.ext (φ.injective (congrArg Subtype.val hab))`. Introduce `b`. Conclude with `⟨⟨φ.symm b, (hφ _).1 (by simp)⟩, Subtype.ext (by simp)⟩`.
+
+Introduce `γ x show φ.symm (φ γ * x) = γ * φ.symm x`. Simplify using the standard rewrite rules. Establish `hm : (μ.map e) (e.symm ⁻¹' 𝓕) = 1` using `by rw [e.map_apply, hpre, h1]`. Establish `h2` using `setIntegral_map_equiv (μ := μ) e g (e.symm ⁻¹' 𝓕)`. Rewrite `h2` using `[hpre]`.
+
+Conclude with `h2.symm.trans (setIntegral_fd_eq Γ g hg _ μ _ 𝓕 hS h𝓕 hm h1)`.
+-/
 theorem setIntegral_comp_aut {N : Type} [Group N] [TopologicalSpace N] [IsTopologicalGroup N] [LocallyCompactSpace N]
     [SecondCountableTopology N] [T2Space N] [MeasurableSpace N] [BorelSpace N] (Γ : Subgroup N) [Countable Γ]
     (φ : N ≃* N) (c1 : Continuous φ) (c2 : Continuous φ.symm) (hφ : ∀ u, φ u ∈ Γ ↔ u ∈ Γ)
@@ -38,6 +47,13 @@ theorem setIntegral_comp_aut {N : Type} [Group N] [TopologicalSpace N] [IsTopolo
 
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E}
 
+/- English proof (translation)
+Rewrite `hu`, the goal using `[unip_eq]`. Take `⟨h1, h2⟩` from `hu`. Use `⟨?_, fun z => ?_⟩` and prove the remaining obligations. Rewrite using `[mat_mul', mat_mul', ← Matrix.mulVec_mulVec, ← Matrix.mulVec_mulVec, hx', h1, hx]`. Take `⟨a, ha⟩` from `h2 (A *ᵥ z)`.
+
+Use `⟨a, ?_⟩` and prove the remaining obligations. Establish `e1 : mat m *ᵥ (incM F H.ι *ᵥ z) = incM F H.ι *ᵥ (A *ᵥ z)`. Rewrite using `[Matrix.mulVec_mulVec, Matrix.mulVec_mulVec, hA]`. Establish `e2 : mat m⁻¹ *ᵥ (incM F H.ι *ᵥ (A *ᵥ z)) = incM F H.ι *ᵥ z`. Rewrite using `[Matrix.mulVec_mulVec, Matrix.mulVec_mulVec, hB, Matrix.mul_assoc, hAB, Matrix.mul_one]`.
+
+Rewrite using `[mat_mul', mat_mul', ← Matrix.mulVec_mulVec, ← Matrix.mulVec_mulVec, e1, ha, Matrix.mulVec_add, Matrix.mulVec_smul, hx, e2]`.
+-/
 theorem conj_mem {n n₁ : ℕ} (Y : Spc F E n) (H : Plane E n n₁) (m : UA σ Y.J)
     (A B : Matrix (Fin n₁) (Fin n₁) (AE F E)) (hAB : B * A = 1)
     (hx : mat m⁻¹ *ᵥ incV F H.x = incV F H.x) (hx' : mat m *ᵥ incV F H.x = incV F H.x)
@@ -56,6 +72,21 @@ theorem conj_mem {n n₁ : ℕ} (Y : Spc F E n) (H : Plane E n n₁) (m : UA σ 
     rw [mat_mul', mat_mul', ← Matrix.mulVec_mulVec, ← Matrix.mulVec_mulVec, e1, ha, Matrix.mulVec_add,
       Matrix.mulVec_smul, hx, e2]
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ n n₁ Y Y₁ H f hf γ m hm hL μ 𝓕 hμ h𝓕 h1 x`. Take `⟨i1, i2, i3, i4⟩` from `topFacts (F := F) σ Y.J`. Use `haveI : BorelSpace (UA σ Y.J) := ⟨rfl⟩`. Use `haveI : LocallyCompactSpace (unip σ Y H) := (isClosed_unip σ Y H).isClosedEmbedding_subtypeVal.locallyCompactSpace`. Use `haveI := countable_ratU (σ := σ) Y.J`.
+
+Use `haveI : Countable ((ratU σ Y.J).subgroupOf (unip σ Y H)) := Function.Injective.countable (f := fun g : (ratU σ Y.J).subgroupOf (unip σ Y H) => (⟨g.1.1, g.2⟩ : ratU σ Y.J)) fun g h hgh => by`. Apply `Subtype.ext` to reduce the goal to its premises. Apply `Subtype.ext` to reduce the goal to its premises. Simplify using `using congrArg Subtype.val hgh`. Take `⟨hx, -, hι⟩` from `hL`.
+
+Rewrite `hx` using `[Units.val_one, one_smul]`. Establish `hx' : mat m⁻¹ *ᵥ incV F H.x = incV F H.x` using `by conv_lhs => rw [← hx]`. Rewrite using `[Matrix.mulVec_mulVec, mat_inv_mul', Matrix.one_mulVec]`. Establish `g1 : mat γ⁻¹ * mat γ = 1` using `mat_inv_mul' γ`. Establish `g2 : mat γ * mat γ⁻¹ = 1` using `by simpa using mat_inv_mul' γ⁻¹`.
+
+Establish `hι' : mat m⁻¹ * incM F H.ι = incM F H.ι * mat γ⁻¹`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Matrix.mul_assoc, Matrix.mul_assoc, g2, Matrix.mul_one]`. Use `_ = incM F H.ι * mat γ⁻¹ := by rw [← hι, ← Matrix.mul_assoc, mat_inv_mul', Matrix.one_mul]`. Establish `k1` using `conj_mem Y H m _ _ g1 hx' hx hι hι'`.
+
+Establish `k2` using `conj_mem Y H m⁻¹ _ _ g2 (by rwa [inv_inv]) hx' hι' (by rwa [inv_inv])`. Set `φ : unip σ Y H ≃* unip σ Y H` to `{ toFun := fun u => ⟨m⁻¹ * u.1 * m, k1 _ u.2⟩ invFun := fun u => ⟨m⁻¹⁻¹ * u.1 * m⁻¹, k2 _ u.2⟩ left_inv := fun u => Subtype.ext (by simp [mul_assoc]) right_inv := fun u => Subtype.ext (by simp [mul_assoc]) map_mul' := fun u v => Subtype.ext (by simp [mul_assoc]) }`. Establish `c1 : Continuous φ` using `((continuous_const.mul continuous_subtype_val).mul continuous_const).subtype_mk _`. Establish `c2 : Continuous φ.symm` using `((continuous_const.mul continuous_subtype_val).mul continuous_const).subtype_mk _`. Establish `hφ : ∀ u, φ u ∈ (ratU σ Y.J).subgroupOf (unip σ Y H) ↔ u ∈ (ratU σ Y.J).subgroupOf (unip σ Y H)`.
+
+Introduce `u`. Simplify using `only [Subgroup.mem_subgroupOf]`. Use `show m⁻¹ * u.1 * m ∈ ratU σ Y.J ↔ _`. Rewrite using `[Subgroup.mul_mem_cancel_right _ hm, Subgroup.mul_mem_cancel_left _ (inv_mem hm)]`. Rewrite using `[← setIntegral_comp_aut ((ratU σ Y.J).subgroupOf (unip σ Y H)) φ c1 c2 hφ (fun u => f (u.1 * x)) ?_ μ 𝓕 h𝓕 h1]`.
+
+Use `congrArg _ (funext fun u => ?_) show _ = f (m⁻¹ * u.1 * m * x)` and prove the remaining obligations. Rewrite using `[mul_assoc, mul_assoc, hf _ (inv_mem hm)]`. Introduce `δ hδ y show f ((δ.1 * y.1) * x) = f (y.1 * x)`. Rewrite using `[mul_assoc]`. Conclude with `hf _ (Subgroup.mem_subgroupOf.1 hδ) _`.
+-/
 theorem constantTerm_levi : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E)
     (n n₁ : ℕ) (Y : Spc F E n) (Y₁ : Spc F E n₁) (H : Plane E n n₁) (f : UA σ Y.J → ℂ),
     (∀ γ ∈ ratU σ Y.J, ∀ x, f (γ * x) = f x) → ∀ (γ : UA σ Y₁.J) (m₀ : UA σ Y.J), m₀ ∈ ratU σ Y.J →

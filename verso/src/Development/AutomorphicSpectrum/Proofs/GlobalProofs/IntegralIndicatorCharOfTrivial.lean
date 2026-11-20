@@ -14,12 +14,22 @@ section Abstract
 
 variable {G : Type} [AddCommGroup G] [MeasurableSpace G] [MeasurableAdd G]
 
+/- English proof (translation)
+Rewrite using `[integral_indicator hH, setIntegral_congr_fun hH (g := fun _ => (1 : ℂ)) (fun x hx => h1 x hx)]`. Simplify using `[Measure.real]`.
+-/
 theorem integral_indicator_char_of_trivial (μ : Measure G) (H : AddSubgroup G)
     (hH : MeasurableSet (H : Set G)) (χ : G → ℂ) (h1 : ∀ x ∈ H, χ x = 1) :
     ∫ x, (H : Set G).indicator χ x ∂μ = ((μ (H : Set G)).toReal : ℂ) := by
   rw [integral_indicator hH, setIntegral_congr_fun hH (g := fun _ => (1 : ℂ)) (fun x hx => h1 x hx)]
   simp [Measure.real]
 
+/- English proof (translation)
+Establish `key : ∀ x, (H : Set G).indicator χ (x + h) = (H : Set G).indicator χ x * χ h`. Introduce `x`. Distinguish the cases in `hx : x ∈ H`. Establish `hxh : x + h ∈ H` using `H.add_mem hx hh`. Rewrite using `[Set.indicator_of_mem (by exact hxh), Set.indicator_of_mem (by exact hx), hχ]`.
+
+Establish `hxh : x + h ∉ H` using `fun hc => hx (by simpa using H.sub_mem hc hh)`. Rewrite using `[Set.indicator_of_notMem (by exact hxh), Set.indicator_of_notMem (by exact hx), zero_mul]`. Establish `h2` using `integral_add_right_eq_self (μ := μ) ((H : Set G).indicator χ) h`. Simplify using `only [key] at h2`. Rewrite `h2` using `[integral_mul_const]`.
+
+Establish `h3 : (∫ x, (H : Set G).indicator χ x ∂μ) * (χ h - 1) = 0`. Rewrite using `[mul_sub, h2, mul_one, sub_self]`. Conclude with `(mul_eq_zero.1 h3).resolve_right (sub_ne_zero.2 hne)`.
+-/
 theorem integral_indicator_char_of_ne (μ : Measure G) [μ.IsAddLeftInvariant] (H : AddSubgroup G)
     (χ : G → ℂ) (hχ : ∀ x y, χ (x + y) = χ x * χ y) {h : G} (hh : h ∈ H) (hne : χ h ≠ 1) :
     ∫ x, (H : Set G).indicator χ x ∂μ = 0 := by
@@ -52,18 +62,30 @@ def annF (ψ : AddChar (AF F) ℂ) (B : Set (Af F)) : Set (Af F) :=
 def fouInf (ψ : AddChar (AF F) ℂ) (lam : Measure (Ainf F)) (ρ : Ainf F → ℝ) (t : Ainf F) : ℂ :=
   ∫ x, (ρ x : ℂ) * psiInf F ψ (x * t) ∂lam
 
+/- English proof (translation)
+Establish `h : pairA F 0 (x + y) = pairA F 0 x + pairA F 0 y` using `Prod.ext (add_zero (0 : Ainf F)).symm rfl`. Rewrite using `[psiF, h, AddChar.map_add_eq_mul]`. Both sides reduce to the same expression.
+-/
 theorem psiF_add (ψ : AddChar (AF F) ℂ) (x y : Af F) : psiF ψ (x + y) = psiF ψ x * psiF ψ y := by
   have h : pairA F 0 (x + y) = pairA F 0 x + pairA F 0 y := Prod.ext (add_zero (0 : Ainf F)).symm rfl
   rw [psiF, h, AddChar.map_add_eq_mul]
   rfl
 
+/- English proof (translation)
+Establish `h : pairA F 0 (0 : Af F) = 0` using `rfl`. Rewrite using `[psiF, h, AddChar.map_zero_eq_one]`.
+-/
 theorem psiF_zero (ψ : AddChar (AF F) ℂ) : psiF ψ 0 = 1 := by
   have h : pairA F 0 (0 : Af F) = 0 := rfl
   rw [psiF, h, AddChar.map_zero_eq_one]
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem psiF_singleV (ψ : AddChar (AF F) ℂ) (v : HeightOneSpectrum (𝓞 F)) (s : Fv F v) :
     psiF ψ (singleV F v s) = psiV F ψ v s := rfl
 
+/- English proof (translation)
+Establish `h : pairA F x y = pairA F x 0 + pairA F 0 y` using `Prod.ext (add_zero x).symm (zero_add y).symm`. Rewrite using `[h, AddChar.map_add_eq_mul]`. Both sides reduce to the same expression.
+-/
 theorem psi_pairA (ψ : AddChar (AF F) ℂ) (x : Ainf F) (y : Af F) :
     ψ (pairA F x y) = psiInf F ψ x * psiF ψ y := by
   have h : pairA F x y = pairA F x 0 + pairA F 0 y :=
@@ -71,15 +93,24 @@ theorem psi_pairA (ψ : AddChar (AF F) ℂ) (x : Ainf F) (y : Af F) :
   rw [h, AddChar.map_add_eq_mul]
   rfl
 
+/- English proof (translation)
+Establish `h : singleV F v (0 : Fv F v) = 0` using `RestrictedProduct.single_zero _ v`. Rewrite using `[← psiF_singleV, h, psiF_zero]`.
+-/
 theorem psiV_zero (ψ : AddChar (AF F) ℂ) (v : HeightOneSpectrum (𝓞 F)) : psiV F ψ v 0 = 1 := by
   classical
   have h : singleV F v (0 : Fv F v) = 0 := RestrictedProduct.single_zero _ v
   rw [← psiF_singleV, h, psiF_zero]
 
+/- English proof (translation)
+The claim follows from `GlobalTheory.CompanionTheory.SW.PiV.psiV_add ψ v x y`.
+-/
 theorem psiV_add (ψ : AddChar (AF F) ℂ) (v : HeightOneSpectrum (𝓞 F)) (x y : Fv F v) :
     psiV F ψ v (x + y) = psiV F ψ v x * psiV F ψ v y :=
   GlobalTheory.CompanionTheory.SW.PiV.psiV_add ψ v x y
 
+/- English proof (translation)
+Establish `h` using `psiV_add ψ v (-x) x`. Rewrite `h` using `[neg_add_cancel, psiV_zero, hx, mul_one]`. Conclude with `h.symm`.
+-/
 theorem psiV_neg_of_eq_one (ψ : AddChar (AF F) ℂ) (v : HeightOneSpectrum (𝓞 F)) {x : Fv F v}
     (hx : psiV F ψ v x = 1) : psiV F ψ v (-x) = 1 := by
   have h := psiV_add ψ v (-x) x
@@ -100,6 +131,9 @@ def annS (ψ : AddChar (AF F) ℂ) (v : HeightOneSpectrum (𝓞 F)) (U : Set (Fv
     rw [mul_neg]
     exact psiV_neg_of_eq_one ψ v (ha s hs)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem coe_annS (ψ : AddChar (AF F) ℂ) (v : HeightOneSpectrum (𝓞 F)) (U : Set (Fv F v)) :
     (annS ψ v U : Set (Fv F v)) = annV ψ v U := rfl
 
@@ -116,6 +150,9 @@ def boxS (S : Finset (HeightOneSpectrum (𝓞 F))) (U : ∀ v : HeightOneSpectru
     exact ⟨fun v hv => (U v).neg_mem (ha.1 v hv),
       fun v hv => neg_mem (ha.2 v hv)⟩
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem coe_boxS (S : Finset (HeightOneSpectrum (𝓞 F)))
     (U : ∀ v : HeightOneSpectrum (𝓞 F), AddSubgroup (Fv F v)) :
     (boxS S U : Set (Af F)) = Coef.boxA S fun v => (U v : Set (Fv F v)) := rfl

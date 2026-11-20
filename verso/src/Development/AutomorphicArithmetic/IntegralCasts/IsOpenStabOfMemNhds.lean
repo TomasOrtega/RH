@@ -16,6 +16,11 @@ variable {a : ℕ} {R : Type} [CommRing R]
 def nilM {r : ℕ} (x : BlockIx a r → R) : Matrix (Fin a) (Fin a) R :=
   Matrix.of fun i j => if h : i.val < r ∧ r ≤ j.val then x ⟨(i, j), h⟩ else 0
 
+/- English proof (translation)
+Use extensionality with `i j`. Rewrite using `[Matrix.mul_apply]`. Use `Finset.sum_eq_zero fun l _ => ?_` and prove the remaining obligations. Distinguish the cases in `h : l.val < r`. Simplify using `[nilM, not_le.2 h]`.
+
+Simplify using `[nilM, h]`.
+-/
 theorem nilM_mul_self {r : ℕ} (x : BlockIx a r → R) : nilM x * nilM x = 0 := by
   ext i j
   rw [Matrix.mul_apply]
@@ -24,6 +29,11 @@ theorem nilM_mul_self {r : ℕ} (x : BlockIx a r → R) : nilM x * nilM x = 0 :=
   · simp [nilM, not_le.2 h]
   · simp [nilM, h]
 
+/- English proof (translation)
+Use extensionality with `i j`. Rewrite using `[Matrix.mul_apply]`. Use `Finset.sum_eq_zero fun l _ => ?_` and prove the remaining obligations. Distinguish the cases in `h : l.val < r`. Simplify using `[nilM, not_le.2 h]`.
+
+Simplify using `[nilM, h]`.
+-/
 theorem nilM_mul {r : ℕ} (x y : BlockIx a r → R) : nilM x * nilM y = 0 := by
   ext i j
   rw [Matrix.mul_apply]
@@ -51,6 +61,9 @@ def twRep {G : Type} [Group G] {V : Type} [AddCommGroup V] [Module ℂ V]
     simp only [map_mul, Units.val_mul, smul_mul_assoc, mul_smul_comm, smul_smul]
     rw [mul_comm (χ h : ℂ)]
 
+/- English proof (translation)
+The claim follows from `UpperTheory.Reformulated.B.IsOpenStabilizer.isOpen_stab_of_mem_nhds ρ v h`.
+-/
 theorem isOpen_stab_of_mem_nhds {G : Type} [Group G] [TopologicalSpace G] [IsTopologicalGroup G]
     {V : Type} [AddCommGroup V] [Module ℂ V] (ρ : G →* Module.End ℂ V) (v : V)
     (h : {g : G | ρ g v = v} ∈ nhds (1 : G)) : IsOpen {g : G | ρ g v = v} :=

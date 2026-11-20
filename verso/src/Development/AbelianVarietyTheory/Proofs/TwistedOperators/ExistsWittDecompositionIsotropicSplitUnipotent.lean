@@ -11,12 +11,38 @@ open scoped GlobalTheory.MixModel
 
 namespace GlobalTheory.WittSect
 
+/- English proof (translation)
+Rewrite using `[hv, Matrix.sub_mulVec, Matrix.one_mulVec, Matrix.mulVec_add, Matrix.mulVec_mulVec, Matrix.mulVec_mulVec, hP, hQ, sub_self]`.
+-/
 theorem sub_one_mulVec_eq_zero {R : Type*} [CommRing R] {n a b : ℕ} (M : Matrix (Fin n) (Fin n) R)
     (P : Matrix (Fin n) (Fin a) R) (Q : Matrix (Fin n) (Fin b) R) (v : Fin n → R) (p : Fin a → R) (q : Fin b → R)
     (hv : v = P *ᵥ p + Q *ᵥ q) (hP : M * P = P) (hQ : M * Q = Q) : (M - 1) *ᵥ v = 0 := by
   rw [hv, Matrix.sub_mulVec, Matrix.one_mulVec, Matrix.mulVec_add, Matrix.mulVec_mulVec, Matrix.mulVec_mulVec, hP, hQ,
     sub_self]
 
+/- English proof (translation)
+Introduce `D V V' r C B hs`. Take `⟨C', h1, h2, h3⟩` from `GlobalTheory.TwistDual.exists_isotropic_dual D V V' r C B hs`. Establish `e : ∀ {a b : ℕ} (M : Matrix (Fin a) (Fin b) D.host.E), GlobalTheory.IndefiniteRowSideFullHecke.AdjointIsotropicDecomposition.adj D M = Mᴴ` using `fun _ => rfl`. Establish `hG` using `GlobalTheory.MixModel.gram_conjTranspose V`. Rewrite `h1`, `h2`, `h3` using `[e]`.
+
+Establish `hee : Cᴴ * V.gram * C = 0` using `hs.frame.2.2`. Establish `horth : Cᴴ * V.gram * B = 0` using `by rw [← e]; exact hs.orth`. Establish `hiso : Bᴴ * V.gram * B = V'.gram` using `by rw [← e]; exact hs.isom`. Establish `h1' : C'ᴴ * V.gram * C = 1`. Use `congrArg Matrix.conjTranspose h1` as an intermediate fact.
+
+Simplify `this` using `[Matrix.conjTranspose_mul, hG, Matrix.mul_assoc]`. Establish `h0e : Bᴴ * V.gram * C = 0`. Use `congrArg Matrix.conjTranspose horth` as an intermediate fact. Simplify `this` using `[Matrix.conjTranspose_mul, hG, Matrix.mul_assoc]`. Establish `h0e' : Bᴴ * V.gram * C' = 0`.
+
+Use `congrArg Matrix.conjTranspose h3` as an intermediate fact. Simplify `this` using `[Matrix.conjTranspose_mul, hG, Matrix.mul_assoc]`. Set `d : GlobalTheory.MixModel.HypDec V V' r` to `{ e := C, e' := C', i₀ := B, ee := hee, e'e' := h2, e'e := h1', iso := hiso, i₀e := h0e, i₀e' := h0e', rank_add := hs.rank.symm }`. Use `⟨d, rfl, rfl, fun m hC hB => Subgroup.subset_closure ?_⟩` and prove the remaining obligations. Establish `hu` using `GlobalTheory.MixModel.mt_unitary V m`.
+
+Establish `hsum : C * (C'ᴴ * V.gram) + B * (V'.gram⁻¹ * (Bᴴ * V.gram)) + C' * (Cᴴ * V.gram) = 1` using `d.sum_eq_one_rat`. Establish `hCm : GlobalTheory.MixModel.adj (C.map (incA D)) ⬝ GlobalTheory.MixModel.gA V ⬝ mt V m = GlobalTheory.MixModel.adj (C.map (incA D)) ⬝ GlobalTheory.MixModel.gA V`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[GlobalTheory.MixModel.adj_mul]`. Simplify using `only [Matrix.mul_assoc]`.
+
+Use `_ = _ := by rw [hu]`. Simplify using `only [Set.mem_setOf_eq]`. Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `(mt V m - 1) ⬝ C.map (incA D) = 0`. Rewrite using `[Matrix.sub_mul, hC, Matrix.one_mul, sub_self]`.
+
+Rewrite using `[Matrix.map_mul]`. Express the relevant statement in the definitionally equal form `GlobalTheory.MixModel.adj (C.map (incA D)) ⬝ GlobalTheory.MixModel.gA V ⬝ (mt V m - 1) = 0`. Rewrite using `[Matrix.mul_sub, hCm, Matrix.mul_one, sub_self]`. Introduce `x hx`. Use `⟨0, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[Matrix.mulVec_zero]`. Establish `hx0 : (Cᴴ * V.gram) *ᵥ x = 0` using `hx`. Take `⟨u, hu⟩ : ∃ u, u = (C'ᴴ * V.gram) *ᵥ x` from `⟨_, rfl⟩`. Take `⟨w, hw⟩ : ∃ w, w = (V'.gram⁻¹ * (Bᴴ * V.gram)) *ᵥ x` from `⟨_, rfl⟩`. Establish `hx' : x = C *ᵥ u + B *ᵥ w`.
+
+Use `congrArg (fun M => M *ᵥ x) hsum` as an intermediate fact. Rewrite `this` using `[Matrix.add_mulVec, Matrix.add_mulVec, Matrix.one_mulVec, ← Matrix.mulVec_mulVec (M := C), ← Matrix.mulVec_mulVec (M := B), ← Matrix.mulVec_mulVec (M := C'), hx0, Matrix.mulVec_zero, add_zero]`. Rewrite using `[hu, hw]`. Conclude with `this.symm`. Establish `hxA : (fun i => incA D (x i)) = C.map (incA D) *ᵥ (incA D ∘ u) + B.map (incA D) *ᵥ (incA D ∘ w)`.
+
+Use function extensionality and compare the values at `i`. Establish `hi : x i = (C *ᵥ u) i + (B *ᵥ w) i` using `congrFun hx' i`. Establish `ha` using `RingHom.map_mulVec (incA D) C u i`. Establish `hb` using `RingHom.map_mulVec (incA D) B w i`. Rewrite using `[Pi.add_apply, ← ha, ← hb, hi]`.
+
+Conclude with `RingHom.map_add (incA D) _ _`. Use `sub_one_mulVec_eq_zero _ (C.map (incA D)) (B.map (incA D)) _ (incA D ∘ u) (incA D ∘ w) ?_ ?_ ?_` and prove the remaining obligations. Conclude with `hxA`. Conclude with `hC`. Conclude with `hB`.
+-/
 theorem exists_hypDec_mem_NI : ∀ (D : D7) (V V' : HSp D) (r : ℕ) (C : Matrix (Fin V.rank) (Fin r) D.host.E)
     (B : Matrix (Fin V.rank) (Fin V'.rank) D.host.E), GlobalTheory.IndefiniteRowSideFullHecke.AdjointIsotropicDecomposition.IsIsoSplit V V' C B →
     ∃ d : GlobalTheory.MixModel.HypDec V V' r, d.e = C ∧ d.i₀ = B ∧ ∀ m : GA D V,

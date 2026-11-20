@@ -12,6 +12,19 @@ open scoped Pointwise ENNReal Classical
 
 namespace GlobalTheory.InvH
 
+/- English proof (translation)
+Set `e : MulAction.orbitRel.Quotient K X ≃ MulAction.orbitRel.Quotient K X` to `Quotient.congr (MulAction.toPerm h) (by`. Introduce `a b`. Simplify using `only [MulAction.orbitRel_apply, MulAction.mem_orbit_iff, MulAction.toPerm_apply]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨s, hs⟩`.
+
+Use `⟨⟨_, h1 s s.2⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[← hs]`. Simplify using `[Subgroup.smul_def, mul_smul]`. Introduce and unpack `⟨s, hs⟩`. Use `⟨⟨_, h2 s s.2⟩, ?_⟩` and prove the remaining obligations.
+
+Simplify using `only [Subgroup.smul_def, mul_smul] at hs ⊢`. Rewrite using `[hs]`. Use the proof step `simp)`. Rewrite using `[← e.tsum_eq]`. Use `tsum_congr fun o => ?_` and prove the remaining obligations.
+
+Establish `h3 : e o = Quotient.mk _ (h • o.out)` using `by conv_lhs => rw [← Quotient.out_eq o]`. Both sides reduce to the same expression. Establish `h4 : (MulAction.orbitRel K X) (e o).out (h • o.out)`. Rewrite using `[h3]`. Conclude with `Quotient.mk_out (s := MulAction.orbitRel K X) _`.
+
+Rewrite `h4` using `[MulAction.orbitRel_apply, MulAction.mem_orbit_iff]`. Take `⟨s, hs⟩` from `h4`. Establish `h5 : (e o).out = h • ((h⁻¹ * s * h) • o.out)`. Rewrite using `[← hs]`. Simplify using `[Subgroup.smul_def, mul_smul]`.
+
+Rewrite using `[h5, hψ, hφ _ (h2 s s.2)]`.
+-/
 theorem tsum_orbit_normaliser {G X M : Type} [Group G] [MulAction G X] [AddCommMonoid M]
     [TopologicalSpace M] (K : Subgroup G) (h : G) (h1 : ∀ s ∈ K, h * s * h⁻¹ ∈ K)
     (h2 : ∀ s ∈ K, h⁻¹ * s * h ∈ K) (φ ψ : X → M) (hφ : ∀ s ∈ K, ∀ x, φ (s • x) = φ x)
@@ -47,6 +60,11 @@ theorem tsum_orbit_normaliser {G X M : Type} [Group G] [MulAction G X] [AddCommM
 variable {F : Type} [Field F] [ValuativeRel F] [TopologicalSpace F]
 variable {E : Type} [CommRing E] [Algebra F E] [TopologicalSpace E]
 
+/- English proof (translation)
+Establish `hA' : ∀ v, h.symm v ∈ A ↔ v ∈ A` using `fun v => by rw [← hA]; simp`. Use `⟨fun v => ?_, fun v hv => ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `h (s (h.symm v)) ∈ A ↔ _`. Rewrite using `[hA, hs.1, hA']`. Use `(hB _).2 (hs.2 _ ((hA' v).2 hv))` as an intermediate fact.
+
+Rewrite `this` using `[map_sub, LinearEquiv.apply_symm_apply]`. Conclude with `this`.
+-/
 theorem conj_unipOn {n : ℕ} {A B : Submodule E (Fin n → E)} {h s : (Fin n → E) ≃ₗ[E] (Fin n → E)}
     (hA : ∀ v, h v ∈ A ↔ v ∈ A) (hB : ∀ v, h v ∈ B ↔ v ∈ B) (hs : s ∈ unipOn A B) :
     h * s * h⁻¹ ∈ unipOn A B := by
@@ -58,6 +76,11 @@ theorem conj_unipOn {n : ℕ} {A B : Submodule E (Fin n → E)} {h s : (Fin n �
     rw [map_sub, LinearEquiv.apply_symm_apply] at this
     exact this
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce `hv`. Use `h.injective (hA _ hv)` as an intermediate fact. Rewrite `hv` using `[this]`. Then use the resulting hypothesis. Introduce `hv`.
+
+Rewrite using `[hA v hv]` and apply the resulting hypothesis.
+-/
 theorem mem_iff_of_fix {n : ℕ} {A : Submodule E (Fin n → E)} {h : (Fin n → E) ≃ₗ[E] (Fin n → E)}
     (hA : ∀ v ∈ A, h v = v) (v : Fin n → E) : h v ∈ A ↔ v ∈ A := by
   constructor
@@ -68,9 +91,17 @@ theorem mem_iff_of_fix {n : ℕ} {A : Submodule E (Fin n → E)} {h : (Fin n →
 
 variable {L : LocE F E} {r k : ℕ} (S : Frames L r k)
 
+/- English proof (translation)
+The claim follows from `Submodule.span_mono (Set.image_mono fun _ ha => lt_of_lt_of_le ha hij)`.
+-/
 theorem spanTo_mono (g : Fin (r + 1) → S.V) {i j : ℕ} (hij : i ≤ j) : S.spanTo g i ≤ S.spanTo g j :=
   Submodule.span_mono (Set.image_mono fun _ ha => lt_of_lt_of_le ha hij)
 
+/- English proof (translation)
+Establish `hfix : ∀ j ≤ r + 1, ∀ v, h v ∈ S.spanTo g j ↔ v ∈ S.spanTo g j` using `fun j hj => mem_iff_of_fix fun v hv => hg v (spanTo_mono S g hj hv)`. Take `⟨⟨s1, s2⟩, s3⟩` from `hs`. Use `⟨⟨(isomG L S.Hm).mul_mem ((isomG L S.Hm).mul_mem hi s1) ((isomG L S.Hm).inv_mem hi), ?_⟩, ?_⟩` and prove the remaining obligations. Use `Subgroup.mem_iInf.2 fun j => ?_` and prove the remaining obligations. Conclude with `conj_unipOn (hfix _ (by omega)) (hfix _ (by omega)) (Subgroup.mem_iInf.1 s2 j)`.
+
+Use `conj_unipOn (fun v => ?_) (hfix _ (by omega)) s3` and prove the remaining obligations. Use `forall₂_congr fun y hy => ?_` and prove the remaining obligations. Use `hi v y` as an intermediate fact. Rewrite `this` using `[hg y (spanTo_mono S g (by omega) hy)]`. Rewrite using `[this]`.
+-/
 theorem conj_Nof (g : Fin (r + 1) → S.V) {h s : S.GLV} (hi : h ∈ isomG L S.Hm)
     (hg : ∀ v ∈ S.spanTo g (r + 1), h v = v) (hs : s ∈ S.Nof g) : h * s * h⁻¹ ∈ S.Nof g := by
   have hfix : ∀ j ≤ r + 1, ∀ v, h v ∈ S.spanTo g j ↔ v ∈ S.spanTo g j := fun j hj =>
@@ -85,11 +116,31 @@ theorem conj_Nof (g : Fin (r + 1) → S.V) {h s : S.GLV} (hi : h ∈ isomG L S.H
     rw [hg y (spanTo_mono S g (by omega) hy)] at this
     rw [this]
 
+/- English proof (translation)
+Establish `hfix : ∀ v ∈ S.ME, h v = v` using `fun v hv => sub_eq_zero.1 ((Submodule.mem_bot E).1 (hh.2.2 v hv))`. Conclude with `⟨conj_Nof S _ hh.1 (fun v hv => hfix v (Submodule.mem_sup_left hv)) hs.1, conj_Nof S _ hh.1 (fun v hv => hfix v (Submodule.mem_sup_right hv)) hs.2⟩`.
+-/
 theorem conj_St {h s : S.GLV} (hh : h ∈ S.H0) (hs : s ∈ S.St) : h * s * h⁻¹ ∈ S.St := by
   have hfix : ∀ v ∈ S.ME, h v = v := fun v hv => sub_eq_zero.1 ((Submodule.mem_bot E).1 (hh.2.2 v hv))
   exact ⟨conj_Nof S _ hh.1 (fun v hv => hfix v (Submodule.mem_sup_left hv)) hs.1,
     conj_Nof S _ hh.1 (fun v hv => hfix v (Submodule.mem_sup_right hv)) hs.2⟩
 
+/- English proof (translation)
+Introduce `F _ _ _ _ _ E _ _ _ L r k S h hh d Q Q' hQ hQ'`. Establish `c1 : ∀ s ∈ S.St, h * s * h⁻¹ ∈ S.St` using `fun s hs => conj_St S hh hs`. Establish `c2 : ∀ s ∈ S.St, h⁻¹ * s * h ∈ S.St` using `fun s hs => by`. Simplify using `using conj_St S (inv_mem hh) hs`. Establish `aS` using `GlobalTheory.T.hermitianFrames_stabilizer_acts_on_terms L r k S d`.
+
+Establish `aH` using `GlobalTheory.T.hermitianFrames_complementUnitary_acts_on_terms L r k S`. Establish `hmu : ∀ Λ, S.IsTerm d Λ → ∀ s ∈ S.St, S.mu (s • Λ) = S.mu Λ` using `fun Λ hΛ => ((GlobalTheory.T.commonStabilizer_stabilizers_commensurable_volume L r k S).1 Λ (GlobalTheory.HL.TermBasic.term_basic L r k S d Λ hΛ).1.1).2.2`. Establish `iS : ∀ s ∈ S.St, ∀ Λ, (S.IsTerm d (s • Λ) ∧ Q (s • Λ)) ↔ (S.IsTerm d Λ ∧ Q Λ)`. Introduce `s hs Λ`. Prove the components needed by the constructor for the conclusion.
+
+Introduce and unpack `⟨a, b⟩`. Establish `a'` using `(aS _ a _ (inv_mem hs)).1`. Establish `b'` using `hQ _ (inv_mem hs) _ a b`. Rewrite `a'`, `b'` using `[inv_smul_smul]`. Conclude with `⟨a', b'⟩`.
+
+Introduce and unpack `⟨a, b⟩`. Conclude with `⟨(aS _ a _ hs).1, hQ _ hs _ a b⟩`. Establish `iH : ∀ Λ, (S.IsTerm (h • d) (h • Λ) ∧ Q' (h • Λ)) ↔ (S.IsTerm d Λ ∧ Q Λ)`. Introduce `Λ`. Prove the components needed by the constructor for the conclusion.
+
+Introduce and unpack `⟨a, b⟩`. Establish `a'` using `(aH _ _ a _ (inv_mem hh)).1`. Rewrite `a'` using `[inv_smul_smul, inv_smul_smul]`. Conclude with `⟨a', (hQ' _ a').2 b⟩`. Introduce and unpack `⟨a, b⟩`.
+
+Conclude with `⟨(aH _ _ a _ hh).1, (hQ' _ a).1 b⟩`. Prove the components needed by the constructor for the conclusion. Use `tsum_orbit_normaliser S.St h c1 c2 (fun Λ => if S.IsTerm d Λ ∧ Q Λ then (S.mu Λ : ℂ) * S.om d Λ else 0) (fun Λ => if S.IsTerm (h • d) Λ ∧ Q' Λ then (S.mu Λ : ℂ) * S.om (h • d) Λ else 0) ?_ ?_` and prove the remaining obligations. Introduce `s hs Λ`. Conclude with `if_ctx_congr (iS s hs Λ) (fun a => by rw [hmu _ a.1 s hs, (aS _ a.1 s hs).2.1]) fun _ => rfl`.
+
+Introduce `Λ`. Conclude with `if_ctx_congr (iH Λ) (fun a => by rw [(aH _ _ a.1 h hh).2.1, (aH _ _ a.1 h hh).2.2.1]) fun _ => rfl`. Use `tsum_orbit_normaliser S.St h c1 c2 (fun Λ => if S.IsTerm d Λ ∧ Q Λ then ENNReal.ofReal (S.mu Λ) else 0) (fun Λ => if S.IsTerm (h • d) Λ ∧ Q' Λ then ENNReal.ofReal (S.mu Λ) else 0) ?_ ?_` and prove the remaining obligations. Introduce `s hs Λ`. Conclude with `if_ctx_congr (iS s hs Λ) (fun a => by rw [hmu _ a.1 s hs]) fun _ => rfl`.
+
+Introduce `Λ`. Conclude with `if_ctx_congr (iH Λ) (fun a => by rw [(aH _ _ a.1 h hh).2.2.1]) fun _ => rfl`.
+-/
 theorem amp_mass_smul : ∀ {F : Type} [Field F] [ValuativeRel F] [TopologicalSpace F] [IsNonarchimedeanLocalField F] [CharZero F] {E : Type} [CommRing E] [Algebra F E] [TopologicalSpace E] (L : LocE F E), ∀ (r k : ℕ) (S : Frames L r k), ∀ h ∈ S.H0, ∀ (d : S.Datum) (Q Q' : Submodule L.O S.V → Prop), (∀ s ∈ S.St, ∀ Λ, S.IsTerm d Λ → Q Λ → Q (s • Λ)) → (∀ Λ, S.IsTerm d Λ → (Q Λ ↔ Q' (h • Λ))) → S.amp (h • d) Q' = S.amp d Q ∧ S.mass (h • d) Q' = S.mass d Q := by
   intro F _ _ _ _ _ E _ _ _ L r k S h hh d Q Q' hQ hQ'
   have c1 : ∀ s ∈ S.St, h * s * h⁻¹ ∈ S.St := fun s hs => conj_St S hh hs

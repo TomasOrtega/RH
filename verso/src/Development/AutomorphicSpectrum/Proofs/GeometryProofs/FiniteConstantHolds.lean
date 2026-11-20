@@ -4,6 +4,9 @@ import Development.AutomorphicSpectrum.Proofs.GeometryProofs.FiniteConstantAllHo
 
 namespace GlobalTheory.CompanionTheory.Ar.Flat
 
+/- English proof (translation)
+The claim follows from `FinConstAll.finConst GlobalTheory.T.finite_constant_all_holds`.
+-/
 theorem finConst_of_all_hosts : FinConst :=
   FinConstAll.finConst GlobalTheory.T.finite_constant_all_holds
 

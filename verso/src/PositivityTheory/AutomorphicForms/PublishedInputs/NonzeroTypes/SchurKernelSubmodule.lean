@@ -16,6 +16,13 @@ def kerSub {K : Type} [Group K] {d : ℕ} (ξ : Representation ℂ K (Fin d → 
 end SchurKernelSubmodule
 
 open SchurKernelSubmodule in
+/- English proof (translation)
+Introduce `K _ d ξ hξ W _ _ ρ g hg hint`. Use `haveI : IsSimpleOrder (Subrepresentation ξ) := hξ`. Break down `eq_bot_or_eq_top (kerSub ξ ρ g hint) with h | h` into its components or cases. Rewrite using `[← LinearMap.ker_eq_bot]`. Establish `hk` using `congrArg Subrepresentation.toSubmodule h`.
+
+Use `first`. Consider the case `exact hk`. Consider the case `simpa [kerSub] using hk`. It suffices to derive a contradiction. Apply `hg` to reduce the goal to its premises.
+
+Rewrite using `[← LinearMap.ker_eq_top]`. Establish `hk` using `congrArg Subrepresentation.toSubmodule h`. Use `first`. Consider the case `exact hk`. Consider the case `simpa [kerSub] using hk`.
+-/
 theorem schurInjective_holds : SchurInjectiveFromIrreducible := by
   intro K _ d ξ hξ W _ _ ρ g hg hint
   haveI : IsSimpleOrder (Subrepresentation ξ) := hξ

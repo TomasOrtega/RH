@@ -9,6 +9,13 @@ open MeasureTheory NumberField GroundTheory.Automorphic GroundTheory.Automorphic
 open GroundTheory.Automorphic.AutomorphicForm GroundTheory.Automorphic.CuspidalSpectrum PositivityTheory.Rg.Tf.Core UpperTheory.ConvolutionTheory UpperTheory.ConvolutionTheory.C
 open scoped ContDiff
 
+/- English proof (translation)
+Introduce `K _ _ μ _ a N'`. Use `haveI : Subsingleton (AdelicGLn.AdelicGL K 0) := ⟨fun x y => Units.ext (Subsingleton.elim _ _)⟩`. Use `haveI : Subsingleton (G1 K 0) := ⟨fun x y => Subtype.ext (Subsingleton.elim _ _)⟩`. Take `⟨Ω₀, hΩ₁, hΩ₁B, t, ht, hsieg⟩` from `exists_siegelSet (K := K) 0`. Take `⟨C₀, N, hC₀⟩` from `exists_norm_rconv_le_siegel_basic μ a hΩ₁ ht`.
+
+Establish `hq : 1 ≤ qht (1 : G1 K 0)` using `le_ciInf fun _ => AutomorphicForm.one_le_height _`. Establish `hqN : qht (1 : G1 K 0) ^ N' ≠ 0` using `(pow_pos (by linarith) N').ne'`. Use `⟨max C₀ 0 * qht (1 : G1 K 0) ^ N', fun φ _ x => ?_⟩` and prove the remaining obligations. Take `⟨γ, hγ⟩` from `hsieg (x : AdelicGLn.AdelicGL K 0)`. Take `⟨b, hb, a', ⟨ρ, hρ, hs, rfl⟩, kk, hkk, -⟩` from `hγ`.
+
+Establish `h` using `hC₀ φ b hb ρ hρ hs kk hkk x (Subsingleton.elim _ _) 1 le_rfl (fun i => i.elim0)`. Rewrite `h` using `[one_pow, Real.sqrt_one, mul_one]`. Rewrite `h`, the goal using `[Subsingleton.elim x 1]`. Rewrite using `[mul_inv_cancel_right₀ hqN]`. Conclude with `h.trans (mul_le_mul_of_nonneg_right (le_max_left _ _) (norm_nonneg _))`.
+-/
 theorem UpperTheory.cuspDecay_of_rank_zero :
     ∀ (K : Type) [Field K] [NumberField K] (μ : Measure (G1 K 0)) [μ.IsHaarMeasure] (a : CC K 0), CuspDecay μ a := by
   intro K _ _ μ _ a N'

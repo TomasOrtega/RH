@@ -12,6 +12,13 @@ section Sandwich
 
 variable {K : Type*} [CommRing K] {r : ℕ}
 
+/- English proof (translation)
+Use extensionality with `i j`. Simplify using `only [Matrix.mul_apply, cornerM, Matrix.of_apply]`. Rewrite using `[Finset.sum_eq_single (Fin.last r)]`. Rewrite using `[Finset.sum_eq_single (Fin.last r)]`. Apply the tactic sequence `rw [hA, hB] split_ifs <;> simp_all`.
+
+Introduce `k _ hk`. Simplify using `[hk]`. Simplify using the standard rewrite rules. Introduce `l _ hl`. Establish `h0 : ∀ k, (A i k * if k = Fin.last r ∧ l = Fin.last r then c else 0) = 0`.
+
+Introduce `k`. Simplify using `[hl]`. Simplify using `[h0]`. Simplify using the standard rewrite rules.
+-/
 theorem corner_sandwich (A B : Matrix (Fin (r + 1)) (Fin (r + 1)) K)
     (hA : ∀ i, A i (Fin.last r) = if i = Fin.last r then 1 else 0)
     (hB : ∀ j, B (Fin.last r) j = if j = Fin.last r then 1 else 0) (c : K) :
@@ -32,6 +39,9 @@ theorem corner_sandwich (A B : Matrix (Fin (r + 1)) (Fin (r + 1)) K)
     simp [h0]
   · simp
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem Ec_eq_cornerM : (Ec (K := K) r) = cornerM 1 := rfl
 
 end Sandwich
@@ -46,11 +56,23 @@ def π1 : E →+* F := (RingHom.fst F F).comp g.e.toRingEquiv.toRingHom
 
 def π2 : E →+* F := (RingHom.snd F F).comp g.e.toRingEquiv.toRingHom
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem π1_apply (x : E) : π1 M g x = (g.e x).1 := rfl
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem π2_apply (x : E) : π2 M g x = (g.e x).2 := rfl
 
+/- English proof (translation)
+Rewrite using `[π1_apply, g.e_cj, π2_apply, Prod.fst_swap]`.
+-/
 theorem π1_cj (x : E) : π1 M g (M.L.cj x) = π2 M g x := by
   rw [π1_apply, g.e_cj, π2_apply, Prod.fst_swap]
+/- English proof (translation)
+Rewrite using `[π2_apply, g.e_cj, π1_apply, Prod.snd_swap]`.
+-/
 theorem π2_cj (x : E) : π2 M g (M.L.cj x) = π1 M g x := by
   rw [π2_apply, g.e_cj, π1_apply, Prod.snd_swap]
 
@@ -62,19 +84,36 @@ def mmG (L P : Matrix (Fin (r + 1)) (Fin (r + 1)) E) : Matrix (Fin (r + 1)) (Fin
 def uuG (L P : Matrix (Fin (r + 1)) (Fin (r + 1)) E) : Matrix (Fin (r + 1)) (Fin (r + 1)) E :=
   Matrix.of fun i j => g.e.symm ((g.e (P i j)).1, (g.e (L j i)).2)
 
+/- English proof (translation)
+Use extensionality with `i j`. Simplify using `[mmG, π1_apply, π2_apply]`.
+-/
 theorem middleMatrix_map_firstComponent (L P : Matrix (Fin (r + 1)) (Fin (r + 1)) E) : (mmG M g L P).map (π1 M g) = P.map (π2 M g) := by
   ext i j
   simp [mmG, π1_apply, π2_apply]
+/- English proof (translation)
+Use extensionality with `i j`. Simplify using `[mmG, π1_apply, π2_apply]`.
+-/
 theorem middleMatrix_map_secondComponent (L P : Matrix (Fin (r + 1)) (Fin (r + 1)) E) : (mmG M g L P).map (π2 M g) = (L.map (π1 M g))ᵀ := by
   ext i j
   simp [mmG, π1_apply, π2_apply]
+/- English proof (translation)
+Use extensionality with `i j`. Simplify using `[uuG, π1_apply, π2_apply]`.
+-/
 theorem unipotentMatrix_map_firstComponent (L P : Matrix (Fin (r + 1)) (Fin (r + 1)) E) : (uuG M g L P).map (π1 M g) = P.map (π1 M g) := by
   ext i j
   simp [uuG, π1_apply, π2_apply]
+/- English proof (translation)
+Use extensionality with `i j`. Simplify using `[uuG, π1_apply, π2_apply]`.
+-/
 theorem unipotentMatrix_map_secondComponent (L P : Matrix (Fin (r + 1)) (Fin (r + 1)) E) : (uuG M g L P).map (π2 M g) = (L.map (π2 M g))ᵀ := by
   ext i j
   simp [uuG, π1_apply, π2_apply]
 
+/- English proof (translation)
+Use extensionality with `a b`. Simplify using `only [Formalism.MainNotions.S.Loc.HermSp.ZZplusOf, hs]`. Rewrite using `[Ec_eq_cornerM]`. Distinguish the cases in `h : a = Fin.last r ∧ b = Fin.last r`. Simplify using `[h, cornerM, π1_apply]`.
+
+Expand and normalize the polynomial expressions, which then agree. Simplify using `[h, cornerM, π1_apply]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem zzPlus_map_firstComponent (hs : M.split = some g) (Zh : Matrix (Fin (r + 1)) (Fin (r + 1)) E) (T T' : F) :
     (Formalism.MainNotions.S.Loc.HermSp.ZZplusOf M Zh T T').map (π1 M g) =
       ((g.q : F))⁻¹ • Zh.map (π1 M g) + (T / (g.q : F)) • Ec r := by
@@ -87,6 +126,11 @@ theorem zzPlus_map_firstComponent (hs : M.split = some g) (Zh : Matrix (Fin (r +
   · simp [h, cornerM, π1_apply]
     ring
 
+/- English proof (translation)
+Use extensionality with `a b`. Simplify using `only [Formalism.MainNotions.S.Loc.HermSp.ZZplusOf, hs]`. Rewrite using `[Ec_eq_cornerM]`. Distinguish the cases in `h : a = Fin.last r ∧ b = Fin.last r`. Simplify using `[h, cornerM, π2_apply]`.
+
+Expand and normalize the polynomial expressions, which then agree. Simplify using `[h, cornerM, π2_apply]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem zzPlus_map_secondComponent (hs : M.split = some g) (Zh : Matrix (Fin (r + 1)) (Fin (r + 1)) E) (T T' : F) :
     (Formalism.MainNotions.S.Loc.HermSp.ZZplusOf M Zh T T').map (π2 M g) =
       (-((g.q : F))⁻¹) • (Zh.map (π2 M g))ᵀ + (-(T' / (g.q : F))) • Ec r := by

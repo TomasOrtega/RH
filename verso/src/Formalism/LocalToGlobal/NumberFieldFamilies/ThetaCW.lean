@@ -13,9 +13,17 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 variable {D : D7}
 
+/- English proof (translation)
+The claim follows from `((x.isUnit.map (infPart D)).map θ).ne_zero`.
+-/
 theorem inf_ne_zero (θ : Ainf D.host.F ⊗[D.host.F] D.host.E →+* ℂ) (x : (AE D)ˣ) : θ (infPart D (x : AE D)) ≠ 0 :=
   ((x.isUnit.map (infPart D)).map θ).ne_zero
 
+/- English proof (translation)
+Take `⟨n, hn, e⟩` from `h`. Take `⟨m, hm, e'⟩` from `h'`. Use `⟨n + m, by push_cast; rw [hn, hm]; ring, allSome_fam.2 fun x h1 h2 => ?_⟩` and prove the remaining obligations. Establish `hz` using `inf_ne_zero (th0 D τ) x`. Rewrite using `[MonoidHom.mul_apply, Circle.coe_mul, allSome_fam.1 e x h1 h2, allSome_fam.1 e' x h1 h2, zpow_add₀]`.
+
+Conclude with `div_ne_zero hz (by exact_mod_cast norm_ne_zero_iff.2 hz)`.
+-/
 theorem hasInfExp_mul {χ χ' : (AE D)ˣ →* Circle} {τ : D.what₂.Tau} {a b : ℚ} (h : HasInfExp D χ τ a)
     (h' : HasInfExp D χ' τ b) : HasInfExp D (χ * χ') τ (a + b) := by
   obtain ⟨n, hn, e⟩ := h
@@ -25,12 +33,18 @@ theorem hasInfExp_mul {χ χ' : (AE D)ˣ →* Circle} {τ : D.what₂.Tau} {a b 
   rw [MonoidHom.mul_apply, Circle.coe_mul, allSome_fam.1 e x h1 h2, allSome_fam.1 e' x h1 h2, zpow_add₀]
   exact div_ne_zero hz (by exact_mod_cast norm_ne_zero_iff.2 hz)
 
+/- English proof (translation)
+Take `⟨n, hn, e⟩` from `h`. Use `⟨-n, by push_cast; rw [hn]; ring, allSome_fam.2 fun x h1 h2 => ?_⟩` and prove the remaining obligations. Rewrite using `[MonoidHom.inv_apply, Circle.coe_inv, allSome_fam.1 e x h1 h2, _root_.zpow_neg]`.
+-/
 theorem hasInfExp_inv {χ : (AE D)ˣ →* Circle} {τ : D.what₂.Tau} {a : ℚ} (h : HasInfExp D χ τ a) :
     HasInfExp D χ⁻¹ τ (-a) := by
   obtain ⟨n, hn, e⟩ := h
   refine ⟨-n, by push_cast; rw [hn]; ring, allSome_fam.2 fun x h1 h2 => ?_⟩
   rw [MonoidHom.inv_apply, Circle.coe_inv, allSome_fam.1 e x h1 h2, _root_.zpow_neg]
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨0, by simp, allSome_fam.2 fun x _ _ => by simp⟩`.
+-/
 theorem hasInfExp_one (τ : D.what₂.Tau) : HasInfExp D (1 : (AE D)ˣ →* Circle) τ 0 :=
   ⟨0, by simp, allSome_fam.2 fun x _ _ => by simp⟩
 
@@ -53,12 +67,21 @@ def ExpU (D : D7) : Prop := ∀ (χ : (AE D)ˣ →* Circle) (τ : D.what₂.Tau)
 
 def infTyC (χ : chrA D) (τ : D.what₂.Tau) : ℚ := (χ.2.2 τ).choose
 
+/- English proof (translation)
+The claim follows from `(χ.2.2 τ).choose_spec`.
+-/
 theorem infTyC_spec (χ : chrA D) (τ : D.what₂.Tau) : HasInfExp D χ.1 τ (infTyC χ τ) := (χ.2.2 τ).choose_spec
 
+/- English proof (translation)
+Use function extensionality and compare the values at `w`. Simplify using `[Heisenberg₂, mul_add]`.
+-/
 theorem heis_add (ψ : AddChar (AF D.host.F) ℂ) (V W : HSp D) (u : WA V W) (f g : WA V W → ℂ) :
     Heisenberg₂ ψ V W u (f + g) = Heisenberg₂ ψ V W u f + Heisenberg₂ ψ V W u g := by
   funext w; simp [Heisenberg₂, mul_add]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `w`. Conclude with `mul_left_comm _ c _`.
+-/
 theorem heis_smul (ψ : AddChar (AF D.host.F) ℂ) (V W : HSp D) (u : WA V W) (c : ℂ) (f : WA V W → ℂ) :
     Heisenberg₂ ψ V W u (c • f) = c • Heisenberg₂ ψ V W u f := by
   funext w
@@ -79,11 +102,17 @@ def schC (ψ : AddChar (AF D.host.F) ℂ) (V W : HSp D) : Submodule ℂ (WA V W 
       exact ⟨U, hU, fun u hu h0 => by rw [heis_smul, e u hu h0]⟩,
     hf.cont.const_smul c, fun k L h1 h2 w => (hf.smooth k L h1 h2 w).const_smul c⟩
 
+/- English proof (translation)
+Unfold `symplH sympl`. Rewrite using `[hHom_transpose V W hne]`.
+-/
 theorem symplH_transpose (V W : HSp D) (hne : V.rank ≠ W.rank) (x y : WA V W) :
     symplH W V x.transpose y.transpose = symplH V W x y := by
   unfold symplH sympl
   rw [hHom_transpose V W hne]
 
+/- English proof (translation)
+Introduce `γ w` and use `by have e := hf.quasi γ.transpose w.transpose rw [← symplH_transpose V W hne] at e exact e level := by obtain ⟨U, hU, e⟩ := hf.level refine ⟨U.comap (Matrix.transposeAddEquiv (Fin W.rank) (Fin V.rank) (AE D)).toAddMonoidHom, hU.preimage (continuous_id.matrix_transpose), fun u hu …`.
+-/
 theorem swap_mem (ψ : AddChar (AF D.host.F) ℂ) (V W : HSp D) (hne : V.rank ≠ W.rank) (f : WA V W → ℂ)
     (hf : IsThetaFun ψ V W f) : IsThetaFun ψ W V (fun y => f y.transpose) where
   quasi := fun γ w => by
@@ -111,6 +140,9 @@ open Classical in
 def swapC (ψ : AddChar (AF D.host.F) ℂ) (V W : HSp D) (Φ : schC ψ V W) : schC ψ W V :=
   if h : V.rank ≠ W.rank then ⟨fun y => Φ.1 y.transpose, swap_mem ψ V W h Φ.1 Φ.2⟩ else 0
 
+/- English proof (translation)
+Unfold `swapC`. Rewrite using `[dif_pos hne]`. Both sides reduce to the same expression.
+-/
 theorem swapC_apply (ψ : AddChar (AF D.host.F) ℂ) (V W : HSp D) (hne : V.rank ≠ W.rank) (Φ : schC ψ V W) (x : WA V W) :
     (swapC ψ V W Φ).1 x.transpose = Φ.1 x := by
   unfold swapC
@@ -185,6 +217,9 @@ structure FormGaps (D : D7) : Prop where
 
 variable {ψ : AddChar (AF D.host.F) ℂ}
 
+/- English proof (translation)
+The claim follows from `Om.lift V W χ χ' h _ _ (pairC_spec G.volEx V).1 (pairC_spec G.volEx V).2.1 Φ _ ((mem_afC G.add).1 F.1.2) ((mem_cuspC G.add G.cuspInt).1 F.2)`.
+-/
 theorem lift_ok (G : FormGaps D) (Om : WeilC ψ) {V W : HSp D} {χ χ' : chrA D} (h : admitted V W χ χ') (Φ : schC ψ V W)
     (F : cuspC D V) : (∀ x, IntegrableOn (fun g => kerC (Om.om V W χ χ') Φ g x * F.1.1 g) (pairC V).2 (pairC V).1) ∧
       IsAutFunSm (th0 D) W fun x => intC V fun g => kerC (Om.om V W χ χ') Φ g x * F.1.1 g :=
@@ -196,6 +231,9 @@ def thFun (G : FormGaps D) (Om : WeilC ψ) (petF : HSp D → ℝ) {V W : HSp D} 
   (petCOf D petF (petRC D) V : ℂ) •
     ⟨fun x => intC V fun g => kerC (Om.om V W χ χ') Φ g x * F.1.1 g, Submodule.subset_span (lift_ok G Om h Φ F).2⟩
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem thFun_apply (G : FormGaps D) (Om : WeilC ψ) (petF : HSp D → ℝ) {V W : HSp D} {χ χ' : chrA D} (h : admitted V W χ χ')
     (Φ : schC ψ V W) (F : cuspC D V) (x : GA D W) : (thFun G Om petF h Φ F).1 x =
       (petCOf D petF (petRC D) V : ℂ) * intC V fun g => kerC (Om.om V W χ χ') Φ g x * F.1.1 g := rfl
@@ -232,6 +270,9 @@ def thC (G : FormGaps D) (Om : WeilC ψ) (petF : HSp D → ℝ) (V W : HSp D) (�
         simp only [Submodule.coe_smul, Pi.smul_apply, smul_eq_mul, mul_left_comm c]))
   else 0
 
+/- English proof (translation)
+Unfold `kerC`. Establish `e : ((γ * g, x) : GA D V × GA D W) = (γ, 1) * (g, x)` using `by rw [Prod.mk_mul_mk, one_mul]`. Rewrite using `[e, map_mul, Module.End.mul_apply, h.aut γ hγ 1 (one_mem _)]`.
+-/
 theorem kerC_left {V W : HSp D} {χ χ' : chrA D} {Om : GA D V × GA D W →* Module.End ℂ (schC ψ V W)}
     (h : IsWeil ψ V W χ χ' Om) (Φ : schC ψ V W) {γ : GA D V} (hγ : γ ∈ GQ V) (g : GA D V) (x : GA D W) :
     kerC Om Φ (γ * g) x = kerC Om Φ g x := by
@@ -239,6 +280,9 @@ theorem kerC_left {V W : HSp D} {χ χ' : chrA D} {Om : GA D V × GA D W →* Mo
   have e : ((γ * g, x) : GA D V × GA D W) = (γ, 1) * (g, x) := by rw [Prod.mk_mul_mk, one_mul]
   rw [e, map_mul, Module.End.mul_apply, h.aut γ hγ 1 (one_mem _)]
 
+/- English proof (translation)
+Unfold `thC`. Rewrite using `[dif_pos h, LinearMap.mk₂_apply, thFun_apply, intC_eq G.volEx G.volU hV hp]`. Both sides reduce to the same expression. Introduce `γ hγ g`. Rewrite using `[kerC_left (Om.weil V W χ χ' h) Φ hγ, ((mem_afC G.add).1 F.1.2).left γ hγ]`.
+-/
 theorem thC_apply (G : FormGaps D) (Om : WeilC ψ) (petF : HSp D → ℝ) {V W : HSp D} {χ χ' : chrA D} (h : admitted V W χ χ')
     (hV : V.SigOK) {μ : Measure (GA D V)} {𝓕 : Set (GA D V)} (hp : IsVolPair D V μ 𝓕) (Φ : schC ψ V W) (F : cuspC D V)
     (x : GA D W) : (thC G Om petF V W χ χ' Φ F).1 x =
@@ -249,6 +293,13 @@ theorem thC_apply (G : FormGaps D) (Om : WeilC ψ) (petF : HSp D → ℝ) {V W :
   · intro γ hγ g
     rw [kerC_left (Om.weil V W χ χ' h) Φ hγ, ((mem_afC G.add).1 F.1.2).left γ hγ]
 
+/- English proof (translation)
+Take `⟨e, ⟨Q, Q', a, a'⟩, hP⟩` from `h`. Establish `hP' : Qᴴ * J.reindex e e * Q = Formalism.UG.Jpq p q` using `hP`. Use `⟨Q'.submatrix id e, ?_⟩` and prove the remaining obligations. Establish `h1 : Q'ᴴ * Formalism.UG.Jpq p q * Q' = J.reindex e e`. Rewrite using `[← hP']`.
+
+Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Matrix.conjTranspose_mul]`. Simplify using `only [Matrix.mul_assoc]`. Use `_ = _ := by rw [a]; simp`. Establish `h2` using `congrArg (fun M => M.submatrix e e) h1`.
+
+Simplify using `only [Matrix.reindex_apply, Matrix.submatrix_submatrix, Equiv.symm_comp_self, Matrix.submatrix_id_id] at h2`. Rewrite using `[← h2]`. Use extensionality with `i j`. Simplify using `[Matrix.mul_apply]`.
+-/
 theorem sig_frame {n : ℕ} (J : Matrix (Fin n) (Fin n) ℂ) (p q : ℕ) (h : Formalism.UG.HasSignature J p q) :
     ∃ A : Matrix (Fin p ⊕ Fin q) (Fin n) ℂ, Aᴴ * Formalism.UG.Jpq p q * A = J := by
   obtain ⟨e, ⟨Q, Q', a, a'⟩, hP⟩ := h
@@ -265,6 +316,9 @@ theorem sig_frame {n : ℕ} (J : Matrix (Fin n) (Fin n) ℂ) (p q : ℕ) (h : Fo
   ext i j
   simp [Matrix.mul_apply]
 
+/- English proof (translation)
+Conclude with `sig_frame _ _ _ (hV (tauE D τ))`.
+-/
 theorem cpt_ex (V : HSp D) (hV : V.SigOK) (τ : D.what₂.Tau) :
     ∃ A : Matrix (Fin (V.sig (tauE D τ)).1 ⊕ Fin (V.sig (tauE D τ)).2) (Fin V.rank) ℂ,
       Aᴴ * Formalism.UG.Jpq (V.sig (tauE D τ)).1 (V.sig (tauE D τ)).2 * A = gramAt D V τ := by
@@ -276,12 +330,18 @@ def cptC (V : HSp D) (τ : D.what₂.Tau) :
     Matrix (Fin (V.sig (tauE D τ)).1 ⊕ Fin (V.sig (tauE D τ)).2) (Fin V.rank) ℂ :=
   if h : V.SigOK then (cpt_bas_ex V h τ).choose else 0
 
+/- English proof (translation)
+Unfold `cptC`. Rewrite using `[dif_pos hV]`. Conclude with `(cpt_bas_ex V hV τ).choose_spec.1`.
+-/
 theorem cptC_gram (V : HSp D) (hV : V.SigOK) (τ : D.what₂.Tau) :
     (cptC V τ)ᴴ * Formalism.UG.Jpq (V.sig (tauE D τ)).1 (V.sig (tauE D τ)).2 * cptC V τ = gramAt D V τ := by
   unfold cptC
   rw [dif_pos hV]
   exact (cpt_bas_ex V hV τ).choose_spec.1
 
+/- English proof (translation)
+Unfold `cptC`. Rewrite using `[dif_pos hV]`. Conclude with `(cpt_bas_ex V hV τ).choose_spec.2 a i j`.
+-/
 theorem cptC_bas (V : HSp D) (hV : V.SigOK) (τ : D.what₂.Tau) (a : Fin (V.sig (tauE D τ)).1 ⊕ Fin (V.sig (tauE D τ)).2)
     (i j : Fin V.rank) : (cptC V τ * (basC V).map (tauE D τ)) a i ≠ 0 → (cptC V τ * (basC V).map (tauE D τ)) a j ≠ 0 → i = j := by
   unfold cptC
@@ -298,6 +358,11 @@ def PolAdd (ψ : AddChar (AF D.host.F) ℂ) : Prop := ∀ V W : HSp D, V.rank �
   ∀ f g : WA V W → ℂ, IsThetaFun ψ V W f → IsThetaFun ψ V W g → IsPolFock ψ (th0 D) V W (cptC V) (cptC W) f →
     IsPolFock ψ (th0 D) V W (cptC V) (cptC W) g → IsPolFock ψ (th0 D) V W (cptC V) (cptC W) (f + g)
 
+/- English proof (translation)
+Establish `e : ∀ L : ℝ →+ WA V W, ∀ x, dRho ψ V W L (c • f) x = c * dRho ψ V W L f x` using `fun L x => by`. Unfold `dRho`. Simplify using `only [heis_smul, Pi.smul_apply, smul_eq_mul]`. Conclude with `deriv_const_mul_field c`. Use function extensionality and compare the values at `x`.
+
+Use `show dRho ψ V W L (c • f) x + Complex.I * dRho ψ V W (J.comp L) (c • f) x = c * (dRho ψ V W L f x + Complex.I * dRho ψ V W (J.comp L) f x)`. Rewrite using `[e, e]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem annOp_smul (V W : HSp D) (J : WA V W →+ WA V W) (L : ℝ →+ WA V W) (c : ℂ) (f : WA V W → ℂ) :
     annOp ψ V W J L (c • f) = c • annOp ψ V W J L f := by
   have e : ∀ L : ℝ →+ WA V W, ∀ x, dRho ψ V W L (c • f) x = c * dRho ψ V W L f x := fun L x => by
@@ -310,6 +375,13 @@ theorem annOp_smul (V W : HSp D) (J : WA V W →+ WA V W) (L : ℝ →+ WA V W) 
   rw [e, e]
   ring
 
+/- English proof (translation)
+Use `⟨fun h => ?_, fun h => Submodule.subset_span h⟩` and prove the remaining obligations. Proceed by induction on `h using Submodule.span_induction with`. Consider the case `mem x hx => exact hx`. Consider the case `zero`. Take `⟨J, hJ⟩` from `h0 V W a b c`.
+
+Conclude with `⟨J, hJ, 0, fun _ _ => rfl⟩`. Consider the case `add x y _ _ hx hy => exact hA V W a b c _ _ x.2 y.2 hx hy`. Consider the case `smul r x _ hx`. Take `⟨J, hJ, N, hN⟩` from `hx`. Use `⟨J, hJ, N, fun Ls hL => ?_⟩` and prove the remaining obligations.
+
+Establish `e : ∀ l : List (ℝ →+ WA V W), l.foldr (fun L g => annOp ψ V W J L g) (r • x.1) = r • l.foldr (fun L g => annOp ψ V W J L g) x.1` using `fun l => by`. Proceed by induction on `l with`. Consider the case `nil => rfl`. Consider the case `cons L l ih => rw [List.foldr_cons, List.foldr_cons, ih, annOp_smul]`. Conclude with `(e _).trans (by rw [hN Ls hL, smul_zero])`.
+-/
 theorem mem_kfinC (h0 : FockCxEx D) (hA : PolAdd ψ) {V W : HSp D} (a : V.rank ≠ W.rank) (b : V.SigOK) (c : W.SigOK)
     (Φ : schC ψ V W) : Φ ∈ kfinC ψ V W ↔ IsPolFock ψ (th0 D) V W (cptC V) (cptC W) Φ.1 := by
   refine ⟨fun h => ?_, fun h => Submodule.subset_span h⟩
@@ -331,6 +403,19 @@ theorem mem_kfinC (h0 : FockCxEx D) (hA : PolAdd ψ) {V W : HSp D} (a : V.rank �
 
 def DetRootInf (D : D7) : Prop := ∀ (V : HSp D), ∀ g ∈ GinfC V, ∃ x, IsDetRoot V g x
 
+/- English proof (translation)
+Establish `one : ∀ (N : Type) [AddCommGroup N] [Module ℂ N], ∃ c : N → N, (∀ x y, c (x + y) = c x + c y) ∧ (∀ (a : ℂ) x, c (a • x) = star a • c x) ∧ ∀ x, c (c x) = x`. Introduce `N _ _`. Take `⟨I, r⟩ : ∃ I : Type, Nonempty (N ≃ₗ[ℂ] (I →₀ ℂ))` from `⟨_, ⟨(Module.Basis.ofVectorSpace ℂ N).repr⟩⟩`. Take `⟨r⟩` from `r`. Use `⟨fun x => r.symm ((r x).mapRange star (star_zero ℂ)), fun x y => ?_, fun a x => ?_, fun x => ?_⟩` and prove the remaining obligations.
+
+Apply `r.injective` to reduce the goal to its premises. Use extensionality with `i`. Simplify using `only [r.map_add, r.apply_symm_apply, Finsupp.mapRange_apply, Finsupp.add_apply, star_add]`. Apply `r.injective` to reduce the goal to its premises. Use extensionality with `i`.
+
+Simplify using `only [r.map_smul, r.apply_symm_apply, Finsupp.mapRange_apply, Finsupp.smul_apply, smul_eq_mul, star_mul']`. Apply `r.injective` to reduce the goal to its premises. Use extensionality with `i`. Simplify using `only [r.apply_symm_apply, Finsupp.mapRange_apply, star_star]`. Take `⟨Q, hQ⟩` from `K.exists_isCompl`.
+
+Take `⟨c1, a1, s1, i1⟩` from `one K`. Take `⟨c2, a2, s2, i2⟩` from `one Q`. Take `⟨e, he, he'⟩ : ∃ e : (K × Q) ≃ₗ[ℂ] M, (∀ x : K, e.symm x = (x, 0)) ∧ ∀ x : K, e (x, 0) = x` from `⟨Submodule.prodEquivOfIsCompl K Q hQ, Submodule.prodEquivOfIsCompl_symm_apply_left K Q hQ, fun x => by simp⟩`. Use `⟨fun x => e (c1 (e.symm x).1, c2 (e.symm x).2), fun x y => ?_, fun a x => ?_, fun x => ?_, fun x hx => ?_⟩` and prove the remaining obligations. Use `show e (c1 (e.symm (x + y)).1, c2 (e.symm (x + y)).2) = e _ + e _`.
+
+Rewrite using `[← e.map_add, e.symm.map_add, Prod.fst_add, Prod.snd_add, a1, a2, Prod.mk_add_mk]`. Use `show e (c1 (e.symm (a • x)).1, c2 (e.symm (a • x)).2) = star a • e _`. Rewrite using `[← e.map_smul, e.symm.map_smul, Prod.smul_fst, Prod.smul_snd, s1, s2, Prod.smul_mk]`. Use `show e (c1 (e.symm (e _)).1, c2 (e.symm (e _)).2) = x`. Rewrite using `[e.symm_apply_apply, i1, i2, Prod.mk.eta, e.apply_symm_apply]`.
+
+Establish `h0 : c2 0 = 0` using `by have := s2 0 0; simpa using this show e (c1 (e.symm x).1, c2 (e.symm x).2) ∈ K`. Rewrite using `[he ⟨x, hx⟩, h0, he']`. Conclude with `Subtype.property _`.
+-/
 theorem conj_ex {M : Type} [AddCommGroup M] [Module ℂ M] (K : Submodule ℂ M) :
     ∃ c : M → M, (∀ x y, c (x + y) = c x + c y) ∧ (∀ (a : ℂ) x, c (a • x) = star a • c x) ∧ (∀ x, c (c x) = x) ∧
       ∀ x ∈ K, c x ∈ K := by

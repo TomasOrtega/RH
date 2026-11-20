@@ -16,11 +16,22 @@ attribute [local instance] GlobalTheory.Mem.Col2.starE Formalism.BasicNotions.Ho
 
 namespace GlobalTheory.Mem.Col2.DnAdel
 
+/- English proof (translation)
+Use `group`.
+-/
 theorem grpId {G : Type*} [Group G] (a b c d : G) : a * (a⁻¹ * b * c * d⁻¹) * d = b * c := by group
 
+/- English proof (translation)
+Substitute `h` using the available equality. Use `group`.
+-/
 theorem grpId2 {G : Type*} [Group G] (r y1 kb y0 hm m : G) (h : hm = r * (y1 * kb)) :
     r * y1 = y0 * (y0⁻¹ * hm * m⁻¹ * hm⁻¹ * y0) * (y0⁻¹ * hm * m * kb⁻¹) := by subst h; group
 
+/- English proof (translation)
+Establish `hm0 : rll_put n v0 (bc (prV (E` using `E) v0) (hm⁻¹ * g0)) ∈ Formalism.L2.Herm.UstdAf hc n := rll_put_mem_UAd hc n v0 (afsplit_bc_mem hc.sig 1 v0 _ (mul_mem (inv_mem hh) hg))`. Use `⟨fun v' hv' => ?_, ?_⟩` and prove the remaining obligations. Simplify using `only [map_mul, map_inv]`. Rewrite using `[rll_put_ne n v0 v' hv']`. Use `group`.
+
+Conclude with `mul_mem (mul_mem (mul_mem (mul_mem (inv_mem hy0) hh) (inv_mem hm0)) (inv_mem hh)) hy0`.
+-/
 theorem etaFacts {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [StarRing E] [Algebra F E]
     (hc : Formalism.BasicNotions.CMData F E) (n : ℕ) [NeZero n] (v0 : HeightOneSpectrum (𝓞 F))
     (y0 hm g0 : GL (Fin n) (TensorProduct F E (Formalism.L2.Herm.Af F)))
@@ -35,6 +46,11 @@ theorem etaFacts {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E
     group
   · exact mul_mem (mul_mem (mul_mem (mul_mem (inv_mem hy0) hh) (inv_mem hm0)) (inv_mem hh)) hy0
 
+/- English proof (translation)
+Substitute `hJ` using the available equality. Use `set hm := bc (inclE (F := F) (FiniteAdeleRing (𝓞 F) F)) γ * (y1.1 * kb) with hhm`. Use `set m := rll_put n v0 (bc (prV (E := E) v0) (hm⁻¹ * (y0.1 * kb))) with hmdef`. Establish `hE` using `etaFacts hc n v0 y0.1 hm (y0.1 * kb) y0.2 hh (mul_mem y0.2 hk)`. Establish `hx : y0.1 * (y0.1⁻¹ * hm * m * kb⁻¹) * kb = hm * m` using `grpId _ _ _ _`.
+
+Establish `hU` using `hlev _ hx`. Use `⟨⟨_, hE.2⟩, ⟨_, hU⟩, hE.1, grpId2 _ _ _ _ _ _ hhm, ?_⟩` and prove the remaining obligations. Rewrite using `[Units.val_inv_eq_inv_val, hchi ⟨_, hU⟩ hx, hts, inv_inv]`.
+-/
 theorem coreMove {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [StarRing E] [Algebra F E]
     (hc : Formalism.BasicNotions.CMData F E) (n : ℕ) [NeZero n] (J : Matrix (Fin n) (Fin n) E) (hJ : J = 1)
     (v0 : HeightOneSpectrum (𝓞 F)) (U : Subgroup (GL (Fin n) (TensorProduct F E (FiniteAdeleRing (𝓞 F) F))))
@@ -58,6 +74,13 @@ theorem coreMove {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E
   refine ⟨⟨_, hE.2⟩, ⟨_, hU⟩, hE.1, grpId2 _ _ _ _ _ _ hhm, ?_⟩
   rw [Units.val_inv_eq_inv_val, hchi ⟨_, hU⟩ hx, hts, inv_inv]
 
+/- English proof (translation)
+Use extensionality with `x`. Use `show x ∈ localization₂ Q.asIdeal (gmap ga d.N) ↔ x ∈ localization₂ Q.asIdeal (gmap ga d'.N)`. Rewrite using `[mem_localization_gmap, mem_localization_gmap, h.N Q hQ]`. Use `f Q hQ := by`. Use function extensionality and compare the values at `x`.
+
+Use `show d.f Q (ga.symm x) = d'.f Q (ga.symm x)`. Rewrite using `[h.f Q hQ]`. Use `be w hw := by`. Use function extensionality and compare the values at `x`. Use `show (hh w).1.mulVec (d.be w (ga.symm x)) = (hh w).1.mulVec (d'.be w (ga.symm x))`.
+
+Rewrite using `[h.be w hw]`.
+-/
 theorem actSameOff {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [StarRing E] [Algebra F E] {n : ℕ}
     {ST SG : Finset (HeightOneSpectrum (𝓞 E))} (v : HeightOneSpectrum (𝓞 F)) {d d' : Deco E n ST SG}
     (h : Deco.SameOff ST SG v d d') (ga : Sp E n ≃ₗ[E] Sp E n) (hh : GLG E n SG) :
@@ -75,6 +98,21 @@ theorem actSameOff {F E : Type} [Field F] [NumberField F] [Field E] [NumberField
     show (hh w).1.mulVec (d.be w (ga.symm x)) = (hh w).1.mulVec (d'.be w (ga.symm x))
     rw [h.be w hw]
 
+/- English proof (translation)
+Establish `e1 : (((1 : UF E n), a.2)⁻¹ : UF E n × GLG E n SG × GLQ E n Q) • d = ((a.1, 1, 1) : UF E n × GLG E n SG × GLQ E n Q) • r'`. Rewrite using `[← hmv, smul_smul]`. Use `congr 1`. Use `ext1`. Simplify using the standard rewrite rules.
+
+Apply the tactic sequence `ext1 <;> simp`. Use `GlobalTheory.T.isPointOf_decoratedLattice_splicedAtPlace hc n ST SG Q SQ SQ v0 g0 h (extTo SQ r0) _ _ h0 h1 hQ hSG ?_ ?_ ?_ ?_` and prove the remaining obligations. Establish `h2` using `actSameOff v0 hoff (((((1 : UF E n), a.2)⁻¹ : UF E n × GLG E n SG × GLQ E n Q)).1.1) (((((1 : UF E n), a.2)⁻¹ : UF E n × GLG E n SG × GLQ E n Q)).2.1)`. Establish `e2 : (((a.1, 1, 1) : UF E n × GLG E n SG × GLQ E n SQ) • extTo SQ r').deco.1 = ((((1 : UF E n), a.2)⁻¹ : UF E n × GLG E n SG × GLQ E n Q) • d).deco.1`. Rewrite using `[e1]`.
+
+Both sides reduce to the same expression. Rewrite using `[e2]`. Conclude with `h2`. Introduce `P _`. Use extensionality with `x`.
+
+Use `show x ∈ localization₂ P.asIdeal (gmap _ r0.deco.1.N) ↔ x ∈ localization₂ P.asIdeal r0.deco.1.N`. Rewrite using `[mem_localization_gmap]`. Conclude with `Iff.rfl`. Introduce `P _`. Use function extensionality and compare the values at `x`.
+
+Both sides reduce to the same expression. Introduce `P`. Use `⟨⟨P.1, hQSQ P.2⟩, rfl, ?_⟩` and prove the remaining obligations. Establish `hP : P.1 ∉ SG` using `Finset.disjoint_right.1 hdis P.2`. Establish `e3 : ((((1 : UF E n), a.2)⁻¹ : UF E n × GLG E n SG × GLQ E n Q) • r0).fr P = ((((1 : UF E n), a.2)⁻¹ : UF E n × GLG E n SG × GLQ E n Q) • d).fr P` using `by show _ * r0.1.2 P * _ = _ * d.1.2 P * _`.
+
+Rewrite using `[show d.1.2 P = d.fr P from rfl, hfr]`. Both sides reduce to the same expression. Rewrite using `[e3, e1]`. Use `show a.1.1 * ptFr r' P.1 * _ = a.1.1 * r'.1.2 P * _`. Rewrite using `[ptFr_of_mem r' hP P.2]`.
+
+Simplify using the standard rewrite rules. Both sides reduce to the same expression.
+-/
 theorem pointGen {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [StarRing E] [Algebra F E]
     (hc : Formalism.BasicNotions.CMData F E) (n : ℕ) [NeZero n] (ST SG Q SQ : Finset (HeightOneSpectrum (𝓞 E)))
     (v0 : HeightOneSpectrum (𝓞 F)) (r0 d r' : DecoF E n ST SG Q) (a : UF E n × GLG E n SG × GLQ E n Q)
@@ -118,6 +156,9 @@ theorem pointGen {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E
     simp
     rfl
 
+/- English proof (translation)
+Use `show cT _ _ * 1 * _ = 1`. Rewrite using `[mul_one]`. Conclude with `GlobalTheory.Mem.Col2.StepOk.ufGL_conjTranspose_mul γ`.
+-/
 theorem ufGL_UJ {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [StarRing E] [Algebra F E]
     (hc : Formalism.BasicNotions.CMData F E) (n : ℕ) (γ : UF E n) : ufGL E n γ ∈ UJ (hc.sig : E →+* E) (1 : Matrix (Fin n) (Fin n) E) := by
   show cT _ _ * 1 * _ = 1
@@ -126,6 +167,27 @@ theorem ufGL_UJ {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E]
 
 set_option maxHeartbeats 8000000 in
 
+/- English proof (translation)
+Introduce `B X I hOk hPins l Z u a i hi bad Ch chOf K eY eV L hR hY hV hL v β c g hg hβ`. Take `⟨k, R⟩` from `hR`. Take `⟨c0, hc0⟩` from `c`. Substitute `hc0` using the available equality. Establish `hgram : gramN (I.rec7 l Z) i hi = 1` using `((GlobalTheory.T.trueColumn_spaces_standard_in_frameCoords I hOk hPins l Z).2.2.2 i hi).1`.
+
+Use `haveI : NeZero (B.R.N i) := inferInstance`. Establish `hP` using `GlobalTheory.T.levelPrimes_not_selfConjugate_disjoint_type_twist I hOk l u a v`. Establish `hv0 : (eV v).1 = v.1.under (𝓞 B.host.F)` using `hV v`. Establish `hd : ((I.atIn u a).A i).dnPt v c0 g = ((I.stp u a i).rep c0).mv (((I.stp u a i).rep c0).1.1.deco.dn v (TDat.extF _ v.1 g))` using `rfl`. Establish `hdn` using `GlobalTheory.T.moveDown_point_preserves_index_frames _ ((I.stp u a i).rep c0) v (TDat.extF _ v.1 g) (v.1.under (𝓞 B.host.F)) rfl hP.1 (IsOver.conj B.sp.cm rfl)`.
+
+Rewrite `hdn` using `[← hd, ← hv0]`. Establish `hmv` using `(I.stp u a i).mv_smul c0.1 (((I.atIn u a).A i).dnPt v c0 g)`. Establish `hyc' : ∀ (β' : Ch) (h : chOf ((I.fm l u a).dn i v c0 g) = β'), ((K β').y ⟨_, h⟩).1 = ((K (chOf ((I.fm l u a).dn i v c0 g))).y ⟨_, rfl⟩).1` using `by rintro _ rfl; rfl`. Establish `hk : k (chOf ((I.fm l u a).dn i v c0 g)) = k (chOf c0)` using `by rw [hβ]`. Establish `hpt0` using `R.pt c0`.
+
+Establish `hpt1` using `R.pt ((I.fm l u a).dn i v c0 g)`. Rewrite `hpt1` using `[hk, ← hyc' _ hβ]`. Establish `hh` using `GlobalTheory.T.isPointOf_rational_unitary_adelic_mul _ _ B.sp.cm _ _ _ _ ((I.stp u a i).mv c0.1 (((I.atIn u a).A i).dnPt v c0 g)).1 _ _ hpt1`. Establish `hq` using `pointGen B.sp.cm (B.R.N i) _ _ _ I.SQ (eV v).1 _ _ _ (FrmG.incl _ _ ((I.stp u a i).mv c0.1 (((I.atIn u a).A i).dnPt v c0 g))) (congrArg (fun p => p.1.1) hmv) hdn.2.1 hdn.2.2 (I.Q_subset_SQ a) hP.2.2.2 _ _ hpt0 hh (hv0 ▸ hP.2.2.1) (hv0 ▸ hP.2.1)`. Establish `hκ'mv : (((1 : UF B.fields.E (B.R.N i)), ((I.stp u a i).mv c0.1 (((I.atIn u a).A i).dnPt v c0 g)).2)⁻¹ : (I.stp u a i).G c0.1) * (I.stp u a i).mv c0.1 (((I.atIn u a).A i).dnPt v c0 g) = (((I.stp u a i).mv c0.1 (((I.atIn u a).A i).dnPt v c0 g)).1, 1)` using `by ext1`.
+
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish `hgam1 : (I.stp u a i).gam c0.1 (((1 : UF B.fields.E (B.R.N i)), ((I.stp u a i).mv c0.1 (((I.atIn u a).A i).dnPt v c0 g)).2)⁻¹ : (I.stp u a i).G c0.1) = 1` using `by show ufGL _ _ ((1 : UF B.fields.E (B.R.N i))⁻¹) = 1`. Simplify using the standard rewrite rules. Establish `hchr : (I.stp u a i).chr c0.1 (((1 : UF B.fields.E (B.R.N i)), ((I.stp u a i).mv c0.1 (((I.atIn u a).A i).dnPt v c0 g)).2)⁻¹ : (I.stp u a i).G c0.1) = ((I.stp u a i).chr c0.1 ((I.stp u a i).mv c0.1 (((I.atIn u a).A i).dnPt v c0 g)))⁻¹`.
+
+Rewrite using `[map_inv]`. Both sides reduce to the same expression. Establish `hc1` using `GlobalTheory.T.couplingCoset_congr_index_frames_localLattices ((I.stp u a i).act c0.1 (((1 : UF B.fields.E (B.R.N i)), ((I.stp u a i).mv c0.1 (((I.atIn u a).A i).dnPt v c0 g)).2)⁻¹ : (I.stp u a i).G c0.1) ((I.stp u a i).rep c0)) ((I.stp u a i).act c0.1 (((1 : UF B.fields.E (B.R.N …`. Rewrite using `[hdn.1]) (by`. Use function extensionality and compare the values at `P`.
+
+Use `show _ * ((I.stp u a i).rep c0).1.1.1.2 P * _ = _ * (((I.atIn u a).A i).dnPt v c0 g).1.1.1.2 P * _`. Rewrite using `[show (((I.atIn u a).A i).dnPt v c0 g).1.1.1.2 = (((I.atIn u a).A i).dnPt v c0 g).1.1.fr from rfl, hdn.2.1]`. Use the proof step `rfl) (fun w => ⟨(actSameOff _ hdn.2.2 _ _).N w.1 (hv0 ▸ hP.2.1 w.1 w.2), (actSameOff _ hdn.2.2 _ _).be w (hv0 ▸ hP.2.1 w.1 w.2)⟩)`. Establish `hc2 : (I.stp u a i).act c0.1 (((1 : UF B.fields.E (B.R.N i)), ((I.stp u a i).mv c0.1 (((I.atIn u a).A i).dnPt v c0 g)).2)⁻¹ : (I.stp u a i).G c0.1) (((I.atIn u a).A i).dnPt v c0 g) = (I.stp u a i).act c0.1 (((I.stp u a i).mv c0.1 (((I.atIn u a).A i).dnPt v c0 g)).1, 1) ((I.stp u …`. Unfold `GStep.act`.
+
+Rewrite using `[← hκ'mv]`. Conclude with `(congrArg (fun p => @HSMul.hSMul _ _ _ (@instHSMul _ _ ((I.stp u a i).actD c0.1).toSMul) (((1 : UF B.fields.E (B.R.N i)), ((I.stp u a i).mv c0.1 (((I.atIn u a).A i).dnPt v c0 g)).2)⁻¹ : (I.stp u a i).G c0.1) p) hmv).symm.trans (@mul_smul _ _ _ (@MulAction.toSemigroupAction _ _ _ …`. Establish `hc3` using `GlobalTheory.T.couplingCosetInFrames_rational_action_eq I hOk l u a i c0.1 (((I.stp u a i).mv c0.1 (((I.atIn u a).A i).dnPt v c0 g)).1, 1) ((I.stp u a i).rep ((I.stp u a i).cl c0.1 (((I.atIn u a).A i).dnPt v c0 g))) rfl`. Establish `hkey` using `((R.key ((I.fm l u a).dn i v c0 g) c0).1 hβ).2`. Establish `hcos : cosetIn ((I.stp u a i).act c0.1 (((1 : UF B.fields.E (B.R.N i)), ((I.stp u a i).mv c0.1 (((I.atIn u a).A i).dnPt v c0 g)).2)⁻¹ : (I.stp u a i).G c0.1) ((I.stp u a i).rep c0)) = cosetIn ((I.stp u a i).rep c0)`.
+
+Rewrite using `[hc1, hc2, hc3]`. Conclude with `hkey`. Establish `hγU : (I.stp u a i).gam c0.1 ((I.stp u a i).mv c0.1 (((I.atIn u a).A i).dnPt v c0 g)) ∈ UJ (sigD (I.rec7 l Z) : (I.rec7 l Z).host.E →+* (I.rec7 l Z).host.E) (gramN (I.rec7 l Z) i hi)`. Rewrite using `[hgram]`. Conclude with `ufGL_UJ B.sp.cm _ ((I.stp u a i).mv c0.1 (((I.atIn u a).A i).dnPt v c0 g)).1`.
+
+Establish `hts : B.embLL (((I.stp u a i).chr c0.1 (((1 : UF B.fields.E (B.R.N i)), ((I.stp u a i).mv c0.1 (((I.atIn u a).A i).dnPt v c0 g)).2)⁻¹ : (I.stp u a i).G c0.1) : B.LLˣ) : B.LL) = (B.embLL (((I.stp u a i).chr c0.1 ((I.stp u a i).mv c0.1 (((I.atIn u a).A i).dnPt v c0 g)) : B.LLˣ) : B …`. Rewrite using `[hchr, Units.val_inv_eq_inv_val, map_inv₀]`. Take `⟨kp, hkp, -⟩` from `R.k_std (chOf c0)`. Take `⟨η, κ, h1, h2, h3⟩` from `coreMove B.sp.cm (B.R.N i) (gramN (I.rec7 l Z) i hi) hgram (eV v).1 ((K (chOf c0)).lev.U) ((K (chOf c0)).lev.chi) ((K (chOf c0)).y ⟨c0, rfl⟩) ((K (chOf c0)).y ⟨_, hβ⟩) ((I.stp u a i).gam c0.1 ((I.stp u a i).mv c0.1 (((I.atIn u a).A i).dnPt v c0 g))) (k (chOf c0)) _ _ hts hkp.uni …`. Conclude with `⟨⟨_, hγU⟩, η, κ, rfl, h1, h2, h3⟩`.
+-/
 theorem move_down_adelic : ∀ {B : Base} {X : PreX B.toPre} (I : TC B X), I.Ok → TC.Pins B X → ∀ (l : I.Laws) (Z : TC.Later B (I.cols l)), ∀ (u : B.Word) (a : I.ι) (i : ℕ) (hi : i ≤ B.R.m) (bad : Set (HeightOneSpectrum (𝓞 B.host.F))) (Ch : Type) (chOf : (I.stp u a i).Cl → Ch) (K : ∀ β : Ch, LevelChart (I.rec7 l Z) (B.T u) bad i hi (fun c : {c // chOf c = β} => (I.chain l u a).stab i c.1) (fun c => latCrd (I.rec7 l Z) i hi (I.latAt u a i c.1))) (eY : (I.chain l u a).Y i ≃ Formalism.L2.Forms.Fr (I.rec7 l Z) i hi) (eV : (I.atT l u a).vT ≃ {v : HeightOneSpectrum (𝓞 (I.rec7 l Z).host.F) // (B.T u : 𝓞 (I.rec7 l Z).host.F) ∈ v.asIdeal}) (L : LevelCompatibleLattices (D := (I.rec7 l Z)) (I.fm l u a) (B.T u) (I.resT l u a) i hi fun c => latCrd (I.rec7 l Z) i hi (I.latAt u a i c)), I.ReadsK l Z u a i hi chOf K → I.IdY l Z u a i hi eY → I.IdV l u a eV → I.IdL l Z u a i hi L → ∀ (v : (I.atT l u a).vT) (β : Ch) (c : {c // chOf c = β}) (g : Module.Dual (Res v.1) (((I.atIn u a).A i).lk v c.1)), g ≠ 0 → ∀ hβ : chOf ((I.fm l u a).dn i v c.1 g) = β, ∃ (γ : UJ (sigD (I.rec7 l Z) : (I.rec7 l Z).host.E →+* (I.rec7 l Z).host.E) (gramN (I.rec7 l Z) i hi)) (η : UPts (sigD (I.rec7 l Z)) (gramN (I.rec7 l Z) i hi) (FiniteAdeleRing (𝓞 (I.rec7 l Z).host.F) (I.rec7 l Z).host.F)) (κ : (K β).lev.U), (γ.1 : GL (Fin (B.R.N i)) B.fields.E) = (I.stp u a i).gam c.1.1 ((I.stp u a i).mv c.1.1 (((I.atIn u a).A i).dnPt v c.1 g)) ∧ (∀ v', v' ≠ (eV v).1 → bc (prV (E := (I.rec7 l Z).host.E) v') η.1 = 1) ∧ bc (inclE (F := (I.rec7 l Z).host.F) (FiniteAdeleRing (𝓞 (I.rec7 l Z).host.F) (I.rec7 l Z).host.F)) γ.1 * ((K β).y ⟨(I.fm l u a).dn i v c.1 g, hβ⟩).1 = ((K β).y c).1 * η.1 * κ.1 ∧ ((((K β).lev.chi κ)⁻¹ : ℂˣ) : ℂ) = B.embLL (((I.stp u a i).chr c.1.1 ((I.stp u a i).mv c.1.1 (((I.atIn u a).A i).dnPt v c.1 g)) : B.LLˣ) : B.LL) := by
   intro B X I hOk hPins l Z u a i hi bad Ch chOf K eY eV L hR hY hV hL v β c g hg hβ
   obtain ⟨k, R⟩ := hR

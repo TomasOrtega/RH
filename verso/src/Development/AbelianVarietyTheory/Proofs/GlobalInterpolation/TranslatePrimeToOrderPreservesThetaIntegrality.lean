@@ -14,10 +14,28 @@ namespace GlobalTheory.MomTrans
 
 variable {g : ℕ}
 
+/- English proof (translation)
+Take `⟨u, v, rfl⟩` from `h`. Conclude with `⟨n * u, n * v, by push_cast; ring⟩`.
+-/
 theorem ok_natCast_mul {d : ℕ} (n : ℕ) {z : ℂ} (h : z ∈ OK d) : (n : ℂ) * z ∈ OK d := by
   obtain ⟨u, v, rfl⟩ := h
   exact ⟨n * u, n * v, by push_cast; ring⟩
 
+/- English proof (translation)
+Establish `key : ∀ (c : Fin g → ℂ) (j : Fin g), beta S.d S.Hm (∑ i, c i • x i) (x j) = c j * a j`. Introduce `c j`. Rewrite using `[GlobalTheory.MomOne.Translates.beta_sum_left]`. Simplify using `[hb]`. Establish `hli : LinearIndependent ℂ x`.
+
+Rewrite using `[Fintype.linearIndependent_iff]`. Introduce `c hc j`. Establish `h` using `key c j`. Rewrite `h` using `[hc]`. Establish `h0 : beta S.d S.Hm 0 (x j) = 0` using `by simp [beta, hf]`.
+
+Rewrite `h` using `[h0]`. Establish `: (a j : ℂ) ≠ 0` using `by exact_mod_cast (ha j).1.ne'`. Conclude with `(mul_eq_zero.1 h.symm).resolve_right this`. Set `B` to `Module.Basis.mk hli (hli.span_eq_top_of_card_eq_finrank' (by simp)).ge`. Establish `hB : ∀ i, B i = x i` using `fun i => by simp [B]`.
+
+Use `⟨hx, fun y hy => ?_, fun c _ hc i => ?_⟩` and prove the remaining obligations. Establish `hy' : y = ∑ i, B.repr y i • x i` using `by conv_lhs => rw [← B.sum_repr y]`. Simplify using `only [hB]`. Establish `hr : ∀ i, beta S.d S.Hm y (x i) = B.repr y i * a i`. Introduce `i`.
+
+Use `conv_lhs => rw [hy']`. Conclude with `key _ i`. Use `⟨∏ i, a i, Nat.Coprime.prod_left fun i _ => (ha i).2, fun i => ((∏ j ∈ Finset.univ.erase i, a j : ℕ) : ℂ) * beta S.d S.Hm y (x i), fun i => ?_, ?_⟩` and prove the remaining obligations. Conclude with `ok_natCast_mul _ (hO.2.2.2.2.2.2.1 y hy (x i) (hx i))`. Use `conv_lhs => rw [hy']`.
+
+Rewrite using `[Finset.smul_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Simplify using `only`. Rewrite using `[smul_smul, hr i, ← Finset.prod_erase_mul _ _ (Finset.mem_univ i)]`. Use `push_cast`.
+
+Use `congr 1`. Expand and normalize the polynomial expressions, which then agree. Conclude with `(Fintype.linearIndependent_iff.1 hli) c hc i`.
+-/
 theorem nnBasis_of_frame (q : ℕ) (S : Setup g) (hO : S.Ok) (x : Fin g → Fin g → ℂ) (a : Fin g → ℕ)
     (hx : ∀ i, x i ∈ S.La) (hb : ∀ i j, beta S.d S.Hm (x i) (x j) = if i = j then (a i : ℂ) else 0)
     (ha : ∀ i, 0 < a i ∧ Nat.Coprime (a i) q) : S.NNBasis q x := by
@@ -57,6 +75,15 @@ theorem nnBasis_of_frame (q : ℕ) (S : Setup g) (hO : S.Ok) (x : Fin g → Fin 
       ring
   · exact (Fintype.linearIndependent_iff.1 hli) c hc i
 
+/- English proof (translation)
+Introduce `q _ ι δ₀ θ Ω g S e t hPer hO hS hth halg ht hLe`. Take `⟨hIsTh, -, hδ, hall, hΩ, hLaws, -⟩` from `hPer`. Establish `hp : S.d.Prime` using `hO.1`. Establish `h7 : S.d % 16 = 7` using `hO.2.1`. Establish `hq : q.Prime` using `Fact.out`.
+
+Set `lam : Qbar →+* ℂ_[q]` to `(ι : ℂ →+* ℂ_[q]).comp (algebraMap Qbar ℂ)`. Establish `hlam : ∀ z : Qbar, ι (z : ℂ) = lam z` using `fun z => rfl`. Establish `hqd : ¬ q ∣ S.d` using `(GlobalTheory.MomOne.okArith S.d q ι hp h7 hS).2.2.2.2.2.2`. Take `⟨x, a, hx, hb, ha⟩` from `GlobalTheory.MomOne.exists_orthFrame q g S hq hO hqd`. Establish `hNN` using `nnBasis_of_frame q S hO x a hx hb ha`.
+
+Take `⟨N, hN⟩` from `GlobalTheory.MomOne.Translates.moments_of_translates S.d q lam δ₀ θ ι Ω hp h7 hS hIsTh hδ hall hlam hΩ hLaws g S rfl hO g x hNN e hth halg`. Establish `h0 : S.PrimeTo q 0` using `⟨1, one_pos, Nat.coprime_one_left q, by simp [S.La.zero_mem]⟩`. Take `⟨μ0, hμ0, hM0⟩` from `hN 0 h0`. Take `⟨μt, hμt, hMt⟩` from `hN t ht`. Establish `hU0 : opU S.Hm 0 e = e` using `by funext z; simp [opU, hf]`.
+
+Establish `b0` using `GlobalTheory.T.momentMeasure_norm_le_one_iff_latticeIntegral q ι lam δ₀ Ω g S g x 0 (opU S.Hm 0 e) μ0 hlam hδ hΩ hO hS hNN h0 (GlobalTheory.MomOne.Translates.contDiff_opU S.Hm 0 hth.1) hM0`. Establish `bt` using `GlobalTheory.T.momentMeasure_norm_le_one_iff_latticeIntegral q ι lam δ₀ Ω g S g x t (opU S.Hm t e) μt hlam hδ hΩ hO hS hNN ht (GlobalTheory.MomOne.Translates.contDiff_opU S.Hm t hth.1) hMt`. Rewrite `b0` using `[hU0]`. Establish `hN1 : N ≤ 1` using `hμ0 ▸ b0.2 hLe`. Conclude with `bt.1 (hμt ▸ hN1)`.
+-/
 theorem latInt_translate : ∀ (q : ℕ) [Fact q.Prime] (ι : ℂ ≃+* ℂ_[q]) (δ₀ : ℂ) (θ : ℂ → ℂ) (Ω : ℂ_[q]) (g : ℕ) (S : Setup g) (e : (Fin g → ℂ) → ℂ) (t : Fin g → ℂ), Per S.d ι δ₀ θ Ω → S.Ok → GlobalTheory.MomOne.Split S.d q → S.IsTheta e → S.AlgJets δ₀ e → S.PrimeTo q t → LatInt ι (Ω / ι δ₀) S.La.toAddSubgroup e → LatInt ι (Ω / ι δ₀) S.La.toAddSubgroup (opU S.Hm t e) := by
   intro q _ ι δ₀ θ Ω g S e t hPer hO hS hth halg ht hLe
   obtain ⟨hIsTh, -, hδ, hall, hΩ, hLaws, -⟩ := hPer

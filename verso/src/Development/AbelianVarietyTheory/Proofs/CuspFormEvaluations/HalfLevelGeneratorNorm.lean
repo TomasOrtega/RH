@@ -18,6 +18,15 @@ open NumberField IsDedekindDomain Formalism.BasicNotions Formalism.MainNotions F
 
 namespace GlobalTheory.RunIn
 
+/- English proof (translation)
+Introduce `D T h _EX`. Establish `hM : LawsM T.toCore` using `h.toLawsCore.toLawsM`. Establish `hbb : ∀ x : 𝓞 D.host.E, T.Q.H.bar (T.Q.H.bar x) = x`. Introduce `x`. Rewrite using `[bar_core T.toCore, bar_core T.toCore, barE_barE]`.
+
+Establish `hn : ∀ i, piOf T.toCore _EX i * T.Q.H.bar (piOf T.toCore _EX i) = (D.host.g i : 𝓞 D.host.E)`. Introduce `i`. Rewrite using `[bar_core T.toCore]`. Conclude with `piOf_mul_barE T.toCore _EX i`. Use `set π₀ := piOf T.toCore _EX 0`.
+
+Use `set π₁ := piOf T.toCore _EX 1`. Use `⟨T.Q.H.bar (π₀ * π₁), ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[hbb, map_mul, level_M T.toCore hM]`. Establish `h0` using `hn 0`. Establish `h1` using `hn 1`.
+
+Use `push_cast`. Rewrite using `[← h0, ← h1]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hbb, Mb_eq T.toCore hM, ← span_piOf T.toCore hM _EX 0, ← span_piOf T.toCore hM _EX 1, Ideal.span_singleton_mul_span_singleton]`.
+-/
 theorem half_level_generator_norm :
     ∀ (D : D7) (T : Top D) (_h : LawsP T) (_EX : ErrX D), ∃ α : 𝓞 D.host.E, α * T.Q.H.bar α = (T.Q.l.M : 𝓞 D.host.E) ∧ T.Q.l.Mb = Ideal.span {T.Q.H.bar α} := by
   intro D T h _EX

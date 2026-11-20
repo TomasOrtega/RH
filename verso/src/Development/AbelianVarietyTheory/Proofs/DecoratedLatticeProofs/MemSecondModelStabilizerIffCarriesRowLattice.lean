@@ -17,6 +17,11 @@ noncomputable section
 
 namespace GlobalTheory.Core.Mi.KsetAt
 
+/- English proof (translation)
+Introduce `D X h v κ hκ`. Establish `hlat : Submodule.IsLattice D.host.E (latS D)` using `GlobalTheory.StdFrames.isLattice_crdLat (D.sp.Y 0) (D.sp.Y 0).standardTuple_isLattice`. Take `⟨β, hβ⟩` from `GlobalTheory.latticeFrame.exists_frame D.host.F D.host.E _ (latS D) hlat`. Establish `h1` using `((GlobalTheory.SeeConjReadIota.read_iota X h β hβ κ).2.1)`. Establish `h2` using `GlobalTheory.ChainOnto.LStab.finE_mem_St_iff_of_fg (D.sp.Y 0) β (latS D) hβ hlat.fg κ`.
+
+Establish `h3 : κ ∈ GlobalTheory.AdelicU.levelOpen D.sp.cm.sig (D.sp.Y 0).gram (latS D) ↔ Moves (D.sp.Y 0) κ (latS D) (latS D) (· = v)` using `⟨fun hk => GlobalTheory.FinPl.KOpen.moves_of_levelOpen (D.sp.Y 0) (latS D) hlat.fg (· = v) hk, fun hm => GlobalTheory.FinPl.KOpen.levelOpen_of_inK (D.sp.Y 0) (latS D) hlat.fg (· = v) ⟨hκ, hm⟩⟩`. Conclude with `h1.trans (h2.trans (GlobalTheory.AdelicU.mem_levelOpen.symm.trans h3))`.
+-/
 theorem mem_Kset_iff_moves : ∀ {D : D7} (X : Formalism.L2.SG.HidaSetting.HidaSetting D) (h : X.B.I = Formalism.L2.SG.InstExistsPf.instOf D) (v : GlobalTheory.FinPl.Pl D) (κ : GA D (D.sp.Y 0)), κ ∈ grpAt (D.sp.Y 0) (· = v) → ((iotaX X h κ).2 ∈ X.B.I.Kset ↔ Moves (D.sp.Y 0) κ (latS D) (latS D) (· = v)) := by
   intro D X h v κ hκ
   have hlat : Submodule.IsLattice D.host.E (latS D) :=

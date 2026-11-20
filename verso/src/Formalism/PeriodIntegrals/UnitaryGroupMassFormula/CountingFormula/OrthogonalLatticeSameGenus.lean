@@ -103,4 +103,7 @@ def OrthogonalLatticeIntegral : Prop :=
 
 end PI.UnitaryGroupMassFormula.CntFormula.RowsMassW
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 example {K : Type} [Field K] [StarRing K] {V1 : Type} [AddCommGroup V1] [Module K V1] (h1 : V1 →ₗ⋆[K] V1 →ₗ[K] K) (z : V1) (x y : PI.UnitaryGroupMassFormula.CntFormula.RowsMassW.wPerp h1 z) : PI.UnitaryGroupMassFormula.CntFormula.RowsMassW.hPerp h1 z x y = h1 x y := rfl

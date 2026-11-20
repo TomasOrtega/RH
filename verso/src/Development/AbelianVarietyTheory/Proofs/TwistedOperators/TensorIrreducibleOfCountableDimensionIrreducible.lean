@@ -14,6 +14,21 @@ open scoped GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels
 
 namespace GlobalTheory.TensIrr
 
+/- English proof (translation)
+Set `A` to `Algebra.adjoin ℂ SV`. Set `ev : V → (A →ₗ[ℂ] V)` to `fun y => { toFun := fun a => (a : Module.End ℂ V) y map_add' := fun a b => by simp map_smul' := fun c a => by simp }`. Establish `hev : ∀ y (a : A), ev y a = (a : Module.End ℂ V) y` using `fun _ _ => rfl`. Establish `hsurj : Function.Surjective (ev v₀)`. Rewrite using `[← LinearMap.range_eq_top]`.
+
+Break down `hirr (LinearMap.range (ev v₀)) (fun s hs x hx => by` into its components or cases. Take `⟨a, rfl⟩` from `hx`. Conclude with `⟨⟨s * a, mul_mem (Algebra.subset_adjoin hs) a.2⟩, rfl⟩) with h0 | h0`. It suffices to derive a contradiction. Apply `hv₀` to reduce the goal to its premises.
+
+Establish `h1 : ev v₀ 1 ∈ LinearMap.range (ev v₀)` using `LinearMap.mem_range_self _ _`. Rewrite `h1` using `[h0, Submodule.mem_bot]`. Simplify `h1` using `[hev]`. Conclude with `h0`. Establish `hker : LinearMap.ker (ev v₀) ≤ LinearMap.ker (ev w)` using `fun a ha => by`.
+
+Rewrite `ha`, the goal using `[LinearMap.mem_ker, hev]`. Conclude with `h a a.2 ha`. Set `φ : Module.End ℂ V` to `((LinearMap.ker (ev v₀)).liftQ (ev w) hker).comp (LinearMap.quotKerEquivOfSurjective (ev v₀) hsurj).symm.toLinearMap`. Establish `hφ : ∀ a : A, φ ((a : Module.End ℂ V) v₀) = (a : Module.End ℂ V) w`. Introduce `a`.
+
+Establish `h2 : (LinearMap.quotKerEquivOfSurjective (ev v₀) hsurj).symm (ev v₀ a) = Submodule.Quotient.mk a`. Rewrite using `[LinearEquiv.symm_apply_eq, LinearMap.quotKerEquivOfSurjective_apply_mk]`. Simplify using `only [φ, LinearMap.comp_apply, LinearEquiv.coe_coe]`. Rewrite using `[← hev v₀, h2, Submodule.liftQ_apply, hev]`. Take `⟨c, hc⟩` from `GlobalTheory.dixmier_commutant_scalar SV V (fun s => s.1) hrank (fun N hN => hirr N (fun a ha x hx => hN ⟨a, ha⟩ x hx)) φ (fun s => by`.
+
+Use extensionality with `y`. Take `⟨a, rfl⟩` from `hsurj y`. Establish `h1 : φ ((s.1 * (a : Module.End ℂ V)) v₀) = (s.1 * (a : Module.End ℂ V)) w` using `hφ ⟨s.1 * a, mul_mem (Algebra.subset_adjoin s.2) a.2⟩`. Simplify using `only [Module.End.mul_apply, hev] at h1 ⊢`. Rewrite using `[h1, hφ a])`.
+
+Use `⟨c, ?_⟩` and prove the remaining obligations. Establish `h3` using `hφ 1`. Simplify using `only [OneMemClass.coe_one, Module.End.one_apply] at h3`. Rewrite using `[← h3, hc]`. Simplify using the standard rewrite rules.
+-/
 theorem eq_smul_of_ann {V : Type} [AddCommGroup V] [Module ℂ V] (SV : Set (Module.End ℂ V))
     (hrank : Module.rank ℂ V ≤ Cardinal.aleph0)
     (hirr : ∀ N : Submodule ℂ V, (∀ a ∈ SV, ∀ x ∈ N, a x ∈ N) → N = ⊥ ∨ N = ⊤)
@@ -61,6 +76,13 @@ theorem eq_smul_of_ann {V : Type} [AddCommGroup V] [Module ℂ V] (SV : Set (Mod
   rw [← h3, hc]
   simp
 
+/- English proof (translation)
+Introduce `a ha`. Proceed by induction on `ha using Algebra.adjoin_induction with`. Consider the case `mem a ha => exact hN a ha`. Consider the case `algebraMap r`. Introduce `x hx`.
+
+Rewrite using `[Algebra.algebraMap_eq_smul_one, LinearMap.rTensor_smul, Module.End.one_eq_id, LinearMap.rTensor_id]`. Simplify using `using N.smul_mem r hx`. Consider the case `add a b _ _ ha hb`. Introduce `x hx`. Rewrite using `[LinearMap.rTensor_add, LinearMap.add_apply]`.
+
+Conclude with `N.add_mem (ha x hx) (hb x hx)`. Consider the case `mul a b _ _ ha hb`. Introduce `x hx`. Rewrite using `[LinearMap.rTensor_mul, Module.End.mul_apply]`. Conclude with `ha _ (hb x hx)`.
+-/
 theorem rTensor_mem_adjoin {V U : Type} [AddCommGroup V] [Module ℂ V] [AddCommGroup U] [Module ℂ U]
     (SV : Set (Module.End ℂ V)) (N : Submodule ℂ (V ⊗[ℂ] U))
     (hN : ∀ a ∈ SV, ∀ x ∈ N, LinearMap.rTensor U a x ∈ N) :
@@ -82,6 +104,41 @@ theorem rTensor_mem_adjoin {V U : Type} [AddCommGroup V] [Module ℂ V] [AddComm
     rw [LinearMap.rTensor_mul, Module.End.mul_apply]
     exact ha _ (hb x hx)
 
+/- English proof (translation)
+Introduce `V U _ _ _ _ SV SU hrank _ hV hU N hNV hNU`. Distinguish the cases in `hN : N = ⊥`. Conclude with `Or.inl hN`. Use `right`. Take `⟨x₁, hx₁N, hx₁⟩` from `Submodule.exists_mem_ne_zero_of_ne_bot hN`.
+
+Set `b` to `Module.Free.chooseBasis ℂ U`. Set `e` to `TensorProduct.equivFinsuppOfBasisRight (M := V) b`. Establish `he : ∀ (a : Module.End ℂ V) y j, e (LinearMap.rTensor U a y) j = a (e y j)`. Introduce `a y j`. Proceed by induction on `y using TensorProduct.induction_on with`.
+
+Consider the case `zero => simp`. Consider the case `tmul m n => simp [e, TensorProduct.equivFinsuppOfBasisRight_apply_tmul_apply]`. Consider the case `add y z hy hz => simp only [map_add, Finsupp.add_apply, hy, hz]`. Establish `hex : ∃ n, ∃ y ∈ N, y ≠ 0 ∧ (e y).support.card = n` using `⟨_, x₁, hx₁N, hx₁, rfl⟩`. Take `⟨x, hxN, hx0, hxc⟩` from `Nat.find_spec hex`.
+
+Establish `hmin : ∀ y ∈ N, (e y).support.card < (e x).support.card → y = 0`. Introduce `y hy hlt`. Assume the negation of the conclusion as `hy0`. Conclude with `Nat.find_min hex (hxc ▸ hlt) ⟨y, hy, hy0, rfl⟩`. Choose the witnesses or unpack the hypotheses as in `⟨j₀, hj₀⟩ : (e x).support.Nonempty := by`.
+
+Rewrite using `[Finsupp.support_nonempty_iff]`. Conclude with `(LinearEquiv.map_ne_zero_iff e).mpr hx0`. Use `set v₀ := e x j₀ with hv₀def`. Establish `hv₀ : v₀ ≠ 0` using `Finsupp.mem_support_iff.mp hj₀`. Establish `hA` using `rTensor_mem_adjoin SV N hNV`.
+
+Establish `hcol : ∀ j, ∃ c : ℂ, e x j = c • v₀`. Introduce `j`. Use `eq_smul_of_ann SV hrank hV v₀ (e x j) hv₀ (fun a ha hav => ?_)` and prove the remaining obligations. Establish `hy` using `hmin _ (hA a ha x hxN) (by`. Apply `Finset.card_lt_card` to reduce the goal to its premises.
+
+Rewrite using `[Finset.ssubset_iff_of_subset]`. Use `⟨j₀, hj₀, ?_⟩` and prove the remaining obligations. Rewrite using `[Finsupp.mem_support_iff, not_not, he]`. Conclude with `hav`. Introduce `i hi`.
+
+Rewrite `hi`, the goal using `[Finsupp.mem_support_iff]`. Introduce `h0`. Apply `hi` to reduce the goal to its premises. Rewrite using `[he, h0, map_zero])`. Establish `h5` using `he a x j`.
+
+Rewrite `h5` using `[hy, map_zero, Finsupp.zero_apply]`. Conclude with `h5.symm`. Take `⟨ℓ, hℓ⟩` from `Module.Projective.exists_dual_eq_one ℂ hv₀`. Set `u : U` to `b.repr.symm ((e x).mapRange ℓ (map_zero ℓ))`. Establish `hxu : x = v₀ ⊗ₜ u`.
+
+Apply `e.injective` to reduce the goal to its premises. Use extensionality with `j`. Rewrite using `[TensorProduct.equivFinsuppOfBasisRight_apply_tmul_apply]`. Simplify using `only [u, LinearEquiv.apply_symm_apply, Finsupp.mapRange_apply]`. Take `⟨c, hc⟩` from `hcol j`.
+
+Rewrite using `[hc, map_smul, hℓ, smul_eq_mul, mul_one]`. Establish `hu : u ≠ 0`. Introduce `hu0`. Apply `hx0` to reduce the goal to its premises. Rewrite using `[hxu, hu0, TensorProduct.tmul_zero]`.
+
+Establish `hP : N.comap ((TensorProduct.mk ℂ V U).flip u) = ⊤`. Break down `hV (N.comap ((TensorProduct.mk ℂ V U).flip u)) (fun a ha v hv => by` into its components or cases. Simplify using `only [Submodule.mem_comap, LinearMap.flip_apply, TensorProduct.mk_apply] at hv ⊢`. Establish `h6` using `hNV a ha _ hv`. Rewrite using `[LinearMap.rTensor_tmul] at h6) with h0 | h0` and apply the resulting hypothesis.
+
+It suffices to derive a contradiction. Establish `h7 : v₀ ∈ N.comap ((TensorProduct.mk ℂ V U).flip u)`. Simplify using `only [Submodule.mem_comap, LinearMap.flip_apply, TensorProduct.mk_apply]`. Rewrite using `[← hxu]`. Conclude with `hxN`.
+
+Rewrite `h7` using `[h0, Submodule.mem_bot]`. Conclude with `hv₀ h7`. Conclude with `h0`. Establish `hQ : ∀ v : V, N.comap (TensorProduct.mk ℂ V U v) = ⊤`. Introduce `v`.
+
+Break down `hU (N.comap (TensorProduct.mk ℂ V U v)) (fun c hc y hy => by` into its components or cases. Simplify using `only [Submodule.mem_comap, TensorProduct.mk_apply] at hy ⊢`. Establish `h6` using `hNU c hc _ hy`. Rewrite using `[LinearMap.lTensor_tmul] at h6) with h0 | h0` and apply the resulting hypothesis. It suffices to derive a contradiction.
+
+Establish `h7 : u ∈ N.comap (TensorProduct.mk ℂ V U v)`. Establish `h8 : v ∈ N.comap ((TensorProduct.mk ℂ V U).flip u)` using `by rw [hP]; trivial`. Simplify using `using h8`. Rewrite `h7` using `[h0, Submodule.mem_bot]`. Conclude with `hu h7`.
+
+Conclude with `h0`. Rewrite using `[eq_top_iff, ← TensorProduct.span_tmul_eq_top, Submodule.span_le]`. Introduce and unpack `_ ⟨m, n, rfl⟩`. Establish `h9 : n ∈ N.comap (TensorProduct.mk ℂ V U m)` using `by rw [hQ m]; trivial`. Simplify using `using h9`.
+-/
 theorem tensor_irreducible : ∀ (V U : Type) [AddCommGroup V] [Module ℂ V] [AddCommGroup U] [Module ℂ U] (SV : Set (Module.End ℂ V))
     (SU : Set (Module.End ℂ U)), Module.rank ℂ V ≤ Cardinal.aleph0 → Nontrivial V →
     (∀ N : Submodule ℂ V, (∀ a ∈ SV, ∀ x ∈ N, a x ∈ N) → N = ⊥ ∨ N = ⊤) →

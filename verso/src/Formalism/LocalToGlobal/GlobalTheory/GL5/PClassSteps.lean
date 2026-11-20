@@ -14,6 +14,11 @@ section Gen
 
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
 
+/- English proof (translation)
+Use `show ∑ i, ((r : E) • x) i • b i ∈ L0`. Establish `e : ∑ i, ((r : E) • x) i • b i = r • ∑ i, x i • b i`. Rewrite using `[Finset.smul_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[Pi.smul_apply, smul_eq_mul, mul_smul, algebraMap_smul]`.
+
+Rewrite using `[e]`. Conclude with `L0.smul_mem r hx`.
+-/
 theorem crd_smul_mem {V : Type} [AddCommGroup V] [Module E V] [Module (𝓞 E) V] [IsScalarTower (𝓞 E) E V] {M : ℕ}
     (b : Module.Basis (Fin M) E V) (L0 : Submodule (𝓞 E) V) (r : 𝓞 E) {x : Fin M → E} (hx : x ∈ crdOf b L0) :
     (r : E) • x ∈ crdOf b L0 := by
@@ -25,6 +30,13 @@ theorem crd_smul_mem {V : Type} [AddCommGroup V] [Module E V] [Module (𝓞 E) V
   rw [e]
   exact L0.smul_mem r hx
 
+/- English proof (translation)
+Proceed by induction on `hy using AddSubgroup.closure_induction with`. Consider the case `mem y hy`. Take `⟨a, ha, x, hx, rfl⟩` from `hy`. Use `AddSubgroup.subset_closure ⟨a, ha, (r : E) • x, hL r x hx, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `i`.
+
+Rewrite using `[Pi.smul_apply, smul_eq_mul, Pi.smul_apply, smul_eq_mul]`. Use `show (1 : Af F) ⊗ₜ[F] (r : E) * a ⊗ₜ[F] x i = a ⊗ₜ[F] ((r : E) * x i)`. Rewrite using `[Algebra.TensorProduct.tmul_mul_tmul, one_mul]`. Consider the case `zero => rw [smul_zero]`. Conclude with `zero_mem _`.
+
+Consider the case `add y z _ _ h1 h2 => rw [smul_add]`. Conclude with `add_mem h1 h2`. Consider the case `neg y _ h1 => rw [smul_neg]`. Conclude with `neg_mem h1`.
+-/
 theorem latHat_smul {M : ℕ} (L : Set (Fin M → E)) (hL : ∀ r : 𝓞 E, ∀ x ∈ L, (r : E) • x ∈ L) (r : 𝓞 E)
     {y : Fin M → Af F ⊗[F] E} (hy : y ∈ latHat F E L) :
     inclR (F := F) (Af F) (r : E) • y ∈ latHat F E L := by
@@ -40,13 +52,22 @@ theorem latHat_smul {M : ℕ} (L : Set (Fin M → E)) (hL : ∀ r : 𝓞 E, ∀ 
   | add y z _ _ h1 h2 => rw [smul_add]; exact add_mem h1 h2
   | neg y _ h1 => rw [smul_neg]; exact neg_mem h1
 
+/- English proof (translation)
+Use function extensionality and compare the values at `i`. Conclude with `map_zero _`.
+-/
 theorem vinc_zero {M : ℕ} : PI.UnitaryGroupMassFormula.UJClassFin.vinc (F := F) (0 : Fin M → E) = 0 := by
   funext i; exact map_zero _
 
+/- English proof (translation)
+Use function extensionality and compare the values at `i`. Conclude with `map_add _ _ _`.
+-/
 theorem vinc_add {M : ℕ} (x y : Fin M → E) :
     PI.UnitaryGroupMassFormula.UJClassFin.vinc (F := F) (x + y) = PI.UnitaryGroupMassFormula.UJClassFin.vinc (F := F) x + PI.UnitaryGroupMassFormula.UJClassFin.vinc (F := F) y := by
   funext i; exact map_add _ _ _
 
+/- English proof (translation)
+Use function extensionality and compare the values at `i`. Conclude with `map_mul _ _ _`.
+-/
 theorem vinc_smul {M : ℕ} (c : E) (x : Fin M → E) :
     PI.UnitaryGroupMassFormula.UJClassFin.vinc (F := F) (c • x) = inclR (F := F) (Af F) c • PI.UnitaryGroupMassFormula.UJClassFin.vinc (F := F) x := by
   funext i; exact map_mul _ _ _
@@ -84,6 +105,31 @@ def LatGenus : Prop :=
     ∀ (g : HA (AF F) σ (gramOf h b)) (N : Submodule (𝓞 E) V),
       (N : Set V) = latSet σ (gramOf h b) b L0 g → Submodule.IsLattice E N → SameGenus h L0 N
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ _ σ V _ _ _ _ _ h M b L0 hσ hτ hL hsig g`. Establish `hcrd` using `crdBounds F E V M b L0 hL`. Take `⟨D, T, c0, hD, hT, hc0, hall⟩` from `PI.UnitaryGroupMassFormula.UJClassFin.adelic_bounds F E σ M (gramOf h b) (crdOf b L0) hσ hτ hsig hcrd.1 hcrd.2`. Take `⟨-, ⟨k, hk0, hlow⟩, hint, -⟩` from `hall g`. Establish `hLs : ∀ r : 𝓞 E, ∀ x ∈ crdOf b L0, (r : E) • x ∈ crdOf b L0` using `fun r x hx => crd_smul_mem b L0 r hx`.
+
+Set `Nc` to `lamSub σ (gramOf h b) (crdOf b L0) hLs g`. Set `e' : V ≃ₗ[𝓞 E] (Fin M → E)` to `b.equivFun.restrictScalars (𝓞 E)`. Set `N : Submodule (𝓞 E) V` to `Nc.comap e'.toLinearMap`. Use `⟨N, rfl, ?_, ?_⟩` and prove the remaining obligations. Take `⟨τ⟩ : Nonempty (E →+* ℂ)` from `inferInstance`.
+
+Establish `hPD` using `PI.UnitaryGroupMassFormula.UJClassFin.posDefOfDefiniteSignature_holds M _ (hsig τ)`. Establish `hdet : (gramOf h b).det ≠ 0`. Introduce `h0`. Establish `: ((gramOf h b).map τ).det = 0`. Rewrite using `[show (gramOf h b).map τ = τ.mapMatrix (gramOf h b) from rfl, ← RingHom.map_det, h0, map_zero]`.
+
+Conclude with `hPD.det_pos.ne' this`. Establish `hu : IsUnit (gramOf h b).det` using `isUnit_iff_ne_zero.mpr hdet`. Take `⟨d, hd0, hdint⟩` from `PI.UnitaryGroupMassFormula.UJClassFin.mat_den (gramOf h b)⁻¹`. Establish `hJy : ∀ y ∈ Nc, ∀ i, IsIntegral ℤ ((D : E) * (k : E) * ((gramOf h b).mulVec y) i)`. Introduce `y hy i`.
+
+Establish `h1` using `hint _ (hlow i 1 isIntegral_one) y hy`. Establish `e : PI.HermLatFin.herm (σ : E →+* E) (gramOf h b) (Pi.single i ((k : E) * 1)) y = (k : E) * ((gramOf h b).mulVec y) i`. Unfold `PI.HermLatFin.herm`. Rewrite using `[Finset.sum_eq_single i]`. Simplify using `only [Pi.single_eq_same, mul_one, map_natCast, Matrix.mulVec, dotProduct, Finset.mul_sum, mul_assoc]`.
+
+Introduce `j _ hj`. Simplify using `[Pi.single_eq_of_ne hj]`. Introduce `hi`. Conclude with `absurd (Finset.mem_univ i) hi`. Rewrite `h1` using `[e, ← mul_assoc]`.
+
+Conclude with `h1`. Establish `hy_eq : ∀ y : Fin M → E, y = ((gramOf h b)⁻¹).mulVec ((gramOf h b).mulVec y)`. Introduce `y`. Rewrite using `[Matrix.mulVec_mulVec, Matrix.nonsing_inv_mul _ hu, Matrix.one_mulVec]`. Establish `hfgc : Nc.FG`.
+
+Use `PI.UnitaryGroupMassFormula.UJClassFin.fg_of_den Nc (d * D * k) (by positivity) fun y hy j => ?_` and prove the remaining obligations. Establish `hyj : y j = ∑ i, (gramOf h b)⁻¹ j i * ((gramOf h b).mulVec y) i` using `by conv_lhs => rw [hy_eq y]`. Both sides reduce to the same expression. Rewrite using `[hyj, Finset.mul_sum]`. Use `IsIntegral.sum _ fun i _ => ?_` and prove the remaining obligations.
+
+Establish `e : ((d * D * k : ℕ) : E) * ((gramOf h b)⁻¹ j i * ((gramOf h b).mulVec y) i) = ((d : E) * (gramOf h b)⁻¹ j i) * ((D : E) * (k : E) * ((gramOf h b).mulVec y) i)` using `by push_cast; ring`. Rewrite using `[e]`. Conclude with `(hdint j i).mul (hJy y hy i)`. Establish `hN : N = Nc.map e'.symm.toLinearMap` using `Submodule.comap_equiv_eq_map_symm e' Nc`. Rewrite using `[hN]`.
+
+Conclude with `hfgc.map _`. Rewrite using `[eq_top_iff, ← b.span_eq, Submodule.span_le]`. Introduce and unpack `_ ⟨i, rfl⟩`. Establish `hk : (k : E) ≠ 0` using `by exact_mod_cast hk0.ne'`. Establish `hmem : (k : E) • b i ∈ N` using `by show b.equivFun ((k : E) • b i) ∈ PI.UnitaryGroupMassFormula.UJClassFin.abelian₂ σ (gramOf h b) (crdOf b L0) g`.
+
+Establish `e : b.equivFun ((k : E) • b i) = Pi.single i ((k : E) * 1)`. Use function extensionality and compare the values at `j`. Rewrite using `[map_smul, Pi.smul_apply, Module.Basis.equivFun_apply, b.repr_self, Finsupp.single_apply, Pi.single_apply, smul_eq_mul]`. Apply the tactic sequence `split_ifs <;> simp_all`. Rewrite using `[e]`.
+
+Conclude with `hlow i 1 isIntegral_one`. Establish `e2 : b i = (k : E)⁻¹ • ((k : E) • b i)` using `by rw [smul_smul, inv_mul_cancel₀ hk, one_smul]`. Rewrite using `[e2]`. Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span hmem)`.
+-/
 theorem latLattice : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] [StarRing E]
     (σ : E →ₐ[F] E) (V : Type) [AddCommGroup V] [Module E V] [Module (𝓞 E) V]
     [IsScalarTower (𝓞 E) E V] [FiniteDimensional E V]
@@ -164,11 +210,17 @@ theorem latLattice : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [Numbe
     rw [e2]
     exact Submodule.smul_mem _ _ (Submodule.subset_span hmem)
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ _ σ V _ _ _ _ _ h M b L0 hσ hθ hτ hsymm hnd hL hsig g`. Take `⟨N, hNs, hNl⟩` from `latLattice F E σ V h M b L0 hσ hτ hL hsig g`. Conclude with `⟨N, hNs, hNl, hG F E σ V h M b L0 hσ hθ hτ hsymm hnd hL hsig g N hNs hNl⟩`.
+-/
 theorem latStep_of (hG : LatGenus) : LatStep := by
   intro F E _ _ _ _ _ _ σ V _ _ _ _ _ h M b L0 hσ hθ hτ hsymm hnd hL hsig g
   obtain ⟨N, hNs, hNl⟩ := latLattice F E σ V h M b L0 hσ hτ hL hsig g
   exact ⟨N, hNs, hNl, hG F E σ V h M b L0 hσ hθ hτ hsymm hnd hL hsig g N hNs hNl⟩
 
+/- English proof (translation)
+The claim follows from `uJClassMass_of_open (latStep_of hG) hS`.
+-/
 theorem uJClassMass_of_genus (hG : LatGenus) (hS : SurjStep) : PI.UJClassMass2.UJClassMass :=
   uJClassMass_of_open (latStep_of hG) hS
 

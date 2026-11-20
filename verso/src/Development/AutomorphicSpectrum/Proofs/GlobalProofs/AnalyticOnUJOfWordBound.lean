@@ -21,10 +21,18 @@ local notation "Jε" => ReciprocityTheory.ChartRestriction.DS.Jm
 def projJ (ε : Fin n → Bool) (Y : Matrix (Fin n) (Fin n) ℂ) : Matrix (Fin n) (Fin n) ℂ :=
   (1 / 2 : ℝ) • (Y - Jε ε * Yᴴ * Jε ε)
 
+/- English proof (translation)
+Simplify using `only [ReciprocityTheory.ChartRestriction.DS.Jm, diagonal_conjTranspose]`. Apply the tactic sequence `congr 1; funext a; by_cases h : ε a <;> simp [h]`.
+-/
 theorem Jm_herm (ε : Fin n → Bool) : (Jε ε)ᴴ = Jε ε := by
   simp only [ReciprocityTheory.ChartRestriction.DS.Jm, diagonal_conjTranspose]
   congr 1; funext a; by_cases h : ε a <;> simp [h]
 
+/- English proof (translation)
+Establish `hJ : Jε ε * Jε ε = 1` using `CompanionTheory.D.gk.HC.Jm_sq_A`. Use `show (projJ ε Y)ᴴ * Jε ε + Jε ε * projJ ε Y = 0`. Establish `e : (projJ ε Y)ᴴ = (1 / 2 : ℝ) • (Yᴴ - Jε ε * Y * Jε ε)`. Simplify using `only [projJ, conjTranspose_smul, conjTranspose_sub, conjTranspose_mul, Jm_herm, conjTranspose_conjTranspose, star_trivial, Matrix.mul_assoc]`. Establish `e1 : Jε ε * Y * Jε ε * Jε ε = Jε ε * Y` using `by rw [Matrix.mul_assoc, hJ, Matrix.mul_one]`.
+
+Establish `e2 : Jε ε * (Jε ε * Yᴴ * Jε ε) = Yᴴ * Jε ε`. Rewrite using `[← Matrix.mul_assoc, ← Matrix.mul_assoc, hJ, Matrix.one_mul]`. Rewrite using `[e, projJ, smul_mul_assoc, mul_smul_comm, Matrix.sub_mul, Matrix.mul_sub, e1, e2, ← smul_add]`. Simplify using the standard rewrite rules.
+-/
 theorem inG_projJ (ε : Fin n → Bool) (Y : Matrix (Fin n) (Fin n) ℂ) : ReciprocityTheory.ChartRestriction.DS.inG ε (projJ ε Y) := by
   have hJ : Jε ε * Jε ε = 1 := CompanionTheory.D.gk.HC.Jm_sq_A
   show (projJ ε Y)ᴴ * Jε ε + Jε ε * projJ ε Y = 0
@@ -37,6 +45,11 @@ theorem inG_projJ (ε : Fin n → Bool) (Y : Matrix (Fin n) (Fin n) ℂ) : Recip
   rw [e, projJ, smul_mul_assoc, mul_smul_comm, Matrix.sub_mul, Matrix.mul_sub, e1, e2, ← smul_add]
   simp
 
+/- English proof (translation)
+Establish `hJ : Jε ε * Jε ε = 1` using `CompanionTheory.D.gk.HC.Jm_sq_A`. Establish `h : Xᴴ * Jε ε + Jε ε * X = 0` using `hX`. Establish `h1 : Xᴴ * Jε ε = -(Jε ε * X)` using `eq_neg_of_add_eq_zero_left h`. Establish `h2 : Jε ε * Xᴴ * Jε ε = -X`. Rewrite using `[Matrix.mul_assoc, h1, Matrix.mul_neg, ← Matrix.mul_assoc, hJ, Matrix.one_mul]`.
+
+Rewrite using `[projJ, h2, sub_neg_eq_add, ← two_smul ℝ X, smul_smul]`. Evaluate the numerical expressions.
+-/
 theorem projJ_of_inG {ε : Fin n → Bool} {X : Matrix (Fin n) (Fin n) ℂ} (hX : ReciprocityTheory.ChartRestriction.DS.inG ε X) :
     projJ ε X = X := by
   have hJ : Jε ε * Jε ε = 1 := CompanionTheory.D.gk.HC.Jm_sq_A
@@ -58,15 +71,28 @@ def projL (ε : Fin n → Bool) : (Fin n → Fin n → ℂ) →ₗ[ℝ] Matrix (
     simp only [projJ, e, conjTranspose_smul, star_trivial, mul_smul_comm, smul_mul_assoc, RingHom.id_apply]
     module
 
+/- English proof (translation)
+The claim follows from `Finset.sum_nonneg fun _ _ => Finset.sum_nonneg fun _ _ => norm_nonneg _`.
+-/
 theorem mnorm_nonneg (X : Matrix (Fin n) (Fin n) ℂ) : 0 ≤ mnorm X :=
   Finset.sum_nonneg fun _ _ => Finset.sum_nonneg fun _ _ => norm_nonneg _
 
+/- English proof (translation)
+Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem mnorm_of_le (Y : Fin n → Fin n → ℂ) : mnorm (Matrix.of Y) ≤ (n : ℝ) ^ 2 * ‖Y‖ := by
   calc mnorm (Matrix.of Y) ≤ ∑ _a : Fin n, ∑ _b : Fin n, ‖Y‖ :=
         Finset.sum_le_sum fun a _ => Finset.sum_le_sum fun b _ =>
           (norm_le_pi_norm (Y a) b).trans (norm_le_pi_norm Y a)
     _ = _ := by simp; ring
 
+/- English proof (translation)
+Apply the tactic sequence `have hentry : ∀ a b, ‖projL ε Y a b‖ ≤ ‖Y‖ := fun a b => by`. Establish `h1 : ‖Y a b‖ ≤ ‖Y‖` using `(norm_le_pi_norm (Y a) b).trans (norm_le_pi_norm Y a)`. Establish `h2 : ‖Y b a‖ ≤ ‖Y‖` using `(norm_le_pi_norm (Y b) a).trans (norm_le_pi_norm Y b)`. Apply the tactic sequence `have hs : ∀ a : Fin n, ‖(if ε a = true then (1 : ℂ) else -1)‖ = 1 := fun a => by by_cases h : ε a <;> simp [h]`. Establish `e : projL ε Y a b = (1 / 2 : ℝ) • (Y a b - (if ε a = true then (1 : ℂ) else -1) * star (Y b a) * (if ε b = true then (1 : ℂ) else -1))` using `by show projJ ε (Matrix.of Y) a b = _`.
+
+Simplify using `only [projJ, ReciprocityTheory.ChartRestriction.DS.Jm, Matrix.smul_apply, Matrix.sub_apply, Matrix.mul_diagonal, Matrix.diagonal_mul, conjTranspose_apply, Matrix.of_apply]`. Rewrite using `[e, norm_smul]`. Establish `h3 : ‖Y a b - (if ε a = true then (1 : ℂ) else -1) * star (Y b a) * (if ε b = true then (1 : ℂ) else -1)‖ ≤ ‖Y a b‖ + ‖Y b a‖`. Use `(norm_sub_le _ _).trans (le_of_eq ?_)` and prove the remaining obligations. Rewrite using `[norm_mul, norm_mul, hs, hs, norm_star]`.
+
+Expand and normalize the polynomial expressions, which then agree. Establish `h4 : ‖(1 / 2 : ℝ)‖ = 1 / 2` using `by norm_num`. Rewrite using `[h4]`. Combine the linear equalities and inequalities to obtain the conclusion. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem mnorm_projL_le (ε : Fin n → Bool) (Y : Fin n → Fin n → ℂ) : mnorm (projL ε Y) ≤ (n : ℝ) ^ 2 * ‖Y‖ := by
   have hentry : ∀ a b, ‖projL ε Y a b‖ ≤ ‖Y‖ := fun a b => by
     have h1 : ‖Y a b‖ ≤ ‖Y‖ := (norm_le_pi_norm (Y a) b).trans (norm_le_pi_norm Y a)
@@ -89,6 +115,9 @@ theorem mnorm_projL_le (ε : Fin n → Bool) (Y : Fin n → Fin n → ℂ) : mno
         Finset.sum_le_sum fun a _ => Finset.sum_le_sum fun b _ => hentry a b
     _ = _ := by simp; ring
 
+/- English proof (translation)
+Introduce `t` and use `ReciprocityTheory.ChartRestriction.DS.exp_smul_mem_UJset hX t`.
+-/
 theorem lieOf_of_inG {ε : Fin n → Bool} {X : Matrix (Fin n) (Fin n) ℂ} (hX : ReciprocityTheory.ChartRestriction.DS.inG ε X) :
     X ∈ HCSS.lieOf (UJset ε) := fun t => ReciprocityTheory.ChartRestriction.DS.exp_smul_mem_UJset hX t
 
@@ -104,6 +133,11 @@ def smoothSub (hG : IsLinRed G) (hrep : Formalism.QuantumDeterminants.IsCRepOn G
     have h := (GlobalTheory.T.smooth_vectors_invariant_subspace hG hrep).2.1 (r : ℂ) x hx
     rwa [Complex.coe_smul] at h
 
+/- English proof (translation)
+Establish `h` using `(GlobalTheory.T.derived_action_of_smooth_vector hG hrep hv hX).1`. Establish `h2 : HasDerivAt (fun t : ℝ => r * t) r 0` using `by simpa using (hasDerivAt_id (0 : ℝ)).const_mul r`. Establish `h3 : HasDerivAt (fun t : ℝ => π (NormedSpace.exp (t • X)) v) (dRep π X v) (r * 0)` using `by simpa using h`. Establish `h4` using `h3.scomp 0 h2`. Establish `e : ((fun t : ℝ => π (NormedSpace.exp (t • X)) v) ∘ fun t : ℝ => r * t) = fun t : ℝ => π (NormedSpace.exp (t • r • X)) v`.
+
+Use function extensionality and compare the values at `t`. Simplify using `only [Function.comp_apply, smul_smul, mul_comm]`. Rewrite `h4` using `[e]`. Conclude with `h4.deriv`.
+-/
 theorem dRep_smul (hG : IsLinRed G) (hrep : Formalism.QuantumDeterminants.IsCRepOn G π) {v : H} (hv : IsSmoothVec G π v)
     {X : Matrix (Fin n) (Fin n) ℂ} (hX : X ∈ HCSS.lieOf G) (r : ℝ) : dRep π (r • X) v = r • dRep π X v := by
   have h := (GlobalTheory.T.derived_action_of_smooth_vector hG hrep hv hX).1
@@ -132,6 +166,9 @@ section Series
 
 variable {ε : Fin n → Bool} {π : Matrix (Fin n) (Fin n) ℂ → (H →L[ℂ] H)}
 
+/- English proof (translation)
+The claim follows from `lieOf_of_inG (inG_projJ ε _)`.
+-/
 theorem projL_mem (ε : Fin n → Bool) (Y : Fin n → Fin n → ℂ) : projL ε Y ∈ HCSS.lieOf (UJset ε) :=
   lieOf_of_inG (inG_projJ ε _)
 
@@ -149,6 +186,11 @@ def act (hG : IsLinRed (UJset ε)) (hrep : Formalism.QuantumDeterminants.IsCRepO
     rw [map_smul]
     exact dRep_smul hG hrep x.2 (projL_mem ε Y) r
 
+/- English proof (translation)
+Proceed by induction on `l with`. Consider the case `nil => simp`. Consider the case `cons a l ih`. Simplify using `only [List.map_cons, List.prod_cons, List.foldr_cons, Module.End.mul_apply]`. Rewrite using `[← ih]`.
+
+Both sides reduce to the same expression.
+-/
 theorem word_eq (hG : IsLinRed (UJset ε)) (hrep : Formalism.QuantumDeterminants.IsCRepOn (UJset ε) π)
     (l : List (Fin n → Fin n → ℂ)) (x : smoothSub hG hrep) :
     (((l.map (act hG hrep)).prod x : smoothSub hG hrep) : H) = (l.map (projL ε)).foldr (dRep π) (x : H) := by
@@ -159,12 +201,38 @@ theorem word_eq (hG : IsLinRed (UJset ε)) (hrep : Formalism.QuantumDeterminants
     rw [← ih]
     rfl
 
+/- English proof (translation)
+Proceed by induction on `m with`. Consider the case `zero => rfl`. Consider the case `succ m ih => rw [List.replicate_succ, List.foldr_cons, ih, Function.iterate_succ_apply']`.
+-/
 theorem foldr_replicate_eq {α : Type*} (f : α → H → H) (X : α) (m : ℕ) (x : H) :
     (List.replicate m X).foldr f x = (f X)^[m] x := by
   induction m with
   | zero => rfl
   | succ m ih => rw [List.replicate_succ, List.foldr_cons, ih, Function.iterate_succ_apply']
 
+/- English proof (translation)
+Establish `hG : IsLinRed (UJset ε)` using `GlobalTheory.HCUnitary.isLinRed_UJset ε`. Take `⟨r₀, hr₀, hsum⟩` from `GlobalTheory.T.analytic_vector_exponential_series hG hrep hc hs hw`. Take `⟨C, hC, hb⟩` from `hw`. Set `v' : smoothSub hG hrep` to `⟨v, hs⟩`. Set `ev : Module.End ℝ (smoothSub hG hrep) →ₗ[ℝ] H` to `(smoothSub hG hrep).subtype ∘ₗ LinearMap.applyₗ v'`.
+
+Set `q : ∀ m : ℕ, MultilinearMap ℝ (fun _ : Fin m => Fin n → Fin n → ℂ) H` to `fun m => ((m.factorial : ℝ)⁻¹) • ev.compMultilinearMap ((MultilinearMap.mkPiAlgebraFin ℝ m (Module.End ℝ (smoothSub hG hrep))).compLinearMap fun _ => act hG hrep)`. Establish `hq : ∀ m (Y : Fin m → Fin n → Fin n → ℂ), q m Y = ((m.factorial : ℝ)⁻¹) • (List.ofFn fun i => projL ε (Y i)).foldr (dRep π) v` using `fun m Y => by`. Establish `h` using `word_eq hG hrep (List.ofFn Y) v'`. Simplify using `only [List.map_ofFn] at h`. Simplify using `only [q, MultilinearMap.smul_apply, LinearMap.compMultilinearMap_apply, MultilinearMap.compLinearMap_apply, MultilinearMap.mkPiAlgebraFin_apply]`.
+
+Use `congr 1`. Establish `hqb : ∀ m (Y : Fin m → Fin n → Fin n → ℂ), ‖q m Y‖ ≤ C ^ (m + 1) * ((n : ℝ) ^ 2) ^ m * ∏ i, ‖Y i‖`. Introduce `m Y`. Establish `hmem : ∀ X ∈ List.ofFn (fun i => projL ε (Y i)), X ∈ HCSS.lieOf (UJset ε)` using `fun X hX => by`. Take `⟨i, rfl⟩` from `(List.mem_ofFn' _ _).1 hX`.
+
+Conclude with `projL_mem ε _`. Establish `h` using `hb _ hmem`. Rewrite `h` using `[List.length_ofFn, List.map_ofFn, List.prod_ofFn]`. Establish `hf : (0 : ℝ) < m.factorial` using `by exact_mod_cast m.factorial_pos`. Rewrite using `[hq, norm_smul, norm_inv, Real.norm_natCast, inv_mul_le_iff₀ hf]`.
+
+Use `h.trans ?_` and prove the remaining obligations. Establish `h2 : ∏ i, (mnorm ∘ fun i => projL ε (Y i)) i ≤ ((n : ℝ) ^ 2) ^ m * ∏ i, ‖Y i‖`. Use `(Finset.prod_le_prod (fun i _ => mnorm_nonneg _) fun i _ => mnorm_projL_le ε (Y i)).trans (le_of_eq ?_)` and prove the remaining obligations. Rewrite using `[Finset.prod_mul_distrib, Finset.prod_const, Finset.card_univ, Fintype.card_fin]`. Use `(mul_le_mul_of_nonneg_left h2 (by positivity)).trans (le_of_eq (by ring))` and prove the remaining obligations.
+
+Set `p : FormalMultilinearSeries ℝ (Fin n → Fin n → ℂ) H` to `fun m => (q m).mkContinuous _ (hqb m)`. Set `r : ℝ≥0` to `⟨(C * ((n : ℝ) ^ 2 + 1))⁻¹, by positivity⟩`. Establish `hr : (r : ℝ) = (C * ((n : ℝ) ^ 2 + 1))⁻¹` using `rfl`. Establish `hrad : (r : ℝ≥0∞) ≤ p.radius` using `p.le_radius_of_bound C fun m => by`. Use `(mul_le_mul_of_nonneg_right ((q m).mkContinuous_norm_le (by positivity) (hqb m)) (by positivity)).trans ?_` and prove the remaining obligations.
+
+Establish `h1 : C * (n : ℝ) ^ 2 * r ≤ 1`. Rewrite using `[hr, ← div_eq_mul_inv, div_le_one (by positivity)]`. Use the polynomial consequences of the given equalities and inequalities. Combine the equalities or inequalities in the displayed calculation. Establish `hpos : 0 < p.radius` using `lt_of_lt_of_le (by`.
+
+Rewrite using `[ENNReal.coe_pos, ← NNReal.coe_pos, hr]`. Use the proof step `positivity) hrad`. Establish `hP` using `(p.hasFPowerSeriesOnBall hpos).hasFPowerSeriesAt`. Use `⟨p.sum, hP.analyticAt, ?_⟩` and prove the remaining obligations. Establish `hn1 : (0 : ℝ) < (n : ℝ) ^ 2 + 1` using `by positivity`.
+
+Use `filter_upwards [hP.eventually_hasSum, Metric.ball_mem_nhds 0 (show (0 : ℝ) < r₀ / ((n : ℝ) ^ 2 + 1) by positivity)] with Y hY hYr hGY`. Rewrite `hYr` using `[mem_ball_zero_iff, lt_div_iff₀ hn1]`. Establish `hlt : mnorm (Matrix.of Y) < r₀`. Establish `h1` using `mnorm_of_le Y`. Use polynomial arithmetic with `[norm_nonneg Y]`.
+
+Establish `hs2` using `hsum _ (lieOf_of_inG hGY) hlt`. Rewrite `hY` using `[zero_add]`. Use `hY.unique ?_` and prove the remaining obligations. Use `hs2 using 2 with m` and compare the differences between its conclusion and the goal. Establish `hPY : projL ε Y = Matrix.of Y` using `projJ_of_inG hGY`.
+
+Use `show q m _ = _`. Rewrite using `[hq, List.ofFn_const, hPY, foldr_replicate_eq, ← Complex.coe_smul]`. Use `push_cast`. Both sides reduce to the same expression.
+-/
 theorem exists_series [CompleteSpace H] (hrep : Formalism.QuantumDeterminants.IsCRepOn (UJset ε) π)
     (hc : ∀ v, ContinuousOn (fun g => π g v) (UJset ε)) {v : H} (hs : IsSmoothVec (UJset ε) π v)
     (hw : WordBound (UJset ε) π v) :
@@ -232,6 +300,21 @@ theorem exists_series [CompleteSpace H] (hrep : Formalism.QuantumDeterminants.Is
   push_cast
   rfl
 
+/- English proof (translation)
+Introduce `g₀ hg₀`. Take `⟨Φ, hΦ, hΦe⟩` from `exists_series hrep hc hs hw`. Take `⟨L, hL, hL0, hLe⟩` from `CompanionTheory.D.gk.HC.exists_logG_A ε`. Establish `hJ : Jε ε * Jε ε = 1` using `CompanionTheory.D.gk.HC.Jm_sq_A`. Establish `hg : g₀ᴴ * Jε ε * g₀ = Jε ε` using `hg₀`.
+
+Use `set h : Matrix (Fin n) (Fin n) ℂ := Jε ε * g₀ᴴ * Jε ε with hh`. Establish `h1 : h * g₀ = 1`. Rewrite using `[hh, Matrix.mul_assoc, Matrix.mul_assoc, ← Matrix.mul_assoc g₀ᴴ, hg, hJ]`. Establish `h2 : g₀ * h = 1` using `mul_eq_one_comm.1 h1`. Establish `hU : h ∈ UJset ε` using `by show hᴴ * Jε ε * h = Jε ε`.
+
+Establish `e : hᴴ = Jε ε * g₀ * Jε ε`. Rewrite using `[hh, Matrix.conjTranspose_mul, Matrix.conjTranspose_mul, Jm_herm, Matrix.conjTranspose_conjTranspose, Matrix.mul_assoc]`. Rewrite using `[e, Matrix.mul_assoc _ (Jε ε) (Jε ε), hJ, Matrix.mul_one, Matrix.mul_assoc, h2, Matrix.mul_one]`. Set `T₀ : (Fin n → Fin n → ℂ) →ₗ[ℝ] (Fin n → Fin n → ℂ)` to `{ toFun := fun z => Matrix.of.symm (h * Matrix.of z) map_add' := fun a b => congrArg Matrix.of.symm (Matrix.mul_add h (Matrix.of a) (Matrix.of b)) map_smul' := fun c a => congrArg Matrix.of.symm (Matrix.mul_smul h c (Matrix.of a)) }`. Set `T` to `LinearMap.toContinuousLinearMap T₀`.
+
+Establish `hT : T (Matrix.of.symm g₀) = Matrix.of.symm 1` using `congrArg Matrix.of.symm h1`. Establish `aL : AnalyticAt ℝ (fun z => L (T z)) (Matrix.of.symm g₀)` using `AnalyticAt.comp (g := L) (f := T) (hT ▸ hL) (T.analyticAt _)`. Establish `aF : AnalyticAt ℝ (fun z => π g₀ (Φ (L (T z)))) (Matrix.of.symm g₀)` using `(((π g₀).restrictScalars ℝ).analyticAt _).comp (AnalyticAt.comp (g := Φ) (f := fun z => L (T z)) (by rw [hT, hL0]; exact hΦ) aL)`. Establish `t1 : Tendsto T (𝓝 (Matrix.of.symm g₀)) (𝓝 (Matrix.of.symm 1))` using `hT ▸ T.continuous.tendsto _`. Establish `t2 : Tendsto (fun z => L (T z)) (𝓝 (Matrix.of.symm g₀)) (𝓝 0)`.
+
+Use `aL.continuousAt.tendsto` as an intermediate fact. Rewrite `this` using `[hT, hL0]`. Then use the resulting hypothesis. Take `⟨U, hUp, hUo, hU0⟩` from `eventually_nhds_iff.1 (aF.eventually_analyticAt.and ((t1.eventually hLe).and (t2.eventually hΦe)))`. Use `⟨U, _, hUo, hU0, fun z hz => (hUp z hz).1, fun z hz hzU => ?_⟩` and prove the remaining obligations. Take `⟨-, ⟨e1, e2⟩, e3⟩` from `hUp z hz`.
+
+Establish `hm : Matrix.of (T z) ∈ UJset ε` using `CompanionTheory.D.gk.HC.UJset_mul_mem hU hzU`. Use `show π (Matrix.of z) v = π g₀ (Φ (L (T z)))`. Rewrite using `[e3 (e2 hm), e1, ← ContinuousLinearMap.comp_apply, ← hrep.2 _ hg₀ _ hm]`. Use `congr 2`. Use `show Matrix.of z = g₀ * (h * Matrix.of z)`.
+
+Rewrite using `[← Matrix.mul_assoc, h2, Matrix.one_mul]`.
+-/
 theorem analytic_orbit [CompleteSpace H] (hrep : Formalism.QuantumDeterminants.IsCRepOn (UJset ε) π)
     (hc : ∀ v, ContinuousOn (fun g => π g v) (UJset ε)) {v : H} (hs : IsSmoothVec (UJset ε) π v)
     (hw : WordBound (UJset ε) π v) : GlobalTheory.Published.AnalyticOnUJ ε fun g => π g v := by
@@ -278,6 +361,9 @@ theorem analytic_orbit [CompleteSpace H] (hrep : Formalism.QuantumDeterminants.I
 
 end Series
 
+/- English proof (translation)
+The claim follows from `(analytic_orbit hrep hc hs hw).clm ((innerSL ℂ w).restrictScalars ℝ)`.
+-/
 theorem analyticOnUJ_of_wordBound {n : ℕ} {ε : Fin n → Bool} {H : Type} [NormedAddCommGroup H]
     [InnerProductSpace ℂ H] [CompleteSpace H] {π : Matrix (Fin n) (Fin n) ℂ → (H →L[ℂ] H)}
     (hrep : Formalism.QuantumDeterminants.IsCRepOn (UJset ε) π) (hc : ∀ v, ContinuousOn (fun g => π g v) (UJset ε)) {v : H}

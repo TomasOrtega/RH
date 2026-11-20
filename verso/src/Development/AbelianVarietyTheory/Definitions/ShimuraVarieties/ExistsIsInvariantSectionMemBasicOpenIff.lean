@@ -12,12 +12,26 @@ section FiniteSets
 
 variable {X Y : Scheme.{u}}
 
+/- English proof (translation)
+Rewrite using `[← PrimeSpectrum.mem_basicOpen, ← hU.fromSpec_preimage_basicOpen]`. Express the relevant statement in the definitionally equal form `x ∈ X.basicOpen f ↔ hU.fromSpec (hU.primeIdealOf ⟨x, hx⟩) ∈ X.basicOpen f`. Rewrite using `[hU.fromSpec_primeIdealOf]`.
+-/
 private theorem mem_basicOpen_iff_not_mem_primeIdealOf {U : X.Opens} (hU : IsAffineOpen U) {x : X} (hx : x ∈ U)
     (f : Γ(X, U)) : x ∈ X.basicOpen f ↔ f ∉ (hU.primeIdealOf ⟨x, hx⟩).asIdeal := by
   rw [← PrimeSpectrum.mem_basicOpen, ← hU.fromSpec_preimage_basicOpen]
   change x ∈ X.basicOpen f ↔ hU.fromSpec (hU.primeIdealOf ⟨x, hx⟩) ∈ X.basicOpen f
   rw [hU.fromSpec_primeIdealOf]
 
+/- English proof (translation)
+Break down `s.eq_empty_or_nonempty with rfl | ⟨y₀, hy₀⟩` into its components or cases. Conclude with `⟨0, Set.empty_subset _, by rw [Scheme.basicOpen_zero]; exact bot_le⟩`. Establish `hloc : ∀ y : s, ∃ g : Γ(X, U), X.basicOpen g ≤ O ∧ (y : X) ∈ X.basicOpen g` using `fun y ↦ hU.exists_basicOpen_le ⟨y, hsO y.2⟩ (hsU y.2)`. Use `choose g hgO hyg using hloc`. Set `P : X → Ideal Γ(X, U)` to `fun y ↦ if h : y ∈ U then (hU.primeIdealOf ⟨y, h⟩).asIdeal else ⊤`.
+
+Establish `hP : ∀ y (h : y ∈ U), P y = (hU.primeIdealOf ⟨y, h⟩).asIdeal` using `fun y h ↦ dif_pos h`. Establish `hnot : ¬ ((Ideal.span (Set.range g) : Set Γ(X, U)) ⊆ ⋃ i ∈ (↑hs.toFinset : Set X), P i)`. Rewrite using `[Ideal.subset_union_prime y₀ y₀ (fun i hi _ _ ↦ by`. Rewrite using `[hP i (hsU (hs.mem_toFinset.1 hi))]`. Use the proof step `infer_instance)]`.
+
+Introduce and unpack `⟨i, hi, hJ⟩`. Establish `his : i ∈ s` using `hs.mem_toFinset.1 hi`. Establish `h1` using `hyg ⟨i, his⟩`. Rewrite `h1` using `[mem_basicOpen_iff_not_mem_primeIdealOf hU (hsU his), ← hP]`. Conclude with `h1 (hJ (Ideal.subset_span ⟨⟨i, his⟩, rfl⟩))`.
+
+Rewrite `hnot` using `[Set.not_subset]`. Take `⟨f, hfJ, hf⟩` from `hnot`. Use `⟨f, fun y hy ↦ ?_, fun z hz ↦ ?_⟩` and prove the remaining obligations. Rewrite using `[SetLike.mem_coe, mem_basicOpen_iff_not_mem_primeIdealOf hU (hsU hy), ← hP]`. Conclude with `fun h ↦ hf (Set.mem_biUnion (hs.mem_toFinset.2 hy) h)`.
+
+Establish `hz' : ¬ ∀ g' ∈ (Ideal.span (Set.range g) : Set Γ(X, U)), z ∉ X.basicOpen g'` using `fun h ↦ h f hfJ hz`. Rewrite `hz'` using `[← Scheme.mem_zeroLocus_iff, Scheme.zeroLocus_span, Scheme.mem_zeroLocus_iff]`. Use `push_neg at hz'`. Take `⟨_, ⟨i, rfl⟩, hzi⟩` from `hz'`. Conclude with `hgO i hzi`.
+-/
 theorem exists_basicOpen_le_of_finite {U : X.Opens} (hU : IsAffineOpen U) (O : X.Opens)
     {s : Set X} (hs : s.Finite) (hsU : s ⊆ U) (hsO : s ⊆ O) :
     ∃ f : Γ(X, U), s ⊆ X.basicOpen f ∧ X.basicOpen f ≤ O := by
@@ -58,17 +72,26 @@ namespace FiniteSubsetsInAffineOpens
 instance (priority := 900) of_isAffine [IsAffine X] : FiniteSubsetsInAffineOpens X :=
   ⟨fun _ _ ↦ ⟨⊤, isAffineOpen_top X, Set.subset_univ _⟩⟩
 
+/- English proof (translation)
+Take `⟨U, hU, hsU⟩` from `FiniteSubsetsInAffineOpens.exists_isAffineOpen s hs`. Take `⟨f, hsf, hfO⟩` from `exists_basicOpen_le_of_finite hU O hs hsU hsO`. Conclude with `⟨X.basicOpen f, hU.basicOpen f, hsf, hfO⟩`.
+-/
 theorem exists_isAffineOpen_le [FiniteSubsetsInAffineOpens X] {s : Set X} (hs : s.Finite)
     (O : X.Opens) (hsO : s ⊆ O) : ∃ U : X.Opens, IsAffineOpen U ∧ s ⊆ U ∧ U ≤ O := by
   obtain ⟨U, hU, hsU⟩ := FiniteSubsetsInAffineOpens.exists_isAffineOpen s hs
   obtain ⟨f, hsf, hfO⟩ := exists_basicOpen_le_of_finite hU O hs hsU hsO
   exact ⟨X.basicOpen f, hU.basicOpen f, hsf, hfO⟩
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fun s hs ↦ by obtain ⟨V, hV, hsV⟩ := exists_isAffineOpen (X := Y) ((fun x : X ↦ f x) '' s) (hs.image _) exact ⟨f ⁻¹ᵁ V, hV.preimage f, fun x hx ↦ hsV ⟨x, hx, rfl⟩⟩⟩`.
+-/
 theorem of_isAffineHom (f : X ⟶ Y) [IsAffineHom f] [FiniteSubsetsInAffineOpens Y] :
     FiniteSubsetsInAffineOpens X := ⟨fun s hs ↦ by
   obtain ⟨V, hV, hsV⟩ := exists_isAffineOpen (X := Y) ((fun x : X ↦ f x) '' s) (hs.image _)
   exact ⟨f ⁻¹ᵁ V, hV.preimage f, fun x hx ↦ hsV ⟨x, hx, rfl⟩⟩⟩
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fun s hs ↦ by obtain ⟨V, hV, hsV, hVf⟩ := exists_isAffineOpen_le (X := Y) (hs.image (fun x : X ↦ f x)) f.opensRange (by rintro _ ⟨x, -, rfl⟩; exact ⟨x, rfl⟩) refine ⟨f ⁻¹ᵁ V, ?_, fun x hx ↦ hsV ⟨x, hx, rfl⟩⟩ rw [← f.isAffineOpen_iff_of_isOpenImmersion, f.image_preimage_eq_opensR …`.
+-/
 theorem of_isOpenImmersion (f : X ⟶ Y) [IsOpenImmersion f] [FiniteSubsetsInAffineOpens Y] :
     FiniteSubsetsInAffineOpens X := ⟨fun s hs ↦ by
   obtain ⟨V, hV, hsV, hVf⟩ := exists_isAffineOpen_le (X := Y) (hs.image (fun x : X ↦ f x))
@@ -81,10 +104,26 @@ theorem of_isOpenImmersion (f : X ⟶ Y) [IsOpenImmersion f] [FiniteSubsetsInAff
 instance opens [FiniteSubsetsInAffineOpens X] (U : X.Opens) : FiniteSubsetsInAffineOpens U :=
   of_isOpenImmersion U.ι
 
+/- English proof (translation)
+The claim follows from `of_isAffineHom (Y := f.coborderRange.toScheme) f.liftCoborder`.
+-/
 theorem of_isImmersion (f : X ⟶ Y) [IsImmersion f] [FiniteSubsetsInAffineOpens Y] :
     FiniteSubsetsInAffineOpens X :=
   of_isAffineHom (Y := f.coborderRange.toScheme) f.liftCoborder
 
+/- English proof (translation)
+Set `S : Finset (Ideal A)` to `hs.toFinset.image (fun x : Proj 𝒜 ↦ x.asHomogeneousIdeal.toIdeal)`. Establish `hmemS : ∀ p ∈ S, ∃ x : Proj 𝒜, p = x.asHomogeneousIdeal.toIdeal`. Introduce `p hp`. Take `⟨x, -, rfl⟩` from `Finset.mem_image.1 hp`. Conclude with `⟨x, rfl⟩`.
+
+Take `⟨n, hn, f, hf, hfM⟩` from `exists_homogeneous_forall_notMem 𝒜 (S.filter (fun p ↦ Maximal (· ∈ S) p)) (fun p hp ↦ by`. Take `⟨x, rfl⟩` from `hmemS p (Finset.mem_filter.1 hp).1`. Conclude with `x.isPrime)`. Use the proof step `(fun p hp ↦ by`. Take `⟨x, rfl⟩` from `hmemS p (Finset.mem_filter.1 hp).1`.
+
+Conclude with `x.asHomogeneousIdeal.isHomogeneous)`. Use the proof step `(fun p hp q hq hqp ↦ (Finset.mem_filter.1 hq).2.eq_of_le (Finset.mem_filter.1 hp).1 hqp)`. Use the proof step `(fun p hp ↦ by`. Take `⟨x, rfl⟩` from `hmemS p (Finset.mem_filter.1 hp).1`. Take `⟨m, y, hy, hyI, hyp⟩` from `exists_homogeneous_notMem_of_not_le 𝒜 (HomogeneousIdeal.irrelevant 𝒜).isHomogeneous (fun h ↦ x.not_irrelevant_le h)`.
+
+Use `⟨m, Nat.pos_of_ne_zero ?_, y, hy, hyp⟩` and prove the remaining obligations. Introduce and unpack `rfl`. Establish `h0` using `(HomogeneousIdeal.mem_irrelevant_iff 𝒜 y).1 hyI`. Rewrite `h0` using `[GradedRing.proj_apply, DirectSum.decompose_of_mem_same 𝒜 hy]`. Conclude with `hyp (by rw [h0]; exact Ideal.zero_mem _))`.
+
+Use `⟨n, hn, f, hf, fun x hx ↦ ?_⟩` and prove the remaining obligations. Establish `hxS : x.asHomogeneousIdeal.toIdeal ∈ S` using `Finset.mem_image.2 ⟨x, hs.mem_toFinset.2 hx, rfl⟩`. Take `⟨q, hxq, hq⟩` from `S.exists_le_maximal hxS`. Establish `hfq` using `hfM q (Finset.mem_filter.2 ⟨hq.prop, hq⟩)`. Rewrite using `[SetLike.mem_coe, Proj.mem_basicOpen]`.
+
+Conclude with `fun h ↦ hfq (hxq h)`.
+-/
 theorem exists_proj_basicOpen {σ : Type*} {A : Type u} [CommRing A] [SetLike σ A]
     [AddSubgroupClass σ A] (𝒜 : ℕ → σ) [GradedRing 𝒜] {s : Set (Proj 𝒜)} (hs : s.Finite) :
     ∃ n, 0 < n ∧ ∃ f ∈ 𝒜 n, s ⊆ Proj.basicOpen 𝒜 f := by
@@ -124,12 +163,18 @@ instance proj {σ : Type*} {A : Type u} [CommRing A] [SetLike σ A] [AddSubgroup
   obtain ⟨n, hn, f, hf, hsf⟩ := exists_proj_basicOpen 𝒜 hs
   exact ⟨_, Proj.isAffineOpen_basicOpen 𝒜 f hf hn, hsf⟩⟩
 
+/- English proof (translation)
+Take `⟨N, i, hi, -, -⟩` from `h`. Conclude with `of_isImmersion i`.
+-/
 theorem of_isQProjOver {R : Type} [CommRing R] {X : Scheme.{0}}
     {f : X ⟶ ReciprocityTheory.ChartRestriction.G.Geo.Tor.Sp R} (h : ReciprocityTheory.ChartRestriction.G.Geo.Tor.IsQProjOver f) :
     FiniteSubsetsInAffineOpens X := by
   obtain ⟨N, i, hi, -, -⟩ := h
   exact of_isImmersion i
 
+/- English proof (translation)
+Take `⟨N, i, hi, -⟩` from `h`. Conclude with `of_isImmersion i`.
+-/
 theorem of_isProjOver {R : Type} [CommRing R] {X : Scheme.{0}}
     {f : X ⟶ ReciprocityTheory.ChartRestriction.G.Geo.Tor.Sp R} (h : ReciprocityTheory.ChartRestriction.G.Geo.Tor.IsProjOver f) :
     FiniteSubsetsInAffineOpens X := by
@@ -156,12 +201,18 @@ instance (priority := 900) of_finiteSubsetsInAffineOpens [Finite G] [FiniteSubse
     (Set.finite_range fun g ↦ (ρ g).hom x)
   exact ⟨U, hU, fun g ↦ h ⟨g, rfl⟩⟩⟩
 
+/- English proof (translation)
+Use `FiniteSubsetsInAffineOpens.of_isQProjOver h` as an intermediate fact. Use `infer_instance`.
+-/
 theorem of_isQProjOver [Finite G] {R : Type} [CommRing R] {X : Scheme.{0}}
     {f : X ⟶ ReciprocityTheory.ChartRestriction.G.Geo.Tor.Sp R} (h : ReciprocityTheory.ChartRestriction.G.Geo.Tor.IsQProjOver f)
     (ρ : G →* Aut X) : OrbitsInAffineOpens ρ := by
   have := FiniteSubsetsInAffineOpens.of_isQProjOver h
   infer_instance
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fun x ↦ by obtain ⟨W, hyW, hW⟩ := h (f x) have horb : ∀ g, (ρ g).hom x ∈ f ⁻¹ᵁ W := fun g ↦ by show f ((ρ g).hom x) ∈ W rw [← Scheme.Hom.comp_apply, hf g] exact hyW obtain ⟨V, hV, hsV⟩ := FiniteSubsetsInAffineOpens.exists_isAffineOpen (X := (f ⁻¹ᵁ W).toScheme) (Set.range fun g : …`.
+-/
 theorem of_locally_on_base [Finite G] (ρ : G →* Aut X) (f : X ⟶ Y) (hf : ∀ g, (ρ g).hom ≫ f = f)
     (h : ∀ y : Y, ∃ W : Y.Opens, y ∈ W ∧ FiniteSubsetsInAffineOpens (f ⁻¹ᵁ W)) :
     OrbitsInAffineOpens ρ := ⟨fun x ↦ by
@@ -175,6 +226,9 @@ theorem of_locally_on_base [Finite G] (ρ : G →* Aut X) (f : X ⟶ Y) (hf : �
   refine ⟨(f ⁻¹ᵁ W).ι ''ᵁ V, hV.image_of_isOpenImmersion _, fun g ↦ ?_⟩
   exact ⟨_, hsV ⟨g, rfl⟩, rfl⟩⟩
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fun x ↦ by obtain ⟨V, hV, hxV⟩ := exists_isAffineOpen (ρ := τ) (p x) refine ⟨p ⁻¹ᵁ V, hV.preimage p, fun g ↦ ?_⟩ show p ((ρ g).hom x) ∈ V rw [← Scheme.Hom.comp_apply, hp g, Scheme.Hom.comp_apply] exact hxV g⟩`.
+-/
 theorem of_equivariant (ρ : G →* Aut X) (τ : G →* Aut Y) [OrbitsInAffineOpens τ] (p : X ⟶ Y)
     [IsAffineHom p] (hp : ∀ g, (ρ g).hom ≫ p = p ≫ (τ g).hom) : OrbitsInAffineOpens ρ := ⟨fun x ↦ by
   obtain ⟨V, hV, hxV⟩ := exists_isAffineOpen (ρ := τ) (p x)
@@ -183,6 +237,9 @@ theorem of_equivariant (ρ : G →* Aut X) (τ : G →* Aut Y) [OrbitsInAffineOp
   rw [← Scheme.Hom.comp_apply, hp g, Scheme.Hom.comp_apply]
   exact hxV g⟩
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fun x ↦ by obtain ⟨V, hV, hxV, -⟩ := exists_isAffineOpen_mem_and_subset (TopologicalSpace.Opens.mem_top (p x)) refine ⟨p ⁻¹ᵁ V, hV.preimage p, fun g ↦ ?_⟩ show p ((ρ g).hom x) ∈ V rw [← Scheme.Hom.comp_apply, hp g] exact hxV⟩`.
+-/
 theorem of_invariant (ρ : G →* Aut X) (p : X ⟶ Y) [IsAffineHom p]
     (hp : ∀ g, (ρ g).hom ≫ p = p) : OrbitsInAffineOpens ρ := ⟨fun x ↦ by
   obtain ⟨V, hV, hxV, -⟩ := exists_isAffineOpen_mem_and_subset (TopologicalSpace.Opens.mem_top (p x))
@@ -198,6 +255,9 @@ instance comp {H : Type w} [Group H] (ρ : G →* Aut X) [OrbitsInAffineOpens ρ
 
 end OrbitsInAffineOpens
 
+/- English proof (translation)
+Use `h.isAffineHom` as an intermediate fact. Conclude with `OrbitsInAffineOpens.of_invariant ρ π h.comp_eq`.
+-/
 theorem IsAffineQuotient.orbitsInAffineOpens {ρ : G →* Aut X} {π : X ⟶ Y}
     (h : IsAffineQuotient ρ π) : OrbitsInAffineOpens ρ := by
   have := h.isAffineHom
@@ -205,15 +265,24 @@ theorem IsAffineQuotient.orbitsInAffineOpens {ρ : G →* Aut X} {π : X ⟶ Y}
 
 variable {ρ : G →* Aut X}
 
+/- English proof (translation)
+Rewrite using `[map_mul, Aut.Aut_mul_def]`. Conclude with `Scheme.Hom.comp_apply (ρ k).hom (ρ g).hom x`.
+-/
 theorem aut_map_mul_apply (ρ : G →* Aut X) (g k : G) (x : X) :
     (ρ (g * k)).hom x = (ρ g).hom ((ρ k).hom x) := by
   rw [map_mul, Aut.Aut_mul_def]
   exact Scheme.Hom.comp_apply (ρ k).hom (ρ g).hom x
 
+/- English proof (translation)
+Rewrite using `[map_one]`. Both sides reduce to the same expression.
+-/
 theorem aut_map_one_apply (ρ : G →* Aut X) (x : X) : (ρ 1).hom x = x := by
   rw [map_one]
   rfl
 
+/- English proof (translation)
+Take `⟨h, hgs⟩` from `hs g`. Use `Scheme.basicOpen_appLE (ρ g).hom U U h s` as an intermediate fact. Rewrite `this` using `[hgs]`. Conclude with `this.le.trans inf_le_right`.
+-/
 theorem IsInvariantSection.basicOpen_le {U : X.Opens} {s : Γ(X, U)}
     (hs : IsInvariantSection ρ U s) (g : G) : X.basicOpen s ≤ (ρ g).hom ⁻¹ᵁ X.basicOpen s := by
   obtain ⟨h, hgs⟩ := hs g
@@ -221,6 +290,11 @@ theorem IsInvariantSection.basicOpen_le {U : X.Opens} {s : Γ(X, U)}
   rw [hgs] at this
   exact this.le.trans inf_le_right
 
+/- English proof (translation)
+Proceed by induction on `T using Finset.induction_on with`. Consider the case `empty => simp`. Consider the case `insert g T hg ih`. Rewrite using `[Finset.prod_insert hg, Scheme.basicOpen_mul, TopologicalSpace.Opens.mem_inf, ih, Finset.forall_mem_insert]`. Prove the components needed by the constructor for the conclusion.
+
+Introduce and unpack `⟨h1, h2, h3⟩`. Conclude with `⟨h2, h1, h3⟩`. Introduce and unpack `⟨h2, h1, h3⟩`. Conclude with `⟨h1, h2, h3⟩`.
+-/
 private theorem mem_basicOpen_prod_iff {U : X.Opens} (a : G → Γ(X, U)) (T : Finset G) (x : X) :
     x ∈ X.basicOpen (∏ g ∈ T, a g) ↔ x ∈ U ∧ ∀ g ∈ T, x ∈ X.basicOpen (a g) := by
   classical
@@ -235,11 +309,25 @@ private theorem mem_basicOpen_prod_iff {U : X.Opens} (a : G → Γ(X, U)) (T : F
     · rintro ⟨h2, h1, h3⟩
       exact ⟨h1, h2, h3⟩
 
+/- English proof (translation)
+Substitute `hff` using the available equality. Both sides reduce to the same expression.
+-/
 private theorem appLE_apply_congr' {f f' : X ⟶ X} (hff : f = f') (U : X.Opens) (e : U ≤ f ⁻¹ᵁ U)
     (e' : U ≤ f' ⁻¹ᵁ U) (s : Γ(X, U)) : f.appLE U U e s = f'.appLE U U e' s := by
   subst hff
   rfl
 
+/- English proof (translation)
+Use `Fintype.ofFinite G` as an intermediate fact. Use `⟨∏ g : G, (ρ g).hom.appLE U U (hU g) s, fun k ↦ ⟨hU k, ?_⟩, fun x ↦ ?_⟩` and prove the remaining obligations. Rewrite using `[map_prod]`. Use `(Finset.prod_congr rfl fun g _ ↦ ?_).trans (Fintype.prod_equiv (Equiv.mulRight k) (fun g ↦ (ρ (g * k)).hom.appLE U U (hU (g * k)) s) _ (fun _ ↦ rfl))` and prove the remaining obligations. Establish `e` using `Scheme.Hom.appLE_comp_appLE (ρ k).hom (ρ g).hom U U U (hU g) (hU k)`.
+
+Establish `e'` using `congrArg (fun φ : Γ(X, U) ⟶ Γ(X, U) ↦ φ s) e`. Simplify using `only [CommRingCat.comp_apply] at e'`. Rewrite using `[e']`. Conclude with `appLE_apply_congr' (by rw [map_mul, Aut.Aut_mul_def]; rfl) _ _ _ _`. Rewrite using `[mem_basicOpen_prod_iff]`.
+
+Establish `key : ∀ g, x ∈ X.basicOpen ((ρ g).hom.appLE U U (hU g) s) ↔ x ∈ U ∧ (ρ g).hom x ∈ X.basicOpen s` using `fun g ↦ by`. Rewrite using `[Scheme.basicOpen_appLE]`. Conclude with `Iff.rfl`. Simplify using `only [Finset.mem_univ, true_implies, key]`. Prove the components needed by the constructor for the conclusion.
+
+Introduce and unpack `⟨_, h⟩ g`. Conclude with `(h g).2`. Introduce `h`. Establish `h1` using `h 1`. Rewrite `h1` using `[aut_map_one_apply]`.
+
+Conclude with `⟨X.basicOpen_le s h1, fun g ↦ ⟨X.basicOpen_le s h1, h g⟩⟩`.
+-/
 theorem exists_isInvariantSection_mem_basicOpen_iff [Finite G] {U : X.Opens}
     (hU : ∀ g, U ≤ (ρ g).hom ⁻¹ᵁ U) (s : Γ(X, U)) :
     ∃ t : Γ(X, U), IsInvariantSection ρ U t ∧
@@ -271,6 +359,9 @@ theorem exists_isInvariantSection_mem_basicOpen_iff [Finite G] {U : X.Opens}
 
 variable [Finite G]
 
+/- English proof (translation)
+Take `⟨t, ht, hmem⟩` from `exists_isInvariantSection_mem_basicOpen_iff hU s`. Use `⟨t, ht, le_antisymm (fun x hx ↦ ?_) (fun x hx ↦ ?_)⟩` and prove the remaining obligations. Use `(hmem x).1 hx 1` as an intermediate fact. Rewrite `this` using `[aut_map_one_apply]`. Then use the resulting hypothesis. Conclude with `(hmem x).2 fun g ↦ hs g hx`.
+-/
 theorem exists_isInvariantSection_basicOpen_eq {U : X.Opens} (hU : ∀ g, U ≤ (ρ g).hom ⁻¹ᵁ U)
     (s : Γ(X, U)) (hs : ∀ g, X.basicOpen s ≤ (ρ g).hom ⁻¹ᵁ X.basicOpen s) :
     ∃ t : Γ(X, U), IsInvariantSection ρ U t ∧ X.basicOpen t = X.basicOpen s := by
@@ -280,6 +371,9 @@ theorem exists_isInvariantSection_basicOpen_eq {U : X.Opens} (hU : ∀ g, U ≤ 
     rwa [aut_map_one_apply] at this
   · exact (hmem x).2 fun g ↦ hs g hx
 
+/- English proof (translation)
+Take `⟨f, hsf, hfO⟩` from `exists_basicOpen_le_of_finite hU O (Set.finite_range fun g ↦ (ρ g).hom x) (by rintro _ ⟨g, rfl⟩; exact hst g hx) (by rintro _ ⟨g, rfl⟩; exact hO g)`. Take `⟨t, ht, hmem⟩` from `exists_isInvariantSection_mem_basicOpen_iff hst f`. Use `⟨t, ht, (hmem x).2 fun g ↦ hsf ⟨g, rfl⟩, fun y hy ↦ hfO ?_⟩` and prove the remaining obligations. Use `(hmem y).1 hy 1` as an intermediate fact. Rewrite `this` using `[aut_map_one_apply]`. Then use the resulting hypothesis.
+-/
 theorem exists_isInvariantSection_basicOpen_le {U : X.Opens} (hU : IsAffineOpen U)
     (hst : ∀ g, U ≤ (ρ g).hom ⁻¹ᵁ U) {x : X} (hx : x ∈ U) (O : X.Opens)
     (hO : ∀ g, (ρ g).hom x ∈ O) :
@@ -293,6 +387,21 @@ theorem exists_isInvariantSection_basicOpen_le {U : X.Opens} (hU : IsAffineOpen 
 
 variable (ρ) in
 
+/- English proof (translation)
+Take `⟨U, hU, hxU⟩` from `OrbitsInAffineOpens.exists_isAffineOpen (ρ := ρ) x`. Set `W : X.Opens` to `⨅ g, (ρ g).hom ⁻¹ᵁ U`. Establish `hmemW : ∀ y, y ∈ W ↔ ∀ g, (ρ g).hom y ∈ U` using `fun y ↦ by`. Rewrite using `[← SetLike.mem_coe, TopologicalSpace.Opens.coe_iInf, Set.mem_iInter]`. Conclude with `Iff.rfl`.
+
+Establish `hWU : W ≤ U` using `fun y hy ↦ by`. Use `(hmemW y).1 hy 1` as an intermediate fact. Rewrite `this` using `[aut_map_one_apply]`. Then use the resulting hypothesis. Establish `hWst : ∀ k, W ≤ (ρ k).hom ⁻¹ᵁ W` using `fun k y hy ↦ by show (ρ k).hom y ∈ W`. Rewrite using `[hmemW]`.
+
+Introduce `g`. Rewrite using `[← aut_map_mul_apply]`. Conclude with `(hmemW y).1 hy _`. Establish `hxW : x ∈ W` using `(hmemW x).2 hxU`. Take `⟨f, hsf, hfW⟩` from `exists_basicOpen_le_of_finite hU W (Set.finite_range fun g ↦ (ρ g).hom x) (by rintro _ ⟨g, rfl⟩; exact hxU g) (by rintro _ ⟨g, rfl⟩; exact hWst g hxW)`.
+
+Establish `hf' : X.basicOpen (X.presheaf.map (homOfLE hWU).op f) = X.basicOpen f`. Rewrite using `[Scheme.basicOpen_res]`. Conclude with `inf_eq_right.2 hfW`. Take `⟨t, ht, hmem⟩` from `exists_isInvariantSection_mem_basicOpen_iff hWst (X.presheaf.map (homOfLE hWU).op f)`. Establish `htf : X.basicOpen t ≤ X.basicOpen f` using `fun y hy ↦ by`.
+
+Use `(hmem y).1 hy 1` as an intermediate fact. Rewrite `this` using `[aut_map_one_apply, hf']`. Then use the resulting hypothesis. Use `⟨X.basicOpen t, ?_, fun k y hy ↦ ?_, ?_⟩` and prove the remaining obligations. Establish `hA` using `(hU.basicOpen f).basicOpen (X.presheaf.map (homOfLE hfW).op t)`. Rewrite `hA` using `[Scheme.basicOpen_res, inf_eq_right.2 htf]`. Then use the resulting hypothesis.
+
+Use `show (ρ k).hom y ∈ X.basicOpen t`. Rewrite using `[hmem]`. Introduce `g`. Rewrite using `[← aut_map_mul_apply]`. Conclude with `(hmem y).1 hy _`.
+
+Rewrite using `[hmem]`. Introduce `g`. Rewrite using `[hf']`. Conclude with `hsf ⟨g, rfl⟩`.
+-/
 theorem exists_stable_isAffineOpen [OrbitsInAffineOpens ρ] (x : X) :
     ∃ V : X.Opens, IsAffineOpen V ∧ (∀ g, V ≤ (ρ g).hom ⁻¹ᵁ V) ∧ x ∈ V := by
   obtain ⟨U, hU, hxU⟩ := OrbitsInAffineOpens.exists_isAffineOpen (ρ := ρ) x

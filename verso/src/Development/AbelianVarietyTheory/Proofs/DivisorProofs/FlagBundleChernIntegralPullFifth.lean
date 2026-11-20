@@ -30,25 +30,40 @@ section General
 
 variable {M : Type} [TopologicalSpace M] {n : ℕ} (A : HolAtlas M n)
 
+/- English proof (translation)
+Use function extensionality and compare the values at `x`. Simplify using `only [evalF, fld, map_mul, Pi.mul_apply, Subalgebra.coe_mul]`.
+-/
 theorem evalF_mul {ι : Type} (w : ι → A.Pt → Ev n) (P Q : MvPolynomial ι ℝ) :
     evalF A w (P * Q) = evalF A w P * evalF A w Q := by
   funext x
   simp only [evalF, fld, map_mul, Pi.mul_apply, Subalgebra.coe_mul]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `x`. Simplify using `only [evalF, fld, map_neg, Pi.neg_apply, NegMemClass.coe_neg]`.
+-/
 theorem evalF_neg {ι : Type} (w : ι → A.Pt → Ev n) (P : MvPolynomial ι ℝ) :
     evalF A w (-P) = -evalF A w P := by
   funext x
   simp only [evalF, fld, map_neg, Pi.neg_apply, NegMemClass.coe_neg]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `x`. Conclude with `((Subalgebra.mem_center_iff.1 (aeval (fun i => w i x) (P.map (algebraMap ℝ ℂ))).2) (ψ x)).symm`.
+-/
 theorem evalF_comm {ι : Type} (w : ι → A.Pt → Ev n) (P : MvPolynomial ι ℝ) (ψ : A.Fld) :
     evalF A w P * ψ = ψ * evalF A w P := by
   funext x
   exact ((Subalgebra.mem_center_iff.1 (aeval (fun i => w i x) (P.map (algebraMap ℝ ℂ))).2) (ψ x)).symm
 
+/- English proof (translation)
+Simplify using `only [wInt, integral_div]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem wInt_div_two [MeasurableSpace M] (g : M → ℝ) (α : A.Fld) :
     wInt A (fun y => g y / 2) α = wInt A g α / 2 := by
   simp only [wInt, integral_div]; ring
 
+/- English proof (translation)
+Establish `key : ∀ ε : ℤˣ, Tendsto (fun t => ∫ y, G t y ∂A.part α ε) l (𝓝 (∫ y, g y ∂A.part α ε))` using `fun ε => tendsto_integral_filter_of_dominated_convergence b (hm.mono fun t ht => ht ε) (hbd.mono fun t ht => ht ε) (hb ε) (hl ε)`. Simplify using `only [wInt]`. Conclude with `(key 1).sub (key (-1))`.
+-/
 theorem wInt_tendsto [MeasurableSpace M] (α : A.Fld) {G : ℝ → M → ℝ} {g b : M → ℝ} {l : Filter ℝ}
     [l.IsCountablyGenerated]
     (hm : ∀ᶠ t in l, ∀ ε : ℤˣ, AEStronglyMeasurable (G t) (A.part α ε))
@@ -62,6 +77,9 @@ theorem wInt_tendsto [MeasurableSpace M] (α : A.Fld) {G : ℝ → M → ℝ} {g
   simp only [wInt]
   exact (key 1).sub (key (-1))
 
+/- English proof (translation)
+Use function extensionality and compare the values at `z`. Establish `hz` using `(hpos z.pt).ne'`. Simplify using `only [Pi.mul_apply, Pi.sub_apply, Pi.add_apply, HolAtlas.fn, ← Algebra.smul_def]`. Simplify using `only [sub_mul, add_mul, smul_mul_assoc, smul_add, smul_sub, mul_add]`. Apply the tactic sequence `match_scalars <;> push_cast <;> field_simp <;> ring`.
+-/
 theorem alg_step (f : M → ℝ) (t : ℝ) (D α ψ : A.Fld) (hpos : ∀ y, 0 < f y + t) :
     (A.fn (fun y => 1 / (f y + t)) * D - A.fn (fun y => 1 / (f y + t) ^ 2) * (A.fn f * (D + A.fn f * α))) * ψ =
       A.fn (fun y => t / (f y + t) ^ 2) * (D + A.fn f * α) * ψ - A.fn (fun y => f y / (f y + t)) * (α * ψ) := by
@@ -73,6 +91,63 @@ theorem alg_step (f : M → ℝ) (t : ℝ) (D α ψ : A.Fld) (hpos : ∀ y, 0 < 
 
 end General
 
+/- English proof (translation)
+Introduce `k _ B Y _ _ q p d hB hY π w E h H flB fl hfl A σ v hv K`. Use `haveI : CompactSpace (CxPts p σ) := CxPts.compactSpace σ hY.isProjOver`. Use `haveI : T2Space (CxPts p σ) := CxPts.t2Space_cxPts_of_isProjOver σ hY.isProjOver`. Use `haveI : SecondCountableTopology (CxPts p σ) := CxPts.secondCountableTopology_of_isProjOver σ hY.isProjOver`. Use `haveI : BorelSpace (Sp ℂ ⟶ Y) := ⟨rfl⟩`.
+
+Establish `hcalc` using `GlobalTheory.T.smoothForms_calculus_holomorphicAtlas _ (d + 1) (hY.atlas σ)`. Establish `hbasic` using `GlobalTheory.T.firstChern_form_properties k Y p (d + 1) hY σ`. Establish `hlin` using `GlobalTheory.T.holAtlas_topFormIntegral_finite_additive_homogeneous (CxPts p σ) (d + 1) (hY.atlas σ)`. Establish `hfib` using `(GlobalTheory.T.flag_bundle_chern_integral_pull_fourth k B Y q p d hB hY π w E h H flB fl hfl A σ v hv).1`. Establish `hom` using `GlobalTheory.T.flag_bundle_hermitian_line_curvature k B Y q p d hB hY π w E h H flB fl hfl A σ`.
+
+Take `⟨hv01, hvc, hvs⟩` from `GlobalTheory.T.flag_bundle_hermitian_line_integral k B Y q p d hB hY π w E h H flB fl hfl A σ v hv`. Establish `hloc` using `GlobalTheory.T.flag_bundle_hermitian_line_degree k B Y q p d hB hY π w E h H flB fl hfl A σ v hv`. Establish `hnull` using `GlobalTheory.T.flag_bundle_hermitian_line_height k B Y q p d hB hY π w E h H flB fl hfl A σ v hv`. Establish `hconc` using `GlobalTheory.T.flag_bundle_hermitian_line_limit k B Y q p d hB hY π w E h H flB fl hfl A σ v hv K`. Use `set At := hY.atlas σ with hAt`.
+
+Use `set x : Fin 5 → At.Pt → Ev (d + 1) := fun i => c1F hY σ (fam5 π w H flB fl A i) with hx`. Use `set ω := (fld At (omF hY σ (h.pull π w) fl) - pullF hB hY σ π w (fld (hB.atlas σ) (omF hB σ h flB))) with hω`. Use `set Z := evalF At x K with hZ`. Use `set α := evalF At x (X 4 - X 0) with hα`. Use `set f : CxPts p σ → ℝ := fun y => 1 - v y with hf`.
+
+Establish `hxF : ∀ i, At.IsForm (fld At (x i))` using `fun i => (hbasic.1 _ (fam5 π w H flB fl A i)).1.1`. Establish `hxd : ∀ i, At.del (fld At (x i)) = 0` using `fun i => (hbasic.1 _ (fam5 π w H flB fl A i)).2.1`. Establish `hxdb : ∀ i, At.dbar (fld At (x i)) = 0` using `fun i => (hbasic.1 _ (fam5 π w H flB fl A i)).2.2.1`. Establish `hev` using `fun P => hcalc.2.2.2.1 (Fin 5) x P hxF`. Establish `hZF : At.IsForm Z` using `(hev K).1`.
+
+Establish `hZd : At.del Z = 0` using `(hev K).2.1 hxd`. Establish `hZdb : At.dbar Z = 0` using `(hev K).2.2 hxdb`. Establish `hαF : At.IsForm α` using `(hev _).1`. Establish `hωF : At.IsForm ω` using `hom.1`. Establish `hops` using `fun (c : ℂ) (a b : At.Fld) (ha : At.IsForm a) (hb : At.IsForm b) => hcalc.2.1 c a b ha hb`.
+
+Establish `hdbωF : At.IsForm (At.dbar ω)` using `(hops 0 ω ω hωF hωF).2.2.2.2.1`. Establish `hψF : At.IsForm (Z * ω)` using `(hops 0 Z ω hZF hωF).2.1`. Establish `hddcψ : At.ddc (Z * ω) = Z * At.ddc ω`. Establish `l1` using `(hcalc.2.2.1 (fun y => aeval (fun i => x i y) (K.map (algebraMap ℝ ℂ))) ω hZF hωF).2`. Establish `l2` using `(hcalc.2.2.1 (fun y => aeval (fun i => x i y) (K.map (algebraMap ℝ ℂ))) (At.dbar ω) hZF hdbωF).1`.
+
+Express the relevant statement in the definitionally equal form `At.dbar (Z * ω) = At.dbar Z * ω + Z * At.dbar ω at l1`. Express the relevant statement in the definitionally equal form `At.del (Z * At.dbar ω) = At.del Z * At.dbar ω + Z * At.del (At.dbar ω) at l2`. Rewrite `l1` using `[hZdb, zero_mul, zero_add]`. Rewrite `l2` using `[hZd, zero_mul, zero_add]`. Use `show GlobalTheory.HermFrame.kappa • At.del (At.dbar (Z * ω)) = Z * (GlobalTheory.HermFrame.kappa • At.del (At.dbar ω))`.
+
+Rewrite using `[l1, l2, mul_smul_comm]`. Establish `hf01 : ∀ y, 0 ≤ f y ∧ f y ≤ 1` using `fun y => ⟨by simp only [hf]; linarith [(hv01 y).2], by simp only [hf]; linarith [(hv01 y).1]⟩`. Establish `hfc : Continuous f` using `continuous_const.sub hvc`. Establish `hfs : At.SmoothOn Set.univ (fun y => (f y : ℂ))` using `fun i => ((contDiffOn_const (c := (1 : ℂ))).sub (hvs i)).congr fun z _ => by simp only [hf, Function.comp_apply]; push_cast; ring`. Establish `hfF : At.IsForm (At.fn f)` using `At.isForm_fn hfs`.
+
+Use `set D := At.ddc (At.fn f) with hD`. Establish `hDF : At.IsForm D`. Establish `db` using `(hops 0 _ _ hfF hfF).2.2.2.2.1`. Establish `dd` using `(hops 0 _ _ db db).2.2.2.1`. Conclude with `(hops GlobalTheory.HermFrame.kappa _ _ dd dd).2.2.1`.
+
+Establish `hρF : At.IsForm (D + At.fn f * α)` using `(hops 0 _ _ hDF (hops 0 _ _ hfF hαF).2.1).1`. Establish `hddcF : At.IsForm (At.ddc (Z * ω))`. Establish `db` using `(hops 0 _ _ hψF hψF).2.2.2.2.1`. Establish `dd` using `(hops 0 _ _ db db).2.2.2.1`. Conclude with `(hops GlobalTheory.HermFrame.kappa _ _ dd dd).2.2.1`.
+
+Establish `hαψF : At.IsForm (α * (Z * ω))` using `(hops 0 _ _ hαF hψF).2.1`. Establish `F2 : ∀ t : ℝ, 0 < t → wInt At (fun y => Real.log (f y + t)) (At.ddc (Z * ω)) = At.integral (At.fn (fun y => t / (f y + t) ^ 2) * (D + At.fn f * α) * (Z * ω)) - wInt At (fun y => f y / (f y + t)) (α * (Z * ω))`. Introduce `t ht`. Establish `hpos : ∀ y, 0 < f y + t` using `fun y => by linarith [(hf01 y).1]`. Take `⟨c1, s1, -⟩` from `GlobalTheory.T.smooth_composition_form _ _ At f (Set.Ioi (-t)) (fun s => Real.log (s + t)) hfc hfs isOpen_Ioi (fun y => by simp only [Set.mem_Ioi]; linarith [hpos y]) (Real.contDiffOn_log.comp (contDiff_id.add contDiff_const).contDiffOn fun s hs => by`.
+
+Simplify using `only [Set.mem_Ioi] at hs`. Simplify using `only [Set.mem_compl_iff, Set.mem_singleton_iff, id]`. Use the proof step `linarith)`. Take `⟨-, -, g2F⟩` from `GlobalTheory.T.smooth_composition_form _ _ At f (Set.Ioi (-t)) (fun s => t / (s + t) ^ 2) hfc hfs isOpen_Ioi (fun y => by simp only [Set.mem_Ioi]; linarith [hpos y]) (contDiffOn_const.div ((contDiff_id.add contDiff_const).pow 2).contDiffOn fun s hs => by`. Simplify using `only [Set.mem_Ioi] at hs; show (s + t) ^ 2 ≠ 0; exact pow_ne_zero _ (by linarith : (0:ℝ) < s + t).ne')`.
+
+Take `⟨c3, -, g3F⟩` from `GlobalTheory.T.smooth_composition_form _ _ At f (Set.Ioi (-t)) (fun s => s / (s + t)) hfc hfs isOpen_Ioi (fun y => by simp only [Set.mem_Ioi]; linarith [hpos y]) (contDiff_id.contDiffOn.div (contDiff_id.add contDiff_const).contDiffOn fun s hs => by`. Simplify using `only [Set.mem_Ioi] at hs`. Use the proof step `linarith)`. Rewrite using `[← GlobalTheory.T.weighted_integral_of_continuous _ _ At _ c1 _ hddcF, GlobalTheory.T.ddc_integration_by_parts _ _ At _ s1 _ hψF, GlobalTheory.T.ddc_log_plus_constant _ _ At f hfs (fun y => (hf01 y).1) t ht, hloc, alg_step At f t D α (Z * ω) hpos, GlobalTheory.T.integral_sub_of_i …`. Establish `hnullae : ∀ β : At.Fld, At.IsForm β → ∀ ε : ℤˣ, ∀ᵐ y ∂At.part β ε, 0 < f y`.
+
+Introduce `β hβ ε`. Use `ae_iff.2 (measure_mono_null (fun y hy => ?_) (hnull β hβ ε))` and prove the remaining obligations. Simplify using `only [Set.mem_setOf_eq, hf, not_lt] at hy ⊢`. Conclude with `le_antisymm (hv01 y).2 (by linarith)`. Establish `hfin` using `hlin.1`.
+
+Establish `F3 : Tendsto (fun t => wInt At (fun y => Real.log (f y + t)) (At.ddc (Z * ω))) (𝓝[>] 0) (𝓝 (wInt At (fun y => Real.log (f y)) (At.ddc (Z * ω))))`. Use `wInt_tendsto At _ (b := fun y => 2 * |Real.log (f y) / 2| + 1) ?_ ?_ ?_ ?_` and prove the remaining obligations. Use `filter_upwards [self_mem_nhdsWithin] with t ht ε`. Conclude with `((hfc.add continuous_const).log fun y => (by linarith [(hf01 y).1, Set.mem_Ioi.1 ht] : 0 < f y + t).ne').aestronglyMeasurable`. Introduce `ε haveI := hfin _ hddcF ε`.
+
+Conclude with `(((hfib _ hddcF ε).abs.const_mul 2).add (integrable_const 1))`. Use `filter_upwards [Ioo_mem_nhdsGT (show (0:ℝ) < 1 by norm_num)] with t ht ε filter_upwards [hnullae _ hddcF ε] with y hy`. Establish `h1` using `(hf01 y).2`. Establish `hlog1 : Real.log (f y + t) ≤ 1`. Use `Real.log_le_sub_one_of_pos (show 0 < f y + t by linarith [ht.1])` as an intermediate fact.
+
+Combine the linear relations using `[ht.2]`. Establish `hlog2 : Real.log (f y) ≤ Real.log (f y + t)` using `Real.log_le_log hy (by linarith [ht.1])`. Establish `hlog3 : Real.log (f y) ≤ 0` using `Real.log_nonpos hy.le h1`. Establish `e : 2 * |Real.log (f y) / 2| = -Real.log (f y)`. Rewrite using `[abs_div, abs_two, abs_of_nonpos hlog3]`.
+
+Expand and normalize the polynomial expressions, which then agree. Rewrite using `[Real.norm_eq_abs, abs_le, e]`. Apply the tactic sequence `constructor <;> linarith`. Introduce `ε filter_upwards [hnullae _ hddcF ε] with y hy`. Establish `: Tendsto (fun t => f y + t) (𝓝[>] 0) (𝓝 (f y + 0))` using `((continuous_const.add continuous_id).tendsto 0).mono_left nhdsWithin_le_nhds`.
+
+Rewrite `this` using `[add_zero]`. Conclude with `this.log hy.ne'`. Establish `F4 : Tendsto (fun t => wInt At (fun y => f y / (f y + t)) (α * (Z * ω))) (𝓝[>] 0) (𝓝 (At.integral (α * (Z * ω))))`. Rewrite using `[← wInt_one]`. Use `wInt_tendsto At _ (b := fun _ => 1) ?_ ?_ ?_ ?_` and prove the remaining obligations.
+
+Use `filter_upwards [self_mem_nhdsWithin] with t ht ε`. Conclude with `(hfc.div (hfc.add continuous_const) fun y => (by linarith [(hf01 y).1, Set.mem_Ioi.1 ht] : 0 < f y + t).ne').aestronglyMeasurable`. Introduce `ε haveI := hfin _ hαψF ε`. Conclude with `integrable_const 1`. Use `filter_upwards [self_mem_nhdsWithin] with t ht ε`.
+
+Use `Filter.Eventually.of_forall fun y => ?_` and prove the remaining obligations. Establish `h0` using `(hf01 y).1`. Establish `ht'` using `Set.mem_Ioi.1 ht`. Rewrite using `[Real.norm_eq_abs, abs_le]`. Prove the components needed by the constructor for the conclusion.
+
+Establish `: 0 ≤ f y / (f y + t)` using `div_nonneg h0 (by linarith)`. Combine the linear equalities and inequalities to obtain the conclusion. Conclude with `(div_le_one (by linarith)).2 (by linarith)`. Introduce `ε filter_upwards [hnullae _ hαψF ε] with y hy`. Establish `: Tendsto (fun t => f y + t) (𝓝[>] 0) (𝓝 (f y + 0))` using `((continuous_const.add continuous_id).tendsto 0).mono_left nhdsWithin_le_nhds`.
+
+Rewrite `this` using `[add_zero]`. Establish `h2` using `(tendsto_const_nhds (x := f y)).div this hy.ne'`. Rewrite `h2` using `[div_self hy.ne']`. Then use the resulting hypothesis. Establish `F5 : Tendsto (fun t => wInt At (fun y => Real.log (f y + t)) (At.ddc (Z * ω))) (𝓝[>] 0) (𝓝 (0 - At.integral (α * (Z * ω))))`. Use `(hconc.sub F4).congr' ?_` and prove the remaining obligations.
+
+Use `filter_upwards [self_mem_nhdsWithin] with t ht`. Conclude with `(F2 t ht).symm`. Establish `hcoreEq : wInt At (fun y => Real.log (1 - v y)) (At.ddc (Z * ω)) = -At.integral (α * (Z * ω))` using `(tendsto_nhds_unique F3 F5).trans (zero_sub _)`. Establish `e1 : evalF At x ((X 0 - X 3) * ((X 4 - X 0) * K)) = ((-1 : ℝ) : ℂ) • At.ddc (Z * ω)`. Rewrite using `[hddcψ, hom.2, hZ, ← evalF_mul]`.
+
+Establish `: (X 0 - X 3) * ((X 4 - X 0) * K) = -(K * ((X 4 - X 0) * (X 3 - X 0)))` using `by ring`. Rewrite using `[this, evalF_neg]`. Simplify using the standard rewrite rules. Establish `e2` using `wInt_div_two At (fun y => Real.log (1 - v y)) (At.ddc (Z * ω))`. Use `beta_reduce at e2`.
+
+Establish `hcalcB` using `GlobalTheory.T.smoothForms_calculus_holomorphicAtlas _ d (hB.atlas σ)`. Establish `hbasicB` using `GlobalTheory.T.firstChern_form_properties k B q d hB σ`. Establish `hoY : At.IsForm (fld At (omF hY σ (h.pull π w) fl))` using `(hbasic.2.1 _ (h.pull π w) (H.pull π w) fl fl).1.1`. Establish `hoB : (hB.atlas σ).IsForm (fld (hB.atlas σ) (omF hB σ h flB))` using `(hbasicB.2.1 E h H flB flB).1.1`. Establish `hpB : At.IsForm (pullF hB hY σ π w (fld (hB.atlas σ) (omF hB σ h flB)))` using `((hcalcB.2.2.2.2 (CxPts p σ) (d + 1) At _ (hbasicB.2.2 Y p (d + 1) hY π w).1).2 0 (fld (hB.atlas σ) (omF hB σ h flB)) (fld (hB.atlas σ) (omF hB σ h flB)) |>.2.2.2 hoB).1`.
+
+Establish `hPF : At.IsForm (evalF At x ((X 4 - X 0) * K))` using `(hev _).1`. Establish `eR : At.integral (fld At (omF hY σ (h.pull π w) fl) * evalF At x ((X 4 - X 0) * K)) - At.integral (pullF hB hY σ π w (fld (hB.atlas σ) (omF hB σ h flB)) * evalF At x ((X 4 - X 0) * K)) = At.integral (α * (Z * ω))`. Rewrite using `[← GlobalTheory.T.integral_sub_of_isForm' At _ _ (hops 0 _ _ hoY hPF).2.1 (hops 0 _ _ hpB hPF).2.1, ← sub_mul, ← hω, ← evalF_comm, evalF_mul, ← hα, ← hZ, mul_assoc]`. Rewrite using `[eR, e1, hlin.2.2.1 _ _ _ hddcF, e2, hcoreEq]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem pl_step : ∀ (k : Type) [CommRing k] (B Y : Scheme.{0}) [IsIntegral B] [IsIntegral Y] (q : B ⟶ Sp k) (p : Y ⟶ Sp k) (d : ℕ)
     (hB : IsRegVar q d) (hY : IsRegVar p (d + 1)) (π : Y ⟶ B) (w : π ≫ q = p) (E : B.Modules) (h : VMetric q E 2) (H : h.IsCInf)
     (flB : Vert.Flag E 2) (fl : Vert.Flag ((Scheme.Modules.pullback π).obj E) 2),

@@ -13,6 +13,11 @@ namespace Formalism.L2.FormalSeriesBounds
 open Formalism.IncomingBounds Formalism.L2.Pj NumberField
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Geo.Tor ReciprocityTheory.ChartRestriction.G.Geo.Tor.Germ
 
+/- English proof (translation)
+Rewrite using `[show (Finset.univ.filter fun x : (Σ a : ZMod d, Fin (m a)) => x.1 = a) = (Finset.univ : Finset (Fin (m a))).map ⟨Sigma.mk a, sigma_mk_injective⟩ from ?_]`. Simplify using the standard rewrite rules. Use extensionality with `x`. Take `⟨b, i⟩` from `x`. Simplify using `only [Finset.mem_filter, Finset.mem_univ, true_and, Finset.mem_map, Function.Embedding.coeFn_mk]`.
+
+Prove the components needed by the constructor for the conclusion. Introduce and unpack `rfl`. Conclude with `⟨i, rfl⟩`. Introduce and unpack `⟨j, hj⟩`. Conclude with `(congrArg Sigma.fst hj).symm`.
+-/
 theorem card_sigma_fst {d : ℕ} [NeZero d] (m : ZMod d → ℕ) (a : ZMod d) :
     (Finset.univ.filter fun x : (Σ a : ZMod d, Fin (m a)) => x.1 = a).card = m a := by
   rw [show (Finset.univ.filter fun x : (Σ a : ZMod d, Fin (m a)) => x.1 = a) =
@@ -43,6 +48,9 @@ section Rank
 
 variable {T : CDVR} {io : c.F →+* T.Fr} {y : IntFr Xo c T io} {Orb : Type} {d : ℕ} [NeZero d]
 
+/- English proof (translation)
+The claim follows from `(hr o).1 rk_big := fun g a hb => (card_sigma_fst (fun a => Dw.mult (lab.tau o g a)) a).trans ((hr o).2.1 g a hb) rk_small := fun g a hb => (card_sigma_fst (fun a => Dw.mult (lab.tau o g a)) a).trans ((hr o).2.2 g a hb)`.
+-/
 theorem rankHyp_ofLab {C3 : IntChart T io y} {ι : T.Fr →+* C} {Y : FBChart C V (𝓞 E) (chD C3.ch)} {lab : Lab E Orb d}
     (ha : LabArith V io ι lab) (hg : LabGeo C3 ι Y lab) (hr : lab.RankOK Dw) (o : Orb) :
     (Y.raw (pairOfLab ha hg o)).RankHyp where
@@ -75,6 +83,9 @@ section Top
 
 variable {T : CDVR} {io : c.F →+* T.Fr} {y : IntFr Xo c T io} {Orb : Type} {d : ℕ} [NeZero d]
 
+/- English proof (translation)
+The claim follows from `FBChart.hyps hCart hAx hG0 hC hR1 Y (pairOfLab ha hg o) (rankHyp_ofLab ha hg hr o) (hR2 hstar _ _ _ C3 C V ι hι k Y hY Orb d lab ha hg hr o _) (hCH hstar _ _ _ C3 C V ι hι k Y hY Orb d lab ha hg hr o _)`.
+-/
 theorem hypotheses_of_labelling (hCart : CartFBSt) (hAx : AxesFBSt) (hG0 : IntegralGermIndependentAllCharts) (hC : CEqFBSt) (hR1 : IndependenceBoundAllCharts)
     (hR2 : RankMaximalCharts Xo c) (hCH : CharacterHypothesisAllCharts Xo c) (hstar : ∀ a : 𝓞 E, star a = H.bar a)
     {C3 : IntChart T io y} {ι : T.Fr →+* C} (hι : EmbOK T V ι) {k : ℕ}

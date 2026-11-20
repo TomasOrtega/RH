@@ -13,6 +13,13 @@ open scoped Formalism.Per
 
 namespace GlobalTheory.MemLoc.GaussDefinite
 
+/- English proof (translation)
+Proceed by induction on `j generalizing m with`. Consider the case `zero => exact ⟨0, 1, by simp⟩`. Consider the case `succ j ih`. Break down `m with _ | m` into its components or cases. Conclude with `⟨(x + p) ^ (j + 1), 0, by simp⟩`.
+
+Take `⟨u, v, h⟩` from `ih m`. Take `⟨u', v', h'⟩` from `ih (m + 1)`. Take `⟨d, hd⟩ : ∃ d, j - (m + 1) + 1 = j - m + d` from `⟨j - (m + 1) + 1 - (j - m), by omega⟩`. Use `⟨u + p * u', x * v + p ^ d * v', ?_⟩` and prove the remaining obligations. Rewrite using `[show j + 1 - (m + 1) = j - m by omega]`.
+
+Establish `e : p * p ^ (j - (m + 1)) = p ^ (j - m) * p ^ d` using `by rw [← pow_add, ← hd, pow_succ']`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[← h, ← h']`. Use `_ = _ := by linear_combination v' * e`.
+-/
 theorem add_pow_split {R : Type} [CommRing R] (x p : R) (j m : ℕ) :
     ∃ u v : R, (x + p) ^ j = x ^ m * u + p ^ (j - m) * v := by
   induction j generalizing m with
@@ -33,6 +40,11 @@ theorem add_pow_split {R : Type} [CommRing R] (x p : R) (j m : ℕ) :
 
 variable (l : ℕ) [hl : Fact l.Prime]
 
+/- English proof (translation)
+Establish `hr : ∀ a : Per.OC l, ∃ b : Per.OC l, b ^ l = a`. Introduce `a`. Take `⟨b, hb⟩` from `IsAlgClosed.exists_pow_nat_eq (a : ℂ_[l]) hl.out.pos`. Establish `h1 : ‖b‖ ^ l ≤ 1` using `by rw [← norm_pow, hb]; exact (GlobalTheory.RingBasics.mem_OC _).1 a.2`. Conclude with `⟨⟨b, (GlobalTheory.RingBasics.mem_OC _).2 ((pow_le_one_iff_of_nonneg (norm_nonneg _) hl.out.ne_zero).1 h1)⟩, Subtype.ext hb⟩`.
+
+Use `choose r hr using hr`. Take `⟨e, he⟩` from `zeta_exists_tilt (p := l) (O := Per.OC l) (fun n => r^[n] (l : Per.OC l)) (fun n => by`. Rewrite using `[Function.iterate_succ_apply', hr])`. Conclude with `⟨e, he 0⟩`.
+-/
 theorem exists_flat : ∃ x : Per.Fl l, x.untilt = (l : Per.OC l) := by
   have hr : ∀ a : Per.OC l, ∃ b : Per.OC l, b ^ l = a := by
     intro a
@@ -45,10 +57,18 @@ theorem exists_flat : ∃ x : Per.Fl l, x.untilt = (l : Per.OC l) := by
     rw [Function.iterate_succ_apply', hr])
   exact ⟨e, he 0⟩
 
+/- English proof (translation)
+Rewrite using `[GlobalTheory.RingBasics.norm_eq_val, PadicComplex.valuation_p]`. Simplify using the standard rewrite rules.
+-/
 theorem norm_l : ‖(l : ℂ_[l])‖ = (l : ℝ)⁻¹ := by
   rw [GlobalTheory.RingBasics.norm_eq_val, PadicComplex.valuation_p]
   simp
 
+/- English proof (translation)
+Establish `h` using `PreTilt.untilt_iterate_frobeniusEquiv_symm_pow x i`. Establish `e : ((frobeniusEquiv (Per.Fl l) l).symm ^ i) x = ((frobeniusEquiv (Per.Fl l) l).symm)^[i] x`. Proceed by induction on `i with`. Consider the case `zero => rfl`. Consider the case `succ i ih => rw [pow_succ', Function.iterate_succ_apply', ← ih (PreTilt.untilt_iterate_frobeniusEquiv_symm_pow x i)]`.
+
+Both sides reduce to the same expression. Rewrite using `[← h, e]`. Use `push_cast`. Rewrite using `[norm_pow, one_div, ← Nat.cast_pow, Real.pow_rpow_inv_natCast (norm_nonneg _) (pow_ne_zero _ hl.out.ne_zero)]`.
+-/
 theorem norm_root (x : Per.Fl l) (i : ℕ) :
     ‖((x.untilt : Per.OC l) : ℂ_[l])‖ ^ ((1 : ℝ) / (l : ℝ) ^ i) =
       ‖(((((frobeniusEquiv (Per.Fl l) l).symm ^ i) x).untilt : Per.OC l) : ℂ_[l])‖ := by
@@ -62,6 +82,23 @@ theorem norm_root (x : Per.Fl l) (i : ℕ) :
   rw [norm_pow, one_div, ← Nat.cast_pow, Real.pow_rpow_inv_natCast (norm_nonneg _)
     (pow_ne_zero _ hl.out.ne_zero)]
 
+/- English proof (translation)
+Take `⟨w, hw⟩` from `exists_flat l`. Establish `hk : Per.tm w - (l : Per.Ainf l) ∈ RingHom.ker (Per.θ l)`. Rewrite using `[RingHom.mem_ker, map_sub, map_natCast, WittVector.fontaineTheta_teichmuller, hw, sub_self]`. Establish `hl0 : (0 : ℝ) < (l : ℝ)⁻¹` using `inv_pos.2 (by exact_mod_cast hl.out.pos)`. Establish `key : ∀ i ∈ Finset.Iic M, ∃ c : Per.Ainf l, Per.tm (((frobeniusEquiv (Per.Fl l) l).symm ^ i) (a.coeff i)) * (l : Per.Ainf l) ^ i - (l : Per.Ainf l) ^ (M - m) * c ∈ RingHom.ker (Per.θ l) ^ m`.
+
+Introduce `i hi`. Rewrite `hi` using `[Finset.mem_Iic]`. Establish `h1` using `h i`. Rewrite `h1` using `[norm_root]`. Use `set y := ((frobeniusEquiv (Per.Fl l) l).symm ^ i) (a.coeff i)`.
+
+Establish `h2 : ‖((y.untilt : Per.OC l) : ℂ_[l])‖ ≤ ‖(l : ℂ_[l])‖ ^ (M - i)`. Rewrite using `[norm_l]`. Use `le_of_mul_le_mul_right ?_ (pow_pos hl0 i)` and prove the remaining obligations. Rewrite using `[← pow_add, Nat.sub_add_cancel hi]` and apply the resulting hypothesis. Rewrite `h2` using `[← GlobalTheory.RingBasics.mem_span_pow_OC, Ideal.span_singleton_pow, Ideal.mem_span_singleton, ← hw, ← map_pow]`.
+
+Take `⟨z, hz⟩` from `GlobalTheory.TiltAlgClosed.dvd_of_untilt_dvd h2`. Take `⟨u, v, huv⟩` from `add_pow_split (Per.tm w - (l : Per.Ainf l)) (l : Per.Ainf l) (M - i) m`. Take `⟨d, hd⟩ : ∃ d, M - i - m + i = M - m + d` from `⟨M - i - m + i - (M - m), by omega⟩`. Establish `e : (l : Per.Ainf l) ^ (M - i - m) * (l : Per.Ainf l) ^ i = (l : Per.Ainf l) ^ (M - m) * (l : Per.Ainf l) ^ d` using `by rw [← pow_add, hd, pow_add]`. Use `⟨(l : Per.Ainf l) ^ d * v * Per.tm z, ?_⟩` and prove the remaining obligations.
+
+Establish `e2 : Per.tm y * (l : Per.Ainf l) ^ i - (l : Per.Ainf l) ^ (M - m) * ((l : Per.Ainf l) ^ d * v * Per.tm z) = (Per.tm w - (l : Per.Ainf l)) ^ m * (u * Per.tm z * (l : Per.Ainf l) ^ i)`. Rewrite `huv` using `[sub_add_cancel]`. Rewrite using `[hz, Per.tm, map_mul, map_pow]`. Express the relevant statement in the definitionally equal form `Per.tm w ^ (M - i) * Per.tm z * _ - _ = _`. Rewrite using `[huv]`.
+
+Take the linear combination `(v * Per.tm z) * e`. Rewrite using `[e2]`. Conclude with `Ideal.mul_mem_right _ _ (Ideal.pow_mem_pow hk m)`. Use `choose! c hc using key`. Take `⟨t, ht⟩` from `WittVector.dvd_sub_sum_teichmuller_iterateFrobeniusEquiv_coeff (p := l) a M`.
+
+Take `⟨d, hd⟩ : ∃ d, M + 1 = M - m + d` from `⟨M + 1 - (M - m), by omega⟩`. Use `⟨∑ i ∈ Finset.Iic M, c i + (l : Per.Ainf l) ^ d * t, ?_⟩` and prove the remaining obligations. Use `Ideal.sum_mem _ hc` as an intermediate fact. Rewrite `this` using `[Finset.sum_sub_distrib, ← Finset.mul_sum]`. Rewrite `ht` using `[hd, pow_add]`.
+
+Use `this using 1` and compare the differences between its conclusion and the goal. Take the linear combination `ht`.
+-/
 theorem split_of_small (a : Per.Ainf l) (M m : ℕ)
     (h : ∀ i : ℕ, ‖(((a.coeff i).untilt : Per.OC l) : ℂ_[l])‖ ^ ((1 : ℝ) / (l : ℝ) ^ i) * ((l : ℝ)⁻¹) ^ i ≤
       ((l : ℝ)⁻¹) ^ M) :
@@ -109,6 +146,9 @@ theorem split_of_small (a : Per.Ainf l) (M m : ℕ)
   convert this using 1
   linear_combination ht
 
+/- English proof (translation)
+Establish `h1 : RingHom.ker (Per.θ l) ≤ (Per.kerP l).comap (algebraMap (Per.Ainf l) (Per.AinfP l))`. Introduce `x hx`. Conclude with `Ideal.mem_comap.2 (GlobalTheory.RingIface.alg_mem_kerP l (RingHom.mem_ker.1 hx))`. Conclude with `Ideal.le_comap_pow _ m (Ideal.pow_right_mono h1 m h)`.
+-/
 theorem map_mem_kerP (a : Per.Ainf l) (m : ℕ) (h : a ∈ RingHom.ker (Per.θ l) ^ m) :
     algebraMap (Per.Ainf l) (Per.AinfP l) a ∈ Per.kerP l ^ m := by
   have h1 : RingHom.ker (Per.θ l) ≤ (Per.kerP l).comap (algebraMap (Per.Ainf l) (Per.AinfP l)) := by
@@ -116,6 +156,9 @@ theorem map_mem_kerP (a : Per.Ainf l) (m : ℕ) (h : a ∈ RingHom.ker (Per.θ l
     exact Ideal.mem_comap.2 (GlobalTheory.RingIface.alg_mem_kerP l (RingHom.mem_ker.1 hx))
   exact Ideal.le_comap_pow _ m (Ideal.pow_right_mono h1 m h)
 
+/- English proof (translation)
+Establish `h1 : (1 : ℝ) ≤ l` using `by exact_mod_cast hl.out.one_le`. Rewrite using `[norm_root]`. Conclude with `mul_le_one₀ ((GlobalTheory.RingBasics.mem_OC _).1 (Subtype.property _)) (by positivity) (pow_le_one₀ (by positivity) (inv_le_one_of_one_le₀ h1))`.
+-/
 theorem term_le_one (a : Per.Ainf l) (i : ℕ) :
     ‖(((a.coeff i).untilt : Per.OC l) : ℂ_[l])‖ ^ ((1 : ℝ) / (l : ℝ) ^ i) * ((l : ℝ)⁻¹) ^ i ≤ 1 := by
   have h1 : (1 : ℝ) ≤ l := by exact_mod_cast hl.out.one_le
@@ -123,6 +166,11 @@ theorem term_le_one (a : Per.Ainf l) (i : ℕ) :
   exact mul_le_one₀ ((GlobalTheory.RingBasics.mem_OC _).1 (Subtype.property _)) (by positivity)
     (pow_le_one₀ (by positivity) (inv_le_one_of_one_le₀ h1))
 
+/- English proof (translation)
+Use `ciSup_le fun i => ?_` and prove the remaining obligations. Rewrite using `[norm_root]`. Distinguish the cases in `h : i = k`. Substitute `h` using the available equality. Conclude with `mul_le_of_le_one_left (by positivity) ((GlobalTheory.RingBasics.mem_OC _).1 (Subtype.property _))`.
+
+Establish `h0 : (0 : Per.Fl l).untilt = 0`. Rewrite using `[← WittVector.fontaineTheta_teichmuller, WittVector.teichmuller_zero, map_zero]`. Rewrite using `[WittVector.coeff_p_pow_eq_zero _ _ h, map_zero, h0]`. Simplify using the standard rewrite rules.
+-/
 theorem gauss_pow_le (k : ℕ) :
     ⨆ i : ℕ, ‖(((((l : Per.Ainf l) ^ k).coeff i).untilt : Per.OC l) : ℂ_[l])‖ ^ ((1 : ℝ) / (l : ℝ) ^ i) *
       ((l : ℝ)⁻¹) ^ i ≤ ((l : ℝ)⁻¹) ^ k := by
@@ -136,6 +184,15 @@ theorem gauss_pow_le (k : ℕ) :
     rw [WittVector.coeff_p_pow_eq_zero _ _ h, map_zero, h0]
     simp
 
+/- English proof (translation)
+Take `⟨K, a, ha⟩` from `IsLocalization.Away.surj ((l : ℕ) : Per.Ainf l) (s : Per.AinfP l)`. Establish `e0 : s * algebraMap (Per.Ainf l) (Per.Acris0 l) ((l : Per.Ainf l) ^ K) = algebraMap (Per.Ainf l) (Per.Acris0 l) a` using `Subtype.ext (by rw [← map_pow] at ha; exact ha)`. Establish `hc : ∀ x, algebraMap (Per.Acris0 l) (Per.Acris l) (algebraMap (Per.Ainf l) (Per.Acris0 l) x) = algebraMap (Per.Ainf l) (Per.Acris l) x` using `fun x => (GlobalTheory.RingIface.tower l x).symm`. Establish `e1` using `congrArg (algebraMap (Per.Acris0 l) (Per.Acris l)) e0`. Rewrite `e1` using `[map_mul, hc, hc]`.
+
+Establish `hN : N (algebraMap (Per.Ainf l) (Per.Acris l) a) ≤ ((l : ℝ)⁻¹) ^ (k + m + K)`. Rewrite using `[← e1, hm, pow_add]`. Use `mul_le_mul hs ?_ (h0 _) (by positivity)` and prove the remaining obligations. Rewrite using `[hA]`. Conclude with `gauss_pow_le l K`.
+
+Rewrite `hN` using `[hA]`. Take `⟨c, hc⟩` from `split_of_small l a (k + m + K) m fun i => (le_ciSup (f := fun n : ℕ => ‖(((a.coeff n).untilt : Per.OC l) : ℂ_[l])‖ ^ ((1 : ℝ) / (l : ℝ) ^ n) * ((l : ℝ)⁻¹) ^ n) ⟨1, by rintro _ ⟨i, rfl⟩; exact term_le_one l a i⟩ i).trans hN`. Use `⟨c, ?_⟩` and prove the remaining obligations. Establish `h2` using `map_mem_kerP l _ m hc`. Rewrite `h2` using `[show k + m + K - m = k + K by omega, map_sub, ← ha, map_natCast]`.
+
+Rewrite using `[← Ideal.unit_mul_mem_iff_mem _ ((GlobalTheory.RingBasics.isUnit_l l).pow K)]`. Use `h2 using 1` and compare the differences between its conclusion and the goal. Simplify using `only [map_mul, map_pow, map_natCast]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem envelope_split (N : Per.Acris l → ℝ) (h0 : ∀ x, 0 ≤ N x) (hm : ∀ x y, N (x * y) = N x * N y)
     (hA : ∀ a : Per.Ainf l, N (algebraMap (Per.Ainf l) (Per.Acris l) a) =
       ⨆ n : ℕ, ‖(((a.coeff n).untilt : Per.OC l) : ℂ_[l])‖ ^ ((1 : ℝ) / (l : ℝ) ^ n) * ((l : ℝ)⁻¹) ^ n)
@@ -170,6 +227,23 @@ end GlobalTheory.MemLoc.GaussDefinite
 
 namespace GlobalTheory.MemLoc
 
+/- English proof (translation)
+Introduce `l hl N hN b hb hb0`. Establish `hl1 : (1 : ℝ) < l` using `by exact_mod_cast hl.out.one_lt`. Take `⟨h01, hadd, hneg, hm, hA⟩` from `hN _ le_rfl (inv_lt_one_of_one_lt₀ hl1)`. Take `⟨j, hj⟩` from `exists_isCrisP l`. Use `hb (crisP_injective l j hj ?_)` and prove the remaining obligations.
+
+Rewrite using `[map_zero]`. Use `GlobalTheory.RingIface.ev_ext l _ _ fun m => ?_` and prove the remaining obligations. Rewrite using `[map_zero]`. Take `⟨N₀, hN₀⟩` from `hj.bdd m`. Take `⟨a, ha⟩` from `hN₀ b`.
+
+Establish `hu : IsUnit (Per.ev l m (((l : ℕ) : Per.BdRp l) ^ N₀))`. Use `((GlobalTheory.RingBasics.isUnit_l l).pow N₀).map (Ideal.Quotient.mk (Per.kerP l ^ m))` as an intermediate fact. Rewrite `this`, the goal using `[map_pow, map_natCast]`. Conclude with `this`. Rewrite using `[← hu.mul_right_eq_zero, ← map_mul, ha, Ideal.Quotient.eq_zero_iff_mem]`.
+
+Use `image_kerP_pow_separated l m a fun k => ?_` and prove the remaining obligations. Take `⟨s, z, hs⟩` from `(acris_basic l).2.2.1 b (k + m)`. Establish `hz : N (l : ℝ)⁻¹ (-((l : Per.Acris l) ^ (k + m) * z)) ≤ ((l : ℝ)⁻¹) ^ (k + m)`. Rewrite using `[hneg, hm, ← map_natCast (algebraMap (Per.Ainf l) (Per.Acris l)), ← map_pow, hA]`. Conclude with `(mul_le_mul (GaussDefinite.gauss_pow_le l _) (h01 z).2 (h01 z).1 (by positivity)).trans (mul_one _).le`.
+
+Establish `hs' : N (l : ℝ)⁻¹ (algebraMap (Per.Acris0 l) (Per.Acris l) s) ≤ ((l : ℝ)⁻¹) ^ (k + m)`. Establish `e : algebraMap (Per.Acris0 l) (Per.Acris l) s = b + -((l : Per.Acris l) ^ (k + m) * z)`. Rewrite using `[hs]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e]`.
+
+Use `(hadd _ _).trans (max_le ?_ hz)` and prove the remaining obligations. Rewrite using `[hb0]`. Check the signs of the components of the expression. Take `⟨c, hc⟩` from `GaussDefinite.envelope_split l (N (l : ℝ)⁻¹) (fun x => (h01 x).1) hm hA s k m hs'`. Take `⟨a', ha'⟩` from `hN₀ z`.
+
+Establish `hev : Per.ev l m (algebraMap (Per.AinfP l) (Per.BdRp l) (s : Per.AinfP l)) = Ideal.Quotient.mk _ (s : Per.AinfP l)` using `GlobalTheory.RingIface.ev_alg l m _`. Use `⟨(l : Per.Ainf l) ^ N₀ * c + (l : Per.Ainf l) ^ m * a', ?_⟩` and prove the remaining obligations. Rewrite `hc`, the goal using `[← Ideal.Quotient.eq_zero_iff_mem]`. Rewrite `ha` using `[hs]`. Simplify using `only [map_add, map_sub, map_mul, map_pow, map_natCast, hj.on0, hev] at ha ha' hc ⊢`.
+
+Take the linear combination `-ha + (l : Per.AinfP l ⧸ Per.kerP l ^ m) ^ (k + m) * ha' + (l : Per.AinfP l ⧸ Per.kerP l ^ m) ^ N₀ * hc`.
+-/
 theorem gauss_ne_zero : ∀ (l : ℕ) [Fact l.Prime] (N : ℝ → Per.Acris l → ℝ), (∀ r : ℝ, (l : ℝ)⁻¹ ≤ r → r < 1 → (∀ x, 0 ≤ N r x ∧ N r x ≤ 1) ∧ (∀ x y, N r (x + y) ≤ max (N r x) (N r y)) ∧ (∀ x, N r (-x) = N r x) ∧ (∀ x y, N r (x * y) = N r x * N r y) ∧ ∀ a : Per.Ainf l, N r (algebraMap (Per.Ainf l) (Per.Acris l) a) = ⨆ n : ℕ, ‖(((a.coeff n).untilt : Per.OC l) : ℂ_[l])‖ ^ ((1 : ℝ) / (l : ℝ) ^ n) * r ^ n) → ∀ b : Per.Acris l, b ≠ 0 → N (l : ℝ)⁻¹ b ≠ 0 := by
   intro l hl N hN b hb hb0
   have hl1 : (1 : ℝ) < l := by exact_mod_cast hl.out.one_lt

@@ -21,6 +21,11 @@ def CanonKeySt : Prop :=
 
 namespace CanonKeySt
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨_, _⟩`. Distinguish the cases in `h : IsField R`. Conclude with `Or.inl h`. Conclude with `Or.inr { not_a_field' := fun e => h (IsLocalRing.isField_iff_maximalIdeal_eq.2 e) }`.
+
+Introduce and unpack `(h | h)`. Use `letI := h.toField`. Conclude with `⟨inferInstance, inferInstance⟩`. Conclude with `⟨inferInstance, inferInstance⟩`.
+-/
 theorem base_iff (R : Type) [CommRing R] [IsDomain R] :
     (IsLocalRing R ∧ IsPrincipalIdealRing R) ↔ IsField R ∨ IsDiscreteValuationRing R := by
   constructor
@@ -33,12 +38,18 @@ theorem base_iff (R : Type) [CommRing R] [IsDomain R] :
       exact ⟨inferInstance, inferInstance⟩
     · exact ⟨inferInstance, inferInstance⟩
 
+/- English proof (translation)
+Simplify using `only [thetaChar, add_zero]`.
+-/
 theorem thetaChar_zero {g : ℕ} (τ : Matrix (Fin g) (Fin g) ℂ) (z : Fin g → ℂ) :
     thetaChar τ 0 0 z = ∑' n : Fin g → ℤ,
       Complex.exp (Real.pi * Complex.I * ((fun i => (n i : ℂ)) ⬝ᵥ τ.mulVec fun i => (n i : ℂ)) +
         2 * Real.pi * Complex.I * ((fun i => (n i : ℂ)) ⬝ᵥ z)) := by
   simp only [thetaChar, add_zero]
 
+/- English proof (translation)
+Rewrite using `[← pow_mul, Nat.mul_comm g 4, pow_mul, pow_mul, mul_pow, Complex.I_pow_four, _root_.mul_one]`.
+-/
 theorem const_pow (g : ℕ) :
     ((2 * Real.pi * Complex.I : ℂ) ^ g) ^ 4 = (2 * Real.pi : ℂ) ^ (4 * g) := by
   rw [← pow_mul, Nat.mul_comm g 4, pow_mul, pow_mul, mul_pow, Complex.I_pow_four, _root_.mul_one]

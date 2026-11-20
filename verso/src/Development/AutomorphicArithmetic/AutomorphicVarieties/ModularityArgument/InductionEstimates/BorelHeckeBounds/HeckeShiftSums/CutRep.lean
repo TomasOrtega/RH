@@ -15,25 +15,43 @@ open scoped ENNReal NumberField.AdeleRing InnerProductSpace ComplexConjugate
 
 private def chi (T : ℝ) (n : ℕ) (x : ℝ) : ℝ := max 0 (min (min 1 ((n + 1) * (x - T))) (T + n + 2 - x))
 
+/- English proof (translation)
+Unfold `chi`. Use `fun_prop`.
+-/
 private theorem chi_cont (T : ℝ) (n : ℕ) : Continuous (chi T n) := by
   unfold chi
   fun_prop
 
+/- English proof (translation)
+Unfold `chi`. Use `max_eq_left ?_` and prove the remaining obligations. Establish `: ((n : ℝ) + 1) * (x - T) ≤ 0` using `mul_nonpos_of_nonneg_of_nonpos (by positivity) (by linarith)`. Conclude with `(min_le_left _ _).trans ((min_le_right _ _).trans this)`.
+-/
 private theorem chi_low (T : ℝ) (n : ℕ) {x : ℝ} (h : x ≤ T) : chi T n x = 0 := by
   unfold chi
   refine max_eq_left ?_
   have : ((n : ℝ) + 1) * (x - T) ≤ 0 := mul_nonpos_of_nonneg_of_nonpos (by positivity) (by linarith)
   exact (min_le_left _ _).trans ((min_le_right _ _).trans this)
 
+/- English proof (translation)
+Unfold `chi`. Conclude with `max_eq_left ((min_le_right _ _).trans (by linarith))`.
+-/
 private theorem chi_high (T : ℝ) (n : ℕ) {x : ℝ} (h : T + n + 2 ≤ x) : chi T n x = 0 := by
   unfold chi
   exact max_eq_left ((min_le_right _ _).trans (by linarith))
 
+/- English proof (translation)
+The claim follows from `le_max_left _ _`.
+-/
 private theorem chi_nonneg (T : ℝ) (n : ℕ) (x : ℝ) : 0 ≤ chi T n x := le_max_left _ _
 
+/- English proof (translation)
+The claim follows from `max_le zero_le_one ((min_le_left _ _).trans (min_le_left _ _))`.
+-/
 private theorem chi_le (T : ℝ) (n : ℕ) (x : ℝ) : chi T n x ≤ 1 :=
   max_le zero_le_one ((min_le_left _ _).trans (min_le_left _ _))
 
+/- English proof (translation)
+The claim follows from `HasCompactSupport.intro (isCompact_Icc (a := T) (b := T + n + 2)) fun x hx => by rcases le_or_gt x T with h | h · exact chi_low T n h · exact chi_high T n (by by_contra h' exact hx ⟨h.le, (not_le.1 h').le⟩)`.
+-/
 private theorem chi_supp (T : ℝ) (n : ℕ) : HasCompactSupport (chi T n) :=
   HasCompactSupport.intro (isCompact_Icc (a := T) (b := T + n + 2)) fun x hx => by
     rcases le_or_gt x T with h | h
@@ -42,6 +60,13 @@ private theorem chi_supp (T : ℝ) (n : ℕ) : HasCompactSupport (chi T n) :=
         by_contra h'
         exact hx ⟨h.le, (not_le.1 h').le⟩)
 
+/- English proof (translation)
+Take `⟨N, hN⟩` from `exists_nat_ge (max (1 / (x - T)) (x - T))`. Use `filter_upwards [eventually_ge_atTop N] with n hn`. Establish `hp : 0 < x - T` using `sub_pos.2 h`. Establish `hn' : (N : ℝ) ≤ n` using `Nat.cast_le.2 hn`. Establish `h1 : 1 / (x - T) ≤ n` using `((le_max_left _ _).trans hN).trans hn'`.
+
+Establish `h2 : x - T ≤ n` using `((le_max_right _ _).trans hN).trans hn'`. Establish `h3 : 1 ≤ ((n : ℝ) + 1) * (x - T)`. Use `(div_le_iff₀ hp).1 h1` as an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Unfold `chi`.
+
+Rewrite using `[min_eq_left h3, min_eq_left (by linarith)]`. Conclude with `max_eq_right zero_le_one`.
+-/
 private theorem chi_one (T : ℝ) {x : ℝ} (h : T < x) : ∀ᶠ n : ℕ in atTop, chi T n x = 1 := by
   obtain ⟨N, hN⟩ := exists_nat_ge (max (1 / (x - T)) (x - T))
   filter_upwards [eventually_ge_atTop N] with n hn
@@ -56,6 +81,11 @@ private theorem chi_one (T : ℝ) {x : ℝ} (h : T < x) : ∀ᶠ n : ℕ in atTo
   rw [min_eq_left h3, min_eq_left (by linarith)]
   exact max_eq_right zero_le_one
 
+/- English proof (translation)
+Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => filter_upwards [Lp.coeFn_zero E 2 ν] with x hx`. Rewrite using `[Finset.sum_empty, hx]`. Simplify using the standard rewrite rules. Consider the case `insert a s ha ih`.
+
+Rewrite using `[Finset.sum_insert ha]`. Use `filter_upwards [Lp.coeFn_add (f a) (∑ i ∈ s, f i), ih] with x h1 h2`. Rewrite using `[h1, Pi.add_apply, h2, Finset.sum_insert ha]`.
+-/
 private theorem sum_ae {α ι E : Type*} {m : MeasurableSpace α} {ν : Measure α} [NormedAddCommGroup E]
     (s : Finset ι) (f : ι → Lp E 2 ν) :
     ∀ᵐ x ∂ν, ((∑ i ∈ s, f i : Lp E 2 ν) : α → E) x = ∑ i ∈ s, (f i : α → E) x := by
@@ -70,10 +100,18 @@ private theorem sum_ae {α ι E : Type*} {m : MeasurableSpace α} {ν : Measure 
     filter_upwards [Lp.coeFn_add (f a) (∑ i ∈ s, f i), ih] with x h1 h2
     rw [h1, Pi.add_apply, h2, Finset.sum_insert ha]
 
+/- English proof (translation)
+Use `(EuclideanSpace.basisFun (Fin d) ℂ).sum_repr v` as an intermediate fact. Simplify using `using this`.
+-/
 private theorem eu_sum {d : ℕ} (v : Eu d) : ∑ i, v i • (EuclideanSpace.single i (1 : ℂ) : Eu d) = v := by
   have := (EuclideanSpace.basisFun (Fin d) ℂ).sum_repr v
   simpa using this
 
+/- English proof (translation)
+Establish `hm : MeasurableSet (E ∩ {p | (w : RightCosetSpace (Gam K (2 + 2)) → ℂ) p ≠ 0})` using `hE.inter ((Lp.stronglyMeasurable w).measurable (measurableSet_singleton 0).compl)`. Establish `h0 : ∫⁻ p, (E ∩ {p | (w : RightCosetSpace (Gam K (2 + 2)) → ℂ) p ≠ 0}).indicator 1 p ∂quotientMeasure (Gam K (2 + 2)) μ = 0`. Rewrite using `[lintegral_quotientMeasure]`. Use `(lintegral_congr_ae (g := 0) (ae_restrict_of_ae ?_)).trans (by simp)` and prove the remaining obligations. Use `filter_upwards [h] with y hy`.
+
+Conclude with `indicator_of_notMem (fun hA => hA.2 (hy hA.1)) _`. Rewrite `h0` using `[lintegral_indicator_one hm]`. Conclude with `ae_iff.2 (measure_mono_null (fun p hp => _root_.not_imp.1 hp) h0)`.
+-/
 private theorem ae_down {K : Type} [Field K] [NumberField K] (μ : Measure (G1 K (2 + 2))) [μ.IsHaarMeasure] (w : L2 μ)
     (E : Set (RightCosetSpace (Gam K (2 + 2)))) (hE : MeasurableSet E)
     (h : ∀ᵐ y ∂μ, mk (Gam K (2 + 2)) y ∈ E →
@@ -90,6 +128,23 @@ private theorem ae_down {K : Type} [Field K] [NumberField K] (μ : Measure (G1 K
   rw [lintegral_indicator_one hm] at h0
   exact ae_iff.2 (measure_mono_null (fun p hp => _root_.not_imp.1 hp) h0)
 
+/- English proof (translation)
+Set `E : Set (RightCosetSpace (Gam K (2 + 2)))` to `{p | Om T (Quotient.out p : G1 K (2 + 2))}`. Establish `hEm : MeasurableSet E` using `(omMeas T).2.2`. Establish `hmk : ∀ y : G1 K (2 + 2), mk (Gam K (2 + 2)) y ∈ E ↔ Om T y` using `fun y => by`. Take `⟨γ, hγ⟩` from `mk_eq_mk_iff.1 (Quotient.out_eq (RightCosetSpace.mk (Gam K (2 + 2)) y))`. Express the relevant statement in the definitionally equal form `Om T (Quotient.out (RightCosetSpace.mk (Gam K (2 + 2)) y)) ↔ Om T y`.
+
+Rewrite using `[← hγ]`. Conclude with `(omMeas T).1 _ γ.2 y`. Set `R` to `LpToLpRestrictCLM (RightCosetSpace (Gam K (2 + 2))) ℂ ℂ (quotientMeasure (Gam K (2 + 2)) μ) 2 E`. Establish `hR : ∀ w : L2 μ, R w = 0 ↔ ∀ᵐ p ∂quotientMeasure (Gam K (2 + 2)) μ, p ∈ E → (w : RightCosetSpace (Gam K (2 + 2)) → ℂ) p = 0` using `fun w => by`. Rewrite using `[Lp.eq_zero_iff_ae_eq_zero, ← ae_restrict_iff' hEm]`.
+
+Prove the components needed by the constructor for the conclusion. Introduce `h filter_upwards [h, LpToLpRestrictCLM_coeFn ℂ E w] with p h1 h2`. Rewrite using `[← h2, h1]`. Both sides reduce to the same expression. Introduce `h filter_upwards [h, LpToLpRestrictCLM_coeFn ℂ E w] with p h1 h2`.
+
+Rewrite using `[h2, h1]`. Both sides reduce to the same expression. Set `Φ` to `R.comp A.J.toContinuousLinearMap`. Set `Sp : Submodule ℂ (L (Eu d))` to `LinearMap.ker Φ.toLinearMap`. Establish `hcl : IsClosed (Sp : Set (L (Eu d)))`.
+
+Establish `: (Sp : Set (L (Eu d))) = {x | Φ x = 0}`. Use extensionality with `x`. Simplify using `[Sp]`. Rewrite using `[this]`. Conclude with `isClosed_eq Φ.continuous continuous_const`.
+
+Establish `hsub : Submodule.span ℂ {u : L (Eu d) | ∃ (β : ℝ → ℂ) (v : Eu d), Continuous β ∧ HasCompactSupport β ∧ (∀ x, x ≤ T → β x = 0) ∧ ∀ᵐ x : ℝ, u x = β x • v} ≤ Sp`. Use `Submodule.span_le.2 ?_` and prove the remaining obligations. Introduce and unpack `g ⟨β, v, h1, h2, h3, h4⟩`. Use `(hR (A.J g)).2 (ae_down μ _ E hEm ?_)` and prove the remaining obligations. Use `filter_upwards [A.spec β v g h1 h2 h4] with y hy hyE`.
+
+Rewrite using `[hy]`. Unfold `theta`. Use `finsum_eq_zero_of_forall_eq_zero fun q => ?_` and prove the remaining obligations. Rewrite using `[h3 _ ((hmk y).1 hyE q), zero_mul, zero_mul]`. Establish `hin` using `closure_mono hsub ((denseCc d).2.2 T c hc)`.
+
+Rewrite `hin` using `[hcl.closure_eq]`. Establish `hz : R (A.J c) = 0` using `hin`. Use `filter_upwards [(quasiMeasurePreserving_mk (Gam K (2 + 2)) μ).ae ((hR _).1 hz)] with y hy hO`. Conclude with `hy ((hmk y).2 hO)`.
+-/
 private theorem first {K : Type} [Field K] [NumberField K] (μ : Measure (G1 K (2 + 2))) [μ.IsHaarMeasure]
     {μ₂ : Measure (G1 K 2)} {τ₁ τ₂ : Submodule ℂ (L2 μ₂)} {D : TypeDat K (2 + 2)} {d : ℕ} (A : Line μ τ₁ τ₂ D d)
     (T : ℝ) (c : L (Eu d)) (hc : ∀ᵐ x : ℝ, x ≤ T → c x = 0) :
@@ -138,6 +193,17 @@ private theorem first {K : Type} [Field K] [NumberField K] (μ : Measure (G1 K (
   filter_upwards [(quasiMeasurePreserving_mk (Gam K (2 + 2)) μ).ae ((hR _).1 hz)] with y hy hO
   exact hy ((hmk y).2 hO)
 
+/- English proof (translation)
+Establish `fin : ∀ i : Fin d, (Function.support fun q : Cos K => bf (fun x => (χ x : ℂ) * U x i) (A.sec (EuclideanSpace.single i (1 : ℂ))) ((q.out : G1 K (2 + 2)) * y)).Finite` using `fun i => by`. Use `(locFin {y} T isCompact_singleton).subset fun q hq => ⟨y, rfl, ?_⟩` and prove the remaining obligations. Assume the negation of the conclusion as `hlt`. Apply `hq` to reduce the goal to its premises. Establish `e : χ (HP 2 2 ((q.out : G1 K (2 + 2)) * y)) = 0` using `h0 _ (not_le.1 hlt).le`.
+
+Simplify using `only [bf, e]`. Simplify using the standard rewrite rules. Simplify using `only [theta_eq]`. Unfold `th`. Rewrite using `[← finsum_sum_comm _ _ fun i _ => fin i]`.
+
+Use `finsum_congr fun q => ?_` and prove the remaining obligations. Generalize the expression as in `((q.out : G1 K (2 + 2)) * y) = z`. Establish `hs : A.sec (U (HH z)) z = ∑ i, U (HH z) i * A.sec (EuclideanSpace.single i (1 : ℂ)) z` using `by conv_lhs => rw [← eu_sum (U (HH z))]`. Rewrite using `[map_sum, Finset.sum_apply]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[map_smul, Pi.smul_apply, smul_eq_mul]`. Establish `ex : ((((2 + 2 : ℕ) : ℝ) / 2 * HP 2 2 z : ℝ) : ℂ) = 2 * (HH z : ℂ)`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Simplify using `only [bf, secF, ex, hs, Finset.mul_sum]`.
+
+Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+-/
 private theorem th_chi {K : Type} [Field K] [NumberField K] (μ : Measure (G1 K (2 + 2))) [μ.IsHaarMeasure]
     {μ₂ : Measure (G1 K 2)} {τ₁ τ₂ : Submodule ℂ (L2 μ₂)} {D : TypeDat K (2 + 2)} {d : ℕ} (A : Line μ τ₁ τ₂ D d)
     (T : ℝ) (U : ℝ → Eu d) (χ : ℝ → ℝ) (h0 : ∀ x ≤ T, χ x = 0) (y : G1 K (2 + 2)) :
@@ -168,6 +234,13 @@ private theorem th_chi {K : Type} [Field K] [NumberField K] (μ : Measure (G1 K 
   refine Finset.sum_congr rfl fun i _ => ?_
   ring
 
+/- English proof (translation)
+Establish `hβ : ∀ i : Fin d, Continuous fun x => (χ x : ℂ) * U x i` using `fun i => (Complex.continuous_ofReal.comp hχ).mul ((EuclideanSpace.proj i : Eu d →L[ℂ] ℂ).continuous.comp hU)`. Establish `hβc : ∀ i : Fin d, HasCompactSupport fun x => (χ x : ℂ) * U x i` using `fun i => (hc.comp_left (g := fun r : ℝ => (r : ℂ)) (by simp)).mul_right`. Establish `hex` using `fun i => (denseCc d).2.1 _ (EuclideanSpace.single i (1 : ℂ)) (hβ i) (hβc i)`. Use `choose u hu using hex`. Use `⟨∑ i, u i, ?_, ?_⟩` and prove the remaining obligations.
+
+Use `filter_upwards [sum_ae Finset.univ u, ae_all_iff.2 hu] with x h1 h2`. Rewrite using `[h1, Finset.sum_congr rfl fun i _ => h2 i]`. Simplify using `only [mul_smul, ← Finset.smul_sum, eu_sum]`. Establish `h2` using `ae_all_iff.2 fun i => A.spec _ _ (u i) (hβ i) (hβc i) (hu i)`. Establish `h3` using `(quasiMeasurePreserving_mk (Gam K (2 + 2)) μ).ae (sum_ae Finset.univ fun i => A.J (u i))`.
+
+Unfold `Reps`. Use `filter_upwards [h2, h3] with y a b`. Rewrite using `[map_sum, b, Finset.sum_congr rfl fun i _ => a i]`. Conclude with `th_chi μ A T U χ h0 y`.
+-/
 private theorem rep_chi {K : Type} [Field K] [NumberField K] (μ : Measure (G1 K (2 + 2))) [μ.IsHaarMeasure]
     {μ₂ : Measure (G1 K 2)} {τ₁ τ₂ : Submodule ℂ (L2 μ₂)} {D : TypeDat K (2 + 2)} {d : ℕ} (A : Line μ τ₁ τ₂ D d)
     (T : ℝ) (U : ℝ → Eu d) (hU : Continuous U) (χ : ℝ → ℝ) (hχ : Continuous χ) (hc : HasCompactSupport χ)
@@ -191,6 +264,15 @@ private theorem rep_chi {K : Type} [Field K] [NumberField K] (μ : Measure (G1 K
     rw [map_sum, b, Finset.sum_congr rfl fun i _ => a i]
     exact th_chi μ A T U χ h0 y
 
+/- English proof (translation)
+Establish `h1` using `(Filter.eventually_all_finite (l := (atTop : Filter ℕ)) (locFin {y} T isCompact_singleton) (p := fun q n => (chi T n (HH ((q.out : G1 K (2 + 2)) * y)) : ℂ) * G ((q.out : G1 K (2 + 2)) * y) = hi T G ((q.out : G1 K (2 + 2)) * y))).2 fun q _ => by`. Distinguish the cases in `h : T < HH ((q.out : G1 K (2 + 2)) * y)`. Use `filter_upwards [chi_one T h] with n hn`. Rewrite using `[hn, hi, indicator_of_mem (show _ ∈ {z | T < HH z} from h)]`. Simplify using the standard rewrite rules.
+
+Use `Eventually.of_forall fun n => ?_` and prove the remaining obligations. Rewrite using `[chi_low T n (not_lt.1 h), hi, indicator_of_notMem (show _ ∉ {z | T < HH z} from h)]`. Simplify using the standard rewrite rules. Use `filter_upwards [h1] with n hn`. Unfold `th`.
+
+Use `finsum_congr fun q => ?_` and prove the remaining obligations. Distinguish the cases in `hq : T ≤ HH ((q.out : G1 K (2 + 2)) * y)`. Conclude with `hn q ⟨y, rfl, hq⟩`. Establish `h' : ¬ T < HH ((q.out : G1 K (2 + 2)) * y)` using `fun h => hq h.le beta_reduce`. Rewrite using `[chi_low T n (not_lt.1 h'), hi, indicator_of_notMem (show _ ∉ {z | T < HH z} from h')]`.
+
+Simplify using the standard rewrite rules.
+-/
 private theorem th_lim {K : Type} [Field K] [NumberField K] (T : ℝ) (G : G1 K (2 + 2) → ℂ) (y : G1 K (2 + 2)) :
     ∀ᶠ n : ℕ in atTop, th (fun z => (chi T n (HH z) : ℂ) * G z) y = th (hi T G) y := by
   have h1 := (Filter.eventually_all_finite (l := (atTop : Filter ℕ)) (locFin {y} T isCompact_singleton)
@@ -213,10 +295,30 @@ private theorem th_lim {K : Type} [Field K] [NumberField K] (T : ℝ) (G : G1 K 
     rw [chi_low T n (not_lt.1 h'), hi, indicator_of_notMem (show _ ∉ {z | T < HH z} from h')]
     simp
 
+/- English proof (translation)
+Rewrite using `[← inner_self_eq_norm_sq (𝕜 := ℂ), L2.inner_def, ← integral_re (L2.integrable_inner u u)]`. Simplify using `only [inner_self_eq_norm_sq]`.
+-/
 private theorem nsq {V : Type} [NormedAddCommGroup V] [InnerProductSpace ℂ V] (u : L V) : ‖u‖ ^ 2 = ∫ x, ‖u x‖ ^ 2 := by
   rw [← inner_self_eq_norm_sq (𝕜 := ℂ), L2.inner_def, ← integral_re (L2.integrable_inner u u)]
   simp only [inner_self_eq_norm_sq]
 
+/- English proof (translation)
+Establish `hall` using `ae_all_iff.2 hw`. Establish `hae : ∀ n, ∀ᵐ x : ℝ, ‖(w n - c : L (Eu d)) x‖ ^ 2 ≤ ‖u x‖ ^ 2` using `fun n => by filter_upwards [Lp.coeFn_sub (w n) c, hc, hw n] with x h1 h2 h3`. Rewrite using `[h1, Pi.sub_apply, h2, h3]`. Use `pow_le_pow_left₀ (norm_nonneg _) ?_ 2` and prove the remaining obligations. Distinguish the cases in `h : T < x`.
+
+Rewrite using `[indicator_of_mem (show x ∈ Ioi T from h)]`. Establish `e : ((chi T n x : ℂ) • u x - u x) = ((chi T n x - 1 : ℝ) : ℂ) • u x`. Use `push_cast`. Rewrite using `[sub_smul, one_smul]`. Rewrite using `[e, norm_smul, Complex.norm_real, Real.norm_eq_abs]`.
+
+Use `mul_le_of_le_one_left (norm_nonneg _) ?_` and prove the remaining obligations. Rewrite using `[abs_le]`. Apply the tactic sequence `constructor <;> linarith [chi_nonneg T n x, chi_le T n x]`. Rewrite using `[indicator_of_notMem (show x ∉ Ioi T from h), chi_low T n (not_lt.1 h)]`. Simplify using the standard rewrite rules.
+
+Establish `hlim : ∀ᵐ x : ℝ, Tendsto (fun n => ‖(w n - c : L (Eu d)) x‖ ^ 2) atTop (𝓝 0)`. Establish `hsub` using `ae_all_iff.2 fun n => Lp.coeFn_sub (w n) c`. Use `filter_upwards [hsub, hc, hall] with x h1 h2 h3`. Use `tendsto_const_nhds.congr' ?_` and prove the remaining obligations. Distinguish the cases in `h : T < x`.
+
+Use `filter_upwards [chi_one T h] with n hn beta_reduce`. Rewrite using `[h1 n, Pi.sub_apply, h2, h3 n, hn, indicator_of_mem (show x ∈ Ioi T from h)]`. Simplify using the standard rewrite rules. Use `Eventually.of_forall fun n => ?_ beta_reduce` and prove the remaining obligations. Rewrite using `[h1 n, Pi.sub_apply, h2, h3 n, indicator_of_notMem (show x ∉ Ioi T from h), chi_low T n (not_lt.1 h)]`.
+
+Simplify using the standard rewrite rules. Establish `hi2 : Integrable fun x => ‖u x‖ ^ 2` using `(memLp_two_iff_integrable_sq_norm (Lp.aestronglyMeasurable u)).1 (Lp.memLp u)`. Establish `h1` using `tendsto_integral_of_dominated_convergence (F := fun n x => ‖(w n - c : L (Eu d)) x‖ ^ 2) (f := fun _ => 0) (fun x => ‖u x‖ ^ 2) (fun n => (Lp.aestronglyMeasurable (w n - c)).norm.pow 2) hi2 (fun n => by filter_upwards [hae n] with x hx`. Rewrite using `[Real.norm_of_nonneg (sq_nonneg _)]) hlim` and apply the resulting hypothesis. Establish `h3 : (fun n => ∫ x, ‖(w n - c : L (Eu d)) x‖ ^ 2) = fun n => ‖w n - c‖ ^ 2` using `funext fun n => (nsq _).symm`.
+
+Rewrite `h1` using `[h3, integral_zero]`. Establish `h2` using `(Real.continuous_sqrt.tendsto 0).comp h1`. Rewrite `h2` using `[Real.sqrt_zero]`. Rewrite using `[tendsto_iff_norm_sub_tendsto_zero]`. Conclude with `h2.congr fun n => by`.
+
+Rewrite using `[Function.comp_apply, Real.sqrt_sq (norm_nonneg _)]`.
+-/
 private theorem cut_lim {d : ℕ} (T : ℝ) (u c : L (Eu d)) (w : ℕ → L (Eu d))
     (hc : ∀ᵐ x : ℝ, c x = (Ioi T).indicator u x) (hw : ∀ n, ∀ᵐ x : ℝ, w n x = (chi T n x : ℂ) • u x) :
     Tendsto w atTop (𝓝 c) := by
@@ -264,6 +366,15 @@ private theorem cut_lim {d : ℕ} (T : ℝ) (u c : L (Eu d)) (w : ℕ → L (Eu 
   exact h2.congr fun n => by
     rw [Function.comp_apply, Real.sqrt_sq (norm_nonneg _)]
 
+/- English proof (translation)
+Introduce `K _ _ _ μ _ μ₂ _ τ₁ τ₂ hp D d d' A A' T u`. Establish `hc` using `cutSpec (V := Eu d) (Ioi T) measurableSet_Ioi u`. Use `⟨first μ A T _ ?_, fun U hU hu => ?_⟩` and prove the remaining obligations. Use `filter_upwards [hc] with x hx h`. Rewrite using `[hx]`.
+
+Conclude with `indicator_of_notMem (fun h' : x ∈ Ioi T => not_lt.2 h h') _`. Establish `hex` using `fun n : ℕ => rep_chi μ A T U hU (chi T n) (chi_cont T n) (chi_supp T n) fun x hx => chi_low T n hx`. Use `choose w hw hr using hex`. Establish `hlim : Tendsto w atTop (𝓝 (cut (Eu d) (Ioi T) u))` using `cut_lim T u _ w hc fun n => by filter_upwards [hw n, hu] with x h1 h2`. Rewrite using `[h1, h2]`.
+
+Establish `hJ : Tendsto (fun n => A.J (w n)) atTop (𝓝 (A.J (cut (Eu d) (Ioi T) u)))` using `(A.J.continuous.tendsto _).comp hlim`. Take `⟨ns, hns, hae⟩` from `(tendstoInMeasure_of_tendsto_Lp hJ).exists_seq_tendsto_ae`. Establish `h1` using `(quasiMeasurePreserving_mk (Gam K (2 + 2)) μ).ae hae`. Establish `h2` using `ae_all_iff.2 hr`. Unfold `Reps`.
+
+Use `filter_upwards [h1, h2] with y a b`. Use `tendsto_nhds_unique a (tendsto_const_nhds.congr' ?_)` and prove the remaining obligations. Use `filter_upwards [hns.tendsto_atTop.eventually (th_lim T (secF A.sec U) y)] with i hi'`. Rewrite using `[b (ns i), hi']`.
+-/
 theorem UpperTheory.V.Z.InvariantSubmoduleMonicPolynomial.cutRep :
     ForAllC fun K _ _ μ _ _ _ _ _ _ d _ A _ => ∀ (T : ℝ) (u : L (Eu d)), (∀ᵐ y ∂μ, Om T y → (A.J (cut (Eu d) (Ioi T) u) : RightCosetSpace (Gam K (2 + 2)) → ℂ) (mk (Gam K (2 + 2)) y) = 0) ∧
       ∀ U : ℝ → Eu d, Continuous U → (∀ᵐ s : ℝ, u s = U s) → Reps μ (A.J (cut (Eu d) (Ioi T) u)) (th (hi T (secF A.sec U))) := by

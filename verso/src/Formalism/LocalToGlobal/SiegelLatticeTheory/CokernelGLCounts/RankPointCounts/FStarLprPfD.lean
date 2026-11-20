@@ -21,6 +21,23 @@ variable {D : Formalism.BasicNotions.D7}
 
 def gramW {ι : Type} (w : ι → (VS D).V) : Matrix ι ι D.host.E := Matrix.of fun i j => brS (VS D) (w j) (w i)
 
+/- English proof (translation)
+Establish `hli : LinearIndependent D.host.E w`. Rewrite using `[linearIndependent_iff_card_eq_finrank_span]`. Use `show _ = Module.finrank D.host.E (Submodule.span D.host.E (Set.range w))`. Rewrite using `[hw, hdim, Fintype.card_sum, Fintype.card_fin]`. Expand and normalize the polynomial expressions, which then agree.
+
+Introduce `h0`. Take `⟨c, hc0, hMc⟩` from `Matrix.exists_mulVec_eq_zero_iff.2 h0`. Use `set x := ∑ k, c k • w k with hx`. Establish `hx2 : ∀ i, (VS D).hT (w i) x = 0`. Introduce `i`.
+
+Establish `h` using `congrFun hMc i`. Simplify using `only [Matrix.mulVec, dotProduct, gramW, Matrix.of_apply, brS, Pi.zero_apply] at h`. Rewrite using `[hx, map_sum]`. Simplify using `only [map_smul, smul_eq_mul]`. Rewrite using `[← h]`.
+
+Conclude with `Finset.sum_congr rfl fun j _ => mul_comm _ _`. Establish `hx1 : x ∈ U`. Rewrite using `[← hw, hx]`. Conclude with `Submodule.sum_mem _ fun k _ => Submodule.smul_mem _ _ (Submodule.subset_span ⟨k, rfl⟩)`. Establish `hx3 : x ∈ orth (VS D) U`.
+
+Simplify using `only [orth, Submodule.mem_iInf, LinearMap.mem_ker]`. Introduce `y hy`. Rewrite `hy` using `[← hw]`. Establish `hk : Submodule.span D.host.E (Set.range w) ≤ LinearMap.ker ((VS D).hT.flip x)`. Rewrite using `[Submodule.span_le]`.
+
+Introduce and unpack `_ ⟨i, rfl⟩`. Use `show (VS D).hT.flip x (w i) = 0`. Rewrite using `[LinearMap.flip_apply]`. Conclude with `hx2 i`. Establish `h` using `hk hy`.
+
+Rewrite `h` using `[LinearMap.mem_ker, LinearMap.flip_apply]`. Conclude with `h`. Establish `hx0 : x = 0`. Establish `h : x ∈ U ⊓ orth (VS D) U` using `⟨hx1, hx3⟩`. Rewrite `h` using `[hnd]`.
+
+Conclude with `(Submodule.mem_bot _).1 h`. Apply `hc0` to reduce the goal to its premises. Use function extensionality and compare the values at `k`. Conclude with `Fintype.linearIndependent_iff.1 hli c (hx ▸ hx0) k`.
+-/
 theorem gramW_det_ne {r : ℕ} {U : Submodule D.host.E (VS D).V} (hdim : Module.finrank D.host.E U = 2 * r + 2)
     (hnd : U ⊓ orth (VS D) U = ⊥) (w : Fin (r + 1) ⊕ Fin (r + 1) → (VS D).V)
     (hw : Submodule.span D.host.E (Set.range w) = U) : (gramW w).det ≠ 0 := by
@@ -64,6 +81,19 @@ theorem gramW_det_ne {r : ℕ} {U : Submodule D.host.E (VS D).V} (hdim : Module.
   funext k
   exact Fintype.linearIndependent_iff.1 hli c (hx ▸ hx0) k
 
+/- English proof (translation)
+Use `set v := Sum.elim F.fl.fvec F''.fl.fvec with hv`. Use `set Λ' : Submodule (𝓞 D.host.E) (VS D).V := Λ ⊔ Submodule.span (𝓞 D.host.E) (Set.range v) with hΛ'`. Establish `hfg : Λ'.FG` using `hΛ.fg.sup (Submodule.fg_span (Set.finite_range _))`. Use `hΛ` as an intermediate fact. Establish `hL' : Submodule.IsLattice D.host.E Λ'` using `Submodule.IsLattice.of_le_of_isLattice_of_fg (A := D.host.E) le_sup_left hfg`.
+
+Establish `hmem : ∀ k, v k ∈ Λ'` using `fun k => Submodule.mem_sup_right (Submodule.subset_span ⟨k, rfl⟩)`. Set `F1 : LFlag (VS D) D.R.rS T` to `⟨F.fl, F.fl.z⟩`. Set `F2 : LFlag (VS D) D.R.rS T'` to `⟨F''.fl, F''.fl.z⟩`. Establish `hz1 : F1.fl.z ∈ Λ'`. Establish `h` using `hmem (Sum.inl (Fin.last D.R.rS))`.
+
+Simplify `h` using `[hv, PI.UnitaryGroupMassFormula.BetaLUniq.GN.fvec_last]`. Establish `hz2 : F2.fl.z ∈ Λ'`. Establish `h` using `hmem (Sum.inr (Fin.last D.R.rS))`. Simplify `h` using `[hv, PI.UnitaryGroupMassFormula.BetaLUniq.GN.fvec_last]`. Establish `hX1 : Xsp F1 ≤ spanE (VS D) (XLam Λ' F1)` using `by show Submodule.span D.host.E (Set.range F.fl.e) ≤ _`.
+
+Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨a, rfl⟩`. Use `Submodule.subset_span ⟨?_, Submodule.subset_span ⟨a, rfl⟩⟩` and prove the remaining obligations. Establish `h` using `hmem (Sum.inl a.castSucc)`. Simplify `h` using `[hv, PI.UnitaryGroupMassFormula.BetaLUniq.GN.fvec_castSucc]`.
+
+Establish `hX2 : Xsp F2 ≤ spanE (VS D) (XLam Λ' F2)` using `by show Submodule.span D.host.E (Set.range F''.fl.e) ≤ _`. Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨a, rfl⟩`. Use `Submodule.subset_span ⟨?_, Submodule.subset_span ⟨a, rfl⟩⟩` and prove the remaining obligations. Establish `h` using `hmem (Sum.inr a.castSucc)`.
+
+Simplify `h` using `[hv, PI.UnitaryGroupMassFormula.BetaLUniq.GN.fvec_castSucc]`. Establish `n` using `PI.UnitaryGroupMassFormula.BetaLUniq.gram_matrix_nondegenerate (VS D) Λ' F1 F2 hL' ⟨hz1, rfl⟩ ⟨hz2, rfl⟩ hG`. Establish `hU : UUE Λ' F1 F2 = Submodule.span D.host.E (Set.range v)` using `PI.ScalarPairDr.W.UUE_eq Λ' F1 F2 rfl rfl hX1 hX2`. Conclude with `gramW_det_ne n.1 n.2 w (hw.trans hU.symm)`.
+-/
 theorem gram_pair_ne {T T' : D.host.E} (Λ : Submodule (𝓞 D.host.E) (VS D).V) (hΛ : Submodule.IsLattice D.host.E Λ)
     (F : LFlag (VS D) D.R.rS T) (F'' : LFlag (VS D) D.R.rS T') (hzF : F.zt = F.fl.z) (hG : Gflag F.fl F''.fl ≠ 0)
     (w : Fin (D.R.rS + 1) ⊕ Fin (D.R.rS + 1) → (VS D).V)
@@ -103,6 +133,23 @@ theorem gram_pair_ne {T T' : D.host.E} (Λ : Submodule (𝓞 D.host.E) (VS D).V)
     PI.ScalarPairDr.W.UUE_eq Λ' F1 F2 rfl rfl hX1 hX2
   exact gramW_det_ne n.1 n.2 w (hw.trans hU.symm)
 
+/- English proof (translation)
+Establish `hdet : IsUnit ξ.det`. Establish `hbt : ξ.BlockTriangular id` using `fun i j hij => h1 i j hij`. Rewrite using `[Matrix.det_of_isUpperTriangular hbt]`. Simplify using `[h2]`. Establish `hinv : ξ⁻¹ * ξ = 1` using `Matrix.nonsing_inv_mul _ hdet`.
+
+Establish `hv : v = frameAct (frameAct v ξ⁻¹) ξ`. Use function extensionality and compare the values at `b`. Simplify using `only [frameAct, Finset.smul_sum, smul_smul]`. Rewrite using `[Finset.sum_comm]`. Establish `e : ∀ a, ∑ c, ((ξ⁻¹ a c : 𝓞 D.host.E) : D.host.E) * ((ξ c b : 𝓞 D.host.E) : D.host.E) = (((ξ⁻¹ * ξ) a b : 𝓞 D.host.E) : D.host.E)`.
+
+Introduce `a`. Rewrite using `[Matrix.mul_apply]`. Use `push_cast`. Both sides reduce to the same expression. Repeatedly rewrite using `[← Finset.sum_smul]`.
+
+Establish `e2 : ∀ a, (∑ c, ((ξ c b : 𝓞 D.host.E) : D.host.E) * ((ξ⁻¹ a c : 𝓞 D.host.E) : D.host.E)) = (((ξ⁻¹ * ξ) a b : 𝓞 D.host.E) : D.host.E)`. Introduce `a`. Rewrite using `[← e a]`. Conclude with `Finset.sum_congr rfl fun c _ => mul_comm _ _`. Simplify using `only [e2, hinv, Matrix.one_apply]`.
+
+Simplify using the standard rewrite rules. Apply `le_antisymm` to reduce the goal to its premises. Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨k, rfl⟩`. Consider the cases of `k with`.
+
+Consider the case `inl a => exact Submodule.subset_span ⟨Sum.inl a, rfl⟩`. Consider the case `inr b => show frameAct v ξ⁻¹ b ∈ _`. Conclude with `Submodule.sum_mem _ fun a _ => Submodule.smul_mem _ _ (Submodule.subset_span ⟨Sum.inr a, rfl⟩)`. Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨k, rfl⟩`.
+
+Consider the cases of `k with`. Consider the case `inl a => exact Submodule.subset_span ⟨Sum.inl a, rfl⟩`. Consider the case `inr b => show v b ∈ _`. Establish `hb : v b = frameAct (frameAct v ξ⁻¹) ξ b` using `congrFun hv b`. Rewrite using `[hb]`.
+
+Conclude with `Submodule.sum_mem _ fun a _ => Submodule.smul_mem _ _ (Submodule.subset_span ⟨Sum.inr a, rfl⟩)`.
+-/
 theorem span_frameAct {r : ℕ} (u v : Fin (r + 1) → (VS D).V) (ξ : Matrix (Fin (r + 1)) (Fin (r + 1)) (𝓞 D.host.E))
     (h1 : ∀ a b, b < a → ξ a b = 0) (h2 : ∀ a, ξ a a = 1) :
     Submodule.span D.host.E (Set.range (Sum.elim u (frameAct v ξ⁻¹))) =
@@ -144,6 +191,9 @@ theorem span_frameAct {r : ℕ} (u v : Fin (r + 1) → (VS D).V) (ξ : Matrix (F
 
 variable (Zd : LocDat D) (p : PlF D)
 
+/- English proof (translation)
+Use extensionality with `i j`. Simplify using `only [Formalism.MainNotions.S.Loc.HermSp.gram, Matrix.of_apply, Matrix.diagonal_mul, Matrix.mul_diagonal, Matrix.map_apply, gramW]`. Rewrite using `[Formalism.L2.SG.Pf.ScalarFramePf.h_bcP]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem gram_loc {ι : Type} [Fintype ι] [DecidableEq ι] (w : ι → (VS D).V) (s : ι → (D.s.atP p).Ep) :
     (locH Zd p).gram (fun k => s k • baseChange₂ D p (w k)) =
       Matrix.diagonal (fun k => (Zd.M p).L.cj (s k)) * (gramW w).map (D.s.atP p).ιE * Matrix.diagonal s := by
@@ -153,6 +203,13 @@ theorem gram_loc {ι : Type} [Fintype ι] [DecidableEq ι] (w : ι → (VS D).V)
   rw [Formalism.L2.SG.Pf.ScalarFramePf.h_bcP]
   ring
 
+/- English proof (translation)
+Use `set M := gramW w with hMdef`. Use `set ι' := (D.s.atP p).ιE with hι`. Use `set si : ι → (D.s.atP p).Ep := fun k => (((hs k).unit⁻¹ : (D.s.atP p).Epˣ) : (D.s.atP p).Ep) with hsi`. Use `⟨Matrix.diagonal si * M⁻¹.map ι' * Matrix.diagonal (fun k => (Zd.M p).L.cj (si k)), ?_⟩` and prove the remaining obligations. Rewrite using `[gram_loc]`.
+
+Establish `hM : M⁻¹ * M = 1` using `Matrix.nonsing_inv_mul _ (isUnit_iff_ne_zero.2 hdet)`. Establish `hmap : M⁻¹.map ι' * M.map ι' = 1`. Rewrite using `[← Matrix.map_mul, hM, Matrix.map_one _ (map_zero ι') (map_one ι')]`. Establish `hs1 : (fun k => si k * s k) = fun _ => 1` using `funext fun k => (hs k).val_inv_mul`. Establish `hc1 : (fun k => (Zd.M p).L.cj (si k) * (Zd.M p).L.cj (s k)) = fun _ => 1`.
+
+Use function extensionality and compare the values at `k`. Rewrite using `[← map_mul, (hs k).val_inv_mul, map_one]`. Simplify using `only [Matrix.mul_assoc]`. Rewrite using `[← Matrix.mul_assoc (Matrix.diagonal fun k => (Zd.M p).L.cj (si k)), Matrix.diagonal_mul_diagonal, hc1, Matrix.diagonal_one, Matrix.one_mul, ← Matrix.mul_assoc (M⁻¹.map ι'), hmap, Matrix.one_mul, Matrix.diagonal_mul_diagonal, hs1, Matrix.diagonal_one]`.
+-/
 theorem gramInvE_loc {ι : Type} [Fintype ι] [DecidableEq ι] (w : ι → (VS D).V) (s : ι → (D.s.atP p).Ep)
     (hs : ∀ k, IsUnit (s k)) (hdet : (gramW w).det ≠ 0) :
     GramInvE (locH Zd p) (fun k => s k • baseChange₂ D p (w k)) := by
@@ -179,6 +236,13 @@ open LprND
 variable {D : Formalism.BasicNotions.D7} (Zd : LocDat D) {u u' : D.what₂.Word} {F0 : FlagG (VS D) D.R.rS (CntLocal.Tn u)}
   {what₂ : Finset (Submodule (𝓞 D.host.E) (VS D).V)}
 
+/- English proof (translation)
+Establish `hR : IsRowLat D F0 γ.lam` using `hrows.1 γ.lam γ.mem`. Take `⟨hgen, hG⟩` from `hγ.1`. Take `⟨h2, h2e⟩` from `starRepF_rep γ`. Take `⟨F', ⟨h1, h1e⟩, hF'⟩` from `hgen`. Establish `hrel` using `(Formalism.L2.SG.Pf.double_coset_equivalence γ.lam (lf D F0) (PD D γ.lam (lf D F0) u') ⟨F', h1⟩ ⟨repF γ, h2⟩).1 (h1e.trans h2e.symm)`.
+
+Establish `hgenR : IsGeneric γ.lam (gS D) (lf D F0) (repF γ)` using `(PI.TermAttrConst.UnitaryGroupMassFormula.genericity_constant_double_cosets D u u' F0 γ.lam hR ⟨F', h1⟩ ⟨repF γ, h2⟩ hrel).1 hF'`. Establish `hrel2` using `(Formalism.L2.SG.Pf.double_coset_equivalence γ.lam (lf D F0) (PD D γ.lam (lf D F0) u') (Quot.out γ.cls) ⟨repF γ, h2⟩).1 ((Quot.out_eq γ.cls).trans h2e.symm)`. Establish `hGv : Gval (lf D F0) (repF γ) ≠ 0`. Rewrite using `[Formalism.L2.SG.Pf.gval_rel (lf D F0) hrel2]`. Conclude with `hG`.
+
+Conclude with `(Formalism.L2.SG.Pf.frameGenLoc_holds D Zd F0 γ.lam (repF γ) hR h2 (Formalism.L2.SG.Pf.m_plus_independent _ _ _ _) hGv).1 hgenR p`.
+-/
 theorem genLoc_rows (hrows : IsRowReps D F0 what₂) (γ : TermDef.Term D u u' F0 what₂)
     (w : Point D.host.E (D.R.rS + 1)) (hγ : EligAt γ w) (p : PlF D) : (locH Zd p).IsGeneric (tLoc Zd p γ) := by
   have hR : IsRowLat D F0 γ.lam := hrows.1 γ.lam γ.mem
@@ -196,6 +260,9 @@ theorem genLoc_rows (hrows : IsRowReps D F0 what₂) (γ : TermDef.Term D u u' F
   exact (Formalism.L2.SG.Pf.frameGenLoc_holds D Zd F0 γ.lam (repF γ) hR h2
     (Formalism.L2.SG.Pf.m_plus_independent _ _ _ _) hGv).1 hgenR p
 
+/- English proof (translation)
+Take `⟨-, hG⟩` from `hγ.1`. Take `⟨h2, h2e⟩` from `starRepF_rep γ`. Establish `hrel2` using `(Formalism.L2.SG.Pf.double_coset_equivalence γ.lam (lf D F0) (PD D γ.lam (lf D F0) u') (Quot.out γ.cls) ⟨repF γ, h2⟩).1 ((Quot.out_eq γ.cls).trans h2e.symm)`. Rewrite using `[Formalism.L2.SG.Pf.gval_rel (lf D F0) hrel2]`. Conclude with `hG`.
+-/
 theorem gval_repF (γ : TermDef.Term D u u' F0 what₂) (w : Point D.host.E (D.R.rS + 1)) (hγ : EligAt γ w) :
     Gval (lf D F0) (repF γ) ≠ 0 := by
   obtain ⟨-, hG⟩ := hγ.1
@@ -204,6 +271,17 @@ theorem gval_repF (γ : TermDef.Term D u u' F0 what₂) (w : Point D.host.E (D.R
     ⟨repF γ, h2⟩).1 ((Quot.out_eq γ.cls).trans h2e.symm)
   rw [Formalism.L2.SG.Pf.gval_rel (lf D F0) hrel2]; exact hG
 
+/- English proof (translation)
+Introduce `a b hab`. Use `show (locH Zd p).h ((TermLoc.sgnP' D p a * frFac Zd.δ p a) • baseChange₂ D p (frame F' a)) ((TermLoc.sgnP' D p b * frFac Zd.δ p b) • baseChange₂ D p (frame F' b)) = 0`. Rewrite using `[Formalism.L2.SG.Pf.ScalarFramePf.h_bcP]`. Establish `h0 : brS (VS D) (frame F' a) (frame F' b) = 0`. Unfold `brS`.
+
+Break down `hab with ha | hb` into its components or cases. Take `⟨i, rfl⟩` from `Fin.exists_castSucc_eq.2 ha`. Rewrite using `[PI.ScalarPairDr.W.hT_swap]`. Establish `e : (VS D).hT (frame F' i.castSucc) (frame F' b) = 0` using `by show (VS D).hT (F'.fl.fvec i.castSucc) (F'.fl.fvec b) = 0`. Rewrite using `[PI.UnitaryGroupMassFormula.BetaLUniq.GN.fvec_castSucc]`.
+
+Use `Fin.lastCases ?_ (fun j => ?_) b` and prove the remaining obligations. Rewrite using `[PI.UnitaryGroupMassFormula.BetaLUniq.GN.fvec_last]`. Conclude with `F'.fl.z_orth i`. Rewrite using `[PI.UnitaryGroupMassFormula.BetaLUniq.GN.fvec_castSucc]`. Conclude with `F'.fl.e_iso i j`.
+
+Rewrite using `[e, star_zero]`. Take `⟨j, rfl⟩` from `Fin.exists_castSucc_eq.2 hb show (VS D).hT (F'.fl.fvec j.castSucc) (F'.fl.fvec a) = 0`. Rewrite using `[PI.UnitaryGroupMassFormula.BetaLUniq.GN.fvec_castSucc]`. Use `Fin.lastCases ?_ (fun i => ?_) a` and prove the remaining obligations. Rewrite using `[PI.UnitaryGroupMassFormula.BetaLUniq.GN.fvec_last]`.
+
+Conclude with `F'.fl.z_orth j`. Rewrite using `[PI.UnitaryGroupMassFormula.BetaLUniq.GN.fvec_castSucc]`. Conclude with `F'.fl.e_iso j i`. Rewrite using `[h0, map_zero, mul_zero]`.
+-/
 theorem iso_locF' (p : PlF D) {T' : D.host.E} (F' : LFlag (VS D) D.R.rS T') :
     Iso' (locH Zd p) (locF' Zd p F') := by
   intro a b hab
@@ -230,6 +308,19 @@ theorem iso_locF' (p : PlF D) {T' : D.host.E} (F' : LFlag (VS D) D.R.rS T') :
       · rw [PI.UnitaryGroupMassFormula.BetaLUniq.GN.fvec_castSucc]; exact F'.fl.e_iso j i
   rw [h0, map_zero, mul_zero]
 
+/- English proof (translation)
+Introduce `hrows γ Z hC F' hP p`. Take `⟨w, hγ, -, -, -, -⟩` from `id hC`. Establish `hΛ : Submodule.IsLattice D.host.E γ.lam` using `(hrows.1 γ.lam γ.mem).1.1`. Establish `hgen` using `genLoc_rows Zd hrows γ w hγ p`. Establish `hZ : ZhatL (lf D F0) F' = Z` using `hP.1.2.2.2.2`.
+
+Establish `hdet : Z.det ≠ 0` using `(starMinors_holds u u' F0 what₂ γ Z hC).1`. Establish `hsK : ∀ k, IsUnit (Sum.elim (fun a => sgnP D p a * frFac Zd.δ p a) (fun b => sgnP' D p b * frFac Zd.δ p b) k)`. Introduce `k`. Consider the cases of `k with`. Consider the case `inl a => exact Formalism.L2.SG.Pf.ScalarFramePf.isUnit_sF Zd p a`.
+
+Consider the case `inr b => exact Formalism.L2.SG.Pf.ScalarFramePf.isUnit_sF' Zd p b`. Establish `n1 : GramInvE (locH Zd p) (Sum.elim (tLoc Zd p γ).f (tLoc Zd p γ).f')`. Establish `e : Sum.elim (tLoc Zd p γ).f (tLoc Zd p γ).f' = fun k => Sum.elim (fun a => sgnP D p a * frFac Zd.δ p a) (fun b => sgnP' D p b * frFac Zd.δ p b) k • baseChange₂ D p (Sum.elim (frame (lf D F0)) (starFrame γ) k)`. Apply the tactic sequence `funext k; cases k <;> rfl`. Rewrite using `[e]`.
+
+Use `gramInvE_loc Zd p _ _ hsK (gram_pair_ne γ.lam hΛ (lf D F0) (repF γ) rfl (gval_repF γ w hγ) _ ?_)` and prove the remaining obligations. Establish `hu` using `admissibility_witness_unitriangular γ.lam (lf D F0) (repF γ)`. Conclude with `span_frameAct _ _ _ hu.1 hu.2`. Establish `n2 : GramInvE (locH Zd p) (Sum.elim (tLoc Zd p γ).f (locF' Zd p F'))`. Establish `e : Sum.elim (tLoc Zd p γ).f (locF' Zd p F') = fun k => Sum.elim (fun a => sgnP D p a * frFac Zd.δ p a) (fun b => sgnP' D p b * frFac Zd.δ p b) k • baseChange₂ D p (Sum.elim (frame (lf D F0)) (frame F') k)`.
+
+Apply the tactic sequence `funext k; cases k <;> rfl`. Rewrite using `[e]`. Conclude with `gramInvE_loc Zd p _ _ hsK (gram_pair_ne γ.lam hΛ (lf D F0) F' rfl hP.1.1.2.2 _ rfl)`. Use `⟨n1, n2, ?_, ?_, hgen.1.2.2.1.2.1, iso_locF' Zd p F'⟩` and prove the remaining obligations. Rewrite using `[← dl_full]`.
+
+Conclude with `hgen.1.2.2.2.1`. Rewrite using `[← dl_full]`. Conclude with `local_discriminant_unit_of_det Zd p γ Z F' hZ hdet`.
+-/
 theorem lprNondeg_holds : LprNondeg Zd u u' F0 what₂ := by
   intro hrows γ Z hC F' hP p
   obtain ⟨w, hγ, -, -, -, -⟩ := id hC
@@ -262,6 +353,9 @@ theorem lprNondeg_holds : LprNondeg Zd u u' F0 what₂ := by
   · rw [← dl_full]; exact hgen.1.2.2.2.1
   · rw [← dl_full]; exact local_discriminant_unit_of_det Zd p γ Z F' hZ hdet
 
+/- English proof (translation)
+The claim follows from `lprPart_of Zd hE (lprNondeg_holds Zd)`.
+-/
 theorem lprPart_of' (hE : LprExist Zd u u' F0 what₂) : LprPart Zd u u' F0 what₂ :=
   lprPart_of Zd hE (lprNondeg_holds Zd)
 

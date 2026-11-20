@@ -3,6 +3,19 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.PrimitiveFrobenius
 open NumberField IsDedekindDomain Formalism.ConjugateSelfDual ReciprocityTheory.Gal Formalism.GaloisCohomology UpperTheory.V UpperTheory.V.Base UpperTheory.V.Odd UpperTheory.V.Stick UpperTheory.V.ML
 open scoped nonZeroDivisors Pointwise
 
+/- English proof (translation)
+Introduce `l F r L hL`. Proceed by induction on `L with`. Consider the case `nil`. Use `⟨⟨squarefree_one, fun q hq hd => absurd (Nat.eq_one_of_dvd_one hd) hq.ne_one⟩, by simp, fun q _ => by simp, fun q _ => ⟨List.nodup_nil, by simp⟩⟩` and prove the remaining obligations. Consider the case `cons a L ih`.
+
+Establish `tail : ∀ (b : ℕ) (M : List ℕ), AdmL l F r (b :: M) → AdmL l F r M` using `fun b M h => ⟨(List.nodup_cons.mp h.1).2, fun q hq => h.2 q (List.mem_cons_of_mem b hq)⟩`. Take `⟨hA, hne, hcop, -⟩` from `ih (tail a L hL)`. Establish `haP : AdmP l F r a` using `hL.2 a List.mem_cons_self`. Establish `ha : a.Prime` using `haP.1`. Establish `haL : a.Coprime L.prod` using `hcop a hL`.
+
+Rewrite using `[List.prod_cons]`. Use `⟨⟨?_, ?_⟩, mul_ne_zero ha.ne_zero hne, ?_, fun q hq => tail q _ hq⟩` and prove the remaining obligations. Conclude with `Nat.squarefree_mul_iff.mpr ⟨haL, ha.prime.squarefree, hA.1⟩`. Introduce `q hq hd`. Break down `(Nat.Prime.dvd_mul hq).mp hd with h | h` into its components or cases.
+
+Rewrite using `[(Nat.prime_dvd_prime_iff_eq hq ha).mp h]`. Conclude with `haP`. Conclude with `hA.2 q hq h`. Introduce `q hq`. Establish `hqa : q ≠ a` using `fun h => (List.nodup_cons.mp hq.1).1 (h ▸ List.mem_cons_self)`.
+
+Establish `hqP : q.Prime` using `(hq.2 q List.mem_cons_self).1`. Establish `hqL : AdmL l F r (q :: L)` using `⟨List.nodup_cons.mpr ⟨fun h => (List.nodup_cons.mp hq.1).1 (List.mem_cons_of_mem a h), (List.nodup_cons.mp (List.nodup_cons.mp hq.1).2).2⟩, fun p hp => by`. Break down `List.mem_cons.mp hp with h | h` into its components or cases. Conclude with `h ▸ hq.2 q List.mem_cons_self`. Conclude with `hq.2 p (List.mem_cons_of_mem q (List.mem_cons_of_mem a h))⟩`.
+
+Conclude with `Nat.Coprime.mul_right ((Nat.coprime_primes hqP ha).mpr hqa) (hcop q hqL)`.
+-/
 theorem UpperTheory.V.ML.isCrys_isDR_prod :
     ∀ (l F r : ℕ) (L : List ℕ), AdmL l F r L → admitted l F r L.prod ∧ L.prod ≠ 0 ∧ (∀ q, AdmL l F r (q :: L) → q.Coprime L.prod) ∧ ∀ q, AdmL l F r (q :: L) → AdmL l F r L := by
   intro l F r L hL

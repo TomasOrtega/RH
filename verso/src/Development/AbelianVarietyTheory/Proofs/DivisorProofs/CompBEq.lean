@@ -13,6 +13,13 @@ namespace GlobalTheory.UCanon.LowPull
 
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E}
 
+/- English proof (translation)
+Establish `hs : lowMap c (f.comp L.b) = spMap f ≫ lowMap c L.b`. Simplify using `only [lowMap, spMap, ← Spec.map_comp, ← CommRingCat.ofHom_comp]`. Take `⟨o', ⟨m⟩⟩` from `(GlobalTheory.UCanon.obj_pull_comp_cancel (D := D') (l := LowDat.lowLevel l)).1 (lowMap c L.b) L.o (spMap f) (lowMap c (f.comp L.b)) hs`. Establish `hB` using `L.ab.1.1`. Establish `u : ∀ y, ∃ u : Sp L.W ⟶ L.o.t.G.left, u ≫ L.φB = (L.D.c y).left ∧ u ≫ L.o.t.G.hom = 𝟙 _`.
+
+Introduce `y`. Use `⟨hB.lift (L.D.c y).left (𝟙 _) ?_, hB.lift_fst _ _ _, hB.lift_snd _ _ _⟩` and prove the remaining obligations. Simplify using `using Over.w (L.D.c y)`. Use `choose u hu₁ hu₂ using u`. Establish `hm` using `m.toSABMap.cart.1`.
+
+Use `⟨o', m, fun y => hm.lift (spMap f ≫ u y) (𝟙 _) ?_, fun y => ?_, fun y => hm.lift_snd _ _ _⟩` and prove the remaining obligations. Rewrite using `[Category.assoc, hu₂, Category.comp_id, Category.id_comp]`. Rewrite using `[← Category.assoc, hm.lift_fst, Category.assoc, hu₁]`.
+-/
 theorem exists_pull {D' : Datum H} {l : Geo.Tor.Level H} {c : Coeff l} (L : LowBase D' c) (A : Type) [CommRing A]
     (f : L.W →+* A) :
     ∃ (o' : LowObj D' c (f.comp L.b)) (m : ObjMap o' L.o (spMap f)) (x : L.D.X → (Sp A ⟶ o'.t.G.left)),
@@ -32,6 +39,9 @@ theorem exists_pull {D' : Datum H} {l : Geo.Tor.Level H} {c : Coeff l} (L : LowB
   · rw [Category.assoc, hu₂, Category.comp_id, Category.id_comp]
   · rw [← Category.assoc, hm.lift_fst, Category.assoc, hu₁]
 
+/- English proof (translation)
+Substitute `h` using the available equality. Take `⟨o', m, x, hx, hxs⟩` from `exists_pull L A f₁`. Conclude with `⟨o', m, m, x, hx, hx, hxs⟩`.
+-/
 theorem exists_pull₂ {D' : Datum H} {l : Geo.Tor.Level H} {c : Coeff l} (L : LowBase D' c) (A : Type) [CommRing A]
     (f₁ f₂ : L.W →+* A) (h : f₁ = f₂) :
     ∃ (o' : LowObj D' c (f₁.comp L.b)) (m₁ : ObjMap o' L.o (spMap f₁)) (m₂ : ObjMap o' L.o (spMap f₂))
@@ -45,6 +55,13 @@ theorem exists_pull₂ {D' : Datum H} {l : Geo.Tor.Level H} {c : Coeff l} (L : L
 end GlobalTheory.UCanon.LowPull
 
 namespace GlobalTheory.UCanon.LowPull
+/- English proof (translation)
+Establish `key : ∀ (θ : R →+* V) (κ : Sp (FractionRing V) ⟶ Sp (FractionRing R)), κ ≫ jK R = jK V ≫ spMap θ → jK V ≫ spMap (θ.comp F.b) = κ ≫ F.y ≫ pullback.snd _ _`. Introduce `θ κ h`. Rewrite using `[F.y_over, ← Category.assoc, h, Category.assoc, spMap_comp]`. Establish `e : jK V ≫ spMap (θ₁.comp F.b) = jK V ≫ spMap (θ₂.comp F.b)`. Rewrite using `[key θ₁ κ₁ h₁, key θ₂ κ₂ h₂, ← Category.assoc, hy, Category.assoc]`.
+
+Simplify using `only [jK, spMap, ← Spec.map_comp] at e`. Establish `e2` using `congrArg CommRingCat.Hom.hom (Spec.map_injective e)`. Use extensionality with `r`. Use `congrArg (fun f => f r) e2` as an intermediate fact. Simplify using `only [CommRingCat.hom_comp, CommRingCat.hom_ofHom, RingHom.comp_apply] at this`.
+
+Conclude with `IsFractionRing.injective V (FractionRing V) this`.
+-/
 theorem comp_b_eq {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {Dw : Datum H} {l : Geo.Tor.Level H}
     {Xo : Moduli Dw l} {c : Coeff l} {R : Type} [CommRing R] [IsDomain R] [IsLocalRing R] (F : Fam Xo c R)
     {V : Type} [CommRing V] [IsDomain V] (θ₁ θ₂ : R →+* V) (κ₁ κ₂ : Sp (FractionRing V) ⟶ Sp (FractionRing R))

@@ -16,6 +16,11 @@ open GroundTheory.Heights₂.Heights.IndefiniteRowSideFullHecke.Regular (errE er
 
 noncomputable section
 
+/- English proof (translation)
+Take `⟨δ, hδ, hδP⟩` from `ReciprocityTheory.AnForm.A.exists_thick hP hε.le hz`. Establish `hi : Integrable ((closedBall z (ε + δ)).indicator u)` using `(integrable_indicator_iff isClosed_closedBall.measurableSet).2 ((hu.mono hδP).integrableOn_compact (isCompact_closedBall z (ε + δ)))`. Establish `hg` using `(ReciprocityTheory.AnForm.A.scaled_hasCompactSupport ρ hε).contDiff_convolution_left (ContinuousLinearMap.lsmul ℝ ℝ) (μ := volume) (n := ⊤) (ReciprocityTheory.AnForm.A.scaled_contDiff ρ ε) hi.locallyIntegrable`. Use `hg.contDiffAt.congr_of_eventuallyEq ?_` and prove the remaining obligations. Use `filter_upwards [ball_mem_nhds z hδ] with y hy`.
+
+Rewrite `hy` using `[mem_ball]`. Rewrite using `[ReciprocityTheory.AnForm.A.molli_eq_C ρ hε (C := closedBall z (ε + δ)) (closedBall_subset_closedBall' (by linarith)), convolution_def]`. Both sides reduce to the same expression.
+-/
 theorem molli_contDiffAt {D : ℕ} (ρ : Mollifier D) {P : Set (Fin D → ℂ)} (hP : IsOpen P)
     {u : (Fin D → ℂ) → ℝ} (hu : ContinuousOn u P) {ε : ℝ} (hε : 0 < ε) {z : Fin D → ℂ}
     (hz : z ∈ shrink P ε) : ContDiffAt ℝ ∞ (molli ρ ε u) z := by
@@ -38,10 +43,16 @@ section Calculus
 variable {E F G : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E] [NormedAddCommGroup F]
   [NormedSpace ℝ F] [NormedAddCommGroup G] [NormedSpace ℝ G]
 
+/- English proof (translation)
+Rewrite using `[← norm_iteratedFDeriv_one, norm_iteratedFDeriv_fderiv]`.
+-/
 theorem norm_fderiv_fderiv_eq (g : E → F) (y : E) :
     ‖fderiv ℝ (fderiv ℝ g) y‖ = ‖iteratedFDeriv ℝ 2 g y‖ := by
   rw [← norm_iteratedFDeriv_one, norm_iteratedFDeriv_fderiv]
 
+/- English proof (translation)
+Establish `da : DifferentiableAt ℝ a z` using `(ha.contDiffAt (hV.mem_nhds hz)).differentiableAt (by norm_num)`. Establish `db : DifferentiableAt ℝ b z` using `(hb.contDiffAt (hV.mem_nhds hz)).differentiableAt (by norm_num)`. Use `⟨norm_iteratedFDeriv_zero, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[norm_iteratedFDeriv_one, fderiv_fun_sub da db]`. Rewrite using `[← norm_fderiv_fderiv_eq, fderiv2_sub_of_contDiffOn hV ha hb hz]`.
+-/
 theorem norm_iteratedFDeriv_sub_eq {a b : E → ℝ} {V : Set E} (hV : IsOpen V)
     (ha : ContDiffOn ℝ 2 a V) (hb : ContDiffOn ℝ 2 b V) {z : E} (hz : z ∈ V) :
     ‖iteratedFDeriv ℝ 0 (fun y => a y - b y) z‖ = ‖a z - b z‖ ∧
@@ -56,6 +67,11 @@ theorem norm_iteratedFDeriv_sub_eq {a b : E → ℝ} {V : Set E} (hV : IsOpen V)
   · rw [norm_iteratedFDeriv_one, fderiv_fun_sub da db]
   · rw [← norm_fderiv_fderiv_eq, fderiv2_sub_of_contDiffOn hV ha hb hz]
 
+/- English proof (translation)
+Establish `hn' : (n : WithTop ℕ∞) ≤ 2` using `by exact_mod_cast hn`. Rewrite using `[← iteratedFDerivWithin_of_isOpen n hs hx]`. Use `norm_iteratedFDerivWithin_comp_le (hg.of_le hn') (hf.of_le hn') le_rfl ht.uniqueDiffOn hs.uniqueDiffOn hst hx (fun i hi => ?_) (fun i hi1 hi => ?_)` and prove the remaining obligations. Rewrite using `[iteratedFDerivWithin_of_isOpen i ht (hst hx)]`. Conclude with `hC i (hi.trans hn)`.
+
+Rewrite using `[iteratedFDerivWithin_of_isOpen i hs hx]`. Conclude with `hD i hi1 (hi.trans hn)`.
+-/
 theorem norm_iteratedFDeriv_comp_le_of_isOpen {g : F → G} {f : E → F} {s : Set E} {t : Set F}
     (hs : IsOpen s) (ht : IsOpen t) (hg : ContDiffOn ℝ 2 g t) (hf : ContDiffOn ℝ 2 f s)
     (hst : MapsTo f s t) {x : E} (hx : x ∈ s) {n : ℕ} (hn : n ≤ 2) {C d : ℝ}
@@ -71,6 +87,11 @@ theorem norm_iteratedFDeriv_comp_le_of_isOpen {g : F → G} {f : E → F} {s : S
   · rw [iteratedFDerivWithin_of_isOpen i hs hx]
     exact hD i hi1 (hi.trans hn)
 
+/- English proof (translation)
+Establish `h : ∀ i : ℕ, i ≤ 2 → ∃ B : ℝ, ∀ y ∈ K, ‖iteratedFDeriv ℝ i f y‖ ≤ B` using `fun i hi => hK.exists_bound_of_continuousOn ((ContinuousOn.continuousOn_iteratedFDeriv hf hs (by exact_mod_cast hi)).mono hKs)`. Take `⟨B0, h0⟩` from `h 0 (by norm_num)`. Take `⟨B1, h1⟩` from `h 1 (by norm_num)`. Take `⟨B2, h2⟩` from `h 2 le_rfl`. Use `⟨max B0 (max B1 B2), fun i hi y hy => ?_⟩` and prove the remaining obligations.
+
+Use `interval_cases i`. Conclude with `(h0 y hy).trans (le_max_left _ _)`. Conclude with `(h1 y hy).trans ((le_max_left _ _).trans (le_max_right _ _))`. Conclude with `(h2 y hy).trans ((le_max_right _ _).trans (le_max_right _ _))`.
+-/
 theorem exists_bound_iteratedFDeriv {f : E → F} {s K : Set E} (hs : IsOpen s)
     (hf : ContDiffOn ℝ 2 f s) (hK : IsCompact K) (hKs : K ⊆ s) :
     ∃ B : ℝ, ∀ i : ℕ, i ≤ 2 → ∀ y ∈ K, ‖iteratedFDeriv ℝ i f y‖ ≤ B := by
@@ -88,6 +109,9 @@ theorem exists_bound_iteratedFDeriv {f : E → F} {s K : Set E} (hs : IsOpen s)
 
 end Calculus
 
+/- English proof (translation)
+Rewrite using `[Metric.tendstoUniformlyOn_iff]`. Introduce `e he`. Use `filter_upwards [h, hβ.eventually (gt_mem_nhds he)] with t ht hβt y hy`. Rewrite using `[dist_comm, dist_eq_norm]`. Conclude with `(ht y hy).trans_lt hβt`.
+-/
 theorem tendstoUniformlyOn_of_norm_le {Y α : Type*} [SeminormedAddCommGroup α] {F : ℝ → Y → α}
     {f : Y → α} {K : Set Y} {β : ℝ → ℝ} (hβ : Tendsto β (𝓝[>] 0) (𝓝 0))
     (h : ∀ᶠ t in 𝓝[>] 0, ∀ y ∈ K, ‖F t y - f y‖ ≤ β t) :
@@ -98,6 +122,13 @@ theorem tendstoUniformlyOn_of_norm_le {Y α : Type*} [SeminormedAddCommGroup α]
   rw [dist_comm, dist_eq_norm]
   exact (ht y hy).trans_lt hβt
 
+/- English proof (translation)
+Establish `hell : Tendsto ell (𝓝[>] (0 : ℝ)) atTop` using `Real.tendsto_log_atTop.comp tendsto_inv_nhdsGT_zero`. Establish `h1 : Tendsto (fun x : ℝ => Real.log x / x) atTop (𝓝 0)`. Simplify using `using Real.tendsto_pow_log_div_mul_add_atTop 1 0 1 one_ne_zero`. Establish `h2 : Tendsto (fun t => errE C t) (𝓝[>] 0) (𝓝 0)`. Use `(h1.comp hell).const_mul C` as an intermediate fact.
+
+Rewrite `this` using `[mul_zero]`. Use `this.congr fun t => ?_` and prove the remaining obligations. Simplify using `only [Function.comp, errE, mul_div_assoc]`. Establish `h3 : Tendsto (fun t : ℝ => C * t) (𝓝[>] 0) (𝓝 0)`. Establish `: Tendsto (fun t : ℝ => C * t) (𝓝 0) (𝓝 (C * 0))` using `(continuous_const.mul continuous_id).tendsto 0`.
+
+Rewrite `this` using `[mul_zero]`. Conclude with `this.mono_left nhdsWithin_le_nhds`. Simplify `h2.add h3` using `[errorWithLinear]`.
+-/
 theorem tendsto_logErrorBound_nhdsWithin (C : ℝ) : Tendsto (fun t => errorWithLinear C t) (𝓝[>] 0) (𝓝 0) := by
   have hell : Tendsto ell (𝓝[>] (0 : ℝ)) atTop :=
     Real.tendsto_log_atTop.comp tendsto_inv_nhdsGT_zero
@@ -115,6 +146,11 @@ theorem tendsto_logErrorBound_nhdsWithin (C : ℝ) : Tendsto (fun t => errorWith
     exact this.mono_left nhdsWithin_le_nhds
   simpa [errorWithLinear] using h2.add h3
 
+/- English proof (translation)
+Establish `hl : 1 < ell t`. Use `Real.log_lt_log ht ht1` as an intermediate fact. Rewrite `this` using `[Real.log_exp]`. Use `show 1 < Real.log t⁻¹`. Rewrite using `[Real.log_inv]`.
+
+Combine the linear equalities and inequalities to obtain the conclusion. Establish `hlog : 0 < Real.log (ell t)` using `Real.log_pos hl`. Establish `hl0 : 0 < ell t` using `by linarith`. Unfold `errorWithLinear errE`. Check the signs of the components of the expression.
+-/
 theorem logErrorBound_pos {C t : ℝ} (hC : 0 < C) (ht : 0 < t) (ht1 : t < Real.exp (-1)) :
     0 < errorWithLinear C t := by
   have hl : 1 < ell t := by

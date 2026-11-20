@@ -12,6 +12,9 @@ namespace GlobalTheory.GLm.MirSum
 
 variable {g : ℕ} [Fact g.Prime]
 
+/- English proof (translation)
+Unfold `toG`. Use `split_ifs with hu`. Rewrite using `[hu.unit_spec]`. Conclude with `h`. Conclude with `inMir_one m`.
+-/
 theorem inMir_toG {m : ℕ} {M : Mt g m} (h : InMir M) : InMir ((toG M : Gn g m) : Mt g m) := by
   unfold toG
   split_ifs with hu
@@ -19,6 +22,11 @@ theorem inMir_toG {m : ℕ} {M : Mt g m} (h : InMir M) : InMir ((toG M : Gn g m)
     exact h
   · exact inMir_one m
 
+/- English proof (translation)
+Simplify using `only [indV]`. Rewrite using `[← Finset.mul_sum]`. Use `congr 1`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun y _ => ?_` and prove the remaining obligations.
+
+Use `split_ifs with hc`. Rewrite using `[h _ (inMir_toG hc.2.2), Finset.sum_mul]`. Simplify using the standard rewrite rules.
+-/
 theorem indV_sum (ψ : AddChar (ZMod g) ℂ) (m : ℕ) (f : Gn g m → ℂ) (s : Finset ℕ) (fs : ℕ → Gn g m → ℂ)
     (h : ∀ p : Gn g m, InMir (p : Mt g m) → f p = ∑ i ∈ s, fs i p) (x : Gn g (m + 1)) :
     indV ψ m f x = ∑ i ∈ s, indV ψ m (fs i) x := by
@@ -31,6 +39,11 @@ theorem indV_sum (ψ : AddChar (ZMod g) ℂ) (m : ℕ) (f : Gn g m → ℂ) (s :
   · rw [h _ (inMir_toG hc.2.2), Finset.sum_mul]
   · simp
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce `h`. Use extensionality with `i j`. Use `fin_cases i`. Use `fin_cases j`.
+
+Simplify using `using h 0 0 rfl`. Introduce and unpack `rfl i j _`. Both sides reduce to the same expression.
+-/
 theorem inMir_one_iff (p : Gn g 1) : InMir (p : Mt g 1) ↔ p = 1 := by
   constructor
   · intro h
@@ -41,6 +54,11 @@ theorem inMir_one_iff (p : Gn g 1) : InMir (p : Mt g 1) ↔ p = 1 := by
   · rintro rfl i j _
     rfl
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce `h`. Use extensionality with `i j`. Use `fin_cases i`. Use `fin_cases j`.
+
+Simplify using `using (h 0 0).2 rfl`. Introduce and unpack `rfl a b fin_cases a fin_cases b`. Simplify using the standard rewrite rules.
+-/
 theorem isUniUp_one_iff (p : Gn g 1) : IsUniUp (p : Mt g 1) ↔ p = 1 := by
   constructor
   · intro h
@@ -53,21 +71,35 @@ theorem isUniUp_one_iff (p : Gn g 1) : IsUniUp (p : Mt g 1) ↔ p = 1 := by
     fin_cases b
     simp
 
+/- English proof (translation)
+Use extensionality with `i j`. Take `rfl` from `Subsingleton.elim i 0`. Take `rfl` from `Subsingleton.elim j 0`. Simplify using `[br, entN]`.
+-/
 theorem br_one (M : Mt g 1) : br 0 1 M = M := by
   ext i j
   obtain rfl := Subsingleton.elim i 0
   obtain rfl := Subsingleton.elim j 0
   simp [br, entN]
 
+/- English proof (translation)
+Introduce `i j hj _`. Conclude with `absurd hj (Nat.not_lt_zero _)`.
+-/
 theorem inPar_zero {n : ℕ} (M : Mt g n) : InPar 0 M := by
   intro i j hj _
   exact absurd hj (Nat.not_lt_zero _)
 
+/- English proof (translation)
+Use `show InPar 0 (p : Mt g 1) ∧ IsUniUp (br 0 1 (p : Mt g 1)) ↔ p = 1`. Rewrite using `[br_one, isUniUp_one_iff]`. Conclude with `⟨fun h => h.2, fun h => ⟨inPar_zero _, h⟩⟩`.
+-/
 theorem inR_one_iff (p : Gn g 1) : InR 0 (p : Mt g 1) ↔ p = 1 := by
   show InPar 0 (p : Mt g 1) ∧ IsUniUp (br 0 1 (p : Mt g 1)) ↔ p = 1
   rw [br_one, isUniUp_one_iff]
   exact ⟨fun h => h.2, fun h => ⟨inPar_zero _, h⟩⟩
 
+/- English proof (translation)
+Establish `key : ∀ x : Gn g 1, (InPar 0 (x : Mt g 1) ∧ tl 0 (x : Mt g 1) = (h : Mt g 0) ∧ br 0 1 (x : Mt g 1) = (u : Mt g 1)) ↔ x = u`. Introduce `x`. Rewrite using `[br_one]`. Conclude with `⟨fun hx => Units.ext hx.2.2, fun hx => ⟨inPar_zero _, by ext i j; exact i.elim0, by rw [hx]⟩⟩`. Unfold `res`.
+
+Simplify using `only [key, Finset.sum_ite_eq', Finset.mem_univ, if_true, zero_mul, pow_zero, inv_one, one_mul]`.
+-/
 theorem res_one (F : Gn g 1 → ℂ) (h : Gn g 0) (u : Gn g 1) : res 0 1 F h u = F u := by
   have key : ∀ x : Gn g 1, (InPar 0 (x : Mt g 1) ∧ tl 0 (x : Mt g 1) = (h : Mt g 0) ∧
       br 0 1 (x : Mt g 1) = (u : Mt g 1)) ↔ x = u := by
@@ -77,6 +109,9 @@ theorem res_one (F : Gn g 1 → ℂ) (h : Gn g 0) (u : Gn g 1) : res 0 1 F h u =
   unfold res
   simp only [key, Finset.sum_ite_eq', Finset.mem_univ, if_true, zero_mul, pow_zero, inv_one, one_mul]
 
+/- English proof (translation)
+Establish `hf : (Finset.univ.filter fun u : Gn g 1 => IsUniUp (u : Mt g 1)) = {1}`. Use extensionality with `u`. Simplify using `[isUniUp_one_iff]`. Simplify using `only [eU, eDat, hf]`. Simplify using the standard rewrite rules.
+-/
 theorem eU_one (ψ : AddChar (ZMod g) ℂ) : eU g 1 ψ = MonoidAlgebra.single 1 1 := by
   have hf : (Finset.univ.filter fun u : Gn g 1 => IsUniUp (u : Mt g 1)) = {1} := by
     ext u
@@ -84,6 +119,11 @@ theorem eU_one (ψ : AddChar (ZMod g) ℂ) : eU g 1 ψ = MonoidAlgebra.single 1 
   simp only [eU, eDat, hf]
   simp
 
+/- English proof (translation)
+Use `show wh ψ (res 0 1 F h) = F 1`. Unfold `wh tr`. Rewrite using `[eU_one, Finset.sum_eq_single (1 : Gn g 1)]`. Rewrite using `[MonoidAlgebra.coeff_single, Finsupp.single_eq_same, one_mul, res_one]`. Introduce `b _ hb`.
+
+Simplify using `[MonoidAlgebra.coeff_single, Finsupp.single_apply, Ne.symm hb]`. Introduce `h1`. Conclude with `absurd (Finset.mem_univ _) h1`.
+-/
 theorem der_one (ψ : AddChar (ZMod g) ℂ) (F : Gn g 1 → ℂ) (h : Gn g 0) : der ψ 0 F h = F 1 := by
   show wh ψ (res 0 1 F h) = F 1
   unfold wh tr
@@ -94,6 +134,11 @@ theorem der_one (ψ : AddChar (ZMod g) ℂ) (F : Gn g 1 → ℂ) (h : Gn g 0) : 
   · intro h1
     exact absurd (Finset.mem_univ _) h1
 
+/- English proof (translation)
+Establish `hc : (Finset.univ.filter fun p : Gn g 1 => InR 0 (p : Mt g 1)) = {1}`. Use extensionality with `p`. Simplify using `[inR_one_iff]`. Establish `hs : ∀ y : Gn g 1, (InMir (y : Mt g 1) ∧ InR 0 ((y⁻¹ * 1 * y : Gn g 1) : Mt g 1)) ↔ y = 1`. Introduce `y`.
+
+Rewrite using `[inMir_one_iff, inR_one_iff]`. Simplify using the standard rewrite rules. Unfold `indR`. Simplify using `only [hc, hs, Finset.card_singleton, Nat.cast_one, inv_one, one_mul, Finset.sum_ite_eq', Finset.mem_univ, if_true, der_one, supFrom]`. Simplify using the standard rewrite rules.
+-/
 theorem base (ψ : AddChar (ZMod g) ℂ) (F : Gn g 1 → ℂ) : F 1 = indR ψ 0 1 (der ψ 0 F) 1 := by
   have hc : (Finset.univ.filter fun p : Gn g 1 => InR 0 (p : Mt g 1)) = {1} := by
     ext p
@@ -107,6 +152,17 @@ theorem base (ψ : AddChar (ZMod g) ℂ) (F : Gn g 1 → ℂ) : F 1 = indR ψ 0 
     Finset.mem_univ, if_true, der_one, supFrom]
   simp
 
+/- English proof (translation)
+Introduce `g _ ψ hψ n`. Proceed by induction on `n with`. Consider the case `zero`. Introduce `F h`. Use linear arithmetic over natural numbers and integers.
+
+Consider the case `succ m ih`. Introduce `F _ hF p hp`. Break down `Nat.eq_zero_or_pos m with rfl | hm` into its components or cases. Establish `hp1` using `(inMir_one_iff p).mp hp`. Substitute `hp1` using the available equality.
+
+Use `show F 1 = ∑ i ∈ Finset.range 1, indR ψ i 1 (der ψ i F) 1`. Rewrite using `[Finset.sum_range_one]`. Conclude with `base ψ F`. Establish `hT` using `GlobalTheory.T.isMirabolicConjInvariant_twistedTailMeanFun g ψ m (m + 1) F hm (Nat.le_succ m) hF`. Rewrite using `[GlobalTheory.T.mirabolic_function_eq_induced_derivative_add_tail g ψ hψ m F hm hF p hp, Finset.sum_range_succ, add_comm (indR ψ m (m + 1) (der ψ m F) p)]`.
+
+Use `congr 1`. Use `(indV_sum ψ m (tail ψ m F) (Finset.range m) (fun i => indR ψ i m (der ψ i (tail ψ m F))) (fun q hq => ih (tail ψ m F) hm hT q hq) p).trans ?_` and prove the remaining obligations. Use `Finset.sum_congr rfl fun i hi => ?_` and prove the remaining obligations. Rewrite `hi` using `[Finset.mem_range]`. Use `show indV ψ m (indR ψ i m (der ψ i (tail ψ m F))) p = _`.
+
+Rewrite using `[GlobalTheory.T.mirabolicInductionPhiPlus_inductionFromBlockUni g ψ i m _ hi p hp, GlobalTheory.T.der_tail_of_lt_of_le g ψ i m (m + 1) F hi (Nat.le_succ m)]`.
+-/
 theorem eq_sum_indR_der : ∀ (g : ℕ) [Fact g.Prime] (ψ : AddChar (ZMod g) ℂ) , ψ ≠ 1 → ∀ (n : ℕ) (F : Gn g n → ℂ), 1 ≤ n → IsMirClass F → ∀ p : Gn g n, InMir (p : Mt g n) → F p = ∑ i ∈ Finset.range n, indR ψ i n (der ψ i F) p := by
   intro g _ ψ hψ n
   induction n with

@@ -12,6 +12,9 @@ open GroundTheory.Global.AdicLiesOver
 open GlobalTheory.CompanionTheory.FexTheta
 
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.CompanionTheory.OrbitSums.orbit_sum_unfold | exact GlobalTheory.CompanionTheory.OrbitSums.orbit_sum_unfold | (intros; apply GlobalTheory.CompanionTheory.OrbitSums.orbit_sum_unfold <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.hasSum_over_coset_representatives : ∀ {H A : Type} [CommGroup H] [AddCommGroup A] (T : AddSubgroup A) (φ : H → A), (∀ h, φ h ∈ T) →
   (∀ a b, φ (a * b) = φ a + φ b) → ∀ R : Finset A, (∀ r ∈ R, r ∈ T) →
   (∀ m ∈ T, ∃! r, r ∈ R ∧ ∃ h, m = r + φ h) → Finite {h : H // φ h = 0} →

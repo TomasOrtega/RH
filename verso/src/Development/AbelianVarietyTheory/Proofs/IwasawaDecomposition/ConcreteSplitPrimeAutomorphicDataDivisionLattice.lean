@@ -18,26 +18,41 @@ def cmpInS (I : Cmp.CmpIn D X) : Cmp.CmpIn (setDiv D N h) (DivTr.herm0S N h X) :
 
 set_option maxHeartbeats 2000000 in
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨H.ex, H.evInj, H.ptEx, H.ptAll, H.chi, H.latM⟩`.
+-/
 theorem cmpHyp0P_setDiv {T : ∀ u : D.what₂.Word, Forms0 D u} {Gt : GatTies D} {I : Cmp.CmpIn D X} (H : CmpHyp0P T Gt I) :
     CmpHyp0P (D := setDiv D N h) (fun u => DivTr.forms0S N h (T u)) (gatTr N h Gt) (cmpInS N h I) :=
   ⟨H.ex, H.evInj, H.ptEx, H.ptAll, H.chi, H.latM⟩
 
+/- English proof (translation)
+The claim follows from `hB`.
+-/
 theorem stdB_setDiv {B : GL (Fin D.R.k) D.host.E} (hB : Cmp.StdB D B) : Cmp.StdB (setDiv D N h) B := hB
 
 set_option maxHeartbeats 2000000 in
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨H.ex, H.uniq, H.pos, H.chi, H.li, H.latM⟩`.
+-/
 theorem cmpHyp_setDiv {T : ∀ u : D.what₂.Word, Forms0 D u} {Gt : GatTies D} {I : Cmp.CmpIn D X} (H : Cmp.CmpHyp T Gt I) :
     Cmp.CmpHyp (D := setDiv D N h) (fun u => DivTr.forms0S N h (T u)) (gatTr N h Gt) (cmpInS N h I) :=
   ⟨H.ex, H.uniq, H.pos, H.chi, H.li, H.latM⟩
 
 set_option maxHeartbeats 2000000 in
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem latCmpC_setDiv {T : ∀ u : D.what₂.Word, Forms0 D u} {Gt : GatTies D} {I : Cmp.CmpIn D X} (H : Cmp.CmpHyp T Gt I) :
     cmpTr N h (Cmp.latCmpC T Gt I H) =
       Cmp.latCmpC (D := setDiv D N h) (fun u => DivTr.forms0S N h (T u)) (gatTr N h Gt) (cmpInS N h I) (cmpHyp_setDiv N h H) := rfl
 
 set_option maxHeartbeats 2000000 in
 
+/- English proof (translation)
+Rewrite using `[latCmpC_setDiv]`.
+-/
 theorem sigma_setDiv {T : ∀ u : D.what₂.Word, Forms0 D u} {Gt : GatTies D} {I : Cmp.CmpIn D X} (H : Cmp.CmpHyp T Gt I)
     (H0 : Formalism.L2.Herm.Herm0 D) :
     (⟨setDiv D N h, gatTr N h Gt, cmpTr N h (Cmp.latCmpC T Gt I H), DivTr.herm0S N h H0, fun u => DivTr.forms0S N h (T u)⟩ :
@@ -54,6 +69,15 @@ attribute [local instance_reducible] tauRec hP frobSet lamRec packC locPackC rec
 
 set_option maxHeartbeats 1600000 in
 
+/- English proof (translation)
+Introduce `sc D Gt c H F N h hR`. Take `⟨D0, Lc, I, ψ, hd, H0, hL, T, B, hBs, hB, iK, lam, hK, hPos, CH, eq⟩` from `hR`. Consider the cases of `eq`. Use `IsRecG.intro (setDiv D0 N h) Lc I ?a1 ?a2 ?a3 ?a4 ?a5 B ?a6 ?a7 ?a8 ?a9 ?a10 ?a11 ?a12 ?a13` and prove the remaining obligations. Use `case a1 => with_reducible_and_instances exact ψ`.
+
+Use `case a2 => with_reducible_and_instances exact hd`. Use `case a3 => with_reducible_and_instances exact DivTr.herm0S N h H0`. Use `case a4 => with_reducible_and_instances exact hL`. Use `case a5 => with_reducible_and_instances exact fun u => DivTr.forms0S N h (T u)`. Use `case a6 => with_reducible_and_instances exact stdB_setDiv N h hBs`.
+
+Use `case a7 => with_reducible_and_instances exact hB`. Use `case a8 => with_reducible_and_instances exact iK`. Use `case a9 => with_reducible_and_instances exact lam`. Use `case a10 => with_reducible_and_instances exact hK`. Use `case a11 => with_reducible_and_instances exact hPos`.
+
+Use `case a12 => with_reducible_and_instances exact cmpHyp0P_setDiv N h CH`. Use `case a13 => with_reducible_and_instances refine Eq.trans (sigma_setDiv N h _ H0) ?_ with_reducible_and_instances exact Eq.refl _`.
+-/
 theorem isRecG_setDiv : ∀ (sc : Scale) (D : D7) (Gt : GatTies D) (c : LatCmp D) (H : Formalism.L2.Herm.Herm0 D)
     (F : ∀ u, Formalism.L2.Forms.Forms0 D u) (N : ∀ u, Submodule (𝓞 D.what₂.LL) (D.div.Nu u).V) (h : D.what₂.Word → ℝ),
     IsRecG sc D Gt c H F → IsRecG sc (setDiv D N h) (gatTr N h Gt) (cmpTr N h c) (DivTr.herm0S N h H)

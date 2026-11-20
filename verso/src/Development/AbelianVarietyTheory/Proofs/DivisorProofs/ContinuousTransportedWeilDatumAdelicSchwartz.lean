@@ -19,6 +19,13 @@ open scoped Classical
 
 namespace GlobalTheory.WeilCont
 
+/- English proof (translation)
+Introduce `D ψ hψ S T χS χT hS hT rS rT JA JB ξ hJA hJB κ _ co hco ω hω om htr`. Establish `hfin` using `GlobalTheory.T.exists_local_finiteDim_finiteParts_weilOperators D ψ hψ S T χS χT hS hT rS rT JA JB ξ hJA hJB κ co hco ω hω om htr`. Establish `hpt` using `GlobalTheory.T.continuous_transportedWeilOperator_groupVariable D ψ hψ S T χS χT hS hT rS rT JA JB ξ hJA hJB κ co hco ω hω om htr`. Establish `hbd` using `GlobalTheory.T.weilOperator_archimedeanSlice_schwartzSeminorm_bounded D ψ hψ S T χS χT hS hT rS rT JA JB ξ hJA hJB κ co hco ω hω om htr`. Establish `hpres` using `(GlobalTheory.T.transportedWeil_preserves_schwartz_heisenberg_equivariant D ψ hψ S T χS χT hS hT rS rT JA JB ξ hJA hJB κ co hco ω hω om htr).1`.
+
+Use `GlobalTheory.WeilCont.isContOn_of_local D.host.F hfin (fun Φ hΦ y => ?_)` and prove the remaining obligations. Use `choose s hs using fun p => GlobalTheory.WeilCont.exists_slice D.host.F (hpres p Φ hΦ) y`. Use `⟨s, continuous_iff_continuousAt.2 fun p0 => GlobalTheory.T.schwartz_continuousAt_of_continuousAt_apply_of_bounded s p0 (fun v => ?_) (fun k n => ?_), hs⟩` and prove the remaining obligations. Repeatedly rewrite using `[hs]`. Conclude with `(hpt Φ hΦ _).continuousAt`.
+
+Take `⟨C, hC⟩` from `hbd Φ hΦ y p0 k n`. Use `⟨C, hC.mono fun p hp v => ?_⟩` and prove the remaining obligations. Establish `e : (⇑(s p)) = fun x => om p Φ (GlobalTheory.WeilCont.adeleJoin D.host.F x y)` using `funext (hs p)`. Rewrite using `[e]`. Conclude with `hp v`.
+-/
 theorem continuous_transport : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ), IsStdChar D ψ (-1) →
     ∀ (S T : HSp D) (χS χT : (AE D)ˣ →* Circle), IsHeckeChar D χS → IsHeckeChar D χT →
       ResEta D χS S.rank → ResEta D χT T.rank →

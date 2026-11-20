@@ -26,11 +26,21 @@ open GlobalTheory.BoxPhi
 variable {V : Type} [CommRing V] [IsDomain V] [IsDiscreteValuationRing V]
   {F : Type} [Field F] [Algebra (FractionRing V) F] {O : Type} [CommRing O] [StarRing O]
 
+/- English proof (translation)
+Distinguish the cases in `h : f y ∈ U`. Rewrite using `[gs_eq f y U h, map_zero, map_zero]`. Conclude with `dif_neg h`.
+-/
 theorem gs_zero' {X Y : Scheme.{0}} (f : Y ⟶ X) (y : Y) (U : X.Opens) : gs f y U 0 = 0 := by
   by_cases h : f y ∈ U
   · rw [gs_eq f y U h, map_zero, map_zero]
   · exact dif_neg h
 
+/- English proof (translation)
+Use `oa.onB.hom a` as an intermediate fact. Establish `p₃` using `prod_fam D.toPre F (DegPre.zF D.toPre F) (star a • χ) (k * N) h`. Establish `p₄` using `prod_fam D.toPre F (DegPre.zF D.toPre F ≫ aF D F oa a) χ k h`. Establish `z₂ : DegPre.zF D.toPre F ≫ DegPre.prB D.toPre F = 1` using `lift_snd _ _`. Establish `z₃ : (DegPre.zF D.toPre F ≫ aF D F oa a) ≫ DegPre.prB D.toPre F = 1`.
+
+Rewrite using `[Category.assoc, aF, lift_snd, ← Category.assoc, z₂, MonObj.one_comp]`. Rewrite `p₃` using `[z₂, _root_.mul_one]`. Rewrite `p₄` using `[z₃, _root_.mul_one]`. Simplify using `only [Over.comp_left, Category.assoc] at p₄`. Use `(prod_sum₂ (K := Fin 4) (K' := Fin 4) (U := U) _ p₃ (prod_neg _ _ p₄)).trans ?_` and prove the remaining obligations.
+
+Rewrite using `[← zpow_natCast, Nat.cast_mul, Nat.cast_mul, Nat.cast_sub hN]`. Apply `Additive.ofMul.injective` to reduce the goal to its premises. Simplify using `only [ofMul_mul, ofMul_inv, ofMul_zpow]`. Use `module`.
+-/
 theorem prod_pull_zero (D : DegData V (maximalIdeal V)) [Module O D.toPre.X] (oa : D.toPre.OAct O) (a : O) (k N : ℕ)
     (hN : 1 ≤ N) (χ : D.toPre.X) {U : Type} [CommGroup U] (h : ((TF (R := V) F).left ⟶ D.toPre.P.A.left) → U) :
     ∏ i, h ((DegPre.zF D.toPre F).left ≫ pullφ D F oa a χ i) ^ pullε k N i =
@@ -50,6 +60,9 @@ theorem prod_pull_zero (D : DegData V (maximalIdeal V)) [Module O D.toPre.X] (oa
   simp only [ofMul_mul, ofMul_inv, ofMul_zpow]
   module
 
+/- English proof (translation)
+Use `congrArg (fun q => q.left) (?_ : aF D' F oa' a ≫ (TF (R := V) F ◁ pD.pw.pr i) = (TF (R := V) F ◁ pD.pw.pr i) ≫ aF D F oa a)` and prove the remaining obligations. Apply `CartesianMonoidalCategory.hom_ext` to reduce the goal to its premises. Simplify using `[aF]`. Simplify using `[aF, hact]`.
+-/
 theorem aF_pr {j : ℕ} {D D' : DegData V (maximalIdeal V)} (pD : IsPowDeg D'.toPre D.toPre j)
     [Module O D.toPre.X] [Module O D'.toPre.X] (oa : D.toPre.OAct O) (oa' : D'.toPre.OAct O) (a : O) (i : Fin j)
     (hact : oa'.onB.act a ≫ pD.pw.pr i = pD.pw.pr i ≫ oa.onB.act a) :
@@ -60,6 +73,31 @@ theorem aF_pr {j : ℕ} {D D' : DegData V (maximalIdeal V)} (pD : IsPowDeg D'.to
   · simp [aF]
   · simp [aF, hact]
 
+/- English proof (translation)
+Establish `ht` using `fun i => aF_pr (F := F) pD oa oa' a i (hact a i)`. Use `⟨fun χ' => ?_, fun β' hβ' => ?_⟩` and prove the remaining obligations. Use `choose u hu hc hr using fun i => (hs i).1 (pD.xe χ' i)`. Establish `hφ : ∀ i b, pullφ D' F oa' a χ' b ≫ (pD.pw.pr i).left = prB pD F i ≫ pullφ D F oa a (pD.xe χ' i) b`. Introduce and unpack `i (b | b)`.
+
+Conclude with `((hS' (star a • χ')).choose i b).trans (by rw [hx]; rfl)`. Use `show ((aF D' F oa' a).left ≫ DegPre.famφ D'.toPre F χ' b) ≫ _ = _ ≫ (aF D F oa a).left ≫ DegPre.famφ D.toPre F (pD.xe χ' i) b`. Rewrite using `[Category.assoc, (hS χ').choose i b, ← Category.assoc, ht, Category.assoc]`. Take `⟨v, hv, vv⟩` from `exists_box_gen D.toPre.P.isLB D'.toPre.P.isLB pD.w pD.w_gen hφ u hu`. Use `⟨v, hv, corr_of_val D'.toPre.P.isLB fun y J' hJ' => ?_, (secRel_iff D'.toPre.P.isLB _ _ _ _ _ _ _ _ _ v).2 fun y J' hJ' => ?_⟩` and prove the remaining obligations.
+
+Take `⟨J, hJ⟩` from `BoxFamily.exists_good_at D.toPre.P.isLB y`. Establish `e₂` using `vv _ (DegPre.zF D'.toPre F).left y J J' hJ hJ'`. Set `r : (TF (R` to `V) F).left ⟶ (TK V).left := 𝟙 (TF (R := V) F).left ≫ jFK (R := V) F`. Establish `e₃ : om pD.w y J J' (1 : TF (R` using `V) F ⟶ D'.toPre.P.A).left * val D'.toPre.rigK r y J' = ∏ _i : Fin j, val D.toPre.rigK r y J := by`. Establish `z : (1 : TF (R` using `V) F ⟶ D'.toPre.P.A).left = r ≫ (toUnit (TK V)).left ≫ eSec D'.toPre.P.A := (show (1 : TF (R := V) F ⟶ D'.toPre.P.A).left = jFK (R := V) F ≫ (toUnit (TK V)).left ≫ eSec D'.toPre.P.A by show (toUnit _ ≫ η[D'.toPre.P.A]).left = _`.
+
+Rewrite using `[Over.comp_left]`. Use the proof step `rfl).trans (congrArg (· ≫ (toUnit (TK V)).left ≫ eSec D'.toPre.P.A)`. Use the proof step `(Category.id_comp (jFK (R := V) F)).symm)`. Rewrite using `[z]`. Conclude with `BoxFamily.rig_val pD hJ hJ' r`.
+
+Establish `e₅ : ∀ i, val (u i) ((DegPre.zF D'.toPre F).left ≫ prB pD F i) y J = val D.toPre.rigK r y J ^ (k * (N - 1))` using `fun i => by`. Use `(val_pull hJ _ _ _).symm.trans ((val_corr hJ (hc i) (𝟙 _)).trans ((val_pull hJ _ _ _).trans (BoxFamily.val_powGen _ _ _ _ _ _ _)))` as an intermediate fact. Rewrite `this` using `[Category.id_comp]`. Rewrite using `[BoxFamily.zF_pr]`. Conclude with `this`.
+
+Rewrite `e₂` using `[prod_pull_zero D' oa' a k N hN χ', Finset.prod_congr rfl (fun i _ => e₅ i), Finset.prod_pow, ← e₃, mul_pow]`. Use `(val_pull hJ' _ _ _).trans (Eq.trans ?_ ((val_pull hJ' _ _ _).trans (BoxFamily.val_powGen _ _ _ _ _ _ _)).symm)` and prove the remaining obligations. Rewrite using `[Category.id_comp]`. Conclude with `mul_left_cancel e₂`. Take `⟨J, hJ⟩` from `BoxFamily.exists_good_at D.toPre.P.isLB y`.
+
+Establish `e₁` using `fam_val pD hS' (star a • χ') (𝟙 _) y hJ hJ'`. Establish `e₂` using `fam_val pD hS χ' (𝟙 _ ≫ (aF D' F oa' a).left) y hJ hJ'`. Establish `e₃` using `vv _ (𝟙 _) y J J' hJ hJ'`. Establish `e₄ : ∀ i, sval ((s' i).s (pD.xe (star a • χ') i)) (𝟙 _ ≫ prB pD F i) y J = sval ((s i).s (pD.xe χ' i)) ((𝟙 _ ≫ (aF D' F oa' a).left) ≫ prB pD F i) y J * (val (u i) (𝟙 _ ≫ prB pD F i) y J).val` using `fun i => by`. Rewrite using `[hx, Category.assoc, ht, ← Category.assoc]`.
+
+Conclude with `(secRel_iff D.toPre.P.isLB _ _ _ _ _ _ _ _ _ (u i)).1 (hr i) _ _ y J hJ`. Establish `e₅ : ∏ b, om pD.w y J J' (𝟙 _ ≫ pullφ D' F oa' a χ' b) ^ pullε k N b = (∏ b, om pD.w y J J' (𝟙 _ ≫ DegPre.famφ D'.toPre F (star a • χ') b) ^ DegPre.famε (k * N) b) * (∏ b, om pD.w y J J' ((𝟙 _ ≫ (aF D' F oa' a).left) ≫ DegPre.famφ D'.toPre F χ' b) ^ DegPre.famε k b)⁻¹`. Simplify using `only [Category.assoc]`. Conclude with `prod_sum₂ (K := Fin 4) (K' := Fin 4) _ rfl (prod_neg _ _ rfl)`. Rewrite `e₁` using `[Finset.prod_congr rfl (fun i _ => e₄ i), Finset.prod_mul_distrib, ← e₂, ← Units.coe_prod, ← e₃, e₅]`.
+
+Conclude with `alg_fin e₁`. Choose the witnesses or unpack the hypotheses as in `⟨i, hi⟩ : ∃ i, ∀ χ, pD.xe β' i ≠ star a • χ := by`. Assume the negation of the conclusion as `hne`. Use `push Not at hne`. Use `choose χ hχ using hne`.
+
+Use `hβ' (pD.xe.symm χ) (pD.xe.injective (funext fun i => ?_))` and prove the remaining obligations. Rewrite using `[hx, AddEquiv.apply_symm_apply, hχ]`. Establish `hz` using `(hs i).2 _ hi`. Introduce `jj`. Use `fn_ext fun y hy => ?_` and prove the remaining obligations.
+
+Take `⟨J', hJ', e⟩` from `sval_trans D'.toPre.P.isLB (S'.s β') y jj hy`. Take `⟨J, hJ⟩` from `BoxFamily.exists_good_at D.toPre.P.isLB y`. Establish `e₁` using `fam_val pD hS' β' (𝟙 _) y hJ hJ'`. Establish `z₀ : sval ((s' i).s (pD.xe β' i)) (𝟙 _ ≫ prB pD F i) y J = 0`. Conclude with `(congrArg (gs _ y _) (hz _)).trans (gs_zero' _ y _)`.
+
+Rewrite `e₁` using `[Finset.prod_eq_zero (Finset.mem_univ i) z₀, Units.mul_right_eq_zero]`. Rewrite `e` using `[e₁, mul_zero]`. Use `e.trans ?_` and prove the remaining obligations. Conclude with `(gs_zero' _ y _).symm`.
+-/
 theorem pullAl_box {j : ℕ} {D D' : DegData V (maximalIdeal V)} (pD : IsPowDeg D'.toPre D.toPre j)
     [Module O D.toPre.X] [Module O D'.toPre.X]
     (hx : ∀ (a : O) (x : D'.toPre.X) (i : Fin j), pD.xe (a • x) i = a • pD.xe x i)
@@ -144,6 +182,9 @@ theorem pullAl_box {j : ℕ} {D D' : DegData V (maximalIdeal V)} (pD : IsPowDeg 
     refine e.trans ?_
     exact (gs_zero' _ y _).symm
 
+/- English proof (translation)
+Introduce `_ _ _ _ _ _ _ _ _ _ _ _ pD _ _ _ _ _ _ _ _ hx oa oa' hact a N k hN _ _ s s' S S' hs hS hS'` and use `pullAl_box pD hx oa oa' hact a N k hN s s' S S' hs hS hS'`.
+-/
 theorem main : Laws → Laws2 → Laws4 → TwistBaseChangeStatement → ∀ (V : Type) [CommRing V] [IsDomain V] [IsDiscreteValuationRing V] [IsAdicComplete (maximalIdeal V) V] (j : ℕ) (D D' : DegData V (maximalIdeal V)) (pD : IsPowDeg D'.toPre D.toPre j) (F : Type) [Field F] [Algebra (FractionRing V) F] (O : Type) [CommRing O] [StarRing O] [Module O D.toPre.X] [Module O D'.toPre.X], (∀ (a : O) (x : D'.toPre.X) (i : Fin j), pD.xe (a • x) i = a • pD.xe x i) → ∀ (oa : D.toPre.OAct O) (oa' : D'.toPre.OAct O), (∀ a i, oa'.onB.act a ≫ pD.pw.pr i = pD.pw.pr i ≫ oa.onB.act a) → ∀ (a : O) (N k : ℕ), 1 ≤ N → 1 ≤ k → a * star a = (N : O) → ∀ (s : Fin j → Fam D.toPre F k) (s' : Fin j → Fam D.toPre F (k * N)) (S : Fam D'.toPre F k) (S' : Fam D'.toPre F (k * N)), (∀ i, PullAl D F oa a k N (s i) (s' i)) → IsBoxFam pD F k S s → IsBoxFam pD F (k * N) S' s' → PullAl D' F oa' a k N S S' :=
   fun _ _ _ _ _ _ _ _ _ _ _ _ pD _ _ _ _ _ _ _ _ hx oa oa' hact a N k hN _ _ s s' S S' hs hS hS' =>
     pullAl_box pD hx oa oa' hact a N k hN s s' S S' hs hS hS'

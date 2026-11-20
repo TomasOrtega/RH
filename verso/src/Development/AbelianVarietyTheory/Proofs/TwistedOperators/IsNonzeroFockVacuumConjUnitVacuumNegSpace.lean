@@ -16,6 +16,11 @@ variable {D : D7}
 
 open GlobalTheory.IndefiniteRowSideFullHecke.ConjugateAdjointDagger in
 
+/- English proof (translation)
+Use function extensionality and compare the values at `x`. Use `show deriv (fun t : ℝ => heisO ψ S T (lineAt θ τ z t) (cj id f) x) 0 = starRingEnd ℂ (deriv (fun t : ℝ => heisO ψ (GlobalTheory.Grid.neg S) T (lineAt θ τ z t) f x) 0)`. Establish `e : (fun t : ℝ => heisO ψ S T (lineAt θ τ z t) (cj id f) x) = fun t => star (heisO ψ (GlobalTheory.Grid.neg S) T (lineAt θ τ z t) f x)`. Use function extensionality and compare the values at `t`. Rewrite using `[GlobalTheory.CjNeg.heis_negS' hψ]`.
+
+Both sides reduce to the same expression. Rewrite using `[e, deriv.star]`. Both sides reduce to the same expression.
+-/
 theorem dRho_cj {ψ : AddChar (AF D.host.F) ℂ} (hψ : IsStdChar D ψ (-1)) (S T : HSp D) (θ : InfFam D)
     (τ : D.what₂.Tau) (z : Matrix (Fin T.rank) (Fin S.rank) ℂ) (f : WO S T → ℂ) :
     dRho (heisO ψ S T) θ τ z (cj id f) = cj id (dRho (heisO ψ (GlobalTheory.Grid.neg S) T) θ τ z f) := by
@@ -30,6 +35,19 @@ theorem dRho_cj {ψ : AddChar (AF D.host.F) ℂ} (hψ : IsStdChar D ψ (-1)) (S 
   rw [e, deriv.star]
   rfl
 
+/- English proof (translation)
+Introduce `D S T ψ θ f h`. Take `⟨hψ, hv⟩` from `h`. Establish `hth : IsThetaFunO ψ (GlobalTheory.Grid.neg S.V) T.V f` using `hv.theta`. Use `⟨GlobalTheory.CjNeg.theta_negS' hψ (show IsThetaFunO ψ (GlobalTheory.ChiGrid.negSp S.V) T.V f from hth), ?_, fun τ => ?_⟩` and prove the remaining obligations. Introduce `h0`.
+
+Establish `hf0 : f = 0`. Rewrite using `[← GlobalTheory.CjNeg.cj_id_cj_id f, h0]`. Use function extensionality and compare the values at `x`. Simplify using `[GlobalTheory.IndefiniteRowSideFullHecke.ConjugateAdjointDagger.cj]`. Take `⟨⟨p, hp⟩, hall⟩` from `hv.norm`.
+
+Establish `h1` using `hall p hp`. Rewrite `h1` using `[hf0]`. Simplify using `[nrm2] at h1`. Introduce `z`. Establish `h0 : annih (heisO ψ (GlobalTheory.Grid.neg S.V) T.V) θ τ (cplxO (-(cart S.M τ)) (cart T.M τ)) z f = 0` using `hv.fock τ z`.
+
+Establish `hJ : cplxO (-(cart S.M τ)) (cart T.M τ) z = -cplxO (cart S.M τ) (cart T.M τ) z`. Simplify using `[cplxO]`. Unfold `annih at h0 ⊢`. Rewrite `h0` using `[hJ, GlobalTheory.FockAdjoint.dRho_neg' hψ hv.inf hth]`. Rewrite using `[dRho_cj hψ, dRho_cj hψ]`.
+
+Use function extensionality and compare the values at `x`. Establish `h2` using `congrFun h0 x`. Simplify using `only [Pi.add_apply, Pi.smul_apply, Pi.neg_apply, smul_eq_mul, Pi.zero_apply] at h2 ⊢`. Simplify using `only [GlobalTheory.IndefiniteRowSideFullHecke.ConjugateAdjointDagger.cj, id_eq]`. Establish `e` using `congrArg (starRingEnd ℂ) h2`.
+
+Simplify using `only [map_add, map_mul, map_neg, Complex.conj_I, map_zero] at e`. Take the linear combination `e`.
+-/
 theorem isVacVec_cj_of_isVac_neg : ∀ {D : D7} (S T : GlobalTheory.Grid.Node D) (ψ : AddChar (AF D.host.F) ℂ) (θ : InfFam D)
     (f : WO S.V T.V → ℂ), GlobalTheory.Grid.IsVac ψ θ true S T f →
       GlobalTheory.Chain.IsVacVec ψ θ S.M T.M (GlobalTheory.IndefiniteRowSideFullHecke.ConjugateAdjointDagger.cj id f) := by

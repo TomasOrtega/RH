@@ -15,6 +15,13 @@ open GlobalTheory GlobalTheory.Cartier GlobalTheory.TopForm GlobalTheory.CechPic
 
 namespace GlobalTheory.Discrepancy
 
+/- English proof (translation)
+Introduce `hP k _ _ X _ _ _ p n hp hdim Δ η m G hL`. Establish `hne : (⊥ : Closeds X) ≠ ⊤`. Introduce `h`. Establish `hx : genericPoint X ∈ ((⊤ : Closeds X) : Set X)` using `trivial`. Rewrite `hx` using `[← h]`.
+
+Conclude with `hx`. Take `⟨Y, hYi, s, hsd, K, B, hR, -⟩` from `LogResExist.exists_logRes hP k X p n hp hdim η m G hL.ne_zero ⊥ hne`. Use `haveI := hYi`. Use `haveI := hsd`. Use `haveI := hR.smooth`.
+
+Establish `hsm : Smooth (s ≫ p)` using `SmoothOfRelativeDimension.smooth (n := n) (f := s ≫ p)`. Take `⟨-, -, hYn⟩` from `isReduced_isNormalScheme_isLocallyNoetherian_of_smooth_over_field k Y (s ≫ p) hsm`. Use `haveI := hYn`. Take `⟨J, hJ⟩` from `MultIdealExists.exists_isMultIdeal k X p n hp η m G Y s K B hL.ne_zero hL.pos hR`. Conclude with `⟨J, hJ, mem_support_multIdeal_iff k X p n hp hdim Δ η m G Y s K B hL hR J hJ⟩`.
+-/
 theorem exists_isMultIdeal_support_iff_not_kltAt : GlobalTheory.Published.Principalisation → ∀ (k : Type) [Field k] [CharZero k] (X : Scheme.{0}) [IsIntegral X] [IsLocallyNoetherian X] [GlobalTheory.IsNormalScheme X] (p : X ⟶ Sp k) (n : ℕ), IsProjOver p → topologicalKrullDim X = n → ∀ (Δ : X → ℚ) (η : RatForms p n) (m : ℕ) (G : CartierDiv X), IsLogMult p n Δ η m G → ∃ J : X.IdealSheafData, IsMultIdeal p n η m G J ∧ ∀ x : X, x ∈ J.support ↔ ¬ KltAt p n Δ x := by
   intro hP k _ _ X _ _ _ p n hp hdim Δ η m G hL
   have hne : (⊥ : Closeds X) ≠ ⊤ := by

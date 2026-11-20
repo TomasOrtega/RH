@@ -11,6 +11,15 @@ noncomputable section
 
 attribute [local instance] Matrix.normedAddCommGroup Matrix.normedSpace
 
+/- English proof (translation)
+Introduce `P Wp Wq Wq' _ _ _ _ _ _ _ _ _ p u'' π'' l0 hty hok hl1 hl2`. Set `Bs : B.RealPlaceData P.k P.r Wp Wq'` to `{ p.T.base with π' := π'' π'_rep := hty.2.1 π'_unitary := hty.2.2.2.1 π'_cont := hty.2.2.1 }`. Establish `hN` using `p.hT 0 (Nat.zero_le _)`. Take `⟨T', hTb, hTn⟩` from `Dx2.Tower.towerExists P.k P.r Wp Wq' Bs hN.1 hN.2.1 hN.2.2`. Establish `hPl : Q.IsPlace (shP P P.u u'') Bs.z Bs.z' Bs.π Bs.π'` using `⟨hok, p.hP.2.1, p.hP.2.2.1, p.hP.2.2.2.1, p.hP.2.2.2.2.1, p.hP.2.2.2.2.2.1, hty⟩`.
+
+Take `⟨X⟩` from `actual_operators_exist Wp Wq' (shP P P.u u'') Bs.z Bs.z' Bs.π Bs.π' hPl`. Take `⟨X0, μ, L0, st0, hD0, -⟩` from `p.hΘ`. Take `⟨L, st, h1, h2, h3, h4, h5, h6⟩` from `level_start_actual Wp Wq' (shP P P.u u'') Bs.z Bs.z' Bs.π Bs.π' hPl X l0`. Establish `hData : P5.IsData (shP P P.u u'') Bs.z Bs.z' Bs.π Bs.π' X μ L st l0` using `⟨hPl, hD0.2.1, h1, h2, h3, h4, h5, h6⟩`. Take `⟨Cb, -, hTL⟩` from `top_lift_exists`.
+
+Take `⟨Θ, hΘ, -⟩` from `hTL Wp Wq' (shP P P.u u'') Bs X μ L st l0 hl1 hl2 hData`. Establish `hfv` using `HaarMassHermitianCurvature.frameVec_facts p.T.base p.ν' p.m₀ p.hF`. Take `⟨TP⟩` from `type_projectors_exist Wp Wq' (shP P P.u u'') Bs.z Bs.z' Bs.π Bs.π' (p.m₀ *ᵥ p.ν') hPl hfv.1 hfv.2.1 hfv.2.2`. Establish `hF : D.IsBaseFrame Bs p.ν' p.m₀` using `p.hF`. Use `⟨⟨l0, T', p.ν', p.m₀, Θ, hTb ▸ TP, ⟨hl1, hl2, p.hl.2.2⟩, hTn, hTb ▸ hF, hTb ▸ hPl, hTb ▸ ⟨X, μ, L, st, hData, hΘ⟩⟩, ?_, ?_, rfl⟩` and prove the remaining obligations.
+
+Use `show T'.base.z = _ ∧ T'.base.z' = _ ∧ T'.base.π = _ ∧ T'.base.μW = _ ∧ T'.base.μN = _ ∧ T'.base.μW' = _ ∧ p.ν' = _ ∧ p.m₀ = _`. Rewrite using `[hTb]`. Conclude with `⟨rfl, rfl, rfl, rfl, rfl, rfl, rfl, rfl⟩`. Use `show T'.base.π' = π''`. Rewrite using `[hTb]`.
+-/
 theorem place_swap_exists : PlaceSwapExists := by
   intro P Wp Wq Wq' _ _ _ _ _ _ _ _ _ p u'' π'' l0 hty hok hl1 hl2
   let Bs : B.RealPlaceData P.k P.r Wp Wq' :=

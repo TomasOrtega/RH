@@ -15,6 +15,9 @@ variable {Em : Type} [Field Em] [NumberField Em] [IsCMField Em] {Ψ : Type} [Fin
   (A : HermDatum Em Ψ N j)
 
 omit [NumberField Em] [IsCMField Em] in
+/- English proof (translation)
+Use extensionality with `x`. Simplify using the standard rewrite rules.
+-/
 theorem conj_comp_conj_comp (σ : Em →+* ℂ) : (starRingEnd ℂ).comp ((starRingEnd ℂ).comp σ) = σ := by
   ext x
   simp
@@ -46,16 +49,44 @@ def embEquiv : Ψ ⊕ Ψ ≃ (Em →+* ℂ) :=
         show (starRingEnd ℂ).comp (A.emb τ) = σ
         rw [hτ, conj_comp_conj_comp])
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem embEquiv_inl (τ : Ψ) : A.embEquiv (Sum.inl τ) = A.emb τ := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem embEquiv_inr (τ : Ψ) : A.embEquiv (Sum.inr τ) = (starRingEnd ℂ).comp (A.emb τ) := rfl
 
 include A in
 
+/- English proof (translation)
+Rewrite using `[← NumberField.Embeddings.card Em ℂ, ← Fintype.card_congr A.embEquiv, Fintype.card_sum]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem finrank_eq_two_mul_card_cm : Module.finrank ℚ Em = 2 * Fintype.card Ψ := by
   rw [← NumberField.Embeddings.card Em ℂ, ← Fintype.card_congr A.embEquiv, Fintype.card_sum]
   ring
 
+/- English proof (translation)
+Use `set X := P⁻¹ *ᵥ fun b => A.emb τ (x b) with hXdef`. Use `set Y := P⁻¹ *ᵥ fun b => A.emb τ (y b) with hYdef`. Establish `hdet : IsUnit P.det`. Establish `h1` using `congrArg Matrix.det hP`. Rewrite `h1` using `[Matrix.det_mul, Matrix.det_mul]`.
+
+Establish `hS : (signMat N j).det ≠ 0`. Rewrite using `[signMat, Matrix.det_diagonal]`. Apply the tactic sequence `exact Finset.prod_ne_zero_iff.2 fun a _ => by split_ifs <;> norm_num`. Rewrite using `[isUnit_iff_ne_zero]`. Introduce `h0`.
+
+Rewrite `h1` using `[h0, mul_zero]`. Conclude with `hS h1.symm`. Establish `hx : (fun b => A.emb τ (x b)) = P *ᵥ X`. Rewrite using `[hXdef, Matrix.mulVec_mulVec, Matrix.mul_nonsing_inv _ hdet, Matrix.one_mulVec]`. Establish `hy : (fun b => A.emb τ (y b)) = P *ᵥ Y`.
+
+Rewrite using `[hYdef, Matrix.mulVec_mulVec, Matrix.mul_nonsing_inv _ hdet, Matrix.one_mulVec]`. Establish `hτ0 : A.emb τ (hermForm Em A.H x y) = star (fun b => A.emb τ (x b)) ⬝ᵥ (A.H.map (A.emb τ) *ᵥ fun b => A.emb τ (y b))`. Simplify using `[hermForm, dotProduct, Matrix.mulVec, Finset.mul_sum, mul_assoc, map_sum, map_mul]`. Establish `hτ : A.emb τ (hermForm Em A.H x y) = star X ⬝ᵥ (signMat N j *ᵥ Y)`. Rewrite using `[hτ0, hx, hy, ← hP, ← Matrix.mulVec_mulVec, ← Matrix.mulVec_mulVec, Matrix.dotProduct_mulVec (star X) Pᴴ, Matrix.star_mulVec]`.
+
+Establish `hτ' : ∑ a, conj (X a) * ((if (a : ℕ) < j then (1 : ℂ) else -1) * Y a) = 0`. Establish `h0` using `hτ.symm`. Rewrite `h0` using `[hxy, map_zero]`. Simplify `h0` using `[signMat, dotProduct, Matrix.mulVec_diagonal]`. Establish `hsplit : ∑ a, conj (X a) * Y a = ∑ a ∈ Finset.univ.filter (fun a : Fin N => ¬ (a : ℕ) < j), 2 * (conj (X a) * Y a)`.
+
+Rewrite using `[Finset.sum_filter]`. Establish `: ∑ a, conj (X a) * Y a = ∑ a, conj (X a) * Y a - ∑ a, conj (X a) * ((if (a : ℕ) < j then (1 : ℂ) else -1) * Y a)`. Rewrite using `[hτ', sub_zero]`. Rewrite using `[this, ← Finset.sum_sub_distrib]`. Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations.
+
+Apply the tactic sequence `split_ifs <;> ring`. Rewrite using `[hsplit, Finset.mul_sum]`. Use `symm`. Use `Finset.sum_bij (fun c _ => tailIdx hj c) ?_ ?_ ?_ ?_` and prove the remaining obligations. Introduce `c _`.
+
+Simplify using `[tailIdx]`. Introduce `c₁ _ c₂ _ h`. Simplify using `only [tailIdx, Fin.mk.injEq] at h`. Conclude with `Fin.ext (by omega)`. Introduce `a ha`.
+
+Simplify using `only [Finset.mem_filter, Finset.mem_univ, true_and, not_lt] at ha`. Conclude with `⟨⟨a - j, by omega⟩, Finset.mem_univ _, Fin.ext (by simp [tailIdx]; omega)⟩`. Introduce `c _`. Both sides reduce to the same expression.
+-/
 theorem sum_coord_of_iso (hj : j ≤ N) {P : Matrix (Fin N) (Fin N) ℂ} (τ : Ψ)
     (hP : Pᴴ * A.H.map (A.emb τ) * P = signMat N j) {x y : Fin N → Em}
     (hxy : hermForm Em A.H x y = 0) :
@@ -111,6 +142,13 @@ theorem sum_coord_of_iso (hj : j ≤ N) {P : Matrix (Fin N) (Fin N) ℂ} (τ : �
   · intro c _
     rfl
 
+/- English proof (translation)
+Rewrite using `[A.sum_coord_of_iso hj τ hP hxy]`. Establish `hr : (Real.sqrt (2 * ‖A.emb τ A.ξ‖) : ℂ) * (Real.sqrt (2 * ‖A.emb τ A.ξ‖) : ℂ) = ((2 * ‖A.emb τ A.ξ‖ : ℝ) : ℂ)`. Rewrite using `[← Complex.ofReal_mul, Real.mul_self_sqrt (by positivity)]`. Establish `hs : ∑ c, conj (A.lieComp hj P τ x c) * A.lieComp hj P τ y c = ((2 * ‖A.emb τ A.ξ‖ : ℝ) : ℂ) * ∑ c : Fin (N - j), conj ((P⁻¹ *ᵥ fun b => A.emb τ (x b)) (tailIdx hj c)) * (P⁻¹ *ᵥ fun b => A.emb τ (y b)) (tailIdx hj c)`. Rewrite using `[Finset.mul_sum, ← hr]`.
+
+Use `Finset.sum_congr rfl fun c _ => ?_` and prove the remaining obligations. Simplify using `only [lieComp, map_mul, Complex.conj_ofReal]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hs, Complex.re_ofReal_mul]`. Simplify using `only [Complex.mul_re, Complex.re_ofNat, Complex.im_ofNat, zero_mul, sub_zero]`.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem hodge_term_of_iso (hj : j ≤ N) {P : Matrix (Fin N) (Fin N) ℂ} (τ : Ψ)
     (hP : Pᴴ * A.H.map (A.emb τ) * P = signMat N j) {x y : Fin N → Em}
     (hxy : hermForm Em A.H x y = 0) :
@@ -133,6 +171,11 @@ theorem hodge_term_of_iso (hj : j ≤ N) {P : Matrix (Fin N) (Fin N) ℂ} (τ : 
   simp only [Complex.mul_re, Complex.re_ofNat, Complex.im_ofNat, zero_mul, sub_zero]
   ring
 
+/- English proof (translation)
+Establish `h : (fun a => A.emb τ ((ω • v) a)) = A.emb τ (ω : Em) • fun a => A.emb τ (v a)`. Use extensionality with `a`. Simplify using `[Algebra.smul_def]`. Unfold `lieComp`. Rewrite using `[h, Matrix.mulVec_smul, Pi.smul_apply, smul_eq_mul]`.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem lieComp_smul (hj : j ≤ N) (P : Matrix (Fin N) (Fin N) ℂ) (τ : Ψ) (ω : 𝓞 Em)
     (v : Fin N → Em) (c : Fin (N - j)) :
     A.lieComp hj P τ (ω • v) c = A.emb τ (ω : Em) * A.lieComp hj P τ v c := by
@@ -143,6 +186,9 @@ theorem lieComp_smul (hj : j ≤ N) (P : Matrix (Fin N) (Fin N) ℂ) (τ : Ψ) (
   rw [h, Matrix.mulVec_smul, Pi.smul_apply, smul_eq_mul]
   ring
 
+/- English proof (translation)
+Use extensionality with `a b`. Simplify using `[gramLie, Matrix.mul_apply]`.
+-/
 theorem gramLie_eq_conjTranspose_mul (hj : j ≤ N) (P : Matrix (Fin N) (Fin N) ℂ) (τ : Ψ) {ρ : ℕ}
     (v : Fin ρ → Fin N → Em) :
     A.gramLie hj P τ v = (Matrix.of fun c a => A.lieComp hj P τ (v a) c)ᴴ *
@@ -150,11 +196,17 @@ theorem gramLie_eq_conjTranspose_mul (hj : j ≤ N) (P : Matrix (Fin N) (Fin N) 
   ext a b
   simp [gramLie, Matrix.mul_apply]
 
+/- English proof (translation)
+Rewrite using `[A.gramLie_eq_conjTranspose_mul hj P τ v]`. Conclude with `(Matrix.posSemidef_conjTranspose_mul_self _).det_nonneg`.
+-/
 theorem det_gramLie_nonneg (hj : j ≤ N) (P : Matrix (Fin N) (Fin N) ℂ) (τ : Ψ) {ρ : ℕ}
     (v : Fin ρ → Fin N → Em) : 0 ≤ (A.gramLie hj P τ v).det := by
   rw [A.gramLie_eq_conjTranspose_mul hj P τ v]
   exact (Matrix.posSemidef_conjTranspose_mul_self _).det_nonneg
 
+/- English proof (translation)
+Establish `h` using `Complex.nonneg_iff.1 (A.det_gramLie_nonneg hj P τ v)`. Conclude with `⟨Complex.ext (by simp) (by simp [← h.2]), h.1⟩`.
+-/
 theorem det_gramLie_eq_re (hj : j ≤ N) (P : Matrix (Fin N) (Fin N) ℂ) (τ : Ψ) {ρ : ℕ}
     (v : Fin ρ → Fin N → Em) :
     (A.gramLie hj P τ v).det = (((A.gramLie hj P τ v).det.re : ℝ) : ℂ) ∧
@@ -171,6 +223,9 @@ variable {II : IntersectionSystem} {Ψ : Type} [Fintype Ψ] {K : Type} [Fintype 
   [∀ τ, Module Ω (E τ)] {Em : Type} [Field Em] [NumberField Em] [IsCMField Em]
   (D : FullerData II Ψ K ι Ω E Em)
 
+/- English proof (translation)
+Unfold `hodgeInner`. Use `Finset.sum_congr rfl fun τ _ => ?_` and prove the remaining obligations. Conclude with `D.herm.hodge_term_of_iso _ τ (D.per_witt z hz τ) (hI x hx y hy)`.
+-/
 theorem hodgeInner_of_iso {z : (Σ k, ι k) → ℂ} (hz : z ∈ D.Xo) {I : Submodule (𝓞 Em) (Fin D.N → Em)}
     (hI : D.herm.IsIso I) {x y : Fin D.N → Em} (hx : x ∈ I) (hy : y ∈ I) :
     D.hodgeInner z x y = ∑ τ, 2 * (∑ c, conj (D.herm.lieComp (D.j_le.trans (Nat.sub_le _ _)) (D.per z τ) τ x c) *
@@ -179,6 +234,9 @@ theorem hodgeInner_of_iso {z : (Σ k, ι k) → ℂ} (hz : z ∈ D.Xo) {I : Subm
   refine Finset.sum_congr rfl fun τ _ => ?_
   exact D.herm.hodge_term_of_iso _ τ (D.per_witt z hz τ) (hI x hx y hy)
 
+/- English proof (translation)
+Establish `h : ∀ τ, (fun b => D.herm.emb τ (v b) + D.herm.emb τ (v' b)) = (fun b => D.herm.emb τ (v b)) + fun b => D.herm.emb τ (v' b)`. Introduce `τ`. Both sides reduce to the same expression. Simplify using `only [hodgeInner, Pi.add_apply, map_add, h, Matrix.mulVec_add, Pi.add_apply, map_add, add_mul, Finset.sum_add_distrib, Complex.add_re, mul_add]`.
+-/
 theorem hodgeInner_add_left (z : (Σ k, ι k) → ℂ) (v v' w : Fin D.N → Em) :
     D.hodgeInner z (v + v') w = D.hodgeInner z v w + D.hodgeInner z v' w := by
   have h : ∀ τ, (fun b => D.herm.emb τ (v b) + D.herm.emb τ (v' b)) =
@@ -187,6 +245,9 @@ theorem hodgeInner_add_left (z : (Σ k, ι k) → ℂ) (v v' w : Fin D.N → Em)
   simp only [hodgeInner, Pi.add_apply, map_add, h, Matrix.mulVec_add, Pi.add_apply, map_add, add_mul,
     Finset.sum_add_distrib, Complex.add_re, mul_add]
 
+/- English proof (translation)
+Establish `h : ∀ τ, (fun b => D.herm.emb τ (w b) + D.herm.emb τ (w' b)) = (fun b => D.herm.emb τ (w b)) + fun b => D.herm.emb τ (w' b)`. Introduce `τ`. Both sides reduce to the same expression. Simplify using `only [hodgeInner, Pi.add_apply, map_add, h, Matrix.mulVec_add, Pi.add_apply, mul_add, Finset.sum_add_distrib, Complex.add_re]`.
+-/
 theorem hodgeInner_add_right (z : (Σ k, ι k) → ℂ) (v w w' : Fin D.N → Em) :
     D.hodgeInner z v (w + w') = D.hodgeInner z v w + D.hodgeInner z v w' := by
   have h : ∀ τ, (fun b => D.herm.emb τ (w b) + D.herm.emb τ (w' b)) =
@@ -199,6 +260,9 @@ def hodgeAdd (z : (Σ k, ι k) → ℂ) : (Fin D.N → Em) →+ (Fin D.N → Em)
   AddMonoidHom.mk' (fun v => AddMonoidHom.mk' (D.hodgeInner z v) (D.hodgeInner_add_right z v))
     (fun v v' => AddMonoidHom.ext fun w => D.hodgeInner_add_left z v v' w)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem hodgeAdd_apply (z : (Σ k, ι k) → ℂ) (v w : Fin D.N → Em) :
     D.hodgeAdd z v w = D.hodgeInner z v w := rfl
 

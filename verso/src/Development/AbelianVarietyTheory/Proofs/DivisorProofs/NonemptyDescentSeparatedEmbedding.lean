@@ -17,6 +17,9 @@ open GlobalTheory.Desc
 
 namespace GlobalTheory.Desc.EmbeddingLemmas
 
+/- English proof (translation)
+Establish `h : spMap (Desc.cst p) = Spec.map ((Scheme.ΓSpecIso (CommRingCat.of R)).inv ≫ p.appTop ≫ X.presheaf.germ ⊤ (genericPoint X) trivial)` using `rfl`. Rewrite using `[h, Spec.map_comp, Spec.map_comp, ← Scheme.fromSpecStalk_toSpecΓ, Category.assoc, Category.assoc, ← Scheme.toSpecΓ_naturality_assoc, toSpecΓ_SpecMap_ΓSpecIso_inv, Category.comp_id]`. Both sides reduce to the same expression.
+-/
 theorem spMap_cst {X : Scheme.{0}} [IsIntegral X] {R : Type} [CommRing R] (p : X ⟶ Sp R) :
     spMap (Desc.cst p) = gp X ≫ p := by
   have h : spMap (Desc.cst p) = Spec.map ((Scheme.ΓSpecIso (CommRingCat.of R)).inv ≫ p.appTop ≫
@@ -25,16 +28,25 @@ theorem spMap_cst {X : Scheme.{0}} [IsIntegral X] {R : Type} [CommRing R] (p : X
     ← Scheme.toSpecΓ_naturality_assoc, toSpecΓ_SpecMap_ΓSpecIso_inv, Category.comp_id]
   rfl
 
+/- English proof (translation)
+Rewrite using `[← Spec.map_comp]`. Both sides reduce to the same expression.
+-/
 theorem spMap_comp' {R R' R'' : Type} [CommRing R] [CommRing R'] [CommRing R''] (a : R →+* R') (b : R' →+* R'') :
     spMap (b.comp a) = spMap b ≫ spMap a := by
   rw [← Spec.map_comp]; rfl
 
+/- English proof (translation)
+Establish `e : spMap (Desc.cst (q ≫ spMap ρ)) = spMap ((Desc.cst q).comp ρ)`. Rewrite using `[spMap_comp', spMap_cst, spMap_cst, Category.assoc]`. Conclude with `congrArg CommRingCat.Hom.hom (Spec.map_injective e)`.
+-/
 theorem cst_comp {X : Scheme.{0}} [IsIntegral X] {R R' : Type} [CommRing R] [CommRing R'] (q : X ⟶ Sp R') (ρ : R →+* R') :
     Desc.cst (q ≫ spMap ρ) = (Desc.cst q).comp ρ := by
   have e : spMap (Desc.cst (q ≫ spMap ρ)) = spMap ((Desc.cst q).comp ρ) := by
     rw [spMap_comp', spMap_cst, spMap_cst, Category.assoc]
   exact congrArg CommRingCat.Hom.hom (Spec.map_injective e)
 
+/- English proof (translation)
+Establish `h1 : Flat (gp X)` using `GlobalTheory.LocalRingGeneralisation.flat_fromSpecStalk X _`. Establish `h2 : Flat (spMap (Desc.cst p))` using `by rw [spMap_cst]; infer_instance`. Establish `h3 : (Desc.cst p).Flat` using `(HasRingHomProperty.Spec_iff (P := @Flat)).1 h2`. Use `algebraize [Desc.cst p]`. Conclude with `FaithfulSMul.algebraMap_injective R X.functionField`.
+-/
 theorem cst_inj {X : Scheme.{0}} [IsIntegral X] {R : Type} [CommRing R] [IsDomain R] (p : X ⟶ Sp R) [Flat p] :
     Function.Injective (Desc.cst p) := by
   have h1 : Flat (gp X) := GlobalTheory.LocalRingGeneralisation.flat_fromSpecStalk X _
@@ -43,10 +55,16 @@ theorem cst_inj {X : Scheme.{0}} [IsIntegral X] {R : Type} [CommRing R] [IsDomai
   algebraize [Desc.cst p]
   exact FaithfulSMul.algebraMap_injective R X.functionField
 
+/- English proof (translation)
+Use `haveI := σ.ab.smooth`. Conclude with `cst_inj _`.
+-/
 theorem baseIndexConstant_injective (σ : Setup) : Function.Injective σ.c₀ := by
   haveI := σ.ab.smooth
   exact cst_inj _
 
+/- English proof (translation)
+Take `⟨l, hl, hl'⟩` from `σ.hθ x`. Establish `e : spMap ((σ.θ x).comp σ.c₀) = spMap ((Desc.cst (σ.C x).G.hom).comp (σ.ρ x))`. Rewrite using `[spMap_comp', spMap_comp', Setup.c₀, spMap_cst, spMap_cst, ← Category.assoc, ← hl', ← hl, Category.assoc, (σ.cart x).w]`. Simplify using `only [Category.assoc]`. Conclude with `congrArg CommRingCat.Hom.hom (Spec.map_injective e)`.
+-/
 theorem abelianSchemeDescent_chart_baseConstants_comp (σ : Setup) (x : Sp σ.R) : (σ.θ x).comp σ.c₀ = (Desc.cst (σ.C x).G.hom).comp (σ.ρ x) := by
   obtain ⟨l, hl, hl'⟩ := σ.hθ x
   have e : spMap ((σ.θ x).comp σ.c₀) = spMap ((Desc.cst (σ.C x).G.hom).comp (σ.ρ x)) := by
@@ -55,6 +73,13 @@ theorem abelianSchemeDescent_chart_baseConstants_comp (σ : Setup) (x : Sp σ.R)
     simp only [Category.assoc]
   exact congrArg CommRingCat.Hom.hom (Spec.map_injective e)
 
+/- English proof (translation)
+Use `haveI := σ.ab.proper`. Establish `hfl : (algebraMap σ.R (Localization.Away σ.f)).Flat`. Rewrite using `[RingHom.flat_algebraMap_iff]`. Use `infer_instance`. Use `(GlobalTheory.T.cartierSections_flat_baseChange_linearlyDisjoint σ.R _ _ hfl σ.A.left σ.A.left σ.A.left (σ.A.hom ≫ awayMap σ.f) σ.A.hom (𝟙 _) (𝟙 _) (RingHom.id _) inferInstance inferInstance ?_ ⟨gp _, by simp, ?_⟩ σ.D σ.D ?_).1` and prove the remaining obligations.
+
+Rewrite using `[Category.id_comp]`. Conclude with `IsPullback.of_horiz_isIso_mono ⟨by simp⟩`. Establish `: spMap (RingHom.id σ.A.left.functionField) = 𝟙 _` using `Spec.map_id _`. Rewrite using `[this]`. Simplify using the standard rewrite rules.
+
+Introduce `v g h`. Conclude with `h`.
+-/
 theorem linDisj_A (σ : Setup) : LinDisj σ.c₀ (Desc.cst σ.A.hom) (RingHom.id _) := by
   haveI := σ.ab.proper
   have hfl : (algebraMap σ.R (Localization.Away σ.f)).Flat := by
@@ -68,27 +93,49 @@ theorem linDisj_A (σ : Setup) : LinDisj σ.c₀ (Desc.cst σ.A.hom) (RingHom.id
   · intro v g h
     exact h
 
+/- English proof (translation)
+Use `haveI := σ.ab.proper`. Conclude with `(GlobalTheory.T.cartierSections_flat_baseChange_linearlyDisjoint σ.R _ _ (σ.flat x) σ.A.left (σ.C x).G.left (σ.V x).toScheme (σ.A.hom ≫ awayMap σ.f) (σ.C x).G.hom (σ.V x).ι (σ.φ x) (σ.θ x) inferInstance inferInstance (σ.cart x) (σ.hθ x) σ.D (σ.D₁ x) (σ.pull x)).1`.
+-/
 theorem linDisj_C (σ : Setup) (x : Sp σ.R) : LinDisj σ.c₀ (Desc.cst (σ.C x).G.hom) (σ.θ x) := by
   haveI := σ.ab.proper
   exact (GlobalTheory.T.cartierSections_flat_baseChange_linearlyDisjoint σ.R _ _ (σ.flat x) σ.A.left (σ.C x).G.left (σ.V x).toScheme (σ.A.hom ≫ awayMap σ.f) (σ.C x).G.hom
     (σ.V x).ι (σ.φ x) (σ.θ x) inferInstance inferInstance (σ.cart x) (σ.hθ x) σ.D (σ.D₁ x) (σ.pull x)).1
 
+/- English proof (translation)
+Use `haveI := σ.ab.proper`. Conclude with `QuasiCompact.compactSpace_of_compactSpace σ.A.hom`.
+-/
 theorem compact_A (σ : Setup) : CompactSpace σ.A.left := by
   haveI := σ.ab.proper
   exact QuasiCompact.compactSpace_of_compactSpace σ.A.hom
 
+/- English proof (translation)
+Use `haveI := σ.ab.proper`. Conclude with `quasiSeparatedSpace_of_quasiSeparated σ.A.hom`.
+-/
 theorem qsep_A (σ : Setup) : QuasiSeparatedSpace σ.A.left := by
   haveI := σ.ab.proper
   exact quasiSeparatedSpace_of_quasiSeparated σ.A.hom
 
+/- English proof (translation)
+Use `haveI := (σ.C x).semi.quasiCompact`. Conclude with `QuasiCompact.compactSpace_of_compactSpace (σ.C x).G.hom`.
+-/
 theorem compact_C (σ : Setup) (x : Sp σ.R) : CompactSpace (σ.C x).G.left := by
   haveI := (σ.C x).semi.quasiCompact
   exact QuasiCompact.compactSpace_of_compactSpace (σ.C x).G.hom
 
+/- English proof (translation)
+Use `haveI := (σ.C x).semi.separated`. Conclude with `quasiSeparatedSpace_of_quasiSeparated (σ.C x).G.hom`.
+-/
 theorem qsep_C (σ : Setup) (x : Sp σ.R) : QuasiSeparatedSpace (σ.C x).G.left := by
   haveI := (σ.C x).semi.separated
   exact quasiSeparatedSpace_of_quasiSeparated (σ.C x).G.hom
 
+/- English proof (translation)
+Take `⟨w, ho⟩` from `h`. Use `haveI := σ.ab.proper`. Use `set g := pullback.lift i σ.A.hom w with hg`. Establish `hsnd : g ≫ pullback.snd p (awayMap σ.f) = σ.A.hom` using `pullback.lift_snd _ _ _`. Use `haveI : IsProper (g ≫ pullback.snd p (awayMap σ.f)) := by rw [hsnd]; infer_instance`.
+
+Use `haveI : IsProper g := IsProper.of_comp g (pullback.snd p (awayMap σ.f))`. Use `haveI : Nonempty (pullback p (awayMap σ.f) : Scheme.{0}) := ⟨g (genericPoint σ.A.left)⟩`. Use `haveI : IsIntegral (pullback p (awayMap σ.f)) := isIntegral_of_isOpenImmersion (pullback.fst p (awayMap σ.f))`. Establish `hclo : IsClopen (Set.range g)` using `⟨g.isClosedMap.isClosed_range, g.isOpenEmbedding.isOpen_range⟩`. Establish `hs : Surjective g` using `⟨Set.range_eq_univ.1 (hclo.eq_univ (Set.range_nonempty _))⟩`.
+
+Use `haveI : IsIso g := (isIso_iff_isOpenImmersion_and_surjective g).2 ⟨ho, hs⟩`. Conclude with `IsPullback.of_iso_pullback ⟨w⟩ (asIso g) (pullback.lift_fst _ _ _) (pullback.lift_snd _ _ _)`.
+-/
 theorem cartA_of_openIn (σ : Setup) (P : Scheme.{0}) [IsIntegral P] (p : P ⟶ Sp σ.R) (hp : IsSeparated p)
     (i : σ.A.left ⟶ P) (h : OpenIn i σ.A.hom p (awayMap σ.f)) : IsPullback i σ.A.hom p (awayMap σ.f) := by
   obtain ⟨w, ho⟩ := h
@@ -104,6 +151,15 @@ theorem cartA_of_openIn (σ : Setup) (P : Scheme.{0}) [IsIntegral P] (p : P ⟶ 
   haveI : IsIso g := (isIso_iff_isOpenImmersion_and_surjective g).2 ⟨ho, hs⟩
   exact IsPullback.of_iso_pullback ⟨w⟩ (asIso g) (pullback.lift_fst _ _ _) (pullback.lift_snd _ _ _)
 
+/- English proof (translation)
+Take `⟨l, hl, hl'⟩` from `σ.hθ x`. Take `⟨a, ha, ha'⟩` from `hfA`. Take `⟨b, hb, hb'⟩` from `hf`. Rewrite `ha`, `hb` using `[Category.comp_id]`. Substitute `ha hb` using the available equality.
+
+Use `haveI : IsDominant (l ≫ (σ.V x).ι) := by`. Rewrite using `[hl]`. Use `⟨?_⟩` and prove the remaining obligations. Establish `hm : genericPoint (σ.C x).G.left ∈ Set.range (gp (σ.C x).G.left)` using `⟨closedPoint _, Scheme.fromSpecStalk_closedPoint⟩`. Establish `hd : Dense {genericPoint (σ.C x).G.left}`.
+
+Rewrite using `[dense_iff_closure_eq]`. Conclude with `(genericPoint_spec _).def.trans rfl`. Conclude with `hd.mono (Set.singleton_subset_iff.2 hm)`. Use `haveI : IsDominant l := IsDominant.of_comp_of_isOpenImmersion l (σ.V x).ι`. Use `ext_of_isDominant_of_isSeparated p ?_ l ?_` and prove the remaining obligations.
+
+Rewrite using `[Category.assoc, Category.assoc, hi, he, (σ.cart x).w, Category.assoc]`. Rewrite using `[← Category.assoc, hl', ← Category.assoc, hl, hb', Category.assoc, ha', spMap_comp', Category.assoc]`.
+-/
 theorem onV_of (σ : Setup) (x : Sp σ.R) (P : Scheme.{0}) [IsIntegral P] (p : P ⟶ Sp σ.R) (hp : IsSeparated p)
     (ψ : P.functionField →+* σ.A.left.functionField) (i : σ.A.left ⟶ P) (hi : i ≫ p = σ.A.hom ≫ awayMap σ.f)
     (hfA : PFF (𝟙 _) i ψ) (e : (σ.C x).G.left ⟶ P) (he : e ≫ p = (σ.C x).G.hom ≫ spMap (σ.ρ x))
@@ -132,6 +188,23 @@ namespace GlobalTheory.Desc
 
 open GlobalTheory.Desc.EmbeddingLemmas in
 
+/- English proof (translation)
+Introduce `σ _`. Take `⟨hG, k₀, hk₀, b₀, hb₀, hb₀0⟩` from `GlobalTheory.T.abelianSchemeDescent_gradedFamily_nonzero σ`. Take `⟨P, hPi, p, ψ, Dp, hM⟩` from `GlobalTheory.T.exists_integral_separated_projModel_gradedFunctions σ.R _ σ.c₀ σ.N hG ⟨k₀, hk₀, b₀, hb₀, hb₀0⟩`. Establish `hinj` using `baseIndexConstant_injective σ`. Use `haveI : IsDomain (Localization.Away σ.f) := IsLocalization.isDomain_localization (powers_le_nonZeroDivisors_of_noZeroDivisors σ.hf)`.
+
+Establish `hcA : (RingHom.id _).comp σ.c₀ = (cst σ.A.hom).comp (algebraMap σ.R (Localization.Away σ.f))`. Rewrite using `[RingHom.id_comp]`. Conclude with `cst_comp σ.A.hom _`. Establish `hspA : ∀ k, Sec σ.D k = spanBy (cst σ.A.hom) ((RingHom.id _) '' σ.N k)`. Introduce `k`.
+
+Rewrite using `[RingHom.coe_id, Set.image_id]`. Conclude with `GlobalTheory.T.cartierMultipleGlobalSections_eq_span_regularLattice σ k`. Establish `hsecA : ∀ k, ∀ a ∈ σ.N k, (RingHom.id _) a ∈ Sec σ.D k` using `fun k a ha => ha.1`. Establish `hcovA` using `GlobalTheory.T.exists_cartierSectionLocus_of_ample_span _ _ σ.A.left σ.A.hom (RingHom.id _) σ.N σ.D σ.amp hspA`. Take `⟨m, hm, hmf, hml⟩` from `GlobalTheory.T.exists_map_integral_scheme_to_graded_proj_model σ.R _ σ.c₀ σ.N hG P p ψ Dp hM (Localization.Away σ.f) (algebraMap σ.R (Localization.Away σ.f)) σ.A.left σ.A.hom (RingHom.id _) σ.D hcA hsecA hcovA`.
+
+Use `haveI := compact_A σ`. Use `haveI := qsep_A σ`. Establish `hflA : (algebraMap σ.R (Localization.Away σ.f)).Flat`. Rewrite using `[RingHom.flat_algebraMap_iff]`. Use `infer_instance`.
+
+Establish `hoA` using `GlobalTheory.T.isOpenImmersion_to_graded_model_flat_base_change σ.R _ σ.c₀ σ.N hG P p ψ Dp hM (Localization.Away σ.f) (algebraMap σ.R (Localization.Away σ.f)) hflA hinj σ.A.left σ.A.hom (RingHom.id _) σ.D hcA (linDisj_A σ) σ.amp hspA m hm hmf hml`. Establish `hcart` using `cartA_of_openIn σ P p hM.sep m hoA`. Establish `hC : ∀ x, ∃ e : (σ.C x).G.left ⟶ P, e ≫ p = (σ.C x).G.hom ≫ spMap (σ.ρ x) ∧ PFF (𝟙 _) e ((σ.θ x).comp ψ) ∧ OpenIn e (σ.C x).G.hom p (spMap (σ.ρ x))`. Introduce `x`. Establish `hsp` using `GlobalTheory.T.cartierMultipleGlobalSections_chart_eq_span σ x`.
+
+Establish `hsec : ∀ k, ∀ a ∈ σ.N k, σ.θ x a ∈ Sec (σ.D₁ x) k` using `fun k a ha => by`. Rewrite using `[hsp k]`. Conclude with `subset_spanBy _ _ (Set.mem_image_of_mem _ ha)`. Establish `hcov` using `GlobalTheory.T.exists_cartierSectionLocus_of_ample_span _ _ (σ.C x).G.left (σ.C x).G.hom (σ.θ x) σ.N (σ.D₁ x) (σ.amp₁ x) hsp`. Take `⟨e, he, hef, hel⟩` from `GlobalTheory.T.exists_map_integral_scheme_to_graded_proj_model σ.R _ σ.c₀ σ.N hG P p ψ Dp hM (σ.C x).R (σ.ρ x) (σ.C x).G.left (σ.C x).G.hom (σ.θ x) (σ.D₁ x) (abelianSchemeDescent_chart_baseConstants_comp σ x) hsec hcov`.
+
+Use `haveI := compact_C σ x`. Use `haveI := qsep_C σ x`. Conclude with `⟨e, he, hef, GlobalTheory.T.isOpenImmersion_to_graded_model_flat_base_change σ.R _ σ.c₀ σ.N hG P p ψ Dp hM (σ.C x).R (σ.ρ x) (σ.flat x) hinj (σ.C x).G.left (σ.C x).G.hom (σ.θ x) (σ.D₁ x) (abelianSchemeDescent_chart_baseConstants_comp σ x) (linDisj_C σ x) (σ.amp₁ x) hsp e he hef h …`. Use `choose e he hef heo using hC`. Establish `hm' : m ≫ p = σ.A.hom ≫ awayMap σ.f` using `hm`.
+
+Establish `hmf' : PFF (𝟙 _) m ψ` using `by simpa using hmf`. Conclude with `⟨{ P := P p := p sep := hM.sep ψ := ψ ιA := m cartA := hcart ffA := hmf' emb := e openIn := heo ff := hef onV := fun x => onV_of σ x P p hM.sep ψ m hm' hmf' (e x) (he x) (hef x) }⟩`.
+-/
 theorem nonempty_emb : ∀ σ : Setup, σ.Common → Nonempty (Emb σ) := by
   intro σ _
   obtain ⟨hG, k₀, hk₀, b₀, hb₀, hb₀0⟩ := GlobalTheory.T.abelianSchemeDescent_gradedFamily_nonzero σ

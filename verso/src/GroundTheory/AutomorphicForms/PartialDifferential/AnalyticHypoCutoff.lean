@@ -12,6 +12,9 @@ section Finite
 
 variable {ι : Type*} [Fintype ι]
 
+/- English proof (translation)
+Rewrite using `[EuclideanSpace.norm_eq]`. Use `congr 1`. Use `Finset.sum_congr rfl fun i _ ↦ ?_` and prove the remaining obligations. Simplify using `[Real.norm_eq_abs, sq_abs]`.
+-/
 theorem sqrt_sum_sq_eq_norm (x : ι → ℝ) :
     Real.sqrt (∑ i, x i ^ 2) = ‖(WithLp.toLp 2 x : EuclideanSpace ℝ ι)‖ := by
   rw [EuclideanSpace.norm_eq]
@@ -19,6 +22,11 @@ theorem sqrt_sum_sq_eq_norm (x : ι → ℝ) :
   refine Finset.sum_congr rfl fun i _ ↦ ?_
   simp [Real.norm_eq_abs, sq_abs]
 
+/- English proof (translation)
+Rewrite using `[sqrt_sum_sq_eq_norm, sqrt_sum_sq_eq_norm, sqrt_sum_sq_eq_norm]`. Establish `: (WithLp.toLp 2 (fun i ↦ x i + y i) : EuclideanSpace ℝ ι) = WithLp.toLp 2 x + WithLp.toLp 2 y`. Use extensionality with `i`. Simplify using the standard rewrite rules. Rewrite using `[this]`.
+
+Conclude with `norm_add_le _ _`.
+-/
 theorem sqrt_sum_sq_add_le (x y : ι → ℝ) :
     Real.sqrt (∑ i, (x i + y i) ^ 2) ≤ Real.sqrt (∑ i, x i ^ 2) + Real.sqrt (∑ i, y i ^ 2) := by
   rw [sqrt_sum_sq_eq_norm, sqrt_sum_sq_eq_norm, sqrt_sum_sq_eq_norm]
@@ -28,6 +36,11 @@ theorem sqrt_sum_sq_add_le (x y : ι → ℝ) :
   rw [this]
   exact norm_add_le _ _
 
+/- English proof (translation)
+Repeatedly rewrite using `[sqrt_sum_sq_eq_norm]`. Establish `: (WithLp.toLp 2 (fun i ↦ ∑ t ∈ T, y t i) : EuclideanSpace ℝ ι) = ∑ t ∈ T, WithLp.toLp 2 (y t)`. Use extensionality with `i`. Simplify using the standard rewrite rules. Rewrite using `[this]`.
+
+Conclude with `norm_sum_le _ _`.
+-/
 theorem sqrt_sum_sq_sum_le {τ : Type*} (T : Finset τ) (y : τ → ι → ℝ) :
     Real.sqrt (∑ i, (∑ t ∈ T, y t i) ^ 2) ≤ ∑ t ∈ T, Real.sqrt (∑ i, y t i ^ 2) := by
   simp_rw [sqrt_sum_sq_eq_norm]
@@ -37,22 +50,34 @@ theorem sqrt_sum_sq_sum_le {τ : Type*} (T : Finset τ) (y : τ → ι → ℝ) 
   rw [this]
   exact norm_sum_le _ _
 
+/- English proof (translation)
+Use `Real.sqrt_le_sqrt (Finset.sum_le_sum fun i _ ↦ ?_)` and prove the remaining obligations. Rewrite using `[← sq_abs (x i)]`. Conclude with `pow_le_pow_left₀ (abs_nonneg _) (h i) 2`.
+-/
 theorem sqrt_sum_sq_mono_abs {x y : ι → ℝ} (h : ∀ i, |x i| ≤ y i) :
     Real.sqrt (∑ i, x i ^ 2) ≤ Real.sqrt (∑ i, y i ^ 2) := by
   refine Real.sqrt_le_sqrt (Finset.sum_le_sum fun i _ ↦ ?_)
   rw [← sq_abs (x i)]
   exact pow_le_pow_left₀ (abs_nonneg _) (h i) 2
 
+/- English proof (translation)
+The claim follows from `sqrt_sum_sq_mono_abs fun i ↦ by rw [abs_of_nonneg (h i).1]; exact (h i).2`.
+-/
 theorem sqrt_sum_sq_mono {x y : ι → ℝ} (h : ∀ i, 0 ≤ x i ∧ x i ≤ y i) :
     Real.sqrt (∑ i, x i ^ 2) ≤ Real.sqrt (∑ i, y i ^ 2) :=
   sqrt_sum_sq_mono_abs fun i ↦ by rw [abs_of_nonneg (h i).1]; exact (h i).2
 
+/- English proof (translation)
+Establish `: ∑ i, (c * x i) ^ 2 = c ^ 2 * ∑ i, x i ^ 2`. Rewrite using `[Finset.mul_sum]; exact Finset.sum_congr rfl fun i _ ↦ by ring`. Rewrite using `[this, Real.sqrt_mul (sq_nonneg c), Real.sqrt_sq_eq_abs]`.
+-/
 theorem sqrt_sum_sq_const_mul (c : ℝ) (x : ι → ℝ) :
     Real.sqrt (∑ i, (c * x i) ^ 2) = |c| * Real.sqrt (∑ i, x i ^ 2) := by
   have : ∑ i, (c * x i) ^ 2 = c ^ 2 * ∑ i, x i ^ 2 := by
     rw [Finset.mul_sum]; exact Finset.sum_congr rfl fun i _ ↦ by ring
   rw [this, Real.sqrt_mul (sq_nonneg c), Real.sqrt_sq_eq_abs]
 
+/- English proof (translation)
+Combine the equalities or inequalities in the displayed calculation. Use `Finset.sum_congr rfl fun t ht ↦ ?_` and prove the remaining obligations. Rewrite using `[sqrt_sum_sq_const_mul, abs_of_nonneg (hc t ht)]`.
+-/
 theorem sqrt_sum_sq_le_sum {ι τ : Type*} [Fintype ι] (T : Finset τ) (x : ι → ℝ) (c : τ → ℝ)
     (y : τ → ι → ℝ) (hc : ∀ t ∈ T, 0 ≤ c t) (hx : ∀ i, |x i| ≤ ∑ t ∈ T, c t * y t i) :
     Real.sqrt (∑ i, x i ^ 2) ≤ ∑ t ∈ T, c t * Real.sqrt (∑ i, y t i ^ 2) := by
@@ -69,21 +94,35 @@ section L2
 
 variable {n : ℕ}
 
+/- English proof (translation)
+The claim follows from `hf.memLp_of_hasCompactSupport hc`.
+-/
 theorem memLp_two_of_continuous_hasCompactSupport {f : EuclideanSpace ℝ (Fin n) → ℝ}
     (hf : Continuous f) (hc : HasCompactSupport f) : MemLp f 2 volume :=
   hf.memLp_of_hasCompactSupport hc
 
+/- English proof (translation)
+Use `ENNReal.toReal_mono hg.eLpNorm_ne_top (eLpNorm_mono_real fun x ↦ ?_)` and prove the remaining obligations. Rewrite using `[Real.norm_eq_abs]`. Conclude with `h x`.
+-/
 theorem l2Norm_le_of_abs_le {f g : EuclideanSpace ℝ (Fin n) → ℝ} (hg : MemLp g 2 volume)
     (_hf : AEStronglyMeasurable f volume) (h : ∀ x, |f x| ≤ g x) : l2n f ≤ l2n g := by
   refine ENNReal.toReal_mono hg.eLpNorm_ne_top (eLpNorm_mono_real fun x ↦ ?_)
   rw [Real.norm_eq_abs]; exact h x
 
+/- English proof (translation)
+Establish `h` using `eLpNorm_add_le hf.1 hg.1 (p := 2) (μ := volume) one_le_two`. Rewrite using `[l2n, l2n, l2n, ← ENNReal.toReal_add hf.eLpNorm_ne_top hg.eLpNorm_ne_top]`. Conclude with `ENNReal.toReal_mono (ENNReal.add_ne_top.2 ⟨hf.eLpNorm_ne_top, hg.eLpNorm_ne_top⟩) h`.
+-/
 theorem l2Norm_add_le_alt {f g : EuclideanSpace ℝ (Fin n) → ℝ} (hf : MemLp f 2 volume)
     (hg : MemLp g 2 volume) : l2n (fun x ↦ f x + g x) ≤ l2n f + l2n g := by
   have h := eLpNorm_add_le hf.1 hg.1 (p := 2) (μ := volume) one_le_two
   rw [l2n, l2n, l2n, ← ENNReal.toReal_add hf.eLpNorm_ne_top hg.eLpNorm_ne_top]
   exact ENNReal.toReal_mono (ENNReal.add_ne_top.2 ⟨hf.eLpNorm_ne_top, hg.eLpNorm_ne_top⟩) h
 
+/- English proof (translation)
+Establish `h` using `eLpNorm_sum_le (μ := volume) (p := 2) (s := s) (f := F) (fun i hi ↦ (hF i hi).1) one_le_two`. Establish `e : (fun x ↦ ∑ i ∈ s, F i x) = ∑ i ∈ s, F i`. Use function extensionality and compare the values at `x`. Simplify using `[Finset.sum_apply]`. Simplify using `only [l2n]`.
+
+Rewrite using `[e, ← ENNReal.toReal_sum fun i hi ↦ (hF i hi).eLpNorm_ne_top]`. Conclude with `ENNReal.toReal_mono (ENNReal.sum_ne_top.2 fun i hi ↦ (hF i hi).eLpNorm_ne_top) h`.
+-/
 theorem l2Norm_finset_sum_le {ι : Type*} (s : Finset ι) (F : ι → EuclideanSpace ℝ (Fin n) → ℝ)
     (hF : ∀ i ∈ s, MemLp (F i) 2 volume) : l2n (fun x ↦ ∑ i ∈ s, F i x) ≤ ∑ i ∈ s, l2n (F i) := by
   have h := eLpNorm_sum_le (μ := volume) (p := 2) (s := s) (f := F) (fun i hi ↦ (hF i hi).1)
@@ -94,6 +133,9 @@ theorem l2Norm_finset_sum_le {ι : Type*} (s : Finset ι) (F : ι → EuclideanS
   rw [e, ← ENNReal.toReal_sum fun i hi ↦ (hF i hi).eLpNorm_ne_top]
   exact ENNReal.toReal_mono (ENNReal.sum_ne_top.2 fun i hi ↦ (hF i hi).eLpNorm_ne_top) h
 
+/- English proof (translation)
+Establish `h` using `eLpNorm_const_smul (μ := volume) (p := 2) c f`. Establish `e : (fun x ↦ c * f x) = c • f` using `by funext x; simp`. Rewrite using `[l2n, e, h, l2n, ENNReal.toReal_mul]`. Simplify using `[Real.norm_eq_abs]`.
+-/
 theorem l2Norm_const_mul (c : ℝ) (f : EuclideanSpace ℝ (Fin n) → ℝ) :
     l2n (fun x ↦ c * f x) = |c| * l2n f := by
   have h := eLpNorm_const_smul (μ := volume) (p := 2) c f
@@ -101,6 +143,11 @@ theorem l2Norm_const_mul (c : ℝ) (f : EuclideanSpace ℝ (Fin n) → ℝ) :
   rw [l2n, e, h, l2n, ENNReal.toReal_mul]
   simp [Real.norm_eq_abs]
 
+/- English proof (translation)
+Rewrite using `[l2n, hf.eLpNorm_eq_integral_rpow_norm two_ne_zero ENNReal.ofNat_ne_top, ENNReal.toReal_ofReal (by positivity), Real.sqrt_eq_rpow]`. Establish `e : ∫ x, ‖f x‖ ^ (ENNReal.toReal 2) = ∫ x, f x ^ 2`. Use `integral_congr_ae (ae_of_all _ fun x ↦ ?_)` and prove the remaining obligations. Simplify using `[Real.norm_eq_abs, sq_abs]`. Rewrite using `[e]`.
+
+Evaluate the numerical expressions.
+-/
 theorem l2Norm_eq_sqrt_integral_sq {f : EuclideanSpace ℝ (Fin n) → ℝ} (hf : MemLp f 2 volume) :
     l2n f = Real.sqrt (∫ x, f x ^ 2) := by
   rw [l2n, hf.eLpNorm_eq_integral_rpow_norm two_ne_zero ENNReal.ofNat_ne_top,
@@ -111,6 +158,13 @@ theorem l2Norm_eq_sqrt_integral_sq {f : EuclideanSpace ℝ (Fin n) → ℝ} (hf 
   rw [e]
   norm_num
 
+/- English proof (translation)
+Establish `hint : Integrable (fun x ↦ ∑ i, F i x ^ 2) volume` using `integrable_finsetSum _ fun i _ ↦ (hF i).integrable_sq`. Establish `hmeas : AEStronglyMeasurable (fun x ↦ Real.sqrt (∑ i, F i x ^ 2)) volume`. Establish `: AEStronglyMeasurable (fun x ↦ ∑ i, F i x ^ 2) volume` using `hint.1`. Conclude with `Real.continuous_sqrt.comp_aestronglyMeasurable this`. Establish `hsq : ∀ x, Real.sqrt (∑ i, F i x ^ 2) ^ 2 = ∑ i, F i x ^ 2` using `fun x ↦ Real.sq_sqrt (Finset.sum_nonneg fun i _ ↦ sq_nonneg _)`.
+
+Establish `hmem : MemLp (fun x ↦ Real.sqrt (∑ i, F i x ^ 2)) 2 volume`. Rewrite using `[memLp_two_iff_integrable_sq hmeas]`. Repeatedly rewrite using `[hsq]`. Conclude with `hint`. Rewrite using `[l2Norm_eq_sqrt_integral_sq hmem]`.
+
+Repeatedly rewrite using `[hsq]`. Rewrite using `[integral_finsetSum _ fun i _ ↦ (hF i).integrable_sq]`. Use `congr 1`. Use `Finset.sum_congr rfl fun i _ ↦ ?_` and prove the remaining obligations. Rewrite using `[l2Norm_eq_sqrt_integral_sq (hF i), Real.sq_sqrt (integral_nonneg fun x ↦ sq_nonneg _)]`.
+-/
 theorem l2Norm_sqrt_sum_sq_eq {ι : Type*} [Fintype ι] (F : ι → EuclideanSpace ℝ (Fin n) → ℝ)
     (hF : ∀ i, MemLp (F i) 2 volume) :
     l2n (fun x ↦ Real.sqrt (∑ i, F i x ^ 2)) = Real.sqrt (∑ i, l2n (F i) ^ 2) := by
@@ -138,6 +192,9 @@ section Cutoff
 
 variable {n : ℕ}
 
+/- English proof (translation)
+Set `bmp : ContDiffBump x₀` to `⟨R / 2, 3 * R / 4, by positivity, by linarith⟩`. Use `⟨bmp, bmp.contDiff, bmp.hasCompactSupport, fun x ↦ ⟨bmp.nonneg, bmp.le_one⟩, ?_, fun x hx ↦ ?_⟩` and prove the remaining obligations. Rewrite using `[bmp.tsupport_eq]`. Conclude with `Metric.closedBall_subset_ball (show 3 * R / 4 < R by linarith)`. Conclude with `bmp.one_of_mem_closedBall (Metric.ball_subset_closedBall hx)`.
+-/
 theorem exists_cutoff (x₀ : EuclideanSpace ℝ (Fin n)) {R : ℝ} (hR : 0 < R) :
     ∃ χ : EuclideanSpace ℝ (Fin n) → ℝ, ContDiff ℝ ∞ χ ∧ HasCompactSupport χ ∧
       (∀ x, 0 ≤ χ x ∧ χ x ≤ 1) ∧ tsupport χ ⊆ Metric.ball x₀ R ∧
@@ -148,6 +205,21 @@ theorem exists_cutoff (x₀ : EuclideanSpace ℝ (Fin n)) {R : ℝ} (hR : 0 < R)
     exact Metric.closedBall_subset_ball (show 3 * R / 4 < R by linarith)
   · exact bmp.one_of_mem_closedBall (Metric.ball_subset_closedBall hx)
 
+/- English proof (translation)
+Establish `hb : ∀ j : ℕ, ∃ C : ℝ, ∀ x, ‖iteratedFDeriv ℝ j χ x‖ ≤ C` using `fun j ↦ (hχ.continuous_iteratedFDeriv (by exact_mod_cast le_top)).bounded_above_of_compact_support (hχc.iteratedFDeriv j)`. Use `choose C hC using hb`. Use `set D : ℝ := 1 + ∑ j ∈ Finset.range (L + 1), |C j| with hD`. Establish `hD1 : 1 ≤ D`. Rewrite using `[hD]`.
+
+Combine the linear relations using `[Finset.sum_nonneg fun j (_ : j ∈ Finset.range (L + 1)) ↦ abs_nonneg (C j)]`. Establish `hDj : ∀ j ≤ L, ∀ x, ‖iteratedFDeriv ℝ j χ x‖ ≤ D`. Introduce `j hj x`. Combine the equalities or inequalities in the displayed calculation. Use `⟨(L ! : ℝ) * D ^ L, by positivity, fun s i x hiL his ↦ ?_⟩` and prove the remaining obligations.
+
+Establish `hfun : (fun y ↦ ((χ y : ℂ)) ^ s) = Complex.ofRealLI ∘ ((fun t : ℝ ↦ t ^ s) ∘ χ)`. Use function extensionality and compare the values at `y`. Simplify using the standard rewrite rules. Establish `hcomp : ContDiff ℝ ∞ ((fun t : ℝ ↦ t ^ s) ∘ χ)` using `(contDiff_id.pow s).comp hχ`. Rewrite using `[hfun, LinearIsometry.norm_iteratedFDeriv_comp_left _ hcomp.contDiffAt (by exact_mod_cast le_top)]`.
+
+Take `⟨h0, h1⟩` from `h01 x`. Establish `key` using `norm_iteratedFDeriv_comp_le (g := fun t : ℝ ↦ t ^ s) (f := χ) (n := i) (contDiff_id.pow s) hχ (by exact_mod_cast le_top) x (C := (s : ℝ) ^ i * χ x ^ (s - i)) (D := D) (fun j hj ↦ ?_) (fun j hj1 hj ↦ ?_)`. Combine the equalities or inequalities in the displayed calculation. Establish `h1' : (i ! : ℝ) ≤ L !` using `by exact_mod_cast Nat.factorial_le hiL`. Establish `h2' : D ^ i ≤ D ^ L` using `pow_le_pow_right₀ hD1 hiL`.
+
+Use `gcongr`. Use `_ = (L ! : ℝ) * D ^ L * (s : ℝ) ^ i * χ x ^ (s - i) := by ring`. Rewrite using `[norm_iteratedFDeriv_eq_norm_iteratedDeriv, iteratedDeriv_pow, norm_mul, norm_pow, Real.norm_of_nonneg h0, Real.norm_of_nonneg (Nat.cast_nonneg _)]`. Establish `hjs : j ≤ s` using `hj.trans his`. Establish `hsj : (s : ℝ) ^ j ≤ (s : ℝ) ^ i`.
+
+Break down `Nat.eq_zero_or_pos s with hs | hs` into its components or cases. Establish `hi0 : i = 0` using `by omega`. Establish `hj0 : j = 0` using `by omega`. Rewrite using `[hi0, hj0]`. Conclude with `pow_le_pow_right₀ (Nat.one_le_cast.mpr hs) hj`.
+
+Combine the equalities or inequalities in the displayed calculation. Conclude with `(hDj j (hj.trans hiL) x).trans (le_self_pow₀ hD1 (by omega))`.
+-/
 theorem exists_norm_iteratedFDeriv_pow_le {χ : EuclideanSpace ℝ (Fin n) → ℝ}
     (hχ : ContDiff ℝ ∞ χ) (hχc : HasCompactSupport χ) (h01 : ∀ x, 0 ≤ χ x ∧ χ x ≤ 1) (L : ℕ) :
     ∃ K : ℝ, 0 ≤ K ∧ ∀ (s i : ℕ) (x : EuclideanSpace ℝ (Fin n)), i ≤ L → i ≤ s →

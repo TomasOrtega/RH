@@ -17,6 +17,9 @@ def mulMap (S K : Subgroup G) (p : S × K) : G := (p.1 : G) * (p.2 : G)
 
 variable {S K : Subgroup G}
 
+/- English proof (translation)
+The claim follows from `(continuous_subtype_val.comp continuous_fst).mul (continuous_subtype_val.comp continuous_snd)`.
+-/
 theorem continuous_mulMap : Continuous (mulMap S K) :=
   (continuous_subtype_val.comp continuous_fst).mul (continuous_subtype_val.comp continuous_snd)
 
@@ -25,6 +28,11 @@ section Topology
 variable [T2Space G] (hS : IsClosed (S : Set G)) (hK : IsCompact (K : Set G))
 include hS hK
 
+/- English proof (translation)
+Establish `hA : IsCompact ((fun q : G × G => q.1 * q.2⁻¹) '' (C ×ˢ (K : Set G)))` using `(hC.prod hK).image (continuous_fst.mul continuous_snd.inv)`. Establish `hA'` using `hS.isClosedEmbedding_subtypeVal.isCompact_preimage hA`. Establish `: CompactSpace K` using `isCompact_iff_compactSpace.mp hK`. Use `(hA'.prod isCompact_univ).of_isClosed_subset (hC.isClosed.preimage continuous_mulMap) ?_` and prove the remaining obligations. Introduce and unpack `⟨s, k⟩ h`.
+
+Use `⟨⟨((s : G) * k, (k : G)), ⟨h, k.2⟩, ?_⟩, mem_univ _⟩` and prove the remaining obligations. Simplify using the standard rewrite rules.
+-/
 theorem isCompact_preimage_mulMap {C : Set G} (hC : IsCompact C) :
     IsCompact (mulMap S K ⁻¹' C) := by
   have hA : IsCompact ((fun q : G × G => q.1 * q.2⁻¹) '' (C ×ˢ (K : Set G))) :=
@@ -39,10 +47,16 @@ theorem isCompact_preimage_mulMap {C : Set G} (hC : IsCompact C) :
 
 variable [LocallyCompactSpace G]
 
+/- English proof (translation)
+The claim follows from `isProperMap_iff_isCompact_preimage.2 ⟨continuous_mulMap, fun _ hC => isCompact_preimage_mulMap hS hK hC⟩`.
+-/
 theorem isProperMap_mulMap : IsProperMap (mulMap S K) :=
   isProperMap_iff_isCompact_preimage.2
     ⟨continuous_mulMap, fun _ hC => isCompact_preimage_mulMap hS hK hC⟩
 
+/- English proof (translation)
+The claim follows from `(isProperMap_mulMap hS hK).isClosedMap.isQuotientMap continuous_mulMap hSK`.
+-/
 theorem isQuotientMap_mulMap (hSK : Surjective (mulMap S K)) : IsQuotientMap (mulMap S K) :=
   (isProperMap_mulMap hS hK).isClosedMap.isQuotientMap continuous_mulMap hSK
 
@@ -50,8 +64,16 @@ end Topology
 
 abbrev inter (S K : Subgroup G) : Subgroup S := K.subgroupOf S
 
+/- English proof (translation)
+The claim follows from `Subgroup.mem_subgroupOf`.
+-/
 theorem mem_inter_iff {m : S} : m ∈ inter S K ↔ (m : G) ∈ K := Subgroup.mem_subgroupOf
 
+/- English proof (translation)
+Use `⟨s⁻¹ * s', ?_, by group⟩` and prove the remaining obligations. Rewrite using `[mem_inter_iff]`. Establish `: ((s⁻¹ * s' : S) : G) = (k : G) * (k' : G)⁻¹`. Simplify using `only [Subgroup.coe_mul, Subgroup.coe_inv]`. Rewrite using `[inv_mul_eq_iff_eq_mul, ← mul_assoc, h]`.
+
+Use `group`. Rewrite using `[this]`. Conclude with `K.mul_mem k.2 (K.inv_mem k'.2)`.
+-/
 theorem exists_mem_inter_of_mul_eq {s s' : S} {k k' : K} (h : (s : G) * k = (s' : G) * k') :
     ∃ m ∈ inter S K, s' = s * m := by
   refine ⟨s⁻¹ * s', ?_, by group⟩
@@ -68,6 +90,9 @@ def lift (u : S → ℝ) (g : G) : ℝ := u (hSK.hasRightInverse.choose g).1
 
 variable {hSK}
 
+/- English proof (translation)
+Use `set q := hSK.hasRightInverse.choose (mulMap S K p)`. Establish `hq : mulMap S K q = mulMap S K p` using `hSK.hasRightInverse.choose_spec _`. Take `⟨m, hm, he⟩` from `exists_mem_inter_of_mul_eq (s := p.1) (s' := q.1) (k := p.2) (k' := q.2) hq.symm`. Express the relevant statement in the definitionally equal form `u q.1 = u p.1`. Rewrite using `[he, hu _ _ hm]`.
+-/
 theorem lift_mulMap {u : S → ℝ} (hu : ∀ s, ∀ m ∈ inter S K, u (s * m) = u s) (p : S × K) :
     lift hSK u (mulMap S K p) = u p.1 := by
   set q := hSK.hasRightInverse.choose (mulMap S K p)
@@ -77,12 +102,21 @@ theorem lift_mulMap {u : S → ℝ} (hu : ∀ s, ∀ m ∈ inter S K, u (s * m) 
   change u q.1 = u p.1
   rw [he, hu _ _ hm]
 
+/- English proof (translation)
+The claim follows from `lift_mulMap hu (s, k)`.
+-/
 theorem lift_mul {u : S → ℝ} (hu : ∀ s, ∀ m ∈ inter S K, u (s * m) = u s) (s : S) (k : K) :
     lift hSK u ((s : G) * k) = u s :=
   lift_mulMap hu (s, k)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem lift_add (u w : S → ℝ) : lift hSK (u + w) = lift hSK u + lift hSK w := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem lift_smul (c : ℝ) (u : S → ℝ) : lift hSK (c • u) = c • lift hSK u := rfl
 
 section Measure
@@ -94,16 +128,25 @@ def flat (mL : Measure (inter S K)) (v : S → ℝ) (s : S) : ℝ := ∫ m, v (s
 
 variable {mL : Measure (inter S K)}
 
+/- English proof (translation)
+Unfold `flat`. Use `integral_mul_left_eq_self (μ := mL) (fun m' : inter S K => v (s * m')) m` as an intermediate fact. Simplify `this` using `only [Subgroup.coe_mul, mul_assoc]`.
+-/
 theorem flat_mul_inter [mL.IsMulLeftInvariant] (v : S → ℝ) (s : S) (m : inter S K) :
     flat mL v (s * m) = flat mL v s := by
   unfold flat
   have := integral_mul_left_eq_self (μ := mL) (fun m' : inter S K => v (s * m')) m
   simpa only [Subgroup.coe_mul, mul_assoc] using this
 
+/- English proof (translation)
+Introduce `s m hm` and use `flat_mul_inter v s ⟨m, hm⟩`.
+-/
 theorem flat_right_inv [mL.IsMulLeftInvariant] (v : S → ℝ) :
     ∀ s, ∀ m ∈ inter S K, flat mL v (s * m) = flat mL v s :=
   fun s m hm => flat_mul_inter v s ⟨m, hm⟩
 
+/- English proof (translation)
+Use function extensionality and compare the values at `s`. Simplify using `only [flat]`. Rewrite using `[integral_congr_ae (Filter.Eventually.of_forall fun m : inter S K => hu s m m.2)]`. Simplify using the standard rewrite rules.
+-/
 theorem flat_eq_self [IsProbabilityMeasure mL] {u : S → ℝ}
     (hu : ∀ s, ∀ m ∈ inter S K, u (s * m) = u s) : flat mL u = u := by
   funext s
@@ -113,11 +156,17 @@ theorem flat_eq_self [IsProbabilityMeasure mL] {u : S → ℝ}
 
 variable [LocallyCompactSpace S] [CompactSpace (inter S K)]
 
+/- English proof (translation)
+The claim follows from `(hv.comp (continuous_const.mul continuous_subtype_val)).integrable_of_hasCompactSupport (isCompact_univ.of_isClosed_subset (isClosed_tsupport _) (subset_univ _))`.
+-/
 theorem integrable_mul_inter [IsFiniteMeasure mL] {v : S → ℝ} (hv : Continuous v) (s : S) :
     Integrable (fun m : inter S K => v (s * m)) mL :=
   (hv.comp (continuous_const.mul continuous_subtype_val)).integrable_of_hasCompactSupport
     (isCompact_univ.of_isClosed_subset (isClosed_tsupport _) (subset_univ _))
 
+/- English proof (translation)
+Establish `: SecondCountableTopology S` using `TopologicalSpace.Subtype.secondCountableTopology _`. Use `show Continuous fun s : S => ∫ m, v (s * m) ∂mL`. Use `continuous_parametric_integral_of_continuous (μ := mL) (f := fun (s : S) (m : inter S K) => v (s * m)) (hv.comp (continuous_fst.mul (continuous_subtype_val.comp continuous_snd))) isCompact_univ` as an intermediate fact. Simplify `this` using `[flat]`.
+-/
 theorem continuous_flat [IsFiniteMeasure mL] {v : S → ℝ} (hv : Continuous v) :
     Continuous (flat mL v) := by
   have : SecondCountableTopology S := TopologicalSpace.Subtype.secondCountableTopology _
@@ -127,6 +176,11 @@ theorem continuous_flat [IsFiniteMeasure mL] {v : S → ℝ} (hv : Continuous v)
     (hv.comp (continuous_fst.mul (continuous_subtype_val.comp continuous_snd))) isCompact_univ
   simpa [flat] using this
 
+/- English proof (translation)
+Use `HasCompactSupport.intro ((IsCompact.prod hv (isCompact_univ (X := inter S K))).image (f := fun p : S × inter S K => p.1 * (p.2 : S)⁻¹) (by fun_prop)) ?_` and prove the remaining obligations. Introduce `s hs`. Establish `h0 : ∀ m : inter S K, v (s * m) = 0` using `fun m => by`. Assume the negation of the conclusion as `h`. Conclude with `hs ⟨(s * m, m), ⟨subset_tsupport _ h, mem_univ _⟩, by simp⟩`.
+
+Simplify using `[flat, h0]`.
+-/
 theorem hasCompactSupport_flat {v : S → ℝ} (hv : HasCompactSupport v) :
     HasCompactSupport (flat mL v) := by
   refine HasCompactSupport.intro
@@ -138,12 +192,18 @@ theorem hasCompactSupport_flat {v : S → ℝ} (hv : HasCompactSupport v) :
     exact hs ⟨(s * m, m), ⟨subset_tsupport _ h, mem_univ _⟩, by simp⟩
   simp [flat, h0]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `s`. Simplify using `only [flat, CompactlySupportedContinuousMap.coe_add, Pi.add_apply]`. Conclude with `integral_add (integrable_mul_inter v.continuous s) (integrable_mul_inter w.continuous s)`.
+-/
 theorem flat_add [IsFiniteMeasure mL] (v w : CompactlySupportedContinuousMap S ℝ) :
     flat mL (⇑(v + w)) = flat mL v + flat mL w := by
   funext s
   simp only [flat, CompactlySupportedContinuousMap.coe_add, Pi.add_apply]
   exact integral_add (integrable_mul_inter v.continuous s) (integrable_mul_inter w.continuous s)
 
+/- English proof (translation)
+Use function extensionality and compare the values at `s`. Express the relevant statement in the definitionally equal form `∫ m, (c • v) (s * m) ∂mL = c • ∫ m, v (s * m) ∂mL`. Rewrite using `[smul_eq_mul, ← integral_const_mul]`. Both sides reduce to the same expression.
+-/
 theorem flat_smul (c : ℝ) (v : CompactlySupportedContinuousMap S ℝ) :
     flat mL (⇑(c • v)) = c • flat mL v := by
   funext s
@@ -154,6 +214,9 @@ theorem flat_smul (c : ℝ) (v : CompactlySupportedContinuousMap S ℝ) :
 variable (hS : IsClosed (S : Set G)) (hK : IsCompact (K : Set G)) (hSK : Surjective (mulMap S K))
 include hS hK
 
+/- English proof (translation)
+Rewrite using `[(isQuotientMap_mulMap hS hK hSK).continuous_iff]`. Establish `: lift hSK u ∘ mulMap S K = u ∘ Prod.fst` using `funext fun p => lift_mulMap hu p`. Rewrite using `[this]`. Conclude with `huc.comp continuous_fst`.
+-/
 theorem continuous_lift {u : S → ℝ} (hu : ∀ s, ∀ m ∈ inter S K, u (s * m) = u s)
     (huc : Continuous u) : Continuous (lift hSK u) := by
   rw [(isQuotientMap_mulMap hS hK hSK).continuous_iff]
@@ -161,6 +224,11 @@ theorem continuous_lift {u : S → ℝ} (hu : ∀ s, ∀ m ∈ inter S K, u (s *
   rw [this]
   exact huc.comp continuous_fst
 
+/- English proof (translation)
+Establish `: CompactSpace K` using `isCompact_iff_compactSpace.mp hK`. Use `HasCompactSupport.intro ((IsCompact.prod hcs (isCompact_univ (X := K))).image continuous_mulMap) ?_` and prove the remaining obligations. Introduce `g hg`. Take `⟨p, rfl⟩` from `hSK g`. Rewrite using `[lift_mulMap hu]`.
+
+Assume the negation of the conclusion as `h`. Conclude with `hg ⟨p, ⟨subset_tsupport _ h, mem_univ _⟩, rfl⟩`.
+-/
 theorem hasCompactSupport_lift {u : S → ℝ} (hu : ∀ s, ∀ m ∈ inter S K, u (s * m) = u s)
     (hcs : HasCompactSupport u) : HasCompactSupport (lift hSK u) := by
   have : CompactSpace K := isCompact_iff_compactSpace.mp hK
@@ -175,6 +243,9 @@ theorem hasCompactSupport_lift {u : S → ℝ} (hu : ∀ s, ∀ m ∈ inter S K,
 variable (mL) (μ : Measure G) [IsFiniteMeasureOnCompacts μ] [IsFiniteMeasure mL]
   [mL.IsMulLeftInvariant]
 
+/- English proof (translation)
+The claim follows from `(continuous_lift hS hK hSK (flat_right_inv _) (continuous_flat v.continuous)).integrable_of_hasCompactSupport (hasCompactSupport_lift hS hK hSK (flat_right_inv _) (hasCompactSupport_flat v.hasCompactSupport))`.
+-/
 theorem integrable_lift_flat (v : CompactlySupportedContinuousMap S ℝ) :
     Integrable (lift hSK (flat mL v)) μ :=
   (continuous_lift hS hK hSK (flat_right_inv _) (continuous_flat v.continuous)).integrable_of_hasCompactSupport
@@ -193,6 +264,9 @@ def funcL : CompactlySupportedContinuousMap S ℝ →ₚ[ℝ] ℝ :=
         exact integral_const_mul c _ }
     (fun v hv => integral_nonneg fun g => integral_nonneg fun m => hv _)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem funcL_apply (v : CompactlySupportedContinuousMap S ℝ) :
     funcL (mL := mL) (hS := hS) (hK := hK) (hSK := hSK) (μ := μ) v = ∫ g, lift hSK (flat mL v) g ∂μ := rfl
 
@@ -209,6 +283,9 @@ def translate (s₀ : S) (v : CompactlySupportedContinuousMap S ℝ) :
   continuous_toFun := v.continuous.comp (continuous_const.mul continuous_id)
   hasCompactSupport' := v.hasCompactSupport.comp_homeomorph (Homeomorph.mulLeft s₀)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem translate_apply (s₀ : S) (v : CompactlySupportedContinuousMap S ℝ) (s : S) :
     translate s₀ v s = v (s₀ * s) := rfl
 
@@ -217,6 +294,11 @@ variable {mL : Measure (inter S K)} [LocallyCompactSpace S] [CompactSpace (inter
   {hS : IsClosed (S : Set G)} {hK : IsCompact (K : Set G)} {hSK : Surjective (mulMap S K)}
   {μ : Measure G} [IsFiniteMeasureOnCompacts μ] [μ.IsMulLeftInvariant]
 
+/- English proof (translation)
+Take `⟨p, rfl⟩` from `hSK g`. Rewrite using `[lift_mulMap (flat_right_inv _) p]`. Establish `: (s₀ : G) * mulMap S K p = mulMap S K (s₀ * p.1, p.2)`. Simplify using `[mulMap, mul_assoc]`. Rewrite using `[this, lift_mulMap (flat_right_inv _)]`.
+
+Simplify using `only [flat, translate_apply, mul_assoc]`.
+-/
 theorem lift_flat_translate (s₀ : S) (v : CompactlySupportedContinuousMap S ℝ) (g : G) :
     lift hSK (flat mL (translate s₀ v)) g = lift hSK (flat mL v) ((s₀ : G) * g) := by
   obtain ⟨p, rfl⟩ := hSK g
@@ -226,6 +308,9 @@ theorem lift_flat_translate (s₀ : S) (v : CompactlySupportedContinuousMap S �
   rw [this, lift_mulMap (flat_right_inv _)]
   simp only [flat, translate_apply, mul_assoc]
 
+/- English proof (translation)
+Rewrite using `[funcL_apply, funcL_apply]`. Repeatedly rewrite using `[lift_flat_translate]`. Conclude with `integral_mul_left_eq_self (fun g => lift hSK (flat mL v) g) (s₀ : G)`.
+-/
 theorem funcL_translate (s₀ : S) (v : CompactlySupportedContinuousMap S ℝ) :
     funcL (mL := mL) (hS := hS) (hK := hK) (hSK := hSK) (μ := μ) (translate s₀ v) =
       funcL (mL := mL) (hS := hS) (hK := hK) (hSK := hSK) (μ := μ) v := by
@@ -237,10 +322,18 @@ variable (mL hS hK hSK μ)
 
 abbrev rmk : Measure S := RealRMK.rieszMeasure (funcL (mL := mL) (hS := hS) (hK := hK) (hSK := hSK) (μ := μ))
 
+/- English proof (translation)
+The claim follows from `RealRMK.integral_rieszMeasure _ v`.
+-/
 theorem integral_rmk (v : CompactlySupportedContinuousMap S ℝ) :
     ∫ s, v s ∂rmk mL hS hK hSK μ = funcL (mL := mL) (hS := hS) (hK := hK) (hSK := hSK) (μ := μ) v :=
   RealRMK.integral_rieszMeasure _ v
 
+/- English proof (translation)
+Establish `: SecondCountableTopology S` using `TopologicalSpace.Subtype.secondCountableTopology _`. Prove the components needed by the constructor for the conclusion. Introduce `s₀`. Establish `: IsFiniteMeasureOnCompacts (map (s₀ * ·) (rmk mL hS hK hSK μ))` using `IsFiniteMeasureOnCompacts.map _ (Homeomorph.mulLeft s₀)`. Apply `Measure.ext_of_integral_eq_on_compactlySupported` to reduce the goal to its premises.
+
+Introduce `v`. Rewrite using `[integral_map (measurable_const_mul s₀).aemeasurable (map_continuous v).aestronglyMeasurable]`. Establish `h` using `integral_rmk mL hS hK hSK μ (translate s₀ v)`. Rewrite `h` using `[funcL_translate, ← integral_rmk]`. Conclude with `h`.
+-/
 theorem isMulLeftInvariant_rmk : (rmk mL hS hK hSK μ).IsMulLeftInvariant := by
   have : SecondCountableTopology S := TopologicalSpace.Subtype.secondCountableTopology _
   constructor
@@ -256,6 +349,37 @@ theorem isMulLeftInvariant_rmk : (rmk mL hS hK hSK μ).IsMulLeftInvariant := by
 
 end Main
 
+/- English proof (translation)
+Establish `: LocallyCompactSpace S` using `hS.isClosedEmbedding_subtypeVal.locallyCompactSpace`. Establish `: SecondCountableTopology S` using `TopologicalSpace.Subtype.secondCountableTopology _`. Establish `: CompactSpace K` using `isCompact_iff_compactSpace.mp hK`. Establish `hLc : IsCompact ((inter S K : Subgroup S) : Set S)`. Rewrite using `[Subgroup.coe_subgroupOf]`.
+
+Conclude with `hS.isClosedEmbedding_subtypeVal.isCompact_preimage hK`. Establish `: CompactSpace (inter S K)` using `isCompact_iff_compactSpace.mp hLc`. Use `set mL : Measure (inter S K) := haarMeasure ⊤ with hmL`. Establish `: IsProbabilityMeasure mL` using `⟨by simpa using haarMeasure_self (K₀ := (⊤ : PositiveCompacts (inter S K)))⟩`. Establish `: (rmk mL hS hK hSK μ).IsMulLeftInvariant` using `isMulLeftInvariant_rmk mL hS hK hSK μ`.
+
+Use `set c₀ := haarScalarFactor (rmk mL hS hK hSK μ) μS`. Establish `hc₀ : rmk mL hS hK hSK μ = c₀ • μS` using `isMulLeftInvariant_eq_smul _ _`. Establish `: IsFiniteMeasure μK` using `inferInstance`. Establish `hKpos : 0 < (μK univ).toReal` using `ENNReal.toReal_pos (IsOpenPosMeasure.open_pos univ isOpen_univ univ_nonempty) (measure_ne_top _ _)`. Establish `hfin : IsFiniteMeasureOnCompacts (map (mulMap S K) (μS.prod μK))` using `⟨fun C hC => by`.
+
+Rewrite using `[map_apply continuous_mulMap.measurable hC.measurableSet]`. Conclude with `(isCompact_preimage_mulMap hS hK hC).measure_lt_top⟩`. Establish `key : ∀ φ : CompactlySupportedContinuousMap G ℝ, (μK univ).toReal * ∫ g, φ g ∂μ = (c₀ : ℝ) * ∫ p, φ (mulMap S K p) ∂(μS.prod μK)`. Introduce `φ`. Use `set φK : G → ℝ := fun g => ∫ k, φ (g * k) ∂μK with hφK`.
+
+Establish `hφKc : Continuous φK`. Use `continuous_parametric_integral_of_continuous (μ := μK) (f := fun (g : G) (k : K) => φ (g * k)) (φ.continuous.comp (continuous_fst.mul (continuous_subtype_val.comp continuous_snd))) isCompact_univ` as an intermediate fact. Simplify using `using this`. Establish `hφKinv : ∀ g (k : K), φK (g * k) = φK g`. Introduce `g k`.
+
+Simplify using `only [hφK]`. Use `integral_mul_left_eq_self (μ := μK) (fun k' : K => φ (g * k')) k` as an intermediate fact. Simplify `this` using `only [Subgroup.coe_mul, mul_assoc]`. Establish `hφKcs : HasCompactSupport φK`. Use `HasCompactSupport.intro ((IsCompact.prod φ.hasCompactSupport hK).image (f := fun q : G × G => q.1 * q.2⁻¹) (by fun_prop)) ?_` and prove the remaining obligations.
+
+Introduce `g hg`. Establish `h0 : ∀ k : K, φ (g * k) = 0` using `fun k => by`. Assume the negation of the conclusion as `h`. Conclude with `hg ⟨(g * k, k), ⟨subset_tsupport _ h, k.2⟩, by simp⟩`. Simplify using `[hφK, h0]`.
+
+Establish `hint : ∫ g, φK g ∂μ = (μK univ).toReal * ∫ g, φ g ∂μ`. Establish `hF : Integrable (fun q : G × K => φ (q.1 * q.2)) (μ.prod μK)`. Use `(φ.continuous.comp (continuous_fst.mul (continuous_subtype_val.comp continuous_snd))).integrable_of_hasCompactSupport ?_` and prove the remaining obligations. Use `HasCompactSupport.intro (((IsCompact.prod φ.hasCompactSupport hK).image (f := fun q : G × G => q.1 * q.2⁻¹) (by fun_prop)).prod (isCompact_univ (X := K))) ?_` and prove the remaining obligations. Introduce and unpack `⟨g, k⟩ hq`.
+
+Assume the negation of the conclusion as `h`. Conclude with `hq ⟨⟨(g * k, k), ⟨subset_tsupport _ h, k.2⟩, by simp⟩, mem_univ _⟩`. Rewrite using `[hφK, integral_integral_swap hF]`. Repeatedly rewrite using `[integral_mul_right_eq_self (μ := μ) (fun g => φ g)]`. Rewrite using `[integral_const, smul_eq_mul, measureReal_def]`.
+
+Establish `hu : ∀ s, ∀ m ∈ inter S K, (fun s : S => φK s) (s * m) = (fun s : S => φK s) s`. Introduce `s m hm`. Simplify using `using hφKinv (s : G) ⟨(m : G), (mem_inter_iff).1 hm⟩`. Use `set uCc : CompactlySupportedContinuousMap S ℝ := { toFun := fun s => φK s continuous_toFun := hφKc.comp continuous_subtype_val hasCompactSupport' := hφKcs.comp_isClosedEmbedding hS.isClosedEmbedding_subtypeVal }`. Establish `hflat : flat mL uCc = fun s : S => φK (s : G)` using `flat_eq_self (u := fun s : S => φK (s : G)) hu`.
+
+Establish `hlift : lift hSK (flat mL uCc) = φK`. Rewrite using `[hflat]`. Use function extensionality and compare the values at `g`. Take `⟨p, rfl⟩` from `hSK g`. Rewrite using `[lift_mulMap hu]`.
+
+Conclude with `(hφKinv _ _).symm`. Establish `h1` using `integral_rmk mL hS hK hSK μ uCc`. Rewrite `h1` using `[funcL_apply, hlift, hint, hc₀, integral_smul_nnreal_measure]`. Rewrite using `[← h1]`. Establish `hFS : Integrable (fun p : S × K => φ (mulMap S K p)) (μS.prod μK)` using `(φ.continuous.comp continuous_mulMap).integrable_of_hasCompactSupport (isCompact_preimage_mulMap hS hK φ.hasCompactSupport |>.of_isClosed_subset (isClosed_tsupport _) (by`.
+
+Introduce `p hp`. Conclude with `(tsupport_comp_subset_preimage φ continuous_mulMap) hp))`. Rewrite using `[integral_prod _ hFS]`. Both sides reduce to the same expression. Use `set c : ℝ≥0 := ⟨c₀ / (μK univ).toReal, div_nonneg c₀.2 hKpos.le⟩ with hc`.
+
+Use `⟨c, ?_⟩` and prove the remaining obligations. Establish `hreg : (map (mulMap S K) (μS.prod μK)).Regular` using `inferInstance`. Establish `: (c • map (mulMap S K) (μS.prod μK)).Regular`. Rewrite using `[ENNReal.smul_def]`. Conclude with `Measure.Regular.smul ENNReal.coe_ne_top`.
+
+Apply `Measure.ext_of_integral_eq_on_compactlySupported` to reduce the goal to its premises. Introduce `φ`. Rewrite using `[integral_smul_nnreal_measure, integral_map continuous_mulMap.aemeasurable (map_continuous φ).aestronglyMeasurable, NNReal.smul_def, smul_eq_mul]`. Use `show _ = ((c₀ : ℝ) / (μK univ).toReal) * _`. Rewrite using `[div_mul_eq_mul_div, ← key, mul_div_cancel_left₀ _ hKpos.ne']`.
+-/
 theorem exists_eq_smul_map_mulMap [MeasurableSpace G] [BorelSpace G] [T2Space G]
     [LocallyCompactSpace G] [SecondCountableTopology G]
     (μ : Measure G) [μ.IsHaarMeasure] [μ.IsMulRightInvariant]
@@ -357,6 +481,13 @@ theorem exists_eq_smul_map_mulMap [MeasurableSpace G] [BorelSpace G] [T2Space G]
   show _ = ((c₀ : ℝ) / (μK univ).toReal) * _
   rw [div_mul_eq_mul_div, ← key, mul_div_cancel_left₀ _ hKpos.ne']
 
+/- English proof (translation)
+Take `⟨c, hc⟩` from `exists_eq_smul_map_mulMap μ hS hK hSK μS μK`. Establish `: CompactSpace K` using `isCompact_iff_compactSpace.mp hK`. Establish `: SecondCountableTopology S` using `TopologicalSpace.Subtype.secondCountableTopology _`. Establish `: SecondCountableTopology K` using `TopologicalSpace.Subtype.secondCountableTopology _`. Establish `hform : ∀ f : G → ℝ≥0∞, Measurable f → ∫⁻ g, f g ∂μ = c * ∫⁻ s, ∫⁻ k, f ((s : G) * k) ∂μK ∂μS`.
+
+Introduce `f hf`. Rewrite using `[hc, lintegral_smul_measure, lintegral_map hf continuous_mulMap.measurable, lintegral_prod (fun p : S × K => f (mulMap S K p)) (hf.comp continuous_mulMap.measurable).aemeasurable, ENNReal.smul_def, smul_eq_mul]`. Both sides reduce to the same expression. Use `⟨c, fun h0 => ?_, hform⟩` and prove the remaining obligations. Establish `h1` using `hform 1 measurable_const`.
+
+Rewrite `h1` using `[h0, ENNReal.coe_zero, zero_mul]`. Simplify using `only [Pi.one_apply, lintegral_const, one_mul] at h1`. Conclude with `(IsOpenPosMeasure.open_pos univ isOpen_univ univ_nonempty) h1`.
+-/
 theorem exists_lintegral_eq [MeasurableSpace G] [BorelSpace G] [T2Space G]
     [LocallyCompactSpace G] [SecondCountableTopology G]
     (μ : Measure G) [μ.IsHaarMeasure] [μ.IsMulRightInvariant]

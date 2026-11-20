@@ -7,6 +7,17 @@ open Formalism.IndefR.DatumF MeasureTheory GlobalTheory.FinWeil GlobalTheory.Fin
 open PositivityTheory.ThKW PositivityTheory.ThKW.AutEtaA
 open UpperTheory.TP.W
 
+/- English proof (translation)
+Set `f : R →+ R` to `AddMonoidHom.mulLeft a`. Establish `hle : (Ideal.span {a * b}).toAddSubgroup ≤ (Ideal.span {a}).toAddSubgroup`. Introduce `x hx`. Take `⟨y, rfl⟩` from `Ideal.mem_span_singleton'.1 hx`. Conclude with `Ideal.mem_span_singleton'.2 ⟨y * b, by ring⟩`.
+
+Establish `hcomap : (Ideal.span {a * b}).toAddSubgroup.comap f = (Ideal.span {b}).toAddSubgroup`. Use extensionality with `x`. Express the relevant statement in the definitionally equal form `a * x ∈ Ideal.span {a * b} ↔ x ∈ Ideal.span {b}`. Rewrite using `[Ideal.mem_span_singleton, Ideal.mem_span_singleton]`. Conclude with `mul_dvd_mul_iff_left ha`.
+
+Establish `hmap : (⊤ : AddSubgroup R).map f = (Ideal.span {a}).toAddSubgroup`. Use extensionality with `x`. Express the relevant statement in the definitionally equal form `x ∈ (⊤ : AddSubgroup R).map f ↔ x ∈ Ideal.span {a}`. Rewrite using `[Ideal.mem_span_singleton, AddSubgroup.mem_map]`. Prove the components needed by the constructor for the conclusion.
+
+Introduce and unpack `⟨y, -, rfl⟩`. Conclude with `⟨y, rfl⟩`. Introduce and unpack `⟨y, rfl⟩`. Conclude with `⟨y, trivial, rfl⟩`. Establish `hrel : (Ideal.span {a * b}).toAddSubgroup.relIndex (Ideal.span {a}).toAddSubgroup = (Ideal.span {b}).toAddSubgroup.index`.
+
+Rewrite using `[← hmap, ← AddSubgroup.relIndex_comap, hcomap, AddSubgroup.relIndex_top_right]`. Establish `hmul` using `AddSubgroup.relIndex_mul_index hle`. Rewrite `hmul` using `[hrel]`. Express the relevant statement in the definitionally equal form `(Ideal.span {a * b}).toAddSubgroup.index = (Ideal.span {a}).toAddSubgroup.index * (Ideal.span {b}).toAddSubgroup.index`. Rewrite using `[← hmul, Nat.mul_comm]`.
+-/
 private theorem card_quot_span_mul {R : Type} [CommRing R] [IsDomain R] {a b : R} (ha : a ≠ 0) :
     Nat.card (R ⧸ Ideal.span {a * b}) =
       Nat.card (R ⧸ Ideal.span {a}) * Nat.card (R ⧸ Ideal.span {b}) := by
@@ -38,6 +49,11 @@ private theorem card_quot_span_mul {R : Type} [CommRing R] [IsDomain R] {a b : R
     (Ideal.span {a}).toAddSubgroup.index * (Ideal.span {b}).toAddSubgroup.index
   rw [← hmul, Nat.mul_comm]
 
+/- English proof (translation)
+Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty`. Establish `h : Ideal.span {(1 : R)} = ⊤` using `Ideal.span_singleton_one`. Simplify using `only [Finset.prod_empty]`. Rewrite using `[h]`.
+
+Conclude with `Nat.card_unique`. Consider the case `insert i s hi ih`. Rewrite using `[Finset.prod_insert hi, Finset.prod_insert hi, card_quot_span_mul (hc i (Finset.mem_insert_self i s)), ih fun j hj => hc j (Finset.mem_insert_of_mem hj)]`.
+-/
 private theorem card_quot_span_prod {R ι : Type} [CommRing R] [IsDomain R] (s : Finset ι) (c : ι → R)
     (hc : ∀ i ∈ s, c i ≠ 0) :
     Nat.card (R ⧸ Ideal.span {∏ i ∈ s, c i}) = ∏ i ∈ s, Nat.card (R ⧸ Ideal.span {c i}) := by
@@ -52,6 +68,25 @@ private theorem card_quot_span_prod {R ι : Type} [CommRing R] [IsDomain R] (s :
       card_quot_span_mul (hc i (Finset.mem_insert_self i s)),
       ih fun j hj => hc j (Finset.mem_insert_of_mem hj)]
 
+/- English proof (translation)
+Introduce `R M _ _ _ _ _ _ _ f hinj`. Use `set N := LinearMap.range f with hN`. Set `e : M ≃ₗ[R] N` to `LinearEquiv.ofInjective f hinj`. Set `b` to `Module.Free.chooseBasis R M`. Establish `h : Module.finrank R N = Module.finrank R M` using `e.symm.finrank_eq`.
+
+Set `c` to `Submodule.smithNormalFormCoeffs b h`. Set `b'` to `Submodule.smithNormalFormTopBasis b h`. Set `cb` to `Submodule.smithNormalFormBotBasis b h`. Establish `cb_eq` using `Submodule.smithNormalFormBotBasis_def b h`. Set `e' : M ≃ₗ[R] N` to `b'.equiv cb (Equiv.refl _)`.
+
+Set `g : M →ₗ[R] M` to `N.subtype ∘ₗ (e' : M →ₗ[R] N)`. Establish `hg : ∀ i, g (b' i) = c i • b' i`. Introduce `i`. Establish `: g (b' i) = b'.equiv cb (Equiv.refl _) (b' i)` using `rfl`. Rewrite using `[this, b'.equiv_apply, Equiv.refl_apply]`.
+
+Conclude with `cb_eq i`. Establish `hm : LinearMap.toMatrix b' b' g = Matrix.diagonal c`. Use extensionality with `i j`. Rewrite using `[LinearMap.toMatrix_apply, hg, map_smul, Module.Basis.repr_self, Finsupp.smul_single, smul_eq_mul, _root_.mul_one]`. Distinguish the cases in `hij : i = j`.
+
+Rewrite using `[hij, Matrix.diagonal_apply_eq, Finsupp.single_eq_same]`. Rewrite using `[Matrix.diagonal_apply_ne _ hij, Finsupp.single_eq_of_ne hij]`. Establish `hass` using `LinearMap.associated_det_comp_equiv N.subtype e e'`. Establish `h0 : N.subtype ∘ₗ (e : M →ₗ[R] N) = f`. Use extensionality with `x`.
+
+Both sides reduce to the same expression. Rewrite `hass` using `[h0]`. Establish `h1 : LinearMap.det g = ∏ i, c i`. Rewrite using `[← LinearMap.det_toMatrix b', hm, Matrix.det_diagonal]`. Express the relevant statement in the definitionally equal form `Associated (LinearMap.det f) (LinearMap.det g) at hass`.
+
+Rewrite `hass` using `[h1]`. Establish `hc0 : ∀ i, c i ≠ 0`. Introduce `i hi`. Apply `cb.ne_zero i` to reduce the goal to its premises. Apply `Subtype.ext` to reduce the goal to its premises.
+
+Rewrite using `[cb_eq i]`. Express the relevant statement in the definitionally equal form `c i • b' i = 0`. Rewrite using `[hi, zero_smul]`. Establish `hcq : Nat.card (M ⧸ N) = ∏ i, Nat.card (R ⧸ Ideal.span {c i})`. Rewrite using `[← Nat.card_pi]`.
+
+Conclude with `Nat.card_congr (Submodule.quotientEquivPiSpan N b h).toEquiv`. Rewrite using `[hcq, Ideal.span_singleton_eq_span_singleton.2 hass, card_quot_span_prod _ c fun i _ => hc0 i]`.
+-/
 theorem UpperTheory.TP.W.cardDet :
     CardDet := by
   intro R M _ _ _ _ _ _ _ f hinj

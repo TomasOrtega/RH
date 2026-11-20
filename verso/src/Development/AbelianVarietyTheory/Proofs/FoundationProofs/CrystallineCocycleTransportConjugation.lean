@@ -9,6 +9,11 @@ open scoped TensorProduct
 
 namespace GlobalTheory.TwistedSelmerCompare
 
+/- English proof (translation)
+Establish `h : ((IsLocalRing.maximalIdeal O).comap (algebraMap ℤ_[l] O)).IsMaximal` using `Ideal.isMaximal_comap_of_isIntegral_of_isMaximal _`. Establish `h2` using `IsLocalRing.eq_maximalIdeal h`. Establish `h3 : (l : ℤ_[l]) ∈ IsLocalRing.maximalIdeal ℤ_[l]`. Rewrite using `[PadicInt.maximalIdeal_eq_span_p]`. Conclude with `Ideal.mem_span_singleton_self _`.
+
+Rewrite `h3` using `[← h2, Ideal.mem_comap, map_natCast]`. Conclude with `h3`.
+-/
 theorem natCast_mem_maximalIdeal {l : ℕ} [Fact l.Prime] (O : Type) [CommRing O] [IsLocalRing O]
     [Algebra ℤ_[l] O] [Module.Finite ℤ_[l] O] : (l : O) ∈ IsLocalRing.maximalIdeal O := by
   have h : ((IsLocalRing.maximalIdeal O).comap (algebraMap ℤ_[l] O)).IsMaximal :=
@@ -19,6 +24,13 @@ theorem natCast_mem_maximalIdeal {l : ℕ} [Fact l.Prime] (O : Type) [CommRing O
   rw [← h2, Ideal.mem_comap, map_natCast] at h3
   exact h3
 
+/- English proof (translation)
+Use extensionality with `z`. Rewrite using `[← sub_eq_zero, ← Ideal.mem_bot, ← Ideal.iInf_pow_eq_bot_of_isLocalRing _ (IsLocalRing.maximalIdeal.isMaximal O).ne_top, Ideal.mem_iInf]`. Introduce `n`. Take `⟨c, hc⟩` from `Ideal.mem_span_singleton'.1 (PadicInt.appr_spec n z)`. Establish `hz : z = (z.appr n : ℤ_[l]) + c * (l : ℤ_[l]) ^ n` using `by rw [hc]; ring`.
+
+Establish `: f z - g z = (f c - g c) * (l : O) ^ n`. Rewrite using `[hz]`. Simplify using `only [map_add, map_mul, map_pow, map_natCast]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[this]`.
+
+Conclude with `Ideal.mul_mem_left _ _ (Ideal.pow_mem_pow hl n)`.
+-/
 theorem padicInt_hom_ext {l : ℕ} [Fact l.Prime] {O : Type} [CommRing O] [IsLocalRing O] [IsNoetherianRing O]
     (hl : (l : O) ∈ IsLocalRing.maximalIdeal O) (f g : ℤ_[l] →+* O) : f = g := by
   ext z
@@ -34,6 +46,17 @@ theorem padicInt_hom_ext {l : ℕ} [Fact l.Prime] {O : Type} [CommRing O] [IsLoc
   rw [this]
   exact Ideal.mul_mem_left _ _ (Ideal.pow_mem_pow hl n)
 
+/- English proof (translation)
+Take `⟨⟨hc1, hc2⟩, x, hx⟩` from `hc`. Use `L₁.2` as an intermediate fact. Establish `hpc : Continuous p` using `p.continuous_of_finiteDimensional`. Set `q : (Fin k → ↥L₁.1) →ₗ[ℚ_[l]] (Fin k → ↥L₂.1)` to `LinearMap.compLeft p (Fin k)`. Establish `hq : ∀ g v, q (matRep M₁ (θ g) v) = matRep M₂ g (q v)` using `fun g v => hp g v`.
+
+Set `T` to `TensorProduct.map q (P.actQ σ).toLinearMap`. Establish `hT : ∀ g y, T (actVB (P.PD K₁) (matRep M₁) (θ g) y) = actVB (P.PD K₂) (matRep M₂) g (T y)`. Introduce `g y`. Proceed by induction on `y using TensorProduct.induction_on with`. Consider the case `zero => simp`.
+
+Consider the case `add a b ha hb => simp only [map_add, ha, hb]`. Consider the case `tmul v b`. Express the relevant statement in the definitionally equal form `q (matRep M₁ (θ g) v) ⊗ₜ[ℚ_[l]] P.actQ σ ((P.PD K₁).actB (θ g) b) = matRep M₂ g (q v) ⊗ₜ[ℚ_[l]] (P.PD K₂).actB g (P.actQ σ b)`. Rewrite using `[hq, P.PD_actB, P.PD_actB, ← AlgEquiv.mul_apply, ← AlgEquiv.mul_apply, ← map_mul, ← map_mul]`. Use `congr 3`.
+
+Rewrite using `[hσ g]`. Use `group`. Use `⟨⟨continuous_pi fun j => hpc.comp ((continuous_apply j).comp (hc1.comp hθ)), fun g h => ?_⟩, T x, fun g => ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `q (c (θ (g * h))) = q (c (θ g)) + matRep M₂ g (q (c (θ h)))`. Rewrite using `[map_mul, hc2, map_add, hq]`.
+
+Rewrite using `[← hT, ← map_sub, ← hx]`. Express the relevant statement in the definitionally equal form `q (c (θ g)) ⊗ₜ[ℚ_[l]] (1 : P.R.B) = q (c (θ g)) ⊗ₜ[ℚ_[l]] P.actQ σ 1`. Rewrite using `[map_one]`.
+-/
 theorem crystallineCocycle_transport_conjugation {l : ℕ} [Fact l.Prime] (P : LocPrime l) (K₁ K₂ L₁ L₂ : FinExt l)
     (θ : ↥(GK K₂) →* ↥(GK K₁)) (hθ : Continuous θ) (σ : GQ l)
     (hσ : ∀ g : ↥(GK K₂), (g : GQ l) = σ * (θ g : GQ l) * σ⁻¹) {k : ℕ}
@@ -73,6 +96,13 @@ variable {l : ℕ} [Fact l.Prime] {E Ω : Type} [Field E] [Field Ω] [Algebra E 
   {O₀ O : Type} [CommRing O₀] [IsDomain O₀] [Algebra ℤ_[l] O₀] [TopologicalSpace O₀]
   [CommRing O] [IsDomain O] [Algebra ℤ_[l] O] [TopologicalSpace O]
 
+/- English proof (translation)
+Use `⟨(Br.toLLK B).injective, fun x => ?_⟩` and prove the remaining obligations. Use `B.LL.2` as an intermediate fact. Establish `: Algebra.IsAlgebraic ℤ_[l] ↥B.LL.1` using `IsFractionRing.comap_isAlgebraic_iff.2 (inferInstance : Algebra.IsAlgebraic ℚ_[l] ↥B.LL.1)`. Take `⟨d, hd, hx⟩` from `(Algebra.IsAlgebraic.isAlgebraic (R := ℤ_[l]) x).exists_integral_multiple`. Take `⟨n, hn⟩` from `B.eO.surjective ⟨d • x, hx⟩`.
+
+Use `⟨algebraMap O _ n / algebraMap O _ (algebraMap ℤ_[l] O d), ?_⟩` and prove the remaining obligations. Rewrite using `[map_div₀, Br.toLLK_alg, Br.toLLK_alg, hn, B.eO_alg, ← IsScalarTower.algebraMap_apply, div_eq_iff]`. Express the relevant statement in the definitionally equal form `d • x = _`. Rewrite using `[Algebra.smul_def, mul_comm]`. Rewrite using `[IsScalarTower.algebraMap_apply ℤ_[l] ℚ_[l] ↥B.LL.1]`.
+
+Simplify using `using hd`.
+-/
 theorem toLLK_bijective (B : LocBridge l E Ω Gw O) : Function.Bijective (Br.toLLK B) := by
   refine ⟨(Br.toLLK B).injective, fun x => ?_⟩
   have := B.LL.2
@@ -87,6 +117,11 @@ theorem toLLK_bijective (B : LocBridge l E Ω Gw O) : Function.Bijective (Br.toL
   · rw [IsScalarTower.algebraMap_apply ℤ_[l] ℚ_[l] ↥B.LL.1]
     simpa using hd
 
+/- English proof (translation)
+Set `e` to `RingEquiv.ofBijective _ (toLLK_bijective B₀)`. Set `φ : ↥B₀.LL.1 →+* ↥B.LL.1` to `(Br.toLLK B).comp ((GlobalTheory.IndefiniteRowSideFullHecke.LatticeConditions.fracMap f hf).comp e.symm.toRingHom)`. Establish `hφ : ∀ x, φ (Br.toLLK B₀ x) = Br.toLLK B (GlobalTheory.IndefiniteRowSideFullHecke.LatticeConditions.fracMap f hf x)` using `fun x => congrArg (fun y => Br.toLLK B (GlobalTheory.IndefiniteRowSideFullHecke.LatticeConditions.fracMap f hf y)) (e.symm_apply_apply x)`. Establish `hc : φ.comp (algebraMap ℚ_[l] ↥B₀.LL.1) = algebraMap ℚ_[l] ↥B.LL.1`. Use `IsFractionRing.ringHom_ext (A := ℤ_[l]) fun z => ?_` and prove the remaining obligations.
+
+Establish `h` using `hφ (algebraMap O₀ _ (algebraMap ℤ_[l] O₀ z))`. Rewrite `h` using `[GlobalTheory.IndefiniteRowSideFullHecke.LatticeConditions.fracMap_alg, hz, Br.toLLK_alg, Br.toLLK_alg, B.eO_alg, B₀.eO_alg, ← IsScalarTower.algebraMap_apply, ← IsScalarTower.algebraMap_apply]`. Rewrite using `[RingHom.comp_apply, ← IsScalarTower.algebraMap_apply, ← IsScalarTower.algebraMap_apply, h]`. Conclude with `⟨{ φ with commutes' := fun q => DFunLike.congr_fun hc q }, hφ⟩`.
+-/
 theorem exists_coefMap (B₀ : LocBridge l E Ω Gw O₀) (B : LocBridge l E Ω Gw O) (f : O₀ →+* O)
     (hf : Function.Injective f) (hz : ∀ z : ℤ_[l], f (algebraMap ℤ_[l] O₀ z) = algebraMap ℤ_[l] O z) :
     ∃ φ : ↥B₀.LL.1 →ₐ[ℚ_[l]] ↥B.LL.1,

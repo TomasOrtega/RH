@@ -6,6 +6,29 @@ open UpperTheory.ConvolutionTheory.G UpperTheory.ConvolutionTheory.T4
 open MeasureTheory
 open scoped ENNReal
 
+/- English proof (translation)
+Introduce `G _ _ _ _ _ _ _ _ T _ _ _ _ _ _ _ _ H _ _ _ _ _ _ _ _ T' _ _ _ _ _ _ _ _ μ j ν μ' j' ν' hP hP' U hU π πT hπ hπT hc hμ hν F F' hF hFi hF' hF'i hs hFF`. Establish `hjc : Continuous j` using `hP.2.1.continuous`. Establish `hUT : IsOpen ((U.comap j : Subgroup T) : Set T)` using `hU.preimage hjc`. Use `haveI : LocallyCompactSpace U := hU.isOpenEmbedding_subtypeVal.locallyCompactSpace`. Use `haveI : LocallyCompactSpace (U.comap j) := hUT.isOpenEmbedding_subtypeVal.locallyCompactSpace`.
+
+Use `haveI : SecondCountableTopology U := TopologicalSpace.Subtype.secondCountableTopology (U : Set G)`. Use `haveI : SecondCountableTopology (U.comap j) := TopologicalSpace.Subtype.secondCountableTopology ((U.comap j : Subgroup T) : Set T)`. Use `haveI : BorelSpace U := Subtype.borelSpace (U : Set G)`. Use `haveI : BorelSpace (U.comap j) := Subtype.borelSpace ((U.comap j : Subgroup T) : Set T)`. Set `i : U.comap j →* U` to `(j.comp (U.comap j).subtype).codRestrict U (fun t => t.2)`.
+
+Establish `hi : ∀ t : U.comap j, (i t : G) = j t` using `fun _ => rfl`. Take `⟨hPU, hO⟩` from `quotOpen_of normEx quotEq G T μ j ν hP U hU i hi`. Take `⟨ρ', hρc, hρ, -⟩` from `normEx H T' μ' j' ν' hP'`. Establish `embG : MeasurableEmbedding (fun u : U => (u : G))` using `MeasurableEmbedding.subtype_coe hU.measurableSet`. Establish `embT : MeasurableEmbedding (fun t : U.comap j => (t : T))` using `MeasurableEmbedding.subtype_coe hUT.measurableSet`.
+
+Establish `mapG : (μ.comap fun u : U => (u : G)).map (fun u : U => (u : G)) = μ.restrict (U : Set G)`. Rewrite using `[embG.map_comap]`. Use `congr 1`. Conclude with `Subtype.range_coe`. Establish `mapT : (ν.comap fun t : U.comap j => (t : T)).map (fun t : U.comap j => (t : T)) = ν.restrict (j ⁻¹' (U : Set G))`.
+
+Rewrite using `[embT.map_comap]`. Use `congr 1`. Conclude with `Subtype.range_coe`. Establish `hρm : Measurable fun h : H => ((ρ' h : NNReal) : ℝ≥0∞)` using `measurable_coe_nnreal_ennreal.comp hρc.measurable`. Establish `hn : IsNrm i (ν.comap fun t : U.comap j => (t : T)) (fun u : U => ((ρ' (π u) : NNReal) : ℝ≥0∞))`.
+
+Use `⟨hρm.comp (hπ.measurable.comp measurable_subtype_coe), fun x => ?_⟩` and prove the remaining obligations. Establish `hg : Measurable fun s : T' => ((ρ' (j' s * π x) : NNReal) : ℝ≥0∞)` using `hρm.comp ((hP'.2.1.continuous.measurable).mul_const _)`. Combine the equalities or inequalities in the displayed calculation. Use `lintegral_congr fun t => ?_` and prove the remaining obligations. Simplify using `only [Subgroup.coe_mul, map_mul, hi, hc]`.
+
+Use `_ = ∫⁻ s, ((ρ' (j' (πT s) * π x) : NNReal) : ℝ≥0∞) ∂((ν.comap fun t : U.comap j => (t : T)).map (fun t : U.comap j => (t : T))) := (embT.lintegral_map (fun s : T => ((ρ' (j' (πT s) * π x) : NNReal) : ℝ≥0∞))).symm`. Use `_ = ∫⁻ s, ((ρ' (j' (πT s) * π x) : NNReal) : ℝ≥0∞) ∂(ν.restrict (j ⁻¹' (U : Set G))) := by`. Rewrite using `[mapT]`. Use `_ = ∫⁻ s, ((ρ' (j' s * π x) : NNReal) : ℝ≥0∞) ∂((ν.restrict (j ⁻¹' (U : Set G))).map πT) := (lintegral_map hg hπT.measurable).symm`. Use `_ = ∫⁻ s, ((ρ' (j' s * π x) : NNReal) : ℝ≥0∞) ∂ν' := by rw [hν]`.
+
+Use `_ = 1 := hρ.2 (π x)`. Establish `hFU : Measurable fun u : U => F u` using `hF.comp measurable_subtype_coe`. Establish `hFUi : ∀ (t : U.comap j) (g : U), F ((i t * g : U) : G) = F g`. Introduce `t g`. Rewrite using `[Subgroup.coe_mul, hi, hFi]`.
+
+Establish `hgm : Measurable fun h : H => F' h * ((((ρ' h : NNReal) : ℝ≥0∞).toReal : ℝ) : ℂ)` using `hF'.mul (Complex.measurable_ofReal.comp hρm.ennreal_toReal)`. Establish `e1` using `(hO F hF hFi hs).2`. Establish `e2` using `(quotEq (↥U) (↥(U.comap j)) (μ.comap fun u : U => (u : G)) i (ν.comap fun t : U.comap j => (t : T)) hPU (fun u : U => F u) hFU hFUi _ hn).2.2`. Establish `e3` using `(quotEq H T' μ' j' ν' hP' F' hF' hF'i _ hρ).2.2`. Rewrite using `[e1, e2, e3]`.
+
+Combine the equalities or inequalities in the displayed calculation. Use `integral_congr_ae (Filter.Eventually.of_forall fun u => ?_)` and prove the remaining obligations. Simplify using `only [hFF u u.2]`. Use `_ = ∫ x, F' (π x) * ((((ρ' (π x) : NNReal) : ℝ≥0∞).toReal : ℝ) : ℂ) ∂((μ.comap fun u : U => (u : G)).map (fun u : U => (u : G))) := (embG.integral_map (fun x : G => F' (π x) * ((((ρ' (π x) : NNReal) : ℝ≥0∞).toReal : ℝ) : ℂ))).symm`. Use `_ = ∫ x, F' (π x) * ((((ρ' (π x) : NNReal) : ℝ≥0∞).toReal : ℝ) : ℂ) ∂(μ.restrict (U : Set G)) := by`.
+
+Rewrite using `[mapG]`. Use `_ = ∫ h, F' h * ((((ρ' h : NNReal) : ℝ≥0∞).toReal : ℝ) : ℂ) ∂((μ.restrict (U : Set G)).map π) := (integral_map hπ.aemeasurable hgm.aestronglyMeasurable).symm`. Use `_ = ∫ h, F' h * ((((ρ' h : NNReal) : ℝ≥0∞).toReal : ℝ) : ℂ) ∂μ' := by rw [hμ]`.
+-/
 theorem UpperTheory.quotient_haar_measure_pushforward :
     QPush := by
   intro G _ _ _ _ _ _ _ _ T _ _ _ _ _ _ _ _ H _ _ _ _ _ _ _ _ T' _ _ _ _ _ _ _ _

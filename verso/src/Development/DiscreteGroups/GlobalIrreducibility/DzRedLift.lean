@@ -10,14 +10,23 @@ namespace DiscreteGroups.sglob.DzRed
 
 attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField
 
+/- English proof (translation)
+Rewrite using `[map_mul]`. Both sides reduce to the same expression.
+-/
 theorem rep_mul_apply {G V : Type*} [Monoid G] [AddCommGroup V] [Module ℂ V] (π : Representation ℂ G V)
     (a b : G) (v : V) : π (a * b) v = π a (π b v) := by
   rw [map_mul]; rfl
 
+/- English proof (translation)
+Rewrite using `[map_one]`. Both sides reduce to the same expression.
+-/
 theorem rep_one_apply {G V : Type*} [Monoid G] [AddCommGroup V] [Module ℂ V] (π : Representation ℂ G V)
     (v : V) : π 1 v = v := by
   rw [map_one]; rfl
 
+/- English proof (translation)
+Simplify using `only [superDiag, map_sum]`. Both sides reduce to the same expression.
+-/
 theorem superDiag_map {R S : Type} [CommRing R] [CommRing S] (f : R →+* S) {n : ℕ} (x : GL (Fin n) R) :
     superDiag (Matrix.GeneralLinearGroup.map f x) = f (superDiag x) := by
   simp only [superDiag, map_sum]
@@ -28,6 +37,19 @@ variable {E : Type} [Field E] [NumberField E] {w : HeightOneSpectrum (𝓞 E)} {
   {ψ₀ : AddChar (ZMod g) Circle} {ψ : AddChar (w.adicCompletion E) Circle}
 
 include hi in
+/- English proof (translation)
+Establish `hu'` using `(mem_unipB (R := ZMod g)).1 hu`. Set `M : Matrix (Fin n) (Fin n) ℤ_[g]` to `fun a b => (((u : Matrix (Fin n) (Fin n) (ZMod g)) a b).val : ℤ_[g])`. Establish `hlow : ∀ a b, b < a → M a b = 0` using `fun a b h => by simp only [M, hu'.1 a b h, ZMod.val_zero, Nat.cast_zero]`. Establish `hdiag : ∀ a, M a a = 1` using `fun a => by simp only [M, hu'.2 a, ZMod.val_one, Nat.cast_one]`. Establish `hdet : M.det = 1`.
+
+Rewrite using `[Matrix.det_of_isUpperTriangular (fun a b h => hlow a b h)]`. Simplify using `[hdiag]`. Establish `hU : IsUnit M` using `(Matrix.isUnit_iff_isUnit_det M).2 (by rw [hdet]; exact isUnit_one)`. Set `κ : GL (Fin n) ℤ_[g]` to `hU.unit`. Establish `hκ : (κ : Matrix (Fin n) (Fin n) ℤ_[g]) = M` using `hU.unit_spec`.
+
+Establish `hred : red g n κ = u`. Use `Units.ext (Matrix.ext fun a b => ?_)` and prove the remaining obligations. Use `show PadicInt.toZMod ((κ : Matrix (Fin n) (Fin n) ℤ_[g]) a b) = _`. Rewrite using `[hκ]`. Simplify using `only [M, map_natCast, ZMod.natCast_zmod_val]`.
+
+Use `⟨κ, hred, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[mem_unipB]`. Use `⟨fun a b h => ?_, fun a => ?_⟩` and prove the remaining obligations. Use `show i (((κ : Matrix (Fin n) (Fin n) ℤ_[g]) a b : ℤ_[g]) : ℚ_[g]) = 0`. Rewrite using `[hκ, hlow a b h]`.
+
+Simplify using the standard rewrite rules. Use `show i (((κ : Matrix (Fin n) (Fin n) ℤ_[g]) a a : ℤ_[g]) : ℚ_[g]) = 1`. Rewrite using `[hκ, hdiag]`. Simplify using the standard rewrite rules. Rewrite using `[show inc g n κ = Matrix.GeneralLinearGroup.map (algebraMap ℤ_[g] ℚ_[g]) κ from rfl, superDiag_map, superDiag_map, ← hred, show red g n κ = Matrix.GeneralLinearGroup.map (PadicInt.toZMod (p := g)) κ from rfl, superDiag_map]`.
+
+Conclude with `hψ _`.
+-/
 theorem exists_lift_unipB (hψ : ∀ x : ℤ_[g], ψ (i (x : ℚ_[g])) = ψ₀ (PadicInt.toZMod x)) {n : ℕ}
     {u : Gn g n} (hu : u ∈ unipB (ZMod g) (Fin n)) :
     ∃ κ : GL (Fin n) ℤ_[g], red g n κ = u ∧
@@ -66,9 +88,17 @@ def cellFun {m : ℕ} {V' : Type} [AddCommGroup V'] [Module ℂ V']
     (s : Gn g m → GL (Fin m) ℤ_[g]) (x : Gn g m) : ℂ :=
   l' (ρ₀ (Matrix.GeneralLinearGroup.map i.toRingHom (inc g m (s x))) v')
 
+/- English proof (translation)
+Introduce `a b h` and use `by simp [Matrix.one_apply_ne (ne_of_lt h)]`.
+-/
 theorem isLower_one {m : ℕ} : ∀ a b : Fin m, a < b → ((1 : Gn g m) : Mt g m) a b = 0 :=
   fun a b h => by simp [Matrix.one_apply_ne (ne_of_lt h)]
 
+/- English proof (translation)
+Unfold `cellFun`. Establish `h1 : red g m ((s (red g m κ₁))⁻¹ * κ₁) = 1` using `by rw [map_mul, map_inv, hs, inv_mul_cancel]`. Establish `h2` using `hv' ((s (red g m κ₁))⁻¹ * κ₁) (by rw [h1]; exact isLower_one)`. Use `conv_rhs => rw [show κ₁ = s (red g m κ₁) * ((s (red g m κ₁))⁻¹ * κ₁) by group]`. Generalize the expression as in `(s (red g m κ₁))⁻¹ * κ₁ = y at h2 ⊢`.
+
+Rewrite using `[map_mul (inc g m), map_mul (Matrix.GeneralLinearGroup.map i.toRingHom), rep_mul_apply, h2]`.
+-/
 theorem cellFun_eq {m : ℕ} {V' : Type} [AddCommGroup V'] [Module ℂ V']
     (ρ₀ : Representation ℂ (GL (Fin m) (w.adicCompletion E)) V') (l' : Module.Dual ℂ V') (v' : V')
     (hv' : ∀ x : GL (Fin m) ℤ_[g], (∀ a b : Fin m, a < b → (red g m x : Mt g m) a b = 0) →
@@ -82,6 +112,9 @@ theorem cellFun_eq {m : ℕ} {V' : Type} [AddCommGroup V'] [Module ℂ V']
   generalize (s (red g m κ₁))⁻¹ * κ₁ = y at h2 ⊢
   rw [map_mul (inc g m), map_mul (Matrix.GeneralLinearGroup.map i.toRingHom), rep_mul_apply, h2]
 
+/- English proof (translation)
+Rewrite using `[show x * b = red g m (s x * s b) by rw [map_mul, hs, hs], cellFun_eq i ρ₀ l' v' hv' s hs, map_mul (inc g m), map_mul (Matrix.GeneralLinearGroup.map i.toRingHom), rep_mul_apply, hv' (s b) (by rw [hs]; exact hb)]`. Both sides reduce to the same expression.
+-/
 theorem cellFun_lower {m : ℕ} {V' : Type} [AddCommGroup V'] [Module ℂ V']
     (ρ₀ : Representation ℂ (GL (Fin m) (w.adicCompletion E)) V') (l' : Module.Dual ℂ V') (v' : V')
     (hv' : ∀ x : GL (Fin m) ℤ_[g], (∀ a b : Fin m, a < b → (red g m x : Mt g m) a b = 0) →
@@ -94,6 +127,9 @@ theorem cellFun_lower {m : ℕ} {V' : Type} [AddCommGroup V'] [Module ℂ V']
   rfl
 
 include hi in
+/- English proof (translation)
+Take `⟨κ, hred, hmem, hsd⟩` from `exists_lift_unipB i hi hψ hu`. Rewrite using `[show u * x = red g m (κ * s x) by rw [map_mul, hred, hs], cellFun_eq i ρ₀ l' v' hv' s hs, map_mul (inc g m), map_mul (Matrix.GeneralLinearGroup.map i.toRingHom), rep_mul_apply, hl' _ hmem, AddChar.inv_apply', hsd]`. Both sides reduce to the same expression.
+-/
 theorem cellFun_unip (hψ : ∀ x : ℤ_[g], ψ (i (x : ℚ_[g])) = ψ₀ (PadicInt.toZMod x)) {m : ℕ} {V' : Type}
     [AddCommGroup V'] [Module ℂ V']
     (ρ₀ : Representation ℂ (GL (Fin m) (w.adicCompletion E)) V') (l' : Module.Dual ℂ V') (v' : V')
@@ -108,6 +144,9 @@ theorem cellFun_unip (hψ : ∀ x : ℤ_[g], ψ (i (x : ℚ_[g])) = ψ₀ (Padic
     map_mul (inc g m), map_mul (Matrix.GeneralLinearGroup.map i.toRingHom), rep_mul_apply, hl' _ hmem, AddChar.inv_apply', hsd]
   rfl
 
+/- English proof (translation)
+Establish `h` using `cellFun_eq i ρ₀ l' v' hv' s hs 1`. Rewrite `h` using `[map_one]`. Rewrite using `[h, map_one, map_one, rep_one_apply]`.
+-/
 theorem cellFun_one {m : ℕ} {V' : Type} [AddCommGroup V'] [Module ℂ V']
     (ρ₀ : Representation ℂ (GL (Fin m) (w.adicCompletion E)) V') (l' : Module.Dual ℂ V') (v' : V')
     (hv' : ∀ x : GL (Fin m) ℤ_[g], (∀ a b : Fin m, a < b → (red g m x : Mt g m) a b = 0) →

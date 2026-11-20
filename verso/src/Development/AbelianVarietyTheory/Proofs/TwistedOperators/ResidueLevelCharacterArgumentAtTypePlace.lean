@@ -27,22 +27,43 @@ variable {A κ : Type} [CommRing A] [CommRing κ] {S : Subring A} (π : S →+* 
 
 def resOf (x : A) : κ := if hx : x ∈ S then π ⟨x, hx⟩ else 0
 
+/- English proof (translation)
+The claim follows from `dif_pos hx`.
+-/
 theorem resOf_of_mem {x : A} (hx : x ∈ S) : resOf π x = π ⟨x, hx⟩ := dif_pos hx
 
+/- English proof (translation)
+The claim follows from `dif_pos x.2`.
+-/
 theorem resOf_coe (x : S) : resOf π (x : A) = π x := dif_pos x.2
 
+/- English proof (translation)
+Rewrite using `[resOf_of_mem π (zero_mem S)]`. Conclude with `map_zero π`.
+-/
 theorem resOf_zero : resOf π (0 : A) = 0 := by
   rw [resOf_of_mem π (zero_mem S)]; exact map_zero π
 
+/- English proof (translation)
+Rewrite using `[resOf_of_mem π (one_mem S)]`. Conclude with `map_one π`.
+-/
 theorem resOf_one : resOf π (1 : A) = 1 := by
   rw [resOf_of_mem π (one_mem S)]; exact map_one π
 
+/- English proof (translation)
+Rewrite using `[resOf_of_mem π hx, resOf_of_mem π hy, resOf_of_mem π (add_mem hx hy), ← map_add]`. Both sides reduce to the same expression.
+-/
 theorem resOf_add {x y : A} (hx : x ∈ S) (hy : y ∈ S) : resOf π (x + y) = resOf π x + resOf π y := by
   rw [resOf_of_mem π hx, resOf_of_mem π hy, resOf_of_mem π (add_mem hx hy), ← map_add]; rfl
 
+/- English proof (translation)
+Rewrite using `[resOf_of_mem π hx, resOf_of_mem π hy, resOf_of_mem π (mul_mem hx hy), ← map_mul]`. Both sides reduce to the same expression.
+-/
 theorem resOf_mul {x y : A} (hx : x ∈ S) (hy : y ∈ S) : resOf π (x * y) = resOf π x * resOf π y := by
   rw [resOf_of_mem π hx, resOf_of_mem π hy, resOf_of_mem π (mul_mem hx hy), ← map_mul]; rfl
 
+/- English proof (translation)
+Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simpa using resOf_zero π`. Consider the case `insert a s ha ih`. Rewrite using `[Finset.sum_insert ha, Finset.sum_insert ha, resOf_add π (hf a) (sum_mem fun i _ => hf i), ih]`.
+-/
 theorem resOf_sum {ι : Type} (s : Finset ι) (f : ι → A) (hf : ∀ i, f i ∈ S) :
     resOf π (∑ i ∈ s, f i) = ∑ i ∈ s, resOf π (f i) := by
   induction s using Finset.induction_on with
@@ -50,6 +71,11 @@ theorem resOf_sum {ι : Type} (s : Finset ι) (f : ι → A) (hf : ∀ i, f i �
   | insert a s ha ih =>
     rw [Finset.sum_insert ha, Finset.sum_insert ha, resOf_add π (hf a) (sum_mem fun i _ => hf i), ih]
 
+/- English proof (translation)
+Take `⟨t, ht, e⟩` from `h`. Establish `e' : x = c + (g : A) * t` using `by rw [← e]; ring`. Establish `hgS : (g : A) ∈ S` using `natCast_mem S g`. Establish `h0 : resOf π (g : A) = 0`. Rewrite using `[resOf_of_mem π hgS, ← hg, ← map_natCast π g]`.
+
+Use `congr 1`. Rewrite using `[e', resOf_add π hc (mul_mem hgS ht), resOf_mul π hgS ht, h0, zero_mul, add_zero]`.
+-/
 theorem resOf_of_cong {g : ℕ} (hg : (g : κ) = 0) {x c : A} (hc : c ∈ S) (h : ∃ t ∈ S, x - c = (g : A) * t) :
     resOf π x = resOf π c := by
   obtain ⟨t, ht, e⟩ := h
@@ -60,6 +86,11 @@ theorem resOf_of_cong {g : ℕ} (hg : (g : κ) = 0) {x c : A} (hc : c ∈ S) (h 
     congr 1
   rw [e', resOf_add π hc (mul_mem hgS ht), resOf_mul π hgS ht, h0, zero_mul, add_zero]
 
+/- English proof (translation)
+Establish `e : v = ∑ l, v l • (Pi.single l 1 : Fin n → A)`. Use function extensionality and compare the values at `i`. Simplify using `[Finset.sum_apply, Pi.single_apply]`. Use `conv_lhs => rw [e]`. Rewrite using `[Matrix.mulVec_sum, map_sum]`.
+
+Use `Finset.sum_congr rfl fun l _ => ?_` and prove the remaining obligations. Rewrite using `[Matrix.mulVec_smul, map_smul, smul_eq_mul, mul_comm]`.
+-/
 theorem lin_mulVec {n : ℕ} (φ : (Fin n → A) →ₗ[A] A) (B : Matrix (Fin n) (Fin n) A) (v : Fin n → A) :
     φ (B *ᵥ v) = ∑ l, φ (B *ᵥ Pi.single l 1) * v l := by
   have e : v = ∑ l, v l • (Pi.single l 1 : Fin n → A) := by
@@ -69,6 +100,19 @@ theorem lin_mulVec {n : ℕ} (φ : (Fin n → A) →ₗ[A] A) (B : Matrix (Fin n
   refine Finset.sum_congr rfl fun l _ => ?_
   rw [Matrix.mulVec_smul, map_smul, smul_eq_mul, mul_comm]
 
+/- English proof (translation)
+Establish `hc : ∀ l, φ (β.val *ᵥ Pi.single l 1) ∈ S` using `fun l => hφ _ fun i => by`. Rewrite using `[Matrix.mulVec_mulVec, Units.inv_mul, Matrix.one_mulVec, Pi.single_apply]`. Use `split_ifs`. Conclude with `one_mem _`. Conclude with `zero_mem _`.
+
+Establish `key : ∀ v : Fin n → A, (∀ i, v i ∈ S) → resOf π (φ (β.val *ᵥ v)) = ∑ l, resOf π (φ (β.val *ᵥ Pi.single l 1)) * resOf π (v l)`. Introduce `v hv`. Rewrite using `[lin_mulVec, resOf_sum π _ _ fun l => mul_mem (hc l) (hv l)]`. Conclude with `Finset.sum_congr rfl fun l _ => resOf_mul π (hc l) (hv l)`. Establish `hm : ∀ j i, ((β⁻¹).val *ᵥ w j) i ∈ S` using `fun j i => (hw i j).1`.
+
+Establish `hr : ∀ j i, resOf π (((β⁻¹).val *ᵥ w j) i) = if i = j then 1 else 0` using `fun j i => by`. Rewrite using `[resOf_of_mem π (hm j i)]`. Conclude with `(hw i j).2`. Establish `hwl : ∀ l, resOf π (φ (w l)) = resOf π (φ (β.val *ᵥ Pi.single l 1))`. Introduce `l`.
+
+Establish `e : w l = β.val *ᵥ ((β⁻¹).val *ᵥ w l)`. Rewrite using `[Matrix.mulVec_mulVec, Units.mul_inv, Matrix.one_mulVec]`. Use `conv_lhs => rw [e]`. Rewrite using `[key _ (hm l)]`. Simplify using `only [hr]`.
+
+Simplify using the standard rewrite rules. Establish `hy : ∀ l, (y.map S.subtype *ᵥ ((β⁻¹).val *ᵥ w j)) l = ∑ m, (y l m : A) * ((β⁻¹).val *ᵥ w j) m` using `fun l => rfl`. Rewrite using `[← Matrix.mulVec_mulVec, ← Matrix.mulVec_mulVec, key _ fun l => by rw [hy]; exact sum_mem fun m _ => mul_mem (y l m).2 (hm j m)]`. Use `Finset.sum_congr rfl fun l _ => ?_` and prove the remaining obligations. Rewrite using `[hwl, hy, resOf_sum π _ _ fun m => mul_mem (y l m).2 (hm j m)]`.
+
+Use `congr 1`. Rewrite using `[Finset.sum_congr rfl fun m _ => resOf_mul π (y l m).2 (hm j m)]`. Simplify using `only [hr, resOf_coe]`. Simplify using the standard rewrite rules.
+-/
 theorem resOf_frame {n : ℕ} (φ : (Fin n → A) →ₗ[A] A) (β : GL (Fin n) A)
     (hφ : ∀ v : Fin n → A, (∀ i, ((β⁻¹).val *ᵥ v) i ∈ S) → φ v ∈ S) (w : Fin n → Fin n → A)
     (hw : ∀ i j, ∃ hm : ((β⁻¹).val *ᵥ w j) i ∈ S, π ⟨_, hm⟩ = if i = j then 1 else 0)
@@ -109,9 +153,37 @@ end Ring
 
 def nxtPos (ρ k a : ℕ) : ℕ := if a + 1 < ρ then a + 1 else ρ + k
 
+/- English proof (translation)
+Apply the tactic sequence `unfold nxtPos; split_ifs <;> omega`.
+-/
 theorem nxtPos_le (ρ k a : ℕ) : nxtPos ρ k a ≤ ρ + k := by
   unfold nxtPos; split_ifs <;> omega
 
+/- English proof (translation)
+Take `⟨t, rfl⟩ : ∃ t, r = ρ + (k + t)` from `⟨r - (ρ + k), by omega⟩`. Rewrite using `[Fin.sum_univ_add, Fin.sum_univ_add]`. Establish `h3 : (∑ i : Fin t, ∑ j, if symEdge ρ k (Fin.natAdd ρ (Fin.natAdd k i)) j then ((wA ρ k s (Fin.natAdd ρ (Fin.natAdd k i)) j : ℤ) : κ) * U (Fin.natAdd ρ (Fin.natAdd k i)) j else 0) = 0`. Use `Finset.sum_eq_zero fun i _ => Finset.sum_eq_zero fun j _ => ?_` and prove the remaining obligations. Establish `: wA ρ k s (Fin.natAdd ρ (Fin.natAdd k i)) j = 0`.
+
+Unfold `wA`. Rewrite using `[if_neg (by simp), if_neg (by simp; omega)]`. Rewrite using `[this]`. Simplify using the standard rewrite rules. Rewrite using `[h3, add_zero]`.
+
+Use `congr 1`. Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Establish `ha` using `a.2`. Rewrite using `[Finset.sum_eq_single ⟨nxtPos ρ k a.1, (nxtPos_le ρ k a.1).trans_lt hr⟩]`. Rewrite using `[if_pos]`.
+
+Establish `: wA ρ k s (Fin.castAdd (k + t) a) ⟨nxtPos ρ k a.1, (nxtPos_le ρ k a.1).trans_lt hr⟩ = 1`. Unfold `wA`. Rewrite using `[if_pos (by simp)]`. Rewrite using `[this, Int.cast_one, one_mul]`. Both sides reduce to the same expression.
+
+Unfold `symEdge nxtPos`. Simplify using `only [Fin.val_castAdd]`. Apply the tactic sequence `split_ifs <;> omega`. Introduce `j _ hj`. Rewrite using `[if_neg]`.
+
+Introduce `h`. Apply `hj` to reduce the goal to its premises. Apply `Fin.ext` to reduce the goal to its premises. Unfold `symEdge at h`. Unfold `nxtPos`.
+
+Simplify using `only [Fin.val_castAdd] at h ⊢`. Apply the tactic sequence `split_ifs <;> omega`. Simplify using the standard rewrite rules. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Establish `hi` using `i.2`.
+
+Establish `hw : ∀ j, wA ρ k s (Fin.natAdd ρ (Fin.castAdd t i)) j = if i.1 + 1 < k then (if s then 1 else 0) else 0`. Introduce `j`. Unfold `wA`. Rewrite using `[if_neg (by simp)]`. Simplify using `only [Fin.val_natAdd, Fin.val_castAdd, add_assoc, add_lt_add_iff_left]`.
+
+Simplify using `only [hw]`. Distinguish the cases in `h : i.1 + 1 < k`. Simplify using `only [if_pos h]`. Rewrite using `[Finset.sum_eq_single ⟨ρ + i.1 + 1, by omega⟩]`. Rewrite using `[if_pos]`.
+
+Consider the cases of `s`. Simplify using the standard rewrite rules. Simplify using `only [if_true, Int.cast_one, one_mul]`. Both sides reduce to the same expression. Apply the tactic sequence `refine Or.inl ⟨rfl, ?_, ?_⟩ <;> simp only [Fin.val_natAdd, Fin.val_castAdd] <;> omega`.
+
+Introduce `j _ hj`. Rewrite using `[if_neg]`. Introduce `h`. Apply `hj` to reduce the goal to its premises. Apply `Fin.ext` to reduce the goal to its premises.
+
+Unfold `symEdge at h`. Simplify using `only [Fin.val_natAdd, Fin.val_castAdd] at h ⊢`. Use linear arithmetic over natural numbers and integers. Simplify using the standard rewrite rules. Simplify using `[if_neg h]`.
+-/
 theorem sum_symEdge {κ : Type} [CommRing κ] {r ρ k : ℕ} (hr : ρ + k < r) (s : Bool) (U : Fin r → Fin r → κ) :
     (∑ i, ∑ j, if symEdge ρ k i j then ((wA ρ k s i j : ℤ) : κ) * U i j else 0) =
       (∑ a : Fin ρ, U ⟨a.1, by omega⟩ ⟨nxtPos ρ k a.1, (nxtPos_le ρ k a.1).trans_lt hr⟩) +
@@ -182,6 +254,11 @@ section Core
 open Formalism.L2.SG.HidaSetting PI.UnitaryDimensionFormula.unitaryCongruence
 open scoped TensorProduct
 
+/- English proof (translation)
+Unfold `flagV nxt`. Unfold `nxtPos at hl`. Distinguish the cases in `h : a.1 + 1 < ρ`. Rewrite `hl` using `[if_pos h]`. Rewrite using `[dif_pos (by omega), dif_pos h]`.
+
+Use `congr 1`. Conclude with `Fin.ext hl`. Rewrite `hl` using `[if_neg h]`. Rewrite using `[dif_neg (by omega), dif_neg (by omega), dif_pos hl, dif_neg h]`.
+-/
 theorem flagV_e {M : Type} [Zero M] {ρ k n : ℕ} (e f : Fin ρ → M) (b : Fin k → M) (z : M) (a : Fin ρ)
     (l : Fin n) (hl : l.1 = nxtPos ρ k a.1) : flagV ρ k n e f b z l = nxt e z a := by
   unfold flagV nxt
@@ -194,6 +271,9 @@ theorem flagV_e {M : Type} [Zero M] {ρ k n : ℕ} (e f : Fin ρ → M) (b : Fin
   · rw [if_neg h] at hl
     rw [dif_neg (by omega), dif_neg (by omega), dif_pos hl, dif_neg h]
 
+/- English proof (translation)
+Use `i.2` as an intermediate fact. Unfold `flagV`. Rewrite using `[dif_neg (by omega), dif_pos (by omega)]`. Use `congr 1`. Conclude with `Fin.ext (by simp only; omega)`.
+-/
 theorem flagV_b {M : Type} [Zero M] {ρ k n : ℕ} (e f : Fin ρ → M) (b : Fin k → M) (z : M) (i : Fin k)
     (l : Fin n) (hl : l.1 = ρ + i.1) : flagV ρ k n e f b z l = b i := by
   have := i.2
@@ -202,6 +282,11 @@ theorem flagV_b {M : Type} [Zero M] {ρ k n : ℕ} (e f : Fin ρ → M) (b : Fin
   congr 1
   exact Fin.ext (by simp only; omega)
 
+/- English proof (translation)
+Unfold `flagV`. Use `split_ifs with h1 h2 h3 h4`. Conclude with `he _`. Rewrite using `[hb]`. Use `congr 1`.
+
+Simplify using `only`. Use linear arithmetic over natural numbers and integers. Rewrite using `[hz, hc _ h3.ge]`. Rewrite using `[hf, hc _ (by omega)]`. Rewrite using `[h0, hc _ (by omega)]`.
+-/
 theorem flagV_apply {M κ : Type} [Zero M] [Zero κ] {ρ k n : ℕ} (φ : M → κ) (e f : Fin ρ → M) (b : Fin k → M) (z : M)
     (c : ℕ → κ) (h0 : φ 0 = 0) (he : ∀ a, φ (e a) = c a.1) (hb : ∀ i, φ (b i) = c (ρ + i.1)) (hz : φ z = 0)
     (hf : ∀ a, φ (f a) = 0) (hc : ∀ m, ρ + k ≤ m → c m = 0) (l : Fin n) : φ (flagV ρ k n e f b z l) = c l.1 := by
@@ -213,6 +298,11 @@ theorem flagV_apply {M κ : Type} [Zero M] [Zero κ] {ρ k n : ℕ} (φ : M → 
   · rw [hf, hc _ (by omega)]
   · rw [h0, hc _ (by omega)]
 
+/- English proof (translation)
+Establish `hg : u ∈ blockTri (κ` using `κ) (n := n) (blk2 n) := by`. Introduce `a b hab`. Simplify using `[blk2] at hab`. Unfold `upperLeftBlock`. Rewrite using `[extendOne_of_mem _ hg]`.
+
+Both sides reduce to the same expression.
+-/
 theorem restrictedBlock_self_apply {κ : Type} [CommRing κ] {n : ℕ} (hr : n ≤ n) (u : GL (Fin n) κ) (i j : Fin n) :
     (upperLeftBlock hr u).val i j = u.val i j := by
   have hg : u ∈ blockTri (κ := κ) (n := n) (blk2 n) := by
@@ -222,6 +312,45 @@ theorem restrictedBlock_self_apply {κ : Type} [CommRing κ] {n : ℕ} (hr : n �
   rw [extendOne_of_mem _ hg]
   rfl
 
+/- English proof (translation)
+Substitute `hn` using the available equality. Use `Eq.trans ?_ (sum_symEdge hr s fun i j => (upperLeftBlock hle (Formalism.UG.bc π y)).val i j).symm` and prove the remaining obligations. Simplify using `only [restrictedBlock_self_apply]`. Establish `hML : ∀ v ∈ I.Lf, M *ᵥ v ∈ I.Lf`. Introduce `v hv`.
+
+Rewrite `hv`, the goal using `[hβ]`. Introduce `i`. Rewrite using `[hM, Matrix.mulVec_mulVec, ← Matrix.mul_assoc, ← Matrix.mul_assoc, Units.inv_mul, Matrix.one_mul, ← Matrix.mulVec_mulVec]`. Rewrite using `[Matrix.mulVec, dotProduct]`. Conclude with `Subring.sum_mem _ fun m _ => Subring.mul_mem _ (y.val i m).2 (hv m)`.
+
+Establish `hnx : ∀ a, nxt e z a ∈ I.Lf` using `fun a => by`. Unfold `nxt`. Use `split_ifs`. Conclude with `(hint.1 _).1`. Conclude with `hint.2.1`.
+
+Establish `Z0 : ∀ {x}, ZMod' I g x → resOf π x = 0` using `fun {x} hx => by`. Rewrite using `[← resOf_zero π]`. Conclude with `resOf_of_cong π hg (zero_mem _) (by rw [sub_zero]; exact hx)`. Establish `Z0' : ∀ {u v}, ZMod' I g (hA I u v) → resOf π (hA I v u) = 0` using `fun {u v} hx => by`. Rewrite using `[hA_symm]`.
+
+Conclude with `Z0 (Z_sig I g hx)`. Establish `hA0 : ∀ u, resOf π (hA I u 0) = 0` using `fun u => by`. Rewrite using `[← hL_apply, map_zero, resOf_zero]`. Establish `gen : ∀ u ∈ I.Lf, ∀ p : Fin I.n, (∀ l, resOf π (hA I u (w l)) = if l.1 = p.1 then 1 else 0) → ∀ j, resOf π (hA I u (M *ᵥ w j)) = (Formalism.UG.bc π y).val p j`. Introduce `u hu p hp j`.
+
+Use `resOf_frame π (hL I u) β (fun v hv => hA_int I hu ((hβ v).2 hv)) w hred y.val j` as an intermediate fact. Rewrite `this` using `[← hM]`. Simplify using `only [hL_apply, hp, Fin.val_inj, ite_mul, one_mul, zero_mul, Finset.sum_ite_eq', Finset.mem_univ, if_true] at this`. Conclude with `this`. Establish `hfe : ∀ a c, resOf π (hA I (f a) (e c)) = if c.1 = a.1 then 1 else 0`.
+
+Introduce `a c`. Establish `h1` using `Z_sig I g (hgram c a).2.2`. Rewrite `h1` using `[map_sub, ← hA_symm]`. Distinguish the cases in `hca : c = a`. Rewrite `h1` using `[if_pos hca, map_one]`.
+
+Rewrite using `[if_pos (congrArg Fin.val hca), ← resOf_one π]`. Conclude with `resOf_of_cong π hg (one_mem _) h1`. Rewrite `h1` using `[if_neg hca, map_zero, sub_zero]`. Rewrite using `[if_neg fun h => hca (Fin.ext h)]`. Conclude with `Z0 h1`.
+
+Establish `hF : ∀ a l, resOf π (hA I (f a) (w l)) = if l.1 = a.1 then 1 else 0`. Introduce `a l`. Establish `ha` using `a.2`. Establish `key : ∀ b' : Fin k → VA I, (∀ i, resOf π (hA I (f a) (b' i)) = 0) → resOf π (hA I (f a) (flagV ρ k I.n e f b' z l)) = if l.1 = a.1 then 1 else 0` using `fun b' hb' => flagV_apply (fun v => resOf π (hA I (f a) v)) e f b' z (fun m => if m = a.1 then 1 else 0) (hA0 _) (hfe a) (fun i => by rw [hb', if_neg (by omega)]) (Z0 (hz a).2) (fun c => Z0 (hgram a c).2.1) (fun m hm => if_neg (by omega)) l`. Consider the cases of `s`.
+
+Rewrite using `[hw0 rfl]`. Conclude with `key _ fun i => Z0 ((hW _).2.2 a).2.2.2`. Rewrite using `[hw1 rfl]`. Conclude with `key _ fun i => Z0 ((hW _).2.2 a).2.1`. Establish `hwe : ∀ a : Fin ρ, nxt e z a = w ⟨nxtPos ρ k a.1, (nxtPos_le ρ k a.1).trans_lt hr⟩`.
+
+Introduce `a`. Consider the cases of `s`. Rewrite using `[hw0 rfl]`. Conclude with `(flagV_e _ _ _ _ a _ rfl).symm`. Rewrite using `[hw1 rfl]`.
+
+Conclude with `(flagV_e _ _ _ _ a _ rfl).symm`. Establish `m1 : ∀ a, hA I (f a) (M *ᵥ nxt e z a) ∈ IntAf I.F I.E` using `fun a => hA_int I (hint.1 a).2 (hML _ (hnx a))`. Establish `m2 : ∀ i : Fin k, (if hi : i.1 + 1 < k then hA I (bd i) (M *ᵥ b ⟨i.1 + 1, hi⟩) else 0) ∈ IntAf I.F I.E`. Introduce `i`. Use `split_ifs`.
+
+Conclude with `hA_int I (hint.2.2 i).2 (hML _ (hint.2.2 _).1)`. Conclude with `zero_mem _`. Rewrite using `[resOf_add π (sum_mem fun a _ => m1 a) (sum_mem fun i _ => m2 i), resOf_sum π _ _ m1, resOf_sum π _ _ m2]`. Use `congr 1`. Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[hwe a]`. Conclude with `gen _ (hint.1 a).2 ⟨a.1, by have := a.2; omega⟩ (hF a) _`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Establish `hi'` using `i.2`. Distinguish the cases in `hi : i.1 + 1 < k`.
+
+Rewrite using `[dif_pos hi, if_pos hi]`. Consider the cases of `s`. Rewrite using `[hbd i, hA_smul_left, sigA_sigA, resOf_mul π hew (hA_int I (hint.2.2 i).2 (hML _ (hint.2.2 _).1)), resOf_of_mem π hew, hs0 rfl, zero_mul]`. Simplify using the standard rewrite rules. Rewrite using `[if_pos rfl]`.
+
+Establish `hb : b ⟨i.1 + 1, hi⟩ = w ⟨ρ + i.1 + 1, by omega⟩`. Rewrite using `[hw1 rfl]`. Conclude with `(flagV_b _ _ _ _ _ _ rfl).symm`. Rewrite using `[hb]`. Use `gen _ (hint.2.2 i).2 ⟨ρ + i.1, by omega⟩ (fun l => ?_) _` and prove the remaining obligations.
+
+Rewrite using `[hw1 rfl]`. Use `flagV_apply (fun v => resOf π (hA I (bd i) v)) e f b z (fun m => if m = ρ + i.1 then 1 else 0) (hA0 _) (fun a => ?_) (fun j => ?_) (Z0' (hW i).2.1) (fun c => Z0' ((hW i).2.2 c).2.2.2) (fun m hm => if_neg (by omega)) l` and prove the remaining obligations. Use `a.2` as an intermediate fact. Rewrite using `[if_neg (by omega)]`. Conclude with `Z0' ((hW i).2.2 a).2.2.1`.
+
+Establish `h1` using `hdual i j`. Distinguish the cases in `hij : i = j`. Rewrite `h1` using `[if_pos hij]`. Rewrite using `[if_pos (by rw [hij]), ← hs1 rfl, ← resOf_of_mem π hew]`. Conclude with `resOf_of_cong π hg hew h1`.
+
+Rewrite `h1` using `[if_neg hij, sub_zero]`. Rewrite using `[if_neg fun h => hij (Fin.ext (by omega))]`. Conclude with `Z0 h1`. Rewrite using `[dif_neg hi, if_neg hi, resOf_zero]`.
+-/
 theorem core (I : AutInst) {κ : Type} [CommRing κ] (π : IntAf I.F I.E →+* κ) {g : ℕ} (hg : (g : κ) = 0)
     {ρ k r : ℕ} (hn : I.n = r) (hle : r ≤ I.n) (hr : ρ + k < r)
     (e f : Fin ρ → VA I) (z : VA I) (b bd : Fin k → VA I) (ew : I.E ⊗[I.F] Af I.F)
@@ -346,6 +475,9 @@ theorem core (I : AutInst) {κ : Type} [CommRing κ] (π : IntAf I.F I.E →+* �
 
 end Core
 
+/- English proof (translation)
+Substitute `h` using the available equality. Conclude with `hP`.
+-/
 theorem transport {I I' : AutInst} (h : I = I') {ρ k : ℕ}
     (P : ∀ I : AutInst, (Fin ρ → Formalism.L2.SG.HidaSetting.VA I) → (Fin ρ → Formalism.L2.SG.HidaSetting.VA I) → Formalism.L2.SG.HidaSetting.VA I →
       (Fin k → Formalism.L2.SG.HidaSetting.VA I) → (Fin k → Formalism.L2.SG.HidaSetting.VA I) → TensorProduct I.F I.E (Af I.F) → Prop)
@@ -359,16 +491,27 @@ theorem transport {I I' : AutInst} (h : I = I') {ρ k : ℕ}
       (cast (congrArg (fun I : AutInst => TensorProduct I.F I.E (Af I.F)) h) ew) := by
   subst h; exact hP
 
+/- English proof (translation)
+Substitute `h` using the available equality. Both sides reduce to the same expression.
+-/
 theorem cast_hA {I I' : AutInst} (h : I = I') (x y : Formalism.L2.SG.HidaSetting.VA I') :
     cast (congrArg (fun I : AutInst => TensorProduct I.F I.E (Af I.F)) h)
       (Formalism.L2.SG.HidaSetting.hA I (cast (congrArg (fun I : AutInst => Formalism.L2.SG.HidaSetting.VA I) h.symm) x)
         (cast (congrArg (fun I : AutInst => Formalism.L2.SG.HidaSetting.VA I) h.symm) y)) = Formalism.L2.SG.HidaSetting.hA I' x y := by
   subst h; rfl
 
+/- English proof (translation)
+The claim follows from `cast_hA h x y`.
+-/
 theorem hT_eq {D : D7} (X : Formalism.L2.SG.HidaSetting.HidaSetting D) (h : X.B.I = Formalism.L2.SG.InstExistsPf.instOf D)
     (x y : Fin (Yc D 0).rank → EAf D) :
     hT X h x y = Formalism.L2.SG.HidaSetting.hA (Formalism.L2.SG.InstExistsPf.instOf D) x y := cast_hA h x y
 
+/- English proof (translation)
+Use `⟨fun h => ?_, fun h => ?_⟩` and prove the remaining obligations. Rewrite using `[← sub_eq_zero, ← map_one (resS D.host.F PP), ← RingHom.map_sub]`. Use `(GlobalTheory.AdIsom.resS_eq_zero_iff_cpt PP _).2 ?_` and prove the remaining obligations. Rewrite using `[AddSubgroupClass.coe_sub, RingHom.map_sub]`. Simplify using `[h]`.
+
+Establish `h0 : GlobalTheory.StdFrames.cpt PP c * (GlobalTheory.StdFrames.cpt PP c - 1) = 0`. Rewrite using `[mul_sub, ← RingHom.map_mul, hcc, mul_one, sub_self]`. Establish `h1 : GlobalTheory.StdFrames.cpt PP c = 0` using `(mul_eq_zero.1 h0).resolve_right (sub_ne_zero.2 h)`. Conclude with `(GlobalTheory.AdIsom.resS_eq_zero_iff_cpt PP _).2 (by simp [h1])`.
+-/
 theorem resS_of_cpt {D : D7} (PP : Pl D.host.E) {c : EAf D} (hc : c ∈ Formalism.L2.Herm.intAf D.host.F D.host.E)
     (hcc : c * c = c) : (GlobalTheory.StdFrames.cpt PP c = 1 → resS D.host.F PP ⟨c, hc⟩ = 1) ∧
       (GlobalTheory.StdFrames.cpt PP c ≠ 1 → resS D.host.F PP ⟨c, hc⟩ = 0) := by
@@ -384,6 +527,17 @@ theorem resS_of_cpt {D : D7} (PP : Pl D.host.E) {c : EAf D} (hc : c ∈ Formalis
 
 open Formalism.L2.SG.HidaSetting in
 
+/- English proof (translation)
+Introduce `D G _ _ Pl0 T A Ks _ _ _ R F X h hLev _ β hF hred PP hPP κ hκ`. Take `⟨y, hy⟩` from `hκ`. Rewrite using `[← hy, redFn_frGL]`. Establish `hg : ((X.B.g : ℕ) : kP PP) = 0`. Rewrite using `[X.g_eq, ← map_natCast (Ideal.Quotient.mk PP.asIdeal), Ideal.Quotient.eq_zero_iff_mem]`.
+
+Conclude with `(places_over_g R hLev).1 PP hPP`. Establish `hn : (Formalism.L2.SG.InstExistsPf.instOf D).n = D.R.r` using `h ▸ X.n_eq`. Establish `hr : D.R.rS + D.R.k < D.R.r`. Use `D.R.two_le_m` as an intermediate fact. Unfold `Ranks.r Ranks.rS`.
+
+Use linear arithmetic over natural numbers and integers. Take `⟨h1, h2, h3, h4, h5, h6, h7, h8⟩` from `transport h (fun I e f z b bd ew => ((∀ a, e a ∈ I.Lf ∧ f a ∈ I.Lf) ∧ z ∈ I.Lf ∧ ∀ i, b i ∈ I.Lf ∧ bd i ∈ I.Lf) ∧ (∀ a c, ZMod' I X.B.g (hA I (e a) (e c)) ∧ ZMod' I X.B.g (hA I (f a) (f c)) ∧ ZMod' I X.B.g (hA I (e a) (f c) - if a = c then 1 else 0)) ∧ (∀ a, ZMod' I X.B.g (hA I ( …`. Establish `hc` using `resS_of_cpt (D := D) PP (c := ewT X h) h5 h8`. Establish `hβ : ∀ x, x ∈ (Formalism.L2.SG.InstExistsPf.instOf D).Lf ↔ ∀ i, ((β⁻¹).val *ᵥ x) i ∈ Formalism.L2.Herm.intAf D.host.F D.host.E`. Introduce `x`.
+
+Rewrite using `[GlobalTheory.SeeMatchOnto.Lf_eq]`. Conclude with `hF x`. Establish `main` using `core (Formalism.L2.SG.InstExistsPf.instOf D) (resS D.host.F PP) hg hn (r_le_Y (D := D) 0) hr (e0T X h) (f0T X h) (z0T X h) (bwT X h) (bwdT X h) (ewT X h) h1 h2 h3 h4 h5 h6 h7 (sideAt X h PP) (fun hs => hc.1 (of_decide_eq_true hs)) (fun hs => hc.2 (of_decide_eq_false hs)) β hβ (fl …`. Unfold `argT`. Simplify using `only [hT_eq]`.
+
+Conclude with `main`.
+-/
 theorem resT_argT : ∀ {D : D7} {G : Type} [Group G] [Fintype G] {Pl0 T : Type} {A : FamIn D.what₂.LL G Pl0 T D.R.m} {Ks : Type} [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] (R : RealDat D A Ks) (F : Face D A) (X : Formalism.L2.SG.HidaSetting.HidaSetting D) (h : X.B.I = Formalism.L2.SG.InstExistsPf.instOf D), R.toLevCh.Is A.μ0 → R.IsGrp F → ∀ β : GL (Fin (Yc D 0).rank) (EAf D), IsFrame β (Formalism.L2.Herm.crdLat (Yc D 0) (Yc D 0).L0) → (∀ PP ∈ R.Pg, RedIs β PP (flagAt X h PP)) → ∀ PP ∈ R.Pg, ∀ κ : GA D (Yc D 0), finE (Yc D 0) κ ∈ St β → GlobalTheory.SeeConjChar.resT PP (GlobalTheory.SeeConjChar.argT X h (finE (Yc D 0) κ)) = ∑ i, ∑ j, if symEdge D.R.rS D.R.k i j then ((GlobalTheory.SeeConjChar.wA D.R.rS D.R.k (GlobalTheory.SeeConjChar.sideAt X h PP) i j : ℤ) : kP PP) * ((upperLeftBlock (r_le_Y (D := D) 0) (redFn β PP (finE (Yc D 0) κ)) : GL (Fin D.R.r) (kP PP)).val i j) else 0 := by
   intro D G _ _ Pl0 T A Ks _ _ _ R F X h hLev _ β hF hred PP hPP κ hκ
   obtain ⟨y, hy⟩ := hκ

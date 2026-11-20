@@ -12,6 +12,23 @@ open GlobalTheory.TwistChoice (Reading ReadsAt)
 
 namespace GlobalTheory.ParaUnit
 
+/- English proof (translation)
+Set `O` to `v.valuationSubring`. Set `A' : Matrix ι ι O` to `Matrix.of fun a b => ⟨A a b, hA a b⟩`. Set `B' : Matrix ι ι O` to `Matrix.of fun a b => ⟨B a b, hB a b⟩`. Establish `hAB' : A' * B' = 1`. Use extensionality with `a b`.
+
+Use `congrFun (congrFun hAB a) b` as an intermediate fact. Rewrite `this` using `[Matrix.mul_apply]`. Simplify using `only [Matrix.mul_apply, Matrix.one_apply] at this ⊢`. Rewrite using `[AddSubmonoidClass.coe_finsetSum, apply_ite (fun x : O => (x : K))]`. Simplify `this` using `[A', B']`.
+
+Set `f` to `IsLocalRing.residue O`. Establish `hf : ∀ a b, p a → ¬ p b → f (A' a b) = 0`. Introduce `a b ha hb`. Rewrite using `[IsLocalRing.residue_eq_zero_iff, Valuation.mem_maximalIdeal_iff]`. Conclude with `hlow a b ha hb`.
+
+Set `A₁ : Matrix {x // p x} {x // p x} O` to `Matrix.of fun a b => A' a.1 b.1`. Set `B₁ : Matrix {x // p x} {x // p x} O` to `Matrix.of fun a b => B' a.1 b.1`. Establish `h1 : f.mapMatrix A₁ * f.mapMatrix B₁ = 1`. Use extensionality with `a b`. Establish `h` using `congrArg f (congrFun (congrFun hAB' a.1) b.1)`.
+
+Rewrite `h` using `[Matrix.mul_apply, map_sum, ← Fintype.sum_subtype_add_sum_subtype p]`. Rewrite `h` using `[Finset.sum_eq_zero (s := (Finset.univ : Finset {x // ¬ p x})) (fun c _ => by rw [map_mul, hf a.1 c.1 a.2 c.2, zero_mul]), add_zero]`. Rewrite using `[Matrix.mul_apply]`. Simplify using `only [map_mul] at h`. Use `Eq.trans h ?_` and prove the remaining obligations.
+
+Simplify using `only [Matrix.one_apply, Subtype.ext_iff]`. Apply the tactic sequence `split_ifs <;> simp`. Establish `h2 : f A₁.det ≠ 0`. Introduce `h0`. Use `congrArg Matrix.det h1` as an intermediate fact.
+
+Rewrite `this` using `[Matrix.det_mul, ← RingHom.map_det, h0, zero_mul, Matrix.det_one]`. Conclude with `zero_ne_one this`. Establish `h3 : ((A₁.det : O) : K) = (Matrix.of fun a b : {x // p x} => A a.1 b.1).det`. Use `RingHom.map_det O.subtype A₁` as an intermediate fact. Conclude with `this`.
+
+Rewrite using `[← h3]`. Use `le_antisymm A₁.det.2 (not_lt.1 fun hlt => h2 ?_)` and prove the remaining obligations. Rewrite using `[IsLocalRing.residue_eq_zero_iff, Valuation.mem_maximalIdeal_iff]`. Conclude with `hlt`.
+-/
 theorem val_det_block {K Γ ι : Type*} [Field K] [LinearOrderedCommGroupWithZero Γ] [Fintype ι] [DecidableEq ι]
     (v : Valuation K Γ) (p : ι → Prop) [DecidablePred p] (A B : Matrix ι ι K)
     (hA : ∀ a b, v (A a b) ≤ 1) (hB : ∀ a b, v (B a b) ≤ 1) (hAB : A * B = 1)
@@ -58,6 +75,13 @@ theorem val_det_block {K Γ ι : Type*} [Field K] [LinearOrderedCommGroupWithZer
   rw [IsLocalRing.residue_eq_zero_iff, Valuation.mem_maximalIdeal_iff]
   exact hlt
 
+/- English proof (translation)
+Introduce `L _ _ _ n r s h hp`. Establish `key : ∀ g : GL (Fin n) (s.v.adicCompletion (maximalRealSubfield L)), g ∈ Formalism.UG.GLint (Fin n) (s.v.adicCompletionIntegers (maximalRealSubfield L)).toSubring → ∀ a b, Valued.v (g.val a b) ≤ 1`. Introduce and unpack `g ⟨x, rfl⟩ a b`. Conclude with `(x.val a b).2`. Establish `hA` using `key h hp.1`.
+
+Establish `hB` using `key h⁻¹ (inv_mem hp.1)`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Conclude with `val_det_block Valued.v (fun x : Fin n => r ≤ x.val) h.val (h⁻¹).val hA hB (by simp) (fun a b ha hb => hp.2 a b ha (not_le.1 hb))`. Unfold `NG.supDiag`. Use `Valuation.map_sum_le _ fun a _ => Valuation.map_sum_le _ fun b _ => ?_` and prove the remaining obligations.
+
+Use `split_ifs`. Conclude with `hA a b`. Simplify using the standard rewrite rules.
+-/
 theorem detDD_unit_supDiag_int : ∀ (L : Type) [Field L] [NumberField L] [IsCMField L] (n : ℕ) (r : ℕ) (s : SplitPlace L) (h : GL (Fin n) (s.v.adicCompletion (maximalRealSubfield L))), NG.ParaRT s r h → Valued.v (NG.detDD s r h) = 1 ∧ Valued.v (NG.supDiag s r h) ≤ 1 := by
   intro L _ _ _ n r s h hp
   have key : ∀ g : GL (Fin n) (s.v.adicCompletion (maximalRealSubfield L)),

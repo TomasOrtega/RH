@@ -10,11 +10,37 @@ open scoped InnerProductSpace
 
 namespace ReciprocityTheory.ChartRestriction.DS.Lap.DecLow
 
+/- English proof (translation)
+Rewrite using `[szt_gN_eq, ← szt_hs_conj hP g]`. Both sides reduce to the same expression.
+-/
 theorem frob_conj_eq {k r : ℕ} {ε : Fin (2 * r + k + 1) → Bool} {P : Mat k r} (hP : Formalism.MainNotions.S.IsCayleyU k r ε P)
     (g : Mat k r) : frob (P * g * P⁻¹) = Formalism.FourierDecayAlt.B.gN g := by
   rw [szt_gN_eq, ← szt_hs_conj hP g]
   rfl
 
+/- English proof (translation)
+Take `⟨P₀, hP₀, hds₀⟩` from `hDS`. Establish `hds` using `(cayleyIndep k r ε lam H σ P₀ P hP₀ hP hds₀).1`. Take `⟨hp, hq⟩` from `TransportInt.cayley_signature hP.1`. Establish `hlam : S7.IsHCParam lam` using `(mir_isHCParam_iff lam).1 hlamR`. Establish `hq0 : S7.q0 ε = r + 1` using `by unfold S7.q0; rw [hp, hq]; omega`.
+
+Establish `hq1 : 1 ≤ S7.q0 ε` using `by omega`. Use `set N : ℝ := ((2 * r + k + 1 : ℕ) : ℝ) with hN`. Establish `hN1 : (1 : ℝ) ≤ N` using `by rw [hN]; exact_mod_cast (by omega : 1 ≤ 2 * r + k + 1)`. Establish `hpN : (pOf ε : ℝ) ≤ N` using `by rw [hN, hp]; exact_mod_cast (by omega : k + r ≤ 2 * r + k + 1)`. Establish `hqN : (qOf ε : ℝ) ≤ N` using `by rw [hN, hq]; exact_mod_cast (by omega : r + 1 ≤ 2 * r + k + 1)`.
+
+Establish `hq0N : (S7.q0 ε : ℝ) ≤ N` using `by rw [hN, hq0]; exact_mod_cast (by omega : r + 1 ≤ 2 * r + k + 1)`. Establish `hN3 : (1 : ℝ) ≤ N ^ 3` using `one_le_pow₀ hN1`. Establish `hpq : N * (pOf ε : ℝ) * (qOf ε : ℝ) ≤ N ^ 3`. Combine the equalities or inequalities in the displayed calculation. Establish `hnq : N * (S7.q0 ε : ℝ) ≤ N ^ 3`.
+
+Combine the equalities or inequalities in the displayed calculation. Establish `hgap : StdGap ε lam` using `⟨hlam.1, h, hgapAt, by linarith⟩`. Establish `h8 : 8 * N * (S7.q0 ε : ℝ) < h` using `by linarith`. Establish `h0 : 0 < h` using `by linarith`. Use `choose mm hmm using hlam.2`.
+
+Set `μ : Fin (2 * r + k + 1) → ℤ` to `fun a => mm a + ((2 * r + k + 1 : ℕ) : ℤ) - 1 - ((a : ℕ) : ℤ)`. Establish `hμ : S7.IsMu lam μ`. Unfold `S7.IsMu`. Introduce `a`. Establish `ha` using `hmm a`.
+
+Simplify using `only [μ]`. Unfold `rho`. Move the coercions through the operations in `at ha ⊢`. Combine the linear equalities and inequalities to obtain the conclusion. Take `⟨T⟩` from `HW.kType_exists ε lam hlam`.
+
+Establish `hΨ` using `(S7.isPsiFor_psiM ε lam h T μ hlam hμ hgapAt hq1 h8).1`. Take `⟨j, -, -, hran, hF⟩` from `anyF hds hgap hΨ`. Take `⟨C, hC⟩` from `S0.DecDeriv.psiM_frob_dec ε lam h T μ hlam hgapAt h0 hq1 hμ`. Rewrite `h₁`, `h₂` using `[← hran]`. Take `⟨v₁, rfl⟩` from `h₁`.
+
+Take `⟨v₂, rfl⟩` from `h₂`. Use `⟨‖v₂‖ * ‖v₁‖ * C, fun x hx => ?_⟩` and prove the remaining obligations. Establish `hg` using `szt_conj_mem hP hx`. Establish `hd : IsUnit P.det` using `(Matrix.isUnit_iff_isUnit_det P).mp hP.1.1`. Establish `hback : P⁻¹ * (P * x * P⁻¹) * P = x`.
+
+Establish `e : P⁻¹ * P = 1` using `Matrix.nonsing_inv_mul P hd`. Combine the equalities or inequalities in the displayed calculation. Establish `hco : ⟪j v₂, σ x (j v₁)⟫_ℂ = ⟪v₂, S7.PsiM T μ (P * x * P⁻¹) v₁⟫_ℂ`. Rewrite using `[← hF _ hg, ContinuousLinearMap.comp_apply, ContinuousLinearMap.adjoint_inner_right, ContinuousLinearMap.comp_apply, hback]`. Establish `hb` using `hC _ hg`.
+
+Rewrite `hb` using `[frob_conj_eq hP, hq0]`. Move the coercions through the operations in `at hb`. Combine the equalities or inequalities in the displayed calculation. Conclude with `ContinuousLinearMap.le_opNorm _ _`. Use `_ ≤ ‖v₂‖ * (C * Formalism.FourierDecayAlt.B.gN x ^ (-(h / (8 * Real.sqrt (2 * ((r : ℝ) + 1))))) * ‖v₁‖) := by gcongr`.
+
+Use `_ = _ := by ring`.
+-/
 theorem decLow (k r : ℕ) (hk : 1 ≤ k) (ε : Fin (2 * r + k + 1) → Bool) (lam : Fin (2 * r + k + 1) → ℝ) (h : ℝ)
     (H : Type) [NormedAddCommGroup H] [InnerProductSpace ℂ H] [CompleteSpace H] (σ : Mat k r → (H →L[ℂ] H))
     (hlamR : Formalism.QuantumDeterminants.IsHCParam lam) (hDS : Formalism.MainNotions.S.IsDSHpk k r ε lam σ)

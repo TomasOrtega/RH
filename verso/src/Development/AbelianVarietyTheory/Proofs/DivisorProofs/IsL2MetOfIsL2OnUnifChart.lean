@@ -14,6 +14,9 @@ open scoped Real
 
 namespace GlobalTheory.TorsionForm
 
+/- English proof (translation)
+Rewrite using `[h.form_smul_left, ← h.conj_form (b • e) e, h.form_smul_left, map_mul, h.conj_form, _root_.mul_assoc]`.
+-/
 theorem form_smul_smul {k : Type} [CommRing k] {X : Scheme.{0}} {p : X ⟶ Sp k} {σ : k →+* ℂ}
     {E : X.Modules} {r : ℕ} (h : Met p σ E r) {W : X.Opens} (a b : Γ(X, W)) (e : Γ(E, W))
     (y : CxPts p σ) :
@@ -21,6 +24,19 @@ theorem form_smul_smul {k : Type} [CommRing k] {X : Scheme.{0}} {p : X ⟶ Sp k}
   rw [h.form_smul_left, ← h.conj_form (b • e) e, h.form_smul_left, map_mul, h.conj_form,
     _root_.mul_assoc]
 
+/- English proof (translation)
+Introduce `v hv U s t hy`. Establish `hc` using `mem_pick M.isLB (c.e.symm v)`. Use `set ch := Chart.ofLB M.isLB (pick M.isLB (c.e.symm v)) with hch`. Establish `hW : c.e.symm v ∈ ptsIn p σ (U ⊓ ch.U)` using `mem_ptsIn_inf.2 ⟨hy, hc⟩`. Set `B` to `ch.isFrame.basis (inf_le_right : U ⊓ ch.U ≤ ch.U)`.
+
+Establish `hs (s : Γ(toMod M.B, U)) : resM (toMod M.B) inf_le_left s = B.repr (resM (toMod M.B) inf_le_left s) 0 • B 0`. Use `B.sum_repr (resM (toMod M.B) inf_le_left s)` as an intermediate fact. Rewrite `this` using `[Fin.sum_univ_one]`. Conclude with `this.symm`. Use `set a := B.repr (resM (toMod M.B) inf_le_left s) 0`.
+
+Use `set b := B.repr (resM (toMod M.B) inf_le_left t) 0`. Establish `hm (z : Fin g → ℂ) : PtsOver.map A.hom rfl _ (ex (v, z)) = c.e.symm v` using `Subtype.ext ((hu.2.2 v hv).1 z)`. Establish `key (z : Fin g → ℂ) : ((VMetric.ofLB L).met σ).form (V` using `A.hom ⁻¹ᵁ U) (ψ.hom.app U s) (ψ.hom.app U t) (ex (v, z)) = ev p σ _ a (c.e.symm v) * (starRingEnd ℂ) (ev p σ _ b (c.e.symm v)) * ((VMetric.ofLB L).met σ).form (V := A.hom ⁻¹ᵁ (U ⊓ ch.U)) (ψ.hom.app _ (B 0)) (ψ.hom.app _ (B 0)) (ex (v, z)) := by`. Establish `hz : ex (v, z) ∈ ptsIn (A.hom ≫ p) σ (A.hom ⁻¹ᵁ (U ⊓ ch.U))`. Rewrite `hW` using `[← hm z]`.
+
+Conclude with `hW`. Establish `hle : A.hom ⁻¹ᵁ (U ⊓ ch.U) ≤ A.hom ⁻¹ᵁ U` using `fun _ h => h.1`. Establish `e (s : Γ(toMod M.B, U)) : resM (toMod L.B) hle (ψ.hom.app U s) = A.hom.app _ (B.repr (resM (toMod M.B) inf_le_left s) 0) • (show Γ(toMod L.B, A.hom ⁻¹ᵁ (U ⊓ ch.U)) from ψ.hom.app _ (B 0))`. Establish `e1` using `app_resM ψ.hom (inf_le_left : U ⊓ ch.U ≤ U) s`. Rewrite `e1` using `[hs s, Scheme.Modules.Hom.app_smul]`.
+
+Conclude with `e1.symm`. Use `(((VMetric.ofLB L).met σ).form_resM _ _ hle hz).symm.trans ?_` and prove the remaining obligations. Use `(congrArg₂ (((VMetric.ofLB L).met σ).form · · _) (e s) (e t)).trans ?_` and prove the remaining obligations. Rewrite using `[form_smul_smul, ev_app A.hom rfl, ev_app A.hom rfl, hm z]`. Use `Eq.trans ?_ (congrArg (_ * ·) (integral_congr_ae (.of_forall fun x => key _))).symm` and prove the remaining obligations.
+
+Rewrite using `[integral_const_mul, mul_left_comm, ← H v hv _ (B 0) hW, ← form_smul_smul, ← hs s, ← hs t]`. Conclude with `(Met.form_resM _ _ _ _ hW).symm`.
+-/
 theorem isL2Met_of_isL2On (k : Type) [CommRing k] (S : Scheme.{0}) (p : S ⟶ Sp k) (σ : k →+* ℂ)
     (A : Over S) (g D : ℕ) (L : HermLB (A.hom ≫ p)) (M : HermLB p)
     (ψ : toMod M.B ≅ (Scheme.Modules.pushforward A.hom).obj (toMod L.B)) (c : AlgChart p σ D)

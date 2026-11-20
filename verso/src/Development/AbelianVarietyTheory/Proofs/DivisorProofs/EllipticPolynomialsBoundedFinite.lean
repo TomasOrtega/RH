@@ -13,6 +13,9 @@ namespace GlobalTheory.BCT.GeoFin
 
 variable {E : Type} [Field E] [NumberField E] [IsCMField E]
 
+/- English proof (translation)
+Take `⟨hm, hd, -, hr⟩` from `hP`. Establish `h` using `Polynomial.coeff_le_of_roots_le (f := τ) (B := 1) i hm (IsAlgClosed.splits _) (fun z hz => (hr τ z hz).le)`. Rewrite `h` using `[one_pow, one_mul, hd, Polynomial.coeff_map]`. Conclude with `h`.
+-/
 theorem norm_coeff_le {n : ℕ} {P : E[X]} (hP : P ∈ Ell E n) (τ : E →+* ℂ) (i : ℕ) :
     ‖τ (P.coeff i)‖ ≤ n.choose i := by
   obtain ⟨hm, hd, -, hr⟩ := hP
@@ -21,16 +24,37 @@ theorem norm_coeff_le {n : ℕ} {P : E[X]} (hP : P ∈ Ell E n) (τ : E →+* �
   rw [one_pow, one_mul, hd, Polynomial.coeff_map] at h
   exact h
 
+/- English proof (translation)
+The claim follows from `Formalism.UG.P.levelaf_valued_algebraMap w k`.
+-/
 theorem valued_algebraMap (w : Pl E) (k : E) :
     Valued.v (algebraMap E (w.adicCompletion E) k) = w.valuation E k :=
   Formalism.UG.P.levelaf_valued_algebraMap w k
 
+/- English proof (translation)
+Establish `h` using `(conjLoc_spec (GlobalTheory.SplitPts.conjE E) w).2.2 (algebraMap E _ k)`. Rewrite `h` using `[(conjLoc_spec (GlobalTheory.SplitPts.conjE E) w).2.1, valued_algebraMap, valued_algebraMap]`. Conclude with `h`.
+-/
 theorem valuation_conjE (w : Pl E) (k : E) :
     w.valuation E (GlobalTheory.SplitPts.conjE E k) = (conjSrc (GlobalTheory.SplitPts.conjE E) w).valuation E k := by
   have h := (conjLoc_spec (GlobalTheory.SplitPts.conjE E) w).2.2 (algebraMap E _ k)
   rw [(conjLoc_spec (GlobalTheory.SplitPts.conjE E) w).2.1, valued_algebraMap, valued_algebraMap] at h
   exact h
 
+/- English proof (translation)
+Establish `hv : ∀ u ∈ S, (∀ j, u.valuation E (P.coeff j) ≤ γ u) ∧ (γ u)⁻¹ ≤ u.valuation E (P.coeff 0)`. Introduce `u hu`. Take `⟨h1, h2⟩` from `hPS u hu`. Use `⟨fun j => ?_, ?_⟩` and prove the remaining obligations. Use `h1 j` as an intermediate fact.
+
+Rewrite `this` using `[atPl, Polynomial.coeff_map, valued_algebraMap]`. Then use the resulting hypothesis. Rewrite `h2` using `[atPl, Polynomial.coeff_map, valued_algebraMap]`. Then use the resulting hypothesis. Use `split_ifs with hw`. Conclude with `(hv w hw).1 i`. Take `⟨hm, hd, -, hr⟩` from `hP`.
+
+Establish `hrec` using `GlobalTheory.T.monic_coeff_natDegree_sub_eq_mul_cmConj E n P hm hd hr`. Take `⟨u, ⟨hu, huw⟩, -⟩` from `hS w`. Break down `GlobLev.eq_or_eq_conjSrc huw with rfl | rfl` into its components or cases. Conclude with `absurd hu hw`. Use `set u := conjSrc (GlobalTheory.SplitPts.conjE E) w`.
+
+Distinguish the cases in `hi : i ≤ n`. Use `swap`. Rewrite using `[Polynomial.coeff_eq_zero_of_natDegree_lt (by omega), Valuation.map_zero]`. Conclude with `zero_le'`. Establish `hci : P.coeff i = P.coeff 0 * GlobalTheory.SplitPts.conjE E (P.coeff (n - i))`.
+
+Use `hrec (n - i) (Nat.sub_le n i)` as an intermediate fact. Rewrite `this` using `[Nat.sub_sub_self hi]`. Then use the resulting hypothesis. Establish `hc0 : P.coeff 0 * GlobalTheory.SplitPts.conjE E (P.coeff 0) = 1`. Use `hrec 0 (Nat.zero_le n)` as an intermediate fact. Rewrite `this` using `[Nat.sub_zero, ← hd, ← Polynomial.leadingCoeff, hm.leadingCoeff]`.
+
+Conclude with `this.symm`. Establish `hv0 : w.valuation E (P.coeff 0) * u.valuation E (P.coeff 0) = 1`. Rewrite using `[← valuation_conjE, ← Valuation.map_mul, hc0, Valuation.map_one]`. Establish `hw0 : w.valuation E (P.coeff 0) ≤ γ u`. Rewrite using `[eq_inv_of_mul_eq_one_left hv0]`.
+
+Establish `hu0 : u.valuation E (P.coeff 0) ≠ 0` using `right_ne_zero_of_mul_eq_one hv0`. Conclude with `(inv_le_comm₀ (zero_lt_iff.2 hu0) (zero_lt_iff.2 (hγ0 u))).2 (hv u hu).2`. Rewrite using `[hci, Valuation.map_mul, valuation_conjE, sq]`. Conclude with `mul_le_mul' hw0 ((hv u hu).1 _)`.
+-/
 theorem valuation_coeff_le {n : ℕ} {S : Set (Pl E)} (hS : IsSection S) {γ : Pl E → WithZero (Multiplicative ℤ)} (hγ0 : ∀ w, γ w ≠ 0)
     {P : E[X]} (hP : P ∈ Ell E n) (hPS : ∀ w ∈ S, (∀ i, Valued.v ((atPl w P).coeff i) ≤ γ w) ∧
       (γ w)⁻¹ ≤ Valued.v ((atPl w P).coeff 0)) (w : Pl E) (i : ℕ) :
@@ -70,6 +94,17 @@ theorem valuation_coeff_le {n : ℕ} {S : Set (Pl E)} (hS : IsSection S) {γ : P
   rw [hci, Valuation.map_mul, valuation_conjE, sq]
   exact mul_le_mul' hw0 ((hv u hu).1 _)
 
+/- English proof (translation)
+Introduce `E _ _ _ n S hS γ hγ0 hγ1`. Use `set σ := GlobalTheory.SplitPts.conjE E`. Use `set β : Pl E → WithZero (Multiplicative ℤ) := fun w => if w ∈ S then γ w else γ (conjSrc σ w) ^ 2 with hβ`. Establish `hβ1 : ∀ᶠ w in cofinite, β w ≤ 1`. Establish `h2 : ∀ᶠ w in cofinite, γ (conjSrc σ w) = 1` using `(conjSrc_injective σ).tendsto_cofinite.eventually hγ1`.
+
+Use `filter_upwards [hγ1, h2] with w h1 h2`. Simplify using `only [hβ]`. Use `split_ifs`. Conclude with `h1.le`. Rewrite using `[h2, one_pow]`.
+
+Take `⟨D, hD0, hD⟩` from `GlobalTheory.T.exists_common_denominator_of_valuation_le_cofinite E β hβ1`. Establish `hD0' : (D : E) ≠ 0` using `by exact_mod_cast hD0`. Use `set r : ℕ → ℝ := fun i => (∑ τ : E →+* ℂ, ‖τ (D : E)‖) * n.choose i with hr`. Use `set X : Fin (n + 1) → Set E := fun i => {x | IsIntegral ℤ x ∧ ∀ φ : E →+* ℂ, ‖φ x‖ ≤ r i} with hXd`. Establish `hX : ∀ i, (X i).Finite` using `fun i => Embeddings.finite_of_norm_le E ℂ (r i)`.
+
+Use `Set.Finite.of_finite_image (f := fun (P : E[X]) (i : Fin (n + 1)) => (D : E) * P.coeff i) ((Set.Finite.pi hX).subset ?_) ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨P, ⟨hP, hPS⟩, rfl⟩ i -`. Use `⟨hD _ fun w => valuation_coeff_le hS hγ0 hP hPS w i, fun φ => ?_⟩` and prove the remaining obligations. Rewrite using `[map_mul, norm_mul]`. Conclude with `mul_le_mul (Finset.single_le_sum (f := fun τ : E →+* ℂ => ‖τ (D : E)‖) (fun τ _ => norm_nonneg _) (Finset.mem_univ φ)) (norm_coeff_le hP φ i) (norm_nonneg _) (Finset.sum_nonneg fun τ _ => norm_nonneg _)`.
+
+Introduce `P hP Q hQ hPQ`. Use extensionality with `k`. Distinguish the cases in `hk : k ≤ n`. Conclude with `mul_left_cancel₀ hD0' (congrFun hPQ ⟨k, Nat.lt_succ_of_le hk⟩)`. Rewrite using `[Polynomial.coeff_eq_zero_of_natDegree_lt (by rw [hP.1.2.1]; omega), Polynomial.coeff_eq_zero_of_natDegree_lt (by rw [hQ.1.2.1]; omega)]`.
+-/
 theorem finite_ell_bounded : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (n : ℕ) (S : Set (Pl E)), IsSection S →
     ∀ γ : Pl E → WithZero (Multiplicative ℤ), (∀ w, γ w ≠ 0) → (∀ᶠ w in cofinite, γ w = 1) →
     {P : E[X] | P ∈ Ell E n ∧ ∀ w ∈ S, (∀ i, Valued.v ((atPl w P).coeff i) ≤ γ w) ∧

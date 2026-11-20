@@ -32,32 +32,71 @@ variable (G : Type*) [Group G] [TopologicalSpace G] [IsTopologicalGroup G] [Loca
   [SecondCountableTopology G] [T2Space G] [MeasurableSpace G] [BorelSpace G]
   (μ : Measure G) [μ.IsHaarMeasure]
 
+/- English proof (translation)
+The claim follows from `poincareSeries_finite G μ`.
+-/
 theorem fold_L2_first : Formalism.L2.SG.PoincareSeriesSquareIntegrable.PoincareSeriesFinite G μ := poincareSeries_finite G μ
+/- English proof (translation)
+The claim follows from `fold_l2_bound_b G μ`.
+-/
 theorem fold_L2_second : Formalism.L2.SG.PoincareSeriesSquareIntegrable.PoincareSeriesMemLp G μ := fold_l2_bound_b G μ
 
 end Fold
 
+/- English proof (translation)
+The claim follows from `schur_orthogonality_idempotent`.
+-/
 theorem SchurConv_holds : Formalism.L2.SG.ProjRows.SchurConv := schur_orthogonality_idempotent
+/- English proof (translation)
+The claim follows from `convolution_projection`.
+-/
 theorem ConvProj_holds : Formalism.L2.SG.ProjRows.ConvProj := convolution_projection
+/- English proof (translation)
+The claim follows from `isConvIdempotent_pi`.
+-/
 theorem ProdConv_holds : Formalism.L2.SG.ProjRows.ProdConv := isConvIdempotent_pi
+/- English proof (translation)
+The claim follows from `Formalism.L2.SG.Pf.regular_representation_unitary`.
+-/
 theorem RegUnitary_holds : Formalism.L2.SG.ProjRows.RegUnitary := Formalism.L2.SG.Pf.regular_representation_unitary
+/- English proof (translation)
+The claim follows from `Formalism.L2.SG.ProjRows.projRowsR_of SchurConv_holds ConvProj_holds ProdConv_holds RegUnitary_holds`.
+-/
 theorem ProjRowsR_holds : Formalism.L2.SG.ProjRows.ProjRowsR :=
   Formalism.L2.SG.ProjRows.projRowsR_of SchurConv_holds ConvProj_holds ProdConv_holds RegUnitary_holds
 
+/- English proof (translation)
+Introduce `I μf _ _` and use `(PI.WAU.adUnimod_of PI.WAU.kg_subgroup PI.WAU.maximal_compact_isCompact PI.WAU.compact_countable PI.adelic_index_eq) I μf inferInstance`.
+-/
 theorem GfUnimod_holds : Formalism.L2.SG.Pf.GfUnimod := fun I μf _ _ =>
   (PI.WAU.adUnimod_of PI.WAU.kg_subgroup PI.WAU.maximal_compact_isCompact PI.WAU.compact_countable
     PI.adelic_index_eq) I μf inferInstance
 
+/- English proof (translation)
+The claim follows from `GfUnimod_holds`.
+-/
 theorem UnimodGf_holds : Formalism.L2.SG.Pf.UnimodGf := GfUnimod_holds
 
+/- English proof (translation)
+The claim follows from `PI.WAU.maximal_compact_isCompact`.
+-/
 theorem AutKCompact_holds : Formalism.L2.SG.Pf.AutKCompact := PI.WAU.maximal_compact_isCompact
 
+/- English proof (translation)
+The claim follows from `Formalism.L2.SG.Pf.rows_bijective ProjRowsR_holds UnimodGf_holds`.
+-/
 theorem RowsBij_holds : Formalism.L2.SG.RowsDef.RowsBij :=
   Formalism.L2.SG.Pf.rows_bijective ProjRowsR_holds UnimodGf_holds
 
+/- English proof (translation)
+The claim follows from `Formalism.L2.SG.Pf.level_subgroup_character_unitary X`.
+-/
 theorem level_subgroup_is_group {D : Formalism.BasicNotions.D7} (X : Formalism.L2.SG.HidaSetting.HidaSetting D) : X.LevelSubgroupCharacter :=
   Formalism.L2.SG.Pf.level_subgroup_character_unitary X
 
+/- English proof (translation)
+The claim follows from `Formalism.L2.SG.Pf.levelSubgroupNormalized_of_compact X AutKCompact_holds`.
+-/
 theorem level_subgroup_properties {D : Formalism.BasicNotions.D7} (X : Formalism.L2.SG.HidaSetting.HidaSetting D) : X.LevelSubgroupNormalized :=
   Formalism.L2.SG.Pf.levelSubgroupNormalized_of_compact X AutKCompact_holds
 
@@ -69,12 +108,18 @@ def latSubEquiv (I : AutInst) (x : I.GA) : PI.LatCountG.Sub I x ≃ Formalism.L2
   left_inv _ := rfl
   right_inv _ := rfl
 
+/- English proof (translation)
+Use function extensionality and compare the values at `x`. Unfold `PI.LatCountG.tau1 Formalism.L2.SG.LitS.Size.tau1`. Use `congr 1`. Conclude with `Equiv.iInf_congr (latSubEquiv I x) (fun _ => rfl)`.
+-/
 theorem lattice_tau_eq_size_tau (I : AutInst) : PI.LatCountG.tau1 I = Formalism.L2.SG.LitS.Size.tau1 I := by
   funext x
   unfold PI.LatCountG.tau1 Formalism.L2.SG.LitS.Size.tau1
   congr 1
   exact Equiv.iInf_congr (latSubEquiv I x) (fun _ => rfl)
 
+/- English proof (translation)
+Establish `h` using `lattice_count_all I`. Unfold `PI.LatCountG.LatCount at h`. Unfold `Formalism.L2.SG.Count.LatCount`. Rewrite `h` using `[lattice_tau_eq_size_tau]`. Conclude with `h`.
+-/
 theorem LatCount_holds (I : AutInst) : Formalism.L2.SG.Count.LatCount I := by
   have h := lattice_count_all I
   unfold PI.LatCountG.LatCount at h
@@ -82,6 +127,9 @@ theorem LatCount_holds (I : AutInst) : Formalism.L2.SG.Count.LatCount I := by
   rw [lattice_tau_eq_size_tau] at h
   exact h
 
+/- English proof (translation)
+The claim follows from `symDist_of exp_triangle_inequality`.
+-/
 theorem DistTri_holds : Formalism.MainNotions.LeviCoordinates.DistTri := symDist_of exp_triangle_inequality
 
 end Count

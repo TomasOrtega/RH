@@ -10,6 +10,17 @@ noncomputable section
 
 namespace GlobalTheory.RoadU
 
+/- English proof (translation)
+Introduce `Ω _ E _ _ _ _ w A h n ξ hξ a ha g hg`. Set `χ : Fin n → Weil h →* ℂˣ` to `fun j => (ξ j).comp a`. Establish `hχ : ∀ j, IsSmooth (χ j)` using `fun j => ha.smooth (hξ j)`. Set `b` to `WDRep.ofChars h χ hχ`. Establish `hy : AbW (WD.mk b)`.
+
+Introduce `g₁ g₂`. Rewrite using `[WD.charPol_mk, WD.lpDim_mk]`. Establish `hc : ∀ i, χ i (g₁ * g₂ * g₁⁻¹ * g₂⁻¹) = 1` using `fun i => by`. Rewrite using `[map_mul, map_mul, map_mul, map_inv, map_inv, mul_right_comm (χ i g₁ * χ i g₂), mul_inv_cancel_right, mul_inv_cancel]`. Establish `e : b.ρ (g₁ * g₂ * g₁⁻¹ * g₂⁻¹) = 1`.
+
+Rewrite using `[WDRep.ofChars_ρ]`. Use `LinearMap.ext fun v => funext fun i => ?_` and prove the remaining obligations. Rewrite using `[diagEnd_apply, hc i, Units.val_one, one_mul, Module.End.one_apply]`. Rewrite using `[e, LinearMap.charpoly_one]`. Take `⟨V, hV1, hV2, hV3, hV4⟩` from `GlobalTheory.AboveL.AbSub.exists_open_sub E Ω A w h (WD.mk b) hy g hg`.
+
+Use `⟨V, hV1, hV2, hV3, ?_⟩` and prove the remaining obligations. Introduce `t x hx hxt j`. Establish `hc` using `hV4 t x hx hxt`. Rewrite `hc` using `[WD.charPol_mk, WD.lpDim_mk]`. Establish `h1` using `GlobalTheory.AboveL.AbSub.eq_one_of_charpoly _ (b.semisimple _) hc`.
+
+Establish `h2` using `congrArg (fun f : Module.End ℂ (Fin n → ℂ) => f (Pi.single j 1) j) h1`. Simplify using `only [b, WDRep.ofChars_ρ, diagEnd_apply, Module.End.one_apply, Pi.single_eq_same, mul_one, χ, MonoidHom.comp_apply] at h2`. Conclude with `Units.ext h2`.
+-/
 theorem exists_open_sub_charKer : ∀ (Ω : Type) [Field Ω] (E : Type) [Field E] [NumberField E] [Algebra E Ω] [IsAlgClosure E Ω] (w : HeightOneSpectrum (𝓞 E)) (A : ValuationSubring Ω) (h : IsPlaceOver A w), ∀ (n : ℕ), ∀ (ξ : Fin n → ((w.adicCompletion E)ˣ →* ℂˣ)) (hξ : ∀ j, IsSmoothChar (ξ j)), ∀ a : Weil h →* (w.adicCompletion E)ˣ, IsLocalArtin h a → ∀ g : Weil h, deg g ≠ 0 → ∃ V : Subgroup (Dec (F := E) A), IsOpen (V : Set (Dec (F := E) A)) ∧ commutator (Dec (F := E) A) ≤ V ∧ (⟨(g : G E Ω), Weil_le_Dec h g.2⟩ : Dec (F := E) A) ∈ V ∧ ∀ t : Ine (F := E) A, ∀ x ∈ V, (x : G E Ω) = t → ∀ j, ξ j (a (ineIncl h t)) = 1 := by
   intro Ω _ E _ _ _ _ w A h n ξ hξ a ha g hg
   let χ : Fin n → Weil h →* ℂˣ := fun j => (ξ j).comp a

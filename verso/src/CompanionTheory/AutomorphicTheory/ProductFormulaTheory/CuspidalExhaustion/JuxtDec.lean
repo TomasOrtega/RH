@@ -17,6 +17,9 @@ def FineUniqP : Prop :=
     (τ : Representation ℂ (GL (Fin N) k) V), IsSmooth τ → τ.IsIrreducible →
     ∀ f : τ.IntertwiningMap (prodIrr (Zc.Seg.dec Δ) hd), Function.Injective f → IsLSeg Δ τ
 
+/- English proof (translation)
+Substitute `e` using the available equality. Take `rfl : x = y` from `funext fun i => by simpa using hxy i`. Conclude with `⟨hd, f, hf⟩`.
+-/
 theorem exists_emb_of_cast {h h' N : ℕ} {V : Type} [AddCommGroup V] [Module ℂ V]
     (τ : Representation ℂ (GL (Fin N) k) V) (e : h = h') (x : Fin h → IrrGL k) (y : Fin h' → IrrGL k)
     (hxy : ∀ i, x i = y (Fin.cast e i)) (hd : ∑ a, (x a).1 = N) (f : τ.IntertwiningMap (prodIrr x hd))
@@ -26,10 +29,16 @@ theorem exists_emb_of_cast {h h' N : ℕ} {V : Type} [AddCommGroup V] [Module �
   obtain rfl : x = y := funext fun i => by simpa using hxy i
   exact ⟨hd, f, hf⟩
 
+/- English proof (translation)
+Conclude with `List.get_ofFn (fun a : Fin Γ.len => Γ.term (Fin.rev a)) i`.
+-/
 theorem decW_get_eq (Γ : Segment k) (e : (decW Γ).length = Γ.len) (i : Fin (decW Γ).length) :
     (decW Γ).get i = Zc.Seg.dec Γ (Fin.cast e i) := by
   exact List.get_ofFn (fun a : Fin Γ.len => Γ.term (Fin.rev a)) i
 
+/- English proof (translation)
+Introduce `Γ σ h`. Take `⟨hd, f, hf⟩` from `h`. Establish `e : (decW Γ).length = Γ.len` using `List.length_ofFn`. Take `⟨hd', g, hg⟩` from `exists_emb_of_cast σ.rep e (decW Γ).get (Zc.Seg.dec Γ) (decW_get_eq Γ e) hd f hf`. Conclude with `hF Γ hd' σ.rep σ.2.rep.smooth σ.2.rep.irr g hg`.
+-/
 theorem decLP (hF : FineUniqP k) : DecLP k := by
   intro Γ σ h
   obtain ⟨hd, f, hf⟩ := h

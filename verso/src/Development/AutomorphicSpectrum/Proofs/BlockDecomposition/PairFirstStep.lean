@@ -10,6 +10,23 @@ open PositivityTheory.Rg.BcB.E PositivityTheory.Rg.BcB.SpectralAccumulation
 
 namespace GlobalTheory.CompanionTheory.EGlue.TensorOne
 
+/- English proof (translation)
+Assume the negation of the conclusion as `hl`. Set `l : κ → ℂ` to `fun k => L (s k)`. Set `D' : Submodule ℂ (κ → ℂ)` to `D ⊔ Submodule.span ℂ {l}`. Establish `: FiniteDimensional ℂ D'` using `Submodule.finiteDimensional_sup _ _`. Establish `hlD' : l ∈ D'` using `Submodule.mem_sup_right (Submodule.mem_span_singleton_self l)`.
+
+Establish `hDD' : ∀ w ∈ D, w ∈ D'` using `fun w hw => Submodule.mem_sup_left hw`. Set `D0 : Submodule ℂ D'` to `D.comap D'.subtype`. Establish `hnot : (⟨l, hlD'⟩ : D') ∉ D0` using `hl`. Take `⟨f, hfl, hf0⟩` from `Submodule.exists_dual_map_eq_bot_of_notMem hnot inferInstance`. Establish `hf0' : ∀ w (hw : w ∈ D), f ⟨w, hDD' w hw⟩ = 0` using `fun w hw => by`.
+
+Establish `: f ⟨w, hDD' w hw⟩ ∈ D0.map f` using `Submodule.mem_map_of_mem (show (⟨w, hDD' w hw⟩ : D') ∈ D0 from hw)`. Rewrite `this` using `[hf0]`. Conclude with `(Submodule.mem_bot ℂ).1 this`. Set `e : κ → Module.Dual ℂ D'` to `fun k => (LinearMap.proj k).comp D'.subtype`. Establish `hspan : Submodule.span ℂ (Set.range e) = ⊤`.
+
+Establish `hco : (Submodule.span ℂ (Set.range e)).dualCoannihilator = ⊥`. Rewrite using `[Submodule.eq_bot_iff]`. Introduce `w hw`. Rewrite `hw` using `[Submodule.mem_dualCoannihilator]`. Use `Subtype.ext (funext fun k => ?_)` and prove the remaining obligations.
+
+Conclude with `hw (e k) (Submodule.subset_span ⟨k, rfl⟩)`. Use `Subspace.dualCoannihilator_dualAnnihilator_eq (W := Submodule.span ℂ (Set.range e))` as an intermediate fact. Rewrite `this` using `[hco]`. Rewrite using `[← this]`. Simplify using the standard rewrite rules.
+
+Establish `hfm : f ∈ Submodule.span ℂ (Set.range e)` using `by rw [hspan]; trivial`. Take `⟨c, hc⟩` from `Finsupp.mem_span_range_iff_exists_finsupp.1 hfm`. Establish `hval : ∀ w : D', f w = ∑ k ∈ c.support, c k * w.1 k` using `fun w => by`. Rewrite using `[← hc]`. Simplify using `[Finsupp.sum, e, LinearMap.sum_apply]`.
+
+Set `A : V` to `∑ k ∈ c.support, c k • s k`. Establish `hA : A = 0` using `hsep A fun y => by`. Use `hf0' _ (hs y)` as an intermediate fact. Rewrite `this` using `[hval]`. Simplify `this` using `[A, map_sum]`.
+
+Apply `hfl` to reduce the goal to its premises. Establish `: f ⟨l, hlD'⟩ = L A`. Rewrite using `[hval]`. Simplify using `[A, map_sum, l]`. Rewrite using `[this, hA, map_zero]`.
+-/
 theorem mem_of_separating {κ V Y : Type} [AddCommGroup V] [Module ℂ V] (D : Submodule ℂ (κ → ℂ))
     (hD : FiniteDimensional ℂ D) (s : κ → V) (ev : Y → V →ₗ[ℂ] ℂ)
     (hsep : ∀ v, (∀ y, ev y v = 0) → v = 0) (hs : ∀ y, (fun k => ev y (s k)) ∈ D) (L : V →ₗ[ℂ] ℂ) :
@@ -58,12 +75,18 @@ theorem mem_of_separating {κ V Y : Type} [AddCommGroup V] [Module ℂ V] (D : S
 
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {a b : ℕ}
 
+/- English proof (translation)
+Establish `hex : ∃ φ : Sm E a, φ.1 = fun x => F (x, m₂)` using `⟨φ, h⟩`. Unfold `sl₁`. Rewrite using `[dif_pos hex]`. Conclude with `Subtype.ext (hex.choose_spec.trans h.symm)`.
+-/
 theorem sl₁_eq {F : H E a b → ℂ} {m₂ : GA E b} {φ : Sm E a} (h : φ.1 = fun x => F (x, m₂)) : sl₁ F m₂ = φ := by
   have hex : ∃ φ : Sm E a, φ.1 = fun x => F (x, m₂) := ⟨φ, h⟩
   unfold sl₁
   rw [dif_pos hex]
   exact Subtype.ext (hex.choose_spec.trans h.symm)
 
+/- English proof (translation)
+Use function extensionality and compare the values at `x`. Establish `e : sl₁ (fun x : H E a b => φ₁.1 x.1 * φ₂.1 x.2) x.2 = φ₂.1 x.2 • φ₁` using `sl₁_eq (funext fun y => by show φ₂.1 x.2 * φ₁.1 y = φ₁.1 y * φ₂.1 x.2 ring)`. Simplify using `only [ap₁, e, map_smul]`. Use `show φ₂.1 x.2 * (T φ₁).1 x.1 = _`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem ap₁_prod (T : Sm E a →ₗ[ℂ] Sm E a) (φ₁ : Sm E a) (φ₂ : Sm E b) :
     ap₁ T (fun x : H E a b => φ₁.1 x.1 * φ₂.1 x.2) = fun x => (T φ₁).1 x.1 * φ₂.1 x.2 := by
   funext x
@@ -75,6 +98,11 @@ theorem ap₁_prod (T : Sm E a →ₗ[ℂ] Sm E a) (φ₁ : Sm E a) (φ₂ : Sm 
   show φ₂.1 x.2 * (T φ₁).1 x.1 = _
   ring
 
+/- English proof (translation)
+Proceed by induction on `hF using Submodule.span_induction with`. Consider the case `mem G hG`. Take `⟨φ₁, h₁, φ₂, -, rfl⟩` from `hG`. Conclude with `Submodule.subset_span ⟨act (.fin g.1) φ₁, hU _ _ h₁, act (.fin g.2) φ₂, trivial, rfl⟩`. Consider the case `zero => exact Submodule.zero_mem _`.
+
+Consider the case `add G G' _ _ h h' => exact Submodule.add_mem _ h h'`. Consider the case `smul c G _ h => exact Submodule.smul_mem _ c h`.
+-/
 theorem translate_mem {U₁ : Submodule ℂ (Sm E a)} {U₂ : Submodule ℂ (Sm E b)} (hU : IsStable U₁) {F : H E a b → ℂ}
     (hF : F ∈ pairSpace U₁ U₂) (g : Hf E a b) :
     (fun y => F (y * finH g)) ∈ pairSpace U₁ (⊤ : Submodule ℂ (Sm E b)) := by
@@ -90,13 +118,22 @@ section Slices
 
 variable {U₁ : Submodule ℂ (Sm E a)} {U₂ : Submodule ℂ (Sm E b)}
 
+/- English proof (translation)
+The claim follows from `((hS E a b U₁ U₂ F hF).1 m).1`.
+-/
 theorem sl_mem (hS : PairSlices) {F : H E a b → ℂ} (hF : F ∈ pairSpace U₁ U₂) (m : GA E b) : sl₁ F m ∈ U₁ :=
   ((hS E a b U₁ U₂ F hF).1 m).1
 
+/- English proof (translation)
+The claim follows from `congrFun ((hS E a b U₁ U₂ F hF).1 m).2 y`.
+-/
 theorem sl_val (hS : PairSlices) {F : H E a b → ℂ} (hF : F ∈ pairSpace U₁ U₂) (m : GA E b) (y : GA E a) :
     (sl₁ F m).1 y = F (y, m) :=
   congrFun ((hS E a b U₁ U₂ F hF).1 m).2 y
 
+/- English proof (translation)
+Use function extensionality and compare the values at `x`. Establish `e : sl₁ (F + G) x.2 = sl₁ F x.2 + sl₁ G x.2` using `sl₁_eq (funext fun y => by show (sl₁ F x.2).1 y + (sl₁ G x.2).1 y = F (y, x.2) + G (y, x.2)`. Rewrite using `[sl_val hS hF, sl_val hS hG])`. Simplify using `only [ap₁, e, map_add, Pi.add_apply]`. Both sides reduce to the same expression.
+-/
 theorem ap₁_add (hS : PairSlices) (T : Sm E a →ₗ[ℂ] Sm E a) {F G : H E a b → ℂ} (hF : F ∈ pairSpace U₁ U₂)
     (hG : G ∈ pairSpace U₁ U₂) : ap₁ T (F + G) = ap₁ T F + ap₁ T G := by
   funext x
@@ -107,6 +144,9 @@ theorem ap₁_add (hS : PairSlices) (T : Sm E a →ₗ[ℂ] Sm E a) {F G : H E a
   simp only [ap₁, e, map_add, Pi.add_apply]
   rfl
 
+/- English proof (translation)
+Use function extensionality and compare the values at `x`. Establish `e : sl₁ (c • F) x.2 = c • sl₁ F x.2` using `sl₁_eq (funext fun y => by show c * (sl₁ F x.2).1 y = c * F (y, x.2)`. Rewrite using `[sl_val hS hF])`. Simplify using `only [ap₁, e, map_smul, Pi.smul_apply]`. Both sides reduce to the same expression.
+-/
 theorem ap₁_smul (hS : PairSlices) (T : Sm E a →ₗ[ℂ] Sm E a) {F : H E a b → ℂ} (hF : F ∈ pairSpace U₁ U₂) (c : ℂ) :
     ap₁ T (c • F) = c • ap₁ T F := by
   funext x
@@ -117,12 +157,18 @@ theorem ap₁_smul (hS : PairSlices) (T : Sm E a →ₗ[ℂ] Sm E a) {F : H E a 
   simp only [ap₁, e, map_smul, Pi.smul_apply]
   rfl
 
+/- English proof (translation)
+Use function extensionality and compare the values at `x`. Establish `e : sl₁ (0 : H E a b → ℂ) x.2 = 0` using `sl₁_eq rfl`. Simplify using `only [ap₁, e, map_zero]`. Both sides reduce to the same expression.
+-/
 theorem ap₁_zero (T : Sm E a →ₗ[ℂ] Sm E a) : ap₁ T (0 : H E a b → ℂ) = 0 := by
   funext x
   have e : sl₁ (0 : H E a b → ℂ) x.2 = 0 := sl₁_eq rfl
   simp only [ap₁, e, map_zero]
   rfl
 
+/- English proof (translation)
+Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simpa using ap₁_zero T`. Consider the case `insert k s hk ih`. Rewrite using `[Finset.sum_insert hk, Finset.sum_insert hk, ap₁_add hS T (hG k (Finset.mem_insert_self k s)) (Submodule.sum_mem _ fun j hj => hG j (Finset.mem_insert_of_mem hj)), ih fun j hj => hG j (Finset.mem_insert_of_mem hj)]`.
+-/
 theorem ap₁_sum (hS : PairSlices) (T : Sm E a →ₗ[ℂ] Sm E a) {κ : Type} (s : Finset κ) (G : κ → H E a b → ℂ)
     (hG : ∀ k ∈ s, G k ∈ pairSpace U₁ U₂) : ap₁ T (∑ k ∈ s, G k) = ∑ k ∈ s, ap₁ T (G k) := by
   classical
@@ -134,6 +180,13 @@ theorem ap₁_sum (hS : PairSlices) (T : Sm E a →ₗ[ℂ] Sm E a) {κ : Type} 
         (Submodule.sum_mem _ fun j hj => hG j (Finset.mem_insert_of_mem hj)),
       ih fun j hj => hG j (Finset.mem_insert_of_mem hj)]
 
+/- English proof (translation)
+Proceed by induction on `hF using Submodule.span_induction with`. Consider the case `mem G hG`. Take `⟨φ₁, h₁, φ₂, h₂, rfl⟩` from `hG`. Rewrite using `[ap₁_prod]`. Conclude with `Submodule.subset_span ⟨T φ₁, hT _ h₁, φ₂, h₂, rfl⟩`.
+
+Consider the case `zero => rw [ap₁_zero]`. Conclude with `Submodule.zero_mem _`. Consider the case `add G G' hG hG' h h' => rw [ap₁_add hS T hG hG']`. Conclude with `Submodule.add_mem _ h h'`. Consider the case `smul c G hG h => rw [ap₁_smul hS T hG]`.
+
+Conclude with `Submodule.smul_mem _ c h`.
+-/
 theorem ap₁_mem (hS : PairSlices) (T : Sm E a →ₗ[ℂ] Sm E a) {U₁' : Submodule ℂ (Sm E a)}
     (hT : ∀ ψ ∈ U₁, T ψ ∈ U₁') {F : H E a b → ℂ} (hF : F ∈ pairSpace U₁ U₂) : ap₁ T F ∈ pairSpace U₁' U₂ := by
   induction hF using Submodule.span_induction with
@@ -145,6 +198,9 @@ theorem ap₁_mem (hS : PairSlices) (T : Sm E a →ₗ[ℂ] Sm E a) {U₁' : Sub
   | add G G' hG hG' h h' => rw [ap₁_add hS T hG hG']; exact Submodule.add_mem _ h h'
   | smul c G hG h => rw [ap₁_smul hS T hG]; exact Submodule.smul_mem _ c h
 
+/- English proof (translation)
+Rewrite using `[hT o _ (sl_mem hS hF _), ho]`. Both sides reduce to the same expression.
+-/
 theorem ap₁_mul (hS : PairSlices) (T : Sm E a →ₗ[ℂ] Sm E a) (hT : ∀ o, ∀ ψ ∈ U₁, T (act o ψ) = act o (T ψ))
     {F : H E a b → ℂ} (hF : F ∈ pairSpace U₁ U₂) (o : Op E a) (g₁ : GA E a) (g₂ : GA E b)
     (ho : ∀ (ψ : Sm E a) y, (act o ψ).1 y = ψ.1 (y * g₁)) (x : H E a b) :
@@ -152,6 +208,9 @@ theorem ap₁_mul (hS : PairSlices) (T : Sm E a →ₗ[ℂ] Sm E a) (hT : ∀ o,
   rw [hT o _ (sl_mem hS hF _), ho]
   rfl
 
+/- English proof (translation)
+Rewrite using `[ap₁_mul hS T hT hF o g₁ g₂ ho]`. Establish `e : sl₁ (fun y : H E a b => F (y * (g₁, g₂))) x.2 = act o (sl₁ F (x.2 * g₂))` using `sl₁_eq (funext fun y => by`. Rewrite using `[ho, sl_val hS hF]`. Use the proof step `rfl)`. Simplify using `only [ap₁, e]`.
+-/
 theorem ap₁_translate (hS : PairSlices) (T : Sm E a →ₗ[ℂ] Sm E a) (hT : ∀ o, ∀ ψ ∈ U₁, T (act o ψ) = act o (T ψ))
     {F : H E a b → ℂ} (hF : F ∈ pairSpace U₁ U₂) (o : Op E a) (g₁ : GA E a) (g₂ : GA E b)
     (ho : ∀ (ψ : Sm E a) y, (act o ψ).1 y = ψ.1 (y * g₁)) (x : H E a b) :
@@ -163,6 +222,15 @@ theorem ap₁_translate (hS : PairSlices) (T : Sm E a →ₗ[ℂ] Sm E a) (hT : 
       rfl)
   simp only [ap₁, e]
 
+/- English proof (translation)
+Use `⟨fun u₁ h₁ u₂ h₂ x => ?_, fun x => ?_⟩` and prove the remaining obligations. Rewrite using `[ap₁_translate hS T hT hF (.fin u₁) _ _ (fun _ _ => rfl)]`. Establish `e : (fun y => F (y * (finGL E a u₁, finGL E b u₂))) = F` using `funext (hty.1 u₁ h₁ u₂ h₂)`. Rewrite using `[e]`. Establish `hD` using `GlobalTheory.CompanionTheory.LimV.finiteDimensional_prodSpan_of_fd W₁ W₂ hW₁ hW₂`.
+
+Set `s : Kinf E a × Kinf E b → Sm E a` to `fun k => act (.cpt k.1) (sl₁ F (x.2 * infGL E b (Unitary.toUnits k.2)))`. Set `ev : GA E a → Sm E a →ₗ[ℂ] ℂ` to `fun y => (LinearMap.proj y).comp (Sm E a).subtype`. Establish `hs : ∀ y, (fun k => ev y (s k)) ∈ GlobalTheory.CompanionTheory.LimV.prodSpan W₁ W₂` using `fun y => by`. Establish `e : (fun k => ev y (s k)) = fun k : Kinf E a × Kinf E b => F ((y, x.2) * (infGL E a (Unitary.toUnits k.1), infGL E b (Unitary.toUnits k.2)))`. Use function extensionality and compare the values at `fun k => sl_val hS hF _ _`.
+
+Rewrite using `[e]`. Conclude with `hty.2 (y, x.2)`. Establish `h` using `mem_of_separating _ hD s ev (fun v hv => Subtype.ext (funext hv)) hs ((ev x.1).comp T)`. Establish `e : (fun k : Kinf E a × Kinf E b => ap₁ T F (x * (infGL E a (Unitary.toUnits k.1), infGL E b (Unitary.toUnits k.2)))) = fun k => ((ev x.1).comp T) (s k)`. Use function extensionality and compare the values at `fun k => ap₁_mul hS T hT hF (.cpt k.1) _ _ (fun _ _ => rfl) x`.
+
+Rewrite using `[e]`. Conclude with `h`.
+-/
 theorem typeH_ap₁ (hS : PairSlices) {K₁ : Subgroup (GL (Fin a) (Af E))} {K₂ : Subgroup (GL (Fin b) (Af E))}
     {W₁ : Submodule ℂ (Kinf E a → ℂ)} {W₂ : Submodule ℂ (Kinf E b → ℂ)} (hW₁ : FiniteDimensional ℂ W₁)
     (hW₂ : FiniteDimensional ℂ W₂) (T : Sm E a →ₗ[ℂ] Sm E a) (hT : ∀ o, ∀ ψ ∈ U₁, T (act o ψ) = act o (T ψ))
@@ -191,6 +259,19 @@ theorem typeH_ap₁ (hS : PairSlices) {K₁ : Subgroup (GL (Fin a) (Af E))} {K�
 
 end Slices
 
+/- English proof (translation)
+Introduce `hS E _ _ _ a b ι _ K₁ K₂ W₁ W₂ U₁ U₁' U₂ T f hW₁ hW₂ hU hT hTm hf hty hne`. Use `⟨?_, fun i => ap₁_mem hS T hTm (hf i), fun i => typeH_ap₁ hS hW₁ hW₂ T hT (hf i) (hty i), ?_⟩` and prove the remaining obligations. Take `⟨i, m₂, φ, hφ, hTφ⟩` from `hne`. Introduce `h0`. Apply `hTφ` to reduce the goal to its premises.
+
+Use `Subtype.ext (funext fun x => ?_)` and prove the remaining obligations. Establish `h` using `congrFun (congrFun h0 i) (x, m₂)`. Simplify using `only [ap₁, sl₁_eq hφ] at h`. Conclude with `h`. Introduce `h c hc`.
+
+Use function extensionality and compare the values at `i x`. Establish `hmem : ∀ j g, (fun y => f j (y * finH g)) ∈ pairSpace U₁ (⊤ : Submodule ℂ (Sm E b))` using `fun j g => translate_mem hU (hf j) g`. Establish `e : heckeAct h f i = ∑ j, ∑ g ∈ (h i j).support, (h i j g) • (fun y => f j (y * finH g))`. Use function extensionality and compare the values at `y`. Simplify using `[heckeAct, Finsupp.sum, Finset.sum_apply]`.
+
+Establish `step : ap₁ T (heckeAct h f i) x = heckeAct h (fun i => ap₁ T (f i)) i x`. Rewrite using `[e, ap₁_sum (U₁ := U₁) (U₂ := ⊤) hS T _ _ (fun j _ => Submodule.sum_mem _ fun g _ => Submodule.smul_mem _ _ (hmem j g))]`. Simplify using `only [heckeAct, Finset.sum_apply, Finsupp.sum]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[ap₁_sum (U₁ := U₁) (U₂ := ⊤) hS T _ _ (fun g _ => Submodule.smul_mem _ _ (hmem j g)), Finset.sum_apply]`.
+
+Use `Finset.sum_congr rfl fun g _ => ?_` and prove the remaining obligations. Rewrite using `[ap₁_smul (U₁ := U₁) (U₂ := ⊤) hS T (hmem j g), Pi.smul_apply, smul_eq_mul]`. Conclude with `congrArg _ (ap₁_translate hS T hT (hf j) (.fin g.1) (finGL E a g.1) (finGL E b g.2) (fun _ _ => rfl) x).symm`. Establish `hc' : heckeAct h f i = c • f i` using `congrFun hc i`. Rewrite using `[← step, hc', ap₁_smul hS T (hf i)]`.
+
+Both sides reduce to the same expression.
+-/
 theorem pairStep₁_of_slices : PairSlices → PairStep₁ := by
   intro hS E _ _ _ a b ι _ K₁ K₂ W₁ W₂ U₁ U₁' U₂ T f hW₁ hW₂ hU hT hTm hf hty hne
   refine ⟨?_, fun i => ap₁_mem hS T hTm (hf i), fun i => typeH_ap₁ hS hW₁ hW₂ T hT (hf i) (hty i), ?_⟩

@@ -18,6 +18,15 @@ namespace GlobalTheory.SkewMove
 
 variable {D : D7}
 
+/- English proof (translation)
+Rewrite `hcop`, the goal using `[Ideal.isCoprime_iff_sup_eq]`. Assume the negation of the conclusion as `h`. Take `⟨P, hPm, hle⟩` from `Ideal.exists_le_maximal _ h`. Establish `hqP : (q : 𝓞 D.host.E) ∈ P` using `hle (Ideal.mem_sup_right (Ideal.mem_span_singleton_self _))`. Establish `hP0 : P ≠ ⊥`.
+
+Introduce and unpack `rfl`. Rewrite `hqP` using `[Ideal.mem_bot]`. Conclude with `hq.ne_zero (by exact_mod_cast hqP)`. Establish `hPP` using `hi P hPm.isPrime hP0 hqP`. Establish `h𝔪 : 𝔪 ≤ P` using `le_trans le_sup_left hle`.
+
+Establish `h𝔪' : D.host.conj • 𝔪 ≤ P`. Introduce `x hx`. Rewrite `hx` using `[Ideal.mem_pointwise_smul_iff_inv_smul_mem]`. Rewrite using `[← hPP, Ideal.mem_pointwise_smul_iff_inv_smul_mem]`. Conclude with `h𝔪 hx`.
+
+Conclude with `hPm.ne_top (top_le_iff.1 (hcop ▸ sup_le h𝔪 h𝔪'))`.
+-/
 theorem coprime_span_of_inert (𝔪 : Ideal (𝓞 D.host.E)) (hcop : IsCoprime 𝔪 (D.host.conj • 𝔪)) {q : ℕ}
     (hq : q.Prime) (hi : InertQ D q) : IsCoprime 𝔪 (Ideal.span {(q : 𝓞 D.host.E)}) := by
   rw [Ideal.isCoprime_iff_sup_eq] at hcop ⊢
@@ -38,6 +47,19 @@ theorem coprime_span_of_inert (𝔪 : Ideal (𝓞 D.host.E)) (hcop : IsCoprime �
   exact hPm.ne_top (top_le_iff.1 (hcop ▸ sup_le h𝔪 h𝔪'))
 
 open Classical in
+/- English proof (translation)
+Use `set n := Ideal.absNorm 𝔪 with hn`. Establish `hn0 : n ≠ 0` using `by simpa [hn, Ideal.absNorm_eq_zero_iff] using h𝔪`. Use `set S := n.primeFactors with hS`. Use `⟨∏ p ∈ S.filter (fun p => ¬ InertQ D p), p ^ n.factorization p, ∏ p ∈ S.filter (fun p => InertQ D p), p ^ n.factorization p, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Conclude with `Finset.prod_pos fun p hp => pow_pos (Nat.pos_of_mem_primeFactors (Finset.mem_filter.1 hp).1) _`.
+
+Establish `: (∏ p ∈ S.filter (fun p => ¬ InertQ D p), p ^ n.factorization p) * (∏ p ∈ S.filter (fun p => InertQ D p), p ^ n.factorization p) = n`. Rewrite using `[mul_comm, Finset.prod_filter_mul_prod_filter_not]`. Conclude with `Nat.prod_factorization_pow_eq_self hn0`. Rewrite using `[this, hn]`. Conclude with `Ideal.absNorm_mem 𝔪`.
+
+Introduce `q hq hi`. Use `Nat.Coprime.symm (Nat.Coprime.prod_right fun p hp => Nat.Coprime.pow_right _ ?_)` and prove the remaining obligations. Establish `hp` using `Finset.mem_filter.1 hp`. Establish `hpp : p.Prime` using `Nat.prime_of_mem_primeFactors hp.1`. Use `(Nat.coprime_primes hq hpp).2 ?_` and prove the remaining obligations.
+
+Introduce and unpack `rfl`. Conclude with `hp.2 hi`. Establish `hc : IsCoprime 𝔪 (Ideal.span {((∏ p ∈ S.filter (fun p => InertQ D p), p ^ n.factorization p : ℕ) : 𝓞 D.host.E)})`. Rewrite using `[Nat.cast_prod, ← Ideal.prod_span_singleton]`. Use `IsCoprime.prod_right fun p hp => ?_` and prove the remaining obligations.
+
+Establish `hp` using `Finset.mem_filter.1 hp`. Rewrite using `[Nat.cast_pow, ← Ideal.span_singleton_pow]`. Conclude with `IsCoprime.pow_right (coprime_span_of_inert 𝔪 hcop (Nat.prime_of_mem_primeFactors hp.1) hp.2)`. Rewrite `hc` using `[Ideal.isCoprime_iff_sup_eq, Ideal.eq_top_iff_one, Submodule.mem_sup]`. Take `⟨b, hb, c, hc, e⟩` from `hc`.
+
+Take `⟨r, rfl⟩` from `Ideal.mem_span_singleton'.1 hc`. Conclude with `⟨b, hb, r, by rw [← e, mul_comm]⟩`.
+-/
 theorem exists_split_nat (𝔪 : Ideal (𝓞 D.host.E)) (h𝔪 : 𝔪 ≠ ⊥) (hcop : IsCoprime 𝔪 (D.host.conj • 𝔪)) :
     ∃ ns ni : ℕ, 0 < ns ∧ ((ns * ni : ℕ) : 𝓞 D.host.E) ∈ 𝔪 ∧ (∀ q : ℕ, q.Prime → InertQ D q → Nat.Coprime ns q) ∧
       ∃ b ∈ 𝔪, ∃ r : 𝓞 D.host.E, b + (ni : 𝓞 D.host.E) * r = 1 := by
@@ -72,6 +94,15 @@ theorem exists_split_nat (𝔪 : Ideal (𝓞 D.host.E)) (h𝔪 : 𝔪 ≠ ⊥) (
     obtain ⟨r, rfl⟩ := Ideal.mem_span_singleton'.1 hc
     exact ⟨b, hb, r, by rw [← e, mul_comm]⟩
 
+/- English proof (translation)
+Take `⟨y, y1, hy⟩` from `GlobalTheory.IdealIdele.exists_idele_generator D 𝔪 h𝔪`. Take `⟨ns, ni, hns, hn𝔪, hcq, b, hb, r, e⟩` from `exists_split_nat 𝔪 h𝔪 hcop`. Take `⟨hsep, hcpl⟩` from `GlobalTheory.IntAdeleComplete.integral_separated_complete D`. Take `⟨f, hf, hff, ⟨w, hw, hfw⟩, h3⟩` from `GlobalTheory.IdealIdele.exists_idem (OhE D) hsep hcpl ns hns`. Use `⟨y, f, y1, hy, hf, hff, ?_, fun q hq hi k => ?_⟩` and prove the remaining obligations.
+
+Establish `h1 : inc D (b : D.host.E) + (ni : AE D) * inc D (r : D.host.E) = 1`. Use `congrArg (fun z : 𝓞 D.host.E => inc D (z : D.host.E)) e` as an intermediate fact. Simplify using `using this`. Establish `h2` using `y1 _ hn𝔪`. Establish `h3 : inc D (((ns * ni : ℕ) : 𝓞 D.host.E) : D.host.E) = (ns : AE D) * ni` using `by simp`.
+
+Rewrite `h2` using `[h3]`. Establish `hb'` using `y1 b hb`. Establish `: f * ((y⁻¹ : (AE D)ˣ) : AE D) = f * (((y⁻¹ : (AE D)ˣ) : AE D) * inc D (b : D.host.E)) + inc D (r : D.host.E) * w * (((y⁻¹ : (AE D)ˣ) : AE D) * ((ns : AE D) * ni))`. Rewrite using `[hfw]`. Take the linear combination `(-((ns : AE D) * w * ((y⁻¹ : (AE D)ˣ) : AE D))) * h1`.
+
+Rewrite using `[this]`. Conclude with `add_mem (mul_mem hf hb') (mul_mem (mul_mem (VacMove.inc_int D r) hw) h2)`. Take `⟨w', hw', e'⟩` from `h3 (q ^ k) (pow_pos hq.pos k) (Nat.Coprime.pow_right _ (hcq q hq hi))`. Conclude with `⟨w', hw', by rw [e']; push_cast; ring⟩`.
+-/
 theorem exists_gen_idem (𝔪 : Ideal (𝓞 D.host.E)) (h𝔪 : 𝔪 ≠ ⊥) (hcop : IsCoprime 𝔪 (D.host.conj • 𝔪)) :
     ∃ (y : (AE D)ˣ) (f : AE D),
       (∀ b ∈ 𝔪, ((y⁻¹ : (AE D)ˣ) : AE D) * inc D (b : D.host.E) ∈ OhE D) ∧
@@ -99,6 +130,17 @@ theorem exists_gen_idem (𝔪 : Ideal (𝓞 D.host.E)) (h𝔪 : 𝔪 ≠ ⊥) (h
   · obtain ⟨w', hw', e'⟩ := h3 (q ^ k) (pow_pos hq.pos k) (Nat.Coprime.pow_right _ (hcq q hq hi))
     exact ⟨w', hw', by rw [e']; push_cast; ring⟩
 
+/- English proof (translation)
+Establish `h0 : ((𝔪 : FractionalIdeal (𝓞 D.host.E)⁰ D.host.E)) ≠ 0`. Rewrite using `[Ne, FractionalIdeal.coeIdeal_eq_zero]` and apply the resulting hypothesis. Rewrite using `[← inv_inv ((𝔪 : FractionalIdeal (𝓞 D.host.E)⁰ D.host.E)), FractionalIdeal.mem_inv_iff (inv_ne_zero h0)]`. Introduce `β hβ`. Rewrite `hβ` using `[FractionalIdeal.mem_inv_iff h0]`.
+
+Establish `hint : ∀ i, inc D ((b i : D.host.E) * β) ∈ OhE D` using `fun i => by`. Establish `h` using `hβ _ (FractionalIdeal.mem_coeIdeal_of_mem _ (hb i))`. Rewrite `h` using `[mul_comm]`. Take `⟨r, hr⟩` from `(FractionalIdeal.mem_one_iff _).1 h`. Rewrite using `[← hr]`.
+
+Conclude with `VacMove.inc_int D r`. Establish `e : inc D (z * β) = (((y⁻¹ : (AE D)ˣ) : AE D) * inc D z) * ∑ i, inc D ((b i : D.host.E) * β) * w i`. Establish `: ∑ i, inc D ((b i : D.host.E) * β) * w i = (y : AE D) * inc D β`. Rewrite using `[hy, Finset.sum_mul]`. Conclude with `Finset.sum_congr rfl fun i _ => by rw [map_mul]; ring`.
+
+Rewrite using `[this, map_mul]`. Take the linear combination `(-(inc D z * inc D β)) * y.inv_mul`. Establish `hm : inc D (z * β) ∈ OhE D` using `e ▸ mul_mem hz (sum_mem fun i _ => mul_mem (hint i) (hw i))`. Rewrite `hm` using `[GlobalTheory.HeckeVal.inc_mem_iff]`. Rewrite using `[FractionalIdeal.mem_one_iff]`.
+
+Conclude with `⟨⟨_, hm⟩, rfl⟩`.
+-/
 theorem mem_of_gen {𝔪 : Ideal (𝓞 D.host.E)} (h𝔪 : 𝔪 ≠ ⊥) {y : (AE D)ˣ} {k : ℕ} {b : Fin k → 𝓞 D.host.E}
     {w : Fin k → AE D} (hb : ∀ i, b i ∈ 𝔪) (hw : ∀ i, w i ∈ OhE D) (hy : (y : AE D) = ∑ i, inc D (b i : D.host.E) * w i)
     {z : D.host.E} (hz : ((y⁻¹ : (AE D)ˣ) : AE D) * inc D z ∈ OhE D) :
@@ -124,6 +166,9 @@ theorem mem_of_gen {𝔪 : Ideal (𝓞 D.host.E)} (h𝔪 : 𝔪 ≠ ⊥) {y : (A
   rw [FractionalIdeal.mem_one_iff]
   exact ⟨⟨_, hm⟩, rfl⟩
 
+/- English proof (translation)
+Take `⟨b, hb, hb0⟩` from `Submodule.exists_mem_ne_zero_of_ne_bot h𝔪`. Introduce `h`. Use `Ideal.smul_mem_pointwise_smul D.host.conj b 𝔪 hb` as an intermediate fact. Rewrite `this` using `[h, Ideal.mem_bot, smul_eq_zero_iff_eq]`. Conclude with `hb0 this`.
+-/
 theorem conj_smul_ne_bot {𝔪 : Ideal (𝓞 D.host.E)} (h𝔪 : 𝔪 ≠ ⊥) : D.host.conj • 𝔪 ≠ ⊥ := by
   obtain ⟨b, hb, hb0⟩ := Submodule.exists_mem_ne_zero_of_ne_bot h𝔪
   intro h
@@ -131,6 +176,23 @@ theorem conj_smul_ne_bot {𝔪 : Ideal (𝓞 D.host.E)} (h𝔪 : 𝔪 ≠ ⊥) :
   rw [h, Ideal.mem_bot, smul_eq_zero_iff_eq] at this
   exact hb0 this
 
+/- English proof (translation)
+Establish `hJ0 : ((D.host.conj • 𝔪 : Ideal (𝓞 D.host.E)) : FractionalIdeal (𝓞 D.host.E)⁰ D.host.E) ≠ 0`. Rewrite using `[Ne, FractionalIdeal.coeIdeal_eq_zero]`. Conclude with `conj_smul_ne_bot h𝔪`. Rewrite using `[FractionalIdeal.mem_div_iff_of_ne_zero hJ0]`. Prove the components needed by the constructor for the conclusion.
+
+Introduce `h`. Establish `hmem : ∀ i, ((y⁻¹ : (AE D)ˣ) : AE D) * inc D (x * D.host.conj (b i : D.host.E)) ∈ OhE D` using `fun i => by`. Establish `h1` using `h _ (FractionalIdeal.mem_coeIdeal_of_mem _ (Ideal.smul_mem_pointwise_smul D.host.conj (b i) 𝔪 (hb i)))`. Take `⟨b', hb', e⟩` from `(FractionalIdeal.mem_coeIdeal _).1 h1`. Establish `e' : x * D.host.conj (b i : D.host.E) = (b' : D.host.E)`.
+
+Express the relevant statement in the definitionally equal form `_ = algebraMap (𝓞 D.host.E) D.host.E b'`. Rewrite using `[e]`. Both sides reduce to the same expression. Rewrite using `[e']`. Conclude with `y1 b' hb'`.
+
+Establish `e : sgA D (y : AE D) * ((y⁻¹ : (AE D)ˣ) : AE D) * inc D x = ∑ i, sgA D (w i) * (((y⁻¹ : (AE D)ˣ) : AE D) * inc D (x * D.host.conj (b i : D.host.E)))`. Rewrite using `[hy, map_sum, Finset.sum_mul, Finset.sum_mul]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[map_mul, GlobalTheory.NormSum.PtsMem.sgA_inc, map_mul]`. Expand and normalize the polynomial expressions, which then agree.
+
+Rewrite using `[e]`. Conclude with `sum_mem fun i _ => mul_mem (VacMove.sgA_mem D (hw i)) (hmem i)`. Introduce `hs c hc`. Take `⟨c', hc', rfl⟩` from `(FractionalIdeal.mem_coeIdeal _).1 hc`. Rewrite `hc'` using `[Ideal.mem_pointwise_smul_iff_inv_smul_mem]`.
+
+Establish `hcc : D.host.conj (((D.host.conj⁻¹ • c' : 𝓞 D.host.E)) : D.host.E) = (c' : D.host.E)`. Express the relevant statement in the definitionally equal form `D.host.conj (D.host.conj⁻¹ (c' : D.host.E)) = c'`. Rewrite using `[← AlgEquiv.mul_apply, mul_inv_cancel, AlgEquiv.one_apply]`. Establish `hinv : sgA D ((y⁻¹ : (AE D)ˣ) : AE D) * sgA D (y : AE D) = 1`. Rewrite using `[← map_mul, Units.inv_mul, map_one]`.
+
+Use `mem_of_gen h𝔪 hb hw hy ?_` and prove the remaining obligations. Establish `e : ((y⁻¹ : (AE D)ˣ) : AE D) * inc D (x * algebraMap (𝓞 D.host.E) D.host.E c') = (sgA D (y : AE D) * ((y⁻¹ : (AE D)ˣ) : AE D) * inc D x) * sgA D (((y⁻¹ : (AE D)ˣ) : AE D) * inc D ((D.host.conj⁻¹ • c' : 𝓞 D.host.E) : D.host.E))`. Rewrite using `[map_mul (sgA D), GlobalTheory.NormSum.PtsMem.sgA_inc, hcc, map_mul]`. Express the relevant statement in the definitionally equal form `_ * (_ * inc D (c' : D.host.E)) = _`. Take the linear combination `(-(((y⁻¹ : (AE D)ˣ) : AE D) * inc D x * inc D (c' : D.host.E))) * hinv`.
+
+Rewrite using `[e]`. Conclude with `mul_mem hs (VacMove.sgA_mem D (y1 _ hc'))`.
+-/
 theorem mem_skew_iff {𝔪 : Ideal (𝓞 D.host.E)} (h𝔪 : 𝔪 ≠ ⊥) {y : (AE D)ˣ}
     (y1 : ∀ b ∈ 𝔪, ((y⁻¹ : (AE D)ˣ) : AE D) * inc D (b : D.host.E) ∈ OhE D) {k : ℕ} {b : Fin k → 𝓞 D.host.E}
     {w : Fin k → AE D} (hb : ∀ i, b i ∈ 𝔪) (hw : ∀ i, w i ∈ OhE D) (hy : (y : AE D) = ∑ i, inc D (b i : D.host.E) * w i)
@@ -175,6 +237,13 @@ theorem mem_skew_iff {𝔪 : Ideal (𝓞 D.host.E)} (h𝔪 : 𝔪 ≠ ⊥) {y : 
     rw [e]
     exact mul_mem hs (VacMove.sgA_mem D (y1 _ hc'))
 
+/- English proof (translation)
+Establish `e1 : ((1 - e) * yi + e) * ((1 - e) * Y + e) * T = (1 - e) * (Y * yi * T) + e * T`. Take the linear combination `(yi * Y - yi - Y + 1) * T * he`. Establish `e2 : e * T = (e * y * Yi) * (Y * yi * T)`. Take the linear combination `(-(e * T * Y * Yi)) * hyy - e * T * hY`. Establish `h1e : 1 - e ∈ S` using `sub_mem (one_mem _) heS`.
+
+Rewrite using `[e1]`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Establish `e3 : Y * yi * T = (1 - e) * ((1 - e) * (Y * yi * T) + e * T) + (e * Y * yi) * ((1 - e) * (Y * yi * T) + e * T)`. Take the linear combination `(T + Y * yi * (Y * yi * T) - 2 * (Y * yi * T)) * he`.
+
+Rewrite using `[e3]`. Conclude with `add_mem (mul_mem h1e h) (mul_mem hA h)`. Introduce `h`. Rewrite using `[e2]`. Conclude with `add_mem (mul_mem h1e h) (mul_mem hB h)`.
+-/
 theorem move_iff {R : Type*} [CommRing R] (S : Subring R) {e y yi Y Yi T : R} (heS : e ∈ S) (he : e * e = e)
     (hyy : y * yi = 1) (hY : Y * Yi = 1) (hA : e * Y * yi ∈ S) (hB : e * y * Yi ∈ S) :
     ((1 - e) * yi + e) * ((1 - e) * Y + e) * T ∈ S ↔ Y * yi * T ∈ S := by
@@ -195,11 +264,51 @@ theorem move_iff {R : Type*} [CommRing R] (S : Subring R) {e y yi Y Yi T : R} (h
     rw [e2]
     exact add_mem (mul_mem h1e h) (mul_mem hB h)
 
+/- English proof (translation)
+Introduce `_` and use `⟨1, one_pos, Nat.coprime_one_left q, 0, zero_mem _, by simp⟩`.
+-/
 theorem zeroAt_zero' (D : D7) (q : ℕ) : ZeroAt D q 0 :=
   fun _ => ⟨1, one_pos, Nat.coprime_one_left q, 0, zero_mem _, by simp⟩
 
 set_option maxHeartbeats 1000000 in
 
+/- English proof (translation)
+Introduce `D 𝔪 h𝔪 hcop d`. Take `⟨y, f, y1, ⟨k, b, w, hb, hw, hy⟩, hf, hff, hfy, hq⟩` from `exists_gen_idem 𝔪 h𝔪 hcop`. Take `⟨e, he_def⟩ : ∃ e : AE D, e = f * sgA D f` from `⟨_, rfl⟩`. Establish `hfb : sgA D f * sgA D f = sgA D f` using `by rw [← map_mul, hff]`. Establish `he : e * e = e` using `by rw [he_def]; linear_combination sgA D f * sgA D f * hff + f * hfb`.
+
+Establish `hse : sgA D e = e` using `by rw [he_def, map_mul, VacMove.sgA_sgA, mul_comm]`. Establish `heO : e ∈ OhE D` using `he_def ▸ mul_mem hf (VacMove.sgA_mem D hf)`. Establish `hyO : (y : AE D) ∈ OhE D` using `hy ▸ sum_mem fun i _ => mul_mem (VacMove.inc_int D (b i)) (hw i)`. Establish `hyy : (y : AE D) * ((y⁻¹ : (AE D)ˣ) : AE D) = 1` using `y.mul_inv`. Establish `hY : sgA D (y : AE D) * sgA D ((y⁻¹ : (AE D)ˣ) : AE D) = 1` using `by rw [← map_mul, hyy, map_one]`.
+
+Establish `hA : e * sgA D (y : AE D) * ((y⁻¹ : (AE D)ˣ) : AE D) ∈ OhE D`. Establish `: e * sgA D (y : AE D) * ((y⁻¹ : (AE D)ˣ) : AE D) = (sgA D f * sgA D (y : AE D)) * (f * ((y⁻¹ : (AE D)ˣ) : AE D))` using `by rw [he_def]; ring`. Rewrite using `[this]`. Conclude with `mul_mem (mul_mem (VacMove.sgA_mem D hf) (VacMove.sgA_mem D hyO)) hfy`. Establish `hB : e * (y : AE D) * sgA D ((y⁻¹ : (AE D)ˣ) : AE D) ∈ OhE D`.
+
+Establish `: e * (y : AE D) * sgA D ((y⁻¹ : (AE D)ˣ) : AE D) = (f * (y : AE D)) * sgA D (f * ((y⁻¹ : (AE D)ˣ) : AE D))` using `by rw [he_def, map_mul]; ring`. Rewrite using `[this]`. Conclude with `mul_mem (mul_mem hf hyO) (VacMove.sgA_mem D hfy)`. Establish `h1e : ∀ q : ℕ, q.Prime → InertQ D q → ZeroAt D q (1 - e)`. Introduce `q hqp hi j`.
+
+Take `⟨w', hw', e'⟩` from `hq q hqp hi j`. Establish `e'' : 1 - sgA D f = (q : AE D) ^ j * sgA D w'`. Rewrite using `[← map_one (sgA D), ← map_sub, e', map_mul, map_pow, map_natCast]`. Use `⟨1, one_pos, Nat.coprime_one_left q, w' + f * sgA D w', add_mem hw' (mul_mem hf (VacMove.sgA_mem D hw')), ?_⟩` and prove the remaining obligations. Rewrite using `[he_def, Nat.cast_one, one_mul]`.
+
+Take the linear combination `e' + f * e''`. Establish `hu : ((1 - e) * (y : AE D) + e) * ((1 - e) * ((y⁻¹ : (AE D)ˣ) : AE D) + e) = 1`. Take the linear combination `(1 - e) ^ 2 * hyy + (2 - (y : AE D) - ((y⁻¹ : (AE D)ˣ) : AE D)) * he`. Take `⟨u, hu_val, hu_inv⟩ : ∃ u : (AE D)ˣ, (u : AE D) = (1 - e) * (y : AE D) + e ∧ ((u⁻¹ : (AE D)ˣ) : AE D) = (1 - e) * ((y⁻¹ : (AE D)ˣ) : AE D) + e` from `⟨⟨_, _, hu, by rw [mul_comm]; exact hu⟩, rfl, rfl⟩`. Establish `hsv : ∀ z : (AE D)ˣ, ((sgU D z : (AE D)ˣ) : AE D) = sgA D (z : AE D)` using `fun z => rfl`.
+
+Establish `hsi : ∀ z : (AE D)ˣ, (((sgU D z)⁻¹ : (AE D)ˣ) : AE D) = sgA D ((z⁻¹ : (AE D)ˣ) : AE D)` using `fun z => rfl`. Establish `hu1 : ∀ q : ℕ, q.Prime → InertQ D q → ZeroAt D q ((u : AE D) - 1)` using `fun q hqp hi => by`. Use `VacMove.zeroAt_mul D hqp (h1e q hqp hi) ((y : AE D) - 1)` as an intermediate fact. Rewrite using `[hu_val]`. Use `this using 1` and compare the differences between its conclusion and the goal.
+
+Expand and normalize the polynomial expressions, which then agree. Take `⟨v, hv_def⟩ : ∃ v : (AE D)ˣ, v = u * (sgU D u)⁻¹` from `⟨_, rfl⟩`. Establish `hv : (v : AE D) = ((1 - e) * (y : AE D) + e) * ((1 - e) * sgA D ((y⁻¹ : (AE D)ˣ) : AE D) + e)`. Rewrite using `[hv_def, Units.val_mul, hsi, hu_val, hu_inv, map_add, map_mul, map_sub, map_one, hse]`. Establish `hvi : ((v⁻¹ : (AE D)ˣ) : AE D) = ((1 - e) * ((y⁻¹ : (AE D)ˣ) : AE D) + e) * ((1 - e) * sgA D (y : AE D) + e)`.
+
+Rewrite using `[hv_def, mul_inv_rev, inv_inv, Units.val_mul, hsv, hu_val, hu_inv, map_add, map_mul, map_sub, map_one, hse, mul_comm]`. Establish `hv2 : ((1 - e) * sgA D (y : AE D) + e) * ((1 - e) * sgA D ((y⁻¹ : (AE D)ˣ) : AE D) + e) = 1`. Take the linear combination `(1 - e) ^ 2 * hY + (2 - sgA D (y : AE D) - sgA D ((y⁻¹ : (AE D)ˣ) : AE D)) * he`. Establish `hss : sgU D (sgU D u) = u` using `Units.ext (VacMove.sgA_sgA D _)`. Establish `hvv' : sgU D v * v = 1`.
+
+Rewrite using `[hv_def]`. Rewrite using `[map_mul, map_inv, hss]`. Use `group`. Establish `hvv : sgA D (v : AE D) * (v : AE D) = 1` using `congrArg Units.val hvv'`. Take `⟨gG, hgv, hgi⟩ : ∃ gG : GL (Fin d) (AE D), (gG : Matrix (Fin d) (Fin d) (AE D)) = Matrix.diagonal (fun _ => (v : AE D)) ∧ ((gG⁻¹ : GL (Fin d) (AE D)) : Matrix (Fin d) (Fin d) (AE D)) = Matrix.diagonal fun _ => ((v⁻¹ : (AE D)ˣ) : AE D)` from `⟨Units.map (Matrix.scalar (Fin d) : AE D →+* Matrix (Fin d) (Fin d) (AE D)).toMonoidHom v, rfl, rfl⟩`.
+
+Establish `hmem : gG ∈ GA D d`. Rewrite using `[GlobalTheory.NormSum.PtsMem.mem_GA, hgv, Matrix.diagonal_map (map_zero _), Matrix.diagonal_transpose, Matrix.diagonal_mul_diagonal, ← Matrix.diagonal_one]`. Conclude with `congrArg Matrix.diagonal (funext fun _ => hvv)`. Establish `hsupp : SuppSplit D gG`. Introduce `q hqp hi i j`.
+
+Rewrite using `[hgv]`. Distinguish the cases in `hij : i = j`. Substitute `hij` using the available equality. Rewrite using `[Matrix.diagonal_apply_eq, Matrix.one_apply_eq]`. Use `VacMove.zeroAt_mul D hqp (h1e q hqp hi) (((y : AE D) - sgA D (y : AE D)) * ((1 - e) * sgA D ((y⁻¹ : (AE D)ˣ) : AE D) + e))` as an intermediate fact.
+
+Use `this using 1` and compare the differences between its conclusion and the goal. Rewrite using `[hv]`. Take the linear combination `hv2`. Rewrite using `[Matrix.diagonal_apply_ne _ hij, Matrix.one_apply_ne hij, sub_self]`. Conclude with `zeroAt_zero' D q`.
+
+Establish `hmove : Moves D gG (skewLat D 𝔪 d)`. Introduce `x`. Rewrite using `[hgi]`. Simplify using `only [Matrix.mulVec_diagonal, hvi]`. Express the relevant statement in the definitionally equal form `x ∈ Submodule.pi Set.univ _ ↔ _`.
+
+Rewrite using `[Submodule.mem_pi]`. Use `⟨fun h i => ?_, fun h i _ => ?_⟩` and prove the remaining obligations. Conclude with `(move_iff (OhE D) heO he hyy hY hA hB).2 ((mem_skew_iff h𝔪 y1 hb hw hy (x i)).1 (FractionalIdeal.mem_coe.1 (h i (Set.mem_univ i))))`. Establish `key` using `(mem_skew_iff h𝔪 y1 hb hw hy (x i)).2 ((move_iff (OhE D) heO he hyy hY hA hB).1 (h i))`. Conclude with `key`.
+
+Establish `hdet : Matrix.GeneralLinearGroup.det gG = v ^ d`. Establish `h1 : ((Matrix.GeneralLinearGroup.det gG : (AE D)ˣ) : AE D) = (gG : Matrix (Fin d) (Fin d) (AE D)).det` using `Matrix.GeneralLinearGroup.val_det_apply gG`. Establish `h2 : (gG : Matrix (Fin d) (Fin d) (AE D)).det = (v : AE D) ^ d`. Rewrite using `[hgv, Matrix.det_diagonal, Finset.prod_const, Finset.card_univ, Fintype.card_fin]`. Use `Units.ext ?_` and prove the remaining obligations.
+
+Rewrite using `[h1, h2, Units.val_pow_eq_pow_val]`. Use `⟨⟨gG, hmem⟩, u ^ d, hsupp, hmove, ?_, ?_⟩` and prove the remaining obligations. Introduce `q hqp hi`. Rewrite using `[Units.val_pow_eq_pow_val, ← mul_geom_sum]`. Conclude with `VacMove.zeroAt_mul D hqp (hu1 q hqp hi) _`.
+
+Express the relevant statement in the definitionally equal form `u ^ d = Matrix.GeneralLinearGroup.det gG * sgU D (u ^ d)`. Rewrite using `[hdet, map_pow, hv_def, mul_pow, inv_pow, inv_mul_cancel_right]`.
+-/
 theorem exists_skew_move : ∀ (D : D7) (𝔪 : Ideal (𝓞 D.host.E)), 𝔪 ≠ ⊥ → IsCoprime 𝔪 (D.host.conj • 𝔪) → ∀ d : ℕ, ∃ (g' : GA D d) (x' : (AE D)ˣ), SuppSplit D (g' : GL (Fin d) (AE D)) ∧ Moves D (g' : GL (Fin d) (AE D)) (skewLat D 𝔪 d) ∧ (∀ q : ℕ, q.Prime → InertQ D q → ZeroAt D q ((x' : AE D) - 1)) ∧ x' = Matrix.GeneralLinearGroup.det (g' : GL (Fin d) (AE D)) * sgU D x' := by
   intro D 𝔪 h𝔪 hcop d
   obtain ⟨y, f, y1, ⟨k, b, w, hb, hw, hy⟩, hf, hff, hfy, hq⟩ := exists_gen_idem 𝔪 h𝔪 hcop

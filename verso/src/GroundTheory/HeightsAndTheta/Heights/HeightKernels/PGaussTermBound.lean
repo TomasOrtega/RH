@@ -8,6 +8,15 @@ open Real
 
 namespace PGaussTermBound
 
+/- English proof (translation)
+Use `set s := √(n : ℝ) with hs_def`. Establish `hn' : (0 : ℝ) < n` using `by exact_mod_cast hn`. Establish `hs : 0 < s` using `Real.sqrt_pos.2 hn'`. Establish `hss : s * s = n` using `Real.mul_self_sqrt hn'.le`. Establish `hm : (0 : ℝ) ≤ (m : ℝ) + 1` using `by positivity`.
+
+Establish `h1` using `Real.pow_div_factorial_le_exp (s * ((m : ℝ) + 1)) (mul_nonneg hs.le hm) n`. Establish `hfac : (0 : ℝ) < (n.factorial : ℝ)` using `by exact_mod_cast Nat.factorial_pos n`. Rewrite `h1` using `[div_le_iff₀ hfac]`. Establish `hfac2 : (n.factorial : ℝ) ≤ s ^ n * s ^ n`. Rewrite using `[← mul_pow, hss]`.
+
+Conclude with `Nat.factorial_le_pow n` after adjusting the coercions. Establish `hE : 0 ≤ Real.exp (s * ((m : ℝ) + 1))` using `(Real.exp_pos _).le`. Establish `h2 : s ^ n * ((m : ℝ) + 1) ^ n ≤ s ^ n * (s ^ n * Real.exp (s * ((m : ℝ) + 1)))`. Rewrite using `[← mul_pow]`. Combine the equalities or inequalities in the displayed calculation.
+
+Conclude with `le_of_mul_le_mul_left h2 (pow_pos hs n)`.
+-/
 theorem pow_le_sqrt_pow_mul_exp (n m : ℕ) (hn : 1 ≤ n) :
     ((m : ℝ) + 1) ^ n ≤ √(n : ℝ) ^ n * Real.exp (√(n : ℝ) * ((m : ℝ) + 1)) := by
   set s := √(n : ℝ) with hs_def
@@ -29,6 +38,13 @@ theorem pow_le_sqrt_pow_mul_exp (n m : ℕ) (hn : 1 ≤ n) :
       _ = s ^ n * (s ^ n * Real.exp (s * ((m : ℝ) + 1))) := by ring
   exact le_of_mul_le_mul_left h2 (pow_pos hs n)
 
+/- English proof (translation)
+Use `set s := √(n : ℝ) with hs_def`. Establish `hss : s * s = n` using `Real.mul_self_sqrt (Nat.cast_nonneg n)`. Establish `hpi : 0 < π` using `Real.pi_pos`. Establish `hpi3 : 3 < π` using `Real.pi_gt_three`. Establish `hA : s * m - π / 2 * (m : ℝ) ^ 2 ≤ n / (2 * π)`.
+
+Rewrite using `[le_div_iff₀ (by positivity)]`. Use polynomial arithmetic with `[sq_nonneg (π * m - s)]`. Establish `hB : (m : ℝ) ≤ π / 2 * (m : ℝ) ^ 2`. Break down `Nat.eq_zero_or_pos m with h | h` into its components or cases. Substitute `h` using the available equality.
+
+Simplify using the standard rewrite rules. Establish `hm1 : (1 : ℝ) ≤ m` using `by exact_mod_cast h`. Use the polynomial consequences of the given equalities and inequalities. Use the polynomial consequences of the given equalities and inequalities.
+-/
 theorem exponent_le (n m : ℕ) :
     √(n : ℝ) * ((m : ℝ) + 1) + -π * (m : ℝ) ^ 2 ≤ √(n : ℝ) + n / (2 * π) + -(m : ℝ) := by
   set s := √(n : ℝ) with hs_def
@@ -49,6 +65,13 @@ theorem exponent_le (n m : ℕ) :
 
 end PGaussTermBound
 
+/- English proof (translation)
+Introduce `n hn m`. Establish `h1` using `PGaussTermBound.pow_le_sqrt_pow_mul_exp n m hn`. Establish `h2` using `PGaussTermBound.exponent_le n m`. Establish `hE : 0 ≤ Real.exp (-π * (m : ℝ) ^ 2)` using `(Real.exp_pos _).le`. Combine the equalities or inequalities in the displayed calculation.
+
+Rewrite using `[Real.exp_add]`. Expand and normalize the polynomial expressions, which then agree. Use `_ ≤ √(n : ℝ) ^ n * Real.exp (√(n : ℝ) + n / (2 * π) + -(m : ℝ)) := mul_le_mul_of_nonneg_left (Real.exp_le_exp.2 h2) (by positivity)`. Use `_ = √(n : ℝ) ^ n * Real.exp √(n : ℝ) * Real.exp (n / (2 * π)) * Real.exp (-(m : ℝ)) := by`. Rewrite using `[Real.exp_add, Real.exp_add]`.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem GaussTermBound.proof : GaussTermBound.Statement := by
   intro n hn m
   have h1 := PGaussTermBound.pow_le_sqrt_pow_mul_exp n m hn

@@ -9,6 +9,9 @@ namespace PositivityTheory.RgUd.Exp.ThetaPf
 
 open GlobalTheory.CompanionTheory.BZSegComm GlobalTheory.CompanionTheory.ThetaW
 
+/- English proof (translation)
+Introduce `r t V W _ _ _ _ A B _ _`. Take `⟨κ⟩` from `ind₂_swap_equiv_comp_invT (k := k) (stdSum (rfl : r + t = r + t)) (stdSum (add_comm t r)) (extTensor A B)`. Take `⟨τ⟩` from `nonempty_extTensor_swap (k := k) A B`. Conclude with `⟨(compInvTEquiv (prod₂ A B)).symm.trans (κ.symm.trans (ind₂Equiv _ (τ.trans (extTensorCongr (compInvTEquiv B) (compInvTEquiv A)))))⟩`.
+-/
 theorem thetaProd (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] :
     PositivityTheory.RgUd.Exp.ThetaProd k := by
   intro r t V W _ _ _ _ A B _ _

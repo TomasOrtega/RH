@@ -6,12 +6,20 @@ open scoped Formalism.Per NNReal
 noncomputable section
 namespace GlobalTheory.CovTrans
 
+/- English proof (translation)
+Use `show (algebraMap ℚ_[l] (Om l) (algebraMap ℤ_[l] ℚ_[l] c)) • x = _`. Rewrite using `[algebraMap_smul]`. Both sides reduce to the same expression.
+-/
 theorem zOm_smul_eq_q {l : ℕ} [Fact l.Prime] {X : Type} [AddCommGroup X] [Module (Om l) X] [Module ℚ_[l] X]
     [IsScalarTower ℚ_[l] (Om l) X] (c : ℤ_[l]) (x : X) : zOm l c • x = ((c : ℚ_[l])) • x := by
   show (algebraMap ℚ_[l] (Om l) (algebraMap ℤ_[l] ℚ_[l] c)) • x = _
   rw [algebraMap_smul]
   rfl
 
+/- English proof (translation)
+Simplify using `only [zOm_smul_eq_q] at h`. Use `Fintype.linearIndependent_iff.mp hv (fun i => (u i : ℚ_[l]) - u' i) (by simp only [sub_smul, Finset.sum_sub_distrib, h, sub_self])` as an intermediate fact. Use function extensionality and compare the values at `i`. Establish `h2` using `this i`. Rewrite `h2` using `[sub_eq_zero]`.
+
+Conclude with `Subtype.ext h2`.
+-/
 theorem coord_inj {l : ℕ} [Fact l.Prime] {X : Type} [AddCommGroup X] [Module (Om l) X] [Module ℚ_[l] X]
     [IsScalarTower ℚ_[l] (Om l) X] {n : ℕ} {v : Fin n → X} (hv : LinearIndependent ℚ_[l] v) {u u' : Fin n → ℤ_[l]}
     (h : ∑ i, zOm l (u i) • v i = ∑ i, zOm l (u' i) • v i) : u = u' := by
@@ -23,6 +31,9 @@ theorem coord_inj {l : ℕ} [Fact l.Prime] {X : Type} [AddCommGroup X] [Module (
   rw [sub_eq_zero] at h2
   exact Subtype.ext h2
 
+/- English proof (translation)
+Simplify using `only [Finset.smul_sum, smul_smul, map_sum, map_mul, Finset.sum_smul]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun s _ => ?_` and prove the remaining obligations. Rewrite using `[mul_comm]`.
+-/
 theorem dsum {l : ℕ} [Fact l.Prime] {X : Type} [AddCommGroup X] [Module (Om l) X] {p q : ℕ} (α : Fin p → ℤ_[l])
     (β : Fin p → Fin q → ℤ_[l]) (w : Fin q → X) :
     ∑ s, zOm l (α s) • ∑ i, zOm l (β s i) • w i = ∑ i, zOm l (∑ s, β s i * α s) • w i := by
@@ -31,6 +42,51 @@ theorem dsum {l : ℕ} [Fact l.Prime] {X : Type} [AddCommGroup X] [Module (Om l)
   refine Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun s _ => ?_
   rw [mul_comm]
 
+/- English proof (translation)
+Introduce `l _ Γ _ a r d b hb m m' ρs ρs' ι hι t t' ht M M' hM d₁ d₂ ρ₁ ρ₂ bb₁ bb₂ e₁ e₂ hbb₁ hR₁ hR₂ hmem₂ hcoord P₁ P₂ n N₁ N₂ hn₁ hn₂ hC₁ hC₂`. Establish `hsm : ∀ {k : Fin m} (c : Om l) (w : Matrix (Fin a) (Fin a) (Om l)), (Pi.single k (c • w) : Fin m → Matrix (Fin a) (Fin a) (Om l)) = c • Pi.single k w`. Introduce `k c w`. Use function extensionality and compare the values at `k₀`. Distinguish the cases in `h : k₀ = k`.
+
+Substitute `h` using the available equality. Simplify using the standard rewrite rules. Simplify using `[Pi.single_eq_of_ne h]`. Establish `hπL : ∀ y ∈ GlobalTheory.TraceConjugationCover.latL t' M', y ∘ ι ∈ GlobalTheory.TraceConjugationCover.latL t M`. Introduce `y hy`.
+
+Establish `hle : Submodule.map (LinearMap.funLeft ℤ_[l] (Matrix (Fin a) (Fin a) (Om l)) ι) (GlobalTheory.TraceConjugationCover.latL t' M') ≤ GlobalTheory.TraceConjugationCover.latL t M`. Rewrite using `[GlobalTheory.TraceConjugationCover.latL, Submodule.map_span, Submodule.span_le]`. Introduce and unpack `_ ⟨x, hx, rfl⟩`. Simplify using `only [Set.mem_iUnion, Set.mem_image] at hx`. Take `⟨k', v, hv, rfl⟩` from `hx`.
+
+Express the relevant statement in the definitionally equal form `(Pi.single k' ((l : Om l) ^ M' • v)) ∘ ι ∈ _`. Rewrite using `[← Finset.univ_sum_single (Pi.single k' ((l : Om l) ^ M' • v) ∘ ι)]`. Use `Submodule.sum_mem _ fun k _ => ?_` and prove the remaining obligations. Distinguish the cases in `hk : ι k = k'`. Substitute `hk` using the available equality.
+
+Simplify using `only [Function.comp_apply, Pi.single_eq_same]`. Establish `hv' : v ∈ t k` using `by rw [← ht k]; exact hv`. Establish `e1 : ((l : Om l) ^ M' • v) = zOm l ((l : ℤ_[l]) ^ (M' - M)) • ((l : Om l) ^ M • v)`. Rewrite using `[map_pow, map_natCast, smul_smul, ← pow_add, Nat.sub_add_cancel hM]`. Rewrite using `[e1, hsm, GlobalTheory.TraceConjugationCover.zOm_smul]`.
+
+Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span (Set.mem_iUnion.mpr ⟨k, v, hv', rfl⟩))`. Simplify using `[Pi.single_eq_of_ne hk]`. Conclude with `hle ⟨y, hy, rfl⟩`. Establish `hdec : ∀ j, ∃ (F : Γ →₀ ℤ_[l]) (y : Fin m' → Matrix (Fin a) (Fin a) (Om l)), y ∈ GlobalTheory.TraceConjugationCover.latL t' M' ∧ bb₂ j = (F.sum fun g c => zOm l c • GlobalTheory.TraceConjugationCover.tup ρs' g) + y`. Introduce `j`.
+
+Take `⟨x, hx, y, hy, hxy⟩` from `Submodule.mem_sup.mp (hmem₂ j)`. Take `⟨F, hF⟩` from `(Finsupp.mem_span_range_iff_exists_finsupp).mp hx`. Use `⟨F, y, hy, ?_⟩` and prove the remaining obligations. Rewrite using `[← hxy, ← hF]`. Simplify using `only [GlobalTheory.TraceConjugationCover.zOm_smul]`.
+
+Use `choose F y hy hbb using hdec`. Establish `hπF : ∀ (G : Γ →₀ ℤ_[l]), (G.sum fun g c => zOm l c • GlobalTheory.TraceConjugationCover.tup ρs' g) ∘ ι = G.sum fun g c => zOm l c • GlobalTheory.TraceConjugationCover.tup ρs g`. Introduce `G`. Use function extensionality and compare the values at `k`. Simplify using `[Finsupp.sum, Finset.sum_apply, GlobalTheory.TraceConjugationCover.tup, hι]`.
+
+Establish `hπbb : ∀ j, bb₂ j ∘ ι = ((F j).sum fun g c => zOm l c • GlobalTheory.TraceConjugationCover.tup ρs g) + y j ∘ ι`. Introduce `j`. Rewrite using `[hbb j, ← hπF]`. Both sides reduce to the same expression. Establish `hmemT : ∀ j, bb₂ j ∘ ι ∈ GlobalTheory.TraceConjugationCover.latT ρs t M`.
+
+Introduce `j`. Rewrite using `[hπbb j]`. Use `Submodule.add_mem_sup ?_ (hπL _ (hy j))` and prove the remaining obligations. Simplify using `only [GlobalTheory.TraceConjugationCover.zOm_smul]`. Conclude with `Submodule.finsuppSum_mem _ _ _ _ (fun g _ => Submodule.smul_mem _ _ (Submodule.subset_span ⟨g, rfl⟩))`.
+
+Use `choose z hz using fun j => hcoord _ (hmemT j)`. Establish `hcol : ∀ j k, bb₂ j (ι k) = ∑ s, zOm l (z j s) • bb₁ s k`. Introduce `j k`. Use `congrFun (hz j) k` as an intermediate fact. Simplify `this` using `[Finset.sum_apply]`.
+
+Use `⟨Matrix.of fun s j => z j s, ?_, ?_⟩` and prove the remaining obligations. Introduce `g`. Use extensionality with `i j`. Establish `hA : ∀ k, (ρs k g).val * bb₂ j (ι k) = ∑ i, zOm l (((ρ₁ g).val * Matrix.of fun s j => z j s) i j) • bb₁ i k`. Introduce `k`.
+
+Establish `e` using `fun s => (hR₁ k).equi g s`. Apply the tactic sequence `try simp only at e`. Rewrite using `[hcol, Finset.mul_sum]`. Repeatedly rewrite using `[Matrix.mul_smul, e]`. Rewrite using `[dsum]`.
+
+Simplify using `[Matrix.mul_apply]`. Establish `hB : ∀ k, (ρs k g).val * bb₂ j (ι k) = ∑ i, zOm l (((Matrix.of fun s j => z j s) * (ρ₂ g).val) i j) • bb₁ i k`. Introduce `k`. Rewrite using `[← hι k]`. Establish `e` using `(hR₂ (ι k)).equi g j`.
+
+Apply the tactic sequence `try simp only at e`. Rewrite using `[e]`. Repeatedly rewrite using `[hcol]`. Rewrite using `[dsum]`. Simplify using `[Matrix.mul_apply]`.
+
+Establish `key : (fun i => ((Matrix.of fun s j => z j s) * (ρ₂ g).val) i j) = fun i => ((ρ₁ g).val * Matrix.of fun s j => z j s) i j`. Apply `GlobalTheory.CovTrans.coord_inj hbb₁` to reduce the goal to its premises. Use function extensionality and compare the values at `k`. Simplify using `only [Finset.sum_apply, Pi.smul_apply]`. Rewrite using `[← hB k, hA k]`.
+
+Conclude with `congrFun key i`. Introduce `i j`. Establish `hsingle : ∑ s, zOm l ((Pi.single j 1 : Fin d₂ → ℤ_[l]) s) • bb₂ s = bb₂ j`. Simplify using `[Pi.single_apply]`. Take `⟨w₂, hw₂⟩` from `hC₂ (Pi.single j 1) (F j) (y j) (hy j) (by rw [hsingle]; exact hbb j)`.
+
+Take `⟨w₁, hw₁⟩` from `hC₁ (fun s => z j s) (F j) (y j ∘ ι) (hπL _ (hy j)) (by rw [← hz j, hπbb j])`. Establish `hP₂ : P₂ *ᵥ Pi.single j 1 = fun i => P₂ i j`. Use function extensionality and compare the values at `i`. Simplify using `[Matrix.mulVec, dotProduct, Pi.single_apply]`. Establish `hP₁ : P₁ *ᵥ (fun s => z j s) = fun i => (P₁ * Matrix.of fun s j => z j s) i j`.
+
+Use function extensionality and compare the values at `i`. Simplify using `[Matrix.mulVec, dotProduct, Matrix.mul_apply]`. Rewrite `hw₂` using `[hP₂]`. Rewrite `hw₁` using `[hP₁]`. Establish `key : (fun i => (P₁ * Matrix.of fun s j => z j s) i j - P₂ i j) = fun i => (l : ℤ_[l]) ^ n * ((l : ℤ_[l]) ^ (N₁ - n) * w₁ i - (l : ℤ_[l]) ^ (N₂ - n) * w₂ i)`.
+
+Apply `GlobalTheory.CovTrans.coord_inj hb` to reduce the goal to its premises. Establish `hs : ∑ i, zOm l ((P₁ * Matrix.of fun s j => z j s) i j - P₂ i j) • b i = ∑ i, zOm l ((P₁ * Matrix.of fun s j => z j s) i j) • b i - ∑ i, zOm l (P₂ i j) • b i`. Simplify using `only [map_sub, sub_smul, Finset.sum_sub_distrib]`. Rewrite using `[hs, hw₁, hw₂, add_sub_add_left_eq_sub]`. Establish `e1 : (l : Om l) ^ N₁ = (l : Om l) ^ n * (l : Om l) ^ (N₁ - n)` using `by rw [← pow_add, Nat.add_sub_cancel' hn₁]`.
+
+Establish `e2 : (l : Om l) ^ N₂ = (l : Om l) ^ n * (l : Om l) ^ (N₂ - n)` using `by rw [← pow_add, Nat.add_sub_cancel' hn₂]`. Rewrite using `[e1, e2]`. Simplify using `only [Finset.smul_sum, smul_smul, map_mul, map_sub, map_pow, map_natCast, mul_sub, sub_smul, Finset.sum_sub_distrib, mul_assoc]`. Use `congrFun key i` as an intermediate fact. Rewrite using `[Matrix.sub_apply, this]`.
+
+Conclude with `Dvd.intro _ rfl`.
+-/
 theorem transition : ∀ (l : ℕ) [Fact l.Prime] (Γ : Type) [Group Γ] (a : ℕ) (r : Γ →* GL (Fin a) (Om l)) (d : ℕ) (b : Fin d → Matrix (Fin a) (Fin a) (Om l)), LinearIndependent ℚ_[l] b → ∀ (m m' : ℕ) (ρs : Fin m → (Γ →* GL (Fin a) (Om l))) (ρs' : Fin m' → (Γ →* GL (Fin a) (Om l))) (ι : Fin m → Fin m'), (∀ k, ρs' (ι k) = ρs k) → ∀ (t : Fin m → Finset (Matrix (Fin a) (Fin a) (Om l))) (t' : Fin m' → Finset (Matrix (Fin a) (Fin a) (Om l))), (∀ k, t' (ι k) = t k) → ∀ (M M' : ℕ), M ≤ M' → ∀ (d₁ d₂ : ℕ) (ρ₁ : Γ →* GL (Fin d₁) ℤ_[l]) (ρ₂ : Γ →* GL (Fin d₂) ℤ_[l]) (bb₁ : Fin d₁ → Fin m → Matrix (Fin a) (Fin a) (Om l)) (bb₂ : Fin d₂ → Fin m' → Matrix (Fin a) (Fin a) (Om l)) (e₁ : Fin d₁ → ℤ_[l]) (e₂ : Fin d₂ → ℤ_[l]), LinearIndependent ℚ_[l] bb₁ → (∀ k, Reads ρ₁ (ρs k) (fun s => bb₁ s k) e₁) → (∀ k, Reads ρ₂ (ρs' k) (fun s => bb₂ s k) e₂) → (∀ s, bb₂ s ∈ GlobalTheory.TraceConjugationCover.latT ρs' t' M') → (∀ x ∈ GlobalTheory.TraceConjugationCover.latT ρs t M, ∃ z : Fin d₁ → ℤ_[l], x = ∑ s, zOm l (z s) • bb₁ s) → ∀ (P₁ : Matrix (Fin d) (Fin d₁) ℤ_[l]) (P₂ : Matrix (Fin d) (Fin d₂) ℤ_[l]) (n N₁ N₂ : ℕ), n ≤ N₁ → n ≤ N₂ → GlobalTheory.TraceConjugationCover.Carries r b ρs t M bb₁ P₁ N₁ → GlobalTheory.TraceConjugationCover.Carries r b ρs' t' M' bb₂ P₂ N₂ → ∃ f : Matrix (Fin d₁) (Fin d₂) ℤ_[l], (∀ g, f * ((ρ₂ g : GL (Fin d₂) ℤ_[l]) : Matrix (Fin d₂) (Fin d₂) ℤ_[l]) = ((ρ₁ g : GL (Fin d₁) ℤ_[l]) : Matrix (Fin d₁) (Fin d₁) ℤ_[l]) * f) ∧ ∀ i j, (l : ℤ_[l]) ^ n ∣ (P₁ * f - P₂) i j := by
   intro l _ Γ _ a r d b hb m m' ρs ρs' ι hι t t' ht M M' hM d₁ d₂ ρ₁ ρ₂ bb₁ bb₂ e₁ e₂ hbb₁ hR₁ hR₂ hmem₂ hcoord
     P₁ P₂ n N₁ N₂ hn₁ hn₂ hC₁ hC₂

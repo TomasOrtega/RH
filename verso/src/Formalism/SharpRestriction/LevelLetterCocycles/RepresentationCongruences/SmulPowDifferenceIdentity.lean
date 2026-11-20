@@ -25,28 +25,43 @@ variable {G : Type} [Group G] [TopologicalSpace G] {Qp K₀ K : Type} [Field Qp]
 def InPi0Lattice (T : LocLat G Qp LL O) (c : ZMod n) (x : W.DD T) : Prop :=
   ∃ x', Formalism.MainNotions.LiftingTheory.InNΔi W T c x' ∧ x = W.π₀ • x'
 
+/- English proof (translation)
+Take `⟨x', hx', rfl⟩` from `hx`. Take `⟨y', hy', rfl⟩` from `hy`. Conclude with `⟨x' - y', Relay2.InNΔi_sub W T c hx' hy', (smul_sub _ _ _).symm⟩`.
+-/
 theorem inPi0Lattice_sub (T : LocLat G Qp LL O) (c : ZMod n) {x y : W.DD T}
     (hx : InPi0Lattice W T c x) (hy : InPi0Lattice W T c y) : InPi0Lattice W T c (x - y) := by
   obtain ⟨x', hx', rfl⟩ := hx
   obtain ⟨y', hy', rfl⟩ := hy
   exact ⟨x' - y', Relay2.InNΔi_sub W T c hx' hy', (smul_sub _ _ _).symm⟩
 
+/- English proof (translation)
+Take `⟨x', hx', rfl⟩` from `hx`. Take `⟨y', hy', rfl⟩` from `hy`. Conclude with `⟨x' + y', Relay2.InNΔi_add W T c hx' hy', (smul_add _ _ _).symm⟩`.
+-/
 theorem inPi0Lattice_add (T : LocLat G Qp LL O) (c : ZMod n) {x y : W.DD T}
     (hx : InPi0Lattice W T c x) (hy : InPi0Lattice W T c y) : InPi0Lattice W T c (x + y) := by
   obtain ⟨x', hx', rfl⟩ := hx
   obtain ⟨y', hy', rfl⟩ := hy
   exact ⟨x' + y', Relay2.InNΔi_add W T c hx' hy', (smul_add _ _ _).symm⟩
 
+/- English proof (translation)
+Take `⟨x', hx', rfl⟩` from `hx`. Conclude with `⟨a • x', Relay2.InNΔi_smul W T c ha hx', smul_comm _ _ _⟩`.
+-/
 theorem inPi0Lattice_smul_invariant (T : LocLat G Qp LL O) (c : ZMod n) {a : LetA O n} (ha : a ∈ W.AΔ)
     {x : W.DD T} (hx : InPi0Lattice W T c x) : InPi0Lattice W T c (a • x) := by
   obtain ⟨x', hx', rfl⟩ := hx
   exact ⟨a • x', Relay2.InNΔi_smul W T c ha hx', smul_comm _ _ _⟩
 
+/- English proof (translation)
+Rewrite using `[← algebraMap_smul (LetA O n) o x]`. Conclude with `inPi0Lattice_smul_invariant W T c (W.AΔ.algebraMap_mem o) hx`.
+-/
 theorem inPi0Lattice_smul_scalar (T : LocLat G Qp LL O) (c : ZMod n) (o : O)
     {x : W.DD T} (hx : InPi0Lattice W T c x) : InPi0Lattice W T c (o • x) := by
   rw [← algebraMap_smul (LetA O n) o x]
   exact inPi0Lattice_smul_invariant W T c (W.AΔ.algebraMap_mem o) hx
 
+/- English proof (translation)
+Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => exact ⟨0, Relay2.InNΔi_zero W T c, by simp⟩`. Consider the case `insert a s ha ih`. Rewrite using `[Finset.sum_insert ha]`. Conclude with `inPi0Lattice_add W T c (hf a (Finset.mem_insert_self a s)) (ih fun i hi => hf i (Finset.mem_insert_of_mem hi))`.
+-/
 theorem inPi0Lattice_sum (T : LocLat G Qp LL O) (c : ZMod n) {ι : Type} (s : Finset ι)
     (f : ι → W.DD T) (hf : ∀ i ∈ s, InPi0Lattice W T c (f i)) :
     InPi0Lattice W T c (∑ i ∈ s, f i) := by
@@ -57,17 +72,28 @@ theorem inPi0Lattice_sum (T : LocLat G Qp LL O) (c : ZMod n) {ι : Type} (s : Fi
     exact inPi0Lattice_add W T c (hf a (Finset.mem_insert_self a s))
       (ih fun i hi => hf i (Finset.mem_insert_of_mem hi))
 
+/- English proof (translation)
+Take `⟨x', hx', rfl⟩` from `hx`. Conclude with `⟨W.map F x', Relay2.InNΔi_map W F hT hT' c hx', Relay2.mapA_smul W F _ _⟩`.
+-/
 theorem inPi0Lattice_map {T T' : LocLat G Qp LL O} (F : LatHom T.L T'.L) (hT : IsCrys PD T.ρ)
     (hT' : IsCrys PD T'.ρ) (c : ZMod n) {x : W.DD T}
     (hx : InPi0Lattice W T c x) : InPi0Lattice W T' c (W.map F x) := by
   obtain ⟨x', hx', rfl⟩ := hx
   exact ⟨W.map F x', Relay2.InNΔi_map W F hT hT' c hx', Relay2.mapA_smul W F _ _⟩
 
+/- English proof (translation)
+The claim follows from `Relay2.InNΔi_sum W T c _ _ fun j _ => Relay2.InNΔi_osmul W T c _ (hb j)`.
+-/
 theorem frameVector_mem_lattice (T : LocLat G Qp LL O) (c : ZMod n) {d : ℕ} (b : Fin d → W.DD T)
     (hb : ∀ j, Formalism.MainNotions.LiftingTheory.InNΔi W T c (b j)) (y : Fin d → O) :
     Formalism.MainNotions.LiftingTheory.InNΔi W T c (Formalism.MainNotions.LiftingTheory.vecB W T b y) :=
   Relay2.InNΔi_sum W T c _ _ fun j _ => Relay2.InNΔi_osmul W T c _ (hb j)
 
+/- English proof (translation)
+Proceed by induction on `M, hM using Nat.le_induction with`. Consider the case `base => exact ⟨0, Relay2.InNΔi_zero W T c, by simp⟩`. Consider the case `succ M hM ih`. Take `⟨x', hx', hxe⟩` from `ih`. Use `⟨x' + W.π₀ ^ (M - 1) • Formalism.MainNotions.LiftingTheory.vecB W T b (y M), Relay2.InNΔi_add W T c hx' (Relay2.InNΔi_smul W T c (W.AΔ.pow_mem hπ _) (frameVector_mem_lattice W T c b hb (y M))), ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[Finset.sum_range_succ, smul_add, smul_smul, ← pow_succ', Nat.sub_add_cancel hM, ← hxe]`. Normalize the expressions using the abelian group laws.
+-/
 theorem inPi0Lattice_series_trunc (T : LocLat G Qp LL O) (c : ZMod n) (hπ : W.π₀ ∈ W.AΔ) {d : ℕ}
     (b : Fin d → W.DD T) (hb : ∀ j, Formalism.MainNotions.LiftingTheory.InNΔi W T c (b j)) (y : ℕ → Fin d → O)
     (M : ℕ) (hM : 1 ≤ M) :
@@ -83,6 +109,13 @@ theorem inPi0Lattice_series_trunc (T : LocLat G Qp LL O) (c : ZMod n) (hπ : W.�
     rw [Finset.sum_range_succ, smul_add, smul_smul, ← pow_succ', Nat.sub_add_cancel hM, ← hxe]
     abel
 
+/- English proof (translation)
+Establish `hy' : y = Pi.single m (((PD.p : ℕ) : O) ^ κ)`. Use function extensionality and compare the values at `j`. Apply `hinj` to reduce the goal to its premises. Rewrite using `[hy j]`. Distinguish the cases in `h : j = m`.
+
+Substitute `h` using the available equality. Simplify using the standard rewrite rules. Simplify using `[Pi.single_apply, h]`. Rewrite using `[Formalism.MainNotions.LiftingTheory.vecB, hy', Finset.sum_eq_single m]`. Simplify using the standard rewrite rules.
+
+Introduce `j _ hj`. Simplify using `[hj]`. Simplify using the standard rewrite rules.
+-/
 theorem frameVector_single (T : LocLat G Qp LL O) (hinj : Function.Injective (algebraMap O LL))
     {d : ℕ} (b : Fin d → W.DD T) (m : Fin d) (κ : ℕ) (y : Fin d → O)
     (hy : ∀ j, algebraMap O LL (y j) = (PD.p : LL) ^ κ * (Pi.single m (1 : LL) : Fin d → LL) j) :
@@ -99,6 +132,11 @@ theorem frameVector_single (T : LocLat G Qp LL O) (hinj : Function.Injective (al
   · intro j _ hj; simp [hj]
   · simp
 
+/- English proof (translation)
+Distinguish the cases in `hx : x = 0`. Conclude with `⟨0, fun t' _ => by rw [hx, mul_zero, AddValuation.map_zero]; exact le_top⟩`. Establish `hne : v x ≠ ⊤` using `by rwa [Ne, AddValuation.top_iff]`. Take `⟨q, hq⟩` from `WithTop.ne_top_iff_exists.1 hne`. Use `⟨⌈-q⌉₊, fun t' ht' => ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[AddValuation.map_mul, AddValuation.map_pow, hvl, ← hq, ← WithTop.coe_one, ← WithTop.coe_nsmul, ← WithTop.coe_add, ← WithTop.coe_zero, WithTop.coe_le_coe]`. Establish `h1` using `Nat.le_ceil (-q)`. Establish `h2 : (⌈-q⌉₊ : ℚ) ≤ t'` using `by exact_mod_cast ht'`. Rewrite using `[nsmul_eq_mul, mul_one]`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem exists_l_pow_integral (hvl : v (PD.p : LL) = 1) (x : LL) : ∃ t : ℕ, ∀ t', t ≤ t' → 0 ≤ v ((PD.p : LL) ^ t' * x) := by
   by_cases hx : x = 0
   · exact ⟨0, fun t' _ => by rw [hx, mul_zero, AddValuation.map_zero]; exact le_top⟩
@@ -112,6 +150,9 @@ theorem exists_l_pow_integral (hvl : v (PD.p : LL) = 1) (x : LL) : ∃ t : ℕ, 
     rw [nsmul_eq_mul, mul_one]
     linarith
 
+/- English proof (translation)
+Use `Relay2.Pp_ind W T c j _ (by rw [map_zero]; exact (Pp W T c (k + j)).zero_mem) (fun x y hx hy => by rw [map_add]; exact (Pp W T c (k + j)).add_mem hx hy) (fun x hx => by rw [map_neg]; exact (Pp W T c (k + j)).neg_mem hx) ?_` and prove the remaining obligations. Introduce `a ha x hx`. Rewrite using `[Relay2.φpow_smul, ← Module.End.mul_apply, ← pow_add]`. Conclude with `Relay2.Pp_gen W T c (k + j) (PhiPowers.φA_pow_mem_AΔ W ha k) hx`.
+-/
 theorem frobenius_pow_mem_pullback (T : LocLat G Qp LL O) (c : ZMod n) (j k : ℕ) :
     ∀ y ∈ Pp W T c j, ((W.φD T) ^ k) y ∈ Pp W T c (k + j) := by
   refine Relay2.Pp_ind W T c j _ (by rw [map_zero]; exact (Pp W T c (k + j)).zero_mem)
@@ -121,16 +162,25 @@ theorem frobenius_pow_mem_pullback (T : LocLat G Qp LL O) (c : ZMod n) (j k : �
   rw [Relay2.φpow_smul, ← Module.End.mul_apply, ← pow_add]
   exact Relay2.Pp_gen W T c (k + j) (PhiPowers.φA_pow_mem_AΔ W ha k) hx
 
+/- English proof (translation)
+Take `⟨y, hy, rfl⟩` from `hz`. Conclude with `⟨_, frobenius_pow_mem_pullback W T c j k y hy, Relay2.φpow_smul W T k f y⟩`.
+-/
 theorem inFP_frobenius_pow (T : LocLat G Qp LL O) (c : ZMod n) (j k : ℕ) (f : LetA O n) {z : W.DD T}
     (hz : InFP W T c j f z) : InFP W T c (k + j) ((W.φA ^ k) f) (((W.φD T) ^ k) z) := by
   obtain ⟨y, hy, rfl⟩ := hz
   exact ⟨_, frobenius_pow_mem_pullback W T c j k y hy, Relay2.φpow_smul W T k f y⟩
 
+/- English proof (translation)
+Take `⟨y, hy, rfl⟩` from `hz`. Conclude with `⟨u • y, Relay2.Pp_smul W T c e hu y hy, mul_smul _ _ _⟩`.
+-/
 theorem inFP_of_mul_unit (T : LocLat G Qp LL O) (c : ZMod n) (e : ℕ) (f u : LetA O n)
     (hu : u ∈ W.AΔ) {z : W.DD T} (hz : InFP W T c e (f * u) z) : InFP W T c e f z := by
   obtain ⟨y, hy, rfl⟩ := hz
   exact ⟨u • y, Relay2.Pp_smul W T c e hu y hy, mul_smul _ _ _⟩
 
+/- English proof (translation)
+Use `module`.
+-/
 theorem smul_pow_difference_identity {R M : Type} [CommRing R] [AddCommGroup M] [Module R M] (L Λ : R)
     (X S1 S2 : M) (a b c d : ℕ) :
     L ^ (a + b) • (L ^ (c + d) • Λ • X - S2) =
@@ -150,6 +200,67 @@ variable {G : Type} [Group G] [TopologicalSpace G] {Qp K₀ K : Type} [Field Qp]
     {LL O : Type} [Field LL] [Algebra Qp LL] [TopologicalSpace LL] [CommRing O] [Algebra O LL]
     {v : AddValuation LL (WithTop ℚ)} {n : ℕ} (W : LocWach PD LL O v n)
 
+/- English proof (translation)
+Introduce `hCA hp5 A hA c hc e hje hel T₁ T₂ F hW₁ hW₂ d₁ b₁ sol₁ hb₁ d b sol hb`. Use `set c' : ZMod n := c - ((A.len c : ℕ) : ZMod n) with hc'`. Establish `h9 : Formalism.MainNotions.LiftingTheory.P9π₀ W` using `(Formalism.MainNotions.LiftingTheory.uniformizer_ring_and_module_clauses W hP9 hCA T₂ hW₂.1).1`. Establish `hπ : W.π₀ ∈ W.AΔ` using `h9.1`. Establish `hC` using `Relay2.ctx_of W hinj hO2 hP9 hH hTr hCA T₂ hW₂.1`.
+
+Use `⟨fun x hx => Relay2.inMultiple_map W F hW₁.1 hW₂.1 c' e 1 hx, ?_⟩` and prove the remaining obligations. Establish `hFb : ∀ m, Formalism.MainNotions.LiftingTheory.InNΔi W T₂ c' (W.map F (b₁ m))` using `fun m => Relay2.InNΔi_map W F hW₁.1 hW₂.1 c' (hb₁.1.1 m)`. Use `choose β hβ using fun m => (hb.1.2 _ (hFb m)).exists`. Set `μ : Fin d₁ → Fin d → O` to `fun m k => PowerSeries.constantCoeff (β m k c')`. Establish `hbN : ∀ k, b k ∈ W.N T₂` using `fun k => (hb.1.1 k).1.1`.
+
+Establish `hbl : ∀ k, (letE c' : LetA O n) • b k = b k` using `fun k => Relay2.InNΔi_letter W T₂ c' (hb.1.1 k)`. Establish `hii : ∀ m, Formalism.MainNotions.TruncatedSeriesCountingBounds.crisMap B F.f (dv W T₁ e b₁ (Pi.single m 1)) = dvO W T₂ e b (μ m)`. Introduce `m`. Establish `hb1N : b₁ m ∈ W.N T₁` using `(hb₁.1.1 m).1.1`. Establish `hx : W.map F (b₁ m) ∈ W.N T₂` using `(hFb m).1.1`.
+
+Establish `hsumN : ∑ k, β m k • b k ∈ W.N T₂` using `(hβ m).2 ▸ hx`. Establish `e1 : dv W T₁ e b₁ (Pi.single m 1) = ((φVB PD (LL` using `LL) (V := T₁.V)) ^ e) (cmpD W T₁ (b₁ m)) := by`. Unfold `dv`. Rewrite using `[Finset.sum_eq_single m]`. Simplify using the standard rewrite rules.
+
+Introduce `j _ hj`. Simplify using `[Pi.single_apply, hj]`. Simplify using the standard rewrite rules. Rewrite using `[e1, ArcC.crisMap_φVB_pow, ArcF.cmpD_of_mem W T₁ hb1N]`. Establish `h1 : Formalism.MainNotions.TruncatedSeriesCountingBounds.crisMap B F.f (W.cmp T₁ ⟨b₁ m, hb1N⟩) = W.cmp T₂ ⟨W.map F (b₁ m), hx⟩` using `(W.cmp_map F hW₁.1 hW₂.1 ⟨b₁ m, hb1N⟩ hx).symm`.
+
+Establish `h2 : (⟨W.map F (b₁ m), hx⟩ : ↥(W.N T₂)) = ⟨∑ k, β m k • b k, hsumN⟩` using `Subtype.ext (hβ m).2`. Rewrite using `[h1, h2, ArcF.cmp_sum_letter W T₂ c' b hbN hbl (β m) hsumN, map_sum]`. Unfold `dvO dv`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[map_smul, ArcF.cmpD_of_mem W T₂ (hbN k)]`.
+
+Use `⟨μ, hii, ?_⟩` and prove the remaining obligations. Introduce `x g hx hg hrep`. Take `⟨κ, κ', Hh₁, a₁, hHh₁, ha₁, hX⟩` from `hrep`. Establish `hM1 : 1 ≤ A.M PD.p` using `Relay2.M_pos A PD.p`. Establish `hM : 2 * A.G₀ ≤ (PD.p - 1) * A.M PD.p` using `Relay2.arith_M PD.p A.G₀ A.h PD.hp.two_le hA.2.2.2.2.2.1`.
+
+Take `⟨t, ht⟩ : ∃ t : ℕ, ∀ (k : Fin d) (r : Fin (A.M PD.p)) (j : Fin d), 0 ≤ v ((PD.p : LL) ^ (κ + t) * sol k r j)` from `by choose tf htf using fun (q : Fin d × Fin (A.M PD.p) × Fin d) => exists_l_pow_integral (v := v) (PD := PD) W.v_l (sol q.1 q.2.1 q.2.2)`. Use `⟨∑ q, tf q, fun k r j => htf (k, r, j) _ ?_⟩` and prove the remaining obligations. Conclude with `le_trans (Finset.single_le_sum (fun _ _ => Nat.zero_le _) (Finset.mem_univ (k, r, j))) (Nat.le_add_left _ _)`. Use `choose y₂ hy₂ using fun (k : Fin d) (r : Fin (A.M PD.p)) (j : Fin d) => hO2 _ (ht k r j)`. Set `Y : Fin d → ℕ → Fin d → O` to `fun k r j => if h : r < A.M PD.p then y₂ k ⟨r, h⟩ j else 0`.
+
+Establish `hY : ∀ k, ∀ r < A.M PD.p, ∀ j, algebraMap O LL (Y k r j) = (PD.p : LL) ^ (κ + t) * sol k r j`. Introduce `k r hr j`. Simplify using `only [Y, dif_pos hr]`. Conclude with `hy₂ k ⟨r, hr⟩ j`. Set `Hh : Fin d → W.DD T₂` to `fun k => ∑ r ∈ Finset.range (A.M PD.p), W.π₀ ^ r • Formalism.MainNotions.LiftingTheory.vecB W T₂ b (Y k r)`.
+
+Establish `hHh : ∀ k, IsHorTr W T₂ b sol (A.M PD.p) (κ + t) k (Hh k)` using `fun k => ⟨Y k, hY k, rfl⟩`. Set `E : Fin d₁ → W.DD T₂` to `fun m => lA W ^ t • W.map F (Hh₁ m) - ∑ k, μ m k • Hh k`. Establish `hEsol : ∀ m, Relay2.SolOK W T₂ c' (A.M PD.p) 0 0 (E m)`. Introduce `m`. Take `⟨y₁, hy₁, hH₁⟩` from `hHh₁ m`.
+
+Establish `hy₁0 : ∀ j, algebraMap O LL (y₁ 0 j) = (PD.p : LL) ^ κ * (Pi.single m (1 : LL) : Fin d₁ → LL) j`. Introduce `j`. Rewrite using `[hy₁ 0 hM1 j, (hb₁.2 m).2]`. Establish `hv₁` using `frameVector_single W T₁ hinj b₁ m κ (y₁ 0) hy₁0`. Establish `hD1 : InPi0Lattice W T₁ c' (Hh₁ m - (((PD.p : ℕ) : O) ^ κ) • b₁ m)`.
+
+Rewrite using `[hH₁, ← hv₁]`. Conclude with `inPi0Lattice_series_trunc W T₁ c' hπ b₁ hb₁.1.1 y₁ _ hM1`. Establish `hD2 : ∀ k, InPi0Lattice W T₂ c' (Hh k - (((PD.p : ℕ) : O) ^ (κ + t)) • b k)`. Introduce `k`. Establish `hyk0 : ∀ j, algebraMap O LL (Y k 0 j) = (PD.p : LL) ^ (κ + t) * (Pi.single k (1 : LL) : Fin d → LL) j`.
+
+Introduce `j`. Rewrite using `[hY k 0 hM1 j, (hb.2 k).2]`. Rewrite using `[← frameVector_single W T₂ hinj b k (κ + t) (Y k 0) hyk0]`. Conclude with `inPi0Lattice_series_trunc W T₂ c' hπ b hb.1.1 (Y k) _ hM1`. Establish `hD3 : InPi0Lattice W T₂ c' (W.map F (b₁ m) - ∑ k, μ m k • b k)`.
+
+Rewrite using `[(hβ m).2, ← Finset.sum_sub_distrib]`. Use `inPi0Lattice_sum W T₂ c' _ _ fun k _ => ?_` and prove the remaining obligations. Take `⟨a₀, tt, htt, hsplit⟩` from `Formalism.MainNotions.LiftingTheory.invariants_eq_constants_add_uniformizer W h9 (β m k) ((hβ m).1 k).1`. Establish `hμ : μ m k = a₀ c'` using `by show PowerSeries.constantCoeff (β m k c') = a₀ c'`. Rewrite using `[hsplit, Pi.add_apply, Pi.mul_apply, map_add, map_mul, Formalism.MainNotions.LiftingTheory.uniformizer_constantCoeff_zero W h9 c', zero_mul, add_zero, PowerSeries.constantCoeff_C]`.
+
+Establish `hCl : ((fun j => PowerSeries.C (a₀ j)) : LetA O n) * letE c' = algebraMap O (LetA O n) (a₀ c') * letE c'`. Use function extensionality and compare the values at `j`. Distinguish the cases in `h : j = c'`. Substitute `h` using the available equality. Simplify using `[letE]`.
+
+Simplify using `[letE, h]`. Use `⟨tt • b k, Relay2.InNΔi_smul W T₂ c' htt (hb.1.1 k), ?_⟩` and prove the remaining obligations. Establish `e1 : ((fun j => PowerSeries.C (a₀ j)) : LetA O n) • b k = a₀ c' • b k` using `by conv_lhs => rw [← hbl k]`. Rewrite using `[smul_smul, hCl, ← smul_smul, hbl k, algebraMap_smul]`. Rewrite using `[hsplit, add_smul, e1, hμ, mul_smul]`.
+
+Normalize the expressions using the abelian group laws. Use `⟨?_, ?_⟩` and prove the remaining obligations. Establish `key : E m = lA W ^ t • (W.map F (Hh₁ m) - (((PD.p : ℕ) : O) ^ κ) • W.map F (b₁ m)) - ∑ k, μ m k • (Hh k - (((PD.p : ℕ) : O) ^ (κ + t)) • b k) + (((PD.p : ℕ) : O) ^ (κ + t)) • (W.map F (b₁ m) - ∑ k, μ m k • b k)`. Simplify using `only [E]`. Rewrite using `[← Relay2.lsmul_eq, ← Relay2.lsmul_eq]`.
+
+Simplify using `only [smul_sub, Finset.sum_sub_distrib, Finset.smul_sum, smul_smul, ← pow_add]`. Rewrite using `[show t + κ = κ + t by omega]`. Simplify using `only [mul_comm (μ m _)]`. Normalize the expressions using the abelian group laws. Rewrite using `[key]`.
+
+Use `inPi0Lattice_add W T₂ c' (inPi0Lattice_sub W T₂ c' ?_ ?_) ?_` and prove the remaining obligations. Conclude with `inPi0Lattice_smul_invariant W T₂ c' (W.AΔ.pow_mem (Relay2.lA_mem W) t) (by have h := inPi0Lattice_map W F hW₁.1 hW₂.1 c' hD1; rwa [map_sub, ArcC.map_smulO] at h)`. Conclude with `inPi0Lattice_sum W T₂ c' _ _ fun k _ => inPi0Lattice_smul_scalar W T₂ c' _ (hD2 k)`. Conclude with `inPi0Lattice_smul_scalar W T₂ c' _ hD3`. Take `⟨x₁, hx₁, ex₁⟩` from `(hb₁.2 m).1 (A.M PD.p) κ y₁ hy₁ choose x₂ hx₂ ex₂ using fun k => (hb.2 k).1 (A.M PD.p) (κ + t) (Y k) (hY k)`.
+
+Rewrite `ex₁` using `[← hH₁, smul_zero, sub_zero]`. Establish `ex₂' : ∀ k, W.γ T₂ (Hh k) - Hh k = W.π₀ ^ A.M PD.p • x₂ k`. Introduce `k`. Use `ex₂ k` as an intermediate fact. Rewrite `this` using `[smul_zero, sub_zero]`.
+
+Conclude with `this`. Use `⟨lA W ^ t • W.map F x₁ - ∑ k, μ m k • x₂ k, Relay2.InNΔi_sub W T₂ c' (Relay2.InNΔi_lsmul W T₂ c' t (Relay2.InNΔi_map W F hW₁.1 hW₂.1 c' hx₁)) (Relay2.InNΔi_sum W T₂ c' _ _ fun k _ => Relay2.InNΔi_osmul W T₂ c' _ (hx₂ k)), ?_⟩` and prove the remaining obligations. Establish `hγF : W.γ T₂ (W.map F (Hh₁ m)) = W.map F (W.γ T₁ (Hh₁ m))` using `(W.map_γ F W.gam _).symm`. Establish `eγ₁ : W.γ T₁ (Hh₁ m) = Hh₁ m + W.π₀ ^ A.M PD.p • x₁` using `by rw [← ex₁]; abel`. Establish `eγ₂ : ∀ k, W.γ T₂ (Hh k) = Hh k + W.π₀ ^ A.M PD.p • x₂ k` using `fun k => by rw [← ex₂' k]; abel`.
+
+Simplify using `only [E, smul_zero, sub_zero, map_sub, Relay2.γ_lsmul, map_sum, map_smul, hγF, eγ₁, eγ₂, map_add, Relay2.mapA_smul, smul_add, Finset.sum_add_distrib, smul_sub, Finset.smul_sum]`. Establish `hc1 : lA W ^ t • W.π₀ ^ A.M PD.p • W.map F x₁ = W.π₀ ^ A.M PD.p • lA W ^ t • W.map F x₁` using `smul_comm _ _ _`. Establish `hc2 : ∀ k, μ m k • W.π₀ ^ A.M PD.p • x₂ k = W.π₀ ^ A.M PD.p • μ m k • x₂ k` using `fun k => smul_comm _ _ _`. Rewrite using `[hc1, Finset.sum_congr rfl fun k _ => hc2 k]`. Normalize the expressions using the abelian group laws.
+
+Establish `hzero : Relay2.SolOK W T₂ c' (A.M PD.p) 0 0 0` using `⟨⟨0, Relay2.InNΔi_zero W T₂ c', (smul_zero _).symm⟩, 0, Relay2.InNΔi_zero W T₂ c', by simp⟩`. Use `choose K hK using fun m => Relay2.solOK_cong W T₂ hC c' A.j (2 * A.G₀) (A.M PD.p) hM (hEsol m) hzero`. Take `⟨u, hu, hφJJ⟩` from `(hArc hp5 hCA hp5 A hA c hc e hje hel).1`. Establish `hEP : ∀ m, InFP W T₂ c' e (W.π₀ * abelian₂ W A (c' + (e : ZMod n)) e ^ 2) (lA W ^ K m • ((W.φD T₂) ^ e) (E m))`. Introduce `m`.
+
+Establish `h1` using `inFP_frobenius_pow W T₂ c' A.j (e - A.j) _ (hK m)`. Rewrite `h1` using `[Nat.sub_add_cancel hje, hφJJ, map_zero, sub_zero, Relay2.φpow_lsmul, ← Module.End.mul_apply, ← pow_add, Nat.sub_add_cancel hje]`. Conclude with `inFP_of_mul_unit W T₂ c' e _ u hu h1`. Establish `hXF` using `Relay2.inMultiple_map W F hW₁.1 hW₂.1 c' e _ hX`. Simplify using `only [Relay2.mapA_smul, map_sub, map_sum, Relay2.map_φpow] at hXF`.
+
+Establish `hA : ∑ m, a₁ m • ((W.φD T₂) ^ e) (E m) = lA W ^ t • ∑ m, a₁ m • ((W.φD T₂) ^ e) (W.map F (Hh₁ m)) - ∑ k, (∑ m, a₁ m * algebraMap O (LetA O n) (μ m k)) • ((W.φD T₂) ^ e) (Hh k)`. Establish `h1 : ∀ m, a₁ m • ((W.φD T₂) ^ e) (E m) = lA W ^ t • (a₁ m • ((W.φD T₂) ^ e) (W.map F (Hh₁ m))) - ∑ k, (a₁ m * algebraMap O (LetA O n) (μ m k)) • ((W.φD T₂) ^ e) (Hh k)`. Introduce `m`. Simplify using `only [E, map_sub, Relay2.φpow_lsmul, map_sum, map_smul, smul_sub, Finset.smul_sum]`. Use `congr 1`.
+
+Conclude with `smul_comm _ _ _`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[← algebraMap_smul (LetA O n) (μ m k), smul_smul]`. Rewrite using `[Finset.sum_congr rfl fun m _ => h1 m, Finset.sum_sub_distrib, ← Finset.smul_sum, Finset.sum_comm]`. Use `congr 1`.
+
+Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[← Finset.sum_smul]`. Use `⟨κ + t, κ' + ∑ m, K m, Hh, fun k => ∑ m, a₁ m * algebraMap O (LetA O n) (μ m k), hHh, fun k => ⟨?_, ?_⟩, ?_⟩` and prove the remaining obligations. Conclude with `W.AΔ.sum_mem fun m _ => W.AΔ.mul_mem (ha₁ m).1 (W.AΔ.algebraMap_mem _)`. Rewrite using `[Finset.mul_sum, map_sum]`.
+
+Use `Finset.sum_congr rfl fun m _ => ?_` and prove the remaining obligations. Rewrite using `[← mul_assoc, (ha₁ m).2, map_mul, ← IsScalarTower.algebraMap_apply O (LetA O n) W.EE]`. Establish `hS : ∀ m, InFP W T₂ c' e (W.π₀ * abelian₂ W A (c' + (e : ZMod n)) e ^ 2) (a₁ m • (lA W ^ (∑ m, K m) • ((W.φD T₂) ^ e) (E m)))`. Introduce `m`. Establish `hle : K m ≤ ∑ m, K m` using `Finset.single_le_sum (fun _ _ => Nat.zero_le _) (Finset.mem_univ m)`.
+
+Rewrite using `[show ∑ m, K m = (∑ m, K m - K m) + K m by omega, pow_add, mul_smul]`. Conclude with `Relay2.inMultiple_smul W T₂ c' e _ (ha₁ m).1 (Relay2.inMultiple_lA_pow_smul W T₂ c' e _ _ (hEP m))`. Establish `h2` using `Relay2.inMultiple_add W T₂ c' e _ (Relay2.inMultiple_lA_pow_smul W T₂ c' e _ ((∑ m, K m) + t) hXF) (Relay2.inMultiple_lA_pow_smul W T₂ c' e _ κ' (Relay2.inMultiple_sum W T₂ c' e _ Finset.univ _ fun m _ => hS m))`. Use `h2 using 1` and compare the differences between its conclusion and the goal. Establish `hB : ∑ m, a₁ m • (lA W ^ (∑ m, K m) • ((W.φD T₂) ^ e) (E m)) = lA W ^ (∑ m, K m) • ∑ m, a₁ m • ((W.φD T₂) ^ e) (E m)`.
+
+Rewrite using `[Finset.smul_sum]`. Conclude with `Finset.sum_congr rfl fun m _ => smul_comm _ _ _`. Rewrite using `[hB, hA]`. Conclude with `smul_pow_difference_identity (lA W) _ _ _ _ κ' (∑ m, K m) κ t`.
+-/
 theorem arc_section_map (hinj : Function.Injective (algebraMap O LL))
     (hO2 : ∀ x : LL, 0 ≤ v x → ∃ o : O, algebraMap O LL o = x) (hP9 : Formalism.MainNotions.DeltaInvariantLattices.P9W W)
     (hH : Formalism.MainNotions.LiftingTheory.coreH W) (hTr : Formalism.MainNotions.LiftingTheory.coreTr W) (hArc : 5 ≤ PD.p → ArcCore W) :

@@ -16,6 +16,11 @@ namespace GlobalTheory.TriFrame
 def matNorm {C : Type} [NormedField C] {r : ℕ} (M : Matrix (Fin r) (Fin r) C) (i : Fin r) : ℝ :=
   sInf {t | ∃ cf : Fin r → C, cf i ≠ 0 ∧ (∀ k, i < k → cf k = 0) ∧ (∀ l, ‖∑ j, cf j * M l j‖ ≤ 1) ∧ t = ‖cf i‖⁻¹}
 
+/- English proof (translation)
+Use `IsLeast.csInf_eq ⟨⟨Pi.single i 1, by simp, fun k hk => by simp [hk.ne'], fun l => ?_, by simp⟩, ?_⟩` and prove the remaining obligations. Simplify using `only [Matrix.one_apply, mul_ite, mul_one, mul_zero, Finset.sum_ite_eq, Finset.mem_univ, if_true]`. Apply the tactic sequence `by_cases h : l = i <;> simp [h]`. Introduce and unpack `_ ⟨cf, h₁, -, h₂, rfl⟩`. Use `h₂ i` as an intermediate fact.
+
+Simplify using `only [Matrix.one_apply, mul_ite, mul_one, mul_zero, Finset.sum_ite_eq, Finset.mem_univ, if_true] at this`. Conclude with `(one_le_inv₀ (norm_pos_iff.2 h₁)).2 this`.
+-/
 example {C : Type} [NormedField C] {r : ℕ} (i : Fin r) : matNorm (1 : Matrix (Fin r) (Fin r) C) i = 1 := by
   refine IsLeast.csInf_eq ⟨⟨Pi.single i 1, by simp, fun k hk => by simp [hk.ne'], fun l => ?_, by simp⟩, ?_⟩
   · simp only [Matrix.one_apply, mul_ite, mul_one, mul_zero, Finset.sum_ite_eq, Finset.mem_univ, if_true]
@@ -43,6 +48,9 @@ def Tri (hs : IsFrame s) (L : Fin r → LB X) (ρ : ∀ i k, Γ(X, A ⊓ (L i).U
     x ∈ V ∧ IsFrame e ∧ IsTri hs e ∧
       ∀ i, coordIn hs e i i = resG X (le_inf inf_le_right (inf_le_left.trans (hk i))) (ρ i (k i))
 
+/- English proof (translation)
+Introduce `i l h` and use `by rw [coordIn, ← hs.basis_apply inf_le_right, Module.Basis.repr_self, Finsupp.single_eq_of_ne h.ne']`.
+-/
 theorem isTri_self (hs : IsFrame s) : IsTri hs s := fun i l h => by
   rw [coordIn, ← hs.basis_apply inf_le_right, Module.Basis.repr_self, Finsupp.single_eq_of_ne h.ne']
 

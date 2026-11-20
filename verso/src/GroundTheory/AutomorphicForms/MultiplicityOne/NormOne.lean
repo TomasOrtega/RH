@@ -20,6 +20,11 @@ variable {K : Type*} [Field K] [NumberField K] {n : ℕ}
 
 local notation "Γ₁" => rationalGLOne K n
 
+/- English proof (translation)
+Rewrite using `[mem_normOneGL_iff_detModule, map_mul, map_inv]`. Break down `Nat.eq_zero_or_pos n with rfl | hn` into its components or cases. Establish `: Subsingleton (AdelicGLn.AdelicGL K 0)` using `⟨fun x y => Units.ext (Subsingleton.elim _ _)⟩`. Rewrite using `[Subsingleton.elim g 1, Subsingleton.elim (centralSection K 0 _) 1]`. Simplify using the standard rewrite rules.
+
+Rewrite using `[detModule_centralSection hn, mul_inv_cancel]`.
+-/
 theorem mul_centralSection_inv_mem (g : AdelicGLn.AdelicGL K n) :
     g * (centralSection K n (detModule K n g))⁻¹ ∈ normOneGL K n := by
   rw [mem_normOneGL_iff_detModule, map_mul, map_inv]
@@ -33,23 +38,38 @@ theorem mul_centralSection_inv_mem (g : AdelicGLn.AdelicGL K n) :
 def retract (g : AdelicGLn.AdelicGL K n) : normOneGL K n :=
   ⟨g * (centralSection K n (detModule K n g))⁻¹, mul_centralSection_inv_mem g⟩
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem coe_retract (g : AdelicGLn.AdelicGL K n) :
     (retract g : AdelicGLn.AdelicGL K n) = g * (centralSection K n (detModule K n g))⁻¹ := rfl
 
+/- English proof (translation)
+Use `ext1`. Rewrite using `[coe_retract, (mem_normOneGL_iff_detModule).1 x.2, map_one, inv_one, mul_one]`.
+-/
 theorem retract_coe (x : normOneGL K n) : retract (x : AdelicGLn.AdelicGL K n) = x := by
   ext1
   rw [coe_retract, (mem_normOneGL_iff_detModule).1 x.2, map_one, inv_one, mul_one]
 
+/- English proof (translation)
+Use `ext1`. Rewrite using `[coe_retract, Subgroup.coe_mul, coe_retract, map_mul, (mem_normOneGL_iff_detModule).1 x.2, one_mul, mul_assoc]`.
+-/
 theorem retract_mul_left (x : normOneGL K n) (g : AdelicGLn.AdelicGL K n) :
     retract ((x : AdelicGLn.AdelicGL K n) * g) = x * retract g := by
   ext1
   rw [coe_retract, Subgroup.coe_mul, coe_retract, map_mul, (mem_normOneGL_iff_detModule).1 x.2,
     one_mul, mul_assoc]
 
+/- English proof (translation)
+The claim follows from `continuous_induced_rng.2 (continuous_id.mul ((continuous_centralSection.comp continuous_detModule).inv))`.
+-/
 theorem continuous_retract : Continuous (retract (K := K) (n := n)) :=
   continuous_induced_rng.2 (continuous_id.mul
     ((continuous_centralSection.comp continuous_detModule).inv))
 
+/- English proof (translation)
+Establish `h1 : detModule K n (finEmb K n u) = 1` using `(mem_normOneGL_iff_detModule).1 (finOne K n ⟨u, hu⟩).2`. Use `ext1`. Rewrite using `[coe_retract, Subgroup.coe_mul, coe_retract, coe_finOne, map_mul, h1, mul_one, mul_assoc, ← centralSection_inv_mul_comm, ← mul_assoc]`.
+-/
 theorem retract_mul_finEmb (g : AdelicGLn.AdelicGL K n) {u : AdelicGLn.FiniteAdelicGL K n}
     (hu : u ∈ AdelicGLn.integralFiniteGL K n) :
     retract (g * finEmb K n u) = retract g * finOne K n ⟨u, hu⟩ := by
@@ -61,13 +81,24 @@ theorem retract_mul_finEmb (g : AdelicGLn.AdelicGL K n) {u : AdelicGLn.FiniteAde
 
 def lift (ϕ : normOneGL K n → ℂ) (g : AdelicGLn.AdelicGL K n) : ℂ := ϕ (retract g)
 
+/- English proof (translation)
+Rewrite using `[lift, retract_coe]`.
+-/
 theorem lift_coe (ϕ : normOneGL K n → ℂ) (x : normOneGL K n) :
     lift ϕ (x : AdelicGLn.AdelicGL K n) = ϕ x := by
   rw [lift, retract_coe]
 
+/- English proof (translation)
+The claim follows from `hϕ.comp continuous_retract`.
+-/
 theorem continuous_lift {ϕ : normOneGL K n → ℂ} (hϕ : Continuous ϕ) : Continuous (lift ϕ) :=
   hϕ.comp continuous_retract
 
+/- English proof (translation)
+Introduce `γ g`. Establish `hγ1 : AdelicGLn.diagonal K n γ ∈ normOneGL K n` using `rationalGL_le_normOneGL ⟨γ, rfl⟩`. Use `set γ₁ : normOneGL K n := ⟨AdelicGLn.diagonal K n γ, hγ1⟩`. Establish `hγΓ : γ₁ ∈ Γ₁` using `⟨γ, rfl⟩`. Use `show ϕ (retract ((γ₁ : AdelicGLn.AdelicGL K n) * g)) = ϕ (retract g)`.
+
+Rewrite using `[retract_mul_left, hϕ γ₁ hγΓ]`.
+-/
 theorem isLeftInvariant_lift {ϕ : normOneGL K n → ℂ}
     (hϕ : ∀ γ ∈ Γ₁, ∀ x, ϕ (γ * x) = ϕ x) : IsLeftInvariant (lift ϕ) := by
   intro γ g
@@ -77,6 +108,11 @@ theorem isLeftInvariant_lift {ϕ : normOneGL K n → ℂ}
   show ϕ (retract ((γ₁ : AdelicGLn.AdelicGL K n) * g)) = ϕ (retract g)
   rw [retract_mul_left, hϕ γ₁ hγΓ]
 
+/- English proof (translation)
+Introduce `r hr hrn g`. Rewrite using `[← hϕ r hr hrn (retract g)]`. Unfold `constantTerm`. Use `setIntegral_congr_fun (measurableSet_unipFundamentalDomain (K := K) (n := n) (r := r)) fun X _ => ?_` and prove the remaining obligations. Use `show ϕ (retract ((unipOne K n r X : AdelicGLn.AdelicGL K n) * g)) = _`.
+
+Rewrite using `[retract_mul_left]`.
+-/
 theorem isCuspidal_lift {ϕ : normOneGL K n → ℂ}
     (hϕ : ∀ r : ℕ, 0 < r → r < n → ∀ x : normOneGL K n,
       ∫ X in unipFundamentalDomain K n r, ϕ (unipOne K n r X * x) ∂unipMeasure K n r = 0) :
@@ -99,6 +135,9 @@ def openSubgroupOf (U : Subgroup (AdelicGLn.integralFiniteGL K n))
     rw [Subgroup.coe_map, Subgroup.coe_subtype]
     exact (AdelicGLn.isOpen_integralFiniteGL K n).isOpenMap_subtype_val _ hU
 
+/- English proof (translation)
+Take `⟨u, hu, rfl⟩` from `hv`. Use `show ϕ (retract (g * finEmb K n (u : AdelicGLn.FiniteAdelicGL K n))) = ϕ (retract g)`. Rewrite using `[retract_mul_finEmb g u.2]`. Conclude with `hϕ u hu _`.
+-/
 theorem lift_mul_finEmb {ϕ : normOneGL K n → ℂ} {U : Subgroup (AdelicGLn.integralFiniteGL K n)}
     (hU : IsOpen (U : Set (AdelicGLn.integralFiniteGL K n)))
     (hϕ : ∀ u ∈ U, ∀ x, ϕ (x * finOne K n u) = ϕ x) (g : AdelicGLn.AdelicGL K n)
@@ -109,6 +148,9 @@ theorem lift_mul_finEmb {ϕ : normOneGL K n → ℂ} {U : Subgroup (AdelicGLn.in
   rw [retract_mul_finEmb g u.2]
   exact hϕ u hu _
 
+/- English proof (translation)
+Establish `h1 : AdelicGLn.det K n (uGL X) = 1` using `Units.ext (by rw [AdelicGLn.coe_det, coe_uGL, det_uMat, Units.val_one])`. Rewrite using `[mem_normOneGL, h1, map_one]`. Both sides reduce to the same expression.
+-/
 theorem uGL_mem_normOneGL (X : Pos n → 𝔸[K]) :
     (uGL X : AdelicGLn.AdelicGL K n) ∈ normOneGL K n := by
   have h1 : AdelicGLn.det K n (uGL X) = 1 :=
@@ -118,6 +160,9 @@ theorem uGL_mem_normOneGL (X : Pos n → 𝔸[K]) :
 
 def uOne (X : Pos n → 𝔸[K]) : normOneGL K n := ⟨uGL X, uGL_mem_normOneGL X⟩
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem coe_uOne (X : Pos n → 𝔸[K]) :
     (uOne X : AdelicGLn.AdelicGL K n) = uGL X := rfl
 
@@ -125,6 +170,9 @@ def whittakerOne (ϕ : normOneGL K n → ℂ) (x : normOneGL K n) : ℂ :=
   ∫ X in vecDomain K (Pos n), ϕ (uOne X * x) * (GroundTheory.Global.adelicChar K (-supSum 0 X) : ℂ)
     ∂vecMeasure K (Pos n)
 
+/- English proof (translation)
+Unfold `whittaker whittakerOne`. Use `setIntegral_congr_fun measurableSet_vecDomain fun X _ => ?_` and prove the remaining obligations. Use `show ϕ (retract ((uOne X : AdelicGLn.AdelicGL K n) * g)) * _ = _`. Rewrite using `[retract_mul_left]`.
+-/
 theorem whittaker_lift (ϕ : normOneGL K n → ℂ) (g : AdelicGLn.AdelicGL K n) :
     whittaker (lift ϕ) g = whittakerOne ϕ (retract g) := by
   unfold whittaker whittakerOne
@@ -141,6 +189,9 @@ def IsSmoothTest (f : CompactlySupportedContinuousMap (normOneGL K n) ℂ) : Pro
     (g : CompactlySupportedContinuousMap (normOneGL K n) ℂ),
     f = archConv ν hβ.continuous hβc hβu (finAvg U hU g)
 
+/- English proof (translation)
+Take `⟨ν, hν, U, hU, β, hβ, hβc, hβu, g, rfl⟩` from `hf`. Use `⟨U, hU, fun u hu x => ?_⟩` and prove the remaining obligations. Rewrite using `[archConv_apply, archConv_apply]`. Conclude with `archConvFun_finOne_mul _ _ u (fun y => finAvgFun_finOne_mul U hU g ⟨u, hu⟩ y) x`.
+-/
 theorem IsSmoothTest.exists_finOne_mul {f : CompactlySupportedContinuousMap (normOneGL K n) ℂ}
     (hf : IsSmoothTest f) :
     ∃ (U : Subgroup (AdelicGLn.integralFiniteGL K n))
@@ -153,6 +204,9 @@ theorem IsSmoothTest.exists_finOne_mul {f : CompactlySupportedContinuousMap (nor
 
 variable (μ : Measure (normOneGL K n)) [μ.IsHaarMeasure]
 
+/- English proof (translation)
+Unfold `rconv`. Use `congr 1`. Use function extensionality and compare the values at `y`. Rewrite using `[mul_inv_rev, mul_assoc, ← hf ((finOne K n u)⁻¹ * (x⁻¹ * y)), mul_inv_cancel_left]`.
+-/
 theorem rconv_mul_finOne {f : CompactlySupportedContinuousMap (normOneGL K n) ℂ}
     {u : AdelicGLn.integralFiniteGL K n} (hf : ∀ x, f (finOne K n u * x) = f x)
     (φ : Lp ℂ 2 (quotientMeasure Γ₁ μ)) (x : normOneGL K n) :
@@ -162,6 +216,9 @@ theorem rconv_mul_finOne {f : CompactlySupportedContinuousMap (normOneGL K n) �
   funext y
   rw [mul_inv_rev, mul_assoc, ← hf ((finOne K n u)⁻¹ * (x⁻¹ * y)), mul_inv_cancel_left]
 
+/- English proof (translation)
+Take `⟨U, hU, hfU⟩` from `hf.exists_finOne_mul`. Establish `key` using `eq_zero_of_whittaker_eq_zero (ϕ := lift (rconv Γ₁ μ f φ)) (continuous_lift (continuous_rconv Γ₁ μ f φ)) (isLeftInvariant_lift fun γ hγ y => rconv_mul_left Γ₁ μ f φ hγ y) (isCuspidal_lift fun r hr hrn y => integral_rconv_unip_eq_zero μ f hφ hr hrn y) ⟨openSubgroupOf U hU, lift_mul …`. Use `congrFun key (x : AdelicGLn.AdelicGL K n)` as an intermediate fact. Rewrite `this` using `[lift_coe]`. Then use the resulting hypothesis.
+-/
 theorem rconv_eq_zero_of_whittakerOne {φ : Lp ℂ 2 (quotientMeasure Γ₁ μ)} (hφ : φ ∈ cuspidalL2 μ)
     {f : CompactlySupportedContinuousMap (normOneGL K n) ℂ} (hf : IsSmoothTest f)
     (h : ∀ x, whittakerOne (rconv Γ₁ μ f φ) x = 0) (x : normOneGL K n) :
@@ -176,6 +233,11 @@ theorem rconv_eq_zero_of_whittakerOne {φ : Lp ℂ 2 (quotientMeasure Γ₁ μ)}
   have := congrFun key (x : AdelicGLn.AdelicGL K n)
   rwa [lift_coe] at this
 
+/- English proof (translation)
+Use `isFiniteMeasure_quotientMeasure (K := K) (n := n) μ` as an intermediate fact. Use `(Lp.eq_zero_iff_ae_eq_zero).2 ?_` and prove the remaining obligations. Use `filter_upwards [integrated_ae_eq_rconvQ Γ₁ μ f φ] with q hq`. Rewrite using `[hq]`. Take `⟨x, rfl⟩` from `mk_surjective Γ₁ q`.
+
+Rewrite using `[rconvQ_mk, h x]`. Both sides reduce to the same expression.
+-/
 theorem integrated_eq_zero_of_rconv_eq_zero {φ : Lp ℂ 2 (quotientMeasure Γ₁ μ)}
     {f : CompactlySupportedContinuousMap (normOneGL K n) ℂ} (h : ∀ x, rconv Γ₁ μ f φ x = 0) :
     (rightRegularRep Γ₁ μ).integrated μ (UnitaryRep.ccToL1 μ f) φ = 0 := by
@@ -187,6 +249,9 @@ theorem integrated_eq_zero_of_rconv_eq_zero {φ : Lp ℂ 2 (quotientMeasure Γ�
   rw [rconvQ_mk, h x]
   rfl
 
+/- English proof (translation)
+Take `⟨ν, hν⟩ : ∃ ν : Measure (ArchUnits K n), ν.IsHaarMeasure` from `⟨Measure.haar, inferInstance⟩`. Take `⟨U, hU, β, hβ, hβc, hβu, -, hclose⟩` from `exists_smooth_approx μ ν g hε`. Conclude with `⟨_, ⟨ν, hν, U, hU, β, hβ, hβc, hβu, g, rfl⟩, le_of_eq_of_le (integral_congr_ae (Eventually.of_forall fun x => norm_sub_rev _ _)) hclose⟩`.
+-/
 theorem exists_isSmoothTest_near (g : CompactlySupportedContinuousMap (normOneGL K n) ℂ) {ε : ℝ}
     (hε : 0 < ε) : ∃ f : CompactlySupportedContinuousMap (normOneGL K n) ℂ,
       IsSmoothTest f ∧ ∫ x, ‖g x - f x‖ ∂μ ≤ ε := by
@@ -196,6 +261,13 @@ theorem exists_isSmoothTest_near (g : CompactlySupportedContinuousMap (normOneGL
   exact ⟨_, ⟨ν, hν, U, hU, β, hβ, hβc, hβu, g, rfl⟩,
     le_of_eq_of_le (integral_congr_ae (Eventually.of_forall fun x => norm_sub_rev _ _)) hclose⟩
 
+/- English proof (translation)
+Use `norm_le_zero_iff.1 (le_of_forall_pos_le_add fun ε hε => ?_)` and prove the remaining obligations. Establish `hε' : 0 < ε / (‖v‖ + 1)` using `div_pos hε (by positivity)`. Take `⟨f, hfs, hclose⟩` from `hP g _ hε'`. Establish `hf0` using `h f hfs`. Establish `hd` using `π.dist_integrated_ccToL1_le ν g f`.
+
+Establish `hv1 : ‖v‖ / (‖v‖ + 1) ≤ 1`. Rewrite using `[div_le_one (by positivity)]; linarith`. Rewrite `hd` using `[dist_eq_norm]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[sub_apply, hf0, sub_zero]`.
+
+Use `_ ≤ ‖π.integrated ν (UnitaryRep.ccToL1 ν g) - π.integrated ν (UnitaryRep.ccToL1 ν f)‖ * ‖v‖ := ContinuousLinearMap.le_opNorm _ v`. Use `_ ≤ (ε / (‖v‖ + 1)) * ‖v‖ := by gcongr; exact hd.trans hclose`. Use `_ = ε * (‖v‖ / (‖v‖ + 1)) := by ring`. Use `_ ≤ ε * 1 := by gcongr`. Use `_ = 0 + ε := by ring`.
+-/
 theorem _root_.GroundTheory.Automorphic.UnitaryRep.integrated_eq_zero_of_dense {G : Type*} [Group G]
     [TopologicalSpace G] [MeasurableSpace G] [BorelSpace G] {H : Type*}
     [NormedAddCommGroup H] [InnerProductSpace ℂ H] [CompleteSpace H] (π : UnitaryRep G H)
@@ -222,6 +294,9 @@ theorem _root_.GroundTheory.Automorphic.UnitaryRep.integrated_eq_zero_of_dense {
     _ ≤ ε * 1 := by gcongr
     _ = 0 + ε := by ring
 
+/- English proof (translation)
+Assume the negation of the conclusion as `hne`. Take `⟨g, hg⟩` from `UnitaryRep.exists_integrated_ne_zero (rightRegularRep Γ₁ μ) μ hne`. Conclude with `hg (UnitaryRep.integrated_eq_zero_of_dense (rightRegularRep Γ₁ μ) μ IsSmoothTest (fun g ε hε => exists_isSmoothTest_near μ g hε) (fun f hf => integrated_eq_zero_of_rconv_eq_zero μ (rconv_eq_zero_of_whittakerOne μ hφ hf (h f hf))) g)`.
+-/
 theorem eq_zero_of_forall_whittakerOne_rconv_eq_zero {φ : Lp ℂ 2 (quotientMeasure Γ₁ μ)}
     (hφ : φ ∈ cuspidalL2 μ)
     (h : ∀ f, IsSmoothTest f → ∀ x, whittakerOne (rconv Γ₁ μ f φ) x = 0) : φ = 0 := by

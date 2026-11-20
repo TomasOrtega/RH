@@ -4,6 +4,37 @@ import Development.AutomorphicArithmetic.Foundations.GaloisRepresentations.Proje
 open NumberField IsDedekindDomain Matrix Polynomial GlobalTheory.CuspRep GlobalTheory.UnitaryBC GlobalTheory.DefU Formalism.BasicNotions UpperTheory.Gal.CertificateRingHomMap
 open scoped Classical
 
+/- English proof (translation)
+Introduce `E _ _ _ n y P s h φ t ht`. Use `set A : Matrix (Fin n) (Fin n) ℂ := (y : Matrix (Fin n) (Fin n) E).map φ with hAdef`. Use `set Q : Matrix (Fin n) (Fin n) ℂ := (P : Matrix (Fin n) (Fin n) E).map φ with hQdef`. Use `set B : Matrix (Fin n) (Fin n) ℂ := (y : Matrix (Fin n) (Fin n) E).map (NumberField.ComplexEmbedding.conjugate φ) with hBdef`. Establish `hB : B = ((y : Matrix (Fin n) (Fin n) E).map (IsCMField.complexConj E)).map φ`.
+
+Use extensionality with `i j`. Simplify using `only [B, Matrix.map_apply]`. Rewrite using `[NumberField.ComplexEmbedding.conjugate_coe_eq, NumberField.IsCMField.complexEmbedding_complexConj]`. Establish `hrel : Bᵀ * Q * A = ((s : ℚ) : ℂ) • Q`. Establish `h2` using `congrArg (fun M : Matrix (Fin n) (Fin n) E => M.map φ) h`.
+
+Simplify using `only [Matrix.map_mul] at h2`. Rewrite `h2` using `[Matrix.transpose_map]`. Rewrite using `[hB, hQdef, hAdef, h2]`. Use extensionality with `i j`. Simplify using `[Matrix.map_apply]`.
+
+Establish `hA : ((y : Matrix (Fin n) (Fin n) E).map φ).charpoly = ∏ i, (X - C (t i))`. Rewrite using `[Matrix.charpoly_map]`. Conclude with `ht`. Establish `hdetA : A.det ≠ 0`. Establish `hu : IsUnit (y : Matrix (Fin n) (Fin n) E).det` using `(Matrix.isUnit_iff_isUnit_det _).mp y.isUnit`.
+
+Rewrite using `[hAdef, ← RingHom.mapMatrix_apply, ← RingHom.map_det]`. Conclude with `(map_ne_zero φ).mpr hu.ne_zero`. Establish `hdetQ : Q.det ≠ 0`. Establish `hu : IsUnit (P : Matrix (Fin n) (Fin n) E).det` using `(Matrix.isUnit_iff_isUnit_det _).mp P.isUnit`. Rewrite using `[hQdef, ← RingHom.mapMatrix_apply, ← RingHom.map_det]`.
+
+Conclude with `(map_ne_zero φ).mpr hu.ne_zero`. Establish `hprodt : A.det = ∏ i, t i`. Establish `e` using `congrArg (Polynomial.eval 0) hA`. Rewrite `e` using `[Matrix.eval_charpoly, Polynomial.eval_prod]`. Simplify using `only [Polynomial.eval_sub, Polynomial.eval_X, Polynomial.eval_C, zero_sub] at e`.
+
+Rewrite `e` using `[map_zero, zero_sub, Matrix.det_neg, Fintype.card_fin]`. Establish `e2 : ∏ i, -t i = (-1) ^ n * ∏ i, t i`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Finset.prod_mul_distrib, Finset.prod_const, Finset.card_univ, Fintype.card_fin]`. Rewrite `e` using `[e2]`.
+
+Conclude with `mul_left_cancel₀ (pow_ne_zero n (neg_ne_zero.mpr one_ne_zero)) e`. Establish `ht0 : ∀ i, t i ≠ 0`. Introduce `i hi`. Apply `hdetA` to reduce the goal to its premises. Rewrite using `[hprodt]`.
+
+Conclude with `Finset.prod_eq_zero (Finset.mem_univ i) hi`. Establish `hpt : ∏ i, t i ≠ 0` using `hprodt ▸ hdetA`. Use `⟨ht0, ?_⟩` and prove the remaining obligations. Rewrite using `[← Matrix.charpoly_map]`. Apply `Polynomial.eq_of_infinite_eval_eq` to reduce the goal to its premises.
+
+Apply `Set.Infinite.mono (s := {z : ℂ | z ≠ 0})` to reduce the goal to its premises. Introduce `z hz`. Simplify using `only [Set.mem_setOf_eq] at hz ⊢`. Establish `key : (Matrix.scalar (Fin n) z - B).det * A.det = z ^ n * (-1) ^ n * (Matrix.scalar (Fin n) (((s : ℚ) : ℂ) / z) - A).det`. Establish `e1 : (Matrix.scalar (Fin n) z - Bᵀ) * Q * A = Q * (z • A - ((s : ℚ) : ℂ) • 1)`.
+
+Rewrite using `[Matrix.scalar_apply, ← Matrix.smul_one_eq_diagonal, sub_mul, sub_mul, hrel, mul_sub]`. Simplify using `[smul_mul_assoc, mul_smul_comm]`. Establish `e2 : (Matrix.scalar (Fin n) z - B).det = (Matrix.scalar (Fin n) z - Bᵀ).det`. Rewrite using `[← Matrix.eval_charpoly, ← Matrix.eval_charpoly, Matrix.charpoly_transpose]`. Establish `e3 : z • A - ((s : ℚ) : ℂ) • (1 : Matrix (Fin n) (Fin n) ℂ) = z • (-(Matrix.scalar (Fin n) (((s : ℚ) : ℂ) / z) - A))`.
+
+Rewrite using `[neg_sub, Matrix.scalar_apply, ← Matrix.smul_one_eq_diagonal, smul_sub, smul_smul, mul_div_cancel₀ _ hz]`. Establish `e4` using `congrArg Matrix.det e1`. Rewrite `e4` using `[Matrix.det_mul, Matrix.det_mul, Matrix.det_mul, e3, Matrix.det_smul, Matrix.det_neg, Fintype.card_fin, ← e2]`. Apply `mul_left_cancel₀ hdetQ` to reduce the goal to its premises. Take the linear combination `e4`.
+
+Establish `hAev` using `congrArg (Polynomial.eval (((s : ℚ) : ℂ) / z)) hA`. Rewrite `hAev` using `[Matrix.eval_charpoly, Polynomial.eval_prod]`. Simplify using `only [Polynomial.eval_sub, Polynomial.eval_X, Polynomial.eval_C] at hAev`. Rewrite `key` using `[hAev, hprodt]`. Rewrite using `[Matrix.eval_charpoly, Polynomial.eval_prod]`.
+
+Simplify using `only [Polynomial.eval_sub, Polynomial.eval_X, Polynomial.eval_C]`. Establish `hfac : ∀ i, (z - ((s : ℚ) : ℂ) / t i) * t i = (z * -1) * (((s : ℚ) : ℂ) / z - t i)`. Introduce `i`. Clear denominators, using `[ht0 i, hz]` for the nonvanishing conditions. Expand and normalize the polynomial expressions, which then agree.
+
+Establish `hq : (∏ i, (z - ((s : ℚ) : ℂ) / t i)) * ∏ i, t i = z ^ n * (-1) ^ n * ∏ i, (((s : ℚ) : ℂ) / z - t i)`. Rewrite using `[← Finset.prod_mul_distrib, Finset.prod_congr rfl (fun i _ => hfac i), Finset.prod_mul_distrib, Finset.prod_const, Finset.card_univ, Fintype.card_fin, mul_pow]`. Conclude with `mul_right_cancel₀ hpt (key.trans hq.symm)`. Conclude with `(Set.finite_singleton (0 : ℂ)).infinite_compl`.
+-/
 theorem UpperTheory.Gal.CertificateRingHomMap.pCharConj_of :
     UpperTheory.Gal.CertificateRingHomMap.CharConj := by
   intro E _ _ _ n y P s h φ t ht

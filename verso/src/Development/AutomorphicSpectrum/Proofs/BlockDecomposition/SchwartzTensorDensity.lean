@@ -12,6 +12,9 @@ section Analysis
 variable {E E₁ E₂ : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
   [NormedAddCommGroup E₁] [NormedSpace ℝ E₁] [NormedAddCommGroup E₂] [NormedSpace ℝ E₂]
 
+/- English proof (translation)
+Establish `h : iteratedFDeriv ℝ n (fun w => f (A w)) z = (iteratedFDeriv ℝ n f (A z)).compContinuousLinearMap fun _ => A` using `A.iteratedFDeriv_comp_right (f := f) (f.smooth n) z le_rfl`. Rewrite using `[h]`. Use `(ContinuousMultilinearMap.norm_compContinuousLinearMap_le _ _).trans ?_` and prove the remaining obligations. Establish `: ∏ _i : Fin n, ‖A‖ ≤ 1` using `Finset.prod_le_one (fun _ _ => norm_nonneg _) fun _ _ => hA`. Conclude with `mul_le_of_le_one_right (norm_nonneg _) this`.
+-/
 theorem norm_iter_comp_le (A : E →L[ℝ] E₁) (hA : ‖A‖ ≤ 1) (f : SchwartzMap E₁ ℂ) (n : ℕ) (z : E) :
     ‖iteratedFDeriv ℝ n (fun w => f (A w)) z‖ ≤ ‖iteratedFDeriv ℝ n f (A z)‖ := by
   have h : iteratedFDeriv ℝ n (fun w => f (A w)) z =
@@ -81,6 +84,9 @@ def tens (A : E →L[ℝ] E₁) (B : E →L[ℝ] E₂) (hA : ‖A‖ ≤ 1) (hB 
             _ = (n.choose i : ℝ) * (‖A z‖ ^ k * a * b + a * (‖B z‖ ^ k * b)) := by ring
             _ ≤ _ := mul_le_mul_of_nonneg_left (add_le_add e1 e2) hn0
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem tens_apply (A : E →L[ℝ] E₁) (B : E →L[ℝ] E₂) (hA : ‖A‖ ≤ 1) (hB : ‖B‖ ≤ 1)
     (hAB : ∀ z, ‖z‖ ≤ max ‖A z‖ ‖B z‖) (f : SchwartzMap E₁ ℂ) (g : SchwartzMap E₂ ℂ) (z : E) :
     tens A B hA hB hAB f g z = f (A z) * g (B z) := rfl
@@ -103,23 +109,38 @@ def botL (T : Type*) [Fintype T] (r s p : ℕ) : (T → Fin (r + s) → Fin p �
   map_smul' _ _ := rfl
   cont := by fun_prop
 
+/- English proof (translation)
+The claim follows from `(norm_le_pi_norm (t τ i) j).trans ((norm_le_pi_norm (t τ) i).trans (norm_le_pi_norm t τ))`.
+-/
 theorem norm_coord_le (t : T → Fin r → Fin p → ℂ) (τ : T) (i : Fin r) (j : Fin p) : ‖t τ i j‖ ≤ ‖t‖ :=
   (norm_le_pi_norm (t τ i) j).trans ((norm_le_pi_norm (t τ) i).trans (norm_le_pi_norm t τ))
 
+/- English proof (translation)
+The claim follows from `(pi_norm_le_iff_of_nonneg hC).2 fun τ => (pi_norm_le_iff_of_nonneg hC).2 fun i => (pi_norm_le_iff_of_nonneg hC).2 fun j => h τ i j`.
+-/
 theorem norm_le_of_coord {t : T → Fin r → Fin p → ℂ} {C : ℝ} (hC : 0 ≤ C) (h : ∀ τ i j, ‖t τ i j‖ ≤ C) : ‖t‖ ≤ C :=
   (pi_norm_le_iff_of_nonneg hC).2 fun τ => (pi_norm_le_iff_of_nonneg hC).2 fun i =>
     (pi_norm_le_iff_of_nonneg hC).2 fun j => h τ i j
 
+/- English proof (translation)
+The claim follows from `ContinuousLinearMap.opNorm_le_bound _ zero_le_one fun t => by rw [one_mul] exact norm_le_of_coord (norm_nonneg _) fun τ i j => norm_coord_le t τ _ j`.
+-/
 theorem norm_topL_le : ‖topL T r s p‖ ≤ 1 :=
   ContinuousLinearMap.opNorm_le_bound _ zero_le_one fun t => by
     rw [one_mul]
     exact norm_le_of_coord (norm_nonneg _) fun τ i j => norm_coord_le t τ _ j
 
+/- English proof (translation)
+The claim follows from `ContinuousLinearMap.opNorm_le_bound _ zero_le_one fun t => by rw [one_mul] exact norm_le_of_coord (norm_nonneg _) fun τ i j => norm_coord_le t τ _ j`.
+-/
 theorem norm_botL_le : ‖botL T r s p‖ ≤ 1 :=
   ContinuousLinearMap.opNorm_le_bound _ zero_le_one fun t => by
     rw [one_mul]
     exact norm_le_of_coord (norm_nonneg _) fun τ i j => norm_coord_le t τ _ j
 
+/- English proof (translation)
+Use `norm_le_of_coord (le_max_of_le_left (norm_nonneg _)) fun τ i j => ?_` and prove the remaining obligations. Proceed by induction on `i using Fin.addCases with`. Consider the case `left a => exact le_max_of_le_left (norm_coord_le (topL T r s p t) τ a j)`. Consider the case `right b => exact le_max_of_le_right (norm_coord_le (botL T r s p t) τ b j)`.
+-/
 theorem norm_le_max (t : T → Fin (r + s) → Fin p → ℂ) : ‖t‖ ≤ max ‖topL T r s p t‖ ‖botL T r s p t‖ := by
   refine norm_le_of_coord (le_max_of_le_left (norm_nonneg _)) fun τ i j => ?_
   induction i using Fin.addCases with
@@ -135,6 +156,11 @@ variable {R : Type} {tR : TopologicalSpace R} {r s p : ℕ}
 def joinR (a : Fin r → Fin p → R) (b : Fin s → Fin p → R) : Fin (r + s) → Fin p → R :=
   fun i j => Fin.addCases (motive := fun _ => R) (fun u => a u j) (fun v => b v j) i
 
+/- English proof (translation)
+Use `continuous_pi fun i => continuous_pi fun j => ?_` and prove the remaining obligations. Proceed by induction on `i using Fin.addCases with`. Consider the case `left a => simp only [joinR, Fin.addCases_left]`. Use `fun_prop`. Consider the case `right b => simp only [joinR, Fin.addCases_right]`.
+
+Use `fun_prop`.
+-/
 theorem continuous_joinR :
     Continuous fun q : (Fin r → Fin p → R) × (Fin s → Fin p → R) => joinR q.1 q.2 := by
   refine continuous_pi fun i => continuous_pi fun j => ?_
@@ -142,6 +168,19 @@ theorem continuous_joinR :
   | left a => simp only [joinR, Fin.addCases_left]; fun_prop
   | right b => simp only [joinR, Fin.addCases_right]; fun_prop
 
+/- English proof (translation)
+Take `⟨hl, hc⟩` from `hg`. Take `⟨hl', hc'⟩` from `hg'`. Establish `hT : Continuous fun u : Fin (r + s) → Fin p → R => fun (i : Fin r) (j : Fin p) => u (Fin.castAdd s i) j` using `by fun_prop`. Establish `hB : Continuous fun u : Fin (r + s) → Fin p → R => fun (i : Fin s) (j : Fin p) => u (Fin.natAdd r i) j` using `by fun_prop`. Establish `hlc` using `(hl.comp_continuous hT).mul (hl'.comp_continuous hB)`.
+
+Use `⟨hlc, ?_⟩` and prove the remaining obligations. Use `set G : (Fin (r + s) → Fin p → R) → ℂ := fun u => g (fun i j => u (Fin.castAdd s i) j) * g' (fun i j => u (Fin.natAdd r i) j) with hG`. Establish `hlG : IsLocallyConstant G` using `hlc`. Establish `hclosed : IsClosed (Function.support G)`. Establish `: Function.support G = (G ⁻¹' {0})ᶜ` using `by ext u; simp [Function.mem_support]`.
+
+Rewrite using `[this]`. Conclude with `(hlG.isOpen_fiber 0).isClosed_compl`. Establish `hK : IsCompact ((fun q : (Fin r → Fin p → R) × (Fin s → Fin p → R) => joinR q.1 q.2) '' (tsupport g ×ˢ tsupport g'))` using `(IsCompact.prod hc hc').image continuous_joinR`. Establish `hsub : Function.support G ⊆ (fun q : (Fin r → Fin p → R) × (Fin s → Fin p → R) => joinR q.1 q.2) '' (tsupport g ×ˢ tsupport g')`. Introduce `u hu`.
+
+Establish `hu' : G u ≠ 0` using `hu`. Use `⟨(fun i j => u (Fin.castAdd s i) j, fun i j => u (Fin.natAdd r i) j), ⟨?_, ?_⟩, ?_⟩` and prove the remaining obligations. Conclude with `subset_tsupport _ (left_ne_zero_of_mul hu')`. Conclude with `subset_tsupport _ (right_ne_zero_of_mul hu')`. Use function extensionality and compare the values at `i j`.
+
+Proceed by induction on `i using Fin.addCases with`. Consider the case `left a => simp [joinR]`. Consider the case `right b => simp [joinR]`. Establish `: HasCompactSupport G`. Unfold `HasCompactSupport tsupport`.
+
+Rewrite using `[hclosed.closure_eq]`. Conclude with `hK.of_isClosed_subset hclosed hsub`. Conclude with `this`.
+-/
 theorem sb_tensor {g : (Fin r → Fin p → R) → ℂ} {g' : (Fin s → Fin p → R) → ℂ}
     (hg : g ∈ GlobalTheory.WeilM.SB (Fin r → Fin p → R)) (hg' : g' ∈ GlobalTheory.WeilM.SB (Fin s → Fin p → R)) :
     (fun u : Fin (r + s) → Fin p → R =>
@@ -183,6 +222,23 @@ theorem sb_tensor {g : (Fin r → Fin p → R) → ℂ} {g' : (Fin s → Fin p �
 
 end Finite
 
+/- English proof (translation)
+Introduce `D θ _ r s p φ hφ φ' hφ'`. Proceed by induction on `hφ using Submodule.span_induction with`. Consider the case `zero`. Use `(GlobalTheory.IndefiniteRowSideFullHecke.ModerateGrowthSchwartz.schwartzA θ (r + s) p).zero_mem using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `y`.
+
+Simplify using the standard rewrite rules. Consider the case `add a b _ _ ha hb`. Use `(GlobalTheory.IndefiniteRowSideFullHecke.ModerateGrowthSchwartz.schwartzA θ (r + s) p).add_mem ha hb` as an intermediate fact. Use `this using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `y`.
+
+Simplify using `[add_mul]`. Consider the case `smul c a _ ha`. Use `(GlobalTheory.IndefiniteRowSideFullHecke.ModerateGrowthSchwartz.schwartzA θ (r + s) p).smul_mem c ha` as an intermediate fact. Use `this using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `y`.
+
+Simplify using `[mul_assoc]`. Consider the case `mem a ha`. Take `⟨f, g, hg, rfl⟩` from `ha`. Proceed by induction on `hφ' using Submodule.span_induction with`. Consider the case `zero`.
+
+Use `(GlobalTheory.IndefiniteRowSideFullHecke.ModerateGrowthSchwartz.schwartzA θ (r + s) p).zero_mem using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `y`. Simplify using the standard rewrite rules. Consider the case `add a b _ _ ha hb`. Use `(GlobalTheory.IndefiniteRowSideFullHecke.ModerateGrowthSchwartz.schwartzA θ (r + s) p).add_mem ha hb` as an intermediate fact.
+
+Use `this using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `y`. Simplify using `[mul_add]`. Consider the case `smul c a _ ha`. Use `(GlobalTheory.IndefiniteRowSideFullHecke.ModerateGrowthSchwartz.schwartzA θ (r + s) p).smul_mem c ha` as an intermediate fact.
+
+Use `this using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `y`. Simplify using `only [Pi.smul_apply, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree. Consider the case `mem b hb`.
+
+Take `⟨f', g', hg', rfl⟩` from `hb`. Use `Submodule.subset_span ⟨tens (topL _ r s p) (botL _ r s p) norm_topL_le norm_botL_le norm_le_max f f', _, sb_tensor hg hg', ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `y`. Simplify using `only [tens_apply]`. Conclude with `mul_mul_mul_comm _ _ _ _`.
+-/
 theorem schwTensor : SchwTensor := by
   intro D θ _ r s p φ hφ φ' hφ'
   induction hφ using Submodule.span_induction with

@@ -6,6 +6,15 @@ open NumberField IsDedekindDomain Formalism Formalism.BasicNotions Formalism.Mai
 
 namespace GlobalTheory.HubLoc
 
+/- English proof (translation)
+Introduce `l _ K`. Establish `hl2 : 2 ≤ l` using `(Fact.out : l.Prime).two_le`. Establish `hl1 : l - 1 ≠ 0` using `by omega`. Establish `hpow : ∀ n : ℕ, l ^ n ≠ 0` using `fun n => pow_ne_zero n (by omega)`. Use `haveI : FiniteDimensional ℚ_[l] ↥K.1 := K.2`.
+
+Establish `hle : Loc.K0 K ≤ K.1` using `by unfold Loc.K0; exact inf_le_left`. Use `haveI : FiniteDimensional ℚ_[l] ↥(Loc.K0 K) := Module.Finite.of_injective (IntermediateField.inclusion hle).toLinearMap (IntermediateField.inclusion hle).injective`. Establish `hk0 : finrank ℚ_[l] ↥(Loc.K0 K) ≠ 0` using `Module.finrank_pos.ne'`. Use `⟨fun m hm => ?_, fun hK => ?_⟩` and prove the remaining obligations. Rewrite using `[finrank_Ks_eq l K m hm, finrank_Ks_eq l K 1 one_pos, padicValNat.mul hk0 (Nat.mul_ne_zero (hpow _) hl1), padicValNat.mul hk0 (Nat.mul_ne_zero (hpow _) hl1), padicValNat.mul (hpow _) hl1, padicValNat.mul (hpow _) hl1, padicValNat.prime_pow, padicValNat.prime_pow]`.
+
+Use linear arithmetic over natural numbers and integers. Establish `heq : Loc.K0 K = K.1` using `by unfold Loc.K0; exact inf_eq_left.mpr hK`. Establish `hK1 : finrank ℚ_[l] ↥K.1 ≠ 0` using `Module.finrank_pos.ne'`. Establish `hv : padicValNat l (l - 1) = 0` using `padicValNat.eq_zero_of_not_dvd (Nat.not_dvd_of_pos_of_lt (by omega) (by omega))`. Rewrite using `[finrank_Ks_eq l K 1 one_pos, heq, padicValNat.mul hK1 (Nat.mul_ne_zero (hpow _) hl1), padicValNat.mul (hpow _) hl1, padicValNat.prime_pow, hv]`.
+
+Use linear arithmetic over natural numbers and integers.
+-/
 theorem padicValNat_finrank_Ks : ∀ (l : ℕ) [Fact l.Prime] (K : Loc.FinExt l), (∀ m : ℕ, 0 < m → padicValNat l (finrank ℚ_[l] ↥(Loc.Ks K m)) - padicValNat l (finrank ℚ_[l] ↥(Loc.Ks K 1)) = m - 1) ∧ (K.1 ≤ Loc.MaximalUnramifiedExtension l → padicValNat l (finrank ℚ_[l] ↥(Loc.Ks K 1)) - padicValNat l (finrank ℚ_[l] ↥K.1) = 0) := by
   intro l _ K
   have hl2 : 2 ≤ l := (Fact.out : l.Prime).two_le

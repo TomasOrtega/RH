@@ -7,6 +7,9 @@ namespace GlobalTheory.CompanionTheory.DepthZeroJac
 open PositivityTheory.LowerBoundConstant GlobalTheory GlobalTheory.Published GlobalTheory.PRep GlobalTheory.SmGL GlobalTheory.SplitWeil GlobalTheory.SplitRead Topology
 open GlobalTheory.DepthZeroJac GlobalTheory.StepData GlobalTheory.IwahoriInj
 
+/- English proof (translation)
+Introduce `v hv h0`. Take `⟨c, hc0, hc1, hc2⟩` from `exists_deep (k := k) 1`. Establish `h1 : v ∈ twKer π (unipRad k e) 1` using `(Submodule.Quotient.mk_eq_zero _).1 h0`. Take `⟨M, hM⟩` from `(eventually_mem_twKer (hc := hc0) hc1 hc2 h1).exists`. Conclude with `claim_of_antitone hc1 hc2 hπ _ _ rfl (antitone_expo M) v hv hM`.
+-/
 theorem fixed_inj_smooth (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
     (n s : ℕ) (d : Fin s → ℕ) (e : (Σ a, Fin (d a)) ≃ Fin n) (V : Type) [AddCommGroup V] [Module ℂ V]
     (π : Representation ℂ (GL (Fin n) k) V) (hπ : IsSmooth π) :

@@ -38,6 +38,19 @@ private def Irr {G E : Type} (κ : Type) [Field κ] [AddCommGroup E] [Module κ 
   (∃ W : Submodule κ E, ∀ g, g ∈ A ↔ φ g ∈ W) ∧
     ∀ T : Set (Submodule κ E), T.Finite → (∀ g ∈ A, ∃ B ∈ T, φ g ∈ B) → ∃ B ∈ T, ∀ g ∈ A, φ g ∈ B
 
+/- English proof (translation)
+Proceed by induction on `W using WellFoundedLT.induction with`. Consider the case `ind W ih`. Distinguish the cases in `h : Irr κ φ {g | φ g ∈ W}`. Conclude with `⟨{{g | φ g ∈ W}}, Set.finite_singleton _, by simpa using h, by simp⟩`. Establish `h' : ∃ T : Set (Submodule κ E), T.Finite ∧ (∀ g, φ g ∈ W → ∃ B ∈ T, φ g ∈ B) ∧ ∀ B ∈ T, ∃ g, φ g ∈ W ∧ φ g ∉ B`.
+
+Assume the negation of the conclusion as `hc`. Use `h ⟨⟨W, fun _ => Iff.rfl⟩, fun T hT hcov => ?_⟩` and prove the remaining obligations. Assume the negation of the conclusion as `hn`. Use `hc ⟨T, hT, hcov, fun B hB => ?_⟩` and prove the remaining obligations. Assume the negation of the conclusion as `hB'`.
+
+Use `hn ⟨B, hB, fun g hg => ?_⟩` and prove the remaining obligations. Assume the negation of the conclusion as `hg'`. Conclude with `hB' ⟨g, hg, hg'⟩`. Take `⟨T, hT, hcov, hne⟩` from `h'`. Establish `hlt : ∀ B : T, W ⊓ (B : Submodule κ E) < W`.
+
+Introduce `B`. Take `⟨g, hg, hg'⟩` from `hne B B.2`. Use `lt_of_le_of_ne inf_le_left fun he => hg' ?_` and prove the remaining obligations. Rewrite `hg` using `[← he]`. Conclude with `hg.2`.
+
+Use `choose C hC1 hC2 hC3 using fun B : T => ih _ (hlt B)`. Use `haveI : Finite T := hT`. Use `⟨⋃ B, C B, Set.finite_iUnion hC1, ?_, ?_⟩` and prove the remaining obligations. Introduce `A hA`. Take `⟨B, hB⟩` from `Set.mem_iUnion.1 hA`.
+
+Conclude with `hC2 B A hB`. Introduce `g hg`. Take `⟨B, hB, hgB⟩` from `hcov g hg`. Take `⟨A, hA, hgA⟩` from `hC3 ⟨B, hB⟩ g ⟨hg, hgB⟩`. Conclude with `⟨A, Set.mem_iUnion.2 ⟨_, hA⟩, hgA⟩`.
+-/
 private theorem irr_cover {G E κ : Type} [Field κ] [AddCommGroup E] [Module κ E]
     [FiniteDimensional κ E] (φ : G → E) (W : Submodule κ E) :
     ∃ C : Set (Set G), C.Finite ∧ (∀ A ∈ C, Irr κ φ A) ∧ ∀ g, φ g ∈ W → ∃ A ∈ C, g ∈ A := by
@@ -73,6 +86,13 @@ private theorem irr_cover {G E κ : Type} [Field κ] [AddCommGroup E] [Module κ
         obtain ⟨A, hA, hgA⟩ := hC3 ⟨B, hB⟩ g ⟨hg, hgB⟩
         exact ⟨A, Set.mem_iUnion.2 ⟨_, hA⟩, hgA⟩
 
+/- English proof (translation)
+Take `⟨⟨W, hW⟩, h2⟩` from `hA`. Use `⟨⟨W.comap (L x⁻¹), fun g => ?_⟩, fun T hT hcov => ?_⟩` and prove the remaining obligations. Rewrite using `[Set.mem_smul_set_iff_inv_smul_mem, hW, smul_eq_mul, hL, Submodule.mem_comap]`. Take `⟨_, ⟨B, hB, rfl⟩, h⟩` from `h2 ((fun B => B.comap (L x)) '' T) (hT.image _) (by`. Introduce `g hg`.
+
+Take `⟨B, hB, hgB⟩` from `hcov (x • g) (Set.smul_mem_smul_set hg)`. Use `⟨_, ⟨B, hB, rfl⟩, ?_⟩` and prove the remaining obligations. Rewrite `hgB` using `[smul_eq_mul, hL]`. Conclude with `hgB)`. Use `⟨B, hB, ?_⟩` and prove the remaining obligations.
+
+Introduce and unpack `_ ⟨g, hg, rfl⟩`. Use `show φ (x * g) ∈ B`. Rewrite using `[hL]`. Conclude with `h g hg`.
+-/
 private theorem irr_smul {G E κ : Type} [Group G] [Field κ] [AddCommGroup E] [Module κ E]
     (φ : G → E) (L : G → E →ₗ[κ] E) (hL : ∀ h g, φ (h * g) = L h (φ g))
     {A : Set G} (hA : Irr κ φ A) (x : G) : Irr κ φ (x • A) := by
@@ -91,6 +111,25 @@ private theorem irr_smul {G E κ : Type} [Group G] [Field κ] [AddCommGroup E] [
     rw [hL]
     exact h g hg
 
+/- English proof (translation)
+Take `⟨C, hC1, hC2, hC3⟩` from `irr_cover φ (⊤ : Submodule κ E)`. Establish `hsub : ∀ A, Irr κ φ A → ∃ D ∈ C, A ⊆ D`. Introduce `A hA`. Use `choose W hW using fun D : C => (hC2 D D.2).1`. Use `haveI : Finite C := hC1`.
+
+Take `⟨_, ⟨D, rfl⟩, hD⟩` from `hA.2 (Set.range W) (Set.finite_range _) (by`. Introduce `g _`. Take `⟨D, hD, hg⟩` from `hC3 g trivial`. Conclude with `⟨_, ⟨⟨D, hD⟩, rfl⟩, (hW ⟨D, hD⟩ g).1 hg⟩)`. Conclude with `⟨D, D.2, fun g hg => (hW D g).2 (hD g hg)⟩`.
+
+Establish `hne : C.Nonempty`. Take `⟨D, hD, -⟩` from `hC3 1 trivial`. Conclude with `⟨D, hD⟩`. Take `⟨A, hA⟩` from `hC1.exists_maximal hne`. Establish `hAI` using `hC2 A hA.1`.
+
+Establish `horb : MulAction.orbit G A ⊆ C`. Introduce and unpack `_ ⟨x, rfl⟩`. Take `⟨D, hD, h1⟩` from `hsub _ (irr_smul φ L hL hAI x)`. Take `⟨D', hD', h2⟩` from `hsub _ (irr_smul φ L hL (hC2 D hD) x⁻¹)`. Establish `h3 : A ⊆ x⁻¹ • D` using `Set.smul_set_subset_iff_subset_inv_smul_set.1 h1`.
+
+Establish `h4 : D' ⊆ A` using `hA.2 hD' (h3.trans h2)`. Establish `h5 : D ⊆ x • A`. Use `Set.smul_set_subset_iff_subset_inv_smul_set.1 (h2.trans h4)` as an intermediate fact. Rewrite `this` using `[inv_inv]`. Then use the resulting hypothesis. Establish `h6 : x • A = D` using `Set.Subset.antisymm h1 h5`.
+
+Use `show x • A ∈ C`. Rewrite using `[h6]`. Conclude with `hD`. Establish `hfi : (MulAction.stabilizer G A).FiniteIndex`. Use `⟨?_⟩` and prove the remaining obligations.
+
+Rewrite using `[MulAction.index_stabilizer]`. Conclude with `((Set.ncard_pos (hC1.subset horb)).2 ⟨A, MulAction.mem_orbit_self A⟩).ne'`. Take `⟨B, hB, hAB⟩` from `hAI.2 T hT fun g _ => hcov g`. Establish `hAne : A.Nonempty`. Assume the negation of the conclusion as `hn`.
+
+Take `⟨B, hB, -⟩` from `hAI.2 ∅ Set.finite_empty fun g hg => (hn ⟨g, hg⟩).elim`. Conclude with `hB`. Take `⟨x, hx⟩` from `hAne`. Use `⟨B, hB, _, hfi, x, fun h hh => hAB _ ?_⟩` and prove the remaining obligations. Establish `: h • x ∈ h • A` using `Set.smul_mem_smul_set hx`.
+
+Rewrite `this` using `[MulAction.mem_stabilizer_iff.1 hh]`. Then use the resulting hypothesis.
+-/
 private theorem coset_in_member {G E κ : Type} [Group G] [Field κ] [AddCommGroup E] [Module κ E]
     [FiniteDimensional κ E]
     (φ : G → E) (L : G → E →ₗ[κ] E) (hL : ∀ h g, φ (h * g) = L h (φ g))
@@ -138,14 +177,39 @@ private theorem coset_in_member {G E κ : Type} [Group G] [Field κ] [AddCommGro
   have : h • x ∈ h • A := Set.smul_mem_smul_set hx
   rwa [MulAction.mem_stabilizer_iff.1 hh] at this
 
+/- English proof (translation)
+Simplify using `[gm]`.
+-/
 private theorem gm_mul {G κ : Type} [Group G] [Field κ] {n : ℕ} (r : G →* GL (Fin n) κ) (g h : G) :
     gm r (g * h) = gm r g * gm r h := by
   simp [gm]
 
+/- English proof (translation)
+Simplify using `[gm]`.
+-/
 private theorem gm_one {G κ : Type} [Group G] [Field κ] {n : ℕ} (r : G →* GL (Fin n) κ) :
     gm r 1 = 1 := by
   simp [gm]
 
+/- English proof (translation)
+Set `W : Submodule κ (Fin n → κ)` to `Submodule.span κ {w | ∃ h ∈ H, (gm r h).mulVec v = w}`. Set `S : Subgroup G` to `{ carrier := {g | ∀ w ∈ W, (gm r g).mulVec w ∈ W} one_mem' := by`. Introduce `w hw`. Rewrite using `[gm_one, Matrix.one_mulVec]` and apply the resulting hypothesis. Use the proof step `mul_mem' := by`.
+
+Introduce `a b ha hb w hw`. Rewrite using `[gm_mul, ← Matrix.mulVec_mulVec]`. Conclude with `ha _ (hb _ hw)`. Use the proof step `inv_mem' := by`. Introduce `g hg w hw`.
+
+Establish `hinv : ∀ y, (gm r g⁻¹).mulVec ((gm r g).mulVec y) = y`. Introduce `y`. Rewrite using `[Matrix.mulVec_mulVec, ← gm_mul, inv_mul_cancel, gm_one, Matrix.one_mulVec]`. Set `f : W →ₗ[κ] W` to `(Matrix.mulVecLin (gm r g)).restrict (fun y hy => hg y hy)`. Establish `hf : Function.Injective f`.
+
+Introduce `a b hab`. Apply `Subtype.ext` to reduce the goal to its premises. Establish `: (gm r g).mulVec a = (gm r g).mulVec b` using `congrArg Subtype.val hab`. Rewrite using `[← hinv a, this, hinv]`. Take `⟨y, hy⟩` from `(LinearMap.injective_iff_surjective.1 hf) ⟨w, hw⟩`.
+
+Establish `: (gm r g).mulVec y = w` using `congrArg Subtype.val hy`. Rewrite using `[← this, hinv]`. Conclude with `y.2 }`. Establish `hle : H ≤ S`. Introduce `g hg w hw`.
+
+Establish `: W ≤ W.comap (Matrix.mulVecLin (gm r g))`. Use `Submodule.span_le.2 ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨h, hh, rfl⟩`. Use `Submodule.subset_span ⟨g * h, H.mul_mem hg hh, ?_⟩` and prove the remaining obligations. Rewrite using `[gm_mul, ← Matrix.mulVec_mulVec]`.
+
+Both sides reduce to the same expression. Conclude with `this hw`. Establish `hS : S.FiniteIndex` using `Subgroup.finiteIndex_of_le hle`. Establish `hvW : v ∈ W` using `Submodule.subset_span ⟨1, H.one_mem, by rw [gm_one, Matrix.one_mulVec]⟩`. Break down `hr W S hS (fun g => Iff.rfl) with h | h` into its components or cases.
+
+Rewrite `hvW` using `[h]`. Conclude with `(hv hvW).elim`. Introduce `w`. Establish `: W ≤ LinearMap.ker l`. Use `Submodule.span_le.2 ?_` and prove the remaining obligations.
+
+Introduce and unpack `_ ⟨h, hh, rfl⟩`. Conclude with `hl h hh`. Conclude with `this (h ▸ Submodule.mem_top)`.
+-/
 private theorem form_eq_zero {G κ : Type} [Group G] [Field κ] {n : ℕ} (r : G →* GL (Fin n) κ)
     (hr : StrongIrr r) (H : Subgroup G) (hH : H.FiniteIndex) (v : Fin n → κ) (hv : v ≠ 0)
     (l : (Fin n → κ) →ₗ[κ] κ) (hl : ∀ h ∈ H, l ((gm r h).mulVec v) = 0) : ∀ w, l w = 0 := by
@@ -198,6 +262,27 @@ private theorem form_eq_zero {G κ : Type} [Group G] [Field κ] {n : ℕ} (r : G
 end UpperTheory.Reformulated.B.StronglyIrreducibleFreeRatios
 
 open UpperTheory.Reformulated.B.StronglyIrreducibleFreeRatios in
+/- English proof (translation)
+Introduce `G κ _ _ n r hr u α _ _`. Assume the negation of the conclusion as `hno`. Set `M` to `Matrix (Fin n) (Fin n) κ`. Set `φ : G → M × M` to `fun g => (gm r g, gm r g⁻¹)`. Set `L : G → (M × M) →ₗ[κ] (M × M)` to `fun h => (LinearMap.mulLeft κ (gm r h)).prodMap (LinearMap.mulRight κ (gm r h⁻¹))`.
+
+Establish `hL : ∀ h g, φ (h * g) = L h (φ g)`. Introduce `h g`. Use `show (gm r (h * g), gm r (h * g)⁻¹) = (gm r h * gm r g, gm r g⁻¹ * gm r h⁻¹)`. Rewrite using `[mul_inv_rev, gm_mul, gm_mul]`. Set `e : Fin n × Fin n → M →ₗ[κ] κ` to `fun p => Matrix.entryLinearMap κ κ p.1 p.2`.
+
+Set `T : Set (Submodule κ (M × M))` to `Set.range (fun p => LinearMap.ker (e p ∘ₗ LinearMap.fst κ M M)) ∪ Set.range (fun p => LinearMap.ker (e p ∘ₗ LinearMap.snd κ M M))`. Establish `hT : T.Finite` using `(Set.finite_range _).union (Set.finite_range _)`. Establish `hcov : ∀ g, ∃ B ∈ T, φ g ∈ B`. Introduce `g`. Assume the negation of the conclusion as `hc`.
+
+Use `hno ⟨g, fun i j => ⟨fun h => hc ⟨_, Or.inl ⟨(i, j), rfl⟩, h⟩, fun h => ?_⟩⟩` and prove the remaining obligations. Rewrite `h` using `[← map_inv]`. Conclude with `hc ⟨_, Or.inr ⟨(i, j), rfl⟩, h⟩`. Establish `hs : ∀ j : Fin n, (Pi.single j (1 : κ) : Fin n → κ) ≠ 0`. Introduce `j h`.
+
+Simplify using `using congrFun h j`. Establish `hcancel : ∀ x y, (gm r x⁻¹).mulVec ((gm r x).mulVec y) = y`. Introduce `x y`. Rewrite using `[Matrix.mulVec_mulVec, ← gm_mul, inv_mul_cancel, gm_one, Matrix.one_mulVec]`. Take `⟨B, hB, H, hH, x, hx⟩` from `coset_in_member φ L hL T hT hcov`.
+
+Break down `hB with ⟨⟨i, j⟩, rfl⟩ | ⟨⟨i, j⟩, rfl⟩` into its components or cases. Establish `hv : (gm r x).mulVec (Pi.single j 1) ≠ 0`. Introduce `h`. Apply `hs j` to reduce the goal to its premises. Rewrite using `[← hcancel x (Pi.single j 1), h, Matrix.mulVec_zero]`.
+
+Use `form_eq_zero r hr H hH _ hv (LinearMap.proj i) (by` as an intermediate fact. Introduce `h hh`. Establish `h1 : gm r (h * x) i j = 0` using `hx h hh`. Rewrite using `[Matrix.mulVec_mulVec, ← gm_mul, Matrix.mulVec_single_one]`. Conclude with `h1) (Pi.single i 1)`.
+
+Simplify using `at this`. Use `form_eq_zero r hr H hH _ (hs j) (LinearMap.proj i ∘ₗ Matrix.mulVecLin (gm r x⁻¹)) (by` as an intermediate fact. Introduce `h hh`. Establish `h1 : gm r (h⁻¹ * x)⁻¹ i j = 0` using `hx h⁻¹ (H.inv_mem hh)`. Rewrite `h1` using `[mul_inv_rev, inv_inv]`.
+
+Use `show ((gm r x⁻¹).mulVec ((gm r h).mulVec (Pi.single j 1))) i = 0`. Rewrite using `[Matrix.mulVec_mulVec, ← gm_mul, Matrix.mulVec_single_one]`. Conclude with `h1) ((gm r x).mulVec (Pi.single i 1))`. Establish `h2 : ((gm r x⁻¹).mulVec ((gm r x).mulVec (Pi.single i 1))) i = 0` using `this`. Rewrite `h2` using `[hcancel]`.
+
+Simplify using `at h2`.
+-/
 theorem UpperTheory.Reformulated.B.StronglyIrreducibleFreeRatios.fullEx :
     UpperTheory.Reformulated.B.StronglyIrreducibleFreeRatios.FullEx := by
   intro G κ _ _ n r hr u α _ _

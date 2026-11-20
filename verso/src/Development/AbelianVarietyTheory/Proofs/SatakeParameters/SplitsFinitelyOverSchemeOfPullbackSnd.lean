@@ -4,6 +4,13 @@ open CategoryTheory Limits AlgebraicGeometry
 
 namespace GlobalTheory.EtC.Tr
 
+/- English proof (translation)
+Introduce and unpack `⟨m, s, hs, hiso⟩`. Use `⟨m, fun j => s j ≫ pullback.fst f x, fun j => ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[Category.assoc, pullback.condition, ← Category.assoc, hs j]`. Establish `heq : (Sigma.desc (fun j => pullback.lift (s j ≫ pullback.fst f x) (𝟙 V) (by rw [Category.assoc, pullback.condition, ← Category.assoc, hs j, Category.id_comp])) : ∐ (fun _ : Fin m => V) ⟶ pullback f (v ≫ x)) = (Sigma.desc (fun j => pullback.lift (s j) (𝟙 V) (by rw [hs j, Category …`. Apply `Sigma.hom_ext` to reduce the goal to its premises.
+
+Introduce `j`. Rewrite using `[Sigma.ι_desc, Sigma.ι_desc_assoc]`. Apply `pullback.hom_ext` to reduce the goal to its premises. Rewrite using `[pullback.lift_fst, Category.assoc, pullbackLeftPullbackSndIso_hom_fst, pullback.lift_fst_assoc]`. Rewrite using `[pullback.lift_snd, Category.assoc, pullbackLeftPullbackSndIso_hom_snd, pullback.lift_snd]`.
+
+Rewrite using `[heq]`. Use `infer_instance`.
+-/
 theorem splits_of_splits_pullback_snd {Z X S V : Scheme.{0}} (f : Z ⟶ X) (x : S ⟶ X) (v : V ⟶ S) :
     GlobalTheory.EtC.Tr.Splits (pullback.snd f x) v → GlobalTheory.EtC.Tr.Splits f (v ≫ x) := by
   rintro ⟨m, s, hs, hiso⟩

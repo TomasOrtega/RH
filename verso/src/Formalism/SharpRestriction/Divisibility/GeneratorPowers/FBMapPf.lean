@@ -13,27 +13,45 @@ variable {R R' : Type} [CommRing R] [CommRing R'] (ψ : R →+* R') {d : ℕ}
 
 def mp {n : ℕ} (a : Pt R n d) : Pt R' n d := fun i => map ψ (a i)
 
+/- English proof (translation)
+The claim follows from `MvPowerSeries.hasSubst_of_constantCoeff_zero (fun p => ha p.1 p.2)`.
+-/
 private theorem hs_lemma {m n : ℕ} (a : Fin m → Pt R n d) (ha : ∀ j i, constantCoeff (a j i) = 0) :
     MvPowerSeries.HasSubst (fun p : Fin m × Fin d => a p.1 p.2) :=
   MvPowerSeries.hasSubst_of_constantCoeff_zero (fun p => ha p.1 p.2)
 
+/- English proof (translation)
+The claim follows from `MvPowerSeries.constantCoeff_subst_eq_zero (hs_lemma a ha) (fun p => ha p.1 p.2) hf`.
+-/
 private theorem cz_ev_lemma_2 {m n : ℕ} (a : Fin m → Pt R n d) (ha : ∀ j i, constantCoeff (a j i) = 0)
     (f : PS R m d) (hf : constantCoeff f = 0) : constantCoeff (ev a f) = 0 :=
   MvPowerSeries.constantCoeff_subst_eq_zero (hs_lemma a ha) (fun p => ha p.1 p.2) hf
 
+/- English proof (translation)
+Unfold `ev`. Conclude with `MvPowerSeries.map_subst (hs_lemma a ha) f`.
+-/
 theorem map_ev' {m n : ℕ} (a : Fin m → Pt R n d) (ha : ∀ j i, constantCoeff (a j i) = 0) (f : PS R m d) :
     map ψ (ev a f) = ev (fun j => mp ψ (a j)) (map ψ f) := by
   unfold ev
   exact MvPowerSeries.map_subst (hs_lemma a ha) f
 
+/- English proof (translation)
+Use function extensionality and compare the values at `i`. Simplify using `only [mp, pt, MvPowerSeries.map_X]`.
+-/
 theorem mp_pt {n : ℕ} (j : Fin n) : mp ψ (pt R d j) = pt R' d j := by
   funext i
   simp only [mp, pt, MvPowerSeries.map_X]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `i`. Simplify using `[mp]`.
+-/
 theorem mp_zero {n : ℕ} : mp ψ (0 : Pt R n d) = 0 := by
   funext i
   simp [mp]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `j`. Consider the cases of `j using Fin.cases with`. Consider the case `zero => rfl`. Consider the case `succ k => rfl`.
+-/
 theorem mp_cons {n m : ℕ} (p : Pt R n d) (u : Fin m → Pt R n d) :
     (fun j => mp ψ (Matrix.vecCons p u j)) = Matrix.vecCons (mp ψ p) (fun j => mp ψ (u j)) := by
   funext j
@@ -41,13 +59,24 @@ theorem mp_cons {n m : ℕ} (p : Pt R n d) (u : Fin m → Pt R n d) :
   | zero => rfl
   | succ k => rfl
 
+/- English proof (translation)
+Use function extensionality and compare the values at `j`. Conclude with `j.elim0`.
+-/
 theorem mp_nil {n : ℕ} : (fun j => mp ψ ((![] : Fin 0 → Pt R n d) j)) = ![] := by
   funext j
   exact j.elim0
 
+/- English proof (translation)
+Simplify using `only [pt, MvPowerSeries.constantCoeff_X]`.
+-/
 theorem cz_pt {n : ℕ} (j : Fin n) (i : Fin d) : constantCoeff (pt R d j i) = 0 := by
   simp only [pt, MvPowerSeries.constantCoeff_X]
 
+/- English proof (translation)
+Establish `h : ∀ (j : Fin 2) (k : Fin d), constantCoeff ((![a, b] : Fin 2 → Pt R n d) j k) = 0`. Introduce `j k`. Use `fin_cases j`. Conclude with `ha k`. Conclude with `hb k`.
+
+Use `show constantCoeff (ev ![a, b] (F i)) = 0`. Conclude with `cz_ev_lemma_2 ![a, b] h (F i) (hF i)`.
+-/
 theorem cz_add (F : Fin d → PS R 2 d) (hF : ∀ i, constantCoeff (F i) = 0) {n : ℕ} (a b : Pt R n d)
     (ha : ∀ i, constantCoeff (a i) = 0) (hb : ∀ i, constantCoeff (b i) = 0) (i : Fin d) :
     constantCoeff (addOf F a b i) = 0 := by
@@ -59,6 +88,11 @@ theorem cz_add (F : Fin d → PS R 2 d) (hF : ∀ i, constantCoeff (F i) = 0) {n
   show constantCoeff (ev ![a, b] (F i)) = 0
   exact cz_ev_lemma_2 ![a, b] h (F i) (hF i)
 
+/- English proof (translation)
+Establish `h : ∀ (j : Fin 1) (k : Fin d), constantCoeff ((![a] : Fin 1 → Pt R n d) j k) = 0`. Introduce `j k`. Use `fin_cases j`. Conclude with `ha k`. Use `show constantCoeff (ev ![a] (φ i)) = 0`.
+
+Conclude with `cz_ev_lemma_2 ![a] h (φ i) (hφ i)`.
+-/
 theorem cz_comp1 (φ : Pt R 1 d) (hφ : ∀ i, constantCoeff (φ i) = 0) {n : ℕ} (a : Pt R n d)
     (ha : ∀ i, constantCoeff (a i) = 0) (i : Fin d) : constantCoeff (comp1 φ a i) = 0 := by
   have h : ∀ (j : Fin 1) (k : Fin d), constantCoeff ((![a] : Fin 1 → Pt R n d) j k) = 0 := by
@@ -68,6 +102,13 @@ theorem cz_comp1 (φ : Pt R 1 d) (hφ : ∀ i, constantCoeff (φ i) = 0) {n : �
   show constantCoeff (ev ![a] (φ i)) = 0
   exact cz_ev_lemma_2 ![a] h (φ i) (hφ i)
 
+/- English proof (translation)
+Use function extensionality and compare the values at `i`. Establish `h : ∀ (j : Fin 2) (k : Fin d), constantCoeff ((![a, b] : Fin 2 → Pt R n d) j k) = 0`. Introduce `j k`. Use `fin_cases j`. Conclude with `ha k`.
+
+Conclude with `hb k`. Use `show MvPowerSeries.map ψ (ev ![a, b] (F i)) = ev ![mp ψ a, mp ψ b] (MvPowerSeries.map ψ (F i))`. Rewrite using `[map_ev' ψ _ h]`. Use `congr 1`. Use function extensionality and compare the values at `j`.
+
+Apply the tactic sequence `fin_cases j <;> rfl`.
+-/
 theorem mp_add (F : Fin d → PS R 2 d) {n : ℕ} (a b : Pt R n d)
     (ha : ∀ i, constantCoeff (a i) = 0) (hb : ∀ i, constantCoeff (b i) = 0) :
     mp ψ (addOf F a b) = addOf (fun i => map ψ (F i)) (mp ψ a) (mp ψ b) := by
@@ -83,6 +124,13 @@ theorem mp_add (F : Fin d → PS R 2 d) {n : ℕ} (a b : Pt R n d)
   funext j
   fin_cases j <;> rfl
 
+/- English proof (translation)
+Use function extensionality and compare the values at `i`. Establish `h : ∀ (j : Fin 1) (k : Fin d), constantCoeff ((![a] : Fin 1 → Pt R n d) j k) = 0`. Introduce `j k`. Use `fin_cases j`. Conclude with `ha k`.
+
+Use `show MvPowerSeries.map ψ (ev ![a] (φ i)) = ev ![mp ψ a] (MvPowerSeries.map ψ (φ i))`. Rewrite using `[map_ev' ψ _ h]`. Use `congr 1`. Use function extensionality and compare the values at `j`. Use `fin_cases j`.
+
+Both sides reduce to the same expression.
+-/
 theorem mp_comp1 (φ : Pt R 1 d) {n : ℕ} (a : Pt R n d) (ha : ∀ i, constantCoeff (a i) = 0) :
     mp ψ (comp1 φ a) = comp1 (mp ψ φ) (mp ψ a) := by
   funext i
@@ -194,6 +242,9 @@ end Formalism.MainNotions.ModuliIntegralCharts.H1.FBMap
 
 namespace Formalism.MainNotions.ModuliIntegralCharts.H1
 
+/- English proof (translation)
+Introduce `R R' _ _ ψ d O _ _ B`. Conclude with `⟨FBMap.mapFB ψ B, fun j => rfl, fun a j => rfl, rfl, rfl, rfl, fun a => rfl⟩`.
+-/
 theorem fbMap_holds : FBMapSt := by
   intro R R' _ _ ψ d O _ _ B
   exact ⟨FBMap.mapFB ψ B, fun j => rfl, fun a j => rfl, rfl, rfl, rfl, fun a => rfl⟩

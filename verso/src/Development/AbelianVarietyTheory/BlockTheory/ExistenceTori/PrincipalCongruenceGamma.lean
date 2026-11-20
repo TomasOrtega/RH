@@ -63,9 +63,15 @@ def Gam (T : Core D) : Prop :=
 def GamEq (T : Core D) : Prop :=
   ∀ j, InR D j → ∀ σ : T.Q.c.F →+* ℂ, GoodEmb T.Q.c σ → GamEqAt T j σ
 
+/- English proof (translation)
+Introduce `k` and use `(h k).ge`.
+-/
 theorem GamEqAt.gamAt {T : Core D} {j : ℕ} {σ : T.Q.c.F →+* ℂ} (h : GamEqAt T j σ) : GamAt T j σ :=
   fun k => (h k).ge
 
+/- English proof (translation)
+Introduce `j hj σ hσ` and use `(h j hj σ hσ).gamAt`.
+-/
 theorem GamEq.gam {T : Core D} (h : GamEq T) : Gam T := fun j hj σ hσ => (h j hj σ hσ).gamAt
 
 end GlobalTheory.IndefiniteRowSideFullHecke.PrincipalCongruenceGamma

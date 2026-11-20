@@ -17,6 +17,23 @@ open UpperTheory.BaseChangeIdentities.FrameWordIdentity
 
 attribute [local instance] borelG borelF borelA GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField
 
+/- English proof (translation)
+Introduce `hA hO hF hR E _ _ _ n π S T F₀ F i p`. Take `⟨g, b⟩` from `p`. Establish `hP : (↑F.d.P : Set (Pl E)) ⊆ F₀.Sec` using `(hF hR E n π S T F₀ F).2.2.2`. Establish `hok : ∀ L, F.d.IsGen (F₀.C.a i) (F₀.C.le i) L → L.Ok F.d.P` using `fun L hL => (hO E n F.d F.ok (F₀.C.a i) (F₀.C.le i)).2.2.2 L hL`. Establish `hadj : ∀ L, F.d.IsGen (F₀.C.a i) (F₀.C.le i) L → adjF (F.ψ i L) = F.ψ i L.adj` using `fun L hL => (hA E F.d.kap F₀.Sec F.d.P (F.B i) (Equiv.refl _) F₀.hSec hP L L (hok L hL) (hok L hL)).2.2.2.2`.
+
+Establish `heL : (F.d.eL (F₀.C.a i)).adj = F.d.eL (F₀.C.a i)`. Establish `hm` using `LocComm.adj_m F.d (a := F₀.C.a i) (ha := F₀.C.le i) (L := F.d.eL (F₀.C.a i)) (Or.inl rfl)`. Establish `hs : (F.d.eL (F₀.C.a i)).adj.s = (F.d.eL (F₀.C.a i)).s`. Use function extensionality and compare the values at `w`. Conclude with `LocComm.lfStar_idem _`.
+
+Establish `ht : (F.d.eL (F₀.C.a i)).adj.t = (F.d.eL (F₀.C.a i)).t`. Use function extensionality and compare the values at `w`. Conclude with `LocComm.lfStar_idem _`. Consider the cases of `h : F.d.eL (F₀.C.a i) with`. Consider the case `mk m s t`.
+
+Rewrite `hm`, `hs`, `ht` using `[h]`. Simplify using `only [LM.adj] at hm hs ht ⊢`. Rewrite using `[LM.mk.injEq]`. Conclude with `⟨hm, hs, ht⟩`. Establish `heψ : adjF (F.ψ i (F.d.eL (F₀.C.a i))) = F.ψ i (F.d.eL (F₀.C.a i))`.
+
+Rewrite using `[hadj _ (Or.inl rfl), heL]`. Break down `g with _ | x | x` into its components or cases. Use `Or.inr ?_` and prove the remaining obligations. Consider the cases of `b`. Conclude with `⟨F.t₀ i, rfl, rfl⟩`.
+
+Conclude with `⟨(F.t₀ i).adj, rfl, heψ⟩`. Distinguish the cases in `hi : i = x.1`. Use `Or.inr ?_` and prove the remaining obligations. Consider the cases of `b`. Conclude with `⟨F.tD i x.2.1 x.2.2.1 x.2.2.2.1 x.2.2.2.2, by simp [gl, RunFrame.g, hi], rfl⟩`.
+
+Use `⟨(F.tD i x.2.1 x.2.2.1 x.2.2.2.1 x.2.2.2.2).adj, by simp [gl, RunFrame.g, hi, BGen.adj], heψ⟩` and prove the remaining obligations. Use `Or.inl ?_` and prove the remaining obligations. Consider the cases of `b`. Conclude with `⟨F.dval x, by simp [gl, RunFrame.g, hi], rfl⟩`. Conclude with `⟨starRingEnd ℂ (F.dval x), by simp [gl, RunFrame.g, hi, BGen.adj], rfl⟩`.
+
+Use `Or.inr ?_` and prove the remaining obligations. Consider the cases of `b`. Conclude with `⟨F.ptL i (F.d.hL _ (F₀.C.le i) x.1.1 x.2.1 x.2.2), rfl, by simp [lt, locL]; rfl⟩`. Conclude with `⟨(F.ptL i (F.d.hL _ (F₀.C.le i) x.1.1 x.2.1 x.2.2)).adj, rfl, (hadj _ (Or.inr ⟨x.1.1, x.2.1, x.2.2, x.1.2.2, rfl⟩)).trans (by simp [lt, locL])⟩`.
+-/
 theorem _root_.UpperTheory.BaseChangeIdentities.FrameWordIdentity.psilet_pf :
     FmAlg → LocOk → FrFacts → PsiLet := by
   intro hA hO hF hR E _ _ _ n π S T F₀ F i p

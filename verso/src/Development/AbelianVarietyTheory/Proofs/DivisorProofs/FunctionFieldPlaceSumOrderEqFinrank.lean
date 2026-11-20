@@ -25,6 +25,9 @@ noncomputable def toRing (v : Place k F) : GroundTheory.FunctionField.Place k F 
     · simp [hc]
     · exact (v.2.2 c hc).le
 
+/- English proof (translation)
+Use `GroundTheory.FunctionField.valuation_eq_of_isEquiv ?_ (toRing v).valuation_surjective v.2.1` and prove the remaining obligations. Use `Valuation.isEquiv_iff_val_le_one.2 fun {x} => ?_` and prove the remaining obligations. Rewrite using `[GroundTheory.FunctionField.Place.valuation_le_one_iff]`. Both sides reduce to the same expression.
+-/
 theorem valuation_toRing [GroundTheory.FunctionField.IsFunctionField k F] (v : Place k F) :
     (toRing v).valuation = v.1 := by
   refine GroundTheory.FunctionField.valuation_eq_of_isEquiv ?_ (toRing v).valuation_surjective v.2.1
@@ -32,16 +35,25 @@ theorem valuation_toRing [GroundTheory.FunctionField.IsFunctionField k F] (v : P
   rw [GroundTheory.FunctionField.Place.valuation_le_one_iff]
   rfl
 
+/- English proof (translation)
+Unfold `ord`. Rewrite using `[← valuation_toRing]`. Both sides reduce to the same expression.
+-/
 theorem ord_toRing [GroundTheory.FunctionField.IsFunctionField k F] (v : Place k F) (x : F) :
     (toRing v).ord x = ord v x := by
   unfold ord
   rw [← valuation_toRing]
   rfl
 
+/- English proof (translation)
+Introduce `v w h` and use `Subtype.ext (by rw [← valuation_toRing, ← valuation_toRing, h])`.
+-/
 theorem toRing_injective [GroundTheory.FunctionField.IsFunctionField k F] :
     Function.Injective (toRing : Place k F → _) := fun v w h =>
   Subtype.ext (by rw [← valuation_toRing, ← valuation_toRing, h])
 
+/- English proof (translation)
+Introduce `w`. Use `⟨⟨w.valuation, w.valuation_surjective, fun c hc => ?_⟩, ?_⟩` and prove the remaining obligations. Conclude with `w.valuation_algebraMap' hc`. Use extensionality with `x`. Conclude with `w.valuation_le_one_iff x`.
+-/
 theorem toRing_surjective [GroundTheory.FunctionField.IsFunctionField k F] :
     Function.Surjective (toRing : Place k F → _) := by
   intro w
@@ -50,6 +62,9 @@ theorem toRing_surjective [GroundTheory.FunctionField.IsFunctionField k F] :
   · ext x
     exact w.valuation_le_one_iff x
 
+/- English proof (translation)
+Establish `h : Function.Bijective (algebraMap k w.ResidueField)` using `IsAlgClosed.algebraMap_bijective_of_isIntegral`. Establish `e : k ≃ₗ[k] w.ResidueField` using `LinearEquiv.ofBijective (Algebra.linearMap k w.ResidueField) h`. Use `e.finrank_eq` as an intermediate fact. Rewrite `this` using `[Module.finrank_self]`. Conclude with `this.symm`.
+-/
 theorem deg_eq_one [IsAlgClosed k] [GroundTheory.FunctionField.IsFunctionField k F]
     (w : GroundTheory.FunctionField.Place k F) : w.deg = 1 := by
   have h : Function.Bijective (algebraMap k w.ResidueField) :=
@@ -60,6 +75,21 @@ theorem deg_eq_one [IsAlgClosed k] [GroundTheory.FunctionField.IsFunctionField k
   rw [Module.finrank_self] at this
   exact this.symm
 
+/- English proof (translation)
+Introduce `k F E _ _ _ _ _ _ _ _ _ _ hF ρ hρ v π _ hπ`. Use `haveI : GroundTheory.FunctionField.IsFunctionField k F := ⟨hF⟩`. Use `haveI : GroundTheory.FunctionField.IsFunctionField k E := GroundTheory.FunctionField.IsFunctionField.of_finiteDimensional (k := k) (K := F)`. Use `haveI : CharZero F := charZero_of_injective_algebraMap (algebraMap k F).injective`. Establish `key : ∀ p : Place k E, ρ p = v ↔ (toRing p).LiesOver (toRing v)`.
+
+Introduce `p`. Establish `h1 : (toRing p).LiesOver (toRing (ρ p))`. Use extensionality with `x`. Conclude with `hρ p x`. Prove the components needed by the constructor for the conclusion.
+
+Introduce and unpack `rfl`. Conclude with `h1`. Introduce `h`. Conclude with `toRing_injective (GroundTheory.FunctionField.Place.ext (h1.symm.trans h))`. Establish `hfin` using `(toRing v).finite_liesOver (K' := E)`.
+
+Establish `hfin' : {p | ρ p = v}.Finite`. Use `(hfin.preimage toRing_injective.injOn).subset fun p hp => (key p).1 hp` and prove the remaining obligations. Use `⟨hfin', ?_⟩` and prove the remaining obligations. Rewrite using `[finsum_mem_eq_finite_toFinset_sum _ hfin', ← (toRing v).sum_ramificationIdx_mul_inertiaDeg (K' := E), Nat.cast_sum]`. Use `Finset.sum_bij (fun p _ => toRing p) ?_ ?_ ?_ ?_` and prove the remaining obligations.
+
+Introduce `p hp`. Simplify `hp` using `[key]`. Introduce `p _ q _ h`. Conclude with `toRing_injective h`. Introduce `w hw`.
+
+Take `⟨p, rfl⟩` from `toRing_surjective w`. Conclude with `⟨p, by simpa [key] using hw, rfl⟩`. Introduce `p hp`. Establish `h : (toRing p).LiesOver (toRing v)` using `by simpa [key] using hp`. Rewrite using `[← ord_toRing, h.ord_algebraMap, ord_toRing, hπ, GroundTheory.FunctionField.Place.inertiaDeg, deg_eq_one, deg_eq_one]`.
+
+Simplify using the standard rewrite rules.
+-/
 theorem sum_ord_eq_finrank : ∀ (k F E : Type) [Field k] [IsAlgClosed k] [CharZero k] [Field F] [Field E] [Algebra k F] [Algebra k E] [Algebra F E] [IsScalarTower k F E] [FiniteDimensional F E], IsFF k F →
   ∀ ρ : Place k E → Place k F, IsRes ρ → ∀ (v : Place k F) (π : F), π ≠ 0 → ord v π = 1 → {p | ρ p = v}.Finite ∧ ∑ᶠ p ∈ {p | ρ p = v}, ord p (algebraMap F E π) = Module.finrank F E := by
   intro k F E _ _ _ _ _ _ _ _ _ _ hF ρ hρ v π _ hπ

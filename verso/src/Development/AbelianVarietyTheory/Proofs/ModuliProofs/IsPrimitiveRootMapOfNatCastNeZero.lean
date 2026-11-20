@@ -12,6 +12,9 @@ open GlobalTheory.ZM
 
 namespace GlobalTheory.ZM.IntegersAway
 
+/- English proof (translation)
+Establish `: NeZero (k : K)` using `⟨hβ⟩`. Establish `h : (Polynomial.cyclotomic k R).IsRoot z` using `hz.isRoot_cyclotomic hk`. Rewrite using `[← Polynomial.isRoot_cyclotomic_iff, ← Polynomial.map_cyclotomic k β]`. Conclude with `h.map`.
+-/
 theorem isPrimitiveRoot_map_of_natCast_ne_zero {R K : Type} [CommRing R] [IsDomain R] [CharZero R] [Field K] {k : ℕ}
     (hk : 0 < k) {z : R} (hz : IsPrimitiveRoot z k) (β : R →+* K) (hβ : (k : K) ≠ 0) : IsPrimitiveRoot (β z) k := by
   have : NeZero (k : K) := ⟨hβ⟩
@@ -19,6 +22,17 @@ theorem isPrimitiveRoot_map_of_natCast_ne_zero {R K : Type} [CommRing R] [IsDoma
   rw [← Polynomial.isRoot_cyclotomic_iff, ← Polynomial.map_cyclotomic k β]
   exact h.map
 
+/- English proof (translation)
+Take `⟨em, hem, hcomp⟩` from `exists_arBase_away φ hk.ne'`. Establish `hn' : (k : 𝓞 F) ≠ 0` using `by exact_mod_cast hk.ne'`. Establish `hM : Submonoid.powers (k : 𝓞 F) ≤ nonZeroDivisors (𝓞 F)` using `powers_le_nonZeroDivisors_of_noZeroDivisors hn'`. Set `o` to `Localization.Away (k : 𝓞 F)`. Establish `hu : IsUnit (algebraMap (𝓞 F) F (k : 𝓞 F))` using `by simpa using hk.ne'`.
+
+Set `j : o →+* F` to `IsLocalization.Away.lift (k : 𝓞 F) hu`. Establish `hj : ∀ x, j (algebraMap (𝓞 F) o x) = algebraMap (𝓞 F) F x` using `IsLocalization.Away.lift_eq _ hu`. Set `alg : Algebra o F` to `j.toAlgebra`. Establish `: IsScalarTower (𝓞 F) o F` using `IsScalarTower.of_algebraMap_eq fun x => (hj x).symm`. Set `z₀ : 𝓞 F` to `⟨z, hz.isIntegral hk⟩`.
+
+Establish `hz₀ : IsPrimitiveRoot z₀ k` using `IsPrimitiveRoot.of_map_of_injective (f := algebraMap (𝓞 F) F) hz RingOfIntegers.coe_injective`. Establish `hko : IsUnit (k : o)`. Simplify using `using IsLocalization.Away.algebraMap_isUnit (S := o) (k : 𝓞 F)`. Establish `hzu : IsUnit (algebraMap (𝓞 F) o z₀)` using `(hz₀.isUnit hk.ne').map _`. Use `⟨o, inferInstance, ⟨hzu.unit, hko, fun K _ β => ?_⟩, em, algebraMap (𝓞 F) o ⟨r, hr⟩, alg, hem, IsFractionRing.isFractionRing_of_isDomain_of_isLocalization (Submonoid.powers (k : 𝓞 F)) o F, ?_, hj _, hj _⟩` and prove the remaining obligations.
+
+Use `isPrimitiveRoot_map_of_natCast_ne_zero hk hz₀ (β.comp (algebraMap (𝓞 F) o)) ?_` and prove the remaining obligations. Simplify using `using (hko.map β).ne_zero`. Establish `: φ.comp j = em`. Use `IsLocalization.ringHom_ext (Submonoid.powers (k : 𝓞 F)) ?_` and prove the remaining obligations. Rewrite using `[hcomp]`.
+
+Use extensionality with `x`. Simplify using `[hj]`. Conclude with `fun x => DFunLike.congr_fun this x`.
+-/
 theorem exists_tBase_of_numberField {F : Type} [Field F] [NumberField F] (φ : F →+* ℂ) {k : ℕ} (hk : 0 < k)
     {z r : F} (hz : IsPrimitiveRoot z k) (hr : IsIntegral ℤ r) :
     ∃ (o : Type) (_ : CommRing o) (b : TBase o k) (em : o →+* ℂ) (ρ : o) (_ : Algebra o F), ArBase em ∧
@@ -50,6 +64,15 @@ theorem exists_tBase_of_numberField {F : Type} [Field F] [NumberField F] (φ : F
       simp [hj]
     exact fun x => DFunLike.congr_fun this x
 
+/- English proof (translation)
+Introduce `E _ _ _ H l`. Establish `: FiniteDimensional ℚ (KA l)`. Use `IntermediateField.finiteDimensional_adjoin fun x hx => ?_` and prove the remaining obligations. Break down `hx with rfl | rfl` into its components or cases. Use `IsIntegral.of_pow two_pos ?_` and prove the remaining obligations.
+
+Rewrite using `[H.sqrt_neg_disc_sq]`. Conclude with `(isIntegral_algebraMap (x := (H.d : ℚ))).neg`. Use `IsIntegral.of_pow l.A_pos ?_` and prove the remaining obligations. Rewrite using `[show zeta l.A ^ l.A = 1 from (Complex.isPrimitiveRoot_exp l.A l.A_pos.ne').pow_eq_one]`. Conclude with `isIntegral_one`.
+
+Establish `: NumberField (KA l)` using `{}`. Establish `hr : IsIntegral ℤ (baseKA l).ρ`. Use `IsIntegral.of_pow two_pos ?_` and prove the remaining obligations. Rewrite using `[(baseKA l).ρ_sq]`. Simplify using `using (isIntegral_algebraMap (R := ℤ) (A := KA l) (x := (H.d : ℤ))).neg`.
+
+Conclude with `exists_tBase_of_numberField (KA l).val.toRingHom l.A_pos (baseKA l).ζ_prim hr`.
+-/
 theorem exists_tBase_fractionRing : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (l : Level H), ∃ (o : Type) (_ : CommRing o) (b : TBase o l.A) (em : o →+* ℂ) (ρ : o) (_ : Algebra o (KA l)), ArBase em ∧ IsFractionRing o (KA l) ∧ (∀ x, ((algebraMap o (KA l) x : KA l) : ℂ) = em x) ∧ algebraMap o (KA l) ρ = (baseKA l).ρ ∧ algebraMap o (KA l) (b.ζ : o) = (baseKA l).ζ := by
   intro E _ _ _ H l
   have : FiniteDimensional ℚ (KA l) := by

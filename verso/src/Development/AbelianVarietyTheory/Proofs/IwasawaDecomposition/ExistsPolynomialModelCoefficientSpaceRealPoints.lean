@@ -16,6 +16,9 @@ namespace GlobalTheory.CoefReal
 
 open GlobalTheory.CoefModel
 
+/- English proof (translation)
+Unfold `vact actP trAct`. Rewrite using `[detTw_eq]`. Simplify using `only [invTrK_coe, Matrix.transpose_transpose, Matrix.det_transpose, Pi.inv_apply, Matrix.coe_units_inv, Matrix.det_nonsing_inv, Ring.inverse_eq_inv', _root_.zpow_neg, _root_.inv_zpow]`.
+-/
 theorem vact_eq_actP {ι : Type} [Fintype ι] {n : ℕ} (lam : ι → DomWeight n) (g : ι → GL (Fin n) ℂ) :
     vact lam (fun τ => (g τ : Matrix (Fin n) (Fin n) ℂ)) = actP lam (invTrK g) := by
   unfold vact actP trAct
@@ -23,6 +26,9 @@ theorem vact_eq_actP {ι : Type} [Fintype ι] {n : ℕ} (lam : ι → DomWeight 
   simp only [invTrK_coe, Matrix.transpose_transpose, Matrix.det_transpose, Pi.inv_apply, Matrix.coe_units_inv,
     Matrix.det_nonsing_inv, Ring.inverse_eq_inv', _root_.zpow_neg, _root_.inv_zpow]
 
+/- English proof (translation)
+Simplify using `only [actP, LinearMap.smul_apply, MvPolynomial.coeff_smul, smul_eq_mul, detTw_eq, AlgHom.toLinearMap_apply, trAct]`. Use `Continuous.mul (continuous_finsetProd _ fun τ _ => (hA τ).matrix_det.zpow₀ _ fun x => Or.inl ?_) (continuous_coeff_blockAct _ (fun τ => (hA τ).matrix_transpose) _ m)` and prove the remaining obligations. Conclude with `((Matrix.isUnit_iff_isUnit_det _).1 (A x τ).isUnit).ne_zero`.
+-/
 theorem continuous_coeff_actP {ι : Type} [Fintype ι] {n : ℕ} (lam : ι → DomWeight n) {X : Type} [TopologicalSpace X]
     (A : X → ι → GL (Fin n) ℂ) (hA : ∀ τ, Continuous fun x => (A x τ : Matrix (Fin n) (Fin n) ℂ)) (F : Pol ℂ ι n)
     (m : ι × Fin n × Fin n →₀ ℕ) : Continuous fun x => MvPolynomial.coeff m (actP lam (A x) F) := by
@@ -31,6 +37,11 @@ theorem continuous_coeff_actP {ι : Type} [Fintype ι] {n : ℕ} (lam : ι → D
     (continuous_coeff_blockAct _ (fun τ => (hA τ).matrix_transpose) _ m)
   exact ((Matrix.isUnit_iff_isUnit_det _).1 (A x τ).isUnit).ne_zero
 
+/- English proof (translation)
+Set `b1` to `Module.Basis.mk (linearIndependent_mapVV φ lam) (span_mapVV φ lam).ge`. Set `b2` to `Module.Basis.mk h1 h2.ge`. Use `⟨b1.equiv b2 (Equiv.refl _), fun v => ?_⟩` and prove the remaining obligations. Establish `: (b1.equiv b2 (Equiv.refl _)).toLinearMap.comp (mapVV φ lam) = c0`. Use `(bVV K lam).ext fun i => ?_` and prove the remaining obligations.
+
+Establish `h` using `b1.equiv_apply i b2 (Equiv.refl _)`. Simplify `h` using `[b1, b2]`. Conclude with `LinearMap.congr_fun this v`.
+-/
 theorem exists_scalarExt {ι : Type} [Fintype ι] {n : ℕ} {K : Type} [Field K] (φ : K →+* ℂ) (lam : ι → DomWeight n)
     {W : Type} [AddCommGroup W] [Module ℂ W] (c0 : VV K lam →ₛₗ[φ] W)
     (h1 : LinearIndependent ℂ fun i => c0 (bVV K lam i))
@@ -47,6 +58,23 @@ theorem exists_scalarExt {ι : Type} [Fintype ι] {n : ℕ} {K : Type} [Field K]
 
 variable {D : D7}
 
+/- English proof (translation)
+Take `⟨e, he⟩ : ∃ e : VV ℂ lam ≃ₗ[ℂ] c.W, ∀ v, e (mapVV D.what₂.embLL lam v) = c0 v` from `exists_scalarExt D.what₂.embLL lam c0 ht.2.1 ht.2.2`. Use `⟨e, he, fun u hu v => ?_⟩` and prove the remaining obligations. Use `haveI := Formalism.L2.GlobalTheoryTheory.GenusMassVolumes.Unfold.topGroupHA D.sp.cm.sig V.gram`. Establish `hlab : ∀ τ x, D.what₂.embLL (labLL D τ x) = tauE D τ x` using `fun τ x => DFunLike.congr_fun (GlobalTheory.ThetaFiresProbe.labE_fixed τ) x`. Establish `hrat : ∀ (γ : GQ V) (v : VV ℂ lam), c.ρ γ.1 (e v) = e (rhoK lam (invTrK (realGL θ V γ.1)) v)`.
+
+Introduce `γ v`. Choose the witnesses or unpack the hypotheses as in `⟨γE, hγ⟩ : ∃ γE, Bridge.IsRatMat V γ γE := by`. Take `⟨γ, ⟨g, -, hg⟩⟩` from `γ`. Conclude with `⟨g, hg.symm⟩`. Establish `e1 : (fun τ => Formalism.UG.bc D.what₂.embLL (invTrK (embGL (labLL D) γE) τ)) = invTrK (realGL θ V γ)`.
+
+Use function extensionality and compare the values at `τ`. Apply `Units.ext` to reduce the goal to its premises. Rewrite using `[bc_coe, invTrK_coe, invTrK_coe, realGL_rat hθ V γ γE hγ, embGL_inv, ← map_inv, embGL_coe, bc_coe]`. Use extensionality with `a b`. Conclude with `hlab _ _`.
+
+Establish `: (c.ρ γ).comp e.toLinearMap = e.toLinearMap.comp (rhoK lam (invTrK (realGL θ V γ)))`. Use `LinearMap.ext_on_range (span_mapVV D.what₂.embLL lam) fun i => ?_` and prove the remaining obligations. Use `show c.ρ γ (e _) = e (rhoK lam (invTrK (realGL θ V γ)) _)`. Rewrite using `[← e1, ← mapVV_rhoK, he, he]`. Conclude with `(ht.1 γ γE hγ _).symm`.
+
+Conclude with `LinearMap.congr_fun this v`. Establish `hfin : ∀ k ∈ GfC V, realGL θ V k = 1` using `fun k hk => funext fun τ => by show Formalism.UG.bc (θ τ) (infHom V k) = 1`. Rewrite using `[show infHom V k = 1 from hk, map_one]`. Rewrite using `[← e.symm_apply_eq]`. Use `Subtype.ext (MvPolynomial.ext _ _ fun m => ?_)` and prove the remaining obligations.
+
+Set `L : c.W →ₗ[ℂ] ℂ` to `MvPolynomial.lcoeff ℂ m ∘ₗ (VV ℂ lam).subtype ∘ₗ e.symm.toLinearMap`. Establish `hf : Continuous fun h => L (c.ρ h (e v))` using `L.continuous_of_finiteDimensional.comp (hc.2.2.1 _)`. Establish `hg : Continuous fun h => MvPolynomial.coeff m (actP lam (invTrK (realGL θ V h)) v.1)`. Use `continuous_coeff_actP lam _ (fun τ => ?_) _ m` and prove the remaining obligations. Use `(((realGL_laws hθ V).1 τ).comp continuous_inv).matrix_transpose.congr fun h => ?_` and prove the remaining obligations.
+
+Use `show (realGL θ V h⁻¹ τ : Matrix (Fin V.rank) (Fin V.rank) ℂ)ᵀ = _`. Rewrite using `[map_inv]`. Both sides reduce to the same expression. Assume the negation of the conclusion as `hne`. Take `⟨γ, hγ, k, hk, hU, -⟩` from `GlobalTheory.RealApprox.weak_approx_real V u hu _ (isOpen_ne_fun hf hg) hne`.
+
+Use `hU ?_` and prove the remaining obligations. Use `show L (c.ρ (γ * k) (e v)) = MvPolynomial.coeff m (actP lam (invTrK (realGL θ V (γ * k))) v.1)`. Rewrite using `[map_mul, map_mul (realGL θ V), hc.1 k hk, hfin k hk, mul_one, mul_one, hrat ⟨γ, hγ⟩ v]`. Simplify using `[L, rhoK_coe]`.
+-/
 theorem exists_real_model (V : HSp D) (θ : InfFam D) (c : CoefA V) (lam : D.what₂.Tau → DomWeight V.rank)
     (c0 : VV D.what₂.LL lam →ₛₗ[D.what₂.embLL] c.coef.W) (hθ : IsInfFam θ) (hc : c.Is)
     (ht : Bridge.CoefMapTie V c.coef c0 (rhoVr (labLL D) lam)) :
@@ -95,6 +123,13 @@ theorem exists_real_model (V : HSp D) (θ : InfFam D) (c : CoefA V) (lam : D.wha
   rw [map_mul, map_mul (realGL θ V), hc.1 k hk, hfin k hk, mul_one, mul_one, hrat ⟨γ, hγ⟩ v]
   simp [L, rhoK_coe]
 
+/- English proof (translation)
+Introduce `D V θ c lam c0 hθ hc ht BS hBS`. Take `⟨e, -, he⟩` from `exists_real_model V θ c lam c0 hθ hc ht`. Use `choose B hB using hBS`. Use `⟨(VV ℂ lam).subtype ∘ₗ rhoK lam (invTrK B⁻¹) ∘ₗ e.symm.toLinearMap, ?_, fun u hu w => ?_⟩` and prove the remaining obligations. Establish `hs : Function.Surjective (rhoK lam (invTrK B⁻¹))` using `fun x => ⟨rhoK lam (invTrK B) x, by`.
+
+Rewrite using `[← Module.End.mul_apply, ← map_mul, ← map_mul, inv_mul_cancel, map_one, map_one, Module.End.one_apply]⟩`. Rewrite using `[LinearMap.range_comp, LinearMap.range_comp, LinearEquiv.range, Submodule.map_top, LinearMap.range_eq_top.2 hs, Submodule.map_top, Submodule.range_subtype]`. Take `⟨v, rfl⟩` from `e.surjective w`. Establish `e1 : (fun τ => (BS τ)⁻¹ * compAt θ τ (Formalism.L2.Theta.mt V u) * BS τ) = fun τ => (((B⁻¹ * realGL θ V u * B) τ : GL (Fin V.rank) ℂ) : Matrix (Fin V.rank) (Fin V.rank) ℂ)`. Use function extensionality and compare the values at `τ`.
+
+Rewrite using `[← hB τ, ← Matrix.coe_units_inv]`. Both sides reduce to the same expression. Rewrite using `[e1, vact_eq_actP, he u hu v]`. Simplify using `only [LinearMap.comp_apply, LinearEquiv.coe_coe, LinearEquiv.symm_apply_apply, Submodule.subtype_apply]`. Rewrite using `[← rhoK_coe, ← Module.End.mul_apply, ← Module.End.mul_apply, ← map_mul, ← map_mul, ← map_mul, ← map_mul, mul_inv_cancel_right]`.
+-/
 theorem exists_poly_model : ∀ (D : D7) (V : HSp D) (θ : InfFam D) (c : CoefA V) (lam : D.what₂.Tau → DomWeight V.rank) (c0 : VV D.what₂.LL lam →ₛₗ[D.what₂.embLL] c.coef.W), IsInfFam θ → c.Is → Bridge.CoefMapTie V c.coef c0 (rhoVr (labLL D) lam) → ∀ BS : D.what₂.Tau → Matrix (Fin V.rank) (Fin V.rank) ℂ, (∀ τ, IsUnit (BS τ)) → ∃ j : c.W →ₗ[ℂ] Pol ℂ D.what₂.Tau V.rank, LinearMap.range j = VV ℂ lam ∧ ∀ u ∈ GinfC V, ∀ w, j (c.ρ u w) = vact lam (fun τ => (BS τ)⁻¹ * compAt θ τ (Formalism.L2.Theta.mt V u) * BS τ) (j w) := by
   intro D V θ c lam c0 hθ hc ht BS hBS
   obtain ⟨e, -, he⟩ := exists_real_model V θ c lam c0 hθ hc ht

@@ -26,12 +26,21 @@ def afsplitIE (v : HeightOneSpectrum (𝓞 F)) : E ⊗[F] v.adicCompletion F →
       | tmul c d =>
         simp only [Algebra.TensorProduct.tmul_mul_tmul, LinearMap.lTensor_tmul, afsplitI_mul]
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem afsplitIE_tmul (v : HeightOneSpectrum (𝓞 F)) (a : E) (x : v.adicCompletion F) :
     afsplitIE v (a ⊗ₜ[F] x) = a ⊗ₜ[F] afsplitI v x := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem afsplit_prV_tmul (w : HeightOneSpectrum (𝓞 F)) (a : E) (b : 𝔸) :
     prV (E := E) w (a ⊗ₜ[F] b) = a ⊗ₜ[F] (b w) := rfl
 
+/- English proof (translation)
+Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => rw [map_zero, map_zero]`. Consider the case `tmul a b => rw [afsplitIE_tmul, afsplit_prV_tmul, afsplitI_self]`. Consider the case `add x y hx hy => rw [map_add, map_add, hx, hy]`.
+-/
 theorem afsplit_prV_IE (v : HeightOneSpectrum (𝓞 F)) (x : E ⊗[F] v.adicCompletion F) :
     prV (E := E) v (afsplitIE v x) = x := by
   induction x using TensorProduct.induction_on with
@@ -39,6 +48,9 @@ theorem afsplit_prV_IE (v : HeightOneSpectrum (𝓞 F)) (x : E ⊗[F] v.adicComp
   | tmul a b => rw [afsplitIE_tmul, afsplit_prV_tmul, afsplitI_self]
   | add x y hx hy => rw [map_add, map_add, hx, hy]
 
+/- English proof (translation)
+Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => rw [map_zero, map_zero]`. Consider the case `tmul a b => rw [afsplitIE_tmul, afsplit_prV_tmul, afsplitI_ne v w h, TensorProduct.tmul_zero]`. Consider the case `add x y hx hy => rw [map_add, map_add, hx, hy, add_zero]`.
+-/
 theorem afsplit_prV_IE_ne (v w : HeightOneSpectrum (𝓞 F)) (h : w ≠ v)
     (x : E ⊗[F] v.adicCompletion F) : prV (E := E) w (afsplitIE v x) = 0 := by
   induction x using TensorProduct.induction_on with
@@ -46,6 +58,9 @@ theorem afsplit_prV_IE_ne (v w : HeightOneSpectrum (𝓞 F)) (h : w ≠ v)
   | tmul a b => rw [afsplitIE_tmul, afsplit_prV_tmul, afsplitI_ne v w h, TensorProduct.tmul_zero]
   | add x y hx hy => rw [map_add, map_add, hx, hy, add_zero]
 
+/- English proof (translation)
+Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => simp only [map_zero]`. Consider the case `tmul a b => simp [sigR, afsplitIE_tmul]`. Consider the case `add x y hx hy => simp only [map_add, hx, hy]`.
+-/
 theorem afsplit_sigR_IE (σ : E →ₐ[F] E) (v : HeightOneSpectrum (𝓞 F)) (x : E ⊗[F] v.adicCompletion F) :
     sigR σ 𝔸 (afsplitIE v x) = afsplitIE v (sigR σ (v.adicCompletion F) x) := by
   induction x using TensorProduct.induction_on with
@@ -56,6 +71,11 @@ theorem afsplit_sigR_IE (σ : E →ₐ[F] E) (v : HeightOneSpectrum (𝓞 F)) (x
 def afsplitEps (E : Type) [CommRing E] [Algebra F E] (v : HeightOneSpectrum (𝓞 F)) : E ⊗[F] 𝔸 :=
   afsplitIE v 1
 
+/- English proof (translation)
+Establish `he : afsplitEps E v = (1 : E) ⊗ₜ[F] afsplitI v 1`. Rewrite using `[afsplitEps, Algebra.TensorProduct.one_def, afsplitIE_tmul]`. Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => simp only [map_zero, mul_zero]`. Consider the case `tmul a b`.
+
+Rewrite using `[afsplit_prV_tmul, afsplitIE_tmul, afsplitI_eval, he, Algebra.TensorProduct.tmul_mul_tmul, one_mul]`. Consider the case `add x y hx hy => rw [map_add, map_add, hx, hy, mul_add]`.
+-/
 theorem afsplit_decomp (v : HeightOneSpectrum (𝓞 F)) (x : E ⊗[F] 𝔸) :
     afsplitIE v (prV (E := E) v x) = afsplitEps E v * x := by
   have he : afsplitEps E v = (1 : E) ⊗ₜ[F] afsplitI v 1 := by
@@ -67,6 +87,11 @@ theorem afsplit_decomp (v : HeightOneSpectrum (𝓞 F)) (x : E ⊗[F] 𝔸) :
       one_mul]
   | add x y hx hy => rw [map_add, map_add, hx, hy, mul_add]
 
+/- English proof (translation)
+Establish `he : afsplitEps E v = (1 : E) ⊗ₜ[F] afsplitI v 1`. Rewrite using `[afsplitEps, Algebra.TensorProduct.one_def, afsplitIE_tmul]`. Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => simp only [map_zero, mul_zero]`. Consider the case `tmul a b`.
+
+Rewrite using `[he, afsplitIE_tmul, Algebra.TensorProduct.tmul_mul_tmul, one_mul, ← afsplitI_mul, one_mul]`. Consider the case `add x y hx hy => rw [map_add, mul_add, hx, hy]`.
+-/
 theorem afsplit_eps_mul_IE (v : HeightOneSpectrum (𝓞 F)) (x : E ⊗[F] v.adicCompletion F) :
     afsplitEps E v * afsplitIE v x = afsplitIE v x := by
   have he : afsplitEps E v = (1 : E) ⊗ₜ[F] afsplitI v 1 := by
@@ -77,24 +102,44 @@ theorem afsplit_eps_mul_IE (v : HeightOneSpectrum (𝓞 F)) (x : E ⊗[F] v.adic
     rw [he, afsplitIE_tmul, Algebra.TensorProduct.tmul_mul_tmul, one_mul, ← afsplitI_mul, one_mul]
   | add x y hx hy => rw [map_add, mul_add, hx, hy]
 
+/- English proof (translation)
+Conclude with `afsplit_eps_mul_IE (E := E) v 1`.
+-/
 theorem afsplit_eps_idem (v : HeightOneSpectrum (𝓞 F)) :
     afsplitEps E v * afsplitEps E v = afsplitEps E v := by
   exact afsplit_eps_mul_IE (E := E) v 1
 
+/- English proof (translation)
+Rewrite using `[afsplitEps, afsplit_sigR_IE, map_one]`.
+-/
 theorem afsplit_sigR_eps (σ : E →ₐ[F] E) (v : HeightOneSpectrum (𝓞 F)) :
     sigR σ 𝔸 (afsplitEps E v) = afsplitEps E v := by
   rw [afsplitEps, afsplit_sigR_IE, map_one]
 
+/- English proof (translation)
+Conclude with `afsplit_prV_IE (E := E) v 1`.
+-/
 theorem afsplit_prV_eps (v : HeightOneSpectrum (𝓞 F)) : prV (E := E) v (afsplitEps E v) = 1 := by
   exact afsplit_prV_IE (E := E) v 1
 
+/- English proof (translation)
+Conclude with `afsplit_prV_IE_ne (E := E) v w h 1`.
+-/
 theorem afsplit_prV_eps_ne (v w : HeightOneSpectrum (𝓞 F)) (h : w ≠ v) :
     prV (E := E) w (afsplitEps E v) = 0 := by
   exact afsplit_prV_IE_ne (E := E) v w h 1
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem afsplit_prV_inclE (v : HeightOneSpectrum (𝓞 F)) (e : E) :
     prV (E := E) v (inclE (F := F) 𝔸 e) = inclE (F := F) (v.adicCompletion F) e := rfl
 
+/- English proof (translation)
+Use `RingHom.ext fun y => ?_` and prove the remaining obligations. Simplify using `only [RingHom.comp_apply]`. Proceed by induction on `y using TensorProduct.induction_on with`. Consider the case `zero => simp only [map_zero]`. Consider the case `tmul a b => rfl`.
+
+Consider the case `add x y hx hy => simp only [map_add, hx, hy]`.
+-/
 theorem afsplit_prV_comp_sigR (σ : E →ₐ[F] E) (v : HeightOneSpectrum (𝓞 F)) :
     (prV (E := E) v).comp (sigR σ 𝔸) = (sigR σ (v.adicCompletion F)).comp (prV (E := E) v) := by
   refine RingHom.ext fun y => ?_
@@ -111,6 +156,11 @@ variable {F : Type} [Field F] [NumberField F] {E : Type} [CommRing E] [Algebra F
 
 local notation "𝔸" => FiniteAdeleRing (𝓞 F) F
 
+/- English proof (translation)
+Proceed by induction on `y using TensorProduct.induction_on with`. Consider the case `zero => simp only [map_zero]`. Both sides reduce to the same expression. Consider the case `tmul a b`. Rewrite using `[afsplit_prV_tmul]`.
+
+Simplify using `only [LinearMap.rTensor_tmul, TensorProduct.lid_tmul, afsplit_smul_apply]`. Consider the case `add x y hx hy => simp only [map_add, hx, hy, afsplit_add_apply]`.
+-/
 theorem afsplit_coord_prV (b : Module.Basis (Module.Free.ChooseBasisIndex F E) F E)
     (i : Module.Free.ChooseBasisIndex F E) (w : HeightOneSpectrum (𝓞 F)) (y : E ⊗[F] 𝔸) :
     TensorProduct.lid F (w.adicCompletion F) ((b.coord i).rTensor _ (prV (E := E) w y)) =
@@ -122,6 +172,15 @@ theorem afsplit_coord_prV (b : Module.Basis (Module.Free.ChooseBasisIndex F E) F
     simp only [LinearMap.rTensor_tmul, TensorProduct.lid_tmul, afsplit_smul_apply]
   | add x y hx hy => simp only [map_add, hx, hy, afsplit_add_apply]
 
+/- English proof (translation)
+Use `set b := Module.Free.chooseBasis F E`. Establish `hc : ∀ i, TensorProduct.lid F 𝔸 ((b.coord i).rTensor _ y) = 0`. Introduce `i`. Use extensionality with `w`. Rewrite using `[← afsplit_coord_prV b i w y, hy w]`.
+
+Simplify using `only [map_zero]`. Both sides reduce to the same expression. Establish `hcoord : ∀ (z : E ⊗[F] 𝔸) (i : Module.Free.ChooseBasisIndex F E), TensorProduct.equivFinsuppOfBasisLeft b z i = TensorProduct.lid F 𝔸 ((b.coord i).rTensor _ z)`. Introduce `z i`. Proceed by induction on `z using TensorProduct.induction_on with`.
+
+Consider the case `zero => simp`. Consider the case `tmul m n => simp [TensorProduct.equivFinsuppOfBasisLeft_apply_tmul_apply]`. Consider the case `add x y hx hy => simp [hx, hy]`. Apply `(TensorProduct.equivFinsuppOfBasisLeft (N := 𝔸) b).injective` to reduce the goal to its premises. Rewrite using `[map_zero]`.
+
+Use extensionality with `i`. Rewrite using `[hcoord, hc i]`. Both sides reduce to the same expression.
+-/
 theorem afsplit_inj (y : E ⊗[F] 𝔸) (hy : ∀ w : HeightOneSpectrum (𝓞 F), prV (E := E) w y = 0) :
     y = 0 := by
   classical

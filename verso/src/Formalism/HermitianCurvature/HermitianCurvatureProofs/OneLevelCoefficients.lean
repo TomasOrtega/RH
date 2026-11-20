@@ -7,6 +7,11 @@ open scoped ComplexOrder
 
 variable {E W : Type} [Field E]
 
+/- English proof (translation)
+Establish `hout : ∀ t : E, (((t : E ⧸ L).out : E) : E ⧸ L) = (t : E ⧸ L)` using `fun t => QuotientAddGroup.out_eq' _`. Use `⟨S.image (fun t : E => (QuotientAddGroup.mk t : E ⧸ L).out), ?_, ?_⟩` and prove the remaining obligations. Introduce `t ht`. Use `⟨_, Finset.mem_image_of_mem _ ht, ?_⟩` and prove the remaining obligations. Rewrite using `[← QuotientAddGroup.eq_zero_iff, QuotientAddGroup.mk_sub, hout, sub_self]`.
+
+Introduce `a ha b hb hab`. Take `⟨t, _, rfl⟩` from `Finset.mem_image.1 ha`. Take `⟨t', _, rfl⟩` from `Finset.mem_image.1 hb`. Rewrite `hab` using `[← QuotientAddGroup.eq_zero_iff, QuotientAddGroup.mk_sub, hout, hout, sub_eq_zero]`. Simplify using `only [hab]`.
+-/
 lemma exists_reps (L : AddSubgroup E) (S : Finset E) :
     ∃ R : Finset E, (∀ t ∈ S, ∃ t₀ ∈ R, t - t₀ ∈ L) ∧
       (∀ t₀ ∈ R, ∀ t₀' ∈ R, t₀ - t₀' ∈ L → t₀ = t₀') := by
@@ -23,6 +28,9 @@ lemma exists_reps (L : AddSubgroup E) (S : Finset E) :
     rw [← QuotientAddGroup.eq_zero_iff, QuotientAddGroup.mk_sub, hout, hout, sub_eq_zero] at hab
     simp only [hab]
 
+/- English proof (translation)
+Establish `h1 : r + 1 - (i - s) = (r + 1 - i) + s` using `by omega`. Establish `h2 : m * K ≤ 4 * K * s`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[h1, Nat.mul_add]`. Conclude with `Nat.add_le_add hc h2`.
+-/
 lemma budget_step (K r i s c m : ℕ) (hsi : s ≤ i) (hi : i ≤ r + 1)
     (hc : c ≤ 4 * K * (r + 1 - i)) (hm : m ≤ 4 * s) : c + m * K ≤ 4 * K * (r + 1 - (i - s)) := by
   have h1 : r + 1 - (i - s) = (r + 1 - i) + s := by omega
@@ -32,10 +40,48 @@ lemma budget_step (K r i s c m : ℕ) (hsi : s ≤ i) (hi : i ≤ r + 1)
   rw [h1, Nat.mul_add]
   exact Nat.add_le_add hc h2
 
+/- English proof (translation)
+The claim follows from `(budget_step K r i s c m hsi hi hc hm).trans (Nat.mul_le_mul_left _ (Nat.sub_le _ _))`.
+-/
 lemma budget_top (K r i s c m : ℕ) (hsi : s ≤ i) (hi : i ≤ r + 1)
     (hc : c ≤ 4 * K * (r + 1 - i)) (hm : m ≤ 4 * s) : c + m * K ≤ 4 * K * (r + 1) :=
   (budget_step K r i s c m hsi hi hc hm).trans (Nat.mul_le_mul_left _ (Nat.sub_le _ _))
 
+/- English proof (translation)
+Introduce `hSplit hSchur hDiag hOne hMulti E W _ D ep C₄ hG hKer hW hA2 hA13 hEW hP hEL hEB hLat hep h4 hv0 hv1 T ε hε σ i hi1 hi hσ w hw`. Establish `hwW : w ∈ D.Wall` using `(Finset.mem_filter.1 hw).1`. Establish `hwc : D.cnt w ≤ 4 * D.K * (D.r + 1 - i)` using `(Finset.mem_filter.1 hw).2`. Establish `hwt : 0 < D.wt w` using `hW w`. Establish `he : 0 ≤ D.e i` using `(hA13 i 1 le_rfl hi1 hi).1.1`.
+
+Establish `ha0 : 0 ≤ 3 ^ D.f * ep` using `by positivity`. Establish `hb0 : 0 ≤ 2 ^ D.f * ep` using `by positivity`. Establish `hS : ∀ s, 1 ≤ s → s ≤ i → ∀ M : ℝ, (∀ w' ∈ D.Wb (D.cnt w + D.K), D.Dg T ε i s w' ≤ M) → D.Sf ε i w (Xs T i s) / D.wt w ≤ (1 + 3 ^ D.f * ep) * M`. Introduce `s hs hsi M hM`. Establish `hN : D.cnt w + D.K ≤ D.Ntop`.
+
+Use `budget_top D.K D.r i s (D.cnt w) 1 hsi hi hwc (by omega)` as an intermediate fact. Simplify `this` using `[Data.Ntop]`. Establish `h` using `hSchur E W D ep hG hKer hW hA2 hEL hLat T ε hε i s hs hsi hi w hwW hN M hM`. Establish `h2` using `hM w (Finset.mem_filter.2 ⟨hwW, Nat.le_add_right _ _⟩)`. Combine the equalities or inequalities in the displayed calculation.
+
+Establish `h1 : D.Sf ε i w (Xs T i 1) / D.wt w ≤ (1 + 3 ^ D.f * ep) * ((1 + D.e i) * ((1 + 2 ^ D.f * ep) * σ (i - 1) ^ 2))`. Apply `hS 1 le_rfl hi1` to reduce the goal to its premises. Introduce `w' hw'`. Establish `hw'W : w' ∈ D.Wall` using `(Finset.mem_filter.1 hw').1`. Establish `hw'c : D.cnt w' ≤ D.cnt w + D.K` using `(Finset.mem_filter.1 hw').2`.
+
+Take `⟨R, hR1, hR2⟩` from `exists_reps (D.La (i - 1 + 1) 1) (T.Sg (i - 1 + 1) 1)`. Establish `hd` using `hDiag E W D hG hKer hW hA13 T ε hε i 1 le_rfl hi1 hi w' R hR1`. Establish `hii : i - 1 + 1 = i` using `by omega`. Rewrite `hd`, `hR2` using `[hii]`. Establish `hT : D.cnt w + 2 * D.K ≤ 4 * D.K * (D.r + 1)` using `budget_top D.K D.r i 1 (D.cnt w) 2 hi1 hi hwc (by omega)`.
+
+Establish `hB : D.cnt w + 2 * D.K ≤ 4 * D.K * (D.r + 1 - (i - 1))` using `budget_step D.K D.r i 1 (D.cnt w) 2 hi1 hi hwc (by omega)`. Establish `hN : D.cnt w' + D.K ≤ D.Ntop`. Simplify using `only [Data.Ntop]`. Use linear arithmetic over natural numbers and integers. Establish `hlow : ∀ w'' ∈ D.Wb (D.cnt w' + D.K), D.N0 ε (i - 1) w'' (T.X (i - 1)) (D.Kr (i - 1)) ≤ σ (i - 1) ^ 2`.
+
+Introduce `w'' hw''`. Use `(hσ (i - 1) (by omega)).2 w'' (Finset.mem_filter.2 ⟨(Finset.mem_filter.1 hw'').1, ?_⟩)` and prove the remaining obligations. Use `(Finset.mem_filter.1 hw'').2` as an intermediate fact. Simplify using `only [Data.budget]`. Use linear arithmetic over natural numbers and integers.
+
+Establish `ho` using `hOne E W D ep hG hKer hW hA13 hEW hP hLat T ε hε i hi1 hi w' hw'W hN R hR2 (σ (i - 1) ^ 2) hlow`. Establish `hw0` using `hlow w' (Finset.mem_filter.2 ⟨hw'W, Nat.le_add_right _ _⟩)`. Combine the equalities or inequalities in the displayed calculation. Establish `h2 : ∀ s, 2 ≤ s → s ≤ i → D.Sf ε i w (Xs T i s) / D.wt w ≤ (1 + 3 ^ D.f * ep) * (C₄ ^ (D.f * s) * (∏ s' ∈ Ico 1 s, D.vol (i - s + 1) s') * ((1 + D.e i) * σ (i - s) ^ 2))`. Introduce `s hs hsi`.
+
+Apply `hS s (by omega) hsi` to reduce the goal to its premises. Introduce `w' hw'`. Establish `hw'W : w' ∈ D.Wall` using `(Finset.mem_filter.1 hw').1`. Establish `hw'c : D.cnt w' ≤ D.cnt w + D.K` using `(Finset.mem_filter.1 hw').2`. Take `⟨R, hR1, hR2⟩` from `exists_reps (D.La (i - s + 1) s) (T.Sg (i - s + 1) s)`.
+
+Establish `hd` using `hDiag E W D hG hKer hW hA13 T ε hε i s (by omega) hsi hi w' R hR1`. Establish `hT : D.cnt w + (s + 2) * D.K ≤ 4 * D.K * (D.r + 1)` using `budget_top D.K D.r i s (D.cnt w) (s + 2) hsi hi hwc (by omega)`. Establish `hB : D.cnt w + (s + 2) * D.K ≤ 4 * D.K * (D.r + 1 - (i - s))` using `budget_step D.K D.r i s (D.cnt w) (s + 2) hsi hi hwc (by omega)`. Establish `hsK : (s + 2) * D.K = D.K + (s + 1) * D.K` using `by ring`. Establish `hN : D.cnt w' + (s + 1) * D.K ≤ D.Ntop`.
+
+Simplify using `only [Data.Ntop]`. Use linear arithmetic over natural numbers and integers. Establish `hlow : ∀ w'' ∈ D.Wb (D.cnt w' + (s + 1) * D.K), D.N0 ε (i - s) w'' (T.X (i - s)) (D.Kr (i - s)) ≤ σ (i - s) ^ 2`. Introduce `w'' hw''`. Use `(hσ (i - s) (by omega)).2 w'' (Finset.mem_filter.2 ⟨(Finset.mem_filter.1 hw'').1, ?_⟩)` and prove the remaining obligations.
+
+Use `(Finset.mem_filter.1 hw'').2` as an intermediate fact. Simplify using `only [Data.budget]`. Use linear arithmetic over natural numbers and integers. Establish `hm` using `hMulti E W D C₄ hG hKer hW hA13 hEB h4 hv0 T ε hε i s hs hsi hi w' hw'W hN (hv1 _ _ (by omega) (by omega) (by omega)) R hR2 (σ (i - s) ^ 2) hlow`. Conclude with `hd.trans hm`.
+
+Establish `hsplit` using `hSplit E W D hG hKer T ε hε i hi1 w`. Establish `hIcc : Icc 1 i = insert 1 (Icc 2 i)`. Use extensionality with `s`. Simplify using `only [Finset.mem_Icc, Finset.mem_insert]`. Use linear arithmetic over natural numbers and integers.
+
+Establish `hnot : (1 : ℕ) ∉ Icc 2 i` using `by simp`. Establish `hfirst : √(D.Q T ε i w) ≤ ∑ s ∈ Icc 1 i, √(D.Sf ε i w (Xs T i s) / D.wt w)`. Establish `: ∀ x : ℝ, √(x / D.wt w) = √x / √(D.wt w)` using `fun x => Real.sqrt_div' x hwt.le`. Simplify using `only [Data.Q, this, ← Finset.sum_div]`. Conclude with `div_le_div_of_nonneg_right hsplit (Real.sqrt_nonneg _)`.
+
+Use `hfirst.trans ?_` and prove the remaining obligations. Rewrite using `[hIcc, Finset.sum_insert hnot]`. Apply `add_le_add` to reduce the goal to its premises. Establish `hσ0 : 0 ≤ σ (i - 1)` using `(hσ (i - 1) (by omega)).1`. Use `(Real.sqrt_le_sqrt h1).trans (le_of_eq ?_)` and prove the remaining obligations.
+
+Establish `: (1 + 3 ^ D.f * ep) * ((1 + D.e i) * ((1 + 2 ^ D.f * ep) * σ (i - 1) ^ 2)) = (1 + 3 ^ D.f * ep) * (1 + 2 ^ D.f * ep) * (1 + D.e i) * σ (i - 1) ^ 2` using `by ring`. Rewrite using `[this, Real.sqrt_mul' _ (sq_nonneg _), Real.sqrt_sq hσ0, Real.sqrt_mul' _ (by linarith : 0 ≤ 1 + D.e i)]`. Apply `Finset.sum_le_sum` to reduce the goal to its premises. Introduce `s hs`. Rewrite `hs` using `[Finset.mem_Icc]`.
+
+Establish `hσ0 : 0 ≤ σ (i - s)` using `(hσ (i - s) (by omega)).1`. Use `(Real.sqrt_le_sqrt (h2 s hs.1 hs.2)).trans (le_of_eq ?_)` and prove the remaining obligations. Establish `: (1 + 3 ^ D.f * ep) * (C₄ ^ (D.f * s) * (∏ s' ∈ Ico 1 s, D.vol (i - s + 1) s') * ((1 + D.e i) * σ (i - s) ^ 2)) = (1 + 3 ^ D.f * ep) * (1 + D.e i) * C₄ ^ (D.f * s) * (∏ s' ∈ Ico 1 s, D.vol (i - s + 1) s') * σ (i - s) ^ 2` using `by ring`. Rewrite using `[this, Real.sqrt_mul' _ (sq_nonneg _), Real.sqrt_sq hσ0]`.
+-/
 theorem oneLevel_of_steps : OneLevelOfSteps := by
   intro hSplit hSchur hDiag hOne hMulti E W _ D ep C₄ hG hKer hW hA2 hA13 hEW hP hEL hEB hLat hep
     h4 hv0 hv1 T ε hε σ i hi1 hi hσ w hw
@@ -145,6 +191,23 @@ theorem oneLevel_of_steps : OneLevelOfSteps := by
           (∏ s' ∈ Ico 1 s, D.vol (i - s + 1) s') * σ (i - s) ^ 2 := by ring
     rw [this, Real.sqrt_mul' _ (sq_nonneg _), Real.sqrt_sq hσ0]
 
+/- English proof (translation)
+Establish `hΘ0 : 0 < Θ` using `by linarith`. Use `set q : ℝ := (Θ ^ D.f)⁻¹ with hq`. Establish `hq0 : 0 ≤ q` using `by positivity`. Establish `hC0 : 0 ≤ C₀` using `by linarith`. Establish `hP : ∏ s' ∈ Ico 1 s, D.vol (i - s + 1) s' ≤ (q ^ 2) ^ (s - 1)`.
+
+Combine the equalities or inequalities in the displayed calculation. Apply `Finset.prod_le_prod (fun s' _ => hS.1 _ _)` to reduce the goal to its premises. Introduce `s' hs'`. Rewrite `hs'` using `[Finset.mem_Ico]`. Conclude with `hS.2 _ _ (by omega) hs'.1 (by omega)`.
+
+Use `_ = (q ^ 2) ^ (s - 1) := by simp`. Establish `hP0 : 0 ≤ ∏ s' ∈ Ico 1 s, D.vol (i - s + 1) s'` using `Finset.prod_nonneg fun s' _ => hS.1 _ _`. Establish `hR : ((C₀ / Θ) ^ D.f) ^ (s - 1) = (C₀ ^ D.f) ^ (s - 1) * q ^ (s - 1)`. Rewrite using `[div_pow, div_eq_mul_inv, mul_pow]`. Establish `hpow : 4 * C₄ ^ (D.f * s) ≤ ((C₀ ^ D.f) ^ (s - 1)) ^ 2`.
+
+Establish `e1 : ((C₀ ^ D.f) ^ (s - 1)) ^ 2 = C₀ ^ (D.f * (s - 1) * 2)`. Rewrite using `[← pow_mul, ← pow_mul, mul_assoc]`. Establish `e2 : (2 * C₄) ^ (D.f * (s - 1) * 2) ≤ C₀ ^ (D.f * (s - 1) * 2)` using `pow_le_pow_left₀ (by linarith) h0 _`. Establish `hn : 1 ≤ D.f * (s - 1)` using `Nat.mul_pos hf (by omega)`. Establish `e3 : (4 : ℝ) ≤ 2 ^ (D.f * (s - 1) * 2)`.
+
+Combine the equalities or inequalities in the displayed calculation. Establish `e4 : C₄ ^ (D.f * s) ≤ C₄ ^ (D.f * (s - 1) * 2)`. Apply `pow_le_pow_right₀ h4` to reduce the goal to its premises. Establish `: s ≤ (s - 1) * 2` using `by omega`. Combine the equalities or inequalities in the displayed calculation.
+
+Rewrite using `[e1]`. Use `le_trans ?_ e2` and prove the remaining obligations. Rewrite using `[mul_pow]`. Conclude with `mul_le_mul e3 e4 (by positivity) (by positivity)`. Rewrite using `[hR]`.
+
+Apply `Real.sqrt_le_iff.mpr` to reduce the goal to its premises. Use `⟨by positivity, ?_⟩` and prove the remaining obligations. Establish `h1 : (1 + a) * (1 + e) ≤ 4` using `by nlinarith`. Establish `hc : 0 ≤ C₄ ^ (D.f * s)` using `by positivity`. Combine the equalities or inequalities in the displayed calculation.
+
+Apply `mul_le_mul (mul_le_mul_of_nonneg_right h1 hc) hP hP0 (by positivity)` to reduce the goal to its premises. Use `_ ≤ ((C₀ ^ D.f) ^ (s - 1)) ^ 2 * (q ^ 2) ^ (s - 1) := mul_le_mul_of_nonneg_right hpow (by positivity)`. Use `_ = ((C₀ ^ D.f) ^ (s - 1) * q ^ (s - 1)) ^ 2 := by`. Rewrite using `[mul_pow, ← pow_mul q, ← pow_mul q, mul_comm 2 (s - 1)]`.
+-/
 lemma coef (D : Data E W) (Θ C₄ C₀ a e : ℝ) (hΘ : 1 ≤ Θ) (h4 : 1 ≤ C₄) (h0 : 2 * C₄ ≤ C₀)
     (hf : 1 ≤ D.f) (hS : D.SizesBelow Θ) (ha0 : 0 ≤ a) (ha : a ≤ 1) (_he0 : 0 ≤ e) (he : e ≤ 1)
     (i s : ℕ) (hs : 2 ≤ s) (hsi : s ≤ i) (hi : i ≤ D.r + 1) :
@@ -195,6 +258,9 @@ lemma coef (D : Data E W) (Θ C₄ C₀ a e : ℝ) (hΘ : 1 ≤ Θ) (h4 : 1 ≤ 
     _ = ((C₀ ^ D.f) ^ (s - 1) * q ^ (s - 1)) ^ 2 := by
         rw [mul_pow, ← pow_mul q, ← pow_mul q, mul_comm 2 (s - 1)]
 
+/- English proof (translation)
+Introduce `b s hb hs hbs`. Use `(hS.2 b s hb hs hbs).trans ?_` and prove the remaining obligations. Establish `h1 : (Θ ^ D.f)⁻¹ ≤ 1` using `inv_le_one_of_one_le₀ (one_le_pow₀ hΘ)`. Establish `h0 : 0 ≤ (Θ ^ D.f)⁻¹` using `by positivity`. Conclude with `pow_le_one₀ h0 h1`.
+-/
 lemma size_le_one (D : Data E W) (Θ : ℝ) (hΘ : 1 ≤ Θ) (hS : D.SizesBelow Θ) :
     ∀ b s, 1 ≤ b → 1 ≤ s → b + s ≤ D.r + 2 → D.vol b s ≤ 1 := by
   intro b s hb hs hbs
@@ -203,11 +269,21 @@ lemma size_le_one (D : Data E W) (Θ : ℝ) (hΘ : 1 ≤ Θ) (hS : D.SizesBelow 
   have h0 : 0 ≤ (Θ ^ D.f)⁻¹ := by positivity
   exact pow_le_one₀ h0 h1
 
+/- English proof (translation)
+Use `le_trans (mul_le_mul_of_nonneg_left ?_ (Nat.cast_nonneg r)) hs` and prove the remaining obligations. Conclude with `pow_le_pow_left₀ (by positivity) (div_le_div_of_nonneg_right h hΘ.le) f`.
+-/
 lemma small (r f : ℕ) (C C₀ Θ : ℝ) (hΘ : 0 < Θ) (h0 : 0 ≤ C₀) (h : C₀ ≤ C)
     (hs : (r : ℝ) * (C / Θ) ^ f ≤ 1) : (r : ℝ) * (C₀ / Θ) ^ f ≤ 1 := by
   refine le_trans (mul_le_mul_of_nonneg_left ?_ (Nat.cast_nonneg r)) hs
   exact pow_le_pow_left₀ (by positivity) (div_le_div_of_nonneg_right h hΘ.le) f
 
+/- English proof (translation)
+Use extensionality with `p`. Rewrite using `[T.isTower 0 p, Finset.mem_singleton]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨hl, hb⟩`. Consider the cases of `p with`.
+
+Consider the case `nil => rfl`. Consider the case `cons a q`. Use `(hb 0 (by simp)).1` as an intermediate fact. Simplify using `[level] at hl`. Simplify using `at this`.
+
+Use linear arithmetic over natural numbers and integers. Introduce and unpack `rfl`. Simplify using `[level]`.
+-/
 theorem X0 (T : Tower E) : T.X 0 = {[]} := by
   ext p
   rw [T.isTower 0 p, Finset.mem_singleton]
@@ -223,10 +299,16 @@ theorem X0 (T : Tower E) : T.X 0 = {[]} := by
   · rintro rfl
     simp [level]
 
+/- English proof (translation)
+Simplify using `[Data.Q, Data.Sf, X0, D.K0]`.
+-/
 theorem Q0 (D : Data E W) (T : Tower E) (ε : ℝ) (w : W) :
     D.Q T ε 0 w = (D.gram ε 0 w [] []).re / D.wt w := by
   simp [Data.Q, Data.Sf, X0, D.K0]
 
+/- English proof (translation)
+Establish `h` using `hG ε hε i w {p}`. Use `Matrix.PosSemidef.diag_nonneg h (i := ⟨p, by simp⟩)` as an intermediate fact. Establish `h2 : 0 ≤ D.gram ε i w p p` using `by simpa using this`. Conclude with `(Complex.le_def.1 h2).1`.
+-/
 lemma gram_diag (D : Data E W) (hG : D.GramPSD) (ε : ℝ) (hε : 0 < ε) (i : ℕ) (w : W) (p : Pt E) :
     0 ≤ (D.gram ε i w p p).re := by
   have h := hG ε hε i w {p}
@@ -234,6 +316,57 @@ lemma gram_diag (D : Data E W) (hG : D.GramPSD) (ε : ℝ) (hε : 0 < ε) (i : �
   have h2 : 0 ≤ D.gram ε i w p p := by simpa using this
   exact (Complex.le_def.1 h2).1
 
+/- English proof (translation)
+Introduce `hOL hLS hJ C₁ C₄ h1 h4`. Use `set C₀ : ℝ := max (3 * C₁) (2 * C₄) with hC₀`. Establish `hC01 : 1 ≤ C₀` using `le_trans (by linarith) (le_max_left _ _)`. Establish `hC03 : 3 * C₁ ≤ C₀` using `le_max_left _ _`. Establish `hC04 : 2 * C₄ ≤ C₀` using `le_max_right _ _`.
+
+Take `⟨C'J, CJ, hJ⟩` from `hJ C₀ hC01`. Use `⟨max C₀ CJ, max (max C'J (3 * C₁)) 1, ?_⟩` and prove the remaining obligations. Introduce `E W _ D Θ jn H _ _ _ Vt c hK hf hΘ0 hC' hsm hS hG hKer hW hA2 hA13 hE72 hP hE73 hE74 hLat hE hCut hA4 R`. Use `set C : ℝ := max C₀ CJ with hC`. Establish `hCC0 : C₀ ≤ C` using `le_max_left _ _`.
+
+Establish `hCCJ : CJ ≤ C` using `le_max_right _ _`. Establish `hCpos : 0 ≤ C` using `by linarith`. Establish `hΘ1 : 1 ≤ Θ` using `le_trans (le_max_right _ _) hC'`. Establish `hΘ3 : 3 * C₁ ≤ Θ` using `le_trans (le_trans (le_max_right _ _) (le_max_left _ _)) hC'`. Establish `hΘJ : C'J ≤ Θ` using `le_trans (le_trans (le_max_left _ _) (le_max_left _ _)) hC'`.
+
+Use `set y : ℝ := Θ ^ (-((D.K : ℝ) - 5 / 2)) with hy`. Establish `hy0 : 0 ≤ y` using `Real.rpow_nonneg hΘ0.le _`. Establish `hK4 : (4 : ℝ) ≤ (D.K : ℝ)` using `by exact_mod_cast hK`. Establish `hy1 : y ≤ Θ⁻¹`. Rewrite using `[← Real.rpow_neg_one]`.
+
+Conclude with `Real.rpow_le_rpow_of_exponent_le hΘ1 (by linarith)`. Use `set ep : ℝ := (C₁ * y) ^ D.f with hep`. Establish `hep0 : 0 ≤ ep` using `by positivity`. Establish `ha : 3 ^ D.f * ep = (3 * C₁ * y) ^ D.f` using `by rw [hep, ← mul_pow, mul_assoc]`. Establish `h3y : 3 * C₁ * y ≤ 1`.
+
+Combine the equalities or inequalities in the displayed calculation. Establish `ha1 : 3 ^ D.f * ep ≤ 1`. Rewrite using `[ha]; exact pow_le_one₀ (by positivity) h3y`. Establish `ha0 : 0 ≤ 3 ^ D.f * ep` using `by positivity`. Establish `haC : 3 ^ D.f * ep ≤ (C₀ * y) ^ D.f`.
+
+Rewrite using `[ha]; exact pow_le_pow_left₀ (by positivity) (mul_le_mul_of_nonneg_right hC03 hy0) _`. Establish `hb : 2 ^ D.f * ep ≤ 3 ^ D.f * ep` using `mul_le_mul_of_nonneg_right (pow_le_pow_left₀ (by norm_num) (by norm_num) _) hep0`. Establish `he : ∀ i, 1 ≤ i → i ≤ D.r + 1 → 0 ≤ D.e i ∧ D.e i ≤ 1` using `fun i h1 h2 => (hA13 i 1 le_rfl h1 h2).1`. Use `set e' : ℕ → ℝ := fun i => if 1 ≤ i ∧ i ≤ D.r + 1 then D.e i else 0 with he'`. Establish `he'0 : ∀ i, 0 ≤ e' i`.
+
+Introduce `i`. Simplify using `only [he']`. Use `split_ifs with h`. Conclude with `(he i h.1 h.2).1`. Conclude with `le_rfl`.
+
+Establish `hprod : ∏ i ∈ Icc 1 (D.r + 1), (1 + e' i) = ∏ i ∈ Icc 1 (D.r + 1), (1 + D.e i)`. Apply `Finset.prod_congr rfl` to reduce the goal to its premises. Introduce `i hi`. Rewrite `hi` using `[Finset.mem_Icc]`. Simplify using `only [he', if_pos hi]`.
+
+Establish `hprod0 : 0 ≤ ∏ i ∈ Icc 1 (D.r + 1), (1 + D.e i)`. Apply `Finset.prod_nonneg` to reduce the goal to its premises. Introduce `i hi`. Rewrite `hi` using `[Finset.mem_Icc]`. Use `(he i hi.1 hi.2).1` as an intermediate fact.
+
+Combine the linear equalities and inequalities to obtain the conclusion. Establish `hx0 : 0 ≤ (C₀ / Θ) ^ D.f` using `by positivity`. Establish `hxy : (C₀ / Θ) ^ D.f ≤ (C / Θ) ^ D.f` using `pow_le_pow_left₀ (by positivity) (div_le_div_of_nonneg_right hCC0 hΘ0.le) _`. Establish `hr0 : (0 : ℝ) ≤ (D.r : ℝ) + 1` using `by positivity`. Establish `hBJ : 1 + CJ * ((D.r : ℝ) + 1) * (C₀ / Θ) ^ D.f ≤ 1 + C * ((D.r : ℝ) + 1) * (C / Θ) ^ D.f`.
+
+Establish `s1 : CJ * ((D.r : ℝ) + 1) * (C₀ / Θ) ^ D.f ≤ C * ((D.r : ℝ) + 1) * (C₀ / Θ) ^ D.f` using `mul_le_mul_of_nonneg_right (mul_le_mul_of_nonneg_right hCCJ hr0) hx0`. Establish `s2 : C * ((D.r : ℝ) + 1) * (C₀ / Θ) ^ D.f ≤ C * ((D.r : ℝ) + 1) * (C / Θ) ^ D.f` using `mul_le_mul_of_nonneg_left hxy (by positivity)`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hB0 : 0 ≤ 1 + C * ((D.r : ℝ) + 1) * (C / Θ) ^ D.f` using `by positivity`. Use `hLS E W D jn H Vt c hG hKer hE hCut hA4 _ ?_ R` and prove the remaining obligations.
+
+Introduce `T ε hε σ₀ hσ₀`. Establish `hempN : D.emp ∈ D.Wb D.Ntop`. Simplify using `[Data.Wb, D.emp_mem, D.cnt_emp]`. Establish `hσ₀0 : 0 ≤ σ₀`. Use `le_trans ?_ (hσ₀ D.emp hempN)` and prove the remaining obligations.
+
+Rewrite using `[D.wt_emp, div_one]`. Conclude with `gram_diag D hG ε hε 0 D.emp []`. Use `set S : ℕ → NNReal := fun k => (D.Wb (D.budget k)).sup (fun w => (D.Q T ε k w).toNNReal) with hSd`. Use `set σ : ℕ → ℝ := fun k => √(S k : ℝ) with hσ`. Establish `hσ0 : ∀ k, 0 ≤ σ k` using `fun k => Real.sqrt_nonneg _`.
+
+Establish `hσsq : ∀ k, σ k ^ 2 = (S k : ℝ)` using `fun k => Real.sq_sqrt (NNReal.coe_nonneg _)`. Establish `hσQ : ∀ k, ∀ w ∈ D.Wb (D.budget k), D.Q T ε k w ≤ σ k ^ 2`. Introduce `k w hw`. Rewrite using `[hσsq]`. Use `le_trans (Real.le_coe_toNNReal _) ?_` and prove the remaining obligations.
+
+Conclude with `Finset.le_sup (f := fun w => (D.Q T ε k w).toNNReal) hw` after adjusting the coercions. Establish `hSle : ∀ k (X : ℝ), 0 ≤ X → (∀ w ∈ D.Wb (D.budget k), D.Q T ε k w ≤ X) → (S k : ℝ) ≤ X`. Introduce `k X hX h`. Establish `: S k ≤ X.toNNReal` using `Finset.sup_le fun w hw => Real.toNNReal_le_toNNReal (h w hw)`. Combine the equalities or inequalities in the displayed calculation.
+
+Establish `hσle : ∀ k (X : ℝ), 0 ≤ X → (∀ w ∈ D.Wb (D.budget k), √(D.Q T ε k w) ≤ X) → σ k ≤ X`. Introduce `k X hX h`. Apply `Real.sqrt_le_iff.mpr` to reduce the goal to its premises. Conclude with `⟨hX, hSle k _ (sq_nonneg X) fun w hw => (Real.sqrt_le_iff.mp (h w hw)).2⟩`. Establish `hb0 : D.budget 0 = D.Ntop` using `by simp [Data.budget, Data.Ntop]`.
+
+Establish `hσ00 : σ 0 ^ 2 ≤ σ₀`. Rewrite using `[hσsq]`. Apply `hSle 0 σ₀ hσ₀0` to reduce the goal to its premises. Introduce `w hw`. Rewrite using `[Q0]`.
+
+Rewrite `hw` using `[hb0]`. Conclude with `hσ₀ w hw`. Establish `hrec : ∀ i, 1 ≤ i → i ≤ D.r + 1 → σ i ≤ (1 + (C₀ * Θ ^ (-((D.K : ℝ) - 5 / 2))) ^ D.f) * √(1 + e' i) * σ (i - 1) + ∑ t ∈ Icc 2 i, ((C₀ / Θ) ^ D.f) ^ (t - 1) * σ (i - t)`. Introduce `i hi1 hi`. Establish `hei : e' i = D.e i` using `by simp only [he', if_pos (And.intro hi1 hi)]`.
+
+Rewrite using `[hei]`. Apply `hσle i` to reduce the goal to its premises. Apply `add_nonneg` to reduce the goal to its premises. Conclude with `mul_nonneg (mul_nonneg (by positivity) (Real.sqrt_nonneg _)) (hσ0 _)`. Conclude with `Finset.sum_nonneg fun t _ => mul_nonneg (by positivity) (hσ0 _)`.
+
+Introduce `w hw`. Use `le_trans (hOL E W D ep C₄ hG hKer hW hA2 hA13 hE72 hP hE73 hE74 hLat hep0 h4 hS.1 (size_le_one D Θ hΘ1 hS) T ε hε σ i hi1 hi (fun k _ => ⟨hσ0 k, hσQ k⟩) w hw) ?_` and prove the remaining obligations. Apply `add_le_add` to reduce the goal to its premises. Apply `mul_le_mul_of_nonneg_right _ (hσ0 _)` to reduce the goal to its premises. Apply `mul_le_mul_of_nonneg_right _ (Real.sqrt_nonneg _)` to reduce the goal to its premises.
+
+Apply `Real.sqrt_le_iff.mpr` to reduce the goal to its premises. Use `⟨by positivity, ?_⟩` and prove the remaining obligations. Establish `q1 : 0 ≤ 2 ^ D.f * ep` using `by positivity`. Use the polynomial consequences of the given equalities and inequalities. Apply `Finset.sum_le_sum` to reduce the goal to its premises.
+
+Introduce `s hs`. Rewrite `hs` using `[Finset.mem_Icc]`. Apply `mul_le_mul_of_nonneg_right _ (hσ0 _)` to reduce the goal to its premises. Conclude with `coef D Θ C₄ C₀ _ _ hΘ1 h4 hC04 hf hS ha0 ha1 (he i hi1 hi).1 (he i hi1 hi).2 i s hs.1 hs.2 hi`. Establish `hfin` using `hJ (D.K : ℝ) Θ D.f D.r e' σ hK4 hf hΘJ (small D.r D.f C C₀ Θ hΘ0 (by linarith) hCC0 hsm) he'0 hσ0 hrec`.
+
+Rewrite `hfin` using `[hprod]`. Establish `hempB : D.emp ∈ D.Wb (D.budget (D.r + 1))`. Simplify using `[Data.Wb, D.emp_mem, D.cnt_emp]`. Establish `hQ` using `hσQ (D.r + 1) D.emp hempB`. Establish `hQS : D.Q T ε (D.r + 1) D.emp = D.Sf ε (D.r + 1) D.emp (T.X (D.r + 1))`.
+
+Simplify using `[Data.Q, D.wt_emp]`. Rewrite `hQ` using `[hQS]`. Establish `hs0 : 0 ≤ σ 0 ^ 2` using `sq_nonneg _`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem theoremA_of_steps : TheoremAOfSteps := by
   intro hOL hLS hJ C₁ C₄ h1 h4
   set C₀ : ℝ := max (3 * C₁) (2 * C₄) with hC₀
@@ -372,8 +505,14 @@ end Formalism.FourierDecayAlt.P.OneLevelCoefficients
 
 namespace Formalism.FourierDecayAlt.P
 
+/- English proof (translation)
+The claim follows from `OneLevelCoefficients.oneLevel_of_steps`.
+-/
 theorem levelInequalityOfSteps : Formalism.FourierDecayAlt.TB.OneLevelOfSteps := OneLevelCoefficients.oneLevel_of_steps
 
+/- English proof (translation)
+The claim follows from `OneLevelCoefficients.theoremA_of_steps`.
+-/
 theorem towerBoundOfSteps : Formalism.FourierDecayAlt.TB.TheoremAOfSteps := OneLevelCoefficients.theoremA_of_steps
 
 end Formalism.FourierDecayAlt.P

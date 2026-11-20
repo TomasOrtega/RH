@@ -15,6 +15,21 @@ noncomputable section
 
 namespace GlobalTheory.Obs.BC
 
+/- English proof (translation)
+Introduce `hb`. Set `β : ∀ T, F'.obj T →+* F.obj T` to `fun T ↦ (RingEquiv.ofBijective (α T) (hb T)).symm.toRingHom`. Establish `hαβ : ∀ T (b : F'.obj T), α T (β T b) = b` using `fun T b ↦ (RingEquiv.ofBijective (α T) (hb T)).apply_symm_apply b`. Establish `hβα : ∀ T (b : F.obj T), β T (α T b) = b` using `fun T b ↦ (RingEquiv.ofBijective (α T) (hb T)).symm_apply_apply b`. Establish `natβ : ∀ {T T' : C} (a : T ⟶ T') (b : F'.obj T), β T' (mp F' a b) = mp F a (β T b)`.
+
+Introduce `T T' a b`. Apply `(hb T').1` to reduce the goal to its premises. Rewrite using `[hαβ, nat, hαβ]`. Establish `smulβ : ∀ T (r : R) (b : F'.obj T), β T (r • b) = r • β T b`. Introduce `T r b`.
+
+Apply `(hb T).1` to reduce the goal to its premises. Rewrite using `[hαβ, smul, hαβ]`. Set `m` to `GlobalTheory.Obs.BC.natCoef α nat smul`. Set `n` to `GlobalTheory.Obs.BC.natCoef β natβ smulβ`. Establish `left : ∀ c, n.pull1 (m.pull1 c) = c`.
+
+Introduce `c`. Take `⟨f, rfl⟩` from `H1.mk_surjective F c`. Rewrite using `[CoefMap.pullCohomologyOne_class, CoefMap.pullCohomologyOne_class]`. Use `congr 1`. Use `Subtype.ext ?_` and prove the remaining obligations.
+
+Use function extensionality and compare the values at `T T' φ`. Conclude with `hβα T' _`. Establish `right : ∀ c, m.pull1 (n.pull1 c) = c`. Introduce `c`. Take `⟨f, rfl⟩` from `H1.mk_surjective F' c`.
+
+Rewrite using `[CoefMap.pullCohomologyOne_class, CoefMap.pullCohomologyOne_class]`. Use `congr 1`. Use `Subtype.ext ?_` and prove the remaining obligations. Use function extensionality and compare the values at `T T' φ`. Conclude with `hαβ T' _`.
+
+Conclude with `⟨Function.LeftInverse.injective left, Function.RightInverse.surjective right⟩`.
+-/
 theorem natCoef_pull1_bijective (R : Type) [CommRing R] (C : Type) [Category.{0} C] (F F' : C ⥤ CommAlgCat.{0} R)
     (α : ∀ T, F.obj T →+* F'.obj T)
     (nat : ∀ {T T' : C} (a : T ⟶ T') (b : F.obj T), α T' (mp F a b) = mp F' a (α T b))

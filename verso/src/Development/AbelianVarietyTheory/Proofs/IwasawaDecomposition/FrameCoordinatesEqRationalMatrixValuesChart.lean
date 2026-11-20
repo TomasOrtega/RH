@@ -17,10 +17,16 @@ namespace GlobalTheory.LieBase.ChartCoords
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {Dw : Datum H}
   {l : Level H} {Xo : Moduli Dw l} {c : Coeff l} {O : Type} [CommRing O] {β : O →+* c.F} {Z : Model Xo c β}
 
+/- English proof (translation)
+The claim follows from `EigFrame.co_eq fun i => by rw [funext (h τ)]; exact f.co_spec g τ i`.
+-/
 theorem co_congr {R : Type} [CommRing R] {φ : c.F →+* R} {x : Sp R ⟶ Z.X} {f f' g : EigFrame Z φ x}
     (h : ∀ τ i, f'.v τ i = f.v τ i) (τ : E →+* ℂ) : f'.co g τ = f.co g τ :=
   EigFrame.co_eq fun i => by rw [funext (h τ)]; exact f.co_spec g τ i
 
+/- English proof (translation)
+Rewrite using `[h₂ τ i, h₁ τ i, GlobalTheory.GradedPieces.dual_comp, hψ, h τ i]`.
+-/
 theorem v_of_isMap_trans {R R₁ R₂ : Type} [CommRing R] [CommRing R₁] [CommRing R₂] {φ : c.F →+* R}
     {x : Sp R ⟶ Z.X} {φ₁ : c.F →+* R₁} {x₁ : Sp R₁ ⟶ Z.X} {φ₂ : c.F →+* R₂} {x₂ : Sp R₂ ⟶ Z.X}
     {f : EigFrame Z φ x} {f₁ : EigFrame Z φ₁ x₁} {f₂ f₂' : EigFrame Z φ₂ x₂} {ψ₁ : R →+* R₁} {ψ₂ : R₁ →+* R₂}
@@ -32,6 +38,33 @@ end GlobalTheory.LieBase.ChartCoords
 
 open GlobalTheory.ProjVar.Var GlobalTheory.LieBase.ChartCoords
 
+/- English proof (translation)
+Introduce `E _ _ _ H Dw l Xo c O _ β Z σ F _ e X j f₀ S A₀ hj _hoi hT V φ Φ hV A`. Establish `hVa : IsAffineOpen V.1` using `V.2`. Use `haveI : Mono (LogKS.chart V) := inferInstanceAs (Mono hVa.fromSpec)`. Establish `hmem : ∀ z : GlobalTheory.CxPts X.str (σ.comp e.toRingHom), cxOf e σ hj z ∈ ptsIn (genStr Z) σ V.1 → under z ∈ j ⁻¹ᵁ V.1` using `fun z hz => mem_ptsIn.1 hz`. Distinguish the cases in `hη : genericPoint X.X ∈ j ⁻¹ᵁ V.1`.
+
+Use `swap`. Conclude with `⟨0, fun z _ hz => absurd (gen_mem (hmem z hz)) hη⟩`. Establish `key : ∀ x : X.X, x ∈ j ⁻¹ᵁ V.1 → ∃ ψ : Γ(gen Z, V.1) →+* X.X.presheaf.stalk x, spMap ψ ≫ LogKS.chart V = stalkPt X x ≫ j` using `fun x hx => TieBase.exists_affine_factor _ V.2 (by show j (X.X.fromSpecStalk x (IsLocalRing.closedPoint _)) ∈ V.1`. Rewrite using `[Scheme.fromSpecStalk_closedPoint]`. Conclude with `hx)`.
+
+Establish `key' : ∀ (x : X.X) (ψ : Γ(gen Z, V.1) →+* X.X.presheaf.stalk x), spMap ψ ≫ LogKS.chart V = stalkPt X x ≫ j → spMap ((algebraMap (X.X.presheaf.stalk x) X.X.functionField).comp ψ) ≫ LogKS.chart V = genericPt X ≫ j` using `fun x ψ h => by rw [TieBase.spMap_trans, Category.assoc, h, TieBase.genericPt_eq X x, Category.assoc]`. Take `⟨ψη, hψη⟩` from `key _ hη`. Take `⟨ρ, h₀⟩ : ∃ ρ : Γ(gen Z, V.1) →+* X.X.functionField, spMap ρ ≫ LogKS.chart V = genericPt X ≫ j` from `⟨_, key' _ ψη hψη⟩`. Establish `hφK : constF e X = ρ.comp φ` using `EigLoc.spMap_inj (by`. Rewrite using `[← TieBase.genericPt_str e X j hj, ← h₀, Category.assoc, hV, ← TieBase.spMap_trans])`.
+
+Take `⟨ΦK, hΦK⟩` from `Φ.exists_isMap ρ hφK (x' := genericPt X ≫ j ≫ genι Z) (by rw [← Category.assoc, ← h₀, Category.assoc])`. Use `⟨fun τ => ΦK.co f₀ τ * (((A₀ * A⁻¹) τ)ᵀ)⁻¹, fun z hA hz => ?_⟩` and prove the remaining obligations. Establish `hx` using `hmem z hz`. Take `⟨φx, fz, hc⟩` from `hT.2 (under z) A hA`. Take `⟨ψx, hψx⟩` from `key _ hx`.
+
+Establish `hρx : (algebraMap _ X.X.functionField).comp ψx = ρ` using `EigLoc.spMap_inj ((cancel_mono (LogKS.chart V)).1 ((key' _ ψx hψx).trans h₀.symm))`. Establish `hφx : φx = ψx.comp φ` using `RingHom.ext fun a => IsFractionRing.injective (X.X.presheaf.stalk (under z)) X.X.functionField (by`. Establish `h1` using `RingHom.congr_fun hc.2.1 a`. Establish `h2` using `RingHom.congr_fun hφK a`. Rewrite `h2` using `[← hρx]`.
+
+Conclude with `h1.symm.trans h2)`. Take `⟨Φx, hΦx⟩` from `Φ.exists_isMap ψx hφx (x' := stalkPt X (under z) ≫ j ≫ genι Z) (by rw [← Category.assoc, ← hψx, Category.assoc])`. Establish `hM : ∀ fz' : EigFrame Z φx (stalkPt X (under z) ≫ j ≫ genι Z), fz'.Coord (algebraMap (X.X.presheaf.stalk (under z)) X.X.functionField) f₀ (A₀ * A⁻¹) → ∀ τ, ΦK.co f₀ τ * (((A₀ * A⁻¹) τ)ᵀ)⁻¹ = (Φx.co fz' τ).map (algebraMap _ X.X.functionField)`. Introduce `fz' hc' τ`. Take `⟨k, hk⟩` from `fz'.exists_isMap _ hc'.2.1 hc'.1`.
+
+Take `⟨Φk, hΦk⟩` from `Φx.exists_isMap _ hc'.2.1 hc'.1`. Establish `h1 : k.co f₀ τ = ((A₀ * A⁻¹) τ)ᵀ` using `EigFrame.co_eq fun i => by rw [funext (hk τ)]; exact hc'.2.2 τ i`. Establish `h3 : Φk.co k τ = (Φx.co fz' τ).map (algebraMap _ X.X.functionField)` using `hΦk.co τ hk hc'.1`. Establish `h4 : Φk.co f₀ τ = ΦK.co f₀ τ` using `co_congr (v_of_isMap_trans hΦx hΦk hΦK hρx) τ`. Establish `h5 : f₀.co k τ = (k.co f₀ τ)⁻¹` using `(Matrix.inv_eq_right_inv ((k.co_mul f₀ k τ).trans (k.co_self τ))).symm`.
+
+Rewrite using `[← h3, ← Φk.co_mul f₀ k τ, h4, h5, h1]`. Establish `hs : spMap (Scheme.stalkClosedPointTo z.1).hom ≫ stalkPt X (under z) = z.1` using `Scheme.Spec_stalkClosedPointTo_fromSpecStalk z.1`. Establish `hxz : (cxOf e σ hj z).1 ≫ genι Z = spMap (Scheme.stalkClosedPointTo z.1).hom ≫ stalkPt X (under z) ≫ j ≫ genι Z` using `by show (z.1 ≫ j) ≫ genι Z = _ conv_lhs => rw [← hs]`. Simplify using `only [Category.assoc]`. Use `⟨fun τ p q => ?_, ?_, ?_⟩` and prove the remaining obligations.
+
+Use `beta_reduce`. Rewrite using `[hM fz hc τ]`. Conclude with `⟨Φx.co fz τ p q, rfl⟩`. Establish `hφ : σ = (Scheme.stalkClosedPointTo z.1).hom.comp φx` using `RingHom.ext fun a => by`. Establish `h3 : φx a = algebraMap F _ (e.symm a)` using `IsFractionRing.injective _ X.X.functionField ((RingHom.congr_fun hc.2.1 a).symm.trans ((X.stalkIncl (under z)).commutes _).symm)`.
+
+Use `show σ a = evStalk z (φx a)`. Rewrite using `[h3]`. Use `Eq.trans ?_ ((evStalk_germ (U := ⊤) trivial _).trans (ev_algX mem_ptsIn_top _)).symm` and prove the remaining obligations. Simplify using the standard rewrite rules. Take `⟨g, hg⟩` from `fz.exists_isMap _ hφ hxz`.
+
+Conclude with `⟨g, φx, fz, _, (Scheme.Spec_stalkClosedPointTo_fromSpecStalk z.1).symm, hc, hg⟩`. Introduce and unpack `g ⟨φ', fz', ψ', hψ', hc', hm'⟩ f hf τ`. Take `rfl : ψ' = (Scheme.stalkClosedPointTo z.1).hom` from `EigLoc.spMap_inj ((cancel_mono (X.X.fromSpecStalk (under z))).1 (hψ'.symm.trans (Scheme.Spec_stalkClosedPointTo_fromSpecStalk z.1).symm))`. Take `rfl : φ' = φx` from `RingHom.ext fun a => IsFractionRing.injective _ X.X.functionField ((RingHom.congr_fun hc'.2.1 a).symm.trans (RingHom.congr_fun hc.2.1 a))`. Establish `hev : (Scheme.stalkClosedPointTo z.1).hom.comp ψx = evHom hz` using `EigLoc.spMap_inj ((cancel_mono (LogKS.chart V)).1 (by`.
+
+Rewrite using `[TieBase.spMap_trans, Category.assoc, hψx, LieMet.spMap_evHom hz, ← Category.assoc, hs]`. Use the proof step `rfl))`. Establish `hfx : Φx.IsMap (Scheme.stalkClosedPointTo z.1).hom f` using `fun τ i => by`. Rewrite using `[hf τ i, hΦx τ i, GlobalTheory.GradedPieces.dual_comp, hev]`. Use `beta_reduce`.
+
+Rewrite using `[hfx.co τ hm' hxz, hM fz' hc' τ]`. Use `Matrix.ext fun a b => ?_` and prove the remaining obligations. Simplify using `only [Matrix.map_apply]`. Rewrite using `[GlobalTheory.TrueGeo.Res.ratVal_eq_valAt z ⟨_, rfl⟩, GlobalTheory.TrueGeo.Res.valAt_algebraMap]`.
+-/
 theorem GlobalTheory.LieBase.coords_eq_ratVal_of_chart : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l) (O : Type) [CommRing O] (β : O →+* c.F) (Z : Model Xo c β) (σ : c.F →+* ℂ) (F : Type) [Field F] (e : F ≃+* c.F) (X : Var F) (j : X.X ⟶ gen Z) (f₀ : EigFrame Z (constF e X) (genericPt X ≫ j ≫ genι Z)) (S : Fr (ratOf X) Dw.mult 0) (A₀ : Mat Dw.mult X.Fn) (hj : j ≫ genStr Z ≫ spMap e.toRingHom = X.str), IsOpenImmersion j → Tied e X j f₀ S A₀ → ∀ (V : (gen Z).affineOpens) (φ : c.F →+* Γ(gen Z, V.1)) (Φ : EigFrame Z φ (LogKS.chart V ≫ genι Z)), LogKS.chart V ≫ genStr Z = spMap φ → ∀ A : Mat Dw.mult X.Fn, ∃ M : Mat Dw.mult X.Fn, ∀ z : GlobalTheory.CxPts X.str (σ.comp e.toRingHom), A ∈ S.S (under z) → ∀ hz : cxOf e σ hj z ∈ ptsIn (genStr Z) σ V.1, (∀ τ p q, RegAt (under z) (M τ p q)) ∧ (∃ g : EigFrame Z σ ((cxOf e σ hj z).1 ≫ genι Z), FrameAt e f₀ A₀ A z g) ∧ ∀ g : EigFrame Z σ ((cxOf e σ hj z).1 ≫ genι Z), FrameAt e f₀ A₀ A z g → ∀ f : EigFrame Z σ ((cxOf e σ hj z).1 ≫ genι Z), Φ.IsMap (evHom hz) f → ∀ τ, f.co g τ = (M τ).map (fun r => ratVal r z) := by
   intro E _ _ _ H Dw l Xo c O _ β Z σ F _ e X j f₀ S A₀ hj _hoi hT V φ Φ hV A
   classical

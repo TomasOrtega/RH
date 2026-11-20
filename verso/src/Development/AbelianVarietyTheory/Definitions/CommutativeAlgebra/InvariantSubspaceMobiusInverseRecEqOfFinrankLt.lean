@@ -28,6 +28,9 @@ def invariantSubspaceMobiusInverseRec (s : F[X] → ℂ) (n : ℕ) : ∀ (V : Ty
     (fun _ r V _ _ _ g => s (LinearMap.charpoly g) -
       ∑ᶠ W : {W : Submodule F V // W ≠ ⊤ ∧ ∀ x ∈ W, g x ∈ W}, r W.1 (g.restrict W.2.2)) n
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem invariantSubspaceMobiusInverseRec_succ (s : F[X] → ℂ) (n : ℕ) (V : Type) [AddCommGroup V] [Module F V] [FiniteDimensional F V]
     (g : Module.End F V) : invariantSubspaceMobiusInverseRec s (n + 1) V g = s (LinearMap.charpoly g) -
       ∑ᶠ W : {W : Submodule F V // W ≠ ⊤ ∧ ∀ x ∈ W, g x ∈ W}, invariantSubspaceMobiusInverseRec s n W.1 (g.restrict W.2.2) := rfl
@@ -36,6 +39,13 @@ def psi (s : F[X] → ℂ) (V : Type) [AddCommGroup V] [Module F V] [FiniteDimen
     (g : Module.End F V) : ℂ :=
   invariantSubspaceMobiusInverseRec s (Module.finrank F V + 1) V g
 
+/- English proof (translation)
+Proceed by induction on `n with`. Consider the case `zero => intro m V _ _ _ g h`. Use linear arithmetic over natural numbers and integers. Consider the case `succ n ih`. Introduce `m V _ _ _ g h h'`.
+
+Consider the cases of `m with`. Consider the case `zero => omega`. Consider the case `succ m`. Rewrite using `[invariantSubspaceMobiusInverseRec_succ, invariantSubspaceMobiusInverseRec_succ]`. Use `congr 1`.
+
+Use `finsum_congr fun W => ?_` and prove the remaining obligations. Use `Submodule.finrank_lt W.2.1` as an intermediate fact. Conclude with `ih m _ _ (by omega) (by omega)`.
+-/
 theorem invariantSubspaceMobiusInverseRec_eq_of_finrank_lt (s : F[X] → ℂ) (n : ℕ) : ∀ (m : ℕ) (V : Type) [AddCommGroup V] [Module F V]
     [FiniteDimensional F V] (g : Module.End F V), Module.finrank F V < n → Module.finrank F V < m →
     invariantSubspaceMobiusInverseRec s n V g = invariantSubspaceMobiusInverseRec s m V g := by
@@ -52,6 +62,9 @@ theorem invariantSubspaceMobiusInverseRec_eq_of_finrank_lt (s : F[X] → ℂ) (n
       have := Submodule.finrank_lt W.2.1
       exact ih m _ _ (by omega) (by omega)
 
+/- English proof (translation)
+Rewrite using `[psi, invariantSubspaceMobiusInverseRec_succ]`. Use `congr 1`. Use `finsum_congr fun W => ?_` and prove the remaining obligations. Use `Submodule.finrank_lt W.2.1` as an intermediate fact. Conclude with `invariantSubspaceMobiusInverseRec_eq_of_finrank_lt s _ (Module.finrank F W.1 + 1) _ _ (by omega) (by omega)`.
+-/
 theorem psi_eq (s : F[X] → ℂ) (V : Type) [AddCommGroup V] [Module F V] [FiniteDimensional F V]
     (g : Module.End F V) :
     psi s V g = s (LinearMap.charpoly g) -
@@ -86,6 +99,9 @@ def ipGL {V : Type} [AddCommGroup V] [Module F V] (φ φ' : Module.End F V → �
 def extZero {d : ℕ} (χ : GL (Fin d) F → ℂ) (g : Module.End F (Fin d → F)) : ℂ :=
   ∑ᶠ x ∈ {x : GL (Fin d) F | Matrix.toLin' (x : Matrix (Fin d) (Fin d) F) = g}, χ x
 
+/- English proof (translation)
+Introduce `P Q hP hQ`. Simplify using `[hP.natDegree_mul hQ]`.
+-/
 theorem isAdditive_natDegree : IsAdditive (fun P : F[X] => (P.natDegree : ℂ)) := by
   intro P Q hP hQ
   simp [hP.natDegree_mul hQ]

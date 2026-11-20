@@ -11,11 +11,17 @@ def NefExtendIso.Statement : Prop :=
     [Algebra F Ω] [IsScalarTower S F Ω] (N : ℕ) (x : Fin (N + 1) → Ω) (Q : Kleiman.SubSystem S x Ω),
     Function.Bijective (algebraMap S F) → Kleiman.Nef Q → Kleiman.Nef (Q.extend F)
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨Function.bijective_id, Kleiman.nef_twistSys_zero⟩`.
+-/
 theorem NefExtendIso.hyps :
     Function.Bijective (algebraMap ℚ ℚ) ∧
       Kleiman.Nef (Kleiman.twistSys ℚ (Kleiman.lineX ℚ) 0) :=
   ⟨Function.bijective_id, Kleiman.nef_twistSys_zero⟩
 
+/- English proof (translation)
+The claim follows from `h ℚ ℚ (RatFunc ℚ) 1 (Kleiman.lineX ℚ) _ NefExtendIso.hyps.1 NefExtendIso.hyps.2`.
+-/
 example (h : NefExtendIso.Statement) :=
   h ℚ ℚ (RatFunc ℚ) 1 (Kleiman.lineX ℚ) _ NefExtendIso.hyps.1 NefExtendIso.hyps.2
 

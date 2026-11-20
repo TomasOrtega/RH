@@ -14,6 +14,13 @@ namespace BM
 
 set_option maxHeartbeats 400000 in
 
+/- English proof (translation)
+Introduce `D hG X u u' sc hsc v cv hcv g hZ`. Take `⟨τ, hτ⟩ : ∃ τ, vOf X τ = v` from `⟨X.pl v, X.pl.symm_apply_apply v⟩`. Substitute `hτ` using the available equality. Take `⟨μS, ν, hloc, h4⟩` from `Formalism.L2.SG.RealObj.EnergyFinal.BM.weilPairJ_holds hI hG X τ`. Take `⟨hs1, hn1, hW1, hi1, h01, -⟩` from `hloc u`.
+
+Take `⟨hs2, hn2, hW2, hi2, h02, -⟩` from `hloc u'`. Establish `hfin` using `h4 u u' sc hsc cv hcv g hZ`. Establish `hU` using `Formalism.L2.S.Pv.SchurTens.unitRep_of_URepOn (X.ds (vOf X τ)).2.2.1`. Rewrite `hfin` using `[quad_eq_GG (μ := Formalism.REAL.muG (X.B.I.ε (vOf X τ))) (μS := μS u) (μS' := μS u') (ν := ν u) (ν' := ν u') (S := Formalism.L2.SG.Pf.WuDec.Sloc X u (vOf X τ)) (S' := Formalism.L2.SG.Pf.WuDec.Sloc X u' (vOf X τ)) hU (X.B.w (vOf X τ)) (X.Wloc_cont u (vOf X τ)) (X.Wloc_cont u' (vO …`. Unfold `PhiGG at hfin`.
+
+Conclude with `hfin`.
+-/
 theorem locQuadGG_G_holds (hI : CompanionTheory.Lime.BM.Inputs2) : LocQuadGG_G := by
   intro D hG X u u' sc hsc v cv hcv g hZ
   obtain ⟨τ, hτ⟩ : ∃ τ, vOf X τ = v := ⟨X.pl v, X.pl.symm_apply_apply v⟩

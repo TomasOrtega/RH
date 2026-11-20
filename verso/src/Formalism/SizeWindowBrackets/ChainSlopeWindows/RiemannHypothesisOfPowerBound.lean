@@ -6,10 +6,22 @@ namespace Formalism.LFunctionChainParameters.ConditionalMainTheorem
 
 open Formalism
 
+/- English proof (translation)
+Introduce `θ h0 h1 y₀ hG s hs`. Conclude with `Formalism.zetaLandau 1 (Or.inl rfl) θ h0 h1 ⟨1, y₀, fun y hy => by simpa using hG y hy⟩ s hs`.
+-/
 theorem landau_zero_free_half_plane : LandauZeroFreeHalfPlane := by
   intro θ h0 h1 y₀ hG s hs
   exact Formalism.zetaLandau 1 (Or.inl rfl) θ h0 h1 ⟨1, y₀, fun y hy => by simpa using hG y hy⟩ s hs
 
+/- English proof (translation)
+Introduce `C ε₁ hε₁ hG`. Apply `Formalism.riemannHypothesis_of_zero_free_halfPlane` to reduce the goal to its premises. Introduce `s hs`. Use `Formalism.zetaLandauEps 1 (Or.inl rfl) (1 / 2) (by norm_num) (by norm_num) ?_ s hs` and prove the remaining obligations. Introduce `ε' hε'`.
+
+Use `set ε : ℝ := min (ε₁ / 2) (ε' / (|C| + 1)) with hεdef`. Establish `hε0 : 0 < ε` using `lt_min (by linarith) (div_pos hε' (by positivity))`. Establish `hεlt : ε < ε₁` using `lt_of_le_of_lt (min_le_left _ _) (by linarith)`. Take `⟨x₀, hx⟩` from `hG ε hε0 hεlt`. Use `⟨1, max x₀ 1, fun x hx' => ?_⟩` and prove the remaining obligations.
+
+Establish `hx1 : 1 ≤ x` using `le_trans (le_max_right _ _) hx'`. Establish `hCe : C * ε ≤ ε'`. Establish `h1 : C * ε ≤ |C| * ε` using `mul_le_mul_of_nonneg_right (le_abs_self C) hε0.le`. Establish `h2 : ε ≤ ε' / (|C| + 1)` using `min_le_right _ _`. Establish `h3 : |C| * ε ≤ (|C| + 1) * ε` using `by nlinarith [abs_nonneg C]`.
+
+Establish `h4 : (|C| + 1) * ε ≤ ε'`. Rewrite using `[le_div_iff₀ (by positivity)] at h2; linarith`. Combine the linear equalities and inequalities to obtain the conclusion. Use `hx x (le_trans (le_max_left _ _) hx')` as an intermediate fact. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem riemann_hypothesis_of_power_bound : PowerBoundGivesRiemannHypothesis := by
   intro C ε₁ hε₁ hG
   apply Formalism.riemannHypothesis_of_zero_free_halfPlane

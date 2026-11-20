@@ -19,14 +19,23 @@ open GroundTheory.Automorphic GroundTheory.Automorphic.Reduction GroundTheory.Au
 section
 variable {E : Type} [Field E] [NumberField E] {r : ℕ}
 
+/- English proof (translation)
+Unfold `zt`. Rewrite using `[← map_mul]`. Use `congr 1`. Conclude with `Subtype.ext (Real.exp_add t v)`.
+-/
 private theorem zt_add (t v : ℝ) : zt E r (t + v) = zt E r t * zt E r v := by
   unfold zt
   rw [← map_mul]
   congr 1
   exact Subtype.ext (Real.exp_add t v)
 
+/- English proof (translation)
+The claim follows from `centralSection_mul_comm _ g`.
+-/
 private theorem zt_comm (t : ℝ) (g : GA E r) : zt E r t * g = g * zt E r t := centralSection_mul_comm _ g
 
+/- English proof (translation)
+Take `⟨k₁, h₁, k₂, h₂, e⟩` from `h`. Take `⟨l₁, g₁, l₂, g₂, e'⟩` from `h'`. Use `⟨l₁ * k₁⁻¹, mul_mem g₁ (inv_mem h₁), k₂⁻¹ * l₂, mul_mem (inv_mem h₂) g₂, Units.ext ?_⟩` and prove the remaining obligations. Simplify using `only [Units.val_mul, e, e', mul_assoc, Units.inv_mul_cancel_left, Units.mul_inv_cancel_left]`.
+-/
 private theorem tset_rel {w : Pl E} {ϖ : w.adicCompletion E} {a : ℕ} {x x' : GL (Fin r) (w.adicCompletion E)}
     (h : x ∈ satakeTset w ϖ a) (h' : x' ∈ satakeTset w ϖ a) : ∃ k ∈ KGL w r, ∃ k' ∈ KGL w r, x' = k * x * k' := by
   obtain ⟨k₁, h₁, k₂, h₂, e⟩ := h
@@ -36,6 +45,15 @@ private theorem tset_rel {w : Pl E} {ϖ : w.adicCompletion E} {a : ℕ} {x x' : 
 
 variable [IsTotallyComplex E] {S : Set (Pl E)}
 
+/- English proof (translation)
+Establish `hq : (0 : ℝ) < qV E w` using `by exact_mod_cast Nat.pos_of_ne_zero (qV_ne_zero w)`. Establish `hg : zt E r (a * Real.log (qV E w)) * finGL E r (locGL E r w x) ∈ normOneGL E r`. Rewrite using `[mem_normOneGL_iff_detModule, map_mul, zt, detModule_centralSection b.pos]`. Use `Subtype.ext ?_` and prove the remaining obligations. Rewrite using `[Positive.val_mul, UpperTheory.detModule_satakeTset_eq_inv_pow E w r a ϖ hu ha x hx]`.
+
+Express the relevant statement in the definitionally equal form `Real.exp _ * _ = 1`. Rewrite using `[Real.exp_nat_mul, Real.exp_log hq]`. Conclude with `mul_inv_cancel₀ (pow_ne_zero _ hq.ne')`. Establish `hl : AutomorphicForm.IsLeftInvariant b.f.1` using `b.cusp.1.isLeftInvariant`. Use `UpperTheory.integral_quotient_rightTranslate_eq_and_integrable_iff E r (fun y => Φ (zt E r (t - a * Real.log (qV E w)) * y) * starRingEnd ℂ (b.f.1 (y * finGL E r (locGL E r w x⁻¹)))) (fun γ g => by beta_reduce` as an intermediate fact.
+
+Rewrite using `[← mul_assoc, zt_comm, mul_assoc, hΦ, mul_assoc, hl]) _ hg`. Establish `e1 : ∀ y : GA E r, zt E r (t - a * Real.log (qV E w)) * (y * (zt E r (a * Real.log (qV E w)) * finGL E r (locGL E r w x))) = zt E r t * y * finGL E r (locGL E r w x)` using `fun y => by`. Rewrite using `[← mul_assoc y, ← zt_comm, ← mul_assoc, ← mul_assoc, ← zt_add, sub_add_cancel]`. Establish `e2 : ∀ y : GA E r, b.f.1 (y * (zt E r (a * Real.log (qV E w)) * finGL E r (locGL E r w x)) * finGL E r (locGL E r w x⁻¹)) = b.f.1 y` using `fun y => by`. Rewrite using `[map_inv, map_inv, ← mul_assoc y, ← zt_comm, mul_inv_cancel_right, b.cen]`.
+
+Simplify `this` using `only [e1, e2]`.
+-/
 private theorem move (b : Blo S r) {w : Pl E} {ϖ : w.adicCompletion E} (hu : IsUnifV E w ϖ) {a : ℕ} (ha : a ≤ r)
     {Φ : GA E r → ℂ} (hΦ : AutomorphicForm.IsLeftInvariant Φ) (t : ℝ) {x : GL (Fin r) (w.adicCompletion E)}
     (hx : x ∈ satakeTset w ϖ a) :
@@ -74,6 +92,17 @@ private theorem move (b : Blo S r) {w : Pl E} {ϖ : w.adicCompletion E} (hu : Is
     rw [map_inv, map_inv, ← mul_assoc y, ← zt_comm, mul_inv_cancel_right, b.cen]
   simpa only [e1, e2] using this
 
+/- English proof (translation)
+Take `⟨n, c, μ, hn, hc, hs⟩` from `UpperTheory.exists_satakeTset_sum_eigenvector E w r a ϖ hu ha _ (rw r w) b.f _ (b.isSat w hw)`. Establish `hf : ∀ k ∈ KGL w r, ∀ g, b.f.1 (g * finGL E r (locGL E r w k)) = b.f.1 g` using `fun k hk g => congrFun (congrArg Subtype.val (GlobalTheory.LGrp.mem_fixed.1 (b.isSat w hw).2.1 k hk)) g`. Establish `hs' : ∀ g, ∑ i, b.f.1 (g * finGL E r (locGL E r w (c i))) = μ * b.f.1 g` using `fun g => by`. Use `congrFun (congrArg Subtype.val hs) g` as an intermediate fact. Rewrite `this` using `[Submodule.coe_sum, Finset.sum_apply]`.
+
+Conclude with `this`. Use `⟨(n : ℂ)⁻¹ * starRingEnd ℂ μ, fun Φ hΦ hK hI t x hx => ?_⟩` and prove the remaining obligations. Establish `hn' : (n : ℂ) ≠ 0` using `by exact_mod_cast hn.ne'`. Establish `h1 : ∀ i, ∫ y : RightCosetSpace (rationalGLOne E r), Φ (zt E r t * ((Quotient.out y : normOneGL E r) : GA E r) * finGL E r (locGL E r w x)) * starRingEnd ℂ (b.f.1 ((Quotient.out y : normOneGL E r) : GA E r)) ∂(quotientMeasure (rationalGLOne E r) (mu1 E r)) = ∫ y : RightCosetSpace …` using `fun i => by`. Take `⟨k, hk, k', hk', rfl⟩` from `tset_rel (hc i) hx`.
+
+Use `(move b hu ha hΦ t (satake_Tset_left w (hc i) hk)).1` as an intermediate fact. Simplify using `only [mul_inv_rev, inv_inv, map_mul _ (c i), map_mul _ (locGL E r w (c i)), ← mul_assoc, hf _ (inv_mem hk)] at this`. Simplify using `only [map_mul _ _ k', map_mul _ _ (locGL E r w k'), ← mul_assoc, hK _ hk']`. Conclude with `this`. Establish `h2 : ∀ i, Integrable (fun y : RightCosetSpace (rationalGLOne E r) => Φ (zt E r (t - a * Real.log (qV E w)) * ((Quotient.out y : normOneGL E r) : GA E r)) * starRingEnd ℂ (b.f.1 (((Quotient.out y : normOneGL E r) : GA E r) * finGL E r (locGL E r w (c i))))) (quotientMeasure (ratio …` using `fun i => by`.
+
+Use `(move b hu ha hΦ t (hc i)).2.1 (by` as an intermediate fact. Simplify `hI (zt E r t * finGL E r (locGL E r w (c i)⁻¹)))` using `only [zt_comm t, mul_assoc]`. Simplify `this` using `only [inv_inv]`. Establish `h3` using `Finset.sum_congr (rfl : (Finset.univ : Finset (Fin n)) = _) fun i _ => h1 i`. Rewrite `h3` using `[← integral_finset_sum _ fun i _ => h2 i]`.
+
+Simplify using `only [← Finset.mul_sum, ← map_sum, hs', map_mul, mul_left_comm _ (starRingEnd ℂ μ), integral_const_mul, Finset.sum_const, Finset.card_univ, Fintype.card_fin, nsmul_eq_mul] at h3`. Rewrite using `[mul_assoc, ← h3, inv_mul_cancel_left₀ hn']`.
+-/
 private theorem kappa (b : Blo S r) {w : Pl E} (hw : w ∉ S) {ϖ : w.adicCompletion E} (hu : IsUnifV E w ϖ) {a : ℕ}
     (ha : a ≤ r) : ∃ κ : ℂ, ∀ Φ : GA E r → ℂ, AutomorphicForm.IsLeftInvariant Φ →
     (∀ k ∈ KGL w r, ∀ g, Φ (g * finGL E r (locGL E r w k)) = Φ g) →
@@ -120,6 +149,13 @@ private theorem kappa (b : Blo S r) {w : Pl E} (hw : w ∉ S) {ϖ : w.adicComple
     Finset.sum_const, Finset.card_univ, Fintype.card_fin, nsmul_eq_mul] at h3
   rw [mul_assoc, ← h3, inv_mul_cancel_left₀ hn']
 
+/- English proof (translation)
+Take `⟨κ, hκ⟩` from `kappa b hw hu ha`. Take `⟨hi, h0⟩` from `UpperTheory.integrable_translate_mul_conj_and_inner_self_ne_zero E S r b`. Take `⟨-, hfix, -, heig⟩` from `b.isSat w hw`. Establish `hf : ∀ k ∈ KGL w r, ∀ g, b.f.1 (g * finGL E r (locGL E r w k)) = b.f.1 g` using `fun k hk g => congrFun (congrArg Subtype.val (GlobalTheory.LGrp.mem_fixed.1 hfix k hk)) g`. Establish `hs : ∀ g, ∑ i : SatakeIdx w hϖ (n` using `r) a, b.f.1 (g * finGL E r (locGL E r w (satakeB w hϖ hu i))) = satEig (qV E w) r (b.sat w) a * b.f.1 g := fun g => by`.
+
+Use `congrFun (congrArg Subtype.val ((UpperTheory.V.Cj.S.hkSum E w r _ (rw r w) ϖ hϖ hu a ha b.f hfix).symm.trans (heig ϖ hu a ha))) g` as an intermediate fact. Rewrite `this` using `[Submodule.coe_sum, Finset.sum_apply]`. Conclude with `this`. Establish `h1` using `Finset.sum_congr (rfl : (Finset.univ : Finset (SatakeIdx w hϖ (n := r) a)) = _) fun i _ => hκ b.f.1 b.cusp.1.isLeftInvariant hf hi 0 _ (satakeB_mem w hϖ hu i)`. Simplify using `only [mul_assoc, b.cen] at h1`.
+
+Rewrite `h1` using `[← integral_finset_sum _ fun i _ => hi _]`. Simplify using `only [← Finset.sum_mul, hs, mul_assoc, integral_const_mul] at h1`. Rewrite using `[Finset.sum_congr rfl fun i _ => hκ Φ hΦ hK hI t _ (satakeB_mem w hϖ hu i), ← Finset.sum_mul, ← mul_right_cancel₀ h0 h1]`.
+-/
 private theorem adj (b : Blo S r) {w : Pl E} (hw : w ∉ S) {ϖ : w.adicCompletion E} (hϖ : ϖ ∈ Ov E w) (hu : IsUnifV E w ϖ)
     [Fintype (satakeRes (Ov E w) ⟨ϖ, hϖ⟩)] {a : ℕ} (ha : a ≤ r) (Φ : GA E r → ℂ) (hΦ : AutomorphicForm.IsLeftInvariant Φ)
     (hK : ∀ k ∈ KGL w r, ∀ g, Φ (g * finGL E r (locGL E r w k)) = Φ g)
@@ -153,6 +189,13 @@ private theorem adj (b : Blo S r) {w : Pl E} (hw : w ∉ S) {ϖ : w.adicCompleti
 
 end
 
+/- English proof (translation)
+Rewrite using `[← Finset.sum_filter, ← Finset.sum_filter_of_ne (s := (Finset.range (j + 1)).filter fun a => j - a ≤ s) (p := fun a => a ≤ r) fun a _ h => not_lt.1 fun h' => h (hG a h' _)]`. Use `Finset.sum_bij (fun p _ => (p.1 : ℕ)) (fun p hp => ?_) (fun p hp p' hp' e => ?_) (fun a ha => ?_) fun p hp => ?_` and prove the remaining obligations. Use `p.1.2` as an intermediate fact. Use `p.2.2` as an intermediate fact. Simplify using `only [Finset.mem_filter, Finset.mem_univ, true_and, Finset.mem_range] at hp ⊢`.
+
+Use linear arithmetic over natural numbers and integers. Simplify using `only [Finset.mem_filter, Finset.mem_univ, true_and] at hp hp' e`. Conclude with `Prod.ext (Fin.ext e) (Fin.ext (by omega))`. Simplify using `only [Finset.mem_filter, Finset.mem_range] at ha`. Use `⟨(⟨a, by omega⟩, ⟨j - a, by omega⟩), ?_, rfl⟩` and prove the remaining obligations.
+
+Simplify using `only [Finset.mem_filter, Finset.mem_univ, true_and]`. Use linear arithmetic over natural numbers and integers. Simplify using `only [Finset.mem_filter, Finset.mem_univ, true_and] at hp`. Rewrite using `[← hp, Nat.add_sub_cancel_left]`.
+-/
 private theorem reidx (r s j : ℕ) (G : ℕ → ℕ → ℂ) (hG : ∀ a, r < a → ∀ c, G a c = 0) :
     ∑ p : Fin (r + 1) × Fin (s + 1), (if (p.1 : ℕ) + p.2 = j then G p.1 p.2 else 0) =
       ∑ a ∈ (Finset.range (j + 1)).filter fun a => j - a ≤ s, G a (j - a) := by
@@ -172,6 +215,27 @@ private theorem reidx (r s j : ℕ) (G : ℕ → ℕ → ℂ) (hG : ∀ a, r < a
   · simp only [Finset.mem_filter, Finset.mem_univ, true_and] at hp
     rw [← hp, Nat.add_sub_cancel_left]
 
+/- English proof (translation)
+Introduce `E _ _ _ S r s b t φ ψ w j hU hS hw hj hψ`. Establish `hu` using `(exists_isUnifV w).choose_spec`. Establish `hϖ` using `mem_Ov_of_isUnifV hu`. Use `satake_res_finite w hϖ hu` as an intermediate fact. Use `letI : Fintype (satakeRes (Ov E w) ⟨_, hϖ⟩) := Fintype.ofFinite _`.
+
+Establish `hq : (qV E w : ℂ) ≠ 0` using `Nat.cast_ne_zero.2 (qV_ne_zero w)`. Take `⟨F, hF, -, hL, -⟩` from `ctOps E r s φ hU`. Establish `hψS : ∀ v, ψ v ∈ GlobalTheory.PRep.fixed (rw s w) (KGL w s)` using `fun v => by`. Take `⟨ψ', h1, -, -, -, h2, -⟩` from `sliceUmg E S r s b v φ hU`. Rewrite using `[Subtype.ext ((hψ v).trans h1.symm)]`.
+
+Conclude with `GlobalTheory.LGrp.mem_fixed.2 (h2 hS w hw)`. Establish `hl : ∀ m : GA E s, AutomorphicForm.IsLeftInvariant fun g : GA E r => AutomorphicForm.constantTerm r φ.1 (lev (Ad E) r s (g, m))` using `fun m γ g => by`. Use `hL (γ, 1) (lev (Ad E) r s (g, m))` as an intermediate fact. Rewrite `this` using `[← map_mul, hF, map_one, Prod.mk_mul_mk, one_mul]`. Conclude with `this`.
+
+Establish `hK : ∀ m : GA E s, ∀ k ∈ KGL w r, ∀ g : GA E r, AutomorphicForm.constantTerm r φ.1 (lev (Ad E) r s (g * finGL E r (locGL E r w k), m)) = AutomorphicForm.constantTerm r φ.1 (lev (Ad E) r s (g, m))` using `fun m k hk g => by`. Take `⟨b1, -, -, b4⟩` from `UpperTheory.V.Cj.S.gl2_local_to_adelic_embedding E w r s`. Establish `e : ∀ x, φ.1 (x * finGL E _ (locGL E _ w (UpperTheory.V.Af.Fin.blk k 1))) = φ.1 x` using `congrFun (congrArg Subtype.val (hS w hw _ (b4 k hk 1 (one_mem _))))`. Rewrite `e` using `[b1, map_one, map_one, UpperTheory.blockDiagonal_eq_leviEmbedding]`. Establish `e' : lev (Ad E) r s (g * finGL E r (locGL E r w k), m) = lev (Ad E) r s (g, m) * lev (Ad E) r s (finGL E r (locGL E r w k), 1)`.
+
+Rewrite using `[← map_mul, Prod.mk_mul_mk, mul_one]`. Simplify using `only [AutomorphicForm.constantTerm, e', ← mul_assoc, e]`. Use function extensionality and compare the values at `m`. Establish `hI : ∀ (g : GA E r) (m : GA E s), Integrable (fun y : RightCosetSpace (rationalGLOne E r) => AutomorphicForm.constantTerm r φ.1 (lev (Ad E) r s (zt E r t * ((Quotient.out y : normOneGL E r) : GA E r) * g, m)) * starRingEnd ℂ (b.f.1 ((Quotient.out y : normOneGL E r) : GA E r))) (q …` using `fun g m => by`. Simplify `UpperTheory.integrable_constantTerm_leviEmbedding_mul_conj_cuspForm E S r s b φ hU (zt E r t * g) m` using `only [zt_comm t, mul_assoc]`.
+
+Establish `h1 : ∀ p : Fin (r + 1) × Fin (s + 1), ∫ y : RightCosetSpace (rationalGLOne E r), (∑ i₁ : SatakeIdx w hϖ (n` using `r) p.1, ∑ i₂ : SatakeIdx w hϖ (n := s) p.2, AutomorphicForm.constantTerm r φ.1 (lev (Ad E) r s (zt E r t * ((Quotient.out y : normOneGL E r) : GA E r) * finGL E r (locGL E r w (satakeB w hϖ hu i₁)), m * finGL E s (locGL E s w (satakeB w hϖ hu i₂)))) * starRingEnd ℂ (b.f.1 ((Quoti …`. Rewrite using `[integral_finset_sum _ fun i _ => integrable_finset_sum _ fun i' _ => hI _ _]`. Simplify using `only [fun i => integral_finset_sum (Finset.univ : Finset (SatakeIdx w hϖ (n := s) p.2)) fun i' _ => hI (finGL E r (locGL E r w (satakeB w hϖ hu (j := p.1) i))) (m * finGL E s (locGL E s w (satakeB w hϖ hu i')))]`. Rewrite using `[Finset.sum_comm, Finset.sum_congr rfl fun i _ => adj b hw hϖ hu (Nat.lt_succ_iff.1 p.1.2) _ (hl _) (hK _) (fun g => UpperTheory.integrable_constantTerm_leviEmbedding_mul_conj_cuspForm E S r s b φ hU g _) t, ← Finset.mul_sum, (hkOps E s w p.2).1, UpperTheory.V.Cj.S.hkSum E w s _ …`. Use `congrArg _ (Finset.sum_congr rfl fun i _ => ?_)` and prove the remaining obligations.
+
+Conclude with `(congrFun (hψ _) _).symm`. Rewrite using `[(hkOps E (r + s) w j).1, Submodule.coe_smul, slice]`. Simplify using `only [AutomorphicForm.constantTerm_smul, UpperTheory.constantTerm_heckeOperator_eq_sum_satake E r s w _ hϖ hu j hj φ hU (hS w hw), smul_eq_mul, mul_assoc, Finset.sum_mul, integral_const_mul]`. Rewrite using `[integral_finset_sum _ fun p _ => (integrable_finset_sum _ fun i _ => integrable_finset_sum _ fun i' _ => by`. Simplify `hI _ _).const_mul _]` using `only [mul_assoc]`.
+
+Simplify using `only [integral_const_mul, ← mul_assoc (zt E r t), h1]`. Rewrite using `[Submodule.coe_sum, Finset.sum_apply, Finset.mul_sum]`. Use `Eq.trans (Finset.sum_congr rfl fun p _ => ?_) ((reidx r s j (fun a c => (((b.sat w).map fun x : ℂˣ => (x : ℂ)).esymm a * qc w ^ (((s : ℂ) * a - (r : ℂ) * ((j : ℂ) - a)) / 2)) * (hk s w c (ψ (t - a * Real.log (qV E w)))).1 m) fun a ha c => ?_).trans rfl)` and prove the remaining obligations. Rewrite using `[UpperTheory.V.Cj.S.coef] split_ifs with h`. Establish `key : qc w ^ (((s : ℂ) * (p.1 : ℕ) - (r : ℂ) * ((j : ℂ) - (p.1 : ℕ))) / 2) = (qc w ^ (((j : ℂ) * (((r + s : ℕ) : ℂ) - j)) / 2))⁻¹ * (qV E w : ℂ) ^ ((p.1 : ℕ) * (s - p.2)) * qc w ^ ((((p.1 : ℕ) : ℂ) * ((r : ℂ) - (p.1 : ℕ))) / 2) * qc w ^ ((((p.2 : ℕ) : ℂ) * ((s : ℂ) - (p.2 : ℕ))) …`.
+
+Rewrite using `[← Complex.cpow_neg, ← Complex.cpow_natCast, ← Complex.cpow_add _ _ hq, ← Complex.cpow_add _ _ hq, ← Complex.cpow_add _ _ hq, ← h]`. Use `congr 1`. Move the coercions through the operations in `[Nat.cast_sub (Nat.lt_succ_iff.1 p.2.2)]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[key, satEig]`.
+
+Expand and normalize the polynomial expressions, which then agree. Simplify using the standard rewrite rules. Rewrite using `[Multiset.esymm, Multiset.powersetCard_eq_empty, Multiset.map_zero, Multiset.sum_zero, zero_mul, zero_mul]`. Rewrite using `[Multiset.card_map, (b.isSat w hw).2.2.1]`. Conclude with `ha`.
+-/
 theorem UpperTheory.ConvolutionTheory.BW.sliceHecke :
     ∀ (E : Type) [Field E] [NumberField E] [IsTotallyComplex E], UpperTheory.ConvolutionTheory.BW.SliceHecke E := by
   intro E _ _ _ S r s b t φ ψ w j hU hS hw hj hψ

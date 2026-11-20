@@ -10,6 +10,17 @@ namespace GlobalTheory.LeviUnique
 
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
 
+/- English proof (translation)
+Take `⟨hrs, A, hA⟩` from `h`. Establish `hD : IsUnit (Matrix.fromBlocks (1 : Matrix (Fin r) (Fin r) ℂ) 0 0 (-1 : Matrix (Fin s) (Fin s) ℂ))`. Establish `hm : Matrix.fromBlocks (1 : Matrix (Fin r) (Fin r) ℂ) 0 0 (-1 : Matrix (Fin s) (Fin s) ℂ) * Matrix.fromBlocks (1 : Matrix (Fin r) (Fin r) ℂ) 0 0 (-1 : Matrix (Fin s) (Fin s) ℂ) = 1`. Rewrite using `[Matrix.fromBlocks_multiply]`. Simplify using `[Matrix.fromBlocks_one]`.
+
+Conclude with `⟨⟨_, _, hm, hm⟩, rfl⟩`. Establish `hrank : n ≤ M.rank`. Establish `h1` using `Matrix.rank_of_isUnit _ hD`. Rewrite `h1` using `[← hA]`. Establish `h2 : (Aᵀ * M * A.map star).rank ≤ M.rank` using `(Matrix.rank_mul_le_left _ _).trans (Matrix.rank_mul_le_right _ _)`.
+
+Simplify using `only [Fintype.card_sum, Fintype.card_fin] at h1`. Use linear arithmetic over natural numbers and integers. Introduce `hdet`. Take `⟨v, hv, hMv⟩` from `(Matrix.exists_mulVec_eq_zero_iff).2 hdet`. Establish `hsurj : LinearMap.range M.mulVecLin = ⊤`.
+
+Apply `Submodule.eq_top_of_finrank_eq` to reduce the goal to its premises. Establish `h3` using `M.rank_le_card_width`. Rewrite `hrank`, `h3` using `[Matrix.rank]`. Simplify using `only [Fintype.card_fin] at h3`. Rewrite using `[Module.finrank_fin_fun]`.
+
+Use linear arithmetic over natural numbers and integers. Establish `hinj : Function.Injective M.mulVecLin` using `LinearMap.injective_iff_surjective.2 (LinearMap.range_eq_top.1 hsurj)`. Conclude with `hv (hinj (by simpa using hMv))`.
+-/
 theorem det_ne_zero_of_hasSig {n r s : ℕ} {M : Matrix (Fin n) (Fin n) ℂ} (h : HasSig M r s) : M.det ≠ 0 := by
   obtain ⟨hrs, A, hA⟩ := h
   have hD : IsUnit (Matrix.fromBlocks (1 : Matrix (Fin r) (Fin r) ℂ) 0 0 (-1 : Matrix (Fin s) (Fin s) ℂ)) := by
@@ -38,6 +49,9 @@ theorem det_ne_zero_of_hasSig {n r s : ℕ} {M : Matrix (Fin n) (Fin n) ℂ} (h 
     LinearMap.injective_iff_surjective.2 (LinearMap.range_eq_top.1 hsurj)
   exact hv (hinj (by simpa using hMv))
 
+/- English proof (translation)
+Simplify using `only [form, dotProduct, Matrix.mulVec, map_sum, map_mul, hσ, Finset.mul_sum]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[hJ]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem form_swap (σ : E →ₐ[F] E) (hσ : ∀ x, σ (σ x) = x) {n : ℕ} {J : Matrix (Fin n) (Fin n) E}
     (hJ : ∀ i j, σ (J j i) = J i j) (x y : Fin n → E) : form σ J y x = σ (form σ J x y) := by
   simp only [form, dotProduct, Matrix.mulVec, map_sum, map_mul, hσ, Finset.mul_sum]
@@ -46,14 +60,23 @@ theorem form_swap (σ : E →ₐ[F] E) (hσ : ∀ x, σ (σ x) = x) {n : ℕ} {J
   rw [hJ]
   ring
 
+/- English proof (translation)
+Simplify using `[form, add_dotProduct]`.
+-/
 theorem form_add_left (σ : E →ₐ[F] E) {n : ℕ} (J : Matrix (Fin n) (Fin n) E) (a b y : Fin n → E) :
     form σ J (a + b) y = form σ J a y + form σ J b y := by
   simp [form, add_dotProduct]
 
+/- English proof (translation)
+Simplify using `[form, smul_dotProduct]`.
+-/
 theorem form_smul_left (σ : E →ₐ[F] E) {n : ℕ} (J : Matrix (Fin n) (Fin n) E) (c : E) (a y : Fin n → E) :
     form σ J (c • a) y = c * form σ J a y := by
   simp [form, smul_dotProduct]
 
+/- English proof (translation)
+Simplify using `[form]`.
+-/
 theorem form_zero_left (σ : E →ₐ[F] E) {n : ℕ} (J : Matrix (Fin n) (Fin n) E) (y : Fin n → E) :
     form σ J 0 y = 0 := by
   simp [form]
@@ -64,6 +87,21 @@ namespace GlobalTheory.LeviUnique
 
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
 
+/- English proof (translation)
+Set `ℓ : ((Fin n₁ → E) × E × E) →ₗ[E] (Fin n → E)` to `(Matrix.mulVecLin H.ι).coprod ((LinearMap.id.smulRight H.x).coprod (LinearMap.id.smulRight H.y))`. Establish `hℓ : ∀ p, ℓ p = H.ι *ᵥ p.1 + (p.2.1 • H.x + p.2.2 • H.y)` using `fun p => by`. Simplify using `[ℓ]`. Establish `hinj : Function.Injective ℓ`. Rewrite using `[← LinearMap.ker_eq_bot, LinearMap.ker_eq_bot']`.
+
+Introduce and unpack `⟨u, s, t⟩ h0`. Rewrite `h0` using `[hℓ]`. Establish `hyx : form σ J H.y H.x = 1` using `by rw [form_swap σ hσ hJ, xy, map_one]`. Establish `hs : s = 0`. Use `congrArg (fun v => form σ J v H.y) h0` as an intermediate fact.
+
+Simplify using `only [form_add_left, form_smul_left, form_zero_left, (orth u).2, xy, yy] at this`. Simplify using `using this`. Establish `ht : t = 0`. Use `congrArg (fun v => form σ J v H.x) h0` as an intermediate fact. Simplify using `only [form_add_left, form_smul_left, form_zero_left, (orth u).1, xx, hyx] at this`.
+
+Simplify using `using this`. Substitute `hs ht` using the available equality. Establish `hu : H.ι *ᵥ u = 0` using `by simpa using h0`. Establish `hu' : u ᵥ* J₁ = 0`. Rewrite using `[← gram, ← Matrix.vecMul_vecMul, ← Matrix.vecMul_vecMul, Matrix.vecMul_transpose, hu, Matrix.zero_vecMul, Matrix.zero_vecMul]`.
+
+Establish `: u = 0`. Assume the negation of the conclusion as `hne`. Conclude with `hJ₁ ((Matrix.exists_vecMul_eq_zero_iff).1 ⟨u, hne, hu'⟩)`. Simplify using `[this]`. Establish `hdim : Module.finrank E ((Fin n₁ → E) × E × E) = Module.finrank E (Fin n → E)`.
+
+Simplify using `[Module.finrank_prod, Module.finrank_fin_fun, hn]`. Establish `hsurj` using `(LinearMap.injective_iff_surjective_of_finrank_eq_finrank hdim).1 hinj`. Take `⟨⟨u, s, t⟩, hp⟩` from `hsurj z`. Use `⟨s, t, u, ?_⟩` and prove the remaining obligations. Rewrite using `[← hp, hℓ]`.
+
+Normalize the expressions using the abelian group laws.
+-/
 theorem plane_spans (σ : E →ₐ[F] E) (hσ : ∀ x, σ (σ x) = x) {n n₁ : ℕ} (J : Matrix (Fin n) (Fin n) E)
     (J₁ : Matrix (Fin n₁) (Fin n₁) E) (hJ : ∀ i j, σ (J j i) = J i j) (hJ₁ : J₁.det ≠ 0) (H : Plane E n n₁)
     (hn : n = n₁ + 2) (xx : form σ J H.x H.x = 0) (yy : form σ J H.y H.y = 0) (xy : form σ J H.x H.y = 1)
@@ -108,6 +146,23 @@ end GlobalTheory.LeviUnique
 
 namespace GlobalTheory.LeviUnique
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ B b a' G G₁ H H' hC hB hG hG₁ t h₁ h h' hl hl'`. Take `⟨w⟩` from `(inferInstance : Nonempty (InfinitePlace F))`. Establish `hσ : ∀ x, σ (σ x) = x` using `fun x => by`. Apply `(B.emb w).1.injective` to reduce the goal to its premises. Rewrite using `[hB.cm.2.2.2, hB.cm.2.2.2]`.
+
+Simplify using the standard rewrite rules. Establish `hJ₁ : G₁.V.J.det ≠ 0`. Introduce `h0`. Apply `det_ne_zero_of_hasSig (hG₁.hV.sig w)` to reduce the goal to its premises. Rewrite using `[show G₁.V.J.map (B.emb w).1 = ((B.emb w).1).mapMatrix G₁.V.J from rfl, ← RingHom.map_det, h0, map_zero]`.
+
+Establish `hA` using `hC.hH`. Establish `hspan` using `plane_spans σ hσ G.V.J G₁.V.J hG.hV.herm hJ₁ H hA.rank hA.xx hA.yy hA.xy hA.orth hA.gram`. Establish `hincV : ∀ (n : ℕ) (u : Fin n → E) (c : E) (v : Fin n → E), incV F (c • u + v) = (inclR (AF F) c : AE F E) • incV F u + incV F v` using `fun n u c v => by`. Use function extensionality and compare the values at `i`. Express the relevant statement in the definitionally equal form `inclR (AF F) (c * u i + v i) = (inclR (AF F) c : AE F E) * inclR (AF F) (u i) + inclR (AF F) (v i)`.
+
+Rewrite using `[map_add, map_mul]`. Establish `hincι : ∀ u, incV F (H.ι *ᵥ u) = incM F H.ι *ᵥ incV F u` using `fun u => by`. Use extensionality with `i`. Simplify using `[incV, incM, RingHom.map_mulVec]`. Both sides reduce to the same expression.
+
+Establish `key : ∀ z : Fin (b + 2) → E, mat h *ᵥ incV F z = mat h' *ᵥ incV F z` using `fun z => by`. Take `⟨s, r, u, rfl⟩` from `hspan z`. Establish `e : s • H.x + H.ι *ᵥ u + r • H.y = s • H.x + (r • H.y + H.ι *ᵥ u)` using `by abel`. Rewrite using `[e, hincV, hincV, hincι]`. Simplify using `only [Matrix.mulVec_add, Matrix.mulVec_smul, Matrix.mulVec_mulVec, hl.1, hl.2.1, hl.2.2, hl'.1, hl'.2.1, hl'.2.2]`.
+
+Establish `hmat : mat h = mat h'`. Use extensionality with `i j`. Use `congrFun (key (Pi.single j 1)) i` as an intermediate fact. Establish `hs : incV F (Pi.single j (1 : E)) = Pi.single j 1`. Use extensionality with `k`.
+
+Distinguish the cases in `hk : k = j`. Substitute `hk` using the available equality. Simplify using `[incV]`. Simplify using `[incV, Pi.single_apply, hk]`. Rewrite `this` using `[hs]`.
+
+Simplify `this` using `[Matrix.mulVec_single_one]`. Conclude with `Subtype.ext (Units.ext hmat)`.
+-/
 theorem levi_unique : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E) (b a' : ℕ) (G : Geo σ (b + 2) a') (G₁ : Geo σ b a')
     (H : Plane E (b + 2) b) (H' : Plane E (b + 2 + a') (b + a')), CfgA B G G₁ H H' → B.IsGood σ → G.IsGood B → G₁.IsGood B →
     ∀ (t : (AE F E)ˣ) (h₁ : UA σ G₁.V.J) (h h' : UA σ G.V.J), IsLevi H t h₁ h → IsLevi H t h₁ h' → h = h' := by

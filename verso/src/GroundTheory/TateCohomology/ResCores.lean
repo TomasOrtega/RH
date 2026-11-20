@@ -12,6 +12,9 @@ variable {k G : Type u} [CommRing k] [Group G] [Fintype G] (S : Subgroup G) [Fin
 
 omit [Fintype G] [Fintype S] in
 
+/- English proof (translation)
+The claim follows from `(Rep.shortExact_res S.subtype).2 hX`.
+-/
 lemma shortExact_map_resFunctor {X : ShortComplex (Rep.{u} k G)} (hX : X.ShortExact) :
     (X.map (resFunctor S.subtype)).ShortExact :=
   (Rep.shortExact_res S.subtype).2 hX
@@ -26,6 +29,9 @@ noncomputable def tateRes (n : ℤ) :
     (Functor.associator _ _ _).hom ≫
     Functor.whiskerLeft (resFunctor S.subtype) (tateCoindNatIso S n).hom
 
+/- English proof (translation)
+Simplify using `only [tateRes, NatTrans.comp_app, Functor.leftUnitor_inv_app, Functor.whiskerRight_app, Functor.associator_hom_app, Functor.whiskerLeft_app, Category.id_comp]`. Both sides reduce to the same expression.
+-/
 lemma tateRes_app (n : ℤ) (A : Rep.{u} k G) :
     (tateRes S n).app A =
       (tateCohomologyFunctor n).map ((Rep.resCoindAdjunction.{u, u} k S.subtype).unit.app A) ≫
@@ -34,6 +40,9 @@ lemma tateRes_app (n : ℤ) (A : Rep.{u} k G) :
     Functor.associator_hom_app, Functor.whiskerLeft_app, Category.id_comp]
   rfl
 
+/- English proof (translation)
+The claim follows from `(tateRes S n).naturality f @[simps]`.
+-/
 theorem tateRes_naturality {A B : Rep.{u} k G} (f : A ⟶ B) (n : ℤ) :
     (tateCohomologyFunctor n).map f ≫ (tateRes S n).app B =
       (tateRes S n).app A ≫ (resFunctor S.subtype ⋙ tateCohomologyFunctor n).map f :=
@@ -48,6 +57,11 @@ noncomputable def resCoindUnitShortComplex (X : ShortComplex (Rep.{u} k G)) :
   comm₁₂ := ((Rep.resCoindAdjunction.{u, u} k S.subtype).unit.naturality X.f).symm
   comm₂₃ := ((Rep.resCoindAdjunction.{u, u} k S.subtype).unit.naturality X.g).symm
 
+/- English proof (translation)
+Establish `hR` using `shortExact_map_resFunctor S hX`. Establish `h1` using `TateCohomology.δ_naturality hX (shortExact_map_coindFunctor S hR) (resCoindUnitShortComplex S X) n`. Establish `h2` using `tateCoindIso_δ S hR n`. Simplify using `only [resCoindUnitShortComplex_τ₁, resCoindUnitShortComplex_τ₃] at h1`. Rewrite using `[tateRes_app, tateRes_app]`.
+
+Conclude with `(Category.assoc _ _ _).symm.trans ((congrArg (· ≫ _) h1).trans ((Category.assoc _ _ _).trans ((congrArg (_ ≫ ·) h2).trans (Category.assoc _ _ _).symm)))`.
+-/
 theorem tateRes_δ {X : ShortComplex (Rep.{u} k G)} (hX : X.ShortExact) (n : ℤ) :
     TateCohomology.δ hX n ≫ (tateRes S (n + 1)).app X.X₁ =
       (tateRes S n).app X.X₃ ≫ TateCohomology.δ (shortExact_map_resFunctor S hX) n := by
@@ -74,6 +88,9 @@ noncomputable def tateCores (n : ℤ) :
     Functor.whiskerRight (Rep.indResAdjunction.{u} k S.subtype).counit _ ≫
     (Functor.leftUnitor _).hom
 
+/- English proof (translation)
+Simplify using `only [tateCores, NatTrans.comp_app, Functor.leftUnitor_hom_app, Functor.whiskerRight_app, Functor.associator_inv_app, Functor.whiskerLeft_app, Category.id_comp]`. Both sides reduce to the same expression.
+-/
 lemma tateCores_app (n : ℤ) (A : Rep.{u} k G) :
     (tateCores S n).app A =
       (tateIndIso S (res S.subtype A) n).inv ≫
@@ -82,6 +99,9 @@ lemma tateCores_app (n : ℤ) (A : Rep.{u} k G) :
     Functor.associator_inv_app, Functor.whiskerLeft_app, Category.id_comp]
   rfl
 
+/- English proof (translation)
+The claim follows from `(tateCores S n).naturality f @[simps]`.
+-/
 theorem tateCores_naturality {A B : Rep.{u} k G} (f : A ⟶ B) (n : ℤ) :
     (resFunctor S.subtype ⋙ tateCohomologyFunctor n).map f ≫ (tateCores S n).app B =
       (tateCores S n).app A ≫ (tateCohomologyFunctor n).map f :=
@@ -96,6 +116,11 @@ noncomputable def indResCounitShortComplex (X : ShortComplex (Rep.{u} k G)) :
   comm₁₂ := ((Rep.indResAdjunction.{u} k S.subtype).counit.naturality X.f).symm
   comm₂₃ := ((Rep.indResAdjunction.{u} k S.subtype).counit.naturality X.g).symm
 
+/- English proof (translation)
+Establish `hR` using `shortExact_map_resFunctor S hX`. Establish `h1` using `TateCohomology.δ_naturality (shortExact_map_indFunctor S hR) hX (indResCounitShortComplex S X) n`. Establish `h2` using `tateIndIso_δ S hR n`. Simplify using `only [indResCounitShortComplex_τ₁, indResCounitShortComplex_τ₃] at h1`. Establish `h3 : TateCohomology.δ hR n ≫ (tateIndIso S (X.map (resFunctor S.subtype)).X₁ (n + 1)).inv = (tateIndIso S (X.map (resFunctor S.subtype)).X₃ n).inv ≫ TateCohomology.δ (shortExact_map_indFunctor S hR) n`.
+
+Conclude with `(Iso.inv_hom_id_assoc _ _).symm.trans (congrArg (_ ≫ ·) ((Category.assoc _ _ _).symm.trans ((congrArg (· ≫ _) h2.symm).trans ((Category.assoc _ _ _).trans ((congrArg (_ ≫ ·) (Iso.hom_inv_id _)).trans (Category.comp_id _))))))`. Rewrite using `[tateCores_app, tateCores_app]`. Conclude with `(Category.assoc _ _ _).symm.trans ((congrArg (· ≫ _) h3).trans ((Category.assoc _ _ _).trans ((congrArg (_ ≫ ·) h1).trans (Category.assoc _ _ _).symm)))`.
+-/
 theorem tateCores_δ {X : ShortComplex (Rep.{u} k G)} (hX : X.ShortExact) (n : ℤ) :
     TateCohomology.δ (shortExact_map_resFunctor S hX) n ≫ (tateCores S (n + 1)).app X.X₁ =
       (tateCores S n).app X.X₃ ≫ TateCohomology.δ hX n := by

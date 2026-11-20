@@ -6,6 +6,19 @@ attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalDat
 
 namespace GlobalTheory.IntMatSep
 
+/- English proof (translation)
+Use `set f := Matrix.toLin' A`. Establish `hcp : f.charpoly = A.charpoly` using `Matrix.charpoly_toLin' A`. Establish `hfg : Commute f (Matrix.toLin' N)` using `hc.map Matrix.toLinAlgEquiv'`. Establish `hNl : IsNilpotent (Matrix.toLin' N)` using `hN.map Matrix.toLinAlgEquiv'`. Take `⟨k, hk⟩` from `hNl`.
+
+Establish `key : ∀ μ, Module.End.maxGenEigenspace f μ ≤ LinearMap.ker (Matrix.toLin' N)` using `fun μ v hv => by`. Establish `h1 : Module.finrank K (Module.End.maxGenEigenspace f μ) ≤ 1`. Rewrite using `[LinearMap.finrank_maxGenEigenspace_eq, hcp]`. Conclude with `Polynomial.rootMultiplicity_le_one_of_separable hA μ`. Distinguish the cases in `h0 : v = 0`.
+
+Simplify using `[h0]`. Establish `h2 : Module.finrank K (Module.End.maxGenEigenspace f μ) = 1` using `le_antisymm h1 (Module.finrank_pos_iff_exists_ne_zero.2 ⟨⟨v, hv⟩, fun h => h0 (congrArg Subtype.val h)⟩)`. Take `⟨c, hc⟩` from `(finrank_eq_one_iff_of_nonzero' (⟨v, hv⟩ : Module.End.maxGenEigenspace f μ) fun h => h0 (congrArg Subtype.val h)).1 h2 ⟨_, Module.End.mapsTo_maxGenEigenspace_of_comm hfg μ hv⟩`. Establish `hc' : Matrix.toLin' N v = c • v` using `(congrArg Subtype.val hc).symm`. Establish `hpow : ∀ m : ℕ, (Matrix.toLin' N ^ m) v = c ^ m • v`.
+
+Introduce `m`. Proceed by induction on `m with`. Consider the case `zero => simp`. Consider the case `succ m ih => rw [pow_succ', Module.End.mul_apply, ih, map_smul, hc', smul_smul, pow_succ]`. Establish `h5 : c ^ k • v = 0` using `by rw [← hpow, hk]; rfl`.
+
+Establish `hc0 : c = 0`. Break down `smul_eq_zero.1 h5 with h | h` into its components or cases. Conclude with `pow_eq_zero_iff'.1 h |>.1`. Conclude with `absurd h h0`. Rewrite using `[LinearMap.mem_ker, hc', hc0, zero_smul]`.
+
+Establish `h3` using `iSup_le key`. Rewrite `h3` using `[Module.End.iSup_maxGenEigenspace_eq_top, top_le_iff, LinearMap.ker_eq_top]`. Conclude with `Matrix.toLin'.injective (by rw [h3, map_zero])`.
+-/
 theorem nilp_eq_zero_of_commute_sep_alg {K : Type} [Field K] [IsAlgClosed K] {n : ℕ}
     {A N : Matrix (Fin n) (Fin n) K} (hA : A.charpoly.Separable) (hN : IsNilpotent N) (hc : Commute A N) :
     N = 0 := by
@@ -39,6 +52,9 @@ theorem nilp_eq_zero_of_commute_sep_alg {K : Type} [Field K] [IsAlgClosed K] {n 
   rw [Module.End.iSup_maxGenEigenspace_eq_top, top_le_iff, LinearMap.ker_eq_top] at h3
   exact Matrix.toLin'.injective (by rw [h3, map_zero])
 
+/- English proof (translation)
+Establish `h` using `nilp_eq_zero_of_commute_sep_alg (K := AlgebraicClosure K) (A := A.map (algebraMap K (AlgebraicClosure K))) (N := N.map (algebraMap K (AlgebraicClosure K))) (by rw [Matrix.charpoly_map]; exact hA.map) (hN.map (algebraMap K (AlgebraicClosure K)).mapMatrix) (hc.map (algebraMap K (Al …`. Use extensionality with `i j`. Use `congrFun (congrFun h i) j` as an intermediate fact. Simplify using `using this`.
+-/
 theorem nilp_eq_zero_of_commute_sep {K : Type} [Field K] {n : ℕ}
     {A N : Matrix (Fin n) (Fin n) K} (hA : A.charpoly.Separable) (hN : IsNilpotent N) (hc : Commute A N) :
     N = 0 := by
@@ -50,6 +66,9 @@ theorem nilp_eq_zero_of_commute_sep {K : Type} [Field K] {n : ℕ}
   have := congrFun (congrFun h i) j
   simpa using this
 
+/- English proof (translation)
+Take `⟨k, hk⟩` from `MulArchimedean.arch B hx`. Use `⟨k + 1, hk.trans_lt ?_⟩` and prove the remaining obligations. Establish `h0 : x ^ k ≠ 0` using `pow_ne_zero _ (ne_of_gt (zero_lt_one.trans hx))`. Rewrite using `[pow_succ]`. Simplify using `using mul_lt_mul_of_pos_left hx (zero_lt_iff.2 h0)`.
+-/
 theorem exists_lt_pow (x B : WithZero (Multiplicative ℤ)) (hx : 1 < x) : ∃ m : ℕ, B < x ^ m := by
   obtain ⟨k, hk⟩ := MulArchimedean.arch B hx
   refine ⟨k + 1, hk.trans_lt ?_⟩
@@ -57,6 +76,35 @@ theorem exists_lt_pow (x B : WithZero (Multiplicative ℤ)) (hx : 1 < x) : ∃ m
   rw [pow_succ]
   simpa using mul_lt_mul_of_pos_left hx (zero_lt_iff.2 h0)
 
+/- English proof (translation)
+Introduce `E _ _ w n P₀ hP A s hA hAc hsA hBd i j`. Take `⟨B, hB⟩` from `hBd`. Establish `memO : ∀ x : w.adicCompletion E, x ∈ w.adicCompletionIntegers E ↔ Valued.v x ≤ 1` using `fun x => HeightOneSpectrum.mem_adicCompletionIntegers (𝓞 E) E w`. Assume the negation of the conclusion as `hij`. Use `haveI : Nonempty (Fin n × Fin n) := ⟨(i, j)⟩`.
+
+Take `⟨⟨i₀, j₀⟩, hmax⟩` from `Finite.exists_max (fun p : Fin n × Fin n => Valued.v (s p.1 p.2))`. Establish `hc1 : 1 < Valued.v (s i₀ j₀)`. Establish `: 1 < Valued.v (s i j)` using `not_le.1 (fun h => hij ((memO _).2 h))`. Conclude with `this.trans_le (hmax (i, j))`. Establish `hvc : Valued.v (s i₀ j₀) ≠ 0` using `ne_of_gt (zero_lt_one.trans hc1)`.
+
+Establish `hc0 : s i₀ j₀ ≠ 0` using `fun h => hvc (by rw [h, map_zero])`. Use `set c := s i₀ j₀ with hcdef`. Use `set u := c⁻¹ • s with hudef`. Establish `hu : ∀ k l, u k l ∈ w.adicCompletionIntegers E`. Introduce `k l`.
+
+Rewrite using `[memO]`. Simplify using `only [u, Matrix.smul_apply, smul_eq_mul, map_mul, map_inv₀]`. Rewrite using `[inv_mul_le_iff₀ (zero_lt_iff.2 hvc), mul_one]`. Conclude with `hmax (k, l)`. Set `A₀ : Matrix (Fin n) (Fin n) (w.adicCompletionIntegers E)` to `fun k l => ⟨A k l, hA k l⟩`.
+
+Set `u₀ : Matrix (Fin n) (Fin n) (w.adicCompletionIntegers E)` to `fun k l => ⟨u k l, hu k l⟩`. Establish `hinj : Function.Injective (algebraMap (w.adicCompletionIntegers E) (w.adicCompletion E))` using `FaithfulSMul.algebraMap_injective _ _`. Establish `hA₀ : A₀.map (algebraMap (w.adicCompletionIntegers E) (w.adicCompletion E)) = A` using `by ext; rfl`. Establish `hu₀ : u₀.map (algebraMap (w.adicCompletionIntegers E) (w.adicCompletion E)) = u` using `by ext; rfl`. Establish `hcomm : Commute A₀ u₀`.
+
+Apply `Matrix.map_injective hinj` to reduce the goal to its premises. Use `show (A₀ * u₀).map _ = (u₀ * A₀).map _`. Rewrite using `[Matrix.map_mul, Matrix.map_mul, hA₀, hu₀]`. Conclude with `((hsA.smul_left c⁻¹).symm).eq`. Establish `hcp : A₀.charpoly = P₀`.
+
+Apply `Polynomial.map_injective _ hinj` to reduce the goal to its premises. Rewrite using `[← Matrix.charpoly_map, hA₀, hAc]`. Take `⟨m, hm⟩` from `exists_lt_pow (Valued.v c) B hc1`. Establish `hsmall : ∀ k l, Valued.v ((u ^ m) k l) < 1`. Introduce `k l`.
+
+Rewrite using `[hudef, _root_.smul_pow, Matrix.smul_apply, smul_eq_mul, map_mul, map_pow, map_inv₀, inv_pow, inv_mul_lt_iff₀ (pow_pos (zero_lt_iff.2 hvc) _), mul_one]`. Conclude with `(hB m k l).trans_lt hm`. Establish `hnil : IsNilpotent (u₀.map (IsLocalRing.residue (w.adicCompletionIntegers E)))`. Use `⟨m, ?_⟩` and prove the remaining obligations. Rewrite using `[← Matrix.map_pow]`.
+
+Use extensionality with `k l`. Simplify using `only [Matrix.map_apply, Matrix.zero_apply]`. Rewrite using `[IsLocalRing.residue_eq_zero_iff, IsLocalRing.mem_maximalIdeal, mem_nonunits_iff]`. Introduce and unpack `⟨y, hy⟩`. Establish `e : (((u₀ ^ m) k l : w.adicCompletionIntegers E) : w.adicCompletion E) = (u ^ m) k l`.
+
+Rewrite using `[← hu₀, ← Matrix.map_pow]`. Both sides reduce to the same expression. Establish `h1` using `hsmall k l`. Rewrite `h1` using `[← e, ← hy]`. Establish `h2 : Valued.v (((y : w.adicCompletionIntegers E) : w.adicCompletion E)) * Valued.v (((y⁻¹ : (w.adicCompletionIntegers E)ˣ) : w.adicCompletionIntegers E) : w.adicCompletion E) = 1`.
+
+Establish `hy1 : ((y : w.adicCompletionIntegers E) : w.adicCompletion E) * (((y⁻¹ : (w.adicCompletionIntegers E)ˣ) : w.adicCompletionIntegers E) : w.adicCompletion E) = 1` using `by first`. Consider the case `exact congrArg Subtype.val y.mul_inv`. Consider the case `exact_mod_cast congrArg Subtype.val y.mul_inv`. Consider the case `simp`. Rewrite using `[← map_mul, hy1, map_one]`.
+
+Establish `h3` using `(memO _).1 (((y⁻¹ : (w.adicCompletionIntegers E)ˣ) : w.adicCompletionIntegers E)).2`. Establish `h4 : Valued.v (((y : w.adicCompletionIntegers E) : w.adicCompletion E)) * Valued.v (((y⁻¹ : (w.adicCompletionIntegers E)ˣ) : w.adicCompletionIntegers E) : w.adicCompletion E) < 1` using `lt_of_le_of_lt (mul_le_of_le_one_right' h3) h1`. Rewrite `h4` using `[h2]`. Conclude with `lt_irrefl _ h4`. Establish `hsep : (A₀.map (IsLocalRing.residue (w.adicCompletionIntegers E))).charpoly.Separable`.
+
+Rewrite using `[Matrix.charpoly_map, hcp]`. Conclude with `Polynomial.Separable.map hP`. Establish `h0` using `nilp_eq_zero_of_commute_sep hsep hnil (hcomm.map (IsLocalRing.residue (w.adicCompletionIntegers E)).mapMatrix)`. Establish `hone : u₀ i₀ j₀ = 1`. Apply `Subtype.ext` to reduce the goal to its premises.
+
+Use `show c⁻¹ * c = 1`. Conclude with `inv_mul_cancel₀ hc0`. Use `congrFun (congrFun h0 i₀) j₀` as an intermediate fact. Simplify using `only [Matrix.map_apply, Matrix.zero_apply, hone, map_one] at this`. Conclude with `one_ne_zero this`.
+-/
 theorem integral_of_commute_sep : ∀ (E : Type) [Field E] [NumberField E] (w : Pl E) (n : ℕ) (P₀ : (w.adicCompletionIntegers E)[X]),
     IsCoprime P₀ (derivative P₀) →
     ∀ (A s : Matrix (Fin n) (Fin n) (w.adicCompletion E)), (∀ i j, A i j ∈ w.adicCompletionIntegers E) →

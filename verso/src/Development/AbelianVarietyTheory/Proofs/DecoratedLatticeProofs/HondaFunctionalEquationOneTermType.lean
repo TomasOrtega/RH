@@ -9,9 +9,19 @@ namespace GlobalTheory.HondaFunEq
 
 variable {K : Type} [NormedField K]
 
+/- English proof (translation)
+Rewrite using `[pow_two]`. Both sides reduce to the same expression.
+-/
 theorem sq_apply (σ : K →+* K) (a : K) : (σ ^ 2) a = σ (σ a) := by
   rw [pow_two]; rfl
 
+/- English proof (translation)
+Take `⟨-, -, -, hmax, hiso, hfrob⟩` from `h`. Establish `key : ∀ x : K, ‖x‖ ≤ 1 → ‖σ x - x ^ l‖ ≤ ‖(l : K)‖` using `fun x hx => hmax _ (hfrob x hx)`. Introduce `a ha`. Establish `hsa : ‖σ a‖ ≤ 1` using `by rw [hiso]; exact ha`. Establish `hal : ‖a ^ l‖ ≤ 1` using `by rw [norm_pow]; exact pow_le_one₀ (norm_nonneg _) ha`.
+
+Establish `hd : (σ ^ 2) a - a ^ (l ^ 2) = (σ (σ a) - (σ a) ^ l) + ((σ a) ^ l - (a ^ l) ^ l)`. Rewrite using `[sq_apply, ← pow_mul, sq]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hd]`. Use `(IsUltrametricDist.norm_add_le_max _ _).trans (max_le (key _ hsa) ?_)` and prove the remaining obligations.
+
+Rewrite using `[← (Commute.all (σ a) (a ^ l)).geom_sum₂_mul, norm_mul]`. Establish `hs : ‖∑ i ∈ Finset.range l, σ a ^ i * (a ^ l) ^ (l - 1 - i)‖ ≤ 1` using `IsUltrametricDist.norm_sum_le_of_forall_le_of_nonneg zero_le_one fun i _ => by`. Rewrite using `[norm_mul, norm_pow, norm_pow]`. Conclude with `mul_le_one₀ (pow_le_one₀ (norm_nonneg _) hsa) (by positivity) (pow_le_one₀ (norm_nonneg _) hal)`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem frobLift_sq [IsUltrametricDist K] {l : ℕ} {σ : K →+* K} (h : Unr K l σ) :
     Formalism.G.IsFrobLift l (l ^ 2) (σ ^ 2) := by
   obtain ⟨-, -, -, hmax, hiso, hfrob⟩ := h
@@ -31,10 +41,16 @@ theorem frobLift_sq [IsUltrametricDist K] {l : ℕ} {σ : K →+* K} (h : Unr K 
   calc _ ≤ 1 * ‖(l : K)‖ := mul_le_mul hs (key a ha) (norm_nonneg _) zero_le_one
     _ = _ := one_mul _
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨h.1, ⟨2, by norm_num, rfl⟩, h.2.2.1, frobLift_sq h⟩`.
+-/
 theorem setting [IsUltrametricDist K] {l : ℕ} {σ : K →+* K} (h : Unr K l σ) :
     Formalism.G.FunctionalEquationSetting K l (l ^ 2) (σ ^ 2) :=
   ⟨h.1, ⟨2, by norm_num, rfl⟩, h.2.2.1, frobLift_sq h⟩
 
+/- English proof (translation)
+Establish `h : ∃ i : ℕ, (l ^ 2) ^ j = (l ^ 2) ^ i` using `⟨j, rfl⟩`. Simplify using `only [ltLog, coeff_mk, dif_pos h]`. Establish `hq : 2 ≤ l ^ 2` using `le_trans hl (Nat.le_self_pow (by norm_num) l)`. Use `Nat.find_spec h` as an intermediate fact. Rewrite using `[(Nat.pow_right_injective hq this).symm]`.
+-/
 theorem coeff_ltLog_pow (l : ℕ) (hl : 2 ≤ l) (j : ℕ) :
     coeff ((l ^ 2) ^ j) (ltLog K l) = ((l : K) ^ j)⁻¹ := by
   have h : ∃ i : ℕ, (l ^ 2) ^ j = (l ^ 2) ^ i := ⟨j, rfl⟩
@@ -43,10 +59,28 @@ theorem coeff_ltLog_pow (l : ℕ) (hl : 2 ≤ l) (j : ℕ) :
   have := Nat.find_spec h
   rw [(Nat.pow_right_injective hq this).symm]
 
+/- English proof (translation)
+Simplify using `only [ltLog, coeff_mk, dif_neg h]`.
+-/
 theorem coeff_ltLog_of_not (l : ℕ) {n : ℕ} (h : ¬ ∃ j : ℕ, n = (l ^ 2) ^ j) :
     coeff n (ltLog K l) = 0 := by
   simp only [ltLog, coeff_mk, dif_neg h]
 
+/- English proof (translation)
+Establish `hq : l ^ 2 ≠ 0` using `by positivity`. Establish `hq2 : 2 ≤ l ^ 2` using `le_trans hl (Nat.le_self_pow (by norm_num) l)`. Establish `hmap : PowerSeries.map τ (ltLog K l) = ltLog K l`. Use extensionality with `n`. Simplify using `only [coeff_map, ltLog, coeff_mk]`.
+
+Apply the tactic sequence `split_ifs <;> simp [map_inv₀]`. Rewrite using `[hmap, ← PowerSeries.expand_apply _ hq]`. Use extensionality with `n`. Rewrite using `[map_sub, coeff_smul, PowerSeries.coeff_expand, coeff_X, smul_eq_mul]`. Distinguish the cases in `hn : ∃ j : ℕ, n = (l ^ 2) ^ j`.
+
+Take `⟨j, rfl⟩` from `hn`. Consider the cases of `j with`. Consider the case `zero`. Establish `: ¬ l ^ 2 ∣ 1` using `fun h => by`. Use `Nat.le_of_dvd one_pos h` as an intermediate fact.
+
+Use linear arithmetic over natural numbers and integers. Rewrite using `[coeff_ltLog_pow l hl 0, if_neg (by simpa using this), if_pos (pow_zero _)]; simp`. Consider the case `succ k`. Establish `h1 : (l ^ 2) ^ (k + 1) ≠ 1`. Conclude with `(Nat.one_lt_pow (Nat.succ_ne_zero k) (by omega : 1 < l ^ 2)).ne'`.
+
+Rewrite using `[if_pos (dvd_pow_self _ (Nat.succ_ne_zero k)), if_neg h1, pow_succ, Nat.mul_div_cancel _ (by omega), coeff_ltLog_pow l hl k, ← pow_succ, coeff_ltLog_pow l hl (k + 1)]`. Establish `hl0 : (l : K) ≠ 0` using `by exact_mod_cast (by omega : l ≠ 0)`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Establish `h1 : n ≠ 1` using `fun h => hn ⟨0, by simp [h]⟩`.
+
+Rewrite using `[coeff_ltLog_of_not l hn, if_neg h1]`. Use `split_ifs with hd`. Take `⟨m, rfl⟩` from `hd`. Establish `: ¬ ∃ j : ℕ, m = (l ^ 2) ^ j` using `fun ⟨j, hj⟩ => hn ⟨j + 1, by rw [hj]; ring⟩`. Rewrite using `[Nat.mul_div_cancel_left _ (by omega), coeff_ltLog_of_not l this]; simp`.
+
+Simplify using the standard rewrite rules.
+-/
 theorem ltLog_funEq [CharZero K] (l : ℕ) (hl : 2 ≤ l) (τ : K →+* K) :
     ltLog K l - (l : K)⁻¹ • (PowerSeries.map τ (ltLog K l)).subst ((X : K⟦X⟧) ^ (l ^ 2)) = X := by
   have hq : l ^ 2 ≠ 0 := by positivity
@@ -81,6 +115,17 @@ theorem ltLog_funEq [CharZero K] (l : ℕ) (hl : 2 ≤ l) (τ : K →+* K) :
       rw [Nat.mul_div_cancel_left _ (by omega), coeff_ltLog_of_not l this]; simp
     · simp
 
+/- English proof (translation)
+Use `set τ := σ ^ 2 with hτdef`. Establish `hq : l ^ 2 ≠ 0`. Establish `hl' : l ≠ 0` using `by rintro rfl; simp at hl`. Conclude with `pow_ne_zero 2 hl'`. Establish `hε0 : ε ≠ 0` using `by rintro rfl; simp at hε`.
+
+Establish `hτε : τ ε ≠ 0` using `(map_ne_zero τ).2 hε0`. Establish `hτ : τ ε⁻¹ = c * ε⁻¹`. Rewrite using `[map_inv₀]`. Clear the denominators using the available nonvanishing facts. Take the linear combination `hc`.
+
+Establish `hfrob : frobOp τ (l ^ 2) 1 f = PowerSeries.expand (l ^ 2) hq (PowerSeries.map τ f)`. Simplify using `only [frobOp, pow_one]`. Rewrite using `[PowerSeries.expand_apply]`. Rewrite `hH` using `[hfrob]`. Establish `hid : ε⁻¹ • f - (l : K)⁻¹ • (PowerSeries.map τ (ε⁻¹ • f)).subst ((X : K⟦X⟧) ^ (l ^ 2)) = (ε⁻¹ * (l : K)⁻¹) • (C (l : K) * f - C c * PowerSeries.expand (l ^ 2) hq (PowerSeries.map τ f))`.
+
+Rewrite using `[← PowerSeries.expand_apply _ hq, PowerSeries.smul_eq_C_mul, map_mul, map_C, map_mul, PowerSeries.expand_C, hτ]`. Use extensionality with `n`. Simplify using `only [map_sub, coeff_smul, coeff_C_mul, smul_eq_mul]`. Clear the denominators using the available nonvanishing facts. Introduce `n`.
+
+Rewrite using `[hid, coeff_smul, smul_eq_mul, norm_mul, norm_mul, norm_inv, norm_inv, hε, inv_one, one_mul]`. Establish `hlp : 0 < ‖(l : K)‖` using `norm_pos_iff.2 hl`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem funEq_scaled [IsUltrametricDist K] {l : ℕ} {σ : K →+* K} {f : K⟦X⟧} {c ε : K} (hε : ‖ε‖ = 1)
     (hc : ε = c * (σ ^ 2) ε)
     (hH : CoefLe ‖(l : K)‖ (C (l : K) * f - C c * frobOp (σ ^ 2) (l ^ 2) 1 f)) (hl : (l : K) ≠ 0) :
@@ -111,6 +156,11 @@ theorem funEq_scaled [IsUltrametricDist K] {l : ℕ} {σ : K →+* K} {f : K⟦X
   calc ‖(l : K)‖⁻¹ * _ ≤ ‖(l : K)‖⁻¹ * ‖(l : K)‖ := mul_le_mul_of_nonneg_left (hH n) (inv_nonneg.2 hlp.le)
     _ = 1 := inv_mul_cancel₀ hlp.ne'
 
+/- English proof (translation)
+Establish `hx : (PowerSeries.map σ g).subst ((X : K⟦X⟧) ^ q) = MvPowerSeries.expand q hq (MvPowerSeries.map σ g)`. Rewrite using `[← PowerSeries.expand_apply q hq]`. Both sides reduce to the same expression. Introduce `n`. Use `hg (Finsupp.single () n)` as an intermediate fact.
+
+Rewrite `this` using `[← hx]`. Conclude with `this`.
+-/
 theorem funEqType_of_unit {p q : ℕ} (hq : q ≠ 0) {σ : K →+* K} {g : K⟦X⟧}
     (hg : Formalism.G.IsFunEqTypeMv (ι := Unit) p q hq σ (g : MvPowerSeries Unit K)) :
     Formalism.G.IsFunEqType p q σ g := by
@@ -123,6 +173,29 @@ theorem funEqType_of_unit {p q : ℕ} (hq : q ≠ 0) {σ : K →+* K} {g : K⟦X
   rw [← hx] at this
   exact this
 
+/- English proof (translation)
+Introduce `K _ _ _ l σ hU f e hfe c ε hε hc hH`. Establish `hS` using `setting hU`. Establish `hl2 : 2 ≤ l` using `hU.2.1.le`. Establish `hl : (l : K) ≠ 0` using `by exact_mod_cast (by omega : l ≠ 0)`. Establish `hq : l ^ 2 ≠ 0` using `by positivity`.
+
+Establish `hε0 : ε ≠ 0` using `by rintro rfl; simp at hε`. Take `⟨hf0, hf1, he0, hef, -⟩` from `hfe`. Establish `hg` using `funEq_scaled hε hc hH hl`. Establish `hg0 : constantCoeff (ε⁻¹ • f) = 0` using `by simp [hf0]`. Establish `hαS : PowerSeries.HasSubst (ε • X : K⟦X⟧)` using `PowerSeries.HasSubst.smul_X' ε`.
+
+Establish `hα0 : MvPowerSeries.constantCoeff (ε • X : K⟦X⟧) = 0` using `by show constantCoeff (ε • X : K⟦X⟧) = 0`. Simplify using the standard rewrite rules. Establish `hαI : Formalism.G.IntegralMv (ε • X : K⟦X⟧)`. Introduce `d`. Rewrite using `[Finsupp.unique_single d]`.
+
+Use `show ‖coeff (d ()) (ε • X : K⟦X⟧)‖ ≤ 1`. Rewrite using `[coeff_smul, coeff_X, smul_eq_mul]`. Apply the tactic sequence `split_ifs <;> simp [hε]`. Establish `hMv` using `Formalism.LT.funEqSubst K l (l ^ 2) hq (σ ^ 2) hS (ε⁻¹ • f) hg0 hg Unit (ε • X : K⟦X⟧) hα0 hαI`. Use `set ft : K⟦X⟧ := (ε⁻¹ • f).subst (ε • X : K⟦X⟧) with hft`.
+
+Establish `hftE : Formalism.G.IsFunEqType l (l ^ 2) (σ ^ 2) ft` using `funEqType_of_unit hq hMv`. Establish `hftr : ft = ε⁻¹ • rescale ε f`. Rewrite using `[hft, PowerSeries.subst_smul hαS, PowerSeries.rescale_eq_subst]`. Establish `hft0 : constantCoeff ft = 0`. Rewrite using `[hftr, ← coeff_zero_eq_constantCoeff_apply, coeff_smul, coeff_rescale, coeff_zero_eq_constantCoeff_apply, hf0]`.
+
+Simplify using the standard rewrite rules. Establish `hft1 : coeff 1 ft = 1`. Rewrite using `[hftr, coeff_smul, coeff_rescale, hf1, smul_eq_mul]`. Clear the denominators using the available nonvanishing facts. Establish `hL0 : constantCoeff (ltLog K l) = 0`.
+
+Rewrite using `[← coeff_zero_eq_constantCoeff_apply]`. Apply `coeff_ltLog_of_not` to reduce the goal to its premises. Introduce and unpack `⟨j, hj⟩`. Conclude with `(pow_ne_zero j hq) hj.symm`. Establish `hLE : Formalism.G.IsFunEqType l (l ^ 2) (σ ^ 2) (ltLog K l)`.
+
+Unfold `Formalism.G.IsFunEqType`. Rewrite using `[ltLog_funEq l hl2]`. Introduce `n`. Apply the tactic sequence `rw [coeff_X]; split_ifs <;> simp`. Take `⟨h, hh0, hhI, hh⟩` from `Formalism.LT.funEqHom K l (l ^ 2) (σ ^ 2) hS ft (ltLog K l) hft0 hft1 hftE hL0 hLE`.
+
+Establish `hhS : PowerSeries.HasSubst h` using `PowerSeries.HasSubst.of_constantCoeff_zero' hh0`. Establish `hεh0 : constantCoeff (ε • h) = 0` using `by simp [hh0]`. Establish `hεhS : PowerSeries.HasSubst (ε • h)` using `PowerSeries.HasSubst.of_constantCoeff_zero' hεh0`. Establish `hXh : (ε • X : K⟦X⟧).subst h = ε • h`. Rewrite using `[PowerSeries.subst_smul hhS, PowerSeries.subst_X hhS]`.
+
+Establish `hfεh : f.subst (ε • h) = ε • ltLog K l`. Rewrite using `[← hh, hft, PowerSeries.subst_smul hαS, PowerSeries.subst_smul hhS, PowerSeries.subst_comp_subst_apply hαS hhS, hXh, smul_smul, mul_inv_cancel₀ hε0, one_smul]`. Establish `hmain : e.subst (C ε * ltLog K l) = ε • h`. Rewrite using `[← PowerSeries.smul_eq_C_mul, ← hfεh, ← PowerSeries.subst_comp_subst_apply (PowerSeries.HasSubst.of_constantCoeff_zero' hf0) hεhS, hef, PowerSeries.subst_X hεhS]`. Introduce `n`.
+
+Rewrite using `[hmain, coeff_smul, smul_eq_mul, norm_mul, hε, one_mul]`. Conclude with `hhI n`.
+-/
 theorem honda_funEq : ∀ (K : Type) [NormedField K] [IsUltrametricDist K] [CharZero K] (l : ℕ) (σ : K →+* K),
     Unr K l σ → ∀ (f e : K⟦X⟧), Formalism.L2.Th1.C.IsLogPair f e → ∀ c ε : K, ‖ε‖ = 1 → ε = c * (σ ^ 2) ε →
     CoefLe ‖(l : K)‖ (C (l : K) * f - C c * frobOp (σ ^ 2) (l ^ 2) 1 f) →

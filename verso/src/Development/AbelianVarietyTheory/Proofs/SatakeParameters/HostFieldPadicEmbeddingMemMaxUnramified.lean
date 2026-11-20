@@ -10,6 +10,9 @@ open scoped Pointwise
 
 namespace GlobalTheory.HostKur
 
+/- English proof (translation)
+Introduce `R H l _ hl2 hq hd c x`. Conclude with `GlobalTheory.HubLoc.image_mem_Kur H c (UpperTheory.Small.not_dvd_condN H Fact.out hl2 hq hd) x`.
+-/
 theorem host_image_mem_Kur : ∀ {R : Ranks} (H : Host R) (l : ℕ) [Fact l.Prime], l ∉ H.small → l ≠ H.q → l ≠ H.d →
     ∀ (c : H.E →+* PadicAlgCl l) (x : H.E), c x ∈ Loc.MaximalUnramifiedExtension l := by
   intro R H l _ hl2 hq hd c x

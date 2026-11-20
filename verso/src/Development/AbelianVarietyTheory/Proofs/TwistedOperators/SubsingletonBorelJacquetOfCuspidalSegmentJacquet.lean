@@ -10,6 +10,13 @@ namespace GlobalTheory.SmGL.CuspSegment
 def intervals (l d : ℕ) : (Σ _ : Fin l, Fin d) ≃ Fin (l * d) :=
   (Equiv.sigmaEquivProd _ _).trans finProdFinEquiv
 
+/- English proof (translation)
+Establish `key : (i : ℕ) + d * a < j + d * b`. Simplify `h` using `[intervals, finProdFinEquiv, Fin.lt_def]`. Break down `lt_trichotomy a b with hab | rfl | hab` into its components or cases. Conclude with `Or.inl hab`. Conclude with `Or.inr ⟨rfl, Fin.lt_def.2 (by omega)⟩`.
+
+It suffices to derive a contradiction. Establish `h1 : (b : ℕ) + 1 ≤ a` using `hab`. Establish `h2 : d * ((b : ℕ) + 1) ≤ d * a` using `Nat.mul_le_mul_left d h1`. Establish `hj` using `j.isLt`. Rewrite `h2` using `[Nat.mul_succ]`.
+
+Use linear arithmetic over natural numbers and integers.
+-/
 theorem intervals_lt {l d : ℕ} {a b : Fin l} {i j : Fin d}
     (h : intervals l d ⟨a, i⟩ < intervals l d ⟨b, j⟩) : a < b ∨ (a = b ∧ i < j) := by
   have key : (i : ℕ) + d * a < j + d * b := by
@@ -26,6 +33,13 @@ theorem intervals_lt {l d : ℕ} {a b : Fin l} {i j : Fin d}
 
 variable {R : Type} [CommRing R]
 
+/- English proof (translation)
+Introduce `g hg`. Take `⟨hpar, hdiag⟩` from `mem_unipRad.1 hg`. Rewrite `hpar` using `[mem_parab]`. Rewrite using `[mem_unipB]`. Use `⟨fun p q hqp => ?_, fun p => ?_⟩` and prove the remaining obligations.
+
+Take `⟨⟨a, i⟩, rfl⟩` from `(intervals l d).surjective p`. Take `⟨⟨b, j⟩, rfl⟩` from `(intervals l d).surjective q`. Break down `intervals_lt hqp with hba | ⟨rfl, hji⟩` into its components or cases. Conclude with `hpar _ _ (by simpa using hba)`. Rewrite using `[hdiag]`.
+
+Conclude with `Matrix.one_apply_ne hji.ne'`. Take `⟨⟨a, i⟩, rfl⟩` from `(intervals l d).surjective p`. Rewrite using `[hdiag]`. Conclude with `Matrix.one_apply_eq i`.
+-/
 theorem unipRad_intervals_le (l d : ℕ) : unipRad R (intervals l d) ≤ unipB R (Fin (l * d)) := by
   intro g hg
   obtain ⟨hpar, hdiag⟩ := mem_unipRad.1 hg
@@ -42,6 +56,13 @@ theorem unipRad_intervals_le (l d : ℕ) : unipRad R (intervals l d) ≤ unipB R
     rw [hdiag]
     exact Matrix.one_apply_eq i
 
+/- English proof (translation)
+Rewrite using `[mem_unipB]`. Use `⟨fun p q hqp => ?_, fun p => ?_⟩` and prove the remaining obligations. Take `⟨⟨a, i⟩, rfl⟩` from `(intervals l d).surjective p`. Take `⟨⟨b, j⟩, rfl⟩` from `(intervals l d).surjective q`. Break down `intervals_lt hqp with hba | ⟨rfl, hji⟩` into its components or cases.
+
+Conclude with `leviEmb_apply_ne _ _ _ hba.ne' _ _`. Rewrite using `[leviEmb_apply_same]`. Conclude with `((mem_unipB (R := R)).1 (hg b)).1 i j hji`. Take `⟨⟨a, i⟩, rfl⟩` from `(intervals l d).surjective p`. Rewrite using `[leviEmb_apply_same]`.
+
+Conclude with `((mem_unipB (R := R)).1 (hg a)).2 i`.
+-/
 theorem leviEmb_intervals_mem {l d : ℕ} (g : Levi R fun _ : Fin l => Fin d)
     (hg : ∀ a, g a ∈ unipB R (Fin d)) : leviEmb R (intervals l d) g ∈ unipB R (Fin (l * d)) := by
   rw [mem_unipB]
@@ -56,6 +77,13 @@ theorem leviEmb_intervals_mem {l d : ℕ} (g : Levi R fun _ : Fin l => Fin d)
     rw [leviEmb_apply_same]
     exact ((mem_unipB (R := R)).1 (hg a)).2 i
 
+/- English proof (translation)
+Take `⟨-, hcusp⟩` from `hσ`. Set `e : (Σ _ : Fin d, Fin 1) ≃ Fin d` to `Equiv.sigmaUnique (Fin d) fun _ => Fin 1`. Establish `hblk : ∀ i, blk e i = i` using `fun i => rfl`. Establish `hne : unipRad k e ≠ ⊥`. Rewrite using `[CuspMax.unipRad_ne_bot_iff]`.
+
+Use `⟨⟨0, by omega⟩, ⟨1, hd⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[hblk, hblk]`. Conclude with `Fin.mk_lt_mk.2 Nat.zero_lt_one`. Establish `hsub : Subsingleton (Jacquet σ (unipRad k e))` using `hcusp d (fun _ => 1) e hne`. Establish `hB : Subsingleton (Jacquet σ (unipRad k (points (Fin d))))` using `CuspMax.subsingleton_jacquet_of_perm σ (e := e) (e' := points (Fin d)) (Equiv.refl _) (fun i j h => h) hsub`.
+
+Conclude with `Submodule.Quotient.subsingleton_iff.1 hB`.
+-/
 theorem twKer_unipB_eq_top {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k]
     [IsNonarchimedeanLocalField k] {d : ℕ} (hd : 1 < d) {W : Type} [AddCommGroup W] [Module ℂ W]
     {σ : Representation ℂ (GL (Fin d) k) W} (hσ : IsCuspidal σ) :
@@ -76,6 +104,9 @@ theorem twKer_unipB_eq_top {k : Type} [Field k] [ValuativeRel k] [TopologicalSpa
       (fun i j h => h) hsub
   exact Submodule.Quotient.subsingleton_iff.1 hB
 
+/- English proof (translation)
+Rewrite using `[deltaHalf_apply]`. Use `Finset.prod_eq_one fun a _ => ?_` and prove the remaining obligations. Rewrite using `[det_eq_one_of_mem_unipRad (hu := (show g a ∈ unipRad k (points (Fin d)) from hg a)), map_one]`.
+-/
 private theorem deltaHalf_eq_one_of_unipB {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k]
     [IsNonarchimedeanLocalField k] {l d : ℕ} (g : Levi k fun _ : Fin l => Fin d)
     (hg : ∀ a, g a ∈ unipB k (Fin d)) : deltaHalf k (fun _ : Fin l => Fin d) g = 1 := by
@@ -83,6 +114,35 @@ private theorem deltaHalf_eq_one_of_unipB {k : Type} [Field k] [ValuativeRel k] 
   refine Finset.prod_eq_one fun a _ => ?_
   rw [det_eq_one_of_mem_unipRad (hu := (show g a ∈ unipRad k (points (Fin d)) from hg a)), map_one]
 
+/- English proof (translation)
+Take `⟨φ⟩` from `h (intervals l d)`. Take `⟨a₀⟩ : Nonempty (Fin l)` from `⟨⟨0, hl⟩⟩`. Use `set K := twKer π (unipB k (Fin (l * d))) 1 with hK`. Establish `hgen : ∀ u ∈ unipB k (Fin (l * d)), ∀ v : V, π u v - v ∈ K`. Introduce `u hu v`.
+
+Conclude with `Submodule.subset_span ⟨⟨u, hu⟩, v, by simp⟩`. Establish `hUK : twKer π (unipRad k (intervals l d)) 1 ≤ K`. Use `Submodule.span_le.2 ?_` and prove the remaining obligations. Introduce and unpack `w ⟨n, v, rfl⟩`. Simplify using `using hgen n (unipRad_intervals_le l d n.2) v`.
+
+Set `P` to `Submodule.factor hUK`. Establish `hP : ∀ v : V, P (Submodule.Quotient.mk v) = Submodule.Quotient.mk v` using `fun v => Submodule.factor_mk hUK v`. Establish `hlevi : ∀ g : Levi k (fun _ : Fin l => Fin d), (∀ a, g a ∈ unipB k (Fin d)) → ∀ q, P (jac (intervals l d) π g q) = P q`. Introduce `g hg q`. Take `⟨v, rfl⟩` from `Submodule.Quotient.mk_surjective _ q`.
+
+Rewrite using `[jac_mk, deltaHalf_eq_one_of_unipB g hg, inv_one, Units.val_one, one_smul, hP, hP]`. Conclude with `(Submodule.Quotient.eq _).2 (hgen _ (leviEmb_intervals_mem g hg) v)`. Establish `hfwd : ∀ g z, φ (jac (intervals l d) π g z) = piTensor (segTerm σ l) g (φ z)`. Introduce `g z`. Use `LinearMap.congr_fun (φ.isIntertwining' g) z` as an intermediate fact.
+
+Simplify using `using this`. Establish `hint : ∀ g y, φ.symm (piTensor (segTerm σ l) g y) = jac (intervals l d) π g (φ.symm y)`. Introduce `g y`. Apply `EquivLike.injective φ` to reduce the goal to its premises. Rewrite using `[hfwd, Representation.Equiv.apply_symm_apply, Representation.Equiv.apply_symm_apply]`.
+
+Set `F : (⨂[ℂ] _ : Fin l, W) →ₗ[ℂ] V ⧸ K` to `P ∘ₗ φ.symm.toLinearMap`. Establish `hFapp : ∀ y, F y = P (φ.symm y)` using `fun y => rfl`. Establish `hF : ∀ g : Levi k (fun _ : Fin l => Fin d), (∀ a, g a ∈ unipB k (Fin d)) → ∀ y, F (piTensor (segTerm σ l) g y) = F y`. Introduce `g hg y`. Rewrite using `[hFapp, hFapp, hint]`.
+
+Conclude with `hlevi g hg _`. Establish `htop : twKer (segTerm σ l a₀) (unipB k (Fin d)) 1 = ⊤` using `twKer_unipB_eq_top hd (LocGL.isCuspidal_twist hσ (LocGL.isSmoothChar_absPow _))`. Establish `htens : ∀ x : Fin l → W, F (PiTensorProduct.tprod ℂ x) = 0`. Introduce `x`. Set `Lx` to `(PiTensorProduct.tprod ℂ).toLinearMap x a₀`.
+
+Establish `hker : twKer (segTerm σ l a₀) (unipB k (Fin d)) 1 ≤ LinearMap.ker (F ∘ₗ Lx)`. Use `Submodule.span_le.2 ?_` and prove the remaining obligations. Introduce and unpack `w ⟨u, v, rfl⟩`. Establish `hg : ∀ a, (Pi.mulSingle a₀ (u : GL (Fin d) k) : Levi k fun _ : Fin l => Fin d) a ∈ unipB k (Fin d)`. Introduce `a`.
+
+Distinguish the cases in `ha : a = a₀`. Rewrite using `[ha, Pi.mulSingle_eq_same]`. Conclude with `u.2`. Rewrite using `[Pi.mulSingle_eq_of_ne ha]`. Conclude with `one_mem _`.
+
+Establish `hact : Lx (segTerm σ l a₀ u v) = piTensor (segTerm σ l) (Pi.mulSingle a₀ (u : GL (Fin d) k)) (Lx v)`. Simplify using `only [Lx, MultilinearMap.toLinearMap_apply, piTensor_tprod]`. Use `congr 1`. Use function extensionality and compare the values at `a`. Distinguish the cases in `ha : a = a₀`.
+
+Rewrite using `[ha]`. Simplify using the standard rewrite rules. Simplify using `[ha]`. Simplify using `only [SetLike.mem_coe, LinearMap.mem_ker, LinearMap.comp_apply, MonoidHom.one_apply, Units.val_one, one_smul, map_sub, hact, hF _ hg, sub_self]`. Establish `hx : Lx (x a₀) = PiTensorProduct.tprod ℂ x`.
+
+Simplify using `[Lx]`. Rewrite using `[← hx]`. Conclude with `LinearMap.mem_ker.1 (hker (by rw [htop]; exact Submodule.mem_top))`. Establish `hF0 : F = 0` using `PiTensorProduct.ext (MultilinearMap.ext fun x => by simpa using htens x)`. Establish `hv : ∀ v : V, (Submodule.Quotient.mk v : V ⧸ K) = 0`.
+
+Introduce `v`. Rewrite using `[← hP v]`. Establish `hPF : P (Submodule.Quotient.mk v) = F (φ (Submodule.Quotient.mk v))`. Rewrite using `[hFapp, Representation.Equiv.symm_apply_apply]`. Rewrite using `[hPF, hF0, LinearMap.zero_apply]`.
+
+Use `⟨fun a b => ?_⟩` and prove the remaining obligations. Take `⟨v, rfl⟩` from `Submodule.Quotient.mk_surjective _ a`. Take `⟨w, rfl⟩` from `Submodule.Quotient.mk_surjective _ b`. Conclude with `(hv v).trans (hv w).symm`.
+-/
 theorem subsingleton_jacquet_unipB (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k]
     [IsNonarchimedeanLocalField k] (l d : ℕ) (hl : 0 < l) (hd : 1 < d) (V : Type) [AddCommGroup V]
     [Module ℂ V] (W : Type) [AddCommGroup W] [Module ℂ W] (σ : Representation ℂ (GL (Fin d) k) W)

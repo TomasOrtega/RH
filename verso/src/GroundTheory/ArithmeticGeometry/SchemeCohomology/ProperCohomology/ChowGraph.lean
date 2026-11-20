@@ -26,10 +26,16 @@ def gP : (W U).toScheme ⟶ ProjSpace.MP A k n :=
       rw [Category.assoc, Category.assoc, hc i, ← Category.assoc, Scheme.homOfLE_ι])
 
 @[reassoc (attr := simp)]
+/- English proof (translation)
+The claim follows from `ProjSpace.lift_mpStr _ _ _ _ _ @[reassoc (attr := simp)]`.
+-/
 lemma gP_mpStr : gP s n U c hc ≫ ProjSpace.mpStr A k n = (W U).ι ≫ s :=
   ProjSpace.lift_mpStr _ _ _ _ _
 
 @[reassoc (attr := simp)]
+/- English proof (translation)
+The claim follows from `ProjSpace.lift_pr _ _ _ _ _ i`.
+-/
 lemma gP_pr (i : Fin (k + 1)) : gP s n U c hc ≫ ProjSpace.pr A k n i =
     X.homOfLE (iInf_le U i) ≫ c i ≫ (ProjSpace.stdOpen A (n i) 0).ι :=
   ProjSpace.lift_pr _ _ _ _ _ i
@@ -40,11 +46,20 @@ def g : (W U).toScheme ⟶ G s n :=
   pullback.lift (W U).ι (gP s n U c hc) (gP_mpStr s n U c hc).symm
 
 @[reassoc (attr := simp)]
+/- English proof (translation)
+The claim follows from `pullback.lift_fst _ _ _ @[reassoc (attr := simp)]`.
+-/
 lemma g_fst : g s n U c hc ≫ pullback.fst _ _ = (W U).ι := pullback.lift_fst _ _ _
 
 @[reassoc (attr := simp)]
+/- English proof (translation)
+The claim follows from `pullback.lift_snd _ _ _`.
+-/
 lemma g_snd : g s n U c hc ≫ pullback.snd _ _ = gP s n U c hc := pullback.lift_snd _ _ _
 
+/- English proof (translation)
+Substitute `hh` using the available equality. Rewrite using `[isIso_iff_isOpenImmersion_and_surjective]`. Use `⟨inferInstance, ⟨fun x => ?_⟩⟩` and prove the remaining obligations. Use `⟨⟨x, by simp⟩, ?_⟩` and prove the remaining obligations. Conclude with `Subtype.ext ((morphismRestrict_base_coe _ _ _).trans rfl)`.
+-/
 lemma isIso_morphismRestrict_of_eq_ι {T : Scheme.{u}} (V : T.Opens) (h : V.toScheme ⟶ T)
     (hh : h = V.ι) : IsIso (h ∣_ V) := by
   subst hh
@@ -57,6 +72,9 @@ variable [IsProper (ProjSpace.mpStr A k n)]
 
 omit [IsProper (ProjSpace.mpStr A k n)] in
 
+/- English proof (translation)
+Rewrite using `[← morphismRestrict_comp]`. Conclude with `isIso_morphismRestrict_of_eq_ι _ _ (g_fst s n U c hc)`.
+-/
 lemma isIso_g_restrict_comp : IsIso ((g s n U c hc ∣_ (pullback.fst s (ProjSpace.mpStr A k n) ⁻¹ᵁ W U)) ≫
       (pullback.fst s (ProjSpace.mpStr A k n) ∣_ W U)) := by
   rw [← morphismRestrict_comp]
@@ -80,6 +98,9 @@ abbrev π : X' s n U c hc ⟶ X := ι' s n U c hc ≫ pullback.fst _ _
 
 abbrev q : X' s n U c hc ⟶ ProjSpace.MP A k n := ι' s n U c hc ≫ pullback.snd _ _
 
+/- English proof (translation)
+Establish `h1` using `isIso_g_restrict_comp s n U c hc`. Rewrite using `[π, morphismRestrict_comp, ← SchemeImage.imageRestrictLift_fac, Category.assoc]`. Conclude with `IsIso.comp_isIso' (SchemeImage.isIso_imageRestrictLift _ _) h1`.
+-/
 theorem isIso_π_restrict : IsIso (π s n U c hc ∣_ W U) := by
   have h1 := isIso_g_restrict_comp s n U c hc
   rw [π, morphismRestrict_comp, ← SchemeImage.imageRestrictLift_fac, Category.assoc]
@@ -98,6 +119,9 @@ abbrev βU (i : Fin (k + 1)) : (pullback.fst s (ProjSpace.mpStr A k n) ⁻¹ᵁ 
 
 omit [IsProper (ProjSpace.mpStr A k n)] [QuasiCompact (g s n U c hc)] in
 include hc in
+/- English proof (translation)
+Rewrite using `[αU, βU, Category.assoc, Category.assoc, ProjSpace.pr_toSpecBase, Category.assoc, Category.assoc, hc i, morphismRestrict_ι_assoc, ← pullback.condition]`.
+-/
 lemma αU_βU_over (i : Fin (k + 1)) :
     αU s n U i ≫ ProjSpace.toSpecBase A (n i) = βU s n U c i ≫ ProjSpace.toSpecBase A (n i) := by
   rw [αU, βU, Category.assoc, Category.assoc, ProjSpace.pr_toSpecBase, Category.assoc,
@@ -105,6 +129,9 @@ lemma αU_βU_over (i : Fin (k + 1)) :
 
 omit [IsProper (ProjSpace.mpStr A k n)] [QuasiCompact (g s n U c hc)] in
 
+/- English proof (translation)
+Establish `hinc : (g s n U c hc ∣_ (pullback.fst s (ProjSpace.mpStr A k n) ⁻¹ᵁ U i)) ≫ (pullback.fst s (ProjSpace.mpStr A k n) ∣_ U i) = (g s n U c hc ⁻¹ᵁ (pullback.fst s (ProjSpace.mpStr A k n) ⁻¹ᵁ U i)).ι ≫ X.homOfLE (iInf_le U i)`. Rewrite using `[← cancel_mono (U i).ι, Category.assoc, morphismRestrict_ι, morphismRestrict_ι_assoc, g_fst, Category.assoc, Scheme.homOfLE_ι]`. Rewrite using `[αU, βU, morphismRestrict_ι_assoc, reassoc_of% hinc, g_snd_assoc, gP_pr]`.
+-/
 lemma g_restrict_αU (i : Fin (k + 1)) :
     (g s n U c hc ∣_ (pullback.fst s (ProjSpace.mpStr A k n) ⁻¹ᵁ U i)) ≫ αU s n U i =
       (g s n U c hc ∣_ (pullback.fst s (ProjSpace.mpStr A k n) ⁻¹ᵁ U i)) ≫ βU s n U c i := by
@@ -118,6 +145,13 @@ lemma g_restrict_αU (i : Fin (k + 1)) :
 
 omit [IsProper (ProjSpace.mpStr A k n)] in
 
+/- English proof (translation)
+Take `⟨κ, hκ⟩` from `SchemeImage.exists_lift_imageι_morphismRestrict (g s n U c hc) (pullback.fst s (ProjSpace.mpStr A k n) ⁻¹ᵁ U i) (eqLocusι (ProjSpace.toSpecBase A (n i)) (αU s n U i) (βU s n U c i) (αU_βU_over s n U c hc i)) (eqLocusLift _ _ _ _ (g s n U c hc ∣_ (pullback.fst s (ProjSpace.mpStr A …`. Establish `hE : (ι' s n U c hc ∣_ (pullback.fst s (ProjSpace.mpStr A k n) ⁻¹ᵁ U i)) ≫ αU s n U i = (ι' s n U c hc ∣_ (pullback.fst s (ProjSpace.mpStr A k n) ⁻¹ᵁ U i)) ≫ βU s n U c i`. Rewrite using `[← hκ, Category.assoc, Category.assoc, eqLocusι_comp_eq]`. Establish `hy' : y ∈ ι' s n U c hc ⁻¹ᵁ (pullback.fst s (ProjSpace.mpStr A k n) ⁻¹ᵁ U i)` using `hy`. Establish `hE' : (ι' s n U c hc ⁻¹ᵁ (pullback.fst s (ProjSpace.mpStr A k n) ⁻¹ᵁ U i)).ι ≫ q s n U c hc ≫ ProjSpace.pr A k n i = ((ι' s n U c hc ∣_ (pullback.fst s (ProjSpace.mpStr A k n) ⁻¹ᵁ U i)) ≫ (pullback.fst s (ProjSpace.mpStr A k n) ∣_ U i) ≫ c i) ≫ (ProjSpace.stdOpen A (n i) 0).ι`.
+
+Use `hE` as an intermediate fact. Simplify using `only [αU, βU, morphismRestrict_ι_assoc] at this`. Simplify `this` using `only [q, Category.assoc]`. Establish `h2 : (⟨y, hy'⟩ : (ι' s n U c hc ⁻¹ᵁ (pullback.fst s (ProjSpace.mpStr A k n) ⁻¹ᵁ U i)).toScheme) ∈ ((ι' s n U c hc ⁻¹ᵁ (pullback.fst s (ProjSpace.mpStr A k n) ⁻¹ᵁ U i)).ι ≫ q s n U c hc ≫ ProjSpace.pr A k n i) ⁻¹ᵁ ProjSpace.stdOpen A (n i) 0`. Rewrite using `[hE']`.
+
+Conclude with `Subtype.prop (((ι' s n U c hc ∣_ (pullback.fst s (ProjSpace.mpStr A k n) ⁻¹ᵁ U i)) ≫ (pullback.fst s (ProjSpace.mpStr A k n) ∣_ U i) ≫ c i).base ⟨y, hy'⟩)`. Conclude with `h2`.
+-/
 theorem q_mem_V (i : Fin (k + 1)) (y : X' s n U c hc) (hy : π s n U c hc y ∈ U i) :
     q s n U c hc y ∈ V n i := by
   obtain ⟨κ, hκ⟩ := SchemeImage.exists_lift_imageι_morphismRestrict (g s n U c hc)
@@ -166,6 +200,11 @@ abbrev eX' : E s n U c i ⟶ X := pullback.snd _ _ ≫ (O s n i).ι ≫ pullback
 
 omit [IsProper (ProjSpace.mpStr A k n)] [QuasiCompact (g s n U c hc)] in
 include hc in
+/- English proof (translation)
+Establish `h1 : pullback.fst (c i) (ρ (A` using `A) n i) ≫ c i ≫ (ProjSpace.stdOpen A (n i) 0).ι = pullback.snd (c i) (ρ (A := A) n i) ≫ (V (A := A) n i).ι ≫ ProjSpace.pr A k n i := by`. Rewrite using `[← morphismRestrict_ι, ← Category.assoc, pullback.condition, Category.assoc]`. Establish `h2` using `congrArg (· ≫ ProjSpace.toSpecBase A (n i)) h1`. Simplify using `only [Category.assoc, hc i, ProjSpace.pr_toSpecBase] at h2`. Simplify using `only [eX, eX', Category.assoc, h2, pullback.condition]`.
+
+Rewrite using `[pullback.condition_assoc, morphismRestrict_ι_assoc]`.
+-/
 lemma eX_eX'_over : eX s n U c i ≫ s = eX' s n U c i ≫ s := by
   have h1 : pullback.fst (c i) (ρ (A := A) n i) ≫ c i ≫ (ProjSpace.stdOpen A (n i) 0).ι =
       pullback.snd (c i) (ρ (A := A) n i) ≫ (V (A := A) n i).ι ≫ ProjSpace.pr A k n i := by
@@ -186,6 +225,9 @@ abbrev Qφ : Q s n U c hc i ⟶ F n U c i := eqLocusι _ _ _ _ ≫ pullback.fst 
 omit [IsProper (ProjSpace.mpStr A k n)] [QuasiCompact (g s n U c hc)] [IsSeparated s] in
 include hc in
 
+/- English proof (translation)
+Establish `h1 : pullback.fst (c i) (ρ (A` using `A) n i) ≫ c i ≫ (ProjSpace.stdOpen A (n i) 0).ι = pullback.snd (c i) (ρ (A := A) n i) ≫ (V (A := A) n i).ι ≫ ProjSpace.pr A k n i := by`. Rewrite using `[← morphismRestrict_ι, ← Category.assoc, pullback.condition, Category.assoc]`. Establish `h2` using `congrArg (· ≫ ProjSpace.toSpecBase A (n i)) h1`. Simplify `h2` using `only [Category.assoc, hc i, ProjSpace.pr_toSpecBase]`.
+-/
 lemma F_over : pullback.fst (c i) (ρ (A := A) n i) ≫ (U i).ι ≫ s =
     pullback.snd (c i) (ρ (A := A) n i) ≫ (V (A := A) n i).ι ≫ ProjSpace.mpStr A k n := by
   have h1 : pullback.fst (c i) (ρ (A := A) n i) ≫ c i ≫ (ProjSpace.stdOpen A (n i) 0).ι =
@@ -216,6 +258,9 @@ def gQ : (g s n U c hc ⁻¹ᵁ O s n i).toScheme ⟶ Q s n U c hc i :=
 
 omit [IsProper (ProjSpace.mpStr A k n)] [QuasiCompact (g s n U c hc)] [IsSeparated s] in
 @[reassoc]
+/- English proof (translation)
+Simplify using `only [gQ, Qo, eqLocusLift_ι_assoc, gE]`. Conclude with `pullback.lift_snd _ _ _`.
+-/
 lemma gQ_Qo : gQ s n U c hc i ≫ Qo s n U c hc i = g s n U c hc ∣_ O s n i := by
   simp only [gQ, Qo, eqLocusLift_ι_assoc, gE]
   exact pullback.lift_snd _ _ _
@@ -227,6 +272,11 @@ def σG : F n U c i ⟶ G s n :=
     (by simpa only [Category.assoc] using F_over s n U c hc i)
 
 omit [IsProper (ProjSpace.mpStr A k n)] [QuasiCompact (g s n U c hc)] [IsSeparated s] in
+/- English proof (translation)
+Introduce and unpack `_ ⟨x, rfl⟩`. Rewrite using `[Scheme.Opens.range_ι]`. Express the relevant statement in the definitionally equal form `(pullback.snd s (ProjSpace.mpStr A k n)).base ((σG s n U c hc i).base x) ∈ V (A := A) n i`. Establish `: σG s n U c hc i ≫ pullback.snd s (ProjSpace.mpStr A k n) = pullback.snd _ _ ≫ (V (A` using `A) n i).ι := pullback.lift_snd _ _ _`. Establish `h2 : x ∈ (σG s n U c hc i ≫ pullback.snd s (ProjSpace.mpStr A k n)) ⁻¹ᵁ V (A` using `A) n i := by`.
+
+Rewrite using `[this]`. Conclude with `Subtype.prop ((pullback.snd (c i) (ρ (A := A) n i)).base x)`. Conclude with `h2`.
+-/
 lemma range_σG : Set.range (σG s n U c hc i).base ⊆ Set.range (O s n i).ι.base := by
   rintro _ ⟨x, rfl⟩
   rw [Scheme.Opens.range_ι]
@@ -245,6 +295,9 @@ def σO : F n U c i ⟶ (O s n i).toScheme :=
 
 omit [IsProper (ProjSpace.mpStr A k n)] [QuasiCompact (g s n U c hc)] [IsSeparated s] in
 @[reassoc (attr := simp)]
+/- English proof (translation)
+The claim follows from `IsOpenImmersion.lift_fac _ _ _`.
+-/
 lemma σO_ι : σO s n U c hc i ≫ (O s n i).ι = σG s n U c hc i := IsOpenImmersion.lift_fac _ _ _
 
 omit [IsProper (ProjSpace.mpStr A k n)] [QuasiCompact (g s n U c hc)] in
@@ -280,6 +333,15 @@ instance isIso_Qφ [IsClosedImmersion (c i)] : IsIso (Qφ s n U c hc i) := by
 
 omit [IsProper (ProjSpace.mpStr A k n)] in
 
+/- English proof (translation)
+Establish `hQo : IsClosedImmersion (Qo s n U c hc i)` using `by unfold Qo; infer_instance`. Take `⟨κ, hκ⟩` from `SchemeImage.exists_lift_imageι_morphismRestrict (g s n U c hc) (O s n i) (Qo s n U c hc i) (gQ s n U c hc i) (gQ_Qo s n U c hc i)`. Establish `hκc : IsClosedImmersion κ`. Establish `: IsClosedImmersion (κ ≫ Qo s n U c hc i)` using `by rw [hκ]; infer_instance`. Conclude with `IsClosedImmersion.of_comp_isClosedImmersion κ (Qo s n U c hc i)`.
+
+Establish `e : q s n U c hc ∣_ V (A` using `A) n i = κ ≫ Qφ s n U c hc i ≫ pullback.snd (c i) (ρ (A := A) n i) := by`. Express the relevant statement in the definitionally equal form `(ι' s n U c hc ≫ pullback.snd _ _) ∣_ V (A := A) n i = _`. Rewrite using `[morphismRestrict_comp]`. Express the relevant statement in the definitionally equal form `(ι' s n U c hc ∣_ O s n i) ≫ τ s n i = _`. Rewrite using `[← hκ, Category.assoc]`.
+
+Use `congr 1`. Simplify using `only [Qo, Qφ, Category.assoc]`. Rewrite using `[pullback.condition]`. Rewrite using `[e]`. Establish `h1 : IsClosedImmersion (Qφ s n U c hc i)` using `inferInstance`.
+
+Establish `h2 : IsClosedImmersion (Qφ s n U c hc i ≫ pullback.snd (c i) (ρ (A` using `A) n i)) := inferInstance`. Conclude with `@IsClosedImmersion.comp _ _ _ κ _ hκc h2`.
+-/
 theorem isClosedImmersion_q_restrict [IsClosedImmersion (c i)] :
     IsClosedImmersion (q s n U c hc ∣_ V (A := A) n i) := by
   have hQo : IsClosedImmersion (Qo s n U c hc i) := by unfold Qo; infer_instance
@@ -305,6 +367,15 @@ theorem isClosedImmersion_q_restrict [IsClosedImmersion (c i)] :
 
 end OverV
 
+/- English proof (translation)
+Establish `hp : IsProper (q s n U c hc ≫ ProjSpace.mpStr A k n)`. Express the relevant statement in the definitionally equal form `IsProper ((ι' s n U c hc ≫ pullback.snd _ _) ≫ ProjSpace.mpStr A k n)`. Rewrite using `[Category.assoc, ← pullback.condition]`. Use `infer_instance`. Establish `hq : IsProper (q s n U c hc)` using `IsProper.of_comp _ (ProjSpace.mpStr A k n)`.
+
+Establish `hcl : IsClosed (Set.range (q s n U c hc).base)` using `(q s n U c hc).isClosedMap.isClosed_range`. Set `W' : Option (Fin (k + 1)) → (ProjSpace.MP A k n).Opens` to `fun o => o.elim ⟨(Set.range (q s n U c hc).base)ᶜ, hcl.isOpen_compl⟩ (fun i => V (A := A) n i)`. Use `IsZariskiLocalAtTarget.of_iSup_eq_top W' ?_ ?_` and prove the remaining obligations. Use `top_le_iff.1 fun p _ => ?_` and prove the remaining obligations. Distinguish the cases in `hpr : p ∈ Set.range (q s n U c hc).base`.
+
+Take `⟨y, rfl⟩` from `hpr`. Establish `hy : π s n U c hc y ∈ (⊤ : X.Opens)` using `trivial`. Rewrite `hy` using `[← hU]`. Take `⟨i, hi⟩` from `Opens.mem_iSup.1 hy`. Conclude with `Opens.mem_iSup.2 ⟨some i, q_mem_V s n U c hc i y hi⟩`.
+
+Conclude with `Opens.mem_iSup.2 ⟨none, hpr⟩`. Introduce and unpack `(_ | i)`. Establish `: IsEmpty (q s n U c hc ⁻¹ᵁ W' none).toScheme` using `⟨fun x => x.2 ⟨x.1, rfl⟩⟩ infer_instance`. Conclude with `isClosedImmersion_q_restrict s n U c hc i`.
+-/
 theorem isClosedImmersion_q [IsProper s] (hU : iSup U = ⊤) [∀ i, IsClosedImmersion (c i)] :
     IsClosedImmersion (q s n U c hc) := by
   have hp : IsProper (q s n U c hc ≫ ProjSpace.mpStr A k n) := by

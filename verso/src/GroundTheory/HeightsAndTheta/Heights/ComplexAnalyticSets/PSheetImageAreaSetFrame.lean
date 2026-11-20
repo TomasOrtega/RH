@@ -11,6 +11,25 @@ noncomputable section
 
 namespace SheetImageAreaSet
 
+/- English proof (translation)
+Use `set K := LinearMap.ker P with hKdef`. Establish `h1` using `K.finrank_add_finrank_orthogonal`. Establish `h2` using `LinearMap.finrank_range_add_finrank_ker P`. Rewrite `h2` using `[LinearMap.range_eq_top.2 hP, finrank_top]`. Simplify using `only [finrank_euclideanSpace_fin] at h1 h2`.
+
+Rewrite `h2` using `[← hKdef]`. Establish `hW : finrank ℂ Kᗮ = d` using `by omega`. Establish `hn : n = d + finrank ℂ K` using `by omega`. Set `bW : OrthonormalBasis (Fin d) ℂ Kᗮ` to `(stdOrthonormalBasis ℂ Kᗮ).reindex (finCongr hW)`. Set `bK` to `stdOrthonormalBasis ℂ K`.
+
+Set `e : Fin n ≃ Fin d ⊕ Fin (finrank ℂ K)` to `(finCongr hn).trans finSumFinEquiv.symm`. Set `πW : EuclideanSpace ℂ (Fin n) →ₗ[ℂ] EuclideanSpace ℂ (Fin d)` to `bW.repr.toLinearMap ∘ₗ (Kᗮ.orthogonalProjectionOnto : _ →L[ℂ] Kᗮ).toLinearMap`. Set `π : EuclideanSpace ℂ (Fin n) →ₗ[ℂ] EuclideanSpace ℂ (Fin (finrank ℂ K))` to `bK.repr.toLinearMap ∘ₗ (K.orthogonalProjectionOnto : _ →L[ℂ] K).toLinearMap`. Take `⟨R, hR⟩` from `P.exists_rightInverse_of_surjective (LinearMap.range_eq_top.2 hP)`. Establish `hPR : ∀ y, P (R y) = y` using `fun y => LinearMap.congr_fun hR y`.
+
+Establish `hWR : ∀ z, πW (R (P z)) = πW z`. Introduce `z`. Establish `hmem : R (P z) - z ∈ Kᗮᗮ` using `K.le_orthogonal_orthogonal (by simp [hKdef, LinearMap.mem_ker, hPR])`. Establish `h0` using `Submodule.orthogonalProjectionOnto_eq_zero_iff.2 hmem`. Establish `h3 : πW (R (P z) - z) = 0` using `by simp [πW, h0]`.
+
+Rewrite `h3` using `[map_sub, sub_eq_zero]`. Then use the resulting hypothesis. Establish `hinj : Function.Injective (πW ∘ₗ R)`. Rewrite using `[← LinearMap.ker_eq_bot, LinearMap.ker_eq_bot']`. Introduce `y hy`. Establish `h0 : Kᗮ.orthogonalProjectionOnto (R y) = 0` using `by simpa [πW] using hy`.
+
+Rewrite `h0` using `[Submodule.orthogonalProjectionOnto_eq_zero_iff, K.orthogonal_orthogonal]`. Rewrite using `[← hPR y]`. Conclude with `h0`. Set `L` to `LinearEquiv.ofInjectiveEndo _ hinj`. Set `Q : EuclideanSpace ℂ (Fin n) →ₗ[ℂ] EuclideanSpace ℂ (Fin n)` to `{ toFun := fun z => WithLp.toLp 2 (fun j => Sum.elim (fun i => πW z i) (fun i => π z i) (e j)) map_add' := fun z w => by`.
+
+Use extensionality with `j`. Take `⟨s, rfl⟩` from `e.symm.surjective j`. Apply the tactic sequence `rcases s with i | i <;> simp`. Use the proof step `map_smul' := fun c z => by`. Use extensionality with `j`.
+
+Take `⟨s, rfl⟩` from `e.symm.surjective j`. Apply the tactic sequence `rcases s with i | i <;> simp }`. Use `⟨finrank ℂ K, e, Q, L, π, fun z => ?_, fun z => ?_⟩` and prove the remaining obligations. Use `(sq_eq_sq₀ (norm_nonneg _) (norm_nonneg _)).1 ?_ show ‖(WithLp.toLp 2 (fun j => Sum.elim (fun i => πW z i) (fun i => π z i) (e j)) : EuclideanSpace ℂ (Fin n))‖ ^ 2 = _` and prove the remaining obligations. Rewrite using `[GraphAreaHolomorphic.norm_sq_sumElim e (πW z) (π z), Submodule.norm_sq_eq_add_norm_sq_projection z K, add_comm]`.
+
+Simplify using `[πW, π]`. Use `show WithLp.toLp 2 (fun j => Sum.elim (fun i => πW z i) (fun i => π z i) (e j)) = _`. Simplify using `[L, hWR]`.
+-/
 theorem exists_adapted_frame {n d : ℕ}
     (P : EuclideanSpace ℂ (Fin n) →ₗ[ℂ] EuclideanSpace ℂ (Fin d)) (hP : Function.Surjective P) :
     ∃ (m : ℕ) (e : Fin n ≃ Fin d ⊕ Fin m)
@@ -72,6 +91,9 @@ theorem exists_adapted_frame {n d : ℕ}
   · show WithLp.toLp 2 (fun j => Sum.elim (fun i => πW z i) (fun i => π z i) (e j)) = _
     simp [L, hWR]
 
+/- English proof (translation)
+Establish `h` using `M.normDet_sq`. Simplify using `only [RCLike.ofReal_real_eq_id, id_eq] at h`. Rewrite using `[areaJacobian, ← h, Real.sqrt_sq M.normDet_nonneg]`.
+-/
 theorem areaJacobian_eq_normDet {E F : Type*} [NormedAddCommGroup E] [InnerProductSpace ℝ E]
     [FiniteDimensional ℝ E] [NormedAddCommGroup F] [InnerProductSpace ℝ F] [FiniteDimensional ℝ F]
     (M : E →ₗ[ℝ] F) : areaJacobian M = M.normDet := by
@@ -79,6 +101,9 @@ theorem areaJacobian_eq_normDet {E F : Type*} [NormedAddCommGroup E] [InnerProdu
   simp only [RCLike.ofReal_real_eq_id, id_eq] at h
   rw [areaJacobian, ← h, Real.sqrt_sq M.normDet_nonneg]
 
+/- English proof (translation)
+Rewrite using `[areaJacobian_eq_normDet, areaJacobian_eq_normDet, LinearMap.normDet_comp, show (Q.domRestrict (LinearMap.range M)).normDet = 1 from LinearIsometry.normDet_eq_one ⟨Q.domRestrict _, fun v => hQ v⟩, one_mul]`.
+-/
 theorem areaJacobian_comp_of_norm {E F : Type*} [NormedAddCommGroup E] [InnerProductSpace ℝ E]
     [FiniteDimensional ℝ E] [NormedAddCommGroup F] [InnerProductSpace ℝ F] [FiniteDimensional ℝ F]
     (Q : F →ₗ[ℝ] F) (hQ : ∀ v, ‖Q v‖ = ‖v‖) (M : E →ₗ[ℝ] F) :
@@ -87,6 +112,9 @@ theorem areaJacobian_comp_of_norm {E F : Type*} [NormedAddCommGroup E] [InnerPro
     show (Q.domRestrict (LinearMap.range M)).normDet = 1 from
       LinearIsometry.normDet_eq_one ⟨Q.domRestrict _, fun v => hQ v⟩, one_mul]
 
+/- English proof (translation)
+Rewrite using `[areaJacobian_eq_normDet, areaJacobian_eq_normDet, LinearMap.normDet_comp_of_finrank_eq _ _ rfl, LinearMap.normDet_eq_abs_det]`.
+-/
 theorem areaJacobian_comp_endo {E F : Type*} [NormedAddCommGroup E] [InnerProductSpace ℝ E]
     [FiniteDimensional ℝ E] [NormedAddCommGroup F] [InnerProductSpace ℝ F] [FiniteDimensional ℝ F]
     (M : E →ₗ[ℝ] F) (T : E →ₗ[ℝ] E) :

@@ -33,16 +33,25 @@ abbrev ratA (F : Type) [Field F] [NumberField F] {E : Type} [Field E] [Algebra F
 def NearAt (P : HeightOneSpectrum (𝓞 E)) (n : ℕ) (x : GL (Fin N) (E ⊗[F] FiniteAdeleRing (𝓞 F) F)) (g : GL (Fin N) E) : Prop :=
   CongAt P n (x⁻¹ * ratA F g)
 
+/- English proof (translation)
+Introduce `a b`. Use `⟨1, fun h => P.isPrime.ne_top ((Ideal.eq_top_iff_one _).2 h), ?_⟩` and prove the remaining obligations. Simplify using the standard rewrite rules.
+-/
 theorem congAt_one (P : HeightOneSpectrum (𝓞 E)) (n : ℕ) : CongAt (F := F) (N := N) P n 1 := by
   intro a b
   refine ⟨1, fun h => P.isPrime.ne_top ((Ideal.eq_top_iff_one _).2 h), ?_⟩
   simp
 
+/- English proof (translation)
+Unfold `NearAt`. Rewrite using `[inv_mul_cancel]`. Conclude with `congAt_one P n`.
+-/
 theorem nearAt_self (P : HeightOneSpectrum (𝓞 E)) (n : ℕ) (g : GL (Fin N) E) : NearAt (F := F) P n (ratA F g) g := by
   unfold NearAt
   rw [inv_mul_cancel]
   exact congAt_one P n
 
+/- English proof (translation)
+Unfold `NearAt`. Rewrite using `[map_mul, _root_.mul_inv_rev, mul_assoc, inv_mul_cancel_left]`.
+-/
 theorem nearAt_rat_mul (P : HeightOneSpectrum (𝓞 E)) (n : ℕ) (γ g : GL (Fin N) E)
     (x : GL (Fin N) (E ⊗[F] FiniteAdeleRing (𝓞 F) F)) : NearAt P n (ratA F γ * x) (γ * g) ↔ NearAt P n x g := by
   unfold NearAt
@@ -60,6 +69,11 @@ def latCo (sp : Spaces R F E) (J : Matrix (Fin N) (Fin N) E) (co : GL (Fin N) E)
 
 variable {sp : Spaces R F E}
 
+/- English proof (translation)
+Unfold `mvL`. Rewrite using `[← Submodule.map_comp]`. Use `congr 1`. Use `LinearMap.ext fun x => ?_` and prove the remaining obligations. Use `show toLE (g * h) x = toLE g (toLE h x)`.
+
+Rewrite using `[toLE_apply, toLE_apply, toLE_apply, Matrix.mulVec_mulVec, Units.val_mul]`.
+-/
 theorem mvL_mul (g h : GL (Fin N) E) (Λ : Submodule (𝓞 E) (Fin N → E)) : mvL (g * h) Λ = mvL g (mvL h Λ) := by
   unfold mvL
   rw [← Submodule.map_comp]
@@ -68,18 +82,27 @@ theorem mvL_mul (g h : GL (Fin N) E) (Λ : Submodule (𝓞 E) (Fin N → E)) : m
   show toLE (g * h) x = toLE g (toLE h x)
   rw [toLE_apply, toLE_apply, toLE_apply, Matrix.mulVec_mulVec, Units.val_mul]
 
+/- English proof (translation)
+Unfold `latCo latK toStd mvL`. Rewrite using `[h]`.
+-/
 theorem latCo_eq_latK (J : Matrix (Fin N) (Fin N) E) (co : GL (Fin N) E) (h : toLE co = stdCo (sp.cm.sig : E →+* E) J) (a : 𝓞 E)
     (y : GL (Fin N) (E ⊗[F] FiniteAdeleRing (𝓞 F) F)) (Lb : Submodule (𝓞 E) (Fin N → E)) :
     latCo sp J co a y Lb = latK sp J a y Lb := by
   unfold latCo latK toStd mvL
   rw [h]
 
+/- English proof (translation)
+Unfold `latCo`. Rewrite using `[latAd_rat, compan_mvL J a γ hγ, ← mvL_mul, ← mvL_mul, inv_mul_cancel_right]`.
+-/
 theorem latCo_rat (J : Matrix (Fin N) (Fin N) E) (co γ : GL (Fin N) E) (hγ : γ ∈ UJ (sp.cm.sig : E →+* E) J) (a : 𝓞 E)
     (y : GL (Fin N) (E ⊗[F] FiniteAdeleRing (𝓞 F) F)) (Lb : Submodule (𝓞 E) (Fin N → E)) :
     latCo sp J co a (ratA F γ * y) Lb = mvL (co * γ * co⁻¹) (latCo sp J co a y Lb) := by
   unfold latCo
   rw [latAd_rat, compan_mvL J a γ hγ, ← mvL_mul, ← mvL_mul, inv_mul_cancel_right]
 
+/- English proof (translation)
+Unfold `latCo`. Rewrite using `[latAd_rat, compan_mvL J a γ hγ, mvL_mul]`.
+-/
 theorem latCo_mul (J : Matrix (Fin N) (Fin N) E) (co γ : GL (Fin N) E) (hγ : γ ∈ UJ (sp.cm.sig : E →+* E) J) (a : 𝓞 E)
     (y : GL (Fin N) (E ⊗[F] FiniteAdeleRing (𝓞 F) F)) (Lb : Submodule (𝓞 E) (Fin N → E)) :
     latCo sp J (co * γ) a y Lb = latCo sp J co a (ratA F γ * y) Lb := by
@@ -89,6 +112,9 @@ theorem latCo_mul (J : Matrix (Fin N) (Fin N) E) (co γ : GL (Fin N) E) (hγ : �
 def toStdCo (σ : E →+* E) (J : Matrix (Fin N) (Fin N) E) (co : GL (Fin N) E) : (Fin N → E) ≃ₗ[E] (Fin N → E) :=
   (toLE co).symm.trans (stdCo σ J)
 
+/- English proof (translation)
+Unfold `latCo latK toStd mvL`. Rewrite using `[← Submodule.map_comp]`. Use `congr 1`. Use `LinearMap.ext fun x => ?_` and prove the remaining obligations. Simplify using `[toStdCo]`.
+-/
 theorem latK_eq_map (J : Matrix (Fin N) (Fin N) E) (co : GL (Fin N) E) (a : 𝓞 E)
     (y : GL (Fin N) (E ⊗[F] FiniteAdeleRing (𝓞 F) F)) (Lb : Submodule (𝓞 E) (Fin N → E)) :
     latK sp J a y Lb = (latCo sp J co a y Lb).map ((toStdCo (sp.cm.sig : E →+* E) J co).toLinearMap.restrictScalars (𝓞 E)) := by
@@ -109,6 +135,9 @@ variable {D : D7} {X : Fields} (s : Seam D X)
 def seamP (P : HeightOneSpectrum (𝓞 X.E)) : HeightOneSpectrum (𝓞 D.host.E) :=
   HeightOneSpectrum.equivOfRingEquiv (RingOfIntegers.mapRingEquiv s.iE) P
 
+/- English proof (translation)
+Simplify using `[seamP, HeightOneSpectrum.equivOfRingEquiv, HeightOneSpectrum.comap, Ideal.mem_comap]`.
+-/
 theorem mem_seamP (P : HeightOneSpectrum (𝓞 X.E)) (x : 𝓞 X.E) :
     RingOfIntegers.mapRingEquiv s.iE x ∈ (seamP s P).asIdeal ↔ x ∈ P.asIdeal := by
   simp [seamP, HeightOneSpectrum.equivOfRingEquiv, HeightOneSpectrum.comap, Ideal.mem_comap]
@@ -118,6 +147,11 @@ def seamGL {n : ℕ} : (Sp X.E n ≃ₗ[X.E] Sp X.E n) →* GL (Fin n) D.host.E 
     ((Matrix.GeneralLinearGroup.toLin (n := Fin n) (R := X.E)).symm.toMonoidHom.comp
       (LinearMap.GeneralLinearGroup.generalLinearEquiv X.E (Fin n → X.E)).symm.toMonoidHom)
 
+/- English proof (translation)
+Use function extensionality and compare the values at `l`. Establish `h : ((seamGL s g : GL (Fin n) D.host.E) : Matrix (Fin n) (Fin n) D.host.E) = (LinearMap.toMatrix' g.toLinearMap).map (s.iE : X.E →+* D.host.E)` using `rfl`. Rewrite using `[h]`. Establish `h2` using `RingHom.map_mulVec (s.iE : X.E →+* D.host.E) (LinearMap.toMatrix' g.toLinearMap) x l`. Rewrite `h2` using `[LinearMap.toMatrix'_mulVec]`.
+
+Conclude with `h2.symm`.
+-/
 theorem seamGL_mulVec {n : ℕ} (g : Sp X.E n ≃ₗ[X.E] Sp X.E n) (x : Sp X.E n) :
     ((seamGL s g : GL (Fin n) D.host.E) : Matrix (Fin n) (Fin n) D.host.E) *ᵥ (fun l => s.iE (x l)) = fun l => s.iE (g x l) := by
   funext l
@@ -131,6 +165,11 @@ theorem seamGL_mulVec {n : ℕ} (g : Sp X.E n ≃ₗ[X.E] Sp X.E n) (x : Sp X.E 
 def seamHom {a b : ℕ} (x : HomE D.host.E a b) : HomE X.E a b :=
   Matrix.toLin' ((LinearMap.toMatrix' x).map s.iE.symm)
 
+/- English proof (translation)
+Establish `h` using `RingHom.map_mulVec (s.iE : X.E →+* D.host.E) ((LinearMap.toMatrix' x).map s.iE.symm) w l`. Establish `h2 : ((LinearMap.toMatrix' x).map s.iE.symm).map (s.iE : X.E →+* D.host.E) = LinearMap.toMatrix' x`. Use extensionality with `p q`. Simplify using the standard rewrite rules. Rewrite `h` using `[h2, LinearMap.toMatrix'_mulVec]`.
+
+Conclude with `h`.
+-/
 theorem seamHom_apply {a b : ℕ} (x : HomE D.host.E a b) (w : Sp X.E a) (l : Fin b) :
     s.iE (seamHom s x w l) = x (fun k => s.iE (w k)) l := by
   have h := RingHom.map_mulVec (s.iE : X.E →+* D.host.E) ((LinearMap.toMatrix' x).map s.iE.symm) w l
@@ -154,6 +193,9 @@ def MidLev (j : ℕ) (P : rowSG Pr sel mu) (h : AutY X R j) (g : Sp X.E (R.N j) 
   ∃ r ∈ Loc.Cbe (Jat (Pr := Pr) cst.sharp j P.1) h,
     (∀ x, r (Loc.inX X.E (R.N j) (cOf R j) x) = Loc.inX X.E (R.N j) (cOf R j) (g x)) ∧ z = chiInv Ch sel mu cst j P h r
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fun ⟨_, r, hr, hg, _⟩ => ⟨r, hr, hg⟩, fun ⟨r, hr, hg⟩ => ⟨_, r, hr, hg, rfl⟩⟩`.
+-/
 theorem exists_midLev_iff (j : ℕ) (P : rowSG Pr sel mu) (h : AutY X R j) (g : Sp X.E (R.N j) ≃ₗ[X.E] Sp X.E (R.N j)) :
     (∃ z, MidLev Ch sel mu cst j P h g z) ↔ g ∈ prCat (Pr := Pr) cst.sharp j P.1 h :=
   ⟨fun ⟨_, r, hr, hg, _⟩ => ⟨r, hr, hg⟩, fun ⟨r, hr, hg⟩ => ⟨_, r, hr, hg, rfl⟩⟩
@@ -189,9 +231,15 @@ def TopLev (j : ℕ) (P : rowSG Pr sel mu) (g : Sp X.E (R.N j) ≃ₗ[X.E] Sp X.
     atNL X.E (R.N j) (R.N j - 1) ∘ₗ g.toLinearMap = atNL X.E (R.N j) (R.N j - 1) ∧
     z = rowChrTop Ch mu cst.sharp j (R.N j) P.1 g'.toLinearMap
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨_, 1, Subgroup.one_mem _, rfl, rfl, rfl⟩`.
+-/
 example (j : ℕ) (P : rowSG Pr sel mu) : ∃ z, TopLev Ch sel mu cst j P 1 z :=
   ⟨_, 1, Subgroup.one_mem _, rfl, rfl, rfl⟩
 
+/- English proof (translation)
+The claim follows from `(exists_midLev_iff Ch sel mu cst j P h 1).2 (Subgroup.one_mem _)`.
+-/
 example (j : ℕ) (P : rowSG Pr sel mu) (h : AutY X R j) : ∃ z, MidLev Ch sel mu cst j P h 1 z :=
   (exists_midLev_iff Ch sel mu cst j P h 1).2 (Subgroup.one_mem _)
 
@@ -205,16 +253,25 @@ variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algeb
   {σ : E →ₐ[F] E} {n : ℕ} {J : Matrix (Fin n) (Fin n) E} {T f : ℕ} {bad : Set (HeightOneSpectrum (𝓞 F))}
   {S : StepLevel F E σ J T f bad} (k : basePts S) (κ : S.U)
 
+/- English proof (translation)
+Use `show x₁.1 * k.1 = x.1 * k.1 * (k.1⁻¹ * κ.1 * k.1)`. Rewrite using `[e]`. Use `group`.
+-/
 theorem mul_toMoved {x x₁ : UPts σ J (FiniteAdeleRing (𝓞 F) F)} (e : x₁.1 = x.1 * κ.1) :
     (x₁ * basePtU k).1 = (x * basePtU k).1 * (toMoved k κ).1 := by
   show x₁.1 * k.1 = x.1 * k.1 * (k.1⁻¹ * κ.1 * k.1)
   rw [e]
   group
 
+/- English proof (translation)
+Use `show Matrix.GeneralLinearGroup.det (k.1⁻¹ * κ.1 * k.1) = _`. Rewrite using `[map_mul, map_mul, map_inv, inv_mul_cancel_comm]`.
+-/
 theorem det_toMoved : Matrix.GeneralLinearGroup.det (toMoved k κ).1 = Matrix.GeneralLinearGroup.det κ.1 := by
   show Matrix.GeneralLinearGroup.det (k.1⁻¹ * κ.1 * k.1) = _
   rw [map_mul, map_mul, map_inv, inv_mul_cancel_comm]
 
+/- English proof (translation)
+Rewrite using `[Subgroup.coe_mul, Subgroup.coe_mul, map_mul, map_mul, e]`.
+-/
 theorem prV_mul_basePt {x x₁ : UPts σ J (FiniteAdeleRing (𝓞 F) F)} (v : HeightOneSpectrum (𝓞 F))
     (e : bc (prV (E := E) v) x₁.1 = bc (prV (E := E) v) x.1) :
     bc (prV (E := E) v) (x₁ * basePtU k).1 = bc (prV (E := E) v) (x * basePtU k).1 := by
@@ -284,6 +341,9 @@ variable (St : StepCharts C i hi)
 
 def y (c : C.cls i) : UPts (sigD D) (gramN D i hi) (FiniteAdeleRing (𝓞 D.host.F) D.host.F) := (St.K (St.chOf c)).y ⟨c, rfl⟩
 
+/- English proof (translation)
+Take `⟨c, rfl⟩` from `c`. Both sides reduce to the same expression.
+-/
 theorem y_eq {β : St.Ch} (c : {c // St.chOf c = β}) : (St.K β).y c = St.y c.1 := by
   obtain ⟨c, rfl⟩ := c
   rfl
@@ -292,6 +352,9 @@ abbrev Base : Type := ∀ β : St.Ch, basePts (St.K β).lev
 
 def move (k : St.Base) : StepCharts C i hi := { St with K := fun β => moveChart (St.K β) (k β) }
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem move_y (k : St.Base) (c : C.cls i) : (St.move k).y c = St.y c * basePtU (k (St.chOf c)) := rfl
 
 end StepCharts
@@ -334,6 +397,9 @@ def FunMoved {ST SG : Finset (HeightOneSpectrum (𝓞 X.E))} (P : ST) (v : Heigh
       (Submodule.span (𝓞 D.host.E) (dualSet (sigD D : D.host.E →+* D.host.E) (gramN D i hi) lev.Lb)),
     (z.1 = fun l => prV (E := D.host.E) v (pullV (F := D.host.F) x (fun a => s.iE (w a)) l)) → d.f P w = ι (lev.fT v h z)
 
+/- English proof (translation)
+Unfold `InFrame NearAt`. Simplify using `using congAt_one (F := D.host.F) (N := D.R.N i) (seamP s P.1) (dep P)`.
+-/
 example (P : SB) : InFrame s fb dep P 1 1 := by
   unfold InFrame NearAt
   simpa using congAt_one (F := D.host.F) (N := D.R.N i) (seamP s P.1) (dep P)
@@ -351,11 +417,19 @@ def IsAdIso {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Al
   (∀ x : E, ι (x ⊗ₜ[F] 1) = algebraMap E _ x) ∧
     ∀ y, y ∈ RInt F E ↔ ∀ P : HeightOneSpectrum (𝓞 E), Valued.v (ι y P) ≤ 1
 
+/- English proof (translation)
+Take `⟨ι, h1, h2, -⟩` from `GlobalTheory.AdeleBaseChange.exists_finiteAdele_baseChange_equiv F E`. Conclude with `⟨ι, h1, h2⟩`.
+-/
 theorem exists_isAdIso (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] :
     ∃ ι : AfE F E ≃+* FiniteAdeleRing (𝓞 E) E, IsAdIso ι := by
   obtain ⟨ι, h1, h2, -⟩ := GlobalTheory.AdeleBaseChange.exists_finiteAdele_baseChange_equiv F E
   exact ⟨ι, h1, h2⟩
 
+/- English proof (translation)
+Take `⟨s, hs, hm⟩` from `h`. Establish `h1` using `(hι.2 _).1 hm P`. Establish `h2 : ι (iA F E (algebraMap (𝓞 E) E s)) = algebraMap E _ (algebraMap (𝓞 E) E s)` using `hι.1 _`. Rewrite `h1` using `[map_mul, h2]`. Establish `h3 : Valued.v ((algebraMap E (FiniteAdeleRing (𝓞 E) E) (algebraMap (𝓞 E) E s)) P) = 1` using `by show Valued.v (((algebraMap (𝓞 E) E s : E)) : P.adicCompletion E) = 1`.
+
+Rewrite using `[HeightOneSpectrum.valuedAdicCompletion_eq_valuation']`. Conclude with `(HeightOneSpectrum.valuation_eq_one_iff_notMem P).2 hs`. Establish `h4 : (algebraMap E (FiniteAdeleRing (𝓞 E) E) (algebraMap (𝓞 E) E s) * ι z) P = (algebraMap E (FiniteAdeleRing (𝓞 E) E) (algebraMap (𝓞 E) E s)) P * ι z P` using `rfl`. Rewrite `h1` using `[h4, map_mul, h3, one_mul]`. Then use the resulting hypothesis.
+-/
 theorem IsAdIso.val_le {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
     {ι : AfE F E ≃+* FiniteAdeleRing (𝓞 E) E} (hι : IsAdIso ι) {P : HeightOneSpectrum (𝓞 E)} {z : AfE F E}
     (h : IntAtA (F := F) P z) : Valued.v (ι z P) ≤ 1 := by
@@ -371,6 +445,11 @@ theorem IsAdIso.val_le {F E : Type} [Field F] [NumberField F] [Field E] [NumberF
       (algebraMap E (FiniteAdeleRing (𝓞 E) E) (algebraMap (𝓞 E) E s)) P * ι z P := rfl
   rwa [h4, map_mul, h3, one_mul] at h1
 
+/- English proof (translation)
+Take `⟨ι, hι⟩` from `exists_isAdIso F E`. Establish `h1` using `hι.val_le (h 0 0)`. Establish `h2 : iA F E (((qOf P : ℕ) : E) ^ n)⁻¹ * (((-1 : GL (Fin 1) (AfE F E)) : Matrix (Fin 1) (Fin 1) (AfE F E)) - 1) 0 0 = iA F E ((((qOf P : ℕ) : E) ^ n)⁻¹ * (-2))`. Rewrite using `[map_mul, map_neg, map_ofNat]`. Use `congr 1`.
+
+Simplify using the standard rewrite rules. Evaluate the numerical expressions. Rewrite `h1` using `[h2, show ι (iA F E ((((qOf P : ℕ) : E) ^ n)⁻¹ * (-2))) = algebraMap E _ ((((qOf P : ℕ) : E) ^ n)⁻¹ * (-2)) from hι.1 _]`. Rewrite using `[← HeightOneSpectrum.valuedAdicCompletion_eq_valuation']`. Conclude with `h1`.
+-/
 example {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (P : HeightOneSpectrum (𝓞 E)) (n : ℕ)
     (h : CongAt (F := F) P n (-1 : GL (Fin 1) (AfE F E))) : P.valuation E ((((qOf P : ℕ) : E) ^ n)⁻¹ * (-2)) ≤ 1 := by
   obtain ⟨ι, hι⟩ := exists_isAdIso F E
@@ -404,6 +483,9 @@ def IsChainTopW (r : KerRead C X) (σ : X.K →+* ℂ) (v : Pr.Word) (m2 : ℕ)
   r.TopPinAt Ch sel mu cst σ v m2 (pt (m2 + 1) le_rfl) yb pT ∧
   (∀ i, i ≤ m2 + 1 → ∀ c, r.pin i c) ∧ ∀ c', r.pin (m2 + 1 + 1) c' ↔ ∃ d, OverRow sel mu v d (pT c')
 
+/- English proof (translation)
+Unfold both sides. The equivalence is reflexive.
+-/
 theorem isChainTop_iff (r : KerRead C X) (σ : X.K →+* ℂ) (v : Pr.Word) (m2 : ℕ) :
     r.IsChainTop Ch sel mu cst L σ v m2 ↔ r.SS = Sall sel mu v ∧ r.lev = levC sel mu cst v ∧
       ∃ pt ix yb pT, IsChainTopW Ch sel mu cst L r σ v m2 pt ix yb pT := Iff.rfl
@@ -415,14 +497,23 @@ variable {D : D7} {L : SizeData₂ D} {hT : GatTies D} {Gi : G.Inst D L} {Gl : G
 
 include μ in
 
+/- English proof (translation)
+The claim follows from `(t.idx_ok μ).hm`.
+-/
 theorem m_eq : D.R.m = t.m2 + 2 := (t.idx_ok μ).hm
 
 include μ in
 
+/- English proof (translation)
+Use `m_eq t μ` as an intermediate fact. Use linear arithmetic over natural numbers and integers.
+-/
 theorem cpl_lt : t.m2 + 1 < D.R.m := by have := m_eq t μ; omega
 
 include μ in
 
+/- English proof (translation)
+Use `m_eq t μ` as an intermediate fact. Use linear arithmetic over natural numbers and integers.
+-/
 theorem top_le : t.m2 + 1 + 1 ≤ D.R.m := by have := m_eq t μ; omega
 
 abbrev SB : Finset (HeightOneSpectrum (𝓞 t.X.E)) := rowSG t.Pr t.sel (t.tup μ)
@@ -432,6 +523,9 @@ def UnderSB (v : HeightOneSpectrum (𝓞 D.host.F)) : Prop := ∃ P ∈ SB t μ,
 def ssRec : Finset (HeightOneSpectrum (𝓞 D.host.E)) :=
   (t.rd u μ).SS.map (HeightOneSpectrum.equivOfRingEquiv (RingOfIntegers.mapRingEquiv t.seam.iE)).toEmbedding
 
+/- English proof (translation)
+The claim follows from `Finset.mem_map' _`.
+-/
 theorem mem_ssRec (P : HeightOneSpectrum (𝓞 t.X.E)) : seamP t.seam P ∈ ssRec t u μ ↔ P ∈ (t.rd u μ).SS :=
   Finset.mem_map' _
 
@@ -552,12 +646,18 @@ structure AdTie : Prop where
 
 variable {A dtU a}
 
+/- English proof (translation)
+Establish `h` using `t.rd_chain u μ`. Take `⟨h1, h2, -⟩` from `h`. Conclude with `(isChainTop_iff _ _ _ _ _ _ _ _ _).2 ⟨h1, h2, ⟨_, _, _, _, H.chain⟩⟩`.
+-/
 theorem AdTie.isChainTop (H : AdTie A dtU a) :
     (t.rd u μ).IsChainTop t.Ch t.sel (t.tup μ) (t.cst μ) (t.idx μ) t.seam.σ₀ (t.word u) t.m2 := by
   have h := t.rd_chain u μ
   obtain ⟨h1, h2, -⟩ := h
   exact (isChainTop_iff _ _ _ _ _ _ _ _ _).2 ⟨h1, h2, ⟨_, _, _, _, H.chain⟩⟩
 
+/- English proof (translation)
+Break down `Nat.lt_or_ge i (t.m2 + 1 + 1) with h | h` into its components or cases. Conclude with `H.chain.1 i (by omega) c`. Take `rfl : i = t.m2 + 1 + 1` from `by have := m_eq t μ; omega`. Conclude with `H.chain.2.2.2.2.1.1 c`.
+-/
 theorem AdTie.N_eq (H : AdTie A dtU a) (i : ℕ) (hi : i ≤ D.R.m) (c : (D.chTw u μ).cls i) :
     (t.rd u μ).N i c = (A.pt i hi c).deco.1.N := by
   rcases Nat.lt_or_ge i (t.m2 + 1 + 1) with h | h
@@ -565,6 +665,9 @@ theorem AdTie.N_eq (H : AdTie A dtU a) (i : ℕ) (hi : i ≤ D.R.m) (c : (D.chTw
   · obtain rfl : i = t.m2 + 1 + 1 := by have := m_eq t μ; omega
     exact H.chain.2.2.2.2.1.1 c
 
+/- English proof (translation)
+Rewrite using `[H.lat i hi c]`. Conclude with `latK_eq_map _ _ _ _ _`.
+-/
 theorem AdTie.latK_eq (H : AdTie A dtU a) (i : ℕ) (hi : i ≤ D.R.m) (c : (D.chTw u μ).cls i) :
     latK D.sp (gramN D i hi) a ((St i hi).y c).1 ((St i hi).K ((St i hi).chOf c)).lev.Lb =
       (t.seam.lat ((t.rd u μ).N i c)).map
@@ -634,6 +737,9 @@ def AdLaw : Prop := ∃ XiAd muT, AdLawAt A dtU a XiAd muT
 
 variable {A dtU a}
 
+/- English proof (translation)
+Introduce `h0`. Establish `h` using `(H.mu_mul i hi).2 x hx x⁻¹ (Subgroup.inv_mem _ hx)`. Rewrite `h` using `[mul_inv_cancel, (H.mu_mul i hi).1, h0, zero_mul]`. Conclude with `one_ne_zero h`.
+-/
 theorem AdLawAt.mu_ne {XiAd : AdDatum St} {muT : ℕ → (AfE D.host.F D.host.E)ˣ → ℂ} (H : AdLawAt A dtU a XiAd muT) {i : ℕ} (hi : i < D.R.m)
     {x : (AfE D.host.F D.host.E)ˣ} (hx : x ∈ U1 (sigD D)) : muT (i + 1) x ≠ 0 := by
   intro h0
@@ -652,6 +758,9 @@ def moveCharts (k : ChainBase St) : ChainCharts D u μ := fun i hi => (St i hi).
 def AdData.unmove {k : ChainBase St} (B : AdData t u μ (moveCharts St k)) : AdData t u μ St :=
   ⟨B.crd, B.iA, B.q, B.pt, B.yb, B.ib, B.fb, B.y0⟩
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fun h => { h with }, fun h => { h with }⟩`.
+-/
 theorem AdPins.unmove_iff {k : ChainBase St} (B : AdData t u μ (moveCharts St k)) : AdPins B.unmove dtU ↔ AdPins B dtU :=
   ⟨fun h => { h with }, fun h => { h with }⟩
 
@@ -713,11 +822,17 @@ def AdLawB (k : ChainBase St) : Prop := ∃ XiAd muT, AdLawAtB A dtU a k XiAd mu
 
 variable {A dtU a}
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fun h => { h with mu_cls := fun i hi j hj c => by simpa using h.mu_cls i hi j hj c }, fun h => { h with mu_cls := fun i hi j hj c => by simpa using h.mu_cls i hi j hj c }⟩`.
+-/
 theorem adLawAtB_one_iff {XiAd : AdDatum St} {muT : ℕ → (AfE D.host.F D.host.E)ˣ → ℂ} :
     AdLawAtB A dtU a (fun _ _ _ => 1) XiAd muT ↔ AdLawAt A dtU a XiAd muT :=
   ⟨fun h => { h with mu_cls := fun i hi j hj c => by simpa using h.mu_cls i hi j hj c },
     fun h => { h with mu_cls := fun i hi j hj c => by simpa using h.mu_cls i hi j hj c }⟩
 
+/- English proof (translation)
+Unfold `latK`. Rewrite using `[latAd_basePt]`.
+-/
 theorem latK_basePt {i : ℕ} {hi : i ≤ D.R.m} {β : (St i hi).Ch} (k : basePts ((St i hi).K β).lev)
     (x : GL (Fin (D.R.N i)) (D.host.E ⊗[D.host.F] FiniteAdeleRing (𝓞 D.host.F) D.host.F)) :
     latK D.sp (gramN D i hi) a (x * k.1) ((St i hi).K β).lev.Lb = latK D.sp (gramN D i hi) a x ((St i hi).K β).lev.Lb := by
@@ -726,6 +841,9 @@ theorem latK_basePt {i : ℕ} {hi : i ≤ D.R.m} {β : (St i hi).Ch} (k : basePt
 
 set_option maxHeartbeats 1000000 in
 
+/- English proof (translation)
+The claim follows from `H.read rat i hi β β' x x' x₁ x₁' γ hγ γ' hγ' e e' := H.rat i hi β β' _ _ _ _ γ hγ γ' hγ' ((congrArg (· * (k i _ β).1) e).trans (mul_assoc _ _ _)) ((congrArg (· * (k (i + 1) hi β').1) e').trans (mul_assoc _ _ _)) lev i hi β β' x x' x₁ x₁' κ κ' e e' z := by have h := H.lev i hi β β …`.
+-/
 theorem AdLawAt.unmove {k : ChainBase St} {B : AdData t u μ (moveCharts St k)} {Xi : AdDatum (moveCharts St k)}
     {muT : ℕ → (AfE D.host.F D.host.E)ˣ → ℂ} (H : AdLawAt B dtU a Xi muT) : AdLawAtB B.unmove dtU a k Xi.unmove muT where
   read := H.read
@@ -752,10 +870,16 @@ theorem AdLawAt.unmove {k : ChainBase St} {B : AdData t u μ (moveCharts St k)} 
   mu_unr := H.mu_unr
   mu_rat := H.mu_rat
 
+/- English proof (translation)
+The claim follows from `let ⟨_, _, h⟩ := H ⟨_, _, h.unmove⟩`.
+-/
 theorem AdLaw.unmove {k : ChainBase St} {B : AdData t u μ (moveCharts St k)} (H : AdLaw B dtU a) : AdLawB B.unmove dtU a k :=
   let ⟨_, _, h⟩ := H
   ⟨_, _, h.unmove⟩
 
+/- English proof (translation)
+The claim follows from `H.dt i hi c y h`.
+-/
 example {k : ChainBase St} {B : AdData t u μ (moveCharts St k)} (H : AdTie B dtU a) (i : ℕ) (hi : i ≤ D.R.m) (c : (D.chTw u μ).cls i)
     (y : Formalism.L2.Herm.unitaryOneFiniteAdeles D.sp.cm)
     (h : Matrix.GeneralLinearGroup.det y.1 = Matrix.GeneralLinearGroup.det (((St i hi).y c).1 * (k i hi ((St i hi).chOf c)).1)) :

@@ -17,34 +17,61 @@ variable {K : Type} [Field K] [NumberField K] {m : ℕ}
 local notation "φ" => (MvPolynomial.map (algebraMap (𝓞 K) K) : MvPolynomial (Fin m) (𝓞 K) →+* MvPolynomial (Fin m) K)
 local notation "CC" => (C : 𝓞 K →+* MvPolynomial (Fin m) (𝓞 K))
 
+/- English proof (translation)
+Rewrite using `[Set.disjoint_left]`. Introduce and unpack `_ ⟨a, ha, rfl⟩ hW`. Conclude with `nonZeroDivisors.ne_zero ha (Ideal.mem_bot.1 (h ▸ (show a ∈ W.comap CC from hW)))`.
+-/
 theorem disjoint_of_bot {W : Ideal (MvPolynomial (Fin m) (𝓞 K))} (h : W.comap CC = ⊥) :
     Disjoint (((nonZeroDivisors (𝓞 K)).map CC : Submonoid _) : Set (MvPolynomial (Fin m) (𝓞 K))) W := by
   rw [Set.disjoint_left]
   rintro _ ⟨a, ha, rfl⟩ hW
   exact nonZeroDivisors.ne_zero ha (Ideal.mem_bot.1 (h ▸ (show a ∈ W.comap CC from hW)))
 
+/- English proof (translation)
+The claim follows from `IsLocalization.under_map_of_isPrime_disjoint ((nonZeroDivisors (𝓞 K)).map CC) (MvPolynomial (Fin m) K) hW (disjoint_of_bot h)`.
+-/
 theorem comap_map {W : Ideal (MvPolynomial (Fin m) (𝓞 K))} (hW : W.IsPrime) (h : W.comap CC = ⊥) :
     (W.map φ).comap φ = W :=
   IsLocalization.under_map_of_isPrime_disjoint ((nonZeroDivisors (𝓞 K)).map CC) (MvPolynomial (Fin m) K) hW
     (disjoint_of_bot h)
 
+/- English proof (translation)
+The claim follows from `IsLocalization.isPrime_of_isPrime_disjoint ((nonZeroDivisors (𝓞 K)).map CC) (MvPolynomial (Fin m) K) W hW (disjoint_of_bot h)`.
+-/
 theorem isPrime_map {W : Ideal (MvPolynomial (Fin m) (𝓞 K))} (hW : W.IsPrime) (h : W.comap CC = ⊥) :
     (W.map φ).IsPrime :=
   IsLocalization.isPrime_of_isPrime_disjoint ((nonZeroDivisors (𝓞 K)).map CC) (MvPolynomial (Fin m) K) W hW
     (disjoint_of_bot h)
 
+/- English proof (translation)
+The claim follows from `IsLocalization.map_under ((nonZeroDivisors (𝓞 K)).map CC) (MvPolynomial (Fin m) K) W`.
+-/
 theorem map_comap (W : Ideal (MvPolynomial (Fin m) K)) : (W.comap φ).map φ = W :=
   IsLocalization.map_under ((nonZeroDivisors (𝓞 K)).map CC) (MvPolynomial (Fin m) K) W
 
+/- English proof (translation)
+Use `le_bot_iff.1 fun a ha => ?_` and prove the remaining obligations. Assume the negation of the conclusion as `h0`. Rewrite `ha` using `[Ideal.mem_comap, Ideal.mem_comap, map_C]`. Conclude with `hW (W.eq_top_of_isUnit_mem ha ((IsUnit.mk0 _ (by simpa using h0)).map C))`.
+-/
 theorem comap_bot {W : Ideal (MvPolynomial (Fin m) K)} (hW : W ≠ ⊤) : (W.comap φ).comap CC = ⊥ := by
   refine le_bot_iff.1 fun a ha => ?_
   by_contra h0
   rw [Ideal.mem_comap, Ideal.mem_comap, map_C] at ha
   exact hW (W.eq_top_of_isUnit_mem ha ((IsUnit.mk0 _ (by simpa using h0)).map C))
 
+/- English proof (translation)
+Simplify using `[linForm]`.
+-/
 theorem map_linForm (u : Fin m → 𝓞 K) : φ (linForm u) = linForm fun j => (u j : K) := by
   simp [linForm]
 
+/- English proof (translation)
+Use `⟨isPrime_map hW.isPrime h, ?_, (isRelevant_comap_map_iff _ _).1 ((comap_map hW.isPrime h).symm ▸ hW.isRelevant)⟩` and prove the remaining obligations. Introduce `f hf d`. Use `Submodule.span_induction (p := fun f _ => ∀ d, homogeneousComponent d f ∈ W.map φ) ?_ (by simp) (fun a b _ _ ha hb d => by rw [map_add]; exact Ideal.add_mem _ (ha d) (hb d)) ?_ hf d` and prove the remaining obligations. Introduce and unpack `_ ⟨g, hg, rfl⟩ d`. Establish `e : homogeneousComponent d (φ g) = φ (homogeneousComponent d g)`.
+
+Use extensionality with `n`. Rewrite using `[coeff_homogeneousComponent, coeff_map, coeff_map, coeff_homogeneousComponent]`. Apply the tactic sequence `split_ifs <;> simp`. Rewrite using `[e]`. Conclude with `Ideal.mem_map_of_mem _ (hW.isHomog g hg d)`.
+
+Introduce `a b _ hb d`. Rewrite using `[smul_eq_mul, ← b.sum_homogeneousComponent, ← a.sum_homogeneousComponent, Finset.sum_mul_sum, map_sum]`. Use `Ideal.sum_mem _ fun i _ => ?_` and prove the remaining obligations. Rewrite using `[map_sum]`. Use `Ideal.sum_mem _ fun j _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[homogeneousComponent_of_mem ((homogeneousComponent_isHomogeneous i a).mul (homogeneousComponent_isHomogeneous j b))]`. Use `split_ifs`. Conclude with `Ideal.mul_mem_left _ _ (hb j)`. Conclude with `Ideal.zero_mem _`.
+-/
 theorem isProjPrime_map {W : Ideal (MvPolynomial (Fin m) (𝓞 K))} (hW : IsProjPrime W) (h : W.comap CC = ⊥) :
     IsProjPrime (W.map φ) := by
   refine ⟨isPrime_map hW.isPrime h, ?_, (isRelevant_comap_map_iff _ _).1 ((comap_map hW.isPrime h).symm ▸ hW.isRelevant)⟩
@@ -69,6 +96,9 @@ theorem isProjPrime_map {W : Ideal (MvPolynomial (Fin m) (𝓞 K))} (hW : IsProj
     · exact Ideal.mul_mem_left _ _ (hb j)
     · exact Ideal.zero_mem _
 
+/- English proof (translation)
+Use `hW.1.1.1` as an intermediate fact. Take `⟨W', h1, h2, h3, h4⟩` from `A.exists_core W`. Establish `e : W' = W` using `le_antisymm h3 (hW.1.2 ⟨h1, fun g hg => h4 g fun d => hW.1.1.2 (hJ g hg d)⟩ h3)`. Conclude with `⟨this, e ▸ h2, hW.2⟩`.
+-/
 theorem isProjPrime_of_relComps {R : Type} [CommRing R] {J W : Ideal (MvPolynomial (Fin m) R)} (hJ : IsHomogIdeal J)
     (hW : W ∈ relComps J) : IsProjPrime W := by
   have := hW.1.1.1
@@ -76,11 +106,17 @@ theorem isProjPrime_of_relComps {R : Type} [CommRing R] {J W : Ideal (MvPolynomi
   have e : W' = W := le_antisymm h3 (hW.1.2 ⟨h1, fun g hg => h4 g fun d => hW.1.1.2 (hJ g hg d)⟩ h3)
   exact ⟨this, e ▸ h2, hW.2⟩
 
+/- English proof (translation)
+Establish `h` using `IsLocalization.minimalPrimes_map ((nonZeroDivisors (𝓞 K)).map CC) (MvPolynomial (Fin m) K) J`. Conclude with `and_congr (Set.ext_iff.1 h W) (isRelevant_comap_map_iff _ _).symm`.
+-/
 theorem mem_relComps_map {J : Ideal (MvPolynomial (Fin m) (𝓞 K))} {W : Ideal (MvPolynomial (Fin m) K)} :
     W ∈ relComps (J.map φ) ↔ W.comap φ ∈ relComps J := by
   have h := IsLocalization.minimalPrimes_map ((nonZeroDivisors (𝓞 K)).map CC) (MvPolynomial (Fin m) K) J
   exact and_congr (Set.ext_iff.1 h W) (isRelevant_comap_map_iff _ _).symm
 
+/- English proof (translation)
+Use `A.localMult_map φ W J (fun b => ?_) ?_` and prove the remaining obligations. Take `⟨⟨a, s⟩, e⟩` from `IsLocalization.surj ((nonZeroDivisors (𝓞 K)).map CC) b`. Conclude with `⟨a, s, fun h => hW.ne_top (W.eq_top_of_isUnit_mem h (IsLocalization.map_units (MvPolynomial (Fin m) K) s)), e⟩`. Rewrite using `[(RingHom.injective_iff_ker_eq_bot _).1 (map_injective _ (FaithfulSMul.algebraMap_injective (𝓞 K) K))]`. Conclude with `bot_le`.
+-/
 theorem localMult_map' (J : Ideal (MvPolynomial (Fin m) (𝓞 K))) (W : Ideal (MvPolynomial (Fin m) K)) [hW : W.IsPrime] :
     localMult (J.map φ) W = localMult J (W.comap φ) := by
   refine A.localMult_map φ W J (fun b => ?_) ?_
@@ -94,6 +130,17 @@ variable {P : Ideal (MvPolynomial (Fin m) (𝓞 K))} {u : Fin m → 𝓞 K} {ι 
   {Pt : ι → Ideal (MvPolynomial (Fin m) (𝓞 K))} {μ : ι → ℤ}
 
 open Classical in
+/- English proof (translation)
+Establish `hI : integralModel (P.map φ) = P` using `comap_map hP h0`. Establish `h1 (v : HeightOneSpectrum (𝓞 K)) : vertTermAt (P.map φ) k u v = ∑ z ∈ S, if (Pt z).comap CC = v.asIdeal then (μ z : ℝ) * g z else 0`. Establish `e : vertComps (P.map φ) u v = Pt '' (S.filter fun z => (Pt z).comap CC = v.asIdeal : Finset ι)`. Use extensionality with `W`. Simplify using `only [vertComps, hI, hS, Set.mem_ofPred_eq, Set.mem_image, Finset.coe_filter]`.
+
+Conclude with `⟨fun ⟨⟨z, hz, e⟩, h⟩ => ⟨z, ⟨hz, e ▸ h⟩, e⟩, fun ⟨z, ⟨hz, h⟩, e⟩ => ⟨⟨z, hz, e⟩, e ▸ h⟩⟩`. Rewrite using `[vertTermAt, e, finsum_mem_image hi.injOn, finsum_mem_coe_finset, ← Finset.sum_filter, hI]`. Use `Finset.sum_congr rfl fun z hz => ?_` and prove the remaining obligations. Rewrite `hz` using `[Finset.mem_filter]`. Rewrite using `[hμ z hz.1, hg z hz.1 v hz.2, Int.cast_natCast, mul_assoc]`.
+
+Rewrite using `[vertTerm, finsum_congr h1, finsum_sum_comm, Finset.sum_filter]`. Use `Finset.sum_congr rfl fun z hz => ?_` and prove the remaining obligations. Establish `hp : (Pt z).IsPrime` using `((hS _).2 ⟨z, hz, rfl⟩).1.1.1`. Use `split_ifs with h`. Use `(finsum_eq_single _ ⟨(Pt z).comap CC, Ideal.comap_isPrime _ _, h⟩ fun v hv => if_neg fun e => hv ?_).trans (if_pos rfl)` and prove the remaining obligations.
+
+Conclude with `HeightOneSpectrum.ext e.symm`. Conclude with `finsum_eq_zero_of_forall_eq_zero fun v => if_neg fun (e : (Pt z).comap CC = v.asIdeal) => h fun e' => v.ne_bot (e.symm.trans e')`. Introduce `z _`. Use `Set.Subsingleton.finite fun v hv w hw => HeightOneSpectrum.ext ?_` and prove the remaining obligations. Establish `h1 : (Pt z).comap CC = v.asIdeal` using `by by_contra h; exact hv (if_neg h)`.
+
+Establish `h2 : (Pt z).comap CC = w.asIdeal` using `by by_contra h; exact hw (if_neg h)`. Conclude with `h1.symm.trans h2`.
+-/
 theorem vertTerm_eq (hP : P.IsPrime) (h0 : P.comap CC = ⊥) (hi : Function.Injective Pt)
     (hS : ∀ W, W ∈ relComps (P ⊔ Ideal.span {linForm u}) ↔ ∃ z ∈ S, Pt z = W)
     (hμ : ∀ z ∈ S, μ z = localMult (P ⊔ Ideal.span {linForm u}) (Pt z)) (k : ℕ) (g : ι → ℝ)
@@ -127,6 +174,17 @@ theorem vertTerm_eq (hP : P.IsPrime) (h0 : P.comap CC = ⊥) (hi : Function.Inje
     exact h1.symm.trans h2
 
 open Classical in
+/- English proof (translation)
+Establish `hJ : P.map φ ⊔ Ideal.span {linForm fun j => (u j : K)} = (P ⊔ Ideal.span {linForm u}).map φ`. Rewrite using `[Ideal.map_sup, Ideal.map_span, Set.image_singleton, map_linForm]`. Establish `hp (z) (hz : z ∈ S) : (Pt z).IsPrime` using `((hS _).2 ⟨z, hz, rfl⟩).1.1.1`. Establish `hval (z) (hz : z ∈ S) (h : (Pt z).comap CC = ⊥) : ((divCycle (P.map φ) fun j => (u j : K)) ((Pt z).map φ) : ℤ) = μ z`. Use `isPrime_map (hp z hz) h` as an intermediate fact.
+
+Rewrite using `[divCycle, hJ, fundCycle_apply, if_pos (mem_relComps_map.2 (by`. Rewrite using `[comap_map (hp z hz) h]`. Conclude with `(hS _).2 ⟨z, hz, rfl⟩)), localMult_map', comap_map (hp z hz) h, hμ z hz]`. Establish `hmem (z) (hz : z ∈ S) (h : (Pt z).comap CC = ⊥) : (Pt z).map φ ∈ (divCycle (P.map φ) fun j => (u j : K)).support` using `Finsupp.mem_support_iff.2 fun e => hμ0 z hz ((hval z hz h).symm.trans (by rw [e]; rfl))`. Use `⟨hmem, fun F => (Finset.sum_bij (fun z _ => (Pt z).map φ) (fun z hz => ?_) (fun z hz z' hz' e => ?_) (fun W hW => ?_) fun z hz => ?_).symm⟩` and prove the remaining obligations.
+
+Rewrite `hz` using `[Finset.mem_filter]`. Conclude with `hmem z hz.1 hz.2`. Rewrite `hz`, `hz'` using `[Finset.mem_filter]`. Conclude with `hi ((comap_map (hp z hz.1) hz.2).symm.trans ((congrArg _ e).trans (comap_map (hp z' hz'.1) hz'.2)))`. Establish `h1 : W ∈ relComps ((P ⊔ Ideal.span {linForm u}).map φ)`.
+
+Assume the negation of the conclusion as `hn`. Use `Finsupp.mem_support_iff.1 hW ?_` and prove the remaining obligations. Rewrite using `[divCycle, hJ, fundCycle_apply, if_neg hn]`. Take `⟨z, hz, e⟩` from `(hS _).1 (mem_relComps_map.1 h1)`. Conclude with `⟨z, Finset.mem_filter.2 ⟨hz, e ▸ comap_bot h1.1.1.1.ne_top⟩, by rw [e, map_comap]⟩`.
+
+Rewrite `hz` using `[Finset.mem_filter]`. Rewrite using `[← hval z hz.1 hz.2, Int.cast_natCast]`.
+-/
 theorem divCycle_eq (hi : Function.Injective Pt)
     (hS : ∀ W, W ∈ relComps (P ⊔ Ideal.span {linForm u}) ↔ ∃ z ∈ S, Pt z = W)
     (hμ : ∀ z ∈ S, μ z = localMult (P ⊔ Ideal.span {linForm u}) (Pt z)) (hμ0 : ∀ z ∈ S, μ z ≠ 0) :

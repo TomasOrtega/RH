@@ -12,12 +12,18 @@ noncomputable section
 
 namespace GlobalTheory.TypeProductCover
 
+/- English proof (translation)
+Apply `D.host.φ₀.injective` to reduce the goal to its premises. Use `D.host.isCMField_hostE` as an intermediate fact. Conclude with `(IsCMField.complexEmbedding_complexConj _ D.host.φ₀ x).trans (D.host.conjE_apply D.host.φ₀ x).symm`.
+-/
 theorem star_eq_conj (D : D7) (x : D.host.E) : star x = D.host.conj x := by
   apply D.host.φ₀.injective
   have := D.host.isCMField_hostE
   exact (IsCMField.complexEmbedding_complexConj _ D.host.φ₀ x).trans
     (D.host.conjE_apply D.host.φ₀ x).symm
 
+/- English proof (translation)
+Introduce `c hc` and use `⟨RingOfIntegers.mapRingHom (D.host.conj : D.host.E →+* D.host.E) c, (h c _ rfl).1 hc, by show D.host.conj (c : D.host.E) = star (c : D.host.E) rw [star_eq_conj]⟩`.
+-/
 theorem lev_of_isConjPl (D : D7) {P P' : Formalism.L2.DIV.Pl D.host.E} (h : Formalism.BasicNotions.IsConjPl D.host P P') :
     Formalism.IndefR.Lev.IsConjPl P P' := fun c hc =>
   ⟨RingOfIntegers.mapRingHom (D.host.conj : D.host.E →+* D.host.E) c,
@@ -25,6 +31,15 @@ theorem lev_of_isConjPl (D : D7) {P P' : Formalism.L2.DIV.Pl D.host.E} (h : Form
       show D.host.conj (c : D.host.E) = star (c : D.host.E)
       rw [star_eq_conj]⟩
 
+/- English proof (translation)
+Introduce `D Pg plg hplg PP hPP`. Establish `hmul : ((D.host.g 0 : ℕ) : 𝓞 D.host.E) * ((D.host.g 1 : ℕ) : 𝓞 D.host.E) ∈ PP.asIdeal`. Rewrite using `[← Nat.cast_mul]`. Conclude with `hPP`. Establish `hk : ∃ k : Fin 2, PP ∈ placesOver D.host.E (D.host.g k)`.
+
+Break down `PP.isPrime.mem_or_mem hmul with h | h` into its components or cases. Conclude with `⟨0, h⟩`. Conclude with `⟨1, h⟩`. Take `⟨k, hk⟩` from `hk`. Take `⟨v, hv | hv⟩` from `GlobalTheory.TypePlaceCover.place_cover D k PP hk`.
+
+Use `left`. Rewrite using `[hv, ← hplg ⟨k, v⟩]`. Conclude with `(plg ⟨k, v⟩).2`. Use `right`. Use `⟨(plg ⟨k, v⟩ : Formalism.L2.DIV.Pl D.host.E), (plg ⟨k, v⟩).2, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[hplg ⟨k, v⟩]`. Conclude with `lev_of_isConjPl D hv`.
+-/
 theorem place_cover_prod : ∀ (D : D7) (Pg : Finset (Formalism.L2.DIV.Pl D.host.E)) (plg : (Σ k : Fin 2, D.nd.PlG k) ≃ ↥Pg),
     (∀ kv, ((plg kv : ↥Pg) : Formalism.L2.DIV.Pl D.host.E) = D.naut.plGw kv.1 kv.2) →
     ∀ PP : Formalism.L2.DIV.Pl D.host.E, ((D.host.g 0 * D.host.g 1 : ℕ) : 𝓞 D.host.E) ∈ PP.asIdeal →

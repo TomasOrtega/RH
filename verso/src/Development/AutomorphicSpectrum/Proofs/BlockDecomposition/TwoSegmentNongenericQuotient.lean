@@ -13,6 +13,9 @@ namespace GlobalTheory.CompanionTheory.BZSeg.TwoSeg
 variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
   {N : ℕ} {V W : Type} [AddCommGroup V] [Module ℂ V] [AddCommGroup W] [Module ℂ W]
 
+/- English proof (translation)
+Introduce and unpack `_ ⟨w, rfl⟩`. Conclude with `⟨σ g w, Representation.IntertwiningMap.isIntertwining _ _ f g w⟩`.
+-/
 theorem range_le_comap (π : Representation ℂ (GL (Fin N) k) V) (σ : Representation ℂ (GL (Fin N) k) W)
     (f : σ.IntertwiningMap π) (g : GL (Fin N) k) :
     LinearMap.range f.toLinearMap ≤ (LinearMap.range f.toLinearMap).comap (π g) := by
@@ -25,10 +28,18 @@ def quotRep (π : Representation ℂ (GL (Fin N) k) V) (σ : Representation ℂ 
   map_one' := by ext v; simp
   map_mul' a b := by ext v; simp
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem quotRep_mk (π : Representation ℂ (GL (Fin N) k) V) (σ : Representation ℂ (GL (Fin N) k) W)
     (f : σ.IntertwiningMap π) (g : GL (Fin N) k) (v : V) :
     quotRep π σ f g ((LinearMap.range f.toLinearMap).mkQ v) = (LinearMap.range f.toLinearMap).mkQ (π g v) := rfl
 
+/- English proof (translation)
+Establish `hle : twKer π U θ ≤ (twKer (quotRep π σ f) U θ).comap (LinearMap.range f.toLinearMap).mkQ`. Use `Submodule.span_le.2 ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨n, u, rfl⟩`. Use `Submodule.subset_span ⟨n, (LinearMap.range f.toLinearMap).mkQ u, ?_⟩` and prove the remaining obligations. Simplify using `only [LinearMap.map_sub, LinearMap.map_smul]`.
+
+Both sides reduce to the same expression. Conclude with `hle hv`.
+-/
 theorem mkQ_mem_twKer (π : Representation ℂ (GL (Fin N) k) V) (σ : Representation ℂ (GL (Fin N) k) W)
     (f : σ.IntertwiningMap π) (U : Subgroup (GL (Fin N) k)) (θ : U →* ℂˣ) {v : V} (hv : v ∈ twKer π U θ) :
     (LinearMap.range f.toLinearMap).mkQ v ∈ twKer (quotRep π σ f) U θ := by
@@ -40,6 +51,11 @@ theorem mkQ_mem_twKer (π : Representation ℂ (GL (Fin N) k) V) (σ : Represent
     rfl
   exact hle hv
 
+/- English proof (translation)
+Introduce `w`. Establish `: {g : GL (Fin N) k | σ g w = w} = {g | π g (f w) = f w}`. Use extensionality with `g`. Simplify using `only [Set.mem_setOf_eq]`. Rewrite using `[← Representation.IntertwiningMap.isIntertwining _ _ f g w, hf.eq_iff]`.
+
+Rewrite using `[this]`. Conclude with `hπ _`.
+-/
 theorem isSmooth_of_injective (π : Representation ℂ (GL (Fin N) k) V) (σ : Representation ℂ (GL (Fin N) k) W)
     (f : σ.IntertwiningMap π) (hf : Function.Injective f) (hπ : IsSmooth π) : IsSmooth σ := by
   intro w
@@ -50,6 +66,17 @@ theorem isSmooth_of_injective (π : Representation ℂ (GL (Fin N) k) V) (σ : R
   rw [this]
   exact hπ _
 
+/- English proof (translation)
+Rewrite `hσ`, the goal using `[isGeneric_iff_isGenericFor hψ h1]`. Establish `hσs` using `isSmooth_of_injective π σ f hf hπ`. Unfold `IsGenericFor at hσ ⊢`. Rewrite using `[not_nontrivial_iff_subsingleton]`. Take `⟨q, hq⟩` from `exists_ne (0 : TwJacquet σ (unipB k (Fin N)) (whitChar ψ N))`.
+
+Take `⟨w, rfl⟩` from `Submodule.Quotient.mk_surjective _ q`. Establish `hw : w ∉ twKer σ (unipB k (Fin N)) (whitChar ψ N)` using `fun h => hq ((Submodule.Quotient.mk_eq_zero _).2 h)`. Establish `hfw : f w ∉ twKer π (unipB k (Fin N)) (whitChar ψ N)` using `fun h => hw (GlobalTheory.CompanionTheory.PRep.WhitExact.twKer_whitChar_reflect k ψ hψ N σ π hσs hπ f.toLinearMap hf (fun g v => Representation.IntertwiningMap.isIntertwining _ _ f g v) w h)`. Take `⟨e, he⟩` from `rank_le_one_iff.1 hr`. Use `subsingleton_of_forall_eq 0 fun t => ?_` and prove the remaining obligations.
+
+Take `⟨t, rfl⟩` from `Submodule.Quotient.mk_surjective _ t`. Take `⟨v, rfl⟩` from `Submodule.Quotient.mk_surjective _ t`. Use `(Submodule.Quotient.mk_eq_zero _).2 ?_` and prove the remaining obligations. Take `⟨a, ha⟩` from `he (Submodule.Quotient.mk (f w))`. Take `⟨b, hb⟩` from `he (Submodule.Quotient.mk v)`.
+
+Establish `ha0 : a ≠ 0`. Introduce and unpack `rfl`. Conclude with `hfw ((Submodule.Quotient.mk_eq_zero _).1 (by rw [← ha, zero_smul]))`. Establish `hk : v - (b / a) • f w ∈ twKer π (unipB k (Fin N)) (whitChar ψ N)`. Use `(Submodule.Quotient.mk_eq_zero _).1 ?_` and prove the remaining obligations.
+
+Rewrite using `[Submodule.Quotient.mk_sub, Submodule.Quotient.mk_smul, ← ha, ← hb, smul_smul, div_mul_cancel₀ _ ha0, sub_self]`. Establish `h2` using `mkQ_mem_twKer π σ f _ _ hk`. Establish `h3 : (LinearMap.range f.toLinearMap).mkQ (f w) = 0` using `(Submodule.Quotient.mk_eq_zero _).2 ⟨w, rfl⟩`. Rewrite `h2` using `[map_sub, map_smul, h3, smul_zero, sub_zero]`. Conclude with `h2`.
+-/
 theorem not_isGeneric_quotRep {ψ : AddChar k Circle} (hψ : Continuous ψ) (h1 : ψ ≠ 1)
     (π : Representation ℂ (GL (Fin N) k) V) (σ : Representation ℂ (GL (Fin N) k) W)
     (f : σ.IntertwiningMap π) (hf : Function.Injective f) (hπ : IsSmooth π)
@@ -86,6 +113,11 @@ theorem not_isGeneric_quotRep {ψ : AddChar k Circle} (hψ : Continuous ψ) (h1 
   rw [map_sub, map_smul, h3, smul_zero, sub_zero] at h2
   exact h2
 
+/- English proof (translation)
+Use `⟨V ⧸ LinearMap.range f.toLinearMap, inferInstance, inferInstance, quotRep π σ f, ⟨(LinearMap.range f.toLinearMap).mkQ, fun g => ?_⟩, ?_, ?_, not_isGeneric_quotRep hψ h1 π σ f hf hπ hr hσ⟩` and prove the remaining obligations. Use extensionality with `v`. Both sides reduce to the same expression. Conclude with `Submodule.mkQ_surjective _`. Use `Submodule.Quotient.nontrivial_iff.2 fun h => hns ?_` and prove the remaining obligations.
+
+Conclude with `LinearMap.range_eq_top.1 h`.
+-/
 theorem exists_nonGeneric_quot {ψ : AddChar k Circle} (hψ : Continuous ψ) (h1 : ψ ≠ 1)
     (π : Representation ℂ (GL (Fin N) k) V) (σ : Representation ℂ (GL (Fin N) k) W)
     (f : σ.IntertwiningMap π) (hf : Function.Injective f) (hns : ¬ Function.Surjective f) (hπ : IsSmooth π)
@@ -107,6 +139,9 @@ open GlobalTheory.CompanionTheory.BZSeg.TwoSeg
 
 set_option maxHeartbeats 3000000 in
 
+/- English proof (translation)
+Introduce `Δ Δ' x y N hd hpre hx hy`. Take `⟨W, _, _, σ, f, hinj, hns, hgen⟩` from `hsub Δ Δ' x y N hd hpre hx hy`. Conclude with `exists_nonGeneric_quot hψ h1 _ σ f hinj hns (isSmooth_prodIrr _ hd) (hrank ψ hψ h1 Δ Δ' x y N hd hx hy) hgen`.
+-/
 theorem twoSegNonGenQuot_of_char {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k]
     [IsNonarchimedeanLocalField k] {ψ : AddChar k Circle} (hψ : Continuous ψ) (h1 : ψ ≠ 1)
     (hsub : GlobalTheory.BZSeg.TwoSegGenericSub k) (hrank : GlobalTheory.BZSeg.WhitRankTwoSeg k) : GlobalTheory.BZSeg.TwoSegNonGenQuot k := by
@@ -114,6 +149,9 @@ theorem twoSegNonGenQuot_of_char {k : Type} [Field k] [ValuativeRel k] [Topologi
   obtain ⟨W, _, _, σ, f, hinj, hns, hgen⟩ := hsub Δ Δ' x y N hd hpre hx hy
   exact exists_nonGeneric_quot hψ h1 _ σ f hinj hns (isSmooth_prodIrr _ hd) (hrank ψ hψ h1 Δ Δ' x y N hd hx hy) hgen
 
+/- English proof (translation)
+Introduce `k _ _ _ _ hsub hrank`. Take `⟨ψ, hψ, h1⟩` from `exists_continuous_addChar_ne_one k`. Conclude with `twoSegNonGenQuot_of_char hψ h1 hsub hrank`.
+-/
 theorem twoSegNonGenQuot : ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k],
     GlobalTheory.BZSeg.TwoSegGenericSub k → GlobalTheory.BZSeg.WhitRankTwoSeg k → GlobalTheory.BZSeg.TwoSegNonGenQuot k := by
   intro k _ _ _ _ hsub hrank

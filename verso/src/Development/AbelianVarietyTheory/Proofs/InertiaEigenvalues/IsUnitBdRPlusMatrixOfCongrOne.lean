@@ -11,6 +11,21 @@ noncomputable section
 
 namespace GlobalTheory.BKLim.UnitFil
 
+/- English proof (translation)
+Introduce `l _ K bk d k β B h1 h2`. Take `⟨-, hker, hunit, haD, -⟩` from `GlobalTheory.MemLoc.thetaD_props l`. Establish `hE : Per.θ l (bk.ev bk.E) = 0`. Establish `: bk.ev bk.E ∈ RingHom.ker (Per.θ l)` using `bk.span_ev ▸ Ideal.mem_span_singleton_self _`. Conclude with `this`.
+
+Establish `hl0 : ((l : ℂ_[l]) ^ k) ≠ 0` using `pow_ne_zero _ (Nat.cast_ne_zero.2 (Fact.out : l.Prime).ne_zero)`. Establish `hB : ∀ i j, Per.θD l (B i j) = (1 : Matrix (Fin d) (Fin d) ℂ_[l]) i j`. Introduce `i j`. Establish `ha` using `(hker _).2 (h2 i j)`. Take `⟨c, hc⟩` from `h1 i j`.
+
+Establish `hb : bk.ev (β i j) = (l : Ainf l) ^ k * bk.ev ((1 : Matrix (Fin d) (Fin d) bk.S) i j) + bk.ev bk.E * bk.ev c`. Establish `: β i j = (l : bk.S) ^ k * (1 : Matrix (Fin d) (Fin d) bk.S) i j + bk.E * c`. Rewrite using `[← hc]`. Simplify using `[Matrix.sub_apply, Matrix.smul_apply]`. Rewrite using `[this, map_add, map_mul, map_mul, map_pow, map_natCast]`.
+
+Rewrite `ha` using `[map_sub, haD, hb, map_add, map_mul, map_mul, hE, zero_mul, add_zero, map_mul]`. Simplify using `only [map_pow, map_natCast] at ha`. Distinguish the cases in `hij : i = j`. Substitute `hij` using the available equality. Simplify using `only [Matrix.one_apply_eq, map_one, mul_one] at ha ⊢`.
+
+Establish `ha' : ((l : ℂ_[l]) ^ k) * Per.θD l (B i i) = (l : ℂ_[l]) ^ k * 1`. Rewrite using `[mul_one]`. Move the coercions through the operations in `at ha`. Take the linear combination `-ha`. Conclude with `mul_left_cancel₀ hl0 ha'`.
+
+Simplify using `only [Matrix.one_apply_ne hij, map_zero, mul_zero] at ha ⊢`. Move the coercions through the operations in `at ha`. Establish `ha' : ((l : ℂ_[l]) ^ k) * Per.θD l (B i j) = 0` using `by linear_combination -ha`. Conclude with `(mul_eq_zero.1 ha').resolve_left hl0`. Establish `hmap : B.map (Per.θD l) = 1` using `Matrix.ext hB`.
+
+Rewrite using `[Matrix.isUnit_iff_isUnit_det]`. Apply `hunit` to reduce the goal to its premises. Rewrite using `[RingHom.map_det, RingHom.mapMatrix_apply, hmap, Matrix.det_one]`. Conclude with `one_ne_zero`.
+-/
 theorem isUnit_of_congr_one : ∀ (l : ℕ) [Fact l.Prime] (K : FinExt l) (bk : BK K) (d k : ℕ) (β : Matrix (Fin d) (Fin d) bk.S) (B : Matrix (Fin d) (Fin d) (Per.BdRp l)), (∀ i j, bk.E ∣ (β - (l : bk.S) ^ k • (1 : Matrix (Fin d) (Fin d) bk.S)) i j) → (∀ i j, aDp l (bk.ev (β i j)) - (l : Per.BdRp l) ^ k * B i j ∈ Per.FilP l 1) → IsUnit B := by
   intro l _ K bk d k β B h1 h2
   obtain ⟨-, hker, hunit, haD, -⟩ := GlobalTheory.MemLoc.thetaD_props l

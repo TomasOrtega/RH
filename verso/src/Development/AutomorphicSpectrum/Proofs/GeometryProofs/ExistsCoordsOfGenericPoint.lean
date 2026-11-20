@@ -36,6 +36,49 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.G
 
 namespace GlobalTheory.CompanionTheory.Ar.SncBase
 
+/- English proof (translation)
+Take `⟨hred, hln, M, i, hi, his⟩` from `GlobalTheory.T.generic_fibre_projective_embedding F P s hp hn`. Take `⟨b, ξF, hF1, hF2, hFg⟩` from `GlobalTheory.T.generic_point_generic_fibre F P s Ω ξ₀ hξ₀`. Establish `hmem` using `GlobalTheory.T.generic_point_mem_dense_open _ Ω ξF U hFg hd`. Establish `hin : ResK.IsResInput M i U e` using `⟨hi, hred, hd, by rw [his]; exact hU⟩`. Take `⟨r, X', j, f', hj, hfj, hsm, hiso, hdense, hsnc⟩` from `hRes F M e _ i U hin`.
+
+Use `letI algF : Algebra F Ω := b.toAlgebra`. Use `letI algO : Algebra (𝓞 F) Ω := (b.comp (algebraMap (𝓞 F) F)).toAlgebra`. Use `haveI : IsScalarTower (𝓞 F) F Ω := .of_algebraMap_eq' rfl`. Establish `hs0 : ξ₀ ≫ s = spMap (algebraMap (𝓞 F) Ω)`. Rewrite using `[← hF1, Category.assoc, pullback.condition, ← Category.assoc, hF2]`.
+
+Use `show _ = Spec.map (CommRingCat.ofHom (b.comp (algebraMap (𝓞 F) F)))`. Rewrite using `[CommRingCat.ofHom_comp, Spec.map_comp]`. Take `⟨nu, u, hu⟩` from `GlobalTheory.T.projective_over_coords_exist (𝓞 F) P s hp Ω ξ₀ hξ₀ hs0`. Establish `hproj : IsProjOver (f' ≫ i ≫ PSpace.str F M)`. Use `GlobalTheory.T.closed_in_product_projective F M r X' j hj` as an intermediate fact.
+
+Rewrite `this` using `[← Category.assoc, ← hfj, Category.assoc]`. Then use the resulting hypothesis. Establish `hdom` using `GlobalTheory.T.smooth_scheme_stalks_domains F e X' _ hsm`. Take `⟨ξ', h1, hξ'⟩` from `GlobalTheory.T.generic_point_lift_along_iso _ X' f' U Ω ξF hiso hmem hFg hdom`. Establish `hξs : ξ' ≫ f' ≫ i ≫ PSpace.str F M = spMap (algebraMap F Ω)`. Rewrite using `[← Category.assoc, h1, his, hF2]`.
+
+Take `⟨nx, x2, hx2⟩` from `GlobalTheory.T.projective_over_coords_exist F X' _ hproj Ω ξ' hξ' hξs`. Establish `hg : ξ' ≫ (f' ≫ pullback.fst _ _) = ξ₀` using `by rw [← Category.assoc, h1, hF1]`. Establish `hbase` using `GlobalTheory.T.every_component_in_some_chart X' P Ω ξ' ξ₀ _ (𝓞 F) _ u hu hg`. Take `⟨n, ht⟩` from `GlobalTheory.T.coords_product_refinement X' Ω ξ' F _ _ x2 u hx2 hbase`. Take `⟨c₀, hc₀, hfrac⟩` from `GlobalTheory.T.coords_generate_function_field (𝓞 F) F Ω X' ξ' _ _ ht`.
+
+Take `⟨X, ξ, sX, htX, hirr, -, -, -⟩` from `GlobalTheory.T.exists_proper_integral_model Ω (𝓞 F) _ _ c₀ hc₀ hfrac`. Establish `hreg : ∀ (a : 𝓞 F) (p : Cpt ξ), (RingHom.id Ω) (algebraMap (𝓞 F) Ω a) ∈ regAt ξ p`. Introduce `a p`. Take `⟨c, hc⟩` from `htX.cover p`. Conclude with `(htX.ring c hc.1 _).1 (Subalgebra.algebraMap_mem _ a) p hc`.
+
+Establish `hchart : ∀ p : Cpt ξ, ∃ c, InChart ξ (fun k => (RingHom.id Ω) (u k)) c p`. Introduce `p`. Take `⟨⟨q1, q2, q3⟩, h0, hc⟩` from `htX.cover p`. Establish `hne` using `h0`. Simplify using `only [mul_ne_zero_iff] at hne`.
+
+Use `⟨q3, hne.2, fun c' => ?_⟩` and prove the remaining obligations. Use `hc ⟨q1, q2, c'⟩` as an intermediate fact. Establish `e1 : ((∏ a, x2 (q1 a)) * x2 q2 * u c') / ((∏ a, x2 (q1 a)) * x2 q2 * u q3) = u c' / u q3`. Clear denominators, using `[hne.1.1, hne.1.2, hne.2]` for the nonvanishing conditions. Simplify `this` using `[e1]`.
+
+Take `⟨f, hf, -⟩` from `GlobalTheory.T.dominates_of_coords_regular P Ω ξ₀ (𝓞 F) _ u X Ω ξ (RingHom.id Ω) hu htX.gen hirr hreg hchart`. Establish `hf' : ξ ≫ f = ξ₀`. Establish `: ξ ≫ f = _` using `hf`. Rewrite using `[this]`. Simplify using the standard rewrite rules.
+
+Take `⟨N, x, hx⟩` from `GlobalTheory.T.coord_over_int_of_finite_order X Ω ξ (𝓞 F) _ _ htX`. Take `⟨R1, R2⟩` from `GlobalTheory.T.coord_charts_match_regular (𝓞 F) F Ω X X' ξ ξ' _ _ htX ht`. Establish `hchar` using `GlobalTheory.T.char_zero_iff_nonzero_units F Ω X ξ _ _ htX`. Establish `hFreg : ∀ (a : F) (p' : Cpt ξ'), algebraMap F Ω a ∈ regAt ξ' p'`. Introduce `a p'`.
+
+Take `⟨c, hc⟩` from `ht.cover p'`. Conclude with `(ht.ring c hc.1 _).1 (Subalgebra.algebraMap_mem _ a) p' hc`. Establish `hunit : ∀ (p : Cpt ξ) (p' : Cpt ξ'), regAt ξ p = regAt ξ' p' → Char0 ξ p`. Introduce `p p' h`. Use `(hchar p).2 fun d hd0 => ?_` and prove the remaining obligations.
+
+Establish `hd1 : (algebraMap (𝓞 F) F d) ≠ 0` using `by simpa using hd0`. Establish `e1 : algebraMap (𝓞 F) Ω d = algebraMap F Ω (algebraMap (𝓞 F) F d)` using `rfl`. Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[e1]`. Conclude with `(map_ne_zero _).2 hd1`.
+
+Rewrite using `[h, e1]`. Conclude with `hFreg _ p'`. Rewrite using `[h, e1, ← map_inv₀]`. Conclude with `hFreg _ p'`. Establish `hPts : Pts ξ = Set.range (regAt ξ')`.
+
+Use extensionality with `R`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨p, hp0, rfl⟩`. Take `⟨p', h⟩` from `R2 p ((hchar p).1 hp0)`. Conclude with `⟨p', h.symm⟩`.
+
+Introduce and unpack `⟨p', rfl⟩`. Take `⟨p, h⟩` from `R1 p'`. Conclude with `⟨p, hunit p p' h, h.symm⟩`. Set `B : Set (Cpt ξ)` to `{p | Char0 ξ p ∧ f p.1 ∉ Ab}`. Set `T : Set X'` to `f'.base ⁻¹' (U : Set ((pullback s (spMap (algebraMap (𝓞 F) F)) : Scheme.{0})))ᶜ`.
+
+Establish `hgen : ∀ (p : Cpt ξ) (p' : Cpt ξ'), regAt ξ p = regAt ξ' p' → (f p.1 ∉ Ab ↔ p'.1 ∈ T)`. Introduce `p p' h`. Establish `e1 : f p.1 = (f' ≫ pullback.fst _ _) p'.1` using `GlobalTheory.T.regular_rings_equal_images_equal P X X' Ω ξ₀ ξ ξ' f _ (𝓞 F) _ u hu htX.gen hξ' hf' hg p p' h`. Establish `e2 : ((f' ≫ pullback.fst s (spMap (algebraMap (𝓞 F) F))) p'.1 ∈ Ab) ↔ f' p'.1 ∈ (U : Set ((pullback s (spMap (algebraMap (𝓞 F) F)) : Scheme.{0})))`. Rewrite using `[← hAb]`.
+
+Simplify using the standard rewrite rules. Rewrite using `[e1, e2]`. Both sides reduce to the same expression. Establish `hBd : regAt ξ '' B = regAt ξ' '' {p | p.1 ∈ T}`. Use extensionality with `R`.
+
+Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨p, ⟨hp0, hp1⟩, rfl⟩`. Take `⟨p', h⟩` from `R2 p ((hchar p).1 hp0)`. Conclude with `⟨p', (hgen p p' h).1 hp1, h.symm⟩`. Introduce and unpack `⟨p', hp', rfl⟩`.
+
+Take `⟨p, h⟩` from `R1 p'`. Conclude with `⟨p, ⟨hunit p p' h, (hgen p p' h).2 hp'⟩, h⟩`. Establish `hpatch` using `GlobalTheory.T.snc_patch_at_each_component F X' _ e T Ω ξ' hξ' hξs hsm hsnc (GlobalTheory.T.regular_ring_determines_component X' Ω ξ' F _ _ ht)`. Take `⟨bd, hm, hc⟩` from `GlobalTheory.T.exists_snc_model_of_patches Ω X ξ N x e B hx (fun p hp => hp.1) (by`. Introduce `p hp0`.
+
+Take `⟨p', h⟩` from `R2 p ((hchar p).1 hp0)`. Rewrite using `[hPts, hBd, h]`. Conclude with `hpatch p')`. Use `⟨N, x, X, ξ, f, bd, hirr, hx, hf', hm, fun z w hw => ?_⟩` and prove the remaining obligations. Rewrite using `[hc z w hw]`.
+
+Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨h, -, h2⟩`. Conclude with `h2`. Introduce `h`. Conclude with `⟨hirr _, GlobalTheory.T.char_zero_centre_of_complex Ω X ξ z _ htX.gen, h⟩`.
+-/
 theorem exists_model_of_res (hRes : ResK.ResKStatement)
     (F : Type) [Field F] [NumberField F] (P : Scheme.{0}) (s : P ⟶ Sp (𝓞 F)) (hp : IsProjOver s)
     (hn : Tor.IsNormalScheme P) (U : (pullback s (spMap (algebraMap (𝓞 F) F))).Opens) (hd : Dense (U : Set ((pullback s (spMap (algebraMap (𝓞 F) F)) : Scheme.{0})))) (e : ℕ)
@@ -149,6 +192,13 @@ theorem exists_model_of_res (hRes : ResK.ResKStatement)
   · intro h
     exact ⟨hirr _, GlobalTheory.T.char_zero_centre_of_complex Ω X ξ z _ htX.gen, h⟩
 
+/- English proof (translation)
+Introduce `hRes E _ _ _ H D l Xo c Y Ω _ _ ξ₀ hξ₀`. Use `haveI : FiniteDimensional ℚ c.F := c.fin`. Use `haveI : NumberField c.F := {}`. Use `haveI := Y.jQ_open`. Establish `hsm : SmoothOfRelativeDimension D.dim (pullback.snd Xo.s (spMap (IntermediateField.inclusion c.le).toRingHom))`.
+
+Conclude with `(smoothOfRelativeDimension_isStableUnderBaseChange D.dim).of_isPullback (IsPullback.of_hasPullback _ _) Xo.smooth`. Establish `hU : SmoothOfRelativeDimension D.dim (Y.jQ.opensRange.ι ≫ pullback.snd Y.s (spMap (algebraMap (𝓞 c.F) c.F)))`. Apply `GlobalTheory.T.smooth_open_immersion_range _ _ _ Y.jQ` to reduce the goal to its premises. Rewrite using `[Y.jQ_over]`. Conclude with `hsm`.
+
+Take `⟨N, x, X, ξ, f, bd, hirr, hx, hf, hm, hc⟩` from `exists_model_of_res hRes c.F Y.X Y.s Y.proj Y.normal Y.jQ.opensRange (by simpa using Y.jQ_dense) D.dim hU (abLocus Y.t.G) (by simpa using Y.ab_gen) Ω ξ₀ hξ₀`. Conclude with `⟨Unit, inferInstance, fun _ => Fin (N + 1), fun _ => inferInstance, fun p => x p.2, X, ξ, f, bd, inferInstance, hirr, GlobalTheory.T.coords_single_block_segre X Ω ξ N x hx, hf, hm, hc⟩`.
+-/
 theorem exists_sncBase : ReciprocityTheory.ChartRestriction.G.Geo.ResK.ResKStatement → ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (D : Datum H) (l : Tor.Level H) (Xo : Moduli D l) (c : Coeff l) (Y : Model Xo c (algebraMap (𝓞 c.F) c.F)) (Ω : Type) [Field Ω] [CharZero Ω] (ξ₀ : Spec (CommRingCat.of Ω) ⟶ Y.X), IsCptGen ξ₀ → ∃ (K : Type) (_ : Fintype K) (J : K → Type) (_ : ∀ k, Fintype (J k)) (y : (Σ k, J k) → Ω) (X : Scheme.{0}) (ξ : Spec (CommRingCat.of Ω) ⟶ X) (f : X ⟶ Y.X) (bd : Ideal (MRing J)), Nonempty K ∧ (∀ q : X, genPt ξ ⤳ q) ∧ CoordTie ℤ ξ (fun c' : (k : K) → J k => ∏ k, y ⟨k, c' k⟩) ∧ ξ ≫ f = ξ₀ ∧ Cmp.IsSncModel y D.dim bd ∧ ∀ (z : Spec (CommRingCat.of ℂ) ⟶ X) w, CoordsAt ξ y z w → (w ∈ mcPts bd ↔ f (centre z) ∉ abLocus Y.t.G) := by
   intro hRes E _ _ _ H D l Xo c Y Ω _ _ ξ₀ hξ₀
   haveI : FiniteDimensional ℚ c.F := c.fin

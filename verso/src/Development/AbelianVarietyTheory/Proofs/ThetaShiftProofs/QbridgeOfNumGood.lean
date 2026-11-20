@@ -12,6 +12,13 @@ open Formalism.L2.Pj Formalism.L2.Pj.QAt Formalism.MainNotions Formalism.BasicNo
 
 namespace GlobalTheory.ArcCM
 
+/- English proof (translation)
+Establish `h1 : (∑ᶠ w : HeightOneSpectrum (𝓞 K), (-(FractionalIdeal.count K w N.I : ℝ)) * logN w) = -Real.log ((FractionalIdeal.absNorm N.I : ℚ) : ℝ)`. Repeatedly rewrite using `[neg_mul]`. Rewrite using `[finsum_neg_distrib, PlaceDegreeSums.sum_count_log_norm _ hN.1]`. Establish `h2 : ∑ σ : InfinitePlace K, (σ.mult : ℝ) * Real.log (N.n σ.embedding) = ∑ τ : K →+* ℂ, Real.log (N.n τ)`. Rewrite using `[PlaceDegreeSums.sum_infinite_places_mult (fun σ => Real.log (N.n σ.embedding))]`.
+
+Use `Finset.sum_congr rfl fun τ _ => ?_` and prove the remaining obligations. Break down `InfinitePlace.embedding_mk_eq τ with h | h` into its components or cases. Rewrite using `[h]`. Rewrite using `[h]`. Conclude with `congrArg Real.log (hc τ)`.
+
+Rewrite using `[h1, h2, MLine.ndeg, MLine.deg]`.
+-/
 theorem ndeg_eq_places {K : Type} [Field K] [NumberField K] (N : MLine K) (hN : N.Good)
     (hc : ∀ σ : K →+* ℂ, N.n ((starRingEnd ℂ).comp σ) = N.n σ) :
     ((∑ᶠ w : HeightOneSpectrum (𝓞 K), (-(FractionalIdeal.count K w N.I : ℝ)) * logN w) -
@@ -30,6 +37,17 @@ theorem ndeg_eq_places {K : Type} [Field K] [NumberField K] (N : MLine K) (hN : 
       exact congrArg Real.log (hc τ)
   rw [h1, h2, MLine.ndeg, MLine.deg]
 
+/- English proof (translation)
+Introduce `D large₂ B j ka CR Ch Ah Cc Ac Tt cc be Carch Bdeg hlat hbe hbefin hbesum hconj hroom hdet`. Take `⟨K₁, _, _, _, ρ, g, cf, hfam, hcf, hker, hdim⟩` from `kerCore_holds B.KO (B.Cusp j ka) (WeightFamilies.MggK B CR Tt cc j ka) (fun K₁ _ _ _ φ => WeightFamilies.MggK B CR Tt cc j ka ≤ LinearMap.ker φ ∧ NumGood (B.Mlat j ka : Set (B.Cusp j ka)) (B.supN j ka) be Carch Bdeg K₁ φ) (fun _ _ _ _ _ h => h.1) (fun v hv => by`. Assume the negation of the conclusion as `hn`. Take `⟨K₁, _, _, _, φ, h1, h2, h3⟩` from `hdet v hn`. Conclude with `h2 (hv K₁ φ ⟨h1, h3⟩))`.
+
+Use the proof step `(fun K' K₁ _ _ _ _ _ _ e f hf => ⟨e.toLinearMap.comp f, ⟨fun v hv => by`. Use `LinearMap.mem_ker.1 (hf.1 hv)` as an intermediate fact. Simplify using `[LinearMap.mem_ker, this], GlobalTheory.T.isNumberFieldFunctionalBounded_comp_extension _ _ _ _ _ _ _ K' K₁ e f hf.2⟩, fun _ => rfl⟩)`. Establish `hrk : WeightFamilies.rhoP B CR Tt cc j ka + Module.finrank B.KO (WeightFamilies.MggK B CR Tt cc j ka) = Module.finrank B.KO (B.Cusp j ka)` using `LocalQuotientRank.rank_QuotMW (K := B.KO) (B.Mlat j ka) hlat.fg hlat.span_eq_top (WeightFamilies.MggK B CR Tt cc j ka)`. Establish `hρ : ρ = WeightFamilies.rhoP B CR Tt cc j ka` using `by omega`.
+
+Substitute `hρ` using the available equality. Use `choose N hG hd hc hint harch using fun i => (hfam i).2`. Use `⟨K₁, inferInstance, inferInstance, inferInstance, cf, be, fun i w => -(FractionalIdeal.count K₁ w (N i).I : ℝ), fun i σ => Real.log ((N i).n σ.embedding), Carch, Bdeg, hker, hbe, hbefin, hbesum, fun i => ?_, fun la w hw i F hF hne => ?_, hconj, fun σ i F hF hne => ?_, fun i => ?_ …` and prove the remaining obligations. Use `(Filter.eventually_cofinite.1 (FractionalIdeal.finite_factors (N i).I)).subset fun w hw h => hw ?_` and prove the remaining obligations. Simplify using `[h]`.
+
+Rewrite `hne`, the goal using `[hcf]`. Conclude with `(hint i la w hw F hF hne).trans_eq (sub_eq_add_neg _ _)`. Rewrite `hne`, the goal using `[hcf]`. Rewrite using `[← InfinitePlace.norm_embedding_eq]`. Conclude with `harch i σ.embedding F hF hne`.
+
+Rewrite using `[ndeg_eq_places (N i) (hG i) (hc i)]`. Conclude with `hd i`.
+-/
 theorem qbridge_of_numGood : ∀ (D : D7) (large₂ : SizeData₂ D) (B : WeightFamilies.Prov D) (j : ℕ) (ka : WeightFamilies.Wt D j) (CR Ch Ah Cc Ac Tt cc : ℝ) (be : HeightOneSpectrum (𝓞 B.KO) → ℝ) (Carch Bdeg : ℝ), Submodule.IsLattice B.KO (B.Mlat j ka) → (∀ la, 0 ≤ be la) → (Function.support be).Finite → (∑ᶠ la, be la * WeightFamilies.lnN B la) / WeightFamilies.degO B ≤ WeightFamilies.PPv D large₂ Cc Ac * ka.size → (∀ τ F, B.supN j ka ((starRingEnd ℂ).comp τ) F = B.supN j ka τ F) → WeightFamilies.PPv D large₂ Ch Ah * ka.size + Carch + Bdeg + Real.log (WeightFamilies.rhoP B CR Tt cc j ka : ℝ) / 2 ≤ WeightFamilies.PPv D large₂ Cc Ac * ka.size → (∀ F : B.Cusp j ka, F ∉ WeightFamilies.MggK B CR Tt cc j ka → ∃ (K₁ : Type) (_ : Field K₁) (_ : NumberField K₁) (_ : Algebra B.KO K₁) (φ : B.Cusp j ka →ₗ[B.KO] K₁), WeightFamilies.MggK B CR Tt cc j ka ≤ LinearMap.ker φ ∧ φ F ≠ 0 ∧ NumGood (B.Mlat j ka : Set (B.Cusp j ka)) (B.supN j ka) be Carch Bdeg K₁ φ) → QBridgeAt large₂ B j ka CR Ch Ah Cc Ac Tt cc := by
   intro D large₂ B j ka CR Ch Ah Cc Ac Tt cc be Carch Bdeg hlat hbe hbefin hbesum hconj hroom hdet
   classical

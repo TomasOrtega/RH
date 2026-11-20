@@ -10,6 +10,17 @@ open Formalism.REAL Formalism.FourierDecayAlt.Q Formalism.FourierDecayAlt.Qr
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Introduce `V _ _ _ n E Et Om β L l hH hadj hEt hOm M v hv`. Establish `hq : ∀ w v, qdet E w v = (∏ j, (w + shf β L j)) • v` using `hH.cap`. Take `⟨K, hK, hK'⟩` from `comatrix_last_row_inverts_casimir V n E Om (shf β L) hH.gl hq hOm`. Take `⟨-, -, hsym, -⟩` from `tensorStd_rel_adjoint_splitCasimir V n E Et Om hH.gl hadj hEt hOm`. Establish `hev` using `splitCasimirStd_eigenvalue V n E Et Om (shf β L) hH.gl hadj hq hEt hOm`.
+
+Establish `hinj : Function.Injective (shf β L)`. Introduce `a b h`. Apply `hH.anti.injective` to reduce the goal to its premises. Establish `h' : (L a : ℂ) = (L b : ℂ)` using `add_left_cancel h`. Conclude with `h'` after adjusting the coercions.
+
+Establish `hcont : Continuous fun u : ℂ => cpol (shf β M) (u - 1)`. Unfold `cpol`. Use `fun_prop`. Establish `h` using `ev_starProjection_eigenspace_eq_residue (PiLp 2 (fun _ : Fin (n + 1) => V)) V (n + 1) (shf β L) 0 Om (PiLp.projₗ 2 (fun _ : Fin (n + 1) => V) (Fin.last n)) K (fun u : ℂ => cpol (shf β M) (u - 1)) (PiLp.single 2 (Fin.last n) v) v l hinj hsym hev hK hcont (fun u => (hK' u v).trans …`. Use `Eq.trans h ?_` and prove the remaining obligations.
+
+Use `congr 1`. Simplify using `only [cpol, shf, WigSh.wP]`. Use `push_cast`. Use `congr 1`. Conclude with `Finset.prod_congr rfl fun j _ => by ring`.
+
+Conclude with `Finset.prod_congr rfl fun j _ => by ring`.
+-/
 theorem starProjection_splitCasimirStd_last : ∀ (V : Type) [NormedAddCommGroup V] [InnerProductSpace ℂ V] [FiniteDimensional ℂ V] (n : ℕ) (E : Fin (n + 1) → Fin (n + 1) → Module.End ℂ V) (Et : Fin (n + 1) → Fin (n + 1) → Module.End ℂ (PiLp 2 (fun _ : Fin (n + 1) => V))) (Om : Module.End ℂ (PiLp 2 (fun _ : Fin (n + 1) => V))) (β : ℂ) (L : Fin (n + 1) → ℤ) (l : Fin (n + 1)), Hyp E β L → (∀ a b x y, inner ℂ (E a b x) y = inner ℂ x (E b a y)) → (∀ a b y c, Et a b y c = E a b (y c) + if c = a then y b else 0) → (∀ y b, Om y b = ∑ c, E c b (y c)) → ∀ (M : Fin n → ℤ) (v : V), v ∈ CapSp (subA E) (shf β M) → (Module.End.eigenspace Om (β + L l + 0)).starProjection (PiLp.single 2 (Fin.last n) v) (Fin.last n) = (GlobalTheory.WigSh.wP L M l : ℂ) • v := by
   intro V _ _ _ n E Et Om β L l hH hadj hEt hOm M v hv
   have hq : ∀ w v, qdet E w v = (∏ j, (w + shf β L j)) • v := hH.cap

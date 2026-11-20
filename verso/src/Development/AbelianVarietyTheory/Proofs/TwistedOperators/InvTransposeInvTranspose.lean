@@ -30,6 +30,11 @@ def onRight (V : Type) [AddCommGroup V] [Module ℂ V] {G : Type} [Group G] (σ 
   map_one' := by simp only [map_one]; exact LinearMap.lTensor_id _ _
   map_mul' g h := by simp only [map_mul]; exact LinearMap.lTensor_comp _ _ _
 
+/- English proof (translation)
+Introduce `x`. Use `show x ∈ smoothPart (onRight V σ)`. Proceed by induction on `x with`. Consider the case `zero => exact zero_mem _`. Consider the case `add x y hx hy => exact add_mem hx hy`.
+
+Consider the case `tmul v w`. Use `mem_smoothPart_of_nhds (Filter.mem_of_superset ((hσ w).mem_nhds (by simp)) fun g hg => ?_)` and prove the remaining obligations. Establish `h2 : σ g w = w` using `hg`. Use `show (σ g).lTensor V (v ⊗ₜ w) = _`. Rewrite using `[LinearMap.lTensor_tmul, h2]`.
+-/
 theorem isSmooth_onRight {G : Type} [Group G] [TopologicalSpace G] [IsTopologicalGroup G]
     {σ : Representation ℂ G W} (hσ : IsSmooth σ) : IsSmooth (onRight V σ) := by
   intro x
@@ -56,6 +61,9 @@ def tensorInd (σ : Representation ℂ P W) :
       map_smul' := fun c v => LinearMap.ext fun f => Subtype.ext (Subtype.ext (funext fun x =>
         (TensorProduct.smul_tmul' c v (f.1.1 x)).symm)) }
 
+/- English proof (translation)
+Proceed by induction on `t with`. Consider the case `zero => simp`. Consider the case `add s t hs ht => simp only [map_add, ← hs, ← ht]`. Both sides reduce to the same expression. Consider the case `tmul v f => rfl`.
+-/
 theorem tensorInd_apply (σ : Representation ℂ P W) (t : V ⊗[ℂ] smoothPart (ind P σ)) (x : H) :
     (tensorInd σ t).1.1 x = (MultiIrr.ev σ x).lTensor V t := by
   induction t with
@@ -63,6 +71,9 @@ theorem tensorInd_apply (σ : Representation ℂ P W) (t : V ⊗[ℂ] smoothPart
   | add s t hs ht => simp only [map_add, ← hs, ← ht]; rfl
   | tmul v f => rfl
 
+/- English proof (translation)
+Use `⟨(injective_iff_map_eq_zero _).2 fun t ht => MultiIrr.eq_zero_of_ev σ t fun x => ?_, fun f => ?_⟩` and prove the remaining obligations. Rewrite using `[← tensorInd_apply, ht]`. Both sides reduce to the same expression. Take `⟨t, ht⟩` from `MultiIrr.exists_tensor σ hK hPK f.1.1 f.1.2 (MultiIrr.eventually_of_smooth f)`. Conclude with `⟨t, Subtype.ext (Subtype.ext (funext fun x => (tensorInd_apply σ t x).trans (ht x)))⟩`.
+-/
 theorem tensorInd_bijective (σ : Representation ℂ P W) {K : Set H} (hK : IsCompact K)
     (hPK : ∀ x, ∃ p : P, ∃ w ∈ K, x = p * w) : Function.Bijective (tensorInd (V := V) σ) := by
   refine ⟨(injective_iff_map_eq_zero _).2 fun t ht => MultiIrr.eq_zero_of_ev σ t fun x => ?_, fun f => ?_⟩
@@ -70,6 +81,11 @@ theorem tensorInd_bijective (σ : Representation ℂ P W) {K : Set H} (hK : IsCo
   · obtain ⟨t, ht⟩ := MultiIrr.exists_tensor σ hK hPK f.1.1 f.1.2 (MultiIrr.eventually_of_smooth f)
     exact ⟨t, Subtype.ext (Subtype.ext (funext fun x => (tensorInd_apply σ t x).trans (ht x)))⟩
 
+/- English proof (translation)
+Take `⟨s, hs⟩` from `f.exists_rightInverse_of_surjective (LinearMap.range_eq_top.2 hf)`. Use `⟨g ∘ₗ s, fun v => ?_⟩` and prove the remaining obligations. Establish `: s (f v) - v ∈ LinearMap.ker f`. Rewrite using `[LinearMap.mem_ker, map_sub, sub_eq_zero]`. Conclude with `LinearMap.congr_fun hs (f v)`.
+
+Use `h this` as an intermediate fact. Rewrite `this` using `[LinearMap.mem_ker, map_sub, sub_eq_zero]`. Then use the resulting hypothesis.
+-/
 theorem exists_factor (f : V →ₗ[ℂ] W) (g : V →ₗ[ℂ] U) (hf : Function.Surjective f)
     (h : LinearMap.ker f ≤ LinearMap.ker g) : ∃ T : W →ₗ[ℂ] U, ∀ v, T (f v) = g v := by
   obtain ⟨s, hs⟩ := f.exists_rightInverse_of_surjective (LinearMap.range_eq_top.2 hf)
@@ -84,6 +100,23 @@ def contract (L : Submodule ℂ (Module.Dual ℂ V)) (Y : Type) [AddCommGroup Y]
     V →ₗ[ℂ] L ⊗[ℂ] Y →ₗ[ℂ] Y :=
   ((dualTensorHom ℂ V Y) ∘ₗ L.subtype.rTensor Y).flip
 
+/- English proof (translation)
+Set `α : (onRight V σ).IntertwiningMap ρ` to `{ toLinearMap := TensorProduct.lift { toFun := fun v => (A v).toLinearMap map_add' := fun v v' => by rw [map_add]; rfl map_smul' := fun c v => by rw [map_smul]; rfl } isIntertwining' := fun p => TensorProduct.ext' fun v w => (A v).isIntertwining _ _ p w }`. Establish `hα : ∀ v w, α (v ⊗ₜ w) = A v w` using `fun _ _ => rfl`. Set `T : Γ → (onRight V σ).IntertwiningMap (onRight V σ)` to `fun γ => { toLinearMap := TensorProduct.map (R γ) (S γ).toLinearMap isIntertwining' := fun p => TensorProduct.ext' fun v w => congrArg (fun z => R γ v ⊗ₜ[ℂ] z) ((S γ).isIntertwining _ _ p w) }`. Take `⟨h1, h2⟩` from `GlobalTheory.SmGL.IndCoinv.smInd_coinvariants H P K hP hK hPK hb _ U (onRight V σ) ρ (isSmooth_onRight hσ) α Γ T (fun u => by obtain ⟨v, w, rfl⟩ := hs u; exact ⟨v ⊗ₜ w, rfl⟩) (fun x hx => by set N := Submodule.span ℂ {y : V ⊗[ℂ] W | ∃ γ z, y = T γ z - z}`. Take `⟨B₀, hB₀⟩` from `hu _ ((TensorProduct.mk ℂ V W).flip.compr₂ N.mkQ) fun γ w v => (Submodule.Quotient.eq N).2 (Submodule.subset_span ⟨γ, v ⊗ₜ w, rfl⟩)`.
+
+Establish `: N.mkQ = B₀ ∘ₗ α.toLinearMap` using `TensorProduct.ext' fun v w => hB₀ w v`. Establish `h0 : N.mkQ x = 0`. Rewrite using `[this]`. Use `show B₀ (α x) = 0`. Rewrite using `[hx, map_zero]`.
+
+Conclude with `(Submodule.Quotient.mk_eq_zero N).1 h0)`. Set `E` to `LinearEquiv.ofBijective _ (tensorInd_bijective (V := V) σ hK fun x => by`. Take `⟨p, hp, w, hw, e⟩` from `hPK x`. Conclude with `⟨⟨p, hp⟩, w, hw, e⟩)`. Set `β : V ⊗[ℂ] smoothPart (ind P σ) →ₗ[ℂ] Y` to `TensorProduct.lift { toFun := fun v => (B v).toLinearMap map_add' := fun v v' => by rw [map_add]; rfl map_smul' := fun c v => by rw [map_smul]; rfl }`.
+
+Establish `hker : LinearMap.ker (smIndMap α).toLinearMap ≤ LinearMap.ker (β ∘ₗ E.symm.toLinearMap)`. Introduce `f hf`. Use `Submodule.span_le.2 ?_ (h2 f hf)` and prove the remaining obligations. Introduce and unpack `_ ⟨γ, z, rfl⟩`. Take `⟨t, rfl⟩` from `E.surjective z`.
+
+Establish `e1 : smIndMap (T γ) (E t) = E (TensorProduct.map (R γ) (smIndMap (S γ)).toLinearMap t)`. Proceed by induction on `t with`. Consider the case `zero => simp`. Consider the case `add s t hs ht => simp only [map_add, hs, ht]`. Consider the case `tmul v f => rfl`.
+
+Establish `e2 : β (TensorProduct.map (R γ) (smIndMap (S γ)).toLinearMap t) = β t` using `LinearMap.congr_fun (f := β ∘ₗ TensorProduct.map (R γ) (smIndMap (S γ)).toLinearMap) (g := β) (TensorProduct.ext' fun v f => hB γ v f) t`. Use `show β (E.symm _) = 0`. Rewrite using `[e1, map_sub, E.symm_apply_apply, E.symm_apply_apply, map_sub, e2, sub_self]`. Take `⟨T₀, hT₁⟩` from `exists_factor _ _ h1 hker`. Establish `hT₀ : ∀ t, T₀ (smIndMap α (E t)) = β t` using `fun t => (hT₁ (E t)).trans (congrArg β (E.symm_apply_apply t))`.
+
+Establish `hT : ∀ v f, T₀ (smIndMap (A v) f) = B v f` using `fun v f => hT₀ (v ⊗ₜ f)`. Use `⟨⟨T₀, fun h => LinearMap.ext fun u => ?_⟩, hT⟩` and prove the remaining obligations. Take `⟨z, rfl⟩` from `h1 u`. Take `⟨t, rfl⟩` from `E.surjective z`. Use `show T₀ (smInd P ρ h _) = π' h (T₀ _)`.
+
+Proceed by induction on `t with`. Consider the case `zero => simp`. Consider the case `add s t hs ht => simp only [map_add, hs, ht]`. Consider the case `tmul v f => exact (hT v (smInd P σ h f)).trans (((B v).isIntertwining _ _ h f).trans (congrArg _ (hT v f).symm))`.
+-/
 theorem exists_lift [T2Space H] {K : Subgroup H} (hP : IsClosed (P : Set H)) (hK : IsCompact (K : Set H))
     (hPK : ∀ g : H, ∃ p ∈ P, ∃ x ∈ K, g = p * x)
     (hb : ∀ U ∈ nhds (1 : H), ∃ J : Subgroup H, IsOpen (J : Set H) ∧ (J : Set H) ⊆ U ∧ J ≤ K ∧
@@ -176,6 +209,9 @@ variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchim
   {a b n : Type} [Fintype a] [DecidableEq a] [Fintype b] [DecidableEq b] [Fintype n] [DecidableEq n]
   {V Y : Type} [AddCommGroup V] [Module ℂ V] [AddCommGroup Y] [Module ℂ Y]
 
+/- English proof (translation)
+Introduce `U hU`. Take `⟨J, h1, h2, h3, -⟩` from `exists_open_normalised_subgroup_subset k n U hU`. Conclude with `⟨J, h1, SplitFlip.isCompact_KO.of_isClosed_subset (J.isClosed_of_isOpen h1) h3, h2⟩`.
+-/
 theorem compact_open_basis (n : Type) [Fintype n] [DecidableEq n] : ∀ U ∈ nhds (1 : GL n k),
     ∃ K : Subgroup (GL n k), IsOpen (K : Set (GL n k)) ∧ IsCompact (K : Set (GL n k)) ∧ (K : Set (GL n k)) ⊆ U := by
   intro U hU
@@ -204,6 +240,11 @@ def contraMap [TopologicalSpace G] [IsTopologicalGroup G] {π : Representation �
     show l.1 (σ g⁻¹ (f v)) = l.1 (f (π g⁻¹ v))
     rw [f.isIntertwining])
 
+/- English proof (translation)
+Take `⟨B, h1, h2, h3⟩` from `h`. Use `⟨(B.comp E.toLinearMap).compl₂ E.toLinearMap, fun v w => h1 _ _, fun v hv => h2 _ ?_, fun g v w => ?_⟩` and prove the remaining obligations. Conclude with `fun h => hv (E.toLinearEquiv.map_eq_zero_iff.1 h)`. Use `show B (E.toIntertwiningMap (π g v)) (E.toIntertwiningMap (π g w)) = _`. Rewrite using `[E.toIntertwiningMap.isIntertwining, E.toIntertwiningMap.isIntertwining, h3]`.
+
+Both sides reduce to the same expression.
+-/
 theorem isUnitarisable_of_equiv {π : Representation ℂ G V} {σ : Representation ℂ G W} (E : π.Equiv σ)
     (h : IsUnitarisable σ) : IsUnitarisable π := by
   obtain ⟨B, h1, h2, h3⟩ := h
@@ -224,6 +265,11 @@ open GlobalTheory.IndefiniteRowSideFullHecke GlobalTheory.Published
 variable {G V W Y : Type} [Group G] [AddCommGroup V] [Module ℂ V] [AddCommGroup W] [Module ℂ W]
   [AddCommGroup Y] [Module ℂ Y]
 
+/- English proof (translation)
+Set `φ : Subrepresentation (twist π χ) ≃o Subrepresentation π` to `{ toFun := fun S => ⟨S.toSubmodule, fun g v hv => by`. Use `S.toSubmodule.smul_mem ((χ g)⁻¹ : ℂˣ) (S.apply_mem_toSubmodule g hv)` as an intermediate fact. Rewrite using `[twist_apply, smul_smul, Units.inv_mul, one_smul] at this⟩` and apply the resulting hypothesis. Use `invFun := fun S => ⟨S.toSubmodule, fun g v hv => S.toSubmodule.smul_mem _ (S.apply_mem_toSubmodule g hv)⟩`. Use `left_inv := fun _ => rfl`.
+
+Use `right_inv := fun _ => rfl`. Use the proof step `map_rel_iff' := Iff.rfl }`. Conclude with `φ.isSimpleOrder_iff.2 h`.
+-/
 theorem isIrreducible_twist {π : Representation ℂ G V} (h : π.IsIrreducible) (χ : G →* ℂˣ) :
     (twist π χ).IsIrreducible := by
   let φ : Subrepresentation (twist π χ) ≃o Subrepresentation π :=
@@ -239,6 +285,9 @@ theorem isIrreducible_twist {π : Representation ℂ G V} (h : π.IsIrreducible)
 variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
 
 omit [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] in
+/- English proof (translation)
+The claim follows from `Units.ext (transpose_transpose _)`.
+-/
 theorem invTranspose_invTranspose {n : ℕ} (g : GL (Fin n) k) :
     WeilTensorLiftConclusion.invTranspose n k (WeilTensorLiftConclusion.invTranspose n k g) = g := Units.ext (transpose_transpose _)
 

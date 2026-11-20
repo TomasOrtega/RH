@@ -14,6 +14,15 @@ open Classical
 
 namespace GlobalTheory.UPoinc
 
+/- English proof (translation)
+Introduce `E _ _ _ H Dw l Xo c C X₁ z₁`. Use `letI : Algebra (X₁.M.Z.presheaf.stalk z₁) X₁.Ω₁ := (X₁.M.stalkHom z₁).toAlgebra`. Establish `hN` using `X₁.normal`. Use `⟨GlobalTheory.IsNormalScheme.isDomain_stalk z₁, ?_, GlobalTheory.IsNormalScheme.isIntegrallyClosed_stalk z₁, ?_⟩` and prove the remaining obligations. Establish `: FaithfulSMul (X₁.M.Z.presheaf.stalk z₁) X₁.Ω₁` using `(faithfulSMul_iff_algebraMap_injective _ _).2 (X₁.M.stalkHom_injective z₁)`.
+
+Use `IsFractionRing.of_field _ _ fun x => ?_` and prove the remaining obligations. Take `⟨a, b, -, hx⟩` from `IsFractionRing.div_surjective (A := X₁.M.O z₁) x`. Use `⟨(X₁.M.stalkEquiv z₁).symm a, (X₁.M.stalkEquiv z₁).symm b, ?_⟩` and prove the remaining obligations. Establish `h : ∀ c : X₁.M.O z₁, algebraMap (X₁.M.Z.presheaf.stalk z₁) X₁.Ω₁ ((X₁.M.stalkEquiv z₁).symm c) = c` using `fun c => by`. Express the relevant statement in the definitionally equal form `X₁.M.stalkHom z₁ _ = _`.
+
+Rewrite using `[← RatModel.coe_stalkEquiv, RingEquiv.apply_symm_apply]`. Rewrite using `[h, h, ← hx]`. Both sides reduce to the same expression. Establish `: IsDedekindDomain X₁.o₁` using `X₁.ar.ded`. Use `X₁.M.lft` as an intermediate fact.
+
+Establish `: IsLocallyNoetherian (Sp X₁.o₁)` using `inferInstanceAs (IsLocallyNoetherian (Spec (CommRingCat.of X₁.o₁)))`. Establish `: IsLocallyNoetherian X₁.M.Z` using `LocallyOfFiniteType.isLocallyNoetherian X₁.M.s`. Use `infer_instance`.
+-/
 theorem ustalk_isNoetherian_normal_fractionRing : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (Dw : Datum H) (l : Geo.Tor.Level H) (Xo : Moduli Dw l) (c : Coeff l) (C : UCompact Xo c) (X₁ : USetup C) (z₁ : X₁.M.Z), letI : Algebra (X₁.M.Z.presheaf.stalk z₁) X₁.Ω₁ := (X₁.M.stalkHom z₁).toAlgebra; IsDomain (X₁.M.Z.presheaf.stalk z₁) ∧ IsFractionRing (X₁.M.Z.presheaf.stalk z₁) X₁.Ω₁ ∧ IsIntegrallyClosed (X₁.M.Z.presheaf.stalk z₁) ∧ IsNoetherianRing (X₁.M.Z.presheaf.stalk z₁) := by
   intro E _ _ _ H Dw l Xo c C X₁ z₁
   letI : Algebra (X₁.M.Z.presheaf.stalk z₁) X₁.Ω₁ := (X₁.M.stalkHom z₁).toAlgebra
@@ -36,6 +45,13 @@ theorem ustalk_isNoetherian_normal_fractionRing : ∀ (E : Type) [Field E] [Numb
     have : IsLocallyNoetherian X₁.M.Z := LocallyOfFiniteType.isLocallyNoetherian X₁.M.s
     infer_instance
 
+/- English proof (translation)
+Introduce `E _ _ _ H Dw hpq l Xo c C X₁ p _ z₁ Φ hΦ y₀ N₀`. Take `⟨N, hN₀, hdvd, Ω₂, _, _, _, _, hcore⟩` from `GlobalTheory.T.unitary_classSums_deeper_level_integralClosure E H Dw hpq l Xo c C X₁ p z₁ Φ hΦ y₀ N₀`. Use `letI : Algebra (X₁.M.Z.presheaf.stalk z₁) X₁.Ω₁ := (X₁.M.stalkHom z₁).toAlgebra`. Take `⟨hdom, hfr, hic, hno⟩` from `ustalk_isNoetherian_normal_fractionRing E H Dw l Xo c C X₁ z₁`. Take `⟨hfin, hfinA, hinj, hfix⟩` from `GlobalTheory.T.integralClosure_galois_finite_autGroup_invariants (X₁.M.Z.presheaf.stalk z₁) X₁.Ω₁ Ω₂`.
+
+Use `letI : Algebra (X₁.M.Z.presheaf.stalk z₁) Ω₂ := ((algebraMap X₁.Ω₁ Ω₂).comp (X₁.M.stalkHom z₁)).toAlgebra`. Take `⟨𝔷, hmax⟩` from `Ideal.exists_maximal (integralClosure (X₁.M.Z.presheaf.stalk z₁) Ω₂)`. Establish `hext` using `fun y => GlobalTheory.T.extend_integral_padic_evaluation_galois p (X₁.M.Z.presheaf.stalk z₁) (integralClosure (X₁.M.Z.presheaf.stalk z₁) Ω₂) 𝔷 hinj hfix hmax (Φ.ev y) (Φ.ev_le y) (Φ.ev_lt y)`. Use `choose ev' h1 h2 h3 using hext`. Take `⟨k, Q, t, f, hk₀, hk, ht, hf, hcs, hgal⟩` from `hcore 𝔷 hmax ev' h1 h2 h3`.
+
+Conclude with `⟨N, hN₀, hdvd, k, Q, t, (integralClosure (X₁.M.Z.presheaf.stalk z₁) Ω₂), inferInstance, inferInstance, inferInstance, hfin, hfinA, 𝔷, hinj, hfix, hmax, hk₀, hk, ht, ev', f, h1, h2, h3, hf, hcs, hgal⟩`.
+-/
 theorem uclassSums_deeper : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (Dw : Datum H), 1 ≤ Dw.p + Dw.q → ∀ (l : Geo.Tor.Level H) (Xo : Moduli Dw l) (c : Coeff l) (C : UCompact Xo c) (X₁ : USetup C) (p : ℕ) [Fact p.Prime] (z₁ : X₁.M.Z) (Φ : FPre (H.bar : 𝓞 E → 𝓞 E) (min Dw.p Dw.q) p (X₁.M.Z.presheaf.stalk z₁)), (∀ y, ∃ t : UCTrait X₁ p z₁, (∀ a, Φ.ev y a = t.val a) ∧ ∃ e : Φ.X y ≃ₗ[𝓞 E] t.T.P.D.toPre.X, ∀ a b, Φ.sc y * Φ.β y a b = t.sc * t.T.be (e a) (e b)) → ∀ (y₀ : Φ.Y) (N₀ : ℕ), ∃ N, N₀ ≤ N ∧ (X₁.S.r * X₁.S.N) ∣ N ∧ ∃ (k : ∀ y, Φ.X y₀ →ₗ[ℤ] Φ.X y) (Q : Type) (t : ∀ y, (Fin 1 → Φ.X y) → Q → PadicAlgCl p) (B : Type) (_ : CommRing B) (_ : IsDomain B) (_ : Algebra (X₁.M.Z.presheaf.stalk z₁) B) (_ : Module.Finite (X₁.M.Z.presheaf.stalk z₁) B) (_ : Finite (B ≃ₐ[X₁.M.Z.presheaf.stalk z₁] B)) (𝔷 : Ideal B), Function.Injective (algebraMap (X₁.M.Z.presheaf.stalk z₁) B) ∧ (∀ b : B, (∀ σ : B ≃ₐ[X₁.M.Z.presheaf.stalk z₁] B, σ b = b) → b ∈ Set.range (algebraMap (X₁.M.Z.presheaf.stalk z₁) B)) ∧ 𝔷.IsMaximal ∧ k y₀ = LinearMap.id ∧ (∀ y, IsUnimodMod (𝓞 E) N (k y)) ∧ Φ.IsTerms !![(1 : ℤ)] t ∧ Φ.ClassSums (X₁.S.r * X₁.S.N) N y₀ k t B 𝔷 := by
   intro E _ _ _ H Dw hpq l Xo c C X₁ p _ z₁ Φ hΦ y₀ N₀
   obtain ⟨N, hN₀, hdvd, Ω₂, _, _, _, _, hcore⟩ := GlobalTheory.T.unitary_classSums_deeper_level_integralClosure E H Dw hpq l Xo c C X₁ p z₁ Φ hΦ y₀ N₀

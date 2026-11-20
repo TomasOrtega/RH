@@ -6,6 +6,9 @@ open CategoryTheory AlgebraicGeometry TopologicalSpace NumberField IsDedekindDom
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Geo.Tor
 open GlobalTheory.Cartier GlobalTheory.ProjVar Formalism.BasicNotions GlobalTheory.TrueGeo
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.TrueGeo.HtEvalUp.main | exact GlobalTheory.TrueGeo.HtEvalUp.main | (intros; apply GlobalTheory.TrueGeo.HtEvalUp.main <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.adelic_metric_generated_sections_bound : ∀ (F : Type) [Field F] [NumberField F] (C : CxSt F) (Y : Var F) (A : Adl C Y) (k : ℕ+) (x : Y.X),
     IsClosed ({x} : Set Y.X) →
     (∀ y : AlgPt Y, below y.1 = x → {v : HeightOneSpectrum (𝓞 F) | ∃ e : Ext v, A.lg v e y ≠ 0}.Finite) →

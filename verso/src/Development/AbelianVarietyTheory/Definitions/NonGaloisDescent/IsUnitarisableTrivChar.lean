@@ -57,6 +57,9 @@ section Trivial
 
 open GlobalTheory.PRep GlobalTheory.UnitaryBC.Model
 
+/- English proof (translation)
+Establish `e1 : ((((3 : ℕ) : ℂ) - 1) / 2 - ((0 : Fin 3) : ℕ)) = 1` using `by norm_num`. Establish `e2 : ((((3 : ℕ) : ℂ) - 1) / 2 - ((1 : Fin 3) : ℕ)) = 0` using `by norm_num`. Establish `e3 : ((((3 : ℕ) : ℂ) - 1) / 2 - ((2 : Fin 3) : ℕ)) = -1` using `by norm_num`. Rewrite using `[Fin.sum_univ_three, e1, e2, e3, Complex.cpow_neg, add_right_comm]`. Simplify using `[GlobalTheory.LGrp.bcParam]`.
+-/
 example {q : ℕ} (hq : q ≠ 0) :
     ∑ k : Fin 3, ({1} : Multiset ℂˣ).map (fun z : ℂˣ => (z : ℂ) * ((q ^ 2 : ℕ) : ℂ) ^ ((((3 : ℕ) : ℂ) - 1) / 2 - (k : ℕ))) =
       (GlobalTheory.LGrp.bcParam 3 (fun _ => Units.mk0 (q : ℂ) (by exact_mod_cast hq) ^ 2)).map fun z : ℂˣ => (z : ℂ) := by

@@ -13,14 +13,25 @@ namespace GlobalTheory.HCF.ModGrowth
 variable {E : Type} [Field E] [NumberField E] [IsTotallyComplex E] {a : ℕ}
 
 omit [IsTotallyComplex E] in
+/- English proof (translation)
+The claim follows from `(InfinitePlace.Completion.isometryEquivComplexOfIsComplex hw).isometry.norm_map_of_map_zero (map_zero (InfinitePlace.Completion.ringEquivComplexOfIsComplex hw)) x`.
+-/
 theorem norm_ringEquivComplex (w : InfinitePlace E) (hw : w.IsComplex) (x : w.Completion) :
     ‖InfinitePlace.Completion.ringEquivComplexOfIsComplex hw x‖ = ‖x‖ :=
   (InfinitePlace.Completion.isometryEquivComplexOfIsComplex hw).isometry.norm_map_of_map_zero
     (map_zero (InfinitePlace.Completion.ringEquivComplexOfIsComplex hw)) x
 
+/- English proof (translation)
+The claim follows from `norm_ringEquivComplex w (IsTotallyComplex.isComplex w) (x.1 w)`.
+-/
 theorem norm_pInf_apply (x : Ad E) (w : InfinitePlace E) : ‖pInf E x w‖ = ‖x.1 w‖ :=
   norm_ringEquivComplex w (IsTotallyComplex.isComplex w) (x.1 w)
 
+/- English proof (translation)
+Use `(pi_norm_le_iff_of_nonneg (by positivity)).2 fun i => (pi_norm_le_iff_of_nonneg (by positivity)).2 fun j => ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `‖(A * B) i j‖ ≤ _`. Rewrite using `[Matrix.mul_apply]`. Use `(norm_sum_le _ _).trans ((Finset.sum_le_card_nsmul _ _ (‖toL A‖ * ‖toL B‖) fun k _ => ?_).trans_eq (by simp [nsmul_eq_mul]))` and prove the remaining obligations. Use `(norm_mul_le _ _).trans (mul_le_mul ?_ ?_ (norm_nonneg _) (norm_nonneg _))` and prove the remaining obligations.
+
+Conclude with `(norm_le_pi_norm (toL A i) k).trans (norm_le_pi_norm (toL A) i)`. Conclude with `(norm_le_pi_norm (toL B k) j).trans (norm_le_pi_norm (toL B) k)`.
+-/
 theorem norm_toL_mul_le (A B : Matrix (Fin a) (Fin a) (Cinf E)) :
     ‖toL (A * B)‖ ≤ a * (‖toL A‖ * ‖toL B‖) := by
   refine (pi_norm_le_iff_of_nonneg (by positivity)).2 fun i => (pi_norm_le_iff_of_nonneg (by positivity)).2 fun j => ?_
@@ -32,6 +43,11 @@ theorem norm_toL_mul_le (A B : Matrix (Fin a) (Fin a) (Cinf E)) :
   · exact (norm_le_pi_norm (toL A i) k).trans (norm_le_pi_norm (toL A) i)
   · exact (norm_le_pi_norm (toL B k) j).trans (norm_le_pi_norm (toL B) k)
 
+/- English proof (translation)
+Establish `h1` using `norm_toL_mul_le (E := E) y.val z.val`. Establish `h2` using `norm_toL_mul_le (E := E) (z⁻¹).val (y⁻¹).val`. Unfold `GlobalTheory.CuspRep.height`. Rewrite using `[mul_inv_rev, Units.val_mul, Units.val_mul]`. Establish `p1` using `norm_nonneg (toL y.val)`.
+
+Establish `p2` using `norm_nonneg (toL (y⁻¹).val)`. Establish `q1` using `norm_nonneg (toL z.val)`. Establish `q2` using `norm_nonneg (toL (z⁻¹).val)`. Establish `ha : (0 : ℝ) ≤ a` using `Nat.cast_nonneg a`. Use polynomial arithmetic with `[mul_nonneg p1 q1, mul_nonneg p2 q2, mul_nonneg p1 q2, mul_nonneg p2 q1, mul_nonneg ha (mul_nonneg p1 q1), mul_nonneg ha (mul_nonneg p2 q2), mul_nonneg ha p1, mul_nonneg ha p2, mul_nonneg ha q1, mul_nonneg ha q2, mul_nonneg ha (mul_nonneg p1 q2), mul_nonneg ha (mul_nonneg p2 q1)]`.
+-/
 theorem height_mul_le (y z : GL (Fin a) (Cinf E)) :
     GlobalTheory.CuspRep.height (y * z) ≤ (a + 1) * (GlobalTheory.CuspRep.height y * GlobalTheory.CuspRep.height z) := by
   have h1 := norm_toL_mul_le (E := E) y.val z.val
@@ -47,6 +63,9 @@ theorem height_mul_le (y z : GL (Fin a) (Cinf E)) :
     mul_nonneg ha (mul_nonneg p2 q2), mul_nonneg ha p1, mul_nonneg ha p2, mul_nonneg ha q1, mul_nonneg ha q2,
     mul_nonneg ha (mul_nonneg p1 q2), mul_nonneg ha (mul_nonneg p2 q1)]
 
+/- English proof (translation)
+Establish `h1 : Continuous fun y : GL (Fin a) (Cinf E) => toL y.val` using `Units.continuous_val (M := Matrix (Fin a) (Fin a) (Cinf E))`. Establish `h2 : Continuous fun y : GL (Fin a) (Cinf E) => toL (y⁻¹).val` using `(Units.continuous_val (M := Matrix (Fin a) (Fin a) (Cinf E))).comp continuous_inv`. Conclude with `(continuous_const.add (continuous_norm.comp h1)).add (continuous_norm.comp h2)`.
+-/
 theorem continuous_height : Continuous (GlobalTheory.CuspRep.height : GL (Fin a) (Cinf E) → ℝ) := by
   have h1 : Continuous fun y : GL (Fin a) (Cinf E) => toL y.val :=
     Units.continuous_val (M := Matrix (Fin a) (Fin a) (Cinf E))
@@ -54,6 +73,11 @@ theorem continuous_height : Continuous (GlobalTheory.CuspRep.height : GL (Fin a)
     (Units.continuous_val (M := Matrix (Fin a) (Fin a) (Cinf E))).comp continuous_inv
   exact (continuous_const.add (continuous_norm.comp h1)).add (continuous_norm.comp h2)
 
+/- English proof (translation)
+Use `Units.ext (Matrix.ext fun i j => ?_)` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `pFin E ((diagUnits a fun i => posIdele (K := E) (r i) (hr i) : GA E a) i j) = (1 : Matrix (Fin a) (Fin a) (Af E)) i j`. Rewrite using `[coe_diagUnits, Matrix.diagonal_apply, Matrix.one_apply]`. Use `split_ifs with h`. Substitute `h` using the available equality.
+
+Conclude with `IsDedekindDomain.FiniteAdeleRing.ext _ fun v => by`. Express the relevant statement in the definitionally equal form `((posIdele (K := E) (r i) (hr i) : GroundTheory.Global.IdeleGroup E) : AdeleRing (𝓞 E) E).2 v = _`. Rewrite using `[posIdele_finite]`. Both sides reduce to the same expression. Conclude with `map_zero _`.
+-/
 theorem pFin_diag (r : Fin a → ℝ) (hr : ∀ i, 0 < r i) :
     Matrix.GeneralLinearGroup.map (pFin E) (diagUnits a fun i => posIdele (K := E) (r i) (hr i)) = 1 := by
   refine Units.ext (Matrix.ext fun i j => ?_)
@@ -66,6 +90,21 @@ theorem pFin_diag (r : Fin a → ℝ) (hr : ∀ i, 0 < r i) :
       rw [posIdele_finite]; rfl
   · exact map_zero _
 
+/- English proof (translation)
+Use `set d : Fin a → GroundTheory.Global.IdeleGroup E := fun i => posIdele (K := E) (r i) (hr i) with hd`. Establish `hn : ∀ i w, ‖pInf E (d i : Ad E) w‖ = r i` using `fun i w => by`. Rewrite using `[norm_pInf_apply]`. Conclude with `norm_posIdele_infinite (r i) (hr i) w`. Establish `hn' : ∀ i w, ‖pInf E (((d i)⁻¹ : GroundTheory.Global.IdeleGroup E) : Ad E) w‖ = (r i)⁻¹` using `fun i w => by`.
+
+Establish `e : pInf E (((d i)⁻¹ : GroundTheory.Global.IdeleGroup E) : Ad E) w * pInf E (d i : Ad E) w = 1`. Rewrite using `[← Pi.mul_apply, ← map_mul, Units.inv_mul, map_one, Pi.one_apply]`. Use `congrArg norm e` as an intermediate fact. Rewrite `this` using `[norm_mul, hn, norm_one]`. Conclude with `eq_inv_of_mul_eq_one_left this`.
+
+Establish `key : ∀ (f : Fin a → GroundTheory.Global.IdeleGroup E) (s : Fin a → ℝ), (∀ i w, ‖pInf E (f i : Ad E) w‖ = s i) → (∀ i, 0 ≤ s i) → ‖toL (Matrix.GeneralLinearGroup.map (pInf E) (diagUnits a f)).val‖ ≤ ∑ i, s i`. Introduce `f s hf hs`. Establish `h0 : 0 ≤ ∑ i, s i` using `Finset.sum_nonneg fun i _ => hs i`. Use `(pi_norm_le_iff_of_nonneg h0).2 fun i => (pi_norm_le_iff_of_nonneg h0).2 fun j => ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `‖pInf E ((diagUnits a f : GA E a) i j)‖ ≤ _`.
+
+Rewrite using `[coe_diagUnits, Matrix.diagonal_apply]`. Use `split_ifs with h`. Substitute `h` using the available equality. Use `(pi_norm_le_iff_of_nonneg h0).2 fun w => ?_` and prove the remaining obligations. Rewrite using `[hf]`.
+
+Conclude with `Finset.single_le_sum (fun k _ => hs k) (Finset.mem_univ i)`. Rewrite using `[map_zero, norm_zero]`. Conclude with `h0`. Establish `h1` using `key d r hn fun i => (hr i).le`. Establish `h2` using `key (fun i => (d i)⁻¹) (fun i => (r i)⁻¹) hn' fun i => (inv_pos.2 (hr i)).le`.
+
+Establish `e : (Matrix.GeneralLinearGroup.map (pInf E) (diagUnits a d))⁻¹ = Matrix.GeneralLinearGroup.map (pInf E) (diagUnits a fun i => (d i)⁻¹)`. Rewrite using `[← map_inv, ← map_inv]`. Both sides reduce to the same expression. Unfold `GlobalTheory.CuspRep.height`. Rewrite using `[e, Finset.sum_add_distrib]`.
+
+Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem height_pInf_diag (r : Fin a → ℝ) (hr : ∀ i, 0 < r i) :
     GlobalTheory.CuspRep.height (Matrix.GeneralLinearGroup.map (pInf E) (diagUnits a fun i => posIdele (K := E) (r i) (hr i)))
       ≤ 1 + ∑ i, (r i + (r i)⁻¹) := by
@@ -100,6 +139,17 @@ theorem height_pInf_diag (r : Fin a → ℝ) (hr : ∀ i, 0 < r i) :
   rw [e, Finset.sum_add_distrib]
   linarith
 
+/- English proof (translation)
+Proceed by induction on `hφ using Submodule.span_induction with`. Consider the case `mem x hx`. Use `⟨hx.2.1, fun g => ?_⟩` and prove the remaining obligations. Take `⟨C, M, h⟩` from `hx.1.growth g`. Use `⟨|C|, M, abs_nonneg _, fun y => (h y).trans (mul_le_mul_of_nonneg_right (le_abs_self C) ?_)⟩` and prove the remaining obligations.
+
+Conclude with `pow_nonneg (zero_le_one.trans (one_le_height y)) _`. Consider the case `zero => exact ⟨fun l _ => map_zero _, fun g => ⟨0, 0, le_rfl, fun y => by simp⟩⟩`. Consider the case `add x y _ _ hx hy`. Use `⟨fun l hl => by rw [map_add, hx.1 l hl, hy.1 l hl], fun g => ?_⟩` and prove the remaining obligations. Take `⟨C1, M1, h1, e1⟩` from `hx.2 g`.
+
+Take `⟨C2, M2, h2, e2⟩` from `hy.2 g`. Use `⟨C1 + C2, M1 + M2, add_nonneg h1 h2, fun z => ?_⟩` and prove the remaining obligations. Establish `hz` using `one_le_height z`. Establish `p1 : GlobalTheory.CuspRep.height z ^ M1 ≤ GlobalTheory.CuspRep.height z ^ (M1 + M2)` using `pow_le_pow_right₀ hz (by omega)`. Establish `p2 : GlobalTheory.CuspRep.height z ^ M2 ≤ GlobalTheory.CuspRep.height z ^ (M1 + M2)` using `pow_le_pow_right₀ hz (by omega)`.
+
+Combine the equalities or inequalities in the displayed calculation. Consider the case `smul c x _ hx`. Use `⟨fun l hl => by rw [map_smul, hx.1 l hl], fun g => ?_⟩` and prove the remaining obligations. Take `⟨C, M, h, e⟩` from `hx.2 g`. Use `⟨‖c‖ * C, M, by positivity, fun z => ?_⟩` and prove the remaining obligations.
+
+Express the relevant statement in the definitionally equal form `‖c * x.1 (g * infGL E a z)‖ ≤ _`. Rewrite using `[norm_mul, mul_assoc]`. Conclude with `mul_le_mul_of_nonneg_left (e z) (norm_nonneg c)`.
+-/
 theorem span_props {L : Subgroup (GL (Fin a) (Af E))} {W : Submodule ℂ (Kinf E a → ℂ)}
     {X : Set (Module.End ℂ (Sm E a) → ℂ)} {N : ℕ} {φ : Sm E a} (hφ : φ ∈ Submodule.span ℂ (formsGL E a L W X N)) :
     (∀ l ∈ L, finRep E a l φ = φ) ∧ ∀ g, ∃ (C : ℝ) (M : ℕ), 0 ≤ C ∧
@@ -132,6 +182,13 @@ theorem span_props {L : Subgroup (GL (Fin a) (Af E))} {W : Submodule ℂ (Kinf E
     rw [norm_mul, mul_assoc]
     exact mul_le_mul_of_nonneg_left (e z) (norm_nonneg c)
 
+/- English proof (translation)
+Take `⟨t, ht⟩` from `hS.elim_finite_subcover (fun s : GL (Fin a) (Af E) => s • (L : Set (GL (Fin a) (Af E)))) (fun s => hL.leftCoset s) (fun s _ => Set.mem_iUnion.2 ⟨s, Set.mem_smul_set.2 ⟨1, L.one_mem, mul_one s⟩⟩)`. Use `choose C M hC hb using fun s : GL (Fin a) (Af E) => hg (finGL E a s)`. Use `⟨∑ s ∈ t, C s, ∑ s ∈ t, M s, Finset.sum_nonneg fun s _ => hC s, fun s' hs' y => ?_⟩` and prove the remaining obligations. Take `⟨s, hst, hs⟩` from `Set.mem_iUnion₂.1 (ht hs')`. Take `⟨l, hl, rfl⟩` from `Set.mem_smul_set.1 hs`.
+
+Establish `e : φ.1 (finGL E a (s • l) * infGL E a y) = φ.1 (finGL E a s * infGL E a y)`. Establish `h` using `congrArg (fun ψ : Sm E a => ψ.1 (finGL E a s * infGL E a y)) (hinv l hl)`. Use `Eq.trans ?_ h` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `φ.1 (finGL E a (s * l) * infGL E a y) = φ.1 (finGL E a s * infGL E a y * finGL E a l)`. Rewrite using `[map_mul, mul_assoc, mul_assoc, infGL_comm]`.
+
+Rewrite using `[e]`. Establish `hy` using `one_le_height y`. Use `(hb s y).trans (mul_le_mul (Finset.single_le_sum (fun s _ => hC s) hst) (pow_le_pow_right₀ hy (Finset.single_le_sum (fun s _ => Nat.zero_le (M s)) hst)) (pow_nonneg (zero_le_one.trans hy) _) (Finset.sum_nonneg fun s _ => hC s))` and prove the remaining obligations.
+-/
 theorem uniform_fin {L : Subgroup (GL (Fin a) (Af E))} (hL : IsOpen (L : Set (GL (Fin a) (Af E)))) {φ : Sm E a}
     (hinv : ∀ l ∈ L, finRep E a l φ = φ)
     (hg : ∀ g, ∃ (C : ℝ) (M : ℕ), 0 ≤ C ∧ ∀ y, ‖φ.1 (g * infGL E a y)‖ ≤ C * GlobalTheory.CuspRep.height y ^ M)
@@ -159,6 +216,29 @@ end GlobalTheory.HCF.ModGrowth
 
 namespace GlobalTheory.HCF.ModGrowth
 
+/- English proof (translation)
+Introduce `E _ _ _ a L hL W X N φ hφ Ω hΩ`. Take `⟨hinv, hgr⟩` from `span_props hφ`. Break down `Nat.eq_zero_or_pos a with rfl | ha` into its components or cases. Establish `h1 : ∀ g : GA E 0, g = 1` using `fun g => Units.ext (Matrix.ext fun i => Fin.elim0 i)`. Use `⟨‖φ.1 1‖, 0, norm_nonneg _, fun b _ r hr k _ y => ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[h1 (b * _ * k * _)]`. Simplify using the standard rewrite rules. Establish `hS : IsCompact ((fun p : GA E a × GA E a => Matrix.GeneralLinearGroup.map (pFin E) (p.1 * p.2)) '' (Ω ×ˢ ((maxCompact : Subgroup (GA E a)) : Set (GA E a))))` using `(hΩ.prod isCompact_maxCompact).image ((ContAut.continuous_map_pFin E a).comp (continuous_fst.mul continuous_snd))`. Take `⟨C1, M, hC1, hb1⟩` from `uniform_fin hL hinv hgr hS`. Establish `hf : Continuous fun g : GA E a => GlobalTheory.CuspRep.height (Matrix.GeneralLinearGroup.map (pInf E) g)` using `continuous_height.comp (ContAut.continuous_map_pInf E a)`.
+
+Take `⟨Mb, hMb⟩` from `hΩ.exists_bound_of_continuousOn hf.continuousOn`. Take `⟨Mk, hMk⟩` from `(isCompact_maxCompact (K := E) (n := a)).exists_bound_of_continuousOn hf.continuousOn`. Establish `hB : (0 : ℝ) ≤ (a + 1) ^ 3 * (max Mb 1 * 2 * max Mk 1)` using `by positivity`. Use `⟨C1 * ((a + 1) ^ 3 * (max Mb 1 * 2 * max Mk 1)) ^ M, M, by positivity, fun b hb r hr k hk y => ?_⟩` and prove the remaining obligations. Establish `hfin : Matrix.GeneralLinearGroup.map (pFin E) (b * diagUnits a (fun i => posIdele (K` using `E) (r i) (hr i)) * k * infGL E a y) = Matrix.GeneralLinearGroup.map (pFin E) (b * k) := by`.
+
+Simplify using `only [map_mul, pFin_diag, pFin_infGL, mul_one]`. Establish `hinf : Matrix.GeneralLinearGroup.map (pInf E) (b * diagUnits a (fun i => posIdele (K` using `E) (r i) (hr i)) * k * infGL E a y) = Matrix.GeneralLinearGroup.map (pInf E) b * Matrix.GeneralLinearGroup.map (pInf E) (diagUnits a (fun i => posIdele (K := E) (r i) (hr i))) * Matrix.GeneralLinearGroup.map (pInf E) k * y := by`. Simplify using `only [map_mul, pInf_infGL]`. Establish `hx` using `infGL_mul_finGL (b * diagUnits a (fun i => posIdele (K := E) (r i) (hr i)) * k * infGL E a y)`. Rewrite `hx` using `[infGL_comm, hfin, hinf]`.
+
+Rewrite using `[← hx]`. Establish `hs : Matrix.GeneralLinearGroup.map (pFin E) (b * k) ∈ (fun p : GA E a × GA E a => Matrix.GeneralLinearGroup.map (pFin E) (p.1 * p.2)) '' (Ω ×ˢ ((maxCompact : Subgroup (GA E a)) : Set (GA E a)))` using `⟨(b, k), ⟨hb, hk⟩, rfl⟩`. Use `(hb1 _ hs _).trans ?_` and prove the remaining obligations. Use `set A := Matrix.GeneralLinearGroup.map (pInf E) b`. Use `set D := Matrix.GeneralLinearGroup.map (pInf E) (diagUnits a (fun i => posIdele (K := E) (r i) (hr i)))`.
+
+Use `set K := Matrix.GeneralLinearGroup.map (pInf E) k`. Use `set s := ∑ i, (r i + (r i)⁻¹)`. Establish `hs1 : 1 ≤ s`. Establish `h0 : ∀ i, 0 ≤ r i + (r i)⁻¹` using `fun i => add_nonneg (hr i).le (inv_pos.2 (hr i)).le`. Establish `h1 : 1 ≤ r ⟨0, ha⟩ + (r ⟨0, ha⟩)⁻¹`.
+
+Break down `le_total (r ⟨0, ha⟩) 1 with h | h` into its components or cases. Combine the linear relations using `[(one_le_inv₀ (hr ⟨0, ha⟩)).2 h, hr ⟨0, ha⟩]`. Combine the linear relations using `[inv_pos.2 (hr ⟨0, ha⟩)]`. Conclude with `h1.trans (Finset.single_le_sum (fun i _ => h0 i) (Finset.mem_univ _))`. Establish `hA : GlobalTheory.CuspRep.height A ≤ max Mb 1` using `((Real.le_norm_self _).trans (hMb b hb)).trans (le_max_left _ _)`.
+
+Establish `hK : GlobalTheory.CuspRep.height K ≤ max Mk 1` using `((Real.le_norm_self _).trans (hMk k hk)).trans (le_max_left _ _)`. Establish `hD : GlobalTheory.CuspRep.height D ≤ 2 * s` using `(height_pInf_diag r hr).trans (by linarith)`. Establish `hA1` using `one_le_height A`. Establish `hD1` using `one_le_height D`. Establish `hK1` using `one_le_height K`.
+
+Establish `hy1` using `one_le_height y`. Establish `c0 : (0 : ℝ) ≤ a + 1` using `by positivity`. Establish `e3` using `height_mul_le A D`. Establish `e2` using `height_mul_le (A * D) K`. Establish `e1` using `height_mul_le (A * D * K) y`.
+
+Establish `hAD : GlobalTheory.CuspRep.height A * GlobalTheory.CuspRep.height D ≤ max Mb 1 * (2 * s)` using `mul_le_mul hA hD (by linarith) (by positivity)`. Establish `hADK : GlobalTheory.CuspRep.height (A * D * K) ≤ (a + 1) * ((a + 1) * (max Mb 1 * (2 * s)) * max Mk 1)` using `e2.trans (mul_le_mul_of_nonneg_left (mul_le_mul (e3.trans (mul_le_mul_of_nonneg_left hAD c0)) hK (by linarith) (by positivity)) c0)`. Establish `hz : GlobalTheory.CuspRep.height (A * D * K * y) ≤ (a + 1) ^ 3 * (max Mb 1 * 2 * max Mk 1) * s * GlobalTheory.CuspRep.height y`. Use `e1.trans ((mul_le_mul_of_nonneg_left (mul_le_mul_of_nonneg_right hADK (by linarith)) c0).trans_eq ?_)` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+
+Establish `hz0 : 0 ≤ GlobalTheory.CuspRep.height (A * D * K * y)` using `zero_le_one.trans (one_le_height _)`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[mul_pow, mul_pow]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem modGrowth_span : ∀ (E : Type) [Field E] [NumberField E] [IsTotallyComplex E] (a : ℕ)
     (L : Subgroup (GL (Fin a) (Af E))), IsOpen (L : Set (GL (Fin a) (Af E))) → ∀ (W : Submodule ℂ (Kinf E a → ℂ))
     (X : Set (Module.End ℂ (Sm E a) → ℂ)) (N : ℕ), ∀ φ ∈ Submodule.span ℂ (formsGL E a L W X N),

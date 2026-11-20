@@ -21,10 +21,16 @@ open Formalism.FourierDecayAlt.P.PBJ
 
 section pts
 
+/- English proof (translation)
+Rewrite using `[bigPt, List.map_ofFn]`. Both sides reduce to the same expression.
+-/
 theorem bigPt_eq_map {n : ℕ} (d : Fin n → ℂ) : bigPt d = (List.ofFn d).map fun c => (1, c) := by
   rw [bigPt, List.map_ofFn]
   rfl
 
+/- English proof (translation)
+Proceed by induction on `l generalizing a with`. Consider the case `nil => rfl`. Consider the case `cons c l ih`. Simplify using `only [List.map_cons, D.ptPartner, ih]`. Apply the tactic sequence `split_ifs with h <;> omega`.
+-/
 theorem ptPartner_ones (l : List ℂ) (a : ℕ) : D.ptPartner (l.map fun c => (1, c)) a = a := by
   induction l generalizing a with
   | nil => rfl
@@ -32,6 +38,13 @@ theorem ptPartner_ones (l : List ℂ) (a : ℕ) : D.ptPartner (l.map fun c => (1
     simp only [List.map_cons, D.ptPartner, ih]
     split_ifs with h <;> omega
 
+/- English proof (translation)
+Unfold `D.ptPerm`. Use `split_ifs with h`. Use extensionality with `i`. Establish `hp : ∀ a : ℕ, D.ptPartner (bigPt d) a = a` using `fun a => by`. Rewrite using `[bigPt_eq_map]`.
+
+Conclude with `ptPartner_ones _ _`. Simplify using `only [Equiv.ofBijective_apply, Equiv.Perm.coe_one, id_eq, D.ptPartnerF]`. Use `split_ifs`. Conclude with `hp i`. Both sides reduce to the same expression.
+
+Both sides reduce to the same expression.
+-/
 theorem ptPerm_bigPt {n : ℕ} (d : Fin n → ℂ) (hd : ∀ i, d i ≠ 0) : D.ptPerm (bigPt d) = 1 := by
   unfold D.ptPerm
   split_ifs with h
@@ -45,17 +58,26 @@ theorem ptPerm_bigPt {n : ℕ} (d : Fin n → ℂ) (hd : ∀ i, d i ≠ 0) : D.p
     · rfl
   · rfl
 
+/- English proof (translation)
+Substitute `e` using the available equality. Conclude with `hσ`.
+-/
 theorem cast_perm_eq_one {n m : ℕ} (e : n = m) (σ : Equiv.Perm (Fin n)) (hσ : σ = 1) :
     (e ▸ σ : Equiv.Perm (Fin m)) = 1 := by
   subst e
   exact hσ
 
+/- English proof (translation)
+Establish `hw : U.wP (1 : Equiv.Perm (Fin n)) = 1`. Use extensionality with `a b`. Apply the tactic sequence `by_cases hab : a = b <;> simp [U.wP, Matrix.one_apply, hab]`. Simplify using `only [U.hMat, hw, one_mul]`.
+-/
 theorem hMat_one {n : ℕ} (d : Fin n → ℂ) : U.hMat (1 : Equiv.Perm (Fin n)) d = Matrix.diagonal d := by
   have hw : U.wP (1 : Equiv.Perm (Fin n)) = 1 := by
     ext a b
     by_cases hab : a = b <;> simp [U.wP, Matrix.one_apply, hab]
   simp only [U.hMat, hw, one_mul]
 
+/- English proof (translation)
+Proceed by induction on `l generalizing a b with`. Consider the case `nil => simp [D.ptEntry]`. Consider the case `cons c l ih`. Apply the tactic sequence `rcases a with _ | a <;> rcases b with _ | b <;> simp [D.ptEntry, ih]`.
+-/
 private lemma ptEntry_map_one_eq_ite_getD (l : List ℂ) (a b : ℕ) :
     D.ptEntry (l.map fun c => (1, c)) a b = if a = b then l.getD a 0 else 0 := by
   induction l generalizing a b with
@@ -63,10 +85,16 @@ private lemma ptEntry_map_one_eq_ite_getD (l : List ℂ) (a b : ℕ) :
   | cons c l ih =>
     rcases a with _ | a <;> rcases b with _ | b <;> simp [D.ptEntry, ih]
 
+/- English proof (translation)
+Rewrite using `[List.getD_eq_getElem _ _ (by simpa using hi), List.getElem_ofFn]`.
+-/
 private lemma list_ofFn_getD_of_lt {n : ℕ} (d : Fin n → ℂ) (i : ℕ) (hi : i < n) :
     (List.ofFn d).getD i 0 = d ⟨i, hi⟩ := by
   rw [List.getD_eq_getElem _ _ (by simpa using hi), List.getElem_ofFn]
 
+/- English proof (translation)
+Use extensionality with `a b`. Simplify using `only [D.ptMatN, bigPt_eq_map, ptEntry_map_one_eq_ite_getD, Matrix.diagonal_apply, Fin.ext_iff]`. Use `split_ifs with h`. Conclude with `list_ofFn_getD_of_lt d a a.isLt`. Both sides reduce to the same expression.
+-/
 private lemma ptMatN_bigPt_eq_diagonal' {n : ℕ} (d : Fin n → ℂ) : D.ptMatN (bigPt d) n = Matrix.diagonal d := by
   ext a b
   simp only [D.ptMatN, bigPt_eq_map, ptEntry_map_one_eq_ite_getD, Matrix.diagonal_apply, Fin.ext_iff]
@@ -74,6 +102,9 @@ private lemma ptMatN_bigPt_eq_diagonal' {n : ℕ} (d : Fin n → ℂ) : D.ptMatN
   · exact list_ofFn_getD_of_lt d a a.isLt
   · rfl
 
+/- English proof (translation)
+Use extensionality with `a b`. Simplify using `only [D.ptMatN, bigPt_eq_map, ptEntry_map_one_eq_ite_getD, Matrix.diagonal_apply, Fin.ext_iff]`. Use `split_ifs with h`. Conclude with `list_ofFn_getD_of_lt d a (by omega)`. Both sides reduce to the same expression.
+-/
 theorem ptMatN_bigPt_head {r : ℕ} (d : Fin (r + 1) → ℂ) :
     D.ptMatN (bigPt d) r = Matrix.diagonal fun a : Fin r => d a.castSucc := by
   ext a b
@@ -82,6 +113,9 @@ theorem ptMatN_bigPt_head {r : ℕ} (d : Fin (r + 1) → ℂ) :
   · exact list_ofFn_getD_of_lt d a (by omega)
   · rfl
 
+/- English proof (translation)
+Establish `h1` using `h`. Simplify using `only [D.ptG, ptMatN_bigPt_eq_diagonal', ptMatN_bigPt_head, Matrix.det_diagonal, Fin.prod_univ_castSucc, map_mul] at h1`. Assume the negation of the conclusion as `hc`. Use `push_neg at hc`. Use polynomial arithmetic with `[mul_nonneg (sub_nonneg.2 hc) (Complex.normSq_nonneg (∏ a : Fin r, d a.castSucc))]`.
+-/
 theorem zeta_big {r : ℕ} (TT : ℝ) (d : Fin (r + 1) → ℂ) (h : 0 < D.ptG TT r (bigPt d)) :
     TT < Complex.normSq (d (Fin.last r)) := by
   have h1 := h
@@ -98,6 +132,11 @@ section orb
 variable {k r : ℕ} {Wp Wq : Type} [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp]
   [NormedAddCommGroup Wq] [InnerProductSpace ℂ Wq]
 
+/- English proof (translation)
+Rewrite using `[ptMatN_bigPt_eq_diagonal', bigCellZhat k r _ _ _ _ Bs.z_mem Bs.z'_mem, Formalism.FourierDecayAlt.P.BigCellHermitian.herm_bigCell _ _ Bs.z_mem Bs.z'_mem, (Bs.sec.2 _ hζ).2]`. Use `congr 1`. Use function extensionality and compare the values at `a`. Use `split_ifs with h`. Both sides reduce to the same expression.
+
+Establish `ha` using `a.isLt`. Establish `hl : a = Fin.last r` using `Fin.ext (by rw [Fin.val_last]; omega)`. Rewrite using `[hl]`.
+-/
 theorem zhat_bigCell_pt (Bs : B.RealPlaceData k r Wp Wq) (d : Fin (r + 1) → ℂ)
     (hζ : Tz k r Bs.z * Tz k r Bs.z' < Complex.normSq (d (Fin.last r))) :
     Zhat k r Bs.z Bs.z' (bigCell k r (fun i => d i.castSucc) (Bs.μsec (d (Fin.last r)))) =
@@ -112,6 +151,25 @@ theorem zhat_bigCell_pt (Bs : B.RealPlaceData k r Wp Wq) (d : Fin (r + 1) → �
     have hl : a = Fin.last r := Fin.ext (by rw [Fin.val_last]; omega)
     rw [hl]
 
+/- English proof (translation)
+Establish `: IsEmpty (C2.Lstidx (1 : Equiv.Perm (Fin (r + 1))))` using `⟨fun q => by`. Take `⟨⟨a, b⟩, h1, h2⟩` from `q`. Simplify using `only [Equiv.Perm.one_symm, Equiv.Perm.coe_one, id] at h2`. Conclude with `absurd h1 (not_lt.2 h2.le)⟩`. Establish `hone : D.rhoOfU S γ 1 = 1`.
+
+Unfold `D.rhoOfU`. Use `split_ifs with hex`. Establish `h1mem : (1 : B.Mat k r) ∈ C6.Rset γ`. Use `⟨WeylGroupFacts.mem_n_one, ?_⟩` and prove the remaining obligations. Rewrite using `[Matrix.mul_one, Matrix.nonsing_inv_mul _ (Formalism.FourierDecayAlt.P.Dx2.OrbJ.isUnit_of_G hγ)]`.
+
+Conclude with `WeylGroupFacts.mem_n_one`. Conclude with `Formalism.FourierDecayAlt.P.Dx2.Rad.u_inj S hγ hpos hd hZ hex.choose_spec.1 h1mem (hex.choose_spec.2.trans (Formalism.FourierDecayAlt.P.Dx2.Rad.uMap_one S.z ⟨S.z_mem, S.T_pos⟩).symm)`. Both sides reduce to the same expression. Establish `hlow : C2.lowOf (fun q : C2.Lstidx (1 : Equiv.Perm (Fin (r + 1))) => q.1) isEmptyElim = 1`. Unfold `C2.lowOf`.
+
+Use extensionality with `i j`. Simplify using the standard rewrite rules. Establish `hR : D.muR S γ 1 = Measure.dirac (Matrix.of.symm (1 : B.Mat k r))`. Unfold `D.muR`. Rewrite using `[MeasureTheory.volume_pi, Measure.pi_of_empty _ isEmptyElim, Measure.map_dirac' Subsingleton.measurable, hlow, Matrix.conjTranspose_one, hone]`.
+
+Establish `hact : ∀ p, C6.actR γ 1 p = p`. Introduce `p`. Unfold `C6.actR`. Rewrite using `[Matrix.mul_one, Matrix.nonsing_inv_mul _ (Formalism.FourierDecayAlt.P.Dx2.OrbJ.isUnit_of_G hγ), Matrix.one_mul, Matrix.one_mul]`. Both sides reduce to the same expression.
+
+Establish `hθ : ∀ θ, D.IsNormCut S γ (D.muR S γ 1) θ → ∀ p, S.inSS p → θ p = 1`. Introduce `θ hθ p hp`. Establish `h` using `hθ.2.2 p hp`. Rewrite `h` using `[hR, integral_dirac]`. Simplify `h` using `[hact]`.
+
+Unfold `D.orbJ`. Use `split_ifs with hex`. Establish `h1` using `hθ _ hex.choose_spec.1`. Combine the equalities or inequalities in the displayed calculation. Use `integral_congr_ae ?_` and prove the remaining obligations.
+
+Use `filter_upwards [Formalism.FourierDecayAlt.P.Dx2.OrbJ.ae_inSS S] with p hp`. Rewrite using `[h1 p hp, one_smul]`. Use `_ = B.Jtau S (1, 1) F γ := rfl`. Use `_ = B.JF S F γ := Formalism.FourierDecayAlt.P.bessel_function_trivial_index k r Wp Wq S F γ`. Use `_ = 0 := hJ`.
+
+Both sides reduce to the same expression.
+-/
 theorem orbJ_one_zero (S : B.RealPlaceData k r Wp Wq) {γ : B.Mat k r} (hγ : γ ∈ B.GV k r)
     (hpos : 0 < Gf k r S.z S.z' γ) {d : Fin (r + 1) → ℂ} (hd : ∀ a, d a ≠ 0)
     (hZ : Zhat k r S.z S.z' γ = C2.monoP 1 d) (F : B.Mat k r → (Wq →L[ℂ] Wp))
@@ -168,6 +226,17 @@ section jf
 variable {Wp Wq : Type} [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp]
   [NormedAddCommGroup Wq] [InnerProductSpace ℂ Wq]
 
+/- English proof (translation)
+Establish `hsec` using `Bs.sec.2 ζ hζ`. Establish `hμ : Bs.μsec ζ ∈ UH (Hb P.k)` using `hsec.1`. Establish `hg : B2.embWb P.k P.r (Bs.μsec ζ) ∈ Q.Glev P.k P.r (Fin.last P.r)` using `Formalism.FourierDecayAlt.P.NFRadRedA.uwb_glev (Formalism.FourierDecayAlt.P.TwoByOneBlock.emb_mem_UWb hμ)`. Establish `e : herm (Hpk P.k P.r) (bigCell P.k P.r c (Bs.μsec ζ) *ᵥ Bs.z') Bs.z = Q.zetaL P.k P.r Bs.z Bs.z' (Fin.last P.r) (B2.embWb P.k P.r (Bs.μsec ζ))`. Rewrite using `[Formalism.FourierDecayAlt.P5.Rad.zetaL_last, ← Formalism.FourierDecayAlt.P.TwoByOneBlock.jV_wbPart Bs.z'_mem, Formalism.FourierDecayAlt.P.BigCellHermitian.bigCell_mulVec_jV, Formalism.FourierDecayAlt.P.TwoByOneBlock.emb_mulVec_jV]`.
+
+Establish `hz : Q.zetaL P.k P.r Bs.z Bs.z' (Fin.last P.r) (B2.embWb P.k P.r (Bs.μsec ζ)) = ζ`. Rewrite using `[← e, Formalism.FourierDecayAlt.P.BigCellHermitian.herm_bigCell _ _ Bs.z_mem Bs.z'_mem, hsec.2]`. Establish `hdom : ((c, B2.embWb P.k P.r (Bs.μsec ζ)) : (Fin P.r → ℂ) × Q.Mx P.k P.r) ∈ Q.DomR P.k P.r Bs.z Bs.z'` using `⟨hc, hg, by unfold Q.GGl; rw [hz]; linarith⟩`. Establish `h0` using `hR _ hdom`. Establish `hz0 : ((0 : Q.RadSp P.k P.r Bs.z Bs.z' Bs.π Bs.π') : Q.Fn P.k P.r (Wq →L[ℂ] Wp)) c (B2.embWb P.k P.r (Bs.μsec ζ)) = 0` using `rfl`.
+
+Rewrite `h0` using `[hz0]`. Unfold `Q.resG at h0`. Rewrite `h0` using `[Formalism.FourierDecayAlt.P5.Rad.wCell_last_eq, ← (Formalism.FourierDecayAlt.P.bruhat_big_cell_factorization P.k P.r c _).1]`. Break down `smul_eq_zero.1 h0.symm with h | h` into its components or cases. It suffices to derive a contradiction.
+
+Rewrite `h` using `[Complex.ofReal_eq_zero, Finset.prod_eq_zero_iff]`. Take `⟨a, -, ha⟩` from `h`. Use `split_ifs at ha`. Conclude with `pow_ne_zero _ (norm_ne_zero_iff.2 (hc a)) ha`. Conclude with `one_ne_zero ha`.
+
+Conclude with `h`.
+-/
 theorem jf_bigCell_zero (P : M.Par) (Bs : B.RealPlaceData P.k P.r Wp Wq) (F : B.Mat P.k P.r → (Wq →L[ℂ] Wp))
     (hR : Top.IsRadOf P Bs 0 F) (c : Fin P.r → ℂ) (hc : ∀ a, c a ≠ 0) (ζ : ℂ)
     (hζ : Tz P.k P.r Bs.z * Tz P.k P.r Bs.z' < Complex.normSq ζ) :
@@ -201,6 +270,19 @@ theorem jf_bigCell_zero (P : M.Par) (Bs : B.RealPlaceData P.k P.r Wp Wq) (F : B.
 
 end jf
 
+/- English proof (translation)
+Introduce `Wp Wq _ _ _ _ _ _ P p F _ hR d hd`. Use `show D.vecV p.T.base p.ν' p.m₀ F (bigPt d) = 0`. Unfold `D.vecV`. Use `split_ifs with h h'`. Take `⟨hγ, hZγ, -⟩` from `h'.choose_spec`.
+
+Establish `hζ : Tz P.k P.r p.T.base.z * Tz P.k P.r p.T.base.z' < Complex.normSq (d (Fin.last P.r))` using `zeta_big _ d h.2`. Establish `hc : ∀ a : Fin P.r, d a.castSucc ≠ 0` using `fun a => hd _`. Establish `hsec` using `p.T.base.sec.2 _ hζ`. Establish `hγ' : bigCell P.k P.r (fun i => d i.castSucc) (p.T.base.μsec (d (Fin.last P.r))) ∈ B.GV P.k P.r` using `bigCellMem P.k P.r _ _ hc hsec.1`. Establish `hZγ'` using `zhat_bigCell_pt p.T.base d hζ`.
+
+Establish `hpos : 0 < Gf P.k P.r p.T.base.z p.T.base.z' h'.choose`. Rewrite using `[← Formalism.FourierDecayAlt.P.ptG_spec P.k P.r _ _ (bigPt d) _ h.1 hZγ]`. Conclude with `h.2`. Establish `hpos' : 0 < Gf P.k P.r p.T.base.z p.T.base.z' (bigCell P.k P.r (fun i => d i.castSucc) (p.T.base.μsec (d (Fin.last P.r))))`. Rewrite using `[← Formalism.FourierDecayAlt.P.ptG_spec P.k P.r _ _ (bigPt d) _ h.1 hZγ']`.
+
+Conclude with `h.2`. Take `⟨s, hs, s', hs', hγs⟩` from `Formalism.FourierDecayAlt.P.fibre_orbit_description P.k P.r p.T.base.z p.T.base.z' ⟨p.T.base.k_pos, Formalism.FourierDecayAlt.P.Dx2.VV.std_vector_z p.T.base, Formalism.FourierDecayAlt.P.Dx2.VV.std_vector_z_prime p.T.base⟩ _ hγ _ hγ' hpos (hZγ.trans hZγ'.symm)`. Take `⟨hA, hhA, nA, hnA, hfA, rfl⟩` from `Formalism.FourierDecayAlt.P.Dx2.VV.stabilizer_decomp_unitary_mul_unipotent (Formalism.FourierDecayAlt.P.Dx2.VV.std_vector_z p.T.base) hs`. Take `⟨hB, hhB, nB, hnB, hfB, rfl⟩` from `Formalism.FourierDecayAlt.P.Dx2.VV.stabilizer_decomp_unitary_mul_unipotent (Formalism.FourierDecayAlt.P.Dx2.VV.std_vector_z_prime p.T.base) hs'`. Establish `hlaw` using `Formalism.FourierDecayAlt.P.Dx2.VV.orbJ_pt p.T.base (bigPt d) h.1 hγ hZγ hpos hhA hnA hfA hhB hnB hfB F`.
+
+Rewrite `hlaw` using `[← hγs]`. Rewrite using `[← hlaw]`. Establish `hw : (h.1.2 ▸ D.ptPerm (bigPt d) : Equiv.Perm (Fin (P.r + 1))) = 1` using `cast_perm_eq_one _ _ (ptPerm_bigPt d hd)`. Take `⟨hmono, hnz⟩` from `Formalism.FourierDecayAlt.P.Dx2.VV.ptMatN_monoP' (bigPt d) (P.r + 1) h.1.2 h.1.1`. Rewrite `hmono` using `[hw]`.
+
+Rewrite using `[hw, orbJ_one_zero p.T.base hγ' hpos' hnz (hZγ'.trans hmono) F (jf_bigCell_zero P p.T.base F hR _ hc _ hζ), map_zero]`. Both sides reduce to the same expression. Both sides reduce to the same expression.
+-/
 theorem bigCellVan : PBJ.BigCellVan := by
   intro Wp Wq _ _ _ _ _ _ P p F _ hR d hd
   show D.vecV p.T.base p.ν' p.m₀ F (bigPt d) = 0
@@ -240,6 +322,9 @@ end Formalism.FourierDecayAlt.P.PBM
 
 namespace Formalism.FourierDecayAlt.P
 
+/- English proof (translation)
+The claim follows from `PBM.bigCellVan`.
+-/
 theorem vector_vanishes_big_cell : PBJ.BigCellVan := PBM.bigCellVan
 
 end Formalism.FourierDecayAlt.P

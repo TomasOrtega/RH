@@ -14,6 +14,9 @@ def LatLocGlob : Prop :=
       latS (F := F) (FiniteAdeleRing (𝓞 F) F) (tensInt (F := F) (FiniteAdeleRing (𝓞 F) F) (intOE E) (intAd F)) Λ →
     x ∈ Λ
 
+/- English proof (translation)
+The claim follows from `Submodule.subset_span ⟨x, hx, rfl⟩`.
+-/
 theorem latS_of_mem {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {n : ℕ}
     (Λ : Submodule (𝓞 E) (Fin n → E)) (x : Fin n → E) (hx : x ∈ Λ) :
     (fun i => inclE (F := F) (FiniteAdeleRing (𝓞 F) F) (x i)) ∈

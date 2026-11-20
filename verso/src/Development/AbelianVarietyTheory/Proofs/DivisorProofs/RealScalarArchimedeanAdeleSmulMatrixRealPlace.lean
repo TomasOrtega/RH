@@ -9,6 +9,13 @@ namespace GlobalTheory.RealScalar
 
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
 
+/- English proof (translation)
+Use `set y : mixedEmbedding.mixedSpace F := algebraMap ℝ _ r with hy`. Use `set a := (InfiniteAdeleRing.ringEquiv_mixedSpace F).symm y with ha`. Establish `hev : evInf F w (realAd F r) = a w` using `rfl`. Establish `hay : InfiniteAdeleRing.ringEquiv_mixedSpace F a = y` using `by rw [ha]; exact RingEquiv.apply_symm_apply _ _`. Rewrite `hay` using `[InfiniteAdeleRing.ringEquiv_mixedSpace_apply]`.
+
+Rewrite using `[hev]`. Break down `w.isReal_or_isComplex with hw | hw` into its components or cases. Establish `h1` using `congrFun (congrArg Prod.fst hay) ⟨w, hw⟩`. Simplify using `only [hy] at h1`. Rewrite using `[← InfinitePlace.Completion.extensionEmbeddingOfIsReal_apply hw]`.
+
+Rewrite using `[show (InfinitePlace.Completion.extensionEmbeddingOfIsReal hw (a w)) = r from by simpa using h1]`. Establish `h1` using `congrFun (congrArg Prod.snd hay) ⟨w, hw⟩`. Simplify `h1` using `[hy]`.
+-/
 theorem ext_realAd (r : ℝ) (w : InfinitePlace F) :
     InfinitePlace.Completion.extensionEmbedding w (evInf F w (realAd F r)) = (r : ℂ) := by
   set y : mixedEmbedding.mixedSpace F := algebraMap ℝ _ r with hy
@@ -25,6 +32,9 @@ theorem ext_realAd (r : ℝ) (w : InfinitePlace F) :
   · have h1 := congrFun (congrArg Prod.snd hay) ⟨w, hw⟩
     simpa [hy] using h1
 
+/- English proof (translation)
+Express the relevant statement in the definitionally equal form `infEmb τ (compInf F E w (x ⊗ₜ[F] (1 : E))) = _`. Rewrite using `[compInf]`. Express the relevant statement in the definitionally equal form `infEmb τ ((evInf F w x) ⊗ₜ[F] ((AlgHom.id F E) 1)) = _`. Rewrite using `[infEmb_tmul]`. Simplify using the standard rewrite rules.
+-/
 theorem piInf_algebraMap {w : InfinitePlace F} (τ : EmbOver E w) (x : AF F) :
     piInf τ (algebraMap (AF F) (AE F E) x) = InfinitePlace.Completion.extensionEmbedding w (evInf F w x) := by
   change infEmb τ (compInf F E w (x ⊗ₜ[F] (1 : E))) = _
@@ -33,10 +43,16 @@ theorem piInf_algebraMap {w : InfinitePlace F} (τ : EmbOver E w) (x : AF F) :
   rw [infEmb_tmul]
   simp
 
+/- English proof (translation)
+Rewrite using `[Algebra.smul_def, map_mul, piInf_algebraMap, ext_realAd]`.
+-/
 theorem piInf_realAd_smul {w : InfinitePlace F} (τ : EmbOver E w) (r : ℝ) (z : AE F E) :
     piInf τ (realAd F r • z) = (r : ℂ) * piInf τ z := by
   rw [Algebra.smul_def, map_mul, piInf_algebraMap, ext_realAd]
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ α β τ _ u r w`. Use extensionality with `i j`. Simplify using `only [Matrix.map_apply, Matrix.smul_apply, smul_eq_mul]`. Conclude with `piInf_realAd_smul (τ w) r (u i j)`.
+-/
 theorem realAd_smul_map : ∀ {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) {α β : Type}
     (τ : ∀ w : InfinitePlace F, EmbOver E w), IsCMExt F E σ →
     ∀ (u : Matrix α β (AE F E)) (r : ℝ) (w : InfinitePlace F),

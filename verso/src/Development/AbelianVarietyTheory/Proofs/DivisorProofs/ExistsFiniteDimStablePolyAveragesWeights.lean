@@ -15,6 +15,11 @@ namespace GlobalTheory.PsCo.PolyAvg
 
 variable {n : ℕ}
 
+/- English proof (translation)
+Use `conv_lhs => rw [Q.as_sum, map_sum]`. Use `totalDegree_finsetSum_le fun s hs => ?_` and prove the remaining obligations. Rewrite using `[bind₁_monomial]`. Use `(totalDegree_mul _ _).trans ?_` and prove the remaining obligations. Rewrite using `[totalDegree_C, zero_add]`.
+
+Use `(totalDegree_finsetProd _ _).trans ?_` and prove the remaining obligations. Use `le_trans ?_ (le_totalDegree hs)` and prove the remaining obligations. Use `(Finset.sum_le_sum fun i _ => (totalDegree_pow _ _).trans (Nat.mul_le_mul_left _ (hg i))).trans ?_` and prove the remaining obligations. Simplify using `[Finsupp.sum]`.
+-/
 theorem totalDegree_bind_le {α β : Type} (g : α → MvPolynomial β ℂ) (hg : ∀ i, (g i).totalDegree ≤ 1)
     (Q : MvPolynomial α ℂ) : (bind₁ g Q).totalDegree ≤ Q.totalDegree := by
   classical
@@ -29,6 +34,13 @@ theorem totalDegree_bind_le {α β : Type} (g : α → MvPolynomial β ℂ) (hg 
     (Nat.mul_le_mul_left _ (hg i))).trans ?_
   simp [Finsupp.sum]
 
+/- English proof (translation)
+Set `f : (Fin n × Fin n) ⊕ (Fin n × Fin n) → Poly n` to `Sum.elim (fun x => ∑ c, C (a x.1 c) * X (Sum.inl (c, x.2))) (fun x => ∑ c, C (star (a x.1 c)) * X (Sum.inr (c, x.2)))`. Use `⟨bind₁ f P, totalDegree_bind_le f ?_ P, fun g => ?_⟩` and prove the remaining obligations. Apply the tactic sequence `rintro (x | x) <;>`. Use `totalDegree_finsetSum_le fun l _ => (totalDegree_mul _ _).trans ?_` and prove the remaining obligations. Rewrite using `[totalDegree_X, totalDegree_C]`.
+
+Establish `h : ev (a * g) = (ev g).comp (bind₁ f : Poly n →ₐ[ℂ] Poly n).toRingHom`. Use `MvPolynomial.ringHom_ext (fun r => ?_) ?_` and prove the remaining obligations. Simplify using `[ev]`. Apply the tactic sequence `rintro (x | x) <;> simp [ev, f, Matrix.mul_apply]`. Rewrite using `[h]`.
+
+Both sides reduce to the same expression.
+-/
 theorem exists_translate (a : Mat n) (P : Poly n) :
     ∃ Q : Poly n, Q.totalDegree ≤ P.totalDegree ∧ ∀ g, ev (a * g) P = ev g Q := by
   let f : (Fin n × Fin n) ⊕ (Fin n × Fin n) → Poly n := Sum.elim
@@ -48,6 +60,13 @@ def varWt : (Fin n × Fin n) ⊕ (Fin n × Fin n) → Fin n → ℝ :=
 
 def monWt (s : (Fin n × Fin n) ⊕ (Fin n × Fin n) →₀ ℕ) : Fin n → ℝ := fun a => ∑ i, (s i : ℝ) * varWt i a
 
+/- English proof (translation)
+Establish `h1 : (∑ a, monWt s a * θ a : ℝ) = ∑ i, (s i : ℝ) * ∑ a, varWt i a * θ a`. Simplify using `only [monWt, Finset.sum_mul, Finset.mul_sum, mul_assoc]`. Conclude with `Finset.sum_comm`. Rewrite using `[h1]`. Simplify using `only [ev, eval_monomial, one_mul]`.
+
+Rewrite using `[Finsupp.prod_fintype _ _ (by simp), Finsupp.prod_fintype _ _ (by simp), Complex.ofReal_sum, Finset.sum_mul, Complex.exp_sum, ← Finset.prod_mul_distrib]`. Use `Finset.prod_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[Complex.ofReal_mul, Complex.ofReal_natCast, mul_assoc, Complex.exp_nat_mul, ← mul_pow]`. Use `congr 1`. Break down `i with x | x` into its components or cases.
+
+Simplify using `[varWt, Pi.single_apply, ite_mul]`. Simplify using `[varWt, Pi.single_apply, ite_mul, ← Complex.exp_conj]`.
+-/
 theorem ev_diag_monomial (θ : Fin n → ℝ) (g : Mat n) (s : (Fin n × Fin n) ⊕ (Fin n × Fin n) →₀ ℕ) :
     ev (Matrix.diagonal (fun a => Complex.exp (-((θ a : ℂ) * Complex.I))) * g) (monomial s 1) =
       Complex.exp (((∑ a, monWt s a * θ a : ℝ) : ℂ) * Complex.I) * ev g (monomial s 1) := by
@@ -65,23 +84,40 @@ theorem ev_diag_monomial (θ : Fin n → ℝ) (g : Mat n) (s : (Fin n × Fin n) 
   · simp [varWt, Pi.single_apply, ite_mul]
   · simp [varWt, Pi.single_apply, ite_mul, ← Complex.exp_conj]
 
+/- English proof (translation)
+The claim follows from `(Formalism.REAL.isClosedEmbeddingMatrix n ε).1.continuous.comp continuous_subtype_val`.
+-/
 theorem continuous_toMK (ε : Fin n → Bool) : Continuous fun k : KG ε => toMK k :=
   (Formalism.REAL.isClosedEmbeddingMatrix n ε).1.continuous.comp continuous_subtype_val
 
+/- English proof (translation)
+Use `(MvPolynomial.continuous_eval P).comp (continuous_pi ?_)` and prove the remaining obligations. Introduce and unpack `(x | x)`. Simplify using `only [Sum.elim_inl]`. Use `fun_prop`. Simplify using `only [Sum.elim_inr]`.
+
+Use `fun_prop`.
+-/
 theorem continuous_ev (P : Poly n) : Continuous fun g : Mat n => ev g P := by
   refine (MvPolynomial.continuous_eval P).comp (continuous_pi ?_)
   rintro (x | x)
   · simp only [Sum.elim_inl]; fun_prop
   · simp only [Sum.elim_inr]; fun_prop
 
+/- English proof (translation)
+The claim follows from `(k : Formalism.REAL.UJ ε).2`.
+-/
 theorem toMK_mem (ε : Fin n → Bool) (k : KG ε) : toMK k ∈ UJset ε := (k : Formalism.REAL.UJ ε).2
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem toMK_mul (ε : Fin n → Bool) (a b : KG ε) : toMK (a * b) = toMK a * toMK b := rfl
 
 variable {H : Type} [NormedAddCommGroup H] [InnerProductSpace ℂ H] [CompleteSpace H] {ε : Fin n → Bool}
   {σ : Mat n → (H →L[ℂ] H)}
 
 omit [CompleteSpace H] in
+/- English proof (translation)
+Establish `h : Continuous fun k : KG ε => ev (toMK k) P • σ (toMK k) u` using `((continuous_ev P).comp (continuous_toMK ε)).smul ((hσ.2.2 u).comp_continuous (continuous_toMK ε) (toMK_mem ε))`. Conclude with `h.integrable_of_hasCompactSupport (HasCompactSupport.of_compactSpace _)`.
+-/
 theorem integrable_avg (hσ : IsURepOn (UJset ε) σ) (u : H) (P : Poly n) :
     Integrable (fun k : KG ε => ev (toMK k) P • σ (toMK k) u) (muK ε) := by
   have h : Continuous fun k : KG ε => ev (toMK k) P • σ (toMK k) u :=
@@ -98,6 +134,11 @@ def avg (hσ : IsURepOn (UJset ε) σ) (u : H) : Poly n →ₗ[ℂ] H where
     rw [RingHom.id_apply, ← integral_smul]
     simp [ev, smul_eq_C_mul, mul_smul]
 
+/- English proof (translation)
+Express the relevant statement in the definitionally equal form `σ (toMK g) (∫ k : KG ε, ev (toMK k) P • σ (toMK k) u ∂(muK ε)) = _`. Rewrite using `[← ContinuousLinearMap.integral_comp_comm _ (integrable_avg hσ u P), ← integral_mul_left_eq_self (fun k : KG ε => ev (toMK g⁻¹ * toMK k) P • σ (toMK k) u) g]`. Use `integral_congr_ae (Filter.Eventually.of_forall fun k => ?_)` and prove the remaining obligations. Simplify using `only`. Rewrite using `[← toMK_mul, inv_mul_cancel_left, toMK_mul, hσ.1.2 _ (toMK_mem ε g) _ (toMK_mem ε k), map_smul]`.
+
+Both sides reduce to the same expression.
+-/
 theorem apply_avg (hσ : IsURepOn (UJset ε) σ) (u : H) (P : Poly n) (g : KG ε) :
     σ (toMK g) (avg hσ u P) = ∫ k : KG ε, ev (toMK g⁻¹ * toMK k) P • σ (toMK k) u ∂(muK ε) := by
   change σ (toMK g) (∫ k : KG ε, ev (toMK k) P • σ (toMK k) u ∂(muK ε)) = _
@@ -108,6 +149,15 @@ theorem apply_avg (hσ : IsURepOn (UJset ε) σ) (u : H) (P : Poly n) (g : KG ε
   rw [← toMK_mul, inv_mul_cancel_left, toMK_mul, hσ.1.2 _ (toMK_mem ε g) _ (toMK_mem ε k), map_smul]
   rfl
 
+/- English proof (translation)
+Introduce `θ hθ`. Rewrite `hθ` using `[← Formalism.REAL.range_toMK]`. Take `⟨g, hg⟩` from `hθ`. Simplify using `only at hg`. Establish `hinv : toMK g⁻¹ = Matrix.diagonal (fun a => Complex.exp (-((θ a : ℂ) * Complex.I)))`.
+
+Establish `h1 : toMK g * Matrix.diagonal (fun a => Complex.exp (-((θ a : ℂ) * Complex.I))) = 1`. Rewrite using `[hg, Matrix.diagonal_mul_diagonal, ← Matrix.diagonal_one]`. Use `congr 1`. Use function extensionality and compare the values at `a`. Rewrite using `[← Complex.exp_add, add_neg_cancel, Complex.exp_zero]`.
+
+Establish `h2 : toMK g⁻¹ * toMK g = 1` using `by rw [← toMK_mul, inv_mul_cancel]; rfl`. Rewrite using `[← Matrix.mul_one (toMK g⁻¹), ← h1, ← Matrix.mul_assoc, h2, Matrix.one_mul]`. Rewrite using `[← hg, apply_avg, hinv]`. Simplify using `only [ev_diag_monomial, mul_smul]`. Rewrite using `[integral_smul]`.
+
+Both sides reduce to the same expression.
+-/
 theorem isWtOn_avg (hσ : IsURepOn (UJset ε) σ) (u : H) (s : (Fin n × Fin n) ⊕ (Fin n × Fin n) →₀ ℕ) :
     Formalism.MainNotions.S.IsWtOn (Formalism.REAL.Kset ε) σ (monWt s) (avg hσ u (monomial s 1)) := by
   intro θ hθ
@@ -127,6 +177,21 @@ theorem isWtOn_avg (hσ : IsURepOn (UJset ε) σ) (u : H) (s : (Fin n × Fin n) 
   rw [integral_smul]
   rfl
 
+/- English proof (translation)
+Introduce `n ε d`. Use `⟨monWt '' {s | s.degree ≤ d}, (Finsupp.finite_of_degree_le d).image _, ?_⟩` and prove the remaining obligations. Introduce `H _ _ _ σ hσ u`. Use `⟨(restrictTotalDegree _ ℂ d).map (avg hσ u), inferInstance, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce and unpack `g hg v ⟨P, hP, rfl⟩`.
+
+Rewrite `hg` using `[← Formalism.REAL.range_toMK]`. Take `⟨g, rfl⟩` from `hg`. Take `⟨Q, hQ, hQ'⟩` from `exists_translate (toMK g⁻¹) P`. Use `⟨Q, (mem_restrictTotalDegree _ _ _).2 (hQ.trans ((mem_restrictTotalDegree _ _ _).1 hP)), ?_⟩` and prove the remaining obligations. Simplify using `only`.
+
+Rewrite using `[apply_avg]`. Simplify using `only [hQ']`. Both sides reduce to the same expression. Introduce `P hP`. Conclude with `⟨P, (mem_restrictTotalDegree _ _ _).2 hP, rfl⟩`.
+
+Introduce and unpack `μ v ⟨P, hP, rfl⟩ hv hw`. Assume the negation of the conclusion as `hμ`. Apply `hv` to reduce the goal to its premises. Establish `hP' : P.totalDegree ≤ d` using `(mem_restrictTotalDegree _ _ _).1 hP`. Rewrite using `[← inner_self_eq_zero (𝕜 := ℂ)]`.
+
+Establish `e : avg hσ u P = ∑ s ∈ P.support, coeff s P • avg hσ u (monomial s 1)` using `by conv_lhs => rw [P.as_sum, map_sum]`. Use `Finset.sum_congr rfl fun s _ => ?_` and prove the remaining obligations. Rewrite using `[← map_smul, smul_monomial, smul_eq_mul, mul_one]`. Generalize the expression as in `avg hσ u P = v at e hw`. Establish `: inner ℂ v (∑ s ∈ P.support, coeff s P • avg hσ u (monomial s 1)) = 0`.
+
+Rewrite using `[inner_sum]`. Use `Finset.sum_eq_zero fun s hs => ?_` and prove the remaining obligations. Rewrite using `[inner_smul_right, ReciprocityTheory.ChartRestriction.DS.kfin_wt_orth hσ hw (isWtOn_avg hσ u s), mul_zero]`. Introduce and unpack `rfl`. Conclude with `hμ ⟨s, (le_totalDegree hs).trans hP', rfl⟩`.
+
+Rewrite `this` using `[← e]`. Then use the resulting hypothesis.
+-/
 theorem polyAvg : ∀ (n : ℕ) (ε : Fin n → Bool) (d : ℕ), ∃ A : Set (Fin n → ℝ), A.Finite ∧ ∀ (H : Type) [NormedAddCommGroup H] [InnerProductSpace ℂ H] [CompleteSpace H] (σ : Matrix (Fin n) (Fin n) ℂ → (H →L[ℂ] H)), ReciprocityTheory.ChartRestriction.DS.IsURepOn (ReciprocityTheory.ChartRestriction.DS.UJset ε) σ → ∀ u : H, ∃ S : Submodule ℂ H, FiniteDimensional ℂ S ∧ Formalism.MainNotions.S.IsKStableOn ε σ S ∧ (∀ P : GlobalTheory.PsCo.Pc1.Poly n, P.totalDegree ≤ d → ∫ k : Formalism.REAL.KG ε, GlobalTheory.PsCo.Pc1.ev (Formalism.REAL.toMK k) P • σ (Formalism.REAL.toMK k) u ∂(Formalism.REAL.muK ε) ∈ S) ∧ ∀ (μ : Fin n → ℝ) (s : H), s ∈ S → s ≠ 0 → Formalism.MainNotions.S.IsWtOn (Formalism.REAL.Kset ε) σ μ s → μ ∈ A := by
   intro n ε d
   refine ⟨monWt '' {s | s.degree ≤ d}, (Finsupp.finite_of_degree_le d).image _, ?_⟩

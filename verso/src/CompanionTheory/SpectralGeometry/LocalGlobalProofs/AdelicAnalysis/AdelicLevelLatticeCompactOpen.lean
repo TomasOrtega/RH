@@ -9,12 +9,20 @@ namespace GlobalTheory.CompanionTheory.SW.ThW.Lco
 open NumberField IsDedekindDomain MeasureTheory Matrix Topology GlobalTheory.CompanionTheory.SW.Core GlobalTheory.CompanionTheory.SW.ThW
 open scoped ENNReal NNReal MatrixGroups Kronecker
 
+/- English proof (translation)
+Use extensionality with `x`. Conclude with `⟨fun h i _ => h i, fun h i => h i (Set.mem_univ i)⟩`.
+-/
 theorem latN_coe_eq_pi (F : Type) [Field F] [NumberField F] (ι : Type) [Fintype ι] [DecidableEq ι]
     (N : ℕ) : (latN F ι N : Set (ι → A F)) =
       Set.pi Set.univ (fun _ => {x : A F | ∃ y ∈ Oh F, x = (N : A F) * y}) := by
   ext x
   exact ⟨fun h i _ => h i, fun h i => h i (Set.mem_univ i)⟩
 
+/- English proof (translation)
+Establish `hOh : IsCompact (Oh F)` using `(GlobalTheory.T.mem_Oh_iff_and_nat_mul_properties F).2.2.2.1`. Establish `heq : {x : A F | ∃ y ∈ Oh F, x = (N : A F) * y} = (fun y => (N : A F) * y) '' Oh F`. Use extensionality with `x`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨y, hy, rfl⟩`.
+
+Conclude with `⟨y, hy, rfl⟩`. Introduce and unpack `⟨y, hy, rfl⟩`. Conclude with `⟨y, hy, rfl⟩`. Rewrite using `[heq]`. Conclude with `hOh.image (continuous_const.mul continuous_id)`.
+-/
 theorem isCompact_mul_oh (F : Type) [Field F] [NumberField F] (N : ℕ) :
     IsCompact {x : A F | ∃ y ∈ Oh F, x = (N : A F) * y} := by
   have hOh : IsCompact (Oh F) := (GlobalTheory.T.mem_Oh_iff_and_nat_mul_properties F).2.2.2.1
@@ -28,6 +36,21 @@ theorem isCompact_mul_oh (F : Type) [Field F] [NumberField F] (N : ℕ) :
   rw [heq]
   exact hOh.image (continuous_const.mul continuous_id)
 
+/- English proof (translation)
+Introduce `F _ _ ι _ _ N hN`. Take `⟨-, -, hT2, -, -, -, -, -, -, hOpen⟩` from `GlobalTheory.T.mem_Oh_iff_and_nat_mul_properties F`. Establish `hC : IsCompact (latN F ι N : Set (ι → A F))`. Rewrite using `[latN_coe_eq_pi]`. Conclude with `isCompact_univ_pi fun _ => isCompact_mul_oh F N`.
+
+Establish `hO : IsOpen (latN F ι N : Set (ι → A F))`. Rewrite using `[latN_coe_eq_pi]`. Conclude with `isOpen_set_pi Set.finite_univ fun _ _ => hOpen N hN`. Use `⟨hC, hO, fun a => ?_⟩` and prove the remaining obligations. Establish `hclopen : IsClopen (latN F ι N : Set (ι → A F))` using `⟨hC.isClosed, hO⟩`.
+
+Establish `hcont : Continuous fun x : ι → A F => x - toA a` using `continuous_id.sub continuous_const`. Establish `hS : IsClopen {x : ι → A F | x - toA a ∈ latN F ι N}` using `hclopen.preimage hcont`. Establish `hK : IsCompact {x : ι → A F | x - toA a ∈ latN F ι N}`. Establish `h : {x : ι → A F | x - toA a ∈ latN F ι N} = (fun x => x + toA a) '' (latN F ι N : Set (ι → A F))`. Use extensionality with `x`.
+
+Prove the components needed by the constructor for the conclusion. Introduce `hx`. Conclude with `⟨x - toA a, hx, by simp⟩`. Introduce and unpack `⟨y, hy, rfl⟩`. Simplify using `using hy`.
+
+Rewrite using `[h]`. Conclude with `hC.image (continuous_id.add continuous_const)`. Use `⟨?_, HasCompactSupport.of_support_subset_isCompact hK Set.support_indicator_subset⟩` and prove the remaining obligations. Rewrite using `[IsLocallyConstant.iff_eventually_eq]`. Introduce `x`.
+
+Distinguish the cases in `hx : x ∈ {x : ι → A F | x - toA a ∈ latN F ι N}`. Use `filter_upwards [hS.isOpen.mem_nhds hx] with y hy`. Establish `hy' : y ∈ {x : ι → A F | x - toA a ∈ latN F ι N}` using `hy`. Rewrite using `[indC, Set.indicator_of_mem hx, Set.indicator_of_mem hy']`. Use `filter_upwards [hS.compl.isOpen.mem_nhds hx] with y hy`.
+
+Establish `hy' : y ∉ {x : ι → A F | x - toA a ∈ latN F ι N}` using `hy`. Rewrite using `[indC, Set.indicator_of_notMem hx, Set.indicator_of_notMem hy']`.
+-/
 theorem main : ∀ (F : Type) [Field F] [NumberField F] (ι : Type) [Fintype ι] [DecidableEq ι] (N : ℕ),
     0 < N → IsCompact (latN F ι N : Set (ι → A F)) ∧ IsOpen (latN F ι N : Set (ι → A F)) ∧
       ∀ a : ι → F, SB (indC N a) := by

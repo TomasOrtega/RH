@@ -14,6 +14,9 @@ section Loc
 
 variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
 
+/- English proof (translation)
+Establish `h` using `mem_valBall_iff_le_ord (n := 0) (x * p⁻¹ : kˣ).ne_zero`. Rewrite `h` using `[mem_valBall_zero_iff, Valuation.mem_integer_iff, ord_units_mul, ord_units_inv, Units.val_mul, Units.val_inv_eq_inv_val, map_mul, map_inv₀, mul_inv_le_iff₀ (zero_lt_iff.2 ((Valuation.ne_zero_iff _).2 p.ne_zero)), one_mul]`. Rewrite using `[h]`. Use linear arithmetic over natural numbers and integers.
+-/
 private theorem val_le_iff (x p : kˣ) :
     ValuativeRel.valuation k (x : k) ≤ ValuativeRel.valuation k (p : k) ↔ ord (p : k) ≤ ord (x : k) := by
   have h := mem_valBall_iff_le_ord (n := 0) (x * p⁻¹ : kˣ).ne_zero
@@ -23,10 +26,20 @@ private theorem val_le_iff (x p : kˣ) :
   rw [h]
   omega
 
+/- English proof (translation)
+Establish `h` using `mem_valBall_iff_le_ord (n := 1) x.ne_zero`. Rewrite `h` using `[mem_valBall_one_iff]`. Then use the resulting hypothesis.
+-/
 private theorem val_lt_iff (x : kˣ) : ValuativeRel.valuation k (x : k) < 1 ↔ 1 ≤ ord (x : k) := by
   have h := mem_valBall_iff_le_ord (n := 1) x.ne_zero
   rwa [mem_valBall_one_iff] at h
 
+/- English proof (translation)
+Establish `hex : ∃ p : kˣ, ValuativeRel.valuation k (p : k) < 1 ∧ ∀ x : k, ValuativeRel.valuation k x < 1 → ValuativeRel.valuation k x ≤ ValuativeRel.valuation k (p : k)`. Use `⟨unifUnit k, (val_lt_iff _).2 ord_unifUnit.ge, fun x hx => ?_⟩` and prove the remaining obligations. Distinguish the cases in `h0 : x = 0`. Simplify using `[h0]`. Establish `h1` using `(val_lt_iff (Units.mk0 x h0)).1 hx`.
+
+Conclude with `(val_le_iff (Units.mk0 x h0) _).2 (by rw [ord_unifUnit]; exact h1)`. Take `⟨h1, h2⟩` from `Classical.epsilon_spec hex`. Establish `a` using `(val_lt_iff _).1 h1`. Establish `b` using `(val_le_iff _ _).1 (h2 _ ((val_lt_iff (unifUnit k)).2 ord_unifUnit.ge))`. Rewrite `b` using `[ord_unifUnit]`.
+
+Conclude with `le_antisymm b a`.
+-/
 private theorem ord_unif : ord ((UpperTheory.V.Z.ImaginaryQuadraticEtaCharacter.unif k : kˣ) : k) = 1 := by
   have hex : ∃ p : kˣ, ValuativeRel.valuation k (p : k) < 1 ∧
       ∀ x : k, ValuativeRel.valuation k x < 1 → ValuativeRel.valuation k x ≤ ValuativeRel.valuation k (p : k) := by
@@ -41,15 +54,24 @@ private theorem ord_unif : ord ((UpperTheory.V.Z.ImaginaryQuadraticEtaCharacter.
   rw [ord_unifUnit] at b
   exact le_antisymm b a
 
+/- English proof (translation)
+The claim follows from `isUnramifiedChar_iff.2 fun u hu => by rw [MonoidHom.mul_apply, isUnramifiedChar_iff.1 ha u hu, isUnramifiedChar_iff.1 hb u hu, one_mul]`.
+-/
 private theorem unr_mul {a b : kˣ →* ℂˣ} (ha : IsUnramifiedChar a) (hb : IsUnramifiedChar b) :
     IsUnramifiedChar (a * b) :=
   isUnramifiedChar_iff.2 fun u hu => by
     rw [MonoidHom.mul_apply, isUnramifiedChar_iff.1 ha u hu, isUnramifiedChar_iff.1 hb u hu, one_mul]
 
+/- English proof (translation)
+The claim follows from `isUnramifiedChar_iff.2 fun u hu => by rw [MonoidHom.inv_apply, isUnramifiedChar_iff.1 ha u hu, inv_one]`.
+-/
 private theorem unr_inv {a : kˣ →* ℂˣ} (ha : IsUnramifiedChar a) : IsUnramifiedChar a⁻¹ :=
   isUnramifiedChar_iff.2 fun u hu => by
     rw [MonoidHom.inv_apply, isUnramifiedChar_iff.1 ha u hu, inv_one]
 
+/- English proof (translation)
+Rewrite using `[Ad3.lf3, localLFactor_of_isUnramified (unr_mul hν hc), localLFactor_of_isUnramified hc, localLFactor_of_isUnramified (unr_mul (unr_inv hν) hc), quasiChar_apply_eq_of_isUnramified hν ord_unif]`. Simplify using `only [tri, Multiset.insert_eq_cons, Multiset.map_cons, Multiset.map_singleton, Multiset.prod_cons, Multiset.prod_singleton, MonoidHom.mul_apply, MonoidHom.inv_apply, mul_assoc]`.
+-/
 private theorem local_l_factor_rank_three_unramified {ν c : kˣ →* ℂˣ} (hν : IsUnramifiedChar ν) (hc : IsUnramifiedChar c) (s : ℂ) :
     Ad3.lf3 ν c s = ((tri (ν (UpperTheory.V.Z.ImaginaryQuadraticEtaCharacter.unif k)) (c (unifUnit k))).map
       fun b => (1 - b * (residueCard k : ℂ) ^ (-s))⁻¹).prod := by
@@ -60,18 +82,31 @@ private theorem local_l_factor_rank_three_unramified {ν c : kˣ →* ℂˣ} (h�
 
 end Loc
 
+/- English proof (translation)
+Simplify using `only [tri, Multiset.insert_eq_cons, Multiset.map_cons, Multiset.map_singleton, Units.val_mul, Units.val_inv_eq_inv_val, mul_inv, inv_inv]`. Rewrite using `[← Multiset.cons_zero, ← Multiset.cons_zero ((↑a)⁻¹ * (↑x)⁻¹ : ℂ), Multiset.cons_swap (((↑a)⁻¹ * (↑x)⁻¹ : ℂ)), Multiset.cons_swap (((↑a)⁻¹ * (↑x)⁻¹ : ℂ)), Multiset.cons_swap ((↑x)⁻¹ : ℂ)]`.
+-/
 private theorem tri_inv (a x : ℂˣ) : (tri a x).map (·⁻¹) = tri a x⁻¹ := by
   simp only [tri, Multiset.insert_eq_cons, Multiset.map_cons, Multiset.map_singleton, Units.val_mul,
     Units.val_inv_eq_inv_val, mul_inv, inv_inv]
   rw [← Multiset.cons_zero, ← Multiset.cons_zero ((↑a)⁻¹ * (↑x)⁻¹ : ℂ), Multiset.cons_swap (((↑a)⁻¹ * (↑x)⁻¹ : ℂ)),
     Multiset.cons_swap (((↑a)⁻¹ * (↑x)⁻¹ : ℂ)), Multiset.cons_swap ((↑x)⁻¹ : ℂ)]
 
+/- English proof (translation)
+Use extensionality with `x`. Simplify using `[GroundTheory.Automorphic.GodementSection.coe_localChar, HeckeCharacter.localComponent_apply, HeckeCharacter.toIdele_apply]`. Conclude with `Circle.coe_inv _`.
+-/
 private theorem localChar_inv' (c : HeckeCharacter ℚ) (v : Ad3.Pl) : localChar c⁻¹ v = (localChar c v)⁻¹ := by
   ext x
   simp [GroundTheory.Automorphic.GodementSection.coe_localChar, HeckeCharacter.localComponent_apply,
     HeckeCharacter.toIdele_apply]
   exact Circle.coe_inv _
 
+/- English proof (translation)
+Introduce `D c δ S h s`. Prove the components needed by the constructor for the conclusion. Use `tprod_congr fun v => ?_` and prove the remaining obligations. Establish `hν` using `D.unr v.1 fun hb => v.2 (h.bad hb)`. Establish `hc` using `h.unr v.1 v.2`.
+
+Use `(local_l_factor_rank_three_unramified hν hc s).trans ?_` and prove the remaining obligations. Rewrite using `[GroundTheory.Global.residueCard_adicCompletion, ← Ad3P.DihedralUnramifiedPlaces.val_eq hc]`. Both sides reduce to the same expression. Use `tprod_congr fun v => ?_` and prove the remaining obligations. Establish `hν` using `D.unr v.1 fun hb => v.2 (h.bad hb)`.
+
+Establish `hc` using `h.unr v.1 v.2`. Rewrite using `[localChar_inv']`. Use `(local_l_factor_rank_three_unramified hν (unr_inv hc) (1 - s)).trans ?_` and prove the remaining obligations. Rewrite using `[GroundTheory.Global.residueCard_adicCompletion, MonoidHom.inv_apply, ← Ad3P.DihedralUnramifiedPlaces.val_eq hc, ← tri_inv]`. Both sides reduce to the same expression.
+-/
 theorem UpperTheory.euler_product_adjoint_eq_standard :
     ∀ (D : Ad3.Dat) (c : HeckeCharacter ℚ) (δ : Bool) (S : Finset Ad3.Pl), Ad3.admitted D c δ S → ∀ s : ℂ,
         Ad3.eul D c S s = eulerL ℚ (par D (toH c)) S s ∧ Ad3.eul D c⁻¹ S (1 - s) = eulerLd ℚ (par D (toH c)) S s := by

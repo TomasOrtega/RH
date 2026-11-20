@@ -41,6 +41,9 @@ def toCompanionTheory {eB : Per.Bcris l ≃+* Per6.Bcris l} {eD : Per.BdR l ≃+
     exact ⟨eP y, (h.log AI y).1 hy, by rw [RingEquiv.trans_apply, he, h.alg y]⟩
   · rw [RingEquiv.trans_apply, T.ιA a, h.aB a]
 
+/- English proof (translation)
+Introduce and unpack `⟨T⟩`. Take `⟨eB, eD, eP, h⟩` from `hC`. Conclude with `⟨toCompanionTheory h T⟩`.
+-/
 theorem locTied6_of_cmp (hC : Cmp l) (P : LocPrime l) (AI : LocAinf l P) :
     Nonempty (LocTied l P AI) → Nonempty (LocTied6 l P AI) := by
   rintro ⟨T⟩

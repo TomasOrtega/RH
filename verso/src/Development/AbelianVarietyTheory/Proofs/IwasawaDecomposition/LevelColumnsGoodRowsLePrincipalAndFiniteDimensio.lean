@@ -10,6 +10,11 @@ noncomputable section
 
 namespace GlobalTheory.Mem.SRe
 
+/- English proof (translation)
+Introduce `hF _ D G' _ _ Pl0 T A Ks _ _ _ R F _ hi _`. Use `⟨GlobalTheory.Mem.Th.EEat_le_triv R _, ?_⟩` and prove the remaining obligations. Take `⟨U, hU, hJ⟩` from `GlobalTheory.DefiniteEnd.exists_open_level (Yc D 0) (R.βY 0) (R.dat0 (R.levR F true))`. Conclude with `GlobalTheory.MultFinite.hcFinite hF hi ⟨U, hU, fun k hk hk' => by`. Take `⟨h1, h2⟩` from `hJ k hk`.
+
+Establish `hm : k ∈ levS (Yc D 0) (R.βY 0) (flag1L (R.dat0 (R.levR F true)))` using `⟨hk', h1⟩`. Establish `hc : levChi (Yc D 0) (R.βY 0) (flag1L (R.dat0 (R.levR F true))) k = 1` using `congrArg Units.val h2`. Take `⟨h3, h4⟩` from `GlobalTheory.Mem.Th.principal_le_level (R.βY 0) (R.dat0 (R.levR F true)) (R.dat0 (R.levR F true)).P k hm`. Conclude with `⟨h3, h4.trans hc⟩⟩`.
+-/
 theorem levCols_le_triv_and_finite : GlobalTheory.Published.HarishChandraFinite → GlobalTheory.Published.CuspRapidDecay → ∀ (D : D7) (G' : Type) [Group G'] [Fintype G'] (Pl0 T : Type) (A : FamIn D.what₂.LL G' Pl0 T D.R.m) (Ks : Type) [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] (R : RealDat D A Ks) (F : Face D A), R.toLevCh.Is A.μ0 → R.models_inf → R.models_ν0 → R.EEat (R.levR F true) ≤ R.EEat R.triv ∧ FiniteDimensional ℂ (MultR R F) := by
   intro hF _ D G' _ _ Pl0 T A Ks _ _ _ R F _ hi _
   refine ⟨GlobalTheory.Mem.Th.EEat_le_triv R _, ?_⟩

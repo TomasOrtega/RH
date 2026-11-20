@@ -4,6 +4,9 @@ import Development.WeilBound.RepresentationTheoryGL.ArchimedeanBaseChange.Archim
 
 namespace PositivityTheory.Rg.BcB.SpectralAccumulation
 
+/- English proof (translation)
+The claim follows from `eisenstein_final_of_separation Cz.separation_holds`.
+-/
 theorem eFinal_holds : EFinal := eisenstein_final_of_separation Cz.separation_holds
 
 end PositivityTheory.Rg.BcB.SpectralAccumulation

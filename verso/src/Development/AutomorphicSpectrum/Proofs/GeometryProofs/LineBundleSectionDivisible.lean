@@ -9,12 +9,20 @@ open GlobalTheory.CompanionTheory.Ar.Sl.Reg
 noncomputable section
 namespace GlobalTheory.CompanionTheory.Ar.Sl.Reg.Glue
 
+/- English proof (translation)
+Establish `e` using `Scheme.Hom.appLE_map π (U := ⊤) (V := U) (fun _ _ => trivial) (homOfLE h).op`. Simplify using `only [sc, RingHom.comp_apply]`. Conclude with `congrArg (fun q => q.hom ((Scheme.ΓSpecIso (CommRingCat.of R)).inv.hom d)) e`.
+-/
 theorem sc_res {R : Type} [CommRing R] {X : Scheme.{0}} (π : X ⟶ Sp R) {U V : X.Opens} (h : V ≤ U) (d : R) :
     (X.presheaf.map (homOfLE h).op).hom (sc π U d) = sc π V d := by
   have e := Scheme.Hom.appLE_map π (U := ⊤) (V := U) (fun _ _ => trivial) (homOfLE h).op
   simp only [sc, RingHom.comp_apply]
   exact congrArg (fun q => q.hom ((Scheme.ΓSpecIso (CommRingCat.of R)).inv.hom d)) e
 
+/- English proof (translation)
+Introduce `h`. Apply `hd` to reduce the goal to its premises. Establish `hi` using `map_injective_of_isIntegral X (homOfLE (le_top : V ≤ ⊤))`. Apply `hi` to reduce the goal to its premises. Use `sc_res π (le_top : V ≤ ⊤) d` as an intermediate fact.
+
+Rewrite using `[map_zero]`. Conclude with `this.trans h`.
+-/
 theorem sc_ne_zero {X : Scheme.{0}} [IsIntegral X] {R : Type} [CommRing R] (π : X ⟶ Sp R) {V : X.Opens}
     [Nonempty V] {d : R} (hd : sc π ⊤ d ≠ 0) : sc π V d ≠ 0 := by
   intro h
@@ -25,6 +33,11 @@ theorem sc_ne_zero {X : Scheme.{0}} [IsIntegral X] {R : Type} [CommRing R] (π :
   rw [map_zero]
   exact this.trans h
 
+/- English proof (translation)
+Distinguish the cases in `hV : Nonempty V`. Conclude with `mul_left_cancel₀ (sc_ne_zero π hd) h`. Establish `: V = ⊥`. Use extensionality with `x`. Simplify using `only [TopologicalSpace.Opens.coe_bot, Set.mem_empty_iff_false, iff_false]`.
+
+Conclude with `fun hx => hV ⟨⟨x, hx⟩⟩`. Substitute `this` using the available equality. Conclude with `Subsingleton.elim _ _`.
+-/
 theorem sc_cancel {X : Scheme.{0}} [IsIntegral X] {R : Type} [CommRing R] (π : X ⟶ Sp R) (V : X.Opens)
     {d : R} (hd : sc π ⊤ d ≠ 0) {a b : Γ(X, V)} (h : sc π V d * a = sc π V d * b) : a = b := by
   by_cases hV : Nonempty V
@@ -36,6 +49,17 @@ theorem sc_cancel {X : Scheme.{0}} [IsIntegral X] {R : Type} [CommRing R] (π : 
     subst this
     exact Subsingleton.elim _ _
 
+/- English proof (translation)
+Set `I` to `{W : X.affineOpens // (W : X.Opens) ≤ V}`. Set `U : I → X.Opens` to `fun i => (i.1 : X.Opens)`. Use `choose g hg using fun i : I => h (U i) i.2 i.1.2`. Establish `hcover : V ≤ iSup U`. Introduce `y hy`.
+
+Take `⟨W, hW, hyW, hWV⟩` from `(TopologicalSpace.Opens.isBasis_iff_nbhd.mp X.isBasis_affineOpens) hy`. Conclude with `TopologicalSpace.Opens.mem_iSup.2 ⟨⟨⟨W, hW⟩, hWV⟩, hyW⟩`. Establish `hcompat : TopCat.Presheaf.IsCompatible X.sheaf.1 U g`. Introduce `i j`. Use `show (X.presheaf.map (homOfLE (inf_le_left : U i ⊓ U j ≤ U i)).op).hom (g i) = (X.presheaf.map (homOfLE (inf_le_right : U i ⊓ U j ≤ U j)).op).hom (g j)`.
+
+Apply `sc_cancel π _ hd` to reduce the goal to its premises. Establish `e1` using `congrArg (X.presheaf.map (homOfLE (inf_le_left : U i ⊓ U j ≤ U i)).op).hom (hg i)`. Establish `e2` using `congrArg (X.presheaf.map (homOfLE (inf_le_right : U i ⊓ U j ≤ U j)).op).hom (hg j)`. Rewrite `e1`, `e2` using `[map_mul, sc_res, ← CommRingCat.comp_apply, ← Functor.map_comp]`. Conclude with `e1.symm.trans e2`.
+
+Take `⟨s, hs, -⟩` from `TopCat.Sheaf.existsUnique_gluing' X.sheaf U V (fun i => homOfLE i.2) hcover g hcompat`. Use `⟨s, ?_⟩` and prove the remaining obligations. Apply `TopCat.Sheaf.eq_of_locally_eq' X.sheaf U V (fun i => homOfLE i.2) hcover` to reduce the goal to its premises. Introduce `i`. Use `show (X.presheaf.map (homOfLE i.2).op).hom x = (X.presheaf.map (homOfLE i.2).op).hom (sc π V d * (show Γ(X, V) from s))`.
+
+Rewrite using `[hg i, map_mul, sc_res]`. Conclude with `congrArg _ (hs i).symm`.
+-/
 theorem exists_div {X : Scheme.{0}} [IsIntegral X] {R : Type} [CommRing R] (π : X ⟶ Sp R) (V : X.Opens)
     {d : R} (hd : sc π ⊤ d ≠ 0) (x : Γ(X, V))
     (h : ∀ (W : X.Opens) (hW : W ≤ V), IsAffineOpen W →
@@ -65,6 +89,11 @@ theorem exists_div {X : Scheme.{0}} [IsIntegral X] {R : Type} [CommRing R] (π :
   rw [hg i, map_mul, sc_res]
   exact congrArg _ (hs i).symm
 
+/- English proof (translation)
+Use `choose y hy using fun i => exists_div π (M.U i) hδ (s.f i) (h i)`. Use `⟨⟨y, fun i j => ?_⟩, hy⟩` and prove the remaining obligations. Apply `sc_cancel π _ hδ` to reduce the goal to its premises. Establish `e` using `s.compat i j`. Rewrite `e` using `[hy i, hy j, map_mul, map_mul, sc_res, sc_res]`.
+
+Rewrite using `[e]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem exists_sec_of_local {X : Scheme.{0}} [IsIntegral X] (R : Type) [CommRing R] (π : X ⟶ Sp R) (M : LB X)
     (s : LB.Sec M) (δ : R) (hδ : sc π ⊤ δ ≠ 0)
     (h : ∀ i (W : X.Opens) (hW : W ≤ M.U i), IsAffineOpen W →
@@ -78,6 +107,9 @@ theorem exists_sec_of_local {X : Scheme.{0}} [IsIntegral X] (R : Type) [CommRing
   rw [e]
   ring
 
+/- English proof (translation)
+Introduce `X _ R _ π M s δ hδ h`. Conclude with `exists_sec_of_local R π M s δ hδ h`.
+-/
 theorem sec_eq_smul_of_local : ∀ (X : Scheme.{0}) [IsIntegral X] (R : Type) [CommRing R] (π : X ⟶ Sp R) (M : LB X) (s : LB.Sec M) (δ : R), sc π ⊤ δ ≠ 0 → (∀ i (W : X.Opens) (hW : W ≤ M.U i), IsAffineOpen W → ∃ a : Γ(X, W), (X.presheaf.map (homOfLE hW).op).hom (s.f i) = sc π W δ * a) → ∃ s' : LB.Sec M, ∀ i, s.f i = sc π (M.U i) δ * s'.f i := by
   intro X _ R _ π M s δ hδ h
   exact exists_sec_of_local R π M s δ hδ h

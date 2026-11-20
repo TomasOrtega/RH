@@ -6,6 +6,9 @@ namespace LateralTheory.EtaleFoundations.EvMkPf
 
 variable {R : Type} [CommRing R] {E : Spc} {I : Cx R}
 
+/- English proof (translation)
+Apply `ModuleCat.free_hom_ext` to reduce the goal to its premises. Introduce `x`. Simplify using `[ModuleCat.free_map_apply, ModuleCat.freeDesc_apply, H]`.
+-/
 theorem sq {X Y : Type 1} (h : X ⟶ Y) {M N : ModuleCat.{1} (ULift.{1} R)} (a : Y ⟶ M) (b : X ⟶ N) (φ : N ⟶ M)
     (H : ∀ x, a (h x) = φ (b x)) :
     (ModuleCat.free (ULift.{1} R)).map h ≫ ModuleCat.freeDesc a = ModuleCat.freeDesc b ≫ φ := by
@@ -25,6 +28,9 @@ noncomputable def phi (k : ℕ) (s : ℤ) (F : ∀ U : Scheme.{0}, Sx E k U → 
   ((sheafificationAdjunction Scheme.etaleTopology.{0} (ModuleCat.{1} (ULift.{1} R))).homEquiv
     ((freeP R).obj (E.obj (op (SimplexCategory.mk k)))) (I.X s)).symm (eta k s F hF)
 
+/- English proof (translation)
+Use `((sheafificationAdjunction Scheme.etaleTopology.{0} (ModuleCat.{1} (ULift.{1} R))).homEquiv ((freeP R).obj (E.obj (op (SimplexCategory.mk k)))) (I.X s)).apply_symm_apply (eta k s F hF)` as an intermediate fact. Rewrite `this` using `[Adjunction.homEquiv_unit]`. Conclude with `this`.
+-/
 theorem phi_unit (k : ℕ) (s : ℤ) (F : ∀ U : Scheme.{0}, Sx E k U → Sec (I.X s) U)
     (hF : ∀ (V U : Scheme.{0}) (g : V ⟶ U) (x : Sx E k U), Sec.res g (F U x) = F V (x.res g)) :
     toSheafify Scheme.etaleTopology.{0} ((freeP R).obj (E.obj (op (SimplexCategory.mk k)))) ≫ (phi k s F hF).hom =
@@ -34,6 +40,9 @@ theorem phi_unit (k : ℕ) (s : ℤ) (F : ∀ U : Scheme.{0}, Sx E k U → Sec (
   rw [Adjunction.homEquiv_unit] at this
   exact this
 
+/- English proof (translation)
+Establish `h2` using `congrArg (fun f => (f.app (op U)).hom (ModuleCat.freeMk (R := ULift.{1} R) (ULift.up.{1} x))) (phi_unit k s F hF)`. Conclude with `h2.trans (ModuleCat.freeDesc_apply _ _)`.
+-/
 theorem phi_freeGen (k : ℕ) (s : ℤ) (F : ∀ U : Scheme.{0}, Sx E k U → Sec (I.X s) U)
     (hF : ∀ (V U : Scheme.{0}) (g : V ⟶ U) (x : Sx E k U), Sec.res g (F U x) = F V (x.res g))
     (U : Scheme.{0}) (x : Sx E k U) :
@@ -50,6 +59,9 @@ noncomputable def comp (p q : ℤ) (hpq : p + n = q) : ((chains R).obj E).X p �
       phi p.natAbs q (fun U x => a p.natAbs q (by omega) U x) (fun V U g x => ha _ _ _ V U g x)
   else 0
 
+/- English proof (translation)
+Substitute `e` using the available equality. Simplify using the standard rewrite rules.
+-/
 theorem aux {s : ℤ} (j k : ℕ) (e : j = k) (hjk : -(k : ℤ) = -(j : ℤ)) (hj : -(j : ℤ) + n = s) (hk : -(k : ℤ) + n = s) :
     (HomologicalComplex.XIsoOfEq ((chains R).obj E) hjk).hom ≫ (chainsXIso R E j).hom ≫
       phi j s (fun U x => a j s hj U x) (fun V U g x => ha _ _ _ V U g x) =
@@ -57,6 +69,9 @@ theorem aux {s : ℤ} (j k : ℕ) (e : j = k) (hjk : -(k : ℤ) = -(j : ℤ)) (h
   subst e
   simp
 
+/- English proof (translation)
+Unfold `comp`. Rewrite using `[dif_pos (by omega)]`. Conclude with `aux a ha _ _ (by omega) _ _ _`.
+-/
 theorem comp_neg (k : ℕ) (s : ℤ) (h : -(k : ℤ) + n = s) :
     comp a ha (-(k : ℤ)) s h = (chainsXIso R E k).hom ≫ phi k s (fun U x => a k s h U x) (fun V U g x => ha _ _ _ V U g x) := by
   unfold comp
@@ -66,6 +81,9 @@ theorem comp_neg (k : ℕ) (s : ℤ) (h : -(k : ℤ) + n = s) :
 end LateralTheory.EtaleFoundations.EvMkPf
 
 open LateralTheory.EtaleFoundations.EvMkPf in
+/- English proof (translation)
+Introduce `R _ E I n a ha`. Use `⟨Cochain.mk (comp a ha), fun p s h U x => ?_⟩` and prove the remaining obligations. Unfold `ev`. Rewrite using `[Cochain.mk_v, comp_neg a ha p s h, Iso.inv_hom_id_assoc]`. Conclude with `phi_freeGen _ _ _ _ U x`.
+-/
 theorem LateralTheory.EtaleFoundations.pp_ev_mk_of : LateralTheory.EtaleFoundations.pp_ev_mk := by
   intro R _ E I n a ha
   refine ⟨Cochain.mk (comp a ha), fun p s h U x => ?_⟩

@@ -13,9 +13,23 @@ variable {G : Type*} [Group G] [TopologicalSpace G] [IsTopologicalGroup G] [Meas
 
 def leftTranslateSet (W : Set G) (x : G) : Set G := (fun z => x⁻¹ * z) ⁻¹' W
 
+/- English proof (translation)
+The claim follows from `hW.preimage (continuous_const.mul continuous_id)`.
+-/
 theorem pj_sep_T_open {W : Set G} (hW : IsOpen W) (x : G) : IsOpen (leftTranslateSet W x) :=
   hW.preimage (continuous_const.mul continuous_id)
 
+/- English proof (translation)
+Take `⟨A, hA⟩` from `zorn_subset {A : Set G | A.PairwiseDisjoint (leftTranslateSet W)} (fun c hc hch => ⟨⋃₀ c, (Set.pairwiseDisjoint_sUnion hch.directedOn).2 (fun a ha => hc ha), fun s hs => Set.subset_sUnion_of_mem hs⟩)`. Establish `hAd : A.PairwiseDisjoint (leftTranslateSet W)` using `hA.prop`. Use `⟨A, ?_, ?_⟩` and prove the remaining obligations. Establish `hc` using `Measure.countable_meas_pos_of_disjoint_iUnion (μ := μ) (As := fun x : A => leftTranslateSet W (x : G)) (fun i => (pj_sep_T_open hW _).measurableSet) (fun i j hij => hAd i.2 j.2 (fun h => hij (Subtype.ext h)))`. Establish `hall : {i : A | 0 < μ (leftTranslateSet W (i : G))} = Set.univ`.
+
+Use extensionality with `i`. Simplify using `only [Set.mem_ofPred_eq, Set.mem_univ, iff_true]`. Unfold `leftTranslateSet`. Rewrite using `[measure_preimage_mul]`. Conclude with `hW.measure_pos μ ⟨1, h1⟩`.
+
+Rewrite `hc` using `[hall]`. Conclude with `Set.countable_coe_iff.1 (Set.countable_univ_iff.1 hc)`. Introduce `y`. Assume the negation of the conclusion as `hcon`. Use `push Not at hcon`.
+
+Establish `hins : (insert y A).PairwiseDisjoint (leftTranslateSet W)`. Use `hAd.insert fun x hx _ => ?_` and prove the remaining obligations. Rewrite using `[Set.disjoint_left]`. Introduce `z hz1 hz2`. Use `hcon x hx _ hz1 _ hz2 ?_` and prove the remaining obligations.
+
+Use `group`. Establish `hsub : insert y A ⊆ A` using `hA.le_of_ge hins (Set.subset_insert y A)`. Conclude with `hcon y (hsub (Set.mem_insert y A)) 1 h1 1 h1 rfl`.
+-/
 theorem pj_sep_cover (μ : Measure G) [μ.IsMulLeftInvariant] [μ.IsOpenPosMeasure] [SFinite μ] (W : Set G)
     (hW : IsOpen W) (h1 : (1 : G) ∈ W) :
     ∃ S : Set G, S.Countable ∧ ∀ y : G, ∃ x ∈ S, ∃ a ∈ W, ∃ b ∈ W, y * a = x * b := by
@@ -46,6 +60,13 @@ theorem pj_sep_cover (μ : Measure G) [μ.IsMulLeftInvariant] [μ.IsOpenPosMeasu
     have hsub : insert y A ⊆ A := hA.le_of_ge hins (Set.subset_insert y A)
     exact hcon y (hsub (Set.mem_insert y A)) 1 h1 1 h1 rfl
 
+/- English proof (translation)
+Establish `c1 : Filter.Tendsto (fun p : G × G => p.1 * p.2⁻¹) (nhds ((1 : G), (1 : G))) (nhds 1)`. Establish `: Continuous (fun p : G × G => p.1 * p.2⁻¹)` using `continuous_fst.mul continuous_snd.inv`. Simplify using `using this.tendsto ((1 : G), (1 : G))`. Establish `c2 : Filter.Tendsto (fun p : G × G => p.1⁻¹ * p.2) (nhds ((1 : G), (1 : G))) (nhds 1)`. Establish `: Continuous (fun p : G × G => p.1⁻¹ * p.2)` using `continuous_fst.inv.mul continuous_snd`.
+
+Simplify using `using this.tendsto ((1 : G), (1 : G))`. Establish `h : (fun p : G × G => p.1 * p.2⁻¹) ⁻¹' V ∩ (fun p : G × G => p.1⁻¹ * p.2) ⁻¹' V ∈ nhds ((1 : G), (1 : G))` using `Filter.inter_mem (Filter.mem_map.1 (c1 hV)) (Filter.mem_map.1 (c2 hV))`. Take `⟨u, hu, v, hv, huv⟩` from `mem_nhds_prod_iff.1 h`. Take `⟨n, hn⟩` from `hUb (u ∩ v) (Filter.inter_mem hu hv)`. Use `⟨n, fun a ha b hb => ?_⟩` and prove the remaining obligations.
+
+Conclude with `huv (Set.mk_mem_prod (hn ha).1 (hn hb).2)`.
+-/
 theorem pj_sep_nbhd (U : ℕ → Set G) (hUb : ∀ V ∈ nhds (1 : G), ∃ n, U n ⊆ V) (V : Set G) (hV : V ∈ nhds (1 : G)) :
     ∃ n, ∀ a ∈ U n, ∀ b ∈ U n, a * b⁻¹ ∈ V ∧ a⁻¹ * b ∈ V := by
   have c1 : Filter.Tendsto (fun p : G × G => p.1 * p.2⁻¹) (nhds ((1 : G), (1 : G))) (nhds 1) := by
@@ -61,6 +82,21 @@ theorem pj_sep_nbhd (U : ℕ → Set G) (hUb : ∀ V ∈ nhds (1 : G), ∃ n, U 
   refine ⟨n, fun a ha b hb => ?_⟩
   exact huv (Set.mk_mem_prod (hn ha).1 (hn hb).2)
 
+/- English proof (translation)
+Use `choose S hSc hS using fun n => pj_sep_cover μ (U n) (hUo n) (hU1 n)`. Use `set B : Set (Set G) := ⋃ n, ⋃ m, (fun x => leftTranslateSet (U m) x) '' (S n) with hB`. Establish `hBc : B.Countable` using `Set.countable_iUnion fun n => Set.countable_iUnion fun m => (hSc n).image _`. Use `IsTopologicalBasis.secondCountableTopology (b := B) ?_ hBc` and prove the remaining obligations. Use `isTopologicalBasis_of_isOpen_of_nhds ?_ ?_` and prove the remaining obligations.
+
+Introduce `u hu`. Simplify using `only [hB, Set.mem_iUnion, Set.mem_image] at hu`. Take `⟨n, m, x, -, rfl⟩` from `hu`. Conclude with `pj_sep_T_open (hUo m) x`. Introduce `y O hy hO`.
+
+Establish `hV : (fun z => y * z) ⁻¹' O ∈ nhds (1 : G)` using `(hO.preimage (continuous_const.mul continuous_id)).mem_nhds (by simpa using hy)`. Take `⟨m, hm⟩` from `pj_sep_nbhd U hUb _ hV`. Establish `hV2 : (fun z : G => z⁻¹) ⁻¹' (U m) ∈ nhds (1 : G)` using `((hUo m).preimage continuous_inv).mem_nhds (by simpa using hU1 m)`. Take `⟨n, hn⟩` from `pj_sep_nbhd U hUb _ hV2`. Take `⟨x, hx, a, ha, b, hb, hab⟩` from `hS n y`.
+
+Establish `hxy : x⁻¹ * y ∈ U m`. Establish `h1` using `(hn a ha b hb).1`. Establish `h2 : (a * b⁻¹)⁻¹ = x⁻¹ * y`. Establish `: y = x * b * a⁻¹` using `by rw [← hab]; group`. Rewrite using `[this]`.
+
+Use `group`. Establish `h3 : (a * b⁻¹)⁻¹ ∈ U m` using `h1`. Rewrite `h3` using `[h2]`. Then use the resulting hypothesis. Use `⟨leftTranslateSet (U m) x, ?_, hxy, ?_⟩` and prove the remaining obligations. Simplify using `only [hB, Set.mem_iUnion, Set.mem_image]`.
+
+Conclude with `⟨n, m, x, hx, rfl⟩`. Introduce `z hz`. Establish `h1` using `(hm _ hxy _ hz).2`. Establish `h2 : y * ((x⁻¹ * y)⁻¹ * (x⁻¹ * z)) = z` using `by group`. Establish `h3 : y * ((x⁻¹ * y)⁻¹ * (x⁻¹ * z)) ∈ O` using `h1`.
+
+Rewrite `h3` using `[h2]`. Then use the resulting hypothesis.
+-/
 theorem pj_sep_second (μ : Measure G) [μ.IsMulLeftInvariant] [μ.IsOpenPosMeasure] [SFinite μ] (U : ℕ → Set G)
     (hUo : ∀ n, IsOpen (U n)) (hU1 : ∀ n, (1 : G) ∈ U n) (hUb : ∀ V ∈ nhds (1 : G), ∃ n, U n ⊆ V) :
     SecondCountableTopology G := by
@@ -99,6 +135,13 @@ theorem pj_sep_second (μ : Measure G) [μ.IsMulLeftInvariant] [μ.IsOpenPosMeas
 
 end General
 
+/- English proof (translation)
+Establish `: X.μf.IsHaarMeasure` using `hX.2.1.2.2.2.1`. Unfold `SepF`. Use `pj_sep_second X.μf (fun n => _) (fun n => X.I.topf_open (n + 1) (Nat.succ_le_succ (Nat.zero_le n))) ?_ ?_` and prove the remaining obligations. Introduce `n`. Use `⟨one_mem _, fun y _ => ⟨0, zero_mem _, ?_⟩⟩` and prove the remaining obligations.
+
+Simplify using the standard rewrite rules. Introduce `V hV`. Take `⟨g, hg, hsub⟩` from `X.I.topf_basis V hV`. Use `⟨g - 1, ?_⟩` and prove the remaining obligations. Establish `: g - 1 + 1 = g` using `by omega`.
+
+Simplify using `only [this]`. Conclude with `hsub`.
+-/
 theorem pj_sepF (X : CData) {n₀ : ℕ} {A : ℝ} (hX : X.HypB n₀ A) : SepF X := by
   have : X.μf.IsHaarMeasure := hX.2.1.2.2.2.1
   unfold SepF

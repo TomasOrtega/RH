@@ -12,6 +12,11 @@ attribute [local instance] Over.cartesianMonoidalCategory
 
 namespace GlobalTheory.AbCoh
 
+/- English proof (translation)
+Introduce `K L _ _ _ A _ B _ φ h hA hB`. Establish `hp : IsProper A.hom` using `hA.proper`. Take `⟨⟨e₁, he₁⟩, e₂, he₂⟩` from `GlobalTheory.T.structure_cohomology_flat_base_change K L A.left B.left A.hom B.hom φ h.1 inferInstance inferInstance`. Use `GlobalTheory.T.exteriorSquare_equiv_of_baseChange_field K L _ _ _ _ (cup (OAff A.hom)) (cup (OAff B.hom)) e₁ e₂ (fun a b ↦ ?_) hB` and prove the remaining obligations. Rewrite using `[he₁, he₁, he₂]`.
+
+Conclude with `(GlobalTheory.T.structureSheafCohomology_pullback_comp_cup_id.2.1 K L A.left B.left A.hom B.hom _ φ h.1.w).1 a b`.
+-/
 theorem wedgeO_descends_field : ∀ (K L : Type) [Field K] [Field L] [Algebra K L] (A : Over (Sp K)) [GrpObj A] (B : Over (Sp L)) [GrpObj B] (φ : B.left ⟶ A.left), IsGrpPullback B A (spMap (algebraMap K L)) φ → IsAbelianScheme A → WedgeO (OAff B.hom) → WedgeO (OAff A.hom) := by
   intro K L _ _ _ A _ B _ φ h hA hB
   have hp : IsProper A.hom := hA.proper

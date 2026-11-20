@@ -12,6 +12,9 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 namespace GlobalTheory.DefFree
 
+/- English proof (translation)
+Take `⟨a, ha, b, hb, hab⟩` from `Submodule.mem_sup.1 (hIJ ▸ Submodule.mem_top : (1 : R) ∈ J ⊔ I)`. Establish `e : f x = f (a • x) + b • f x` using `by rw [map_smul, ← add_smul, hab, one_smul]`. Rewrite using `[e]`. Conclude with `add_mem (h _ (Submodule.smul_mem_smul ha Submodule.mem_top)) (Submodule.smul_mem_smul hb Submodule.mem_top)`.
+-/
 theorem mem_smul_top_of_coprime {R N : Type} [CommRing R] [AddCommGroup N] [Module R N] (I J : Ideal R) (hIJ : J ⊔ I = ⊤)
     (f : N →ₗ[R] N) (h : ∀ z ∈ J • (⊤ : Submodule R N), f z ∈ I • (⊤ : Submodule R N)) (x : N) :
     f x ∈ I • (⊤ : Submodule R N) := by
@@ -20,6 +23,11 @@ theorem mem_smul_top_of_coprime {R N : Type} [CommRing R] [AddCommGroup N] [Modu
   rw [e]
   exact add_mem (h _ (Submodule.smul_mem_smul ha Submodule.mem_top)) (Submodule.smul_mem_smul hb Submodule.mem_top)
 
+/- English proof (translation)
+Introduce `hu`. Establish `h1` using `hu.map (Algebra.norm ℤ : 𝓞 K →* ℤ)`. Establish `e : ((g : 𝓞 K)) = algebraMap ℤ (𝓞 K) (g : ℤ)` using `by simp`. Rewrite `h1` using `[e, Algebra.norm_algebraMap]`. Establish `hn : Module.finrank ℤ (𝓞 K) ≠ 0` using `Module.finrank_pos.ne'`.
+
+Rewrite `h1` using `[isUnit_pow_iff hn, Int.isUnit_iff]`. Use `hg.two_le` as an intermediate fact. Apply the tactic sequence `rcases h1 with h1 | h1 <;> omega`.
+-/
 theorem natCast_not_isUnit {K : Type} [Field K] [NumberField K] {g : ℕ} (hg : g.Prime) : ¬ IsUnit (g : 𝓞 K) := by
   intro hu
   have h1 := hu.map (Algebra.norm ℤ : 𝓞 K →* ℤ)
@@ -30,6 +38,13 @@ theorem natCast_not_isUnit {K : Type} [Field K] [NumberField K] {g : ℕ} (hg : 
   have := hg.two_le
   rcases h1 with h1 | h1 <;> omega
 
+/- English proof (translation)
+Introduce `htop`. Establish `hb : Ideal.map (H.bar : 𝓞 E →+* 𝓞 E) l.Mb ⊔ Ideal.span {(g : 𝓞 E)} = ⊤`. Use `congrArg (Ideal.map (H.bar : 𝓞 E →+* 𝓞 E)) htop` as an intermediate fact. Rewrite `this` using `[Ideal.map_sup, Ideal.map_span, Set.image_singleton, map_natCast, Ideal.map_top]`. Then use the resulting hypothesis. Establish `hle : (⊤ : Ideal (𝓞 E)) ≤ Ideal.span {(g : 𝓞 E)}`.
+
+Combine the equalities or inequalities in the displayed calculation. Rewrite using `[htop, hb, Ideal.top_mul]`. Use `_ ≤ Ideal.span {(g : 𝓞 E)} := by`. Rewrite using `[Ideal.sup_mul, Ideal.mul_sup, Ideal.mul_sup, l.prod]`. Use `sup_le (sup_le ?_ (Ideal.mul_le_inf.trans inf_le_right)) (sup_le (Ideal.mul_le_inf.trans inf_le_left) (Ideal.mul_le_inf.trans inf_le_left))` and prove the remaining obligations.
+
+Rewrite using `[Ideal.span_singleton_le_span_singleton]`. Conclude with `(Nat.cast_dvd_cast hd : ((g : 𝓞 E)) ∣ (l.M : 𝓞 E))` after adjusting the coercions. Conclude with `natCast_not_isUnit hg (Ideal.span_singleton_eq_top.1 (top_le_iff.1 hle))`.
+-/
 theorem sup_span_ne_top {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E} (l : Level H)
     {g : ℕ} (hg : g.Prime) (hd : g ∣ l.M) : l.Mb ⊔ Ideal.span {(g : 𝓞 E)} ≠ ⊤ := by
   intro htop
@@ -46,6 +61,13 @@ theorem sup_span_ne_top {E : Type} [Field E] [NumberField E] [IsCMField E] {H : 
           exact_mod_cast (Nat.cast_dvd_cast hd : ((g : 𝓞 E)) ∣ (l.M : 𝓞 E))
   exact natCast_not_isUnit hg (Ideal.span_singleton_eq_top.1 (top_le_iff.1 hle))
 
+/- English proof (translation)
+Introduce `D L hT Gi Gl Kc Y0 cX ex Csz p i PP A M hR hi hG hW hH hF`. Establish `hM : p.T.Q.l.M = D.host.g 0 * D.host.g 1` using `p.fw.laws.pins.2.1.1`. Establish `hj : InR D ((i : ℕ) + 1)` using `⟨by omega, by omega⟩`. Establish `hpq : 1 ≤ (p.T.Q.Dw ((i : ℕ) + 1)).p + (p.T.Q.Dw ((i : ℕ) + 1)).q`. Establish `h1` using `(p.fw.laws.pins.2.2.2 _ hj).1`.
+
+Establish `h2` using `D.R.m_add_three_le_k`. Rewrite using `[h1]`. Simplify using `only [Ranks.sigW]`. Use linear arithmetic over natural numbers and integers. Establish `hun : ∀ (g : (p.F.lv2.lvl false).P) (x : (p.T.Q.Dw ((i : ℕ) + 1)).La), (((p.O i).lev (g : p.P.Gp) - 1) ^ D.R.r) x ∈ p.T.Q.l.Mb • (⊤ : Submodule (𝓞 D.host.E) (p.T.Q.Dw ((i : ℕ) + 1)).La)` using `fun g x => mem_smul_top_of_coprime _ _ (by rw [sup_comm]; exact p.T.Q.l.coprime) _ (GlobalTheory.T.final_row_weight_gram_algebraic p i PP A M hR hi hG hW hH hF g) x`.
+
+Conclude with `GlobalTheory.T.free_action_framedPoints_of_unipotent_mod_two_primes D.host.E p.T.Q.H (p.T.Q.Dw ((i : ℕ) + 1)) p.T.Q.l (p.T.Q.Xo ((i : ℕ) + 1)) p.T.Q.c (p.F.lv2.lvl false).P (fun g => (p.O i).lev (g : p.P.Gp)) D.R.r (D.host.g 0) (D.host.g 1) (p.T.Q.l.Mb ⊔ Ideal.span {((D.host.g 0 …`.
+-/
 theorem free_base : ∀ {D : D7} {L : SizeData₂ D} {hT : GatTies D} {Gi : Formalism.MainNotions.G.Inst D L} {Gl : Formalism.MainNotions.G.LatInst D} {Kc : Formalism.MainNotions.G.Consts} {Y0 : DivX D} {cX : ExtraC} {ex : Extra D L hT Gi Gl Kc Y0 cX} {Csz : ℝ} (p : PtAt ex Csz) (i : Fin D.R.m) (PP A M : ℝ), RowsT p → (i : ℕ) + 1 = D.R.m → GramAt p i → WtNum p i PP → HostNum D L PP A M → FnAlgClosed (p.T.Q.Xo ((i : ℕ) + 1)) p.T.Q.c → FreePt (p.T.Q.Xo ((i : ℕ) + 1)) p.T.Q.c (fun g : (p.F.lv2.lvl false).P => (p.O i).lev2 (g : p.P.Gp)) := by
   intro D L hT Gi Gl Kc Y0 cX ex Csz p i PP A M hR hi hG hW hH hF
   have hM : p.T.Q.l.M = D.host.g 0 * D.host.g 1 := p.fw.laws.pins.2.1.1

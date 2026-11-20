@@ -16,6 +16,13 @@ section Pt
 variable {X : Scheme.{0}} {Ω : Type} [Field Ω] {ξ : Spec (CommRingCat.of Ω) ⟶ X}
   {K : Type} [Fintype K] {J : K → Type} [∀ k, Fintype (J k)] {y : (Σ k, J k) → Ω}
 
+/- English proof (translation)
+Take `⟨cc, hcc⟩` from `hT.cover ⟨centre z, h⟩`. Take `⟨U, hU, hUiff⟩` from `hT.affine cc hcc.1`. Establish `hzU : centre z ∈ U` using `(hUiff _).2 ⟨h, hcc⟩`. Take `⟨g, hgV, hzg⟩` from `hU.exists_basicOpen_le (V := V) ⟨centre z, hV⟩ hzU`. Establish `hsu : IsUnit (X.presheaf.germ U (centre z) hzU g)` using `(X.mem_basicOpen g _ hzU).1 hzg`.
+
+Use `⟨cc, genMap ξ ⟨centre z, h⟩ (X.presheaf.germ U (centre z) hzU g), ChartFrames.inFrameDomain_of_unitAt hT hz h hcc (ChartFrames.unitAt_of_isUnit hsu), hcc, ?_⟩` and prove the remaining obligations. Introduce `p hp hpf`. Establish `hpU : p.1 ∈ U` using `(hUiff p.1).2 ⟨p.2, hp⟩`. Establish `hfp` using `ChartFrames.genMap_germ_eq g p ⟨centre z, h⟩ hpU hzU`. Apply `hgV` to reduce the goal to its premises.
+
+Rewrite using `[X.mem_basicOpen g _ hpU]`. Conclude with `ChartFrames.isUnit_of_unitAt hT.gen (by rw [hfp]; exact hpf)`.
+-/
 theorem exists_basic (hT : CoordTie ℤ ξ (segreCoord y)) {z : Spec (CommRingCat.of ℂ) ⟶ X}
     {w : (Σ k, J k) → ℂ} (hz : CoordsAt ξ y z w) (h : genPt ξ ⤳ centre z) (V : X.Opens) (hV : centre z ∈ V) :
     ∃ (cc : (k : K) → J k) (f : Ω), InFrameDomain y cc f w ∧ InChart ξ (segreCoord y) cc ⟨centre z, h⟩ ∧
@@ -34,6 +41,11 @@ theorem exists_basic (hT : CoordTie ℤ ξ (segreCoord y)) {z : Spec (CommRingCa
   rw [X.mem_basicOpen g _ hpU]
   exact ChartFrames.isUnit_of_unitAt hT.gen (by rw [hfp]; exact hpf)
 
+/- English proof (translation)
+Proceed by induction on `p using MvPolynomial.induction_on with`. Consider the case `C a`. Simplify using `only [MvPolynomial.map_C, MvPolynomial.eval_C]`. Conclude with `analyticAt_const`. Consider the case `add p r hp hr`.
+
+Simplify using `only [map_add]`. Conclude with `hp.add hr`. Consider the case `mul_X p i hp`. Simplify using `only [map_mul, MvPolynomial.map_X, MvPolynomial.eval_X]`. Conclude with `hp.mul (hq i)`.
+-/
 theorem analyticAt_eval {A : Type} {n : ℕ} {q : (Fin n → ℂ) → A → ℂ} {t₀ : Fin n → ℂ}
     (hq : ∀ i, AnalyticAt ℂ (fun t => q t i) t₀) (p : MvPolynomial A ℤ) :
     AnalyticAt ℂ (fun t => MvPolynomial.eval (q t) (MvPolynomial.map (Int.castRingHom ℂ) p)) t₀ := by
@@ -48,12 +60,18 @@ theorem analyticAt_eval {A : Type} {n : ℕ} {q : (Fin n → ℂ) → A → ℂ}
     simp only [map_mul, MvPolynomial.map_X, MvPolynomial.eval_X]
     exact hp.mul (hq i)
 
+/- English proof (translation)
+Take `⟨h1, s, hs, rfl⟩` from `h`. Take `⟨h2, s', hs', rfl⟩` from `h'`. Rewrite using `[hg.inj ⟨centre z, h1⟩ (hs.trans hs'.symm)]`.
+-/
 private theorem valAt_unique_lemma (hg : IsCptGen ξ) {z : Spec (CommRingCat.of ℂ) ⟶ X} {a : Ω} {r r' : ℂ}
     (h : ValAt ξ z a r) (h' : ValAt ξ z a r') : r = r' := by
   obtain ⟨h1, s, hs, rfl⟩ := h
   obtain ⟨h2, s', hs', rfl⟩ := h'
   rw [hg.inj ⟨centre z, h1⟩ (hs.trans hs'.symm)]
 
+/- English proof (translation)
+Take `⟨hz, s1, hs, hs'⟩` from `h`. Take `⟨hz', s2, ht, ht'⟩` from `h'`. Use `⟨hz, s1 * s2, by rw [map_mul, hs, ht], ?_⟩` and prove the remaining obligations. Rewrite using `[← hs', ← ht']`. Conclude with `map_mul _ s1 s2`.
+-/
 private theorem valAt_mul_lemma_2 {z : Spec (CommRingCat.of ℂ) ⟶ X} {a b : Ω} {r s : ℂ}
     (h : ValAt ξ z a r) (h' : ValAt ξ z b s) : ValAt ξ z (a * b) (r * s) := by
   obtain ⟨hz, s1, hs, hs'⟩ := h
@@ -62,6 +80,9 @@ private theorem valAt_mul_lemma_2 {z : Spec (CommRingCat.of ℂ) ⟶ X} {a b : �
   rw [← hs', ← ht']
   exact map_mul _ s1 s2
 
+/- English proof (translation)
+Take `⟨hz, s1, hs, hs'⟩` from `h`. Take `⟨hz', s2, ht, ht'⟩` from `h'`. Use `⟨hz, s1 - s2, by rw [map_sub, hs, ht], ?_⟩` and prove the remaining obligations. Rewrite using `[← hs', ← ht']`. Conclude with `map_sub _ s1 s2`.
+-/
 private theorem valAt_sub_lemma_3 {z : Spec (CommRingCat.of ℂ) ⟶ X} {a b : Ω} {r s : ℂ}
     (h : ValAt ξ z a r) (h' : ValAt ξ z b s) : ValAt ξ z (a - b) (r - s) := by
   obtain ⟨hz, s1, hs, hs'⟩ := h
@@ -70,6 +91,9 @@ private theorem valAt_sub_lemma_3 {z : Spec (CommRingCat.of ℂ) ⟶ X} {a b : �
   rw [← hs', ← ht']
   exact map_sub _ s1 s2
 
+/- English proof (translation)
+Take `⟨hz, s1, hs, hs'⟩` from `h`. Take `⟨hz', s2, ht, ht'⟩` from `h'`. Use `⟨hz, s1 + s2, by rw [map_add, hs, ht], ?_⟩` and prove the remaining obligations. Rewrite using `[← hs', ← ht']`. Conclude with `map_add _ s1 s2`.
+-/
 private theorem valAt_add_lemma_12 {z : Spec (CommRingCat.of ℂ) ⟶ X} {a b : Ω} {r s : ℂ}
     (h : ValAt ξ z a r) (h' : ValAt ξ z b s) : ValAt ξ z (a + b) (r + s) := by
   obtain ⟨hz, s1, hs, hs'⟩ := h
@@ -78,11 +102,19 @@ private theorem valAt_add_lemma_12 {z : Spec (CommRingCat.of ℂ) ⟶ X} {a b : 
   rw [← hs', ← ht']
   exact map_add _ s1 s2
 
+/- English proof (translation)
+Use `⟨h, (m : ↑(X.presheaf.stalk (centre z))), by simp, ?_⟩` and prove the remaining obligations. Conclude with `map_intCast _ m`.
+-/
 private theorem valAt_intCast_lemma_13 {z : Spec (CommRingCat.of ℂ) ⟶ X} (h : genPt ξ ⤳ centre z) (m : ℤ) :
     ValAt ξ z (m : Ω) (m : ℂ) := by
   refine ⟨h, (m : ↑(X.presheaf.stalk (centre z))), by simp, ?_⟩
   exact map_intCast _ m
 
+/- English proof (translation)
+Take `⟨hz, t, ht, ht'⟩` from `h`. Establish `hu : IsUnit t` using `(Scheme.isLocalHom_stalkClosedPointTo z).map_nonunit t (by rw [ht']; exact hr.isUnit)`. Establish `key : ∀ {L : Type} [Field L] (φ : ↑(X.presheaf.stalk (centre z)) →+* L), φ ↑hu.unit⁻¹ = (φ t)⁻¹` using `fun φ => eq_inv_of_mul_eq_one_left (by rw [← map_mul, hu.val_inv_mul, map_one])`. Use `⟨hz, ↑hu.unit⁻¹, ?_, ?_⟩` and prove the remaining obligations. Conclude with `(key (genMap ξ ⟨centre z, hz⟩)).trans (congrArg (·⁻¹) ht)`.
+
+Conclude with `(key (Scheme.stalkClosedPointTo z).hom).trans (congrArg (·⁻¹) ht')`.
+-/
 private theorem valAt_inv_lemma_4 {z : Spec (CommRingCat.of ℂ) ⟶ X} {a : Ω} {r : ℂ}
     (h : ValAt ξ z a r) (hr : r ≠ 0) : ValAt ξ z a⁻¹ r⁻¹ := by
   obtain ⟨hz, t, ht, ht'⟩ := h
@@ -95,6 +127,9 @@ private theorem valAt_inv_lemma_4 {z : Spec (CommRingCat.of ℂ) ⟶ X} {a : Ω}
   · exact (key (genMap ξ ⟨centre z, hz⟩)).trans (congrArg (·⁻¹) ht)
   · exact (key (Scheme.stalkClosedPointTo z).hom).trans (congrArg (·⁻¹) ht')
 
+/- English proof (translation)
+Take `⟨hz, t, ht, ht'⟩` from `h`. Establish `hu : IsUnit t` using `(Scheme.isLocalHom_stalkClosedPointTo z).map_nonunit t (by rw [ht']; exact hr.isUnit)`. Conclude with `⟨hz, ht ▸ ChartFrames.unitAt_of_isUnit hu⟩`.
+-/
 private theorem unitAt_of_valAt_lemma_5 {z : Spec (CommRingCat.of ℂ) ⟶ X} {a : Ω} {r : ℂ}
     (h : ValAt ξ z a r) (hr : r ≠ 0) : ∃ hz : genPt ξ ⤳ centre z, unitAt ξ ⟨centre z, hz⟩ a := by
   obtain ⟨hz, t, ht, ht'⟩ := h
@@ -102,6 +137,9 @@ private theorem unitAt_of_valAt_lemma_5 {z : Spec (CommRingCat.of ℂ) ⟶ X} {a
     (Scheme.isLocalHom_stalkClosedPointTo z).map_nonunit t (by rw [ht']; exact hr.isUnit)
   exact ⟨hz, ht ▸ ChartFrames.unitAt_of_isUnit hu⟩
 
+/- English proof (translation)
+Proceed by induction on `s using Finset.cons_induction with`. Consider the case `empty => simpa using valAt_intCast_lemma_13 (ξ := ξ) hz 0`. Consider the case `@cons i s hi ih`. Rewrite using `[Finset.sum_cons, Finset.sum_cons]`. Conclude with `valAt_add_lemma_12 (h i (Finset.mem_cons_self i s)) (ih fun j hj => h j (Finset.mem_cons_of_mem hj))`.
+-/
 private theorem valAt_sum_lemma_6 {z : Spec (CommRingCat.of ℂ) ⟶ X} (hz : genPt ξ ⤳ centre z) {I : Type*}
     (s : Finset I) (f : I → Ω) (v : I → ℂ) (h : ∀ i ∈ s, ValAt ξ z (f i) (v i)) :
     ValAt ξ z (∑ i ∈ s, f i) (∑ i ∈ s, v i) := by
@@ -111,6 +149,9 @@ private theorem valAt_sum_lemma_6 {z : Spec (CommRingCat.of ℂ) ⟶ X} (hz : ge
     rw [Finset.sum_cons, Finset.sum_cons]
     exact valAt_add_lemma_12 (h i (Finset.mem_cons_self i s)) (ih fun j hj => h j (Finset.mem_cons_of_mem hj))
 
+/- English proof (translation)
+Proceed by induction on `s using Finset.cons_induction with`. Consider the case `empty => simpa using valAt_intCast_lemma_13 (ξ := ξ) hz 1`. Consider the case `@cons i s hi ih`. Rewrite using `[Finset.prod_cons, Finset.prod_cons]`. Conclude with `valAt_mul_lemma_2 (h i (Finset.mem_cons_self i s)) (ih fun j hj => h j (Finset.mem_cons_of_mem hj))`.
+-/
 private theorem valAt_prod_lemma_7 {z : Spec (CommRingCat.of ℂ) ⟶ X} (hz : genPt ξ ⤳ centre z) {I : Type*}
     (s : Finset I) (f : I → Ω) (v : I → ℂ) (h : ∀ i ∈ s, ValAt ξ z (f i) (v i)) :
     ValAt ξ z (∏ i ∈ s, f i) (∏ i ∈ s, v i) := by
@@ -120,10 +161,18 @@ private theorem valAt_prod_lemma_7 {z : Spec (CommRingCat.of ℂ) ⟶ X} (hz : g
     rw [Finset.prod_cons, Finset.prod_cons]
     exact valAt_mul_lemma_2 (h i (Finset.mem_cons_self i s)) (ih fun j hj => h j (Finset.mem_cons_of_mem hj))
 
+/- English proof (translation)
+Simplify using `using valAt_prod_lemma_7 hz (Finset.range n) (fun _ => a) (fun _ => r) (fun _ _ => h)`.
+-/
 private theorem valAt_pow_lemma_8 {z : Spec (CommRingCat.of ℂ) ⟶ X} (hz : genPt ξ ⤳ centre z) {a : Ω} {r : ℂ}
     (h : ValAt ξ z a r) (n : ℕ) : ValAt ξ z (a ^ n) (r ^ n) := by
   simpa using valAt_prod_lemma_7 hz (Finset.range n) (fun _ => a) (fun _ => r) (fun _ _ => h)
 
+/- English proof (translation)
+Rewrite using `[MvPolynomial.eval₂_eq', Finset.sum_div]`. Use `Finset.sum_congr rfl fun m hm => ?_` and prove the remaining obligations. Rewrite using `[eq_intCast, mul_div_assoc, Fintype.prod_sigma, ← Finset.prod_div_distrib]`. Use `congr 1`. Use `Finset.prod_congr rfl fun k _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[← hp m hm k]`. Simplify using `only [div_pow, Finset.prod_div_distrib, Finset.prod_pow_eq_pow_sum]`.
+-/
 private theorem eval₂_div_lemma_9 {L : Type*} [Field L] {d : K → ℕ} {p : MRing J} (hp : IsMultiHomog p d)
     (u : (Σ k, J k) → L) (c : (k : K) → J k) :
     MvPolynomial.eval₂ (Int.castRingHom L) u p / ∏ k, u ⟨k, c k⟩ ^ d k =
@@ -136,6 +185,13 @@ private theorem eval₂_div_lemma_9 {L : Type*} [Field L] {d : K → ℕ} {p : M
   rw [← hp m hm k]
   simp only [div_pow, Finset.prod_div_distrib, Finset.prod_pow_eq_pow_sum]
 
+/- English proof (translation)
+Establish `hr : ∀ k i, ValAt ξ z (y ⟨k, i⟩ / y ⟨k, c k⟩) (w ⟨k, i⟩ / w ⟨k, c k⟩)`. Introduce `k i`. Take `⟨r, hr, hw⟩` from `(hz.2 k (c k) (hc k)).2 i`. Rewrite using `[hw, mul_div_assoc, div_self (hc k).ne_zero, _root_.mul_one]` and apply the resulting hypothesis. Rewrite using `[MvPolynomial.aeval_def, MvPolynomial.eval_map, algebraMap_int_eq, eval₂_div_lemma_9 hp, eval₂_div_lemma_9 hp]`.
+
+Apply `valAt_sum_lemma_6 h0` to reduce the goal to its premises. Introduce `m _`. Apply `valAt_mul_lemma_2 (valAt_intCast_lemma_13 h0 _)` to reduce the goal to its premises. Apply `valAt_prod_lemma_7 h0` to reduce the goal to its premises. Introduce `k _`.
+
+Apply `valAt_prod_lemma_7 h0` to reduce the goal to its premises. Introduce `i _`. Conclude with `valAt_pow_lemma_8 h0 (hr k i) _`.
+-/
 private theorem valAt_ratio_lemma_10 {z : Spec (CommRingCat.of ℂ) ⟶ X} {w : (Σ k, J k) → ℂ}
     (hz : CoordsAt ξ y z w) (h0 : genPt ξ ⤳ centre z) (c : (k : K) → J k) (hc : ∀ k, IsUnit (w ⟨k, c k⟩))
     {d : K → ℕ} {p : MRing J} (hp : IsMultiHomog p d) :
@@ -155,6 +211,13 @@ private theorem valAt_ratio_lemma_10 {z : Spec (CommRingCat.of ℂ) ⟶ X} {w : 
   intro i _
   exact valAt_pow_lemma_8 h0 (hr k i) _
 
+/- English proof (translation)
+Use `choose c hc using hz.1`. Establish `hyc : ∀ k, y ⟨k, c k⟩ ≠ 0` using `fun k => (hz.2 k (c k) (hc k)).1`. Establish `hD : ∏ k, y ⟨k, c k⟩ ^ d k ≠ 0` using `Finset.prod_ne_zero_iff.2 fun k _ => pow_ne_zero _ (hyc k)`. Establish `hDw : ∏ k, w ⟨k, c k⟩ ^ d k ≠ 0` using `Finset.prod_ne_zero_iff.2 fun k _ => pow_ne_zero _ (hc k).ne_zero`. Establish `e1 : f = (MvPolynomial.aeval y g / ∏ k, y ⟨k, c k⟩ ^ d k) * (MvPolynomial.aeval y p / ∏ k, y ⟨k, c k⟩ ^ d k)⁻¹`.
+
+Rewrite using `[hgf]`. Clear the denominators using the available nonvanishing facts. Establish `e2 : MvPolynomial.eval w (MvPolynomial.map (Int.castRingHom ℂ) g) / MvPolynomial.eval w (MvPolynomial.map (Int.castRingHom ℂ) p) = (MvPolynomial.eval w (MvPolynomial.map (Int.castRingHom ℂ) g) / ∏ k, w ⟨k, c k⟩ ^ d k) * (MvPolynomial.eval w (MvPolynomial.map (Int.castRingHom ℂ) p …`. Clear the denominators using the available nonvanishing facts. Rewrite using `[e1, e2]`.
+
+Conclude with `valAt_mul_lemma_2 (valAt_ratio_lemma_10 hz h0 c hc hg) (valAt_inv_lemma_4 (valAt_ratio_lemma_10 hz h0 c hc hp) (div_ne_zero hwp hDw))`.
+-/
 private theorem valAt_of_isValueAt_lemma_11 {z : Spec (CommRingCat.of ℂ) ⟶ X} {w : (Σ k, J k) → ℂ}
     (hz : CoordsAt ξ y z w) (h0 : genPt ξ ⤳ centre z) {f : Ω} {d : K → ℕ} {g p : MRing J}
     (hg : IsMultiHomog g d) (hp : IsMultiHomog p d) (hyp : MvPolynomial.aeval y p ≠ 0)
@@ -180,6 +243,17 @@ private theorem valAt_of_isValueAt_lemma_11 {z : Spec (CommRingCat.of ℂ) ⟶ X
   exact valAt_mul_lemma_2 (valAt_ratio_lemma_10 hz h0 c hc hg)
     (valAt_inv_lemma_4 (valAt_ratio_lemma_10 hz h0 c hc hp) (div_ne_zero hwp hDw))
 
+/- English proof (translation)
+Establish `h0 : genPt ξ ⤳ centre z₀` using `hall _`. Choose the witnesses or unpack the hypotheses as in `⟨m, hm⟩ : ∃ m : ℤ, v₀ + (m : ℂ) ≠ 0 := by`. Distinguish the cases in `h1 : v₀ + 1 = 0`. Use `⟨0, ?_⟩` and prove the remaining obligations. Introduce `h2`.
+
+Simplify using `only [Int.cast_zero, add_zero] at h2`. Rewrite `h1` using `[h2]`. Evaluate the numerical expressions using `at h1`. Conclude with `⟨1, by simpa using h1⟩`. Establish `hv' : ValAt ξ z₀ (a + m) (v₀ + m)` using `valAt_add_lemma_12 hv (valAt_intCast_lemma_13 h0 m)`.
+
+Take `⟨h0', hu⟩` from `unitAt_of_valAt_lemma_5 hv' hm`. Take `⟨cc, hcc⟩` from `hT.cover ⟨centre z₀, h0'⟩`. Take `⟨-, v, ⟨d, g, p, hg, hp, hyp, hgf, hwp, rfl⟩, -⟩` from `ChartFrames.inFrameDomain_of_unitAt hT hz h0' hcc hu`. Establish `hv0` using `valAt_unique_lemma hT.gen (valAt_of_isValueAt_lemma_11 hz h0' hg hp hyp hgf hwp) hv'`. Establish `hA` using `(analyticAt_eval hq g).div (analyticAt_eval hq p) hwp`.
+
+Use `⟨fun t => MvPolynomial.eval (gm t) (MvPolynomial.map (Int.castRingHom ℂ) g) / MvPolynomial.eval (gm t) (MvPolynomial.map (Int.castRingHom ℂ) p) - m, hA.sub analyticAt_const, ?_, ?_⟩` and prove the remaining obligations. Use `show _ - _ = _`. Rewrite using `[hv0]`. Expand and normalize the polynomial expressions, which then agree. Use `filter_upwards [(analyticAt_eval hq p).continuousAt.eventually_ne hwp] with t ht z hzt`.
+
+Establish `h5` using `valAt_sub_lemma_3 (valAt_of_isValueAt_lemma_11 hzt (hall _) hg hp hyp hgf ht) (valAt_intCast_lemma_13 (hall _) m)`. Rewrite `h5` using `[add_sub_cancel_right]`. Then use the resulting hypothesis.
+-/
 theorem exists_val_fam (hT : CoordTie ℤ ξ (segreCoord y)) (hall : ∀ q : X, genPt ξ ⤳ q) {n : ℕ}
     {gm : (Fin n → ℂ) → (Σ k, J k) → ℂ} (hq : ∀ q, AnalyticAt ℂ (fun t => gm t q) 0)
     {z₀ : Spec (CommRingCat.of ℂ) ⟶ X} (hz : CoordsAt ξ y z₀ (gm 0)) {a : Ω} {v₀ : ℂ} (hv : ValAt ξ z₀ a v₀) :
@@ -210,9 +284,17 @@ theorem exists_val_fam (hT : CoordTie ℤ ξ (segreCoord y)) (hall : ∀ q : X, 
     have h5 := valAt_sub_lemma_3 (valAt_of_isValueAt_lemma_11 hzt (hall _) hg hp hyp hgf ht) (valAt_intCast_lemma_13 (hall _) m)
     rwa [add_sub_cancel_right] at h5
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨h, m, map_intCast _ m, map_intCast (Scheme.stalkClosedPointTo z).hom m⟩`.
+-/
 theorem valAt_int {z : Spec (CommRingCat.of ℂ) ⟶ X} (h : genPt ξ ⤳ centre z) (m : ℤ) : ValAt ξ z (m : Ω) (m : ℂ) :=
   ⟨h, m, map_intCast _ m, map_intCast (Scheme.stalkClosedPointTo z).hom m⟩
 
+/- English proof (translation)
+Take `⟨ha0, ⟨s, hs⟩, ⟨t, ht⟩⟩` from `ha`. Establish `hu : IsUnit s`. Break down `IsLocalRing.isUnit_or_isUnit_one_sub_self (s * t) with h1 | h1` into its components or cases. Conclude with `isUnit_of_mul_isUnit_left h1`. It suffices to derive a contradiction.
+
+Establish `h2` using `h1.map (genMap ξ ⟨centre z, h⟩)`. Rewrite `h2` using `[map_sub, map_one, map_mul, hs, ht, mul_inv_cancel₀ ha0, sub_self]`. Conclude with `not_isUnit_zero h2`. Use `⟨(Scheme.stalkClosedPointTo z).hom s, ?_, h, s, hs, rfl⟩` and prove the remaining obligations. Conclude with `(hu.map _).ne_zero`.
+-/
 theorem exists_val_ne {z : Spec (CommRingCat.of ℂ) ⟶ X} (h : genPt ξ ⤳ centre z) {a : Ω}
     (ha : unitAt ξ ⟨centre z, h⟩ a) : ∃ v : ℂ, v ≠ 0 ∧ ValAt ξ z a v := by
   obtain ⟨ha0, ⟨s, hs⟩, ⟨t, ht⟩⟩ := ha
@@ -232,6 +314,15 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {D : Da
   {Xo : Moduli D l} {c : Coeff l} {Y : Model Xo c (algebraMap (𝓞 c.F) c.F)} {S : Finset ℕ} {Ω : Type} [Field Ω]
   [CharZero Ω] {K : Type} [Fintype K] {J : K → Type} [∀ k, Fintype (J k)] {y : (Σ k, J k) → Ω}
 
+/- English proof (translation)
+Establish `hgen : ∀ (h : Spec (CommRingCat.of Ω) ⟶ Spec (CommRingCat.of (𝓞 c.F))), h = Spec.map (CommRingCat.ofHom (𝔐.cst.comp (algebraMap (𝓞 c.F) c.F))) → ∀ x, (Scheme.stalkClosedPointTo h).hom ((Spec (CommRingCat.of (𝓞 c.F))).presheaf.germ ⊤ _ trivial x) = 𝔐.cst (algebraMap _ _ ((Scheme.Γ …`. Introduce and unpack `h rfl x`. Conclude with `congrArg (fun φ => φ.hom x) (Scheme.germ_stalkClosedPointTo_Spec (R := CommRingCat.of (𝓞 c.F)) (S := CommRingCat.of Ω) (CommRingCat.ofHom (𝔐.cst.comp (algebraMap (𝓞 c.F) c.F))))`. Establish `hG : 𝔐.ξ ≫ (𝔐.f ≫ Y.s) = Spec.map (CommRingCat.ofHom (𝔐.cst.comp (algebraMap (𝓞 c.F) c.F)))` using `𝔐.cst_over`. Establish `h` using `𝔐.all (centre z)`.
+
+Establish `e2` using `hgen _ hG ((Scheme.ΓSpecIso (CommRingCat.of (𝓞 c.F))).inv.hom b)`. Rewrite `e2` using `[Scheme.stalkClosedPointTo_comp]`. Establish `hsp` using `Scheme.Hom.stalkSpecializes_stalkMap (𝔐.f ≫ Y.s) _ _ h`. Use `⟨_, h, (𝔐.f ≫ Y.s).stalkMap (centre z) ((Spec (CommRingCat.of (𝓞 c.F))).presheaf.germ ⊤ _ trivial ((Scheme.ΓSpecIso (CommRingCat.of (𝓞 c.F))).inv.hom b)), ?_, rfl⟩` and prove the remaining obligations. Establish `hm : (Spec (CommRingCat.of (𝓞 c.F))).presheaf.germ ⊤ _ trivial ≫ (𝔐.f ≫ Y.s).stalkMap (centre z) ≫ 𝔐.X.presheaf.stalkSpecializes h = (Spec (CommRingCat.of (𝓞 c.F))).presheaf.germ ⊤ _ trivial ≫ (𝔐.f ≫ Y.s).stalkMap (genPt 𝔐.ξ)`.
+
+Rewrite using `[← hsp, ← Category.assoc]`. Use `congr 1`. Conclude with `TopCat.Presheaf.germ_stalkSpecializes _ _ _`. Establish `h3` using `congrArg (fun φ => (φ ≫ Scheme.stalkClosedPointTo 𝔐.ξ).hom ((Scheme.ΓSpecIso (CommRingCat.of (𝓞 c.F))).inv.hom b)) hm`. Simplify using `only [Iso.inv_hom_id_apply] at e2`.
+
+Conclude with `h3.trans e2`.
+-/
 private theorem exists_cst_val_lemma (𝔐 : HodgeCpt Y S y) (z : Spec (CommRingCat.of ℂ) ⟶ 𝔐.X) (b : 𝓞 c.F) :
     ∃ r : ℂ, ValAt 𝔐.ξ z (𝔐.cst (algebraMap (𝓞 c.F) c.F b)) r := by
   have hgen : ∀ (h : Spec (CommRingCat.of Ω) ⟶ Spec (CommRingCat.of (𝓞 c.F))),
@@ -259,6 +350,15 @@ private theorem exists_cst_val_lemma (𝔐 : HodgeCpt Y S y) (z : Spec (CommRing
   simp only [Iso.inv_hom_id_apply] at e2
   exact h3.trans e2
 
+/- English proof (translation)
+Establish `h0 : genPt 𝔐.ξ ⤳ centre z` using `𝔐.all _`. Establish `hex : ∀ a : c.F, ∃ r : ℂ, ValAt 𝔐.ξ z (𝔐.cst a) r`. Introduce `a`. Use `haveI := c.fin`. Establish `hx : IsAlgebraic ℤ a` using `IsFractionRing.isAlgebraic_iff ℤ ℚ c.F |>.mpr (.of_finite ℚ a)`.
+
+Take `⟨m, b, hm, hmb⟩` from `hx.exists_nsmul_eq (𝓞 c.F)`. Take `⟨r, hr⟩` from `exists_cst_val_lemma 𝔐 z b`. Establish `hmi : ValAt 𝔐.ξ z (m : Ω) (m : ℂ)`. Simplify using `using valAt_intCast_lemma_13 (ξ := 𝔐.ξ) h0 (m : ℤ)`. Establish `hmC : (m : ℂ) ≠ 0` using `Nat.cast_ne_zero.2 hm`.
+
+Establish `hmΩ : (m : Ω) ≠ 0` using `Nat.cast_ne_zero.2 hm`. Establish `e : 𝔐.cst a = 𝔐.cst (algebraMap (𝓞 c.F) c.F b) * (m : Ω)⁻¹`. Rewrite using `[← hmb, nsmul_eq_mul, map_mul, map_natCast]`. Clear the denominators using the available nonvanishing facts. Rewrite using `[e]`.
+
+Conclude with `⟨_, valAt_mul_lemma_2 hr (valAt_inv_lemma_4 hmi hmC)⟩`. Use `choose sv hsv using hex`. Establish `hu : ∀ a r, ValAt 𝔐.ξ z (𝔐.cst a) r → sv a = r` using `fun a r h => valAt_unique_lemma 𝔐.tie.gen (hsv a) h`. Set `s : c.F →+* ℂ` to `{ toFun := sv map_one' := hu _ _ (by rw [map_one]; simpa using valAt_intCast_lemma_13 (ξ := 𝔐.ξ) h0 1) map_mul' := fun a b => hu _ _ (by rw [map_mul]; exact valAt_mul_lemma_2 (hsv a) (hsv b)) map_zero' := hu _ _ (by rw [map_zero]; simpa using valAt_intCast_lemma_13 (ξ := 𝔐.ξ) h0 …`. Conclude with `⟨s, hsv⟩`.
+-/
 theorem exists_emb (𝔐 : HodgeCpt Y S y) {z : Spec (CommRingCat.of ℂ) ⟶ 𝔐.X} {w : (Σ k, J k) → ℂ}
     (hz : CoordsAt 𝔐.ξ y z w) : ∃ s : c.F →+* ℂ, ∀ a, ValAt 𝔐.ξ z (𝔐.cst a) (s a) := by
   have h0 : genPt 𝔐.ξ ⤳ centre z := 𝔐.all _
@@ -288,6 +388,19 @@ theorem exists_emb (𝔐 : HodgeCpt Y S y) {z : Spec (CommRingCat.of ℂ) ⟶ �
       map_add' := fun a b => hu _ _ (by rw [map_add]; exact valAt_add_lemma_12 (hsv a) (hsv b)) }
   exact ⟨s, hsv⟩
 
+/- English proof (translation)
+Use `haveI : NumberField c.F := @NumberField.mk _ _ inferInstance c.fin`. Take `⟨s₀, hs₀⟩` from `exists_emb 𝔐 hz`. Establish `claim : ∀ a : c.F, ∀ᶠ t in 𝓝 (0 : Fin n → ℂ), ∀ z : Spec (CommRingCat.of ℂ) ⟶ 𝔐.X, CoordsAt 𝔐.ξ y z (gm t) → ∀ s : c.F →+* ℂ, (∀ b, ValAt 𝔐.ξ z (𝔐.cst b) (s b)) → s a = s₀ a`. Introduce `a`. Take `⟨F, hF, hF0, hev⟩` from `exists_val_fam 𝔐.tie 𝔐.all hq hz (hs₀ a)`.
+
+Establish `hfin : (Set.range (fun σ : c.F →+* ℂ => σ a) \ {s₀ a}).Finite` using `(Set.finite_range _).diff`. Establish `hnot : F 0 ∉ Set.range (fun σ : c.F →+* ℂ => σ a) \ {s₀ a}`. Rewrite using `[hF0]`. Simplify using the standard rewrite rules. Use `filter_upwards [hev, hF.continuousAt.preimage_mem_nhds (hfin.isClosed.isOpen_compl.mem_nhds hnot)] with t ht ht2 z hzt s hs`.
+
+Establish `e : F t = s a` using `valAt_unique_lemma 𝔐.tie.gen (ht z hzt) (hs a)`. Assume the negation of the conclusion as `hne`. Conclude with `ht2 ⟨⟨s, e.symm⟩, by rw [Set.mem_singleton_iff, e]; exact hne⟩`. Establish `hw : ∀ σ : c.F →+* ℂ, ∃ a, σ ≠ s₀ → σ a ≠ s₀ a`. Introduce `σ`.
+
+Distinguish the cases in `h : σ = s₀`. Conclude with `⟨0, fun h' => (h' h).elim⟩`. Take `⟨a, ha⟩` from `not_forall.1 (fun h'' => h (RingHom.ext h''))`. Conclude with `⟨a, fun _ => ha⟩`. Use `choose wit hwit using hw`.
+
+Use `⟨s₀, ?_⟩` and prove the remaining obligations. Use `filter_upwards [Filter.eventually_all.2 fun σ => claim (wit σ)] with t ht z hzt`. Take `⟨s, hs⟩` from `exists_emb 𝔐 hzt`. Establish `hss : s = s₀`. Assume the negation of the conclusion as `hne`.
+
+Conclude with `hwit s hne (ht s z hzt s hs)`. Substitute `hss` using the available equality. Conclude with `hs`.
+-/
 theorem exists_emb_fam (𝔐 : HodgeCpt Y S y) {n : ℕ} {gm : (Fin n → ℂ) → (Σ k, J k) → ℂ}
     (hq : ∀ q, AnalyticAt ℂ (fun t => gm t q) 0) {z₀ : Spec (CommRingCat.of ℂ) ⟶ 𝔐.X} (hz : CoordsAt 𝔐.ξ y z₀ (gm 0)) :
     ∃ s : c.F →+* ℂ, ∀ᶠ t in 𝓝 (0 : Fin n → ℂ), ∀ z : Spec (CommRingCat.of ℂ) ⟶ 𝔐.X, CoordsAt 𝔐.ξ y z (gm t) →

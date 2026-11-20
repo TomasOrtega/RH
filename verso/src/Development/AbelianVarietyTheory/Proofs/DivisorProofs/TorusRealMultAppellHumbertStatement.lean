@@ -17,6 +17,9 @@ set_option autoImplicit false
 
 noncomputable section
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.RosatiAH.hermForm_prod_halfDiag | exact GlobalTheory.RosatiAH.hermForm_prod_halfDiag | (intros; apply GlobalTheory.RosatiAH.hermForm_prod_halfDiag <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.torus_real_mult_appell_humbert : ∀ (F : Type) [Field F] [NumberField F] [IsTotallyReal F] (𝔠 : FracId F)
     (X : Obj F 𝔠 (Sp ℂ)) (c : 𝔠.elt), IsTotPos (c : F) →
     ∀ (u : HolUnif X.A (X.diag c) (Module.finrank ℚ F)) (e : Fin (Module.finrank ℚ F) ≃ (F →+* ℝ)),

@@ -10,6 +10,15 @@ attribute [local instance] Over.cartesianMonoidalCategory
 
 namespace GlobalTheory.HeckeEx
 
+/- English proof (translation)
+Introduce `E _ _ _ H Dw l Xo T Ω _ _ x k w t₀ z J hJ hne`. Use `⟨fun _ => J (w ≫ (snd (Over.mk x) Xo.univ.t.G).left), ?_, ?_⟩` and prove the remaining obligations. Introduce `y _`. Establish `hy : y = z` using `Subsingleton.elim _ _`. Substitute `hy` using the available equality.
+
+Conclude with `hJ.mem (fun _ : Fin 1 => (snd (Over.mk x) Xo.univ.t.G).left) w`. Introduce `hi`. Establish `hz : w z ∈ LB.wchart Xo.univ.t.PP.L (fun _ : Fin 1 => (snd (Over.mk x) Xo.univ.t.G).left) (fun _ => J (w ≫ (snd (Over.mk x) Xo.univ.t.G).left))` using `hJ.mem (fun _ : Fin 1 => (snd (Over.mk x) Xo.univ.t.G).left) w`. Apply `hne` to reduce the goal to its premises. Rewrite using `[sv, sval_of t₀ w z J (fun _ => J (w ≫ (snd (Over.mk x) Xo.univ.t.G).left)) (fun _ => rfl)]`.
+
+Use `erw [gs_eq w z _ hz]`. Establish `hle : (⊤ : (Sp Ω).Opens) ≤ w ⁻¹ᵁ LB.wchart Xo.univ.t.PP.L (fun _ : Fin 1 => (snd (Over.mk x) Xo.univ.t.G).left) (fun _ => J (w ≫ (snd (Over.mk x) Xo.univ.t.G).left))`. Introduce `y _`. Establish `hy : y = z` using `Subsingleton.elim _ _`. Substitute `hy` using the available equality.
+
+Conclude with `hz`. Rewrite using `[← TopCat.Presheaf.germ_res_apply (Sp Ω).presheaf (homOfLE hle) z trivial]`. Use `(congrArg ((Sp Ω).presheaf.germ ⊤ z trivial).hom ?_).trans (map_zero _)` and prove the remaining obligations. Conclude with `hi`.
+-/
 theorem exists_appLE_ne_zero_of_sv_ne_zero : ∀ {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {Dw : Datum H} {l : Level H} {Xo : Moduli Dw l} {T Ω : Type} [CommRing T] [Field Ω] {x : Sp T ⟶ Xo.X} {k : ℤ} (w : Sp Ω ⟶ Gx x) (t₀ : LB.Sec (LPow Xo.univ.t.G Xo.univ.t.PP.L k (Over.mk x))) (z : Sp Ω) (J : (Sp Ω ⟶ Xo.univ.t.G.left) → Xo.univ.t.PP.L.ι), Good Xo.univ.t.PP.L z J → sv Xo.univ.t.G Xo.univ.t.PP t₀ w z J ≠ 0 → ∃ (i : (LPow Xo.univ.t.G Xo.univ.t.PP.L k (Over.mk x)).ι) (hi : ⊤ ≤ w ⁻¹ᵁ (LPow Xo.univ.t.G Xo.univ.t.PP.L k (Over.mk x)).U i), (w.appLE _ ⊤ hi).hom (t₀.f i) ≠ 0 := by
   intro E _ _ _ H Dw l Xo T Ω _ _ x k w t₀ z J hJ hne
   refine ⟨fun _ => J (w ≫ (snd (Over.mk x) Xo.univ.t.G).left), ?_, ?_⟩

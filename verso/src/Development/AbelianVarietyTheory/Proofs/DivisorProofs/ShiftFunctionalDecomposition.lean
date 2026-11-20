@@ -7,6 +7,13 @@ open MvPolynomial Formalism.DegreeFormula GlobalTheory.FlagPoly
 
 namespace GlobalTheory.FlagPoly
 
+/- English proof (translation)
+Unfold `pSum`. Rewrite using `[map_sum]`. Simplify using `only [Derivation.leibniz_pow, pderiv_X, Pi.single_apply, Prod.mk.injEq]`. Distinguish the cases in `h : σ = τ`. Substitute `h` using the available equality.
+
+Rewrite using `[if_pos rfl, Finset.sum_eq_single i]`. Simplify using the standard rewrite rules. Introduce `b _ hb`. Simplify using `[hb]`. Simplify using the standard rewrite rules.
+
+Simplify using `[h]`.
+-/
 theorem pderiv_pSum_eq {ι : Type} [Fintype ι] [DecidableEq ι] {N : ℕ} (τ σ : ι) (i : Fin N) (k : ℕ) :
     pderiv (τ, i) (pSum σ k : Pol ι N) =
       if σ = τ then C (k : ℝ) * X (τ, i) ^ (k - 1) else 0 := by
@@ -22,6 +29,15 @@ theorem pderiv_pSum_eq {ι : Type} [Fintype ι] [DecidableEq ι] {N : ℕ} (τ �
     · simp
   · simp [h]
 
+/- English proof (translation)
+Establish `h1 : ∀ i : Fin N, degFl ι N (pderiv (τ, i) (∑ σ : ι, ∑ k ∈ Finset.Icc 1 N, pSum σ k * Q σ k)) = ∑ k ∈ Finset.Icc 1 N, (k : ℝ) * degFl ι N (X (τ, i) ^ (k - 1) * Q τ k)`. Introduce `i`. Rewrite using `[map_sum, PPowSum.degFl_sum, Finset.sum_eq_single τ]`. Rewrite using `[map_sum, PPowSum.degFl_sum]`. Use `Finset.sum_congr rfl fun k hk => ?_` and prove the remaining obligations.
+
+Establish `hk1 : 1 ≤ k` using `(Finset.mem_Icc.mp hk).1`. Establish `hz : degFl ι N (pSum τ k * pderiv (τ, i) (Q τ k)) = 0` using `PPowSum.degFlPowerSum ι N τ k _ hk1`. Rewrite using `[pderiv_mul, PPowSum.degFl_add, hz, add_zero, pderiv_pSum_eq, if_pos rfl, mul_assoc, PPowSum.degFl_C_mul]`. Introduce `σ _ hσ`. Rewrite using `[map_sum, PPowSum.degFl_sum]`.
+
+Use `Finset.sum_eq_zero fun k hk => ?_` and prove the remaining obligations. Establish `hk1 : 1 ≤ k` using `(Finset.mem_Icc.mp hk).1`. Establish `hz : degFl ι N (pSum σ k * pderiv (τ, i) (Q σ k)) = 0` using `PPowSum.degFlPowerSum ι N σ k _ hk1`. Rewrite using `[pderiv_mul, PPowSum.degFl_add, hz, add_zero, pderiv_pSum_eq, if_neg hσ, zero_mul, PPowSum.degFl_zero]`. Simplify using the standard rewrite rules.
+
+Rewrite using `[PPowSum.degFl_sum, Finset.sum_congr rfl fun i _ => h1 i, Finset.sum_comm]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_mul, PPowSum.degFl_sum, Finset.mul_sum]`.
+-/
 theorem degFl_pderiv_powerComb {ι : Type} [Fintype ι] [DecidableEq ι] {N : ℕ}
     (Q : ι → ℕ → Pol ι N) (τ : ι) (s : Finset (Fin N)) :
     degFl ι N (∑ i ∈ s, pderiv (τ, i) (∑ σ : ι, ∑ k ∈ Finset.Icc 1 N, pSum σ k * Q σ k)) =
@@ -50,6 +66,13 @@ theorem degFl_pderiv_powerComb {ι : Type} [Fintype ι] [DecidableEq ι] {N : �
   refine Finset.sum_congr rfl fun k _ => ?_
   rw [Finset.sum_mul, PPowSum.degFl_sum, Finset.mul_sum]
 
+/- English proof (translation)
+Introduce `ι _ _ N j Q τ hN`. Use `⟨degFl_pderiv_powerComb Q τ _, ?_⟩` and prove the remaining obligations. Unfold `totF`. Rewrite using `[degFl_pderiv_powerComb Q τ Finset.univ, Finset.sum_eq_single 1]`. Establish `: (∑ i : Fin N, X (τ, i) ^ (1 - 1) : Pol ι N) = C (N : ℝ)` using `by simp`.
+
+Rewrite using `[this, PPowSum.degFl_C_mul]`. Simplify using the standard rewrite rules. Introduce `k hk hk1`. Establish `hk2 : 1 ≤ k - 1` using `by have := (Finset.mem_Icc.mp hk).1; omega`. Rewrite using `[PPowSum.degFlPowerSum ι N τ (k - 1) _ hk2, mul_zero]`.
+
+Introduce `h`. Conclude with `absurd (Finset.mem_Icc.mpr ⟨le_rfl, hN⟩) h`.
+-/
 theorem shF_totF_powerComb : ∀ (ι : Type) [Fintype ι] [DecidableEq ι] (N : ℕ) (j : ℕ) (Q : ι → ℕ → Pol ι N) (τ : ι), 1 ≤ N → shF j τ (∑ σ : ι, ∑ k ∈ Finset.Icc 1 N, pSum σ k * Q σ k) = ∑ k ∈ Finset.Icc 1 N, (k : ℝ) * degFl ι N (pLow j τ (k - 1) * Q τ k) ∧ totF τ (∑ σ : ι, ∑ k ∈ Finset.Icc 1 N, pSum σ k * Q σ k) = (N : ℝ) * degFl ι N (Q τ 1) := by
   intro ι _ _ N j Q τ hN
   refine ⟨degFl_pderiv_powerComb Q τ _, ?_⟩

@@ -16,6 +16,13 @@ open ReciprocityTheory.ChartRestriction.G.PullbackSections
 
 namespace GlobalTheory.Dict
 
+/- English proof (translation)
+Establish `hol' : IsHolFam (fun z => (ex z).left)` using `fun U f => by`. Simplify `hol U f` using `only [Set.mem_univ, true_and]`. Establish `he : ∀ z, (ex z).left ≫ G.hom = x0` using `fun z => Over.w (ex z)`. Establish `h` using `isHolFam_vtfLift G.hom x0 (fun z => (ex z).left) he hol'`. Apply the tactic sequence `let σ : pullback G.hom x0 ⟶ (Over.mk x0 ⊗ G).left := (pullbackSymmetry G.hom x0).hom`.
+
+Establish `hσ : ∀ z, vtfLift G.hom x0 (fun z => (ex z).left) he z ≫ σ = (vtfQ G (ex z)).left` using `fun z => by`. Use `vtf_pt_uniq G (ex z) _ ?_ ?_` and prove the remaining obligations. Conclude with `(Category.assoc _ _ _).trans ((congrArg (_ ≫ ·) (pullbackSymmetry_hom_comp_snd G.hom x0)).trans (pullback.lift_fst _ _ _))`. Conclude with `(Category.assoc _ _ _).trans ((congrArg (_ ≫ ·) (pullbackSymmetry_hom_comp_fst G.hom x0)).trans (pullback.lift_snd _ _ _))`. Introduce `U f`.
+
+Establish `h2` using `h (σ ⁻¹ᵁ U) ((σ.app U).hom f)`. Simplify using `only [← hσ]`. Conclude with `⟨h2.1, h2.2.congr fun z _ => (valAt'_comp _ σ U f).symm⟩`.
+-/
 theorem isHolFam_fibrePoint {S : Scheme.{0}} (G : Over S) [GrpObj G] {x0 : Sp ℂ ⟶ S} {g : ℕ}
     (ex : (Fin g → ℂ) → (Over.mk x0 ⟶ G)) (hol : IsHolTo Set.univ (fun z => (ex z).left)) :
     IsHolFam (fun z => (vtfQ G (ex z)).left) := by
@@ -35,12 +42,36 @@ theorem isHolFam_fibrePoint {S : Scheme.{0}} (G : Over S) [GrpObj G] {x0 : Sp �
   simp only [← hσ]
   exact ⟨h2.1, h2.2.congr fun z _ => (valAt'_comp _ σ U f).symm⟩
 
+/- English proof (translation)
+Simplify using `only [hx, mulVec_add, mulVec_smul, add_dotProduct, smul_dotProduct, smul_eq_mul]`.
+-/
 theorem hx_add_smul {E : Type} [Field E] [NumberField E] [IsCMField E] {r g : ℕ} (X : Data E r)
     (bas : (Fin g ⊕ Fin g → ℤ) ≃ₗ[ℤ] X.Λ) (idx : Fin g ≃ X.Ψ × Fin r) (x : Frame X.Ψ r)
     (z a w : Fin g → ℂ) (t : ℂ) :
     hx X bas idx x (z + t • a) w = hx X bas idx x z w + t * hx X bas idx x a w := by
   simp only [hx, mulVec_add, mulVec_smul, add_dotProduct, smul_dotProduct, smul_eq_mul]
 
+/- English proof (translation)
+Introduce `E _ _ _ H Dw l Xo c _ r g X bas idx e x L y A _ _ _ k F`. Establish `hcov : ∀ z, ∃ j, ⊤ ≤ (A.ex z).left ⁻¹ᵁ Xo.univ.t.PP.L.U j` using `fun z => by`. Establish `hm : (A.ex z).left cpt ∈ (⨆ i, Xo.univ.t.PP.L.U i)`. Rewrite using `[Xo.univ.t.PP.isLB.cover]`. Discharge the goal by the elementary cases of `trivial`.
+
+Take `⟨j, hj⟩` from `TopologicalSpace.Opens.mem_iSup.1 hm`. Conclude with `⟨j, top_le_of_mem hj⟩`. Establish `hrd : ∀ θ, A.Reads k F θ → ∀ j z, ⊤ ≤ (A.ex z).left ⁻¹ᵁ Xo.univ.t.PP.L.U j → valAt' (vtfQ Xo.univ.t.G (A.ex z)).left ((LPow Xo.univ.t.G Xo.univ.t.PP.L (k : ℤ) (ptO Xo y.x)).U (fun _ => j)) (F.f (fun _ => j)) = θ z * A.fr j z ^ (k : ℤ)` using `fun θ h j z hj => h j z _ (vtfQ_snd _ _) (vtfQ_fst _ _) hj`. Establish `hne : ∀ j z (m : ℤ), ⊤ ≤ (A.ex z).left ⁻¹ᵁ Xo.univ.t.PP.L.U j → A.fr j z ^ m ≠ 0` using `fun j z m hj => zpow_ne_zero m (A.fr_ne j z hj)`. Use `⟨?_, fun θ h => ⟨fun z => ?_, fun v hv => ?_⟩⟩` and prove the remaining obligations.
+
+Use `choose ch hch using hcov`. Use `⟨fun z => valAt' (vtfQ Xo.univ.t.G (A.ex z)).left ((LPow Xo.univ.t.G Xo.univ.t.PP.L (k : ℤ) (ptO Xo y.x)).U (fun _ => ch z)) (F.f (fun _ => ch z)) / A.fr (ch z) z ^ (k : ℤ), ?_, fun θ h => ?_⟩` and prove the remaining obligations. Introduce `j z pt h1 h2 hj`. Take `rfl` from `vtf_pt_uniq Xo.univ.t.G (A.ex z) pt h1 h2`. Conclude with `vtf_read Xo.univ.t.G Xo.univ.t.PP.L F (A.ex z) (fun j => A.fr j z) (fun j j' => A.fr_g j j' z) (ch z) j (hch z) hj _ (div_mul_cancel₀ _ (hne _ _ _ (hch z))).symm`.
+
+Use function extensionality and compare the values at `z`. Rewrite using `[hrd θ h _ z (hch z), mul_div_cancel_right₀ _ (hne _ _ _ (hch z))]`. Take `⟨j, hj⟩` from `hcov z`. Establish `ho : IsOpen {w | ⊤ ≤ (A.ex w).left ⁻¹ᵁ Xo.univ.t.PP.L.U j}`. Simplify `(A.hol (Xo.univ.t.PP.L.U j) 0).1` using `only [Set.mem_univ, true_and]`.
+
+Establish `hn` using `ho.mem_nhds hj`. Establish `hd` using `(isHolFam_fibrePoint Xo.univ.t.G A.ex A.hol _ (F.f (fun _ => j))).2.mono (fun w (hw : w ∈ {w | ⊤ ≤ (A.ex w).left ⁻¹ᵁ Xo.univ.t.PP.L.U j}) => vtf_chart Xo.univ.t.G Xo.univ.t.PP.L (k : ℤ) (A.ex w) (fun _ => j) hw)`. Establish `hq` using `(hd.differentiableAt hn).mul (((A.fr_hol j).differentiableAt hn).zpow (m := -(k : ℤ)) (Or.inl (A.fr_ne j z hj)))`. Use `hq.congr_of_eventuallyEq ?_` and prove the remaining obligations. Use `filter_upwards [hn] with w hw`.
+
+Establish `h1` using `hrd θ h j w hw`. Use `Eq.trans ?_ (congrArg (· * A.fr j w ^ (-(k : ℤ))) h1.symm)` and prove the remaining obligations. Rewrite using `[_root_.zpow_neg, mul_inv_cancel_right₀ (hne _ _ _ hw)]`. Use function extensionality and compare the values at `z`. Take `⟨j, hj⟩` from `hcov z`.
+
+Establish `hex : A.ex (z + pv X idx x v) = A.ex z`. Rewrite using `[A.ex_add, (A.ex_ker _).2 ⟨v, hv, rfl⟩, _root_.mul_one]`. Establish `hj' : ⊤ ≤ (A.ex (z + pv X idx x v)).left ⁻¹ᵁ Xo.univ.t.PP.L.U j`. Rewrite using `[hex]`. Conclude with `hj`.
+
+Establish `h2` using `hrd θ h j _ hj'`. Rewrite `h2` using `[hex, hrd θ h j z hj, A.fr_per v hv j z hj, mul_zpow, ← _root_.mul_assoc]`. Establish `h3` using `mul_right_cancel₀ (hne _ _ _ hj') h2`. Establish `hχ : A.χ v ≠ 0` using `fun h0 => by simpa [h0] using A.χ_norm v hv`. Simplify using `only [Pi.smul_apply, fock, smul_eq_mul]`.
+
+Rewrite using `[← h3, hx_add_smul, zpow_natCast, mul_pow, ← Complex.exp_nat_mul]`. Use `set a := hx X bas idx x z (pv X idx x v)`. Use `set b := hx X bas idx x (pv X idx x v) (pv X idx x v)`. Establish `h4 : cexp (-((k : ℂ) * Real.pi * (a + 1 / 2 * b))) * cexp (k * (Real.pi * a + Real.pi / 2 * b)) = 1`. Rewrite using `[← Complex.exp_add]`.
+
+Use `Eq.trans (congrArg cexp ?_) Complex.exp_zero` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree. Establish `h5 : (A.χ v)⁻¹ ^ k * A.χ v ^ k = 1` using `by rw [← mul_pow, inv_mul_cancel₀ hχ, one_pow]`. Take the linear combination `(θ z * ((A.χ v)⁻¹ ^ k * A.χ v ^ k)) * h4 + θ z * h5`.
+-/
 theorem reads_existsUnique_theta : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (Dw : Datum H) (l : Geo.Tor.Level H) (Xo : Moduli Dw l) (c : Coeff l) [Algebra c.F ℂ] (r g : ℕ) (X : Data E r) (bas : (Fin g ⊕ Fin g → ℤ) ≃ₗ[ℤ] X.Λ) (idx : Fin g ≃ X.Ψ × Fin r) (e : Fin g ≃ Lt1 Dw) (x : Frame X.Ψ r) (L : Lt E r) (y : FrPt Xo c ℂ) (A : AnFib X bas idx e x L y), IsSympl X bas → x ∈ X.dom → SelfD X L → ∀ (k : ℕ) (F : LB.Sec (LPow Xo.univ.t.G Xo.univ.t.PP.L (k : ℤ) (ptO Xo y.x))), (∃! θ, A.Reads k F θ) ∧ ∀ θ, A.Reads k F θ → Differentiable ℂ θ ∧ ∀ v ∈ L, (A.χ v)⁻¹ ^ k • fock X bas idx x k (pv X idx x v) θ = θ := by
   intro E _ _ _ H Dw l Xo c _ r g X bas idx e x L y A _ _ _ k F
   have hcov : ∀ z, ∃ j, ⊤ ≤ (A.ex z).left ⁻¹ᵁ Xo.univ.t.PP.L.U j := fun z => by

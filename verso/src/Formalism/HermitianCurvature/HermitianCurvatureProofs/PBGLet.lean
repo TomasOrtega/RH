@@ -21,6 +21,11 @@ variable {E : Type*} [AddCommGroup E] [Module ℂ E]
 def PolyRepN (d : ℕ) (f : ℂ → E) (top : E) : Prop :=
   ∃ c : ℕ → E, c d = top ∧ ∀ u, f u = ∑ l ∈ range (d + 1), u ^ l • c l
 
+/- English proof (translation)
+Take `⟨c, hc, hf⟩` from `h`. Use `⟨fun l => s • c l, by beta_reduce; rw [hc], fun u => ?_⟩` and prove the remaining obligations. Use `beta_reduce`. Rewrite using `[hf u, Finset.smul_sum]`. Apply `Finset.sum_congr rfl` to reduce the goal to its premises.
+
+Introduce `l _`. Rewrite using `[smul_comm]`.
+-/
 theorem polyRepN_smul {d : ℕ} {f : ℂ → E} {top : E} (h : PolyRepN d f top) (s : ℂ) :
     PolyRepN d (fun u => s • f u) (s • top) := by
   obtain ⟨c, hc, hf⟩ := h
@@ -31,6 +36,15 @@ theorem polyRepN_smul {d : ℕ} {f : ℂ → E} {top : E} (h : PolyRepN d f top)
   intro l _
   rw [smul_comm]
 
+/- English proof (translation)
+Take `⟨c, hc, hf⟩` from `h`. Use `⟨fun l => if l ≤ d then c l else 0, ?_, fun u => ?_⟩` and prove the remaining obligations. Use `beta_reduce`. Distinguish the cases in `e : d = d'`. Substitute `e` using the available equality.
+
+Simplify using `[hc]`. Rewrite using `[if_neg (by omega), if_neg e]`. Use `beta_reduce`. Rewrite using `[hf u]`. Use `symm`.
+
+Rewrite using `[← Finset.sum_subset (fun x hx => by simp at hx ⊢; omega : range (d + 1) ⊆ range (d' + 1))]`. Apply `Finset.sum_congr rfl` to reduce the goal to its premises. Introduce `l hl`. Rewrite using `[if_pos (by simp at hl; omega)]`. Introduce `l _ hl`.
+
+Rewrite using `[if_neg (by simp at hl; omega), smul_zero]`.
+-/
 theorem polyRepN_mono {d d' : ℕ} (hdd : d ≤ d') {f : ℂ → E} {top : E} (h : PolyRepN d f top) :
     PolyRepN d' f (if d = d' then top else 0) := by
   obtain ⟨c, hc, hf⟩ := h
@@ -49,6 +63,21 @@ theorem polyRepN_mono {d d' : ℕ} (hdd : d ≤ d') {f : ℂ → E} {top : E} (h
     · intro l _ hl
       rw [if_neg (by simp at hl; omega), smul_zero]
 
+/- English proof (translation)
+Take `⟨c, hc, hf⟩` from `h`. Use `⟨fun i => ∑ l ∈ range (d + 1), (a ^ (l - i) * (Nat.choose l i : ℂ)) • c l, ?_, fun Y => ?_⟩` and prove the remaining obligations. Use `beta_reduce`. Rewrite using `[Finset.sum_eq_single d]`. Simplify using `[hc]`.
+
+Introduce `l hl hne`. Simplify using `at hl`. Rewrite using `[Nat.choose_eq_zero_of_lt (by omega)]`. Simplify using the standard rewrite rules. Introduce `h`.
+
+Simplify using `at h`. Use `beta_reduce`. Rewrite using `[hf (Y + a)]`. Establish `e1 : ∀ l ∈ range (d + 1), (Y + a) ^ l • c l = ∑ i ∈ range (d + 1), (Y ^ i * (a ^ (l - i) * (Nat.choose l i : ℂ))) • c l`. Introduce `l hl`.
+
+Simplify using `at hl`. Rewrite using `[add_pow, Finset.sum_smul]`. Rewrite using `[← Finset.sum_subset (fun x hx => by simp at hx ⊢; omega : range (l + 1) ⊆ range (d + 1))]`. Apply `Finset.sum_congr rfl` to reduce the goal to its premises. Introduce `i _`.
+
+Use `congr 1`. Expand and normalize the polynomial expressions, which then agree. Introduce `i _ hi`. Simplify using `at hi`. Rewrite using `[Nat.choose_eq_zero_of_lt (by omega)]`.
+
+Simplify using the standard rewrite rules. Rewrite using `[Finset.sum_congr rfl e1, Finset.sum_comm]`. Apply `Finset.sum_congr rfl` to reduce the goal to its premises. Introduce `i _`. Rewrite using `[Finset.smul_sum]`.
+
+Apply `Finset.sum_congr rfl` to reduce the goal to its premises. Introduce `l _`. Rewrite using `[smul_smul]`.
+-/
 theorem polyRepN_shift {d : ℕ} {f : ℂ → E} {top : E} (h : PolyRepN d f top) (a : ℂ) :
     PolyRepN d (fun Y => f (Y + a)) top := by
   obtain ⟨c, hc, hf⟩ := h
@@ -93,24 +122,42 @@ open Classical
 
 variable {k r : ℕ} {E : Type*} [NormedAddCommGroup E] [NormedSpace ℂ E]
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨Set.univ, fun _ => 0, isOpen_univ, Set.mem_univ _, contDiffOn_const, fun _ _ _ => rfl⟩`.
+-/
 theorem loc_zero' (g : Mat k r) : Loc (⊤ : ℕ∞) (fun _ : Mat k r => (0 : E)) g :=
   ⟨Set.univ, fun _ => 0, isOpen_univ, Set.mem_univ _, contDiffOn_const, fun _ _ _ => rfl⟩
 
+/- English proof (translation)
+Take `⟨U, f', hU, hgU, hf', hfe⟩` from `h`. Conclude with `⟨U ∩ V, f', hU.inter hV, ⟨hgU, hg⟩, hf'.mono Set.inter_subset_left, fun x hx hxG => by rw [he x hx.2 hxG, hfe x hx.1 hxG]⟩`.
+-/
 theorem loc_of_eq {m : ℕ∞} {f f₂ : Mat k r → E} {g : Mat k r} (h : Loc m f g) {V : Set (Mat k r)}
     (hV : IsOpen V) (hg : g ∈ V) (he : ∀ x ∈ V, x ∈ GV k r → f₂ x = f x) : Loc m f₂ g := by
   obtain ⟨U, f', hU, hgU, hf', hfe⟩ := h
   exact ⟨U ∩ V, f', hU.inter hV, ⟨hgU, hg⟩, hf'.mono Set.inter_subset_left,
     fun x hx hxG => by rw [he x hx.2 hxG, hfe x hx.1 hxG]⟩
 
+/- English proof (translation)
+The claim follows from `Formalism.FourierDecayAlt.P.Qx2.hpart1_lie Z`.
+-/
 theorem hermitian_part_one_mem_lie (Z : Mat k r) : inLie k r (hpart1 (Hpk k r) Z) := Formalism.FourierDecayAlt.P.Qx2.hpart1_lie Z
 
+/- English proof (translation)
+The claim follows from `Formalism.FourierDecayAlt.P.Qx2.hpart2_lie Z`.
+-/
 theorem hermitian_part_two_mem_lie (Z : Mat k r) : inLie k r (hpart2 (Hpk k r) Z) := Formalism.FourierDecayAlt.P.Qx2.hpart2_lie Z
 
+/- English proof (translation)
+Establish `h' : Loc ((⊤ : ℕ∞) + 1) f g` using `by rwa [top_add]`. Conclude with `loc_add (loc_RdV (hermitian_part_one_mem_lie _) h') (loc_RdV (hermitian_part_two_mem_lie _) h') Complex.I`.
+-/
 theorem eabH_loc (a b : Fin (2 * r + k + 1)) {f : Mat k r → E} {g : Mat k r} (h : Loc (⊤ : ℕ∞) f g) :
     Loc (⊤ : ℕ∞) (EabH (Hpk k r) a b f) g := by
   have h' : Loc ((⊤ : ℕ∞) + 1) f g := by rwa [top_add]
   exact loc_add (loc_RdV (hermitian_part_one_mem_lie _) h') (loc_RdV (hermitian_part_two_mem_lie _) h') Complex.I
 
+/- English proof (translation)
+Unfold `EabH`. Rewrite using `[Formalism.FourierDecayAlt.P.LieDecompositionLocal.rdV_fun_add h₁ h₂ hg (hermitian_part_one_mem_lie _) c, Formalism.FourierDecayAlt.P.LieDecompositionLocal.rdV_fun_add h₁ h₂ hg (hermitian_part_two_mem_lie _) c]`. Use `module`.
+-/
 theorem eabH_add (a b : Fin (2 * r + k + 1)) {f₁ f₂ : Mat k r → E} {g : Mat k r} (h₁ : Loc 1 f₁ g)
     (h₂ : Loc 1 f₂ g) (hg : g ∈ GV k r) (c : ℂ) :
     EabH (Hpk k r) a b (fun x => f₁ x + c • f₂ x) g = EabH (Hpk k r) a b f₁ g + c • EabH (Hpk k r) a b f₂ g := by
@@ -118,12 +165,18 @@ theorem eabH_add (a b : Fin (2 * r + k + 1)) {f₁ f₂ : Mat k r → E} {g : Ma
   rw [Formalism.FourierDecayAlt.P.LieDecompositionLocal.rdV_fun_add h₁ h₂ hg (hermitian_part_one_mem_lie _) c, Formalism.FourierDecayAlt.P.LieDecompositionLocal.rdV_fun_add h₁ h₂ hg (hermitian_part_two_mem_lie _) c]
   module
 
+/- English proof (translation)
+Unfold `EabH`. Rewrite using `[rdV_congr hV hg hgG (hermitian_part_one_mem_lie _) he, rdV_congr hV hg hgG (hermitian_part_two_mem_lie _) he]`.
+-/
 theorem eabH_congr (a b : Fin (2 * r + k + 1)) {f₁ f₂ : Mat k r → E} {V : Set (Mat k r)} (hV : IsOpen V)
     {g : Mat k r} (hg : g ∈ V) (hgG : g ∈ GV k r) (he : ∀ x ∈ V, x ∈ GV k r → f₁ x = f₂ x) :
     EabH (Hpk k r) a b f₁ g = EabH (Hpk k r) a b f₂ g := by
   unfold EabH
   rw [rdV_congr hV hg hgG (hermitian_part_one_mem_lie _) he, rdV_congr hV hg hgG (hermitian_part_two_mem_lie _) he]
 
+/- English proof (translation)
+Simplify using `[EabH, RdV]`.
+-/
 theorem eabH_zero (a b : Fin (2 * r + k + 1)) (g : Mat k r) :
     EabH (Hpk k r) a b (fun _ : Mat k r => (0 : E)) g = 0 := by
   simp [EabH, RdV]
@@ -142,6 +195,9 @@ def Wsm (U₀ : Set (Mat k r)) : Submodule ℂ (Mat k r → E) where
     convert this using 1
     funext x; simp
 
+/- English proof (translation)
+The claim follows from `loc_mono le_top h`.
+-/
 theorem loc1 {f : Mat k r → E} {g : Mat k r} (h : Loc (⊤ : ℕ∞) f g) : Loc 1 f g := loc_mono le_top h
 
 def EHt (U₀ : Set (Mat k r)) (hU₀ : IsOpen U₀) (a b : Fin (2 * r + k + 1)) :
@@ -167,6 +223,11 @@ def EHt (U₀ : Set (Mat k r)) (hU₀ : IsOpen U₀) (a b : Fin (2 * r + k + 1))
 
 variable (U₀ : Set (Mat k r)) (hU₀ : IsOpen U₀)
 
+/- English proof (translation)
+Unfold `Tm QuantumDeterminants.Top`. Simplify using `only [LinearMap.add_apply, Submodule.coe_add, Pi.add_apply]`. Use `congr 1`. Use `split_ifs`. Simplify using `[Module.algebraMap_end_apply]`.
+
+Simplify using the standard rewrite rules. Use `show (if g ∈ U₀ ∧ g ∈ GV k r then _ else _) = _`. Rewrite using `[if_pos ⟨hg, hgG⟩]`.
+-/
 theorem top_agree (u : ℂ) (a b : Fin (2 * r + k + 1)) (h : Wsm (E := E) U₀) (g : Mat k r) (hg : g ∈ U₀)
     (hgG : g ∈ GV k r) :
     ((Tm (fun a b => EHt (E := E) U₀ hU₀ a b) u a b) h).1 g = QuantumDeterminants.Top (EabH (Hpk k r)) u a b h.1 g := by
@@ -180,12 +241,18 @@ theorem top_agree (u : ℂ) (a b : Fin (2 * r + k + 1)) (h : Wsm (E := E) U₀) 
     rw [if_pos ⟨hg, hgG⟩]
 
 include hU₀ in
+/- English proof (translation)
+Unfold `QuantumDeterminants.Top`. Rewrite using `[he g hg hgG, eabH_congr a b hU₀ hg hgG he]`.
+-/
 theorem top_congr' (u : ℂ) (a b : Fin (2 * r + k + 1)) {h₁ h₂ : Mat k r → E}
     (he : ∀ x ∈ U₀, x ∈ GV k r → h₁ x = h₂ x) (g : Mat k r) (hg : g ∈ U₀) (hgG : g ∈ GV k r) :
     Top (EabH (Hpk k r)) u a b h₁ g = QuantumDeterminants.Top (EabH (Hpk k r)) u a b h₂ g := by
   unfold QuantumDeterminants.Top
   rw [he g hg hgG, eabH_congr a b hU₀ hg hgG he]
 
+/- English proof (translation)
+The claim follows from `| [], _, _, f, g, _, _ => by simp | p :: L, hA, hC, f, g, hg, hgG => by simp only [List.map_cons, List.prod_cons, List.foldr_cons, Module.End.mul_apply] rw [hA p (by simp) _ g hg hgG] apply hC p (by simp) _ _ _ g hg hgG intro x hx hxG exact fold_agree L (fun q hq => hA q (by simp …`.
+-/
 theorem fold_agree : ∀ (L : List (Module.End ℂ (Wsm (E := E) U₀) × ((Mat k r → E) → (Mat k r → E)))),
     (∀ p ∈ L, ∀ (h : Wsm (E := E) U₀), ∀ g ∈ U₀, g ∈ GV k r → (p.1 h).1 g = p.2 h.1 g) →
     (∀ p ∈ L, ∀ (h₁ h₂ : Mat k r → E), (∀ x ∈ U₀, x ∈ GV k r → h₁ x = h₂ x) →
@@ -200,6 +267,17 @@ theorem fold_agree : ∀ (L : List (Module.End ℂ (Wsm (E := E) U₀) × ((Mat 
     intro x hx hxG
     exact fold_agree L (fun q hq => hA q (by simp [hq])) (fun q hq => hC q (by simp [hq])) f x hx hxG
 
+/- English proof (translation)
+Unfold `qminor qminorOp`. Rewrite using `[LinearMap.sum_apply, Submodule.coe_sum, Finset.sum_apply, Finset.sum_apply]`. Apply `Finset.sum_congr rfl` to reduce the goal to its premises. Introduce `σ _`. Rewrite using `[Module.End.mul_apply]`.
+
+Establish `hL` using `fold_agree U₀ (List.ofFn fun i : Fin t => (Tm (fun a b => EHt (E := E) U₀ hU₀ a b) (u - ((i : ℕ) : ℂ)) (a (σ i)) (b i), QuantumDeterminants.Top (EabH (Hpk k r)) (u - ((i : ℕ) : ℂ)) (a (σ i)) (b i))) (by`. Introduce `p hp h x hx hxG`. Take `⟨i, rfl⟩` from `(List.mem_ofFn' _ _).1 hp`. Conclude with `top_agree U₀ hU₀ _ _ _ h x hx hxG)`. Use the proof step `(by`.
+
+Introduce `p hp h₁ h₂ he x hx hxG`. Take `⟨i, rfl⟩` from `(List.mem_ofFn' _ _).1 hp`. Conclude with `top_congr' U₀ hU₀ _ _ _ he x hx hxG)`. Use `f g hg hgG`. Rewrite `hL` using `[List.map_ofFn, List.map_ofFn]`.
+
+Simplify using `only [Function.comp_def] at hL`. Rewrite using `[Pi.smul_apply]`. Establish `hz : ∀ (z : ℤ) (v : Wsm (E` using `E) U₀), ((z : Module.End ℂ (Wsm (E := E) U₀)) v) = (z : ℂ) • v := by`. Introduce `z v`. Rewrite using `[Module.End.intCast_apply, Int.cast_smul_eq_zsmul]`.
+
+Rewrite using `[hz, Submodule.coe_smul, Pi.smul_apply, hL]`.
+-/
 theorem qminor_agree {t : ℕ} (a b : Fin t → Fin (2 * r + k + 1)) (u : ℂ) (f : Wsm (E := E) U₀) (g : Mat k r)
     (hg : g ∈ U₀) (hgG : g ∈ GV k r) :
     ((qminor (fun a b => EHt (E := E) U₀ hU₀ a b) a b u) f).1 g = qminorOp (EabH (Hpk k r)) a b u f.1 g := by
@@ -244,6 +322,11 @@ def y0 (g₀ : Mat k r) : Fin r → Fin (2 * r + k + 1) → ℂ :=
 
 variable (U₀ : Set (Mat k r)) (hU₀ : IsOpen U₀)
 
+/- English proof (translation)
+Unfold `C3.AAop C3.AAx`. Rewrite using `[LinearMap.sum_apply, Submodule.coe_sum, Finset.sum_apply]`. Apply `Finset.sum_congr rfl` to reduce the goal to its premises. Introduce `c _`. Use `split_ifs`.
+
+Rewrite using `[LinearMap.smul_apply, Submodule.coe_smul, Pi.smul_apply, qminor_agree U₀ hU₀ _ _ _ f g₀ hg hgG]`. Both sides reduce to the same expression. Simplify using the standard rewrite rules.
+-/
 theorem AAop_eq (m : ℕ) (hm : m ≤ r) (u : ℂ) (f : Wsm (E := E) U₀) (g₀ : Mat k r) (hg : g₀ ∈ U₀)
     (hgG : g₀ ∈ GV k r) :
     C3.AAop k r m hm u f.1 g₀ = ((C3.AAx k r (fun a b => EHt (E := E) U₀ hU₀ a b) (xi0 g₀) m hm u) f).1 g₀ := by
@@ -256,6 +339,11 @@ theorem AAop_eq (m : ℕ) (hm : m ≤ r) (u : ℂ) (f : Wsm (E := E) U₀) (g₀
     rfl
   · simp
 
+/- English proof (translation)
+Unfold `C3.AAvop C3.AAv`. Rewrite using `[LinearMap.sum_apply, Submodule.coe_sum, Finset.sum_apply]`. Apply `Finset.sum_congr rfl` to reduce the goal to its premises. Introduce `c _`. Use `split_ifs`.
+
+Rewrite using `[LinearMap.smul_apply, Submodule.coe_smul, Pi.smul_apply, qminor_agree U₀ hU₀ _ _ _ f g₀ hg hgG]`. Both sides reduce to the same expression. Simplify using the standard rewrite rules.
+-/
 theorem AAvop_eq (m : ℕ) (hm : m ≤ r) (ell : ℂ) (f : Wsm (E := E) U₀) (g₀ : Mat k r) (hg : g₀ ∈ U₀)
     (hgG : g₀ ∈ GV k r) :
     C3.AAvop k r m hm ell f.1 g₀ = ((C3.AAv k r (fun a b => EHt (E := E) U₀ hU₀ a b) (y0 g₀) m hm ell) f).1 g₀ := by
@@ -269,6 +357,13 @@ theorem AAvop_eq (m : ℕ) (hm : m ≤ r) (ell : ℂ) (f : Wsm (E := E) U₀) (g
   · simp
 
 include hU₀ in
+/- English proof (translation)
+Take `⟨B, hB⟩` from `Formalism.FourierDecayAlt.P.SignAntidiagonal.leading_term_identity (Module.End ℂ (Wsm (E := E) U₀)) k r (fun a b => EHt (E := E) U₀ hU₀ a b) (xi0 g₀) m hm`. Use `⟨fun l => if h : l < m then (B ⟨l, h⟩ f).1 g₀ else (Matrix.of fun a b : Fin m => xi0 g₀ (Fin.castLE hm a) (C3.xR k r m hm b)).det • f.1 g₀, by simp, fun u => ?_⟩` and prove the remaining obligations. Use `beta_reduce`. Rewrite using `[AAop_eq U₀ hU₀ m hm u f g₀ hg hgG, hB u, Finset.sum_range_succ, dif_neg (lt_irrefl m)]`. Simplify using `only [LinearMap.add_apply, Module.algebraMap_end_apply, LinearMap.sum_apply, Module.End.mul_apply, Submodule.coe_add, Submodule.coe_smul, Submodule.coe_sum, Pi.add_apply, Pi.smul_apply, Finset.sum_apply]`.
+
+Rewrite using `[add_comm, Finset.sum_range (fun l => u ^ l • if h : l < m then (B ⟨l, h⟩ f).1 g₀ else _)]`. Use `congr 1`. Apply `Finset.sum_congr rfl` to reduce the goal to its premises. Introduce `l _`. Rewrite using `[dif_pos l.isLt]`.
+
+Rewrite using `[smul_smul]`.
+-/
 theorem poly_AAop (m : ℕ) (hm : m ≤ r) (f : Wsm (E := E) U₀) (g₀ : Mat k r) (hg : g₀ ∈ U₀)
     (hgG : g₀ ∈ GV k r) :
     PolyRepN m (fun u => C3.AAop k r m hm u f.1 g₀)
@@ -289,6 +384,13 @@ theorem poly_AAop (m : ℕ) (hm : m ≤ r) (f : Wsm (E := E) U₀) (g₀ : Mat k
   · rw [smul_smul]
 
 include hU₀ in
+/- English proof (translation)
+Take `⟨B, hB⟩` from `Formalism.FourierDecayAlt.P.SignAntidiagonal.leading_term_vector_identity (Module.End ℂ (Wsm (E := E) U₀)) k r (fun a b => EHt (E := E) U₀ hU₀ a b) (y0 g₀) m hm`. Use `⟨fun l => if h : l < m then (B ⟨l, h⟩ f).1 g₀ else (Matrix.of fun a b : Fin m => y0 g₀ (Fin.castLE hm a) (C3.sR k r m hm b)).det • f.1 g₀, by simp, fun u => ?_⟩` and prove the remaining obligations. Use `beta_reduce`. Rewrite using `[AAvop_eq U₀ hU₀ m hm u f g₀ hg hgG, hB u, Finset.sum_range_succ, dif_neg (lt_irrefl m)]`. Simplify using `only [LinearMap.add_apply, Module.algebraMap_end_apply, LinearMap.sum_apply, Module.End.mul_apply, Submodule.coe_add, Submodule.coe_smul, Submodule.coe_sum, Pi.add_apply, Pi.smul_apply, Finset.sum_apply]`.
+
+Rewrite using `[add_comm, Finset.sum_range (fun l => u ^ l • if h : l < m then (B ⟨l, h⟩ f).1 g₀ else _)]`. Use `congr 1`. Apply `Finset.sum_congr rfl` to reduce the goal to its premises. Introduce `l _`. Rewrite using `[dif_pos l.isLt]`.
+
+Rewrite using `[smul_smul]`.
+-/
 theorem poly_AAvop (m : ℕ) (hm : m ≤ r) (f : Wsm (E := E) U₀) (g₀ : Mat k r) (hg : g₀ ∈ U₀)
     (hgG : g₀ ∈ GV k r) :
     PolyRepN m (fun ell => C3.AAvop k r m hm ell f.1 g₀)
@@ -316,6 +418,11 @@ open Classical
 
 variable {k r : ℕ} {E : Type} [NormedAddCommGroup E] [NormedSpace ℂ E]
 
+/- English proof (translation)
+Unfold `Dmin`. Use `congr 1`. Use extensionality with `a b`. Simplify using `only [Matrix.of_apply, Matrix.submatrix_apply, Zhat, fvec, xi0, C3.xR]`. Rewrite using `[dif_pos (by simp; omega), dif_pos (by simp; omega)]`.
+
+Both sides reduce to the same expression.
+-/
 theorem det_upper_minor_eq_minor (z z' : Fin (2 * r + k + 1) → ℂ) (g₀ : Mat k r) (m : ℕ) (hm : m ≤ r) :
     (Matrix.of fun a b : Fin m => xi0 g₀ (Fin.castLE hm a) (C3.xR k r m hm b)).det =
       Dmin k r z z' g₀ ⟨m, by omega⟩ := by
@@ -326,6 +433,11 @@ theorem det_upper_minor_eq_minor (z z' : Fin (2 * r + k + 1) → ℂ) (g₀ : Ma
   rw [dif_pos (by simp; omega), dif_pos (by simp; omega)]
   rfl
 
+/- English proof (translation)
+Unfold `Dmin`. Rewrite using `[RingHom.map_det]`. Use `congr 1`. Use extensionality with `a b`. Simplify using `only [Matrix.of_apply, y0, C3.sR]`.
+
+Rewrite using `[(Formalism.FourierDecayAlt.P.SignAntidiagonal.xi_Y_zhat_identity k r z z' g₀ (Fin.castLE hm a) (Fin.castLE hm b) hg).2]`. Both sides reduce to the same expression.
+-/
 theorem det_lower_minor_eq_conj (z z' : Fin (2 * r + k + 1) → ℂ) (g₀ : Mat k r) (hg : g₀ ∈ GV k r) (m : ℕ) (hm : m ≤ r) :
     (Matrix.of fun a b : Fin m => y0 g₀ (Fin.castLE hm a) (C3.sR k r m hm b)).det =
       starRingEnd ℂ (Dmin k r z z' g₀ ⟨m, by omega⟩) := by
@@ -337,6 +449,27 @@ theorem det_lower_minor_eq_conj (z z' : Fin (2 * r + k + 1) → ℂ) (g₀ : Mat
   rw [(Formalism.FourierDecayAlt.P.SignAntidiagonal.xi_Y_zhat_identity k r z z' g₀ (Fin.castLE hm a) (Fin.castLE hm b) hg).2]
   rfl
 
+/- English proof (translation)
+Take `⟨U, f', hU, hgU, hf', he⟩` from `hG`. Establish `hW : G ∈ Wsm (E` using `E) U := fun g hg hgG => ⟨U, f', hU, hg, hf', he⟩`. Use `set Gw : Wsm (E := E) U := ⟨G, hW⟩ with hGw`. Distinguish the cases in `h10 : e = 1 ∧ j = 0`. Use `⟨fun _ => 0, ?_, fun Y => ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[if_neg (by rw [h10.1]; decide)]`. Simplify using `[D.vLet, if_pos h10]`. Establish `hej : (e : ℕ) ≤ j`. Apply the tactic sequence `rcases Fin.exists_fin_two.1 ⟨e, rfl⟩ with h | h <;> subst h <;> simp <;> omega`. Establish `htop : ∀ (x : E), (if j - (e : ℕ) = j then x else 0) = (if e = 0 then x else 0)`.
+
+Introduce `x`. Apply the tactic sequence `rcases Fin.exists_fin_two.1 ⟨e, rfl⟩ with h | h <;> subst h`. Simplify using the standard rewrite rules. Establish `: j ≠ 0` using `fun h0 => h10 ⟨rfl, h0⟩`. Rewrite using `[if_neg (by simp; omega), if_neg (by decide)]`.
+
+Consider the cases of `b`. Establish `P` using `polyRepN_mono (Nat.sub_le j e) (polyRepN_smul (polyRepN_shift (poly_AAvop U hU (j - e) (by omega) Gw g₀ hgU hg₀) (-(((2 * r + k : ℕ) : ℂ) / 2))) (starRingEnd ℂ (Dmin k r z z' g₀ ⟨j, by omega⟩))⁻¹)`. Take `⟨c, hc, hf⟩` from `P`. Use `⟨fun l : Fin (j + 1) => c l.val, ?_, fun Y => ?_⟩` and prove the remaining obligations. Simplify using `only [Fin.val_last]`.
+
+Rewrite using `[hc, htop]`. Use `split_ifs with he0`. Substitute `he0` using the available equality. Establish `e2 : Dmin k r z z' g₀ ⟨j - ((0 : Fin 2) : ℕ), by omega⟩ = Dmin k r z z' g₀ ⟨j, by omega⟩` using `rfl`. Rewrite using `[det_lower_minor_eq_conj z z' g₀ hg₀, smul_smul, e2, inv_mul_cancel₀ ((map_ne_zero _).2 hD), one_smul]`.
+
+Both sides reduce to the same expression. Simplify using `only [D.vLet]`. Rewrite using `[if_neg h10, if_neg (by simp)]`. Use `hf (Y : ℂ)` as an intermediate fact. Simplify using `only at this`.
+
+Rewrite `this` using `[← sub_eq_add_neg]`. Rewrite using `[this, Fin.sum_univ_eq_sum_range (fun l => ((Y : ℂ) ^ l) • c l)]`. Establish `P` using `polyRepN_mono (Nat.sub_le j e) (polyRepN_smul (polyRepN_shift (poly_AAop U hU (j - e) (by omega) Gw g₀ hgU hg₀) (((2 * r + k : ℕ) : ℂ) / 2)) (Dmin k r z z' g₀ ⟨j, by omega⟩)⁻¹)`. Take `⟨c, hc, hf⟩` from `P`. Use `⟨fun l : Fin (j + 1) => c l.val, ?_, fun Y => ?_⟩` and prove the remaining obligations.
+
+Simplify using `only [Fin.val_last]`. Rewrite using `[hc, htop]`. Use `split_ifs with he0`. Substitute `he0` using the available equality. Establish `e2 : Dmin k r z z' g₀ ⟨j - ((0 : Fin 2) : ℕ), by omega⟩ = Dmin k r z z' g₀ ⟨j, by omega⟩` using `rfl`.
+
+Rewrite using `[det_upper_minor_eq_minor z z' g₀, smul_smul, e2, inv_mul_cancel₀ hD, one_smul]`. Both sides reduce to the same expression. Simplify using `only [D.vLet]`. Rewrite using `[if_neg h10, if_pos (by simp)]`. Use `hf (Y : ℂ)` as an intermediate fact.
+
+Simplify using `only at this`. Rewrite using `[this, Fin.sum_univ_eq_sum_range (fun l => ((Y : ℂ) ^ l) • c l)]`.
+-/
 theorem vLet_poly {j : ℕ} (hj : j ≤ r) (z z' : Fin (2 * r + k + 1) → ℂ) (G : B.Mat k r → E) (g₀ : B.Mat k r)
     (hg₀ : g₀ ∈ GV k r) (hD : Dmin k r z z' g₀ ⟨j, by omega⟩ ≠ 0) (hG : Loc (⊤ : ℕ∞) G g₀) (b : Bool) (e : Fin 2) :
     ∃ c : Fin (j + 1) → E, c (Fin.last j) = (if e = 0 then G g₀ else 0) ∧
@@ -403,9 +536,15 @@ open Classical
 
 variable {k r : ℕ} {E : Type} [NormedAddCommGroup E] [NormedSpace ℂ E]
 
+/- English proof (translation)
+The claim follows from `Complex.conjCLE.contDiff`.
+-/
 @[fun_prop] theorem contDiff_starC {n : WithTop ℕ∞} : ContDiff ℝ n (fun x : ℂ => star x) :=
   Complex.conjCLE.contDiff
 
+/- English proof (translation)
+Simplify using `only [Matrix.det_apply]`. Apply `ContDiff.sum` to reduce the goal to its premises. Introduce `σ _`. Simplify using `only [Units.smul_def, zsmul_eq_mul]`. Conclude with `contDiff_const.mul (contDiff_prod (fun i _ => h (σ i) i))`.
+-/
 theorem contDiff_det' {n : ℕ} {X : Type*} [NormedAddCommGroup X] [NormedSpace ℝ X]
     (M : X → Matrix (Fin n) (Fin n) ℂ) (h : ∀ i j, ContDiff ℝ ⊤ (fun x => M x i j)) :
     ContDiff ℝ ⊤ (fun x => (M x).det) := by
@@ -415,6 +554,9 @@ theorem contDiff_det' {n : ℕ} {X : Type*} [NormedAddCommGroup X] [NormedSpace 
   simp only [Units.smul_def, zsmul_eq_mul]
   exact contDiff_const.mul (contDiff_prod (fun i _ => h (σ i) i))
 
+/- English proof (translation)
+Unfold `Dmin`. Apply `contDiff_det'` to reduce the goal to its premises. Introduce `a b`. Simplify using `only [Matrix.submatrix_apply, Zhat, herm, dotProduct, mulVec]`. Use `fun_prop`.
+-/
 theorem contDiff_Dmin (z z' : Fin (2 * r + k + 1) → ℂ) (l : Fin (r + 2)) :
     ContDiff ℝ ⊤ (fun g : Mat k r => Dmin k r z z' g l) := by
   unfold Dmin
@@ -423,11 +565,17 @@ theorem contDiff_Dmin (z z' : Fin (2 * r + k + 1) → ℂ) (l : Fin (r + 2)) :
   simp only [Matrix.submatrix_apply, Zhat, herm, dotProduct, mulVec]
   fun_prop
 
+/- English proof (translation)
+Take `⟨U, f', hU, hgU, hf', he⟩` from `h`. Conclude with `⟨U, fun x => φ x • f' x, hU, hgU, (hφ.of_le le_top).contDiffOn.smul hf', fun x hx hxG => by simp only [he x hx hxG]⟩`.
+-/
 theorem loc_smulFun {f : Mat k r → E} {g : Mat k r} (φ : Mat k r → ℂ) (hφ : ContDiff ℝ ⊤ φ)
     (h : Loc (⊤ : ℕ∞) f g) : Loc (⊤ : ℕ∞) (fun x => φ x • f x) g := by
   obtain ⟨U, f', hU, hgU, hf', he⟩ := h
   exact ⟨U, fun x => φ x • f' x, hU, hgU, (hφ.of_le le_top).contDiffOn.smul hf', fun x hx hxG => by simp only [he x hx hxG]⟩
 
+/- English proof (translation)
+Take `⟨U, f', hU, hgU, hf', he⟩` from `h`. Use `⟨U ∩ {x | φ x ≠ 0}, fun x => (φ x)⁻¹ • f' x, hU.inter (isOpen_ne_fun hφ.continuous continuous_const), ⟨hgU, hg⟩, ?_, fun x hx hxG => by simp only [he x hx.1 hxG]⟩` and prove the remaining obligations. Conclude with `(((hφ.of_le le_top).contDiffOn).inv (fun x (hx : x ∈ U ∩ {x | φ x ≠ 0}) => hx.2)).smul (hf'.mono Set.inter_subset_left)`.
+-/
 theorem loc_invsmul {f : Mat k r → E} {g : Mat k r} (φ : Mat k r → ℂ) (hφ : ContDiff ℝ ⊤ φ) (hg : φ g ≠ 0)
     (h : Loc (⊤ : ℕ∞) f g) : Loc (⊤ : ℕ∞) (fun x => (φ x)⁻¹ • f x) g := by
   obtain ⟨U, f', hU, hgU, hf', he⟩ := h
@@ -437,6 +585,11 @@ theorem loc_invsmul {f : Mat k r → E} {g : Mat k r} (φ : Mat k r → ℂ) (h�
   exact (((hφ.of_le le_top).contDiffOn).inv (fun x (hx : x ∈ U ∩ {x | φ x ≠ 0}) => hx.2)).smul
     (hf'.mono Set.inter_subset_left)
 
+/- English proof (translation)
+Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simpa using loc_zero' (E := E) g`. Consider the case `insert a s ha ih`. Use `loc_add (h a (by simp)) (ih (fun i hi => h i (by simp [hi]))) 1` as an intermediate fact. Use `this using 1` and compare the differences between its conclusion and the goal.
+
+Use function extensionality and compare the values at `x`. Rewrite using `[Finset.sum_insert ha, one_smul]`.
+-/
 theorem loc_sum {ι : Type*} (s : Finset ι) (F : ι → Mat k r → E) {g : Mat k r}
     (h : ∀ i ∈ s, Loc (⊤ : ℕ∞) (F i) g) : Loc (⊤ : ℕ∞) (fun x => ∑ i ∈ s, F i x) g := by
   induction s using Finset.induction_on with
@@ -447,6 +600,9 @@ theorem loc_sum {ι : Type*} (s : Finset ι) (F : ι → Mat k r → E) {g : Mat
     funext x
     rw [Finset.sum_insert ha, one_smul]
 
+/- English proof (translation)
+Apply `Matrix.inv_eq_left_inv` to reduce the goal to its premises. Establish `h1 : gᴴ * Hpk k r * g = Hpk k r` using `hg`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem inv_GV {g : Mat k r} (hg : g ∈ GV k r) : g⁻¹ = Hpk k r * gᴴ * Hpk k r := by
   apply Matrix.inv_eq_left_inv
   have h1 : gᴴ * Hpk k r * g = Hpk k r := hg
@@ -457,9 +613,41 @@ variable (z z' : Fin (2 * r + k + 1) → ℂ) (j : ℕ) (hj : j ≤ r)
 
 def Sd : Set (Mat k r) := {g | Dmin k r z z' g ⟨j, by omega⟩ ≠ 0}
 
+/- English proof (translation)
+The claim follows from `isOpen_ne_fun (contDiff_Dmin z z' _).continuous continuous_const`.
+-/
 theorem isOpen_Sd : IsOpen (Sd z z' j hj) :=
   isOpen_ne_fun (contDiff_Dmin z z' _).continuous continuous_const
 
+/- English proof (translation)
+Introduce `g₀ hg hgG`. Establish `hU₀` using `isOpen_Sd z z' j hj`. Distinguish the cases in `h10 : e = 1 ∧ j = 0`. Establish `e0 : D.vLet k r z z' j hj l e h.1 = fun _ => 0` using `by funext g; simp [D.vLet, if_pos h10]`. Rewrite using `[e0]`.
+
+Conclude with `loc_zero' g₀`. Establish `hm : j - (e : ℕ) ≤ r` using `by omega`. Break down `l with ⟨b, y⟩` into its components or cases. Consider the cases of `b`. Set `Q : (Fin (j - (e : ℕ)) → Fin (2 * r + k + 1)) → Wsm (E` to `E) (Sd z z' j hj) := fun B => (qminor (fun a b => EHt (E := E) (Sd z z' j hj) hU₀ a b) B (C3.sR k r (j - (e : ℕ)) hm) ((y : ℂ) - ((2 * r + k : ℕ) : ℂ) / 2 + ((j - (e : ℕ) : ℕ) : ℂ) - 1)) h`.
+
+Set `ψ : (Fin (j - (e : ℕ)) → Fin (2 * r + k + 1)) → Mat k r → ℂ` to `fun B g => (Matrix.of fun a l : Fin (j - (e : ℕ)) => ((Hpk k r * gᴴ * Hpk k r) *ᵥ bvec (eI k r (Fin.castLE hm a))) (B l)).det`. Establish `hψ : ∀ B, ContDiff ℝ ⊤ (ψ B)`. Introduce `B`. Apply `contDiff_det'` to reduce the goal to its premises. Introduce `a l`.
+
+Simplify using `only [Matrix.of_apply, mulVec, dotProduct, Matrix.mul_apply, conjTranspose_apply]`. Use `fun_prop`. Set `S : Mat k r → E` to `fun g => ∑ B : Fin (j - (e : ℕ)) → Fin (2 * r + k + 1), if StrictMono (fun l => C3.keyS k r (B l)) then ψ B g • (Q B).1 g else 0`. Establish `hS : Loc (⊤ : ℕ∞) S g₀`. Apply `loc_sum` to reduce the goal to its premises.
+
+Introduce `B _`. Distinguish the cases in `hB : StrictMono (fun l => C3.keyS k r (B l))`. Simplify using `only [if_pos hB]`. Conclude with `loc_smulFun _ (hψ B) ((Q B).2 g₀ hg hgG)`. Simplify using `only [if_neg hB]`.
+
+Conclude with `loc_zero' g₀`. Establish `hT` using `loc_invsmul (fun g => starRingEnd ℂ (Dmin k r z z' g ⟨j, by omega⟩)) ((contDiff_starC).comp (contDiff_Dmin z z' _)) ((map_ne_zero _).2 hg) hS`. Use `loc_of_eq hT hU₀ hg (fun x hx hxG => ?_)` and prove the remaining obligations. Use `show D.vLet k r z z' j hj (false, y) e h.1 x = _`. Unfold `D.vLet`.
+
+Rewrite using `[if_neg h10, if_neg Bool.false_ne_true]`. Use `congr 1`. Unfold `C3.AAvop`. Apply `Finset.sum_congr rfl` to reduce the goal to its premises. Introduce `B _`.
+
+Distinguish the cases in `hB : StrictMono (fun l => C3.keyS k r (B l))`. Rewrite using `[if_pos hB, if_pos hB, qminor_agree _ hU₀ _ _ _ h x hx hxG, inv_GV hxG]`. Rewrite using `[if_neg hB, if_neg hB]`. Set `Q : (Fin (j - (e : ℕ)) → Fin (2 * r + k + 1)) → Wsm (E` to `E) (Sd z z' j hj) := fun c => (qminor (fun a b => EHt (E := E) (Sd z z' j hj) hU₀ a b) (C3.xR k r (j - (e : ℕ)) hm) c ((y : ℂ) + ((2 * r + k : ℕ) : ℂ) / 2)) h`. Set `ψ : (Fin (j - (e : ℕ)) → Fin (2 * r + k + 1)) → Mat k r → ℂ` to `fun c g => (Matrix.of fun a l : Fin (j - (e : ℕ)) => herm (Hpk k r) (g *ᵥ bvec (c l)) (bvec (eI k r (Fin.castLE hm a)))).det`.
+
+Establish `hψ : ∀ c, ContDiff ℝ ⊤ (ψ c)`. Introduce `c`. Apply `contDiff_det'` to reduce the goal to its premises. Introduce `a l`. Simplify using `only [Matrix.of_apply, herm, mulVec, dotProduct]`.
+
+Use `fun_prop`. Set `S : Mat k r → E` to `fun g => ∑ c : Fin (j - (e : ℕ)) → Fin (2 * r + k + 1), if StrictMono c then ψ c g • (Q c).1 g else 0`. Establish `hS : Loc (⊤ : ℕ∞) S g₀`. Apply `loc_sum` to reduce the goal to its premises. Introduce `c _`.
+
+Distinguish the cases in `hc : StrictMono c`. Simplify using `only [if_pos hc]`. Conclude with `loc_smulFun _ (hψ c) ((Q c).2 g₀ hg hgG)`. Simplify using `only [if_neg hc]`. Conclude with `loc_zero' g₀`.
+
+Establish `hg' : Dmin k r z z' g₀ ⟨j, by omega⟩ ≠ 0` using `hg`. Establish `hT` using `loc_invsmul (fun g => Dmin k r z z' g ⟨j, by omega⟩) (contDiff_Dmin z z' ⟨j, by omega⟩) hg' hS`. Use `loc_of_eq hT hU₀ hg (fun x hx hxG => ?_)` and prove the remaining obligations. Use `show D.vLet k r z z' j hj (true, y) e h.1 x = _`. Unfold `D.vLet`.
+
+Rewrite using `[if_neg h10, if_pos rfl]`. Use `congr 1`. Unfold `C3.AAop`. Apply `Finset.sum_congr rfl` to reduce the goal to its premises. Introduce `c _`.
+
+Distinguish the cases in `hc : StrictMono c`. Rewrite using `[if_pos hc, if_pos hc, qminor_agree _ hU₀ _ _ _ h x hx hxG]`. Rewrite using `[if_neg hc, if_neg hc]`.
+-/
 theorem vLet_mem (l : C.Letter) (e : Fin 2) (h : Wsm (E := E) (Sd z z' j hj)) :
     D.vLet k r z z' j hj l e h.1 ∈ Wsm (E := E) (Sd z z' j hj) := by
   intro g₀ hg hgG
@@ -541,12 +729,18 @@ theorem vLet_mem (l : C.Letter) (e : Fin 2) (h : Wsm (E := E) (Sd z z' j hj)) :
     · rw [if_pos hc, if_pos hc, qminor_agree _ hU₀ _ _ _ h x hx hxG]
     · rw [if_neg hc, if_neg hc]
 
+/- English proof (translation)
+The claim follows from `| [], _ => fun g _ hgG => hF g hgG | l :: w, e => vLet_mem z z' j hj l (e 0) ⟨_, uwG_mem hF w fun a => e a.succ⟩`.
+-/
 theorem uwG_mem {F : B.Mat k r → E} (hF : B.CkOn ⊤ (B.GV k r) F) :
     ∀ (w : List C.Letter) (e : Wd.Ix (Fin w.length)),
       D.uwG k r z z' F j hj w e ∈ Wsm (E := E) (Sd z z' j hj)
   | [], _ => fun g _ hgG => hF g hgG
   | l :: w, e => vLet_mem z z' j hj l (e 0) ⟨_, uwG_mem hF w fun a => e a.succ⟩
 
+/- English proof (translation)
+The claim follows from `vLet_poly hj z z' _ g₀ hg₀ hD (uwG_mem z z' j hj hF w e' g₀ hD hg₀) b e`.
+-/
 theorem uwG_letter_poly {F : B.Mat k r → E} (hF : B.CkOn ⊤ (B.GV k r) F) (w : List C.Letter)
     (e' : Wd.Ix (Fin w.length)) (g₀ : B.Mat k r) (hg₀ : g₀ ∈ GV k r) (hD : Dmin k r z z' g₀ ⟨j, by omega⟩ ≠ 0)
     (b : Bool) (e : Fin 2) :

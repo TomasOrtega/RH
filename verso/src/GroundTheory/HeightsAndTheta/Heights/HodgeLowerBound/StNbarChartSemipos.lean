@@ -30,6 +30,11 @@ variable {K : Type} [Fintype K] {ι : K → Type} [∀ k, Fintype (ι k)]
 
 omit [DecidableEq Ψ] in
 
+/- English proof (translation)
+Establish `hlim : Tendsto (fun t => 4 * X.S.Cη * X.S.e1 t) (𝓝[>] 0) (𝓝 0)`. Simplify using `using X.S_tied.e1_tendsto_zero.const_mul (4 * X.S.Cη)`. Establish `h1 : ∀ᶠ t in 𝓝[>] (0 : ℝ), 0 < t` using `eventually_mem_nhdsWithin`. Establish `hev` using `(X.S.eventually_chartLevi X.S_tied).and (h1.and (hlim.eventually (eventually_le_nhds hc)))`. Take `⟨t, ⟨hs, hl⟩, ht, hδ⟩` from `hev.exists`.
+
+Conclude with `⟨t, 4 * X.S.Cη * X.S.e1 t, ht, hs, hl, by simpa using hδ⟩`.
+-/
 theorem NbarChartSemipos.hyps_of_setting (X : ComponentSetting D O Lt) {c : ℝ} (hc : 0 < c) :
     ∃ t δ : ℝ, 0 < t ∧ X.M.atlas.Smooth (X.S.regWeight t) ∧
       (∀ k : Fin X.S.R.N, ∀ x ∈ X.S.R.mid k, ∀ w : Fin D.n → ℂ,
@@ -46,6 +51,9 @@ namespace Line
 
 open GroundTheory.Heights₂.Heights.Regular.ProjectiveLine
 
+/- English proof (translation)
+The claim follows from `LowerBoundFree.NbarChartSemipos.hyps_of_setting _ hc`.
+-/
 theorem NbarChartSemipos.hyps_inhabited {c : ℝ} (hc : 0 < c) :
     ∃ t δ : ℝ, 0 < t ∧ (projLineComponentSetting zeroSystem zero_hII).M.atlas.Smooth
         ((projLineComponentSetting zeroSystem zero_hII).S.regWeight t) ∧

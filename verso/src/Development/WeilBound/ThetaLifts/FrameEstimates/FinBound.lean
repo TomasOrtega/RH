@@ -6,6 +6,23 @@ open MeasureTheory Filter Topology GlobalTheory.WeilM
 noncomputable section
 namespace PositivityTheory.ThKEst.W
 
+/- English proof (translation)
+Set `V` to `EuclideanSpace ℝ (Fin (Module.finrank ℝ Y))`. Set `T : V ≃L[ℝ] Y` to `(toEuclidean (E := Y)).symm`. Use `⟨Measure.map T volume, T.isAddHaarMeasure_map _, fun N => ?_⟩` and prove the remaining obligations. Take `⟨p, hp, hb⟩` from `h V N`. Set `S : Y →ₗ[ℝ] (V →L[ℝ] ℝ)` to `(LinearMap.toContinuousLinearMap (𝕜 := ℝ) (E := V) (F' := ℝ)).toLinearMap ∘ₗ (β.compl₂ T.toLinearEquiv.toLinearMap)`.
+
+Establish `hS : ∀ y v, S y v = β y (T v)` using `fun _ _ => rfl`. Take `⟨K₁, -, hK₁⟩` from `S.exists_antilipschitzWith (LinearMap.ker_eq_bot'.2 fun y hy => hβ y (LinearMap.ext fun u => by`. Use `hS y (T.symm u)` as an intermediate fact. Rewrite `this` using `[hy, T.apply_symm_apply]`. Conclude with `this.symm))`.
+
+Set `K : NNReal` to `1 + K₁ + ‖(T : V →L[ℝ] Y)‖₊`. Establish `hK : (K : ℝ) = 1 + K₁ + ‖(T : V →L[ℝ] Y)‖` using `rfl`. Set `c` to `SchwartzMap.compCLMOfContinuousLinearEquiv ℂ (F := ℂ) T`. Use `⟨K ^ N • p.comp c.toLinearMap, (hp.comp c.continuous).const_smul (K ^ N), fun f₁ f₂ x y => ?_⟩` and prove the remaining obligations. Establish `h1` using `hb (c f₁) (c f₂) (T.symm x) ((InnerProductSpace.toDual ℝ V).symm (S y))`.
+
+Establish `e : ∫ u, Complex.exp (2 * Real.pi * Complex.I * (β y u : ℝ)) * f₁ (u + x) * (starRingEnd ℂ) (f₂ u) ∂(Measure.map T volume) = ∫ u, Complex.exp (2 * Real.pi * Complex.I * (inner ℝ u ((InnerProductSpace.toDual ℝ V).symm (S y)) : ℝ)) * c f₁ (u + T.symm x) * (starRingEnd ℂ) (c f₂ u)`. Rewrite using `[show Measure.map T volume = Measure.map T.toHomeomorph.toMeasurableEquiv volume from rfl, integral_map_equiv]`. Use `integral_congr_ae (.of_forall fun u => ?_)` and prove the remaining obligations. Simplify using `only [real_inner_comm _ u, InnerProductSpace.toDual_symm_apply, hS]`. Simplify using `[c]`.
+
+Rewrite using `[e]`. Rewrite `h1` using `[LinearIsometryEquiv.norm_map]`. Establish `hx : ‖x‖ ≤ ‖(T : V →L[ℝ] Y)‖ * ‖T.symm x‖` using `by simpa using (T : V →L[ℝ] Y).le_opNorm (T.symm x)`. Establish `hy : ‖y‖ ≤ K₁ * ‖S y‖`. Use `hK₁.le_mul_dist y 0` as an intermediate fact.
+
+Rewrite `this` using `[map_zero, dist_eq_norm, dist_eq_norm, sub_zero, sub_zero]`. Then use the resulting hypothesis. Establish `n1` using `norm_nonneg (T : V →L[ℝ] Y)`. Establish `n2` using `norm_nonneg (T.symm x)`. Establish `n3` using `norm_nonneg (S y)`. Establish `n4` using `K₁.coe_nonneg`.
+
+Establish `h2 : 1 + ‖x‖ + ‖y‖ ≤ K * (1 + ‖T.symm x‖ + ‖S y‖)`. Rewrite using `[hK]`. Use polynomial arithmetic with `[mul_nonneg n1 n3, mul_nonneg n4 n2]`. Establish `hK1 : (1 : ℝ) ≤ K ^ N` using `one_le_pow₀ (by rw [hK]; linarith)`. Establish `q` using `mul_nonneg (apply_nonneg p (c f₁)) (apply_nonneg p (c f₂))`.
+
+Combine the equalities or inequalities in the displayed calculation. Simplify using `only [Seminorm.smul_apply, Seminorm.comp_apply, NNReal.smul_def, NNReal.coe_pow, smul_eq_mul, ContinuousLinearMap.coe_coe]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem real_bound (h : CoefReal) (Y : Type) [NormedAddCommGroup Y] [NormedSpace ℝ Y] [FiniteDimensional ℝ Y]
     [MeasurableSpace Y] [BorelSpace Y] (β : Y →ₗ[ℝ] Y →ₗ[ℝ] ℝ) (hβ : ∀ y, β y = 0 → y = 0) :
     ∃ ν : Measure Y, ν.IsAddHaarMeasure ∧ ∀ N : ℕ, ∃ p : Seminorm ℂ (SchwartzMap Y ℂ), Continuous p ∧
@@ -58,6 +75,13 @@ theorem real_bound (h : CoefReal) (Y : Type) [NormedAddCommGroup Y] [NormedSpace
         ContinuousLinearMap.coe_coe]
       ring
 
+/- English proof (translation)
+Establish `h1 : ∀ᶠ k in 𝓝 (0 : G), ∀ x ∈ tsupport φ, φ (x + k) = φ x ∧ φ (x - k) = φ x` using `hφ.2.isCompact.eventually_forall_of_forall_eventually fun x _ => by`. Establish `a` using `(hφ.1.comp_continuous (f := fun z : G × G => z.2 + z.1) (by fun_prop)).eventually_eq (0, x)`. Establish `b` using `(hφ.1.comp_continuous (f := fun z : G × G => z.2 - z.1) (by fun_prop)).eventually_eq (0, x)`. Establish `c` using `(hφ.1.comp_continuous (f := fun z : G × G => z.2) (by fun_prop)).eventually_eq (0, x)`. Use `filter_upwards [a, b, c] with z a b c`.
+
+Simplify using `only [Function.comp, add_zero, sub_zero] at a b c`. Conclude with `⟨a.trans c.symm, b.trans c.symm⟩`. Use `filter_upwards [h1] with k hk x`. Distinguish the cases in `hx : x ∈ tsupport φ`. Conclude with `(hk x hx).1`.
+
+Distinguish the cases in `hx' : x + k ∈ tsupport φ`. Simplify using `using (hk _ hx').2.symm`. Rewrite using `[image_eq_zero_of_notMem_tsupport hx, image_eq_zero_of_notMem_tsupport hx']`.
+-/
 theorem sb_inv {G : Type} [AddCommGroup G] [TopologicalSpace G] [IsTopologicalAddGroup G] {φ : G → ℂ} (hφ : φ ∈ SB G) :
     ∀ᶠ k in 𝓝 (0 : G), ∀ x, φ (x + k) = φ x := by
   have h1 : ∀ᶠ k in 𝓝 (0 : G), ∀ x ∈ tsupport φ, φ (x + k) = φ x ∧ φ (x - k) = φ x :=
@@ -75,6 +99,15 @@ theorem sb_inv {G : Type} [AddCommGroup G] [TopologicalSpace G] [IsTopologicalAd
   · simpa using (hk _ hx').2.symm
   · rw [image_eq_zero_of_notMem_tsupport hx, image_eq_zero_of_notMem_tsupport hx']
 
+/- English proof (translation)
+Take `⟨C, hC⟩` from `h₁.1.continuous.bounded_above_of_compact_support h₁.2`. Take `⟨K, hK, hK'⟩` from `hd _ ((sb_inv h₁).and (sb_inv h₂))`. Establish `hi : Integrable φ₂ ν` using `h₂.1.continuous.integrable_of_hasCompactSupport h₂.2`. Use `⟨∫ u, C * ‖φ₂ u‖ ∂ν, ((fun z : G × G => z.1 - z.2) '' (tsupport φ₁ ×ˢ tsupport φ₂)) ×ˢ K, ((h₁.2.isCompact.prod h₂.2.isCompact).image (by fun_prop)).prod hK, fun x y => ⟨?_, fun h0 => ⟨?_, hK' y fun k hk => ?_⟩⟩⟩` and prove the remaining obligations. Use `norm_integral_le_of_norm_le (hi.norm.const_mul C) (.of_forall fun u => ?_)` and prove the remaining obligations.
+
+Rewrite using `[norm_mul, norm_mul, hn, one_mul, RCLike.norm_conj]`. Use `gcongr`. Conclude with `hC _`. Assume the negation of the conclusion as `hx`. Use `h0 (integral_eq_zero_of_ae (.of_forall fun u => ?_))` and prove the remaining obligations.
+
+Assume the negation of the conclusion as `hu`. Simplify using `only [Pi.zero_apply, mul_eq_zero, not_or, map_eq_zero] at hu`. Conclude with `hx ⟨(u + x, u), ⟨subset_tsupport _ hu.1.2, subset_tsupport _ hu.2⟩, add_sub_cancel_left _ _⟩`. Use `(mul_eq_right₀ h0).1 ?_` and prove the remaining obligations. Rewrite using `[← integral_const_mul]`.
+
+Use `conv_rhs => rw [← integral_add_right_eq_self _ k]`. Use `integral_congr_ae (.of_forall fun u => ?_)` and prove the remaining obligations. Simplify using `only`. Rewrite using `[ha, add_right_comm, hk.1, hk.2]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem fin_bound {G H : Type} [AddCommGroup G] [TopologicalSpace G] [IsTopologicalAddGroup G] [MeasurableSpace G]
     [BorelSpace G] [TopologicalSpace H] (ν : Measure G) [ν.IsAddHaarMeasure] (χ : H → G → ℂ) (hn : ∀ y u, ‖χ y u‖ = 1)
     (ha : ∀ y u u', χ y (u + u') = χ y u * χ y u')

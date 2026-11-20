@@ -10,6 +10,15 @@ noncomputable section
 
 namespace ModelDimension
 
+/- English proof (translation)
+Introduce `E _ _ _ H X tX Ω _ ξ Li _ _ M ρ hM q a e he`. Unfold `LieModel.lat at he ⊢`. Proceed by induction on `he using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨v, hv1, hv2⟩` from `hx`.
+
+Apply `Submodule.subset_span` to reduce the goal to its premises. Use `⟨v ≫ tX.act.act a, ?_, ?_⟩` and prove the remaining obligations. Use `haveI := tX.act.hom a`. Unfold `IsTanAt at hv1 ⊢`. Rewrite using `[Over.comp_left, ← Category.assoc, hv1, ← Over.comp_left, MonObj.one_comp]`.
+
+Rewrite using `[hM a x, Over.comp_left, hv2, Over.comp_left]`. Conclude with `Category.assoc _ _ _`. Consider the case `zero => simp`. Consider the case `add x y _ _ hx hy`. Rewrite using `[map_add]`.
+
+Conclude with `Submodule.add_mem _ hx hy`. Consider the case `smul r x _ hx`. Rewrite using `[Subring.smul_def, map_smul, ← Subring.smul_def]`. Conclude with `Submodule.smul_mem _ r hx`.
+-/
 theorem lie_lattice_action_stable : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (X : Scheme.{0}) (tX : SAB H X) (Ω : Type) [Field Ω] (ξ : Spec (CommRingCat.of Ω) ⟶ X) (Li : Type) [AddCommGroup Li] [Module Ω Li] (M : LieModel tX.G ξ Li) (ρ : 𝓞 E →+* Module.End Ω Li), M.IsActOf tX.act.act ρ → ∀ (q : Cpt ξ) (a : 𝓞 E) (e : Li), e ∈ M.lat q → ρ a e ∈ M.lat q := by
   intro E _ _ _ H X tX Ω _ ξ Li _ _ M ρ hM q a e he
   unfold LieModel.lat at he ⊢

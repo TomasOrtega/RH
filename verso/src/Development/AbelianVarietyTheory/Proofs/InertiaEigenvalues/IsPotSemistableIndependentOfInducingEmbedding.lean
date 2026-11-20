@@ -18,6 +18,15 @@ section Rank
 variable {l : ℕ} [Fact l.Prime] (P : LocPrime l) {LL : Type} [Field LL] [Algebra ℚ_[l] LL]
   {V : Type} [AddCommGroup V] [Module LL V] [Module ℚ_[l] V] [IsScalarTower ℚ_[l] LL V]
 
+/- English proof (translation)
+Establish `hρ' : ∀ (h' : ↥(GK K')) (h : ↥(GK K)), (h : GQ l) = g⁻¹ * h' * g⁻¹⁻¹ → ρ h = ρ' h'` using `fun h' h hh => (hρ h h' (by rw [hh]; group)).symm`. Establish `hK' : ∀ x, x ∈ K'.1 ↔ g⁻¹ x ∈ K.1` using `fun x => by`. Rewrite using `[hK, show g (g⁻¹ x) = x from g.apply_symm_apply x]`. Set `i : ↥(MaximalUnramifiedExtension l) → ↥(MaximalUnramifiedExtension l)` to `fun c => ⟨g c, (BridgeInd.mem_Kur_iff g _).1 c.2⟩`. Establish `hi : Function.Surjective i` using `fun c => ⟨⟨g⁻¹ c, (BridgeInd.mem_Kur_iff g _).2 (by rw [show g (g⁻¹ (c : Om l)) = c from g.apply_symm_apply _]; exact c.2)⟩, Subtype.ext (g.apply_symm_apply _)⟩`.
+
+Set `j : DpstUr P ρ →+ DpstUr P ρ'` to `(toUr P ρ').toAddMonoidHom.comp ((conjD P hρ hK).toAddMonoidHom.comp (toUr P ρ).symm.toAddMonoidHom)`. Establish `hj : Function.Injective j`. Introduce `x y hxy`. Establish `hx : ∀ z : ↥(Dpst P ρ), conjD P hρ' hK' (conjD P hρ hK z) = z` using `fun z => Subtype.ext (by`. Use `LinearMap.congr_fun (conjV_conjV_inv P (LL := LL) (V := V) g⁻¹) z.1` as an intermediate fact.
+
+Rewrite `this` using `[inv_inv]`. Conclude with `this)`. Use `congrArg (conjD P hρ' hK') hxy` as an intermediate fact. Conclude with `(hx x).symm.trans (this.trans (hx y))`. Use `rank_le_of_surjective_injective i j hi hj fun c x => ?_` and prove the remaining obligations.
+
+Conclude with `conjD_mulD P hρ hK c (i c) rfl x`.
+-/
 theorem rank_le_of_conj {K K' : FinExt l} {g : GQ l} {ρ : Representation LL ↥(GK K) V}
     {ρ' : Representation LL ↥(GK K') V}
     (hρ : ∀ (h : ↥(GK K)) (h' : ↥(GK K')), (h' : GQ l) = g * h * g⁻¹ → ρ' h' = ρ h)
@@ -47,6 +56,17 @@ theorem rank_le_of_conj {K K' : FinExt l} {g : GQ l} {ρ : Representation LL ↥
 
 end Rank
 
+/- English proof (translation)
+Introduce `l _ P AI _ E Ω _ _ _ _ _ A O O' _ _ _ _ _ _ Bw Bw' hj hj' a r _ hr`. Take `⟨L₁, r₁, hm₁, hV₁⟩` from `hr`. Set `L₂ : FinExt l` to `supExt L₁ Bw'.LL`. Establish `h₁ : L₁.1 ≤ L₂.1` using `le_sup_left`. Establish `h₂ : Bw'.LL.1 ≤ L₂.1` using `le_sup_right`.
+
+Set `r₂` to `mapRep (IntermediateField.inclusion h₁).toRingHom r₁`. Establish `hW` using `GlobalTheory.PstExt.isPst_enlarge P Bw h₁ r₁ hV₁`. Take `⟨g, hg, hK⟩` from `BridgeInd.exists_conj Bw Bw' hj hj'`. Establish `hρ` using `BridgeInd.repE_conj Bw Bw' hg L₂ r₂`. Use `⟨L₂, r₂, ⟨h₂, ?_⟩, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[← hm₁.2]`. Use extensionality with `x i k`. Both sides reduce to the same expression. Establish `e1` using `rank_le_of_conj P hρ hK`. Establish `hρ' : ∀ (h' : ↥(GK Bw'.Kw)) (h : ↥(GK Bw.Kw)), (h : GQ l) = g⁻¹ * h' * g⁻¹⁻¹ → Bw.repE L₂ r₂ h = Bw'.repE L₂ r₂ h'` using `fun h' h hh => (hρ h h' (by rw [hh]; group)).symm`.
+
+Establish `hK' : ∀ x, x ∈ Bw'.Kw.1 ↔ g⁻¹ x ∈ Bw.Kw.1` using `fun x => by`. Rewrite using `[hK, show g (g⁻¹ x) = x from g.apply_symm_apply x]`. Establish `e2` using `rank_le_of_conj P hρ' hK'`. Unfold `IsPst at hW ⊢`. Rewrite using `[← hW]`.
+
+Conclude with `le_antisymm e2 e1`.
+-/
 theorem isPstAt_indep_bridge : ∀ (l : ℕ) [Fact l.Prime] (P : LocPrime l) (AI : LocAinf l P), Nonempty (LocTied l P AI) → ∀ (E Ω : Type) [Field E] [NumberField E] [Field Ω] [Algebra E Ω] [IsAlgClosure E Ω] (A : ValuationSubring Ω) (O O' : Type) [CommRing O] [Algebra ℤ_[l] O] [TopologicalSpace O] [CommRing O'] [Algebra ℤ_[l] O'] [TopologicalSpace O'] (Bw : LocBridge l E Ω (Dec (F := E) A) O) (Bw' : LocBridge l E Ω (Dec (F := E) A) O'), GlobalTheory.Pst.Induces Bw → GlobalTheory.Pst.Induces Bw' → ∀ (a : ℕ) (r : ↥(Dec (F := E) A) →* GL (Fin a) (Om l)), Continuous (fun g => ((r g : GL (Fin a) (Om l)) : Matrix (Fin a) (Fin a) (Om l))) → GlobalTheory.Pst.IsPstAt P Bw r → GlobalTheory.Pst.IsPstAt P Bw' r := by
   intro l _ P AI _ E Ω _ _ _ _ _ A O O' _ _ _ _ _ _ Bw Bw' hj hj' a r _ hr
   obtain ⟨L₁, r₁, hm₁, hV₁⟩ := hr

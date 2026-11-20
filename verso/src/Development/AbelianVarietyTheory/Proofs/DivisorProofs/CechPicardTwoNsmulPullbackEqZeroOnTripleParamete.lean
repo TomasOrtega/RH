@@ -14,6 +14,39 @@ attribute [local instance] Over.cartesianMonoidalCategory
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Introduce `S _ _ hS A _ hA U V W hV hU hsurj hUW hWUV c hc Y x a v p e hpv hmem hsm hgi he`. Use `hA.smooth` as an intermediate fact. Establish `: GeometricallyIntegral A.hom` using `GlobalTheory.forall_geometricallyIntegral_of_smooth_of_geometricallyConnected _ _ _ hA.smooth hA.geomConnected`. Establish `: GlobalTheory.IsNormalScheme S` using `(GlobalTheory.isNormalScheme_iff S).mpr hS`. Establish `: IsIntegral A.left` using `GeometricallyIntegral.isIntegral_of_isLocallyNoetherian A.hom`.
+
+Establish `: IsLocallyNoetherian A.left` using `LocallyOfFiniteType.isLocallyNoetherian A.hom`. Take `⟨s0, hs0⟩` from `hU`. Take `⟨a0, ha0V, ha0⟩` from `hsurj s0`. Establish `: Nonempty V` using `⟨⟨a0, ha0V⟩⟩`. Establish `: IsIntegral V.toScheme` using `inferInstance`.
+
+Establish `hVn : GlobalTheory.IsNormalScheme V.toScheme` using `GlobalTheory.isNormalScheme_of_smooth (V.ι ≫ A.hom)`. Set `i0` to `(x.left ⁻¹ᵁ W).ι`. Set `O : (x.left ⁻¹ᵁ W).toScheme.Opens` to `i0 ⁻¹ᵁ (x.left ⁻¹ᵁ V)`. Establish `hrange : Set.range (x.left ⁻¹ᵁ V).ι = Set.range (O.ι ≫ i0)`. Establish `hO : (O : Set _) = i0 ⁻¹' (x.left ⁻¹ᵁ V : Set Y.left)` using `rfl`.
+
+Rewrite using `[Scheme.Hom.comp_base, TopCat.coe_comp, Set.range_comp, Scheme.Opens.range_ι, Scheme.Opens.range_ι, hO, Set.image_preimage_eq_inter_range, Scheme.Opens.range_ι]`. Use extensionality with `z`. Simplify using `only [Set.mem_inter_iff, SetLike.mem_coe, Scheme.Hom.mem_preimage]`. Conclude with `⟨fun h => ⟨h, hV h⟩, fun h => h.1⟩`. Set `φ` to `IsOpenImmersion.isoOfRangeEq (x.left ⁻¹ᵁ V).ι (O.ι ≫ i0) hrange`.
+
+Establish `hφ : φ.hom ≫ O.ι ≫ i0 = (x.left ⁻¹ᵁ V).ι` using `IsOpenImmersion.isoOfRangeEq_hom_fac _ _ _`. Set `UT : V.toScheme.Opens` to `(V.ι ≫ A.hom) ⁻¹ᵁ U`. Establish `hUT : (UT : Set V.toScheme).Nonempty` using `⟨⟨a0, ha0V⟩, by show A.hom (V.ι ⟨a0, ha0V⟩) ∈ U`. Simplify `hs0⟩` using `[ha0]`. Set `p'` to `i0 ≫ p`.
+
+Establish `hOp : O.ι ≫ p' = φ.inv ≫ (x.left ⁻¹ᵁ V).ι ≫ p`. Rewrite using `[← hφ]`. Simplify using `[p']`. Establish `hsm' : Smooth (O.ι ≫ p')` using `by rw [hOp]; infer_instance`. Establish `hgi' : GeometricallyIntegral (O.ι ≫ p')`.
+
+Establish `: MorphismProperty.RespectsIso @GeometricallyIntegral` using `MorphismProperty.IsStableUnderBaseChange.respectsIso`. Rewrite using `[hOp]`. Conclude with `(MorphismProperty.cancel_left_of_respectsIso @GeometricallyIntegral φ.inv _).mpr hgi`. Establish `he' : (e ≫ φ.hom) ≫ O.ι ≫ p' = 𝟙 _`. Simplify using `only [p', Category.assoc]`.
+
+Rewrite using `[reassoc_of% hφ]`. Conclude with `he`. Establish `hpY : p' ≫ V.ι ≫ A.hom = i0 ≫ Y.hom`. Simplify using `only [p', Category.assoc]`. Rewrite using `[reassoc_of% hpv, Over.w v]`.
+
+Establish `hcover : O ⊔ p' ⁻¹ᵁ UT = ⊤`. Rewrite using `[eq_top_iff]`. Introduce and unpack `z -`. Establish `hz : x.left (i0 z) ∈ W` using `z.2`. Establish `h' : x.left (i0 z) ∈ ((A.hom ⁻¹ᵁ U ⊔ V : A.left.Opens) : Set A.left)` using `hWUV hz`.
+
+Rewrite `h'` using `[TopologicalSpace.Opens.coe_sup]`. Break down `h' with h | h` into its components or cases. Use `right show (V.ι ≫ A.hom) (p' z) ∈ U`. Rewrite using `[← Scheme.Hom.comp_apply, hpY, ← Over.w x, Scheme.Hom.comp_apply, Scheme.Hom.comp_apply]`. Conclude with `h`.
+
+Use `left`. Conclude with `h`. Establish `key : ∀ c' : Pic (x.left ⁻¹ᵁ W).toScheme, pull O.ι c' = 0 → pull (p' ⁻¹ᵁ UT).ι c' = 0 → c' = 0` using `fun c' h1 h2 => GlobalTheory.T.picardClass_eq_zero_of_zero_dense_open_and_section_open V.toScheme (x.left ⁻¹ᵁ W).toScheme ((GlobalTheory.isNormalScheme_iff _).mp hVn) UT hUT p' O (e ≫ φ.hom) hsm' hgi' he' hcover c' h1 h2`. Apply `key` to reduce the goal to its premises. Rewrite using `[← pull_comp]`.
+
+Establish `hfac : O.ι ≫ (x.left ∣_ W) = φ.inv ≫ (x.left ∣_ V) ≫ A.left.homOfLE hV`. Rewrite using `[← cancel_mono W.ι]`. Simplify using `only [Category.assoc, morphismRestrict_ι, Scheme.homOfLE_ι]`. Rewrite using `[← reassoc_of% hφ]`. Simplify using `[i0]`.
+
+Rewrite using `[hfac, pull_comp, pull_comp, map_nsmul, hc, smul_zero, map_zero, map_zero]`. Rewrite using `[← pull_comp]`. Set `j` to `(p' ⁻¹ᵁ UT).ι`. Set `Y' : Over S` to `Over.mk (j ≫ i0 ≫ Y.hom)`. Set `q : Y' ⟶ Y` to `Over.homMk (j ≫ i0) (by simp [Y'])`.
+
+Use `GlobalTheory.T.twice_picardClass_eq_zero_of_translates_mem_open S A hA U V W hV hUW c hc Y' (q ≫ x) (q ≫ a) (q ≫ v) ?_ ?_ ?_ (j ≫ (x.left ∣_ W)) ?_` and prove the remaining obligations. Introduce `y show (j ≫ i0 ≫ Y.hom) y ∈ U`. Rewrite using `[← hpY]`. Conclude with `y.2`. Introduce `y`.
+
+Establish `: (q ≫ v).left = (j ≫ i0 ≫ p) ≫ V.ι` using `by simp [q, hpv]`. Rewrite using `[this, Scheme.Hom.comp_apply]`. Conclude with `((j ≫ i0 ≫ p) y).2`. Introduce `y`. Simplify using `only [← GrpObj.comp_inv, ← MonObj.comp_mul, Over.comp_left, Scheme.Hom.comp_apply]`.
+
+Conclude with `hmem _`. Simplify using `[q, j, i0, morphismRestrict_ι]`.
+-/
 theorem pull_two_nsmul_eq_zero_of_triples : ∀ (S : Scheme.{0}) [IsIntegral S] [IsLocallyNoetherian S], ReciprocityTheory.ChartRestriction.G.Geo.Tor.IsNormalScheme S → ∀ (A : Over S) [GrpObj A], IsAbelianScheme A → ∀ (U : S.Opens) (V W : A.left.Opens) (hV : V ≤ W), (U : Set S).Nonempty → (∀ s : S, ∃ x ∈ V, A.hom x = s) → A.hom ⁻¹ᵁ U ≤ W → W ≤ A.hom ⁻¹ᵁ U ⊔ V → ∀ c : Pic W.toScheme, GlobalTheory.CechPic.pull (A.left.homOfLE hV) c = 0 → ∀ (Y : Over S) (x a v : Y ⟶ A) (p : Y.left ⟶ V.toScheme) (e : V.toScheme ⟶ (x.left ⁻¹ᵁ V).toScheme), p ≫ V.ι = v.left → (∀ y, (x * a).left y ∈ V ∧ (x * a⁻¹).left y ∈ V ∧ (v * a).left y ∈ V ∧ (v * a⁻¹).left y ∈ V) → Smooth ((x.left ⁻¹ᵁ V).ι ≫ p) → GeometricallyIntegral ((x.left ⁻¹ᵁ V).ι ≫ p) → e ≫ (x.left ⁻¹ᵁ V).ι ≫ p = 𝟙 _ → GlobalTheory.CechPic.pull (x.left ∣_ W) (2 • c) = 0 := by
   intro S _ _ hS A _ hA U V W hV hU hsurj hUW hWUV c hc Y x a v p e hpv hmem hsm hgi he
   have := hA.smooth

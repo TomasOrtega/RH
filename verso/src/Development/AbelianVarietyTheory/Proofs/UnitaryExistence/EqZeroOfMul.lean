@@ -27,15 +27,27 @@ def ratFn : Subalgebra K (ℚ → K) where
 
 variable {K}
 
+/- English proof (translation)
+The claim follows from `(ratFn K).algebraMap_mem a`.
+-/
 theorem const_mem (a : K) : (fun _ : ℚ => a) ∈ ratFn K := (ratFn K).algebraMap_mem a
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨X, 1, fun s => by simp, fun s => by simp⟩`.
+-/
 theorem cast_mem : (fun s : ℚ => (s : K)) ∈ ratFn K := ⟨X, 1, fun s => by simp, fun s => by simp⟩
 
+/- English proof (translation)
+Take `⟨p, q, hq, h⟩` from `hf`. Use `⟨q, p, fun s => by rw [← h]; exact mul_ne_zero (h0 s) (hq s), fun s => ?_⟩` and prove the remaining obligations. Rewrite using `[← h, ← mul_assoc, inv_mul_cancel₀ (h0 s), one_mul]`.
+-/
 theorem inv_mem {f : ℚ → K} (hf : f ∈ ratFn K) (h0 : ∀ s, f s ≠ 0) : (fun s => (f s)⁻¹) ∈ ratFn K := by
   obtain ⟨p, q, hq, h⟩ := hf
   refine ⟨q, p, fun s => by rw [← h]; exact mul_ne_zero (h0 s) (hq s), fun s => ?_⟩
   rw [← h, ← mul_assoc, inv_mul_cancel₀ (h0 s), one_mul]
 
+/- English proof (translation)
+Take `⟨m, rfl | rfl⟩` from `e.eq_nat_or_neg`. Simplify using `only [zpow_natCast]`. Conclude with `pow_mem hf m`. Simplify using `only [zpow_neg, zpow_natCast, ← inv_pow]`. Conclude with `pow_mem (inv_mem hf h0) m`.
+-/
 theorem zpow_mem {f : ℚ → K} (hf : f ∈ ratFn K) (h0 : ∀ s, f s ≠ 0) (e : ℤ) : (fun s => f s ^ e) ∈ ratFn K := by
   obtain ⟨m, rfl | rfl⟩ := e.eq_nat_or_neg
   · simp only [zpow_natCast]
@@ -43,6 +55,13 @@ theorem zpow_mem {f : ℚ → K} (hf : f ∈ ratFn K) (h0 : ∀ s, f s ≠ 0) (e
   · simp only [zpow_neg, zpow_natCast, ← inv_pow]
     exact pow_mem (inv_mem hf h0) m
 
+/- English proof (translation)
+Take `⟨p, q, hq, hp⟩` from `hf`. Take `⟨p', q', hq', hp'⟩` from `hg`. Establish `hpp : p * p' = 0`. Use `Polynomial.eq_zero_of_infinite_isRoot _ ((Set.infinite_range_of_injective (Rat.cast_injective (α := K))).mono ?_)` and prove the remaining obligations. Introduce and unpack `_ ⟨t, rfl⟩`.
+
+Express the relevant statement in the definitionally equal form `eval _ _ = 0`. Rewrite using `[eval_mul, ← hp, ← hp']`. Take the linear combination `(eval (t : K) q * eval (t : K) q') * h t`. Establish `hp0 : p' ≠ 0`. Introduce and unpack `rfl`.
+
+Conclude with `mul_ne_zero h0 (hq' s₀) (by simpa using hp' s₀)`. Establish `: p = 0` using `(mul_eq_zero.1 hpp).resolve_right hp0`. Substitute `this` using the available equality. Conclude with `(mul_eq_zero.1 (by simpa using hp s)).resolve_right (hq s)`.
+-/
 theorem eq_zero_of_mul {f g : ℚ → K} (hf : f ∈ ratFn K) (hg : g ∈ ratFn K) (h : ∀ s, f s * g s = 0) {s₀ : ℚ}
     (h0 : g s₀ ≠ 0) (s : ℚ) : f s = 0 := by
   obtain ⟨p, q, hq, hp⟩ := hf
@@ -61,6 +80,17 @@ theorem eq_zero_of_mul {f g : ℚ → K} (hf : f ∈ ratFn K) (hg : g ∈ ratFn 
   subst this
   exact (mul_eq_zero.1 (by simpa using hp s)).resolve_right (hq s)
 
+/- English proof (translation)
+Establish `hvg : (fun s => v s * g₀ s) ∈ ratFn K` using `mul_mem hv hg₀`. Establish `hS : (fun s => ∑ i ∈ Finset.range N, f₀ s ^ i * (v s * g₀ s) ^ (N - 1 - i)) ∈ ratFn K`. Use `Subalgebra.sum_mem (ratFn K) (t := Finset.range N) (f := fun i => f₀ ^ i * (fun s => v s * g₀ s) ^ (N - 1 - i)) fun i _ => mul_mem (pow_mem hf₀ i) (pow_mem hvg _)` as an intermediate fact. Use `this using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `s`.
+
+Simplify using the standard rewrite rules. Establish `a₀ : ∀ s, f₀ s - v s * g₀ s = 0`. Use `eq_zero_of_mul (s₀ := 0) (sub_mem hf₀ hvg) hS (fun s => ?_) ?_` and prove the remaining obligations. Rewrite using `[mul_comm]`. Use `(geom_sum₂_mul _ _ _).trans ?_` and prove the remaining obligations.
+
+Rewrite using `[e₀, mul_pow, mul_pow, hpow, sub_self]`. Establish `: f₀ 0 = v 0 * g₀ 0` using `by rw [e₀, h0]`. Simplify using `only [this]`. Rewrite using `[geom_sum₂_self]`. Conclude with `mul_ne_zero (Nat.cast_ne_zero.2 hN) (pow_ne_zero _ (mul_ne_zero hv0 hg0))`.
+
+Establish `a₁ : f₁ 1 - v 1 * g₁ 1 = 0`. Use `eq_zero_of_mul (s₀ := 0) (f := fun s => f₁ s - v s * g₁ s) (sub_mem hf₁ (mul_mem hv hg₁)) hg₀ (fun s => ?_) hg0 1` and prove the remaining obligations. Use `a₀ s` as an intermediate fact. Rewrite `this` using `[e₀]`. Rewrite using `[e₁]`.
+
+Take the linear combination `g₁ s * this`. Rewrite `a₁` using `[e₁]`. Conclude with `mul_right_cancel₀ hg1 (sub_eq_zero.1 a₁)`.
+-/
 theorem scalar_eq {c v f₀ g₀ f₁ g₁ : ℚ → K} {N : ℕ} (hN : N ≠ 0) (hv : v ∈ ratFn K) (hf₀ : f₀ ∈ ratFn K)
     (hg₀ : g₀ ∈ ratFn K) (hf₁ : f₁ ∈ ratFn K) (hg₁ : g₁ ∈ ratFn K) (e₀ : ∀ s, f₀ s = c s * g₀ s)
     (e₁ : ∀ s, f₁ s = c s * g₁ s) (hpow : ∀ s, c s ^ N = v s ^ N) (h0 : c 0 = v 0) (hv0 : v 0 ≠ 0)
@@ -92,6 +122,9 @@ theorem scalar_eq {c v f₀ g₀ f₁ g₁ : ℚ → K} {N : ℕ} (hN : N ≠ 0)
   rw [e₁] at a₁
   exact mul_right_cancel₀ hg1 (sub_eq_zero.1 a₁)
 
+/- English proof (translation)
+Use `Subalgebra.sum_mem (ratFn K) (t := Finset.univ) (f := fun σ : Equiv.Perm n => (fun _ : ℚ => ((Equiv.Perm.sign σ : ℤ) : K)) * ∏ i, fun s => M s (σ i) i) fun σ _ => mul_mem (const_mem _) (Subalgebra.prod_mem _ fun i _ => h _ _)` as an intermediate fact. Use `this using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `s`. Simplify using `[Matrix.det_apply']`.
+-/
 theorem det_mem {n : Type} [Fintype n] [DecidableEq n] {M : ℚ → Matrix n n K}
     (h : ∀ i j, (fun s => M s i j) ∈ ratFn K) : (fun s => (M s).det) ∈ ratFn K := by
   have := Subalgebra.sum_mem (ratFn K) (t := Finset.univ)
@@ -101,6 +134,13 @@ theorem det_mem {n : Type} [Fintype n] [DecidableEq n] {M : ℚ → Matrix n n K
   funext s
   simp [Matrix.det_apply']
 
+/- English proof (translation)
+Establish `h1 : (fun s => (M s).adjugate i j) ∈ ratFn K`. Simplify using `only [Matrix.adjugate_apply]`. Use `det_mem fun a b => ?_` and prove the remaining obligations. Distinguish the cases in `hab : a = j`. Substitute `hab` using the available equality.
+
+Simplify using `using const_mem _`. Simplify `h a b` using `[Matrix.updateRow_ne hab]`. Use `mul_mem (inv_mem (det_mem h) h0) h1` as an intermediate fact. Use `this using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `s`.
+
+Simplify using `[Matrix.inv_def]`.
+-/
 theorem matInv_mem {n : Type} [Fintype n] [DecidableEq n] {M : ℚ → Matrix n n K}
     (h : ∀ i j, (fun s => M s i j) ∈ ratFn K) (h0 : ∀ s, (M s).det ≠ 0) (i j : n) :
     (fun s => (M s)⁻¹ i j) ∈ ratFn K := by
@@ -116,6 +156,13 @@ theorem matInv_mem {n : Type} [Fintype n] [DecidableEq n] {M : ℚ → Matrix n 
   funext s
   simp [Matrix.inv_def]
 
+/- English proof (translation)
+Proceed by induction on `P using MvPolynomial.induction_on generalizing ℓ with`. Consider the case `C a => simpa using const_mem _`. Consider the case `add p q hp hq`. Simplify using `only [map_add]`. Conclude with `add_mem (hp ℓ) (hq ℓ)`.
+
+Consider the case `mul_X p x hp`. Use `Subalgebra.sum_mem (ratFn K) (t := Finset.univ) fun j _ => mul_mem (hr x j) (hp (ℓ ∘ₗ LinearMap.mulRight K (MvPolynomial.X (y x j))))` as an intermediate fact. Use `this using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `s`. Simplify using `only [map_mul, MvPolynomial.aeval_X, Finset.mul_sum, map_sum, Finset.sum_apply, Pi.mul_apply, LinearMap.comp_apply, LinearMap.mulRight_apply]`.
+
+Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[mul_left_comm, ← MvPolynomial.smul_eq_C_mul, map_smul, smul_eq_mul]`.
+-/
 theorem aeval_mem {σ σ' ι : Type} [Fintype ι] (r : ℚ → σ → ι → K) (y : σ → ι → σ')
     (hr : ∀ x j, (fun s => r s x j) ∈ ratFn K) (P : MvPolynomial σ K) (ℓ : MvPolynomial σ' K →ₗ[K] K) :
     (fun s => ℓ (MvPolynomial.aeval (fun x => ∑ j, MvPolynomial.C (r s x j) * MvPolynomial.X (y x j)) P)) ∈
@@ -137,6 +184,9 @@ theorem aeval_mem {σ σ' ι : Type} [Fintype ι] (r : ℚ → σ → ι → K) 
 
 end Rat
 
+/- English proof (translation)
+Proceed by induction on `m with`. Consider the case `zero => simp`. Consider the case `succ m ih`. Rewrite using `[Finset.prod_range_succ, mul_assoc, ← pow_add, Nat.sub_add_cancel (hν (Nat.le_succ m)), Finset.prod_range_succ x, mul_pow, ← mul_assoc, ih, Finset.prod_range_succ]`.
+-/
 theorem tele {M : Type} [CommMonoid M] (x : ℕ → M) (ν : ℕ → ℕ) (hν : Antitone ν) (m : ℕ) :
     (∏ i ∈ Finset.range m, (∏ b ∈ Finset.range (i + 1), x b) ^ (ν i - ν (i + 1))) *
       (∏ b ∈ Finset.range m, x b) ^ ν m = ∏ b ∈ Finset.range m, x b ^ ν b := by
@@ -146,6 +196,19 @@ theorem tele {M : Type} [CommMonoid M] (x : ℕ → M) (ν : ℕ → ℕ) (hν :
     rw [Finset.prod_range_succ, mul_assoc, ← pow_add, Nat.sub_add_cancel (hν (Nat.le_succ m)),
       Finset.prod_range_succ x, mul_pow, ← mul_assoc, ih, Finset.prod_range_succ]
 
+/- English proof (translation)
+Take `⟨L, L', D, hD, hM⟩` from `Matrix.SpecialLinearGroup.exists_list_transvec_mul_diagonal_mul_list_transvec ⟨(g : Matrix n n F), hg⟩`. Set `χ` to `ψ.comp (Matrix.SpecialLinearGroup.toGL (n := n) (R := F))`. Establish `ht : ∀ t : Matrix.TransvectionStruct n F, χ t.toSpecialLinearGroup = 1`. Introduce and unpack `⟨i, j, hij, a⟩`. Establish `hN : Matrix.single i j a * Matrix.single i j a = 0` using `Matrix.single_mul_single_of_ne _ _ _ _ hij.symm _`.
+
+Use `ddChar_unip_eq_one ψ _ hN (ddCharDiag (Pi.mulSingle i (Units.mk0 2 two_ne_zero))) 2 1 (by` as an intermediate fact. Use extensionality with `a b`. Distinguish the cases in `h : i = a`. Substitute `h` using the available equality. Simplify using `[ddCharDiag_val]`.
+
+Simplify using `[ddCharDiag_val, Matrix.single_apply, h])`. Use the proof step `(by`. Use extensionality with `a b`. Distinguish the cases in `h : j = b`. Substitute `h` using the available equality.
+
+Simplify using `[ddCharDiag_val, Pi.mulSingle_eq_of_ne hij.symm]`. Simplify using `[ddCharDiag_val, Matrix.single_apply, h])`. Use the proof step `(by norm_num)`. Rewrite using `[← this]`. Conclude with `congrArg ψ (Units.ext rfl)`.
+
+Establish `hl : ∀ L : List (Matrix.TransvectionStruct n F), χ (L.map Matrix.TransvectionStruct.toSpecialLinearGroup).prod = 1` using `fun L => by`. Proceed by induction on `L with`. Consider the case `nil => simp`. Consider the case `cons t L ih => rw [List.map_cons, List.prod_cons, map_mul, ht, ih, one_mul]`. Establish `hd : χ ⟨Matrix.diagonal D, hD⟩ = 1` using `ddChar_diag ψ _ (fun i j h => Matrix.diagonal_apply_ne D h) hD`.
+
+Use `(congrArg χ hM).trans ((map_mul χ _ _).trans (congrArg₂ (· * ·) ((map_mul χ _ _).trans (congrArg₂ (· * ·) (hl L) hd)) (hl L')))` as an intermediate fact. Establish `e : ψ g = χ ⟨(g : Matrix n n F), hg⟩` using `congrArg ψ (Units.ext rfl)`. Conclude with `e.trans (this.trans (by simp))`.
+-/
 theorem char_eq_one {F A n : Type} [Field F] [CharZero F] [CommGroup A] [Fintype n] [DecidableEq n]
     (ψ : GL n F →* A) (g : GL n F) (hg : (g : Matrix n n F).det = 1) : ψ g = 1 := by
   obtain ⟨L, L', D, hD, hM⟩ :=
@@ -186,6 +249,19 @@ open scoped Matrix
 
 variable {E : Type} [Field E] [NumberField E] [NumberField.IsCMField E] {n : ℕ}
 
+/- English proof (translation)
+Take `⟨w, hw⟩` from `h1.exists_right_inv`. Take `⟨hS, hS2⟩` from `GenusSelfDual.cayley_skew (u := γ) hγ hw (mul_eq_one_comm.1 hw)`. Generalize the expression as in `(1 - γ) * w = S at hS hS2`. Establish `hs : ∀ s : ℚ, star (s • S) = -(s • S)` using `fun s => by rw [star_smul, hS, smul_neg]; rfl`. Establish `hu : ∀ s : ℚ, IsUnit (1 + s • S).det` using `fun s => (Matrix.isUnit_iff_isUnit_det _).1 (GenusSelfDual.isUnit_one_add_of_skew _ (hs s))`.
+
+Use `⟨fun s => 2 * (1 + s • S)⁻¹ - 1, fun s => GenusSelfDual.cayley_unitary (hs s) (Matrix.mul_nonsing_inv _ (hu s)), ?_, ?_, fun σ i j => ?_⟩` and prove the remaining obligations. Simplify using `only [zero_smul, add_zero, inv_one]`. Evaluate the numerical expressions. Establish `h` using `Matrix.nonsing_inv_mul _ (hu 1)`. Simplify using `only [one_smul] at h ⊢`.
+
+Establish `: (1 + S)⁻¹ * 2 = 1 + γ` using `by rw [← hS2, ← mul_assoc, h, one_mul]`. Rewrite using `[two_mul, ← mul_two, this, add_sub_cancel_left]`. Establish `e : ∀ s : ℚ, σ.mapMatrix (1 + s • S)⁻¹ = (σ.mapMatrix (1 + s • S))⁻¹` using `fun s => (Matrix.inv_eq_right_inv (by rw [← map_mul, Matrix.mul_nonsing_inv _ (hu s), map_one])).symm`. Establish `hm` using `matInv_mem (M := fun s : ℚ => σ.mapMatrix (1 + s • S)) (fun a b => by`. Use `add_mem (const_mem (σ ((1 : Matrix (Fin n) (Fin n) E) a b))) (mul_mem cast_mem (const_mem (σ (S a b))))` as an intermediate fact.
+
+Use `this using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `s`. Simplify using `[Rat.smul_def]) (fun s => by`. Rewrite using `[← RingHom.map_det]`. Conclude with `(_root_.map_ne_zero σ).2 (hu s).ne_zero) i j`.
+
+Use `sub_mem (add_mem hm hm) (const_mem (σ ((1 : Matrix (Fin n) (Fin n) E) i j)))` as an intermediate fact. Use `this using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `s`. Simplify using `only [Pi.sub_apply, Pi.add_apply, ← e]`. Simplify using `only [two_mul, Matrix.sub_apply, Matrix.add_apply, map_sub, map_add]`.
+
+Both sides reduce to the same expression.
+-/
 theorem exists_curve (K : Type) [Field K] [CharZero K] (γ : Matrix (Fin n) (Fin n) E) (hγ : γᴴ * γ = 1)
     (h1 : IsUnit (1 + γ)) :
     ∃ Γ : ℚ → Matrix (Fin n) (Fin n) E, (∀ s, (Γ s)ᴴ * Γ s = 1) ∧ Γ 0 = 1 ∧ Γ 1 = γ ∧
@@ -218,6 +294,17 @@ theorem exists_curve (K : Type) [Field K] [CharZero K] (γ : Matrix (Fin n) (Fin
     simp only [two_mul, Matrix.sub_apply, Matrix.add_apply, map_sub, map_add]
     rfl
 
+/- English proof (translation)
+Take `⟨θ', h0, hθ⟩` from `GenusSelfDual.exists_imaginary_integer E`. Generalize the expression as in `(θ' : E) = θ at h0 hθ`. Use `replace hθ : star θ = -θ := hθ`. Establish `hc : ∀ k : ℤ, star (1 + k * θ) = 1 - k * θ` using `fun k => by`. Rewrite using `[star_add, star_one, star_mul', star_intCast, hθ]`.
+
+Expand and normalize the polynomial expressions, which then agree. Establish `hne : ∀ k : ℤ, 1 + k * θ ≠ 0` using `fun k hk => by`. Use `hc k` as an intermediate fact. Rewrite `this` using `[hk, star_zero]`. Conclude with `two_ne_zero (α := E) (by linear_combination hk - this)`.
+
+Establish `hne' : ∀ k : ℤ, 1 - k * θ ≠ 0` using `fun k => by`. Rewrite using `[← hc]`. Conclude with `star_ne_zero.2 (hne k)`. Set `f : ℤ → E` to `fun k => (1 - k * θ) / (1 + k * θ)`. Establish `hf : Function.Injective f` using `fun a b hab => by`.
+
+Rewrite `hab` using `[div_eq_div_iff (hne a) (hne b)]`. Establish `: (2 * θ : E) * (a - b) = 0` using `by linear_combination -hab`. Conclude with `sub_eq_zero.1 ((mul_eq_zero.1 this).resolve_left (mul_ne_zero two_ne_zero h0))` after adjusting the coercions. Take `⟨_, ⟨k, rfl⟩, hk⟩` from `(Set.infinite_range_of_injective hf).exists_notMem_finite (GenusSelfDual.finite_not_isUnit_one_add_smul (RingHom.id E) γ)`. Use `⟨f k, ?_, not_not.1 hk⟩` and prove the remaining obligations.
+
+Use `hc (-k)` as an intermediate fact. Simplify using `only [Int.cast_neg, neg_mul, ← sub_eq_add_neg, sub_neg_eq_add] at this`. Simplify using `only [f, star_div₀, hc, this]`. Rewrite using `[div_mul_div_comm, mul_comm, div_self (mul_ne_zero (hne' k) (hne k))]`.
+-/
 theorem exists_scalar (γ : Matrix (Fin n) (Fin n) E) : ∃ z : E, star z * z = 1 ∧ IsUnit (1 + z • γ) := by
   obtain ⟨θ', h0, hθ⟩ := GenusSelfDual.exists_imaginary_integer E
   generalize (θ' : E) = θ at h0 hθ

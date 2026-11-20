@@ -19,10 +19,16 @@ open Limits VMetric
 
 variable {k : Type} [CommRing k] {X : Scheme.{0}} {p : X ⟶ Sp k}
 
+/- English proof (translation)
+Simplify using `using h.form_add_left 0 0 t y`.
+-/
 theorem form_zero_left {σ : k →+* ℂ} {E : X.Modules} {r : ℕ} (h : Met p σ E r) {U : X.Opens}
     (t : Γ(E, U)) (y : CxPts p σ) : h.form 0 t y = 0 := by
   simpa using h.form_add_left 0 0 t y
 
+/- English proof (translation)
+Rewrite using `[← h.conj_form, form_zero_left, map_zero]`.
+-/
 theorem form_zero_right {σ : k →+* ℂ} {E : X.Modules} {r : ℕ} (h : Met p σ E r) {U : X.Opens}
     (t : Γ(E, U)) (y : CxPts p σ) : h.form t 0 y = 0 := by
   rw [← h.conj_form, form_zero_left, map_zero]
@@ -36,6 +42,15 @@ open scoped ComplexOrder
 variable {S S' : ShortComplex X.Modules} {T : X.Modules} {r m s : ℕ}
   {u₁ : S'.X₁ ⟶ S.X₁} {u₂ : S'.X₂ ⟶ S.X₂} {v : T ⟶ S.X₁}
 
+/- English proof (translation)
+Use `hS.epi_g` as an intermediate fact. Use `hS'.epi_g` as an intermediate fact. Establish `z₁ : S'.f ≫ u₂ ≫ S.g = 0` using `by rw [← Category.assoc, ← w, Category.assoc, S.zero, comp_zero]`. Establish `k₁ : u₂ ≫ inv (biprod.desc u₂ (v ≫ S.f)) = biprod.inl`. Rewrite using `[IsIso.comp_inv_eq, biprod.inl_desc]`.
+
+Establish `k₂ : (v ≫ S.f) ≫ inv (biprod.desc u₂ (v ≫ S.f)) = biprod.inr`. Rewrite using `[IsIso.comp_inv_eq, biprod.inr_desc]`. Establish `z₂ : S.f ≫ inv (biprod.desc u₂ (v ≫ S.f)) ≫ biprod.fst ≫ S'.g = 0`. Rewrite using `[← cancel_epi (biprod.desc u₁ v), comp_zero]`. Use `biprod.hom_ext' _ _ ?_ ?_` and prove the remaining obligations.
+
+Rewrite using `[biprod.inl_desc_assoc, reassoc_of% w, reassoc_of% k₁, biprod.inl_fst_assoc, S'.zero, comp_zero]`. Rewrite using `[biprod.inr_desc_assoc, reassoc_of% k₂, biprod.inr_fst_assoc, zero_comp, comp_zero]`. Use `⟨⟨hS'.exact.desc _ z₁, hS.exact.desc _ z₂, ?_, ?_⟩, hS'.exact.g_desc _ z₁⟩` and prove the remaining obligations. Rewrite using `[← cancel_epi S'.g, ShortComplex.Exact.g_desc_assoc, Category.assoc, ShortComplex.Exact.g_desc, reassoc_of% k₁, biprod.inl_fst_assoc, Category.comp_id]`. Rewrite using `[← cancel_epi S.g, ShortComplex.Exact.g_desc_assoc, Category.assoc, Category.assoc, ShortComplex.Exact.g_desc, Category.comp_id, IsIso.inv_comp_eq]`.
+
+Apply the tactic sequence `refine biprod.hom_ext' _ _ ?_ ?_ <;> simp`.
+-/
 theorem exists_iso_X₃ (hS : S.ShortExact) (hS' : S'.ShortExact) (w : u₁ ≫ S.f = S'.f ≫ u₂)
     [IsIso (biprod.desc u₁ v)] [IsIso (biprod.desc u₂ (v ≫ S.f))] :
     ∃ φ : S'.X₃ ≅ S.X₃, S'.g ≫ φ.hom = u₂ ≫ S.g := by
@@ -81,6 +96,9 @@ noncomputable def sumChart [IsIso (biprod.desc u₁ v)] (φ : S'.X₃ ≅ S.X₃
     convert a.ht.map_iso φ.hom using 2 with j
     exact congr(($hφ).app a.U (a.t j)).symm
 
+/- English proof (translation)
+Take `⟨a, ha⟩` from `Met.exists_adapted hS' h₁ h₃ y`. Use `⟨⟨a.U ⊓ (hT.pick y).U, _, fun j => resM _ inf_le_left (a.t j), a.he.res inf_le_left, ?_⟩, _, (hT.pick y).isFrame.res inf_le_right, mem_ptsIn_inf.2 ⟨ha, hT.mem_pick y⟩⟩` and prove the remaining obligations. Simplify using `only [app_resM]`. Conclude with `a.ht.res inf_le_left`.
+-/
 theorem exists_adapted_frame {σ : k →+* ℂ} (hS' : S'.ShortExact) (h₁ : IsVB S'.X₁ r)
     (h₃ : IsVB S'.X₃ s) (hT : IsVB T m) (y : CxPts p σ) : ∃ (a : AdaptedChart S' r s)
       (f : Fin m → Γ(T, a.U)), IsFrame f ∧ y ∈ ptsIn p σ a.U := by
@@ -90,6 +108,13 @@ theorem exists_adapted_frame {σ : k →+* ℂ} (hS' : S'.ShortExact) (h₁ : Is
   simp only [app_resM]
   exact a.ht.res inf_le_left
 
+/- English proof (translation)
+Introduce `K j`. Establish `f₁ (x) : (sumChart (u₁` using `u₁) (v := v) φ hφ a f hf).frame (j x) = u₂.app a.U (a.frame x) := by`. Break down `x with x | x` into its components or cases. Express the relevant statement in the definitionally equal form `S.f.app a.U (Sum.elim _ _ (finSumFinEquiv.symm (finSumFinEquiv (Sum.inl x)))) = _`. Rewrite using `[Equiv.symm_apply_apply]`.
+
+Conclude with `congr(($w).app a.U (a.e x))`. Both sides reduce to the same expression. Establish `f₂ (b : Fin m) : (sumChart (u₁` using `u₁) (v := v) φ hφ a f hf).frame (Sum.inl (finSumFinEquiv (Sum.inr b))) = (v ≫ S.f).app a.U (f b) := by`. Express the relevant statement in the definitionally equal form `S.f.app a.U (Sum.elim _ _ (finSumFinEquiv.symm (finSumFinEquiv (Sum.inr b)))) = _`. Rewrite using `[Equiv.symm_apply_apply]`.
+
+Both sides reduce to the same expression. Establish `z (x) (b : Fin m) : K (j x) (Sum.inl (finSumFinEquiv (Sum.inr b))) = 0` using `(congrArg₂ (fun s t => h.form s t y) (f₁ x) (f₂ b)).trans (e₂ _ _ _ y hy)`. Use `⟨Matrix.ext fun x x' => (congrArg₂ (fun s t => h.form s t y) (f₁ x) (f₁ x')).trans (e₁ _ _ _ y hy), fun x b => ⟨z x b, ?_⟩, (posDef_subGram (h.posDef_gram_frame hS (sumChart (u₁ := u₁) (v := v) φ hφ a f hf) hy)).det_pos.ne'.isUnit⟩` and prove the remaining obligations. Conclude with `(h.conj_form _ _ y).symm.trans ((congrArg (starRingEnd ℂ) (z x b)).trans (map_zero _))`.
+-/
 theorem gram_sumChart {σ : k →+* ℂ} (hS : S.ShortExact) (w : u₁ ≫ S.f = S'.f ≫ u₂)
     [IsIso (biprod.desc u₁ v)] (φ : S'.X₃ ≅ S.X₃) (hφ : S'.g ≫ φ.hom = u₂ ≫ S.g)
     {h : Met p σ S.X₂ (r + m + s)} {h' : Met p σ S'.X₂ (r + s)}
@@ -124,6 +149,15 @@ theorem gram_sumChart {σ : k →+* ℂ} (hS : S.ShortExact) (w : u₁ ≫ S.f =
       (sumChart (u₁ := u₁) (v := v) φ hφ a f hf) hy)).det_pos.ne'.isUnit⟩
   exact (h.conj_form _ _ y).symm.trans ((congrArg (starRingEnd ℂ) (z x b)).trans (map_zero _))
 
+/- English proof (translation)
+Substitute `hr` using the available equality. Take `⟨φ, hφ⟩` from `exists_iso_X₃ (v := v) hS hS' w`. Use `⟨⟨φ, (isIsometry_iff _).2 (VMetric.ext (funext fun σ => Met.ext_of_exists fun y => ?_))⟩, fun σ => ?_⟩` and prove the remaining obligations. Take `⟨a, f, hf, hy⟩` from `exists_adapted_frame hS' h₁' h₃' hT y`. Take `⟨g₁, g₂, g₃⟩` from `gram_sumChart hS w φ hφ (e₁ σ) (e₂ σ) a f hf hy`.
+
+Establish `e : (sumChart (u₁` using `u₁) (v := v) φ hφ a f hf).quot = a.quot.map φ := by`. Establish `: (fun j => S.g.app a.U (u₂.app a.U (a.t j))) = fun j => φ.hom.app a.U (S'.g.app a.U (a.t j))`. Use function extensionality and compare the values at `fun j => congr(($hφ).app a.U (a.t j)).symm`. Conclude with `congr(Chart.mk a.U $this _)`. Use `⟨a.quot.map φ, hy, Eq.trans ?_ (((h'.met σ).quot hS' h₁' h₃').map_G φ a.quot hy).symm⟩` and prove the remaining obligations.
+
+Rewrite using `[← e, (h'.met σ).quot_G hS' h₁' h₃' a hy]`. Conclude with `((h.met σ).quot_G hS h₁ h₃ _ hy).trans ((GlobalTheory.T.submatrix_schur_complement_compat ℂ _ _ _ _ finSumFinEquiv).1 _ _ g₁ g₂ g₃)`. Use `iSup_congr fun c => MeasureTheory.Measure.ext fun A hA => ?_` and prove the remaining obligations. Rewrite using `[ChartGlue.chartMeas_apply _ _ hA, ChartGlue.chartMeas_apply _ _ hA]`. Use `MeasureTheory.setLIntegral_congr_fun (ChartGlue.measurableSet_image _ (c.e.open_source.measurableSet.inter hA) Set.inter_subset_left) ?_` and prove the remaining obligations.
+
+Introduce and unpack `_ ⟨y, ⟨hc, -⟩, rfl⟩`. Take `⟨a, f, hf, hy⟩` from `exists_adapted_frame hS' h₁' h₃' hT y`. Simplify using `only [c.e.left_inv hc]`. Rewrite using `[Met.bcDens_eq hS h₁ h₃ (sumChart (u₁ := u₁) (v := v) φ hφ a f hf) c (H σ) hc hy, Met.bcDens_eq hS' h₁' h₃' a c (H' σ) hc hy, Met.bcForm, Met.bcForm, (GlobalTheory.T.submatrix_schur_complement_compat _ _ _ _ _ finSumFinEquiv).2 _ (fun v => (h'.met σ).gram a.frame (c.e.symm v)) _ …`. Conclude with `eventually_of_mem ((ChartGlue.isOpen_over c.e (isOpen_ptsIn a.U)).mem_nhds (ChartGlue.mem_over c.e hc hy)) fun _ hv => gram_sumChart hS w φ hφ (e₁ σ) (e₂ σ) a f hf hv.2`.
+-/
 theorem quot_bcMeas_eq {r' : ℕ} (hS : S.ShortExact) (hS' : S'.ShortExact) (h₁ : IsVB S.X₁ r')
     (h₃ : IsVB S.X₃ s) (h₁' : IsVB S'.X₁ r) (h₃' : IsVB S'.X₃ s) (hT : IsVB T m) (hr : r' = r + m)
     (w : u₁ ≫ S.f = S'.f ≫ u₂) (i₁ : IsIso (biprod.desc u₁ v))
@@ -165,6 +199,13 @@ theorem quot_bcMeas_eq {r' : ℕ} (hS : S.ShortExact) (hS' : S'.ShortExact) (h�
 
 end Seq
 
+/- English proof (translation)
+Establish `e₄ : (v ≫ fl.step i) ≫ fl.ι _ = τ ≫ w'` using `by rw [Category.assoc, fl.step_ι, e₃]`. Take `⟨⟨φ, hφ⟩, hb⟩` from `quot_bcMeas_eq (S := stepSeq fl i) (S' := stepSeq fl' j) (u₁ := u₁) (u₂ := u₂) (v := v) (stepSeq_shortExact fl i) (stepSeq_shortExact fl' j) (fl.isVB i.castSucc) (fl.isVB_gr i) (fl'.isVB j.castSucc) (fl'.isVB_gr j) hT hm ((cancel_mono (fl.ι i.succ)).1 (by`. Express the relevant statement in the definitionally equal form `(u₁ ≫ fl.step i) ≫ _ = (fl'.step j ≫ u₂) ≫ _`. Rewrite using `[Category.assoc, Category.assoc, fl.step_ι, e₁, e₂, fl'.step_ι_assoc])) i₁ i₂`. Use the proof step `(h := g.stepMet fl i) (h' := g'.stepMet fl' j) (G.restrict _ _) (G'.restrict _ _)`.
+
+Use the proof step `(fun σ U a b y hy => by`. Use `(Met.form_restrict (g.met σ) (fl.isSubbundle i.succ) (fl.isVB i.succ) _ _ hy).trans (Eq.trans ?_ (Met.form_restrict (g'.met σ) (fl'.isSubbundle j.succ) (fl'.isVB j.succ) _ _ hy).symm)` and prove the remaining obligations. Conclude with `(congrArg₂ (fun s t => (g.met σ).form s t y) congr(($e₂).app U a) congr(($e₂).app U b)).trans (hw σ U _ _ y hy))`. Use the proof step `(fun σ U a t y hy => by`. Use `(Met.form_restrict (g.met σ) (fl.isSubbundle i.succ) (fl.isVB i.succ) _ _ hy).trans ?_` and prove the remaining obligations.
+
+Conclude with `(congrArg₂ (fun s t => (g.met σ).form s t y) congr(($e₂).app U a) congr(($e₄).app U t)).trans (hw' σ U _ _ y hy))`. Conclude with `⟨GlobalTheory.T.determinant_metric_isometric k X p _ _ 1 _ _ φ _ _ hφ, hb⟩`.
+-/
 theorem step_eq {E E' E'' T : X.Modules} {N N' m : ℕ} {g : VMetric p E N} {g' : VMetric p E' N'}
     (G : g.IsCInf) (G' : g'.IsCInf) (w : E' ⟶ E) (w' : E'' ⟶ E)
     (hw : ∀ σ (U : X.Opens) (a b : Γ(E', U)), ∀ y ∈ ptsIn p σ U,
@@ -205,6 +246,9 @@ section Sum
 
 variable {E₁ E₂ : X.Modules} {r s : ℕ} (g₁ : VMetric p E₁ r) (g₂ : VMetric p E₂ s)
 
+/- English proof (translation)
+The claim follows from `isOrthSum_orthSum g₁ g₂ σ U _ _ y hy`.
+-/
 theorem form_orthSum_app {A B : X.Modules} (α : A ⟶ E₁ ⊞ E₂) (β : B ⟶ E₁ ⊞ E₂) (σ : k →+* ℂ)
     (U : X.Opens) (a : Γ(A, U)) (b : Γ(B, U)) (y : CxPts p σ) (hy : y ∈ ptsIn p σ U) :
     ((g₁.orthSum g₂).met σ).form (α.app U a) (β.app U b) y =
@@ -212,11 +256,19 @@ theorem form_orthSum_app {A B : X.Modules} (α : A ⟶ E₁ ⊞ E₂) (β : B �
       (g₂.met σ).form ((α ≫ biprod.snd).app U a) ((β ≫ biprod.snd).app U b) y :=
   isOrthSum_orthSum g₁ g₂ σ U _ _ y hy
 
+/- English proof (translation)
+Rewrite using `[Vert.Flag.incl, dif_pos e]`. Use `infer_instance`.
+-/
 theorem isIso_incl {E : X.Modules} {N : ℕ} (fl : Vert.Flag E N) {a b : Fin (N + 1)} (h)
     (e : (b : ℕ) = a) : IsIso (fl.incl a b h) := by
   rw [Vert.Flag.incl, dif_pos e]
   infer_instance
 
+/- English proof (translation)
+Establish `e : biprod.desc (f ≫ biprod.inl) (g ≫ biprod.inr) = (biprod.mapIso (asIso f) (asIso g)).hom`. Apply the tactic sequence `refine biprod.hom_ext' _ _ ?_ ?_ <;> simp`. Establish `e' : biprod.desc (g ≫ (biprod.inr : D ⟶ C ⊞ D)) (f ≫ biprod.inl) = (biprod.braiding B A).hom ≫ (biprod.mapIso (asIso f) (asIso g)).hom`. Apply the tactic sequence `refine biprod.hom_ext' _ _ ?_ ?_ <;> refine biprod.hom_ext _ _ ?_ ?_ <;> simp`. Rewrite using `[e, e']`.
+
+Conclude with `⟨inferInstance, inferInstance⟩`.
+-/
 theorem isIso_desc {A B C D : X.Modules} (f : A ⟶ C) (g : B ⟶ D) [IsIso f] [IsIso g] :
     IsIso (biprod.desc (f ≫ biprod.inl) (g ≫ biprod.inr)) ∧
       IsIso (biprod.desc (g ≫ (biprod.inr : D ⟶ C ⊞ D)) (f ≫ biprod.inl)) := by
@@ -230,6 +282,13 @@ theorem isIso_desc {A B C D : X.Modules} (f : A ⟶ C) (g : B ⟶ D) [IsIso f] [
 
 variable {g₁ g₂} (G₁ : g₁.IsCInf) (G₂ : g₂.IsCInf) (fl₁ : Vert.Flag E₁ r) (fl₂ : Vert.Flag E₂ s)
 
+/- English proof (translation)
+Establish `a₁ : j.castSucc = Vert.Flag.fstIdx r s (j.castAdd s).castSucc` using `Fin.ext (by simp [Vert.Flag.fstIdx])`. Establish `a₂ : j.succ = Vert.Flag.fstIdx r s (j.castAdd s).succ` using `Fin.ext (by simp [Vert.Flag.fstIdx])`. Use `isIso_incl fl₂ (Vert.Flag.sndIdx_step (j.castAdd s)) (by simp [Vert.Flag.sndIdx])` as an intermediate fact. Use `step_eq (G₁.orthSum G₂) G₁ biprod.inl biprod.inr (fun σ U a b y hy => ?_) (fun σ U a b y hy => ?_) _ _ _ _ (fl₂.isVB (Vert.Flag.sndIdx r s (j.castAdd s).castSucc)) (by simp [Vert.Flag.sndIdx]) (eqToHom (congrArg fl₁.F a₁) ≫ biprod.inl) (eqToHom (congrArg fl₁.F a₂) ≫ biprod.inl) ( …` and prove the remaining obligations. Rewrite using `[form_orthSum_app _ _ _ _ _ _ _ _ _ hy, biprod.inl_fst, biprod.inl_snd]`.
+
+Conclude with `(congrArg (_ + ·) (form_zero_left _ _ _)).trans (add_zero _)`. Rewrite using `[form_orthSum_app _ _ _ _ _ _ _ _ _ hy, biprod.inl_snd, biprod.inr_fst]`. Conclude with `(congrArg₂ (· + ·) (form_zero_right _ _ _) (form_zero_left _ _ _)).trans (add_zero _)`. Conclude with `(Category.assoc _ _ _).trans ((congrArg (_ ≫ ·) (biprod.inl_map _ _)).trans (fl₁.eqToHom_ι_assoc a₁ _))`. Conclude with `(Category.assoc _ _ _).trans ((congrArg (_ ≫ ·) (biprod.inl_map _ _)).trans (fl₁.eqToHom_ι_assoc a₂ _))`.
+
+Conclude with `(Category.assoc _ _ _).trans ((Category.id_comp _).trans (biprod.inr_map _ _))`. Establish `e : (𝟙 _ ≫ biprod.inr) ≫ (fl₁.biprod fl₂).step (j.castAdd s) = fl₂.incl _ _ (Vert.Flag.sndIdx_step (j.castAdd s)) ≫ biprod.inr` using `(Category.assoc _ _ _).trans ((Category.id_comp _).trans (biprod.inr_map _ _))`. Conclude with `e ▸ (isIso_desc _ _).1`.
+-/
 theorem step_castAdd (j : Fin r) :
     (grLB fl₁ j G₁).Isometric (grLB (fl₁.biprod fl₂) (j.castAdd s) (G₁.orthSum G₂)) ∧ ∀ σ,
       (((g₁.orthSum g₂).stepMet (fl₁.biprod fl₂) (j.castAdd s)).met σ).bcMeas
@@ -262,6 +321,13 @@ theorem step_castAdd (j : Fin r) :
       (Category.assoc _ _ _).trans ((Category.id_comp _).trans (biprod.inr_map _ _))
     exact e ▸ (isIso_desc _ _).1
 
+/- English proof (translation)
+Establish `a₁ : j.castSucc = Vert.Flag.sndIdx r s (j.natAdd r).castSucc` using `Fin.ext (by simp [Vert.Flag.sndIdx])`. Establish `a₂ : j.succ = Vert.Flag.sndIdx r s (j.natAdd r).succ` using `Fin.ext (by simp [Vert.Flag.sndIdx]; omega)`. Use `isIso_incl fl₁ (Vert.Flag.fstIdx_step (j.natAdd r)) (by simp [Vert.Flag.fstIdx]; omega)` as an intermediate fact. Use `step_eq (G₁.orthSum G₂) G₂ biprod.inr biprod.inl (fun σ U a b y hy => ?_) (fun σ U a b y hy => ?_) _ _ _ _ (fl₁.isVB (Vert.Flag.fstIdx r s (j.natAdd r).castSucc)) (by simp [Vert.Flag.fstIdx]; omega) (eqToHom (congrArg fl₂.F a₁) ≫ biprod.inr) (eqToHom (congrArg fl₂.F a₂) ≫ biprod. …` and prove the remaining obligations. Rewrite using `[form_orthSum_app _ _ _ _ _ _ _ _ _ hy, biprod.inr_fst, biprod.inr_snd]`.
+
+Conclude with `(congrArg (· + _) (form_zero_left _ _ _)).trans (zero_add _)`. Rewrite using `[form_orthSum_app _ _ _ _ _ _ _ _ _ hy, biprod.inl_snd, biprod.inr_fst]`. Conclude with `(congrArg₂ (· + ·) (form_zero_left _ _ _) (form_zero_right _ _ _)).trans (add_zero _)`. Conclude with `(Category.assoc _ _ _).trans ((congrArg (_ ≫ ·) (biprod.inr_map _ _)).trans (fl₂.eqToHom_ι_assoc a₁ _))`. Conclude with `(Category.assoc _ _ _).trans ((congrArg (_ ≫ ·) (biprod.inr_map _ _)).trans (fl₂.eqToHom_ι_assoc a₂ _))`.
+
+Conclude with `(Category.assoc _ _ _).trans ((Category.id_comp _).trans (biprod.inl_map _ _))`. Establish `e : (𝟙 _ ≫ biprod.inl) ≫ (fl₁.biprod fl₂).step (j.natAdd r) = fl₁.incl _ _ (Vert.Flag.fstIdx_step (j.natAdd r)) ≫ biprod.inl` using `(Category.assoc _ _ _).trans ((Category.id_comp _).trans (biprod.inl_map _ _))`. Conclude with `e ▸ (isIso_desc _ _).2`.
+-/
 theorem step_natAdd (j : Fin s) :
     (grLB fl₂ j G₂).Isometric (grLB (fl₁.biprod fl₂) (j.natAdd r) (G₁.orthSum G₂)) ∧ ∀ σ,
       (((g₁.orthSum g₂).stepMet (fl₁.biprod fl₂) (j.natAdd r)).met σ).bcMeas
@@ -294,6 +360,15 @@ theorem step_natAdd (j : Fin s) :
       (Category.assoc _ _ _).trans ((Category.id_comp _).trans (biprod.inl_map _ _))
     exact e ▸ (isIso_desc _ _).2
 
+/- English proof (translation)
+Take `⟨f₁, x, hx, rfl⟩` from `hx`. Take `⟨f₂, y, hy, rfl⟩` from `hy`. Use `⟨fun i => ?_, Fin.addCases x y, fun i => ?_, ?_⟩` and prove the remaining obligations. Proceed by induction on `i using Fin.addCases with`. Consider the case `left j => exact fun σ => ((step_castAdd G₁ G₂ fl₁ fl₂ j).2 σ).symm ▸ f₁ j σ`.
+
+Consider the case `right j => exact fun σ => ((step_natAdd G₁ G₂ fl₁ fl₂ j).2 σ).symm ▸ f₂ j σ`. Proceed by induction on `i using Fin.addCases with`. Consider the case `left j`. Take `⟨h, hh, e⟩` from `hx j`. Conclude with `⟨h, (HC k X p 1 hX).1 _ _ h (step_castAdd G₁ G₂ fl₁ fl₂ j).1 hh, by simpa using e⟩`.
+
+Consider the case `right j`. Take `⟨h, hh, e⟩` from `hy j`. Conclude with `⟨h, (HC k X p 1 hX).1 _ _ h (step_natAdd G₁ G₂ fl₁ fl₂ j).1 hh, by simpa using e⟩`. Establish `e : (g₁.orthSum g₂).flagBc (fl₁.biprod fl₂) = g₁.flagBc fl₁ + g₂.flagBc fl₂`. Rewrite using `[flagBc, Fin.sum_univ_add]`.
+
+Conclude with `congrArg₂ (· + ·) (Finset.sum_congr rfl fun j _ => finsum_congr fun σ => congrArg (fun μ : MeasureTheory.Measure _ => (μ Set.univ).toReal) ((step_castAdd G₁ G₂ fl₁ fl₂ j).2 σ)) (Finset.sum_congr rfl fun j _ => finsum_congr fun σ => congrArg (fun μ : MeasureTheory.Measure _ => (μ …`. Rewrite using `[e, Fin.sum_univ_add]`. Simplify using `only [Fin.addCases_left, Fin.addCases_right]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem isFlagCh2_biprod (HC : Published.ArIso) [IsIntegral X] (hX : IsArithVar p 1) {x y : ℝ}
     (hx : IsFlagCh2 G₁ fl₁ x) (hy : IsFlagCh2 G₂ fl₂ y) :
     IsFlagCh2 (G₁.orthSum G₂) (fl₁.biprod fl₂) (x + y) := by
@@ -340,6 +415,15 @@ end GlobalTheory.SecondChernDegreeSum
 
 open GlobalTheory.SecondChernDegreeSum in
 
+/- English proof (translation)
+Introduce `HC k _ X p _ hreg hX E₁ E₂ r s h₁ h₂ a b H₁ H₂ ha hb`. Establish `HS : (h₁.orthSum h₂).IsCInfNorm` using `fun Y π hπ => by`. Take `⟨φ, hφ⟩` from `GlobalTheory.T.orthogonal_sum_pullback_isometric k X Y p _ E₁ E₂ r s h₁ h₂ π rfl`. Rewrite using `[(VMetric.isIsometry_iff _).1 hφ]`. Conclude with `((H₁ Y π hπ).orthSum (H₂ Y π hπ)).map φ`.
+
+Take `⟨c, hc⟩` from `hex HC k X p hreg hX _ _ _ HS`. Take `⟨M⟩` from `ha.1`. Take `⟨_, ⟨M'⟩, -⟩` from `hex HC k M.Y (M.ρ ≫ p) hreg M.reg.toIsArithVar _ _ _ (VMetric.pull_regCover_isCInf k X p E₂ s h₂ H₂ M.toRegCover).isCInfNorm`. Set `C` to `compCover M.toRegCover M'.toRegCover`. Set `M₁ : h₁.FlagModel` to `⟨C, VMetric.pull_regCover_isCInf k X p E₁ r h₁ H₁ C, (M.flag.pull M'.ρ).ofIso ((Scheme.Modules.pullbackComp M'.ρ M.ρ).app E₁)⟩`.
+
+Set `M₂ : h₂.FlagModel` to `⟨C, VMetric.pull_regCover_isCInf k X p E₂ s h₂ H₂ C, M'.flag.ofIso ((Scheme.Modules.pullbackComp M'.ρ M.ρ).app E₂)⟩`. Take `⟨φ, hφ⟩` from `GlobalTheory.T.orthogonal_sum_pullback_isometric k X C.Y p _ E₁ E₂ r s h₁ h₂ C.ρ rfl`. Set `M₃ : (h₁.orthSum h₂).FlagModel` to `⟨C, VMetric.pull_regCover_isCInf k X p _ _ _ HS C, (M₁.flag.biprod M₂.flag).ofIso φ⟩`. Establish `h₃ : VMetric.IsFlagCh2 M₃.cInf M₃.flag (C.deg * a + C.deg * b)` using `(VMetric.isFlagCh2_ofIso k C.Y _ _ _ _ _ _ φ (M₁.cInf.orthSum M₂.cInf) M₃.cInf _ _ hφ).1 (isFlagCh2_biprod M₁.cInf M₂.cInf M₁.flag M₂.flag HC.arIso C.reg.toIsArithVar (ha.2 M₁) (hb.2 M₂))`. Establish `e : c = a + b`.
+
+Rewrite using `[hc.eq_div M₃ h₃, ← mul_add]`. Conclude with `mul_div_cancel_left₀ _ (Nat.cast_ne_zero.2 C.deg_pos.ne')`. Conclude with `e ▸ hc`.
+-/
 theorem GlobalTheory.SecondChernDegreeSum.isCh2Deg_orthSum_of_exists (hex : GlobalTheory.Published.ArCalc → ∀ (k : Type) [CommRing k] (X : Scheme.{0}) (p : X ⟶ Sp k) [IsIntegral X], (∀ (Y : Scheme.{0}) (q : Y ⟶ Sp k) [IsIntegral Y], IsArithVar q 1 → Nonempty (RegCover q)) → IsArithVar p 1 → ∀ (E : X.Modules) (r : ℕ) (h : VMetric p E r), h.IsCInfNorm → ∃ a, h.IsCh2Deg a) : GlobalTheory.Published.ArCalc → ∀ (k : Type) [CommRing k] (X : Scheme.{0}) (p : X ⟶ Sp k) [IsIntegral X], (∀ (Y : Scheme.{0}) (q : Y ⟶ Sp k) [IsIntegral Y], IsArithVar q 1 → Nonempty (RegCover q)) → IsArithVar p 1 → ∀ (E₁ E₂ : X.Modules) (r s : ℕ) (h₁ : VMetric p E₁ r) (h₂ : VMetric p E₂ s) (a b : ℝ), h₁.IsCInfNorm → h₂.IsCInfNorm → h₁.IsCh2Deg a → h₂.IsCh2Deg b → (h₁.orthSum h₂).IsCh2Deg (a + b) := by
   intro HC k _ X p _ hreg hX E₁ E₂ r s h₁ h₂ a b H₁ H₂ ha hb
   have HS : (h₁.orthSum h₂).IsCInfNorm := fun Y π hπ => by

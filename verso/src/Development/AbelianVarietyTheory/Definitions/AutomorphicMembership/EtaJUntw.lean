@@ -139,6 +139,13 @@ def useFace (R : RealDat D A Ks) (F : Face D A) : Face D (useFam R) where
     let Z := F.Zsc (extSub R F Zs)
     ⟨Z.F0, fun t => Z.J0 t.1, Z.E1u, Z.l3m, Z.l3u, Z.l6m, Z.l6u, Z.x, Z.b, Z.la, Z.de⟩
 
+/- English proof (translation)
+Unfold `extSub`. Use `show DefSub.mk _ _ = DefSub.mk _ _`. Use `congr 1`. Use function extensionality and compare the values at `t`. Distinguish the cases in `h : InUse R t`.
+
+Conclude with `(dif_pos h).trans rfl`. Conclude with `(dif_neg h).trans rfl`. Use function extensionality and compare the values at `i t`. Distinguish the cases in `h : InUse R t`. Conclude with `(dif_pos h).trans rfl`.
+
+Conclude with `(dif_neg h).trans rfl`.
+-/
 theorem extSub_zs (R : RealDat D A Ks) (F : Face D A) :
     extSub R F ((useReal R).toCx (useFace R F)).zs = (R.toCx F).zs := by
   unfold extSub
@@ -173,14 +180,23 @@ structure CharAll (R : RealDat D A Ks) (F : Face D A) : Prop where
 
 variable {R : RealDat D A Ks} {F : Face D A}
 
+/- English proof (translation)
+The claim follows from `congrArg (fun Z => (F.Zsc Z).F0) (extSub_zs R F)`.
+-/
 theorem restrictedFace_closedNumbers : ((useFace R F).Zsc ((useReal R).toCx (useFace R F)).zs).F0 = (F.Zsc (R.toCx F).zs).F0 :=
   congrArg (fun Z => (F.Zsc Z).F0) (extSub_zs R F)
 
+/- English proof (translation)
+The claim follows from `congrArg (fun Z => (F.Zsc Z).l6m) (extSub_zs R F)`.
+-/
 theorem restrictedFace_eigenvalueMainTerm : ((useFace R F).Zsc ((useReal R).toCx (useFace R F)).zs).l6m = (F.Zsc (R.toCx F).zs).l6m :=
   congrArg (fun Z => (F.Zsc Z).l6m) (extSub_zs R F)
 
 set_option maxHeartbeats 2000000 in
 
+/- English proof (translation)
+Unfold `RealDat.NonzeroIndexPlace`. Rewrite using `[restrictedFace_closedNumbers]`. Conclude with `Iff.rfl`.
+-/
 theorem nonzeroIndexPlaces_iff (w : HeightOneSpectrum (𝓞 D.what₂.LL)) : (useReal R).NonzeroIndexPlace (useFace R F) w ↔ R.NonzeroIndexPlace F w := by
   unfold RealDat.NonzeroIndexPlace
   rw [restrictedFace_closedNumbers]
@@ -188,12 +204,18 @@ theorem nonzeroIndexPlaces_iff (w : HeightOneSpectrum (𝓞 D.what₂.LL)) : (us
 
 set_option maxHeartbeats 2000000 in
 
+/- English proof (translation)
+Apply the tactic sequence `cases b <;> exact Iff.rfl`.
+-/
 theorem partAt_use (b : Bool) (i : Fin D.R.m) (p : A.fam.base.Ix) (v : InfinitePlace D.what₂.LL) :
     (useReal R).PartAt (useFace R F) b i p v ↔ R.PartAt F b i p v := by
   cases b <;> exact Iff.rfl
 
 set_option maxHeartbeats 4000000 in
 
+/- English proof (translation)
+The claim follows from `{ mu0 := h.lev.mu0, eta := h.lev.eta, xi := fun t => h.lev.xi t.1 xi_inj := fun _ _ e => Subtype.ext (h.lev.xi_inj e) xi_base := h.lev.xi_base, xi_fin := fun t => h.lev.xi_fin t.1, xi_triv := fun t => h.lev.xi_triv t.1 xi_tame := fun t => h.lev.xi_tame t.1, Pg := h.lev.Pg, Q_pl : …`.
+-/
 theorem CharAll.use (h : CharAll R F) : (useReal R).Char (useFace R F) where
   lev :=
     { mu0 := h.lev.mu0, eta := h.lev.eta, xi := fun t => h.lev.xi t.1
@@ -286,6 +308,9 @@ def useTie {X0 : BaseLevelRowSide D} (Y : RowsTie R F X0) : RowsTie (useReal R) 
   lam_tie i t := Y.lam_tie i t.1
   etaJ_tie := Y.etaJ_tie
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fun t => h.1 t.1, fun t => h.2 t.1⟩`.
+-/
 theorem qGuard_use (h : QGuard R) : QGuard (useReal R) := ⟨fun t => h.1 t.1, fun t => h.2 t.1⟩
 
 set_option maxHeartbeats 2000000 in
@@ -456,16 +481,28 @@ abbrev R₀ : RealDat D r.A₀ r.core.Q.c.F := useReal r.R
 
 abbrev F₀ : Face D r.A₀ := useFace r.R r.F
 
+/- English proof (translation)
+The claim follows from `r.char.use`.
+-/
 theorem char₀ : r.R₀.Char r.F₀ := r.char.use
 
+/- English proof (translation)
+The claim follows from `qGuard_use r.guard`.
+-/
 theorem guard₀ : QGuard r.R₀ := qGuard_use r.guard
 
 def tie₀ : RowsTie r.R₀ r.F₀ r.p0 := useTie r.tie
 
 def fw₀ : FWTie r.core r.R₀ (kapTop D) r.v₀ := useFW r.fw
 
+/- English proof (translation)
+The claim follows from `r.rho`.
+-/
 theorem rho₀ : RhoTie r.R₀ := r.rho
 
+/- English proof (translation)
+The claim follows from `r.bar`.
+-/
 theorem bar₀ : BarTie r.fw₀ := r.bar
 
 abbrev eig : EigIdx D r.X := eigOf r.tie r.X
@@ -474,9 +511,17 @@ def tupEquiv : r.T ≃ D.what₂.Tup := Equiv.ofBijective r.tie.tup ⟨r.tie.tup
 
 include r in
 
+/- English proof (translation)
+Rewrite using `[← r.tie.tup_zero, ← r.xi_eq]`. Conclude with `r.char.lev.xi_base`.
+-/
 theorem trueColumnChoices_heckeChar_reference_eq_one : xi D.what₂.mu0 = 1 := by
   rw [← r.tie.tup_zero, ← r.xi_eq]; exact r.char.lev.xi_base
 
+/- English proof (translation)
+Take `⟨t, rfl⟩` from `r.tup_onto μ`. Rewrite using `[(r.eQ t).nonempty_congr, ← r.xi_eq]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨P⟩`. Conclude with `⟨P.1, (r.char.lev.Q_ram t P.1).2 (Or.inl P.2)⟩`.
+
+Introduce and unpack `⟨v, hv⟩`. Break down `(r.char.lev.Q_ram t v).1 hv with h | ⟨P, h, -⟩` into its components or cases. Conclude with `⟨⟨v, h⟩⟩`. Conclude with `⟨⟨P, h⟩⟩`.
+-/
 theorem nonempty_QPl_iff (μ : D.what₂.Tup) : Nonempty (r.X.QPl μ) ↔ ∃ v, ¬ (xi μ).UnrAt v := by
   obtain ⟨t, rfl⟩ := r.tup_onto μ
   rw [(r.eQ t).nonempty_congr, ← r.xi_eq]
@@ -488,9 +533,15 @@ theorem nonempty_QPl_iff (μ : D.what₂.Tup) : Nonempty (r.X.QPl μ) ↔ ∃ v,
     · exact ⟨⟨v, h⟩⟩
     · exact ⟨⟨P, h⟩⟩
 
+/- English proof (translation)
+The claim follows from `r.tie.base.iota_tie t x`.
+-/
 example (t : r.T) (x : r.p0.s.Amb (r.tupEquiv t)) :
     r.tie.base.eE (r.p0.s.iota (r.tupEquiv t) x) = r.R.Th t (r.tie.base.eA t x) := r.tie.base.iota_tie t x
 
+/- English proof (translation)
+Rewrite using `[← not_nonempty_iff, r.nonempty_QPl_iff, r.trueColumnChoices_heckeChar_reference_eq_one]`. Conclude with `fun ⟨v, hv⟩ => hv fun _ _ => rfl`.
+-/
 example : IsEmpty (r.X.QPl D.what₂.mu0) := by
   rw [← not_nonempty_iff, r.nonempty_QPl_iff, r.trueColumnChoices_heckeChar_reference_eq_one]
   exact fun ⟨v, hv⟩ => hv fun _ _ => rfl

@@ -16,6 +16,9 @@ open scoped Formalism.Per NNReal
 
 namespace GlobalTheory.BSP
 
+/- English proof (translation)
+Use `⟨fun x hx => hJ.haus x fun n => ?_⟩` and prove the remaining obligations. Establish `h1` using `hx n`. Rewrite `h1`, the goal using `[SModEq.sub_mem]`. Conclude with `Submodule.smul_mono_left (Ideal.pow_right_mono h n) h1`.
+-/
 theorem isHausdorff_of_le_ideal {R : Type} [CommRing R] {I J : Ideal R} (h : I ≤ J) (hJ : IsHausdorff J R) :
     IsHausdorff I R := by
   refine ⟨fun x hx => hJ.haus x fun n => ?_⟩
@@ -23,6 +26,9 @@ theorem isHausdorff_of_le_ideal {R : Type} [CommRing R] {I J : Ideal R} (h : I �
   rw [SModEq.sub_mem] at h1 ⊢
   exact Submodule.smul_mono_left (Ideal.pow_right_mono h n) h1
 
+/- English proof (translation)
+Use extensionality with `n`. Rewrite using `[WittVector.map_coeff, WittVector.coeff_frobenius_charP, WittVector.coeff_frobenius_charP, WittVector.map_coeff, map_pow]`.
+-/
 theorem map_frobenius_charP {l : ℕ} [Fact l.Prime] {R O : Type} [CommRing R] [CharP R l] [CommRing O] [CharP O l]
     (ψ : R →+* O) (x : WittVector l R) :
     WittVector.map ψ (WittVector.frobenius x) = WittVector.frobenius (WittVector.map ψ x) := by
@@ -30,17 +36,31 @@ theorem map_frobenius_charP {l : ℕ} [Fact l.Prime] {R O : Type} [CommRing R] [
   rw [WittVector.map_coeff, WittVector.coeff_frobenius_charP, WittVector.coeff_frobenius_charP,
     WittVector.map_coeff, map_pow]
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem hom_comp_apply {l : ℕ} {R : Type} [CommRing R] {P P' P'' : Obj l R} (g : Hom P' P'') (f : Hom P P')
     (a : P.A) : (g.comp f).f a = g.f (f.f a) := rfl
 
+/- English proof (translation)
+Rewrite using `[← hom_comp_apply, h]`. Both sides reduce to the same expression.
+-/
 theorem hom_eq_id_apply {l : ℕ} {R : Type} [CommRing R] {P P' : Obj l R} (g : Hom P' P) (f : Hom P P')
     (h : g.comp f = Hom.id P) (a : P.A) : g.f (f.f a) = a := by
   rw [← hom_comp_apply, h]; rfl
 
+/- English proof (translation)
+Rewrite using `[← hom_comp_apply, h]`. Both sides reduce to the same expression.
+-/
 theorem hom_eq_comp_apply {l : ℕ} {R : Type} [CommRing R] {P P' P'' Q : Obj l R} (g : Hom P' P'') (f : Hom P P')
     (g' : Hom Q P'') (f' : Hom P Q) (h : g.comp f = g'.comp f') (a : P.A) : g.f (f.f a) = g'.f (f'.f a) := by
   rw [← hom_comp_apply, h]; rfl
 
+/- English proof (translation)
+Take `⟨w, -, hwE⟩` from `GlobalTheory.T.breuilKisin_eisenstein_image_teichmuller_pow l K bk O ψ hxu`. Establish `hE0 : WittVector.map ψ (bk.ev bk.E) ≠ 0` using `fun h => by`. Establish `h1` using `congrArg (WittVector.constantCoeff (p := l) (R := O)) h`. Rewrite `h1` using `[hwE, map_add, map_mul, map_pow, map_natCast, CharP.cast_eq_zero, zero_mul, add_zero, WittVector.constantCoeff_apply, WittVector.teichmuller_coeff_zero, map_zero]`. Conclude with `hx0 ((pow_eq_zero_iff bk.deg_pos.ne').1 h1)`.
+
+Use `⟨mem_nonZeroDivisors_of_ne_zero hE0, isHausdorff_of_le_ideal ?_ (GlobalTheory.T.wittVector_teichmuller_isAdicComplete_of_perfect l O (ψ bk.flat) hx0 hxc).2.toIsHausdorff⟩` and prove the remaining obligations. Rewrite using `[Ideal.map_sup, Ideal.map_span, Ideal.map_span, Set.image_singleton, Set.image_singleton, map_natCast]`. Use `sup_le le_sup_left ?_` and prove the remaining obligations. Rewrite using `[Ideal.span_le, Set.singleton_subset_iff, SetLike.mem_coe, hwE]`. Conclude with `Ideal.add_mem _ (Ideal.mem_sup_right (Ideal.pow_mem_of_mem _ (Ideal.mem_span_singleton_self _) _ bk.deg_pos)) (Ideal.mem_sup_left (Ideal.mul_mem_right _ _ (Ideal.mem_span_singleton_self _)))`.
+-/
 theorem mapE_facts {l : ℕ} [Fact l.Prime] {K : FinExt l} (bk : BK K) (O : Type) [CommRing O] [IsDomain O]
     [ValuationRing O] [CharP O l] [PerfectRing O l] (ψ : OCb l →+* O) (hx0 : ψ bk.flat ≠ 0)
     (hxu : ¬ IsUnit (ψ bk.flat)) (hxc : IsAdicComplete (Ideal.span {ψ bk.flat}) O) :
@@ -61,10 +81,20 @@ theorem mapE_facts {l : ℕ} [Fact l.Prime] {K : FinExt l} (bk : BK K) (O : Type
   exact Ideal.add_mem _ (Ideal.mem_sup_right (Ideal.pow_mem_of_mem _ (Ideal.mem_span_singleton_self _) _ bk.deg_pos))
     (Ideal.mem_sup_left (Ideal.mul_mem_right _ _ (Ideal.mem_span_singleton_self _)))
 
+/- English proof (translation)
+Substitute `hIJ` using the available equality. Substitute `hgh` using the available equality. Conclude with `H`.
+-/
 theorem isHausdorff_map_congr {A B : Type} [CommRing A] [CommRing B] {I J : Ideal A} {g h : A →+* B} (hIJ : I = J)
     (hgh : g = h) (H : IsHausdorff (J.map h) B) : IsHausdorff (I.map g) B := by
   subst hIJ; subst hgh; exact H
 
+/- English proof (translation)
+Establish `hFi : ∀ b : WittVector l (OCb l), F (En.inl.f b) = WittVector.map ψ b` using `fun b => RingHom.congr_fun hFinl b`. Establish `htfW : ∀ c : WittVector l O, ((l : ℕ) : WittVector l O) * c = 0 → c = 0` using `fun c hc => WittVector.eq_zero_of_p_mul_eq_zero c (by rw [mul_comm, hc])`. Take `⟨F', hF'a⟩ : ∃ F' : En.Q.A →+* WittVector l O, ∀ a, F' a = WittVector.map ψ (s.f a)` from `⟨(WittVector.map ψ).comp s.f, fun _ => rfl⟩`. Establish `hF'φ : ∀ a, F' (En.Q.D.φ a) = WittVector.frobenius (F' a)` using `fun a => ((hF'a _).trans (congrArg (WittVector.map ψ) (Hom.f_φ s a))).trans ((map_frobenius_charP ψ (s.f a)).trans (congrArg WittVector.frobenius (hF'a a).symm))`. Establish `hinl : ∀ b, F (En.inl.f b) = F' (En.inl.f b)` using `fun b => (hFi b).trans ((congrArg (WittVector.map ψ) (hom_eq_id_apply s En.inl hs1 b).symm).trans (hF'a _).symm)`.
+
+Establish `hE` using `(mapE_facts bk O ψ hx0 hxu hxc).1`. Establish `hH` using `(mapE_facts bk O ψ hx0 hxu hxc).2`. Establish `hnzd : F (En.inl.f (bk.ev bk.E)) ∈ nonZeroDivisors (WittVector l O)`. Rewrite using `[hFi]`. Conclude with `hE`.
+
+Establish `hI : (ainfObj K).I = Ideal.span {bk.ev bk.E}` using `bk.span_ev.symm`. Establish `hhaus : IsHausdorff ((Ideal.span {((l : ℕ) : (ainfObj K).A)} ⊔ (ainfObj K).I).map (F.comp En.inl.f)) (WittVector l O)` using `isHausdorff_map_congr (congrArg (Ideal.span {((l : ℕ) : (ainfObj K).A)} ⊔ ·) hI) hFinl hH`. Establish `hFF : F = F'` using `GlobalTheory.T.breuilKisinPrismCoproduct_hom_eq_of_agree l K bk (ainfObj K) (bk.ev bk.E) (bk.ev X) En (WittVector l O) WittVector.frobenius F F' htfW hFφ hF'φ hinl (hinr.trans (hF'a _).symm) hnzd hhaus`. Rewrite using `[hFF, hF'a]`.
+-/
 theorem envPoint_eq {l : ℕ} [Fact l.Prime] {K : FinExt l} (bk : BK K) (En : Env bk (ainfObj K) (bk.ev bk.E) (bk.ev X))
     (O : Type) [CommRing O] [IsDomain O] [ValuationRing O] [CharP O l] [PerfectRing O l] (ψ : OCb l →+* O)
     (hx0 : ψ bk.flat ≠ 0) (hxu : ¬ IsUnit (ψ bk.flat)) (hxc : IsAdicComplete (Ideal.span {ψ bk.flat}) O)
@@ -95,6 +125,23 @@ theorem envPoint_eq {l : ℕ} [Fact l.Prime] {K : FinExt l} (bk : BK K) (En : En
       htfW hFφ hF'φ hinl (hinr.trans (hF'a _).symm) hnzd hhaus
   rw [hFF, hF'a]
 
+/- English proof (translation)
+Introduce `l _ K bk En O _ _ _ _ _ f hx0 hxu hxc`. Establish `hcc : Function.Surjective (WittVector.constantCoeff (p` using `l) (R := OCb l)) := fun y => ⟨WittVector.teichmuller l y, by rw [WittVector.constantCoeff_apply, WittVector.teichmuller_coeff_zero]⟩`. Set `f0 : WittVector l (OCb l) →+* O` to `f.comp En.inl.f`. Establish `hker : RingHom.ker (WittVector.constantCoeff (p` using `l) (R := OCb l)) ≤ RingHom.ker f0 := by`. Rewrite using `[WittVector.ker_constantCoeff, Ideal.span_le, Set.singleton_subset_iff, SetLike.mem_coe, RingHom.mem_ker, map_natCast, CharP.cast_eq_zero]`.
+
+Take `⟨ψ, hψ⟩ : ∃ ψ : OCb l →+* O, ∀ a : WittVector l (OCb l), f (En.inl.f a) = ψ (a.coeff 0)` from `⟨RingHom.liftOfSurjective _ hcc ⟨f0, hker⟩, fun a => (RingHom.liftOfSurjective_comp_apply _ hcc ⟨f0, hker⟩ a).symm⟩`. Establish `hflat : f (En.inl.f (bk.ev X)) = ψ bk.flat`. Rewrite using `[hψ, bk.ev_X, WittVector.teichmuller_coeff_zero]`. Rewrite `hx0`, `hxu`, `hxc` using `[hflat]`. Take `⟨htf, -, -⟩` from `GlobalTheory.T.ainf_envelope_mod_prime_properties l K bk En`.
+
+Take `⟨F, hF0, hFφ⟩` from `GlobalTheory.T.exists_frobenius_compatible_wittVector_lift l En.Q.A En.Q.D.φ (fun a => ⟨En.Q.D.δ a, by rw [En.Q.D.φ_eq]; ring⟩) htf O f`. Establish `hFinl : F.comp En.inl.f = WittVector.map ψ` using `GlobalTheory.T.wittVector_ringHom_eq_map_of_coeff_zero l (OCb l) O (F.comp En.inl.f) ψ (fun a => (hF0 (En.inl.f a)).trans (hψ a))`. Establish `hFi : ∀ b : WittVector l (OCb l), F (En.inl.f b) = WittVector.map ψ b` using `fun b => RingHom.congr_fun hFinl b`. Establish `hφX : En.Q.D.φ (BK.hf En.inr X) = BK.hf En.inr X ^ l`. Combine the equalities or inequalities in the displayed calculation.
+
+Use `set v := F (BK.hf En.inr X) with hvdef`. Establish `hv : WittVector.frobenius v = v ^ l`. Rewrite using `[hvdef, ← hFφ, hφX, map_pow]`. Establish `hvt` using `GlobalTheory.T.wittVector_eq_teichmuller_of_frobenius_eq_pow_self l O v hv`. Establish `e1 : F (En.inl.f (bk.ev X)) = WittVector.teichmuller l (ψ bk.flat)`.
+
+Rewrite using `[hFi, bk.ev_X, WittVector.map_teichmuller]`. Establish `e2 : F (En.inl.f (bk.ev bk.E)) = WittVector.map ψ (bk.ev bk.E)` using `hFi _`. Establish `h1 : v = F (En.inl.f (bk.ev X)) + F (En.inl.f (bk.ev bk.E)) * F En.w`. Use `congrArg F En.w_eq` as an intermediate fact. Rewrite `this` using `[map_add, map_mul]`. Then use the resulting hypothesis.
+
+Rewrite `h1` using `[e1, e2]`. Establish `hdvd : WittVector.map ψ (bk.ev bk.E) ∣ WittVector.teichmuller l (v.coeff 0) - WittVector.teichmuller l (ψ bk.flat)` using `⟨F En.w, by rw [← hvt]; linear_combination h1⟩`. Take `⟨g, hg⟩` from `GlobalTheory.T.exists_galois_conj_of_teichmuller_congr l K bk O ψ hx0 hxu hxc (v.coeff 0) hdvd`. Take `⟨s, ⟨hs1, hs2⟩, -⟩` from `En.univ (ainfObj K) (Hom.id _) ((ainfHom K g).comp bk.ι)`. Establish `hinr : F (BK.hf En.inr X) = WittVector.map ψ (s.f (BK.hf En.inr X))`.
+
+Establish `h2 : s.f (BK.hf En.inr X) = Per.σA (g : GQ l) (bk.ev X)` using `hom_eq_comp_apply s En.inr _ _ hs2 X`. Establish `h3 : WittVector.map ψ (Per.σA (g : GQ l) (bk.ev X)) = WittVector.teichmuller l (ψ (Per.σF (g : GQ l) bk.flat))`. Rewrite using `[bk.ev_X, GlobalTheory.RingIface.sigA_teich, WittVector.map_teichmuller]`. Use `Eq.trans ?_ ((congrArg (WittVector.map ψ) h2).trans h3).symm` and prove the remaining obligations. Conclude with `hvdef.symm.trans (hvt.trans (congrArg (WittVector.teichmuller l) hg))`.
+
+Use `⟨g, s, ψ, hs1, hs2, fun a => ?_⟩` and prove the remaining obligations. Rewrite using `[← hF0, envPoint_eq bk En O ψ hx0 hxu hxc F hFφ hFinl s hs1 hinr a]`. Conclude with `WittVector.map_coeff ψ (s.f a) 0`.
+-/
 theorem envPoint_factors : ∀ (l : ℕ) [Fact l.Prime] (K : FinExt l) (bk : BK K)
     (En : Env bk (ainfObj K) (bk.ev bk.E) (bk.ev X)) (O : Type) [CommRing O] [IsDomain O] [ValuationRing O]
     [CharP O l] [PerfectRing O l] (f : En.Q.A →+* O), f (En.inl.f (bk.ev X)) ≠ 0 →

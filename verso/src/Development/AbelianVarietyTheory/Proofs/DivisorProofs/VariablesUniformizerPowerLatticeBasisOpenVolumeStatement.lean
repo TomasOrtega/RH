@@ -22,6 +22,9 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar GlobalTheory.Local
   GlobalTheory.FunObj.borelSpaceKw
 
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.UnfoldLoss.LatVol.varLat_basis_open_vol | exact GlobalTheory.UnfoldLoss.LatVol.varLat_basis_open_vol | (intros; apply GlobalTheory.UnfoldLoss.LatVol.varLat_basis_open_vol <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.variablesUniformizerPowerLattice_basis_open_volume : ∀ {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] [MeasurableSpace k] [BorelSpace k]
     (G : Grid k) (ν : Measure k), IsUnitVol ν → ∀ ϖ : kˣ, IsUnif ϖ →
     (∀ s ∈ nhds (0 : Vars G), ∃ n : ℕ, (varLat G ϖ n : Set (Vars G)) ⊆ s) ∧

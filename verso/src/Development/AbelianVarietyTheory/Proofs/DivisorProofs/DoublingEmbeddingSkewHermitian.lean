@@ -17,6 +17,21 @@ open GlobalTheory.DefiniteStab
 
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E}
 
+/- English proof (translation)
+Take `⟨c, hc0, hc⟩` from `exists_transfer hlat`. Take `⟨t, ht0, ht⟩` from `exists_int_scale (F := F) (E := E)`. Set `V : Set (AE F E)` to `{u | ∀ k, (basA F E).repr (inclR (F := F) (AF F) (t * c)⁻¹ * u) k ∈ intFin F}`. Establish `hVo : IsOpen V`. Establish `hcont : Continuous fun u : AE F E => (basA F E).equivFun (inclR (F` using `F) (AF F) (t * c)⁻¹ * u) := (IsModuleTopology.continuous_of_linearMap (basA F E).equivFun.toLinearMap).comp (continuous_const.mul continuous_id)`.
+
+Establish `e : V = ⋂ k, (fun u => (basA F E).equivFun (inclR (F` using `F) (AF F) (t * c)⁻¹ * u) k) ⁻¹' intFin F := by`. Use extensionality with `u`. Simplify using `[V, Module.Basis.equivFun_apply]`. Rewrite using `[e]`. Conclude with `isOpen_iInter_of_finite fun k => isOpen_intFin.preimage ((continuous_apply k).comp hcont)`.
+
+Establish `hV0 : (0 : AE F E) ∈ V` using `fun k => by`. Rewrite using `[mul_zero, map_zero, Finsupp.zero_apply]`. Conclude with `zero_mem_intFin`. Establish `hmat : Continuous fun g : UA σ X.J => mat g` using `Units.continuous_val.comp continuous_subtype_val`. Set `W : Set (UA σ X.J)` to `{g | ∀ i j, (mat g - 1) i j ∈ V ∧ (mat g⁻¹ - 1) i j ∈ V}`.
+
+Establish `hWo : IsOpen W`. Establish `h1 : ∀ i j, Continuous fun g : UA σ X.J => (mat g - 1) i j` using `fun i j => (hmat.sub continuous_const).matrix_elem i j`. Establish `h2 : ∀ i j, Continuous fun g : UA σ X.J => (mat g⁻¹ - 1) i j` using `fun i j => ((hmat.comp continuous_inv).sub continuous_const).matrix_elem i j`. Simplify using `only [W, Set.setOf_forall, Set.setOf_and]`. Conclude with `isOpen_iInter_of_finite fun i => isOpen_iInter_of_finite fun j => (hVo.preimage (h1 i j)).inter (hVo.preimage (h2 i j))`.
+
+Establish `hW1 : (1 : UA σ X.J) ∈ W`. Establish `e : mat (1 : UA σ X.J) = 1` using `rfl`. Introduce `i j`. Rewrite using `[inv_one, e, sub_self]`. Conclude with `⟨hV0, hV0⟩`.
+
+Establish `key : ∀ N : Matrix (Fin n) (Fin n) (AE F E), (∀ i j, (N - 1) i j ∈ V) → ∀ z ∈ latHat X, N *ᵥ z ∈ latHat X`. Introduce `N hN z hz`. Establish `e : N *ᵥ z = z + (N - 1) *ᵥ z` using `by rw [Matrix.sub_mulVec, Matrix.one_mulVec]; abel`. Rewrite using `[e]`. Conclude with `add_mem hz (mulVec_mem hc0 ht0 hc ht (fun i j => hN i j) hz)`.
+
+Use `Subgroup.isOpen_of_mem_nhds K (g := 1) (Filter.mem_of_superset (hWo.mem_nhds hW1) fun g hg => ?_)` and prove the remaining obligations. Rewrite using `[SetLike.mem_coe, hK]`. Use `⟨fun w => ?_, fun z hz => ⟨key _ (fun i j => (hg i j).1) z hz, key _ (fun i j => (hg i j).2) z hz⟩⟩` and prove the remaining obligations. Rewrite using `[hθ w]`. Conclude with `Commute.one_right _`.
+-/
 theorem isOpen_stab_of_theta_one {B : Base F E} {n : ℕ} {X : Spc F E n} (hlat : X.L.IsLattice E)
     (hθ : ∀ w, X.θ w = 1) {K : Subgroup (UA σ X.J)} (hK : IsStab B K) : IsOpen (K : Set (UA σ X.J)) := by
   obtain ⟨c, hc0, hc⟩ := exists_transfer hlat
@@ -58,6 +73,31 @@ theorem isOpen_stab_of_theta_one {B : Base F E} {n : ℕ} {X : Spc F E n} (hlat 
   rw [hθ w]
   exact Commute.one_right _
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce `h`. Establish `key : ∀ z ∈ latHat W₂, (fun i => z (finSumFinEquiv (.inl i))) ∈ latHat W ∧ (fun i => z (finSumFinEquiv (.inr i))) ∈ latHat W`. Introduce `z hz`. Proceed by induction on `hz using AddSubgroup.closure_induction with`.
+
+Consider the case `mem z hz`. Take `⟨b, hb0, hb, x, hx, rfl⟩` from `hz`. Rewrite `hx` using `[hL, mem_sumLat]`. Conclude with `⟨gen_mem W hb0 hb hx.1, gen_mem W hb0 hb hx.2⟩`. Consider the case `zero => exact ⟨zero_mem _, zero_mem _⟩`.
+
+Consider the case `add x y _ _ hx hy => exact ⟨add_mem hx.1 hy.1, add_mem hx.2 hy.2⟩`. Consider the case `neg x _ hx => exact ⟨neg_mem hx.1, neg_mem hx.2⟩`. Simplify `key _ h` using `only [pairVec_inl, pairVec_inr]`. Introduce and unpack `⟨hu, hv⟩`. Establish `hadd : ∀ a b c d : Fin n → AE F E, pairVec finSumFinEquiv (a + b) (c + d) = pairVec finSumFinEquiv a c + pairVec finSumFinEquiv b d`.
+
+Introduce `a b c d`. Apply the tactic sequence `funext j; obtain ⟨i | i, rfl⟩ := finSumFinEquiv.surjective j <;>`. Simplify using `only [pairVec_inl, pairVec_inr, Pi.add_apply]`. Establish `hneg : ∀ a c : Fin n → AE F E, pairVec finSumFinEquiv (-a) (-c) = -pairVec finSumFinEquiv a c`. Introduce `a c`.
+
+Apply the tactic sequence `funext j; obtain ⟨i | i, rfl⟩ := finSumFinEquiv.surjective j <;>`. Simplify using `only [pairVec_inl, pairVec_inr, Pi.neg_apply]`. Establish `hzero : pairVec finSumFinEquiv (0 : Fin n → AE F E) (0 : Fin n → AE F E) = 0`. Apply the tactic sequence `funext j; obtain ⟨i | i, rfl⟩ := finSumFinEquiv.surjective j <;>`. Simplify using `only [pairVec_inl, pairVec_inr, Pi.zero_apply]`.
+
+Establish `hgen : ∀ (b : AF F) (x y : Fin n → E), pairVec finSumFinEquiv (b • incV F x) (b • incV F y) = b • incV F (pairVec finSumFinEquiv x y)`. Introduce `b x y`. Apply the tactic sequence `funext j; obtain ⟨i | i, rfl⟩ := finSumFinEquiv.surjective j <;>`. Simplify using `only [pairVec_inl, pairVec_inr, Pi.smul_apply, incV]`. Establish `h1 : pairVec finSumFinEquiv u 0 ∈ latHat W₂`.
+
+Proceed by induction on `hu using AddSubgroup.closure_induction with`. Consider the case `mem z hz`. Take `⟨b, hb0, hb, x, hx, rfl⟩` from `hz`. Use `hgen b x 0` as an intermediate fact. Rewrite `this` using `[GlobalTheory.LatHatClosed.incV_zero, smul_zero]`.
+
+Rewrite using `[this]`. Conclude with `gen_mem W₂ hb0 hb (by rw [hL, pairVec_mem_sumLat]; exact ⟨hx, zero_mem _⟩)`. Consider the case `zero => rw [hzero]`. Conclude with `zero_mem _`. Consider the case `add x y _ _ hx hy => rw [← add_zero (0 : Fin n → AE F E), hadd]`.
+
+Conclude with `add_mem hx hy`. Consider the case `neg x _ hx => rw [← neg_zero, hneg]`. Conclude with `neg_mem hx`. Establish `h2 : pairVec finSumFinEquiv 0 v ∈ latHat W₂`. Proceed by induction on `hv using AddSubgroup.closure_induction with`.
+
+Consider the case `mem z hz`. Take `⟨b, hb0, hb, x, hx, rfl⟩` from `hz`. Use `hgen b 0 x` as an intermediate fact. Rewrite `this` using `[GlobalTheory.LatHatClosed.incV_zero, smul_zero]`. Rewrite using `[this]`.
+
+Conclude with `gen_mem W₂ hb0 hb (by rw [hL, pairVec_mem_sumLat]; exact ⟨zero_mem _, hx⟩)`. Consider the case `zero => rw [hzero]`. Conclude with `zero_mem _`. Consider the case `add x y _ _ hx hy => rw [← add_zero (0 : Fin n → AE F E), hadd]`. Conclude with `add_mem hx hy`.
+
+Consider the case `neg x _ hx => rw [← neg_zero, hneg]`. Conclude with `neg_mem hx`. Use `add_mem h1 h2` as an intermediate fact. Rewrite `this` using `[← hadd, add_zero, zero_add]`. Then use the resulting hypothesis.
+-/
 theorem mem_latHat_sum {n : ℕ} {W : Spc F E n} {W₂ : Spc F E (n + n)} (hL : W₂.L = sumLat finSumFinEquiv W.L W.L)
     {u v : Fin n → AE F E} : pairVec finSumFinEquiv u v ∈ latHat W₂ ↔ u ∈ latHat W ∧ v ∈ latHat W := by
   constructor
@@ -117,6 +157,9 @@ theorem mem_latHat_sum {n : ℕ} {W : Spc F E n} {W₂ : Spc F E (n + n)} (hL : 
     have := add_mem h1 h2
     rwa [← hadd, add_zero, zero_add] at this
 
+/- English proof (translation)
+Rewrite `hz`, the goal using `[← pairVec_eta finSumFinEquiv z]`. Rewrite `hz` using `[mem_latHat_sum hL]`. Rewrite using `[blkMat_mulVec, mem_latHat_sum hL, Matrix.one_mulVec]`. Conclude with `⟨hA _ hz.1, hz.2⟩`.
+-/
 theorem blkMat_mulVec_mem {n : ℕ} {W : Spc F E n} {W₂ : Spc F E (n + n)} (hL : W₂.L = sumLat finSumFinEquiv W.L W.L)
     {A : Matrix (Fin n) (Fin n) (AE F E)} (hA : ∀ z ∈ latHat W, A *ᵥ z ∈ latHat W) {z : Fin (n + n) → AE F E}
     (hz : z ∈ latHat W₂) : blkMat finSumFinEquiv A 1 *ᵥ z ∈ latHat W₂ := by
@@ -125,6 +168,15 @@ theorem blkMat_mulVec_mem {n : ℕ} {W : Spc F E n} {W₂ : Spc F E (n + n)} (hL
   rw [blkMat_mulVec, mem_latHat_sum hL, Matrix.one_mulVec]
   exact ⟨hA _ hz.1, hz.2⟩
 
+/- English proof (translation)
+Introduce `_ F E _ _ _ _ _ σ B n W hB hW W₂ _ hL hθ₂ i hi K₂ hK₂`. Establish `hθ : ∀ w, W.θ w = 1` using `fun w => GlobalTheory.DefiniteCartan.eq_one_of_hasSig (hW.sig w) (hW.cartan w)`. Establish `hK` using `GlobalTheory.StabHaar.isStab_stabK (σ := σ) B W`. Use `⟨GlobalTheory.StabHaar.stabK B W, isOpen_stab_of_theta_one hW.lat hθ hK, ?_, fun k hk => ?_⟩` and prove the remaining obligations. Take `⟨C, hC, hsub⟩` from `GlobalTheory.StabBoundedSkew.exists_compact_superset_stab F E σ B n W n 0 hB hW _ hK`.
+
+Conclude with `hC.of_isClosed_subset (GlobalTheory.StabHaar.isClosed_stabK B W (GlobalTheory.LatHatClosed.isClosed_latHat F E n W hW.lat)) hsub`. Establish `hk'` using `(hK k).1 hk`. Establish `e1 : mat (i (k, 1)) = blkMat finSumFinEquiv (mat k) 1` using `hi k 1`. Establish `e2 : mat (i (k, 1))⁻¹ = blkMat finSumFinEquiv (mat k⁻¹) 1`. Rewrite using `[← map_inv, Prod.inv_mk, inv_one]`.
+
+Conclude with `hi k⁻¹ 1`. Use `(hK₂ _).2 ⟨fun w => ?_, fun z hz => ?_⟩` and prove the remaining obligations. Rewrite using `[e1, hθ₂, hθ, blkMat_map _ _ (map_zero _), Matrix.map_one _ (map_zero _) (map_one _)] show _ * _ = _ * _`. Rewrite using `[blkMat_mul, blkMat_mul, Matrix.mul_one, Matrix.one_mul, Matrix.mul_one, Matrix.one_mul]`. Rewrite using `[e1, e2]`.
+
+Conclude with `⟨blkMat_mulVec_mem hL (fun y hy => (hk'.2 y hy).1) hz, blkMat_mulVec_mem hL (fun y hy => (hk'.2 y hy).2) hz⟩`.
+-/
 theorem exists_open_compact : GlobalTheory.ThK.KP → ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E) (n : ℕ)
     (W : Spc F E n), B.IsGood σ → W.IsSkew σ B n 0 →
     ∀ W₂ : Spc F E (n + n), W₂.J = dblGram finSumFinEquiv W.J → W₂.L = sumLat finSumFinEquiv W.L W.L →

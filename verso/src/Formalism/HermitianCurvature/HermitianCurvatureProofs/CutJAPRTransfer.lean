@@ -16,6 +16,9 @@ section datum
 
 variable {k r : ℕ}
 
+/- English proof (translation)
+Unfold `SSn.unitH`. Rewrite using `[Formalism.FourierDecayAlt.P.Qx2.herm_uh hh, Matrix.mulVec_smul]`.
+-/
 theorem unitH_uh {h : B.Mat k r} (hh : h ∈ UH (Hpk k r)) (v : Fin (2 * r + k + 1) → ℂ) :
     SSn.unitH k r (h *ᵥ v) = h *ᵥ SSn.unitH k r v := by
   unfold SSn.unitH
@@ -23,12 +26,18 @@ theorem unitH_uh {h : B.Mat k r} (hh : h ∈ UH (Hpk k r)) (v : Fin (2 * r + k +
 
 variable {z z' : Fin (2 * r + k + 1) → ℂ} {μ μ0 : ℂ → Matrix (Fin (k + 1)) (Fin (k + 1)) ℂ} {ζ : ℂ} {h h' : B.Mat k r}
 
+/- English proof (translation)
+Unfold `SSn.nu0`. Rewrite using `[hd, ← Matrix.mulVec_mulVec, hh'.2.2, ← Matrix.mulVec_mulVec, kap_prWv_mulVec hz hh, unitH_uh hh.1]`.
+-/
 theorem section_first_vector_transport (hz : inWb k r z) (hh : h ∈ UWset k r z) (hh' : h' ∈ UWset k r z')
     (hd : NF.muZ k r μ ζ = h * NF.muZ k r μ0 ζ * h') :
     SSn.nu0 k r z z' μ ζ = h *ᵥ SSn.nu0 k r z z' μ0 ζ := by
   unfold SSn.nu0
   rw [hd, ← Matrix.mulVec_mulVec, hh'.2.2, ← Matrix.mulVec_mulVec, kap_prWv_mulVec hz hh, unitH_uh hh.1]
 
+/- English proof (translation)
+Establish `hhi` using `Formalism.FourierDecayAlt.P.BigCellInversePair.uw_inv hh`. Establish `hhi'` using `Formalism.FourierDecayAlt.P.BigCellInversePair.uw_inv hh'`. Unfold `SSn.nu0'`. Rewrite using `[hd, Matrix.mul_inv_rev, Matrix.mul_inv_rev, ← Matrix.mulVec_mulVec, ← Matrix.mulVec_mulVec, hhi.2.2, kap_prWv_mulVec hz' hhi', unitH_uh hhi'.1]`.
+-/
 theorem nu0'_tr (hz' : inWb k r z') (hh : h ∈ UWset k r z) (hh' : h' ∈ UWset k r z')
     (hd : NF.muZ k r μ ζ = h * NF.muZ k r μ0 ζ * h') :
     SSn.nu0' k r z z' μ ζ = h'⁻¹ *ᵥ SSn.nu0' k r z z' μ0 ζ := by
@@ -38,6 +47,11 @@ theorem nu0'_tr (hz' : inWb k r z') (hh : h ∈ UWset k r z) (hh' : h' ∈ UWset
   rw [hd, Matrix.mul_inv_rev, Matrix.mul_inv_rev, ← Matrix.mulVec_mulVec, ← Matrix.mulVec_mulVec, hhi.2.2,
     kap_prWv_mulVec hz' hhi', unitH_uh hhi'.1]
 
+/- English proof (translation)
+Apply `Formalism.FourierDecayAlt.P.Qx8.mat_ext` to reduce the goal to its premises. Introduce `v`. Use `set ν := SSn.nu0' k r z z' μ0 ζ with hν`. Establish `e1 : h' *ᵥ (h'⁻¹ *ᵥ ν) = ν`. Rewrite using `[Matrix.mulVec_mulVec, Formalism.FourierDecayAlt.P.NFRadRedS.uw_mul_inv hh', Matrix.one_mulVec]`.
+
+Establish `e2 : ∀ w, herm (Hpk k r) (h' *ᵥ w) ν = herm (Hpk k r) w (h'⁻¹ *ᵥ ν)`. Introduce `w`. Use `conv_lhs => rw [← e1]`. Conclude with `Formalism.FourierDecayAlt.P.Qx2.herm_uh hh'.1 _ _`. Rewrite using `[MC.DT.ioMulVec, nu0'_tr hz' hh hh' hd, ← hν, ← Matrix.mulVec_mulVec, ← Matrix.mulVec_mulVec, MC.DT.ioMulVec, ← hν, kap_prWv_mulVec hz' hh', e2, hd, ← Matrix.mulVec_mulVec, ← Matrix.mulVec_mulVec, Matrix.mulVec_sub, Matrix.mulVec_smul, e1]`.
+-/
 theorem section_embedding_transport (hz' : inWb k r z') (hh : h ∈ UWset k r z) (hh' : h' ∈ UWset k r z')
     (hd : NF.muZ k r μ ζ = h * NF.muZ k r μ0 ζ * h') :
     SSn.io0 k r z z' μ ζ = h * SSn.io0 k r z z' μ0 ζ * h' := by
@@ -63,12 +77,18 @@ variable {Wp Wq : Type} [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp] [Norm
 
 variable {k r : ℕ} {z : Fin (2 * r + k + 1) → ℂ}
 
+/- English proof (translation)
+Establish `e : (π h⁻¹).comp (π h) = 1`. Rewrite using `[← hπ.2 _ (Formalism.FourierDecayAlt.P.BigCellInversePair.uw_inv hh) _ hh, Formalism.FourierDecayAlt.P.NFRadRedS.uw_inv_mul hh, hπ.1]`. Conclude with `congrArg (fun T : Wp →L[ℂ] Wp => T y) e`.
+-/
 theorem rep_inv_l {π : B.Mat k r → (Wp →L[ℂ] Wp)} (hπ : IsCRepOn (UWset k r z) π) {h : B.Mat k r}
     (hh : h ∈ UWset k r z) (y : Wp) : π h⁻¹ (π h y) = y := by
   have e : (π h⁻¹).comp (π h) = 1 := by
     rw [← hπ.2 _ (Formalism.FourierDecayAlt.P.BigCellInversePair.uw_inv hh) _ hh, Formalism.FourierDecayAlt.P.NFRadRedS.uw_inv_mul hh, hπ.1]
   exact congrArg (fun T : Wp →L[ℂ] Wp => T y) e
 
+/- English proof (translation)
+Establish `e : (π h).comp (π h⁻¹) = 1`. Rewrite using `[← hπ.2 _ hh _ (Formalism.FourierDecayAlt.P.BigCellInversePair.uw_inv hh), Formalism.FourierDecayAlt.P.NFRadRedS.uw_mul_inv hh, hπ.1]`. Conclude with `congrArg (fun T : Wp →L[ℂ] Wp => T y) e`.
+-/
 theorem rep_inv_r {π : B.Mat k r → (Wp →L[ℂ] Wp)} (hπ : IsCRepOn (UWset k r z) π) {h : B.Mat k r}
     (hh : h ∈ UWset k r z) (y : Wp) : π h (π h⁻¹ y) = y := by
   have e : (π h).comp (π h⁻¹) = 1 := by
@@ -84,6 +104,17 @@ variable {Wp Wq : Type} [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp] [Norm
 variable {k r : ℕ} {z z' : Fin (2 * r + k + 1) → ℂ} {μ μ0 : ℂ → Matrix (Fin (k + 1)) (Fin (k + 1)) ℂ} {ζ : ℂ}
   {h h' : B.Mat k r} {π : B.Mat k r → (Wp →L[ℂ] Wp)} {π' : B.Mat k r → (Wq →L[ℂ] Wq)}
 
+/- English proof (translation)
+Establish `hhi` using `Formalism.FourierDecayAlt.P.BigCellInversePair.uw_inv hh`. Establish `hhi'` using `Formalism.FourierDecayAlt.P.BigCellInversePair.uw_inv hh'`. Introduce `p hp`. Take `⟨hp1, hp2, hp3⟩` from `hp`. Establish `hst : (h * p.1 * h⁻¹, h'⁻¹ * p.2 * h') ∈ NF.Stab k r z z' μ ζ`.
+
+Use `⟨Formalism.FourierDecayAlt.P.NFRadRedS.uw_mul (Formalism.FourierDecayAlt.P.NFRadRedS.uw_mul hh hp1) hhi, Formalism.FourierDecayAlt.P.NFRadRedS.uw_mul (Formalism.FourierDecayAlt.P.NFRadRedS.uw_mul hhi' hp2) hh', ?_⟩` and prove the remaining obligations. Use `show h * p.1 * h⁻¹ * NF.muZ k r μ ζ * (h'⁻¹ * p.2 * h') = NF.muZ k r μ ζ`. Rewrite using `[hd]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Formalism.FourierDecayAlt.P.NFRadRedS.uw_inv_mul hh, Formalism.FourierDecayAlt.P.NFRadRedS.uw_mul_inv hh']`.
+
+Simplify using `only [Matrix.mul_one, Matrix.mul_assoc]`. Use `_ = h * NF.muZ k r μ0 ζ * h' := by rw [hp3]`. Establish `hfix` using `hX _ hst`. Apply `ContinuousLinearMap.ext` to reduce the goal to its premises. Introduce `x`.
+
+Establish `h1` using `congrArg (fun T : Wq →L[ℂ] Wp => T (π' h'⁻¹ x)) hfix`. Simplify using `only [ContinuousLinearMap.comp_apply] at h1`. Rewrite `h1` using `[hπ.2 _ (Formalism.FourierDecayAlt.P.NFRadRedS.uw_mul hh hp1) _ hhi, hπ.2 _ hh _ hp1, hπ'.2 _ (Formalism.FourierDecayAlt.P.NFRadRedS.uw_mul hhi' hp2) _ hh', hπ'.2 _ hhi' _ hp2]`. Simplify using `only [ContinuousLinearMap.comp_apply] at h1`. Rewrite `h1` using `[rep_inv_r hπ' hh']`.
+
+Simplify using `only [ContinuousLinearMap.comp_apply]`. Rewrite using `[← h1, rep_inv_l hπ hh]`.
+-/
 theorem fib_tr (hπ : IsCRepOn (UWset k r z) π) (hπ' : IsCRepOn (UWset k r z') π')
     (hh : h ∈ UWset k r z) (hh' : h' ∈ UWset k r z')
     (hd : NF.muZ k r μ ζ = h * NF.muZ k r μ0 ζ * h') {Xf : Wq →L[ℂ] Wp} (hX : Xf ∈ NF.Fib k r z z' μ π π' ζ) :
@@ -120,6 +151,43 @@ end fib
 end Tr
 
 open Tr in
+/- English proof (translation)
+Introduce `hTF h0 Wp Wq _ _ _ _ _ _ P Bs hk X d hA l hl S hS Pr hPr Bw Bw' hBw hBw' π ρ hUp`. Establish `hpl` using `hA.1`. Establish `hz` using `Bs.z_mem`. Establish `hz'` using `Bs.z'_mem`. Establish `hTz : Tz P.k P.r Bs.z * Tz P.k P.r Bs.z' = P.TT` using `Gauge.GC.tz_TT P Bs hpl`.
+
+Establish `hcs0` using `Formalism.FourierDecayAlt.P.TheSecStab.theSection_csec (k := P.k) (r := P.r) (by omega) Bs.z_mem Bs.z'_mem Bs.T_pos Bs.T'_pos`. Use `set μ0 := TheSec.theSection P.k P.r Bs.z Bs.z' with hμ0`. Set `Bs0 : B.RealPlaceData P.k P.r Wp Wq` to `{ Bs with μsec := μ0, sec := hcs0.1 }`. Set `c0 : Fin P.r → ℂ` to `fun _ => 1`. Establish `hc0 : c0 ∈ OmX P.r` using `fun _ => one_ne_zero`.
+
+Establish `hdec : ∀ ζ : ℂ, ∃ hh : Q.Mx P.k P.r × Q.Mx P.k P.r, ζ ∈ Gauge.GC.Ann P → hh.1 ∈ UWset P.k P.r Bs.z ∧ hh.2 ∈ UWset P.k P.r Bs.z' ∧ NF.muZ P.k P.r Bs.μsec ζ = hh.1 * NF.muZ P.k P.r μ0 ζ * hh.2`. Introduce `ζ`. Distinguish the cases in `hζ : ζ ∈ Gauge.GC.Ann P`. Establish `hq : ((c0, ζ) : (Fin P.r → ℂ) × ℂ) ∈ NF.QR P.k P.r Bs.z Bs.z'` using `⟨hc0, by rw [hTz]; exact hζ⟩`. Establish `hdom` using `Formalism.FourierDecayAlt.P.NFRadRedA.mem_domR hz hz' Bs.sec hq`.
+
+Take `⟨h, hh, h', hh', he⟩` from `Formalism.FourierDecayAlt.P.NFRadRedA.decomp Bs.k_pos hz hz' Bs.T_pos Bs.T'_pos hcs0.1 hdom.2.1 hdom.2.2`. Rewrite `he` using `[Formalism.FourierDecayAlt.P.NFRadRedA.zeta_muZ hz hz' Bs.sec hq.2]`. Conclude with `⟨(h, h'), fun _ => ⟨hh, hh', he⟩⟩`. Conclude with `⟨(1, 1), fun h => absurd h hζ⟩`. Use `choose H hH using hdec`.
+
+Set `S0 : ℂ → ((Wq →L[ℂ] Wp) →L[ℂ] (Wq →L[ℂ] Wp))` to `fun ζ => (sandw (Bs.π (H ζ).1⁻¹) (Bs.π' (H ζ).2⁻¹)).comp ((S ζ).comp (sandw (Bs.π (H ζ).1) (Bs.π' (H ζ).2)))`. Establish `hS0 : IsSSPt P Bs0 d l S0`. Introduce `Φ c hc ζ hζ`. Take `⟨hh, hh', hd⟩` from `hH ζ hζ`. Use `set h := (H ζ).1 with hh_def`.
+
+Use `set h' := (H ζ).2 with hh'_def`. Establish `hq : ((c, ζ) : (Fin P.r → ℂ) × ℂ) ∈ NF.QR P.k P.r Bs.z Bs.z'` using `⟨hc, by rw [hTz]; exact hζ⟩`. Establish `hdom` using `Formalism.FourierDecayAlt.P.NFRadRedA.mem_domR hz hz' Bs.sec hq`. Establish `hdom0` using `Formalism.FourierDecayAlt.P.NFRadRedA.mem_domR hz hz' hcs0.1 hq`. Establish `hhi` using `Formalism.FourierDecayAlt.P.BigCellInversePair.uw_inv hh`.
+
+Establish `hhi'` using `Formalism.FourierDecayAlt.P.BigCellInversePair.uw_inv hh'`. Establish `hback : NF.muZ P.k P.r μ0 ζ = h⁻¹ * NF.muZ P.k P.r Bs.μsec ζ * h'⁻¹`. Rewrite using `[hd, ← Matrix.mul_assoc, ← Matrix.mul_assoc, Formalism.FourierDecayAlt.P.NFRadRedS.uw_inv_mul hh, Matrix.one_mul, Matrix.mul_assoc, Formalism.FourierDecayAlt.P.NFRadRedS.uw_mul_inv hh', Matrix.mul_one]`. Establish `hb1 : (((d.SS l).1 Φ : Q.RadSp P.k P.r Bs.z Bs.z' Bs.π Bs.π') : Q.Fn P.k P.r (Wq →L[ℂ] Wp)) c (NF.muZ P.k P.r μ0 ζ) = (Bs.π h⁻¹).comp (((((d.SS l).1 Φ : Q.RadSp P.k P.r Bs.z Bs.z' Bs.π Bs.π') : Q.Fn P.k P.r (Wq →L[ℂ] Wp)) c (NF.muZ P.k P.r Bs.μsec ζ)).comp (Bs.π' h'⁻¹))`. Rewrite using `[hback]`.
+
+Conclude with `((d.SS l).1 Φ).2.2.2 (c, NF.muZ P.k P.r Bs.μsec ζ) hdom h⁻¹ hhi h'⁻¹ hhi'`. Establish `hf : (Φ : Q.Fn P.k P.r (Wq →L[ℂ] Wp)) c (NF.muZ P.k P.r Bs.μsec ζ) = (Bs.π h).comp (((Φ : Q.Fn P.k P.r (Wq →L[ℂ] Wp)) c (NF.muZ P.k P.r μ0 ζ)).comp (Bs.π' h'))`. Rewrite using `[hd]`. Conclude with `Φ.2.2.2 (c, NF.muZ P.k P.r μ0 ζ) hdom0 h hh h' hh'`. Express the relevant statement in the definitionally equal form `(((d.SS l).1 Φ : Q.RadSp P.k P.r Bs.z Bs.z' Bs.π Bs.π') : Q.Fn P.k P.r (Wq →L[ℂ] Wp)) c (NF.muZ P.k P.r μ0 ζ) = (Bs.π h⁻¹).comp ((S ζ ((Bs.π h).comp (((Φ : Q.Fn P.k P.r (Wq →L[ℂ] Wp)) c (NF.muZ P.k P.r μ0 ζ)).comp (Bs.π' h')))).comp (Bs.π' h'⁻¹))`.
+
+Rewrite using `[← hf, ← hS Φ c hc ζ hζ]`. Conclude with `hb1`. Take `⟨n, q, hq⟩` from `h0 Wp Wq P Bs0 rfl hk X d hA l hl S0 hS0 Pr hPr Bw Bw' hBw hBw' π ρ hUp`. Use `⟨n, q, fun ζ hζ Xf hXf hline => ?_⟩` and prove the remaining obligations. Take `⟨hh, hh', hd⟩` from `hH ζ hζ`.
+
+Use `set h := (H ζ).1 with hh_def`. Use `set h' := (H ζ).2 with hh'_def`. Establish `hhi` using `Formalism.FourierDecayAlt.P.BigCellInversePair.uw_inv hh`. Establish `hhi'` using `Formalism.FourierDecayAlt.P.BigCellInversePair.uw_inv hh'`. Establish `hinv : h'⁻¹⁻¹ = h'` using `Matrix.nonsing_inv_nonsing_inv h' (WeylGroupFacts.isUnit_of_uh hh'.1)`.
+
+Establish `eν` using `section_first_vector_transport (z' := Bs.z') hz hh hh' hd`. Establish `eν'` using `nu0'_tr (z := Bs.z) hz' hh hh' hd`. Establish `eι` using `section_embedding_transport (z := Bs.z) hz' hh hh' hd`. Use `set ν := SSn.nu0 P.k P.r Bs.z Bs.z' μ0 ζ with hν`. Use `set ν' := SSn.nu0' P.k P.r Bs.z Bs.z' μ0 ζ with hν'`.
+
+Use `set ι := SSn.io0 P.k P.r Bs.z Bs.z' μ0 ζ with hι`. Use `set Xf0 : Wq →L[ℂ] Wp := (Bs.π h⁻¹).comp (Xf.comp (Bs.π' h'⁻¹)) with hXf0`. Establish `hXb : (Bs.π h).comp (Xf0.comp (Bs.π' h')) = Xf`. Apply `ContinuousLinearMap.ext` to reduce the goal to its premises. Introduce `x`.
+
+Simplify using `only [hXf0, ContinuousLinearMap.comp_apply]`. Rewrite using `[rep_inv_l Bs.π'_rep hh', rep_inv_r Bs.π_rep hh]`. Establish `hmem0 : Xf0 ∈ NF.Fib P.k P.r Bs.z Bs.z' μ0 Bs.π Bs.π' ζ` using `fib_tr Bs.π_rep Bs.π'_rep hh hh' hd hXf`. Establish `hPrT : ∀ σ : M.Ty P, Pr σ (h *ᵥ ν) = (Bs.π h).comp ((Pr σ ν).comp (Bs.π h⁻¹))` using `fun σ => hPr.2.1 h hh σ ν`. Establish `hline0 : (Pr π ν).comp Xf0 = Xf0`.
+
+Rewrite `hline` using `[eν, hPrT]`. Apply `ContinuousLinearMap.ext` to reduce the goal to its premises. Introduce `x`. Establish `h1` using `congrArg (fun T : Wq →L[ℂ] Wp => Bs.π h⁻¹ (T (Bs.π' h'⁻¹ x))) hline`. Simplify using `only [ContinuousLinearMap.comp_apply] at h1`.
+
+Rewrite `h1` using `[rep_inv_l Bs.π_rep hh]`. Simplify using `only [hXf0, ContinuousLinearMap.comp_apply]`. Conclude with `h1`. Establish `hkey : (((Complex.normSq ζ - P.TT : ℝ) : ℂ) ^ n) • (Pr ρ ν).comp (S0 ζ Xf0) = q.eval ((Real.sqrt (Complex.normSq ζ - P.TT) : ℝ) : ℂ) • (Pr ρ ν).comp (tht P.k P.r Bs.z Bs.z' Bs.π Bs.π' Bw Bw' ν ν' ι Xf0)` using `hq ζ hζ Xf0 hmem0 hline0`. Establish `hS0v : S0 ζ Xf0 = (Bs.π h⁻¹).comp ((S ζ Xf).comp (Bs.π' h'⁻¹))`.
+
+Express the relevant statement in the definitionally equal form `(Bs.π h⁻¹).comp ((S ζ ((Bs.π h).comp (Xf0.comp (Bs.π' h')))).comp (Bs.π' h'⁻¹)) = _`. Rewrite using `[hXb]`. Establish `hT` using `((hTF Wp Wq P Bs hpl Bw Bw' hBw hBw').2.2.2.1 h hh h'⁻¹ hhi' ν ν' ι Xf0).1`. Rewrite `hT` using `[hinv, hXb]`. Rewrite using `[eν, eν', eι, hT, hPrT]`.
+
+Rewrite `hkey` using `[hS0v]`. Apply `ContinuousLinearMap.ext` to reduce the goal to its premises. Introduce `x`. Establish `h1` using `congrArg (fun T : Wq →L[ℂ] Wp => Bs.π h (T (Bs.π' h' x))) hkey`. Simplify using `only [ContinuousLinearMap.comp_apply, _root_.smul_apply, map_smul] at h1`.
+
+Rewrite `h1` using `[rep_inv_l Bs.π'_rep hh']`. Simplify using `only [ContinuousLinearMap.comp_apply, _root_.smul_apply]`. Rewrite using `[rep_inv_l Bs.π_rep hh]`. Conclude with `h1`.
+-/
 theorem transfer_holds : Transfer := by
   intro hTF h0 Wp Wq _ _ _ _ _ _ P Bs hk X d hA l hl S hS Pr hPr Bw Bw' hBw hBw' π ρ hUp
   have hpl := hA.1

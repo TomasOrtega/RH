@@ -8,6 +8,15 @@ open scoped TensorProduct
 
 namespace GlobalTheory.St.G
 
+/- English proof (translation)
+Proceed by induction on `S using Finset.induction_on with`. Consider the case `empty => exact ⟨1, one_mem _, by simp, fun v _ => map_one _⟩`. Consider the case `insert w S hw ih`. Take `⟨x, hx, h1, h2⟩` from `ih`. Establish `hne : ∀ v, v ≠ w → bc (prV (E` using `E) v) (Formalism.UG.P.afsplitU w (h w) x) = bc (prV (E := E) v) x := fun v hv => Units.ext (Formalism.UG.P.afsplitC_prV_ne w v hv _ _)`.
+
+Use `⟨Formalism.UG.P.afsplitU w (h w) x, Formalism.UG.P.afsplitU_mem w σ J _ _ (hh w) hx, ?_, ?_⟩` and prove the remaining obligations. Introduce `v hv`. Distinguish the cases in `e : v = w`. Substitute `e` using the available equality. Conclude with `Units.ext (Formalism.UG.P.afsplitC_prV v _ _)`.
+
+Rewrite using `[hne v e]`. Conclude with `h1 v ((Finset.mem_insert.1 hv).resolve_left e)`. Introduce `v hv`. Rewrite `hv` using `[Finset.mem_insert, not_or]`. Rewrite using `[hne v hv.1]`.
+
+Conclude with `h2 v hv.2`.
+-/
 theorem exists_adelic_of_finset {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E]
     [Algebra F E] {n : ℕ} (σ : E →ₐ[F] E) (J : Matrix (Fin n) (Fin n) E)
     (h : ∀ v : HeightOneSpectrum (𝓞 F), GL (Fin n) (E ⊗[F] v.adicCompletion F))
@@ -34,6 +43,11 @@ theorem exists_adelic_of_finset {F E : Type} [Field F] [NumberField F] [Field E]
       rw [hne v hv.1]
       exact h2 v hv.2
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ n σ J h hh hf`. Take `⟨x, hx, h1, h2⟩` from `exists_adelic_of_finset σ J h hh hf.toFinset`. Use `⟨x, hx, fun v => ?_⟩` and prove the remaining obligations. Distinguish the cases in `hv : v ∈ hf.toFinset`. Conclude with `h1 v hv`.
+
+Rewrite using `[h2 v hv]`. Assume the negation of the conclusion as `e`. Conclude with `hv (hf.mem_toFinset.2 fun e' => e e'.symm)`.
+-/
 theorem exists_adelic_of_finite_support : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (n : ℕ) (σ : E →ₐ[F] E) (J : Matrix (Fin n) (Fin n) E) (h : ∀ v : HeightOneSpectrum (𝓞 F), GL (Fin n) (E ⊗[F] v.adicCompletion F)), (∀ v, h v ∈ UPts σ J (v.adicCompletion F)) → {v | h v ≠ 1}.Finite → ∃ x ∈ UPts σ J (Ad F), ∀ v, bc (prV (E := E) v) x = h v := by
   intro F E _ _ _ _ _ n σ J h hh hf
   obtain ⟨x, hx, h1, h2⟩ := exists_adelic_of_finset σ J h hh hf.toFinset

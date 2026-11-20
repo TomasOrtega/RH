@@ -14,6 +14,11 @@ section star
 
 variable {k r j : ℕ}
 
+/- English proof (translation)
+Unfold `hpart1 hM`. Rewrite using `[Formalism.FourierDecayAlt.P.Qx2.hpk_inv, SingleEntryHermitianProducts.single_conjT, star_one, SingleEntryHermitianProducts.hpk_mul_single_esI, single_mul_hpk_esI]`. Establish `h2 : star (-1 / 2 : ℂ) = -1 / 2`. Rewrite using `[star_div₀, star_neg, star_one, star_ofNat]`. Rewrite using `[h2, show (-1 / 2 : ℂ) = -(1 / 2) by ring, neg_smul, neg_smul, sub_neg_eq_add, smul_sub]`.
+
+Express the relevant statement in the definitionally equal form `(1 / 2 : ℂ) • Matrix.single (esI k r ⟨b, by omega⟩) (esI k r ⟨j, by omega⟩) (1 : ℂ) - (1 / 2 : ℂ) • Matrix.single (eI k r ⟨j, by omega⟩) (eI k r ⟨b, by omega⟩) (1 : ℂ) = -((1 / 2 : ℂ) • Matrix.single (eI k r ⟨j, by omega⟩) (eI k r ⟨b, by omega⟩) (1 : ℂ)) + (1 / 2 : ℂ) • Matrix.si …`. Normalize the expressions using the abelian group laws.
+-/
 theorem hpart1_single_es (hj : j + 1 ≤ r) (b : Fin j) :
     hpart1 (Hpk k r) (Matrix.single (esI k r ⟨b, by omega⟩) (esI k r ⟨j, by omega⟩) (1 : ℂ)) =
       hM k r j hj (Fin.last j) b.castSucc (-1 / 2) := by
@@ -28,6 +33,11 @@ theorem hpart1_single_es (hj : j + 1 ≤ r) (b : Fin j) :
       (1 / 2 : ℂ) • Matrix.single (esI k r ⟨b, by omega⟩) (esI k r ⟨j, by omega⟩) (1 : ℂ)
   abel
 
+/- English proof (translation)
+Unfold `hpart2 hM`. Rewrite using `[Formalism.FourierDecayAlt.P.Qx2.hpk_inv, SingleEntryHermitianProducts.single_conjT, star_one, SingleEntryHermitianProducts.hpk_mul_single_esI, single_mul_hpk_esI, smul_add]`. Establish `h2 : star (1 / (2 * Complex.I) : ℂ) = -(1 / (2 * Complex.I))` using `by simp [Complex.conj_I]`. Rewrite using `[h2, neg_smul, sub_neg_eq_add]`. Express the relevant statement in the definitionally equal form `(1 / (2 * Complex.I)) • Matrix.single (esI k r ⟨b, by omega⟩) (esI k r ⟨j, by omega⟩) (1 : ℂ) + (1 / (2 * Complex.I)) • Matrix.single (eI k r ⟨j, by omega⟩) (eI k r ⟨b, by omega⟩) (1 : ℂ) = (1 / (2 * Complex.I)) • Matrix.single (eI k r ⟨j, by omega⟩) (eI k r ⟨b, by omega⟩) (1 : ℂ …`.
+
+Normalize the expressions using the abelian group laws.
+-/
 theorem hpart2_single_es (hj : j + 1 ≤ r) (b : Fin j) :
     hpart2 (Hpk k r) (Matrix.single (esI k r ⟨b, by omega⟩) (esI k r ⟨j, by omega⟩) (1 : ℂ)) =
       hM k r j hj (Fin.last j) b.castSucc (1 / (2 * Complex.I)) := by
@@ -50,6 +60,15 @@ namespace Formalism.FourierDecayAlt.P
 
 open Formalism.FourierDecayAlt Formalism.REAL Formalism.QuantumDeterminants Formalism.FourierDecayAlt.P.LevelPointCoordinates
 
+/- English proof (translation)
+Introduce `E _ _ k r j hj z Dm Ψ Z τ γ hj1 hz hD hS hZ hτ hγ hx hEq b`. Use `show EabH (Hpk k r) _ _ Ψ _ = _`. Unfold `EabH`. Rewrite using `[hpart1_single_es hj b, hpart2_single_es hj b, rdV_hM E hj z Dm Ψ Z τ γ hj1 hz hS hZ hτ hγ hx hEq b, rdV_hM E hj z Dm Ψ Z τ γ hj1 hz hS hZ hτ hγ hx hEq b, smul_smul, ← add_smul, ← map_mul]`. Use `congr 1`.
+
+Use `set w := τ * Z⁻¹ b ⟨j - 1, by omega⟩`. Establish `e1 : (-1 / 2 : ℂ) * τ * Z⁻¹ b ⟨j - 1, by omega⟩ = -w / 2` using `by simp only [w]; ring`. Establish `e2 : 1 / (2 * Complex.I) * τ * Z⁻¹ b ⟨j - 1, by omega⟩ = -(Complex.I * w) / 2`. Simplify using `only [w]`. Clear the denominators using the available nonvanishing facts.
+
+Put the polynomial expressions in normal form. Rewrite using `[Complex.I_sq]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e1, e2]`. Simplify using `only [map_div₀, map_neg, map_mul, Complex.conj_I, map_ofNat]`.
+
+Put the polynomial expressions in normal form. Rewrite using `[Complex.I_sq]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem star_rule_x0 : CutHL.ConjugateActionRuleAtBasePoint := by
   intro E _ _ k r j hj z Dm Ψ Z τ γ hj1 hz hD hS hZ hτ hγ hx hEq b
   show EabH (Hpk k r) _ _ Ψ _ = _

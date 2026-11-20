@@ -16,6 +16,31 @@ noncomputable section
 
 namespace GlobalTheory.MixWOneDbl
 
+/- English proof (translation)
+Introduce `_ F E _ _ _ _ _ σ B n d X W M χX χW om r s r' s' hpair d₁ W₁ H' i₀ i₁ M₁ om₁ r₁ s₁ _ hpair₁ d' hd' d₁' hd₁' dd hdd dd₁ hdd₁ e he`. Establish `hψ : ∀ t, ‖B.ψ t‖ = 1` using `GlobalTheory.StdCharWeilDatum.norm_psi hpair.base.std`. Establish `hL : IsLocOp e` using `isLocOp_of_isEv hpair.good hpair₁.good he`. Establish `hL₂ : IsLocOp (conjLin e)` using `GlobalTheory.DblEval.ConjLoc.isLocOp_conjLin e hL`. Establish `hone : incM F (1 : Matrix (Fin n) (Fin n) E) = 1`.
+
+Rewrite using `[incM, Matrix.map_one _ (map_zero _) (map_one _)]`. Establish `r0 : ∀ (ψ : AddChar (AF F) ℂ) (w : Matrix (Fin d) (Fin n) (AE F E)), d'.rho ψ w = M.co.rho ψ wᵀ` using `fun ψ w => by`. Rewrite using `[Darboux.rho, Darboux.rho, ← hd', Matrix.transpose_transpose]`. Establish `r1 : ∀ (ψ : AddChar (AF F) ℂ) (w : Matrix (Fin d₁) (Fin n) (AE F E)), d₁'.rho ψ w = M₁.co.rho ψ wᵀ` using `fun ψ w => by`. Rewrite using `[Darboux.rho, Darboux.rho, ← hd₁', Matrix.transpose_transpose]`.
+
+Establish `Heisenberg₂ : ∀ (z : Matrix (Fin d₁) (Fin n) (AE F E)), ∀ φ ∈ schA F (Fin n × Fin d), e (d'.rho B.ψ (incM F H'.ι * z) φ) = d₁'.rho B.ψ z (e φ)` using `fun z φ hφ => by`. Use `he.Heisenberg₂ zᵀ φ hφ` as an intermediate fact. Rewrite `this` using `[hone, Matrix.one_mul]`. Rewrite using `[r0, r1, Matrix.transpose_mul, this]`. Establish `heis₂ : ∀ (z : Matrix (Fin d₁) (Fin n) (AE F E)), ∀ φ ∈ schA F (Fin n × Fin d), conjLin e (d'.rho B.ψ⁻¹ (incM F H'.ι * z) φ) = d₁'.rho B.ψ⁻¹ z (conjLin e φ)` using `fun z φ hφ => by`.
+
+Use function extensionality and compare the values at `y`. Rewrite using `[conjLin_apply]`. Establish `h1 : (fun x => starRingEnd ℂ (d'.rho B.ψ⁻¹ (incM F H'.ι * z) φ x)) = d'.rho B.ψ (incM F H'.ι * z) (fun x => starRingEnd ℂ (φ x))`. Use function extensionality and compare the values at `fun x => conj_schr_inv B.ψ hψ _ _ _`. Rewrite using `[h1, Heisenberg₂ z _ (GlobalTheory.ConjSch.conj_mem_schA φ hφ)]`.
+
+Conclude with `conj_schr B.ψ hψ _ _ _`. Establish `inv₁ : ∀ (y : Fin n → AE F E), ∀ φ ∈ schA F (Fin n × Fin d), e (d'.rho B.ψ (Matrix.vecMulVec (incV F H'.x) y) φ) = e φ` using `fun y φ hφ => by`. Establish `ht : (Matrix.vecMulVec (incV F H'.x) y)ᵀ = Matrix.vecMulVec y (incV F H'.x)`. Use extensionality with `i j`. Simplify using `[Matrix.vecMulVec_apply, mul_comm]`.
+
+Rewrite using `[r0, ht]`. Conclude with `he.inv _ ⟨y, rfl⟩ φ hφ`. Establish `inv₂ : ∀ (y : Fin n → AE F E), ∀ φ ∈ schA F (Fin n × Fin d), conjLin e (d'.rho B.ψ⁻¹ (Matrix.vecMulVec (incV F H'.x) y) φ) = conjLin e φ` using `fun y φ hφ => by`. Use function extensionality and compare the values at `x'`. Rewrite using `[conjLin_apply, conjLin_apply]`.
+
+Establish `h1 : (fun x => starRingEnd ℂ (d'.rho B.ψ⁻¹ (Matrix.vecMulVec (incV F H'.x) y) φ x)) = d'.rho B.ψ (Matrix.vecMulVec (incV F H'.x) y) (fun x => starRingEnd ℂ (φ x))`. Use function extensionality and compare the values at `fun x => conj_schr_inv B.ψ hψ _ _ _`. Rewrite using `[h1, inv₁ y _ (GlobalTheory.ConjSch.conj_mem_schA φ hφ)]`. Take `⟨Φ₀, h₀, hne⟩` from `GlobalTheory.EvNonzero.exists_mem_schA_ev_ne_zero F E σ B n d n d₁ X W X W₁ M M₁ 1 H'.ι (iso0 n H') e hpair.good hpair₁.good he`. Use `⟨partRₗ (conjLin e) ∘ₗ partLₗ e, fun Φ hΦ => ?_, fun z Φ hΦ => ?_, fun z Φ hΦ => ?_, fun l hl => ?_, fun x => starRingEnd ℂ (Φ₀ x), GlobalTheory.ConjSch.conj_mem_schA _ h₀, conjLin e (fun x => starRingEnd ℂ (Φ₀ x)), GlobalTheory.ConjSch.conj_mem_schA _ (he.maps _ (GlobalTheory.Co …` and prove the remaining obligations.
+
+Conclude with `partR_mem (conjLin e) hL₂ _ (partL_mem e hL Φ hΦ)`. Rewrite using `[← Matrix.fromCols_toCols z, Matrix.mul_fromCols, rho_dbl _ _ _ _ _ _ hdd, rho_dbl _ _ _ _ _ _ hdd₁]`. Simplify using `only [LinearMap.comp_apply, partLₗ_apply, partRₗ_apply]`. Rewrite using `[partL_intertwine e (d'.rho B.ψ (incM F H'.ι * z.toCols₁)) (d₁'.rho B.ψ z.toCols₁) e _ (fun φ hφ => Heisenberg₂ _ φ hφ) (fun b => by rw [sliceL_partR_rho]; exact Submodule.smul_mem _ _ (sliceL_mem hΦ _)), partL_partR_rho, partR_partL_rho, partR_intertwine (conjLin e) (d'.rho B.ψ⁻ …`. Establish `hv : Matrix.vecMulVec (incV F H'.x) z = Matrix.fromCols (Matrix.vecMulVec (incV F H'.x) (z ∘ Sum.inl)) (Matrix.vecMulVec (incV F H'.x) (z ∘ Sum.inr))`.
+
+Apply the tactic sequence `ext i j; cases j <;> rfl`. Rewrite using `[hv, rho_dbl _ _ _ _ _ _ hdd]`. Simplify using `only [LinearMap.comp_apply, partLₗ_apply, partRₗ_apply]`. Rewrite using `[partL_intertwine e (d'.rho B.ψ (Matrix.vecMulVec (incV F H'.x) (z ∘ Sum.inl))) (fun φ => φ) e _ (fun φ hφ => inv₁ _ φ hφ) (fun b => by rw [sliceL_partR_rho]; exact Submodule.smul_mem _ _ (sliceL_mem hΦ _)), partL_id, partL_partR_rho, partR_intertwine (conjLin e) (d'.rho B.ψ⁻¹ (M …`. Rewrite using `[← LinearMap.comp_assoc]`.
+
+Conclude with `partL_adm e hL _ (partR_adm (conjLin e) hL₂ l hl)`. Use `congrFun h y` as an intermediate fact. Simplify `this` using `[conjLin_apply]`. Use function extensionality and compare the values at `y`. Simplify using `only [LinearMap.comp_apply, partLₗ_apply, partRₗ_apply, partR, partL, boxFun, Sum.elim_comp_inl, Sum.elim_comp_inr]`.
+
+Establish `h1 : (fun x => e (fun x' => φ₁ x' * (fun x => starRingEnd ℂ (Φ₀ x)) x) (y ∘ Sum.inl)) = e φ₁ (y ∘ Sum.inl) • (fun x => starRingEnd ℂ (Φ₀ x))` using `funext fun x => by`. Rewrite using `[show (fun x' => φ₁ x' * (fun x => starRingEnd ℂ (Φ₀ x)) x) = (fun x => starRingEnd ℂ (Φ₀ x)) x • φ₁ from`. Use function extensionality and compare the values at `fun x' => by simp [mul_comm], map_smul]`. Simplify using `[mul_comm]`. Rewrite using `[h1, map_smul]`.
+
+Both sides reduce to the same expression.
+-/
 theorem exists_dblEv0 : GlobalTheory.FunPr.Hypotheses₂ → ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E) (n d : ℕ) (X : Spc F E n) (W : Spc F E d)
     (M : Model σ X W) (χX χW : Chr F E) (om : Rep σ X W) (r s r' s' : ℕ), IsPair B M χX χW om r s r' s' →
     ∀ (d₁ : ℕ) (W₁ : Spc F E d₁) (H' : Plane E d d₁) (i₀ i₁ : ℕ) (M₁ : Model σ X W₁) (om₁ : Rep σ X W₁) (r₁ s₁ : ℕ),

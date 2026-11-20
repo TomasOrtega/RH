@@ -22,6 +22,11 @@ open ReciprocityTheory.ChartRestriction.G.Pdiv (LieG ptMap dualScale specO)
 
 variable {R : Type} [CommRing R] {G : Over (Sp R)} [GrpObj G]
 
+/- English proof (translation)
+Establish `h : (toUnit (specO R R)).left = 𝟙 (Sp R)`. Rewrite using `[Over.toUnit_left]`. Conclude with `Spec.map_id _`. Use `ext1`. Simplify using `only [Over.comp_left, h]`.
+
+Conclude with `hw.trans (Category.id_comp _).symm`.
+-/
 theorem fst_of_isTangent {w : epsR R ⟶ G} (hw : IsTangent w) :
     ptMap (TrivSqZeroExt.fstHom R R R) ≫ (w : specO R (DualNumber R) ⟶ G) = toUnit (specO R R) ≫ η[G] := by
   have h : (toUnit (specO R R)).left = 𝟙 (Sp R) := by
@@ -31,8 +36,18 @@ theorem fst_of_isTangent {w : epsR R ⟶ G} (hw : IsTangent w) :
   simp only [Over.comp_left, h]
   exact hw.trans (Category.id_comp _).symm
 
+/- English proof (translation)
+The claim follows from `sec_epsZero_comp x`.
+-/
 theorem isTangent_val (x : LieG G) : IsTangent (G := G) x.1 := sec_epsZero_comp x
 
+/- English proof (translation)
+Proceed by induction on `l with`. Consider the case `nil`. Use `⟨⟨1, ?_⟩, rfl, ?_⟩` and prove the remaining obligations. Conclude with `comp_one _`. Use `dual_ext fun W _ s => ?_` and prove the remaining obligations.
+
+Establish `e : cotMap (1 : specO R (DualNumber R) ⟶ G) (epsZero_comp ⟨1, comp_one _⟩) = 0` using `cotMap_eq_zero rfl _`. Rewrite using `[List.map_nil, List.sum_nil]`. Conclude with `(congr((epsIso R).hom.app W (($e).app W s))).trans (map_zero _)`. Consider the case `cons x l ih`. Take `⟨p, hp, hp'⟩` from `ih`.
+
+Use `⟨⟨x.1 * p.1, OmegaGlobal.fst_mul x p⟩, by simp [hp], ?_⟩` and prove the remaining obligations. Rewrite using `[tangent_mul, hp', List.map_cons, List.sum_cons]`.
+-/
 theorem exists_prod [QuasiSeparated G.hom] (l : List (LieG G)) :
     ∃ p : LieG G, p.1 = (l.map (·.1)).prod ∧ tangent p = (l.map tangent).sum := by
   induction l with
@@ -48,6 +63,15 @@ theorem exists_prod [QuasiSeparated G.hom] (l : List (LieG G)) :
     refine ⟨⟨x.1 * p.1, OmegaGlobal.fst_mul x p⟩, by simp [hp], ?_⟩
     rw [tangent_mul, hp', List.map_cons, List.sum_cons]
 
+/- English proof (translation)
+Set `u : Fin n → LieG G` to `fun i => ⟨ptMap (dualScale (a i)) ≫ (v i).1, OmegaGlobal.fst_scale (a i) (v i)⟩`. Establish `hu (i : Fin n) : (u i).1.left = spMap (epsScaleR (a i)) ≫ (v i).1.left`. Establish `ha : (dualScale (a i)).toRingHom = epsScaleR (a i)`. Apply the tactic sequence `ext y <;> simp [dualScale, epsScaleR]`. Conclude with `congrArg (fun r => spMap r ≫ (v i).1.left) ha`.
+
+Take `⟨p, hp, hp'⟩` from `exists_prod (List.ofFn u)`. Rewrite `hp`, `hp'` using `[List.map_ofFn]`. Rewrite `hp'` using `[List.sum_ofFn]`. Establish `hs : tangent p = ∑ i, cst R (a i) • tangent (v i)` using `hp'.trans (Finset.sum_congr rfl fun i _ => tangent_scale (a i) (v i) _)`. Prove the components needed by the constructor for the conclusion.
+
+Introduce and unpack `⟨u', hu', e⟩`. Take `rfl : u' = fun i => (u i).1` from `funext fun i => Over.OverMorphism.ext ((hu' i).trans (hu i).symm)`. Take `rfl : w = p` from `Subtype.ext (e.trans hp.symm)`. Conclude with `hs`. Introduce `e`.
+
+Take `rfl : w = p` from `tangent_injective R G (e.trans hs.symm)`. Conclude with `⟨fun i => (u i).1, hu, hp⟩`.
+-/
 theorem isLieComb_iff [QuasiSeparated G.hom] {n : ℕ} (a : Fin n → R) (v : Fin n → LieG G) (w : LieG G) :
     IsLieComb (G := G) a (fun i => (v i).1) w.1 ↔ tangent w = ∑ i, cst R (a i) • tangent (v i) := by
   let u : Fin n → LieG G := fun i => ⟨ptMap (dualScale (a i)) ≫ (v i).1, OmegaGlobal.fst_scale (a i) (v i)⟩
@@ -69,6 +93,15 @@ theorem isLieComb_iff [QuasiSeparated G.hom] {n : ℕ} (a : Fin n → R) (v : Fi
     obtain rfl : w = p := tangent_injective R G (e.trans hs.symm)
     exact ⟨fun i => (u i).1, hu, hp⟩
 
+/- English proof (translation)
+Use `choose v hv using fun j => TangentSurj.tangent_surjective R G (he.coord j)`. Use `⟨v, fun j k => ?_, fun j => isTangent_val (v j), fun w hw => ?_⟩` and prove the remaining obligations. Establish `h` using `he.dualApp_coord_frame j k le_rfl`. Rewrite `h` using `[Twist.resM_self]`. Rewrite using `[hv]`.
+
+Conclude with `h.trans (if_congr eq_comm rfl rfl)`. Establish `hc : Function.Bijective (cst R)` using `ConcreteCategory.bijective_of_isIso (Scheme.ΓSpecIso (.of R)).inv`. Set `b` to `he.dual.basis le_rfl`. Establish `hb (j : Fin n) : b j = tangent (v j)`. Rewrite using `[hv]`.
+
+Conclude with `(IsFrame.basis_apply _ _ _).trans (Twist.resM_self _ _)`. Establish `key (a : Fin n → R)` using `isLieComb_iff a v ⟨w, fst_of_isTangent hw⟩`. Simplify using `only [← hb] at key`. Use `choose a ha using fun j => hc.2 (b.repr (tangent ⟨w, fst_of_isTangent hw⟩) j)`. Use `⟨a, (key a).2 ?_, fun a' h' => funext fun j => hc.1 ?_⟩` and prove the remaining obligations.
+
+Simplify using `only [ha]`. Conclude with `(b.sum_repr _).symm`. Rewrite using `[ha, (key a').1 h', b.repr_sum_self]`.
+-/
 theorem exists_dual_of_isFrame [QuasiSeparated G.hom] {n : ℕ} {e : Fin n → Γ(omega G, ⊤)} (he : IsFrame e) :
     ∃ v : Fin n → LieG G, (∀ j k, dualApp (tangent (v j)) le_top (e k) = if j = k then 1 else 0) ∧
       IsLieBasis (G := G) fun j => (v j).1 := by
@@ -91,6 +124,11 @@ theorem exists_dual_of_isFrame [QuasiSeparated G.hom] {n : ℕ} {e : Fin n → �
       exact (b.sum_repr _).symm
     · rw [ha, (key a').1 h', b.repr_sum_self]
 
+/- English proof (translation)
+Introduce `S G _ g c R _ ξ hG _ hc`. Establish `h` using `isGrpPullback_pullback G ξ`. Establish `: QuasiSeparated (bG G ξ).hom` using `MorphismProperty.of_isPullback h.1 inferInstance`. Establish `h₁` using `((c.isFrame.pullback ξ).res hc).map_iso (omegaBase h)`. Establish `hf : IsFrame (pfr c ξ hc)`.
+
+Use `h₁ using 2 with k` and compare the differences between its conclusion and the goal. Conclude with `congrArg _ (QCoh.res_pullbackSections ξ _ le_rfl hc (c.e k)).symm`. Take `⟨v, hv, hb⟩` from `exists_dual_of_isFrame hf`. Conclude with `⟨fun j => (v j).1, ⟨hc, fun j => ⟨v j, rfl, hv j⟩⟩, hb⟩`.
+-/
 theorem exists_isDual : ∀ (S : Scheme.{0}) (G : Over S) [GrpObj G] (g : ℕ) (c : VB.Chart (LieVB.omega G) g) (R : Type) [CommRing R]
     (ξ : Sp R ⟶ S), IsSemiAbelian G → SmoothOfRelativeDimension g G.hom → ⊤ ≤ ξ ⁻¹ᵁ c.U →
     ∃ y : Fin g → (epsR R ⟶ KeyVals.bG G ξ), KeyVals.IsDual c ξ y ∧ IsLieBasis y := by

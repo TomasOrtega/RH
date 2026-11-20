@@ -21,6 +21,15 @@ open GlobalTheory.CechPic GlobalTheory.UPel.HT
 
 variable {p : ℕ} [Fact p.Prime] {D : Datum p} {R : Type} [CommRing R] {b : Base D R} {N : ℕ}
 
+/- English proof (translation)
+Establish `hs` using `mp.sq`. Establish `e : (lift (𝟙 o'.A) (𝟙 o'.A)).left ≫ mp.φ₂ = mp.φ ≫ (lift (𝟙 o.A) (𝟙 o.A)).left`. Establish `a₁` using `congrArg (fun q => q.left) (lift_fst (𝟙 o.A) (𝟙 o.A))`. Establish `a₂` using `congrArg (fun q => q.left) (lift_snd (𝟙 o.A) (𝟙 o.A))`. Establish `b₁` using `congrArg (fun q => q.left) (lift_fst (𝟙 o'.A) (𝟙 o'.A))`.
+
+Establish `b₂` using `congrArg (fun q => q.left) (lift_snd (𝟙 o'.A) (𝟙 o'.A))`. Simplify using `only [Over.comp_left, Over.id_left] at a₁ a₂ b₁ b₂`. Apply `pullback.hom_ext` to reduce the goal to its premises. Use `show (_ ≫ _) ≫ (fst o.A o.A).left = (_ ≫ _) ≫ (fst o.A o.A).left`. Rewrite using `[Category.assoc, hs.1, ← Category.assoc, b₁, Category.assoc, a₁]`.
+
+Simplify using the standard rewrite rules. Use `show (_ ≫ _) ≫ (snd o.A o.A).left = (_ ≫ _) ≫ (snd o.A o.A).left`. Rewrite using `[Category.assoc, hs.2, ← Category.assoc, b₂, Category.assoc, a₂]`. Simplify using the standard rewrite rules. Establish `h1 : pull mp.φ₂ (cls o.P o.isLB) = cls o'.P o'.isLB` using `((cls_eq_iff o'.isLB (pull_isLB o.isLB mp.φ₂)).2 mp.pol).symm`.
+
+Rewrite using `[cls_pull o.isLB, cls_pull o'.isLB, ← pull_comp, ← e, pull_comp, h1]`.
+-/
 theorem pull_cls_diag {S S' : Scheme.{0}} {s : S ⟶ Sp R} {s' : S' ⟶ Sp R} {o : Obj b N s} {o' : Obj b N s'}
     {f : S' ⟶ S} (mp : ObjMap o' o f) :
     pull mp.φ (cls (o.P.pull (lift (𝟙 o.A) (𝟙 o.A)).left) (pull_isLB o.isLB _)) =
@@ -41,6 +50,11 @@ theorem pull_cls_diag {S S' : Scheme.{0}} {s : S ⟶ Sp R} {s' : S' ⟶ Sp R} {o
     ((cls_eq_iff o'.isLB (pull_isLB o.isLB mp.φ₂)).2 mp.pol).symm
   rw [cls_pull o.isLB, cls_pull o'.isLB, ← pull_comp, ← e, pull_comp, h1]
 
+/- English proof (translation)
+Establish `hN0 : 0 < N` using `by omega`. Establish `hNK : (N : k) ≠ 0`. Establish `hu` using `(b.unit N hNp).map (Spec.preimage t).hom`. Rewrite `hu` using `[map_natCast]`. Conclude with `hu.ne_zero`.
+
+Use `GlobalTheory.SiegRigid.eq_of_field (pull_isLB o.isLB _) o.ample o₀.ab h h' hc hN hNK fun Ω _ _ x y hy => ?_` and prove the remaining obligations. Take `⟨I, hI⟩` from `o₀.geom Ω x (Spec.preimage (x ≫ t)).hom (Spec.map_preimage _).symm`. Take `⟨a, ha⟩` from `(I.onto N hN0 hNp y).1 hy`. Rewrite using `[← ha, ← hI a]`. Simplify using `only [Over.comp_left, Category.assoc, he, he']`.
+-/
 theorem phi_eq (hN : 3 ≤ N) (hNp : N.Coprime p) {k : Type} [Field k] [IsAlgClosed k] {t : Sp k ⟶ Sp R}
     (o₀ : Obj b N t) {S : Scheme.{0}} {s : S ⟶ Sp R} (o : Obj b N s) {z : Sp k ⟶ S}
     {φ φ' : o₀.A.left ⟶ o.A.left} (h : IsGrpPullback o₀.A o.A z φ) (h' : IsGrpPullback o₀.A o.A z φ')
@@ -59,6 +73,11 @@ theorem phi_eq (hN : 3 ≤ N) (hNp : N.Coprime p) {k : Type} [Field k] [IsAlgClo
   rw [← ha, ← hI a]
   simp only [Over.comp_left, Category.assoc, he, he']
 
+/- English proof (translation)
+Introduce `q`. Take `⟨w, rfl⟩` from `hm.2 q`. Proceed by induction on `w with`. Consider the case `zero => simp`. Consider the case `add u v hu hv => simp only [map_add, hu, hv]`.
+
+Consider the case `tmul r q`. Rewrite using `[liftSemi_tmul, LinearMap.map_smulₛₗ, map_smul, map_smul, e, smul_eq_mul, smul_eq_mul, map_mul]`.
+-/
 theorem corr_of_isBC {R₀ R₁ R₂ : Type} [CommRing R₀] [CommRing R₁] [CommRing R₂] [Algebra R₀ R₁]
     {I₀ : Ideal R₀} {I₁ : Ideal R₁} {I₂ : Ideal R₂} {κ₀ : DividedPowers I₀} {κ₁ : DividedPowers I₁}
     {κ₂ : DividedPowers I₂} {S₀ S₁ S₂ : Scheme.{0}} {t₀ : S₀ ⟶ Sp R₀} {t₁ : S₁ ⟶ Sp R₁} {t₂ : S₂ ⟶ Sp R₂}
@@ -77,6 +96,25 @@ theorem corr_of_isBC {R₀ R₁ R₂ : Type} [CommRing R₀] [CommRing R₁] [Co
 
 set_option maxHeartbeats 1000000 in
 
+/- English proof (translation)
+Introduce `p _ D R _ b N hN hNp k _ _ t o₀ d s o m c s' o' m' n x y hxy`. Take `⟨dd, hdd, edd⟩` from `hxy`. Set `σ : TrivSqZeroExt k (Fin d → k) →+* DualNumber k` to `(TrivSqZeroExt.map c).toRingHom`. Establish `hz : spMap (TrivSqZeroExt.fstHom k k k).toRingHom ≫ spMap σ = spMap (TrivSqZeroExt.fstHom k k (Fin d → k)).toRingHom`. Rewrite using `[← Cris.spMap_comp]`.
+
+Use `congr 1`. Apply the tactic sequence `ext a <;> simp [σ]`. Establish `hrig : m'.φ ≫ n.φ = m.φ`. Use `(phi_eq hN hNp o₀ o ((m'.cart.comp n.cart).congr hz rfl) m.cart ?_ ?_ m.eta).symm.symm` and prove the remaining obligations. Rewrite using `[pull_comp, pull_cls_diag n, pull_cls_diag m', pull_cls_diag m]`.
+
+Introduce `y`. Rewrite using `[← Category.assoc, m'.eta y, Category.assoc, n.eta y, ← Category.assoc, hz]`. Establish `hdp : (divided₂ (GlobalTheory.FODef.sqZero k (Fin d → k))).IsDPMorphism (epsDP k) σ`. Unfold `epsDP`. Use `isDPMorphism_sqDP _ _ σ fun a ha => ?_` and prove the remaining obligations.
+
+Establish `ha' : a.fst = 0` using `ha`. Express the relevant statement in the definitionally equal form `(σ a).fst = 0`. Simplify using `[σ, ha']`. Establish `M : GrpMor (divided₂ (GlobalTheory.FODef.sqZero k (Fin d → k))) (spMap (TrivSqZeroExt.fstHom k k (Fin d → k)).toRingHom) o₀.A (epsDP k) (spMap (TrivSqZeroExt.fstHom k k k).toRingHom) o₀.A σ (𝟙 _) (Over.Hom.left (𝟙 o₀.A))` using `GrpMor.of_hom hdp hz.symm (𝟙 o₀.A)`. Establish `hBC : (constMor o₀.A).IsBC` using `GlobalTheory.SqZeroCrys.isBC_trivSqZeroExt k k o₀.A o₀.ab _ (constMor o₀.A)`.
+
+Establish `hBCV : (GlobalTheory.FODef.constMorV k (Fin d → k) o₀.A).IsBC` using `GlobalTheory.SqZeroCrys.isBC_trivSqZeroExt k (Fin d → k) o₀.A o₀.ab _ _`. Set `d' : Crys (epsDP k) (spMap (TrivSqZeroExt.fstHom k k k).toRingHom) o₀.A` to `hBC.bcMap x + (TrivSqZeroExt.inr (1 : k) : DualNumber k) • hBC.bcMap (c ∘ₗ y)`. Establish `ed' : ∀ q, d' ((constMor o₀.A).pull q) = TrivSqZeroExt.inl (x q) + TrivSqZeroExt.inr (c (y q))`. Introduce `q`. Establish `e1` using `(hBC.corr_iff (h := x)).2 rfl q`.
+
+Establish `e2` using `(hBC.corr_iff (h := c ∘ₗ y)).2 rfl q`. Simplify using `only [d', LinearMap.add_apply, LinearMap.smul_apply, smul_eq_mul, e1, e2]`. Apply the tactic sequence `ext <;> simp [TrivSqZeroExt.algebraMap_eq_inl]`. Establish `hMc : M.Corr dd d'` using `corr_of_isBC hBCV M fun q => by`. Rewrite using `[GrpMor.pull_pull (GlobalTheory.FODef.constMorV k (Fin d → k) o₀.A) M (constMor o₀.A) (fun _ => by`.
+
+Apply the tactic sequence `ext <;> simp [σ, TrivSqZeroExt.algebraMap_eq_inl]) (by simp) q, ed', edd q]`. Apply the tactic sequence `ext <;> simp [σ]`. Establish `Nm : GrpMor (dp0 _) (𝟙 _) o.A (dp0 _) (𝟙 _) o'.A σ (spMap σ) n.φ` using `GrpMor.of_isGrpPullback (isDPMorphism_of_eq_bot _ rfl _ _) ((Category.comp_id _).trans (Category.id_comp _).symm) n.cart`. Establish `hNc` using `crysToDR_corr (divided₂ (GlobalTheory.FODef.sqZero k (Fin d → k))) m.cart m'.cart M Nm (by rw [hrig]; simp) hMc`. Use `⟨d', ?_, fun q => ?_⟩` and prove the remaining obligations.
+
+Use `letI : Algebra (TrivSqZeroExt k (Fin d → k)) (DualNumber k) := σ.toAlgebra`. Take `⟨g, hg⟩` from `GlobalTheory.AbelianDim.exists_relDim (TrivSqZeroExt k (Fin d → k)) o.A o.ab`. Establish `hF` using `(GlobalTheory.abelianDeRham.2.2.1 _ o.A g o.ab hg (DualNumber k) o'.A n.φ n.cart).2`. Conclude with `mem_Fil_of_corr (hφ := n.cart) hF hNc hdd`. Rewrite using `[ed']`.
+
+Both sides reduce to the same expression.
+-/
 theorem main : ∀ (p : ℕ) [Fact p.Prime] (D : GlobalTheory.UPel.HT.Datum p) (R : Type) [CommRing R] (b : GlobalTheory.UPel.HT.Base D R) (N : ℕ), 3 ≤ N → N.Coprime p → ∀ (k : Type) [Field k] [IsAlgClosed k] (t : Sp k ⟶ Sp R) (o₀ : GlobalTheory.UPel.HT.Obj b N t), ∀ (d : ℕ) (s : Sp (TrivSqZeroExt k (Fin d → k)) ⟶ Sp R) (o : GlobalTheory.UPel.HT.Obj b N s) (m : GlobalTheory.UPel.HT.ObjMap o₀ o (spMap (TrivSqZeroExt.fstHom k k (Fin d → k)).toRingHom)) (c : (Fin d → k) →ₗ[k] k) (s' : Sp (DualNumber k) ⟶ Sp R) (o' : GlobalTheory.UPel.HT.Obj b N s') (m' : GlobalTheory.UPel.HT.ObjMap o₀ o' (spMap (TrivSqZeroExt.fstHom k k k).toRingHom)) (n : GlobalTheory.UPel.HT.ObjMap o' o (spMap (TrivSqZeroExt.map c).toRingHom)) (x : HdR o₀.A) (y : primDR o₀.A →ₗ[k] (Fin d → k)), GlobalTheory.FODef.IsFilLiftV m.cart x y → IsFilLift m'.cart x (c ∘ₗ y) := by
   intro p _ D R _ b N hN hNp k _ _ t o₀ d s o m c s' o' m' n x y hxy
   obtain ⟨dd, hdd, edd⟩ := hxy

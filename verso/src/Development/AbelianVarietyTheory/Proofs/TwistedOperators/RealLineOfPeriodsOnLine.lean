@@ -30,6 +30,11 @@ namespace GlobalTheory.RowReal
 variable {D : D7} {Γ : Type} [Group Γ] [Fintype Γ] {Pl0 T : Type} {A : FamIn D.what₂.LL Γ Pl0 T D.R.m}
   {Ks : Type} [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] {R : RealDat D A Ks}
 
+/- English proof (translation)
+Rewrite using `[Finsupp.sum_mul]`. Use `Finsupp.sum_congr fun p _ => ?_` and prove the remaining obligations. Rewrite using `[Finsupp.mul_sum]`. Use `Finsupp.sum_congr fun d hd => ?_` and prove the remaining obligations. Rewrite using `[h d hd p]`.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem sum_sum_line {P D' : Type} (σ : P →₀ ℂ) (τ : D' →₀ ℂ) (f : P → D' → ℂ) (ell : P → ℂ)
     (κ : D' → ℂ) (h : ∀ d ∈ τ.support, ∀ p, f p d = κ d * ell p) :
     (σ.sum fun p c => τ.sum fun d c' => c * c' * f p d) =
@@ -41,6 +46,19 @@ theorem sum_sum_line {P D' : Type} (σ : P →₀ ℂ) (τ : D' →₀ ℂ) (f :
   rw [h d hd p]
   ring
 
+/- English proof (translation)
+Take `⟨ell₀, h₀⟩` from `h`. Set `ell : PolCol ch.G × PolRow ch.G → ℂ` to `if ell₀ = 0 then fun _ => 1 else ell₀`. Establish `hne : ell ≠ 0`. Distinguish the cases in `e : ell₀ = 0`. Simplify using `only [ell, e, if_true]`.
+
+Introduce `h1`. Use `congrFun h1 (Classical.arbitrary _)` as an intermediate fact. Simplify using `at this`. Simplify `e` using `[ell, e]`. Establish `hline : ∀ t a, ch.S.SumOK t (ch.Phi a) → ∀ β ∈ ch.S.supp t (ch.Phi a), ∀ M : Vol ch.G, IsTermVol t ch.S.toGridChoice (ch.Phi a) β M → ∀ τ, ch.S.IsExpansion t (ch.Phi a) β τ → ∀ d ∈ τ.support, ∀ y, ∃ κ : ℂ, ∀ P, defPer t ch.S.toGridChoice M P d (colFn ch a) (formTop ch t y) = κ * …`.
+
+Introduce `t a hS β hβ M hM τ hτ d hd y`. Take `⟨κ, hκ⟩` from `h₀ t a hS β hβ M hM τ hτ d hd y`. Distinguish the cases in `e : ell₀ = 0`. Use `⟨0, fun P => ?_⟩` and prove the remaining obligations. Rewrite using `[hκ P, e]`.
+
+Simplify using the standard rewrite rules. Conclude with `⟨κ, fun P => by simp only [ell, e, if_false]; exact hκ P⟩`. Use `⟨ell, hne, fun t a hS β hβ M hM τ hτ y => ?_, fun z => ?_⟩` and prove the remaining obligations. Use `choose κ hκ using hline t a hS β hβ M hM τ hτ`. Set `κ' : PureDat ch.G t → ℂ` to `fun d => if hd : d ∈ τ.support then κ d hd y else 0`.
+
+Use `⟨τ.sum fun d c' => c' * κ' d, fun σ => ?_⟩` and prove the remaining obligations. Use `sum_sum_line σ τ _ ell κ' fun d hd P => ?_` and prove the remaining obligations. Simplify using `only [κ', dif_pos hd]`. Conclude with `hκ d hd y P`. Take `⟨P₀, hP₀⟩` from `Function.ne_iff.1 hne`.
+
+Use `⟨Finsupp.single P₀ (z / ell P₀), fun hz => by simp [hz], ?_⟩` and prove the remaining obligations. Rewrite using `[Finsupp.sum_single_index (zero_mul _)]`. Conclude with `div_mul_cancel₀ z hP₀`.
+-/
 theorem realLine_of_periodsOnLine (ch : Choice R) (h : PeriodsOnLine ch) : RealLine ch := by
   obtain ⟨ell₀, h₀⟩ := h
   classical
@@ -74,6 +92,9 @@ theorem realLine_of_periodsOnLine (ch : Choice R) (h : PeriodsOnLine ch) : RealL
     rw [Finsupp.sum_single_index (zero_mul _)]
     exact div_mul_cancel₀ z hP₀
 
+/- English proof (translation)
+Take `⟨CF0, hC⟩` from `hQ`. Use `⟨CF0, fun ε CF hCF => ?_⟩` and prove the remaining obligations. Take `⟨x₀, hx⟩` from `hC ε CF hCF`. Conclude with `⟨x₀, fun D large₂ he hx' Γ _ _ Pl0 T A Ks _ _ _ R F hS ch hch hsc => h ch (hx D large₂ he hx' Γ Pl0 T A Ks R F hS ch hch hsc)⟩`.
+-/
 theorem big_mono {Q Q' : ChP} (h : ∀ {D : D7} {Γ : Type} [Group Γ] [Fintype Γ] {Pl0 T : Type}
     {A : FamIn D.what₂.LL Γ Pl0 T D.R.m} {Ks : Type} [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] {R : RealDat D A Ks}
     (ch : Choice R), Q ch → Q' ch) (hQ : Big Q) : Big Q' := by

@@ -13,21 +13,36 @@ namespace GlobalTheory.EisBL.DoubledUnipotentRadical
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
 
 omit [NumberField E] in
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem matrixRep_mul {σ : E →ₐ[F] E} {n : ℕ} {Y : Spc F E n} (a b : G2 σ Y) : mat2 (a * b) = mat2 a * mat2 b := rfl
 
 omit [NumberField E] in
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem matrixRep_one {σ : E →ₐ[F] E} {n : ℕ} {Y : Spc F E n} : mat2 (1 : G2 σ Y) = 1 := rfl
 
 omit [NumberField E] in
+/- English proof (translation)
+The claim follows from `Units.inv_mul a.1`.
+-/
 theorem matrix_inv_mul_doubled {σ : E →ₐ[F] E} {n : ℕ} {Y : Spc F E n} (a : G2 σ Y) : mat2 a⁻¹ * mat2 a = 1 :=
   Units.inv_mul a.1
 
 omit [NumberField E] in
+/- English proof (translation)
+Unfold `diagCols`. Both sides reduce to the same expression.
+-/
 theorem diagCols_eq {n : ℕ} : diagCols (E := AE F E) (Fin n) =
     Matrix.fromRows (1 : Matrix (Fin n) (Fin n) (AE F E)) (1 : Matrix (Fin n) (Fin n) (AE F E)) := by
   unfold diagCols; rfl
 
 omit [NumberField E] in
+/- English proof (translation)
+Rewrite using `[diagCols_eq]`. Conclude with `unip_iff_blk (mat2 g)`.
+-/
 theorem unip_iff {σ : E →ₐ[F] E} {n : ℕ} {Y : Spc F E n} (g : G2 σ Y) :
     ((mat2 g - 1) * diagCols (E := AE F E) (Fin n) = 0 ∧
       Matrix.fromCols (1 : Matrix (Fin n) (Fin n) (AE F E)) (-1 : Matrix (Fin n) (Fin n) (AE F E)) * (mat2 g - 1) = 0) ↔
@@ -59,12 +74,18 @@ def eltA (σ : E →ₐ[F] E) {n : ℕ} (Y : Spc F E n) (Z : Matrix (Fin n) (Fin
     (blk_form_iff _ _ _).2 hZ⟩
 
 omit [NumberField E] in
+/- English proof (translation)
+Use `show Algebra.TensorProduct.map (AlgHom.id (AF F) (AF F)) σ ((1 : AF F) ⊗ₜ[F] x) = (1 : AF F) ⊗ₜ[F] σ x`. Rewrite using `[Algebra.TensorProduct.map_tmul, AlgHom.id_apply]`.
+-/
 theorem cA_inclR (σ : E →ₐ[F] E) (x : E) :
     cA σ (inclR (F := F) (AF F) x) = inclR (F := F) (AF F) (σ x) := by
   show Algebra.TensorProduct.map (AlgHom.id (AF F) (AF F)) σ ((1 : AF F) ⊗ₜ[F] x) = (1 : AF F) ⊗ₜ[F] σ x
   rw [Algebra.TensorProduct.map_tmul, AlgHom.id_apply]
 
 omit [NumberField E] in
+/- English proof (translation)
+Proceed by induction on `z using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul a x => show Algebra.TensorProduct.map (AlgHom.id (AF F) (AF F)) σ (Algebra.TensorProduct.map (AlgHom.id (AF F) (AF F)) σ (a ⊗ₜ[F] x)) = a ⊗ₜ[F] x`. Rewrite using `[Algebra.TensorProduct.map_tmul, Algebra.TensorProduct.map_tmul, AlgHom.id_apply, AlgHom.id_apply, hσ]`. Consider the case `add x y hx hy => rw [map_add, map_add, hx, hy]`.
+-/
 theorem cA_cA (σ : E →ₐ[F] E) (hσ : ∀ a, σ (σ a) = a) (z : AE F E) : cA σ (cA σ z) = z := by
   induction z using TensorProduct.induction_on with
   | zero => simp

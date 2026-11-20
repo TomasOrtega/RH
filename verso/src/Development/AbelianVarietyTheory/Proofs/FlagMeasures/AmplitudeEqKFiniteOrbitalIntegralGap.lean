@@ -14,6 +14,39 @@ namespace GlobalTheory.AmpOrbGap
 
 open GlobalTheory.AmpOrb GlobalTheory.CellOrbInt
 
+/- English proof (translation)
+Introduce `hH k r L h μG w l l' hOne γ μR νR ν hD b hb0 hb hint v v' hv hv' ξ ξ'`. Establish `H` using `hH.1`. Take `⟨⟨hgap, hok, -, hw, hμ, -, -⟩, hl, hl'⟩` from `hOne`. Take `⟨hγ, -, -, hrel, hR, hQ, hQG⟩` from `hD`. Establish `hG` using `Formalism.FourierDecayAlt.P.unitary_group_closed k r`.
+
+Establish `hσ : PI.UpqRep.IsDSHpk k r L.ε L.lam L.σ` using `L.hσ`. Set `R : Rep k r` to `⟨L.Hs, L.σ⟩`. Establish `hDS : R.IsDS L.ε L.lam` using `⟨L.hlam, hσ⟩`. Take `⟨hmul, hone, huni, -⟩` from `GlobalTheory.rep_basic_of_isDS H.1.2.2.1 k r L.ε L.lam R hDS`. Establish `hsm` using `H.1.2.2.1 k r L.ε L.lam L.Hs L.σ L.hlam hσ w (PI.UnitaryGroupMassFormula.LowSmooth.isKFinHpk_of_lowUnit hw)`.
+
+Take `⟨C, Ws, -, hC⟩` from `H.1.2.1 k r L.ε L.lam h L.Hs L.σ L.hlam hσ hgap hok v hv`. Take `⟨C', Ws', -, hC'⟩` from `H.1.2.1 k r L.ε L.lam h L.Hs L.σ L.hlam hσ hgap hok v' hv'`. Establish `hw1 : ‖w‖ = 1` using `hw.choose_spec.2.1`. Establish `hw0 : w ≠ 0` using `fun h0 => by simp [h0] at hw1`. Take `⟨c, -, hc⟩` from `Gp91.GlobalTheory.BesselDegree.schur_fdeg H k r L.ε μG hμ`.
+
+Establish `hDG : R.IsDG L.ε L.lam` using `⟨L.hlam, hσ, h, hgap, hok⟩`. Take `⟨hd, hS⟩` from `hc L.lam R hDG`. Establish `hd' : PI.BesselPeriodGGP.fdegH μG L.σ w = c * fdegHC L.lam` using `hd w hw0`. Establish `hS' : ∀ y y' : L.Hs, ∫ x, ⟪y, L.σ (Matrix.of x) w⟫_ℂ * star ⟪y', L.σ (Matrix.of x) w⟫_ℂ ∂μG = (PI.BesselPeriodGGP.fdegH μG L.σ w : ℂ)⁻¹ * ⟪y, y'⟫_ℂ` using `fun y y' => by`. Use `(hS w y w y').2.trans ?_` and prove the remaining obligations.
+
+Establish `: ⟪w, w⟫_ℂ = 1` using `by rw [inner_self_eq_norm_sq_to_K, hw1]; simp`. Rewrite using `[hd']`. Use `show ⟪w, w⟫_ℂ * ⟪y, y'⟫_ℂ / _ = _`. Rewrite using `[this, one_mul, div_eq_inv_mul]`. Use `haveI : SigmaFinite μG := hμ.1`.
+
+Use `haveI : SigmaFinite μR := hR.1`. Use `haveI : SFinite (pairMeas L) := by`. Establish `: SFinite L.μN` using `by unfold LocBessel.μN haarLie; infer_instance`. Establish `: SigmaFinite L.μW` using `L.hμW.1.1`. Establish `: SigmaFinite L.μW'` using `L.hμW'.1.1`.
+
+Unfold `pairMeas`. Use `infer_instance`. Establish `aG : ∀ᵐ y ∂μG, Matrix.of y ∈ UH (Hpk k r)` using `by rw [ae_iff]; exact hμ.2.2.1`. Establish `aR : ∀ᵐ y ∂μR, Matrix.of y ∈ RStab k r γ` using `by rw [ae_iff]; exact hR.2.2.1`. Establish `aν` using `ae_quot L hR hQ`.
+
+Use `haveI : SFinite ν := sfinite_of_lintegral ν (fun p => ‖pairMaj γ b p‖ₑ) hint.1.enorm (aν.mono fun p hp => by`. Establish `: 0 < pairMaj γ b p` using `Real.rpow_pos_of_pos (one_pos.trans_le (PI.PolynomialProperness.GN.gN_ge_one (point_mem L hγ hp))) _`. Simplify using `using this.ne') hint.2.ne`. Establish `hRc` using `Formalism.FourierDecayAlt.P.Dx2.OrbJ.closedR (hG.unit _ hγ)`. Establish `hinv : μR.map GlobalTheory.SgInf.invM = μR` using `(GlobalTheory.UnipUnimod.isUnimod_of_subset_Nset (S := RStab k r γ) ⟨fun a ha => ha.1.1, hRc.closed, hRc.one_mem, hRc.mul_mem, hRc.inv_mem⟩ (fun a ha => ha.1) hR).2`.
+
+Establish `mi : Measurable (GlobalTheory.SgInf.invM (k` using `k) (r := r)) := Formalism.FourierDecayAlt.P.B7.measurable_invM`. Set `cj : Mt k r → Mt k r` to `fun x => fun i j => (γ⁻¹ * Matrix.of x * γ) i j`. Establish `mc : Measurable cj` using `meas_mul (g := fun _ => γ) (meas_mul (f := fun _ => (γ⁻¹ : MatKR k r)) measurable_const measurable_id) measurable_const`. Set `a₂ : Mt k r → Mt k r → Mt k r` to `fun a x => Matrix.of.symm (γ⁻¹ * (Matrix.of a)⁻¹ * γ * Matrix.of x)`. Establish `m2 : Measurable fun q : Mt k r × Mt k r => a₂ q.2 q.1` using `meas_mul (mc.comp (mi.comp measurable_snd)) measurable_fst`.
+
+Establish `hW2 : ∀ f : Mt k r → ℝ≥0∞, Measurable f → ∫⁻ x, f x ∂μG = ∫⁻ x, (∫⁻ a, f (a₂ a x) ∂μR) ∂νR`. Introduce `f hf`. Rewrite using `[hQG f hf]`. Use `lintegral_congr fun x => ?_` and prove the remaining obligations. Establish `mf : Measurable fun s : Mt k r => f fun i j => (Matrix.of s * Matrix.of x) i j` using `hf.comp (meas_mul measurable_id measurable_const)`.
+
+Rewrite using `[lintegral_map mf mc]`. Use `conv_lhs => rw [← hinv]`. Rewrite using `[lintegral_map (f := fun s => f fun i j => (Matrix.of (cj s) * Matrix.of x) i j) (mf.comp mc) mi]`. Both sides reduce to the same expression. Use `haveI : SFinite νR := sfinite_of_weil μG νR μR hR.2.1 a₂ m2 hW2`.
+
+Establish `m1 : Measurable fun q : PairSp k r × Mt k r => stabAct γ (Matrix.of q.2) q.1` using `(measurable_fst.fst.fst.prodMk (meas_mul measurable_snd measurable_fst.fst.snd)).prodMk (measurable_fst.snd.fst.prodMk (meas_mul (mc.comp measurable_snd) measurable_fst.snd.snd))`. Establish `hcl : IsClosed {x : Mt k r | Matrix.of x ∈ UH (Hpk k r)}` using `hG.closed`. Establish `aνR : ∀ᵐ x ∂νR, Matrix.of x ∈ UH (Hpk k r)`. Use `ae_of_weil μG νR μR a₂ _ hcl.measurableSet aG hR.2.1 hW2 ?_` and prove the remaining obligations. Use `filter_upwards [aR] with a ha x hx`.
+
+Establish `h1` using `hG.mul_mem _ (hG.mul_mem _ (hG.inv_mem _ hγ) _ (hG.inv_mem _ ha.1.1)) _ hγ`. Establish `h3 : γ⁻¹ * (Matrix.of a)⁻¹ * γ * Matrix.of x ∈ UH (Hpk k r)` using `hx`. Establish `h2` using `hG.mul_mem _ (hG.inv_mem _ h1) _ h3`. Rewrite `h2` using `[Matrix.nonsing_inv_mul_cancel_left _ _ (hG.unit _ h1)]`. Conclude with `h2`.
+
+Establish `hI` using `integrable_ker L hγ w v v' ξ ξ' hμ aν (e := Formalism.FourierDecayAlt.ThreeDimData.aOf r h - 1) hb0 (by linarith) hint (fun x hx => by rw [neg_sub]; exact hC w hsm x hx) (fun x hx => by rw [neg_sub]; exact hC' w hsm x hx)`. Establish `key` using `double_weil (pairMeas L) ν μG νR μR (fun a p => stabAct γ (Matrix.of a) p) a₂ (mp_of_weil _ _ _ (fun a p => stabAct γ (Matrix.of a) p) m1 hQ) (mp_of_weil _ _ _ a₂ m2 hW2) (ker L γ w v v' ξ ξ') (aesm_ker L hγ w v v' ξ ξ' _ _ (ae_pairMeas L) aνR) hI (by filter_upwards [Measure.quas …`. Conclude with `ker_act L hγ hrel w v v' ξ ξ' ht.2 ht.1 t.2)`. Unfold `ampJ OrbInt`. Rewrite using `[Complex.ofReal_one, inv_one, one_smul, ← integral_smul, ← integral_smul]`.
+
+Use `Eq.trans (integral_congr_ae ?_) (key.trans (integral_congr_ae ?_))` and prove the remaining obligations. Use `filter_upwards [aνR] with x hx`. Rewrite using `[integral_ker_pair L hok.1 hγ hmul w v v' ξ ξ' hx, hl _ (Submodule.subset_span ⟨_, hG.mul_mem _ hγ _ hx, rfl⟩) v hv, hl' _ (Submodule.subset_span ⟨_, hx, rfl⟩) v' hv']`. Use extensionality with `η`. Simplify using `only [ContinuousLinearMap.smul_apply, ContinuousLinearMap.smulRight_apply, innerSL_apply_apply, smul_smul, inner_smul_left, inner_conj_symm]`.
+
+Use `congr 1`. Expand and normalize the polynomial expressions, which then agree. Use `filter_upwards [aν] with p hp`. Conclude with `integral_ker_group L hγ hmul hone huni aG hS' v v' ξ ξ' hp`.
+-/
 theorem ampKF : GlobalTheory.GapIn.Hyp → GlobalTheory.GapIn.AmpKF0 := by
   intro hH k r L h μG w l l' hOne γ μR νR ν hD b hb0 hb hint v v' hv hv' ξ ξ'
   have H := hH.1

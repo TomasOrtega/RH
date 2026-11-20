@@ -29,6 +29,9 @@ open Matrix GlobalTheory.FunObj.Comparison₂ GlobalTheory.SplitFlip GlobalTheor
 
 variable {D : D7} {T : Type} {L : LevCh D T} {sc : Consts}
 
+/- English proof (translation)
+Distinguish the cases in `hw : w ∈ G.pl.W0`. Conclude with `(mem_idS_modul G s).1 hs w hw`. Rewrite using `[(depthAt_of_notMem G hw).1, Nat.cast_zero, neg_zero, WithZero.exp_zero]`. Conclude with `(mem_OA_iff _).1 s.2 w`.
+-/
 theorem v_le_cosExp (G : GridData L sc) {s : OA D} (hs : s ∈ idS D.host.F G.modul) (w : Pl D.host.E) :
     Valued.v (cpt (D := D) w s.1) ≤ WithZero.exp (-(cosExp G w : ℤ)) := by
   by_cases hw : w ∈ G.pl.W0
@@ -36,6 +39,11 @@ theorem v_le_cosExp (G : GridData L sc) {s : OA D} (hs : s ∈ idS D.host.F G.mo
   · rw [(depthAt_of_notMem G hw).1, Nat.cast_zero, neg_zero, WithZero.exp_zero]
     exact (mem_OA_iff _).1 s.2 w
 
+/- English proof (translation)
+Rewrite using `[mem_matLat_pow, map_algebraMap, map_algebraMap, coord_map, coord_map]`. Introduce `a b`. Take `⟨s, hs, e⟩` from `fr_mem_idS h1 h0 (sub_mem_of_mk_eq hy) (Fin.cast (rank_vertex G t w (X := (0, 0)) ⟨h.le, Nat.zero_le _⟩) b) (Fin.cast (rank_vertex G t w (X := (1, 0)) ⟨h, Nat.zero_le _⟩) a)`. Simplify using `only [Matrix.sub_apply, Matrix.transpose_apply, Matrix.submatrix_apply, Matrix.map_apply]`. Rewrite using `[← RingHom.map_sub, ← Matrix.sub_apply, ← fr_sub, ← Matrix.map_sub _ (map_sub (eToEAf D)), ← e]`.
+
+Conclude with `v_le_cosExp G hs w`.
+-/
 theorem coord_sub_mem (G : GridData L sc) (B : Frames G) (t : T) (w : Pl D.host.E) (h : 0 < D.R.m)
     (h0 : IsFrame (B.β 0 0) (G.Λ (.grid 0 0))) (h1 : IsFrame (B.β 1 0) (G.Λ (.grid 1 0)))
     {y y₀ : homLat (G.Λ (.grid 1 0)) (G.Λ (.grid 0 0))} (hy : Cos.mk G.modul y = Cos.mk G.modul y₀) :
@@ -52,6 +60,11 @@ theorem coord_sub_mem (G : GridData L sc) (B : Frames G) (t : T) (w : Pl D.host.
   rw [← RingHom.map_sub, ← Matrix.sub_apply, ← fr_sub, ← Matrix.map_sub _ (map_sub (eToEAf D)), ← e]
   exact v_le_cosExp G hs w
 
+/- English proof (translation)
+Use extensionality with `x`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨y, hy, hx⟩`. Use `add_mem hx (coord_sub_mem G B t w h h0 h1 hy)` as an intermediate fact. Rewrite `this` using `[sub_add_sub_cancel]`. Then use the resulting hypothesis.
+
+Introduce `hx`. Conclude with `⟨y₀, rfl, hx⟩`.
+-/
 theorem cosetSet_mk (G : GridData L sc) (B : Frames G) (t : T) (w : Pl D.host.E) (h : 0 < D.R.m)
     (h0 : IsFrame (B.β 0 0) (G.Λ (.grid 0 0))) (h1 : IsFrame (B.β 1 0) (G.Λ (.grid 1 0)))
     (y₀ : homLat (G.Λ (.grid 1 0)) (G.Λ (.grid 0 0))) :
@@ -72,6 +85,11 @@ namespace GlobalTheory.FunObj.CosFlip
 
 open Matrix GlobalTheory.FunObj.Comparison₂ GlobalTheory.SplitFlip GlobalTheory.StdFrames ValuativeRel Formalism.L2.DIV
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce `hx`. Use `add_mem hx h` as an intermediate fact. Rewrite `this` using `[sub_add_sub_cancel]`. Then use the resulting hypothesis. Introduce `hx`.
+
+Use `sub_mem hx h` as an intermediate fact. Rewrite `this` using `[sub_sub_sub_cancel_right]`. Then use the resulting hypothesis.
+-/
 theorem sub_mem_iff_of_sub_mem {R M : Type*} [Ring R] [AddCommGroup M] [Module R M] (S : Submodule R M) {a b : M}
     (h : a - b ∈ S) (x : M) : x - a ∈ S ↔ x - b ∈ S := by
   constructor
@@ -82,6 +100,23 @@ theorem sub_mem_iff_of_sub_mem {R M : Type*} [Ring R] [AddCommGroup M] [Module R
     have := sub_mem hx h
     rwa [sub_sub_sub_cancel_right] at this
 
+/- English proof (translation)
+Introduce `D T T' L L' sc G G' B B' hY hY' hv0 hw _ _ h κ'`. Establish `h0 : IsFrame (B.β 0 0) (G.Λ (.grid 0 0))` using `hY.choose_spec.1`. Establish `h0' : IsFrame (B'.β 0 0) (G'.Λ (.grid 0 0))` using `hY'.choose_spec.1`. Establish `h1 : IsFrame (B.β 1 0) (G.Λ (.grid 1 0))` using `B.isFrame 1 0 le_rfl h (Nat.zero_le _)`. Establish `h1' : IsFrame (B'.β 1 0) (G'.Λ (.grid 1 0))` using `B'.isFrame 1 0 le_rfl h (Nat.zero_le _)`.
+
+Establish `hW0 : G'.pl.W0 = G.pl.W0`. Unfold `Places.W0 Places.S0`. Rewrite using `[hv0, hw]`. Establish `hdep : ∀ v, G'.pl.depth sc v = G.pl.depth sc v` using `fun v => by`. Unfold `Places.depth`.
+
+Rewrite using `[hv0]`. Establish `hexp : ∀ w, cosExp G' w = cosExp G w` using `fun w => by`. Distinguish the cases in `hm : w ∈ G.pl.W0`. Rewrite using `[cosExp, cosExp, if_pos (by rw [hW0]; exact hm), if_pos hm, hdep]`. Rewrite using `[cosExp, cosExp, if_neg (by rw [hW0]; exact hm), if_neg hm]`.
+
+Take `⟨y', hy'⟩` from `Submodule.Quotient.mk_surjective _ κ'`. Establish `hint : ∀ i j, ∃ s ∈ idS D.host.F ⊤, s.1 = fr (B'.β 0 0) (B'.β 1 0) (y'.1.map (eToEAf D)) i j` using `fr_mem_idS h1' h0' (by rw [Submodule.top_smul]; exact y'.2)`. Use `choose N _ hN using hint`. Establish `hr : (G.V (.grid 1 0)).rank = (G'.V (.grid 1 0)).rank` using `by show (G.sp.Vs 1 0).sp.rank = (G'.sp.Vs 1 0).sp.rank`. Rewrite using `[‹G'.sp.Vs 1 0 = G.sp.Vs 1 0›]`.
+
+Take `⟨x₀, hx₀, hs⟩` from `HatFrame.homLat_approx_mod (G.Λ (.grid 1 0)) (G.Λ (.grid 0 0)) (B.β 1 0) (B.β 0 0) h1 h0 G.modul (G.pl.modul_ne_bot sc) (fun i j => N i (Fin.cast hr j))`. Use `⟨Cos.mk G.modul ⟨x₀, hx₀⟩, fun t t₀ w => ?_⟩` and prove the remaining obligations. Establish `hk : Cos.mk G'.modul y' = κ'` using `hy'`. Rewrite using `[← hk, cosetSet_mk G' B' t w h h0' h1' y', cosetSet_mk G B t₀ w h h0 h1 ⟨x₀, hx₀⟩, hexp]`. Establish `key : @id (Matrix (Fin ((locGrid G t₀ w).rank (1, 0))) (Fin ((locGrid G t₀ w).rank (0, 0))) (Kw w)) (B'.coord t w (X` using `(0, 0)) (Y := (1, 0)) ⟨h.le, Nat.zero_le _⟩ ⟨h, Nat.zero_le _⟩ (y'.1.map (algebraMap D.host.E (Kw w)))) - B.coord t₀ w (X := (0, 0)) (Y := (1, 0)) ⟨h.le, Nat.zero_le _⟩ ⟨h, Nat.zero_le _⟩ (x₀.map (algebraMap D.host.E (Kw w))) ∈ matLat (Fin ((locGrid G t₀ w).rank (1, 0))) (unifAt …`.
+
+Rewrite using `[mem_matLat_pow]`. Simplify using `only [id]`. Rewrite using `[Comparison₂.map_algebraMap, Comparison₂.map_algebraMap, coord_map, coord_map]`. Introduce `a b`. Take `⟨s, hs1, hs2⟩` from `hs (Fin.cast (rank_vertex G t₀ w (X := (0, 0)) ⟨h.le, Nat.zero_le _⟩) b) (Fin.cast (rank_vertex G t₀ w (X := (1, 0)) ⟨h, Nat.zero_le _⟩) a)`.
+
+Establish `e1 : (N (Fin.cast (rank_vertex G t₀ w (X` using `(0, 0)) ⟨h.le, Nat.zero_le _⟩) b) (Fin.cast hr (Fin.cast (rank_vertex G t₀ w (X := (1, 0)) ⟨h, Nat.zero_le _⟩) a)) : EAf D) = fr (B'.β 0 0) (B'.β 1 0) (y'.1.map (eToEAf D)) (Fin.cast (rank_vertex G' t w (X := (0, 0)) ⟨h.le, Nat.zero_le _⟩) b) (Fin.cast (rank_vertex G' t w (X := ( …`. Establish `e2 : fr (B'.β 0 0) (B'.β 1 0) (y'.1.map (eToEAf D)) (Fin.cast (rank_vertex G' t w (X` using `(0, 0)) ⟨h.le, Nat.zero_le _⟩) b) (Fin.cast (rank_vertex G' t w (X := (1, 0)) ⟨h, Nat.zero_le _⟩) a) - fr (B.β 0 0) (B.β 1 0) (x₀.map (eToEAf D)) (Fin.cast (rank_vertex G t₀ w (X := (0, 0)) ⟨h.le, Nat.zero_le _⟩) b) (Fin.cast (rank_vertex G t₀ w (X := (1, 0)) ⟨h, Nat.zero_le _⟩) …`. Rewrite using `[hs2, ← e1]`. Conclude with `(neg_sub _ _).symm`. Use `show Valued.v (cpt (D := D) w (fr (B'.β 0 0) (B'.β 1 0) (y'.1.map (eToEAf D)) (Fin.cast (rank_vertex G' t w (X := (0, 0)) ⟨h.le, Nat.zero_le _⟩) b) (Fin.cast (rank_vertex G' t w (X := (1, 0)) ⟨h, Nat.zero_le _⟩) a)) - cpt (D := D) w (fr (B.β 0 0) (B.β 1 0) (x₀.map (eToEAf D)) (Fi …`.
+
+Rewrite using `[← RingHom.map_sub, e2, RingHom.map_neg, Valuation.map_neg]`. Conclude with `v_le_cosExp G hs1 w`. Use extensionality with `x`. Conclude with `sub_mem_iff_of_sub_mem _ key x`.
+-/
 theorem exists_cos_cosetSet_eq : ∀ {D : D7} {T T' : Type} {L : LevCh D T} {L' : LevCh D T'} {sc : Consts} (G : GridData L sc) (G' : GridData L' sc)
     (B : GlobalTheory.FunObj.Frames G) (B' : GlobalTheory.FunObj.Frames G'),
     IsSDFrame (Yc D 0) (L.βY 0) (L.ΛY 0) (D.host.g 0 * D.host.g 1) →

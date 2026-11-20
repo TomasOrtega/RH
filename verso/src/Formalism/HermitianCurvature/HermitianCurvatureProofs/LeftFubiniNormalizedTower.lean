@@ -18,6 +18,11 @@ section pt
 variable {k p ρ : ℕ} {Wp Wq : Type} [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp] [NormedAddCommGroup Wq]
   [InnerProductSpace ℂ Wq]
 
+/- English proof (translation)
+Establish `h1 : U.skewOf (0 : (G.UT p → ℂ) × (Fin p → ℝ)) = 0`. Unfold `U.skewOf`. Use extensionality with `a b`. Simplify using `[G.strictUpper]`. Unfold `U.Rn`.
+
+Rewrite using `[← Formalism.FourierDecayAlt.P.Ux3.block3_one]`. Simplify using `only [Prod.fst_zero, Prod.snd_zero, h1]`. Apply the tactic sequence `congr 1 <;> ext <;> simp`.
+-/
 theorem rn_zero : U.Rn k p ρ 0 = 1 := by
   have h1 : U.skewOf (0 : (G.UT p → ℂ) × (Fin p → ℝ)) = 0 := by
     unfold U.skewOf; ext a b; simp [G.strictUpper]
@@ -26,12 +31,21 @@ theorem rn_zero : U.Rn k p ρ 0 = 1 := by
   simp only [Prod.fst_zero, Prod.snd_zero, h1]
   congr 1 <;> ext <;> simp
 
+/- English proof (translation)
+Unfold `G.upper G.strictUpper`. Use extensionality with `a b`. Simplify using the standard rewrite rules.
+-/
 theorem upper_zero : G.upper (0 : G.UT p → ℂ) = 1 := by
   unfold G.upper G.strictUpper; ext a b; simp
 
+/- English proof (translation)
+Apply the tactic sequence `unfold rcAct; ext <;> simp`.
+-/
 theorem rcAct_one_zero : rcAct (1 : B.Mat k ρ) (0 : U.RC k p ρ) = 0 := by
   unfold rcAct; ext <;> simp
 
+/- English proof (translation)
+Distinguish the cases in `hx : GoodL Bj σ x`. Rewrite using `[sxL, if_pos hx]`. Conclude with `left_factor_mem k p ρ Bj.z (-x.2.1) (lhOf σ x.2.2.2) (Matrix.of x.1.1) (Matrix.of x.1.2) Bj.z_mem (lh_lower σ _) hx.1 hx.2`. Rewrite using `[sxL, if_neg hx]`. Use `⟨1, (Formalism.FourierDecayAlt.P.weyl_subgroup_closed k (p + ρ) _).one_mem, 1, (Formalism.FourierDecayAlt.P.unipotent_radical_closed k (p + ρ)).one_mem, by simp⟩` and prove the remaining obligations.
+-/
 theorem sxL_mem (Bj : B.RealPlaceData k ρ Wp Wq) (σ : Equiv.Perm (Fin p)) (x : XL k p ρ σ) :
     sxL Bj σ x ∈ Sset k (p + ρ) (liftVec k p ρ Bj.z) := by
   by_cases hx : GoodL Bj σ x
@@ -42,6 +56,15 @@ theorem sxL_mem (Bj : B.RealPlaceData k ρ Wp Wq) (σ : Equiv.Perm (Fin p)) (x :
     refine ⟨1, (Formalism.FourierDecayAlt.P.weyl_subgroup_closed k (p + ρ) _).one_mem, 1,
       (Formalism.FourierDecayAlt.P.unipotent_radical_closed k (p + ρ)).one_mem, by simp⟩
 
+/- English proof (translation)
+Use `set ξ0 : U.Xi k p 0 ρ σ := ((x.2.1, 0), (x.2.2.1, (x.2.2.2, 0))) with hξ0`. Establish `uh : IsUnit (Matrix.of x.1.1 : B.Mat k ρ).det` using `(Formalism.FourierDecayAlt.P.weyl_subgroup_closed k ρ Bj.z).unit _ hx.1`. Establish `uν : IsUnit (Matrix.of x.1.2 : B.Mat k ρ).det` using `(Formalism.FourierDecayAlt.P.unipotent_radical_closed k ρ).unit _ hx.2`. Establish `hH1 : (1 : B.Mat k ρ)ᴴ * Hpk k ρ * 1 = Hpk k ρ` using `by simp`. Establish `e` using `gamma_xi_split k p ρ σ d ξ0 (fun a => a.elim0) (Matrix.of x.1.1) (Matrix.of x.1.2) 1 1 g uh uν hH1`.
+
+Simplify using `only [hξ0, Formalism.FourierDecayAlt.P.PBM.embG_one, upper_zero, Formalism.FourierDecayAlt.P.PBM.muP_one, rcAct_one_zero, rn_zero, Matrix.mul_one] at e`. Establish `hx' : sxL Bj σ x = U.Rn k p ρ (-x.2.1) * U.muP k p ρ (lhOf σ x.2.2.2)ᴴ⁻¹ * U.embG k p ρ ((Matrix.of x.1.1 : B.Mat k ρ)⁻¹ * (Matrix.of x.1.2 : B.Mat k ρ)⁻¹)` using `if_pos hx`. Establish `cG` using `Formalism.FourierDecayAlt.P.unitary_group_closed k ρ`. Establish `hγ : (Matrix.of x.1.1 : B.Mat k ρ)⁻¹ * (Matrix.of x.1.2 : B.Mat k ρ)⁻¹ * g ∈ B.GV k ρ` using `cG.mul_mem _ (cG.mul_mem _ (cG.inv_mem _ hx.1.1) _ (cG.inv_mem _ hx.2.1)) _ hg`. Rewrite using `[hx', ← e]`.
+
+Establish `hZ : G.detM (fun a : Fin 0 => a.elim0 : G.Mat 0) ≠ 0` using `by rw [detM_zero]; exact one_ne_zero`. Use `⟨Formalism.FourierDecayAlt.P.Ux10.gaXi_mem Formalism.FourierDecayAlt.P.slice_membership Formalism.FourierDecayAlt.P.radical_parametrisation σ d hd ξ0 _ hZ hγ, ?_⟩` and prove the remaining obligations. Introduce `h0`. Establish `h1` using `Formalism.FourierDecayAlt.P.Ux10.DjU_gaXi Formalism.FourierDecayAlt.P.hat_z_on_slice σ d ξ0 (fun a : Fin 0 => a.elim0) ((Matrix.of x.1.1 : B.Mat k ρ)⁻¹ * (Matrix.of x.1.2 : B.Mat k ρ)⁻¹ * g)`. Rewrite `h1` using `[detM_zero, mul_one]`.
+
+Conclude with `Formalism.FourierDecayAlt.P.Ux10.det_hMat_ne σ d hd (h1.symm.trans h0)`.
+-/
 theorem goodL_pt (Bj : B.RealPlaceData k ρ Wp Wq) (σ : Equiv.Perm (Fin p)) (d : Fin p → ℂ) (hd : ∀ i, d i ≠ 0)
     (g : B.Mat k ρ) (hg : g ∈ B.GV k ρ) (x : XL k p ρ σ) (hx : GoodL Bj σ x) :
     sxL Bj σ x * U.mMap k p ρ (U.hMat σ d) g ∈ B.GV k (p + ρ) ∧
@@ -69,6 +92,9 @@ theorem goodL_pt (Bj : B.RealPlaceData k ρ Wp Wq) (σ : Equiv.Perm (Fin p)) (d 
 
 variable [FiniteDimensional ℂ Wp] [FiniteDimensional ℂ Wq]
 
+/- English proof (translation)
+The claim follows from `core_main gamma_xi_split psi_right_equivariant psi_right_action_comm psi_measure_preserving right_measure_preserving hp σ d hd Bj B0 hz' hπ' hW' hW0' hNj hN0 g hg H hHc R hR (fl_aesm Bj σ d hd H hHc g hg.1) (aestronglyMeasurable_germ_integrand gamma_xi_split Bj B0 hz' hπ' σ d hd …`.
+-/
 theorem core_lf (hp : 1 ≤ p) (σ : Equiv.Perm (Fin p)) (d : Fin p → ℂ) (hd : ∀ i, d i ≠ 0)
     (Bj : B.RealPlaceData k ρ Wp Wq) (B0 : B.RealPlaceData k (p + ρ) Wp Wq) (hz' : B0.z' = liftVec k p ρ Bj.z')
     (hπ' : ∀ y : B.Mat k ρ, Bj.π' y = B0.π' (U.embG k p ρ y)) (hW' : Bj.μW' Set.univ = 1)
@@ -89,6 +115,15 @@ theorem core_lf (hp : 1 ≤ p) (σ : Equiv.Perm (Fin p)) (d : Fin p → ℂ) (hd
 
 end pt
 
+/- English proof (translation)
+Introduce `k p m n e hp σ d hd Wp Wq _ _ _ _ _ _ Bj B0 hz hz' hπ' hW' hW0' hNj hN0`. Substitute `e` using the available equality. Rewrite `hz`, `hz'` using `[Formalism.FourierDecayAlt.P.Dx2.Tower.castV_rfl]`. Use `⟨XL k p m σ, inferInstance, muL Bj σ, ellL Bj σ, sxL Bj σ, fun x => hz ▸ sxL_mem Bj σ x, ?_⟩` and prove the remaining obligations. Introduce `g hg H hHc hRb`.
+
+Take `⟨R, hR⟩` from `hRb`. Establish `hπ'' : ∀ y : B.Mat k m, Bj.π' y = B0.π' (U.embG k p m y)` using `fun y => by`. Rewrite using `[hπ' y, Formalism.FourierDecayAlt.P.Dx2.MN.castM_rfl, Formalism.FourierDecayAlt.P.Dx2.Tower.lev_eq_embG]`. Establish `hset : {x | x ∈ B.GV k (p + m) ∧ Dmin k (p + m) B0.z B0.z' x ⟨p, by omega⟩ ≠ 0} = {x | x ∈ B.GV k (p + m) ∧ U.DjU k p m x ≠ 0}`. Use extensionality with `x`.
+
+Simplify using `only [Set.mem_setOf_eq]`. Rewrite using `[Formalism.FourierDecayAlt.P.hat_z_minimum_degree k p m B0.z B0.z' x]`. Establish `hHc' : ContinuousOn H {x | x ∈ B.GV k (p + m) ∧ U.DjU k p m x ≠ 0}` using `hset ▸ hHc`. Establish `h` using `core_lf hp σ d hd Bj B0 hz'.symm hπ'' hW' hW0' hNj hN0 g hg H hHc' R hR`. Establish `hF : D.castF (rfl : p + m = p + m) H = H` using `funext fun y => by`.
+
+Simplify using `only [D.castF, Formalism.FourierDecayAlt.P.Dx2.MN.castM_rfl]`. Establish `hV : ∀ v : Fin (2 * (p + m) + k + 1) → ℂ, D.castV (rfl : p + m = p + m).symm v = v` using `fun v => Formalism.FourierDecayAlt.P.Dx2.Tower.castV_rfl v`. Simplify using `only [Formalism.FourierDecayAlt.P.Dx2.MN.castM_rfl, hF, hV, ← hz, ← hz']`. Conclude with `h`.
+-/
 theorem left_fubini_reduced_form : CoreLF := by
   intro k p m n e hp σ d hd Wp Wq _ _ _ _ _ _ Bj B0 hz hz' hπ' hW' hW0' hNj hN0
   subst e
@@ -116,6 +151,9 @@ end Formalism.FourierDecayAlt.P.LeftFubiniLemmas
 
 namespace Formalism.FourierDecayAlt.P
 
+/- English proof (translation)
+The claim follows from `LeftFubiniReduction.leftFubini_of_core LeftFubiniLemmas.left_fubini_reduced_form`.
+-/
 theorem left_fubini_normalized_tower : LeftFubiniLemmas.LeftFubini := LeftFubiniReduction.leftFubini_of_core LeftFubiniLemmas.left_fubini_reduced_form
 
 end Formalism.FourierDecayAlt.P

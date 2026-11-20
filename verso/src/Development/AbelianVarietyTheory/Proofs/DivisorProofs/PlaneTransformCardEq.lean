@@ -8,6 +8,11 @@ open GlobalTheory.WeilM GlobalTheory.AdelicU GlobalTheory.LFun GlobalTheory.Inde
 
 namespace GlobalTheory.ThK.PlaneCo
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ B n d n₁ d₁ i₀ i₁ j₀ j₁ X W X₁ W₁ H H' hB hH hH'`. Take `⟨_, _, h2, _⟩` from `hB.cm`. Take `rfl` from `hH.rank`. Take `rfl` from `hH'.rank`. Simplify using `only [Fintype.card_prod, Fintype.card_sum, Fintype.card_fin, Kc, Ic, h2]`.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem card_coords : ∀ {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E)
     {n d n₁ d₁ i₀ i₁ j₀ j₁ : ℕ} (X : Spc F E n) (W : Spc F E d) (X₁ : Spc F E n₁) (W₁ : Spc F E d₁)
     (H : Plane E n n₁) (H' : Plane E d d₁), B.IsGood σ →

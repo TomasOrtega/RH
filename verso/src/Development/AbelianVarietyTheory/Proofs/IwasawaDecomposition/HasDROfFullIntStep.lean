@@ -11,6 +11,9 @@ open GlobalTheory.FlagMod (ev tau tau_le spMap_ev ev_res ev_spMap le_preimage_in
 
 namespace GlobalTheory.DRFlag
 
+/- English proof (translation)
+Rewrite using `[initSpan, ← Set.image_univ]`. Use `congr 2`. Conclude with `Set.eq_univ_of_forall fun j => j.2`.
+-/
 theorem initSpan_self {R N : Type} [CommRing R] [AddCommGroup N] [Module R N] {m : ℕ} (v : Fin m → N) :
     initSpan R v m = Submodule.span R (Set.range v) := by
   rw [initSpan, ← Set.image_univ]
@@ -21,6 +24,11 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheo
   {l : Level H} {Xo : Moduli Dw l} {c : Coeff l} {V : ValuationSubring c.F}
   {M : Model Xo c V.subtype} {X : Scheme.{0}} {π : X ⟶ M.X} {ty : (E →+* ℂ) → Finset ℕ}
 
+/- English proof (translation)
+Take `⟨a, φ, e⟩` from `A.ch.exists_fac w (hc ⟨_, rfl⟩)`. Take `⟨u₀, h₀⟩` from `A.exists_up_fr e`. Establish `f₀` using `A.isFrame_bc e`. Establish `g₀` using `A.flagAt_fr e`. Rewrite `f₀`, `g₀` using `[← h₀]`.
+
+Use `(A.flagAt_iff e h₀ _).2 ⟨(isFrame_up_iff _ _).2 fun σ => ⟨?_, ?_⟩, fun σ j hj => (hb σ K w (hw σ) u₀ g₀ j (hty σ j hj)).symm⟩` and prove the remaining obligations. Conclude with `(basAt (b σ) w (hw σ)).linearIndependent.comp _ Sum.inl_injective`. Rewrite using `[← initSpan_self, ← hb σ K w (hw σ) u₀ g₀ _ le_rfl, initSpan_self]`. Conclude with `((isFrame_up_iff _ _).1 f₀ σ).2`.
+-/
 theorem flagAt_of_intOn (A : Atlas M π ty) (hty : ∀ σ, ∀ j ∈ ty σ, j ≤ Dw.mult σ)
     {U : (E →+* ℂ) → X.Opens} {hU : ∀ σ, IsAffineOpen (U σ)} {m : (E →+* ℂ) → ℕ}
     (b : ∀ σ, Module.Basis (Fin (Dw.mult σ) ⊕ Fin (m σ)) Γ(X, U σ) (TanM (tau (hU σ) ≫ π) M.t.G))
@@ -38,6 +46,15 @@ theorem flagAt_of_intOn (A : Atlas M π ty) (hty : ∀ σ, ∀ j ∈ ty σ, j �
   · rw [← initSpan_self, ← hb σ K w (hw σ) u₀ g₀ _ le_rfl, initSpan_self]
     exact ((isFrame_up_iff _ _).1 f₀ σ).2
 
+/- English proof (translation)
+Introduce `E _ _ _ H Dw Xo p W Y i₀ Z hty hs`. Use `⟨hty, fun x => ?_⟩` and prove the remaining obligations. Use `choose U hU m b hx hb using fun σ => hs σ x`. Take `⟨_, ⟨U₀, hU₀, rfl⟩, hx₀, hle⟩` from `Z.X.isBasis_affineOpens.exists_subset_of_mem_open (show x ∈ ⋂ σ, (U σ : Set Z.X) from Set.mem_iInter.2 hx) (isOpen_iInter_of_finite fun σ => (U σ).isOpen)`. Establish `hle' : ∀ σ, U₀ ≤ U σ` using `fun σ q hq => Set.mem_iInter.1 (hle hq) σ`.
+
+Set `b'` to `fun σ => basAt (b σ) (tau hU₀) (tau_le hU₀ (hle' σ))`. Use `⟨U₀, hU₀, up (Dw := Dw) fun σ i => b' σ (.inl i), hx₀, fun σ => ?_, fun k _ φ hr => ?_⟩` and prove the remaining obligations. Set `b''` to `(b' σ).reindex finSumFinEquiv`. Use `⟨_, fun i => (tv (b'' i)).left, Fin.castAddEmb _, fun i => ?_, fun i => isTan_tv _, fun u hu => ?_⟩` and prove the remaining obligations. Simplify using `only [b'', Module.Basis.reindex_apply, Fin.castAddEmb_apply, finSumFinEquiv_symm_apply_castAdd]`.
+
+Both sides reduce to the same expression. Conclude with `(existsUnique_congr fun a => isComb_iff b'' a (tanOf hu)).2 ⟨b''.repr (tanOf hu), (b''.sum_repr _).symm, fun a ha => by rw [ha]; exact (b''.repr_sum_self a).symm⟩`. Establish `hw : ∀ σ, ⊤ ≤ (spMap φ ≫ tau hU₀) ⁻¹ᵁ U σ` using `fun σ => le_preimage_comp _ (tau_le hU₀ (hle' σ))`. Establish `key` using `flagAt_of_intOn (atlasOf Z) (fun σ j hj => by rw [hty, Finset.mem_range] at hj; omega) b hb (spMap φ ≫ tau hU₀) hw (by rw [(atlasOf Z).cover]; exact hr)`. Rewrite using `[← up_tanPull φ (Category.assoc _ _ _).symm]`.
+
+Simplify using `only [b', tanPull_basAt _ φ _ _ rfl (hw _)]`. Conclude with `key`.
+-/
 theorem hasDR_of_intStep : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (Dw : Datum H) (Xo : ∀ l : Level H, Moduli Dw l) (p : ℕ) (W : ValuationSubring ℂ) (Y : LocalSystem Xo p W) (i₀ : Idx H p) (Z : Mdl Y i₀), (∀ σ, Z.ty σ = Finset.range (Dw.mult σ + 1)) → (∀ σ, IntStep (atlasOf Z) σ (Dw.mult σ)) → HasDR Z := by
   intro E _ _ _ H Dw Xo p W Y i₀ Z hty hs
   refine ⟨hty, fun x => ?_⟩

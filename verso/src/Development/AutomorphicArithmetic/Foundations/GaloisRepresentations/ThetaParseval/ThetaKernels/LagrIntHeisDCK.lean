@@ -14,6 +14,13 @@ namespace GlobalTheory.SplitLagrF
 section aux
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
 end aux
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ B _ nS nT JS JT _ _ ξ₀ _ _ ν 𝓕 _ h𝓕 f hf u`. Use `set g : WOF F E nS nT → ℂ := fun v => f (dC F E nT * v) with hg`. Establish `h1 : ∀ v : WOF F E nS nT, heisOF σ JS (GlobalTheory.WeilSchrodinger.DblTargetF.dblG JT) ξ₀ B.ψ (dC F E nT * u) f (dC F E nT * v) = g (v + u)`. Introduce `v`. Simplify using `only [hg, heisOF]`.
+
+Rewrite using `[symplOHF_dC, AddChar.map_zero_eq_one, one_mul, Matrix.mul_add]`. Establish `h2 : ∀ (r : ratLF F E nS nT) (v : WOF F E nS nT), g (r +ᵥ v) = g v`. Introduce and unpack `⟨r, γ, rfl⟩ v`. Use `show f (dC F E nT * ((ratWF γ : WOF F E nS nT) + v)) = f (dC F E nT * v)`. Establish `hq` using `hf.quasi (GlobalTheory.LagrThetaInv.dC E nT * γ) (dC F E nT * v)`.
+
+Rewrite `hq` using `[← dC_mul_ratWF, symplOHF_dC, neg_zero, AddChar.map_zero_eq_one, one_mul]`. Rewrite using `[Matrix.mul_add, hq]`. Unfold `GlobalTheory.LagrTheta.lagrInt`. Repeatedly rewrite using `[h1]`. Conclude with `setIntegral_add_right ν 𝓕 h𝓕 g h2 u`.
+-/
 theorem lagrInt_heis_dC_k : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E),
     _root_.UpperTheory.TP.W.GoodK σ B → ∀ (nS nT : ℕ) (JS : Matrix (Fin nS) (Fin nS) E) (JT : Matrix (Fin nT) (Fin nT) E),
       IsHermND σ JS → IsHermND σ JT → ∀ ξ₀ : E, ξ₀ ≠ 0 → σ ξ₀ = -ξ₀ →

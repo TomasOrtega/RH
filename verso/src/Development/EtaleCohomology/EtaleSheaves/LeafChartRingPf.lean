@@ -32,6 +32,9 @@ def LeafJacobian : Prop := ∀ (d e : ℕ) (A B : Type) [CommRing A] [CommRing B
       (fun j => KaehlerDifferential.D A (Localization.Away g) (algebraMap B _ (t j))))) = ⊤ →
     (coordMap (A := A) g y t).Etale
 
+/- English proof (translation)
+Unfold `LateralTheory.E.t_E6Cut.varIdeal coordMap`. Simplify using the standard rewrite rules.
+-/
 theorem varIdeal_coordMap {A B : Type} [CommRing A] [CommRing B] [Algebra A B] {d e : ℕ} (g : B)
     (y : Fin e → B) (t : Fin d → B) :
     LateralTheory.E.t_E6Cut.varIdeal (coordMap (A := A) g y t) =
@@ -39,6 +42,9 @@ theorem varIdeal_coordMap {A B : Type} [CommRing A] [CommRing B] [Algebra A B] {
   unfold LateralTheory.E.t_E6Cut.varIdeal coordMap
   simp
 
+/- English proof (translation)
+Introduce `d e A B _ _ _ I hB hBI P hP hIP`. Take `⟨g, hg, t, y, hI, hli, hsp⟩` from `hC d e A B I hB hBI P hP hIP`. Use `⟨g, hg, MvPolynomial (Fin e) A, inferInstance, coordMap (A := A) g y t, hJ d e A B (e + d) hB g t y hli hsp, ?_⟩` and prove the remaining obligations. Rewrite using `[varIdeal_coordMap, hI]`.
+-/
 theorem LeafChartRing_of (hC : LeafCoords) (hJ : LeafJacobian) : LateralTheory.E.t_E6Cut.LeafChartRing := by
   intro d e A B _ _ _ I hB hBI P hP hIP
   obtain ⟨g, hg, t, y, hI, hli, hsp⟩ := hC d e A B I hB hBI P hP hIP

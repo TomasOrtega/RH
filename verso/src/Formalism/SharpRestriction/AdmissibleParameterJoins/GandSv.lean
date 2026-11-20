@@ -10,12 +10,42 @@ section Ab
 
 variable {p : ℕ} [Fact p.Prime] (g : G1 p)
 
+/- English proof (translation)
+Rewrite using `[Formalism.MainNotions.GL3Theta.G1.ph.eq_1, map_neg, neg_eq_zero]`. Use `show Formalism.MainNotions.GL3Theta.logMv _ 0 = 0`. Rewrite using `[Formalism.MainNotions.GL3Theta.logMv.eq_1]`. Simplify using the standard rewrite rules.
+-/
 theorem cc_ph : PowerSeries.constantCoeff g.ph = 0 := by
   rw [Formalism.MainNotions.GL3Theta.G1.ph.eq_1, map_neg, neg_eq_zero]
   show Formalism.MainNotions.GL3Theta.logMv _ 0 = 0
   rw [Formalism.MainNotions.GL3Theta.logMv.eq_1]
   simp
 
+/- English proof (translation)
+Use `set c : ℂ_[p] := ep⁻¹ with hc`. Use `set ψ : PowerSeries ℂ_[p] := PowerSeries.subst (PowerSeries.subst (PowerSeries.C c * PowerSeries.X : PowerSeries ℂ_[p]) g.ex) g.ph with hψ`. Establish `hcX : PowerSeries.constantCoeff (PowerSeries.C c * PowerSeries.X : PowerSeries ℂ_[p]) = 0` using `by simp`. Establish `hE : PowerSeries.constantCoeff (PowerSeries.subst (PowerSeries.C c * PowerSeries.X : PowerSeries ℂ_[p]) g.ex) = 0` using `PowerSeries.constantCoeff_subst_eq_zero hcX _ hex`. Establish `hψ0 : PowerSeries.coeff 0 ψ = 0`.
+
+Rewrite using `[PowerSeries.coeff_zero_eq_constantCoeff_apply]`. Conclude with `PowerSeries.constantCoeff_subst_eq_zero hE _ (cc_ph g)`. Establish `key : ∀ z : MvPowerSeries (Fin 2) ℂ_[p], constantCoeff z = 0 → g.phAt (g.pt (C c * z)) = PowerSeries.subst z ψ`. Introduce `z hz`. Establish `hz'` using `PowerSeries.HasSubst.of_constantCoeff_zero hz`.
+
+Rewrite using `[hψ, PowerSeries.subst_comp_subst_apply (PowerSeries.HasSubst.of_constantCoeff_zero' hE) hz', PowerSeries.subst_comp_subst_apply (PowerSeries.HasSubst.of_constantCoeff_zero' hcX) hz', PowerSeries.subst_mul hz', PowerSeries.subst_C, PowerSeries.subst_X hz']`. Both sides reduce to the same expression. Establish `h0 : ∀ i : Fin 2, constantCoeff (C c * X i : MvPowerSeries (Fin 2) ℂ_[p]) = 0` using `by intro i; simp`. Establish `hB : map i0 be = PowerSeries.subst (X 0 + X 1 : MvPowerSeries (Fin 2) ℂ_[p]) ψ - PowerSeries.subst (X 0 : MvPowerSeries (Fin 2) ℂ_[p]) ψ - PowerSeries.subst (X 1 : MvPowerSeries (Fin 2) ℂ_[p]) ψ`. Establish `h` using `be_at g i0 be ep hex be_tie (cc_pt g hex (h0 0)) (cc_pt g hex (h0 1))`.
+
+Rewrite `h` using `[lg_pt g hex hinv (h0 0), lg_pt g hex hinv (h0 1)]`. Establish `e : (![C ep * (C c * X 0), C ep * (C c * X 1)] : Fin 2 → MvPowerSeries (Fin 2) ℂ_[p]) = X`. Use function extensionality and compare the values at `s`. Use `fin_cases s`. Use `show C ep * (C c * X 0) = X 0`.
+
+Rewrite using `[← mul_assoc, ← map_mul, hc, mul_inv_cancel₀ hep, map_one, one_mul]`. Use `show C ep * (C c * X 1) = X 1`. Rewrite using `[← mul_assoc, ← map_mul, hc, mul_inv_cancel₀ hep, map_one, one_mul]`. Rewrite `h` using `[e, subst_self]`. Establish `h' : map i0 be = g.be (g.pt (C c * X 0)) (g.pt (C c * X 1))` using `h`.
+
+Rewrite using `[h']`. Unfold `G1.be G1.add`. Rewrite using `[lg_pt g hex hinv (h0 0), lg_pt g hex hinv (h0 1), ← mul_add, key _ (by simp), key _ (by simp), key _ (by simp)]`. Establish `hco : i0 (coeff n be) = ((n 0 + n 1).choose (n 0) : ℂ_[p]) * PowerSeries.coeff (n 0 + n 1) ψ - (if n = Finsupp.single 0 (n 0) then PowerSeries.coeff (n 0) ψ else 0) - (if n = Finsupp.single 1 (n 1) then PowerSeries.coeff (n 1) ψ else 0)`. Rewrite using `[← coeff_map, hB, map_sub, map_sub, PowerSeries.coeff_subst_X_zero_add_X_one, PowerSeries.coeff_subst_single, PowerSeries.coeff_subst_single]`.
+
+Assume the negation of the conclusion as `hcon`. Apply `hn` to reduce the goal to its premises. Apply `i0.injective` to reduce the goal to its premises. Rewrite using `[map_zero, hco]`. Establish `hcase : n 0 = 0 ∨ n 1 = 0`.
+
+Assume the negation of the conclusion as `h`. Use `push Not at h`. Conclude with `hcon ⟨Nat.one_le_iff_ne_zero.2 h.1, Nat.one_le_iff_ne_zero.2 h.2⟩`. Break down `hcase with h | h` into its components or cases. Establish `e1 : n = Finsupp.single 1 (n 1)`.
+
+Use extensionality with `i`. Use `fin_cases i`. Simplify using `[h]`. Simplify using the standard rewrite rules. Rewrite using `[if_pos e1, h, zero_add, Nat.choose_zero_right, Nat.cast_one, one_mul]`.
+
+Use `split_ifs with h2`. Establish `: n 1 = 0` using `by rw [h2]; simp`. Rewrite using `[this, hψ0]`. Expand and normalize the polynomial expressions, which then agree. Expand and normalize the polynomial expressions, which then agree.
+
+Establish `e1 : n = Finsupp.single 0 (n 0)`. Use extensionality with `i`. Use `fin_cases i`. Simplify using the standard rewrite rules. Simplify using `[h]`.
+
+Rewrite using `[if_pos e1, h, add_zero, Nat.choose_self, Nat.cast_one, one_mul]`. Use `split_ifs with h2`. Establish `: n 0 = 0` using `by rw [h2]; simp`. Rewrite using `[this, hψ0]`. Expand and normalize the polynomial expressions, which then agree.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem be_ab (i0 : K0 p →+* ℂ_[p]) (be : MvPowerSeries (Fin 2) (K0 p)) (ep : ℂ_[p]) (hep : ep ≠ 0)
     (hex : PowerSeries.constantCoeff g.ex = 0) (hinv : PowerSeries.subst g.ex g.l = PowerSeries.X)
     (be_tie : subst ![C ep * g.lg (X (0 : Fin 2)), C ep * g.lg (X (1 : Fin 2))] (map i0 be) =

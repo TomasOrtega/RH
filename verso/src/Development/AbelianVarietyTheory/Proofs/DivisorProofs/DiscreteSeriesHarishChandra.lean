@@ -6,6 +6,11 @@ open Finset
 namespace GlobalTheory.DSParam
 
 open Finset in
+/- English proof (translation)
+Rewrite using `[← Matrix.diagonal_one]`. Use `congr 1`. Use function extensionality and compare the values at `b`. Distinguish the cases in `h : b = a`. Substitute `h` using the available equality.
+
+Simplify using `[Complex.exp_two_pi_mul_I]`. Simplify using `[Pi.single_apply, h]`.
+-/
 private theorem diagonal_exp_single_two_pi_eq_one {n : ℕ} (a : Fin n) :
     (Matrix.diagonal fun b ↦
       Complex.exp (↑((Pi.single a (2 * Real.pi) : Fin n → ℝ) b) * Complex.I)) = 1 := by
@@ -17,6 +22,17 @@ private theorem diagonal_exp_single_two_pi_eq_one {n : ℕ} (a : Fin n) :
   · simp [Pi.single_apply, h]
 
 open Finset in
+/- English proof (translation)
+Unfold `_root_.Formalism.MainNotions.S.IsWtOn at hv`. Establish `h1` using `hv 0 (by simpa using hK)`. Establish `h2` using `hv (Pi.single a (2 * Real.pi)) (by rw [diagonal_exp_single_two_pi_eq_one]; exact hK)`. Rewrite `h2` using `[diagonal_exp_single_two_pi_eq_one]`. Simplify using `only [Pi.zero_apply, Complex.ofReal_zero, zero_mul, Complex.exp_zero, Matrix.diagonal_one, mul_zero, Finset.sum_const_zero, one_smul] at h1`.
+
+Rewrite `h2` using `[h1]`. Establish `hsum : (∑ b, μ b * (Pi.single a (2 * Real.pi) : Fin n → ℝ) b) = μ a * (2 * Real.pi)`. Simplify using `[Pi.single_apply, mul_ite]`. Rewrite `h2` using `[hsum]`. Establish `he : Complex.exp (↑(μ a * (2 * Real.pi)) * Complex.I) = 1`.
+
+Assume the negation of the conclusion as `hne`. Apply `hv0` to reduce the goal to its premises. Establish `: (Complex.exp (↑(μ a * (2 * Real.pi)) * Complex.I) - 1) • v = 0`. Rewrite using `[sub_smul, ← h2, one_smul, sub_self]`. Conclude with `(smul_eq_zero.mp this).resolve_left (sub_ne_zero.mpr hne)`.
+
+Take `⟨m, hm⟩` from `Complex.exp_eq_one_iff.mp he`. Use `⟨m, ?_⟩` and prove the remaining obligations. Establish `hpi : (2 * (Real.pi : ℂ) * Complex.I) ≠ 0` using `by simp [Real.pi_ne_zero]`. Establish `: ((μ a : ℝ) : ℂ) = (m : ℂ)`. Apply `mul_right_cancel₀ hpi` to reduce the goal to its premises.
+
+Move the coercions through the operations in `at hm`. Take the linear combination `hm`. Conclude with `this` after adjusting the coercions.
+-/
 private theorem exists_int_eq_weight_of_isWtOn {n : ℕ} {H : Type} [NormedAddCommGroup H]
     [InnerProductSpace ℂ H] {K : Set (Matrix (Fin n) (Fin n) ℂ)}
     (hK : (1 : Matrix (Fin n) (Fin n) ℂ) ∈ K)
@@ -48,12 +64,24 @@ private theorem exists_int_eq_weight_of_isWtOn {n : ℕ} {H : Type} [NormedAddCo
   exact_mod_cast this
 
 open Finset in
+/- English proof (translation)
+Unfold `_root_.Formalism.REAL.Kset`. Conclude with `⟨one_mem _, by simp⟩`.
+-/
 private theorem one_mem_Kset_divisor {n : ℕ} (ε : Fin n → Bool) :
     (1 : Matrix (Fin n) (Fin n) ℂ) ∈ _root_.Formalism.REAL.Kset ε := by
   unfold _root_.Formalism.REAL.Kset
   exact ⟨one_mem _, by simp⟩
 
 open Finset in
+/- English proof (translation)
+Simplify using `only [Finset.card_filter]`. Rewrite using `[← Finset.sum_add_distrib, ← Finset.sum_add_distrib, ← Finset.sum_add_distrib]`. Establish `key : ∀ b, ((if a < b ∧ ε b = ε a then 1 else 0) + (if b < a ∧ ε b = ε a then 1 else 0) + (if a < b ∧ ε b ≠ ε a then 1 else 0) + (if b < a ∧ ε b ≠ ε a then 1 else 0) : ℕ) = if b = a then 0 else 1`. Introduce `b`. Break down `lt_trichotomy a b with h | h | h` into its components or cases.
+
+Establish `h1 : b ≠ a` using `ne_of_gt h`. Establish `h2 : ¬ b < a` using `not_lt.mpr h.le`. Apply the tactic sequence `by_cases he : ε b = ε a <;> simp [h, h1, h2, he]`. Substitute `h` using the available equality. Simplify using the standard rewrite rules.
+
+Establish `h1 : b ≠ a` using `ne_of_lt h`. Establish `h2 : ¬ a < b` using `not_lt.mpr h.le`. Apply the tactic sequence `by_cases he : ε b = ε a <;> simp [h, h1, h2, he]`. Rewrite using `[Finset.sum_congr rfl (fun b _ => key b)]`. Rewrite using `[Finset.sum_ite, Finset.sum_const_zero, zero_add, Finset.sum_const, smul_eq_mul, mul_one, Finset.filter_ne', Finset.card_erase_of_mem (Finset.mem_univ a), Finset.card_univ, Fintype.card_fin]`.
+
+Use `a.isLt` as an intermediate fact. Use linear arithmetic over natural numbers and integers.
+-/
 private theorem card_same_diff_sign_lt_gt_add_one_eq {n : ℕ} (ε : Fin n → Bool) (a : Fin n) :
     #{b | a < b ∧ ε b = ε a} + #{b | b < a ∧ ε b = ε a} + #{b | a < b ∧ ε b ≠ ε a}
       + #{b | b < a ∧ ε b ≠ ε a} + 1 = n := by
@@ -79,6 +107,11 @@ private theorem card_same_diff_sign_lt_gt_add_one_eq {n : ℕ} (ε : Fin n → B
   omega
 
 open Finset in
+/- English proof (translation)
+Establish `h` using `card_same_diff_sign_lt_gt_add_one_eq ε a`. Unfold `_root_.Formalism.REAL.rhoC _root_.Formalism.REAL.rhoN`. Use `⟨-((#{b | b < a ∧ ε b = ε a} : ℕ) + (#{b | a < b ∧ ε b ≠ ε a} : ℕ) : ℤ), ?_⟩` and prove the remaining obligations. Establish `hr : ((#{b | a < b ∧ ε b = ε a} : ℕ) : ℝ) + #{b | b < a ∧ ε b = ε a} + #{b | a < b ∧ ε b ≠ ε a} + #{b | b < a ∧ ε b ≠ ε a} + 1 = n`. Conclude with `h` after adjusting the coercions.
+
+Use `push_cast`. Take the linear combination `hr / 2`.
+-/
 private theorem exists_int_rhoC_sub_rhoN_sub_half {n : ℕ} (ε : Fin n → Bool) (a : Fin n) :
     ∃ m : ℤ, _root_.Formalism.REAL.rhoC ε a - _root_.Formalism.REAL.rhoN ε a - ((n : ℝ) - 1) / 2 = m := by
   have h := card_same_diff_sign_lt_gt_add_one_eq ε a
@@ -92,6 +125,13 @@ private theorem exists_int_rhoC_sub_rhoN_sub_half {n : ℕ} (ε : Fin n → Bool
 
 open Finset in
 
+/- English proof (translation)
+Introduce `n H _ _ ε lam σ hlam hds`. Unfold `_root_.Formalism.MainNotions.S.IsDS at hds`. Take `⟨-, -, -, -, -, ⟨S, hS⟩, -⟩` from `hds`. Unfold `_root_.Formalism.MainNotions.S.IsKTypeOf at hS`. Take `⟨-, -, -, ⟨v, -, hv0, hv⟩, -⟩` from `hS`.
+
+Unfold `_root_.Formalism.QuantumDeterminants.IsHCParam`. Use `⟨hlam, fun a => ?_⟩` and prove the remaining obligations. Take `⟨k, hk⟩` from `exists_int_eq_weight_of_isWtOn (one_mem_Kset_divisor ε) hv0 hv a`. Take `⟨m, hm⟩` from `exists_int_rhoC_sub_rhoN_sub_half ε a`. Use `⟨k + m, ?_⟩` and prove the remaining obligations.
+
+Establish `hl : _root_.Formalism.QuantumDeterminants.lowK ε lam a = lam a + _root_.Formalism.REAL.rhoN ε a - _root_.Formalism.REAL.rhoC ε a`. Unfold `_root_.Formalism.QuantumDeterminants.lowK`. Simplify using the standard rewrite rules. Use `push_cast`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem _root_.GlobalTheory.DSParam.isHCParam_of_isDS : ∀ (n : ℕ) (H : Type) [NormedAddCommGroup H]
     [InnerProductSpace ℂ H]
     (ε : Fin n → Bool) (lam : Fin n → ℝ) (σ : Matrix (Fin n) (Fin n) ℂ → (H →L[ℂ] H)),

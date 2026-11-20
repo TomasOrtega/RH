@@ -14,18 +14,27 @@ variable {C0 Cde CE1 CE2 mu E : ℝ} {X : Loc} [NeZero X.m] [Fact X.p.Prime] {O 
   [IsDiscreteValuationRing O] [Algebra (WF X.p X.n') O] {β : GlobalTheory X} {L : LvDat C0 CE1 CE2 mu X β}
   {G : ∀ j, MvPolynomial (Fin (2 * segS X.TT j + 1) × Fin X.m) (KK O)}
 
+/- English proof (translation)
+The claim follows from `softHseg S hS C0 CE1 CE2 j _`.
+-/
 theorem soft_height_bound_segment_power (S : UniformizedDVR X.p O) (hS : S.SqP) (j : Fin (numSeg X.TT)) (i : Fin (BDk C0 CE1 CE2 mu X β j).T.t) :
     SoftOK S.w (hTop O X (l2x C0 CE1 CE2 mu X β j i) ^ l2P C0 CE1 CE2 mu X β j i) (l2P C0 CE1 CE2 mu X β j i)
       (EhatT O X (l2x C0 CE1 CE2 mu X β j i) (l2P C0 CE1 CE2 mu X β j i))
       (fun l => l2P C0 CE1 CE2 mu X β j i * dgH (l2x C0 CE1 CE2 mu X β j i) l) :=
   softHseg S hS C0 CE1 CE2 j _
 
+/- English proof (translation)
+Use `wh_congr (rigid_product_weighted_homog L a0 j0 (wN X) (fun _ => 1) fun x => hTop_nd x) ?_` and prove the remaining obligations. Rewrite using `[← ndM_eq, nd_rig]`. Simplify using the standard rewrite rules.
+-/
 theorem rig_factor_weighted_homogeneous_total (L : LvDat C0 CE1 CE2 mu X β) (a0 : Fin (numSeg X.TT) → ℕ) (j0 : Fin (numSeg X.TT)) :
     IsWeightedHomogeneous (wN X) (l2sR O L a0 j0) (∑ j, L.jp j) := by
   refine wh_congr (rigid_product_weighted_homog L a0 j0 (wN X) (fun _ => 1) fun x => hTop_nd x) ?_
   rw [← ndM_eq, nd_rig]
   simp
 
+/- English proof (translation)
+Use `wh_congr (rigid_product_weighted_homog L a0 j0 (wL X l) (fun x => dgH x l) fun x => mem_Pol_iff.1 (hTop_pol x) l) ?_` and prove the remaining obligations. Rewrite using `[← multideg_eq]`.
+-/
 theorem rig_factor_weighted_homogeneous_letter (L : LvDat C0 CE1 CE2 mu X β) (a0 : Fin (numSeg X.TT) → ℕ) (j0 : Fin (numSeg X.TT)) (l : X.TT × Bool) :
     IsWeightedHomogeneous (wL X l) (l2sR O L a0 j0)
       ((∑ j, L.jp j * dgH (topEnd X j) l) + multideg (rig L a0 j0) l) := by
@@ -40,6 +49,9 @@ variable (S : UniformizedDVR X.p O) (hS : S.SqP) (hD : D1num X) (h2 : 2 ≤ numS
       ((∑ j, ∑ a, (Cs j).pl a) + ∑ a, multMk X β a • aMk C0 CE1 CE2 X a))
 
 include hS hD h2 hG0 hStd stdEq in
+/- English proof (translation)
+Establish `hp : 0 < X.p` using `by have := hD.2.1; omega`. Establish `h` using `wh_total (wN X) (rig_factor_weighted_homogeneous_total (O := O) L (fun j => (Cs j).a0) j0) (sC := fun j a => l2sC Cs j a) (dC := fun j a => (Cs j).oC a) (fun j a => ndHom_iff.1 (fun m hm => (Cs j).homC a m hm)) (fun j i => ndHom_iff.1 (soft_height_bound_segment_power (C0 := C0) ( …`. Rewrite `h` using `[sym_family_eq_sigma_product Cs j0 Std hStd stdEq]`. Conclude with `IsWeightedHomogeneous.inj_right (sym_family_word_ne_zero hp L G hG0 Std hStd) h (symNdBL β _ (balanced_word_homogeneous L G (column_word_mem_polynomials_of_degree Cs)))`.
+-/
 theorem order_sum_eq_order_family : (∑ j, L.jp j) + ((∑ j, ∑ a, (Cs j).oC a) + ((∑ j, ∑ i, L.lv j i * l2P C0 CE1 CE2 mu X β j i) +
       ∑ a, multMk X β a * oMk C0 CE1 CE2 X a)) = ordFam C0 CE1 CE2 X β := by
   have hp : 0 < X.p := by have := hD.2.1; omega
@@ -52,6 +64,9 @@ theorem order_sum_eq_order_family : (∑ j, L.jp j) + ((∑ j, ∑ a, (Cs j).oC 
   exact IsWeightedHomogeneous.inj_right (sym_family_word_ne_zero hp L G hG0 Std hStd) h (symNdBL β _ (balanced_word_homogeneous L G (column_word_mem_polynomials_of_degree Cs)))
 
 include hS hD h2 hβ hG0 hStd stdEq in
+/- English proof (translation)
+Establish `hp : 0 < X.p` using `by have := hD.2.1; omega`. Establish `h` using `wh_total (wL X l) (rig_factor_weighted_homogeneous_letter (O := O) L (fun j => (Cs j).a0) j0 l) (sC := fun j a => l2sC Cs j a) (dC := fun j a => (Cs j).dgC a l) (fun j a => mem_Pol_iff.1 ((Cs j).polC a) l) (fun j i => mem_Pol_iff.1 (soft_height_bound_segment_power (C0 := C0) (CE1 …`. Rewrite `h` using `[sym_family_eq_sigma_product Cs j0 Std hStd stdEq]`. Conclude with `IsWeightedHomogeneous.inj_right (sym_family_word_ne_zero hp L G hG0 Std hStd) h (mem_Pol_iff.1 (symPolBL h2 β hβ _ (balanced_word_homogeneous L G (column_word_mem_polynomials_of_degree Cs))) l)`.
+-/
 theorem multidegree_sum_eq_target_degrees (l : X.TT × Bool) : ((∑ j, L.jp j * dgH (topEnd X j) l) + multideg (rig L (fun j => (Cs j).a0) j0) l) +
       ((∑ j, ∑ a, (Cs j).dgC a l) + ((∑ j, ∑ i, L.lv j i * (l2P C0 CE1 CE2 mu X β j i * dgH (l2x C0 CE1 CE2 mu X β j i) l)) +
       ∑ a, multMk X β a * dgMk C0 CE1 CE2 X a l)) = hhDegs X.TT X.aT X.bT l := by
@@ -66,6 +81,9 @@ theorem multidegree_sum_eq_target_degrees (l : X.TT × Bool) : ((∑ j, L.jp j *
     (mem_Pol_iff.1 (symPolBL h2 β hβ _ (balanced_word_homogeneous L G (column_word_mem_polynomials_of_degree Cs))) l)
 
 include hS hD h2 hβ hG0 hStd stdEq in
+/- English proof (translation)
+Use `mem_Pol_iff.2 fun l => wh_congr (wh_total (wL X l) (rig_factor_weighted_homogeneous_letter (O := O) L (fun j => (Cs j).a0) j0 l) (sC := fun j a => (Cs j).fC a) (dC := fun j a => (Cs j).dgC a l) (fun j a => mem_Pol_iff.1 ((Cs j).fPol a) l) (dH := fun j i => l2P C0 CE1 CE2 mu X β j …` and prove the remaining obligations. Use `(mem_Pol_iff.1 (hTop_pol (O := O) (l2x C0 CE1 CE2 mu X β j i)) l).pow (l2P C0 CE1 CE2 mu X β j i)` as an intermediate fact. Rewrite `this` using `[smul_eq_mul]`. Then use the resulting hypothesis.
+-/
 theorem total_product_mem_polynomials : l2sR O L (fun j => (Cs j).a0) j0 * ((∏ j, ∏ a, (Cs j).fC a) *
       ((∏ j, ∏ i, (hTop O X (l2x C0 CE1 CE2 mu X β j i) ^ l2P C0 CE1 CE2 mu X β j i) ^ L.lv j i) *
         ∏ a, fMk O C0 CE1 CE2 X a ^ multMk X β a)) ∈
@@ -80,6 +98,15 @@ theorem total_product_mem_polynomials : l2sR O L (fun j => (Cs j).a0) j0 * ((∏
   rwa [smul_eq_mul] at this
 
 include hS hD h2 hG0 hStd stdEq in
+/- English proof (translation)
+Establish `hrig : (monomial (rig L (fun j => (Cs j).a0) j0) (1 : KK O) : RHH O X) = monomial (rig0 L (fun j => (Cs j).a0) j0) 1 * MvPolynomial.X ((topStart X j0, true), 0) ^ X.c`. Unfold `rig`. Rewrite using `[X_pow_eq_monomial, monomial_mul, one_mul]`. Establish `hloc : locR O X j0 ^ X.c = MvPolynomial.X ((topStart X j0, true), 0) ^ X.c * ∏ c : Fin X.m, locC O X c.succ ^ X.c`. Unfold `locR`.
+
+Rewrite using `[mul_pow, Finset.prod_pow]`. Establish `hF : l2sR O L (fun j => (Cs j).a0) j0 * ((∏ j, ∏ a, (Cs j).fC a) * ((∏ j, ∏ i, (hTop O X (l2x C0 CE1 CE2 mu X β j i) ^ l2P C0 CE1 CE2 mu X β j i) ^ L.lv j i) * ∏ a, fMk O C0 CE1 CE2 X a ^ multMk X β a)) = locR O X j0 ^ X.c * (((∏ j, hTop O X (topEnd X j) ^ L.jp j) * monomial (rig …`. Rewrite using `[product_split_constant, hloc]`. Unfold `l2sR`. Rewrite using `[hrig]`.
+
+Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hF]`. Establish `hR0 : InWjRg X.p X.n' O S.w 1 (hhLetters X.TT) g' ((∏ j, hTop O X (topEnd X j) ^ L.jp j) * monomial (rig0 L (fun j => (Cs j).a0) j0) 1) ((∑ j, L.jp j * 1) + 0)` using `inWjRg_mul (inWjRg_prod _ _ _ fun j _ => inWjRg_pow (hTop_ord S.w _ g' hg') _) (inWjRg_zero_of_inA S.w (monomial_in_algebra _) g' hg')`. Establish `h` using `inWjRg_mul (locPow_ord S hS hD h2 j0 g' hg' hne X.c) (order_total_bound hR0 (sC := fun j a => (Cs j).fC a) (dC := fun j a => (Cs j).oC a) (fun j a => ((Cs j).facC a).ord g' hg') (fun j i => (soft_height_bound_segment_power (C0 := C0) (CE1 := CE1) (CE2 := CE2) (mu := mu) (β := β) …`. Establish `e : X.c + (((∑ j, L.jp j * 1) + 0) + ((∑ j, ∑ a, (Cs j).oC a) + ((∑ j, ∑ i, L.lv j i * l2P C0 CE1 CE2 mu X β j i) + ∑ a, multMk0 X β a * oMk C0 CE1 CE2 X a))) = ordFam C0 CE1 CE2 X β + X.c`.
+
+Rewrite using `[sum_split_constant, ← order_sum_eq_order_family S hS hD h2 Cs hG0 j0 Std hStd stdEq]`. Simplify using `only [mul_one, add_zero]`. Expand and normalize the polynomial expressions, which then agree. Rewrite `h` using `[e]`. Conclude with `h`.
+-/
 theorem cleaned_product_order_family_eq (g' : Matrix (Fin (X.m + 1)) (Fin (X.m + 1)) (WF X.p X.n')) (hg' : IsGLW g')
     (hne : ratPlane X.p X.n' 1 g' ≠ ratPlane X.p X.n' 1 1) :
     InWjRg X.p X.n' O S.w 1 (hhLetters X.TT) g'

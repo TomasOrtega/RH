@@ -8,6 +8,17 @@ noncomputable section
 
 namespace GlobalTheory.PolFan.CarDim
 
+/- English proof (translation)
+Establish `hZ : ∀ n : ℤ, n ≠ 0 → ∀ y : X, n • y ∈ (orad β : Submodule (𝓞 E) X) → y ∈ (orad β : Submodule (𝓞 E) X)` using `fun n hn y hy a z => by`. Establish `h` using `hy a z`. Rewrite `h` using `[smul_comm, map_zsmul, LinearMap.smul_apply, smul_eq_mul]`. Conclude with `(mul_eq_zero.1 h).resolve_left hn`. Establish `hO : ∀ a : 𝓞 E, a ≠ 0 → ∀ y : X, a • y ∈ (orad β : Submodule (𝓞 E) X) → y ∈ (orad β : Submodule (𝓞 E) X)`.
+
+Introduce `a ha y hy`. Establish `hne : (Ideal.span {a}).comap (algebraMap ℤ (𝓞 E)) ≠ ⊥` using `Ideal.comap_ne_bot_of_integral_mem ha (Ideal.mem_span_singleton_self a) (Algebra.IsIntegral.isIntegral a)`. Take `⟨n, hn, hn0⟩` from `Submodule.exists_mem_ne_zero_of_ne_bot hne`. Take `⟨a', ha'⟩` from `Ideal.mem_span_singleton'.1 (Ideal.mem_comap.1 hn)`. Use `hZ n hn0 y fun b z => ?_` and prove the remaining obligations.
+
+Establish `h` using `hy (b * a') z`. Rewrite `h` using `[mul_smul, smul_smul a' a y, ha', algebraMap_int_eq, eq_intCast, Int.cast_smul_eq_zsmul]`. Conclude with `h`. Establish `htor : Submodule.torsion (𝓞 E) (X ⧸ (orad β : Submodule (𝓞 E) X)) = ⊥`. Use `(Submodule.eq_bot_iff _).2 fun u hu => ?_` and prove the remaining obligations.
+
+Take `⟨⟨a, ha⟩, hau⟩` from `(Submodule.mem_torsion_iff u).1 hu`. Take `⟨y, rfl⟩` from `Submodule.Quotient.mk_surjective _ u`. Rewrite `hau` using `[Submonoid.mk_smul, ← Submodule.Quotient.mk_smul, Submodule.Quotient.mk_eq_zero]`. Rewrite using `[Submodule.Quotient.mk_eq_zero]`. Conclude with `hO a (nonZeroDivisors.ne_zero ha) y hau`.
+
+Establish `: Module.Flat (𝓞 E) (X ⧸ (orad β : Submodule (𝓞 E) X))` using `IsDedekindDomain.flat_iff_torsion_eq_bot.2 htor`. Establish `: Module.FinitePresentation (𝓞 E) (X ⧸ (orad β : Submodule (𝓞 E) X))` using `Module.finitePresentation_of_finite _ _`. Conclude with `Module.Flat.projective_of_finitePresentation`.
+-/
 theorem projective_quot_orad (E : Type) [Field E] [NumberField E] (X : Type) [AddCommGroup X] [Module (𝓞 E) X]
     [Module.Finite (𝓞 E) X] (β : LinearMap.BilinForm ℤ X) :
     Module.Projective (𝓞 E) (X ⧸ (orad β : Submodule (𝓞 E) X)) := by
@@ -38,6 +49,19 @@ theorem projective_quot_orad (E : Type) [Field E] [NumberField E] (X : Type) [Ad
   have : Module.FinitePresentation (𝓞 E) (X ⧸ (orad β : Submodule (𝓞 E) X)) := Module.finitePresentation_of_finite _ _
   exact Module.Flat.projective_of_finitePresentation
 
+/- English proof (translation)
+Unfold `genRank`. Use `choose k hk hkm using h`. Use `set P : ℕ := ∏ j, k j with hPdef`. Establish `hP : 0 < P` using `Finset.prod_pos fun j _ => hk j`. Establish `hmem : ∀ x ∈ Submodule.span ℤ (Set.range A), (P : ℤ) • x ∈ Submodule.span ℤ (Set.range B)`.
+
+Introduce `x hx`. Proceed by induction on `hx using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨j, rfl⟩` from `hx`. Establish `e : P = (∏ i ∈ Finset.univ.erase j, k i) * k j` using `(Finset.prod_erase_mul _ _ (Finset.mem_univ j)).symm`.
+
+Rewrite using `[natCast_zsmul, e, mul_smul]`. Conclude with `nsmul_mem (hkm j) _`. Consider the case `zero => simp`. Consider the case `add x y _ _ hx hy => rw [smul_add]`. Conclude with `add_mem hx hy`.
+
+Consider the case `smul a x _ hx => rw [smul_comm]`. Conclude with `Submodule.smul_mem _ a hx`. Establish `: Module.Finite ℤ (Submodule.span ℤ (Set.range B))` using `Module.Finite.span_of_finite ℤ (Set.finite_range B)`. Set `f : Submodule.span ℤ (Set.range A) →ₗ[ℤ] Submodule.span ℤ (Set.range B)` to `((P : ℤ) • (Submodule.span ℤ (Set.range A)).subtype).codRestrict _ fun x => hmem x x.2`. Establish `hf : Function.Injective f`.
+
+Rewrite using `[← LinearMap.ker_eq_bot, LinearMap.ker_eq_bot']`. Introduce `x hx`. Establish `hx' : (P : ℤ) • (x : LinearMap.BilinForm ℤ X) = 0` using `congrArg Subtype.val hx`. Establish `hP' : (P : ℤ) ≠ 0` using `by exact_mod_cast hP.ne'`. Use extensionality with `a b`.
+
+Use `LinearMap.congr_fun₂ hx' a b` as an intermediate fact. Simplify using `only [LinearMap.smul_apply, smul_eq_mul, LinearMap.zero_apply] at this`. Simplify using `using (mul_eq_zero.1 this).resolve_left hP'`. Conclude with `LinearMap.finrank_le_finrank_of_injective hf`.
+-/
 theorem genRank_le_of_smul_mem_span {X : Type} [AddCommGroup X] {m m' : ℕ} (A : Fin m' → LinearMap.BilinForm ℤ X)
     (B : Fin m → LinearMap.BilinForm ℤ X)
     (h : ∀ j, ∃ k : ℕ, 0 < k ∧ k • A j ∈ Submodule.span ℤ (Set.range B)) : genRank A ≤ genRank B := by
@@ -72,6 +96,11 @@ theorem genRank_le_of_smul_mem_span {X : Type} [AddCommGroup X] {m m' : ℕ} (A 
     simpa using (mul_eq_zero.1 this).resolve_left hP'
   exact LinearMap.finrank_le_finrank_of_injective hf
 
+/- English proof (translation)
+Establish `h0 : ∑ o : Option (Fin m), (o.elim (-1) c) • toReal (LinearMap.id (R` using `ℤ) (o.elim β γ)) = 0 := by`. Rewrite using `[Fintype.sum_option]`. Simplify using `only [Option.elim, LinearMap.id_apply, h, neg_one_smul, neg_add_cancel]`. Use `sum_mul_eq_zero_of_sum_toReal (j := LinearMap.id) (fun _ _ h => h) ℓ h0` as an intermediate fact. Rewrite `this` using `[Fintype.sum_option]`.
+
+Simplify using `only [Option.elim] at this`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem intLin_eq_sum_of_toReal {X : Type} [AddCommGroup X] {m : ℕ} (γ : Fin m → LinearMap.BilinForm ℤ X) (c : Fin m → ℝ)
     (β : LinearMap.BilinForm ℤ X) (ℓ : LinearMap.BilinForm ℤ X →ₗ[ℤ] ℤ) (h : toReal β = ∑ i, c i • toReal (γ i)) :
     (ℓ β : ℝ) = ∑ i, c i * (ℓ (γ i) : ℝ) := by
@@ -83,6 +112,15 @@ theorem intLin_eq_sum_of_toReal {X : Type} [AddCommGroup X] {m : ℕ} (γ : Fin 
   simp only [Option.elim] at this
   linarith
 
+/- English proof (translation)
+Take `⟨G, hG⟩` from `IsNoetherian.noetherian K`. Use `⟨∑ k ∈ G, LinearMap.applyₗ k ∘ₗ LinearMap.applyₗ k, fun β hβ hp => ?_⟩` and prove the remaining obligations. Establish `hv : (∑ k ∈ G, (LinearMap.applyₗ k ∘ₗ LinearMap.applyₗ k : LinearMap.BilinForm ℤ X →ₗ[ℤ] ℤ)) β = ∑ k ∈ G, β k k`. Simplify using the standard rewrite rules. Rewrite using `[hv]`.
+
+Use `⟨Finset.sum_nonneg fun k _ => hp k, fun h0 => ?_, fun h0 => Finset.sum_eq_zero fun k hk => h0 k ?_ k⟩` and prove the remaining obligations. Establish `hk0 : ∀ k ∈ G, β k k = 0` using `(Finset.sum_eq_zero_iff_of_nonneg fun k _ => hp k).1 h0`. Rewrite using `[← hG]`. Introduce `x hx`. Proceed by induction on `hx using Submodule.span_induction with`.
+
+Consider the case `mem x hx => exact fun y => ConeSub.eq_zero_of_self_eq_zero β hβ.1 hp (hk0 x hx) y`. Consider the case `zero => simp`. Consider the case `add x x' _ _ h1 h2 => intro y`. Rewrite using `[map_add, LinearMap.add_apply, h1, h2, add_zero]`. Consider the case `smul a x _ h1 => intro y`.
+
+Rewrite using `[hβ.2 a x y]`. Conclude with `h1 _`. Rewrite using `[← hG]`. Conclude with `Submodule.subset_span hk`.
+-/
 theorem exists_radical_test {O : Type} [CommRing O] [IsNoetherianRing O] (bar : O → O) {X : Type} [AddCommGroup X]
     [Module O X] [Module.Finite O X] (K : Submodule O X) :
     ∃ hK : LinearMap.BilinForm ℤ X →ₗ[ℤ] ℤ, ∀ β ∈ balForms bar X, (∀ y, 0 ≤ β y y) →
@@ -109,6 +147,11 @@ end GlobalTheory.PolFan.CarDim
 
 namespace GlobalTheory.PolFan.CarDim
 
+/- English proof (translation)
+Establish `e1 : φ.evalZ b = ∑ i, c i * φ.evalZ (γ i)`. Rewrite using `[← hl c hc]`. Unfold `InvFun.evalZ`. Use `congr 1`. Use function extensionality and compare the values at `a a'`.
+
+Use `LinearMap.congr_fun₂ hb a a'` as an intermediate fact. Simplify `this` using `[LinearMap.sum_apply]`. Rewrite using `[intLin_eq_sum_of_toReal γ c b ℓ hb, e1, Finset.mul_sum]`. Conclude with `Finset.sum_congr rfl fun i _ => by rw [h1 i]; ring`.
+-/
 theorem intLin_eq_of_inCone {O : Type} [CommRing O] (φ : InvFun O) {Y : Type} [AddCommGroup Y] [Module O Y]
     [Module.Finite O Y] {n : ℕ} {γ : Fin n → LinearMap.BilinForm ℤ Y} (hl : φ.LinearOn γ) {N : ℕ}
     {ℓ : LinearMap.BilinForm ℤ Y →ₗ[ℤ] ℤ} (h1 : ∀ i, (ℓ (γ i) : ℝ) = N * φ.evalZ (γ i)) {c : Fin n → ℝ}
@@ -124,6 +167,61 @@ theorem intLin_eq_of_inCone {O : Type} [CommRing O] (φ : InvFun O) {Y : Type} [
   rw [intLin_eq_sum_of_toReal γ c b ℓ hb, e1, Finset.mul_sum]
   exact Finset.sum_congr rfl fun i _ => by rw [h1 i]; ring
 
+/- English proof (translation)
+Introduce `E _ _ _ H ψ X _ _ _ _ hfan hface β hβ hp m' δ hδ hin`. Establish `: Module.Projective (𝓞 E) (X ⧸ (orad (O` using `𝓞 E) β)) := projective_quot_orad E X β`. Take `⟨t, ht⟩` from `Module.projective_lifting_property (orad (O := 𝓞 E) β).mkQ LinearMap.id (orad (O := 𝓞 E) β).mkQ_surjective`. Establish `htt : ∀ u, (orad (O` using `𝓞 E) β).mkQ (t u) = u := fun u => LinearMap.congr_fun ht u`. Establish `htt' : ∀ u, (Submodule.Quotient.mk (t u) : X ⧸ (orad (O` using `𝓞 E) β)) = u := htt`.
+
+Establish `hπ : Function.Surjective (orad (O` using `𝓞 E) β).mkQ := (orad (O := 𝓞 E) β).mkQ_surjective`. Establish `desc : ∀ β' : LinearMap.BilinForm ℤ X, β' ∈ balForms H.bar X → (∀ k ∈ (orad (O` using `𝓞 E) β), ∀ y, β' k y = 0) → pull (orad (O := 𝓞 E) β).mkQ (pull t β') = β' := by`. Introduce `β' hb hv`. Use `LinearMap.ext₂ fun a b => ?_` and prove the remaining obligations. Establish `ha : a - t ((orad (O` using `𝓞 E) β).mkQ a) ∈ (orad (O := 𝓞 E) β) := by`.
+
+Rewrite using `[← Submodule.Quotient.mk_eq_zero (orad (O := 𝓞 E) β), ← Submodule.mkQ_apply, map_sub, htt, sub_self]`. Establish `hb' : b - t ((orad (O` using `𝓞 E) β).mkQ b) ∈ (orad (O := 𝓞 E) β) := by`. Rewrite using `[← Submodule.Quotient.mk_eq_zero (orad (O := 𝓞 E) β), ← Submodule.mkQ_apply, map_sub, htt, sub_self]`. Establish `e1` using `hv _ ha b`. Establish `e2` using `hv _ hb' (t ((orad (O := 𝓞 E) β).mkQ a))`.
+
+Rewrite `e1`, `e2` using `[map_sub, LinearMap.sub_apply, sub_eq_zero]`. Rewrite using `[pull_apply, pull_apply, hb.1 (t _) (t _), ← e2, hb.1 b (t ((orad (O := 𝓞 E) β).mkQ a)), ← e1]`. Establish `hbK : ∀ k ∈ (orad (O` using `𝓞 E) β), ∀ y, β k y = 0 := fun k hk y => by simpa using (mem_orad.1 hk) 1 y`. Establish `hmem : toReal β ∈ psdCone H.bar X`. Use `ConeSub.sum_smul_toReal_mem_psdCone (𝓞 E) H.bar X 1 ![β] ![1] (fun i => by fin_cases i; exact hβ) (fun i y => by fin_cases i; exact hp y) (fun i => by fin_cases i; norm_num)` as an intermediate fact.
+
+Simplify using `using this`. Take `⟨S, -, hS⟩` from `hfan.finite`. Take `⟨e, m, γ, d, hγ, -, hd, he⟩` from `hS _ hmem`. Use `set σ : Fin m → LinearMap.BilinForm ℤ X := fun i => pull e.symm.toLinearMap (γ i) with hσdef`. Establish `hσ : IsCell H.bar ψ σ` using `isCell_pull_equiv hγ e.symm`.
+
+Establish `hβσ : toReal β = ∑ i, d i • toReal (σ i)` using `LinearMap.ext₂ fun a b => by`. Use `LinearMap.congr_fun₂ he (e.symm a) (e.symm b)` as an intermediate fact. Simplify `this` using `[LinearMap.sum_apply, hσdef]`. Take `⟨Nδ, ℓδ, hNδ, hℓδ1, hℓδ2, hℓδ3⟩` from `hδ.strict`. Take `⟨Nσ, ℓσ, hNσ, hℓσ1, hℓσ2, hℓσ3⟩` from `hσ.strict`.
+
+Take `⟨hK, hKt⟩` from `exists_radical_test H.bar (orad (O := 𝓞 E) β)`. Set `g : LinearMap.BilinForm ℤ X →ₗ[ℤ] ℤ` to `(Nσ : ℤ) • (ℓδ ∘ₗ pullLin t) - (Nδ : ℤ) • ℓσ`. Establish `hg : ∀ β', g β' = Nσ * ℓδ (pull t β') - Nδ * ℓσ β'` using `fun β' => by simp [g]`. Use `set M : ℤ := ∑ j, |g (σ j)| + 1 with hM`. Establish `hMj : ∀ j, |g (σ j)| < M` using `fun j => by`.
+
+Use `Finset.single_le_sum (f := fun j => |g (σ j)|) (fun j _ => abs_nonneg _) (Finset.mem_univ j)` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Set `hh : LinearMap.BilinForm ℤ X →ₗ[ℤ] ℤ` to `g + M • hK`. Establish `hhv : ∀ β', hh β' = g β' + M * hK β'` using `fun β' => by simp [hh]`. Establish `factA : ∀ j, hK (σ j) = 0 → (g (σ j) : ℝ) = Nσ * ((ℓδ (pull t (σ j)) : ℝ) - Nδ * ψ.evalZ (pull t (σ j)))`.
+
+Introduce `j hj`. Establish `hv` using `(hKt _ (hσ.mem j) (hσ.nonneg j)).2.1 hj`. Establish `e1 : ψ.evalZ (σ j) = ψ.evalZ (pull t (σ j))`. Rewrite using `[← evalZ_pull ψ hπ (pull t (σ j)), desc _ (hσ.mem j) hv]`. Rewrite using `[hg]`.
+
+Use `push_cast`. Rewrite using `[hℓσ1 j, e1]`. Expand and normalize the polynomial expressions, which then agree. Establish `hpos : ∀ j, hK (σ j) ≠ 0 → 0 < hh (σ j)`. Introduce `j hj`.
+
+Rewrite using `[hhv]`. Establish `h0` using `(hKt _ (hσ.mem j) (hσ.nonneg j)).1`. Establish `h1 : 1 ≤ hK (σ j)` using `by omega`. Establish `h2` using `hMj j`. Establish `hM0 : 0 ≤ M` using `(abs_nonneg _).trans h2.le`.
+
+Establish `h3` using `mul_le_mul_of_nonneg_left h1 hM0`. Establish `h4` using `neg_abs_le (g (σ j))`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hnn : ∀ j, 0 ≤ hh (σ j)`. Introduce `j`.
+
+Distinguish the cases in `hj : hK (σ j) = 0`. Rewrite using `[hhv, hj, mul_zero, add_zero]`. Establish `hA` using `factA j hj`. Establish `h2` using `hℓδ2 (pull t (σ j)) (pull_mem t (hσ.mem j)) (fun y => hσ.nonneg j _)`. Establish `h3 : (0 : ℝ) ≤ g (σ j)`.
+
+Rewrite using `[hA]`. Conclude with `mul_nonneg (Nat.cast_nonneg _) (by linarith)`. Conclude with `h3` after adjusting the coercions. Conclude with `(hpos j hj).le`. Use `set F : Finset (Fin m) := Finset.univ.filter fun j => hh (σ j) = 0 with hF`.
+
+Set `s : Fin F.card ↪ Fin m` to `(F.orderEmbOfFin rfl).toEmbedding`. Establish `hs : ∀ j, j ∈ Set.range s ↔ hh (σ j) = 0` using `fun j => by`. Establish `: Set.range s = (F : Set (Fin m))` using `Finset.range_orderEmbOfFin F rfl`. Rewrite using `[this]`. Simplify using `[hF]`.
+
+Establish `hcut : IsFaceCut σ s hh` using `⟨hnn, fun j => (hs j).symm⟩`. Establish `hσs : IsCell H.bar ψ (fun i => σ (s i))` using `hface m F.card σ s hh hσ hcut`. Establish `hKb : hK β = 0` using `(hKt β hβ hp).2.2 hbK`. Establish `hψβ : ψ.evalZ β = ψ.evalZ (pull t β)`. Rewrite using `[← evalZ_pull ψ hπ (pull t β), desc β hβ hbK]`.
+
+Take `⟨c, hc, hcβ⟩` from `hin`. Establish `hcβ1 : toReal (pull t β) = ∑ i, c i • toReal (δ i)` using `LinearMap.ext₂ fun a b => by`. Use `LinearMap.congr_fun₂ hcβ (t a) (t b)` as an intermediate fact. Simplify `this` using `[LinearMap.sum_apply, htt, htt']`. Establish `hgβ : g β = 0`.
+
+Establish `e1` using `intLin_eq_of_inCone ψ hσ.linear hℓσ1 hd hβσ`. Establish `e2` using `intLin_eq_of_inCone ψ hδ.linear hℓδ1 hc hcβ1`. Establish `: (g β : ℝ) = 0`. Rewrite using `[hg]`. Use `push_cast`.
+
+Rewrite using `[e1, e2, hψβ]`. Expand and normalize the polynomial expressions, which then agree. Conclude with `this` after adjusting the coercions. Establish `hhβ : hh β = 0` using `by rw [hhv, hgβ, hKb]; simp`. Establish `hsum` using `intLin_eq_sum_of_toReal σ d β hh hβσ`.
+
+Rewrite `hsum` using `[hhβ, Int.cast_zero]`. Establish `hzero : ∀ j, d j * (hh (σ j) : ℝ) = 0`. Use `(Finset.sum_eq_zero_iff_of_nonneg (fun j _ => mul_nonneg (hd j) (by exact_mod_cast hnn j))).1 hsum.symm` as an intermediate fact. Conclude with `fun j => this j (Finset.mem_univ j)`. Establish `hdz : ∀ j, j ∉ Set.range s → d j = 0` using `fun j hj => by`.
+
+Establish `h0 : (hh (σ j) : ℝ) ≠ 0` using `by exact_mod_cast fun h => hj ((hs j).2 h)`. Conclude with `(mul_eq_zero.1 (hzero j)).resolve_right h0`. Establish `hcone : InRCone (fun i => σ (s i)) β`. Use `⟨fun i => d (s i), fun i => hd _, ?_⟩` and prove the remaining obligations. Rewrite using `[hβσ]`.
+
+Conclude with `(Fintype.sum_of_injective s s.injective _ _ (fun j hj => by rw [hdz j hj, zero_smul]) fun i => rfl).symm`. Establish `hspan : ∀ i, ∃ k : ℕ, 0 < k ∧ k • σ (s i) ∈ Submodule.span ℤ (Set.range fun i => pull (orad (O` using `𝓞 E) β).mkQ (δ i)) := by`. Introduce `i`. Establish `hj0 : hh (σ (s i)) = 0` using `(hs (s i)).1 ⟨i, rfl⟩`. Establish `hKj : hK (σ (s i)) = 0`.
+
+Assume the negation of the conclusion as `hne`. Conclude with `(hpos _ hne).ne' hj0`. Establish `hgj : g (σ (s i)) = 0`. Rewrite `hj0` using `[hhv, hKj, mul_zero, add_zero]`. Conclude with `hj0`.
+
+Establish `hA` using `factA _ hKj`. Rewrite `hA` using `[hgj, Int.cast_zero]`. Establish `heq : (Nδ : ℝ) * ψ.evalZ (pull t (σ (s i))) = ℓδ (pull t (σ (s i)))`. Establish `hN : (Nσ : ℝ) ≠ 0` using `by exact_mod_cast hNσ.ne'`. Use `(mul_eq_zero.1 hA.symm).resolve_left hN` as an intermediate fact.
+
+Combine the linear equalities and inequalities to obtain the conclusion. Take `⟨k, c', hk, hkc⟩` from `hℓδ3 _ (pull_mem t (hσ.mem (s i))) (fun y => hσ.nonneg (s i) _) heq`. Use `⟨k, hk, ?_⟩` and prove the remaining obligations. Establish `hv` using `(hKt _ (hσ.mem (s i)) (hσ.nonneg (s i))).2.1 hKj`. Establish `e3 : k • σ (s i) = ∑ l, c' l • pull (orad (O` using `𝓞 E) β).mkQ (δ l) := by`.
+
+Establish `e` using `congrArg (pullLin (orad (O := 𝓞 E) β).mkQ) hkc`. Simplify using `only [map_nsmul, map_sum, pullLin_apply] at e`. Rewrite `e` using `[desc _ (hσ.mem (s i)) hv]`. Conclude with `e`. Rewrite using `[e3]`.
+
+Conclude with `Submodule.sum_mem _ fun l _ => nsmul_mem (Submodule.subset_span (Set.mem_range_self l)) _`. Use `⟨F.card, fun i => σ (s i), hσs, hcone, ?_⟩` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem cell_of_quot_cell : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (ψ : InvFun (𝓞 E)) (X : Type) [AddCommGroup X] [Module (𝓞 E) X] [Module.Finite (𝓞 E) X] [Module.Projective (𝓞 E) X], IsPolyFanOn H.bar ψ X → (∀ (m m' : ℕ) (γ : Fin m → LinearMap.BilinForm ℤ X) (s : Fin m' ↪ Fin m) (h : LinearMap.BilinForm ℤ X →ₗ[ℤ] ℤ), IsCell H.bar ψ γ → IsFaceCut γ s h → IsCell H.bar ψ (fun i => γ (s i))) → ∀ β ∈ balForms H.bar X, (∀ y, 0 ≤ β y y) → ∀ (m' : ℕ) (δ : Fin m' → LinearMap.BilinForm ℤ (X ⧸ (orad β : Submodule (𝓞 E) X))), IsCell H.bar ψ δ → InRCone (fun i => pull (orad β : Submodule (𝓞 E) X).mkQ (δ i)) β → ∃ (m : ℕ) (γ : Fin m → LinearMap.BilinForm ℤ X), IsCell H.bar ψ γ ∧ InRCone γ β ∧ genRank γ ≤ genRank δ := by
   intro E _ _ _ H ψ X _ _ _ _ hfan hface β hβ hp m' δ hδ hin
   classical

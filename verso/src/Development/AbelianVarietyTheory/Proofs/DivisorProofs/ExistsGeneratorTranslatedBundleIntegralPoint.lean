@@ -19,6 +19,9 @@ open ReciprocityTheory.ChartRestriction.G.DVR GlobalTheory.Poinc.Sep.Frames Glob
 
 namespace GlobalTheory.GenLocal
 
+/- English proof (translation)
+Introduce `V _ _ _ D b`. Use `choose i hi using fun k : Fin 2 => exists_chart D.P.isLB ((![(η[D.P.A]).left, b.left] k) (closedPoint V))`. Conclude with `AbSquare.exists_gen_of_mem_chart D.P.isLB _ _ i fun k y => by`. Establish `: (![(η[D.P.A]).left, b.left] k) ⁻¹ᵁ D.P.L.U (i k) = ⊤` using `(IsLocalRing.closedPoint_mem_iff _).1 (hi k)`. Conclude with `(this.ge trivial : y ∈ (![(η[D.P.A]).left, b.left] k) ⁻¹ᵁ D.P.L.U (i k))`.
+-/
 theorem exists_gen_unit_point : ∀ (V : Type) [CommRing V] [IsDomain V] [IsLocalRing V] (D : DegPre V) (b : 𝟙_ (Over (Sp V)) ⟶ D.P.A), ∃ t : LB.Gen (LB.LinComb D.P.L ![(η[D.P.A]).left, b.left] (DegPre.lineε 1)), t.IsGen := by
   intro V _ _ _ D b
   choose i hi using fun k : Fin 2 =>

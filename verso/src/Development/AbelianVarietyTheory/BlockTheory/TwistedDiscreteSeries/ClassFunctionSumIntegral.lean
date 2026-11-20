@@ -44,11 +44,22 @@ def ClassSumIntegral : Prop :=
 
 variable {V : HSp D} {K : Subgroup (GL (Fin V.rank) (Lev.EAf D))}
 
+/- English proof (translation)
+Rewrite using `[map_mul, map_mul, map_inv]`.
+-/
 theorem map_conj_inv {G H : Type} [Group G] [Group H] (f : G →* H) (a b : G) : f (a⁻¹ * b * a) = (f a)⁻¹ * f b * f a := by
   rw [map_mul, map_mul, map_inv]
 
+/- English proof (translation)
+Unfold both sides. The equivalence is reflexive.
+-/
 theorem mem_levelFin (w : GA D V) : (finHom V).rangeRestrict w ∈ levelFin V K ↔ Lev.finE V w ∈ K := Iff.rfl
 
+/- English proof (translation)
+Unfold `classGroupAt`. Rewrite using `[Bridge.mem_stab]`. Establish `e : ((finHom V).rangeRestrict z)⁻¹ * Bridge.ratF V γ * (finHom V).rangeRestrict z = (finHom V).rangeRestrict (z⁻¹ * (γ : GA D V) * z)`. Establish `e0 : Bridge.ratF V γ = (finHom V).rangeRestrict (γ : GA D V)`. Simplify using `only [Bridge.ratF, MonoidHom.comp_apply, Subgroup.coe_subtype]`.
+
+Rewrite using `[e0]`. Conclude with `(map_conj_inv (finHom V).rangeRestrict z γ).symm`. Rewrite using `[e]`. Conclude with `mem_levelFin _`.
+-/
 theorem mem_classGroupAt (z : GA D V) (γ : GQ V) :
     γ ∈ classGroupAt V K ((finHom V).rangeRestrict z) ↔ Lev.finE V (z⁻¹ * (γ : GA D V) * z) ∈ K := by
   unfold classGroupAt
@@ -62,9 +73,15 @@ theorem mem_classGroupAt (z : GA D V) (γ : GQ V) :
   rw [e]
   exact mem_levelFin _
 
+/- English proof (translation)
+The claim follows from `(finHom V).rangeRestrict_surjective x`.
+-/
 theorem exists_lift (x : Bridge.Gf V) : ∃ z : GA D V, (finHom V).rangeRestrict z = x :=
   (finHom V).rangeRestrict_surjective x
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fun _ _ _ => rfl, fun _ _ _ => rfl, fun _ _ _ => rfl⟩`.
+-/
 example (c : ℂ) : IsClassFun V K fun _ => c := ⟨fun _ _ _ => rfl, fun _ _ _ => rfl, fun _ _ _ => rfl⟩
 
 end GlobalTheory.IndefiniteRowSideFullHecke.ClassFunctionSumIntegral

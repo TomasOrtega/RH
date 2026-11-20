@@ -14,6 +14,17 @@ namespace GlobalTheory.DeepLaws
 
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
+/- English proof (translation)
+Use `letI : Algebra K L := j.toAlgebra`. Use `haveI : IsScalarTower K L ℂ := IsScalarTower.of_algebraMap_eq fun a => (hj a).symm`. Use `haveI : IsScalarTower ℚ K L := IsScalarTower.of_algebraMap_eq fun a => by simp`. Use `haveI : Algebra.IsAlgebraic K L := Algebra.IsAlgebraic.tower_top (K := ℚ) K`. Establish `: Normal K L`.
+
+Use `normal_iff.2 fun x => ⟨Algebra.IsIntegral.isIntegral x, ?_⟩` and prove the remaining obligations. Use `Polynomial.Splits.of_splits_map (algebraMap L ℂ) (IsAlgClosed.splits _) fun a ha => ?_` and prove the remaining obligations. Establish `hroot : a ∈ (minpoly K x).rootSet ℂ`. Rewrite `ha` using `[Polynomial.map_map, ← IsScalarTower.algebraMap_eq]`. Conclude with `Finset.mem_coe.2 (Multiset.mem_toFinset.2 ha)`.
+
+Rewrite `hroot` using `[← Algebra.IsAlgebraic.range_eval_eq_rootSet_minpoly]`. Take `⟨φ, rfl⟩` from `hroot`. Take `⟨s, hsφ⟩` from `Formalism.L2.GlobalTheoryTheory.IntegralLatticeDensity.B5.extendEmb_holds L inferInstance (φ.restrictScalars ℚ)`. Establish `hfix : ∀ a ∈ K, s a = a`. Introduce `a ha`.
+
+Establish `h1` using `hsφ (j ⟨a, ha⟩)`. Rewrite `h1` using `[hj]`. Use `h1.trans ?_` and prove the remaining obligations. Conclude with `φ.commutes (⟨a, ha⟩ : K)`. Establish `hmem : s (x : ℂ) ∈ L` using `hs s hfix _ x.2`.
+
+Use `⟨⟨s (x : ℂ), hmem⟩, ?_⟩` and prove the remaining obligations. Conclude with `hsφ x`. Conclude with `IsGalois.mk`.
+-/
 theorem isGalois_of_aut (K L : IntermediateField ℚ ℂ) [FiniteDimensional ℚ L] (j : K →+* L)
     (hj : ∀ a : K, ((j a : L) : ℂ) = a)
     (hs : ∀ s : ℂ ≃+* ℂ, (∀ a ∈ K, s a = a) → ∀ a ∈ L, s a ∈ L) :
@@ -47,6 +58,11 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheo
   {Dw : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Datum H} {l : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Level H}
   {Xo : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Moduli Dw l} {c : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Coeff l}
 
+/- English proof (translation)
+Take `⟨x, xo, u, t, e, b, s, g⟩` from `y`. Take `⟨x', xo', u', t', e', b', s', g'⟩` from `z`. Take `rfl : x = x'` from `hx`. Take `rfl : u = u'` from `hu`. Take `rfl : s = s'` from `eq_of_heq hs`.
+
+Both sides reduce to the same expression.
+-/
 theorem frPt_eq {S : Type} [CommRing S] [Algebra c.F S] {y z : FrPt Xo c S} (hx : y.x = z.x) (hu : y.u = z.u)
     (hs : HEq y.s z.s) : y = z := by
   obtain ⟨x, xo, u, t, e, b, s, g⟩ := y
@@ -56,6 +72,19 @@ theorem frPt_eq {S : Type} [CommRing S] [Algebra c.F S] {y z : FrPt Xo c S} (hx 
   obtain rfl : s = s' := eq_of_heq hs
   rfl
 
+/- English proof (translation)
+Introduce `D T j Y e o hJ hj hG hdm hmod`. Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Conclude with `{ inR := hj host := hJ.pins.1 dat := hJ.pins.2.2.2 j hj levA := hG.lev.2 unf := hG.unf chiTriv := hG.chiTriv dictU := fun σ hσ => by`. Take `⟨th, hr, h1, h2⟩` from `hG.dictU σ hσ`. Use `⟨Y.Kf, th, hr, ?_, h1, h2, hdm σ hσ⟩` and prove the remaining obligations.
+
+Establish `hM : Y.d.l₂.M = D.host.g 0 * D.host.g 1 * Y.d.pd`. Rewrite using `[hG.lev.1.2.1, hJ.pins.2.1.1]`. Rewrite using `[hM]`. Conclude with `hG.levelK`. Use `modelW := hmod }`.
+
+Use `haveI := Y.d.c₂.fin`. Use `isGalois_of_aut T.Q.c.F Y.d.c₂.F _ (fun a => rfl) fun s hs a ha => ?_` and prove the remaining obligations. Establish `hF` using `Y.d.hF`. Rewrite `ha`, the goal using `[hF]`. Conclude with `hG.normal s hs a ha`.
+
+Introduce `a n f hf g`. Establish `hV` using `(rulBC_sec_val_linear D.host.E T.Q.H (T.Q.Dw j) T.Q.l (T.Q.Xo j) T.Q.c Y.c' Y.hle).1 a n f hf`. Prove the components needed by the constructor for the conclusion. Introduce `hP k _ _ _ _ hk y₂ y hO`. Use `letI : Algebra T.Q.c.F k := resAlg Y.hle k`.
+
+Establish `hA : AlgOver T.Q.c Y.c' Y.hle k` using `fun _ => rfl`. Rewrite using `[hV.2 k hA y]`. Conclude with `hP k hA hk y₂ y (y.res Y.hle hA) hO rfl rfl HEq.rfl`. Introduce `hP k _ _ _ _ _ hA hk y₂ y' y hO hx hu hs`. Establish `hy : y = y'.res Y.hle hA` using `frPt_eq hx hu hs`.
+
+Rewrite using `[hy, ← hV.2 k hA y']`. Conclude with `hP k hk y₂ y' hO`.
+-/
 theorem laws_galois_pull : ∀ (D : D7) (T : CoreJ D) (j : ℕ) (Y : Deep T.toCore j) (e : ℕ) (o : ℝ), LawsJ T → InR D j → Y.Good e o → (∀ σ, GoodEmb Y.d.c₂ σ → ∀ g τ k, ‖dmin ((Y.U σ).X (Y.dict σ g).1).Gm (Y.dict σ g).2 τ k‖ = 1) → (∀ σ, GoodEmb Y.d.c₂ σ → ∃ hr : (D.sp.W j).rank = D.R.r, ∀ k, ModelW (D.sp.W j) hr ((Y.U σ).X k)) → Laws D j Y.d.Xo₂ Y.d.c₂ Y.U Y.dict ∧ (letI : Algebra T.Q.c.F Y.d.c₂.F := ((Y.d.eF : Y.c'.F →+* Y.d.c₂.F).comp (incF T.Q.c Y.c' Y.hle)).toAlgebra; IsGalois T.Q.c.F Y.d.c₂.F) ∧ ∀ (a : (D.host.E →+* ℂ) × ℕ → ℕ) (n : ℕ), ∀ f ∈ sec (T.Q.Xo j) T.Q.c a n, ∀ g, Y.Pull f g ↔ Pull Y.d (rulBC Y.hle f) g := by
   intro D T j Y e o hJ hj hG hdm hmod
   refine ⟨?_, ?_, ?_⟩

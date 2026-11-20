@@ -6,6 +6,11 @@ open scoped TensorProduct ENNReal nonZeroDivisors Classical
 
 namespace GlobalTheory.SnMass.VolN
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ hcm hu`. Establish `hd` using `(GlobalTheory.formallyUnramified_ringOfIntegers_iff_differentIdeal_eq_top F E).1 hu`. Establish `h1` using `NumberField.natAbs_discr_eq_absNorm_differentIdeal_mul_natAbs_discr_pow F (𝓞 F) E (𝓞 E)`. Rewrite `h1` using `[hd, Ideal.absNorm_top, one_mul, hcm.2.2.1]`. Establish `h2 : (((discr E).natAbs : ℕ) : ℝ) = (((discr F).natAbs ^ 2 : ℕ) : ℝ)` using `by exact_mod_cast h1`.
+
+Simplify `h2` using `[Nat.cast_natAbs]`.
+-/
 theorem abs_discr_eq_abs_discr_sq_of_unramified : ∀ (F E : Type) [Field F] [NumberField F] [Field E]
     [NumberField E] [Algebra F E] (σ : E →ₐ[F] E), IsCMExt F E σ →
     Algebra.FormallyUnramified (𝓞 F) (𝓞 E) → |(discr E : ℝ)| = |(discr F : ℝ)| ^ 2 := by

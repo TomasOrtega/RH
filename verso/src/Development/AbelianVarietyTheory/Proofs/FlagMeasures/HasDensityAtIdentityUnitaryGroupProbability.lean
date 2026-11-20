@@ -16,20 +16,34 @@ noncomputable section
 
 namespace GlobalTheory.UnitaryVolume
 
+/- English proof (translation)
+Use `show gᴴ * 1 * g = 1 ↔ _`. Rewrite using `[Matrix.mul_one]`.
+-/
 theorem mem_UH_one {m : ℕ} {g : Matrix (Fin m) (Fin m) ℂ} :
     g ∈ UH (1 : Matrix (Fin m) (Fin m) ℂ) ↔ gᴴ * g = 1 := by
   show gᴴ * 1 * g = 1 ↔ _
   rw [Matrix.mul_one]
 
+/- English proof (translation)
+Use extensionality with `g`. Rewrite using `[mem_UH_one, SetLike.mem_coe, Matrix.mem_unitaryGroup_iff']`. Both sides reduce to the same expression.
+-/
 theorem UH_one_eq (m : ℕ) : UH (1 : Matrix (Fin m) (Fin m) ℂ) =
     (Matrix.unitaryGroup (Fin m) ℂ : Set (Matrix (Fin m) (Fin m) ℂ)) := by
   ext g
   rw [mem_UH_one, SetLike.mem_coe, Matrix.mem_unitaryGroup_iff']
   rfl
 
+/- English proof (translation)
+Rewrite using `[UH_one_eq]`. Conclude with `GlobalTheory.isCompact_unitaryGroup _ _`.
+-/
 theorem isCompact_UH_one (m : ℕ) : IsCompact (UH (1 : Matrix (Fin m) (Fin m) ℂ)) := by
   rw [UH_one_eq]; exact GlobalTheory.isCompact_unitaryGroup _ _
 
+/- English proof (translation)
+Use `⟨(isCompact_UH_one m).isClosed, mem_UH_one.2 (by simp), fun a ha b hb => ?_, fun g hg => ?_⟩` and prove the remaining obligations. Rewrite `*` using `[mem_UH_one]`. Rewrite using `[Matrix.conjTranspose_mul, Matrix.mul_assoc, ← Matrix.mul_assoc aᴴ, ha, Matrix.one_mul, hb]`. Rewrite `*` using `[mem_UH_one]`. Establish `h1 : g⁻¹ = gᴴ` using `Matrix.inv_eq_left_inv hg`.
+
+Establish `h2 : g * gᴴ = 1` using `mul_eq_one_comm.1 hg`. Rewrite using `[h1, Matrix.conjTranspose_conjTranspose]`. Conclude with `⟨h2, h2⟩`.
+-/
 theorem isMatGroup_UH_one (m : ℕ) : PI.IsMatGroup (UH (1 : Matrix (Fin m) (Fin m) ℂ)) := by
   refine ⟨(isCompact_UH_one m).isClosed, mem_UH_one.2 (by simp), fun a ha b hb => ?_, fun g hg => ?_⟩
   · rw [mem_UH_one] at *
@@ -40,6 +54,17 @@ theorem isMatGroup_UH_one (m : ℕ) : PI.IsMatGroup (UH (1 : Matrix (Fin m) (Fin
     rw [h1, Matrix.conjTranspose_conjTranspose]
     exact ⟨h2, h2⟩
 
+/- English proof (translation)
+Establish `hc' : IsCompact (Set.range (MatHaar.inc : MatHaar.Grp G hG → PI.MtM m))`. Rewrite using `[MatHaar.range_inc]`. Conclude with `hc`. Use `haveI : CompactSpace (MatHaar.Grp G hG) := ⟨by`. Rewrite using `[MatHaar.inc_closedEmb.isInducing.isCompact_iff, Set.image_univ]`.
+
+Conclude with `hc'⟩`. Set `ν : Measure (MatHaar.Grp G hG)` to `Measure.haarMeasure ⊤`. Establish `hν : ν Set.univ = 1` using `Measure.haarMeasure_self (K₀ := (⊤ : TopologicalSpace.PositiveCompacts (MatHaar.Grp G hG)))`. Establish `h1 : (ν.map MatHaar.inc) Set.univ = 1`. Rewrite using `[MatHaar.inc_memb.map_apply, Set.preimage_univ, hν]`.
+
+Use `haveI : IsProbabilityMeasure (ν.map MatHaar.inc) := ⟨h1⟩`. Use `⟨ν.map MatHaar.inc, ⟨inferInstance, IsProbabilityMeasure.ne_zero _, ?_, fun s hs => ?_⟩, h1⟩` and prove the remaining obligations. Rewrite using `[MatHaar.inc_memb.map_apply]`. Establish `: (MatHaar.inc : MatHaar.Grp G hG → PI.MtM m) ⁻¹' {x | Matrix.of x ∉ G} = ∅`. Use extensionality with `x`.
+
+Simplify using `only [Set.mem_preimage, Set.mem_setOf_eq, Set.mem_empty_iff_false, iff_false, not_not]`. Conclude with `MatHaar.inc_mem x`. Rewrite using `[this, measure_empty]`. Set `a : MatHaar.Grp G hG` to `⟨s, hs⟩`. Rewrite using `[Measure.map_map (MatHaar.lmulQ_cont s).measurable MatHaar.inc_memb.measurable]`.
+
+Establish `: PI.lmulQ s ∘ (MatHaar.inc : MatHaar.Grp G hG → PI.MtM m) = MatHaar.inc ∘ fun x => a * x`. Use function extensionality and compare the values at `x`. Both sides reduce to the same expression. Rewrite using `[this, ← Measure.map_map MatHaar.inc_memb.measurable (measurable_const_mul a), map_mul_left_eq_self]`.
+-/
 theorem exists_prob_haar {m : ℕ} {G : Set (Matrix (Fin m) (Fin m) ℂ)} (hG : PI.IsMatGroup G) (hc : IsCompact G) :
     ∃ μ : Measure (PI.MtM m), PI.IsHaarOnM G μ ∧ μ Set.univ = 1 := by
   have hc' : IsCompact (Set.range (MatHaar.inc : MatHaar.Grp G hG → PI.MtM m)) := by
@@ -64,6 +89,15 @@ theorem exists_prob_haar {m : ℕ} {G : Set (Matrix (Fin m) (Fin m) ℂ)} (hG : 
       funext x; rfl
     rw [this, ← Measure.map_map MatHaar.inc_memb.measurable (measurable_const_mul a), map_mul_left_eq_self]
 
+/- English proof (translation)
+Use `haveI : Subsingleton (EuclideanSpace ℝ (Fin 0 × Fin 0 × Bool)) := ⟨fun a b => by ext p; exact p.1.elim0⟩`. Use `haveI : Subsingleton (lieE S) := inferInstance`. Establish `hu : (volume : Measure (lieE S)) Set.univ = 1`. Establish `hp` using `(stdOrthonormalBasis ℝ (lieE S)).volume_parallelepiped`. Establish `he : parallelepiped (stdOrthonormalBasis ℝ (lieE S)) = Set.univ` using `Set.eq_univ_of_forall fun x => by`.
+
+Rewrite using `[Subsingleton.elim x 0]`. Conclude with `mem_parallelepiped_iff _ _ |>.2 ⟨0, by simp, Subsingleton.elim _ _⟩`. Rewrite `hp` using `[he]`. Then use the resulting hypothesis. Use `tendsto_const_nhds.congr' ?_` and prove the remaining obligations. Use `filter_upwards [self_mem_nhdsWithin] with ρ hρ`.
+
+Establish `hb : Metric.ball (0 : lieE S) ρ = Set.univ` using `Set.eq_univ_of_forall fun x => by`. Rewrite using `[Subsingleton.elim x 0]`. Conclude with `Metric.mem_ball_self hρ`. Establish `he : expSet S Set.univ = Set.univ` using `Set.eq_univ_of_forall fun x => ⟨0, trivial, Subsingleton.elim _ _⟩`. Rewrite using `[hb, he, h, hu]`.
+
+Simplify using the standard rewrite rules.
+-/
 theorem hasDens_zero (S : Set (Matrix (Fin 0) (Fin 0) ℂ)) (μ : Measure (PI.MtM 0)) (h : μ Set.univ = 1) :
     HasDens S μ 1 := by
   haveI : Subsingleton (EuclideanSpace ℝ (Fin 0 × Fin 0 × Bool)) :=
@@ -87,15 +121,28 @@ theorem hasDens_zero (S : Set (Matrix (Fin 0) (Fin 0) ℂ)) (μ : Measure (PI.Mt
 
 local instance factTwoPi : Fact (0 < 2 * Real.pi) := ⟨Real.two_pi_pos⟩
 
+/- English proof (translation)
+Use extensionality with `i j`. Rewrite using `[Subsingleton.elim i 0, Subsingleton.elim j 0, h]`.
+-/
 theorem mat_ext {A B : Matrix (Fin 1) (Fin 1) ℂ} (h : A 0 0 = B 0 0) : A = B := by
   ext i j
   rw [Subsingleton.elim i 0, Subsingleton.elim j 0, h]
 
+/- English proof (translation)
+Establish `: X = Matrix.diagonal fun _ => X 0 0` using `mat_ext (by simp)`. Rewrite using `[this, Matrix.exp_diagonal, Complex.exp_eq_exp_ℂ, Matrix.diagonal_apply_eq, Matrix.diagonal_apply_eq, Pi.coe_exp]`.
+-/
 theorem exp_one (X : Matrix (Fin 1) (Fin 1) ℂ) : NormedSpace.exp X 0 0 = Complex.exp (X 0 0) := by
   have : X = Matrix.diagonal fun _ => X 0 0 := mat_ext (by simp)
   rw [this, Matrix.exp_diagonal, Complex.exp_eq_exp_ℂ, Matrix.diagonal_apply_eq, Matrix.diagonal_apply_eq,
     Pi.coe_exp]
 
+/- English proof (translation)
+Rewrite using `[mem_UH_one]`. Establish `e : (gᴴ * g) 0 0 = ((‖g 0 0‖ ^ 2 : ℝ) : ℂ)`. Rewrite using `[Matrix.mul_apply, Fin.sum_univ_one, Matrix.conjTranspose_apply, Complex.star_def, Complex.conj_mul']`. Use `push_cast`. Both sides reduce to the same expression.
+
+Prove the components needed by the constructor for the conclusion. Introduce `h`. Rewrite `e` using `[h, Matrix.one_apply_eq]`. Establish `: ‖g 0 0‖ ^ 2 = 1` using `by exact_mod_cast e.symm`. Use polynomial arithmetic with `[norm_nonneg (g 0 0)]`.
+
+Introduce `h`. Apply `mat_ext` to reduce the goal to its premises. Rewrite using `[e, h]`. Simplify using the standard rewrite rules.
+-/
 theorem mem_UH_rank_one {g : Matrix (Fin 1) (Fin 1) ℂ} :
     g ∈ UH (1 : Matrix (Fin 1) (Fin 1) ℂ) ↔ ‖g 0 0‖ = 1 := by
   rw [mem_UH_one]
@@ -112,6 +159,15 @@ theorem mem_UH_rank_one {g : Matrix (Fin 1) (Fin 1) ℂ} :
     apply mat_ext
     rw [e, h]; simp
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce `h`. Proceed by induction on `h using Submodule.span_induction with`. Consider the case `mem y hy`. Take `⟨X, hX, rfl⟩` from `hy`.
+
+Establish `h1` using `mem_UH_rank_one.1 (hX 1)`. Rewrite `h1` using `[exp_one, Complex.norm_exp, Real.exp_eq_one_iff]`. Simplify `h1` using `[realifyFun]`. Consider the case `zero => rfl`. Consider the case `add a b _ _ ha hb => simp [ha, hb]`.
+
+Consider the case `smul c a _ ha => simp [ha]`. Introduce `h`. Use `Submodule.subset_span ⟨unrealify x, fun t => ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[mem_UH_rank_one, exp_one, Complex.norm_exp, Real.exp_eq_one_iff]`. Simplify using `[unrealify, h]`.
+
+Use extensionality with `⟨i, j, b⟩`. Apply the tactic sequence `cases b <;> simp [realifyFun, unrealify]`.
+-/
 theorem mem_lieE_one {x : EuclideanSpace ℝ (Fin 1 × Fin 1 × Bool)} :
     x ∈ lieE (UH (1 : Matrix (Fin 1) (Fin 1) ℂ)) ↔ x (0, 0, false) = 0 := by
   constructor
@@ -142,9 +198,17 @@ def lieLine : ℝ →ₗᵢ[ℝ] lieE (UH (1 : Matrix (Fin 1) (Fin 1) ℂ)) wher
     show ‖EuclideanSpace.single (𝕜 := ℝ) ((0, 0, true) : Fin 1 × Fin 1 × Bool) s‖ = _
     simp
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem coe_lieLine (s : ℝ) : (lieLine s : EuclideanSpace ℝ (Fin 1 × Fin 1 × Bool)) =
     EuclideanSpace.single (0, 0, true) s := rfl
 
+/- English proof (translation)
+Introduce and unpack `⟨x, hx⟩`. Use `⟨x (0, 0, true), Subtype.ext ?_⟩` and prove the remaining obligations. Establish `h` using `mem_lieE_one.1 hx`. Rewrite using `[coe_lieLine]`. Use extensionality with `⟨i, j, b⟩`.
+
+Take `rfl : i = 0` from `Subsingleton.elim _ _`. Take `rfl : j = 0` from `Subsingleton.elim _ _`. Apply the tactic sequence `cases b <;> simp [h]`.
+-/
 theorem lieLine_surjective : Function.Surjective lieLine := by
   rintro ⟨x, hx⟩
   refine ⟨x (0, 0, true), Subtype.ext ?_⟩
@@ -157,16 +221,30 @@ theorem lieLine_surjective : Function.Surjective lieLine := by
 
 def par (x : AddCircle (2 * Real.pi)) : PI.MtM 1 := fun _ _ => (AddCircle.toCircle x : ℂ)
 
+/- English proof (translation)
+The claim follows from `continuous_pi fun _ => continuous_pi fun _ => continuous_subtype_val.comp AddCircle.continuous_toCircle`.
+-/
 theorem continuous_par : Continuous par :=
   continuous_pi fun _ => continuous_pi fun _ => continuous_subtype_val.comp AddCircle.continuous_toCircle
 
+/- English proof (translation)
+Introduce `_ _ h` and use `AddCircle.injective_toCircle Real.two_pi_pos.ne' (Circle.ext (congrFun (congrFun h 0) 0))`.
+-/
 theorem par_injective : Function.Injective par := fun _ _ h =>
   AddCircle.injective_toCircle Real.two_pi_pos.ne' (Circle.ext (congrFun (congrFun h 0) 0))
 
+/- English proof (translation)
+Rewrite using `[AddCircle.toCircle_apply_mk, div_self Real.two_pi_pos.ne', one_mul]`.
+-/
 theorem toCircle_coe (s : ℝ) :
     AddCircle.toCircle (s : AddCircle (2 * Real.pi)) = Circle.exp s := by
   rw [AddCircle.toCircle_apply_mk, div_self Real.two_pi_pos.ne', one_mul]
 
+/- English proof (translation)
+Apply `mat_ext` to reduce the goal to its premises. Use `show _ = NormedSpace.exp (unrealify (lieLine s).1) 0 0`. Rewrite using `[exp_one]`. Use `show ((AddCircle.toCircle (s : AddCircle (2 * Real.pi)) : Circle) : ℂ) = _`. Rewrite using `[toCircle_coe, Circle.coe_exp]`.
+
+Use `congr 1`. Apply the tactic sequence `apply Complex.ext <;> simp [unrealify, coe_lieLine]`.
+-/
 theorem par_coe (s : ℝ) : par s = Matrix.of.symm (NormedSpace.exp (unrealify (lieLine s).1)) := by
   apply mat_ext
   show _ = NormedSpace.exp (unrealify (lieLine s).1) 0 0
@@ -176,9 +254,23 @@ theorem par_coe (s : ℝ) : par s = Matrix.of.symm (NormedSpace.exp (unrealify (
   congr 1
   apply Complex.ext <;> simp [unrealify, coe_lieLine]
 
+/- English proof (translation)
+The claim follows from `(continuous_par.isClosedEmbedding par_injective).measurableEmbedding`.
+-/
 theorem par_memb : MeasurableEmbedding par :=
   (continuous_par.isClosedEmbedding par_injective).measurableEmbedding
 
+/- English proof (translation)
+Use `⟨inferInstance, fun h => ?_, ?_, fun s hs => ?_⟩` and prove the remaining obligations. Use `congrArg (fun ν : Measure (PI.MtM 1) => ν Set.univ) h` as an intermediate fact. Simplify using `only [par_memb.map_apply, Set.preimage_univ, AddCircle.measure_univ] at this`. Simplify using `[Real.pi_pos.not_ge] at this`. Rewrite using `[par_memb.map_apply]`.
+
+Establish `: par ⁻¹' {x | Matrix.of x ∉ UH (1 : Matrix (Fin 1) (Fin 1) ℂ)} = ∅`. Use extensionality with `x`. Simplify using `only [Set.mem_preimage, Set.mem_setOf_eq, Set.mem_empty_iff_false, iff_false, not_not]`. Rewrite using `[mem_UH_rank_one]`. Conclude with `Circle.norm_coe _`.
+
+Rewrite using `[this, measure_empty]`. Establish `h1` using `mem_UH_rank_one.1 hs`. Take `⟨t, ht⟩` from `Circle.exp_surjective ⟨s 0 0, by simpa [Submonoid.unitSphere] using h1⟩`. Rewrite using `[Measure.map_map (MatHaar.lmulQ_cont s).measurable par_memb.measurable]`. Establish `: PI.lmulQ s ∘ par = par ∘ fun x => (t : AddCircle (2 * Real.pi)) + x`.
+
+Use function extensionality and compare the values at `x`. Apply `mat_ext` to reduce the goal to its premises. Use `show (s * Matrix.of (par x)) 0 0 = ((AddCircle.toCircle ((t : AddCircle (2 * Real.pi)) + x) : Circle) : ℂ)`. Rewrite using `[AddCircle.toCircle_add, toCircle_coe, Circle.coe_mul, ht]`. Conclude with `(Matrix.mul_apply ..).trans (Fin.sum_univ_one _)`.
+
+Rewrite using `[this, ← Measure.map_map par_memb.measurable (measurable_const_add _), map_add_left_eq_self]`.
+-/
 theorem isHaar_par : PI.IsHaarOnM (UH (1 : Matrix (Fin 1) (Fin 1) ℂ)) (Measure.map par volume) := by
   refine ⟨inferInstance, fun h => ?_, ?_, fun s hs => ?_⟩
   · have := congrArg (fun ν : Measure (PI.MtM 1) => ν Set.univ) h
@@ -202,6 +294,11 @@ theorem isHaar_par : PI.IsHaarOnM (UH (1 : Matrix (Fin 1) (Fin 1) ℂ)) (Measure
       exact (Matrix.mul_apply ..).trans (Fin.sum_univ_one _)
     rw [this, ← Measure.map_map par_memb.measurable (measurable_const_add _), map_add_left_eq_self]
 
+/- English proof (translation)
+Use extensionality with `x`. Rewrite using `[mem_ball_zero_iff, QuotientAddGroup.norm_lt_iff]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨X, hX, h⟩`. Take `⟨s, rfl⟩` from `lieLine_surjective X`.
+
+Rewrite `hX` using `[mem_ball_zero_iff, lieLine.norm_map]`. Conclude with `⟨s, par_injective ((par_coe s).trans h), hX⟩`. Introduce and unpack `⟨s, rfl, hs⟩`. Conclude with `⟨lieLine s, by rwa [mem_ball_zero_iff, lieLine.norm_map], (par_coe s).symm⟩`.
+-/
 theorem preimage_arc (r : ℝ) :
     par ⁻¹' expSet (UH (1 : Matrix (Fin 1) (Fin 1) ℂ)) (Metric.ball 0 r) = Metric.ball 0 r := by
   ext x
@@ -214,12 +311,22 @@ theorem preimage_arc (r : ℝ) :
   · rintro ⟨s, rfl, hs⟩
     exact ⟨lieLine s, by rwa [mem_ball_zero_iff, lieLine.norm_map], (par_coe s).symm⟩
 
+/- English proof (translation)
+Set `L` to `LinearIsometryEquiv.ofSurjective lieLine lieLine_surjective`. Rewrite using `[← L.measurePreserving.measure_preimage measurableSet_ball.nullMeasurableSet, L.preimage_ball, map_zero, Real.volume_ball]`.
+-/
 theorem volume_ball_one (r : ℝ) :
     volume (Metric.ball (0 : lieE (UH (1 : Matrix (Fin 1) (Fin 1) ℂ))) r) = ENNReal.ofReal (2 * r) := by
   let L := LinearIsometryEquiv.ofSurjective lieLine lieLine_surjective
   rw [← L.measurePreserving.measure_preimage measurableSet_ball.nullMeasurableSet, L.preimage_ball, map_zero,
     Real.volume_ball]
 
+/- English proof (translation)
+Take `⟨c, -, -, hc⟩` from `(MatHaar.haar_unique_locFinite_openPos 1 _ _ (isMatGroup_UH_one 1) isHaar_par).1 μ hμ`. Establish `h1 : ∀ S, μ S = c * volume (par ⁻¹' S)` using `fun S => by`. Rewrite using `[hc, Measure.smul_apply, smul_eq_mul, par_memb.map_apply]`. Establish `h2` using `h1 Set.univ`. Rewrite `h2` using `[h, Set.preimage_univ, AddCircle.measure_univ]`.
+
+Establish `h3 : c = ENNReal.ofReal (2 * Real.pi)⁻¹`. Rewrite using `[ENNReal.ofReal_inv_of_pos Real.two_pi_pos]`. Conclude with `ENNReal.eq_inv_of_mul_eq_one_left h2.symm`. Use `tendsto_const_nhds.congr' ?_` and prove the remaining obligations. Use `filter_upwards [Ioo_mem_nhdsGT Real.pi_pos] with r hr`.
+
+Rewrite using `[h1, preimage_arc, ← measure_congr AddCircle.closedBall_ae_eq_ball, AddCircle.volume_closedBall, volume_ball_one, min_eq_right (by linarith [hr.2]), ← h3, ENNReal.mul_div_cancel_right (by simpa using hr.1) ENNReal.ofReal_ne_top]`.
+-/
 theorem hasDens_one (μ : Measure (PI.MtM 1)) (hμ : PI.IsHaarOnM (UH (1 : Matrix (Fin 1) (Fin 1) ℂ)) μ)
     (h : μ Set.univ = 1) :
     HasDens (UH (1 : Matrix (Fin 1) (Fin 1) ℂ)) μ (ENNReal.ofReal (2 * Real.pi)⁻¹) := by
@@ -237,9 +344,25 @@ theorem hasDens_one (μ : Measure (PI.MtM 1)) (hμ : PI.IsHaarOnM (UH (1 : Matri
     AddCircle.volume_closedBall, volume_ball_one, min_eq_right (by linarith [hr.2]), ← h3,
     ENNReal.mul_div_cancel_right (by simpa using hr.1) ENNReal.ofReal_ne_top]
 
+/- English proof (translation)
+The claim follows from `Finset.prod_pos fun i _ => by have := Real.pi_pos; positivity`.
+-/
 theorem volUn_pos (j : ℕ) : 0 < volUn j :=
   Finset.prod_pos fun i _ => by have := Real.pi_pos; positivity
 
+/- English proof (translation)
+Introduce `j`. Proceed by induction on `j with`. Consider the case `zero => intro μ _ h`. Simplify `hasDens_zero _ μ h` using `[volUn]`. Consider the case `succ k ih`.
+
+Introduce `μ hμ h`. Break down `Nat.eq_zero_or_pos k with rfl | hk` into its components or cases. Establish `: volUn (0 + 1) = 2 * Real.pi` using `by simp [volUn]`. Rewrite using `[this]`. Conclude with `hasDens_one μ hμ h`.
+
+Take `⟨μ₀, hμ₀, h₀⟩` from `exists_prob_haar (isMatGroup_UH_one k) (isCompact_UH_one k)`. Take `⟨c, hc, hd, -⟩` from `GlobalTheory.T.exists_unique_haarDensity_at_identity _ _ μ (isMatGroup_UH_one (k + 1)) hμ`. Establish `hD : (Matrix.diagonal fun j : Fin (k + 1) => if j = Fin.last k then ((1 : ℝ) : ℂ) else 1) = 1`. Simplify using the standard rewrite rules. Establish `hv` using `volUn_pos k`.
+
+Establish `ht` using `GlobalTheory.T.haar_volume_thin_tube_unitary_product_asymptotic k 1 hk (Or.inl rfl) μ μ₀ c (volUn k)⁻¹ hc (inv_pos.2 hv) (by rwa [hD]) (by rwa [hD]) hμ₀ h₀ (ih μ₀ hμ₀ h₀)`. Establish `h1 : Tendsto (fun t : ℝ => μ {g | |‖g (Fin.last k) (Fin.last k)‖ ^ 2 - 1| ≤ t} / ENNReal.ofReal (t ^ k)) (𝓝[>] 0) (𝓝 1)`. Use `tendsto_const_nhds.congr' ?_` and prove the remaining obligations. Use `filter_upwards [Ioo_mem_nhdsGT (zero_lt_one' ℝ)] with t ht`. Rewrite using `[GlobalTheory.T.haarUnitary_lastDiagonalEntry_law k μ hk hμ h t ht.1.le ht.2.le, ENNReal.div_self (by simpa using pow_pos ht.1 k) ENNReal.ofReal_ne_top]`.
+
+Establish `h2` using `ENNReal.ofReal_eq_one.1 (tendsto_nhds_unique ht h1)`. Establish `h3 : c = (volUn (k + 1))⁻¹`. Apply `eq_inv_of_mul_eq_one_left` to reduce the goal to its premises. Rewrite using `[← h2, volUn, Finset.prod_range_succ, ← volUn]`. Clear the denominators using the available nonvanishing facts.
+
+Rewrite using `[← h3]` and apply the resulting hypothesis.
+-/
 theorem hasDens_unitary : ∀ (j : ℕ) (μ : Measure (PI.MtM j)), PI.IsHaarOnM (UH (1 : Matrix (Fin j) (Fin j) ℂ)) μ →
     μ Set.univ = 1 → HasDens (UH (1 : Matrix (Fin j) (Fin j) ℂ)) μ (ENNReal.ofReal (volUn j)⁻¹) := by
   intro j

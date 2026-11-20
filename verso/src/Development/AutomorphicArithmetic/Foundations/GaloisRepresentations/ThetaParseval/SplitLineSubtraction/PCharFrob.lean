@@ -12,6 +12,11 @@ attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalDat
 
 namespace UpperTheory.Gal.TP.Sub
 
+/- English proof (translation)
+Introduce `E Ω _ _ _ _ _ l _ ι art ha χ n μ h w hw hu A hA`. Establish `hv : ((l : ℕ) : 𝓞 E) ∉ w.asIdeal ∨ n = 0` using `Or.inl hw`. Use `⟨fun s hs => ?_, fun σ hσ => ?_⟩` and prove the remaining obligations. Establish `h1 : μ s = 1` using `(h.unr_iff ha hv hA).mpr hu s hs`. Simplify using `[rk1, h1]`.
+
+Establish `h1 : ((μ σ : (Qbar l)ˣ) : Qbar l) = (ι.symm ((χ.val w : ℂˣ) : ℂ))⁻¹` using `h.frob_unr ha hv hu hA hσ`. Simplify using `[rk1, Matrix.charpoly, Matrix.det_fin_one, h1, Polynomial.map_sub]`.
+-/
 theorem charFrob_holds : CharFrob := by
   intro E Ω _ _ _ _ _ l _ ι art ha χ n μ h w hw hu A hA
   have hv : ((l : ℕ) : 𝓞 E) ∉ w.asIdeal ∨ n = 0 := Or.inl hw

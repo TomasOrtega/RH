@@ -4,6 +4,11 @@ namespace Formalism.MainNotions.flipOneThree.Pf
 
 open Formalism.MainNotions.G Formalism.MainNotions.flipOneThree
 
+/- English proof (translation)
+Introduce `Cc hCc`. Take `⟨T0, hT0, h0⟩` from `h Cc hCc`. Use `⟨T0, hT0, fun C₀ hC₀ => ?_⟩` and prove the remaining obligations. Take `⟨T1, hT1, h1⟩` from `h0 C₀ hC₀`. Use `⟨T1, hT1, fun CE1 CE2 Cm a1 a2 a3 => ?_⟩` and prove the remaining obligations.
+
+Take `⟨T2, hT2, h2⟩` from `h1 CE1 CE2 Cm a1 a2 a3`. Use `⟨T2, hT2, fun CH hCH => ?_⟩` and prove the remaining obligations. Take `⟨CA, Ckap, Ct, Cs, b1, b2, b3, b4, hP⟩` from `h2 CH hCH`. Conclude with `⟨CA, Ckap, Ct, Cs, b1, b2, b3, b4, hPQ _ _ _ _ _ _ _ _ _ _ hP⟩`.
+-/
 theorem ClosedA.mono {P Q : ℝ → ℝ → ℝ → ℝ → ℝ → ℝ → ℝ → ℝ → ℝ → ℝ → Prop} (h : ClosedA P)
     (hPQ : ∀ a b c d e f g i j k, P a b c d e f g i j k → Q a b c d e f g i j k) : ClosedA Q := by
   intro Cc hCc
@@ -16,6 +21,9 @@ theorem ClosedA.mono {P Q : ℝ → ℝ → ℝ → ℝ → ℝ → ℝ → ℝ 
   obtain ⟨CA, Ckap, Ct, Cs, b1, b2, b3, b4, hP⟩ := h2 CH hCH
   exact ⟨CA, Ckap, Ct, Cs, b1, b2, b3, b4, hPQ _ _ _ _ _ _ _ _ _ _ hP⟩
 
+/- English proof (translation)
+Take `⟨T0, hT0, h0⟩` from `h`. Use `⟨T0, hT0, fun C₀ hC₀ => ?_⟩` and prove the remaining obligations. Take `⟨T2, C, hT2, hC, h1⟩` from `h0 C₀ hC₀`. Conclude with `⟨T2, C, hT2, hC, fun CH hCH => hPQ _ _ _ (h1 CH hCH)⟩`.
+-/
 theorem ClosedP.mono {P Q : ℝ → ℝ → ℝ → Prop} (h : ClosedP P) (hPQ : ∀ a b c, P a b c → Q a b c) : ClosedP Q := by
   obtain ⟨T0, hT0, h0⟩ := h
   refine ⟨T0, hT0, fun C₀ hC₀ => ?_⟩

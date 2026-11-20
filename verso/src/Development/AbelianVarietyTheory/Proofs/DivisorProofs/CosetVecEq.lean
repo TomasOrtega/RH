@@ -29,15 +29,27 @@ def stdSum {δ : ℂ} {a d : ℕ} {e0 : VC D a d → ℂ} (W : WeilO D ⊤ δ a 
     (R : Finset (GA D a)) : VC D a d → ℂ :=
   ∑ r ∈ R, W.Om r 1 (cosetV D δ 𝔪 o a d e0)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem cosetVec_eq {δ t0 : ℂ} {Q : ℕ} (P : Pair D ⊤ δ t0 Q) (𝔪 : Ideal (𝓞 D.host.E)) (o : ℕ) :
     cosetVec P 𝔪 o = cosetV D δ 𝔪 o P.a P.d P.e0 := rfl
 
+/- English proof (translation)
+The claim follows from `(Subgroup.closure_le _).2 fun _ h => h.1`.
+-/
 theorem congLev_le (𝔪 : Ideal (𝓞 D.host.E)) (N : ℕ) : congLev D 𝔪 N ≤ intG D N :=
   (Subgroup.closure_le _).2 fun _ h => h.1
 
+/- English proof (translation)
+The claim follows from `(Subgroup.closure_le _).2 fun _ h => h.1`.
+-/
 theorem blockLev_le (𝔪 : Ideal (𝓞 D.host.E)) (d a : ℕ) : blockLev D 𝔪 d a ≤ intG D d :=
   (Subgroup.closure_le _).2 fun _ h => h.1
 
+/- English proof (translation)
+Use `le_antisymm (blockLev_le _ _ _) fun h hh => Subgroup.subset_closure ⟨hh, fun i j hj _ => absurd hj (Nat.not_lt_zero _)⟩` and prove the remaining obligations.
+-/
 example (N : ℕ) : blockLev D ⊤ N 0 = intG D N := by
   refine le_antisymm (blockLev_le _ _ _) fun h hh => Subgroup.subset_closure ⟨hh, fun i j hj _ => absurd hj (Nat.not_lt_zero _)⟩
 

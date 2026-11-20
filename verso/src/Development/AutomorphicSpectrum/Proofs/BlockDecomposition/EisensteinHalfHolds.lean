@@ -14,6 +14,19 @@ open GlobalTheory.Doubling (absE)
 
 namespace GlobalTheory.CompanionTheory.SiegelEisHalf
 
+/- English proof (translation)
+Unfold `SiegelEisensteinSeries.EisHalf`. Introduce `F E _ _ _ _ _ σ B n Y r s hB hn hY χ hχ c hc b K a hb hK ha s₁ f hf`. Take `⟨Ê, t₁, hsum, hdiff⟩` from `GlobalTheory.T.eisenstein_series_continuation F E σ B n Y r s hB hn hY b K a hb hK ha χ s₁ f hf`. Take `⟨t₀, h23⟩` from `GlobalTheory.T.eisenstein_vertical_bound F E σ B n Y r s hB hn hY b K a hb hK ha χ s₁ f hf`. Take `⟨t, ht₀, ht₁⟩ : ∃ t : ℝ, t₀ ≤ t ∧ t₁ ≤ t` from `⟨max t₀ t₁, le_max_left _ _, le_max_right _ _⟩`.
+
+Establish `hsum' : ∀ z : ℂ, t < z.re → ∀ x : GlobalTheory.ThK.Dbl.G2 σ Y, HasSum (GlobalTheory.ThK.Dbl.eisTerm (GlobalTheory.ThK.Dbl.flat a f s₁ z) x) (Ê z x)` using `fun z hz x => hsum z (lt_of_le_of_lt ht₁ hz) x`. Take `⟨hmod, hcont, hbd⟩` from `h23 t Ê ht₀ hsum'`. Set `v : ℂ → ↥(GlobalTheory.ThK.Dbl.modFun σ Y)` to `fun z => if hz : t < z.re then ⟨fun x => Ê z x, hmod z hz⟩ else 0`. Establish `hv : ∀ z : ℂ, t < z.re → ∀ x : GlobalTheory.ThK.Dbl.G2 σ Y, (↑(v z) : GlobalTheory.ThK.Dbl.G2 σ Y → ℂ) x = Ê z x`. Introduce `z hz x`.
+
+Simplify using `only [v]`. Rewrite using `[dif_pos hz]`. Use `⟨t, v, fun z hz x => by rw [hv z hz x]; exact hsum' z hz x, ?_⟩` and prove the remaining obligations. Establish `hS : IsOpen {z : ℂ | t < z.re}` using `isOpen_lt continuous_const Complex.continuous_re`. Apply `GlobalTheory.CompanionTheory.WeakHolo.wholo_growForms v hS` to reduce the goal to its premises.
+
+Introduce `x`. Conclude with `((hdiff x).mono fun z hz => lt_of_le_of_lt ht₁ hz).congr fun z hz => hv z hz x`. Conclude with `hcont.congr fun y hy => hv y.1 hy.1 y.2`. Introduce `Q hQS hQ`. Break down `Q.eq_empty_or_nonempty with hQe | hne` into its components or cases.
+
+Conclude with `⟨0, 0, fun z hz => by simp [hQe] at hz⟩`. Take `⟨z₀, hz₀, hmin⟩` from `hQ.exists_isMinOn hne Complex.continuous_re.continuousOn`. Take `⟨z₁, _, hmax⟩` from `hQ.exists_isMaxOn hne Complex.continuous_re.continuousOn`. Take `⟨C, N, hC⟩` from `hbd z₀.re z₁.re (hQS hz₀)`. Use `⟨C, N, fun z hz x => ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[hv z (hQS hz) x]`. Conclude with `hC z (isMinOn_iff.mp hmin z hz) (isMaxOn_iff.mp hmax z hz) x`.
+-/
 theorem eisHalf : EisHalf := by
   unfold SiegelEisensteinSeries.EisHalf
   intro F E _ _ _ _ _ σ B n Y r s hB hn hY χ hχ c hc b K a hb hK ha s₁ f hf

@@ -7,6 +7,9 @@ open NumberField IsDedekindDomain MeasureTheory Filter Topology Formalism.MainNo
 open GlobalTheory.WeilM GlobalTheory.AdelicU GlobalTheory.LFun GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels GlobalTheory.ThK GlobalTheory.Doubling GlobalTheory.ThK.Bot
 open Formalism.L2.Host (aboveF)
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.ThK.Bot.Asm.exists_polData_I_ne_zero | exact GlobalTheory.ThK.Bot.Asm.exists_polData_I_ne_zero | (intros; apply GlobalTheory.ThK.Bot.Asm.exists_polData_I_ne_zero <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.doubling_l_function_special_value : GlobalTheory.ThK.KP → ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E) (n d : ℕ) (X : Spc F E n) (W : Spc F E d) (M : Model σ X W) (χX χW : Chr F E) (om : Rep σ X W) (r s' r₁ s₁ : ℕ),
     IsPair B M χX χW om r s' r₁ s₁ → min r s' = 0 → min r₁ s₁ = 0 → 1 ≤ n → n < d → Even d →
     ∀ (k : InfinitePlace F → ℤ), HasExp B.emb χW k → (∀ w, (d : ℤ) < |k w|) → ∀ T : Finset (Pl F), T ⊆ B.P → UnrOff χW (T : Set (Pl F)) →

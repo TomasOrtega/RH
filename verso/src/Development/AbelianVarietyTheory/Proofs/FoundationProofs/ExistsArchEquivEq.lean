@@ -17,6 +17,9 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 def placeOf (D : D7) (ρ : D.what₂.Tau) : InfinitePlace D.host.F :=
   InfinitePlace.mk ((tauE D ρ).comp (algebraMap D.host.F D.host.E))
 
+/- English proof (translation)
+The claim follows from `GlobalTheory.CMTypePlaces.places_bijective D`.
+-/
 theorem placeOf_bijective (D : D7) : Function.Bijective (placeOf D) := GlobalTheory.CMTypePlaces.places_bijective D
 
 def embOverOf (D : D7) (ρ : D.what₂.Tau) : EmbOver D.host.E (placeOf D ρ) :=
@@ -25,25 +28,43 @@ def embOverOf (D : D7) (ρ : D.what₂.Tau) : EmbOver D.host.E (placeOf D ρ) :=
     exact (InfinitePlace.embedding_mk_eq_of_isReal
       (InfinitePlace.isReal_mk_iff.1 (IsTotallyReal.isReal (placeOf D ρ)))).symm⟩
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem embOverOf_val (D : D7) (ρ : D.what₂.Tau) : (embOverOf D ρ).1 = tauE D ρ := rfl
 
+/- English proof (translation)
+Introduce `ρ` and use `isInfEmb_infProj (embOverOf D ρ)`.
+-/
 theorem isInfFam_infProj (D : D7) : IsInfFam (D := D) fun ρ : D.what₂.Tau => infProj (embOverOf D ρ) :=
   fun ρ => isInfEmb_infProj (embOverOf D ρ)
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨_, isInfFam_infProj D⟩`.
+-/
 theorem exists_isInfFam (D : D7) : ∃ θ, IsInfFam (D := D) θ := ⟨_, isInfFam_infProj D⟩
 
 variable {D : D7}
 
+/- English proof (translation)
+Rewrite using `[placeOf, ← hτ, τ.2, InfinitePlace.mk_embedding]`.
+-/
 theorem eq_placeOf {ρ : D.what₂.Tau} {w : InfinitePlace D.host.F} (τ : EmbOver D.host.E w) (hτ : τ.1 = tauE D ρ) :
     w = placeOf D ρ := by
   rw [placeOf, ← hτ, τ.2, InfinitePlace.mk_embedding]
 
 variable {θ : D.what₂.Tau → (Ainf D.host.F ⊗[D.host.F] D.host.E →+* ℂ)}
 
+/- English proof (translation)
+The claim follows from `GlobalTheory.LettersCheck.isInfEmb_unique _ _ _ (hθ ρ) (hτ ▸ isInfEmb_infProj τ)`.
+-/
 theorem eq_infProj (hθ : IsInfFam θ) {ρ : D.what₂.Tau} {w : InfinitePlace D.host.F} (τ : EmbOver D.host.E w)
     (hτ : τ.1 = tauE D ρ) : θ ρ = infProj τ :=
   GlobalTheory.LettersCheck.isInfEmb_unique _ _ _ (hθ ρ) (hτ ▸ isInfEmb_infProj τ)
 
+/- English proof (translation)
+Use `⟨mem_infPts.2 (projFin_embArch _ _ w x), ?_, fun ρ' h => ?_⟩` and prove the remaining obligations. Rewrite using `[eq_infProj hθ τ hτ, infMat_infProj V.gram (isCMExt_host D), projArch_embArch_self]`. Establish `hw : placeOf D ρ' ≠ w` using `fun e => h ((placeOf_bijective D).1 (e.trans (eq_placeOf τ hτ)))`. Rewrite using `[eq_infProj hθ (embOverOf D ρ') rfl, infMat_infProj V.gram (isCMExt_host D), projArch_embArch_ne _ _ hw, map_one]`. Both sides reduce to the same expression.
+-/
 theorem isAtTau_embArch (hθ : IsInfFam θ) (V : HSp D) {ρ : D.what₂.Tau} {w : InfinitePlace D.host.F}
     (τ : EmbOver D.host.E w) (hτ : τ.1 = tauE D ρ) (x : GArch D.sp.cm.sig V.gram w) :
     IsAtTau θ V ρ (archEquiv V.gram (isCMExt_host D) τ x).1.1 (embArch D.sp.cm.sig V.gram w x) := by
@@ -54,6 +75,9 @@ theorem isAtTau_embArch (hθ : IsInfFam θ) (V : HSp D) {ρ : D.what₂.Tau} {w 
       map_one]
     rfl
 
+/- English proof (translation)
+Establish `h` using `(archEquiv V.gram (isCMExt_host D) τ x).2`. Rewrite using `[gramAt, ← hτ]`. Conclude with `h`.
+-/
 theorem archEquiv_mem_UH (V : HSp D) {ρ : D.what₂.Tau} {w : InfinitePlace D.host.F}
     (τ : EmbOver D.host.E w) (hτ : τ.1 = tauE D ρ) (x : GArch D.sp.cm.sig V.gram w) :
     (archEquiv V.gram (isCMExt_host D) τ x).1.1 ∈ Formalism.QuantumDeterminants.UH (gramAt D V ρ) := by
@@ -61,6 +85,9 @@ theorem archEquiv_mem_UH (V : HSp D) {ρ : D.what₂.Tau} {w : InfinitePlace D.h
   rw [gramAt, ← hτ]
   exact h
 
+/- English proof (translation)
+Take `⟨θ, hθ⟩` from `exists_isInfFam D`. Take `⟨h, hh, -⟩` from `GlobalTheory.PointAtPlace.existsUnique_isAtTau V ρ θ hθ g hg`. Use `⟨projArch _ _ w h, ?_⟩` and prove the remaining obligations. Rewrite using `[← infMat_infProj, ← eq_infProj hθ τ hτ]`. Conclude with `hh.2.1`.
+-/
 theorem exists_archEquiv_eq (V : HSp D) {ρ : D.what₂.Tau} {w : InfinitePlace D.host.F}
     (τ : EmbOver D.host.E w) (hτ : τ.1 = tauE D ρ) {g : Matrix (Fin V.rank) (Fin V.rank) ℂ}
     (hg : g ∈ Formalism.QuantumDeterminants.UH (gramAt D V ρ)) :
@@ -71,6 +98,9 @@ theorem exists_archEquiv_eq (V : HSp D) {ρ : D.what₂.Tau} {w : InfinitePlace 
   rw [← infMat_infProj, ← eq_infProj hθ τ hτ]
   exact hh.2.1
 
+/- English proof (translation)
+Establish `hu` using `GlobalTheory.PointAtPlace.existsUnique_isAtTau V ρ θ hθ _ (archEquiv_mem_UH V τ hτ x)`. Use `hu.unique ?_ (isAtTau_embArch hθ V τ hτ x)` and prove the remaining obligations. Unfold `atTau`. Rewrite using `[dif_pos hu.exists]`. Conclude with `hu.exists.choose_spec`.
+-/
 theorem atTau_archEquiv (hθ : IsInfFam θ) (V : HSp D) {ρ : D.what₂.Tau} {w : InfinitePlace D.host.F}
     (τ : EmbOver D.host.E w) (hτ : τ.1 = tauE D ρ) (x : GArch D.sp.cm.sig V.gram w) :
     atTau θ V ρ (archEquiv V.gram (isCMExt_host D) τ x).1.1 = embArch D.sp.cm.sig V.gram w x := by

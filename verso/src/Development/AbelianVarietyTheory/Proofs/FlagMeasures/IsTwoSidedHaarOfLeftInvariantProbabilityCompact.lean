@@ -9,17 +9,26 @@ open scoped ENNReal
 
 namespace GlobalTheory.ThA
 
+/- English proof (translation)
+Use `measurable_pi_lambda _ fun i => measurable_pi_lambda _ fun j => ?_` and prove the remaining obligations. Simplify using `only [lmulM, Matrix.mul_apply, Matrix.of_apply]`. Conclude with `Finset.measurable_sum _ fun l _ => measurable_const.mul ((measurable_pi_apply j).comp (measurable_pi_apply l))`.
+-/
 private lemma measurable_lmulM_flag_measures {k r : ℕ} (a : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ) :
     Measurable (lmulM (k := k) (r := r) a) := by
   refine measurable_pi_lambda _ fun i => measurable_pi_lambda _ fun j => ?_
   simp only [lmulM, Matrix.mul_apply, Matrix.of_apply]
   exact Finset.measurable_sum _ fun l _ => measurable_const.mul ((measurable_pi_apply j).comp (measurable_pi_apply l))
 
+/- English proof (translation)
+Use `measurable_pi_lambda _ fun i => measurable_pi_lambda _ fun j => ?_` and prove the remaining obligations. Simplify using `only [B.rmulF, Matrix.mul_apply, Matrix.of_apply]`. Use `fun_prop`.
+-/
 private lemma measurable_rmulF' {n : ℕ} (a : Matrix (Fin n) (Fin n) ℂ) : Measurable (B.rmulF a) := by
   refine measurable_pi_lambda _ fun i => measurable_pi_lambda _ fun j => ?_
   simp only [B.rmulF, Matrix.mul_apply, Matrix.of_apply]
   fun_prop
 
+/- English proof (translation)
+Establish `hm : Measurable (fun p : Mt k r × Mt k r => lmulM (Matrix.of p.2) p.1)`. Use `measurable_pi_lambda _ fun i => measurable_pi_lambda _ fun j => ?_` and prove the remaining obligations. Simplify using `only [lmulM, Matrix.mul_apply, Matrix.of_apply]`. Use `fun_prop`. Conclude with `hm hA`.
+-/
 private lemma measurableSet_lmulM_pair_mem {k r : ℕ} {A : Set (Mt k r)} (hA : MeasurableSet A) :
     MeasurableSet {p : Mt k r × Mt k r | lmulM (Matrix.of p.2) p.1 ∈ A} := by
   have hm : Measurable (fun p : Mt k r × Mt k r => lmulM (Matrix.of p.2) p.1) := by
@@ -28,6 +37,15 @@ private lemma measurableSet_lmulM_pair_mem {k r : ℕ} {A : Set (Mt k r)} (hA : 
     fun_prop
   exact hm hA
 
+/- English proof (translation)
+Use extensionality with `A hA`. Use `set S : Set (Mt k r × Mt k r) := {p | lmulM (Matrix.of p.2) p.1 ∈ A} with hSdef`. Establish `hS : MeasurableSet S` using `measurableSet_lmulM_pair_mem hA`. Establish `hx : (μ.prod ν) S = ν A`. Rewrite using `[Measure.prod_apply hS]`.
+
+Establish `hslice : ∀ᵐ x ∂μ, ν (Prod.mk x ⁻¹' S) = ν A` using `by filter_upwards [hμ] with x hx`. Establish `hpre : Prod.mk x ⁻¹' S = B.rmulF (Matrix.of x) ⁻¹' A` using `rfl`. Rewrite using `[hpre, ← Measure.map_apply (measurable_rmulF' _) hA, hr _ hx]`. Rewrite using `[lintegral_congr_ae hslice, lintegral_const, measure_univ, mul_one]`. Establish `hy : (μ.prod ν) S = μ A * ν Set.univ`.
+
+Rewrite using `[Measure.prod_apply_symm hS]`. Establish `hslice : ∀ᵐ y ∂ν, μ ((fun x => (x, y)) ⁻¹' S) = μ A` using `by filter_upwards [hν] with y hy`. Establish `hpre : (fun x => (x, y)) ⁻¹' S = lmulM (Matrix.of y) ⁻¹' A` using `rfl`. Rewrite using `[hpre, ← Measure.map_apply (measurable_lmulM_flag_measures _) hA, hl _ hy]`. Rewrite using `[lintegral_congr_ae hslice, lintegral_const]`.
+
+Rewrite using `[Measure.smul_apply, smul_eq_mul, ← hx, hy, mul_comm]`.
+-/
 theorem measure_eq_smul_of_left_right {k r : ℕ} {U : Set (B.Mat k r)} {μ ν : Measure (Mt k r)}
     [IsProbabilityMeasure μ] [IsFiniteMeasure ν]
     (hμ : ∀ᵐ x ∂μ, (Matrix.of x : B.Mat k r) ∈ U) (hν : ∀ᵐ x ∂ν, (Matrix.of x : B.Mat k r) ∈ U)
@@ -54,6 +72,19 @@ theorem measure_eq_smul_of_left_right {k r : ℕ} {U : Set (B.Mat k r)} {μ ν :
     rw [lintegral_congr_ae hslice, lintegral_const]
   rw [Measure.smul_apply, smul_eq_mul, ← hx, hy, mul_comm]
 
+/- English proof (translation)
+Introduce `k r z μ _ _ hH h1`. Take `⟨_, hne, hconc, hleft⟩` from `hH`. Use `haveI : IsProbabilityMeasure μ := ⟨h1⟩`. Establish `hinvU : ∀ g ∈ UWset k r z, g⁻¹ ∈ UWset k r z ∧ g * g⁻¹ = 1 ∧ g⁻¹ * g = 1` using `fun g hg => Formalism.FourierDecayAlt.P.MatrixMultiplicationContinuity.uw_inv hg`. Establish `hUm : MeasurableSet {x : Mt k r | (Matrix.of x : B.Mat k r) ∈ UWset k r z}` using `(show IsClosed {x : Mt k r | (Matrix.of x : B.Mat k r) ∈ UWset k r z} from Formalism.FourierDecayAlt.P.B6.isClosed_UWset k r z).measurableSet`.
+
+Establish `hμU : ∀ᵐ x ∂μ, (Matrix.of x : B.Mat k r) ∈ UWset k r z` using `ae_iff.mpr hconc`. Establish `hinvm : Measurable (Formalism.FourierDecayAlt.P.HermitianFormFactor.invF (m` using `Fin (2 * r + k + 1))) := Formalism.FourierDecayAlt.P.HermitianFormFactor.invF_meas`. Take `⟨ν, hνdef⟩ : ∃ ν : Measure (Mt k r), ν = μ.map (Formalism.FourierDecayAlt.P.HermitianFormFactor.invF (m` from `Fin (2 * r + k + 1))) := ⟨_, rfl⟩`. Establish `hmass : ν Set.univ = 1`. Rewrite using `[hνdef, Measure.map_apply hinvm MeasurableSet.univ, Set.preimage_univ, h1]`.
+
+Use `haveI : IsFiniteMeasure ν := ⟨by rw [hmass]; exact ENNReal.one_lt_top⟩`. Establish `hνU : ∀ᵐ x ∂ν, (Matrix.of x : B.Mat k r) ∈ UWset k r z`. Rewrite using `[hνdef]`. Use `(ae_map_iff hinvm.aemeasurable hUm).2 ?_` and prove the remaining obligations. Use `filter_upwards [hμU] with x hx using (hinvU _ hx).1`.
+
+Establish `hνr : ∀ a ∈ UWset k r z, Measure.map (B.rmulF a) ν = ν`. Introduce `a ha`. Take `⟨hai, haa, -⟩` from `hinvU a ha`. Rewrite using `[hνdef, Measure.map_map (measurable_rmulF' a) hinvm]`. Establish `hcomp : (B.rmulF a ∘ (Formalism.FourierDecayAlt.P.HermitianFormFactor.invF (m` using `Fin (2 * r + k + 1)))) = (Formalism.FourierDecayAlt.P.HermitianFormFactor.invF (m := Fin (2 * r + k + 1))) ∘ lmulM a⁻¹ := by`.
+
+Use function extensionality and compare the values at `x`. Use `show ((Matrix.of x)⁻¹ * a : B.Mat k r) = (a⁻¹ * Matrix.of x)⁻¹`. Rewrite using `[Matrix.mul_inv_rev, Matrix.inv_eq_left_inv haa]`. Rewrite using `[hcomp]`. Conclude with `(Measure.map_map hinvm (measurable_lmulM_flag_measures a⁻¹)).symm.trans (congrArg (Measure.map _) (hleft _ hai))`.
+
+Establish `hkey` using `measure_eq_smul_of_left_right (μ := μ) (ν := ν) hμU hνU hleft hνr`. Rewrite `hkey` using `[hmass, one_smul]`. Use `⟨hconc, hleft, fun a ha => ?_, fun K _ => measure_lt_top μ K, hne⟩` and prove the remaining obligations. Establish `h` using `hνr a ha`. Rewrite `h` using `[hkey]`. Then use the resulting hypothesis.
+-/
 theorem haarW_twoSided_of_left : ∀ (k r : ℕ) (z : Fin (2 * r + k + 1) → ℂ) (μ : Measure (Mt k r)), inWb k r z → 0 < Tz k r z → Formalism.MainNotions.S.IsHaarOn (UWset k r z) μ → μ Set.univ = 1 → B.IsHaarOn (UWset k r z) μ := by
   intro k r z μ _ _ hH h1
   obtain ⟨_, hne, hconc, hleft⟩ := hH

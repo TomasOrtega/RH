@@ -10,12 +10,18 @@ open NumberField Formalism.BasicNotions Formalism.MainNotions.S Formalism.MainNo
 
 variable {D : Formalism.BasicNotions.D7}
 
+/- English proof (translation)
+Use `haveI := Formalism.MainNotions.LocalModelPeriodLattices.top_of_OK M hOK`. Conclude with `Formalism.L2.SG.Pf.LocOrbCut.orbitDecomposition_of_integrand M hOK a c (Formalism.L2.SG.Pf.LocOrbCut.val M hOK a c)`.
+-/
 theorem orbCut_all {F : Type} [Field F] [ValuativeRel F] [TopologicalSpace F]
     {E : Type} [CommRing E] [Algebra F E] [TopologicalSpace E] [MeasurableSpace E]
     (M : Loc.Model F E) (hOK : M.OK) {m : ℕ} (a : Loc.Pt E (m + 1)) (c : M.Cls m) : OrbCut M a c := by
   haveI := Formalism.MainNotions.LocalModelPeriodLattices.top_of_OK M hOK
   exact Formalism.L2.SG.Pf.LocOrbCut.orbitDecomposition_of_integrand M hOK a c (Formalism.L2.SG.Pf.LocOrbCut.val M hOK a c)
 
+/- English proof (translation)
+The claim follows from `locOrbSum_of M δ u u' (fun p w => modShift_holds δ _ _ p w) (fun p a c => orbCut_all (M p) (hA p).1 a c) (fun p => nAutNe_of M p (hA p).1)`.
+-/
 theorem localOrbitSum_holds (M : ∀ p : PlF D, Loc.Model (D.s.atP p).Fp (D.s.atP p).Ep)
     (δ : ∀ p : PlF D, (D.s.atP p).Fp) (u u' : D.what₂.Word) (hA : ∀ p, Agree δ M p) :
     LocOrbSum M δ u u' :=

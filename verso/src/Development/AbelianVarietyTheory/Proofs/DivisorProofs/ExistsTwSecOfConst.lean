@@ -20,6 +20,11 @@ namespace GlobalTheory.FlatTwisting
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E} {Dw : Datum H}
   {l : Level H} {Xo : Moduli Dw l} {c : Coeff l} {r : ℕ} {U : ∀ σ : c.F →+* ℂ, Unf Xo c σ r} {x : ℝ}
 
+/- English proof (translation)
+Distinguish the cases in `h : τ (H.rt : E) = H.rt0`. Establish `hp : j < Dw.p` using `by simpa [Datum.mult, h] using hj`. Establish `e1` using `wtOf_big (parWt Dw w) 0 ⟨τ, h⟩ j hp`. Establish `e2` using `wtOf_big (parWt Dw w) 0 ⟨τ, h⟩ i (by omega)`. Conclude with `(e1.trans e2.symm).le`.
+
+Establish `hq : j < Dw.q` using `by simpa [Datum.mult, h] using hj`. Establish `e1` using `wtOf_small (parWt Dw w) 0 ⟨conjEmb τ, conj_mem h⟩ j hq`. Establish `e2` using `wtOf_small (parWt Dw w) 0 ⟨conjEmb τ, conj_mem h⟩ i (by omega)`. Simplify using `only [conjEmb_conjEmb] at e1 e2`. Conclude with `(e1.trans e2.symm).le`.
+-/
 theorem wtOf_parWt_anti (w : Psi H → ℤ) (τ : E →+* ℂ) (i j : ℕ) (hij : i ≤ j) (hj : j < Dw.mult τ) :
     (wtOf Dw (parWt Dw w) 0).1 (τ, j) ≤ (wtOf Dw (parWt Dw w) 0).1 (τ, i) := by
   by_cases h : τ (H.rt : E) = H.rt0
@@ -33,12 +38,18 @@ theorem wtOf_parWt_anti (w : Psi H → ℤ) (τ : E →+* ℂ) (i j : ℕ) (hij 
     simp only [conjEmb_conjEmb] at e1 e2
     exact (e1.trans e2.symm).le
 
+/- English proof (translation)
+Establish `h` using `wtOf_add' (Dw := Dw) (parWt Dw (-w)) (parWt Dw w)`. Establish `h0 : parWt Dw (-w) + parWt Dw w = 0` using `by funext τ i; simp [parWt]`. Rewrite `h` using `[h0, wtOf_zero]`. Conclude with `eq_neg_of_add_eq_zero_left h.symm`.
+-/
 theorem wtOf_parWt_neg (w : Psi H → ℤ) : wtOf Dw (parWt Dw (-w)) 0 = -wtOf Dw (parWt Dw w) 0 := by
   have h := wtOf_add' (Dw := Dw) (parWt Dw (-w)) (parWt Dw w)
   have h0 : parWt Dw (-w) + parWt Dw w = 0 := by funext τ i; simp [parWt]
   rw [h0, wtOf_zero] at h
   exact eq_neg_of_add_eq_zero_left h.symm
 
+/- English proof (translation)
+The claim follows from `GlobalTheory.BddCusp.mul_mem_cuspOn_of_bdd E H Dw l Xo c r U x Z _ s.sig hK hU hpq (even_wtOf _ _) (wtOf_parWt_anti w) s.sig_mem s.sig_mem_suppOn fun σ hσ => ⟨s.cInf σ, by have e : goodOf c σ = σ := if_pos hσ have h : ∀ z ∈ framesOn (U (goodOf c σ)) Z, homN (U (goodOf c σ)) x (wt …`.
+-/
 theorem mul_sig_mem_cuspOn (hK : Nonempty (KeySec Xo c)) (hU : ∀ σ, GoodEmb c σ → IsUnf (U σ))
     (hpq : 1 ≤ Dw.p + Dw.q) {Z : Comp Xo c} {w : Psi H → ℤ} {δ : HeightOneSpectrum (𝓞 c.F) → ℝ}
     (s : ConstSec U x Z (parWt Dw w) δ) :
@@ -51,6 +62,9 @@ theorem mul_sig_mem_cuspOn (hK : Nonempty (KeySec Xo c)) (hU : ∀ σ, GoodEmb c
       rw [e] at h
       exact h⟩
 
+/- English proof (translation)
+Use `⟨TwSec.ofConst s hδ (mul_sig_mem_cuspOn hK hU hpq s) fun G hG f hf => ?_, rfl, rfl, rfl, rfl, intOff_of_unramPts E H Dw l Xo c r U x B hB Z _ δ s⟩` and prove the remaining obligations. Establish `h` using `mul_sig_mem_cuspOn hK hU hpq (w := -w) (s.symm.copy rfl rfl) (G + wtOf Dw (parWt Dw w) 0) (Even.add hG (even_wtOf _ _)) f hf`. Rewrite `h` using `[wtOf_parWt_neg, add_neg_cancel_right]`. Conclude with `h`.
+-/
 theorem exists_twSec_of_const {B : Finset ℕ} (hK : Nonempty (KeySec Xo c)) (hU : ∀ σ, GoodEmb c σ → IsUnf (U σ))
     (hpq : 1 ≤ Dw.p + Dw.q) (hB : UnramPts Xo c B) (Z : Comp Xo c) (w : Psi H → ℤ)
     (δ : HeightOneSpectrum (𝓞 c.F) → ℝ) (s : ConstSec U x Z (parWt Dw w) δ) (hδ : (Function.support δ).Finite) :
@@ -63,6 +77,9 @@ theorem exists_twSec_of_const {B : Finset ℕ} (hK : Nonempty (KeySec Xo c)) (hU
   rw [wtOf_parWt_neg, add_neg_cancel_right] at h
   exact h
 
+/- English proof (translation)
+Use `(Set.finite_iUnion fun τ => finite_flDefect_vw (Dw := Dw) (c := c) τ).subset fun la hla => ?_` and prove the remaining obligations. Assume the negation of the conclusion as `hn`. Simplify using `only [Set.mem_iUnion, Function.mem_support, not_exists, not_not] at hn`. Conclude with `hla (by simp [Finset.sum_apply, hn])`.
+-/
 theorem finite_sum_flDefect (w : Psi H → ℤ) :
     (Function.support (∑ τ, (-w τ) • flDefect_vw Dw c τ)).Finite := by
   refine (Set.finite_iUnion fun τ => finite_flDefect_vw (Dw := Dw) (c := c) τ).subset fun la hla => ?_
@@ -70,6 +87,11 @@ theorem finite_sum_flDefect (w : Psi H → ℤ) :
   simp only [Set.mem_iUnion, Function.mem_support, not_exists, not_not] at hn
   exact hla (by simp [Finset.sum_apply, hn])
 
+/- English proof (translation)
+Establish `h1 : ∀ la, (∑ τ, (-w τ) • flDefect_vw Dw c τ) la * lw c.F la = ∑ τ, (-(w τ : ℝ)) * (flDefect_vw Dw c τ la * lw c.F la)` using `fun la => by`. Rewrite using `[Finset.sum_apply, Finset.sum_mul]`. Use `Finset.sum_congr rfl fun τ _ => ?_` and prove the remaining obligations. Rewrite using `[Pi.smul_apply, zsmul_eq_mul]`. Use `push_cast`.
+
+Expand and normalize the polynomial expressions, which then agree. Rewrite using `[finsum_congr h1, finsum_sum_comm _ _ fun τ _ => (fin_mul (finite_flDefect_vw τ) (lw c.F)).subset (Function.support_mul_subset_right _ _), Finset.mul_sum, ← Finset.sum_neg_distrib]`. Use `Finset.sum_congr rfl fun τ _ => ?_` and prove the remaining obligations. Rewrite using `[← mul_finsum, sum_flDefect_vw]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem finsum_sum_flDefect (w : Psi H → ℤ) :
     ∑ᶠ la, (∑ τ, (-w τ) • flDefect_vw Dw c τ) la * lw c.F la =
       -((Dw.q : ℝ) * (lrd E - Real.log H.d) * ∑ τ, (w τ : ℝ)) := by
@@ -84,6 +106,17 @@ theorem finsum_sum_flDefect (w : Psi H → ℤ) :
   refine Finset.sum_congr rfl fun τ _ => ?_
   rw [← mul_finsum, sum_flDefect_vw]; ring
 
+/- English proof (translation)
+Use `⟨exists_twSec_of_const hK hU hpq hB, fun hF Z w hp => ?_⟩` and prove the remaining obligations. Establish `sF : ∀ τ, FlatSec U x Z τ` using `fun τ => (hF.nonempty Z τ).some`. Establish `hδ` using `finite_sum_flDefect (Dw := Dw) (c := c) w`. Take `⟨s, hdeg⟩ : ∃ s : ConstSec U x Z (parWt Dw w) (∑ τ, (-w τ) • flDefect_vw Dw c τ), s.deg = ∑ τ, (w τ : ℝ) * c1 U x τ` from `⟨(FlatSec.shift hp sF w).copy rfl (by congr; exact Subsingleton.elim _ _), (hF.deg_shift hp sF w).trans (by congr; exact Subsingleton.elim _ _)⟩`. Take `⟨t, -, h2, h3, -, h5⟩` from `exists_twSec_of_const hK hU hpq hB Z w _ s hδ`.
+
+Establish `key` using `lineDeg_mul (r := 1) (fun _ => one_pos) s.cInf_pos hδ s.finite_rho`. Rewrite `key` using `[one_mul]`. Establish `hd : t.degLo = (∑ τ, (w τ : ℝ) * c1 U x τ) - (Dw.q : ℝ) * (lrd E - Real.log H.d) * (∑ τ, (w τ : ℝ))`. Establish `h1 : lineDeg (1 : (c.F →+* ℂ) → ℝ) (∑ τ, (-w τ) • flDefect_vw Dw c τ) = -((Dw.q : ℝ) * (lrd E - Real.log H.d) * ∑ τ, (w τ : ℝ))`. Rewrite using `[lineDeg, finsum_sum_flDefect]`.
+
+Simplify using the standard rewrite rules. Rewrite using `[TwSec.degLo, h2, h3, key, h1, ← hdeg, ConstSec.deg]`. Expand and normalize the polynomial expressions, which then agree. Use `⟨t, h5, hd, ?_⟩` and prove the remaining obligations. Establish `hA` using `GlobalTheory.T.abs_logRootDisc_sub_log_hostPrime_le E H`.
+
+Establish `hs : (lrd E - Real.log H.d) * ∑ τ, (w τ : ℝ) ≤ lrd E * ∑ τ, |(w τ : ℝ)|`. Rewrite using `[Finset.mul_sum, Finset.mul_sum]`. Use `Finset.sum_le_sum fun τ _ => (le_abs_self _).trans ?_` and prove the remaining obligations. Rewrite using `[abs_mul]`. Conclude with `mul_le_mul_of_nonneg_right hA (abs_nonneg _)`.
+
+Use `mul_le_mul_of_nonneg_left hs (Nat.cast_nonneg (α := ℝ) Dw.q)` as an intermediate fact. Rewrite using `[hd, mul_assoc, mul_assoc]`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem twSec_of_flat (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E)
     (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l) (r : ℕ) (U : ∀ σ : c.F →+* ℂ, Unf Xo c σ r)
     (x : ℝ) (B : Finset ℕ) (hK : Nonempty (KeySec Xo c)) (hU : ∀ σ, GoodEmb c σ → IsUnf (U σ))

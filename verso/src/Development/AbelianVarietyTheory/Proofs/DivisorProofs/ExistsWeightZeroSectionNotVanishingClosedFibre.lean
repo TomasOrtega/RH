@@ -20,6 +20,25 @@ noncomputable section
 
 namespace GlobalTheory.Mum.SecBZeroBpf
 
+/- English proof (translation)
+Use `P.isAb.smooth` as an intermediate fact. Use `P.isAb.geomConnected` as an intermediate fact. Establish `: GeometricallyIntegral P.A.hom` using `GlobalTheory.geometricallyIntegral_of_smooth _`. Establish `: AlgebraicGeometry.IsIntegral (Over.mk t ⊗ P.A).left` using `GeometricallyIntegral.geometrically_isIntegral t _ _ (IsPullback.of_hasPullback t P.A.hom).flip`. Establish `: Subsingleton (Over.mk t).left` using `⟨spec_pt_eq (k := K)⟩`.
+
+Establish `: Nontrivial Γ((Over.mk t).left, ⊤)` using `(Scheme.ΓSpecIso (CommRingCat.of K)).commRingCatIsoToRingEquiv.toEquiv.nontrivial`. Establish `h1` using `GlobalTheory.ThetaRep.finrank_secM hL.secBaseChange P (n := 1) le_rfl t`. Rewrite `h1` using `[one_pow]`. Establish `: Nontrivial (SecM P.A P.L (1 : ℕ) (Over.mk t))` using `Module.nontrivial_of_finrank_pos (h1 ▸ Nat.one_pos)`. Take `⟨f, hf⟩` from `exists_ne (0 : SecM P.A P.L (1 : ℕ) (Over.mk t))`.
+
+Set `θ : LB.Sec (LPow P.A P.L 1 (Over.mk t))` to `SecM.toSec P.A f`. Choose the witnesses or unpack the hypotheses as in `⟨k, hk⟩ : ∃ k, θ.f k ≠ 0 := by`. Assume the negation of the conclusion as `h`. Use `push_neg at h`. Conclude with `hf (Subtype.ext (funext h))`.
+
+Establish `hD : (((Over.mk t ⊗ P.A).left.basicOpen (θ.f k) : (Over.mk t ⊗ P.A).left.Opens) : Set (Over.mk t ⊗ P.A).left).Nonempty`. Rewrite using `[Set.nonempty_iff_ne_empty]`. Introduce `h`. Conclude with `hk ((basicOpen_eq_bot_iff _).1 (SetLike.coe_injective h))`. Set `p : (Over.mk t).left` to `IsLocalRing.closedPoint K`.
+
+Set `y` to `(ptSecT P.A x).left p`. Establish `good : ∀ a : Over.mk t ⟶ P.A, (ptSecT P.A (a * x)).left p ∈ (Over.mk t ⊗ P.A).left.basicOpen (θ.f k) → UnitAt P.L (K` using `Fin 1) (fun _ => (translPt P.A a).left) (fun _ => 1) y := fun a ha => GlobalTheory.NoBasePoint.unitAt_transl P.isLB θ k a y (by`. Rewrite `ha` using `[← GlobalTheory.NoBasePoint.ptSecT_translT]`. Conclude with `ha)`. Establish `step : ∀ (m : ℤ) (b a : Over.mk t ⟶ P.A), UnitAt P.L ![(translPt P.A b).left, (snd (Over.mk t) P.A).left] ![1, m] y → UnitAt P.L (K` using `Fin 1) (fun _ => (translPt P.A a).left) (fun _ => 1) y → UnitAt P.L ![(translPt P.A (b * a)).left, (snd (Over.mk t) P.A).left] ![1, m + 1] y := by`.
+
+Introduce `m b a hb ha`. Take `⟨V, hV, c, hc⟩` from `hL.square S P (Over.mk t) b a p`. Use `UnitAt.congr P.isLB (formEq_of_add fun U _ hh => ?_) ((hb.mul ha).mul (GlobalTheory.NoBasePoint.unitAt_of_local P.isLB _ _ p V hV c hc y))` and prove the remaining obligations. Simplify using `[Fin.sum_univ_succ]`. Use `module`.
+
+Establish `main : ∀ (m : ℕ) (b : Over.mk t ⟶ P.A), UnitAt P.L ![(translPt P.A b).left, (snd (Over.mk t) P.A).left] ![1, (m : ℤ) + 1] y`. Introduce `m`. Proceed by induction on `m with`. Consider the case `zero`. Introduce `b`.
+
+Take `⟨a, h₁, h₂⟩` from `GlobalTheory.NoBasePoint.exists_two_points t _ hD x (b * x)`. Use `step 0 a (a⁻¹ * b) (UnitAt.congr P.isLB (formEq_of_add fun U _ hh => by simp) (good a (h₁ p))) (good _ (by rw [_root_.mul_assoc]; exact h₂ p))` as an intermediate fact. Rewrite `this` using `[mul_inv_cancel_left]`. Then use the resulting hypothesis. Consider the case `succ m ih`. Introduce `b`.
+
+Take `⟨a, h₁, -⟩` from `GlobalTheory.NoBasePoint.exists_two_points t _ hD x x`. Use `step _ _ a (ih (b * a⁻¹)) (good a (h₁ p))` as an intermediate fact. Rewrite `this` using `[inv_mul_cancel_right]`. Then use the resulting hypothesis. Conclude with `main m 1`.
+-/
 theorem unitAt_pow {S : Scheme.{0}} [IsLocallyNoetherian S] (hL : Laws) (P : PolAV S) {K : Type} [Field K]
     [IsAlgClosed K] (t : Spec (CommRingCat.of K) ⟶ S) (x : Over.mk t ⟶ P.A) (m : ℕ) :
     UnitAt P.L ![(translPt P.A (1 : Over.mk t ⟶ P.A)).left, (snd (Over.mk t) P.A).left] ![1, (m : ℤ) + 1]
@@ -80,11 +99,19 @@ theorem unitAt_pow {S : Scheme.{0}} [IsLocallyNoetherian S] (hL : Laws) (P : Pol
       rwa [inv_mul_cancel_right] at this
   exact main m 1
 
+/- English proof (translation)
+Rewrite `h` using `[gs_eq r z U hz]`. Conclude with `(SetLike.ext_iff.1 (Scheme.preimage_basicOpen r a) z).2 ((Z.mem_basicOpen _ z hz).2 h)`.
+-/
 theorem mem_basicOpen_of_isUnit {Y Z : Scheme.{0}} (r : Z ⟶ Y) (z : Z) (U : Y.Opens) (hz : r z ∈ U) (a : Γ(Y, U))
     (h : IsUnit (gs r z U a)) : r z ∈ Y.basicOpen a := by
   rw [gs_eq r z U hz] at h
   exact (SetLike.ext_iff.1 (Scheme.preimage_basicOpen r a) z).2 ((Z.mem_basicOpen _ z hz).2 h)
 
+/- English proof (translation)
+Establish `h` using `D.c_add 0 0`. Rewrite `h` using `[add_zero]`. Establish `h' : D.c 0 * D.c 0 = D.c 0` using `h.symm`. Rewrite `h'` using `[mul_eq_left]`. Rewrite using `[h']`.
+
+Use `show toUnit _ ≫ η[D.P.A] = η[D.P.A]`. Rewrite using `[toUnit_unique (toUnit _) (𝟙 _), Category.id_comp]`.
+-/
 theorem c_zero {R : Type} [CommRing R] [IsDomain R] (D : DegPre R) : D.c 0 = η[D.P.A] := by
   have h := D.c_add 0 0
   rw [add_zero] at h
@@ -94,6 +121,29 @@ theorem c_zero {R : Type} [CommRing R] [IsDomain R] (D : DegPre R) : D.c 0 = η[
   show toUnit _ ≫ η[D.P.A] = η[D.P.A]
   rw [toUnit_unique (toUnit _) (𝟙 _), Category.id_comp]
 
+/- English proof (translation)
+Introduce `R _ _ _ hB D k hk x hx`. Use `haveI : IsNoetherianRing R := hB.1.1`. Establish `hL : Laws` using `GlobalTheory.abelianSchemeLaws_all.1`. Establish `hTW : DVR.TwistBCSpanStatement` using `DVR.twistBCSpan_of GlobalTheory.twistBaseChange`. Set `P` to `D.toPre.P`.
+
+Set `K` to `AlgebraicClosure (P.A.left.residueField x)`. Set `u : Spec (CommRingCat.of K) ⟶ P.A.left` to `Spec.map (CommRingCat.ofHom (algebraMap (P.A.left.residueField x) K)) ≫ P.A.left.fromSpecResidueField x`. Establish `hu : ∀ q, u q = x` using `fun q => (Scheme.Hom.comp_apply _ _ q).trans (Scheme.fromSpecResidueField_apply x _)`. Take `⟨φ, hφ⟩` from `Spec.map_surjective (u ≫ P.A.hom)`. Set `f : R →+* K` to `φ.hom`.
+
+Establish `hφ' : Spec.map (CommRingCat.ofHom f) = u ≫ P.A.hom` using `hφ`. Establish `e2 : (u ≫ P.A.hom) (closedPoint K) = closedPoint R` using `(Scheme.Hom.comp_apply _ _ _).trans ((congrArg _ (hu _)).trans hx)`. Establish `e : (Spec.map (CommRingCat.ofHom f)) (closedPoint K) = closedPoint R` using `by rw [hφ']; exact e2`. Establish `e3 : Ideal.comap f (maximalIdeal K) = maximalIdeal R` using `congrArg PrimeSpectrum.asIdeal e`. Establish `hf : IsLocalHom f` using `⟨fun a ha => by`.
+
+Assume the negation of the conclusion as `hna`. Establish `h1 : a ∈ maximalIdeal R` using `(mem_maximalIdeal a).2 hna`. Rewrite `h1` using `[← e3]`. Conclude with `(mem_maximalIdeal _).1 h1 ha⟩`. Set `T : Over (Spec (CommRingCat.of R))` to `Over.mk (Spec.map (CommRingCat.ofHom f))`.
+
+Set `xb : T ⟶ P.A` to `Over.homMk u hφ'.symm`. Set `y` to `(ptSecT P.A xb).left (closedPoint K)`. Establish `hy : (snd T P.A).left y = x`. Establish `e4 : ptSecT P.A xb ≫ snd T P.A = xb` using `lift_snd _ _`. Establish `e5` using `congrArg (fun q => q.left (closedPoint K)) e4`.
+
+Simplify using `only [Over.comp_left, Scheme.Hom.comp_apply] at e5`. Conclude with `e5.trans (hu _)`. Establish `c0` using `c_zero D.toPre`. Establish `a0 : (snd T P.A).left ≫ D.toPre.famφB 0 0 = (snd T P.A).left` using `Category.comp_id _`. Establish `a1 : (snd T P.A).left ≫ D.toPre.famφB 0 1 = (translPt P.A (1 : T ⟶ P.A)).left` using `by show (snd T P.A ≫ padd D.toPre.P.A (𝟙 D.toPre.P.A) (toUnit _ ≫ D.toPre.c 0)).left = _`.
+
+Use `congr 1`. Establish `e1 : snd T P.A ≫ padd D.toPre.P.A (𝟙 D.toPre.P.A) (toUnit _ ≫ D.toPre.c 0) = snd T P.A * (toUnit _ ≫ D.toPre.c 0)`. Use `(MonObj.comp_mul (snd T P.A) (𝟙 _) (toUnit _ ≫ D.toPre.c 0)).trans ?_` and prove the remaining obligations. Rewrite using `[Category.comp_id, ← Category.assoc, comp_toUnit]`. Rewrite using `[e1, mul_comm, GlobalTheory.NoBasePoint.translPt_eq, c0, MonObj.comp_one]`.
+
+Both sides reduce to the same expression. Establish `a2 : (snd T P.A).left ≫ D.toPre.famφB 0 2 = (T ⊗ P.A).hom ≫ (η[P.A]).left` using `by show (snd T P.A ≫ toUnit _ ≫ D.toPre.c 0).left = _`. Rewrite using `[← Category.assoc, comp_toUnit, Over.comp_left, Over.toUnit_left, c0]`. Establish `a3 : (snd T P.A).left ≫ D.toPre.famφB 0 3 = (T ⊗ P.A).hom ≫ (η[P.A]).left` using `by show (snd T P.A ≫ toUnit _ ≫ η[D.toPre.P.A]).left = _`. Rewrite using `[← Category.assoc, comp_toUnit, Over.comp_left, Over.toUnit_left]`.
+
+Choose the witnesses or unpack the hypotheses as in `⟨σ, hσ⟩ : UnitAt P.L (fun i => (snd T P.A).left ≫ D.toPre.famφB 0 i) (DegPre.famε k) y := by`. Use `UnitAt.congr P.isLB (formEq_of_add fun U _ hh => ?_) (unitAt_pow hL P (Spec.map (CommRingCat.ofHom f)) xb (k - 2))` and prove the remaining obligations. Rewrite using `[Fin.sum_univ_four, a0, a1, a2, a3, Fin.sum_univ_two]`. Establish `hk' : ((k - 2 : ℕ) : ℤ) + 1 = (k : ℤ) - 1` using `by omega`. Simplify using `only [DegPre.famε, Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.cons_val, hk']`.
+
+Normalize the expressions using the abelian group laws. Take `⟨m, c', β, hβ⟩` from `hTW R D.toPre k (by omega) 0 K f hf σ`. Use `choose J hJ using fun ψ : (T ⊗ P.A).left ⟶ P.A.left => exists_chart P.isLB (ψ y)`. Establish `hJ' : Good P.L y J` using `hJ`. Establish `e6` using `SectionScalarValuation.sval_lin (fun l => (fst T P.A).left.appTop.hom (c' l)) (fun l => SectionArithmetic.pullSec (β l) (snd T P.A).left) (fun j => hβ j) (𝟙 _) y hJ'`.
+
+Take `⟨i, -, hi⟩` from `IsLocalRing.exists_of_isUnit_sum ((congrArg IsUnit e6).mp (hσ J hJ'))`. Establish `hi'` using `isUnit_of_mul_isUnit_right hi`. Rewrite `hi'` using `[SectionArithmetic.sval_pullSec _ _ (𝟙 _) y hJ', Category.id_comp]`. Rewrite using `[← hy]`. Conclude with `⟨β i, _, mem_basicOpen_of_isUnit _ y _ (hJ'.mem _ _) _ hi'⟩`.
+-/
 theorem _root_.GlobalTheory.Mum.exists_secB_zero_mem_basicOpen : ∀ (R : Type) [CommRing R] [IsDomain R] [IsLocalRing R], Base R →
     ∀ (D : DegData R (maximalIdeal R)) (k : ℕ), 2 ≤ k → ∀ x : D.toPre.P.A.left,
       D.toPre.P.A.hom x = closedPoint R →

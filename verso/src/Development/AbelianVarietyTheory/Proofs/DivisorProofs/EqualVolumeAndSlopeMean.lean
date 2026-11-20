@@ -11,6 +11,13 @@ noncomputable section
 
 namespace GlobalTheory.Mean4
 
+/- English proof (translation)
+Establish `h1 : 1 ≤ D.R.f`. Break down `Nat.eq_zero_or_pos D.R.f with h | h` into its components or cases. Rewrite `hf` using `[h]`. Use linear arithmetic over natural numbers and integers. Conclude with `h`.
+
+Establish `h2 : 1 ≤ Y.N` using `by have := Y.j_lt; omega`. Establish `h1' : (1 : ℝ) ≤ D.R.f` using `by exact_mod_cast h1`. Establish `h2' : (1 : ℝ) ≤ Y.N` using `by exact_mod_cast h2`. Establish `h3 : 0 ≤ supAbs Y u` using `Real.iSup_nonneg fun x => abs_nonneg _`. Establish `h4 : 0 ≤ supAbs Y u / g` using `div_nonneg h3 hu.1.le`.
+
+Establish `h5 : (1 : ℝ) ≤ (Y.N : ℝ) ^ 2` using `one_le_pow₀ h2'`. Establish `h6 : (1 : ℝ) ≤ (D.R.f : ℝ) * (Y.N : ℝ) ^ 2` using `one_le_mul_of_one_le_of_one_le h1' h5`. Establish `h7 : (1 : ℝ) ≤ (D.R.f : ℝ) * (Y.N : ℝ) ^ 2 * (1 + supAbs Y u / g)` using `one_le_mul_of_one_le_of_one_le h6 (by linarith)`. Unfold `bigB0`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem two_le_weight_threshold {D : D7} (Y : ShimX D.what₂.Tau) (hf : 2 < D.R.f * (Y.N - 1)) {u : Wt Y} {g : ℝ}
     (hu : WeightHyp Y u g) : 2 ≤ bigB0 Y u g := by
   have h1 : 1 ≤ D.R.f := by
@@ -29,6 +36,21 @@ theorem two_le_weight_threshold {D : D7} (Y : ShimX D.what₂.Tau) (hf : 2 < D.R
   unfold bigB0
   linarith
 
+/- English proof (translation)
+Introduce `D Y A Φ C hf hLim hPoly hAg hDeg hEq hProp hLow`. Take `⟨hw, hvol, -, hgeo⟩` from `hDeg`. Establish `hrat : ∀ u : D.what₂.Tau → Fin Y.N → ℚ, IsRat Y (GlobalTheory.IndefiniteRowSideFullHecke.ComponentMean.realWt Y u)` using `fun u τ i => ⟨u τ i, rfl⟩`. Use `⟨⟨A.w, ⟨hw, hvol, fun u g hu c => ?_⟩, hEq⟩, fun u g hu => ?_⟩` and prove the remaining obligations. Use `hgeo _ (two_le_weight_threshold Y hf hu) _ (hrat u) c` and compare the differences between its conclusion and the goal.
+
+Use `set v := GlobalTheory.IndefiniteRowSideFullHecke.ComponentMean.realWt Y u with hv`. Establish `hB` using `two_le_weight_threshold Y hf hu`. Use `set B := bigB0 Y v g with hBdef`. Establish `hfd : 0 < flagDeg D.what₂.Tau Y.N v` using `GlobalTheory.SlopeCompare.flagDeg_pos hu.2.1`. Take `⟨c₀⟩` from `Y.compNe`.
+
+Establish `hn : (0 : ℝ) < Fintype.card Y.Comp` using `by exact_mod_cast Fintype.card_pos`. Establish `hvol' : Y.vol = Fintype.card Y.Comp * A.w c₀`. Rewrite using `[hvol, Finset.sum_congr rfl fun c _ => hEq c c₀]`. Simplify using the standard rewrite rules. Establish `hg : geoDeg Y v = Fintype.card Y.Comp * A.w c₀ * flagDeg D.what₂.Tau Y.N v`.
+
+Rewrite using `[geoDeg, hProp, hvol']`. Both sides reduce to the same expression. Establish `hw₀` using `hw c₀`. Establish `hgpos : 0 < geoDeg Y v` using `by rw [hg]; positivity`. Establish `hd : (0 : ℝ) < (dimY Y : ℝ) + 1` using `by positivity`.
+
+Take `⟨_, hP⟩` from `hPoly`. Establish `hsum` using `(hP B hB).2 v`. Establish `hmean : GlobalTheory.IndefiniteRowSideFullHecke.ComponentMean.compMean Y (fun c => evS Y (A.Ps B c) v 0 / (((dimY Y : ℝ) + 1) * (A.w c₀ * flagDeg D.what₂.Tau Y.N v))) = atWt Y (Φ B) v / (((dimY Y : ℝ) + 1) * geoDeg Y v)`. Rewrite using `[GlobalTheory.IndefiniteRowSideFullHecke.ComponentMean.compMean, ← Finset.sum_div, hsum, hg]`. Clear the denominators using the available nonvanishing facts.
+
+Use `⟨_, fun c => ?_, ⟨Φ B, hLim B hB, hgpos, hmean⟩, ?_⟩` and prove the remaining obligations. Establish `h1` using `GlobalTheory.T.self_intersection_limit_at_zero D Y A hAg B hB v (hrat u) hu.2.1 c`. Establish `h2` using `hgeo B hB v (hrat u) c`. Rewrite `h2` using `[hEq c c₀]`. Conclude with `h1.div (h2.const_mul _) (by positivity)`.
+
+Rewrite using `[hmean, le_div_iff₀ (by positivity)]`. Establish `h` using `hLow v g hu`. Use `le_trans (le_of_eq ?_) h` and prove the remaining obligations. Rewrite using `[GlobalTheory.IndefiniteRowSideFullHecke.ComponentMean.errTerm, lg]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem volEq_and_slopeMean : ∀ (D : D7) (Y : ShimX D.what₂.Tau), ∀ (A : SlopeTestRemainingChoices Y), ∀ (Φ : ℝ → Fn Y) (C : ℝ),
     2 < D.R.f * (Y.N - 1) → LimFam Φ → PolySize A Φ → Agree A → Degrees A → EqVol A → Propor Y → Lower Φ C →
     GlobalTheory.IndefiniteRowSideFullHecke.ComponentMean.VolEq Y ∧ GlobalTheory.IndefiniteRowSideFullHecke.ComponentMean.SlopeMean Y C := by

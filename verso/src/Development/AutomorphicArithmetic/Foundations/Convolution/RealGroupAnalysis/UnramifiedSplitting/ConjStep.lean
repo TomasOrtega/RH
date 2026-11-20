@@ -8,6 +8,17 @@ open UpperTheory.V.Af.Smo (Eig EigAt)
 open UpperTheory.ConvolutionTheory.R2 UpperTheory.ConvolutionTheory.R2.H
 open scoped Classical
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ _ _ D W M f φ α h1 h2 h3`. Establish `hn : nu F (aE α) = ideleNorm F E α`. Unfold `nu`. Use `congr 1`. Conclude with `Units.ext (by simp [aE, Matrix.det_fin_two])`.
+
+Establish `h4` using `((UpperTheory.ConvolutionTheory.R2.inv F M _ h1 h2 h3).2 (ideleNorm F E α)).2`. Establish `hab : ((ab (ideleNorm F E α) : ℝ) : ℂ) ≠ 0` using `Complex.ofReal_ne_zero.2 (IdeleGroup.ideleModule F (ideleNorm F E α)).2.ne'`. Establish `h5 : (fun g => w1 W f φ (aE α) (cD (ideleNorm F E α) g)) = fun g => Wf f (dM (ideleNorm F E α) * gl g) * hat (W.Om g φ).1 ![0, ((ideleNorm F E α : (A F)ˣ) : A F), D.co ((α⁻¹ : (A E)ˣ) : A E) 0, D.co ((α⁻¹ : (A E)ˣ) : A E) 1]`. Use function extensionality and compare the values at `g`. Establish `e1 : gl (cD (ideleNorm F E α) g) * dM (ideleNorm F E α) = dM (ideleNorm F E α) * gl g`.
+
+Generalize the expression as in `ideleNorm F E α = t`. Use `Units.ext ?_` and prove the remaining obligations. Use `show (cD t g).1 * (dM t).val = (dM t).val * g.1`. Use extensionality with `i j : 2`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;> simp [cD, dM, Matrix.mul_apply, Fin.sum_univ_two, mul_comm]`.
+
+Establish `e2 : W.Om (cD (ideleNorm F E α) g) (W.L (aE α) φ) = W.L (aE α) (W.Om g φ)`. Use `LinearMap.congr_fun (W.comm (aE α) g) φ` as an intermediate fact. Rewrite `this` using `[hn]`. Conclude with `this.symm`. Establish `e3 : D.mkE 1 0 = 1` using `by simp [Dat.mkE]`.
+
+Rewrite using `[w1, hn, e1, e2, (UpperTheory.ConvolutionTheory.R2.hatSt F E D W).aE, e3, mul_one, mul_one]`. Rewrite using `[← h5, h4, Complex.ofReal_inv, ← mul_assoc, mul_inv_cancel₀ hab, one_mul]`. Both sides reduce to the same expression.
+-/
 theorem UpperTheory.ConvolutionTheory.R2.H.conjStep :
     ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] [IsTotallyReal F] [IsTotallyComplex E] (D : Dat F E) (W : Weil D) (M : Meas F) (f : GL (Fin 2) (A F) → ℂ) (φ : S4 F) (α : (A E)ˣ),
       Measurable (w1 W f φ (aE α)) → (∀ b g, w1 W f φ (aE α) (nU b * g) = w1 W f φ (aE α) g) → Integrable (iw (w1 W f φ (aE α))) M.ν →

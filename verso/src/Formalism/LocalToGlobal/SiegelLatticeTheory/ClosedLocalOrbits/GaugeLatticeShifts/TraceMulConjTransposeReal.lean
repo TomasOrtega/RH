@@ -10,16 +10,29 @@ variable {P Q : ℕ}
 
 local notation "ι" => Fin P ⊕ Fin Q
 
+/- English proof (translation)
+Unfold `Formalism.UG.Jpq`. Rewrite using `[Matrix.fromBlocks_multiply]`. Simplify using the standard rewrite rules.
+-/
 theorem jpq_sq : Formalism.UG.Jpq P Q * Formalism.UG.Jpq P Q = 1 := by
   unfold Formalism.UG.Jpq
   rw [Matrix.fromBlocks_multiply]
   simp
 
+/- English proof (translation)
+Unfold `Formalism.UG.Jpq`. Rewrite using `[Matrix.fromBlocks_conjTranspose]`. Simplify using the standard rewrite rules.
+-/
 theorem jpq_conjTranspose : (Formalism.UG.Jpq P Q)ᴴ = Formalism.UG.Jpq P Q := by
   unfold Formalism.UG.Jpq
   rw [Matrix.fromBlocks_conjTranspose]
   simp
 
+/- English proof (translation)
+Establish `hb' : bᴴ = -(Formalism.UG.Jpq P Q * b * Formalism.UG.Jpq P Q)`. Establish `h : bᴴ * Formalism.UG.Jpq P Q + Formalism.UG.Jpq P Q * b = 0` using `hb`. Establish `h2 : bᴴ * Formalism.UG.Jpq P Q = -(Formalism.UG.Jpq P Q * b)` using `eq_neg_of_add_eq_zero_left h`. Combine the equalities or inequalities in the displayed calculation. Establish `ha' : aᴴ = -(Formalism.UG.Jpq P Q * a * Formalism.UG.Jpq P Q)`.
+
+Establish `h : aᴴ * Formalism.UG.Jpq P Q + Formalism.UG.Jpq P Q * a = 0` using `ha`. Establish `h2 : aᴴ * Formalism.UG.Jpq P Q = -(Formalism.UG.Jpq P Q * a)` using `eq_neg_of_add_eq_zero_left h`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[← Matrix.trace_conjTranspose, Matrix.conjTranspose_mul, Matrix.conjTranspose_conjTranspose, ha', hb']`. Simplify using `only [Matrix.mul_neg, Matrix.trace_neg]`.
+
+Use `congr 1`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem trace_mul_conjTranspose_real {a b : Matrix ι ι ℂ} (ha : a ∈ Formalism.BasicNotions.lieU P Q) (hb : b ∈ Formalism.BasicNotions.lieU P Q) :
     star (Matrix.trace (a * bᴴ)) = Matrix.trace (a * bᴴ) := by
   have hb' : bᴴ = -(Formalism.UG.Jpq P Q * b * Formalism.UG.Jpq P Q) := by
@@ -42,12 +55,22 @@ theorem trace_mul_conjTranspose_real {a b : Matrix ι ι ℂ} (ha : a ∈ Formal
 
 def hs2 (Z : Matrix ι ι ℂ) : ℝ := ∑ i, ∑ j, Complex.normSq (Z i j)
 
+/- English proof (translation)
+Unfold `hs2`. Simplify using `only [Matrix.trace, Matrix.diag, Matrix.mul_apply, Matrix.conjTranspose_apply, Complex.re_sum]`. Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[Complex.star_def, Complex.mul_conj, Complex.ofReal_re]`.
+-/
 theorem hilbert_schmidt_eq_re_trace (Z : Matrix ι ι ℂ) : hs2 Z = (Matrix.trace (Z * Zᴴ)).re := by
   unfold hs2
   simp only [Matrix.trace, Matrix.diag, Matrix.mul_apply, Matrix.conjTranspose_apply, Complex.re_sum]
   refine Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => ?_
   rw [Complex.star_def, Complex.mul_conj, Complex.ofReal_re]
 
+/- English proof (translation)
+Rewrite using `[hilbert_schmidt_eq_re_trace, hilbert_schmidt_eq_re_trace, hilbert_schmidt_eq_re_trace]`. Establish `hT` using `trace_mul_conjTranspose_real ha hb`. Establish `hT' : (Matrix.trace (a * bᴴ)).im = 0`. Use `congrArg Complex.im hT` as an intermediate fact. Simplify using `only [Complex.star_def, Complex.conj_im] at this`.
+
+Combine the linear equalities and inequalities to obtain the conclusion. Rewrite using `[Matrix.conjTranspose_add, Matrix.conjTranspose_smul]`. Simplify using `only [Matrix.add_mul, Matrix.mul_add, Matrix.smul_mul, Matrix.mul_smul, Matrix.trace_add, Matrix.trace_smul, Complex.add_re, smul_eq_mul, Complex.star_def, Complex.conj_I]`. Establish `hba : Matrix.trace (b * aᴴ) = star (Matrix.trace (a * bᴴ))`. Rewrite using `[← Matrix.trace_conjTranspose, Matrix.conjTranspose_mul, Matrix.conjTranspose_conjTranspose]`.
+
+Rewrite using `[hba, hT]`. Simplify using `only [Complex.mul_re, Complex.neg_re, Complex.neg_im, Complex.I_re, Complex.I_im, hT']`. Rewrite using `[Complex.add_im, Complex.mul_im, Complex.I_re, Complex.I_im, hT']`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem hilbert_schmidt_add_I_smul {a b : Matrix ι ι ℂ} (ha : a ∈ Formalism.BasicNotions.lieU P Q) (hb : b ∈ Formalism.BasicNotions.lieU P Q) :
     hs2 (a + Complex.I • b) = hs2 a + hs2 b := by
   rw [hilbert_schmidt_eq_re_trace, hilbert_schmidt_eq_re_trace, hilbert_schmidt_eq_re_trace]

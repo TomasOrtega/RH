@@ -12,6 +12,13 @@ namespace GlobalTheory.ArcPts
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Geo.Tor GlobalTheory Filter
 open scoped LaurentSeries PowerSeries
 
+/- English proof (translation)
+Take `⟨π, hπ⟩` from `(Algebra.linearMap K L).exists_leftInverse_of_injective (LinearMap.ker_eq_bot.2 (algebraMap K L).injective)`. Use `⟨fun i => π (r i), fun i => (π (r i)).2, fun v => ?_⟩` and prove the remaining obligations. Establish `h1 : π (f v) = ⟨f v, hf v⟩` using `LinearMap.congr_fun hπ ⟨f v, hf v⟩`. Establish `h2 : π (f v) = ∑ i, π (r i) * ⟨g i v, hg i v⟩`. Rewrite using `[h v, map_sum]`.
+
+Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Establish `: r i * g i v = (⟨g i v, hg i v⟩ : K) • r i`. Rewrite using `[mul_comm]`. Both sides reduce to the same expression. Rewrite using `[this, map_smul, smul_eq_mul, mul_comm]`.
+
+Establish `h3` using `congrArg (fun x : K => (x : L)) (h1.symm.trans h2)`. Simplify using `using h3`.
+-/
 theorem exists_coeff_mem_subfield {k L V ι : Type*} [Field k] [Field L] [Algebra k L] [Fintype ι]
     (K : IntermediateField k L) (r : ι → L) (g : ι → V → L) (f : V → L) (hg : ∀ i v, g i v ∈ K)
     (hf : ∀ v, f v ∈ K) (h : ∀ v, f v = ∑ i, r i * g i v) :
@@ -29,6 +36,11 @@ theorem exists_coeff_mem_subfield {k L V ι : Type*} [Field k] [Field L] [Algebr
   have h3 := congrArg (fun x : K => (x : L)) (h1.symm.trans h2)
   simpa using h3
 
+/- English proof (translation)
+Introduce and unpack `O _ _ A - j _ f ⟨n, r, α, th, h1, h2⟩ hf`. Take `⟨T₀, h₀⟩` from `A.exists_isConvLine`. Establish `hm : ∀ i v, A.FSum j (α i) (th i) v ∈ Conv.halfRing T₀` using `fun i v _ hw => (AnArc.hasSum_coeff_FSum h₀ (h1 i).2 hw v).summable`. Take `⟨s, hs, hfs⟩` from `exists_coeff_mem_subfield Conv.convLaurent r (fun i v => A.FSum j (α i) (th i) v) f (fun i v => Conv.halfRing_le_convLaurent T₀ (hm i v)) hf h2`. Take `⟨T, hT, hT₀⟩` from `((eventually_all.2 fun i => Conv.eventually_mem_halfRing (hs i)).and (eventually_ge_atTop T₀)).exists`.
+
+Use `⟨T, ⟨n, s, α, th, fun i => ⟨hT i, (h1 i).2⟩, hfs⟩, fun v => ?_⟩` and prove the remaining obligations. Rewrite using `[hfs v]`. Conclude with `Subalgebra.sum_mem _ fun i _ => Subalgebra.mul_mem _ (hT i) (Conv.halfRing_mono hT₀ (hm i v))`.
+-/
 theorem exists_isComb_halfRing : ∀ (O : Type) [CommRing O] [StarRing O] (A : AnArc O), AnFin A →
     ∀ (j : ℕ) [NeZero j] (f : A.V → ℂ⸨X⸩), IsComb A j Set.univ f → (∀ v, f v ∈ Conv.convLaurent) →
     ∃ T : ℝ, IsComb A j (Conv.halfRing T) f ∧ ∀ v, f v ∈ Conv.halfRing T := by

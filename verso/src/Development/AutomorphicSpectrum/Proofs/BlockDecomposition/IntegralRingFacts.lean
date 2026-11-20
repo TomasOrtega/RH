@@ -14,30 +14,55 @@ namespace GlobalTheory.CompanionTheory.TiltFacts
 
 variable (l : ℕ) [Fact l.Prime]
 
+/- English proof (translation)
+The claim follows from `IsPerfectoidField.isDomain_preTilt (K := ℂ_[l]) l`.
+-/
 theorem isDomain_ob : IsDomain (CrystallineSemistableComparison.Ob l) :=
   IsPerfectoidField.isDomain_preTilt (K := ℂ_[l]) l
 
+/- English proof (translation)
+Rewrite using `[preTilt_norm_def, coe_untilt_pFlat]`.
+-/
 theorem norm_pFlat_eq : ‖(pFlat l : PreTilt (normInteger ℂ_[l]) l)‖ = ‖(l : ℂ_[l])‖ := by
   rw [preTilt_norm_def, coe_untilt_pFlat]
 
+/- English proof (translation)
+Rewrite using `[norm_pFlat_eq]`. Conclude with `norm_pos_iff.2 (Nat.cast_ne_zero.2 (Fact.out : l.Prime).ne_zero)`.
+-/
 theorem norm_pFlat_pos : 0 < ‖(pFlat l : PreTilt (normInteger ℂ_[l]) l)‖ := by
   rw [norm_pFlat_eq]
   exact norm_pos_iff.2 (Nat.cast_ne_zero.2 (Fact.out : l.Prime).ne_zero)
 
+/- English proof (translation)
+Rewrite using `[norm_pFlat_eq]`. Conclude with `IsPerfectoidField.norm_natCast_lt_one`.
+-/
 theorem norm_pFlat_lt_one : ‖(pFlat l : PreTilt (normInteger ℂ_[l]) l)‖ < 1 := by
   rw [norm_pFlat_eq]
   exact IsPerfectoidField.norm_natCast_lt_one
 
+/- English proof (translation)
+Establish `h` using `(iterateFrobeniusEquiv (CrystallineSemistableComparison.Ob l) l k).apply_symm_apply (pFlat l)`. Rewrite `h` using `[iterateFrobeniusEquiv_def]`. Then use the resulting hypothesis.
+-/
 theorem rt_pow (k : ℕ) : CrystallineSemistableComparison.D.rt l k ^ l ^ k = pFlat l := by
   have h := (iterateFrobeniusEquiv (CrystallineSemistableComparison.Ob l) l k).apply_symm_apply (pFlat l)
   rwa [iterateFrobeniusEquiv_def] at h
 
+/- English proof (translation)
+Take `⟨M, hM⟩` from `exists_pow_lt_of_lt_one (norm_pos_iff.2 ha) (norm_pFlat_lt_one l)`. Use `⟨M, preTilt_dvd_iff_norm_le.2 ?_⟩` and prove the remaining obligations. Rewrite using `[norm_pow]`. Conclude with `hM.le`.
+-/
 theorem exists_dvd_pFlat_pow (a : CrystallineSemistableComparison.Ob l) (ha : a ≠ 0) : ∃ M : ℕ, a ∣ pFlat l ^ M := by
   obtain ⟨M, hM⟩ := exists_pow_lt_of_lt_one (norm_pos_iff.2 ha) (norm_pFlat_lt_one l)
   refine ⟨M, preTilt_dvd_iff_norm_le.2 ?_⟩
   rw [norm_pow]
   exact hM.le
 
+/- English proof (translation)
+Establish `hlt : ‖a‖ < 1`. Use `lt_of_le_of_ne (preTilt_norm_le_one a) fun h => ha ?_` and prove the remaining obligations. Conclude with `(IsPerfectoidField.isUnit_iff_norm_untilt l).2 (by rwa [preTilt_norm_def] at h)`. Establish `hl : 1 < l` using `(Fact.out : l.Prime).one_lt`. Take `⟨n, hn⟩` from `exists_pow_lt_of_lt_one (norm_pFlat_pos l) hlt`.
+
+Establish `hnl : n ≤ l ^ n` using `(Nat.lt_pow_self hl).le`. Use `⟨n, preTilt_dvd_iff_norm_le.2 ?_⟩` and prove the remaining obligations. Establish `h1 : ‖a‖ ^ l ^ n ≤ ‖CrystallineSemistableComparison.D.rt l n‖ ^ l ^ n`. Rewrite using `[← norm_pow (CrystallineSemistableComparison.D.rt l n), rt_pow]`. Conclude with `(pow_le_pow_of_le_one (norm_nonneg _) hlt.le hnl).trans hn.le`.
+
+Conclude with `le_of_pow_le_pow_left₀ (pow_ne_zero _ (by omega)) (norm_nonneg _) h1`.
+-/
 theorem exists_rt_dvd (a : CrystallineSemistableComparison.Ob l) (ha : ¬ IsUnit a) : ∃ k : ℕ, CrystallineSemistableComparison.D.rt l k ∣ a := by
   have hlt : ‖a‖ < 1 := by
     refine lt_of_le_of_ne (preTilt_norm_le_one a) fun h => ha ?_
@@ -51,6 +76,11 @@ theorem exists_rt_dvd (a : CrystallineSemistableComparison.Ob l) (ha : ¬ IsUnit
     exact (pow_le_pow_of_le_one (norm_nonneg _) hlt.le hnl).trans hn.le
   exact le_of_pow_le_pow_left₀ (pow_ne_zero _ (by omega)) (norm_nonneg _) h1
 
+/- English proof (translation)
+Introduce `l _`. Use `haveI := isDomain_ob l`. Use `⟨inferInstance, ?_, exists_dvd_pFlat_pow l, exists_rt_dvd l⟩` and prove the remaining obligations. Use `(ValuationRing.iff_dvd_total).2 ⟨fun a b => ?_⟩` and prove the remaining obligations. Break down `le_total ‖a‖ ‖b‖ with h | h` into its components or cases.
+
+Conclude with `Or.inr (preTilt_dvd_iff_norm_le.2 h)`. Conclude with `Or.inl (preTilt_dvd_iff_norm_le.2 h)`.
+-/
 theorem obFacts : ∀ (l : ℕ) [Fact l.Prime], CrystallineSemistableComparison.D.ObFacts l := by
   intro l _
   haveI := isDomain_ob l

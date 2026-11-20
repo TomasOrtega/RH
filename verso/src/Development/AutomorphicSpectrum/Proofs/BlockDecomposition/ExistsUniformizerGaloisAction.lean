@@ -25,11 +25,23 @@ variable {l : ℕ} [Fact l.Prime] {K : FinExt l}
 variable {F : Type} [Field F] [ValuativeRel F] [TopologicalSpace F] [IsNonarchimedeanLocalField F]
   [Algebra F (Om l)] [ValuativeExtension F (Om l)]
 
+/- English proof (translation)
+Rewrite using `[← map_one (valuation F), ← (valuation F).vle_iff_le, ← ValuativeExtension.vle_iff_vle (B := Om l), GroundTheory.PAdicHodge.CyclNorms.vle_iff_norm_le, map_one, norm_one]`.
+-/
 theorem valuation_le_one_iff (x : F) :
     valuation F x ≤ 1 ↔ ‖algebraMap F (Om l) x‖ ≤ 1 := by
   rw [← map_one (valuation F), ← (valuation F).vle_iff_le, ← ValuativeExtension.vle_iff_vle (B := Om l),
     GroundTheory.PAdicHodge.CyclNorms.vle_iff_norm_le, map_one, norm_one]
 
+/- English proof (translation)
+Establish `hmem : ∀ a : 𝒪[F], algebraMap F (Om l) (a : F) ∈ K.1` using `fun a => by`. Establish `h : algebraMap F (Om l) (a : F) ∈ (K.1 : Set (Om l))` using `hR ▸ ⟨_, rfl⟩`. Conclude with `h`. Establish `hO : ∀ a : 𝒪[F], (⟨_, hmem a⟩ : ↥K.1) ∈ OL K` using `fun a => (GlobalTheory.IntNormFinExt.mem_OL_iff_norm_le_one l K _).mpr ((valuation_le_one_iff (a : F)).mp a.2)`. Set `f : 𝒪[F] →+* ↥(OL K)` to `{ toFun := fun a => ⟨⟨_, hmem a⟩, hO a⟩ map_one' := Subtype.ext (Subtype.ext (by simp)) map_mul' := fun a b => Subtype.ext (Subtype.ext (by simp)) map_zero' := Subtype.ext (Subtype.ext (by simp)) map_add' := fun a b => Subtype.ext (Subtype.ext (by simp)) }`.
+
+Establish `hinj : Function.Injective f` using `fun a b hab => by`. Establish `h : algebraMap F (Om l) (a : F) = algebraMap F (Om l) (b : F)` using `congrArg (fun c : ↥(OL K) => ((c : ↥K.1) : Om l)) hab`. Conclude with `Subtype.ext ((algebraMap F (Om l)).injective h)`. Establish `hsurj : Function.Surjective f` using `fun b => by`. Establish `hb : ((b : ↥K.1) : Om l) ∈ (K.1 : Set (Om l))` using `(b : ↥K.1).2`.
+
+Rewrite `hb` using `[← hR]`. Take `⟨y, hy⟩` from `hb`. Establish `hn : ‖algebraMap F (Om l) y‖ ≤ 1`. Rewrite using `[hy]`. Conclude with `(GlobalTheory.IntNormFinExt.mem_OL_iff_norm_le_one l K _).mp b.2`.
+
+Conclude with `⟨⟨y, (valuation_le_one_iff y).mpr hn⟩, Subtype.ext (Subtype.ext hy)⟩`. Conclude with `⟨RingEquiv.ofBijective f ⟨hinj, hsurj⟩, fun a => rfl⟩`.
+-/
 theorem exists_ringEquiv (hR : Set.range (algebraMap F (Om l)) = (K.1 : Set (Om l))) :
     ∃ ρ : 𝒪[F] ≃+* ↥(OL K), ∀ a : 𝒪[F],
       (((ρ a : ↥(OL K)) : ↥K.1) : Om l) = algebraMap F (Om l) (a : F) := by
@@ -58,6 +70,9 @@ theorem exists_ringEquiv (hR : Set.range (algebraMap F (Om l)) = (K.1 : Set (Om 
     exact ⟨⟨y, (valuation_le_one_iff y).mpr hn⟩, Subtype.ext (Subtype.ext hy)⟩
   exact ⟨RingEquiv.ofBijective f ⟨hinj, hsurj⟩, fun a => rfl⟩
 
+/- English proof (translation)
+Establish `e1 : (𝒪[F] ⧸ Ideal.span {π}) ≃ (↥(OL K) ⧸ Ideal.span {ρ π})` using `(Ideal.quotientEquiv (Ideal.span {π}) (Ideal.span {ρ π}) ρ (by rw [Ideal.map_span, Set.image_singleton]; simp)).toEquiv`. Establish `e2 : 𝓀[F] ≃ (𝒪[F] ⧸ Ideal.span {π})` using `(Ideal.quotEquivOfEq hπ.maximalIdeal_eq).toEquiv`. Conclude with `Nat.card_congr (e2.trans e1).symm`.
+-/
 theorem card_quot (ρ : 𝒪[F] ≃+* ↥(OL K)) {π : 𝒪[F]} (hπ : Irreducible π) :
     Nat.card (↥(OL K) ⧸ Ideal.span {ρ π}) = Nat.card 𝓀[F] := by
   have e1 : (𝒪[F] ⧸ Ideal.span {π}) ≃ (↥(OL K) ⧸ Ideal.span {ρ π}) :=
@@ -67,6 +82,9 @@ theorem card_quot (ρ : 𝒪[F] ≃+* ↥(OL K)) {π : 𝒪[F]} (hπ : Irreducib
     (Ideal.quotEquivOfEq hπ.maximalIdeal_eq).toEquiv
   exact Nat.card_congr (e2.trans e1).symm
 
+/- English proof (translation)
+Rewrite using `[ltSeries, card_quot ρ hπ, ltPoly]`. Simplify using the standard rewrite rules.
+-/
 theorem map_ltPoly (ρ : 𝒪[F] ≃+* ↥(OL K)) {π : 𝒪[F]} (hπ : Irreducible π) :
     PowerSeries.map (ρ : 𝒪[F] →+* ↥(OL K)) (ltPoly π : PowerSeries 𝒪[F]) = ltSeries (ρ π) := by
   rw [ltSeries, card_quot ρ hπ, ltPoly]
@@ -74,6 +92,49 @@ theorem map_ltPoly (ρ : 𝒪[F] ≃+* ↥(OL K)) {π : 𝒪[F]} (hπ : Irreduci
 
 end Ring
 
+/- English proof (translation)
+Introduce `l _ K χ hχ F _ _ _ _ _ _ _ hR`. Take `⟨πK, z, hπK, h0, h1, hs, hch⟩` from `hχ`. Take `⟨ρ, hρ⟩` from `exists_ringEquiv (K := K) (F := F) hR`. Establish `hρπ : ρ (ρ.symm πK) = πK` using `ρ.apply_symm_apply πK`. Take `⟨π, hπdef⟩ : ∃ π : 𝒪[F], π = ρ.symm πK` from `⟨_, rfl⟩`.
+
+Rewrite `hρπ` using `[← hπdef]`. Establish `hπ : Irreducible π` using `hπdef ▸ (MulEquiv.irreducible_iff ρ.symm).mpr hπK`. Establish `hf` using `isLubinTateSeries_ltPoly π`. Establish `hcard : Nat.card (↥(OL K) ⧸ Ideal.span {πK}) = Nat.card 𝓀[F]`. Establish `h` using `card_quot ρ hπ`.
+
+Rewrite `h` using `[hρπ]`. Then use the resulting hypothesis. Establish `hcoe : ((πK : ↥K.1) : Om l) = algebraMap F (Om l) (π : F)`. Rewrite using `[← hρ π, hρπ]`. Establish `hs' : ∀ n, algebraMap F (Om l) (π : F) * z (n + 1) + z (n + 1) ^ Nat.card 𝓀[F] = z n` using `fun n => by`. Rewrite using `[← hcoe, ← hcard, add_comm]`.
+
+Conclude with `hs n`. Establish `hv : ∀ n, valuation (Om l) (z n) < 1`. Introduce `n`. Proceed by induction on `n with`. Consider the case `zero => simp [h0]`.
+
+Consider the case `succ n ih => exact CharEx.valuation_lt_one_of_eq hπ ih (hs' n)`. Set `Z : ℕ → IdealPoint (Om l) (lubinTateFormalGroup hπ hf)` to `fun n => IdealPoint.mk (z n) (hv n)`. Establish `heval : ∀ (a : 𝒪[F]) (h : ↥(GK K)), (((ρ a : ↥(OL K)) : ↥K.1)) = ((χ h : (↥K.1)ˣ) : ↥K.1) → ∀ n, (a • Z n).val = (h : GQ l) (z n)`. Introduce `a h ha n`. Set `Φ : PowerSeries 𝒪[F]` to `(lubinTateHom hπ hf hf a).toPowerSeries`.
+
+Set `ψ : PowerSeries ↥(OL K)` to `PowerSeries.map (ρ : 𝒪[F] →+* ↥(OL K)) Φ`. Establish `hΦ0 : PowerSeries.constantCoeff Φ = 0` using `(lubinTateHom hπ hf hf a).constantCoeff_eq_zero'`. Establish `hψ0 : PowerSeries.constantCoeff ψ = 0`. Rewrite using `[← PowerSeries.coeff_zero_eq_constantCoeff_apply, PowerSeries.coeff_map, PowerSeries.coeff_zero_eq_constantCoeff_apply, hΦ0, map_zero]`. Establish `hψ1 : ((PowerSeries.coeff 1 ψ : ↥(OL K)) : ↥K.1) = ((χ h : (↥K.1)ˣ) : ↥K.1)`.
+
+Rewrite using `[PowerSeries.coeff_map, coeff_one_lubinTateHom]`. Conclude with `ha`. Establish `hF0 : PowerSeries.constantCoeff (ltPoly π : PowerSeries 𝒪[F]) = 0` using `hf.constantCoeff_eq_zero`. Establish `hsub : PowerSeries.subst ψ (ltSeries πK) = PowerSeries.subst (ltSeries πK) ψ`. Establish `h2` using `congrArg (MvPowerSeries.map (ρ : 𝒪[F] →+* ↥(OL K))) (subst_lubinTateHom hπ hf hf a)`.
+
+Rewrite `h2` using `[PowerSeries.map_subst (PowerSeries.HasSubst.of_constantCoeff_zero hΦ0), PowerSeries.map_subst (PowerSeries.HasSubst.of_constantCoeff_zero hF0)]`. Express the relevant statement in the definitionally equal form `PowerSeries.subst ψ (PowerSeries.map (ρ : 𝒪[F] →+* ↥(OL K)) (ltPoly π : PowerSeries 𝒪[F])) = PowerSeries.subst (PowerSeries.map (ρ : 𝒪[F] →+* ↥(OL K)) (ltPoly π : PowerSeries 𝒪[F])) ψ at h2`. Rewrite `h2` using `[map_ltPoly ρ hπ, hρπ]`. Then use the resulting hypothesis. Establish `hsum` using `hch h ψ hψ0 hψ1 hsub n`. Establish `hsum2` using `CharEx.hasSum_coeff_mul_pow (K := F) Φ (hv n)`.
+
+Rewrite using `[lubinTate_smul_val]`. Use `hsum2.unique ?_` and prove the remaining obligations. Use `hsum using 2 with k` and compare the differences between its conclusion and the goal. Simplify using `only [ψ, PowerSeries.coeff_map]`. Rewrite using `[← hρ]`.
+
+Both sides reduce to the same expression. Establish `hZ0 : Z 0 = 0` using `IdealPoint.ext h0`. Establish `hZ1 : Z 1 ≠ 0` using `fun h => h1 (congrArg IdealPoint.val h)`. Establish `hstep : ∀ n, π • Z (n + 1) = Z n` using `fun n => IdealPoint.ext (by`. Rewrite using `[lubinTate_uniformizer_smul_val]`.
+
+Express the relevant statement in the definitionally equal form `psEval ((ltPoly π : Polynomial 𝒪[F]) : PowerSeries 𝒪[F]) (fun _ => z (n + 1)) = z n`. Rewrite using `[psEval_polynomial, aeval_ltPoly]`. Conclude with `hs' n)`. Establish `hpow : ∀ n, π ^ n • Z (n + 1) = Z 1`. Introduce `n`.
+
+Proceed by induction on `n with`. Consider the case `zero => simp`. Consider the case `succ n ih => rw [pow_succ, mul_smul, hstep, ih]`. Establish `hunit : ∀ (a : 𝒪[F]) (h : ↥(GK K)), (((ρ a : ↥(OL K)) : ↥K.1)) = ((χ h : (↥K.1)ˣ) : ↥K.1) → IsUnit a`. Introduce `a h ha`.
+
+Assume the negation of the conclusion as `hnu`. Establish `hm` using `(IsLocalRing.mem_maximalIdeal a).mpr hnu`. Rewrite `hm` using `[hπ.maximalIdeal_eq, Ideal.mem_span_singleton']`. Take `⟨b, rfl⟩` from `hm`. Establish `h2 : (b * π) • Z 1 = 0` using `by rw [mul_smul, hstep, hZ0, smul_zero]`.
+
+Establish `h3` using `heval _ h ha 1`. Rewrite `h3` using `[h2]`. Conclude with `h1 ((map_eq_zero_iff _ (h : GQ l).injective).mp h3.symm)`. Use `⟨π, hπ, fun g g' hg => ?_⟩` and prove the remaining obligations. Choose the witnesses or unpack the hypotheses as in `⟨u, hu⟩ : ∃ u : 𝒪[F]ˣ, algebraMap F (Om l) ((u : 𝒪[F]) : F) = (((χ g' : (↥K.1)ˣ) : ↥K.1) : Om l) := by`.
+
+Establish `hy : (((χ g' : (↥K.1)ˣ) : ↥K.1) : Om l) ∈ (K.1 : Set (Om l))` using `((χ g' : (↥K.1)ˣ) : ↥K.1).2`. Rewrite `hy` using `[← hR]`. Take `⟨y, hy⟩` from `hy`. Establish `hy0 : y ≠ 0`. Introduce and unpack `rfl`.
+
+Rewrite `hy` using `[map_zero]`. Conclude with `(χ g').ne_zero (Subtype.ext hy.symm)`. Break down `le_total (valuation F y) 1 with hle | hle` into its components or cases. Take `⟨w, hw⟩` from `hunit ⟨y, hle⟩ g' (Subtype.ext (by rw [hρ]; exact hy))`. Conclude with `⟨w, by rw [hw]; exact hy⟩`.
+
+Establish `hle' : valuation F y⁻¹ ≤ 1`. Rewrite using `[map_inv₀]`. Conclude with `inv_le_one_of_one_le₀ hle`. Establish `hinv : (((χ (g'⁻¹) : (↥K.1)ˣ) : ↥K.1) : Om l) = algebraMap F (Om l) y⁻¹`. Rewrite using `[map_inv, map_inv₀, hy, Units.val_inv_eq_inv_val, IntermediateField.coe_inv]`.
+
+Take `⟨w, hw⟩` from `hunit ⟨y⁻¹, hle'⟩ g'⁻¹ (Subtype.ext (by rw [hρ, hinv]))`. Use `⟨w⁻¹, ?_⟩` and prove the remaining obligations. Establish `hw2 : ((w : 𝒪[F]) : F) = y⁻¹` using `by rw [hw]`. Establish `hw3 : (((w⁻¹ : 𝒪[F]ˣ) : 𝒪[F]) : F) * ((w : 𝒪[F]) : F) = 1`. Establish `h5 : ((w⁻¹ : 𝒪[F]ˣ) : 𝒪[F]) * (w : 𝒪[F]) = 1` using `Units.inv_mul w`.
+
+Conclude with `congrArg Subtype.val h5`. Rewrite `hw3` using `[hw2]`. Rewrite using `[← hy, (eq_of_mul_inv_eq_one hw3)]`. Use `⟨u, hu, fun n x hx => ?_⟩` and prove the remaining obligations. Establish `hgZ : lubinTateGalPointMap (hπ` using `hπ) hf g (Z (n + 1)) = (u : 𝒪[F]) • Z (n + 1) := IdealPoint.ext (by`.
+
+Rewrite using `[lubinTateGalPointMap_val, heval (u : 𝒪[F]) g' (Subtype.ext (by rw [hρ]; exact hu))]`. Conclude with `hg _)`. Establish `hZt : Z (n + 1) ∈ lubinTateTorsion (Om l) (hπ` using `hπ) hf (n + 1) := CharEx.mem_torsion hπ h0 hs' (n + 1) _ rfl`. Establish `hZn : Z (n + 1) ∉ lubinTateTorsion (Om l) (hπ` using `hπ) hf (n + 1 - 1) := by`. Rewrite using `[Nat.add_sub_cancel, mem_lubinTateTorsion, hpow]`.
+
+Conclude with `hZ1`. Take `⟨-, hgen⟩` from `primitive_spec hπ hf hZt hZn`. Take `⟨a, rfl⟩` from `hgen x (lubinTateTorsion_mono hπ hf n.le_succ hx)`. Rewrite using `[map_smul, hgZ, smul_smul, smul_smul, mul_comm]`.
+-/
 theorem main : ∀ {l : ℕ} [Fact l.Prime] {K : FinExt l} {χ : ↥(GK K) →* (↥K.1)ˣ}, IsLTChar K χ →
     ∀ {F : Type} [Field F] [ValuativeRel F] [TopologicalSpace F] [IsNonarchimedeanLocalField F]
     [Algebra F (Om l)] [ValuativeExtension F (Om l)] [Algebra.IsAlgebraic F (Om l)],

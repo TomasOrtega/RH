@@ -22,10 +22,18 @@ def subrepOfComp (ρ : Representation ℂ G V) (s : H →* G) (hs : Function.Sur
   right_inv _ := rfl
   map_rel_iff' := Iff.rfl
 
+/- English proof (translation)
+The claim follows from `(subrepOfComp ρ s hs).isSimpleOrder_iff.2 h`.
+-/
 theorem isIrreducible_comp {ρ : Representation ℂ G V} {s : H →* G} (hs : Function.Surjective s)
     (h : ρ.IsIrreducible) : Representation.IsIrreducible (ρ.comp s : Representation ℂ H V) :=
   (subrepOfComp ρ s hs).isSimpleOrder_iff.2 h
 
+/- English proof (translation)
+Introduce `G H V W _ _ _ _ _ _ σ π s hs h`. Take `⟨hi, f, hf, hS⟩` from `h`. Set `f' : Representation.IntertwiningMap (π.comp s : Representation ℂ H V) (σ.comp s : Representation ℂ H W)` to `⟨f.toLinearMap, fun g => f.isIntertwining' (s g)⟩`. Use `⟨isIrreducible_comp hs hi, f', hf, fun S hS' => ?_⟩` and prove the remaining obligations. Establish `h1` using `hS (subrepOfComp π s hs S) ((OrderIso.isCoatom_iff (subrepOfComp π s hs) S).2 hS')`.
+
+Establish `h2` using `congrArg Subrepresentation.toSubmodule h1`. Establish `inj : Function.Injective (Subrepresentation.toSubmodule (ρ` using `(π.comp s : Representation ℂ H V))) := by`. Introduce and unpack `⟨a, _⟩ ⟨b, _⟩ rfl`. Both sides reduce to the same expression. Conclude with `inj h2`.
+-/
 theorem isCosocle_comp : ∀ (G H V W : Type) [Group G] [Group H] [AddCommGroup V] [Module ℂ V] [AddCommGroup W]
     [Module ℂ W] (σ : Representation ℂ G W) (π : Representation ℂ G V) (s : H →* G), Function.Surjective s →
     IsCosocle σ π → IsCosocle (σ.comp s) (π.comp s) := by

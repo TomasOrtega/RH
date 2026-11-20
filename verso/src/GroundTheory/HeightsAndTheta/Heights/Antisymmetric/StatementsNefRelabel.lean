@@ -30,11 +30,17 @@ def optionToSum (K : Type) : Option K ≃ K ⊕ Unit where
   left_inv := by rintro (_ | k) <;> rfl
   right_inv := by rintro (k | ⟨⟩) <;> rfl
 
+/- English proof (translation)
+Apply the tactic sequence `rintro (_ | k) <;> rfl`.
+-/
 theorem optionToSum_idx {K : Type} (ι : K → Type) (κ : Type) :
     ∀ o, (fun o : Option K => Option.elim o κ ι) o =
       Sum.elim ι (fun _ : Unit => κ) (optionToSum K o) := by
   rintro (_ | k) <;> rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 example : relabelBlocks (optionToSum Unit) (optionToSum_idx (fun _ : Unit => Fin 2) (Fin 2))
     ⟨none, (1 : Fin 2)⟩ = ⟨Sum.inr (), (1 : Fin 2)⟩ := rfl
 

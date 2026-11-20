@@ -9,6 +9,9 @@ open ReciprocityTheory.ChartRestriction.G.DVR.FlatBC (algX)
 
 namespace GlobalTheory.SmoothStalk
 
+/- English proof (translation)
+Establish `hbc` using `KaehlerDifferential.isBaseChange_of_formallyEtale k B A`. Establish `hbc2` using `TensorProduct.isBaseChange A Ω[A⁄k] K`. Establish `hcomp` using `hbc.comp hbc2`. Rewrite using `[hcomp.equiv.finrank_eq, Module.finrank_baseChange]`.
+-/
 theorem finrank_baseChange_kaehler_of_formallyEtale {k B A K : Type} [Field k] [CommRing B] [CommRing A] [Field K]
     [Algebra k B] [Algebra k A] [Algebra B A] [IsScalarTower k B A] [Algebra A K] [Algebra B K]
     [IsScalarTower B A K] [Algebra.FormallyEtale B A] [Module.Free A Ω[A⁄k]] [Module.Finite A Ω[A⁄k]] [Nontrivial A] :
@@ -18,6 +21,13 @@ theorem finrank_baseChange_kaehler_of_formallyEtale {k B A K : Type} [Field k] [
   have hcomp := hbc.comp hbc2
   rw [hcomp.equiv.finrank_eq, Module.finrank_baseChange]
 
+/- English proof (translation)
+Introduce `k _ X f d _ U x hxU hU`. Use `letI iB : Algebra k Γ(X, U) := (cstOn f U).toAlgebra`. Use `letI iBK : Algebra Γ(X, U) (IsLocalRing.ResidueField (X.presheaf.stalk x)) := ((IsLocalRing.residue (X.presheaf.stalk x)).comp (X.presheaf.germ U x hxU).hom).toAlgebra`. Use `letI iBA : Algebra Γ(X, U) (X.presheaf.stalk x) := (X.presheaf.germ U x hxU).hom.toAlgebra`. Use `letI iA : Algebra k (X.presheaf.stalk x) := ((X.presheaf.germ U x hxU).hom.comp (cstOn f U)).toAlgebra`.
+
+Take `⟨-, hfree, hfin, hrank⟩` from `GlobalTheory.SmoothStalk.smooth_stalk k X f d ⟨U, hU⟩ x hxU`. Use `haveI : Module.Free (X.presheaf.stalk x) Ω[X.presheaf.stalk x⁄k] := hfree`. Use `haveI : Module.Finite (X.presheaf.stalk x) Ω[X.presheaf.stalk x⁄k] := hfin`. Establish `hrank' : Module.finrank (X.presheaf.stalk x) Ω[X.presheaf.stalk x⁄k] = d` using `hrank`. Use `haveI : IsScalarTower k Γ(X, U) (X.presheaf.stalk x) := IsScalarTower.of_algebraMap_eq' rfl`.
+
+Use `haveI hsc : @IsScalarTower Γ(X, U) (X.presheaf.stalk x) (IsLocalRing.ResidueField (X.presheaf.stalk x)) _ _ iBK.toSMul := IsScalarTower.of_algebraMap_eq' rfl`. Use `haveI hloc : IsLocalization.AtPrime (X.presheaf.stalk x) (hU.primeIdealOf ⟨x, hxU⟩).asIdeal := hU.isLocalization_stalk ⟨x, hxU⟩`. Use `haveI : Algebra.FormallyEtale Γ(X, U) (X.presheaf.stalk x) := Algebra.FormallyEtale.of_isLocalization (hU.primeIdealOf ⟨x, hxU⟩).asIdeal.primeCompl`. Rewrite using `[← hrank']`. Conclude with `@finrank_baseChange_kaehler_of_formallyEtale k Γ(X, U) (X.presheaf.stalk x) (IsLocalRing.ResidueField (X.presheaf.stalk x)) _ _ _ _ iB iA iBA _ _ iBK hsc _ _ _ _`.
+-/
 theorem finrank_residue_kaehler : ∀ (k : Type) [Field k] (X : Scheme.{0}) (f : X ⟶ Sp k) (d : ℕ) [SmoothOfRelativeDimension d f] (U : X.Opens) (x : X) (hxU : x ∈ U), IsAffineOpen U → letI : Algebra k Γ(X, U) := (cstOn f U).toAlgebra; letI : Algebra Γ(X, U) (IsLocalRing.ResidueField (X.presheaf.stalk x)) := ((IsLocalRing.residue (X.presheaf.stalk x)).comp (X.presheaf.germ U x hxU).hom).toAlgebra; Module.finrank (IsLocalRing.ResidueField (X.presheaf.stalk x)) (IsLocalRing.ResidueField (X.presheaf.stalk x) ⊗[Γ(X, U)] Ω[Γ(X, U)⁄k]) = d := by
   intro k _ X f d _ U x hxU hU
   letI iB : Algebra k Γ(X, U) := (cstOn f U).toAlgebra

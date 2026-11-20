@@ -33,6 +33,9 @@ def iotaG (σ : E →ₐ[F] E) {M : ℕ} (J : Matrix (Fin M) (Fin M) E) (b : Mod
 
 end Concrete
 
+/- English proof (translation)
+Unfold `Formalism.HermitianLatticesTheory.gmap`. Rewrite using `[Submodule.map_coe]`. Both sides reduce to the same expression.
+-/
 theorem coe_gmap {K V : Type} [Field K] [NumberField K] [StarRing K] [AddCommGroup V] [Module K V]
     [Module (𝓞 K) V] [IsScalarTower (𝓞 K) K V] (u : V ≃ₗ[K] V) (N : Submodule (𝓞 K) V) :
     (gmap u N : Set V) = u '' N := by
@@ -124,11 +127,25 @@ def Dict : Prop :=
     ∃ (Λ : HA (AF F) σ (gramOf h b) → Submodule (𝓞 E) V) (ι : GamG σ (gramOf h b) → V ≃ₗ[E] V),
       IsDict (GamG σ (gramOf h b)) (SFin σ (gramOf h b) (crdOf b L0)) h L0 Λ ι
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ _ σ V _ _ _ _ _ h M b L0 hσ hθ hτ hs hnd hL hsig n g hcov hdisj`. Take `⟨Λ, ι, D⟩` from `hD F E σ V h M b L0 hσ hθ hτ hs hnd hL hsig`. Conclude with `sum_eq_mass D n g hcov hdisj`.
+-/
 theorem uJClassMass_of_dict (hD : Dict) : PI.UJClassMass2.UJClassMass := by
   intro F E _ _ _ _ _ _ σ V _ _ _ _ _ h M b L0 hσ hθ hτ hs hnd hL hsig n g hcov hdisj
   obtain ⟨Λ, ι, D⟩ := hD F E σ V h M b L0 hσ hθ hτ hs hnd hL hsig
   exact sum_eq_mass D n g hcov hdisj
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ _ σ V _ _ _ _ _ h M b L0 hσ hθ hτ hs hnd hL hsig`. Establish `S1` using `s1 F E σ V h M b L0 hσ hθ hτ hs hnd hL hsig`. Use `choose Λ hΛ using S1`. Use `⟨Λ, iotaG σ (gramOf h b) b, ⟨fun g => (hΛ g).2, si F E σ V h M b L0 hσ hθ hτ hs hnd hL hsig, ?_, ?_, ?_, ?_⟩⟩` and prove the remaining obligations. Introduce `g γ k`.
+
+Apply `SetLike.coe_injective` to reduce the goal to its premises. Rewrite using `[coe_gmap, (hΛ g).1, (hΛ _).1]`. Conclude with `s2 F E σ V h M b L0 hσ hθ hτ hs hnd hL hsig g γ k`. Introduce `g g' u hu hgm`. Apply `s3 F E σ V h M b L0 hσ hθ hτ hs hnd hL hsig g g' u hu` to reduce the goal to its premises.
+
+Establish `e` using `congrArg (fun N : Submodule (𝓞 E) V => (N : Set V)) hgm`. Simplify using `only [coe_gmap] at e`. Rewrite `e` using `[(hΛ g).1, (hΛ g').1]`. Then use the resulting hypothesis. Introduce `N hN`. Take `⟨g, hg⟩` from `s4 F E σ V h M b L0 hσ hθ hτ hs hnd hL hsig N hN`.
+
+Conclude with `⟨g, SetLike.coe_injective ((hΛ g).1.trans hg)⟩`. Introduce `g`. Rewrite using `[s5 F E σ V h M b L0 hσ hθ hτ hs hnd hL hsig g]`. Use `Nat.card_congr (Equiv.subtypeEquivRight fun u => ?_)` and prove the remaining obligations. Use `show _ ∧ _ ↔ _ ∧ _`.
+
+Rewrite using `[← (hΛ g).1, ← coe_gmap]`. Conclude with `and_congr Iff.rfl ⟨fun e => SetLike.coe_injective e, fun e => by rw [e]⟩`.
+-/
 theorem dict_of (s1 : LatStep) (si : IsomStep) (s2 : EquivStep) (s3 : InjStep) (s4 : SurjStep)
     (s5 : CardStep) : Dict := by
   intro F E _ _ _ _ _ _ σ V _ _ _ _ _ h M b L0 hσ hθ hτ hs hnd hL hsig
@@ -155,6 +172,9 @@ theorem dict_of (s1 : LatStep) (si : IsomStep) (s2 : EquivStep) (s3 : InjStep) (
     rw [← (hΛ g).1, ← coe_gmap]
     exact and_congr Iff.rfl ⟨fun e => SetLike.coe_injective e, fun e => by rw [e]⟩
 
+/- English proof (translation)
+Conclude with `uJClassMass_of_dict (dict_of s1 si s2 s3 s4 s5)`.
+-/
 theorem uJClassMass_of (s1 : LatStep) (si : IsomStep) (s2 : EquivStep) (s3 : InjStep)
     (s4 : SurjStep) (s5 : CardStep) : PI.UJClassMass2.UJClassMass := by
   exact uJClassMass_of_dict (dict_of s1 si s2 s3 s4 s5)

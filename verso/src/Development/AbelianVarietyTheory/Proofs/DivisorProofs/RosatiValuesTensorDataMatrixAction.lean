@@ -18,6 +18,9 @@ open GlobalTheory.Ex GlobalTheory.Mum.TensTor
 noncomputable section
 namespace GlobalTheory.Mum.TensRos
 
+/- English proof (translation)
+Establish `hK : A * Bv * E' * G * Dd ≠ 0` using `by positivity`. Apply `mul_right_cancel₀ hK` to reduce the goal to its premises. Take the linear combination `(A*Bv*Dd)*h4 - (a1*E'*G*Dd)*h3 - (A*Bv*Dd*C*one)*h2 + (P1*one*Dd)*h1`.
+-/
 theorem main_alg {F : Type} [Field F] (a1 a2 P1 P2 s1 s2 A Bv C Dd E' G one : F) (hA : A ≠ 0) (hB : Bv ≠ 0)
     (hE : E' ≠ 0) (hG : G ≠ 0) (hD : Dd ≠ 0)
     (h1 : a2 * (A * Bv * C) = a1 * (Dd * E' * G)) (h2 : a2 * P1 = P2) (h3 : s1 * A * Bv = P1 * Dd * one)
@@ -26,6 +29,15 @@ theorem main_alg {F : Type} [Field F] (a1 a2 P1 P2 s1 s2 A Bv C Dd E' G one : F)
   apply mul_right_cancel₀ hK
   linear_combination (A*Bv*Dd)*h4 - (a1*E'*G*Dd)*h3 - (A*Bv*Dd*C*one)*h2 + (P1*one*Dd)*h1
 
+/- English proof (translation)
+Introduce `R _ _ _ hB D D' r W T F _ _ _ N N' ν ν' E _ _ _ H ρ hρ _ o hact x ρ' hρ' v' w' vs hv hw`. Use `letI := H.starRing`. Take `⟨ρ'', hT, hmove⟩` from `GlobalTheory.T.rosatiValue_tensorData_transport_lambdaBundle R hB D D' W T F N N' ν ν' (𝓞 E) o.onB x ρ' hρ'`. Take `⟨-, hbij, -, -, -, hwv0, -, -⟩` from `GlobalTheory.T.tensorData_values_facts R hB D D' W T F N N' ν ν'`. Rewrite `hv`, `hw` using `[GtRel, gtRelV_iff]`.
+
+Introduce `χ`. Establish `hb : w'.b = GlobalTheory.Relabel.actV ν' o.onB x v'.b`. Apply `hbij.1` to reduce the goal to its premises. Use function extensionality and compare the values at `j`. Rewrite using `[hw.1 j, cmp_actV T ν ν' o ρ hact x v'.b j, ← NumD.projB_apply, map_prod]`.
+
+Use `Finset.prod_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[map_zpow, NumD.projB_apply, hv.1 k]`. Establish `h1` using `hmove (N'.c χ) v'.b`. Rewrite `h1` using `[c_actV ν' o]`. Establish `h2` using `GlobalTheory.T.rosatiGenerator_components_torusExtension R hB D D' W T F N N' ν ν' E H ρ hρ o hact x ρ'' hT χ v'.b vs hv.1`.
+
+Establish `h3` using `hv.2 (ν'.eX.symm (star x • ν'.eX χ))`. Establish `h4` using `hw.2 χ`. Rewrite `h4` using `[hb]`. Conclude with `main_alg _ _ _ _ _ _ _ _ _ _ _ _ _ (hwv0 _) (hwv0 _) (hwv0 _) (hwv0 _) (hwv0 _) h1 h2 h3 h4`.
+-/
 theorem rosGt_values : ∀ (R : Type) [CommRing R] [IsDomain R] [IsLocalRing R], Base R → ∀ (D D' : DegData R (maximalIdeal R)) {r : ℕ} (W : Matrix (Fin r) (Fin r) ℤ) (T : Tens D.toPre D'.toPre W) (F : Type) [Field F] [IsAlgClosed F] [Algebra (FractionRing R) F] (N N' : NumD F) (ν : NumOf D.toPre F N) (ν' : NumOf D'.toPre F N') (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (ρ : 𝓞 E →+* Matrix (Fin r) (Fin r) ℤ), (∀ a, (ρ a).transpose * (W + W.transpose) = (W + W.transpose) * ρ (H.bar a)) → ∀ [Module (𝓞 E) D'.toPre.X] (o : letI := H.starRing; D'.toPre.OAct (𝓞 E)), (letI := H.starRing; T.IsAct o ρ) → ∀ (x : 𝓞 E) (ρ' : N'.A → N'.A → F), (letI := H.starRing; GlobalTheory.Relabel.RosV ν' o.onB x ρ') → ∀ (v' w' : N'.Gt) (vs : Fin r → N.Gt), GtRel T ν ν' v' vs → GtRel T ν ν' w' (fun i => ∏ j, vs j ^ ρ x i j) → (letI := H.starRing; ∀ χ, (w'.s χ : F) = v'.s (ν'.eX.symm (star x • ν'.eX χ)) * ρ' (N'.c χ) v'.b) := by
   intro R _ _ _ hB D D' r W T F _ _ _ N N' ν ν' E _ _ _ H ρ hρ _ o hact x ρ' hρ' v' w' vs hv hw
   letI := H.starRing

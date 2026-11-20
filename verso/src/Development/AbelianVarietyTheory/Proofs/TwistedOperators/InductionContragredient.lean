@@ -19,12 +19,18 @@ variable {G W W' : Type} [Group G] [TopologicalSpace G] [IsTopologicalGroup G] [
 
 def cell (P J : Subgroup G) : Set G := {g | ∃ p : P, (p : G)⁻¹ * g ∈ J}
 
+/- English proof (translation)
+Establish `: cell P J = ⋃ p : P, (fun g => (p : G)⁻¹ * g) ⁻¹' J` using `by ext; simp [cell]`. Rewrite using `[this]`. Conclude with `isOpen_iUnion fun p => hJ.preimage (by fun_prop)`.
+-/
 theorem isOpen_cell {J : Subgroup G} (hJ : IsOpen (J : Set G)) : IsOpen (cell P J) := by
   have : cell P J = ⋃ p : P, (fun g => (p : G)⁻¹ * g) ⁻¹' J := by ext; simp [cell]
   rw [this]
   exact isOpen_iUnion fun p => hJ.preimage (by fun_prop)
 
 omit [TopologicalSpace G] [IsTopologicalGroup G] in
+/- English proof (translation)
+Distinguish the cases in `h : g ∈ cell P J`. Take `⟨p, hp⟩` from `h`. Conclude with `Or.inr ⟨p, _, hp, by simp⟩`. Conclude with `Or.inl h`.
+-/
 theorem cell_cases (J : Subgroup G) (g : G) : g ∉ cell P J ∨ ∃ p : P, ∃ j ∈ J, g = p * j := by
   by_cases h : g ∈ cell P J
   · obtain ⟨p, hp⟩ := h
@@ -37,6 +43,11 @@ def extFun (σ : Representation ℂ P W) (J : Subgroup G) (φ : G → W) (g : G)
   if h : g ∈ cell P J then σ h.choose (φ ((h.choose : G)⁻¹ * g)) else 0
 
 omit [TopologicalSpace G] [IsTopologicalGroup G] in
+/- English proof (translation)
+Establish `h : (p : G) * j ∈ cell P J` using `⟨p, by simpa using hj⟩`. Rewrite using `[extFun, dif_pos h]`. Establish `h1` using `h.choose_spec`. Generalize the expression as in `h.choose = q at h1`. Establish `h2 : ((q⁻¹ * p : P) : G) ∈ J` using `by simpa [mul_assoc] using mul_mem h1 (inv_mem hj)`.
+
+Establish `h3` using `hφ _ h2 j hj`. Simplify using `only [Subgroup.coe_mul, Subgroup.coe_inv, mul_assoc] at h3`. Rewrite using `[h3, ← Module.End.mul_apply, ← map_mul, mul_inv_cancel_left]`.
+-/
 theorem extFun_mul {σ : Representation ℂ P W} {J : Subgroup G} {φ : G → W}
     (hφ : ∀ p : P, (p : G) ∈ J → ∀ j ∈ J, φ (p * j) = σ p (φ j)) (p : P) {j : G} (hj : j ∈ J) :
     extFun σ J φ (p * j) = σ p (φ j) := by
@@ -50,10 +61,16 @@ theorem extFun_mul {σ : Representation ℂ P W} {J : Subgroup G} {φ : G → W}
   rw [h3, ← Module.End.mul_apply, ← map_mul, mul_inv_cancel_left]
 
 omit [TopologicalSpace G] [IsTopologicalGroup G] in
+/- English proof (translation)
+The claim follows from `dif_neg h`.
+-/
 theorem extFun_zero (σ : Representation ℂ P W) {J : Subgroup G} (φ : G → W) {g : G}
     (h : g ∉ cell P J) : extFun σ J φ g = 0 := dif_neg h
 
 omit [TopologicalSpace G] [IsTopologicalGroup G] in
+/- English proof (translation)
+Break down `cell_cases (P := P) J g with h | ⟨p, j, hj, rfl⟩` into its components or cases. Rewrite using `[extFun_zero _ _ h, extFun_zero]`. Introduce and unpack `⟨p, hp⟩`. Conclude with `h ⟨p, by simpa [mul_assoc] using mul_mem hp (inv_mem hi)⟩`. Rewrite using `[mul_assoc, extFun_mul hφ p hj, extFun_mul hφ p (mul_mem hj hi), hφ' j hj]`.
+-/
 theorem extFun_right {σ : Representation ℂ P W} {J : Subgroup G} {φ : G → W}
     (hφ : ∀ p : P, (p : G) ∈ J → ∀ j ∈ J, φ (p * j) = σ p (φ j)) {i : G} (hi : i ∈ J)
     (hφ' : ∀ j ∈ J, φ (j * i) = φ j) (g : G) : extFun σ J φ (g * i) = extFun σ J φ g := by
@@ -77,6 +94,9 @@ def extInd (σ : Representation ℂ P W) {J I : Subgroup G} (hI : IsOpen (I : Se
       Subtype.ext (funext fun g => extFun_right hφ (hle hi) (hφ' i hi) g))⟩
 
 omit [TopologicalSpace G] [IsTopologicalGroup G] in
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fun hw h hh => by simpa using hw ⟨h, hh⟩, fun hw h => by simpa using hw h h.2⟩`.
+-/
 theorem mem_fixed_iff {σ : Representation ℂ G W} {H : Subgroup G} {w : W} :
     w ∈ fixed σ H ↔ ∀ h ∈ H, σ h w = w :=
   ⟨fun hw h hh => by simpa using hw ⟨h, hh⟩, fun hw h => by simpa using hw h h.2⟩
@@ -96,18 +116,32 @@ def bump (σ : Representation ℂ P W) {J : Subgroup G} (hJ : IsOpen (J : Set G)
     unfold extFun
     split_ifs <;> simp
 
+/- English proof (translation)
+The claim follows from `extFun_mul (φ := fun _ => w.1) (fun p hp _ _ => (mem_fixed_iff.1 w.2 p hp).symm) p hj`.
+-/
 theorem bump_mul (σ : Representation ℂ P W) {J : Subgroup G} (hJ : IsOpen (J : Set G))
     (w : fixed σ (J.subgroupOf P)) (p : P) {j : G} (hj : j ∈ J) :
     (bump σ hJ w).1.1 (p * j) = σ p w :=
   extFun_mul (φ := fun _ => w.1) (fun p hp _ _ => (mem_fixed_iff.1 w.2 p hp).symm) p hj
 
+/- English proof (translation)
+The claim follows from `extFun_zero σ (fun _ => w.1) h`.
+-/
 theorem bump_zero (σ : Representation ℂ P W) {J : Subgroup G} (hJ : IsOpen (J : Set G))
     (w : fixed σ (J.subgroupOf P)) {g : G} (h : g ∉ cell P J) : (bump σ hJ w).1.1 g = 0 :=
   extFun_zero σ (fun _ => w.1) h
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem smInd_apply (σ : Representation ℂ P W) (f : smoothPart (ind P σ)) (g x : G) :
     (smInd P σ g f).1.1 x = f.1.1 (x * g) := rfl
 
+/- English proof (translation)
+Use `Subtype.ext (Subtype.ext (funext fun g => ?_))` and prove the remaining obligations. Rewrite using `[smInd_apply]`. Break down `cell_cases (P := P) J g with h | ⟨p, j, hj, rfl⟩` into its components or cases. Rewrite using `[bump_zero _ _ _ h, bump_zero]`. Introduce and unpack `⟨p, hp⟩`.
+
+Conclude with `h ⟨p * q⁻¹, by simpa [mul_assoc] using hq _ hp⟩`. Establish `: (p : G) * j * q = (p * q : P) * ((q : G)⁻¹ * j * q)` using `by simp [mul_assoc]`. Rewrite using `[this, bump_mul _ _ _ _ (hq' j hj), bump_mul _ _ _ _ hj, hv, map_mul, Module.End.mul_apply]`.
+-/
 theorem smInd_bump (σ : Representation ℂ P W) {J : Subgroup G} (hJ : IsOpen (J : Set G)) (q : P)
     (hq : ∀ j ∈ J, (q : G) * j * (q : G)⁻¹ ∈ J) (hq' : ∀ j ∈ J, (q : G)⁻¹ * j * q ∈ J)
     (w v : fixed σ (J.subgroupOf P)) (hv : v.1 = σ q w) : smInd P σ q (bump σ hJ w) = bump σ hJ v := by
@@ -120,6 +154,23 @@ theorem smInd_bump (σ : Representation ℂ P W) {J : Subgroup G} (hJ : IsOpen (
   · have : (p : G) * j * q = (p * q : P) * ((q : G)⁻¹ * j * q) := by simp [mul_assoc]
     rw [this, bump_mul _ _ _ _ (hq' j hj), bump_mul _ _ _ _ hj, hv, map_mul, Module.End.mul_apply]
 
+/- English proof (translation)
+Establish `hf' : ∀ j ∈ J, ∀ x, f.1.1 (x * j) = f.1.1 x` using `fun j hj x => by rw [← smInd_apply, hf j hj]`. Establish `hK' : ∀ (p : P) (x : K), (p : G)⁻¹ * x ∈ J → (p : G) ∈ K` using `fun p x h => by`. Simplify using `using mul_mem x.2 (inv_mem (hle h))`. Set `H : Subgroup K` to `{ carrier := {x | (x : G) ∈ cell P J} one_mem' := ⟨1, by simp⟩ mul_mem' := by`. Introduce and unpack `x y ⟨p, hp⟩ ⟨q, hq⟩`.
+
+Conclude with `⟨p * q, by simpa [mul_assoc] using mul_mem (hn _ (inv_mem (hK' q y hq)) _ hp) hq⟩`. Use the proof step `inv_mem' := by`. Introduce and unpack `x ⟨p, hp⟩`. Conclude with `⟨p⁻¹, by simpa [mul_assoc] using hn _ (hK' p x hp) _ (inv_mem hp)⟩ }`. Use `haveI : CompactSpace K := isCompact_iff_compactSpace.1 hK`.
+
+Use `haveI : Finite (K ⧸ H) := H.quotient_finite_of_isOpen ((isOpen_cell hJ).preimage continuous_subtype_val)`. Use `haveI := Fintype.ofFinite (K ⧸ H)`. Establish `hw : ∀ z : K, f.1.1 (z : G)⁻¹ ∈ fixed σ (J.subgroupOf P)` using `fun z => mem_fixed_iff.2 fun h hh => by`. Rewrite using `[← f.1.2 h, ← hf' _ (hn z z.2 h hh) (z : G)⁻¹]`. Simplify using `[mul_assoc]`.
+
+Establish `key : f = ∑ q : K ⧸ H, smInd P σ (q.out : G) (bump σ hJ ⟨_, hw q.out⟩)`. Use `Subtype.ext (Subtype.ext (funext fun g => ?_))` and prove the remaining obligations. Take `⟨p, hp, y, hy, rfl⟩` from `hPK g`. Rewrite using `[f.1.2 ⟨p, hp⟩, Subtype.property (p := (· ∈ indSpace P σ)) _ ⟨p, hp⟩]`. Use `congr 1`.
+
+Simplify using `only [Submodule.coe_sum, Finset.sum_apply, smInd_apply]`. Rewrite using `[Finset.sum_eq_single (QuotientGroup.mk (⟨y, hy⟩⁻¹ : K))]`. Establish `h1` using `QuotientGroup.eq.1 (QuotientGroup.out_eq' (QuotientGroup.mk (⟨y, hy⟩⁻¹ : K) : K ⧸ H)).symm`. Generalize the expression as in `(QuotientGroup.mk (⟨y, hy⟩⁻¹ : K) : K ⧸ H).out = z at h1`. Take `⟨q, hq⟩` from `h1`.
+
+Establish `h2 : y * z = q * ((q : G)⁻¹ * (y * z))` using `by simp`. Establish `hq' : (q : G)⁻¹ * (y * z) ∈ J` using `by simpa using hq`. Rewrite using `[h2, bump_mul _ _ _ _ hq', ← f.1.2 q, ← hf' _ (hn z z.2 _ hq') (q * (z : G)⁻¹)]`. Simplify using `[mul_assoc]`. Introduce `q _ hq`.
+
+Use `bump_zero _ _ _ fun h => hq ?_` and prove the remaining obligations. Rewrite using `[← QuotientGroup.out_eq' q, eq_comm, QuotientGroup.eq]`. Rewrite using `[inv_inv]`. Conclude with `h`. Simplify using the standard rewrite rules.
+
+Rewrite using `[key]`. Conclude with `Submodule.sum_mem _ fun q _ => Submodule.subset_span ⟨(q.out : G)⁻¹, inv_mem q.out.2, _, by rw [inv_inv]⟩`.
+-/
 theorem mem_span_bump (σ : Representation ℂ P W) {J K : Subgroup G} (hJ : IsOpen (J : Set G))
     (hK : IsCompact (K : Set G)) (hle : J ≤ K) (hn : ∀ x ∈ K, ∀ j ∈ J, x * j * x⁻¹ ∈ J)
     (hPK : ∀ g : G, ∃ p ∈ P, ∃ x ∈ K, g = p * x) (f : smoothPart (ind P σ))
@@ -167,6 +218,9 @@ theorem mem_span_bump (σ : Representation ℂ P W) {J K : Subgroup G} (hJ : IsO
   rw [key]
   exact Submodule.sum_mem _ fun q _ => Submodule.subset_span ⟨(q.out : G)⁻¹, inv_mem q.out.2, _, by rw [inv_inv]⟩
 
+/- English proof (translation)
+Use extensionality with `u`. Take `⟨v, hv, e⟩` from `IwahoriOnto.exists_fixed_map_eq hσ hH (l - l') u fun g hg => by`. Simplify using `[hl g hg, hl' g hg]`. Simplify using `only [LinearMap.sub_apply, h v hv, sub_self] at e`. Conclude with `sub_eq_zero.1 e.symm`.
+-/
 theorem dual_ext {σ : Representation ℂ G W} (hσ : IsSmooth σ) {H : Subgroup G} (hH : IsCompact (H : Set G))
     {l l' : Module.Dual ℂ W} (hl : ∀ h ∈ H, ∀ w, l (σ h w) = l w) (hl' : ∀ h ∈ H, ∀ w, l' (σ h w) = l' w)
     (h : ∀ w ∈ fixed σ H, l w = l' w) : l = l' := by
@@ -181,6 +235,9 @@ variable [T2Space G] [MeasurableSpace G] [BorelSpace G] (μ : Measure G) [μ.IsH
   (B : W' →ₗ[ℂ] Module.Dual ℂ W)
 
 omit [T2Space G] [MeasurableSpace G] [BorelSpace G] in
+/- English proof (translation)
+The claim follows from `((isLocallyConstant_smInd f').comp₂ (isLocallyConstant_smInd f) fun l w => B l w).continuous`.
+-/
 theorem continuous_pair (f' : smoothPart (ind P τ)) (f : smoothPart (ind P σ)) :
     Continuous fun x => B (f'.1.1 x) (f.1.1 x) :=
   ((isLocallyConstant_smInd f').comp₂ (isLocallyConstant_smInd f) fun l w => B l w).continuous
@@ -198,9 +255,17 @@ def pair : smoothPart (ind P τ) →ₗ[ℂ] Module.Dual ℂ (smoothPart (ind P 
       simp)
     (fun c f' f => by rw [← integral_smul]; simp)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem pair_apply (f' : smoothPart (ind P τ)) (f : smoothPart (ind P σ)) :
     pair μ hK σ τ B f' f = ∫ x in (K : Set G), B (f'.1.1 x) (f.1.1 x) ∂μ := rfl
 
+/- English proof (translation)
+Rewrite using `[pair_apply, setIntegral_congr_fun hK.measurableSet (g := (cell P J).indicator fun _ => B (f'.1.1 1) w), setIntegral_indicator (isOpen_cell hJ).measurableSet, setIntegral_const, Complex.real_smul]`. Introduce `x hx`. Break down `cell_cases (P := P) J x with h | ⟨p, j, hj, rfl⟩` into its components or cases. Simplify using `[bump_zero _ _ _ h, h]`. Establish `hp : (p : G) ∈ K` using `by simpa using mul_mem hx (inv_mem (hle hj))`.
+
+Establish `hm : (p : G) * j ∈ cell P J` using `⟨p, by simpa using hj⟩`. Simplify using `only [Set.indicator_of_mem hm]`. Rewrite using `[bump_mul _ _ _ _ hj, f'.1.2 p j, hB p hp, hf j hj]`.
+-/
 theorem pair_bump (hB : ∀ p : P, (p : G) ∈ K → ∀ w' w, B (τ p w') (σ p w) = B w' w)
     {J : Subgroup G} (hJ : IsOpen (J : Set G)) (hle : J ≤ K) (f' : smoothPart (ind P τ))
     (hf : ∀ j ∈ J, f'.1.1 j = f'.1.1 1) (w : fixed σ (J.subgroupOf P)) :
@@ -217,12 +282,40 @@ theorem pair_bump (hB : ∀ p : P, (p : G) ∈ K → ∀ w' w, B (τ p w') (σ p
     rw [bump_mul _ _ _ _ hj, f'.1.2 p j, hB p hp, hf j hj]
 
 include hK in
+/- English proof (translation)
+Rewrite using `[Complex.ofReal_ne_zero, Ne, measureReal_eq_zero_iff ((measure_mono Set.inter_subset_left).trans_lt hK.measure_lt_top).ne]`. Conclude with `((hKo.inter (isOpen_cell hJ)).measure_pos μ ⟨1, one_mem K, 1, by simp⟩).ne'`.
+-/
 theorem vol_ne_zero (hKo : IsOpen (K : Set G)) {J : Subgroup G} (hJ : IsOpen (J : Set G)) :
     (μ.real (K ∩ cell P J) : ℂ) ≠ 0 := by
   rw [Complex.ofReal_ne_zero, Ne, measureReal_eq_zero_iff
     ((measure_mono Set.inter_subset_left).trans_lt hK.measure_lt_top).ne]
   exact ((hKo.inter (isOpen_cell hJ)).measure_pos μ ⟨1, one_mem K, 1, by simp⟩).ne'
 
+/- English proof (translation)
+Establish `hinv' : ∀ g f' f, pair μ hK σ τ B f' (smInd P σ g⁻¹ f) = pair μ hK σ τ B (smInd P τ g f') f`. Introduce `g f' f`. Rewrite using `[← hinv g, ← Module.End.mul_apply, ← map_mul, mul_inv_cancel, map_one, Module.End.one_apply]`. Prove the components needed by the constructor for the conclusion. Rewrite using `[injective_iff_map_eq_zero]`.
+
+Introduce `f' h0`. Use `Subtype.ext (Subtype.ext (funext fun g => hBi (LinearMap.ext fun w => ?_)))` and prove the remaining obligations. Take `⟨U, hU, hU'⟩` from `(mem_nhds_subtype _ _ _).1 ((hσ w).mem_nhds (x := 1) (by simp))`. Take `⟨J, hJ, hJU, hle, -⟩` from `hbasis _ (Filter.inter_mem hU (IsOpen.mem_nhds (isSmooth_smoothRep _ (smInd P τ g f')) (by simp)))`. Establish `h1` using `pair_bump μ hK σ τ B hB hJ hle (smInd P τ g f') (fun j hj => by`.
+
+Establish `h2 : (smInd P τ g f').1.1 (1 * j) = _` using `congrArg (fun φ => φ.1.1 1) (hJU hj).2`. Rewrite using `[one_mul] at h2) ⟨w, mem_fixed_iff.2 fun h hh => hU' (hJU hh).1⟩` and apply the resulting hypothesis. Rewrite `h1` using `[← hinv', h0, LinearMap.zero_apply, smInd_apply, one_mul]`. Simplify `h1` using `[vol_ne_zero μ hK hKo hJ]`. Introduce `l hl`.
+
+Take `⟨J, hJ, hJU, hle, hn⟩` from `hbasis _ (IsOpen.mem_nhds hl (by`. Rewrite using `[Set.mem_ofPred_eq, map_one, Module.End.one_apply]))`. Establish `hlJ : ∀ j ∈ J, ∀ f, l (smInd P σ j f) = l f` using `fun j hj f => by`. Establish `h2 : l (smInd P σ j⁻¹⁻¹ f) = l f` using `LinearMap.congr_fun (hJU (inv_mem hj)) f`. Rewrite `h2` using `[inv_inv]`. Then use the resulting hypothesis.
+
+Establish `hJc : IsCompact (J : Set G)` using `hK.of_isClosed_subset (J.isClosed_of_isOpen hJ) hle`. Establish `hHc : IsCompact (J.subgroupOf P : Set P)` using `hP.isClosedEmbedding_subtypeVal.isCompact_preimage hJc`. Use `set c : ℂ := ((μ.real (K ∩ cell P J) : ℝ) : ℂ) with hc`. Establish `hc0 : c ≠ 0` using `vol_ne_zero μ hK hKo hJ`. Establish `hex : ∀ z : G, ∃ w' : W', (∀ h ∈ J.subgroupOf P, ∀ w, B w' (σ h w) = B w' w) ∧ ∀ w : fixed σ (J.subgroupOf P), B w' w = c⁻¹ * l (smInd P σ z⁻¹ (bump σ hJ w))`.
+
+Introduce `z`. Take `⟨l₀, hl₀⟩` from `LinearMap.exists_extend (c⁻¹ • (l ∘ₗ smInd P σ z⁻¹ ∘ₗ bump σ hJ))`. Take `⟨l₁, h1, h2⟩` from `GlobalTheory.SmGL.DualAverage.exists_invariant_form P W σ hσ _ hHc l₀`. Take `⟨w', rfl⟩` from `hBs l₁ (Filter.mem_of_superset ((hJ.preimage continuous_subtype_val).mem_nhds (one_mem J)) h1)`. Conclude with `⟨w', h1, fun w => (h2 _ (mem_fixed_iff.1 w.2)).trans (LinearMap.congr_fun hl₀ w)⟩`.
+
+Use `choose φ hφ1 hφ2 using hex`. Establish `hφr : ∀ i ∈ J, ∀ j ∈ K, φ (j * i) = φ j` using `fun i hi j _ => hBi (dual_ext hσ hHc (hφ1 _) (hφ1 _) fun w hw => by`. Rewrite using `[hφ2 _ ⟨w, hw⟩, hφ2 _ ⟨w, hw⟩, mul_inv_rev, map_mul, Module.End.mul_apply, hlJ _ (inv_mem hi)])`. Establish `hφl : ∀ p : P, (p : G) ∈ K → ∀ j ∈ K, φ (p * j) = τ p (φ j)`. Introduce `p hp z _`.
+
+Establish `h1 : ∀ w, B (τ p (φ z)) w = B (φ z) (σ p⁻¹ w)` using `fun w => by`. Rewrite using `[← hB p hp (φ z), ← Module.End.mul_apply, ← map_mul, mul_inv_cancel, map_one, Module.End.one_apply]`. Establish `h2 : ∀ q : P, (q : G) ∈ K → ∀ h ∈ J.subgroupOf P, q * h * q⁻¹ ∈ J.subgroupOf P` using `fun q hq h hh => hn q hq h hh`. Use `hBi (dual_ext hσ hHc (hφ1 _) (fun h hh w => ?_) fun w hw => ?_)` and prove the remaining obligations. Rewrite using `[h1, h1, ← hφ1 z _ (h2 p⁻¹ (inv_mem hp) h hh) (σ p⁻¹ w)]`.
+
+Simplify using `only [← Module.End.mul_apply, ← map_mul]`. Simplify using `[mul_assoc]`. Establish `hv : σ p⁻¹ w ∈ fixed σ (J.subgroupOf P)` using `mem_fixed_iff.2 fun h hh => by conv_rhs => rw [← mem_fixed_iff.1 hw _ (h2 p hp h hh)]`. Simplify using `only [← Module.End.mul_apply, ← map_mul]`. Simplify using `[mul_assoc]`.
+
+Rewrite using `[h1, hφ2 _ ⟨w, hw⟩, hφ2 _ ⟨_, hv⟩, mul_inv_rev, map_mul, Module.End.mul_apply, ← smInd_bump σ hJ p⁻¹ (hn _ (inv_mem hp)) (fun j hj => by simpa using hn _ hp j hj) ⟨w, hw⟩ ⟨_, hv⟩ rfl]`. Both sides reduce to the same expression. Set `f'` to `extInd τ hJ hle φ hφl hφr`. Establish `hf1 : ∀ z ∈ K, f'.1.1 z = φ z` using `fun z hz => by show extFun τ K φ z = φ z`. Simplify using `using extFun_mul hφl 1 hz`.
+
+Establish `hf2 : ∀ j ∈ J, smInd P τ j f' = f'` using `fun j hj => Subtype.ext (Subtype.ext (funext fun g => extFun_right hφl (hle hj) (hφr j hj) g))`. Use `⟨f', dual_ext (isSmooth_smoothRep _) hJc (fun j hj f => ?_) hlJ fun f hf => ?_⟩` and prove the remaining obligations. Use `conv_lhs => rw [← hf2 j hj]`. Conclude with `hinv j f' f`. Use `LinearMap.eqOn_span' ?_ (mem_span_bump σ hJ hK hle hn hPK f (mem_fixed_iff.1 hf))` and prove the remaining obligations.
+
+Introduce and unpack `_ ⟨z, hz, w, rfl⟩`. Rewrite using `[hinv', pair_bump μ hK σ τ B hB hJ hle, smInd_apply, one_mul, hf1 z hz, hφ2, mul_inv_cancel_left₀ hc0]`. Introduce `j hj`. Rewrite using `[smInd_apply, smInd_apply, one_mul, hf1 z hz, hf1 _ (mul_mem (hle hj) hz), ← hφr _ (hn _ (inv_mem hz) j hj) z hz]`. Simplify using `[mul_assoc]`.
+-/
 theorem pair_bijective (hKo : IsOpen (K : Set G)) (hP : IsClosed (P : Set G))
     (hPK : ∀ g : G, ∃ p ∈ P, ∃ x ∈ K, g = p * x)
     (hbasis : ∀ U ∈ 𝓝 (1 : G), ∃ J : Subgroup G, IsOpen (J : Set G) ∧ (J : Set G) ⊆ U ∧ J ≤ K ∧
@@ -304,6 +397,11 @@ theorem pair_bijective (hKo : IsOpen (K : Set G)) (hP : IsClosed (P : Set G))
         ← hφr _ (hn _ (inv_mem hz) j hj) z hz]
       simp [mul_assoc]
 
+/- English proof (translation)
+Establish `hact : ∀ g f', pair μ hK σ τ B (smInd P τ g f') = (smInd P σ).dual g (pair μ hK σ τ B f')` using `fun g f' => LinearMap.ext fun f => by show _ = pair μ hK σ τ B f' (smInd P σ g⁻¹ f)`. Rewrite using `[← hinv g f', ← Module.End.mul_apply, ← map_mul, mul_inv_cancel, map_one, Module.End.one_apply]`. Establish `hsm : ∀ f', pair μ hK σ τ B f' ∈ smoothPart (smInd P σ).dual` using `fun f' => mem_smoothPart_of_nhds (Filter.mem_of_superset (IsOpen.mem_nhds (isSmooth_smoothRep _ f') (by`. Rewrite using `[Set.mem_ofPred_eq, map_one, Module.End.one_apply])) fun g hg => by`. Establish `hg' : smInd P τ g f' = f'` using `hg`.
+
+Rewrite using `[Set.mem_ofPred_eq, ← hact, hg'])`. Use `⟨.mk (LinearEquiv.ofBijective ((pair μ hK σ τ B).codRestrict _ hsm) ⟨fun a b h => hi (congrArg Subtype.val h), fun l => ?_⟩) fun g => ?_, fun f' f => rfl⟩` and prove the remaining obligations. Take `⟨f', hf'⟩` from `hs l.1 l.2`. Conclude with `⟨f', Subtype.ext hf'⟩`. Conclude with `LinearMap.ext fun f' => Subtype.ext (hact g f')`.
+-/
 theorem exists_equiv
     (hinv : ∀ g f' f, pair μ hK σ τ B (smInd P τ g f') (smInd P σ g f) = pair μ hK σ τ B f' f)
     (hi : Function.Injective (pair μ hK σ τ B))
@@ -328,6 +426,17 @@ theorem exists_equiv
 
 end Abstract
 
+/- English proof (translation)
+Introduce `k _ _ _ _ α n m _ _ _ _ _ _ e _ _ μ _ W _ _ ρ hρ`. Take `⟨-, hK1, hK2, -, -, hcont, hP, -, hPK⟩` from `GlobalTheory.SmGL.LeviInt.levi_integral_facts k α n m e`. Set `σ : Representation ℂ (parab k e) W` to `(twist ρ (deltaHalf k m)).comp (leviProj k e)`. Set `τ : Representation ℂ (parab k e) (smoothPart ρ.dual)` to `(twist (contra ρ) (deltaHalf k m)).comp (leviProj k e)`. Set `B : smoothPart ρ.dual →ₗ[ℂ] Module.Dual ℂ W` to `Submodule.subtype _`.
+
+Establish `hσ : IsSmooth σ` using `isSmooth_comp (isSmooth_twist hρ (isSmoothChar_deltaHalf k)) _ hcont`. Establish `hB : ∀ p w' w, B (τ p w') (σ p w) = (modulus k m (leviProj k e p) : ℂ) * B w' w`. Introduce `p w' w`. Use `show ((deltaHalf k m (leviProj k e p) : ℂ) • (contra ρ (leviProj k e p) w' : Module.Dual ℂ W)) ((deltaHalf k m (leviProj k e p) : ℂ) • ρ (leviProj k e p) w) = _ * (w' : Module.Dual ℂ W) w`. Rewrite using `[LinearMap.smul_apply, map_smul, contra_apply, ← Module.End.mul_apply, ← map_mul, inv_mul_cancel, map_one, Module.End.one_apply, smul_smul, val_deltaHalf, ← Complex.ofReal_mul, Real.mul_self_sqrt (modulus_pos k _).le, smul_eq_mul]`.
+
+Establish `hinv : ∀ g f' f, pair μ SplitFlip.isCompact_KO σ τ B (smInd _ τ g f') (smInd _ σ g f) = pair μ SplitFlip.isCompact_KO σ τ B f' f` using `fun g f' f => GlobalTheory.SmGL.IndDual.integral_KO_mul_right k α n m e μ _ (continuous_pair σ τ B f' f) (fun p x => by rw [f'.1.2 p x, f.1.2 p x, hB]) g`. Take `⟨hi, hs⟩` from `pair_bijective μ SplitFlip.isCompact_KO σ τ B SplitFlip.isOpen_KO hP hPK (GlobalTheory.SmGL.exists_open_normalised_subgroup_subset k n) hσ (fun p hp w' w => by rw [hB, hK2 _ (hK1 p hp)]; simp) Subtype.val_injective (fun l hl => by`. Rewrite using `[Submodule.range_subtype]`. Establish `hc : Continuous fun g : Levi k m => (⟨leviEmb k e g⁻¹, leviEmb_mem_parab k e _⟩ : parab k e)` using `((continuous_leviEmb k e).comp continuous_inv).subtype_mk _`. Use `mem_smoothPart_of_nhds ?_` and prove the remaining obligations.
+
+Use `filter_upwards [(hc.tendsto' 1 1 (by simp)).eventually hl, IsOpen.mem_nhds (isSmoothChar_deltaHalf k (m := m)) (one_mem _)] with g h1 h2`. Use `LinearMap.ext fun w => Eq.trans ?_ (h1 w)` and prove the remaining obligations. Establish `h3 : deltaHalf k m g⁻¹ = 1` using `inv_mem h2`. Use `show l (ρ g⁻¹ w) = l (twist ρ (deltaHalf k m) (leviProj k e _) w)`. Rewrite using `[leviProj_leviEmb, twist_apply, h3, Units.val_one, one_smul]) hinv`.
+
+Conclude with `exists_equiv μ SplitFlip.isCompact_KO σ τ B hinv hi hs`.
+-/
 theorem inductionContragredient : ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k]
     [IsNonarchimedeanLocalField k], GlobalTheory.SmGL.InductionContragredient k := by
   intro k _ _ _ _ α n m _ _ _ _ _ _ e _ _ μ _ W _ _ ρ hρ

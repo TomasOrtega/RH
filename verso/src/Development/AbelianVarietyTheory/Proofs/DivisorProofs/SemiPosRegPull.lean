@@ -22,6 +22,17 @@ namespace GlobalTheory.Weight
 
 open ReciprocityTheory.L2DbarEstimates (V leviV)
 
+/- English proof (translation)
+Introduce `k _ X Y p q σ π hπ D D' hs B φ hC hSP`. Use `haveI := hs`. Introduce `i c y hy ξ`. Use `set m := PtsOver.map π hπ (spMap σ)`. Establish `hm : ∀ z, (m z).1 = z.1 ≫ π` using `fun _ => rfl`.
+
+Take `⟨c0, h0⟩` from `AlgChart.exists_mem_source (p := p) (σ := σ) (D := D) (m y)`. Establish `him : m y ∈ ptsIn p σ (B.U (i PUnit.unit))` using `mem_of_mem_linComb (m := fun _ => m y) (fun _ => rfl) hy.2 PUnit.unit`. Use `set F : V D' → V D := c0.e ∘ m ∘ c.e.symm with hFdef`. Use `set U := c.e.target ∩ c.e.symm ⁻¹' (m ⁻¹' c0.e.source)`. Establish `hU : IsOpen U` using `GlobalTheory.ChartGlue.isOpen_over c.e (c0.e.open_source.preimage (continuous_of_comp hm))`.
+
+Establish `hyU : c.e y ∈ U` using `GlobalTheory.ChartGlue.mem_over c.e hy.1 h0`. Establish `hF0 : DifferentiableOn ℂ F U` using `AlgChart.holo_map hm c c0`. Establish `hF : ContDiffOn ℂ 2 F U` using `(contDiffOn_piLp 2).2 fun a => (ReciprocityTheory.L2DbarEstimates.contDiffOn_of_differentiableOn D' _ U hU (differentiableOn_euclidean.1 hF0 a)).of_le (by norm_cast)`. Establish `hFy : F (c.e y) = c0.e (m y)`. Simplify using `only [hFdef, Function.comp_apply, c.e.left_inv hy.1]`.
+
+Use `set g : V D → ℂ := fun v => (φ.φ (i PUnit.unit) (c0.e.symm v) : ℂ) with hgdef`. Establish `hg : ContDiffAt ℝ 2 g (F (c.e y))` using `hFy ▸ Complex.ofRealCLM.contDiff.contDiffAt.comp _ (hC.contDiffAt c0 h0 him)`. Establish `e : (fun v => ((φ.pull π hπ).φ i (c.e.symm v) : ℂ)) =ᶠ[𝓝 (c.e y)] g ∘ F` using `by filter_upwards [hU.mem_nhds hyU] with v hv`. Use `Weight.pull_φ φ π hπ i (c.e.symm v)` as an intermediate fact. Simplify using `only [g, hFdef, Function.comp_apply, c0.e.left_inv hv.2]`.
+
+Conclude with `congrArg _ this`. Rewrite using `[ReciprocityTheory.L2DbarEstimates.leviV_congr e, ReciprocityTheory.ChartRestriction.G.AR.Up.RGF.gc_leviV_comp D' D g F U hU _ hyU hF hg ξ, hFy]`. Conclude with `hSP (i PUnit.unit) c0 (m y) ⟨h0, him⟩ _`.
+-/
 theorem semiPosReg_pull : ∀ (k : Type) [CommRing k] (X Y : Scheme.{0}) (p : X ⟶ Sp k) (q : Y ⟶ Sp k) (σ : k →+* ℂ) (π : Y ⟶ X) (hπ : π ≫ p = q) (D D' : ℕ), SmoothOfRelativeDimension D p → ∀ (B : LB X) (φ : Weight p σ B), φ.IsCInf → φ.SemiPosReg D → (φ.pull π hπ).SemiPosReg D' := by
   intro k _ X Y p q σ π hπ D D' hs B φ hC hSP
   haveI := hs

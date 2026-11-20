@@ -7,6 +7,13 @@ open scoped Classical
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Distinguish the cases in `hi : MeasureTheory.Integrable (fun x => f x ^ 2) μ`. Rewrite using `[MeasureTheory.ofReal_integral_eq_lintegral_ofReal hi (MeasureTheory.ae_of_all _ (fun x => sq_nonneg (f x)))]`. Establish `hm : ∀ a, Measurable (fun x => ‖g a x‖ₑ ^ 2)` using `fun a => ((hg a).measurable.enorm).pow_const 2`. Combine the equalities or inequalities in the displayed calculation. Use `MeasureTheory.lintegral_mono (fun x => ?_)` and prove the remaining obligations.
+
+Combine the equalities or inequalities in the displayed calculation. Rewrite using `[ENNReal.ofReal_sum_of_nonneg (fun a _ => sq_nonneg _)]`. Use `congr 1`. Use `Finset.sum_congr rfl (fun a _ => ?_)` and prove the remaining obligations. Rewrite using `[ENNReal.ofReal_pow (norm_nonneg _), ofReal_norm_eq_enorm]`.
+
+Use `_ = ENNReal.ofReal C * ∑ a, ∫⁻ x, ‖g a x‖ₑ ^ 2 ∂μ := by`. Rewrite using `[MeasureTheory.lintegral_const_mul _ (Finset.measurable_sum _ (fun a _ => hm a)), MeasureTheory.lintegral_finset_sum _ (fun a _ => hm a)]`. Rewrite using `[MeasureTheory.integral_undef hi, ENNReal.ofReal_zero]`. Conclude with `zero_le`.
+-/
 theorem sq_le_sum_enorm_sq_lintegral_bound
     (E : Type) [TopologicalSpace E] [MeasurableSpace E] [OpensMeasurableSpace E] (μ : MeasureTheory.Measure E)
     (ι : Type) [Fintype ι] (f : E → ℝ) (g : ι → E → ℂ) (C : ℝ) (hg : ∀ a, Continuous (g a))

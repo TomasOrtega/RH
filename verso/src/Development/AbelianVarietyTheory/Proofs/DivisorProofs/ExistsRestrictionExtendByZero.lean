@@ -9,6 +9,9 @@ namespace GlobalTheory.ExtendByZero
 
 variable {V : Type} [NormedAddCommGroup V] [NormedSpace ℝ V] {κ₁ κ : Type} [Fintype κ₁] [Fintype κ]
 
+/- English proof (translation)
+Use extensionality with `i`. Distinguish the cases in `h : ∃ a, j a = i`. Take `⟨a, rfl⟩` from `h`. Simplify using `[hj.extend_apply]`. Simplify using `[Function.extend_apply' _ _ _ h]`.
+-/
 theorem extend_zero_add {j : κ₁ → κ} (hj : Function.Injective j) (y z : κ₁ → V) :
     Function.extend j (y + z) (0 : κ → V) = Function.extend j y 0 + Function.extend j z 0 := by
   ext i
@@ -17,6 +20,9 @@ theorem extend_zero_add {j : κ₁ → κ} (hj : Function.Injective j) (y z : κ
     simp [hj.extend_apply]
   · simp [Function.extend_apply' _ _ _ h]
 
+/- English proof (translation)
+Use extensionality with `i`. Distinguish the cases in `h : ∃ a, j a = i`. Take `⟨a, rfl⟩` from `h`. Simplify using `[hj.extend_apply]`. Simplify using `[Function.extend_apply' _ _ _ h]`.
+-/
 theorem extend_zero_smul {j : κ₁ → κ} (hj : Function.Injective j) (c : ℝ) (y : κ₁ → V) :
     Function.extend j (c • y) (0 : κ → V) = c • Function.extend j y 0 := by
   ext i
@@ -38,8 +44,14 @@ def clm {j : κ₁ → κ} (hj : Function.Injective j) : (κ₁ → V) →L[ℝ]
     · simp only [Function.extend_apply' _ _ _ h]
       exact continuous_const
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem clm_apply {j : κ₁ → κ} (hj : Function.Injective j) (y : κ₁ → V) : clm hj y = Function.extend j y 0 := rfl
 
+/- English proof (translation)
+Use `(pi_norm_le_iff_of_nonneg (norm_nonneg _)).2 fun a => ?_` and prove the remaining obligations. Establish `h : clm hj y (j a) = y a` using `by rw [clm_apply, hj.extend_apply]`. Rewrite using `[← h]`. Conclude with `norm_le_pi_norm (clm hj y) (j a)`.
+-/
 theorem norm_le_norm_clm {j : κ₁ → κ} (hj : Function.Injective j) (y : κ₁ → V) : ‖y‖ ≤ ‖clm hj y‖ := by
   refine (pi_norm_le_iff_of_nonneg (norm_nonneg _)).2 fun a => ?_
   have h : clm hj y (j a) = y a := by rw [clm_apply, hj.extend_apply]
@@ -52,6 +64,9 @@ namespace GlobalTheory.RestrS
 
 open scoped Classical in
 
+/- English proof (translation)
+Introduce `F _ _ κ₁ κ _ _ j hj`. Use `⟨SchwartzMap.compCLM ℂ (GlobalTheory.ExtendByZero.clm (V := mixedEmbedding.mixedSpace F) hj).hasTemperateGrowth ⟨1, 1, fun y => ?_⟩, fun f y => rfl⟩` and prove the remaining obligations. Use `GlobalTheory.ExtendByZero.norm_le_norm_clm (V := mixedEmbedding.mixedSpace F) hj y` as an intermediate fact. Simplify using `only [pow_one, one_mul]`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem exists_restr : ∀ (F : Type) [Field F] [NumberField F] {κ₁ κ : Type} [Fintype κ₁] [Fintype κ] (j : κ₁ → κ), Function.Injective j →
     ∃ R : SInf F κ →L[ℂ] SInf F κ₁, ∀ f y, R f y = f (Function.extend j y 0) := by
   intro F _ _ κ₁ κ _ _ j hj

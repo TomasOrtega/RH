@@ -15,6 +15,11 @@ section Alg
 
 variable {Γ : Type} [Group Γ] {K : Type} [Field K]
 
+/- English proof (translation)
+Establish `: Infinite K` using `Infinite.of_injective (Nat.cast : ℕ → K) Nat.cast_injective`. Apply `Polynomial.funext` to reduce the goal to its premises. Introduce `x`. Take `⟨y, rfl⟩ : ∃ y, x = c * y` from `⟨c⁻¹ * x, by rw [← mul_assoc, mul_inv_cancel₀ hc, one_mul]⟩`. Rewrite using `[scaleRoots_eval_mul, Matrix.charpoly_natDegree_eq_dim, Matrix.eval_charpoly, Matrix.eval_charpoly, ← Matrix.det_smul, smul_sub]`.
+
+Use `congr 2`. Use extensionality with `a b`. Simplify using `only [Matrix.smul_apply, Matrix.scalar_apply, Matrix.diagonal_apply, smul_eq_mul]`. Apply the tactic sequence `split_ifs <;> simp`.
+-/
 theorem charpoly_smul [CharZero K] {n : ℕ} (M : Matrix (Fin n) (Fin n) K) {c : K} (hc : c ≠ 0) :
     (c • M).charpoly = M.charpoly.scaleRoots c := by
   have : Infinite K := Infinite.of_injective (Nat.cast : ℕ → K) Nat.cast_injective
@@ -28,6 +33,9 @@ theorem charpoly_smul [CharZero K] {n : ℕ} (M : Matrix (Fin n) (Fin n) K) {c :
   simp only [Matrix.smul_apply, Matrix.scalar_apply, Matrix.diagonal_apply, smul_eq_mul]
   split_ifs <;> simp
 
+/- English proof (translation)
+Proceed by induction on `m using Multiset.induction_on with`. Consider the case `empty => rw [Multiset.map_zero, Multiset.prod_zero, one_scaleRoots, Multiset.map_zero, Multiset.prod_zero]`. Consider the case `cons α m ih`. Rewrite using `[Multiset.map_cons, Multiset.prod_cons, mul_scaleRoots_of_noZeroDivisors, ih, X_sub_C_scaleRoots, Multiset.map_cons, Multiset.prod_cons]`.
+-/
 theorem scaleRoots_prod (m : Multiset K) (s : K) :
     ((m.map fun α => X - C α).prod).scaleRoots s = (m.map fun α => X - C (α * s)).prod := by
   induction m using Multiset.induction_on with
@@ -36,12 +44,18 @@ theorem scaleRoots_prod (m : Multiset K) (s : K) :
     rw [Multiset.map_cons, Multiset.prod_cons, mul_scaleRoots_of_noZeroDivisors, ih, X_sub_C_scaleRoots,
       Multiset.map_cons, Multiset.prod_cons]
 
+/- English proof (translation)
+Use `show algebraMap K (Matrix (Fin a) (Fin a) K) (χ g : K) * ((ρ g : GL _ K) : Matrix (Fin a) (Fin a) K) = _`. Rewrite using `[Algebra.algebraMap_eq_smul_one, smul_mul_assoc, one_mul]`.
+-/
 theorem twGL_val' {a : ℕ} (ρ : Γ →* GL (Fin a) K) (χ : Γ →* Kˣ) (g : Γ) :
     ((twGL ρ χ g : GL _ K) : Matrix (Fin a) (Fin a) K) =
       (χ g : K) • ((ρ g : GL _ K) : Matrix (Fin a) (Fin a) K) := by
   show algebraMap K (Matrix (Fin a) (Fin a) K) (χ g : K) * ((ρ g : GL _ K) : Matrix (Fin a) (Fin a) K) = _
   rw [Algebra.algebraMap_eq_smul_one, smul_mul_assoc, one_mul]
 
+/- English proof (translation)
+Rewrite using `[GlobalTheory.BCGal.sumRep_val, Matrix.charpoly_reindex, Matrix.charpoly_fromBlocks_zero₁₂]`.
+-/
 theorem charpoly_sumRep' {a b : ℕ} (ρ : Γ →* GL (Fin a) K) (ρ' : Γ →* GL (Fin b) K) (g : Γ) :
     ((sumRep ρ ρ' g : GL _ _) : Matrix (Fin (a + b)) (Fin (a + b)) K).charpoly =
       ((ρ g : GL _ _) : Matrix (Fin a) (Fin a) K).charpoly *
@@ -52,10 +66,16 @@ noncomputable def strRep {a : ℕ} (ρ : Γ →* GL (Fin a) K) (e : Γ →* Kˣ)
   | 0 => 1
   | d + 1 => sumRep (strRep ρ e d) (twGL ρ (e ^ d))
 
+/- English proof (translation)
+The claim follows from `Polynomial.eq_one_of_monic_natDegree_zero (Matrix.charpoly_monic _) (by rw [Matrix.charpoly_natDegree_eq_dim, Fintype.card_fin, hm])`.
+-/
 theorem charpoly_zero' {m : ℕ} (hm : m = 0) (M : Matrix (Fin m) (Fin m) K) : M.charpoly = 1 :=
   Polynomial.eq_one_of_monic_natDegree_zero (Matrix.charpoly_monic _)
     (by rw [Matrix.charpoly_natDegree_eq_dim, Fintype.card_fin, hm])
 
+/- English proof (translation)
+The claim follows from `| 0 => by rw [Finset.prod_range_zero]; exact charpoly_zero' (Nat.mul_zero a) _ | d + 1 => by show ((sumRep (strRep ρ e d) (twGL ρ (e ^ d)) g : GL _ K) : Matrix (Fin (a * d + a)) (Fin (a * d + a)) K).charpoly = _ rw [charpoly_sumRep', charpoly_strRep ρ e g d, Finset.prod_range_suc …`.
+-/
 theorem charpoly_strRep [CharZero K] {a : ℕ} (ρ : Γ →* GL (Fin a) K) (e : Γ →* Kˣ) (g : Γ) : ∀ d : ℕ,
     ((strRep ρ e d g : GL _ K) : Matrix (Fin (a * d)) (Fin (a * d)) K).charpoly =
       ∏ j ∈ Finset.range d, ((ρ g : GL _ K) : Matrix (Fin a) (Fin a) K).charpoly.scaleRoots ((e g : K) ^ j)
@@ -66,6 +86,9 @@ theorem charpoly_strRep [CharZero K] {a : ℕ} (ρ : Γ →* GL (Fin a) K) (e : 
     rw [charpoly_sumRep', charpoly_strRep ρ e g d, Finset.prod_range_succ, twGL_val',
       charpoly_smul _ (Units.ne_zero _), MonoidHom.pow_apply, Units.val_pow_eq_pow_val]
 
+/- English proof (translation)
+The claim follows from `| 0 => by show Continuous fun g => (((1 : Γ →* GL (Fin (a * 0)) K) g : GL _ K) : Matrix (Fin (a * 0)) (Fin (a * 0)) K) simp only [MonoidHom.one_apply, Units.val_one] exact continuous_const | d + 1 => by show Continuous fun g => ((sumRep (strRep ρ e d) (twGL ρ (e ^ d)) g : GL _ K) …`.
+-/
 theorem cont_strRep [TopologicalSpace Γ] [TopologicalSpace K] [IsTopologicalRing K] {a : ℕ}
     (ρ : Γ →* GL (Fin a) K) (e : Γ →* Kˣ)
     (hρ : Continuous fun g => ((ρ g : GL _ K) : Matrix (Fin a) (Fin a) K))
@@ -86,6 +109,9 @@ noncomputable def rkL {CG : ℕ → Type} : List (Part CG) → ℕ
   | [] => 0
   | p :: L => p.a * p.d + rkL L
 
+/- English proof (translation)
+The claim follows from `| [] => rfl | p :: L => by rw [rkL, rkL_eq L, List.map_cons, List.sum_cons]`.
+-/
 theorem rkL_eq {CG : ℕ → Type} : ∀ L : List (Part CG), rkL L = (L.map fun p => p.a * p.d).sum
   | [] => rfl
   | p :: L => by rw [rkL, rkL_eq L, List.map_cons, List.sum_cons]
@@ -95,6 +121,9 @@ noncomputable def listRep {CG : ℕ → Type} (Rp : ∀ p : Part CG, Γ →* GL 
   | [] => 1
   | p :: L => sumRep (strRep (Rp p) e p.d) (listRep Rp e L)
 
+/- English proof (translation)
+The claim follows from `| [] => by rw [List.map_nil, List.prod_nil]; exact charpoly_zero' rfl _ | p :: L => by show ((sumRep (strRep (Rp p) e p.d) (listRep Rp e L) g : GL _ K) : Matrix (Fin (p.a * p.d + rkL L)) (Fin (p.a * p.d + rkL L)) K).charpoly = _ rw [charpoly_sumRep', charpoly_strRep, charpoly_lis …`.
+-/
 theorem charpoly_listRep [CharZero K] {CG : ℕ → Type} (Rp : ∀ p : Part CG, Γ →* GL (Fin p.a) K)
     (e : Γ →* Kˣ) (g : Γ) : ∀ L : List (Part CG),
     ((listRep Rp e L g : GL _ K) : Matrix (Fin (rkL L)) (Fin (rkL L)) K).charpoly =
@@ -106,6 +135,9 @@ theorem charpoly_listRep [CharZero K] {CG : ℕ → Type} (Rp : ∀ p : Part CG,
       Matrix (Fin (p.a * p.d + rkL L)) (Fin (p.a * p.d + rkL L)) K).charpoly = _
     rw [charpoly_sumRep', charpoly_strRep, charpoly_listRep Rp e g L, List.map_cons, List.prod_cons]
 
+/- English proof (translation)
+The claim follows from `| [], _ => by show Continuous fun g => (((1 : Γ →* GL (Fin 0) K) g : GL _ K) : Matrix (Fin 0) (Fin 0) K) simp only [MonoidHom.one_apply, Units.val_one] exact continuous_const | p :: L, h => by show Continuous fun g => ((sumRep (strRep (Rp p) e p.d) (listRep Rp e L) g : GL _ K) : …`.
+-/
 theorem cont_listRep [TopologicalSpace Γ] [TopologicalSpace K] [IsTopologicalRing K] {CG : ℕ → Type}
     (Rp : ∀ p : Part CG, Γ →* GL (Fin p.a) K) (e : Γ →* Kˣ) (he : Continuous fun g => ((e g : Kˣ) : K)) :
     ∀ L : List (Part CG), (∀ p ∈ L, Continuous fun g => ((Rp p g : GL _ K) : Matrix (Fin p.a) (Fin p.a) K)) →
@@ -120,6 +152,9 @@ theorem cont_listRep [TopologicalSpace Γ] [TopologicalSpace K] [IsTopologicalRi
     exact GlobalTheory.BCGal.cont_sumRep _ _ (cont_strRep _ e (h p List.mem_cons_self) he p.d)
       (cont_listRep Rp e he L fun q hq => h q (List.mem_cons_of_mem _ hq))
 
+/- English proof (translation)
+Substitute `h` using the available equality. Conclude with `⟨ρ, id, fun _ => rfl⟩`.
+-/
 theorem exists_cast [TopologicalSpace Γ] [TopologicalSpace K] {m n : ℕ} (h : m = n) (ρ : Γ →* GL (Fin m) K) :
     ∃ ρ' : Γ →* GL (Fin n) K, ((Continuous fun g => ((ρ g : GL _ K) : Matrix (Fin m) (Fin m) K)) →
       Continuous fun g => ((ρ' g : GL _ K) : Matrix (Fin n) (Fin n) K)) ∧
@@ -128,6 +163,9 @@ theorem exists_cast [TopologicalSpace Γ] [TopologicalSpace K] {m n : ℕ} (h : 
   subst h
   exact ⟨ρ, id, fun _ => rfl⟩
 
+/- English proof (translation)
+The claim follows from `| [] => by simp | a :: L => by show ∏ k : Fin (L.length + 1), F ((a :: L).get k) = _ rw [Fin.prod_univ_succ, List.map_cons, List.prod_cons, ← prod_get F L] rfl`.
+-/
 theorem prod_get {M : Type} [CommMonoid M] {α : Type} (F : α → M) :
     ∀ L : List α, ∏ k : Fin L.length, F (L.get k) = (L.map F).prod
   | [] => by simp
@@ -148,11 +186,17 @@ section Frob
 
 variable {R : Ranks} {H : Host R} {what₂ : Rows.Data R} {N : NData R H what₂} {A : NAut N}
 
+/- English proof (translation)
+Establish `h` using `(Ideal.absNorm_eq_zero_iff (I := w.asIdeal)).not.mpr w.ne_bot`. Rewrite `h` using `[Ideal.absNorm_apply, Submodule.cardQuot_apply]`. Conclude with `h`.
+-/
 theorem normV_ne_zero' {F : Type} [Field F] [NumberField F] (w : HeightOneSpectrum (𝓞 F)) : normV w ≠ 0 := by
   have h := (Ideal.absNorm_eq_zero_iff (I := w.asIdeal)).not.mpr w.ne_bot
   rw [Ideal.absNorm_apply, Submodule.cardQuot_apply] at h
   exact h
 
+/- English proof (translation)
+The claim follows from `| [], _ => by rw [List.map_nil, List.prod_nil, Polynomial.map_one, List.foldr_nil, GlobalTheory.BCGal.lpTw_lpZero N A w s0, A.frobEig_zero, Multiset.map_zero, Multiset.prod_zero] | j :: l, hun => by rw [List.foldr_cons] at hun have h12 := (A.unr_sum _ _).1 hun have hLg : A.unr la …`.
+-/
 theorem fold_poly (i : N.Loc) (w : PlE H) (hl : w ∉ placesOver H.E (N.l i)) (B : ValuationSubring N.Om)
     (σ : G H.E N.Om) (hB : IsPlaceOver (F := H.E) B w) (hσ : IsFrob (F := H.E) B (normV w) σ)
     {a : ℕ} (ρ : G H.E N.Om →* GL (Fin a) (Qbar (N.l i))) (large₂ : A.LP w) (d : ℕ) (s0 : ℝ)
@@ -188,10 +232,16 @@ theorem fold_poly (i : N.Loc) (w : PlE H) (hl : w ∉ placesOver H.E (N.l i)) (B
         (((((d : ℝ) - 1) / 2 - (j : ℝ) + s0 : ℝ)) : ℂ) := by push_cast; ring
     rw [mul_assoc, inv_pow, ← Complex.cpow_natCast, ← Complex.cpow_neg, ← Complex.cpow_add _ _ hq, hc]
 
+/- English proof (translation)
+The claim follows from `| [] => rfl | a :: l => by simp [List.flatMap_cons, flatMap_single f l]`.
+-/
 theorem flatMap_single {γ : Type*} (f : ℕ → γ) : ∀ l : List ℕ, List.flatMap (fun a => [f a]) l = l.map f
   | [] => rfl
   | a :: l => by simp [List.flatMap_cons, flatMap_single f l]
 
+/- English proof (translation)
+Unfold `spehLoc`. Simplify using `only [bind, pure]`. Rewrite using `[flatMap_single (fun a : ℕ => (a : ℝ)), List.foldr_map]`.
+-/
 theorem spehLoc_eq (p : Part A.CG) (w : PlE H) :
     spehLoc N A p w = (List.range p.d).foldr (fun (k : ℕ) acc =>
       A.lpSum (A.lpTw (A.locG p.π w) (((p.d : ℝ) - 1) / 2 - (k : ℝ))) acc) (A.lpZero w) := by
@@ -199,6 +249,9 @@ theorem spehLoc_eq (p : Part A.CG) (w : PlE H) :
   simp only [bind, pure]
   rw [flatMap_single (fun a : ℕ => (a : ℝ)), List.foldr_map]
 
+/- English proof (translation)
+Rewrite `hun`, the goal using `[spehLoc_eq]`. Rewrite using `[Finset.prod_eq_multiset_prod, Finset.range_val, ← Multiset.coe_range, Multiset.map_coe, Multiset.prod_coe]`. Conclude with `fold_poly i w hl B σ hB hσ ρ _ p.d s0 hcρ hρ u hu (List.range p.d) hun`.
+-/
 theorem part_poly (i : N.Loc) (w : PlE H) (hl : w ∉ placesOver H.E (N.l i)) (B : ValuationSubring N.Om)
     (σ : G H.E N.Om) (hB : IsPlaceOver (F := H.E) B w) (hσ : IsFrob (F := H.E) B (normV w) σ)
     (p : Part A.CG) (ρ : G H.E N.Om →* GL (Fin p.a) (Qbar (N.l i))) (s0 : ℝ)
@@ -212,6 +265,9 @@ theorem part_poly (i : N.Loc) (w : PlE H) (hl : w ∉ placesOver H.E (N.l i)) (B
   rw [Finset.prod_eq_multiset_prod, Finset.range_val, ← Multiset.coe_range, Multiset.map_coe, Multiset.prod_coe]
   exact fold_poly i w hl B σ hB hσ ρ _ p.d s0 hcρ hρ u hu (List.range p.d) hun
 
+/- English proof (translation)
+The claim follows from `| [], _, _, _ => by show _ = ((A.frobEig (A.lpTw (A.lpZero w) s0)).map fun α => X - C α).prod rw [List.map_nil, List.prod_nil, Polynomial.map_one, GlobalTheory.BCGal.lpTw_lpZero N A w s0, A.frobEig_zero, Multiset.map_zero, Multiset.prod_zero] | p :: L, hcR, hR, hun => by have hun …`.
+-/
 theorem iso_poly (i : N.Loc) (w : PlE H) (hl : w ∉ placesOver H.E (N.l i)) (B : ValuationSubring N.Om)
     (σ : G H.E N.Om) (hB : IsPlaceOver (F := H.E) B w) (hσ : IsFrob (F := H.E) B (normV w) σ)
     (Rp : ∀ p : Part A.CG, G H.E N.Om →* GL (Fin p.a) (Qbar (N.l i))) (s0 : ℝ) (u : Qbar (N.l i))
@@ -238,6 +294,13 @@ theorem iso_poly (i : N.Loc) (w : PlE H) (hl : w ∉ placesOver H.E (N.l i)) (B 
       iso_poly i w hl B σ hB hσ Rp s0 u hu L (fun q hq => hcR q (List.mem_cons_of_mem _ hq))
         (fun q hq => hR q (List.mem_cons_of_mem _ hq)) h12.2]
 
+/- English proof (translation)
+Take `⟨hsp, hl, hS, hQ⟩` from `hw`. Rewrite using `[hBC.2.2.2.1 w hsp]`. Use `A.locV_unr i P w hsp hQ (fun k hk => ?_) (fun hk => ?_)` and prove the remaining obligations. Apply `hS` to reduce the goal to its premises. Rewrite using `[N.S_def]`.
+
+Use `⟨?_, hl⟩` and prove the remaining obligations. Use `fin_cases k`. Conclude with `Or.inl hk`. Conclude with `Or.inr (Or.inl hk)`. Apply `hS` to reduce the goal to its premises.
+
+Rewrite using `[N.S_def]`. Conclude with `⟨Or.inr (Or.inr hk), hl⟩`.
+-/
 theorem iso_unr (i : N.Loc) {P : A.AV i} {Pa : List (Part A.CG)} (hBC : IsBCV N A i P Pa) (w : PlE H)
     (hw : SplitOut N i w) : A.unr (isoLoc N A Pa w) := by
   obtain ⟨hsp, hl, hS, hQ⟩ := hw
@@ -268,6 +331,11 @@ variable {R : Ranks} {H : Host R} {what₂ : Rows.Data R} (N : NData R H what₂
 noncomputable def epsQU : G H.E N.Om →* (Qbar (N.l i))ˣ :=
   (Units.map (iotaOQ N A i).toMonoidHom).comp (Formalism.MainNotions.N.Glob.epsO N i)
 
+/- English proof (translation)
+Establish `e : (fun g => ((epsQU N A i g : (Qbar (N.l i))ˣ) : Qbar (N.l i))) = fun g => algebraMap ℚ_[N.l i] (Qbar (N.l i)) (((cycZ (F` using `H.E) (Ω := N.Om) (N.l i) g : ℤ_[N.l i]ˣ) : ℤ_[N.l i]) : ℚ_[N.l i]) := by`. Use function extensionality and compare the values at `g`. Conclude with `A.iotaQ_alg i _`. Rewrite using `[e]`. Establish `h1 : Continuous fun g => ((cycZ (F` using `H.E) (Ω := N.Om) (N.l i) g : ℤ_[N.l i]ˣ) : ℤ_[N.l i]) := Units.continuous_val.comp (continuous_cycZ H.E N.Om (N.l i))`.
+
+Establish `h2 : Continuous fun z : ℤ_[N.l i] => (z : ℚ_[N.l i])` using `continuous_subtype_val`. Conclude with `(continuous_algebraMap ℚ_[N.l i] (Qbar (N.l i))).comp (h2.comp h1)`.
+-/
 theorem cont_epsQU : Continuous fun g => ((epsQU N A i g : (Qbar (N.l i))ˣ) : Qbar (N.l i)) := by
   have e : (fun g => ((epsQU N A i g : (Qbar (N.l i))ˣ) : Qbar (N.l i))) = fun g =>
       algebraMap ℚ_[N.l i] (Qbar (N.l i)) (((cycZ (F := H.E) (Ω := N.Om) (N.l i) g : ℤ_[N.l i]ˣ) : ℤ_[N.l i]) :
@@ -280,15 +348,24 @@ theorem cont_epsQU : Continuous fun g => ((epsQU N A i g : (Qbar (N.l i))ˣ) : Q
   have h2 : Continuous fun z : ℤ_[N.l i] => (z : ℚ_[N.l i]) := continuous_subtype_val
   exact (continuous_algebraMap ℚ_[N.l i] (Qbar (N.l i))).comp (h2.comp h1)
 
+/- English proof (translation)
+Rewrite using `[MonoidHom.inv_apply, Units.val_inv_eq_inv_val]`.
+-/
 theorem epsQU_inv_val (g : G H.E N.Om) :
     (((epsQU N A i)⁻¹ g : (Qbar (N.l i))ˣ) : Qbar (N.l i)) =
       ((epsQU N A i g : (Qbar (N.l i))ˣ) : Qbar (N.l i))⁻¹ := by
   rw [MonoidHom.inv_apply, Units.val_inv_eq_inv_val]
 
+/- English proof (translation)
+Simplify using `only [epsQU_inv_val]`. Conclude with `(cont_epsQU N A i).inv₀ fun g => Units.ne_zero _`.
+-/
 theorem cont_epsQU_inv : Continuous fun g => (((epsQU N A i)⁻¹ g : (Qbar (N.l i))ˣ) : Qbar (N.l i)) := by
   simp only [epsQU_inv_val]
   exact (cont_epsQU N A i).inv₀ fun g => Units.ne_zero _
 
+/- English proof (translation)
+Rewrite using `[epsQU_inv_val, map_inv₀]`. Use `congr 1`. Use `show (A.iotaQC i).toRingHom (iotaOQ N A i (algebraMap ℤ_[N.l i] (N.O i) ((cycZ (F := H.E) (Ω := N.Om) (N.l i) σ : ℤ_[N.l i]ˣ) : ℤ_[N.l i]))) = _`. Rewrite using `[cycZ_of_isFrob hl hB hσ]`. Simplify using `only [map_natCast]`.
+-/
 theorem epsQU_frob {w : PlE H} (hl : w ∉ placesOver H.E (N.l i)) {B : ValuationSubring N.Om}
     {σ : G H.E N.Om} (hB : IsPlaceOver (F := H.E) B w) (hσ : IsFrob (F := H.E) B (normV w) σ) :
     (A.iotaQC i).toRingHom (((epsQU N A i)⁻¹ σ : (Qbar (N.l i))ˣ) : Qbar (N.l i)) = (((normV w : ℕ) : ℂ))⁻¹ := by
@@ -307,6 +384,11 @@ namespace GlobalTheory.StringDecomp
 
 open Formalism.MainNotions.SumRepresentations.At Topology
 
+/- English proof (translation)
+Establish `h0 : Ideal.span {((p : ℕ) : 𝓞 E)} ≠ 0`. Rewrite using `[Ne, Ideal.zero_eq_bot, Ideal.span_singleton_eq_bot]`. Conclude with `hp` after adjusting the coercions. Use `(Ideal.finite_factors h0).subset fun v hv => ?_` and prove the remaining obligations. Use `show v.asIdeal ∣ _`.
+
+Rewrite using `[Ideal.dvd_iff_le, Ideal.span_singleton_le_iff_mem]`. Conclude with `hv`.
+-/
 theorem placesOver_finite' (E : Type) [Field E] [NumberField E] (p : ℕ) (hp : p ≠ 0) :
     (placesOver E p).Finite := by
   have h0 : Ideal.span {((p : ℕ) : 𝓞 E)} ≠ 0 := by
@@ -317,6 +399,15 @@ theorem placesOver_finite' (E : Type) [Field E] [NumberField E] (p : ℕ) (hp : 
   rw [Ideal.dvd_iff_le, Ideal.span_singleton_le_iff_mem]
   exact hv
 
+/- English proof (translation)
+Take `⟨⟨⟨hLP, hAut, hGal⟩, -, -, hG, -, -, -⟩, -⟩` from `hA.1`. Take `⟨ha, hd, hc⟩` from `hBC.1 p hp`. Establish `hw` using `GlobalTheory.BCGal.awayRep_piece D.nd D.naut i hLP hAut hGal hG ha p.π hc ((p.d : ℤ) - 1 + p.a - D.R.nV) fun τ => by`. Establish `hW : (D.naut.infWt i τ).Nodup ∧ ∀ z ∈ D.naut.infWt i τ, ∃ k : ℤ, z = (k : ℂ) + ((D.R.nV : ℂ) - 1) / 2`. Rewrite using `[D.nbc.embAV_inf i P]`.
+
+Conclude with `D.nbc.infW_alg _ _ τ`. Establish `hle : (D.naut.infG p.π τ).map (· + (((p.d : ℂ) - 1) / 2 - ((0 : ℕ) : ℂ))) ≤ D.naut.infWt i τ`. Rewrite using `[← hBC.2.2.2.2.2 τ]`. Use `le_trans (List.single_le_sum (fun _ _ => Multiset.zero_le _) _ ?_) (List.single_le_sum (fun _ _ => Multiset.zero_le _) _ (List.mem_map_of_mem hp))` and prove the remaining obligations. Conclude with `List.mem_map.2 ⟨0, by simp; exact ⟨0, by omega, by simp⟩, by simp⟩`.
+
+Use `⟨(Multiset.nodup_of_le hle hW.1).of_map _, fun z hz => ?_⟩` and prove the remaining obligations. Take `⟨n, hn⟩` from `hW.2 _ (Multiset.mem_of_le hle (Multiset.mem_map_of_mem _ hz))`. Conclude with `⟨n, by push_cast at hn ⊢; linear_combination hn⟩`. Take `⟨ρ, hcont, hss, hwd⟩` from `hw`. Use `⟨ρ, hcont, hss, fun w hwl => ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[hwd w hwl]`. Use `congr 1`. Use `push_cast`. Put the polynomial expressions in normal form.
+-/
 theorem exists_stringRep (D : D7) (hA : Formalism.MainNotions.SumRepresentations.admitted D) (i : D.nd.Loc) (P : D.naut.AV i)
     (Pa : List (Part D.naut.CG)) (hBC : IsBCV D.nd D.naut i P Pa) (p : Part D.naut.CG) (hp : p ∈ Pa) :
     ∃ ρ : G D.host.E D.nd.Om →* GL (Fin p.a) (Qbar (D.nd.l i)), IsStringRep D i p ρ := by
@@ -343,6 +434,19 @@ theorem exists_stringRep (D : D7) (hA : Formalism.MainNotions.SumRepresentations
   push_cast
   ring_nf
 
+/- English proof (translation)
+Introduce `D hA i x P Pa hx hBC r hr`. Establish `hC` using `hA.1.1.2.2.2.2.2.2.2.2.1`. Establish `hex : ∀ p : Part D.naut.CG, ∃ ρ : G D.host.E D.nd.Om →* GL (Fin p.a) (Qbar (D.nd.l i)), p ∈ Pa → IsStringRep D i p ρ`. Introduce `p`. Distinguish the cases in `hp : p ∈ Pa`.
+
+Take `⟨ρ, hρ⟩` from `exists_stringRep D hA i P Pa hBC p hp`. Conclude with `⟨ρ, fun _ => hρ⟩`. Conclude with `⟨1, fun h => absurd h hp⟩`. Use `choose Rp hRp using hex`. Use `⟨fun k => Rp (Pa.get k), fun k => hRp _ (List.get_mem Pa k), ?_⟩` and prove the remaining obligations.
+
+Establish `hrk : rkL Pa = D.R.nV` using `(rkL_eq Pa).trans hBC.2.2.1`. Establish `hcL` using `cont_listRep Rp _ (cont_epsQU_inv D.nd D.naut i) Pa (fun p hp => (hRp p hp).1)`. Take `⟨ρ', hρ'⟩` from `exists_cast hrk (listRep Rp (epsQU D.nd D.naut i)⁻¹ Pa)`. Establish `hQ` using `GlobalTheory.NRows.isHeckeGaloisQ_of_isHeckeGalois D i x (r x) (hr x)`. Establish `hfin : (placesOver D.host.E (D.nd.l i) ∪ ↑(D.nd.S i) ∪ ↑(D.nd.Q i) : Set (PlE D.host)).Finite` using `((placesOver_finite' D.host.E (D.nd.l i) (D.nd.lPrime i).out.ne_zero).union (D.nd.S i).finite_toSet).union (D.nd.Q i).finite_toSet`.
+
+Establish `key` using `GlobalTheory.charpoly_eq_of_eqOn_dense (fun g => ((mapRep (iotaOQ D.nd D.naut i) (r x) g : GL _ _) : Matrix (Fin D.R.nV) (Fin D.R.nV) (Qbar (D.nd.l i)))) (fun g => ((ρ' g : GL _ _) : Matrix (Fin D.R.nV) (Fin D.R.nV) (Qbar (D.nd.l i)))) hQ.1 (hρ'.1 hcL) _ (dense_iff_closure_eq.2 ( …`. Introduce and unpack `σ ⟨w, hw, hsp, B, hB, hσ⟩`. Simplify using `only [Set.mem_union, not_or, Finset.mem_coe] at hw`. Establish `hso : SplitOut D.nd i w` using `⟨hsp, hw.1.1, hw.1.2, hw.2⟩`. Use `show _ = _`.
+
+Rewrite using `[hQ.2.2 w hso B σ hB hσ, hρ'.2 σ, charpoly_listRep]`. Apply `Polynomial.map_injective (D.naut.iotaQC i).toRingHom (D.naut.iotaQC i).injective` to reduce the goal to its premises. Rewrite using `[Polynomial.map_map, show (D.naut.iotaQC i).toRingHom.comp (iotaOQ D.nd D.naut i) = ((D.naut.iotaQC i).toRingHom.comp (D.naut.iotaQ i)).comp (algebraMap (D.nd.O i) (FractionRing (D.nd.O i))) from rfl, D.naut.pt_loc i P x hx w hso, ← hBC.2.2.2.1 w hsp]`. Conclude with `(iso_poly i w hso.2.1 B σ hB hσ Rp _ _ (epsQU_frob D.nd D.naut i hso.2.1 hB hσ) Pa (fun p hp => (hRp p hp).1) (fun p hp => (hRp p hp).2.2 w hso.2.1) (iso_unr i hBC w hso)).symm)`. Introduce `g`.
+
+Rewrite using `[key g, hρ'.2 g, charpoly_listRep, epsQU_inv_val, ← prod_get]`. Both sides reduce to the same expression.
+-/
 theorem stringDecomp_holds :
     ∀ D : D7, Formalism.MainNotions.SumRepresentations.admitted D → ∀ (i : D.nd.Loc) (x : D.nd.X i) (P : D.naut.AV i)
     (Pa : List (Part D.naut.CG)), D.naut.ptV i P = some x → IsBCV D.nd D.naut i P Pa →

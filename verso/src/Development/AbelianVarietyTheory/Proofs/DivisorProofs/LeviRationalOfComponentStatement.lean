@@ -22,6 +22,9 @@ open GlobalTheory.Doubling (absE)
 open GlobalTheory.ConeSmallMidJB
 
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.MidLineParam.levi_one_mem_ratU | exact GlobalTheory.MidLineParam.levi_one_mem_ratU | (intros; apply GlobalTheory.MidLineParam.levi_one_mem_ratU <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.levi_rational_of_component : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (d d₁ : ℕ)
     (W : Spc F E d) (W₁ : Spc F E d₁) (H' : Plane E d d₁),
     (∀ v : Fin d → E, ∃ (a b : E) (u : Fin d₁ → E), v = a • H'.x + H'.ι *ᵥ u + b • H'.y) →

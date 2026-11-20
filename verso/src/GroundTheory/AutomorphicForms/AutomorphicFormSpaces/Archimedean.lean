@@ -37,6 +37,9 @@ instance : NormedAddCommGroup (archLie K n) := Submodule.normedAddCommGroup _
 
 instance : NormedSpace ℝ (archLie K n) := Submodule.normedSpace _
 
+/- English proof (translation)
+The claim follows from `Subgroup.mem_top _ exists_nhds := ⟨(expPartialHomeomorph ℝ (ArchMatrix K n)).source, (expPartialHomeomorph ℝ (ArchMatrix K n)).open_source, zero_mem_expPartialHomeomorph_source ℝ _, subset_rfl, fun _ _ _ => Submodule.mem_top⟩`.
+-/
 theorem isExpLieAlgebra : IsExpLieAlgebra (archGroup K n) (archLie K n) where
   expUnit_mem _ _ := Subgroup.mem_top _
   exists_nhds := ⟨(expPartialHomeomorph ℝ (ArchMatrix K n)).source,
@@ -46,16 +49,27 @@ theorem isExpLieAlgebra : IsExpLieAlgebra (archGroup K n) (archLie K n) where
 def archMatrixEquiv : Matrix (Fin n) (Fin n) (InfiniteAdeleRing K) ≃+* ArchMatrix K n :=
   RingEquiv.mapMatrix (m := Fin n) (InfiniteAdeleRing.ringEquiv_mixedSpace K)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem archMatrixEquiv_apply (M : Matrix (Fin n) (Fin n) (InfiniteAdeleRing K)) (a b : Fin n) :
     (archMatrixEquiv K n M : Matrix (Fin n) (Fin n) (mixedSpace K)) a b =
       InfiniteAdeleRing.ringEquiv_mixedSpace K (M a b) :=
   rfl
 
+/- English proof (translation)
+Express the relevant statement in the definitionally equal form `Continuous fun M : Matrix (Fin n) (Fin n) (InfiniteAdeleRing K) => M.map (GroundTheory.Global.homeomorphMixedSpace K)`. Conclude with `continuous_id.matrix_map (GroundTheory.Global.homeomorphMixedSpace K).continuous`.
+-/
 theorem continuous_archMatrixEquiv : Continuous (archMatrixEquiv K n) := by
   change Continuous fun M : Matrix (Fin n) (Fin n) (InfiniteAdeleRing K) =>
     M.map (GroundTheory.Global.homeomorphMixedSpace K)
   exact continuous_id.matrix_map (GroundTheory.Global.homeomorphMixedSpace K).continuous
 
+/- English proof (translation)
+Establish `he : ⇑(GroundTheory.Global.homeomorphMixedSpace K).symm = ⇑(InfiniteAdeleRing.ringEquiv_mixedSpace K).symm`. Use function extensionality and compare the values at `x`. Apply `(InfiniteAdeleRing.ringEquiv_mixedSpace K).injective` to reduce the goal to its premises. Rewrite using `[RingEquiv.apply_symm_apply, ← GroundTheory.Global.homeomorphMixedSpace_apply, Homeomorph.apply_symm_apply]`. Express the relevant statement in the definitionally equal form `Continuous fun M : Matrix (Fin n) (Fin n) (mixedSpace K) => M.map (InfiniteAdeleRing.ringEquiv_mixedSpace K).symm`.
+
+Rewrite using `[← he]`. Conclude with `continuous_id.matrix_map (GroundTheory.Global.homeomorphMixedSpace K).symm.continuous`.
+-/
 theorem continuous_archMatrixEquiv_symm : Continuous (archMatrixEquiv K n).symm := by
   have he : ⇑(GroundTheory.Global.homeomorphMixedSpace K).symm =
       ⇑(InfiniteAdeleRing.ringEquiv_mixedSpace K).symm := by
@@ -84,26 +98,44 @@ def finEmb : AdelicGLn.FiniteAdelicGL K n →* AdelicGLn.AdelicGL K n :=
 
 variable {K n}
 
+/- English proof (translation)
+The claim follows from `(AdelicGLn.prodEquiv K n).symm.continuous.comp ((continuous_id.prodMk continuous_const).comp (archEquiv K n).symm.continuous)`.
+-/
 theorem continuous_infEmb : Continuous (infEmb K n) :=
   (AdelicGLn.prodEquiv K n).symm.continuous.comp
     ((continuous_id.prodMk continuous_const).comp (archEquiv K n).symm.continuous)
 
+/- English proof (translation)
+The claim follows from `(AdelicGLn.prodEquiv K n).symm.continuous.comp (continuous_const.prodMk continuous_id)`.
+-/
 theorem continuous_finEmb : Continuous (finEmb K n) :=
   (AdelicGLn.prodEquiv K n).symm.continuous.comp (continuous_const.prodMk continuous_id)
 
+/- English proof (translation)
+The claim follows from `(AdelicGLn.prodEquiv K n).apply_symm_apply _`.
+-/
 theorem prodEquiv_infEmb (x : archGroup K n) :
     AdelicGLn.prodEquiv K n (infEmb K n x) = ((archEquiv K n).symm x, 1) :=
   (AdelicGLn.prodEquiv K n).apply_symm_apply _
 
+/- English proof (translation)
+The claim follows from `(AdelicGLn.prodEquiv K n).apply_symm_apply _`.
+-/
 theorem prodEquiv_finEmb (y : AdelicGLn.FiniteAdelicGL K n) :
     AdelicGLn.prodEquiv K n (finEmb K n y) = (1, y) :=
   (AdelicGLn.prodEquiv K n).apply_symm_apply _
 
+/- English proof (translation)
+Apply `(AdelicGLn.prodEquiv K n).injective` to reduce the goal to its premises. Simplify using `only [map_mul, prodEquiv_infEmb, prodEquiv_finEmb, Prod.mk_mul_mk, mul_one, one_mul]`.
+-/
 theorem infEmb_mul_finEmb_comm (x : archGroup K n) (y : AdelicGLn.FiniteAdelicGL K n) :
     infEmb K n x * finEmb K n y = finEmb K n y * infEmb K n x := by
   apply (AdelicGLn.prodEquiv K n).injective
   simp only [map_mul, prodEquiv_infEmb, prodEquiv_finEmb, Prod.mk_mul_mk, mul_one, one_mul]
 
+/- English proof (translation)
+Apply `(AdelicGLn.prodEquiv K n).injective` to reduce the goal to its premises. Simplify using `only [map_mul, prodEquiv_infEmb, prodEquiv_finEmb, ContinuousMulEquiv.symm_apply_apply, Prod.mk_mul_mk, mul_one, one_mul]`.
+-/
 theorem infEmb_mul_finEmb (g : AdelicGLn.AdelicGL K n) :
     infEmb K n (archEquiv K n (AdelicGLn.prodEquiv K n g).1) *
       finEmb K n (AdelicGLn.prodEquiv K n g).2 = g := by
@@ -111,11 +143,17 @@ theorem infEmb_mul_finEmb (g : AdelicGLn.AdelicGL K n) :
   simp only [map_mul, prodEquiv_infEmb, prodEquiv_finEmb, ContinuousMulEquiv.symm_apply_apply,
     Prod.mk_mul_mk, mul_one, one_mul]
 
+/- English proof (translation)
+Introduce `x y hxy`. Use `congrArg (fun g => (AdelicGLn.prodEquiv K n g).1) hxy` as an intermediate fact. Simplify `this` using `[prodEquiv_infEmb]`.
+-/
 theorem infEmb_injective : Function.Injective (infEmb K n) := by
   intro x y hxy
   have := congrArg (fun g => (AdelicGLn.prodEquiv K n g).1) hxy
   simpa [prodEquiv_infEmb] using this
 
+/- English proof (translation)
+Introduce `x y hxy`. Use `congrArg (fun g => (AdelicGLn.prodEquiv K n g).2) hxy` as an intermediate fact. Simplify `this` using `[prodEquiv_finEmb]`.
+-/
 theorem finEmb_injective : Function.Injective (finEmb K n) := by
   intro x y hxy
   have := congrArg (fun g => (AdelicGLn.prodEquiv K n g).2) hxy

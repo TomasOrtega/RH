@@ -13,6 +13,27 @@ attribute [local instance] Over.cartesianMonoidalCategory
 
 namespace GlobalTheory.Pinch
 
+/- English proof (translation)
+Introduce `R _ B M _ _ _ _ _ _ _ _ _ _ β hβ X x z hxz`. Set `T` to `Sp (TrivSqZeroExt R M)`. Set `i : Sp R ⟶ T` to `spMap (TrivSqZeroExt.fstHom R R M).toRingHom`. Set `j : Sp (TrivSqZeroExt B M) ⟶ T` to `spMap β`. Establish `hcov0` using `fun q => exists_basicOpen_inl (M := M) x q`.
+
+Establish `EO` using `GlobalTheory.T.trivSqZeroExt_pinch_exists_extend_basicOpen R B M β hβ X x z hxz`. Establish `UO` using `GlobalTheory.T.trivSqZeroExt_pinch_basicOpen_morphism_unique R B M β hβ X x`. Establish `RES : ∀ {Y' : Scheme.{0}} (f' : Y' ⟶ T) {V V' : T.Opens} (h : V' ≤ V) (g : V.toScheme ⟶ X) (w : Y' ⟶ X), f'.resLE V _ le_rfl ≫ g = (f' ⁻¹ᵁ V).ι ≫ w → f'.resLE V' _ le_rfl ≫ T.homOfLE h ≫ g = (f' ⁻¹ᵁ V').ι ≫ w`. Introduce `Y' f' V V' h g w hg`. Establish `e : f'.resLE V' _ le_rfl ≫ T.homOfLE h = Y'.homOfLE (f'.preimage_mono h) ≫ f'.resLE V _ le_rfl`.
+
+Rewrite using `[← cancel_mono V.ι]`. Simplify using `only [Category.assoc, Scheme.homOfLE_ι, Scheme.Hom.resLE_comp_ι, Scheme.homOfLE_ι_assoc]`. Rewrite using `[reassoc_of% e, hg, Scheme.homOfLE_ι_assoc]`. Set `Idx` to `{p : Γ(T, ⊤) × X.affineOpens // i ⁻¹ᵁ T.basicOpen p.1 ≤ x ⁻¹ᵁ p.2.1}`. Establish `hcov : TopologicalSpace.IsOpenCover (fun p : Idx => T.basicOpen p.1.1)`.
+
+Rewrite using `[TopologicalSpace.IsOpenCover, eq_top_iff]`. Introduce `q _`. Take `⟨s, U, hq, hle⟩` from `hcov0 q`. Conclude with `TopologicalSpace.Opens.mem_iSup.mpr ⟨⟨(s, U), hle⟩, hq⟩`. Set `𝒰` to `T.openCoverOfIsOpenCover _ hcov`.
+
+Use `choose g hg using fun p : Idx => EO p.1.1 p.1.2 p.2`. Establish `hc : ∀ a b : Idx, pullback.fst (𝒰.f a) (𝒰.f b) ≫ g a = pullback.snd (𝒰.f a) (𝒰.f b) ≫ g b`. Introduce `a b`. Establish `hP` using `isPullback_opens_inf (T.basicOpen a.1.1) (T.basicOpen b.1.1)`. Express the relevant statement in the definitionally equal form `pullback.fst (T.basicOpen a.1.1).ι (T.basicOpen b.1.1).ι ≫ g a = pullback.snd (T.basicOpen a.1.1).ι (T.basicOpen b.1.1).ι ≫ g b`.
+
+Rewrite using `[← cancel_epi hP.isoPullback.hom, IsPullback.isoPullback_hom_fst_assoc, IsPullback.isoPullback_hom_snd_assoc]`. Use `UO _ (a.1.1 * b.1.1) (T.basicOpen_mul _ _).symm a.1.2 ((i.preimage_mono inf_le_left).trans a.2) _ _ (RES i _ _ x (hg a).1) (RES i _ _ x (hg b).1) ?_` and prove the remaining obligations. Rewrite using `[RES j _ _ z (hg a).2, RES j _ _ z (hg b).2]`. Set `z₀` to `𝒰.glueMorphisms g hc`. Establish `hz₀ : ∀ a : Idx, (T.basicOpen a.1.1).ι ≫ z₀ = g a` using `fun a => 𝒰.ι_glueMorphisms g hc a`.
+
+Establish `hi : i ≫ z₀ = x`. Establish `hcovR : TopologicalSpace.IsOpenCover (fun p : Idx => i ⁻¹ᵁ T.basicOpen p.1.1)`. Rewrite using `[TopologicalSpace.IsOpenCover, ← Scheme.Hom.preimage_iSup, hcov, Scheme.Hom.preimage_top]`. Use `Scheme.Cover.hom_ext ((Sp R).openCoverOfIsOpenCover _ hcovR) _ _ fun a => ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `(i ⁻¹ᵁ T.basicOpen a.1.1).ι ≫ i ≫ z₀ = (i ⁻¹ᵁ T.basicOpen a.1.1).ι ≫ x`.
+
+Rewrite using `[← (hg a).1, ← hz₀ a, ← Category.assoc, ← Scheme.Hom.resLE_comp_ι i (le_rfl), Category.assoc]`. Establish `hj : j ≫ z₀ = z`. Establish `hcovA : TopologicalSpace.IsOpenCover (fun p : Idx => j ⁻¹ᵁ T.basicOpen p.1.1)`. Rewrite using `[TopologicalSpace.IsOpenCover, ← Scheme.Hom.preimage_iSup, hcov, Scheme.Hom.preimage_top]`. Use `Scheme.Cover.hom_ext ((Sp (TrivSqZeroExt B M)).openCoverOfIsOpenCover _ hcovA) _ _ fun a => ?_` and prove the remaining obligations.
+
+Express the relevant statement in the definitionally equal form `(j ⁻¹ᵁ T.basicOpen a.1.1).ι ≫ j ≫ z₀ = (j ⁻¹ᵁ T.basicOpen a.1.1).ι ≫ z`. Rewrite using `[← (hg a).2, ← hz₀ a, ← Category.assoc, ← Scheme.Hom.resLE_comp_ι j (le_rfl), Category.assoc]`. Use `⟨z₀, ⟨hi, hj⟩, fun z₁ ⟨h1, h2⟩ => ?_⟩` and prove the remaining obligations. Use `Scheme.Cover.hom_ext 𝒰 _ _ fun a => ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `(T.basicOpen a.1.1).ι ≫ z₁ = (T.basicOpen a.1.1).ι ≫ z₀`.
+
+Rewrite using `[hz₀ a]`. Use `UO _ a.1.1 rfl a.1.2 a.2 _ _ ?_ (hg a).1 ?_` and prove the remaining obligations. Rewrite using `[Scheme.Hom.resLE_comp_ι_assoc, h1]`. Rewrite using `[Scheme.Hom.resLE_comp_ι_assoc, h2, (hg a).2]`.
+-/
 theorem pinch_main : ∀ (R : Type) [CommRing R] (B M : Type) [CommRing B] [Algebra R B] [AddCommGroup M] [Module B M] [Module Bᵐᵒᵖ M] [IsCentralScalar B M] [Module R M] [IsScalarTower R B M] [Module Rᵐᵒᵖ M] [IsCentralScalar R M] (β : TrivSqZeroExt R M →+* TrivSqZeroExt B M), IsSum β (algebraMap R B) id → ∀ (X : Scheme.{0}) (x : Sp R ⟶ X) (z : Sp (TrivSqZeroExt B M) ⟶ X), spMap (TrivSqZeroExt.fstHom B B M).toRingHom ≫ z = spMap (algebraMap R B) ≫ x → ∃! z₀ : Sp (TrivSqZeroExt R M) ⟶ X, spMap (TrivSqZeroExt.fstHom R R M).toRingHom ≫ z₀ = x ∧ spMap β ≫ z₀ = z := by
   intro R _ B M _ _ _ _ _ _ _ _ _ _ β hβ X x z hxz
   let T := Sp (TrivSqZeroExt R M)

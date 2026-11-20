@@ -2,6 +2,13 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.CommutativeAlgebra
 
 open IsLocalRing Filter Formalism.MainNotions.V.Pf.V2.Calc UpperTheory.V.Alg UpperTheory.V.Alg.M
 
+/- English proof (translation)
+Set `b` to `Module.finBasisOfFinrankEq O P hr`. Establish `ha` using `fun i => IsDiscreteValuationRing.eq_unit_mul_pow_irreducible (Submodule.smithNormalFormCoeffs_ne_zero b hN i) hϖ`. Use `choose c u hu using ha`. Use `⟨fun i => (u i : O) • Submodule.smithNormalFormTopBasis b hN i, c, ?_, ?_⟩` and prove the remaining obligations. Establish `h1 : (fun i => ϖ ^ c i • (u i : O) • Submodule.smithNormalFormTopBasis b hN i) = N.subtype ∘ Submodule.smithNormalFormBotBasis b hN`.
+
+Use function extensionality and compare the values at `i`. Simplify using `only [Function.comp, Submodule.subtype_apply]`. Rewrite using `[Submodule.smithNormalFormBotBasis_def, hu i, smul_smul, mul_comm]`. Rewrite using `[h1, Set.range_comp, ← Submodule.map_span, Module.Basis.span_eq, Submodule.map_top, Submodule.range_subtype]`. Rewrite using `[(N.quotientEquivPiSpan b hN).length_eq, Module.length_pi_of_fintype, Nat.cast_sum]`.
+
+Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Establish `: Ideal.span {Submodule.smithNormalFormCoeffs b hN i} = maximalIdeal O ^ c i`. Rewrite using `[hu i, hϖ.maximalIdeal_eq, Ideal.span_singleton_pow, Ideal.span_singleton_mul_left_unit (u i).isUnit]`. Rewrite using `[this, IsDiscreteValuationRing.length_quotient_pow_maximalIdeal]`.
+-/
 private theorem sm_smith {O P : Type} [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] [AddCommGroup P]
     [Module O P] [Module.Finite O P] [Module.IsTorsionFree O P] {r : ℕ} (hr : Module.finrank O P = r)
     (N : Submodule O P) (hN : Module.finrank O N = Module.finrank O P) (ϖ : O) (hϖ : Irreducible ϖ) :
@@ -25,6 +32,17 @@ private theorem sm_smith {O P : Type} [CommRing O] [IsDomain O] [IsDiscreteValua
       rw [hu i, hϖ.maximalIdeal_eq, Ideal.span_singleton_pow, Ideal.span_singleton_mul_left_unit (u i).isUnit]
     rw [this, IsDiscreteValuationRing.length_quotient_pow_maximalIdeal]
 
+/- English proof (translation)
+Establish `hw : ∀ i, ∃ w, φ w = n i` using `fun i => by`. Establish `: n i ∈ LinearMap.range φ` using `hn ▸ Submodule.subset_span ⟨i, rfl⟩`. Conclude with `this`. Use `choose w hw using hw`. Establish `hk : Module.finrank O (LinearMap.ker φ) = 1`.
+
+Establish `h1` using `(LinearMap.ker φ).finrank_quotient_add_finrank`. Rewrite `h1` using `[φ.quotKerEquivRange.finrank_eq, hr, Module.finrank_fin_fun]`. Use linear arithmetic over natural numbers and integers. Set `b` to `Module.finBasisOfFinrankEq O (LinearMap.ker φ) hk`. Use `⟨Fin.snoc (α := fun _ => Fin (r + 1) → O) w (b 0 : Fin (r + 1) → O), ?_, fun i => by simp [hw], by simp⟩` and prove the remaining obligations.
+
+Rewrite using `[eq_top_iff]`. Introduce `u _`. Establish `h1 : φ u ∈ Submodule.span O (Set.range n)` using `hn ▸ LinearMap.mem_range_self φ u`. Take `⟨a, ha⟩` from `(Submodule.mem_span_range_iff_exists_fun O).1 h1`. Establish `h2 : u - ∑ i, a i • w i ∈ LinearMap.ker φ`.
+
+Simplify using `[LinearMap.mem_ker, map_sum, hw, ha]`. Establish `h3` using `congrArg Subtype.val (b.sum_repr ⟨_, h2⟩)`. Simplify using `only [Fin.sum_univ_one, Submodule.coe_smul] at h3`. Rewrite using `[← sub_add_cancel u (∑ i, a i • w i), ← h3]`. Use `add_mem (Submodule.smul_mem _ _ (Submodule.subset_span ⟨Fin.last r, by simp⟩)) ?_` and prove the remaining obligations.
+
+Conclude with `Submodule.sum_mem _ fun i _ => Submodule.smul_mem _ _ (Submodule.subset_span ⟨i.castSucc, by simp⟩)`.
+-/
 private theorem sm_lift {O P : Type} [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] [AddCommGroup P]
     [Module O P] {r : ℕ} (φ : (Fin (r + 1) → O) →ₗ[O] P) (hr : Module.finrank O (LinearMap.range φ) = r)
     (n : Fin r → P) (hn : Submodule.span O (Set.range n) = LinearMap.range φ) :
@@ -52,6 +70,27 @@ private theorem sm_lift {O P : Type} [CommRing O] [IsDomain O] [IsDiscreteValuat
   refine add_mem (Submodule.smul_mem _ _ (Submodule.subset_span ⟨Fin.last r, by simp⟩)) ?_
   exact Submodule.sum_mem _ fun i _ => Submodule.smul_mem _ _ (Submodule.subset_span ⟨i.castSucc, by simp⟩)
 
+/- English proof (translation)
+Introduce `O _ _ _ A _ _ 𝒜 x hx r F hF hfin hr hs ϖ hϖ`. Use `haveI : Module.IsTorsionFree O (A ⧸ satSq x) := by`. Use `Module.IsTorsionFree.of_smul_eq_zero fun c p h => ?_` and prove the remaining obligations. Take `⟨f, rfl⟩` from `(satSq x).mkQ_surjective p`. Distinguish the cases in `hc : c = 0`.
+
+Conclude with `Or.inl hc`. Use `right`. Rewrite `h` using `[← map_smul, Submodule.mkQ_apply, Submodule.Quotient.mk_eq_zero]`. Take `⟨d, hd, h⟩` from `h`. Rewrite using `[Submodule.mkQ_apply, Submodule.Quotient.mk_eq_zero]`.
+
+Conclude with `⟨d * c, mul_ne_zero hd hc, by rwa [mul_smul]⟩`. Establish `hle : cotSpan x F ≤ cotLat x 𝒜 (-1)`. Use `Submodule.span_le.2 ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨i, rfl⟩`. Conclude with `⟨F i, ⟨hF i, hx _ (hF i)⟩, rfl⟩`.
+
+Use `set N := (cotSpan x F).comap (cotLat x 𝒜 (-1)).subtype with hNdef`. Establish `hN : Module.finrank O N = Module.finrank O (cotLat x 𝒜 (-1))`. Establish `h1` using `N.finrank_quotient_add_finrank`. Establish `h2 : Module.finrank O (cotLat x 𝒜 (-1) ⧸ N) = 0`. Rewrite using `[Module.finrank_eq_zero_iff]`.
+
+Introduce `q`. Take `⟨p, rfl⟩` from `N.mkQ_surjective q`. Take `⟨c, hc, hp⟩` from `hs p.1 p.2`. Use `⟨c, hc, ?_⟩` and prove the remaining obligations. Rewrite using `[← map_smul, Submodule.mkQ_apply, Submodule.Quotient.mk_eq_zero]`.
+
+Conclude with `hp`. Use linear arithmetic over natural numbers and integers. Take `⟨y, c, hy, hlen⟩` from `sm_smith hr N hN ϖ hϖ`. Set `ψ : (Fin (r + 1) → O) →ₗ[O] A` to `Fintype.linearCombination O F`. Establish `hψ : LinearMap.range ψ = Submodule.span O (Set.range F)` using `Fintype.range_linearCombination O F`.
+
+Establish `hφ : LinearMap.range ((satSq x).mkQ ∘ₗ ψ) = cotSpan x F`. Rewrite using `[LinearMap.range_comp, hψ, Submodule.map_span, ← Set.range_comp]`. Both sides reduce to the same expression. Establish `hmap : N.map (cotLat x 𝒜 (-1)).subtype = cotSpan x F`. Rewrite using `[hNdef, Submodule.map_comap_subtype, inf_eq_right.2 hle]`.
+
+Take `⟨v, hv, hv1, hv2⟩` from `sm_lift ((satSq x).mkQ ∘ₗ ψ) (by rw [hφ]; exact (Submodule.comapSubtypeEquivOfLe hle).finrank_eq.symm.trans (hN.trans hr)) (fun i => ϖ ^ c i • (y i : A ⧸ satSq x)) (by rw [hφ, ← hmap, ← hy, Submodule.map_span, ← Set.range_comp]; rfl)`. Establish `hz : ∀ i, ∃ z ∈ 𝒜 (-1), (satSq x).mkQ z = y i` using `fun i => by`. Take `⟨z, hz, h⟩` from `(y i).2`. Conclude with `⟨z, hz.1, h⟩`. Use `choose z hz hz' using hz`.
+
+Use `⟨ψ ∘ v, z, c, ?_, fun i => ⟨hz i, ?_⟩, ?_, hlen⟩` and prove the remaining obligations. Rewrite using `[Set.range_comp, ← Submodule.map_span, hv, Submodule.map_top, hψ]`. Rewrite using `[← Submodule.Quotient.mk_eq_zero, ← Submodule.mkQ_apply, map_sub, map_smul, hz', sub_eq_zero]`. Conclude with `hv1 i`. Rewrite using `[← Submodule.Quotient.mk_eq_zero]`.
+
+Conclude with `hv2`.
+-/
 theorem UpperTheory.V.Alg.M.sm_holds :
     ∀ (O : Type) [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] (A : Type) [CommRing A] [Algebra O A]
       (𝒜 : ℤ → Submodule O A) (x : A →ₐ[O] O), (∀ f ∈ 𝒜 (-1), x f = 0) → ∀ (r : ℕ) (F : Fin (r + 1) → A), (∀ i, F i ∈ 𝒜 (-1)) →

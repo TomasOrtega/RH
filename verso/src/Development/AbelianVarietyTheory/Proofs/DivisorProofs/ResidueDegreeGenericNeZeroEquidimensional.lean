@@ -12,6 +12,23 @@ noncomputable section
 
 namespace GlobalTheory.GenFinite
 
+/- English proof (translation)
+Use `letI : Algebra F K := ((algebraMap A K).comp (algebraMap F A)).toAlgebra`. Use `letI : Algebra F L := ((algebraMap B L).comp (algebraMap F B)).toAlgebra`. Use `haveI : IsScalarTower F A K := IsScalarTower.of_algebraMap_eq' rfl`. Use `haveI : IsScalarTower F B L := IsScalarTower.of_algebraMap_eq' rfl`. Use `haveI : IsScalarTower F K L := by`.
+
+Use `IsScalarTower.of_algebraMap_eq fun x => ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `algebraMap B L (algebraMap F B x) = algebraMap K L (algebraMap A K (algebraMap F A x))`. Rewrite using `[← IsScalarTower.algebraMap_apply A K L, IsScalarTower.algebraMap_apply A B L, ← IsScalarTower.algebraMap_apply F A B]`. Use `haveI : FaithfulSMul F A := (faithfulSMul_iff_algebraMap_injective _ _).mpr (algebraMap F A).injective`. Use `haveI : FaithfulSMul F B := (faithfulSMul_iff_algebraMap_injective _ _).mpr (algebraMap F B).injective`.
+
+Use `haveI : FaithfulSMul A K := (faithfulSMul_iff_algebraMap_injective _ _).mpr (IsFractionRing.injective A K)`. Use `haveI : FaithfulSMul B L := (faithfulSMul_iff_algebraMap_injective _ _).mpr (IsFractionRing.injective B L)`. Use `haveI : Algebra.IsAlgebraic A K := IsLocalization.isAlgebraic K (nonZeroDivisors A)`. Use `haveI : Algebra.IsAlgebraic B L := IsLocalization.isAlgebraic L (nonZeroDivisors B)`. Establish `hK : Algebra.trdeg F K = n` using `(trdeg_eq_of_isAlgebraic_top F A K).trans hA`.
+
+Establish `hL : Algebra.trdeg F L = n` using `(trdeg_eq_of_isAlgebraic_top F B L).trans hB`. Establish `h0 : Algebra.trdeg K L = 0`. Establish `e` using `trdeg_add_eq F K (A := L)`. Rewrite `e` using `[hK, hL]`. Break down `(Cardinal.add_eq_left_iff).1 e with h | h` into its components or cases.
+
+Conclude with `absurd (le_trans (le_max_left _ _) h) (not_le.2 (Cardinal.natCast_lt_aleph0))`. Conclude with `h`. Use `haveI : Algebra.IsAlgebraic K L := trdeg_eq_zero_iff.1 h0`. Take `⟨s, hs⟩` from `(inferInstance : Algebra.FiniteType A B).out`. Set `g : B →ₐ[A] L` to `IsScalarTower.toAlgHom A B L`.
+
+Set `T : IntermediateField K L` to `IntermediateField.adjoin K (g '' (s : Set B))`. Establish `hfin : FiniteDimensional K T` using `IntermediateField.finiteDimensional_adjoin fun x _ => Algebra.IsIntegral.isIntegral x`. Establish `hrange : ∀ b : B, algebraMap B L b ∈ T`. Introduce `b`. Establish `hb : b ∈ Algebra.adjoin A (s : Set B)` using `hs ▸ Algebra.mem_top`.
+
+Establish `: g b ∈ (Algebra.adjoin A (s : Set B)).map g` using `Subalgebra.mem_map.2 ⟨b, hb, rfl⟩`. Rewrite `this` using `[AlgHom.map_adjoin]`. Establish `hle : Algebra.adjoin A (g '' (s : Set B)) ≤ T.toSubalgebra.restrictScalars A` using `Algebra.adjoin_le (IntermediateField.subset_adjoin K _)`. Conclude with `hle this`. Establish `htop : T = ⊤`.
+
+Use `eq_top_iff.2 fun l _ => ?_` and prove the remaining obligations. Take `⟨x, y, _, rfl⟩` from `IsFractionRing.div_surjective (A := B) l`. Conclude with `T.div_mem (hrange x) (hrange y)`. Rewrite `hfin` using `[htop]`. Conclude with `LinearEquiv.finiteDimensional (IntermediateField.topEquiv (F := K) (E := L)).toLinearEquiv`.
+-/
 theorem finiteDimensional_of_trdeg_eq (F A B K L : Type) [Field F] [CommRing A] [IsDomain A]
     [CommRing B] [IsDomain B] [Field K] [Field L] [Algebra F A] [Algebra A B] [Algebra F B]
     [IsScalarTower F A B] [Algebra A K] [Algebra B L] [Algebra K L] [Algebra A L]
@@ -66,6 +83,11 @@ end GlobalTheory.GenFinite
 
 namespace GlobalTheory.GenFinite
 
+/- English proof (translation)
+Use `haveI : Nonempty U := ⟨⟨hne.some, hne.some_mem⟩⟩`. Take `⟨d, h₁, h₂⟩` from `exists_ringKrullDim_eq_and_trdeg_eq F Γ(Y, U)`. Establish `e : topologicalKrullDim (U : Set Y) = d`. Rewrite using `[← h₁, ← PrimeSpectrum.topologicalKrullDim_eq_ringKrullDim]`. Conclude with `topologicalKrullDim_eq_of_isEmbedding hU.fromSpec.isOpenEmbedding.isEmbedding hU.range_fromSpec`.
+
+Rewrite `e` using `[GlobalTheory.OpenDim.topologicalKrullDim_open F q U hne, hn]`. Establish `hd : d = n` using `by exact_mod_cast e.symm`. Rewrite using `[h₂, hd]`.
+-/
 theorem trdeg_affineOpen_eq (F : Type) [Field F] {Y : Scheme.{0}} [IsIntegral Y]
     (q : Y ⟶ Sp F) [LocallyOfFiniteType q] {U : Y.Opens} (hU : IsAffineOpen U)
     (hne : (U : Set Y).Nonempty) [Algebra F Γ(Y, U)] [Algebra.FiniteType F Γ(Y, U)] (n : ℕ)
@@ -80,6 +102,23 @@ theorem trdeg_affineOpen_eq (F : Type) [Field F] {Y : Scheme.{0}} [IsIntegral Y]
   have hd : d = n := by exact_mod_cast e.symm
   rw [h₂, hd]
 
+/- English proof (translation)
+Introduce `F _ M W _ _ p f n hp hf hs hM hW`. Establish `hη : f (genericPoint M) = genericPoint W`. Use `(genericPoint_spec M).image f.continuous` as an intermediate fact. Rewrite `this` using `[Set.image_univ, f.surjective.range_eq, closure_univ]`. Conclude with `this.eq (genericPoint_spec W)`.
+
+Take `⟨_, ⟨V, hV, rfl⟩, hxV, -⟩` from `W.isBasis_affineOpens.exists_subset_of_mem_open (Set.mem_univ (genericPoint W)) isOpen_univ`. Establish `hV : IsAffineOpen V` using `hV`. Establish `hx : f (genericPoint M) ∈ V` using `hη ▸ hxV`. Take `⟨_, ⟨U, hU, rfl⟩, hy, hUV⟩` from `M.isBasis_affineOpens.exists_subset_of_mem_open (show genericPoint M ∈ f ⁻¹ᵁ V from hx) (f ⁻¹ᵁ V).isOpen`. Establish `hU : IsAffineOpen U` using `hU`.
+
+Use `haveI : Nonempty V := ⟨⟨_, hx⟩⟩`. Use `haveI : Nonempty U := ⟨⟨_, hy⟩⟩`. Establish `e : U ≤ f ⁻¹ᵁ V` using `hUV`. Set `φ` to `Spec.preimage (hV.fromSpec ≫ p)`. Establish `hφ : Spec.map φ = hV.fromSpec ≫ p` using `Spec.map_preimage _`.
+
+Use `letI : Algebra F Γ(W, V) := φ.hom.toAlgebra`. Establish `hftA : Algebra.FiniteType F Γ(W, V)` using `(HasRingHomProperty.Spec_iff (P := @LocallyOfFiniteType) (φ := φ)).mp (hφ ▸ inferInstance)`. Use `letI : Algebra Γ(W, V) Γ(M, U) := (f.appLE V U e).hom.toAlgebra`. Establish `hftB : Algebra.FiniteType Γ(W, V) Γ(M, U)` using `HasRingHomProperty.appLE @LocallyOfFiniteType f hf ⟨V, hV⟩ ⟨U, hU⟩ e`. Use `letI : Algebra F Γ(M, U) := (φ ≫ f.appLE V U e).hom.toAlgebra`.
+
+Use `haveI : IsScalarTower F Γ(W, V) Γ(M, U) := IsScalarTower.of_algebraMap_eq' rfl`. Establish `hftC : Algebra.FiniteType F Γ(M, U)` using `Algebra.FiniteType.trans hftA hftB`. Establish `hA : Algebra.trdeg F Γ(W, V) = n` using `trdeg_affineOpen_eq F p hV ⟨_, hx⟩ n hW`. Establish `hB : Algebra.trdeg F Γ(M, U) = n` using `trdeg_affineOpen_eq F (f ≫ p) hU ⟨_, hy⟩ n hM`. Use `letI := (W.evaluation V _ hx).hom.toAlgebra`.
+
+Use `letI := (M.evaluation U _ hy).hom.toAlgebra`. Use `letI := (f.residueFieldMap (genericPoint M)).hom.toAlgebra`. Use `letI : Algebra Γ(W, V) (M.residueField (genericPoint M)) := (f.appLE V U e ≫ M.evaluation U _ hy).hom.toAlgebra`. Use `haveI : IsScalarTower Γ(W, V) Γ(M, U) (M.residueField (genericPoint M)) := IsScalarTower.of_algebraMap_eq' rfl`. Establish `nat : f.appLE V U e ≫ M.evaluation U _ hy = W.evaluation V _ hx ≫ f.residueFieldMap (genericPoint M)`.
+
+Rewrite using `[Scheme.evaluation_naturality f _ hx, Scheme.Hom.appLE, Category.assoc]`. Use `congr 1`. Simplify using `only [Scheme.evaluation]`. Rewrite using `[← Category.assoc, TopCat.Presheaf.germ_res]`. Use `haveI : IsScalarTower Γ(W, V) (W.residueField (f (genericPoint M))) (M.residueField (genericPoint M)) := IsScalarTower.of_algebraMap_eq' congr($(nat).hom)`.
+
+Use `haveI := GenFiniteEtale.isFractionRing_eval W hV hη hx`. Use `haveI := GenFiniteEtale.isFractionRing_eval M hU rfl hy`. Use `finiteDimensional_of_trdeg_eq F Γ(W, V) Γ(M, U) (W.residueField (f (genericPoint M))) (M.residueField (genericPoint M)) n hA hB` as an intermediate fact. Express the relevant statement in the definitionally equal form `Module.finrank (W.residueField (f (genericPoint M))) (M.residueField (genericPoint M)) ≠ 0`. Conclude with `Module.finrank_pos.ne'`.
+-/
 theorem residueDegree_genericPoint_ne_zero : ∀ (F : Type) [Field F] (M W : Scheme.{0}) [IsIntegral M] [IsIntegral W] (p : W ⟶ Sp F) (f : M ⟶ W) (n : ℕ), LocallyOfFiniteType p → LocallyOfFiniteType f → Surjective f → topologicalKrullDim M = n → topologicalKrullDim W = n → f.residueDegree (genericPoint M) ≠ 0 := by
   intro F _ M W _ _ p f n hp hf hs hM hW
   have hη : f (genericPoint M) = genericPoint W := by

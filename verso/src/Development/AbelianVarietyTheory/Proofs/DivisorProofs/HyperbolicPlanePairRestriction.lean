@@ -19,6 +19,35 @@ namespace GlobalTheory.EvPtDenom
 
 open Formalism.UG in
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ n d κ ι _ _ e Y N hN`. Set `f1 : κ → (Matrix (Fin n) (Fin d) (AF F ⊗[F] E) →ₗ[AF F] AF F)` to `fun j => (LinearMap.proj j).comp ((LinearMap.fst (AF F) (κ → AF F) (κ → AF F)).comp e.toLinearMap)`. Set `f2 : κ → (Matrix (Fin n) (Fin d) (AF F ⊗[F] E) →ₗ[AF F] AF F)` to `fun j => (LinearMap.proj j).comp ((LinearMap.snd (AF F) (κ → AF F) (κ → AF F)).comp e.toLinearMap)`. Use `choose K1 hK1f hK1 hK1b using fun j => GlobalTheory.LinFormBound.main (f1 j)`. Use `choose K2 hK2f hK2 hK2b using fun j => GlobalTheory.LinFormBound.main (f2 j)`.
+
+Use `choose Kx hKxf hKx hKxb using fun i => GlobalTheory.FixedBound.exists_entry_absFin_bound (Y i)`. Set `Kc : HeightOneSpectrum (𝓞 F) → ℝ≥0` to `fun v => (∏ j, K1 j v * K2 j v) * ∏ i, Kx i v`. Establish `hKc1 : ∀ v, 1 ≤ Kc v` using `fun v => one_le_mul_of_one_le_of_one_le (Finset.one_le_prod' fun j _ => one_le_mul_of_one_le_of_one_le (hK1 j v) (hK2 j v)) (Finset.one_le_prod' fun i _ => hKx i v)`. Establish `hKcf : (Function.mulSupport Kc).Finite`. Use `((Set.finite_iUnion fun j => (hK1f j).union (hK2f j)).union (Set.finite_iUnion hKxf)).subset ?_` and prove the remaining obligations.
+
+Use `(Function.mulSupport_mul _ _).trans (Set.union_subset_union ?_ ?_)` and prove the remaining obligations. Use `(Finset.mulSupport_prod _ _).trans ?_` and prove the remaining obligations. Introduce `v hv`. Simplify using `only [Set.mem_iUnion] at hv ⊢`. Take `⟨j, -, hj⟩` from `hv`.
+
+Conclude with `⟨j, Function.mulSupport_mul _ _ hj⟩`. Use `(Finset.mulSupport_prod _ _).trans ?_` and prove the remaining obligations. Introduce `v hv`. Simplify using `only [Set.mem_iUnion] at hv ⊢`. Take `⟨i, -, hi⟩` from `hv`.
+
+Conclude with `⟨i, hi⟩`. Establish `hP1 : ∀ v, ∏ j, K1 j v * K2 j v ≤ Kc v` using `fun v => le_mul_of_one_le_right' (Finset.one_le_prod' fun i _ => hKx i v)`. Establish `hP2 : ∀ v, ∏ i, Kx i v ≤ Kc v` using `fun v => le_mul_of_one_le_left' (Finset.one_le_prod' fun j _ => one_le_mul_of_one_le_of_one_le (hK1 j v) (hK2 j v))`. Establish `hK1c : ∀ v i j, K1 j v * Kx i v ≤ Kc v` using `fun v i j => by`. Use `le_trans ?_ (mul_le_mul' (Finset.single_le_prod' (fun j _ => one_le_mul_of_one_le_of_one_le (hK1 j v) (hK2 j v)) (Finset.mem_univ j)) (Finset.single_le_prod' (fun i _ => hKx i v) (Finset.mem_univ i)))` and prove the remaining obligations.
+
+Conclude with `mul_le_mul' (le_mul_of_one_le_right' (hK2 j v)) le_rfl`. Establish `hK2c : ∀ v i j, K2 j v * Kx i v ≤ Kc v` using `fun v i j => by`. Use `le_trans ?_ (mul_le_mul' (Finset.single_le_prod' (fun j _ => one_le_mul_of_one_le_of_one_le (hK1 j v) (hK2 j v)) (Finset.mem_univ j)) (Finset.single_le_prod' (fun i _ => hKx i v) (Finset.mem_univ i)))` and prove the remaining obligations. Conclude with `mul_le_mul' (le_mul_of_one_le_left' (hK1 j v)) le_rfl`. Set `C0 : ℝ≥0` to `∏ᶠ v, Kc v`.
+
+Use `⟨N * C0, 1, fun g h => ?_⟩` and prove the remaining obligations. Set `Hg : HeightOneSpectrum (𝓞 F) → ℝ≥0` to `fun v => htFin F v (bc (compFin F E v) g)`. Set `Hh : HeightOneSpectrum (𝓞 F) → ℝ≥0` to `fun v => htFin F v (bc (compFin F E v) h)`. Establish `hgf : (Function.mulSupport Hg).Finite` using `finite_mulSupport_htFin F g`. Establish `hhf : (Function.mulSupport Hh).Finite` using `finite_mulSupport_htFin F h`.
+
+Set `Z : ι → Matrix (Fin n) (Fin d) (AF F ⊗[F] E)` to `fun i => ((g⁻¹ : GL (Fin n) (AF F ⊗[F] E)) : Matrix (Fin n) (Fin n) (AF F ⊗[F] E)) * Y i * (((h⁻¹ : GL (Fin d) (AF F ⊗[F] E)) : Matrix (Fin d) (Fin d) (AF F ⊗[F] E)))ᵀ`. Establish `hsup : ∀ i v, (Finset.univ.sup fun p : Fin n × Fin d => absFin F v (compFin F E v (Z i p.1 p.2))) ≤ Kx i v * (Hg v * Hh v)` using `fun i v => by`. Use `Finset.sup_le fun p _ => (GlobalTheory.absFin_mul_mul_transpose_le g⁻¹ (Y i) h⁻¹ v p.1 p.2).trans ?_` and prove the remaining obligations. Rewrite using `[GlobalTheory.MovedLat.htFin_bc_inv, GlobalTheory.MovedLat.htFin_bc_inv]`. Combine the equalities or inequalities in the displayed calculation.
+
+Establish `hloc1 : ∀ i j v, ‖evFin F v ((e (Z i)).1 j)‖₊ ≤ Kc v * (Hg v * Hh v)` using `fun i j v => by`. Use `hK1b j (Z i) v` as an intermediate fact. Combine the equalities or inequalities in the displayed calculation. Establish `hloc2 : ∀ i j v, ‖evFin F v ((e (Z i)).2 j)‖₊ ≤ Kc v * (Hg v * Hh v)` using `fun i j v => by`. Use `hK2b j (Z i) v` as an intermediate fact.
+
+Combine the equalities or inequalities in the displayed calculation. Set `H : HeightOneSpectrum (𝓞 F) → ℝ≥0` to `fun v => Kc v * (Hg v * Hh v)`. Establish `hH1 : ∀ v, 1 ≤ H v` using `fun v => one_le_mul_of_one_le_of_one_le (hKc1 v) (one_le_mul_of_one_le_of_one_le (one_le_htOf _ _) (one_le_htOf _ _))`. Establish `hHf : (Function.mulSupport H).Finite` using `(hKcf.union (hgf.union hhf)).subset ((Function.mulSupport_mul _ _).trans (Set.union_subset_union le_rfl (Function.mulSupport_mul _ _)))`. Take `⟨M, hM0, hMb, hMv⟩` from `GlobalTheory.SmoothForms.denom_global H hH1 hHf`.
+
+Establish `hfin : ∀ x : AF F, (∀ v, ‖evFin F v x‖₊ ≤ H v) → GlobalTheory.FinSupp.FinDiv F N (((N * M : ℕ) : AF F) * x)`. Introduce `x hx v`. Use `⟨(M : Fv F v) * evFin F v x, Valued.toNormedField.norm_le_one_iff.1 (hMv v _ (hx v)), ?_⟩` and prove the remaining obligations. Rewrite using `[map_mul, map_natCast]`. Use `push_cast`.
+
+Expand and normalize the polynomial expressions, which then agree. Use `⟨N * M, Nat.one_le_iff_ne_zero.2 (Nat.mul_ne_zero (by omega) (by omega)), ?_, fun i j => ⟨hfin _ (hloc1 i j), hfin _ (hloc2 i j)⟩⟩` and prove the remaining obligations. Establish `hMH : (M : ℝ≥0) ≤ C0 * (heightGL F g * heightGL F h)`. Use `hMb.trans (le_of_eq_of_le (finprod_mul_distrib hKcf ((hgf.union hhf).subset (Function.mulSupport_mul _ _))) ?_)` and prove the remaining obligations. Use `mul_le_mul' le_rfl ?_` and prove the remaining obligations.
+
+Rewrite using `[finprod_mul_distrib hgf hhf]`. Conclude with `mul_le_mul' (GlobalTheory.MovedLat.finprod_htFin_le g) (GlobalTheory.MovedLat.finprod_htFin_le h)`. Use `NNReal.coe_le_coe.2 hMH` as an intermediate fact. Move the coercions through the operations in `at this ⊢`. Rewrite using `[pow_one, mul_assoc]`.
+
+Conclude with `mul_le_mul_of_nonneg_left this (by positivity)`.
+-/
 theorem exists_scale : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (n d : ℕ) (κ ι : Type)
     [Fintype κ] [Fintype ι]
     (e : Matrix (Fin n) (Fin d) (AF F ⊗[F] E) ≃ₗ[AF F] (κ → AF F) × (κ → AF F)) (Y : ι → Matrix (Fin n) (Fin d) (AF F ⊗[F] E))
@@ -118,6 +147,17 @@ theorem exists_scale : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [Num
   rw [pow_one, mul_assoc]
   exact mul_le_mul_of_nonneg_left this (by positivity)
 
+/- English proof (translation)
+Establish `h0 : ∀ a, ∑ i, ∑ k, incM F ι i a * incM F JX i k * cA σ (incV F y k) = 0`. Introduce `a`. Establish `h1` using `congrArg (inclR (F := F) (AF F)) (hy (Pi.single a 1))`. Rewrite `h1` using `[map_zero]`. Rewrite using `[← h1]`.
+
+Simplify using `only [form, dotProduct, Matrix.mulVec_single_one, Matrix.col_apply, incM, incV, Matrix.map_apply, GlobalTheory.ThKCptBoundX.cA_inclR]`. Simplify using `only [Matrix.mulVec, dotProduct, map_sum, map_mul, Finset.mul_sum, mul_assoc]`. Establish `h2 : hTens (cA σ) (incM F JX) JW (incM F ι * z) (Matrix.vecMulVec (incV F y) w) = ∑ a, ∑ j, ∑ l, (z a j * JW j l * cA σ (w l)) * ∑ i, ∑ k, incM F ι i a * incM F JX i k * cA σ (incV F y k)`. Simplify using `only [hTens, Matrix.mul_apply, Matrix.vecMulVec_apply, map_mul, Finset.sum_mul, Finset.mul_sum]`. Combine the equalities or inequalities in the displayed calculation.
+
+Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Use `(Finset.sum_congr rfl fun i _ => Finset.sum_comm).trans ?_` and prove the remaining obligations. Use `Finset.sum_comm.trans (Finset.sum_congr rfl fun l _ => ?_)` and prove the remaining obligations. Use `(Finset.sum_congr rfl fun i _ => Finset.sum_comm).trans ?_` and prove the remaining obligations.
+
+Conclude with `Finset.sum_comm`. Use `_ = _ := by`. Use `symm`. Rewrite using `[Finset.sum_comm]`. Conclude with `Finset.sum_congr rfl fun j _ => Finset.sum_comm`.
+
+Rewrite using `[h2]`. Simplify using `only [h0, mul_zero, Finset.sum_const_zero]`.
+-/
 theorem hTens_eq_zero {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E}
     {n n₁ d : ℕ} (JX : Matrix (Fin n) (Fin n) E) (JW : Matrix (Fin d) (Fin d) (AE F E)) (ι : Matrix (Fin n) (Fin n₁) E)
     (y : Fin n → E) (hy : ∀ u, form σ JX (ι *ᵥ u) y = 0) (z : Matrix (Fin n₁) (Fin d) (AE F E)) (w : Fin d → AE F E) :
@@ -150,6 +190,41 @@ theorem hTens_eq_zero {F E : Type} [Field F] [NumberField F] [Field E] [NumberFi
   rw [h2]
   simp only [h0, mul_zero, Finset.sum_const_zero]
 
+/- English proof (translation)
+Introduce `_ F E _ _ _ _ _ σ B n d X W M χX χW om r s r' s' hP d₂ H hH V₁ M₁ e _ _ hev Φ hΦ g K hK _`. Establish `S` using `hP.weil.isUSplitting`. Establish `hstd : IsStd B.ψ` using `hP.base.std`. Take `⟨N₀, hN1, hinv⟩` from `GlobalTheory.FinSuppHeis.heis_fix_finDiv F (Fin n × Fin d) B.ψ hstd.1 Φ hΦ`. Take `⟨C, k, hC⟩` from `exists_scale F E n d (Fin n × Fin d) (Fin d₂ × Fin d) M.co.e (fun i => incM F H.ι * M₁.co.e.symm (0, Pi.single i 1)) N₀ hN1`.
+
+Take `⟨D, hD1, hD⟩` from `GlobalTheory.FinSupp.DenStd.exists_den F`. Establish `hcont : Continuous (fun u : UA σ X.J => (ht (u * g) : ℝ))` using `NNReal.continuous_coe.comp ((GlobalTheory.Grow.continuous_heightGL F).comp (continuous_subtype_val.comp (continuous_id.mul continuous_const)))`. Take `⟨R, hR⟩` from `hK.exists_bound_of_continuousOn hcont.continuousOn`. Use `⟨D * (max C 0 * (max R 0) ^ k), k, fun u hu h N hN => ?_⟩` and prove the remaining obligations. Take `⟨m, hm1, hmC, hmT⟩` from `hC (u * g).1 h.1`.
+
+Use `⟨D * m, Nat.one_le_iff_ne_zero.mpr (Nat.mul_ne_zero (by omega) (by omega)), ?_, ?_⟩` and prove the remaining obligations. Use `push_cast`. Rewrite using `[mul_assoc]`. Use `mul_le_mul_of_nonneg_left (hmC.trans ?_) (by positivity)` and prove the remaining obligations. Establish `h1 : (ht (u * g) : ℝ) ≤ max R 0` using `((le_abs_self _).trans (hR u hu)).trans (le_max_left _ _)`.
+
+Establish `h2 : (ht h : ℝ) ≤ (N : ℝ) * ht h` using `le_mul_of_one_le_left (NNReal.coe_nonneg _) (by exact_mod_cast hN)`. Use `show C * ((ht (u * g) : ℝ) * ht h) ^ k ≤ _`. Rewrite using `[mul_assoc, ← mul_pow]`. Use `mul_le_mul (le_max_left _ _) ?_ (by positivity) (le_max_right _ _)` and prove the remaining obligations. Conclude with `pow_le_pow_left₀ (by positivity) (mul_le_mul h1 h2 (NNReal.coe_nonneg _) (le_max_right _ _)) k`.
+
+Introduce `w _ ξ hξ i set p : UA σ X.J × UA σ W.J := (u * g, h) with hp`. Establish `hom : om (u, 1) (om (g, h) Φ) = om p Φ`. Rewrite using `[← Module.End.mul_apply, ← map_mul, hp, Prod.mk_mul_mk, one_mul]`. Rewrite `hξ` using `[hom]`. Establish `hpΦ : om p Φ ∈ schA F (Fin n × Fin d)` using `S.pres p Φ hΦ`.
+
+Use `set a₀ := Matrix.vecMulVec (incV F H.y) (incV F w) with ha₀`. Establish `hΨ : M.co.rho B.ψ a₀ (om p Φ) ∈ schA F _` using `GlobalTheory.HeisSchA.rho_mem_schA M B.ψ hstd a₀ _ hpΦ`. Establish `key : ∀ a : 𝓞 F, B.ψ (GlobalTheory.FinSupp.finPart F (algebraMap F (AF F) ((a : F) * ((m : F) * ξ i)))) = 1`. Introduce `a`. Use `set c : AF F := GlobalTheory.FinSupp.finPart F (algebraMap F (AF F) ((m : F) * (a : F))) with hc`.
+
+Use `set y : Fin d₂ × Fin d → AF F := c • Pi.single i 1 with hy`. Use `set z := M₁.co.e.symm (0, y) with hz`. Use `set w' := incM F H.ι * z with hw'`. Use `set w₁ := actAB (cA σ) p⁻¹ w' with hw`. Establish `hwe : M.co.e w₁ = c • M.co.e (((((u * g).1)⁻¹ : GL (Fin n) (AF F ⊗[F] E)) : Matrix (Fin n) (Fin n) (AF F ⊗[F] E)) * (incM F H.ι * M₁.co.e.symm (0, Pi.single i 1)) * (((h.1⁻¹ : GL (Fin d) (AF F ⊗[F] E)) : Matrix (Fin d) (Fin d) (AF F ⊗[F] E)))ᵀ)`.
+
+Rewrite using `[hw, hw', hz, hy, hp]`. Rewrite using `[show ((0 : Fin d₂ × Fin d → AF F), c • Pi.single i (1 : AF F)) = c • ((0 : Fin d₂ × Fin d → AF F), Pi.single i (1 : AF F)) by simp]`. Rewrite using `[LinearEquiv.map_smul, ← LinearEquiv.map_smul M.co.e]`. Use `congr 1`. Simplify using `only [actAB, Prod.inv_mk, Subgroup.coe_inv]`.
+
+Rewrite using `[Matrix.mul_smul, Matrix.mul_smul, Matrix.smul_mul]`. Establish `hrho : M.co.rho B.ψ w₁ Φ = Φ`. Unfold `Darboux.rho`. Apply `hinv` to reduce the goal to its premises. Introduce `l`.
+
+Rewrite using `[hwe]`. Take `⟨h1, h2⟩` from `hmT i l`. Use `⟨?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Use `show (c * _).1 = 0`. Conclude with `zero_mul _`.
+
+Rewrite using `[Prod.smul_fst, Pi.smul_apply, smul_eq_mul]`. Conclude with `GlobalTheory.FinSupp.finDiv_finPart_mul h1 a`. Use `show (c * _).1 = 0`. Conclude with `zero_mul _`. Rewrite using `[Prod.smul_snd, Pi.smul_apply, smul_eq_mul]`.
+
+Conclude with `GlobalTheory.FinSupp.finDiv_finPart_mul h2 a`. Establish `himpl` using `S.impl p w₁ Φ hΦ`. Rewrite `himpl` using `[hrho]`. Establish `hact : actAB (cA σ) p w₁ = w'`. Rewrite using `[hw]`.
+
+Simplify using `only [actAB, Prod.fst_inv, Prod.snd_inv, Subgroup.coe_inv]`. Rewrite using `[← Matrix.mul_assoc, ← Matrix.mul_assoc, ← Units.val_mul, mul_inv_cancel, Units.val_one, Matrix.one_mul, Matrix.mul_assoc, ← Matrix.transpose_mul, ← Units.val_mul, mul_inv_cancel, Units.val_one, Matrix.transpose_one, Matrix.mul_one]`. Rewrite `himpl` using `[hact]`. Establish `horth : (M.co.e w').1 ⬝ᵥ (M.co.e a₀).2 - (M.co.e a₀).1 ⬝ᵥ (M.co.e w').2 = 0`. Rewrite using `[← M.co.form, symp, hw', ha₀, hTens_eq_zero X.J _ H.ι H.y (fun u => (hH.2.2.2.2.1 u).2), mul_zero, map_zero]`.
+
+Establish `hcomm : M.co.rho B.ψ w' (M.co.rho B.ψ a₀ (om p Φ)) = M.co.rho B.ψ a₀ (om p Φ)` using `by conv_rhs => rw [himpl]`. Simplify using `only [Darboux.rho]`. Rewrite using `[GlobalTheory.ThetaQuasiRat.schr_schr, GlobalTheory.ThetaQuasiRat.schr_schr, horth, ← neg_sub, horth, neg_zero, add_comm]`. Establish `hheis` using `hev.Heisenberg₂ z _ hΨ`. Establish `h11 : incM F (1 : Matrix (Fin d) (Fin d) E) = 1` using `Matrix.map_one _ (map_zero _) (map_one _)`.
+
+Rewrite `hheis` using `[h11, Matrix.transpose_one, Matrix.mul_one, ← hw', hcomm]`. Establish `hx` using `congrFun hheis (fun j => algebraMap F (AF F) (ξ j))`. Rewrite `hx` using `[Darboux.rho.eq_1 M₁.co, hz, LinearEquiv.apply_symm_apply]`. Simplify using `only [schr, zero_dotProduct, mul_zero, add_zero] at hx`. Establish `h1 : B.ψ ((fun j => algebraMap F (AF F) (ξ j)) ⬝ᵥ y) = 1` using `(mul_eq_right₀ hξ).1 hx.symm`.
+
+Rewrite `h1` using `[hy, dotProduct_smul, dotProduct_single, smul_eq_mul, mul_one, hc, GlobalTheory.FinSupp.finPart_mul, ← map_mul]`. Use `h1 using 3` and compare the differences between its conclusion and the goal. Expand and normalize the polynomial expressions, which then agree. Use `hD B.ψ hstd _ key` as an intermediate fact. Use `this using 1` and compare the differences between its conclusion and the goal.
+
+Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem main : GlobalTheory.ThK.KP → ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E)
     (n d : ℕ) (X : Spc F E n) (W : Spc F E d) (M : Model σ X W) (χX χW : Chr F E) (om : Rep σ X W) (r s r' s' : ℕ),
     IsPair B M χX χW om r s r' s' →

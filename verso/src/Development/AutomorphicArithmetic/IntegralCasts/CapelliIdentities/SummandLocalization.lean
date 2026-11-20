@@ -1,5 +1,8 @@
 import Mathlib
 
+/- English proof (translation)
+Introduce and unpack `R _ W _ _ S L x y ⟨s, hs, hx⟩ ⟨t, ht, hy⟩`. Use `⟨s * t, S.mul_mem hs ht, ?_⟩` and prove the remaining obligations. Rewrite using `[smul_add, mul_smul s t y, mul_comm s t, mul_smul t s x]`. Conclude with `L.add_mem (L.smul_mem t hx) (L.smul_mem s hy)`.
+-/
 theorem UpperTheory.Reformulated.B.SummandLocalization.aux1.{u_1, u_2} :
     ∀ {R : Type u_2} [inst : CommRing R] {W : Type u_1} [inst_1 : AddCommGroup W] [inst_2 : _root_.Module R W]
       (S : Submonoid R) (L : Submodule R W) {x y : W},
@@ -9,12 +12,18 @@ theorem UpperTheory.Reformulated.B.SummandLocalization.aux1.{u_1, u_2} :
   rw [smul_add, mul_smul s t y, mul_comm s t, mul_smul t s x]
   exact L.add_mem (L.smul_mem t hx) (L.smul_mem s hy)
 
+/- English proof (translation)
+Introduce `R _ W _ _ S L`. Conclude with `⟨1, S.one_mem, by rw [smul_zero]; exact L.zero_mem⟩`.
+-/
 theorem UpperTheory.Reformulated.B.SummandLocalization.aux2.{u_1, u_2} :
     ∀ {R : Type u_1} [inst : CommRing R] {W : Type u_2} [inst_1 : AddCommGroup W] [inst_2 : _root_.Module R W]
       (S : Submonoid R) (L : Submodule R W), ∃ s ∈ S, s • (0 : W) ∈ L := by
   intro R _ W _ _ S L
   exact ⟨1, S.one_mem, by rw [smul_zero]; exact L.zero_mem⟩
 
+/- English proof (translation)
+Introduce and unpack `R _ W _ _ S L r x ⟨s, hs, hx⟩`. Use `⟨s, hs, ?_⟩` and prove the remaining obligations. Rewrite using `[smul_comm]`. Conclude with `L.smul_mem r hx`.
+-/
 theorem UpperTheory.Reformulated.B.SummandLocalization.aux3.{u_1, u_2} :
     ∀ {R : Type u_2} [inst : CommRing R] {W : Type u_1} [inst_1 : AddCommGroup W] [inst_2 : _root_.Module R W]
       (S : Submonoid R) (L : Submodule R W) (r : R) {x : W},
@@ -66,6 +75,13 @@ noncomputable def UpperTheory.Reformulated.B.SummandLocalization.SummandLoc :
           (∃ (Λ₀ : Submodule (NumberField.RingOfIntegers K) V), Submodule.IsLattice K Λ₀ ∧ UpperTheory.Reformulated.B.SummandLocalization.locF 𝔭 Λ₀ = Λ) →
             ∃ (π : V →ₗ[K] V), (∀ (v : V), (π : V → V) v ∈ X) ∧ (∀ x ∈ X, (π : V → V) x = x) ∧ ∀ y ∈ Λ, (π : V → V) y ∈ Λ
 
+/- English proof (translation)
+Establish `hs : algebraMap R K s ≠ 0` using `(IsLocalization.map_units K s).ne_zero`. Rewrite using `[Module.End.isUnit_iff]`. Establish `h : ((algebraMap R (Module.End R W)) s : W → W) = fun w => (algebraMap R K s) • w`. Use function extensionality and compare the values at `w`. Simplify using the standard rewrite rules.
+
+Rewrite using `[h]`. Conclude with `MulAction.bijective (Units.mk0 _ hs)`. Use `surj y := by`. Establish `hy : y ∈ Submodule.span K (M : Set W)` using `hM ▸ Submodule.mem_top`. Take `⟨t, ht⟩` from `multiple_mem_span_of_mem_localization_span (nonZeroDivisors R) K (M : Set W) y hy`.
+
+Rewrite `ht` using `[Submodule.span_eq]`. Conclude with `⟨⟨⟨_, ht⟩, t⟩, rfl⟩`. Use `exists_of_eq h := ⟨1, by rw [Subtype.ext h]⟩`.
+-/
 private theorem UpperTheory.Reformulated.B.SummandLocalization.lattice_isLocalizedModule {R K W : Type*} [CommRing R] [IsDomain R] [Field K]
     [Algebra R K] [IsFractionRing R K] [AddCommGroup W] [Module K W] [Module R W] [IsScalarTower R K W]
     (M : Submodule R W) (hM : Submodule.span K (M : Set W) = ⊤) :
@@ -85,6 +101,21 @@ private theorem UpperTheory.Reformulated.B.SummandLocalization.lattice_isLocaliz
     exact ⟨⟨⟨_, ht⟩, t⟩, rfl⟩
   exists_of_eq h := ⟨1, by rw [Subtype.ext h]⟩
 
+/- English proof (translation)
+Set `q : V →ₗ[R] V ⧸ X` to `X.mkQ.restrictScalars R`. Set `M : Submodule R (V ⧸ X)` to `L.map q`. Establish `hM : Submodule.span K (M : Set (V ⧸ X)) = ⊤`. Establish `h : (M : Set (V ⧸ X)) = X.mkQ '' (L : Set V)` using `rfl`. Rewrite using `[h, ← Submodule.map_span, hL.span_eq_top, Submodule.map_top, Submodule.range_mkQ]`.
+
+Use `haveI : Module.Finite R M := Module.Finite.iff_fg.2 (hL.fg.map q)`. Use `haveI : Module.IsTorsionFree R (V ⧸ X) := Module.IsTorsionFree.trans_faithfulSMul R K (V ⧸ X)`. Use `haveI : Module.FinitePresentation R M := Module.finitePresentation_of_finite R M`. Use `haveI : Module.Projective R M := Module.Flat.projective_of_finitePresentation`. Establish `hsurj : Function.Surjective (q.submoduleMap L)` using `LinearMap.submoduleMap_surjective q L`.
+
+Take `⟨s, hs⟩` from `Module.projective_lifting_property (q.submoduleMap L) LinearMap.id hsurj`. Use `haveI := UpperTheory.Reformulated.B.SummandLocalization.lattice_isLocalizedModule M hM`. Establish `hb : IsBaseChange K M.subtype` using `IsLocalizedModule.isBaseChange (nonZeroDivisors R) K M.subtype`. Set `σ : (V ⧸ X) →ₗ[K] V` to `hb.lift (L.subtype ∘ₗ s)`. Establish `hσ : ∀ m : M, σ m = (s m : V)` using `fun m => hb.lift_eq (L.subtype ∘ₗ s) m`.
+
+Establish `hq : X.mkQ ∘ₗ σ = LinearMap.id`. Apply `LinearMap.ext_on hM` to reduce the goal to its premises. Introduce `m hm`. Establish `h1` using `congrArg Subtype.val (LinearMap.congr_fun hs ⟨m, hm⟩)`. Rewrite using `[LinearMap.comp_apply, hσ ⟨m, hm⟩]`.
+
+Conclude with `h1`. Use `⟨LinearMap.id - σ ∘ₗ X.mkQ, fun v => ?_, fun x hx => ?_, fun y hy => ?_⟩` and prove the remaining obligations. Rewrite using `[← Submodule.Quotient.mk_eq_zero, ← Submodule.mkQ_apply]`. Establish `h1` using `LinearMap.congr_fun hq (X.mkQ v)`. Rewrite `h1` using `[LinearMap.comp_apply, LinearMap.id_apply]`.
+
+Rewrite using `[LinearMap.sub_apply, LinearMap.id_apply, LinearMap.comp_apply, map_sub, h1, sub_self]`. Establish `h1 : X.mkQ x = 0` using `(Submodule.Quotient.mk_eq_zero X).2 hx`. Rewrite using `[LinearMap.sub_apply, LinearMap.id_apply, LinearMap.comp_apply, h1, map_zero, sub_zero]`. Establish `h1` using `hσ ⟨q y, Submodule.mem_map_of_mem hy⟩`. Establish `h2 : σ (X.mkQ y) ∈ L`.
+
+Establish `h3 : σ (X.mkQ y) = _` using `h1`. Rewrite using `[h3]`. Conclude with `Subtype.property _`. Conclude with `L.sub_mem hy h2`.
+-/
 private theorem UpperTheory.Reformulated.B.SummandLocalization.exists_proj {R K V : Type*} [CommRing R] [IsDedekindDomain R] [Field K]
     [Algebra R K] [IsFractionRing R K] [AddCommGroup V] [Module K V] [Module R V] [IsScalarTower R K V]
     (X : Submodule K V) (L : Submodule R V) (hL : Submodule.IsLattice K L) :
@@ -124,6 +155,11 @@ private theorem UpperTheory.Reformulated.B.SummandLocalization.exists_proj {R K 
       exact Subtype.property _
     exact L.sub_mem hy h2
 
+/- English proof (translation)
+Introduce and unpack `K F V _ _ _ _ _ _ _ _ _ _ X 𝔭 _ Λ ⟨Λ₀, hΛ₀, rfl⟩`. Take `⟨π, h1, h2, h3⟩` from `UpperTheory.Reformulated.B.SummandLocalization.exists_proj X Λ₀ hΛ₀`. Use `⟨π, h1, h2, ?_⟩` and prove the remaining obligations. Introduce and unpack `y ⟨s, hs, hy⟩`. Use `⟨s, hs, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[← LinearMap.map_smul_of_tower]`. Conclude with `h3 _ hy`.
+-/
 theorem UpperTheory.Reformulated.B.SummandLocalization.summand_localization :
     UpperTheory.Reformulated.B.SummandLocalization.SummandLoc := by
   rintro K F V _ _ _ _ _ _ _ _ _ _ X 𝔭 _ Λ ⟨Λ₀, hΛ₀, rfl⟩

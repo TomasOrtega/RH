@@ -27,6 +27,9 @@ open Classical in
 def emb (X : ThetaX D) (t j : ℕ) : (X.Xs t j).V →ₗ[D.host.E] (X.Ys t j).V :=
   if (⟨X.Xs t j, X.Ys t j, X.iXYs t j⟩ : Tri D) = tri0 D then -X.iXYs t j else X.iXYs t j
 
+/- English proof (translation)
+Introduce `x y`. Unfold `emb`. Use `split_ifs`. Simplify using `using X.iXYs_isom t j hj x y`. Conclude with `X.iXYs_isom t j hj x y`.
+-/
 theorem emb_isom (X : ThetaX D) (t j : ℕ) (hj : j < D.R.m) : HSpace.IsIsomEmb (X.Xs t j) (X.Ys t j) (emb X t j) := by
   intro x y
   unfold emb
@@ -34,6 +37,19 @@ theorem emb_isom (X : ThetaX D) (t j : ℕ) (hj : j < D.R.m) : HSpace.IsIsomEmb 
   · simpa using X.iXYs_isom t j hj x y
   · exact X.iXYs_isom t j hj x y
 
+/- English proof (translation)
+Unfold `emb`. Use `split_ifs with h`. Introduce `h'`. Establish `h2` using `h'.trans h.symm`. Simplify using `only [Sigma.mk.injEq, heq_eq_eq, true_and] at h2`.
+
+Establish `h0 : ∀ x, X.iXYs t j x = 0`. Introduce `x`. Establish `h3 : -X.iXYs t j x = X.iXYs t j x` using `by simpa using LinearMap.congr_fun h2 x`. Establish `h4 : (2 : D.host.E) • X.iXYs t j x = 0`. Rewrite using `[two_smul]`.
+
+Use `nth_rewrite 1 [← h3]`. Conclude with `neg_add_cancel _`. Conclude with `(smul_eq_zero.1 h4).resolve_left two_ne_zero`. Establish `hz : ∀ x : (X.Xs t j).V, x = 0`. Introduce `x`.
+
+Use `(X.Xs t j).nondeg.1 x fun y => ?_` and prove the remaining obligations. Rewrite using `[← X.iXYs_isom t j hj x y, h0, h0]`. Simplify using the standard rewrite rules. Establish `hr : (X.Xs t j).rank = 0`. Rewrite using `[← (X.Xs t j).rank_eq]`.
+
+Establish `: Subsingleton (X.Xs t j).V` using `⟨fun a b => (hz a).trans (hz b).symm⟩`. Conclude with `Module.finrank_zero_of_subsingleton`. Use `X.Xs_rank t j hj.le` as an intermediate fact. Use `D.R.m_add_three_le_k` as an intermediate fact. Use linear arithmetic over natural numbers and integers.
+
+Conclude with `h`.
+-/
 theorem emb_ne (X : ThetaX D) (t j : ℕ) (hj : j < D.R.m) :
     (⟨X.Xs t j, X.Ys t j, emb X t j⟩ : Tri D) ≠ tri0 D := by
   unfold emb
@@ -120,6 +136,9 @@ def cutAll {X : ThetaX D} {Ap : TH.ProvA} (H : AllTied D X Ap) : AllTied D (cut 
   real := H.real
   prov := H.prov
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fun q => emb_ne X t j hj q.2⟩`.
+-/
 theorem cut_empty (X : ThetaX D) (t j : ℕ) (hj : j < D.R.m) :
     IsEmpty ((cut X).Pos ((cut X).Xs t j) ((cut X).Ys t j) ((cut X).iXYs t j)) :=
   ⟨fun q => emb_ne X t j hj q.2⟩

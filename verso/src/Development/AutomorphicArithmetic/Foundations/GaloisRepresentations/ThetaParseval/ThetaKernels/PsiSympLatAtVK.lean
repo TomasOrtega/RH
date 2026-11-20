@@ -28,6 +28,15 @@ namespace GlobalTheory.LatVacArith
 section Final
 open GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ B n d X Y r s r' s' hB hX hY v θ b hb γ hγ γ' hγ'`. Establish `step : ∀ z' ∈ {z | ∃ a : AF F, At (GlobalTheory.AdelicU.evFin F v) a ∧ GlobalTheory.AdelicU.evFin F v a ∈ v.adicCompletionIntegers F ∧ ∃ x ∈ X.L, ∃ y ∈ Y.L, z = a • GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.incM F (Matrix.vecMulVec x y)}, ∀ γ ∈ GlobalTheory.Indefin …` using `AF F) (GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.cA σ) (inclR (F := F) (AF F) (θ : E)) (GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.incM F X.J) (GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.incM F Y.J) γ z') = 1 := by`. Introduce `z' hz' γ hγ`. Take `⟨a', -, ha', x', hx', y', hy', rfl⟩` from `hz'`. Proceed by induction on `hγ using AddSubgroup.closure_induction with`.
+
+Consider the case `mem z hz`. Take `⟨a, ha, hav, x, hx, y, hy, rfl⟩` from `hz`. Conclude with `psi_gen σ B X Y hX hY hB.std v θ b hb ha hav ha' hx hx' hy hy'`. Consider the case `zero => rw [symp_zero_left, mul_zero, AddChar.map_zero_eq_one]`. Consider the case `add x y _ _ hx hy`.
+
+Rewrite using `[symp_add_left, mul_add, AddChar.map_add_eq_mul, hx, hy, one_mul]`. Consider the case `neg x _ hx`. Rewrite using `[symp_neg_left, mul_neg, AddChar.map_neg_eq_inv, hx, inv_one]`. Proceed by induction on `hγ' using AddSubgroup.closure_induction with`. Consider the case `mem z hz => exact step z hz γ hγ`.
+
+Consider the case `zero => rw [symp_zero_right, mul_zero, AddChar.map_zero_eq_one]`. Consider the case `add x y _ _ hx hy`. Rewrite using `[symp_add_right, mul_add, AddChar.map_add_eq_mul, hx, hy, one_mul]`. Consider the case `neg x _ hx`. Rewrite using `[symp_neg_right, mul_neg, AddChar.map_neg_eq_inv, hx, inv_one]`.
+-/
 theorem psi_symp_latAtV_k : ∀ {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
     (σ : E →ₐ[F] E) (B : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Base F E) {n d : ℕ} (X : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Spc F E n)
     (Y : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Spc F E d) (r s r' s' : ℕ),

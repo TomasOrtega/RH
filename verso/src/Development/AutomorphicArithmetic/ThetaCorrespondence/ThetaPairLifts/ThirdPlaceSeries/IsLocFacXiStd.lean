@@ -18,6 +18,13 @@ open GlobalTheory.StepData ValuativeRel
 set_option maxHeartbeats 1000000
 noncomputable section
 namespace GlobalTheory.Fam.TopLocFac
+/- English proof (translation)
+Introduce `B X I l Z L hT Gi Gl Kc Yd cX ex W hW u a ha ht n`. Establish `hid` using `((ha.tie (fun t => (nonempty_rowCh (D := I.rec7 l Z) _ _ u a.g ht.pinX.std t).some) fun t => (nonempty_colCh (D := I.rec7 l Z) u _).some).2.idem n).1`. Take `⟨hs, hX, -⟩` from `hW.tr.ok.spaces`. Establish `hsd : ∀ j, j ≤ B.R.m → IsSelfDualC _ (a.g.x j).L` using `fun j hj => by`. Establish `e : ((a.g.x j).L : Set (Fin ((I.rec7 l Z).sp.X j).rank → (I.rec7 l Z).host.E)) = intVec (I.rec7 l Z) _` using `Set.ext (ht.pinX.xs j hj).2.2`.
+
+Establish `h1` using `GlobalTheory.AdForm.VacStd.coe_latFrame_of_eq ((I.rec7 l Z).sp.X j) hs _ (hX j)`. Establish `h2 : GlobalTheory.PlaceModel.latFrame ((I.rec7 l Z).sp.X j) = (a.g.x j).L` using `SetLike.coe_injective (h1.trans e.symm)`. Rewrite using `[← h2]`. Conclude with `GlobalTheory.PlaceModel.isSelfDualC_latFrame _`. Establish `hm : (a.G n).s + 1 + 1 = B.R.m` using `(a.G n).hs`.
+
+Conclude with `⟨(a.G n).k, _, _, _, _, ofSplit (a.G n).q, _, _, _, _, _, _, (a.G n).FX ((a.G n).s + 1) le_rfl, (a.G n).FM, _, (GlobalTheory.QTw.GeoInhab.int_dense (a.G n).q hid).2, hid, GlobalTheory.StdHomAt.int_iff_up_mem_stdHom _ _ (a.G n).q (a.G n).unit _ _ _ _ _ _ _ _ (hsd _ (by omega)) (hs …`.
+-/
 theorem isLocFac_xiStd_alt : ∀ {B : GlobalTheory.Mem.Base} {X : PreX B.toPre} {I : TC B X} {l : I.Laws} {Z : TC.Later B (I.cols l)} {L : SizeData₂ (I.rec7 l Z)} {hT : GatTies (I.rec7 l Z)} {Gi : Formalism.MainNotions.G.Inst (I.rec7 l Z) L} {Gl : Formalism.MainNotions.G.LatInst (I.rec7 l Z)} {Kc : Formalism.MainNotions.G.Consts} {Yd : DivX (I.rec7 l Z)} {cX : ExtraC} {ex : Extra (I.rec7 l Z) L hT Gi Gl Kc Yd cX} (W : _root_.GlobalTheory.MiS.RealPackAlt ex), _root_.GlobalTheory.Fam.AllFamilyConditions W → ∀ (u : B.Word) (a : _root_.GlobalTheory.Fam.GeometricFamily W u), a.Is → a.True → ∀ n : Fin a.n,
    GlobalTheory.LocMod.IsLocFac (I.rec7 l Z) (_root_.GlobalTheory.Fam.pk_z W).ψ _ _ (a.pl n).1 ((a.G n).cg ((a.G n).s + 1)) (_root_.GlobalTheory.Fam.TopLoc.standardXi a n) := by
   intro B X I l Z L hT Gi Gl Kc Yd cX ex W hW u a ha ht n

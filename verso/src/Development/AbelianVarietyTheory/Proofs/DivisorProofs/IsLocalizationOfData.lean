@@ -26,9 +26,15 @@ def extMap {T T' : C} (φ : T ⟶ T') :
       · rw [fst_semiDiag]; simp [TrivSqZeroExt.algebraMap_eq_inl', (semiHom_mp F φ).map_algebraMap]
       · rw [snd_semiDiag]; simp [TrivSqZeroExt.algebraMap_eq_inl'] }
 
+/- English proof (translation)
+The claim follows from `fst_semiDiag _ c`.
+-/
 theorem fst_extMap {T T' : C} (φ : T ⟶ T') (c : TrivSqZeroExt (F.obj T) Ω[F.obj T⁄R]) :
     (extMap F φ c).fst = mp F φ c.fst := fst_semiDiag _ c
 
+/- English proof (translation)
+The claim follows from `snd_semiDiag _ c`.
+-/
 theorem snd_extMap {T T' : C} (φ : T ⟶ T') (c : TrivSqZeroExt (F.obj T) Ω[F.obj T⁄R]) :
     (extMap F φ c).snd = p1 F φ c.snd := snd_semiDiag _ c
 
@@ -53,6 +59,13 @@ attribute [local instance] GlobalTheory.Cris.opModule GlobalTheory.Cris.isCentra
 
 variable {R : Type} [CommRing R] {C : Type} [Category.{0} C] (F : C ⥤ CommAlgCat.{0} R)
 
+/- English proof (translation)
+Use `letI : Algebra (F.obj T) (F.obj T') := (mp F l : F.obj T →+* F.obj T').toAlgebra`. Use `⟨?_, fun z ↦ ?_, fun {x y} e ↦ ?_⟩` and prove the remaining obligations. Introduce and unpack `⟨_, n, rfl⟩`. Express the relevant statement in the definitionally equal form `IsUnit (mp F l (b ^ n))`. Rewrite using `[map_pow]`.
+
+Conclude with `h1.pow n`. Take `⟨n, x, e⟩` from `h2 z`. Use `⟨(x, ⟨b ^ n, n, rfl⟩), ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `z * mp F l (b ^ n) = mp F l x`. Rewrite using `[map_pow]`.
+
+Conclude with `e`. Take `⟨n, hn⟩` from `h3 (x - y) (by rw [map_sub]; exact sub_eq_zero.2 e)`. Conclude with `⟨⟨b ^ n, n, rfl⟩, sub_eq_zero.1 (by rw [← mul_sub]; exact hn)⟩`.
+-/
 theorem isLocalization_of_data {T T' : C} (l : T ⟶ T') (b : F.obj T) (h1 : IsUnit (mp F l b))
     (h2 : ∀ y : F.obj T', ∃ (n : ℕ) (x : F.obj T), y * mp F l b ^ n = mp F l x)
     (h3 : ∀ x : F.obj T, mp F l x = 0 → ∃ n : ℕ, b ^ n * x = 0) :
@@ -70,10 +83,18 @@ theorem isLocalization_of_data {T T' : C} (l : T ⟶ T') (b : F.obj T) (h1 : IsU
   · obtain ⟨n, hn⟩ := h3 (x - y) (by rw [map_sub]; exact sub_eq_zero.2 e)
     exact ⟨⟨b ^ n, n, rfl⟩, sub_eq_zero.1 (by rw [← mul_sub]; exact hn)⟩
 
+/- English proof (translation)
+The claim follows from `TrivSqZeroExt.isUnit_iff_isUnit_fst.trans (iff_of_eq (congrArg IsUnit (fst_extMap F u c)))`.
+-/
 theorem isUnit_mp_omExt_iff {T S : C} (u : T ⟶ S) (c : (omExt F).obj T) :
     IsUnit (mp (omExt F) u c) ↔ IsUnit (mp F u c.fst) :=
   TrivSqZeroExt.isUnit_iff_isUnit_fst.trans (iff_of_eq (congrArg IsUnit (fst_extMap F u c)))
 
+/- English proof (translation)
+Apply `TrivSqZeroExt.ext` to reduce the goal to its premises. Rewrite using `[TrivSqZeroExt.fst_mul, TrivSqZeroExt.fst_pow, fst_extMap, fst_extMap]`. Simplify using `only [TrivSqZeroExt.fst_add, TrivSqZeroExt.fst_inl, TrivSqZeroExt.fst_inr, add_zero, map_mul, map_pow] at ha ⊢`. Take the linear combination `(mp F l c.fst) ^ (k₂ + 1) * ha`. Rewrite using `[TrivSqZeroExt.snd_mul, TrivSqZeroExt.snd_pow_of_smul_comm _ _ (op_smul_eq_smul _ _), TrivSqZeroExt.fst_pow, snd_extMap, fst_extMap, snd_extMap]`.
+
+Simplify using `only [TrivSqZeroExt.fst_add, TrivSqZeroExt.fst_inl, TrivSqZeroExt.fst_inr, add_zero, TrivSqZeroExt.snd_add, TrivSqZeroExt.snd_inl, TrivSqZeroExt.snd_inr, zero_add, map_add, map_nsmul, oneFormsMapOfFunctorMorphism_smul, map_mul, map_pow, op_smul_eq_smul, Nat.pred_succ] at ha hη ⊢`. Rewrite using `[← hη, ← ha]`. Use `module`.
+-/
 theorem surj_key {T T' : C} (l : T ⟶ T') (c : TrivSqZeroExt (F.obj T) Ω[F.obj T⁄R])
     (y : TrivSqZeroExt (F.obj T') Ω[F.obj T'⁄R]) (a₀ : F.obj T) (η₀ : Ω[F.obj T⁄R]) (k₁ k₂ : ℕ)
     (ha : y.fst * mp F l (c.fst ^ k₁) = mp F l a₀) (hη : mp F l (c.fst ^ k₂) • y.snd = p1 F l η₀) :
@@ -92,6 +113,9 @@ theorem surj_key {T T' : C} (l : T ⟶ T') (c : TrivSqZeroExt (F.obj T) Ω[F.obj
     rw [← hη, ← ha]
     module
 
+/- English proof (translation)
+Apply `TrivSqZeroExt.ext` to reduce the goal to its premises. Rewrite using `[TrivSqZeroExt.fst_mul, TrivSqZeroExt.fst_pow, TrivSqZeroExt.fst_zero]`. Take the linear combination `c.fst ^ (m₂ + 1) * h₁`. Rewrite using `[TrivSqZeroExt.snd_mul, TrivSqZeroExt.snd_pow_of_smul_comm _ _ (op_smul_eq_smul _ _), TrivSqZeroExt.fst_pow, TrivSqZeroExt.snd_zero, op_smul_eq_smul, Nat.pred_succ]`. Take the linear combination `(norm := module) c.fst ^ (m₁ + 1) • h₂ + h₁ • ((m₁ + m₂ + 1) • c.fst ^ m₂ • c.snd)`.
+-/
 theorem ker_key {T : C} (c x : TrivSqZeroExt (F.obj T) Ω[F.obj T⁄R]) (m₁ m₂ : ℕ)
     (h₁ : c.fst ^ m₁ * x.fst = 0) (h₂ : c.fst ^ m₂ • x.snd = 0) : c ^ (m₁ + m₂ + 1) * x = 0 := by
   apply TrivSqZeroExt.ext
@@ -101,6 +125,17 @@ theorem ker_key {T : C} (c x : TrivSqZeroExt (F.obj T) Ω[F.obj T⁄R]) (m₁ m�
       TrivSqZeroExt.fst_pow, TrivSqZeroExt.snd_zero, op_smul_eq_smul, Nat.pred_succ]
     linear_combination (norm := module) c.fst ^ (m₁ + 1) • h₂ + h₁ • ((m₁ + m₂ + 1) • c.fst ^ m₂ • c.snd)
 
+/- English proof (translation)
+Introduce `T c`. Take `⟨T', l, h1, h2, h3, h4⟩` from `H T c.fst`. Use `letI : Algebra (F.obj T) (F.obj T') := (mp F l : F.obj T →+* F.obj T').toAlgebra`. Use `haveI : IsScalarTower R (F.obj T) (F.obj T') := IsScalarTower.of_algebraMap_eq fun r ↦ ((mp F l).commutes r).symm`. Use `haveI := isLocalization_of_data F l c.fst h1 h2 h3`.
+
+Establish `hp : ∀ ω, p1 F l ω = KaehlerDifferential.map R R (F.obj T) (F.obj T') ω` using `SemiHom.oneFormMap_eq_kaehlerDifferential_map _ fun _ ↦ rfl`. Establish `hs : ∀ (a : F.obj T) (η : Ω[F.obj T'⁄R]), a • η = mp F l a • η` using `fun a η ↦ (algebraMap_smul (F.obj T') a η).symm`. Use `⟨T', l, (isUnit_mp_omExt_iff F l c).2 h1, fun y ↦ ?_, fun x hx ↦ ?_, fun S u hu ↦ h4 S u ((isUnit_mp_omExt_iff F u c).1 hu)⟩` and prove the remaining obligations. Take `⟨⟨a₀, _, k₁, rfl⟩, ha⟩` from `IsLocalization.surj (Submonoid.powers c.fst) y.fst`. Take `⟨⟨η₀, _, k₂, rfl⟩, hη⟩` from `IsLocalizedModule.surj (Submonoid.powers c.fst) (KaehlerDifferential.map R R (F.obj T) (F.obj T')) y.snd`.
+
+Express the relevant statement in the definitionally equal form `y.fst * mp F l (c.fst ^ k₁) = mp F l a₀ at ha`. Express the relevant statement in the definitionally equal form `(c.fst ^ k₂) • y.snd = _ at hη`. Rewrite `hη` using `[hs, ← hp]`. Use `⟨k₁ + k₂ + 1, TrivSqZeroExt.inl (a₀ * c.fst ^ (k₂ + 1)) + TrivSqZeroExt.inr ((k₁ + k₂ + 1) • (a₀ * c.fst ^ k₂) • c.snd + c.fst ^ (k₁ + 1) • η₀), ?_⟩` and prove the remaining obligations. Conclude with `surj_key F l c y a₀ η₀ k₁ k₂ ha hη`.
+
+Establish `e1 : mp F l x.fst = 0` using `(fst_extMap F l x).symm.trans (congrArg TrivSqZeroExt.fst hx)`. Establish `e2 : KaehlerDifferential.map R R (F.obj T) (F.obj T') x.snd = 0` using `(hp _).symm.trans ((snd_extMap F l x).symm.trans (congrArg TrivSqZeroExt.snd hx))`. Take `⟨m₁, h₁⟩` from `h3 _ e1`. Take `⟨⟨_, m₂, rfl⟩, h₂⟩` from `IsLocalizedModule.exists_of_eq (S := Submonoid.powers c.fst) (f := KaehlerDifferential.map R R (F.obj T) (F.obj T')) (x₁ := x.snd) (x₂ := 0) (by rw [e2, map_zero])`. Rewrite `h₂` using `[smul_zero, Submonoid.smul_def]`.
+
+Conclude with `⟨m₁ + m₂ + 1, ker_key F c x m₁ m₂ h₁ h₂⟩`.
+-/
 theorem hasLoc_omExt (H : Desc.HasLoc F) : Desc.HasLoc (omExt F) := by
   intro T c
   obtain ⟨T', l, h1, h2, h3, h4⟩ := H T c.fst
@@ -139,6 +174,9 @@ namespace GlobalTheory.CechDR.FormExt
 
 attribute [local instance] GlobalTheory.Cris.opModule GlobalTheory.Cris.isCentralScalar_kaehler GlobalTheory.Cris.isScalarTower_kaehler
 
+/- English proof (translation)
+Use `congrArg (Ideal.map (TrivSqZeroExt.inlHom (F.obj S) Ω[F.obj S⁄R])) hb` as an intermediate fact. Rewrite `this` using `[Ideal.map_span, Ideal.map_top, ← Set.range_comp]`. Conclude with `this`.
+-/
 theorem span_inl_eq_top {R : Type} [CommRing R] {C : Type} [Category.{0} C] (F : C ⥤ CommAlgCat.{0} R)
     {S : C} {n : ℕ} {b : Fin n → F.obj S} (hb : Ideal.span (Set.range b) = ⊤) :
     Ideal.span (Set.range fun i ↦ (TrivSqZeroExt.inl (b i) : (omExt F).obj S)) = ⊤ := by
@@ -146,6 +184,13 @@ theorem span_inl_eq_top {R : Type} [CommRing R] {C : Type} [Category.{0} C] (F :
   rw [Ideal.map_span, Ideal.map_top, ← Set.range_comp] at this
   exact this
 
+/- English proof (translation)
+Introduce `R' _ X' s' C' _ _ G hcov hdir T s hs`. Establish `unit : ∀ {S S' : AffOp X'} (u : S ⟶ S') (b : (OAff s').obj S), IsUnit (mp (omExt (OAff s')) u (TrivSqZeroExt.inl b)) → IsUnit (mp (OAff s') u b)` using `fun u b h ↦ ((isUnit_mp_omExt_iff (OAff s') u _).1 h)`. Take `⟨x, hx⟩` from `GlobalTheory.CatCoh.Desc.glue_comma_of_basis (omExt (OAff s')) G (hasLoc_omExt (OAff s') (hasLoc_OAff s')) (fun T ↦ by`. Take `⟨n, b, hb, h⟩` from `hcov T`. Conclude with `⟨n, fun i ↦ TrivSqZeroExt.inl (b i), span_inl_eq_top (OAff s') hb, fun i S u hu ↦ h i S u (unit u _ hu)⟩)`.
+
+Use the proof step `(fun t₁ t₂ S a₁ a₂ ↦ by`. Take `⟨n, b, hb, h⟩` from `hdir t₁ t₂ S a₁ a₂`. Conclude with `⟨n, fun i ↦ TrivSqZeroExt.inl (b i), span_inl_eq_top (OAff s') hb, fun i S' u hu ↦ h i S' u (unit u _ hu)⟩)`. Use `T (fun t u ↦ TrivSqZeroExt.inr (s t u)) (fun t t' u a ↦ by`. Apply `TrivSqZeroExt.ext` to reduce the goal to its premises.
+
+Conclude with `(TrivSqZeroExt.fst_inr _ _).trans (((fst_extMap (OAff s') (G.map a) _).trans (by rw [TrivSqZeroExt.fst_inr, map_zero])).symm)`. Conclude with `((TrivSqZeroExt.snd_inr _ _).trans (hs t t' u a)).trans ((snd_extMap (OAff s') (G.map a) _).trans (by rw [TrivSqZeroExt.snd_inr])).symm)`. Conclude with `⟨x.snd, fun t u ↦ (snd_extMap (OAff s') u x).symm.trans ((congrArg TrivSqZeroExt.snd (hx t u)).trans (TrivSqZeroExt.snd_inr _ _))⟩`.
+-/
 theorem glue_one_forms : ∀ {R' : Type} [CommRing R'] {X' : Scheme.{0}} (s' : X' ⟶ Sp R') {C' : Type} [Category.{0} C'], [Quiver.IsThin C'] → ∀ (G : C' ⥤ AffOp X'), (∀ T : AffOp X', ∃ (n : ℕ) (b : Fin n → (OAff s').obj T), Ideal.span (Set.range b) = ⊤ ∧ ∀ (i : Fin n) (S : AffOp X') (u : T ⟶ S), IsUnit (mp (OAff s') u (b i)) → ∃ (t : C') (v : T ⟶ G.obj t) (w : G.obj t ⟶ S), v ≫ w = u) → (∀ (t₁ t₂ : C') (S : AffOp X'), (G.obj t₁ ⟶ S) → (G.obj t₂ ⟶ S) → ∃ (n : ℕ) (b : Fin n → (OAff s').obj S), Ideal.span (Set.range b) = ⊤ ∧ ∀ (i : Fin n) (S' : AffOp X') (u : S ⟶ S'), IsUnit (mp (OAff s') u (b i)) → ∃ t₃, Nonempty (t₁ ⟶ t₃) ∧ Nonempty (t₂ ⟶ t₃) ∧ Nonempty (G.obj t₃ ⟶ S')) → (∀ (T : AffOp X') (s : ∀ t, (T ⟶ G.obj t) → Ω[(OAff s').obj (G.obj t)⁄R']), (∀ t t' (u : T ⟶ G.obj t) (a : t ⟶ t'), s t' (u ≫ G.map a) = p1 (OAff s') (G.map a) (s t u)) → ∃ ω : Ω[(OAff s').obj T⁄R'], ∀ t u, p1 (OAff s') u ω = s t u) := by
   intro R' _ X' s' C' _ _ G hcov hdir T s hs
   have unit : ∀ {S S' : AffOp X'} (u : S ⟶ S') (b : (OAff s').obj S),

@@ -13,10 +13,16 @@ namespace PositivityTheory.Rg.Bc.ArchbcB.B.M4
 
 variable {E : Type} [Field E] [NumberField E] [IsCMField E]
 
+/- English proof (translation)
+Rewrite using `[h, Units.val_mul, Units.val_mul, Matrix.coe_units_inv, Matrix.charpoly_units_conj, GlobalTheory.SmGL.val_diagT, Matrix.charpoly_diagonal]`.
+-/
 theorem charpoly_conj_diagT {L : Type} [Field L] {n : ℕ} (g p : GL (Fin n) L) (u : Fin n → Lˣ)
     (h : g = p * GlobalTheory.SmGL.diagT L (Fin n) u * p⁻¹) : g.val.charpoly = ∏ i, (X - C (u i : L)) := by
   rw [h, Units.val_mul, Units.val_mul, Matrix.coe_units_inv, Matrix.charpoly_units_conj, GlobalTheory.SmGL.val_diagT, Matrix.charpoly_diagonal]
 
+/- English proof (translation)
+Take `⟨p₀, u, h1, h2, h3, h4⟩` from `GlobalTheory.T.dominant_coset_twisted_conjugacy E hU w hw n b hb ϖ hϖ l hl (fun y hy δ hδ => contr_id_pf w ϖ hϖ n y hy δ hδ) γ hγ`. Use `⟨p₀, u, h1, h2, h3, h4, charpoly_conj_diagT _ (p₀.1 * b) u ?_⟩` and prove the remaining obligations. Establish `: γ.1 = p₀.1 * (p₀⁻¹ * γ * p₀).1 * p₀.1⁻¹` using `by simp [mul_assoc]`. Rewrite using `[this, h2]`. Use `group`.
+-/
 theorem s2raw (hU : Unr E) (w : Pl E) (hw : ¬ IsSplitAt w) (n : ℕ) (b : GLw n w) (hb : IsWitt n w b)
     (ϖ : (w.adicCompletion E)ˣ) (hϖ : IsUnifAt ϖ) (l : Fin (n / 2) → ℤ) (hl : Cone l) (γ : UL n w)
     (hγ : ∃ p : UL n w, fU n w b ϖ l (p⁻¹ * γ * p) ≠ 0) :

@@ -7,6 +7,13 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.CommutativeAlgebra
 
 open TensorProduct IsLocalRing Polynomial UpperTheory.V.W UpperTheory.V.Alg UpperTheory.V.CA
 
+/- English proof (translation)
+Set `L` to `Localization.Away (X : A[X])`. Establish `hinj : Function.Injective (algebraMap A[X] L)` using `IsLocalization.injective L (M := Submonoid.powers (X : A[X])) (by`. Introduce and unpack `_ ⟨k, rfl⟩`. Conclude with `pow_mem monic_X.mem_nonZeroDivisors k)`. Apply `hinj` to reduce the goal to its premises.
+
+Establish `key : ∀ D₀ : Det n A E, algebraMap A[X] L (D₀.chi y) = algebraMap A[X] L X ^ n * D₀.D L (1 + (-IsLocalization.Away.invSelf (S` using `L) (X : A[X])) ⊗ₜ y) := by`. Introduce `D₀`. Establish `h1` using `D₀.nat A[X] L (IsScalarTower.toAlgHom A A[X] L) (X ⊗ₜ 1 - 1 ⊗ₜ y)`. Rewrite using `[← D₀.homog]`. Use `h1.symm.trans ?_` and prove the remaining obligations.
+
+Use `congr 1`. Rewrite using `[smul_add, smul_tmul', smul_eq_mul, mul_neg, IsLocalization.Away.mul_invSelf, neg_tmul, Algebra.TensorProduct.one_def, smul_tmul', smul_eq_mul, mul_one, ← sub_eq_add_neg]`. Simplify using the standard rewrite rules. Rewrite using `[key, key, h]`.
+-/
 private theorem chi_congr {n : ℕ} {A E : Type} [CommRing A] [Ring E] [Algebra A E] (D D' : Det n A E) (y : E)
     (h : ∀ (B : Type) [CommRing B] [Algebra A B] (b : B), D.D B (1 + b ⊗ₜ y) = D'.D B (1 + b ⊗ₜ y)) :
     D.chi y = D'.chi y := by
@@ -29,18 +36,27 @@ private theorem chi_congr {n : ℕ} {A E : Type} [CommRing A] [Ring E] [Algebra 
     simp
   rw [key, key, h]
 
+/- English proof (translation)
+Use `D.homog A[X] (X - 1) 1` as an intermediate fact. Rewrite `this` using `[map_one, mul_one]`. Rewrite using `[← this, Det.chi, ← sub_tmul, Algebra.TensorProduct.one_def, smul_tmul', smul_eq_mul, mul_one]`.
+-/
 private theorem chi_one {n : ℕ} {A E : Type} [CommRing A] [Ring E] [Algebra A E] (D : Det n A E) :
     D.chi 1 = (X - 1) ^ n := by
   have := D.homog A[X] (X - 1) 1
   rw [map_one, mul_one] at this
   rw [← this, Det.chi, ← sub_tmul, Algebra.TensorProduct.one_def, smul_tmul', smul_eq_mul, mul_one]
 
+/- English proof (translation)
+Use `D.homog A[X] X 1` as an intermediate fact. Rewrite `this` using `[map_one, mul_one]`. Rewrite using `[← this, Det.chi, tmul_zero, sub_zero, Algebra.TensorProduct.one_def, smul_tmul', smul_eq_mul, mul_one]`.
+-/
 private theorem chi_zero {n : ℕ} {A E : Type} [CommRing A] [Ring E] [Algebra A E] (D : Det n A E) :
     D.chi 0 = X ^ n := by
   have := D.homog A[X] X 1
   rw [map_one, mul_one] at this
   rw [← this, Det.chi, tmul_zero, sub_zero, Algebra.TensorProduct.one_def, smul_tmul', smul_eq_mul, mul_one]
 
+/- English proof (translation)
+Use `D.nat A[X] B (aeval b) (1 + X ⊗ₜ e)` as an intermediate fact. Rewrite `this` using `[h]`. Simplify using `using this`.
+-/
 private theorem ev_one_add {n : ℕ} {A E : Type} [CommRing A] [Ring E] [Algebra A E] (D : Det n A E) (e : E)
     (h : D.D A[X] (1 + X ⊗ₜ e) = 1 + X) (B : Type) [CommRing B] [Algebra A B] (b : B) :
     D.D B (1 + b ⊗ₜ e) = 1 + b := by
@@ -48,6 +64,9 @@ private theorem ev_one_add {n : ℕ} {A E : Type} [CommRing A] [Ring E] [Algebra
   rw [h] at this
   simpa using this
 
+/- English proof (translation)
+Rewrite using `[← Matrix.diagonal_single, ← Matrix.diagonal_one, Matrix.diagonal_add, Matrix.det_diagonal, Finset.prod_eq_single i]`. Simplify using the standard rewrite rules. Introduce `j _ hj`. Simplify using `[hj]`. Simplify using the standard rewrite rules.
+-/
 private theorem det_one_add_single {n : ℕ} {B : Type} [CommRing B] (i : Fin n) (b : B) :
     (1 + Matrix.single i i b).det = 1 + b := by
   rw [← Matrix.diagonal_single, ← Matrix.diagonal_one, Matrix.diagonal_add, Matrix.det_diagonal,
@@ -61,6 +80,9 @@ private noncomputable def rS {n : ℕ} {A E S : Type} [CommRing A] [Ring E] [Alg
     (r : E →ₐ[A] Matrix (Fin n) (Fin n) S) : S ⊗[A] E →ₐ[S] Matrix (Fin n) (Fin n) S :=
   Algebra.TensorProduct.lift (Algebra.ofId S _) r fun s _ => Algebra.commute_algebraMap_left s _
 
+/- English proof (translation)
+The claim follows from `(Algebra.TensorProduct.lift_tmul _ _ _ s x).trans (Algebra.smul_def _ _).symm`.
+-/
 private theorem rS_tmul {n : ℕ} {A E S : Type} [CommRing A] [Ring E] [Algebra A E] [CommRing S] [Algebra A S]
     (r : E →ₐ[A] Matrix (Fin n) (Fin n) S) (s : S) (x : E) : rS r (s ⊗ₜ x) = s • r x :=
   (Algebra.TensorProduct.lift_tmul _ _ _ s x).trans (Algebra.smul_def _ _).symm
@@ -77,6 +99,29 @@ private def adapted {n : ℕ} {E : Type} [Ring E] (e : Fin n → E) (he : ∀ i,
     have h2 : y * e l = y := by rw [← hy, mul_assoc, (he l).eq]
     exact Or.inr ⟨i, l, by rw [← mul_assoc, h1, mul_assoc, h2]⟩
 
+/- English proof (translation)
+Introduce `n A E _ _ _ D e hCH he h1 S _ _ r hr T _ _ _ _ ι _ t x`. Establish `hrep : ∀ (B : Type) [CommRing B] [Algebra S B] (y : B ⊗[S] (S ⊗[A] E)), (Det.ofRep (Fintype.card_fin n) (rS r)).D B y = (Det.repS (rS r) B y).det` using `fun _ _ _ _ => rfl`. Establish `main : D.baseChange S = Det.ofRep (Fintype.card_fin n) (rS r)`. Use `d_ext _ _ ((adapted e he.idem).map (Algebra.TensorProduct.includeRight : E →ₐ[A] S ⊗[A] E).toMonoidHom) ?_ ?_` and prove the remaining obligations. Rewrite using `[eq_top_iff]`.
+
+Introduce and unpack `y -`. Proceed by induction on `y with`. Consider the case `zero => exact zero_mem _`. Consider the case `add a b ha hb => exact add_mem ha hb`. Consider the case `tmul s z`.
+
+Establish `hz : z = ∑ i, ∑ j, e i * z * e j`. Simplify using `only [← Finset.mul_sum, he.complete, mul_one, ← Finset.sum_mul, one_mul]`. Establish `hs : s ⊗ₜ[A] z = s • ((1 : S) ⊗ₜ[A] z)` using `by rw [smul_tmul', smul_eq_mul, mul_one]`. Rewrite using `[hs, hz]`. Use `Submodule.smul_mem _ _ ?_` and prove the remaining obligations.
+
+Simplify using `only [tmul_sum]`. Use `Submodule.sum_mem _ fun i _ => Submodule.sum_mem _ fun j _ => Submodule.subset_span ?_` and prove the remaining obligations. Use `⟨e i * z * e j, Or.inr ⟨i, j, ?_⟩, rfl⟩` and prove the remaining obligations. Rewrite using `[← mul_assoc, ← mul_assoc, (he.idem i).eq, mul_assoc, (he.idem j).eq]`. Introduce and unpack `_ ⟨z, hz, rfl⟩ k hk1 hkn`.
+
+Express the relevant statement in the definitionally equal form `(D.baseChange S).lam k ((1 : S) ⊗ₜ[A] z) = Det.lam _ k ((1 : S) ⊗ₜ[A] z)`. Break down `hz with rfl | ⟨i, j, hz⟩` into its components or cases. Rewrite using `[← Algebra.TensorProduct.one_def, Det.lam, Det.lam, chi_one, chi_one]`. Distinguish the cases in `hij : i = j`. Substitute `hij` using the available equality.
+
+Establish `hc` using `(d_corner D (e i) hCH (he.idem i) (h1 i) (hk1.trans hkn)).1 z`. Rewrite `hc` using `[hz]`. Generalize the expression as in `D.tr (e i * z) = a at hc`. Substitute `hc` using the available equality. Rewrite using `[Det.lam, Det.lam, chi_congr (D.baseChange S) (Det.ofRep (Fintype.card_fin n) (rS r))]`.
+
+Introduce `B _ _ b`. Use `letI : Algebra A B := ((algebraMap S B).comp (algebraMap A S)).toAlgebra`. Use `haveI : IsScalarTower A S B := .of_algebraMap_eq fun _ => rfl`. Rewrite using `[(d_bc D S).1 B, hrep, map_add, map_add (Det.repS _ _), map_one, map_one (Det.repS _ _), Det.cancel_tmul, Det.repS_tmul, rS_tmul, map_one, mul_one, ← smul_tmul, ev_one_add D _ (h1 i), map_smul, hr, one_smul, ← det_one_add_single i (a • b)]`. Use `congr 2`.
+
+Use extensionality with `p q`. Simplify using `only [Matrix.single_apply, Matrix.smul_apply, Matrix.map_apply]`. Use `split_ifs`. Rewrite using `[Algebra.smul_def, Algebra.smul_def a, mul_one, smul_eq_mul, mul_comm]`. Both sides reduce to the same expression.
+
+Simplify using the standard rewrite rules. Establish `h0 : ∀ D₀ : Det n S (S ⊗[A] E), D₀.lam k ((1 : S) ⊗ₜ[A] z) = D₀.lam k 0`. Introduce `D₀`. Establish `e1 : (1 : S) ⊗ₜ[A] z = ((1 : S) ⊗ₜ[A] (e i * z)) * ((1 : S) ⊗ₜ[A] e j)`. Rewrite using `[Algebra.TensorProduct.tmul_mul_tmul, mul_one, hz]`.
+
+Rewrite using `[e1, (d_tr D₀).2.1, Algebra.TensorProduct.tmul_mul_tmul, ← mul_assoc, he.ortho (Ne.symm hij), zero_mul, tmul_zero]`. Rewrite using `[h0, h0, Det.lam, Det.lam, chi_zero, chi_zero]`. Establish `h2` using `(d_bc D S).1 T (∑ a, t a ⊗ₜ ((1 : S) ⊗ₜ[A] x a))`. Rewrite `h2` using `[main, hrep]`. Simplify using `only [map_sum, Det.cancel_tmul, Det.repS_tmul, rS_tmul, map_one, mul_one, one_smul] at h2`.
+
+Conclude with `h2.symm`.
+-/
 theorem UpperTheory.V.CA.d_gma_det :
     ∀ {n : ℕ} {A E : Type} [CommRing A] [Ring E] [Algebra A E] (D : Det n A E) (e : Fin n → E), D.IsCH → CompleteOrthogonalIdempotents e → (∀ i, D.D A[X] (1 + X ⊗ₜ e i) = 1 + X) → ∀ (S : Type) [CommRing S] [Algebra A S] (r : E →ₐ[A] Matrix (Fin n) (Fin n) S), (∀ i, r (e i) = Matrix.single i i 1) → ∀ (T : Type) [CommRing T] [Algebra A T] [Algebra S T] [IsScalarTower A S T] {ι : Type} [Fintype ι] (t : ι → T) (x : ι → E), D.D T (∑ a, t a ⊗ₜ x a) = (∑ a, t a • (r (x a)).map (algebraMap S T)).det := by
   intro n A E _ _ _ D e hCH he h1 S _ _ r hr T _ _ _ _ ι _ t x

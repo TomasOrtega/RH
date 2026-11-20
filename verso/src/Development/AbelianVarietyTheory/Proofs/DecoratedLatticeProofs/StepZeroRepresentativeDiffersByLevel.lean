@@ -16,6 +16,9 @@ namespace GlobalTheory.Fam.RepZero
 
 open Formalism.L2.Col GlobalTheory.Mem.Col2.StepZero
 
+/- English proof (translation)
+Use `show (Λ b).chr g.2.1 * (Θ b).chr g.2.2 = 1`. Rewrite using `[chr_eq_one (hΘ b), mul_one, chr_congr (hΛ b)]`. Establish `e : (⟨g.2.1.1, hΛ b ▸ g.2.1.2⟩ : Λ₀.grp) = (down pref hΛ b g).2` using `rfl`. Rewrite using `[e, h]`. Conclude with `map_one _`.
+-/
 theorem chr_of_down_eq_one {X : Fields} {n : ℕ} {ST SG Q : Finset (IsDedekindDomain.HeightOneSpectrum (NumberField.RingOfIntegers X.E))}
     {y : Ys X n} {β : Type} [Fintype β] [DecidableEq β] {Λ : β → LevFam X.E X.K n SG} {Θ : β → LevQFam X.E X.K n Q}
     (pref : DecoF X.E n ST SG Q → Prop) {Λ₀ : LevFam X.E X.K n SG} (hΛ : ∀ b, Λ b = Λ₀) (hΘ : ∀ b, Θ b = LevQFam.top X.E X.K n Q)
@@ -26,6 +29,9 @@ theorem chr_of_down_eq_one {X : Fields} {n : ℕ} {ST SG Q : Finset (IsDedekindD
   rw [e, h]
   exact map_one _
 
+/- English proof (translation)
+Take `⟨g, h2, h3⟩` from `exists_lift pref hy hΛ hΘ b p q 1 (by rw [one_smul]; exact h)`. Conclude with `⟨g, (congrArg (fun g => ufGL X.E n g.1) h2).trans (map_one _), h3, chr_of_down_eq_one pref hΛ hΘ b g h2⟩`.
+-/
 theorem exists_lift_one {X : Fields} {n : ℕ} {ST SG Q : Finset (IsDedekindDomain.HeightOneSpectrum (NumberField.RingOfIntegers X.E))}
     {y : Ys X n} {β : Type} [Fintype β] [DecidableEq β] {Λ : β → LevFam X.E X.K n SG} {Θ : β → LevQFam X.E X.K n Q}
     (pref : DecoF X.E n ST SG Q → Prop) {Λ₀ : LevFam X.E X.K n SG} (hy : ∀ N, y.ys N = {∅}) (hΛ : ∀ b, Λ b = Λ₀)
@@ -38,6 +44,21 @@ end GlobalTheory.Fam.RepZero
 
 set_option maxHeartbeats 1000000 in
 
+/- English proof (translation)
+Introduce `B X I hI _ l Z C hC u a Ch A hA β hk c`. Take `⟨c, rfl⟩` from `c`. Use `set c' := (I.eCls0 l u a).symm c with hc'`. Establish `hR` using `hA.reads 0 (Nat.zero_le _)`. Establish `hyS : ((C.forms u).to0.cls0.y c').1 = I.yStd u 0 c'` using `(hC u).yE 0 (Nat.zero_le _) (Or.inl rfl) c'`.
+
+Establish `hS` using `MemChart.yStd_spec I hI u 0 c'`. Use `set yc : TC.GA B (B.R.N 0) := ((A.K 0 (Nat.zero_le _) (A.chOf 0 c)).y ⟨c, rfl⟩).1 with hyc`. Establish `hd : Disjoint (B.primes X).vGs (I.Q a)` using `(LevTwist.levOk_twists B X I hI).2.1.mono_right (I.Q_subset_SQ a)`. Set `q : Formalism.L2.Col.ChPt (Pr` to `B.primes X) (R := B.R) I.sel (I.tup a) u 0 := extTo (I.Q a) (extTo I.SQ ((I.stp u I.mu0 0).rep c').1.1)`. Establish `hq : TC.PtOf (yc * (yc⁻¹ * I.yStd u 0 c') * A.kb 0 (A.chOf 0 c)) q`.
+
+Rewrite using `[mul_inv_cancel_left, hk]`. Conclude with `IsPtOf.extTo (I.Q_subset_SQ a) hd hS`. Establish `hL` using `hI.idx_ok a`. Establish `hy` using `StepZero.ysAt_zero I.sel (I.tup a) (I.cst a) (R := B.R)`. Establish `hΛ` using `StepZero.levGAt_zero (I.Tp a) hL`.
+
+Establish `hΘ` using `StepZero.levQAt_zero (I.Tp a) hL`. Establish `e : ((I.stp u a 0).rep c).1.1.deco = ((I.stp u I.mu0 0).rep c').1.1.deco`. Use `TC.StepZero.rep_eCls0 I hI l u a c'` as an intermediate fact. Rewrite `this` using `[hc', Equiv.apply_symm_apply]`. Then use the resulting hypothesis. Take `⟨p, hp⟩` from `exists_ptAt (R := B.R) I.sel (I.tup a) (I.cst a) q`.
+
+Take `⟨g, hgam, h3, hchr⟩` from `RepZero.exists_lift_one ((I.Tp a).pref u 0) hy hΛ hΘ c.1 ((I.stp u a 0).rep c) p (by rw [hp]; exact e)`. Establish `hact : ((I.stp u a 0).act c.1 g ((I.stp u a 0).rep c)).1.1 = q` using `(congrArg (fun p : PtAt B.R I.sel (I.tup a) (I.cst a) u 0 => p.1.1) h3).trans hp`. Establish `hmem : yc⁻¹ * I.yStd u 0 c' ∈ (A.K 0 (Nat.zero_le _) (A.chOf 0 c)).lev.U` using `(hR.lev c _ q hq).2 ⟨g, hgam, hact, TC.Chart0.cos0 I _ _⟩`. Use `⟨⟨yc⁻¹ * I.yStd u 0 c', hmem⟩, ?_, ?_⟩` and prove the remaining obligations. Use `show _ = yc * (yc⁻¹ * I.yStd u 0 c')`.
+
+Rewrite using `[hyS, mul_inv_cancel_left]`. Establish `hpt2 : TC.PtOf (yc * (yc⁻¹ * I.yStd u 0 c') * A.kb 0 (A.chOf 0 c)) ((I.stp u a 0).act c.1 g ((I.stp u a 0).rep c)).1.1`. Rewrite using `[hact]`. Conclude with `hq`. Establish `hc` using `hR.chr c ⟨yc⁻¹ * I.yStd u 0 c', hmem⟩ g hgam hpt2`.
+
+Apply `Units.ext` to reduce the goal to its premises. Use `hc.trans ?_` and prove the remaining obligations. Rewrite using `[hchr]`. Simplify using the standard rewrite rules.
+-/
 theorem GlobalTheory.Fam.rep_zero_std : ∀ {B : GlobalTheory.Mem.Base} {X : PreX B.toPre} (I : TC B X), I.Ok → TC.Pins B X → ∀ (l : I.Laws) (Z : TC.Later B (I.cols l)) (C : Formalism.L2.Forms.ColsTiedSym (I.rec7 l Z)), I.StdC l Z C → ∀ (u : B.Word) (a : I.ι) (Ch : ℕ → Type) (A : GlobalTheory.AdForm.TwDat I l Z u a Ch), A.Is → ∀ (β : Ch 0), A.kb 0 β = TC.kStd X u (B.R.N 0) → ∀ c : {c // A.chOf 0 c = β}, ∃ κ : (A.K 0 (Nat.zero_le _) β).lev.U, ((C.forms u).to0.cls0.y ((I.eCls0 l u a).symm c.1)).1 = ((A.K 0 (Nat.zero_le _) β).y c).1 * κ.1 ∧ (A.K 0 (Nat.zero_le _) β).lev.chi κ = 1 := by
   intro B X I hI _ l Z C hC u a Ch A hA β hk c
   obtain ⟨c, rfl⟩ := c

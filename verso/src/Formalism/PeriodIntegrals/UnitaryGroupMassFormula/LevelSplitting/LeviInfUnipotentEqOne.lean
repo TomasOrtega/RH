@@ -20,10 +20,18 @@ def uT (g : HA R σ J) : Matrix (Fin r) (Fin r) (R ⊗[F] E) :=
     hR R σ J (ratV (F := F) R (P.f a)) (lin R σ J g (ratV (F := F) R (P.e b)))
     else if a = b then 1 else 0
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem uT_apply (g : HA R σ J) (a b : Fin r) : uT R σ J P g a b = if a < b then
     hR R σ J (ratV (F := F) R (P.f a)) (lin R σ J g (ratV (F := F) R (P.e b)))
     else if a = b then 1 else 0 := rfl
 
+/- English proof (translation)
+Rewrite using `[Matrix.det_of_upperTriangular]`. Conclude with `Finset.prod_eq_one fun a _ => by simp [uT]`. Introduce `i j hji`. Establish `h : j < i` using `hji`. Simplify using `only [uT, Matrix.of_apply]`.
+
+Rewrite using `[if_neg (lt_asymm h), if_neg (ne_of_gt h)]`.
+-/
 theorem det_uT (g : HA R σ J) : (uT R σ J P g).det = 1 := by
   rw [Matrix.det_of_upperTriangular]
   · exact Finset.prod_eq_one fun a _ => by simp [uT]
@@ -34,23 +42,40 @@ theorem det_uT (g : HA R σ J) : (uT R σ J P g).det = 1 := by
 
 def uI (g : HA R σ J) : Matrix (Fin r) (Fin r) (R ⊗[F] E) := (uT R σ J P g).adjugate
 
+/- English proof (translation)
+Rewrite using `[uI, Matrix.mul_adjugate, det_uT, one_smul]`.
+-/
 theorem uT_mul_uI (g : HA R σ J) : uT R σ J P g * uI R σ J P g = 1 := by
   rw [uI, Matrix.mul_adjugate, det_uT, one_smul]
 
+/- English proof (translation)
+Rewrite using `[uI, Matrix.adjugate_mul, det_uT, one_smul]`.
+-/
 theorem uI_mul_uT (g : HA R σ J) : uI R σ J P g * uT R σ J P g = 1 := by
   rw [uI, Matrix.adjugate_mul, det_uT, one_smul]
 
 def cj (U : Matrix (Fin r) (Fin r) (R ⊗[F] E)) : Matrix (Fin r) (Fin r) (R ⊗[F] E) :=
   Matrix.of fun a b => sigR R σ (U b a)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem cj_apply (U : Matrix (Fin r) (Fin r) (R ⊗[F] E)) (a b : Fin r) :
     cj R σ U a b = sigR R σ (U b a) := rfl
 
+/- English proof (translation)
+Use extensionality with `a b`. Simplify using `only [cj, Matrix.mul_apply, Matrix.of_apply, map_sum, map_mul]`. Conclude with `Finset.sum_congr rfl fun k _ => mul_comm _ _`.
+-/
 theorem cj_mul (U V : Matrix (Fin r) (Fin r) (R ⊗[F] E)) : cj R σ U * cj R σ V = cj R σ (V * U) := by
   ext a b
   simp only [cj, Matrix.mul_apply, Matrix.of_apply, map_sum, map_mul]
   exact Finset.sum_congr rfl fun k _ => mul_comm _ _
 
+/- English proof (translation)
+Use extensionality with `a b`. Simplify using `only [cj, Matrix.of_apply, Matrix.one_apply]`. Distinguish the cases in `h : a = b`. Substitute `h` using the available equality. Simplify using the standard rewrite rules.
+
+Simplify using `[h, Ne.symm h]`.
+-/
 theorem cj_one : cj R σ (1 : Matrix (Fin r) (Fin r) (R ⊗[F] E)) = 1 := by
   ext a b
   simp only [cj, Matrix.of_apply, Matrix.one_apply]
@@ -66,12 +91,18 @@ section Hyp
 variable (hσσ : ∀ x, σ (σ x) = x) (hJ : IsHermND σ J) (hP : P.IsStd σ J T)
 include hσσ hJ hP
 
+/- English proof (translation)
+Rewrite using `[levL_comp (datR_hyp hσσ hJ hP), uT_mul_uI, cj_mul, uT_mul_uI, cj_one, levL_one (datR_hyp hσσ hJ hP)]`.
+-/
 theorem levTI (g : HA R σ J) (x : Fin M → R ⊗[F] E) :
     levL (datR R σ J P T) (uT R σ J P g) (cj R σ (uI R σ J P g))
       (levL (datR R σ J P T) (uI R σ J P g) (cj R σ (uT R σ J P g)) x) = x := by
   rw [levL_comp (datR_hyp hσσ hJ hP), uT_mul_uI, cj_mul, uT_mul_uI, cj_one,
     levL_one (datR_hyp hσσ hJ hP)]
 
+/- English proof (translation)
+Rewrite using `[levL_comp (datR_hyp hσσ hJ hP), uI_mul_uT, cj_mul, uI_mul_uT, cj_one, levL_one (datR_hyp hσσ hJ hP)]`.
+-/
 theorem levIT (g : HA R σ J) (x : Fin M → R ⊗[F] E) :
     levL (datR R σ J P T) (uI R σ J P g) (cj R σ (uT R σ J P g))
       (levL (datR R σ J P T) (uT R σ J P g) (cj R σ (uI R σ J P g)) x) = x := by
@@ -102,6 +133,17 @@ section Hyp2
 variable (hσσ : ∀ x, σ (σ x) = x) (hJ : IsHermND σ J) (hP : P.IsStd σ J T)
 include hσσ hJ hP
 
+/- English proof (translation)
+Establish `H : (datR R σ J P T).Hyp` using `datR_hyp hσσ hJ hP`. Use `show Formalism.UG.cT (sigR R σ) (LinearMap.toMatrix' (levL (datR R σ J P T) (uT R σ J P g) (cj R σ (uI R σ J P g)))) * JR R J * LinearMap.toMatrix' (levL (datR R σ J P T) (uT R σ J P g) (cj R σ (uI R σ J P g))) = JR R J`. Apply `PI.LevelKSplit.W.SemiA.uj_of_uni` to reduce the goal to its premises. Introduce `x y`. Rewrite using `[LinearMap.toMatrix'_mulVec, LinearMap.toMatrix'_mulVec]`.
+
+Use `levL_uni H _ _ (fun b c => ?_) (fun b c => ?_) x y` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Matrix.mul_apply, map_sum]`. Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Rewrite using `[cj_apply, map_mul, mul_comm]`.
+
+Use `_ = if b = c then 1 else 0 := by`. Rewrite using `[uI_mul_uT, Matrix.one_apply]`. Distinguish the cases in `h : b = c`. Substitute `h` using the available equality. Simplify using the standard rewrite rules.
+
+Simplify using `[h, Ne.symm h]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Matrix.mul_apply]`. Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Rewrite using `[cj_apply]`.
+
+Conclude with `congrArg (· * uT R σ J P g a c) (H.σσ _)`. Use `_ = if b = c then 1 else 0 := by rw [uI_mul_uT, Matrix.one_apply]`.
+-/
 theorem levU_mem (g : HA R σ J) : levU hσσ hJ hP g ∈ HR R σ J := by
   have H : (datR R σ J P T).Hyp := datR_hyp hσσ hJ hP
   show Formalism.UG.cT (sigR R σ) (LinearMap.toMatrix' (levL (datR R σ J P T) (uT R σ J P g)
@@ -172,6 +214,11 @@ def Asub : Subgroup (HA R σ J) where
 
 variable {R σ J P}
 
+/- English proof (translation)
+Proceed by induction on `hx using Submodule.span_induction with`. Consider the case `mem y hy`. Take `⟨c, hc, rfl⟩` from `hy`. Use `show (datR R σ J P T).h ((datR R σ J P T).f a) ((datR R σ J P T).e c) = 0`. Rewrite using `[PG.Dat.fe H, if_neg]`.
+
+Introduce and unpack `rfl`. Conclude with `ha hc`. Consider the case `zero => exact PG.Dat.h_zero_right _ _`. Consider the case `add x y _ _ hx hy => rw [PG.Dat.h_add_right, hx, hy, add_zero]`. Consider the case `smul c x _ hx => rw [PG.Dat.h_smul_right, hx, mul_zero]`.
+-/
 theorem spanE_f_zero (H : (datR R σ J P T).Hyp) {s : Set (Fin r)} {x : Fin M → R ⊗[F] E}
     (hx : x ∈ spanR (F := F) R P.e s) {a : Fin r} (ha : a ∉ s) :
     (datR R σ J P T).h ((datR R σ J P T).f a) x = 0 := by
@@ -186,11 +233,19 @@ theorem spanE_f_zero (H : (datR R σ J P T).Hyp) {s : Set (Fin r)} {x : Fin M �
   | add x y _ _ hx hy => rw [PG.Dat.h_add_right, hx, hy, add_zero]
   | smul c x _ hx => rw [PG.Dat.h_smul_right, hx, mul_zero]
 
+/- English proof (translation)
+Rewrite using `[PG.Dat.pXv_apply]`. Conclude with `Submodule.sum_mem _ fun a _ => Submodule.smul_mem _ _ (Submodule.subset_span ⟨a, rfl⟩)`.
+-/
 theorem pXv_mem_span (x : Fin M → R ⊗[F] E) :
     (datR R σ J P T).pXv x ∈ Submodule.span (R ⊗[F] E) (Set.range (datR R σ J P T).f) := by
   rw [PG.Dat.pXv_apply]
   exact Submodule.sum_mem _ fun a _ => Submodule.smul_mem _ _ (Submodule.subset_span ⟨a, rfl⟩)
 
+/- English proof (translation)
+Proceed by induction on `hx using Submodule.span_induction with`. Consider the case `mem y hy`. Take `⟨b, rfl⟩` from `hy`. Rewrite using `[PG.Dat.pXv_apply]`. Simplify using `[H.ef]`.
+
+Consider the case `zero => simp`. Consider the case `add x y _ _ hx hy => rw [map_add, hx, hy]`. Consider the case `smul c x _ hx => rw [map_smul, hx]`.
+-/
 theorem pXv_of_span (H : (datR R σ J P T).Hyp) {x : Fin M → R ⊗[F] E}
     (hx : x ∈ Submodule.span (R ⊗[F] E) (Set.range (datR R σ J P T).f)) :
     (datR R σ J P T).pXv x = x := by
@@ -203,14 +258,23 @@ theorem pXv_of_span (H : (datR R σ J P T).Hyp) {x : Fin M → R ⊗[F] E}
   | add x y _ _ hx hy => rw [map_add, hx, hy]
   | smul c x _ hx => rw [map_smul, hx]
 
+/- English proof (translation)
+The claim follows from `PG.Dat.pX_mem_span (D := datR R σ J P T) x`.
+-/
 theorem pX_mem (x : Fin M → R ⊗[F] E) :
     (datR R σ J P T).pX x ∈ Submodule.span (R ⊗[F] E) (Set.range fun a => ratV (F := F) R (P.e a)) :=
   PG.Dat.pX_mem_span (D := datR R σ J P T) x
 
+/- English proof (translation)
+The claim follows from `pXv_mem_span (T := T) x`.
+-/
 theorem pXv_mem (x : Fin M → R ⊗[F] E) :
     (datR R σ J P T).pXv x ∈ Submodule.span (R ⊗[F] E) (Set.range fun a => ratV (F := F) R (P.f a)) :=
   pXv_mem_span (T := T) x
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fun a => h_e_pV H a x, fun a => h_f_pV H a x⟩`.
+-/
 theorem pV_mem_Wp (H : (datR R σ J P T).Hyp) (x : Fin M → R ⊗[F] E) :
     pV (datR R σ J P T) x ∈ Wp R σ J P :=
   ⟨fun a => h_e_pV H a x, fun a => h_f_pV H a x⟩
@@ -220,6 +284,9 @@ section Hyp3
 variable (hσσ : ∀ x, σ (σ x) = x) (hJ : IsHermND σ J) (hP : P.IsStd σ J T)
 include hσσ hJ hP
 
+/- English proof (translation)
+Use `first`. Consider the case `rfl`. Consider the case `(unfold lin; simp [levG, levU, HA.mat]; exact Matrix.toLin'_toMatrix' _)`. Consider the case `(unfold lin; simp [levG, levU, HA.mat]; exact LinearMap.ext fun x => LinearMap.toMatrix'_mulVec _ x)`.
+-/
 theorem lin_levG (g : HA R σ J) :
     lin R σ J (levG hσσ hJ hP g) = levL (datR R σ J P T) (uT R σ J P g) (cj R σ (uI R σ J P g)) := by
   first
@@ -227,6 +294,11 @@ theorem lin_levG (g : HA R σ J) :
   | (unfold lin; simp [levG, levU, HA.mat]; exact Matrix.toLin'_toMatrix' _)
   | (unfold lin; simp [levG, levU, HA.mat]; exact LinearMap.ext fun x => LinearMap.toMatrix'_mulVec _ x)
 
+/- English proof (translation)
+Unfold `lin`. Simplify using `[levG, levU, HA.mat]`. Use `first`. Consider the case `exact LinearMap.toMatrix'_mulVec _ x`. Consider the case `(show (LinearMap.toMatrix' (levL (datR R σ J P T) (uI R σ J P g) (cj R σ (uT R σ J P g)))).mulVec x = _`.
+
+Conclude with `LinearMap.toMatrix'_mulVec _ x)`.
+-/
 theorem lin_levG_inv (g : HA R σ J) (x : Fin M → R ⊗[F] E) :
     lin R σ J (levG hσσ hJ hP g)⁻¹ x =
       levL (datR R σ J P T) (uI R σ J P g) (cj R σ (uT R σ J P g)) x := by
@@ -237,6 +309,21 @@ theorem lin_levG_inv (g : HA R σ J) (x : Fin M → R ⊗[F] E) :
   | (show (LinearMap.toMatrix' (levL (datR R σ J P T) (uI R σ J P g) (cj R σ (uT R σ J P g)))).mulVec x = _
      exact LinearMap.toMatrix'_mulVec _ x)
 
+/- English proof (translation)
+Establish `H : (datR R σ J P T).Hyp` using `datR_hyp hσσ hJ hP`. Establish `hfs : ∀ (U W : Matrix (Fin r) (Fin r) (R ⊗[F] E)) (b : Fin r), levL (datR R σ J P T) U W (ratV (F` using `F) R (P.f b)) ∈ spanR (F := F) R P.f Set.univ := fun U W b => by show levL (datR R σ J P T) U W ((datR R σ J P T).f b) ∈ _`. Rewrite using `[levL_f H]`. Conclude with `Submodule.sum_mem _ fun d _ => Submodule.smul_mem _ _ (Submodule.subset_span ⟨d, Set.mem_univ _, rfl⟩)`. Use `⟨⟨fun b => ?_, fun v hv => ?_⟩, fun w hw => ?_, fun b => ?_, fun b => ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[lin_levG] show levL (datR R σ J P T) _ _ ((datR R σ J P T).e b) - (datR R σ J P T).e b ∈ _`. Rewrite using `[levL_e H]`. Establish `e1 : ∑ a, uT R σ J P g a b • (datR R σ J P T).e a - (datR R σ J P T).e b = ∑ a, (if a < b then uT R σ J P g a b else 0) • (datR R σ J P T).e a`. Establish `eb : (datR R σ J P T).e b = ∑ a, (if a = b then (1 : R ⊗[F] E) else 0) • (datR R σ J P T).e a` using `by simp`. Rewrite using `[eb, ← Finset.sum_sub_distrib]`.
+
+Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Rewrite using `[← sub_smul]`. Use `congr 1`. Rewrite using `[uT_apply]`. Break down `lt_trichotomy a b with h | h | h` into its components or cases.
+
+Simplify using `[h, h.ne]`. Substitute `h` using the available equality. Simplify using the standard rewrite rules. Simplify using `[not_lt.2 h.le, h.ne']`. Rewrite using `[e1]`.
+
+Use `Submodule.sum_mem _ fun a _ => ?_` and prove the remaining obligations. Use `split_ifs with h`. Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span ⟨a, h, rfl⟩)`. Rewrite using `[zero_smul]`. Conclude with `Submodule.zero_mem _`.
+
+Rewrite using `[lin_levG, PI.LevelKSplit.W.Glob.spanR_univ]`. Conclude with `levL_sub_perp H _ _ hv`. Rewrite using `[lin_levG]`. Conclude with `levL_alt H _ _ hw.2 hw.1`. Rewrite using `[lin_levG]`.
+
+Conclude with `hfs _ _ b`. Rewrite using `[lin_levG_inv]`. Conclude with `hfs _ _ b`.
+-/
 theorem levG_mem (g : HA R σ J) : levG hσσ hJ hP g ∈ Asub R σ J P := by
   have H : (datR R σ J P T).Hyp := datR_hyp hσσ hJ hP
   have hfs : ∀ (U W : Matrix (Fin r) (Fin r) (R ⊗[F] E)) (b : Fin r),
@@ -275,6 +362,17 @@ theorem levG_mem (g : HA R σ J) : levG hσσ hJ hP g ∈ Asub R σ J P := by
   · rw [lin_levG]; exact hfs _ _ b
   · rw [lin_levG_inv]; exact hfs _ _ b
 
+/- English proof (translation)
+Establish `H : (datR R σ J P T).Hyp` using `datR_hyp hσσ hJ hP`. Establish `hn1 : UniC R σ J P.e n` using `hn.1`. Establish `hmem : lin R σ J n (ratV (F` using `F) R (P.e b)) ∈ Submodule.span (R ⊗[F] E) (Set.range (datR R σ J P T).e) := by`. Use `uni_map_le hn1 Set.univ (fun _ _ _ _ => Set.mem_univ _) (Submodule.mem_map_of_mem (Submodule.subset_span ⟨b, Set.mem_univ _, rfl⟩))` as an intermediate fact. Rewrite `this` using `[PI.LevelKSplit.W.Glob.spanR_univ]`.
+
+Conclude with `this`. Establish `e1 : lin R σ J n (ratV (F` using `F) R (P.e b)) = ∑ a, (datR R σ J P T).h ((datR R σ J P T).f a) (lin R σ J n (ratV (F := F) R (P.e b))) • (datR R σ J P T).e a := by conv_lhs => rw [← PG.Dat.pX_of_span H hmem]`. Conclude with `PG.Dat.pX_apply _ _`. Rewrite using `[lin_levG]`. Use `show levL (datR R σ J P T) _ _ ((datR R σ J P T).e b) = _`.
+
+Rewrite using `[levL_e H, e1]`. Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Use `congr 1`. Rewrite using `[uT_apply]`. Distinguish the cases in `h1 : a < b`.
+
+Rewrite using `[if_pos h1]`. Both sides reduce to the same expression. Rewrite using `[if_neg h1]`. Establish `h0` using `spanE_f_zero (T := T) H (hn1 b) (a := a) (fun h => h1 h)`. Establish `hfe : (datR R σ J P T).h ((datR R σ J P T).f a) (ratV (F` using `F) R (P.e b)) = if a = b then 1 else 0 := PG.Dat.fe H a b`.
+
+Rewrite `h0` using `[PG.Dat.h_sub_right, hfe, sub_eq_zero]`. Conclude with `h0.symm`.
+-/
 theorem levG_e (n : HA R σ J) (hn : n ∈ Nsub R σ J P) (b : Fin r) :
     lin R σ J (levG hσσ hJ hP n) (ratV (F := F) R (P.e b)) = lin R σ J n (ratV (F := F) R (P.e b)) := by
   have H : (datR R σ J P T).Hyp := datR_hyp hσσ hJ hP
@@ -304,12 +402,26 @@ theorem levG_e (n : HA R σ J) (hn : n ∈ Nsub R σ J P) (b : Fin r) :
     rw [PG.Dat.h_sub_right, hfe, sub_eq_zero] at h0
     exact h0.symm
 
+/- English proof (translation)
+Use `Subgroup.mem_inf.2 ⟨(Nsub R σ J P).mul_mem ((Nsub R σ J P).inv_mem (levG_mem hσσ hJ hP n).1) hn, (mem_stabT R σ J P.e _).2 fun b => ?_⟩` and prove the remaining obligations. Rewrite using `[lin_mul, ← levG_e hσσ hJ hP n hn b, lin_inv_lin]`.
+-/
 theorem levG_inv_mul (n : HA R σ J) (hn : n ∈ Nsub R σ J P) :
     (levG hσσ hJ hP n)⁻¹ * n ∈ LevelUnipotentSubgroup R σ J P := by
   refine Subgroup.mem_inf.2 ⟨(Nsub R σ J P).mul_mem ((Nsub R σ J P).inv_mem
     (levG_mem hσσ hJ hP n).1) hn, (mem_stabT R σ J P.e _).2 fun b => ?_⟩
   rw [lin_mul, ← levG_e hσσ hJ hP n hn b, lin_inv_lin]
 
+/- English proof (translation)
+Establish `H : (datR R σ J P T).Hyp` using `datR_hyp hσσ hJ hP`. Take `⟨_, hW, hF, _⟩` from `hu`. Establish `hS` using `(mem_stabT R σ J P.e u).1 (Subgroup.mem_inf.1 hu1).2`. Establish `hf : ∀ b, lin R σ J u (ratV (F` using `F) R (P.f b)) = ratV (F := F) R (P.f b) := by`. Introduce `b`.
+
+Establish `hm : lin R σ J u (ratV (F` using `F) R (P.f b)) ∈ Submodule.span (R ⊗[F] E) (Set.range (datR R σ J P T).f) := by`. Use `hF b` as an intermediate fact. Rewrite `this` using `[PI.LevelKSplit.W.Glob.spanR_univ]`. Conclude with `this`. Rewrite using `[← pXv_of_span H hm, PG.Dat.pXv_apply]`.
+
+Establish `hc : ∀ d, (datR R σ J P T).h ((datR R σ J P T).e d) (lin R σ J u (ratV (F` using `F) R (P.f b))) = if d = b then 1 else 0 := fun d => by show hR R σ J (ratV (F := F) R (P.e d)) (lin R σ J u (ratV (F := F) R (P.f b))) = _`. Rewrite using `[← hS d, hR_lin]`. Conclude with `H.ef d b`. Simplify using `only [hc, ite_smul, one_smul, zero_smul, Finset.sum_ite_eq', Finset.mem_univ, if_true]`. Both sides reduce to the same expression.
+
+Apply `PI.LevelKSplit.W.SemiA.ext_lin` to reduce the goal to its premises. Introduce `x`. Rewrite using `[lin_one]`. Use `conv_lhs => rw [decomp (datR R σ J P T) x]`. Rewrite using `[map_add, map_add, hW _ (pV_mem_Wp H x), PI.LevelKSplit.W.Glob.lin_fix_span u P.e hS _ (pX_mem x), PI.LevelKSplit.W.Glob.lin_fix_span u P.f hf _ (pXv_mem x)]`.
+
+Conclude with `(decomp (datR R σ J P T) x).symm`.
+-/
 theorem levi_inf_unipotent_eq_one (u : HA R σ J) (hu : u ∈ Asub R σ J P) (hu1 : u ∈ LevelUnipotentSubgroup R σ J P) : u = 1 := by
   have H : (datR R σ J P T).Hyp := datR_hyp hσσ hJ hP
   obtain ⟨_, hW, hF, _⟩ := hu
@@ -340,6 +452,11 @@ theorem levi_inf_unipotent_eq_one (u : HA R σ J) (hu : u ∈ Asub R σ J P) (hu
 
 end Hyp3
 
+/- English proof (translation)
+Establish `hm'` using `Subgroup.mem_inf.1 hm`. Use `Subgroup.mem_inf.2 ⟨(Nsub R σ J P).mul_mem ((Nsub R σ J P).mul_mem hn hm'.1) ((Nsub R σ J P).inv_mem hn), (mem_stabT R σ J P.e _).2 fun b => ?_⟩` and prove the remaining obligations. Establish `hmS` using `(mem_stabT R σ J P.e m).1 hm'.2`. Establish `h1 : lin R σ J n⁻¹ (ratV (F` using `F) R (P.e b)) ∈ Submodule.span (R ⊗[F] E) (Set.range fun a => ratV (F := F) R (P.e a)) := by`. Use `uni_map_le ((Nsub R σ J P).inv_mem hn).1 Set.univ (fun _ _ _ _ => Set.mem_univ _) (Submodule.mem_map_of_mem (Submodule.subset_span ⟨b, Set.mem_univ _, rfl⟩))` as an intermediate fact.
+
+Rewrite `this` using `[PI.LevelKSplit.W.Glob.spanR_univ]`. Conclude with `this`. Rewrite using `[lin_mul, lin_mul, PI.LevelKSplit.W.Glob.lin_fix_span m P.e hmS _ h1, lin_lin_inv]`.
+-/
 theorem unipotent_radical_normal (n m : HA R σ J) (hn : n ∈ Nsub R σ J P) (hm : m ∈ LevelUnipotentSubgroup R σ J P) :
     n * m * n⁻¹ ∈ LevelUnipotentSubgroup R σ J P := by
   have hm' := Subgroup.mem_inf.1 hm
@@ -354,6 +471,21 @@ theorem unipotent_radical_normal (n m : HA R σ J) (hn : n ∈ Nsub R σ J P) (h
     exact this
   rw [lin_mul, lin_mul, PI.LevelKSplit.W.Glob.lin_fix_span m P.e hmS _ h1, lin_lin_inv]
 
+/- English proof (translation)
+Take `⟨hu1, hW, hF, _⟩` from `hu`. Establish `hu1' : UniC R σ J P.e u` using `hu1.1`. Establish `hhe` using `PI.LevelKSplit.W.Glob.lin_fix_span h P.e (PI.LevelKSplit.W.Glob.H_fix_e P h hh)`. Establish `hhf` using `PI.LevelKSplit.W.Glob.lin_fix_span h P.f (PI.LevelKSplit.W.Glob.H_fix_f P h hh)`. Apply `PI.LevelKSplit.W.SemiA.ext_lin` to reduce the goal to its premises.
+
+Introduce `x`. Establish `hWx : lin R σ J h (pV (datR R σ J P T) x) ∈ Wp R σ J P`. Use `⟨fun a => ?_, fun a => ?_⟩` and prove the remaining obligations. Rewrite using `[← PI.LevelKSplit.W.Glob.H_fix_e P h hh a, hR_lin]`. Conclude with `h_e_pV H a x`.
+
+Rewrite using `[← PI.LevelKSplit.W.Glob.H_fix_f P h hh a, hR_lin]`. Conclude with `h_f_pV H a x`. Establish `uE : lin R σ J u ((datR R σ J P T).pX x) ∈ Submodule.span (R ⊗[F] E) (Set.range fun a => ratV (F` using `F) R (P.e a)) := by`. Establish `hx : (datR R σ J P T).pX x ∈ spanR (F` using `F) R P.e Set.univ := by`. Rewrite using `[PI.LevelKSplit.W.Glob.spanR_univ]`.
+
+Conclude with `pX_mem x`. Use `uni_map_le hu1' Set.univ (fun _ _ _ _ => Set.mem_univ _) (Submodule.mem_map_of_mem hx)` as an intermediate fact. Rewrite `this` using `[PI.LevelKSplit.W.Glob.spanR_univ]`. Conclude with `this`. Establish `uF : lin R σ J u ((datR R σ J P T).pXv x) ∈ Submodule.span (R ⊗[F] E) (Set.range fun a => ratV (F` using `F) R (P.f a)) := by`.
+
+Establish `hle : spanR (F` using `F) R P.f Set.univ ≤ (spanR (F := F) R P.f Set.univ).comap (lin R σ J u) := by`. Rewrite using `[spanR, Submodule.span_le]`. Introduce and unpack `_ ⟨b, _, rfl⟩`. Conclude with `hF b`. Establish `hx : (datR R σ J P T).pXv x ∈ spanR (F` using `F) R P.f Set.univ := by`.
+
+Rewrite using `[PI.LevelKSplit.W.Glob.spanR_univ]`. Conclude with `pXv_mem x`. Use `hle hx` as an intermediate fact. Rewrite `this` using `[PI.LevelKSplit.W.Glob.spanR_univ]`. Conclude with `this`.
+
+Rewrite using `[lin_mul, lin_mul]`. Use `conv_lhs => rw [decomp (datR R σ J P T) x]`. Use `conv_rhs => rw [decomp (datR R σ J P T) x]`. Simplify using `only [map_add]`. Rewrite using `[hW _ (pV_mem_Wp H x), hW _ hWx, hhe _ (pX_mem x), hhf _ (pXv_mem x), hhe _ uE, hhf _ uF]`.
+-/
 theorem H_comm_A (H : (datR R σ J P T).Hyp) (h u : HA R σ J) (hh : h ∈ Hsub R σ J P)
     (hu : u ∈ Asub R σ J P) : h * u = u * h := by
   obtain ⟨hu1, hW, hF, _⟩ := hu

@@ -58,9 +58,15 @@ def Growth : Prop :=
       ∀ x : Fin b → ℝ, Antitone x → (∀ l, 0 ≤ x l) → ∀ t, IsSplit ε W₀ x t →
         ‖kCoef f' f t‖ ≤ C * Real.exp (∑ l, (reExt D b l - (rho n (fun _ : Fin b => 1) l).re) * x l) * (1 + ‖x‖) ^ d
 
+/- English proof (translation)
+Apply the tactic sequence `constructor <;> simp [blockExt]`.
+-/
 example (x : ℝ) : blockExt ![2] ![x] 1 = x ∧ blockExt ![2] ![x] 2 = 0 := by
   constructor <;> simp [blockExt]
 
+/- English proof (translation)
+Take `⟨f, hf, h1, hK⟩` from `exists_spherical h.1 (fun _ => le_rfl) (fun l => (lam l : ℂ))`. Conclude with `⟨f, hf, fun k hk => by simpa [h1] using hK 1 k hk.1⟩`.
+-/
 theorem exists_isSph {ε : Fin n → Bool} {b : ℕ} {W₀ : Flag n b} (h : IsMinimalFlag ε W₀) (lam : Fin b → ℝ) :
     ∃ φ, IsSph (ε := ε) ⊤ W₀ lam φ := by
   obtain ⟨f, hf, h1, hK⟩ := exists_spherical h.1 (fun _ => le_rfl) (fun l => (lam l : ℂ))

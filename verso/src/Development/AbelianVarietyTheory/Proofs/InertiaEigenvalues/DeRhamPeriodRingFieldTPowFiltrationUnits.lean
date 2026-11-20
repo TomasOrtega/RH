@@ -13,28 +13,51 @@ variable {l : ℕ} [Fact l.Prime] (P : LocPrime l)
 
 def tu : P.R.BdRˣ := Units.map (P.ιB : P.R.B →* P.R.BdR) (isUnit_tB P).unit
 
+/- English proof (translation)
+Simplify using `[tu]`.
+-/
 theorem tu_val : (tu P : P.R.BdR) = P.ιB P.tB := by
   simp [tu]
 
+/- English proof (translation)
+Rewrite using `[tz, tu, ← map_zpow]`. Both sides reduce to the same expression.
+-/
 theorem tz_eq (a : ℤ) : tz P a = ((tu P ^ a : P.R.BdRˣ) : P.R.BdR) := by
   rw [tz, tu, ← map_zpow]
   rfl
 
+/- English proof (translation)
+Proceed by induction on `b, h using Int.le_induction with`. Consider the case `base => exact hx`. Consider the case `succ b _ ih => exact ih ((P.PD (botExt l)).Fil_anti b hx)`.
+-/
 theorem fil_anti_le {a b : ℤ} (h : a ≤ b) (x : P.R.BdR) (hx : x ∈ Fil P b) : x ∈ Fil P a := by
   induction b, h using Int.le_induction with
   | base => exact hx
   | succ b _ ih => exact ih ((P.PD (botExt l)).Fil_anti b hx)
 
+/- English proof (translation)
+Introduce `a b h` and use `(P.PD (botExt l)).ι_inj (by rw [P.PD_ι, P.PD_ι]; exact h)`.
+-/
 theorem ι_injective : Function.Injective P.ιB := fun a b h =>
   (P.PD (botExt l)).ι_inj (by rw [P.PD_ι, P.PD_ι]; exact h)
 
+/- English proof (translation)
+The claim follows from `(P.PD (botExt l)).Fil_mul a b x y hx hy`.
+-/
 theorem fil_mul (a b : ℤ) (x y : P.R.BdR) (hx : x ∈ Fil P a) (hy : y ∈ Fil P b) : x * y ∈ Fil P (a + b) :=
   (P.PD (botExt l)).Fil_mul a b x y hx hy
 
+/- English proof (translation)
+Establish `h` using `(P.PD (botExt l)).Fil_G ⟨g, mem_GK_botExt g⟩ a x hx`. Rewrite `h` using `[P.PD_actdR]`. Then use the resulting hypothesis.
+-/
 theorem fil_act (a : ℤ) (g : GQ l) (x : P.R.BdR) (hx : x ∈ Fil P a) : P.actQdR g x ∈ Fil P a := by
   have h := (P.PD (botExt l)).Fil_G ⟨g, mem_GK_botExt g⟩ a x hx
   rwa [P.PD_actdR] at h
 
+/- English proof (translation)
+Establish `h : Units.map (P.actQ g : P.R.B →* P.R.B) (isUnit_tB P).unit = Units.map (algebraMap ℚ_[l] P.R.B : ℚ_[l] →* P.R.B) (P.χQ g) * (isUnit_tB P).unit`. Apply `Units.ext` to reduce the goal to its premises. Simplify `localPrime_galoisAction_periodT P g` using `[Algebra.smul_def]`. Establish `h2` using `congrArg (fun u : P.R.Bˣ => ((u ^ a : P.R.Bˣ) : P.R.B)) h`. Simplify using `only [mul_zpow, ← map_zpow, Units.val_mul, Units.coe_map] at h2`.
+
+Rewrite using `[← map_zpow P.χQ]`. Conclude with `h2`.
+-/
 theorem actQ_tpow (g : GQ l) (a : ℤ) : P.actQ g (((isUnit_tB P).unit ^ a : P.R.Bˣ) : P.R.B) =
     algebraMap ℚ_[l] P.R.B ((P.χQ g ^ a : ℚ_[l]ˣ) : ℚ_[l]) * (((isUnit_tB P).unit ^ a : P.R.Bˣ) : P.R.B) := by
   have h : Units.map (P.actQ g : P.R.B →* P.R.B) (isUnit_tB P).unit =
@@ -46,6 +69,9 @@ theorem actQ_tpow (g : GQ l) (a : ℤ) : P.actQ g (((isUnit_tB P).unit ^ a : P.R
   rw [← map_zpow P.χQ]
   exact h2
 
+/- English proof (translation)
+Establish `hι : ∀ b : P.R.B, P.actQdR g (P.ιB b) = P.ιB (P.actQ g b)` using `fun b => by`. Establish `h` using `(P.PD (botExt l)).ι_comm ⟨g, mem_GK_botExt g⟩ b`. Rewrite `h` using `[P.PD_actB, P.PD_actdR, P.PD_ι, P.PD_ι]`. Conclude with `h.symm`. Rewrite using `[tz, hι, actQ_tpow, map_mul, AlgHom.commutes]`.
+-/
 theorem act_tz (g : GQ l) (a : ℤ) : P.actQdR g (tz P a) =
     algebraMap ℚ_[l] P.R.BdR ((P.χQ g ^ a : ℚ_[l]ˣ) : ℚ_[l]) * tz P a := by
   have hι : ∀ b : P.R.B, P.actQdR g (P.ιB b) = P.ιB (P.actQ g b) := fun b => by
@@ -56,6 +82,11 @@ theorem act_tz (g : GQ l) (a : ℤ) : P.actQdR g (tz P a) =
 
 variable {AI : LocAinf l P}
 
+/- English proof (translation)
+Establish `h` using `((GlobalTheory.MemLoc.TiedUnif.tied_uniformiser l P AI T).2.2 (botExt l) a (P.ιB P.tB * x))`. Express the relevant statement in the definitionally equal form `x ∈ (P.PD (botExt l)).Fil a ↔ P.ιB P.tB * x ∈ (P.PD (botExt l)).Fil (a + 1)`. Rewrite using `[h]`. Prove the components needed by the constructor for the conclusion. Introduce `hx`.
+
+Conclude with `⟨x, hx, rfl⟩`. Introduce and unpack `⟨y, hy, e⟩`. Establish `hu : IsUnit (P.ιB P.tB)` using `tu_val P ▸ (tu P).isUnit`. Rewrite using `[hu.mul_left_cancel e]` and apply the resulting hypothesis.
+-/
 theorem fil_step (T : LocTied l P AI) (a : ℤ) (x : P.R.BdR) : x ∈ Fil P a ↔ P.ιB P.tB * x ∈ Fil P (a + 1) := by
   have h := ((GlobalTheory.MemLoc.TiedUnif.tied_uniformiser l P AI T).2.2 (botExt l) a (P.ιB P.tB * x))
   change x ∈ (P.PD (botExt l)).Fil a ↔ P.ιB P.tB * x ∈ (P.PD (botExt l)).Fil (a + 1)
@@ -67,6 +98,13 @@ theorem fil_step (T : LocTied l P AI) (a : ℤ) (x : P.R.BdR) : x ∈ Fil P a �
     have hu : IsUnit (P.ιB P.tB) := tu_val P ▸ (tu P).isUnit
     rwa [hu.mul_left_cancel e]
 
+/- English proof (translation)
+Proceed by induction on `b using Int.induction_on with`. Consider the case `zero => intro a x`. Simplify using `[tz_eq]`. Consider the case `succ b ih`. Introduce `a x`.
+
+Rewrite using `[ih a x, fil_step P T (a + b), tz_eq, tz_eq, zpow_add_one, Units.val_mul, tu_val, ← add_assoc]`. Put the polynomial expressions in normal form. Consider the case `pred b ih`. Introduce `a x`. Rewrite using `[ih a x, fil_step P T (a + (-(b : ℤ) - 1)), tz_eq, tz_eq, ← tu_val, ← mul_assoc, ← Units.val_mul, ← zpow_one_add]`.
+
+Put the polynomial expressions in normal form.
+-/
 theorem fil_tz (T : LocTied l P AI) (b : ℤ) : ∀ (a : ℤ) (x : P.R.BdR), x ∈ Fil P a ↔ tz P b * x ∈ Fil P (a + b) := by
   induction b using Int.induction_on with
   | zero => intro a x; simp [tz_eq]
@@ -80,10 +118,22 @@ theorem fil_tz (T : LocTied l P AI) (b : ℤ) : ∀ (a : ℤ) (x : P.R.BdR), x �
       ← zpow_one_add]
     ring_nf
 
+/- English proof (translation)
+Take `⟨-, -, hF, -⟩` from `GlobalTheory.MemLoc.BdRField.bdR_isField l`. Conclude with `MulEquiv.isField hF T.eD.toMulEquiv`.
+-/
 theorem isField (T : LocTied l P AI) : IsField P.R.BdR := by
   obtain ⟨-, -, hF, -⟩ := GlobalTheory.MemLoc.BdRField.bdR_isField l
   exact MulEquiv.isField hF T.eD.toMulEquiv
 
+/- English proof (translation)
+Take `⟨C, hC⟩` from `GlobalTheory.MemLoc.FitsEx.exists_fits l P AI T`. Establish `he : GlobalTheory.MemLoc.IsEps AI.ε` using `hC.ε ▸ GlobalTheory.MemLoc.core_isEps l C`. Take `⟨-, hker, hunit, -, -⟩` from `GlobalTheory.MemLoc.thetaD_props l`. Establish `h0' : T.eD x ∈ Formalism.Per.FilD l 0` using `(T.fil (botExt l) 0 x).1 h0`. Take `⟨w, hw⟩` from `(GlobalTheory.MemLoc.TiedUnif.mem_FilD_iff he 0 (T.eD x)).1 h0'`.
+
+Rewrite `hw` using `[zpow_zero, Units.val_one, one_mul]`. Establish `hθ : Formalism.Per.θD l w ≠ 0`. Introduce `hz`. Apply `h1` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `x ∈ (P.PD (botExt l)).Fil 1`.
+
+Rewrite using `[T.fil, hw]`. Use `GlobalTheory.MemLoc.TiedUnif.alg_mem_FilD 1 ((hker w).1 hz)` as an intermediate fact. Simplify using `using this`. Take `⟨w', hw'⟩` from `(hunit w hθ).exists_right_inv`. Use `⟨T.eD.symm (algebraMap (Formalism.Per.BdRp l) (Formalism.Per.BdR l) w'), ?_, T.eD.injective ?_⟩` and prove the remaining obligations.
+
+Express the relevant statement in the definitionally equal form `_ ∈ (P.PD (botExt l)).Fil 0`. Rewrite using `[T.fil, RingEquiv.apply_symm_apply]`. Conclude with `GlobalTheory.MemLoc.TiedUnif.alg_mem_FilD_zero w'`. Rewrite using `[map_mul, RingEquiv.apply_symm_apply, hw, ← map_mul, hw', map_one, map_one]`.
+-/
 theorem unit_of_fil (T : LocTied l P AI) (x : P.R.BdR) (h0 : x ∈ Fil P 0) (h1 : x ∉ Fil P 1) :
     ∃ y ∈ Fil P 0, x * y = 1 := by
   obtain ⟨C, hC⟩ := GlobalTheory.MemLoc.FitsEx.exists_fits l P AI T
@@ -106,6 +156,13 @@ theorem unit_of_fil (T : LocTied l P AI) (x : P.R.BdR) (h0 : x ∈ Fil P 0) (h1 
     exact GlobalTheory.MemLoc.TiedUnif.alg_mem_FilD_zero w'
   · rw [map_mul, RingEquiv.apply_symm_apply, hw, ← map_mul, hw', map_one, map_one]
 
+/- English proof (translation)
+Take `⟨a₀, ha₀⟩` from `(P.PD (botExt l)).Fil_exh x`. Establish `hc : ∃ c, x ∉ Fil P c`. Assume the negation of the conclusion as `h`. Use `push_neg at h`. Conclude with `hx ((P.PD (botExt l)).Fil_sep x h)`.
+
+Take `⟨c, hc⟩` from `hc`. Establish `hbd : ∀ z : ℤ, x ∈ Fil P z → z ≤ c` using `fun z hz => by`. Assume the negation of the conclusion as `hlt`. Conclude with `hc (fil_anti_le P (le_of_lt (not_le.1 hlt)) x hz)`. Take `⟨a, ha, hmax⟩` from `Int.exists_greatest_of_bdd ⟨c, hbd⟩ ⟨a₀, ha₀⟩`.
+
+Conclude with `⟨a, ha, fun h => by have := hmax _ h; omega⟩`.
+-/
 theorem exact_deg (x : P.R.BdR) (hx : x ≠ 0) : ∃ a : ℤ, x ∈ Fil P a ∧ x ∉ Fil P (a + 1) := by
   classical
   obtain ⟨a₀, ha₀⟩ := (P.PD (botExt l)).Fil_exh x
@@ -124,6 +181,9 @@ end GlobalTheory.PMon.BdRTied
 
 namespace GlobalTheory.PMon
 
+/- English proof (translation)
+Introduce `l _ P AI T`. Use `⟨BdRTied.isField P T, BdRTied.ι_injective P, fun a b x => BdRTied.fil_tz P T b a x, fun x h0 h1 => BdRTied.unit_of_fil P T x h0 h1, BdRTied.exact_deg P, BdRTied.fil_mul P, BdRTied.fil_act P, fun a g => BdRTied.act_tz P g a, fun a b => ?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[BdRTied.tz_eq, BdRTied.tz_eq, BdRTied.tz_eq, zpow_add, Units.val_mul]`. Rewrite using `[BdRTied.tz_eq, zpow_zero, Units.val_one]`. Rewrite using `[BdRTied.tz_eq, zpow_one, BdRTied.tu_val]`.
+-/
 theorem bdR_tied : ∀ (l : ℕ) [Fact l.Prime] (P : LocPrime l) (AI : LocAinf l P) (T : LocTied l P AI),
     IsField P.R.BdR ∧ Function.Injective P.ιB ∧
     (∀ (a b : ℤ) (x : P.R.BdR), x ∈ Fil P a ↔ tz P b * x ∈ Fil P (a + b)) ∧

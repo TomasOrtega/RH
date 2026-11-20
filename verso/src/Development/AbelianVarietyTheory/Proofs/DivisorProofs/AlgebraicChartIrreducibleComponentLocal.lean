@@ -24,6 +24,13 @@ section
 
 open Limits
 
+/- English proof (translation)
+Establish `h` using `(isPullback_morphismRestrict (pullback.fst q (spMap τ)) U).paste_vert (IsPullback.of_hasPullback q (spMap τ))`. Establish `hs : Smooth ((pullback.fst q (spMap τ) ⁻¹ᵁ U).ι ≫ pullback.snd q (spMap τ))` using `MorphismProperty.of_isPullback h ‹_›`. Establish `hd` using `(forall_isDomain_and_isIntegrallyClosed_stalk_of_smooth ((pullback.fst q (spMap τ) ⁻¹ᵁ U).ι ≫ pullback.snd q (spMap τ)) (fun y => by`. Establish `hf : IsField ((Sp ℂ).presheaf.stalk y)`. Use `letI := (Sp ℂ).presheaf.algebra_section_stalk (⟨y, trivial⟩ : (⊤ : (Sp ℂ).Opens))`.
+
+Use `(isAffineOpen_top (Sp ℂ)).isLocalization_stalk ⟨y, trivial⟩` as an intermediate fact. Establish `hF : IsField Γ(Sp ℂ, ⊤)` using `(Scheme.ΓSpecIso (CommRingCat.of ℂ)).commRingCatIsoToRingEquiv.toMulEquiv.isField (Field.toIsField ℂ)`. Use `letI := hF.toField`. Conclude with `(RingEquiv.ofBijective _ (IsField.localization_map_bijective (M := ((isAffineOpen_top (Sp ℂ)).primeIdealOf ⟨y, trivial⟩).asIdeal.primeCompl) (Rₘ := (Sp ℂ).presheaf.stalk y) (fun h => h (Ideal.zero_mem _)) hF)).symm.toMulEquiv.isField hF`. Use `letI := hf.toField`.
+
+Conclude with `⟨inferInstance, inferInstance⟩) ⟨x, hx⟩).1`. Conclude with `((pullback.fst q (spMap τ) ⁻¹ᵁ U).stalkIso ⟨x, hx⟩).commRingCatIsoToRingEquiv.symm.toMulEquiv.isDomain _`.
+-/
 theorem isDomain_stalk_pullback {k : Type} [CommRing k] {Y : Scheme.{0}} (q : Y ⟶ Sp k) (τ : k →+* ℂ)
     (U : Y.Opens) [Smooth (U.ι ≫ q)] (x : (pullback q (spMap τ) : Scheme.{0}))
     (hx : pullback.fst q (spMap τ) x ∈ U) : IsDomain ((pullback q (spMap τ)).presheaf.stalk x) := by
@@ -51,6 +58,11 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheo
   {c : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Coeff l} {Oz : Type} [CommRing Oz] {β : Oz →+* c.F}
   {Z : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Model Xo c β} {Y : Scheme.{0}} {q : Y ⟶ Sp Oz}
 
+/- English proof (translation)
+Establish `h₁` using `(IsPullback.of_hasPullback (genStr Z) (spMap σ)).paste_horiz (IsPullback.of_hasPullback Z.s (spMap β))`. Use `IsPullback.of_right ?_ ?_ h₁.flip` and prove the remaining obligations. Establish `e : toGenCx j hj σ ≫ pullback.snd (genStr Z) (spMap σ) = pullback.snd _ _` using `pullback.lift_snd _ _ _`. Rewrite using `[e, hj, spMap_comp_spMap]`. Conclude with `(IsPullback.of_hasPullback _ _).flip`.
+
+Establish `e : toGenCx j hj σ ≫ pullback.fst (genStr Z) (spMap σ) = toGen j hj σ` using `pullback.lift_fst _ _ _`. Rewrite using `[← Category.assoc, e]`. Conclude with `pullback.lift_fst _ _ _`.
+-/
 theorem isPullback_toGenCx (j : Y ⟶ Z.X) (hj : j ≫ Z.s = q) (σ : c.F →+* ℂ) :
     IsPullback (toGenCx j hj σ) (pullback.fst _ _) (pullback.fst (genStr Z) (spMap σ) ≫ genι Z) j := by
   have h₁ := (IsPullback.of_hasPullback (genStr Z) (spMap σ)).paste_horiz
@@ -66,6 +78,11 @@ theorem isPullback_toGenCx (j : Y ⟶ Z.X) (hj : j ≫ Z.s = q) (σ : c.F →+* 
 noncomputable def fibPt (σ : c.F →+* ℂ) (y : CxPts q (σ.comp β)) : Sp ℂ ⟶ cxFib β q σ :=
   pullback.lift y.1 (𝟙 _) (y.2.trans (Category.id_comp _).symm)
 
+/- English proof (translation)
+Establish `e : (pullback.lift (up j hj σ y).1 (𝟙 _) ((up j hj σ y).2.trans (Category.id_comp _).symm) : Sp ℂ ⟶ genCx Z σ) = fibPt σ y ≫ toGenCx j hj σ`. Apply `pullback.hom_ext` to reduce the goal to its premises. Apply the tactic sequence `apply pullback.hom_ext <;>`. Simplify using `only [fibPt, toGenCx, toGen, up, Category.assoc, pullback.lift_fst, pullback.lift_snd, pullback.lift_fst_assoc, pullback.lift_snd_assoc, Category.id_comp]`. Establish `e : toGenCx j hj σ ≫ pullback.snd (genStr Z) (spMap σ) = pullback.snd _ _` using `pullback.lift_snd _ _ _`.
+
+Rewrite using `[Category.assoc, e]`. Conclude with `(pullback.lift_snd _ _ _).trans (pullback.lift_snd _ _ _).symm`. Conclude with `congrArg (fun g : Sp ℂ ⟶ genCx Z σ => g (IsLocalRing.closedPoint ℂ)) e`.
+-/
 theorem ptOf_up_eq (j : Y ⟶ Z.X) (hj : j ≫ Z.s = q) (σ : c.F →+* ℂ) (y : CxPts q (σ.comp β)) :
     ptOf Z (up j hj σ y) = toGenCx j hj σ (fibPt σ y (IsLocalRing.closedPoint ℂ)) := by
   have e : (pullback.lift (up j hj σ y).1 (𝟙 _) ((up j hj σ y).2.trans (Category.id_comp _).symm) :
@@ -79,6 +96,11 @@ theorem ptOf_up_eq (j : Y ⟶ Z.X) (hj : j ≫ Z.s = q) (σ : c.F →+* ℂ) (y 
       exact (pullback.lift_snd _ _ _).trans (pullback.lift_snd _ _ _).symm
   exact congrArg (fun g : Sp ℂ ⟶ genCx Z σ => g (IsLocalRing.closedPoint ℂ)) e
 
+/- English proof (translation)
+Establish `hci : IsClosedImmersion (toGenCx j hj σ)` using `MorphismProperty.of_isPullback (isPullback_toGenCx j hj σ).flip ‹_›`. Establish `hinj : Function.Injective (toGenCx j hj σ)` using `(toGenCx j hj σ).isClosedEmbedding.injective`. Simplify using `only [ptsOf, Set.mem_setOf_eq, ptOf_up_eq, hinj.mem_set_image] at h h'`. Establish `hsm` using `ChartSmooth.smooth_chart _ _ q _ n ch`. Establish `hs : Smooth (ch.U.ι ≫ q)` using `SmoothOfRelativeDimension.smooth n _`.
+
+Establish `e : pullback.fst q (spMap (σ.comp β)) (fibPt σ y (IsLocalRing.closedPoint ℂ)) = y.1 (IsLocalRing.closedPoint ℂ)` using `congrArg (fun g : Sp ℂ ⟶ Y => g (IsLocalRing.closedPoint ℂ)) (pullback.lift_fst _ _ _)`. Establish `hd` using `isDomain_stalk_pullback q (σ.comp β) ch.U (fibPt σ y (IsLocalRing.closedPoint ℂ)) (e ▸ mem_ptsIn.1 (ch.source_subset hy))`. Conclude with `IsNormalScheme.eq_of_mem_irreducibleComponents_of_isDomain hC hC' h h'`.
+-/
 theorem component_eq_of_chart (j : Y ⟶ Z.X) [IsClosedImmersion j] (hj : j ≫ Z.s = q) (σ : c.F →+* ℂ) {n : ℕ}
     (ch : AlgChart q (σ.comp β) n) {y : CxPts q (σ.comp β)} (hy : y ∈ ch.e.source)
     {C C' : Set (cxFib β q σ)} (hC : C ∈ irreducibleComponents (cxFib β q σ))
@@ -100,6 +122,9 @@ theorem component_eq_of_chart (j : Y ⟶ Z.X) [IsClosedImmersion j] (hj : j ≫ 
 
 end
 
+/- English proof (translation)
+Introduce `D A N j S κ s σ Y _ q jm _ hq n _ ch y hy C hC C' hC' h h'`. Conclude with `component_eq_of_chart jm hq σ ch hy hC hC' h h'`.
+-/
 theorem component_unique : ∀ (D : D7) (A : Amb D) (N j : ℕ) (S : Sig A N j) (κ : Lv A) (s : FinalTheorems S κ) (σ : κ.c.F →+* ℂ) (Y : Scheme.{0}) [IsIntegral Y] (q : Y ⟶ Sp (𝓞 κ.c.F)) (jm : Y ⟶ s.T.Z.X) [IsClosedImmersion jm] (hq : jm ≫ s.T.Z.s = q) (n : ℕ), IsArithVar q n → ∀ (ch : AlgChart q (σ.comp (algebraMap (𝓞 κ.c.F) κ.c.F)) n) (y : CxPts q (σ.comp (algebraMap (𝓞 κ.c.F) κ.c.F))), y ∈ ch.e.source → ∀ C ∈ irreducibleComponents (cxFib (algebraMap (𝓞 κ.c.F) κ.c.F) q σ), ∀ C' ∈ irreducibleComponents (cxFib (algebraMap (𝓞 κ.c.F) κ.c.F) q σ), up jm hq σ y ∈ ptsOf s.T.Z (toGenCx jm hq σ '' C) → up jm hq σ y ∈ ptsOf s.T.Z (toGenCx jm hq σ '' C') → C = C' := by
   intro D A N j S κ s σ Y _ q jm _ hq n _ ch y hy C hC C' hC' h h'
   exact component_eq_of_chart jm hq σ ch hy hC hC' h h'

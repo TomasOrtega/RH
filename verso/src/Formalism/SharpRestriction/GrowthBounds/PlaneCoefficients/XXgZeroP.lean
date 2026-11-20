@@ -12,14 +12,27 @@ open Formalism.MainNotions.TestSideWords.TwistedFiltration.G2
 variable {p : ℕ} [Fact p.Prime] {O : Type} [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] {r J : ℕ} [NeZero J]
   [NeZero r] (Dt : SignedChainData p O r J)
 
+/- English proof (translation)
+The claim follows from `pow_pos (Nat.Prime.pos Fact.out) _`.
+-/
 theorem twoPow_pos (j : ZMod J) (m : Fin r) : 0 < Dt.P j m := pow_pos (Nat.Prime.pos Fact.out) _
 
+/- English proof (translation)
+Use `⟨Submodule.zero_mem _, fun rho j i => ?_, fun j mm _ => ?_⟩` and prove the remaining obligations. Rewrite using `[Fdig_zero, valS_zero_eq_top]`. Conclude with `geZ_top _`. Rewrite using `[valS_zero_eq_top]`. Conclude with `geZ_top _`.
+-/
 theorem XXg_zeroP (d : TL J Dt.nL r → ℕ) (th : ∀ j, Fin (Dt.nch j) → ℝ) (thL : ZMod J → Fin r → ℝ) :
     XXg Dt d th thL 0 := by
   refine ⟨Submodule.zero_mem _, fun rho j i => ?_, fun j mm _ => ?_⟩
   · rw [Fdig_zero, valS_zero_eq_top]; exact geZ_top _
   · rw [valS_zero_eq_top]; exact geZ_top _
 
+/- English proof (translation)
+Take `⟨j', y⟩` from `x0`. Take `⟨z, hz, hzz⟩` from `h`. Apply the tactic sequence `rcases y with l | m <;> rcases z with l' | m'`. Simplify using `only [Formalism.MainNotions.PlaneGramData.SignedChainData.levToML, Formalism.MainNotions.PlaneGramData.SignedChainData.liftVar] at hzz injection hzz with h1 h2`. Substitute `h1` using the available equality.
+
+Consider the cases of `h2`. Conclude with `Or.inl ⟨l', rfl, hz⟩`. Simplify using `[Formalism.MainNotions.PlaneGramData.SignedChainData.levToML, Formalism.MainNotions.PlaneGramData.SignedChainData.liftVar] at hzz`. Simplify using `[Formalism.MainNotions.PlaneGramData.SignedChainData.levToML, Formalism.MainNotions.PlaneGramData.SignedChainData.liftVar] at hzz`. Simplify using `only [Formalism.MainNotions.PlaneGramData.SignedChainData.levToML, Formalism.MainNotions.PlaneGramData.SignedChainData.liftVar] at hzz injection hzz with h1 h2`.
+
+Substitute `h1 h2` using the available equality. Conclude with `Or.inr ⟨m', rfl⟩`.
+-/
 private theorem touchC_of_liftVar_mem_chainML (x0 : TL J Dt.nL r) (a : Fin r) (j : ZMod J) (i : Fin (Dt.nch j))
     (h : (Dt.liftVar (x0, a)).1 ∈ Dt.chainML j i) : touchC Dt x0 j i := by
   obtain ⟨j', y⟩ := x0
@@ -37,6 +50,21 @@ private theorem touchC_of_liftVar_mem_chainML (x0 : TL J Dt.nL r) (a : Fin r) (j
     subst h1 h2
     exact Or.inr ⟨m', rfl⟩
 
+/- English proof (translation)
+Take `⟨hP, hC, hT⟩` from `hH`. Use `⟨Pol_pderiv x0 a h0 h1 hP, fun rho j i => ?_, fun j m hm => ?_⟩` and prove the remaining obligations. Take `⟨c1, c2, c3, rho1, rho2, hc2, hF⟩` from `Fdig_der_ex Dt (twoPow_pos Dt) (x0, a) rho`. Rewrite using `[hF]`. Establish `e1 : geZ (valS Dt.modelLet (Dt.chainML j i) (c1 • Dt.Fdig rho1 H)) (th j i)` using `geZ_anti (t1 j i) (geZ_mono (valS_smul_ge _ _ _ _) (hC rho1 j i))`.
+
+Establish `e2 : geZ (valS Dt.modelLet (Dt.chainML j i) (c2 • (X (Dt.liftVar (x0, a)) * pderiv (Dt.liftVar (x0, a)) (Dt.Fdig rho1 H)))) (th j i)`. Distinguish the cases in `hc : c2 = 0`. Rewrite using `[hc, zero_smul, valS_zero_eq_top]`. Conclude with `geZ_top _`. Establish `hv : Dt.trueLet.vec x0 = true` using `hc2 hc`.
+
+Use `geZ_mono (valS_smul_ge _ _ _ _) (geZ_mono (valS_X_mul_of _ _ _ _ ?_) ?_)` and prove the remaining obligations. Introduce `_`. Rewrite using `[modelLet_vec]`. Conclude with `hv`. Distinguish the cases in `hs : (Dt.liftVar (x0, a)).1 ∈ Dt.chainML j i`.
+
+Conclude with `valuation_ge_of_le_add_one (valS_pderiv _ _ _ _) (hC rho1 j i) (t2 j i (touchC_of_liftVar_mem_chainML Dt x0 a j i hs) hv)`. Conclude with `geZ_anti (t1 j i) (geZ_mono (valS_pderiv_of _ _ _ _ (fun h => absurd h hs)) (hC rho1 j i))`. Establish `e3 : geZ (valS Dt.modelLet (Dt.chainML j i) (c3 • pderiv (Dt.liftVar (x0, a)) (Dt.Fdig rho2 H))) (th j i)`. Use `geZ_mono (valS_smul_ge _ _ _ _) ?_` and prove the remaining obligations. Distinguish the cases in `hb : (Dt.liftVar (x0, a)).1 ∈ Dt.chainML j i ∧ Dt.trueLet.vec x0 = true`.
+
+Conclude with `valuation_ge_of_le_add_one (valS_pderiv _ _ _ _) (hC rho2 j i) (t2 j i (touchC_of_liftVar_mem_chainML Dt x0 a j i hb.1) hb.2)`. Use `geZ_anti (t1 j i) (geZ_mono (valS_pderiv_of _ _ _ _ ?_) (hC rho2 j i))` and prove the remaining obligations. Introduce `hs`. Rewrite using `[modelLet_vec]`. Assume the negation of the conclusion as `hc`.
+
+Conclude with `hb ⟨hs, by simpa using hc⟩`. Conclude with `geZ_mono (flt_valS_add _ _ _ _) (geZ_min (geZ_mono (flt_valS_add _ _ _ _) (geZ_min e1 e2)) e3)`. Distinguish the cases in `hb : x0 ∈ Dt.TSet j m ∧ Dt.trueLet.vec x0 = true`. Conclude with `valuation_ge_of_le_add_one (valS_pderiv _ _ H (x0, a)) (hT j m hm) (t4 j m hb.1 hb.2)`. Use `geZ_anti (t3 j m) (geZ_mono (valS_pderiv_of _ _ H (x0, a) ?_) (hT j m hm))` and prove the remaining obligations.
+
+Introduce `hs`. Assume the negation of the conclusion as `hc`. Conclude with `hb ⟨hs, by simpa using hc⟩`.
+-/
 theorem plDer' (x0 : TL J Dt.nL r) (a : Fin r) (d d' : TL J Dt.nL r → ℕ) (h0 : d' x0 = d x0 + 1)
     (h1 : ∀ i, i ≠ x0 → d' i = d i) (th th' : ∀ j, Fin (Dt.nch j) → ℝ) (thL thL' : ZMod J → Fin r → ℝ)
     (t1 : ∀ j i, th j i ≤ th' j i)
@@ -83,6 +111,17 @@ theorem plDer' (x0 : TL J Dt.nL r) (a : Fin r) (d d' : TL J Dt.nL r → ℕ) (h0
       by_contra hc
       exact hb ⟨hs, by simpa using hc⟩
 
+/- English proof (translation)
+Take `⟨hP, hC, hT⟩` from `hH`. Use `⟨Pol_X_mul x0 a h0 h1 hP, fun rho j i => ?_, fun j m hm => ?_⟩` and prove the remaining obligations. Take `⟨c1, c2, rho1, rho2, hF⟩` from `Fdig_mul_ex Dt (twoPow_pos Dt) (x0, a) rho`. Rewrite using `[hF]`. Establish `e1 : geZ (valS Dt.modelLet (Dt.chainML j i) (c1 • Dt.Fdig rho1 H)) (th j i)` using `geZ_anti (t1 j i) (geZ_mono (valS_smul_ge _ _ _ _) (hC rho1 j i))`.
+
+Establish `e2 : geZ (valS Dt.modelLet (Dt.chainML j i) (c2 • (X (Dt.liftVar (x0, a)) * Dt.Fdig rho2 H))) (th j i)`. Use `geZ_mono (valS_smul_ge _ _ _ _) ?_` and prove the remaining obligations. Distinguish the cases in `hb : (Dt.liftVar (x0, a)).1 ∈ Dt.chainML j i ∧ Dt.trueLet.vec x0 = false`. Conclude with `valuation_ge_of_le_add_one (valS_X_mul _ _ _ _) (hC rho2 j i) (t2 j i (touchC_of_liftVar_mem_chainML Dt x0 a j i hb.1) hb.2)`. Use `geZ_anti (t1 j i) (geZ_mono (valS_X_mul_of _ _ _ _ ?_) (hC rho2 j i))` and prove the remaining obligations.
+
+Introduce `hs`. Rewrite using `[modelLet_vec]`. Assume the negation of the conclusion as `hc`. Conclude with `hb ⟨hs, by simpa using hc⟩`. Conclude with `geZ_mono (flt_valS_add _ _ _ _) (geZ_min e1 e2)`.
+
+Distinguish the cases in `hb : x0 ∈ Dt.TSet j m ∧ Dt.trueLet.vec x0 = false`. Conclude with `valuation_ge_of_le_add_one (valS_X_mul _ _ H (x0, a)) (hT j m hm) (t4 j m hb.1 hb.2)`. Use `geZ_anti (t3 j m) (geZ_mono (valS_X_mul_of _ _ H (x0, a) ?_) (hT j m hm))` and prove the remaining obligations. Introduce `hs`. Assume the negation of the conclusion as `hc`.
+
+Conclude with `hb ⟨hs, by simpa using hc⟩`.
+-/
 theorem plMul' (x0 : TL J Dt.nL r) (a : Fin r) (d d' : TL J Dt.nL r → ℕ) (h0 : d x0 = d' x0 + 1)
     (h1 : ∀ i, i ≠ x0 → d' i = d i) (th th' : ∀ j, Fin (Dt.nch j) → ℝ) (thL thL' : ZMod J → Fin r → ℝ)
     (t1 : ∀ j i, th j i ≤ th' j i)
@@ -121,18 +160,33 @@ namespace Formalism.MainNotions.PairMembershipBlocks
 
 open Formalism.MainNotions.G Formalism.GradedWeylDivisibility Formalism.MainNotions.SourceCleaning Formalism.MainNotions.Pf14 Formalism.MainNotions.PlaneGramData Formalism.MainNotions.TestSideCounting Formalism.MainNotions.TestSideWords
 
+/- English proof (translation)
+Introduce `p _ O _ _ _ r J _ _ Dt x0 a d th th' thL thL' hD H hH`. Conclude with `plDer' Dt x0 a d (Function.update d x0 (d x0 + 1)) (by simp) (fun i hi => by simp [Function.update_of_ne hi]) th th' thL thL' hD.1 (fun j i h _ => hD.2.1 j i h) hD.2.2.1 (fun j m h _ => hD.2.2.2 j m h) H hH`.
+-/
 theorem plDer : PlDer := by
   intro p _ O _ _ _ r J _ _ Dt x0 a d th th' thL thL' hD H hH
   exact plDer' Dt x0 a d (Function.update d x0 (d x0 + 1)) (by simp)
     (fun i hi => by simp [Function.update_of_ne hi]) th th' thL thL' hD.1
     (fun j i h _ => hD.2.1 j i h) hD.2.2.1 (fun j m h _ => hD.2.2.2 j m h) H hH
 
+/- English proof (translation)
+Introduce `p _ O _ _ _ r J _ _ Dt x0 a d th th' thL thL' hD hd H hH`. Conclude with `plMul' Dt x0 a d (Function.update d x0 (d x0 - 1)) (by simp; omega) (fun i hi => by simp [Function.update_of_ne hi]) th th' thL thL' hD.1 (fun j i h _ => hD.2.1 j i h) hD.2.2.1 (fun j m h _ => hD.2.2.2 j m h) H hH`.
+-/
 theorem plMul : PlMul := by
   intro p _ O _ _ _ r J _ _ Dt x0 a d th th' thL thL' hD hd H hH
   exact plMul' Dt x0 a d (Function.update d x0 (d x0 - 1)) (by simp; omega)
     (fun i hi => by simp [Function.update_of_ne hi]) th th' thL thL' hD.1
     (fun j i h _ => hD.2.1 j i h) hD.2.2.1 (fun j m h _ => hD.2.2.2 j m h) H hH
 
+/- English proof (translation)
+Introduce `p _ O _ _ _ r J _ _ Dt x0 a d th th' thL thL' hD H hH`. Break down `Nat.eq_zero_or_pos (d x0) with hz | hpos` into its components or cases. Establish `hvars : (x0, a) ∉ H.vars`. Introduce `hv`. Take `⟨m, hm, hma⟩` from `(MvPolynomial.mem_vars _).1 hv`.
+
+Establish `hdeg` using `(mem_Pol'.1 hH.1) m hm x0`. Rewrite `hdeg` using `[hz]`. Establish `hle : m (x0, a) ≤ multideg m x0` using `Finset.single_le_sum (f := fun c => m (x0, c)) (fun _ _ => Nat.zero_le _) (Finset.mem_univ a)`. Rewrite `hle` using `[hdeg]`. Conclude with `(Finsupp.mem_support_iff.1 hma) (by omega)`.
+
+Rewrite using `[MvPolynomial.pderiv_eq_zero_of_notMem_vars hvars, mul_zero]`. Conclude with `XXg_zeroP Dt d th thL`. Establish `e0 : d x0 = Function.update d x0 (d x0 - 1) x0 + 1` using `by simp; omega`. Establish `e1 : ∀ i, i ≠ x0 → Function.update d x0 (d x0 - 1) i = d i` using `fun i hi => by simp [Function.update_of_ne hi]`. Establish `e1' : ∀ i, i ≠ x0 → d i = Function.update d x0 (d x0 - 1) i` using `fun i hi => (e1 i hi).symm`.
+
+Consider the cases of `hv : Dt.trueLet.vec x0`. Establish `hD1` using `plDer' Dt x0 a (Function.update d x0 (d x0 - 1)) d e0 e1' th' th' thL' thL' (fun _ _ => le_rfl) (fun _ _ _ hf => by simp [hv] at hf) (fun _ _ => le_rfl) (fun _ _ _ hf => by simp [hv] at hf) H hH`. Conclude with `plMul' Dt x0 a d (Function.update d x0 (d x0 - 1)) e0 e1 th th' thL thL' hD.1 (fun j i h _ => hD.2.1 j i h) hD.2.2.1 (fun j m h _ => hD.2.2.2 j m h) _ hD1`. Establish `hD1` using `plDer' Dt x0 a (Function.update d x0 (d x0 - 1)) d e0 e1' th th' thL thL' hD.1 (fun j i h _ => hD.2.1 j i h) hD.2.2.1 (fun j m h _ => hD.2.2.2 j m h) H hH`. Conclude with `plMul' Dt x0 a d (Function.update d x0 (d x0 - 1)) e0 e1 th th thL thL (fun _ _ => le_rfl) (fun _ _ _ hf => by simp [hv] at hf) (fun _ _ => le_rfl) (fun _ _ _ hf => by simp [hv] at hf) _ hD1`.
+-/
 theorem plEul : PlEul := by
   intro p _ O _ _ _ r J _ _ Dt x0 a d th th' thL thL' hD H hH
   rcases Nat.eq_zero_or_pos (d x0) with hz | hpos

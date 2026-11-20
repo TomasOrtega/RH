@@ -12,6 +12,13 @@ open NumberField ReciprocityTheory.ChartRestriction.G.Geo.Tor GlobalTheory.Toroi
 
 namespace GlobalTheory.PolFan.OrbMark
 
+/- English proof (translation)
+Introduce `E _ _ _ H q φ lab _hdom _hfan hφ hlab hsl M hM _hmax c`. Distinguish the cases in `hex : ∃ (X : Type) (_ : AddCommGroup X) (_ : Module (𝓞 E) X) (_ : Module.Finite (𝓞 E) X) (_ : Module.Projective (𝓞 E) X), Module.finrank (𝓞 E) X ≤ q ∧ ∃ (m : ℕ) (δ : Fin m → LinearMap.BilinForm ℤ X), IsMultCell H.bar φ M δ ∧ c.Carries δ`. Take `⟨X₀, _, _, _, _, -, m₀, δ₀, hM₀, hc₀⟩` from `hex`. Take `⟨v, hv, hvp, hvn, t, ht, htv⟩` from `GlobalTheory.T.exists_primitiveBalancedForm_fracCoords_of_cellMult H.bar φ M δ₀ hM₀ hM`. Take `⟨h₀, hli, hpr, -⟩` from `hM₀`.
+
+Establish `hv0 : v ≠ 0` using `fun h => by`. Establish `e : (⟨v, hv⟩ : balForms H.bar X₀) = 0` using `Subtype.ext h`. Rewrite `hvp` using `[e]`. Conclude with `not_isPrim_zero hvp`. Use `⟨OrbMark.orbFun (𝓞 E) H.w0 v, OrbMark.isTwInv_orbFun H v, fun X _ _ _ _ hX => ⟨fun β _ _ => OrbMark.orbFun_eval_eq_zero_or_one _ _ _, fun β _ _ h1 => GlobalTheory.T.markedOrbit_form_primitive H.bar H.w0 v hv hvp β h1, fun m γ hγ β hβ hβp β' hβ' hβp' h1 h1' hc hc' => GlobalTheory. …` and prove the remaining obligations.
+
+Take `⟨β, hβ, hβp, h1, hin⟩` from `GlobalTheory.T.carries_exists_marked_form_in_cone H.bar H.w0 c δ₀ v t hv hv0 hvn hc₀ (fun i => (ht i).1) htv X m δ hδ`. Conclude with `⟨β, hβ, hβp, h1, hin⟩`. Use `⟨zeroFun (𝓞 E), fun _ _ _ _ => rfl, fun X _ _ _ _ _ => ⟨fun β _ _ => Or.inl (zeroFun_evalZ β), fun β _ _ h => by simp at h, fun _ _ _ β _ _ _ _ _ h => by simp at h⟩, fun X _ _ _ _ hX m δ hδ hc => (hex ⟨X, inferInstance, inferInstance, inferInstance, inferInstance, hX, m, δ, hδ, h …` and prove the remaining obligations.
+-/
 theorem centres_exists : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (q : ℕ) (φ lab : InvFun (𝓞 E)),
     (∀ (X : Type) [AddCommGroup X] [Module (𝓞 E) X] [Module.Finite (𝓞 E) X] [Module.Projective (𝓞 E) X], Dominates H.bar X) →
     IsPolyFan H.bar q φ → IsTwInv H φ → IsTwInv H lab → SimpLab H.bar q φ lab → ∀ M : ℕ, 2 ≤ M →

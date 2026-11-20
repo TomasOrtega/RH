@@ -12,6 +12,11 @@ namespace NetData
 
 variable (Nt : NetData B j ka)
 
+/- English proof (translation)
+Rewrite using `[PiLp.inner_apply, Fintype.sum_sigma, Finset.sum_eq_single σ]`. Establish `hc : (((Fintype.card (Nt.NN σ) : ℝ)⁻¹ : ℝ) : ℂ) = ((Nt.cf σ : ℝ) : ℂ) * ((Nt.cf σ : ℝ) : ℂ)`. Rewrite using `[← Complex.ofReal_mul, Nt.cf_sq]`. Rewrite using `[hc, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun y _ => ?_` and prove the remaining obligations.
+
+Simplify using `only [Nt.goodRowsProjector_apply_eq_sum, if_true, RCLike.inner_apply, map_mul, Complex.conj_ofReal]`. Expand and normalize the polynomial expressions, which then agree. Introduce `τ _ h`. Simplify using `[Nt.goodRowsProjector_apply_eq_sum, h]`. Simplify using the standard rewrite rules.
+-/
 theorem inner_euclideanEmbedding_eq_average (σ : B.KO →+* ℂ) (F G : B.Cusp j ka) :
     inner ℂ (Nt.e0 σ F) (Nt.e0 σ G) =
       (((Fintype.card (Nt.NN σ) : ℝ)⁻¹ : ℝ) : ℂ) * ∑ y, conj (Nt.ev σ y F) * Nt.ev σ y G := by
@@ -34,11 +39,17 @@ def herm : Formalism.MainNotions.Gaps.SizeBoundsAlt.Herm (fun σ => Nt.netN σ) 
     simp only [LinearMap.coe_comp, Function.comp_apply, LinearEquiv.coe_coe, LinearIsometryEquiv.coe_toLinearEquiv,
       LinearIsometryEquiv.norm_map, Nt.norm_euclideanEmbedding_eq_netNorm]
 
+/- English proof (translation)
+Simplify using `only [herm, LinearMap.coe_comp, Function.comp_apply, LinearEquiv.coe_coe, LinearIsometryEquiv.coe_toLinearEquiv, LinearIsometryEquiv.inner_map_map]`.
+-/
 theorem herm_inner (σ : B.KO →+* ℂ) (F G : B.Cusp j ka) :
     inner ℂ (Nt.herm.e σ F) (Nt.herm.e σ G) = inner ℂ (Nt.e0 σ F) (Nt.e0 σ G) := by
   simp only [herm, LinearMap.coe_comp, Function.comp_apply, LinearEquiv.coe_coe, LinearIsometryEquiv.coe_toLinearEquiv,
     LinearIsometryEquiv.inner_map_map]
 
+/- English proof (translation)
+Introduce `σ f g`. Rewrite using `[Nt.herm_inner, Nt.herm_inner, Nt.inner_euclideanEmbedding_eq_average, Nt.inner_euclideanEmbedding_eq_average]`. Rewrite using `[← Fintype.card_congr (Nt.cj σ), ← (Nt.cj σ).sum_comp]`. Simplify using `only [Nt.ev_conj, Complex.conj_conj, star_mul', Complex.star_def, Complex.conj_ofReal, map_sum, map_mul]`.
+-/
 theorem herm_conj : Nt.herm.Conj := by
   intro σ f g
   rw [Nt.herm_inner, Nt.herm_inner, Nt.inner_euclideanEmbedding_eq_average, Nt.inner_euclideanEmbedding_eq_average]
@@ -47,6 +58,17 @@ theorem herm_conj : Nt.herm.Conj := by
 
 end NetData
 
+/- English proof (translation)
+Introduce `Nt hM hL large₂ CG AG hP F σ`. Rewrite using `[Nt.Bp_L2N_run hM hL]`. Express the relevant statement in the definitionally equal form `B.supN j ka σ F ^ 2 ≤ _ * Nt.netN σ F ^ 2`. Take `⟨y, hy⟩` from `hM σ F`. Establish `hS` using `B.supN_nonneg j ka σ F`.
+
+Establish `hn : (1 : ℝ) ≤ (Fintype.card (Nt.NN σ) : ℝ)`. Conclude with `Nat.one_le_iff_ne_zero.mpr (Fintype.card_pos_iff.mpr ⟨y⟩).ne'` after adjusting the coercions. Establish `hsum0 : (0 : ℝ) ≤ ∑ y, ‖Nt.ev σ y F‖ ^ 2` using `Finset.sum_nonneg fun _ _ => sq_nonneg _`. Establish `hsq : Nt.netN σ F ^ 2 = (Fintype.card (Nt.NN σ) : ℝ)⁻¹ * ∑ y, ‖Nt.ev σ y F‖ ^ 2` using `Real.sq_sqrt (mul_nonneg (inv_nonneg.mpr (by linarith)) hsum0)`. Establish `h1 : ‖Nt.ev σ y F‖ ^ 2 ≤ ∑ y, ‖Nt.ev σ y F‖ ^ 2` using `Finset.single_le_sum (f := fun y => ‖Nt.ev σ y F‖ ^ 2) (fun _ _ => sq_nonneg _) (Finset.mem_univ y)`.
+
+Establish `h2 : (B.supN j ka σ F / 4) ^ 2 ≤ ‖Nt.ev σ y F‖ ^ 2` using `pow_le_pow_left₀ (by positivity) hy 2`. Establish `h3 : B.supN j ka σ F ^ 2 ≤ 16 * (Fintype.card (Nt.NN σ) : ℝ) * Nt.netN σ F ^ 2`. Rewrite using `[hsq]`. Establish `: 16 * (Fintype.card (Nt.NN σ) : ℝ) * ((Fintype.card (Nt.NN σ) : ℝ)⁻¹ * ∑ y, ‖Nt.ev σ y F‖ ^ 2) = 16 * ∑ y, ‖Nt.ev σ y F‖ ^ 2`. Clear the denominators using the available nonvanishing facts.
+
+Rewrite using `[this]`. Establish `h4 : (B.supN j ka σ F / 4) ^ 2 = B.supN j ka σ F ^ 2 / 16` using `by ring`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `h4 : 16 * (Fintype.card (Nt.NN σ) : ℝ) ≤ Real.exp (WeightFamilies.PPv D large₂ CG AG * (1 + Real.log ka.size))`. Rewrite using `[← Real.exp_log (by positivity : (0 : ℝ) < 16 * (Fintype.card (Nt.NN σ) : ℝ))]`.
+
+Conclude with `Real.exp_le_exp.mpr (hP σ)`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem sup_L2_bound_of_net : SupL2BoundFromNet (D := D) (B := B) (j := j) (ka := ka) := by
   intro Nt hM hL large₂ CG AG hP F σ
   rw [Nt.Bp_L2N_run hM hL]
@@ -76,11 +98,21 @@ theorem sup_L2_bound_of_net : SupL2BoundFromNet (D := D) (B := B) (j := j) (ka :
     _ ≤ Real.exp (WeightFamilies.PPv D large₂ CG AG * (1 + Real.log ka.size)) * Nt.netN σ F ^ 2 :=
       mul_le_mul_of_nonneg_right h4 (sq_nonneg _)
 
+/- English proof (translation)
+Introduce `P Nt hM hL X`. Conclude with `⟨_, { e := Nt.herm.e, norm_e := fun σ F => (Nt.herm.norm_e σ F).trans (by rw [Nt.Bp_L2N_run hM hL]) }, Nt.herm_conj⟩`.
+-/
 theorem deepHermNet : DeepHermNetSt (D := D) (B := B) (j := j) (ka := ka) := by
   intro P Nt hM hL X
   exact ⟨_, { e := Nt.herm.e, norm_e := fun σ F => (Nt.herm.norm_e σ F).trans (by rw [Nt.Bp_L2N_run hM hL]) },
     Nt.herm_conj⟩
 
+/- English proof (translation)
+Introduce `P Nt hM hL X σ Pd hI hP`. Express the relevant statement in the definitionally equal form `Real.log (finrank B.KO (B.Cusp j ka) : ℝ) ≤ Pd`. Establish `hd : finrank B.KO (B.Cusp j ka) ≤ Fintype.card (Nt.NN σ)`. Establish `hb` using `hI _ _ (Module.finBasis B.KO (B.Cusp j ka)).linearIndependent`. Use `hb.fintype_card_le_finrank` as an intermediate fact.
+
+Simplify `this` using `[Module.finrank_fintype_fun_eq_card]`. Establish `hlog0 : 0 ≤ Real.log (Fintype.card (Nt.NN σ) : ℝ)` using `Real.log_natCast_nonneg _`. Break down `Nat.eq_zero_or_pos (finrank B.KO (B.Cusp j ka)) with h0 | h0` into its components or cases. Rewrite using `[h0]`. Simplify using `only [Nat.cast_zero, Real.log_zero]`.
+
+Combine the linear equalities and inequalities to obtain the conclusion. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem deepLogDNet : DeepLogDNetSt (D := D) (B := B) (j := j) (ka := ka) := by
   intro P Nt hM hL X σ Pd hI hP
   change Real.log (finrank B.KO (B.Cusp j ka) : ℝ) ≤ Pd

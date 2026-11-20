@@ -7,6 +7,19 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.G
 
 namespace GlobalTheory.CompanionTheory.Ar.Flat.KonstReg
 
+/- English proof (translation)
+Introduce `E _ _ _ H D l Xo c Y S Ω _ K _ J y 𝔐 p hunit`. Use `haveI : FiniteDimensional ℚ c.F := c.fin`. Use `haveI : NumberField c.F := ⟨⟩`. Use `letI : Algebra (𝓞 c.F) Ω := (𝔐.cst.comp (algebraMap (𝓞 c.F) c.F)).toAlgebra`. Establish `hs : 𝔐.ξ ≫ (𝔐.f ≫ Y.s) = Spec.map (CommRingCat.ofHom (algebraMap (𝓞 c.F) Ω))` using `𝔐.cst_over`.
+
+Set `h : 𝓞 c.F →+* 𝔐.X.presheaf.stalk p.1` to `(𝔐.X.presheaf.germ ⊤ p.1 trivial).hom.comp ((𝔐.f ≫ Y.s).appTop.hom.comp (Scheme.ΓSpecIso (CommRingCat.of (𝓞 c.F))).inv.hom)`. Establish `hgen : ∀ o : 𝓞 c.F, genMap 𝔐.ξ p (h o) = 𝔐.cst (algebraMap (𝓞 c.F) c.F o)` using `fun o => Flat.ConstReg.genMap_germ_const 𝔐.ξ (𝔐.f ≫ Y.s) hs p o`. Establish `hu : ∀ o : 𝓞 c.F, o ≠ 0 → IsUnit (h o)`. Introduce `o ho`. Establish `hI : (Ideal.span {o}).comap (algebraMap ℤ (𝓞 c.F)) ≠ ⊥` using `Ideal.comap_ne_bot_of_integral_mem ho (Ideal.mem_span_singleton_self o) (Algebra.IsIntegral.isIntegral o)`.
+
+Take `⟨n, hn, hn0⟩` from `Submodule.exists_mem_ne_zero_of_ne_bot hI`. Rewrite `hn` using `[Ideal.mem_comap, Ideal.mem_span_singleton]`. Establish `hnat : IsUnit ((n.natAbs : ℕ) : 𝔐.X.presheaf.stalk p.1)` using `hunit _ (Int.natAbs_ne_zero.mpr hn0)`. Establish `hint : IsUnit (h (algebraMap ℤ (𝓞 c.F) n))`. Rewrite using `[eq_intCast (algebraMap ℤ (𝓞 c.F)), map_intCast]`.
+
+Break down `Int.natAbs_eq n with hn' | hn'` into its components or cases. Rewrite using `[hn']`. Simplify using `using hnat`. Rewrite using `[hn']`. Simplify using `using hnat`.
+
+Conclude with `isUnit_of_dvd_unit (map_dvd h hn) hint`. Use `⟨IsLocalization.lift (M := nonZeroDivisors (𝓞 c.F)) (S := c.F) (fun z => hu z.1 (nonZeroDivisors.ne_zero z.2)), ?_⟩` and prove the remaining obligations. Apply `IsLocalization.ringHom_ext (nonZeroDivisors (𝓞 c.F))` to reduce the goal to its premises. Use extensionality with `o`. Simplify using `only [RingHom.comp_apply, IsLocalization.lift_eq]`.
+
+Conclude with `hgen o`.
+-/
 theorem exists_const_stalk : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (D : Datum H) (l : Level H) (Xo : Moduli D l) (c : Coeff l) (Y : Model Xo c (algebraMap (𝓞 c.F) c.F)) (S : Finset ℕ) (Ω : Type) [Field Ω] (K : Type) [Fintype K] (J : K → Type) (y : (Σ k, J k) → Ω) (𝔐 : HodgeCpt Y S y) (p : Cpt 𝔐.ξ), (∀ n : ℕ, n ≠ 0 → IsUnit ((n : 𝔐.X.presheaf.stalk p.1))) → ∃ g₀ : c.F →+* 𝔐.X.presheaf.stalk p.1, (genMap 𝔐.ξ p).comp g₀ = 𝔐.cst := by
   intro E _ _ _ H D l Xo c Y S Ω _ K _ J y 𝔐 p hunit
   haveI : FiniteDimensional ℚ c.F := c.fin

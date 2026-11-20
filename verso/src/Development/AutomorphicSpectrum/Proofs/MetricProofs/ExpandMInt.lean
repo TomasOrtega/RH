@@ -12,6 +12,19 @@ open scoped ContDiff
 
 namespace GlobalTheory.CompanionTheory.Metric.ExpandMInt
 
+/- English proof (translation)
+Introduce `e X _ _ _ A U P f Θ g hU hnull hP hΘ hf hT`. Establish `hae : ∀ j, ∀ᵐ y ∂(volume : Measure (Fin e → ℂ)), y ∈ (A.chart j).target → locDens A (fun i => P i + LocPot.ofFun (f i)) j y = ∑ T : Finset (Fin e), (-1 : ℝ) ^ (e - T.card) * locDens A (fun i => (if i ∈ T then P i else LocPot.ofFun 0) + LocPot.ofFun (if i ∈ T then f i else 0) + Θ) …`. Introduce `j`. Rewrite using `[ae_iff]`. Use `measure_mono_null (fun y hy => ?_) (hnull j)` and prove the remaining obligations.
+
+Simplify using `only [Set.mem_ofPred_eq, Classical.not_imp] at hy`. Use `⟨hy.1, fun hyU => hy.2 ?_⟩` and prove the remaining obligations. Conclude with `GlobalTheory.T.local_density_inclusion_exclusion A U P f Θ hU hP hΘ hf j y ⟨hy.1, hyU⟩`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Introduce `j K hK hKc`.
+
+Establish `hsum : IntegrableOn (fun y => ∑ T : Finset (Fin e), (-1 : ℝ) ^ (e - T.card) * (g ((A.chart j).symm y) * locDens A (fun i => (if i ∈ T then P i else LocPot.ofFun 0) + LocPot.ofFun (if i ∈ T then f i else 0) + Θ) j y)) K` using `integrable_finsetSum _ fun T _ => (hT T j K hK hKc).const_mul _`. Use `hsum.congr_fun_ae ?_` and prove the remaining obligations. Use `filter_upwards [ae_restrict_of_ae (hae j), ae_restrict_mem hKc.measurableSet] with y hy hyK`. Rewrite using `[hy (hK hyK), Finset.mul_sum]`. Use `Finset.sum_congr rfl fun T _ => ?_` and prove the remaining obligations.
+
+Expand and normalize the polynomial expressions, which then agree. Unfold `mInt split_ifs with h`. Unfold `integralWith`. Repeatedly rewrite using `[Finset.mul_sum]`. Rewrite using `[Finset.sum_comm]`.
+
+Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Repeatedly rewrite using `[← integral_const_mul]`. Rewrite using `[← integral_finsetSum _ fun T _ => (integrableOn_weight A h.some _ g (hT T) j).const_mul _]`. Use `setIntegral_congr_ae (A.chart j).open_target.measurableSet ?_` and prove the remaining obligations. Use `filter_upwards [hae j] with y hy hyt`.
+
+Rewrite using `[hy hyt, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun T _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree. Simplify using the standard rewrite rules.
+-/
 theorem expand_mInt : ∀ {e : ℕ} {X : Type} [TopologicalSpace X] [CompactSpace X] [T2Space X] (A : FinHolAtlas e X) (U : Set X) (P : Fin e → LocPot X) (f : Fin e → X → ℝ) (Θ : LocPot X) (g : X → ℝ), IsOpen U → (∀ j, volume ((A.chart j).target ∩ (A.chart j).symm ⁻¹' Uᶜ) = 0) → (∀ i, IsPotential A (P i)) → IsPotential A Θ → (∀ i, A.SmoothOn U (f i)) → (∀ T : Finset (Fin e), MIntegrable A (fun i => (if i ∈ T then P i else LocPot.ofFun 0) + LocPot.ofFun (if i ∈ T then f i else 0) + Θ) g) → MIntegrable A (fun i => P i + LocPot.ofFun (f i)) g ∧ mInt A (fun i => P i + LocPot.ofFun (f i)) g = ∑ T : Finset (Fin e), (-1 : ℝ) ^ (e - T.card) * mInt A (fun i => (if i ∈ T then P i else LocPot.ofFun 0) + LocPot.ofFun (if i ∈ T then f i else 0) + Θ) g := by
   intro e X _ _ _ A U P f Θ g hU hnull hP hΘ hf hT
 

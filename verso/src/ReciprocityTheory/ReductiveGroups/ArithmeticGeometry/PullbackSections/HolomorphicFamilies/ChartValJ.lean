@@ -15,6 +15,9 @@ variable {T : Type} [Fintype T] (rr : T → ℕ) (n : ℕ)
 def colL (m : Formalism.L2.Pj.Letter T rr n →₀ ℕ) (b : Fin n) : (Σ τ : T, Fin (rr τ)) →₀ ℕ :=
   Finsupp.equivFunOnFinite.symm fun ℓ => m ⟨ℓ.1, ℓ.2, b⟩
 
+/- English proof (translation)
+Use extensionality with `ℓ`. Use `show Finsupp.mapDomain CVA.lEq m (CVA.lEq ⟨ℓ.1, ℓ.2, b⟩) = m ⟨ℓ.1, ℓ.2, b⟩`. Rewrite using `[Finsupp.mapDomain_apply CVA.lEq.injective]`.
+-/
 theorem colM_lEq_colL (m : Formalism.L2.Pj.Letter T rr n →₀ ℕ) (b : Fin n) :
     colM (m.mapDomain (CVA.lEq (T := T) (r := rr) (n := n))) b = colL rr n m b := by
   ext ℓ
@@ -28,6 +31,37 @@ section Main
 variable {R k : Type} [CommRing R] [Field k] [Algebra ℚ k] [Algebra R k]
 
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Use `set uK : (Σ τ : T, Fin (rr τ)) → Fin d → k := fun ℓ j => algebraMap R k (u ℓ j) with huK`. Use `set φK : (Σ τ : T, Fin (rr τ)) → Fin d → k := fun ℓ i => algebraMap R k (φ ℓ i) + ψ ℓ i - (sg1 k h).mulVec (uK ℓ) i with hφK`. Use `set g : Fin n → PS k 1 d := fun b => FB.expS k ((m : k) • B.hL k h w0) * f b with hgdef`. Use `set P2 := MvPolynomial.rename (CVA.lEq (T := T) (r := rr) (n := n)) P with hP2`. Establish `hvan : ∀ ℓ ℓ' : (Σ τ : T, Fin (rr τ)), ℓ'.1 ≠ cc ℓ.1 → ∑ i, φK ℓ' i * uK ℓ i = 0` using `fun ℓ ℓ' hne => heig ℓ ℓ' hne`.
+
+Establish `hpair : ∀ ℓ ℓ' : (Σ τ : T, Fin (rr τ)), ℓ'.1 = cc ℓ.1 → (c ℓ.1 = c ℓ'.1 ∧ s ℓ.1 ≠ s ℓ'.1)`. Introduce `ℓ ℓ' he'`. Rewrite using `[he']`. Conclude with `⟨(hcs ℓ.1).1.symm, (hcs ℓ.1).2.symm⟩`. Establish `hL1 : OppositePairVanishing k (fun ℓ : (Σ τ : T, Fin (rr τ)) => c ℓ.1) (fun ℓ => s ℓ.1) (fun ℓ => (uK ℓ, 0)) (fun ℓ => (uK ℓ, 0))`.
+
+Introduce `l l' _`. Simplify using `[betaH]`. Establish `hL2 : OppositePairVanishing k (fun ℓ : (Σ τ : T, Fin (rr τ)) => c ℓ.1) (fun ℓ => s ℓ.1) (fun ℓ => (uK ℓ, 0)) (fun ℓ => (0, φK ℓ))`. Introduce `l l' hnot`. Distinguish the cases in `hl : l'.1 = cc l.1`.
+
+Conclude with `absurd (hpair l l' hl) hnot`. Simplify using `only [betaH, Pi.zero_apply, zero_mul, sub_zero]`. Conclude with `hvan l l' hl`. Establish `hL3 : OppositePairVanishing k (fun ℓ : (Σ τ : T, Fin (rr τ)) => c ℓ.1) (fun ℓ => s ℓ.1) (fun ℓ => (0, φK ℓ)) (fun ℓ => (uK ℓ, 0))`. Introduce `l l' hnot`.
+
+Distinguish the cases in `hl : l.1 = cc l'.1`. It suffices to derive a contradiction. Apply `hnot` to reduce the goal to its premises. Use `hpair l' l hl` as an intermediate fact. Conclude with `⟨this.1.symm, this.2.symm⟩`.
+
+Simplify using `only [betaH, Pi.zero_apply, mul_zero, zero_sub, Finset.sum_neg_distrib, neg_eq_zero]`. Conclude with `hvan l' l hl`. Establish `hharm` using `CVA.harm_rename (r := rr) (n := n) cc isX P hP.1.1`. Use `set cfun : (Σ τ : T, Fin (rr τ)) → (Σ τ : T, Fin (rr τ)) → k := fun l l' => if c l.1 = c l'.1 ∧ s l.1 = true ∧ s l'.1 = false then (m : k) * betaH k (0, φK l) (uK l', 0) else 0 with hcfun`. Establish `hcvan : ∀ l l' : (Σ τ : T, Fin (rr τ)), l'.1 ≠ cc l.1 → cfun l l' = 0`.
+
+Introduce `l l' hne`. Establish `hne' : l.1 ≠ cc l'.1` using `fun h' => hne (by rw [h', hcc])`. Establish `hz : betaH k (0, φK l) (uK l', 0) = 0`. Simplify using `only [betaH, Pi.zero_apply, mul_zero, zero_sub, Finset.sum_neg_distrib, neg_eq_zero]`. Conclude with `hvan l' l hne'`.
+
+Simplify using `only [hcfun, hz, mul_zero, ite_self]`. Establish `hso` using `harmSecond_holds k T rr cc isX hcc hX n cfun hcvan P2 hharm`. Establish `hfun : (fun p q : (Σ τ : T, Fin (rr τ)) × Fin n => if p.2 = q.2 ∧ c p.1.1 = c q.1.1 ∧ s p.1.1 = true ∧ s q.1.1 = false then (m : k) * betaH k (0, φK p.1) (uK q.1, 0) else 0) = (fun p q : (Σ τ : T, Fin (rr τ)) × Fin n => if p.2 = q.2 then cfun p.1 q.1 else 0)`. Use function extensionality and compare the values at `p q`. Apply the tactic sequence `by_cases h1 : p.2 = q.2 <;> simp [h1, hcfun]`.
+
+Establish `hso' : secondOrder k (fun p q : (Σ τ : T, Fin (rr τ)) × Fin n => if p.2 = q.2 ∧ c p.1.1 = c q.1.1 ∧ s p.1.1 = true ∧ s q.1.1 = false then (m : k) * betaH k (0, φK p.1) (uK q.1, 0) else 0) P2 = 0`. Rewrite using `[hfun]`. Conclude with `hso`. Establish `hLH` using `TB.WickVanishing.Closed.lemma_H_columns R d O k B h hg.ax0 m (Σ τ : T, Fin (rr τ)) π (fun ℓ => c ℓ.1) (fun ℓ => s ℓ.1) uK φK hL1 hL2 hL3 n P2 hso' g`. Use `set ξh : (Σ τ : T, Fin (rr τ)) → (Fin d → k) × (Fin d → k) := fun ℓ => ((fun j => algebraMap R k (u ℓ j)), fun i => algebraMap R k (φ ℓ i) - (sg1 k h).mulVec (fun j => algebraMap R k (u ℓ j)) i) with hξh`.
+
+Establish `hxi : (fun ℓ => ξh ℓ + ((0 : Fin d → k), ψ ℓ)) = fun ℓ => (uK ℓ, φK ℓ)`. Use function extensionality and compare the values at `ℓ`. Use `Prod.ext ?_ ?_` and prove the remaining obligations. Use function extensionality and compare the values at `j`. Simplify using `[hξh, huK]`.
+
+Use function extensionality and compare the values at `i`. Simplify using `only [hξh, Prod.snd_add, Pi.add_apply, hφK, huK]`. Expand and normalize the polynomial expressions, which then agree. Establish `he2 : ∀ mo ∈ P2.support, ∑ b, pairMin (fun ℓ : (Σ τ : T, Fin (rr τ)) => c ℓ.1) (fun ℓ => s ℓ.1) (colM mo b) ≤ e`. Introduce `mo hmo`.
+
+Rewrite `hmo` using `[hP2, MvPolynomial.support_rename_of_injective CVA.lEq.injective]`. Take `⟨mo0, hmo0, rfl⟩` from `Finset.mem_image.1 hmo`. Simplify using `only [colM_lEq_colL]`. Conclude with `he mo0 hmo0`. Establish `hSC` using `TB.WickVanishing.Closed.scaled_connection_columns R d O k hRQ J hJ1 B h hg w0 hw0 m (Σ τ : T, Fin (rr τ)) π (fun ℓ => c ℓ.1) (fun ℓ => s ℓ.1) ξh ψ (fun ℓ => ⟨u ℓ, φ ℓ, rfl⟩) hψ h21a h21b h21c n P2 (CVA.coeff_rename_mem _ P hP.2) e he2 f hf`.
+
+Rewrite `hSC` using `[hxi]`. Establish `hchain : ∑ mo ∈ P.support, P.coeff mo * ∏ b, B.nabVal k h w0 m (f b) uK (MvPolynomial.monomial (colL rr n mo b) 1) = ∑ mo ∈ P2.support, P2.coeff mo * ∏ b, constantCoeff (ordNabla k B h m (fun ℓ => s ℓ.1) (fun ℓ => (uK ℓ, φK ℓ)) (MvPolynomial.monomial (colM mo b) 1) (liftX k (g b) …`. Rewrite using `[hLH, hP2, CVA.sum_rename]`. Use `Finset.sum_congr rfl fun mo _ => ?_` and prove the remaining obligations. Use `congr 1`.
+
+Use `Finset.prod_congr rfl fun b _ => ?_` and prove the remaining obligations. Rewrite using `[colM_lEq_colL]`. Simplify using `only [FB.nabVal, hgdef]`. Rewrite using `[mul_comm]`. Rewrite using `[hchain]`.
+
+Establish `hg' : g = fun b => FB.expS k ((m : k) • B.hL k h w0) * f b` using `hgdef`. Rewrite using `[hg']`. Conclude with `hSC`.
+-/
 theorem chartValJ (hRQ : IsRQ (R := R) k) (J : Submodule R k) (hJ1 : (1 : k) ∈ J)
     {d : ℕ} {O : Type} [CommRing O] [StarRing O] (B : FB R d O) (h : PS k 2 d) (hg : B.IsCanonGauge k h)
     (w0 : O) (hw0 : w0 + star w0 = 1) (m : ℕ)

@@ -13,6 +13,17 @@ noncomputable section
 
 namespace GlobalTheory.ThKLin
 
+/- English proof (translation)
+Introduce `hKP F E _ _ _ _ _ σ B a a' G X om om' R Rf hM Φ hΦ Ψ hΨ c`. Establish `hT` using `hM.triple`. Establish `hdec` using `(GlobalTheory.T.theta_kernel_decay hKP F E σ B a a' G X om om' hT).2`. Establish `pres : ∀ x, ∀ Φ ∈ schA F (Fin a' × Fin (a + a')), om' x Φ ∈ schA F (Fin a' × Fin (a + a'))` using `fun x Φ hΦ => (IsUWeilPair.isUSplitting hT.weil').pres x Φ hΦ`. Establish `hPol : PolData B G.M' ≤ schA F (Fin a' × Fin (a + a'))`.
+
+Use `Submodule.span_le.2 ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨f, -, φ, hSB, hev, rfl⟩`. Conclude with `GlobalTheory.TensUniq.pure_mem_schA f φ hSB ((hev.and hT.geo.hM'.std).mono fun v hv => hv.1.trans hv.2)`. Establish `hΦS` using `hPol hΦ.1`. Establish `hΨS` using `hPol hΨ.1`.
+
+Establish `hcΨS : c • Ψ ∈ schA F (Fin a' × Fin (a + a'))` using `Submodule.smul_mem _ c hΨS`. Use function extensionality and compare the values at `h`. Establish `e : ∀ g, theta om' (Φ + c • Ψ) g h = theta om' Φ g h + c * theta om' Ψ g h` using `fun g => by`. Establish `e1 : theta om' (Φ + c • Ψ) g h = theta om' Φ g h + theta om' (c • Ψ) g h`. Simplify using `only [theta, map_add]`.
+
+Conclude with `thetaSum_add F (pres _ Φ hΦS) (pres _ (c • Ψ) hcΨS)`. Establish `e2 : theta om' (c • Ψ) g h = c * theta om' Ψ g h`. Simplify using `only [theta, map_smul]`. Conclude with `thetaSum_smul F c _`. Rewrite using `[e1, e2]`.
+
+Establish `iΦ` using `(hdec Φ hΦ.2).2.1 h`. Establish `iΨ` using `(hdec Ψ hΨ.2).2.1 h`. Simplify using `only [Model.I, Pi.add_apply, Pi.smul_apply, smul_eq_mul]`. Rewrite using `[show (fun g => theta om' (Φ + c • Ψ) g h) = fun g => theta om' Φ g h + c * theta om' Ψ g h from funext e, integral_add iΦ (iΨ.const_mul c), integral_const_mul]`.
+-/
 theorem thetaIntegral_linear : GlobalTheory.ThK.KP → ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Base F E) (a a' : ℕ) (G : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Geo σ a a') (X : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Chars F E) (om : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Rep σ G.V G.W) (om' : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Rep σ G.V' G.W) (R : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.RealMaps F a a') (Rf : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.FinMaps F a a'), GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.IsMatched B G X om om' R Rf → ∀ Φ ∈ (GlobalTheory.ThK.PolData B G.M' ⊓ G.M'.So B.ψ B.τ₁), ∀ Ψ ∈ (GlobalTheory.ThK.PolData B G.M' ⊓ G.M'.So B.ψ B.τ₁), ∀ c : ℂ, G.M'.I om' (Φ + c • Ψ) = G.M'.I om' Φ + c • G.M'.I om' Ψ := by
   intro hKP F E _ _ _ _ _ σ B a a' G X om om' R Rf hM Φ hΦ Ψ hΨ c
   have hT := hM.triple

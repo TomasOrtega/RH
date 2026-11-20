@@ -13,6 +13,11 @@ open Formalism.FrobeniusOrbits
 
 namespace Rd
 
+/- English proof (translation)
+Break down `Nat.eq_zero_or_pos m with rfl | hm` into its components or cases. Use `⟨fun h h0 => absurd (Set.mem_singleton_iff.1 h) h0, fun x => ?_⟩` and prove the remaining obligations. Establish `htop : Algebra.adjoin ℚ ((Polynomial.cyclotomic 0 ℚ).rootSet (Polynomial.cyclotomic 0 ℚ).SplittingField) = ⊤` using `Polynomial.SplittingField.adjoin_rootSet _`. Rewrite `htop` using `[Polynomial.cyclotomic_zero, Polynomial.rootSet_one, Algebra.adjoin_empty]`. Establish `hx : x ∈ (⊥ : Subalgebra ℚ (CyclotomicField 0 ℚ))`.
+
+Rewrite using `[show (⊥ : Subalgebra ℚ (CyclotomicField 0 ℚ)) = ⊤ from htop]`. Conclude with `Algebra.mem_top`. Conclude with `(bot_le : (⊥ : Subalgebra ℚ (CyclotomicField 0 ℚ)) ≤ _) hx`. Use `haveI : NeZero m := ⟨hm.ne'⟩ haveI : NeZero (m : ℚ) := ⟨by exact_mod_cast hm.ne'⟩`. Conclude with `CyclotomicField.isCyclotomicExtension m ℚ`.
+-/
 theorem cycRat (m : ℕ) : IsCyclotomicExtension {m} ℚ (CyclotomicField m ℚ) := by
   rcases Nat.eq_zero_or_pos m with rfl | hm
   · refine ⟨fun h h0 => absurd (Set.mem_singleton_iff.1 h) h0, fun x => ?_⟩
@@ -28,6 +33,15 @@ theorem cycRat (m : ℕ) : IsCyclotomicExtension {m} ℚ (CyclotomicField m ℚ)
     haveI : NeZero (m : ℚ) := ⟨by exact_mod_cast hm.ne'⟩
     exact CyclotomicField.isCyclotomicExtension m ℚ
 
+/- English proof (translation)
+Assume the negation of the conclusion as `hn`. Establish `: Fact l.Prime` using `⟨hl⟩`. Establish `hl'` using `Nat.prime_iff_prime_int.mp hl`. Establish `hpr : (span {(l : ℤ)}).IsPrime` using `(span_singleton_prime hl'.ne_zero).mpr hl'`. Take `⟨⟨P, h1, h2⟩⟩ : Nonempty ((span {(l : ℤ)}).primesOver (𝓞 E))` from `inferInstance`.
+
+Establish `hpb : span {(l : ℤ)} ≠ ⊥`. Rewrite using `[Ne, Ideal.span_singleton_eq_bot]`. Conclude with `hl'.ne_zero`. Establish `hP0 : P ≠ ⊥` using `Ideal.ne_bot_of_liesOver_of_ne_bot hpb P`. Establish `hun` using `(not_dvd_discr_iff_forall_liesOver E (𝓞 E) hl').mp hn P (h1.isMaximal hP0) h2`.
+
+Establish `hcard` using `card_inertia_eq_ramificationIdxIn (G := E ≃ₐ[ℚ] E) (span {(l : ℤ)}) P`. Rewrite `hcard` using `[ramificationIdxIn_eq_ramificationIdx (span {(l : ℤ)}) P (E ≃ₐ[ℚ] E), Ideal.ramificationIdx_eq_one_of_isUnramifiedAt, Subgroup.card_eq_one]`. Take `⟨σ, hσ1, hσ⟩` from `h P`. Establish `h3 : σ ∈ P.inertia (E ≃ₐ[ℚ] E)` using `AddSubgroup.mem_inertia.mpr hσ`. Rewrite `h3` using `[hcard, Subgroup.mem_bot]`.
+
+Conclude with `hσ1 h3`.
+-/
 theorem dvd_discr_of_inertia {E : Type} [Field E] [NumberField E] [IsGalois ℚ E] {l : ℕ} (hl : l.Prime)
     (h : ∀ (P : Ideal (𝓞 E)) [P.IsPrime] [P.LiesOver (span {(l : ℤ)})],
       ∃ σ : E ≃ₐ[ℚ] E, σ ≠ 1 ∧ ∀ x : 𝓞 E, σ • x - x ∈ P) : (l : ℤ) ∣ discr E := by
@@ -49,6 +63,11 @@ theorem dvd_discr_of_inertia {E : Type} [Field E] [NumberField E] [IsGalois ℚ 
   rw [hcard, Subgroup.mem_bot] at h3
   exact hσ1 h3
 
+/- English proof (translation)
+Unfold `hcl at h`. Rewrite `h` using `[QuotientGroup.eq_one_iff]`. Take `⟨k, hk⟩` from `Subgroup.mem_zpowers_iff.1 h`. Break down `Int.even_or_odd k with ⟨m, rfl⟩ | ⟨m, rfl⟩` into its components or cases. Use `left`.
+
+Rewrite using `[← hk, ← two_mul, zpow_mul]`. Simplify using the standard rewrite rules. Use `right`. Rewrite using `[← hk, zpow_add, zpow_mul]`. Simplify using the standard rewrite rules.
+-/
 theorem hcl_eq_one {e : ℕ} {v : (ZMod (2 ^ (e + 2)))ˣ} (h : hcl e v = 1) : v = 1 ∨ v = -1 := by
   unfold hcl at h
   rw [QuotientGroup.eq_one_iff] at h
@@ -66,6 +85,13 @@ variable {φ : Frame} (H : HostRaw φ)
 instance neZeroN : NeZero H.condN :=
   ⟨by have := H.QS_pos; have := H.hyp.1.pos; have := H.hyp.2.1.pos; positivity⟩
 
+/- English proof (translation)
+Use `cycRat H.condN` as an intermediate fact. Set `: Algebra H.E (CyclotomicField H.condN ℚ)` to `H.cycEmb.toRingHom.toAlgebra`. Establish `h1` using `log_rd H.cycZeta_prim H.E H.art.ker (fun σ u hσ => by`. Establish `h2` using `H.art_spec u σ hσ`. Rewrite using `[MonoidHom.mem_ker, ← H.gal.symm.map_eq_one_iff]`.
+
+Prove the components needed by the constructor for the conclusion. Introduce `h3`. Conclude with `AlgEquiv.ext fun x => H.cycEmb.injective ((h2 x).trans (h3 x))`. Introduce `h3 x`. Rewrite `h2` using `[h3]`.
+
+Conclude with `(h2 x).symm)`. Establish `h0 : (0 : ℝ) < |(discr H.E : ℝ)|` using `by simpa using discr_ne_zero H.E`. Rewrite using `[HostRaw.rd, Real.log_rpow h0, one_div_mul_eq_div, h1, SS, ← abel]`.
+-/
 theorem log_rd_eq : Real.log H.rd = SS H.art.ker := by
   have := cycRat H.condN
   let : Algebra H.E (CyclotomicField H.condN ℚ) := H.cycEmb.toRingHom.toAlgebra
@@ -81,19 +107,33 @@ theorem log_rd_eq : Real.log H.rd = SS H.art.ker := by
   have h0 : (0 : ℝ) < |(discr H.E : ℝ)| := by simpa using discr_ne_zero H.E
   rw [HostRaw.rd, Real.log_rpow h0, one_div_mul_eq_div, h1, SS, ← abel]
 
+/- English proof (translation)
+Unfold `Formalism.HC.HostRaw.rd`. Apply `Real.rpow_pos_of_pos` to reduce the goal to its premises. Apply `abs_pos.2` to reduce the goal to its premises. Conclude with `NumberField.discr_ne_zero H.E` after adjusting the coercions.
+-/
 theorem rd_pos : 0 < H.rd := by
   unfold Formalism.HC.HostRaw.rd
   apply Real.rpow_pos_of_pos
   apply abs_pos.2
   exact_mod_cast NumberField.discr_ne_zero H.E
 
+/- English proof (translation)
+The claim follows from `(H.tower_dvd.mul_right _).mul_right _`.
+-/
 theorem two_dvd : 2 ^ (φ.e + 2) ∣ H.condN := (H.tower_dvd.mul_right _).mul_right _
 
+/- English proof (translation)
+Apply `H.art_h` to reduce the goal to its premises. Use `show (ZMod.castHom (two_dvd H) (ZMod (2 ^ (φ.e + 2)))) (u : ZMod H.condN) = _`. Rewrite using `[ZMod.castHom_apply, ZMod.cast_eq_val]`.
+-/
 theorem hH_art (u : (ZMod H.condN)ˣ) : φ.hH (H.art u).2 = hcl φ.e (ZMod.unitsMap (two_dvd H) u) := by
   apply H.art_h
   show (ZMod.castHom (two_dvd H) (ZMod (2 ^ (φ.e + 2)))) (u : ZMod H.condN) = _
   rw [ZMod.castHom_apply, ZMod.cast_eq_val]
 
+/- English proof (translation)
+Introduce `h0`. Establish `h1` using `H.QS_coprime`. Rewrite `h1` using `[h0, Nat.coprime_zero_right]`. Establish `h2` using `H.tower_dvd`. Rewrite `h2` using `[h1, Nat.dvd_one]`.
+
+Establish `h3 : 2 ^ 1 ≤ 2 ^ (φ.e + 2)` using `Nat.pow_le_pow_right (by norm_num) (by omega)`. Rewrite `h3` using `[h2]`. Evaluate the numerical expressions using `at h3`.
+-/
 private theorem q_mul_d_ne_zero : H.q * H.d ≠ 0 := by
   intro h0
   have h1 := H.QS_coprime
@@ -104,15 +144,24 @@ private theorem q_mul_d_ne_zero : H.q * H.d ≠ 0 := by
   rw [h2] at h3
   norm_num at h3
 
+/- English proof (translation)
+Use `show H.QS * H.q * H.d / H.d = H.QS * H.q`. Conclude with `Nat.mul_div_cancel _ (Nat.pos_of_ne_zero (right_ne_zero_of_mul (q_mul_d_ne_zero H)))`.
+-/
 theorem div_d : H.condN / H.d = H.QS * H.q := by
   show H.QS * H.q * H.d / H.d = H.QS * H.q
   exact Nat.mul_div_cancel _ (Nat.pos_of_ne_zero (right_ne_zero_of_mul (q_mul_d_ne_zero H)))
 
+/- English proof (translation)
+Use `show H.QS * H.q * H.d / H.q = H.QS * H.d`. Rewrite using `[show H.QS * H.q * H.d = H.QS * H.d * H.q by ring]`. Conclude with `Nat.mul_div_cancel _ (Nat.pos_of_ne_zero (left_ne_zero_of_mul (q_mul_d_ne_zero H)))`.
+-/
 theorem div_q : H.condN / H.q = H.QS * H.d := by
   show H.QS * H.q * H.d / H.q = H.QS * H.d
   rw [show H.QS * H.q * H.d = H.QS * H.d * H.q by ring]
   exact Nat.mul_div_cancel _ (Nat.pos_of_ne_zero (left_ne_zero_of_mul (q_mul_d_ne_zero H)))
 
+/- English proof (translation)
+Introduce `h`. Establish `h1` using `H.hyp.2.2.1`. Establish `h2` using `H.hyp.2.2.2.1`. Rewrite `h1` using `[h]`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem q_ne_d : H.q ≠ H.d := by
   intro h
   have h1 := H.hyp.2.2.1
@@ -120,6 +169,13 @@ theorem q_ne_d : H.q ≠ H.d := by
   rw [h] at h1
   omega
 
+/- English proof (translation)
+Assume the negation of the conclusion as `h`. Use `push Not at h`. Establish `hc : Nat.Coprime (H.QS * H.q) H.d` using `Nat.Coprime.mul_left H.QS_coprime.coprime_mul_left_right ((Nat.coprime_primes H.hyp.1 H.hyp.2.1).mpr (q_ne_d H))`. Establish `h1` using `KK_gcd (φ.chD.comp H.art).ker (dvd_mul_right (H.QS * H.q) H.d) (dvd_mul_left H.d (H.QS * H.q)) (fun u hu => by`. Rewrite using `[MonoidHom.mem_ker, MonoidHom.comp_apply, MonoidHom.mem_ker.mp (h u hu), map_one])`.
+
+Use the proof step `(fun u hu => by`. Apply `Units.ext` to reduce the goal to its premises. Use `(C.art_ch u).trans ?_` and prove the remaining obligations. Rewrite using `[jacobiSym.mod_left' (a₂ := 1) (by exact_mod_cast Int.natCast_modEq_iff.mpr (mem_KK.mp hu)), jacobiSym.one_left]`. Use the proof step `rfl) (-1) (by rw [hc, mem_KK]; exact Nat.modEq_one)`.
+
+Rewrite `h1` using `[MonoidHom.mem_ker, MonoidHom.comp_apply, H.art_neg_one]`. Conclude with `absurd h1 (show ¬ (-1 : ℤˣ) = 1 by decide)`.
+-/
 theorem exists_d (C : HostCore H) : ∃ u ∈ KK H.condN (H.QS * H.q), u ∉ H.art.ker := by
   by_contra h
   push Not at h
@@ -136,6 +192,19 @@ theorem exists_d (C : HostCore H) : ∃ u ∈ KK H.condN (H.QS * H.q), u ∉ H.a
   rw [MonoidHom.mem_ker, MonoidHom.comp_apply, H.art_neg_one] at h1
   exact absurd h1 (show ¬ (-1 : ℤˣ) = 1 by decide)
 
+/- English proof (translation)
+Assume the negation of the conclusion as `h`. Use `push Not at h`. Establish `hc : Nat.Coprime (ordCompl[2] H.condN) (2 ^ (φ.e + 2))` using `((Nat.coprime_ordCompl Nat.prime_two (NeZero.ne _)).pow_left _).symm`. Take `⟨u, hu⟩` from `ZMod.unitsMap_surjective (two_dvd H) (ZMod.unitOfCoprime 3 (Nat.Coprime.pow_right _ (by norm_num)))`. Establish `h1` using `KK_gcd (φ.hH.comp ((MonoidHom.snd _ _).comp H.art)).ker (Nat.ordCompl_dvd _ 2) (two_dvd H) (fun u hu => by`.
+
+Rewrite using `[MonoidHom.mem_ker, MonoidHom.comp_apply, MonoidHom.comp_apply, MonoidHom.mem_ker.mp (h u hu), map_one, map_one])`. Use the proof step `(fun u hu => by`. Use `(hH_art H u).trans ?_` and prove the remaining obligations. Rewrite using `[MonoidHom.mem_ker.mp ((mem_ker_iff (two_dvd H) u).mpr (mem_KK.mp hu))]`. Use the proof step `rfl) u (by rw [hc, mem_KK]; exact Nat.modEq_one)`.
+
+Establish `h2` using `(hH_art H u).symm.trans h1`. Rewrite `h2` using `[hu]`. Establish `h3 : 2 ^ 4 ≤ 2 ^ (φ.e + 2)` using `Nat.pow_le_pow_right (by norm_num) (by have := H.two_le_e; omega)`. Break down `hcl_eq_one h2 with h4 | h4` into its components or cases. Establish `h5` using `congrArg Units.val h4`.
+
+Rewrite `h5` using `[ZMod.coe_unitOfCoprime, Units.val_one]`. Establish `h6 : ((2 : ℕ) : ZMod (2 ^ (φ.e + 2))) = 0`. Move the coercions through the operations in `at h5 ⊢`. Take the linear combination `h5`. Use `Nat.le_of_dvd (by norm_num) ((ZMod.natCast_eq_zero_iff _ _).mp h6)` as an intermediate fact.
+
+Use linear arithmetic over natural numbers and integers. Establish `h5` using `congrArg Units.val h4`. Rewrite `h5` using `[ZMod.coe_unitOfCoprime, Units.val_neg, Units.val_one]`. Establish `h6 : ((4 : ℕ) : ZMod (2 ^ (φ.e + 2))) = 0`. Move the coercions through the operations in `at h5 ⊢`.
+
+Take the linear combination `h5`. Use `Nat.le_of_dvd (by norm_num) ((ZMod.natCast_eq_zero_iff _ _).mp h6)` as an intermediate fact. Use linear arithmetic over natural numbers and integers.
+-/
 theorem exists_two : ∃ u ∈ KK H.condN (ordCompl[2] H.condN), u ∉ H.art.ker := by
   by_contra h
   push Not at h
@@ -169,6 +238,9 @@ theorem exists_two : ∃ u ∈ KK H.condN (ordCompl[2] H.condN), u ∉ H.art.ker
     have := Nat.le_of_dvd (by norm_num) ((ZMod.natCast_eq_zero_iff _ _).mp h6)
     omega
 
+/- English proof (translation)
+Rewrite using `[div_d]`. Use `rho_le_half _ (dvd_mul_right _ _) fun u hu v hv h1 h2 => ?_` and prove the remaining obligations. Rewrite `h1`, `h2`, the goal using `[MonoidHom.mem_ker]`. Rewrite using `[map_mul, (H.art_d u (mem_KK.mp hu)).resolve_left h1, (H.art_d v (mem_KK.mp hv)).resolve_left h2]`. Conclude with `Prod.ext (show ((1, -1) : G0) * (1, -1) = 1 by decide) (mul_one _)`.
+-/
 theorem rho_d : rho H.art.ker (H.condN / H.d) ≤ 1 / 2 := by
   rw [div_d]
   refine rho_le_half _ (dvd_mul_right _ _) fun u hu v hv h1 h2 => ?_
@@ -176,6 +248,19 @@ theorem rho_d : rho H.art.ker (H.condN / H.d) ≤ 1 / 2 := by
   rw [map_mul, (H.art_d u (mem_KK.mp hu)).resolve_left h1, (H.art_d v (mem_KK.mp hv)).resolve_left h2]
   exact Prod.ext (show ((1, -1) : G0) * (1, -1) = 1 by decide) (mul_one _)
 
+/- English proof (translation)
+Rewrite using `[div_q]`. Establish `: Fact H.q.Prime` using `⟨H.hyp.1⟩`. Establish `hf : H.QS * H.d ∣ H.condN` using `⟨H.q, mul_right_comm _ _ _⟩`. Establish `hq : H.q ∣ H.condN` using `(dvd_mul_left _ _).mul_right _`. Establish `hc : Nat.Coprime (H.QS * H.d) H.q` using `Nat.Coprime.mul_left H.QS_coprime.coprime_mul_right_right ((Nat.coprime_primes H.hyp.2.1 H.hyp.1).mpr (q_ne_d H).symm)`.
+
+Establish `hcyc : IsCyclic (ZMod.unitsMap hf).ker`. Use `isCyclic_of_injective ((ZMod.unitsMap hq).comp (ZMod.unitsMap hf).ker.subtype) ?_` and prove the remaining obligations. Rewrite using `[injective_iff_map_eq_one]`. Introduce and unpack `⟨u, hu⟩ h1`. Establish `h2` using `(Nat.modEq_and_modEq_iff_modEq_mul hc).mp ⟨(mem_ker_iff hf u).mp hu, (mem_ker_iff hq u).mp h1⟩`.
+
+Rewrite `h2` using `[mul_right_comm, ← mem_ker_iff dvd_rfl, ZMod.unitsMap_self, MonoidHom.mem_ker, MonoidHom.id_apply]`. Conclude with `Subtype.ext h2`. Take `⟨⟨g, hg⟩, hgen⟩` from `hcyc.exists_generator`. Establish `hg2` using `H.art_q g ((mem_ker_iff hf g).mp hg)`. Establish `key : ∀ u ∈ KK H.condN (H.QS * H.d), H.art u ≠ 1 → H.art u = H.art g`.
+
+Introduce `u hu h1`. Take `⟨k, hk⟩` from `Subgroup.mem_zpowers_iff.mp (hgen ⟨u, (mem_ker_iff hf u).mpr (mem_KK.mp hu)⟩)`. Establish `h2 : g ^ k = u` using `congrArg Subtype.val hk`. Rewrite `h1`, the goal using `[← h2, map_zpow]`. Take `⟨j, rfl | rfl⟩` from `Int.even_or_odd' k`.
+
+Rewrite `h1` using `[zpow_mul, zpow_ofNat, hg2, one_zpow]`. Conclude with `absurd rfl h1`. Rewrite using `[zpow_add, zpow_mul, zpow_ofNat, hg2, one_zpow, one_mul, zpow_one]`. Use `rho_le_half _ hf fun u hu v hv h1 h2 => ?_` and prove the remaining obligations. Rewrite `h1`, `h2`, the goal using `[MonoidHom.mem_ker]`.
+
+Rewrite using `[map_mul, key u hu h1, key v hv h2, ← sq, hg2]`.
+-/
 theorem rho_q : rho H.art.ker (H.condN / H.q) ≤ 1 / 2 := by
   rw [div_q]
   have : Fact H.q.Prime := ⟨H.hyp.1⟩
@@ -211,6 +296,13 @@ open Rd
 
 variable {φ : Frame} (H : HostRaw φ)
 
+/- English proof (translation)
+Use `H.galois` as an intermediate fact. Use `⟨fun p hp h => ?_, ?_, ?_⟩` and prove the remaining obligations. Use `cycRat H.condN` as an intermediate fact. Set `: Algebra H.E (CyclotomicField H.condN ℚ)` to `H.cycEmb.toRingHom.toAlgebra`. Establish `h1` using `h.trans (discr_dvd_discr H.E (CyclotomicField H.condN ℚ))`.
+
+Rewrite `h1` using `[Int.natCast_dvd, IsCyclotomicExtension.Rat.natAbs_discr H.condN]`. Conclude with `hp.dvd_of_dvd_pow (h1.trans (Nat.div_dvd_of_dvd (Nat.prod_primeFactors_pow_totient_ediv_dvd (NeZero.pos _))))`. Establish `: Fact (Nat.Prime 2)` using `⟨Nat.prime_two⟩`. Use `dvd_discr_of_inertia Nat.prime_two fun P _ _ => ?_` and prove the remaining obligations. Take `⟨u, hu, h1⟩` from `exists_two H`.
+
+Use `⟨H.gal.symm (H.art u), fun h2 => h1 (H.gal.symm.map_eq_one_iff.mp h2), ?_⟩` and prove the remaining obligations. Conclude with `(C.inertia 2 P _).mpr ⟨u, mem_KK.mp hu, H.gal.apply_symm_apply _⟩`. Use `dvd_discr_of_inertia H.hyp.2.1 fun P _ _ => ⟨H.gal.symm φ.iod, fun h2 => ?_, (C.inertia_d P _).mpr (Or.inr (H.gal.apply_symm_apply _))⟩` and prove the remaining obligations. Conclude with `absurd (congrArg (fun g : φ.GG => g.1) (H.gal.symm.map_eq_one_iff.mp h2)) (show ¬ ((1, -1) : G0) = 1 by decide)`.
+-/
 theorem discr_primes (C : HostCore H) :
     (∀ p : ℕ, p.Prime → (p : ℤ) ∣ discr H.E → p ∣ H.condN) ∧ (2 : ℤ) ∣ discr H.E ∧ (H.d : ℤ) ∣ discr H.E := by
   have := H.galois
@@ -230,6 +322,9 @@ theorem discr_primes (C : HostCore H) :
     exact absurd (congrArg (fun g : φ.GG => g.1) (H.gal.symm.map_eq_one_iff.mp h2))
       (show ¬ ((1, -1) : G0) = 1 by decide)
 
+/- English proof (translation)
+Establish `hd : (0 : ℝ) < H.d` using `by exact_mod_cast H.hyp.2.1.pos`. Establish `h1` using `le_SS H.art.ker (two_dvd H) H.hyp.2.1 (dvd_mul_left _ _) (by have := H.hyp.2.2.2.1; omega) (fun u hu => hcl_eq_one (by rw [← hH_art, MonoidHom.mem_ker.mp hu]; exact map_one _)) (by rw [div_d]; exact half_le_rho _ (dvd_mul_right _ _) (exists_d H C))`. Rewrite using `[← Real.log_le_log_iff (by positivity) (rd_pos H), log_rd_eq, Real.log_mul (by positivity) (by positivity), Real.log_rpow (by norm_num), Real.log_sqrt hd.le, Real.rpow_neg (by norm_num), Real.rpow_natCast, ← one_div]`. Conclude with `h1`.
+-/
 theorem rd_ge (C : HostCore H) : (2 : ℝ) ^ ((φ.e : ℝ) + 1 - (2 : ℝ) ^ (-(φ.e : ℝ))) * Real.sqrt H.d ≤ H.rd := by
   have hd : (0 : ℝ) < H.d := by exact_mod_cast H.hyp.2.1.pos
   have h1 := le_SS H.art.ker (two_dvd H) H.hyp.2.1 (dvd_mul_left _ _) (by have := H.hyp.2.2.2.1; omega)
@@ -239,6 +334,11 @@ theorem rd_ge (C : HostCore H) : (2 : ℝ) ^ ((φ.e : ℝ) + 1 - (2 : ℝ) ^ (-(
     Real.log_rpow (by norm_num), Real.log_sqrt hd.le, Real.rpow_neg (by norm_num), Real.rpow_natCast, ← one_div]
   exact h1
 
+/- English proof (translation)
+Establish `hd : (0 : ℝ) < H.d` using `by exact_mod_cast H.hyp.2.1.pos`. Establish `hq : (0 : ℝ) < H.q` using `by exact_mod_cast H.hyp.1.pos`. Establish `hS : (0 : ℝ) < H.QS` using `by exact_mod_cast H.QS_pos`. Establish `h1` using `SS_le H.art.ker ((dvd_pow_self 2 (by omega)).trans (two_dvd H)) H.hyp.1 H.hyp.2.1 ((dvd_mul_left _ _).mul_right _) (dvd_mul_left _ _) (by have := H.hyp.2.2.1; omega) (by have := H.hyp.2.2.2.1; omega) (q_ne_d H) (rho_q H) (rho_d H)`. Establish `hN : Real.log (H.condN : ℝ) = Real.log H.QS + Real.log H.q + Real.log H.d`.
+
+Rewrite using `[Nat.cast_mul, Nat.cast_mul, Real.log_mul (by positivity) hd.ne', Real.log_mul hS.ne' hq.ne']`. Rewrite `h1` using `[hN]`. Rewrite using `[← Real.log_le_log_iff (rd_pos H) (by positivity), log_rd_eq, Real.log_mul (by positivity) (by positivity), Real.log_div hS.ne' (by norm_num), Real.log_sqrt (by positivity), Real.log_mul hq.ne' hd.ne']`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem rd_le : H.rd ≤ (H.QS : ℝ) / 2 * Real.sqrt ((H.q : ℝ) * H.d) := by
   have hd : (0 : ℝ) < H.d := by exact_mod_cast H.hyp.2.1.pos
   have hq : (0 : ℝ) < H.q := by exact_mod_cast H.hyp.1.pos
@@ -253,6 +353,9 @@ theorem rd_le : H.rd ≤ (H.QS : ℝ) / 2 * Real.sqrt ((H.q : ℝ) * H.d) := by
     Real.log_div hS.ne' (by norm_num), Real.log_sqrt (by positivity), Real.log_mul hq.ne' hd.ne']
   linarith
 
+/- English proof (translation)
+Establish `h1` using `log_index_le H.art.ker`. Rewrite `h1` using `[Subgroup.index_ker, MonoidHom.range_eq_top.mpr C.art_surj, Subgroup.card_top, φ.natCard_GG]`. Establish `h0 : (0 : ℝ) < φ.ord` using `by exact_mod_cast φ.ord_pos`. Rewrite using `[← Real.log_le_log_iff (by positivity) (pow_pos (rd_pos H) 2), Real.log_pow, log_rd_eq]`. Conclude with `h1` after adjusting the coercions.
+-/
 theorem rd_sq_ge (C : HostCore H) : (4 * φ.ord : ℝ) ≤ H.rd ^ 2 := by
   have h1 := log_index_le H.art.ker
   rw [Subgroup.index_ker, MonoidHom.range_eq_top.mpr C.art_surj, Subgroup.card_top, φ.natCard_GG] at h1

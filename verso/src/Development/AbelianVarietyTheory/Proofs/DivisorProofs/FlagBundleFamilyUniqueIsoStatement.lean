@@ -10,5 +10,8 @@ open CategoryTheory AlgebraicGeometry ReciprocityTheory.ChartRestriction.G Recip
 open scoped Classical
 open Formalism.BasicNotions.DV Formalism.MainNotions.WeightThresholdDefs GlobalTheory.FlagAr GlobalTheory.ShFam.Pad GlobalTheory.VB
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.CovTest.flagBundle_iso_over | exact GlobalTheory.CovTest.flagBundle_iso_over | (intros; apply GlobalTheory.CovTest.flagBundle_iso_over <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.flag_bundle_family_unique_iso : ∀ (B Y Y' : Scheme.{0}) (π : Y ⟶ B) (π' : Y' ⟶ B) (ι : Type) (E : ι → B.Modules) (r : ι → ℕ) (fl : ∀ a, Vert.Flag ((Scheme.Modules.pullback π).obj (E a)) (r a)) (fl' : ∀ a, Vert.Flag ((Scheme.Modules.pullback π').obj (E a)) (r a)), IsFlagBundle π E r fl → IsFlagBundle π' E r fl' → ∃ e : Y ≅ Y', e.hom ≫ π' = π := by
   first | exact @GlobalTheory.CovTest.flagBundle_iso_over | exact GlobalTheory.CovTest.flagBundle_iso_over | (intros; apply GlobalTheory.CovTest.flagBundle_iso_over <;> assumption)

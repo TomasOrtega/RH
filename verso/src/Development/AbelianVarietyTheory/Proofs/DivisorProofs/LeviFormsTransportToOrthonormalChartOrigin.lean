@@ -13,6 +13,11 @@ namespace GlobalTheory.LeviWeightChart
 
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {r : ℕ}
 
+/- English proof (translation)
+Unfold `nmat`. Distinguish the cases in `h : c < a`. Simplify using `only [h, dif_pos, h.ne', if_false, sub_zero]`. Conclude with `((PiLp.proj 2 (fun _ : Fin (nd X) => ℂ) ((Fintype.equivFin (Ent X)) ⟨τ, ⟨(a, c), h⟩⟩)).hasFDerivAt).comp_hasDerivAt t hf`. Simplify using `only [h, dif_neg, not_false_eq_true, sub_self]`.
+
+Conclude with `hasDerivAt_const _ _`.
+-/
 theorem nmat_hasDerivAt (X : Data E r) {f : ℂ → V (nd X)} {f' : V (nd X)} {t : ℂ}
     (hf : HasDerivAt f f' t) (τ : X.Ψ) (a c : Fin r) :
     HasDerivAt (fun s => nmat X (f s) τ a c) (nmat X f' τ a c - if a = c then 1 else 0) t := by
@@ -24,11 +29,47 @@ theorem nmat_hasDerivAt (X : Data E r) {f : ℂ → V (nd X)} {f' : V (nd X)} {t
   · simp only [h, dif_neg, not_false_eq_true, sub_self]
     exact hasDerivAt_const _ _
 
+/- English proof (translation)
+Use `congrFun (congrFun (IW.nmat_zero X τ) a) c` as an intermediate fact. Simplify `this` using `[mat, Matrix.one_apply]`.
+-/
 theorem nmat_zero_apply (X : Data E r) (τ : X.Ψ) (a c : Fin r) :
     nmat X 0 τ a c = if a = c then 1 else 0 := by
   have := congrFun (congrFun (IW.nmat_zero X τ) a) c
   simpa [mat, Matrix.one_apply] using this
 
+/- English proof (translation)
+Introduce `E _ _ _ r X x0 x1 b z ho hz hb hxb ξ`. Establish `hz1 : (0 : V (nd X)) ∈ OmF X x1` using `IW.zero_mem_OmF X x1 ho`. Establish `hxb' : cpt X x0 z = rmul (cpt X x1 0) b` using `by rw [IW.cpt_zero]; exact hxb`. Take `⟨Δ, zOf, bOf, hΔ, -, hzd, hbd, hsplit, hinv⟩` from `lu_holds r X x1 ho`. Establish `h0` using `hinv 0 hz1 b hb`.
+
+Rewrite `h0` using `[← hxb']`. Establish `hcd : Differentiable ℂ (cpt X x0)` using `IW.cpt_diff X x0`. Use `set U : Set (V (nd X)) := {w | cpt X x0 w ∈ X.dom ∧ Δ (cpt X x0 w) ≠ 0} with hUdef`. Establish `hU : IsOpen U` using `(ExF.isOpen_OmF X x0).inter (isOpen_compl_singleton.preimage (hΔ.comp hcd).continuous)`. Establish `hzU : z ∈ U` using `⟨hz, h0.1⟩`.
+
+Use `set Φ : V (nd X) → V (nd X) := fun w => zOf (cpt X x0 w) with hΦdef`. Use `set bf : V (nd X) → Frame X.Ψ r := fun w => bOf (cpt X x0 w) with hbfdef`. Establish `hΦ : DifferentiableOn ℂ Φ U` using `hzd.comp hcd.differentiableOn fun w hw => hw`. Establish `hbf : DifferentiableOn ℂ bf U` using `hbd.comp hcd.differentiableOn fun w hw => hw`. Establish `hΦz : Φ z = 0` using `h0.2.1`.
+
+Establish `hbz : bf z = b` using `h0.2.2`. Establish `hΦ2 : ContDiffOn ℂ 2 Φ U`. Rewrite using `[contDiffOn_piLp]`. Introduce `i`. Conclude with `(ReciprocityTheory.L2DbarEstimates.contDiffOn_of_differentiableOn _ _ U hU ((differentiableOn_piLp 2).1 hΦ i)).of_le HE.two_le_inf`.
+
+Use `set v : V (nd X) := WithLp.toLp 2 ξ with hv`. Establish `hγ : HasDerivAt (fun t : ℂ => z + t • v) v 0`. Simplify using `using ((hasDerivAt_id (0 : ℂ)).smul_const v).const_add z`. Establish `hγU : ∀ᶠ t in 𝓝 (0 : ℂ), z + t • v ∈ U`. Establish `h` using `(hγ.continuousAt)`.
+
+Simplify using `only [ContinuousAt, zero_smul, add_zero] at h`. Conclude with `h (hU.mem_nhds hzU)`. Establish `hbfD : HasDerivAt (fun t : ℂ => bf (z + t • v)) (fderiv ℂ bf z v) 0` using `(hbf.differentiableAt (hU.mem_nhds hzU)).hasFDerivAt.comp_hasDerivAt_of_eq 0 hγ (by simp)`. Establish `hΦD : HasDerivAt (fun t : ℂ => Φ (z + t • v)) (fderiv ℂ Φ z v) 0` using `(hΦ.differentiableAt (hU.mem_nhds hzU)).hasFDerivAt.comp_hasDerivAt_of_eq 0 hγ (by simp)`. Establish `hbfE : ∀ τ a c, HasDerivAt (fun t : ℂ => bf (z + t • v) τ a c) (fderiv ℂ bf z v τ a c) 0` using `fun τ a c => hasDerivAt_pi.1 (hasDerivAt_pi.1 (hasDerivAt_pi.1 hbfD τ) a) c`.
+
+Use `⟨fun k => (fderiv ℂ Φ z v).ofLp k, fun la => ?_, fderiv ℂ bf z v, ?_, ?_⟩` and prove the remaining obligations. Establish `hch : DifferentiableOn ℂ (fun w => bchar la (bf w)) U` using `by classical`. Introduce `w hw`. Unfold `bchar`. Use `DifferentiableAt.differentiableWithinAt ?_` and prove the remaining obligations.
+
+Use `(HasFDerivAt.finsetProd (g' := fun τ => fderiv ℂ (fun w => ∏ i, bf w τ i i ^ la τ i) w) fun τ _ => DifferentiableAt.hasFDerivAt ?_).differentiableAt` and prove the remaining obligations. Use `(HasFDerivAt.finsetProd (g' := fun i => fderiv ℂ (fun w => bf w τ i i ^ la τ i) w) fun i _ => DifferentiableAt.hasFDerivAt ?_).differentiableAt` and prove the remaining obligations. Establish `hw' : DifferentiableAt ℂ bf w` using `hbf.differentiableAt (hU.mem_nhds hw)`. Establish `hi : DifferentiableAt ℂ (fun w => bf w τ i i) w` using `differentiableAt_pi.1 (differentiableAt_pi.1 (differentiableAt_pi.1 hw' τ) i) i`. Establish `hzp : DifferentiableAt ℂ (fun t : ℂ => t ^ la τ i) (bf w τ i i)` using `differentiableAt_zpow.2 (Or.inl (GlobalTheory.LeviTransfer.borel_diag_ne_zero (hsplit _ hw.1 hw.2).2.1 τ i))`.
+
+Conclude with `DifferentiableAt.comp (g := fun t : ℂ => t ^ la τ i) w hzp hi`. Establish `hchz : ContDiffAt ℂ 2 (fun w => bchar la (bf w)) z` using `(HE.contDiffAt_of_punct hU hch hzU).of_le HE.two_le_inf`. Establish `hne : bchar la (bf z) ≠ 0` using `IW.bchar_ne_zero X (hsplit _ hz h0.1).2.1 _`. Establish `hev : (fun w => ((phla X la (cpt X x0 w) : ℝ) : ℂ)) =ᶠ[𝓝 z] fun w => ((phla X la (cpt X x1 (Φ w)) + Real.log (Complex.normSq (bchar la (bf w))) : ℝ) : ℂ)` using `by filter_upwards [hU.mem_nhds hzU] with w hw`. Take `⟨h1, h2, h3⟩` from `hsplit _ hw.1 hw.2`.
+
+Rewrite using `[← GlobalTheory.LeviTransfer.metric_rmul normFactor_rightBorel_holds X la h1 h2, ← h3]`. Establish `hg : ContDiffAt ℝ 2 (fun w => phla X la (cpt X x1 w)) (Φ z)`. Rewrite using `[hΦz]`. Conclude with `(IW.phla_cpt_cdAt X x1 hz1 la).of_le HE.two_le_inf`. Establish `h1 : ContDiffAt ℝ 2 (fun w => phla X la (cpt X x1 (Φ w))) z` using `hg.comp z ((hΦ2.contDiffAt (hU.mem_nhds hzU)).restrict_scalars ℝ)`.
+
+Establish `h2 : ContDiffAt ℝ 2 (fun w => Real.log (Complex.normSq (bchar la (bf w)))) z` using `(HE.normSq_contDiffAt hchz).log (Complex.normSq_pos.2 hne).ne'`. Establish `hgC : ContDiffAt ℝ 2 (fun w => ((phla X la (cpt X x1 w) : ℝ) : ℂ)) (Φ z)` using `Complex.ofRealCLM.contDiff.contDiffAt.comp _ hg`. Establish `hc` using `RGF.gc_leviV_comp _ _ _ Φ U hU z hzU hΦ2 hgC ξ`. Rewrite `hc` using `[hΦz]`. Unfold `leviM`.
+
+Rewrite using `[leviV_congr hev, Y.LocalMaximumSecondDerivative.leviV_ofReal_add h1 h2, HE.levi_logNormSq_zero_at _ z hchz hne ξ, add_zero]`. Conclude with `congrArg Complex.re hc`. Introduce `τ a c hca`. Establish `hev : (fun t : ℂ => bf (z + t • v) τ a c) =ᶠ[𝓝 0] fun _ => (0 : ℂ)` using `by filter_upwards [hγU] with t ht`. Conclude with `((hsplit _ ht.1 ht.2).2.1 τ).2 a c hca`.
+
+Conclude with `(hbfE τ a c).unique ((hasDerivAt_const (0 : ℂ) (0 : ℂ)).congr_of_eventuallyEq hev)`. Introduce `τ`. Use extensionality with `a c`. Establish `hL : HasDerivAt (fun t : ℂ => ∑ k, x0 τ a k * nmat X (z + t • v) τ k c) (∑ k, x0 τ a k * (nmat X v τ k c - if k = c then 1 else 0)) 0` using `HasDerivAt.fun_sum fun k _ => (nmat_hasDerivAt X hγ τ k c).const_mul _`. Establish `hR : HasDerivAt (fun t : ℂ => ∑ k, (∑ l, x1 τ a l * nmat X (Φ (z + t • v)) τ l k) * bf (z + t • v) τ k c) (∑ k, ((∑ l, x1 τ a l * (nmat X (fderiv ℂ Φ z v) τ l k - if l = k then 1 else 0)) * bf (z + (0:ℂ) • v) τ k c + (∑ l, x1 τ a l * nmat X (Φ (z + (0:ℂ) • v)) τ l k) * fderiv ℂ b …` using `HasDerivAt.fun_sum fun k _ => (HasDerivAt.fun_sum fun l _ => (nmat_hasDerivAt X hΦD τ l k).const_mul _).fun_mul (hbfE τ k c)`.
+
+Establish `hev : (fun t : ℂ => ∑ k, x0 τ a k * nmat X (z + t • v) τ k c) =ᶠ[𝓝 0] fun t : ℂ => ∑ k, (∑ l, x1 τ a l * nmat X (Φ (z + t • v)) τ l k) * bf (z + t • v) τ k c` using `by filter_upwards [hγU] with t ht`. Establish `e0 : cpt X x0 (z + t • v) = rmul (cpt X x1 (Φ (z + t • v))) (bf (z + t • v))` using `(hsplit _ ht.1 ht.2).2.2`. Establish `e` using `congrFun (congrFun (congrFun e0 τ) a) c`. Simplify using `only [cpt, rmul, mat, Matrix.mul_apply, Matrix.of_apply] at e`. Conclude with `e`.
+
+Establish `heq` using `hL.unique (hR.congr_of_eventuallyEq hev)`. Simplify using `only [zero_smul, add_zero, hΦz, hbz, nmat_zero_apply] at heq`. Simplify using `only [Matrix.mul_apply, Matrix.sub_apply, Matrix.add_apply, Matrix.one_apply, mat, Matrix.of_apply, WithLp.toLp_ofLp]`. Rewrite using `[heq]`. Simplify using `only [mul_ite, mul_one, mul_zero, Finset.sum_ite_eq', Finset.mem_univ, if_true, mul_add, Finset.sum_add_distrib, Finset.mul_sum, Finset.sum_mul, mul_assoc]`.
+
+Rewrite using `[Finset.sum_comm]`.
+-/
 theorem levi_transport_origin : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (r : ℕ) (X : Data E r) (x0 x1 b : Frame X.Ψ r) (z : V (nd X)), IsOrth X x1 → z ∈ OmF X x0 → b ∈ Bor X.Ψ r → cpt X x0 z = rmul x1 b → ∀ ξ : Fin (nd X) → ℂ, ∃ ξ' : Fin (nd X) → ℂ, (∀ la : Wt X.Ψ r, leviM X (phla X la) x0 z ξ = leviM X (phla X la) x1 0 ξ') ∧ ∃ B : Frame X.Ψ r, (∀ τ (a c : Fin r), c < a → B τ a c = 0) ∧ ∀ τ, mat x0 τ * (mat (nmat X (WithLp.toLp 2 ξ)) τ - 1) = mat x1 τ * ((mat (nmat X (WithLp.toLp 2 ξ')) τ - 1) * mat b τ + mat B τ) := by
   intro E _ _ _ r X x0 x1 b z ho hz hb hxb ξ
   have hz1 : (0 : V (nd X)) ∈ OmF X x1 := IW.zero_mem_OmF X x1 ho

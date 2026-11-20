@@ -11,6 +11,9 @@ open GroundTheory.PAdicHodge
 
 variable (l : ℕ) [Fact l.Prime]
 
+/- English proof (translation)
+Rewrite using `[isCrisDRF_iff, ← isCrisDRA_toBdRPlus_iff]`. Conclude with `isCrisDRA_iff (Cmp6.cA l) (Cmp6.cBc l) (Cmp6.cP l) (Cmp6.cD l) (Reformulated.AutPerF.Acris.toBdRPlus l (Cmp6.OC l)) (fun x => Cmp6.cBc_algebraMap l x) (fun y => Cmp6.cD_algebraMap l y) hι f`.
+-/
 theorem incl_native
     (hι : ∀ x : Reformulated.AutPerF.Acris l (Cmp6.OC l),
       Cmp6.cP l (Reformulated.AutPerF.Acris.toBdRPlus l (Cmp6.OC l) x) = ACris.iota ℂ_[l] l (Cmp6.cA l x))

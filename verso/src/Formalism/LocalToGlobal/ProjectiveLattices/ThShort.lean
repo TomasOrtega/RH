@@ -332,6 +332,11 @@ def ShortNe0 (nab : NabV Xo c) (bad nV : ℕ) (dδ : ∀ n, DeltaDat Xo c n)
     8 * (Module.finrank ℚ E / 2) * (Dw.p + Dw.q) + 4 ≤ n → cusp a n ≠ ⊥ →
       ∃ f ∈ shortGen Xo c nab bad nV a n (dδ n), f ≠ 0
 
+/- English proof (translation)
+Introduce `a n hd hl hn hc`. Assume the negation of the conclusion as `hno`. Use `push Not at hno`. Apply `hc` to reduce the goal to its premises. Rewrite using `[eq_bot_iff]`.
+
+Introduce `g hg`. Establish `hsp : Submodule.span c.F (shortGen Xo c nab bad nV a n (dδ n)) = ⊥` using `(Submodule.span_eq_bot).2 hno`. Use `h a n hd hl hn hg` as an intermediate fact. Rewrite `this` using `[hsp]`. Conclude with `this`.
+-/
 theorem shortNe0_of_t4Span (nab : NabV Xo c) (bad nV : ℕ) (dδ : ∀ n, DeltaDat Xo c n)
     (cusp : ((E →+* ℂ) × ℕ → ℕ) → ℕ → Submodule c.F (Rul Xo c))
     (h : SpanningAtDominantWeight Xo c nab bad nV cusp dδ) : ShortNe0 Xo c nab bad nV dδ cusp := by

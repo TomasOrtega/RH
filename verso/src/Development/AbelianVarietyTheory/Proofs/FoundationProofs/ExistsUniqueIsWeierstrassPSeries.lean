@@ -17,6 +17,11 @@ variable {K : Type} [Field K]
 
 def euler (R : PowerSeries K) : PowerSeries K := X * derivativeFun R
 
+/- English proof (translation)
+Consider the cases of `n with`. Consider the case `zero => simp [euler]`. Consider the case `succ n`. Rewrite using `[euler, coeff_succ_X_mul, show coeff n (derivativeFun R) = coeff (n + 1) R * ((n : K) + 1) from coeff_derivative R n]`. Use `push_cast`.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem coeff_euler (R : PowerSeries K) (n : ℕ) : coeff n (euler R) = (n : K) * coeff n R := by
   cases n with
   | zero => simp [euler]
@@ -26,6 +31,11 @@ theorem coeff_euler (R : PowerSeries K) (n : ℕ) : coeff n (euler R) = (n : K) 
     push_cast
     ring
 
+/- English proof (translation)
+Use extensionality with `n`. Consider the cases of `n with`. Consider the case `zero => simp [coeff_euler]`. Consider the case `succ n`. Simplify using `only [coeff_euler, map_add, coeff_succ_X_mul, coeff_one]`.
+
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem euler_one_add (R : PowerSeries K) : euler (1 + X * R) = X * (R + euler R) := by
   ext n
   cases n with
@@ -37,6 +47,11 @@ theorem euler_one_add (R : PowerSeries K) : euler (1 + X * R) = X * (R + euler R
 
 def inv4 (R : PowerSeries K) : PowerSeries K := PowerSeries.mk fun n => coeff n R / (4 * ((n : K) + 2))
 
+/- English proof (translation)
+Establish `h4 : (4 : PowerSeries K) = C 4` using `(map_ofNat _ 4).symm`. Establish `h2 : (2 : PowerSeries K) = C 2` using `(map_ofNat _ 2).symm`. Rewrite using `[PowerSeries.ext_iff, PowerSeries.ext_iff]`. Use `forall_congr' fun n => ?_` and prove the remaining obligations. Establish `hn : (4 * ((n : K) + 2)) ≠ 0`.
+
+Establish `: ((n : K) + 2) ≠ 0` using `by exact_mod_cast (by omega : n + 2 ≠ 0)`. Conclude with `mul_ne_zero (by norm_num) this`. Rewrite using `[inv4, coeff_mk, div_eq_iff hn, h4, h2, coeff_C_mul, map_add, coeff_C_mul, coeff_euler]`. Apply the tactic sequence `constructor <;> intro h <;> rw [h] <;> ring`.
+-/
 theorem inverseShiftedEulerOperatorFour_eq_iff [CharZero K] (R S : PowerSeries K) :
     inv4 S = R ↔ S = 4 * (2 * R + euler R) := by
   have h4 : (4 : PowerSeries K) = C 4 := (map_ofNat _ 4).symm
@@ -52,6 +67,15 @@ theorem inverseShiftedEulerOperatorFour_eq_iff [CharZero K] (R S : PowerSeries K
 def rest (a b : K) (R : PowerSeries K) : PowerSeries K :=
   (euler R - R) ^ 2 - 12 * R ^ 2 - 4 * X * R ^ 3 + C a * X ^ 2 * (1 + X * R) + C b * X ^ 4
 
+/- English proof (translation)
+Establish `he : X ^ n ∣ euler x - euler y`. Rewrite `h`, the goal using `[X_pow_dvd_iff]`. Introduce `m hm`. Use `h m hm` as an intermediate fact. Rewrite `this` using `[map_sub, sub_eq_zero]`.
+
+Rewrite using `[map_sub, coeff_euler, coeff_euler, this, sub_self]`. Take `⟨u, hu⟩` from `h`. Take `⟨v, hv⟩` from `he`. Establish `hr : X ^ (n + 1) ∣ X * rest a b x - X * rest a b y`. Use `⟨(v - u) * (euler x - x + (euler y - y)) - 12 * u * (x + y) - 4 * X * u * (x ^ 2 + x * y + y ^ 2) + C a * X ^ 3 * u, ?_⟩` and prove the remaining obligations.
+
+Unfold `rest`. Take the linear combination `X * (euler x - x + (euler y - y)) * hv + X * (-(euler x - x + (euler y - y)) - 12 * (x + y) - 4 * X * (x ^ 2 + x * y + y ^ 2) + C a * X ^ 3) * hu`. Rewrite `hr`, the goal using `[X_pow_dvd_iff]`. Introduce `m hm`. Use `hr m hm` as an intermediate fact.
+
+Rewrite `this` using `[map_sub, sub_eq_zero]`. Rewrite using `[map_sub, inv4, inv4, coeff_mk, coeff_mk, this, sub_self]`.
+-/
 theorem contract (a b : K) (n : ℕ) (x y : PowerSeries K) (h : X ^ n ∣ x - y) :
     X ^ (n + 1) ∣ inv4 (X * rest a b x) - inv4 (X * rest a b y) := by
   have he : X ^ n ∣ euler x - euler y := by
@@ -75,6 +99,13 @@ theorem contract (a b : K) (n : ℕ) (x y : PowerSeries K) (h : X ^ n ∣ x - y)
   rw [map_sub, sub_eq_zero] at this
   rw [map_sub, inv4, inv4, coeff_mk, coeff_mk, this, sub_self]
 
+/- English proof (translation)
+Rewrite using `[inverseShiftedEulerOperatorFour_eq_iff]`. Establish `he` using `euler_one_add R`. Establish `hX : (X : PowerSeries K) ≠ 0` using `X_ne_zero`. Unfold `IsWpSer`. Express the relevant statement in the definitionally equal form `_ ∧ (euler (1 + X * R) - _) ^ 2 = _ ↔ _`.
+
+Rewrite using `[he]`. Unfold `rest`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨-, h⟩`. Apply `mul_left_cancel₀ hX` to reduce the goal to its premises.
+
+Take the linear combination `h`. Introduce `h`. Use `⟨by simp, ?_⟩` and prove the remaining obligations. Take the linear combination `X * h`.
+-/
 theorem isWpSer_iff [CharZero K] (a b : K) (R : PowerSeries K) :
     IsWpSer a b (1 + X * R) ↔ inv4 (X * rest a b R) = R := by
   rw [inverseShiftedEulerOperatorFour_eq_iff]
@@ -92,10 +123,22 @@ theorem isWpSer_iff [CharZero K] (a b : K) (R : PowerSeries K) :
     refine ⟨by simp, ?_⟩
     linear_combination X * h
 
+/- English proof (translation)
+Take `⟨R, hR⟩ : X ∣ P - 1` from `by rw [X_dvd_iff]; simp [h]`. Conclude with `⟨R, by linear_combination hR⟩`.
+-/
 theorem eq_one_add {P : PowerSeries K} (h : constantCoeff P = 1) : ∃ R, P = 1 + X * R := by
   obtain ⟨R, hR⟩ : X ∣ P - 1 := by rw [X_dvd_iff]; simp [h]
   exact ⟨R, by linear_combination hR⟩
 
+/- English proof (translation)
+Introduce `K _ _ a b`. Take `⟨R, hR⟩` from `GlobalTheory.GenusOneDatum.exists_fixed_of_contract (fun R : PowerSeries K => inv4 (X * rest a b R)) (contract a b)`. Use `⟨1 + X * R, (isWpSer_iff a b R).2 hR, fun P hP => ?_⟩` and prove the remaining obligations. Take `⟨S, rfl⟩` from `eq_one_add hP.1`. Establish `hS` using `(isWpSer_iff a b S).1 hP`.
+
+Establish `hd : ∀ n : ℕ, X ^ n ∣ S - R`. Introduce `n`. Proceed by induction on `n with`. Consider the case `zero => simp`. Consider the case `succ n ih`.
+
+Use `contract a b n S R ih` as an intermediate fact. Rewrite `this` using `[hS, show inv4 (X * rest a b R) = R from hR]`. Then use the resulting hypothesis. Establish `: S = R`. Use extensionality with `n`. Use `X_pow_dvd_iff.1 (hd (n + 1)) n (by omega)` as an intermediate fact.
+
+Rewrite `this` using `[map_sub, sub_eq_zero]`. Then use the resulting hypothesis. Rewrite using `[this]`.
+-/
 theorem existsUnique_isWpSer :
     ∀ (K : Type) [Field K] [CharZero K] (a b : K), ∃! P : PowerSeries K, IsWpSer a b P := by
   intro K _ _ a b

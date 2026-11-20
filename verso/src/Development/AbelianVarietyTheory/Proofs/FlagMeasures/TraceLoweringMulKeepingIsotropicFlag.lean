@@ -6,19 +6,31 @@ namespace GlobalTheory.IwConst.FlagTrace
 
 variable {n a : ℕ} {ε : Fin n → Bool} {W : Fin (a + 1) → Submodule ℂ (Fin n → ℂ)}
 
+/- English proof (translation)
+Simplify using `only [lowers, Submodule.mem_inf, Submodule.mem_iInf, mem_into]`.
+-/
 theorem mem_lowers {X : Matrix (Fin n) (Fin n) ℂ} : X ∈ lowers ε W ↔
     ((∀ i : Fin a, ∀ y ∈ W i.succ, X *ᵥ y ∈ W i.castSucc) ∧
       ∀ y ∈ perp ε (W (Fin.last a)), X *ᵥ y ∈ W (Fin.last a)) ∧
       ∀ i : Fin a, ∀ y ∈ perp ε (W i.castSucc), X *ᵥ y ∈ perp ε (W i.succ) := by
   simp only [lowers, Submodule.mem_inf, Submodule.mem_iInf, mem_into]
 
+/- English proof (translation)
+Simplify using `only [keeps, Submodule.mem_inf, Submodule.mem_iInf, mem_into]`.
+-/
 theorem mem_keeps {X : Matrix (Fin n) (Fin n) ℂ} : X ∈ keeps ε W ↔
     (∀ i, ∀ y ∈ W i, X *ᵥ y ∈ W i) ∧ ∀ i, ∀ y ∈ perp ε (W i), X *ᵥ y ∈ perp ε (W i) := by
   simp only [keeps, Submodule.mem_inf, Submodule.mem_iInf, mem_into]
 
+/- English proof (translation)
+Introduce `_ hy x hx` and use `hy x (h hx)`.
+-/
 theorem perp_anti {V V' : Submodule ℂ (Fin n → ℂ)} (h : V ≤ V') : perp ε V' ≤ perp ε V :=
   fun _ hy x hx => hy x (h hx)
 
+/- English proof (translation)
+Rewrite `hX`, the goal using `[mem_lowers]`. Rewrite `hY` using `[mem_keeps]`. Simplify using `only [← Matrix.mulVec_mulVec]`. Conclude with `⟨⟨fun i y hy => hX.1.1 i _ (hY.1 _ y hy), fun y hy => hX.1.2 _ (hY.2 _ y hy)⟩, fun i y hy => hX.2 i _ (hY.2 _ y hy)⟩`.
+-/
 theorem mul_mem_lowers {X Y : Matrix (Fin n) (Fin n) ℂ} (hX : X ∈ lowers ε W) (hY : Y ∈ keeps ε W) :
     X * Y ∈ lowers ε W := by
   rw [mem_lowers] at hX ⊢
@@ -27,6 +39,17 @@ theorem mul_mem_lowers {X Y : Matrix (Fin n) (Fin n) ℂ} (hX : X ∈ lowers ε 
   exact ⟨⟨fun i y hy => hX.1.1 i _ (hY.1 _ y hy), fun y hy => hX.1.2 _ (hY.2 _ y hy)⟩,
     fun i y hy => hX.2 i _ (hY.2 _ y hy)⟩
 
+/- English proof (translation)
+Rewrite `hX` using `[mem_lowers]`. Establish `h1 : ∀ i : Fin (a + 1), ∀ y, X ^ (i : ℕ) *ᵥ y ∈ perp ε (W i)`. Introduce `i`. Proceed by induction on `i using Fin.induction with`. Consider the case `zero => intro y x hx`.
+
+Rewrite `hx` using `[h0, Submodule.mem_bot]`. Simplify using `[hx]`. Consider the case `succ i ih`. Introduce `y`. Rewrite using `[Fin.val_succ, pow_succ', ← Matrix.mulVec_mulVec]`.
+
+Conclude with `hX.2 i _ (ih y)`. Establish `h2 : ∀ i : Fin (a + 1), ∀ y ∈ W i, X ^ (i : ℕ) *ᵥ y = 0`. Introduce `i`. Proceed by induction on `i using Fin.induction with`. Consider the case `zero => intro y hy`.
+
+Rewrite `hy` using `[h0, Submodule.mem_bot]`. Simplify using `[hy]`. Consider the case `succ i ih`. Introduce `y hy`. Rewrite using `[Fin.val_succ, pow_succ, ← Matrix.mulVec_mulVec]`.
+
+Conclude with `ih _ (hX.1.1 i y hy)`. Use `⟨a + 1 + a, ?_⟩` and prove the remaining obligations. Use `Matrix.toLin'.injective (LinearMap.ext fun y => ?_)` and prove the remaining obligations. Rewrite using `[Matrix.toLin'_apply, map_zero, LinearMap.zero_apply, pow_add, pow_succ, ← Matrix.mulVec_mulVec, ← Matrix.mulVec_mulVec]`. Conclude with `h2 (Fin.last a) _ (hX.1.2 _ (h1 (Fin.last a) y))`.
+-/
 theorem isNilpotent_of_mem_lowers (h0 : W 0 = ⊥) {X : Matrix (Fin n) (Fin n) ℂ} (hX : X ∈ lowers ε W) :
     IsNilpotent X := by
   rw [mem_lowers] at hX
@@ -52,6 +75,13 @@ theorem isNilpotent_of_mem_lowers (h0 : W 0 = ⊥) {X : Matrix (Fin n) (Fin n) �
     ← Matrix.mulVec_mulVec]
   exact h2 (Fin.last a) _ (hX.1.2 _ (h1 (Fin.last a) y))
 
+/- English proof (translation)
+Take `⟨h0, hm, -, hi⟩` from `h`. Introduce `X hX`. Rewrite `hX` using `[mem_lowers]`. Rewrite using `[mem_keeps]`. Use `⟨fun i => ?_, fun i => ?_⟩` and prove the remaining obligations.
+
+Proceed by induction on `i using Fin.cases with`. Consider the case `zero => intro y hy`. Rewrite `hy` using `[h0, Submodule.mem_bot]`. Simplify using `[hy]`. Consider the case `succ i => exact fun y hy => hm (Fin.castSucc_le_succ i) (hX.1.1 i y hy)`.
+
+Proceed by induction on `i using Fin.lastCases with`. Consider the case `last => exact fun y hy x hx => hi x hx _ (hX.1.2 y hy)`. Consider the case `cast i => exact fun y hy => perp_anti (hm (Fin.castSucc_le_succ i)) (hX.2 i y hy)`.
+-/
 theorem lowers_le_keeps {j : Fin a → ℕ} (h : IsIsoFlag ε j W) : lowers ε W ≤ keeps ε W := by
   obtain ⟨h0, hm, -, hi⟩ := h
   intro X hX
@@ -65,6 +95,11 @@ theorem lowers_le_keeps {j : Fin a → ℕ} (h : IsIsoFlag ε j W) : lowers ε W
     | last => exact fun y hy x hx => hi x hx _ (hX.1.2 y hy)
     | cast i => exact fun y hy => perp_anti (hm (Fin.castSucc_le_succ i)) (hX.2 i y hy)
 
+/- English proof (translation)
+Introduce `n ε a j W h`. Use `⟨fun X hX Y hY => ?_, lowers_le_keeps h, ?_, fun X hX Y hY => ?_⟩` and prove the remaining obligations. Conclude with `(Matrix.isNilpotent_trace_of_isNilpotent (isNilpotent_of_mem_lowers h.1 (mul_mem_lowers hX hY))).eq_zero`. Rewrite using `[mem_keeps]`. Simplify using the standard rewrite rules.
+
+Rewrite `hX`, `hY`, the goal using `[mem_keeps]`. Simplify using `only [← Matrix.mulVec_mulVec]`. Conclude with `⟨fun i y hy => hX.1 i _ (hY.1 i y hy), fun i y hy => hX.2 i _ (hY.2 i y hy)⟩`.
+-/
 theorem trace_lowers_keeps : ∀ (n : ℕ) (ε : Fin n → Bool) (a : ℕ) (j : Fin a → ℕ)
     (W : Fin (a + 1) → Submodule ℂ (Fin n → ℂ)), IsIsoFlag ε j W →
     (∀ X ∈ lowers ε W, ∀ Y ∈ keeps ε W, (X * Y).trace = 0) ∧ lowers ε W ≤ keeps ε W ∧

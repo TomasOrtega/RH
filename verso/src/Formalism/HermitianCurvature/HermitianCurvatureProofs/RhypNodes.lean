@@ -19,6 +19,25 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {Wp Wq : InfinitePla
   {Cb Cc : ℝ} {S : C.HidaSetting E Wp Wq} {p : ∀ v, KB.Pl (D.parOf S v) (Wp (S.pl v)) (Wq (S.pl v))}
   {f : ∀ v : Fin S.f, B.Mat S.G.k S.G.r → (Wq (S.pl v) →L[ℂ] Wp (S.pl v))} {χ : ℝ → ℝ} {A₀ : ℝ}
 
+/- English proof (translation)
+Establish `hB'` using `hB`. Take `⟨-, -, -, -, -, -, -, -, -, -, hGo, -, -, -, -, hv⟩` from `hB'`. Take `⟨hl0, -⟩` from `hv v`. Rewrite using `[hl0]`. Use `rhyp_of _ a e ρ _ _ _ fun ys₁ y ys₂ hsplit => ?_` and prove the remaining obligations.
+
+Take `⟨b₀, hb₀, rfl, hlen, hlater⟩` from `ofFn_split (fun b => grid b (n b)) ys₁ y ys₂ hsplit`. Establish `hc : KB.CutWord (D.parOf S v) (S.l + 1) ((true, grid b₀ (n b₀)) :: KB.plusW ys₂ a)`. Rewrite `hcut`, the goal using `[PBD.cutWord_iff]`. Rewrite `hcut` using `[PBF.plusW_eq, hsplit]`. Establish `hsub : ((true, grid b₀ (n b₀)) :: KB.plusW ys₂ a).Sublist ((ys₁ ++ grid b₀ (n b₀) :: ys₂).map (fun y => (true, y)) ++ a)`.
+
+Rewrite using `[PBF.plusW_eq, List.map_append, List.map_cons, List.append_assoc, List.cons_append]`. Conclude with `List.sublist_append_right _ _`. Conclude with `⟨fun x hx => hcut.1 x (hsub.subset hx), hcut.2.sublist hsub⟩`. Establish `hgr : ∃ m, grid b₀ (n b₀) ∈ S.grid v m` using `⟨_, hmem b₀ (n b₀)⟩`. Establish `hl : (KB.plusW ys₂ a).length < S.Ntop`.
+
+Rewrite using `[PBF.plusW_eq, List.length_append, List.length_map]`. Use linear arithmetic over natural numbers and integers. Establish `hfar : ∀ x ∈ KB.plusW ys₂ a, (S.Ntop : ℝ) ^ 2 + 1 ≤ |grid b₀ (n b₀) - x.2| ∧ (x.1 = false → (S.Ntop : ℝ) ^ 2 + 1 ≤ |grid b₀ (n b₀) - (x.2 - 1)|)`. Introduce `x hx`. Rewrite `hx` using `[PBF.plusW_eq, List.mem_append]`.
+
+Break down `hx with hx | hx` into its components or cases. Take `⟨y', hy', rfl⟩` from `List.mem_map.1 hx`. Take `⟨b', hb', rfl⟩` from `hlater y' hy'`. Use `⟨?_, fun h => absurd h (by simp)⟩` and prove the remaining obligations. Use `PBD.sep_grid S hGo v (hmem b₀ (n b₀)) (hmem b' (n b')) (by` as an intermediate fact.
+
+Establish `: (b₀ : ℕ) < b'` using `hb'`. Establish `hb'K` using `b'.isLt`. Use the proof step `omega) (e := 0) (e' := 0) (by simp) (by simp)`. Simplify using `using this`. Establish `hy : (false = false ∧ ∃ a', a.length < a' ∧ a' ≤ S.Ntop ∧ grid b₀ (n b₀) ∈ S.grid v a') ∨ (false = true ∧ grid b₀ (n b₀) ∈ S.grid1 v ∧ ∀ x ∈ a, PBD.Sep (true, grid b₀ (n b₀)) x)` using `Or.inl ⟨rfl, a.length + K - (b₀ : ℕ), by have := b₀.isLt; omega, by omega, hmem b₀ (n b₀)⟩`.
+
+Take `⟨h1, h2⟩` from `node_far hB v a ha (grid b₀ (n b₀)) false hy x hx`. Simplify using `only [Bool.false_eq_true, if_false] at h1 h2`. Unfold `PBD.nodeOf at h1 h2`. Distinguish the cases in `hx1 : x.1 = true`. Rewrite `h1` using `[if_pos hx1]`.
+
+Conclude with `⟨h1, fun h => absurd h (by simp [hx1])⟩`. Rewrite `h1`, `h2` using `[if_neg hx1]`. Rewrite `h2` using `[sub_add_cancel]`. Conclude with `⟨h2, fun _ => h1⟩`. Use `hTR Cb Cc E Wp Wq S p f χ A₀ hB hC v (KB.plusW ys₂ a) (grid b₀ (n b₀)) hc hgr hl hfar (KB.firstSt ys₂ e) ρ` as an intermediate fact.
+
+Conclude with `this`.
+-/
 theorem rhyp_nodes (hTR : TopRatio) (hB : KB.IsLeadingFormSetting Cb Cc S p f χ A₀) (hC : 28 * Real.exp 1 ≤ Cc) (v : Fin S.f) (a : List C.Letter)
     (ha : D.AdmAt S v a) {K d : ℕ} (haN : a.length + K ≤ S.Ntop) (grid : Fin K → Fin (d + 1) → ℝ)
     (hmem : ∀ (b : Fin K) j, grid b j ∈ S.grid v (a.length + K - (b : ℕ)))

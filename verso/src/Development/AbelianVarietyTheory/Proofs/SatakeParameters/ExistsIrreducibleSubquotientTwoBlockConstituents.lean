@@ -9,6 +9,13 @@ open GlobalTheory.PRep GlobalTheory.SmGL GlobalTheory.SplitWeil GlobalTheory.Spl
 namespace GlobalTheory.ParIndExact
 open TensorProduct
 
+/- English proof (translation)
+Introduce `S₀`. Use `WellFoundedLT.induction (motive := fun S => ∀ T, T ≤ S → Q S T → ∃ S' T', T' ⋖ S' ∧ Q S' T') S₀ ?_` and prove the remaining obligations. Introduce `S ihS T₀`. Use `WellFoundedGT.induction (motive := fun T => T ≤ S → Q S T → ∃ S' T', T' ⋖ S' ∧ Q S' T') T₀ ?_` and prove the remaining obligations. Introduce `T ihT hTS hQ`.
+
+Establish `hne : T < S` using `lt_of_le_of_ne hTS (fun h => hself S (h ▸ hQ))`. Distinguish the cases in `hc : T ⋖ S`. Conclude with `⟨S, T, hc, hQ⟩`. Choose the witnesses or unpack the hypotheses as in `⟨U, hTU, hUS⟩ : ∃ U, T < U ∧ U < S := by`. Assume the negation of the conclusion as `hno`.
+
+Conclude with `hc ⟨hne, fun U h1 h2 => hno ⟨U, h1, h2⟩⟩`. Break down `hsplit S U T hTU.le hUS.le hQ with h | h` into its components or cases. Conclude with `ihS U hUS T hTU.le h`. Conclude with `ihT U hTU hUS.le h`.
+-/
 theorem exists_covBy_of_split {L : Type} [PartialOrder L] [WellFoundedLT L] [WellFoundedGT L]
     (Q : L → L → Prop) (hself : ∀ S, ¬ Q S S)
     (hsplit : ∀ S U T, T ≤ U → U ≤ S → Q S T → Q U T ∨ Q S U) :
@@ -31,10 +38,16 @@ theorem exists_covBy_of_split {L : Type} [PartialOrder L] [WellFoundedLT L] [Wel
 section SubQuot
 variable {F G V : Type} [Field F] [Group G] [AddCommGroup V] [Module F V] {ρ : Representation F G V}
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨S, ⟨(Submodule.comap S.toSubmodule.subtype T.toSubmodule).mkQ, fun g => LinearMap.ext fun x => rfl⟩, Submodule.mkQ_surjective _⟩`.
+-/
 theorem isSubquotient_subQuot (S T : Subrepresentation ρ) : IsSubquotient (subQuot S T) ρ :=
   ⟨S, ⟨(Submodule.comap S.toSubmodule.subtype T.toSubmodule).mkQ, fun g => LinearMap.ext fun x => rfl⟩,
     Submodule.mkQ_surjective _⟩
 
+/- English proof (translation)
+Use `⟨⟨(Submodule.comap (⊤ : Subrepresentation ρ).toSubmodule.subtype (⊥ : Subrepresentation ρ).toSubmodule).mkQ ∘ₗ LinearMap.codRestrict (⊤ : Subrepresentation ρ).toSubmodule LinearMap.id (fun _ => trivial), fun g => LinearMap.ext fun x => rfl⟩, ?_⟩` and prove the remaining obligations. Introduce `x y hxy`. Use `(Submodule.Quotient.eq _).1 hxy` as an intermediate fact. Establish `h2 : x - y = 0` using `this`. Conclude with `sub_eq_zero.1 h2`.
+-/
 theorem subQuot_top_bot (ρ : Representation F G V) :
     ∃ ι : ρ.IntertwiningMap (subQuot (⊤ : Subrepresentation ρ) ⊥), Function.Injective ι := by
   refine ⟨⟨(Submodule.comap (⊤ : Subrepresentation ρ).toSubmodule.subtype
@@ -46,6 +59,17 @@ theorem subQuot_top_bot (ρ : Representation F G V) :
   have h2 : x - y = 0 := this
   exact sub_eq_zero.1 h2
 
+/- English proof (translation)
+Establish `hUS' : U.toSubmodule ≤ S.toSubmodule` using `hUS`. Establish `hTU' : T.toSubmodule ≤ U.toSubmodule` using `hTU`. Set `i : U.toSubmodule →ₗ[F] S.toSubmodule` to `Submodule.inclusion hUS'`. Establish `hi : Submodule.comap U.toSubmodule.subtype T.toSubmodule ≤ Submodule.comap i (Submodule.comap S.toSubmodule.subtype T.toSubmodule)` using `fun x hx => hx`. Establish `hj : Submodule.comap S.toSubmodule.subtype T.toSubmodule ≤ Submodule.comap LinearMap.id (Submodule.comap S.toSubmodule.subtype U.toSubmodule)` using `fun x hx => hTU' hx`.
+
+Use `⟨⟨Submodule.mapQ _ _ i hi, fun g => Submodule.linearMap_qext _ (LinearMap.ext fun x => rfl)⟩, ⟨Submodule.mapQ _ _ LinearMap.id hj, fun g => Submodule.linearMap_qext _ (LinearMap.ext fun x => rfl)⟩, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `x y hxy`. Proceed by induction on `x using Submodule.Quotient.induction_on with | H x =>`. Proceed by induction on `y using Submodule.Quotient.induction_on with | H y =>`. Use `(Submodule.Quotient.eq _).1 hxy` as an intermediate fact.
+
+Conclude with `(Submodule.Quotient.eq _).2 this`. Introduce `x`. Proceed by induction on `x using Submodule.Quotient.induction_on with | H x =>`. Conclude with `⟨Submodule.Quotient.mk x, rfl⟩`. Introduce `y`.
+
+Proceed by induction on `y using Submodule.Quotient.induction_on with | H y =>`. Use `show Submodule.Quotient.mk _ = 0`. Rewrite using `[Submodule.Quotient.mk_eq_zero]`. Conclude with `y.2`. Introduce `x hx`.
+
+Proceed by induction on `x using Submodule.Quotient.induction_on with | H x =>`. Establish `hx' : (Submodule.Quotient.mk x : S.toSubmodule ⧸ Submodule.comap S.toSubmodule.subtype U.toSubmodule) = 0` using `hx`. Establish `hxU : (x : V) ∈ U.toSubmodule` using `(Submodule.Quotient.mk_eq_zero (Submodule.comap S.toSubmodule.subtype U.toSubmodule)).1 hx'`. Conclude with `⟨Submodule.Quotient.mk ⟨x, hxU⟩, rfl⟩`.
+-/
 theorem subQuot_exact {S U T : Subrepresentation ρ} (hTU : T ≤ U) (hUS : U ≤ S) :
     ∃ (ι : (subQuot U T).IntertwiningMap (subQuot S T)) (p : (subQuot S T).IntertwiningMap (subQuot S U)),
       Function.Injective ι ∧ Function.Surjective p ∧ (∀ y, p (ι y) = 0) ∧ ∀ x, p x = 0 → ∃ y, ι y = x := by
@@ -98,16 +122,25 @@ def extTensorMapRight {ρ₁ : Representation F H V₁} {ρ : Representation F H
     simp only [LinearMap.comp_apply, extTensor_tmul, LinearMap.lTensor_tmul]
     exact congrArg ((A g.1) v ⊗ₜ[F] ·) (Representation.IntertwiningMap.isIntertwining _ _ f g.2 w)⟩
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨extTensorMapLeft B ι, Module.Flat.rTensor_preserves_injective_linearMap ι.toLinearMap hι⟩`.
+-/
 theorem extTensor_injective_left {ρ₁ : Representation F G V₁} {ρ : Representation F G V}
     (B : Representation F H W) (ι : ρ₁.IntertwiningMap ρ) (hι : Function.Injective ι) :
     ∃ ι' : (extTensor ρ₁ B).IntertwiningMap (extTensor ρ B), Function.Injective ι' :=
   ⟨extTensorMapLeft B ι, Module.Flat.rTensor_preserves_injective_linearMap ι.toLinearMap hι⟩
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨extTensorMapRight A ι, Module.Flat.lTensor_preserves_injective_linearMap ι.toLinearMap hι⟩`.
+-/
 theorem extTensor_injective_right {ρ₁ : Representation F H V₁} {ρ : Representation F H V}
     (A : Representation F G W) (ι : ρ₁.IntertwiningMap ρ) (hι : Function.Injective ι) :
     ∃ ι' : (extTensor A ρ₁).IntertwiningMap (extTensor A ρ), Function.Injective ι' :=
   ⟨extTensorMapRight A ι, Module.Flat.lTensor_preserves_injective_linearMap ι.toLinearMap hι⟩
 
+/- English proof (translation)
+Establish `hexact : Function.Exact ι.toLinearMap p.toLinearMap` using `fun v => ⟨fun h => hex v h, fun ⟨u, hu⟩ => hu ▸ hpι u⟩`. Use `⟨extTensorMapLeft B ι, extTensorMapLeft B p, Module.Flat.rTensor_preserves_injective_linearMap ι.toLinearMap hι, fun x hx => ?_⟩` and prove the remaining obligations. Conclude with `(rTensor_exact W hexact hp x).1 hx`.
+-/
 theorem extTensor_exact_left {ρ₁ : Representation F G V₁} {ρ : Representation F G V}
     {ρ₂ : Representation F G V₂} (B : Representation F H W) (ι : ρ₁.IntertwiningMap ρ)
     (p : ρ.IntertwiningMap ρ₂) (hι : Function.Injective ι) (hp : Function.Surjective p)
@@ -120,6 +153,9 @@ theorem extTensor_exact_left {ρ₁ : Representation F G V₁} {ρ : Representat
     Module.Flat.rTensor_preserves_injective_linearMap ι.toLinearMap hι, fun x hx => ?_⟩
   exact (rTensor_exact W hexact hp x).1 hx
 
+/- English proof (translation)
+Establish `hexact : Function.Exact ι.toLinearMap p.toLinearMap` using `fun v => ⟨fun h => hex v h, fun ⟨u, hu⟩ => hu ▸ hpι u⟩`. Use `⟨extTensorMapRight A ι, extTensorMapRight A p, Module.Flat.lTensor_preserves_injective_linearMap ι.toLinearMap hι, fun x hx => ?_⟩` and prove the remaining obligations. Conclude with `(lTensor_exact W hexact hp x).1 hx`.
+-/
 theorem extTensor_exact_right {ρ₁ : Representation F H V₁} {ρ : Representation F H V}
     {ρ₂ : Representation F H V₂} (A : Representation F G W) (ι : ρ₁.IntertwiningMap ρ)
     (p : ρ.IntertwiningMap ρ₂) (hι : Function.Injective ι) (hp : Function.Surjective p)
@@ -137,6 +173,9 @@ end GlobalTheory.ParIndExact
 
 namespace GlobalTheory.ParIndExact
 
+/- English proof (translation)
+Take `⟨f, hsurj, hint, -⟩` from `h`. Use `⟨S, ⟨f ∘ₗ S.toSubmodule.subtype, fun g => LinearMap.ext fun v => ?_⟩, fun w => ?_⟩` and prove the remaining obligations. Conclude with `hint g v v.2`. Take `⟨v, hv, rfl⟩` from `hsurj w`. Conclude with `⟨⟨v, hv⟩, rfl⟩`.
+-/
 theorem isSubquotient_of_step {F G V W : Type} [Field F] [Group G] [AddCommGroup V] [Module F V]
     [AddCommGroup W] [Module F W] {σ : Representation F G W} {ρ : Representation F G V}
     {S T : Subrepresentation ρ} (h : GlobalTheory.JHMult.Step σ S T) : IsSubquotient σ ρ := by
@@ -146,6 +185,19 @@ theorem isSubquotient_of_step {F G V W : Type} [Field F] [Group G] [AddCommGroup
   · obtain ⟨v, hv, rfl⟩ := hsurj w
     exact ⟨⟨v, hv⟩, rfl⟩
 
+/- English proof (translation)
+Take `⟨S, f, hf⟩` from `h`. Take `⟨f', hf'⟩` from `LinearMap.exists_extend f.toLinearMap`. Establish `hf'v : ∀ v (hv : v ∈ S.toSubmodule), f' v = f ⟨v, hv⟩` using `fun v hv => LinearMap.congr_fun hf' ⟨v, hv⟩`. Set `T : Subrepresentation ρ` to `⟨Submodule.map S.toSubmodule.subtype (LinearMap.ker f.toLinearMap), by`. Introduce and unpack `g _ ⟨x, hx, rfl⟩`.
+
+Use `⟨S.toRepresentation g x, ?_, rfl⟩` and prove the remaining obligations. Establish `hx' : f x = 0` using `hx`. Use `show f (S.toRepresentation g x) = 0`. Rewrite using `[Representation.IntertwiningMap.isIntertwining, hx', map_zero]⟩`. Establish `hTS : T ≤ S`.
+
+Introduce and unpack `_ ⟨x, -, rfl⟩`. Conclude with `x.2`. Establish `hstep : GlobalTheory.JHMult.Step σ S T`. Use `⟨f', fun w => ?_, fun g v hv => ?_, fun v hv => ?_⟩` and prove the remaining obligations. Take `⟨x, rfl⟩` from `hf w`.
+
+Conclude with `⟨x, x.2, hf'v x x.2⟩`. Rewrite using `[hf'v v hv, hf'v _ (S.apply_mem_toSubmodule g hv)]`. Conclude with `Representation.IntertwiningMap.isIntertwining _ _ f g ⟨v, hv⟩`. Rewrite using `[hf'v v hv]`. Prove the components needed by the constructor for the conclusion.
+
+Introduce `h0`. Conclude with `⟨⟨v, hv⟩, h0, rfl⟩`. Introduce and unpack `⟨x, hx, hxv⟩`. Establish `: x = ⟨v, hv⟩` using `Subtype.ext hxv`. Substitute `this` using the available equality.
+
+Conclude with `hx`. Break down `GlobalTheory.JHMult.step_dichotomy ι p hσ hex hTS hstep with h1 | h2` into its components or cases. Conclude with `Or.inl (isSubquotient_of_step h1)`. Conclude with `Or.inr (isSubquotient_of_step h2)`.
+-/
 theorem isSubquotient_dichotomy {F G V W V₁ V₂ : Type} [Field F] [Group G] [AddCommGroup V] [Module F V]
     [AddCommGroup W] [Module F W] [AddCommGroup V₁] [Module F V₁] [AddCommGroup V₂] [Module F V₂]
     {σ : Representation F G W} {ρ : Representation F G V} {ρ₁ : Representation F G V₁}
@@ -193,6 +245,9 @@ variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchim
     {α n : Type} {m : α → Type} [Fintype α] [LinearOrder α] [∀ a, Fintype (m a)] [∀ a, DecidableEq (m a)]
     [Fintype n] [DecidableEq n]
 
+/- English proof (translation)
+Introduce `φ ψ h`. Establish `h' : ∀ g, ι (φ.1.1 g) = ι (ψ.1.1 g)` using `fun g => congrFun (congrArg (fun x => x.1.1) h) g`. Conclude with `Subtype.ext (Subtype.ext (funext fun g => hι (h' g)))`.
+-/
 theorem parIndMap_injective {V₁ V : Type} [AddCommGroup V₁] [Module ℂ V₁] [AddCommGroup V] [Module ℂ V]
     (e : (Σ a, m a) ≃ n) {ρ₁ : Representation ℂ (Levi k m) V₁} {ρ : Representation ℂ (Levi k m) V}
     (ι : ρ₁.IntertwiningMap ρ) (hι : Function.Injective ι) : Function.Injective (parIndMap e ι) := by
@@ -200,6 +255,23 @@ theorem parIndMap_injective {V₁ V : Type} [AddCommGroup V₁] [Module ℂ V₁
   have h' : ∀ g, ι (φ.1.1 g) = ι (ψ.1.1 g) := fun g => congrFun (congrArg (fun x => x.1.1) h) g
   exact Subtype.ext (Subtype.ext (funext fun g => hι (h' g)))
 
+/- English proof (translation)
+Introduce `φ hφ`. Set `σ₁` to `(twist ρ₁ (deltaHalf k m)).comp (leviProj k e)`. Set `σ` to `(twist ρ (deltaHalf k m)).comp (leviProj k e)`. Set `ιt : Representation.IntertwiningMap σ₁ σ` to `compMap (twistMap ι (deltaHalf k m)) (leviProj k e)`. Establish `hp0 : ∀ g, p (φ.1.1 g) = 0` using `fun g => congrFun (congrArg (fun x => x.1.1) hφ) g`.
+
+Use `choose ψf hψf using fun g => hex _ (hp0 g)`. Establish `hφind : ∀ (h : parab k e) g, φ.1.1 (↑h * g) = σ h (φ.1.1 g)` using `φ.1.2`. Establish `hmem : ψf ∈ indSpace (parab k e) σ₁`. Introduce `h g`. Apply `hι` to reduce the goal to its premises.
+
+Combine the equalities or inequalities in the displayed calculation. Set `ψ' : indSpace (parab k e) σ₁` to `⟨ψf, hmem⟩`. Establish `hset : {x | (ind (parab k e) σ₁ x) ψ' = ψ'} = {x | (ind (parab k e) σ x) φ.1 = φ.1}`. Use extensionality with `x`. Simplify using `only [Set.mem_setOf_eq]`.
+
+Prove the components needed by the constructor for the conclusion. Introduce `hx`. Apply `Subtype.ext` to reduce the goal to its premises. Use function extensionality and compare the values at `y`. Use `congrFun (congrArg Subtype.val hx) y` as an intermediate fact.
+
+Express the relevant statement in the definitionally equal form `ψf (y * x) = ψf y at this`. Express the relevant statement in the definitionally equal form `φ.1.1 (y * x) = φ.1.1 y`. Rewrite using `[← hψf, ← hψf, this]`. Introduce `hx`. Apply `Subtype.ext` to reduce the goal to its premises.
+
+Use function extensionality and compare the values at `y`. Use `congrFun (congrArg Subtype.val hx) y` as an intermediate fact. Express the relevant statement in the definitionally equal form `φ.1.1 (y * x) = φ.1.1 y at this`. Express the relevant statement in the definitionally equal form `ψf (y * x) = ψf y`. Apply `hι` to reduce the goal to its premises.
+
+Rewrite using `[hψf, hψf, this]`. Establish `hsm : ψ' ∈ smoothPart (ind (parab k e) σ₁)`. Express the relevant statement in the definitionally equal form `IsOpen {x | (ind (parab k e) σ₁ x) ψ' = ψ'}`. Rewrite using `[hset]`. Conclude with `φ.2`.
+
+Conclude with `⟨⟨ψ', hsm⟩, Subtype.ext (Subtype.ext (funext fun g => hψf g))⟩`.
+-/
 theorem parIndMap_exact {V₁ V V₂ : Type} [AddCommGroup V₁] [Module ℂ V₁] [AddCommGroup V] [Module ℂ V]
     [AddCommGroup V₂] [Module ℂ V₂] (e : (Σ a, m a) ≃ n) {ρ₁ : Representation ℂ (Levi k m) V₁}
     {ρ : Representation ℂ (Levi k m) V} {ρ₂ : Representation ℂ (Levi k m) V₂}
@@ -255,6 +327,9 @@ section Glue
 variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
     {n : Type} [Fintype n] [DecidableEq n] {a b : Type} [Fintype a] [DecidableEq a] [Fintype b] [DecidableEq b]
 
+/- English proof (translation)
+Establish `hι' : Function.Injective (compMap ι (leviTwo k a b).symm.toMonoidHom)` using `hι`. Establish `hex' : ∀ v, compMap p (leviTwo k a b).symm.toMonoidHom v = 0 → ∃ u, compMap ι (leviTwo k a b).symm.toMonoidHom u = v` using `hex`. Conclude with `isSubquotient_dichotomy _ _ hπ (parIndMap_exact (two e) _ _ hι' hex') h`.
+-/
 theorem ind₂_dichotomy (e : a ⊕ b ≃ n) {V₁ V V₂ U : Type} [AddCommGroup V₁] [Module ℂ V₁] [AddCommGroup V]
     [Module ℂ V] [AddCommGroup V₂] [Module ℂ V₂] [AddCommGroup U] [Module ℂ U]
     {ρ₁ : Representation ℂ (GL a k × GL b k) V₁} {ρ : Representation ℂ (GL a k × GL b k) V}
@@ -267,6 +342,9 @@ theorem ind₂_dichotomy (e : a ⊕ b ≃ n) {V₁ V V₂ U : Type} [AddCommGrou
       ∃ u, compMap ι (leviTwo k a b).symm.toMonoidHom u = v := hex
   exact isSubquotient_dichotomy _ _ hπ (parIndMap_exact (two e) _ _ hι' hex') h
 
+/- English proof (translation)
+Establish `hι' : Function.Injective (compMap ι (leviTwo k a b).symm.toMonoidHom)` using `hι`. Conclude with `h.trans (IsSubquotient.of_injective _ (parIndMap_injective (two e) _ hι'))`.
+-/
 theorem ind₂_of_injective (e : a ⊕ b ≃ n) {V₁ V U : Type} [AddCommGroup V₁] [Module ℂ V₁] [AddCommGroup V]
     [Module ℂ V] [AddCommGroup U] [Module ℂ U]
     {ρ₁ : Representation ℂ (GL a k × GL b k) V₁} {ρ : Representation ℂ (GL a k × GL b k) V}
@@ -275,6 +353,13 @@ theorem ind₂_of_injective (e : a ⊕ b ≃ n) {V₁ V U : Type} [AddCommGroup 
   have hι' : Function.Injective (compMap ι (leviTwo k a b).symm.toMonoidHom) := hι
   exact h.trans (IsSubquotient.of_injective _ (parIndMap_injective (two e) _ hι'))
 
+/- English proof (translation)
+Introduce and unpack `⟨S, f, hf⟩`. Use `haveI := nontrivial_of_irreducible hπ`. Take `⟨x, y, hxy⟩` from `exists_pair_ne U`. Take `⟨x', rfl⟩` from `hf x`. Take `⟨y', rfl⟩` from `hf y`.
+
+Apply `hxy` to reduce the goal to its premises. Use `congr 1`. Apply `Subtype.ext` to reduce the goal to its premises. Apply `Subtype.ext` to reduce the goal to its premises. Apply `Subtype.ext` to reduce the goal to its premises.
+
+Use function extensionality and compare the values at `g`. Conclude with `Subsingleton.elim _ _`.
+-/
 theorem not_isSubquotient_ind₂ (e : a ⊕ b ≃ n) {V U : Type} [AddCommGroup V] [Module ℂ V] [Subsingleton V]
     [AddCommGroup U] [Module ℂ U] (ρ : Representation ℂ (GL a k × GL b k) V)
     {π : Representation ℂ (GL n k) U} (hπ : π.IsIrreducible) : ¬ IsSubquotient π (ind₂ e ρ) := by
@@ -291,6 +376,11 @@ theorem not_isSubquotient_ind₂ (e : a ⊕ b ≃ n) {V U : Type} [AddCommGroup 
 
 end Glue
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce `x y`. Proceed by induction on `x using Submodule.Quotient.induction_on with`. Consider the case `H x`. Proceed by induction on `y using Submodule.Quotient.induction_on with`.
+
+Consider the case `H y`. Rewrite using `[Submodule.Quotient.eq]`. Simplify using the standard rewrite rules.
+-/
 theorem subsingleton_subQuot_self {F G V : Type} [Field F] [Group G] [AddCommGroup V] [Module F V]
     {ρ : Representation F G V} (S : Subrepresentation ρ) :
     Subsingleton (S.toSubmodule ⧸ Submodule.comap S.toSubmodule.subtype S.toSubmodule) := by
@@ -303,6 +393,11 @@ theorem subsingleton_subQuot_self {F G V : Type} [Field F] [Group G] [AddCommGro
   rw [Submodule.Quotient.eq]
   simp
 
+/- English proof (translation)
+Establish `h0 : ∀ z : TensorProduct F V W, z = 0` using `fun z => by`. Proceed by induction on `z using TensorProduct.induction_on with`. Consider the case `zero => rfl`. Consider the case `tmul v w => rw [Subsingleton.elim v 0, TensorProduct.zero_tmul]`. Consider the case `add x y hx hy => rw [hx, hy, add_zero]`.
+
+Conclude with `⟨fun x y => by rw [h0 x, h0 y]⟩`.
+-/
 theorem tensor_subsingleton_left {F V W : Type} [Field F] [AddCommGroup V] [Module F V] [AddCommGroup W]
     [Module F W] [Subsingleton V] : Subsingleton (TensorProduct F V W) := by
   have h0 : ∀ z : TensorProduct F V W, z = 0 := fun z => by
@@ -312,6 +407,11 @@ theorem tensor_subsingleton_left {F V W : Type} [Field F] [AddCommGroup V] [Modu
     | add x y hx hy => rw [hx, hy, add_zero]
   exact ⟨fun x y => by rw [h0 x, h0 y]⟩
 
+/- English proof (translation)
+Establish `h0 : ∀ z : TensorProduct F V W, z = 0` using `fun z => by`. Proceed by induction on `z using TensorProduct.induction_on with`. Consider the case `zero => rfl`. Consider the case `tmul v w => rw [Subsingleton.elim w 0, TensorProduct.tmul_zero]`. Consider the case `add x y hx hy => rw [hx, hy, add_zero]`.
+
+Conclude with `⟨fun x y => by rw [h0 x, h0 y]⟩`.
+-/
 theorem tensor_subsingleton_right {F V W : Type} [Field F] [AddCommGroup V] [Module F V] [AddCommGroup W]
     [Module F W] [Subsingleton W] : Subsingleton (TensorProduct F V W) := by
   have h0 : ∀ z : TensorProduct F V W, z = 0 := fun z => by
@@ -324,6 +424,9 @@ theorem tensor_subsingleton_right {F V W : Type} [Field F] [AddCommGroup V] [Mod
 section Main
 variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
 
+/- English proof (translation)
+Take `⟨ι, p, hι, hp, hpι, hex⟩` from `subQuot_exact (ρ := A) hTM hMS`. Take `⟨ι', p', hι', hex'⟩` from `extTensor_exact_left (F := ℂ) (G := GL (Fin r) k) (H := GL (Fin t) k) B ι p hι hp hpι hex`. Conclude with `ind₂_dichotomy _ ι' p' hι' hex' hπ h`.
+-/
 theorem step_left {r t : ℕ} {U V W : Type} [AddCommGroup U] [Module ℂ U] [AddCommGroup V] [Module ℂ V]
     [AddCommGroup W] [Module ℂ W] (π : Representation ℂ (GL (Fin (r + t)) k) U)
     (A : Representation ℂ (GL (Fin r) k) V) (B : Representation ℂ (GL (Fin t) k) W)
@@ -334,6 +437,9 @@ theorem step_left {r t : ℕ} {U V W : Type} [AddCommGroup U] [Module ℂ U] [Ad
   obtain ⟨ι', p', hι', hex'⟩ := extTensor_exact_left (F := ℂ) (G := GL (Fin r) k) (H := GL (Fin t) k) B ι p hι hp hpι hex
   exact ind₂_dichotomy _ ι' p' hι' hex' hπ h
 
+/- English proof (translation)
+Take `⟨ι, p, hι, hp, hpι, hex⟩` from `subQuot_exact (ρ := B) hTM hMS`. Take `⟨ι', p', hι', hex'⟩` from `extTensor_exact_right (F := ℂ) (G := GL (Fin r) k) (H := GL (Fin t) k) A ι p hι hp hpι hex`. Conclude with `ind₂_dichotomy _ ι' p' hι' hex' hπ h`.
+-/
 theorem step_right {r t : ℕ} {U V W : Type} [AddCommGroup U] [Module ℂ U] [AddCommGroup V] [Module ℂ V]
     [AddCommGroup W] [Module ℂ W] (π : Representation ℂ (GL (Fin (r + t)) k) U)
     (A : Representation ℂ (GL (Fin r) k) V) (B : Representation ℂ (GL (Fin t) k) W)
@@ -344,6 +450,9 @@ theorem step_right {r t : ℕ} {U V W : Type} [AddCommGroup U] [Module ℂ U] [A
   obtain ⟨ι', p', hι', hex'⟩ := extTensor_exact_right (F := ℂ) (G := GL (Fin r) k) (H := GL (Fin t) k) A ι p hι hp hpι hex
   exact ind₂_dichotomy _ ι' p' hι' hex' hπ h
 
+/- English proof (translation)
+Conclude with `(subQuot_top_bot A).elim fun ι hι => (extTensor_injective_left (F := ℂ) (G := GL (Fin r) k) (H := GL (Fin t) k) B ι hι).elim fun ι' hι' => ind₂_of_injective _ ι' hι' h`.
+-/
 theorem top_left {r t : ℕ} {U V W : Type} [AddCommGroup U] [Module ℂ U] [AddCommGroup V] [Module ℂ V]
     [AddCommGroup W] [Module ℂ W] (π : Representation ℂ (GL (Fin (r + t)) k) U)
     (A : Representation ℂ (GL (Fin r) k) V) (B : Representation ℂ (GL (Fin t) k) W)
@@ -353,6 +462,9 @@ theorem top_left {r t : ℕ} {U V W : Type} [AddCommGroup U] [Module ℂ U] [Add
     (extTensor_injective_left (F := ℂ) (G := GL (Fin r) k) (H := GL (Fin t) k) B ι hι).elim
       fun ι' hι' => ind₂_of_injective _ ι' hι' h
 
+/- English proof (translation)
+Conclude with `(subQuot_top_bot B).elim fun ι hι => (extTensor_injective_right (F := ℂ) (G := GL (Fin r) k) (H := GL (Fin t) k) A ι hι).elim fun ι' hι' => ind₂_of_injective _ ι' hι' h`.
+-/
 theorem top_right {r t : ℕ} {U V W : Type} [AddCommGroup U] [Module ℂ U] [AddCommGroup V] [Module ℂ V]
     [AddCommGroup W] [Module ℂ W] (π : Representation ℂ (GL (Fin (r + t)) k) U)
     (A : Representation ℂ (GL (Fin r) k) V) (B : Representation ℂ (GL (Fin t) k) W)
@@ -362,6 +474,11 @@ theorem top_right {r t : ℕ} {U V W : Type} [AddCommGroup U] [Module ℂ U] [Ad
     (extTensor_injective_right (F := ℂ) (G := GL (Fin r) k) (H := GL (Fin t) k) A ι hι).elim
       fun ι' hι' => ind₂_of_injective _ ι' hι' h
 
+/- English proof (translation)
+Take `⟨h1, h2⟩` from `(hasFiniteLength_iff_wellFounded A).1 hA`. Use `exists_covBy_of_split (fun (S T : Subrepresentation A) => IsSubquotient π (prod₂ (subQuot S T) B)) ?_ ?_ ⊤ ⊥ bot_le ?_` and prove the remaining obligations. Introduce `S hS haveI := subsingleton_subQuot_self S haveI := tensor_subsingleton_left (F := ℂ) (V := ↥S.toSubmodule ⧸ Submodule.comap S.toSubmodule.subtype S.toSubmodule) (W := W)`. Conclude with `not_isSubquotient_ind₂ _ _ hπ hS`. Introduce `S₀ M₀ T₀ hTM hMS hQ`.
+
+Conclude with `step_left π A B hπ hTM hMS hQ`. Conclude with `top_left π A B h`.
+-/
 theorem exists_covBy_left {r t : ℕ} {U V W : Type} [AddCommGroup U] [Module ℂ U] [AddCommGroup V] [Module ℂ V]
     [AddCommGroup W] [Module ℂ W] (π : Representation ℂ (GL (Fin (r + t)) k) U)
     (A : Representation ℂ (GL (Fin r) k) V) (B : Representation ℂ (GL (Fin t) k) W)
@@ -378,6 +495,11 @@ theorem exists_covBy_left {r t : ℕ} {U V W : Type} [AddCommGroup U] [Module �
     exact step_left π A B hπ hTM hMS hQ
   · exact top_left π A B h
 
+/- English proof (translation)
+Take `⟨h1, h2⟩` from `(hasFiniteLength_iff_wellFounded B).1 hB`. Use `exists_covBy_of_split (fun (S T : Subrepresentation B) => IsSubquotient π (prod₂ A (subQuot S T))) ?_ ?_ ⊤ ⊥ bot_le ?_` and prove the remaining obligations. Introduce `S hS haveI := subsingleton_subQuot_self S haveI := tensor_subsingleton_right (F := ℂ) (V := V) (W := ↥S.toSubmodule ⧸ Submodule.comap S.toSubmodule.subtype S.toSubmodule)`. Conclude with `not_isSubquotient_ind₂ _ _ hπ hS`. Introduce `S₀ M₀ T₀ hTM hMS hQ`.
+
+Conclude with `step_right π A B hπ hTM hMS hQ`. Conclude with `top_right π A B h`.
+-/
 theorem exists_covBy_right {r t : ℕ} {U V W : Type} [AddCommGroup U] [Module ℂ U] [AddCommGroup V] [Module ℂ V]
     [AddCommGroup W] [Module ℂ W] (π : Representation ℂ (GL (Fin (r + t)) k) U)
     (A : Representation ℂ (GL (Fin r) k) V) (B : Representation ℂ (GL (Fin t) k) W)
@@ -399,6 +521,9 @@ end Main
 end GlobalTheory.ParIndExact
 
 open GlobalTheory.ParIndExact in
+/- English proof (translation)
+Introduce `k _ _ _ _ r t U _ _ V _ _ W _ _ π A B hπ hsA hsB hA hB h`. Take `⟨S, T, hST, h1⟩` from `exists_covBy_left π A B hπ hA h`. Take `⟨S', T', hST', h2⟩` from `exists_covBy_right π (subQuot S T) B hπ hB h1`. Conclude with `⟨Irr.mk _ (subQuot S T) ((isSubquotient_subQuot S T).isSmooth hsA) (isIrreducible_subQuot hST), Irr.mk _ (subQuot S' T') ((isSubquotient_subQuot S' T').isSmooth hsB) (isIrreducible_subQuot hST'), isSubquotient_subQuot S T, isSubquotient_subQuot S' T', h2⟩`.
+-/
 theorem GlobalTheory.ParIndExact.exists_irr_isSubquotient_prod₂ :
     ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] (r t : ℕ) (U : Type) [AddCommGroup U] [Module ℂ U] (V : Type) [AddCommGroup V] [Module ℂ V] (W : Type) [AddCommGroup W] [Module ℂ W] (π : Representation ℂ (GL (Fin (r + t)) k) U) (A : Representation ℂ (GL (Fin r) k) V) (B : Representation ℂ (GL (Fin t) k) W), π.IsIrreducible → IsSmooth A → IsSmooth B → HasFiniteLength A → HasFiniteLength B → IsSubquotient π (prod₂ A B) → ∃ (σ₁ : Irr k r) (σ₂ : Irr k t), IsSubquotient σ₁.π A ∧ IsSubquotient σ₂.π B ∧ IsSubquotient π (prod₂ σ₁.π σ₂.π) := by
   intro k _ _ _ _ r t U _ _ V _ _ W _ _ π A B hπ hsA hsB hA hB h

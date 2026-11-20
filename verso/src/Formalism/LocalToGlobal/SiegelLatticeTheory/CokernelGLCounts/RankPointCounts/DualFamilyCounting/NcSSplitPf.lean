@@ -12,16 +12,25 @@ namespace Formalism.L2.SG.Pf.NcS.SplitPf
 
 open Formalism.L2.SG.Pf.NcS
 
+/- English proof (translation)
+Establish `hLoc : FinVolSk.LocSB` using `LocSBPf.locSB_of hW hI`. Conclude with `FinVolSk.omFinVol_of KfOrbPf.finite_orbit_holds hLoc BoxVolPf.box_volume_holds`.
+-/
 theorem omega_finite_volume_of_witt (hW : LocSBPf.WittLocT) (hI : LocSBPf.IntWittAE) : SplitSk.OmFinVol := by
 
   have hLoc : FinVolSk.LocSB := LocSBPf.locSB_of hW hI
   exact FinVolSk.omFinVol_of KfOrbPf.finite_orbit_holds hLoc BoxVolPf.box_volume_holds
 
+/- English proof (translation)
+Apply `SplitSk.splitOm_of AdTupPf.admissible_tuple_holds OmDecompPf.omega_decomposition_holds` to reduce the goal to its premises. Conclude with `omega_finite_volume_of_witt hW hI`.
+-/
 theorem omega_splitting_of_witt (hW : LocSBPf.WittLocT) (hI : LocSBPf.IntWittAE) : Formalism.L2.SG.Pf.NcSplitS.SplitOm := by
 
   apply SplitSk.splitOm_of AdTupPf.admissible_tuple_holds OmDecompPf.omega_decomposition_holds
   exact omega_finite_volume_of_witt hW hI
 
+/- English proof (translation)
+Conclude with `omega_splitting_of_witt WittLocPf.local_witt_theorem hI`.
+-/
 theorem splitOm_of_intWitt (hI : LocSBPf.IntWittAE) : Formalism.L2.SG.Pf.NcSplitS.SplitOm := by
 
   exact omega_splitting_of_witt WittLocPf.local_witt_theorem hI

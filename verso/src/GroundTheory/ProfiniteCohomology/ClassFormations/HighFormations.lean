@@ -11,6 +11,9 @@ section Local
 variable (K Ksep : Type) [Field K] [ValuativeRel K] [TopologicalSpace K] [IsNonarchimedeanLocalField K]
   [Field Ksep] [Algebra K Ksep] [IsSepClosure K Ksep]
 
+/- English proof (translation)
+The claim follows from `(localClassFormationOfIsSepClosure K Ksep).subsingleton_cohomology_top_of_three_le hr`.
+-/
 theorem subsingleton_cohomology_galUnits_of_three_le {r : ℕ} (hr : 3 ≤ r) :
     Subsingleton (cohomology (galUnits.{0} K Ksep) r) :=
   (localClassFormationOfIsSepClosure K Ksep).subsingleton_cohomology_top_of_three_le hr
@@ -21,6 +24,9 @@ section Global
 
 open GroundTheory.Global
 
+/- English proof (translation)
+The claim follows from `(globalClassFormation K).subsingleton_cohomology_top_of_three_le_int hr`.
+-/
 theorem subsingleton_cohomology_classLimitRep_of_three_le (K : FiniteSubfield) {r : ℕ}
     (hr : 3 ≤ r) : Subsingleton (cohomology (classLimitRep K) r) :=
   (globalClassFormation K).subsingleton_cohomology_top_of_three_le_int hr

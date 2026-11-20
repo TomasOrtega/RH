@@ -10,6 +10,9 @@ open GlobalTheory.WeilM GlobalTheory.AdelicU GlobalTheory.LFun GlobalTheory.Inde
 attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField
 
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.FullRankPair.pair_normal_form | exact GlobalTheory.FullRankPair.pair_normal_form | (intros; apply GlobalTheory.FullRankPair.pair_normal_form <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.full_rank_normal_form_valuation : ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] (n d : ℕ) (Y₁ Y₂ : Matrix (Fin n) (Fin d) k), Y₁.rank = n → Y₂.rank = n →
     (∀ a : GL (Fin n) k, Y₁ ≠ a.1 * Y₂) →
     ∃ (i₀ : Fin n) (j₀ : Fin d) (g : GL (Fin n) k) (h : GL (Fin d) k),

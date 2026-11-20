@@ -33,10 +33,16 @@ def diag (L : Type) [Field L] [Algebra L F] : (J → Fˣ) →* GG L F J where
   map_one' := by ext; simp
   map_mul' a b := by ext; simp [mul_smul]
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem diag_apply (u : J → Fˣ) (x : J → F) (j : J) : diag L u x j = (u j : F) * x j := rfl
 
 def toF (ζ : (𝓞 F)ˣ) : Fˣ := Units.map (algebraMap (𝓞 F) F : 𝓞 F →* F) ζ
 
+/- English proof (translation)
+Rewrite using `[toF, ← map_pow, h, map_one]`.
+-/
 theorem toF_pow {ζ : (𝓞 F)ˣ} {q : ℕ} (h : ζ ^ q = 1) : toF ζ ^ q = 1 := by rw [toF, ← map_pow, h, map_one]
 
 def repC (L : Type) [Field L] [Algebra L F] (q : ℕ) [NeZero q] (ζ : (𝓞 F)ˣ) (h : ζ ^ q = 1) (χ : J → ZMod q) :

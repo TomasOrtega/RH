@@ -12,6 +12,13 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.S
 open GlobalTheory GlobalTheory.VB GlobalTheory.TangentOrigin GlobalTheory.Toroidal GlobalTheory.ShFam GlobalTheory.ShFam.Pad GlobalTheory.TrueGeo GlobalTheory.ProjVar GlobalTheory.LineNorm GlobalTheory.BcLie GlobalTheory.CovTest GlobalTheory.Mean4O GlobalTheory.Cartier GlobalTheory.TrueCx
 open scoped ComplexOrder
 
+/- English proof (translation)
+Take `⟨s, hs⟩` from `GlobalTheory.LineNorm.Chart.exists_minor_ne_zero _ h le_rfl`. Rewrite `hs` using `[← GlobalTheory.LineNorm.Chart.map_minor, IsLocalRing.residue_ne_zero_iff_isUnit]`. Set `A : Matrix (Fin g) (Fin m) R` to `Matrix.of fun k l => a l k`. Establish `hu : IsUnit (A.submatrix s id).det`. Rewrite using `[← Matrix.det_transpose]`.
+
+Conclude with `hs`. Use `⟨(A.submatrix s id)⁻¹ * (1 : Matrix (Fin g) (Fin g) R).submatrix s id, ?_⟩` and prove the remaining obligations. Establish `e1 : (1 : Matrix (Fin g) (Fin g) R).submatrix s id * A = A.submatrix s id` using `by conv_rhs => rw [← Matrix.one_mul A]`. Both sides reduce to the same expression. Rewrite using `[Matrix.mul_assoc]`.
+
+Conclude with `(congrArg _ e1).trans (Matrix.nonsing_inv_mul _ hu)`.
+-/
 private theorem exists_leftInv {R : Type} [CommRing R] [IsLocalRing R] {m g : ℕ} (a : Fin m → Fin g → R)
     (h : LinearIndependent (IsLocalRing.ResidueField R) fun l i => IsLocalRing.residue R (a l i)) :
     ∃ a' : Matrix (Fin m) (Fin g) R, a' * (Matrix.of fun k l => a l k) = 1 := by
@@ -27,6 +34,9 @@ private theorem exists_leftInv {R : Type} [CommRing R] [IsLocalRing R] {m g : �
   rw [Matrix.mul_assoc]
   exact (congrArg _ e1).trans (Matrix.nonsing_inv_mul _ hu)
 
+/- English proof (translation)
+The claim follows from `(Category.assoc _ _ _).symm.trans (congrArg (· ≫ r) (eq_spec_fromSpec hV x h).symm)`.
+-/
 private theorem ev_from {R : Type} [CommRing R] {M X : Scheme.{0}} {V : M.Opens} (hV : IsAffineOpen V)
     (x : Sp R ⟶ M) (h : ⊤ ≤ x ⁻¹ᵁ V) (r : M ⟶ X) : spMap (evalPt x V h) ≫ hV.fromSpec ≫ r = x ≫ r :=
   (Category.assoc _ _ _).symm.trans (congrArg (· ≫ r) (eq_spec_fromSpec hV x h).symm)
@@ -37,6 +47,9 @@ attribute [local instance] Over.cartesianMonoidalCategory
 
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E}
 
+/- English proof (translation)
+Use `⟨fun i => GlobalTheory.LieMet.isTan_map _ rfl (h.1 i), fun T _ φ w hw => ?_⟩` and prove the remaining obligations. Rewrite `hw`, the goal using `[← Category.assoc, spMap_comp']`. Simplify using `only [GlobalTheory.LineNorm.Chart.dual_comp]`. Conclude with `h.2 T _ w hw`.
+-/
 private theorem isTanBasis_map {X : Scheme.{0}} {t : SAB H X} {R S : Type} [CommRing R] [CommRing S] {x : Sp R ⟶ X}
     {g : ℕ} {b : Fin g → (Sp (DualNumber R) ⟶ t.G.left)} (h : IsTanBasis t x b) (β : R →+* S) :
     IsTanBasis t (spMap β ≫ x) fun i => spMap (dualMap β) ≫ b i := by
@@ -50,6 +63,15 @@ variable {Dw : Datum H} {l : Level H} {Xo : Moduli Dw l} {c : Coeff l} {O : Type
   {ρ : Y.X ⟶ gen Z}
 
 omit [NumberField F] in
+/- English proof (translation)
+Set `γ : Γ(M, V) →+* Γ(X, U)` to `(p.appLE V U hUV).hom`. Set `δ : Γ(N, W) →+* Γ(X, U)` to `(q.appLE W U hUW).hom`. Establish `hγ : spMap γ ≫ hV.fromSpec = hU.fromSpec ≫ p` using `IsAffineOpen.SpecMap_appLE_fromSpec p hV hU hUV`. Establish `h1 : (evalPt _ U hξ).comp γ = evalPt _ V hξV` using `RingHom.ext fun s => evalPt_appLE (genericPt Y ≫ j) p hUV hξ hξV s`. Establish `h2 : ∀ s, evalPt _ U hξ (δ s) = evalPt _ W hξW s` using `fun s => evalPt_appLE (genericPt Y ≫ j) q hUW hξ hξW s`.
+
+Establish `hx : spMap (evalPt _ V hξV) ≫ hV.fromSpec ≫ ρ' = genericPt Y ≫ ρ ≫ genι Z`. Rewrite using `[ev_from, Category.assoc, hρ]`. Use `⟨hU, hξ, g, fun i => spMap (dualMap γ) ≫ b i, S.map δ, S'.map δ, ?_, ?_, isUnit_nonsing_inv_det T hT, fun i => ⟨_, (GlobalTheory.LineNorm.Chart.comb_iff (g₀.tan τ) _ _).2 rfl, ?_⟩⟩` and prove the remaining obligations. Use `isTanBasis_map hb γ` as an intermediate fact. Rewrite `this` using `[← Category.assoc, hγ, Category.assoc]`. Then use the resulting hypothesis.
+
+Rewrite using `[← Matrix.map_mul, hS, Matrix.map_one _ (map_zero _) (map_one _)]`. Use `GlobalTheory.LineNorm.Chart.comb_comb (fun k => GlobalTheory.LieMet.isTan_map _ hx (hb.1 k)) hA ((GlobalTheory.LineNorm.Chart.comb_iff (g₀.tan τ) (fun a => T⁻¹ a i) _).2 rfl)` as an intermediate fact. Simplify using `only [GlobalTheory.LineNorm.Chart.dual_comp, h1, Matrix.map_apply, h2]`. Use `this using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `k`.
+
+Establish `h3 : A₀ * T⁻¹ = S.map (evalPt _ W hξW)` using `by rw [hAS, Matrix.mul_assoc, mul_nonsing_inv _ hT, Matrix.mul_one]`. Establish `h4` using `congrFun (congrFun h3 k) i`. Rewrite `h4` using `[Matrix.map_apply, mul_apply]`. Rewrite using `[← h4]`. Simplify using `only [Finset.sum_apply, Pi.smul_apply, smul_eq_mul, mul_comm]`.
+-/
 private theorem pull_split (g₀ : GenFrame e ρ) (τ : E →+* ℂ) {X M N : Scheme.{0}} (j : Y.X ⟶ X) (p : X ⟶ M)
     (q : X ⟶ N) (ρ' : M ⟶ Z.X) (hρ : (j ≫ p) ≫ ρ' = ρ ≫ genι Z) {V : M.Opens} (hV : IsAffineOpen V) {W : N.Opens}
     {U : X.Opens} (hU : IsAffineOpen U) (hUV : U ≤ p ⁻¹ᵁ V) (hUW : U ≤ q ⁻¹ᵁ W)
@@ -88,6 +110,21 @@ private theorem pull_split (g₀ : GenFrame e ρ) (τ : E →+* ℂ) {X M N : Sc
 
 omit [NumberField F] in
 open MonoidalCategory CartesianMonoidalCategory MonObj ReciprocityTheory.ChartRestriction.G.PullbackSections GlobalTheory.LieMet in
+/- English proof (translation)
+Establish `hx : spMap (evalPt _ V hξV) ≫ hV.fromSpec ≫ ρ' = genericPt Y ≫ ρ ≫ genι Z`. Rewrite using `[ev_from, Category.assoc, hρ]`. Establish `hA` using `fun i => (hb.2 _ (evalPt _ V hξV) (g₀.v τ i) (by rw [hx]; exact g₀.tan τ i)).exists`. Use `choose A hA using hA`. Use `⟨Matrix.of fun k i => A i k, fun i => by have := hA i; rwa [hx] at this, fun y hy φ f P hf => ?_⟩` and prove the remaining obligations.
+
+Establish `hs` using `stalk_le j hy`. Set `α : Γ(M, V) →+* Y.X.presheaf.stalk y` to `evalPt _ V hs`. Establish `hα : spMap α ≫ hV.fromSpec ≫ ρ' = stalkPt Y y ≫ ρ ≫ genι Z`. Rewrite using `[ev_from, Category.assoc, hρ]`. Establish `hαι : (toFn y).comp α = evalPt _ V hξV` using `GlobalTheory.LineNorm.Chart.ringHom_ext hV (by`.
+
+Use `Eq.trans ?_ (eq_spec_fromSpec hV _ hξV)` and prove the remaining obligations. Rewrite using `[← spMap_comp', Category.assoc, ← spMap_toFn y, Category.assoc]`. Conclude with `congrArg _ (eq_spec_fromSpec hV _ hs).symm)`. Establish `ha` using `fun i => (hb.2 _ α (f.v τ i) (by rw [hα]; exact f.tan τ i)).exists`. Use `choose a ha using ha`.
+
+Take `⟨f', hf'⟩` from `f.exists_isMap (IsLocalRing.residue _) rfl rfl`. Establish `hli` using `GlobalTheory.LineNorm.Chart.coord_linInd hb α (IsLocalRing.residue _) ha (by`. Rewrite using `[hα, ← funext (hf' τ)]`. Introduce `cf cf' w h h'`. Establish `h1` using `(GlobalTheory.LineNorm.Chart.comb_iff (f'.tan τ) _ _).1 h`.
+
+Establish `h2` using `(GlobalTheory.LineNorm.Chart.comb_iff (f'.tan τ) _ _).1 h'`. Conclude with `funext ((Fintype.linearIndependent_iffₛ.1 (f'.linearIndependent_vec τ)) _ _ (GlobalTheory.LieMet.tan_ext (h1.symm.trans h2))))`. Take `⟨a', ha'⟩` from `exists_leftInv a hli`. Use `⟨_, a', ha', ?_⟩` and prove the remaining obligations. Use extensionality with `k i`.
+
+Establish `h1` using `GlobalTheory.LineNorm.Chart.coord_map α (toFn y) (ha i)`. Rewrite `h1` using `[hαι]`. Establish `he` using `fun k => GlobalTheory.LieMet.isTan_map (evalPt _ V hξV) rfl (hb.1 k)`. Establish `h2` using `GlobalTheory.LineNorm.Chart.comb_comb he hA (by rw [hx]; exact hf.2 i)`. Establish `h3` using `congrFun ((hb.2 _ _ _ (GlobalTheory.LineNorm.Chart.comb_tan he h1)).unique h1 h2) k`.
+
+Rewrite using `[Matrix.map_apply, Matrix.of_apply, h3, mul_apply]`. Simplify using `only [Finset.sum_apply, Pi.smul_apply, smul_eq_mul, mul_comm, Matrix.of_apply]`.
+-/
 private theorem local_coord (g₀ : GenFrame e ρ) (τ : E →+* ℂ) {M : Scheme.{0}} (j : Y.X ⟶ M)
     (ρ' : M ⟶ Z.X) (hρ : j ≫ ρ' = ρ ≫ genι Z) {V : M.Opens} (hV : IsAffineOpen V)
     (hξV : ⊤ ≤ (genericPt Y ≫ j) ⁻¹ᵁ V) {g : ℕ} {b : Fin g → (Sp (DualNumber Γ(M, V)) ⟶ Z.t.G.left)}
@@ -134,6 +171,23 @@ private theorem local_coord (g₀ : GenFrame e ρ) (τ : E →+* ℂ) {M : Schem
 
 end SlopeTestRemainingChoices
 
+/- English proof (translation)
+Introduce `E _ _ _ H Dw l Xo c Z F _ _ e Y ρ hρ g₀`. Take `⟨-, -, M, ρ', -, hM⟩` from `GlobalTheory.T.exists_normal_model_over_projective F Y (𝓞 c.F) (RingOfIntegers.mapRingEquiv e) Z.X Z.s (ρ ≫ genι Z) Z.proj (by`. Rewrite using `[← hρ]`. Simplify using `only [Category.assoc]`. Rewrite using `[Limits.pullback.condition_assoc, ← Spec.map_comp, ← Spec.map_comp]`.
+
+Use the proof step `rfl)`. Establish `hgen : ∀ (N : GlobalTheory.TrueGeo.Model Y) (U : N.X.Opens) (z : N.X), z ∈ U → ⊤ ≤ (genericPt Y ≫ N.j) ⁻¹ᵁ U` using `fun N U z hz => by`. Use `N.ar.isIntegral` as an intermediate fact. Conclude with `gen_le N.j ((SmallSec.j_gen_specializes N).mem_open U.isOpen (gen_mem hz))`. Establish `key : ∀ (τ : E →+* ℂ) (z : M.X), ∃ (N : GlobalTheory.TrueGeo.Model Y) (π : N.X ⟶ M.X) (V' : M.X.Opens), N.j ≫ π = M.j ∧ z ∈ V' ∧ ∀ (P : GlobalTheory.TrueGeo.Model Y) (q : P.X ⟶ N.X), P.j ≫ q = N.j → ∀ x : P.X, (q ≫ π) x ∈ V' → ∃ V T, x ∈ V ∧ SplitOn g₀ τ P.j ((q ≫ π) ≫ ρ') V T`.
+
+Introduce `τ z`. Take `⟨⟨V, hV⟩, g, b, hz, hb⟩` from `GlobalTheory.T.exists_affine_tangent_basis_locally E H Z.X Z.t M.X ρ' z`. Use `replace hV : IsAffineOpen V := hV`. Take `⟨Δ, t, ht, hfit⟩` from `UpperTheory.exists_divisor_frame_generic E H Dw l Xo c _ _ Z F e Y ρ hρ g₀ τ`. Take `⟨A₀, hA, hloc⟩` from `local_coord g₀ τ M.j ρ' hM hV (hgen M V z hz) hb`.
+
+Take `⟨N, π, V', h1, h2, h3, h4⟩` from `UpperTheory.stalk_matrix_left_inverse F Y M Δ t ht V z hz g _ A₀ fun y hy => by`. Take `⟨φ, f, P, hf, hP⟩` from `hfit y`. Take `⟨a, a', ha, haP⟩` from `hloc y hy φ f P hf`. Use `⟨a, a', P⁻¹, ha, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[← haP, Matrix.mul_assoc, mul_nonsing_inv _ hf.isUnit_det, Matrix.mul_one]`.
+
+Rewrite using `[Matrix.det_nonsing_inv, Ring.inverse_eq_inv']`. Conclude with `(eq_inv_of_mul_eq_one_left hP).symm`. Use `⟨N, π, V', h1, h2, fun P q hq x hx => ?_⟩` and prove the remaining obligations. Take `⟨W, hW, S, S', T, hxW, hS, hT, hAS⟩` from `h4 (q x) hx`. Take `⟨_, ⟨U, hU, rfl⟩, hxU, hle⟩` from `P.X.isBasis_affineOpens.exists_subset_of_mem_open (show x ∈ ((q ≫ π) ⁻¹ᵁ V ⊓ q ⁻¹ᵁ W : P.X.Opens) from ⟨h3 hx, hxW⟩) ((q ≫ π) ⁻¹ᵁ V ⊓ q ⁻¹ᵁ W : P.X.Opens).isOpen`.
+
+Establish `e1 : P.j ≫ q ≫ π = M.j` using `by rw [← Category.assoc, hq, h1]`. Use `⟨U, T⁻¹, hxU, pull_split g₀ τ P.j (q ≫ π) q ρ' (by rw [e1, hM]) hV hU (fun a ha => (hle ha).1) (fun a ha => (hle ha).2) (hgen P U x hxU) (by rw [e1]; exact hgen M V z hz) (by rw [hq]; exact hW) hb A₀ ?_ S S' T hS hT ?_⟩` and prove the remaining obligations. Simplify `hA` using `only [e1]`. Simplify `hAS` using `only [hq]`. Use `choose N π V' h1 h2 h3 using key`.
+
+Establish `: IsProper M.p` using `CommonModel.isProper_of_isProjOver M.ar.isProjOver`. Establish `: CompactSpace M.X` using `QuasiCompact.compactSpace_of_compactSpace M.p`. Use `choose S hS using fun τ => CompactSpace.elim_nhds_subcover (fun z => (V' τ z : Set M.X)) fun z => (V' τ z).isOpen.mem_nhds (h2 τ z)`. Take `⟨P, σ, hP, hσ, hdom⟩` from `GlobalTheory.LineNorm.Glue.exists_normal_dominating_finset M (fun a : (_ : E →+* ℂ) × M.X => N a.1 a.2) (Finset.univ.sigma S)`. Use `⟨P, σ ≫ ρ', hP, by rw [← Category.assoc, hσ, hM], fun τ x => ?_⟩` and prove the remaining obligations.
+
+Take `⟨a, ha, hxa⟩` from `Set.mem_iUnion₂.1 ((hS τ).ge (Set.mem_univ (σ x)))`. Take `⟨q, hq⟩` from `hdom ⟨τ, a⟩ (Finset.mem_sigma.2 ⟨Finset.mem_univ _, ha⟩)`. Take `rfl : σ = q ≫ π τ a` from `GlobalTheory.LineNorm.Glue.hom_unique hσ (by rw [← Category.assoc, hq, h1])`. Conclude with `h3 τ a P q hq x hxa`.
+-/
 theorem UpperTheory.exists_true_model_over :
     ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l) (Z : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Model Xo c (algebraMap (𝓞 c.F) c.F)) (F : Type) [Field F] [NumberField F] (e : F ≃+* c.F) (Y : Var F) (ρ : Y.X ⟶ gen Z) (_ : ρ ≫ genStr Z ≫ spMap e.toRingHom = Y.str) (g₀ : GenFrame e ρ), ∃ (N : GlobalTheory.TrueGeo.Model Y) (ρ' : N.X ⟶ Z.X), ReciprocityTheory.ChartRestriction.G.Geo.Tor.IsNormalScheme N.X ∧ N.j ≫ ρ' = ρ ≫ genι Z ∧ ∀ (τ : E →+* ℂ) (z : N.X), ∃ V P, z ∈ V ∧ SplitOn g₀ τ N.j ρ' V P := by
   intro E _ _ _ H Dw l Xo c Z F _ _ e Y ρ hρ g₀

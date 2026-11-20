@@ -36,6 +36,9 @@ def PairLiftAt (C0 CYb Cde Ck CD Cb CE1 CE2 Cm Ct Cc : ℝ) : Prop :=
             ∃ ν : O, beHH (m := X.m) X.p X.TT X.aT X.bT (F β u) (G β' u') =
               algebraMap O Kf ((if β = β' then κ β * ∏ j, a j else 0) + w ^ X.c * ν)
 
+/- English proof (translation)
+Establish `ha' : IsDiscreteValuationRing.addVal O a ≠ ⊤`. Rewrite using `[Ne, IsDiscreteValuationRing.addVal_eq_top_iff]` and apply the resulting hypothesis. Establish `hb' : IsDiscreteValuationRing.addVal O b ≠ ⊤`. Rewrite using `[Ne, IsDiscreteValuationRing.addVal_eq_top_iff]` and apply the resulting hypothesis. Rewrite using `[AddValuation.map_mul, ENat.toNat_add ha' hb']`.
+-/
 private theorem addVal_toNat_mul_of_ne_zero {O : Type*} [CommRing O] [IsDomain O] [IsDiscreteValuationRing O]
     {a b : O} (ha : a ≠ 0) (hb : b ≠ 0) :
     (IsDiscreteValuationRing.addVal O (a * b)).toNat =
@@ -46,6 +49,13 @@ private theorem addVal_toNat_mul_of_ne_zero {O : Type*} [CommRing O] [IsDomain O
     rwa [Ne, IsDiscreteValuationRing.addVal_eq_top_iff]
   rw [AddValuation.map_mul, ENat.toNat_add ha' hb']
 
+/- English proof (translation)
+Establish `hz' : algebraMap O (KK O) z ≠ 0`. Introduce `h`. Conclude with `hz ((IsFractionRing.to_map_eq_zero_iff).mp h)`. Establish `hspec` using `Classical.choose_spec (IsLocalization.surj (nonZeroDivisors O) (algebraMap O (KK O) z))`. Simplify using `only [vO, vK, ordW, if_neg hz']`.
+
+Generalize the expression as in `Classical.choose (IsLocalization.surj (nonZeroDivisors O) (algebraMap O (KK O) z)) = ab at hspec ⊢`. Rewrite `hspec` using `[← map_mul]`. Establish `hmul : z * (ab.2 : O) = ab.1` using `IsFractionRing.injective O (KK O) hspec`. Establish `hb : (ab.2 : O) ≠ 0` using `nonZeroDivisors.coe_ne_zero ab.2`. Rewrite using `[← hmul, addVal_toNat_mul_of_ne_zero hz hb]`.
+
+Simplify using `only [WithTop.map_coe]`. Use `congr 1`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+-/
 private theorem vO_eq_addVal_div_ramE_of_ne_zero' {O : Type*} [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] (p : ℕ) {z : O}
     (hz : z ≠ 0) :
     vO p z = ((((IsDiscreteValuationRing.addVal O z).toNat : ℚ) / (ramE p O : ℚ) : ℚ) : WithTop ℚ) := by
@@ -64,6 +74,13 @@ private theorem vO_eq_addVal_div_ramE_of_ne_zero' {O : Type*} [CommRing O] [IsDo
   push_cast
   ring
 
+/- English proof (translation)
+Take `⟨q, hq, hqD⟩` from `h`. Take `⟨q', hq', hqE⟩` from `h'`. Rewrite `hq` using `[vO_eq_addVal_div_ramE_of_ne_zero' p hx]`. Rewrite `hq'` using `[vO_eq_addVal_div_ramE_of_ne_zero' p hy]`. Establish `e1` using `WithTop.coe_eq_coe.mp hq`.
+
+Establish `e2` using `WithTop.coe_eq_coe.mp hq'`. Use `⟨q + q', ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[vO_eq_addVal_div_ramE_of_ne_zero' p (mul_ne_zero hx hy), addVal_toNat_mul_of_ne_zero hx hy, ← e1, ← e2]`. Use `congr 1`. Use `push_cast`.
+
+Expand and normalize the polynomial expressions, which then agree. Use `push_cast`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem vLEO_mul {O : Type} [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] {p : ℕ} {w : O} (hw : Irreducible w)
     (h2 : w ^ 2 = (p : O)) {x y : O} (hx : x ≠ 0) (hy : y ≠ 0) {D E : ℝ} (h : vLEO p x D) (h' : vLEO p y E) :
     vLEO p (x * y) (D + E) := by
@@ -81,6 +98,13 @@ theorem vLEO_mul {O : Type} [CommRing O] [IsDomain O] [IsDiscreteValuationRing O
   · push_cast
     linarith
 
+/- English proof (translation)
+Use `revert h`. Use `Finset.induction_on s ?_ ?_` and prove the remaining obligations. Introduce `_`. Rewrite using `[Finset.prod_empty, Finset.sum_empty]`. Use `⟨one_ne_zero, 0, ?_, by simp⟩` and prove the remaining obligations.
+
+Rewrite using `[vO_eq_addVal_div_ramE_of_ne_zero' p one_ne_zero]`. Simplify using the standard rewrite rules. Introduce `a s ha ih hh`. Establish `hs : ∀ i ∈ s, z i ≠ 0 ∧ vLEO p (z i) (D i)` using `fun i hi => hh i (Finset.mem_insert_of_mem hi)`. Take `⟨h1, h1'⟩` from `ih hs`.
+
+Take `⟨ha0, ha1⟩` from `hh a (Finset.mem_insert_self a s)`. Rewrite using `[Finset.prod_insert ha, Finset.sum_insert ha]`. Conclude with `⟨mul_ne_zero ha0 h1, vLEO_mul hw h2 ha0 h1 ha1 h1'⟩`.
+-/
 theorem vLEO_prod {O : Type} [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] {p : ℕ} {w : O} (hw : Irreducible w)
     (h2 : w ^ 2 = (p : O)) {ι : Type} (s : Finset ι) (z : ι → O) (D : ι → ℝ)
     (h : ∀ i ∈ s, z i ≠ 0 ∧ vLEO p (z i) (D i)) : (∏ i ∈ s, z i) ≠ 0 ∧ vLEO p (∏ i ∈ s, z i) (∑ i ∈ s, D i) := by
@@ -99,6 +123,25 @@ theorem vLEO_prod {O : Type} [CommRing O] [IsDomain O] [IsDiscreteValuationRing 
     rw [Finset.prod_insert ha, Finset.sum_insert ha]
     exact ⟨mul_ne_zero ha0 h1, vLEO_mul hw h2 ha0 h1 ha1 h1'⟩
 
+/- English proof (translation)
+Introduce `X _ W Qq O Kf _ _ _ _ _ _ _ _ _ _ ι σ jO w hS hH hc Dj g hD hBD hcD e he`. Establish `hD1 : D1num X` using `⟨hS.1.prime, hS.1.five_le, hS.1.two_le, hS.1.even⟩`. Establish `hs` using `hstd X hD1 hH hc`. Establish `hw : Irreducible w` using `hS.2.1`. Establish `h2 : w ^ 2 = (X.p : O)` using `hS.1.w_sq`.
+
+Establish `hkap : 0 ≤ X.kap0`. Establish `hk : 0 ≤ X.k` using `by unfold Loc.k; positivity`. Establish `hN : 0 ≤ X.N` using `by unfold Loc.N; positivity`. Establish `hp : (1 : ℝ) < (X.p : ℝ)` using `by have := hs.p5; exact_mod_cast (by omega : 1 < X.p)`. Establish `hl : 0 ≤ Real.logb X.p X.a`.
+
+Unfold `Real.logb`. Conclude with `div_nonneg (le_trans zero_le_one hs.loga) (Real.log_nonneg hp.le)`. Unfold `Loc.kap0 kap0G4`. Check the signs of the components of the expression. Establish `hc1 : 1 ≤ X.c`.
+
+Establish `hsum : 0 ≤ ∑ j, Dj j` using `Finset.sum_nonneg fun j _ => hD j`. Establish `: (0 : ℝ) < (X.c : ℝ)` using `by linarith`. Conclude with `this` after adjusting the coercions. Take `⟨κ, F, G, hκ, hmem, hpair⟩` from `h X W Qq O Kf ι σ jO w hS hH hc hc1 e he`. Use `choose x y β z hxy hsupp hz hform using hBD`.
+
+Establish `hfx : ∀ I : (∀ j, Fin (g j)), FamOK O C0 CE1 CE2 Cm X (fun j => β j (I j)) (fun j => x j (I j))` using `fun I j => ⟨(hxy j (I j)).1, fun b hb => (hsupp j (I j) b hb).1⟩`. Establish `hfy : ∀ I : (∀ j, Fin (g j)), FamOK O C0 CE1 CE2 Cm X (fun j => β j (I j)) (fun j => y j (I j))` using `fun I j => ⟨(hxy j (I j)).2, fun b hb => (hsupp j (I j) b hb).2⟩`. Use `⟨fun I => F (fun j => β j (I j)) (fun j => x j (I j)), fun I => G (fun j => β j (I j)) (fun j => y j (I j)), fun I => κ (fun j => β j (I j)) * ∏ j, z j (I j), fun I => (hmem _ _ (hfx I)).1, fun I => (hmem _ _ (hfy I)).2, ?_, ?_⟩` and prove the remaining obligations. Introduce `I`. Establish `hp` using `vLEO_prod hw h2 Finset.univ (fun j => z j (I j)) Dj fun j _ => hz j (I j)`.
+
+Use `⟨mul_ne_zero (hκ _).1 hp.1, ?_⟩` and prove the remaining obligations. Use `vLEO_mul hw h2 (hκ _).1 hp.1 (hκ (fun j => β j (I j))).2 hp.2` as an intermediate fact. Rewrite `this` using `[add_comm]`. Then use the resulting hypothesis. Introduce `I J`. Take `⟨ν, hν⟩` from `hpair _ _ _ _ (hfx I) (hfy J) (fun j => if I j = J j then z j (I j) else 0) (fun j => by`.
+
+Rewrite using `[hform j (I j) (J j)]`. Apply the tactic sequence `split_ifs <;> simp)`. Use `⟨ν, ?_⟩` and prove the remaining obligations. Rewrite using `[hν]`. Use `congr 2`.
+
+Distinguish the cases in `hIJ : I = J`. Substitute `hIJ` using the available equality. Simplify using the standard rewrite rules. Rewrite using `[if_neg hIJ]`. Take `⟨j0, hj0⟩` from `Function.ne_iff.mp hIJ`.
+
+Establish `h0 : (∏ j, if I j = J j then z j (I j) else 0) = 0` using `Finset.prod_eq_zero (Finset.mem_univ j0) (if_neg hj0)`. Rewrite using `[h0, mul_zero]`. Simplify using the standard rewrite rules.
+-/
 theorem liftVecAt_of {C0 CYb Cde Ck CD Cb CE1 CE2 Cm Ct Cc H : ℝ}
     (hstd : ∀ X : Loc, D1num X → HIext C0 CYb Cde Ck CD Cb X → CBound Cc X → Std C0 Cde CE1 CE2 H X)
     (h : PairLiftAt C0 CYb Cde Ck CD Cb CE1 CE2 Cm Ct Cc) : LiftVecAt C0 CYb Cde Ck CD Cb CE1 CE2 Cm Ct Cc := by
@@ -155,6 +198,11 @@ def RestPairLift : Prop :=
   TransportedAlt fun C0 CYb Cde Ck CD Cb CE1 CE2 Cm Cc => ∃ Ct0 : ℝ, 0 < Ct0 ∧ ∀ Ct : ℝ, Ct0 ≤ Ct →
     PairLiftAt C0 CYb Cde Ck CD Cb CE1 CE2 Cm Ct Cc
 
+/- English proof (translation)
+Unfold `RestPairLift at h`. Unfold `RestLiftVec`. Use `TransportedAlt.mono ?_ (TransportedAlt.and thr_std h)` and prove the remaining obligations. Introduce `C0 CYb Cde Ck CD Cb CE1 CE2 Cm Cc hh`. Take `⟨⟨_, hstd⟩, Ct0, hCt0, hall⟩` from `hh`.
+
+Conclude with `⟨Ct0, hCt0, fun Ct hCt => liftVecAt_of hstd (hall Ct hCt)⟩`.
+-/
 theorem restLiftVec_of (h : RestPairLift) : RestLiftVec := by
   unfold RestPairLift at h
   unfold RestLiftVec

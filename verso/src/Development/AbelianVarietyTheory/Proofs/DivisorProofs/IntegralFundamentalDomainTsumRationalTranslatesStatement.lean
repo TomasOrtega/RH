@@ -25,6 +25,9 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 open MeasureTheory
 
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.ThetaUnfoldInt.integral_fundamentalDomain_tsum | exact GlobalTheory.ThetaUnfoldInt.integral_fundamentalDomain_tsum | (intros; apply GlobalTheory.ThetaUnfoldInt.integral_fundamentalDomain_tsum <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.integral_fundamentalDomain_tsum_rationalTranslates : ∀ (F : Type) [Field F] [NumberField F] (κ : Type) [Fintype κ],
     letI : MeasurableSpace (κ → AF F) := borel _
     ∀ (μ : MeasureTheory.Measure (κ → AF F)), μ.IsAddHaarMeasure →

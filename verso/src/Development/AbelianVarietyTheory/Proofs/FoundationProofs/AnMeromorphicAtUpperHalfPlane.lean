@@ -5,16 +5,40 @@ open Filter Topology
 
 namespace GlobalTheory.KZ
 
+/- English proof (translation)
+The claim follows from `isOpen_lt continuous_const Complex.continuous_im`.
+-/
 theorem hs_isOpen : IsOpen Hs := isOpen_lt continuous_const Complex.continuous_im
 
+/- English proof (translation)
+The claim follows from `(convex_halfSpace_im_gt (r := 0)).isPreconnected`.
+-/
 theorem hs_isPreconnected : IsPreconnected Hs :=
   (convex_halfSpace_im_gt (r := 0)).isPreconnected
 
+/- English proof (translation)
+Establish `hE` using `ha.eqOn_zero_of_preconnected_of_eventuallyEq_zero hs_isPreconnected hτ h`. Conclude with `Filter.Germ.coe_eq.2 (Filter.mem_of_superset (Filter.self_mem_codiscreteWithin Hs) fun z hz => hE hz)`.
+-/
 theorem mero_eq_zero_of_eventually {a : ℂ → ℂ} (ha : AnalyticOnNhd ℂ a Hs) {τ : ℂ} (hτ : τ ∈ Hs)
     (h : a =ᶠ[𝓝 τ] 0) : (a : Mero) = 0 := by
   have hE := ha.eqOn_zero_of_preconnected_of_eventuallyEq_zero hs_isPreconnected hτ h
   exact Filter.Germ.coe_eq.2 (Filter.mem_of_superset (Filter.self_mem_codiscreteWithin Hs) fun z hz => hE hz)
 
+/- English proof (translation)
+Take `⟨a, b, ha, hb, hb0, hab⟩` from `X.an_mero x`. Establish `ha' : AnalyticOnNhd ℂ a Hs` using `ha.analyticOnNhd hs_isOpen`. Establish `hb' : AnalyticOnNhd ℂ b Hs` using `hb.analyticOnNhd hs_isOpen`. Rewrite `hab` using `[hφ]`. Establish `hrel : ∀ᶠ z in codiscreteWithin Hs, φ z * b z = a z` using `Filter.Germ.coe_eq.1 hab`.
+
+Establish `hrel' : ∀ᶠ z in 𝓝[≠] τ, φ z * b z = a z`. Establish `h1` using `(mem_codiscreteWithin_iff_forall_mem_nhdsNE.1 hrel) τ hτ`. Establish `h2 : Hs ∈ 𝓝[≠] τ` using `mem_nhdsWithin_of_mem_nhds (hs_isOpen.mem_nhds hτ)`. Use `filter_upwards [h1, h2] with z hz1 hz2`. Break down `hz1 with hz1 | hz1` into its components or cases.
+
+Conclude with `hz1`. Conclude with `absurd hz2 hz1`. Establish `hbne : ∀ᶠ z in 𝓝[≠] τ, b z ≠ 0`. Break down `(hb' τ hτ).eventually_eq_zero_or_eventually_ne_zero with h | h` into its components or cases. Conclude with `absurd (mero_eq_zero_of_eventually hb' hτ h) hb0`.
+
+Conclude with `h`. Establish `heq : (fun z => a z / b z) =ᶠ[𝓝[≠] τ] φ` using `by filter_upwards [hrel', hbne] with z h1 h2`. Rewrite using `[← h1, mul_div_cancel_right₀ _ h2]`. Establish `hmer : MeromorphicAt φ τ` using `((ha' τ hτ).meromorphicAt.div (hb' τ hτ).meromorphicAt).congr heq`. Use `⟨hmer, fun hx htop => ?_⟩` and prove the remaining obligations.
+
+Establish `hφ0 : ∀ᶠ z in 𝓝[≠] τ, φ z = 0` using `meromorphicOrderAt_eq_top_iff.1 htop`. Establish `ha0 : ∀ᶠ z in 𝓝[≠] τ, a z = 0` using `by filter_upwards [hrel', hφ0] with z h1 h2`. Rewrite using `[← h1, h2, zero_mul]`. Establish `ha00 : a =ᶠ[𝓝 τ] 0`. Break down `(ha' τ hτ).eventually_eq_zero_or_eventually_ne_zero with h | h` into its components or cases.
+
+Conclude with `h`. Conclude with `absurd ((ha0.and h).exists) (by rintro ⟨z, h1, h2⟩; exact h2 h1)`. Establish `hA : (a : Mero) = 0` using `mero_eq_zero_of_eventually ha' hτ ha00`. Rewrite `hab` using `[← hφ, hA]`. Apply `hb0` to reduce the goal to its premises.
+
+Establish `hu : X.an x⁻¹ * X.an x = 1` using `by rw [← map_mul, inv_mul_cancel₀ hx, map_one]`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem Tower.an_meromorphicAt {Ω : Type} [Field Ω] [Algebra ℚ Ω] {ε : Ω →+* ℂ} (X : Tower Ω ε) (x : X.K)
     (φ : ℂ → ℂ) (hφ : X.an x = (φ : Mero)) (τ : ℂ) (hτ : τ ∈ Hs) :
     MeromorphicAt φ τ ∧ (x ≠ 0 → meromorphicOrderAt φ τ ≠ ⊤) := by

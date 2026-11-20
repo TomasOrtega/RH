@@ -7,6 +7,11 @@ namespace GlobalTheory.IntBall.ColGramPos
 
 open scoped ComplexOrder
 
+/- English proof (translation)
+Establish `h' : (i : ℕ) < j` using `h`. Unfold `blkW`. Use `split_ifs`. Unfold `lowMat`. Rewrite using `[dif_neg (by rw [Fin.lt_def]; simp only; omega), if_neg (by rw [Fin.ext_iff]; simp only; omega)]`.
+
+Unfold `lowMat`. Rewrite using `[dif_neg (by rw [Fin.lt_def]; simp only; omega), if_neg (by rw [Fin.ext_iff]; simp only; omega)]`.
+-/
 theorem blkW_upper {r : ℕ} (p0 : ℕ) (w : Low r → ℂ) (i j : Fin (r - 1)) (h : i < j) :
     blkW p0 w i j = 0 := by
   have h' : (i : ℕ) < j := h
@@ -17,6 +22,11 @@ theorem blkW_upper {r : ℕ} (p0 : ℕ) (w : Low r → ℂ) (i j : Fin (r - 1)) 
   · unfold lowMat
     rw [dif_neg (by rw [Fin.lt_def]; simp only; omega), if_neg (by rw [Fin.ext_iff]; simp only; omega)]
 
+/- English proof (translation)
+Unfold `blkW`. Use `split_ifs`. Unfold `lowMat`. Rewrite using `[dif_neg (lt_irrefl _), if_pos rfl]`. Unfold `lowMat`.
+
+Rewrite using `[dif_neg (lt_irrefl _), if_pos rfl]`.
+-/
 theorem blkW_diag {r : ℕ} (p0 : ℕ) (w : Low r → ℂ) (i : Fin (r - 1)) :
     blkW p0 w i i = 1 := by
   unfold blkW
@@ -26,11 +36,27 @@ theorem blkW_diag {r : ℕ} (p0 : ℕ) (w : Low r → ℂ) (i : Fin (r - 1)) :
   · unfold lowMat
     rw [dif_neg (lt_irrefl _), if_pos rfl]
 
+/- English proof (translation)
+Rewrite using `[Matrix.det_of_lowerTriangular T (fun i j hij => hu i j hij)]`. Simplify using `[hd]`.
+-/
 theorem lowerTri_det_one {n : ℕ} (T : Matrix (Fin n) (Fin n) ℂ)
     (hu : ∀ i j, i < j → T i j = 0) (hd : ∀ i, T i i = 1) : T.det = 1 := by
   rw [Matrix.det_of_lowerTriangular T (fun i j hij => hu i j hij)]
   simp [hd]
 
+/- English proof (translation)
+Introduce `r p0 w k`. Use `set B := blkW p0 w with hB`. Establish `hk : (k : ℕ) ≤ r - 1` using `Nat.le_of_lt_succ k.isLt`. Use `set N : Matrix (Fin (r - 1)) (Fin k) ℂ := B.submatrix id (Fin.castLE hk) with hN`. Establish `hsub : (Bᴴ * B).submatrix (Fin.castLE hk) (Fin.castLE hk) = Nᴴ * N`.
+
+Use extensionality with `a b`. Simplify using `[N, Matrix.mul_apply, Matrix.conjTranspose_apply]`. Use `set T : Matrix (Fin k) (Fin k) ℂ := B.submatrix (Fin.castLE hk) (Fin.castLE hk) with hT`. Establish `hTdet : T.det = 1`. Apply `lowerTri_det_one` to reduce the goal to its premises.
+
+Introduce `i j hij`. Conclude with `blkW_upper p0 w _ _ (by rw [Fin.lt_def] at hij ⊢; simpa using hij)`. Introduce `i`. Conclude with `blkW_diag p0 w _`. Establish `hinj : Function.Injective N.mulVec`.
+
+Introduce `u v huv`. Establish `h0 : N *ᵥ (u - v) = 0` using `by rw [Matrix.mulVec_sub, huv, sub_self]`. Establish `hT0 : T *ᵥ (u - v) = 0`. Use extensionality with `i`. Use `congrFun h0 (Fin.castLE hk i)` as an intermediate fact.
+
+Simplify `this` using `[T, N, Matrix.mulVec, dotProduct]`. Use `Matrix.eq_zero_of_mulVec_eq_zero (by rw [hTdet]; exact one_ne_zero) hT0` as an intermediate fact. Conclude with `sub_eq_zero.mp this`. Establish `hpd : (Nᴴ * N).PosDef` using `Matrix.PosDef.conjTranspose_mul_self N hinj`. Establish `hdet : (Nᴴ * N).det ≠ 0` using `hpd.det_pos.ne'`.
+
+Unfold `colGram lminor`. Rewrite using `[hsub]`. Conclude with `norm_pos_iff.mpr hdet`.
+-/
 theorem colGram_blkW_pos : ∀ (r p0 : ℕ) (w : Low r → ℂ) (k : Fin (r - 1 + 1)), 0 < colGram (blkW p0 w) k := by
   intro r p0 w k
   set B := blkW p0 w with hB

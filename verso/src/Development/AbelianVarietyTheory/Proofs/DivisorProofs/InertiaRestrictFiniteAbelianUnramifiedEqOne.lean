@@ -5,6 +5,9 @@ open scoped nonZeroDivisors
 
 namespace GlobalTheory.InertiaRestrict
 
+/- English proof (translation)
+The claim follows from `h.isGalois; AlgEquiv.restrictNormalHom L ((e.symm.trans σ).trans e) = 1 := by intro K _ _ Ω _ _ _ e L h v hv A hA σ hσ haveI := h.isGalois haveI := h.finiteDimensional haveI : NumberField L := NumberField.of_module_finite K L have hint : ∀ y : 𝓞 L, e.symm ((y : L) : AlgebraicClos …`.
+-/
 theorem restrict_eq_one : ∀ {K : Type} [Field K] [NumberField K] {Ω : Type} [Field Ω] [Algebra K Ω] [IsAlgClosure K Ω] (e : Ω ≃ₐ[K] AlgebraicClosure K) (L : IntermediateField K (AlgebraicClosure K)) (h : IsFiniteAbelian K L) (v : HeightOneSpectrum (𝓞 K)), IsUnramifiedIn K v L → ∀ (A : ValuationSubring Ω), Formalism.ConjugateSelfDual.IsPlaceOver A v → ∀ σ : Formalism.ConjugateSelfDual.G K Ω, σ ∈ ReciprocityTheory.Gal.Ine (F := K) A → haveI := h.isGalois; AlgEquiv.restrictNormalHom L ((e.symm.trans σ).trans e) = 1 := by
   intro K _ _ Ω _ _ _ e L h v hv A hA σ hσ
   haveI := h.isGalois

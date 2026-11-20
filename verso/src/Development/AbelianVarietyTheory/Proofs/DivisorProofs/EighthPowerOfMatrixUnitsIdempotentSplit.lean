@@ -15,11 +15,17 @@ namespace MatUnitIdem
 
 variable {C : Type*} [Category C] [CartesianMonoidalCategory C] [BraidedCategory C]
 
+/- English proof (translation)
+The claim follows from `map_prod (MonoidHom.mk ⟨fun x : Y ⟶ M => f ≫ x, MonObj.comp_one f⟩ (fun a b => MonObj.comp_mul f a b)) g s`.
+-/
 theorem comp_prod' {X Y M : C} [MonObj M] [IsCommMonObj M] {J : Type*} (s : Finset J) (f : X ⟶ Y)
     (g : J → (Y ⟶ M)) : f ≫ ∏ l ∈ s, g l = ∏ l ∈ s, f ≫ g l :=
   map_prod (MonoidHom.mk ⟨fun x : Y ⟶ M => f ≫ x, MonObj.comp_one f⟩
     (fun a b => MonObj.comp_mul f a b)) g s
 
+/- English proof (translation)
+The claim follows from `map_prod (IsMonHom.monoidHom f X) g s`.
+-/
 theorem prod_comp' {X M N : C} [MonObj M] [IsCommMonObj M] [MonObj N] [IsCommMonObj N] {J : Type*}
     (s : Finset J) (g : J → (X ⟶ M)) (f : M ⟶ N) [IsMonHom f] :
     (∏ l ∈ s, g l) ≫ f = ∏ l ∈ s, g l ≫ f :=
@@ -29,6 +35,17 @@ end MatUnitIdem
 
 open MatUnitIdem in
 
+/- English proof (translation)
+Introduce `S G H _ _ _ E hE hrel hsum i r hi hr hir hri T y`. Establish `key : ∀ b, E b b = (E b 0 ≫ r) ≫ i ≫ E 0 b`. Introduce `b`. Establish `h1 : E b 0 ≫ E 0 b = E b b` using `by rw [hrel]; simp`. Establish `h2 : E b 0 ≫ E 0 0 = E b 0` using `by rw [hrel]; simp`.
+
+Combine the equalities or inequalities in the displayed calculation. Use `⟨∏ a, y a ≫ i ≫ E 0 a, ?_, ?_⟩` and prove the remaining obligations. Introduce `b haveI := hE b 0 haveI := hr`. Establish `hx : (∏ a, y a ≫ i ≫ E 0 a) ≫ E b 0 = y b ≫ i ≫ E 0 0`. Rewrite using `[prod_comp', Finset.prod_eq_single b]`.
+
+Establish `h3 : E 0 b ≫ E b 0 = E 0 0` using `by rw [hrel]; simp`. Simplify using `only [Category.assoc, h3]`. Introduce `a _ hab`. Establish `h3 : E 0 a ≫ E b 0 = 1` using `by rw [hrel]; simp [hab]`. Simplify using `only [Category.assoc, h3, MonObj.comp_one]`.
+
+Introduce `h`. Conclude with `absurd (Finset.mem_univ b) h`. Rewrite using `[← Category.assoc, hx, ← hri]`. Simplify using `only [Category.assoc]`. Simplify using `only [reassoc_of% hir, hir, Category.comp_id]`.
+
+Introduce `z hz`. Combine the equalities or inequalities in the displayed calculation. Use `Finset.prod_congr rfl fun b _ => ?_` and prove the remaining obligations. Rewrite using `[key, ← Category.assoc, hz]`.
+-/
 theorem matUnits_univ_of_idem : ∀ {S : Scheme.{0}} (G H : Over S) [GrpObj G] [IsCommMonObj G] [GrpObj H] (E : Fin 8 → Fin 8 → (G ⟶ G)) (hE : ∀ a b, IsMonHom (E a b)) (hrel : ∀ a b c d, E a b ≫ E c d = if b = c then E a d else 1) (hsum : ∏ a, E a a = 𝟙 G) (i : H ⟶ G) (r : G ⟶ H) (hi : IsMonHom i) (hr : IsMonHom r) (hir : i ≫ r = 𝟙 H) (hri : r ≫ i = E 0 0), ∀ (T : Over S) (y : Fin 8 → (T ⟶ H)), ∃! x : T ⟶ G, ∀ a, x ≫ (E a 0 ≫ r) = y a := by
   intro S G H _ _ _ E hE hrel hsum i r hi hr hir hri T y
   have key : ∀ b, E b b = (E b 0 ≫ r) ≫ i ≫ E 0 b := by

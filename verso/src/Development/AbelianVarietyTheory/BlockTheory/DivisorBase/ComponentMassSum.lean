@@ -73,15 +73,27 @@ def ComponentSumDeep : Prop :=
     IsDatW D j Dw → l.M = D.host.g 0 * D.host.g 1 * 15 ^ e → FnAlgClosed Xo c →
     IsComplexData U (fun _ => D.sp.W j) dict → OrthSum U (fun _ => D.sp.W j) dict
 
+/- English proof (translation)
+Introduce `D _ _ H Dw l Xo c U dict _ _ _ _ _ _ _ hc` and use `h D H Dw l Xo c _ U _ dict hc`.
+-/
 theorem ComponentSum.deep (h : ComponentSum) : ComponentSumDeep :=
   fun D _ _ H Dw l Xo c U dict _ _ _ _ _ _ _ hc => h D H Dw l Xo c _ U _ dict hc
 
+/- English proof (translation)
+The claim follows from `CompFin.finite_comp Xo c`.
+-/
 theorem finite_comp : Finite (Comp Xo c) := CompFin.finite_comp Xo c
 
+/- English proof (translation)
+Introduce and unpack `_ ⟨f, hf, rfl⟩`. Conclude with `(mem_latOn U).1 hf`.
+-/
 theorem partLat_le (Z : Comp Xo c) (G : WTZ D.host.E) : partLat U Z G ≤ latW U G := by
   rintro _ ⟨f, hf, rfl⟩
   exact (mem_latOn U).1 hf
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨h.pins.2.1.2, fun σ hσ => ⟨h.unf j hj σ hσ, by obtain ⟨th, hr, h1, h2⟩ := h.dictU j hj σ hσ exact ⟨T.Kf j σ, th, hr, h.pins.2.1.1 ▸ h.levelK j hj σ hσ, h1, h2⟩, h.finVol j hj σ hσ, h.xiAbs j hj σ hσ⟩⟩`.
+-/
 theorem isComplexData_of_laws {T : Core D} (h : LawsM T) {j : ℕ} (hj : InR D j) :
     IsComplexData (T.U j) (T.V j) (T.dict j) :=
   ⟨h.pins.2.1.2, fun σ hσ => ⟨h.unf j hj σ hσ, by

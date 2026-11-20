@@ -45,12 +45,18 @@ variable (D) in
 
 def embV (τ : D.what₂.Tau) : D.host.E →+* K' := jL.comp (labLL D τ)
 
+/- English proof (translation)
+Use extensionality with `x`. Establish `h1` using `RingHom.congr_fun D.embE_φ₀ ((D.host.sigmaOf (D.eTau τ).1 : D.host.E →+* D.host.E) x)`. Establish `h2` using `RingHom.congr_fun h (labLL D τ x)`. Conclude with `h2.trans h1`.
+-/
 theorem embV_spec (h : σ'.comp jL = D.what₂.embLL) (τ : D.what₂.Tau) : σ'.comp (embV D jL τ) = tauE D τ := by
   ext x
   have h1 := RingHom.congr_fun D.embE_φ₀ ((D.host.sigmaOf (D.eTau τ).1 : D.host.E →+* D.host.E) x)
   have h2 := RingHom.congr_fun h (labLL D τ x)
   exact h2.trans h1
 
+/- English proof (translation)
+Use extensionality with `x`. Conclude with `RingHom.congr_fun (embV_spec j c.F.val.toRingHom h τ) x`.
+-/
 theorem embV_eq_embF {H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host D.host.E} {l : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Level H}
     (c : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Coeff l) (j : D.what₂.LL →+* c.F) (h : c.F.val.toRingHom.comp j = D.what₂.embLL) (τ : D.what₂.Tau) :
     embV D j τ = embF c (tauE D τ) := by
@@ -164,12 +170,18 @@ structure ThPinsR (v₀ : (R.MW i (sg0 D A)).Vec) (c0' : VsV D i K' →ₛₗ[σ
     (fun i τ => Bridge.lamLdef (Vc D i).rank ((i : ℕ) + 1) τ) gramR c0R c0L ∧ CoefficientBaseChange R i jL σ' (c0L i) c0'
   lev : LevIs R i ι M Mh lev
 
+/- English proof (translation)
+The claim follows from `(hP x₀).imp fun x hx => ⟨hx, hT (jVx R i t x₀) x hx⟩`.
+-/
 theorem thF_of_pins {t : T0} {Cl : Type} [Fintype Cl] {h : Cl → GA D (Vc D i)} {c0' : VsV D i K' →ₛₗ[σ'] (R.cV i).W}
     {v₀ : (R.MW i (sg0 D A)).Vec} {thAd : (Cl → VsV D i K') → AutQ (Wc D i) → ℂ} (hP : PlaceEx R i t h c0')
     (hT : ThAdIs R i t h c0' v₀ thAd) (x₀ : A.fam.amb.FL i t) :
     ∃ x, Place R i t h c0' (jVx R i t x₀) x ∧ thAd x = onQ (Wc D i) (R.thF i t (jVx R i t x₀) v₀) :=
   (hP x₀).imp fun x hx => ⟨hx, hT (jVx R i t x₀) x hx⟩
 
+/- English proof (translation)
+Establish `h1` using `(hL.mu0 i).2 P e he _ x hx`. Establish `h2` using `(hL.xi t).2 P e he _ x hx`. Establish `h3` using `hL.eta.2 P e he _ x hx`. Use `show (((R.mu0 ((i : ℕ) + 1) x * R.xi t x * (R.eta x)⁻¹ : Circle)) : ℂ) = ((((R.C.mu0 i).locK P (Formalism.L2.Host.unif P) * (R.xiH t).locK P (Formalism.L2.Host.unif P) * (R.C.eta.locK P (Formalism.L2.Host.unif P))⁻¹ : ℂˣ)) : ℂ)`. Rewrite using `[Circle.coe_mul, Circle.coe_mul, Circle.coe_inv, h1, h2, h3, Units.val_mul, Units.val_mul, Units.val_inv_eq_inv_val]`.
+-/
 theorem chiW_val {μ0 : T0} (hL : R.toLevCh.Is μ0) (t : T0) (P : Pl D.host.E) (e : AE D) (he : Formalism.L2.JoinChr.IsPlIdem D e P)
     (x : (AE D)ˣ) (hx : (x : AE D) = Formalism.L2.JoinChr.locE D e (Formalism.L2.Host.unif P : D.host.Eˣ)) :
     (((Lift.chrTh (R.toLevCh.mu t) R.eta ((i : ℕ) + 1)).2 x : Circle) : ℂ) =
@@ -182,12 +194,18 @@ theorem chiW_val {μ0 : T0} (hL : R.toLevCh.Is μ0) (t : T0) (P : Pl D.host.E) (
       (R.C.eta.locK P (Formalism.L2.Host.unif P))⁻¹ : ℂˣ)) : ℂ)
   rw [Circle.coe_mul, Circle.coe_mul, Circle.coe_inv, h1, h2, h3, Units.val_mul, Units.val_mul, Units.val_inv_eq_inv_val]
 
+/- English proof (translation)
+Use `show c.ρ h⁻¹ (f (fin V h)) = _`. Rewrite using `[hc.1 _ (inv_mem hh)]`. Both sides reduce to the same expression.
+-/
 theorem ext_fin {V : HSp D} (c : CoefA V) (hc : c.Is) (f : Bridge.Gf V → c.W) {h : GA D V} (hh : h ∈ GfC V) :
     c.ext f h = f (fin V h) := by
   show c.ρ h⁻¹ (f (fin V h)) = _
   rw [hc.1 _ (inv_mem hh)]
   rfl
 
+/- English proof (translation)
+The claim follows from `ext_fin (R.cV i) hc ((R.HV i t).e y) hh`.
+-/
 theorem extV_fin (hc : (R.cV i).Is) (t : T0) (y : (R.HV i t).H) {h : GA D (Vc D i)} (hh : h ∈ GfC (Vc D i)) :
     R.extV i t y h = (R.HV i t).e y (fin _ h) :=
   ext_fin (R.cV i) hc ((R.HV i t).e y) hh

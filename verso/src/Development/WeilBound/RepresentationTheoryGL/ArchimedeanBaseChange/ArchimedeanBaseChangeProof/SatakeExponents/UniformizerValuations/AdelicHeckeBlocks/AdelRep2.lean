@@ -15,6 +15,11 @@ attribute [local instance] borelG borelF borelH
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {κ : Pl E → Type} [∀ w, Fintype (κ w)] {S : Set (Pl E)}
   {P : Finset (Pl E)} {B : Block E} (e : B.κ ≃ ∀ w : P, κ w)
 
+/- English proof (translation)
+Use function extensionality and compare the values at `x y g`. Establish `: L.ent P (e x) (e y) = L'.ent P (e x) (e y)`. Use function extensionality and compare the values at `w`. Unfold `LM.ent`. Use `split_ifs with hw`.
+
+Rewrite using `[h.1 w hw]`. Conclude with `h.2.1 w hw`. Simplify using `only [fm, this, h.2.2]`.
+-/
 theorem fm_congr {L L' : LM κ B.a B.b} (h : L.Eqv P L') : fm S P B e L = fm S P B e L' := by
   funext x y g
   have : L.ent P (e x) (e y) = L'.ent P (e x) (e y) := by
@@ -25,6 +30,15 @@ theorem fm_congr {L L' : LM κ B.a B.b} (h : L.Eqv P L') : fm S P B e L = fm S P
     · exact h.2.1 w hw
   simp only [fm, this, h.2.2]
 
+/- English proof (translation)
+Establish `A` using `BlockFiniteConvolution.fmAlg' E κ S P B e hS hP`. Proceed by induction on `w with`. Consider the case `nil => exact ⟨h₀, ((A I L₀ hI h₀).2.2.1).trans (fm_congr e hI₀), ht⟩`. Consider the case `cons p w ih`. Take `⟨o, i, q⟩` from `ih fun p hp => hw p (List.mem_cons_of_mem _ hp)`.
+
+Take `⟨p1, p2, p3, p4⟩` from `hw p List.mem_cons_self`. Establish `m` using `A p.2 _ p1 o`. Simplify using `only [List.map_cons, List.foldr_cons]`. Use `⟨m.2.1, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[← m.2.2.1, ← (blkLevel E B _ _ _ (A I _ hI o).1 m.1 (A _ _ o o).1).2.2.1, (A I p.2 hI p1).2.2.1, fm_congr e p2]`.
+
+Take `⟨g, L⟩` from `p`. Consider the cases of `g with`. Consider the case `inl c`. Take `rfl : L = I` from `p4 c rfl`. Rewrite using `[← m.2.2.1, i]`.
+
+Conclude with `q`. Consider the case `inr s => show mulF B.ν s.ψ (BGen.wd (w.map Prod.fst) t₀).ψ = _`. Rewrite using `[q, p3 s rfl, (BlockFiniteConvolution.rtAlg' E B u₁ u₂).1, m.2.2.1]`.
+-/
 theorem word_psi (hS : IsSection S) (hP : (↑P : Set (Pl E)) ⊆ S) (u₁ : GL (Fin B.a) E) (u₂ : GL (Fin B.b) E)
     (I L₀ : LM κ B.a B.b) (t₀ : PT B) (hI : I.Ok P) (h₀ : L₀.Ok P) (hI₀ : (I.mul L₀).Eqv P L₀)
     (ht : t₀.ψ = rt u₁ u₂ (fm S P B e L₀)) (w : List (BGen B × LM κ B.a B.b))
@@ -53,6 +67,9 @@ theorem word_psi (hS : IsSection S) (hP : (↑P : Set (Pl E)) ⊆ S) (u₁ : GL 
         show mulF B.ν s.ψ (BGen.wd (w.map Prod.fst) t₀).ψ = _
         rw [q, p3 s rfl, (BlockFiniteConvolution.rtAlg' E B u₁ u₂).1, m.2.2.1]
 
+/- English proof (translation)
+Take `⟨o, -, q⟩` from `word_psi e hS hP u₁ u₂ I L₀ t₀ hI h₀ hI₀ ht w hw`. Conclude with `⟨o, q, (BlockFiniteConvolution.adelRep' E κ S P B e hS hP hκ u₁ u₂ Ta Tb N (fun _ => I) [] _ _ (fun _ h => nomatch h) o q).2.2⟩`.
+-/
 theorem adelRep2 (hS : IsSection S) (hP : (↑P : Set (Pl E)) ⊆ S) (hκ : ∀ w ∈ P, Nonempty (κ w)) (u₁ : GL (Fin B.a) E)
     (u₂ : GL (Fin B.b) E) (Ta : Ops B.Ma) (Tb : Ops B.Mb) (N : ∀ w, κ w → κ w → ℂ)
     (I L₀ : LM κ B.a B.b) (t₀ : PT B) (hI : I.Ok P) (h₀ : L₀.Ok P) (hI₀ : (I.mul L₀).Eqv P L₀)

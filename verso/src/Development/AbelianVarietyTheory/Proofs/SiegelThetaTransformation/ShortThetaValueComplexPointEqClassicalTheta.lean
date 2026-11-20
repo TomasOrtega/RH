@@ -38,6 +38,11 @@ open scoped ContDiff
 variable {W : Type} [NormedAddCommGroup W] [NormedSpace ℂ W]
 
 open ReciprocityTheory.ChartRestriction.G.PullbackSections in
+/- English proof (translation)
+Unfold `I2.polyDeriv`. Use `Finset.sum_congr rfl fun m _ => ?_` and prove the remaining obligations. Use `congr 1`. Establish `hL : (((Finsupp.toMultiset m).toList.map u : List W) : Multiset W) = (Finsupp.toMultiset m).map u`. Rewrite using `[← Multiset.map_coe, Multiset.coe_toList]`.
+
+Rewrite using `[← hL, mD_coe hθ, lD_eq θ x _ (n := Multiset.card (Finsupp.toMultiset m)) (by rw [List.length_map, Multiset.length_toList])]`. Use `congr 1`. Use function extensionality and compare the values at `k`. Simplify using `[List.get_eq_getElem]`.
+-/
 theorem polyDeriv_eq_sum {θ : W → ℂ} {x : W} (hθ : ContDiffAt ℂ ω θ x) {T : Type}
     (P : MvPolynomial T ℂ) (u : T → W) :
     I2.polyDeriv P u θ x =
@@ -54,6 +59,9 @@ theorem polyDeriv_eq_sum {θ : W → ℂ} {x : W} (hθ : ContDiffAt ℂ ω θ x)
   funext k
   simp [List.get_eq_getElem]
 
+/- English proof (translation)
+Rewrite using `[polyDeriv_eq_sum hθ, polyDeriv_eq_sum hθ, MvPolynomial.support_rename_of_injective hρ, Finset.sum_image (fun a _ b _ h => Finsupp.mapDomain_injective hρ h)]`. Use `Finset.sum_congr rfl fun m _ => ?_` and prove the remaining obligations. Rewrite using `[MvPolynomial.coeff_rename_mapDomain ρ hρ, ← Finsupp.toMultiset_map, Multiset.map_map]`.
+-/
 theorem polyDeriv_rename {θ : W → ℂ} {x : W} (hθ : ContDiffAt ℂ ω θ x) {T κ : Type} (ρ : T → κ)
     (hρ : Function.Injective ρ) (P : MvPolynomial T ℂ) (v : κ → W) :
     I2.polyDeriv (MvPolynomial.rename ρ P) v θ x = I2.polyDeriv P (v ∘ ρ) θ x := by
@@ -64,6 +72,13 @@ theorem polyDeriv_rename {θ : W → ℂ} {x : W} (hθ : ContDiffAt ℂ ω θ x)
 
 end Deriv
 
+/- English proof (translation)
+Establish `h1 : P.IsHomogeneous (∑ σ, ∑ i : Fin (m σ), a σ i)`. Introduce `d hd`. Use `h d (MvPolynomial.mem_support_iff.2 hd)` as an intermediate fact. Establish `e : Finsupp.weight (1 : Letter T m n → ℕ) d = d.degree`. Rewrite using `[Finsupp.degree_eq_weight_one]`.
+
+Both sides reduce to the same expression. Rewrite using `[e, Finsupp.degree_eq_sum, Fintype.sum_sigma]`. Use `Finset.sum_congr rfl fun σ _ => ?_` and prove the remaining obligations. Rewrite using `[Fintype.sum_prod_type]`. Conclude with `Finset.sum_congr rfl fun i _ => this σ i`.
+
+Distinguish the cases in `h0 : P = 0`. Rewrite using `[h0]`. Conclude with `MvPolynomial.isHomogeneous_zero _ _ _`. Rewrite using `[h1.totalDegree h0]`. Conclude with `h1`.
+-/
 theorem isHomogeneous_of_rowDeg {T k : Type} [Fintype T] [Field k] {m : T → ℕ} {n : ℕ} {a : T → ℕ → ℕ}
     {P : MvPolynomial (Letter T m n) k} (h : RowDeg m n k a P) : P.IsHomogeneous P.totalDegree := by
   have h1 : P.IsHomogeneous (∑ σ, ∑ i : Fin (m σ), a σ i) := by
@@ -81,6 +96,13 @@ theorem isHomogeneous_of_rowDeg {T k : Type} [Fintype T] [Field k] {m : T → �
 
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {r g n : ℕ}
 
+/- English proof (translation)
+Use `le_antisymm (fun v hv => ?_) (Submodule.span_le.2 ?_)` and prove the remaining obligations. Establish `h : ∀ i, ∃ a : 𝓞 E, algebraMap (𝓞 E) E a = v i` using `fun i => Submodule.mem_one.1 (hv i (Set.mem_univ i)) choose a ha using h`. Establish `e : v = ∑ i, a i • (Pi.single i 1 : Fin n → E)`. Use function extensionality and compare the values at `j`. Simplify using `[Finset.sum_apply, Pi.single_apply, Algebra.smul_def, ha]`.
+
+Rewrite using `[e]`. Conclude with `Submodule.sum_mem _ fun i _ => Submodule.smul_mem _ _ (Submodule.subset_span ⟨i, rfl⟩)`. Introduce and unpack `_ ⟨i, rfl⟩ j -`. Distinguish the cases in `h : j = i`. Substitute `h` using the available equality.
+
+Simplify using `using Submodule.mem_one.2 ⟨1, map_one _⟩`. Simplify using `[h]`.
+-/
 theorem stdLat_eq : stdLat E n = stdL E n := by
   refine le_antisymm (fun v hv => ?_) (Submodule.span_le.2 ?_)
   · have h : ∀ i, ∃ a : 𝓞 E, algebraMap (𝓞 E) E a = v i := fun i =>
@@ -96,6 +118,13 @@ theorem stdLat_eq : stdLat E n = stdL E n := by
     · subst h; simpa using Submodule.mem_one.2 ⟨1, map_one _⟩
     · simp [h]
 
+/- English proof (translation)
+Take `⟨-, h2, s, -, hs, h3, h4⟩` from `h`. Use `⟨fun v => (h2 v).trans (forall₂_congr fun w _ => ?_), s, hs, ?_, ?_⟩` and prove the remaining obligations. Establish `e : herm 1 v w = IsCMField.complexConj E (∑ j, IsCMField.complexConj E (v j) * w j)`. Simplify using `[herm, cc, Matrix.one_apply]`. Rewrite using `[e, show ∀ t, IsCMField.complexConj E t = (IsCMField.complexConj E).restrictScalars ℤ t from fun _ => rfl, isIntegral_algEquiv]`.
+
+Conclude with `⟨fun hi => ⟨⟨_, hi⟩, rfl⟩, fun ⟨a, ha⟩ => ha ▸ a.isIntegral_coe⟩`. Rewrite using `[Submodule.ideal_span_singleton_smul, stdLat_eq]`. Introduce and unpack `_ ⟨v, hv, rfl⟩`. Simplify `h3 v hv` using `[Nat.cast_smul_eq_nsmul]`. Rewrite using `[Submodule.ideal_span_singleton_smul, stdLat_eq]`.
+
+Introduce and unpack `_ ⟨v, hv, rfl⟩`. Simplify `h4 v hv` using `[Nat.cast_smul_eq_nsmul]`.
+-/
 theorem unimod_trivAt {M : ℕ} {Λ : Lt E n} (h : Λ ∈ Vset E n M) :
     (⟨Λ⟩ : GenLat E n).Unimod ∧ (⟨Λ⟩ : GenLat E n).TrivAt M := by
   obtain ⟨-, h2, s, -, hs, h3, h4⟩ := h
@@ -114,13 +143,22 @@ theorem unimod_trivAt {M : ℕ} {Λ : Lt E n} (h : Λ ∈ Vset E n M) :
 
 variable {X : Data E r} {bas : (Fin g ⊕ Fin g → ℤ) ≃ₗ[ℤ] X.Λ} (idx : Fin g ≃ X.Ψ × Fin r)
 
+/- English proof (translation)
+The claim follows from `(isSB_algebra_haar_linear ℚ _ _ φ φ h h).2.1 c`.
+-/
 theorem isSB_smul (c : ℂ) {φ : TF n g} (h : IsSB φ) : IsSB (c • φ) :=
   (isSB_algebra_haar_linear ℚ _ _ φ φ h h).2.1 c
 
+/- English proof (translation)
+The claim follows from `Finset.sum_induction f IsSB (fun a b ha hb => (isSB_algebra_haar_linear ℚ _ _ a b ha hb).1) isSB_zero fun i _ => hf i`.
+-/
 theorem isSB_sum {T : Type} (s : Finset T) (f : T → TF n g) (hf : ∀ i, IsSB (f i)) : IsSB (∑ i ∈ s, f i) :=
   Finset.sum_induction f IsSB (fun a b ha hb => (isSB_algebra_haar_linear ℚ _ _ a b ha hb).1) isSB_zero
     fun i _ => hf i
 
+/- English proof (translation)
+Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simpa using UnAct.thA_smul (X := X) (bas := bas) idx x 0 (0 : TF n g)`. Consider the case `insert a s ha ih`. Rewrite using `[Finset.sum_insert ha, Finset.sum_insert ha, ← ih]`. Conclude with `UnAct.thA_add idx hs hx (hf a) (isSB_sum s f hf)`.
+-/
 theorem thA_sum (hs : IsSympl X bas) {x : Frame X.Ψ r} (hx : x ∈ X.dom) {T : Type} (s : Finset T)
     (f : T → TF n g) (hf : ∀ i, IsSB (f i)) :
     thA X bas idx (∑ i ∈ s, f i) x = ∑ i ∈ s, thA X bas idx (f i) x := by
@@ -130,6 +168,9 @@ theorem thA_sum (hs : IsSympl X bas) {x : Frame X.Ψ r} (hx : x ∈ X.dom) {T : 
     rw [Finset.sum_insert ha, Finset.sum_insert ha, ← ih]
     exact UnAct.thA_add idx hs hx (hf a) (isSB_sum s f hf)
 
+/- English proof (translation)
+Rewrite using `[← Jet.polyDeriv_sum_fun P D _ w _ fun i _ => ThetaHol.differentiable_thA idx hs (hf i) hx, thA_sum idx hs hx _ _ fun i => isSB_smul _ (hf i)]`. Use `congr 1`. Use function extensionality and compare the values at `z`. Simplify using `only [Finset.sum_apply, UnAct.thA_smul, Pi.smul_apply, smul_eq_mul]`.
+-/
 theorem polyDeriv_thA_sum (hs : IsSympl X bas) {x : Frame X.Ψ r} (hx : x ∈ X.dom) {σ T : Type} [Fintype T]
     (P : MvPolynomial σ ℂ) (D : σ → Fin n → Fin g → ℂ) (w : T → ℂ) (f : T → TF n g) (hf : ∀ i, IsSB (f i)) :
     I2.polyDeriv P D (thA X bas idx (∑ i, w i • f i) x) 0 =
@@ -140,6 +181,15 @@ theorem polyDeriv_thA_sum (hs : IsSympl X bas) {x : Frame X.Ψ r} (hx : x ∈ X.
   funext z
   simp only [Finset.sum_apply, UnAct.thA_smul, Pi.smul_apply, smul_eq_mul]
 
+/- English proof (translation)
+Establish `hh` using `(heisG_laws E r X g bas idx n hs hn).2.2.2`. Establish `hsb (q i) : IsSB (heisG X bas (Y q) (heisG X bas (u i) v))` using `(hh _ _ (hh _ _ hv).1).1`. Rewrite using `[polyDeriv_thA_sum idx hs hx P D w _ fun q => (hh _ _ hp).1, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun q _ => ?_` and prove the remaining obligations. Establish `h1 (i) : I2.polyDeriv P D (fun z => κ * thA X bas idx (heisG X bas (Y q) (heisG X bas (u i) v)) x (N • z)) 0 = N ^ d * κ * (1 * I2.polyDeriv P D (thA X bas idx (heisG X bas (Y q) (heisG X bas (u i) v)) x) 0)`.
+
+Establish `hd` using `ThetaHol.differentiable_thA idx hs (hsb q i) hx`. Rewrite using `[_root_.one_mul, _root_.mul_assoc, ← Jet.polyDeriv_smul_fun P D hd, ← Jet.polyDeriv_comp_smul hP N D (hd.const_smul κ)]`. Both sides reduce to the same expression. Establish `h2 : ∑ i, (1 : ℂ) • heisG X bas (Y q) (heisG X bas (u i) v) = ∑ _i : Unit, t • heisG X bas (Y q) p`. Use function extensionality and compare the values at `m`.
+
+Use `congrFun h (m - Matrix.of fun k i => crd X bas (Y q k) (Sum.inr i))` as an intermediate fact. Simplify using `only [Finset.sum_apply, Pi.smul_apply, smul_eq_mul] at this`. Simplify using `only [Finset.sum_apply, Pi.smul_apply, smul_eq_mul, _root_.one_mul, Finset.univ_unique, Finset.sum_singleton]`. Rewrite using `[heisG, heisS, ← _root_.mul_assoc, ← this, Finset.sum_mul]`. Both sides reduce to the same expression.
+
+Simplify using `only [h1]`. Rewrite using `[← Finset.mul_sum, ← polyDeriv_thA_sum idx hs hx P D _ _ (hsb q), h2, polyDeriv_thA_sum idx hs hx P D _ _ fun _ => (hh _ _ hp).1]`. Simplify using `only [Finset.univ_unique, Finset.sum_singleton]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem sum_polyDeriv (hs : IsSympl X bas) (hn : Even n) {x : Frame X.Ψ r} (hx : x ∈ X.dom) {σ Q J : Type}
     [Fintype Q] [Fintype J] {P : MvPolynomial σ ℂ} {d : ℕ} (hP : P.IsHomogeneous d) (D : σ → Fin n → Fin g → ℂ)
     (w : Q → ℂ) (Y : Q → Matrix (Fin n) (Fin r) E) (u : J → Matrix (Fin n) (Fin r) E) {v p : TF n g}
@@ -170,6 +220,13 @@ theorem sum_polyDeriv (hs : IsSympl X bas) (hn : Even n) {x : Frame X.Ψ r} (hx 
   simp only [Finset.univ_unique, Finset.sum_singleton]
   ring
 
+/- English proof (translation)
+Establish `h0 : A.ex 0 = 1`. Use `A.ex_add 0 0` as an intermediate fact. Rewrite `this` using `[add_zero]`. Conclude with `left_eq_mul.1 this`. Establish `h1 (j : ℕ) (z) : A.ex (j • z) = A.ex z ^ j`.
+
+Proceed by induction on `j with`. Consider the case `zero => rw [zero_smul, pow_zero, h0]`. Consider the case `succ j ih => rw [succ_nsmul, A.ex_add, ih, pow_succ]`. Rewrite using `[← h1, A.ex_ker]`. Use `⟨_, h, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[← Nat.cast_smul_eq_nsmul E k a, pv_smul]`. Use function extensionality and compare the values at `j`. Simplify using the standard rewrite rules.
+-/
 theorem ex_pow_eq_one {H : Host E} {Dw : Datum H} {l : Geo.Tor.Level H} {Xo : Moduli Dw l} {c : Coeff l}
     [Algebra c.F ℂ] {e : Fin g ≃ Lt1 Dw} {x : Frame X.Ψ r} {L : Lt E r} {y : FrPt Xo c ℂ}
     (A : AnFib X bas idx e x L y) (k : ℕ) (a : Fin r → E) (h : k • a ∈ L) : A.ex (pv X idx x a) ^ k = 1 := by
@@ -191,6 +248,29 @@ end GlobalTheory.Dict.ShortVal
 
 open GlobalTheory.Dict.ShortVal in
 
+/- English proof (translation)
+Introduce `hC E _ _ _ H Dw l Xo c _ r g X bas idx e x L y A hs hx hL q0 n hr eL hrpq hn hdir _ nab hnab θ v κ hθ hv hκ mk hmk hA Λ hΛ N hN Y hY a P hP wq β v0 h0`. Substitute `hrpq` using the available equality. Establish `hLaws : Laws` using `firstFiveLaws.1`. Use `haveI := ShortValue.finite_levelQuotient Dw l`. Use `haveI := Fintype.ofFinite (LevQ Dw l)`.
+
+Take `⟨hU, hT⟩` from `unimod_trivAt hΛ`. Establish `hodd : Odd N` using `hN.1`. Establish `hN0 : (N : E) ≠ 0` using `Nat.cast_ne_zero.2 hodd.pos.ne'`. Establish `hw : (H.w0 : E) + cc (H.w0 : E) = 1`. Rewrite using `[cc, ← H.bar_eq]`.
+
+Conclude with `congrArg (fun t : 𝓞 E => (t : E)) (PullbackSections.CVA.cmHostUnit_add_conj_eq_one H)` after adjusting the coercions. Establish `hΛ1 : Λ ∈ Vset E n 1`. Take `⟨h1, h2, s, hs, -, h3⟩` from `hΛ`. Conclude with `⟨h1, h2, s, hs, Nat.coprime_one_right s, h3⟩`. Take `⟨u, hu, huinj, hz, -, hsum⟩` from `GlobalTheory.T.exists_even_reps_tensorLattice_and_sum E _ X g bas idx n hs hn (H.w0 : E) H.w0.isIntegral_coe hw L hL Λ hΛ1 N hodd (hN.2.2.trans inf_le_left)`.
+
+Take `⟨hgeo, hroot⟩` from `GlobalTheory.T.analyticFibre_isotropic_points_injective_roots E H Dw l Xo c _ g X bas idx e x L y A hs hx hL n N Λ hodd.pos`. Take `⟨hZ, hinj⟩` from `hgeo _ u hu huinj`. Use `replace hroot := hroot mk hmk hA hN.2.1 Y hY`. Establish `hu2 (i b) : ∃ u' ∈ L, (N ^ 2 : ℕ) • ((N : E)⁻¹ • u i b) = (2 : ℕ) • u'`. Take `⟨u', h1, h2⟩` from `(hu i).2 b`.
+
+Use `⟨u', h1, ?_⟩` and prove the remaining obligations. Rewrite using `[← h2, ← Nat.cast_smul_eq_nsmul E, ← Nat.cast_smul_eq_nsmul E, smul_smul]`. Use `congr 1`. Use `push_cast`. Clear the denominators using the available nonvanishing facts.
+
+Establish `htor (t : Fin (Dw.p + Dw.q) → E) (h : ∃ u' ∈ L, (N ^ 2 : ℕ) • t = (2 : ℕ) • u') : A.ex (pv X idx x t) ^ (N ^ 2) = 1`. Take `⟨u', h1, h2⟩` from `h`. Conclude with `ex_pow_eq_one idx A _ _ (h2 ▸ nsmul_mem h1 2)`. Use `choose F hF using fun q i b => ((exists_isVtOver_and_existsUnique_isUUOver hLaws E H Dw l Xo N hodd (ptO Xo y.x) y.s).2 _ _ (htor _ (hu2 i b)) (htor _ (hroot q b).2.2)).exists`. Establish `h1 : ShortValAt Xo c nab wq (⟨Λ⟩ : GenLat E n) β N P y _` using `⟨ℂ, inferInstance, inferInstance, AlgHom.id c.F ℂ, y, _, _, F, RingHom.FaithfullyFlat.of_bijective Function.bijective_id, FramedBaseChange.refl y, hZ, hinj, fun q b => ⟨(hroot q b).1, (hroot q b).2.1⟩, hF, rfl⟩`.
+
+Rewrite using `[((shortThetaValue_existsUnique_natural hLaws hC E H Dw l Xo c nab hnab n ⟨Λ⟩ N hU hT hN a P hP wq β).1 ℂ y).unique h0 h1]`. Establish `hh` using `(heisG_laws E _ X g bas idx n hs hn).2.2.2`. Establish `hfock` using `(fock_laws E _ X g bas idx n hs hn x hx 1 θ).2.2.2.2`. Establish `hval (q i) : ∑ m ∈ P.support, algebraMap c.F ℂ (P.coeff m) * ∏ b, nab y ((N : ℤ) ^ 2) (F q i b) (colOf m b) = I2.polyDeriv (MvPolynomial.map (algebraMap c.F ℂ) P) (letterDir X hr idx ∘ eL) (fun z => κ * thA X bas idx (heisG X bas (Y q) (heisG X bas (u i) v)) x ((N : ℂ) • z)) 0`. Rewrite using `[GlobalTheory.T.harmonicConnectionValue_eq_polynomial_derivative hC E H Dw l Xo c _ g X bas idx e x L y A hs hx hL nab hnab n N a P hP (F q i) _ fun b => (GlobalTheory.T.sections_read_as_translates_at_scaled_point E H Dw l Xo c _ g X bas idx e x L y A hs hx hL N hodd θ hθ).1 _ _ …`.
+
+Use `congr 1`. Conclude with `funext fun ℓ => (hdir ℓ).symm`. Use function extensionality and compare the values at `z`. Simplify using `only [smul_inv_smul₀ hN0]`. Conclude with `hfock _ κ _ (hh (u i) v hv.1).1 (hfock (fun _ => θ) κ v hv.1 hκ (u i)) (Y q) ((N : ℂ) • z)`.
+
+Establish `hsum'` using `hsum v hv`. Establish `hz' : (((⟨Λ⟩ : GenLat E n).zCard N (Dw.p + Dw.q) : ℕ) : ℂ) ≠ 0` using `Nat.cast_ne_zero.2 hz.ne'`. Establish `hp : IsSB (projA X bas (H.w0 : E) (tens Λ L) v)`. Use `isSB_smul (((⟨Λ⟩ : GenLat E n).zCard N (Dw.p + Dw.q) : ℕ) : ℂ)⁻¹ (hsum' ▸ isSB_sum Finset.univ _ fun i => (hh (u i) v hv.1).1)` as an intermediate fact. Rewrite `this` using `[inv_smul_smul₀ hz']`. Then use the resulting hypothesis.
+
+Establish `hhom` using `(isHomogeneous_of_rowDeg hP.2.2).map (algebraMap c.F ℂ)`. Establish `hg : IsSB (∑ q, algebraMap c.F ℂ (wq q) • heisG X bas (Y q) (projA X bas (H.w0 : E) (tens Λ L) v))` using `isSB_sum _ _ fun q => isSB_smul _ (hh _ _ hp).1`. Simplify using `only [hval]`. Rewrite using `[finsum_eq_sum_of_fintype, sum_polyDeriv idx hs hn hx hhom _ _ Y u hv.1 hp hsum', thP, gphi, finsum_eq_sum_of_fintype, polyDeriv_rename ((SCV.analyticOnNhd_of_differentiable (ThetaHol.differentiable_thA idx hs hg hx) Set.univ 0 trivial).contDiffAt) _ eL.injective]`. Establish `hNc : (N : ℂ) ^ P.totalDegree ≠ 0` using `pow_ne_zero _ (Nat.cast_ne_zero.2 hodd.pos.ne')`.
+
+Simplify using `only [map_mul, map_inv₀, map_pow, map_natCast]`. Establish `key (a b c d t s : ℂ) : a * b * c * ((N : ℂ) ^ P.totalDegree)⁻¹ * ((N : ℂ) ^ P.totalDegree * d * t * s) = a * b * c * d * t * s` using `by field_simp`. Conclude with `key _ _ _ _ _ _`.
+-/
 theorem GlobalTheory.Dict.shortValAt_eq_thP : Formalism.MainNotions.ModuliIntegralCharts.H1.ChartIndepSt2 → ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (Dw : Datum H) (l : Geo.Tor.Level H) (Xo : Moduli Dw l) (c : Coeff l) [Algebra c.F ℂ] (r g : ℕ) (X : Data E r) (bas : (Fin g ⊕ Fin g → ℤ) ≃ₗ[ℤ] X.Λ) (idx : Fin g ≃ X.Ψ × Fin r) (e : Fin g ≃ Lt1 Dw) (x : Frame X.Ψ r) (L : Lt E r) (y : FrPt Xo c ℂ) (A : AnFib X bas idx e x L y), IsSympl X bas → x ∈ X.dom → SelfD X L → ∀ (q0 n : ℕ) (hr : X.p0 + q0 = r) (eL : LtN Dw n ≃ Harm.Var X.Ψ q0 X.p0 (Fin n)), r = Dw.p + Dw.q → Even n → (∀ ℓ, letterDir X hr idx (eL ℓ) = Pi.single ℓ.2.2 (Pi.single (e.symm ⟨ℓ.1, ℓ.2.1⟩) 1)) → ∀ [StarRing (𝓞 E)] (nab : NabV Xo c), IsNab Xo c nab → ∀ (θ : (Fin g → ℂ) → ℂ) (v : TF n g) (κ : ℂ), A.Reads 1 y.s θ → IsVac X bas (H.w0 : E) (tens (stdL E n) L) v → (∀ z : Fin n → Fin g → ℂ, ∏ b, θ (z b) = κ * thA X bas idx v x z) → ∀ mk : Dw.La →ₗ[𝓞 E] (Fin r → E), IsMark l L mk → A.Marked mk → ∀ Λ ∈ Vset E n l.M, ∀ N : ℕ, NOK Λ N l.M → ∀ Y : (Fin n → LevQ Dw l) → Matrix (Fin n) (Fin r) E, IsRoots l L mk N Y → ∀ (a : (E →+* ℂ) × ℕ → ℕ) (P : MvPolynomial (LtN Dw n) c.F), P ∈ HHa Dw.mult n c.F ComplexEmbedding.conjugate (InPsi H) (fun τ i => a (τ, i)) → ∀ (wq : (Fin n → LevQ Dw l) → c.F) (β : c.F) (v0 : ℂ), ShortValAt Xo c nab wq (⟨Λ⟩ : GenLat E n) β N P y v0 → v0 = algebraMap c.F ℂ (β⁻¹ * (((⟨Λ⟩ : GenLat E n).mIdx N r : c.F))⁻¹ * ((Nat.card (Fin n → LevQ Dw l) : c.F))⁻¹ * ((⟨Λ⟩ : GenLat E n).zCard N r : c.F)) * κ * thP X hr bas idx (gphi X bas (H.w0 : E) Λ L v (fun q => algebraMap c.F ℂ (wq q)) Y) (MvPolynomial.rename eL (MvPolynomial.map (algebraMap c.F ℂ) P)) x := by
   intro hC E _ _ _ H Dw l Xo c _ r g X bas idx e x L y A hs hx hL q0 n hr eL hrpq hn hdir _ nab hnab θ v κ hθ hv hκ
     mk hmk hA Λ hΛ N hN Y hY a P hP wq β v0 h0

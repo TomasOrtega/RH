@@ -16,26 +16,44 @@ section WacAbs
 
 variable {A : Type} [CommRing A] {n : Type} [Fintype n] [DecidableEq n]
 
+/- English proof (translation)
+Use extensionality with `i j`. Simplify using `[cT]`.
+-/
 theorem wac_cT_add (τ : A →+* A) (M N : Matrix n n A) : cT τ (M + N) = cT τ M + cT τ N := by
   ext i j; simp [cT]
 
+/- English proof (translation)
+Use extensionality with `i j`. Simplify using `[cT]`.
+-/
 theorem wac_cT_sub (τ : A →+* A) (M N : Matrix n n A) : cT τ (M - N) = cT τ M - cT τ N := by
   ext i j; simp [cT]
 
+/- English proof (translation)
+Use extensionality with `i j`. Simplify using `[cT]`.
+-/
 theorem wac_cT_smul (τ : A →+* A) (c : A) (M : Matrix n n A) : cT τ (c • M) = τ c • cT τ M := by
   ext i j; simp [cT]
 
+/- English proof (translation)
+Use extensionality with `i j`. Simplify using `[cT, h]`.
+-/
 theorem wac_cT_cT (τ : A →+* A) (h : ∀ a, τ (τ a) = a) (M : Matrix n n A) : cT τ (cT τ M) = M := by
   ext i j; simp [cT, h]
 
 def WacSm (S : Subring A) (c : A) (N : Matrix n n A) : Prop := ∀ i j, ∃ s ∈ S, N i j = c * s
 
+/- English proof (translation)
+Introduce `i j`. Take `⟨s, hs, e⟩` from `h i j`. Conclude with `⟨c' * s, mul_mem hc' hs, by rw [e]; ring⟩`.
+-/
 theorem wac_sm_mono (S : Subring A) (c c' : A) (hc' : c' ∈ S) {N : Matrix n n A}
     (h : WacSm S (c * c') N) : WacSm S c N := by
   intro i j
   obtain ⟨s, hs, e⟩ := h i j
   exact ⟨c' * s, mul_mem hc' hs, by rw [e]; ring⟩
 
+/- English proof (translation)
+Introduce `i j`. Take `⟨s, hs, e⟩` from `hM i j`. Take `⟨t, ht, e'⟩` from `hN i j`. Conclude with `⟨s - t, sub_mem hs ht, by rw [Matrix.sub_apply, e, e']; ring⟩`.
+-/
 theorem wac_sm_sub (S : Subring A) (c : A) {M N : Matrix n n A} (hM : WacSm S c M)
     (hN : WacSm S c N) : WacSm S c (M - N) := by
   intro i j
@@ -43,12 +61,20 @@ theorem wac_sm_sub (S : Subring A) (c : A) {M N : Matrix n n A} (hM : WacSm S c 
   obtain ⟨t, ht, e'⟩ := hN i j
   exact ⟨s - t, sub_mem hs ht, by rw [Matrix.sub_apply, e, e']; ring⟩
 
+/- English proof (translation)
+Introduce `i j`. Take `⟨s, hs, e⟩` from `hM i j`. Conclude with `⟨-s, neg_mem hs, by rw [Matrix.neg_apply, e]; ring⟩`.
+-/
 theorem wac_sm_neg (S : Subring A) (c : A) {M : Matrix n n A} (hM : WacSm S c M) :
     WacSm S c (-M) := by
   intro i j
   obtain ⟨s, hs, e⟩ := hM i j
   exact ⟨-s, neg_mem hs, by rw [Matrix.neg_apply, e]; ring⟩
 
+/- English proof (translation)
+Introduce `i j`. Use `choose s hs e using hN`. Use `⟨∑ k, (d * M i k) * s k j, Subring.sum_mem _ fun k _ => mul_mem (hM i k) (hs k j), ?_⟩` and prove the remaining obligations. Rewrite using `[Matrix.mul_apply, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[e]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem wac_sm_mul_left (S : Subring A) (c d : A) (M : Matrix n n A) (hM : ∀ i j, d * M i j ∈ S)
     {N : Matrix n n A} (hN : WacSm S (c * d) N) : WacSm S c (M * N) := by
   intro i j
@@ -58,6 +84,11 @@ theorem wac_sm_mul_left (S : Subring A) (c d : A) (M : Matrix n n A) (hM : ∀ i
   refine Finset.sum_congr rfl fun k _ => ?_
   rw [e]; ring
 
+/- English proof (translation)
+Introduce `i j`. Use `choose s hs e using hN`. Use `⟨∑ k, s i k * (d * M k j), Subring.sum_mem _ fun k _ => mul_mem (hs i k) (hM k j), ?_⟩` and prove the remaining obligations. Rewrite using `[Matrix.mul_apply, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[e]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem wac_sm_mul_right (S : Subring A) (c d : A) (M : Matrix n n A) (hM : ∀ i j, d * M i j ∈ S)
     {N : Matrix n n A} (hN : WacSm S (c * d) N) : WacSm S c (N * M) := by
   intro i j
@@ -67,12 +98,18 @@ theorem wac_sm_mul_right (S : Subring A) (c d : A) (M : Matrix n n A) (hM : ∀ 
   refine Finset.sum_congr rfl fun k _ => ?_
   rw [e]; ring
 
+/- English proof (translation)
+Introduce `i j`. Take `⟨s, hs, e⟩` from `hN i j`. Conclude with `⟨(d * a) * s, mul_mem ha hs, by rw [Matrix.smul_apply, e, smul_eq_mul]; ring⟩`.
+-/
 theorem wac_sm_smul (S : Subring A) (c d a : A) (ha : d * a ∈ S)
     {N : Matrix n n A} (hN : WacSm S (c * d) N) : WacSm S c (a • N) := by
   intro i j
   obtain ⟨s, hs, e⟩ := hN i j
   exact ⟨(d * a) * s, mul_mem ha hs, by rw [Matrix.smul_apply, e, smul_eq_mul]; ring⟩
 
+/- English proof (translation)
+Introduce `i j`. Take `⟨s, hs, e⟩` from `hN j i`. Use `⟨τ s, hτ s hs, ?_⟩` and prove the remaining obligations. Use `show τ (N j i) = _`. Rewrite using `[e, map_mul, hc]`.
+-/
 theorem wac_sm_cT (S : Subring A) (τ : A →+* A) (hτ : ∀ s ∈ S, τ s ∈ S) (c : A) (hc : τ c = c)
     {N : Matrix n n A} (hN : WacSm S c N) : WacSm S c (cT τ N) := by
   intro i j
@@ -81,6 +118,25 @@ theorem wac_sm_cT (S : Subring A) (τ : A →+* A) (hτ : ∀ s ∈ S, τ s ∈ 
   show τ (N j i) = _
   rw [e, map_mul, hc]
 
+/- English proof (translation)
+Use `choose s hs e using hN`. Set `cS : S` to `⟨c, hc⟩`. Set `NS : Matrix n n S` to `fun i j => ⟨s i j, hs i j⟩`. Set `WS : Matrix n n S` to `1 - cS • NS`. Establish `hmap : WS.map S.subtype = 1 - N`.
+
+Use extensionality with `i j`. Simplify using `only [WS, NS, cS, Matrix.map_apply, Matrix.sub_apply, map_sub, Subring.subtype_apply, e i j]`. Use `congr 1`. Distinguish the cases in `h : i = j`. Substitute `h` using the available equality.
+
+Simplify using the standard rewrite rules. Simplify using `[Matrix.one_apply_ne h]`. Establish `hdet : ∃ a : S, WS.det = 1 + cS * a`. Establish `h1 : (Ideal.Quotient.mk (Ideal.span {cS})) WS.det = 1`. Rewrite using `[RingHom.map_det]`.
+
+Establish `: (Ideal.Quotient.mk (Ideal.span {cS})).mapMatrix WS = 1`. Use extensionality with `i j`. Simplify using `only [WS, RingHom.mapMatrix_apply, Matrix.map_apply, Matrix.sub_apply, Matrix.smul_apply, smul_eq_mul, map_sub, map_mul]`. Establish `h0 : (Ideal.Quotient.mk (Ideal.span {cS})) cS = 0` using `Ideal.Quotient.eq_zero_iff_mem.2 (Ideal.mem_span_singleton_self _)`. Rewrite using `[h0, zero_mul, sub_zero]`.
+
+Distinguish the cases in `h : i = j`. Substitute `h` using the available equality. Simplify using the standard rewrite rules. Simplify using `[Matrix.one_apply_ne h]`. Rewrite using `[this, Matrix.det_one]`.
+
+Establish `h2 : WS.det - 1 ∈ Ideal.span {cS}`. Rewrite using `[← Ideal.Quotient.eq_zero_iff_mem, map_sub, h1, map_one, sub_self]`. Take `⟨a, ha⟩` from `Ideal.mem_span_singleton'.1 h2`. Conclude with `⟨a, by rw [mul_comm, ha]; ring⟩`. Take `⟨a, ha⟩` from `hdet`.
+
+Take `⟨t, ht, hta⟩` from `hjac a a.2`. Establish `hu : IsUnit WS.det`. Rewrite using `[ha]`. Use `IsUnit.of_mul_eq_one (⟨t, ht⟩ : S) ?_` and prove the remaining obligations. Apply `Subtype.ext` to reduce the goal to its premises.
+
+Simplify using `using hta`. Use `⟨(WS⁻¹).map S.subtype, fun i j => (WS⁻¹ i j).2, ?_⟩` and prove the remaining obligations. Rewrite using `[← hmap, ← Matrix.map_mul, Matrix.mul_nonsing_inv _ hu]`. Use extensionality with `i j`. Distinguish the cases in `h : i = j`.
+
+Substitute `h` using the available equality. Simplify using the standard rewrite rules. Simplify using `[Matrix.one_apply_ne h]`.
+-/
 theorem wac_inv_one_sub (S : Subring A) (c : A) (hc : c ∈ S)
     (hjac : ∀ s ∈ S, ∃ t ∈ S, (1 + c * s) * t = 1) {N : Matrix n n A} (hN : WacSm S c N) :
     ∃ W' : Matrix n n A, (∀ i j, W' i j ∈ S) ∧ (1 - N) * W' = 1 := by
@@ -148,6 +204,9 @@ structure WacCtx (ι : E →+* A) (σ : E →+* E) (τ : A →+* A) (S : Subring
 
 variable {ι : E →+* A} {σ : E →+* E} {τ : A →+* A} {S : Subring A} {d : O →+* E}
 
+/- English proof (translation)
+Use `choose r hr0 hr using fun p : n × n => H.den (M p.1 p.2)`. Use `⟨∏ p, r p, Finset.prod_ne_zero_iff.2 fun p _ => hr0 p, fun i j => ?_⟩` and prove the remaining obligations. Rewrite using `[← Finset.mul_prod_erase Finset.univ r (Finset.mem_univ (i, j)), mul_comm (r (i, j)), map_mul, map_mul, mul_assoc]`. Conclude with `mul_mem (H.dS _) (hr (i, j))`.
+-/
 theorem wac_den_matrix (H : WacCtx ι σ τ S d) (M : Matrix n n A) :
     ∃ r : O, r ≠ 0 ∧ ∀ i j, ι (d r) * M i j ∈ S := by
   classical
@@ -157,13 +216,88 @@ theorem wac_den_matrix (H : WacCtx ι σ τ S d) (M : Matrix n n A) :
     map_mul, mul_assoc]
   exact mul_mem (H.dS _) (hr (i, j))
 
+/- English proof (translation)
+Use extensionality with `i j`. Simplify using `[cT, H.comm]`.
+-/
 theorem wac_cT_map (H : WacCtx ι σ τ S d) (M : Matrix n n E) :
     cT τ (M.map ι) = (cT σ M).map ι := by
   ext i j; simp [cT, H.comm]
 
+/- English proof (translation)
+The claim follows from `Matrix.map_one ι (map_zero ι) (map_one ι)`.
+-/
 theorem wac_map_one (ι : E →+* A) : (1 : Matrix n n E).map ι = 1 :=
   Matrix.map_one ι (map_zero ι) (map_one ι)
 
+/- English proof (translation)
+Use `H.nontriv` as an intermediate fact. Use `set J' := J.map ι with hJ'`. Use `set P := 1 + G with hPdef`. Use `set B := P⁻¹ with hBdef`. Establish `hPB : P * B = 1` using `Matrix.mul_nonsing_inv _ hP`.
+
+Establish `hBP : B * P = 1` using `Matrix.nonsing_inv_mul _ hP`. Establish `hcPB : cT τ B * cT τ P = 1` using `by rw [← cT_mul, hPB, cT_one]`. Establish `hcP : cT τ P = 1 + cT τ G` using `by rw [hPdef, wac_cT_add, cT_one]`. Establish `h1 : J' * P + cT τ P * J' = cT τ P * J' * P`. Rewrite using `[hcP, hPdef]`.
+
+Establish `e : (1 + cT τ G) * J' * (1 + G) = J' + J' * G + cT τ G * J' + cT τ G * J' * G` using `by noncomm_ring`. Rewrite using `[e, hG]`. Use `noncomm_ring`. Establish `hC : cT τ B * J' + J' * B = J'`. Combine the equalities or inequalities in the displayed calculation.
+
+Rewrite using `[mul_add, add_mul, show cT τ B * (J' * P) * B = cT τ B * J' * (P * B) by simp only [Matrix.mul_assoc], show cT τ B * (cT τ P * J') * B = (cT τ B * cT τ P) * J' * B by`. Simplify using `only [Matrix.mul_assoc], hPB, hcPB, Matrix.mul_one, Matrix.one_mul]`. Use `_ = cT τ B * (cT τ P * J' * P) * B := by rw [h1]`. Use `_ = (cT τ B * cT τ P) * J' * (P * B) := by simp only [Matrix.mul_assoc]`. Use `_ = J' := by rw [hPB, hcPB, Matrix.one_mul, Matrix.mul_one]`.
+
+Use `set Ji := J⁻¹ with hJidef`. Establish `hJJi : J * Ji = 1` using `Matrix.mul_nonsing_inv _ hJd`. Establish `hJiJ : Ji * J = 1` using `Matrix.nonsing_inv_mul _ hJd`. Use `set J'i := Ji.map ι with hJ'i`. Establish `hJ'1 : J'i * J' = 1` using `by rw [hJ'i, hJ', ← Matrix.map_mul, hJiJ, wac_map_one]`.
+
+Use `set c2 := ι (2⁻¹) with hc2`. Establish `h22 : c2 * 2 = 1`. Rewrite using `[hc2, show (2 : A) = ι 2 from (map_ofNat ι 2).symm, ← map_mul, inv_mul_cancel₀ H.two, map_one]`. Establish `hB : B = c2 • (B - J'i * cT τ B * J' + 1)`. Establish `e1 : J'i * cT τ B * J' = 1 - B`.
+
+Establish `e0 : cT τ B * J' = J' - J' * B` using `eq_sub_of_add_eq hC`. Rewrite using `[Matrix.mul_assoc, e0, Matrix.mul_sub, hJ'1, ← Matrix.mul_assoc, hJ'1, Matrix.one_mul]`. Rewrite using `[e1]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[mul_smul]`.
+
+Use `congr 1`. Rewrite using `[two_smul]`. Normalize the expressions using the abelian group laws. Take `⟨rP, hrP0, hrP⟩` from `wac_den_matrix H P`. Take `⟨rJ, hrJ0, hrJ⟩` from `wac_den_matrix H J'`.
+
+Take `⟨rJi, hrJi0, hrJi⟩` from `wac_den_matrix H J'i`. Take `⟨r2, hr20, hr2⟩` from `H.den c2`. Take `⟨w, hw0, hjac⟩` from `H.jac`. Use `set R := w * r * rP * rP with hR`. Use `set R' := R * r2 * rJ * rJi with hR'`.
+
+Establish `hR'0 : R' ≠ 0`. Simplify using `only [hR', hR]`. Use the proof step `repeat' apply mul_ne_zero`. Apply the tactic sequence `all_goals assumption`. Use `choose b s hs hb using fun i j => H.dense (B i j) R' hR'0`.
+
+Use `set B0' : Matrix n n E := Matrix.of b with hB0'`. Use `set Δ' := B - B0'.map ι with hΔ'def`. Establish `hΔ' : WacSm S (ι (d R')) Δ'` using `fun i j => ⟨s i j, hs i j, by`. Simplify `hb i j⟩` using `[hΔ'def, hB0']`. Use `set B0 : Matrix n n E := (2⁻¹ : E) • (B0' - Ji * cT σ B0' * J + 1) with hB0`.
+
+Establish `hιB0 : B0.map ι = c2 • (B0'.map ι - J'i * cT τ (B0'.map ι) * J' + 1)`. Rewrite using `[hB0, Matrix.map_smul' _ _ _ (map_mul ι), wac_cT_map H]`. Use `congr 1`. Rewrite using `[Matrix.map_add _ (map_add ι), Matrix.map_sub _ (map_sub ι), Matrix.map_mul, Matrix.map_mul, wac_map_one]`. Use `set Δ := B - B0.map ι with hΔdef`.
+
+Establish `hΔ : Δ = c2 • (Δ' - J'i * cT τ Δ' * J')`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[← smul_sub]`. Use `congr 1`. Rewrite using `[hΔ'def, wac_cT_sub, Matrix.mul_sub, Matrix.sub_mul]`.
+
+Normalize the expressions using the abelian group laws. Establish `hfixδ : ∀ x : O, τ (ι (d x)) = ι (d x)` using `fun x => by rw [H.comm, H.fix]`. Establish `hR'eq : ι (d R') = ι (d R) * ι (d r2) * ι (d rJ) * ι (d rJi)`. Simplify using `only [hR', map_mul]`. Establish `hΔsm : WacSm S (ι (d R)) Δ`.
+
+Rewrite using `[hΔ]`. Apply `wac_sm_smul S (ι (d R)) (ι (d r2)) c2 hr2` to reduce the goal to its premises. Apply `wac_sm_sub` to reduce the goal to its premises. Apply `wac_sm_mono S _ (ι (d rJ)) (H.dS _)` to reduce the goal to its premises. Apply `wac_sm_mono S _ (ι (d rJi)) (H.dS _)` to reduce the goal to its premises.
+
+Rewrite using `[← hR'eq]`. Conclude with `hΔ'`. Apply `wac_sm_mul_right S _ (ι (d rJ)) J' hrJ` to reduce the goal to its premises. Apply `wac_sm_mul_left S _ (ι (d rJi)) J'i hrJi` to reduce the goal to its premises. Rewrite using `[← hR'eq]`.
+
+Conclude with `wac_sm_cT S τ H.tS _ (hfixδ _) hΔ'`. Establish `hΔP : WacSm S (ι (d (w * r * rP))) (Δ * P)`. Apply `wac_sm_mul_right S _ (ι (d rP)) P hrP` to reduce the goal to its premises. Rewrite using `[← map_mul, ← map_mul]`. Conclude with `hΔsm`.
+
+Establish `hΔPw : WacSm S (ι (d w)) (Δ * P)`. Apply `wac_sm_mono S _ (ι (d (r * rP))) (H.dS _)` to reduce the goal to its premises. Rewrite using `[← map_mul, ← map_mul, ← mul_assoc]`. Conclude with `hΔP`. Establish `hPΔP : WacSm S (ι (d r)) (P * (Δ * P))`.
+
+Apply `wac_sm_mono S _ (ι (d w)) (H.dS _)` to reduce the goal to its premises. Apply `wac_sm_mul_left S _ (ι (d rP)) P hrP` to reduce the goal to its premises. Rewrite using `[← map_mul, ← map_mul, ← map_mul, ← map_mul, mul_comm r w]`. Conclude with `hΔP`. Take `⟨W', hW'S, hW'⟩` from `wac_inv_one_sub S (ι (d w)) (H.dS w) hjac hΔPw`.
+
+Establish `hιB0' : B0.map ι = (1 - Δ * P) * B`. Rewrite using `[Matrix.sub_mul, Matrix.one_mul, Matrix.mul_assoc, hPB, Matrix.mul_one, hΔdef, sub_sub_cancel]`. Establish `hinv : B0.map ι * (P * W') = 1`. Rewrite using `[hιB0', Matrix.mul_assoc, ← Matrix.mul_assoc B, hBP, Matrix.one_mul, hW']`. Establish `hB0d : B0.det ≠ 0`.
+
+Introduce `h0`. Establish `hu : IsUnit (B0.map ι).det` using `Matrix.isUnit_det_of_right_inverse hinv`. Establish `e : (B0.map ι).det = ι B0.det`. Rewrite using `[RingHom.map_det]`. Both sides reduce to the same expression.
+
+Rewrite `hu` using `[e, h0, map_zero]`. Conclude with `not_isUnit_zero hu`. Establish `hB0u : IsUnit B0.det` using `IsUnit.mk0 _ hB0d`. Use `set B0i := B0⁻¹ with hB0idef`. Establish `hB0B0i : B0 * B0i = 1` using `Matrix.mul_nonsing_inv _ hB0u`.
+
+Establish `hB0iB0 : B0i * B0 = 1` using `Matrix.nonsing_inv_mul _ hB0u`. Establish `hιB0i : B0i.map ι = P * W'`. Combine the equalities or inequalities in the displayed calculation. Establish `hcJi : cT σ Ji = Ji`. Establish `e : cT σ Ji * J = 1`.
+
+Combine the equalities or inequalities in the displayed calculation. Combine the equalities or inequalities in the displayed calculation. Establish `hcB0 : cT σ B0 = (2⁻¹ : E) • (cT σ B0' - J * (B0' * Ji) + 1)`. Rewrite using `[hB0, wac_cT_smul, wac_cT_add, wac_cT_sub, cT_mul, cT_mul, wac_cT_cT σ H.ss, hJ, hcJi, cT_one, map_inv₀, map_ofNat]`. Establish `hC0 : cT σ B0 * J + J * B0 = J`.
+
+Establish `e1 : (cT σ B0' - J * (B0' * Ji) + 1) * J = cT σ B0' * J - J * B0' + J`. Rewrite using `[Matrix.add_mul, Matrix.sub_mul, Matrix.one_mul]`. Simplify using `only [Matrix.mul_assoc, hJiJ, Matrix.mul_one]`. Establish `e2 : J * (B0' - Ji * cT σ B0' * J + 1) = J * B0' - cT σ B0' * J + J`. Rewrite using `[Matrix.mul_add, Matrix.mul_sub, Matrix.mul_one, ← Matrix.mul_assoc, ← Matrix.mul_assoc, hJJi, Matrix.one_mul]`.
+
+Rewrite using `[hcB0, Matrix.smul_mul, e1]`. Use `conv_lhs => rw [hB0]`. Rewrite using `[Matrix.mul_smul, e2, ← smul_add]`. Establish `e3 : cT σ B0' * J - J * B0' + J + (J * B0' - cT σ B0' * J + J) = (2 : E) • J`. Rewrite using `[two_smul]`.
+
+Normalize the expressions using the abelian group laws. Rewrite using `[e3, smul_smul, inv_mul_cancel₀ H.two, one_smul]`. Use `set Γ := B0i - 1 with hΓdef`. Establish `hΓB : Γ * B0 = 1 - B0` using `by rw [hΓdef, Matrix.sub_mul, hB0iB0, Matrix.one_mul]`. Establish `hkey : cT σ B0 * (cT σ Γ * J * Γ) * B0 = cT σ B0 * J * B0`.
+
+Combine the equalities or inequalities in the displayed calculation. Rewrite using `[cT_mul]`. Simplify using `only [Matrix.mul_assoc]`. Use `_ = (1 - cT σ B0) * J * (1 - B0) := by rw [hΓB, wac_cT_sub, cT_one]`. Use `_ = J - (cT σ B0 * J + J * B0) + cT σ B0 * J * B0 := by noncomm_ring`.
+
+Use `_ = cT σ B0 * J * B0 := by rw [hC0]; abel`. Establish `hcB0i : cT σ B0i * cT σ B0 = 1` using `by rw [← cT_mul, hB0B0i, cT_one]`. Establish `hΓ : cT σ Γ * J * Γ = J`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[hcB0i, hB0B0i, Matrix.one_mul, Matrix.mul_one]`.
+
+Use `_ = cT σ B0i * (cT σ B0 * (cT σ Γ * J * Γ) * B0) * B0i := by simp only [Matrix.mul_assoc]`. Use `_ = cT σ B0i * (cT σ B0 * J * B0) * B0i := by rw [hkey]`. Use `_ = (cT σ B0i * cT σ B0) * J * (B0 * B0i) := by simp only [Matrix.mul_assoc]`. Use `_ = J := by rw [hcB0i, hB0B0i, Matrix.one_mul, Matrix.mul_one]`. Use `⟨Γ, hΓ, ?_⟩` and prove the remaining obligations.
+
+Establish `hW'' : W' = 1 + Δ * P * W'`. Establish `e` using `hW'`. Rewrite `e` using `[Matrix.sub_mul, Matrix.one_mul]`. Conclude with `eq_add_of_sub_eq e`. Establish `hfin : G - Γ.map ι = -(P * (Δ * P) * W')`.
+
+Establish `e1 : Γ.map ι = P * W' - 1`. Rewrite using `[hΓdef, Matrix.map_sub _ (map_sub ι), hιB0i, wac_map_one]`. Establish `e2 : G = P - 1` using `by rw [hPdef]; abel`. Rewrite using `[e1, e2]`. Use `conv_lhs => rw [hW'']`.
+
+Rewrite using `[Matrix.mul_add, Matrix.mul_one]`. Simplify using `only [Matrix.mul_assoc]`. Normalize the expressions using the abelian group laws. Rewrite using `[hfin]`. Apply `wac_sm_neg` to reduce the goal to its premises.
+
+Apply `wac_sm_mul_right S _ 1 W' (by simpa using hW'S)` to reduce the goal to its premises. Rewrite using `[mul_one]`. Conclude with `hPΔP`.
+-/
 theorem wac_cayley (H : WacCtx ι σ τ S d) (J : Matrix n n E) (hJ : cT σ J = J)
     (hJd : IsUnit J.det) (G : Matrix n n A) (hG : cT τ G * J.map ι * G = J.map ι)
     (hP : IsUnit (1 + G).det) (r : O) (hr : r ≠ 0) :
@@ -351,6 +485,21 @@ namespace Formalism.MainNotions.Gaps.CC.WA
 
 open Formalism.UG
 
+/- English proof (translation)
+Use `set χ : Polynomial A := (-G).charpoly with hχ`. Establish `heval : ∀ a : A, χ.eval a = (a • (1 : Matrix n n A) + G).det`. Introduce `a`. Rewrite using `[hχ, Matrix.eval_charpoly, sub_neg_eq_add]`. Use `congr 2`.
+
+Use extensionality with `p q`. Simplify using `[Matrix.scalar_apply, Matrix.diagonal_apply, Matrix.one_apply]`. Establish `hbad : ∀ m : Ideal A, m.IsMaximal → {l : E | χ.eval (i l) ∈ m}.Finite`. Introduce `m hm`. Set `_` to `Ideal.Quotient.field m`.
+
+Set `φ : E →+* A ⧸ m` to `(Ideal.Quotient.mk m).comp i`. Establish `hφ : Function.Injective φ` using `φ.injective`. Establish `hmon : (χ.map (Ideal.Quotient.mk m)).Monic` using `(Matrix.charpoly_monic _).map _`. Establish `hfin : (φ ⁻¹' ((χ.map (Ideal.Quotient.mk m)).roots.toFinset : Set (A ⧸ m))).Finite` using `Set.Finite.preimage hφ.injOn (Finset.finite_toSet _)`. Use `hfin.subset ?_` and prove the remaining obligations.
+
+Introduce `l hl`. Simplify using `only [Set.mem_ofPred_eq] at hl`. Simplify using `only [Set.mem_preimage, Finset.mem_coe, Multiset.mem_toFinset]`. Rewrite using `[Polynomial.mem_roots hmon.ne_zero, Polynomial.IsRoot.def]`. Use `show Polynomial.eval (Ideal.Quotient.mk m (i l)) _ = 0`.
+
+Rewrite using `[Polynomial.eval_map, Polynomial.eval₂_hom]`. Conclude with `Ideal.Quotient.eq_zero_iff_mem.2 hl`. Establish `hU : (⋃ m ∈ {I : Ideal A | I.IsMaximal}, {l : E | χ.eval (i l) ∈ m}).Finite` using `Set.Finite.biUnion (IsArtinianRing.setOfPred_isMaximal_finite A) (fun m hm => hbad m hm)`. Take `⟨l, hlT, hl⟩` from `hT.exists_notMem_finite hU`. Use `⟨l, hlT, ?_⟩` and prove the remaining obligations.
+
+Assume the negation of the conclusion as `hnu`. Take `⟨m, hm, hmem⟩` from `exists_max_ideal_of_mem_nonunits (a := (i l • (1 : Matrix n n A) + G).det) hnu`. Apply `hl` to reduce the goal to its premises. Simplify using `only [Set.mem_iUnion]`. Use `⟨m, hm, ?_⟩` and prove the remaining obligations.
+
+Use `show χ.eval (i l) ∈ m`. Rewrite using `[heval]`. Conclude with `hmem`.
+-/
 theorem wac_unit_exists {E A : Type} [Field E] [CommRing A] [IsArtinianRing A]
     {n : Type} [Fintype n] [DecidableEq n] (i : E →+* A) (G : Matrix n n A) (T : Set E)
     (hT : T.Infinite) : ∃ l ∈ T, IsUnit (i l • (1 : Matrix n n A) + G).det := by
@@ -391,6 +540,19 @@ theorem wac_unit_exists {E A : Type} [Field E] [CommRing A] [IsArtinianRing A]
   rw [heval]
   exact hmem
 
+/- English proof (translation)
+Take `⟨θ, hθ⟩` from `hθ`. Establish `hne : ∀ a : F, algebraMap F E a + θ ≠ 0`. Introduce `a h`. Apply `hθ` to reduce the goal to its premises. Establish `: θ = algebraMap F E (-a)`.
+
+Rewrite using `[map_neg]`. Conclude with `(eq_neg_of_add_eq_zero_right h)`. Rewrite using `[this, AlgHom.commutes]`. Establish `hne' : ∀ a : F, algebraMap F E a + σ θ ≠ 0`. Introduce `a h`.
+
+Apply `hne a` to reduce the goal to its premises. Use `congrArg σ h` as an intermediate fact. Rewrite `this` using `[map_add, AlgHom.commutes, hσσ, map_zero]`. Conclude with `this`. Set `f : F → E` to `fun a => (algebraMap F E a + θ) / (algebraMap F E a + σ θ)`.
+
+Establish `hinj : Function.Injective f`. Introduce `a b hab`. Simplify using `only [f] at hab`. Rewrite `hab` using `[div_eq_div_iff (hne' a) (hne' b)]`. Establish `h1 : (algebraMap F E a - algebraMap F E b) * (σ θ - θ) = 0`.
+
+Take the linear combination `hab`. Break down `mul_eq_zero.1 h1 with h | h` into its components or cases. Conclude with `(algebraMap F E).injective (sub_eq_zero.1 h)`. Conclude with `absurd (sub_eq_zero.1 h) hθ`. Use `(Set.infinite_range_of_injective hinj).mono ?_` and prove the remaining obligations.
+
+Introduce and unpack `_ ⟨a, rfl⟩`. Simplify using `only [f, Set.mem_ofPred_eq]`. Rewrite using `[map_div₀, map_add, map_add, AlgHom.commutes, hσσ]`. Clear denominators, using `[hne a, hne' a]` for the nonvanishing conditions.
+-/
 theorem wac_norm_one_infinite {F E : Type} [Field F] [CharZero F] [Field E] [Algebra F E]
     (σ : E →ₐ[F] E) (hσσ : ∀ e, σ (σ e) = e) (hθ : ∃ θ, σ θ ≠ θ) :
     {l : E | l * σ l = 1}.Infinite := by
@@ -423,6 +585,9 @@ theorem wac_norm_one_infinite {F E : Type} [Field F] [CharZero F] [Field E] [Alg
   rw [map_div₀, map_add, map_add, AlgHom.commutes, hσσ]
   field_simp [hne a, hne' a]
 
+/- English proof (translation)
+Establish `: FiniteDimensional F E` using `FiniteDimensional.right ℚ F E`. Establish `: Module.Finite (v.adicCompletion F) (v.adicCompletion F ⊗[F] E)` using `Module.Finite.base_change _ _ _`. Establish `: IsArtinianRing (v.adicCompletion F ⊗[F] E)` using `IsArtinianRing.of_finite (v.adicCompletion F) _`. Conclude with `RingEquiv.isArtinianRing (Algebra.TensorProduct.comm F (v.adicCompletion F) E).toRingEquiv`.
+-/
 theorem wac_artinian (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
     (v : HeightOneSpectrum (𝓞 F)) : IsArtinianRing (E ⊗[F] v.adicCompletion F) := by
   have : FiniteDimensional F E := FiniteDimensional.right ℚ F E
@@ -430,6 +595,11 @@ theorem wac_artinian (F E : Type) [Field F] [NumberField F] [Field E] [NumberFie
   have : IsArtinianRing (v.adicCompletion F ⊗[F] E) := IsArtinianRing.of_finite (v.adicCompletion F) _
   exact RingEquiv.isArtinianRing (Algebra.TensorProduct.comm F (v.adicCompletion F) E).toRingEquiv
 
+/- English proof (translation)
+Use `wac_artinian F E v` as an intermediate fact. Take `⟨l, hl, hu⟩` from `wac_unit_exists (inclE (F := F) (v.adicCompletion F)) G _ (wac_norm_one_infinite σ hσσ hθ)`. Use `⟨l, hl, ?_⟩` and prove the remaining obligations. Establish `hl' : inclE (F` using `F) (v.adicCompletion F) (σ l) * inclE (F := F) (v.adicCompletion F) l = 1 := by`. Rewrite using `[← map_mul, mul_comm, hl, map_one]`.
+
+Establish `e : (1 + inclE (F` using `F) (v.adicCompletion F) (σ l) • G) = inclE (F := F) (v.adicCompletion F) (σ l) • (inclE (F := F) (v.adicCompletion F) l • (1 : Matrix n n (E ⊗[F] v.adicCompletion F)) + G) := by`. Rewrite using `[smul_add, smul_smul, hl', one_smul]`. Rewrite using `[e, Matrix.det_smul]`. Conclude with `((IsUnit.of_mul_eq_one _ hl').pow _).mul hu`.
+-/
 theorem wac_scalar {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
     {n : Type} [Fintype n] [DecidableEq n] (σ : E →ₐ[F] E) (hσσ : ∀ e, σ (σ e) = e)
     (hθ : ∃ θ, σ θ ≠ θ) (v : HeightOneSpectrum (𝓞 F))
@@ -466,12 +636,18 @@ section WaNt
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
   (v : HeightOneSpectrum (𝓞 F))
 
+/- English proof (translation)
+Use `show (algebraMap F E a) ⊗ₜ[F] (1 : v.adicCompletion F) = _`. Rewrite using `[Algebra.algebraMap_eq_smul_one, Algebra.algebraMap_eq_smul_one, TensorProduct.smul_tmul]`.
+-/
 theorem wac_incl_base (a : F) :
     inclE (F := F) (E := E) (v.adicCompletion F) (algebraMap F E a) =
       (1 : E) ⊗ₜ[F] (algebraMap F (v.adicCompletion F) a) := by
   show (algebraMap F E a) ⊗ₜ[F] (1 : v.adicCompletion F) = _
   rw [Algebra.algebraMap_eq_smul_one, Algebra.algebraMap_eq_smul_one, TensorProduct.smul_tmul]
 
+/- English proof (translation)
+Rewrite using `[wac_incl_base]`. Use `Subring.subset_closure (Or.inr ⟨⟨_, ?_⟩, rfl⟩)` and prove the remaining obligations. Use `levelaf_int_mem_v v r` as an intermediate fact. Rewrite `this` using `[IsScalarTower.algebraMap_apply (𝓞 F) F (v.adicCompletion F)]`. Then use the resulting hypothesis.
+-/
 theorem wac_dS (r : 𝓞 F) :
     inclE (F := F) (E := E) (v.adicCompletion F) (algebraMap F E (r : F)) ∈
       tensInt (F := F) (v.adicCompletion F) (intOE E) (v.adicCompletionIntegers F).toSubring := by
@@ -480,6 +656,19 @@ theorem wac_dS (r : 𝓞 F) :
   have := levelaf_int_mem_v v r
   rwa [IsScalarTower.algebraMap_apply (𝓞 F) F (v.adicCompletion F)] at this
 
+/- English proof (translation)
+Use `Subring.closure_induction (p := fun s _ => sigR σ (v.adicCompletion F) s ∈ tensInt (F := F) (v.adicCompletion F) (intOE E) (v.adicCompletionIntegers F).toSubring) ?_ ?_ ?_ ?_ ?_ ?_ hs` and prove the remaining obligations. Introduce and unpack `x (⟨⟨e, ⟨b, rfl⟩⟩, rfl⟩ | ⟨⟨y, hy⟩, rfl⟩)`. Establish `h1 : sigR σ (v.adicCompletion F) (algebraMap (𝓞 E) E b ⊗ₜ[F] (1 : v.adicCompletion F)) = (σ (algebraMap (𝓞 E) E b)) ⊗ₜ[F] (1 : v.adicCompletion F)`. Simplify using `[sigR]`. Use `show sigR σ _ (algebraMap (𝓞 E) E b ⊗ₜ[F] (1 : v.adicCompletion F)) ∈ _`.
+
+Rewrite using `[h1]`. Establish `hint : IsIntegral ℤ (σ (algebraMap (𝓞 E) E b))` using `(RingOfIntegers.isIntegral_coe b).map ((σ : E →+* E).toIntAlgHom)`. Conclude with `Subring.subset_closure (Or.inl ⟨⟨_, ⟨⟨_, hint⟩, rfl⟩⟩, rfl⟩)`. Establish `h1 : sigR σ (v.adicCompletion F) ((1 : E) ⊗ₜ[F] y) = (1 : E) ⊗ₜ[F] y`. Simplify using `[sigR]`.
+
+Use `show sigR σ _ ((1 : E) ⊗ₜ[F] y) ∈ _`. Rewrite using `[h1]`. Conclude with `Subring.subset_closure (Or.inr ⟨⟨y, hy⟩, rfl⟩)`. Rewrite using `[map_zero]`. Conclude with `zero_mem _`.
+
+Rewrite using `[map_one]`. Conclude with `one_mem _`. Introduce `x y _ _ hx hy`. Rewrite using `[map_add]`. Conclude with `add_mem hx hy`.
+
+Introduce `x _ hx`. Rewrite using `[map_neg]`. Conclude with `neg_mem hx`. Introduce `x y _ _ hx hy`. Rewrite using `[map_mul]`.
+
+Conclude with `mul_mem hx hy`.
+-/
 theorem wac_sig_S (σ : E →ₐ[F] E) (s : E ⊗[F] v.adicCompletion F)
     (hs : s ∈ tensInt (F := F) (v.adicCompletion F) (intOE E)
       (v.adicCompletionIntegers F).toSubring) :
@@ -509,6 +698,11 @@ theorem wac_sig_S (σ : E →ₐ[F] E) (s : E ⊗[F] v.adicCompletion F)
   · intro x _ hx; rw [map_neg]; exact neg_mem hx
   · intro x y _ _ hx hy; rw [map_mul]; exact mul_mem hx hy
 
+/- English proof (translation)
+Take `⟨N, hN, hmem⟩` from `levelv_denom v a`. Use `⟨(N : 𝓞 F), Nat.cast_ne_zero.2 hN, ?_⟩` and prove the remaining obligations. Establish `: inclE (F` using `F) (E := E) (v.adicCompletion F) (algebraMap F E (((N : 𝓞 F)) : F)) * a = N • a := by`. Rewrite using `[nsmul_eq_mul]`. Use `congr 1`.
+
+Establish `h0 : (((N : 𝓞 F)) : F) = (N : F)` using `map_natCast (algebraMap (𝓞 F) F) N`. Rewrite using `[h0, map_natCast, map_natCast]`. Rewrite using `[this]`. Conclude with `hmem`.
+-/
 theorem wac_den (a : E ⊗[F] v.adicCompletion F) :
     ∃ r : 𝓞 F, r ≠ 0 ∧ inclE (F := F) (E := E) (v.adicCompletion F) (algebraMap F E (r : F)) * a ∈
       tensInt (F := F) (v.adicCompletion F) (intOE E) (v.adicCompletionIntegers F).toSubring := by
@@ -523,6 +717,13 @@ theorem wac_den (a : E ⊗[F] v.adicCompletion F) :
   rw [this]
   exact hmem
 
+/- English proof (translation)
+Take `⟨d, hd0, hd⟩` from `levelaf_local_denom v x`. Take `⟨s, hs⟩` from `csApprox_local v (r * d) (mul_ne_zero hr hd0) _ hd`. Establish `hcd : algebraMap (𝓞 F) (v.adicCompletion F) d ≠ 0` using `levelaf_algebraMap_ne_zero v d hd0`. Establish `hcr : algebraMap (𝓞 F) (v.adicCompletion F) r ≠ 0` using `levelaf_algebraMap_ne_zero v r hr`. Establish `hcrd : algebraMap (𝓞 F) (v.adicCompletion F) (r * d) ≠ 0` using `levelaf_algebraMap_ne_zero v _ (mul_ne_zero hr hd0)`.
+
+Use `⟨(s : F) / (d : F), (algebraMap (𝓞 F) (v.adicCompletion F) d * x - algebraMap (𝓞 F) (v.adicCompletion F) s) / algebraMap (𝓞 F) (v.adicCompletion F) (r * d), ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[mem_adicCompletionIntegers, map_div₀, csApprox_val_int v (r * d)]`. Establish `hpos : 0 < v.intValuation (r * d)` using `zero_lt_iff.2 (v.intValuation_ne_zero _ (mul_ne_zero hr hd0))`. Conclude with `(div_le_one₀ hpos).2 hs.le`. Establish `e1 : algebraMap F (v.adicCompletion F) ((s : F) / (d : F)) = algebraMap (𝓞 F) (v.adicCompletion F) s / algebraMap (𝓞 F) (v.adicCompletion F) d`.
+
+Rewrite using `[map_div₀, IsScalarTower.algebraMap_apply (𝓞 F) F (v.adicCompletion F) s, IsScalarTower.algebraMap_apply (𝓞 F) F (v.adicCompletion F) d]`. Establish `e2 : algebraMap F (v.adicCompletion F) (r : F) = algebraMap (𝓞 F) (v.adicCompletion F) r`. Rewrite using `[IsScalarTower.algebraMap_apply (𝓞 F) F (v.adicCompletion F) r]`. Rewrite using `[e1, e2, map_mul]`. Clear the denominators using the available nonvanishing facts.
+-/
 theorem wac_local_dense (x : v.adicCompletion F) (r : 𝓞 F) (hr : r ≠ 0) :
     ∃ a : F, ∃ y ∈ v.adicCompletionIntegers F,
       x - algebraMap F (v.adicCompletion F) a = algebraMap F (v.adicCompletion F) (r : F) * y := by
@@ -548,6 +749,15 @@ theorem wac_local_dense (x : v.adicCompletion F) (r : 𝓞 F) (hr : r ≠ 0) :
     rw [e1, e2, map_mul]
     field_simp
 
+/- English proof (translation)
+Proceed by induction on `a using TensorProduct.induction_on with`. Consider the case `zero => exact ⟨0, 0, zero_mem _, by simp⟩`. Consider the case `tmul e x`. Take `⟨d, hd0, hd⟩` from `wac_den v (inclE (F := F) (E := E) (v.adicCompletion F) e)`. Take `⟨a0, y, hy, hxy⟩` from `wac_local_dense v x (r * d) (mul_ne_zero hr hd0)`.
+
+Use `⟨a0 • e, _, mul_mem hd (Subring.subset_closure (Or.inr ⟨⟨y, hy⟩, rfl⟩)), ?_⟩` and prove the remaining obligations. Establish `h1 : inclE (F` using `F) (E := E) (v.adicCompletion F) (a0 • e) = e ⊗ₜ[F] (algebraMap F (v.adicCompletion F) a0) := by show (a0 • e) ⊗ₜ[F] (1 : v.adicCompletion F) = _`. Rewrite using `[Algebra.algebraMap_eq_smul_one, TensorProduct.smul_tmul]`. Rewrite using `[h1, ← TensorProduct.tmul_sub, hxy]`. Use `show _ = ((algebraMap F E (r : F)) ⊗ₜ[F] (1 : v.adicCompletion F)) * ((((algebraMap F E (d : F)) ⊗ₜ[F] (1 : v.adicCompletion F)) * (e ⊗ₜ[F] (1 : v.adicCompletion F))) * ((1 : E) ⊗ₜ[F] y))`.
+
+Simplify using `only [Algebra.TensorProduct.tmul_mul_tmul, one_mul, mul_one]`. Establish `h2 : (((r * d : 𝓞 F)) : F) = (r : F) * (d : F)` using `map_mul (algebraMap (𝓞 F) F) r d`. Rewrite using `[h2, ← Algebra.smul_def, ← TensorProduct.smul_tmul, Algebra.smul_def, map_mul, mul_assoc]`. Consider the case `add a b ha hb`. Take `⟨e1, s1, hs1, h1⟩` from `ha`.
+
+Take `⟨e2, s2, hs2, h2⟩` from `hb`. Use `⟨e1 + e2, s1 + s2, add_mem hs1 hs2, ?_⟩` and prove the remaining obligations. Rewrite using `[map_add, mul_add, ← h1, ← h2]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem wac_dense (a : E ⊗[F] v.adicCompletion F) (r : 𝓞 F) (hr : r ≠ 0) :
     ∃ e : E, ∃ s ∈ tensInt (F := F) (v.adicCompletion F) (intOE E)
         (v.adicCompletionIntegers F).toSubring,
@@ -582,9 +792,21 @@ def wacF (E : Type) [Field E] [NumberField E] [Algebra F E] :
   (Algebra.TensorProduct.includeRight : v.adicCompletion F →ₐ[F] E ⊗[F] v.adicCompletion F).toRingHom.comp
     (v.adicCompletionIntegers F).subtype
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem wacF_apply (y : v.adicCompletionIntegers F) :
     wacF v E y = (1 : E) ⊗ₜ[F] (y : v.adicCompletion F) := rfl
 
+/- English proof (translation)
+Use `Subring.closure_induction (p := fun s _ => (wacF v E).IsIntegralElem s) ?_ ?_ ?_ ?_ ?_ ?_ hs` and prove the remaining obligations. Introduce and unpack `x (⟨⟨e, ⟨b, rfl⟩⟩, rfl⟩ | ⟨⟨y, hy⟩, rfl⟩)`. Establish `h1 : IsIntegral ℤ (inclE (F` using `F) (E := E) (v.adicCompletion F) (algebraMap (𝓞 E) E b)) := map_isIntegral_int (inclE (F := F) (E := E) (v.adicCompletion F)) (RingOfIntegers.isIntegral_coe b)`. Establish `h2 : algebraMap ℤ (E ⊗[F] v.adicCompletion F) = (wacF v E).comp (Int.castRingHom (v.adicCompletionIntegers F))` using `RingHom.ext_int _ _`. Establish `h3 : ((wacF v E).comp (Int.castRingHom (v.adicCompletionIntegers F))).IsIntegralElem (inclE (F` using `F) (E := E) (v.adicCompletion F) (algebraMap (𝓞 E) E b)) := by`.
+
+Rewrite using `[← h2]`. Conclude with `h1`. Conclude with `RingHom.IsIntegralElem.of_comp h3`. Conclude with `(wacF v E).isIntegralElem_map (x := ⟨y, hy⟩)`. Conclude with `(wacF v E).isIntegralElem_zero`.
+
+Conclude with `(wacF v E).isIntegralElem_one`. Introduce `x y _ _ hx hy`. Conclude with `RingHom.IsIntegralElem.add _ hx hy`. Introduce `x _ hx`. Conclude with `RingHom.IsIntegralElem.neg _ hx`.
+
+Introduce `x y _ _ hx hy`. Conclude with `RingHom.IsIntegralElem.mul _ hx hy`.
+-/
 theorem wac_integral (s : E ⊗[F] v.adicCompletion F)
     (hs : s ∈ tensInt (F := F) (v.adicCompletion F) (intOE E)
       (v.adicCompletionIntegers F).toSubring) : (wacF v E).IsIntegralElem s := by
@@ -612,6 +834,11 @@ def wacFS (E : Type) [Field E] [NumberField E] [Algebra F E] :
       (v.adicCompletionIntegers F).toSubring :=
   (wacF v E).codRestrict _ (fun y => Subring.subset_closure (Or.inr ⟨⟨y.1, y.2⟩, rfl⟩))
 
+/- English proof (translation)
+Introduce `x`. Take `⟨p, hm, hp⟩` from `wac_integral v x.1 x.2`. Use `⟨p, hm, Subtype.ext ?_⟩` and prove the remaining obligations. Use `Polynomial.hom_eval₂ p (wacFS v E) (tensInt (F := F) (v.adicCompletion F) (intOE E) (v.adicCompletionIntegers F).toSubring).subtype x` as an intermediate fact. Establish `h2 : ((tensInt (F` using `F) (v.adicCompletion F) (intOE E) (v.adicCompletionIntegers F).toSubring).subtype).comp (wacFS v E) = wacF v E := rfl`.
+
+Rewrite `this` using `[h2]`. Conclude with `this.trans hp`.
+-/
 theorem wacFS_integral : (wacFS v E).IsIntegral := by
   intro x
   obtain ⟨p, hm, hp⟩ := wac_integral v x.1 x.2
@@ -623,6 +850,23 @@ theorem wacFS_integral : (wacFS v E).IsIntegral := by
   rw [h2] at this
   exact this.trans hp
 
+/- English proof (translation)
+Take `⟨ϖ, hmem, h0⟩` from `Submodule.exists_mem_ne_zero_of_ne_bot v.ne_bot`. Use `⟨ϖ, h0, fun s hs => ?_⟩` and prove the remaining obligations. Use `set S := tensInt (F := F) (v.adicCompletion F) (intOE E) (v.adicCompletionIntegers F).toSubring with hS`. Set `c : S` to `⟨_, wac_dS (E := E) v ϖ⟩`. Set `u : S` to `1 + c * ⟨s, hs⟩`.
+
+Establish `hu : IsUnit u`. Assume the negation of the conclusion as `hnu`. Take `⟨m, hm, hum⟩` from `exists_max_ideal_of_mem_nonunits (show u ∈ nonunits S from hnu)`. Establish `hmax` using `Ideal.isMaximal_comap_of_isIntegral_of_isMaximal' (wacFS v E) (wacFS_integral v) m`. Establish `hloc` using `IsLocalRing.eq_maximalIdeal hmax`.
+
+Set `w : v.adicCompletionIntegers F` to `⟨_, levelaf_int_mem_v v ϖ⟩`. Establish `hw : w ∈ IsLocalRing.maximalIdeal (v.adicCompletionIntegers F)`. Rewrite using `[IsLocalRing.mem_maximalIdeal, mem_nonunits_iff]`. Introduce `hwu`. Take `⟨y, hy⟩` from `hwu.exists_right_inv`.
+
+Establish `h1 : Valued.v (algebraMap (𝓞 F) (v.adicCompletion F) ϖ) * Valued.v (y : v.adicCompletion F) = 1`. Rewrite using `[← map_mul]`. Use `congrArg Subtype.val hy` as an intermediate fact. Simplify using `only [w] at this`. Rewrite using `[show algebraMap (𝓞 F) (v.adicCompletion F) ϖ * (y : v.adicCompletion F) = 1 from this, map_one]`.
+
+Establish `h2 : Valued.v (algebraMap (𝓞 F) (v.adicCompletion F) ϖ) < 1`. Rewrite using `[csApprox_val_int]`. Conclude with `(v.intValuation_lt_one_iff_mem ϖ).2 hmem`. Establish `h3 : Valued.v (y : v.adicCompletion F) ≤ 1` using `y.2`. Establish `h4 : Valued.v (algebraMap (𝓞 F) (v.adicCompletion F) ϖ) * Valued.v (y : v.adicCompletion F) < 1` using `lt_of_le_of_lt (by simpa using mul_le_mul' (le_refl _) h3) h2`.
+
+Conclude with `absurd h1 h4.ne`. Rewrite `hw` using `[← hloc, Ideal.mem_comap]`. Establish `hc : wacFS v E w = c`. Apply `Subtype.ext` to reduce the goal to its premises. Use `show (1 : E) ⊗ₜ[F] (algebraMap (𝓞 F) (v.adicCompletion F) ϖ) = _`.
+
+Rewrite using `[IsScalarTower.algebraMap_apply (𝓞 F) F (v.adicCompletion F)]`. Conclude with `(wac_incl_base v _).symm`. Rewrite `hw` using `[hc]`. Establish `h1 : (1 : S) ∈ m`. Establish `: (1 : S) = u - c * ⟨s, hs⟩` using `by simp [u]`.
+
+Rewrite using `[this]`. Conclude with `sub_mem hum (m.mul_mem_right _ hw)`. Conclude with `hm.ne_top ((Ideal.eq_top_iff_one m).2 h1)`. Take `⟨t, ht⟩` from `hu.exists_right_inv`. Conclude with `⟨t.1, t.2, congrArg Subtype.val ht⟩`.
+-/
 theorem wac_jac : ∃ ϖ : 𝓞 F, ϖ ≠ 0 ∧ ∀ s ∈ tensInt (F := F) (v.adicCompletion F) (intOE E)
       (v.adicCompletionIntegers F).toSubring,
     ∃ t ∈ tensInt (F := F) (v.adicCompletion F) (intOE E) (v.adicCompletionIntegers F).toSubring,
@@ -692,6 +936,9 @@ section WacTop
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
   {n : Type} [Fintype n] [DecidableEq n]
 
+/- English proof (translation)
+Simplify using `[sigR, inclE] fix r := by simp dS r := wac_dS v r tS s hs := wac_sig_S v σ s hs den a := wac_den v a dense a r hr := wac_dense v a r hr jac := wac_jac v ss := hσσ two := two_ne_zero nontriv := (inclE_injective F E (v.adicCompletion F)).nontrivial`.
+-/
 theorem wac_ctx (σ : E →ₐ[F] E) (hσσ : ∀ e, σ (σ e) = e) (v : HeightOneSpectrum (𝓞 F)) :
     WacCtx (O := 𝓞 F) (inclE (F := F) (E := E) (v.adicCompletion F)) (σ : E →+* E)
       (sigR σ (v.adicCompletion F))
@@ -708,6 +955,23 @@ theorem wac_ctx (σ : E →ₐ[F] E) (hσσ : ∀ e, σ (σ e) = e) (v : HeightO
   two := two_ne_zero
   nontriv := (inclE_injective F E (v.adicCompletion F)).nontrivial
 
+/- English proof (translation)
+Establish `H` using `wac_ctx σ hσσ v`. Use `set ι := inclE (F := F) (E := E) (v.adicCompletion F) with hι`. Use `set τ := sigR σ (v.adicCompletion F) with hτ`. Use `set S := tensInt (F := F) (v.adicCompletion F) (intOE E) (v.adicCompletionIntegers F).toSubring with hS`. Use `set G : Matrix n n (E ⊗[F] v.adicCompletion F) := (g : Matrix n n (E ⊗[F] v.adicCompletion F)) with hGdef`.
+
+Establish `hG : cT τ G * J.map ι * G = J.map ι` using `hg`. Take `⟨l, hl, hu⟩` from `wac_scalar σ hσσ hθ v G`. Establish `hl1 : ι l * ι (σ l) = 1` using `by rw [← map_mul, hl, map_one]`. Establish `hG1 : cT τ (ι (σ l) • G) * J.map ι * (ι (σ l) • G) = J.map ι`. Establish `e : τ (ι (σ l)) = ι l`.
+
+Use `H.comm (σ l)` as an intermediate fact. Rewrite using `[this]`. Conclude with `congrArg ι (hσσ l)`. Rewrite using `[wac_cT_smul, e, Matrix.smul_mul, Matrix.smul_mul, Matrix.mul_smul, smul_smul, hl1, one_smul, hG]`. Take `⟨rl, hrl0, hrl⟩` from `H.den (ι l)`.
+
+Take `⟨Γ1, hΓ1, hsm⟩` from `wac_cayley H J hJ hJd (ι (σ l) • G) hG1 hu (D * rl) (mul_ne_zero hD hrl0)`. Establish `hΓ : cT (σ : E →+* E) (l • Γ1) * J * (l • Γ1) = J`. Rewrite using `[wac_cT_smul, Matrix.smul_mul, Matrix.smul_mul, Matrix.mul_smul, smul_smul]`. Establish `: (σ : E →+* E) l * l = 1` using `by rw [mul_comm]; exact hl`. Rewrite using `[this, one_smul, hΓ1]`.
+
+Establish `hdet : (l • Γ1).det ≠ 0`. Introduce `h0`. Use `congrArg Matrix.det hΓ` as an intermediate fact. Rewrite `this` using `[Matrix.det_mul, h0, mul_zero]`. Conclude with `hJd.ne_zero this.symm`.
+
+Use `⟨Matrix.nonsingInvUnit (l • Γ1) (IsUnit.mk0 _ hdet), hΓ, ?_⟩` and prove the remaining obligations. Establish `hfin : G - (l • Γ1).map ι = ι l • (ι (σ l) • G - Γ1.map ι)`. Rewrite using `[smul_sub, smul_smul, hl1, one_smul, Matrix.map_smul' _ _ _ (map_mul ι)]`. Establish `hsm2 : WacSm S (ι ((algebraMap F E).comp (algebraMap (𝓞 F) F) D)) (G - (l • Γ1).map ι)`. Rewrite using `[hfin]`.
+
+Apply `wac_sm_smul S _ _ (ι l) hrl` to reduce the goal to its premises. Rewrite using `[← map_mul, ← map_mul]`. Conclude with `hsm`. Introduce `i j`. Take `⟨s, hs, e⟩` from `hsm2 i j`.
+
+Conclude with `⟨s, hs, e⟩`.
+-/
 theorem wac_core (σ : E →ₐ[F] E) (J : Matrix n n E) (hσσ : ∀ e, σ (σ e) = e)
     (hθ : ∃ θ, σ θ ≠ θ) (hJ : IsHerm (σ : E →+* E) J) (hJd : IsUnit J.det)
     (v : HeightOneSpectrum (𝓞 F)) (g : GL n (E ⊗[F] v.adicCompletion F))
@@ -769,11 +1033,20 @@ namespace Formalism.MainNotions.Gaps.CC.WA
 
 open Formalism.UG Formalism.MainNotions.Gaps.CC
 
+/- English proof (translation)
+Introduce `_ _ _ _ _ _ _ _ _ _ σ J hσσ hθ hJ hJd v g hg D hD` and use `wac_core σ J hσσ hθ hJ hJd v g hg D hD`.
+-/
 theorem waCore : Surj.WACore :=
   fun _ _ _ _ _ _ _ _ _ _ σ J hσσ hθ hJ hJd v g hg D hD => wac_core σ J hσσ hθ hJ hJd v g hg D hD
 
+/- English proof (translation)
+The claim follows from `Surj.wal_main waCore`.
+-/
 theorem weakApprox1 : Surj.WeakApprox1 := Surj.wal_main waCore
 
+/- English proof (translation)
+The claim follows from `Surj.genusIn_of_core waCore σ hσ hfix hθ`.
+-/
 theorem genusIn {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
     {k : ℕ} [StarRing E] (σ : E →ₐ[F] E) (hσ : ∀ e, σ e = star e)
     (hfix : ∀ e, σ e = e → ∃ a : F, algebraMap F E a = e) (hθ : ∃ θ, σ θ ≠ θ) :

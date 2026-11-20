@@ -42,6 +42,9 @@ variable {B : Base} {X : PreX B.toPre} {I : TC B X} (hOk : I.Ok) (hP : TC.Pins B
 
 include hOk hP hR hfb hfin in
 
+/- English proof (translation)
+Introduce `P v hv κ hκ hU`. Take `⟨x, hx, hxκ⟩` from `GlobalTheory.T.local_group_element_eq_level_component_bad_prime I hOk l Z a (B.T u) i hi bad (K (chOf c)).lev P v hv κ hκ hU`. Take `⟨κ', hk, -, hin⟩` from `GlobalTheory.T.exists_stepGroupElement_of_chartLevel I hOk hP l Z u a i hi bad Ch chOf K k hR c fb hfb hfin ⟨x, hx⟩`. Take `⟨g, g', z, hg, hl, hc⟩` from `h κ' hk P`. Conclude with `⟨g, z, hg, hxκ fb dep g (GlobalTheory.T.rational_automorphism_congruent_near_frame_reading I hOk l Z a i fb _ dep P x g' g hl.1 (hd P) (hin P g' hl) hc)⟩`.
+-/
 theorem locLe_of (hd : ∀ P, dep P ≤ (I.cst a).D P)
     (h : ∀ κ : (I.stp u a i).G c.1, Keeps I κ ((I.stp u a i).rep c) → ∀ P, ∃ g g' z, Rel P g z ∧ LiftsInv I κ P g' ∧ CongE P.1 (dep P) g g') :
     GlobalTheory.TwU.LocLe (sm I l Z) (K (chOf c)).lev fb dep Rel := by
@@ -53,6 +56,11 @@ theorem locLe_of (hd : ∀ P, dep P ≤ (I.cst a).D P)
 
 include hOk hP hR hfb hfin in
 
+/- English proof (translation)
+Introduce `κ g z hg`. Take `⟨κ', -, hχ, hin⟩` from `GlobalTheory.T.exists_stepGroupElement_of_chartLevel I hOk hP l Z u a i hi bad Ch chOf K k hR c fb hfb hfin κ`. Use `choose g' hg' using hex κ'`. Establish `e` using `h κ' g g' z fun P => ⟨(hg P).1, hg' P, GlobalTheory.T.rational_automorphisms_near_same_adelic_congruent I hOk l Z a i fb _ dep P κ.1 (g' P) (g P) (hg' P).1 (hd P).1 (hd P).2 (hin P _ (hg' P)) (hg P).2⟩`. Rewrite using `[hχ]`.
+
+Conclude with `(map_mul B.embLL _ _).symm.trans ((congrArg B.embLL e).trans (map_one _))`.
+-/
 theorem chiIs_of (hd : ∀ P, 1 ≤ dep P ∧ dep P ≤ (I.cst a).D P)
     (hex : ∀ (κ : (I.stp u a i).G c.1) P, ∃ g', LiftsInv I κ P g')
     (h : ∀ (κ : (I.stp u a i).G c.1) (g g' : SBof I a → Sp B.fields.E (B.R.N i) ≃ₗ[B.fields.E] Sp B.fields.E (B.R.N i)) (z : SBof I a → B.fields.K), (∀ P, Rel P (g P) (z P) ∧ LiftsInv I κ P (g' P) ∧ CongE P.1 (dep P) (g P) (g' P)) →
@@ -68,6 +76,17 @@ theorem chiIs_of (hd : ∀ P, 1 ≤ dep P ∧ dep P ≤ (I.cst a).D P)
 
 include hOk hP hR hfb hfin in
 
+/- English proof (translation)
+Use `⟨locLe_of hOk hP hR c hfb hfin (fun _ => le_rfl) fun κ hκ P => ?_, ?_, chiIs_of hOk hP hR c hfb hfin (fun P => ⟨(hOk.idx_ok a).cst_ok.D_pos P, le_rfl⟩) (fun κ P => ?_) fun κ g g' z h => ?_⟩` and prove the remaining obligations. Take `⟨g, z, hg, hl⟩` from `GlobalTheory.T.exists_middleStep_level_inverse_lifts I hOk u a i hm c.1 κ P`. Use `⟨g, g, z, (hRel P g z).2 ⟨hg, fun h1 => ?_⟩, hl, congE_refl _ _ _⟩` and prove the remaining obligations. Establish `h2` using `(GlobalTheory.T.couplingCosetInFrames_preimage_under_lift I hOk u a i c.1 κ _ P g hκ.1 hl (y0 P)).1 (by rw [hκ.2]; exact hy0 h1 P)`. Conclude with `((((GlobalTheory.T.couplingCosetInFrames_shape_at_bad_prime I hOk u a i _ P).2 h1).2.2 _ (hy0 h1 P)).1 _).1 h2`.
+
+Introduce and unpack `P v hv κ hκ ⟨g, z, hg, hin⟩`. Take `⟨hg1, hg2⟩` from `(hRel P g z).1 hg`. Take `⟨hint, hc⟩` from `GlobalTheory.T.congruent_automorphisms_lift_step_group_elements I hOk u a i hm c.1 P g z hg1`. Use `GlobalTheory.T.stepNearLifts_component_mem_localChartGroup I hOk hP l Z u a i hi bad Ch chOf K k hR c fb hfb P v hv κ hκ g hint hin fun g' hg' hgg => ?_` and prove the remaining obligations. Take `⟨κ', e1, e2, e3⟩` from `hc g' hg' hgg`.
+
+Use `⟨κ', ⟨e1, funext fun P' => Set.ext fun z' => ?_⟩, e2, e3⟩` and prove the remaining obligations. Distinguish the cases in `hPP : P' = P`. Substitute `hPP` using the available equality. Rewrite using `[GlobalTheory.T.couplingCosetInFrames_preimage_under_lift I hOk u a i c.1 κ' _ P' g' e1 e2 z']`. Distinguish the cases in `h1 : i + 1 = B.R.m`.
+
+Conclude with `(((GlobalTheory.T.couplingCosetInFrames_shape_at_bad_prime I hOk u a i _ P').2 h1).2.2 _ (hy0 h1 P')).2 g g' hg' hgg (hg2 h1) z'`. Rewrite using `[(GlobalTheory.T.couplingCosetInFrames_shape_at_bad_prime I hOk u a i _ P').1 h1]`. Conclude with `Iff.rfl`. Conclude with `GlobalTheory.T.couplingCosetInFrames_preimage_under_lift I hOk u a i c.1 κ' _ P' 1 e1 (e3 P' hPP) z'`. Take `⟨g, z, -, hl⟩` from `GlobalTheory.T.exists_middleStep_level_inverse_lifts I hOk u a i hm c.1 κ P`.
+
+Conclude with `⟨g, hl⟩`. Conclude with `GlobalTheory.T.step_group_character_inverse_type_at_lifts I hOk u a i hm c.1 κ g g' z fun P => ⟨((hRel P _ _).1 (h P).1).1, (h P).2⟩`.
+-/
 theorem lev_mid (hm : i < B.R.m) (y0 : SBof I a → Sp B.fields.E (B.R.N i))
     (hy0 : i + 1 = B.R.m → ∀ P, y0 P ∈ cosetIn ((I.stp u a i).rep c) P)
     (hRel : ∀ P g z, Rel P g z ↔ MidAt I hm c.1 P g z ∧ (i + 1 = B.R.m → GlobalTheory.TwU.SameCoset I.sel (I.tup a) (I.cst a) P (g (y0 P)) (y0 P))) :
@@ -99,6 +118,11 @@ theorem lev_mid (hm : i < B.R.m) (y0 : SBof I a → Sp B.fields.E (B.R.N i))
 
 include hOk hP hR hfb hfin in
 
+/- English proof (translation)
+Establish `hd : ∀ P, 1 ≤ GlobalTheory.TwU.topDep I.sel (I.tup a) (I.cst a) P ∧ GlobalTheory.TwU.topDep I.sel (I.tup a) (I.cst a) P ≤ (I.cst a).D P` using `fun P => by`. Unfold `GlobalTheory.TwU.topDep`. Establish `h1` using `(hOk.idx_ok a).cst_ok.M_pos`. Use `split_ifs with h`. Conclude with `⟨le_rfl, (hOk.idx_ok a).cst_ok.D_pos P⟩`.
+
+Conclude with `⟨by omega, (hOk.idx_ok a).depthQ P h⟩`. Use `⟨locLe_of hOk hP hR c hfb hfin (fun P => (hd P).2) fun κ _ P => GlobalTheory.T.exists_topStep_level_congruent_blockSum_one I hOk u a i hm c.1 κ P, chiIs_of hOk hP hR c hfb hfin hd (fun κ P => ?_) fun κ g g' z h => GlobalTheory.T.last_step_character_inverse_type_at_lifts I hOk u a …` and prove the remaining obligations. Take `⟨g, g', z, -, hl, -⟩` from `GlobalTheory.T.exists_topStep_level_congruent_blockSum_one I hOk u a i hm c.1 κ P`. Conclude with `⟨g', hl⟩`.
+-/
 theorem lev_top (hm : i = B.R.m) :
     GlobalTheory.TwU.LocLe (sm I l Z) (K (chOf c)).lev fb (GlobalTheory.TwU.topDep I.sel (I.tup a) (I.cst a)) (GlobalTheory.TwU.TopLev (R := B.R) I.Ch I.sel (I.tup a) (I.cst a) i) ∧
       GlobalTheory.TwU.ChiIs (sm I l Z) (K (chOf c)).lev fb (GlobalTheory.TwU.topDep I.sel (I.tup a) (I.cst a)) (GlobalTheory.TwU.TopLev (R := B.R) I.Ch I.sel (I.tup a) (I.cst a) i) := by
@@ -117,6 +141,55 @@ end Lev
 
 set_option maxHeartbeats 4000000 in
 
+/- English proof (translation)
+Introduce `B X I hOk hP l Z L hT Gi Gl K Y cX ex t u a bad Ch chOf eY Kc dt hTw hSK hRd hPin hX hDt hbad hRK hFun hFin hDet`. Establish `hch : t.ChTie` using `(GlobalTheory.T.kernelChoices_standard_trueColumns I hOk hP l Z L hT Gi Gl K Y cX ex t ⟨hSK.X_eq, hSK.seam, hSK.Pr, hSK.Ch, hSK.sel, hSK.S, hSK.word, hSK.tup, hSK.cst, hSK.idx, hSK.m2, hSK.glob, hSK.amb, hSK.δ, hSK.O⟩ hX).1`. Break down `t with ⟨cc, cc_rec, cc_ok, δ, δ_ok, Bb, χ, χ_ok, idl, idl_ok, χ_rec, cD, Xf, seam, seam_ok, Pr, pr_ok, g_rec, Ch', sel, S, word, T_rec, tup, Q_rec, cst, idx, m2, glob, glob_σ, glob_xi, idx_ok, O, rd, rd_chain, O_dgen, O_S, O_lat, O_Th, unf, ent, ent_lam, kf, kf_un, served⟩` into its components or cases. Take `⟨hXf, hseam, hPr, hCh, hsel, hSS, hword, htup, hcst, hidx, hm2, hglob, hamb, hδ, hO⟩` from `hSK`. Simplify using `only at hXf hseam hPr hCh hsel hSS hword htup hcst hidx hm2 hglob hamb hδ hO`.
+
+Substitute `hXf` using the available equality. Consider the cases of `hseam`. Consider the cases of `hPr`. Consider the cases of `hCh`. Consider the cases of `hsel`.
+
+Substitute `hSS` using the available equality. Consider the cases of `htup`. Consider the cases of `hcst`. Consider the cases of `hidx`. Substitute `hm2` using the available equality.
+
+Consider the cases of `hglob`. Consider the cases of `hword`. Take `⟨r, hr, hN, hXi⟩` from `hRd u a`. Take `rfl : rd u a = r` from `eq_of_heq hr`. Establish `hm : B.R.m = B.R.m - 2 + 2` using `hOk.hm`.
+
+Use `choose k hk using fun i hi => (hRK i hi).1`. Use `choose sc hsc using fun i hi => (hk i hi).onto`. Use `choose fb hfb using fun i hi (β : Ch i hi) => GlobalTheory.T.exists_rational_frames_near_adelic_at_bad_primes I hOk l Z a (B.R.N i) (k i hi β)`. Establish `hm1 : B.R.m - 2 + 1 ≤ B.R.m` using `by omega`. Use `choose y0 hy0 using fun (β : Ch _ hm1) (P : SBof I a) => ((GlobalTheory.T.couplingCosetInFrames_shape_at_bad_prime I hOk u a _ ((I.stp u a _).rep (sc _ hm1 β)) P).2 (by omega)).1`.
+
+Establish `hkey : ∀ i hi c, (sc i hi (chOf i hi c)).1 = c.1 ∧ cosetIn ((I.stp u a i).rep (sc i hi (chOf i hi c))) = cosetIn ((I.stp u a i).rep c)` using `fun i hi c => ((hk i hi).key _ _).1 (hsc i hi _)`. Establish `hm3 : B.R.m - 2 + 1 + 1 = B.R.m` using `by omega`. Establish `hib : ∀ i (hi : i < B.R.m) c, Idx.get c.1 hi = Idx.get (sc i hi.le (chOf i hi.le c)).1 hi` using `fun i hi c => by rw [(hkey i hi.le c).1]`. Establish `hcrd` using `(spaces_in_coordinates I hOk hP l Z).2.2.2`. Establish `hdt : ∀ x, dt x = FullDt.u1Dt B.host I.SQ x` using `fun x => by`.
+
+Take `⟨b, hb⟩` from `FullDt.exists_lift B.host x`. Conclude with `(hDt x b hb).trans (FullDt.normOneFiniteAdeleDetClass_of_isDetLift B.host I.SQ x b hb).symm`. Use `⟨{ crd := fun _ _ => 1 iA := RingEquiv.refl _ q := (QuotientGroup.mk' (KDq B.host I.SQ)).comp (finIdele (afIso B.host.F B.host.E)) pt := fun i _ c => ((I.stp u a i).rep c).1.1 yb := fun c => ((I.stp u a _).rep c).1.2 ib := fun i hi β => Idx.get (sc i hi.le β).1 hi fb := fb y0 := …` and prove the remaining obligations. Use `⟨(GlobalTheory.T.base_fields_definite_laws B).1, hOk.sel_ok, ⟨hOk.g_mem, hOk.T_mem u⟩, hch, hOk.ch_tied.mu0, GlobalTheory.T.localConstantWeilCharacter_values_isIntegral I hOk hTw a, fun _ => rfl, fun _ => Iff.rfl, ⟨fun y => ?_, fun k z hz => ?_⟩, fun x y hxy => ?_, fun ι hι j b x …` and prove the remaining obligations. Take `⟨a, rfl⟩` from `QuotientGroup.mk_surjective (show DtQ B.host I.SQ from y)`.
+
+Conclude with `⟨finAf B.host.F B.host.E a, mk_eq_of_snd_eq B.host I.SQ (afIso_finAf B.host.F B.host.E a)⟩`. Establish `hz' : (show B.host.E from z.1) * B.host.conj (k : B.host.E) = k` using `hz show (QuotientGroup.mk (finIdele (afIso B.host.F B.host.E) (ratId B.host.F B.host.E k)) : DtQ B.host I.SQ) = e1Q B.host I.SQ z`. Rewrite using `[← isUnitaryPointsMap_unitaryRationalPointsFiner B.host I.SQ k z hz']`. Use `mk_eq_of_snd_eq B.host I.SQ ?_` and prove the remaining obligations. Use `show afIso B.host.F B.host.E ((k : B.host.E) ⊗ₜ[B.host.F] 1) = _`.
+
+Rewrite using `[afIso_tmul_one]`. Both sides reduce to the same expression. Use `(hDt y (finIdele (afIso B.host.F B.host.E) x) ?_).symm` and prove the remaining obligations. Establish `e : finAf B.host.F B.host.E (finIdele (afIso B.host.F B.host.E) x) = x` using `Units.ext ((afIso B.host.F B.host.E).injective (afIso_finAf B.host.F B.host.E _))`. Unfold `IsDetLift`.
+
+Rewrite using `[e]`. Conclude with `hxy.symm`. Use `show muTilQ B.host I.SQ I.C.mu0 (j.1 + 1) (QuotientGroup.mk (finIdele (afIso B.host.F B.host.E) x)) = _`. Establish `e : (QuotientGroup.mk (finIdele (afIso B.host.F B.host.E) x) : DtQ B.host I.SQ) = QuotientGroup.mk b` using `mk_eq_of_snd_eq B.host I.SQ ((GlobalTheory.T.finiteAdeleFieldIdentification_eq_baseChangeRingEquiv _ _ ι hι x).symm.trans hx)`. Rewrite using `[e, muTilQ_succ B.host I.SQ I.C.mu0 j, tildeQ_mk B.host I.SQ (reference_characters_factor_tame I.SQ I.C j), finPartI_eq_self hb]`.
+
+Both sides reduce to the same expression. Take `rfl : a = I.mu0` from `h`. Use `⟨I.trueColumn_tuple_trivial_eq_one, ?_⟩` and prove the remaining obligations. Use `show (O u I.mu0).mt = _`. Rewrite using `[hO.mt u I.mu0, l.xi0, tildeQ_one]`.
+
+Use function extensionality and compare the values at `j`. Use `split_ifs`. Conclude with `mul_one _`. Both sides reduce to the same expression. Establish `hk : KDq B.host I.SQ ≤ ((I.xi μ).1.comp (finPartI B.host.E)).ker` using `(KDq_anti B.host (I.Q_subset_SQ μ)).trans ((GlobalTheory.Mem.LevTwist.levOk_twists B X I hOk).2.2 μ).1 show tildeQ B.host I.SQ (I.xi μ) (QuotientGroup.mk (finIdele (afIso B.host.F B.host.E) x)) = _`.
+
+Rewrite using `[tildeQ_mk B.host I.SQ hk, finPartI_eq_self fun _ => rfl]`. Conclude with `Units.ext ((hOk.xi_reads μ).apply _ x rfl)`. Conclude with `hO.mt u μ`. Rewrite using `[(hcrd i hi).1]`. Simplify using `[cT]`.
+
+Use `show (O u a).frm i y τ = _`. Establish `e1 : Formalism.L2.Forms.atInf (Formalism.L2.Forms.embT (I.rec7 l Z)) (1 : Matrix (Fin ((I.rec7 l Z).R.N i)) (Fin ((I.rec7 l Z).R.N i)) (I.rec7 l Z).host.E) τ = 1` using `Matrix.map_one _ (map_zero _) (map_one _)`. Use `(congrFun ((hO.frm u a i y).trans ((hRK i hi).2 y).symm) τ).trans ?_` and prove the remaining obligations. Conclude with `((congrArg (· * (eY i hi y).1 τ) e1).trans (one_mul _)).symm`. Establish `hmov : ∀ {n : ℕ} (y : GL (Fin n) (AfE (I.rec7 l Z).host.F (I.rec7 l Z).host.E)), GlobalTheory.TwU.ratA (I.rec7 l Z).host.F 1 * y = y` using `fun y => by`.
+
+Rewrite using `[map_one, one_mul]`. Use `⟨⟨fun i _ c => hN i c, fun c => PtAt.mem_ybSet _ hm3, fun i hi c c' x => ?_, fun c c' x => ?_, ⟨fun c => hN _ c, fun c c' x => ?_⟩, fun i hi c => (hPin u a i c).2 (Or.inl (by have : i ≤ B.R.m - 2 + 1 := hi; omega)), fun c' => (hPin u a _ c').trans (or_iff_right (by show ¬ B.R.m - …` and prove the remaining obligations. Establish `hi' : i < B.R.m - 2` using `hi`. Use `(hXi i (by omega) c c' x).trans ?_` and prove the remaining obligations. Apply the tactic sequence `rw [xiAt_entry I.Ch I.sel (I.tup a) (I.cst a) (I.idx a) (by omega) (Idx.some_get _ (by omega)).symm (Idx.some_get _ (by omega)).symm]`.
+
+Apply the tactic sequence `exact congrArg₂ (fun al be => B.embLL (XiEntry I.Ch I.sel (I.tup a) (I.cst a) (I.idx a) i al be _ _ x)) (hib i _ c) (hib (i + 1) _ c')`. Use `(hXi (B.R.m - 2) (by omega) c c' x).trans ?_` and prove the remaining obligations. Rewrite using `[xiAt_penultimate_eq_xiCpl1 I.Ch I.sel (I.tup a) (I.cst a) (I.idx a) (by omega) (Idx.some_get _ (by omega)).symm]`. Conclude with `congrArg (fun al => B.embLL (XiCpl1 I.Ch I.sel (I.tup a) (I.cst a) (I.idx a) (B.R.m - 2) al _ _ _ x)) (hib (B.R.m - 2) _ c)`. Use `(hXi (B.R.m - 2 + 1) (by omega) c c' x).trans ?_` and prove the remaining obligations.
+
+Rewrite using `[xiAt_last I.Ch I.sel (I.tup a) (I.cst a) (I.idx a) (by omega : B.R.m - 2 + 1 + 1 = B.R.m), xiOver_eq_topG]`. Both sides reduce to the same expression. Conclude with `(seamOf_lat _ _ _ _ _ _ _ _).trans ((hN i c).trans (GlobalTheory.T.representativeLattice_eq_companion_of_adelicRep I hOk hP l Z u a i hi bad _ _ _ _ (hk i hi) c))`. Establish `h` using `GlobalTheory.T.chart_reads_at_class_GL I hOk hP l Z u a i hi bad _ _ _ _ (hk i hi) c _ (hfb i hi _) P`. Rewrite `h` using `[← hmov ((Kc i hi (chOf i hi c)).y ⟨c, rfl⟩).1]`.
+
+Conclude with `h`. Take `⟨ι, hι⟩` from `GlobalTheory.T.levelPrimeFunctionals_eq_moved_level_functionals I hOk hP l Z u a i hi bad _ _ _ _ (hk i hi) β (hFun i hi β) P v h hv`. Use `⟨ι, fun c hc => ?_⟩` and prove the remaining obligations. Establish `h` using `hι c hc`. Rewrite `h` using `[← hmov ((Kc i hi (chOf i hi c)).y ⟨c, rfl⟩).1]`.
+
+Conclude with `h`. Establish `h1` using `(GlobalTheory.T.couplingCosetInFrames_shape_at_bad_prime I hOk u a _ ((I.stp u a _).rep c) P).2 (show B.R.m - 2 + 1 + 1 = B.R.m by omega)`. Establish `h2` using `hy0 (chOf _ hm1 c) P`. Rewrite `h2` using `[(hkey _ hm1 c).2]`. Conclude with `((h1.2.2 _ h2).1 _).1 (h1.2.1 y hy)`.
+
+Establish `hi2' : i ≤ B.R.m - 2` using `hi2`. Take `⟨c, rfl⟩` from `(hk i hi.le).onto β`. Use `lev_mid hOk hP (hk i hi.le) c (hfb i hi.le _) (hFin i hi.le _) hi (fun _ => 0) (fun h => by omega) fun P g z => ?_` and prove the remaining obligations. Rewrite using `[and_iff_left fun h => by omega, ← (hkey i hi.le c).1]`. Conclude with `Iff.rfl`.
+
+Take `⟨c, rfl⟩` from `(hk _ hm1).onto β`. Use `lev_mid hOk hP (hk _ hm1) c (hfb _ hm1 _) (hFin _ hm1 _) (by omega) (y0 (chOf _ hm1 c)) (fun _ P => (hkey _ hm1 c).2 ▸ hy0 _ P) fun P g z => ?_` and prove the remaining obligations. Rewrite using `[← (hkey _ hm1 c).1]`. Conclude with `and_congr Iff.rfl ⟨fun h _ => h, fun h => h (by omega)⟩`. Establish `hm2 : B.R.m - 2 + 1 + 1 ≤ B.R.m` using `by omega`.
+
+Take `⟨c, rfl⟩` from `(hk _ hm2).onto β`. Conclude with `lev_top hOk hP (hk _ hm2) c (hfb _ hm2 _) (hFin _ hm2 _) (by omega)`. Use `(hO.dt u a i c).trans ?_` and prove the remaining obligations. Distinguish the cases in `ha : a = I.mu0`. Substitute `ha` using the available equality.
+
+Conclude with `(FullDt.detPt_of_reads I hOk u i (hk i hi) c y hy).trans (hdt y).symm`. Conclude with `hDet ha i hi c y hy`. Establish `e` using `eq_of_heq hamb`. Establish `h` using `GlobalTheory.T.periodLatticeIdeal_trivial_at_chain_bad_primes I hOk u a χ`. Rewrite `h` using `[← e]`.
+
+Conclude with `h`.
+-/
 theorem adTie_true : ∀ {B : Base} {X : PreX B.toPre} (I : TC B X), I.Ok → TC.Pins B X → ∀ (l : I.Laws) (Z : TC.Later B (I.cols l)), ∀ (L : SizeData₂ (I.rec7 l Z)) (hT : GatTies (I.rec7 l Z)) (Gi : G.Inst (I.rec7 l Z) L) (Gl : G.LatInst (I.rec7 l Z)) (K : G.Consts) (Y : DivX (I.rec7 l Z)) (cX : ExtraC) (ex : Extra (I.rec7 l Z) L hT Gi Gl K Y cX) (t : KerEntTied ex) (u : B.Word) (a : I.ι) (bad : Set (HeightOneSpectrum (𝓞 (I.rec7 l Z).host.F))) (Ch : ∀ i, i ≤ B.R.m → Type) (chOf : ∀ i hi, (I.stp u a i).Cl → Ch i hi) (eY : ∀ i (hi : i ≤ B.R.m), (I.chain l u a).Y i ≃ Formalism.L2.Forms.Fr (I.rec7 l Z) i hi) (Kc : ∀ i hi (β : Ch i hi), LevelChart (I.rec7 l Z) (B.T u) bad i hi (fun c : {c // chOf i hi c = β} => (I.chain l u a).stab i c.1) (fun c => latCrd (I.rec7 l Z) i hi (I.latAt u a i c.1))) (dt : Formalism.L2.Herm.unitaryOneFiniteAdeles (I.rec7 l Z).sp.cm →* (I.rec7 l Z).Dt), I.IsTw → I.StdKer l Z t → GlobalTheory.Pdv.StdRd I l Z t → (∀ (u : B.Word) (a : I.ι) (i : ℕ) (c : ((I.rec7 l Z).chTw u a).cls i), (t.rd u a).pin i c ↔ (i + 1 ≤ B.R.m ∨ ∃ d, OverRow (Pr := B.primes X) (R := B.R) I.sel (I.tup a) u d ((I.stp u a i).rep c).1.1)) → ex.errX.piT = X.piT → I.StdDt l Z dt → (∀ v ∈ bad, v ∈ badG (I.rec7 l Z) ∨ I.UnderQ a v) → (∀ i hi, I.ReadsK l Z u a i hi (chOf i hi) (Kc i hi) ∧ I.IdY l Z u a i hi (eY i hi)) → (∀ i hi β, FunKilled (Kc i hi β).lev (X.piT u)) → (∀ i hi β, ∃ n : ℕ, 0 < n ∧ ∀ κ : (Kc i hi β).lev.U, (∀ v ∈ badG (I.rec7 l Z), bc (prV (E := (I.rec7 l Z).host.E) v) κ.1 = 1) → (Kc i hi β).lev.chi κ ^ n = 1) → (a ≠ I.mu0 → ∀ i hi c (y : Formalism.L2.Herm.unitaryOneFiniteAdeles (I.rec7 l Z).sp.cm), Matrix.GeneralLinearGroup.det y.1 = Matrix.GeneralLinearGroup.det ((Kc i hi (chOf i hi c)).y ⟨c, rfl⟩).1 → detPt B.host I.SQ ((I.stp u a i).rep c).1.1 = dt y) → ∃ A : GlobalTheory.TwU.AdData t u a (fun i hi => ⟨B.T u, bad, eY i hi, Ch i hi, chOf i hi, fun c => latCrd (I.rec7 l Z) i hi (I.latAt u a i c), Kc i hi⟩), GlobalTheory.TwU.AdPins A dt ∧ GlobalTheory.TwU.AdTie A dt (B.fields.conjO (X.piT u)) := by
   intro B X I hOk hP l Z L hT Gi Gl K Y cX ex t u a bad Ch chOf eY Kc dt hTw hSK hRd hPin hX hDt hbad hRK hFun hFin hDet
   have hch : t.ChTie := (GlobalTheory.T.kernelChoices_standard_trueColumns I hOk hP l Z L hT Gi Gl K Y cX ex t ⟨hSK.X_eq, hSK.seam, hSK.Pr, hSK.Ch, hSK.sel, hSK.S, hSK.word, hSK.tup,

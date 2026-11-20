@@ -16,6 +16,11 @@ open scoped ContDiff
 
 namespace GlobalTheory.ThetaRR
 
+/- English proof (translation)
+Introduce `k _ S p P h σ c τ ex H v hv`. Establish `hh` using `H.2.1`. Establish `hj : Continuous fun z : Fin P.g → ℂ => ((v, z) : Pt (V 1) P.g)` using `by fun_prop`. Rewrite using `[CxPts.continuous_iff]`. Introduce `U`.
+
+Use `⟨?_, fun f => ?_⟩` and prove the remaining obligations. Use `(hh U 0).1.preimage hj using 1` and compare the differences between its conclusion and the goal. Use extensionality with `z`. Conclude with `⟨fun hb => ⟨⟨hv, trivial⟩, hb⟩, fun hb => hb.2⟩`. Conclude with `(hh U f).2.continuousOn.comp hj.continuousOn fun z hb => ⟨⟨hv, trivial⟩, hb⟩`.
+-/
 theorem continuous_ex_fibre : ∀ (k : Type) [CommRing k] (S : Scheme.{0}) (p : S ⟶ Sp k) (P : PPAS S) (h : VMetric p (omega P.A) P.g) (σ : k →+* ℂ) (c : AlgChart p σ 1) (τ : V 1 → Matrix (Fin P.g) (Fin P.g) ℂ) (ex : Pt (V 1) P.g → CxPts (P.A.hom ≫ p) σ), IsPeriodChart h c τ ex → ∀ v ∈ c.e.target, Continuous fun z : Fin P.g → ℂ => ex (v, z) := by
   intro k _ S p P h σ c τ ex H v hv
   have hh := H.2.1

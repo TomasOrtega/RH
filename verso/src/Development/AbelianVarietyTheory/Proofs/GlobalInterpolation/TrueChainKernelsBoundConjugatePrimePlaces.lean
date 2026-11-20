@@ -16,6 +16,21 @@ open _root_.Formalism.L2.Col
 
 local instance starFields (B : Base) : StarRing B.fields.E := B.fields.starE
 
+/- English proof (translation)
+Introduce `hJM hP B X I h hJ l Z u a hth i hi`. Take `⟨hX, hPr, -⟩` from `base_fields_primes_ok B X`. Establish `hA : ColIn.A I = ambOf (seamOf B (I.cols l) Z.W Z.V Z.S Z.N Z.G) (AmbIn.toRec B (I.cols l) Z.W Z.V Z.S Z.N Z.G I.J) (ColIn.chi I) I.J.cD`. Rewrite using `[ColIn.A, AmbIn.amb_eq_ambOf B (I.cols l) Z.W Z.V Z.S Z.N Z.G]`. Establish `hH` using `GlobalTheory.KerT.hyp_of_colIn B (I.cols l) Z.W Z.V Z.S Z.N Z.G I h a u`.
+
+Establish `hJa` using `GlobalTheory.KerT.jetsAll_of_colIn B (I.cols l) Z.W Z.V Z.S Z.N Z.G I h hJ a u hi`. Establish `hAl` using `GlobalTheory.KerT.alcoveAt_of_ok I.dat hH.ok u (i + 1) (Nat.succ_le_of_lt hi)`. Establish `hRS` using `GlobalTheory.KerT.ratStep_of_chTh_ok B.fields (B.primes X) B.R B.wts I.Ch I.sel I.S (I.tup a) (I.cst a) (I.idx a) I.glob (B.R.m - 2) u i I.A hX hPr h.ch_ok h.sel_ok (h.T_mem u) h.g_mem (h.idx_ok a) (h.sharp a) hth hi`. Rewrite `hRS` using `[hA]`. Establish `hRT : GlobalTheory.KerT.RatTerm (Pr` using `B.primes X) B.wts I.Ch I.sel (I.tup a) (I.cst a) (ambOf (seamOf B (I.cols l) Z.W Z.V Z.S Z.N Z.G) (AmbIn.toRec B (I.cols l) Z.W Z.V Z.S Z.N Z.G I.J) (ColIn.chi I) I.J.cD) u i (i + 1) := GlobalTheory.KerRat.ratTerm_of_ratStep B.fields (B.primes X) B.R B.wts I.Ch I.sel I.S (I.tup a …`.
+
+Establish `hT` using `isTerm h u a hi`. Introduce `w hw hseen b b' d d' F hF`. Unfold `OverT at hw`. Establish `hw' : (((B.primes X).T u : ℕ) : 𝓞 B.fields.K) ∈ ((I.rec7 l Z).plEq w).asIdeal`. Establish `h0` using `Formalism.L2.Col.att_resChar_mem (I.rec7 l Z).what₂.places (I.rec7 l Z).plEq (I.rec7 l Z).val_eq w`.
+
+Rewrite `h0` using `[hw]`. Conclude with `h0`. Establish `hs : ¬ seenC (B.primes X) u ((I.rec7 l Z).plEq w)` using `fun hc => by`. Establish `h0 : decide (seenC (B.primes X) u ((I.rec7 l Z).plEq w)) = false` using `hseen`. Simplify using `[hc] at h0`.
+
+Establish `hsb : seenBarC (B.primes X) u ((I.rec7 l Z).plEq w)` using `(seenC_or_seenBarC hX hPr u _ hw').resolve_left hs`. Establish `hbar : GlobalTheory.KerT.BarTerm (Pr` using `B.primes X) B.wts I.Ch I.sel (I.tup a) (I.cst a) (ambOf (seamOf B (I.cols l) Z.W Z.V Z.S Z.N Z.G) (AmbIn.toRec B (I.cols l) Z.W Z.V Z.S Z.N Z.G I.J) (ColIn.chi I) I.J.cD) u i (i + 1) ((I.rec7 l Z).plEq w) := GlobalTheory.KerT.Bar.barTerm_of_std I.dat _ (seamOf B (I.cols l) Z.W Z. …`. Rewrite `hbar` using `[← hA]`. Take `⟨Ξ₀, hbox, hint, hfr, hfr', hk⟩` from `hT b b' d d'`. Establish `hk'` using `hk d d' ⟨fun _ _ => rfl, rfl, rfl, rfl⟩ ⟨fun _ _ => rfl, rfl, rfl, rfl⟩`.
+
+Rewrite using `[hk']`. Establish `hF' : F ∈ GlobalTheory.KerT.valAt ((I.rec7 l Z).plEq w) (B.wts.lamTrue u i) d.1.1.deco.1.Lsh` using `hF`. Take `⟨y', hy', he⟩` from `hbar d.1.1.deco _ d'.1.1.deco _ Ξ₀ hfr hfr' hbox (hint _ hw') F hF'`. Use `⟨y', hy', he.trans ?_⟩` and prove the remaining obligations. Establish `e1 : B.fields.f = (I.rec7 l Z).R.f` using `GlobalTheory.Mem.Base.fields_f B`.
+
+Rewrite using `[e1]`. Both sides reduce to the same expression.
+-/
 theorem kerBar : GlobalTheory.IndefiniteRowSideFullHecke.JetSumTable.JetMoments → GlobalTheory.Published.InducedSimpleLowestAlcove → ∀ (B : GlobalTheory.Mem.Base) (X : PreX B.toPre) (I : TC B X), I.Ok → I.JetsIn → ∀ (l : I.Laws) (Z : TC.Later B (I.cols l)) (u : B.Word) (a : I.ι), _root_.Formalism.L2.Col.ChTh.Ok (Ch := I.Ch) (I.cst a) (chTh (Pr := B.primes X) B.wts I.Ch I.sel (I.tup a) (I.cst a) I.A u (B.R.m - 2)) → ∀ i, i < B.R.m → Dat.KerBar (B := dat I l Z u a) (i := i) (kAt (Pr := B.primes X) B.wts I.Ch I.sel (I.tup a) (I.cst a) (I.idx a) I.A u i) := by
   intro hJM hP B X I h hJ l Z u a hth i hi
   obtain ⟨hX, hPr, -⟩ := base_fields_primes_ok B X

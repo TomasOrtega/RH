@@ -13,6 +13,9 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 namespace GlobalTheory.Mem.Top.Bl
 
+/- English proof (translation)
+Consider the cases of `h`. Conclude with `⟨R, rfl⟩`.
+-/
 theorem exists_bdRec_of_eq {D D' : D7} {O : Obj D} {O' : Obj D'} (h : (⟨D, O⟩ : Σ D : D7, Obj D) = ⟨D', O'⟩)
     (R : Formalism.L2.RecT O'.ex) (c : ℝ) :
     ∃ b : BdRec D O c, (⟨D, O, b⟩ : Σ (D : D7) (O : Obj D), BdRec D O c) = ⟨D', O', R⟩ := by

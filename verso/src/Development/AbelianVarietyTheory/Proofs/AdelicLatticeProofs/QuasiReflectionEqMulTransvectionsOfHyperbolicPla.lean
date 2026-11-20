@@ -10,24 +10,42 @@ namespace GlobalTheory.UTrans.PlaneRefl
 
 variable {R : Type} [CommRing R] {n : ℕ} (σ : R →+* R) (G : Matrix (Fin n) (Fin n) R)
 
+/- English proof (translation)
+Simplify using `only [hf, Pi.add_apply, add_mul, Finset.sum_add_distrib]`.
+-/
 theorem hf_add_left (x y v : Fin n → R) : hf σ G (x + y) v = hf σ G x v + hf σ G y v := by
   simp only [hf, Pi.add_apply, add_mul, Finset.sum_add_distrib]
 
+/- English proof (translation)
+Simplify using `only [hf, Pi.add_apply, map_add, mul_add, Finset.sum_add_distrib]`.
+-/
 theorem hf_add_right (x y v : Fin n → R) : hf σ G v (x + y) = hf σ G v x + hf σ G v y := by
   simp only [hf, Pi.add_apply, map_add, mul_add, Finset.sum_add_distrib]
 
+/- English proof (translation)
+Simplify using `only [hf, Pi.smul_apply, smul_eq_mul, Finset.mul_sum, mul_assoc]`.
+-/
 theorem hf_smul_left (a : R) (x v : Fin n → R) : hf σ G (a • x) v = a * hf σ G x v := by
   simp only [hf, Pi.smul_apply, smul_eq_mul, Finset.mul_sum, mul_assoc]
 
+/- English proof (translation)
+Simplify using `only [hf, Pi.smul_apply, smul_eq_mul, Finset.mul_sum, map_mul]`. Use `Finset.sum_congr rfl fun _ _ => Finset.sum_congr rfl fun _ _ => by ring` and prove the remaining obligations.
+-/
 theorem hf_smul_right (a : R) (x v : Fin n → R) : hf σ G v (a • x) = σ a * hf σ G v x := by
   simp only [hf, Pi.smul_apply, smul_eq_mul, Finset.mul_sum, map_mul]
   refine Finset.sum_congr rfl fun _ _ => Finset.sum_congr rfl fun _ _ => by ring
 
+/- English proof (translation)
+Use extensionality with `a b`. Simplify using `[tv]`.
+-/
 theorem tv_zero (x : Fin n → R) : tv σ G x 0 = 1 := by
   ext a b; simp [tv]
 
 open NumberField IsDedekindDomain Matrix in
 open scoped TensorProduct in
+/- English proof (translation)
+Unfold `_root_.GlobalTheory.UTrans.tv`. Use extensionality with `i j`. Simplify using the standard rewrite rules.
+-/
 private lemma transvection_zero' {E : Type} [Field E] {n : ℕ} (σ : E →+* E)
     (G : Matrix (Fin n) (Fin n) E) (w : Fin n → E) : _root_.GlobalTheory.UTrans.tv σ G w 0 = 1 := by
   unfold _root_.GlobalTheory.UTrans.tv
@@ -36,6 +54,37 @@ private lemma transvection_zero' {E : Type} [Field E] {n : ℕ} (σ : E →+* E)
 
 open NumberField IsDedekindDomain Matrix in
 open scoped TensorProduct in
+/- English proof (translation)
+Use `set β := _root_.GlobalTheory.UTrans.hf σ G x z with hβ`. Use `set α := _root_.GlobalTheory.UTrans.hf σ G x x with hα`. Establish `hzx : _root_.GlobalTheory.UTrans.hf σ G z x = σ β`. Rewrite using `[hβ, _root_.GlobalTheory.UTrans.Model.hf_conj σ G hinv hG]`. Establish `hαr : σ α = α` using `by rw [hα, _root_.GlobalTheory.UTrans.Model.hf_conj σ G hinv hG]`.
+
+Establish `hα' : _root_.GlobalTheory.UTrans.hf σ G (x + a • z) (x + a • z) = α + σ a * β + a * σ β`. Rewrite using `[_root_.GlobalTheory.UTrans.Model.hf_add_smul_left, _root_.GlobalTheory.UTrans.Model.hf_add_smul_right, _root_.GlobalTheory.UTrans.Model.hf_add_smul_right, hzz, hzx]`. Expand and normalize the polynomial expressions, which then agree. Rewrite `hyy`, the goal using `[hα']`. Use `clear_value α β`.
+
+Establish `hu0 : u ≠ 0` using `left_ne_zero_of_mul_eq_one hu`. Establish `hsu : σ u = u⁻¹` using `eq_inv_of_mul_eq_one_right hu`. Establish `hu1' : u - 1 ≠ 0` using `sub_ne_zero.2 hu1`. Establish `hsβ : σ β ≠ 0` using `fun h => hxz (by rw [← hinv β, h, map_zero])`. Take `⟨D, hDdef⟩ : ∃ D, D = u * σ a * β + a * σ β` from `⟨_, rfl⟩`.
+
+Rewrite `hD` using `[← hDdef]`. Take `⟨N, hN⟩ : ∃ N, N = β * σ β` from `⟨_, rfl⟩`. Take `⟨A, hA⟩ : ∃ A, A = -(σ a * β + a * σ β) * u * α / (D * (u - 1) * N)` from `⟨_, rfl⟩`. Take `⟨B, hB⟩ : ∃ B, B = (u * α * (σ a * β + a * σ β) - (u - 1) ^ 2 * (σ a * β) * (a * σ β)) / (D * (u - 1) * N)` from `⟨_, rfl⟩`. Take `⟨R, hR⟩ : ∃ R, R = -(D * α / ((α + σ a * β + a * σ β) * (u - 1) * N))` from `⟨_, rfl⟩`.
+
+Take `⟨c, hc⟩ : ∃ c, c = (u - 1) / α` from `⟨_, rfl⟩`. Establish `hσc : σ c = (u⁻¹ - 1) / α` using `by rw [hc, map_div₀, map_sub, map_one, hsu, hαr]`. Establish `hyy2 : α + a * σ β + σ a * β ≠ 0` using `by rw [add_assoc, add_comm (a * σ β), ← add_assoc]; exact hyy`. Establish `hN0 : N ≠ 0` using `by rw [hN]; exact mul_ne_zero hxz hsβ`. Establish `hσD : σ D = D / u`.
+
+Rewrite using `[hDdef]`. Simplify using `only [map_add, map_mul, hinv, hsu]`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Establish `hσN : σ N = N` using `by rw [hN]; simp only [map_mul, hinv]; ring`.
+
+Establish `trA : A + σ A = 0`. Rewrite using `[hA]`. Simplify using `only [map_div₀, map_mul, map_neg, map_sub, map_one, map_add, map_pow, hinv, hsu, hαr, hσD, hσN]`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
+
+Establish `trB : B + σ B = 0`. Rewrite using `[hB]`. Simplify using `only [map_div₀, map_mul, map_neg, map_sub, map_one, map_add, map_pow, hinv, hsu, hαr, hσD, hσN]`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
+
+Establish `trR : R + σ R = 0`. Rewrite using `[hR]`. Simplify using `only [map_div₀, map_mul, map_neg, map_sub, map_one, map_add, map_pow, hinv, hsu, hαr, hσD, hσN]`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
+
+Take `⟨w, hw⟩ : ∃ w, w = z + (c * σ β) • x` from `⟨_, rfl⟩`. Establish `hww : _root_.GlobalTheory.UTrans.hf σ G w w = 0`. Rewrite using `[hw, _root_.GlobalTheory.UTrans.Model.hf_add_smul_left, _root_.GlobalTheory.UTrans.Model.hf_add_smul_right, _root_.GlobalTheory.UTrans.Model.hf_add_smul_right, hzz, hzx, map_mul, hσc, hinv, ← hβ, ← hα]`. Rewrite using `[hc]`. Clear the denominators using the available nonvanishing facts.
+
+Expand and normalize the polynomial expressions, which then agree. Use `⟨_root_.GlobalTheory.UTrans.tv σ G z A * _root_.GlobalTheory.UTrans.tv σ G w R * _root_.GlobalTheory.UTrans.tv σ G z B, ?_, ?_⟩` and prove the remaining obligations. Unfold `_root_.GlobalTheory.UTrans.TvGen`. Use `mul_mem (mul_mem ?_ ?_) ?_` and prove the remaining obligations. Conclude with `Submonoid.subset_closure ⟨z, A, hzz, trA, rfl⟩`.
+
+Conclude with `Submonoid.subset_closure ⟨w, R, hww, trR, rfl⟩`. Conclude with `Submonoid.subset_closure ⟨z, B, hzz, trB, rfl⟩`. Rewrite using `[← hc]`. Use `Matrix.toLin'.injective (LinearMap.ext fun v => ?_)` and prove the remaining obligations. Simplify using `only [Matrix.toLin'_apply]`.
+
+Rewrite using `[← Matrix.mulVec_mulVec, ← Matrix.mulVec_mulVec, ← Matrix.mulVec_mulVec]`. Simplify using `only [_root_.GlobalTheory.UTrans.Model.tv_mulVec]`. Substitute `hw` using the available equality. Simplify using `only [_root_.GlobalTheory.UTrans.Model.hf_add_smul_left, _root_.GlobalTheory.UTrans.Model.hf_add_smul_right]`. Simplify using `only [hzz, hzx, ← hβ, ← hα]`.
+
+Simplify using `only [map_mul, hσc, hinv]`. Generalize the expression as in `_root_.GlobalTheory.UTrans.hf σ G v x = p at *`. Generalize the expression as in `_root_.GlobalTheory.UTrans.hf σ G v z = q at *`. Substitute `hA hB hR hc hDdef hN` using the available equality. Use extensionality with `i`.
+
+Simplify using `only [Pi.add_apply, Pi.smul_apply, smul_eq_mul]`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
+-/
 private lemma quasiReflection_eq_transvectionGen_mul_shifted {E : Type} [Field E] [CharZero E] {n : ℕ} (σ : E →+* E)
     (G : Matrix (Fin n) (Fin n) E) (hinv : ∀ a, σ (σ a) = a) (hG : ∀ a b, σ (G a b) = G b a)
     (x z : Fin n → E) (a u : E) (hzz : _root_.GlobalTheory.UTrans.hf σ G z z = 0)
@@ -127,6 +176,9 @@ private lemma quasiReflection_eq_transvectionGen_mul_shifted {E : Type} [Field E
 
 open NumberField IsDedekindDomain Matrix in
 open scoped TensorProduct in
+/- English proof (translation)
+Simplify using `only [_root_.GlobalTheory.UTrans.Model.tv_mulVec, _root_.GlobalTheory.UTrans.Model.hf_add_smul_left, _root_.GlobalTheory.UTrans.Model.hf_add_smul_right, map_mul]`. Rewrite using `[_root_.GlobalTheory.UTrans.Model.hf_conj σ G hinv hG v' w]`. Take the linear combination `(_root_.GlobalTheory.UTrans.hf σ G v w * _root_.GlobalTheory.UTrans.hf σ G w v') * ht`.
+-/
 private lemma transvection_isometry {E : Type} [Field E] {n : ℕ} (σ : E →+* E)
     (G : Matrix (Fin n) (Fin n) E) (hinv : ∀ a, σ (σ a) = a) (hG : ∀ a b, σ (G a b) = G b a)
     (w : Fin n → E) (t : E)
@@ -140,6 +192,9 @@ private lemma transvection_isometry {E : Type} [Field E] {n : ℕ} (σ : E →+*
 
 open NumberField IsDedekindDomain Matrix in
 open scoped TensorProduct in
+/- English proof (translation)
+Use `Matrix.toLin'.injective (LinearMap.ext fun v => ?_)` and prove the remaining obligations. Simplify using `only [Matrix.toLin'_apply, ← Matrix.mulVec_mulVec, _root_.GlobalTheory.UTrans.Model.tv_mulVec, hg, Matrix.mulVec_add, Matrix.mulVec_smul]`.
+-/
 private lemma isometry_mul_transvection {E : Type} [Field E] {n : ℕ} (σ : E →+* E)
     (G : Matrix (Fin n) (Fin n) E) (g : Matrix (Fin n) (Fin n) E)
     (hg : ∀ v w, _root_.GlobalTheory.UTrans.hf σ G (g.mulVec v) (g.mulVec w) =
@@ -151,6 +206,9 @@ private lemma isometry_mul_transvection {E : Type} [Field E] {n : ℕ} (σ : E �
 
 open NumberField IsDedekindDomain Matrix in
 open scoped TensorProduct in
+/- English proof (translation)
+Use `Matrix.toLin'.injective (LinearMap.ext fun v => ?_)` and prove the remaining obligations. Simplify using `only [Matrix.toLin'_apply, ← Matrix.mulVec_mulVec, _root_.GlobalTheory.UTrans.Model.tv_mulVec, _root_.GlobalTheory.UTrans.Model.hf_add_smul_left, hw]`. Rewrite using `[add_assoc, ← add_smul]`. Use `congr 2`. Expand and normalize the polynomial expressions, which then agree.
+-/
 private lemma transvection_mul_isotropic {E : Type} [Field E] {n : ℕ} (σ : E →+* E)
     (G : Matrix (Fin n) (Fin n) E) (w : Fin n → E) (hw : _root_.GlobalTheory.UTrans.hf σ G w w = 0)
     (s t : E) : _root_.GlobalTheory.UTrans.tv σ G w s * _root_.GlobalTheory.UTrans.tv σ G w t =
@@ -166,6 +224,29 @@ open NumberField IsDedekindDomain Matrix in
 open scoped TensorProduct in
 variable {R : Type} [CommRing R] {n : ℕ} (σ : R →+* R) (G : Matrix (Fin n) (Fin n) R) in
 
+/- English proof (translation)
+Introduce `E _ _ n σ G hH x z a u hzz hxz hxx hyy hu`. Take `⟨hinv, hne, hG, -⟩` from `hH`. Distinguish the cases in `hu1 : u = 1`. Substitute `hu1` using the available equality. Use `⟨1, one_mem _, ?_⟩` and prove the remaining obligations.
+
+Simplify using `only [sub_self, zero_div, transvection_zero', one_mul]`. Distinguish the cases in `hD : u * σ a * _root_.GlobalTheory.UTrans.hf σ G x z + a * σ (_root_.GlobalTheory.UTrans.hf σ G x z) ≠ 0`. Conclude with `quasiReflection_eq_transvectionGen_mul_shifted σ G hinv hG x z a u hzz hxz hxx hyy hu hu1 hD`. Use `push_neg at hD`. Take `⟨e, he⟩` from `hne`.
+
+Take `⟨ω, hωdef⟩ : ∃ ω, ω = e - σ e` from `⟨_, rfl⟩`. Establish `hσω : σ ω = -ω` using `by rw [hωdef, map_sub, hinv]; ring`. Establish `hω0 : ω ≠ 0` using `by rw [hωdef]; exact sub_ne_zero.2 (Ne.symm he)`. Use `set β := _root_.GlobalTheory.UTrans.hf σ G x z with hβ`. Use `set y := x + a • z with hy`.
+
+Use `set E₁ := _root_.GlobalTheory.UTrans.tv σ G z ω with hE₁`. Use `set E₂ := _root_.GlobalTheory.UTrans.tv σ G z (-ω) with hE₂`. Apply the tactic sequence `have hEiso : ∀ v w, _root_.GlobalTheory.UTrans.hf σ G (E₁.mulVec v) (E₁.mulVec w) = _root_.GlobalTheory.UTrans.hf σ G v w := transvection_isometry σ G hinv hG z ω (by rw [hσω, hzz]; ring)`. Establish `hy1 : E₁.mulVec y = x + (a + ω * β) • z`. Rewrite using `[hE₁, _root_.GlobalTheory.UTrans.Model.tv_mulVec, hy, _root_.GlobalTheory.UTrans.Model.hf_add_smul_left, hzz, ← hβ, add_smul, add_assoc]`.
+
+Use `congr 2`. Put the polynomial expressions in normal form. Establish `hnorm : _root_.GlobalTheory.UTrans.hf σ G (x + (a + ω * β) • z) (x + (a + ω * β) • z) = _root_.GlobalTheory.UTrans.hf σ G y y` using `by rw [← hy1, hEiso]`. Establish `hD1 : u * σ (a + ω * β) * β + (a + ω * β) * σ β ≠ 0`. Establish `e1 : u * σ (a + ω * β) * β + (a + ω * β) * σ β = ω * β * σ β * (1 - u)`.
+
+Rewrite using `[map_add, map_mul, hσω]`. Take the linear combination `hD`. Rewrite using `[e1]`. Use `mul_ne_zero (mul_ne_zero (mul_ne_zero hω0 hxz) ?_) (sub_ne_zero.2 (Ne.symm hu1))` and prove the remaining obligations. Introduce `h; exact hxz (by rw [← hinv β, h, map_zero])`.
+
+Take `⟨m₁, hm₁, h₁⟩` from `quasiReflection_eq_transvectionGen_mul_shifted σ G hinv hG x z (a + ω * β) u hzz hxz hxx (by rw [hnorm]; exact hyy) hu hu1 hD1`. Rewrite `h₁` using `[hnorm]`. Use `set c' := (u - 1) / _root_.GlobalTheory.UTrans.hf σ G y y with hc'`. Establish `hyr : σ (_root_.GlobalTheory.UTrans.hf σ G y y) = _root_.GlobalTheory.UTrans.hf σ G y y` using `_root_.GlobalTheory.UTrans.Model.hf_conj σ G hinv hG y y`. Establish `hτiso : ∀ v w, _root_.GlobalTheory.UTrans.hf σ G ((_root_.GlobalTheory.UTrans.tv σ G y c').mulVec v) ((_root_.GlobalTheory.UTrans.tv σ G y c').mulVec w) = _root_.GlobalTheory.UTrans.hf σ G v w`.
+
+Apply the tactic sequence `refine transvection_isometry σ G hinv hG y c' ?_`. Rewrite using `[hc', map_div₀, map_sub, map_one, hyr]`. Clear the denominators using the available nonvanishing facts. Take the linear combination `hu`. Establish `hc1 : E₁ * _root_.GlobalTheory.UTrans.tv σ G y c' = _root_.GlobalTheory.UTrans.tv σ G (x + (a + ω * β) • z) c' * E₁`.
+
+Rewrite using `[isometry_mul_transvection σ G E₁ hEiso, hy1]`. Establish `hEE : E₁ * E₂ = 1`. Rewrite using `[hE₁, hE₂, transvection_mul_isotropic σ G z hzz, add_neg_cancel, transvection_zero']`. Establish `hc2 : _root_.GlobalTheory.UTrans.tv σ G y c' * E₂ = _root_.GlobalTheory.UTrans.tv σ G ((_root_.GlobalTheory.UTrans.tv σ G y c').mulVec z) (-ω) * _root_.GlobalTheory.UTrans.tv σ G y c'`. Rewrite using `[hE₂, isometry_mul_transvection σ G _ hτiso]`.
+
+Use `⟨m₁ * E₁ * _root_.GlobalTheory.UTrans.tv σ G ((_root_.GlobalTheory.UTrans.tv σ G y c').mulVec z) (-ω), ?_, ?_⟩` and prove the remaining obligations. Use `mul_mem (mul_mem hm₁ ?_) ?_` and prove the remaining obligations. Unfold `_root_.GlobalTheory.UTrans.TvGen`. Conclude with `Submonoid.subset_closure ⟨z, ω, hzz, by rw [hσω]; ring, rfl⟩`. Unfold `_root_.GlobalTheory.UTrans.TvGen`.
+
+Conclude with `Submonoid.subset_closure ⟨_, -ω, by rw [hτiso, hzz], by rw [map_neg, hσω]; ring, rfl⟩`. Establish `key : _root_.GlobalTheory.UTrans.tv σ G (x + (a + ω * β) • z) c' = E₁ * _root_.GlobalTheory.UTrans.tv σ G y c' * E₂`. Rewrite using `[hc1, mul_assoc, hEE, mul_one]`. Rewrite using `[h₁, key, mul_assoc E₁, hc2]`. Simplify using `only [mul_assoc]`.
+-/
 theorem _root_.GlobalTheory.UTrans.PlaneRefl.quasiRefl_eq_mul_of_plane : ∀ (E : Type) [Field E] [CharZero E]
     (n : ℕ) (σ : E →+* E) (G : Matrix (Fin n) (Fin n) E), _root_.GlobalTheory.UTrans.IsHerm σ G →
     ∀ (x z : Fin n → E) (a u : E), _root_.GlobalTheory.UTrans.hf σ G z z = 0 →

@@ -16,6 +16,15 @@ open GlobalTheory.FlagFibre (Low)
 
 namespace GlobalTheory.FlagCell
 
+/- English proof (translation)
+Use `haveI := hE.isQuasicoherent`. Take `⟨M, hM, hdet, hMv⟩` from `GlobalTheory.T.flag_frames_triangular_change X _ m fl V _ _ h h'`. Establish `hinj` using `((he.pullback g) V hV).1`. Establish `e1 : (fun i => GlobalTheory.Twist.resM ((Scheme.Modules.pullback g).obj E) hV (QCoh.pullbackSections g E (le_refl (g ⁻¹ᵁ U)) (e i))) = fun i => QCoh.pullbackSections g E hV (e i)`. Use function extensionality and compare the values at `fun i => QCoh.res_pullbackSections _ _ _ _ _`.
+
+Rewrite `hinj` using `[e1]`. Establish `key : uniR n * M = uniR n' * 1`. Rewrite using `[Matrix.mul_one]`. Use `Matrix.ext fun l j => ?_` and prove the remaining obligations. Use `hinj (a₁ := fun l => (uniR n * M) l j) (a₂ := fun l => uniR n' l j) (by` as an intermediate fact.
+
+Simplify using `only [Fintype.linearCombination_apply]`. Establish `h1` using `hMv j`. Simplify using `only [pullCol] at h1`. Rewrite using `[h1]`. Simplify using `only [Matrix.mul_apply, Finset.sum_smul, Finset.smul_sum, smul_smul]`.
+
+Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun k _ => Finset.sum_congr rfl fun l _ => ?_` and prove the remaining obligations. Rewrite using `[mul_comm])`. Conclude with `congrFun this l`. Conclude with `GlobalTheory.T.unipotent_triangular_factor_unique _ m n n' M 1 hM Matrix.blockTriangular_one hdet key`.
+-/
 theorem low_eq_of_spans_pullCol (X B : Scheme.{0}) (g : X ⟶ B) (E : B.Modules) (m : ℕ) (hE : IsVB E m)
     (U : B.Opens) (e : Fin m → Γ(E, U)) (he : IsFrame e)
     (fl : Vert.Flag ((Scheme.Modules.pullback g).obj E) m) (V : X.Opens) (hV : V ≤ g ⁻¹ᵁ U)

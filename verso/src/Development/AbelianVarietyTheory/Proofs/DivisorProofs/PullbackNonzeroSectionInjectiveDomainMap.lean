@@ -16,6 +16,11 @@ open GlobalTheory.Mum
 noncomputable section
 namespace GlobalTheory.PullNonzero
 
+/- English proof (translation)
+Use `h.app_injective (LB.wchart L ψ j) (Eq.trans ?_ (map_zero (h.app (LB.wchart L ψ j)).hom).symm)` and prove the remaining obligations. Use `fn_ext fun y hy => ?_` and prove the remaining obligations. Use `choose I hI using fun χ : Y' ⟶ X => exists_chart hL (χ y)`. Establish `e₁` using `gs_pull (𝟙 Y') h y (LB.wchart L ψ j) hy (s.f j)`. Rewrite `e₁` using `[Category.id_comp]`.
+
+Establish `e₂` using `sec_trans s h y (j := j) hy (Good.mem hI ψ h)`. Establish `e₃ : gs h y _ _ = 0` using `h0 y I hI`. Rewrite `e₂` using `[e₃, MulZeroClass.mul_zero]`. Use `(e₁.trans e₂).trans ?_` and prove the remaining obligations. Rewrite using `[gs_eq _ y _ hy, map_zero, map_zero]`.
+-/
 theorem eq_zero_of_dominant {X Y Y' : Scheme.{0}} {L : LB X} (hL : L.IsLB) {K : Type} [Fintype K] {ψ : K → (Y ⟶ X)}
     {ε : K → ℤ} (s : LB.Sec (LB.LinComb L ψ ε)) (h : Y' ⟶ Y) [IsSchemeTheoreticallyDominant h] [QuasiCompact h]
     (h0 : ∀ y J, Good L y J → sval s h y J = 0) (j : K → L.ι) : s.f j = 0 := by
@@ -30,12 +35,24 @@ theorem eq_zero_of_dominant {X Y Y' : Scheme.{0}} {L : LB X} (hL : L.IsLB) {K : 
   refine (e₁.trans e₂).trans ?_
   rw [gs_eq _ y _ hy, map_zero, map_zero]
 
+/- English proof (translation)
+Use `(congrArg (gs r z (LB.wchart L ψ (fun k => J (r ≫ ψ k)))) (h0 _)).trans ((gs_eq r z _ (hJ.mem ψ r) _).trans ?_)` and prove the remaining obligations. Conclude with `(congrArg _ (map_zero _)).trans (map_zero _)`.
+-/
 theorem sval_zero {X Y Z : Scheme.{0}} {L : LB X} {K : Type} [Fintype K] {ψ : K → (Y ⟶ X)}
     {ε : K → ℤ} (s : LB.Sec (LB.LinComb L ψ ε)) (h0 : ∀ j, s.f j = 0) (r : Z ⟶ Y) (z : Z) {J} (hJ : Good L z J) :
     sval s r z J = 0 := by
   refine (congrArg (gs r z (LB.wchart L ψ (fun k => J (r ≫ ψ k)))) (h0 _)).trans ((gs_eq r z _ (hJ.mem ψ r) _).trans ?_)
   exact (congrArg _ (map_zero _)).trans (map_zero _)
 
+/- English proof (translation)
+Introduce `R _ _ _ _ D A G _ _ U V _ _ _ φ D' A' G' _ _ U' F C _ hφ σ σ' H ⟨j, hj⟩`. Assume the negation of the conclusion as `h0`. Use `push Not at h0`. Establish `hs` using `U.semi.smooth`. Establish `: Flat G.hom` using `inferInstance`.
+
+Establish `: IsDominant (spMap φ)`. Use `⟨?_⟩` and prove the remaining obligations. Conclude with `(PrimeSpectrum.denseRange_comap_iff_ker_le_nilRadical φ).2 (by rw [(RingHom.injective_iff_ker_eq_bot φ).1 hφ]; exact bot_le)`. Use `IsSchemeTheoreticallyDominant.of_isDominant (spMap φ)` as an intermediate fact. Establish `: IsSchemeTheoreticallyDominant F` using `IsSchemeTheoreticallyDominant.of_isPullback C.pb.1.flip`.
+
+Establish `: QuasiCompact F` using `MorphismProperty.of_isPullback (P := @QuasiCompact) C.pb.1.flip inferInstance`. Establish `e : ∀ {S : Scheme.{0}} (B : Over S), (λ_ B).inv.left ≫ (snd _ B).left = 𝟙 _` using `fun B => congrArg (fun q => q.left) (leftUnitor_inv_snd B)`. Establish `: IsIso (λ_ G).inv.left` using `inferInstanceAs (IsIso ((Over.forget _).map (λ_ G).inv))`. Use `hj (eq_zero_of_dominant U.P.L.isLB σ (F ≫ (λ_ G).inv.left) (fun y J hJ => ?_) j)` and prove the remaining obligations. Use `choose J' hJ' using fun χ : G'.left ⟶ G'.left => exists_chart U'.P.L.isLB (χ y)`.
+
+Establish `e₁` using `H _ (λ_ G').inv.left (F ≫ (λ_ G).inv.left) (by rw [Category.assoc, e, ← Category.assoc, e, Category.id_comp, Category.comp_id]) y J J' hJ hJ'`. Rewrite `e₁` using `[sval_zero σ' h0 _ y hJ', MulZeroClass.mul_zero]`. Conclude with `e₁`.
+-/
 theorem main : ∀ (R : Type) [CommRing R] [IsDomain R] [IsLocalRing R], Base R → ∀ (D : DegPre R) (A : PolAV (Sp (FractionRing R))) (G : Over (Sp R)) [GrpObj G] [IsCommMonObj G] (U : GlobalTheory.UU.PreU (maximalIdeal R) D A G) (V : Type) [CommRing V] [IsDomain V] [IsLocalRing V] (φ : R →+* V) (D' : DegPre V) (A' : PolAV (Sp (FractionRing V))) (G' : Over (Sp V)) [GrpObj G'] [IsCommMonObj G'] (U' : GlobalTheory.UU.PreU (maximalIdeal V) D' A' G') (F : G'.left ⟶ G.left) (C : GlobalTheory.LN.Cmp φ U U' F), GlobalTheory.LN.CDvr V → Function.Injective φ → ∀ (σ : U.SecGT (𝟙_ _) 1) (σ' : U'.SecGT (𝟙_ _) 1), (∀ (Z : Scheme.{0}) (r' : Z ⟶ (𝟙_ _ ⊗ G').left) (r : Z ⟶ (𝟙_ _ ⊗ G).left), r ≫ (snd _ G).left = r' ≫ (snd _ G').left ≫ F → ∀ z J J', Good U.P.L.L z J → Good U'.P.L.L z J' → sval σ r z J = (gw C.wL (r' ≫ (snd _ G').left) z (J (r ≫ (snd _ G).left)) (J' (r' ≫ (snd _ G').left))).val ^ 1 * sval σ' r' z J') → (∃ j, σ.f j ≠ 0) → ∃ j, σ'.f j ≠ 0 := by
   intro R _ _ _ _ D A G _ _ U V _ _ _ φ D' A' G' _ _ U' F C _ hφ σ σ' H ⟨j, hj⟩
   by_contra h0

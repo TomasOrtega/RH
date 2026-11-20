@@ -13,19 +13,39 @@ namespace GlobalTheory.ConstTermGrowth
 
 variable {E : Type} [Field E] [NumberField E] [IsTotallyComplex E] {a : ℕ}
 
+/- English proof (translation)
+The claim follows from `continuous_pi fun w => ((InfinitePlace.Completion.isometryEquivComplexOfIsComplex (IsTotallyComplex.isComplex w)).continuous.comp (continuous_apply w)).comp continuous_fst`.
+-/
 theorem continuous_pInf_alt : Continuous (pInf E) :=
   continuous_pi fun w =>
     ((InfinitePlace.Completion.isometryEquivComplexOfIsComplex (IsTotallyComplex.isComplex w)).continuous.comp
       (continuous_apply w)).comp continuous_fst
 
+/- English proof (translation)
+The claim follows from `Continuous.units_map _ (continuous_id.matrix_map continuous_pInf_alt)`.
+-/
 theorem continuous_mapInf : Continuous (Matrix.GeneralLinearGroup.map (n := Fin a) (pInf E)) :=
   Continuous.units_map _ (continuous_id.matrix_map continuous_pInf_alt)
 
+/- English proof (translation)
+The claim follows from `Continuous.units_map _ (continuous_id.matrix_map (continuous_snd : Continuous (pFin E)))`.
+-/
 theorem continuous_mapFin : Continuous (Matrix.GeneralLinearGroup.map (n := Fin a) (pFin E)) :=
   Continuous.units_map _ (continuous_id.matrix_map (continuous_snd : Continuous (pFin E)))
 
 omit [IsTotallyComplex E] in
 
+/- English proof (translation)
+Establish `c1 : Continuous fun u : GL (Fin a) (Cinf E) => toL u.val` using `(Units.continuous_val : Continuous fun u : GL (Fin a) (Cinf E) => u.val)`. Establish `c2 : Continuous fun u : GL (Fin a) (Cinf E) => toL (u⁻¹).val` using `(Units.continuous_coe_inv : Continuous fun u : GL (Fin a) (Cinf E) => (u⁻¹).val)`. Take `⟨M1, h1⟩` from `hΩ.exists_bound_of_continuousOn c1.continuousOn`. Take `⟨M2, h2⟩` from `hΩ.exists_bound_of_continuousOn c2.continuousOn`. Establish `M0 : (0 : ℝ) ≤ max 0 (max M1 M2)` using `le_max_left _ _`.
+
+Establish `ha : (0 : ℝ) ≤ a` using `Nat.cast_nonneg a`. Use `⟨1 + a * max 0 (max M1 M2), by positivity, fun c hc y => ?_⟩` and prove the remaining obligations. Establish `m1 : ‖toL c.val‖ ≤ max 0 (max M1 M2)` using `(h1 c hc).trans ((le_max_left _ _).trans (le_max_right _ _))`. Establish `m2 : ‖toL (c⁻¹).val‖ ≤ max 0 (max M1 M2)` using `(h2 c hc).trans ((le_max_right _ _).trans (le_max_right _ _))`. Establish `e2 : ((c * y)⁻¹ : GL (Fin a) (Cinf E)).val = (y⁻¹).val * (c⁻¹).val`.
+
+Rewrite using `[_root_.mul_inv_rev]`. Both sides reduce to the same expression. Establish `p1` using `norm_toL_mul_le c.val y.val`. Establish `p2` using `norm_toL_mul_le (y⁻¹).val (c⁻¹).val`. Establish `n1` using `norm_nonneg (toL y.val)`.
+
+Establish `n2` using `norm_nonneg (toL (y⁻¹).val)`. Establish `q1 : (a : ℝ) * (‖toL c.val‖ * ‖toL y.val‖) ≤ a * max 0 (max M1 M2) * ‖toL y.val‖`. Rewrite using `[mul_assoc]`. Conclude with `mul_le_mul_of_nonneg_left (mul_le_mul_of_nonneg_right m1 n1) ha`. Establish `q2 : (a : ℝ) * (‖toL (y⁻¹).val‖ * ‖toL (c⁻¹).val‖) ≤ a * max 0 (max M1 M2) * ‖toL (y⁻¹).val‖`.
+
+Combine the equalities or inequalities in the displayed calculation. Establish `aM : (0 : ℝ) ≤ a * max 0 (max M1 M2)` using `by positivity`. Unfold `height`. Rewrite using `[show toL (c * y).val = toL (c.val * y.val) from rfl, e2]`. Use the polynomial consequences of the given equalities and inequalities.
+-/
 theorem height_mul_left_le {Ω : Set (GL (Fin a) (Cinf E))} (hΩ : IsCompact Ω) :
     ∃ B : ℝ, 0 ≤ B ∧ ∀ c ∈ Ω, ∀ y : GL (Fin a) (Cinf E), height (c * y) ≤ B * height y := by
   have c1 : Continuous fun u : GL (Fin a) (Cinf E) => toL u.val :=
@@ -56,6 +76,17 @@ theorem height_mul_left_le {Ω : Set (GL (Fin a) (Cinf E))} (hΩ : IsCompact Ω)
   rw [show toL (c * y).val = toL (c.val * y.val) from rfl, e2]
   nlinarith
 
+/- English proof (translation)
+Establish `hS : ∀ s : GL (Fin a) (Af E), finRep E a s φ = φ → ∀ x, φ.1 (x * finGL E a s) = φ.1 x` using `fun s hs x => by`. Use `congrFun (congrArg Subtype.val hs) x` as an intermediate fact. Conclude with `this`. Establish `hU : ∀ t : GL (Fin a) (Af E), IsOpen ((fun k => t⁻¹ * k) ⁻¹' {k | finRep E a k φ = φ})` using `fun t => hopen.preimage (continuous_const.mul continuous_id)`. Establish `hKf : IsCompact (Matrix.GeneralLinearGroup.map (n` using `Fin a) (pFin E) '' Ω) := hΩ.image continuous_mapFin`.
+
+Take `⟨T, hT⟩` from `hKf.elim_finite_subcover (fun t => (fun k => t⁻¹ * k) ⁻¹' {k | finRep E a k φ = φ}) hU (fun k _ => Set.mem_iUnion.2 ⟨k, by`. Express the relevant statement in the definitionally equal form `finRep E a (k⁻¹ * k) φ = φ`. Rewrite using `[inv_mul_cancel, map_one]`. Use the proof step `rfl⟩)`. Use `choose C N hCN using hgr`.
+
+Take `⟨B, hB0, hB⟩` from `height_mul_left_le (hΩ.image (continuous_mapInf (E := E) (a := a)))`. Use `⟨∑ t ∈ T, |C (finGL E a t)| * B ^ N (finGL E a t), ∑ t ∈ T, N (finGL E a t), fun h hh y => ?_⟩` and prove the remaining obligations. Take `⟨t, htT, hkt⟩` from `Set.mem_iUnion₂.1 (hT ⟨h, hh, rfl⟩)`. Establish `e : h * infGL E a y = finGL E a t * infGL E a (Matrix.GeneralLinearGroup.map (pInf E) h * y) * finGL E a (t⁻¹ * Matrix.GeneralLinearGroup.map (pFin E) h)`. Apply `ga_ext` to reduce the goal to its premises.
+
+Simplify using `only [map_mul, pInf_infGL, pInf_finGL, one_mul, mul_one]`. Simplify using `only [map_mul, pFin_infGL, pFin_finGL, one_mul, mul_one, mul_inv_cancel_left]`. Rewrite using `[e, hS _ hkt]`. Establish `hcy` using `hB _ ⟨h, hh, rfl⟩ y`. Establish `h0` using `one_le_height (Matrix.GeneralLinearGroup.map (pInf E) h * y)`.
+
+Establish `hy` using `one_le_height y`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem uniform_growth (φ : Sm E a) (hopen : IsOpen {k | finRep E a k φ = φ})
     (hgr : ∀ g, ∃ (C : ℝ) (N : ℕ), ∀ y, ‖φ.1 (g * infGL E a y)‖ ≤ C * height y ^ N)
     {Ω : Set (GA E a)} (hΩ : IsCompact Ω) :
@@ -96,6 +127,15 @@ theorem uniform_growth (φ : Sm E a) (hopen : IsOpen {k | finRep E a k φ = φ})
         mul_le_mul_of_nonneg_right (Finset.single_le_sum (f := fun t => |C (finGL E a t)| * B ^ N (finGL E a t))
           (fun _ _ => mul_nonneg (abs_nonneg _) (pow_nonneg hB0 _)) htT) (pow_nonneg (by linarith) _)
 
+/- English proof (translation)
+Introduce `E _ _ _ a r _ _ μ 𝓕 _ _ h1 φ hleft hopen hgr g`. Take `⟨K, hK, hcov⟩` from `GlobalTheory.ConstNotCusp.exists_compact_ratN E a r`. Establish `hc : Continuous fun x : BlockIx a r → Ad E => unip x * g` using `GlobalTheory.CuspRep.CuspidalL2GL.continuous_unip.mul continuous_const`. Take `⟨C, N, hC⟩` from `uniform_growth φ hopen hgr (hK.image hc)`. Use `⟨C, N, fun y => ?_⟩` and prove the remaining obligations.
+
+Establish `hb : ∀ x : BlockIx a r → Ad E, ‖φ.1 (unip x * (g * infGL E a y))‖ ≤ C * height y ^ N`. Introduce `x`. Take `⟨γ, ⟨z, rfl⟩, hγ⟩` from `hcov x`. Establish `hu : unip ((AddMonoidHom.compLeft (algebraMap E (Ad E)).toAddMonoidHom (BlockIx a r)) z) = ratGL E a (unip z)` using `unip_algebraMap z`. Establish `e : φ.1 (unip (AddMonoidHom.compLeft (algebraMap E (Ad E)).toAddMonoidHom (BlockIx a r) z + x) * g * infGL E a y) = φ.1 (unip x * (g * infGL E a y))`.
+
+Rewrite using `[unip_add, hu]`. Simplify using `only [mul_assoc]`. Conclude with `hleft _ _`. Rewrite using `[← e]`. Conclude with `hC _ ⟨_, hγ, rfl⟩ y`.
+
+Establish `hfin : μ 𝓕 < ⊤` using `by rw [h1]; exact ENNReal.one_lt_top`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem norm_constTerm_le : ∀ (E : Type) [Field E] [NumberField E] [IsTotallyComplex E] (a r : ℕ)
     [MeasurableSpace (BlockIx a r → Ad E)] [BorelSpace (BlockIx a r → Ad E)] (μ : Measure (BlockIx a r → Ad E))
     (𝓕 : Set (BlockIx a r → Ad E)), μ.IsAddHaarMeasure → IsAddFundamentalDomain (ratN E a r) 𝓕 μ → μ 𝓕 = 1 →

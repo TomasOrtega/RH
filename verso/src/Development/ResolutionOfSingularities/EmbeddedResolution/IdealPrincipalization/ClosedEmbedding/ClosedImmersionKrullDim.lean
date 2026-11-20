@@ -14,6 +14,9 @@ open CategoryTheory AlgebraicGeometry TopologicalSpace
 
 namespace FunctorialResolution.EmbeddedResolution
 
+/- English proof (translation)
+Establish `hinv : inv τ.toImage ≫ τ = τ.ker.subschemeι` using `(IsIso.inv_comp_eq _).mpr τ.toImage_imageι.symm`. Establish `hcomp : τ.ker.subschemeι ≫ p = inv τ.toImage ≫ (τ ≫ p)`. Rewrite using `[← Category.assoc, hinv]`. Rewrite using `[hcomp]`. Use `infer_instance`.
+-/
 private theorem smooth_ker_subschemeι_comp {k : Type u} [Field k] {X X' : Scheme.{u}}
     (p : X' ⟶ Spec (CommRingCat.of k)) (τ : X ⟶ X')
     [AlgebraicGeometry.IsClosedImmersion τ] [AlgebraicGeometry.Smooth (τ ≫ p)] :
@@ -25,12 +28,30 @@ private theorem smooth_ker_subschemeι_comp {k : Type u} [Field k] {X X' : Schem
   rw [hcomp]
   infer_instance
 
+/- English proof (translation)
+Establish `hle : (⊥ : X.IdealSheafData).map f ≤ I.map f` using `Scheme.IdealSheafData.map_mono f bot_le`. Rewrite `hle` using `[Scheme.IdealSheafData.map_bot]`. Then use the resulting hypothesis.
+-/
 theorem ker_le_map_idealSheaf {X X' : Scheme.{u}} (f : X ⟶ X') (I : X.IdealSheafData) :
     f.ker ≤ I.map f := by
   have hle : (⊥ : X.IdealSheafData).map f ≤ I.map f :=
     Scheme.IdealSheafData.map_mono f bot_le
   rwa [Scheme.IdealSheafData.map_bot] at hle
 
+/- English proof (translation)
+Use `le_trans (orderAt_le_of_le (ker_le_map_idealSheaf τ I) x) ?_` and prove the remaining obligations. Distinguish the cases in `hx : x ∈ τ.ker.support`. Establish `: AlgebraicGeometry.Smooth (τ.ker.subschemeι ≫ p)` using `smooth_ker_subschemeι_comp p τ`. Take `⟨U, m, c, S, hxU, hU, hD⟩` from `exists_chart_restrictIdeal_eq_coordIdeal p τ.ker x hx`. Establish `hD' : τ.ker.comap U.ι = c.coordIdeal S` using `hD`.
+
+Break down `S.eq_empty_or_nonempty with hS | ⟨j, hj⟩` into its components or cases. Substitute `hS` using the available equality. It suffices to derive a contradiction. Establish `hcoord : c.coordIdeal (∅ : Finset (Fin m)) = (⊥ : (affineSpaceFin k m).IdealSheafData).comap c.map`. Rewrite using `[EtaleChart.coordIdeal_eq_comap_coordSubspaceIdeal, coordSubspaceIdeal_empty]`.
+
+Establish `hUsupp : (U : Set ↥X') ⊆ (τ.ker.support : Set ↥X')`. Introduce `y hy`. Establish `hy' : y ∈ Set.range ⇑U.ι.base`. Rewrite using `[Scheme.Opens.range_ι]`. Conclude with `hy`.
+
+Take `⟨z, rfl⟩` from `hy'`. Establish `h1 : z ∈ ((τ.ker.comap U.ι).support : Set ↥U.toScheme)`. Rewrite using `[hD', hcoord, support_comap_eq]`. Simplify using `[Scheme.IdealSheafData.support_bot]`. Rewrite `h1` using `[support_comap_eq]`.
+
+Conclude with `h1`. Establish `hCmem : irreducibleComponent x ∈ irreducibleComponents ↥X'` using `irreducibleComponent_mem_irreducibleComponents x`. Use `hker _ hCmem ?_` and prove the remaining obligations. Establish `hcl` using `closure_inter_open_eq (isClosed_irreducibleComponent) (isIrreducible_irreducibleComponent) U.2 ⟨x, mem_irreducibleComponent, hxU⟩`. Rewrite using `[← hcl]`.
+
+Use `closure_minimal ?_ (τ.ker.support).2` and prove the remaining obligations. Conclude with `fun y hy => hUsupp hy.2`. Conclude with `orderAt_le_one_of_restrictIdeal_eq_coordIdeal p hU c S j hj τ.ker hD x hxU`. Establish `h0 : orderAt τ.ker x = 0` using `(orderAt_eq_zero_iff_not_mem_support τ.ker x).mpr hx`. Rewrite using `[h0]`.
+
+Conclude with `zero_le`.
+-/
 theorem orderAt_map_le_one_of_isClosedImmersion {k : Type u} [Field k] [CharZero k]
     {X X' : Scheme.{u}} (p : X' ⟶ Spec (CommRingCat.of k)) [AlgebraicGeometry.Smooth p]
     (τ : X ⟶ X') [AlgebraicGeometry.IsClosedImmersion τ]
@@ -73,6 +94,11 @@ theorem orderAt_map_le_one_of_isClosedImmersion {k : Type u} [Field k] [CharZero
     rw [h0]
     exact zero_le
 
+/- English proof (translation)
+Establish `hfin : topologicalKrullDim ↥X' < ⊤` using `topologicalKrullDim_lt_top_of_finiteType p ‹AlgebraicGeometry.LocallyOfFiniteType p› ‹AlgebraicGeometry.QuasiCompact p›`. Establish `hemb : Topology.IsClosedEmbedding ⇑τ.base` using `AlgebraicGeometry.Scheme.Hom.isClosedEmbedding τ`. Take `⟨z⟩` from `‹Nonempty ↥X›`. Use `krullDimSucc_lt_of_homeomorph_isClosed X' X (Set.range ⇑τ.base) hemb.isClosed_range ⟨τ.base z, z, rfl⟩ ?_ hfin hemb.toIsEmbedding.toHomeomorph` and prove the remaining obligations. Introduce `C hC hsub`.
+
+Conclude with `hker C hC (hsub.trans τ.range_subset_ker_support)`.
+-/
 theorem krullDimSucc_lt_of_isClosedImmersion_of_nonzeroOnComponents {k : Type u} [Field k]
     {X X' : Scheme.{u}} (p : X' ⟶ Spec (CommRingCat.of k))
     [AlgebraicGeometry.LocallyOfFiniteType p] [AlgebraicGeometry.QuasiCompact p]

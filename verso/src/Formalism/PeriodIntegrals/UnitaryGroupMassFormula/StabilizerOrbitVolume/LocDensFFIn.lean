@@ -11,6 +11,15 @@ section matrix
 
 variable {K : Type} [Field K] {σ : K →+* K}
 
+/- English proof (translation)
+Simplify using `only [ffH, Pi.add_apply, mul_add, Finset.sum_add_distrib]`. Use `smul_right c x y := by`. Simplify using `only [ffH, Pi.smul_apply, smul_eq_mul, Finset.mul_sum]`. Conclude with `Finset.sum_congr rfl (fun i _ => Finset.sum_congr rfl (fun j _ => by ring))`. Use `herm x y := by`.
+
+Simplify using `only [ffH, map_sum, map_mul, hσ, hJ]`. Use `conv_rhs => rw [Finset.sum_comm]`. Conclude with `Finset.sum_congr rfl (fun i _ => Finset.sum_congr rfl (fun j _ => by ring))`. Use `nondeg x hx := by`. Establish `hv : Matrix.vecMul (fun i => σ (x i)) J = 0`.
+
+Use function extensionality and compare the values at `j0`. Use `hx (Pi.single j0 1)` as an intermediate fact. Simplify `this` using `[ffH, Pi.single_apply, Matrix.vecMul, dotProduct]`. Establish `hinv : (fun i => σ (x i)) = 0`. Use `congrArg (fun v => Matrix.vecMul v J⁻¹) hv` as an intermediate fact.
+
+Simplify `this` using `only [Matrix.vecMul_vecMul, Matrix.mul_nonsing_inv J hdet, Matrix.vecMul_one, Matrix.zero_vecMul]`. Use function extensionality and compare the values at `i`. Conclude with `σ.injective (by simpa using congrFun hinv i)`.
+-/
 theorem ffH_isHS (hσ : ∀ x, σ (σ x) = x) {M : ℕ} (J : Matrix (Fin M) (Fin M) K)
     (hJ : ∀ i j, σ (J j i) = J i j) (hdet : IsUnit J.det) : IsHS σ (ffH σ J) where
   add_right x y z := by
@@ -34,6 +43,11 @@ theorem ffH_isHS (hσ : ∀ x, σ (σ x) = x) {M : ℕ} (J : Matrix (Fin M) (Fin
     funext i
     exact σ.injective (by simpa using congrFun hinv i)
 
+/- English proof (translation)
+Establish `hs : ∀ i' : Fin n, σ ((Pi.single i 1 : Fin n → K) i') = (Pi.single i 1 : Fin n → K) i'`. Introduce `i'`. Distinguish the cases in `h : i' = i`. Substitute `h` using the available equality. Simplify using the standard rewrite rules.
+
+Simplify using `[Pi.single_eq_of_ne h]`. Simplify using `only [PI.VolStabSW.ffH, hs]`. Simplify using `[Pi.single_apply]`.
+-/
 theorem ffH_single {n : ℕ} (T : Matrix (Fin n) (Fin n) K) (i j : Fin n) :
     ffH σ T (Pi.single i 1) (Pi.single j 1) = T i j := by
   have hs : ∀ i' : Fin n, σ ((Pi.single i 1 : Fin n → K) i') = (Pi.single i 1 : Fin n → K) i' := by
@@ -47,6 +61,13 @@ theorem ffH_single {n : ℕ} (T : Matrix (Fin n) (Fin n) K) (i j : Fin n) :
 
 end matrix
 
+/- English proof (translation)
+Use `Nat.card_congr { toFun := fun φ => ⟨fun i => φ.1 (b i), fun i j => φ.2 (b i) (b j)⟩ invFun := fun Y => ⟨b.constr K Y.1, fun x y => ?_⟩ left_inv := fun φ => ?_ right_inv := fun Y => ?_ }` and prove the remaining obligations. Establish `hs1 : IsSq σ (fun x y => hV (b.constr K Y.1 x) (b.constr K Y.1 y))` using `{ add_right := fun x y z => by`. Simplify using `only [map_add]`. Conclude with `hsV.add_right _ _ _`. Use `smul_right := fun c x y => by`.
+
+Simplify using `only [map_smul]`. Conclude with `hsV.smul_right _ _ _`. Use `herm := fun x y => hsV.herm _ _ }`. Conclude with `hs1.ext_basis hsU b (fun i j => by simpa only [Basis.constr_basis] using Y.2 i j) x y`. Apply `Subtype.ext` to reduce the goal to its premises.
+
+Conclude with `b.ext fun i => by simp [Basis.constr_basis]`. Apply `Subtype.ext` to reduce the goal to its premises. Use function extensionality and compare the values at `i`. Simplify using `[Basis.constr_basis]`.
+-/
 theorem card_isom {K : Type} [Field K] {σ : K →+* K} {U V : Type} [AddCommGroup U] [Module K U]
     [AddCommGroup V] [Module K V] {hU : U → U → K} {hV : V → V → K} (hsU : IsSq σ hU)
     (hsV : IsSq σ hV) {ι : Type} (b : Basis ι K U) :
@@ -76,6 +97,9 @@ section field
 
 variable {k K : Type} [Field k] [Fintype k] [Field K] [Fintype K] [DecidableEq K] [Algebra k K]
 
+/- English proof (translation)
+Establish `hsub : Z.val ⊆ P.roots` using `fun z hz => (Polynomial.mem_roots hP).mpr (hZ z (Finset.mem_val.mp hz))`. Conclude with `(Multiset.card_le_card ((Multiset.le_iff_subset Z.nodup).mpr hsub)).trans (Polynomial.card_roots' P)`.
+-/
 private theorem card_le_natDegree_of_eval_eq_zero {L : Type} [Field L] (P : L[X]) (hP : P ≠ 0)
     (Z : Finset L) (hZ : ∀ z ∈ Z, P.eval z = 0) : Z.card ≤ P.natDegree := by
   have hsub : Z.val ⊆ P.roots := fun z hz =>
@@ -83,6 +107,13 @@ private theorem card_le_natDegree_of_eval_eq_zero {L : Type} [Field L] (P : L[X]
   exact (Multiset.card_le_card ((Multiset.le_iff_subset Z.nodup).mpr hsub)).trans
     (Polynomial.card_roots' P)
 
+/- English proof (translation)
+Establish `hlt : (C b * X + C c : L[X]).natDegree < (X ^ n : L[X]).natDegree`. Rewrite using `[Polynomial.natDegree_X_pow]`. Conclude with `lt_of_le_of_lt Polynomial.natDegree_linear_le hn`. Establish `hdeg : (X ^ n - (C b * X + C c) : L[X]).natDegree = n`. Rewrite using `[Polynomial.natDegree_sub_eq_left_of_natDegree_lt hlt, Polynomial.natDegree_X_pow]`.
+
+Establish `hP0 : (X ^ n - (C b * X + C c) : L[X]) ≠ 0`. Introduce `h`. Rewrite `hdeg` using `[h, Polynomial.natDegree_zero]`. Use linear arithmetic over natural numbers and integers. Use `card_le_natDegree_of_eval_eq_zero _ hP0 Z fun z hz => by simp [hZ z hz]` as an intermediate fact.
+
+Rewrite `this` using `[hdeg]`. Then use the resulting hypothesis.
+-/
 private theorem card_le_of_pow_eq_mul_add {L : Type} [Field L] (n : ℕ) (hn : 1 < n) (b c : L)
     (Z : Finset L) (hZ : ∀ z ∈ Z, z ^ n = b * z + c) : Z.card ≤ n := by
   have hlt : (C b * X + C c : L[X]).natDegree < (X ^ n : L[X]).natDegree := by
@@ -97,6 +128,13 @@ private theorem card_le_of_pow_eq_mul_add {L : Type} [Field L] (n : ℕ) (hn : 1
   have := card_le_natDegree_of_eval_eq_zero _ hP0 Z fun z hz => by simp [hZ z hz]
   rwa [hdeg] at this
 
+/- English proof (translation)
+Assume the negation of the conclusion as `hne`. Use `push_neg at hne`. Establish `hq : 1 < Fintype.card k` using `Fintype.one_lt_card`. Establish `hdS : d ∉ Finset.univ.image (algebraMap k K)`. Simplify using `only [Finset.mem_image, Finset.mem_univ, true_and, not_exists]`.
+
+Conclude with `hne`. Establish `hc` using `card_le_of_pow_eq_mul_add (Fintype.card k) hq 1 0 (Finset.cons d (Finset.univ.image (algebraMap k K)) hdS) (by`. Introduce `z hz`. Rewrite `hz` using `[Finset.mem_cons]`. Break down `hz with h | hz` into its components or cases.
+
+Rewrite using `[h, hd, one_mul, add_zero]`. Take `⟨a, -, rfl⟩` from `Finset.mem_image.mp hz`. Rewrite using `[← map_pow, FiniteField.pow_card, one_mul, add_zero])`. Rewrite `hc` using `[Finset.card_cons, Finset.card_image_of_injective _ (algebraMap k K).injective, Finset.card_univ]`. Use linear arithmetic over natural numbers and integers.
+-/
 private theorem exists_algebraMap_eq_of_frobenius_fixed (d : K) (hd : d ^ Fintype.card k = d) :
     ∃ d0 : k, algebraMap k K d0 = d := by
   by_contra hne
@@ -117,6 +155,27 @@ private theorem exists_algebraMap_eq_of_frobenius_fixed (d : K) (hd : d ^ Fintyp
     Finset.card_univ] at hc
   omega
 
+/- English proof (translation)
+Introduce `x`. Use `haveI : Module.Finite k K := Module.finite_of_finrank_pos (by omega)`. Distinguish the cases in `hx : ∃ a : k, algebraMap k K a = x`. Take `⟨a, rfl⟩` from `hx`. Rewrite using `[AlgEquiv.commutes, ← map_pow, FiniteField.pow_card]`.
+
+Use `push_neg at hx`. Establish `hq : x ^ Fintype.card k ≠ x` using `fun h => by`. Take `⟨a, ha⟩` from `exists_algebraMap_eq_of_frobenius_fixed x h`. Conclude with `hx a ha`. Establish `hσx : σ x ≠ x`.
+
+Introduce `hfix`. Apply `hne` to reduce the goal to its premises. Establish `hli : LinearIndependent k ![(1 : K), x]`. Rewrite using `[LinearIndependent.pair_iff]`. Introduce `s t hst`.
+
+Distinguish the cases in `ht : t = 0`. Substitute `ht` using the available equality. Conclude with `⟨by simpa using hst, rfl⟩`. It suffices to derive a contradiction. Establish `htK : algebraMap k K t ≠ 0` using `(_root_.map_ne_zero _).mpr ht`.
+
+Rewrite `hst` using `[Algebra.smul_def, Algebra.smul_def, mul_one]`. Apply `hx (-s * t⁻¹)` to reduce the goal to its premises. Rewrite using `[map_mul, map_neg, map_inv₀, eq_comm, eq_mul_inv_iff_mul_eq₀ htK]`. Take the linear combination `hst`. Apply the tactic sequence `have hlin : σ.toLinearMap = LinearMap.id := (basisOfLinearIndependentOfCardEqFinrank hli (by simp [h2])).ext fun i => by fin_cases i <;> simp [coe_basisOfLinearIndependentOfCardEqFinrank, hfix]`.
+
+Use extensionality with `y`. Simplify using `using LinearMap.congr_fun hlin y`. Establish `hint_r : IsIntegral k x` using `IsIntegral.of_finite k x`. Establish `hP0 : (minpoly k x).map (algebraMap k K) ≠ 0` using `Polynomial.map_ne_zero (minpoly.ne_zero hint_r)`. Establish `hroot : ∀ y, Polynomial.aeval y (minpoly k x) = 0 → ((minpoly k x).map (algebraMap k K)).eval y = 0` using `fun y hy => by`.
+
+Rewrite using `[Polynomial.eval_map_algebraMap]`. Conclude with `hy`. Establish `r1` using `hroot x (minpoly.aeval k x)`. Establish `r2` using `hroot (σ x) (by`. Rewrite using `[show σ x = (σ : K →ₐ[k] K) x from rfl, Polynomial.aeval_algHom_apply, minpoly.aeval, map_zero])`.
+
+Establish `r3` using `hroot (x ^ Fintype.card k) (by`. Rewrite using `[← Polynomial.expand_aeval, FiniteField.expand_card, map_pow, minpoly.aeval, zero_pow Fintype.card_ne_zero])`. Assume the negation of the conclusion as `hne3`. Establish `hcard : ({x, σ x, x ^ Fintype.card k} : Finset K).card = 3` using `Finset.card_eq_three.mpr ⟨x, σ x, x ^ Fintype.card k, hσx.symm, hq.symm, hne3, rfl⟩`. Establish `hle` using `card_le_natDegree_of_eval_eq_zero _ hP0 {x, σ x, x ^ Fintype.card k} (by`.
+
+Introduce `z hz`. Simplify using `only [Finset.mem_insert, Finset.mem_singleton] at hz`. Apply the tactic sequence `rcases hz with h | h | h <;> rw [h] <;> assumption)`. Rewrite `hle` using `[hcard, Polynomial.natDegree_map]`. Establish `hdeg : (minpoly k x).natDegree ≤ finrank k K` using `minpoly.natDegree_le x`.
+
+Use linear arithmetic over natural numbers and integers.
+-/
 theorem frob_of_ne (σ : K ≃ₐ[k] K) (h2 : finrank k K = 2) (hne : σ ≠ AlgEquiv.refl) :
     ∀ x, σ x = x ^ Fintype.card k := by
   intro x
@@ -173,6 +232,27 @@ theorem frob_of_ne (σ : K ≃ₐ[k] K) (h2 : finrank k K = 2) (hne : σ ≠ Alg
   have hdeg : (minpoly k x).natDegree ≤ finrank k K := minpoly.natDegree_le x
   omega
 
+/- English proof (translation)
+Establish `hq1 : 1 < Fintype.card k` using `Fintype.one_lt_card`. Establish `hKcard' : Fintype.card K = Fintype.card k ^ finrank k K` using `Module.card_eq_pow_finrank`. Establish `hKcard : Fintype.card K = Fintype.card k ^ 2` using `by rw [hKcard', h2]`. Establish `hσσ : ∀ t, σ (σ t) = t`. Introduce `t`.
+
+Rewrite using `[hfrob (σ t), hfrob t, ← pow_mul, ← sq, ← hKcard, FiniteField.pow_card]`. Set `c : K → ℕ` to `fun y => (Finset.univ.filter fun t : K => t * σ t = y).card`. Set `F : Finset K` to `Finset.univ.filter fun y : K => y ^ Fintype.card k = y`. Establish `hsum : Fintype.card K = ∑ y ∈ F, c y`. Rewrite using `[← Finset.card_univ]`.
+
+Conclude with `Finset.card_eq_sum_card_fiberwise (f := fun t => t * σ t) fun t _ => by`. Simplify using `only [F, Finset.mem_coe, Finset.mem_filter, Finset.mem_univ, true_and]`. Rewrite using `[← hfrob, map_mul, hσσ, mul_comm]`. Establish `hF : F.card ≤ Fintype.card k` using `card_le_of_pow_eq_mul_add _ hq1 1 0 F fun z hz => by`. Simplify using `only [F, Finset.mem_filter, Finset.mem_univ, true_and] at hz`.
+
+Rewrite using `[hz, one_mul, add_zero]`. Establish `hfib : ∀ y, c y ≤ Fintype.card k + 1` using `fun y => card_le_of_pow_eq_mul_add _ (by omega) 0 y (Finset.univ.filter fun t : K => t * σ t = y) fun t ht => by`. Simplify using `only [Finset.mem_filter, Finset.mem_univ, true_and] at ht`. Rewrite using `[pow_succ', ← hfrob, ht, zero_mul, zero_add]`. Establish `hc0 : c 0 = 1` using `by show (Finset.univ.filter fun t : K => t * σ t = 0).card = 1`.
+
+Rewrite using `[Finset.card_eq_one]`. Use `⟨0, ?_⟩` and prove the remaining obligations. Use extensionality with `t`. Simplify using the standard rewrite rules. Rewrite using `[Nat.card_eq_fintype_card, Fintype.card_subtype]`.
+
+Use `split_ifs with hd0`. Substitute `hd0` using the available equality. Conclude with `hc0`. Establish `hdF : d ∈ F`. Simplify using `only [F, Finset.mem_filter, Finset.mem_univ, true_and]`.
+
+Rewrite using `[← hfrob, hd]`. Establish `h0F : (0 : K) ∈ F`. Simplify using `only [F, Finset.mem_filter, Finset.mem_univ, true_and]`. Conclude with `zero_pow (by omega)`. Use `le_antisymm (hfib d) ?_` and prove the remaining obligations.
+
+Assume the negation of the conclusion as `hlt`. Use `push_neg at hlt`. Establish `key : ∑ y ∈ F.erase 0, c y < ∑ _y ∈ F.erase 0, (Fintype.card k + 1)` using `Finset.sum_lt_sum (fun y _ => hfib y) ⟨d, Finset.mem_erase.mpr ⟨hd0, hdF⟩, hlt⟩`. Rewrite `key` using `[Finset.sum_const, smul_eq_mul, Finset.card_erase_of_mem h0F]`. Establish `hs` using `Finset.add_sum_erase F c h0F`.
+
+Rewrite `hs` using `[hc0]`. Establish `hn : 1 ≤ F.card` using `Finset.card_pos.mpr ⟨0, h0F⟩`. Establish `h3 : (F.card - 1) * (Fintype.card k + 1) ≤ (Fintype.card k - 1) * (Fintype.card k + 1)` using `Nat.mul_le_mul_right _ (by omega)`. Establish `h4 : (Fintype.card k - 1) * (Fintype.card k + 1) + 1 = Fintype.card k ^ 2`. Take `⟨r, hr⟩ : ∃ r, Fintype.card k = r + 1` from `⟨Fintype.card k - 1, by omega⟩`.
+
+Rewrite using `[hr, Nat.add_sub_cancel]`. Expand and normalize the polynomial expressions, which then agree. Use linear arithmetic over natural numbers and integers.
+-/
 theorem card_norm_fiber (σ : K ≃ₐ[k] K) (hfrob : ∀ x, σ x = x ^ Fintype.card k)
     (h2 : finrank k K = 2) (d : K) (hd : σ d = d) :
     Nat.card {t : K // t * σ t = d} = if d = 0 then 1 else Fintype.card k + 1 := by
@@ -234,6 +314,27 @@ theorem card_norm_fiber (σ : K ≃ₐ[k] K) (hfrob : ∀ x, σ x = x ^ Fintype.
 
 end field
 
+/- English proof (translation)
+Unfold `PI.VolStabSW.FFInert`. Introduce `k K _ _ _ _ σ hσ h2 hne h2k M a haM J hJ hdet T hT hTdet`. Use `haveI : Fintype k := Fintype.ofFinite k`. Use `haveI : Module.Finite k K := Module.finite_of_finrank_pos (by omega)`. Use `haveI : Finite K := Module.finite_of_finite k`.
+
+Use `haveI : Fintype K := Fintype.ofFinite K`. Establish `hfrob` using `frob_of_ne σ h2 hne`. Establish `hσ' : ∀ x, (σ : K →+* K) ((σ : K →+* K) x) = x` using `fun x => hσ x`. Establish `h2K : (2 : K) ≠ 0`. Use `(algebraMap k K).injective.ne h2k` as an intermediate fact.
+
+Rewrite `this` using `[map_ofNat, map_zero]`. Then use the resulting hypothesis. Establish `hK' : Fintype.card K = Fintype.card k ^ Module.finrank k K` using `Module.card_eq_pow_finrank`. Establish `hK : Fintype.card K = Nat.card k ^ 2`. Rewrite using `[hK', h2, Nat.card_eq_fintype_card]`. Establish `hN : ∀ d, (σ : K →+* K) d = d → Nat.card {t : K // t * (σ : K →+* K) t = d} = if d = 0 then 1 else Nat.card k + 1`.
+
+Introduce `d hd`. Rewrite using `[Nat.card_eq_fintype_card (α := k)]`. Conclude with `card_norm_fiber σ hfrob h2 d hd`. Establish `hq0 : 0 < Nat.card k` using `Nat.card_pos`. Establish `hsV` using `ffH_isHS hσ' J hJ hdet`.
+
+Establish `hsU` using `ffH_isHS hσ' T hT hTdet`. Take `⟨f, horth, hnz⟩` from `exists_orth h2K a (Fin a → K) (PI.VolStabSW.ffH (σ : K →+* K) T) hsU (Module.finrank_fin_fun K)`. Establish `hli` using `linIndep_orth hsU.toIsSq f horth hnz`. Establish `hsp : Submodule.span K (Set.range f) = ⊤` using `Submodule.eq_top_of_finrank_eq (by`. Rewrite using `[finrank_span_eq_card hli, Fintype.card_fin, Module.finrank_fin_fun])`.
+
+Set `bf` to `Module.Basis.mk hli hsp.ge`. Establish `hbf : ∀ i, bf i = f i` using `fun i => Module.Basis.mk_apply hli hsp.ge i`. Establish `e1 : Nat.card {X : Fin a → Fin M → K // PI.VolStabSW.ffGram (σ : K →+* K) J X = T} = Nat.card {Y : Fin a → Fin M → K // ∀ i j, PI.VolStabSW.ffH (σ : K →+* K) J (Y i) (Y j) = PI.VolStabSW.ffH (σ : K →+* K) T (Pi.basisFun K (Fin a) i) (Pi.basisFun K (Fin a) j)}`. Use `Nat.card_congr (Equiv.subtypeEquivRight fun X => ?_)` and prove the remaining obligations. Simplify using `only [Pi.basisFun_apply, ffH_single]`.
+
+Prove the components needed by the constructor for the conclusion. Introduce `h i j`. Conclude with `congrFun (congrFun h i) j`. Introduce `h`. Use extensionality with `i j`.
+
+Conclude with `h i j`. Establish `e2` using `card_isom hsU.toIsSq hsV.toIsSq (Pi.basisFun K (Fin a))`. Establish `e3` using `card_isom hsU.toIsSq hsV.toIsSq bf`. Establish `e4 : Nat.card {Y : Fin a → Fin M → K // ∀ i j, PI.VolStabSW.ffH (σ : K →+* K) J (Y i) (Y j) = PI.VolStabSW.ffH (σ : K →+* K) T (bf i) (bf j)} = Nat.card {Y : Fin a → Fin M → K // ∀ i j, PI.VolStabSW.ffH (σ : K →+* K) J (Y i) (Y j) = if i = j then PI.VolStabSW.ffH (σ : K →+* K) T …`. Establish `hg : ∀ i j, PI.VolStabSW.ffH (σ : K →+* K) T (bf i) (bf j) = if i = j then PI.VolStabSW.ffH (σ : K →+* K) T (f i) (f i) else 0`.
+
+Introduce `i j`. Simplify using `only [hbf]`. Use `split_ifs with hij`. Rewrite using `[hij]`. Conclude with `horth i j hij`.
+
+Use `Nat.card_congr (Equiv.subtypeEquivRight fun Y => ?_)` and prove the remaining obligations. Simplify using `only [hg]`. Rewrite using `[e1, ← e2, e3, e4]`. Conclude with `card_diag (Nat.card k) hq0 hK hσ' h2K hN a M haM (Fin M → K) (PI.VolStabSW.ffH (σ : K →+* K) J) hsV (Module.finrank_fin_fun K) (fun i => PI.VolStabSW.ffH (σ : K →+* K) T (f i) (f i)) (fun i => hsU.toIsSq.self_fixed (f i)) hnz`.
+-/
 theorem fFInert_holds : FFInert := by
   unfold PI.VolStabSW.FFInert
   intro k K _ _ _ _ σ hσ h2 hne h2k M a haM J hJ hdet T hT hTdet

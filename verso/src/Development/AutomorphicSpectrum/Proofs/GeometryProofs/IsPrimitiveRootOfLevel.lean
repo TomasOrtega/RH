@@ -13,6 +13,11 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.G
 
 namespace GlobalTheory.CompanionTheory.Ar.HodgeExists
 
+/- English proof (translation)
+Take `rfl : x' = fun c => x (e c)` from `funext hx`. Establish `hc : ∀ c p, InChart ξ (fun c => x (e c)) c p ↔ InChart ξ x (e c) p` using `fun c p => and_congr Iff.rfl (he.forall (p := fun c' => x c' / x (e c) ∈ regAt ξ p)).symm`. Use `⟨h.gen, fun p => ?_, fun c h0 => ?_, fun c h0 a => ?_⟩` and prove the remaining obligations. Take `⟨c, hp⟩` from `h.cover p`. Take `⟨c, rfl⟩` from `he c`.
+
+Conclude with `⟨c, (hc c p).2 hp⟩`. Take `⟨U, hU, hq⟩` from `h.affine (e c) h0`. Conclude with `⟨U, hU, fun q => (hq q).trans (exists_congr fun _ => (hc c _).symm)⟩`. Establish `: (Set.range fun j => x (e j) / x (e c)) = Set.range fun j => x j / x (e c)` using `he.range_comp fun j => x j / x (e c)`. Simplify `h.ring (e c) h0 a` using `only [hc, this]`.
+-/
 theorem coordTie_reindex {o : Type} [CommRing o] {X : Scheme.{0}} {Ω : Type} [Field Ω] [Algebra o Ω]
     {ξ : Spec (CommRingCat.of Ω) ⟶ X} {κ κ' : Type} {x : κ → Ω} (h : CoordTie o ξ x) (e : κ' → κ)
     (he : Function.Surjective e) (x' : κ' → Ω) (hx : ∀ c, x' c = x (e c)) : CoordTie o ξ x' := by
@@ -29,6 +34,13 @@ theorem coordTie_reindex {o : Type} [CommRing o] {X : Scheme.{0}} {Ω : Type} [F
       he.range_comp fun j => x j / x (e c)
     simpa only [hc, this] using h.ring (e c) h0 a
 
+/- English proof (translation)
+Substitute `hab` using the available equality. Set `P : (Over.mk b ⟶ G') → (Over.mk (b ≫ f) ⟶ G)` to `fun x => Over.homMk (x.left ≫ φ) (by`. Use `Over.w x` as an intermediate fact. Simplify using `only [Over.mk_hom] at this`. Simplify using `only [Category.assoc, Over.mk_hom, h.1.w]`.
+
+Rewrite using `[← Category.assoc, this])`. Establish `hP : ∀ x, (P x).left = x.left ≫ φ` using `fun _ => rfl`. Set `Φ : (Over.mk b ⟶ G') →* (Over.mk (b ≫ f) ⟶ G)` to `MonoidHom.mk' P fun x y => Over.OverMorphism.ext ((hP _).trans (h.2 (Over.mk b) x y (P x) (P y) rfl rfl).symm)`. Establish `hinj : Function.Injective Φ` using `fun x y hxy => Over.OverMorphism.ext (h.1.hom_ext (congrArg CommaMorphism.left hxy) ((Over.w x).trans (Over.w y).symm))`. Set `g' : Over.mk b ⟶ G'` to `Over.homMk (h.1.lift g.left b (Over.w g)) (h.1.lift_snd _ _ _)`.
+
+Establish `hg' : g'.left ≫ φ = g.left` using `h.1.lift_fst _ _ _`. Use `⟨g', hg', hinj ?_⟩` and prove the remaining obligations. Establish `: Φ g' = g` using `Over.OverMorphism.ext hg'`. Rewrite using `[map_pow, this, hg, map_one]`.
+-/
 theorem exists_lift_torsion {S S' Z : Scheme.{0}} {G' : Over S'} [GrpObj G'] {G : Over S} [GrpObj G] {f : S' ⟶ S}
     {φ : G'.left ⟶ G.left} (h : IsGrpPullback G' G f φ) (b : Z ⟶ S') (a : Z ⟶ S) (hab : a = b ≫ f) (n : ℕ)
     (g : Over.mk a ⟶ G) (hg : g ^ n = 1) : ∃ g' : Over.mk b ⟶ G', g'.left ≫ φ = g.left ∧ g' ^ n = 1 := by
@@ -49,6 +61,13 @@ theorem exists_lift_torsion {S S' Z : Scheme.{0}} {G' : Over S'} [GrpObj G'] {G 
   have : Φ g' = g := Over.OverMorphism.ext hg'
   rw [map_pow, this, hg, map_one]
 
+/- English proof (translation)
+Introduce `k _ i g hg`. Take `⟨g', e, hg'⟩` from `exists_lift_torsion h (spMap i ≫ ξ) _ (Category.assoc _ _ _).symm n g hg`. Take `⟨m, rfl⟩` from `hn`. Take `⟨x, hx⟩` from `ht k i g' (by rw [pow_mul, hg', one_pow])`. Use `⟨Over.homMk (x.left ≫ φ) ?_, ?_⟩` and prove the remaining obligations.
+
+Use `Over.w x` as an intermediate fact. Simplify using `only [Over.mk_hom] at this`. Simplify using `only [Category.assoc, Over.mk_hom, h.1.w]`. Rewrite using `[← Category.assoc, this]`. Rewrite using `[← e, hx]`.
+
+Conclude with `Category.assoc _ _ _`.
+-/
 theorem fullTorsion_push {S S' : Scheme.{0}} {G' : Over S'} [GrpObj G'] {G : Over S} [GrpObj G] {f : S' ⟶ S}
     {φ : G'.left ⟶ G.left} (h : IsGrpPullback G' G f φ) {Ω : Type} [Field Ω] {ξ : Spec (CommRingCat.of Ω) ⟶ S'}
     {N n : ℕ} (hn : n ∣ N) (ht : FullTorsion G' ξ N) : FullTorsion G (ξ ≫ f) n := by
@@ -64,6 +83,11 @@ theorem fullTorsion_push {S S' : Scheme.{0}} {G' : Over S'} [GrpObj G'] {G : Ove
   · rw [← e, hx]
     exact Category.assoc _ _ _
 
+/- English proof (translation)
+Establish `h1 : LocallyQuasiFinite (Spec.map (Scheme.stalkClosedPointTo ξ))` using `(HasRingHomProperty.Spec_iff (P := @LocallyQuasiFinite)).2 (.of_finite (RingHom.Finite.of_surjective _ hξ.bij.2))`. Establish `h2 : LocallyQuasiFinite ξ`. Rewrite using `[← Scheme.Spec_stalkClosedPointTo_fromSpecStalk ξ]`. Use `infer_instance`. Establish `h3 : LocallyQuasiFinite (Spec.map (CommRingCat.ofHom i) ≫ ξ₀)`.
+
+Rewrite using `[← h]`. Use `infer_instance`. Establish `h4 : i.QuasiFinite` using `(HasRingHomProperty.Spec_iff (P := @LocallyQuasiFinite) (φ := CommRingCat.ofHom i)).1 (LocallyQuasiFinite.of_comp _ ξ₀)`. Use `algebraize [i]`. Conclude with `.of_quasiFinite`.
+-/
 theorem finite_of_dominates {X Y : Scheme.{0}} {Ω Ω₀ : Type} [Field Ω] [Field Ω₀] {ξ : Spec (CommRingCat.of Ω) ⟶ X}
     {ξ₀ : Spec (CommRingCat.of Ω₀) ⟶ Y} (hξ : IsCptGen ξ) (f : X ⟶ Y) [IsFinite f] {i : Ω₀ →+* Ω}
     (h : GlobalTheory.CompanionTheory.Ar.Dominates ξ ξ₀ f i) : i.Finite := by
@@ -82,6 +106,9 @@ theorem finite_of_dominates {X Y : Scheme.{0}} {Ω Ω₀ : Type} [Field Ω] [Fie
   algebraize [i]
   exact .of_quasiFinite
 
+/- English proof (translation)
+Use `(Scheme.Hom.comp_apply ξ f _).symm.trans ?_` and prove the remaining obligations. Rewrite using `[show ξ ≫ f = _ from h]`. Conclude with `(Scheme.Hom.comp_apply _ ξ₀ _).trans (congrArg ξ₀ (Subsingleton.elim (α := PrimeSpectrum Ω₀) _ _))`.
+-/
 theorem genPt_of_dominates {X Y : Scheme.{0}} {Ω Ω₀ : Type} [Field Ω] [Field Ω₀] {ξ : Spec (CommRingCat.of Ω) ⟶ X}
     {ξ₀ : Spec (CommRingCat.of Ω₀) ⟶ Y} {f : X ⟶ Y} {i : Ω₀ →+* Ω}
     (h : GlobalTheory.CompanionTheory.Ar.Dominates ξ ξ₀ f i) : f (GlobalTheory.CompanionTheory.Ar.genPt ξ) = GlobalTheory.CompanionTheory.Ar.genPt ξ₀ := by
@@ -90,6 +117,9 @@ theorem genPt_of_dominates {X Y : Scheme.{0}} {Ω Ω₀ : Type} [Field Ω] [Fiel
   exact (Scheme.Hom.comp_apply _ ξ₀ _).trans
     (congrArg ξ₀ (Subsingleton.elim (α := PrimeSpectrum Ω₀) _ _))
 
+/- English proof (translation)
+Take `⟨I, hI, -⟩` from `h (AlgebraicClosure Ω) (algebraMap Ω _)`. Use `IsPrimitiveRoot.of_map_of_injective (f := algebraMap Ω (AlgebraicClosure Ω)) ?_ (RingHom.injective _)` and prove the remaining obligations. Rewrite using `[← hI]`. Conclude with `IsPrimitiveRoot.coe_units_iff.2 (I.ζ_prim N hN)`.
+-/
 theorem isPrimitiveRoot_of_level {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {D : Datum H}
     {X : Scheme.{0}} {t : SAB H X} {Ω : Type} [Field Ω] {ξ : Sp Ω ⟶ X} {N : ℕ} (hN : 0 < N) {z : Ωˣ}
     {ev : D.La → (Over.mk ξ ⟶ t.G)} (h : XR.IsFullLevelAt D t ξ N z ev) : IsPrimitiveRoot (z : Ω) N := by
@@ -98,6 +128,21 @@ theorem isPrimitiveRoot_of_level {E : Type} [Field E] [NumberField E] [IsCMField
   rw [← hI]
   exact IsPrimitiveRoot.coe_units_iff.2 (I.ζ_prim N hN)
 
+/- English proof (translation)
+Introduce `hW E _ _ _ H D l Xo c Y S R e₀ he hS hd hR`. Establish `hN : 0 < ∏ p ∈ S, p ^ R p` using `Finset.prod_pos fun p hp => pow_pos (hS p hp).pos _`. Take `⟨Ω, _, _, n, x, M, f, y₀, t, m, z, ev, hnorm, hfin, hf, hy, hlev, htor, -⟩` from `GlobalTheory.T.LevelCoverSt_holds E H D l Xo c Y e₀ he _ hN`. Establish `hz` using `isPrimitiveRoot_of_level hN hlev`. Establish `hζ : ∀ p ∈ S, ∃ ζ : Ω, IsPrimitiveRoot ζ (p ^ R p)` using `fun p hp => by`.
+
+Take `⟨m, hm⟩` from `Finset.dvd_prod_of_mem (fun p => p ^ R p) hp`. Conclude with `⟨_, hz.pow hN (hm.trans (mul_comm _ _))⟩`. Set `M₁ : PModel ℤ (fun c' : (k : Unit) → Fin n => ∏ k, (fun q : Σ _ : Unit, Fin n => x q.2) ⟨k, c' k⟩)` to `⟨M.X, M.ξ, M.s, M.hover, M.all, coordTie_reindex M.tie (fun c' => c' ()) (fun a => ⟨fun _ => a, rfl⟩) _ fun c' => by simp⟩`. Take `⟨K₁, _, J₁, _, y₁, -, -, A, g₁, -, -, hg₁, hAf, hAR, hA, -⟩` from `GlobalTheory.T.hodge_cpt_projective_model hW E H D l Xo c Y S R Ω Unit (fun _ => Fin n) (fun q => x q.2) M₁ f y₀ hnorm hy (hf ▸ he) hS hd hR (fun p hp => fullTorsion_push m.cart (Finset.dvd_prod_of_mem (fun p => p ^ R p) hp) htor) hζ`. Establish `hg₁' : A.ξ ≫ g₁ = M.ξ`.
+
+Rewrite using `[hg₁]`. Simplify using `[M₁]`. Establish `hAy : A.ξ ≫ A.f = y₀ ≫ Y.j` using `by rw [hAf, ← Category.assoc, hg₁', hy]`. Establish `hdom : GlobalTheory.CompanionTheory.Ar.Dominates M.ξ A.ξ₀ f A.fn`. Use `A.fn_over` as an intermediate fact.
+
+Unfold `GlobalTheory.CompanionTheory.Ar.Dominates at this ⊢`. Rewrite using `[← this, hAy, hy]`. Establish `hcov : A.IsCover (letI` using `A.fn.toAlgebra; Module.finrank A.Ω₀ Ω) := by`. Use `⟨?_, rfl⟩` and prove the remaining obligations. Set `` to `A.fn.toAlgebra`.
+
+Establish `: Module.Finite A.Ω₀ Ω` using `finite_of_dominates M.tie.gen f hdom`. Conclude with `Module.finrank_pos`. Take `⟨Ω', _, _, i, K₂, _, J₂, _, y₂, B, g₂, b, Li₀, a₀, m₀, M₀, j, V₀, hg₂, hBf, hBR, hB, hb, hj, hV, hgen⟩` from `GlobalTheory.T.hodge_cpt_good_reduction_degree hW E H D l Xo c Y S Ω K₁ J₁ y₁ A y₀ _ hAy hd hA (by rw [hAR]; exact hζ) hcov`. Establish `hBy : B.ξ ≫ B.f = (spMap i ≫ y₀) ≫ Y.j`. Rewrite using `[hBf, ← Category.assoc, hg₂, Category.assoc, hAy, Category.assoc]`.
+
+Take `⟨K₃, _, J₃, _, y₃, -, -, C, g₃, Fl, xdeg, e, -, -, hg₃, hCf, hCR, -, hC, -, -, hroot, hdR, -⟩` from `GlobalTheory.T.hodge_cpt_label_bases hW E H D l Xo c Y S Ω' K₂ J₂ y₂ B (spMap i ≫ y₀) b Li₀ a₀ m₀ M₀ j V₀ _ hBy hd hB (fun p hp => by`. Take `⟨ζ, hζ'⟩` from `hζ p hp`. Conclude with `⟨i ζ, by rw [hBR, hAR]; exact hζ'.map_of_injective i.injective⟩) hb hj hV hgen`. Use `⟨Ω', inferInstance, inferInstance, K₃, inferInstance, J₃, inferInstance, y₃, C, Fl, xdeg, e, ?_, by rw [hCR, hBR, hAR], hC, hroot, hdR⟩` and prove the remaining obligations. Rewrite using `[hCf, Scheme.Hom.comp_apply, genPt_of_dominates hg₃, hBf, Scheme.Hom.comp_apply, genPt_of_dominates hg₂, hAf, Scheme.Hom.comp_apply, genPt_of_dominates hg₁]`.
+
+Conclude with `hf`.
+-/
 theorem exists_hodgeCpt_flag : Out.WeilSt → ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (D : Datum H) (l : Geo.Tor.Level H) (Xo : Moduli D l) (c : Coeff l) (Y : Model Xo c (algebraMap (𝓞 c.F) c.F)) (S : Finset ℕ) (R : ℕ → ℕ) (e₀ : Y.X), e₀ ∈ genericPoints Y.X → (∀ p ∈ S, p.Prime) → (∀ p : ℕ, p.Prime → (p : ℤ) ∣ NumberField.discr E → p ∈ S) → (∀ p ∈ S, 4 ≤ R p) → ∃ (Ω : Type) (_ : Field Ω) (_ : CharZero Ω) (K : Type) (_ : Fintype K) (J : K → Type) (_ : ∀ k, Fintype (J k)) (y : (Σ k, J k) → Ω) (𝔐 : HodgeCpt Y S y) (Fl : 𝔐.Flag) (xdeg : CMType H × Fin (D.p + D.q) → K → ℤ) (e : CMType H × Fin (D.p + D.q) → Ω), 𝔐.f (GlobalTheory.CompanionTheory.Ar.genPt 𝔐.ξ) = e₀ ∧ 𝔐.R = R ∧ (∀ p ∈ S, HT.HTFree 𝔐 p) ∧ Fl.RootLines xdeg e ∧ ∀ s, (𝔐.dR s).IsFlagVBOn Set.univ (Fl.b s) := by
   intro hW E _ _ _ H D l Xo c Y S R e₀ he hS hd hR
   have hN : 0 < ∏ p ∈ S, p ^ R p := Finset.prod_pos fun p hp => pow_pos (hS p hp).pos _

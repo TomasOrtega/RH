@@ -7,6 +7,9 @@ namespace GlobalTheory.CompanionTheory.Ar.Flat
 
 open ReciprocityTheory.ChartRestriction.G.AI.I2
 
+/- English proof (translation)
+The claim follows from `GroundTheory.Heights₂.Heights.Inter.InductiveIntersectionFormula.proof`.
+-/
 theorem vertical_holds : VerticalStatement := GroundTheory.Heights₂.Heights.Inter.InductiveIntersectionFormula.proof
 
 end GlobalTheory.CompanionTheory.Ar.Flat

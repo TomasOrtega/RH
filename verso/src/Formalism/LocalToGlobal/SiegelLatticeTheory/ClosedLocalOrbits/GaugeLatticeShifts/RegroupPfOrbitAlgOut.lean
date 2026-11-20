@@ -3,6 +3,9 @@ import Formalism.LocalToGlobal.SiegelLatticeTheory.ClosedLocalOrbits.GaugeLattic
 
 namespace Formalism.L2.SG.Pf.RegroupPf
 
+/- English proof (translation)
+The claim follows from `orbitAlgC_of Formalism.L2.SG.Pf.nilradical_conj_level' hC hS`.
+-/
 theorem orbit_algebra_of_stabilizer (hC : TermCarC) (hS : StabNC) : OrbitAlgC :=
   orbitAlgC_of Formalism.L2.SG.Pf.nilradical_conj_level' hC hS
 

@@ -15,6 +15,15 @@ def OrdBelow (v : AddValuation C (WithTop ℝ)) (ρ : ℝ) (D : ℕ) (g : MvPowe
   ∀ α : Fin M →₀ ℕ, Finsupp.degree α < D →
     (((r - ρ * (Finsupp.degree α : ℕ) : ℝ)) : WithTop ℝ) ≤ v (coeff α g)
 
+/- English proof (translation)
+Introduce `α hα`. Rewrite using `[coeff_mul]`. Use `v.map_le_sum fun p hp => ?_` and prove the remaining obligations. Establish `hp' : p.1 + p.2 = α` using `by simpa using hp`. Distinguish the cases in `h1 : p.1 = 0`.
+
+Rewrite using `[h1, coeff_zero_eq_constantCoeff_apply, hg0, zero_mul, v.map_zero]`. Conclude with `le_top`. Distinguish the cases in `h2 : p.2 = 0`. Rewrite using `[h2, coeff_zero_eq_constantCoeff_apply, hh0, mul_zero, v.map_zero]`. Conclude with `le_top`.
+
+Establish `hd : Finsupp.degree p.1 + Finsupp.degree p.2 = Finsupp.degree α`. Rewrite using `[← hp', map_add]`. Establish `d1 : Finsupp.degree p.1 ≠ 0` using `fun e => h1 ((Finsupp.degree_eq_zero_iff _).1 e)`. Establish `d2 : Finsupp.degree p.2 ≠ 0` using `fun e => h2 ((Finsupp.degree_eq_zero_iff _).1 e)`. Rewrite using `[v.map_mul]`.
+
+Use `le_trans (le_of_eq ?_) (add_le_add (hg p.1 (by omega)) (hh p.2 (by omega)))` and prove the remaining obligations. Rewrite using `[← WithTop.coe_add, ← hd]`. Use `congr 1`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem OrdBelow.mul {v : AddValuation C (WithTop ℝ)} {ρ : ℝ} {D : ℕ}
     {g h : MvPowerSeries (Fin M) C} {r s : ℝ} (hg0 : constantCoeff g = 0)
     (hh0 : constantCoeff h = 0) (hg : OrdBelow v ρ D g r) (hh : OrdBelow v ρ D h s) :
@@ -39,6 +48,13 @@ theorem OrdBelow.mul {v : AddValuation C (WithTop ℝ)} {ρ : ℝ} {D : ℕ}
   push_cast
   ring
 
+/- English proof (translation)
+Proceed by induction on `k with`. Consider the case `zero => simpa using hg`. Consider the case `succ k ih`. Establish `h` using `OrdBelow.mul (by simp [hg0]) hg0 ih hg`. Introduce `α hα`.
+
+Establish `h'` using `h α (by omega)`. Rewrite using `[_root_.pow_succ g (k + 1)]`. Use `le_trans (le_of_eq ?_) h'` and prove the remaining obligations. Use `congr 1`. Use `push_cast`.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem OrdBelow.pow_succ {v : AddValuation C (WithTop ℝ)} {ρ : ℝ} {D : ℕ}
     {g : MvPowerSeries (Fin M) C} {r : ℝ} (hg0 : constantCoeff g = 0)
     (hg : OrdBelow v ρ D g r) (k : ℕ) :
@@ -55,6 +71,11 @@ theorem OrdBelow.pow_succ {v : AddValuation C (WithTop ℝ)} {ρ : ℝ} {D : ℕ
     push_cast
     ring
 
+/- English proof (translation)
+Take `⟨k, rfl⟩ : ∃ k, N = k + 1 + 1` from `⟨N - 2, by omega⟩`. Establish `h` using `OrdBelow.mul (by simp [hg0]) hg0 (hg.pow_succ hg0 k) hg`. Rewrite using `[_root_.pow_succ g (k + 1)]`. Use `h using 1` and compare the differences between its conclusion and the goal. Use `push_cast`.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem OrdBelow.pow {v : AddValuation C (WithTop ℝ)} {ρ : ℝ} {D : ℕ}
     {g : MvPowerSeries (Fin M) C} {r : ℝ} (hg0 : constantCoeff g = 0)
     (hg : OrdBelow v ρ D g r) {N : ℕ} (hN : 2 ≤ N) :
@@ -66,6 +87,27 @@ theorem OrdBelow.pow {v : AddValuation C (WithTop ℝ)} {ρ : ℝ} {D : ℕ}
   push_cast
   ring
 
+/- English proof (translation)
+Introduce `C _ _ v l hl _ d M al z t h0 hal hz ht hlg`. Use `set ρ : ℝ := 1 / ((l : ℝ) - 1) with hρ`. Establish `hl2 : (2 : ℝ) ≤ l` using `by exact_mod_cast hl.two_le`. Establish `hρ1 : ρ * ((l : ℝ) - 1) = 1`. Rewrite using `[hρ]; field_simp [show (l : ℝ) - 1 ≠ 0 by linarith]`.
+
+Establish `hρ0 : 0 < ρ` using `by rw [hρ]; apply one_div_pos.2; linarith`. Establish `key : ∀ D : ℕ, ∀ c, OrdBelow v ρ D (t c) ρ`. Introduce `D`. Proceed by induction on `D with`. Consider the case `zero => intro c α hα`.
+
+Use linear arithmetic over natural numbers and integers. Consider the case `succ D ih`. Introduce `e α hα`. Establish `h1 : coeff α (lgSum l al t e) = coeff α (∑ j, MvPowerSeries.C (z e j) * MvPowerSeries.X j)`. Rewrite using `[hlg e]`.
+
+Establish `h2 : coeff α (lgSum l al t e) = ∑ n ∈ Finset.range (Finsupp.degree α + 1), ∑ a, al a n e * coeff α (t a ^ (l ^ n))` using `rfl`. Rewrite `h1` using `[h2, Finset.sum_range_succ']`. Establish `h3 : ∑ a, al a 0 e * coeff α (t a ^ (l ^ 0)) = coeff α (t e)`. Simplify using `[h0]`. Rewrite `h1` using `[h3]`.
+
+Rewrite using `[eq_sub_of_add_eq' h1]`. Use `v.map_le_sub ?_ ?_` and prove the remaining obligations. Rewrite using `[map_sum]`. Use `v.map_le_sum fun j _ => ?_` and prove the remaining obligations. Rewrite using `[coeff_C_mul, coeff_X]`.
+
+Use `split_ifs with hj`. Rewrite using `[hj, mul_one]`. Simplify using `using hz e j`. Rewrite using `[mul_zero, v.map_zero]`. Conclude with `le_top`.
+
+Use `v.map_le_sum fun n _ => v.map_le_sum fun a _ => ?_` and prove the remaining obligations. Establish `hN : 2 ≤ l ^ (n + 1)` using `le_trans hl.two_le (Nat.le_self_pow (by omega) l)`. Establish `h4` using `(ih a).pow (ht a) hN α hα`. Rewrite using `[v.map_mul]`. Use `le_trans ?_ (add_le_add (hal a (n + 1) e) h4)` and prove the remaining obligations.
+
+Rewrite using `[← WithTop.coe_add, WithTop.coe_le_coe]`. Establish `hb` using `one_add_mul_sub_le_pow (a := (l : ℝ)) (by linarith) (n + 1)`. Establish `hb'` using `mul_le_mul_of_nonneg_left hb hρ0.le`. Move the coercions through the operations in `at hb' ⊢`. Establish `: ρ * (1 + ((n : ℝ) + 1) * (l - 1)) = ρ + (n + 1)`.
+
+Take the linear combination `((n : ℝ) + 1) * hρ1`. Combine the linear equalities and inequalities to obtain the conclusion. Introduce `c α`. Establish `h` using `key (Finsupp.degree α + 1) c α (by omega)`. Use `le_trans (le_of_eq ?_) h` and prove the remaining obligations.
+
+Use `congr 2`. Rewrite using `[Finsupp.degree_eq_sum, ← Finset.mul_sum]`. Use `push_cast`. Both sides reduce to the same expression.
+-/
 theorem ordGe_of_lgSum_eq_linear :
   (∀ (C : Type) [Field C] [CharZero C] (v : AddValuation C (WithTop ℝ)) (l : ℕ), l.Prime → v (l : C) = 1 → ∀ (d M : ℕ) (al : Fin d → ℕ → Fin d → C) (z : Fin d → Fin M → C) (t : Fin d → MvPowerSeries (Fin M) C),
     (∀ c e, al c 0 e = if c = e then 1 else 0) → (∀ c (n : ℕ) e, ((-(n : ℝ) : ℝ) : WithTop ℝ) ≤ v (al c n e)) → (∀ c j, 0 ≤ v (z c j)) →

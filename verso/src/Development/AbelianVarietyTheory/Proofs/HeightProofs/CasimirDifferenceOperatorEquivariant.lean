@@ -18,13 +18,24 @@ variable {n : ℕ} {ε : Fin n → Bool} {H : Type} [NormedAddCommGroup H] [Inne
 
 abbrev trF (U V : Mx n) : ℝ := (trace (U * V)).re
 
+/- English proof (translation)
+Simplify using `[trF, Finset.sum_mul, Matrix.trace_sum, Complex.re_sum]`.
+-/
 theorem trF_sum_left {ι : Type} (s : Finset ι) (r : ι → ℝ) (Z : ι → Mx n) (V : Mx n) :
     trF (∑ c ∈ s, r c • Z c) V = ∑ c ∈ s, r c * trF (Z c) V := by
   simp [trF, Finset.sum_mul, Matrix.trace_sum, Complex.re_sum]
 
+/- English proof (translation)
+Simplify using `only [trF, Matrix.trace_mul_comm U V]`.
+-/
 theorem trF_comm (U V : Mx n) : trF U V = trF V U := by
   simp only [trF, Matrix.trace_mul_comm U V]
 
+/- English proof (translation)
+Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty`. Use `Dw_smul hσ (l := [Z]) (by simp [hZ]) (0 : ℂ) (x := 0) ((smooth (Jm ε) σ).zero_mem)` as an intermediate fact. Simplify using `using this`. Consider the case `insert a s ha ih`.
+
+Rewrite using `[Finset.sum_insert ha, Finset.sum_insert ha, ← ih]`. Conclude with `Dw_add hσ (l := [Z]) (by simp [hZ]) (hw _) ((smooth (Jm ε) σ).sum_mem fun i _ => hw i)`.
+-/
 theorem dRep_finsum (hσ : IsURepOn (UJset ε) σ) {Z : Mx n} (hZ : Z ∈ lieSet ε) {ι : Type} (s : Finset ι)
     (w : ι → H) (hw : ∀ i, Sm ε σ (w i)) : dRep σ Z (∑ i ∈ s, w i) = ∑ i ∈ s, dRep σ Z (w i) := by
   classical
@@ -38,6 +49,9 @@ theorem dRep_finsum (hσ : IsURepOn (UJset ε) σ) {Z : Mx n} (hZ : Z ∈ lieSet
 
 variable [CompleteSpace H]
 
+/- English proof (translation)
+Set `e` to `Fintype.equivFin ι`. Use `h.dRep_sum (B := Z ∘ e.symm) (fun i => hZ _) hw (a ∘ e.symm)` as an intermediate fact. Simplify `this` using `only [Function.comp_apply, e.symm.sum_comp (fun c => a c • Z c), e.symm.sum_comp (fun c => (a c : ℂ) • dRep σ (Z c) w)]`.
+-/
 theorem dRep_sum_fin (h : Std ε σ) {ι : Type} [Fintype ι] {Z : ι → Mx n} (hZ : ∀ c, Z c ∈ lieSet ε) {w : H}
     (hw : Sm ε σ w) (a : ι → ℝ) : dRep σ (∑ c, a c • Z c) w = ∑ c, (a c : ℂ) • dRep σ (Z c) w := by
   let e := Fintype.equivFin ι
@@ -45,6 +59,11 @@ theorem dRep_sum_fin (h : Std ε σ) {ι : Type} [Fintype ι] {Z : ι → Mx n} 
   simpa only [Function.comp_apply, e.symm.sum_comp (fun c => a c • Z c),
     e.symm.sum_comp (fun c => (a c : ℂ) • dRep σ (Z c) w)] using this
 
+/- English proof (translation)
+Establish `hs : ∀ d, Sm ε σ (dRep σ (Z d) v)` using `fun d => dRep_mem (isUnit_Jm ε) h.1 hv (hZ d)`. Establish `hw : Sm ε σ (∑ d, (b d : ℂ) • dRep σ (Z d) v)` using `(smooth (Jm ε) σ).sum_mem fun d _ => (smooth (Jm ε) σ).smul_mem _ (hs d)`. Rewrite using `[dRep_sum_fin h hZ hv b, dRep_sum_fin h hZ hw a]`. Use `Finset.sum_congr rfl fun c _ => ?_` and prove the remaining obligations. Rewrite using `[dRep_finsum h.1 (hZ c) _ _ fun d => (smooth (Jm ε) σ).smul_mem _ (hs d), Finset.smul_sum]`.
+
+Use `Finset.sum_congr rfl fun d _ => ?_` and prove the remaining obligations. Use `Dw_smul h.1 (l := [Z c]) (by simp [hZ c]) (b d : ℂ) (hs d)` as an intermediate fact. Rewrite using `[show dRep σ (Z c) ((b d : ℂ) • dRep σ (Z d) v) = (b d : ℂ) • dRep σ (Z c) (dRep σ (Z d) v) from this, smul_smul]`. Use `push_cast`. Put the polynomial expressions in normal form.
+-/
 theorem dRep_dRep_sum (h : Std ε σ) {ι : Type} [Fintype ι] {Z : ι → Mx n} (hZ : ∀ c, Z c ∈ lieSet ε) {v : H}
     (hv : Sm ε σ v) (a b : ι → ℝ) :
     dRep σ (∑ c, a c • Z c) (dRep σ (∑ d, b d • Z d) v) =
@@ -61,12 +80,20 @@ theorem dRep_dRep_sum (h : Std ε σ) {ι : Type} [Fintype ι] {Z : ι → Mx n}
     smul_smul]
   push_cast; ring_nf
 
+/- English proof (translation)
+Unfold `trF`. Use `congr 1`. Rewrite using `[show g⁻¹ * U * g * V = g⁻¹ * (U * g * V) by simp only [Matrix.mul_assoc], Matrix.trace_mul_comm]`. Simplify using `only [Matrix.mul_assoc]`.
+-/
 theorem trF_conj {g : Mx n} (hg : g ∈ UJset ε) (U V : Mx n) : trF (g⁻¹ * U * g) V = trF U (g * V * g⁻¹) := by
   unfold trF
   congr 1
   rw [show g⁻¹ * U * g * V = g⁻¹ * (U * g * V) by simp only [Matrix.mul_assoc], Matrix.trace_mul_comm]
   simp only [Matrix.mul_assoc]
 
+/- English proof (translation)
+Unfold `trF`. Use `congr 1`. Establish `e : g * U * g⁻¹ * (g * V * g⁻¹) = g * (U * V * g⁻¹)`. Simplify using `only [Matrix.mul_assoc]`. Rewrite using `[← Matrix.mul_assoc g⁻¹ g, inv_mul_UJ hg, Matrix.one_mul]`.
+
+Rewrite using `[e, Matrix.trace_mul_comm, Matrix.mul_assoc, inv_mul_UJ hg, Matrix.mul_one]`.
+-/
 theorem trF_conj_conj {g : Mx n} (hg : g ∈ UJset ε) (U V : Mx n) :
     trF (g * U * g⁻¹) (g * V * g⁻¹) = trF U V := by
   unfold trF
@@ -76,10 +103,20 @@ theorem trF_conj_conj {g : Mx n} (hg : g ∈ UJset ε) (U V : Mx n) :
     rw [← Matrix.mul_assoc g⁻¹ g, inv_mul_UJ hg, Matrix.one_mul]
   rw [e, Matrix.trace_mul_comm, Matrix.mul_assoc, inv_mul_UJ hg, Matrix.mul_one]
 
+/- English proof (translation)
+Use `conj_mem_lie (isUnit_Jm ε) (inv_mem_UJ hg) hX` as an intermediate fact. Rewrite `this` using `[Matrix.nonsing_inv_nonsing_inv _ ((isUnit_iff_isUnit_det _).1 (isUnit_of_UJ hg))]`. Then use the resulting hypothesis.
+-/
 theorem conj_mem' {g : Mx n} (hg : g ∈ UJset ε) {X : Mx n} (hX : X ∈ lieSet ε) : g * X * g⁻¹ ∈ lieSet ε := by
   have := conj_mem_lie (isUnit_Jm ε) (inv_mem_UJ hg) hX
   rwa [Matrix.nonsing_inv_nonsing_inv _ ((isUnit_iff_isUnit_det _).1 (isUnit_of_UJ hg))] at this
 
+/- English proof (translation)
+Establish `h3 : ∑ c, s c * trF (Z c) (g * Z d * g⁻¹) * trF (Z c) (g * Z e * g⁻¹) = trF (g * Z d * g⁻¹) (g * Z e * g⁻¹)` using `by conv_rhs => rw [hE _ (conj_mem' hg (hZ d)), trF_sum_left]`. Use `Finset.sum_congr rfl fun c _ => ?_` and prove the remaining obligations. Rewrite using `[trF_comm (g * Z d * g⁻¹) (Z c)]`. Rewrite `h3` using `[trF_conj_conj hg, hO]`. Simplify using `only [trF_conj hg]`.
+
+Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Finset.mul_sum]`. Use `Finset.sum_congr rfl fun c _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree. Use `_ = _ := by`.
+
+Rewrite using `[h3]`. Use `split_ifs with hde`. Substitute `hde` using the available equality. Rewrite using `[mul_assoc, hs, mul_one]`. Simplify using the standard rewrite rules.
+-/
 theorem coef_orth {ι : Type} [Fintype ι] [DecidableEq ι] {Z : ι → Mx n} {s : ι → ℝ} (hs : ∀ c, s c * s c = 1)
     (hO : ∀ c d, trF (Z c) (Z d) = if c = d then s c else 0)
     (hE : ∀ U ∈ lieSet ε, U = ∑ c, (s c * trF U (Z c)) • Z c) (hZ : ∀ c, Z c ∈ lieSet ε) {g : Mx n}
@@ -100,6 +137,15 @@ theorem coef_orth {ι : Type} [Fintype ι] [DecidableEq ι] {Z : ι → Mx n} {s
         · subst hde; rw [mul_assoc, hs, mul_one]
         · simp
 
+/- English proof (translation)
+Use `set a : ι → ι → ℝ := fun c d => s d * trF (g⁻¹ * Z c * g) (Z d) with ha`. Establish `hW : ∀ c, g⁻¹ * Z c * g = ∑ d, a c d • Z d` using `fun c => hE _ (conj_mem_lie (isUnit_Jm ε) hg (hZ c))`. Establish `key` using `coef_orth hs hO hE hZ hg`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [Finset.smul_sum, smul_smul]`.
+
+Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun d _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun e _ => ?_` and prove the remaining obligations. Rewrite using `[Complex.ofReal_sum, Finset.sum_smul]`.
+
+Use `Finset.sum_congr rfl fun c _ => ?_` and prove the remaining obligations. Use `congr 1`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Use `_ = _ := by`.
+
+Simplify using `only [ha, key]`. Use `Finset.sum_congr rfl fun d _ => ?_` and prove the remaining obligations. Simplify using `[apply_ite]`.
+-/
 theorem sum_sq_conj (h : Std ε σ) {ι : Type} [Fintype ι] [DecidableEq ι] {Z : ι → Mx n} {s : ι → ℝ}
     (hs : ∀ c, s c * s c = 1) (hO : ∀ c d, trF (Z c) (Z d) = if c = d then s c else 0)
     (hE : ∀ U ∈ lieSet ε, U = ∑ c, (s c * trF U (Z c)) • Z c) (hZ : ∀ c, Z c ∈ lieSet ε) {g : Mx n}
@@ -127,6 +173,9 @@ theorem sum_sq_conj (h : Std ε σ) {ι : Type} [Fintype ι] [DecidableEq ι] {Z
         simp [apply_ite]
 
 omit [CompleteSpace H] in
+/- English proof (translation)
+Establish `h : ∀ Z ∈ lieSet ε, dRep σ Z (dRep σ Z (σ g v)) = σ g (dRep σ (g⁻¹ * Z * g) (dRep σ (g⁻¹ * Z * g) v))` using `fun Z hZ => Dw_translate hσ hg hv (l := [Z, Z]) (by simp [hZ])`. Simplify using `only [casOp, h _ (hX _), h _ (hY _), map_sub, map_sum]`.
+-/
 theorem casOp_translate (hσ : IsURepOn (UJset ε) σ) {d e : ℕ} {X : Fin d → Mx n} {Y : Fin e → Mx n}
     (hX : ∀ i, X i ∈ lieSet ε) (hY : ∀ b, Y b ∈ lieSet ε) {g : Mx n} (hg : g ∈ UJset ε) {v : H} (hv : Sm ε σ v) :
     casOp σ X Y (σ g v) = σ g (casOp σ (fun i => g⁻¹ * X i * g) (fun b => g⁻¹ * Y b * g) v) := by
@@ -134,15 +183,38 @@ theorem casOp_translate (hσ : IsURepOn (UJset ε) σ) {d e : ℕ} {X : Fin d �
     fun Z hZ => Dw_translate hσ hg hv (l := [Z, Z]) (by simp [hZ])
   simp only [casOp, h _ (hX _), h _ (hY _), map_sub, map_sum]
 
+/- English proof (translation)
+The claim follows from `GlobalTheory.T.skewHermitianOrthonormalBasis_trace_orthonormal n ε i j`.
+-/
 theorem kk_orth (n : ℕ) (ε : Fin n → Bool) (i j : Fin (kList ε).length) :
     (trace (kB ε i * kB ε j)).re = if i = j then -1 else 0 := GlobalTheory.T.skewHermitianOrthonormalBasis_trace_orthonormal n ε i j
+/- English proof (translation)
+The claim follows from `GlobalTheory.T.re_trace_hermitianOrthonormalBasis_mul_eq_ite n ε a b`.
+-/
 theorem pp_orth (n : ℕ) (ε : Fin n → Bool) (a b : Fin (pList ε).length) :
     (trace (pB ε a * pB ε b)).re = if a = b then 1 else 0 := GlobalTheory.T.re_trace_hermitianOrthonormalBasis_mul_eq_ite n ε a b
+/- English proof (translation)
+The claim follows from `GlobalTheory.T.re_trace_skewHermitian_mul_hermitianOrthonormalBasis n ε i b`.
+-/
 theorem kp_orth (n : ℕ) (ε : Fin n → Bool) (i : Fin (kList ε).length) (b : Fin (pList ε).length) :
     (trace (kB ε i * pB ε b)).re = 0 := GlobalTheory.T.re_trace_skewHermitian_mul_hermitianOrthonormalBasis n ε i b
+/- English proof (translation)
+The claim follows from `GlobalTheory.T.signature_lieSet_expand_orthonormal_bases n ε`.
+-/
 theorem expand (n : ℕ) (ε : Fin n → Bool) : ∀ U ∈ lieSet ε,
     U = ∑ b, (trace (U * pB ε b)).re • pB ε b - ∑ i, (trace (U * kB ε i)).re • kB ε i := GlobalTheory.T.signature_lieSet_expand_orthonormal_bases n ε
 
+/- English proof (translation)
+Introduce `n ε H _ _ _ σ h g hg v hv`. Take `⟨hk, hp⟩` from `GlobalTheory.T.orthonormalBases_mem_unitaryLieAlgebra n ε`. Set `Z : Fin (kList ε).length ⊕ Fin (pList ε).length → Mx n` to `Sum.elim (kB ε) (pB ε)`. Set `s : Fin (kList ε).length ⊕ Fin (pList ε).length → ℝ` to `Sum.elim (fun _ => -1) (fun _ => 1)`. Apply the tactic sequence `have hs : ∀ c, s c * s c = 1 := by rintro (c | c) <;> simp [s]`.
+
+Establish `hZ : ∀ c, Z c ∈ lieSet ε` using `by rintro (c | c); exacts [hk c, hp c]`. Establish `hO : ∀ c d, trF (Z c) (Z d) = if c = d then s c else 0`. Introduce and unpack `(c | c) (d | d)`. Simplify `kk_orth n ε c d` using `[Z, s]`. Simplify `kp_orth n ε c d` using `[Z, s]`.
+
+Simplify `kp_orth n ε d c` using `[Z, s, trF_comm]`. Simplify `pp_orth n ε c d` using `[Z, s]`. Establish `hE : ∀ U ∈ lieSet ε, U = ∑ c, (s c * trF U (Z c)) • Z c`. Introduce `U hU`. Simplify using `only [Fintype.sum_sum_type, Z, s, Sum.elim_inl, Sum.elim_inr, neg_one_mul, one_mul, neg_smul, Finset.sum_neg_distrib]`.
+
+Use `conv_lhs => rw [expand n ε U hU]`. Normalize the expressions using the abelian group laws. Use `sum_sq_conj h hs hO hE hZ hg hv` as an intermediate fact. Simplify using `only [Fintype.sum_sum_type, Z, s, Sum.elim_inl, Sum.elim_inr, Complex.ofReal_neg, Complex.ofReal_one, neg_smul, one_smul, Finset.sum_neg_distrib] at this`. Rewrite using `[casOp_translate h.1 hk hp hg hv]`.
+
+Use `congr 1`. Simplify using `only [casOp, sub_eq_neg_add]`. Conclude with `this`.
+-/
 theorem casOp_equivariant : ∀ (n : ℕ) (ε : Fin n → Bool) (H : Type) [NormedAddCommGroup H] [InnerProductSpace ℂ H]
     [CompleteSpace H] (σ : Mx n → (H →L[ℂ] H)), Std ε σ → ∀ g ∈ UJset ε, ∀ v, Sm ε σ v →
       casOp σ (kB ε) (pB ε) (σ g v) = σ g (casOp σ (kB ε) (pB ε) v) := by

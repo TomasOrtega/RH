@@ -2,6 +2,11 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.ModularityArgument
 
 open NumberField Formalism.ConjugateSelfDual ReciprocityTheory.Gal GlobalTheory.GalOfCusp IsLocalRing UpperTheory.V UpperTheory.V.HV UpperTheory.V.U3 UpperTheory.V.Base UpperTheory.V.Af UpperTheory.V.Pr UpperTheory.V.Alg UpperTheory.V.J
 
+/- English proof (translation)
+Introduce `A _ q _ hD P hP hPq a ha`. Establish `hK : (RingHom.ker (algebraMap A (Localization.AtPrime q))).IsPrime` using `RingHom.ker_isPrime _`. Establish `hle : RingHom.ker (algebraMap A (Localization.AtPrime q)) ≤ P`. Introduce `x hx`. Take `⟨m, hm⟩` from `(IsLocalization.map_eq_zero_iff q.primeCompl (Localization.AtPrime q) x).1 hx`.
+
+Establish `h0 : (m : A) * x ∈ P` using `by rw [hm]; exact P.zero_mem`. Conclude with `(hP.1.1.mem_or_mem h0).resolve_left (fun h => m.2 (hPq h))`. Establish `hge : P ≤ RingHom.ker (algebraMap A (Localization.AtPrime q))` using `hP.2 ⟨hK, bot_le⟩ hle`. Take `⟨m, hm⟩` from `(IsLocalization.map_eq_zero_iff q.primeCompl (Localization.AtPrime q) a).1 (hge ha)`. Conclude with `⟨m, fun h => m.2 (hPq h), hm⟩`.
+-/
 theorem UpperTheory.V.J.domMin :
     ∀ (A : Type) [CommRing A] (q : Ideal A) [q.IsPrime], IsDomain (Localization.AtPrime q) → ∀ P ∈ minimalPrimes A, P ≤ q → ∀ a ∈ P, ∃ s ∉ P, s * a = 0 := by
   intro A _ q _ hD P hP hPq a ha

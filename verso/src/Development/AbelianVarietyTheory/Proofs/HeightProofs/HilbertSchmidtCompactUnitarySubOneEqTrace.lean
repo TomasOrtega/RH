@@ -19,6 +19,17 @@ open GlobalTheory.KFourier MeasureTheory
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Establish `hu : star (toMK k) * toMK k = 1` using `Unitary.star_mul_self_of_mem k.2.1`. Establish `hcol : ∀ j, ∑ i, ‖toMK k i j‖ ^ 2 = (1 : ℝ)`. Introduce `j`. Establish `h` using `congrArg Complex.re (congrFun (congrFun hu j) j)`. Rewrite `h` using `[Matrix.mul_apply, Matrix.one_apply_eq, Complex.re_sum, Complex.one_re]`.
+
+Rewrite using `[← h]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[Matrix.star_apply, Complex.star_def, Complex.conj_mul']`. Use `norm_cast`. Apply the tactic sequence `have hentry : ∀ i j, ‖(toMK k - 1) i j‖ ^ 2 = ‖toMK k i j‖ ^ 2 + (if i = j then 1 - 2 * (toMK k i j).re else 0) := by`.
+
+Introduce `i j`. Distinguish the cases in `hij : i = j`. Substitute `hij` using the available equality. Rewrite using `[Matrix.sub_apply, Matrix.one_apply_eq, if_pos rfl, Complex.sq_norm, Complex.sq_norm, Complex.normSq_sub]`. Simplify using the standard rewrite rules.
+
+Expand and normalize the polynomial expressions, which then agree. Rewrite using `[Matrix.sub_apply, Matrix.one_apply_ne hij, if_neg hij, sub_zero, add_zero]`. Unfold `Formalism.REAL.hs`. Repeatedly rewrite using `[hentry]`. Rewrite using `[Finset.sum_comm]`.
+
+Repeatedly rewrite using `[Finset.sum_add_distrib, hcol]`. Simplify using `only [Finset.sum_ite_eq', Finset.mem_univ, if_true, Finset.sum_const, Finset.card_univ, Fintype.card_fin, nsmul_eq_mul, mul_one, Finset.sum_sub_distrib, ← Finset.mul_sum]`. Rewrite using `[Matrix.trace, Complex.re_sum]`. Simplify using `[Matrix.diag]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem hs_toMK_sub_one {n : ℕ} (ε : Fin n → Bool) (k : KG ε) :
     Formalism.REAL.hs (toMK k - 1) = 2 * (n : ℝ) - 2 * (Matrix.trace (toMK k)).re := by
   have hu : star (toMK k) * toMK k = 1 := Unitary.star_mul_self_of_mem k.2.1

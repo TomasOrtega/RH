@@ -10,6 +10,23 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 namespace GlobalTheory.LevZeroChar
 
+/- English proof (translation)
+Use `set F := G.FY 0 (G.s + 1) (Nat.zero_add _) with hF`. Use `set B := (G.S.T (Fin D.R.t)).bas 0 (G.s + 1) (Nat.zero_add _) with hB`. Use `set p := ofSplit G.q with hp`. Establish `hβ` using `GlobalTheory.LocMod.StepVec.map_eq_of_movedTo p F (π' := π') hπ B.val σ hM`. Establish `hfin : ∀ g : GA D (c.V 0), (finE (c.V 0) g).val.map π' = (mt (c.V 0) g).map p.π`.
+
+Introduce `g`. Rewrite using `[GlobalTheory.LevSplit.finE_val]`. Use extensionality with `i j`. Conclude with `hπ _`. Establish `hBB : (B⁻¹).val * B.val = 1` using `Units.inv_mul B`.
+
+Establish `hmt : ∀ g h : GA D (c.V 0), (mt (c.V 0) (g * h)).map p.π = (mt (c.V 0) g).map p.π * (mt (c.V 0) h).map p.π` using `fun g h => Matrix.map_mul`. Establish `ht1 : (mt (c.V 0) b).map p.π * (mt (c.V 0) b⁻¹).map p.π = 1`. Rewrite using `[← hmt, mul_inv_cancel]`. Conclude with `Matrix.map_one _ (map_zero _) (map_one _)`. Use `set W := (mt (c.V 0) b⁻¹).map p.π * F.β * B.val with hW`.
+
+Use `set W' := (B⁻¹).val * F.γ * (mt (c.V 0) b).map p.π with hW'`. Establish `hWW : W' * W = 1`. Rewrite using `[hW, hW']`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [Matrix.mul_assoc]`.
+
+Use `_ = 1 := by rw [ht1, Matrix.mul_one, F.γβ, Matrix.mul_one, hBB]`. Establish `hβ' : β.val.map π' = W.submatrix id σ`. Rewrite using `[hβ]`. Both sides reduce to the same expression. Establish `hinv : (β⁻¹).val.map π' = W'.submatrix σ id`.
+
+Use `Matrix.left_inv_eq_left_inv (A := β.val.map π') ?_ ?_` and prove the remaining obligations. Rewrite using `[← Matrix.map_mul, Units.inv_mul]`. Conclude with `Matrix.map_one _ (map_zero _) (map_one _)`. Rewrite using `[hβ', ← Matrix.submatrix_mul _ _ _ _ _ Function.bijective_id, hWW]`. Conclude with `Matrix.submatrix_one_equiv (Equiv.ofBijective σ hσ)`.
+
+Establish `hn : (mt (c.V 0) n).map p.π = F.β * q.val * F.γ` using `hloc.2`. Rewrite using `[Units.val_mul, Units.val_mul, Matrix.map_mul, Matrix.map_mul, hinv, hfin, hβ', hmt, hmt, hn]`. Establish `hs : ∀ (X : Matrix (XIx (Fin D.R.k) (Fin D.R.t) 0 ⊕ Fin (G.s + 1)) (Fin (c.V 0).rank) G.k) (Mid : Matrix (Fin (c.V 0).rank) (Fin (c.V 0).rank) G.k) (Z : Matrix (Fin (c.V 0).rank) (XIx (Fin D.R.k) (Fin D.R.t) 0 ⊕ Fin (G.s + 1)) G.k), X.submatrix σ id * Mid * Z.submatrix id σ = (X …` using `fun X Mid Z => Matrix.ext fun i j => rfl`. Rewrite using `[hs]`. Use `congr 1`.
+
+Rewrite using `[hW, hW']`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [Matrix.mul_assoc]`. Use `_ = (B⁻¹).val * q.val * B.val := by simp only [ht1, Matrix.mul_one, F.γβ]`.
+-/
 theorem map_conj_local {D : D7} {c : Comm D} {v : VCom c} (G : GLoc v) {β : GL (Fin (c.V 0).rank) (Lev.EAf D)} {b : GA D (c.V 0)}
     {π' : Lev.EAf D →+* G.k} (hπ : ∀ a, π' (toEAf D a) = G.q.pr a) {n : GA D (c.V 0)}
     {q : GL (XIx (Fin D.R.k) (Fin D.R.t) 0 ⊕ Fin (G.s + 1)) G.k}
@@ -69,6 +86,31 @@ theorem map_conj_local {D : D7} {c : Comm D} {v : VCom c} (G : GLoc v) {β : GL 
 
 set_option maxHeartbeats 1000000 in
 
+/- English proof (translation)
+Take `⟨π', hπ, hred, -, -⟩` from `GlobalTheory.T.exists_finiteAdele_projection_integral_reduction D G.k G.q PP hL.idem`. Take `⟨e, he, hM⟩` from `hL.frame (G.s + 1) (Nat.zero_add _)`. Establish `hσ : Function.Bijective (fun i => stdOrd (Fin D.R.k) (Fin D.R.t) 0 (G.s + 1) (Nat.zero_add _) (e.symm i))` using `(e.symm.trans (stdOrd (Fin D.R.k) (Fin D.R.t) 0 (G.s + 1) (Nat.zero_add _))).bijective`. Establish `hmat` using `map_conj_local G hπ hloc _ hσ hM`. Take `⟨y, hy⟩` from `hS`.
+
+Establish `hI : β⁻¹ * finE (c.V 0) (b⁻¹ * n * b) * β = intGL _ _ _ y`. Rewrite using `[← hy]`. Simplify using `[frGL, MulAut.conj_apply]`. Use `group`. Rewrite `hmat` using `[hI]`.
+
+Rewrite `hz`, `hblk` using `[← hy, redFn_frGL]`. Unfold `edgeSum at hz`. Rewrite `hz` using `[upper_block_val_submatrix hr hblk]`. Establish `hrk : D.R.r = D.R.k + (G.s + 1)`. Use `G.hs` as an intermediate fact.
+
+Unfold `Ranks.r`. Use linear arithmetic over natural numbers and integers. Establish `hN` using `(GlobalTheory.RootEx.Radical.mem_N_iff q).1 hq`. Establish `hsum : (∑ i : Fin D.R.r, ∑ j : Fin D.R.r, if GlobalTheory.chainEdge D.R.k i j then ((((G.S.T (Fin D.R.t)).bas 0 (G.s + 1) (Nat.zero_add _))⁻¹).val * q.val * ((G.S.T (Fin D.R.t)).bas 0 (G.s + 1) (Nat.zero_add _)).val) (stdOrd (Fin D.R.k) (Fin D.R.t) 0 (G.s + 1) (Nat.zero_add _) (e …` using `GlobalTheory.NChainChar.edge_sum_typeFrame D.R.k D.R.t G.s (c.V 0).rank D.R.r p hr hrk e he G.S.ϖ q hN`. Use `set w : Formalism.L2.Herm.intAf D.host.F D.host.E := ∑ i : Fin D.R.r, ∑ j : Fin D.R.r, if GlobalTheory.chainEdge D.R.k i j then y.val (Fin.castLE hr i) (Fin.castLE hr j) else 0 with hw`.
+
+Establish `hres : resS D.host.F PP w = Ideal.Quotient.mk PP.asIdeal z`. Rewrite using `[hz, hw, map_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[map_sum]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations.
+
+Use `split_ifs`. Both sides reduce to the same expression. Conclude with `map_zero _`. Establish `hker` using `(hred.ker (w - Formalism.L2.DIV.oToS D.host.F D.host.E z)).1 (by`. Rewrite using `[map_sub, hres, Formalism.L2.DIV.resS_oToS, sub_self])`.
+
+Establish `hpw : (π'.comp (Formalism.L2.Herm.intAf D.host.F D.host.E).subtype) w = (G.S.ϖ : G.k) * GlobalTheory.RootEx.simpleSum q`. Rewrite using `[← hsum, hw, map_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[map_sum]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations.
+
+Use `split_ifs`. Use `congrFun (congrFun hmat (Fin.castLE hr i)) (Fin.castLE hr j)` as an intermediate fact. Conclude with `this`. Conclude with `map_zero _`. Establish `hpz : π' ((Formalism.L2.DIV.oToS D.host.F D.host.E z : Formalism.L2.Herm.intAf D.host.F D.host.E) : Lev.EAf D) = (ofSplit G.q).pr (z : D.host.E)` using `hπ (incA D (z : D.host.E))`.
+
+Establish `hv : ValuativeRel.valuation G.k ((ofSplit G.q).pr (z : D.host.E) - (G.S.ϖ : G.k) * GlobalTheory.RootEx.simpleSum q) < 1`. Establish `h1 : (π'.comp (Formalism.L2.Herm.intAf D.host.F D.host.E).subtype) (w - Formalism.L2.DIV.oToS D.host.F D.host.E z) = -((ofSplit G.q).pr (z : D.host.E) - (G.S.ϖ : G.k) * GlobalTheory.RootEx.simpleSum q)`. Rewrite using `[map_sub, hpw]`. Rewrite using `[show (π'.comp (Formalism.L2.Herm.intAf D.host.F D.host.E).subtype) (Formalism.L2.DIV.oToS D.host.F D.host.E z) = π' ((Formalism.L2.DIV.oToS D.host.F D.host.E z : Formalism.L2.Herm.intAf D.host.F D.host.E) : Lev.EAf D) from rfl, hpz]`. Expand and normalize the polynomial expressions, which then agree.
+
+Rewrite `hker` using `[h1, Valuation.map_neg]`. Conclude with `hker`. Establish `hone : G.S.ψ (((G.S.ϖ⁻¹ : G.kˣ) : G.k) * ((ofSplit G.q).pr (z : D.host.E) - (G.S.ϖ : G.k) * GlobalTheory.RootEx.simpleSum q)) = 1`. Use `(G.S.cond _).2 ?_ _ le_rfl` and prove the remaining obligations. Establish `h5` using `(G.S.unif _).1 hv`.
+
+Establish `h6 : ValuativeRel.valuation G.k (((G.S.ϖ⁻¹ : G.kˣ) : G.k) * (G.S.ϖ : G.k)) = ValuativeRel.valuation G.k ((1 : G.kˣ) : G.k)`. Rewrite using `[Units.inv_mul, Units.val_one]`. Rewrite using `[← h6, map_mul, map_mul]`. Conclude with `mul_le_mul_right h5 _`. Establish `e2 : ((G.S.ϖ⁻¹ : G.kˣ) : G.k) * (ofSplit G.q).pr (z : D.host.E) = ((G.S.ϖ⁻¹ : G.kˣ) : G.k) * ((ofSplit G.q).pr (z : D.host.E) - (G.S.ϖ : G.k) * GlobalTheory.RootEx.simpleSum q) + GlobalTheory.RootEx.simpleSum q`.
+
+Establish `: ((G.S.ϖ⁻¹ : G.kˣ) : G.k) * (G.S.ϖ : G.k) = 1` using `by rw [Units.inv_mul]`. Take the linear combination `(GlobalTheory.RootEx.simpleSum q) * this`. Rewrite using `[e2, AddChar.map_add_eq_mul, hone, one_mul]`.
+-/
 theorem psi_red_at {D : D7} {c : Comm D} {v : VCom c} (G : GLoc v) (PP : Pl D.host.E) (b : GA D (c.V 0))
     (β : GL (Fin (c.V 0).rank) (Lev.EAf D)) (hL : GlobalTheory.LevZero.LocAt G PP b β) (hr : D.R.r ≤ (c.V 0).rank) (n : GA D (c.V 0))
     (q : GL (XIx (Fin D.R.k) (Fin D.R.t) 0 ⊕ Fin (G.s + 1)) G.k) (p : ℕ) (hq : q ∈ GlobalTheory.RootEx.N G.k _ (G.s + 1) p)
@@ -148,6 +190,23 @@ theorem psi_red_at {D : D7} {c : Comm D} {v : VCom c} (G : GLoc v) (PP : Pl D.ho
     linear_combination (GlobalTheory.RootEx.simpleSum q) * this
   rw [e2, AddChar.map_add_eq_mul, hone, one_mul]
 
+/- English proof (translation)
+Introduce `D c v cm st b G h0 hB PP n q hq hloc hlev`. Take `⟨hr, ξ, hL⟩` from `hB.mem.lev`. Establish `hL' : st.L = Lev.datY (c.V 0).rank D.R.r D.R.t 0 hr cm.Pg ∅ cm.P cm.chi ξ Lev.Frm.B` using `hL`. Establish `hl` using `hlev.2`. Rewrite `hl` using `[hL']`.
+
+Express the relevant statement in the definitionally equal form `finE (c.V 0) (b⁻¹ * n * b) ∈ lev _ _ _ _ at hl`. Rewrite `hl` using `[mem_lev, mem_parLev]`. Establish `hP : (fun PP : cm.Pg => upperLeftBlock hr (redFn st.β PP.1 (finE (c.V 0) (b⁻¹ * n * b)))) ∈ cm.P.H` using `hl.2`. Establish `hchi : levChi (c.V 0) st.β st.L (b⁻¹ * n * b) = ((cm.P.chi ⟨_, hP⟩ : ℂˣ) : ℂ)`. Rewrite using `[hL']`.
+
+Unfold `levChi levFn`. Rewrite using `[extendOne_of_mem _ hl.2]`. Establish `e1 : (Lev.datY (c.V 0).rank D.R.r D.R.t 0 hr cm.Pg ∅ cm.P cm.chi ξ Lev.Frm.B).s = 0` using `rfl`. Establish `e2 : (Lev.datY (c.V 0).rank D.R.r D.R.t 0 hr cm.Pg ∅ cm.P cm.chi ξ Lev.Frm.B).Q = ∅` using `rfl`. Simplify using `only [e1, e2, Finset.range_zero, Finset.prod_empty, Finset.prod_const_one, mul_one]`.
+
+Both sides reduce to the same expression. Rewrite using `[hchi]`. Use `choose x hx using (hB.grp _).1 hP`. Rewrite using `[hB.chr ⟨_, hP⟩ x hx, Units.coe_prod, Finset.prod_eq_single PP]`. Take `⟨z, hz⟩` from `Ideal.Quotient.mk_surjective (I := PP.1.asIdeal) (edgeSum (GlobalTheory.chainEdge D.R.k) (upperLeftBlock hr (redFn st.β PP.1 (finE (c.V 0) (b⁻¹ * n * b)))))`.
+
+Rewrite using `[GlobalTheory.LevZero.lam_eq_of_red (G PP) PP.1 (hB.loc PP).idem (x PP) _ (hx PP) z hz]`. Rewrite using `[psi_red_at (G PP) PP.1 b st.β (hB.loc PP) hr n q _ hq hloc hl.1.2.1 (blockTri_blkOf_le _ _ (hl.1.2.2.1 PP.1 PP.2)) z hz]`. Rewrite using `[GlobalTheory.LocBesChar.psiBes_isLoc D (G PP).k (ofSplit (G PP).q) c.ψ (G PP).S.ψ (G PP).char D.R.rS (c.B 0 D.R.rS h0) ((G PP).sc 0) _ ((G PP).s + 1) ((G PP).FX 0 (by omega)) ((G PP).FY 0 ((G PP).s + 1) (Nat.zero_add _)) ((G PP).bes 0 D.R.rS h0 ((G PP).s + 1) (Nat.zero_add _)) n …`. Introduce `PP' _ hne`. Take `⟨e, he⟩` from `hB.com.split`.
+
+Establish `h1` using `GlobalTheory.NChainChar.redFn_conj_eq_one he PP.2 (hB.loc PP).idem hloc.1 b hl.1.2.1 PP'.2 (fun h => hne (Subtype.ext h).symm)`. Establish `h2 : Ideal.Quotient.mk PP'.1.asIdeal (0 : 𝓞 D.host.E) = edgeSum (GlobalTheory.chainEdge D.R.k) (upperLeftBlock hr (redFn st.β PP'.1 (finE (c.V 0) (b⁻¹ * n * b))))`. Rewrite using `[h1, map_zero]`. Unfold `upperLeftBlock`. Rewrite using `[blockDiagonalExtendByOnePrimeField_one]`.
+
+Use `symm`. Use `Finset.sum_eq_zero fun i _ => Finset.sum_eq_zero fun j _ => ?_` and prove the remaining obligations. Use `split_ifs with hij`. Rewrite using `[Units.val_one, Matrix.one_apply_ne]`. Introduce `e; rw [e] at hij; exact absurd hij.1 (by omega)`.
+
+Both sides reduce to the same expression. Rewrite using `[GlobalTheory.LevZero.lam_eq_of_red (G PP') PP'.1 (hB.loc PP').idem (x PP') _ (hx PP') 0 h2]`. Simplify using `[GlobalTheory.LocMod.Place.pr]`. Introduce `h`. Conclude with `absurd (Finset.mem_univ _) h`.
+-/
 theorem levChi_eq_psiBes : ∀ {D : D7} {c : Comm D} {v : VCom c} (cm : GlobalTheory.ChainOnto.Com D) (st : StAt (c.V 0)) (b : GA D (c.V 0)) (G : cm.Pg → GLoc v) (h0 : 0 + 2 * D.R.rS + 2 = D.R.m), GlobalTheory.LevZero.Bot cm st b G → ∀ (PP : cm.Pg) (n : GA D (c.V 0)) (q : GL (XIx (Fin D.R.k) (Fin D.R.t) 0 ⊕ Fin ((G PP).s + 1)) (G PP).k), q ∈ GlobalTheory.RootEx.N (G PP).k _ ((G PP).s + 1) (D.R.rS + 1) → (ofSplit (G PP).q).IsLoc ((G PP).FY 0 ((G PP).s + 1) (Nat.zero_add _)) n q → b⁻¹ * n * b ∈ levS (c.V 0) st.β st.L → levChi (c.V 0) st.β st.L (b⁻¹ * n * b) = psiBes c.ψ (c.bes 0 D.R.rS h0).d 1 (vecB (c.bes 0 D.R.rS h0).o (c.bes 0 D.R.rS h0).ζ) n := by
   intro D c v cm st b G h0 hB PP n q hq hloc hlev
   obtain ⟨hr, ξ, hL⟩ := hB.mem.lev

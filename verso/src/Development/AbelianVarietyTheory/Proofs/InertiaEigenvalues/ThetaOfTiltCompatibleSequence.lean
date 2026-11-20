@@ -15,6 +15,11 @@ open Ideal
 
 section General
 
+/- English proof (translation)
+Introduce `n`. Proceed by induction on `n with`. Consider the case `zero`. Apply `hφ` to reduce the goal to its premises. Rewrite using `[map_add, map_mul, map_pow, hc, hω, h0]`.
+
+Consider the case `succ n ih`. Apply `hφ` to reduce the goal to its premises. Rewrite using `[map_add, map_mul, map_pow, hc, hω, hω, ih]`.
+-/
 theorem root_step {A : Type} [CommRing A] (φ : A →+* A) (hφ : Function.Injective φ) (c : A) (hc : φ c = c) (q : ℕ)
     (ω : ℕ → A) (hω : ∀ n, φ (ω (n + 1)) = ω n) (h0 : φ (ω 0) = c * ω 0 + ω 0 ^ q) :
     ∀ n, c * ω (n + 1) + ω (n + 1) ^ q = ω n := by
@@ -27,6 +32,9 @@ theorem root_step {A : Type} [CommRing A] (φ : A →+* A) (hφ : Function.Injec
     apply hφ
     rw [map_add, map_mul, map_pow, hc, hω, hω, ih]
 
+/- English proof (translation)
+Introduce `n`. Proceed by induction on `n with`. Consider the case `zero => simp`. Consider the case `succ n ih => rw [pow_succ', pow_mul, h, ih]`.
+-/
 theorem pow_pow_eq {R : Type} [Monoid R] (q : ℕ) (r : ℕ → R) (h : ∀ n, r (n + 1) ^ q = r n) :
     ∀ n, r n ^ (q ^ n) = r 0 := by
   intro n
@@ -34,15 +42,30 @@ theorem pow_pow_eq {R : Type} [Monoid R] (q : ℕ) (r : ℕ → R) (h : ∀ n, r
   | zero => simp
   | succ n ih => rw [pow_succ', pow_mul, h, ih]
 
+/- English proof (translation)
+Rewrite using `[map_pow, GlobalTheory.LTTilt.coeff_eq_pow z 0 m, zero_add]`.
+-/
 theorem coeff_pow_eq {O : Type} [CommRing O] {l : ℕ} [Fact l.Prime] [Fact (¬ IsUnit (l : O))]
     (z : PreTilt O l) (m : ℕ) : PreTilt.coeff m (z ^ (l ^ m)) = PreTilt.coeff 0 z := by
   rw [map_pow, GlobalTheory.LTTilt.coeff_eq_pow z 0 m, zero_add]
 
+/- English proof (translation)
+Use `I.add_mem (I.add_mem h1 h2) h3` as an intermediate fact. Rewrite `this` using `[sub_add_sub_cancel, sub_add_sub_cancel]`. Then use the resulting hypothesis.
+-/
 theorem sub_mem_of_three {O : Type} [CommRing O] (I : Ideal O) {u t y v : O} (h1 : u - t ∈ I) (h2 : t - y ∈ I)
     (h3 : y - v ∈ I) : u - v ∈ I := by
   have := I.add_mem (I.add_mem h1 h2) h3
   rwa [sub_add_sub_cancel, sub_add_sub_cancel] at this
 
+/- English proof (translation)
+Introduce `k`. Proceed by induction on `k with`. Consider the case `zero => intro n`. Simplify using `using h1 n`. Consider the case `succ k ih`.
+
+Introduce `n`. Establish `hq : u (n + 1) ^ l ^ f - v (n + 1) ^ l ^ f ∈ I ^ (k + 1 + 1)`. Take `⟨g, hg⟩ : ∃ g, f = g + 1` from `⟨f - 1, by omega⟩`. Rewrite using `[hg, show l ^ (g + 1) = l ^ g * l from pow_succ l g, pow_mul, pow_mul]`. Conclude with `GlobalTheory.LTTilt.pow_l_sub_mem I hlI (by omega) (GlobalTheory.LTTilt.pow_sub_mem _ (ih (n + 1)) _)`.
+
+Establish `e : u n - v n = P * (u (n + 1) - v (n + 1)) + (u (n + 1) ^ l ^ f - v (n + 1) ^ l ^ f)`. Rewrite using `[← hu n, ← hv n]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e]`. Use `Ideal.add_mem _ ?_ hq` and prove the remaining obligations.
+
+Rewrite using `[pow_succ' I (k + 1)]`. Conclude with `Ideal.mul_mem_mul hP (ih (n + 1))`.
+-/
 theorem sub_mem_pow {O : Type} [CommRing O] {l : ℕ} [Fact l.Prime] (I : Ideal O) (hlI : (l : O) ∈ I) {P : O}
     (hP : P ∈ I) {f : ℕ} (hf : 0 < f) {u v : ℕ → O} (hu : ∀ n, P * u (n + 1) + u (n + 1) ^ l ^ f = u n)
     (hv : ∀ n, P * v (n + 1) + v (n + 1) ^ l ^ f = v n) (h1 : ∀ n, u n - v n ∈ I) :
@@ -69,6 +92,13 @@ section OC
 
 open Formalism.BasicNotions
 
+/- English proof (translation)
+Establish `hP1` using `GlobalTheory.LTTilt.norm_lt_one_of_not_isUnit P hP`. Establish `hk : ∀ k, ‖((a - b : OC l) : ℂ_[l])‖ ≤ ‖(P : ℂ_[l])‖ ^ (k + 1)`. Introduce `k`. Use `h k` as an intermediate fact. Rewrite `this` using `[Ideal.span_singleton_pow, GlobalTheory.LTTilt.mem_span_iff_norm, SubmonoidClass.coe_pow, norm_pow]`.
+
+Conclude with `this`. Establish `hlim` using `(tendsto_pow_atTop_nhds_zero_of_lt_one (norm_nonneg _) hP1).comp (Filter.tendsto_add_atTop_nat 1)`. Establish `h0` using `ge_of_tendsto' hlim fun k => hk k`. Establish `h2 : ((a - b : OC l) : ℂ_[l]) = 0` using `norm_le_zero_iff.1 h0`. Establish `h3 : a - b = 0` using `Subtype.ext h2`.
+
+Conclude with `sub_eq_zero.1 h3`.
+-/
 theorem eq_of_forall_mem_pow {l : ℕ} [Fact l.Prime] {P a b : OC l} (hP : ¬ IsUnit P)
     (h : ∀ k, a - b ∈ (Ideal.span {P}) ^ (k + 1)) : a = b := by
   have hP1 := GlobalTheory.LTTilt.norm_lt_one_of_not_isUnit P hP
@@ -87,6 +117,9 @@ end OC
 
 section Main
 
+/- English proof (translation)
+Use `sub_mem_of_three _ (Ideal.mem_span_singleton.2 hu) ?_ hav` and prove the remaining obligations. Use `span_le.2 (Set.singleton_subset_iff.2 hlP) ?_` and prove the remaining obligations. Rewrite `ha` using `[← hxy, coeff_pow_eq, ← PreTilt.mk_untilt_eq_coeff_zero]`. Conclude with `Ideal.Quotient.eq.1 ha`.
+-/
 theorem sub_mem_of_root {l : ℕ} [Fact l.Prime] {P u a v : OC l} (hlP : ((l : ℕ) : OC l) ∈ span {P})
     {x y : OCb l} {m : ℕ} (hxy : y ^ (l ^ m) = x)
     (ha : PreTilt.coeff m x = Ideal.Quotient.mk (span {((l : ℕ) : OC l)}) a) (hav : a - v ∈ span {P})
@@ -96,6 +129,13 @@ theorem sub_mem_of_root {l : ℕ} [Fact l.Prime] {P u a v : OC l} (hlP : ((l : �
   rw [← hxy, coeff_pow_eq, ← PreTilt.mk_untilt_eq_coeff_zero] at ha
   exact Ideal.Quotient.eq.1 ha
 
+/- English proof (translation)
+Introduce `l _ K π hπ v ω hv hx hω h0`. Establish `hF : ∀ n, inO K π * ω (n + 1) + ω (n + 1) ^ l ^ fK K = ω n` using `root_step (frobq K).toRingHom (frobq_bijective K).1 (inO K π) (frobq_inO K π) _ ω hω h0`. Establish `hu : ∀ n, intToOC K π * thetaK K (ω (n + 1)) + thetaK K (ω (n + 1)) ^ l ^ fK K = thetaK K (ω n)`. Introduce `n`. Use `congrArg (thetaK K) (hF n)` as an intermediate fact.
+
+Rewrite `this` using `[map_add, map_mul, map_pow, thetaK_inO]`. Then use the resulting hypothesis. Establish `hr : ∀ n, red K (ω n) ^ (l ^ (fK K * n)) = red K (ω 0)`. Introduce `n`. Rewrite using `[pow_mul]`. Conclude with `pow_pow_eq (l ^ fK K) (fun n => red K (ω n)) (fun n => (red_frobq (ω (n + 1))).symm.trans (congrArg (red K) (hω n))) n`.
+
+Establish `hlP` using `GlobalTheory.LTTilt.natCast_mem_span_intToOC K hπ`. Establish `h1 : ∀ n, thetaK K (ω n) - v n ∈ span {intToOC K π}` using `fun n => (hx n).elim fun a ha => sub_mem_of_root hlP (hr n) ha.1 ha.2 (dvd_thetaK_sub hπ (ω n))`. Conclude with `fun n => eq_of_forall_mem_pow (GlobalTheory.LTTilt.not_isUnit_intToOC K hπ) fun k => sub_mem_pow _ hlP (Ideal.mem_span_singleton_self _) (Nat.pos_of_ne_zero (NeZero.ne (fK K))) (u := fun n => thetaK K (ω n)) hu hv h1 k n`.
+-/
 theorem thetaK_eq : ∀ (l : ℕ) [Fact l.Prime] (K : FinExt l) (π : ↥(OL K)), Irreducible π → ∀ (v : ℕ → OC l) (ω : ℕ → AK K),
     (∀ n, intToOC K π * v (n + 1) + v (n + 1) ^ l ^ fK K = v n) →
     GlobalTheory.LTTilt.IsTiltOf (fK K) (intToOC K π) (red K (ω 0)) v → (∀ n, frobq K (ω (n + 1)) = ω n) →

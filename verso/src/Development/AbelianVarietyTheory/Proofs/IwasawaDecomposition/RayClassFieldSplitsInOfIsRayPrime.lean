@@ -14,12 +14,18 @@ namespace GlobalTheory.ParRay
 
 open Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotions.N Formalism.ConjugateSelfDual ReciprocityTheory.Gal Formalism.L2.Host Formalism.L2.NT Formalism.L2.TwC GlobalTheory.HeightCounting NumberField IsDedekindDomain Polynomial
 
+/- English proof (translation)
+Introduce `h`. Establish `: IsLocalHom (algebraMap ℤ (𝓞 K))` using `Algebra.IsIntegral.isLocalHom _ _`. Rewrite `h` using `[← map_natCast (algebraMap ℤ (𝓞 K))]`. Conclude with `(Nat.prime_iff_prime_int.1 hp).not_unit (isUnit_of_map_unit _ _ h)`.
+-/
 theorem not_isUnit_natCast {K : Type} [Field K] [NumberField K] {p : ℕ} (hp : p.Prime) : ¬ IsUnit (p : 𝓞 K) := by
   intro h
   have : IsLocalHom (algebraMap ℤ (𝓞 K)) := Algebra.IsIntegral.isLocalHom _ _
   rw [← map_natCast (algebraMap ℤ (𝓞 K))] at h
   exact (Nat.prime_iff_prime_int.1 hp).not_unit (isUnit_of_map_unit _ _ h)
 
+/- English proof (translation)
+The claim follows from `GlobalTheory.ParRay.nfOf hf GlobalTheory.Mem.Fld.IsRayField D.host.K M (GlobalTheory.Mem.RaySplit.condIdeal D.host) → ∀ p, IsRayPrime (KQbar D jE) (D.host.QS * D.host.q * D.host.d) p → SplitsIn M p := by letI := GlobalTheory.ParRay.algK D jE h haveI := GlobalTheory.ParRay.nfOf hf …`.
+-/
 theorem rayField_splitsIn_of_isRayPrime (D : D7) (jE : D.host.E →+* Qb) (M : Fld) (h : KQbar D jE ≤ M)
     (hf : FiniteDimensional ℚ M) :
     letI := GlobalTheory.ParRay.algK D jE h

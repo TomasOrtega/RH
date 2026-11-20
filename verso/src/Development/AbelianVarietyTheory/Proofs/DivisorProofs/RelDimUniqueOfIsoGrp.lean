@@ -9,6 +9,11 @@ attribute [local instance] Over.cartesianMonoidalCategory
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Introduce `S hS X Y _ f hf g g' hg hg'`. Take `⟨s⟩` from `hS`. Establish `: IsIso f.left` using `(Over.forget S).map_isIso f`. Establish `sq : CommSq f.left X.hom Y.hom (𝟙 S)` using `⟨by rw [Over.w f, Category.comp_id]⟩`. Establish `h2 : SmoothOfRelativeDimension g' X.hom` using `(smoothOfRelativeDimension_isStableUnderBaseChange g').of_isPullback (IsPullback.of_horiz_isIso sq) hg'`.
+
+Conclude with `ReciprocityTheory.ChartRestriction.G.H1.dim_unique X.hom hg h2 ((η[X]).left s)`.
+-/
 theorem relDim_unique_of_iso_grp : ∀ (S : Scheme.{0}), Nonempty S → ∀ (X Y : Over S) [GrpObj X] (f : X ⟶ Y), IsIso f → ∀ g g' : ℕ, SmoothOfRelativeDimension g X.hom → SmoothOfRelativeDimension g' Y.hom → g = g' := by
   intro S hS X Y _ f hf g g' hg hg'
   obtain ⟨s⟩ := hS

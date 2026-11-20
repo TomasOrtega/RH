@@ -20,6 +20,19 @@ noncomputable section
 
 namespace GlobalTheory.Poinc.TraitUniq
 
+/- English proof (translation)
+Establish `key : ∀ a, (m : ℤ) * β a a = m' * β' (ε a) (ε a)`. Introduce `a`. Take `⟨u₁, n₁, hn₁, c₁⟩` from `hm a`. Take `⟨u₂, n₂, hn₂, c₂⟩` from `hm' (ε a)`. Establish `a₁ : Associated (f (u₁ * ∏ i, ![ϖ] i ^ n₁ i)) (w ^ (m * n₁ 0))`.
+
+Rewrite using `[Fin.prod_univ_one, Matrix.cons_val_zero, map_mul, map_pow, pow_mul]`. Conclude with `(associated_unit_mul_left _ _ (u₁.isUnit.map f)).trans h.pow_pow`. Establish `a₂ : Associated (f' (u₂ * ∏ i, ![ϖ'] i ^ n₂ i)) (w ^ (m' * n₂ 0))`. Rewrite using `[Fin.prod_univ_one, Matrix.cons_val_zero, map_mul, map_pow, pow_mul]`. Conclude with `(associated_unit_mul_left _ _ (u₂.isUnit.map f')).trans h'.pow_pow`.
+
+Establish `a₃` using `(a₁.pow_pow (n := 2)).symm.trans ((hε a _ _ c₁ c₂).trans (a₂.pow_pow (n := 2)))`. Rewrite `a₃` using `[← pow_mul, ← pow_mul]`. Establish `e` using `GlobalTheory.SiegLoc.TraitOrd.eq_of_associated_pow hw a₃`. Establish `h₀ : β a a = 2 * n₁ 0` using `by simpa using hn₁ 0`. Establish `h₀' : β' (ε a) (ε a) = 2 * n₂ 0` using `by simpa using hn₂ 0`.
+
+Rewrite using `[h₀, h₀']`. Establish `e'` using `congrArg (fun x : ℕ => (x : ℤ)) e`. Move the coercions through the operations in `at e'`. Combine the linear equalities and inequalities to obtain the conclusion. Introduce `a b`.
+
+Establish `k` using `key (a + b)`. Establish `ka` using `key a`. Establish `kb` using `key b`. Simplify using `only [map_add, LinearMap.add_apply] at k`. Rewrite `k` using `[hβ b a, hβ' (ε b) (ε a)]`.
+
+Simplify using `only [mul_add] at k`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem form_of_assoc {V V' W : Type} [CommRing V] [IsDomain V] [CommRing V'] [IsDomain V'] [CommRing W] [IsDomain W]
     {Dg : DegPre V} {Dg' : DegPre V'} {ϖ : V} {ϖ' : V'} {β : LinearMap.BilinForm ℤ Dg.X}
     {β' : LinearMap.BilinForm ℤ Dg'.X} (hβ : ∀ a b, β a b = β b a) (hβ' : ∀ a b, β' a b = β' b a)
@@ -56,6 +69,9 @@ theorem form_of_assoc {V V' W : Type} [CommRing V] [IsDomain V] [CommRing V'] [I
   simp only [mul_add] at k
   linarith
 
+/- English proof (translation)
+Take `⟨F, ⟨hF, hF'⟩, -⟩` from `GlobalTheory.semiAbelian_hom_extends_uniquely_dvr W (FractionRing W) G₁ G₂ h₁ h₂ e.hom he`. Take `⟨F₁, ⟨hF₁, hF₁'⟩, -⟩` from `GlobalTheory.semiAbelian_hom_extends_uniquely_dvr W (FractionRing W) G₂ G₁ h₂ h₁ e.inv inferInstance`. Use `⟨⟨F, F₁, ?_, ?_⟩, hF, hF'⟩` and prove the remaining obligations. Conclude with `(GlobalTheory.semiAbelian_hom_extends_uniquely_dvr W (FractionRing W) G₁ G₁ h₁ h₁ (𝟙 _) inferInstance).unique ⟨inferInstance, by rw [Functor.map_comp, hF', hF₁', e.hom_inv_id]⟩ ⟨inferInstance, CategoryTheory.Functor.map_id _ _⟩`. Conclude with `(GlobalTheory.semiAbelian_hom_extends_uniquely_dvr W (FractionRing W) G₂ G₂ h₂ h₂ (𝟙 _) inferInstance).unique ⟨inferInstance, by rw [Functor.map_comp, hF₁', hF', e.inv_hom_id]⟩ ⟨inferInstance, CategoryTheory.Functor.map_id _ _⟩`.
+-/
 theorem extIso {W : Type} [CommRing W] [IsDomain W] [IsDiscreteValuationRing W] {G₁ G₂ : Over (Sp W)} [GrpObj G₁]
     [GrpObj G₂] (h₁ : IsSemiAbelian G₁) (h₂ : IsSemiAbelian G₂)
     (e : (Over.pullback (jK W)).obj G₁ ≅ (Over.pullback (jK W)).obj G₂) (he : IsMonHom e.hom) :
@@ -75,6 +91,9 @@ namespace GlobalTheory.Poinc.TraitUniq
 
 variable {g n : ℕ} {o : Type} [CommRing o] {ζ : o} {F : SFam g n ζ}
 
+/- English proof (translation)
+The claim follows from `GlobalTheory.T.exists_genericFibre_pullback_siegelTrait_model g n o ζ F T W f fK hfK`.
+-/
 theorem genFib (T : Trait F) {W : Type} [CommRing W] [IsDomain W] (f : T.V →+* W)
     (fK : FractionRing T.V →+* FractionRing W) (hfK : ∀ a, fK (algebraMap T.V _ a) = algebraMap W _ (f a)) :
     ∃ κ : ((Over.pullback (jK W)).obj ((Over.pullback (spMap f)).obj T.G)).left ⟶ T.A.A.left,
@@ -83,6 +102,9 @@ theorem genFib (T : Trait F) {W : Type} [CommRing W] [IsDomain W] (f : T.V →+*
         pullback.fst ((Over.pullback (spMap f)).obj T.G).hom (jK W) ≫ pullback.fst T.G.hom (spMap f) :=
   GlobalTheory.T.exists_genericFibre_pullback_siegelTrait_model g n o ζ F T W f fK hfK
 
+/- English proof (translation)
+The claim follows from `GlobalTheory.T.mumfordBundle_trait_fibre_eq_universal g n o ζ F T W fK G'' β κ hκ hκβ α₂ hα₂`.
+-/
 theorem lamPull (T : Trait F) {W : Type} [CommRing W] [IsDomain W] (fK : FractionRing T.V →+* FractionRing W)
     (G'' : Over (Sp W)) [GrpObj G''] (β : G''.left ⟶ T.G.left)
     (κ : ((Over.pullback (jK W)).obj G'').left ⟶ T.A.A.left)
@@ -99,11 +121,22 @@ namespace GlobalTheory.Poinc.TraitUniq
 
 variable {g n : ℕ} {o : Type} [CommRing o] {ζ : o} {F : SFam g n ζ}
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨inferInstance, inferInstance, T.complete, T.char⟩`.
+-/
 theorem isCN (T : Trait F) : GlobalTheory.TorRef.IsCN T.V := ⟨inferInstance, inferInstance, T.complete, T.char⟩
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨h.1.1, h.1.2.2.1, h.1.2.2.2, h.2⟩`.
+-/
 theorem isCN_of_base {W : Type} [CommRing W] [IsDomain W] [IsLocalRing W] (h : GlobalTheory.Mum.Base W) : GlobalTheory.TorRef.IsCN W :=
   ⟨h.1.1, h.1.2.2.1, h.1.2.2.2, h.2⟩
 
+/- English proof (translation)
+Establish `hΛ` using `lamPull T fK G'' β κ hκ hκβ α₂ hα₂`. Establish `gB` using `(isGrpPullback_pullback G'' (jK W)).comp hβ`. Take `⟨hr, hs⟩` from `GlobalTheory.T.rigidified_symmetric_lineBundle_groupPullback _ _ _ T.G _ _ gB T.U.LG T.U.symG T.U.symG_gen`. Establish `hα` using `hκ.comp T.cart`. Take `⟨ha, hamp, hkt⟩` from `GlobalTheory.T.principalPolarization_of_mumfordBundle_siegelFibre o ζ g n F _ (spMap fK ≫ T.y) _ (κ ≫ T.α) α₂ hα hα₂ _ (pull_isLB T.U.LG.isLB _) hr hs hΛ`.
+
+Establish `hϖ : f T.ϖ ≠ 0` using `fun h => T.irr.ne_zero (hf (h.trans (map_zero f).symm))`. Take `⟨D', A', U', ε, hL, hc⟩` from `GlobalTheory.T.exists_uniformisation_baseChange_with_coordinates T.V W (isCN T) hW f hl T.G T.semi T.D T.A T.U {p | T.ϖ ∉ p.asIdeal} (PrimeSpectrum.isOpen_basicOpen (a := T.ϖ)) (fun y => T.mono.psiUnitOn y fun p hp => by simpa using hp) (fun h => hϖ (RingHom.mem_ker.1 h)) G'' β h …`. Conclude with `⟨D', A', U', ε, _, pull_isLB T.U.LG.isLB _, hL, hΛ, hc⟩`.
+-/
 theorem pull (T : Trait F) {W : Type} [CommRing W] [IsDomain W] [IsLocalRing W] (hW : GlobalTheory.TorRef.IsCN W) (f : T.V →+* W)
     (hf : Function.Injective f) (hl : IsLocalHom f) (fK : FractionRing T.V →+* FractionRing W)
     (G'' : Over (Sp W)) [GrpObj G''] [IsCommMonObj G''] (β : G''.left ⟶ T.G.left)
@@ -133,6 +166,21 @@ end GlobalTheory.Poinc.TraitUniq
 
 namespace GlobalTheory.Poinc.TraitUniq
 
+/- English proof (translation)
+Introduce `g n o _ ζ F T T' W _ _ _ f f' fK fK' hW hdvr hf hf' hl hl' hK hK' hy w m m' hw hm hm'`. Use `haveI := hdvr`. Establish `hWC` using `isCN_of_base hW`. Establish `hs₁ : IsSemiAbelian ((Over.pullback (spMap f)).obj T.G)` using `IsSemiAbelian.pullback (spMap f) T.G T.semi`. Establish `hs₂ : IsSemiAbelian ((Over.pullback (spMap f')).obj T'.G)` using `IsSemiAbelian.pullback (spMap f') T'.G T'.semi`.
+
+Take `⟨κ₁, hκ₁, hκβ₁⟩` from `genFib T f fK hK`. Take `⟨κ₂, hκ₂, hκβ₂⟩` from `genFib T' f' fK' hK'`. Establish `hα₁` using `hκ₁.comp T.cart`. Establish `hα₂` using `(hκ₂.comp T'.cart).congr hy.symm rfl`. Take `⟨e, he, heα⟩` from `grpPullback_iso hα₁ hα₂`.
+
+Take `⟨E, hE, hEe⟩` from `extIso hs₁ hs₂ e he`. Establish `w₁` using `hα₁.1.w`. Set `α₂` to `pullback.map ((Over.pullback (jK W)).obj ((Over.pullback (spMap f)).obj T.G)).hom ((Over.pullback (jK W)).obj ((Over.pullback (spMap f)).obj T.G)).hom F.univ.A.hom F.univ.A.hom (κ₁ ≫ T.α) (κ₁ ≫ T.α) (spMap fK ≫ T.y) w₁.symm w₁.symm`. Establish `hsq : IsSquare (κ₁ ≫ T.α) α₂` using `⟨pullback.lift_fst _ _ _, pullback.lift_snd _ _ _⟩`. Establish `hβ' : IsGrpPullback ((Over.pullback (spMap f)).obj T.G) T'.G (spMap f') (E.hom.left ≫ pullback.fst T'.G.hom (spMap f'))` using `((isGrpPullback_of_iso E).comp (isGrpPullback_pullback T'.G (spMap f'))).congr (Category.id_comp _) rfl`.
+
+Establish `hκ'` using `((isGrpPullback_of_iso e).comp hκ₂).congr (Category.id_comp _) rfl`. Establish `hκβ' : (e.hom.left ≫ κ₂) ≫ T'.U.gen.inv.left ≫ pullback.fst T'.G.hom (jK T'.V) = pullback.fst ((Over.pullback (spMap f)).obj T.G).hom (jK W) ≫ E.hom.left ≫ pullback.fst T'.G.hom (spMap f')`. Rewrite using `[Category.assoc, hκβ₂, ← Category.assoc, ← Category.assoc, ← hEe]`. Use `congr 1`. Conclude with `pullback.lift_fst _ _ _`.
+
+Establish `hsq' : IsSquare ((e.hom.left ≫ κ₂) ≫ T'.α) α₂` using `by rw [Category.assoc, heα]; exact hsq`. Take `⟨E₁, A₁, U₁, ε₁, L₁, l₁, i₁, m₁, c₁⟩` from `pull T hWC f hf hl fK _ _ (isGrpPullback_pullback T.G (spMap f)) κ₁ hκ₁ hκβ₁ α₂ hsq`. Take `⟨E₂, A₂, U₂, ε₂, L₂, l₂, i₂, m₂, c₂⟩` from `pull T' hWC f' hf' hl' fK' _ _ hβ' _ hκ' hκβ' α₂ hsq'`. Establish `hΛ : LBIso (abelian₂ _ L₂) (abelian₂ _ L₁)` using `LBIso.trans (DVR.linComb_isLB _ l₂ _ _) (pull_isLB F.univ.isLB _) (DVR.linComb_isLB _ l₁ _ _) m₂ m₁.symm`. Take `⟨ε, hε⟩` from `GlobalTheory.SqUnifCoord.main W hWC _ hs₁ E₂ E₁ A₂ A₁ U₂ U₁ (GlobalTheory.squares_iso_of_lam_generic W hWC _ hs₁ E₂ E₁ A₂ A₁ U₂ U₁ L₂ L₁ l₂ l₁ i₂ i₁ hΛ)`.
+
+Set `ε₀ : T.D.toPre.X ≃+ T'.D.toPre.X` to `(ε₁.symm.trans ε).trans ε₂`. Establish `hε₀ : ∀ z r₁ r₂, PsiCoord T.D.toPre z r₁ → PsiCoord T'.D.toPre (ε₀ z) r₂ → Associated (f r₁ ^ 2) (f' r₂ ^ 2)`. Introduce `z r₁ r₂ h₁ h₂`. Take `⟨u₁, k₁⟩` from `c₁ (ε₁.symm z) r₁ (by rwa [AddEquiv.apply_symm_apply])`. Take `⟨u₂, k₂⟩` from `c₂ (ε (ε₁.symm z)) r₂ h₂`.
+
+Use `hε _ _ _ k₂ k₁` as an intermediate fact. Rewrite `this` using `[mul_pow, mul_pow]`. Conclude with `((associated_unit_mul_left _ _ (u₁.isUnit.pow 2)).symm.trans this.symm).trans (associated_unit_mul_left _ _ (u₂.isUnit.pow 2))`. Conclude with `⟨ε₀, form_of_assoc T.symm T'.symm T.mono T'.mono f f' ε₀ hw hm hm' hε₀⟩`.
+-/
 theorem traitUniq : TraitUniqSt := by
   intro g n o _ ζ F T T' W _ _ _ f f' fK fK' hW hdvr hf hf' hl hl' hK hK' hy w m m' hw hm hm'
   haveI := hdvr

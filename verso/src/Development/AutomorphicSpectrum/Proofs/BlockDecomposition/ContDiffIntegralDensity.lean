@@ -13,24 +13,38 @@ noncomputable def pderiv (H : P × Y → F) : P × Y → (P →L[ℝ] F) :=
   fun z => fderiv ℝ (fun q => H (q, z.2)) z.1
 
 omit [FiniteDimensional ℝ P] [FiniteDimensional ℝ Y] in
+/- English proof (translation)
+The claim follows from `(hH (p, y)).hasFDerivAt.comp p (hasFDerivAt_prodMk_left p y)`.
+-/
 lemma hasFDerivAt_partial {H : P × Y → F} (hH : Differentiable ℝ H) (p : P) (y : Y) :
     HasFDerivAt (fun q => H (q, y))
       ((fderiv ℝ H (p, y)).comp (ContinuousLinearMap.inl ℝ P Y)) p :=
   (hH (p, y)).hasFDerivAt.comp p (hasFDerivAt_prodMk_left p y)
 
 omit [FiniteDimensional ℝ P] [FiniteDimensional ℝ Y] in
+/- English proof (translation)
+Use function extensionality and compare the values at `z`. Conclude with `(hasFDerivAt_partial hH z.1 z.2).fderiv`.
+-/
 lemma pderiv_eq {H : P × Y → F} (hH : Differentiable ℝ H) :
     pderiv H = fun z => (fderiv ℝ H z).comp (ContinuousLinearMap.inl ℝ P Y) := by
   funext z
   exact (hasFDerivAt_partial hH z.1 z.2).fderiv
 
 omit [FiniteDimensional ℝ P] [FiniteDimensional ℝ Y] in
+/- English proof (translation)
+Rewrite using `[pderiv_eq (hH.differentiable (by simp))]`. Establish `h1 : ContDiff ℝ ∞ (fderiv ℝ H)` using `hH.fderiv_right (by simp)`. Conclude with `h1.clm_comp contDiff_const`.
+-/
 lemma contDiff_pderiv {H : P × Y → F} (hH : ContDiff ℝ ∞ H) : ContDiff ℝ ∞ (pderiv H) := by
   rw [pderiv_eq (hH.differentiable (by simp))]
   have h1 : ContDiff ℝ ∞ (fderiv ℝ H) := hH.fderiv_right (by simp)
   exact h1.clm_comp contDiff_const
 
 omit [FiniteDimensional ℝ P] [NormedSpace ℝ P] [FiniteDimensional ℝ Y] [NormedSpace ℝ Y] in
+/- English proof (translation)
+Take `⟨C, hC⟩` from `(isCompact_singleton.prod hK).exists_bound_of_continuousOn (f := H) (s := {p} ×ˢ K) hH.continuousOn`. Establish `hc : Continuous fun y => H (p, y)` using `hH.comp (by fun_prop)`. Establish `meas : AEStronglyMeasurable (fun x => u x • H (p, ψ x)) ν` using `hu.aestronglyMeasurable.smul (hc.comp_aestronglyMeasurable hψ)`. Use `(hu.norm.mul_const C).mono' meas ?_` and prove the remaining obligations. Use `filter_upwards [hψK] with x hx`.
+
+Rewrite using `[norm_smul]`. Conclude with `mul_le_mul_of_nonneg_left (hC _ ⟨rfl, hx⟩) (norm_nonneg _)`.
+-/
 lemma integrable_weight {ν : Measure Ω} {u : Ω → ℝ} {ψ : Ω → Y} {K : Set Y}
     (hu : Integrable u ν) (hψ : AEStronglyMeasurable ψ ν) (hK : IsCompact K)
     (hψK : ∀ᵐ x ∂ν, ψ x ∈ K) {H : P × Y → F} (hH : Continuous H) (p : P) :
@@ -45,6 +59,13 @@ lemma integrable_weight {ν : Measure Ω} {u : Ω → ℝ} {ψ : Ω → Y} {K : 
   rw [norm_smul]
   exact mul_le_mul_of_nonneg_left (hC _ ⟨rfl, hx⟩) (norm_nonneg _)
 
+/- English proof (translation)
+Establish `hd : Differentiable ℝ H` using `hH.differentiable (by simp)`. Establish `hc' : Continuous (pderiv H)` using `(contDiff_pderiv hH).continuous`. Take `⟨C, hC⟩` from `((isCompact_closedBall p₀ 1).prod hK).exists_bound_of_continuousOn (f := pderiv H) hc'.continuousOn`. Use `hasFDerivAt_integral_of_dominated_of_fderiv_le (F := fun p x => u x • H (p, ψ x)) (F' := fun p x => u x • pderiv H (p, ψ x)) (bound := fun x => ‖u x‖ * C) (s := Metric.closedBall p₀ 1) (Metric.closedBall_mem_nhds p₀ one_pos) ?_ ?_ ?_ ?_ ?_ ?_` and prove the remaining obligations. Conclude with `Eventually.of_forall fun p => (integrable_weight hu hψ hK hψK hH.continuous p).aestronglyMeasurable`.
+
+Conclude with `integrable_weight hu hψ hK hψK hH.continuous p₀`. Conclude with `(integrable_weight hu hψ hK hψK hc' p₀).aestronglyMeasurable`. Use `filter_upwards [hψK] with x hx p hp`. Rewrite using `[norm_smul]`. Conclude with `mul_le_mul_of_nonneg_left (hC _ ⟨hp, hx⟩) (norm_nonneg _)`.
+
+Conclude with `hu.norm.mul_const C`. Use `Eventually.of_forall fun x p _ => ?_` and prove the remaining obligations. Establish `h1 : HasFDerivAt (fun q => H (q, ψ x)) (pderiv H (p, ψ x)) p` using `((hasFDerivAt_partial hd p (ψ x)).differentiableAt).hasFDerivAt`. Conclude with `h1.const_smul (u x)`.
+-/
 theorem hasFDerivAt_weight {ν : Measure Ω} {u : Ω → ℝ} {ψ : Ω → Y} {K : Set Y}
     (hu : Integrable u ν) (hψ : AEStronglyMeasurable ψ ν) (hK : IsCompact K)
     (hψK : ∀ᵐ x ∂ν, ψ x ∈ K) [CompleteSpace F] {H : P × Y → F} (hH : ContDiff ℝ ∞ H) (p₀ : P) :
@@ -71,6 +92,13 @@ theorem hasFDerivAt_weight {ν : Measure Ω} {u : Ω → ℝ} {ψ : Ω → Y} {K
       ((hasFDerivAt_partial hd p (ψ x)).differentiableAt).hasFDerivAt
     exact h1.const_smul (u x)
 
+/- English proof (translation)
+Proceed by induction on `n with`. Consider the case `zero`. Introduce `F _ _ _ H hH`. Rewrite using `[Nat.cast_zero, contDiff_zero]`. Conclude with `continuous_iff_continuousAt.2 fun p => (hasFDerivAt_weight hu hψ hK hψK hH p).continuousAt`.
+
+Consider the case `succ n ih`. Introduce `F _ _ _ H hH`. Establish `hfd : fderiv ℝ (fun p => ∫ x, u x • H (p, ψ x) ∂ν) = fun p => ∫ x, u x • pderiv H (p, ψ x) ∂ν`. Use function extensionality and compare the values at `p`. Conclude with `(hasFDerivAt_weight hu hψ hK hψK hH p).fderiv`.
+
+Establish `: ((n + 1 : ℕ) : WithTop ℕ∞) = (n : WithTop ℕ∞) + 1` using `by push_cast; rfl`. Rewrite using `[this, contDiff_succ_iff_fderiv]`. Use `⟨fun p => (hasFDerivAt_weight hu hψ hK hψK hH p).differentiableAt, by simp, ?_⟩` and prove the remaining obligations. Rewrite using `[hfd]`. Conclude with `ih (P →L[ℝ] F) (pderiv H) (contDiff_pderiv hH)`.
+-/
 theorem contDiff_weight_nat {ν : Measure Ω} {u : Ω → ℝ} {ψ : Ω → Y} {K : Set Y}
     (hu : Integrable u ν) (hψ : AEStronglyMeasurable ψ ν) (hK : IsCompact K)
     (hψK : ∀ᵐ x ∂ν, ψ x ∈ K) (n : ℕ) :
@@ -94,12 +122,30 @@ theorem contDiff_weight_nat {ν : Measure Ω} {u : Ω → ℝ} {ψ : Ω → Y} {
     rw [hfd]
     exact ih (P →L[ℝ] F) (pderiv H) (contDiff_pderiv hH)
 
+/- English proof (translation)
+The claim follows from `contDiff_infty.2 fun n => contDiff_weight_nat hu hψ hK hψK n F H hH`.
+-/
 theorem contDiff_weight {ν : Measure Ω} {u : Ω → ℝ} {ψ : Ω → Y} {K : Set Y}
     (hu : Integrable u ν) (hψ : AEStronglyMeasurable ψ ν) (hK : IsCompact K)
     (hψK : ∀ᵐ x ∂ν, ψ x ∈ K) [CompleteSpace F] {H : P × Y → F} (hH : ContDiff ℝ ∞ H) :
     ContDiff ℝ ∞ (fun p => ∫ x, u x • H (p, ψ x) ∂ν) :=
   contDiff_infty.2 fun n => contDiff_weight_nat hu hψ hK hψK n F H hH
 
+/- English proof (translation)
+Establish `hu₁ : Integrable (fun x => (w x).re) ν` using `hw.re`. Establish `hu₂ : Integrable (fun x => (w x).im) ν` using `hw.im`. Use `set h₂ : P × Y → ℂ := fun z => Complex.I * h z with hh₂def`. Establish `hh₂ : ContDiff ℝ ∞ h₂` using `contDiff_const.mul hh`. Establish `hdec : ∀ (a b : ℂ), a * b = b.re • a + b.im • (Complex.I * a)`.
+
+Introduce `a b`. Apply the tactic sequence `apply Complex.ext <;> simp <;> ring`. Establish `hsplit : (fun p => ∫ x, h (p, ψ x) * w x ∂ν) = fun p => (∫ x, (w x).re • h (p, ψ x) ∂ν) + ∫ x, (w x).im • h₂ (p, ψ x) ∂ν`. Use function extensionality and compare the values at `p`. Rewrite using `[← integral_add (integrable_weight hu₁ hψ hK hψK hh.continuous p) (integrable_weight hu₂ hψ hK hψK hh₂.continuous p)]`.
+
+Conclude with `integral_congr_ae (Eventually.of_forall fun x => hdec _ _)`. Use `⟨?_, fun p v => ?_⟩` and prove the remaining obligations. Rewrite using `[hsplit]`. Conclude with `(contDiff_weight hu₁ hψ hK hψK hh).add (contDiff_weight hu₂ hψ hK hψK hh₂)`. Establish `hd : Differentiable ℝ h` using `hh.differentiable (by simp)`.
+
+Establish `hD` using `(hasFDerivAt_weight hu₁ hψ hK hψK hh p).add (hasFDerivAt_weight hu₂ hψ hK hψK hh₂ p)`. Establish `hfd` using `hD.fderiv`. Establish `hi₁` using `integrable_weight hu₁ hψ hK hψK (contDiff_pderiv hh).continuous p`. Establish `hi₂` using `integrable_weight hu₂ hψ hK hψK (contDiff_pderiv hh₂).continuous p`. Establish `hp₂ : ∀ y, pderiv h₂ (p, y) v = Complex.I * pderiv h (p, y) v`.
+
+Introduce `y`. Establish `h1 : HasFDerivAt (fun q => h (q, y)) (pderiv h (p, y)) p` using `((hasFDerivAt_partial hd p y).differentiableAt).hasFDerivAt`. Establish `h2 : HasFDerivAt (fun q => h₂ (q, y)) (Complex.I • pderiv h (p, y)) p`. Conclude with `h1.const_smul Complex.I`. Establish `: pderiv h₂ (p, y) = Complex.I • pderiv h (p, y)` using `h2.fderiv`.
+
+Rewrite using `[this]`. Simplify using the standard rewrite rules. Rewrite using `[hsplit]`. Express the relevant statement in the definitionally equal form `fderiv ℝ ((fun p => ∫ x, (w x).re • h (p, ψ x) ∂ν) + (fun p => ∫ x, (w x).im • h₂ (p, ψ x) ∂ν)) p v = _`. Rewrite using `[hfd, ContinuousLinearMap.add_apply, ContinuousLinearMap.integral_apply hi₁, ContinuousLinearMap.integral_apply hi₂, ← integral_add (hi₁.apply_continuousLinearMap v) (hi₂.apply_continuousLinearMap v)]`.
+
+Use `integral_congr_ae (Eventually.of_forall fun x => ?_)` and prove the remaining obligations. Simplify using `only [ContinuousLinearMap.smul_apply]`. Rewrite using `[hp₂]`. Conclude with `(hdec _ _).symm`.
+-/
 theorem contDiff_integral_density (Ω P Y : Type) [MeasurableSpace Ω] [NormedAddCommGroup P]
     [NormedSpace ℝ P] [FiniteDimensional ℝ P] [NormedAddCommGroup Y] [NormedSpace ℝ Y]
     [FiniteDimensional ℝ Y] (ν : Measure Ω) (w : Ω → ℂ) (ψ : Ω → Y) (K : Set Y)

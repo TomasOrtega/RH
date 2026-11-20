@@ -16,6 +16,9 @@ def pf (E : GLOps n K V) (a b : Fin n) (c T : ℕ) : Module.End K V :=
   ∑ k ∈ Finset.range (T + 1),
     ((-1 : K) ^ k / ((Nat.choose (c + k) k : ℕ) : K)) • (divPowE E b a k * divPowE E a b k)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem ppFac_eq (E : GLOps n K V) (mu : Fin n → ℤ) (a b : Fin n) (T : ℕ) :
     ppFac E mu a b T = pf E a b (mu a - mu b + ((b : ℤ) - (a : ℤ))).toNat T := rfl
 

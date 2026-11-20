@@ -19,6 +19,11 @@ section General
 
 variable {X : Scheme.{0}} [IsIntegral X]
 
+/- English proof (translation)
+Take `⟨β, rfl⟩` from `exists_fnOf_eq hα hf`. Use `hU.isLocalization_basicOpen α` as an intermediate fact. Take `⟨n, γ, e⟩` from `IsLocalization.Away.surj α β`. Use `⟨n, γ, ?_⟩` and prove the remaining obligations. Establish `e'` using `congrArg (fnOf _ hα) e`.
+
+Rewrite `e'` using `[map_mul, map_pow]`. Establish `r (a : Γ(X, U)) : fnOf _ hα (algebraMap _ Γ(X, X.basicOpen α) a) = fnOf U h a` using `fnOf_resG (X.basicOpen_le α) hα a`. Rewrite `e'` using `[r, r]`. Conclude with `e'.symm`.
+-/
 theorem exists_mul_pow {U : X.Opens} (hU : IsAffineOpen U) (h : genericPoint X ∈ U) (α : Γ(X, U))
     (hα : genericPoint X ∈ X.basicOpen α) {f : X.functionField} (hf : ∀ x ∈ X.basicOpen α, RegAt x f) :
     ∃ (n : ℕ) (γ : Γ(X, U)), fnOf U h γ = f * fnOf U h α ^ n := by
@@ -33,6 +38,9 @@ theorem exists_mul_pow {U : X.Opens} (hU : IsAffineOpen U) (h : genericPoint X �
   rw [r, r] at e'
   exact e'.symm
 
+/- English proof (translation)
+Take `⟨W, hW, a, rfl⟩` from `hf.exists_fnOf`. Take `⟨α, hle, hα⟩` from `hU.exists_basicOpen_le (V := W) ⟨x, hW⟩ hx`. Take `⟨n, γ, e⟩` from `exists_mul_pow hU h α (gen_mem hα) fun y hy => regAt_fnOf (hle hy) (gen_mem hW) a`. Use `⟨α ^ (n + 1), γ * α, by rwa [X.basicOpen_pow α n.succ_pos], ?_⟩` and prove the remaining obligations. Rewrite using `[map_mul, e, map_pow, pow_succ, mul_assoc]`.
+-/
 theorem exists_denom {U : X.Opens} (hU : IsAffineOpen U) (h : genericPoint X ∈ U) {x : X} (hx : x ∈ U)
     {f : X.functionField} (hf : RegAt x f) :
     ∃ β γ : Γ(X, U), x ∈ X.basicOpen β ∧ fnOf U h γ = f * fnOf U h β := by
@@ -44,12 +52,24 @@ theorem exists_denom {U : X.Opens} (hU : IsAffineOpen U) (h : genericPoint X ∈
 
 omit [IsIntegral X] in
 
+/- English proof (translation)
+Establish `e` using `Scheme.basicOpen_appLE p U ⊤ le_top ((Scheme.ΓSpecIso (CommRingCat.of O)).inv a)`. Rewrite `e` using `[basicOpen_eq_of_affine]`. Conclude with `SetLike.ext_iff.1 e x`.
+-/
 theorem mem_basicOpen_algX {O : Type} [CommRing O] (p : X ⟶ Sp O) (U : X.Opens) (a : O) (x : X) :
     x ∈ X.basicOpen (algX p U a) ↔ x ∈ U ∧ a ∉ (p x).asIdeal := by
   have e := Scheme.basicOpen_appLE p U ⊤ le_top ((Scheme.ΓSpecIso (CommRingCat.of O)).inv a)
   rw [basicOpen_eq_of_affine] at e
   exact SetLike.ext_iff.1 e x
 
+/- English proof (translation)
+Set `J : Ideal Γ(X, U)` to `{ carrier := {β | ∃ c : ι → Γ(X, U), fnOf U h β * f = ∑ i, fnOf U h (c i) * s i} zero_mem' := ⟨0, by simp⟩ add_mem' := fun ⟨c, hc⟩ ⟨c', hc'⟩ => ⟨c + c', by`. Simplify using `only [map_add, add_mul, hc, hc', Pi.add_apply, Finset.sum_add_distrib]⟩`. Use the proof step `smul_mem' := fun a β ⟨c, hc⟩ => ⟨a • c, by`. Simplify using `only [smul_eq_mul, map_mul, mul_assoc, hc, Pi.smul_apply, Finset.mul_sum]⟩ }`. Assume the negation of the conclusion as `H`.
+
+Take `⟨P, hP, hJ, hd⟩` from `J.exists_le_prime_disjoint ((nonZeroDivisors O).map (algX p U)) (Set.disjoint_left.2 fun β hβ ⟨a, ha, e⟩ => H ⟨a, nonZeroDivisors.ne_zero ha, e ▸ hβ⟩)`. Set `x : X` to `hU.fromSpec ⟨P, hP⟩`. Establish `hx : x ∈ U` using `hU.range_fromSpec.le ⟨_, rfl⟩`. Establish `hb (β : Γ(X, U)) : x ∈ X.basicOpen β ↔ β ∉ P` using `SetLike.ext_iff.1 (hU.fromSpec_preimage_basicOpen β) ⟨P, hP⟩`. Take `⟨i, g, hg, e⟩` from `hf x hx (eq_bot_iff.2 fun a ha => by`.
+
+Assume the negation of the conclusion as `h0`. Conclude with `((mem_basicOpen_algX p U a x).1 ((hb _).2 fun h' => Set.disjoint_left.1 hd h' ⟨a, mem_nonZeroDivisors_of_ne_zero h0, rfl⟩)).2 ha)`. Take `⟨β, γ, hβ, e'⟩` from `exists_denom hU h hx hg`. Use `(hb β).1 hβ (hJ ⟨Pi.single i γ, ?_⟩)` and prove the remaining obligations. Rewrite using `[Finset.sum_eq_single i (fun j _ hj => by rw [Pi.single_eq_of_ne hj, map_zero, zero_mul]) (by simp), Pi.single_eq_same, e', e]`.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem exists_comb {O : Type} [CommRing O] [IsDomain O] (p : X ⟶ Sp O) {U : X.Opens} (hU : IsAffineOpen U)
     (h : genericPoint X ∈ U) {ι : Type} [Fintype ι] (s : ι → X.functionField) (f : X.functionField)
     (hf : ∀ x ∈ U, (p x).asIdeal = ⊥ → ∃ i g, RegAt x g ∧ f = g * s i) :
@@ -78,6 +98,17 @@ theorem exists_comb {O : Type} [CommRing O] [IsDomain O] (p : X ⟶ Sp O) {U : X
     Pi.single_eq_same, e', e]
   ring
 
+/- English proof (translation)
+Establish `key (x : X) : ∃ U : X.Opens, x ∈ U ∧ ∀ᶠ N : ℕ in Filter.atTop, ∀ y ∈ U, (E + N • A).RegularAt y f`. Take `⟨U₁, h₁, a, ha⟩` from `A.exists_isEqn_nhds x`. Take `⟨U₂, h₂, g, hg⟩` from `E.exists_isEqn_nhds x`. Take `⟨U, hU, hx, hle⟩` from `exists_isAffineOpen_mem_and_subset (memInf h₁ h₂)`. Take `⟨α, hα⟩` from `exists_fnOf_eq (gen_mem hx) fun y hy => CartierDiv.eff_iff.1 hA y a (ha y (hle hy).1)`.
+
+Establish `hu {y : X} (hy : y ∈ U) : UnitAt y (a : X.functionField) ↔ y ∈ X.basicOpen α`. Rewrite using `[← hα, unitAt_fnOf_iff hy]`. Take `⟨n, γ, e⟩` from `exists_mul_pow hU (gen_mem hx) α ((hu (gen_mem hx)).1 (unitAt_genericPoint a.ne_zero)) (f := f * g) fun y hy => by`. Establish `hy'` using `X.basicOpen_le α hy`. Conclude with `(hg y (hle hy').2).regularAt_iff.1 (hf y ⟨a, ha y (hle hy').1, by rw [one_mul]; exact (hu hy').2 hy⟩)`.
+
+Use `⟨U, hx, Filter.eventually_atTop.2 ⟨n, fun N hN y hy => ?_⟩⟩` and prove the remaining obligations. Take `⟨k, rfl⟩` from `Nat.exists_eq_add_of_le hN`. Use `⟨_, (hg y (hle hy).2).add ((ha y (hle hy).1).nsmul _), ?_⟩` and prove the remaining obligations. Use `regAt_fnOf hy (gen_mem hx) (γ * α ^ k)` as an intermediate fact. Rewrite `this` using `[map_mul, map_pow, e, hα]`.
+
+Use `this using 1` and compare the differences between its conclusion and the goal. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Use `choose U hU h using key`. Take `⟨T, hT⟩` from `exists_finset_iSup_eq_top U hU`.
+
+Use `filter_upwards [Filter.eventually_all.2 fun x : T => h x] with N hN y`. Take `⟨x, hx⟩` from `Opens.mem_iSup.1 (hT.ge (Set.mem_univ y))`. Conclude with `hN x y hx`.
+-/
 theorem eventually_regularAt [CompactSpace X] {A : CartierDiv X} (hA : A.Eff) (E : CartierDiv X) {f : X.functionField}
     (hf : ∀ x, A.GeneratesAt x 1 → E.RegularAt x f) :
     ∀ᶠ N : ℕ in Filter.atTop, ∀ x, (E + N • A).RegularAt x f := by
@@ -106,6 +137,11 @@ theorem eventually_regularAt [CompactSpace X] {A : CartierDiv X} (hA : A.Eff) (E
   obtain ⟨x, hx⟩ := Opens.mem_iSup.1 (hT.ge (Set.mem_univ y))
   exact hN x y hx
 
+/- English proof (translation)
+Take `⟨i, hi⟩` from `exists_chart hL (genericPoint X)`. Establish `P` using `presents_ofLB hL i hi`. Set `g : X.functionFieldˣ` to `Units.mk0 _ ((P.generatesAt_rat_iff σ).2 hσ).ne_zero`. Use `⟨_ + CartierDiv.principal g, fun x => CartierDiv.regularAt_add_principal.2 ?_, (P.add_principal g).toPic_eq, fun x => ?_⟩` and prove the remaining obligations. Rewrite using `[one_mul]`.
+
+Conclude with `CartierDiv.mem_sections.1 (P.rat_mem σ) x`. Take `⟨g', h⟩` from `(ofLB hL i hi).exists_isEqn x`. Rewrite using `[← P.generatesAt_rat_iff, (h.add (CartierDiv.isEqn_principal g x)).generatesAt_iff, h.generatesAt_iff, one_mul, Units.val_mul, mul_comm]`. Both sides reduce to the same expression.
+-/
 theorem exists_div_sec {L : LB X} (hL : L.IsLB) (σ : L.Sec) (hσ : genericPoint X ∈ nonzeroLocus σ) :
     ∃ A : CartierDiv X, A.Eff ∧ toPic A = cls L hL ∧ ∀ x, A.GeneratesAt x 1 ↔ x ∈ nonzeroLocus σ := by
   obtain ⟨i, hi⟩ := exists_chart hL (genericPoint X)
@@ -120,6 +156,11 @@ theorem exists_div_sec {L : LB X} (hL : L.IsLB) (σ : L.Sec) (hσ : genericPoint
       Units.val_mul, mul_comm]
     rfl
 
+/- English proof (translation)
+Use `filter_upwards [AmpleDominates.eventually_isGenerated q hL (isLB_toLB (-E))] with N hN`. Establish `P` using `presents_toLB (E + N • A)`. Take `⟨m, u, hu⟩` from `hN.of_lbIso P.isLB ((cls_eq_iff P.isLB hN.isLB).1 (by`. Rewrite using `[cls_div (isLB_lbPow hL.isLB N) (isLB_toLB _), cls_lbPow hL.isLB, ← toPic_apply, ← toPic_apply, map_add, map_nsmul, map_neg, hA]`. Use the proof step `abel))`.
+
+Use `⟨m, fun a => P.rat (u a), fun a => CartierDiv.mem_sections.1 (P.rat_mem _), fun x => ?_⟩` and prove the remaining obligations. Take `⟨a, ha⟩` from `Opens.mem_iSup.1 (hu.ge (Set.mem_univ x))`. Conclude with `⟨a, (P.generatesAt_rat_iff _).2 ha⟩`.
+-/
 theorem eventually_generates {R : Type} [CommRing R] (q : X ⟶ Sp R) [IsProper q] {L : LB X} (hL : IsAmpleLB L)
     {A : CartierDiv X} (hA : toPic A = cls L hL.isLB) (E : CartierDiv X) :
     ∀ᶠ N : ℕ in Filter.atTop, ∃ (m : ℕ) (w : Fin m → X.functionField), (∀ a x, (E + N • A).RegularAt x (w a)) ∧
@@ -134,6 +175,9 @@ theorem eventually_generates {R : Type} [CommRing R] (q : X ⟶ Sp R) [IsProper 
   obtain ⟨a, ha⟩ := Opens.mem_iSup.1 (hu.ge (Set.mem_univ x))
   exact ⟨a, (P.generatesAt_rat_iff _).2 ha⟩
 
+/- English proof (translation)
+Use `by_contra! H`. Establish `: ZeroAt x (∑ i, c i * g i)` using `Finset.sum_induction _ _ (fun _ _ => ZeroAt.add) (zeroAt_zero x) fun i _ => mul_comm (g i) (c i) ▸ (zeroAt_iff.2 ⟨hg i, H i⟩).mul (hc i)`. Conclude with `(zeroAt_iff.1 (e ▸ this)).2 (unitAt_one x)`.
+-/
 theorem exists_unitAt {x : X} {ι : Type} [Fintype ι] {c g : ι → X.functionField} (hc : ∀ i, RegAt x (c i))
     (hg : ∀ i, RegAt x (g i)) (e : ∑ i, c i * g i = 1) : ∃ i, UnitAt x (g i) := by
   by_contra! H
@@ -141,6 +185,9 @@ theorem exists_unitAt {x : X} {ι : Type} [Fintype ι] {c g : ι → X.functionF
     mul_comm (g i) (c i) ▸ (zeroAt_iff.2 ⟨hg i, H i⟩).mul (hc i)
   exact (zeroAt_iff.1 (e ▸ this)).2 (unitAt_one x)
 
+/- English proof (translation)
+Use `choose U hU a ha using fun i => (hg i).exists_fnOf`. Set `W : X.Opens` to `⟨⋂ i, U i, isOpen_iInter_of_finite fun i => (U i).isOpen⟩`. Establish `hle (i) : W ≤ U i` using `Set.iInter_subset (fun i => (U i : Set X)) i`. Conclude with `⟨W, Set.mem_iInter.2 hU, fun i => ⟨resG X (hle i) (a i), (fnOf_resG _ _ _).trans (ha i)⟩⟩`.
+-/
 theorem exists_common_open {x : X} {ι : Type} [Finite ι] {g : ι → X.functionField} (hg : ∀ i, RegAt x (g i)) :
     ∃ (W : X.Opens) (hx : x ∈ W), ∀ i, ∃ a : Γ(X, W), fnOf W (gen_mem hx) a = g i := by
   choose U hU a ha using fun i => (hg i).exists_fnOf
@@ -152,6 +199,9 @@ end General
 
 variable {F : Type} [Field F] [NumberField F]
 
+/- English proof (translation)
+The claim follows from `N.ar.isIntegral ∀ x : N.X, ∃ a, (w a : Y.Fn) ≠ 0 ∧ ∀ b, ∃ g, RegAt x g ∧ fnMap N.j (j_gen_specializes N) g * w a = w b := by have P := presents_toLB E let t : Fin (n + 1) → (Y.lb E).Sec := fun a => Var.sec (w a) have hgen (a) (x : Y.X) : E.GeneratesAt x (w a : Y.Fn) ↔ x ∈ nonzero …`.
+-/
 theorem exists_model_ratio {Y : Var F} (M : TrueGeo.Model Y) (E : Y.Dv) {n : ℕ} (w : Fin (n + 1) → Y.H0 E)
     (hw : ∀ x, ∃ a, E.GeneratesAt x (w a : Y.Fn)) :
     ∃ (N : TrueGeo.Model Y) (π : N.X ⟶ M.X), N.j ≫ π = M.j ∧ π ≫ M.p = N.p ∧ haveI := N.ar.isIntegral
@@ -195,6 +245,31 @@ theorem exists_model_ratio {Y : Var F} (M : TrueGeo.Model Y) (E : Y.Dv) {n : ℕ
   rw [mul_right_cancel₀ (Units.ne_zero _) e, ← hf]
   exact congrArg (· * _) (fnMap_fnOf j hη _ h _)
 
+/- English proof (translation)
+Use `M.ar.isIntegral` as an intermediate fact. Use `isPreimmersion_j M` as an intermediate fact. Establish `hη` using `j_gen_specializes M`. Take `⟨H, hH⟩` from `exists_isAmpleLB_of_isProjOver M.ar.isProjOver`. Take `⟨e, he, σ, hzσ, hle, hV⟩` from `hH.exists_affine_le hz`.
+
+Establish `: IsAffineHom M.j` using `MorphismProperty.of_isPullback M.pb.flip (isAffineHom_of_isAffine _)`. Establish `hL` using `((isAmpleLB_pow_iff hH.isLB he).2 hH).pull_of_isAffineHom M.j`. Establish `hloc` using `GlobalTheory.nonzeroLocus_secPull σ M.j`. Use `set V' := nonzeroLocus σ`. Establish `h₀ : genericPoint M.X ∈ V'` using `gen_mem hzσ`.
+
+Establish `h : genericPoint Y.X ∈ M.j ⁻¹ᵁ V'` using `hη.mem_open V'.isOpen h₀`. Take `⟨A, hA, hAL, hA'⟩` from `exists_div_sec hL.isLB (GlobalTheory.secPull σ M.j) (hloc.ge h)`. Simplify using `only [hloc] at hA'`. Use `hL.compactSpace` as an intermediate fact. Use `CommonModel.isProper_of_isProjOver Y.isProjOver` as an intermediate fact.
+
+Establish `hD (y) : (d • -Δ).IsEqn y ((t y)⁻¹ ^ d)` using `(ht y).neg.nsmul d`. Take `⟨N, h₁, m, u, hu, hu'⟩` from `((Filter.eventually_all.2 fun k => eventually_regularAt hA (d • -Δ) (f := s k) fun y hy => ⟨_, hD y, (hs y (hle ((hA' y).1 hy))).1 k⟩).and (eventually_generates Y.str hL hAL (d • -Δ))).exists`. Establish `hE (y) (hy : y ∈ M.j ⁻¹ᵁ V') : (d • -Δ + N • A).IsEqn y ((t y)⁻¹ ^ d)`. Establish `h1 : A.IsEqn y 1` using `CartierDiv.isEqn_iff_generatesAt_inv.2 (by simpa using (hA' y).2 hy)`. Simplify using `using (hD y).add (h1.nsmul N)`.
+
+Use `choose s' hs' using fun k => fnMap_surjective M.j hη (s k)`. Establish `key (a) : ∃ b : Y.Fn, (∀ y, UnitAt y b) ∧ ∃ c : Fin n → Γ(M.X, V'), b * u a = ∑ k, fnOf _ h (M.j.app V' (c k)) * s k`. Take `⟨u', hu₁⟩` from `fnMap_surjective M.j hη (u a)`. Take `⟨b, hb, c, hc⟩` from `exists_comb M.p hV h₀ s' u' fun x hx hp => by`. Take `⟨y, rfl⟩` from `mem_range_j M hp`.
+
+Take `⟨i, hi⟩` from `(hs y (hle hx)).2`. Establish `hr` using `((hE y hx).regularAt_iff.1 (hu a y)).mul hi.inv.regAt`. Establish `hi0 : s i ≠ 0` using `left_ne_zero_of_mul hi.ne_zero`. Rewrite `hr` using `[mul_inv, mul_mul_mul_comm, mul_inv_cancel₀ (Units.ne_zero _), mul_one]`. Use `⟨i, u' * (s' i)⁻¹, (regAt_fnMap_iff M.j hη).1 (by rwa [map_mul, map_inv₀, hu₁, hs']), ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[inv_mul_cancel_right₀]`. Introduce `h0`. Conclude with `hi0 (by rw [← hs', h0, map_zero])`. Use `⟨fnMap M.j hη (fnOf ⊤ trivial (algX M.p ⊤ b)), fun y => ?_, c, ?_⟩` and prove the remaining obligations. Rewrite using `[fnMap_fnOf M.j hη (U := ⊤) trivial trivial]`.
+
+Use `(unitAt_fnOf_iff (U := M.j ⁻¹ᵁ ⊤) trivial _ _).2 ((Scheme.preimage_basicOpen M.j _).le ?_)` and prove the remaining obligations. Conclude with `(mem_basicOpen_algX M.p ⊤ b _).2 ⟨trivial, by rw [asIdeal_p_j]; exact hb⟩`. Establish `e₁` using `congrArg (fnMap M.j hη) hc`. Establish `e₂ : fnOf V' h₀ (algX M.p V' b) = fnOf ⊤ trivial (algX M.p ⊤ b)` using `RingHom.congr_fun (fnOf_comp_algX M.p V' h₀) b`. Simplify using `only [e₂, map_mul, map_sum, hu₁, hs', fnMap_fnOf M.j hη h₀ h] at e₁`.
+
+Conclude with `e₁`. Use `choose b hb c hc using key`. Set `w : Option (Fin n ⊕ Fin m) → Y.H0 (d • -Δ + N • A)` to `fun i => i.elim 0 (Sum.elim (fun k => ⟨s k, Var.mem_riemannRochSpace_iff_regularAt_everywhere.2 (h₁ k)⟩) fun a => ⟨b a * u a, Var.mem_riemannRochSpace_iff_regularAt_everywhere.2 fun y => (hu a y).regAt_mul (hb a y).regAt⟩)`. Set `ε : Fin (n + m + 1) ≃ Option (Fin n ⊕ Fin m)` to `(finSuccEquiv _).trans finSumFinEquiv.symm.optionCongr`. Use `⟨V', h, _, n + m, fun i => w (ε i), hzσ, hle, fun y => ?_, fun k => ⟨ε.symm (some (.inl k)), by beta_reduce; rw [ε.apply_symm_apply]; rfl⟩, fun i => ?_⟩` and prove the remaining obligations.
+
+Take `⟨a, g, hg, ha⟩` from `hu' y`. Use `⟨ε.symm (some (.inr a)), g, hg, ?_⟩` and prove the remaining obligations. Use `beta_reduce`. Rewrite using `[ε.apply_symm_apply]`. Express the relevant statement in the definitionally equal form `UnitAt y (b a * u a * g)`.
+
+Rewrite using `[mul_assoc]`. Conclude with `(hb a y).mul ha`. Use `beta_reduce`. Break down `ε i with _ | k | a` into its components or cases. Conclude with `⟨0, by simp [w]⟩`.
+
+Use `⟨Pi.single k 1, ?_⟩` and prove the remaining obligations. Rewrite using `[Finset.sum_eq_single k (fun j _ hj => by rw [Pi.single_eq_of_ne hj, map_zero, map_zero, zero_mul]) (by simp), Pi.single_eq_same, map_one, map_one, one_mul]`. Both sides reduce to the same expression. Conclude with `⟨c a, hc a⟩`.
+-/
 theorem exists_family {Y : Var F} (M : TrueGeo.Model Y) (Δ : Y.Dv) (t : Y.X → Y.Fnˣ) (V : M.X.Opens) (d n : ℕ)
     (s : Fin n → Y.Fn) (z : M.X) (ht : ∀ y, Δ.IsEqn y (t y)) (hz : z ∈ V) (hs : Generates M t V d s) :
     ∃ (V' : M.X.Opens) (h : genericPoint Y.X ∈ M.j ⁻¹ᵁ V') (E : Y.Dv) (m : ℕ) (w : Fin (m + 1) → Y.H0 E),
@@ -268,6 +343,19 @@ theorem exists_family {Y : Var F} (M : TrueGeo.Model Y) (Δ : Y.Dv) (t : Y.X →
       rfl
     · exact ⟨c a, hc a⟩
 
+/- English proof (translation)
+Introduce `F _ _ Y M Δ t V d n s z ht hz hs`. Take `⟨V', h, E, m, w, hz', hle, hw, hw₁, hw₂⟩` from `exists_family M Δ t V d n s z ht hz hs`. Take `⟨N, π, hπ₁, hπ₂, hN⟩` from `exists_model_ratio M E w hw`. Use `N.ar.isIntegral` as an intermediate fact. Establish `hη` using `j_gen_specializes N`.
+
+Use `⟨N, π, V', hπ₁, hπ₂, hz', hle, fun x hx => ?_⟩` and prove the remaining obligations. Take `⟨a, ha, hb⟩` from `hN x`. Take `⟨c, hc⟩` from `hw₂ a`. Establish `hg (k) : ∃ g, RegAt x g ∧ fnMap N.j hη g * w a = s k`. Take `⟨b, e⟩` from `hw₁ k`.
+
+Conclude with `e ▸ hb b`. Use `choose g hg hg' using hg`. Establish `e (k) : fnMap N.j hη (fnOf _ (gen_mem hx) (π.app V' (c k))) = fnOf _ h (M.j.app V' (c k))`. Establish `gen {j : Y.X ⟶ M.X} (hj : N.j ≫ π = j) (h : genericPoint Y.X ∈ j ⁻¹ᵁ V') : fnMap N.j hη (fnOf _ (gen_mem hx) (π.app V' (c k))) = fnOf _ h (j.app V' (c k))`. Substitute `hj` using the available equality.
+
+Conclude with `fnMap_fnOf N.j hη (U := π ⁻¹ᵁ V') _ h _`. Conclude with `gen hπ₁ h`. Take `⟨i, hi⟩` from `exists_unitAt (x := x) (fun k => regAt_fnOf hx (gen_mem hx) (π.app V' (c k))) hg (by`. Apply `(fnMap N.j hη).injective` to reduce the goal to its premises. Apply `mul_right_cancel₀ ha` to reduce the goal to its premises.
+
+Rewrite using `[map_one, one_mul, map_sum, Finset.sum_mul]`. Use `Eq.trans (Finset.sum_congr rfl fun k _ => ?_) hc.symm` and prove the remaining obligations. Rewrite using `[map_mul, e, mul_assoc, hg'])`. Take `⟨W, hW, hW'⟩` from `exists_common_open fun k => (hg k).mul hi.inv.regAt`. Establish `h0 : fnMap N.j hη (g i) ≠ 0` using `(map_ne_zero _).2 hi.ne_zero`.
+
+Use `⟨i, W, hW, hg' i ▸ mul_ne_zero h0 ha, fun k => ?_⟩` and prove the remaining obligations. Take `⟨γ, hγ⟩` from `hW' k`. Use `⟨γ, fun h' => ?_⟩` and prove the remaining obligations. Rewrite using `[← fnMap_fnOf N.j hη (gen_mem hW) h', hγ, ← hg' i, ← hg' k, map_mul, map_inv₀, mul_assoc, inv_mul_cancel_left₀ h0]`.
+-/
 theorem main : ∀ (F : Type) [Field F] [NumberField F] (Y : Var F) (M : GlobalTheory.TrueGeo.Model Y) (Δ : Y.Dv)
     (t : Y.X → Y.Fnˣ) (V : M.X.Opens) (d n : ℕ) (s : Fin n → Y.Fn) (z : M.X), (∀ y, Δ.IsEqn y (t y)) → z ∈ V →
     Generates M t V d s → ∃ (N : GlobalTheory.TrueGeo.Model Y) (π : N.X ⟶ M.X) (V' : M.X.Opens), N.j ≫ π = M.j ∧

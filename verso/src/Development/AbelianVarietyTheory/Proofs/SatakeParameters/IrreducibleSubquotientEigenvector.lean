@@ -15,6 +15,29 @@ noncomputable section
 
 namespace GlobalTheory.VecSubquot
 
+/- English proof (translation)
+Introduce `G V _ _ _ ρ x hx`. Set `s : Set (Submodule ℂ V)` to `{N | (∀ (g : G), ∀ v ∈ N, ρ g v ∈ N) ∧ x ∉ N}`. Establish `hbot : (⊥ : Submodule ℂ V) ∈ s` using `⟨fun g v hv => by`. Rewrite using `[Submodule.mem_bot] at hv ⊢; rw [hv, map_zero], by simpa using hx⟩`. Take `⟨N, -, hmax⟩` from `zorn_le_nonempty₀ s (fun c hcs hc y hy => by`.
+
+Establish `hne : c.Nonempty` using `⟨y, hy⟩`. Establish `hd : DirectedOn (· ≤ ·) c` using `hc.directedOn`. Use `⟨sSup c, ⟨fun g v hv => ?_, fun hx' => ?_⟩, fun z hz => le_sSup hz⟩` and prove the remaining obligations. Take `⟨M, hM, hvM⟩` from `(Submodule.mem_sSup_of_directed hne hd).1 hv`. Conclude with `le_sSup hM ((hcs hM).1 g v hvM)`.
+
+Take `⟨M, hM, hxM⟩` from `(Submodule.mem_sSup_of_directed hne hd).1 hx'`. Conclude with `(hcs hM).2 hxM) ⊥ hbot`. Take `⟨hNst, hxN⟩` from `hmax.prop`. Set `O : Submodule ℂ V` to `Submodule.span ℂ (Set.range fun g : G => ρ g x)`. Establish `hOst : ∀ (g : G), ∀ v ∈ O, ρ g v ∈ O`.
+
+Introduce `g v hv`. Establish `: O.map (ρ g) ≤ O`. Rewrite using `[Submodule.map_span, Submodule.span_le]`. Introduce and unpack `_ ⟨_, ⟨h, rfl⟩, rfl⟩`. Conclude with `Submodule.subset_span ⟨g * h, by simp only [map_mul, Module.End.mul_apply]⟩`.
+
+Conclude with `this ⟨v, hv, rfl⟩`. Establish `hxO : x ∈ O` using `Submodule.subset_span ⟨1, by simp only [map_one, Module.End.one_apply]⟩`. Set `T : Subrepresentation ρ` to `⟨N, fun g v hv => hNst g v hv⟩`. Set `S : Subrepresentation ρ` to `⟨N ⊔ O, fun g v hv => by`. Take `⟨a, ha, b, hb, rfl⟩` from `Submodule.mem_sup.1 hv`.
+
+Rewrite using `[map_add]`. Conclude with `Submodule.add_mem_sup (hNst g a ha) (hOst g b hb)⟩`. Establish `hxS : x ∈ S.toSubmodule` using `Submodule.mem_sup_right hxO`. Establish `hcov : T ⋖ S`. Use `⟨lt_of_le_of_ne (fun v hv => Submodule.mem_sup_left hv) fun h => hxN ?_, ?_⟩` and prove the remaining obligations.
+
+Establish `: x ∈ (S : Set V)` using `hxS`. Rewrite `this` using `[← h]`. Conclude with `this`. Introduce `T' h1 h2`. Establish `hle : N ≤ T'.toSubmodule` using `h1.le`.
+
+Establish `hxT' : x ∈ T'.toSubmodule`. Assume the negation of the conclusion as `hn`. Establish `hmem : T'.toSubmodule ∈ s` using `⟨fun g v hv => T'.apply_mem_toSubmodule g hv, hn⟩`. Establish `heq : T'.toSubmodule = N` using `le_antisymm (hmax.2 hmem hle) hle`. Conclude with `h1.ne (Subrepresentation.toSubmodule_injective heq.symm)`.
+
+Establish `hST' : S.toSubmodule ≤ T'.toSubmodule`. Use `sup_le hle ?_` and prove the remaining obligations. Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨g, rfl⟩`. Conclude with `T'.apply_mem_toSubmodule g hxT'`.
+
+Conclude with `h2.not_ge hST'`. Use `⟨_, inferInstance, inferInstance, GlobalTheory.SmGL.subQuot S T, Submodule.Quotient.mk (⟨x, hxS⟩ : S.toSubmodule), GlobalTheory.SmGL.isIrreducible_subQuot hcov, ⟨S, ⟨Submodule.mkQ _, fun _ => rfl⟩, Submodule.Quotient.mk_surjective _⟩, ?_, ?_⟩` and prove the remaining obligations. Introduce `h0`. Rewrite `h0` using `[Submodule.Quotient.mk_eq_zero]`. Conclude with `hxN h0`.
+
+Introduce `g c hgc show Submodule.Quotient.mk (S.toRepresentation g ⟨x, hxS⟩) = _`. Rewrite using `[← Submodule.Quotient.mk_smul]`. Use `congr 1`. Conclude with `Subtype.ext hgc`.
+-/
 theorem exists_irreducible_subquotient_of_ne_zero : ∀ (G V : Type) [Group G] [AddCommGroup V] [Module ℂ V]
     (ρ : Representation ℂ G V) (x : V), x ≠ 0 →
     ∃ (Y : Type) (_ : AddCommGroup Y) (_ : Module ℂ Y) (τ : Representation ℂ G Y) (y : Y),

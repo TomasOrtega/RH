@@ -26,6 +26,13 @@ noncomputable section
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Introduce `R _ S A _ _ B _ _ φ φ₂ P P₀ hB hφ sq hP hP₀ hw hsym`. Use `haveI := hB.proper`. Establish `hprop : IsProper (G2 B).hom` using `by rw [Over.tensorObj_hom]; infer_instance`. Use `haveI : QuasiCompact (G2 B).hom := inferInstance`. Use `haveI : QuasiSeparated (G2 B).hom := inferInstance`.
+
+Use `set sw₀ := (lift (snd B B) (fst B B)).left with hsw₀`. Establish `hpb` using `isPullback_square hφ.1 φ₂ sq`. Establish `H : LBIso (P₀.pull φ₂) ((P₀.pull sw₀).pull φ₂)` using `LBIso.trans (pull_isLB hP₀ _) hP (pull_isLB (pull_isLB hP₀ _) _) hw.symm (LBIso.trans hP (pull_isLB hP _) (pull_isLB (pull_isLB hP₀ _) _) hsym (lbIso_square hP hP₀ hw (lift_square sq sq.2.symm sq.1.symm)))`. Take `⟨F, hF⟩` from `lbIso_descends_to_subring_containing_finset R S (G2 A).left (G2 B).left (G2 A).hom (G2 B).hom φ₂ P₀ (P₀.pull sw₀) hpb hP₀ (pull_isLB hP₀ _) H`. Use `⟨F, fun R₁ h hF₁ => ?_⟩` and prove the remaining obligations.
+
+Establish `hpb₁` using `isPullback_square (isGrpPullback (spMap (Subring.inclusion h)) B).1 _ (isSquare (spMap (Subring.inclusion h)) B)`. Establish `H₁` using `hF R₁ h hF₁ _ _ _ hpb₁`. Establish `e` using `lift_swap (spMap (Subring.inclusion h)) B`. Use `LBIso.trans (pull_isLB hP₀ _) (pull_isLB (pull_isLB hP₀ _) _) (pull_isLB (pull_isLB hP₀ _) _) H₁ ?_` and prove the remaining obligations. Conclude with `lbIso_square (pull_isLB hP₀ _) hP₀ (lbIso_refl (pull_isLB hP₀ sw₀)) e.symm`.
+-/
 theorem symm_lbIso_descends_to_subring_containing_finset : ∀ (R : Type) [CommRing R] (S : Subring R) (A : Over (Sp R)) [GrpObj A] [IsCommMonObj A] (B : Over (Sp S)) [GrpObj B] [IsCommMonObj B] (φ : A.left ⟶ B.left) (φ₂ : (G2 A).left ⟶ (G2 B).left) (P : LB (G2 A).left) (P₀ : LB (G2 B).left), IsAbelianScheme B → IsGrpPullback A B (spMap S.subtype) φ → IsSquare φ φ₂ → P.IsLB → P₀.IsLB → LBIso P (P₀.pull φ₂) → LBIso P (P.pull (lift (snd A A) (fst A A)).left) → ∃ F : Finset R, ∀ (R₁ : Subring R) (h : S ≤ R₁), (F : Set R) ⊆ R₁ → LBIso (P₀.pull (pφ₂ (spMap (Subring.inclusion h)) B)) ((P₀.pull (pφ₂ (spMap (Subring.inclusion h)) B)).pull (lift (snd ((Over.pullback (spMap (Subring.inclusion h))).obj B) ((Over.pullback (spMap (Subring.inclusion h))).obj B)) (fst ((Over.pullback (spMap (Subring.inclusion h))).obj B) ((Over.pullback (spMap (Subring.inclusion h))).obj B))).left) := by
   intro R _ S A _ _ B _ _ φ φ₂ P P₀ hB hφ sq hP hP₀ hw hsym
   haveI := hB.proper

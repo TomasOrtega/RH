@@ -56,20 +56,49 @@ def IsAutQN (ι : Qbar l ≃+* ℂ) (r : G F Ω →* GL (Fin n) (Qbar l)) : Prop
 section Conv
 variable {ι : Qbar l ≃+* ℂ} {r : G F Ω →* GL (Fin n) (Qbar l)}
 
+/- English proof (translation)
+The claim follows from `h`.
+-/
 theorem mkCsd [IsCMField F] (h : AutCsd0 ι r) (_ : Continuous r → Wit ι r) : IsAutCsd ι r := h
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨h, u⟩`.
+-/
 theorem mkCsd' [IsCMField F] (h : AutCsd0 ι r) (u : Continuous r → Wit ι r) : IsAutCsdN ι r := ⟨h, u⟩
+/- English proof (translation)
+The claim follows from `h`.
+-/
 theorem csd0 [IsCMField F] (h : IsAutCsd ι r) : AutCsd0 ι r := h
+/- English proof (translation)
+The claim follows from `h.1`.
+-/
 theorem csd0' [IsCMField F] (h : IsAutCsdN ι r) : AutCsd0 ι r := h.1
 omit [NumberField F] in
+/- English proof (translation)
+The claim follows from `h`.
+-/
 theorem automorphicQ_of_witness (h : IsAutQ ι r) : IsAutomorphicOverImagQuad ι r := h
 omit [NumberField F] in
+/- English proof (translation)
+Introduce `hc K _ _ _ _ _ _ h2 hi` and use `(h hc K h2 hi).1`.
+-/
 theorem autQ0' (h : IsAutQN ι r) : IsAutomorphicOverImagQuad ι r := fun hc K _ _ _ _ _ _ h2 hi => (h hc K h2 hi).1
 omit [NumberField F] in
+/- English proof (translation)
+The claim follows from `h`.
+-/
 theorem mkQ (h : IsAutomorphicOverImagQuad ι r) (_ : Continuous r → WitQ ι r) : IsAutQ ι r := h
 omit [NumberField F] in
+/- English proof (translation)
+Introduce `hc K _ _ _ _ _ _ h2 hi` and use `⟨h hc K h2 hi, u hc K h2 hi⟩`.
+-/
 theorem mkQ' (h : IsAutomorphicOverImagQuad ι r) (u : Continuous r → WitQ ι r) : IsAutQN ι r :=
   fun hc K _ _ _ _ _ _ h2 hi => ⟨h hc K h2 hi, u hc K h2 hi⟩
 
+/- English proof (translation)
+Take `⟨s, j, hj, hs, hn⟩` from `h`. Use `⟨s, j, hj, hs, fun α hα hβ => ?_⟩` and prove the remaining obligations. Establish `back : ∀ z : ℂ, ((r s : Matrix (Fin n) (Fin n) (Qbar l)).charpoly.map ι.toRingHom).IsRoot z → (r s : Matrix (Fin n) (Fin n) (Qbar l)).charpoly.IsRoot (ι.symm z)` using `fun z hz => by`. Rewrite `hz` using `[← ι.apply_symm_apply z]`. Conclude with `(Polynomial.isRoot_map_iff (f := ι.toRingHom) ι.injective).1 hz`.
+
+Use `hn _ _ (back _ hβ) (back _ hα) 1 le_rfl ?_` and prove the remaining obligations. Simplify using the standard rewrite rules.
+-/
 theorem UnlinkAt.unlAt {w : HeightOneSpectrum (𝓞 F)} {A : ValuationSubring Ω} (h : UnlinkAt r w A) : UnlAt ι r w A := by
   obtain ⟨s, j, hj, hs, hn⟩ := h
   refine ⟨s, j, hj, hs, fun α hα hβ => ?_⟩

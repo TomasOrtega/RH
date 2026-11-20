@@ -18,6 +18,19 @@ open IsLocalRing in
 set_option synthInstance.maxHeartbeats 400000 in
 set_option maxHeartbeats 1000000 in
 open Polynomial in
+/- English proof (translation)
+Take `⟨gB, hgB_of, hgB_root⟩ : ∃ gB : AdjoinRoot (X ^ m - C (u : A)) →+* W, (∀ a, gB (AdjoinRoot.of _ a) = Φ a) ∧ gB (AdjoinRoot.root _) = y` from `⟨AdjoinRoot.lift Φ y (by simp [hy]), fun a => AdjoinRoot.lift_of _, AdjoinRoot.lift_root _⟩`. Take `⟨g, hg_of, hg_root⟩ : ∃ g : AdjoinRoot (X ^ k - C (AdjoinRoot.of (X ^ m - C (u : A)) ϖ * AdjoinRoot.root (X ^ m - C (u : A)))) →+* W, (∀ b, g (AdjoinRoot.of _ b) = gB b) ∧ g (AdjoinRoot.root _) = τ` from `⟨AdjoinRoot.lift gB τ (by simp [hgB_of, hgB_root, hτ]), fun b => AdjoinRoot.lift_of _, AdjoinRoot.lift_root _⟩`. Use `haveI hn : (Ideal.comap g (maximalIdeal W)).IsPrime := Ideal.comap_isPrime g (maximalIdeal W)`. Establish `hTn : AdjoinRoot.root (X ^ k - C (AdjoinRoot.of (X ^ m - C (u : A)) ϖ * AdjoinRoot.root (X ^ m - C (u : A)))) ∈ Ideal.comap g (maximalIdeal W)`. Rewrite using `[Ideal.mem_comap, hg_root]`.
+
+Conclude with `hτm`. Establish `hmaxV` using `_root_.GlobalTheory.maximalIdeal_localization_eq_span_of_reduced_artinian _ _ (_root_.GlobalTheory.kummerUnit_quotRoot_isReduced A ϖ u m k hϖ hm hk) (_root_.GlobalTheory.T.isArtinianRing_kummerAdjoinRoot_quotient_root A ϖ u m k hϖ hm hk) _ hTn`. Use `haveI : IsNoetherianRing (AdjoinRoot (X ^ k - C (AdjoinRoot.of (X ^ m - C (u : A)) ϖ * AdjoinRoot.root (X ^ m - C (u : A))))) := inferInstance`. Use `haveI : IsNoetherianRing (Localization.AtPrime (Ideal.comap g (maximalIdeal W))) := IsLocalization.isNoetherianRing (Ideal.comap g (maximalIdeal W)).primeCompl _ inferInstance`. Establish `hunit : ∀ s : (Ideal.comap g (maximalIdeal W)).primeCompl, IsUnit (g s)`.
+
+Introduce `s`. Assume the negation of the conclusion as `h`. Conclude with `s.2 ((IsLocalRing.mem_maximalIdeal _).2 h)`. Establish `hlift` using `fun r => IsLocalization.lift_eq (M := (Ideal.comap g (maximalIdeal W)).primeCompl) (S := Localization.AtPrime (Ideal.comap g (maximalIdeal W))) hunit r`. Take `⟨φ, hφ⟩ : ∃ φ : Localization.AtPrime (Ideal.comap g (maximalIdeal W)) →+* W, ∀ r, φ (algebraMap _ _ r) = g r` from `⟨IsLocalization.lift hunit, hlift⟩`.
+
+Establish `key` using `_root_.GlobalTheory.maximalIdeal_eq_span_map_of_fractions (Localization.AtPrime (Ideal.comap g (maximalIdeal W))) W φ _ hmaxV (by rw [hφ, hg_root]; exact hτm) (by rw [hφ, hg_root]; exact hτnz) ?_`. Rewrite using `[key, hφ, hg_root]`. Introduce `w`. Take `⟨x, z, hx, hz, hznz, hzw⟩` from `hfrac w`. Establish `hle : Subring.closure (Set.range Φ ∪ {τ}) ≤ φ.range`.
+
+Rewrite using `[Subring.closure_le]`. Use `Set.union_subset ?_ ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨a, rfl⟩`. Conclude with `⟨algebraMap _ _ (AdjoinRoot.of _ (AdjoinRoot.of _ a)), by rw [hφ, hg_of, hgB_of]⟩`. Introduce and unpack `_ rfl`.
+
+Conclude with `⟨algebraMap _ _ (AdjoinRoot.root _), by rw [hφ, hg_root]⟩`. Take `⟨x', rfl⟩` from `hle hx`. Take `⟨z', rfl⟩` from `hle hz`. Conclude with `⟨x', z', hznz, hzw⟩`.
+-/
 private lemma maximalIdeal_eq_span_of_kummer_tower (A W : Type) [CommRing A] [IsDomain A]
     [IsDiscreteValuationRing A] [CommRing W] [IsLocalRing W] (Φ : A →+* W) (ϖ : A) (u : Aˣ) (m k : ℕ)
     (hϖ : Irreducible ϖ) (hm : IsUnit (m : A)) (hk : 0 < k) (y τ : W) (hy : y ^ m = Φ u)
@@ -72,6 +85,37 @@ open IsLocalRing in
 set_option synthInstance.maxHeartbeats 400000 in
 set_option maxHeartbeats 1000000 in
 
+/- English proof (translation)
+Introduce `S K L _ _ _ _ _ _ _ _ _ _ _ _ π e D _ _ ⟨ψ⟩ hπ he hdiv _ _ _ Q _`. Use `haveI : Q.IsPrime := Ideal.IsMaximal.isPrime inferInstance`. Use `haveI : IsDedekindDomain (integralClosure S L) := integralClosure.isDedekindDomain S K L`. Establish `he0 : 0 < e`. Break down `Nat.eq_zero_or_pos e with h | h` into its components or cases.
+
+Substitute `h` using the available equality. Simplify using `at he`. Conclude with `h`. Take `⟨ht, htnz⟩` from `_root_.GlobalTheory.AbhyankarRootUnit.root_mem_maximalIdeal_and_mem_nonZeroDivisors S K L π e D ψ hπ he0 Q`. Establish `hte : (ψ.symm (AdjoinRoot.root (Polynomial.X ^ e - Polynomial.C π))) ^ e = algebraMap S D π`.
+
+Apply `ψ.injective` to reduce the goal to its premises. Rewrite using `[map_pow, AlgEquiv.apply_symm_apply, AlgEquiv.commutes]`. Establish `h` using `AdjoinRoot.eval₂_root (Polynomial.X ^ e - Polynomial.C π)`. Simplify using `only [Polynomial.eval₂_sub, Polynomial.eval₂_X_pow, Polynomial.eval₂_C] at h`. Rewrite using `[sub_eq_zero.1 h]`.
+
+Both sides reduce to the same expression. Establish `htQ : algebraMap D (integralClosure D (TensorProduct S D L)) (ψ.symm (AdjoinRoot.root (Polynomial.X ^ e - Polynomial.C π))) ∈ Q`. Rewrite `ht` using `[IsScalarTower.algebraMap_apply D (integralClosure D (TensorProduct S D L)) (Localization.AtPrime Q)]`. Conclude with `(IsLocalization.AtPrime.to_map_mem_maximal_iff (Localization.AtPrime Q) Q _).1 ht`. Establish `hπO : algebraMap S (integralClosure S L) π ≠ 0`.
+
+Introduce `h`. Establish `h1 : algebraMap S L π = 0`. Rewrite using `[IsScalarTower.algebraMap_apply S (integralClosure S L) L, h, map_zero]`. Rewrite `h1` using `[IsScalarTower.algebraMap_apply S K L, map_eq_zero_iff _ (algebraMap K L).injective, IsFractionRing.to_map_eq_zero_iff]`. Conclude with `hπ.ne_zero h1`.
+
+Establish `hπP : algebraMap S (integralClosure S L) π ∈ Ideal.comap (_root_.GlobalTheory.AbhyankarLocal.toNorm S L D) Q`. Rewrite using `[Ideal.mem_comap]`. Establish `hpow : _root_.GlobalTheory.AbhyankarLocal.toNorm S L D (algebraMap S (integralClosure S L) π) = (algebraMap D (integralClosure D (TensorProduct S D L)) (ψ.symm (AdjoinRoot.root (Polynomial.X ^ e - Polynomial.C π)))) ^ e`. Apply `Subtype.ext` to reduce the goal to its premises. Rewrite using `[_root_.GlobalTheory.AbhyankarLocal.toNorm_coe, ← map_pow, hte]`.
+
+Express the relevant statement in the definitionally equal form `(1 : D) ⊗ₜ[S] (algebraMap S L π) = algebraMap D (TensorProduct S D L) (algebraMap S D π)`. Rewrite using `[Algebra.TensorProduct.algebraMap_apply, Algebra.algebraMap_eq_smul_one π, Algebra.algebraMap_eq_smul_one π, TensorProduct.tmul_smul, TensorProduct.smul_tmul', Algebra.algebraMap_self, RingHom.id_apply]`. Rewrite using `[hpow]`. Conclude with `Ideal.pow_mem_of_mem Q htQ e he0`. Use `haveI hPmax : (Ideal.comap (_root_.GlobalTheory.AbhyankarLocal.toNorm S L D) Q).IsMaximal := by`.
+
+Use `Ideal.IsPrime.isMaximal inferInstance ?_` and prove the remaining obligations. Introduce `h`. Rewrite `hπP` using `[h]`. Conclude with `hπO hπP`. Take `⟨ϖ, hϖ, u, hu⟩` from `_root_.GlobalTheory.pi_eq_pow_ramificationIdx_mul_unit S K L π e D (Ideal.comap (_root_.GlobalTheory.AbhyankarLocal.toNorm S L D) Q) hπ hπP`.
+
+Take `⟨k, hk⟩` from `hdiv _ hPmax`. Take `⟨y, hym, hyk⟩` from `_root_.GlobalTheory.AbhyankarLocal.exists_kummer_element S K L π e D ψ hπ he0 Q _ k ϖ u hk.symm hu`. Establish `hP0 : Ideal.comap (_root_.GlobalTheory.AbhyankarLocal.toNorm S L D) Q ≠ ⊥`. Introduce `h`. Rewrite `hπP` using `[h]`.
+
+Conclude with `hπO hπP`. Use `haveI : IsDiscreteValuationRing (Localization.AtPrime (Ideal.comap (_root_.GlobalTheory.AbhyankarLocal.toNorm S L D) Q)) := IsLocalization.AtPrime.isDiscreteValuationRing_of_dedekind_domain (integralClosure S L) hP0 _`. Establish `hk0 : 0 < k`. Break down `Nat.eq_zero_or_pos k with h | h` into its components or cases. Rewrite `hk` using `[h, mul_zero]`.
+
+Use linear arithmetic over natural numbers and integers. Conclude with `h`. Establish `hmu : IsUnit (((Ideal.comap (_root_.GlobalTheory.AbhyankarLocal.toNorm S L D) Q).ramificationIdx S : ℕ) : Localization.AtPrime (Ideal.comap (_root_.GlobalTheory.AbhyankarLocal.toNorm S L D) Q))`. Establish `h` using `he.map (algebraMap S (Localization.AtPrime (Ideal.comap (_root_.GlobalTheory.AbhyankarLocal.toNorm S L D) Q)))`. Rewrite `h` using `[map_natCast, hk, Nat.cast_mul]`.
+
+Conclude with `isUnit_of_mul_isUnit_left h`. Establish `hmax` using `maximalIdeal_eq_span_of_kummer_tower _ (Localization.AtPrime Q) (_root_.GlobalTheory.AbhyankarLocal.locHom Q) ϖ u _ k hϖ hmu hk0 y _ hym hyk ht htnz (_root_.GlobalTheory.AbhyankarLocal.exists_frac_closure S K L π e D ψ hπ he0 Q)`. Establish `hunder : Ideal.under D Q = maximalIdeal D`. Use `IsLocalRing.eq_maximalIdeal (Ideal.IsPrime.isMaximal inferInstance ?_)` and prove the remaining obligations. Introduce `h`.
+
+Establish `h1 : ψ.symm (AdjoinRoot.root (Polynomial.X ^ e - Polynomial.C π)) ∈ Ideal.under D Q` using `htQ`. Rewrite `h1` using `[h, Ideal.mem_bot]`. Rewrite `htnz` using `[h1, map_zero]`. Conclude with `zero_notMem_nonZeroDivisors htnz`. Establish `hmapmax : Ideal.map (algebraMap D (Localization.AtPrime Q)) (Ideal.under D Q) = maximalIdeal (Localization.AtPrime Q)`.
+
+Use `le_antisymm ?_ ?_` and prove the remaining obligations. Rewrite using `[Ideal.map_le_iff_le_comap]`. Introduce `d hd`. Rewrite using `[Ideal.mem_comap, IsScalarTower.algebraMap_apply D (integralClosure D (TensorProduct S D L)) (Localization.AtPrime Q)]`. Conclude with `(IsLocalization.AtPrime.to_map_mem_maximal_iff (Localization.AtPrime Q) Q _).2 hd`.
+
+Rewrite using `[hmax, Ideal.span_le, Set.singleton_subset_iff]`. Conclude with `Ideal.mem_map_of_mem _ htQ`. Rewrite using `[Ideal.ramificationIdx_def, hmapmax, Module.length_eq_one_iff.2 (isSimpleModule_iff_isCoatom.2 (IsLocalRing.maximalIdeal.isMaximal _).out)]`. Both sides reduce to the same expression.
+-/
 theorem _root_.GlobalTheory.abhyankar_ramificationIdx_eq_one : ∀ (S K L : Type) [CommRing S] [IsDomain S] [IsDiscreteValuationRing S]
     [Field K] [Algebra S K] [IsFractionRing S K] [Field L] [Algebra K L] [Algebra S L] [IsScalarTower S K L]
     [FiniteDimensional K L] [Algebra.IsSeparable K L] (π : S) (e : ℕ) (D : Type) [CommRing D] [Algebra S D],

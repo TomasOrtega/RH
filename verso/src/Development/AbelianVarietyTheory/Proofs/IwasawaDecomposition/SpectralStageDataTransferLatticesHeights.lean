@@ -23,17 +23,28 @@ def trCar (h : SameCar F F') {X : HidaSetting D} {u} (t : Transport X u (F u)) :
     J_isom := fun c ξ η => by rw [(h u).2.2.2.2]; exact t.J_isom c ξ η }
 
 set_option maxHeartbeats 4000000 in
+/- English proof (translation)
+Use `LinearMap.ext fun T => funext fun c => funext fun z => ?_` and prove the remaining obligations. Conclude with `congrArg (fun e => t.J (shP X u T.1 (t.hc c)) (e z)) (congrArg DFunLike.coe (h u).2.2.2.2)`.
+-/
 theorem colDictL_car (h : SameCar F F') {X : HidaSetting D} {u} (t : Transport X u (F u)) (hK : X.LevelSubgroupCharacter) :
     colDictL X (trCar h t) hK = colDictL X t hK := by
   refine LinearMap.ext fun T => funext fun c => funext fun z => ?_
   exact congrArg (fun e => t.J (shP X u T.1 (t.hc c)) (e z)) (congrArg DFunLike.coe (h u).2.2.2.2)
 
+/- English proof (translation)
+Substitute `e` using the available equality. Rewrite using `[eq_of_heq h]`.
+-/
 theorem chi_of_heq {G : Type} [Group G] {U U' : Subgroup G} {chi : U →* ℂˣ} {chi' : U' →* ℂˣ} (e : U' = U) (h : HEq chi' chi)
     (x : G) (hx : x ∈ U') : chi' ⟨x, hx⟩ = chi ⟨x, e ▸ hx⟩ := by
   subst e
   rw [eq_of_heq h]
 
 set_option maxHeartbeats 4000000 in
+/- English proof (translation)
+Use `⟨fun x => ?_, fun g y hr => ⟨?_, fun hk hy => ?_⟩⟩` and prove the remaining obligations. Rewrite using `[(h u).1]`. Conclude with `l.1 x`. Rewrite using `[(h u).2.1]`. Conclude with `(l.2 g y hr).1`.
+
+Rewrite using `[chi_of_heq (h u).2.1 (h u).2.2.1]`. Conclude with `(l.2 g y hr).2 hk _`.
+-/
 theorem lev_car (h : SameCar F F') {X : HidaSetting D} {u} {t : Transport X u (F u)} {hK : X.LevelSubgroupCharacter} (l : LevelMatch X t hK) :
     LevelMatch X (trCar h t) hK := by
   refine ⟨fun x => ?_, fun g y hr => ⟨?_, fun hk hy => ?_⟩⟩
@@ -75,6 +86,11 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 set_option maxHeartbeats 8000000 in
 
+/- English proof (translation)
+Introduce `K B f T w Z Wt p0 r col N h p0' t col' e ⟨s⟩`. Take `⟨F₁, hF⟩` from `exists_sameF_ofDiv (D := Late.D Z) ((by with_unfolding_all exact (N :))) ((by with_unfolding_all exact (h :))) fun u => (col.C.forms u).to0`. Take `⟨s', -⟩` from `GlobalTheory.T.spectralComparison_transported_divisionLatticeChange B w.C Z (pkOf r).G' (pkOf r).Pl0 (pkOf r).T (pkOf r).A (pkOf r).Ks (pkOf r).R (pkOf r).F (fun u => (col.C.forms u).to0) (pkOf r).eE (cast (sx_eq r col) s) ((by with_unfolding_all exact (N :))) ((by with_unfolding …`. Establish `c` using `StdUnique.sameStd B f T w Z (New.ofDiv (Late.D Z) ((by with_unfolding_all exact (N :))) ((by with_unfolding_all exact (h :)))) col ((by with_unfolding_all exact (col' :))) ((by with_unfolding_all exact (F₁ :))) ((by with_unfolding_all exact (hF :)))`. Establish `e' : pkOf t = (pkOf r).up Z Z.S N h` using `eq_of_heq e`.
+
+Rewrite using `[sx_eq t col', e']`. Conclude with `⟨satCar (D := Late.D (upL Z Z.S N h)) (F := (by with_unfolding_all exact (F₁ :))) ((by with_unfolding_all exact (c :))) ((pkOf r).up Z Z.S N h) ((by with_unfolding_all exact (s' :)))⟩`.
+-/
 theorem sxMv : SxMv := by
   intro K B f T w Z Wt p0 r col N h p0' t col' e ⟨s⟩
   obtain ⟨F₁, hF⟩ := exists_sameF_ofDiv (D := Late.D Z) ((by with_unfolding_all exact (N :))) ((by with_unfolding_all exact (h :))) fun u => (col.C.forms u).to0

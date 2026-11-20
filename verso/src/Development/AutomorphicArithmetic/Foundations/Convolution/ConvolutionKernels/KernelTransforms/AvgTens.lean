@@ -7,6 +7,13 @@ open GroundTheory.Automorphic GroundTheory.Automorphic.Reduction GroundTheory.Au
 open GroundTheory.Automorphic.AutomorphicForm GroundTheory.Automorphic.CuspidalSpectrum UpperTheory.ConvolutionTheory UpperTheory.ConvolutionTheory.C
 open scoped TensorProduct InnerProductSpace ComplexConjugate Pointwise
 
+/- English proof (translation)
+Introduce `K _ _ n hn β e Φ hΦ`. Use `⟨fun x => ?_, fun g => ?_⟩` and prove the remaining obligations. Establish `hemb : MeasurableEmbedding GroundTheory.Global.expPos` using `GroundTheory.Global.expPosHomeomorph.measurableEmbedding`. Rewrite using `[(UpperTheory.ConvolutionTheory.Tf.tensApply K n hn β e).1 x, tensFun, kbar, GroundTheory.Global.posRealMeasure_eq_map_expPos, hemb.integral_map, ← integral_mul_const]`. Unfold `PositivityTheory.Rg.Tf.Geo.avg`.
+
+Use `integral_congr_ae (Filter.Eventually.of_forall fun t => ?_)` and prove the remaining obligations. Establish `h1 : infPart K n (centralSection K n (GroundTheory.Global.expPos t) * (x : AdelicGLn.AdelicGL K n)) = infPart K n (x : AdelicGLn.AdelicGL K n) * zInf K n (GroundTheory.Global.expPos t)`. Rewrite using `[map_mul (infPart K n), ← zInf_mul_comm]`. Both sides reduce to the same expression. Establish `h2 : CuspidalSpectrum.finPart K n (centralSection K n (GroundTheory.Global.expPos t) * (x : AdelicGLn.AdelicGL K n)) = CuspidalSpectrum.finPart K n (x : AdelicGLn.AdelicGL K n)`.
+
+Rewrite using `[map_mul (CuspidalSpectrum.finPart K n), finPart_centralSection, one_mul]`. Express the relevant statement in the definitionally equal form `Φ (centralSection K n (GroundTheory.Global.expPos t) * (x : AdelicGLn.AdelicGL K n)) = _`. Rewrite using `[hΦ, h1, h2]`. Rewrite using `[infPart_apply]`. Both sides reduce to the same expression.
+-/
 theorem UpperTheory.ConvolutionTheory.Tf.avgTens :
     ∀ (K : Type) [Field K] [NumberField K] (n : ℕ), 0 < n → ∀ (β : TI K n) (e : TF K n) (Φ : AdelicGLn.AdelicGL K n → ℂ),
       (∀ g, Φ g = β (infPart K n g) * e (finPart K n g)) →

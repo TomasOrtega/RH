@@ -3,16 +3,27 @@ import Development.AutomorphicArithmetic.Foundations.Convolution.BlockEvaluation
 open MeasureTheory NumberField IsDedekindDomain MvPolynomial Filter Topology UpperTheory.ConvolutionTheory UpperTheory.ConvolutionTheory.C UpperTheory.ConvolutionTheory.Ci
 open GroundTheory.Automorphic GroundTheory.Automorphic.Reduction
 
+/- English proof (translation)
+Unfold `prj`. Conclude with `Submodule.starProjection_eq_self_iff.2 (W.le_topologicalClosure hv)`.
+-/
 private theorem prj_self {H : Type*} [NormedAddCommGroup H] [InnerProductSpace ℂ H] [CompleteSpace H]
     (W : Submodule ℂ H) {v : H} (hv : v ∈ W) : prj W v = v := by
   unfold prj
   exact Submodule.starProjection_eq_self_iff.2 (W.le_topologicalClosure hv)
 
+/- English proof (translation)
+Unfold `fixF`. Conclude with `biInf_mono fun u hu => h hu`.
+-/
 private theorem fixF_anti {K : Type} [Field K] [NumberField K] {n : ℕ} (μ : Measure (normOneGL K n)) [μ.IsHaarMeasure]
     {U U' : Subgroup (AdelicGLn.FiniteAdelicGL K n)} (h : U' ≤ U) : fixF μ U ≤ fixF μ U' := by
   unfold fixF
   exact biInf_mono fun u hu => h hu
 
+/- English proof (translation)
+Take `⟨h1, h2⟩` from `Submodule.mem_inf.1 hv`. Establish `h3 : 𝔞.A v = (x : ℂ) • v` using `Module.End.mem_eigenspace_iff.1 h2`. Use `⟨h1, h3, ?_⟩` and prove the remaining obligations. Establish `hx' : (x : ℂ) ≠ 0` using `by exact_mod_cast hx.ne'`. Establish `h4` using `hA v`.
+
+Rewrite `h4` using `[h3]`. Conclude with `(Submodule.smul_mem_iff _ hx').1 h4`.
+-/
 private theorem eig_fix {K : Type} [Field K] [NumberField K] {n : ℕ} {μ : Measure (normOneGL K n)} [μ.IsHaarMeasure]
     (𝔞 : Amp μ) (hA : ∀ v, 𝔞.A v ∈ fixF μ 𝔞.U) {V : Submodule ℂ (LL μ)} {x : ℝ} (hx : 0 < x) {v : LL μ}
     (hv : v ∈ eigIn V 𝔞.A x) : v ∈ V ∧ 𝔞.A v = (x : ℂ) • v ∧ v ∈ fixF μ 𝔞.U := by
@@ -24,6 +35,17 @@ private theorem eig_fix {K : Type} [Field K] [NumberField K] {n : ℕ} {μ : Mea
   rw [h3] at h4
   exact (Submodule.smul_mem_iff _ hx').1 h4
 
+/- English proof (translation)
+Establish `hadd : ∀ P Q, ev P v = f P • v → ev Q v = f Q • v → ev (P + Q) v = f (P + Q) • v`. Introduce `P Q hP hQ`. Rewrite using `[map_add, map_add, ContinuousLinearMap.add_apply, hP, hQ, add_smul]`. Establish `hmul : ∀ P Q, ev P v = f P • v → ev Q v = f Q • v → ev (P * Q) v = f (P * Q) • v`. Introduce `P Q hP hQ`.
+
+Rewrite using `[map_mul, map_mul, ContinuousLinearMap.mul_apply, hQ, map_smul, hP, smul_smul, mul_comm]`. Establish `hC : ∀ c : MvPolynomial ι ℂ, ev (C c) v = f (C c) • v`. Introduce `c`. Proceed by induction on `c using MvPolynomial.induction_on with`. Consider the case `C a => exact h0 a`.
+
+Consider the case `add p q hp hq => rw [C_add]`. Conclude with `hadd _ _ hp hq`. Consider the case `mul_X p i hp => rw [C_mul]`. Conclude with `hmul _ _ hp (h1 i)`. Establish `hm : P ∈ supported (MvPolynomial ι ℂ) s` using `mem_supported.2 fun y hy => hP y hy`.
+
+Use `clear hP`. Rewrite `hm` using `[supported_eq_adjoin_X]`. Proceed by induction on `hm using Algebra.adjoin_induction with`. Consider the case `mem p hp`. Take `⟨y, hy, rfl⟩` from `hp`.
+
+Conclude with `h2 y hy`. Consider the case `algebraMap r => exact hC r`. Consider the case `add p q _ _ hp hq => exact hadd _ _ hp hq`. Consider the case `mul p q _ _ hp hq => exact hmul _ _ hp hq`.
+-/
 private theorem poly_ind {H σ ι : Type*} [NormedAddCommGroup H] [NormedSpace ℂ H]
     (ev : MvPolynomial σ (MvPolynomial ι ℂ) →+* (H →L[ℂ] H)) (f : MvPolynomial σ (MvPolynomial ι ℂ) →+* ℂ)
     (v : H) (s : Set σ) (h0 : ∀ c : ℂ, ev (C (C c)) v = f (C (C c)) • v)
@@ -52,6 +74,9 @@ private theorem poly_ind {H σ ι : Type*} [NormedAddCommGroup H] [NormedSpace �
   | add p q _ _ hp hq => exact hadd _ _ hp hq
   | mul p q _ _ hp hq => exact hmul _ _ hp hq
 
+/- English proof (translation)
+Take `⟨h1, -, h2⟩` from `eig_fix 𝔞 hA hx hv`. Rewrite using `[Submodule.mem_inf, fixL]`. Conclude with `⟨h1, fixF_anti μ (𝔞.max w hw) h2⟩`.
+-/
 private theorem eig_fixL {K : Type} [Field K] [NumberField K] {n : ℕ} {μ : Measure (normOneGL K n)} [μ.IsHaarMeasure]
     (𝔞 : Amp μ) (hA : ∀ v, 𝔞.A v ∈ fixF μ 𝔞.U) {V : Submodule ℂ (LL μ)} {x : ℝ} (hx : 0 < x) {v : LL μ}
     (hv : v ∈ eigIn V 𝔞.A x) {w : Pl K} (hw : w ∉ 𝔞.S) :
@@ -60,20 +85,39 @@ private theorem eig_fixL {K : Type} [Field K] [NumberField K] {n : ℕ} {μ : Me
   rw [Submodule.mem_inf, fixL]
   exact ⟨h1, fixF_anti μ (𝔞.max w hw) h2⟩
 
+/- English proof (translation)
+Simplify using `[val]`.
+-/
 private theorem val_CC {K : Type} [Field K] [NumberField K] {n : ℕ} (x : ℝ) (Λ : (K →+* ℂ) → Multiset ℂ)
     (t : Pl K → Multiset ℂ) (c : ℂ) : val (n := n) x Λ t (C (C c)) = c := by simp [val]
 
+/- English proof (translation)
+Simplify using `[val]`.
+-/
 private theorem val_none {K : Type} [Field K] [NumberField K] {n : ℕ} (x : ℝ) (Λ : (K →+* ℂ) → Multiset ℂ)
     (t : Pl K → Multiset ℂ) : val (n := n) x Λ t (C (X none)) = x := by simp [val]
 
+/- English proof (translation)
+Simplify using `[val]`.
+-/
 private theorem val_some {K : Type} [Field K] [NumberField K] {n : ℕ} (x : ℝ) (Λ : (K →+* ℂ) → Multiset ℂ)
     (t : Pl K → Multiset ℂ) (y : Ix K n) :
     val (n := n) x Λ t (C (X (some y))) = x * (Λ y.1).esymm (y.2 + 1) := by simp [val]
 
+/- English proof (translation)
+Simplify using `[val, hval]`.
+-/
 private theorem val_X {K : Type} [Field K] [NumberField K] {n : ℕ} (x : ℝ) (Λ : (K →+* ℂ) → Multiset ℂ)
     (t : Pl K → Multiset ℂ) (w : Pl K) (i : Fin n) :
     val (n := n) x Λ t (X (w, i)) = (t w).esymm (i + 1) := by simp [val, hval]
 
+/- English proof (translation)
+Take `⟨hvV, hAv, hvU⟩` from `eig_fix 𝔞 hA hx hv`. Take `⟨hI, hS⟩` from `h`. Establish `hO : Oinf μ 𝔞.ν 𝔞.a₀ v = (x : ℂ) • v`. Rewrite using `[← hAv, Amp.A, ContinuousLinearMap.comp_apply, prj_self _ hvU]`. Use `poly_ind ev (val x Λ t) v {y | y.1 ∉ 𝔞.S} (fun c => ?_) (fun o => ?_) (fun y hy => ?_) P hPv` and prove the remaining obligations.
+
+Rewrite using `[hev.const, val_CC, ContinuousLinearMap.smul_apply, ContinuousLinearMap.one_apply]`. Consider the cases of `o with`. Consider the case `none => rw [hev.amp, hAv, val_none]`. Consider the case `some y`. Take `⟨-, h1⟩` from `hI y.1`.
+
+Rewrite using `[hev.cen, Amp.Z, ContinuousLinearMap.comp_apply, prj_self _ hvU, h1 𝔞.ν 𝔞.a₀ 𝔞.smooth y.2 v hvV, hO, smul_smul, mul_comm, val_some]`. Take `⟨w, i⟩` from `y`. Take `⟨-, -, h1⟩` from `hS w hy`. Rewrite using `[hev.hecke w hy i, h1 i v (eig_fixL 𝔞 hA hx hv hy), val_X]`.
+-/
 private theorem ev_val {K : Type} [Field K] [NumberField K] {n : ℕ} {μ : Measure (normOneGL K n)} [μ.IsHaarMeasure]
     (𝔞 : Amp μ) (hA : ∀ v, 𝔞.A v ∈ fixF μ 𝔞.U) {V : Submodule ℂ (LL μ)} {x : ℝ} (hx : 0 < x)
     {ev : PR K n →+* (LL μ →L[ℂ] LL μ)} (hev : 𝔞.IsEv ev) {Λ : (K →+* ℂ) → Multiset ℂ} {t : Pl K → Multiset ℂ}
@@ -95,6 +139,17 @@ private theorem ev_val {K : Type} [Field K] [NumberField K] {n : ℕ} {μ : Meas
     obtain ⟨-, -, h1⟩ := hS w hy
     rw [hev.hecke w hy i, h1 i v (eig_fixL 𝔞 hA hx hv hy), val_X]
 
+/- English proof (translation)
+Introduce `hE hP K _ _ _ n hn μ _ 𝔞 V x hx hV`. Take `⟨-, -, hA, -⟩` from `hE K n hn μ 𝔞`. Take `⟨p1, p2, -⟩` from `hP K n hn μ V hV`. Use `⟨fun hne => ?_, fun Λ t Λ' t' h h' => ?_, fun ev hev Λ t h P hPv v hv => ev_val 𝔞 hA hx hev h P hPv hv⟩` and prove the remaining obligations. Take `⟨v, hv, hv0⟩` from `(Submodule.ne_bot_iff _).1 hne`.
+
+Establish `hB : ∀ w, ∃ B, w ∉ 𝔞.S → SSat μ V w B`. Introduce `w`. Distinguish the cases in `hw : w ∈ 𝔞.S`. Conclude with `⟨0, fun h => absurd hw h⟩`. Take `⟨B, hB⟩` from `(p2 w ((Submodule.ne_bot_iff _).2 ⟨v, eig_fixL 𝔞 hA hx hv hw, hv0⟩)).exists`.
+
+Conclude with `⟨B, fun _ => hB⟩`. Use `choose t ht using hB`. Use `choose Λ hΛ using fun τ => (p1 τ).exists`. Conclude with `⟨Λ, t, And.intro hΛ ht⟩`. Take `⟨h1, h2⟩` from `h`.
+
+Take `⟨h1', h2'⟩` from `h'`. Use `⟨funext fun τ => ?_, fun w hw => ?_⟩` and prove the remaining obligations. Take `⟨m, -, hm⟩` from `p1 τ beta_reduce at hm`. Rewrite using `[hm (Λ τ) (h1 τ), hm (Λ' τ) (h1' τ)]`. Establish `h3` using `h2 w hw`.
+
+Take `⟨-, h4, -⟩` from `h2 w hw`. Take `⟨m, -, hm⟩` from `p2 w h4`. Use `beta_reduce at hm`. Rewrite using `[hm (t w) h3, hm (t' w) (h2' w hw)]`.
+-/
 theorem UpperTheory.ConvolutionTheory.Ci.evVal :
     EvEx → ParEx → EvVal := by
   intro hE hP K _ _ _ n hn μ _ 𝔞 V x hx hV

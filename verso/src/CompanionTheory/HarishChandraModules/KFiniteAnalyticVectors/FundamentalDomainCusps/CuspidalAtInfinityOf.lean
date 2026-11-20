@@ -11,6 +11,25 @@ namespace CompanionTheory.D.gk.RF
 
 open Formalism.MainNotions.S Formalism.L2.SG.ProjRows Formalism.MainNotions.LeviCoordinates
 
+/- English proof (translation)
+Introduce `hSel hAvg hNW hRP hPi hT hGam hGeo I M hM ph hph hconv U hU`. Take `⟨K, hKn, hKU, hK⟩` from `local_compact_nhds hU`. Take `⟨C, hC, hy⟩` from `hGeo I M hM (interior K) (interior_mem_nhds.2 hKn)`. Use `⟨C, hC, fun y => (hy y).imp_right ?_⟩` and prove the remaining obligations. Introduce and unpack `⟨W, hW0, hWi, hcov⟩`.
+
+Take `⟨-, -, -, hperp, hne, -⟩` from `hT I`. Establish `hiso : ∀ v, Isot (Formalism.REAL.Jm (I.ε v)) (Wv I W v)` using `fun v => by`. Unfold `Isot`. Rewrite using `[← hperp]`. Conclude with `Submodule.span_mono (image_mono hWi)`.
+
+Use `choose Nv hNv using fun v => (hNW _ _ _ (hiso v)).2`. Set `N : Subgroup I.Ginf` to `Subgroup.pi univ Nv`. Establish `hNm : ∀ g, g ∈ N ↔ g ∈ NInf I W` using `fun g => by`. Simplify using `only [N, Subgroup.mem_pi, mem_univ, forall_true_left, NInf, mem_ofPred_eq, ← hNv, SetLike.mem_coe]`. Establish `hNc : IsClosed (N : Set I.Ginf)`.
+
+Rewrite using `[Subgroup.coe_pi]`. Conclude with `isClosed_set_pi fun v _ => by rw [hNv]; exact (hNW _ _ _ (hiso v)).1`. Take `⟨Γ, hΓ, hΓd⟩` from `hGam I M`. Establish `hc : Continuous fun m : I.Ginf => y⁻¹ * m * y` using `by fun_prop`. Establish `hcK : IsCompact ((fun m : I.Ginf => y⁻¹ * m * y) ⁻¹' K)` using `(((Homeomorph.mulLeft y⁻¹).trans (Homeomorph.mulRight y)).isCompact_preimage).2 hK`.
+
+Take `⟨ν, hν, hνV, hinv⟩` from `hAvg I.Ginf N (Γ ⊓ N) hNc inf_le_right (fun B hB => (hΓd B hB).subset fun x hx => ⟨hx.1, hx.2.1⟩) ((fun m => y⁻¹ * m * y) ⁻¹' interior K) (isOpen_interior.preimage hc) (hcK.of_isClosed_subset isClosed_closure (closure_minimal (preimage_mono interior_subset) hcK.isClosed)) fun m h …`. Take `⟨γ, hγ, hγN, h⟩` from `hcov m ((hNm m).1 hm)`. Conclude with `⟨γ, ⟨hΓ.ge hγ, (hNm γ).2 hγN⟩, h⟩`. Use `⟨ν, hν, hνV.mono fun m hm => hKU (interior_subset hm), fun u hu huΓ hrep x => ?_⟩` and prove the remaining obligations. Take `⟨huc, B, hB⟩` from `id hu`.
+
+Establish `hc2 : Continuous fun p : I.Ginf × I.Ginf => u (p.1 * p.2)` using `huc.comp continuous_mul`. Set `F : I.Ginf → ℂ` to `fun x => ∫ m, u (m * x) ∂ν`. Establish `hFb : BC F` using `⟨continuous_of_dominated (bound := fun _ => B) (fun x => (hc2.comp (continuous_id.prodMk continuous_const)).aestronglyMeasurable) (fun x => Eventually.of_forall fun _ => hB _) (integrable_const _) (Eventually.of_forall fun m => hc2.comp (continuous_const.prodMk continuous_id)), B …`. Establish `hFN : LInv N F` using `fun m hm x => hinv u hu (fun γ hγ => huΓ γ (by rw [← hΓ]; exact hγ.1)) m hm x`. Take `⟨v₀⟩ : Nonempty (InfinitePlace I.F)` from `inferInstance`.
+
+Take `⟨a, Ht, P⟩` from `hRP _ _ _ (hne v₀ W hW0) (hiso v₀) (Nv v₀) (hNv v₀)`. Establish `h0` using `hSel I.Ginf (muInf I) ph hph hconv _ _ _ (hPi _ _ v₀ _ a Ht P) F hFb (by`. Introduce and unpack `_ ⟨m, hm, rfl⟩`. Use `hFN _ fun v _ => ?_` and prove the remaining obligations. Distinguish the cases in `hv : v = v₀`.
+
+Substitute `hv` using the available equality. Simplify using `using hm`. Simplify using `[Pi.mulSingle_eq_of_ne hv]) x`. Establish `hI : Integrable (fun p : I.Ginf × I.Ginf => ph p.2 * u (p.1 * x * p.2)) (ν.prod (muInf I))` using `(hph.comp_snd ν).mul_bdd (huc.comp (by fun_prop) : Continuous fun p : I.Ginf × I.Ginf => u (p.1 * x * p.2)).aestronglyMeasurable (Eventually.of_forall fun _ => hB _)`. Rewrite using `[← h0, integral_congr_ae (Eventually.of_forall fun m => hrep (m * x)), integral_integral_swap hI]`.
+
+Simplify using `only [F, integral_const_mul, mul_assoc]`.
+-/
 theorem cuspidal_at_infinity_of : Sel → Avg → NWSub → RealPar → ParPi → Transp → GamSub → GeoInf → CuspInf := by
   classical
   intro hSel hAvg hNW hRP hPi hT hGam hGeo I M hM ph hph hconv U hU
@@ -66,6 +85,17 @@ theorem cuspidal_at_infinity_of : Sel → Avg → NWSub → RealPar → ParPi �
   rw [← h0, integral_congr_ae (Eventually.of_forall fun m => hrep (m * x)), integral_integral_swap hI]
   simp only [F, integral_const_mul, mul_assoc]
 
+/- English proof (translation)
+Introduce `I e hlc hs`. Set `K : Subgroup I.Gf` to `(Formalism.UG.stabGL I.Lf).comap (Formalism.UG.UPts I.cm.sig I.J (Af I.F)).subtype`. Establish `hK : IsCompact (K : Set I.Gf)` using `PI.WAU.maximal_compact_isCompact I`. Establish `hKo : IsOpen (K : Set I.Gf)` using `Formalism.L2.SG.Pf.kset_open I`. Set `Kp : Subgroup I.Gf` to `{ carrier := {k | k ∈ K ∧ ∀ x, e (k * x) = e x} mul_mem' := fun ha hb => ⟨K.mul_mem ha.1 hb.1, fun x => by rw [mul_assoc, ha.2, hb.2]⟩ one_mem' := ⟨K.one_mem, fun x => by rw [one_mul]⟩ inv_mem' := fun {k} hk => ⟨K.inv_mem hk.1, fun x => by rw [← hk.2 (k⁻¹ * x), mul_inv_cancel_lef …`.
+
+Establish `h1 : ∀ᶠ k in 𝓝 (1 : I.Gf), ∀ x ∈ (K : Set I.Gf), e (k * x) = e x`. Use `hK.eventually_forall_of_forall_eventually fun x _ => ?_` and prove the remaining obligations. Establish `a1` using `(hlc.comp_continuous (continuous_mul (M := I.Gf))).eventually_eq (1, x)`. Establish `a2` using `(hlc.comp_continuous (continuous_snd (X := I.Gf))).eventually_eq (1, x)`. Use `filter_upwards [a1, a2] with p h1 h2`.
+
+Simplify using `only [Function.comp_apply, one_mul] at h1 h2`. Rewrite using `[h1, h2]`. Establish `hop : IsOpen (Kp : Set I.Gf)`. Use `Kp.isOpen_of_mem_nhds (g := 1) ?_` and prove the remaining obligations. Use `filter_upwards [h1, hKo.mem_nhds K.one_mem] with k hk hkK`.
+
+Use `⟨hkK, fun x => ?_⟩` and prove the remaining obligations. Distinguish the cases in `hx : x ∈ K`. Conclude with `hk x hx`. Establish `a1 : e x = 0` using `by by_contra h; exact hx (hs x h)`. Establish `a2 : e (k * x) = 0` using `by by_contra h; exact hx ((K.mul_mem_cancel_left hkK).1 (hs _ h))`.
+
+Rewrite using `[a1, a2]`. Conclude with `⟨Kp, hop, hK.of_isClosed_subset (Kp.isClosed_of_isOpen hop) fun k hk => hk.1, fun k hk => hk.2⟩`.
+-/
 theorem level_structure_of : LevelOf := by
   intro I e hlc hs
   let K : Subgroup I.Gf := (Formalism.UG.stabGL I.Lf).comap (Formalism.UG.UPts I.cm.sig I.J (Af I.F)).subtype

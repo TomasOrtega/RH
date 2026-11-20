@@ -19,6 +19,9 @@ def adL (φ : Fam E a b) : Fam E a b := fun w y => starRingEnd ℂ (φ w y⁻¹)
 def szL (w : Pl E) (g : GLw n w) : ℝ :=
   Real.posLog (⨆ p : Fin n × Fin n, ‖g.val p.1 p.2‖) + Real.posLog (⨆ p : Fin n × Fin n, ‖(g⁻¹ : GLw n w).val p.1 p.2‖)
 
+/- English proof (translation)
+Use function extensionality and compare the values at `w y`. Simplify using `[adL]`.
+-/
 theorem adL_adL (φ : Fam E a b) : adL (adL φ) = φ := by
   funext w y
   simp [adL]

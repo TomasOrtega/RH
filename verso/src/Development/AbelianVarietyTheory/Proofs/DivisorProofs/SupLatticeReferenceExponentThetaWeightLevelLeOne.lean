@@ -24,6 +24,9 @@ set_option autoImplicit false
 
 namespace GlobalTheory.RefLevel
 
+/- English proof (translation)
+Establish `hN : 0 ≤ N` using `hs.trans hsN`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem lattice_terms_le {κ R s N d g' V r φ cst : ℝ} (hκ : 0 ≤ κ) (hR : 0 ≤ R) (hs : 0 ≤ s) (hsN : s ≤ N) (hV : 0 < V)
     (hr : 0 < r) (hφ : 0 ≤ φ) (hg' : 0 < g') (hc : κ * N ^ 3 * (R * N / 4 + 2 * d ^ 2) / g' ≤ cst) :
     (R * s * (κ * s ^ 3 * (r * φ)) / (4 * g') + 2 * d ^ 2 * (κ * s ^ 3 * (r * φ)) / g') / (r * V) ≤ cst * φ / V := by
@@ -33,6 +36,11 @@ theorem lattice_terms_le {κ R s N d g' V r φ cst : ℝ} (hκ : 0 ≤ κ) (hR :
     _ ≤ κ * N ^ 3 * (R * N / 4 + 2 * d ^ 2) / g' * φ / V := by gcongr
     _ ≤ cst * φ / V := by gcongr
 
+/- English proof (translation)
+Introduce `hu`. Apply `h` to reduce the goal to its premises. Establish `h2 : valV S.V (algebraMap S.V S.Fr ((N : ℕ) : S.V)) = 1`. Unfold `valV`. Rewrite using `[HeightOneSpectrum.valuation_of_algebraMap, HeightOneSpectrum.intValuation_eq_one_iff]`.
+
+Conclude with `fun h => (mem_nonunits_iff.1 h) hu`. Rewrite `h2` using `[map_natCast]`. Unfold `vV`. Rewrite using `[h2]`. Simplify using the standard rewrite rules.
+-/
 theorem not_isUnit_of_vV_ne_zero (S : CDVR) (N : ℕ) (h : vV S.V ((N : ℕ) : S.Fr) ≠ 0) : ¬ IsUnit ((N : ℕ) : S.V) := by
   intro hu
   apply h
@@ -45,6 +53,13 @@ theorem not_isUnit_of_vV_ne_zero (S : CDVR) (N : ℕ) (h : vV S.V ((N : ℕ) : S
   rw [h2]
   simp
 
+/- English proof (translation)
+Establish `h` using `ho.2 (p : K)`. Rewrite `h` using `[map_natCast]`. Rewrite using `[h]`. Use `mul_pos (by exact_mod_cast ho.1) ?_` and prove the remaining obligations. Establish `h1 : la.valuation K (p : K) < 1`.
+
+Use `(la.valuation_lt_one_iff_mem (K := K) (p : 𝓞 K)).2 hla` as an intermediate fact. Establish `e : ((p : 𝓞 K) : K) = (p : K)` using `map_natCast (algebraMap (𝓞 K) K) p`. Rewrite using `[← e]`. Conclude with `this`. Establish `h0 : la.valuation K (p : K) ≠ 0` using `(Valuation.ne_zero_iff _).2 (Nat.cast_ne_zero.2 hp)`.
+
+Use `(WithZero.log_lt_log h0 one_ne_zero).2 h1` as an intermediate fact. Rewrite `this` using `[WithZero.log_one]`. Unfold `vLa`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem vV_pos {K : Type} [Field K] [NumberField K] {p : ℕ} (hp : p ≠ 0) {la : HeightOneSpectrum (𝓞 K)}
     (hla : (p : 𝓞 K) ∈ la.asIdeal) {T : CDVR} {io : K →+* T.Fr} {k : ℕ} (ho : OverLa la T.V io k) :
     0 < vV T.V (p : T.Fr) := by
@@ -63,11 +78,43 @@ theorem vV_pos {K : Type} [Field K] [NumberField K] {p : ℕ} (hp : p ≠ 0) {la
   unfold vLa
   omega
 
+/- English proof (translation)
+Establish `hc : D.host.g k % (D.host.QS * D.host.q * D.host.d) = 1` using `D.ntypes.g_cond k`. Rewrite using `[Nat.Coprime, Nat.gcd_comm, Nat.gcd_rec, hc]`. Simplify using the standard rewrite rules.
+-/
 theorem coprime_level (D : D7) (k : Fin 2) : Nat.Coprime (D.host.g k) (D.host.QS * D.host.q * D.host.d) := by
   have hc : D.host.g k % (D.host.QS * D.host.q * D.host.d) = 1 := D.ntypes.g_cond k
   rw [Nat.Coprime, Nat.gcd_comm, Nat.gcd_rec, hc]
   simp
 
+/- English proof (translation)
+Rewrite using `[refExp_vp_le_iff]`. Introduce `la S io e ho y hy φ hφ`. Take `⟨st, nab, hn⟩` from `GlobalTheory.CanonConn.exists_isNab_uncond D.host.E T.Q.H (T.Q.Dw j) T.Q.l (T.Q.Xo j) T.Q.c`. Establish `hst` using `GlobalTheory.PowGerm.starSt _ T.Q.H st hn.1`. Substitute `hst` using the available equality.
+
+Use `letI := T.Q.H.starRing`. Take `⟨-, -, -, -, -, hE, hnum⟩` from `GlobalTheory.PinNum.numerics_of_pins D T.Q hM.pins`. Take `⟨hpq, hr1, -⟩` from `hnum j hj`. Establish `hq : (T.Q.Dw j).q = D.R.m - j` using `(hM.pins.2.2.2 j hj).2.1`. Take `⟨hTot, hcusp⟩` from `GlobalTheory.thetaRules_exist_and_cusp D.host.E T.Q.H (T.Q.Dw j) T.Q.l (T.Q.Xo j) T.Q.c D.R.r (T.U j) hr1 (hM.unf j hj) nab hn`.
+
+Take `⟨S', io', y', r, C, P, hy', hr, hFT, hTI, hφ', hOv, hvv, hnv⟩` from `GlobalTheory.T.exists_finiteExtension_uniformisedChart_scale D.host.E T.Q.H (T.Q.Dw j) T.Q.l (T.Q.Xo j) T.Q.c S io y hy φ hφ`. Take `⟨ϖ, hϖ⟩` from `IsDiscreteValuationRing.exists_irreducible S'.V`. Take `⟨⟨Q, hQ⟩, -⟩` from `GlobalTheory.PowData.exists_powData D.host.E T.Q.H (T.Q.Dw j) T.Q.l (T.Q.Xo j) T.Q.c S' io' y' C P ϖ hϖ`. Take `⟨s, hs, hΦ, b, hb1, hb2⟩` from `GlobalTheory.T.exists_short_periodLattice_basis_balanced_slope D.host.E T.Q.H (T.Q.Dw j) T.Q.l (T.Q.Xo j) T.Q.c S' io' y' _ hφ' C P ϖ hϖ Q hQ`. Take `⟨m, hmfin, hmle, hmeq⟩` from `GlobalTheory.ThetaLow.thetaRule_bounded_below D T.Q.H (T.Q.Dw j) T.Q.l (T.Q.Xo j) T.Q.c nab hn g g' ρ ρ' hH hcop a n`.
+
+Take `⟨hgp, hgp', hne, hMl, hρ, hρ', hMb, hsp, -⟩` from `hH`. Establish `hρs : ρ * star ρ = (g : 𝓞 D.host.E)` using `hρ`. Establish `hρs' : ρ' * star ρ' = (g' : 𝓞 D.host.E)` using `hρ'`. Establish `hV : 0 < vV S.V (g : S.Fr)` using `vV_pos hgp.ne_zero la.2 ho`. Establish `hV'` using `hvv g hgp.ne_zero`.
+
+Establish `hrZ : (0 : ℤ) < r` using `by exact_mod_cast hr`. Establish `hsN : (s : ℝ) ≤ 2 * D.R.f * D.R.m`. Rewrite `hs` using `[hE, hq]`. Conclude with `hs.trans (Nat.mul_le_mul_left _ (Nat.sub_le _ _))` after adjusting the coercions. Take `⟨e₀, he₀⟩ : ∃ e₀ : ℕ, vV S.V (g : S.Fr) = e₀` from `⟨_, (Int.toNat_of_nonneg hV.le).symm⟩`.
+
+Establish `he₀0 : 0 < e₀` using `by omega`. Establish `hA` using `GlobalTheory.LevelPrimePoint.least_value_le GlobalTheory.ChF.hodgeTate_inclusion_chart D.host.E T.Q.H (T.Q.Dw j) T.Q.l (T.Q.Xo j) T.Q.c nab hn hTot S' io' y' C hFT P hTI hy' ϖ hϖ Q hQ _ _ s b hΦ hb1 hb2 g g' hgp hgp' hne hMl ρ ρ' hρs hρs' hMb hsp.1 hsp.2 (not_isUnit_of_vV_ne_zero …`. Establish `hν : (∏ τ : D.host.E →+* ℂ, (io' (embK T.Q.c τ (star ρ * star ρ'))) ^ (∑ i : Fin ((T.Q.Dw j).mult τ), a (τ, i))) = io' (nrm (T.Q.Dw j) T.Q.c a (star ρ * star ρ'))`. Unfold `nrm`. Simplify using `only [map_prod, map_pow]`.
+
+Establish `hν0 : nrm (T.Q.Dw j) T.Q.c a (star ρ * star ρ') ≠ 0`. Use `Finset.prod_ne_zero_iff.2 fun τ _ => pow_ne_zero _ fun h0 => ?_` and prove the remaining obligations. Establish `h1 : (star ρ * star ρ') * (ρ * ρ') = ((g * g' : ℕ) : 𝓞 D.host.E)`. Rewrite using `[Nat.cast_mul, ← hρs, ← hρs']`. Expand and normalize the polynomial expressions, which then agree.
+
+Establish `h2` using `congrArg (embK T.Q.c τ) h1`. Rewrite `h2` using `[map_mul, h0, zero_mul, map_natCast]`. Conclude with `(Nat.cast_ne_zero.2 (Nat.mul_ne_zero hgp.ne_zero hgp'.ne_zero)) h2.symm`. Rewrite `hA` using `[hν, hpq, hV', he₀, nval_of_ne ((map_ne_zero io').2 hν0)]`. Generalize the expression as in `nrm (T.Q.Dw j) T.Q.c a (star ρ * star ρ') = ν at hA hν0 hmeq`.
+
+Generalize the expression as in `hN : ((vV S'.V (io' ν) : ℝ) / ((r * e₀ : ℕ) : ℝ) : ℝ) = N at hA`. Establish `hlt : (⨅ f ∈ thGen (T.Q.Xo j) T.Q.c nab a n, nval S'.V (r * e₀) (evI y' f)) < ((1 + cst * φ / e₀ - N : ℝ) : EReal)`. Rewrite `hA` using `[← EReal.le_sub_iff_add_le (Or.inl (EReal.coe_ne_bot _)) (Or.inl (EReal.coe_ne_top _)), ← EReal.coe_sub]`. Use `hA.trans_lt (EReal.coe_lt_coe_iff.2 (sub_lt_sub_right ?_ _))` and prove the remaining obligations. Establish `hrR : (0 : ℝ) < r` using `by exact_mod_cast hr`.
+
+Establish `heR : (0 : ℝ) < e₀` using `by exact_mod_cast he₀0`. Establish `hgR : (4 : ℝ) * DF (T.Q.Dw j) a + 4 ≤ g` using `by exact_mod_cast hg`. Establish `hd0 : (0 : ℝ) ≤ DF (T.Q.Dw j) a` using `Nat.cast_nonneg _`. Rewrite using `[add_assoc, add_div]`. Use `push_cast`.
+
+Use `add_lt_add_of_lt_of_le ?_ (lattice_terms_le (by positivity) (Nat.cast_nonneg _) (Nat.cast_nonneg _) hsN heR hrR hφ.nonneg (by exact_mod_cast hgp'.pos) hc)` and prove the remaining obligations. Rewrite using `[mul_div_assoc, mul_div_cancel_left₀ _ (mul_pos hrR heR).ne', div_lt_one (by linarith)]`. Combine the linear equalities and inequalities to obtain the conclusion. Simplify using `only [iInf_lt_iff] at hlt`. Take `⟨f, hf, hlt⟩` from `hlt`.
+
+Take `⟨t, ht0, htv, w, hw, hwe⟩` from `GlobalTheory.T.cuspForm_clear_denominators_away_from_place D.host.E T.Q.H (T.Q.Dw j) T.Q.l (T.Q.Xo j) T.Q.c D.R.r (T.U j) (wtZ a n) ⟨f, hcusp a n hDom hLast f hf⟩ m hmfin (hmle f hf) la.1 (-vLa la.1 ν) fun v hv => by`. Establish `h` using `hmle f hf la.1 v hv`. Rewrite `h` using `[hmeq la.1 (Or.inl la.2)]`. Rewrite using `[Int.cast_neg]`. Conclude with `h`.
+
+Establish `ho'` using `hOv la.1 e ho`. Use `(iInf₂_le w hw).trans ?_` and prove the remaining obligations. Use `show nval S.V (vV S.V (g : S.Fr)).toNat (evI y (w : Rul (T.Q.Xo j) T.Q.c)) ≤ _`. Rewrite using `[hwe, evI_smul, he₀, Int.toNat_natCast, ← hnv nab hn a n e₀ t f hf, nval_mul, nval_of_ne ((map_ne_zero io').2 ht0), ho'.2 t, htv, neg_neg, ← ho'.2 ν, hN]`. Use `(add_le_add le_rfl hlt.le).trans (le_of_eq ?_)` and prove the remaining obligations.
+
+Rewrite using `[← EReal.coe_add, ← EReal.coe_add]`. Use `congr 1`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem refExp_le_of_halfSplit (D : D7) (T : Core D) (hM : LawsM T) (j : ℕ) (hj : InR D j)
     (a : (D.host.E →+* ℂ) × ℕ → ℕ) (n : ℕ) (cst : ℝ) (hDom : Dom a n) (hLast : LastPos (T.Q.Dw j) a)
     (hrn : 2 * D.R.r ≤ n) (g g' : ℕ) (ρ ρ' : 𝓞 D.host.E) (hH : HalfSplit T.Q.l g g' ρ ρ')
@@ -160,6 +207,11 @@ theorem refExp_le_of_halfSplit (D : D7) (T : Core D) (hM : LawsM T) (j : ℕ) (h
   push_cast
   ring
 
+/- English proof (translation)
+Introduce `D T hM EX j hj a n cst hDom hLast _ hrn hJ k`. Take `⟨π, π', hH⟩` from `GlobalTheory.SplitLevel.level_halfSplit D T hM EX`. Take `⟨k', ρ, ρ', hk⟩ : ∃ (k' : Fin 2) (ρ ρ' : 𝓞 D.host.E), HalfSplit T.Q.l (D.host.g k) (D.host.g k') ρ ρ'` from `by fin_cases k`. Conclude with `⟨1, π, π', hH⟩`. Conclude with `⟨0, π', π, hH.symm⟩`.
+
+Conclude with `refExp_le_of_halfSplit D T hM j hj a n cst hDom hLast hrn _ _ ρ ρ' hk (Nat.Coprime.mul_left (coprime_level D k) (coprime_level D k')) (hJ k).1 (hJ k').1 (hJ k').2.1 (hJ k').2.2`.
+-/
 theorem refExp_level_le_one : ∀ (D : D7) (T : Core D), LawsM T → ∀ (_ : ErrX D) (j : ℕ), InR D j → ∀ (a : (D.host.E →+* ℂ) × ℕ → ℕ) (n : ℕ) (cst : ℝ), Dom a n → LastPos (T.Q.Dw j) a → ∑ f : Lt1 (T.Q.Dw j), 2 * rk f ≤ n → 2 * D.R.r ≤ n → JetNum D (DF (T.Q.Dw j) a) cst → ∀ k : Fin 2, refExp_vp (T.U j) cst (wtZ a n) (D.host.g k) ≤ ((1 : ℝ) : EReal) := by
   intro D T hM EX j hj a n cst hDom hLast _ hrn hJ k
   obtain ⟨π, π', hH⟩ := GlobalTheory.SplitLevel.level_halfSplit D T hM EX

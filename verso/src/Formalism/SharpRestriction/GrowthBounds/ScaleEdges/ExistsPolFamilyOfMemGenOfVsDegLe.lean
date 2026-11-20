@@ -8,6 +8,11 @@ namespace Formalism.MainNotions.Pf14
 
 open Formalism.MainNotions.G Formalism.MainNotions.SourceCleaning Formalism.MainNotions.G.WittFrameLocaliserOrders Formalism.MainNotions.G.symbolGeneratorData
 
+/- English proof (translation)
+Use extensionality with `m`. Rewrite using `[coeff_sum]`. Simplify using `only [coeff_weightedHomogeneousComponent]`. Rewrite using `[Finset.sum_ite_eq]`. Use `split_ifs with hm`.
+
+Both sides reduce to the same expression. Assume the negation of the conclusion as `hne`. Conclude with `hm (Finset.mem_image_of_mem _ (mem_support_iff.2 (Ne.symm hne)))`.
+-/
 theorem sum_comp_image {R σ M : Type*} [CommSemiring R] [AddCommMonoid M] (wt : σ → M) (φ : MvPolynomial σ R) :
     ∑ D ∈ φ.support.image (Finsupp.weight wt), weightedHomogeneousComponent wt D φ = φ := by
   ext m
@@ -23,6 +28,27 @@ section XX
 
 variable {O : Type} [CommRing O] [IsDomain O] {n' r K : ℕ} [NeZero n'] [NeZero r] [NeZero K] (F : Frames n' r) (j : ℤ)
 
+/- English proof (translation)
+Unfold `XX' at hxi`. Establish `h1` using `(Submodule.mem_inf.1 hxi).1`. Establish `h2 : xi ∈ Submodule.map (plnm F j O K).toLinearMap (Submodule.span O (GenM (O` using `O) (K := K) F j 0 th)) := by`. Rewrite using `[Submodule.map_span]`. Use `Submodule.span_mono ?_ h1` and prove the remaining obligations.
+
+Introduce and unpack `_ ⟨A, G, M, hA, hG, hC, rfl⟩`. Take `⟨A0, rfl⟩` from `exists_rename_eq_of_vars_subset_range A _ (md_f_inj F j r) (by`. Introduce `v hv`. Take `⟨i, hi⟩` from `md_eL_surj F j ((mem_supported.1 hA) hv)`. Conclude with `⟨(i, v.2), by simp [hi]⟩)`.
+
+Take `⟨G0, rfl⟩` from `exists_rename_eq_of_vars_subset_range G _ (md_f_inj F j K) (by`. Introduce `v hv`. Take `⟨i, hi⟩` from `md_eL_surj F j ((mem_supported.1 hG) hv).1`. Conclude with `⟨(i, v.2), by simp [hi]⟩)`. Use `⟨rename (plVar (K := K)) A0 * rename (tanVar (r := r)) G0, ⟨A0, G0, fun i => M (eL F j i), ?_, ?_, ?_, rfl⟩, ?_⟩` and prove the remaining obligations.
+
+Introduce `v hv`. Take `⟨m0, hm0, hvm⟩` from `(mem_vars_iff_mem_support _).1 hv`. Establish `h3 : (eL F j v.1, v.2) ∈ (rename (fun v : Fin (Mj F j) × Fin K => (eL F j v.1, v.2)) G0).vars`. Use `(mem_vars_iff_mem_support _).2 ⟨Finsupp.mapDomain (fun v : Fin (Mj F j) × Fin K => (eL F j v.1, v.2)) m0, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[support_rename_of_injective (md_f_inj F j K)]`.
+
+Conclude with `Finset.mem_image_of_mem _ hm0`. Rewrite using `[Finsupp.mem_support_iff]`. Use `Finsupp.mapDomain_apply (md_f_inj F j K) m0 v` as an intermediate fact. Rewrite using `[this]`. Conclude with `Finsupp.mem_support_iff.1 hvm`.
+
+Conclude with `((mem_supported.1 hG) h3).2`. Introduce `i hi`. Establish `hc` using `hC (eL F j i) (md_eL_mem F j i) hi`. Rewrite `hc` using `[md_lam_tr F j {y | y ≤ eL F j i} {y | y ≤ i} (fun i' => md_eL_le F j i' i), md_lam_tr F j {y | y < eL F j i} {y | y < i} (fun i' => md_eL_lt F j i' i), md_val_tr F j {y | y ≤ eL F j i} {y | y ≤ i} (fun i' => md_eL_le F j i' i), md_val_tr F j {y | y < eL F j i} {y | y < i} (fun i …`. Conclude with `⟨hc.1, hc.2.1⟩`.
+
+Introduce `i hi`. Establish `hc` using `(hC (eL F j i) (md_eL_mem F j i) hi).2.2`. Rewrite `hc` using `[md_val_tr F j {y | y < eL F j i} {y | y < i} (fun i' => md_eL_lt F j i' i)]`. Conclude with `hc`. Use `show plnm F j O K _ = _`.
+
+Unfold `plnm plEmb nmEmb`. Rewrite using `[map_mul, rename_rename, rename_rename, rename_rename, rename_rename]`. Both sides reduce to the same expression. Take `⟨ξ0, hξ0, rfl⟩` from `h2`. Rewrite using `[← sum_comp_image letterWeight ξ0, map_sum]`.
+
+Use `Submodule.sum_mem _ fun D _ => ?_` and prove the remaining obligations. Establish `h5` using `md_comp_gen F j 0 th D hξ0`. Establish `h6` using `Submodule.mem_map_of_mem (f := (plnm F j O K).toLinearMap) h5`. Rewrite `h6` using `[Submodule.map_span]`. Use `Submodule.span_mono ?_ h6` and prove the remaining obligations.
+
+Introduce and unpack `_ ⟨P0, ⟨d', d'', A, G, Mx, a1, a2, _, a4, a5, _, rfl⟩, rfl⟩`. Conclude with `⟨d', d'', A, G, Mx, a1, a2, a4, a5, rfl⟩`.
+-/
 theorem xx_span_MGen0 (th o : ℤ → ℝ) {xi : SegRing O r K} (hxi : xi ∈ XX' O r K F j (fun _ => 0) th o) :
     xi ∈ Submodule.span O (MGen0 F j O K) := by
   unfold XX' at hxi
@@ -87,6 +113,9 @@ variable {p n' r K : ℕ} [Fact p.Prime] [NeZero n'] [NeZero r] [NeZero K] {O : 
 
 local notation "PP" => MvPolynomial (TV n' (r + K)) (KK O)
 
+/- English proof (translation)
+Establish `h1` using `xx_span_MGen0 X.Fr j th o (xx_mono X.Fr j mg th o hmg hx)`. Establish `h2 : x ∈ Submodule.span O (PGen X.Fr j O K)` using `(Submodule.span_le.2 fun P hP => hW1 p n' r K O X j P hP) h1`. Conclude with `SyS_of_span X hW2 j h2`.
+-/
 theorem seg_SyS (hW1 : GeneratorSpanInclusion) (hW2 : GeneratorImageIsSymbol) (j : ℤ) (mg : ℤ → ℤ) (th o : ℤ → ℝ) (hmg : ∀ x, 0 ≤ mg x)
     {x : SegRing O r K} (hx : x ∈ XX' O r K X.Fr j mg th o) :
     MvPolynomial.map (algebraMap O (KK O)) (phSeg O K p X.Fr j x) ∈ X.SyS := by
@@ -95,10 +124,22 @@ theorem seg_SyS (hW1 : GeneratorSpanInclusion) (hW2 : GeneratorImageIsSymbol) (j
     (Submodule.span_le.2 fun P hP => hW1 p n' r K O X j P hP) h1
   exact SyS_of_span X hW2 j h2
 
+/- English proof (translation)
+Introduce `h`. Conclude with `X.S.w_irr.ne_zero ((IsFractionRing.injective O (KK O)) (by rw [h, map_zero]))`.
+-/
 theorem w_ne : algebraMap O (KK O) X.S.w ≠ 0 := by
   intro h
   exact X.S.w_irr.ne_zero ((IsFractionRing.injective O (KK O)) (by rw [h, map_zero]))
 
+/- English proof (translation)
+Set `inv : PP →ₐ[KK O] PP` to `aeval fun v => (if IsNormal r v then C (algebraMap O (KK O) X.S.w)⁻¹ else 1) * newCoord p n' O n' X.g v`. Establish `h : X.sb.comp inv = AlgHom.id (KK O) PP`. Apply `MvPolynomial.algHom_ext` to reduce the goal to its premises. Introduce `v`. Simplify using `only [AlgHom.comp_apply, inv, aeval_X, AlgHom.id_apply]`.
+
+Unfold `Ctx.sb`. Rewrite using `[map_mul, substitute_new_coordinate X.S.w r X.hg X.hH.2.2.2.2 v]`. Unfold `newVar`. Use `split_ifs with hv`. Establish `e2 : subst p n' O X.S.w n' r X.g (C (algebraMap O (KK O) X.S.w)⁻¹) = C (algebraMap O (KK O) X.S.w)⁻¹`.
+
+Rewrite using `[← MvPolynomial.algebraMap_eq, AlgHom.commutes]`. Rewrite using `[e2, ← mul_assoc, ← C_mul, inv_mul_cancel₀ (w_ne X), C_1, one_mul]`. Rewrite using `[map_one, one_mul]`. Conclude with `⟨inv T, by`. Use `congrArg (fun f => f T) h` as an intermediate fact.
+
+Simplify using `using this⟩`.
+-/
 theorem sb_surj (T : PP) : ∃ F0 : PP, X.sb F0 = T := by
   let inv : PP →ₐ[KK O] PP := aeval fun v =>
     (if IsNormal r v then C (algebraMap O (KK O) X.S.w)⁻¹ else 1) * newCoord p n' O n' X.g v
@@ -118,6 +159,11 @@ theorem sb_surj (T : PP) : ∃ F0 : PP, X.sb F0 = T := by
     have := congrArg (fun f => f T) h
     simpa using this⟩
 
+/- English proof (translation)
+Unfold `SPtrue Ctx.fixedSymbolFactor Ctx.DkQ`. Establish `e : DtopProd p n' O X.Fr X.hH.2.2.1 X.g ((2 * X.Q + 3) * c' + (r + K) * X.Q) = DtopProd p n' O X.Fr X.hH.2.2.1 X.g ((2 * X.Q + 3) * c') * DtopProd p n' O X.Fr X.hH.2.2.1 X.g ((r + K) * X.Q)`. Unfold `DtopProd`. Rewrite using `[← Finset.prod_mul_distrib]`. Conclude with `Finset.prod_congr rfl fun s _ => pow_add _ _ _`.
+
+Rewrite using `[e]`. Simplify using `only [map_mul, map_pow, map_prod]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem sb_SPtrue (c' : ℕ) : X.sb (SPtrue p n' O X.Fr X.hH.2.2.1 X.g c' X.Q) = X.fixedSymbolFactor c' * X.DkQ := by
   unfold SPtrue Ctx.fixedSymbolFactor Ctx.DkQ
   have e : DtopProd p n' O X.Fr X.hH.2.2.1 X.g ((2 * X.Q + 3) * c' + (r + K) * X.Q) =
@@ -129,6 +175,11 @@ theorem sb_SPtrue (c' : ℕ) : X.sb (SPtrue p n' O X.Fr X.hH.2.2.1 X.g c' X.Q) =
   simp only [map_mul, map_pow, map_prod]
   ring
 
+/- English proof (translation)
+Rewrite `h`, the goal using `[hasMultideg_iff_weighted_homog]`. Use `weighted_component_substitute_comm X.S.w r X.g d F` as an intermediate fact. Rewrite `this` using `[h.weightedHomogeneousComponent_same]`. Unfold `Ctx.sb`. Rewrite using `[← this]`.
+
+Conclude with `weightedHomogeneousComponent_isWeightedHomogeneous _ _`.
+-/
 theorem sb_multideg {F : PP} {d : Fin n' → ℕ} (h : HasMultideg F d) : HasMultideg (X.sb F) d := by
   rw [hasMultideg_iff_weighted_homog] at h ⊢
   have := weighted_component_substitute_comm X.S.w r X.g d F
@@ -137,6 +188,47 @@ theorem sb_multideg {F : PP} {d : Fin n' → ℕ} (h : HasMultideg F d) : HasMul
   rw [← this]
   exact weightedHomogeneousComponent_isWeightedHomogeneous _ _
 
+/- English proof (translation)
+Take `⟨x, hx, l, hl, hPe, hPd⟩` from `hP`. Use `set Tt : PP := MvPolynomial.map (algebraMap O (KK O)) P * X.sb (SPtrue p n' O X.Fr X.hH.2.2.1 X.g c' X.Q) with hTt`. Establish `hH0 : bc_IT X.Fr (X.fixedSymbolFactor c' * X.DkQ)` using `bc_IT_mul (fixed_symbol_factor_integral X c') (mn_DkQ_IT X)`. Establish `hmdP : HasMultideg (MvPolynomial.map (algebraMap O (KK O)) P) d0`. Unfold `HasMultideg Pol`.
+
+Rewrite using `[mem_restrictSupport_iff]`. Introduce `m hm`. Unfold `RRdeg at hPd`. Rewrite `hPd` using `[mem_restrictSupport_iff]`. Conclude with `hPd (Finset.mem_coe.2 (support_map_subset _ _ (Finset.mem_coe.1 hm)))`.
+
+Establish `hmdT : HasMultideg Tt dTop`. Establish `h1` using `(hasMultideg_iff_weighted_homog _ _).1 hmdP`. Establish `h2` using `(hasMultideg_iff_weighted_homog _ _).1 (sb_multideg X hE)`. Establish `h3` using `h1.mul h2`. Establish `e : d0 + E' = dTop` using `funext hd`.
+
+Rewrite `h3` using `[e]`. Conclude with `(hasMultideg_iff_weighted_homog _ _).2 h3`. Establish `hintT : InWj X.S.w Tt 0`. Rewrite using `[hTt, sb_SPtrue]`. Take `⟨h0, _, _, e0⟩` from `hH0`.
+
+Rewrite using `[e0]`. Conclude with `inWPow_zero_mul (inWj_map _) (inWj_map _)`. Establish `hwtT : ∀ m ∈ Tt.support, Finsupp.weight (normalVariableWeight n' (r + K) r) m ≤ T`. Introduce `m hm`. Rewrite `hm` using `[hTt, sb_SPtrue]`.
+
+Establish `hm'` using `MvPolynomial.support_mul _ _ hm`. Take `⟨m1, h1, m2, h2, rfl⟩` from `Finset.mem_add.1 hm'`. Rewrite using `[map_add, IT_hom hH0 (mem_support_iff.1 h2), add_zero, weight_eq_normal_degree, normDeg_eq_vsDeg]`. Conclude with `hT m1 (support_map_subset _ _ h1)`. Establish `hreal : ∀ o, Realisable p n' X.S.w n' r X.g c' o (weightedHomogeneousComponent (normalVariableWeight n' (r + K) r) o Tt)`.
+
+Introduce `o`. Distinguish the cases in `hP0 : P = 0`. Establish `: Tt = 0` using `by rw [hTt, hP0, map_zero, zero_mul]`. Rewrite using `[this, map_zero]`. Use `⟨0, (inA_iff_inWj0 (w := X.S.w) _).2 (inWj_zero 0), fun d' _ => Submodule.zero_mem _, ?_, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[map_zero, mul_zero, sub_zero]`. Conclude with `inWj_zero _`. Introduce `g' _ _ show InWj X.S.w (subst p n' O X.S.w n' r g' 0) (o + c')`. Rewrite using `[map_zero]`. Conclude with `inWj_zero _`.
+
+Establish `hlT : ∀ v ∈ l.support, v.1 ∈ X.Fr.TT`. Introduce `v hv`. Assume the negation of the conclusion as `hvT`. Establish `hA0 : (∏ j ∈ Finset.range X.Fr.J, phSeg O K p X.Fr (j : ℤ) (x j)) ≠ 0`. Introduce `h0`.
+
+Conclude with `hP0 (by rw [hPe, h0, zero_mul])`. Take `⟨m1, hm1⟩` from `MvPolynomial.support_nonempty.2 hA0`. Establish `hmem : m1 + l ∈ P.support`. Rewrite using `[mem_support_iff, hPe, coeff_mul_monomial, mul_one]`. Conclude with `mem_support_iff.1 hm1`.
+
+Unfold `RRdeg at hPd`. Rewrite `hPd` using `[mem_restrictSupport_iff]`. Establish `h3` using `hPd (Finset.mem_coe.2 hmem) v.1`. Rewrite `h3` using `[hd0 v.1 hvT]`. Establish `h4` using `(Finset.sum_eq_zero_iff.1 h3) v.2 (Finset.mem_univ _)`.
+
+Establish `h5 : l v = 0`. Establish `: (m1 + l) (v.1, v.2) = m1 v + l v` using `rfl`. Use linear arithmetic over natural numbers and integers. Conclude with `(Finsupp.mem_support_iff.1 hv) h5`. Take `⟨om, hom⟩` from `hMon p n' r K O X l hl hlT`.
+
+Use `set Sg : PP := ∏ j ∈ Finset.range X.Fr.J, MvPolynomial.map (algebraMap O (KK O)) (phSeg O K p X.Fr (j : ℤ) (x j)) with hSg`. Establish `hSgS : Sg ∈ X.SyS` using `SyS_prod _ _ fun j _ => seg_SyS X hW1 hW2 (j : ℤ) _ _ _ (hmg _) (hx _)`. Establish `hZ : monomial l 1 * X.DkQ * Sg ∈ X.SyS` using `SyS_mul (SyS_of_Sy hom) hSgS`. Establish `hTe : Tt = (monomial l 1 * X.DkQ * Sg) * X.fixedSymbolFactor c'`. Rewrite using `[hTt, sb_SPtrue, hPe, map_mul, map_monomial, map_one, map_prod, ← hSg]`.
+
+Expand and normalize the polynomial expressions, which then agree. Take `⟨FinalForm, hZo, hZe⟩` from `SyS_compZ (IT_hom (fixed_symbol_factor_integral X c')) hZ o`. Rewrite using `[hTe, hZe]`. Use `core X D c' o _ FinalForm 0 hZo (inWj_zero 0) (by rw [mul_zero, add_zero]) ?_` and prove the remaining obligations. Rewrite using `[← hZe, hom_iff]`.
+
+Conclude with `weightedHomogeneousComponent_isWeightedHomogeneous _ _`. Establish `hpre : ∀ o, ∃ Fo : ↥((Pol (KK O) (ι` using `Fin n') (r + K) dTop).restrictScalars O), X.sb (Fo : PP) = weightedHomogeneousComponent (normalVariableWeight n' (r + K) r) o Tt := by`. Introduce `o`. Take `⟨F0, hF0⟩` from `sb_surj X (weightedHomogeneousComponent (normalVariableWeight n' (r + K) r) o Tt)`. Establish `hmo : IsWeightedHomogeneous (coordinatePositionWeight n' (r + K)) (weightedHomogeneousComponent (normalVariableWeight n' (r + K) r) o Tt) dTop`.
+
+Introduce `m hm`. Rewrite `hm` using `[coeff_weightedHomogeneousComponent]`. Use `split_ifs at hm with h1`. Conclude with `(hasMultideg_iff_weighted_homog _ _).1 hmdT hm`. Conclude with `absurd rfl hm`.
+
+Use `⟨⟨weightedHomogeneousComponent (coordinatePositionWeight n' (r + K)) dTop F0, (hasMultideg_iff_weighted_homog _ _).2 (weightedHomogeneousComponent_isWeightedHomogeneous _ _)⟩, ?_⟩` and prove the remaining obligations. Use `show X.sb (weightedHomogeneousComponent (coordinatePositionWeight n' (r + K)) dTop F0) = _`. Unfold `Ctx.sb at hF0 ⊢`. Rewrite using `[← weighted_component_substitute_comm, hF0, hmo.weightedHomogeneousComponent_same]`. Use `choose Fs hFs using hpre`.
+
+Use `⟨Fs, fun o => ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[hFs o]`. Use `⟨?_, inWj_compN o hintT, hreal o⟩` and prove the remaining obligations. Rewrite using `[hasMultideg_iff_weighted_homog]`. Introduce `m hm`.
+
+Rewrite `hm` using `[coeff_weightedHomogeneousComponent]`. Use `split_ifs at hm with h1`. Conclude with `(hasMultideg_iff_weighted_homog _ _).1 hmdT hm`. Conclude with `absurd rfl hm`. Simplify using `only [hFs]`.
+
+Conclude with `sum_comp_range _ Tt T hwtT`.
+-/
 theorem exists_pol_family_of_mem_gen_of_vsDeg_le (D : Formalism.BasicNotions.D7) (hW1 : GeneratorSpanInclusion) (hW2 : GeneratorImageIsSymbol) (hMon : RestMon) (c' : ℕ)
     (mg : ℤ → ℤ → ℤ) (th o : ℤ → ℤ → ℝ) (hmg : ∀ j x, 0 ≤ mg j x) (d0 E' dTop : Fin n' → ℕ)
     (hd : ∀ s, d0 s + E' s = dTop s) (hd0 : ∀ s, s ∉ X.Fr.TT → d0 s = 0)

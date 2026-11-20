@@ -15,6 +15,11 @@ namespace Formalism.FourierDecayAlt.P
 
 open Formalism.QuantumDeterminants
 
+/- English proof (translation)
+Take `⟨-, -, -, h4⟩` from `hOK`. Establish `hAG : 0 ≤ Formalism.FourierDecayAlt.ThreeDimData.AG k r`. Unfold `Formalism.FourierDecayAlt.ThreeDimData.AG`. Check the signs of the components of the expression. Establish `h0 : 0 ≤ 9 * ((r : ℝ) + 1) * ((2 * r + k + 1 : ℕ) : ℝ) ^ 2` using `by positivity`.
+
+Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem one_add_AG_lt_aOf {k r : ℕ} {h : ℝ} (hOK : Formalism.FourierDecayAlt.ThreeDimData.GapOK k r h) :
     1 + Formalism.FourierDecayAlt.ThreeDimData.AG k r < Formalism.FourierDecayAlt.ThreeDimData.aOf r h := by
   obtain ⟨-, -, -, h4⟩ := hOK
@@ -24,6 +29,9 @@ theorem one_add_AG_lt_aOf {k r : ℕ} {h : ℝ} (hOK : Formalism.FourierDecayAlt
   have h0 : 0 ≤ 9 * ((r : ℝ) + 1) * ((2 * r + k + 1 : ℕ) : ℝ) ^ 2 := by positivity
   linarith
 
+/- English proof (translation)
+The claim follows from `| [], w => rfl | X :: W, w => by simp only [PI.UpqRep.dsigW, Formalism.MainNotions.S.dsigW] rw [dsigW_eq_bessel_integrability σ W w] rfl`.
+-/
 theorem dsigW_eq_bessel_integrability {k r : ℕ} {H : Type} [NormedAddCommGroup H] [InnerProductSpace ℂ H]
     (σ : Formalism.FourierDecayAlt.ThreeDimData.Mx k r → (H →L[ℂ] H)) :
     ∀ (W : List (Formalism.FourierDecayAlt.ThreeDimData.Mx k r)) (w : H), PI.UpqRep.dsigW (k := k) (r := r) σ W w = Formalism.MainNotions.S.dsigW σ W w
@@ -33,6 +41,23 @@ theorem dsigW_eq_bessel_integrability {k r : ℕ} {H : Type} [NormedAddCommGroup
     rw [dsigW_eq_bessel_integrability σ W w]
     rfl
 
+/- English proof (translation)
+Introduce `hIn k r ε lam h H _ _ _ σ w0 Wp _ _ _ _ z c u π μW μN μG νq hS`. Take `⟨hHC, hσ, hgap, hOK, hw0, hz, hT, hc, hπ, hW, hN, hG, hQ⟩` from `hS`. Establish `hσ' : Formalism.MainNotions.S.IsDSHpk k r ε lam σ` using `hσ`. Establish `hw0' : Formalism.MainNotions.S.IsLowUnitH k r ε lam σ w0` using `hw0`. Establish `: SigmaFinite μN` using `hN.1`.
+
+Use `set a := Formalism.FourierDecayAlt.ThreeDimData.aOf r h with ha_def`. Establish `ha1 : 1 + Formalism.FourierDecayAlt.ThreeDimData.AG k r < a` using `one_add_AG_lt_aOf hOK`. Establish `hAG0 : 0 ≤ Formalism.FourierDecayAlt.ThreeDimData.AG k r` using `by unfold Formalism.FourierDecayAlt.ThreeDimData.AG; positivity`. Establish `ha : 1 ≤ a` using `by linarith`. Establish `hM` using `Formalism.MainNotions.MeasFS.measF_side hz hT hπ hW hN`.
+
+Establish `hgr0` using `hGS k r z μW μN μG νq (a - 1) hz hT hW hN hG hQ (by linarith)`. Establish `hgr : Integrable (fun p : Mt k r × Mt k r => Formalism.FourierDecayAlt.B.gN (Matrix.of p.1 * Matrix.of p.2) ^ (1 - a)) (μW.prod μN)`. Simplify `hgr0` using `only [neg_sub]`. Establish `hDI : PI.WBL.Cv.BeC.DecInf σ a`. Introduce `v0 hv0`.
+
+Take `⟨C, Ws, hWs, hb⟩` from `hIn.2.1 k r ε lam h H σ hHC hσ hgap hOK v0 hv0`. Use `⟨C, Ws, hWs, fun w hw x hx => ?_⟩` and prove the remaining obligations. Establish `e` using `hb w hw x hx`. Simplify using `only [dsigW_eq_bessel_integrability] at e`. Conclude with `e`.
+
+Establish `hB` using `PI.WBL.Cv.BeC.beConv_of_low z c π μW μN σ a (PI.WBL.Cv.grpAll k r z) (PI.WBL.Cv.sigAll k r ε lam H σ hσ') (PI.WBL.Cv.piAll k r z u Wp π hz hT hπ) (PI.WBL.Cv.psiAll k r z c hz) hM (fun w => Formalism.MainNotions.LeviCoordinates.discrete_series_continuousOn hσ' w) ha hgr hDI hw0'`. Establish `hw0s : w0 ∈ PI.UpqRep.smoothVecs (k` using `k) (r := r) σ := hIn.2.2.1 k r ε lam H σ hHC hσ w0 (Formalism.MainNotions.DoubleDerivativeSmoothness.kfinHpk_of_lowUnitH hw0')`. Establish `hDDs : ∀ v ∈ Formalism.FourierDecayAlt.ThreeDimData.DDsp σ w0, v ∈ PI.UpqRep.smoothVecs (k` using `k) (r := r) σ := by`. Establish `hle : Formalism.FourierDecayAlt.ThreeDimData.DDsp σ w0 ≤ Formalism.MainNotions.DoubleDerivativeSmoothness.smoothSub σ`. Use `Submodule.span_le.2 ?_` and prove the remaining obligations.
+
+Introduce and unpack `_ ⟨g, hg, rfl⟩`. Conclude with `Formalism.MainNotions.LeviCoordinates.smooth_vectors_translate_unitary (fun _ ha _ hb => Formalism.MainNotions.LeviCoordinates.discrete_series_map_mul hσ' ha hb) hw0s hg`. Introduce `v hv`. Conclude with `hle hv`. Establish `hAs : ∀ v, Formalism.FourierDecayAlt.ThreeDimData.IsAdm σ w0 v → v ∈ PI.UpqRep.smoothVecs (k` using `k) (r := r) σ := by`.
+
+Introduce and unpack `v (hv | hv)`. Conclude with `hDDs v hv`. Conclude with `hIn.2.2.1 k r ε lam H σ hHC hσ v hv`. Take `⟨h1, -, h3, -, h5, h6⟩` from `hB`. Use `⟨fun x hx v hv => h1 x hx v hv, fun v hv g hg m hm x hx => ?_, fun x hx v hv => h6 x hx v hv, fun x hx v hv => ⟨h1 v (hAs v hv) x (Or.inl hx), h5 x (Or.inl hx) v (hAs v hv)⟩⟩` and prove the remaining obligations.
+
+Establish `e` using `h3 g hg m hm x hx v hv`. Rewrite `e` using `[ContinuousLinearMap.smul_comp]`. Conclude with `e`.
+-/
 theorem bessel_integral_convergence_of_growth (hGS : Formalism.FourierDecayAlt.ThreeDimData.GrowthS) : Formalism.FourierDecayAlt.ThreeDimData.BeConv := by
   intro hIn k r ε lam h H _ _ _ σ w0 Wp _ _ _ _ z c u π μW μN μG νq hS
   obtain ⟨hHC, hσ, hgap, hOK, hw0, hz, hT, hc, hπ, hW, hN, hG, hQ⟩ := hS

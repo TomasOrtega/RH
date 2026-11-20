@@ -19,6 +19,13 @@ attribute [local instance] Over.cartesianMonoidalCategory
 
 namespace GlobalTheory.GenericDim
 
+/- English proof (translation)
+Introduce `R _ _ G _ _ _ g hg`. Establish `hdense` using `(ReciprocityTheory.ChartRestriction.G.DVR.isDominant_jK (V := R)).denseRange`. Establish `hloc : ∀ x : G.left, ∃ W : G.left.Opens, x ∈ W ∧ SmoothOfRelativeDimension g (W.ι ≫ G.hom)`. Introduce `x`. Take `⟨n, W, hxW, hW⟩` from `ReciprocityTheory.ChartRestriction.G.H1.exists_dim G.hom x`.
+
+Use `⟨W, hxW, ?_⟩` and prove the remaining obligations. Establish `hopen : IsOpen (G.hom '' (W : Set G.left))` using `G.hom.isOpenMap _ W.isOpen`. Take `⟨y, w, hwW, hwy⟩` from `hdense.exists_mem_open hopen ⟨G.hom x, x, hxW, rfl⟩`. Take `⟨z, hz, -⟩` from `Scheme.Pullback.exists_preimage_pullback (f := G.hom) (g := jK R) w y hwy`. Establish `hzW : pullback.fst G.hom (jK R) z ∈ W` using `by rw [hz]; exact hwW`.
+
+Establish `hng : n = g` using `ReciprocityTheory.ChartRestriction.G.H1.dim_base (IsPullback.of_hasPullback G.hom (jK R)) hW hg z hzW`. Conclude with `hng ▸ hW`. Establish `i1 : IsZariskiLocalAtSource (@SmoothOfRelativeDimension g)` using `HasRingHomProperty.instIsZariskiLocalAtSource (P := @SmoothOfRelativeDimension g)`. Use `choose W hxW hW using hloc`. Conclude with `IsZariskiLocalAtSource.of_iSup_eq_top (P := @SmoothOfRelativeDimension g) W (eq_top_iff.2 fun x _ => TopologicalSpace.Opens.mem_iSup.2 ⟨x, hxW x⟩) hW`.
+-/
 theorem smoothOfRelativeDimension_of_generic : ∀ (R : Type) [CommRing R] [IsDomain R] (G : Over (Spec (CommRingCat.of R))) [GrpObj G] [Smooth G.hom] [GeometricallyConnected G.hom] (g : ℕ), SmoothOfRelativeDimension g (pullback.snd G.hom (jK R)) → SmoothOfRelativeDimension g G.hom := by
   intro R _ _ G _ _ _ g hg
   have hdense := (ReciprocityTheory.ChartRestriction.G.DVR.isDominant_jK (V := R)).denseRange

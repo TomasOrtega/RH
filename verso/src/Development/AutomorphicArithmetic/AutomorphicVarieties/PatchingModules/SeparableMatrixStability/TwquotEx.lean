@@ -6,6 +6,11 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.PatchingModules.Se
 import Development.AutomorphicArithmetic.AutomorphicVarieties.PatchingModules.SeparableMatrixStability.PlProps
 open IsLocalRing Matrix Filter UpperTheory.V.Alg UpperTheory.V.W UpperTheory.V.AlgebraTools UpperTheory.V.Pa
 
+/- English proof (translation)
+Establish `e : (H.toSubgroup.map g.p).comap g.p = H.toSubgroup` using `Subgroup.comap_map_eq_self hk`. Establish `hq : Topology.IsQuotientMap g.p` using `g.cont.isClosedMap.isQuotientMap g.cont g.surj`. Establish `ho : IsOpen (H.toSubgroup.map g.p : Set G'.Γ)`. Rewrite using `[← hq.isOpen_preimage, ← Subgroup.coe_comap, e]`. Conclude with `H.toOpenSubgroup.isOpen`.
+
+Conclude with `⟨{ toSubgroup := H.toSubgroup.map g.p, isOpen' := ho, isNormal' := H.isNormal'.map _ g.surj }, e⟩`.
+-/
 private theorem exists_desc {l : ℕ} [Fact l.Prime] {L : Loc} {G G' : Glob l L} (g : G.Hom G')
     (H : OpenNormalSubgroup G.Γ) (hk : g.p.ker ≤ H.toSubgroup) :
     ∃ H' : OpenNormalSubgroup G'.Γ, H'.toSubgroup.comap g.p = H.toSubgroup := by
@@ -16,6 +21,31 @@ private theorem exists_desc {l : ℕ} [Fact l.Prime] {L : Loc} {G G' : Glob l L}
     exact H.toOpenSubgroup.isOpen
   exact ⟨{ toSubgroup := H.toSubgroup.map g.p, isOpen' := ho, isNormal' := H.isNormal'.map _ g.surj }, e⟩
 
+/- English proof (translation)
+Introduce `l _ L G0 T`. Use `haveI hn : T.H.toSubgroup.Normal := T.H.isNormal'`. Establish `ho : IsOpen (T.H.toSubgroup : Set G0.Γ)` using `T.H.toOpenSubgroup.isOpen`. Establish `hoN : ∀ N, IsOpen (T.H.toSubgroup.comap (T.h N).p : Set (T.GN N).Γ)` using `fun N => ho.preimage (T.h N).cont`. Take `⟨G0', g0, ker0⟩` from `quot_ex l L G0 T.H.toSubgroup ho (fun a ha => T.H_η a ha) (fun a ha => T.H_ε a ha)`.
+
+Establish `hN : ∀ N, ∃ (G' : Glob l L) (g : (T.GN N).Hom G'), g.p.ker = PL l (T.H.toSubgroup.comap (T.h N).p)` using `fun N => quot_ex l L (T.GN N) _ (hoN N) (fun a ha => show (T.GN N).η a = 1 by rw [← (T.h N).η]; exact T.H_η _ ha) (fun a ha => by rw [← (T.h N).ε]; exact T.H_ε _ ha)`. Use `choose GN' gN kerN using hN`. Establish `hmap : ∀ N, (gN N).p.ker.map (T.h N).p = g0.p.ker` using `fun N => by`. Rewrite using `[kerN, ker0]`. Conclude with `pl_map l _ _ (T.h N).p T.H.toSubgroup ho (T.h N).cont (T.h N).surj`.
+
+Establish `hd : ∀ N, ∃ h' : (GN' N).Hom G0', ∀ x, h'.p ((gN N).p x) = g0.p ((T.h N).p x)` using `fun N => hom_desc l L _ _ _ _ (gN N) g0 (T.h N) fun a ha => by`. Establish `: (T.h N).p a ∈ g0.p.ker` using `hmap N ▸ Subgroup.mem_map_of_mem _ ha`. Conclude with `this`. Use `choose h' comm using hd`. Take `⟨H', hH'⟩` from `exists_desc g0 T.H (ker0 ▸ (pl_props l G0.Γ T.H.toSubgroup ho).2.2.1)`.
+
+Use `haveI hn' : H'.toSubgroup.Normal := H'.isNormal'`. Establish `ho' : IsOpen (H'.toSubgroup : Set G0'.Γ)` using `H'.toOpenSubgroup.isOpen`. Establish `hiff : ∀ a, g0.p a ∈ H' ↔ a ∈ T.H` using `fun a => by show a ∈ H'.toSubgroup.comap g0.p ↔ a ∈ T.H.toSubgroup`. Rewrite using `[hH']`. Establish `hcN : ∀ N, (H'.toSubgroup.comap (h' N).p).comap (gN N).p = T.H.toSubgroup.comap (T.h N).p` using `fun N => by`.
+
+Use extensionality with `a`. Use `show (h' N).p ((gN N).p a) ∈ H' ↔ (T.h N).p a ∈ T.H`. Rewrite using `[comm, hiff]`. Use `⟨{ G0' := G0', g0 := g0, ker0 := ker0, GN' := GN', gN := gN, kerN := kerN, h' := h', comm := comm H' := H', H'_iff := hiff, ph_lim := fun V j => ?_, ker_le := fun N => ?_, fin0 := ?_ finN := fun N => ?_, pl0 := ?_, plN := fun N => ?_ }⟩` and prove the remaining obligations. Set `V' : OpenNormalSubgroup G0.Γ` to `{ toOpenSubgroup := V.toOpenSubgroup.comap g0.p g0.cont isNormal' := Subgroup.Normal.comap V.isNormal' g0.p }`.
+
+Use `T.ph_lim V' j fun a ha => ?_` and prove the remaining obligations. Rewrite `ha` using `[← ker0, MonoidHom.mem_ker]`. Use `show g0.p a ∈ V.toSubgroup`. Rewrite using `[ha]`. Conclude with `one_mem _`.
+
+Introduce `x hx`. Take `⟨a, rfl⟩` from `(gN N).surj x`. Establish `h1 : (T.h N).p a ∈ (gN N).p.ker.map (T.h N).p`. Rewrite using `[hmap, MonoidHom.mem_ker, ← comm]`. Conclude with `hx`.
+
+Take `⟨b, hb, hba⟩` from `h1`. Establish `h2 : a * b⁻¹ ∈ (T.h N).p.ker`. Rewrite using `[MonoidHom.mem_ker, map_mul, map_inv, hba, mul_inv_cancel]`. Establish `h3 : (gN N).p a = (gN N).p (a * b⁻¹)`. Rewrite using `[map_mul, map_inv, MonoidHom.mem_ker.1 hb, inv_one, mul_one]`.
+
+Rewrite using `[h3]`. Establish `h4 : (Subgroup.normalClosure (Set.range fun j => (T.ta N j : (T.GN N).Γ)) ⊔ PL l (T.H.toSubgroup.comap (T.h N).p)).topologicalClosure ≤ (Subgroup.normalClosure (Set.range fun j => (gN N).p (T.ta N j))).topologicalClosure.comap (gN N).p`. Use `Subgroup.topologicalClosure_minimal _ (sup_le ?_ ?_) ((Subgroup.isClosed_topologicalClosure _).preimage (gN N).cont)` and prove the remaining obligations. Use `le_trans ?_ (Subgroup.comap_mono (Subgroup.le_topologicalClosure _))` and prove the remaining obligations. Use `Subgroup.normalClosure_le_normal ?_` and prove the remaining obligations.
+
+Introduce and unpack `_ ⟨j, rfl⟩`. Conclude with `Subgroup.subset_normalClosure ⟨j, rfl⟩`. Rewrite using `[← kerN]`. Conclude with `MonoidHom.ker_le_comap _ _`. Conclude with `h4 (T.ker_le N h2)`.
+
+Conclude with `(homl_desc l _ _ g0.p H'.toSubgroup g0.cont g0.surj (hH' ▸ T.fin0)).1`. Use `homl_desc l _ _ (gN N).p (H'.toSubgroup.comap (h' N).p) (gN N).cont (gN N).surj (by rw [hcN]; exact (T.finN N).1)` as an intermediate fact. Rewrite `this` using `[hcN]`. Conclude with `⟨this.1, this.2.trans (T.finN N).2⟩`. Rewrite using `[← pl_map l _ _ g0.p H'.toSubgroup ho' g0.cont g0.surj, hH', ← ker0, Subgroup.map_eq_bot_iff]`.
+
+Rewrite using `[← pl_map l _ _ (gN N).p (H'.toSubgroup.comap (h' N).p) (ho'.preimage (h' N).cont) (gN N).cont (gN N).surj, hcN, ← kerN, Subgroup.map_eq_bot_iff]`.
+-/
 theorem UpperTheory.V.Pa.twquot_ex :
     ∀ (l : ℕ) [Fact l.Prime] (L : Loc) (G0 : Glob l L) (T : TWGrp G0), Nonempty (TWQuot T) := by
   intro l _ L G0 T

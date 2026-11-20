@@ -22,6 +22,13 @@ open ReciprocityTheory.AnForm (levi)
 
 namespace GlobalTheory.CompanionTheory.Ar.Cusp.RootNef
 
+/- English proof (translation)
+Introduce `W h1 h2 h3 h4`. Take `⟨d, -, he⟩` from `LevelTowerAlt.geoNum_one_lin W`. Establish `h5` using `h _ (PB.prime_charOf_of_ne_zero h1.1 h3) W ⟨h1, h2, rfl, h4⟩`. Unfold `Top.RootModel.curveDeg at h5`. Rewrite `h5` using `[Fintype.sum_option]`.
+
+Simplify using `only [Top.RootModel.coef, Top.RootModel.line, zero_div, zero_mul, zero_add, neg_neg, M.x_deg, he] at h5`. Rewrite using `[he]`. Establish `: ∑ k, (∑ r, n r • M.xdeg r) k * d k = ∑ r, n r * ∑ k, M.xdeg r k * d k`. Simplify using `only [Finset.sum_apply, Pi.smul_apply, smul_eq_mul, Finset.sum_mul, Finset.mul_sum]`. Rewrite using `[Finset.sum_comm]`.
+
+Simplify using `only [_root_.mul_assoc]`. Rewrite using `[this]`. Conclude with `h5` after adjusting the coercions.
+-/
 theorem nefOnFibres_of_wt {Ψ : Type} [Fintype Ψ] {N : ℕ} (M : Top.RootModel Ψ N) (n : Ψ × Fin N → ℤ)
     (h : ∀ p : ℕ, p.Prime → M.NefAt p (fun τ i => -(n (τ, i) : ℝ)) 0) :
     NefOnFibres (mCoordIdeal M.y) (∑ r, n r • M.xdeg r) := by
@@ -39,6 +46,9 @@ theorem nefOnFibres_of_wt {Ψ : Type} [Fintype Ψ] {N : ℕ} (M : Top.RootModel 
   rw [this]
   exact_mod_cast h5
 
+/- English proof (translation)
+Introduce `τ`. Establish `hn : ‖mu‖ ≤ 1` using `(pi_norm_le_iff_of_nonneg zero_le_one).2 fun τ => (pi_norm_le_iff_of_nonneg zero_le_one).2 fun i => h1 τ i`. Establish `hb' : 4 * (Fintype.card Ψ : ℝ) + 2 ≤ b` using `by exact_mod_cast hb`. Rewrite using `[h2]`. Use polynomial arithmetic with `[Nat.cast_nonneg (α := ℝ) (Fintype.card Ψ)]`.
+-/
 theorem nefThreshold_of_gap_one {Ψ : Type} [Fintype Ψ] {N j : ℕ} (mu : Top.Wt Ψ N) (b : ℕ) (hb : 4 * Fintype.card Ψ + 2 ≤ b)
     (h1 : ∀ τ i, |mu τ i| ≤ 1) (h2 : ∀ τ, Top.gap j mu τ = 1) : Top.NefThreshold j b mu := by
   intro τ
@@ -51,6 +61,23 @@ theorem nefThreshold_of_gap_one {Ψ : Type} [Fintype Ψ] {N j : ℕ} (mu : Top.W
 end GlobalTheory.CompanionTheory.Ar.Cusp.RootNef
 
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Introduce `hG E _ _ _ H D Xo l c Y S _ M 𝔐 Fl e hY hp hq hS hS' hR`. Take `⟨Yl, hg, hYl, -, -, hdom⟩` from `hY`. Establish `key : ∀ mu : Top.Wt (CMType H) (D.p + D.q), Top.Dominant mu → (∀ τ i, |mu τ i| ≤ 1) → (∀ τ, Top.gap D.p mu τ = 1) → ∀ r : ℕ, r.Prime → M.NefAt r mu 0`. Introduce `mu hd h1 h2 r hr`. Distinguish the cases in `hrS : r ∈ S`.
+
+Conclude with `GlobalTheory.T.root_lines_weight_bound_of_free hG.2.2.2.2.2.2.1 E H D l (Xo l) c _ _ Y S M 𝔐 Fl e r hrS (hS r hrS) hR mu hd`. Take `⟨a1, a2, a3⟩` from `hS' r hr hrS`. Conclude with `GlobalTheory.T.hodge_cpt_global_nef_bound E H D Xo Yl (fun p W hp hW i => ⟨((hYl p W hp hW).2 i).1, ((hYl p W hp hW).2 i).2.1⟩) l c hg Y hdom hp hq S M 𝔐 Fl e hR r hr a3 hrS a1 mu hd (GlobalTheory.CompanionTheory.Ar.Cusp.RootNef.nefThreshold_of_gap_one mu r a2 h1 h2)`. Establish `g1 : D.p - 1 < D.p + D.q` using `by omega`. Establish `g2 : D.p < D.p + D.q` using `by omega`.
+
+Establish `g3 : ¬ D.p ≤ D.p - 1` using `by omega`. Establish `g4 : D.p - 1 < D.p` using `by omega`. Prove the components needed by the constructor for the conclusion. Use `GlobalTheory.CompanionTheory.Ar.Cusp.RootNef.nefOnFibres_of_wt M (fun r => if D.p ≤ (r.2 : ℕ) then 1 else 0) (key _ ?_ ?_ ?_)` as an intermediate fact. Use `this using 1` and compare the differences between its conclusion and the goal.
+
+Rewrite using `[Fintype.sum_prod_type]`. Simplify using `only [Finset.sum_filter, ite_smul, one_smul, zero_smul]`. Introduce `τ a b hab`. Establish `: (a : ℕ) ≤ b` using `hab`. Simplify using `only`.
+
+Apply the tactic sequence `split_ifs <;> first | omega | norm_num`. Apply the tactic sequence `intro τ i dsimp only split_ifs <;> norm_num`. Introduce `τ`. Simplify using `[Top.gap, Top.ent, g1, g2, g3]`. Use `GlobalTheory.CompanionTheory.Ar.Cusp.RootNef.nefOnFibres_of_wt M (fun r => if (r.2 : ℕ) < D.p then -1 else 0) (key _ ?_ ?_ ?_)` as an intermediate fact.
+
+Use `this using 1` and compare the differences between its conclusion and the goal. Rewrite using `[Fintype.sum_prod_type]`. Simplify using `only [Finset.sum_filter, ite_smul, neg_smul, one_smul, zero_smul, ← Finset.sum_neg_distrib]`. Use `Finset.sum_congr rfl fun τ _ => Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Apply the tactic sequence `split_ifs <;> simp`.
+
+Introduce `τ a b hab`. Establish `: (a : ℕ) ≤ b` using `hab`. Simplify using `only`. Apply the tactic sequence `split_ifs <;> first | omega | norm_num`. Apply the tactic sequence `intro τ i dsimp only split_ifs <;> norm_num`.
+
+Introduce `τ`. Simplify using `[Top.gap, Top.ent, g1, g2, g4]`.
+-/
 theorem _root_.GlobalTheory.CompanionTheory.Relay.nefOnFibres_block_xdeg_sums_of_rootLines : Top.Given → ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (D : Datum H) (Xo : ∀ l : Tor.Level H, Moduli D l) (l : Tor.Level H) (c : Coeff l) (Y : Model (Xo l) c (algebraMap (𝓞 c.F) c.F)) (S : Finset ℕ) [Fintype (CMType H)] (M : Top.RootModel (CMType H) (D.p + D.q)) (𝔐 : HodgeCpt Y S M.y) (Fl : 𝔐.Flag) (e : CMType H × Fin (D.p + D.q) → M.Ω), Top.IsGlobal Xo l c Y → 1 ≤ D.p → 1 ≤ D.q → (∀ p ∈ S, HT.HTFree 𝔐 p) → (∀ p : ℕ, p.Prime → p ∉ S → ¬ (p : ℤ) ∣ discr E ∧ 4 * Fintype.card (CMType H) + 2 ≤ p ∧ 2 < p) → Fl.RootLines M.xdeg e → NefOnFibres (mCoordIdeal M.y) (∑ τ, ∑ i ∈ Finset.univ.filter (fun i : Fin (D.p + D.q) => D.p ≤ (i : ℕ)), M.xdeg (τ, i)) ∧ NefOnFibres (mCoordIdeal M.y) (-∑ τ, ∑ i ∈ Finset.univ.filter (fun i : Fin (D.p + D.q) => (i : ℕ) < D.p), M.xdeg (τ, i)) := by
   intro hG E _ _ _ H D Xo l c Y S _ M 𝔐 Fl e hY hp hq hS hS' hR
   obtain ⟨Yl, hg, hYl, -, -, hdom⟩ := hY

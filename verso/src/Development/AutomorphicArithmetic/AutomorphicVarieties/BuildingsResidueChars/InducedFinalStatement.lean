@@ -7,13 +7,24 @@ section
 
 variable {R R' : Type} [CommRing R] [CommRing R'] (j : R →+* R')
 
+/- English proof (translation)
+Use extensionality with `a b`. Simplify using `only [adj_apply, Matrix.map_apply, map_zsmul]`.
+-/
 private theorem fin_adj (X : M4 R) : adj (X.map j) = (adj X).map j := by
   ext a b
   simp only [adj_apply, Matrix.map_apply, map_zsmul]
 
+/- English proof (translation)
+Rewrite using `[fin_adj, Matrix.map_mul, Matrix.map_mul]`.
+-/
 private theorem fin_conj (X Y : M4 R) : adj (X.map j) * Y.map j * X.map j = (adj X * Y * X).map j := by
   rw [fin_adj, Matrix.map_mul, Matrix.map_mul]
 
+/- English proof (translation)
+Unfold `IsGSp at h ⊢`. Rewrite `h` using `[fin_adj, ← Matrix.map_mul]`. Use extensionality with `a b`. Apply `hj` to reduce the goal to its premises. Establish `h1` using `congrFun (congrFun h a) b`.
+
+Rewrite `h1` using `[Matrix.map_apply]`. Rewrite using `[h1]`. Simplify using `only [Matrix.smul_apply, Matrix.one_apply, smul_eq_mul, map_mul]`. Apply the tactic sequence `split_ifs <;> simp`.
+-/
 private theorem fin_gsp (hj : Function.Injective j) (ν : R) (X : M4 R) (h : IsGSp (j ν) (X.map j)) : IsGSp ν X := by
   unfold IsGSp at h ⊢
   rw [fin_adj, ← Matrix.map_mul] at h
@@ -25,19 +36,49 @@ private theorem fin_gsp (hj : Function.Injective j) (ν : R) (X : M4 R) (h : IsG
   simp only [Matrix.smul_apply, Matrix.one_apply, smul_eq_mul, map_mul]
   split_ifs <;> simp
 
+/- English proof (translation)
+The claim follows from `congrFun (congrFun (fin_conj j (P.n v) (P.r s)) i) i`.
+-/
 private theorem fin_psi {ι Γ : Type} [Group Γ] (P : PD ι Γ R) (v : ι) (i : Fin 4) (s : Γ) :
     (P.map j).ψ v i s = j (P.ψ v i s) :=
   congrFun (congrFun (fin_conj j (P.n v) (P.r s)) i) i
 
 end
 
+/- English proof (translation)
+Use `revert i j`. Evaluate the decidable proposition.
+-/
 private theorem fin_q (i j : Fin 4) (h : i ≠ j) (h' : wt i j ∉ qQ) : i < j ∨ (i = 2 ∧ j = 1) := by
   revert i j; decide
 
+/- English proof (translation)
+Simplify using `only [nP, vV, Finset.mem_insert, Finset.mem_singleton] at h ⊢`. The claim follows by propositional logic.
+-/
 private theorem fin_v (w : ℤ × ℤ) (h : w ∉ nP) : w ∉ vV := by
   simp only [nP, vV, Finset.mem_insert, Finset.mem_singleton] at h ⊢
   tauto
 
+/- English proof (translation)
+Introduce `Ω _ _ _ l _ c D T ι P hG hL hS`. Use `haveI : IsGalois T.F Ω := IsAlgClosure.isGalois T.F Ω`. Take `⟨c₁, h, Q, hQ, hc⟩` from `(UpperTheory.automorphic_forms_descent_to_smaller_level l c).2 T.ι (G T.F Ω) P hG.cont hG.int fun v => (hL.low v).2.1`. Substitute `hQ` using the available equality. Establish `hinj : Function.Injective (algebraMap c₁.O (Qbar l))` using `Subtype.val_injective`.
+
+Establish `hz : ∀ x : c₁.O, residue c₁.O x = 0 ↔ ‖algebraMap c₁.O (Qbar l) x‖ < 1` using `fun x => (residue_eq_zero_iff x).trans ((UpperTheory.automorphic_forms_descent_to_smaller_level l c₁).1 x).2`. Establish `hne : ∀ x : c₁.O, ‖algebraMap c₁.O (Qbar l) x‖ = 1 → residue c₁.O x ≠ 0` using `fun x hx h0 => absurd ((hz x).1 h0) (by rw [hx]; exact lt_irrefl _)`. Establish `heq : ∀ x y : c₁.O, ‖algebraMap c₁.O (Qbar l) x - algebraMap c₁.O (Qbar l) y‖ < 1 → residue c₁.O x = residue c₁.O y` using `fun x y hxy => by`. Rewrite using `[← sub_eq_zero, ← map_sub, hz, map_sub]`. Conclude with `hxy`.
+
+Establish `h0 : ∀ x : c₁.O, algebraMap c₁.O (Qbar l) x = 0 → x = 0` using `fun x hx => hinj (by rw [hx, map_zero])`. Establish `hV : Supp vV (Q.map (residue c₁.O)).r` using `fun g i j hij hw => (hz _).2 (hG.supp g i j hij hw)`. Establish `hq : ∀ v, SuppM qQ ((Q.map (residue c₁.O)).n v)` using `fun v i j hij hw => by`. Break down `fin_q i j hij hw with hlt | ⟨rfl, rfl⟩` into its components or cases. Use `(hz _).2 ?_` and prove the remaining obligations.
+
+Establish `h1 : algebraMap c₁.O (Qbar l) (Q.n v i j) = 0` using `(hL.low v).1.2.2 i j hlt`. Rewrite using `[h1, norm_zero]`. Conclude with `one_pos`. Conclude with `(hz _).2 (hL.low v).2.2.1`. Use `⟨c₁, h, Q, ⟨⟨?_, ?_, ?_, ?_, ?_, ?_⟩, hc, ⟨?_, ?_, Or.inl ⟨?_, hq⟩⟩, hS⟩, ⟨hV, fun v => ⟨hq v, hne _ (hL.low v).2.2.2⟩⟩, ?_⟩` and prove the remaining obligations.
+
+Conclude with `fun g => fin_gsp _ hinj _ _ (hG.mult g)`. Introduce `g hg`. Use extensionality with `i j`. Establish `h1` using `congrFun (congrFun (hG.kill g hg) i) j`. Establish `h2 : algebraMap c₁.O (Qbar l) ((1 : M4 c₁.O) i j) = (1 : M4 (Qbar l)) i j`.
+
+Simplify using `only [Matrix.one_apply]`. Apply the tactic sequence `split_ifs <;> simp`. Conclude with `h1.trans h2.symm`. Conclude with `fun i j hij => h0 _ (hG.nrm hij)`. Introduce `v`.
+
+Take `⟨a1, a2, a3⟩` from `(hL.low v).1`. Use `⟨fin_gsp _ hinj _ _ (by rw [map_one]; exact a1), fun i => hinj (by rw [map_one]; exact a2 i), fun i j hij => h0 _ (a3 i j hij)⟩` and prove the remaining obligations. Introduce `v s hs i j hij`. Use `h0 _ ?_` and prove the remaining obligations. Establish `h1` using `hL.flag v s hs i j hij`.
+
+Conclude with `(congrFun (congrFun (fin_conj (algebraMap c₁.O (Qbar l)) (Q.n v) (Q.r s)) i) j).symm.trans h1`. Introduce `v s hs i`. Use `hinj ?_` and prove the remaining obligations. Conclude with `((fin_psi (algebraMap c₁.O (Qbar l)) Q v i s).symm.trans (hL.mu v s hs i)).trans (map_one _).symm`. Conclude with `fun g i => heq _ _ (hG.diag g i)`.
+
+Introduce `v s hs i`. Use `(fin_psi (residue c₁.O) Q v i s).trans (heq _ _ ?_)` and prove the remaining obligations. Establish `h1` using `hL.char v s hs i`. Rewrite `h1` using `[fin_psi (algebraMap c₁.O (Qbar l)) Q v i s]`. Conclude with `h1`.
+
+Conclude with `fun g i j hij hw => hV g i j hij (fin_v _ hw)`. Break down `hG.ent with ⟨g, hg⟩ | ⟨⟨g, hg⟩, g', hg'⟩` into its components or cases. Conclude with `Or.inl ⟨g, 1, 0, by decide, hne _ hg⟩`. Conclude with `Or.inr ⟨⟨g, 1, 2, by decide, hne _ hg⟩, g', 3, 0, by decide, hne _ hg'⟩`.
+-/
 theorem UpperTheory.induced_final_statement :
     UpperTheory.V.Sd.S2.Final := by
   intro Ω _ _ _ l _ c D T ι P hG hL hS

@@ -19,10 +19,16 @@ noncomputable section
 
 namespace GlobalTheory.SqTop.CondExpo
 
+/- English proof (translation)
+Introduce `x hx hle` and use `h x hx (hle.trans (WithZero.exp_le_exp.2 (neg_le_neg (Nat.cast_le.2 hab))))`.
+-/
 theorem levelLe_of_le {K : Type} [Field K] [NumberField K] {χ : Formalism.L2.Host.HChar K} {v : HeightOneSpectrum (𝓞 K)}
     {a b : ℕ} (h : χ.LevelLe v a) (hab : a ≤ b) : χ.LevelLe v b :=
   fun x hx hle => h x hx (hle.trans (WithZero.exp_le_exp.2 (neg_le_neg (Nat.cast_le.2 hab))))
 
+/- English proof (translation)
+Introduce `m` and use `⟨fun hm => by by_contra hlt exact h' (levelLe_of_le hm (by omega)), fun hm => levelLe_of_le h hm⟩`.
+-/
 theorem expAt_succ {K : Type} [Field K] [NumberField K] {χ : Formalism.L2.Host.HChar K} {v : HeightOneSpectrum (𝓞 K)} {n : ℕ}
     (h : χ.LevelLe v (n + 1)) (h' : ¬ χ.LevelLe v n) : GlobalTheory.CMVal.ExpAt χ v (n + 1) := fun m =>
   ⟨fun hm => by
@@ -33,6 +39,33 @@ end GlobalTheory.SqTop.CondExpo
 
 open GlobalTheory.SqTop.CondExpo in
 
+/- English proof (translation)
+Introduce `D T L sc G μ₀ hL t i j c hc`. Establish `k1 : 1 ≤ D.R.m - (i : ℕ)` using `by omega`. Establish `k2 : D.R.m - (i : ℕ) ≤ D.R.m` using `by omega`. Establish `hμ` using `L.C.isMu0 j`. Establish `enu : nuH G t i j = L.C.mu0 j * L.xiH t * (G.ch.chiH (D.R.m - i))⁻¹`.
+
+Rewrite using `[nuH, div_eq_mul_inv]`. Establish `echi : G.ch.chiH (D.R.m - i) = L.C.mu0 j * L.xiH t * (nuH G t i j)⁻¹`. Rewrite using `[enu, mul_inv, inv_inv, ← mul_assoc, mul_inv_cancel, one_mul]`. Establish `hW : ∀ v ∈ G.pl.S0, GlobalTheory.CMVal.ExpAt (nuH G t i j) (G.pl.w v) (SqNum.condExp G.pl v)`. Introduce `v hv`.
+
+Establish `hu` using `G.pl.under_w hv`. Distinguish the cases in `h0 : v = G.pl.v0`. Substitute `h0` using the available equality. Rewrite using `[SqNum.condExp, if_pos rfl]`. Use `expAt_succ (n := 0) ?_ ?_` and prove the remaining obligations.
+
+Rewrite using `[enu]`. Conclude with `((hμ.tame _).mul (hL.xi_tame t _)).mul (G.ch.lev0 _ k1 k2 _ hu).1.inv`. Introduce `h`. Conclude with `GlobalTheory.RowTest.squareNuHeckeCharacter_not_unramified_at_chosenPlace hL G t i j ((Formalism.L2.Host.HChar.unrAt_iff _ _).2 h)`. Establish `h1 : v ∈ S1 D` using `(G.pl.mem_S0_of_sum_eq.1 hv).resolve_left h0`.
+
+Rewrite using `[SqNum.condExp, if_neg h0]`. Establish `hl` using `G.ch.lev1 _ k1 k2 (G.pl.w v) (by rw [hu]; exact h1)`. Use `expAt_succ (n := 1) ?_ ?_` and prove the remaining obligations. Rewrite using `[enu]`. Conclude with `((levelLe_of_le (hμ.tame _) (by omega)).mul (levelLe_of_le (hL.xi_tame t _) (by omega))).mul hl.1.inv`.
+
+Introduce `h`. Apply `hl.2` to reduce the goal to its premises. Rewrite using `[echi]`. Conclude with `((hμ.tame _).mul (hL.xi_tame t _)).mul h.inv`. Establish `hQ : ∀ w ∈ twPl G t, GlobalTheory.CMVal.ExpAt (nuH G t i j) w 1`.
+
+Introduce `w hw`. Establish `hw' : w ∈ L.Q t ∧ w ∉ G.pl.W0`. Simplify using `only [twPl, GlobalTheory.FunObj.locPl, Finset.mem_filter, Finset.mem_union] at hw`. Conclude with `⟨hw.1.resolve_left hw.2, hw.2⟩`. Establish `hS1 : w.under (𝓞 D.host.F) ∉ S1 D` using `fun h => by`.
+
+Use `hw'.2 ?_` and prove the remaining obligations. Rewrite using `[G.pl.w_Q t w hw'.1 h]`. Conclude with `Finset.mem_image_of_mem _ (G.pl.mem_S0_of_sum_eq.2 (Or.inr h))`. Establish `hS0 : w.under (𝓞 D.host.F) ∉ G.pl.S0` using `fun h => (G.pl.mem_S0_of_sum_eq.1 h).elim (G.pl.levelPlace_ne_basePlace t w hw'.1) hS1`. Use `expAt_succ (n := 0) ?_ ?_` and prove the remaining obligations.
+
+Rewrite using `[enu]`. Conclude with `((hμ.tame _).mul (hL.xi_tame t _)).mul (Formalism.L2.Host.HChar.UnrAt.levelLe (G.ch.unr _ k1 k2 w hS0) 1).inv`. Introduce `h`. Conclude with `GlobalTheory.SqTop.nuH_not_unrAt_twPl G hL t i j w hw ((Formalism.L2.Host.HChar.unrAt_iff _ _).2 h)`. Establish `cW : ∀ v ∈ G.pl.S0, c (G.pl.w v) = SqNum.condExp G.pl v` using `fun v hv => (hc _ (Finset.mem_union_left _ (Finset.mem_image_of_mem _ hv))).unique (hW v hv)`.
+
+Establish `cQ : ∀ w ∈ twPl G t, c w = 1` using `fun w hw => (hc w (Finset.mem_filter.1 hw).1).unique (hQ w hw)`. Use `⟨fun w hw => ?_, ?_⟩` and prove the remaining obligations. Distinguish the cases in `h : w ∈ G.pl.W0`. Take `⟨v, hv, rfl⟩` from `Finset.mem_image.1 h`. Rewrite using `[cW v hv, SqNum.condExp]`.
+
+Apply the tactic sequence `split_ifs <;> omega`. Rewrite using `[cQ w (Finset.mem_filter.2 ⟨hw, h⟩)]`. Rewrite using `[modul, modT, ← Finset.prod_filter_mul_prod_filter_not (locPl G t) (fun w => w ∈ G.pl.W0)]`. Establish `e1 : (locPl G t).filter (fun w => w ∈ G.pl.W0) = G.pl.W0`. Use extensionality with `w`.
+
+Simplify using `only [Finset.mem_filter, GlobalTheory.FunObj.locPl, Finset.mem_union]`. The claim follows by propositional logic. Establish `e2 : (locPl G t).filter (fun w => w ∉ G.pl.W0) = twPl G t` using `rfl`. Rewrite using `[e1, e2]`. Use `congr 1`.
+
+Rewrite using `[Places.W0, Finset.prod_image fun v hv v' hv' h => (G.pl.under_w hv).symm.trans ((congrArg _ h).trans (G.pl.under_w hv'))]`. Conclude with `Finset.prod_congr rfl fun v hv => by rw [cW v hv]`. Conclude with `Finset.prod_congr rfl fun w hw => by rw [cQ w hw, pow_one]`.
+-/
 theorem GlobalTheory.SqTop.CondExpo.expo_modul : ∀ {D : D7} {T : Type} {L : LevCh D T} {sc : GlobalTheory.ChiGrid.Consts} (G : GridData L sc) {μ₀ : T}, L.Is μ₀ →
     ∀ (t : T) (i j : Fin D.R.m) (c : Formalism.L2.DIV.Pl D.host.E → ℕ), (∀ w ∈ locPl G t, GlobalTheory.CMVal.ExpAt (nuH G t i j) w (c w)) →
     (∀ w ∈ locPl G t, 1 ≤ c w) ∧ modul (locPl G t) c = GlobalTheory.SqTop.modT G t := by

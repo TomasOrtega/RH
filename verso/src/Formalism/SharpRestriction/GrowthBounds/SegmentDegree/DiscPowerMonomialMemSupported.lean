@@ -8,6 +8,21 @@ namespace Formalism.MainNotions.SelectionLemmas.Pf
 
 open Formalism.MainNotions.G Formalism.MainNotions.SelectionLemmas Formalism.MainNotions.G.Joints.StandardMonomialSpace
 
+/- English proof (translation)
+Establish `hbe : 0 ≤ be`. Use `(H.rng N le_rfl 0).1` as an intermediate fact. Rewrite `this` using `[H.fin]`. Then use the resulting hypothesis. Establish `hlast : ν (Fin.last N) 0 = be`. Use `H.fin 0` as an intermediate fact.
+
+Rewrite `this` using `[← stg_eq ν N (by omega)]`. Conclude with `this`. Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `c hc`. Rewrite using `[Ican_eq H, if_neg]`.
+
+Introduce `h`. Apply the tactic sequence `exact hc (mem_colRange_of_le_entry ν (Fin.last N) 0 (by omega) (by rw [hlast]; exact h.2))`. Introduce `c`. Rewrite using `[Ican_eq H, pEnd_eq]`. Distinguish the cases in `h1 : 1 ≤ c`.
+
+Rewrite using `[if_pos h1]`. Distinguish the cases in `h2 : c ≤ be`. Rewrite using `[if_pos ⟨h1, h2⟩, colH_all fun m => by rw [H.fin]; exact h2, Finset.card_univ, Fintype.card_fin]`. Rewrite using `[if_neg fun h => h2 h.2, colH_none fun m => by rw [H.fin]; omega, Finset.card_empty]`. Rewrite using `[if_neg h1, if_neg fun h => h1 h.1, colH_all fun m => by rw [H.fin]; omega, Finset.card_empty]`.
+
+Use linear arithmetic over natural numbers and integers. Introduce `c t`. Unfold `tabCol`. Distinguish the cases in `h1 : 1 ≤ c`. Rewrite using `[if_pos h1, if_pos (by omega : (1 : ℤ) ≤ c + 1), Ican_eq H, Ican_eq H]`.
+
+Distinguish the cases in `h2 : c + 1 ≤ be`. Rewrite using `[if_pos ⟨by omega, h2⟩, if_pos ⟨h1, by omega⟩]`. Rewrite using `[if_neg fun h => h2 h.2]`. Simplify using the standard rewrite rules. Rewrite using `[if_neg h1]`.
+
+Establish `hc0 : Ican ν c = ∅` using `by rw [Ican_eq H, if_neg fun h => h1 h.1]`. Rewrite using `[hc0, Finset.sdiff_empty]`. Conclude with `Finset.card_le_card (Finset.filter_subset_filter _ (Finset.subset_univ _))`.
+-/
 theorem mem_isSt_Ican {N r : ℕ} [NeZero r] {n0 : ℕ} {be : ℤ} {ν : Fin (N + 1) → Fin r → ℤ} (H : PlHyp n0 be ν) :
     IsSt ν (Ican ν) := by
   classical
@@ -49,6 +64,11 @@ section Ctx
 
 variable {p n' r K : ℕ} [NeZero n'] [NeZero r] [NeZero K] {X : Dat n' r}
 
+/- English proof (translation)
+Take `⟨dd, hP, hG, hSt, hu, hd⟩` from `q.2`. Take `⟨P, hPμ⟩` from `hP.path`. Establish `hNK : segN X.F j + r ≤ K` using `le_trans (Nat.add_le_add_right (hX.card j) r) hX.NsK`. Establish `h10 : BracketPolynomialSpan D` using `hAdm.2.2.2.2.2.2.2.2.2.1`. Take `⟨b', b'', hsum, ⟨P1, h1⟩, ⟨P2, h2⟩, hC⟩` from `(h10 (segN X.F j) r K (segLL X.F j) dd hNK (plPart q.1.1) (tanPart q.1.1)).mp ⟨P, by rw [hPμ, joinPT_parts]⟩`.
+
+Conclude with `⟨dd, b', b'', P, P1, P2, hPμ, h1, h2, hsum, hC, hP, hG, hSt, hu, hd⟩`.
+-/
 theorem exists_path_decomposition (D : Formalism.BasicNotions.D7) (hAdm : AdmB D) (hX : X.Hyp p K) (j : ℤ) (b : ℤ → ℕ)
     (q : X.Idx p K j (X.restr j b)) :
     ∃ (dd b' b'' : Fin (segN X.F j) → ℕ) (P : PPath (r + K) (segN X.F j) (segLL X.F j) dd)
@@ -68,12 +88,18 @@ theorem exists_path_decomposition (D : Formalism.BasicNotions.D7) (hAdm : AdmB D
     (h10 (segN X.F j) r K (segLL X.F j) dd hNK (plPart q.1.1) (tanPart q.1.1)).mp ⟨P, by rw [hPμ, joinPT_parts]⟩
   exact ⟨dd, b', b'', P, P1, P2, hPμ, h1, h2, hsum, hC, hP, hG, hSt, hu, hd⟩
 
+/- English proof (translation)
+Establish `hW : X.F.IsW j (segE X.F j l)` using `(TE.dict_w hX.valid l).mpr hl`. Rewrite using `[comb_vec]`. Conclude with `comb_W_even X.F j hX.valid _ (segE_mem X.F j l) hW`.
+-/
 theorem mem_W_vec (hX : X.Hyp p K) (j : ℤ) (l : Fin (segN X.F j)) (hl : l.val < r) :
     (segLL X.F j).vec l = true := by
   have hW : X.F.IsW j (segE X.F j l) := (TE.dict_w hX.valid l).mpr hl
   rw [comb_vec]
   exact comb_W_even X.F j hX.valid _ (segE_mem X.F j l) hW
 
+/- English proof (translation)
+Apply `le_antisymm` to reduce the goal to its premises. Conclude with `T.mu_nonpos P s.val s.isLt (Fin.natAdd r c) (by simp only [Fin.val_natAdd]; omega)`. Conclude with `comb_nonneg_of_vec P s (fun l hl => mem_W_vec hX j l (by omega)) _`.
+-/
 theorem mem_tan_zero (hX : X.Hyp p K) (j : ℤ) {dd : Fin (segN X.F j) → ℕ}
     (P : PPath (r + K) (segN X.F j) (segLL X.F j) dd) (s : Fin (segN X.F j + 1)) (hs : s.val ≤ r) (c : Fin K) :
     tanPart P.mu s c = 0 := by
@@ -81,6 +107,11 @@ theorem mem_tan_zero (hX : X.Hyp p K) (j : ℤ) {dd : Fin (segN X.F j) → ℕ}
   · exact T.mu_nonpos P s.val s.isLt (Fin.natAdd r c) (by simp only [Fin.val_natAdd]; omega)
   · exact comb_nonneg_of_vec P s (fun l hl => mem_W_vec hX j l (by omega)) _
 
+/- English proof (translation)
+Establish `hi : i.val < r` using `(TE.dict_w hX.valid i).mp hW`. Establish `hs` using `T.step_vec P2 i (mem_W_vec hX j i hi)`. Establish `h3` using `hs.2.2`. Rewrite `h3` using `[h2]`. Establish `: ∑ a, (tanPart P.mu i.succ a - tanPart P.mu i.castSucc a) = 0` using `Finset.sum_eq_zero fun a _ => by`.
+
+Rewrite using `[mem_tan_zero hX j P i.succ (by simp only [Fin.val_succ]; omega) a, mem_tan_zero hX j P i.castSucc (by simp only [Fin.val_castSucc]; omega) a, sub_zero]`. Rewrite `h3` using `[this]`. Conclude with `h3.symm` after adjusting the coercions.
+-/
 theorem tangent_degree_zero_at_w (hX : X.Hyp p K) (j : ℤ) {dd b'' : Fin (segN X.F j) → ℕ}
     (P : PPath (r + K) (segN X.F j) (segLL X.F j) dd) (P2 : PPath K (segN X.F j) (segLL X.F j) b'')
     (h2 : P2.mu = tanPart P.mu) (i : Fin (segN X.F j)) (hW : X.F.IsW j (segE X.F j i)) : b'' i = 0 := by
@@ -95,6 +126,11 @@ theorem tangent_degree_zero_at_w (hX : X.Hyp p K) (j : ℤ) {dd b'' : Fin (segN 
   rw [this] at h3
   exact_mod_cast h3.symm
 
+/- English proof (translation)
+Take `⟨ho1, ho2⟩` from `oldest_letter_in_segment p n' r K X hX j x hx`. Unfold `Dat.thc`. Use `split_ifs with hW`. Both sides reduce to the same expression. Establish `hl : X.F.oldest j x ∈ X.toLate j` using `(mem_late X j _).mpr ⟨ho1, hW⟩`.
+
+Unfold `Dat.restr`. Rewrite using `[if_pos hl]`.
+-/
 theorem mem_thc_restr (hX : X.Hyp p K) (j : ℤ) (b : ℤ → ℕ) (x : ℤ) (hx : x ∈ X.toLate j) :
     X.thc p K j (X.restr j b) x = X.thc p K j b x := by
   classical
@@ -106,6 +142,9 @@ theorem mem_thc_restr (hX : X.Hyp p K) (j : ℤ) (b : ℤ → ℕ) (x : ℤ) (hx
     unfold Dat.restr
     rw [if_pos hl]
 
+/- English proof (translation)
+Rewrite using `[Matrix.det_apply]`. Use `Subalgebra.sum_mem _ fun σ _ => ?_` and prove the remaining obligations. Rewrite using `[Units.smul_def, zsmul_eq_mul]`. Use `Subalgebra.mul_mem _ (intCast_mem _ _) (Subalgebra.prod_mem _ fun i _ => ?_)` and prove the remaining obligations. Conclude with `Algebra.subset_adjoin ⟨_, h (σ i) i, rfl⟩`.
+-/
 theorem mem_det_supported (R : Type) [CommRing R] {n : ℕ} (y : Fin n → ℤ) (s : Set (ℤ × Fin n))
     (h : ∀ a c, (y a, c) ∈ s) :
     Matrix.det (Matrix.of fun a c : Fin n => (MvPolynomial.X (y a, c) : MvPolynomial (ℤ × Fin n) R)) ∈
@@ -116,6 +155,9 @@ theorem mem_det_supported (R : Type) [CommRing R] {n : ℕ} (y : Fin n → ℤ) 
   refine Subalgebra.mul_mem _ (intCast_mem _ _) (Subalgebra.prod_mem _ fun i _ => ?_)
   exact Algebra.subset_adjoin ⟨_, h (σ i) i, rfl⟩
 
+/- English proof (translation)
+Establish `hXm : ∀ v ∈ s, (MvPolynomial.X v : MvPolynomial (ℤ × Fin r) O) ∈ supported O s` using `fun v hv => Algebra.subset_adjoin ⟨v, hv, rfl⟩`. Unfold `Dat.discPowerTimesMonomial Dat.Dw`. Use `Subalgebra.mul_mem _ (Subalgebra.pow_mem _ (mem_det_supported O _ s h) _) (Subalgebra.prod_mem _ fun i _ => Subalgebra.pow_mem _ (hXm _ (h i 0)) _)` and prove the remaining obligations.
+-/
 theorem disc_power_monomial_mem_supported (O : Type) [CommRing O] (j : ℤ) (b : ℤ → ℕ) (s : Set (ℤ × Fin r))
     (h : ∀ (a c : Fin r), (X.F.fr (j - 1) a.val, c) ∈ s) : X.discPowerTimesMonomial p K O j b ∈ supported O s := by
   have hXm : ∀ v ∈ s, (MvPolynomial.X v : MvPolynomial (ℤ × Fin r) O) ∈ supported O s :=
@@ -124,6 +166,9 @@ theorem disc_power_monomial_mem_supported (O : Type) [CommRing O] (j : ℤ) (b :
   refine Subalgebra.mul_mem _ (Subalgebra.pow_mem _ (mem_det_supported O _ s h) _)
     (Subalgebra.prod_mem _ fun i _ => Subalgebra.pow_mem _ (hXm _ (h i 0)) _)
 
+/- English proof (translation)
+Establish `hXm : ∀ v ∈ s, (MvPolynomial.X v : MvPolynomial (ℤ × Fin r) O) ∈ supported O s` using `fun v hv => Algebra.subset_adjoin ⟨v, hv, rfl⟩`. Unfold `Dat.memMu`. Conclude with `Subalgebra.prod_mem _ fun v _ => Subalgebra.pow_mem _ (hXm _ (h v.1 v.2)) _`.
+-/
 theorem mem_Mu_supported (O : Type) [CommRing O] (j : ℤ) (u : Fin r × Fin r → ℕ) (s : Set (ℤ × Fin r))
     (h : ∀ (a c : Fin r), (X.F.fr j a.val, c) ∈ s) : X.memMu O j u ∈ supported O s := by
   have hXm : ∀ v ∈ s, (MvPolynomial.X v : MvPolynomial (ℤ × Fin r) O) ∈ supported O s :=
@@ -131,6 +176,13 @@ theorem mem_Mu_supported (O : Type) [CommRing O] (j : ℤ) (u : Fin r × Fin r �
   unfold Dat.memMu
   exact Subalgebra.prod_mem _ fun v _ => Subalgebra.pow_mem _ (hXm _ (h v.1 v.2)) _
 
+/- English proof (translation)
+Establish `hV` using `hX.valid`. Establish `hevW : ∀ a : Fin r, Even (X.F.fr (j - 1) a.val)` using `fun a => (hV.2.2.2.2.1 (j - 1) a.val a.isLt).2`. Establish `hevT : ∀ a : Fin r, Even (X.F.fr j a.val)` using `fun a => (hV.2.2.2.2.1 j a.val a.isLt).2`. Establish `hD : ((1 : ℤ) : WithTop ℤ) ≤ valS LZ S (X.Dw O j)`. Unfold `Dat.Dw`.
+
+Rewrite using `[(hB2 O ℤ r LZ S).2.2 (fun a => X.F.fr (j - 1) a.val) (fr_injective X.F hV (j - 1)) (fun a => ⟨hS a, by simp [LZ, hevW a]⟩)]`. Conclude with `le_rfl`. Establish `h1` using `mem_vg_pow D hB2 S hD (X.m0 K)`. Establish `h2` using `mem_vg_monom D hB2 (R := O) S Finset.univ (fun i : Fin r => (X.F.fr (j - 1) i.val, (0 : Fin r))) (fun i => ((b (X.F.fr (j - 1) i.val) : ℤ) - X.Bw p K j (X.F.fr (j - 1) i.val)).toNat) (fun i _ => hevW i)`. Establish `h3` using `mem_vg_monom D hB2 (R := O) S Finset.univ (fun v : Fin r × Fin r => (X.F.fr j v.1.val, v.2)) q.2.2 (fun v _ => hevT v.1)`.
+
+Establish `h4` using `mem_vg_mul D hB2 S (mem_vg_mul D hB2 S (mem_vg_mul D hB2 S h1 h2) h3) ha`. Unfold `Dat.memA Dat.discPowerTimesMonomial Dat.memMu`. Establish `e : (X.m0 K : ℤ) * 1 + 0 + 0 + a = (X.m0 K : ℤ) + a` using `by ring`. Rewrite `h4` using `[e]`. Conclude with `h4`.
+-/
 theorem mem_vg_A (D : Formalism.BasicNotions.D7) (hB2 : admB2 D) (hX : X.Hyp p K) (O : Type) [CommRing O] [IsDomain O]
     [IsDiscreteValuationRing O] (j : ℤ) (b : ℤ → ℕ)
     (q : (Fin (segN X.F j + 1) → Fin (r + K) → ℤ) × (ℤ → Finset (Fin K)) × (Fin r × Fin r → ℕ))
@@ -158,6 +210,33 @@ theorem mem_vg_A (D : Formalism.BasicNotions.D7) (hB2 : admB2 D) (hX : X.Hyp p K
 
 end Ctx
 
+/- English proof (translation)
+Introduce `p n' r K _ _ _ X O _ _ _ S hX hLa hk j b hb q`. Establish `: Fact p.Prime` using `⟨hX.prime⟩`. Establish `hV` using `hX.valid`. Establish `hB2 : admB2 D` using `hAdm.2.1`. Establish `hA3 : Formalism.MainNotions.CovariantDegrees.DefiniteRankOne D` using `hAdm.2.2.2.2.2.2.2.2.1`.
+
+Take `⟨dd, b', b'', P, P1, P2, hPμ, h1, h2, hsum, hC, hPATH, hGood, hSt, hu, hd⟩` from `exists_path_decomposition D hAdm hX j b q`. Establish `H` using `plHyp_of X p K hX j _ _ dd hPATH`. Establish `hI' : IsSt P1.mu (Ican P1.mu)` using `by rw [h1]; exact mem_isSt_Ican H`. Establish `hI'' : IsSt P2.mu q.1.2.1` using `by rw [h2]; exact hSt`. Establish `u1` using `standard_polynomial_mem_bounds (segLL X.F j) b' (fun th M => (hA3 p O S _ r (segLL X.F j) b' th M).1) P1 _ hI'`.
+
+Establish `u2` using `standard_polynomial_mem_bounds (segLL X.F j) b'' (fun th M => (hA3 p O S _ K (segLL X.F j) b'' th M).1) P2 _ hI''`. Rewrite `u1` using `[h1]`. Rewrite `u2` using `[h2]`. Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Unfold `Dat.memA`.
+
+Use `Subalgebra.mul_mem _ (Subalgebra.mul_mem _ ?_ ?_) ?_` and prove the remaining obligations. Conclude with `disc_power_monomial_mem_supported O j b _ fun a _ => TE.frp_mem hV j a.val a.isLt`. Conclude with `mem_Mu_supported O j _ _ fun a _ => k_fr_mem_letters X.F hV j a.isLt`. Unfold `Dat.memPl`. Use `mem_supported.mpr fun v hv => ?_` and prove the remaining obligations.
+
+Take `⟨u, _, rfl⟩` from `mem_vars_rename _ _ (Finset.mem_coe.mp hv)`. Conclude with `segE_mem X.F j u.1`. Unfold `Dat.memG`. Use `mem_supported.mpr fun v hv => ?_` and prove the remaining obligations. Take `⟨u, hu', rfl⟩` from `mem_vars_rename _ _ (Finset.mem_coe.mp hv)`.
+
+Conclude with `⟨segE_mem X.F j u.1, fun hW => pol_vars_deg u2.1 hu' (tangent_degree_zero_at_w hX j P P2 (by rw [h2, hPμ]) u.1 hW)⟩`. Introduce `x hx hW`. Take `⟨i, rfl⟩` from `segE_surj X.F j hx`. Take `⟨sA1, sA2, -, -⟩` from `seg_val X.F j (Psi O (plPart q.1.1) (Ican (plPart q.1.1))) i`. Take `⟨-, -, sG3, sG4⟩` from `seg_val X.F j (Psi O (tanPart q.1.1) q.1.2.1) i`.
+
+Establish `hxl : segE X.F j i ∈ X.toLate j` using `(mem_late X j _).mpr ⟨hx, hW⟩`. Establish `hM : X.memM K j q.1.1 (segE X.F j i) = (if Even (segE X.F j i) then tanPart q.1.1 i.succ 0 else tanPart q.1.1 i.castSucc 0)` using `(segE_strictMono X.F j).injective.extend_apply _ _ i`. Establish `hWlt : ∀ a : Fin r, X.F.fr (j - 1) a.val < segE X.F j i`. Introduce `a`. Establish `h3 : ¬ segE X.F j i ≤ X.F.fr (j - 1) (r - 1)` using `hW`.
+
+Establish `h4` using `kfr_le X.F hV (j - 1) (by have := a.isLt; omega : a.val ≤ r - 1) (by have := a.isLt; omega)`. Use linear arithmetic over natural numbers and integers. Establish `vlt` using `mem_vg_A D hB2 hX O j b q.1 {y | y < segE X.F j i} hWlt (plPart q.1.1 i.castSucc (lastIdx r)) (by unfold Dat.memPl; rw [sA2]; exact (u1.2 i.castSucc).1)`. Establish `vle` using `mem_vg_A D hB2 hX O j b q.1 {y | y ≤ segE X.F j i} (fun a => (hWlt a).le) (plPart q.1.1 i.succ (lastIdx r)) (by unfold Dat.memPl; rw [sA1]; exact (u1.2 i.succ).1)`. Establish `hCi` using `hC i`.
+
+Unfold `Formalism.MainNotions.CovariantDegrees.CondC at hCi`. Use `⟨fun he => ⟨?_, ?_⟩, fun he => ⟨?_, ?_⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[hM, if_pos he]`. Unfold `Dat.memG`. Rewrite using `[sG3]`.
+
+Conclude with `(u2.2 i.succ).2`. Use `le_trans (WithTop.coe_le_coe.mpr ?_) vlt` and prove the remaining obligations. Rewrite using `[hM, if_pos he]`. Rewrite `hCi` using `[if_pos ((comb_vec X.F j i).mpr he)]`. Use linear arithmetic over natural numbers and integers.
+
+Rewrite using `[hM, if_neg he]`. Unfold `Dat.memG`. Rewrite using `[sG4]`. Conclude with `(u2.2 i.castSucc).2`. Use `le_trans (WithTop.coe_le_coe.mpr ?_) vle` and prove the remaining obligations.
+
+Rewrite using `[hM, if_neg he]`. Rewrite `hCi` using `[if_neg (fun h => he ((comb_vec X.F j i).mp h))]`. Use linear arithmetic over natural numbers and integers. Use `geR_of_le vlt ?_` and prove the remaining obligations. Rewrite using `[← mem_thc_restr hX j b _ hxl]`.
+
+Use `(hGood i hW).1` as an intermediate fact. Use `push_cast`. Establish `hm : (0 : ℝ) ≤ (X.m0 K : ℝ)` using `Nat.cast_nonneg _`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem restMemA_of (D : Formalism.BasicNotions.D7) (hAdm : AdmB D) (C₀ : ℝ) : RestMemA C₀ := by
   intro p n' r K _ _ _ X O _ _ _ S hX hLa hk j b hb q
   classical

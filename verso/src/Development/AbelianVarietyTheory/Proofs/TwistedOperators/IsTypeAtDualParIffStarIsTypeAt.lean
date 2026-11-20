@@ -19,6 +19,31 @@ open Matrix Formalism.IndefR.Mult GlobalTheory.ConjDS GlobalTheory.ConjMult
 
 variable {D : D7}
 
+/- English proof (translation)
+Take `⟨H, i1, i2, σ, lam, ε, Q, hE, hD, hQ, hG, hx⟩` from `h`. Use `letI := i1`. Use `letI := i2`. Establish `hJ` using `GlobalTheory.SmoothAutCheck.gramAt_unit V τ`. Establish `e : ∀ g, rv (Q.submatrix Fin.revPerm (Equiv.refl _) * g * (Q.submatrix Fin.revPerm (Equiv.refl _))⁻¹) = Q * g * Q⁻¹`.
+
+Introduce `g`. Rewrite using `[inv_submatrix_equiv]`. Establish `: Q.submatrix Fin.revPerm (Equiv.refl _) * g * Q⁻¹.submatrix (Equiv.refl _) Fin.revPerm = rv (Q * g * Q⁻¹)`. Use extensionality with `i j`. Simplify using `[rv, Matrix.mul_apply]`.
+
+Rewrite using `[this, rv_rv]`. Establish `hc : ∀ g ∈ Formalism.QuantumDeterminants.UH (gramAt D V τ), ∀ w : Cj H, cj H ((fun g => cjOp (σ (rv g))) (Q.submatrix Fin.revPerm (Equiv.refl _) * g * (Q.submatrix Fin.revPerm (Equiv.refl _))⁻¹) w) = (fun g => σ (Q * g * Q⁻¹)) g (cj H w)`. Introduce `g _ w`. Use `show σ (rv _) (cj H w) = _`. Rewrite using `[e]`.
+
+Establish `hc' : ∀ g ∈ Formalism.QuantumDeterminants.UH (gramAt D V τ), ∀ w : H, (cj H).symm ((fun g => σ (Q * g * Q⁻¹)) g w) = (fun g => cjOp (σ (rv g))) (Q.submatrix Fin.revPerm (Equiv.refl _) * g * (Q.submatrix Fin.revPerm (Equiv.refl _))⁻¹) ((cj H).symm w)`. Introduce `g hg w`. Apply `(cj H).injective` to reduce the goal to its premises. Rewrite using `[hc g hg, LinearIsometryEquiv.apply_symm_apply, LinearIsometryEquiv.apply_symm_apply]`. Establish `hfold : ∀ l : List (Matrix (Fin V.rank) (Fin V.rank) ℂ), (∀ X ∈ l, X ∈ lieAt V τ) → ∀ w : Cj H, l.foldr (dRep (fun g => σ (Q * g * Q⁻¹))) (cj H w) = cj H (l.foldr (dRep (fun g => (fun g => cjOp (σ (rv g))) (Q.submatrix Fin.revPerm (Equiv.refl _) * g * (Q.submatrix Fin.revPerm (Eq …`.
+
+Introduce `l`. Proceed by induction on `l with`. Consider the case `nil => intro _ _`. Both sides reduce to the same expression. Consider the case `cons X l ih`.
+
+Introduce `hl w`. Rewrite using `[List.foldr_cons, ih (fun Y hY => hl Y (List.mem_cons_of_mem _ hY)), dRep_conj hJ (cj H) hc (hl X List.mem_cons_self), List.foldr_cons]`. Establish `hn : ∀ l : List (Matrix (Fin V.rank) (Fin V.rank) ℂ), (∀ X ∈ l, X ∈ lieAt V τ) → ∀ w : Cj H, ‖l.foldr (dRep (fun g => (fun g => cjOp (σ (rv g))) (Q.submatrix Fin.revPerm (Equiv.refl _) * g * (Q.submatrix Fin.revPerm (Equiv.refl _))⁻¹))) w‖ = ‖l.foldr (dRep (fun g => σ (Q * g * Q⁻ …`. Introduce `l hl w`. Rewrite using `[hfold l hl, LinearIsometryEquiv.norm_map]`.
+
+Use `⟨Cj H, inferInstance, inferInstance, fun g => cjOp (σ (rv g)), nr lam, fun a => ε a.rev, Q.submatrix Fin.revPerm (Equiv.refl _), isEnum_dual hE, isDS_transfer (fun _ => rfl) (cj H) (fun _ _ => rfl) hD, (Matrix.isUnit_submatrix_equiv _ _).2 hQ, ?_, fun x => ?_⟩` and prove the remaining obligations. Rewrite using `[← hG, ← rv_Jm (ε := fun a => ε a.rev) (ε' := ε) (fun a => by simp), rv, conjTranspose_submatrix, submatrix_mul_equiv, submatrix_mul_equiv]`. Both sides reduce to the same expression. Take `⟨v, hv, ℓ, hℓ, ⟨S, C, hS, hb, hsum, B, hB, hBb⟩, hs⟩` from `hx x`. Set `ℓ' : ℕ → (Cj H →ₗ[ℂ] ℂ)` to `fun i => { toFun := fun w => star (ℓ i (cj H w)) map_add' := fun x y => by simp map_smul' := fun a x => by rw [map_smulₛₗ, map_smul]; simp }`.
+
+Use `⟨fun i => (cj H).symm (v i), fun i => smoothVec_conj hJ (cj H).symm hc' (hv i), ℓ', fun i => ?_, ⟨S, C, hS, fun i w hw => ?_, fun S' hS' => ?_, B, hB, fun g hg w hw => ?_⟩, fun g hg => ?_⟩` and prove the remaining obligations. Take `⟨ℓ'', h1, h2⟩` from `sobCont_conj hJ (cj H) hc (hℓ i)`. Establish `: ℓ'' = ℓ' i` using `LinearMap.ext h2`. Rewrite using `[← this]`. Conclude with `h1`.
+
+Establish `h1` using `hb i (cj H w) (smoothVec_conj hJ (cj H) hc hw)`. Establish `h2 : (S.map fun l => ‖l.foldr (dRep (fun g => (fun g => cjOp (σ (rv g))) (Q.submatrix Fin.revPerm (Equiv.refl _) * g * (Q.submatrix Fin.revPerm (Equiv.refl _))⁻¹))) w‖) = S.map fun l => ‖l.foldr (dRep (fun g => σ (Q * g * Q⁻¹))) (cj H w)‖` using `List.map_congr_left fun l hl => hn l (hS l hl) w`. Rewrite using `[h2]`. Conclude with `(norm_star _).trans_le h1`. Establish `h2 : ∀ i, (S'.map fun l => ‖l.foldr (dRep (fun g => (fun g => cjOp (σ (rv g))) (Q.submatrix Fin.revPerm (Equiv.refl _) * g * (Q.submatrix Fin.revPerm (Equiv.refl _))⁻¹))) ((cj H).symm (v i))‖) = S'.map fun l => ‖l.foldr (dRep (fun g => σ (Q * g * Q⁻¹))) (v i)‖` using `fun i => List.map_congr_left fun l hl => by rw [hn l (hS' l hl), LinearIsometryEquiv.apply_symm_apply]`.
+
+Simplify using `only [h2]`. Conclude with `hsum S' hS'`. Establish `h2` using `hc g hg w`. Establish `h3 : ∀ u : Cj H, (S.map fun l => ‖l.foldr (dRep (fun g => (fun g => cjOp (σ (rv g))) (Q.submatrix Fin.revPerm (Equiv.refl _) * g * (Q.submatrix Fin.revPerm (Equiv.refl _))⁻¹))) u‖) = S.map fun l => ‖l.foldr (dRep (fun g => σ (Q * g * Q⁻¹))) (cj H u)‖` using `fun u => List.map_congr_left fun l hl => hn l (hS l hl) u`. Rewrite using `[h3, h3, h2]`.
+
+Conclude with `hBb g hg (cj H w) (smoothVec_conj hJ (cj H) hc hw)`. Establish `e2 : ∀ i, ℓ' i ((fun g => cjOp (σ (rv g))) (Q.submatrix Fin.revPerm (Equiv.refl _) * g * (Q.submatrix Fin.revPerm (Equiv.refl _))⁻¹) ((cj H).symm (v i))) = star (ℓ i (σ (Q * g * Q⁻¹) (v i)))`. Introduce `i`. Use `show star (ℓ i (cj H _)) = _`. Rewrite using `[hc g hg, LinearIsometryEquiv.apply_symm_apply]`.
+
+Simplify using `only [e2]`. Conclude with `(hs g hg).star`.
+-/
 theorem isTypeAt_star (θ : InfFam D) (V : HSp D) (τ : D.what₂.Tau) (P : SPar) (φ : GA D V → ℂ)
     (h : IsTypeAt θ V τ P φ) : IsTypeAt θ V τ (dualPar P) fun g => star (φ g) := by
   obtain ⟨H, i1, i2, σ, lam, ε, Q, hE, hD, hQ, hG, hx⟩ := h
@@ -104,6 +129,11 @@ theorem isTypeAt_star (θ : InfFam D) (V : HSp D) (τ : D.what₂.Tau) (P : SPar
     simp only [e2]
     exact (hs g hg).star
 
+/- English proof (translation)
+Introduce `D θ V τ P φ`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Use `isTypeAt_star θ V τ _ _ h` as an intermediate fact. Rewrite `this` using `[dualPar_dualPar]`. Then use the resulting hypothesis.
+
+Introduce `h`. Use `isTypeAt_star θ V τ _ _ h` as an intermediate fact. Simplify `this` using `only [star_star]`.
+-/
 theorem isTypeAt_dualPar_iff : ∀ {D : D7} (θ : InfFam D) (V : HSp D) (τ : D.what₂.Tau) (P : SPar) (φ : GA D V → ℂ),
     IsTypeAt θ V τ (Formalism.IndefR.Mult.dualPar P) φ ↔ IsTypeAt θ V τ P fun g => star (φ g) := by
   intro D θ V τ P φ

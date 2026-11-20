@@ -18,6 +18,15 @@ open GlobalTheory.UU
 noncomputable section
 namespace GlobalTheory.UU.KerPair
 
+/- English proof (translation)
+Proceed by induction on `n with`. Consider the case `zero`. Take `⟨t', ht', hv⟩` from `exists_gen hL (φ' := φ) (ε' := fun k => ε k * (0 : ℕ)) (fun U _ h => by simp) (LB.oneGen L (Y := Y)) (fun i j => (map_one _).trans ((congrArg₂ (· * ·) (Fintype.prod_empty _) (map_one _)).trans (_root_.mul_one _)).symm)`. Conclude with `⟨t', ht', fun Z r z J hJ => (hv _ _ z J hJ).trans ((val_one _).trans (pow_zero _).symm)⟩`. Consider the case `succ n ih`.
+
+Take `⟨s, hs, hv⟩` from `ih`. Take `⟨t', ht', hv'⟩` from `exists_gen hL (φ' := φ) (ε' := fun k => ε k * (n + 1 : ℕ)) (fun U _ h => by`. Use `(Fintype.prod_sum_type _).trans ?_` and prove the remaining obligations. Rewrite using `[← Finset.prod_mul_distrib]`. Use `Finset.prod_congr rfl fun k _ => ?_` and prove the remaining obligations.
+
+Simplify using `only [Sum.elim_inl, Sum.elim_inr]`. Rewrite using `[← zpow_add]`. Use `congr 1`. Use `push_cast`. Use the proof step `ring)`.
+
+Use the proof step `(LB.mulGen L _ _ _ _ s t) (DVR.mulGen_isGen _ _ _ _ _ _ _ hs ht)`. Use `⟨t', ht', fun Z r z J hJ => (hv' _ _ z J hJ).trans ((val_mul hJ _ _ _).trans ?_)⟩` and prove the remaining obligations. Rewrite using `[hv Z r z J hJ, pow_succ]`.
+-/
 theorem exists_pow_gen {X Y : Scheme.{0}} {L : LB X} (hL : L.IsLB) {K : Type} [Fintype K] {φ : K → (Y ⟶ X)}
     {ε : K → ℤ} (t : LB.Gen (LB.LinComb L φ ε)) (ht : t.IsGen) (n : ℕ) :
     ∃ t' : LB.Gen (LB.LinComb L φ (fun k => ε k * n)), t'.IsGen ∧
@@ -50,6 +59,11 @@ abbrev trφ (x : T ⟶ B) : Fin 2 → ((T ⊗ B).left ⟶ B.left) := ![((fst T B
 
 omit [IsCommMonObj B] in
 
+/- English proof (translation)
+Establish `e₀ : (lift ρ b).left ≫ trφ x 0 = ((ρ ≫ x) * b).left` using `by show (lift ρ b ≫ ((fst T B ≫ x) * snd T B)).left = _`. Rewrite using `[MonObj.comp_mul, lift_snd, ← Category.assoc, lift_fst]`. Establish `e₁ : (lift ρ b).left ≫ trφ x 1 = b.left` using `by show (lift ρ b ≫ snd T B).left = _`. Rewrite using `[lift_snd]`. Rewrite using `[Fin.prod_univ_two, e₀, e₁]`.
+
+Simplify using the standard rewrite rules.
+-/
 theorem prod_tr {T' : Over S} (ρ : T' ⟶ T) (b : T' ⟶ B) {U : Type} [CommGroup U] (h : (T'.left ⟶ B.left) → U) (m : ℤ) :
     ∏ k : Fin 2, h ((lift ρ b).left ≫ trφ x k) ^ ((![1, -1] : Fin 2 → ℤ) k * m) =
       h ((ρ ≫ x) * b).left ^ m * h b.left ^ (-m) := by
@@ -64,11 +78,25 @@ theorem prod_tr {T' : Over S} (ρ : T' ⟶ T) (b : T' ⟶ B) {U : Type} [CommGro
 
 omit [IsCommMonObj B] in
 
+/- English proof (translation)
+Simplify using `using prod_tr (x := x) ρ b h 1`.
+-/
 theorem prod_tr_one {T' : Over S} (ρ : T' ⟶ T) (b : T' ⟶ B) {U : Type} [CommGroup U] (h : (T'.left ⟶ B.left) → U) :
     ∏ k : Fin 2, h ((lift ρ b).left ≫ trφ x k) ^ (![1, -1] : Fin 2 → ℤ) k =
       h ((ρ ≫ x) * b).left * (h b.left)⁻¹ := by
   simpa using prod_tr (x := x) ρ b h 1
 
+/- English proof (translation)
+Set `p` to `fst T B`. Set `q` to `snd T B`. Set `uu` to `fun w : T ⊗ B ⟶ B => LB.pullGen L.L _ _ u (lift p w).left`. Establish `gu : ∀ w, (uu w).IsGen` using `fun w => DVR.pullGen_isGen _ _ _ _ hu _`. Establish `vu : ∀ {T' : Over S} (σ : T' ⟶ T ⊗ B) {z : T'.left} {J}, Good L.L z J → ∀ w, val (uu w) σ.left z J = val u (lift (σ ≫ p) (σ ≫ w)).left z J` using `fun σ z J hJ w => (val_pull hJ _ _ _).trans (by rw [← Over.comp_left, comp_lift])`.
+
+Set `t₁` to `LB.mulGen L.L _ _ _ _ (uu ((p ≫ a) * q)) (uu 1)`. Set `t₂` to `LB.mulGen L.L _ _ _ _ (LB.mulGen L.L _ _ _ _ (LB.pullGen L.L (thφ B (x3 B)) thε c.t (lift (p ≫ x) (lift (p ≫ a) q)).left) (uu (p ≫ a))) (uu q)`. Establish `ev : ∀ (w : T ⟶ B) {z : T.left} {J}, Good L.L z J → val t₁ (lift (𝟙 T) w).left z J = val u (lift (𝟙 T) (a * w)).left z J * val u (lift (𝟙 T) (1 : T ⟶ B)).left z J ∧ val t₂ (lift (𝟙 T) w).left z J = cubV c z J x a w * val u (lift (𝟙 T) a).left z J * val u (lift (𝟙 T) w).left z J` using `fun w z J hJ => by`. Establish `hp : lift (𝟙 T) w ≫ p = 𝟙 T` using `lift_fst _ _`. Establish `hq : lift (𝟙 T) w ≫ q = w` using `lift_snd _ _`.
+
+Establish `hp' : ∀ v : T ⟶ B, lift (𝟙 T) w ≫ p ≫ v = v` using `fun v => by rw [← Category.assoc, hp, Category.id_comp]`. Prove the components needed by the constructor for the conclusion. Use `((val_mul hJ _ _ _).trans (congrArg₂ (· * ·) (vu _ hJ _) (vu _ hJ _))).trans ?_` and prove the remaining obligations. Rewrite using `[MonObj.comp_mul, MonObj.comp_one, hp, hq, hp']`. Use `((val_mul hJ _ _ _).trans (congrArg₂ (· * ·) ((val_mul hJ _ _ _).trans (congrArg₂ (· * ·) (val_cub c _ hJ _ _ _) (vu _ hJ _))) (vu _ hJ _))).trans ?_` and prove the remaining obligations.
+
+Rewrite using `[hp, hq, hp', hp']`. Use `(ev b hJ).1.symm.trans (Eq.trans ?_ (ev b hJ).2)` and prove the remaining obligations. Use `gen_unique' L.isLB (fun V _ k => ?_) p.left (lift (𝟙 T) (1 : T ⟶ B)).left (by rw [← Over.comp_left, lift_fst, Over.id_left]) (WeilCube.surj_fst hG hB T) (DVR.mulGen_isGen _ _ _ _ _ _ _ (gu _) (gu _)) (DVR.mulGen_isGen _ _ _ _ _ _ _ (DVR.mulGen_isGen _ _ _ _ _ _ _ (DVR.pullGen_isG …` and prove the remaining obligations. Use `(DVR.prod_sum₂ (K := thK ⊕ Fin 2) (K' := Fin 2) (U := V) _ (DVR.prod_sum₂ (K := thK) (K' := Fin 2) (U := V) _ (prod_cub (p ≫ x) (p ≫ a) q k) (prod_tr_one p (p ≫ a) k)) (prod_tr_one p q k)).trans (Eq.trans ?_ (DVR.prod_sum₂ (K := Fin 2) (K' := Fin 2) (U := V) _ (prod_tr_one p ((p …` and prove the remaining obligations. Rewrite using `[_root_.mul_one, ← _root_.mul_assoc (p ≫ x)]`.
+
+Apply `Additive.ofMul.injective` to reduce the goal to its premises. Simplify using `only [ofMul_mul, ofMul_inv]`. Normalize the expressions using the abelian group laws. Use `(ev 1 hI).1.trans (Eq.trans ?_ (ev 1 hI).2.symm)` and prove the remaining obligations. Rewrite using `[_root_.mul_one, (isCub_cubV c hI).face₃, _root_.one_mul]`.
+-/
 theorem val_mul_pt (hG : GlobalFnsSt) (hB : IsAbelianScheme B) (u : LB.Gen (LB.LinComb L.L (trφ x) ![1, -1]))
     (hu : u.IsGen) (a b : T ⟶ B) (z : T.left) (J) (hJ : Good L.L z J) :
     val u (lift (𝟙 T) (a * b)).left z J * val u (lift (𝟙 T) (1 : T ⟶ B)).left z J =
@@ -114,6 +142,19 @@ theorem val_mul_pt (hG : GlobalFnsSt) (hB : IsAbelianScheme B) (u : LB.Gen (LB.L
   · refine (ev 1 hI).1.trans (Eq.trans ?_ (ev 1 hI).2.symm)
     rw [_root_.mul_one, (isCub_cubV c hI).face₃, _root_.one_mul]
 
+/- English proof (translation)
+Set `p` to `fst T B`. Set `q` to `snd T B`. Establish `hx' : (p ≫ x) ^ N = 1` using `by rw [← MonObj.comp_pow, hx, MonObj.comp_one]`. Take `⟨t, ht, hv⟩` from `WeilCube.exists_gen_torsion c N (p ≫ x) q hx'`. Take `⟨s, hs, hsv⟩` from `exists_pow_gen L.isLB u hu N`.
+
+Set `uu` to `fun w : T ⊗ B ⟶ B => LB.pullGen L.L _ _ s (lift p w).left`. Establish `gu : ∀ w, (uu w).IsGen` using `fun w => DVR.pullGen_isGen _ _ _ _ hs _`. Establish `vu : ∀ {T' : Over S} (σ : T' ⟶ T ⊗ B) {z : T'.left} {J}, Good L.L z J → ∀ w, val (uu w) σ.left z J = val u (lift (σ ≫ p) (σ ≫ w)).left z J ^ N` using `fun σ z J hJ w => (val_pull hJ _ _ _).trans ((hsv _ _ z J hJ).trans (by rw [← Over.comp_left, comp_lift]))`. Set `t₁` to `LB.mulGen L.L _ _ _ _ t (uu q)`. Establish `ev : ∀ (w : T ⟶ B) {z : T.left} {J}, Good L.L z J → val t₁ (lift (𝟙 T) w).left z J = cubN (cubV c z J) N 1 x w * val u (lift (𝟙 T) w).left z J ^ N ∧ val (uu 1) (lift (𝟙 T) w).left z J = val u (lift (𝟙 T) (1 : T ⟶ B)).left z J ^ N` using `fun w z J hJ => by`.
+
+Establish `hp : lift (𝟙 T) w ≫ p = 𝟙 T` using `lift_fst _ _`. Establish `hq : lift (𝟙 T) w ≫ q = w` using `lift_snd _ _`. Establish `hp' : ∀ v : T ⟶ B, lift (𝟙 T) w ≫ p ≫ v = v` using `fun v => by rw [← Category.assoc, hp, Category.id_comp]`. Prove the components needed by the constructor for the conclusion. Use `((val_mul hJ _ _ _).trans (congrArg₂ (· * ·) (hv _ _ z J hJ) (vu _ hJ _))).trans ?_` and prove the remaining obligations.
+
+Rewrite using `[hp, hq, hp']`. Use `(vu _ hJ _).trans ?_` and prove the remaining obligations. Rewrite using `[MonObj.comp_one, hp]`. Use `(ev b hJ).1.symm.trans (Eq.trans ?_ (ev b hJ).2)` and prove the remaining obligations. Use `gen_unique' L.isLB (fun V _ k => ?_) p.left (lift (𝟙 T) (1 : T ⟶ B)).left (by rw [← Over.comp_left, lift_fst, Over.id_left]) (WeilCube.surj_fst hG hB T) (DVR.mulGen_isGen _ _ _ _ _ _ _ ht (gu _)) (gu _) (fun y I hI => ?_) _ _ z J hJ` and prove the remaining obligations.
+
+Use `(prod_tr p 1 k N).trans (Eq.trans ?_ (DVR.prod_sum₂ (K := Fin 4) (K' := Fin 2) (U := V) _ rfl (prod_tr p q k N)).symm)` and prove the remaining obligations. Rewrite using `[_root_.mul_one]`. Simplify using `only [Fin.prod_univ_succ, Sum.elim_inl, Matrix.cons_val_zero, Matrix.cons_val_succ, Fin.prod_univ_zero]`. Apply `Additive.ofMul.injective` to reduce the goal to its premises. Simplify using `only [ofMul_mul, ofMul_zpow, ofMul_one]`.
+
+Use `module`. Use `(ev 1 hI).1.trans (Eq.trans ?_ (ev 1 hI).2.symm)` and prove the remaining obligations. Rewrite using `[(isCub_cubV c hI).N_one, _root_.one_mul]`.
+-/
 theorem val_pow_pt (hG : GlobalFnsSt) (hB : IsAbelianScheme B) (u : LB.Gen (LB.LinComb L.L (trφ x) ![1, -1]))
     (hu : u.IsGen) {N : ℕ} (hx : x ^ N = 1) (b : T ⟶ B) (z : T.left) (J) (hJ : Good L.L z J) :
     cubN (cubV c z J) N 1 x b * val u (lift (𝟙 T) b).left z J ^ N = val u (lift (𝟙 T) (1 : T ⟶ B)).left z J ^ N := by
@@ -153,6 +194,19 @@ theorem val_pow_pt (hG : GlobalFnsSt) (hB : IsAbelianScheme B) (u : LB.Gen (LB.L
   · refine (ev 1 hI).1.trans (Eq.trans ?_ (ev 1 hI).2.symm)
     rw [(isCub_cubV c hI).N_one, _root_.one_mul]
 
+/- English proof (translation)
+Introduce `hG S B _ _ hB L c N T x y hx hy ⟨u, hu⟩`. Use `⟨hx, hy, fun z J hJ => ?_⟩` and prove the remaining obligations. Establish `C` using `isCub_cubV c hJ`. Take `⟨U, hU⟩ : ∃ U : (T ⟶ B) → (T.left.presheaf.stalk z)ˣ, ∀ b, U b = val (L` from `L.L) (φ := trφ x) (ε := ![1, -1]) u (lift (𝟙 T) b).left z J := ⟨_, fun _ => rfl⟩`. Establish `m : ∀ a b, U (a * b) * U 1 = cubV c z J x a b * U a * U b` using `fun a b => by`.
+
+Simplify using `only [hU]`. Conclude with `val_mul_pt c hG hB u hu a b z J hJ`. Establish `k : cubN (cubV c z J) N 1 x y * U y ^ N = U 1 ^ N`. Simplify using `only [hU]`. Conclude with `val_pow_pt c hG hB u hu hx y z J hJ`.
+
+Establish `b : ∀ n : ℕ, U (y ^ n) * U 1 ^ n = U 1 * (cubN (cubV c z J) n 1 y x * U y ^ n)` using `fun n => by`. Proceed by induction on `n with`. Consider the case `zero => simp [cubN]`. Consider the case `succ n ih`. Establish `e` using `m (y ^ n) y`.
+
+Rewrite `e` using `[C.s01, C.s12]`. Simplify using `only [cubN, Finset.prod_range_succ, _root_.one_mul] at ih ⊢`. Rewrite using `[pow_succ, pow_succ, pow_succ]`. Apply `Additive.ofMul.injective` to reduce the goal to its premises. Establish `e'` using `congrArg Additive.ofMul e`.
+
+Establish `ih'` using `congrArg Additive.ofMul ih`. Simplify using `only [ofMul_mul] at e' ih' ⊢`. Take the linear combination `(norm := abel) e' + ih'`. Establish `b'` using `b N`. Rewrite `b'` using `[hy]`.
+
+Rewrite using `[map_one, _root_.one_mul]`. Conclude with `mul_right_cancel (k.trans (mul_left_cancel b'))`.
+-/
 theorem cubWeil_of_gen : (GlobalFnsSt → ∀ (S : Scheme.{0}) (B : Over S) [GrpObj B] [IsCommMonObj B], IsAbelianScheme B → ∀ (L : RigLB B) (c : CubicalStr B L) (N : ℕ) (T : Over S) (x y : T ⟶ B), x ^ N = 1 → y ^ N = 1 → (∃ u : LB.Gen (translDiff B L.L x), u.IsGen) → CubWeil c N x y 1) := by
   intro hG S B _ _ hB L c N T x y hx hy ⟨u, hu⟩
   refine ⟨hx, hy, fun z J hJ => ?_⟩

@@ -14,6 +14,11 @@ noncomputable section
 
 namespace GlobalTheory.AboveLRes
 
+/- English proof (translation)
+Establish `hV'` using `(GlobalTheory.PstLaws.isPst_resTo_iff P ρ hle).2 hV`. Use `haveI := hV.finite`. Use `haveI := hV'.finite`. Rewrite using `[wdPst_of_isPst ι Bw h hj hV, wdPst_of_isPst ι Bw' h' hj' hV']`. Take `⟨e, he1, he2⟩` from `GlobalTheory.T.fontaineWeilDeligneSpace_restriction_equiv l P ι K L Ω A v v' h h' O O' Bw Bw' hj hj' hle (fun σ σ' hσ => weilToGK_eq Bw Bw' hjj hle h h' σ σ' hσ) LL V ρ hV`.
+
+Conclude with `GlobalTheory.T.frobeniusSemisimplification_weilDeligne_restricts K L Ω A v v' h h' _ _ _ _ _ _ _ _ (isSmooth_wdRho P ι Bw h hj ρ) (isSmooth_wdRho P ι Bw' h' hj' _) (BridgeParam.isFrobSS_wdRep P ι Bw h hj ρ) (BridgeParam.isFrobSS_wdRep P ι Bw' h' hj' _) e he1 he2`.
+-/
 theorem restricts_wdPst {l : ℕ} [Fact l.Prime] (P : LocPrime l) (ι : Qbar l ≃+* ℂ) {K L Ω : Type} [Field Ω] [Field K]
     [NumberField K] [Algebra K Ω] [IsAlgClosure K Ω] [Field L] [NumberField L] [Algebra L Ω] [IsAlgClosure L Ω]
     [Algebra K L] [IsScalarTower K L Ω] {A : ValuationSubring Ω} {v : HeightOneSpectrum (𝓞 K)}
@@ -34,6 +39,17 @@ theorem restricts_wdPst {l : ℕ} [Fact l.Prime] (P : LocPrime l) (ι : Qbar l �
     (isSmooth_wdRho P ι Bw' h' hj' _) (BridgeParam.isFrobSS_wdRep P ι Bw h hj ρ)
     (BridgeParam.isFrobSS_wdRep P ι Bw' h' hj' _) e he1 he2
 
+/- English proof (translation)
+Introduce `K L Ω _ _ _ _ _ _ _ _ _ _ _ A v v' h h' l _ ι P AI _ a r O _ _ _ Bw hj hr`. Take `⟨L₁, r₁, hm₁, hV₁, e₁⟩` from `wdAt_of_isPstAt ι Bw h hj hr`. Take `⟨S, Bw', hjj, hS, hle⟩` from `exists_bridge (L := L) Bw hj L₁`. Establish `hj' : GlobalTheory.Pst.Induces Bw'` using `fun x => by rw [hjj]; exact hj x`. Establish `key : ∀ (T : FinExt l) (hT : L₁.1 ≤ T.1), mapRep (algebraMap ↥T.1 (Om l)) ((mapRep (IntermediateField.inclusion hT).toRingHom r₁).comp (decRes A)) = (GlobalTheory.AboveL.resTo L r).comp (Dec (F` using `L) A).subtype := by`.
+
+Introduce `T hT`. Use extensionality with `g i k`. Conclude with `congrArg (fun f : ↥(Dec (F := K) A) →* GL (Fin a) (Om l) => ((f (decRes A g) : GL (Fin a) (Om l)) : Matrix (Fin a) (Fin a) (Om l)) i k) hm₁.2`. Establish `hpS : IsPst P (Bw'.repE Bw'.LL ((mapRep (IntermediateField.inclusion hS).toRingHom r₁).comp (decRes A)))`. Rewrite using `[repE_decRes Bw Bw' hjj hle]`.
+
+Conclude with `(GlobalTheory.PstLaws.isPst_resTo_iff P _ hle).2 (GlobalTheory.PstExt.isPst_enlarge P Bw hS r₁ hV₁)`. Establish `hrL : IsPstAt P Bw' ((GlobalTheory.AboveL.resTo L r).comp (Dec (F` using `L) A).subtype) := ⟨Bw'.LL, _, ⟨le_rfl, key Bw'.LL hS⟩, hpS⟩`. Use `⟨_, _, _, _, Bw', hj', hrL, ?_⟩` and prove the remaining obligations. Take `⟨L₃, r₃, hm₃, hV₃, e₃⟩` from `wdAt_of_isPstAt ι Bw' h' hj' hrL`. Establish `h13 : L₁.1 ≤ (supExt L₁ L₃).1` using `le_sup_left`.
+
+Establish `h33 : L₃.1 ≤ (supExt L₁ L₃).1` using `le_sup_right`. Establish `hm₃' : IsModel Bw' ((GlobalTheory.AboveL.resTo L r).comp (Dec (F` using `L) A).subtype) (supExt L₁ L₃) (mapRep (IntermediateField.inclusion h33).toRingHom r₃) := by`. Use `⟨hm₃.1.trans h33, ?_⟩` and prove the remaining obligations. Use extensionality with `g i k`. Conclude with `congrArg (fun f : ↥(Dec (F := L) A) →* GL (Fin a) (Om l) => ((f g : GL (Fin a) (Om l)) : Matrix (Fin a) (Fin a) (Om l)) i k) hm₃.2`.
+
+Establish `heq` using `IsModel.unique Bw' _ hm₃' ⟨hm₃.1.trans h33, key _ h13⟩`. Rewrite using `[e₁, e₃, BridgeParam.wdPst_enlarge P ι Bw h hj h13 r₁ hV₁, BridgeParam.wdPst_enlarge P ι Bw' h' hj' h33 r₃ hV₃, heq, repE_decRes Bw Bw' hjj hle]`. Conclude with `restricts_wdPst P ι h h' Bw Bw' hj hj' hjj hle _ (GlobalTheory.PstExt.isPst_enlarge P Bw h13 r₁ hV₁)`.
+-/
 theorem wdAt_resTo : ∀ (K L Ω : Type) [Field Ω] [Field K] [NumberField K] [Algebra K Ω] [IsAlgClosure K Ω] [Field L] [NumberField L] [Algebra L Ω] [IsAlgClosure L Ω] [Algebra K L] [IsScalarTower K L Ω] (A : ValuationSubring Ω) (v : HeightOneSpectrum (𝓞 K)) (v' : HeightOneSpectrum (𝓞 L)) (h : IsPlaceOver A v) (h' : IsPlaceOver A v') (l : ℕ) [Fact l.Prime] (ι : Qbar l ≃+* ℂ) (P : LocPrime l) (AI : LocAinf l P), Nonempty (LocTied l P AI) → ∀ (a : ℕ) (r : G K Ω →* GL (Fin a) (Qbar l)) (O : Type) [CommRing O] [Algebra ℤ_[l] O] [TopologicalSpace O] (Bw : LocBridge l K Ω (Dec (F := K) A) O) (hj : GlobalTheory.Pst.Induces Bw), IsPstAt P Bw (r.comp (Dec (F := K) A).subtype) → ∃ (O' : Type) (_ : CommRing O') (_ : Algebra ℤ_[l] O') (_ : TopologicalSpace O') (Bw' : LocBridge l L Ω (Dec (F := L) A) O') (hj' : GlobalTheory.Pst.Induces Bw'), IsPstAt P Bw' ((resTo L r).comp (Dec (F := L) A).subtype) ∧ Restricts (wdAt P ι Bw h hj (r.comp (Dec (F := K) A).subtype)) (wdAt P ι Bw' h' hj' ((resTo L r).comp (Dec (F := L) A).subtype)) := by
   intro K L Ω _ _ _ _ _ _ _ _ _ _ _ A v v' h h' l _ ι P AI _ a r O _ _ _ Bw hj hr
   obtain ⟨L₁, r₁, hm₁, hV₁, e₁⟩ := wdAt_of_isPstAt ι Bw h hj hr

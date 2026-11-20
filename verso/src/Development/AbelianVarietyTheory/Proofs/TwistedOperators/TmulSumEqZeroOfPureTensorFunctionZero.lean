@@ -23,6 +23,31 @@ attribute [local instance] Classical.propDecidable
 
 variable {F : Type} [Field F] [NumberField F] {κ : Type} [Fintype κ]
 
+/- English proof (translation)
+Establish `key : ∀ v : Pl F, ∃ p : κ → Fv F v, vac v p ≠ 0 ∧ (vac v = Set.indicator {x | ∀ i, x i ∈ v.adicCompletionIntegers F} 1 → ∀ i, p i ∈ v.adicCompletionIntegers F)`. Introduce `v`. Take `⟨p, hp⟩` from `Function.ne_iff.1 (h0 v)`. Use `⟨p, hp, fun h => ?_⟩` and prove the remaining obligations. Rewrite `hp` using `[h]`.
+
+Conclude with `Set.mem_of_indicator_ne_zero hp`. Use `choose p hp hp' using key`. Set `w : ∀ v : Pl F, κ → Fv F v` to `fun v => if h : v ∈ T then z ⟨v, h⟩ else p v`. Establish `hw : ∀ i, ∀ᶠ v in cofinite, w v i ∈ v.adicCompletionIntegers F`. Introduce `i`.
+
+Use `filter_upwards [hstd, T.finite_toSet.compl_mem_cofinite] with v hv hvT`. Establish `hvT' : v ∉ T` using `hvT`. Simplify using `only [w, dif_neg hvT']`. Conclude with `hp' v hv i`. Set `y : κ → Af F` to `fun i => ⟨fun v => w v i, hw i⟩`.
+
+Establish `hy : ∀ v, (fun i => evalV F v (y i)) = w v` using `fun _ => rfl`. Establish `hS : {v | vac v ≠ Set.indicator {x | ∀ i, x i ∈ v.adicCompletionIntegers F} 1}.Finite` using `Filter.eventually_cofinite.1 hstd`. Establish `hCfin : (Function.mulSupport fun v => if v ∈ T then (1 : ℂ) else vac v (p v)).Finite`. Use `hS.subset fun v hv => ?_` and prove the remaining obligations. Distinguish the cases in `hvT : v ∈ T`.
+
+Simplify using `[hvT] at hv`. Introduce `he`. Apply `hv` to reduce the goal to its premises. Simplify using `only [if_neg hvT]`. Rewrite using `[he, Set.indicator_of_mem (show p v ∈ {x | ∀ i, x i ∈ v.adicCompletionIntegers F} from hp' v he)]`.
+
+Both sides reduce to the same expression. Establish `hC : (∏ᶠ v, if v ∈ T then (1 : ℂ) else vac v (p v)) ≠ 0` using `finprod_induction (fun c : ℂ => c ≠ 0) one_ne_zero (fun a b ha hb => mul_ne_zero ha hb) fun v => by`. Distinguish the cases in `hvT : v ∈ T`. Simplify using `[hvT]`. Simplify using `only [if_neg hvT]`.
+
+Conclude with `hp v`. Establish `hval : ∀ i, finPr (φ i) y = (∏ v : T, φ i v (z v)) * ∏ᶠ v, if v ∈ T then (1 : ℂ) else vac v (p v)`. Introduce `i`. Establish `e1 : (fun v => φ i v fun j => evalV F v (y j)) = fun v => (if v ∈ T then φ i v (w v) else 1) * (if v ∈ T then (1 : ℂ) else vac v (p v))`. Use function extensionality and compare the values at `v`.
+
+Rewrite using `[hy v]`. Distinguish the cases in `hvT : v ∈ T`. Simplify using `[hvT]`. Simplify using `[hvT, hφ i v hvT, w]`. Establish `hAfin : (Function.mulSupport fun v => if v ∈ T then φ i v (w v) else 1).Finite`.
+
+Use `T.finite_toSet.subset fun v hv => ?_` and prove the remaining obligations. Assume the negation of the conclusion as `h`. Conclude with `hv (if_neg h)`. Use `show (∏ᶠ v, φ i v fun j => evalV F v (y j)) = _`. Rewrite using `[e1, finprod_mul_distrib hAfin hCfin]`.
+
+Use `congr 1`. Rewrite using `[finprod_eq_prod_of_mulSupport_subset (s := T) _ (fun v hv => by`. Assume the negation of the conclusion as `h`. Conclude with `hv (if_neg h))]`. Rewrite using `[← Finset.prod_coe_sort T]`.
+
+Use `Finset.prod_congr rfl fun v _ => ?_` and prove the remaining obligations. Simplify using `[v.2, w]`. Establish `h1` using `congrFun hs (pt x y)`. Simplify using `only [Finset.sum_apply, Pi.zero_apply, pure_eq, pureA_pt, hval] at h1`. Establish `h2 : (∑ i, f i x * ∏ v : T, φ i v (z v)) * ∏ᶠ v, (if v ∈ T then (1 : ℂ) else vac v (p v)) = 0`.
+
+Rewrite using `[Finset.sum_mul]`. Simplify `h1` using `[mul_assoc]`. Conclude with `(mul_eq_zero.1 h2).resolve_right hC`.
+-/
 theorem sum_local_eq_zero (vac : ∀ v : Pl F, (κ → Fv F v) → ℂ) (h0 : ∀ v, vac v ≠ 0)
     (hstd : ∀ᶠ v in cofinite, vac v = Set.indicator {x | ∀ i, x i ∈ v.adicCompletionIntegers F} 1)
     (T : Finset (Pl F)) {m : ℕ} (f : Fin m → SInf F κ) (φ : Fin m → ∀ v : Pl F, (κ → Fv F v) → ℂ)
@@ -103,6 +128,9 @@ def coeL : SInf F κ →ₗ[ℂ] ((κ → mixedEmbedding.mixedSpace F) → ℂ) 
   map_smul' _ _ := by ext; simp
 
 variable (F κ) in
+/- English proof (translation)
+Introduce `_ _ h` and use `SchwartzMap.ext (congrFun h)`.
+-/
 theorem coeL_injective : Function.Injective (coeL F κ) := fun _ _ h => SchwartzMap.ext (congrFun h)
 
 variable (F κ) in
@@ -124,21 +152,33 @@ def famOf (T : Finset (Pl F)) (f : SInf F κ) (φ : ∀ v : Pl F, (κ → Fv F v
 def back (T : Finset (Pl F)) : Vf F κ T none ≃ₗ[ℂ] SInf F κ :=
   (LinearEquiv.ofInjective _ (coeL_injective F κ)).symm
 
+/- English proof (translation)
+The claim follows from `(LinearEquiv.symm_apply_eq _).2 (Subtype.ext rfl)`.
+-/
 theorem back_famOf (T : Finset (Pl F)) (f : SInf F κ) (φ : ∀ v : Pl F, (κ → Fv F v) → ℂ) :
     back T (famOf T f φ none) = f :=
   (LinearEquiv.symm_apply_eq _).2 (Subtype.ext rfl)
 
+/- English proof (translation)
+The claim follows from `q.map_add (a : Xf F κ T (some v) → ℂ) (b : Xf F κ T (some v) → ℂ)`.
+-/
 theorem q_add {T : Finset (Pl F)} {v : T} {Q : Type} [AddCommGroup Q] [Module ℂ Q]
     (q : ((κ → Fv F v) → ℂ) →ₗ[ℂ] Q) (a b : Vf F κ T (some v)) :
     q ((a + b : Vf F κ T (some v)) : Xf F κ T (some v) → ℂ) =
       q (a : Xf F κ T (some v) → ℂ) + q (b : Xf F κ T (some v) → ℂ) :=
   q.map_add (a : Xf F κ T (some v) → ℂ) (b : Xf F κ T (some v) → ℂ)
 
+/- English proof (translation)
+The claim follows from `q.map_smul c (b : Xf F κ T (some v) → ℂ)`.
+-/
 theorem q_smul {T : Finset (Pl F)} {v : T} {Q : Type} [AddCommGroup Q] [Module ℂ Q]
     (q : ((κ → Fv F v) → ℂ) →ₗ[ℂ] Q) (c : ℂ) (b : Vf F κ T (some v)) :
     q ((c • b : Vf F κ T (some v)) : Xf F κ T (some v) → ℂ) = c • q (b : Xf F κ T (some v) → ℂ) :=
   q.map_smul c (b : Xf F κ T (some v) → ℂ)
 
+/- English proof (translation)
+Use function extensionality and compare the values at `v`. Distinguish the cases in `h : v = v₀`. Substitute `h` using the available equality. Simplify using the standard rewrite rules. Rewrite using `[Function.update_of_ne h, Function.update_of_ne (fun e => h (Option.some_injective _ e))]`.
+-/
 theorem upd_some {T : Finset (Pl F)} [DecidableEq (Option T)] {Q : Pl F → Type} [∀ v, AddCommGroup (Q v)]
     [∀ v, Module ℂ (Q v)] (q : ∀ v, ((κ → Fv F v) → ℂ) →ₗ[ℂ] Q v) (w : ∀ l, Vf F κ T l) (v₀ : T)
     (c : Vf F κ T (some v₀)) :
@@ -150,6 +190,9 @@ theorem upd_some {T : Finset (Pl F)} [DecidableEq (Option T)] {Q : Pl F → Type
   · subst h; simp
   · rw [Function.update_of_ne h, Function.update_of_ne (fun e => h (Option.some_injective _ e))]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `v`. Rewrite using `[Function.update_of_ne (Option.some_ne_none v)]`.
+-/
 theorem upd_none {T : Finset (Pl F)} [DecidableEq (Option T)] {Q : Pl F → Type} [∀ v, AddCommGroup (Q v)]
     [∀ v, Module ℂ (Q v)] (q : ∀ v, ((κ → Fv F v) → ℂ) →ₗ[ℂ] Q v) (w : ∀ l, Vf F κ T l) (c : Vf F κ T none) :
     (fun v : T => q v ((Function.update w none c (some v) : Vf F κ T (some v)) : Xf F κ T (some v) → ℂ)) =
@@ -180,6 +223,9 @@ def formOf {T : Finset (Pl F)} {P : Type} [AddCommGroup P] [Module ℂ P] (p : S
       simp only [upd_some, Function.update_of_ne (Option.some_ne_none v₀).symm, q_smul,
         MultilinearMap.map_update_smul, TensorProduct.tmul_smul, map_smul, smul_eq_mul]
 
+/- English proof (translation)
+Use `show ℓ (p (back T (famOf T f φ none)) ⊗ₜ[ℂ] _) = _`. Rewrite using `[back_famOf]`. Both sides reduce to the same expression.
+-/
 theorem formOf_famOf {T : Finset (Pl F)} {P : Type} [AddCommGroup P] [Module ℂ P] (p : SInf F κ →ₗ[ℂ] P)
     {Q : Pl F → Type} [∀ v, AddCommGroup (Q v)] [∀ v, Module ℂ (Q v)] (q : ∀ v, ((κ → Fv F v) → ℂ) →ₗ[ℂ] Q v)
     (ℓ : Module.Dual ℂ (P ⊗[ℂ] PiTensorProduct ℂ fun v : T => Q v)) (f : SInf F κ)
@@ -191,6 +237,13 @@ theorem formOf_famOf {T : Finset (Pl F)} {P : Type} [AddCommGroup P] [Module ℂ
 
 end Forms
 
+/- English proof (translation)
+Introduce `F _ _ κ _ vac h0 hstd P _ _ p Q _ _ q T m f φ hφ hs`. Establish `hloc` using `sum_local_eq_zero vac h0 hstd T f φ hφ hs`. Use `(Module.forall_dual_apply_eq_zero_iff ℂ _).1 fun ℓ => ?_` and prove the remaining obligations. Establish `key` using `GlobalTheory.T.multilinearMap_sum_eq_of_sum_prod_eval_eq (Vf F κ T) (formOf p q ℓ) (Finsupp.equivFunOnFinite.symm fun _ : Fin m => (1 : ℂ)) (fun i => famOf T (f i) (φ i)) (fun _ => 0) (fun z => by`. Rewrite using `[Finsupp.sum_fintype _ _ (fun _ => zero_mul _), Finsupp.sum_fintype _ _ (fun _ => zero_mul _)]`.
+
+Simplify using `only [Finsupp.coe_equivFunOnFinite_symm, one_mul, Fintype.prod_option]`. Establish `h1` using `hloc (z none) fun v => z (some v)`. Simplify using `only [Pi.zero_apply, ZeroMemClass.coe_zero, zero_mul, Finset.sum_const_zero]`. Conclude with `h1)`. Rewrite `key` using `[Finsupp.sum_fintype _ _ (fun _ => zero_mul _), Finsupp.sum_fintype _ _ (fun _ => zero_mul _)]`.
+
+Simplify using `only [Finsupp.coe_equivFunOnFinite_symm, one_mul, MultilinearMap.map_zero, Finset.sum_const_zero, formOf_famOf] at key`. Rewrite using `[map_sum]`. Conclude with `key`.
+-/
 theorem tmul_sum_eq_zero_of_pure : ∀ {F : Type} [Field F] [NumberField F] {κ : Type} [Fintype κ] (vac : ∀ v : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Pl F, (κ → Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.Fv F v) → ℂ),
     (∀ v, vac v ≠ 0) → (∀ᶠ v in Filter.cofinite, vac v = Set.indicator {x | ∀ i, x i ∈ v.adicCompletionIntegers F} 1) →
     ∀ {P : Type} [AddCommGroup P] [Module ℂ P] (p : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.SInf F κ →ₗ[ℂ] P) (Q : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Pl F → Type)

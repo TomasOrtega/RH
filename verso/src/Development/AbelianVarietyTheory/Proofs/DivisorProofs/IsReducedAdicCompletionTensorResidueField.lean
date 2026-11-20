@@ -9,6 +9,25 @@ open IsLocalRing GlobalTheory.Toroidal TensorProduct
 
 namespace GlobalTheory.EtaleCompletionRadical
 
+/- English proof (translation)
+Use `haveI : Finite I.minimalPrimes := (Ideal.finite_minimalPrimes_of_isNoetherianRing A I).to_subtype`. Use `haveI : Fintype I.minimalPrimes := Fintype.ofFinite _`. Use `haveI hpr : ∀ P : I.minimalPrimes, P.1.IsPrime := fun P => P.2.1.1`. Establish `hle : ∀ P : I.minimalPrimes, I ≤ P.1` using `fun P => P.2.1.2`. Set `g : ∀ P : I.minimalPrimes, (A ⧸ I) →ₐ[A] P.1.ResidueField` to `fun P => Ideal.Quotient.liftₐ I (IsScalarTower.toAlgHom A A P.1.ResidueField) (fun a ha => by`.
+
+Express the relevant statement in the definitionally equal form `algebraMap A P.1.ResidueField a = 0`. Conclude with `Ideal.algebraMap_residueField_eq_zero.2 (hle P ha))`. Set `f : (A ⧸ I) →ₗ[A] ∀ P : I.minimalPrimes, P.1.ResidueField` to `LinearMap.pi fun P => (g P).toLinearMap`. Establish `hf : Function.Injective f`. Rewrite using `[← LinearMap.ker_eq_bot, LinearMap.ker_eq_bot']`.
+
+Introduce `y hy`. Take `⟨a, rfl⟩` from `Ideal.Quotient.mk_surjective y`. Rewrite using `[Ideal.Quotient.eq_zero_iff_mem]`. Use `hI (Ideal.sInf_minimalPrimes (I := I) ▸ ?_)` and prove the remaining obligations. Use `Ideal.mem_sInf.2 fun P hP => ?_` and prove the remaining obligations.
+
+Establish `h0` using `congrFun hy ⟨P, hP⟩`. Use `haveI : P.IsPrime := hP.1.1`. Conclude with `Ideal.algebraMap_residueField_eq_zero.1 h0`. Establish `hfB` using `Module.Flat.lTensor_preserves_injective_linearMap (M := B) f hf`. Introduce `x ⟨n, hn⟩`.
+
+Establish `hz : (x ⊗ₜ[A] (1 : A ⧸ I) : B ⊗[A] (A ⧸ I)) = 0`. Apply `hfB` to reduce the goal to its premises. Rewrite using `[map_zero]`. Apply `(TensorProduct.piRight A A B fun P : I.minimalPrimes => P.1.ResidueField).injective` to reduce the goal to its premises. Rewrite using `[map_zero]`.
+
+Use function extensionality and compare the values at `P`. Simplify using `only [LinearMap.lTensor_tmul, TensorProduct.piRight_apply, TensorProduct.piRightHom_tmul, Pi.zero_apply]`. Express the relevant statement in the definitionally equal form `x ⊗ₜ[A] (g P 1) = 0`. Rewrite using `[map_one]`. Establish `hnil : IsNilpotent (x ⊗ₜ[A] (1 : P.1.ResidueField) : B ⊗[A] P.1.ResidueField)`.
+
+Use `⟨n, ?_⟩` and prove the remaining obligations. Rewrite using `[Algebra.TensorProduct.tmul_pow, one_pow]`. Express the relevant statement in the definitionally equal form `Algebra.TensorProduct.includeLeft (S := A) (x ^ n) = 0`. Establish `hk : I.map (algebraMap A B) ≤ RingHom.ker (Algebra.TensorProduct.includeLeft (R` using `A) (S := A) (A := B) (B := P.1.ResidueField)).toRingHom := by`. Rewrite using `[Ideal.map_le_iff_le_comap]`.
+
+Introduce `a ha`. Simplify using `only [Ideal.mem_comap, RingHom.mem_ker, AlgHom.toRingHom_eq_coe, RingHom.coe_coe, Algebra.TensorProduct.includeLeft_apply]`. Rewrite using `[Algebra.algebraMap_eq_smul_one, TensorProduct.smul_tmul, ← Algebra.algebraMap_eq_smul_one, Ideal.algebraMap_residueField_eq_zero.2 (hle P ha), TensorProduct.tmul_zero]`. Conclude with `hk hn`. Conclude with `hnil.eq_zero`.
+
+Use `congrArg (Algebra.TensorProduct.quotIdealMapEquivTensorQuot B I).symm hz` as an intermediate fact. Rewrite `this` using `[← Algebra.TensorProduct.quotIdealMapEquivTensorQuot_mk, AlgEquiv.symm_apply_apply, map_zero, Ideal.Quotient.eq_zero_iff_mem]`. Conclude with `this`.
+-/
 theorem isRadical_map_of_flat {A B : Type} [CommRing A] [CommRing B] [Algebra A B] [IsNoetherianRing A]
     [Module.Flat A B] (I : Ideal A) (hI : I.IsRadical)
     (hfib : ∀ (P : Ideal A) [P.IsPrime], _root_.IsReduced (B ⊗[A] P.ResidueField)) :
@@ -70,6 +89,9 @@ namespace GlobalTheory.EtaleCompletionRadical
 
 set_option synthInstance.maxHeartbeats 400000 in
 
+/- English proof (translation)
+Establish `h` using `GlobalTheory.GeomRegFibTransport.geomRegFib_adicCompletion_of_essFiniteType_int GlobalTheory.qeRing_of_finiteType_int A P P.ResidueField (IntermediateField.fg_of_noetherian _)`. Take `⟨-, hreg⟩` from `h`. Use `isReduced_ofLocalizationMaximal _ fun Q hQ => ?_` and prove the remaining obligations. Use `haveI := hreg Q`. Use `infer_instance`.
+-/
 theorem isReduced_adicCompletion_tensor_residueField (A : Type) [CommRing A] [IsLocalRing A]
     [Algebra.EssFiniteType ℤ A] (P : Ideal A) [P.IsPrime] :
     _root_.IsReduced (AdicCompletion (maximalIdeal A) A ⊗[A] P.ResidueField) := by
@@ -80,6 +102,13 @@ theorem isReduced_adicCompletion_tensor_residueField (A : Type) [CommRing A] [Is
   haveI := hreg Q
   infer_instance
 
+/- English proof (translation)
+Introduce `A R _ _ _ _ _ _ φ hc het hfu I hI`. Use `haveI : IsNoetherianRing A := Algebra.EssFiniteType.isNoetherianRing ℤ A`. Use `haveI := hc`. Use `letI : Algebra A R := φ.toAlgebra`. Take `⟨g, hg, het'⟩` from `GlobalTheory.NormalBaseChange.exists_etale_of_isEtaleCompletion A R het hfu`.
+
+Use `letI : Algebra (AdicCompletion (maximalIdeal A) A) R := g.toAlgebra`. Establish `h1 : (I.map (algebraMap A (AdicCompletion (maximalIdeal A) A))).IsRadical` using `isRadical_map_of_flat I hI fun P _ => isReduced_adicCompletion_tensor_residueField A P`. Establish `h2` using `GlobalTheory.EtaleReducedEq.isRadical_map_of_etale (C := R) _ h1`. Rewrite `h2` using `[Ideal.map_map]`. Express the relevant statement in the definitionally equal form `(I.map (g.comp _)).IsRadical at h2`.
+
+Rewrite `h2` using `[hg]`. Then use the resulting hypothesis.
+-/
 theorem isRadical_map_of_isEtaleCompletion : ∀ (A R : Type) [CommRing A] [IsLocalRing A] [Algebra.EssFiniteType ℤ A]
     [CommRing R] [IsLocalRing R] [IsNoetherianRing R] (φ : A →+* R), IsAdicComplete (maximalIdeal R) R →
     IsEtaleCompletion φ → ((residue R).comp φ).FormallyUnramified → ∀ I : Ideal A, I.IsRadical →

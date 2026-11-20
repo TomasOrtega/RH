@@ -7,6 +7,13 @@ open Formalism.WeaklyAdmissibleFiltrations Formalism.BasicNotions Formalism.Basi
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Set `Φ : V ⊗[k] M ≃ₗ[k] (Fin d → M)` to `(TensorProduct.congr bV.equivFun (LinearEquiv.refl k M)).trans ((TensorProduct.comm k _ _).trans (TensorProduct.piScalarRight k k M (Fin d)))`. Establish `h : ∀ (v : V) (b : M) (i : Fin d), Φ (v ⊗ₜ b) i = bV.repr v i • b`. Introduce `v b i`. Simplify using `[Φ]`. Use `⟨Φ, h, fun z => ?_⟩` and prove the remaining obligations.
+
+Apply `Φ.injective` to reduce the goal to its premises. Use function extensionality and compare the values at `j`. Rewrite using `[map_sum, Finset.sum_apply]`. Simplify using `only [h, Module.Basis.repr_self]`. Rewrite using `[Finset.sum_eq_single j]`.
+
+Simplify using the standard rewrite rules. Introduce `i _ hij`. Simplify using `[Finsupp.single_apply, hij]`. Simplify using the standard rewrite rules.
+-/
 theorem exists_tensor_coord_of_basis {k V M : Type} [Field k] [AddCommGroup V] [Module k V]
     [AddCommGroup M] [Module k M] {d : ℕ} (bV : Module.Basis (Fin d) k V) :
     ∃ Φ : V ⊗[k] M ≃ₗ[k] (Fin d → M), (∀ (v : V) (b : M) (i : Fin d), Φ (v ⊗ₜ b) i = bV.repr v i • b) ∧
@@ -29,6 +36,17 @@ theorem exists_tensor_coord_of_basis {k V M : Type} [Field k] [AddCommGroup V] [
     simp [Finsupp.single_apply, hij]
   · simp
 
+/- English proof (translation)
+Introduce `G _ Qp K₀ K _ _ _ _ _ _ _ B BdR _ _ _ _ _ _ _ _ _ _ _ PD LL _ _ V _ _ _ _ ρ d bV`. Take `⟨Φ, h, hz⟩` from `exists_tensor_coord_of_basis (M := BdR) bV`. Use `⟨Φ, fun a z => ⟨?_, fun H => ?_⟩, fun g z => ?_⟩` and prove the remaining obligations. Introduce and unpack `⟨w, rfl⟩ i`. Proceed by induction on `w using TensorProduct.induction_on with`.
+
+Consider the case `zero => simp`. Consider the case `tmul v b`. Rewrite using `[AlgebraTensorModule.map_tmul, h]`. Conclude with `((PD.Fil a).restrictScalars Qp).smul_mem _ b.2`. Consider the case `add x y hx hy`.
+
+Rewrite using `[map_add, map_add, Pi.add_apply]`. Conclude with `add_mem hx hy`. Rewrite using `[hz z]`. Use `Submodule.sum_mem _ fun i _ => ⟨bV i ⊗ₜ ⟨Φ z i, H i⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[AlgebraTensorModule.map_tmul]`.
+
+Both sides reduce to the same expression. Establish `hact : ∀ (v : V) (b : BdR), actVdR PD ρ g (v ⊗ₜ b) = ρ g v ⊗ₜ PD.actdR g b`. Introduce `v b`. Unfold `actVdR`. Rewrite using `[AlgebraTensorModule.map_tmul]`.
+
+Both sides reduce to the same expression. Use function extensionality and compare the values at `i`. Use `conv_lhs => rw [hz z]`. Rewrite using `[map_sum, map_sum, Finset.sum_apply]`. Simplify using `only [hact, h, Matrix.mulVec, dotProduct, Matrix.of_apply, Algebra.smul_def]`.
+-/
 theorem exists_coord_tensor_dR : ∀ {G : Type} [Group G] {Qp K₀ K : Type} [Field Qp] [Field K₀] [Field K] [Algebra Qp K₀] [Algebra Qp K] [Algebra K₀ K] [IsScalarTower Qp K₀ K] {B BdR : Type} [CommRing B] [CommRing BdR] [Algebra Qp B] [Algebra K₀ B] [IsScalarTower Qp K₀ B] [Algebra Qp BdR] [Algebra K₀ BdR] [Algebra K BdR] [IsScalarTower Qp K BdR] [IsScalarTower K₀ K BdR] [IsScalarTower Qp K₀ BdR] (PD : PeriodData G Qp K₀ K B BdR) {LL : Type} [Field LL] [Algebra Qp LL] {V : Type} [AddCommGroup V] [Module LL V] [Module Qp V] [IsScalarTower Qp LL V] (ρ : Representation LL G V) {d : ℕ} (bV : Module.Basis (Fin d) Qp V), ∃ Φ : V ⊗[Qp] BdR ≃ₗ[Qp] (Fin d → BdR), (∀ (a : ℤ) (z : V ⊗[Qp] BdR), z ∈ FilV PD (LL := LL) (V := V) a ↔ ∀ i, Φ z i ∈ PD.Fil a) ∧ ∀ (g : G) (z : V ⊗[Qp] BdR), Φ (actVdR PD ρ g z) = (Matrix.of fun i j => algebraMap Qp BdR (bV.repr (ρ g (bV j)) i)).mulVec (fun i => PD.actdR g (Φ z i)) := by
   intro G _ Qp K₀ K _ _ _ _ _ _ _ B BdR _ _ _ _ _ _ _ _ _ _ _ PD LL _ _ V _ _ _ _ ρ d bV
   obtain ⟨Φ, h, hz⟩ := exists_tensor_coord_of_basis (M := BdR) bV

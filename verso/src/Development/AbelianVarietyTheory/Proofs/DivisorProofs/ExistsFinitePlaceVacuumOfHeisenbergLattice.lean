@@ -34,6 +34,27 @@ namespace GlobalTheory.HeisLatVac
 
 open GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels (At Acts)
 
+/- English proof (translation)
+Establish `hsq : ∀ u ∈ Λ, χ u * χ u = 1` using `fun u hu => by`. Establish `e` using `hco u hu u hu`. Rewrite `e` using `[h2 u hu, sub_self, mul_zero, AddChar.map_zero_eq_one, mul_one]`. Conclude with `e.symm`. Establish `hiso : ∀ u ∈ Λ, ∀ w ∈ Λ, ψ₀ (u.1 ⬝ᵥ w.2 - w.1 ⬝ᵥ u.2) = 1`.
+
+Introduce `u hu w hw`. Establish `e1` using `hco u hu w hw`. Establish `e2` using `hco w hw u hu`. Rewrite `e2` using `[add_comm w u, e1, mul_comm (χ w) (χ u)]`. Establish `hne0 : χ u * χ w ≠ 0` using `mul_ne_zero (left_ne_zero_of_mul_eq_one (hsq u hu)) (left_ne_zero_of_mul_eq_one (hsq w hw))`.
+
+Use `set a := ⅟(2 : Fv F v) * (u.1 ⬝ᵥ w.2 - w.1 ⬝ᵥ u.2) with ha_def`. Establish `ha : ⅟(2 : Fv F v) * (w.1 ⬝ᵥ u.2 - u.1 ⬝ᵥ w.2) = -a` using `by rw [ha_def]; ring`. Rewrite `e2` using `[ha]`. Establish `e3 : ψ₀ a = ψ₀ (-a)` using `mul_left_cancel₀ hne0 e2`. Establish `e4 : u.1 ⬝ᵥ w.2 - w.1 ⬝ᵥ u.2 = a + a`.
+
+Rewrite using `[ha_def, ← two_mul, ← mul_assoc, mul_invOf_self, one_mul]`. Rewrite using `[e4, AddChar.map_add_eq_mul]`. Combine the equalities or inequalities in the displayed calculation. Set `L : AddSubgroup (κ → Fv F v)` to `Λ.comap (AddMonoidHom.inr (κ → Fv F v) (κ → Fv F v))`. Set `L' : AddSubgroup (κ → Fv F v)` to `Λ.comap ((AddMonoidHom.inr (κ → Fv F v) (κ → Fv F v)).comp (DistribMulAction.toAddMonoidHom (κ → Fv F v) (⅟(2 : Fv F v))))`.
+
+Establish `hL : IsCompact (L : Set (κ → Fv F v))`. Establish `e : (L : Set (κ → Fv F v)) = Prod.snd '' ((Λ : Set ((κ → Fv F v) × (κ → Fv F v))) ∩ {u | u.1 = 0})`. Use extensionality with `y`. Prove the components needed by the constructor for the conclusion. Introduce `hy`.
+
+Conclude with `⟨(0, y), ⟨hy, rfl⟩, rfl⟩`. Introduce and unpack `⟨u, ⟨hu, hu1⟩, rfl⟩`. Establish `: u = (0, u.2)` using `Prod.ext hu1 rfl`. Use `show (0, u.2) ∈ Λ`. Rewrite using `[← this]`.
+
+Conclude with `hu`. Rewrite using `[e]`. Conclude with `(hk.inter_right (isClosed_eq continuous_fst continuous_const)).image continuous_snd`. Establish `hL' : IsOpen (L' : Set (κ → Fv F v))`. Rewrite using `[AddSubgroup.coe_comap]`.
+
+Conclude with `ho.preimage (continuous_const.prodMk (continuous_const.smul continuous_id))`. Take `⟨x₀, hx₀⟩` from `GlobalTheory.T.exists_dotProduct_representation_compact_character_local v ψ₀ hc hne L hL L' hL' (fun y => χ (0, y)) (fun y hy y' hy' => by`. Establish `e` using `hco _ hy _ hy'`. Simplify using `only [AddMonoidHom.inr_apply, Prod.mk_add_mk, add_zero, zero_dotProduct, sub_self, mul_zero, AddChar.map_zero_eq_one, mul_one] at e`. Conclude with `e)`.
+
+Use the proof step `(fun y hy hy' => by`. Establish `e` using `h2 _ hy'`. Simplify using `only [AddMonoidHom.coe_comp, Function.comp_apply, AddMonoidHom.inr_apply, DistribMulAction.toAddMonoidHom_apply, Prod.mk_add_mk, add_zero] at e`. Rewrite using `[← add_smul, invOf_two_add_invOf_two, one_smul] at e)` and apply the resulting hypothesis. Establish `hx : ∀ y : κ → Fv F v, ((0 : κ → Fv F v), y) ∈ Λ → χ (0, y) = ψ₀ (x₀ ⬝ᵥ y)` using `fun y hy => hx₀ y hy`.
+
+Use `⟨vacFn ψ₀ Λ χ x₀, ⟨GlobalTheory.T.isLocallyConstant_heisenberg_lattice_vacuum_function v ψ₀ hc Λ ho χ x₀ hco hx h2, GlobalTheory.T.heisenbergLatticeVacuumFn_hasCompactSupport v ψ₀ Λ χ x₀ hk⟩, ?_, GlobalTheory.T.schroedingerOperator_heisenbergLatticeVacuum_eigen ψ₀ Λ χ x₀ hco hx h …` and prove the remaining obligations. Introduce `h`. Establish `e` using `GlobalTheory.T.heisenbergLatticeVacuumFn_apply_add ψ₀ Λ χ x₀ hco hx 0 (zero_mem _)`. Simplify using `only [Prod.fst_zero, Prod.snd_zero, add_zero, dotProduct_zero, neg_zero, mul_zero, sub_zero, AddChar.map_zero_eq_one, h0, mul_one, h, Pi.zero_apply] at e`. Conclude with `zero_ne_one e`.
+-/
 theorem exists_local_vac {F : Type} [Field F] [NumberField F] (v : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Pl F) {κ : Type} [Fintype κ]
     (ψ₀ : AddChar (Fv F v) ℂ) (hc : Continuous ψ₀) (hne : ψ₀ ≠ 1)
     (Λ : AddSubgroup ((κ → Fv F v) × (κ → Fv F v))) (ho : IsOpen (Λ : Set ((κ → Fv F v) × (κ → Fv F v))))
@@ -104,6 +125,33 @@ end GlobalTheory.HeisLatVac
 
 namespace GlobalTheory.HeisLatVac
 
+/- English proof (translation)
+Introduce `F _ _ W _ _ B κ _ co ψ v hψc hψ1 Γ hAt _hO hopen hcomp c hc0 hcoc hc2`. Establish `hsupp : ∀ a : AF F, GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.At (GlobalTheory.AdelicU.evFin F v) a → a = GlobalTheory.LatVac.liftV v (GlobalTheory.AdelicU.evFin F v a)`. Introduce `a ha`. Establish `h1` using `ha (1 - GlobalTheory.LatVac.liftV v 1) (by rw [map_sub, map_one, GlobalTheory.LatVac.evFin_liftV, sub_self])`. Rewrite `h1` using `[smul_eq_mul, sub_mul, one_mul, sub_eq_zero]`.
+
+Use `conv_lhs => rw [h1]`. Conclude with `GlobalTheory.EmbChart.atPlace_mul_right v 1 a |>.trans (by rw [one_mul]; rfl)`. Establish `hψloc : ∀ a : AF F, GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.At (GlobalTheory.AdelicU.evFin F v) a → ψ a = GlobalTheory.LatVac.psiAt ψ v (GlobalTheory.AdelicU.evFin F v a)`. Introduce `a ha`. Use `conv_lhs => rw [hsupp a ha]`.
+
+Both sides reduce to the same expression. Establish `hAtE : ∀ γ, GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.At (GlobalTheory.AdelicU.evFin F v) γ → ∀ k, GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.At (GlobalTheory.AdelicU.evFin F v) ((co.e γ).1 k) ∧ GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels …`. Introduce `γ hγ k`. Establish `e : ∀ u : AF F, GlobalTheory.AdelicU.evFin F v u = 0 → u • co.e γ = 0` using `fun u hu => by`. Rewrite using `[← LinearEquiv.map_smul, hγ u hu, map_zero]`.
+
+Conclude with `⟨fun u hu => by simpa using congrArg (fun p => p.1 k) (e u hu), fun u hu => by simpa using congrArg (fun p => p.2 k) (e u hu)⟩`. Establish `hinj : ∀ γ ∈ Γ, ∀ γ' ∈ Γ, GlobalTheory.LatVac.locCo co v γ = GlobalTheory.LatVac.locCo co v γ' → γ = γ'`. Introduce `γ hγ γ' hγ' h`. Establish `hδ` using `hAt _ (sub_mem hγ hγ')`. Establish `h0 : GlobalTheory.LatVac.locCo co v (γ - γ') = 0` using `by rw [map_sub, h, sub_self]`.
+
+Establish `he : co.e (γ - γ') = 0`. Use `Prod.ext (funext fun k => ?_) (funext fun k => ?_)` and prove the remaining obligations. Rewrite using `[hsupp _ (hAtE _ hδ k).1]`. Use `congrFun (congrArg Prod.fst h0) k` as an intermediate fact. Express the relevant statement in the definitionally equal form `GlobalTheory.AdelicU.evFin F v ((co.e (γ - γ')).1 k) = 0 at this`.
+
+Rewrite using `[this, map_zero]`. Both sides reduce to the same expression. Rewrite using `[hsupp _ (hAtE _ hδ k).2]`. Use `congrFun (congrArg Prod.snd h0) k` as an intermediate fact. Express the relevant statement in the definitionally equal form `GlobalTheory.AdelicU.evFin F v ((co.e (γ - γ')).2 k) = 0 at this`.
+
+Rewrite using `[this, map_zero]`. Both sides reduce to the same expression. Rewrite `he` using `[LinearEquiv.map_eq_zero_iff, sub_eq_zero]`. Conclude with `he`. Set `χ : (κ → Fv F v) × (κ → Fv F v) → ℂ` to `fun u => if h : ∃ γ ∈ Γ, GlobalTheory.LatVac.locCo co v γ = u then c h.choose else 0`.
+
+Establish `hχ : ∀ γ ∈ Γ, χ (GlobalTheory.LatVac.locCo co v γ) = c γ`. Introduce `γ hγ`. Establish `h : ∃ γ' ∈ Γ, GlobalTheory.LatVac.locCo co v γ' = GlobalTheory.LatVac.locCo co v γ` using `⟨γ, hγ, rfl⟩`. Simplify using `only [χ, dif_pos h]`. Rewrite using `[hinj _ h.choose_spec.1 _ hγ h.choose_spec.2]`.
+
+Establish `hcont : Continuous (GlobalTheory.LatVac.psiAt ψ v)` using `GlobalTheory.VacAny.continuous_psiV hψc v`. Take `⟨φ, hSB, hne, heig⟩` from `exists_local_vac v (GlobalTheory.LatVac.psiAt ψ v) hcont hψ1 (Γ.map (GlobalTheory.LatVac.locCo co v)) hopen hcomp χ (by rw [← map_zero (GlobalTheory.LatVac.locCo co v), hχ 0 (zero_mem _), hc0]) (by`. Introduce and unpack `_ ⟨γ, hγ, rfl⟩ _ ⟨γ', hγ', rfl⟩`. Rewrite using `[← map_add, hχ _ (add_mem hγ hγ'), hχ _ hγ, hχ _ hγ', hcoc γ hγ γ' hγ']`. Use `congr 1`.
+
+Establish `hA : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.At (GlobalTheory.AdelicU.evFin F v) (⅟(2 : AF F) * B γ γ')`. Rewrite using `[co.form]`. Use `GlobalTheory.VacAny.at_mul_left _ (GlobalTheory.VacAny.at_sub ?_ ?_)` and prove the remaining obligations. Conclude with `GlobalTheory.VacAny.at_sum _ fun i _ => GlobalTheory.VacAny.at_mul_left _ (hAtE _ (hAt _ hγ') i).2`. Conclude with `GlobalTheory.VacAny.at_sum _ fun i _ => GlobalTheory.VacAny.at_mul_left _ (hAtE _ (hAt _ hγ) i).2`.
+
+Rewrite using `[hψloc _ hA, co.form, map_mul, GlobalTheory.VacAny.evFin_invOf_two, map_sub]`. Simplify using `only [dotProduct, map_sum, map_mul]`. Use the proof step `rfl)`. Use the proof step `(by`. Introduce and unpack `_ ⟨γ, hγ, rfl⟩`.
+
+Rewrite using `[← map_add, hχ _ (add_mem hγ hγ)]`. Establish `e : γ + γ = GlobalTheory.LatVac.liftV v 2 • γ`. Establish `h` using `hAt γ hγ (GlobalTheory.LatVac.liftV v 2 - 2) (by rw [map_sub, GlobalTheory.LatVac.evFin_liftV, map_ofNat, sub_self])`. Rewrite `h` using `[sub_smul, sub_eq_zero, two_smul]`. Conclude with `h.symm`.
+
+Rewrite using `[e]`. Conclude with `hc2 γ hγ)`. Use `⟨φ, hSB, hne, fun γ hγ => ?_⟩` and prove the remaining obligations. Establish `hb` using `GlobalTheory.T.adelicHeisenberg_acts_by_local_schrodinger co ψ v γ (hAt γ hγ) φ`. Rewrite `hb` using `[heig _ (AddSubgroup.mem_map_of_mem _ hγ), hχ γ hγ]`. Then use the resulting hypothesis.
+-/
 theorem exists_vac_of_lattice : ∀ {F : Type} [Field F] [NumberField F] {W : Type} [AddCommGroup W] [Module (AF F) W]
     {B : W → W → AF F} {κ : Type} [Fintype κ] (co : GlobalTheory.WeilM.Darboux B κ) (ψ : AddChar (AF F) ℂ)
     (v : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Pl F), Continuous ψ → GlobalTheory.LatVac.psiAt ψ v ≠ 1 →

@@ -13,15 +13,26 @@ section FiniteGroup
 variable {G V W X Y : Type} [Group G] [Fintype G] [AddCommGroup V] [Module ℂ V] [AddCommGroup W] [Module ℂ W]
   [AddCommGroup X] [Module ℂ X] [AddCommGroup Y] [Module ℂ Y] [FiniteDimensional ℂ W]
 
+/- English proof (translation)
+Simplify using `[charIdem, LinearMap.sum_apply]`.
+-/
 theorem charIdem_apply (σ : Representation ℂ G V) (τ : Representation ℂ G W) (v : V) :
     charIdem σ τ v =
       ((Module.finrank ℂ W : ℂ) / Fintype.card G) • ∑ g : G, LinearMap.trace ℂ W (τ g⁻¹) • σ g v := by
   simp [charIdem, LinearMap.sum_apply]
 
+/- English proof (translation)
+Simplify using `only [charIdem_apply, map_smul, map_sum, φ.isIntertwining]`.
+-/
 theorem map_charIdem {σ : Representation ℂ G V} {σ' : Representation ℂ G X} (φ : σ.IntertwiningMap σ')
     (τ : Representation ℂ G W) (v : V) : φ (charIdem σ τ v) = charIdem σ' τ (φ v) := by
   simp only [charIdem_apply, map_smul, map_sum, φ.isIntertwining]
 
+/- English proof (translation)
+Simplify using `only [charIdem_apply, map_smul, map_sum]`. Use `congr 1`. Use `(Fintype.sum_equiv (MulAut.conj h).toEquiv _ _ fun g => ?_).symm` and prove the remaining obligations. Establish `e : LinearMap.trace ℂ W (τ (h * g * h⁻¹)⁻¹) = LinearMap.trace ℂ W (τ g⁻¹)`. Rewrite using `[show (h * g * h⁻¹)⁻¹ = h * g⁻¹ * h⁻¹ by group]`.
+
+Conclude with `τ.char_conj g⁻¹ h`. Use `show _ = LinearMap.trace ℂ W (τ (h * g * h⁻¹)⁻¹) • σ (h * g * h⁻¹) (σ h v)`. Rewrite using `[e, ← Module.End.mul_apply, ← Module.End.mul_apply, ← map_mul, ← map_mul, inv_mul_cancel_right]`.
+-/
 theorem charIdem_apply_rep (σ : Representation ℂ G V) (τ : Representation ℂ G W) (h : G) (v : V) :
     charIdem σ τ (σ h v) = σ h (charIdem σ τ v) := by
   simp only [charIdem_apply, map_smul, map_sum]
@@ -33,6 +44,9 @@ theorem charIdem_apply_rep (σ : Representation ℂ G V) (τ : Representation �
   show _ = LinearMap.trace ℂ W (τ (h * g * h⁻¹)⁻¹) • σ (h * g * h⁻¹) (σ h v)
   rw [e, ← Module.End.mul_apply, ← Module.End.mul_apply, ← map_mul, ← map_mul, inv_mul_cancel_right]
 
+/- English proof (translation)
+The claim follows from `LinearMap.ext (charIdem_apply_rep σ τ h)`.
+-/
 theorem commute_charIdem (σ : Representation ℂ G V) (τ : Representation ℂ G W) (h : G) :
     Commute (charIdem σ τ) (σ h) := LinearMap.ext (charIdem_apply_rep σ τ h)
 
@@ -44,6 +58,13 @@ def coeffMap (σ : Representation ℂ G V) (τ : Representation ℂ G W) (ℓ : 
     refine (Fintype.sum_equiv (Equiv.mulLeft h) _ _ fun g => ?_).symm
     simp only [Equiv.coe_mulLeft, ← Module.End.mul_apply, ← map_mul, _root_.mul_inv_rev, inv_mul_cancel_right]
 
+/- English proof (translation)
+Set `b` to `Module.finBasis ℂ W`. Establish `key : ∑ g : G, LinearMap.trace ℂ W (τ g⁻¹) • σ g v = ∑ i, coeffMap σ τ (b.coord i) v (b i)`. Establish `: ∀ i, coeffMap σ τ (b.coord i) v (b i) = ∑ g : G, b.repr (τ g⁻¹ (b i)) i • σ g v` using `fun i => by show (∑ g : G, (b.coord i ∘ₗ τ g⁻¹).smulRight (σ g v)) (b i) = _`. Simplify using `[LinearMap.sum_apply]`. Simplify using `only [this]`.
+
+Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun g _ => ?_` and prove the remaining obligations. Rewrite using `[← Finset.sum_smul, LinearMap.trace_eq_matrix_trace ℂ b]`. Simplify using `[Matrix.trace, LinearMap.toMatrix_apply]`. Rewrite using `[charIdem_apply, key]`.
+
+Conclude with `(isotypic σ τ).toSubmodule.smul_mem _ (Submodule.sum_mem _ fun i _ => apply_mem_isotypic _ _)`.
+-/
 theorem charIdem_mem (σ : Representation ℂ G V) (τ : Representation ℂ G W) (v : V) :
     charIdem σ τ v ∈ isotypic σ τ := by
   classical
@@ -60,6 +81,13 @@ theorem charIdem_mem (σ : Representation ℂ G V) (τ : Representation ℂ G W)
   rw [charIdem_apply, key]
   exact (isotypic σ τ).toSubmodule.smul_mem _ (Submodule.sum_mem _ fun i _ => apply_mem_isotypic _ _)
 
+/- English proof (translation)
+Use `Model.nontrivial_of_isIrreducible hτ` as an intermediate fact. Take `⟨c, hc⟩` from `(Representation.IsIrreducible.algebraMap_intertwiningMap_bijective_of_isAlgClosed (ρ := τ)).2 ⟨charIdem τ τ, fun g => commute_charIdem τ τ g⟩`. Establish `h1 : charIdem τ τ = c • (1 : Module.End ℂ W)` using `LinearMap.ext fun w => (congrArg (fun f : τ.IntertwiningMap τ => f w) hc).symm`. Use `haveI : Invertible (Nat.card G : ℂ) := invertibleOfNonzero (Nat.cast_ne_zero.2 Nat.card_pos.ne')`. Establish `ho` using `Representation.char_orthonormal τ τ`.
+
+Rewrite `ho` using `[if_pos ⟨.refl _⟩, Nat.card_eq_fintype_card]`. Establish `hd : (Module.finrank ℂ W : ℂ) ≠ 0` using `Nat.cast_ne_zero.2 Module.finrank_pos.ne'`. Establish `h2 : LinearMap.trace ℂ W (charIdem τ τ) = Module.finrank ℂ W`. Simplify using `only [charIdem, map_smul, map_sum, smul_eq_mul]`. Rewrite using `[div_eq_mul_inv, mul_assoc]`.
+
+Use `(congrArg _ (Eq.trans ?_ ho)).trans (mul_one _)` and prove the remaining obligations. Conclude with `congrArg _ (Finset.sum_congr rfl fun g _ => mul_comm _ _)`. Rewrite `h2` using `[h1, map_smul, LinearMap.trace_one, smul_eq_mul]`. Rewrite using `[h1, mul_right_cancel₀ hd (h2.trans (one_mul _).symm), one_smul]`.
+-/
 theorem charIdem_self {τ : Representation ℂ G W} (hτ : τ.IsIrreducible) : charIdem τ τ = 1 := by
   have := Model.nontrivial_of_isIrreducible hτ
   obtain ⟨c, hc⟩ := (Representation.IsIrreducible.algebraMap_intertwiningMap_bijective_of_isAlgClosed (ρ := τ)).2
@@ -78,6 +106,9 @@ theorem charIdem_self {τ : Representation ℂ G W} (hτ : τ.IsIrreducible) : c
   rw [h1, map_smul, LinearMap.trace_one, smul_eq_mul] at h2
   rw [h1, mul_right_cancel₀ hd (h2.trans (one_mul _).symm), one_smul]
 
+/- English proof (translation)
+Use `Submodule.iSup_induction _ (motive := fun v => charIdem σ τ v = v) hv ?_ (map_zero _) fun x y hx hy => ?_` and prove the remaining obligations. Introduce and unpack `f _ ⟨w, rfl⟩`. Conclude with `(map_charIdem f τ w).symm.trans (by rw [charIdem_self hτ]; rfl)`. Rewrite using `[map_add, hx, hy]`.
+-/
 theorem charIdem_of_mem {σ : Representation ℂ G V} {τ : Representation ℂ G W} (hτ : τ.IsIrreducible) {v : V}
     (hv : v ∈ isotypic σ τ) : charIdem σ τ v = v := by
   refine Submodule.iSup_induction _ (motive := fun v => charIdem σ τ v = v) hv ?_ (map_zero _) fun x y hx hy => ?_
@@ -92,6 +123,9 @@ section Compact
 variable {G V W : Type} [Group G] [TopologicalSpace G] [IsTopologicalGroup G] [AddCommGroup V] [Module ℂ V]
   [AddCommGroup W] [Module ℂ W] {π : Representation ℂ G V} {σ : Representation ℂ G W} {H : Subgroup G}
 
+/- English proof (translation)
+Take `⟨U, -, _, hU⟩` from `exists_normal_fix hπ hH v`. Use `letI := Fintype.ofFinite (H ⧸ U)`. Rewrite using `[idem_eq_cosetSum hπ hH U hU, idem_eq_cosetSum hσ hH U fun u hu => by rw [← f.isIntertwining, hU u hu]]`. Simplify using `only [map_smul, map_sum, f.isIntertwining]`.
+-/
 theorem map_idem (hπ : IsSmooth π) (hσ : IsSmooth σ) (hH : IsCompact (H : Set G)) (f : π.IntertwiningMap σ) (v : V) :
     f (idem hπ hH v) = idem hσ hH (f v) := by
   obtain ⟨U, -, _, hU⟩ := exists_normal_fix hπ hH v
@@ -99,6 +133,11 @@ theorem map_idem (hπ : IsSmooth π) (hσ : IsSmooth σ) (hH : IsCompact (H : Se
   rw [idem_eq_cosetSum hπ hH U hU, idem_eq_cosetSum hσ hH U fun u hu => by rw [← f.isIntertwining, hU u hu]]
   simp only [map_smul, map_sum, f.isIntertwining]
 
+/- English proof (translation)
+Take `⟨U, -, _, hU⟩` from `exists_normal_fix hπ hH v`. Use `letI := Fintype.ofFinite (H ⧸ U)`. Establish `hc : (Fintype.card (H ⧸ U) : ℂ) ≠ 0` using `Nat.cast_ne_zero.2 Fintype.card_ne_zero`. Rewrite using `[idem_eq_cosetSum hπ hH U hU]`. Simplify using `only [map_smul, map_sum, f.isIntertwining]`.
+
+Rewrite using `[Finset.sum_congr rfl fun q _ => mem_fixed.1 hv _ (q.out : H).2, Finset.sum_const, Finset.card_univ, ← Nat.cast_smul_eq_nsmul ℂ, smul_smul, inv_mul_cancel₀ hc, one_smul]`.
+-/
 theorem map_idem_of_mem (hπ : IsSmooth π) (hH : IsCompact (H : Set G)) (f : π.IntertwiningMap σ) {v : V}
     (hv : f v ∈ fixed σ H) : f (idem hπ hH v) = f v := by
   obtain ⟨U, -, _, hU⟩ := exists_normal_fix hπ hH v
@@ -109,10 +148,16 @@ theorem map_idem_of_mem (hπ : IsSmooth π) (hH : IsCompact (H : Set G)) (f : π
   rw [Finset.sum_congr rfl fun q _ => mem_fixed.1 hv _ (q.out : H).2, Finset.sum_const, Finset.card_univ,
     ← Nat.cast_smul_eq_nsmul ℂ, smul_smul, inv_mul_cancel₀ hc, one_smul]
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨_, idem_mem hπ hH v, map_idem_of_mem hπ hH f hv⟩`.
+-/
 theorem exists_mem_fixed_map_eq (hπ : IsSmooth π) (hH : IsCompact (H : Set G)) (f : π.IntertwiningMap σ) {v : V}
     (hv : f v ∈ fixed σ H) : ∃ u ∈ fixed π H, f u = f v :=
   ⟨_, idem_mem hπ hH v, map_idem_of_mem hπ hH f hv⟩
 
+/- English proof (translation)
+Use `le_antisymm ?_ fun w hw => ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨v, hv, rfl⟩`. Conclude with `mem_fixed.2 fun u hu => by rw [f.toLinearMap_apply, ← f.isIntertwining, mem_fixed.1 hv u hu]`. Take `⟨v, rfl⟩` from `hf w`. Conclude with `exists_mem_fixed_map_eq hπ hH f hw`.
+-/
 theorem map_fixed_of_surjective (hπ : IsSmooth π) (hH : IsCompact (H : Set G)) {f : π.IntertwiningMap σ}
     (hf : Function.Surjective f) : (fixed π H).map f.toLinearMap = fixed σ H := by
   refine le_antisymm ?_ fun w hw => ?_
@@ -130,13 +175,22 @@ variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchim
   [AddCommGroup X] [Module ℂ X] {π : Representation ℂ (GL n k) V} {σ : Representation ℂ (GL n k) W}
   {ρ : Representation ℂ (GL n k) X}
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem levelZeroMap_apply (f : π.IntertwiningMap σ) (v : fixed π (KOne k n)) :
     (levelZeroMap f v : W) = f v := rfl
 
+/- English proof (translation)
+Introduce `_ _ h` and use `Subtype.ext (hf (congrArg Subtype.val h))`.
+-/
 theorem levelZeroMap_injective {f : π.IntertwiningMap σ} (hf : Function.Injective f) :
     Function.Injective (levelZeroMap f) :=
   fun _ _ h => Subtype.ext (hf (congrArg Subtype.val h))
 
+/- English proof (translation)
+Introduce and unpack `⟨x, hx⟩`. Take `⟨v, rfl⟩` from `hf x`. Take `⟨u, hu, h⟩` from `exists_mem_fixed_map_eq hπ (levelPre_bot (k := k) (n := n) ▸ isCompact_levelPre ⊥) f hx`. Conclude with `⟨⟨u, hu⟩, Subtype.ext h⟩`.
+-/
 theorem levelZeroMap_surjective (hπ : IsSmooth π) {f : π.IntertwiningMap σ} (hf : Function.Surjective f) :
     Function.Surjective (levelZeroMap f) := by
   rintro ⟨x, hx⟩

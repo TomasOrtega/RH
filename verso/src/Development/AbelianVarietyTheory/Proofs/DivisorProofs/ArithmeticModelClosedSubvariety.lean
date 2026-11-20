@@ -14,6 +14,23 @@ noncomputable section
 
 namespace GlobalTheory.ArLieBase
 
+/- English proof (translation)
+Introduce `F F' _ _ _ e T sT hT V _ j hj d hd`. Establish `: CharZero F'` using `e.symm.toRingHom.charZero`. Establish `: NumberField F'` using `NumberField.of_ringEquiv F F' e`. Set `ε : 𝓞 F ≃+* 𝓞 F'` to `RingOfIntegers.mapRingEquiv e`. Establish `hb` using `IsPullback.of_hasPullback sT (spMap (algebraMap (𝓞 F') F'))`.
+
+Set `h : V ⟶ T` to `j ≫ Limits.pullback.fst _ _`. Establish `hh : j ≫ Limits.pullback.fst _ _ = h` using `rfl`. Establish `w : h ≫ sT = (j ≫ Limits.pullback.snd _ _) ≫ spMap (algebraMap (𝓞 F') F')`. Rewrite using `[← hh, Category.assoc, Category.assoc, Limits.pullback.condition]`. Establish `: IsAffineHom (Limits.pullback.fst sT (spMap (algebraMap (𝓞 F') F')))` using `MorphismProperty.of_isPullback hb.flip (isAffineHom_of_isAffine _)`.
+
+Establish `: QuasiCompact h` using `by rw [← hh]; infer_instance`. Establish `: Flat (spMap (algebraMap (𝓞 F') F'))` using `flat_specMap_localization (nonZeroDivisors (𝓞 F')) F'`. Establish `: Mono (spMap (algebraMap (𝓞 F') F'))` using `mono_specMap_localization (nonZeroDivisors (𝓞 F')) F'`. Establish `hpb` using `isPullback_toImage_of_isClosedImmersion h j _ hh`. Establish `H'` using `hpb.flip.paste_vert hb`.
+
+Establish `i1 : IsIso (spMap ε.toRingHom)`. Establish `: IsIso (CommRingCat.ofHom ε.toRingHom)` using `(ε.toCommRingCatIso).isIso_hom`. Conclude with `inferInstance`. Establish `i2 : IsIso (spMap e.toRingHom)`. Establish `: IsIso (CommRingCat.ofHom e.toRingHom)` using `(e.toCommRingCatIso).isIso_hom`.
+
+Conclude with `inferInstance`. Establish `sq : IsPullback (spMap (algebraMap (𝓞 F') F')) (spMap e.toRingHom) (spMap ε.toRingHom) (spMap (algebraMap (𝓞 F) F))`. Use `IsPullback.of_vert_isIso ⟨?_⟩` and prove the remaining obligations. Rewrite using `[← Spec.map_comp, ← Spec.map_comp]`. Both sides reduce to the same expression.
+
+Establish `H` using `H'.paste_vert sq`. Establish `hP' : IsProjOver (h.imageι ≫ sT)` using `ProjSpace.isProjOver_comp_of_isClosedImmersion _ hT`. Establish `hP` using `GlobalTheory.ModelOver.isProjOver_comp_spMap ε hP'`. Establish `hfl' : Flat (h.imageι ≫ sT)` using `flat_image_of_over_fractionField h sT _ w.symm`. Establish `hfl : Flat ((h.imageι ≫ sT) ≫ spMap ε.toRingHom)` using `inferInstance`.
+
+Establish `hpr` using `CommonModel.isProper_of_isProjOver hP`. Establish `hdim` using `GlobalTheory.IntModel.topologicalKrullDim_eq_succ (RingOfIntegers.not_isField F) H hd`. Use `⟨h.image, V, (h.imageι ≫ sT) ≫ spMap ε.toRingHom, h.toImage, j, h.imageι, ⟨inferInstance, inferInstance, inferInstance, hP, ?_, hdim⟩, ?_, inferInstance, rfl, h.toImage_imageι⟩` and prove the remaining obligations. Establish `: Flat (spMap (Int.castRingHom (𝓞 F)))`. Rewrite using `[HasRingHomProperty.Spec_iff (P := @Flat)]`.
+
+Conclude with `RingHom.flat_algebraMap_iff.mpr (inferInstance : Module.Flat ℤ (𝓞 F))`. Use `infer_instance`. Simplify `H` using `only [Category.assoc]`.
+-/
 theorem exists_isPre_closure : ∀ (F F' : Type) [Field F] [NumberField F] [Field F'] (e : F ≃+* F') (T : Scheme.{0}) (sT : T ⟶ Sp (𝓞 F')), IsProjOver sT → ∀ (V : Scheme.{0}) [IsIntegral V] (j : V ⟶ Limits.pullback sT (spMap (algebraMap (𝓞 F') F'))), IsClosedImmersion j → ∀ d : ℕ, topologicalKrullDim V = d → ∃ (X W : Scheme.{0}) (q : X ⟶ Sp (𝓞 F)) (jB : W ⟶ X) (πB : W ⟶ Limits.pullback sT (spMap (algebraMap (𝓞 F') F'))) (ρ : X ⟶ T), IsPre (Limits.pullback.snd sT (spMap (algebraMap (𝓞 F') F')) ≫ spMap e.toRingHom) (Set.range j) d (Limits.pullback.fst sT (spMap (algebraMap (𝓞 F') F'))) q jB πB ρ := by
   intro F F' _ _ _ e T sT hT V _ j hj d hd
   have : CharZero F' := e.symm.toRingHom.charZero

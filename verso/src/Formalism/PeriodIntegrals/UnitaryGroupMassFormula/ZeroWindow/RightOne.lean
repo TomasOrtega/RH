@@ -8,21 +8,35 @@ namespace PI.ZW
 
 abbrev zeta1 : ℂ → ℂ := DirichletCharacter.LFunctionTrivChar₁ 1
 
+/- English proof (translation)
+Use `show DirichletCharacter.LFunctionTrivChar₁ 1 s = _`. Unfold `DirichletCharacter.LFunctionTrivChar₁`. Rewrite using `[Function.update_of_ne hs]`. Simplify using `[DirichletCharacter.LFunctionTrivChar, DirichletCharacter.LFunction_modOne_eq]`.
+-/
 lemma zeta1_eq_sub_one_mul_riemannZeta_of_ne_one {s : ℂ} (hs : s ≠ 1) : zeta1 s = (s - 1) * riemannZeta s := by
   show DirichletCharacter.LFunctionTrivChar₁ 1 s = _
   unfold DirichletCharacter.LFunctionTrivChar₁
   rw [Function.update_of_ne hs]
   simp [DirichletCharacter.LFunctionTrivChar, DirichletCharacter.LFunction_modOne_eq]
 
+/- English proof (translation)
+Use `show DirichletCharacter.LFunctionTrivChar₁ 1 1 = 1`. Unfold `DirichletCharacter.LFunctionTrivChar₁`. Simplify using the standard rewrite rules.
+-/
 lemma zeta1_apply_one : zeta1 1 = 1 := by
   show DirichletCharacter.LFunctionTrivChar₁ 1 1 = 1
   unfold DirichletCharacter.LFunctionTrivChar₁
   simp
 
+/- English proof (translation)
+Conclude with `DifferentiableOn.analyticAt (fun z hz => (differentiableAt_riemannZeta hz).differentiableWithinAt) (isOpen_compl_singleton.mem_nhds hs)`.
+-/
 lemma analyticAt_riemannZeta_of_ne {s : ℂ} (hs : s ≠ 1) : AnalyticAt ℂ riemannZeta s := by
   exact DifferentiableOn.analyticAt (fun z hz => (differentiableAt_riemannZeta hz).differentiableWithinAt)
     (isOpen_compl_singleton.mem_nhds hs)
 
+/- English proof (translation)
+Establish `hev : zeta1 =ᶠ[𝓝 s] fun z => (z - 1) * riemannZeta z` using `by filter_upwards [isOpen_compl_singleton.mem_nhds hs] with z hz`. Conclude with `zeta1_eq_sub_one_mul_riemannZeta_of_ne_one hz`. Establish `h1 : AnalyticAt ℂ (fun z : ℂ => z - 1) s` using `by fun_prop`. Establish `h2` using `analyticAt_riemannZeta_of_ne hs`. Simplify using `only [analyticOrderNatAt]`.
+
+Rewrite using `[analyticOrderAt_congr hev, show (fun z => (z - 1) * riemannZeta z) = (fun z : ℂ => z - 1) * riemannZeta from rfl, analyticOrderAt_mul h1 h2]`. Establish `h0 : analyticOrderAt (fun z : ℂ => z - 1) s = 0` using `(analyticOrderAt_eq_zero).2 (Or.inr (by simpa [sub_eq_zero] using hs))`. Rewrite using `[h0, zero_add]`.
+-/
 lemma order_zeta1 {s : ℂ} (hs : s ≠ 1) :
     analyticOrderNatAt zeta1 s = analyticOrderNatAt riemannZeta s := by
   have hev : zeta1 =ᶠ[𝓝 s] fun z => (z - 1) * riemannZeta z := by
@@ -38,6 +52,57 @@ lemma order_zeta1 {s : ℂ} (hs : s ≠ 1) :
     (analyticOrderAt_eq_zero).2 (Or.inr (by simpa [sub_eq_zero] using hs))
   rw [h0, zero_add]
 
+/- English proof (translation)
+Introduce `hZ hI`. Use `⟨11 / Real.log ((19 / 10) / (37 / 20)), ?_⟩` and prove the remaining obligations. Introduce `N _ χ hN t`. Substitute `hN` using the available equality. Establish `hL : DirichletCharacter.LFunction χ = riemannZeta` using `DirichletCharacter.LFunction_modOne_eq`.
+
+Establish `hlogq : 0 < Real.log ((19 / 10 : ℝ) / (37 / 20))` using `Real.log_pos (by norm_num)`. Use `set c : ℂ := 2 + (t : ℂ) * Complex.I with hc`. Establish `hcre : c.re = 2` using `by simp [hc]`. Establish `hcim : c.im = t` using `by simp [hc]`. Establish `hc1 : c ≠ 1`.
+
+Introduce `h`. Use `congrArg Complex.re h` as an intermediate fact. Rewrite `this` using `[hcre]`. Evaluate the numerical expressions using `at this`. Establish `hAn : AnalyticOnNhd ℂ zeta1 (closedBall c (19 / 10))` using `fun z _ => (DirichletCharacter.differentiable_LFunctionTrivChar₁ 1).analyticAt z`.
+
+Establish `hζc : riemannZeta c ≠ 0` using `riemannZeta_ne_zero_of_one_lt_re (by rw [hcre]; norm_num)`. Establish `hfc : zeta1 c ≠ 0`. Rewrite using `[zeta1_eq_sub_one_mul_riemannZeta_of_ne_one hc1]`. Conclude with `mul_ne_zero (sub_ne_zero.2 hc1) hζc`. Establish `hζlow : (1 / 2 : ℝ) ≤ ‖riemannZeta c‖`.
+
+Establish `k` using `hI 1 (1 : DirichletCharacter ℂ 1) c (by rw [hcre]; norm_num)`. Rewrite `k` using `[DirichletCharacter.LFunction_modOne_eq, hcre]`. Establish `hpos : 0 < ‖riemannZeta c‖` using `norm_pos_iff.2 hζc`. Establish `k2 : ‖riemannZeta c‖⁻¹ ≤ 2` using `by norm_num at k ⊢; linarith`. Use `inv_le_of_inv_le₀ hpos k2` as an intermediate fact.
+
+Evaluate the numerical expressions using `at this ⊢`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hc1n : (1 : ℝ) ≤ ‖c - 1‖`. Use `Complex.abs_re_le_norm (c - 1)` as an intermediate fact. Rewrite `this` using `[Complex.sub_re, hcre, Complex.one_re]`.
+
+Evaluate the numerical expressions using `at this`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hfcl : (1 / 2 : ℝ) ≤ ‖zeta1 c‖`. Rewrite using `[zeta1_eq_sub_one_mul_riemannZeta_of_ne_one hc1, norm_mul]`. Use polynomial arithmetic with `[norm_nonneg (riemannZeta c)]`.
+
+Establish `ht0 : (0 : ℝ) ≤ |t|` using `abs_nonneg t`. Establish `hsph : ∀ z ∈ sphere c (19 / 10), ‖zeta1 z‖ ≤ 13 * (|t| + 5) ^ 2`. Introduce `z hz`. Rewrite `hz` using `[mem_sphere, dist_eq_norm]`. Distinguish the cases in `hz1 : z = 1`.
+
+Rewrite using `[hz1, zeta1_apply_one, norm_one]`. Use the polynomial consequences of the given equalities and inequalities. Rewrite using `[zeta1_eq_sub_one_mul_riemannZeta_of_ne_one hz1, norm_mul]`. Establish `hre : (1 / 10 : ℝ) ≤ z.re`. Use `Complex.abs_re_le_norm (z - c)` as an intermediate fact.
+
+Rewrite `this` using `[Complex.sub_re, hcre, hz]`. Use `(abs_le.1 this).1` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hcn : ‖c‖ ≤ 2 + |t|`. Rewrite using `[hc]`.
+
+Combine the equalities or inequalities in the displayed calculation. Establish `hzn : ‖z‖ ≤ |t| + 4`. Use `norm_le_insert' z c` as an intermediate fact. Establish `h2 : ‖z‖ ≤ ‖c‖ + ‖z - c‖`. Combine the equalities or inequalities in the displayed calculation.
+
+Combine the linear equalities and inequalities to obtain the conclusion. Establish `hz1n : ‖z - 1‖ ≤ |t| + 5`. Use `norm_sub_le z 1` as an intermediate fact. Rewrite `this` using `[norm_one]`. Combine the linear equalities and inequalities to obtain the conclusion.
+
+Establish `hζ` using `hZ z (by linarith) hz1`. Establish `hz1pos : 0 < ‖z - 1‖` using `norm_pos_iff.2 (sub_ne_zero.2 hz1)`. Establish `hinv : 1 + 1 / z.re ≤ 11`. Establish `: 1 / z.re ≤ 10`. Rewrite using `[div_le_iff₀ (by linarith)]`.
+
+Combine the linear equalities and inequalities to obtain the conclusion. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hA : ‖z - 1‖ * ‖z‖ * (1 + 1 / z.re) ≤ (|t| + 5) * (|t| + 5) * 11`. Establish `h1 : 0 ≤ ‖z - 1‖ * ‖z‖` using `by positivity`. Combine the equalities or inequalities in the displayed calculation.
+
+Establish `: ‖z‖ ≤ |t| + 5` using `by linarith`. Use `gcongr`. Combine the equalities or inequalities in the displayed calculation. Establish `hM1 : (1 : ℝ) ≤ 13 * (|t| + 5) ^ 2` using `by nlinarith`. Establish `hsub : RightNear χ t ⊆ {z | z ∈ closedBall c (37 / 20) ∧ zeta1 z = 0}`.
+
+Introduce `ρ hρ`. Take `⟨h1, h2, h3, h4⟩` from `hρ`. Rewrite `h4` using `[hL]`. Establish `hρ1 : ρ ≠ 1`. Introduce `e`.
+
+Rewrite `h2` using `[e]`. Simplify using `at h2`. Use `⟨?_, by rw [zeta1_eq_sub_one_mul_riemannZeta_of_ne_one hρ1, h4, mul_zero]⟩` and prove the remaining obligations. Rewrite using `[mem_closedBall, dist_eq_norm]`. Establish `hsq : ‖ρ - c‖ ^ 2 ≤ (37 / 20) ^ 2`.
+
+Rewrite using `[Complex.sq_norm, Complex.normSq_apply, Complex.sub_re, Complex.sub_im, hcre, hcim]`. Use `abs_le.1 h3` as an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Use polynomial arithmetic with `[norm_nonneg (ρ - c)]`. Take `⟨hfin, hsum⟩` from `hJ zeta1 c (13 * (|t| + 5) ^ 2) hAn hfc hM1 hsph _ hsub`.
+
+Use `⟨hfin, ?_⟩` and prove the remaining obligations. Rewrite using `[hL]`. Establish `hcongr : ∑ᶠ ρ ∈ RightNear χ t, (analyticOrderNatAt riemannZeta ρ : ℝ) = ∑ᶠ ρ ∈ RightNear χ t, (analyticOrderNatAt zeta1 ρ : ℝ)`. Use `finsum_mem_congr rfl fun ρ hρ => ?_` and prove the remaining obligations. Establish `hρ1 : ρ ≠ 1`.
+
+Introduce `e`. Establish `h2` using `hρ.2.1`. Rewrite `h2` using `[e]`. Simplify using `at h2`. Rewrite using `[order_zeta1 hρ1]`.
+
+Rewrite using `[hcongr]`. Use `hsum.trans ?_` and prove the remaining obligations. Simplify using `only [Nat.cast_one, one_mul]`. Use `set y : ℝ := |t| + 2 with hy`. Establish `hy2 : (2 : ℝ) ≤ y` using `by linarith`.
+
+Establish `hfpos : 0 < ‖zeta1 c‖` using `by linarith`. Establish `hq : 13 * (|t| + 5) ^ 2 / ‖zeta1 c‖ ≤ y ^ 11`. Rewrite using `[div_le_iff₀ hfpos]`. Establish `e1 : |t| + 5 ≤ 3 * y` using `by linarith`. Establish `e2 : (|t| + 5) ^ 2 ≤ 9 * y ^ 2` using `by nlinarith`.
+
+Establish `e3 : (256 : ℝ) ≤ y ^ 8`. Use `pow_le_pow_left₀ (by norm_num) hy2 8` as an intermediate fact. Evaluate the numerical expressions using `at this`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `e4 : y ^ 10 ≤ y ^ 11` using `pow_le_pow_right₀ (by linarith) (by norm_num)`.
+
+Establish `e5 : 256 * y ^ 2 ≤ y ^ 10`. Use `mul_le_mul_of_nonneg_right e3 (sq_nonneg y)` as an intermediate fact. Combine the equalities or inequalities in the displayed calculation. Establish `e6 : y ^ 11 * (1 / 2) ≤ y ^ 11 * ‖zeta1 c‖` using `mul_le_mul_of_nonneg_left hfcl (by positivity)`. Use the polynomial consequences of the given equalities and inequalities.
+
+Establish `hlog : Real.log (13 * (|t| + 5) ^ 2 / ‖zeta1 c‖) ≤ 11 * Real.log y`. Rewrite using `[show (11 : ℝ) * Real.log y = Real.log (y ^ 11) by rw [Real.log_pow]; norm_num]`. Conclude with `Real.log_le_log (by positivity) hq`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem rightOne_of (hJ : JensenCount) : RightOne := by
   intro hZ hI
   refine ⟨11 / Real.log ((19 / 10) / (37 / 20)), ?_⟩

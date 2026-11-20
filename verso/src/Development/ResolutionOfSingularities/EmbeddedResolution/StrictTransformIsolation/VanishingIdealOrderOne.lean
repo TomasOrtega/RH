@@ -8,6 +8,9 @@ open CategoryTheory AlgebraicGeometry TopologicalSpace
 
 namespace FunctorialResolution.EmbeddedResolution.OpenImmersionRestriction
 
+/- English proof (translation)
+Establish `hx : x ∈ (⨆ U : X.affineOpens, (U : X.Opens))`. Rewrite using `[AlgebraicGeometry.iSup_affineOpens_eq_top X]`. Discharge the goal by the elementary cases of `trivial`. Take `⟨U, hU⟩` from `TopologicalSpace.Opens.mem_iSup.mp hx`. Conclude with `⟨U, hU⟩`.
+-/
 private theorem exists_affineOpens_mem (X : Scheme.{u}) (x : ↥X) :
     ∃ U : X.affineOpens, x ∈ U.1.1 := by
   have hx : x ∈ (⨆ U : X.affineOpens, (U : X.Opens)) := by
@@ -16,6 +19,29 @@ private theorem exists_affineOpens_mem (X : Scheme.{u}) (x : ↥X) :
   obtain ⟨U, hU⟩ := TopologicalSpace.Opens.mem_iSup.mp hx
   exact ⟨U, hU⟩
 
+/- English proof (translation)
+Introduce `hbot`. Take `⟨U, hxU0⟩` from `exists_affineOpens_mem X x`. Establish `hxU : x ∈ U.1` using `hxU0`. Establish `hU : IsAffineOpen U.1` using `U.2`. Establish `hmem : x ∈ closure ({y} : Set ↥X)` using `specializes_iff_mem_closure.mp h`.
+
+Establish `hyU : y ∈ U.1`. Establish `hopen : IsOpen ((U.1 : Set ↥X))` using `U.1.2`. Take `⟨z, hzU, hzy⟩` from `(mem_closure_iff.mp hmem) ((U.1 : Set ↥X)) hopen hxU`. Rewrite `hzy` using `[Set.mem_singleton_iff]`. Establish `hy2 : y ∈ ((U.1 : Set ↥X))` using `by rw [← hzy]; exact hzU`.
+
+Conclude with `hy2`. Establish `hind : Topology.IsInducing (⇑(hU.fromSpec))` using `(hU.fromSpec).isOpenEmbedding.toIsEmbedding.toIsInducing`. Establish `e1 : (⇑(hU.fromSpec)) (hU.primeIdealOf ⟨x, hxU⟩) = x` using `hU.fromSpec_primeIdealOf ⟨x, hxU⟩`. Establish `e2 : (⇑(hU.fromSpec)) (hU.primeIdealOf ⟨y, hyU⟩) = y` using `hU.fromSpec_primeIdealOf ⟨y, hyU⟩`. Establish `hspec : hU.primeIdealOf ⟨y, hyU⟩ ⤳ hU.primeIdealOf ⟨x, hxU⟩`.
+
+Apply `hind.specializes_iff.mp` to reduce the goal to its premises. Rewrite using `[e1, e2]`. Conclude with `h`. Establish `hqp : (hU.primeIdealOf ⟨y, hyU⟩).asIdeal ≤ (hU.primeIdealOf ⟨x, hxU⟩).asIdeal`. Establish `h2` using `specializes_iff_mem_closure.mp hspec`.
+
+Rewrite `h2` using `[PrimeSpectrum.closure_singleton, PrimeSpectrum.mem_zeroLocus]`. Conclude with `fun z hz => h2 hz`. Establish `hne' : (hU.primeIdealOf ⟨y, hyU⟩).asIdeal ≠ (hU.primeIdealOf ⟨x, hxU⟩).asIdeal`. Introduce `heq`. Apply `hne` to reduce the goal to its premises.
+
+Establish `hpe : hU.primeIdealOf ⟨y, hyU⟩ = hU.primeIdealOf ⟨x, hxU⟩` using `PrimeSpectrum.ext heq`. Conclude with `e2.symm.trans (by rw [hpe]; exact e1)`. Take `⟨a, hap, haq⟩` from `SetLike.exists_of_lt (lt_of_le_of_ne hqp hne')`. Set `_ : Algebra Γ(X, U.1) ↑(X.presheaf.stalk x)` to `(X.presheaf.germ U.1 x hxU).hom.toAlgebra`. Establish `hloc : IsLocalization (hU.primeIdealOf ⟨x, hxU⟩).asIdeal.primeCompl ↑(X.presheaf.stalk x)` using `hU.isLocalization_stalk ⟨x, hxU⟩`.
+
+Establish `hmax : Ideal.map (algebraMap Γ(X, U.1) ↑(X.presheaf.stalk x)) (hU.primeIdealOf ⟨x, hxU⟩).asIdeal = IsLocalRing.maximalIdeal ↑(X.presheaf.stalk x)` using `IsLocalization.AtPrime.map_eq_maximalIdeal ..`. Establish `hmapmem : (algebraMap Γ(X, U.1) ↑(X.presheaf.stalk x)) a ∈ IsLocalRing.maximalIdeal ↑(X.presheaf.stalk x)`. Rewrite using `[← hmax]`. Conclude with `Ideal.mem_map_of_mem _ hap`. Establish `h0 : (algebraMap Γ(X, U.1) ↑(X.presheaf.stalk x)) a = 0`.
+
+Rewrite `hmapmem` using `[hbot]`. Simplify using `using hmapmem`. Establish `h1 : (algebraMap Γ(X, U.1) ↑(X.presheaf.stalk x)) a = (algebraMap Γ(X, U.1) ↑(X.presheaf.stalk x)) 0`. Rewrite using `[h0, map_zero]`. Take `⟨c, hc⟩` from `(IsLocalization.eq_iff_exists (hU.primeIdealOf ⟨x, hxU⟩).asIdeal.primeCompl ↑(X.presheaf.stalk x)).mp h1`.
+
+Establish `hca : (c : Γ(X, U.1)) * a = 0`. Rewrite `hc` using `[mul_zero]`. Conclude with `hc`. Establish `hcp : (c : Γ(X, U.1)) ∉ (hU.primeIdealOf ⟨x, hxU⟩).asIdeal` using `c.2`. Establish `hcq : (c : Γ(X, U.1)) ∉ (hU.primeIdealOf ⟨y, hyU⟩).asIdeal` using `fun hc0 => hcp (hqp hc0)`.
+
+Establish `hmem0 : (c : Γ(X, U.1)) * a ∈ (hU.primeIdealOf ⟨y, hyU⟩).asIdeal`. Rewrite using `[hca]`. Conclude with `Submodule.zero_mem _`. Break down `(hU.primeIdealOf ⟨y, hyU⟩).isPrime.mem_or_mem hmem0 with hcc | haa` into its components or cases. Conclude with `hcq hcc`.
+
+Conclude with `haq haa`.
+-/
 theorem maximalIdeal_stalk_ne_bot_of_specializes
     (X : Scheme.{u}) (x y : ↥X) (h : y ⤳ x) (hne : y ≠ x) :
     IsLocalRing.maximalIdeal ↑(X.presheaf.stalk x) ≠ ⊥ := by
@@ -81,6 +107,23 @@ theorem maximalIdeal_stalk_ne_bot_of_specializes
   · exact hcq hcc
   · exact haq haa
 
+/- English proof (translation)
+Establish `hx' : closure ({x} : Set ↥X) = (S : Set ↥X)` using `hx`. Establish `hSirr : IsIrreducible (S : Set ↥X)`. Rewrite using `[← hx']`. Conclude with `isIrreducible_singleton.closure`. Establish `hxS : x ∈ (S : Set ↥X)`.
+
+Rewrite using `[← hx']`. Conclude with `subset_closure (Set.mem_singleton x)`. Establish `hMax : Maximal (fun s : Set ↥X => IsIrreducible s ∧ s ⊆ (S : Set ↥X)) (S : Set ↥X)`. Prove the components needed by the constructor for the conclusion. Conclude with `⟨hSirr, subset_rfl⟩`.
+
+Introduce `b hb _`. Conclude with `hb.2`. Take `⟨t, htpre, hSt, hmaxt⟩` from `exists_preirreducible (S : Set ↥X) hSirr.2`. Establish `htirr : IsIrreducible t` using `⟨⟨x, hSt hxS⟩, htpre⟩`. Establish `htclosed : IsClosed t`.
+
+Establish `h1 : closure t = t` using `hmaxt (closure t) htpre.closure subset_closure`. Rewrite using `[← h1]`. Conclude with `isClosed_closure`. Establish `htmem : t ∈ irreducibleComponents ↥X`. Prove the components needed by the constructor for the conclusion.
+
+Conclude with `htirr`. Introduce `u hu htu`. Conclude with `(hmaxt u hu.2 htu).le`. Establish `hSnet : (S : Set ↥X) ≠ t`. Introduce `hEq`.
+
+Conclude with `hS (hEq ▸ htmem)`. Take `⟨y, hy⟩` from `QuasiSober.sober htirr htclosed`. Establish `hy' : closure ({y} : Set ↥X) = t` using `hy`. Establish `hyx : y ⤳ x`. Rewrite using `[specializes_iff_mem_closure, hy']`.
+
+Conclude with `hSt hxS`. Establish `hyne : y ≠ x`. Introduce `hEq`. Apply `hSnet` to reduce the goal to its premises. Rewrite using `[← hx', ← hEq]`.
+
+Conclude with `hy'`. Establish `hbot : IsLocalRing.maximalIdeal ↑(X.presheaf.stalk x) ≠ ⊥` using `maximalIdeal_stalk_ne_bot_of_specializes X x y hyx hyne`. Conclude with `_root_.FunctorialResolution.EmbeddedResolution.orderAt_vanishingIdeal_eq_one S x (S : Set ↥X) hMax hx hbot`.
+-/
 theorem orderAt_vanishingIdeal_eq_one_of_not_mem_irreducibleComponents
     (X : Scheme.{u}) [IsLocallyNoetherian X] (S : Closeds ↥X) (x : ↥X)
     (hx : IsGenericPoint x (S : Set ↥X))
@@ -126,6 +169,9 @@ theorem orderAt_vanishingIdeal_eq_one_of_not_mem_irreducibleComponents
     maximalIdeal_stalk_ne_bot_of_specializes X x y hyx hyne
   exact _root_.FunctorialResolution.EmbeddedResolution.orderAt_vanishingIdeal_eq_one S x (S : Set ↥X) hMax hx hbot
 
+/- English proof (translation)
+Take `⟨_, hsm⟩` from `hD`. Establish `: AlgebraicGeometry.Smooth (D.subschemeι ≫ U.ι ≫ p)` using `hsm`. Establish `: LocallyOfFiniteType (D.subschemeι ≫ U.ι ≫ p)` using `inferInstance`. Establish `: IsNoetherianRing (CommRingCat.of k)` using `inferInstanceAs (IsNoetherianRing k)`. Conclude with `AlgebraicGeometry.LocallyOfFiniteType.isLocallyNoetherian (D.subschemeι ≫ U.ι ≫ p)`.
+-/
 theorem isLocallyNoetherian_subscheme_of_isSmoothDivisor
     (k : Type u) [Field k] (W : Scheme.{u}) (p : W ⟶ Spec (CommRingCat.of k))
     (U : W.Opens) (D : (U.toScheme).IdealSheafData)
@@ -137,6 +183,9 @@ theorem isLocallyNoetherian_subscheme_of_isSmoothDivisor
   have : IsNoetherianRing (CommRingCat.of k) := inferInstanceAs (IsNoetherianRing k)
   exact AlgebraicGeometry.LocallyOfFiniteType.isLocallyNoetherian (D.subschemeι ≫ U.ι ≫ p)
 
+/- English proof (translation)
+Introduce `k hk W p U D hD T y hy hT`. Establish `: IsLocallyNoetherian D.subscheme` using `isLocallyNoetherian_subscheme_of_isSmoothDivisor k W p U D hD`. Rewrite using `[vanishingIdealAssignment_apply]`. Conclude with `orderAt_vanishingIdeal_eq_one_of_not_mem_irreducibleComponents D.subscheme T y hy hT`.
+-/
 theorem vanishingOrderOneOnSmoothDivisor : VanishingOrderOneOnSmoothDivisor.{u} := by
   intro k hk W p U D hD T y hy hT
   have : IsLocallyNoetherian D.subscheme :=

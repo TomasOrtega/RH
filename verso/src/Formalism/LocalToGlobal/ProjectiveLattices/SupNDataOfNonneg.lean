@@ -15,6 +15,11 @@ variable {K : Type} [Field K] [NumberField K] {ι : Type} [Fintype ι]
   {A : ι → Type} [∀ c, CommRing (A c)] [∀ c, Algebra (Ω c) (A c)] [∀ c, Algebra K (A c)]
   [∀ c, Algebra (𝓞 K) (A c)]
 
+/- English proof (translation)
+Unfold `Data.HeightIntegralEstimateTrivialPlace meanK`. Establish `hN : (0 : ℝ) < (Fintype.card (K →+* ℂ) : ℝ)` using `by first`. Consider the case `exact_mod_cast Fintype.card_pos`. Consider the case `(haveI : Nonempty (K →+* ℂ) := ⟨(IsAlgClosed.lift : K →ₐ[ℚ] ℂ).toRingHom⟩`. Conclude with `Fintype.card_pos)` after adjusting the coercions.
+
+Rewrite using `[div_right_comm, Finset.sum_div, div_le_iff₀ hN]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Finset.sum_const, Finset.card_univ, nsmul_eq_mul, mul_comm]`.
+-/
 theorem htI2et_of_pt (d : Data K ι Ω WT A)
     (hpt : ∀ sg, Real.log (d.supN sg (d.n1 • d.wde) d.et) / d.i ≤ d.Pet) : d.HeightIntegralEstimateTrivialPlace := by
   unfold Data.HeightIntegralEstimateTrivialPlace meanK
@@ -57,6 +62,11 @@ def NrmTieU (h : GenFrEx Xo c) (fn : ∀ σ : c.F →+* ℂ, FrPt Xo c (CAt σ) 
 
 variable [Fintype (Comp Xo c)]
 
+/- English proof (translation)
+Unfold `Data.supN`. Apply `Real.iSup_nonneg` to reduce the goal to its premises. Introduce `p`. Unfold `dataOf nrmC`. Simplify using `only`.
+
+Use `first`. Consider the case `positivity`. Consider the case `exact (rfl : (0 : ℕ) = 0)`.
+-/
 theorem supN_dataOf_nonneg (h : GenFrEx Xo c)
     (δ : ∀ Z : Comp Xo c, AddValuation (Om Z) (WithTop ℤ) → Ix Dw → ℤ)
     (fn : ∀ σ : c.F →+* ℂ, FrPt Xo c (CAt σ) → Ix Dw → ℝ)
@@ -78,6 +88,17 @@ theorem supN_dataOf_nonneg (h : GenFrEx Xo c)
   | positivity
   | exact (rfl : (0 : ℕ) = 0)
 
+/- English proof (translation)
+Introduce `Z P`. Take `⟨σ, hσ, k, x, hx, hw, he⟩` from `htie Z P`. Establish `h1` using `hI2 σ hσ k x hx`. Establish `h2` using `harch σ hσ k x hx`. Use `show -Real.log (Real.sqrt (∑ j, nrmC fn (yP Z) (wtZ uL.1 uL.2) (valC h uL.1 uL.2 (wR j) Z) P ^ 2)) ≤ tableLineDegreeFive * DF + cc / (i : ℝ) * (-Real.log (nrmC fn (yP Z) ((i * g0) • wtZ ude.1 ude.2) (valC h uet.1 uet.2 etR Z) P)) + cc * tableLineDegreeTwo`.
+
+Establish `hbe : (∑ j, nrmC fn (yP Z) (wtZ uL.1 uL.2) (valC h uL.1 uL.2 (wR j) Z) P ^ 2) = ∑ j, recNrm (U σ) xR uL.1 uL.2 (wR j) k x ^ 2` using `Finset.sum_congr rfl fun j _ => by rw [hw j]`. Rewrite using `[hbe]`. Establish `hm` using `valC_mem h uet.1 uet.2 etR Z`. Rewrite `hm` using `[huet]`. Establish `hpos : 0 < nrmC fn (yP Z) ((i * g0) • wtZ ude.1 ude.2) (valC h uet.1 uet.2 etR Z) P` using `nrmC_pos fn (yP Z) hfn P hm (valC_ne_zero (het Z))`.
+
+Establish `he' : nrmC fn (yP Z) ((i * g0) • wtZ ude.1 ude.2) (valC h uet.1 uet.2 etR Z) P ≤ recNrm (U σ) xR uet.1 uet.2 etR k x`. Rewrite using `[← huet]`. Conclude with `he`. Establish `hlog` using `Real.log_le_log hpos (he'.trans h2)`. Rewrite `hlog` using `[Real.log_exp]`.
+
+Use `set e := Real.log (nrmC fn (yP Z) ((i * g0) • wtZ ude.1 ude.2) (valC h uet.1 uet.2 etR Z) P)`. Use `set φ := ReciprocityTheory.ChartRestriction.G.I2.phiFD ((U σ).X k) th x`. Establish `hi' : (0 : ℝ) < i` using `Nat.cast_pos.2 hi`. Establish `h3 : φ - tableLineDegreeTwo ≤ -e / i`. Rewrite using `[le_div_iff₀ hi']`.
+
+Use the polynomial consequences of the given equalities and inequalities. Establish `key : cc * φ ≤ cc / (i : ℝ) * (-e) + cc * tableLineDegreeTwo`. Combine the equalities or inequalities in the displayed calculation. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem htI2be_of (h : GenFrEx Xo c)
     (δ : ∀ Z : Comp Xo c, AddValuation (Om Z) (WithTop ℤ) → Ix Dw → ℤ)
     (fn : ∀ σ : c.F →+* ℂ, FrPt Xo c (CAt σ) → Ix Dw → ℝ)
@@ -142,6 +163,9 @@ def SupTieEt {ι : Type} [Fintype ι] {Ω : ι → Type} [∀ c, Field (Ω c)] [
 
 variable (j : ℕ) [IsCMField D.host.E] [Fintype (Comp (T.Q.Xo j) T.Q.c)]
 
+/- English proof (translation)
+Break down `ha.eq_or_lt with h | h` into its components or cases. Rewrite using `[← h, Real.log_zero, zero_div]`. Conclude with `hQ`. Conclude with `le_trans (le_trans (div_le_div_of_nonneg_right (Real.log_le_log h hab) hn) hb) hPQ`.
+-/
 private theorem log_div_le_lemma {a b P Q n : ℝ} (ha : 0 ≤ a) (hab : a ≤ b) (hb : Real.log b / n ≤ P)
     (hPQ : P ≤ Q) (hQ : 0 ≤ Q) (hn : 0 ≤ n) : Real.log a / n ≤ Q := by
   rcases ha.eq_or_lt with h | h
@@ -149,6 +173,11 @@ private theorem log_div_le_lemma {a b P Q n : ℝ} (ha : 0 ≤ a) (hab : a ≤ b
     exact hQ
   · exact le_trans (le_trans (div_le_div_of_nonneg_right (Real.log_le_log h hab) hn) hb) hPQ
 
+/- English proof (translation)
+Apply `htI2et_of_pt` to reduce the goal to its premises. Introduce `sg`. Use `log_div_le_lemma ?_ (htie sg) (hsup sg) hP hP0 (by positivity)` and prove the remaining obligations. Unfold `Data.supN`. Apply `Real.iSup_nonneg` to reduce the goal to its premises.
+
+Introduce `p`. Unfold `dataOf nrmC`. Simplify using `only`. Check the signs of the components of the expression.
+-/
 theorem htI2et_of_etSup (hG : GenFrEx (T.Q.Xo j) T.Q.c)
     (δ : ∀ Z : Comp (T.Q.Xo j) T.Q.c, AddValuation (Om Z) (WithTop ℤ) → Ix (T.Q.Dw j) → ℤ)
     (fn : ∀ σ : T.Q.c.F →+* ℂ, FrPt (T.Q.Xo j) T.Q.c (CAt σ) → Ix (T.Q.Dw j) → ℝ)
@@ -172,6 +201,11 @@ theorem htI2et_of_etSup (hG : GenFrEx (T.Q.Xo j) T.Q.c)
   dsimp only
   positivity
 
+/- English proof (translation)
+Apply `htI2be_of (hi := hi) (hcc := hcc) (hfn := hfn) (het := het) (huet := huet) (htie := htie) (hI2 := hI2)` to reduce the goal to its premises. Use `first`. Consider the case `exact harch`. Consider the case `(unfold EtArch at harch; exact harch)`. Consider the case `(intro σ hσ k x hx; exact harch σ hσ k x hx)`.
+
+Consider the case `(unfold EtArch at harch; exact (harch : (0 : ℕ) = 0))`.
+-/
 theorem htI2be_of_etArch (hG : GenFrEx (T.Q.Xo j) T.Q.c)
     (δ : ∀ Z : Comp (T.Q.Xo j) T.Q.c, AddValuation (Om Z) (WithTop ℤ) → Ix (T.Q.Dw j) → ℤ)
     (fn : ∀ σ : T.Q.c.F →+* ℂ, FrPt (T.Q.Xo j) T.Q.c (CAt σ) → Ix (T.Q.Dw j) → ℝ)

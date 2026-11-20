@@ -17,13 +17,22 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 def hookProduct (n : ℕ) (a : ℕ → ℕ) : ℕ :=
   ∏ i ∈ Finset.range n, ∏ j ∈ Finset.range (a i), ((a i - j) + ((Finset.Ioo i n).filter fun l => j < a l).card)
 
+/- English proof (translation)
+The claim follows from `Finset.prod_pos fun i _ => Finset.prod_pos fun j hj => by have := Finset.mem_range.1 hj omega`.
+-/
 theorem hookProduct_pos (n : ℕ) (a : ℕ → ℕ) : 0 < hookProduct n a :=
   Finset.prod_pos fun i _ => Finset.prod_pos fun j hj => by
     have := Finset.mem_range.1 hj
     omega
 
+/- English proof (translation)
+Evaluate the decidable proposition.
+-/
 example : hookProduct 2 (fun i => if i = 0 then 2 else 1) = 3 := by decide
 
+/- English proof (translation)
+Evaluate the decidable proposition.
+-/
 example : hookProduct 2 (fun _ => 2) = 12 := by decide
 
 def mainTerm (D : D7) (i : Fin D.R.m) : ℝ :=
@@ -46,6 +55,11 @@ def RegularGaps (D : D7) : Prop :=
   ∀ (ρ : D.what₂.Tau) (n : ℕ), n + 1 < D.R.r →
     (D.R.r : ℚ) ≤ Formalism.L2.NTheta.lamAt (D.hc ρ) n - Formalism.L2.NTheta.lamAt (D.hc ρ) (n + 1)
 
+/- English proof (translation)
+Establish `h0 : ((D.host.g 0 * D.host.g 1 : ℕ) : 𝓞 D.host.F) ≠ 0` using `Nat.cast_ne_zero.2 (mul_ne_zero (D.host.g_prime 0).ne_zero (D.host.g_prime 1).ne_zero)`. Establish `h1 : Ideal.span {((D.host.g 0 * D.host.g 1 : ℕ) : 𝓞 D.host.F)} ≠ 0`. Rewrite using `[Ne, Ideal.zero_eq_bot, Ideal.span_singleton_eq_bot]`. Conclude with `h0`. Use `(Ideal.finite_factors h1).subset fun v hv => ?_` and prove the remaining obligations.
+
+Conclude with `Ideal.dvd_span_singleton.2 hv`.
+-/
 theorem finite_levelPlaces (D : D7) :
     {v : HeightOneSpectrum (𝓞 D.host.F) | ((D.host.g 0 * D.host.g 1 : ℕ) : 𝓞 D.host.F) ∈ v.asIdeal}.Finite := by
   have h0 : ((D.host.g 0 * D.host.g 1 : ℕ) : 𝓞 D.host.F) ≠ 0 :=
@@ -84,6 +98,9 @@ abbrev flagV : Bridge.LevDat D (Vc D i) := levEnv (Vc D i) (R.βV i) (R.datVt i 
 
 def redV : (flagV R i).Q →* G := (R.B.L i A.μ0).act_tie.red
 
+/- English proof (translation)
+The claim follows from `(R.B.L i A.μ0).act_tie.red_surj`.
+-/
 theorem redV_surj : Function.Surjective (redV R i) := (R.B.L i A.μ0).act_tie.red_surj
 
 def srcType (P : LevelP R.Pg D.R.r ℂ) : Set (R.HV i A.μ0).H :=
@@ -173,10 +190,16 @@ def LiftScalarIdentity (i : Fin D.R.m) : Prop :=
             (∀ th e, IsSecLift (O i) (κ i) h th → IsProj R i e → ActsBy (O i) (κ i) cc P (th ∘ₗ e) c l) ∧
             ∀ b, Sizes D b → mainTerm D i - 8 * errUnit D b ≤ Real.log l
 
+/- English proof (translation)
+Take `⟨h, J', hh⟩` from `(hP.2.tuple ()).reps`. Conclude with `⟨h, J', hh⟩`.
+-/
 theorem exists_isReps (i : Fin D.R.m) (hP : OMPins T R κ v₀ O i) : ∃ h, IsReps (O i) (v₀ i (sg0 D A)) h := by
   obtain ⟨h, J', hh⟩ := (hP.2.tuple ()).reps
   exact ⟨h, J', hh⟩
 
+/- English proof (translation)
+Take `⟨x, hx, hx0⟩` from `Submodule.exists_mem_ne_zero_of_ne_bot h.1`. Establish `h2 : (l : ℂ) • x = (l' : ℂ) • x` using `(h.2 x hx).symm.trans (h'.2 x hx)`. Conclude with `Complex.ofReal_injective (smul_left_injective ℂ hx0 h2)`.
+-/
 theorem IsAdelicScalar.unique {i : Fin D.R.m} {c : EigSys D} {l l' : ℝ} (h : IsAdelicScalar R i c l)
     (h' : IsAdelicScalar R i c l') : l = l' := by
   obtain ⟨x, hx, hx0⟩ := Submodule.exists_mem_ne_zero_of_ne_bot h.1

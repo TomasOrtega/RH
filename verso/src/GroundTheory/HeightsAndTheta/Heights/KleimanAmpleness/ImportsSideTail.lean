@@ -21,10 +21,16 @@ def SegreFibresNef.Statement : Prop :=
           (IndefiniteRowSideFullHecke.Kleiman2.pullDeg β) ↔
         IndefiniteRowSideFullHecke.Kleiman2.IsNefIdeal (FractionRing O) (NumbersDVR.genFib (mIdealOver O y)) β)
 
+/- English proof (translation)
+Introduce `_` and use `⟨0, Kleiman.lineX_ne_zero exF 0⟩`.
+-/
 theorem SegreFibresNef.hyps :
     ∀ k, ∃ i, IndefiniteRowSideFullHecke.Kleiman2.oneBlock (Kleiman.lineX exF) ⟨k, i⟩ ≠ 0 :=
   fun _ => ⟨0, Kleiman.lineX_ne_zero exF 0⟩
 
+/- English proof (translation)
+The claim follows from `h exO exΩ Unit (fun _ => Fin (1 + 1)) (IndefiniteRowSideFullHecke.Kleiman2.oneBlock (Kleiman.lineX exF)) SegreFibresNef.hyps 1`.
+-/
 example (h : SegreFibresNef.Statement) :=
   h exO exΩ Unit (fun _ => Fin (1 + 1)) (IndefiniteRowSideFullHecke.Kleiman2.oneBlock (Kleiman.lineX exF)) SegreFibresNef.hyps 1
 

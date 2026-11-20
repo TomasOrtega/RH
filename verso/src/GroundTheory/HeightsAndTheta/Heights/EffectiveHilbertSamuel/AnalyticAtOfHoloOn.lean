@@ -15,6 +15,9 @@ namespace EffectiveHilbertSamuelJetLemmas
 
 variable {D : ℕ} {U : Type} [TopologicalSpace U]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `z`. Simplify using `[sPow, Finset.sum_apply, Finset.prod_apply]`.
+-/
 theorem chart_sum_eq (A : FinHolAtlas D U) (s : Fin D → Fin A.n → U → ℂ) (a : ℕ)
     (h : (Fin D → ℕ) → Fin A.n → U → ℂ) (c : Fin A.n) :
     (∑ α ∈ Finset.Nat.antidiagonalTuple D a, sPow s α * h α) c ∘ (A.chart c).symm =
@@ -23,11 +26,23 @@ theorem chart_sum_eq (A : FinHolAtlas D U) (s : Fin D → Fin A.n → U → ℂ)
   funext z
   simp [sPow, Finset.sum_apply, Finset.prod_apply]
 
+/- English proof (translation)
+The claim follows from `hf c _ ⟨(A.chart c).map_source hx, by rw [Set.mem_preimage, (A.chart c).left_inv hx]; exact hx⟩`.
+-/
 theorem analyticAt_of_holoOn (A : FinHolAtlas D U) {f : U → ℂ} {c : Fin A.n}
     (hf : A.HoloOn (A.chart c).source f) {x : U} (hx : x ∈ (A.chart c).source) :
     AnalyticAt ℂ (f ∘ (A.chart c).symm) (A.chart c x) :=
   hf c _ ⟨(A.chart c).map_source hx, by rw [Set.mem_preimage, (A.chart c).left_inv hx]; exact hx⟩
 
+/- English proof (translation)
+Set `φ : U → (Fin N → ℂ) →ₗ[ℂ] ℂ` to `fun x => ∑ k, e k (chartIdx A x) x • (LinearMap.proj k : (Fin N → ℂ) →ₗ[ℂ] ℂ)`. Establish `hφ : ∀ x c, φ x c = lin e c (chartIdx A x) x`. Introduce `x c`. Simplify using `[φ, lin, Finset.sum_apply, mul_comm]`. Establish `hne : ∀ x, LinearMap.ker (φ x) ≠ ⊤`.
+
+Introduce `x htop`. Take `⟨k, hk⟩` from `he x`. Establish `h0 : Pi.single k 1 ∈ LinearMap.ker (φ x)` using `htop ▸ Submodule.mem_top`. Rewrite `h0` using `[LinearMap.mem_ker, hφ]`. Establish `hl : lin e (Pi.single k 1) = e k` using `by simp [lin, Pi.single_apply]`.
+
+Rewrite `h0` using `[hl]`. Conclude with `hk h0`. Establish `hss` using `Submodule.iUnion_ssubset_of_forall_ne_top_of_card_lt hS.toFinset (fun x => LinearMap.ker (φ x)) hne (by rw [ENat.card_eq_top_of_infinite]; exact ENat.natCast_lt_top _)`. Take `⟨c, -, hc⟩` from `Set.exists_of_ssubset hss`. Use `⟨c, fun x hx h0 => hc ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[Set.mem_iUnion₂]`. Conclude with `⟨x, hS.mem_toFinset.2 hx, by rw [SetLike.mem_coe, LinearMap.mem_ker, hφ]; exact h0⟩`.
+-/
 theorem exists_unit {N : ℕ} (A : FinHolAtlas D U) (e : Fin N → Fin A.n → U → ℂ)
     (he : NoCommonZero A e) {S : Set U} (hS : S.Finite) :
     ∃ c : Fin N → ℂ, ∀ x ∈ S, lin e c (chartIdx A x) x ≠ 0 := by
@@ -52,6 +67,29 @@ theorem exists_unit {N : ℕ} (A : FinHolAtlas D U) (e : Fin N → Fin A.n → U
   rw [Set.mem_iUnion₂]
   exact ⟨x, hS.mem_toFinset.2 hx, by rw [SetLike.mem_coe, LinearMap.mem_ker, hφ]; exact h0⟩
 
+/- English proof (translation)
+Introduce `D T X Z Y hD hT hRes a ha g`. Take `⟨c₀, hc₀⟩` from `exists_unit X.A X.e X.gen Z.finite`. Use `set w : Fin X.A.n → X.U → ℂ := lin X.e c₀ with hw`. Use `set j := T - a with hj`. Establish `hsum : ∀ α ∈ Finset.Nat.antidiagonalTuple D a, ∑ i, α i = a` using `fun α hα => Finset.Nat.mem_antidiagonalTuple.1 hα`.
+
+Use `choose m hmV hm using fun α : Fin D → ℕ => hRes (fun y => g α y / w (chartIdx X.A y) y ^ j)`. Establish `hwj : w ^ j = ∑ ι : Fin j → Fin X.N, (∏ l, c₀ (ι l)) • ∏ l, X.e (ι l)`. Rewrite using `[← Fin.prod_const j w, hw, lin, Fintype.prod_sum]`. Use `Finset.sum_congr rfl fun ι _ => ?_` and prove the remaining obligations. Use function extensionality and compare the values at `k x`.
+
+Simplify using `[Finset.prod_apply, Finset.prod_mul_distrib]`. Establish `pt : ∀ x ∈ zeroSet X.A Z.s, (∀ k < a, iteratedFDeriv ℂ k ((∑ α ∈ Finset.Nat.antidiagonalTuple D a, sPow Z.s α * (w ^ j * m α)) (chartIdx X.A x) ∘ (X.A.chart (chartIdx X.A x)).symm) (X.A.chart (chartIdx X.A x) x) = 0) ∧ ∀ v : Fin D → ℂ, iteratedFDeriv ℂ a ((∑ α ∈ Finset.Nat.antidi …`. Introduce `x hx`. Use `set c := chartIdx X.A x with hc`. Establish `hxc : x ∈ (X.A.chart c).source` using `Classical.choose_spec (X.A.cover x)`.
+
+Establish `hlin : ∀ c' : Fin X.N → ℂ, lin X.e c' ∈ X.L.sections 1` using `fun c' => Submodule.sum_mem _ fun k _ => Submodule.smul_mem _ _ (X.e_mem k)`. Establish `au : ∀ i, AnalyticAt ℂ (Z.s i c ∘ (X.A.chart c).symm) (X.A.chart c x)` using `fun i => analyticAt_of_holoOn X.A ((hlin (Z.c i)).1 c) hxc`. Establish `aw : AnalyticAt ℂ (w c ∘ (X.A.chart c).symm) (X.A.chart c x)` using `analyticAt_of_holoOn X.A ((hlin c₀).1 c) hxc`. Establish `ah : ∀ α, AnalyticAt ℂ ((w ^ j * m α) c ∘ (X.A.chart c).symm) (X.A.chart c x)` using `fun α => (aw.pow j).mul (analyticAt_of_holoOn X.A ((Y.V_le 0 (hmV α)).1 c) hxc)`. Establish `hz : ∀ i, (Z.s i c ∘ (X.A.chart c).symm) (X.A.chart c x) = 0` using `fun i => by`.
+
+Simplify using `only [Function.comp_apply, (X.A.chart c).left_inv hxc]`. Conclude with `hx i`. Take `⟨h1, -, h3⟩` from `hJ D D (fun i => Z.s i c ∘ (X.A.chart c).symm) (fun α => (w ^ j * m α) c ∘ (X.A.chart c).symm) _ a au hz ah`. Establish `hF` using `chart_sum_eq X.A Z.s a (fun α => w ^ j * m α) c`. Rewrite using `[hF]`.
+
+Use `⟨h1, fun v => ?_⟩` and prove the remaining obligations. Rewrite using `[h3 v]`. Establish `hJ0 : sJac X.A Z.s c x ≠ 0` using `Z.nondeg x hx`. Establish `hcoef : ∀ α, ((w ^ j * m α) c ∘ (X.A.chart c).symm) (X.A.chart c x) = g α x * sJac X.A Z.s c x`. Introduce `α`.
+
+Establish `hr` using `hm α x hx`. Establish `hw0 : w c x ≠ 0` using `hc₀ x hx`. Simplify using `only [res] at hr`. Rewrite `hr` using `[div_eq_div_iff hJ0 (pow_ne_zero _ hw0)]`. Simplify using `only [Function.comp_apply, (X.A.chart c).left_inv hxc, Pi.mul_apply, Pi.pow_apply]`.
+
+Take the linear combination `hr`. Establish `hder : ∀ i, sJacMap X.A Z.s c x v i = fderiv ℂ (Z.s i c ∘ (X.A.chart c).symm) (X.A.chart c x) v`. Introduce `i`. Use `show (fderiv ℂ (fun z i => (Z.s i c ∘ (X.A.chart c).symm) z) (X.A.chart c x)) v i = _`. Rewrite using `[fderiv_pi (fun i => (au i).differentiableAt)]`.
+
+Both sides reduce to the same expression. Rewrite using `[mul_div_cancel_left₀ _ (Nat.cast_ne_zero.2 (Nat.factorial_ne_zero a)), Finset.mul_sum]`. Use `Finset.sum_congr rfl fun α _ => ?_` and prove the remaining obligations. Rewrite using `[hcoef α]`. Simplify using `only [hder]`.
+
+Expand and normalize the polynomial expressions, which then agree. Use `⟨∑ α ∈ Finset.Nat.antidiagonalTuple D a, sPow Z.s α * (w ^ j * m α), ?_, fun x hx => (pt x hx).1, fun x hx => (pt x hx).2⟩` and prove the remaining obligations. Use `Submodule.sum_mem _ fun α hα => ?_` and prove the remaining obligations. Establish `hexp : sPow Z.s α * (w ^ j * m α) = ∑ ι : Fin j → Fin X.N, (∏ l, c₀ (ι l)) • (sPow Z.s α * (∏ l, X.e (ι l)) * m α)`. Rewrite using `[hwj, Finset.sum_mul, Finset.mul_sum]`.
+
+Use `Finset.sum_congr rfl fun ι _ => ?_` and prove the remaining obligations. Simplify using `only [smul_mul_assoc, mul_smul_comm, mul_assoc]`. Rewrite using `[hexp]`. Conclude with `Submodule.sum_mem _ fun ι _ => Submodule.smul_mem _ _ (Submodule.mem_sup_left (Submodule.subset_span ⟨α, j, ι, m α, hmV α, by rw [hsum α hα]; omega, by rw [hsum α hα]; exact ha, rfl⟩))`.
+-/
 theorem _root_.GroundTheory.Heights₂.Heights.EffectiveHS.SymOnto.proof
     (hJ : JetOfMonomialSum.Statement) : SymOnto.Statement := by
   classical
@@ -130,6 +168,29 @@ theorem _root_.GroundTheory.Heights₂.Heights.EffectiveHS.SymOnto.proof
     (Submodule.subset_span ⟨α, j, ι, m α, hmV α, by rw [hsum α hα]; omega,
       by rw [hsum α hα]; exact ha, rfl⟩))
 
+/- English proof (translation)
+Introduce `D hD X Y _ _ _ _ _ _ A d s hGood hRes hUnit a ha g`. Take `⟨c₀, hc₀⟩` from `hUnit`. Use `set j := d.T - a with hj`. Use `choose m hmV hm using fun α : Fin D → ℕ => hRes (fun y => g α y / d.W.sec c₀ (chartIdx A y) y ^ j)`. Set `s' : Fin D → Fin A.n → X → ℂ` to `fun i => d.W.sec (s i)`.
+
+Set `hh : (Fin D → ℕ) → Fin A.n → X → ℂ` to `fun α => IndefiniteRowSideFullHecke.EffectiveHS.secMul (d.wProd fun _ : Fin j => c₀) (m α)`. Establish `hF : (∑ α ∈ IndefiniteRowSideFullHecke.EffectiveHS.tuples D a, IndefiniteRowSideFullHecke.EffectiveHS.secMul (d.monoSec s α) (hh α)) = ∑ α ∈ Finset.Nat.antidiagonalTuple D a, sPow s' α * hh α`. Use `Finset.sum_congr rfl fun α _ => ?_` and prove the remaining obligations. Rewrite using `[TranslateEq.sPow_eq_monoSec]`. Both sides reduce to the same expression.
+
+Use `⟨∑ α ∈ IndefiniteRowSideFullHecke.EffectiveHS.tuples D a, IndefiniteRowSideFullHecke.EffectiveHS.secMul (d.monoSec s α) (hh α), Submodule.sum_mem _ fun α hα => Submodule.mem_sup_left (Submodule.subset_span ⟨j, α, fun _ => c₀, m α, hmV α, ?_, ?_, rfl⟩), ?_⟩` and prove the remaining obligations. Rewrite using `[Finset.Nat.mem_antidiagonalTuple.1 hα]`. Use linear arithmetic over natural numbers and integers. Rewrite using `[Finset.Nat.mem_antidiagonalTuple.1 hα]`. Conclude with `ha`.
+
+Establish `hsec : ∀ c' : Fin d.W.n → ℂ, d.W.sec c' ∈ IndefiniteRowSideFullHecke.HilbertSamuel.Bergman.sectionSpace d.L 1` using `fun c' => Submodule.sum_mem _ fun k _ => Submodule.smul_mem _ _ (d.W.mem k)`. Establish `pt : ∀ x ∈ d.zeroU s, (∀ k < a, iteratedFDeriv ℂ k ((∑ α ∈ Finset.Nat.antidiagonalTuple D a, sPow s' α * hh α) (chartIdx A x) ∘ (A.chart (chartIdx A x)).symm) (A.chart (chartIdx A x) x) = 0) ∧ iteratedFDeriv ℂ a ((∑ α ∈ Finset.Nat.antidiagonalTuple D a, sPow s' α * hh α) (chartId …`. Introduce `x hx`. Use `set c := chartIdx A x with hc`. Establish `hxc : x ∈ (A.chart c).source` using `Classical.choose_spec (A.cover x)`.
+
+Establish `au : ∀ i, AnalyticAt ℂ (s' i c ∘ (A.chart c).symm) (A.chart c x)` using `fun i => analyticAt_of_holoOn A ((hsec (s i)).1 c) hxc`. Establish `aw : AnalyticAt ℂ (d.W.sec c₀ c ∘ (A.chart c).symm) (A.chart c x)` using `analyticAt_of_holoOn A ((hsec c₀).1 c) hxc`. Establish `hhc : ∀ α, hh α c ∘ (A.chart c).symm = fun z => (d.W.sec c₀ c ∘ (A.chart c).symm) z ^ j * (m α c ∘ (A.chart c).symm) z`. Introduce `α`. Use function extensionality and compare the values at `z`.
+
+Simplify using `[hh, IndefiniteRowSideFullHecke.EffectiveHS.secMul, IndefiniteRowSideFullHecke.EffectiveHS.FSData.wProd]`. Establish `ah : ∀ α, AnalyticAt ℂ (hh α c ∘ (A.chart c).symm) (A.chart c x)`. Introduce `α`. Rewrite using `[hhc α]`. Conclude with `(aw.pow j).mul (analyticAt_of_holoOn A ((TranslateEq.space_le_topForms d 0 (hmV α)).1 c) hxc)`.
+
+Establish `hz : ∀ i, (s' i c ∘ (A.chart c).symm) (A.chart c x) = 0` using `fun i => by`. Simplify using `only [Function.comp_apply, (A.chart c).left_inv hxc]`. Conclude with `hx i`. Take `⟨h1, h2, -⟩` from `hJ D D (fun i => s' i c ∘ (A.chart c).symm) (fun α => hh α c ∘ (A.chart c).symm) _ a au hz ah`. Rewrite using `[chart_sum_eq A s' a hh c]`.
+
+Use `⟨h1, ?_⟩` and prove the remaining obligations. Rewrite using `[h2]`. Establish `hJ0 : d.sJac s c x ≠ 0` using `hGood.etale x hx`. Use `Finset.sum_congr rfl fun α _ => ?_` and prove the remaining obligations. Establish `hr` using `hm α x hx`.
+
+Establish `hw0 : d.W.sec c₀ c x ≠ 0` using `hc₀ x hx`. Simplify using `only [IndefiniteRowSideFullHecke.EffectiveHS.FSData.res] at hr`. Rewrite `hr` using `[div_eq_div_iff hJ0 (pow_ne_zero _ hw0)]`. Establish `hcoef : (hh α c ∘ (A.chart c).symm) (A.chart c x) = g α x * d.sJac s c x`. Rewrite using `[hhc α]`.
+
+Simplify using `only [Function.comp_apply, (A.chart c).left_inv hxc]`. Take the linear combination `hr`. Rewrite using `[hcoef]`. Both sides reduce to the same expression. Rewrite using `[hF]`.
+
+Conclude with `⟨fun x hx => (pt x hx).1, fun x hx => (pt x hx).2⟩`.
+-/
 theorem _root_.GroundTheory.Heights₂.Heights.IndefiniteRowSideFullHecke.EffectiveHS.EffectiveHilbertSamuelJetSecond.proof
     (hJ : JetOfMonomialSum.Statement) : IndefiniteRowSideFullHecke.EffectiveHS.EffectiveHilbertSamuelJetSecond.Statement := by
   classical

@@ -14,6 +14,21 @@ def doubleCosetMap {K K' S M : Subgroup G} (hK'K : K' ≤ K) {τ : G} (hτ : τ 
     have := hM _ (K'.mul_mem (K'.inv_mem k.2) k'.2) (by simpa using h)
     simpa [mul_assoc] using this
 
+/- English proof (translation)
+Set `f : ∀ i, K' ⧸ (M i).subgroupOf K' → K ⧸ S.subgroupOf K` to `fun i => doubleCosetMap hK'K (hτ i) (fun k hk hkM => (hM i k hk).1 hkM)`. Set `F : (Σ i, K' ⧸ (M i).subgroupOf K') → K ⧸ S.subgroupOf K` to `fun p => f p.1 p.2`. Establish `hFmk : ∀ i (k : K'), F ⟨i, (k : K' ⧸ (M i).subgroupOf K')⟩ = ((⟨k * (τ i)⁻¹, K.mul_mem (hK'K k.2) (K.inv_mem (hτ i))⟩ : K) : K ⧸ S.subgroupOf K)` using `fun _ _ => rfl`. Establish `hF : Function.Bijective F`. Prove the components needed by the constructor for the conclusion.
+
+Introduce and unpack `⟨i, x⟩ ⟨j, y⟩ hxy`. Proceed by induction on `x using QuotientGroup.induction_on with`. Consider the case `H k`. Proceed by induction on `y using QuotientGroup.induction_on with`. Consider the case `H k'`.
+
+Rewrite `hxy` using `[hFmk, hFmk, QuotientGroup.eq, Subgroup.mem_subgroupOf]`. Establish `hxy' : τ i * (k : G)⁻¹ * k' * (τ j)⁻¹ ∈ S` using `by simpa [mul_assoc] using hxy`. Take `rfl` from `hdisj i j k k.2 k' k'.2 hxy'`. Establish `hkk : (k : G)⁻¹ * k' ∈ M i` using `(hM i _ (K'.mul_mem (K'.inv_mem k.2) k'.2)).2 (by simpa [mul_assoc] using hxy')`. Establish `: ((k : K' ⧸ (M i).subgroupOf K')) = (k' : K' ⧸ (M i).subgroupOf K')`.
+
+Rewrite using `[QuotientGroup.eq, Subgroup.mem_subgroupOf]`. Simplify using `using hkk`. Rewrite using `[this]`. Introduce `y`. Proceed by induction on `y using QuotientGroup.induction_on with`.
+
+Consider the case `H c`. Take `⟨i, k, hk, hc⟩` from `hcover c c.2`. Use `⟨⟨i, ((⟨k, hk⟩ : K') : K' ⧸ (M i).subgroupOf K')⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[hFmk, QuotientGroup.eq, Subgroup.mem_subgroupOf]`. Simplify `hc` using `[mul_assoc]`.
+
+Establish `: ∀ i, Fintype (K' ⧸ (M i).subgroupOf K')` using `fun i => Fintype.ofFinite _`. Set `_` to `Fintype.ofFinite (K ⧸ S.subgroupOf K)`. Rewrite using `[coe_norm, ← finprod_comp_equiv (Equiv.ofBijective F hF), finprod_eq_prod_of_fintype, Fintype.prod_sigma]`. Use `Finset.prod_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[coe_norm, finprod_eq_prod_of_fintype]`.
+
+Use `Finset.prod_congr rfl fun x _ => ?_` and prove the remaining obligations. Proceed by induction on `x using QuotientGroup.induction_on with`. Consider the case `H k`. Rewrite using `[Equiv.ofBijective_apply, hFmk, cosetSMul_mk, cosetSMul_mk]`. Conclude with `mul_smul _ _ _`.
+-/
 theorem coe_norm_eq_prod_norm_inf {K K' S : Subgroup G} (hK'K : K' ≤ K)
     [(S.subgroupOf K).FiniteIndex] {ι : Type*} [Fintype ι] (τ : ι → G) (hτ : ∀ i, τ i ∈ K)
     (M : ι → Subgroup G) [∀ i, ((M i).subgroupOf K').FiniteIndex]
@@ -64,11 +79,17 @@ theorem coe_norm_eq_prod_norm_inf {K K' S : Subgroup G} (hK'K : K' ≤ K)
     rw [Equiv.ofBijective_apply, hFmk, cosetSMul_mk, cosetSMul_mk]
     exact mul_smul _ _ _
 
+/- English proof (translation)
+Use `hN.conj_mem ⟨k, hk⟩ (Subgroup.mem_subgroupOf.2 hkL) ⟨τ, hτ⟩` as an intermediate fact. Simplify `this` using `[Subgroup.mem_subgroupOf]`.
+-/
 theorem conj_mem_of_normal {K L : Subgroup G} [hN : (L.subgroupOf K).Normal] {τ k : G} (hτ : τ ∈ K)
     (hk : k ∈ K) (hkL : k ∈ L) : τ * k * τ⁻¹ ∈ L := by
   have := hN.conj_mem ⟨k, hk⟩ (Subgroup.mem_subgroupOf.2 hkL) ⟨τ, hτ⟩
   simpa [Subgroup.mem_subgroupOf] using this
 
+/- English proof (translation)
+Use `⟨fun h => ?_, conj_mem_of_normal hτ hk⟩` and prove the remaining obligations. Use `conj_mem_of_normal (K.inv_mem hτ) (K.mul_mem (K.mul_mem hτ hk) (K.inv_mem hτ)) h` as an intermediate fact. Simplify `this` using `[mul_assoc]`.
+-/
 theorem conj_mem_iff_of_normal {K L : Subgroup G} [(L.subgroupOf K).Normal] {τ k : G} (hτ : τ ∈ K)
     (hk : k ∈ K) : τ * k * τ⁻¹ ∈ L ↔ k ∈ L := by
   refine ⟨fun h => ?_, conj_mem_of_normal hτ hk⟩
@@ -82,6 +103,17 @@ section Inclusion
 variable {G : Type*} [Group G] [TopologicalSpace G] [IsTopologicalGroup G] [CompactSpace G]
   {A : Type*} [CommGroup A] [MulDistribMulAction G A]
 
+/- English proof (translation)
+Establish `hLK : L ≤ K` using `hLK'.trans hK'K`. Set `_` to `Fintype.ofFinite ((K : Subgroup G) ⧸ (K' : Subgroup G).subgroupOf K)`. Set `τ : (K : Subgroup G) ⧸ (K' : Subgroup G).subgroupOf K → G` to `fun i => ((Quotient.out i : K) : G)`. Establish `hτ : ∀ i, τ i ∈ (K : Subgroup G)` using `fun i => (Quotient.out i : K).2`. Establish `ha : ∀ i, (τ i)⁻¹ • (b : A) ∈ fixedModule A (L : Subgroup G)` using `fun i => smul_mem_fixedModule_of_normal hLK ((K : Subgroup G).inv_mem (hτ i)) b.2`.
+
+Establish `key` using `coe_norm_eq_prod_norm_inf (A := A) (S := (L : Subgroup G)) hK'K τ hτ (fun _ => (L : Subgroup G)) (fun i k hk => (conj_mem_iff_of_normal (hτ i) (hK'K hk)).symm) (fun c hc => by`. Take `⟨h, hh⟩` from `QuotientGroup.mk_out_eq_mul ((K' : Subgroup G).subgroupOf K) (⟨c⁻¹, (K : Subgroup G).inv_mem hc⟩ : (K : Subgroup G))`. Use `⟨((⟨c⁻¹, (K : Subgroup G).inv_mem hc⟩ : (K : Subgroup G)) : _ ⧸ _), (h : G), Subgroup.mem_subgroupOf.1 h.2, ?_⟩` and prove the remaining obligations. Establish `: τ ((⟨c⁻¹, (K : Subgroup G).inv_mem hc⟩ : (K : Subgroup G)) : _ ⧸ _) = c⁻¹ * (h : G)`. Simplify using `only [τ, hh, Subgroup.coe_mul]`.
+
+Rewrite using `[this]`. Use the proof step `simp)`. Use the proof step `(fun i j k hk k' hk' hy => by`. Rewrite using `[← QuotientGroup.out_eq' i, ← QuotientGroup.out_eq' j, QuotientGroup.eq, Subgroup.mem_subgroupOf]`. Establish `hyK : τ i * k⁻¹ * k' * (τ j)⁻¹ ∈ (K : Subgroup G)` using `hLK hy`.
+
+Establish `hc` using `conj_mem_of_normal ((K : Subgroup G).inv_mem (hτ j)) ((K : Subgroup G).inv_mem hyK) ((L : Subgroup G).inv_mem hy)`. Establish `hmem : k⁻¹ * k' * ((τ j)⁻¹ * (τ i * k⁻¹ * k' * (τ j)⁻¹)⁻¹ * (τ j)⁻¹⁻¹) ∈ (K' : Subgroup G)` using `(K' : Subgroup G).mul_mem ((K' : Subgroup G).mul_mem ((K' : Subgroup G).inv_mem hk) hk') (hLK' hc)`. Use `hmem using 1` and compare the differences between its conclusion and the goal. Simplify using `only [Subgroup.coe_mul, InvMemClass.coe_inv, τ]`. Use the proof step `group)`.
+
+Use `b ha`. Use `⟨∏ i, ⟨(τ i)⁻¹ • (b : A), ha i⟩, Subtype.ext ?_⟩` and prove the remaining obligations. Rewrite using `[map_prod]`. Simplify using `only [SubmonoidClass.coe_finsetProd]`. Conclude with `key.symm`.
+-/
 theorem norm_mem_range_norm_of_le {K K' L : OpenSubgroup G} (hLK' : L ≤ K') (hK'K : K' ≤ K)
     [((L : Subgroup G).subgroupOf K).Normal] (b : fixedModule A (L : Subgroup G)) :
     (⟨norm A (K : Subgroup G) (L : Subgroup G) b,
@@ -131,6 +163,9 @@ noncomputable def tateZeroIncl {K K' L : OpenSubgroup G} (hLK' : L ≤ K') (hK'K
     rintro _ ⟨b, rfl⟩
     exact norm_mem_range_norm_of_le hLK' hK'K b)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem tateZeroIncl_mk {K K' L : OpenSubgroup G} (hLK' : L ≤ K') (hK'K : K' ≤ K)
     [((L : Subgroup G).subgroupOf K).Normal] (a : fixedModule A (K : Subgroup G)) :
     tateZeroIncl hLK' hK'K (QuotientGroup.mk a : tateZero A (K : Subgroup G) (L : Subgroup G)) =

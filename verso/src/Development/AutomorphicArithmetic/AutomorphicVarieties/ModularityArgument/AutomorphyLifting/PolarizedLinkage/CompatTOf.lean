@@ -28,6 +28,21 @@ section Local
 variable {E Ω : Type} [Field E] [NumberField E] [Field Ω] [Algebra E Ω] [IsAlgClosure E Ω]
   {A : ValuationSubring Ω} {w : HeightOneSpectrum (𝓞 E)} {h : IsPlaceOver A w}
 
+/- English proof (translation)
+Use `haveI : CharZero (w.adicCompletion E) := charZero_of_injective_algebraMap (algebraMap E _).injective`. Take `⟨𝔪, hm⟩` from `Pr.exh (w.adicCompletion E) x`. Establish `he : chars ξ hξ = msupp 𝔪` using `GlobalTheory.LocGL.SupportUnique.hasSupport_unique GlobalTheory.RecT.geometricLemma_holds GlobalTheory.bernsteinZelevinskyFiniteness_holds Pr.zel _ x _ _ hs (GlobalTheory.LocGL.hasSupport_msupp_of_isL Pr.zel _ 𝔪 x hm)`. Establish `hterm : ∀ Δ ∈ 𝔪, ∀ i : Fin Δ.len, Δ.term i ∈ chars ξ hξ` using `fun Δ hΔ i => by`. Rewrite using `[he, msupp]`.
+
+Conclude with `Multiset.mem_bind.2 ⟨Δ, hΔ, Multiset.mem_map.2 ⟨i, Finset.mem_univ_val _, rfl⟩⟩`. Establish `hone : ∀ Δ ∈ 𝔪, Δ.len = 1` using `fun Δ hΔ => by`. Assume the negation of the conclusion as `hne`. Establish `h2 : 1 < Δ.len` using `lt_of_le_of_ne Δ.len_pos (Ne.symm hne)`. Use `hu _ (hterm Δ hΔ ⟨1, h2⟩) _ (hterm Δ hΔ ⟨0, Δ.len_pos⟩) ?_` and prove the remaining obligations.
+
+Simplify using `only [Segment.term, IrrGL.nu_nu]`. Evaluate the numerical expressions. Establish `hms : ∀ Δ ∈ 𝔪, Δ.ms = {Δ.first}` using `fun Δ hΔ => by`. Establish `e : Δ = Segment.single Δ.first Δ.isCusp_first` using `Segment.ext_first rfl (by rw [hone Δ hΔ]; rfl)`. Rewrite using `[e, Segment.ms_single]`.
+
+Both sides reduce to the same expression. Establish `hsupp : msupp 𝔪 = 𝔪.map Segment.first`. Rewrite using `[msupp, ← Multiset.bind_singleton]`. Conclude with `Multiset.bind_congr hms`. Establish `hsum : rc x = sumList (𝔪.toList.map fun Δ => rc Δ.first)`.
+
+Rewrite using `[H.langlands 𝔪.toList x (by rw [Multiset.coe_toList]; exact hm), segSum]`. Use `congr 1`. Use `List.map_congr_left fun Δ hΔ => ?_` and prove the remaining obligations. Rewrite using `[hone Δ (Multiset.mem_toList.1 hΔ)]`. Simplify using `only [Nat.cast_one, sub_self, zero_div]`.
+
+Conclude with `(GlobalTheory.WeilDeligne.charPol_lpTw_lpChar_lpSp E Ω A w h _).1`. Establish `hpol : ∀ j, (rc (IrrGL.ofChar (ξ j) (hξ j))).charPol g = X - C ((ξ j (a g) : ℂˣ) : ℂ)` using `fun j => by`. Rewrite using `[H.one, WD.lpOfChar, WD.charPol_mk, WDRep.ofChars_ρ, charpoly_diagEnd]`. Simplify using the standard rewrite rules. Establish `hprod : (∏ j, (X - C ((ξ j (a g) : ℂˣ) : ℂ))) = ((chars ξ hξ).map fun y => (rc y).charPol g).prod`.
+
+Rewrite using `[chars, Multiset.map_map, Finset.prod_eq_multiset_prod]`. Conclude with `congrArg Multiset.prod (Multiset.map_congr rfl fun j _ => (hpol j).symm)`. Rewrite using `[hsum, GlobalTheory.LocLanglands.CuspExt.charPol_sumList, List.map_map, hprod, he, hsupp, Multiset.map_map, ← Multiset.prod_coe, ← Multiset.map_coe, Multiset.coe_toList]`. Both sides reduce to the same expression.
+-/
 private theorem charPol_chars {a : Weil h →* (w.adicCompletion E)ˣ} {ha : IsLocalArtin h a}
     {rc : IrrGL (w.adicCompletion E) → WD h} (H : LawsT a ha rc) (x : IrrGL (w.adicCompletion E)) {n : ℕ}
     (ξ : Fin n → ((w.adicCompletion E)ˣ →* ℂˣ)) (hξ : ∀ j, IsSmoothChar (ξ j)) (hs : HasSupport x.rep (chars ξ hξ))
@@ -70,11 +85,17 @@ private theorem charPol_chars {a : Weil h →* (w.adicCompletion E)ˣ} {ha : IsL
     ← Multiset.prod_coe, ← Multiset.map_coe, Multiset.coe_toList]
   rfl
 
+/- English proof (translation)
+Unfold `satWD`. Rewrite using `[WD.monomial_twist_iff]`. Conclude with `WD.unr_mono0 _ ((WD.unr_mk _).2 (WDRep.unr_diag _))`.
+-/
 private theorem satWD_mono0 (n : ℕ) (B : Multiset ℂˣ) : (satWD h n B).mono0 := by
   unfold satWD
   rw [WD.monomial_twist_iff]
   exact WD.unr_mono0 _ ((WD.unr_mk _).2 (WDRep.unr_diag _))
 
+/- English proof (translation)
+Unfold `satWD`. Rewrite using `[WD.unr_tw]`. Conclude with `(WD.unr_mk _).2 (WDRep.unr_diag _)`.
+-/
 private theorem satWD_unr (n : ℕ) (B : Multiset ℂˣ) : (satWD h n B).unr := by
   unfold satWD
   rw [WD.unr_tw]
@@ -87,6 +108,13 @@ section Global
 variable {E Ω : Type} [Field E] [NumberField E] [IsCMField E] [Field Ω] [Algebra E Ω] [IsAlgClosure E Ω]
   {l : ℕ} [Fact l.Prime] {n : ℕ}
 
+/- English proof (translation)
+Use `haveI : CharZero (w.adicCompletion E) := charZero_of_injective_algebraMap (algebraMap E _).injective`. Take `⟨a, ha, hL⟩` from `hrc`. Take `⟨α, hα, hS⟩` from `GlobalTheory.LFun.SphComp.hasSatake_of_isLocComp π ((CG.hasSat_mk π w B).1 hB) hσ`. Establish `hBσ : GlobalTheory.LFun.HasSatGL w σ.ρ B` using `hα ▸ GlobalTheory.T.hasSatakeGL_of_hasSatakeParameters_principalSeries E w n _ σ.ρ α hS`. Take `⟨ξ, hξ, ϖ, hsup, hunr, hϖ, rfl⟩` from `GlobalTheory.T.supercuspidal_support_characters E n hn w σ B hBσ`.
+
+Establish `hun : Unlinked (chars ξ hξ)`. Take `⟨s, hs, -, hu⟩` from `hP`. Rewrite `hu` using `[GlobalTheory.LocGL.SupportUnique.hasSupport_unique GlobalTheory.RecT.geometricLemma_holds GlobalTheory.bernsteinZelevinskyFiniteness_holds Pr.zel _ _ _ _ hs hsup]`. Then use the resulting hypothesis. Use `set s : ℂ := (((1 - (n : ℝ)) / 2 : ℝ) : ℂ) with hs`. Set `ξ' : Fin n → ((w.adicCompletion E)ˣ →* ℂˣ)` to `fun j => ξ j * absPow _ s`.
+
+Establish `hξ' : ∀ j, IsSmoothChar (ξ' j)` using `fun j => (hξ j).mul (GlobalTheory.LocGL.isSmoothChar_absPow _)`. Establish `hnu` using `GlobalTheory.RoadU.TwistSupp.supp_nu_chars (w.adicCompletion E) (IrrGL.of σ.ρ σ.smooth σ.irred) n ξ ξ' hξ hξ' s (fun _ => rfl)`. Establish `h2` using `charPol_chars hL (algNorm σ) ξ' hξ' (hnu.1.1 hsup) (hnu.2.1 hun)`. Establish `h3` using `GlobalTheory.SatChar.satWD_charPol_chars Ω E w A h n ξ ξ' (fun _ => rfl) hunr ϖ hϖ a ha`. Conclude with `GlobalTheory.WeakTheRep.eq_of_mono0_charPol _ _ hm (satWD_mono0 n _) fun g => (h2 g).trans (h3 g).symm`.
+-/
 private theorem rec_eq_sat (hn : 1 ≤ n) (π : CuspSub E n) {w : HeightOneSpectrum (𝓞 E)} {A : ValuationSubring Ω}
     {h : IsPlaceOver A w} {σ : SmIrr (GL (Fin n) (w.adicCompletion E))} (hσ : π.IsLocComp w σ) {B : Multiset ℂˣ}
     (hB : (CG.mk π).HasSat w B) {rc : IrrGL (w.adicCompletion E) → WD h} (hrc : IsRecT h rc)
@@ -109,6 +137,15 @@ private theorem rec_eq_sat (hn : 1 ≤ n) (π : CuspSub E n) {w : HeightOneSpect
   have h3 := GlobalTheory.SatChar.satWD_charPol_chars Ω E w A h n ξ ξ' (fun _ => rfl) hunr ϖ hϖ a ha
   exact GlobalTheory.WeakTheRep.eq_of_mono0_charPol _ _ hm (satWD_mono0 n _) fun g => (h2 g).trans (h3 g).symm
 
+/- English proof (translation)
+Introduce `A h`. Establish `hm : Continuous fun g => (r g : Matrix (Fin n) (Fin n) (Qbar l))` using `Units.continuous_val.comp hr`. Establish `hw` using `H A h`. Take `⟨t, ht, φ, hφ, N', a, hN, -⟩` from `isWDOf_wdOf (h := h) (r := r) hl ι hm`. Use `⟨(hN.unr_wdOf_iff hl ht ι).1 (by rw [hw]; exact satWD_unr n B), fun s hs => ?_⟩` and prove the remaining obligations.
+
+Establish `hd : deg (⟨s, mem_Weil_of_isFrob h hs⟩ : Weil h) = 1` using `deg_eq_one_iff.2 hs`. Establish `k` using `charPol_wdOf (h := h) (r := r) hl ι hm (⟨s, mem_Weil_of_isFrob h hs⟩ : Weil h)⁻¹`. Rewrite `k` using `[hw, GlobalTheory.SatChar.charPol_satWD, deg_inv, hd]`. Use `k.symm.trans ?_` and prove the remaining obligations. Simplify using `only [algSat, Multiset.map_map, Multiset.pure_def, Multiset.bind_def, Multiset.bind_singleton]`.
+
+Use `congrArg _ (Multiset.map_congr rfl fun b _ => ?_)` and prove the remaining obligations. Simplify using `only [Function.comp_apply]`. Rewrite using `[Complex.ofReal_cpow (Nat.cast_nonneg _), zpow_neg_one, zpow_neg_one, inv_inv, ← Complex.cpow_neg]`. Use `congr 4`. Use `push_cast`.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 private theorem frobEig_of {ι : Qbar l ≃+* ℂ} {r : G E Ω →* GL (Fin n) (Qbar l)} (hr : Continuous r)
     {w : HeightOneSpectrum (𝓞 E)} (hl : ((l : ℕ) : 𝓞 E) ∉ w.asIdeal) {B : Multiset ℂˣ}
     (H : ∀ (A : ValuationSubring Ω) (h : IsPlaceOver A w), wdOf h hl ι r = satWD h n B) :
@@ -137,6 +174,11 @@ section Main
 variable {F Ω : Type} [Field F] [NumberField F] [IsCMField F] [Field Ω] [Algebra F Ω] [IsAlgClosure F Ω]
   {n : ℕ}
 
+/- English proof (translation)
+Take `⟨s, hs, h1, hu⟩` from `hP`. Take `⟨-, huniq, hT, -, -⟩` from `UpperTheory.V.Z.Gam.suppFacts F n hn π w`. Establish `hsa : UpperTheory.V.Z.Gam.SuppAt π w s` using `⟨σ, hσ, hs.of_equiv (IrrGL.equivOf σ.ρ σ.smooth σ.irred).symm⟩`. Introduce `σ' hσ'`. Take `⟨s', hs', -⟩` from `((hT s hsa).1.2 h1) σ' hσ'`.
+
+Take `rfl : s' = s` from `huniq s' s ⟨σ', hσ', hs'.of_equiv (IrrGL.equivOf σ'.ρ σ'.smooth σ'.irred).symm⟩ hsa`. Conclude with `⟨s', hs', h1, hu⟩`.
+-/
 private theorem plain_all (hn : 1 ≤ n) {π : CuspSub F n} {w : HeightOneSpectrum (𝓞 F)}
     {σ : SmIrr (GL (Fin n) (w.adicCompletion F))} (hσ : π.IsLocComp w σ)
     (hP : PlainTor (IrrGL.of σ.ρ σ.smooth σ.irred)) :
@@ -149,6 +191,9 @@ private theorem plain_all (hn : 1 ≤ n) {π : CuspSub F n} {w : HeightOneSpectr
   obtain rfl : s' = s := huniq s' s ⟨σ', hσ', hs'.of_equiv (IrrGL.equivOf σ'.ρ σ'.smooth σ'.irred).symm⟩ hsa
   exact ⟨s', hs', h1, hu⟩
 
+/- English proof (translation)
+Take `⟨h1, h2⟩` from `(UpperTheory.V.Z.ImaginaryQuadraticEtaCharacter.plainIff F n hn π w).1 hall`. Take `⟨t, ht⟩` from `UpperTheory.V.Z.ImaginaryQuadraticEtaCharacter.winOf F n hn π`. Conclude with `(H F Ω A w h rc hrc n π t (ht w h1 h2) σ hσ).2`.
+-/
 private theorem gd_of (H : PlainRec) (hn : 1 ≤ n) {π : CuspSub F n} {w : HeightOneSpectrum (𝓞 F)} {A : ValuationSubring Ω}
     {h : IsPlaceOver A w} {rc : IrrGL (w.adicCompletion F) → WD h} (hrc : IsRecT h rc)
     {σ : SmIrr (GL (Fin n) (w.adicCompletion F))} (hσ : π.IsLocComp w σ)
@@ -163,6 +208,17 @@ end Main
 end UpperTheory.V.Z.Win.UnramifiedSatakeFrobeniusCompatibility
 
 open UpperTheory.V.Z.Win.UnramifiedSatakeFrobeniusCompatibility in
+/- English proof (translation)
+Introduce `hRow H F Ω _ _ _ _ _ _ l _ ι n hn r π hr hreg ⟨χ, hχ⟩ ha`. Take `⟨R, wt, HT, P⟩` from `hRow F Ω l ι n hn π χ hreg hχ`. Establish `hRc : Continuous fun g => (R g : Matrix (Fin n) (Fin n) (Qbar l))` using `Units.continuous_val.comp P.cont`. Choose the witnesses or unpack the hypotheses as in `⟨p, hp⟩ : RepIso R r := by`. Use `GlobalTheory.IsoOfFrobFree.main F Ω l ι n R r P.cont hr P.ss ha.1 ?_` and prove the remaining obligations.
+
+Use `filter_upwards [ha.2, eventually_not_mem F l] with w ⟨B, hB, hf⟩ hw`. Use `⟨_, frobEig_of P.cont hw fun A h => ?_, hf⟩` and prove the remaining obligations. Take `⟨rc, hrc⟩` from `UpperTheory.Zero.LLC.recTExists F Ω A w h`. Take `⟨⟨s, σ, hσ, -⟩, -⟩` from `UpperTheory.V.Z.Gam.suppFacts F n hn π w`. Establish `hall` using `(UpperTheory.V.Z.ImaginaryQuadraticEtaCharacter.plainIff F n hn π w).2 (UpperTheory.V.Z.ImaginaryQuadraticEtaCharacter.sphUnl F n hn π w B hB)`.
+
+Take `⟨g1, g2⟩` from `gd_of H hn hrc hσ hall`. Rewrite using `[(P.away w hw A h rc hrc σ hσ).tor g1 g2]`. Conclude with `rec_eq_sat hn π hσ hB hrc (hall σ hσ) g2`. Use `⟨HT, P.weights, fun w σ hσ => ⟨fun A h rc hrc => ⟨fun hw => ?_, fun O _ _ _ Bw hj hg => ?_⟩, fun hT A h O _ _ _ Bw hj => ?_⟩⟩` and prove the remaining obligations. Conclude with `WDT.of_conj ⟨wdOf h hw ι R, isWDOf_wdOf hw ι hRc, fun g => (P.away w hw A h rc hrc σ hσ).tor g.1 g.2⟩ hw p fun g => by rw [hp, inv_mul_cancel_right]`.
+
+Take `⟨-, k2, -, k4⟩` from `(P.above (Loc.PP l) _ (Loc.tiedP l) w A h O Bw hj).nice σ hσ rc hrc (Or.inr hg.1) hg.2`. Establish `h3` using `GlobalTheory.PstConj.main F Ω l ι n _ _ (Loc.tiedP l) w A h O Bw hj (R.comp (Dec (F := F) A).subtype) (r.comp (Dec (F := F) A).subtype) p (fun g => hp g.1) k2`. Conclude with `⟨h3.1, by rw [h3.2]; exact k4.tor hg.1 hg.2⟩`. Take `⟨rc, hrc⟩` from `UpperTheory.Zero.LLC.recTExists F Ω A w h`. Take `⟨g1, g2⟩` from `gd_of H hn hrc hσ (plain_all hn hσ hT)`.
+
+Take `⟨k1, -, k3, -⟩` from `(P.above (Loc.PP l) _ (Loc.tiedP l) w A h O Bw hj).nice σ hσ rc hrc (Or.inr g1) g2`. Take `⟨d1, -, -, d4⟩` from `GlobalTheory.ConjLocal.local_conj l (Loc.PP l) F Ω O _ Bw n (R.comp (Dec (F := F) A).subtype) (r.comp (Dec (F := F) A).subtype) p fun g => hp g.1`. Conclude with `⟨d1 k1, fun τ LL' τ' hi => d4 τ _ (k3 τ LL' τ' hi)⟩`.
+-/
 theorem UpperTheory.V.Z.Win.compatTOf :
     UpperTheory.V.Z.Win.CompatTOf := by
   intro hRow H F Ω _ _ _ _ _ _ l _ ι n hn r π hr hreg ⟨χ, hχ⟩ ha

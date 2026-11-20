@@ -29,6 +29,9 @@ open GlobalTheory.BadCount
 open scoped TensorProduct
 open Formalism.IndefR.FWT
 namespace GlobalTheory.NeatOne
+/- English proof (translation)
+Introduce `_ _`. Use `Formalism.MainNotions.Closed.imp (_root_.GlobalTheory.CovTop.Sizes.hostN_alt 6) fun Fm CH _ hh => ?_` and prove the remaining obligations. Take `⟨C, hC, a, ha⟩` from `hh`. Conclude with `⟨C, hC, a, fun x hx hle ι p hp i _ k => free_half p i (rank_add_one_lt Fm x hx ι _ C (ha x hx hle ι p hp i)) k⟩`.
+-/
 theorem neat_divisor_free_half_lifts_alt : _root_.GlobalTheory.CovTop.PublishedHodgeBundleTheorems → _root_.GlobalTheory.CovTop.GramCondition → _root_.GlobalTheory.CovTop.LiftsCondition fun Fm x _ ι p i _ _ => (i : ℕ) + 1 = (Fm.D x ι).R.m → ∀ k : Fin 2,
     GlobalTheory.DefPt.FreePt (p.T.Q.Xo ((i : ℕ) + 1)) p.T.Q.c
       (fun h : GlobalTheory.BadCount.Inh.halfH (Fm.D x ι) k => (p.O i).lev2 ((p.R.eG.trans p.cG).symm (h : G0g (Fm.D x ι).nd))) := by
@@ -52,6 +55,9 @@ open GlobalTheory.BadCount
 open scoped TensorProduct
 open Formalism.IndefR.FWT
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @_root_.GlobalTheory.NeatOne.neat_divisor_free_half_lifts_alt | exact _root_.GlobalTheory.NeatOne.neat_divisor_free_half_lifts_alt | (intros; apply _root_.GlobalTheory.NeatOne.neat_divisor_free_half_lifts_alt <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.freePt_lev2_halfH_at_last_index : _root_.GlobalTheory.CovTop.PublishedHodgeBundleTheorems → _root_.GlobalTheory.CovTop.GramCondition → _root_.GlobalTheory.CovTop.LiftsCondition fun Fm x _ ι p i _ _ => (i : ℕ) + 1 = (Fm.D x ι).R.m → ∀ k : Fin 2,
     GlobalTheory.DefPt.FreePt (p.T.Q.Xo ((i : ℕ) + 1)) p.T.Q.c
       (fun h : GlobalTheory.BadCount.Inh.halfH (Fm.D x ι) k => (p.O i).lev2 ((p.R.eG.trans p.cG).symm (h : G0g (Fm.D x ι).nd))) := by

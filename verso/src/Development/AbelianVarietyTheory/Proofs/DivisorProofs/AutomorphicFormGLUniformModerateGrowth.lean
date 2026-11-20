@@ -9,6 +9,11 @@ noncomputable section
 
 open NumberField GlobalTheory.CuspRep GlobalTheory.CuspQuot GlobalTheory.AutGrowth MeasureTheory GroundTheory.Global GroundTheory.Automorphic GroundTheory.Automorphic.Reduction
 
+/- English proof (translation)
+Introduce `hP E _ _ _ a φ hφ`. Set `ν : Measure (Lie E a)` to `Measure.addHaar`. Take `⟨C, N, hC⟩` from `hφ.growth 1`. Simplify using `only [one_mul] at hC`. Take `⟨α, hα, hconv⟩` from `GlobalTheory.T.automorphicForm_eq_own_realLieSmoothing hP E a ν φ hφ`.
+
+Use `⟨N, fun l => ?_⟩` and prove the remaining obligations. Take `⟨β, hβ, hw⟩` from `GlobalTheory.T.exists_test_word_eq_smoothing E a ν α hα φ hconv l`. Take `⟨C', hC'⟩` from `GlobalTheory.T.exists_smoothing_norm_le_height_pow E a ν β hβ φ.1 C N hC`. Conclude with `⟨C', fun y => by rw [hw]; exact hC' y⟩`.
+-/
 theorem GlobalTheory.AutGrowth.uniform_growth_of_autForm : GlobalTheory.Published.AutomorphicFormsFiniteGL → ∀ (E : Type) [Field E]
     [NumberField E] [IsTotallyComplex E] (a : ℕ) (φ : Sm E a), IsAutForm φ → ∃ N : ℕ, ∀ l : List (Lie E a),
     ∃ C : ℝ, ∀ y, ‖((l.map (lie E a)).prod φ).1 (infGL E a y)‖ ≤ C * height y ^ N := by

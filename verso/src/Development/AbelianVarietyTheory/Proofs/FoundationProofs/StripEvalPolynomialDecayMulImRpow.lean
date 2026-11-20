@@ -9,6 +9,13 @@ namespace GlobalTheory.HeckeFamilyMatrices
 
 open Filter Topology
 
+/- English proof (translation)
+Establish `hdeg : p.natDegree < w + 1`. Distinguish the cases in `h0 : p = 0`. Simplify using `[h0]`. Conclude with `(natDegree_lt_iff_degree_lt h0).2 (mem_degreeLT.1 hp)`. Rewrite using `[eval_add, eval_C, eval_eq_sum_range' hdeg]`.
+
+Establish `hz1 : (1 : ℝ) ≤ 1 + ‖z‖` using `by linarith [norm_nonneg z]`. Establish `hterm : ∀ j ∈ Finset.range (w + 1), ‖p.coeff j * z ^ j‖ ≤ K * e * (1 + ‖z‖) ^ (2 * w)`. Introduce `j hj`. Establish `hjw : j ≤ w` using `Nat.lt_succ_iff.1 (Finset.mem_range.1 hj)`. Rewrite using `[norm_mul, norm_pow]`.
+
+Establish `h1 : ‖z‖ ^ j ≤ (1 + ‖z‖) ^ w` using `(pow_le_pow_left₀ (norm_nonneg z) (by linarith) j).trans (pow_le_pow_right₀ hz1 hjw)`. Combine the equalities or inequalities in the displayed calculation. Combine the equalities or inequalities in the displayed calculation.
+-/
 private lemma norm_eval_add_C_le_of_coeff_le (w : ℕ) (a z : ℂ) (p : ℂ[X]) (K e : ℝ) (hK : 0 ≤ K)
     (he : 0 ≤ e) (hp : p ∈ degreeLT ℂ (w + 1))
     (hc : ∀ j ≤ w, ‖p.coeff j‖ ≤ K * e * (1 + ‖z‖) ^ w) :
@@ -37,6 +44,31 @@ private lemma norm_eval_add_C_le_of_coeff_le (w : ℕ) (a z : ℂ) (p : ℂ[X]) 
         gcongr with j hj; exact hterm j hj
     _ = ‖a‖ + (w + 1) * (K * e * (1 + ‖z‖) ^ (2 * w)) := by simp; ring
 
+/- English proof (translation)
+Introduce `w n a V C' c hw hc hV hcoef ε hε`. Use `set K := max C' 0 with hKdef`. Establish `hK : 0 ≤ K` using `le_max_right _ _`. Establish `hwpos : (0 : ℝ) < (w : ℝ) / 2`. Establish `: (1 : ℝ) ≤ w` using `by exact_mod_cast hw`.
+
+Combine the linear equalities and inequalities to obtain the conclusion. Establish `h1 : Tendsto (fun y : ℝ => ‖a‖ * y ^ (-(w : ℝ) / 2)) atTop (𝓝 0)`. Use `(tendsto_rpow_neg_atTop hwpos).const_mul ‖a‖` as an intermediate fact. Rewrite `this` using `[mul_zero]`. Use `this.congr' (Eventually.of_forall fun y => ?_)` and prove the remaining obligations.
+
+Simplify using `only [neg_div]`. Establish `h2 : Tendsto (fun y : ℝ => (w + 1) * (K * 4 ^ w) * (y ^ (2 * w) / Real.exp (c * y))) atTop (𝓝 0)`. Use `((isLittleO_pow_exp_pos_mul_atTop (2 * w) hc).tendsto_div_nhds_zero).const_mul ((w + 1) * (K * 4 ^ w))` as an intermediate fact. Rewrite `this` using `[mul_zero]`. Then use the resulting hypothesis. Establish `e1` using `h1.eventually (gt_mem_nhds (half_pos hε))`.
+
+Establish `e2` using `h2.eventually (gt_mem_nhds (half_pos hε))`. Take `⟨A0, hA0⟩` from `eventually_atTop.1 (e1.and e2)`. Use `⟨max A0 (1 + n), fun τ hA hre hren => ?_⟩` and prove the remaining obligations. Establish `hpos : 0 < τ.im` using `τ.im_pos`. Establish `hy0 : A0 ≤ τ.im` using `le_trans (le_max_left _ _) hA`.
+
+Establish `hyn : 1 + (n : ℝ) ≤ τ.im` using `le_trans (le_max_right _ _) hA`. Establish `hy1 : 1 ≤ τ.im`. Establish `: (0 : ℝ) ≤ n` using `Nat.cast_nonneg n`. Combine the linear equalities and inequalities to obtain the conclusion. Take `⟨hf1, hf2⟩` from `hA0 τ.im hy0`.
+
+Establish `hz : ‖(τ : ℂ)‖ ≤ n + τ.im`. Use `(Complex.norm_le_abs_re_add_abs_im _).trans ?_` and prove the remaining obligations. Establish `hr : |(τ : ℂ).re| ≤ n`. Rewrite using `[UpperHalfPlane.coe_re, abs_of_nonneg hre]`. Conclude with `hren`.
+
+Establish `hi : |(τ : ℂ).im| = τ.im`. Rewrite using `[UpperHalfPlane.coe_im, abs_of_pos hpos]`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hcb : ∀ j ≤ w, ‖(V τ - C a).coeff j‖ ≤ K * Real.exp (-c * τ.im) * (1 + ‖(τ : ℂ)‖) ^ w`. Introduce `j hj`.
+
+Use `(hcoef τ hy1 j hj).trans ?_` and prove the remaining obligations. Use `gcongr`. Conclude with `le_max_left _ _`. Establish `hmem : V τ - C a ∈ degreeLT ℂ (w + 1)` using `Submodule.sub_mem _ (hV τ) (mem_degreeLT.2 (lt_of_le_of_lt degree_C_le (by exact_mod_cast Nat.succ_pos w)))`. Establish `hmain` using `norm_eval_add_C_le_of_coeff_le w a (τ : ℂ) (V τ - C a) K (Real.exp (-c * τ.im)) hK (Real.exp_pos _).le hmem hcb`.
+
+Rewrite `hmain` using `[sub_add_cancel]`. Establish `hnz : 1 + ‖(τ : ℂ)‖ ≤ 2 * τ.im` using `by linarith`. Establish `hpow : (1 + ‖(τ : ℂ)‖) ^ (2 * w) ≤ 4 ^ w * τ.im ^ (2 * w)`. Combine the equalities or inequalities in the displayed calculation. Establish `hT : (w + 1) * (K * Real.exp (-c * τ.im) * (1 + ‖(τ : ℂ)‖) ^ (2 * w)) ≤ (w + 1) * (K * 4 ^ w) * (τ.im ^ (2 * w) / Real.exp (c * τ.im))`.
+
+Rewrite using `[neg_mul, Real.exp_neg]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[div_eq_mul_inv]`. Expand and normalize the polynomial expressions, which then agree. Establish `hT0 : 0 ≤ (w + 1) * (K * 4 ^ w) * (τ.im ^ (2 * w) / Real.exp (c * τ.im))` using `by positivity`.
+
+Establish `hr0 : 0 ≤ τ.im ^ (-(w : ℝ) / 2)` using `Real.rpow_nonneg hpos.le _`. Establish `hr1 : τ.im ^ (-(w : ℝ) / 2) ≤ 1`. Use `Real.rpow_le_one_of_one_le_of_nonpos hy1 ?_` and prove the remaining obligations. Establish `: (0 : ℝ) ≤ w` using `Nat.cast_nonneg w`. Combine the linear equalities and inequalities to obtain the conclusion.
+
+Combine the equalities or inequalities in the displayed calculation. Conclude with `add_le_add le_rfl (mul_le_of_le_one_right hT0 hr1)`. Use `_ < ε / 2 + ε / 2 := add_lt_add hf1 hf2`. Use `_ = ε := add_halves ε`.
+-/
 theorem strip_eval_decay : ∀ (w n : ℕ) (a : ℂ) (V : ℍ → ℂ[X]) (C' c : ℝ), 1 ≤ w → 0 < c →
     (∀ τ, V τ ∈ degreeLT ℂ (w + 1)) →
     (∀ τ : ℍ, 1 ≤ τ.im → ∀ j ≤ w, ‖(V τ - C a).coeff j‖ ≤ C' * Real.exp (-c * τ.im) * (1 + ‖(τ : ℂ)‖) ^ w) →

@@ -2,6 +2,27 @@ import Mathlib
 
 namespace PositivityTheory.Gud.Pf
 
+/- English proof (translation)
+Introduce `n`. Proceed by induction on `n using Nat.strong_induction_on with`. Consider the case `_ n ih`. Introduce `l hlen hl`. Break down `l with _ | ⟨p, l'⟩` into its components or cases.
+
+Conclude with `⟨[], [], by simp, by simp⟩`. Distinguish the cases in `h0 : p.2 = 0`. Establish `hp : ((p.1, -p.2) : α × ℝ) = p` using `Prod.ext rfl (by simp [h0])`. Establish `hl' : List.Perm (l'.map (fun p => (p.1, -p.2))) l'`. Rewrite `hl` using `[List.map_cons, hp]`.
+
+Conclude with `hl.cons_inv`. Take `⟨a', b', hb', hperm'⟩` from `ih l'.length (by simp at hlen; omega) l' rfl hl'`. Establish `hp0 : ((p.1, (0 : ℝ)) : α × ℝ) = p` using `Prod.ext rfl h0.symm`. Use `⟨p.1 :: a', b', fun q hq => ⟨(hb' q hq).1, List.mem_cons_of_mem _ (hb' q hq).2⟩, ?_⟩` and prove the remaining obligations. Simplify using `only [List.map_cons, List.cons_append, hp0]`.
+
+Conclude with `hperm'.cons p`. Establish `hnp : ((p.1, -p.2) : α × ℝ) ≠ p`. Introduce `h`. Establish `h2` using `congrArg Prod.snd h`. Simplify using `only at h2`.
+
+Conclude with `h0 (by linarith)`. Establish `hmem : ((p.1, -p.2) : α × ℝ) ∈ p :: l'` using `hl.subset (by simp)`. Establish `hmem' : ((p.1, -p.2) : α × ℝ) ∈ l'` using `(List.mem_cons.mp hmem).resolve_left hnp`. Take `⟨s, t, rfl⟩` from `List.append_of_mem hmem'`. Establish `hmid : List.Perm (p :: (s ++ (p.1, -p.2) :: t)) (p :: (p.1, -p.2) :: (s ++ t))` using `List.perm_middle.cons p`.
+
+Establish `h1 : List.Perm ((p :: (p.1, -p.2) :: (s ++ t)).map (fun p => (p.1, -p.2))) (p :: (p.1, -p.2) :: (s ++ t))` using `((hmid.map _).symm.trans hl).trans hmid`. Simplify using `only [List.map_cons, neg_neg, Prod.mk.eta] at h1`. Establish `h2 : List.Perm ((s ++ t).map (fun p => (p.1, -p.2))) (s ++ t)` using `((h1.trans (List.Perm.swap ((p.1, -p.2) : α × ℝ) p (s ++ t))).cons_inv).cons_inv`. Take `⟨a'', b'', hb'', hperm''⟩` from `ih (s ++ t).length (by simp only [List.length_cons, List.length_append] at hlen ⊢; omega) (s ++ t) rfl h2`. Establish `hin : ∀ q ∈ b'', q ∈ p :: (s ++ (p.1, -p.2) :: t)`.
+
+Introduce `q hq`. Establish `hq'` using `(hb'' q hq).2`. Simplify using `only [List.mem_cons, List.mem_append] at hq' ⊢`. The claim follows by propositional logic. Break down `lt_or_gt_of_ne h0 with hneg | hpos` into its components or cases.
+
+Use `⟨a'', (p.1, -p.2) :: b'', ?_, ?_⟩` and prove the remaining obligations. Introduce `q hq`. Break down `List.mem_cons.mp hq with rfl | hq` into its components or cases. Conclude with `⟨by simp only; linarith, hmem⟩`. Conclude with `⟨(hb'' q hq).1, hin q hq⟩`.
+
+Simplify using `only [List.flatMap_cons, List.cons_append, List.nil_append, neg_neg, Prod.mk.eta]`. Conclude with `List.perm_middle.trans ((List.perm_middle.cons _).trans (((hperm''.cons _).cons _).trans ((List.Perm.swap p ((p.1, -p.2) : α × ℝ) (s ++ t)).trans hmid.symm)))`. Use `⟨a'', p :: b'', ?_, ?_⟩` and prove the remaining obligations. Introduce `q hq`. Break down `List.mem_cons.mp hq with rfl | hq` into its components or cases.
+
+Conclude with `⟨hpos, List.mem_cons_self ..⟩`. Conclude with `⟨(hb'' q hq).1, hin q hq⟩`. Simplify using `only [List.flatMap_cons, List.cons_append, List.nil_append]`. Conclude with `List.perm_middle.trans ((List.perm_middle.cons _).trans (((hperm''.cons _).cons _).trans hmid.symm))`.
+-/
 theorem list_symmetric_pair_decomposition {α : Type*} : ∀ (n : ℕ) (l : List (α × ℝ)), l.length = n →
     List.Perm (l.map (fun p => (p.1, -p.2))) l →
     ∃ (a : List α) (b : List (α × ℝ)), (∀ p ∈ b, 0 < p.2 ∧ p ∈ l) ∧
@@ -63,10 +84,20 @@ theorem list_symmetric_pair_decomposition {α : Type*} : ∀ (n : ℕ) (l : List
         exact List.perm_middle.trans ((List.perm_middle.cons _).trans (((hperm''.cons _).cons _).trans
           hmid.symm))
 
+/- English proof (translation)
+The claim follows from `list_symmetric_pair_decomposition l.length l rfl hl`.
+-/
 theorem comb {α : Type*} (l : List (α × ℝ)) (hl : List.Perm (l.map (fun p => (p.1, -p.2))) l) :
     ∃ (a : List α) (b : List (α × ℝ)), (∀ p ∈ b, 0 < p.2 ∧ p ∈ l) ∧
       List.Perm (a.map (fun x => (x, (0 : ℝ))) ++ b.flatMap (fun p => [p, (p.1, -p.2)])) l := list_symmetric_pair_decomposition l.length l rfl hl
 
+/- English proof (translation)
+Establish `hlen : l.length = h` using `by rw [hp.length_eq, List.length_ofFn]`. Substitute `hlen` using the available equality. Use `⟨l.get, List.ofFn_get l, ?_⟩` and prove the remaining obligations. Establish `key : ∀ (f : Fin l.length → β) (c : β), Fintype.card {a // f a = c} = (List.ofFn f).count c`. Introduce `f c`.
+
+Rewrite using `[Fintype.card_subtype, ← Multiset.coe_count, ← Fin.univ_val_map, Multiset.count_map, Finset.card_def, Finset.filter_val]`. Use `congr 1`. Conclude with `Multiset.filter_congr (fun a _ => eq_comm)`. Establish `hcard : ∀ c, Fintype.card {a // l.get a = c} = Fintype.card {b // x b = c}`. Introduce `c`.
+
+Rewrite using `[key, key, List.ofFn_get, hp.count_eq]`. Conclude with `⟨Equiv.ofFiberEquiv (fun c => Fintype.equivOfCardEq (hcard c)),`. Use function extensionality and compare the values at `fun j => (Equiv.ofFiberEquiv_map _ j).symm⟩`.
+-/
 theorem perm_ofFn {β : Type*} {h : ℕ} (x : Fin h → β) (l : List β) (hp : List.Perm l (List.ofFn x)) :
     ∃ (y : Fin h → β), List.ofFn y = l ∧ ∃ σ : Equiv.Perm (Fin h), y = fun j => x (σ j) := by
   classical

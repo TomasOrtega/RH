@@ -17,6 +17,9 @@ abbrev res {K K' LL : FinExt l} (hle : GK K' ≤ GK K) (T : LocLat ↥(GK K) ℚ
     LocLat ↥(GK K') ℚ_[l] ↥LL.1 ↥(OL LL) :=
   LiftingTheory.resLoc (Subgroup.inclusion hle) (continuous_subtype_val.subtype_mk _) T
 
+/- English proof (translation)
+Take `⟨h1, h2⟩` from `hres l K' K hKK hle LL T hT`. Use `⟨h1, fun τ a => ?_⟩` and prove the remaining obligations. Rewrite using `[isJumpV_iff _ _ ((hF K' LL).2.2.2 (GRep.ofLat (res hle T)) h1), isJumpV_iff _ _ ((hF K LL).2.2.2 (GRep.ofLat T) hT), h2]`.
+-/
 theorem res_crys (LT : LocTheory) (hres : ElementDenominator.CrystallineRestrictionToExtension LT)
     (hF : ∀ K LL : FinExt l, TruncatedSeriesCountingIdentities.FontaineAt ((LT l).PD K) ↥LL.1 ↥(OL LL))
     {K K' LL : FinExt l} (hKK : K.1 ≤ K'.1) (hle : GK K' ≤ GK K) (T : LocLat ↥(GK K) ℚ_[l] ↥LL.1 ↥(OL LL))
@@ -29,6 +32,13 @@ theorem res_crys (LT : LocTheory) (hres : ElementDenominator.CrystallineRestrict
   rw [isJumpV_iff _ _ ((hF K' LL).2.2.2 (GRep.ofLat (res hle T)) h1),
     isJumpV_iff _ _ ((hF K LL).2.2.2 (GRep.ofLat T) hT), h2]
 
+/- English proof (translation)
+Use `⟨?_, ?_⟩` and prove the remaining obligations. Rewrite using `[eq_top_iff]`. Introduce `x _`. Rewrite using `[GlobalTheory.Cyc.mem_GKs_iff_mem_Gj, H.W_s]`. Use `show (x : GQ l) ∈ (Ks K s).fixingSubgroup`.
+
+Rewrite using `[hK]`. Conclude with `x.2`. Establish `h1` using `GlobalTheory.Cyc.finrank_Ks K s h.1`. Rewrite `h1` using `[hK, ← Module.finrank_mul_finrank ℚ_[l] ↥(K0 K) ↥K.1]`. Establish `: FiniteDimensional ℚ_[l] ↥K.1` using `K.2`.
+
+Establish `: FiniteDimensional ℚ_[l] ↥(K0 K)` using `FiniteDimensional.of_injective (IntermediateField.inclusion (inf_le_left : K0 K ≤ K.1)).toLinearMap (IntermediateField.inclusion_injective (inf_le_left : K0 K ≤ K.1))`. Rewrite using `[P.PD_p, H.W_s]`. Conclude with `Nat.eq_of_mul_eq_mul_left Module.finrank_pos h1`.
+-/
 theorem caseB (P : LocPrime l) (H : LocHW l P) {K LL : FinExt l} {s : ℕ} (h : Good K s LL) (hK : Ks K s = K.1) :
     LiftingTheory.CaseB (H.W K s LL h) := by
   refine ⟨?_, ?_⟩
@@ -47,6 +57,11 @@ theorem caseB (P : LocPrime l) (H : LocHW l P) {K LL : FinExt l} {s : ℕ} (h : 
     rw [P.PD_p, H.W_s]
     exact Nat.eq_of_mul_eq_mul_left Module.finrank_pos h1
 
+/- English proof (translation)
+Establish `hp : l.Prime` using `Fact.out`. Establish `: FiniteDimensional ℚ_[l] ↥K.1` using `K.2`. Establish `: FiniteDimensional ℚ_[l] ↥(K0 K)` using `FiniteDimensional.of_injective (IntermediateField.inclusion (inf_le_left : K0 K ≤ K.1)).toLinearMap (IntermediateField.inclusion_injective (inf_le_left : K0 K ≤ K.1))`. Establish `h0 : Module.finrank ℚ_[l] ↥(K0 K) ≠ 0` using `Module.finrank_pos.ne'`. Establish `h1 : l - 1 ≠ 0` using `(Nat.sub_pos_of_lt hp.one_lt).ne'`.
+
+Establish `key : ∀ j, 1 ≤ j → padicValNat l (Module.finrank ℚ_[l] ↥(Ks K j)) = padicValNat l (Module.finrank ℚ_[l] ↥(K0 K)) + (padicValNat l (l - 1) + (j - 1))`. Introduce `j hj`. Rewrite using `[GlobalTheory.Cyc.finrank_Ks K j hj, padicValNat.mul h0 (mul_ne_zero h1 (pow_ne_zero _ hp.ne_zero)), padicValNat.mul h1 (pow_ne_zero _ hp.ne_zero), padicValNat.prime_pow]`. Rewrite using `[key m hm, key s hs]`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem vdeg_le (K : FinExt l) {s m : ℕ} (hs : 1 ≤ s) (hm : 1 ≤ m) :
     padicValNat l (Module.finrank ℚ_[l] ↥(Ks K m)) - padicValNat l (Module.finrank ℚ_[l] ↥(Ks K s)) ≤ m := by
   have hp : l.Prime := Fact.out
@@ -64,6 +79,9 @@ theorem vdeg_le (K : FinExt l) {s m : ℕ} (hs : 1 ≤ s) (hm : 1 ≤ m) :
   rw [key m hm, key s hs]
   omega
 
+/- English proof (translation)
+Introduce `a ha`. Take `⟨τ, hτ⟩` from `JsetEmb.jsetSplit_all D HW l K' s LL h (res hle T) a ha`. Conclude with `hU _ a (((res_crys D.loc hres hF hKK hle T hT).2 τ a).1 hτ)`.
+-/
 theorem jset_sub (D : D7) (HW : HWOf D.loc) (hres : ElementDenominator.CrystallineRestrictionToExtension D.loc)
     (hF : ∀ K LL : FinExt l, TruncatedSeriesCountingIdentities.FontaineAt ((D.loc l).PD K) ↥LL.1 ↥(OL LL))
     {K K' LL : FinExt l} (hKK : K.1 ≤ K'.1) (hle : GK K' ≤ GK K) {s : ℕ} (h : Good K' s LL)
@@ -74,6 +92,13 @@ theorem jset_sub (D : D7) (HW : HWOf D.loc) (hres : ElementDenominator.Crystalli
   obtain ⟨τ, hτ⟩ := JsetEmb.jsetSplit_all D HW l K' s LL h (res hle T) a ha
   exact hU _ a (((res_crys D.loc hres hF hKK hle T hT).2 τ a).1 hτ)
 
+/- English proof (translation)
+Establish `hp : l.Prime` using `Fact.out`. Establish `hu : IsUnit ((ordCompl[l] d : ℕ) : ↥(OL LL))`. Establish `h1 : IsUnit ((ordCompl[l] d : ℕ) : ℤ_[l])`. Rewrite using `[PadicInt.isUnit_iff, PadicInt.norm_natCast_eq_one_iff]`. Conclude with `(Nat.Prime.coprime_iff_not_dvd hp).2 (Nat.not_dvd_ordCompl hp hd)`.
+
+Simplify using `using h1.map (algebraMap ℤ_[l] ↥(OL LL))`. Take `⟨u, hu⟩` from `hu`. Establish `e : (d : ↥(OL LL)) = u * (l : ↥(OL LL)) ^ padicValNat l d`. Rewrite using `[hu, ← Nat.factorization_def d hp]`. Use `conv_lhs => rw [← Nat.ordProj_mul_ordCompl_eq_self d l]`.
+
+Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Use `S.smul_mem ((u⁻¹ : (↥(OL LL))ˣ) : ↥(OL LL)) hc` as an intermediate fact. Rewrite `this` using `[e, smul_smul, ← mul_assoc, Units.inv_mul, one_mul]`. Then use the resulting hypothesis.
+-/
 theorem pow_val_smul_mem (LL : FinExt l) {M : Type} [AddCommGroup M] [Module ↥(OL LL) M] (S : Submodule ↥(OL LL) M)
     {d : ℕ} (hd : d ≠ 0) {c : M} (hc : (d : ↥(OL LL)) • c ∈ S) :
     ((l : ↥(OL LL)) ^ padicValNat l d) • c ∈ S := by

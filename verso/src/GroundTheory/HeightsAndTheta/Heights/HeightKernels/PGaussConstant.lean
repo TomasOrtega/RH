@@ -10,6 +10,13 @@ noncomputable section
 
 namespace PGaussConstant
 
+/- English proof (translation)
+Establish `hx : (0 : ℝ) ≤ n` using `Nat.cast_nonneg n`. Establish `ha : 0 ≤ 6 * √2 * Real.exp 2 * √(n : ℝ)` using `by positivity`. Establish `hsq : 72 * Real.exp 4 * (n : ℝ) = (6 * √2 * Real.exp 2 * √(n : ℝ)) ^ 2`. Establish `h4 : Real.exp 2 ^ 2 = Real.exp 4`. Rewrite using `[← Real.exp_nat_mul]`.
+
+Evaluate the numerical expressions. Establish `: (6 * √2 * Real.exp 2 * √(n : ℝ)) ^ 2 = 36 * (√2) ^ 2 * (Real.exp 2) ^ 2 * (√(n : ℝ)) ^ 2` using `by ring`. Rewrite using `[this, Real.sq_sqrt (by norm_num), Real.sq_sqrt hx, h4]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hsq, ← Real.rpow_natCast (6 * √2 * Real.exp 2 * √(n : ℝ)) 2, ← Real.rpow_mul ha, ← Real.rpow_natCast]`.
+
+Use `congr 1`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem rhs_eq (n : ℕ) :
     (72 * Real.exp 4 * (n : ℝ)) ^ ((n : ℝ) / 2) = (6 * √2 * Real.exp 2 * √(n : ℝ)) ^ n := by
   have hx : (0 : ℝ) ≤ n := Nat.cast_nonneg n
@@ -27,6 +34,13 @@ theorem rhs_eq (n : ℕ) :
   push_cast
   ring
 
+/- English proof (translation)
+Establish `hx : (1 : ℝ) ≤ n` using `by exact_mod_cast hn`. Establish `h2 : (2 : ℝ) ≤ 2 ^ n`. Combine the equalities or inequalities in the displayed calculation. Establish `hs : √(n : ℝ) ≤ n`. Use `Real.sqrt_le_sqrt (show (n : ℝ) ≤ (n : ℝ) ^ 2 by nlinarith)` as an intermediate fact.
+
+Rewrite `this` using `[Real.sqrt_sq (by linarith)]`. Then use the resulting hypothesis. Establish `hpi : (n : ℝ) / (2 * π) ≤ n`. Rewrite using `[div_le_iff₀ (by positivity)]`. Use polynomial arithmetic with `[Real.pi_gt_three]`. Establish `he : Real.exp √(n : ℝ) * Real.exp ((n : ℝ) / (2 * π)) ≤ Real.exp 2 ^ n`.
+
+Rewrite using `[← Real.exp_add, ← Real.exp_nat_mul]`. Conclude with `Real.exp_le_exp.mpr (by linarith)`. Conclude with `mul_le_mul h2 he (by positivity) (by positivity)`.
+-/
 theorem exp_part (n : ℕ) (hn : 1 ≤ n) :
     2 * (Real.exp √(n : ℝ) * Real.exp ((n : ℝ) / (2 * π))) ≤ 2 ^ n * Real.exp 2 ^ n := by
   have hx : (1 : ℝ) ≤ n := by exact_mod_cast hn
@@ -48,6 +62,11 @@ end PGaussConstant
 
 open PGaussConstant in
 
+/- English proof (translation)
+Introduce `n hn`. Rewrite using `[rhs_eq, gaussShellConst]`. Establish `key` using `exp_part n hn`. Establish `hc : 0 ≤ √2 ^ n * 3 ^ n * √(n : ℝ) ^ n` using `by positivity`. Combine the equalities or inequalities in the displayed calculation.
+
+Rewrite using `[show (6 : ℝ) = 2 * 3 by norm_num]; simp only [mul_pow]; ring`.
+-/
 theorem GaussConstant.proof : GaussConstant.Statement := by
   intro n hn
   rw [rhs_eq, gaussShellConst]

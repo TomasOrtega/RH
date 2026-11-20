@@ -4,5 +4,8 @@ import Mathlib
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.MapPairDetCovec
 open GlobalTheory.FlatModel
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.FlatModel.LatDual.latSt | exact GlobalTheory.FlatModel.LatDual.latSt | (intros; apply GlobalTheory.FlatModel.LatDual.latSt <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.lattice_statement_holds : LatSt := by
   first | exact @GlobalTheory.FlatModel.LatDual.latSt | exact GlobalTheory.FlatModel.LatDual.latSt | (intros; apply GlobalTheory.FlatModel.LatDual.latSt <;> assumption)

@@ -7,6 +7,9 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.PatchingModules.An
 open IsLocalRing Matrix Filter UpperTheory.V.Alg UpperTheory.V.W UpperTheory.V.AlgebraTools UpperTheory.V.Pa UpperTheory.V.Pa.Core
 open scoped TensorProduct
 
+/- English proof (translation)
+Introduce `N` and use `by have hle : maximalIdeal R ^ N ≤ (maximalIdeal R' ^ N).comap (f : R →+* R') := by refine le_trans (Ideal.pow_right_mono (fun y hy => ?_) N) (Ideal.le_comap_pow _ N) show f y ∈ maximalIdeal R' rw [← res_eq_zero_iff O, res_map, res_eq_zero_iff] exact hy exact (ha N).comp (Ideal.q …`.
+-/
 private theorem adic_map {O : Type} [CommRing O] [IsLocalRing O] {R R' : Type} [CommRing R] [Algebra O R] [IsCO O R]
     [CommRing R'] [Algebra O R'] [IsCO O R'] (f : R →ₐ[O] R') {Γ : Type} [TopologicalSpace Γ] {a : Γ → R}
     (ha : AdicCont (maximalIdeal R) a) : AdicCont (maximalIdeal R') fun g => f (a g) := fun N => by
@@ -17,6 +20,13 @@ private theorem adic_map {O : Type} [CommRing O] [IsLocalRing O] {R R' : Type} [
     exact hy
   exact (ha N).comp (Ideal.quotientMap _ (f : R →+* R') hle)
 
+/- English proof (translation)
+Establish `: (D.comap φ).chi y = D.chi (MonoidAlgebra.mapDomainRingHom A φ y)`. Express the relevant statement in the definitionally equal form `D.D _ (MonoidAlgebra.mapDomainRingHom _ φ _) = D.D _ _`. Use `congr 1`. Rewrite using `[map_sub]`. Use `congr 1`.
+
+Simplify using the standard rewrite rules. Proceed by induction on `y using MonoidAlgebra.induction_linear with`. Consider the case `zero => simp`. Consider the case `add a b ha hb => simp only [map_add, ha, hb]`. Consider the case `single g r => simp`.
+
+Rewrite using `[GDet.lam, GDet.lam, this]`.
+-/
 private theorem lam_comap {n : ℕ} {A G H : Type} [CommRing A] [Group G] [Group H] (D : GDet n A G) (φ : H →* G)
     (i : ℕ) (y : MonoidAlgebra A H) : (D.comap φ).lam i y = D.lam i (MonoidAlgebra.mapDomainRingHom A φ y) := by
   have : (D.comap φ).chi y = D.chi (MonoidAlgebra.mapDomainRingHom A φ y) := by
@@ -31,6 +41,11 @@ private theorem lam_comap {n : ℕ} {A G H : Type} [CommRing A] [Group G] [Group
       | single g r => simp
   rw [GDet.lam, GDet.lam, this]
 
+/- English proof (translation)
+Use `UpperTheory.V.CA.d_gext D D' fun g i _ _ => ?_` and prove the remaining obligations. Take `⟨g, rfl⟩` from `hφ g`. Establish `h1` using `lam_comap D φ i (MonoidAlgebra.single g 1)`. Establish `h2` using `lam_comap D' φ i (MonoidAlgebra.single g 1)`. Rewrite `h1` using `[h, h2]`.
+
+Simplify using `using h1.symm`.
+-/
 private theorem comap_inj {n : ℕ} {A G H : Type} [CommRing A] [Group G] [Group H] (φ : H →* G)
     (hφ : Function.Surjective φ) {D D' : GDet n A G} (h : D.comap φ = D'.comap φ) : D = D' := by
   refine UpperTheory.V.CA.d_gext D D' fun g i _ _ => ?_
@@ -40,6 +55,11 @@ private theorem comap_inj {n : ℕ} {A G H : Type} [CommRing A] [Group G] [Group
   rw [h, h2] at h1
   simpa using h1.symm
 
+/- English proof (translation)
+Use `GDet.ext fun B _ _ x => ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `(GDet.repAlg ρ B (MonoidAlgebra.mapDomainRingHom B φ x)).det = (GDet.repAlg (ρ.comp φ) B x).det`. Use `congr 1`. Proceed by induction on `x using MonoidAlgebra.induction_linear with`. Consider the case `zero => simp`.
+
+Consider the case `add a b ha hb => simp only [map_add, ha, hb]`. Consider the case `single g r => simp [GDet.repAlg]`.
+-/
 private theorem ofRep_comap {n : ℕ} {A G H : Type} [CommRing A] [Group G] [Group H]
     (ρ : G →* Matrix (Fin n) (Fin n) A) (φ : H →* G) : (GDet.ofRep ρ).comap φ = GDet.ofRep (ρ.comp φ) := by
   refine GDet.ext fun B _ _ x => ?_
@@ -50,18 +70,47 @@ private theorem ofRep_comap {n : ℕ} {A G H : Type} [CommRing A] [Group G] [Gro
   | add a b ha hb => simp only [map_add, ha, hb]
   | single g r => simp [GDet.repAlg]
 
+/- English proof (translation)
+Rewrite using `[RingHom.comp_apply, ← lam_comap, h]`. Conclude with `((UpperTheory.V.CA.d_gmap D).2.2.1 f y).2 i`.
+-/
 private theorem lam_push {n : ℕ} {A A' G H : Type} [CommRing A] [CommRing A'] [Group G] [Group H] (φ : H →* G)
     (f : A →+* A') {D : GDet n A H} {D' : GDet n A' G} (h : D'.comap φ = D.map f) (i : ℕ) (y : MonoidAlgebra A H) :
     D'.lam i (((MonoidAlgebra.mapDomainRingHom A' φ).comp (MonoidAlgebra.mapRingHom H f)) y) = f (D.lam i y) := by
   rw [RingHom.comp_apply, ← lam_comap, h]
   exact ((UpperTheory.V.CA.d_gmap D).2.2.1 f y).2 i
 
+/- English proof (translation)
+Simplify using the standard rewrite rules.
+-/
 private theorem push_single {A A' G H : Type} [CommRing A] [CommRing A'] [Group G] [Group H] (φ : H →* G)
     (f : A →+* A') (g : H) (a : A) :
     ((MonoidAlgebra.mapDomainRingHom A' φ).comp (MonoidAlgebra.mapRingHom H f)) (MonoidAlgebra.single g a) =
       MonoidAlgebra.single (φ g) (f a) := by
   simp
 
+/- English proof (translation)
+Introduce `l _ L G0 T Λ n O _ _ _ _ _ r B _ _ _ u J D A W _ hn`. Take `⟨D', hD, hc⟩` from `ooDet l L G0 T Λ n O r B u J D A W hn`. Take `⟨r', c1, c2, c3⟩` from `resPull l L Λ.G G0 Λ.h n O r`. Establish `hs : Function.Surjective (πo0 Λ)` using `Λ.πo0_surj`. Set `f : W.R →ₐ[O] W.R ⧸ ii W` to `Ideal.Quotient.mkₐ O (ii W)`.
+
+Establish `h0 : ∀ a, Rel W a → Ideal.Quotient.mk (ii W) a = 0` using `fun a ha => Ideal.Quotient.eq_zero_iff_mem.2 (Ideal.subset_span ha)`. Establish `key` using `lam_push (πo0 Λ) (Ideal.Quotient.mk (ii W)) hD`. Establish `ps` using `push_single (πo0 Λ) (Ideal.Quotient.mk (ii W))`. Use `⟨{ r' := r', compat := ⟨c1, c2, c3⟩, p := { D := D', ψ := fun v i => pushCh (Ideal.Quotient.mk (ii W)) (W.t.ψ v i), cont := hc, red := ?_, psi := fun v i => ?_, P := fun i g => ?_, Ord := fun v g h => ?_, I := fun w g hg h => ?_ }, D_eq := hD, ψ_eq := fun _ _ => rfl }⟩` and prove the remaining obligations. Use `comap_inj (πo0 Λ) hs ?_` and prove the remaining obligations.
+
+Establish `e : (D'.map (res O (W.R ⧸ ii W) : (W.R ⧸ ii W) →+* ResidueField O)).comap (πo0 Λ) = (D'.comap (πo0 Λ)).map (res O (W.R ⧸ ii W) : (W.R ⧸ ii W) →+* ResidueField O)` using `rfl`. Establish `e2 : (res O (W.R ⧸ ii W) : (W.R ⧸ ii W) →+* ResidueField O).comp (Ideal.Quotient.mk (ii W)) = (res O W.R : W.R →+* ResidueField O)` using `RingHom.ext fun x => res_map f x`. Rewrite using `[e, hD, (UpperTheory.V.CA.d_gmap W.t.D).2.1, e2, W.t.red, Resid.Dbar, Resid.Dbar, ofRep_comap, ofRep_comap]`. Use `congr 1`. Use `MonoidHom.ext fun g => ?_` and prove the remaining obligations.
+
+Express the relevant statement in the definitionally equal form `Matrix.diagonal _ = Matrix.diagonal _`. Use `congr 1`. Use function extensionality and compare the values at `i`. Rewrite using `[c1 i]`. Both sides reduce to the same expression.
+
+Use `⟨adic_map f (W.t.psi v i).cont, fun g => ?_, fun g => ?_⟩` and prove the remaining obligations. Rewrite using `[c2]`. Conclude with `(res_map f _).trans ((W.t.psi v i).red g)`. Rewrite using `[c3]`. Express the relevant statement in the definitionally equal form `f (W.t.ψ v i g : W.R) = _`.
+
+Conclude with `(congrArg f ((W.t.psi v i).mu g)).trans (f.commutes _)`. Take `⟨g, rfl⟩` from `hs g`. Set `g' : Ph0 Λ` to `⟨Λ.ct * g * Λ.ct⁻¹, (MonoidHom.normal_ker _).conj_mem _ g.2 _⟩`. Establish `hg' : πo0 Λ g' = Λ.G.frame.conj (πo0 Λ g)` using `Subtype.ext (by`. Express the relevant statement in the definitionally equal form `Λ.πo (Λ.ct * g * Λ.ct⁻¹) = Λ.G.c * Λ.πo g * Λ.G.c⁻¹`.
+
+Rewrite using `[map_mul, map_mul, map_inv, Λ.ct_o])`. Establish `h1` using `h0 _ (Rel.pol i g g' rfl)`. Rewrite `h1` using `[map_sub, sub_eq_zero, ← key, ← key, ps, ps, map_one, map_inv, hg']`. Rewrite using `[← h1]`. Establish `he : Units.map (f : W.R →* W.R ⧸ ii W) (Λ.G.frame.eps O W.R (πo0 Λ g)) = Λ.G.frame.eps O (W.R ⧸ ii W) (πo0 Λ g)` using `Units.ext (f.commutes _)`.
+
+Simplify using `only [GFrame.star, GFrame.starOp, MonoidAlgebra.lift_single, one_smul, MonoidHom.coe_mk, OneHom.coe_mk, MulOpposite.unop_op]`. Rewrite using `[← he, ← map_zpow (Units.map (f : W.R →* W.R ⧸ ii W))]`. Both sides reduce to the same expression. Take `⟨h, rfl⟩` from `hs h choose ga hga using fun i => hs (Λ.G.φ v (g i))`. Establish `h1` using `h0 _ (Rel.ord v g ga h hga)`.
+
+Rewrite `h1` using `[GDet.tr, ← key, map_mul, ps, map_one, map_list_prod, List.map_ofFn]`. Rewrite using `[← h1, GDet.tr, GFrame.oEl]`. Use `congr 4`. Use function extensionality and compare the values at `i`. Rewrite using `[Function.comp_apply, map_sub, ps, ps, map_one, map_one, hga]`.
+
+Both sides reduce to the same expression. Take `⟨h, rfl⟩` from `hs h`. Take `⟨g, hj, rfl⟩` from `hg.1`. Take `⟨ga, hga⟩` from `hs (Λ.G.φu w g)`. Establish `h1` using `h0 _ (Rel.ine w g ga h hj hga)`.
+
+Rewrite `h1` using `[GDet.tr, ← key, map_mul, map_sub, ps, ps, map_one, map_one, hga]`. Conclude with `h1`.
+-/
 theorem UpperTheory.V.Pa.Core.ooPair :
     ∀ (l : ℕ) [Fact l.Prime] (L : Loc) (G0 : Glob l L) (T : TWGrp G0) (Λ : Lim T) (n : ℕ) (O : Type) [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] [IsCoef l O] [Algebra ℤ_[l] O] (r : Resid G0.frame O n) (B : Type) [CommRing B] [Algebra O B] [IsCO O B] (u : Pair r B) (J : Ideal B) (D : ℕ) (A : TWAut u J Unit D T) (W : RRObj Λ A) [IsCO O (W.R ⧸ ii W)], 1 ≤ n → Nonempty (OoPair W) := by
   intro l _ L G0 T Λ n O _ _ _ _ _ r B _ _ _ u J D A W _ hn

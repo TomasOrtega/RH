@@ -9,12 +9,18 @@ noncomputable section
 
 namespace GlobalTheory.Fc.PeriodEntriesOverColumns
 
+/- English proof (translation)
+The claim follows from `GlobalTheory.T.property_at_constructedPoints_of_trueColumnsView (fun D _ => ∀ u, Formalism.MainNotions.product_first_zeroth_parts.Conclusion6 D u) (fun _ _ _ w Z _ _ _ _ _ => GlobalTheory.T.aux_of_ok_of_pins w.I w.ok w.pins w.l Z) K β (hQ _ _ _ _ _ hq)`.
+-/
 theorem constructedPoint_referenceChainWord_formsMap (Q : V4.Slot) (hQ : OverCols Q) (K : Ctx) (β : BPt K) (hq : β.Is Q) :
     ∀ u, Formalism.MainNotions.product_first_zeroth_parts.Conclusion6 β.D u :=
   GlobalTheory.T.property_at_constructedPoints_of_trueColumnsView (fun D _ => ∀ u, Formalism.MainNotions.product_first_zeroth_parts.Conclusion6 D u)
     (fun _ _ _ w Z _ _ _ _ _ => GlobalTheory.T.aux_of_ok_of_pins w.I w.ok w.pins w.l Z)
     K β (hQ _ _ _ _ _ hq)
 
+/- English proof (translation)
+Introduce `Q hQ _ Lk` and use `Row0.row (validForConstructedPointClasses_eventuallyWorkingClass (R := fun D _ => ∀ u, Formalism.MainNotions.product_first_zeroth_parts.Conclusion6 D u) (EvP.of_all fun _ K _ β hq => constructedPoint_referenceChainWord_formsMap Q hQ K β hq)) Lk`.
+-/
 theorem referenceChainEvaluation_bundlePoints_overColumns : ∀ (Q : V4.Slot), OverCols Q → ∀ (Bd : BdT) (Lk : LkT Bd), PeriodEntriesOverColumns.ReferenceChainEvaluationAtBundlePoints Q Lk :=
   fun Q hQ _ Lk => Row0.row (validForConstructedPointClasses_eventuallyWorkingClass (R := fun D _ => ∀ u, Formalism.MainNotions.product_first_zeroth_parts.Conclusion6 D u)
     (EvP.of_all fun _ K _ β hq => constructedPoint_referenceChainWord_formsMap Q hQ K β hq)) Lk

@@ -4,6 +4,9 @@ noncomputable def UpperTheory.Reformulated.B.H71.wt1 :
     Fin (3 : ℕ) → ℤ :=
     fun (i : Fin (3 : ℕ)) ↦ (1 : ℤ) - (↑(↑i : ℕ) : ℤ)
 
+/- English proof (translation)
+Introduce `R _ t`. Rewrite using `[Matrix.diagonal_mul_diagonal]`. Simplify using `only [Units.mul_inv, Matrix.diagonal_one]`.
+-/
 theorem UpperTheory.Reformulated.B.H71.aux2.{u_1} :
     ∀ {R : Type u_1} [inst : CommRing R] (t : Rˣ),
       ((Matrix.diagonal fun (i : Fin (3 : ℕ)) ↦ (↑(t ^ UpperTheory.Reformulated.B.H71.wt1 i) : R)) *
@@ -13,6 +16,9 @@ theorem UpperTheory.Reformulated.B.H71.aux2.{u_1} :
   rw [Matrix.diagonal_mul_diagonal]
   simp only [Units.mul_inv, Matrix.diagonal_one]
 
+/- English proof (translation)
+Introduce `R _ t`. Rewrite using `[Matrix.diagonal_mul_diagonal]`. Simplify using `only [Units.inv_mul, Matrix.diagonal_one]`.
+-/
 theorem UpperTheory.Reformulated.B.H71.aux3.{u_1} :
     ∀ {R : Type u_1} [inst : CommRing R] (t : Rˣ),
       ((Matrix.diagonal fun (i : Fin (3 : ℕ)) ↦ (↑(t ^ UpperTheory.Reformulated.B.H71.wt1 i)⁻¹ : R)) *
@@ -29,6 +35,9 @@ noncomputable def UpperTheory.Reformulated.B.H71.torGL.{u_1} :
         inv := Matrix.diagonal fun (i : Fin (3 : ℕ)) ↦ (↑(t ^ UpperTheory.Reformulated.B.H71.wt1 i)⁻¹ : R),
         val_inv := UpperTheory.Reformulated.B.H71.aux2 t, inv_val := UpperTheory.Reformulated.B.H71.aux3 t : (Matrix (Fin (3 : ℕ)) (Fin (3 : ℕ)) R)ˣ }
 
+/- English proof (translation)
+Introduce `R _`. Apply `Units.ext` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `Matrix.diagonal (fun i : Fin 3 ↦ (↑((1 : Rˣ) ^ UpperTheory.Reformulated.B.H71.wt1 i) : R)) = 1`. Simplify using `only [one_zpow, Units.val_one, Matrix.diagonal_one]`.
+-/
 theorem UpperTheory.Reformulated.B.H71.aux5.{u_1} :
     ∀ (R : Type u_1) [inst : CommRing R], UpperTheory.Reformulated.B.H71.torGL (1 : Rˣ) = (1 : GL (Fin (3 : ℕ)) R) := by
   intro R _
@@ -36,6 +45,9 @@ theorem UpperTheory.Reformulated.B.H71.aux5.{u_1} :
   change Matrix.diagonal (fun i : Fin 3 ↦ (↑((1 : Rˣ) ^ UpperTheory.Reformulated.B.H71.wt1 i) : R)) = 1
   simp only [one_zpow, Units.val_one, Matrix.diagonal_one]
 
+/- English proof (translation)
+Introduce `R _ s t`. Apply `Units.ext` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `Matrix.diagonal (fun i : Fin 3 ↦ (↑((s * t) ^ UpperTheory.Reformulated.B.H71.wt1 i) : R)) = Matrix.diagonal (fun i : Fin 3 ↦ (↑(s ^ UpperTheory.Reformulated.B.H71.wt1 i) : R)) * Matrix.diagonal (fun i : Fin 3 ↦ (↑(t ^ UpperTheory.Reformulated.B.H71.wt1 i) : R))`. Rewrite using `[Matrix.diagonal_mul_diagonal]`. Simplify using `only [mul_zpow, Units.val_mul]`.
+-/
 theorem UpperTheory.Reformulated.B.H71.aux6.{u_1} :
     ∀ (R : Type u_1) [inst : CommRing R] (s t : Rˣ),
       UpperTheory.Reformulated.B.H71.torGL (s * t) = UpperTheory.Reformulated.B.H71.torGL s * UpperTheory.Reformulated.B.H71.torGL t := by
@@ -53,6 +65,11 @@ noncomputable def UpperTheory.Reformulated.B.H71.tor.{u_1} :
       { toFun := UpperTheory.Reformulated.B.H71.torGL, map_one' := UpperTheory.Reformulated.B.H71.aux5 R, map_mul' := UpperTheory.Reformulated.B.H71.aux6 R :
         Rˣ →* GL (Fin (3 : ℕ)) R }
 
+/- English proof (translation)
+Introduce `A B _ _ f t`. Apply `Units.ext` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `(Matrix.diagonal (fun i : Fin 3 ↦ (↑(t ^ UpperTheory.Reformulated.B.H71.wt1 i) : A))).map f = Matrix.diagonal (fun i : Fin 3 ↦ (↑((Units.map (f : A →* B) t) ^ UpperTheory.Reformulated.B.H71.wt1 i) : B))`. Rewrite using `[Matrix.diagonal_map (map_zero f)]`. Use `congr 1`.
+
+Use function extensionality and compare the values at `i`. Simplify using `only [Function.comp_apply, ← map_zpow, Units.coe_map, MonoidHom.coe_coe]`.
+-/
 theorem UpperTheory.Reformulated.B.H71.map_tor :
     ∀ {A B : Type} [inst : CommRing A] [inst_1 : CommRing B] (f : A →+* B) (t : Aˣ),
       (Matrix.GeneralLinearGroup.map f : GL (Fin (3 : ℕ)) A → GL (Fin (3 : ℕ)) B)

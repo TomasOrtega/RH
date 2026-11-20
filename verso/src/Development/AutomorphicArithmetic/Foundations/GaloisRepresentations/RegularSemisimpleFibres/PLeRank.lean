@@ -5,6 +5,17 @@ open GroundTheory.Global GroundTheory.Global.SemiLocal UpperTheory.V.Published U
 open scoped Classical
 attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField
 
+/- English proof (translation)
+Establish `hg : 0 < Nat.gcd m c` using `Nat.gcd_pos_of_pos_left _ hm`. Take `⟨m₁, c₁, hco, hm₁, hc₁⟩` from `Nat.exists_coprime m c`. Establish `hmm : m₁ = m'`. Apply `Nat.eq_of_mul_eq_mul_right hg` to reduce the goal to its premises. Rewrite using `[← hm₁, h]`.
+
+Substitute `hmm` using the available equality. Use `set g := Nat.gcd m c with hgdef`. Establish `hgcd : Nat.gcd m (c * l) = Nat.gcd m₁ l * g`. Establish `e : c * l = (c₁ * l) * g`. Rewrite using `[hc₁]`.
+
+Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e]`. Use `conv_lhs => rw [hm₁]`. Rewrite using `[Nat.gcd_mul_right, Nat.Coprime.gcd_mul_left_cancel_right l hco.symm]`. Rewrite using `[hgcd]`.
+
+Use `split_ifs with hd`. Rewrite using `[Nat.gcd_eq_right hd, ← mul_assoc, Nat.div_mul_cancel hd]`. Conclude with `h`. Establish `: Nat.gcd m₁ l = 1` using `((Nat.Prime.coprime_iff_not_dvd hl).2 hd).symm`. Rewrite using `[this, one_mul]`.
+
+Conclude with `h`.
+-/
 private theorem gcd_step {m m' c l : ℕ} (hm : 0 < m) (hl : l.Prime) (h : m' * Nat.gcd m c = m) :
     (if l ∣ m' then m' / l else m') * Nat.gcd m (c * l) = m := by
   have hg : 0 < Nat.gcd m c := Nat.gcd_pos_of_pos_left _ hm
@@ -28,6 +39,19 @@ private theorem gcd_step {m m' c l : ℕ} (hm : 0 < m) (hl : l.Prime) (h : m' * 
     rw [this, one_mul]
     exact h
 
+/- English proof (translation)
+Introduce `hOk a b ha hab`. Establish `key : b.Ok ∧ ∃ c : ℕ, 0 < c ∧ b.q = a.q ^ c ∧ ∀ p ∈ b.L, ∃ r ∈ a.L, p.1 * Nat.gcd r.1 c = r.1`. Proceed by induction on `hab with`. Consider the case `refl`. Use `⟨ha, 1, Nat.one_pos, (pow_one _).symm, fun p hp => ⟨p, hp, ?_⟩⟩` and prove the remaining obligations.
+
+Rewrite using `[Nat.gcd_one_right, mul_one]`. Consider the case `@tail b' b'' _ hs ih`. Take `⟨hb, c, hc, hq, hL⟩` from `ih`. Take `⟨l, hl, rfl⟩` from `hs`. Use `⟨(hOk b' l hl hb).1, c * l, Nat.mul_pos hc hl.pos, ?_, ?_⟩` and prove the remaining obligations.
+
+Express the relevant statement in the definitionally equal form `b'.q ^ l = _`. Rewrite using `[hq, pow_mul]`. Introduce `p hp`. Establish `hp' : p ∈ liftAll b'.q l b'.L` using `hp`. Unfold `liftAll at hp'`.
+
+Take `⟨s, hs, hps⟩` from `List.mem_flatMap.1 hp'`. Take `⟨r, hr, hsr⟩` from `hL s hs`. Use `⟨r, hr, ?_⟩` and prove the remaining obligations. Establish `hm : 0 < r.1` using `(ha.2.2 r hr).1`. Establish `hstep` using `gcd_step (l := l) hm hl hsr`.
+
+Establish `hp1 : p.1 = if l ∣ s.1 then s.1 / l else s.1` using `by split_ifs at hps ⊢ with hd`. Simplify using `only [liftL, List.flatMap_cons, List.flatMap_nil, List.append_nil, List.mem_map] at hps`. Take `⟨i, -, rfl⟩` from `hps`. Both sides reduce to the same expression. Simplify using `only [List.mem_singleton] at hps`.
+
+Rewrite using `[hps]`. Rewrite using `[hp1]`. Conclude with `hstep`. Conclude with `key.2`.
+-/
 theorem UpperTheory.Gal.InertialTypesAlt.leRank :
     LiftOk → LeRank := by
   intro hOk a b ha hab

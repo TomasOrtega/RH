@@ -60,6 +60,13 @@ def HalfOfLevelAndCoverReal : Prop :=
     ∀ C : Core D, LawsM C → C.pb = R.C.P.pb →
       ∀ t : T, TwistGuard D (R.Q t) → HalvesAt C.Q.l R.Pg (R.Q t)
 
+/- English proof (translation)
+Introduce `hz`. Unfold `Formalism.BasicNotions.Host.AA Formalism.BasicNotions.Host.AA0 at hz`. Break down `mul_eq_zero.mp hz with h1 | h1` into its components or cases. Rewrite `h1` using `[FractionalIdeal.coeIdeal_eq_zero]`. Unfold `Formalism.BasicNotions.Host.ccE at h1`.
+
+Rewrite `h1` using `[Ideal.map_eq_bot_iff_of_injective (FaithfulSMul.algebraMap_injective _ _)]`. Conclude with `D.host.ccK_ne_bot h1`. Rewrite `h1` using `[inv_eq_zero, FractionalIdeal.coeIdeal_eq_zero]`. Establish `h2` using `D.host.𝔟_spec.2`. Rewrite `h2` using `[h1]`.
+
+Simplify using `at h2`.
+-/
 theorem AA_ne_zero (D : D7) : D.host.AA ≠ 0 := by
   intro hz
   unfold Formalism.BasicNotions.Host.AA Formalism.BasicNotions.Host.AA0 at hz
@@ -73,6 +80,11 @@ theorem AA_ne_zero (D : D7) : D.host.AA ≠ 0 := by
     rw [h1] at h2
     simp at h2
 
+/- English proof (translation)
+Unfold `ReciprocityTheory.ChartRestriction.G.Geo.Tor.Level.Dvd`. Use `⟨⟨n, h.level⟩, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[h.half]`. Introduce `x hx`. Conclude with `(Submodule.mem_inf.mp (Ideal.mul_le_inf hx)).1`.
+
+Rewrite using `[h.aux]`.
+-/
 theorem IsCoverHalf.dvd {H : ModHost D} {l l₂ : Level H} {Q : Finset (Place D)} {n : ℕ} {I : Ideal (𝓞 D.host.E)}
     (h : IsCoverHalf l Q n I l₂) : l.Dvd l₂ := by
   unfold ReciprocityTheory.ChartRestriction.G.Geo.Tor.Level.Dvd

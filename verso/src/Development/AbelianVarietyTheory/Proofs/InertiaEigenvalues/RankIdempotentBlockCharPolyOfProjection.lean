@@ -7,6 +7,17 @@ namespace GlobalTheory.CharBlock
 
 open Polynomial Matrix
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Apply `le_antisymm` to reduce the goal to its premises. Conclude with `(Matrix.rank_mul_le_left a b).trans (by simpa using Matrix.rank_le_width a)`. Establish `h1 : b * (a * b) * a = 1`. Rewrite using `[← Matrix.mul_assoc b a b, hba, Matrix.one_mul, hba]`.
+
+Establish `h2 : (b * (a * b) * a).rank ≤ (a * b).rank` using `(Matrix.rank_mul_le_left _ _).trans (Matrix.rank_mul_le_right _ _)`. Rewrite `h2` using `[h1, Matrix.rank_one]`. Simplify using `using h2`. Unfold `blockPol`. Establish `hba' : b.map (C (R` using `K)) * a.map (C (R := K)) = 1 := by`.
+
+Rewrite using `[← Matrix.map_mul, hba]`. Simplify using the standard rewrite rules. Use `set D : Matrix (Fin t) (Fin t) K[X] := Matrix.diagonal (fun c => (X : K[X]) - C (d c)) with hD`. Establish `hD' : D = (X : K[X]) • (1 : Matrix (Fin t) (Fin t) K[X]) - (Matrix.diagonal d).map (C (R` using `K)) := by ext1 i j`. Distinguish the cases in `h : i = j`.
+
+Substitute `h` using the available equality. Simplify using `[hD]`. Simplify using `[hD, h, Matrix.diagonal_apply_ne _ h, Matrix.one_apply_ne h]`. Establish `key : (X : K[X]) • (a * b).map (C (R` using `K)) - (a * Matrix.diagonal d * b).map (C (R := K)) + 1 - (a * b).map (C (R := K)) = 1 + a.map (C (R := K)) * ((D - 1) * b.map (C (R := K))) := by`. Rewrite using `[hD', Matrix.map_mul, Matrix.map_mul, Matrix.map_mul]`.
+
+Simplify using `only [Matrix.sub_mul, Matrix.mul_sub, Matrix.smul_mul, Matrix.mul_smul, Matrix.one_mul, Matrix.mul_assoc]`. Normalize the expressions using the abelian group laws. Rewrite using `[key, Matrix.det_one_add_mul_comm, Matrix.mul_assoc, hba', Matrix.mul_one, add_sub_cancel, hD, Matrix.det_diagonal]`.
+-/
 theorem rank_blockPol_of_factor {K : Type} [Field K] {n t : ℕ} (a : Matrix (Fin n) (Fin t) K)
     (b : Matrix (Fin t) (Fin n) K) (d : Fin t → K) (hba : b * a = 1) :
     (a * b).rank = t ∧
@@ -39,6 +50,19 @@ theorem rank_blockPol_of_factor {K : Type} [Field K] {n t : ℕ} (a : Matrix (Fi
     rw [key, Matrix.det_one_add_mul_comm, Matrix.mul_assoc, hba', Matrix.mul_one, add_sub_cancel, hD,
       Matrix.det_diagonal]
 
+/- English proof (translation)
+Introduce `K _ n r t e E M d hE hM`. Set `a : Matrix (Fin n) (Fin t) K` to `LinearMap.toMatrix' (e.symm.toLinearMap ∘ₗ LinearMap.inr K (Fin r → K) (Fin t → K))`. Set `b : Matrix (Fin t) (Fin n) K` to `LinearMap.toMatrix' (LinearMap.snd K (Fin r → K) (Fin t → K) ∘ₗ e.toLinearMap)`. Establish `ha : ∀ w, a.mulVec w = e.symm (0, w)`. Introduce `w`.
+
+Simplify using `[a, LinearMap.toMatrix'_mulVec]`. Establish `hb : ∀ u, b.mulVec u = (e u).2`. Introduce `u`. Simplify using `[b, LinearMap.toMatrix'_mulVec]`. Establish `hba : b * a = 1`.
+
+Apply `Matrix.toLin'.injective` to reduce the goal to its premises. Use `ext1 w`. Use `ext1`. Simplify using `only [LinearMap.comp_apply, Matrix.toLin'_apply, ← Matrix.mulVec_mulVec, ha, hb, LinearEquiv.apply_symm_apply, Matrix.one_mulVec]`. Establish `hE' : E = a * b`.
+
+Apply `Matrix.toLin'.injective` to reduce the goal to its premises. Use `LinearMap.ext fun u => ?_` and prove the remaining obligations. Simplify using `only [Matrix.toLin'_apply, ← Matrix.mulVec_mulVec, ha, hb]`. Rewrite using `[← hE, LinearEquiv.symm_apply_apply]`. Establish `hM' : M = a * Matrix.diagonal d * b`.
+
+Apply `Matrix.toLin'.injective` to reduce the goal to its premises. Use `LinearMap.ext fun u => ?_` and prove the remaining obligations. Simplify using `only [Matrix.toLin'_apply, ← Matrix.mulVec_mulVec, ha, hb]`. Apply `e.injective` to reduce the goal to its premises. Rewrite using `[hM, LinearEquiv.apply_symm_apply]`.
+
+Use `congr 1`. Use function extensionality and compare the values at `c`. Rewrite using `[Matrix.mulVec_diagonal]`. Rewrite using `[hE', hM']`. Conclude with `rank_blockPol_of_factor a b d hba`.
+-/
 theorem rank_blockPol_proj : ∀ {K : Type} [Field K] {n r t : ℕ} (e : (Fin n → K) ≃ₗ[K] ((Fin r → K) × (Fin t → K))) (E M : Matrix (Fin n) (Fin n) K) (d : Fin t → K), (∀ u, e (E.mulVec u) = (0, (e u).2)) → (∀ u, e (M.mulVec u) = (0, fun c => d c * (e u).2 c)) → E.rank = t ∧ blockPol E M = ∏ c, (Polynomial.X - Polynomial.C (d c)) := by
   intro K _ n r t e E M d hE hM
   let a : Matrix (Fin n) (Fin t) K :=

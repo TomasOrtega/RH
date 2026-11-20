@@ -14,6 +14,11 @@ variable {K : Type} [Field K] [NumberField K] {i : ℕ} {F F' : HermLattice K i}
   {k : Type} [Field k] {b : Module.Basis T ℤ (dualLattice F)} {b' : Module.Basis T ℤ (dualLattice F')}
   {α : T → k} {M : T → Fin i → k}
 
+/- English proof (translation)
+Take `⟨-, ρ', -, -, hρ', -, -, -, -, hα, -⟩` from `h`. Use `eq_top_iff.mpr fun x _ => ?_` and prove the remaining obligations. Take `⟨φ, rfl⟩` from `hρ' x`. Rewrite using `[← b'.sum_repr φ, map_sum]`. Use `Submodule.sum_mem _ fun t _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[map_zsmul, ← hα t]`. Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span ⟨t, rfl⟩)`.
+-/
 theorem span_alpha (h : IsExcResidueData b b' α M) : Submodule.span ℤ (Set.range α) = ⊤ := by
   obtain ⟨-, ρ', -, -, hρ', -, -, -, -, hα, -⟩ := h
   refine eq_top_iff.mpr fun x _ => ?_
@@ -23,6 +28,15 @@ theorem span_alpha (h : IsExcResidueData b b' α M) : Submodule.span ℤ (Set.ra
   rw [map_zsmul, ← hα t]
   exact Submodule.smul_mem _ _ (Submodule.subset_span ⟨t, rfl⟩)
 
+/- English proof (translation)
+Take `⟨-, -, σ, -, -, hσ, -, -, -, -, hM⟩` from `h`. Introduce `w hw`. Use function extensionality and compare the values at `j`. Take `⟨φ, hφ⟩` from `hσ (Pi.single j 1)`. Establish `hcomb : ∀ j', σ φ j' = ∑ t, (b.repr φ t : k) * M t j'`.
+
+Introduce `j'`. Establish `hs : σ φ = ∑ t, b.repr φ t • M t` using `by conv_lhs => rw [← b.sum_repr φ]`. Rewrite using `[map_sum]`. Repeatedly rewrite using `[map_zsmul, hM]`. Rewrite using `[hs, Finset.sum_apply]`.
+
+Simplify using `only [Pi.smul_apply, zsmul_eq_mul]`. Establish `key : ∑ j', σ φ j' * w j' = 0`. Simplify using `only [hcomb, Finset.sum_mul]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_eq_zero fun t _ => ?_` and prove the remaining obligations.
+
+Simplify using `only [mul_assoc, ← Finset.mul_sum, hw t, mul_zero]`. Rewrite `key` using `[hφ]`. Simplify `key` using `[Pi.single_apply]`.
+-/
 theorem linFormsIndep (h : IsExcResidueData b b' α M) : LinFormsIndep M := by
   obtain ⟨-, -, σ, -, -, hσ, -, -, -, -, hM⟩ := h
   intro w hw
@@ -48,6 +62,11 @@ end StackedExceptionalLinearForms
 
 open StackedExceptionalLinearForms in
 
+/- English proof (translation)
+Introduce `K _ _ i F F' T _ _ b b' a hi hlt hcov hab E hE`. Take `⟨k, hk, hkf, α, M, hD, hcard⟩` from `hEx K i F F' T b b' a hi hlt hcov hab`. Establish `h1 : stackedBase b' a ≤ linPrime α M` using `hBase K i F F' T b b' a hi hlt hcov hab k α M hD`. Establish `h2 : linPrime α M ≤ E` using `hLe K i F F' T b b' a hi hlt hcov hab k α M hD E hE.1.1.1 hE.1.1.2 hE.2`. Establish `hprime : (linPrime α M).IsPrime` using `RingHom.ker_isPrime _`.
+
+Conclude with `⟨k, hk, hkf, α, M, span_alpha hD, linFormsIndep hD, le_antisymm (hE.1.2 ⟨hprime, h1⟩ h2) h2, hcard⟩`.
+-/
 theorem DualStackedExcLinear.proof (hEx : DualStackedExcResidueExists.Statement)
     (hBase : DualStackedExcBaseLe.Statement) (hLe : DualStackedExcLinPrimeLe.Statement) :
     DualStackedExcLinear.Statement := by

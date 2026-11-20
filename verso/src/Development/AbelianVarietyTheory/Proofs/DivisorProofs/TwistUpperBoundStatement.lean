@@ -6,5 +6,8 @@ import Development.AbelianVarietyTheory.PublishedTheorems.AutomorphicForms₂.Ex
 import Development.AbelianVarietyTheory.PublishedTheorems.PublishedFoundations.NonemptyAlgHomOfIsRayOfDvd
 open GlobalTheory.BigTop GlobalTheory.BigOn GlobalTheory.BigOn.Exp
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.BigOn.Exp.TupLe.twLe | exact GlobalTheory.BigOn.Exp.TupLe.twLe | (intros; apply GlobalTheory.BigOn.Exp.TupLe.twLe <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.twist_upper_bound : GlobalTheory.Published.CuspRapidDecay → GlobalTheory.Published.GlobalArtinReciprocity → GlobalTheory.Published.RayClassFieldSt → TwAdm → TwChr → TwLe := by
   first | exact @GlobalTheory.BigOn.Exp.TupLe.twLe | exact GlobalTheory.BigOn.Exp.TupLe.twLe | (intros; apply GlobalTheory.BigOn.Exp.TupLe.twLe <;> assumption)

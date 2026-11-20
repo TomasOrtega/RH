@@ -15,6 +15,13 @@ variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algeb
 def atP (p : HeightOneSpectrum (𝓞 F)) (I : FractionalIdeal (𝓞 E)⁰ E) (t : E) : Prop :=
   ∃ a : 𝓞 F, a ∉ p.asIdeal ∧ algebraMap F E (a : F) * t ∈ I
 
+/- English proof (translation)
+Establish `hb : IsIntegral ℤ (algebraMap F E (b : F))` using `by first`. Consider the case `exact IsIntegral.map (algebraMap F E).toIntAlgHom b.isIntegral_coe`. Consider the case `exact (b.isIntegral_coe).algebraMap`. Consider the case `exact IsIntegral.map (IsScalarTower.toAlgHom ℤ F E) b.isIntegral_coe`. Set `z : 𝓞 E` to `⟨algebraMap F E (b : F), hb⟩`.
+
+Establish `hz : algebraMap F E (b : F) * t = z • t`. Rewrite using `[Algebra.smul_def]`. Both sides reduce to the same expression. Rewrite using `[hz]`. Use `first`.
+
+Consider the case `exact (I : Submodule (𝓞 E) E).smul_mem z ht`. Consider the case `exact Submodule.smul_mem _ z ht`.
+-/
 theorem int_smul_mem (I : FractionalIdeal (𝓞 E)⁰ E) (b : 𝓞 F) (t : E) (ht : t ∈ I) :
     algebraMap F E (b : F) * t ∈ I := by
   have hb : IsIntegral ℤ (algebraMap F E (b : F)) := by
@@ -31,6 +38,21 @@ theorem int_smul_mem (I : FractionalIdeal (𝓞 E)⁰ E) (b : 𝓞 F) (t : E) (h
   | exact (I : Submodule (𝓞 E) E).smul_mem z ht
   | exact Submodule.smul_mem _ z ht
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce `h p`. Use `⟨1, fun h1 => p.isPrime.ne_top ((Ideal.eq_top_iff_one _).2 h1), ?_⟩` and prove the remaining obligations. Rewrite using `[show ((1 : 𝓞 F) : F) = 1 from rfl, map_one, one_mul]`. Conclude with `h`.
+
+Introduce `h`. Set `J : Ideal (𝓞 F)` to `{ carrier := {a | algebraMap F E (a : F) * t ∈ I} add_mem' := fun {a b} ha hb => by`. Establish `ha' : algebraMap F E (a : F) * t ∈ I` using `ha`. Establish `hb' : algebraMap F E (b : F) * t ∈ I` using `hb`. Express the relevant statement in the definitionally equal form `algebraMap F E ((a : F) + (b : F)) * t ∈ I`.
+
+Rewrite using `[map_add, add_mul]`. Conclude with `Submodule.add_mem (I : Submodule (𝓞 E) E) ha' hb'`. Use the proof step `zero_mem' := by`. Express the relevant statement in the definitionally equal form `algebraMap F E (0 : F) * t ∈ I`. Rewrite using `[map_zero, zero_mul]`.
+
+Conclude with `Submodule.zero_mem (I : Submodule (𝓞 E) E)`. Use the proof step `smul_mem' := fun c a ha => by`. Establish `ha' : algebraMap F E (a : F) * t ∈ I` using `ha`. Express the relevant statement in the definitionally equal form `algebraMap F E ((c : F) * (a : F)) * t ∈ I`. Rewrite using `[map_mul, mul_assoc]`.
+
+Conclude with `int_smul_mem I c _ ha' }`. Assume the negation of the conclusion as `hne`. Establish `hJ : J ≠ ⊤`. Introduce `hJ`. Establish `h1 : (1 : 𝓞 F) ∈ J` using `by rw [hJ]; exact Submodule.mem_top`.
+
+Establish `h1' : algebraMap F E ((1 : 𝓞 F) : F) * t ∈ I` using `h1`. Rewrite `h1'` using `[show ((1 : 𝓞 F) : F) = 1 from rfl, map_one, one_mul]`. Conclude with `hne h1'`. Take `⟨M, hM, hJM⟩` from `Ideal.exists_le_maximal J hJ`. Establish `hM0 : M ≠ ⊥` using `by first`.
+
+Consider the case `exact Ring.ne_bot_of_isMaximal_of_not_isField hM (NumberField.RingOfIntegers.not_isField F)`. Consider the case `(intro h0; subst h0; exact NumberField.RingOfIntegers.not_isField F (Ring.isField_iff_maximal_bot.2 hM))`. Take `⟨a, ha, hat⟩` from `h ⟨M, hM.isPrime, hM0⟩`. Conclude with `ha (hJM hat)`.
+-/
 theorem mem_iff_forall_atP (I : FractionalIdeal (𝓞 E)⁰ E) (t : E) :
     t ∈ I ↔ ∀ p : HeightOneSpectrum (𝓞 F), atP p I t := by
   constructor
@@ -71,6 +93,19 @@ theorem mem_iff_forall_atP (I : FractionalIdeal (𝓞 E)⁰ E) (t : E) :
     obtain ⟨a, ha, hat⟩ := h ⟨M, hM.isPrime, hM0⟩
     exact ha (hJM hat)
 
+/- English proof (translation)
+Take `⟨n, d, hd, rfl⟩` from `IsFractionRing.div_surjective (A := 𝓞 F) y`. Establish `hd0 : d ≠ 0` using `nonZeroDivisors.ne_zero hd`. Establish `hdF : (algebraMap (𝓞 F) F d) ≠ 0`. Simplify using `using hd0`. Establish `hsp : Ideal.span {d} ≠ 0`.
+
+Rewrite using `[Ne, Ideal.zero_eq_bot, Ideal.span_singleton_eq_bot]`. Conclude with `hd0`. Take `⟨k, J, hJ, hfac⟩` from `WfDvdMonoid.max_power_factor hsp p.irreducible`. Establish `h1 : p.intValuation d ≤ WithZero.exp (-(k : ℤ))` using `(p.intValuation_le_pow_iff_dvd d k).2 ⟨J, hfac⟩`. Establish `h2 : p.intValuation n ≤ p.intValuation d`.
+
+Rewrite `hy` using `[map_div₀, HeightOneSpectrum.valuation_of_algebraMap, HeightOneSpectrum.valuation_of_algebraMap]`. Establish `hpos : 0 < p.intValuation d`. Rewrite using `[zero_lt_iff]`. Conclude with `p.intValuation_ne_zero d hd0`. Conclude with `(div_le_one₀ hpos).1 hy`.
+
+Establish `h3 : p.asIdeal ^ k ∣ Ideal.span {n}` using `(p.intValuation_le_pow_iff_dvd n k).1 (h2.trans h1)`. Establish `hn : n ∈ p.asIdeal ^ k` using `(Ideal.dvd_iff_le.1 h3) (Ideal.mem_span_singleton_self n)`. Establish `hJp : ¬ J ≤ p.asIdeal` using `fun h => hJ (Ideal.dvd_iff_le.2 h)`. Take `⟨a, haJ, hap⟩` from `Set.not_subset.1 hJp`. Establish `hna : n * a ∈ Ideal.span {d}` using `by rw [hfac]; exact Ideal.mul_mem_mul hn haJ`.
+
+Take `⟨z, hz⟩` from `Ideal.mem_span_singleton'.1 hna`. Use `⟨a, hap, z, ?_⟩` and prove the remaining obligations. Establish `hz' : (z : F) * (d : F) = (n : F) * (a : F)`. Rewrite using `[← map_mul, ← map_mul, hz]`. Clear the denominators using the available nonvanishing facts.
+
+Take the linear combination `-hz'`.
+-/
 theorem exists_den (p : HeightOneSpectrum (𝓞 F)) (y : F) (hy : p.valuation F y ≤ 1) :
     ∃ a : 𝓞 F, a ∉ p.asIdeal ∧ ∃ z : 𝓞 F, (a : F) * y = (z : F) := by
   obtain ⟨n, d, hd, rfl⟩ := IsFractionRing.div_surjective (A := 𝓞 F) y
@@ -106,12 +141,20 @@ section LocS
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
   {sig : E →ₐ[F] E} {p : HeightOneSpectrum (𝓞 F)} (A : LocAt F E sig p)
 
+/- English proof (translation)
+Use `first`. Consider the case `rfl`. Consider the case `push_cast`. Expand and normalize the polynomial expressions, which then agree. Consider the case `simp`.
+-/
 theorem cmul (a b : 𝓞 F) : ((a * b : 𝓞 F) : F) = (a : F) * (b : F) := by
   first
   | rfl
   | push_cast; ring
   | simp
 
+/- English proof (translation)
+Use `first`. Consider the case `exact Valuation.Compatible.vle_iff_le x y`. Consider the case `exact Valuation.Compatible.vle_iff_le`. Consider the case `exact ValuativeRel.vle_iff_le x y`. Consider the case `exact ValuativeRel.vle_iff_le`.
+
+Consider the case `exact (ValuativeRel.vle_iff_le x y).symm`. Consider the case `simp [Valuation.Compatible.vle_iff_le]`.
+-/
 private theorem vle_iff_valuation_le (x y : A.Fp) : (x ≤ᵥ y) ↔ valuation A.Fp x ≤ valuation A.Fp y := by
   first
   | exact Valuation.Compatible.vle_iff_le x y
@@ -121,6 +164,11 @@ private theorem vle_iff_valuation_le (x y : A.Fp) : (x ≤ᵥ y) ↔ valuation A
   | exact (ValuativeRel.vle_iff_le x y).symm
   | simp [Valuation.Compatible.vle_iff_le]
 
+/- English proof (translation)
+Use `first`. Consider the case `exact Valuation.mem_integer_iff _ _`. Consider the case `exact Iff.rfl`. Consider the case `(rw [← map_one (valuation A.Fp)]; exact vle_iff_valuation_le A x 1)`. Consider the case `simp [Valuation.mem_integer_iff]`.
+
+Consider the case `(rw [← map_one (valuation A.Fp), ← vle_iff_valuation_le A x 1]; exact Iff.rfl)`.
+-/
 private theorem mem_valuationSubring_iff_valuation_le_one (x : A.Fp) : x ∈ 𝒪[A.Fp] ↔ valuation A.Fp x ≤ 1 := by
   first
   | exact Valuation.mem_integer_iff _ _
@@ -129,15 +177,24 @@ private theorem mem_valuationSubring_iff_valuation_le_one (x : A.Fp) : x ∈ �
   | simp [Valuation.mem_integer_iff]
   | (rw [← map_one (valuation A.Fp), ← vle_iff_valuation_le A x 1]; exact Iff.rfl)
 
+/- English proof (translation)
+Conclude with `(vle_iff_valuation_le A _ _).symm.trans (A.val a b)`.
+-/
 theorem val_iff (a b : F) : valuation A.Fp (A.ιF a) ≤ valuation A.Fp (A.ιF b) ↔ p.valuation F a ≤ p.valuation F b := by
   exact (vle_iff_valuation_le A _ _).symm.trans (A.val a b)
 
+/- English proof (translation)
+Establish `h` using `val_iff A a 1`. Simplify using `only [map_one] at h`. Rewrite using `[mem_valuationSubring_iff_valuation_le_one A]`. Conclude with `h`.
+-/
 theorem mem_OF_iff (a : F) : A.ιF a ∈ 𝒪[A.Fp] ↔ p.valuation F a ≤ 1 := by
   have h := val_iff A a 1
   simp only [map_one] at h
   rw [mem_valuationSubring_iff_valuation_le_one A]
   exact h
 
+/- English proof (translation)
+Express the relevant statement in the definitionally equal form `p.valuation F (algebraMap (𝓞 F) F a) = 1`. Use `first`. Consider the case `(rw [HeightOneSpectrum.valuation_of_algebraMap, HeightOneSpectrum.intValuation_eq_one_iff]; exact ha)`. Consider the case `(rw [HeightOneSpectrum.valuation_of_algebraMap]; exact HeightOneSpectrum.intValuation_eq_one_iff.2 ha)`. Consider the case `exact le_antisymm (p.valuation_le_one a) (not_lt.1 fun h => ha ((p.valuation_lt_one_iff_mem a).1 h))`.
+-/
 theorem val_eq_one (a : 𝓞 F) (ha : a ∉ p.asIdeal) : p.valuation F (a : F) = 1 := by
   change p.valuation F (algebraMap (𝓞 F) F a) = 1
   first
@@ -145,6 +202,9 @@ theorem val_eq_one (a : 𝓞 F) (ha : a ∉ p.asIdeal) : p.valuation F (a : F) =
   | (rw [HeightOneSpectrum.valuation_of_algebraMap]; exact HeightOneSpectrum.intValuation_eq_one_iff.2 ha)
   | exact le_antisymm (p.valuation_le_one a) (not_lt.1 fun h => ha ((p.valuation_lt_one_iff_mem a).1 h))
 
+/- English proof (translation)
+Establish `h1` using `val_iff A a 1`. Establish `h2` using `val_iff A 1 a`. Simplify using `only [map_one] at h1 h2`. Conclude with `le_antisymm (h1.2 ha.le) (h2.2 ha.ge)`.
+-/
 theorem vFp_eq_one (a : F) (ha : p.valuation F a = 1) : valuation A.Fp (A.ιF a) = 1 := by
   have h1 := val_iff A a 1
   have h2 := val_iff A 1 a
@@ -154,6 +214,11 @@ theorem vFp_eq_one (a : F) (ha : p.valuation F a = 1) : valuation A.Fp (A.ιF a)
 instance nontrivEp : Nontrivial A.Ep :=
   Module.nontrivial_of_finrank_pos (R := A.Fp) (by rw [A.rank]; norm_num)
 
+/- English proof (translation)
+Rewrite using `[A.O_def]`. Establish `h : IsIntegral 𝒪[A.Fp] (algebraMap 𝒪[A.Fp] A.Ep ⟨b, hb⟩)` using `isIntegral_algebraMap`. Use `first`. Consider the case `exact h`. Consider the case `(rw [IsScalarTower.algebraMap_apply 𝒪[A.Fp] A.Fp A.Ep] at h; exact h)`.
+
+Consider the case `simpa using h`.
+-/
 theorem alg_mem_O (b : A.Fp) (hb : b ∈ 𝒪[A.Fp]) : algebraMap A.Fp A.Ep b ∈ A.O := by
   rw [A.O_def]
   have h : IsIntegral 𝒪[A.Fp] (algebraMap 𝒪[A.Fp] A.Ep ⟨b, hb⟩) := isIntegral_algebraMap
@@ -162,6 +227,11 @@ theorem alg_mem_O (b : A.Fp) (hb : b ∈ 𝒪[A.Fp]) : algebraMap A.Fp A.Ep b �
   | (rw [IsScalarTower.algebraMap_apply 𝒪[A.Fp] A.Fp A.Ep] at h; exact h)
   | simpa using h
 
+/- English proof (translation)
+Use `first`. Consider the case `(obtain ⟨y, hy⟩ := (Valuation.integer.integers (valuation A.Fp)).mem_of_integral h`. Rewrite using `[← hy]`. Conclude with `y.2)`. Consider the case `(obtain ⟨y, hy⟩ := (Valuation.integer.integers _).mem_of_integral h`.
+
+Rewrite using `[← hy]`. Conclude with `y.2)`. Consider the case `(obtain ⟨y, hy⟩ := IsIntegrallyClosed.isIntegral_iff.1 h`. Rewrite using `[← hy]`. Conclude with `y.2)`.
+-/
 private theorem mem_valuationSubring_of_isIntegral' (b : A.Fp) (h : IsIntegral 𝒪[A.Fp] b) : b ∈ 𝒪[A.Fp] := by
   first
   | (obtain ⟨y, hy⟩ := (Valuation.integer.integers (valuation A.Fp)).mem_of_integral h
@@ -171,6 +241,9 @@ private theorem mem_valuationSubring_of_isIntegral' (b : A.Fp) (h : IsIntegral �
   | (obtain ⟨y, hy⟩ := IsIntegrallyClosed.isIntegral_iff.1 h
      rw [← hy]; exact y.2)
 
+/- English proof (translation)
+Rewrite `h` using `[A.O_def]`. Apply `mem_valuationSubring_of_isIntegral' A` to reduce the goal to its premises. Use `first`. Consider the case `exact (isIntegral_algHom_iff (IsScalarTower.toAlgHom 𝒪[A.Fp] A.Fp A.Ep) (algebraMap A.Fp A.Ep).injective).1 h`. Consider the case `exact (isIntegral_algHom_iff (IsScalarTower.toAlgHom 𝒪[A.Fp] A.Fp A.Ep) (FaithfulSMul.algebraMap_injective A.Fp A.Ep)).1 h`.
+-/
 theorem mem_OF_of_alg (b : A.Fp) (h : algebraMap A.Fp A.Ep b ∈ A.O) : b ∈ 𝒪[A.Fp] := by
   rw [A.O_def] at h
   apply mem_valuationSubring_of_isIntegral' A
@@ -178,6 +251,9 @@ theorem mem_OF_of_alg (b : A.Fp) (h : algebraMap A.Fp A.Ep b ∈ A.O) : b ∈ �
   | exact (isIntegral_algHom_iff (IsScalarTower.toAlgHom 𝒪[A.Fp] A.Fp A.Ep) (algebraMap A.Fp A.Ep).injective).1 h
   | exact (isIntegral_algHom_iff (IsScalarTower.toAlgHom 𝒪[A.Fp] A.Fp A.Ep) (FaithfulSMul.algebraMap_injective A.Fp A.Ep)).1 h
 
+/- English proof (translation)
+Rewrite using `[A.O_def]`. Establish `hz : IsIntegral ℤ (A.ιE (z : E))` using `IsIntegral.map A.ιE.toIntAlgHom z.isIntegral_coe`. Use `first`. Consider the case `exact hz.tower_top`. Consider the case `exact IsIntegral.tower_top (A := 𝒪[A.Fp]) hz`.
+-/
 theorem ιE_int (z : 𝓞 E) : A.ιE (z : E) ∈ A.O := by
   rw [A.O_def]
   have hz : IsIntegral ℤ (A.ιE (z : E)) := IsIntegral.map A.ιE.toIntAlgHom z.isIntegral_coe
@@ -185,12 +261,20 @@ theorem ιE_int (z : 𝓞 E) : A.ιE (z : E) ∈ A.O := by
   | exact hz.tower_top
   | exact IsIntegral.tower_top (A := 𝒪[A.Fp]) hz
 
+/- English proof (translation)
+Rewrite `h`, the goal using `[A.O_def]`. Use `first`. Consider the case `exact h.map ((A.cj : A.Ep →ₐ[A.Fp] A.Ep).restrictScalars 𝒪[A.Fp])`. Consider the case `exact IsIntegral.map (A.cj.toAlgHom.restrictScalars 𝒪[A.Fp]) h`.
+-/
 theorem cj_mem (x : A.Ep) (h : x ∈ A.O) : A.cj x ∈ A.O := by
   rw [A.O_def] at h ⊢
   first
   | exact h.map ((A.cj : A.Ep →ₐ[A.Fp] A.Ep).restrictScalars 𝒪[A.Fp])
   | exact IsIntegral.map (A.cj.toAlgHom.restrictScalars 𝒪[A.Fp]) h
 
+/- English proof (translation)
+Establish `key : ∀ c c' : A.Fp, c ≠ 0 → valuation A.Fp c = valuation A.Fp c' → algebraMap A.Fp A.Ep c * z ∈ S → algebraMap A.Fp A.Ep c' * z ∈ S`. Introduce `c c' hc hv h`. Apply the tactic sequence `have hu : c' / c ∈ 𝒪[A.Fp] := by (rw [mem_valuationSubring_iff_valuation_le_one A, map_div₀, ← hv, div_self ((Valuation.ne_zero_iff _).2 hc)]) <;> exact le_rfl`. Establish `h2` using `hS _ hu _ h`. Establish `e : c' / c * c = c'` using `by field_simp`.
+
+Rewrite `h2` using `[← mul_assoc, ← map_mul, e]`. Then use the resulting hypothesis. Conclude with `⟨key b b' hb hv, key b' b hb' hv.symm⟩`.
+-/
 theorem scal_iff (S : Set A.Ep) (hS : ∀ b ∈ 𝒪[A.Fp], ∀ z ∈ S, algebraMap A.Fp A.Ep b * z ∈ S) (b b' : A.Fp) (hb : b ≠ 0)
     (hb' : b' ≠ 0) (hv : valuation A.Fp b = valuation A.Fp b') (z : A.Ep) :
     algebraMap A.Fp A.Ep b * z ∈ S ↔ algebraMap A.Fp A.Ep b' * z ∈ S := by
@@ -204,11 +288,20 @@ theorem scal_iff (S : Set A.Ep) (hS : ∀ b ∈ 𝒪[A.Fp], ∀ z ∈ S, algebra
     rwa [← mul_assoc, ← map_mul, e] at h2
   exact ⟨key b b' hb hv, key b' b hb' hv.symm⟩
 
+/- English proof (translation)
+Introduce `b hb z hz` and use `A.O.mul_mem (alg_mem_O A b hb) hz`.
+-/
 theorem O_scal : ∀ b ∈ 𝒪[A.Fp], ∀ z ∈ (A.O : Set A.Ep), algebraMap A.Fp A.Ep b * z ∈ (A.O : Set A.Ep) :=
   fun b hb z hz => A.O.mul_mem (alg_mem_O A b hb) hz
 
+/- English proof (translation)
+The claim follows from `A.compat a`.
+-/
 theorem ιE_alg (a : F) : A.ιE (algebraMap F E a) = algebraMap A.Fp A.Ep (A.ιF a) := A.compat a
 
+/- English proof (translation)
+Establish `hb : IsIntegral ℤ (algebraMap F E (b : F))` using `by first`. Consider the case `exact IsIntegral.map (algebraMap F E).toIntAlgHom b.isIntegral_coe`. Consider the case `exact (b.isIntegral_coe).algebraMap`. Conclude with `⟨⟨algebraMap F E (b : F), hb⟩, rfl⟩`.
+-/
 private theorem exists_integer_eq_algebraMap_integer (b : 𝓞 F) : ∃ z : 𝓞 E, (z : E) = algebraMap F E (b : F) := by
   have hb : IsIntegral ℤ (algebraMap F E (b : F)) := by
     first
@@ -216,6 +309,29 @@ private theorem exists_integer_eq_algebraMap_integer (b : 𝓞 F) : ∃ z : 𝓞
     | exact (b.isIntegral_coe).algebraMap
   exact ⟨⟨algebraMap F E (b : F), hb⟩, rfl⟩
 
+/- English proof (translation)
+Take `⟨tr, htr⟩` from `hfix (x + sig x) (by rw [map_add, hinv, add_comm])`. Take `⟨nm, hnm⟩` from `hfix (x * sig x) (by rw [map_mul, hinv, mul_comm])`. Establish `hq : x * x - algebraMap F E tr * x + algebraMap F E nm = 0`. Rewrite using `[htr, hnm]`. Expand and normalize the polynomial expressions, which then agree.
+
+Prove the components needed by the constructor for the conclusion. Introduce `hx`. Establish `hsx : A.ιE (sig x) ∈ A.O`. Rewrite using `[← A.cj_ιE]`. Conclude with `cj_mem A _ hx`.
+
+Establish `htrO : A.ιF tr ∈ 𝒪[A.Fp]`. Apply `mem_OF_of_alg A` to reduce the goal to its premises. Rewrite using `[← A.compat, htr, map_add]`. Conclude with `A.O.add_mem hx hsx`. Establish `hnmO : A.ιF nm ∈ 𝒪[A.Fp]`.
+
+Apply `mem_OF_of_alg A` to reduce the goal to its premises. Rewrite using `[← A.compat, hnm, map_mul]`. Conclude with `A.O.mul_mem hx hsx`. Take `⟨a1, ha1, z1, hz1⟩` from `exists_den p tr ((mem_OF_iff A tr).1 htrO)`. Take `⟨a2, ha2, z2, hz2⟩` from `exists_den p nm ((mem_OF_iff A nm).1 hnmO)`.
+
+Use `⟨a1 * a2, fun h => (p.isPrime.mem_or_mem h).elim ha1 ha2, ?_⟩` and prove the remaining obligations. Take `⟨U, hU⟩` from `exists_integer_eq_algebraMap_integer (E := E) (a2 * z1)`. Take `⟨V, hV⟩` from `exists_integer_eq_algebraMap_integer (E := E) (a1 * a1 * a2 * z2)`. Establish `hyint : IsIntegral (𝓞 E) (algebraMap F E ((a1 * a2 : 𝓞 F) : F) * x)`. Use `⟨Polynomial.X ^ 2 - Polynomial.C U * Polynomial.X + Polynomial.C V, ?_, ?_⟩` and prove the remaining obligations.
+
+Use `first`. Consider the case `monicity!`. Consider the case `monicity`. Simplify using `only [Polynomial.eval₂_add, Polynomial.eval₂_sub, Polynomial.eval₂_mul, Polynomial.eval₂_X_pow, Polynomial.eval₂_C, Polynomial.eval₂_X]`. Establish `eU : algebraMap (𝓞 E) E U = algebraMap F E ((a2 : F) * (z1 : F))` using `hU`.
+
+Establish `eV : algebraMap (𝓞 E) E V = algebraMap F E ((a1 : F) * (a1 : F) * (a2 : F) * (z2 : F))` using `hV`. Establish `e1 : ((a1 * a2 : 𝓞 F) : F) = (a1 : F) * (a2 : F)` using `rfl`. Rewrite using `[eU, eV, e1, ← hz1, ← hz2]`. Simplify using `only [map_mul]`. Take the linear combination `(algebraMap F E (a1 : F) * algebraMap F E (a2 : F)) ^ 2 * hq`.
+
+Take `⟨w, hw⟩` from `IsIntegrallyClosed.isIntegral_iff.1 hyint`. Rewrite using `[FractionalIdeal.mem_one_iff]`. Conclude with `⟨w, hw⟩`. Introduce and unpack `⟨a, ha, hax⟩`. Rewrite `hax` using `[FractionalIdeal.mem_one_iff]`.
+
+Take `⟨z, hz⟩` from `hax`. Establish `hzO : A.ιE (algebraMap F E (a : F) * x) ∈ A.O`. Rewrite using `[← hz]`. Conclude with `ιE_int A z`. Rewrite `hzO` using `[map_mul, A.compat]`.
+
+Establish `hv : valuation A.Fp (A.ιF (a : F)) = 1` using `vFp_eq_one A _ (val_eq_one a ha)`. Apply the tactic sequence `have hinvO : (A.ιF (a : F))⁻¹ ∈ 𝒪[A.Fp] := by (rw [mem_valuationSubring_iff_valuation_le_one A, map_inv₀, hv, inv_one]) <;> exact le_rfl`. Establish `hne : A.ιF (a : F) ≠ 0`. Introduce `h0`. Rewrite `hv` using `[h0, map_zero]`.
+
+Conclude with `zero_ne_one hv`. Establish `h2` using `O_scal A _ hinvO _ hzO`. Rewrite `h2` using `[← mul_assoc, ← map_mul, inv_mul_cancel₀ hne, map_one, one_mul]`. Conclude with `h2`.
+-/
 theorem int_iff (hinv : ∀ x, sig (sig x) = x) (hfix : ∀ x : E, sig x = x → ∃ a : F, algebraMap F E a = x) (x : E) :
     A.ιE x ∈ A.O ↔ atP p 1 x := by
   obtain ⟨tr, htr⟩ := hfix (x + sig x) (by rw [map_add, hinv, add_comm])
@@ -282,11 +398,19 @@ section LocS2
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
   {sig : E →ₐ[F] E} {p : HeightOneSpectrum (𝓞 F)} (A : LocAt F E sig p)
 
+/- English proof (translation)
+Establish `h : t / algebraMap F E a = algebraMap F E a⁻¹ * t` using `by rw [map_inv₀, div_eq_inv_mul]`. Rewrite using `[h, map_mul, A.compat, map_inv₀]`.
+-/
 theorem ιE_div' (t : E) (a : F) :
     A.ιE (t / algebraMap F E a) = algebraMap A.Fp A.Ep ((A.ιF a)⁻¹) * A.ιE t := by
   have h : t / algebraMap F E a = algebraMap F E a⁻¹ * t := by rw [map_inv₀, div_eq_inv_mul]
   rw [h, map_mul, A.compat, map_inv₀]
 
+/- English proof (translation)
+Rewrite using `[ιE_div' A]`. Establish `hι : A.ιF ((((gp * ot : ℕ)) : F) ^ k * c ^ ν) = (((gp : ℕ) : A.Fp) * ((ot : ℕ) : A.Fp)) ^ k * (A.ιF c) ^ ν`. Simplify using `[map_mul, map_pow, map_natCast]`. Rewrite using `[hι, ← mul_assoc, ← map_mul]`. Distinguish the cases in `hC : (A.ιF c) ^ ν = 0`.
+
+Simplify using `[hC]`. Use `scal_iff A (A.O : Set A.Ep) (O_scal A) _ _ ?_ ?_ ?_ _` and prove the remaining obligations. Conclude with `inv_ne_zero (mul_ne_zero (pow_ne_zero _ (mul_ne_zero hg ho)) hC)`. Conclude with `mul_ne_zero (inv_ne_zero (pow_ne_zero _ hg)) (inv_ne_zero hC)`. Simplify using `only [map_inv₀, map_mul, map_pow, hvo, one_pow, mul_one, mul_inv]`.
+-/
 theorem cond_gen (c : F) (ν gp ot : ℕ) (hg : ((gp : ℕ) : A.Fp) ≠ 0) (ho : ((ot : ℕ) : A.Fp) ≠ 0)
     (hvo : valuation A.Fp ((ot : ℕ) : A.Fp) = 1) (k : ℕ) (y : E) :
     A.ιE (y / algebraMap F E ((((gp * ot : ℕ)) : F) ^ k * c ^ ν)) ∈ A.O ↔
@@ -302,6 +426,9 @@ theorem cond_gen (c : F) (ν gp ot : ℕ) (hg : ((gp : ℕ) : A.Fp) ≠ 0) (ho :
     · exact mul_ne_zero (inv_ne_zero (pow_ne_zero _ hg)) (inv_ne_zero hC)
     · simp only [map_inv₀, map_mul, map_pow, hvo, one_pow, mul_one, mul_inv]
 
+/- English proof (translation)
+Simplify using `only [map_sub, map_mul, map_pow, map_neg, map_one, AlgEquiv.commutes, A.cj_ιE]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem tw_gen (b : A.Fp) (s : ℕ) (t : E) :
     algebraMap A.Fp A.Ep b * A.ιE (t - (-1) ^ s * sig t) =
       algebraMap A.Fp A.Ep b * A.ιE t - (-1) ^ s * A.cj (algebraMap A.Fp A.Ep b * A.ιE t) := by
@@ -315,17 +442,31 @@ section LocGenS
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
   {p : HeightOneSpectrum (𝓞 F)}
 
+/- English proof (translation)
+Introduce `h` and use `p.isPrime.ne_top ((Ideal.eq_top_iff_one _).2 h)`.
+-/
 theorem one_notMem (p : HeightOneSpectrum (𝓞 F)) : (1 : 𝓞 F) ∉ p.asIdeal :=
   fun h => p.isPrime.ne_top ((Ideal.eq_top_iff_one _).2 h)
 
+/- English proof (translation)
+Use `⟨1, one_notMem p, ?_⟩` and prove the remaining obligations. Rewrite using `[show ((1 : 𝓞 F) : F) = 1 from rfl, map_one, one_mul]`. Conclude with `h`.
+-/
 theorem memLocalization_of_mem {I : FractionalIdeal (𝓞 E)⁰ E} {t : E} (h : t ∈ I) : atP p I t := by
   refine ⟨1, one_notMem p, ?_⟩
   rw [show ((1 : 𝓞 F) : F) = 1 from rfl, map_one, one_mul]
   exact h
 
+/- English proof (translation)
+Introduce `h` and use `(p.isPrime.mem_or_mem h).elim ha hb`.
+-/
 theorem mul_notMem {a b : 𝓞 F} (ha : a ∉ p.asIdeal) (hb : b ∉ p.asIdeal) : a * b ∉ p.asIdeal :=
   fun h => (p.isPrime.mem_or_mem h).elim ha hb
 
+/- English proof (translation)
+Take `⟨a, ha, h⟩` from `hx`. Take `⟨b, hb, h'⟩` from `hy`. Use `⟨a * b, mul_notMem ha hb, ?_⟩` and prove the remaining obligations. Establish `e : algebraMap F E ((a * b : 𝓞 F) : F) * (x + y) = algebraMap F E (b : F) * (algebraMap F E (a : F) * x) + algebraMap F E (a : F) * (algebraMap F E (b : F) * y)`. Rewrite using `[cmul, map_mul]`.
+
+Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e]`. Conclude with `(I : Submodule (𝓞 E) E).add_mem (int_smul_mem I b _ h) (int_smul_mem I a _ h')`.
+-/
 theorem memLocalization_add {I : FractionalIdeal (𝓞 E)⁰ E} {x y : E} (hx : atP p I x) (hy : atP p I y) : atP p I (x + y) := by
   obtain ⟨a, ha, h⟩ := hx
   obtain ⟨b, hb, h'⟩ := hy
@@ -336,6 +477,11 @@ theorem memLocalization_add {I : FractionalIdeal (𝓞 E)⁰ E} {x y : E} (hx : 
   rw [e]
   exact (I : Submodule (𝓞 E) E).add_mem (int_smul_mem I b _ h) (int_smul_mem I a _ h')
 
+/- English proof (translation)
+Take `⟨a, ha, hax⟩` from `hx`. Take `⟨b, hb, hby⟩` from `hy`. Use `⟨a * b, mul_notMem ha hb, ?_⟩` and prove the remaining obligations. Establish `e : algebraMap F E ((a * b : 𝓞 F) : F) * (x * y) = (algebraMap F E (a : F) * x) * (algebraMap F E (b : F) * y)`. Rewrite using `[show ((a * b : 𝓞 F) : F) = (a : F) * (b : F) from rfl, map_mul]`.
+
+Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e]`. Conclude with `FractionalIdeal.mul_mem_mul hax hby`.
+-/
 theorem memLocalization_mul {I J : FractionalIdeal (𝓞 E)⁰ E} {x y : E} (hx : atP p I x) (hy : atP p J y) : atP p (I * J) (x * y) := by
   obtain ⟨a, ha, hax⟩ := hx
   obtain ⟨b, hb, hby⟩ := hy
@@ -347,6 +493,9 @@ theorem memLocalization_mul {I J : FractionalIdeal (𝓞 E)⁰ E} {x y : E} (hx 
   rw [e]
   exact FractionalIdeal.mul_mem_mul hax hby
 
+/- English proof (translation)
+Take `⟨b, hb, h⟩` from `h`. Use `⟨b * a, mul_notMem hb ha, ?_⟩` and prove the remaining obligations. Rewrite using `[show ((b * a : 𝓞 F) : F) = (b : F) * (a : F) from rfl, map_mul, mul_assoc]`. Conclude with `h`.
+-/
 theorem memLocalization_of_smul {I : FractionalIdeal (𝓞 E)⁰ E} {a : 𝓞 F} (ha : a ∉ p.asIdeal) {x : E}
     (h : atP p I (algebraMap F E (a : F) * x)) : atP p I x := by
   obtain ⟨b, hb, h⟩ := h
@@ -357,9 +506,17 @@ theorem memLocalization_of_smul {I : FractionalIdeal (𝓞 E)⁰ E} {a : 𝓞 F}
 def LocGen (p : HeightOneSpectrum (𝓞 F)) (I : FractionalIdeal (𝓞 E)⁰ E) (c : E) : Prop :=
   c ≠ 0 ∧ ∀ x : E, atP p I x ↔ atP p 1 (x / c)
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨one_ne_zero, fun x => by rw [div_one]⟩`.
+-/
 theorem LocGen.one : LocGen p (1 : FractionalIdeal (𝓞 E)⁰ E) 1 :=
   ⟨one_ne_zero, fun x => by rw [div_one]⟩
 
+/- English proof (translation)
+Use `(h.2 c).2 ?_` and prove the remaining obligations. Rewrite using `[div_self h.1]`. Apply `memLocalization_of_mem` to reduce the goal to its premises. Use `first`. Consider the case `exact FractionalIdeal.one_mem_one _`.
+
+Consider the case `exact FractionalIdeal.one_mem_one`. Consider the case `simp`.
+-/
 theorem LocGen.self {I : FractionalIdeal (𝓞 E)⁰ E} {c : E} (h : LocGen p I c) : atP p I c := by
   refine (h.2 c).2 ?_
   rw [div_self h.1]
@@ -369,6 +526,19 @@ theorem LocGen.self {I : FractionalIdeal (𝓞 E)⁰ E} {c : E} (h : LocGen p I 
   | exact FractionalIdeal.one_mem_one
   | simp
 
+/- English proof (translation)
+Establish `hs` using `h.self`. Establish `hs'` using `h'.self`. Take `⟨hc, hI⟩` from `h`. Take `⟨hc', hJ⟩` from `h'`. Use `⟨mul_ne_zero hc hc', fun x => ⟨fun hx => ?_, fun hx => ?_⟩⟩` and prove the remaining obligations.
+
+Take `⟨a, ha, hax⟩` from `hx`. Apply `memLocalization_of_smul ha` to reduce the goal to its premises. Establish `key : ∀ w ∈ I * J, atP p 1 (w / (c * c'))`. Introduce `w hw`. Conclude with `FractionalIdeal.mul_induction_on (C := fun w => atP p 1 (w / (c * c'))) hw (fun i hi j hj => by`.
+
+Establish `h3` using `memLocalization_mul ((hI i).1 (memLocalization_of_mem hi)) ((hJ j).1 (memLocalization_of_mem hj))`. Rewrite `h3` using `[one_mul]`. Use `show atP p 1 (i * j / (c * c'))`. Rewrite using `[← div_mul_div_comm]`. Conclude with `h3)`.
+
+Use the proof step `(fun y z hy hz => by`. Establish `hy' : atP p 1 (y / (c * c'))` using `hy`. Establish `hz' : atP p 1 (z / (c * c'))` using `hz`. Use `show atP p 1 ((y + z) / (c * c'))`. Rewrite using `[add_div]`.
+
+Conclude with `memLocalization_add hy' hz')`. Establish `h4` using `key _ hax`. Rewrite `h4` using `[mul_div_assoc]`. Then use the resulting hypothesis. Establish `h3` using `memLocalization_mul (memLocalization_mul hs hs') hx`. Rewrite `h3` using `[mul_one]`.
+
+Establish `e : c * c' * (x / (c * c')) = x`. Clear the denominators using the available nonvanishing facts. Rewrite `h3` using `[e]`. Then use the resulting hypothesis.
+-/
 theorem LocGen.mul {I J : FractionalIdeal (𝓞 E)⁰ E} {c c' : E} (h : LocGen p I c) (h' : LocGen p J c') :
     LocGen p (I * J) (c * c') := by
   have hs := h.self
@@ -401,6 +571,11 @@ theorem LocGen.mul {I J : FractionalIdeal (𝓞 E)⁰ E} {c c' : E} (h : LocGen 
       field_simp
     rwa [e] at h3
 
+/- English proof (translation)
+Proceed by induction on `n with`. Consider the case `zero`. Rewrite using `[pow_zero, pow_zero]`. Conclude with `LocGen.one`. Consider the case `succ n ih`.
+
+Rewrite using `[pow_succ, pow_succ]`. Conclude with `ih.mul h`.
+-/
 theorem LocGen.pow {I : FractionalIdeal (𝓞 E)⁰ E} {c : E} (h : LocGen p I c) (n : ℕ) : LocGen p (I ^ n) (c ^ n) := by
   induction n with
   | zero =>
@@ -410,6 +585,15 @@ theorem LocGen.pow {I : FractionalIdeal (𝓞 E)⁰ E} {c : E} (h : LocGen p I c
     rw [pow_succ, pow_succ]
     exact ih.mul h
 
+/- English proof (translation)
+Use `⟨hc, fun x => ⟨?_, ?_⟩⟩` and prove the remaining obligations. Introduce and unpack `⟨a, ha, hax⟩`. Use `⟨a, ha, ?_⟩` and prove the remaining obligations. Rewrite `hax` using `[FractionalIdeal.mem_spanSingleton]`. Take `⟨z, hz⟩` from `hax`.
+
+Rewrite using `[FractionalIdeal.mem_one_iff]`. Use `⟨z, ?_⟩` and prove the remaining obligations. Rewrite `hz` using `[Algebra.smul_def]`. Rewrite using `[← mul_div_assoc, ← hz]`. Clear the denominators using the available nonvanishing facts.
+
+Introduce and unpack `⟨a, ha, hax⟩`. Use `⟨a, ha, ?_⟩` and prove the remaining obligations. Rewrite `hax` using `[FractionalIdeal.mem_one_iff]`. Take `⟨z, hz⟩` from `hax`. Rewrite using `[FractionalIdeal.mem_spanSingleton]`.
+
+Use `⟨z, ?_⟩` and prove the remaining obligations. Rewrite using `[Algebra.smul_def, hz]`. Clear the denominators using the available nonvanishing facts.
+-/
 theorem LocGen.span {c : E} (hc : c ≠ 0) : LocGen p (FractionalIdeal.spanSingleton (𝓞 E)⁰ c) c := by
   refine ⟨hc, fun x => ⟨?_, ?_⟩⟩
   · rintro ⟨a, ha, hax⟩
@@ -441,12 +625,22 @@ variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algeb
 
 variable {ell : ℕ} (sg : SplitAt A.Fp A.Ep A.cj ell)
 
+/- English proof (translation)
+Rewrite using `[AlgEquiv.commutes]`. Use `first`. Consider the case `rfl`. Consider the case `simp [Prod.algebraMap_apply]`.
+-/
 theorem e_alg (c : A.Fp) : sg.e (algebraMap A.Fp A.Ep c) = (c, c) := by
   rw [AlgEquiv.commutes]
   first
   | rfl
   | simp [Prod.algebraMap_apply]
 
+/- English proof (translation)
+Rewrite using `[A.O_def]`. Establish `hres : ∀ y : A.Fp, y ∈ 𝒪[A.Fp] → IsIntegral 𝒪[A.Fp] y` using `fun y hy => by`. Establish `h : IsIntegral 𝒪[A.Fp] (algebraMap 𝒪[A.Fp] A.Fp ⟨y, hy⟩)` using `isIntegral_algebraMap`. Conclude with `h`. Prove the components needed by the constructor for the conclusion.
+
+Introduce `h`. Establish `h2 : IsIntegral 𝒪[A.Fp] (sg.e x)` using `h.map (sg.e.toAlgHom.restrictScalars 𝒪[A.Fp])`. Conclude with `⟨mem_valuationSubring_of_isIntegral' A _ (h2.map ((AlgHom.fst A.Fp A.Fp A.Fp).restrictScalars 𝒪[A.Fp])), mem_valuationSubring_of_isIntegral' A _ (h2.map ((AlgHom.snd A.Fp A.Fp A.Fp).restrictScalars 𝒪[A.Fp]))⟩`. Introduce and unpack `⟨h1, h2⟩`. Establish `h3 : IsIntegral 𝒪[A.Fp] (sg.e x)` using `IsIntegral.pair (hres _ h1) (hres _ h2)`.
+
+Establish `h4` using `h3.map (sg.e.symm.toAlgHom.restrictScalars 𝒪[A.Fp])`. Use `first`. Consider the case `simpa using h4`. Consider the case `(rw [show (sg.e.symm.toAlgHom.restrictScalars 𝒪[A.Fp]) (sg.e x) = x from sg.e.symm_apply_apply x] at h4; exact h4)`.
+-/
 theorem O_split (x : A.Ep) : x ∈ A.O ↔ (sg.e x).1 ∈ 𝒪[A.Fp] ∧ (sg.e x).2 ∈ 𝒪[A.Fp] := by
   rw [A.O_def]
   have hres : ∀ y : A.Fp, y ∈ 𝒪[A.Fp] → IsIntegral 𝒪[A.Fp] y := fun y hy => by
@@ -464,6 +658,27 @@ theorem O_split (x : A.Ep) : x ∈ A.O ↔ (sg.e x).1 ∈ 𝒪[A.Fp] ∧ (sg.e x
     | simpa using h4
     | (rw [show (sg.e.symm.toAlgHom.restrictScalars 𝒪[A.Fp]) (sg.e x) = x from sg.e.symm_apply_apply x] at h4; exact h4)
 
+/- English proof (translation)
+Establish `hq0 : (sg.q : A.Fp) ≠ 0` using `fun h0 => sg.q_irr.ne_zero (by first`. Consider the case `exact Subtype.ext h0`. Consider the case `exact_mod_cast h0`. Consider the case `simpa using h0)`. Establish `hS : ((-1 : A.Fp) ^ s) * (-1) ^ s = 1`.
+
+Rewrite using `[← mul_pow]`. Evaluate the numerical expressions. Establish `hsO : ((-1 : A.Fp) ^ s) ∈ 𝒪[A.Fp]` using `pow_mem (neg_mem (one_mem _)) s`. Establish `hq1 : (sg.q : A.Fp) * ((sg.q : A.Fp) ^ 2)⁻¹ = (sg.q : A.Fp)⁻¹`. Rewrite using `[pow_two, mul_inv, ← mul_assoc, mul_inv_cancel₀ hq0, one_mul]`.
+
+Establish `hD : ∀ a b : A.Fp, a * (sg.q : A.Fp)⁻¹ - (-1) ^ s * b * (sg.q : A.Fp)⁻¹ = (sg.q : A.Fp) * (((sg.q : A.Fp) ^ 2)⁻¹ * (a - (-1) ^ s * b))`. Introduce `a b`. Take the linear combination `(-(a - (-1) ^ s * b)) * hq1`. Establish `hD2 : ∀ a b : A.Fp, ((sg.q : A.Fp) ^ 2)⁻¹ * (b - (-1) ^ s * a) = -((-1) ^ s) * (((sg.q : A.Fp) ^ 2)⁻¹ * (a - (-1) ^ s * b))`. Introduce `a b`.
+
+Take the linear combination `(-((sg.q : A.Fp) ^ 2)⁻¹ * b) * hS`. Establish `e1 : sg.e (sg.e.symm ((sg.e X).1, (-1) ^ s * (sg.e X).2) * algebraMap A.Fp A.Ep ((sg.q : A.Fp)⁻¹)) = ((sg.e X).1 * (sg.q : A.Fp)⁻¹, (-1) ^ s * (sg.e X).2 * (sg.q : A.Fp)⁻¹)`. Simplify using `only [map_mul, AlgEquiv.apply_symm_apply, e_alg A sg]`. Use `first`. Consider the case `rfl`.
+
+Consider the case `simp`. Establish `e2 : sg.e (algebraMap A.Fp A.Ep ((sg.q : A.Fp)⁻¹) * X) = ((sg.q : A.Fp)⁻¹ * (sg.e X).1, (sg.q : A.Fp)⁻¹ * (sg.e X).2)`. Simplify using `only [map_mul, e_alg A sg]`. Use `first`. Consider the case `rfl`.
+
+Consider the case `simp`. Establish `e3 : sg.e (algebraMap A.Fp A.Ep (((sg.q : A.Fp) ^ 2)⁻¹) * (X - (-1) ^ s * A.cj X)) = (((sg.q : A.Fp) ^ 2)⁻¹ * ((sg.e X).1 - (-1) ^ s * (sg.e X).2), ((sg.q : A.Fp) ^ 2)⁻¹ * ((sg.e X).2 - (-1) ^ s * (sg.e X).1))`. Simplify using `only [map_mul, map_sub, map_pow, map_neg, map_one, e_alg A sg, sg.e_cj]`. Apply the tactic sequence `ext <;> simp`. Rewrite using `[O_split A sg, O_split A sg, e1, e2, e3]`.
+
+Simplify using `only [Formalism.FourierDecayAlt.I.orderR, Set.mem_setOf_eq]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨h1, h2, t, ht, hteq⟩`. Establish `htD : t = ((sg.q : A.Fp) ^ 2)⁻¹ * ((sg.e X).1 - (-1) ^ s * (sg.e X).2)` using `mul_left_cancel₀ hq0 (hteq.symm.trans (hD _ _))`. Use `⟨⟨?_, ?_⟩, ⟨?_, ?_⟩⟩` and prove the remaining obligations.
+
+Rewrite using `[mul_comm]`. Conclude with `h1`. Establish `h3` using `mul_mem hsO h2`. Rewrite `h3` using `[show (-1 : A.Fp) ^ s * ((-1) ^ s * (sg.e X).2 * (sg.q : A.Fp)⁻¹) = (-1) ^ s * (-1) ^ s * ((sg.q : A.Fp)⁻¹ * (sg.e X).2) by ring, hS, one_mul]`. Conclude with `h3`.
+
+Rewrite using `[← htD]`. Conclude with `ht`. Rewrite using `[hD2, ← htD]`. Conclude with `mul_mem (neg_mem hsO) ht`. Introduce and unpack `⟨⟨r1, r2⟩, r3, r4⟩`.
+
+Use `⟨?_, ?_, _, r3, hD _ _⟩` and prove the remaining obligations. Rewrite using `[mul_comm]`. Conclude with `r1`. Rewrite using `[show (-1 : A.Fp) ^ s * (sg.e X).2 * (sg.q : A.Fp)⁻¹ = (-1) ^ s * ((sg.q : A.Fp)⁻¹ * (sg.e X).2) by ring]`. Conclude with `mul_mem hsO r2`.
+-/
 theorem typed_iff (s : ℕ) (X : A.Ep) :
     sg.e (sg.e.symm ((sg.e X).1, (-1) ^ s * (sg.e X).2) * algebraMap A.Fp A.Ep ((sg.q : A.Fp)⁻¹)) ∈
         Formalism.FourierDecayAlt.I.orderR (𝒪[A.Fp]) (sg.q : A.Fp) ↔
@@ -537,6 +752,11 @@ open Formalism.MainNotions.S.LocalSplitGroups Formalism.MainNotions.JointEigenva
 
 variable {D : Formalism.BasicNotions.D7}
 
+/- English proof (translation)
+Simplify using `only [D.conjF_eq]`. Establish `hc : ∀ y, D.host.φ₀ (D.host.conj y) = starRingEnd ℂ (D.host.φ₀ y)` using `(D.host.der.conj_iff D.host.φ₀ D.host.conj).2 (by first`. Consider the case `simp only [Formalism.HC.HostRaw.conj, MulEquiv.apply_symm_apply]`. Consider the case `rfl`. Consider the case `simp [Formalism.HC.HostRaw.conj])`.
+
+Apply `D.host.φ₀.injective` to reduce the goal to its premises. Rewrite using `[hc, hc, Complex.conj_conj]`.
+-/
 theorem conjF_inv (x : D.host.E) : D.conjF (D.conjF x) = x := by
   simp only [D.conjF_eq]
   have hc : ∀ y, D.host.φ₀ (D.host.conj y) = starRingEnd ℂ (D.host.φ₀ y) :=
@@ -548,6 +768,9 @@ theorem conjF_inv (x : D.host.E) : D.conjF (D.conjF x) = x := by
   apply D.host.φ₀.injective
   rw [hc, hc, Complex.conj_conj]
 
+/- English proof (translation)
+Establish `hx : x ∈ D.host.F` using `(D.host.der.mem_F x).2 (by rw [← D.conjF_eq]; exact h)`. Use `⟨⟨x, hx⟩, ?_⟩` and prove the remaining obligations. Use `first`. Consider the case `rfl`. Consider the case `simp`.
+-/
 theorem conjF_fix (x : D.host.E) (h : D.conjF x = x) : ∃ a : D.host.F, algebraMap D.host.F D.host.E a = x := by
   have hx : x ∈ D.host.F := (D.host.der.mem_F x).2 (by rw [← D.conjF_eq]; exact h)
   refine ⟨⟨x, hx⟩, ?_⟩
@@ -555,6 +778,9 @@ theorem conjF_fix (x : D.host.E) (h : D.conjF x = x) : ∃ a : D.host.F, algebra
   | rfl
   | simp
 
+/- English proof (translation)
+Rewrite using `[← Ideal.Quotient.eq_zero_iff_mem, map_natCast]`. Use `first`. Consider the case `exact ringChar.spec _ n`. Consider the case `(simp only [Loc.resChar]; exact ringChar.spec _ n)`.
+-/
 theorem natCast_mem_iff (p : PlF D) (n : ℕ) : ((n : ℕ) : 𝓞 D.host.F) ∈ p.asIdeal ↔ Loc.resChar p ∣ n := by
   rw [← Ideal.Quotient.eq_zero_iff_mem, map_natCast]
   first
@@ -565,10 +791,18 @@ def oth (p : PlF D) : ℕ :=
   if Loc.resChar p = D.host.g 0 then D.host.g 1
   else if Loc.resChar p = D.host.g 1 then D.host.g 0 else D.host.g 0 * D.host.g 1
 
+/- English proof (translation)
+Simplify using `only [gpart, oth, Lat.gS]`. Apply the tactic sequence `split_ifs <;> ring`.
+-/
 theorem gpart_mul_oth (p : PlF D) : gpart p * oth p = Lat.gS D := by
   simp only [gpart, oth, Lat.gS]
   split_ifs <;> ring
 
+/- English proof (translation)
+Establish `hl` using `((D.s.atP p).ellPrime).out`. Simplify using `only [gpart]`. Use `split_ifs with h0 h1`. Rewrite using `[← h0]`. Conclude with `hl.ne_zero`.
+
+Rewrite using `[← h1]`. Conclude with `hl.ne_zero`. Conclude with `one_ne_zero`.
+-/
 theorem gpart_ne_zero (p : PlF D) : gpart p ≠ 0 := by
   have hl := ((D.s.atP p).ellPrime).out
   simp only [gpart]
@@ -579,6 +813,15 @@ theorem gpart_ne_zero (p : PlF D) : gpart p ≠ 0 := by
     exact hl.ne_zero
   · exact one_ne_zero
 
+/- English proof (translation)
+Establish `hl` using `((D.s.atP p).ellPrime).out`. Establish `hg0` using `D.host.g_prime 0`. Establish `hg1` using `D.host.g_prime 1`. Establish `gne` using `D.host.g_ne`. Simplify using `only [oth]`.
+
+Use `split_ifs with h0 h1`. Rewrite using `[h0]`. Introduce `hd`. Conclude with `gne ((Nat.prime_dvd_prime_iff_eq hg0 hg1).1 hd)`. Rewrite using `[h1]`.
+
+Introduce `hd`. Conclude with `gne ((Nat.prime_dvd_prime_iff_eq hg1 hg0).1 hd).symm`. Introduce `hd`. Break down `(Nat.Prime.dvd_mul hl).1 hd with hd | hd` into its components or cases. Conclude with `h0 ((Nat.prime_dvd_prime_iff_eq hl hg0).1 hd)`.
+
+Conclude with `h1 ((Nat.prime_dvd_prime_iff_eq hl hg1).1 hd)`.
+-/
 theorem oth_not_dvd (p : PlF D) : ¬ Loc.resChar p ∣ oth p := by
   have hl := ((D.s.atP p).ellPrime).out
   have hg0 := D.host.g_prime 0
@@ -597,12 +840,20 @@ theorem oth_not_dvd (p : PlF D) : ¬ Loc.resChar p ∣ oth p := by
     · exact h0 ((Nat.prime_dvd_prime_iff_eq hl hg0).1 hd)
     · exact h1 ((Nat.prime_dvd_prime_iff_eq hl hg1).1 hd)
 
+/- English proof (translation)
+Introduce `h`. Apply `oth_not_dvd p` to reduce the goal to its premises. Rewrite using `[h]`. Conclude with `dvd_zero _`.
+-/
 theorem oth_ne_zero (p : PlF D) : oth p ≠ 0 := by
   intro h
   apply oth_not_dvd p
   rw [h]
   exact dvd_zero _
 
+/- English proof (translation)
+Establish `hg : ((gpart p : ℕ) : ℚ) ≠ 0` using `Nat.cast_ne_zero.2 (gpart_ne_zero p)`. Establish `ho : ((oth p : ℕ) : ℚ) ≠ 0` using `Nat.cast_ne_zero.2 (oth_ne_zero p)`. Simplify using `only [uP]`. Rewrite using `[← gpart_mul_oth p, Nat.cast_mul]`. Use `first`.
+
+Consider the case `(rw [div_mul_eq_div_div, div_self hg, one_div])`. Consider the case `field_simp`.
+-/
 theorem unitAt_eq (p : PlF D) : uP p = ((oth p : ℕ) : ℚ)⁻¹ := by
   have hg : ((gpart p : ℕ) : ℚ) ≠ 0 := Nat.cast_ne_zero.2 (gpart_ne_zero p)
   have ho : ((oth p : ℕ) : ℚ) ≠ 0 := Nat.cast_ne_zero.2 (oth_ne_zero p)
@@ -612,6 +863,11 @@ theorem unitAt_eq (p : PlF D) : uP p = ((oth p : ℕ) : ℚ)⁻¹ := by
   | (rw [div_mul_eq_div_div, div_self hg, one_div])
   | field_simp
 
+/- English proof (translation)
+Establish `h1 : ((n : ℕ) : 𝓞 D.host.F) ∉ p.asIdeal` using `fun hm => h ((natCast_mem_iff p n).1 hm)`. Establish `h2` using `val_eq_one (p := p) ((n : ℕ) : 𝓞 D.host.F) h1`. Establish `h2' : p.valuation D.host.F ((n : ℕ) : D.host.F) = 1` using `by first`. Consider the case `simpa using h2`. Consider the case `exact_mod_cast h2`.
+
+Establish `h3` using `vFp_eq_one (D.s.atP p) ((n : ℕ) : D.host.F) h2'`. Simplify using `using h3`.
+-/
 theorem v_nat (p : PlF D) (n : ℕ) (h : ¬ Loc.resChar p ∣ n) :
     valuation (D.s.atP p).Fp ((n : ℕ) : (D.s.atP p).Fp) = 1 := by
   have h1 : ((n : ℕ) : 𝓞 D.host.F) ∉ p.asIdeal := fun hm => h ((natCast_mem_iff p n).1 hm)
@@ -623,6 +879,11 @@ theorem v_nat (p : PlF D) (n : ℕ) (h : ¬ Loc.resChar p ∣ n) :
   have h3 := vFp_eq_one (D.s.atP p) ((n : ℕ) : D.host.F) h2'
   simpa using h3
 
+/- English proof (translation)
+Establish `h1 : ¬ Loc.resChar p ∈ ({D.host.g 0, D.host.g 1} : Finset ℕ)`. Rewrite using `[← D.s_split p, h]`. Simplify using the standard rewrite rules. Simplify using `only [Finset.mem_insert, Finset.mem_singleton, not_or] at h1`. Unfold `gpart`.
+
+Rewrite using `[if_neg h1.1, if_neg h1.2]`.
+-/
 theorem gpart_none (p : PlF D) (h : (D.s.atP p).split = none) : gpart p = 1 := by
   have h1 : ¬ Loc.resChar p ∈ ({D.host.g 0, D.host.g 1} : Finset ℕ) := by
     rw [← D.s_split p, h]; simp
@@ -630,6 +891,11 @@ theorem gpart_none (p : PlF D) (h : (D.s.atP p).split = none) : gpart p = 1 := b
   unfold gpart
   rw [if_neg h1.1, if_neg h1.2]
 
+/- English proof (translation)
+Establish `h1 : Loc.resChar p ∈ ({D.host.g 0, D.host.g 1} : Finset ℕ)`. Rewrite using `[← D.s_split p, h]`. Simplify using the standard rewrite rules. Simplify using `only [Finset.mem_insert, Finset.mem_singleton] at h1`. Unfold `gpart`.
+
+Use `split_ifs with h0 h2`. Conclude with `h0.symm`. Conclude with `h2.symm`. Conclude with `absurd h1 (by tauto)`.
+-/
 theorem gpart_some (p : PlF D) (sg) (h : (D.s.atP p).split = some sg) : gpart p = Loc.resChar p := by
   have h1 : Loc.resChar p ∈ ({D.host.g 0, D.host.g 1} : Finset ℕ) := by
     rw [← D.s_split p, h]; simp
@@ -640,6 +906,11 @@ theorem gpart_some (p : PlF D) (sg) (h : (D.s.atP p).split = some sg) : gpart p 
   · exact h2.symm
   · exact absurd h1 (by tauto)
 
+/- English proof (translation)
+Break down `h : (D.s.atP p).split with _ | sg` into its components or cases. Simplify using `only [qE, h]`. Rewrite using `[gpart_none p h]`. Simplify using the standard rewrite rules. Simplify using `only [qE, h]`.
+
+Rewrite using `[gpart_some p sg h, sg.q_eq]`.
+-/
 theorem qE_eq (p : PlF D) : qE p = algebraMap (D.s.atP p).Fp (D.s.atP p).Ep ((gpart p : ℕ) : (D.s.atP p).Fp) := by
   rcases h : (D.s.atP p).split with _ | sg
   · simp only [qE, h]
@@ -648,13 +919,24 @@ theorem qE_eq (p : PlF D) : qE p = algebraMap (D.s.atP p).Fp (D.s.atP p).Ep ((gp
   · simp only [qE, h]
     rw [gpart_some p sg h, sg.q_eq]
 
+/- English proof (translation)
+Simplify using `only [twist, h]`.
+-/
 theorem twist_none (p : PlF D) (s : ℕ) (x : (D.s.atP p).Ep) (h : (D.s.atP p).split = none) : twist p s x = x := by
   simp only [twist, h]
 
+/- English proof (translation)
+Simplify using `only [twist, h]`.
+-/
 theorem twist_some (p : PlF D) (s : ℕ) (x : (D.s.atP p).Ep) (sg) (h : (D.s.atP p).split = some sg) :
     twist p s x = sg.e.symm ((sg.e x).1, (-1) ^ s * (sg.e x).2) := by
   simp only [twist, h]
 
+/- English proof (translation)
+Break down `h : (D.s.atP p).split with _ | sg` into its components or cases. Simplify using `only [twist, h]`. Simplify using `only [twist, h]`. Apply `sg.e.injective` to reduce the goal to its premises. Simplify using `only [AlgEquiv.apply_symm_apply, map_mul, e_alg (D.s.atP p) sg]`.
+
+Apply the tactic sequence `ext <;> simp <;> ring`.
+-/
 theorem twist_alg (p : PlF D) (s : ℕ) (b : (D.s.atP p).Fp) (x : (D.s.atP p).Ep) :
     twist p s (algebraMap _ _ b * x) = algebraMap _ _ b * twist p s x := by
   rcases h : (D.s.atP p).split with _ | sg
@@ -664,6 +946,9 @@ theorem twist_alg (p : PlF D) (s : ℕ) (b : (D.s.atP p).Fp) (x : (D.s.atP p).Ep
     simp only [AlgEquiv.apply_symm_apply, map_mul, e_alg (D.s.atP p) sg]
     ext <;> simp <;> ring
 
+/- English proof (translation)
+Establish `hu : IsUnit (algebraMap K R b)` using `(IsUnit.mk0 b hb).map (algebraMap K R)`. Establish `h1 : algebraMap K R b * algebraMap K R b⁻¹ = 1`. Rewrite using `[← map_mul, mul_inv_cancel₀ hb, map_one]`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem inverse_alg {K R : Type} [Field K] [CommRing R] [Algebra K R] (b : K) (hb : b ≠ 0) :
     Ring.inverse (algebraMap K R b) = algebraMap K R b⁻¹ := by
   have hu : IsUnit (algebraMap K R b) := (IsUnit.mk0 b hb).map (algebraMap K R)
@@ -673,10 +958,18 @@ theorem inverse_alg {K R : Type} [Field K] [CommRing R] [Algebra K R] (b : K) (h
       = Ring.inverse (algebraMap K R b) * (algebraMap K R b * algebraMap K R b⁻¹) := by rw [h1, mul_one]
     _ = algebraMap K R b⁻¹ := by rw [← mul_assoc, Ring.inverse_mul_cancel _ hu, one_mul]
 
+/- English proof (translation)
+Use `haveI := (D.s.atP p).char0`. Conclude with `Nat.cast_ne_zero.2 hn`.
+-/
 theorem natFp_ne_zero (p : PlF D) (n : ℕ) (hn : n ≠ 0) : ((n : ℕ) : (D.s.atP p).Fp) ≠ 0 := by
   haveI := (D.s.atP p).char0
   exact Nat.cast_ne_zero.2 hn
 
+/- English proof (translation)
+Establish `hoth : ((oth p : ℕ) : (D.s.atP p).Fp) ≠ 0` using `natFp_ne_zero p _ (oth_ne_zero p)`. Establish `hg : ((gpart p : ℕ) : (D.s.atP p).Fp) ≠ 0` using `natFp_ne_zero p _ (gpart_ne_zero p)`. Establish `hu : (D.s.atP p).ιE ((uP p : ℚ) : D.host.E) = algebraMap (D.s.atP p).Fp (D.s.atP p).Ep (((oth p : ℕ) : (D.s.atP p).Fp)⁻¹)`. Rewrite using `[unitAt_eq p]`. Establish `e : (((((oth p : ℕ) : ℚ))⁻¹ : ℚ) : D.host.E) = algebraMap D.host.F D.host.E (((oth p : ℕ) : D.host.F)⁻¹)`.
+
+Simplify using `[map_inv₀, map_natCast]`. Rewrite using `[e, (D.s.atP p).compat, map_inv₀, map_natCast]`. Simplify using `only [tMod]`. Rewrite using `[hu, qE_eq p, ← map_mul, ← map_pow, inverse_alg _ (pow_ne_zero _ (mul_ne_zero hδ (inv_ne_zero hoth))), inverse_alg _ hg, mul_assoc]`.
+-/
 theorem tMod_eq (δ : ∀ p, (D.s.atP p).Fp) (p : PlF D) (hδ : δ p ≠ 0) (ν s : ℕ) (t : D.host.E) :
     tMod δ p ν s t =
       algebraMap _ _ (((δ p * ((oth p : ℕ) : (D.s.atP p).Fp)⁻¹) ^ ν)⁻¹) *
@@ -702,6 +995,15 @@ open Formalism.MainNotions.S.LocalSplitGroups Formalism.MainNotions.JointEigenva
 
 variable {D : Formalism.BasicNotions.D7}
 
+/- English proof (translation)
+Introduce `b hb z hz`. Establish `halg : algebraMap K R b ∈ Mp.R`. Break down `h : Mp.split with _ | g` into its components or cases. Simplify using `only [Loc.Model.R, h]`. Rewrite using `[Mp.L.O_def]`.
+
+Establish `hi : IsIntegral 𝒪[K] (algebraMap 𝒪[K] R ⟨b, hb⟩)` using `isIntegral_algebraMap`. Conclude with `hi`. Simplify using `only [Loc.Model.R, h]`. Use `Subring.mem_comap.2 (Subring.mem_map.2 ⟨(⟨b, hb⟩, ⟨b, hb⟩), ?_, ?_⟩)` and prove the remaining obligations. Use `first`.
+
+Consider the case `rfl`. Consider the case `exact (RingHom.mem_eqLocus _).2 rfl`. Consider the case `simp`. Use `first`. Consider the case `(ext <;> simp [AlgEquiv.commutes])`.
+
+Consider the case `simp [AlgEquiv.commutes]`. Conclude with `Mp.R.mul_mem halg hz`.
+-/
 theorem R_scal {K R : Type} [Field K] [ValuativeRel K] [TopologicalSpace K] [CommRing R] [Algebra K R] [TopologicalSpace R]
     [MeasurableSpace R] (Mp : Loc.Model K R) :
     ∀ b ∈ 𝒪[K], ∀ z ∈ (Mp.R : Set R), algebraMap K R b * z ∈ (Mp.R : Set R) := by
@@ -723,6 +1025,23 @@ theorem R_scal {K R : Type} [Field K] [ValuativeRel K] [TopologicalSpace K] [Com
         | simp [AlgEquiv.commutes]
   exact Mp.R.mul_mem halg hz
 
+/- English proof (translation)
+Break down `hm with ⟨h1, h2⟩ | ⟨g, sg, h1, h2, he, hq⟩` into its components or cases. Rewrite using `[twist_none p s X h2, gpart_none p h2]`. Simplify using `only [Nat.cast_one, inv_one, one_pow, map_one, mul_one, one_mul]`. Establish `hR : Mp.R = (D.s.atP p).O`. Simplify using `only [Loc.Model.R, h1]`.
+
+Conclude with `hO`. Rewrite using `[hR]`. Prove the components needed by the constructor for the conclusion. Introduce `hX`. Conclude with `⟨hX, sub_mem hX (mul_mem (pow_mem (neg_mem (one_mem _)) s) (cj_mem (D.s.atP p) X hX))⟩`.
+
+Conclude with `fun h => h.1`. Rewrite using `[twist_some p s X sg h2, gpart_some p sg h2, ← sg.q_eq, ← typed_iff (D.s.atP p) sg s X]`. Establish `key : ∀ Y : (D.s.atP p).Ep, Y ∈ Mp.R ↔ sg.e Y ∈ Formalism.FourierDecayAlt.I.orderR (𝒪[(D.s.atP p).Fp]) ((sg.q : (D.s.atP p).Fp))`. Introduce `Y`. Simplify using `only [Loc.Model.R, h1, Formalism.FourierDecayAlt.I.orderR, Set.mem_setOf_eq]`.
+
+Rewrite using `[he, ← hq, Subring.mem_comap, Subring.mem_map]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨w, hw, hwY⟩`. Establish `hw' : Ideal.Quotient.mk (Ideal.span {g.q}) w.1 = Ideal.Quotient.mk (Ideal.span {g.q}) w.2` using `hw`. Rewrite `hw'` using `[Ideal.Quotient.eq, Ideal.mem_span_singleton']`.
+
+Take `⟨c, hc⟩` from `hw'`. Establish `e1 : (sg.e Y).1 = (w.1 : (D.s.atP p).Fp)` using `(congrArg Prod.fst hwY).symm`. Establish `e2 : (sg.e Y).2 = (w.2 : (D.s.atP p).Fp)` using `(congrArg Prod.snd hwY).symm`. Use `⟨by rw [e1]; exact w.1.2, by rw [e2]; exact w.2.2, (c : (D.s.atP p).Fp), c.2, ?_⟩` and prove the remaining obligations. Rewrite using `[e1, e2]`.
+
+Establish `hc'` using `congrArg Subtype.val hc`. Move the coercions through the operations in `at hc'`. Use `first`. Consider the case `linear_combination -hc'`. Consider the case `(rw [← hc']; ring)`.
+
+Introduce and unpack `⟨hy1, hy2, t, ht, hteq⟩`. Use `⟨(⟨(sg.e Y).1, hy1⟩, ⟨(sg.e Y).2, hy2⟩), ?_, ?_⟩` and prove the remaining obligations. Use `show Ideal.Quotient.mk (Ideal.span {g.q}) ⟨(sg.e Y).1, hy1⟩ = Ideal.Quotient.mk (Ideal.span {g.q}) ⟨(sg.e Y).2, hy2⟩`. Rewrite using `[Ideal.Quotient.eq, Ideal.mem_span_singleton']`. Use `⟨⟨t, ht⟩, ?_⟩` and prove the remaining obligations.
+
+Apply `Subtype.ext` to reduce the goal to its premises. Use `show t * (g.q : (D.s.atP p).Fp) = (sg.e Y).1 - (sg.e Y).2`. Take the linear combination `-hteq`. Both sides reduce to the same expression. Conclude with `key _`.
+-/
 theorem twist_membership_iff_integral (p : PlF D) (Mp : Loc.Model (D.s.atP p).Fp (D.s.atP p).Ep) (hO : Mp.L.O = (D.s.atP p).O)
     (hm : (Mp.split = none ∧ (D.s.atP p).split = none) ∨
       ∃ g sg, Mp.split = some g ∧ (D.s.atP p).split = some sg ∧ g.e = sg.e ∧ g.q = sg.q) (s : ℕ) (X : (D.s.atP p).Ep) :
@@ -772,6 +1091,9 @@ theorem twist_membership_iff_integral (p : PlF D) (Mp : Loc.Model (D.s.atP p).Fp
         · rfl
     exact key _
 
+/- English proof (translation)
+Take `⟨-, -, -, -, -, hm⟩` from `hA`. Apply the tactic sequence `rcases h1 : (M p).split with _ | g <;> rcases h2 : (D.s.atP p).split with _ | sg <;>`. Simplify using `only [h1, h2] at hm`. Conclude with `Or.inl ⟨rfl, rfl⟩`. Conclude with `Or.inr ⟨g, sg, rfl, rfl, hm.1, hm.2⟩`.
+-/
 theorem agree_split (δ : ∀ p, (D.s.atP p).Fp) (M : ∀ p : PlF D, Loc.Model (D.s.atP p).Fp (D.s.atP p).Ep) (p : PlF D)
     (hA : Agree δ M p) : ((M p).split = none ∧ (D.s.atP p).split = none) ∨
       ∃ g sg, (M p).split = some g ∧ (D.s.atP p).split = some sg ∧ g.e = sg.e ∧ g.q = sg.q := by
@@ -781,6 +1103,9 @@ theorem agree_split (δ : ∀ p, (D.s.atP p).Fp) (M : ∀ p : PlF D, Loc.Model (
   · exact Or.inl ⟨rfl, rfl⟩
   · exact Or.inr ⟨g, sg, rfl, rfl, hm.1, hm.2⟩
 
+/- English proof (translation)
+Rewrite using `[tMod_eq δ p hδ ν s t, twist_alg, mul_assoc]`. Establish `hoth : ((oth p : ℕ) : (D.s.atP p).Fp) ≠ 0` using `natFp_ne_zero p _ (oth_ne_zero p)`. Establish `hvo : valuation (D.s.atP p).Fp ((oth p : ℕ) : (D.s.atP p).Fp) = 1` using `v_nat p _ (oth_not_dvd p)`. Establish `hc' : (D.s.atP p).ιF c ≠ 0` using `(map_ne_zero _).2 hc`. Conclude with `scal_iff (D.s.atP p) ((M p).R : Set (D.s.atP p).Ep) (R_scal (M p)) _ _ (inv_ne_zero (pow_ne_zero _ (mul_ne_zero hδ (inv_ne_zero hoth)))) (inv_ne_zero (pow_ne_zero _ hc')) (by simp only [map_inv₀, map_pow, map_mul, hvo, inv_one, mul_one, hv]) _`.
+-/
 theorem twisted_local_membership_iff (δ : ∀ p, (D.s.atP p).Fp) (M : ∀ p : PlF D, Loc.Model (D.s.atP p).Fp (D.s.atP p).Ep) (p : PlF D)
     (hδ : δ p ≠ 0) (c : D.host.F) (hc : c ≠ 0)
     (hv : valuation (D.s.atP p).Fp ((D.s.atP p).ιF c) = valuation (D.s.atP p).Fp (δ p)) (ν s : ℕ) (t : D.host.E) :
@@ -796,6 +1121,11 @@ theorem twisted_local_membership_iff (δ : ∀ p, (D.s.atP p).Fp) (M : ∀ p : P
     (inv_ne_zero (pow_ne_zero _ hc'))
     (by simp only [map_inv₀, map_pow, map_mul, hvo, inv_one, mul_one, hv]) _
 
+/- English proof (translation)
+Establish `hA'` using `hA`. Take `⟨-, hδ, -, hO, -, -⟩` from `hA'`. Establish `hg` using `natFp_ne_zero p _ (gpart_ne_zero p)`. Establish `ho` using `natFp_ne_zero p _ (oth_ne_zero p)`. Establish `hvo` using `v_nat p _ (oth_not_dvd p)`.
+
+Rewrite using `[twisted_local_membership_iff δ M p hδ c hc hv ν s t, twist_membership_iff_integral p (M p) hO (agree_split δ M p hA) s, ← gpart_mul_oth p, cond_gen (D.s.atP p) c ν (gpart p) (oth p) hg ho hvo 1 t, cond_gen (D.s.atP p) c ν (gpart p) (oth p) hg ho hvo 2, ← tw_gen (D.s.atP p)]`. Simplify using `only [pow_one]`.
+-/
 theorem loc_iff (δ : ∀ p, (D.s.atP p).Fp) (M : ∀ p : PlF D, Loc.Model (D.s.atP p).Fp (D.s.atP p).Ep) (p : PlF D)
     (hA : Agree δ M p) (c : D.host.F) (hc : c ≠ 0)
     (hv : valuation (D.s.atP p).Fp ((D.s.atP p).ιF c) = valuation (D.s.atP p).Fp (δ p)) (ν s : ℕ) (t : D.host.E) :
@@ -817,6 +1147,9 @@ def IsDiffGen (δ : ∀ p, (D.s.atP p).Fp) (p : PlF D) : Prop :=
   ∃ c : D.host.F, valuation (D.s.atP p).Fp ((D.s.atP p).ιF c) = valuation (D.s.atP p).Fp (δ p) ∧
     LocGen p ((D.host.ddE : Ideal (𝓞 D.host.E)) : FractionalIdeal (𝓞 D.host.E)⁰ D.host.E) (algebraMap D.host.F D.host.E c)
 
+/- English proof (translation)
+Establish `hgS : ((Lat.gS D : ℕ) : D.host.E) ≠ 0`. Simplify using `only [Lat.gS, Nat.cast_mul]`. Conclude with `mul_ne_zero (Nat.cast_ne_zero.2 (D.host.g_prime 0).ne_zero) (Nat.cast_ne_zero.2 (D.host.g_prime 1).ne_zero)`. Simplify using `only [gdd, zpow_natCast, map_mul, map_pow, map_natCast]`. Conclude with `(LocGen.span (p := p) (pow_ne_zero k hgS)).mul (h.pow ν)`.
+-/
 theorem locGen_gdd (p : PlF D) (c : D.host.F)
     (h : LocGen p ((D.host.ddE : Ideal (𝓞 D.host.E)) : FractionalIdeal (𝓞 D.host.E)⁰ D.host.E)
       (algebraMap D.host.F D.host.E c)) (k ν : ℕ) :
@@ -827,6 +1160,15 @@ theorem locGen_gdd (p : PlF D) (c : D.host.F)
   simp only [gdd, zpow_natCast, map_mul, map_pow, map_natCast]
   exact (LocGen.span (p := p) (pow_ne_zero k hgS)).mul (h.pow ν)
 
+/- English proof (translation)
+Establish `key : ∀ (k : ℕ) (x : D.host.E) (p : PlF D) (c : D.host.F), LocGen p ((D.host.ddE : Ideal (𝓞 D.host.E)) : FractionalIdeal (𝓞 D.host.E)⁰ D.host.E) (algebraMap D.host.F D.host.E c) → ((D.s.atP p).ιE (x / algebraMap D.host.F D.host.E (((Lat.gS D : ℕ) : D.host.F) ^ k * c ^ ν)) ∈ (D.s. …` using `D) (k : ℤ) (ν : ℤ)) x) := by`. Introduce `k x p c hc`. Rewrite using `[int_iff (D.s.atP p) conjF_inv conjF_fix]`. Conclude with `((locGen_gdd p c hc k ν).2 x).symm`. Unfold `LaIsPeriod`.
+
+Introduce `t`. Simplify using `only [La, Set.mem_setOf_eq]`. Rewrite using `[mem_iff_forall_atP (F := D.host.F) (gdd (D := D) 1 ν) t, mem_iff_forall_atP (F := D.host.F) (gdd (D := D) 2 ν) _, ← forall_and]`. Apply `forall_congr'` to reduce the goal to its premises. Introduce `p`.
+
+Take `⟨c, hcv, hcg⟩` from `hd p`. Establish `hc0 : c ≠ 0` using `fun h0 => hcg.1 (by rw [h0, map_zero])`. Establish `k1` using `key 1 t p c hcg`. Establish `k2` using `key 2 (t - (-1) ^ s * D.conjF t) p c hcg`. Simplify using `only [Nat.cast_one, Nat.cast_ofNat] at k1 k2`.
+
+Rewrite using `[loc_iff δ M p (hA p) c hc0 hcv ν s t, k1, k2]`.
+-/
 theorem laIsPeriod_of (δ : ∀ p, (D.s.atP p).Fp) (M : ∀ p : PlF D, Loc.Model (D.s.atP p).Fp (D.s.atP p).Ep)
     (hA : ∀ p, Agree δ M p) (hd : ∀ p, IsDiffGen δ p) (ν s : ℕ) : LaIsPeriod δ M ν s := by
   have key : ∀ (k : ℕ) (x : D.host.E) (p : PlF D) (c : D.host.F),
@@ -859,6 +1201,17 @@ open Formalism.MainNotions.S.LocalSplitGroups Formalism.MainNotions.JointEigenva
 
 variable {D : Formalism.BasicNotions.D7}
 
+/- English proof (translation)
+Introduce `p x`. Take `⟨-, hδ, -, -, hpsi, -⟩` from `hA p`. Rewrite using `[hpsi]`. Use `congr 1`. Establish `hg : ((gpart p : ℕ) : (D.s.atP p).Fp) ≠ 0` using `natFp_ne_zero p _ (gpart_ne_zero p)`.
+
+Establish `hoth : ((oth p : ℕ) : (D.s.atP p).Fp) ≠ 0` using `natFp_ne_zero p _ (oth_ne_zero p)`. Establish `hu : ((uP p : ℚ) : D.host.E) = algebraMap D.host.F D.host.E (((oth p : ℕ) : D.host.F)⁻¹)`. Rewrite using `[unitAt_eq p]`. Simplify using `[map_inv₀, map_natCast]`. Establish `hx : x / ((Lat.gS D : ℕ) : D.host.E) = x * algebraMap D.host.F D.host.E (((Lat.gS D : ℕ) : D.host.F)⁻¹)`.
+
+Rewrite using `[map_inv₀, map_natCast, div_eq_mul_inv]`. Rewrite using `[qE_eq p, inverse_alg _ hg, hx, hu]`. Simplify using `only [map_neg, map_mul, (D.s.atP p).compat]`. Simplify using `only [map_inv₀, map_natCast]`. Rewrite using `[neg_inj]`.
+
+Establish `e : δ p * ((oth p : ℕ) : (D.s.atP p).Fp)⁻¹ * ((gpart p : ℕ) : (D.s.atP p).Fp)⁻¹ * (δ p)⁻¹ = ((Lat.gS D : ℕ) : (D.s.atP p).Fp)⁻¹`. Rewrite using `[← gpart_mul_oth p, Nat.cast_mul]`. Clear the denominators using the available nonvanishing facts. Rewrite using `[← e]`. Simplify using `only [map_mul]`.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem G1root_of_agree (δ : ∀ p, (D.s.atP p).Fp) (M : ∀ p : PlF D, Loc.Model (D.s.atP p).Fp (D.s.atP p).Ep)
     (hA : ∀ p, Agree δ M p) : G1root δ M := by
   intro p x
@@ -884,6 +1237,9 @@ theorem G1root_of_agree (δ : ∀ p, (D.s.atP p).Fp) (M : ∀ p : PlF D, Loc.Mod
   simp only [map_mul]
   ring
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨laIsPeriod_of δ M hA hd ν s, period_lattice_bounds_of_known δ M ν s (laIsPeriod_of δ M hA hd ν s)⟩`.
+-/
 theorem G3lat_of (δ : ∀ p, (D.s.atP p).Fp) (M : ∀ p : PlF D, Loc.Model (D.s.atP p).Fp (D.s.atP p).Ep)
     (hA : ∀ p, Agree δ M p) (hd : ∀ p, IsDiffGen δ p) (ν s : ℕ) :
     (∀ t, t ∈ La M δ ν s ↔ t ∈ gdd (D := D) 1 ν ∧ t - (-1) ^ s * D.conjF t ∈ gdd (D := D) 2 ν) ∧
@@ -891,6 +1247,9 @@ theorem G3lat_of (δ : ∀ p, (D.s.atP p).Fp) (M : ∀ p : PlF D, Loc.Model (D.s
     (∀ l ∈ dualPsiG (D := D) (La M δ ν s), l ∈ gdd (D := D) (-1) (-((ν : ℤ) + 1))) :=
   ⟨laIsPeriod_of δ M hA hd ν s, period_lattice_bounds_of_known δ M ν s (laIsPeriod_of δ M hA hd ν s)⟩
 
+/- English proof (translation)
+The claim follows from `period_lattice_unramified_of_known (unramE D) δ M i hi (laIsPeriod_of δ M hA hd _ 1)`.
+-/
 theorem global_condition_of_local_agreement (δ : ∀ p, (D.s.atP p).Fp) (M : ∀ p : PlF D, Loc.Model (D.s.atP p).Fp (D.s.atP p).Ep)
     (hA : ∀ p, Agree δ M p) (hd : ∀ p, IsDiffGen δ p) (i : ℕ) (hi : i ≤ D.R.rS + 1) : G4 δ M i :=
   period_lattice_unramified_of_known (unramE D) δ M i hi (laIsPeriod_of δ M hA hd _ 1)

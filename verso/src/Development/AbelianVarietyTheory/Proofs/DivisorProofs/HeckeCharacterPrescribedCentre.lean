@@ -7,6 +7,9 @@ open NumberField
 
 namespace GlobalTheory.SplitCentreChar
 
+/- English proof (translation)
+Introduce `E _ _ _ d hd s`. Take `⟨χ, hχ⟩` from `GlobalTheory.CuspQuot.exists_chiDet_splitCentre (E := E) hd (-s)`. Conclude with `⟨χ, fun t => by rw [hχ t]; congr 1; ring⟩`.
+-/
 theorem exists_hChar_splitCentre : ∀ (E : Type) [Field E] [NumberField E] [IsTotallyComplex E] (d : ℕ), 0 < d →
     ∀ s : ℂ, ∃ χ : Formalism.L2.Host.HChar E, ∀ t : ℝ,
       ((GlobalTheory.CuspRep.chiDet d χ (GlobalTheory.UnitaryBC.splitCentre E d t) : ℂˣ) : ℂ) = Complex.exp (-(t * s)) := by

@@ -19,6 +19,9 @@ open GlobalTheory.SmGL GlobalTheory.PRep GlobalTheory.IndLineGL
 open scoped GlobalTheory.IndLineGL
 
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.UnitaryInjAtPlaceSkew.eq_of_piW_eq | exact GlobalTheory.UnitaryInjAtPlaceSkew.eq_of_piW_eq | (intros; apply GlobalTheory.UnitaryInjAtPlaceSkew.eq_of_piW_eq <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.unitary_local_eq_of_matrix_map_eq : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E)
     (B : Base F E) (d : ℕ) (W : Spc F E d) (r s : ℕ), B.IsGood σ → W.IsSkew σ B r s → ∀ (v : Pl F) (t : E →ₐ[F] Fv F v),
     ∀ h₁ ∈ UAt σ W (evFin F v), ∀ h₂ ∈ UAt σ W (evFin F v), (mat h₁).map (piW t) = (mat h₂).map (piW t) → h₁ = h₂ := by

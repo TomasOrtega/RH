@@ -49,20 +49,50 @@ namespace GroundTheory.Heights₂.Heights.Vertical
 
 open MvPolynomial NumberField IsDedekindDomain
 
+/- English proof (translation)
+The claim follows from `SecAlgFinite.proof IncidenceNull.full`.
+-/
 theorem SecAlgFinite.full : SecAlgFinite.Statement := SecAlgFinite.proof IncidenceNull.full
+/- English proof (translation)
+The claim follows from `ChartDomain.proof`.
+-/
 theorem ChartDomain.full : ChartDomain.Statement := ChartDomain.proof
+/- English proof (translation)
+The claim follows from `GenSecDomain.proof ChartDomain.full GroundTheory.Heights₂.Heights.IncidenceGeneric.full (GroundTheory.Heights₂.Heights.IncIdealBelow.proof GroundTheory.Heights₂.Heights.ChowFormMultiHomog.full)`.
+-/
 theorem GenSecDomain.full : GenSecDomain.Statement :=
   GenSecDomain.proof ChartDomain.full GroundTheory.Heights₂.Heights.IncidenceGeneric.full
     (GroundTheory.Heights₂.Heights.IncIdealBelow.proof GroundTheory.Heights₂.Heights.ChowFormMultiHomog.full)
+/- English proof (translation)
+The claim follows from `SecAlgField.proof SecAlgFinite.full GenSecDomain.full`.
+-/
 theorem SecAlgField.full : SecAlgField.Statement := SecAlgField.proof SecAlgFinite.full GenSecDomain.full
+/- English proof (translation)
+The claim follows from `ChowSecDvd.proof IncidenceNull.full`.
+-/
 theorem ChowSecDvd.full : ChowSecDvd.Statement := ChowSecDvd.proof IncidenceNull.full
+/- English proof (translation)
+The claim follows from `NormFormIrreducible.proof`.
+-/
 theorem NormFormIrreducible.full : NormFormIrreducible.Statement := NormFormIrreducible.proof
+/- English proof (translation)
+The claim follows from `NormFormDvd.proof`.
+-/
 theorem NormFormDvd.full : NormFormDvd.Statement := NormFormDvd.proof
+/- English proof (translation)
+The claim follows from `SecAlgFieldChange.proof`.
+-/
 theorem SecAlgFieldChange.full : SecAlgFieldChange.Statement := SecAlgFieldChange.proof
+/- English proof (translation)
+The claim follows from `GenChowIrreducible.proof GroundTheory.Heights₂.Heights.IncIdealPrime.full GroundTheory.Heights₂.Heights.ChowFormMultiHomog.full`.
+-/
 theorem GenChowIrreducible.full : GenChowIrreducible.Statement :=
   GenChowIrreducible.proof GroundTheory.Heights₂.Heights.IncIdealPrime.full
     GroundTheory.Heights₂.Heights.ChowFormMultiHomog.full
 
+/- English proof (translation)
+The claim follows from `have hDim : GroundTheory.Heights₂.Heights.IncIdealDim.Statement := GroundTheory.Heights₂.Heights.IncIdealDim.proof GroundTheory.Heights₂.Heights.IncidenceGeneric.full GroundTheory.Heights₂.Heights.GenericLinearTrdeg.full GroundTheory.Heights₂.Heights.AffineChartTrdeg.proof SpecFi …`.
+-/
 theorem SpecFirstNeField.full : SpecFirstNeField.Statement :=
   have hDim : GroundTheory.Heights₂.Heights.IncIdealDim.Statement :=
     GroundTheory.Heights₂.Heights.IncIdealDim.proof GroundTheory.Heights₂.Heights.IncidenceGeneric.full
@@ -73,15 +103,45 @@ theorem SpecFirstNeField.full : SpecFirstNeField.Statement :=
     (GroundTheory.Heights₂.Heights.ChowFormExists.proof hDim GroundTheory.Heights₂.Heights.IncIdealPrime.full)
     GroundTheory.Heights₂.Heights.IncidenceZeroLocus.proof
 
+/- English proof (translation)
+The claim follows from `SecBTorsionFree.proof ParDVRIsDVR.full`.
+-/
 theorem SecBTorsionFree.full : SecBTorsionFree.Statement := SecBTorsionFree.proof ParDVRIsDVR.full
+/- English proof (translation)
+The claim follows from `GaussDVR.proof ParDVRIsDVR.full`.
+-/
 theorem GaussDVR.full : GaussDVR.Statement := GaussDVR.proof ParDVRIsDVR.full
+/- English proof (translation)
+The claim follows from `VertSpec.proof`.
+-/
 theorem VertSpec.full : VertSpec.Statement := VertSpec.proof
+/- English proof (translation)
+The claim follows from `ResidueAlgIndep.proof`.
+-/
 theorem ResidueAlgIndep.full : ResidueAlgIndep.Statement := ResidueAlgIndep.proof
 
+/- English proof (translation)
+The claim follows from `CodimOnePrimeAvoid.proof`.
+-/
 theorem CodimOnePrimeAvoid.full : CodimOnePrimeAvoid.Statement := CodimOnePrimeAvoid.proof
+/- English proof (translation)
+The claim follows from `FibreCut.proof CodimOnePrimeAvoid.full`.
+-/
 theorem FibreCut.full : FibreCut.Statement := FibreCut.proof CodimOnePrimeAvoid.full
+/- English proof (translation)
+The claim follows from `GenericFibreDrop.proof`.
+-/
 theorem GenericFibreDrop.full : GenericFibreDrop.Statement := GenericFibreDrop.proof
 
+/- English proof (translation)
+Establish `hDim : GroundTheory.Heights₂.Heights.IncIdealDim.Statement` using `GroundTheory.Heights₂.Heights.IncIdealDim.proof GroundTheory.Heights₂.Heights.IncidenceGeneric.full GroundTheory.Heights₂.Heights.GenericLinearTrdeg.full GroundTheory.Heights₂.Heights.AffineChartTrdeg.proof`. Establish `hCone : GroundTheory.Heights₂.Heights.ConeDimOfChowForm.Statement` using `GroundTheory.Heights₂.Heights.ConeDimOfChowForm.proof hDim GroundTheory.Heights₂.Heights.IncIdealPrime.full`. Establish `hExist : GroundTheory.Heights₂.Heights.ChowFormExists.Statement` using `GroundTheory.Heights₂.Heights.ChowFormExists.proof hDim GroundTheory.Heights₂.Heights.IncIdealPrime.full`. Establish `cnf : ChowNormForm.Statement` using `ChowNormForm.proof (ChowNormFormGeneric.proof SecAlgFinite.full GenSecDomain.full hGenSep ChowSecDvd.full NormFormIrreducible.full GenChowIrreducible.full NormFormDvd.full) SecAlgFieldChange.full`. Establish `csd : ChowSecDegree.Statement` using `ChowSecDegree.proof cnf ChowFormHomog.full NormFormEval.full`.
+
+Establish `nzd : SecLinNZD.Statement` using `SecLinNZD.proof cnf NormFormEval.full SpecFirstNeField.full`. Establish `lininj : SecBLinInj.Statement` using `SecBLinInj.proof SecBGeneric.full SecBTorsionFree.full nzd ParAlgIndep.full`. Establish `fcd : FibreCompDim.Statement` using `FibreCompDim.proof hFibre FibreCut.full GenericFibreDrop.full`. Establish `scd : SpecCompDim.Statement` using `SpecCompDim.proof hCone fcd`. Establish `sip : SecIdealOfPrime.Statement` using `SecIdealOfPrime.proof scd hExist ResidueAlgIndep.full SecAlgField.full hKer`.
+
+Establish `smax : SpecMax.Statement` using `SpecMax.proof SecBFinite.full sip`. Establish `sres : SpecResidue.Statement` using `SpecResidue.proof csd cnf scd hExist ResidueAlgIndep.full`. Establish `slen : SpecLength.Statement` using `SpecLength.proof hChart hOrd ParDVRIsDVR.full SecBFinite.full lininj`. Establish `nid : NormIdentity.Statement` using `NormIdentity.proof cnf SecBFinite.full SecBTorsionFree.full SecBGeneric.full NormFormLocalization.full NormFormEval.full ParAlgIndep.full ParFracIsFractionRing.full ParDVRIsDVR.full`. Establish `oeq : OrdEq.Statement` using `OrdEq.proof nid NormLength.full LengthDecomp.full smax slen sres VertSpec.full lininj SecBFinite.full SecBTorsionFree.full ParDVRIsDVR.full`.
+
+Establish `geq : GaussEq.Statement` using `GaussEq.proof oeq GaussDVR.full ParDVRIsDVR.full`. Conclude with `Main.proof geq PrimitiveScale.full VertTermEq.full`.
+-/
 theorem ChowFormSectionVertical.of_remaining
     (hGenSep : GenSecSeparable.Statement) (hFibre : FibreClosedComponent.Statement)
     (hKer : GenSecKer.Statement) (hChart : SpecChart.Statement) (hOrd : FiniteOrd.Statement) :

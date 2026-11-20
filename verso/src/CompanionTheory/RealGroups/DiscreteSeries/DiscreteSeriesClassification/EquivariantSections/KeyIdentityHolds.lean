@@ -13,6 +13,9 @@ import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.KeyPropositionO
 
 namespace CompanionTheory.RgDs.K
 
+/- English proof (translation)
+The claim follows from `GlobalTheory.T.key_proposition_of_components GlobalTheory.T.low_degree_algebra_facts GlobalTheory.T.holomorphic_function_facts (CompanionTheory.RgDs.K.equivariant_section_holds) (CompanionTheory.RgDs.K.rho_representation_holds) GlobalTheory.T.action_equivariance_statement GlobalT …`.
+-/
 theorem key_identity_holds : CompanionTheory.RgDs.Key :=
   GlobalTheory.T.key_proposition_of_components GlobalTheory.T.low_degree_algebra_facts GlobalTheory.T.holomorphic_function_facts (CompanionTheory.RgDs.K.equivariant_section_holds) (CompanionTheory.RgDs.K.rho_representation_holds) GlobalTheory.T.action_equivariance_statement GlobalTheory.T.torus_restriction_representation
     GlobalTheory.T.torus_weight_decomposition GlobalTheory.T.transfer_statement GlobalTheory.T.compact_exhaustion_statement (GlobalTheory.T.beta_weight_of_torus_facts GlobalTheory.T.holomorphic_function_facts GlobalTheory.T.torus_restriction_representation GlobalTheory.T.torus_weight_decomposition)

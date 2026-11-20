@@ -30,6 +30,9 @@ section Local
 
 variable {L : Type} [Field L] [NumberField L] [IsCMField L] {n : ℕ}
 
+/- English proof (translation)
+Take `⟨y, hy⟩` from `GlobalTheory.TSetDoubleCoset.loc_mem_GLint s hκ`. Use `⟨y, fun a c => ?_⟩` and prove the remaining obligations. Rewrite using `[← hy]`. Both sides reduce to the same expression.
+-/
 theorem exists_isCompOf (s : SplitPlace L) {κ : Formalism.AUTREP.GAf L n} (hκ : κ ∈ Umax L n) :
     ∃ y : GL (Fin n) (Os s), IsCompOf s κ y := by
   obtain ⟨y, hy⟩ := GlobalTheory.TSetDoubleCoset.loc_mem_GLint s hκ
@@ -37,6 +40,15 @@ theorem exists_isCompOf (s : SplitPlace L) {κ : Formalism.AUTREP.GAf L n} (hκ 
   rw [← hy]
   rfl
 
+/- English proof (translation)
+Establish `e : s.loc n x = 1`. Apply `Units.ext` to reduce the goal to its premises. Use `Matrix.ext fun a b => ?_` and prove the remaining obligations. Establish `hc : compAt L s.v (((x : GA L n).1 : Matrix (Fin n) (Fin n) (AL L)) a b - (1 : Matrix (Fin n) (Fin n) (AL L)) a b) = 0`. Use `congrFun (congrFun (hx s.v h) a) b` as an intermediate fact.
+
+Rewrite `this` using `[Matrix.map_apply]`. Rewrite using `[map_sub, this, Matrix.one_apply, Matrix.one_apply]`. Apply the tactic sequence `split_ifs <;> simp`. Establish `h0` using `GlobalTheory.SplitProj.proj_eq_zero_of_compAt_eq_zero L s _ hc`. Rewrite `h0` using `[map_sub, sub_eq_zero]`.
+
+Use `show s.proj (((x : GA L n).1 : Matrix (Fin n) (Fin n) (AL L)) a b) = (1 : Matrix (Fin n) (Fin n) (s.v.adicCompletion (maximalRealSubfield L))) a b`. Rewrite using `[h0, Matrix.one_apply, Matrix.one_apply]`. Apply the tactic sequence `split_ifs <;> simp`. Introduce `a c`. Rewrite using `[e]`.
+
+Apply the tactic sequence `by_cases hac : a = c <;> simp [Matrix.one_apply, hac]`.
+-/
 theorem isCompOf_one_of_not_mem (s : SplitPlace L) {T : Set (HeightOneSpectrum (𝓞 (maximalRealSubfield L)))}
     (h : s.v ∉ T) {x : Formalism.AUTREP.GAf L n} (hx : TrivOutside T x) : IsCompOf s x 1 := by
   have e : s.loc n x = 1 := by
@@ -57,6 +69,17 @@ theorem isCompOf_one_of_not_mem (s : SplitPlace L) {T : Set (HeightOneSpectrum (
   rw [e]
   by_cases hac : a = c <;> simp [Matrix.one_apply, hac]
 
+/- English proof (translation)
+Introduce `a b`. Establish `hl'` using `hl a b`. Establish `hyab` using `hy a b`. Use `show φ (y.val a b) = _`. Distinguish the cases in `hab : a.val < r ∧ b.val < r`.
+
+Rewrite using `[dif_pos hab] at hl' ⊢ show φ (y.val a b) = i ((γ : Matrix (Fin r) (Fin r) (ZMod p)) ⟨a.val, hab.1⟩ ⟨b.val, hab.2⟩) set m : ℕ := ((γ : Matrix (Fin r) (Fin r) (ZMod p)) ⟨a.val, hab.1⟩ ⟨b.val, hab.2⟩).val with hm`. Establish `h0 : φ (y.val a b - (m : Os s)) = 0`. Rewrite using `[hφ.ker]`. Use `push_cast`. Rewrite using `[hyab]`.
+
+Conclude with `hl'`. Rewrite `h0` using `[map_sub, sub_eq_zero, map_natCast]`. Rewrite using `[h0, ← map_natCast i m, hm, ZMod.natCast_zmod_val]`. Rewrite `hl'`, the goal using `[dif_neg hab]`. Establish `h1 : ((y.val a b : Os s) : s.v.adicCompletion (maximalRealSubfield L)) = if a = b then 1 else 0`.
+
+Rewrite using `[hyab]`. Conclude with `hl'`. Use `split_ifs at h1 ⊢ with hab'`. Establish `h2 : y.val a b = 1` using `Subtype.ext (by simpa using h1)`. Rewrite using `[h2, map_one]`.
+
+Establish `h2 : y.val a b = 0` using `Subtype.ext (by simpa using h1)`. Rewrite using `[h2, map_zero]`.
+-/
 theorem isBlockDiagonal_reduction_of_blockLift_splitPlace (s : SplitPlace L) {r p : ℕ} [NeZero p] (γ : GL (Fin r) (ZMod p)) {κ : Formalism.AUTREP.GAf L n}
     {y : GL (Fin n) (Os s)} (hy : IsCompOf s κ y) (hl : GlobalTheory.PendOf.IsLiftAt s r p γ (s.loc n κ)) {k : Type} [CommRing k]
     (φ : Os s →+* k) (hφ : IsResidue s φ) (i : ZMod p →+* k) :
@@ -87,6 +110,11 @@ theorem isBlockDiagonal_reduction_of_blockLift_splitPlace (s : SplitPlace L) {r 
 
 end Local
 
+/- English proof (translation)
+Introduce and unpack `⟨kv, hov⟩`. Take `⟨q, hq, hcard, -, hqg⟩` from `(hQ s.w hs).1`. Establish `hg : (D.host.g kv.1 : 𝓞 D.host.E) ∈ s.w.asIdeal`. Establish `h0 : (D.host.g kv.1 : 𝓞 D.host.E) ∈ (D.naut.plGw kv.1 kv.2).asIdeal` using `D.naut.plGw_over kv.1 kv.2`. Establish `h1 : ((D.host.g kv.1 : ℕ) : 𝓞 (maximalRealSubfield D.host.E)) ∈ s.v.asIdeal`.
+
+Rewrite using `[← hov, Ideal.mem_comap, map_natCast]`. Conclude with `h0`. Rewrite `h1` using `[← s.w_under, Ideal.mem_comap, map_natCast]`. Conclude with `h1`. Conclude with `GlobalTheory.LevelTypePlace.not_two_primes s.w.asIdeal (D.host.g_prime kv.1) hq (hqg kv.1).symm hg (GlobalTheory.LevelTypePlace.natCast_mem_of_card s.w hcard hq.ne_zero)`.
+-/
 theorem not_mem_gPl_of_twist (D : D7) {Q : Finset (Pl D.host.E)} (hQ : IsTwistPlaces D.host.g Q) (s : SplitPlace D.host.E)
     (hs : s.w ∈ Q) : s.v ∉ GlobalTheory.PendOf.gPl D := by
   rintro ⟨kv, hov⟩
@@ -100,6 +128,15 @@ theorem not_mem_gPl_of_twist (D : D7) {Q : Finset (Pl D.host.E)} (hQ : IsTwistPl
   exact GlobalTheory.LevelTypePlace.not_two_primes s.w.asIdeal (D.host.g_prime kv.1) hq (hqg kv.1).symm hg
     (GlobalTheory.LevelTypePlace.natCast_mem_of_card s.w hcard hq.ne_zero)
 
+/- English proof (translation)
+Take `⟨plg, iso, hpl, hg⟩` from `hgrp`. Take `⟨L, hL, hU⟩` from `GlobalTheory.LiftStandardGroup.main D D.R.nV (by unfold Ranks.nV; omega)`. Use `⟨L, hL, hU, fun g s' φ hφ => ⟨fun hs => ?_, fun hP => ?_⟩⟩` and prove the remaining obligations. Conclude with `⟨1, isCompOf_one_of_not_mem s' (not_mem_gPl_of_twist D hQ s' hs) (hL g).1, map_one _⟩`. Take `⟨y, hy⟩` from `exists_isCompOf s' (hU g)`.
+
+Use `⟨y, hy, ?_⟩` and prove the remaining obligations. Establish `hkv : plg (plg.symm ⟨s'.w, hP⟩) = ⟨s'.w, hP⟩` using `plg.apply_symm_apply _`. Establish `key : ∀ (kv : Σ k : Fin 2, D.nd.PlG k) (PP : Pg), plg kv = PP → ∃ i : ZMod (D.host.g kv.1) →+* kP PP.1, eG ((eG.trans cG).symm g) PP = Formalism.UG.bc i (g kv)`. Introduce `kv PP hPP`. Substitute `hPP` using the available equality.
+
+Conclude with `⟨iso kv, by rw [hg, MulEquiv.apply_symm_apply]⟩`. Take `⟨i, hi⟩` from `key _ _ hkv`. Rewrite using `[hi]`. Establish `hw : s'.w = D.naut.plGw (plg.symm ⟨s'.w, hP⟩).1 (plg.symm ⟨s'.w, hP⟩).2`. Rewrite using `[← hpl, hkv]`.
+
+Use `haveI : NeZero (D.host.g (plg.symm ⟨s'.w, hP⟩).1) := ⟨(D.host.g_prime _).ne_zero⟩`. Conclude with `isBlockDiagonal_reduction_of_blockLift_splitPlace s' (g _) hy ((hL g).2 _ s' hw) φ hφ i`.
+-/
 theorem exists_blockLift (D : D7) {Q Pg : Finset (Pl D.host.E)} (hQ : IsTwistPlaces D.host.g Q) {G : Type} [Group G]
     (eG : G ≃* G0 Pg D.R.r) (cG : G0 Pg D.R.r ≃* G0g D.nd)
     (hgrp : ∃ (plg : (Σ k : Fin 2, D.nd.PlG k) ≃ Pg)
@@ -135,6 +172,9 @@ end GlobalTheory.BlockLiftFrame
 
 end
 
+/- English proof (translation)
+Introduce `hL`. Use `GlobalTheory.HeightCounting.JumpsAt.evLgG_of_forall fun K B f T _ w Z Wt p0 t nch n xd c hE hR hP => ?_` and prove the remaining obligations. Introduce `s`. Take `⟨plg, iso, h1, -, -, h4⟩` from `t.r.z.pins.keep.grp`. Conclude with `GlobalTheory.BlockLiftFrame.exists_blockLift (w.st Z).toD7 (t.r.z.lev.is.Q_pl s) t.r.z.R.eG t.r.z.cG ⟨plg, iso, h1, h4⟩`.
+-/
 theorem GlobalTheory.BlockLiftFrame.atMem : ∀ hL : GlobalTheory.Published.LocalLanglandsGL, AtMem hL fun _ _ _ _ w Z _ _ t _ _ _ =>
   ∀ s, ∃ L : G0g (w.st Z).toD7.nd → Formalism.AUTREP.GAf (w.st Z).toD7.host.E (w.st Z).toD7.R.nV,
     GlobalTheory.PendOf.IsTypeGroupBlockLift (w.st Z).toD7 (w.st Z).toD7.R.nV L ∧ (∀ g, L g ∈ ReciprocityTheory.Aut.Umax (w.st Z).toD7.host.E (w.st Z).toD7.R.nV) ∧

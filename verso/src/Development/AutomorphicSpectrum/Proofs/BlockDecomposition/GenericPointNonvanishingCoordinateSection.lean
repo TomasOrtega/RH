@@ -18,6 +18,9 @@ open GlobalTheory.CompanionTheory.MPDict GlobalTheory.CompanionTheory.MixZ Globa
 
 namespace GlobalTheory.CompanionTheory.MixZ.VertGen
 
+/- English proof (translation)
+Unfold `GlobalTheory.ProjBlowup.pullForm GlobalTheory.ProjSpace.pullRatio GlobalTheory.ProjSpace.formOn GlobalTheory.ProjSpace.ratio GlobalTheory.ProjSpace.ratioOn`. Use `congr 1`. Use `congr 1`. Conclude with `pow_one _`.
+-/
 private theorem pullForm_X_eq_pullRatio {N : ℕ} {Y : Scheme.{0}} (φ : Y ⟶ PSpace ℤ N) (W : Y.Opens)
     (i : Fin (N + 1)) (hi : W ≤ (Opens.map φ.base).obj (GlobalTheory.ProjSpace.chart ℤ N i)) (l : Fin (N + 1))
     (h : (MvPolynomial.X l : MvPolynomial (Fin (N + 1)) ℤ).IsHomogeneous 1) :
@@ -28,6 +31,15 @@ private theorem pullForm_X_eq_pullRatio {N : ℕ} {Y : Scheme.{0}} (φ : Y ⟶ P
   congr 1
   exact pow_one _
 
+/- English proof (translation)
+Introduce `m n Z _ f _ k l hX`. Establish `hxj` using `GlobalTheory.CompanionTheory.MPDict.mem_ptChart (f (genericPoint Z)) k`. Establish `hne : GlobalTheory.CompanionTheory.MPDict.ptCoord (f (genericPoint Z)) ⟨k, l⟩ ≠ 0`. Introduce `h0`. Apply `hX` to reduce the goal to its premises.
+
+Use `show (MvPolynomial.X ⟨k, l⟩ : Pol n) ∈ RingHom.ker (ReciprocityTheory.ChartRestriction.G.Geo.mConeMap (GlobalTheory.CompanionTheory.MPDict.ptCoord (f (genericPoint Z))))`. Rewrite using `[RingHom.mem_ker]`. Simplify using `[ReciprocityTheory.ChartRestriction.G.Geo.mConeMap, h0]`. Set `j : (pullO (f ≫ prB n k) 1).ι` to `(GlobalTheory.CompanionTheory.MPDict.ptChart (f (genericPoint Z)) k : Fin (n k + 1))`. Establish `hξ : genericPoint Z ∈ (pullO (f ≫ prB n k) 1).U j` using `hxj`.
+
+Apply `GlobalTheory.basicOpen_le_nonzeroLocus _ j` to reduce the goal to its premises. Use `(Scheme.evaluation_ne_zero_iff_mem_basicOpen Z (genericPoint Z) hξ _).mp ?_` and prove the remaining obligations. Simplify using `only [GlobalTheory.ProjBlowup.pullFormSec]`. Establish `hle : (pullO (f ≫ prB n k) 1).U j ≤ (Opens.map (f ≫ prB n k).base).obj (GlobalTheory.ProjSpace.chart ℤ (n k) (GlobalTheory.CompanionTheory.MPDict.ptChart (f (genericPoint Z)) k))` using `le_rfl`. Establish `e` using `pullForm_X_eq_pullRatio (f ≫ prB n k) ((pullO (f ≫ prB n k) 1).U j) (GlobalTheory.CompanionTheory.MPDict.ptChart (f (genericPoint Z)) k) hle l (isHomogeneous_X ℤ l)`.
+
+Establish `key` using `GlobalTheory.CompanionTheory.MPDict.FnDeg.eval_pullRatio_comp f (prB n k) (genericPoint Z) (GlobalTheory.CompanionTheory.MPDict.ptChart (f (genericPoint Z)) k) hxj l`. Establish `h2 : (CommRingCat.Hom.hom (Scheme.Hom.residueFieldMap f (genericPoint Z))) (GlobalTheory.CompanionTheory.MPDict.ptCoord (f (genericPoint Z)) ⟨k, l⟩) ≠ 0` using `(map_ne_zero _).mpr hne`. Use `h2 using 1` and compare the differences between its conclusion and the goal. Use `Eq.trans ?_ key.symm` and prove the remaining obligations. Conclude with `congrArg (ConcreteCategory.hom (Z.evaluation _ (genericPoint Z) hξ)) e`.
+-/
 theorem genericPoint_mem_nonzeroLocus : ∀ (m : ℕ) (n : Fin (m + 1) → ℕ) (Z : Scheme.{0}) [IsIntegral Z] (f : Z ⟶ MP ℤ m n) [IsClosedImmersion f] (k : Fin (m + 1)) (l : Bk n k), (X ⟨k, l⟩ : Pol n) ∉ ptIdeal (f (genericPoint Z)) → genericPoint Z ∈ Out.nonzeroLocus (pullFormSec (f ≫ prB n k) (X l) (isHomogeneous_X ℤ l)) := by
   intro m n Z _ f _ k l hX
   have hxj := GlobalTheory.CompanionTheory.MPDict.mem_ptChart (f (genericPoint Z)) k

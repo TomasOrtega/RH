@@ -29,18 +29,32 @@ namespace FunctorialResolution.EmbeddedResolution
 
 namespace DivisorReduction
 
+/- English proof (translation)
+The claim follows from `hOB x`.
+-/
 private theorem orderAt_le_mult (T : MarkedIdealWithBoundary.{u}) (hOB : T.IsOrderBoundedByMult) (x : ↥T.scheme) :
     orderAt T.ideal x ≤ (T.mult : ℕ∞) := hOB x
 
+/- English proof (translation)
+The claim follows from `hbal`.
+-/
 private theorem isDerivBalanced_of_isBalanced (T : MarkedIdealWithBoundary.{u})
     (h : AlgebraicGeometry.LocallyOfFiniteType T.structMap) (hbal : T.IsBalanced h) :
     IsDerivBalanced T.base T.structMap T.ideal T.mult := hbal
 
+/- English proof (translation)
+Rewrite `hy` using `[Scheme.IdealSheafData.support_comap]`. Conclude with `hy`.
+-/
 private theorem mem_support_of_mem_support_comap {X Y : Scheme.{u}} (f : Y ⟶ X)
     (I : X.IdealSheafData) {y : ↥Y} (hy : y ∈ (I.comap f).support) : f y ∈ I.support := by
   rw [Scheme.IdealSheafData.support_comap] at hy
   exact hy
 
+/- English proof (translation)
+Use `hV.charZero` as an intermediate fact. Use `hV.locallyOfFiniteType` as an intermediate fact. Use `hV.smooth` as an intermediate fact. Establish `hsm : AlgebraicGeometry.Smooth ((T.boundary.get ⟨j, hj⟩).subschemeι ≫ T.structMap)` using `((isSmoothDivisor_iff T.structMap (T.boundary.get ⟨j, hj⟩)).mp (isSmoothDivisor_boundary_get T hV j hj)).2`. Establish `h` using `irreducibleComponentsDisjointOfSmooth`.
+
+Unfold `IrreducibleComponentsDisjointOfSmooth at h`. Conclude with `h T.base _ _ hsm`.
+-/
 private theorem disjoint_irreducibleComponents_boundary_subscheme (T : MarkedIdealWithBoundary.{u}) (hV : T.IsAdmissible) (j : ℕ)
     (hj : j < T.boundary.length) :
     ∀ C₁ ∈ irreducibleComponents ↥(T.boundary.get ⟨j, hj⟩).subscheme,
@@ -56,6 +70,9 @@ private theorem disjoint_irreducibleComponents_boundary_subscheme (T : MarkedIde
   unfold IrreducibleComponentsDisjointOfSmooth at h
   exact h T.base _ _ hsm
 
+/- English proof (translation)
+Establish `hex : ∃ B, DivisorReduction.containedComponentsIdeal T j hj ^ T.mult * B = T.ideal` using `exists_mul_pow_containedComponentsIdeal_eq_ideal T hV j hj`. Establish `h` using `pow_mul_residualByPow T.ideal (DivisorReduction.containedComponentsIdeal T j hj) T.mult hex`. Simplify `h` using `[DivisorReduction.lowerIdealAfterBlowup, exceptionalIdeal_id, Scheme.IdealSheafData.comap_id]`.
+-/
 private theorem containedComponentsIdeal_pow_mul_lowerIdealAfterBlowup (T : MarkedIdealWithBoundary.{u}) (hV : T.IsAdmissible) (j : ℕ)
     (hj : j < T.boundary.length) :
     DivisorReduction.containedComponentsIdeal T j hj ^ T.mult * DivisorReduction.lowerIdealAfterBlowup T j hj = T.ideal := by
@@ -65,6 +82,27 @@ private theorem containedComponentsIdeal_pow_mul_lowerIdealAfterBlowup (T : Mark
   simpa [DivisorReduction.lowerIdealAfterBlowup, exceptionalIdeal_id,
     Scheme.IdealSheafData.comap_id] using h
 
+/- English proof (translation)
+Use `hV.charZero` as an intermediate fact. Use `hV.locallyOfFiniteType` as an intermediate fact. Use `hV.smooth` as an intermediate fact. Establish `: TopologicalSpace.NoetherianSpace ↥(T.boundary.get ⟨j, hj⟩).subscheme` using `EmbeddedResolution.noetherianSpace_boundary_subscheme T hV j hj`. Establish `hfact : DivisorReduction.containedComponentsIdeal T j hj ^ T.mult * DivisorReduction.lowerIdealAfterBlowup T j hj = T.ideal` using `containedComponentsIdeal_pow_mul_lowerIdealAfterBlowup T hV j hj`.
+
+Establish `horder : ∀ x : ↥T.scheme, orderAt T.ideal x = (T.mult : ℕ∞) * orderAt (DivisorReduction.containedComponentsIdeal T j hj) x + orderAt (DivisorReduction.lowerIdealAfterBlowup T j hj) x`. Introduce `x`. Rewrite using `[← hfact, orderAt_mul T.base T.structMap, orderAt_pow T.base T.structMap]`. Rewrite using `[nonzeroOnComponents_iff]`. Introduce `C hC hsub`.
+
+Take `⟨x, hx⟩` from `hC.1.1`. Distinguish the cases in `hcase : ∀ y ∈ C, (T.boundary.get ⟨j, hj⟩).subschemeι y ∈ orderAtLeastLocus T.ideal T.mult`. Establish `hsep` using `disjoint_irreducibleComponents_boundary_subscheme T hV j hj`. Establish `hcc : connectedComponent x ⊆ C` using `connectedComponent_subset_of_mem_irreducibleComponents hsep hC hx`. Establish `hxrel : x ∈ divisorComponentsInOrderLocus T j hj`.
+
+Introduce `z hz`. Conclude with `hcase z (hcc hz)`. Establish `hopen : IsOpen (divisorComponentsInOrderLocus T j hj)` using `isOpen_setOf_connectedComponent_subset_orderAtLeastLocus T hV j hj`. Establish `hcl : IsClosed (divisorComponentsInOrderLocus T j hj)` using `isClosed_divisorComponentsInOrderLocus T hV j hj`. Establish `hZsupp : (T.boundary.get ⟨j, hj⟩).subschemeι x ∈ (DivisorReduction.containedComponentsIdeal T j hj).support`.
+
+Rewrite using `[containedComponentsIdeal_eq_openSubschemeKer T j hj hopen]`. Establish `hmem : (T.boundary.get ⟨j, hj⟩).subschemeι x ∈ ((openSubschemeKer (T.boundary.get ⟨j, hj⟩) ⟨divisorComponentsInOrderLocus T j hj, hopen⟩).support : Set ↥T.scheme)`. Rewrite using `[support_openSubschemeKer _ _ hcl]`. Conclude with `⟨x, hxrel, rfl⟩`. Conclude with `hmem`.
+
+Establish `hxsupp : (T.boundary.get ⟨j, hj⟩).subschemeι x ∈ (DivisorReduction.lowerIdealAfterBlowup T j hj).support` using `mem_support_of_mem_support_comap _ _ (hsub hx)`. Establish `h1 : (1 : ℕ∞) ≤ orderAt (DivisorReduction.lowerIdealAfterBlowup T j hj) ((T.boundary.get ⟨j, hj⟩).subschemeι x)` using `(one_le_orderAt_iff_mem_support _ _).mpr hxsupp`. Establish `h2 : (1 : ℕ∞) ≤ orderAt (DivisorReduction.containedComponentsIdeal T j hj) ((T.boundary.get ⟨j, hj⟩).subschemeι x)` using `(one_le_orderAt_iff_mem_support _ _).mpr hZsupp`. Establish `h3 : (T.mult : ℕ∞) + 1 ≤ orderAt T.ideal ((T.boundary.get ⟨j, hj⟩).subschemeι x)`. Combine the equalities or inequalities in the displayed calculation.
+
+Establish `h4 : orderAt T.ideal ((T.boundary.get ⟨j, hj⟩).subschemeι x) ≤ (T.mult : ℕ∞)` using `orderAt_le_mult T hOB _`. Establish `h5 : (T.mult : ℕ∞) + 1 ≤ (T.mult : ℕ∞)` using `le_trans h3 h4`. Establish `h6 : T.mult + 1 ≤ T.mult` using `by exact_mod_cast h5`. Use linear arithmetic over natural numbers and integers. Use `push Not at hcase`.
+
+Take `⟨y, hyC, hy⟩` from `hcase`. Establish `hy0 : orderAt T.ideal ((T.boundary.get ⟨j, hj⟩).subschemeι y) = 0`. Break down `orderAt_eq_zero_or_le_orderAt_of_isDerivBalanced T.base T.structMap T.ideal T.mult (isDerivBalanced_of_isBalanced T hV.locallyOfFiniteType hbal) ((T.boundary.get ⟨j, hj⟩).subschemeι y) with h | h` into its components or cases. Conclude with `h`. Conclude with `absurd ((mem_orderAtLeastLocus_iff T.ideal T.mult _).mpr h) hy`.
+
+Establish `hle : orderAt (DivisorReduction.lowerIdealAfterBlowup T j hj) ((T.boundary.get ⟨j, hj⟩).subschemeι y) ≤ 0`. Rewrite using `[← hy0, horder]`. Conclude with `le_add_self`. Establish `hJ0 : orderAt (DivisorReduction.lowerIdealAfterBlowup T j hj) ((T.boundary.get ⟨j, hj⟩).subschemeι y) = 0` using `le_antisymm hle zero_le`. Establish `hmem : (T.boundary.get ⟨j, hj⟩).subschemeι y ∈ (DivisorReduction.lowerIdealAfterBlowup T j hj).support` using `mem_support_of_mem_support_comap _ _ (hsub hyC)`.
+
+Rewrite `hmem` using `[← one_le_orderAt_iff_mem_support, hJ0]`. Simplify using `at hmem`.
+-/
 theorem nonzeroOnComponents_comap_lowerIdealAfterBlowup (T : MarkedIdealWithBoundary.{u}) (hV : T.IsAdmissible)
     (hOB : T.IsOrderBoundedByMult) (hbal : T.IsBalanced hV.locallyOfFiniteType) (j : ℕ)
     (hj : j < T.boundary.length) :
@@ -145,6 +183,11 @@ theorem nonzeroOnComponents_comap_lowerIdealAfterBlowup (T : MarkedIdealWithBoun
     rw [← one_le_orderAt_iff_mem_support, hJ0] at hmem
     simp at hmem
 
+/- English proof (translation)
+Use `hV.charZero` as an intermediate fact. Use `hV.locallyOfFiniteType` as an intermediate fact. Use `hV.quasiCompact` as an intermediate fact. Use `hV.smooth` as an intermediate fact. Establish `hsm : AlgebraicGeometry.Smooth ((T.boundary.get ⟨j, hj⟩).subschemeι ≫ T.structMap)` using `((isSmoothDivisor_iff T.structMap (T.boundary.get ⟨j, hj⟩)).mp (isSmoothDivisor_boundary_get T hV j hj)).2`.
+
+Use `hsm` as an intermediate fact. Establish `hlft : AlgebraicGeometry.LocallyOfFiniteType ((T.boundary.get ⟨j, hj⟩).subschemeι ≫ T.structMap)` using `inferInstance`. Establish `hqc : AlgebraicGeometry.QuasiCompact ((T.boundary.get ⟨j, hj⟩).subschemeι ≫ T.structMap)` using `inferInstance`. Conclude with `{ charZero := hV.charZero locallyOfFiniteType := hlft nonzeroOnComponents := nonzeroOnComponents_comap_lowerIdealAfterBlowup T hV hOB hbal j hj one_le_mult := hV.one_le_mult quasiCompact := hqc smooth := hsm snc := DivisorReductionBoundary.inStrictNormalCrossingPosition_comap_low …`.
+-/
 theorem isAdmissible_restrictTwistedToDivisor (T : MarkedIdealWithBoundary.{u}) (hV : T.IsAdmissible)
     (hOB : T.IsOrderBoundedByMult) (hbal : T.IsBalanced hV.locallyOfFiniteType) (j : ℕ)
     (hj : j < T.boundary.length) (_hZ : DivisorReduction.containedComponentsIdeal T j hj ≠ ⊤) :

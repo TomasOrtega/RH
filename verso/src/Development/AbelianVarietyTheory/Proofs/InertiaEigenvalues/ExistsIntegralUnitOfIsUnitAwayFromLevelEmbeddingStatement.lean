@@ -14,5 +14,8 @@ open GlobalTheory.PlaceRead
 open GlobalTheory.HeightCounting.Up (PrN)
 
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.PlaceRead.unit_of_unitOff | exact GlobalTheory.PlaceRead.unit_of_unitOff | (intros; apply GlobalTheory.PlaceRead.unit_of_unitOff <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.exists_integral_unit_of_isUnitAwayFromLevel_embedding : ∀ (O : Type) [CommRing O] [IsDomain O] [IsIntegrallyClosed O] (ε : FractionRing O →+* ℂ) (N : ℕ) (t : FractionRing O), IsUnit (N : O) → UnitOff N (ε t) → ∃ u : Oˣ, t = algebraMap O (FractionRing O) u := by
   first | exact @GlobalTheory.PlaceRead.unit_of_unitOff | exact GlobalTheory.PlaceRead.unit_of_unitOff | (intros; apply GlobalTheory.PlaceRead.unit_of_unitOff <;> assumption)

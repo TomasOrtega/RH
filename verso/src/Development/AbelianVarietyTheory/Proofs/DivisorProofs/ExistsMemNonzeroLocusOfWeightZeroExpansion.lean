@@ -18,6 +18,23 @@ open GlobalTheory.Mum
 
 namespace GlobalTheory.PreUTheta
 
+/- English proof (translation)
+Introduce `R _ _ _ D A G _ _ U τ g hE hnz hmul`. Take `⟨z₀, hz₀, hn₀⟩` from `hnz (closedPoint R)`. Establish `hx : D.P.A.hom ((snd (𝟙_ (Over (Sp R))) D.P.A).left z₀) = closedPoint R` using `(congrArg (fun q => q z₀) (Over.w (snd (𝟙_ (Over (Sp R))) D.P.A))).trans hz₀`. Take `⟨y', hy'⟩` from `GlobalTheory.ThetaUnit.exists_thick_pt le_rfl 0 D.P.A _ hx`. Take `⟨y, rfl⟩` from `(U.gt 0).q_surj.surj y'`.
+
+Establish `hpG : (U.gt 0).pG.left y = (snd (𝟙_ (Over (Sp R))) D.P.A).left z₀` using `hy'`. Set `rG : (thickObj R (maximalIdeal R) 0 G).left ⟶ (𝟙_ (Over (Sp R)) ⊗ G).left` to `(lift (toUnit _) (fstG (maximalIdeal R) 0 G)).left`. Set `rB : (thickObj R (maximalIdeal R) 0 G).left ⟶ (𝟙_ (Over (Sp R)) ⊗ D.P.A).left` to `(lift (toUnit _) (U.gt 0).pG).left`. Establish `h₁ : rG ≫ (snd _ G).left = (fstG (maximalIdeal R) 0 G).left`. Rewrite using `[← Over.comp_left, lift_snd]`.
+
+Establish `h₂ : rB ≫ (snd _ D.P.A).left = (U.gt 0).pG.left`. Rewrite using `[← Over.comp_left, lift_snd]`. Establish `h₃ : rB ≫ (fst _ D.P.A).left = rG ≫ (fst _ G).left`. Rewrite using `[← Over.comp_left, ← Over.comp_left, lift_fst, lift_fst]`. Establish `hinj : ∀ a b : (𝟙_ (Over (Sp R)) ⊗ D.P.A).left, (snd (𝟙_ (Over (Sp R))) D.P.A).left a = (snd (𝟙_ (Over (Sp R))) D.P.A).left b → a = b`.
+
+Introduce `a b hab`. Establish `e` using `GlobalTheory.PsiExpansion.snd_lift_unit D.P.A`. Establish `key : ∀ c, (lift (toUnit D.P.A) (𝟙 D.P.A)).left ((snd (𝟙_ (Over (Sp R))) D.P.A).left c) = c` using `fun c => by rw [← Scheme.Hom.comp_apply, e]; rfl`. Rewrite using `[← key a, ← key b, hab]`. Establish `hrB : rB y = z₀` using `hinj _ _ ((congrArg (fun q => q y) h₂).trans hpG)`.
+
+Take `⟨J, hJ⟩` from `GlobalTheory.ConstFam.exists_good' D.P.isLB y`. Take `⟨JG, hJG⟩` from `GlobalTheory.ConstFam.exists_good' U.P.L.isLB y`. Take `⟨s, hs⟩` from `hE 0`. Take `⟨H₁, H₂⟩` from `hs _ (𝟙 _) rG rB (by rw [Category.id_comp]; exact h₁) (by rw [Category.id_comp]; exact h₂) h₃ y JG J hJG hJ`. Establish `hu : IsUnit (sval (g 0) rB y J)` using `(GlobalTheory.Ex.OneGen.isUnit_sval_iff (g 0) rB y hJ).2 (by rw [hrB]; exact hn₀)`.
+
+Establish `hc' : rB ≫ (𝟙_ (Over (Sp R)) ⊗ D.P.A).hom = (thickObj R (maximalIdeal R) 0 G).hom ≫ spMap (Ideal.Quotient.mk (maximalIdeal R ^ (0 + 1)))` using `Over.w (lift (toUnit _) (U.gt 0).pG)`. Rewrite using `[Finset.sum_eq_single 0 (fun α _ hα => by`. Take `⟨a, ha, h, hh⟩` from `hmul α hα`. Rewrite using `[GlobalTheory.IndivisibleSection.sval_of_secIsMul hh _ y hJ, hc', cst_comp, Ideal.Quotient.eq_zero_iff_mem.2 (by simpa using ha), GlobalTheory.GermDiv.cst_zero, zero_mul, zero_mul])`. Use the proof step `(fun h => absurd (H₁ 0 h) hu.ne_zero)] at H₂`.
+
+Establish `hτ : IsUnit (sval τ rG y JG)` using `isUnit_of_mul_isUnit_right (H₂ ▸ hu.mul (Units.isUnit _))`. Take `⟨σ, hσ⟩` from `GlobalTheory.PsiExpansion.exists_sameG U.P.L.isLB τ`. Rewrite `hτ` using `[hσ _ rG y JG hJG, h₁]`. Establish `hm` using `(GlobalTheory.Ex.OneGen.isUnit_sval_iff σ _ y hJG).1 hτ`. Use `⟨ReciprocityTheory.ChartRestriction.G.DVR.secOfH0 σ, _, GlobalTheory.ThetaClosed.nonzeroLocus_firstPower_section_subset σ hm, ?_⟩` and prove the remaining obligations.
+
+Establish `hc : (fstG (maximalIdeal R) 0 G).left ≫ G.hom = (U.gt 0).pG.left ≫ D.P.A.hom` using `(Over.w (fstG (maximalIdeal R) 0 G)).trans (Over.w (U.gt 0).pG).symm`. Conclude with `(congrArg (fun q => q y) hc).trans ((congrArg D.P.A.hom hpG).trans hx)`.
+-/
 theorem exists_mem_nonzeroLocus : ∀ (R : Type) [CommRing R] [IsDomain R] [IsLocalRing R] (D : DegPre R) (A : PolAV (Sp (FractionRing R))) (G : Over (Sp R)) [GrpObj G] [IsCommMonObj G] (U : GlobalTheory.UU.PreU (maximalIdeal R) D A G) (τ : U.SecGT (𝟙_ _) 1) (g : ∀ α, GlobalTheory.UU.SecBT D (𝟙_ _) 1 α), U.ExpT (𝟙_ _) 1 τ g → GlobalTheory.PsiRing.FibNZ (𝟙_ _ ⊗ D.P.A).hom (g 0) → (∀ α, α ≠ 0 → ∃ a ∈ maximalIdeal R, ∃ h : GlobalTheory.UU.SecBT D (𝟙_ _) 1 α, ReciprocityTheory.ChartRestriction.G.DVR.SecIsMul (𝟙_ _ ⊗ D.P.A).hom a (g α) h) → ∃ θ : LB.Sec U.P.L.L, ∃ x ∈ nonzeroLocus θ, G.hom x = closedPoint R := by
   intro R _ _ _ D A G _ _ U τ g hE hnz hmul
   obtain ⟨z₀, hz₀, hn₀⟩ := hnz (closedPoint R)

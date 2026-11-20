@@ -16,13 +16,24 @@ variable {V : Type} [NormedAddCommGroup V] [InnerProductSpace ℝ V] [FiniteDime
 
 set_option linter.unusedSectionVars false
 
+/- English proof (translation)
+Use `proj_heis_proj hJ h 0 f` as an intermediate fact. Rewrite `this` using `[h.1, gau_zero, one_smul]`. Then use the resulting hypothesis.
+-/
 theorem proj_proj (hJ : ∀ x, J (J x) = -x) (h : IsHeis (omJ J) ρ) (f : B) : proj h (proj h f) = proj h f := by
   have := proj_heis_proj hJ h 0 f
   rwa [h.1, gau_zero, one_smul] at this
 
+/- English proof (translation)
+The claim follows from `Sm.good V B J ρ hJ h f hf`.
+-/
 theorem good_of_sm (hJ : ∀ x, J (J x) = -x) (h : IsHeis (omJ J) ρ) {f : B} (hf : Sm ρ f) : Good h f :=
   Sm.good V B J ρ hJ h f hf
 
+/- English proof (translation)
+Establish `h0 : omJ J w (-w) = 0`. Use `omJ_skew hJ w w` as an intermediate fact. Establish `e : omJ J w (-w) = -omJ J w w` using `by simp [omJ]`. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite using `[h.2.1, h0, add_neg_cancel, h.1]`.
+
+Simplify using the standard rewrite rules.
+-/
 theorem heis_neg (hJ : ∀ x, J (J x) = -x) (h : IsHeis (omJ J) ρ) (w : V) (f : B) : ρ w (ρ (-w) f) = f := by
   have h0 : omJ J w (-w) = 0 := by
     have := omJ_skew hJ w w
@@ -31,9 +42,19 @@ theorem heis_neg (hJ : ∀ x, J (J x) = -x) (h : IsHeis (omJ J) ρ) (w : V) (f :
   rw [h.2.1, h0, add_neg_cancel, h.1]
   simp
 
+/- English proof (translation)
+The claim follows from `(h.2.2.2 f).comp continuous_neg`.
+-/
 theorem cont_neg (h : IsHeis (omJ J) ρ) (f : B) : Continuous fun w => ρ (-w) f :=
   (h.2.2.2 f).comp continuous_neg
 
+/- English proof (translation)
+Establish `h1` using `(GaussianFourier.integrable_cexp_neg_mul_sq_norm_add (V := V) (b := (π / 4 : ℂ)) (by simpa using Real.pi_pos) 0 0).norm`. Use `Integrable.mono' (h1.const_mul (n.factorial * Real.exp 1)) ((continuous_norm.pow n).mul continuous_gau.norm).aestronglyMeasurable (Filter.Eventually.of_forall fun w => ?_)` and prove the remaining obligations. Establish `e : (-(π / 4 : ℂ) * (‖w‖ : ℂ) ^ 2 + 0 * ((⟪(0 : V), w⟫ : ℝ) : ℂ)) = ((-(π / 4) * ‖w‖ ^ 2 : ℝ) : ℂ)` using `by push_cast; ring`. Rewrite using `[e, Complex.norm_exp, ofReal_re, Real.norm_of_nonneg (by positivity), norm_gau]`. Establish `h2 : ‖w‖ ^ n ≤ n.factorial * Real.exp ‖w‖`.
+
+Use `Real.pow_div_factorial_le_exp ‖w‖ (norm_nonneg w) n` as an intermediate fact. Rewrite `this` using `[div_le_iff₀' (by positivity)]`. Then use the resulting hypothesis. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[mul_assoc, mul_assoc, ← Real.exp_add, ← Real.exp_add]`. Use `mul_le_mul_of_nonneg_left (Real.exp_le_exp.2 ?_) (by positivity)` and prove the remaining obligations.
+
+Use polynomial arithmetic with `[Real.pi_gt_three, sq_nonneg ‖w‖, sq_nonneg (‖w‖ - 1)]`.
+-/
 theorem integrable_pow_gau (n : ℕ) : Integrable fun w : V => ‖w‖ ^ n * ‖gau w‖ := by
   have h1 := (GaussianFourier.integrable_cexp_neg_mul_sq_norm_add (V := V) (b := (π / 4 : ℂ))
     (by simpa using Real.pi_pos) 0 0).norm
@@ -52,30 +73,51 @@ theorem integrable_pow_gau (n : ℕ) : Integrable fun w : V => ‖w‖ ^ n * ‖
         refine mul_le_mul_of_nonneg_left (Real.exp_le_exp.2 ?_) (by positivity)
         nlinarith [Real.pi_gt_three, sq_nonneg ‖w‖, sq_nonneg (‖w‖ - 1)]
 
+/- English proof (translation)
+Introduce `n`. Use `((integrable_pow_gau (V := V) n).mul_const ‖proj h x‖).congr (Filter.Eventually.of_forall fun w => ?_)` and prove the remaining obligations. Simplify using `only [proj_heis_proj hJ, gau_neg, norm_smul, mul_assoc]`.
+-/
 theorem good_proj (hJ : ∀ x, J (J x) = -x) (h : IsHeis (omJ J) ρ) (x : B) : Good h (proj h x) := by
   intro n
   refine ((integrable_pow_gau (V := V) n).mul_const ‖proj h x‖).congr (Filter.Eventually.of_forall fun w => ?_)
   simp only [proj_heis_proj hJ, gau_neg, norm_smul, mul_assoc]
 
+/- English proof (translation)
+Simplify `ContDiff.add hf hf'` using `only [Sm, map_add]`.
+-/
 theorem sm_add {f f' : B} (hf : Sm ρ f) (hf' : Sm ρ f') : Sm ρ (f + f') := by
   simpa only [Sm, map_add] using ContDiff.add hf hf'
 
+/- English proof (translation)
+Simplify `ContDiff.const_smul a hf` using `only [Sm, map_smul]`.
+-/
 theorem sm_smul (a : ℂ) {f : B} (hf : Sm ρ f) : Sm ρ (a • f) := by
   simpa only [Sm, map_smul] using ContDiff.const_smul a hf
 
+/- English proof (translation)
+Unfold `Sm`. Simplify using `only [h.2.1]`. Use `ContDiff.smul (Complex.contDiff_exp.comp (contDiff_const.mul ?_)) (ContDiff.comp hf (contDiff_id.add contDiff_const))` and prove the remaining obligations. Conclude with `Complex.ofRealCLM.contDiff.comp (contDiff_id.inner ℝ contDiff_const)`.
+-/
 theorem sm_heis (h : IsHeis (omJ J) ρ) (a : V) {f : B} (hf : Sm ρ f) : Sm ρ (ρ a f) := by
   unfold Sm
   simp only [h.2.1]
   refine ContDiff.smul (Complex.contDiff_exp.comp (contDiff_const.mul ?_)) (ContDiff.comp hf (contDiff_id.add contDiff_const))
   exact Complex.ofRealCLM.contDiff.comp (contDiff_id.inner ℝ contDiff_const)
 
+/- English proof (translation)
+The claim follows from `ContDiff.comp hf g.contDiff`.
+-/
 theorem sm_comp (g : V →L[ℝ] V) {f : B} (hf : Sm ρ f) : Sm (fun v => ρ (g v)) f :=
   ContDiff.comp hf g.contDiff
 
+/- English proof (translation)
+Simplify using `using hf 0`.
+-/
 theorem good_integrable {h : IsHeis (omJ J) ρ} {f : B} (hf : Good h f) :
     Integrable fun w => ‖proj h (ρ (-w) f)‖ := by
   simpa using hf 0
 
+/- English proof (translation)
+Rewrite using `[← hf.inversion hJ, ← hf'.inversion hJ]`. Simplify using `only [e]`.
+-/
 theorem good_ext (hJ : ∀ x, J (J x) = -x) {h : IsHeis (omJ J) ρ} {f f' : B} (hf : Good h f) (hf' : Good h f')
     (e : ∀ v, proj h (ρ v f) = proj h (ρ v f')) : f = f' := by
   rw [← hf.inversion hJ, ← hf'.inversion hJ]
@@ -85,10 +127,16 @@ def intw (ρ' : V → B →L[ℂ] B) (T : B →L[ℂ] B) (ρ : V → B →L[ℂ]
 
 variable {T : B →L[ℂ] B}
 
+/- English proof (translation)
+Rewrite using `[← hT]`. Conclude with `T.le_opNorm _`.
+-/
 theorem norm_le_of_proj {h : IsHeis (omJ J) ρ} (hT : ∀ x, T (proj h x) = T x) (x : B) :
     ‖T x‖ ≤ ‖T‖ * ‖proj h x‖ := by
   rw [← hT]; exact T.le_opNorm _
 
+/- English proof (translation)
+Use `Integrable.mono' ((good_integrable hf).const_mul ‖T‖) (h'.continuous continuous_id (T.continuous.comp (cont_neg h f))).aestronglyMeasurable (Filter.Eventually.of_forall fun w => ?_)` and prove the remaining obligations. Rewrite using `[h'.2.2.1]`. Conclude with `norm_le_of_proj hT _`.
+-/
 theorem intw_integrable {h : IsHeis (omJ J) ρ} (h' : IsHeis (omJ J) ρ') (hT : ∀ x, T (proj h x) = T x)
     {f : B} (hf : Good h f) : Integrable fun w => ρ' w (T (ρ (-w) f)) := by
   refine Integrable.mono' ((good_integrable hf).const_mul ‖T‖)
@@ -97,10 +145,18 @@ theorem intw_integrable {h : IsHeis (omJ J) ρ} (h' : IsHeis (omJ J) ρ') (hT : 
   rw [h'.2.2.1]
   exact norm_le_of_proj hT _
 
+/- English proof (translation)
+Rewrite using `[h.2.1, map_smul, ← hx, proj_heis_proj hJ, smul_smul]`.
+-/
 theorem proj_heis_heis (hJ : ∀ x, J (J x) = -x) (h : IsHeis (omJ J) ρ) (a b : V) {x : B} (hx : proj h x = x) :
     proj h (ρ a (ρ b x)) = (cexp (π * I * (omJ J a b : ℂ)) * gau (a + b)) • x := by
   rw [h.2.1, map_smul, ← hx, proj_heis_proj hJ, smul_smul]
 
+/- English proof (translation)
+Establish `e1` using `((proj h').comp (ρ' v)).integral_comp_comm (intw_integrable h' hT hf)`. Establish `e2` using `(T.comp ((proj h).comp (ρ v))).integral_comp_comm (intw_integrable h (proj_proj hJ h) hf)`. Rewrite `e2` using `[hf.inversion hJ]`. Simplify using `only [ContinuousLinearMap.comp_apply] at e1 e2`. Rewrite using `[intw, ← e1, ← hT, ← e2]`.
+
+Use `integral_congr_ae (Filter.Eventually.of_forall fun w => ?_)` and prove the remaining obligations. Simplify using `only`. Rewrite using `[proj_heis_heis hJ h' _ _ (hT' _), proj_heis_heis hJ h _ _ (proj_proj hJ h _), map_smul, hT]`.
+-/
 theorem proj_heis_intw (hJ : ∀ x, J (J x) = -x) {h : IsHeis (omJ J) ρ} (h' : IsHeis (omJ J) ρ')
     (hT : ∀ x, T (proj h x) = T x) (hT' : ∀ x, proj h' (T x) = T x) {f : B} (hf : Good h f) (v : V) :
     proj h' (ρ' v (intw ρ' T ρ f)) = T (ρ v f) := by
@@ -113,6 +169,11 @@ theorem proj_heis_intw (hJ : ∀ x, J (J x) = -x) {h : IsHeis (omJ J) ρ} (h' : 
   simp only
   rw [proj_heis_heis hJ h' _ _ (hT' _), proj_heis_heis hJ h _ _ (proj_proj hJ h _), map_smul, hT]
 
+/- English proof (translation)
+Introduce `n`. Simplify using `only [proj_heis_intw hJ h' hT hT' hf]`. Use `Integrable.mono' ((hf n).const_mul ‖T‖) ((continuous_norm.pow n).mul (T.continuous.comp (cont_neg h f)).norm).aestronglyMeasurable (Filter.Eventually.of_forall fun w => ?_)` and prove the remaining obligations. Rewrite using `[Real.norm_of_nonneg (by positivity), mul_left_comm]`. Use `gcongr`.
+
+Conclude with `norm_le_of_proj hT _`.
+-/
 theorem good_intw (hJ : ∀ x, J (J x) = -x) {h : IsHeis (omJ J) ρ} (h' : IsHeis (omJ J) ρ')
     (hT : ∀ x, T (proj h x) = T x) (hT' : ∀ x, proj h' (T x) = T x) {f : B} (hf : Good h f) :
     Good h' (intw ρ' T ρ f) := by
@@ -125,6 +186,9 @@ theorem good_intw (hJ : ∀ x, J (J x) = -x) {h : IsHeis (omJ J) ρ} (h' : IsHei
   gcongr
   exact norm_le_of_proj hT _
 
+/- English proof (translation)
+Establish `g1` using `good_of_sm hJ h hf`. Establish `g2` using `good_of_sm hJ h (sm_heis h a hf)`. Use `good_ext hJ (good_intw hJ h' hT hT' g2) (good_of_sm hJ h' (sm_heis h' a ((good_intw hJ h' hT hT' g1).sm hJ))) fun v => ?_` and prove the remaining obligations. Rewrite using `[proj_heis_intw hJ h' hT hT' g2, h.2.1, h'.2.1, map_smul, map_smul, proj_heis_intw hJ h' hT hT' g1]`.
+-/
 theorem intw_heis (hJ : ∀ x, J (J x) = -x) {h : IsHeis (omJ J) ρ} (h' : IsHeis (omJ J) ρ')
     (hT : ∀ x, T (proj h x) = T x) (hT' : ∀ x, proj h' (T x) = T x) {f : B} (hf : Sm ρ f) (a : V) :
     intw ρ' T ρ (ρ a f) = ρ' a (intw ρ' T ρ f) := by
@@ -134,6 +198,13 @@ theorem intw_heis (hJ : ∀ x, J (J x) = -x) {h : IsHeis (omJ J) ρ} (h' : IsHei
     (good_of_sm hJ h' (sm_heis h' a ((good_intw hJ h' hT hT' g1).sm hJ))) fun v => ?_
   rw [proj_heis_intw hJ h' hT hT' g2, h.2.1, h'.2.1, map_smul, map_smul, proj_heis_intw hJ h' hT hT' g1]
 
+/- English proof (translation)
+Establish `g1` using `good_of_sm hJ h hf`. Establish `s : ∀ {ρ : V → B →L[ℂ] B} (h : IsHeis (omJ J) ρ) (x : B), Good h (proj (h.twist a ha) x)`. Introduce `ρ h x`. Use `sm_comp b ((good_proj hJ (h.twist a ha) x).sm hJ)` as an intermediate fact. Simplify using `only [hab] at this`.
+
+Conclude with `good_of_sm hJ h this`. Use `good_ext hJ (good_intw hJ h' hT hT' (s h f)) (s h' _) fun v => ?_` and prove the remaining obligations. Rewrite using `[proj_heis_intw hJ h' hT hT' (s h f)]`. Establish `e1` using `(T.comp (ρ v)).integral_comp_comm ((h.twist a ha).integrable f)`. Establish `e2` using `((proj h').comp (ρ' v)).integral_comp_comm ((h'.twist a ha).integrable (intw ρ' T ρ f))`.
+
+Simplify using `only [ContinuousLinearMap.comp_apply] at e1 e2`. Rewrite using `[proj_apply (h.twist a ha), proj_apply (h'.twist a ha), ← e1, ← e2]`. Use `integral_congr_ae (Filter.Eventually.of_forall fun w => ?_)` and prove the remaining obligations. Simplify using `only [h.2.1, h'.2.1, map_smul, proj_heis_intw hJ h' hT hT' g1]`.
+-/
 theorem intw_proj (hJ : ∀ x, J (J x) = -x) {h : IsHeis (omJ J) ρ} (h' : IsHeis (omJ J) ρ')
     (hT : ∀ x, T (proj h x) = T x) (hT' : ∀ x, proj h' (T x) = T x) {f : B} (hf : Sm ρ f)
     (a b : V →L[ℝ] V) (hab : ∀ v, a (b v) = v) (ha : ∀ x y, omJ J (a x) (a y) = omJ J x y) :
@@ -153,19 +224,31 @@ theorem intw_proj (hJ : ∀ x, J (J x) = -x) {h : IsHeis (omJ J) ρ} (h' : IsHei
   refine integral_congr_ae (Filter.Eventually.of_forall fun w => ?_)
   simp only [h.2.1, h'.2.1, map_smul, proj_heis_intw hJ h' hT hT' g1]
 
+/- English proof (translation)
+Simplify using `only [intw, map_add]`. Conclude with `integral_add (intw_integrable h' hT hf) (intw_integrable h' hT hf')`.
+-/
 theorem intw_add {h : IsHeis (omJ J) ρ} (h' : IsHeis (omJ J) ρ') (hT : ∀ x, T (proj h x) = T x)
     {f f' : B} (hf : Good h f) (hf' : Good h f') : intw ρ' T ρ (f + f') = intw ρ' T ρ f + intw ρ' T ρ f' := by
   simp only [intw, map_add]
   exact integral_add (intw_integrable h' hT hf) (intw_integrable h' hT hf')
 
+/- English proof (translation)
+Simplify using `only [intw, map_smul, integral_smul]`.
+-/
 theorem intw_smul (a : ℂ) (f : B) : intw ρ' T ρ (a • f) = a • intw ρ' T ρ f := by
   simp only [intw, map_smul, integral_smul]
 
+/- English proof (translation)
+Rewrite using `[proj_apply, proj_apply, ← A.integral_comp_comm (h.integrable x)]`. Simplify using `only [map_smul, hA]`.
+-/
 theorem proj_comm (h : IsHeis (omJ J) ρ) (A : B →L[ℂ] B) (hA : ∀ v f, A (ρ v f) = ρ v (A f)) (x : B) :
     A (proj h x) = proj h (A x) := by
   rw [proj_apply, proj_apply, ← A.integral_comp_comm (h.integrable x)]
   simp only [map_smul, hA]
 
+/- English proof (translation)
+Rewrite using `[intw, intw, ← A.integral_comp_comm (intw_integrable h' hT hf)]`. Simplify using `only [hA, hA', hAT]`.
+-/
 theorem intw_comm {h : IsHeis (omJ J) ρ} (h' : IsHeis (omJ J) ρ') (hT : ∀ x, T (proj h x) = T x)
     {f : B} (hf : Good h f) (A : B →L[ℂ] B) (hA : ∀ v f, A (ρ v f) = ρ v (A f))
     (hA' : ∀ v f, A (ρ' v f) = ρ' v (A f)) (hAT : ∀ x, A (T x) = T (A x)) :
@@ -173,11 +256,19 @@ theorem intw_comm {h : IsHeis (omJ J) ρ} (h' : IsHeis (omJ J) ρ') (hT : ∀ x,
   rw [intw, intw, ← A.integral_comp_comm (intw_integrable h' hT hf)]
   simp only [hA, hA', hAT]
 
+/- English proof (translation)
+Rewrite using `[proj_apply h', ← (proj h).integral_comp_comm (h'.integrable _), lam, ← integral_smul_const]`. Simplify using `only [ha, map_smul, proj_heis_proj hJ, smul_smul]`.
+-/
 theorem proj_twist_proj (hJ : ∀ x, J (J x) = -x) (h : IsHeis (omJ J) ρ) (h' : IsHeis (omJ J) ρ') (a : V → V)
     (ha : ∀ u, ρ' u = ρ (a u)) (x : B) : proj h (proj h' (proj h x)) = lam a • proj h x := by
   rw [proj_apply h', ← (proj h).integral_comp_comm (h'.integrable _), lam, ← integral_smul_const]
   simp only [ha, map_smul, proj_heis_proj hJ, smul_smul]
 
+/- English proof (translation)
+Rewrite using `[proj_apply (h.twist a ha), ← (proj h).integral_comp_comm ((h.twist a ha).integrable _), mu, ← integral_smul_const]`. Use `integral_congr_ae (Filter.Eventually.of_forall fun u => ?_)` and prove the remaining obligations. Establish `e1` using `((proj h).comp (ρ (a u))).integral_comp_comm ((h.twist b hb).integrable (proj h x))`. Simplify using `only [ContinuousLinearMap.comp_apply] at e1`. Simplify using `only`.
+
+Rewrite using `[map_smul, proj_apply (h.twist b hb), ← e1, ← integral_smul, ← integral_smul_const]`. Use `integral_congr_ae (Filter.Eventually.of_forall fun v => ?_)` and prove the remaining obligations. Simplify using `only [map_smul]`. Rewrite using `[proj_heis_heis hJ h _ _ (proj_proj hJ h _), smul_smul, smul_smul]`.
+-/
 theorem proj_twist_twist_proj (hJ : ∀ x, J (J x) = -x) (h : IsHeis (omJ J) ρ) (a b : V →L[ℝ] V)
     (ha : ∀ x y, omJ J (a x) (a y) = omJ J x y) (hb : ∀ x y, omJ J (b x) (b y) = omJ J x y) (x : B) :
     proj h (proj (h.twist a ha) (proj (h.twist b hb) (proj h x))) = mu J a b • proj h x := by
@@ -196,23 +287,38 @@ section Norm
 
 variable {H : Type} [NormedAddCommGroup H] [InnerProductSpace ℂ H] [CompleteSpace H] {Φ : B →L[ℂ] H}
 
+/- English proof (translation)
+Rewrite using `[inner_eq_sum_norm_sq_div_four, inner_eq_sum_norm_sq_div_four]`. Simplify using `only [← map_smul, ← map_add, ← map_sub, hΦ]`.
+-/
 theorem inner_heis (hΦ : ∀ v f, ‖Φ (ρ v f)‖ = ‖Φ f‖) (v : V) (x y : B) :
     inner ℂ (Φ (ρ v x)) (Φ (ρ v y)) = inner ℂ (Φ x) (Φ y) := by
   rw [inner_eq_sum_norm_sq_div_four, inner_eq_sum_norm_sq_div_four]
   simp only [← map_smul, ← map_add, ← map_sub, hΦ]
 
+/- English proof (translation)
+Rewrite using `[← inner_heis hΦ v (ρ (-v) x), heis_neg hJ h]`.
+-/
 theorem inner_heis' (hJ : ∀ x, J (J x) = -x) (h : IsHeis (omJ J) ρ) (hΦ : ∀ v f, ‖Φ (ρ v f)‖ = ‖Φ f‖) (v : V)
     (x y : B) : inner ℂ (Φ x) (Φ (ρ v y)) = inner ℂ (Φ (ρ (-v) x)) (Φ y) := by
   rw [← inner_heis hΦ v (ρ (-v) x), heis_neg hJ h]
 
+/- English proof (translation)
+The claim follows from `(((innerSL ℂ (Φ x)).comp Φ).integral_comp_comm hF).symm`.
+-/
 theorem inner_integral (x : B) {F : V → B} (hF : Integrable F) :
     inner ℂ (Φ x) (Φ (∫ w, F w)) = ∫ w, inner ℂ (Φ x) (Φ (F w)) :=
   (((innerSL ℂ (Φ x)).comp Φ).integral_comp_comm hF).symm
 
+/- English proof (translation)
+Rewrite using `[gau, ← Complex.exp_conj]`. Simplify using `[map_ofNat]`.
+-/
 theorem star_gau (u : V) : (starRingEnd ℂ) (gau u) = gau u := by
   rw [gau, ← Complex.exp_conj]
   simp [map_ofNat]
 
+/- English proof (translation)
+Rewrite using `[← inner_conj_symm, proj_apply, proj_apply, inner_integral _ (h.integrable _), inner_integral _ (h.integrable _), ← integral_conj, ← integral_neg_eq_self]`. Use `integral_congr_ae (Filter.Eventually.of_forall fun u => ?_)` and prove the remaining obligations. Simplify using `only [map_smul, inner_smul_right, map_mul, inner_conj_symm, star_gau, gau_neg, inner_heis' hJ h hΦ u]`.
+-/
 theorem inner_proj (hJ : ∀ x, J (J x) = -x) (h : IsHeis (omJ J) ρ) (hΦ : ∀ v f, ‖Φ (ρ v f)‖ = ‖Φ f‖)
     (x y : B) : inner ℂ (Φ (proj h x)) (Φ y) = inner ℂ (Φ x) (Φ (proj h y)) := by
   rw [← inner_conj_symm, proj_apply, proj_apply, inner_integral _ (h.integrable _), inner_integral _ (h.integrable _),
@@ -220,6 +326,9 @@ theorem inner_proj (hJ : ∀ x, J (J x) = -x) (h : IsHeis (omJ J) ρ) (hΦ : ∀
   refine integral_congr_ae (Filter.Eventually.of_forall fun u => ?_)
   simp only [map_smul, inner_smul_right, map_mul, inner_conj_symm, star_gau, gau_neg, inner_heis' hJ h hΦ u]
 
+/- English proof (translation)
+Use `inner_integral (Φ := Φ) (intw ρ' T ρ f) (intw_integrable h' hT hf)` as an intermediate fact. Use `this.trans (integral_congr_ae (Filter.Eventually.of_forall fun w => ?_))` and prove the remaining obligations. Simplify using `only`. Rewrite using `[inner_heis' hJ h' hΦ, ← hT' (ρ (-w) f), ← inner_proj hJ h' hΦ, proj_heis_intw hJ h' hT hT' hf, hT']`.
+-/
 theorem inner_intw (hJ : ∀ x, J (J x) = -x) {h : IsHeis (omJ J) ρ} (h' : IsHeis (omJ J) ρ')
     (hΦ : ∀ v f, ‖Φ (ρ' v f)‖ = ‖Φ f‖)
     (hT : ∀ x, T (proj h x) = T x) (hT' : ∀ x, proj h' (T x) = T x) {f : B} (hf : Good h f) :
@@ -229,6 +338,11 @@ theorem inner_intw (hJ : ∀ x, J (J x) = -x) {h : IsHeis (omJ J) ρ} (h' : IsHe
   simp only
   rw [inner_heis' hJ h' hΦ, ← hT' (ρ (-w) f), ← inner_proj hJ h' hΦ, proj_heis_intw hJ h' hT hT' hf, hT']
 
+/- English proof (translation)
+Establish `e1` using `inner_intw hJ h' hΦ' hT hT' hf`. Establish `e2` using `inner_intw hJ h hΦ (proj_proj hJ h) (proj_proj hJ h) hf`. Establish `e3 : intw ρ (proj h) ρ f = f` using `hf.inversion hJ`. Simplify using `only [hn] at e1`. Rewrite `e2` using `[e3, ← e1]`.
+
+Rewrite using `[norm_eq_sqrt_re_inner (𝕜 := ℂ), norm_eq_sqrt_re_inner (𝕜 := ℂ), e2]`.
+-/
 theorem norm_intw (hJ : ∀ x, J (J x) = -x) {h : IsHeis (omJ J) ρ} (h' : IsHeis (omJ J) ρ')
     (hΦ : ∀ v f, ‖Φ (ρ v f)‖ = ‖Φ f‖) (hΦ' : ∀ v f, ‖Φ (ρ' v f)‖ = ‖Φ f‖)
     (hT : ∀ x, T (proj h x) = T x) (hT' : ∀ x, proj h' (T x) = T x)
@@ -243,6 +357,11 @@ theorem norm_intw (hJ : ∀ x, J (J x) = -x) {h : IsHeis (omJ J) ρ} (h' : IsHei
 
 end Norm
 
+/- English proof (translation)
+Use `continuous_iff_continuousAt.2 fun p₀ => ?_` and prove the remaining obligations. Use `continuousAt_of_dominated (bound := fun u => ‖gau u‖ * (‖p₀.2‖ + 1)) ?_ ?_ ((integrable_gau (V := V)).norm.mul_const _) ?_` and prove the remaining obligations. Conclude with `Filter.Eventually.of_forall fun p => (continuous_gau.smul ((h.2.2.2 p.2).comp p.1.continuous)).aestronglyMeasurable`. Establish `: ∀ᶠ p : (V →L[ℝ] V) × B in nhds p₀, ‖p.2‖ < ‖p₀.2‖ + 1` using `(continuous_snd.norm.continuousAt (x := p₀)).eventually_lt_const (lt_add_one _) filter_upwards [this] with p hp`. Use `Filter.Eventually.of_forall fun u => ?_` and prove the remaining obligations.
+
+Rewrite using `[norm_smul, h.2.2.1]`. Use `gcongr`. Use `Filter.Eventually.of_forall fun u => Continuous.continuousAt ?_` and prove the remaining obligations. Conclude with `(h.continuous (by fun_prop) continuous_snd).const_smul _`.
+-/
 theorem continuous_twist_proj (h : IsHeis (omJ J) ρ) :
     Continuous fun p : (V →L[ℝ] V) × B => ∫ u, gau u • ρ (p.1 u) p.2 := by
   refine continuous_iff_continuousAt.2 fun p₀ => ?_
@@ -259,6 +378,13 @@ theorem continuous_twist_proj (h : IsHeis (omJ J) ρ) :
   · refine Filter.Eventually.of_forall fun u => Continuous.continuousAt ?_
     exact (h.continuous (by fun_prop) continuous_snd).const_smul _
 
+/- English proof (translation)
+Establish `hc` using `continuous_twist_proj h`. Use `continuous_of_dominated (bound := fun w => (∫ u : V, ‖gau u‖) * ‖proj h (ρ (-w) f)‖) ?_ ?_ ((good_integrable hf).const_mul _) ?_` and prove the remaining obligations. Introduce `a`. Conclude with `(h.continuous a.continuous (hc.comp (continuous_const.prodMk ((proj h).continuous.comp (cont_neg h f))))).aestronglyMeasurable`. Introduce `a`.
+
+Use `Filter.Eventually.of_forall fun w => ?_` and prove the remaining obligations. Rewrite using `[h.2.2.1]`. Use `(norm_integral_le_integral_norm _).trans (le_of_eq ?_)` and prove the remaining obligations. Simplify using `only [norm_smul, h.2.2.1]`. Rewrite using `[integral_mul_const]`.
+
+Use `Filter.Eventually.of_forall fun w => ?_` and prove the remaining obligations. Conclude with `h.continuous (by fun_prop) (hc.comp (continuous_id.prodMk continuous_const))`.
+-/
 theorem continuous_twist_intw {h : IsHeis (omJ J) ρ} {f : B} (hf : Good h f) :
     Continuous fun a : V →L[ℝ] V => ∫ w, ρ (a w) (∫ u, gau u • ρ (a u) (proj h (ρ (-w) f))) := by
   have hc := continuous_twist_proj h
@@ -276,6 +402,9 @@ theorem continuous_twist_intw {h : IsHeis (omJ J) ρ} {f : B} (hf : Good h f) :
   · refine Filter.Eventually.of_forall fun w => ?_
     exact h.continuous (by fun_prop) (hc.comp (continuous_id.prodMk continuous_const))
 
+/- English proof (translation)
+Set `e : V ≃ₗᵢ[ℝ] V` to `LinearIsometryEquiv.ofSurjective ⟨a.toLinearMap, hn⟩ fun v => ⟨b v, hab v⟩`. Establish `he : ∀ v, e v = a v` using `fun v => rfl`. Rewrite using `[proj_apply, proj_apply, ← e.measurePreserving.integral_comp e.toHomeomorph.measurableEmbedding (fun u => gau u • ρ u x)]`. Simplify using `only [he, gau, hn]`.
+-/
 theorem proj_twist_of_isometry (h : IsHeis (omJ J) ρ) (a b : V →L[ℝ] V) (hab : ∀ v, a (b v) = v)
     (ha : ∀ x y, omJ J (a x) (a y) = omJ J x y) (hn : ∀ x, ‖a x‖ = ‖x‖) (x : B) :
     proj (h.twist a ha) x = proj h x := by
@@ -289,9 +418,15 @@ section Group
 
 variable {G : Type} [Group G] {k : G →* (V →L[ℝ] V)} {c : G → ℂ}
 
+/- English proof (translation)
+Rewrite using `[map_mul]`. Both sides reduce to the same expression.
+-/
 theorem k_mul (k : G →* (V →L[ℝ] V)) (g g' : G) (v : V) : k (g * g') v = k g (k g' v) := by
   rw [map_mul]; rfl
 
+/- English proof (translation)
+Rewrite using `[← k_mul, mul_inv_cancel, map_one]`. Both sides reduce to the same expression.
+-/
 theorem k_inv (k : G →* (V →L[ℝ] V)) (g : G) (v : V) : k g (k g⁻¹ v) = v := by
   rw [← k_mul, mul_inv_cancel, map_one]; rfl
 
@@ -306,47 +441,84 @@ def osc (h : IsHeis (omJ J) ρ) (hk : ∀ g x y, omJ J (k g x) (k g y) = omJ J x
 
 variable (hJ : ∀ x, J (J x) = -x) (h : IsHeis (omJ J) ρ) (hk : ∀ g x y, omJ J (k g x) (k g y) = omJ J x y)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem vacOp_apply (g : G) (x : B) : vacOp h hk c g x = c g • pr h hk g (proj h x) := rfl
 
+/- English proof (translation)
+Simplify using `[proj_apply]`.
+-/
 theorem pr_one (x : B) : pr h hk 1 x = proj h x := by
   simp [proj_apply]
 
 include hJ
 
+/- English proof (translation)
+Simplify using `only [vacOp_apply, proj_proj hJ]`.
+-/
 theorem vacOp_proj (g : G) (x : B) : vacOp h hk c g (proj h x) = vacOp h hk c g x := by
   simp only [vacOp_apply, proj_proj hJ]
 
+/- English proof (translation)
+Simplify using `only [vacOp_apply, map_smul, proj_proj hJ]`.
+-/
 theorem proj_vacOp (g : G) (x : B) : pr h hk g (vacOp h hk c g x) = vacOp h hk c g x := by
   simp only [vacOp_apply, map_smul, proj_proj hJ]
 
+/- English proof (translation)
+Use `sm_comp (k g⁻¹) ((good_intw hJ (h.twist (k g) (hk g)) (vacOp_proj (c := c) hJ h hk g) (proj_vacOp hJ h hk g) (good_of_sm hJ h hf)).sm hJ)` as an intermediate fact. Simplify using `only [k_inv] at this`. Conclude with `this`.
+-/
 theorem sm_osc (g : G) {f : B} (hf : Sm ρ f) : Sm ρ (osc h hk c g f) := by
   have := sm_comp (k g⁻¹) ((good_intw hJ (h.twist (k g) (hk g)) (vacOp_proj (c := c) hJ h hk g)
     (proj_vacOp hJ h hk g) (good_of_sm hJ h hf)).sm hJ)
   simp only [k_inv] at this
   exact this
 
+/- English proof (translation)
+The claim follows from `intw_heis hJ (h.twist (k g) (hk g)) (vacOp_proj hJ h hk g) (proj_vacOp hJ h hk g) hf v`.
+-/
 theorem osc_heis (g : G) (v : V) {f : B} (hf : Sm ρ f) : osc h hk c g (ρ v f) = ρ (k g v) (osc h hk c g f) :=
   intw_heis hJ (h.twist (k g) (hk g)) (vacOp_proj hJ h hk g) (proj_vacOp hJ h hk g) hf v
 
+/- English proof (translation)
+Use `proj_heis_intw hJ (h.twist (k g) (hk g)) (vacOp_proj (c := c) hJ h hk g) (proj_vacOp hJ h hk g) (good_of_sm hJ h hf) 0` as an intermediate fact. Simplify using `only [map_zero, h.1] at this`. Conclude with `this`.
+-/
 theorem pr_osc (g : G) {f : B} (hf : Sm ρ f) : pr h hk g (osc h hk c g f) = c g • pr h hk g (proj h f) := by
   have := proj_heis_intw hJ (h.twist (k g) (hk g)) (vacOp_proj (c := c) hJ h hk g)
     (proj_vacOp hJ h hk g) (good_of_sm hJ h hf) 0
   simp only [map_zero, h.1] at this
   exact this
 
+/- English proof (translation)
+Use `(intw_proj hJ (h.twist (k g) (hk g)) (vacOp_proj (c := c) hJ h hk g) (proj_vacOp hJ h hk g) hf (k g') (k g'⁻¹) (k_inv k g') (hk g')).trans ?_` and prove the remaining obligations. Simplify using `only [proj_apply, k_mul, osc]`.
+-/
 theorem osc_pr (g g' : G) {f : B} (hf : Sm ρ f) :
     osc h hk c g (pr h hk g' f) = pr h hk (g * g') (osc h hk c g f) := by
   refine (intw_proj hJ (h.twist (k g) (hk g)) (vacOp_proj (c := c) hJ h hk g)
     (proj_vacOp hJ h hk g) hf (k g') (k g'⁻¹) (k_inv k g') (hk g')).trans ?_
   simp only [proj_apply, k_mul, osc]
 
+/- English proof (translation)
+Rewrite using `[← pr_osc hJ h hk g hf, ← pr_one h hk, osc_pr hJ h hk g 1 hf, mul_one]`.
+-/
 theorem osc_proj (g : G) {f : B} (hf : Sm ρ f) : osc h hk c g (proj h f) = c g • pr h hk g (proj h f) := by
   rw [← pr_osc hJ h hk g hf, ← pr_one h hk, osc_pr hJ h hk g 1 hf, mul_one]
 
+/- English proof (translation)
+Use `Eq.trans ?_ ((good_of_sm hJ h hf).inversion hJ)` and prove the remaining obligations. Simplify using `only [osc, intw, vacOp_apply, pr_one, proj_proj hJ, hc, one_smul, map_one, ContinuousLinearMap.one_apply]`.
+-/
 theorem osc_one (hc : c 1 = 1) {f : B} (hf : Sm ρ f) : osc h hk c 1 f = f := by
   refine Eq.trans ?_ ((good_of_sm hJ h hf).inversion hJ)
   simp only [osc, intw, vacOp_apply, pr_one, proj_proj hJ, hc, one_smul, map_one, ContinuousLinearMap.one_apply]
 
+/- English proof (translation)
+Rewrite using `[← sub_eq_zero]`. Use `set y := (c g * c g') • pr h hk (g * g') (pr h hk g (proj h x)) - c (g * g') • pr h hk (g * g') (proj h x) with hy`. Establish `h1 : proj h y = 0`. Rewrite using `[hy, map_sub, map_smul, map_smul, proj_twist_twist_proj hJ h _ _ (hk _) (hk _), proj_twist_proj hJ h _ (k (g * g')) (fun _ => rfl), smul_smul, smul_smul, hm, sub_self]`. Establish `h2 : pr h hk (g * g') y = y`.
+
+Simplify using `only [hy, map_sub, map_smul, proj_proj hJ]`. Establish `h3` using `proj_twist_proj hJ (h.twist (k (g * g')) (hk _)) h (k (g * g')⁻¹) (fun u => by simp only [k_inv]) y`. Establish `h4 : lam (k (g * g')⁻¹) ≠ 0` using `fun e => by`. Use `hl (g * g')⁻¹` as an intermediate fact. Rewrite `this` using `[e, mul_zero]`.
+
+Conclude with `zero_ne_one this`. Rewrite `h3` using `[h2, h1, map_zero]`. Conclude with `(smul_eq_zero.1 h3.symm).resolve_left h4`.
+-/
 theorem scalar_mul (hl : ∀ g, star (c g) * c g * lam (k g) = 1)
     (hm : ∀ g g', c g * c g' * mu J (k (g * g')) (k g) = c (g * g') * lam (k (g * g'))) (g g' : G) (x : B) :
     (c g * c g') • pr h hk (g * g') (pr h hk g (proj h x)) = c (g * g') • pr h hk (g * g') (proj h x) := by
@@ -365,6 +537,11 @@ theorem scalar_mul (hl : ∀ g, star (c g) * c g * lam (k g) = 1)
   rw [h2, h1, map_zero] at h3
   exact (smul_eq_zero.1 h3.symm).resolve_left h4
 
+/- English proof (translation)
+Establish `s1` using `sm_osc (c := c) hJ h hk g' hf`. Use `good_ext hJ (h := h.twist (k (g * g')) (hk _)) (good_of_sm hJ _ (sm_comp _ (sm_osc hJ h hk _ hf))) (good_of_sm hJ _ (sm_comp _ (sm_osc hJ h hk _ s1))) fun v => ?_` and prove the remaining obligations. Establish `s2` using `sm_heis h v hf`. Establish `s3 : Sm ρ (proj h (ρ v f))` using `(good_proj hJ h _).sm hJ`. Use `show pr h hk (g * g') _ = pr h hk (g * g') _`.
+
+Rewrite using `[← osc_heis hJ h hk _ v hf, pr_osc hJ h hk _ s2, k_mul, ← osc_heis hJ h hk _ _ s1, ← osc_heis hJ h hk _ v hf, ← osc_pr hJ h hk _ _ (sm_osc hJ h hk _ s2), pr_osc hJ h hk _ s2, osc, intw_smul, ← osc, osc_pr hJ h hk _ _ s3, osc_proj hJ h hk _ s2, map_smul, smul_smul, mul_comm (c g') …`.
+-/
 theorem osc_mul (hl : ∀ g, star (c g) * c g * lam (k g) = 1)
     (hm : ∀ g g', c g * c g' * mu J (k (g * g')) (k g) = c (g * g') * lam (k (g * g'))) (g g' : G) {f : B}
     (hf : Sm ρ f) : osc h hk c (g * g') f = osc h hk c g (osc h hk c g' f) := by
@@ -378,6 +555,9 @@ theorem osc_mul (hl : ∀ g, star (c g) * c g * lam (k g) = 1)
     ← osc_pr hJ h hk _ _ (sm_osc hJ h hk _ s2), pr_osc hJ h hk _ s2, osc, intw_smul, ← osc,
     osc_pr hJ h hk _ _ s3, osc_proj hJ h hk _ s2, map_smul, smul_smul, mul_comm (c g'), scalar_mul hJ h hk hl hm]
 
+/- English proof (translation)
+Use `norm_intw hJ (h.twist (k g) (hk g)) hΦ (fun v => hΦ _) (vacOp_proj hJ h hk g) (proj_vacOp hJ h hk g) (fun x => ?_) (good_of_sm hJ h hf)` and prove the remaining obligations. Establish `e : inner ℂ (Φ (pr h hk g (proj h x))) (Φ (pr h hk g (proj h x))) = lam (k g) * inner ℂ (Φ (proj h x)) (Φ (proj h x))`. Rewrite using `[inner_proj hJ (h.twist (k g) (hk g)) (fun v => hΦ _), proj_proj hJ, inner_proj hJ h hΦ, proj_twist_proj hJ h _ (k g) (fun _ => rfl), map_smul, inner_smul_right, inner_proj hJ h hΦ, proj_proj hJ]`. Rewrite using `[vacOp_apply, map_smul, inner_smul_left, inner_smul_right, e, ← mul_assoc, ← mul_assoc]`. Conclude with `(congrArg (· * _) (hl g)).trans (one_mul _)`.
+-/
 theorem norm_osc (hl : ∀ g, star (c g) * c g * lam (k g) = 1) {H : Type} [NormedAddCommGroup H]
     [InnerProductSpace ℂ H] [CompleteSpace H] (Φ : B →L[ℂ] H) (hΦ : ∀ v f, ‖Φ (ρ v f)‖ = ‖Φ f‖) (g : G) {f : B}
     (hf : Sm ρ f) : ‖Φ (osc h hk c g f)‖ = ‖Φ f‖ := by
@@ -392,6 +572,15 @@ theorem norm_osc (hl : ∀ g, star (c g) * c g * lam (k g) = 1) {H : Type} [Norm
 
 end Group
 
+/- English proof (translation)
+Introduce `V _ _ _ _ _ B _ _ _ J ρ hJ h G _ k c hk hc hl hm`. Use `⟨osc h hk c, ⟨fun g f f' hf hf' => ?_, fun g a f _ => intw_smul a f, fun g f hf => sm_osc hJ h hk g hf, fun f hf => osc_one hJ h hk hc hf, fun g g' f hf => osc_mul hJ h hk hl hm g g' hf, fun g v f hf => osc_heis hJ h hk g v hf, fun g A hA f hf => ?_, fun H _ _ _ Φ hΦ g f hf => no …` and prove the remaining obligations. Conclude with `intw_add (h.twist (k g) (hk g)) (vacOp_proj hJ h hk g) (good_of_sm hJ h hf) (good_of_sm hJ h hf')`. Use `intw_comm (h.twist (k g) (hk g)) (vacOp_proj hJ h hk g) (good_of_sm hJ h hf) A hA (fun v => hA _) fun x => ?_` and prove the remaining obligations. Rewrite using `[vacOp_apply, vacOp_apply, map_smul, proj_comm (h.twist (k g) (hk g)) A (fun v => hA _), proj_comm h A hA]`.
+
+Use `(hcγ.smul ((continuous_twist_intw (good_of_sm hJ h hf)).comp hγ)).congr fun y => ?_` and prove the remaining obligations. Simplify using `only [osc, intw, vacOp_apply, map_smul, integral_smul]`. Both sides reduce to the same expression. Establish `hfa' : pr h hk a f = f` using `hfa`. Establish `s0` using `sm_osc (c := c) hJ h hk a⁻¹ hf`.
+
+Establish `e0 : proj h (osc h hk c a⁻¹ f) = osc h hk c a⁻¹ f`. Rewrite using `[← pr_one h hk, ← inv_mul_cancel a, ← osc_pr hJ h hk _ _ hf, hfa']`. Establish `e1 : osc h hk c g (osc h hk c a⁻¹ f) = c g • osc h hk c a⁻¹ f`. Use `osc_proj (c := c) hJ h hk g s0` as an intermediate fact. Apply the tactic sequence `rw [proj_twist_of_isometry h (k g) (k g⁻¹) (k_inv k g) (hk g) hg, e0, e0] at this`.
+
+Conclude with `this`. Rewrite using `[osc_mul hJ h hk hl hm _ _ hf, osc_mul hJ h hk hl hm _ _ s0, e1, osc, intw_smul, ← osc, ← osc_mul hJ h hk hl hm _ _ hf, mul_inv_cancel, osc_one hJ h hk hc hf]`.
+-/
 theorem exists_isOsc : ∀ (V : Type) [NormedAddCommGroup V] [InnerProductSpace ℝ V] [FiniteDimensional ℝ V] [MeasurableSpace V] [BorelSpace V] (B : Type) [NormedAddCommGroup B] [NormedSpace ℂ B] [CompleteSpace B] (J : V ≃ₗᵢ[ℝ] V) (ρ : V → B →L[ℂ] B), (∀ x, J (J x) = -x) → ∀ h : IsHeis (omJ J) ρ, ∀ (G : Type) [Group G] (k : G →* (V →L[ℝ] V)) (c : G → ℂ), (∀ g x y, omJ J (k g x) (k g y) = omJ J x y) → c 1 = 1 → (∀ g, star (c g) * c g * lam (k g) = 1) → (∀ g g', c g * c g' * mu J (k (g * g')) (k g) = c (g * g') * lam (k (g * g'))) → ∃ Ω : G → B → B, IsOsc ρ (fun g v => k g v) Ω ∧ (∀ (Y : Type) [TopologicalSpace Y] (γ : Y → G), Continuous (fun y => k (γ y)) → Continuous (fun y => c (γ y)) → ∀ f, Sm ρ f → Continuous fun y => Ω (γ y) f) ∧ ∀ a g, (∀ x, ‖k g x‖ = ‖x‖) → ∀ f, Sm ρ f → ∫ u, gau u • ρ (k a u) f = f → Ω (a * g * a⁻¹) f = c g • f := by
   intro V _ _ _ _ _ B _ _ _ J ρ hJ h G _ k c hk hc hl hm
   refine ⟨osc h hk c, ⟨fun g f f' hf hf' => ?_, fun g a f _ => intw_smul a f, fun g f hf => sm_osc hJ h hk g hf,

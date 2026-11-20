@@ -8,6 +8,11 @@ open CategoryTheory AlgebraicGeometry
 
 namespace GlobalTheory.Published
 
+/- English proof (translation)
+Introduce `k _ X Y _ _ p q D hX hY π hπ hg hm`. Establish `key (L : HermLB p) (a : ℝ) (ha : L.IsSelfInter a) : (L.pull π hπ).IsSelfInter ((π.residueDegree (genericPoint Y) : ℝ) * a)`. Take `⟨h, hh, rfl⟩` from `ha`. Use `H k X Y p q D D hX hY π hπ (by` as an intermediate fact. Rewrite using `[hg, (genericPoint_spec X).def]`.
+
+Conclude with `(IsHomeomorph.topologicalKrullDim_eq _ (Homeomorph.Set.univ X).isHomeomorph).trans hX.dim_eq) hm L h hh`. Conclude with `(congrArg (fun x => (π.residueDegree (genericPoint Y) : ℝ) * h x) hg) ▸ this`. Use `⟨key, fun ι _ L Φ hΦ => ⟨fun n => ?_, fun P d hd hP => ?_⟩⟩` and prove the remaining obligations. Conclude with `(ArInt.isometric_comb_pull L n π hπ).symm.isSelfInter hY (key _ _ (hΦ.1 n))`. Rewrite using `[LinearMap.smul_apply, hΦ.2 P d hd hP, smul_zero]`.
+-/
 theorem arProj_of_heightProjection (H : HeightProjection) : ArProj := by
   intro k _ X Y _ _ p q D hX hY π hπ hg hm
   have key (L : HermLB p) (a : ℝ) (ha : L.IsSelfInter a) :

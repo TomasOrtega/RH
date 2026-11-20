@@ -25,12 +25,21 @@ structure IsAmb (p : X ⟶ Sp k) : Prop where
 
   isProjOver : IsProjOver p
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨h.isDomain, h.finite, h.isProjOver⟩`.
+-/
 theorem isAmb_of_isArithVar {p : X ⟶ Sp k} {D : ℕ} (h : IsArithVar p D) : IsAmb p :=
   ⟨h.isDomain, h.finite, h.isProjOver⟩
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨h.isDomain, h.finite, GlobalTheory.isProjOver_comp_of_finite k X Y i p inferInstance h.isProjOver⟩`.
+-/
 theorem IsAmb.sub {p : X ⟶ Sp k} (h : IsAmb p) (i : Y ⟶ X) [IsClosedImmersion i] : IsAmb (i ≫ p) :=
   ⟨h.isDomain, h.finite, GlobalTheory.isProjOver_comp_of_finite k X Y i p inferInstance h.isProjOver⟩
 
+/- English proof (translation)
+Use `haveI := h.finite`. Use `haveI : IsNoetherianRing k := isNoetherian_of_tower ℤ (inferInstance : IsNoetherian ℤ k)`. Conclude with `GlobalTheory.isNoetherian_of_isProjOver h.isProjOver`.
+-/
 theorem IsAmb.isNoetherian {p : X ⟶ Sp k} (h : IsAmb p) : IsNoetherian X := by
 
   haveI := h.finite
@@ -52,6 +61,9 @@ instance (x : X) : IsIntegral (clo x) :=
 instance [IsLocallyNoetherian X] (x : X) : IsLocallyNoetherian (clo x) :=
   LocallyOfFiniteType.isLocallyNoetherian (cloι x)
 
+/- English proof (translation)
+The claim follows from `(exists_isClosedImmersion_genericPoint x).choose_spec.choose_spec.choose_spec.choose_spec`.
+-/
 theorem cloι_genericPoint (x : X) : cloι x (genericPoint (clo x)) = x :=
   (exists_isClosedImmersion_genericPoint x).choose_spec.choose_spec.choose_spec.choose_spec
 
@@ -99,6 +111,9 @@ structure IsMix (p : X ⟶ Sp k) (m : ℕ) (T : ∀ d : ℕ, (Fin d → HermLB p
     (∀ a, ((L a).pull i hi).Isometric (L' a)) → ∀ (r : M'.B.ι → Y.functionFieldˣ) (hr : IsRatSec M'.B r),
       T (e + 1) (Fin.cons M L) (i (genericPoint Y)) = recVal (fun z => T e L (i z)) L' M' hr
 
+/- English proof (translation)
+The claim follows from `rfl symm _ _ _ _ _ _ := rfl add := by intros; omega zero _ _ _ := rfl recur := by intros; omega`.
+-/
 theorem isMix_zero (p : X ⟶ Sp k) : IsMix p 0 fun _ _ x => Real.log (Nat.card (X.residueField x)) where
   iso _ _ _ _ _ _ _ := rfl
   symm _ _ _ _ _ _ := rfl

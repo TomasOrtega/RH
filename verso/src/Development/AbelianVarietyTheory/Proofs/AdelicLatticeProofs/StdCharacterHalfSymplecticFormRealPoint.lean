@@ -10,18 +10,27 @@ open GlobalTheory.FockCompare GlobalTheory.VacUnique
 
 namespace GlobalTheory.OrientedChar
 
+/- English proof (translation)
+Use `Matrix.inv_eq_left_inv ?_` and prove the remaining obligations. Rewrite using `[← Matrix.map_mul, Matrix.nonsing_inv_mul _ (isUnit_iff_ne_zero.2 h), Matrix.map_one _ τ.map_zero τ.map_one]`.
+-/
 theorem map_inv_field {E : Type} [Field E] (τ : E →+* ℂ) {n : ℕ} (G : Matrix (Fin n) (Fin n) E) (h : G.det ≠ 0) :
     (G.map τ)⁻¹ = G⁻¹.map τ := by
   refine Matrix.inv_eq_left_inv ?_
   rw [← Matrix.map_mul, Matrix.nonsing_inv_mul _ (isUnit_iff_ne_zero.2 h),
     Matrix.map_one _ τ.map_zero τ.map_one]
 
+/- English proof (translation)
+Simplify using `only [map_sum, map_mul]`.
+-/
 theorem ringHom_map_quadrupleSum_products {A B : Type} [CommRing A] [CommRing B] (φ : A →+* B) {m n : ℕ}
     (P : Fin n → Fin n → A) (y : Fin m → Fin n → A) (Q : Fin m → Fin m → A) (x : Fin m → Fin n → A) :
     φ (∑ a, ∑ b, ∑ c, ∑ d, P a b * y c b * Q c d * x d a) =
       ∑ a, ∑ b, ∑ c, ∑ d, φ (P a b) * φ (y c b) * φ (Q c d) * φ (x d a) := by
   simp only [map_sum, map_mul]
 
+/- English proof (translation)
+Simplify using `only [Matrix.trace, Matrix.diag_apply, Matrix.mul_apply, Matrix.conjTranspose_apply, Finset.sum_mul, Complex.star_def]`. Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_comm]`. Use `(Finset.sum_congr rfl fun c _ => Finset.sum_comm).trans ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_comm]`.
+-/
 theorem trace_four {m n : ℕ} (P : Matrix (Fin n) (Fin n) ℂ) (y : Matrix (Fin m) (Fin n) ℂ)
     (Q : Matrix (Fin m) (Fin m) ℂ) (x : Matrix (Fin m) (Fin n) ℂ) :
     (P * yᴴ * Q * x).trace = ∑ a, ∑ b, ∑ c, ∑ d, P a b * starRingEnd ℂ (y c b) * Q c d * x d a := by
@@ -34,6 +43,11 @@ theorem trace_four {m n : ℕ} (P : Matrix (Fin n) (Fin n) ℂ) (y : Matrix (Fin
 
 variable {D : D7}
 
+/- English proof (translation)
+Establish `hi : ∀ e, ((θ τ).comp (infPart D)) (incA D e) = tauE D τ e` using `comp_incA hθ τ`. Establish `hc : ∀ z, ((θ τ).comp (infPart D)) (cA D z) = starRingEnd ℂ (((θ τ).comp (infPart D)) z)` using `comp_cA hθ τ`. Establish `hg : (gramAt D S τ)⁻¹ = S.gram⁻¹.map (tauE D τ)` using `map_inv_field _ _ (Formalism.L2.Theta.gram_det_ne S)`. Unfold `hO hAt`. Use `(ringHom_map_quadrupleSum_products ((θ τ).comp (infPart D)) (fun a b => incA D (S.gram⁻¹ a b)) (fun c b => cA D (y c b)) (fun c d => incA D (T.gram c d)) x).trans ?_` and prove the remaining obligations.
+
+Rewrite using `[hg]`. Use `Eq.trans ?_ (trace_four _ _ _ _).symm` and prove the remaining obligations. Simplify using `only [hi, hc]`. Both sides reduce to the same expression.
+-/
 theorem comp_hO {θ : InfFam D} (hθ : IsInfFam θ) (S T : HSp D) (τ : D.what₂.Tau) (x y : WO S T) :
     θ τ (infPart D (hO S T x y)) = hAt S T τ (piW θ T S x τ) (piW θ T S y τ) := by
   have hi : ∀ e, ((θ τ).comp (infPart D)) (incA D e) = tauE D τ e := comp_incA hθ τ
@@ -47,12 +61,20 @@ theorem comp_hO {θ : InfFam D} (hθ : IsInfFam θ) (S T : HSp D) (τ : D.what�
   simp only [hi, hc]
   rfl
 
+/- English proof (translation)
+Unfold `valTau symplO omAt`. Rewrite using `[SymplVal.trace_AE, RingHom.map_add, RingHom.map_add, comp_cA hθ, RingHom.map_mul, RingHom.map_mul, comp_incA hθ, comp_hO hθ, Complex.add_re, Complex.conj_re, two_mul]`.
+-/
 theorem valTau_symplO {θ : InfFam D} (hθ : IsInfFam θ) (S T : HSp D) (τ : D.what₂.Tau) (x y : WO S T) :
     valTau θ τ (symplO S T x y) = omAt S T τ (piW θ T S x τ) (piW θ T S y τ) := by
   unfold valTau symplO omAt
   rw [SymplVal.trace_AE, RingHom.map_add, RingHom.map_add, comp_cA hθ, RingHom.map_mul, RingHom.map_mul,
     comp_incA hθ, comp_hO hθ, Complex.add_re, Complex.conj_re, two_mul]
 
+/- English proof (translation)
+Establish `h : ∀ w : AE D, finPart D (cA D w) = sigR (Af D.host.F) D.sp.cm.sig (finPart D w)`. Introduce `w`. Proceed by induction on `w using TensorProduct.induction_on with`. Consider the case `zero => simp only [map_zero]`. Consider the case `add a b ha hb => simp only [map_add, ha, hb]`.
+
+Consider the case `tmul a e => rfl`. Rewrite using `[h, hz, map_zero]`.
+-/
 theorem finPart_cA_eq_zero {z : AE D} (hz : finPart D z = 0) : finPart D (cA D z) = 0 := by
   have h : ∀ w : AE D, finPart D (cA D w) = sigR (Af D.host.F) D.sp.cm.sig (finPart D w) := by
     intro w
@@ -62,6 +84,11 @@ theorem finPart_cA_eq_zero {z : AE D} (hz : finPart D z = 0) : finPart D (cA D z
     | tmul a e => rfl
   rw [h, hz, map_zero]
 
+/- English proof (translation)
+Unfold `hO`. Use `(ringHom_map_quadrupleSum_products (finPart D) (fun a b => incA D (S.gram⁻¹ a b)) (fun c b => cA D (y c b)) (fun c d => incA D (T.gram c d)) x).trans ?_` and prove the remaining obligations. Use `Finset.sum_eq_zero fun a _ => Finset.sum_eq_zero fun b _ => Finset.sum_eq_zero fun c _ => Finset.sum_eq_zero fun d _ => ?_` and prove the remaining obligations. Break down `h with h | h` into its components or cases. Establish `e : finPart D (x d a) = 0` using `congrFun (congrFun h d) a`.
+
+Rewrite using `[e, mul_zero]`. Establish `e : finPart D (y c b) = 0` using `congrFun (congrFun h c) b`. Rewrite using `[finPart_cA_eq_zero e, mul_zero, zero_mul, zero_mul]`.
+-/
 theorem finPart_hO (S T : HSp D) {x y : WO S T} (h : x.map (finPart D) = 0 ∨ y.map (finPart D) = 0) :
     finPart D (hO S T x y) = 0 := by
   unfold hO
@@ -75,6 +102,11 @@ theorem finPart_hO (S T : HSp D) {x y : WO S T} (h : x.map (finPart D) = 0 ∨ y
   · have e : finPart D (y c b) = 0 := congrFun (congrFun h c) b
     rw [finPart_cA_eq_zero e, mul_zero, zero_mul, zero_mul]
 
+/- English proof (translation)
+Establish `h0 : finPart D (incA D D.host.xi0 * hO S T x y) = 0`. Rewrite using `[RingHom.map_mul, finPart_hO S T h, mul_zero]`. Establish `h1 : finPart D (algebraMap (AF D.host.F) (AE D) (symplO S T x y)) = 0`. Unfold `symplO`. Rewrite using `[SymplVal.trace_AE, RingHom.map_add, h0, finPart_cA_eq_zero h0, add_zero]`.
+
+Establish `hinj` using `Algebra.TensorProduct.includeLeft_injective (R := D.host.F) (S := D.host.F) (A := Af D.host.F) (B := D.host.E) (algebraMap D.host.F D.host.E).injective`. Apply `hinj` to reduce the goal to its premises. Rewrite using `[map_zero]`. Conclude with `h1`.
+-/
 theorem sndA_symplO (S T : HSp D) {x y : WO S T} (h : x.map (finPart D) = 0 ∨ y.map (finPart D) = 0) :
     sndA D.host.F (symplO S T x y) = 0 := by
   have h0 : finPart D (incA D D.host.xi0 * hO S T x y) = 0 := by
@@ -88,6 +120,9 @@ theorem sndA_symplO (S T : HSp D) {x y : WO S T} (h : x.map (finPart D) = 0 ∨ 
   rw [map_zero]
   exact h1
 
+/- English proof (translation)
+Introduce `D θ ψ hθ hψ S T x y h`. Take `⟨σ, hσ⟩` from `GlobalTheory.RealLineAt.exists_inverse_chart hθ`. Establish `e` using `(real_adele_ext_and_char D θ σ hσ _ (sndA_symplO S T h)).2 ψ hψ`. Rewrite `e` using `[Finset.sum_congr rfl fun τ _ => valTau_symplO hθ S T τ x y]`. Conclude with `e`.
+-/
 theorem char_symplOH : ∀ (D : D7) (θ : InfFam D) (ψ : AddChar (AF D.host.F) ℂ), IsInfFam θ → IsStdChar D ψ (-1) →
     ∀ (S T : HSp D) (x y : WO S T), (x.map (finPart D) = 0 ∨ y.map (finPart D) = 0) →
       ψ (symplOH S T x y) =

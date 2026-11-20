@@ -16,9 +16,23 @@ namespace GlobalTheory.ProjCore
 
 variable {D : D7}
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem rat_entry' {m n : ℕ} (A : Matrix (Fin m) (Fin n) D.host.E) (i : Fin m) (j : Fin n) :
     (rat A : Mx D m n) i j = (1 : AF D.host.F) ⊗ₜ[D.host.F] A i j := rfl
 
+/- English proof (translation)
+Establish `key : ∀ X ∈ I • homLat ΛS ΛT, M * X ∈ I • homLat ΛS ΛT`. Introduce `X hX`. Use `Submodule.smul_induction_on hX (fun r hr Y hY => ?_) (fun a b ha hb => ?_)` and prove the remaining obligations. Rewrite using `[Matrix.mul_smul]`. Use `Submodule.smul_mem_smul hr ?_` and prove the remaining obligations.
+
+Introduce `y hy`. Rewrite using `[← Matrix.mulVec_mulVec]`. Conclude with `hM _ (hY _ hy)`. Rewrite using `[Matrix.mul_add]`. Conclude with `add_mem ha hb`.
+
+Proceed by induction on `hz using AddSubgroup.closure_induction with`. Consider the case `mem w hw`. Take `⟨α, hα, X, hX, rfl⟩` from `hw`. Use `AddSubgroup.subset_closure ⟨α, hα, M * X, key X hX, ?_⟩` and prove the remaining obligations. Use extensionality with `i j`.
+
+Simplify using `only [Matrix.mul_apply, Matrix.of_apply, TensorProduct.tmul_sum, rat_entry', Algebra.TensorProduct.tmul_mul_tmul, one_mul]`. Consider the case `zero => rw [Matrix.mul_zero]`. Conclude with `zero_mem _`. Consider the case `add x y _ _ hx hy => rw [Matrix.mul_add]`. Conclude with `add_mem hx hy`.
+
+Consider the case `neg x _ hx => rw [Matrix.mul_neg]`. Conclude with `neg_mem hx`.
+-/
 theorem rat_mul_mem_hatMx {m n : ℕ} {ΛS : Submodule (𝓞 D.host.E) (Fin n → D.host.E)}
     {ΛT : Submodule (𝓞 D.host.E) (Fin m → D.host.E)} (M : Matrix (Fin m) (Fin m) D.host.E)
     (hM : ∀ y ∈ ΛT, M *ᵥ y ∈ ΛT) (I : Ideal (𝓞 D.host.E)) {z : Mx D m n} (hz : z ∈ hatMx (I • homLat ΛS ΛT)) :
@@ -43,6 +57,17 @@ theorem rat_mul_mem_hatMx {m n : ℕ} {ΛS : Submodule (𝓞 D.host.E) (Fin n �
   | add x y _ _ hx hy => rw [Matrix.mul_add]; exact add_mem hx hy
   | neg x _ hx => rw [Matrix.mul_neg]; exact neg_mem hx
 
+/- English proof (translation)
+Introduce `D hq T L μ0 hL sc G W M hM F hF u hu`. Establish `hz` using `hF.zA`. Establish `hqa : F.oz.qA * G.sp.dec0.a = 0`. Establish `hp` using `G.sp.dec0.perp`. Rewrite `hp` using `[show Formalism.UG.cT (D.sp.cm.sig : D.host.E →+* D.host.E) (frameMat (G.sp.P 0).sp (Yc D 0) G.sp.dec0.ι) = (frameMat (G.sp.P 0).sp (Yc D 0) G.sp.dec0.ι)ᴴ from Matrix.ext fun _ _ => rfl, ← hz]`.
+
+Rewrite using `[OrthDec.qA, Matrix.mul_assoc, hp, Matrix.mul_zero]`. Establish `hmap : ∀ x ∈ G.Λ (.core 0), (F.oz.iA * F.oz.qA) *ᵥ x ∈ G.Λ (.core 0)`. Introduce `x hx`. Establish `hx' : x ∈ G.sp.dec0.lat (L.ΛY 0) (fun _ => 1)` using `by rw [← G.sp.lat0]; exact hx`. Take `⟨y, hy, c, hc, rfl⟩` from `hx'`.
+
+Use `show _ ∈ (G.sp.P 0).lat`. Rewrite using `[G.sp.lat0]`. Use `⟨y, hy, 0, fun _ => Submodule.zero_mem _, ?_⟩` and prove the remaining obligations. Rewrite using `[Matrix.mulVec_add, Matrix.mulVec_zero, add_zero, ← hz, Matrix.mulVec_mulVec, Matrix.mulVec_mulVec, Matrix.mul_assoc, F.oz.qA_iA, Matrix.mul_one, Matrix.mul_assoc, hqa, Matrix.mul_zero, Matrix.zero_mulVec, add_zero]`. Establish `he : F.oz.jA ⬝ (F.oz.pA ⬝ u) = (rat (F.oz.iA * F.oz.qA) : Mx D _ _) ⬝ u`.
+
+Rewrite using `[rat_mul, ← Matrix.mul_assoc]`. Both sides reduce to the same expression. Rewrite using `[he]`. Use `⟨?_, fun e he' => ?_⟩` and prove the remaining obligations. Conclude with `GlobalTheory.OverTgt.mul_mem_latO (LT := G.Λ (.core 0)) (LT' := G.Λ (.core 0)) _ (fun y hy => GlobalTheory.OrthSumLat.rat_mulVec_mem_latV _ hmap hy) hu.1`.
+
+Rewrite using `[← Matrix.mul_smul]`. Conclude with `rat_mul_mem_hatMx _ hmap _ (hu.2 e he')`.
+-/
 theorem proj_mem_latCore : OnStd fun {D} _ _ _ {G} _ F => ∀ u ∈ latCore G 0, F.oz.jA ⬝ (F.oz.pA ⬝ u) ∈ latCore G 0 := by
   intro D hq T L μ0 hL sc G W M hM F hF u hu
   have hz := hF.zA

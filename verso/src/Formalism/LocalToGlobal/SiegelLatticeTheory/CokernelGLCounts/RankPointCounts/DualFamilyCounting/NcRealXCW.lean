@@ -11,6 +11,41 @@ namespace Formalism.L2.SG.RealObj.InfCut.JacobianCoordinates.JL
 
 open Formalism.L2.SG.RealObj CoordinateScalingProducts
 
+/- English proof (translation)
+Establish `hlam0 : ∀ a, lam r sc a ≠ 0` using `lam_ne hsc`. Establish `hΛ0 : 0 < lamW r k sc` using `Finset.prod_pos fun a _ => pow_pos (norm_pos_iff.2 (hlam0 a)) _`. Establish `hN0 : 0 < nrm r sc` using `Complex.normSq_pos.2 (Finset.prod_ne_zero_iff.2 fun a _ => hlam0 a)`. Establish `hpos : 0 < 2 ^ (r + 1) * nrm r sc * lamW r k sc` using `mul_pos (mul_pos (by positivity) hN0) hΛ0`. Establish `hDl : ∀ l, Continuous fun c : Fin (r + 1) → ℂ => Dl (Matrix.diagonal c) l`.
+
+Introduce `l`. Distinguish the cases in `hl : l ≤ r + 1`. Establish `e : (fun c : Fin (r + 1) → ℂ => Dl (Matrix.diagonal c) l) = fun c => ∏ i : Fin l, c (Fin.castLE hl i)`. Use function extensionality and compare the values at `fun c => dl_diag c l hl`. Rewrite using `[e]`.
+
+Use `fun_prop`. Establish `e : (fun c : Fin (r + 1) → ℂ => Dl (Matrix.diagonal c) l) = fun _ => 0`. Use function extensionality and compare the values at `fun c => by simp [Dl, hl]`. Rewrite using `[e]`. Conclude with `continuous_const`.
+
+Establish `hGv : Continuous fun c : Fin (r + 1) → ℂ => Gv T T' (Matrix.diagonal c)`. Simplify using `only [Gv]`. Conclude with `((hDl (r + 1)).norm.pow 2).sub (continuous_const.mul ((hDl r).norm.pow 2))`. Establish `hGood : MeasurableSet (GoodLoc (r` using `r) T T') := by`. Establish `e : GoodLoc (r` using `r) T T' = (⋂ l, {c : Fin (r + 1) → ℂ | c l ≠ 0}) ∩ {c | 0 < Gv T T' (Matrix.diagonal c)} := by`.
+
+Use extensionality with `c`. Simplify using `[GoodLoc]`. Rewrite using `[e]`. Conclude with `((isOpen_iInter_of_finite fun l => isOpen_ne_fun (continuous_apply l) continuous_const).inter (isOpen_lt continuous_const hGv)).measurableSet`. Establish `hptq : ∀ q : (Fin r → ℂ) × ℂ, Complex.normSq q.2 ≠ T * T' → Gi r k T T' F (coordSc r sc q) = ENNReal.ofReal (lamW r k sc) * (ENNReal.ofReal (Formalism.QuantumDeterminants.bcWeight k r T T' q) * F (coordSc r sc q))`.
+
+Introduce `q hq`. Establish `hw` using `wt_cs hk T T' sc q`. Establish `hg` using `gv_cs T T' sc q`. Distinguish the cases in `hq0 : ∀ a, q.1 a ≠ 0`. Distinguish the cases in `hz : T * T' < Complex.normSq q.2`.
+
+Establish `hmem : coordSc r sc q ∈ GoodLoc (r` using `r) T T' := by`. Use `⟨fun l => ?_, ?_⟩` and prove the remaining obligations. Use `Fin.lastCases ?_ (fun a => ?_) l` and prove the remaining obligations. Rewrite using `[coordSc_last]`. Introduce `h0`.
+
+Rewrite `hz` using `[h0, map_zero]`. Conclude with `absurd hz (not_lt.2 (mul_pos hT hT').le)`. Rewrite using `[coordSc_cs]`. Conclude with `mul_ne_zero (hlam0 a) (hq0 a)`. Rewrite using `[hg]`.
+
+Conclude with `mul_pos (Finset.prod_pos fun a _ => pow_pos (norm_pos_iff.2 (mul_ne_zero (hlam0 a) (hq0 a))) 2) (by linarith)`. Rewrite using `[Gi, Set.indicator_of_mem hmem, hw, Formalism.QuantumDeterminants.bcWeight, if_pos hz.le, ENNReal.ofReal_mul hΛ0.le, mul_assoc]`. Establish `hlt : Complex.normSq q.2 < T * T'` using `lt_of_le_of_ne (not_lt.1 hz) hq`. Establish `hnot : coordSc r sc q ∉ GoodLoc (r` using `r) T T' := by`. Introduce and unpack `⟨-, hp⟩`.
+
+Rewrite `hp` using `[hg]`. Conclude with `absurd hp (not_lt.2 (mul_nonpos_of_nonneg_of_nonpos (Finset.prod_nonneg fun a _ => by positivity) (sub_neg.2 hlt).le))`. Rewrite using `[Gi, Set.indicator_apply_eq_zero.2 (fun h => absurd h hnot), Formalism.QuantumDeterminants.bcWeight, if_neg (not_le.2 hlt), ENNReal.ofReal_zero, zero_mul, mul_zero]`. Use `push_neg at hq0`. Take `⟨a, ha⟩` from `hq0`.
+
+Establish `hnot : coordSc r sc q ∉ GoodLoc (r` using `r) T T' := by`. Introduce and unpack `⟨hne, -⟩`. Conclude with `hne a.castSucc (by rw [coordSc_cs, ha, mul_zero])`. Establish `hp : ∏ a : Fin r, ‖q.1 a‖ ^ (2 * (Formalism.QuantumDeterminants.Mdim k r a - 2)) = 0` using `Finset.prod_eq_zero (Finset.mem_univ a) (by`. Rewrite using `[ha, norm_zero]`.
+
+Conclude with `zero_pow (by have := a.isLt; unfold Formalism.QuantumDeterminants.Mdim; omega))`. Establish `hb : Formalism.QuantumDeterminants.bcWeight k r T T' q = 0`. Apply the tactic sequence `unfold Formalism.QuantumDeterminants.bcWeight; split_ifs <;> simp [hp]`. Rewrite using `[Gi, Set.indicator_apply_eq_zero.2 (fun h => absurd h hnot), hb, ENNReal.ofReal_zero, zero_mul, mul_zero]`. Establish `hnull : ∀ᵐ c : Fin (r + 1) → ℂ, Complex.normSq (c (Fin.last r)) ≠ T * T'`.
+
+Establish `hS : (volume : Measure ℂ) {ζ | Complex.normSq ζ = T * T'} = 0`. Use `measure_mono_null (fun ζ hζ => ?_) (Measure.addHaar_sphere volume (0 : ℂ) (Real.sqrt (T * T')))` and prove the remaining obligations. Simplify using `only [Set.mem_setOf_eq] at hζ`. Rewrite using `[mem_sphere_zero_iff_norm, ← hζ, Complex.normSq_eq_norm_sq, Real.sqrt_sq (norm_nonneg _)]`. Establish `h0 : (volume : Measure (Fin (r + 1) → ℂ)) {c | Complex.normSq (c (Fin.last r)) = T * T'} = 0`.
+
+Conclude with `Measure.pi_eval_preimage_null (fun _ : Fin (r + 1) => (volume : Measure ℂ)) (i := Fin.last r) hS`. Conclude with `ae_iff.2 (by simpa using h0)`. Establish `hpt : ∀ᵐ c : Fin (r + 1) → ℂ, Gi r k T T' F c = ENNReal.ofReal (lamW r k sc) * (ENNReal.ofReal (Formalism.QuantumDeterminants.bcWeight k r T T' ((Phe r sc hsc).symm c)) * F c)` using `by filter_upwards [hnull] with c hc`. Establish `hc' : coordSc r sc ((Phe r sc hsc).symm c) = c`. Rewrite using `[← phe_apply hsc, MeasurableEquiv.apply_symm_apply]`.
+
+Establish `h2 : ((Phe r sc hsc).symm c).2 = c (Fin.last r)` using `by conv_rhs => rw [← hc']`. Rewrite using `[coordSc_last]`. Establish `key` using `hptq ((Phe r sc hsc).symm c) (by rw [h2]; exact hc)`. Rewrite `key` using `[hc']`. Conclude with `key`.
+
+Establish `hL : ∫⁻ q : (Fin r → ℂ) × ℂ, ENNReal.ofReal (Formalism.QuantumDeterminants.bcWeight k r T T' q) * F (coordSc r sc q) = ENNReal.ofReal (nrm r sc)⁻¹ * ∫⁻ c : Fin (r + 1) → ℂ, ENNReal.ofReal (Formalism.QuantumDeterminants.bcWeight k r T T' ((Phe r sc hsc).symm c)) * F c`. Rewrite using `[← smul_eq_mul, ← lintegral_smul_measure, ← map_Phe hsc, lintegral_map_equiv]`. Use `lintegral_congr fun q => ?_` and prove the remaining obligations. Rewrite using `[MeasurableEquiv.symm_apply_apply, phe_apply]`. Rewrite using `[hL, show (∫⁻ c in GoodLoc (r := r) T T', ENNReal.ofReal (wtLoc k T T' c) * F c ∂(dcLoc (r := r))) = ∫⁻ c, Gi r k T T' F c ∂(dcLoc (r := r)) from (lintegral_indicator hGood _).symm, dcLoc_eq, lintegral_smul_measure, smul_eq_mul, lintegral_congr_ae hpt, lintegral_const_mul' _ _ EN …`.
+
+Use `congr 1`. Rewrite using `[← ENNReal.ofReal_ofNat 2, ← ENNReal.ofReal_pow (by norm_num), ← ENNReal.ofReal_mul (inv_pos.2 hpos).le, ← ENNReal.ofReal_mul (by positivity)]`. Use `congr 1`. Clear the denominators using the available nonvanishing facts.
+-/
 theorem coordW_exact (r k : ℕ) (T T' sc : ℝ) (hk : 1 ≤ k) (hT : 0 < T) (hT' : 0 < T') (hsc : 0 < sc)
     (F : (Fin (r + 1) → ℂ) → ℝ≥0∞) :
     ∫⁻ q : (Fin r → ℂ) × ℂ, ENNReal.ofReal (Formalism.QuantumDeterminants.bcWeight k r T T' q) * F (coordSc r sc q) =
@@ -118,12 +153,24 @@ theorem coordW_exact (r k : ℕ) (T T' sc : ℝ) (hk : 1 ≤ k) (hT : 0 < T) (hT
   congr 1
   field_simp
 
+/- English proof (translation)
+Simplify using `[lam]`.
+-/
 theorem lam_one (r : ℕ) (a : Fin r) : lam r 1 a = 1 := by simp [lam]
 
+/- English proof (translation)
+Simplify using `[nrm, lam_one]`.
+-/
 theorem nrm_one (r : ℕ) : nrm r 1 = 1 := by simp [nrm, lam_one]
 
+/- English proof (translation)
+Simplify using `[lamW, lam_one]`.
+-/
 theorem lamW_one (r k : ℕ) : lamW r k 1 = 1 := by simp [lamW, lam_one]
 
+/- English proof (translation)
+Rewrite using `[coordW_exact r k T T' 1 hk hT hT' one_pos F, nrm_one, lamW_one, mul_one, mul_one]`.
+-/
 theorem coordinate_weight_lintegral (r k : ℕ) (T T' : ℝ) (hk : 1 ≤ k) (hT : 0 < T) (hT' : 0 < T')
     (F : (Fin (r + 1) → ℂ) → ℝ≥0∞) :
     ∫⁻ q : (Fin r → ℂ) × ℂ, ENNReal.ofReal (Formalism.QuantumDeterminants.bcWeight k r T T' q) * F (coordSc r 1 q) =

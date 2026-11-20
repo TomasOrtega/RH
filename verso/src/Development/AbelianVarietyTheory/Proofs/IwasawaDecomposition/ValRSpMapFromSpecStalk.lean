@@ -24,27 +24,53 @@ section Par
 
 variable {k k' : ι → ℕ} {K K' : Type} [Field K] [Field K'] {O O' : Subring K} {g h : Mat m K}
 
+/- English proof (translation)
+The claim follows from `funext fun _ => Matrix.map_mul`.
+-/
 theorem Mat.map_mul (g h : Mat m K) (φ : K →+* K') : (g * h).map φ = g.map φ * h.map φ :=
   funext fun _ => Matrix.map_mul
 
+/- English proof (translation)
+The claim follows from `funext fun _ => Matrix.map_one _ φ.map_zero φ.map_one`.
+-/
 theorem Mat.map_one (φ : K →+* K') : (1 : Mat m K).map φ = 1 :=
   funext fun _ => Matrix.map_one _ φ.map_zero φ.map_one
 
+/- English proof (translation)
+The claim follows from `(φ.map_det (g τ)).symm`.
+-/
 theorem Mat.det_map (g : Mat m K) (φ : K →+* K') (τ : ι) : (g.map φ τ).det = φ (g τ).det :=
   (φ.map_det (g τ)).symm
 
+/- English proof (translation)
+The claim follows from `funext fun τ => Matrix.mul_nonsing_inv _ (Ne.isUnit (hg τ))`.
+-/
 theorem Mat.mul_inv (hg : ∀ τ, (g τ).det ≠ 0) : g * g⁻¹ = 1 :=
   funext fun τ => Matrix.mul_nonsing_inv _ (Ne.isUnit (hg τ))
 
+/- English proof (translation)
+The claim follows from `funext fun τ => Matrix.nonsing_inv_mul _ (Ne.isUnit (hg τ))`.
+-/
 theorem Mat.inv_mul (hg : ∀ τ, (g τ).det ≠ 0) : g⁻¹ * g = 1 :=
   funext fun τ => Matrix.nonsing_inv_mul _ (Ne.isUnit (hg τ))
 
+/- English proof (translation)
+The claim follows from `funext fun _ => Matrix.mul_inv_rev _ _`.
+-/
 theorem Mat.mul_inv_rev (g h : Mat m K) : (g * h)⁻¹ = h⁻¹ * g⁻¹ :=
   funext fun _ => Matrix.mul_inv_rev _ _
 
+/- English proof (translation)
+The claim follows from `funext fun τ => Matrix.nonsing_inv_nonsing_inv _ (Ne.isUnit (hg τ))`.
+-/
 theorem Mat.inv_inv (hg : ∀ τ, (g τ).det ≠ 0) : g⁻¹⁻¹ = g :=
   funext fun τ => Matrix.nonsing_inv_nonsing_inv _ (Ne.isUnit (hg τ))
 
+/- English proof (translation)
+Use function extensionality and compare the values at `τ`. Distinguish the cases in `h : (g τ).det = 0`. Establish `h' : (g.map φ τ).det = 0` using `by rw [Mat.det_map, h, map_zero] show ((g τ)⁻¹).map φ = (g.map φ τ)⁻¹`. Rewrite using `[Matrix.nonsing_inv_apply_not_isUnit _ (by simp [h]), Matrix.nonsing_inv_apply_not_isUnit _ (by simp [h']), Matrix.map_zero _ φ.map_zero]`. Use `(Matrix.inv_eq_left_inv ?_).symm show ((g τ)⁻¹).map φ * (g τ).map φ = 1` and prove the remaining obligations.
+
+Rewrite using `[← Matrix.map_mul, Matrix.nonsing_inv_mul _ (Ne.isUnit h), Matrix.map_one _ φ.map_zero φ.map_one]`.
+-/
 theorem Mat.map_inv (g : Mat m K) (φ : K →+* K') : g⁻¹.map φ = (g.map φ)⁻¹ := by
   funext τ
   by_cases h : (g τ).det = 0
@@ -56,18 +82,30 @@ theorem Mat.map_inv (g : Mat m K) (φ : K →+* K') : g⁻¹.map φ = (g.map φ)
     show ((g τ)⁻¹).map φ * (g τ).map φ = 1
     rw [← Matrix.map_mul, Matrix.nonsing_inv_mul _ (Ne.isUnit h), Matrix.map_one _ φ.map_zero φ.map_one]
 
+/- English proof (translation)
+Rewrite using `[Matrix.det_apply']`. Conclude with `O.sum_mem fun σ _ => O.mul_mem (intCast_mem O _) (O.prod_mem fun i _ => h _ _)`.
+-/
 theorem det_mem {n : Type} [Fintype n] [DecidableEq n] {A : Matrix n n K} (h : ∀ i j, A i j ∈ O) : A.det ∈ O := by
   rw [Matrix.det_apply']
   exact O.sum_mem fun σ _ => O.mul_mem (intCast_mem O _) (O.prod_mem fun i _ => h _ _)
 
+/- English proof (translation)
+Introduce `τ` and use `⟨fun i j => by show (1 : Matrix _ _ K) i j ∈ O rw [Matrix.one_apply]; split_ifs; exacts [O.one_mem, O.zero_mem], by simp, by simp [O.one_mem], fun i j _ h => Matrix.one_apply_ne h.ne⟩`.
+-/
 theorem Par.one : Par k O (1 : Mat m K) := fun τ =>
   ⟨fun i j => by
       show (1 : Matrix _ _ K) i j ∈ O
       rw [Matrix.one_apply]; split_ifs; exacts [O.one_mem, O.zero_mem],
     by simp, by simp [O.one_mem], fun i j _ h => Matrix.one_apply_ne h.ne⟩
 
+/- English proof (translation)
+The claim follows from `(hg τ).2.1`.
+-/
 theorem Par.det_ne (hg : Par k O g) (τ : ι) : (g τ).det ≠ 0 := (hg τ).2.1
 
+/- English proof (translation)
+Introduce `τ` and use `by refine ⟨fun i j => ?_, ?_, ?_, fun i j hi hij => ?_⟩ · rw [Pi.mul_apply, Matrix.mul_apply] exact O.sum_mem fun l _ => O.mul_mem ((hg τ).1 i l) ((hh τ).1 l j) · rw [Pi.mul_apply, Matrix.det_mul]; exact mul_ne_zero (hg.det_ne τ) (hh.det_ne τ) · rw [Pi.mul_apply, Matrix.det_mul, …`.
+-/
 theorem Par.mul (hg : Par k O g) (hh : Par k O h) : Par k O (g * h) := fun τ => by
   refine ⟨fun i j => ?_, ?_, ?_, fun i j hi hij => ?_⟩
   · rw [Pi.mul_apply, Matrix.mul_apply]
@@ -80,6 +118,9 @@ theorem Par.mul (hg : Par k O g) (hh : Par k O h) : Par k O (g * h) := fun τ =>
     · rw [(hg τ).2.2.2 i l hi h, zero_mul]
     · rw [(hh τ).2.2.2 l j (lt_of_le_of_lt h hi) (lt_of_le_of_lt h hij), mul_zero]
 
+/- English proof (translation)
+Introduce `τ` and use `by refine ⟨fun i j => ?_, ?_, ?_, fun i j hi hij => ?_⟩ · rw [Pi.inv_apply, Matrix.inv_def, Ring.inverse_eq_inv', Matrix.smul_apply, smul_eq_mul, Matrix.adjugate_apply] refine O.mul_mem (hg τ).2.2.1 (det_mem fun a b => ?_) rw [Matrix.updateRow_apply] split_ifs · rw [Pi.single_app …`.
+-/
 theorem Par.inv (hg : Par k O g) : Par k O g⁻¹ := fun τ => by
   refine ⟨fun i j => ?_, ?_, ?_, fun i j hi hij => ?_⟩
   · rw [Pi.inv_apply, Matrix.inv_def, Ring.inverse_eq_inv', Matrix.smul_apply, smul_eq_mul, Matrix.adjugate_apply]
@@ -99,15 +140,26 @@ theorem Par.inv (hg : Par k O g) : Par k O g⁻¹ := fun τ => by
     have : (i : ℕ) < j := hij
     omega
 
+/- English proof (translation)
+Introduce `τ` and use `⟨fun i j => hO ((hg τ).1 i j), (hg τ).2.1, hO (hg τ).2.2.1, fun i j hi => (hg τ).2.2.2 i j (lt_of_lt_of_le hi (hk τ))⟩`.
+-/
 theorem Par.mono (hg : Par k O g) (hk : k' ≤ k) (hO : O ≤ O') : Par k' O' g := fun τ =>
   ⟨fun i j => hO ((hg τ).1 i j), (hg τ).2.1, hO (hg τ).2.2.1,
     fun i j hi => (hg τ).2.2.2 i j (lt_of_lt_of_le hi (hk τ))⟩
 
+/- English proof (translation)
+Introduce `τ` and use `⟨fun i j => h _ ((hg τ).1 i j), by rw [Mat.det_map]; exact (map_ne_zero φ).2 (hg.det_ne τ), by rw [Mat.det_map, ← map_inv₀]; exact h _ (hg τ).2.2.1, fun i j hi hij => by show φ (g τ i j) = 0; rw [(hg τ).2.2.2 i j hi hij, map_zero]⟩`.
+-/
 theorem Par.map (hg : Par k O g) (φ : K →+* K') {O' : Subring K'} (h : ∀ x ∈ O, φ x ∈ O') : Par k O' (g.map φ) :=
   fun τ => ⟨fun i j => h _ ((hg τ).1 i j), by rw [Mat.det_map]; exact (map_ne_zero φ).2 (hg.det_ne τ),
     by rw [Mat.det_map, ← map_inv₀]; exact h _ (hg τ).2.2.1,
     fun i j hi hij => by show φ (g τ i j) = 0; rw [(hg τ).2.2.2 i j hi hij, map_zero]⟩
 
+/- English proof (translation)
+Use function extensionality and compare the values at `τ`. Use extensionality with `i j`. Establish `e : (g * h) τ i j = ((∑ l, (⟨_, (hg τ).1 i l⟩ * ⟨_, (hh τ).1 l j⟩ : O) : O) : K)`. Simplify using `[Matrix.mul_apply]`. Use `show v ((g * h) τ i j) = ∑ l, v (g τ i l) * v (h τ l j)`.
+
+Rewrite using `[e, hv, map_sum]`. Conclude with `Finset.sum_congr rfl fun l _ => by rw [_root_.map_mul, ← hv, ← hv]`.
+-/
 theorem Par.map_mul_of (hg : Par k O g) (hh : Par k' O h) (v : K → K') (ψ : O →+* K') (hv : ∀ x : O, v x = ψ x) :
     (g * h).map v = g.map v * h.map v := by
   funext τ
@@ -118,6 +170,9 @@ theorem Par.map_mul_of (hg : Par k O g) (hh : Par k' O h) (v : K → K') (ψ : O
   rw [e, hv, map_sum]
   exact Finset.sum_congr rfl fun l _ => by rw [_root_.map_mul, ← hv, ← hv]
 
+/- English proof (translation)
+Introduce `τ` and use `by let A : Matrix (Fin (m τ)) (Fin (m τ)) O := fun i j => ⟨_, (hg τ).1 i j⟩ have e1 : g τ = A.map O.subtype := rfl have e2 : g.map v τ = A.map ψ := by ext i j; exact hv (A i j) have e3 : (A.det : K) = (g τ).det := O.subtype.map_det A have e4 : A.det * ⟨_, (hg τ).2.2.1⟩ = 1 := Sub …`.
+-/
 theorem Par.map_of (hg : Par k O g) (v : K → K') (ψ : O →+* K') (hv : ∀ x : O, v x = ψ x) :
     Par k ⊤ (g.map v) := fun τ => by
   let A : Matrix (Fin (m τ)) (Fin (m τ)) O := fun i j => ⟨_, (hg τ).1 i j⟩
@@ -158,18 +213,29 @@ instance : Inhabited (Fr M m k) := ⟨ofBasis M k 1 fun _ => by simp⟩
 
 variable (S : Fr M m k)
 
+/- English proof (translation)
+Take `⟨U, A, hz, hA, h⟩` from `S.loc z`. Conclude with `⟨A, (h z hz A).2 (by rw [Mat.mul_inv hA]; exact Par.one)⟩`.
+-/
 theorem nonempty (z : M.Z) : (S.S z).Nonempty := by
   obtain ⟨U, A, hz, hA, h⟩ := S.loc z
   exact ⟨A, (h z hz A).2 (by rw [Mat.mul_inv hA]; exact Par.one)⟩
 
 variable {S} {z : M.Z} {A A' : Mat m Ω}
 
+/- English proof (translation)
+Take `⟨U, B, hz, hB, hU⟩` from `S.loc z`. Use `((hU z hz A).1 h).det_ne τ` as an intermediate fact. Rewrite `this` using `[Pi.mul_apply, Matrix.det_mul]`. Conclude with `left_ne_zero_of_mul this`.
+-/
 theorem det_ne (h : A ∈ S.S z) (τ : ι) : (A τ).det ≠ 0 := by
   obtain ⟨U, B, hz, hB, hU⟩ := S.loc z
   have := ((hU z hz A).1 h).det_ne τ
   rw [Pi.mul_apply, Matrix.det_mul] at this
   exact left_ne_zero_of_mul this
 
+/- English proof (translation)
+Take `⟨U, B, hz, hB, hU⟩` from `S.loc z`. Establish `h1` using `(hU z hz A).1 h`. Rewrite using `[hU z hz A']`. Prove the components needed by the constructor for the conclusion. Introduce `h2`.
+
+Use `h2.mul h1.inv` as an intermediate fact. Rewrite `this` using `[Mat.mul_inv_rev, Mat.inv_inv hB, ← mul_assoc, mul_assoc A', Mat.inv_mul hB, mul_one]`. Then use the resulting hypothesis. Introduce `h2`. Use `h2.mul h1` as an intermediate fact. Rewrite `this` using `[← mul_assoc, mul_assoc A', Mat.inv_mul (det_ne h), mul_one]`. Then use the resulting hypothesis.
+-/
 theorem mem_iff (h : A ∈ S.S z) : A' ∈ S.S z ↔ Par k (M.O z).toSubring (A' * A⁻¹) := by
   obtain ⟨U, B, hz, hB, hU⟩ := S.loc z
   have h1 := (hU z hz A).1 h
@@ -182,11 +248,17 @@ theorem mem_iff (h : A ∈ S.S z) : A' ∈ S.S z ↔ Par k (M.O z).toSubring (A'
     have := h2.mul h1
     rwa [← mul_assoc, mul_assoc A', Mat.inv_mul (det_ne h), mul_one] at this
 
+/- English proof (translation)
+Take `⟨U, B, hz, hB, hU⟩` from `S.loc z`. Conclude with `(hU ξ (hξ.mem_open U.isOpen hz) A).2 (((hU z hz A).1 h).mono le_rfl fun _ hx => RatModel.O_le_of_specializes hξ hx)`.
+-/
 theorem mem_of_specializes (h : A ∈ S.S z) {ξ : M.Z} (hξ : ξ ⤳ z) : A ∈ S.S ξ := by
   obtain ⟨U, B, hz, hB, hU⟩ := S.loc z
   exact (hU ξ (hξ.mem_open U.isOpen hz) A).2
     (((hU z hz A).1 h).mono le_rfl fun _ hx => RatModel.O_le_of_specializes hξ hx)
 
+/- English proof (translation)
+The claim follows from `mem_of_specializes h (genericPoint_specializes z)`.
+-/
 theorem mem_genericPoint (h : A ∈ S.S z) : A ∈ S.S (genericPoint M.Z) :=
   mem_of_specializes h (genericPoint_specializes z)
 
@@ -257,6 +329,13 @@ section Var
 
 variable (Y : GlobalTheory.ProjVar.Var F)
 
+/- English proof (translation)
+Establish `h : ⊤ ≤ X.fromSpecStalk x ⁻¹ᵁ U` using `fun w _ => by`. Establish `: X.fromSpecStalk x w ∈ Set.range (X.fromSpecStalk x)` using `⟨w, rfl⟩`. Rewrite `this` using `[Scheme.range_fromSpecStalk]`. Conclude with `Specializes.mem_open (x := X.fromSpecStalk x w) this U.isOpen hU`. Establish `h' : ⊤ ≤ (spMap ψ ≫ X.fromSpecStalk x) ⁻¹ᵁ U` using `fun w _ => h (x := spMap ψ w) trivial`.
+
+Establish `e : (X.fromSpecStalk x).appLE U ⊤ h = X.presheaf.germ U x hU ≫ (Scheme.ΓSpecIso _).inv`. Rewrite using `[Scheme.Hom.appLE, Scheme.fromSpecStalk_app hU, Category.assoc, Category.assoc, ← Functor.map_comp]`. Conclude with `congrArg (_ ≫ ·) ((congrArg (_ ≫ ·) ((Spec (X.presheaf.stalk x)).presheaf.map_id _)).trans (Category.comp_id _))`. Use `(GlobalTheory.Points.valR_appLE (spMap ψ) (X.fromSpecStalk x) h (GlobalTheory.Points.le_preimage_top _) a).symm.trans ?_` and prove the remaining obligations. Rewrite using `[e]`.
+
+Conclude with `GlobalTheory.Points.valR_specMap (CommRingCat.ofHom ψ) _`.
+-/
 theorem valR_spMap_fromSpecStalk {X : Scheme.{0}} {x : X} {C : Type} [CommRing C] (ψ : X.presheaf.stalk x →+* C)
     {U : X.Opens} (hU : x ∈ U) (a : Γ(X, U)) :
     valR (spMap ψ ≫ X.fromSpecStalk x) U a = ψ (X.presheaf.germ U x hU a) := by
@@ -272,6 +351,9 @@ theorem valR_spMap_fromSpecStalk {X : Scheme.{0}} {x : X} {C : Type} [CommRing C
   rw [e]
   exact GlobalTheory.Points.valR_specMap (CommRingCat.ofHom ψ) _
 
+/- English proof (translation)
+Use `valR_spMap_fromSpecStalk (RingHom.id (X.presheaf.stalk (genericPoint X))) hU a` as an intermediate fact. Rewrite `this` using `[show spMap (RingHom.id (X.presheaf.stalk (genericPoint X))) = 𝟙 _ from Spec.map_id _, Category.id_comp]`. Conclude with `this`.
+-/
 theorem valF_fromSpecStalk {X : Scheme.{0}} [IsIntegral X] {U : X.Opens} (hU : genericPoint X ∈ U) (a : Γ(X, U)) :
     valF (F := X.functionField) (X.fromSpecStalk (genericPoint X)) U a = fnOf U hU a := by
   have := valR_spMap_fromSpecStalk (RingHom.id (X.presheaf.stalk (genericPoint X))) hU a
@@ -302,10 +384,18 @@ def ratOf : RatModel F Y.Fn where
     obtain ⟨U, h, a, rfl⟩ := Y.X.presheaf.germ_exist (x := genericPoint Y.X) x
     exact ⟨U, a, ⟨_, h⟩, valF_fromSpecStalk h a⟩
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨Y.isProjOver, Y.smooth_str, Y.geometricallyIntegral_str⟩`.
+-/
 theorem good_ratOf : Good (ratOf Y) Y.dim := ⟨Y.isProjOver, Y.smooth_str, Y.geometricallyIntegral_str⟩
 
 variable {Y}
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨U, a, hy, rfl⟩`. Conclude with `(valF_fromSpecStalk (gen_mem hy) a).symm ▸ regAt_fnOf hy _ a`. Introduce `h`. Take `⟨U, hy, a, rfl⟩` from `h.exists_fnOf`.
+
+Conclude with `⟨U, a, hy, valF_fromSpecStalk (gen_mem hy) a⟩`.
+-/
 theorem mem_O_ratOf {y : Y.X} {g : Y.Fn} : g ∈ (ratOf Y).O y ↔ RegAt y g := by
   constructor
   · rintro ⟨U, a, hy, rfl⟩
@@ -314,6 +404,11 @@ theorem mem_O_ratOf {y : Y.X} {g : Y.Fn} : g ∈ (ratOf Y).O y ↔ RegAt y g := 
     obtain ⟨U, hy, a, rfl⟩ := h.exists_fnOf
     exact ⟨U, a, hy, valF_fromSpecStalk (gen_mem hy) a⟩
 
+/- English proof (translation)
+Take `⟨U, hy, a, rfl⟩` from `Y.X.presheaf.germ_exist a`. Rewrite using `[algebraMap_germ hy, ← valF_fromSpecStalk (gen_mem hy) a, ← valR_spMap_fromSpecStalk ψ hy a]`. Use `RatModel.val_valF (M := ratOf Y) ?_ a` and prove the remaining obligations. Introduce and unpack `_ ⟨w, rfl⟩`. Establish `: Y.X.fromSpecStalk y (spMap ψ w) ∈ Set.range (Y.X.fromSpecStalk y)` using `⟨_, rfl⟩`.
+
+Rewrite `this` using `[Scheme.range_fromSpecStalk]`. Conclude with `Specializes.mem_open this U.isOpen hy`.
+-/
 theorem val_ratOf {y : Y.X} {K : Type} [Field K] (ψ : Y.X.presheaf.stalk y →+* K) (a : Y.X.presheaf.stalk y) :
     (ratOf Y).val (spMap ψ ≫ Y.X.fromSpecStalk y) (algebraMap _ Y.X.functionField a) = ψ a := by
   obtain ⟨U, hy, a, rfl⟩ := Y.X.presheaf.germ_exist a
@@ -324,10 +419,16 @@ theorem val_ratOf {y : Y.X} {K : Type} [Field K] (ψ : Y.X.presheaf.stalk y →+
   rw [Scheme.range_fromSpecStalk] at this
   exact Specializes.mem_open this U.isOpen hy
 
+/- English proof (translation)
+The claim follows from `Scheme.Spec_stalkClosedPointTo_fromSpecStalk (R := .of K) p`.
+-/
 theorem spMap_stalkClosedPointTo {X : Scheme.{0}} {K : Type} [CommRing K] [IsLocalRing K] (p : Sp K ⟶ X) :
     spMap (Scheme.stalkClosedPointTo (R := .of K) p).hom ≫ X.fromSpecStalk (p (IsLocalRing.closedPoint K)) = p :=
   Scheme.Spec_stalkClosedPointTo_fromSpecStalk (R := .of K) p
 
+/- English proof (translation)
+Take `⟨U, hy, a, rfl⟩` from `B.X.presheaf.germ_exist a`. Rewrite using `[algebraMap_germ hy, ← valF_fromSpecStalk (gen_mem hy) a, Scheme.Hom.germ_stalkMap_apply, algebraMap_germ (U := f ⁻¹ᵁ U) hy, ← valF_fromSpecStalk (gen_mem (U := f ⁻¹ᵁ U) hy)]`. Conclude with `(h.valF_app ⟨_, hy⟩ a).symm`.
+-/
 theorem map_algebraMap_stalk {B : GlobalTheory.ProjVar.Var F} {φ : B.Fn →ₐ[F] Y.Fn} {f : Y.X ⟶ B.X}
     (h : (ratOf B).IsHom (ratOf Y) φ f) (y : Y.X) (a : B.X.presheaf.stalk (f y)) :
     φ (algebraMap _ B.X.functionField a) = algebraMap _ Y.X.functionField ((f.stalkMap y).hom a) := by

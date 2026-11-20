@@ -22,6 +22,31 @@ open NumberField in
 open scoped TensorProduct in
 open MvPolynomial in
 
+/- English proof (translation)
+Introduce `K Ω L _ _ _ _ _ D N j₀ x τ φ hD hτ hrel`. Use `letI : Algebra Ω L := φ.toRingHom.toAlgebra`. Use `haveI : IsScalarTower K Ω L := IsScalarTower.of_algebraMap_eq fun a => (φ.commutes a).symm`. Establish `hΩ : ∀ a : Ω, algebraMap Ω L a = φ a` using `fun _ => rfl`. Set `g : _root_.ReciprocityTheory.ChartRestriction.G.T0.SVar D N → L` to `fun v => τ (_root_.GlobalTheory.SectionPoint.freeVarIndex j₀ v)`.
+
+Establish `hg0 : g (Sum.inl ()) = τ (0, j₀)` using `rfl`. Establish `hg1 : ∀ i k, g (Sum.inr (i, k)) = τ (i, j₀.succAbove k)` using `fun _ _ => rfl`. Establish `hsub : ∀ p, τ p ∈ Algebra.adjoin Ω (Set.range g)`. Introduce and unpack `⟨i, j⟩`. Break down `Fin.eq_self_or_eq_succAbove j₀ j with rfl | ⟨k, rfl⟩` into its components or cases.
+
+Consider the cases of `i using Fin.cases with`. Consider the case `zero => exact Algebra.subset_adjoin ⟨Sum.inl (), hg0⟩`. Consider the case `succ i`. Rewrite using `[eq_neg_of_add_eq_zero_left (hrel i)]`. Use `Subalgebra.neg_mem _ (Subalgebra.sum_mem _ fun k _ => Subalgebra.mul_mem _ ?_ ?_)` and prove the remaining obligations.
+
+Conclude with `Algebra.subset_adjoin ⟨Sum.inr (i.succ, k), hg1 _ _⟩`. Rewrite using `[← hΩ]`. Conclude with `Subalgebra.algebraMap_mem _ _`. Conclude with `Algebra.subset_adjoin ⟨Sum.inr (i, k), hg1 _ _⟩`. Establish `hcard` using `_root_.ReciprocityTheory.MultiplicativeHeights.gauss_card_le_trdeg_add (F := K) (E := Ω) (C := L) g τ hτ hsub`.
+
+Rewrite `hcard` using `[hD]`. Establish `hind : AlgebraicIndependent Ω g`. Apply `_root_.ReciprocityTheory.MultiplicativeHeights.gauss_indep_of_le_trdeg` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `Cardinal.mk (Unit ⊕ Fin (D + 1) × Fin N) ≤ _`. Express the relevant statement in the definitionally equal form `Cardinal.mk (Fin (D + 1) × Fin (N + 1)) ≤ _ at hcard`.
+
+Simplify using `only [Cardinal.mk_fintype, Fintype.card_sum, Fintype.card_prod, Fintype.card_unit, Fintype.card_fin] at hcard ⊢`. Break down `lt_or_ge (Algebra.trdeg Ω (Algebra.adjoin Ω (Set.range g))) Cardinal.aleph0 with ht | ht` into its components or cases. Take `⟨m, hm⟩` from `Cardinal.lt_aleph0.1 ht`. Rewrite `hcard`, the goal using `[hm]`. Normalize the coercions in `at hcard ⊢`.
+
+Use the polynomial consequences of the given equalities and inequalities. Conclude with `le_trans (Cardinal.nat_lt_aleph0 _).le ht`. Establish `hinj : Function.Injective (MvPolynomial.aeval (R` using `Ω) g).toRingHom := algebraicIndependent_iff_injective_aeval.1 hind`. Set `P : _root_.ReciprocityTheory.ChartRestriction.G.T0.OmS Ω D N →+* L` to `IsFractionRing.lift (K := _root_.ReciprocityTheory.ChartRestriction.G.T0.OmS Ω D N) hinj`. Establish `hP : ∀ f, P (algebraMap (MvPolynomial (_root_.ReciprocityTheory.ChartRestriction.G.T0.SVar D N) Ω) (_root_.ReciprocityTheory.ChartRestriction.G.T0.OmS Ω D N) f) = MvPolynomial.aeval g f` using `fun f => IsFractionRing.lift_algebraMap hinj f`.
+
+Establish `hC : ∀ a : Ω, algebraMap Ω (_root_.ReciprocityTheory.ChartRestriction.G.T0.OmS Ω D N) a = algebraMap (MvPolynomial (_root_.ReciprocityTheory.ChartRestriction.G.T0.SVar D N) Ω) (_root_.ReciprocityTheory.ChartRestriction.G.T0.OmS Ω D N) (C a)` using `fun a => IsScalarTower.algebraMap_apply Ω (MvPolynomial (_root_.ReciprocityTheory.ChartRestriction.G.T0.SVar D N) Ω) (_root_.ReciprocityTheory.ChartRestriction.G.T0.OmS Ω D N) a`. Establish `hfree : ∀ v, _root_.ReciprocityTheory.ChartRestriction.G.T0.sImg j₀ x (_root_.GlobalTheory.SectionPoint.freeVarIndex j₀ v) = algebraMap (MvPolynomial (_root_.ReciprocityTheory.ChartRestriction.G.T0.SVar D N) Ω) (_root_.ReciprocityTheory.ChartRestriction.G.T0.OmS Ω D N) (X v)`. Introduce and unpack `(⟨⟩ | ⟨i, k⟩)`. Simplify using `[_root_.ReciprocityTheory.ChartRestriction.G.T0.sImg, _root_.GlobalTheory.SectionPoint.freeVarIndex]`. Simplify using `[_root_.ReciprocityTheory.ChartRestriction.G.T0.sImg, _root_.GlobalTheory.SectionPoint.freeVarIndex]`.
+
+Establish `hPΩ : ∀ a : Ω, P (algebraMap Ω (_root_.ReciprocityTheory.ChartRestriction.G.T0.OmS Ω D N) a) = φ a` using `fun a => by`. Rewrite using `[hC, hP, MvPolynomial.aeval_C, hΩ]`. Establish `hPτ : ∀ p, P (_root_.ReciprocityTheory.ChartRestriction.G.T0.sImg j₀ x p) = τ p`. Introduce and unpack `⟨i, j⟩`. Break down `Fin.eq_self_or_eq_succAbove j₀ j with rfl | ⟨k, rfl⟩` into its components or cases.
+
+Consider the cases of `i using Fin.cases with`. Consider the case `zero => exact (congrArg P (hfree (Sum.inl ()))).trans ((hP _).trans (aeval_X _ _))`. Consider the case `succ i`. Establish `h` using `eq_neg_of_add_eq_zero_left (hrel i)`. Simplify using `[_root_.ReciprocityTheory.ChartRestriction.G.T0.sImg, hP, hg1, hΩ, Fin.succ_ne_zero]`.
+
+Conclude with `h.symm`. Conclude with `(congrArg P (hfree (Sum.inr (i, k)))).trans ((hP _).trans (aeval_X _ _))`. Use `⟨P, ⟨hPΩ, hPτ⟩, fun Q ⟨hQΩ, hQτ⟩ => ?_⟩` and prove the remaining obligations. Use `IsFractionRing.ringHom_ext (A := MvPolynomial (_root_.ReciprocityTheory.ChartRestriction.G.T0.SVar D N) Ω) ?_` and prove the remaining obligations. Introduce `f`.
+
+Use `RingHom.congr_fun (MvPolynomial.ringHom_ext (f := Q.comp (algebraMap (MvPolynomial (_root_.ReciprocityTheory.ChartRestriction.G.T0.SVar D N) Ω) (_root_.ReciprocityTheory.ChartRestriction.G.T0.OmS Ω D N))) (g := P.comp (algebraMap (MvPolynomial (_root_.ReciprocityTheory.ChartRestr …` and prove the remaining obligations. Simplify using `only [RingHom.comp_apply, ← hC, hQΩ, hPΩ]`. Simplify using `only [RingHom.comp_apply, ← hfree, hQτ, hPτ]`.
+-/
 theorem _root_.GlobalTheory.existsUnique_ringHom_OmS :
     ∀ (K Ω L : Type) [Field K] [Field Ω] [Algebra K Ω] [Field L] [Algebra K L] (D N : ℕ)
       (j₀ : Fin (N + 1)) (x : Fin N → Ω) (τ : _root_.ReciprocityTheory.ChartRestriction.G.T0.TVar D N → L) (φ : Ω →ₐ[K] L),

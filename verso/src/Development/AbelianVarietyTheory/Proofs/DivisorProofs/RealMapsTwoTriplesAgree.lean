@@ -25,6 +25,9 @@ open GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels
 
 variable {F : Type} [Field F] [NumberField F]
 
+/- English proof (translation)
+Introduce `r hr`. Rewrite using `[← hT _ hr.2]`. Conclude with `h r hr`.
+-/
 theorem acts_of_eqOn {κ : Type} [Fintype κ] {T T' : ((κ → AF F) → ℂ) → (κ → AF F) → ℂ}
     (hT : ∀ Φ ∈ GlobalTheory.WeilM.schA F κ, T Φ = T' Φ) {φ φ₁ : (κ → mixedEmbedding.mixedSpace F) → ℂ}
     (h : Acts (evI F) T φ φ₁) : Acts (evI F) T' φ φ₁ := by
@@ -32,6 +35,11 @@ theorem acts_of_eqOn {κ : Type} [Fintype κ] {T T' : ((κ → AF F) → ℂ) �
   rw [← hT _ hr.2]
   exact h r hr
 
+/- English proof (translation)
+Introduce `r hr x`. Establish `: (fun t => T' t (tens (evI F) φ r) x) = fun t => T t (tens (evI F) φ r) x`. Use function extensionality and compare the values at `t`. Rewrite using `[hT t _ hr.2]`. Rewrite using `[this]`.
+
+Conclude with `h r hr x`.
+-/
 theorem actsD_of_eqOn {κ : Type} [Fintype κ] {T T' : ℝ → ((κ → AF F) → ℂ) → (κ → AF F) → ℂ}
     (hT : ∀ t, ∀ Φ ∈ GlobalTheory.WeilM.schA F κ, T t Φ = T' t Φ) {φ φ₁ : (κ → mixedEmbedding.mixedSpace F) → ℂ}
     (h : ActsD (evI F) T φ φ₁) : ActsD (evI F) T' φ φ₁ := by
@@ -41,6 +49,9 @@ theorem actsD_of_eqOn {κ : Type} [Fintype κ] {T T' : ℝ → ((κ → AF F) �
   rw [this]
   exact h r hr x
 
+/- English proof (translation)
+Introduce `u _`. Simplify using `[mat]`.
+-/
 theorem one_mem_uAt {E : Type} [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E} {n : ℕ}
     {X : Spc F E n} : (1 : UA σ X.J) ∈ UAt σ X (evI F) := by
   intro u _
@@ -50,6 +61,17 @@ end GlobalTheory.RealMapsChars
 
 open GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels GlobalTheory.RealMapsChars in
 
+/- English proof (translation)
+Introduce `hP F E _ _ _ _ _ σ B a a' Γ Xa Xb oa oa' ob ob' R hA hB hR`. Take `⟨hV, hV'⟩` from `GlobalTheory.T.weilOperators_eq_at_realPlaces_same_exponents F E σ B a a' Γ Xa Xb oa oa' ob ob' hA hB`. Establish `lV : ∀ g ∈ UAt σ Γ.V (evI F), ∀ Φ ∈ GlobalTheory.WeilM.schA F (Fin a × Fin (a + a')), oa (g, 1) Φ = ob (g, 1) Φ` using `fun g hg Φ hΦ => hV g 1 hg one_mem_uAt Φ hΦ`. Establish `lV' : ∀ g ∈ UAt σ Γ.V' (evI F), ∀ Φ ∈ GlobalTheory.WeilM.schA F (Fin a' × Fin (a + a')), oa' (g, 1) Φ = ob' (g, 1) Φ` using `fun g hg Φ hΦ => hV' g 1 hg one_mem_uAt Φ hΦ`. Establish `lW : ∀ h ∈ UAt σ Γ.W (evI F), ∀ Φ ∈ GlobalTheory.WeilM.schA F (Fin a × Fin (a + a')), oa (1, h) Φ = ob (1, h) Φ` using `fun h hh Φ hΦ => hV 1 h one_mem_uAt hh Φ hΦ`.
+
+Establish `lW' : ∀ h ∈ UAt σ Γ.W (evI F), ∀ Φ ∈ GlobalTheory.WeilM.schA F (Fin a' × Fin (a + a')), oa' (1, h) Φ = ob' (1, h) Φ` using `fun h hh Φ hΦ => hV' 1 h one_mem_uAt hh Φ hΦ`. Establish `bV : ∀ g ∈ UAt σ Γ.V (evI F), ∀ Φ ∈ GlobalTheory.WeilM.schA F (Fin a × Fin (a + a')), ob (g, 1) Φ = oa (g, 1) Φ` using `fun g hg Φ hΦ => (lV g hg Φ hΦ).symm`. Establish `bV' : ∀ g ∈ UAt σ Γ.V' (evI F), ∀ Φ ∈ GlobalTheory.WeilM.schA F (Fin a' × Fin (a + a')), ob' (g, 1) Φ = oa' (g, 1) Φ` using `fun g hg Φ hΦ => (lV' g hg Φ hΦ).symm`. Establish `bW : ∀ h ∈ UAt σ Γ.W (evI F), ∀ Φ ∈ GlobalTheory.WeilM.schA F (Fin a × Fin (a + a')), ob (1, h) Φ = oa (1, h) Φ` using `fun h hh Φ hΦ => (lW h hh Φ hΦ).symm`. Establish `bW' : ∀ h ∈ UAt σ Γ.W (evI F), ∀ Φ ∈ GlobalTheory.WeilM.schA F (Fin a' × Fin (a + a')), ob' (1, h) Φ = oa' (1, h) Φ` using `fun h hh Φ hΦ => (lW' h hh Φ hΦ).symm`.
+
+Use `⟨⟨hR.quot.onto, ?_, ?_⟩, ⟨hR.quot'.onto, ?_, ?_⟩, ?_, ?_, hR.nontriv, ?_⟩` and prove the remaining obligations. Introduce `γ hγ f hf f₁ h`. Conclude with `hR.quot.lie γ hγ f hf f₁ (actsD_of_eqOn (fun t => bV _ (hγ.2 _)) h)`. Introduce `k hk f hf f₁ h`. Conclude with `hR.quot.cpt k hk f hf f₁ (acts_of_eqOn (bV k hk.1) h)`.
+
+Introduce `γ hγ f hf f₁ h`. Conclude with `hR.quot'.lie γ hγ f hf f₁ (actsD_of_eqOn (fun t => bV' _ (hγ.2 _)) h)`. Introduce `k hk f hf f₁ h`. Conclude with `hR.quot'.cpt k hk f hf f₁ (acts_of_eqOn (bV' k hk.1) h)`. Introduce `γ hγ f hf f' hf' f₁ f₁' h h'`.
+
+Conclude with `hR.lie γ hγ f hf f' hf' f₁ f₁' (actsD_of_eqOn (fun t => bW _ (hγ.2 _)) h) (actsD_of_eqOn (fun t => bW' _ (hγ.2 _)) h')`. Introduce `k hk f hf f' hf' f₁ f₁' h h'`. Conclude with `hR.cpt k hk f hf f' hf' f₁ f₁' (acts_of_eqOn (bW k hk.1) h) (acts_of_eqOn (bW' k hk.1) h')`. Introduce `N h1 h2`. Use `hR.irred N (fun γ hγ f hf f₁ h => h1 γ hγ f hf f₁ (actsD_of_eqOn (fun t => lW _ (hγ.2 _)) h)) (fun k hk f hf f₁ h => h2 k hk f hf f₁ (acts_of_eqOn (lW k hk.1) h))` and prove the remaining obligations.
+-/
 theorem GlobalTheory.RealMapsChars.isRealMaps_of_sameExp : GlobalTheory.FunPr.Hypotheses₂ → ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E)
     (B : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Base F E) (a a' : ℕ) (Γ : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Geo σ a a') (Xa Xb : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Chars F E) oa oa' ob ob' R,
     GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.IsTriple B Γ Xa oa oa' → GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.IsTriple B Γ Xb ob ob' →

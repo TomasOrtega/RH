@@ -7,6 +7,9 @@ import Development.AutomorphicArithmetic.ThetaCorrespondence.ThetaPairLifts.Thir
 set_option synthInstance.maxHeartbeats 200000
 
 section
+/- English proof (translation)
+The claim follows from `_root_.GlobalTheory.T.aut_statement_of_small_exponent_statement`.
+-/
 theorem GlobalTheory.FrameAut.frame_autSt_of_smallSt : _root_.GlobalTheory.ExpTie.SmallnessCondition → _root_.GlobalTheory.FrameAut.AutStAlt :=
   _root_.GlobalTheory.T.aut_statement_of_small_exponent_statement
 end

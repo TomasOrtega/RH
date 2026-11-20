@@ -13,6 +13,11 @@ open GlobalTheory.ZM
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Establish `hmem : ∀ z, F z - z ∈ u.Λ` using `fun z => by`. Rewrite using `[← u.ker]`. Establish `h` using `u.ex_add (F z - z) z`. Rewrite `h` using `[sub_add_cancel, hF]`. Conclude with `mul_eq_right.1 h.symm`.
+
+Use `u.discrete` as an intermediate fact. Establish `hc : Continuous (fun z => (⟨F z - z, hmem z⟩ : u.Λ))` using `(F.continuous_of_finiteDimensional.sub continuous_id).subtype_mk _`. Establish `h` using `congrArg Subtype.val (PreconnectedSpace.constant inferInstance hc (x := z) (y := 0))`. Simplify `h` using `[sub_eq_zero]`.
+-/
 theorem holUnif_linear_eq_self_of_ex_eq {A : Over (Sp ℂ)} [GrpObj A] {L : LB A.left} {g : ℕ} (u : HolUnif A L g)
     (F : (Fin g → ℂ) →ₗ[ℂ] (Fin g → ℂ)) (hF : ∀ z, u.ex (F z) = u.ex z) (z : Fin g → ℂ) : F z = z := by
   have hmem : ∀ z, F z - z ∈ u.Λ := fun z => by
@@ -26,6 +31,9 @@ theorem holUnif_linear_eq_self_of_ex_eq {A : Over (Sp ℂ)} [GrpObj A] {L : LB A
   have h := congrArg Subtype.val (PreconnectedSpace.constant inferInstance hc (x := z) (y := 0))
   simpa [sub_eq_zero] using h
 
+/- English proof (translation)
+Rewrite using `[← u'.ker, hF, (u.ker z).2 hz]`. Conclude with `MonObj.one_comp f`.
+-/
 theorem holUnif_linear_lift_mem {A A' : Over (Sp ℂ)} [GrpObj A] [GrpObj A'] {L : LB A.left} {L' : LB A'.left} {g g' : ℕ}
     (u : HolUnif A L g) (u' : HolUnif A' L' g') (f : A ⟶ A') [IsMonHom f]
     (F : (Fin g → ℂ) → (Fin g' → ℂ)) (hF : ∀ z, u'.ex (F z) = u.ex z ≫ f) (z : Fin g → ℂ) (hz : z ∈ u.Λ) :
@@ -33,6 +41,11 @@ theorem holUnif_linear_lift_mem {A A' : Over (Sp ℂ)} [GrpObj A] [GrpObj A'] {L
   rw [← u'.ker, hF, (u.ker z).2 hz]
   exact MonObj.one_comp f
 
+/- English proof (translation)
+Use `choose a ha using h₁`. Use `choose c hc using h₂`. Use `⟨{ toFun := a, invFun := c, left_inv := fun x => hQ' ?_, right_inv := fun x => hQ ?_, map_add' := fun x y => hQ ?_ }, fun x => (ha x).symm⟩` and prove the remaining obligations. Rewrite using `[hc, ha, h.symm_apply_apply]`. Rewrite using `[ha, hc, h.apply_symm_apply]`.
+
+Rewrite using `[map_add, ha, ha, ha, map_add, map_add]`.
+-/
 theorem exists_addEquiv_of_linearEquiv_range {La : Type} [AddCommGroup La] {g : ℕ} (Q Q' : La →+ (Fin g → ℂ))
     (hQ : Function.Injective Q) (hQ' : Function.Injective Q') (h : (Fin g → ℂ) ≃ₗ[ℂ] (Fin g → ℂ))
     (h₁ : ∀ x, h (Q' x) ∈ Q.range) (h₂ : ∀ x, h.symm (Q x) ∈ Q'.range) :
@@ -45,6 +58,13 @@ theorem exists_addEquiv_of_linearEquiv_range {La : Type} [AddCommGroup La] {g : 
   · rw [ha, hc, h.apply_symm_apply]
   · rw [map_add, ha, ha, ha, map_add, map_add]
 
+/- English proof (translation)
+Introduce `o _ g k J b em w w' t t' La _ EF lam ac Q Q' Hm Hm' hQ hQ' ⟨u, _, _, hΛ, _⟩ ⟨u', _, _, hΛ', _⟩ ⟨φ, hφ, _⟩`. Establish `hid : IsMonHom (Iso.refl t.A).hom` using `inferInstanceAs (IsMonHom (𝟙 t.A))`. Take `⟨e, he, -⟩` from `grpPullback_iso hφ (isGrpPullback_of_iso (Iso.refl t.A))`. Establish `he' : IsMonHom e.inv` using `inferInstance`. Take `⟨F, hF⟩ : ∃ F : (Fin g → ℂ) →ₗ[ℂ] (Fin g → ℂ), ∀ z, u.ex (F z) = u'.ex z ≫ e.hom` from `exists_linear_lift_of_isMonHom_polAV t'.pol t.pol t'.L t.L u' u e.hom he`.
+
+Take `⟨G, hG⟩ : ∃ G : (Fin g → ℂ) →ₗ[ℂ] (Fin g → ℂ), ∀ z, u'.ex (G z) = u.ex z ≫ e.inv` from `exists_linear_lift_of_isMonHom_polAV t.pol t'.pol t.L t'.L u u' e.inv he'`. Establish `hFG : ∀ z, F (G z) = z` using `holUnif_linear_eq_self_of_ex_eq u (F ∘ₗ G) fun z => by`. Rewrite using `[LinearMap.comp_apply, hF, hG, Category.assoc, e.inv_hom_id, Category.comp_id]`. Establish `hGF : ∀ z, G (F z) = z` using `holUnif_linear_eq_self_of_ex_eq u' (G ∘ₗ F) fun z => by`. Rewrite using `[LinearMap.comp_apply, hG, hF, Category.assoc, e.hom_inv_id, Category.comp_id]`.
+
+Set `h : (Fin g → ℂ) ≃ₗ[ℂ] (Fin g → ℂ)` to `LinearEquiv.ofLinear F G (LinearMap.ext hFG) (LinearMap.ext hGF)`. Take `⟨gam, hgam⟩` from `exists_addEquiv_of_linearEquiv_range Q Q' hQ hQ' h (fun x => (hΛ _).1 (holUnif_linear_lift_mem u' u e.hom F hF _ ((hΛ' _).2 ⟨x, rfl⟩))) (fun x => (hΛ' _).1 (holUnif_linear_lift_mem u u' e.inv G hG _ ((hΛ _).2 ⟨x, rfl⟩)))`. Conclude with `⟨gam, h, hgam⟩`.
+-/
 theorem exists_lattice_aut_of_tMap_id :
     ∀ (o : Type) [CommRing o] (g k : ℕ) (J : Type) (b : TBase o k) (em : o →+* ℂ) (w w' : J) (t t' : TObj g k J b (spMap em)) (La : Type) [AddCommGroup La] (EF : LinearMap.BilinForm ℤ La) (lam : Fin (2 * g) → La) (ac : J → La → La) (Q Q' : La →+ (Fin g → ℂ)) (Hm Hm' : Matrix (Fin g) (Fin g) ℂ), Function.Injective Q → Function.Injective Q' → (∃ (u : HolUnif t.A t.L g) (χ' : u.Λ → ℂ), u.IsAH Hm χ' ∧ (∀ z, z ∈ u.Λ ↔ z ∈ (Q).range) ∧ (∀ x (l : u.Λ), (l : Fin g → ℂ) = Q x → χ' l = (-1) ^ EF x (ac w x)) ∧ (∀ i₀, (t.pt i₀).left = (u.ex (((k : ℕ) : ℂ)⁻¹ • Q (lam i₀))).left) ∧ ∀ j₀, ∃ F : (Fin g → ℂ) →ₗ[ℂ] (Fin g → ℂ), (∀ x, F (Q x) = Q (ac j₀ x)) ∧ ∀ z, u.ex (F z) = u.ex z ≫ t.act j₀) → (∃ (u : HolUnif t'.A t'.L g) (χ' : u.Λ → ℂ), u.IsAH Hm' χ' ∧ (∀ z, z ∈ u.Λ ↔ z ∈ (Q').range) ∧ (∀ x (l : u.Λ), (l : Fin g → ℂ) = Q' x → χ' l = (-1) ^ EF x (ac w x)) ∧ (∀ i₀, (t'.pt i₀).left = (u.ex (((k : ℕ) : ℂ)⁻¹ • Q' (lam i₀))).left) ∧ ∀ j₀, ∃ F : (Fin g → ℂ) →ₗ[ℂ] (Fin g → ℂ), (∀ x, F (Q' x) = Q' (ac j₀ x)) ∧ ∀ z, u.ex (F z) = u.ex z ≫ t'.act j₀) → TMap t' t (𝟙 _) → ∃ (gam : La ≃+ La) (h : (Fin g → ℂ) ≃ₗ[ℂ] (Fin g → ℂ)), ∀ x, h (Q' x) = Q (gam x) := by
   intro o _ g k J b em w w' t t' La _ EF lam ac Q Q' Hm Hm' hQ hQ' ⟨u, _, _, hΛ, _⟩ ⟨u', _, _, hΛ', _⟩ ⟨φ, hφ, _⟩

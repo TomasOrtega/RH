@@ -15,6 +15,9 @@ section Ker
 
 variable {D : D7} {X : HidaSetting D} {Y : Full X} {u u' : D.what₂.Word}
 
+/- English proof (translation)
+Unfold `orth perpS`. Simplify using `only [Submodule.mem_iInf, LinearMap.mem_ker]`. Use `first`. Consider the case `exact Iff.rfl`. Consider the case `(constructor <;> intro h <;> exact h)`.
+-/
 theorem mem_orth_iff {U : Submodule D.host.E (VS D).V} {x : (VS D).V} : x ∈ orth (VS D) U ↔ x ∈ perpS (VS D) U := by
   unfold orth perpS
   simp only [Submodule.mem_iInf, LinearMap.mem_ker]
@@ -22,6 +25,29 @@ theorem mem_orth_iff {U : Submodule D.host.E (VS D).V} {x : (VS D).V} : x ∈ or
     | exact Iff.rfl
     | (constructor <;> intro h <;> exact h)
 
+/- English proof (translation)
+Take `⟨Λ', hΛ'⟩` from `q`. Simplify using `only at hq`. Substitute `hq` using the available equality. Establish `hst` using `Formalism.L2.SG.Pf.FibreCounting.stabF_of_fix (X.Fu u') hc hfix`. Take `⟨g, hgq⟩` from `(Formalism.L2.SG.Pf.Act.gamL_autLz_bij (Y.cs u') Y.hK hN ⟨s.lam', hΛ'⟩).2 ⟨Formalism.L2.SG.Pf.Act.indW c hst, Formalism.L2.SG.Pf.Act.indW_mem s.lam' c hst hg⟩`.
+
+Establish `hW : (Formalism.L2.SG.Pf.Act.indW (Formalism.L2.SG.Pf.Act.isoG g.1) (Formalism.L2.SG.Pf.Act.isoG_stab g.1) : Formalism.MainNotions.S.WbQ D (X.Fu u') → Formalism.MainNotions.S.WbQ D (X.Fu u')) = Formalism.L2.SG.Pf.Act.indW c hst` using `congrArg Subtype.val hgq`. Establish `hq : ∀ y ∈ perpS (VS D) (X.Fu u').X, c y - Formalism.L2.SG.Pf.Act.isoG g.1 y ∈ (X.Fu u').X`. Introduce `y hy`. Establish `e` using `congrFun hW.symm (Submodule.Quotient.mk ⟨y, hy⟩)`. Rewrite `e` using `[Formalism.L2.SG.Pf.Act.indW_mk, Formalism.L2.SG.Pf.Act.indW_mk, Submodule.Quotient.eq]`.
+
+Simplify using `using e`. Establish `hfixg : ∀ a, Formalism.L2.SG.Pf.Act.isoG g.1 ((X.Fu u').fvec a) = (X.Fu u').fvec a`. Introduce `a`. Use `Fin.lastCases ?_ (fun i => ?_) a` and prove the remaining obligations. Simplify using `only [FlagG.fvec, Fin.snoc_last]`.
+
+Rewrite using `[X.flagZVector u']`. Conclude with `Formalism.L2.SG.Pf.Act.isoG_fix g.1 _ (Or.inr rfl)`. Simplify using `only [FlagG.fvec, Fin.snoc_castSucc]`. Rewrite using `[X.Fu_e u']`. Conclude with `Formalism.L2.SG.Pf.Act.isoG_e g.1 i`.
+
+Establish `hA : IsAutLam (VS D) s.lam' c` using `⟨hc, hg⟩`. Establish `hA' : IsAutLam (VS D) s.lam' (Formalism.L2.SG.Pf.Act.isoG g.1)` using `⟨(Formalism.L2.SG.Pf.Act.isoG_stab g.1).1, Formalism.L2.SG.Pf.Act.isoG_lat (Y.cs u') ⟨s.lam', hΛ'⟩ g⟩`. Establish `hm` using `Formalism.L2.SG.Pf.FibreCounting.nlam_of_sub (X.Fu u') hA hA' hfix hfixg hq`. Establish `hkinv : colD ((Y.cs u').h ((Y.cs u').base s.lam')) (iotaF X u' g.1⁻¹ * (Y.cs u').h ((Y.cs u').base s.lam')) ∈ X.B.I.Kset`. Rewrite using `[← Formalism.L2.SG.Pf.Act.aK_eq]`.
+
+Establish `h1` using `K_inv X.B.I (kB_mem (Y := Y) ⟨s.lam', hΛ'⟩ g)`. Unfold `Formalism.L2.SG.Pf.SatGramActL.kB at h1`. Rewrite using `[map_inv]`. Use `h1 using 1` and compare the differences between its conclusion and the goal. Use `push_cast`.
+
+Use `group`. Set `γ : Formalism.L2.SG.Pf.Act.GamL (Y.cs u') ⟨s.lam', hΛ'⟩` to `⟨g.1⁻¹, hkinv⟩`. Establish `hxg` using `(isoG_lift Y ⟨s.lam', hΛ'⟩ g).1`. Establish `hxi : RatLink X (γ.1 : X.B.I.GA) (Formalism.L2.SG.Pf.Act.isoG g.1)⁻¹`. Use `Formalism.L2.SG.Pf.ratLink_inv X hxg` as an intermediate fact.
+
+Simplify `this` using `[γ]`. Establish `hiso : Formalism.L2.SG.Pf.Act.isoG γ.1 = (Formalism.L2.SG.Pf.Act.isoG g.1)⁻¹` using `(eq_isoG hxi).symm`. Use `⟨γ, ?_, fun y hy => by rw [hiso, inv_inv]; exact hq y hy⟩` and prove the remaining obligations. Establish `hβt : Formalism.L2.SG.Pf.Act.isoG γ.1 ∈ Formalism.L2.SG.Saturated.AutF s.lam' (lf D (X.Fu u'))` using `(isoG_lift Y ⟨s.lam', hΛ'⟩ γ).2`. Establish `hcls` using `Formalism.L2.SG.Pf.SatGramActR.tmap_cls (γ.1 : X.B.I.GA) (Formalism.L2.SG.Pf.Act.isoG γ.1) Formalism.L2.SG.Pf.SatGramActR.autFConjN_holds (isoG_lift Y ⟨s.lam', hΛ'⟩ γ).1 s hβt`.
+
+Use `set G := Formalism.L2.SG.Pf.Act.isoG g.1 with hG`. Establish `hGA : G⁻¹ ∈ Formalism.L2.SG.Saturated.AutF s.lam' (lf D (X.Fu u'))` using `by rw [← hiso]; exact hβt`. Establish `hν2 : G⁻¹ * ν * G⁻¹⁻¹ ∈ NLam s.lam' (lf D (X.Fu u'))` using `Formalism.L2.SG.Pf.SatGramActL.nlam_conj hGA hν`. Establish `hν3 : (G⁻¹ * ν * G⁻¹⁻¹) * (c⁻¹ * G)⁻¹ ∈ NLam s.lam' (lf D (X.Fu u'))` using `Formalism.L2.SG.Pf.nlamPf_mul hν2 (Formalism.L2.SG.Pf.nlamPf_inv hm)`. Break down `s' with ⟨k, hk, k', hk', q'⟩` into its components or cases.
+
+Simplify using `only at hl hl' he`. Substitute `hl hl'` using the available equality. Use `show (⟨s.lam, hk, s.lam', hk', q'⟩ : TT Y u u') = ⟨s.lam, s.mem, s.lam', s.mem', (Formalism.L2.SG.Pf.SatGramActR.tmap (γ.1 : X.B.I.GA) (Formalism.L2.SG.Pf.Act.isoG γ.1) Formalism.L2.SG.Pf.SatGramActR.autFConjN_holds (isoG_lift Y ⟨s.lam', hΛ'⟩ γ).1 s).cls⟩`. Rewrite using `[hcls]`. Use `congr 1`.
+
+Rewrite using `[← Quot.out_eq q']`. Use `(Quot.sound ⟨n, hn, (G⁻¹ * ν * G⁻¹⁻¹) * (c⁻¹ * G)⁻¹, hν3, ?_⟩).symm` and prove the remaining obligations. Use `show GTerm.lin (⟨s.lam, hk, s.lam', hk', q'⟩ : TT Y u u') = n * (GTerm.lin s * (Formalism.L2.SG.Pf.Act.isoG γ.1)⁻¹) * ((G⁻¹ * ν * G⁻¹⁻¹) * (c⁻¹ * G)⁻¹)`. Rewrite using `[he, hiso]`. Use `group`.
+-/
 theorem act_of_dec (hN : Formalism.L2.SG.PoincareInHH.Cut.NeatKu X u' Y.hK) (q : {Λ // Λ ∈ Y.what₂ u'})
     {s s' : TT Y u u'} (hq : s.lam' = q.1) (hl : s.lam = s'.lam) (hl' : s.lam' = s'.lam')
     {n ν c : (VS D).V ≃ₗ[D.host.E] (VS D).V} (hn : n ∈ NLam s.lam (lf D (X.Fu u)))
@@ -98,6 +124,9 @@ theorem act_of_dec (hN : Formalism.L2.SG.PoincareInHH.Cut.NeatKu X u' Y.hK) (q :
   rw [he, hiso]
   group
 
+/- English proof (translation)
+Establish `hm' : m ∈ NLam (Formalism.HermitianLatticesTheory.gmap s.lin s.lam') (Formalism.L2.SG.Saturated.mapL s.lin (Formalism.L2.SG.Pf.FibreCounting.lin_isom s) (lf D (X.Fu u')))`. Rewrite using `[Formalism.L2.SG.Pf.FibreCounting.lin_gmap s, ← Formalism.L2.SG.Pf.FibreCounting.frame_eq s]`. Conclude with `hm`. Conclude with `(Formalism.L2.SG.Pf.mem_NLam_map _ (Formalism.L2.SG.Pf.FibreCounting.lin_isom s) s.lam' (lf D (X.Fu u')) m).1 hm'`.
+-/
 theorem nlam_frame (s : TT Y u u') {m : (VS D).V ≃ₗ[D.host.E] (VS D).V} (hm : m ∈ NLam s.lam s.frame) :
     s.lin⁻¹ * m * s.lin ∈ NLam s.lam' (lf D (X.Fu u')) := by
   have hm' : m ∈ NLam (Formalism.HermitianLatticesTheory.gmap s.lin s.lam')
@@ -105,6 +134,11 @@ theorem nlam_frame (s : TT Y u u') {m : (VS D).V ≃ₗ[D.host.E] (VS D).V} (hm 
     rw [Formalism.L2.SG.Pf.FibreCounting.lin_gmap s, ← Formalism.L2.SG.Pf.FibreCounting.frame_eq s]; exact hm
   exact (Formalism.L2.SG.Pf.mem_NLam_map _ (Formalism.L2.SG.Pf.FibreCounting.lin_isom s) s.lam' (lf D (X.Fu u')) m).1 hm'
 
+/- English proof (translation)
+Introduce `a`. Unfold `Formalism.MainNotions.S.FlagG.fvec`. Use `Fin.lastCases ?_ (fun i => ?_) a` and prove the remaining obligations. Simplify using `only [Fin.snoc_last]`. Conclude with `hz`.
+
+Simplify using `only [Fin.snoc_castSucc]`. Conclude with `he i`.
+-/
 theorem fix_of_ez {c : (VS D).V ≃ₗ[D.host.E] (VS D).V} (he : ∀ a, c ((X.Fu u').e a) = (X.Fu u').e a)
     (hz : c (X.Fu u').z = (X.Fu u').z) : ∀ a, c ((X.Fu u').fvec a) = (X.Fu u').fvec a := by
   intro a
@@ -115,6 +149,23 @@ theorem fix_of_ez {c : (VS D).V ≃ₗ[D.host.E] (VS D).V} (he : ∀ a, c ((X.Fu
   · simp only [Fin.snoc_castSucc]
     exact he i
 
+/- English proof (translation)
+Set `q : {Λ // Λ ∈ Y.what₂ u'}` to `⟨s₁.lam', s₁.mem'⟩`. Establish `hfix₁` using `fix_of_ez he₁ hz₁`. Establish `hfix₂` using `fix_of_ez he₂ hz₂`. Establish `hμ₁` using `nlam_frame s₁ hm₁`. Establish `hm₂' : m₂ ∈ NLam s₂.lam s₂.frame` using `by rw [hs2]; exact hm₂`.
+
+Establish `hμ₂` using `nlam_frame s₂ hm₂'`. Establish `e₁ : t₁.lin = n₁ * s₁.lin * (s₁.lin⁻¹ * m₁ * s₁.lin) * c₁` using `by rw [hl₁]; group`. Establish `e₂ : t₂.lin = n₂ * s₂.lin * (s₂.lin⁻¹ * m₂ * s₂.lin) * c₂` using `by rw [hl₂]; group`. Establish `hn₂' : n₂ ∈ NLam s₂.lam (lf D (X.Fu u))` using `by rw [hs2]; exact hn₂`. Establish `hg₂' : Formalism.HermitianLatticesTheory.gmap c₂ s₂.lam' = s₂.lam'` using `by rw [hs2']; exact hg₂`.
+
+Take `⟨γ₁, hγ₁, hq₁⟩` from `act_of_dec hN q rfl ht1.symm ht1'.symm hn₁ hμ₁ hc₁ hg₁ hfix₁ e₁`. Take `⟨γ₂, hγ₂, hq₂⟩` from `act_of_dec hN q hs2' (hs2.trans ht2.symm) (hs2'.trans ht2'.symm) hn₂' hμ₂ hc₂ hg₂' hfix₂ e₂`. Establish `i₁` using `iota_act hIR q γ₁ s₁ rfl`. Establish `i₂` using `iota_act hIR q γ₂ s₂ hs2'`. Rewrite `i₁` using `[← hγ₁]`.
+
+Rewrite `i₂` using `[← hγ₂]`. Rewrite `hι'` using `[i₁, i₂, hι]`. Establish `hlev : levi Y.TR (Formalism.L2.SG.Pf.SatGramActL.kB (Y.cs u') q.1 γ₁.1) = levi Y.TR (Formalism.L2.SG.Pf.SatGramActL.kB (Y.cs u') q.1 γ₂.1)` using `inv_injective (mul_left_cancel hι')`. Establish `hγ : γ₁ = γ₂`. Apply `(Formalism.L2.SG.Pf.Act.gamL_levi_bij (Y.cs u') Y.TR Y.hK hN q).1` to reduce the goal to its premises.
+
+Apply `Subtype.ext` to reduce the goal to its premises. Use `show levi Y.TR (colD ((Y.cs u').h ((Y.cs u').base q.1)) (iotaF X u' γ₁.1 * (Y.cs u').h ((Y.cs u').base q.1))) = levi Y.TR (colD ((Y.cs u').h ((Y.cs u').base q.1)) (iotaF X u' γ₂.1 * (Y.cs u').h ((Y.cs u').base q.1)))`. Rewrite using `[← Formalism.L2.SG.Pf.Act.aK_eq, ← Formalism.L2.SG.Pf.Act.aK_eq]`. Conclude with `hlev`. Substitute `hγ` using the available equality.
+
+Introduce `x hx`. Rewrite `hx` using `[mem_orth_iff]`. Establish `hinv` using `Formalism.L2.SG.Pf.FibreCounting.inv_fix (X.Fu u') hfix₁`. Establish `hc₁i : c₁⁻¹ ∈ Formalism.HermitianLatticesTheory.isom (VS D).hT` using `Subgroup.inv_mem _ hc₁`. Establish `hy : c₁⁻¹ x ∈ perpS (VS D) (X.Fu u').X` using `Formalism.L2.SG.Pf.FibreCounting.perp_maps (X.Fu u') hc₁i hinv x hx`.
+
+Establish `d₁` using `hq₁ _ hy`. Establish `d₂` using `hq₂ _ hy`. Establish `e3 : (c₂ * c₁⁻¹) x - x = (c₂ (c₁⁻¹ x) - (Formalism.L2.SG.Pf.Act.isoG γ₁.1)⁻¹ (c₁⁻¹ x)) - (c₁ (c₁⁻¹ x) - (Formalism.L2.SG.Pf.Act.isoG γ₁.1)⁻¹ (c₁⁻¹ x))`. Simplify using `only [LinearEquiv.mul_apply]`. Establish `: c₁ (c₁⁻¹ x) = x` using `by show c₁ (c₁.symm x) = x`.
+
+Conclude with `c₁.apply_symm_apply x`. Rewrite using `[this]`. Normalize the expressions using the abelian group laws. Rewrite using `[e3]`. Conclude with `sub_mem d₂ d₁`.
+-/
 theorem iotaKer_core (hN : Formalism.L2.SG.PoincareInHH.Cut.NeatKu X u' Y.hK) (hIR : Formalism.L2.SG.Pf.SatGramRep.IotaRepC)
     (s₁ s₂ t₁ t₂ : TT Y u u') (n₁ n₂ m₁ m₂ c₁ c₂ : (VS D).V ≃ₗ[D.host.E] (VS D).V)
     (hs2 : s₂.lam = s₁.lam) (ht1 : t₁.lam = s₁.lam) (ht2 : t₂.lam = s₁.lam)

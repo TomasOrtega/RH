@@ -12,6 +12,15 @@ open GlobalTheory GlobalTheory.Points GlobalTheory.ArInt GlobalTheory.Cartier Gl
 
 namespace GlobalTheory.CompanionTheory.CommAlg.OrderEtale
 
+/- English proof (translation)
+Establish `hinj : Function.Injective (algebraMap k K)` using `IsFractionRing.injective k K`. Use `haveI : CharZero K := charZero_of_injective_algebraMap hinj`. Use `letI : Algebra ℚ K := DivisionRing.toRatAlgebra`. Use `haveI := IsScalarTower.of_algebraMap_eq' (R := ℤ) (S := ℚ) (A := K) (RingHom.ext_int _ _)`. Use `haveI := IsScalarTower.of_algebraMap_eq' (R := ℤ) (S := k) (A := K) (RingHom.ext_int _ _)`.
+
+Use `haveI : Algebra.IsIntegral ℤ k := Algebra.IsIntegral.of_finite ℤ k`. Establish `hint : ∀ a : k, IsIntegral ℚ (algebraMap k K a)` using `fun a => IsIntegral.tower_top (A := ℚ) ((Algebra.IsIntegral.isIntegral (R := ℤ) a).algebraMap (B := K))`. Use `haveI : Algebra.IsAlgebraic ℚ K := by`. Prove the components needed by the constructor for the conclusion. Introduce `x`.
+
+Take `⟨a, b, _, rfl⟩` from `IsFractionRing.div_surjective (A := k) x`. Rewrite using `[div_eq_mul_inv]`. Establish `hb : IsIntegral ℚ (algebraMap k K b)⁻¹` using `(IsAlgebraic.inv_iff.mpr (hint b).isAlgebraic).isIntegral`. Conclude with `((hint a).mul hb).isAlgebraic`. Use `haveI : Algebra.FormallyUnramified ℚ K := Algebra.FormallyUnramified.of_isSeparable ℚ K`.
+
+Use `haveI : Algebra.FormallyUnramified ℤ ℚ := Algebra.FormallyUnramified.of_isLocalization (nonZeroDivisors ℤ)`. Conclude with `Algebra.FormallyUnramified.comp ℤ ℚ K`.
+-/
 theorem formallyUnramified_fractionRing (k K : Type) [CommRing k] [IsDomain k] [CharZero k]
     [Module.Finite ℤ k] [Field K] [Algebra k K] [IsFractionRing k K] [Algebra ℤ K] :
     Algebra.FormallyUnramified ℤ K := by
@@ -36,6 +45,11 @@ theorem formallyUnramified_fractionRing (k K : Type) [CommRing k] [IsDomain k] [
   haveI : Algebra.FormallyUnramified ℤ ℚ := Algebra.FormallyUnramified.of_isLocalization (nonZeroDivisors ℤ)
   exact Algebra.FormallyUnramified.comp ℤ ℚ K
 
+/- English proof (translation)
+Establish `hM : (⊥ : Ideal k).primeCompl = nonZeroDivisors k`. Use extensionality with `x`. Simplify using `[Ideal.mem_primeCompl_iff, mem_nonZeroDivisors_iff_ne_zero]`. Use `haveI : IsFractionRing k (Localization.AtPrime (⊥ : Ideal k)) := by`. Unfold `IsFractionRing`.
+
+Rewrite using `[← hM]`. Use `infer_instance`. Use `letI : Field (Localization.AtPrime (⊥ : Ideal k)) := IsFractionRing.toField k`. Conclude with `formallyUnramified_fractionRing k (Localization.AtPrime (⊥ : Ideal k))`.
+-/
 theorem isUnramifiedAt_bot (k : Type) [CommRing k] [IsDomain k] [CharZero k]
     [Module.Finite ℤ k] : Algebra.IsUnramifiedAt ℤ (⊥ : Ideal k) := by
   have hM : (⊥ : Ideal k).primeCompl = nonZeroDivisors k := by
@@ -48,6 +62,21 @@ theorem isUnramifiedAt_bot (k : Type) [CommRing k] [IsDomain k] [CharZero k]
   letI : Field (Localization.AtPrime (⊥ : Ideal k)) := IsFractionRing.toField k
   exact formallyUnramified_fractionRing k (Localization.AtPrime (⊥ : Ideal k))
 
+/- English proof (translation)
+Establish `hU : IsOpen (Algebra.unramifiedLocus ℤ k)` using `Algebra.isOpen_unramifiedLocus`. Establish `hbot : (⟨⊥, Ideal.isPrime_bot⟩ : PrimeSpectrum k) ∈ Algebra.unramifiedLocus ℤ k` using `isUnramifiedAt_bot k`. Take `⟨V, ⟨f, rfl⟩, hfV, hVU⟩` from `PrimeSpectrum.isTopologicalBasis_basic_opens.exists_subset_of_mem_open hbot hU`. Establish `hf0 : f ≠ 0`. Introduce `h`.
+
+Simplify using `[h] at hfV`. Establish `hint : Algebra.IsIntegral ℤ k` using `Algebra.IsIntegral.of_finite ℤ k`. Establish `hne : Ideal.comap (algebraMap ℤ k) (Ideal.span {f}) ≠ ⊥` using `Ideal.comap_ne_bot_of_integral_mem hf0 (Ideal.subset_span rfl) (Algebra.IsIntegral.isIntegral f)`. Take `⟨m, hm, hm0⟩` from `Submodule.exists_mem_ne_zero_of_ne_bot hne`. Rewrite `hm` using `[Ideal.mem_comap, Ideal.mem_span_singleton, eq_intCast]`.
+
+Establish `hmN : (m : k) ∣ ((m.natAbs : ℤ) : k)` using `map_dvd (Int.castRingHom k) (Int.dvd_natAbs.mpr dvd_rfl)`. Establish `hfN : f ∣ ((m.natAbs : ℕ) : k)`. Use `hm.trans hmN` as an intermediate fact. Simplify using `using this`. Take `⟨g, hg⟩` from `hfN`.
+
+Use `⟨m.natAbs, Int.natAbs_ne_zero.mpr hm0, ?_⟩` and prove the remaining obligations. Establish `hS : Algebra.FormallyUnramified ℤ (Localization.Away ((m.natAbs : ℕ) : k))`. Rewrite using `[← Algebra.basicOpen_subset_unramifiedLocus_iff]`. Use `subset_trans ?_ hVU` and prove the remaining obligations. Rewrite using `[hg]`.
+
+Conclude with `PrimeSpectrum.basicOpen_mul_le_left f g`. Establish `hfree : Module.Free ℤ k` using `Module.free_of_finite_type_torsion_free'`. Establish `hflat : Module.Flat ℤ (Localization.Away ((m.natAbs : ℕ) : k))`. Use `IsLocalization.flat (Localization.Away ((m.natAbs : ℕ) : k)) (Submonoid.powers ((m.natAbs : ℕ) : k))` as an intermediate fact. Conclude with `Module.Flat.trans ℤ k _`.
+
+Establish `hfp : Algebra.FinitePresentation ℤ (Localization.Away ((m.natAbs : ℕ) : k))`. Establish `: Algebra.FinitePresentation ℤ k` using `Algebra.FinitePresentation.of_finiteType.mp inferInstance`. Use `IsLocalization.Away.finitePresentation (S := Localization.Away ((m.natAbs : ℕ) : k)) ((m.natAbs : ℕ) : k)` as an intermediate fact. Conclude with `Algebra.FinitePresentation.trans ℤ k _`. Establish `hE : Algebra.Etale ℤ (Localization.Away ((m.natAbs : ℕ) : k))` using `Algebra.Etale.of_formallyUnramified_of_flat`.
+
+Establish `h2 : Int.castRingHom (Localization.Away ((m.natAbs : ℕ) : k)) = algebraMap ℤ (Localization.Away ((m.natAbs : ℕ) : k))` using `RingHom.ext_int _ _`. Rewrite using `[h2, RingHom.etale_algebraMap]`. Conclude with `hE`.
+-/
 theorem exists_etale_away (k : Type) [CommRing k] [IsDomain k] [CharZero k] [Module.Finite ℤ k] :
     ∃ N : ℕ, N ≠ 0 ∧ (Int.castRingHom (Localization.Away (N : k))).Etale := by
   have hU : IsOpen (Algebra.unramifiedLocus ℤ k) := Algebra.isOpen_unramifiedLocus

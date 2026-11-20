@@ -8,11 +8,17 @@ open GlobalTheory.CompanionTheory.Ar.Num (dotDual)
 
 namespace PositivityTheory.Xgn.HodgeDualFrame
 
+/- English proof (translation)
+Simplify using `[dotDual, AddSubgroup.mem_iInf]`.
+-/
 theorem mem_dotDual {O Ω : Type} [CommRing O] [Field Ω] [Algebra O Ω] (R : Subalgebra O Ω) {r : ℕ}
     (L : AddSubgroup (Fin r → Ω)) (e : Fin r → Ω) :
     e ∈ dotDual R L ↔ ∀ l ∈ L, l ⬝ᵥ e ∈ R := by
   simp [dotDual, AddSubgroup.mem_iInf]
 
+/- English proof (translation)
+Establish `key : f ^ n * a = f ^ (n - m) * (f ^ m * a)`. Rewrite using `[← mul_assoc, ← pow_add, Nat.sub_add_cancel hmn]`. Rewrite using `[key]`. Conclude with `R.mul_mem (R.pow_mem hf _) h`.
+-/
 theorem pow_mul_mem {O Ω : Type} [CommRing O] [Field Ω] [Algebra O Ω] {R : Subalgebra O Ω} {f a : Ω}
     (hf : f ∈ R) {m n : ℕ} (hmn : m ≤ n) (h : f ^ m * a ∈ R) : f ^ n * a ∈ R := by
   have key : f ^ n * a = f ^ (n - m) * (f ^ m * a) := by
@@ -20,6 +26,9 @@ theorem pow_mul_mem {O Ω : Type} [CommRing O] [Field Ω] [Algebra O Ω] {R : Su
   rw [key]
   exact R.mul_mem (R.pow_mem hf _) h
 
+/- English proof (translation)
+Use `choose n hn using h`. Use `⟨Finset.univ.sup n, fun q => ?_⟩` and prove the remaining obligations. Conclude with `pow_mul_mem hf (Finset.le_sup (Finset.mem_univ q)) (hn q)`.
+-/
 theorem exists_unif {O Ω : Type} [CommRing O] [Field Ω] [Algebra O Ω] {R : Subalgebra O Ω} {f : Ω}
     (hf : f ∈ R) {m : ℕ} (a : Fin m → Ω) (h : ∀ q, ∃ n : ℕ, f ^ n * a q ∈ R) :
     ∃ n : ℕ, ∀ q, f ^ n * a q ∈ R := by
@@ -27,6 +36,17 @@ theorem exists_unif {O Ω : Type} [CommRing O] [Field Ω] [Algebra O Ω] {R : Su
   refine ⟨Finset.univ.sup n, fun q => ?_⟩
   exact pow_mul_mem hf (Finset.le_sup (Finset.mem_univ q)) (hn q)
 
+/- English proof (translation)
+Set `M : Matrix (Fin r) (Fin r) Ω` to `Matrix.of b`. Establish `hu : IsUnit M` using `Matrix.linearIndependent_rows_iff_isUnit.mp hli`. Establish `hdet : IsUnit M.det` using `(Matrix.isUnit_iff_isUnit_det M).mp hu`. Establish `hrow : ∀ p q, b p ⬝ᵥ (fun i => M⁻¹ i q) = if p = q then 1 else 0`. Introduce `p q`.
+
+Establish `h` using `congrFun (congrFun (Matrix.mul_nonsing_inv M hdet) p) q`. Rewrite `h` using `[Matrix.mul_apply, Matrix.one_apply]`. Conclude with `h`. Use `⟨fun q i => M⁻¹ i q, ?_, ?_⟩` and prove the remaining obligations. Introduce `a q`.
+
+Rewrite using `[sum_dotProduct]`. Repeatedly rewrite using `[smul_dotProduct, hrow]`. Simplify using the standard rewrite rules. Introduce `e`. Establish `h` using `Matrix.mulVec_mulVec e M⁻¹ M`.
+
+Rewrite `h` using `[Matrix.nonsing_inv_mul M hdet, Matrix.one_mulVec]`. Use function extensionality and compare the values at `i`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [Matrix.mulVec, dotProduct, Finset.sum_apply, Pi.smul_apply, smul_eq_mul]`. Apply `Finset.sum_congr rfl` to reduce the goal to its premises.
+
+Introduce `q _`. Rewrite using `[mul_comm]`. Both sides reduce to the same expression.
+-/
 theorem exists_dual {Ω : Type} [Field Ω] {r : ℕ} (b : Fin r → Fin r → Ω)
     (hli : LinearIndependent Ω b) (hsp : Submodule.span Ω (Set.range b) = ⊤) :
     ∃ d : Fin r → Fin r → Ω, (∀ (a : Fin r → Ω) (q : Fin r), (∑ p, a p • b p) ⬝ᵥ d q = a q) ∧
@@ -57,6 +77,39 @@ theorem exists_dual {Ω : Type} [Field Ω] {r : ℕ} (b : Fin r → Fin r → Ω
         rw [mul_comm]
         rfl
 
+/- English proof (translation)
+Take `⟨d, hd1, hd2⟩` from `exists_dual b hli hsp`. Establish `hδ : ∀ p q, b p ⬝ᵥ d q = if p = q then 1 else 0`. Introduce `p q`. Establish `h` using `hd1 (Pi.single p 1) q`. Establish `hs : (∑ p', (Pi.single p (1 : Ω) : Fin r → Ω) p' • b p') = b p`.
+
+Rewrite using `[Finset.sum_eq_single p]`. Simplify using the standard rewrite rules. Introduce `p' _ hp'`. Simplify using `[Pi.single_eq_of_ne hp']`. Simplify using the standard rewrite rules.
+
+Rewrite `h` using `[hs]`. Rewrite using `[h]`. Distinguish the cases in `hpq : p = q`. Substitute `hpq` using the available equality. Simplify using the standard rewrite rules.
+
+Simplify using `[hpq, Pi.single_eq_of_ne (Ne.symm hpq)]`. Establish `hcoord : ∀ (a : Fin r → Ω) q, b q ⬝ᵥ (∑ p, a p • d p) = a q`. Introduce `a q`. Rewrite using `[dotProduct_sum]`. Repeatedly rewrite using `[dotProduct_smul, hδ]`.
+
+Simplify using the standard rewrite rules. Establish `hli' : LinearIndependent Ω d`. Rewrite using `[Fintype.linearIndependent_iff]`. Introduce `g hg q`. Establish `h` using `hcoord g q`.
+
+Rewrite `h` using `[hg, dotProduct_zero]`. Conclude with `h.symm`. Establish `hsp' : Submodule.span Ω (Set.range d) = ⊤`. Rewrite using `[eq_top_iff]`. Introduce `e _`.
+
+Rewrite using `[hd2 e]`. Conclude with `Submodule.sum_mem _ (fun q _ => Submodule.smul_mem _ _ (Submodule.subset_span ⟨q, rfl⟩))`. Use `choose c hc hce using fun k => (hfr (s k)).mp ⟨0, by simpa using hs k⟩`. Use `⟨d, hli', hsp', fun e => ⟨?_, ?_⟩⟩` and prove the remaining obligations. Introduce and unpack `⟨n, hn⟩`.
+
+Use `⟨fun q => b q ⬝ᵥ e, fun q => ?_, hd2 e⟩` and prove the remaining obligations. Establish `hbq : ∃ N : ℕ, f ^ N • b q ∈ L`. Apply `(hfr (b q)).mpr` to reduce the goal to its premises. Use `⟨Pi.single q 1, fun p => ⟨0, ?_⟩, ?_⟩` and prove the remaining obligations. Distinguish the cases in `hpq : p = q`.
+
+Substitute `hpq` using the available equality. Simplify using the standard rewrite rules. Simplify using `[Pi.single_eq_of_ne hpq]`. Rewrite using `[Finset.sum_eq_single q]`. Simplify using the standard rewrite rules.
+
+Introduce `p _ hp`. Simplify using `[Pi.single_eq_of_ne hp]`. Simplify using the standard rewrite rules. Take `⟨N, hN⟩` from `hbq`. Use `⟨N + n, ?_⟩` and prove the remaining obligations.
+
+Establish `h` using `(mem_dotDual R L _).mp hn _ hN`. Rewrite `h` using `[smul_dotProduct, dotProduct_smul, smul_eq_mul, smul_eq_mul]`. Use `show f ^ (N + n) * (b q ⬝ᵥ e) ∈ R`. Rewrite using `[pow_add, mul_assoc]`. Conclude with `h`.
+
+Introduce and unpack `⟨a, ha, rfl⟩`. Establish `hsk : ∀ k, s k ⬝ᵥ (∑ p, a p • d p) = ∑ p, c k p * a p`. Introduce `k`. Rewrite using `[hce k, sum_dotProduct]`. Repeatedly rewrite using `[smul_dotProduct, hcoord, smul_eq_mul]`.
+
+Establish `hk : ∀ k, ∃ n : ℕ, f ^ n * (s k ⬝ᵥ (∑ p, a p • d p)) ∈ R`. Introduce `k`. Take `⟨n, hn⟩` from `exists_unif hf (fun p => c k p * a p) (fun p => by`. Take `⟨n1, h1⟩` from `hc k p`. Take `⟨n2, h2⟩` from `ha p`.
+
+Use `⟨n1 + n2, ?_⟩` and prove the remaining obligations. Establish `hm : f ^ (n1 + n2) * (c k p * a p) = (f ^ n1 * c k p) * (f ^ n2 * a p)` using `by ring`. Rewrite using `[hm]`. Conclude with `R.mul_mem h1 h2)`. Use `⟨n, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[hsk k, Finset.mul_sum]`. Conclude with `sum_mem (fun p _ => hn p)`. Take `⟨N, hN⟩` from `exists_unif hf (fun k => s k ⬝ᵥ (∑ p, a p • d p)) hk`. Use `⟨N, (mem_dotDual R L _).mpr fun l hl => ?_⟩` and prove the remaining obligations. Take `⟨g, hg, rfl⟩` from `hgen l hl`.
+
+Rewrite using `[sum_dotProduct]`. Use `sum_mem (fun k _ => ?_)` and prove the remaining obligations. Rewrite using `[smul_dotProduct, dotProduct_smul, smul_eq_mul, smul_eq_mul]`. Conclude with `R.mul_mem (hg k) (hN k)`.
+-/
 theorem main {O Ω : Type} [CommRing O] [Field Ω] [Algebra O Ω] (R : Subalgebra O Ω) {r : ℕ}
     (L : AddSubgroup (Fin r → Ω)) {m : ℕ} (s : Fin m → Fin r → Ω) (hs : ∀ k, s k ∈ L)
     (hgen : ∀ e ∈ L, ∃ a : Fin m → Ω, (∀ k, a k ∈ R) ∧ e = ∑ k, a k • s k)
@@ -151,6 +204,11 @@ theorem main {O Ω : Type} [CommRing O] [Field Ω] [Algebra O Ω] (R : Subalgebr
 
 end PositivityTheory.Xgn.HodgeDualFrame
 
+/- English proof (translation)
+Introduce `O _ Ω _ _ ι x r B hB i hi`. Take `⟨k, f, c, hf, hc, hsum, hfr⟩` from `B.frame i hi`. Use `⟨k, f, c, hf, hc, hsum, fun l => ?_⟩` and prove the remaining obligations. Take `⟨b, hli, hsp, hb⟩` from `hfr l`. Take `⟨m, s, hs, hgen⟩` from `hB i hi`.
+
+Conclude with `PositivityTheory.Xgn.HodgeDualFrame.main (chartRing O x i) (B.lat i) s hs hgen (hf l) b hli hsp hb`.
+-/
 theorem PositivityTheory.Xgn.hodge_dual_frame_exists : ∀ (O : Type) [CommRing O] (Ω : Type) [Field Ω] [Algebra O Ω] (ι : Type) (x : ι → Ω) (r : ℕ)
     (B : ChartBundle O x r (Fin r → Ω)),
     (∀ c, x c ≠ 0 → ∃ (n : ℕ) (s : Fin n → Fin r → Ω), (∀ k, s k ∈ B.lat c) ∧

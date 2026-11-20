@@ -21,11 +21,25 @@ variable (E a) in
 def scalarCurve (s : ℝ) : GL (Fin a) (Cinf E) :=
   Units.map (Matrix.scalar (Fin a)).toMonoidHom (expU fun _ : InfinitePlace E => (s : ℂ))
 
+/- English proof (translation)
+Establish `h : (expU fun _ : InfinitePlace E => ((0 : ℝ) : ℂ)) = 1` using `Units.ext (funext fun _ => by simp [expU])`. Rewrite using `[scalarCurve, h, map_one]`.
+-/
 theorem scalarCurve_zero : scalarCurve E a 0 = 1 := by
   have h : (expU fun _ : InfinitePlace E => ((0 : ℝ) : ℂ)) = 1 :=
     Units.ext (funext fun _ => by simp [expU])
   rw [scalarCurve, h, map_one]
 
+/- English proof (translation)
+Rewrite using `[hasDerivAt_pi]`. Introduce `i`. Rewrite using `[hasDerivAt_pi]`. Introduce `j`. Rewrite using `[hasDerivAt_pi]`.
+
+Introduce `w`. Distinguish the cases in `h : i = j`. Substitute `h` using the available equality. Establish `e : (fun s : ℝ => toL (scalarCurve E a s).val i i w) = fun s : ℝ => Complex.exp (s : ℂ)`. Use function extensionality and compare the values at `s`.
+
+Simplify using `[scalarCurve, toL, expU, Matrix.scalar_apply]`. Establish `d : HasDerivAt (fun s : ℝ => Complex.exp (s : ℂ)) 1 0`. Simplify using `using (Complex.hasDerivAt_exp ((0 : ℝ) : ℂ)).comp_ofReal`. Establish `o : oneL E a i i w = 1` using `by simp [oneL, toL]`. Rewrite using `[e, o]`.
+
+Conclude with `d`. Establish `e : (fun s : ℝ => toL (scalarCurve E a s).val i j w) = fun _ : ℝ => 0`. Use function extensionality and compare the values at `s`. Simplify using `[scalarCurve, toL, Matrix.scalar_apply, h]`. Establish `o : oneL E a i j w = 0` using `by simp [oneL, toL, h]`.
+
+Rewrite using `[e, o]`. Conclude with `hasDerivAt_const (0 : ℝ) (0 : ℂ)`.
+-/
 theorem hasDerivAt_scalarCurve :
     HasDerivAt (fun s => toL (scalarCurve E a s).val) (oneL E a) 0 := by
   rw [hasDerivAt_pi]
@@ -51,6 +65,21 @@ theorem hasDerivAt_scalarCurve :
     rw [e, o]
     exact hasDerivAt_const (0 : ℝ) (0 : ℂ)
 
+/- English proof (translation)
+Introduce `E _ _ _ a φ c hφ t g`. Use `set f : ℝ → ℂ := fun u => φ.1 (g * GlobalTheory.UnitaryBC.splitCentre E a u) with hf`. Establish `hd : ∀ u, HasDerivAt f (c * f u) u`. Introduce `u`. Establish `h1` using `hasDerivAt_curve φ (g * GlobalTheory.UnitaryBC.splitCentre E a u) (scalarCurve E a) (oneL E a) scalarCurve_zero hasDerivAt_scalarCurve`.
+
+Establish `h2 : lieD (oneL E a) φ.1 (g * GlobalTheory.UnitaryBC.splitCentre E a u) = c * f u`. Use `congrArg (fun ψ : Sm E a => ψ.1 (g * GlobalTheory.UnitaryBC.splitCentre E a u)) hφ` as an intermediate fact. Simplify `this` using `[hf]`. Rewrite `h1` using `[h2]`. Establish `h3 : HasDerivAt (fun x : ℝ => φ.1 ((g * GlobalTheory.UnitaryBC.splitCentre E a u) * infGL E a (scalarCurve E a (x - u)))) (c * f u) u`.
+
+Establish `h0 : u - u = (0 : ℝ)` using `sub_self u`. Conclude with `HasDerivAt.comp_sub_const u u (by rw [h0]; exact h1)`. Use `h3.congr_of_eventuallyEq (Filter.Eventually.of_forall fun x => ?_)` and prove the remaining obligations. Establish `e : GlobalTheory.UnitaryBC.splitCentre E a x = GlobalTheory.UnitaryBC.splitCentre E a u * infGL E a (scalarCurve E a (x - u))`. Use `GlobalTheory.CuspRep.CuspidalL2GL.splitCentre_add (E := E) (a := a) u (x - u)` as an intermediate fact.
+
+Rewrite `this` using `[add_sub_cancel]`. Conclude with `this`. Simplify using `only [hf, e, mul_assoc]`. Establish `hP : ∀ u : ℝ, HasDerivAt (fun v : ℝ => Complex.exp (-c * v) * f v) (Complex.exp (-c * u) * (-c) * f u + Complex.exp (-c * u) * (c * f u)) u`. Introduce `u`.
+
+Establish `h0 : HasDerivAt (fun v : ℝ => -c * (v : ℂ)) (-c) u`. Simplify using `using (Complex.ofRealCLM.hasDerivAt (x := u)).const_mul (-c)`. Conclude with `h0.cexp.mul (hd u)`. Establish `hconst : ∀ u : ℝ, Complex.exp (-c * u) * f u = Complex.exp (-c * (0 : ℝ)) * f 0`. Use `fun u => is_const_of_deriv_eq_zero (f := fun v : ℝ => Complex.exp (-c * v) * f v) (fun x => (hP x).differentiableAt) (fun x => ?_) u 0` and prove the remaining obligations.
+
+Rewrite using `[(hP x).deriv]`. Expand and normalize the polynomial expressions, which then agree. Establish `h0 : f 0 = φ.1 g`. Simplify using `[hf, GlobalTheory.CuspRep.CuspidalL2GL.splitCentre_zero]`. Establish `ht` using `hconst t`.
+
+Simplify using `only [Complex.ofReal_zero, mul_zero, Complex.exp_zero, one_mul, h0] at ht`. Rewrite using `[GlobalTheory.CuspRep.CuspidalL2GL.splitCentre_comm]`. Express the relevant statement in the definitionally equal form `f t = _`. Rewrite using `[← ht, ← mul_assoc, ← Complex.exp_add]`. Simplify using the standard rewrite rules.
+-/
 theorem eigen_along_splitCentre : ∀ (E : Type) [Field E] [NumberField E] [IsTotallyComplex E] (a : ℕ) (φ : Sm E a) (c : ℂ),
     lie E a (oneL E a) φ = c • φ → ∀ (t : ℝ) (g : GA E a),
       φ.1 (GlobalTheory.UnitaryBC.splitCentre E a t * g) = Complex.exp (c * t) * φ.1 g := by

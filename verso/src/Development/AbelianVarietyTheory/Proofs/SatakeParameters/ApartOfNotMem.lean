@@ -22,6 +22,11 @@ namespace GlobalTheory.Cong.OffTLimit
 
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {l : ℕ} [Fact l.Prime] {a : ℕ}
 
+/- English proof (translation)
+Introduce `h`. Apply `hw` to reduce the goal to its premises. Establish `h1 : ((l : ℕ) : 𝓞 (maximalRealSubfield E)) ∈ (w₀.under (𝓞 (maximalRealSubfield E))).asIdeal`. Rewrite using `[HeightOneSpectrum.under_asIdeal, Ideal.under_def, Ideal.mem_comap, map_natCast]`. Conclude with `h₀`.
+
+Rewrite `h1` using `[← h, HeightOneSpectrum.under_asIdeal, Ideal.under_def, Ideal.mem_comap, map_natCast]`. Conclude with `h1`.
+-/
 theorem apart_of_not_mem {w₀ w : HeightOneSpectrum (𝓞 E)} (h₀ : ((l : ℕ) : 𝓞 E) ∈ w₀.asIdeal)
     (hw : ((l : ℕ) : 𝓞 E) ∉ w.asIdeal) : Apart w w₀ := by
   intro h
@@ -31,6 +36,13 @@ theorem apart_of_not_mem {w₀ w : HeightOneSpectrum (𝓞 E)} (h₀ : ((l : ℕ
   rw [← h, HeightOneSpectrum.under_asIdeal, Ideal.under_def, Ideal.mem_comap, map_natCast] at h1
   exact h1
 
+/- English proof (translation)
+Take `⟨v, hv, hv0⟩` from `(Submodule.ne_bot_iff _).1 hne`. Establish `he : ∀ g u, e.toLinearEquiv (σ.ρ g u) = σ'.ρ g (e.toLinearEquiv u)` using `fun g u => LinearMap.congr_fun (e.isIntertwining' g) u`. Establish `hv' : e.toLinearEquiv v ∈ PRep.fixed σ'.ρ (Kw (O.pl j))`. Express the relevant statement in the definitionally equal form `∀ h : Kw (O.pl j), σ'.ρ (h : GL (Fin a) ((O.pl j).adicCompletion E)) (e.toLinearEquiv v) = ((1 : Kw (O.pl j) →* ℂˣ) h : ℂ) • e.toLinearEquiv v`. Introduce `h`.
+
+Use `hv h` as an intermediate fact. Simplify using `only [MonoidHom.one_apply, Units.val_one, one_smul] at this ⊢`. Rewrite using `[← he, this]`. Establish `hop : e.toLinearEquiv (opOf σ.ρ (O.f j) v) = opOf σ'.ρ (O.f j) (e.toLinearEquiv v)`. Simplify using `only [opOf, Finsupp.sum, map_sum, map_smul, he]`.
+
+Establish `h2` using `O.act j σ' _ hv'`. Rewrite `h2` using `[← hop, O.act j σ v hv, map_smul]`. Establish `hne' : e.toLinearEquiv v ≠ 0` using `by simpa using hv0`. Conclude with `smul_left_injective ℂ hne' h2`.
+-/
 theorem z_eq_of_equiv {ι : Qbar l ≃+* ℂ} {Kw : Levels E a} {J : Type} (O : LocOps l ι Kw J) (j : J)
     {σ σ' : SmIrr (GL (Fin a) ((O.pl j).adicCompletion E))} (e : σ.ρ.Equiv σ'.ρ)
     (hne : PRep.fixed σ.ρ (Kw (O.pl j)) ≠ ⊥) : O.z j σ = O.z j σ' := by

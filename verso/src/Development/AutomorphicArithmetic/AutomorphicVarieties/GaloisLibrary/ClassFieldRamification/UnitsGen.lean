@@ -5,12 +5,30 @@ import Development.AutomorphicArithmetic.CyclotomicBounds.ClassNumberBounds.Iner
 open NumberField IsDedekindDomain IntermediateField UpperTheory.V.Kum UpperTheory.V.CF
 open scoped Pointwise
 
+/- English proof (translation)
+Rewrite using `[MonoidHom.mem_ker, ZMod.unitsMap_def, Units.ext_iff, Units.coe_map, Units.val_one]`. Simplify using `only [MonoidHom.coe_coe, ZMod.castHom_apply, ZMod.cast_eq_val]`. Rewrite using `[← Nat.cast_one, ZMod.natCast_eq_natCast_iff]`.
+-/
 private theorem mem_ker_iff {N d : ℕ} [NeZero N] (h : d ∣ N) (u : (ZMod N)ˣ) :
     u ∈ (ZMod.unitsMap h).ker ↔ (u : ZMod N).val ≡ 1 [MOD d] := by
   rw [MonoidHom.mem_ker, ZMod.unitsMap_def, Units.ext_iff, Units.coe_map, Units.val_one]
   simp only [MonoidHom.coe_coe, ZMod.castHom_apply, ZMod.cast_eq_val]
   rw [← Nat.cast_one, ZMod.natCast_eq_natCast_iff]
 
+/- English proof (translation)
+Introduce `u hu`. Rewrite `hu` using `[mem_ker_iff hg]`. Establish `hx1 : 1 ≡ (u : ZMod N).val [MOD Nat.gcd d e]` using `(Nat.ModEq.of_dvd hgcd hu).symm`. Take `⟨k, hk1, hk2⟩` from `Nat.chineseRemainder' hx1`. Establish `hxN : (u : ZMod N).val.Coprime N` using `ZMod.val_coe_unit_coprime u`.
+
+Establish `hkd : k.Coprime d`. Unfold `Nat.Coprime`. Rewrite using `[hk1.gcd_eq]`. Conclude with `Nat.gcd_one_left d`. Establish `hke : k.Coprime e`.
+
+Unfold `Nat.Coprime`. Rewrite using `[hk2.gcd_eq]`. Conclude with `Nat.Coprime.coprime_dvd_right he hxN`. Establish `hkN : k.Coprime N` using `Nat.Coprime.coprime_dvd_right hN (Nat.Coprime.mul_right hkd hke)`. Establish `hvval : ((ZMod.unitOfCoprime k hkN : (ZMod N)ˣ) : ZMod N).val = k % N`.
+
+Rewrite using `[ZMod.coe_unitOfCoprime, ZMod.val_natCast]`. Establish `hv : ZMod.unitOfCoprime k hkN ∈ (ZMod.unitsMap hd).ker`. Rewrite using `[mem_ker_iff hd, hvval]`. Conclude with `((Nat.mod_modEq k N).of_dvd hd).trans hk1`. Establish `key : ZMod.unitsMap he (ZMod.unitOfCoprime k hkN) = ZMod.unitsMap he u`.
+
+Use `ext`. Rewrite using `[ZMod.unitsMap_def, Units.coe_map, Units.coe_map]`. Simplify using `only [MonoidHom.coe_coe, ZMod.castHom_apply, ZMod.cast_eq_val]`. Rewrite using `[hvval, ZMod.natCast_eq_natCast_iff]`. Conclude with `((Nat.mod_modEq k N).of_dvd he).trans hk2`.
+
+Establish `hw : (ZMod.unitOfCoprime k hkN)⁻¹ * u ∈ (ZMod.unitsMap he).ker`. Rewrite using `[MonoidHom.mem_ker, map_mul, map_inv, key, inv_mul_cancel]`. Establish `hu' : u = ZMod.unitOfCoprime k hkN * ((ZMod.unitOfCoprime k hkN)⁻¹ * u)`. Rewrite using `[mul_inv_cancel_left]`. Rewrite using `[hu']`.
+
+Conclude with `Subgroup.mul_mem_sup hv hw`.
+-/
 private theorem ker_le_sup {N g d e : ℕ} [NeZero N] (hg : g ∣ N) (hd : d ∣ N) (he : e ∣ N)
     (hgcd : Nat.gcd d e ∣ g) (hN : N ∣ d * e) :
     (ZMod.unitsMap hg).ker ≤ (ZMod.unitsMap hd).ker ⊔ (ZMod.unitsMap he).ker := by
@@ -46,6 +64,31 @@ private theorem ker_le_sup {N g d e : ℕ} [NeZero N] (hg : g ∣ N) (hd : d ∣
   rw [hu']
   exact Subgroup.mul_mem_sup hv hw
 
+/- English proof (translation)
+Proceed by induction on `b using Nat.strong_induction_on with`. Consider the case `_ b ih`. Introduce `a ha hab hcop`. Establish `hN0 : N ≠ 0` using `NeZero.ne N`. Establish `hb0 : b ≠ 0`.
+
+Introduce and unpack `rfl`. Conclude with `hN0 (by rw [← hab, mul_zero])`. Establish `ha0 : a ≠ 0`. Introduce and unpack `rfl`. Conclude with `hN0 (by rw [← hab, zero_mul])`.
+
+Distinguish the cases in `hb1 : b = 1`. Substitute `hb1` using the available equality. Rewrite `hab` using `[mul_one]`. Substitute `hab` using the available equality. Introduce `u hu`.
+
+Rewrite `hu` using `[mem_ker_iff ha]`. Establish `hu1 : u = 1`. Use `ext`. Rewrite using `[Units.val_one, ← ZMod.natCast_zmod_val (u : ZMod a), ← Nat.cast_one, ZMod.natCast_eq_natCast_iff]`. Conclude with `hu`.
+
+Rewrite using `[hu1]`. Conclude with `one_mem _`. Take `⟨p, hp, hpb⟩` from `Nat.exists_prime_and_dvd hb1`. Establish `hpa : ¬ p ∣ a`. Introduce `h`.
+
+Establish `h1` using `Nat.dvd_gcd h hpb`. Rewrite `h1` using `[hcop.gcd_eq_one]`. Conclude with `hp.ne_one (Nat.dvd_one.mp h1)`. Establish `hbsplit` using `Nat.ordProj_mul_ordCompl_eq_self b p`. Establish `hk0 : 0 < b.factorization p` using `hp.factorization_pos_of_dvd hb0 hpb`.
+
+Establish `hb'pos : 0 < b / p ^ b.factorization p` using `Nat.ordCompl_pos p hb0`. Establish `hpk : 2 ≤ p ^ b.factorization p` using `le_trans hp.two_le (Nat.le_self_pow (by omega) p)`. Establish `hb'lt : b / p ^ b.factorization p < b`. Establish `h2 : 2 * (b / p ^ b.factorization p) ≤ p ^ b.factorization p * (b / p ^ b.factorization p)` using `Nat.mul_le_mul_right _ hpk`. Use linear arithmetic over natural numbers and integers.
+
+Establish `hb'dvd : b / p ^ b.factorization p ∣ b` using `Nat.ordCompl_dvd b p`. Establish `hpb' : Nat.Coprime p (b / p ^ b.factorization p)` using `Nat.coprime_ordCompl hp hb0`. Establish `ha'N : a * p ^ b.factorization p * (b / p ^ b.factorization p) = N`. Rewrite using `[mul_assoc, hbsplit, hab]`. Establish `ha'dvd : a * p ^ b.factorization p ∣ N` using `⟨_, ha'N.symm⟩`.
+
+Establish `ha'cop : (a * p ^ b.factorization p).Coprime (b / p ^ b.factorization p)` using `Nat.Coprime.mul (Nat.Coprime.coprime_dvd_right hb'dvd hcop) (Nat.Coprime.pow_left _ hpb')`. Establish `IH` using `ih _ hb'lt (a * p ^ b.factorization p) ha'dvd ha'N ha'cop`. Establish `hvN : N.factorization p = b.factorization p`. Rewrite using `[← hab, Nat.factorization_mul ha0 hb0, Finsupp.add_apply, Nat.factorization_eq_zero_of_not_dvd hpa, zero_add]`. Establish `hNsplit` using `Nat.ordProj_mul_ordCompl_eq_self N p`.
+
+Establish `hcopE : (p ^ b.factorization p).Coprime (N / p ^ N.factorization p)` using `Nat.Coprime.pow_left _ (Nat.coprime_ordCompl hp hN0)`. Establish `hgcd : Nat.gcd (a * p ^ b.factorization p) (N / p ^ N.factorization p) ∣ a`. Rewrite using `[Nat.Coprime.gcd_mul_right_cancel a hcopE]`. Conclude with `Nat.gcd_dvd_left _ _`. Establish `hNde : N ∣ (a * p ^ b.factorization p) * (N / p ^ N.factorization p)`.
+
+Use `⟨a, ?_⟩` and prove the remaining obligations. Rewrite using `[← hvN, mul_assoc, hNsplit, mul_comm]`. Establish `hstep` using `ker_le_sup ha ha'dvd (Nat.ordCompl_dvd N p) hgcd hNde`. Use `hstep.trans (sup_le (IH.trans ?_) ?_)` and prove the remaining obligations. Conclude with `iSup₂_le fun q hq => le_iSup₂ (f := fun q (_ : q ∈ b.primeFactors) => KStar.Ram.inertiaUnits N q) q (Nat.primeFactors_mono hb'dvd hb0 hq)`.
+
+Conclude with `le_iSup₂ (f := fun q (_ : q ∈ b.primeFactors) => KStar.Ram.inertiaUnits N q) p (Nat.mem_primeFactors.2 ⟨hp, hpb, hb0⟩)`.
+-/
 private theorem aux (N : ℕ) [NeZero N] (b : ℕ) : ∀ (a : ℕ) (ha : a ∣ N), a * b = N → a.Coprime b →
     (ZMod.unitsMap ha).ker ≤ ⨆ p ∈ b.primeFactors, KStar.Ram.inertiaUnits N p := by
   induction b using Nat.strong_induction_on with
@@ -113,6 +156,9 @@ private theorem aux (N : ℕ) [NeZero N] (b : ℕ) : ∀ (a : ℕ) (ha : a ∣ N
     · exact le_iSup₂ (f := fun q (_ : q ∈ b.primeFactors) => KStar.Ram.inertiaUnits N q) p
         (Nat.mem_primeFactors.2 ⟨hp, hpb, hb0⟩)
 
+/- English proof (translation)
+Introduce `a b _ h`. Conclude with `aux (a * b) b a _ rfl h`.
+-/
 theorem UpperTheory.V.CF.unitsGen :
     ∀ (a b : ℕ) [NeZero (a * b)], a.Coprime b → (ZMod.unitsMap (dvd_mul_right a b)).ker ≤ ⨆ p ∈ b.primeFactors, KStar.Ram.inertiaUnits (a * b) p := by
   intro a b _ h

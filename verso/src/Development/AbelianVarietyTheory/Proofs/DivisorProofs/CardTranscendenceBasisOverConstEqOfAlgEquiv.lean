@@ -8,6 +8,13 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.S
 open GlobalTheory GlobalTheory.Cartier GlobalTheory.TopForm GlobalTheory.Discrepancy GlobalTheory.FieldPair
 open scoped TensorProduct
 
+/- English proof (translation)
+Introduce `K κ _ _ _ _ e n k x z hx hz`. Establish `eK : (algebraMap ℂ K).toAlgebra = (inferInstance : Algebra ℂ K)` using `Algebra.algebra_ext _ _ fun _ => rfl`. Establish `eκ : (algebraMap ℂ κ).toAlgebra = (inferInstance : Algebra ℂ κ)` using `Algebra.algebra_ext _ _ fun _ => rfl`. Unfold `TrBasis at hx hz`. Rewrite `hx` using `[eK]`.
+
+Rewrite `hz` using `[eκ]`. Establish `h1` using `IsTranscendenceBasis.cardinalMk_eq_trdeg (R := ℂ) hx`. Establish `h2` using `IsTranscendenceBasis.cardinalMk_eq_trdeg (R := ℂ) hz`. Rewrite `h1` using `[Cardinal.mk_fin, e.trdeg_eq]`. Rewrite `h2` using `[Cardinal.mk_fin, ← h1]`.
+
+Conclude with `h2.symm` after adjusting the coercions.
+-/
 theorem GlobalTheory.trBasis_card_eq_of_algEquiv : ∀ {K κ : Type} [Field K] [Field κ] [Algebra ℂ K] [Algebra ℂ κ] (e : K ≃ₐ[ℂ] κ)
   (n k : ℕ) (x : Fin n → K) (z : Fin k → κ),
   TrBasis (algebraMap ℂ K) x → TrBasis (algebraMap ℂ κ) z → n = k := by

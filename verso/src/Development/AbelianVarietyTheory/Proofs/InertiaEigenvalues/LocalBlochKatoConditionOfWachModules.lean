@@ -27,8 +27,24 @@ variable {G : Type} [Group G] [TopologicalSpace G] {Qp K₀ K : Type} [Field Qp]
     [Module O V] [IsScalarTower O LL V] {ρ : Representation LL G V}
     [TopologicalSpace V] [ContinuousAdd V] [ContinuousConstSMul LL V]
 
+/- English proof (translation)
+The claim follows from `le_sup_right`.
+-/
 theorem bd_le_hf (L : Lattice (O := O) ρ) : BD L ≤ HfD PD L := le_sup_right
 
+/- English proof (translation)
+Use `set A := divisibleCocycles L ⊓ (HfD PD L).comap (c • LinearMap.id)`. Establish `hA : A ≤ divisibleCocycles L` using `inf_le_left`. Set `f0 : ↥A →ₗ[O] (DivisibleCohomology L ⧸ divisibleFiniteCohomology PD L)` to `(divisibleFiniteCohomology PD L).mkQ ∘ₗ (Submodule.mkQ _) ∘ₗ Submodule.inclusion hA`. Establish `hf0 : ∀ z : ↥A, f0 z ∈ Submodule.torsionBy O (DivisibleCohomology L ⧸ divisibleFiniteCohomology PD L) c`. Introduce `z`.
+
+Rewrite using `[Submodule.mem_torsionBy_iff, ← map_smul]`. Simplify using `only [f0, LinearMap.comp_apply, Submodule.mkQ_apply, Submodule.Quotient.mk_eq_zero]`. Conclude with `⟨_, z.2.2, rfl⟩`. Set `f : ↥A →ₗ[O] ↥(Submodule.torsionBy O (DivisibleCohomology L ⧸ divisibleFiniteCohomology PD L) c)` to `f0.codRestrict _ hf0`. Establish `hker : LinearMap.ker f ≤ (divisibleCocycles L ⊓ HfD PD L).comap A.subtype`.
+
+Introduce `z hz`. Rewrite `hz` using `[LinearMap.mem_ker]`. Establish `hz' : f0 z = 0` using `congrArg Subtype.val hz`. Simplify using `only [f0, LinearMap.comp_apply, Submodule.mkQ_apply, Submodule.Quotient.mk_eq_zero] at hz'`. Take `⟨w, hw, hwe⟩` from `hz'`.
+
+Use `⟨hA z.2, ?_⟩` and prove the remaining obligations. Establish `hw' : (w : G → V ⧸ L.T) ∈ HfD PD L` using `hw`. Establish `hd : (w : ↥(divisibleCocycles L)) - Submodule.inclusion hA z ∈ (BD L).comap (divisibleCocycles L).subtype` using `(Submodule.Quotient.eq _).mp hwe`. Establish `hd' : (w : G → V ⧸ L.T) - (z : G → V ⧸ L.T) ∈ HfD PD L` using `bd_le_hf PD L hd`. Use `(HfD PD L).sub_mem hw' hd'` as an intermediate fact.
+
+Simplify using `using this`. Establish `hle : (divisibleCocycles L ⊓ HfD PD L).comap A.subtype ≤ LinearMap.ker f`. Introduce `z hz`. Rewrite using `[LinearMap.mem_ker]`. Apply `Subtype.ext` to reduce the goal to its premises.
+
+Use `show f0 z = 0`. Simplify using `only [f0, LinearMap.comp_apply, Submodule.mkQ_apply, Submodule.Quotient.mk_eq_zero]`. Conclude with `⟨_, hz.2, rfl⟩`. Conclude with `Module.length_le_of_injective (((divisibleCocycles L ⊓ HfD PD L).comap A.subtype).liftQ f hle) (LinearMap.ker_eq_bot.mp (Submodule.ker_liftQ_eq_bot _ _ _ hker))`.
+-/
 theorem len_le_torsion (L : Lattice (O := O) ρ) (c : O) :
     Module.length O (↥(divisibleCocycles L ⊓ (HfD PD L).comap (c • LinearMap.id)) ⧸
         (divisibleCocycles L ⊓ HfD PD L).comap (divisibleCocycles L ⊓ (HfD PD L).comap (c • LinearMap.id)).subtype) ≤
@@ -71,6 +87,11 @@ end Len
 section Fields
 variable {l : ℕ} [Fact l.Prime]
 
+/- English proof (translation)
+Use `⟨le_rfl, fun h2 => absurd h2 hl, hK, ?_⟩` and prove the remaining obligations. Introduce `τ x`. Take `⟨φ, hφ⟩` from `IsAlgClosed.surjective_domRestrict_of_isAlgebraic (K := ℚ_[l]) (L := ↥(Ks K 1)) (M := Om l) (E := Om l) τ`. Establish `hx : (x : Om l) ∈ Ks K s` using `Ks_mono K h.1 x.2`. Use `h.2.2.2 (φ.comp (Ks K s).val) ⟨x, hx⟩` as an intermediate fact.
+
+Establish `e : τ x = φ (x : Om l)`. Rewrite using `[← hφ]`. Both sides reduce to the same expression. Rewrite using `[e]`. Conclude with `this`.
+-/
 theorem good_one {K : FinExt l} {s : ℕ} {LL : FinExt l} (h : Good K s LL) (hK : K.1 ≤ Ks K 1)
     (hl : l ≠ 2) : Good K 1 LL := by
   refine ⟨le_rfl, fun h2 => absurd h2 hl, hK, ?_⟩
@@ -101,6 +122,15 @@ variable {G : Type} [Group G] [TopologicalSpace G] {Qp K₀ K : Type} [Field Qp]
     [Module O V] [IsScalarTower O LL V] {ρ : Representation LL G V}
     [TopologicalSpace V] [ContinuousAdd V] [ContinuousConstSMul LL V]
 
+/- English proof (translation)
+Substitute `hIJ` using the available equality. Use `⟨fun hpos => inf_le_right.trans (h2 hpos).le, fun h0e => ?_, ?_⟩` and prove the remaining obligations. Use `SetLike.ext fun c => ?_` and prove the remaining obligations. Establish `h3c` using `h3 h0e c`. Simplify using `only [Submodule.mem_inf]`.
+
+Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨hz, hf⟩`. Use `⟨hz, ?_⟩` and prove the remaining obligations. Take `⟨-, x, hx⟩` from `h3c.1 hf`. Conclude with `Submodule.mem_sup_left ⟨x, hx⟩`.
+
+Introduce and unpack `⟨hz, hs⟩`. Use `⟨hz, h3c.2 ⟨hz, ?_⟩⟩` and prove the remaining obligations. Take `⟨y, ⟨x, hx⟩, b, ⟨u, rfl⟩, rfl⟩` from `Submodule.mem_sup.mp hs`. Use `⟨x + u, fun g hg => ?_⟩` and prove the remaining obligations. Use `show y g + (actD L g u - u) = actD L g (x + u) - (x + u)`.
+
+Rewrite using `[hx g hg, map_add]`. Normalize the expressions using the abelian group laws. Use `(len_le_torsion PD L _).trans (hlen.trans (le_of_eq ?_))` and prove the remaining obligations. Use `push_cast`. Both sides reduce to the same expression.
+-/
 theorem tbe_clauses (L : Lattice (O := O) ρ) (I J : Subgroup G) (hIJ : I = J) (e cB : ℕ)
     (h2 : 0 < e → HfD PD L = BD L)
     (h3 : e = 0 → ∀ c : G → V ⧸ L.T, c ∈ HfD PD L ↔ (c ∈ divisibleCocycles L ∧ ∃ x, ∀ g ∈ J, c g = actD L g x - x))
@@ -145,11 +175,17 @@ variable (S : Sit) [IsTopologicalRing S.LL] [IsDomain S.O] [IsPrincipalIdealRing
 
 def incL : (kerY Yt p e₀ hpe hp hint he₀).V →ₗ[S.LL] Yt.V := (LinearMap.ker p).subtype
 
+/- English proof (translation)
+The claim follows from `IsModuleTopology.continuous_of_linearMap _`.
+-/
 theorem incL_cont : Continuous (incL S Yt p e₀ hpe hp hint he₀) :=
   IsModuleTopology.continuous_of_linearMap _
 
 def projL : Yt.V →ₗ[S.LL] (trivZ S.G S.Qp S.LL S.O hinj).V := p
 
+/- English proof (translation)
+The claim follows from `IsModuleTopology.continuous_of_linearMap _`.
+-/
 theorem projL_cont : Continuous (projL S Yt p hinj) :=
   IsModuleTopology.continuous_of_linearMap _
 
@@ -168,9 +204,17 @@ def projHom : LatHom Yt.L (trivZ S.G S.Qp S.LL S.O hinj).L :=
       exact ⟨a, ha⟩ }
 
 include hpe in
+/- English proof (translation)
+Rewrite using `[← algebraMap_smul S.LL a e₀, map_smul, hpe, smul_eq_mul, mul_one]`.
+-/
 theorem p_smul (a : S.O) : p (a • e₀) = algebraMap S.O S.LL a := by
   rw [← algebraMap_smul S.LL a e₀, map_smul, hpe, smul_eq_mul, mul_one]
 
+/- English proof (translation)
+Use `⟨(LinearMap.ker p).injective_subtype, fun z => ⟨(show S.LL from z) • e₀, ?_⟩, ?_, fun x => ⟨fun h => ⟨⟨x, h⟩, rfl⟩, ?_⟩, fun y hy => hy⟩` and prove the remaining obligations. Use `show p ((show S.LL from z) • e₀) = z`. Rewrite using `[map_smul, hpe, smul_eq_mul, mul_one]`. Introduce and unpack `_ ⟨a, rfl⟩`. Conclude with `⟨a • e₀, Yt.L.T.smul_mem a he₀, p_smul S Yt p e₀ hpe a⟩`.
+
+Introduce and unpack `⟨y, rfl⟩`. Conclude with `y.2`.
+-/
 theorem ses : IsSESLat (Qp := S.Qp) (incHom S Yt p e₀ hpe hp hint he₀) (projHom S Yt p hp hint hinj) := by
   refine ⟨(LinearMap.ker p).injective_subtype, fun z => ⟨(show S.LL from z) • e₀, ?_⟩, ?_, fun x => ⟨fun h => ⟨⟨x, h⟩, rfl⟩, ?_⟩,
     fun y hy => hy⟩
@@ -183,6 +227,13 @@ theorem ses : IsSESLat (Qp := S.Qp) (incHom S Yt p e₀ hpe hp hint he₀) (proj
 
 include hinj in
 
+/- English proof (translation)
+Set `Y` to `kerY Yt p e₀ hpe hp hint he₀`. Set `φ' : ↥Y.L.T →ₗ[S.O] (Ve.V ⧸ Ve.L.T)` to `φ ∘ₗ ((incL S Yt p e₀ hpe hp hint he₀).restrictScalars S.O) ∘ₗ Y.L.T.subtype`. Set `f : S.G → ↥Y.L.T` to `fun g => ⟨(⟨Yt.ρ g e₀ - e₀, by rw [LinearMap.mem_ker, map_sub, hp, sub_self]⟩ : ↥(LinearMap.ker p)), Yt.L.T.sub_mem (Yt.L.stable g e₀ he₀) he₀⟩`. Establish `honto : ∀ z ∈ (trivZ S.G S.Qp S.LL S.O hinj).L.T, ∃ a : S.O, z = a • (projHom S Yt p hp hint hinj).f e₀`. Introduce and unpack `_ ⟨a, rfl⟩`.
+
+Use `⟨a, ?_⟩` and prove the remaining obligations. Use `show algebraMap S.O S.LL a = a • p e₀`. Rewrite using `[hpe, Algebra.smul_def, mul_one]`. Establish `hequiv : ∀ g y, φ' (actT Y.L g y) = actD Ve.L g (φ' y)` using `fun g y => hφ g _ y.2 y.1.2`. Establish `key` using `hTB e M0 h0 Yt Y (trivZ S.G S.Qp S.LL S.O hinj) Ve (incHom S Yt p e₀ hpe hp hint he₀) (projHom S Yt p hp hint hinj) (ses S Yt p e₀ hpe hp hint he₀ hinj) (Module.finrank_self S.LL) (fun _ _ => rfl) h1 hχ hCt hWY e₀ he₀ honto φ' hequiv f (fun _ => rfl)`.
+
+Take `⟨d, hd⟩` from `Nat.exists_eq_add_of_le hc`. Establish `hfun : (fun g => φ (Yt.ρ g e₀ - e₀)) = fun g => φ' (f g)` using `rfl`. Rewrite using `[hd, pow_add, mul_comm, mul_smul, hfun]`. Conclude with `Submodule.smul_mem _ _ key`.
+-/
 theorem tb_part1 (E : S.Comparison₂) (hTB : TBat S E) (e M0 h0 cB : ℕ) (Ve : LocLat S.G S.Qp S.LL S.O)
     (h1 : Module.finrank S.LL Ve.V = 1)
     (hχ : ∀ g x, Ve.ρ g x = ((algebraMap S.Qp S.LL (S.PD.χ g : S.Qp))⁻¹) ^ e • x)
@@ -226,6 +277,11 @@ variable {G : Type} [Group G] [TopologicalSpace G] {Qp K₀ K : Type} [Field Qp]
     {LL : Type} [Field LL] [Algebra Qp LL] [TopologicalSpace LL] [IsTopologicalRing LL]
     {O : Type} [CommRing O] [Algebra O LL]
 
+/- English proof (translation)
+Take `⟨φ, hφ, -⟩` from `h`. Use `⟨by rw [φ.finrank_eq, Module.finrank_fin_fun], fun g x => φ.injective ?_⟩` and prove the remaining obligations. Rewrite using `[hφ, map_smul]`. Use function extensionality and compare the values at `j`. Use `fin_cases j`.
+
+Simplify using `[epsTw, Matrix.mulVec, dotProduct, map_inv₀]`.
+-/
 theorem eps_lat {V : Type} [AddCommGroup V] [Module LL V] [Module O V] {ρ : Representation LL G V}
     (T : Submodule O V) (e : ℕ) (h : IsMatLat (O := O) (ρ := ρ) T (epsTw PD e)) :
     Module.finrank LL V = 1 ∧ ∀ g x, ρ g x = ((algebraMap Qp LL (PD.χ g : Qp))⁻¹) ^ e • x := by
@@ -237,6 +293,19 @@ theorem eps_lat {V : Type} [AddCommGroup V] [Module LL V] [Module O V] {ρ : Rep
   simp [epsTw, Matrix.mulVec, dotProduct, map_inv₀]
 end Eps
 
+/- English proof (translation)
+Introduce `D HW F i r ρ π M0 h0 cB hP hW hC hF hJ`. Take `⟨hl2, hJw⟩` from `hJ`. Introduce `w hw C hG`. Take `⟨hIn, hKs, hJC⟩` from `hJw w hw`. Establish `hs : Good (D.nbr i w hw).Kw 1 C.LL` using `hG.good_one hl2 hKs`.
+
+Establish `hP1` using `hP (D.nd.l i) (D.nbr i w hw).Kw 1 C.LL hs`. Establish `hTB` using `hP1.1`. Establish `hTBe` using `hP1.2`. Establish `hFa` using `hF w hw C`. Use `⟨?_, ?_⟩` and prove the remaining obligations.
+
+Introduce `Vy _ _ _ _ _ _ _ _ _ _ _ ρy Ly hcy hcrys hjmp p hp hint e₀ he₀ hpe e he Ve _ _ _ _ _ _ _ _ _ _ _ ρe Le hce hMat φ hφ haveI : IsDiscreteValuationRing ↥(OL C.LL) := Formalism.BasicNotions.Examples₂.LB.OL_dvr C.LL`. Establish `hE` using `eps_lat (Br.PD D.loc D.nbr i w hw) (O := ↥(OL C.LL)) Le.T e hMat`. Set `Yt : LocLat (Br.G D.nbr i w hw) ℚ_[D.nd.l i] ↥C.LL.1 ↥(OL C.LL)` to `{ V := Vy, ρ := ρy, cont := hcy, L := Ly }`. Set `Y` to `kerY Yt p e₀ hpe hp hint he₀`. Set `VeL : LocLat (Br.G D.nbr i w hw) ℚ_[D.nd.l i] ↥C.LL.1 ↥(OL C.LL)` to `{ V := Ve, ρ := ρe, cont := hce, L := Le }`.
+
+Establish `hcjY` using `cj_sub hFa (GRep.ofLat Yt) (LinearMap.ker p) (ker_stable Yt p hp) ⟨hcrys, hjmp⟩`. Establish `hJY` using `hJC C hs Y hcjY.1 hcjY.2`. Establish `hWY` using `hW (D.nd.l i) (D.nbr i w hw).Kw 1 C.LL hs Y M0 h0 hcjY.1 hJY.1`. Establish `hCt` using `hC (D.nd.l i) (D.nbr i w hw).Kw 1 C.LL hs Yt hcrys`. Use `haveI : IsTopologicalRing (LocalSituation.sit D.loc HW (D.nd.l i) (D.locA (D.nd.l i)) (D.nbr i w hw).Kw 1 C.LL hs).LL := inferInstanceAs (IsTopologicalRing ↥C.LL.1)`.
+
+Use `haveI : IsDomain (LocalSituation.sit D.loc HW (D.nd.l i) (D.locA (D.nd.l i)) (D.nbr i w hw).Kw 1 C.LL hs).O := inferInstanceAs (IsDomain ↥(OL C.LL))`. Use `haveI : IsPrincipalIdealRing (LocalSituation.sit D.loc HW (D.nd.l i) (D.locA (D.nd.l i)) (D.nbr i w hw).Kw 1 C.LL hs).O := inferInstanceAs (IsPrincipalIdealRing ↥(OL C.LL))`. Conclude with `tb_part1 (LocalSituation.sit D.loc HW (D.nd.l i) (D.locA (D.nd.l i)) (D.nbr i w hw).Kw 1 C.LL hs) Yt p e₀ hpe hp hint he₀ Subtype.val_injective _ hTB e M0 h0 cB VeL hE.1 hE.2 hCt hWY (hJY.2 e he) φ hφ`. Introduce `e he Ve _ _ _ _ _ _ _ _ _ _ _ ρe Le hce hMat`. Establish `hE` using `eps_lat (Br.PD D.loc D.nbr i w hw) (O := ↥(OL C.LL)) Le.T e hMat`.
+
+Set `VeL : LocLat (Br.G D.nbr i w hw) ℚ_[D.nd.l i] ↥C.LL.1 ↥(OL C.LL)` to `{ V := Ve, ρ := ρe, cont := hce, L := Le }`. Establish `hT` using `hTBe e VeL hE.1 hE.2`. Conclude with `tbe_clauses (Br.PD D.loc D.nbr i w hw) Le _ _ hIn e cB hT.2.1 hT.2.2 (hT.1 cB)`.
+-/
 theorem main : ∀ (D : D7) (HW : HWOf D.loc) (F : FonOf D.loc D.locA HW) (i : D.nd.Loc) (r : D.nd.X i → (GE D.nd →* GL (Fin D.R.nV) (D.nd.O i))) (ρ : D.nd.X i → (GE D.nd →* GL (Fin D.R.r) (D.nd.O i))) (π : D.nd.X i) (M0 h0 cB : ℕ), LocalSituation.Conclusion4 D HW F → WAll D HW F → CrysOnCond D HW F → TruncatedSeriesCountingIdentities.FontaineAtPlacesOverL i → JointConditionTameBound D HW F i r π M0 h0 cB → TruncatedSeriesCountingIdentities.admTB i r π cB := by
   intro D HW F i r ρ π M0 h0 cB hP hW hC hF hJ
   obtain ⟨hl2, hJw⟩ := hJ

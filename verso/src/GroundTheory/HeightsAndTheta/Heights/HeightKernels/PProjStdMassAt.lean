@@ -14,12 +14,18 @@ namespace ProjectiveStandardMassAtPoint
 
 variable {K : Type} [Field K] [NumberField K]
 
+/- English proof (translation)
+Simplify using `[segre]`.
+-/
 theorem segre_const {i : ℕ} (z : (Σ _ : Unit, ProjIdx K i) → ℂ) (q : ProjIdx K i) :
     segre (ι := projBlocks K i) z (fun _ => q) = z ⟨(), q⟩ := by
   simp [segre]
 
 open Classical in
 
+/- English proof (translation)
+Establish `h` using `congrFun ((canonicalEmbedding.latticeBasis K).sum_repr (Pi.single τ 1)) σ`. Simplify using `only [Finset.sum_apply, Pi.smul_apply, smul_eq_mul, canonicalEmbedding.latticeBasis_apply, canonicalEmbedding.apply_at, Pi.single_apply] at h`. Conclude with `h`.
+-/
 theorem repr_sum (τ σ : K →+* ℂ) :
     ∑ m, (canonicalEmbedding.latticeBasis K).repr (Pi.single τ 1) m * σ (integralBasis K m) =
       if σ = τ then 1 else 0 := by
@@ -30,6 +36,11 @@ theorem repr_sum (τ σ : K →+* ℂ) :
 
 open Classical in
 
+/- English proof (translation)
+Use function extensionality and compare the values at `j`. Establish `h : ∑ m, (canonicalEmbedding.latticeBasis K).repr (Pi.single τ 1) m * (σ (integralBasis K m) * v j) = (if σ = τ then 1 else 0) * v j`. Rewrite using `[← repr_sum τ σ, Finset.sum_mul]`. Conclude with `Finset.sum_congr rfl fun m _ => by ring`. Simplify using `only [embComp, projPlanePt]`.
+
+Rewrite using `[h]`. Apply the tactic sequence `split_ifs <;> simp`.
+-/
 theorem embComp_planePt {i : ℕ} (τ σ : K →+* ℂ) (v : Fin i → ℂ) :
     embComp τ (fun q => projPlanePt σ v ⟨(), q⟩) = if σ = τ then v else 0 := by
   funext j
@@ -41,6 +52,9 @@ theorem embComp_planePt {i : ℕ} (τ σ : K →+* ℂ) (v : Fin i → ℂ) :
   rw [h]
   split_ifs <;> simp
 
+/- English proof (translation)
+Rewrite using `[projProj_apply]`. Simplify using `only [segre_const, embComp_planePt]`. Rewrite using `[Finset.sum_eq_single σ (fun τ _ hτ => if_neg (Ne.symm hτ)) (by simp)]`. Conclude with `if_pos rfl`.
+-/
 theorem proj_segre_planePt {i : ℕ} (σ : K →+* ℂ) (v : Fin i → ℂ) :
     projProj (segre (ι := projBlocks K i) (projPlanePt σ v)) = v := by
   classical
@@ -49,6 +63,13 @@ theorem proj_segre_planePt {i : ℕ} (σ : K →+* ℂ) (v : Fin i → ℂ) :
   rw [Finset.sum_eq_single σ (fun τ _ hτ => if_neg (Ne.symm hτ)) (by simp)]
   exact if_pos rfl
 
+/- English proof (translation)
+Take `⟨σ, hσ⟩` from `hOn K (D + 1) z hz`. Establish `hp : projProj (segre (ι` using `projBlocks K (D + 1)) z) = embComp σ (fun q => z ⟨(), q⟩) := by`. Rewrite using `[projProj_apply]`. Simplify using `only [segre_const]`. Conclude with `Finset.sum_eq_single σ (fun τ _ hτ => hσ τ hτ) (by simp)`.
+
+Use `show Real.sqrt (latticeNormSq F fun q => z ⟨(), q⟩) = _`. Use `congr 1`. Rewrite using `[latticeNormSq, Finset.sum_eq_single σ]`. Rewrite using `[hF, one_mulVec, dotProduct, Complex.re_sum, hp]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[Pi.star_apply, Complex.star_def, ← Complex.normSq_eq_conj_mul_self, Complex.ofReal_re, Complex.normSq_eq_norm_sq]`. Introduce `τ _ hτ`. Rewrite using `[hσ τ hτ]`. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
+-/
 theorem h_eq (hOn : ProjPtsOnPlane.Statement) {D : ℕ} {F : HermLattice K (D + 1)}
     (hF : ∀ σ, F.metric σ = 1) {z : (Σ _ : Unit, ProjIdx K (D + 1)) → ℂ}
     (hz : z ∈ mcPts (projSpaceIdeal K (D + 1))) :
@@ -70,6 +91,11 @@ theorem h_eq (hOn : ProjPtsOnPlane.Statement) {D : ℕ} {F : HermLattice K (D + 
     simp
   · simp
 
+/- English proof (translation)
+Unfold `sheetDensity`. Rewrite using `[dif_pos h, one_mul]`. Apply `maDensity_congr_of_eventuallyEq` to reduce the goal to its premises. Introduce `j`. Use `filter_upwards [h.choose_spec.2] with y' hy'`.
+
+Take `⟨-, hmc, hΨ⟩` from `hy'`. Use `show Real.log ((latticeLine F).h (h.choose y')) = gbPot y'`. Rewrite using `[h_eq hOn hF hmc, hΨ, gbPot, Fin.sum_univ_succ]`. Simplify using the standard rewrite rules.
+-/
 theorem sheetDensity_eq (hOn : ProjPtsOnPlane.Statement) {D : ℕ} {F : HermLattice K (D + 1)}
     (hF : ∀ σ, F.metric σ = 1) {y : Fin D → ℂ}
     {w : ((k : Unit) → projBlocks K (D + 1) k) → ℂ}
@@ -86,6 +112,17 @@ theorem sheetDensity_eq (hOn : ProjPtsOnPlane.Statement) {D : ℕ} {F : HermLatt
   rw [h_eq hOn hF hmc, hΨ, gbPot, Fin.sum_univ_succ]
   simp
 
+/- English proof (translation)
+Use extensionality with `w`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨z, hz, rfl, hΨ⟩`. Take `⟨σ, hσ⟩` from `hOn K (D + 1) z hz`. Use `⟨σ, congrArg segre ?_⟩` and prove the remaining obligations.
+
+Establish `hW : ∀ τ : K →+* ℂ, embComp τ (fun q => z ⟨(), q⟩) = embComp τ (fun q => projPlanePt σ (Fin.cons 1 y) ⟨(), q⟩)`. Introduce `τ`. Rewrite using `[embComp_planePt]`. Distinguish the cases in `hτ : σ = τ`. Substitute `hτ` using the available equality.
+
+Rewrite using `[if_pos rfl, ← hΨ, projProj_apply]`. Simplify using `only [segre_const]`. Conclude with `(Finset.sum_eq_single σ (fun τ' _ h' => hσ τ' h') (by simp)).symm`. Rewrite using `[if_neg hτ]`. Conclude with `hσ τ (Ne.symm hτ)`.
+
+Use function extensionality and compare the values at `⟨u, m, j⟩`. Consider the cases of `u`. Use `((sum_emb_embComp (fun q => projPlanePt σ (Fin.cons 1 y) ⟨(), q⟩) m j).symm.trans ?_).trans (sum_emb_embComp (fun q => z ⟨(), q⟩) m j)` and prove the remaining obligations. Conclude with `Finset.sum_congr rfl fun τ _ => by rw [hW τ]`. Introduce and unpack `⟨σ, rfl⟩`.
+
+Establish `hv : (Fin.cons 1 y : Fin (D + 1) → ℂ) ≠ 0` using `fun h0 => by simpa using congrFun h0 0`. Conclude with `⟨_, hOf K (D + 1) σ _ hv, rfl, proj_segre_planePt σ _⟩`.
+-/
 theorem fibre_eq (hOn : ProjPtsOnPlane.Statement) (hOf : ProjPtsOfPlane.Statement) {D : ℕ}
     (y : Fin D → ℂ) :
     fibre (projSpaceIdeal K (D + 1)) projProj y =
@@ -116,6 +153,11 @@ theorem fibre_eq (hOn : ProjPtsOnPlane.Statement) (hOf : ProjPtsOfPlane.Statemen
     have hv : (Fin.cons 1 y : Fin (D + 1) → ℂ) ≠ 0 := fun h0 => by simpa using congrFun h0 0
     exact ⟨_, hOf K (D + 1) σ _ hv, rfl, proj_segre_planePt σ _⟩
 
+/- English proof (translation)
+Introduce `σ τ h`. Establish `h1` using `congrArg (fun w : ((k : Unit) → projBlocks K (D + 1) k) → ℂ => embComp σ (fun q => w fun _ => q)) h`. Simplify using `only [segre_const, embComp_planePt] at h1`. Assume the negation of the conclusion as `hne`. Rewrite `h1` using `[if_pos trivial, if_neg fun e => hne e.symm]`.
+
+Simplify using `using congrFun h1 0`.
+-/
 theorem planePt_injective {D : ℕ} (y : Fin D → ℂ) :
     Function.Injective fun σ : K →+* ℂ =>
       segre (ι := projBlocks K (D + 1)) (projPlanePt σ (Fin.cons 1 y)) := by
@@ -128,6 +170,13 @@ theorem planePt_injective {D : ℕ} (y : Fin D → ℂ) :
   rw [if_pos trivial, if_neg fun e => hne e.symm] at h1
   simpa using congrFun h1 0
 
+/- English proof (translation)
+Establish `hc : Differentiable ℂ (fun y' : Fin D → ℂ => (Fin.cons 1 y' : Fin (D + 1) → ℂ))`. Rewrite using `[differentiable_pi]`. Introduce `j`. Use `Fin.cases ?_ (fun k => ?_) j` and prove the remaining obligations. Simplify using the standard rewrite rules.
+
+Simplify using `using differentiable_apply (𝕜 := ℂ) k`. Use `⟨rfl, Filter.Eventually.of_forall fun y' => ⟨?_, ?_, proj_segre_planePt σ _⟩⟩` and prove the remaining obligations. Use `(differentiable_pi.mpr fun p => ?_) y'` and prove the remaining obligations. Simplify using `only [projPlanePt]`. Conclude with `(differentiable_pi.mp hc p.2.2).const_mul _`.
+
+Conclude with `hOf K (D + 1) σ _ fun h0 => by simpa using congrFun h0 0`.
+-/
 theorem isSheet_planePt (hOf : ProjPtsOfPlane.Statement) {D : ℕ} (σ : K →+* ℂ) (y : Fin D → ℂ) :
     IsSheet (projSpaceIdeal K (D + 1)) projProj y
       (segre (ι := projBlocks K (D + 1)) (projPlanePt σ (Fin.cons 1 y)))
@@ -148,6 +197,11 @@ end ProjectiveStandardMassAtPoint
 
 open ProjectiveStandardMassAtPoint in
 
+/- English proof (translation)
+Introduce `K _ _ D F hF`. Establish `hint : ∀ y : Fin D → ℂ, ∑ᶠ w ∈ fibre (projSpaceIdeal K (D + 1)) projProj y, sheetDensity (projSpaceIdeal K (D + 1)) projProj (fun _ z => Real.log ((latticeLine F).h z)) (fun _ => 1) y w = (Fintype.card (K →+* ℂ) : ℝ) * maDensity (fun _ : Fin D => gbPot) y`. Introduce `y`. Rewrite using `[fibre_eq hOn hOf y, finsum_mem_range (planePt_injective y), finsum_eq_sum_of_fintype, Finset.sum_congr rfl fun σ _ => sheetDensity_eq hOn hF ⟨_, isSheet_planePt hOf σ y⟩, Finset.sum_const, Finset.card_univ, nsmul_eq_mul]`. Unfold `ptsIntegralAt`.
+
+Simplify using `only [hint]`. Rewrite using `[integral_const_mul, integral_maDensity_gbPot, mul_one]`.
+-/
 theorem ProjStdMassAt.proof (hOn : ProjPtsOnPlane.Statement) (hOf : ProjPtsOfPlane.Statement) :
     ProjStdMassAt.Statement := by
   intro K _ _ D F hF

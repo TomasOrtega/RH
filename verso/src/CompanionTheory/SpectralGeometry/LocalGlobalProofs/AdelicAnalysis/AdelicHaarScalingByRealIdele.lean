@@ -5,6 +5,19 @@ open scoped TensorProduct ENNReal NNReal Matrix
 
 namespace GlobalTheory.CompanionTheory.AdelicFlow
 
+/- English proof (translation)
+Use `set k := ENNReal.ofReal |(t ^ Module.finrank ℝ V)⁻¹| with hk`. Establish `hΦ : Measurable Φ` using `Φ.continuous.measurable`. Establish `hΦs : Measurable Φ.symm` using `Φ.symm.continuous.measurable`. Set `ν : Measure V` to `Measure.addHaar`. Set `ρ : Measure W` to `Measure.addHaar`.
+
+Set `ψ : V × W → V × W` to `Prod.map (fun v => t • v) id`. Establish `hψ : Measurable ψ` using `(measurable_const_smul t).prodMap measurable_id`. Use `haveI : (μ.map Φ).IsAddHaarMeasure := Φ.isAddHaarMeasure_map μ`. Establish `hc` using `Measure.isAddLeftInvariant_eq_smul (μ.map Φ) (ν.prod ρ)`. Use `set c := Measure.addHaarScalarFactor (μ.map Φ) (ν.prod ρ) with hcdef`.
+
+Establish `hπ : (μ.map Φ).map ψ = k • μ.map Φ`. Establish `h1 : (ν.prod ρ).map ψ = k • ν.prod ρ`. Use `Measure.map_prod_map ν ρ (f := fun v : V => t • v) (g := (id : W → W)) (measurable_const_smul t) measurable_id` as an intermediate fact. Rewrite using `[show (ν.prod ρ).map ψ = (ν.map fun v => t • v).prod (ρ.map id) from this.symm, Measure.map_addHaar_smul ν ht, Measure.map_id, Measure.prod_smul_left]`. Rewrite using `[hc, Measure.map_smul, h1, smul_comm]`.
+
+Establish `hφ : φ = Φ.symm ∘ ψ ∘ Φ`. Use function extensionality and compare the values at `x`. Apply `Φ.injective` to reduce the goal to its premises. Simplify using `[h]`. Both sides reduce to the same expression.
+
+Establish `hμ : (μ.map Φ).map Φ.symm = μ`. Rewrite using `[Measure.map_map hΦs hΦ]`. Simplify using the standard rewrite rules. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Measure.map_map hΦs hψ, Measure.map_map (hΦs.comp hψ) hΦ, hφ]`.
+
+Both sides reduce to the same expression. Use `_ = k • μ := by rw [hπ, Measure.map_smul, hμ]`.
+-/
 theorem map_eq_smul_of_scale {V W G : Type*}
     [NormedAddCommGroup V] [NormedSpace ℝ V] [FiniteDimensional ℝ V]
     [MeasurableSpace V] [BorelSpace V]
@@ -84,6 +97,9 @@ noncomputable def coords [IsTotallyReal F] (ι : Type) :
         ((continuous_apply w).comp ((continuous_apply i).comp continuous_fst))
     · exact (continuous_apply i).comp continuous_snd
 
+/- English proof (translation)
+Establish `h : ((InfinitePlace.Completion.ringEquivRealOfIsReal (IsTotallyReal.isReal w) : w.Completion →+* ℝ).comp ((Pi.evalRingHom (fun v : InfinitePlace F => v.Completion) w).comp θ)) = RingHom.id ℝ` using `Subsingleton.elim _ _`. Conclude with `DFunLike.congr_fun h t`.
+-/
 theorem coord_theta [IsTotallyReal F] (θ : ℝ →+* InfiniteAdeleRing F) (t : ℝ)
     (w : InfinitePlace F) :
     InfinitePlace.Completion.ringEquivRealOfIsReal (IsTotallyReal.isReal w) (θ t w) = t := by
@@ -92,6 +108,9 @@ theorem coord_theta [IsTotallyReal F] (θ : ℝ →+* InfiniteAdeleRing F) (t : 
       = RingHom.id ℝ := Subsingleton.elim _ _
   exact DFunLike.congr_fun h t
 
+/- English proof (translation)
+Rewrite using `[InfinitePlace.card_eq_nrRealPlaces_add_nrComplexPlaces, IsTotallyReal.nrComplexPlaces_eq_zero, add_zero, IsTotallyReal.finrank]`.
+-/
 theorem card_places [IsTotallyReal F] :
     Fintype.card (InfinitePlace F) = Module.finrank ℚ F := by
   rw [InfinitePlace.card_eq_nrRealPlaces_add_nrComplexPlaces,
@@ -99,6 +118,15 @@ theorem card_places [IsTotallyReal F] :
 
 end Adelic
 
+/- English proof (translation)
+Introduce `F _ _ hF θ _ _ _ ι _ μ _ t ht`. Use `haveI := hF`. Use `haveI := GlobalTheory.AdelicUnitaryTop.secondCountable_adele F`. Use `haveI := GlobalTheory.AdelicUnitaryTop.secondCountable_finiteAdele F`. Use `haveI := GlobalTheory.AdelicUnitaryTop.locallyCompact_finiteAdele F`.
+
+Use `letI : MeasurableSpace (FiniteAdeleRing (𝓞 F) F) := borel _`. Use `haveI : BorelSpace (FiniteAdeleRing (𝓞 F) F) := ⟨rfl⟩`. Establish `key` using `map_eq_smul_of_scale (coords F ι) (fun x i => (show AdeleRing (𝓞 F) F from (θ t, 1)) * x i) t ht.ne' ?_ μ`. Establish `hd : Module.finrank ℝ (ι → InfinitePlace F → ℝ) = Module.finrank ℚ F * Fintype.card ι`. Rewrite using `[Module.finrank_pi_fintype]`.
+
+Simplify using `[Module.finrank_fintype_fun_eq_card, card_places F, mul_comm]`. Rewrite using `[key, hd, abs_of_pos (inv_pos.2 (pow_pos ht _))]`. Introduce `x`. Use `Prod.ext ?_ ?_` and prove the remaining obligations. Use function extensionality and compare the values at `i w show InfinitePlace.Completion.ringEquivRealOfIsReal (IsTotallyReal.isReal w) (θ t w * (x i).1 w) = t * _`.
+
+Rewrite using `[map_mul, coord_theta]`. Both sides reduce to the same expression. Use function extensionality and compare the values at `i`. Conclude with `one_mul _`.
+-/
 theorem map_scalar : ∀ (F : Type) [Field F] [NumberField F], IsTotallyReal F →
     ∀ θ : ℝ →+* InfiniteAdeleRing F, Continuous θ →
     ∀ [MeasurableSpace (AdeleRing (𝓞 F) F)] [BorelSpace (AdeleRing (𝓞 F) F)] (ι : Type)

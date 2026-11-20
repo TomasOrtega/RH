@@ -6,6 +6,19 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.CommutativeAlgebra
 import Development.AutomorphicArithmetic.AutomorphicVarieties.CommutativeAlgebraHeight.DToDetCH
 open IsLocalRing Matrix Filter UpperTheory.V.Alg UpperTheory.V.W UpperTheory.V.AlgebraTools UpperTheory.V.Pa
 
+/- English proof (translation)
+Set `K : Ideal (Polynomial B)` to `RingHom.ker (Polynomial.aeval x : Polynomial B →ₐ[B] E)`. Establish `hm : m.map Polynomial.C ≤ K.radical`. Rewrite using `[Ideal.map_le_iff_le_comap]`. Introduce `a ha`. Use `⟨N, ?_⟩` and prove the remaining obligations.
+
+Use `show Polynomial.aeval x (Polynomial.C a ^ N) = 0`. Rewrite using `[← map_pow, Polynomial.aeval_C]`. Conclude with `hN _ (Ideal.pow_mem_pow ha N)`. Establish `h1 : (Polynomial.X - 1 : Polynomial B) ∈ K.radical`. Establish `h2 : p ∈ K.radical` using `Ideal.le_radical hp`.
+
+Establish `h3` using `K.radical.sub_mem h2 (hm (Ideal.mem_map_C_iff.2 hc))`. Rewrite `h3` using `[sub_sub_cancel]`. Conclude with `Ideal.mem_radical_of_pow_mem h3`. Establish `h2 : (l : Polynomial B) ∈ K.radical`. Use `hm (Ideal.mem_map_of_mem Polynomial.C hl)` as an intermediate fact.
+
+Rewrite `this` using `[map_natCast]`. Then use the resulting hypothesis. Set `J : Ideal (Polynomial B)` to `Ideal.span {(l : Polynomial B), Polynomial.X - 1}`. Establish `hJ : J ≤ K.radical`. Rewrite using `[Ideal.span_le]`. Introduce and unpack `z (rfl | rfl)`.
+
+Conclude with `h2`. Conclude with `h1`. Take `⟨j, hj⟩` from `Ideal.exists_pow_le_of_le_radical_of_fg hJ (Submodule.fg_span (Set.toFinite _))`. Establish `h4` using `pow_mem_of_sub_one_mem l (Polynomial B) J.toTwoSided (Ideal.mem_toTwoSided.2 (Ideal.subset_span (by simp))) j Polynomial.X (Ideal.mem_toTwoSided.2 (Ideal.subset_span (by simp)))`. Rewrite `h4` using `[Ideal.asIdeal_toTwoSided]`.
+
+Establish `h5 : Polynomial.aeval x ((Polynomial.X : Polynomial B) ^ l ^ j - 1) = 0` using `hj (Ideal.pow_le_pow_right (Nat.le_succ j) h4)`. Use `⟨j, ?_⟩` and prove the remaining obligations. Simplify `h5` using `[sub_eq_zero]`.
+-/
 private theorem exists_prime_power_pow_eq_one (l n N : ℕ) {B E : Type} [CommRing B] [Ring E] [Algebra B E] (m : Ideal B)
     (hN : ∀ a ∈ m ^ N, algebraMap B E a = 0) (hl : (l : B) ∈ m) (x : E) (p : Polynomial B)
     (hp : Polynomial.aeval x p = 0) (hc : ∀ i, (p - (Polynomial.X - 1) ^ n).coeff i ∈ m) :
@@ -42,6 +55,17 @@ private theorem exists_prime_power_pow_eq_one (l n N : ℕ) {B E : Type} [CommRi
   refine ⟨j, ?_⟩
   simpa [sub_eq_zero] using h5
 
+/- English proof (translation)
+Rewrite using `[← UpperTheory.V.CA.d_toDet_CH]`. Establish `h1` using `(UpperTheory.V.CA.d_chS D.toDet A).1 (1 ⊗ₜ y)`. Establish `h2 : D.toDet.chiS A (1 ⊗ₜ y) = D.chi y` using `by show D.D _ (ofT A G _ _) = D.D _ _`. Use `congr 1`. Rewrite using `[map_sub, Algebra.TensorProduct.map_tmul, ofT_tmul, ofT_tmul, map_one, map_one, one_smul, MonoidAlgebra.one_def, MonoidAlgebra.smul_single, smul_eq_mul, mul_one]`.
+
+Both sides reduce to the same expression. Rewrite `h1` using `[h2]`. Establish `key : ∀ w ∈ Submodule.span A ((fun z : MonoidAlgebra A G => (1 : A) ⊗ₜ[A] z) '' (D.toDet.CH : Set (MonoidAlgebra A G))), Algebra.TensorProduct.lid A (MonoidAlgebra A G) w ∈ D.toDet.CH`. Introduce `w hw`. Proceed by induction on `hw using Submodule.span_induction with`.
+
+Consider the case `mem x hx`. Take `⟨z, hz, rfl⟩` from `hx`. Simplify using `using hz`. Consider the case `zero => simp`. Consider the case `add x y _ _ hx hy => rw [map_add]`.
+
+Conclude with `add_mem hx hy`. Consider the case `smul a x _ hx => rw [map_smul, Algebra.smul_def]`. Conclude with `TwoSidedIdeal.mul_mem_left _ _ _ hx`. Establish `h3` using `key _ h1`. Rewrite `h3` using `[← Polynomial.aeval_algHom_apply]`.
+
+Simplify using `using h3`.
+-/
 private theorem ch_mem {n : ℕ} {A G : Type} [CommRing A] [Group G] (D : GDet n A G) (y : MonoidAlgebra A G) :
     Polynomial.aeval y (D.chi y) ∈ TwoSidedIdeal.span D.CH := by
   rw [← UpperTheory.V.CA.d_toDet_CH]
@@ -67,6 +91,11 @@ private theorem ch_mem {n : ℕ} {A G : Type} [CommRing A] [Group G] (D : GDet n
   rw [← Polynomial.aeval_algHom_apply] at h3
   simpa using h3
 
+/- English proof (translation)
+Use `show (GDet.repAlg (diagRep χ) (Polynomial k) _).det = _`. Establish `: GDet.repAlg (diagRep χ) (Polynomial k) (MonoidAlgebra.single 1 Polynomial.X - MonoidAlgebra.mapRingHom G Polynomial.C (MonoidAlgebra.single g 1)) = diagonal fun _ => Polynomial.X - 1`. Establish `e : diagRep χ g = 1` using `by show diagonal (fun i => (χ i g : k)) = 1`. Simplify using `[h]`. Use `ext1 a b`.
+
+Apply the tactic sequence `by_cases hab : a = b <;> simp [GDet.repAlg, e, hab, Matrix.one_apply]`. Rewrite using `[this, det_diagonal]`. Simplify using the standard rewrite rules.
+-/
 private theorem chi_diag {n : ℕ} {k G : Type} [CommRing k] [Group G] (χ : Fin n → G →* kˣ) (g : G)
     (h : ∀ i, χ i g = 1) :
     (GDet.ofRep (diagRep χ)).chi (MonoidAlgebra.single g 1) = (Polynomial.X - 1) ^ n := by
@@ -82,6 +111,23 @@ private theorem chi_diag {n : ℕ} {k G : Type} [CommRing k] [Group G] (χ : Fin
   rw [this, det_diagonal]
   simp
 
+/- English proof (translation)
+Introduce `l _ L G n O _ _ _ hO _ r B _ _ _ u H _ _ hH hχ Z k hk`. Simplify using `only [GDet.chBar, closureIdeal, TwoSidedIdeal.mem_iInf]`. Introduce `N V`. Generalize the expression as in `hS : (u.D.CH ∪ Z ∪ _ ∪ _ : Set (MonoidAlgebra B G.G₀)) = S`. Set `I` to `TwoSidedIdeal.span S`.
+
+Establish `hsub` using `hS.trans_subset (TwoSidedIdeal.subset_span (s := S))`. Set `q : MonoidAlgebra B G.G₀ →ₐ[B] I.ringCon.Quotient` to `RingCon.mkₐ B I.ringCon`. Establish `hq : ∀ a b, q a = q b ↔ a - b ∈ I` using `fun a b => (RingCon.eq _).trans (TwoSidedIdeal.rel_iff I a b)`. Establish `hq0 : ∀ a ∈ I, q a = 0` using `fun a ha => by`. Rewrite using `[← map_zero q, hq, sub_zero]`.
+
+Conclude with `ha`. Set `f : G.G₀ →* I.ringCon.Quotient` to `(q : _ →* _).comp (MonoidAlgebra.of B G.G₀)`. Establish `hf : ∀ g, g ∈ f.ker ↔ MonoidAlgebra.single g 1 - 1 ∈ I` using `fun g => by`. Rewrite using `[← hq, map_one]`. Both sides reduce to the same expression.
+
+Establish `hV : V.toSubgroup ≤ f.ker` using `fun g hg => (hf g).2 (hsub (Or.inr ⟨g, hg, rfl⟩))`. Set `U : OpenNormalSubgroup G.G₀` to `{ toSubgroup := f.ker isOpen' := Subgroup.isOpen_mono hV V.isOpen isNormal' := MonoidHom.normal_ker f }`. Use `(hf k).1 (pl_sub l G.Γ H G.η.ker G.η_open hH U (fun h hh => ?_) k hk)` and prove the remaining obligations. Establish `hl : (l : B) ∈ maximalIdeal B` using `by haveI := hO.char`. Rewrite using `[← res_eq_zero_iff O, map_natCast, CharP.cast_eq_zero]`.
+
+Establish `hchi : (u.D.chi (MonoidAlgebra.single h 1)).map (res O B : B →+* ResidueField O) = (Polynomial.X - 1) ^ n`. Rewrite using `[← ((UpperTheory.V.CA.d_gmap u.D).2.2.1 _ _).1, u.red, MonoidAlgebra.mapRingHom_single, map_one]`. Conclude with `chi_diag _ _ (hχ h hh)`. Take `⟨e, he⟩` from `exists_prime_power_pow_eq_one l n N (maximalIdeal B) (fun a ha => by`. Rewrite using `[← q.commutes]`.
+
+Conclude with `hq0 _ (hsub (Or.inl (Or.inr ⟨a, ha, rfl⟩)))) hl (q (MonoidAlgebra.single h 1))`. Use the proof step `(u.D.chi (MonoidAlgebra.single h 1))`. Use the proof step `(by`. Rewrite using `[Polynomial.aeval_algHom_apply]`. Conclude with `hq0 _ (TwoSidedIdeal.span_le.2 (fun z hz => hsub (Or.inl (Or.inl (Or.inl hz)))) (ch_mem u.D _)))`.
+
+Use the proof step `(fun i => by`. Rewrite using `[← res_eq_zero_iff O]`. Use `show (res O B : B →+* ResidueField O) _ = 0`. Rewrite using `[← Polynomial.coeff_map, Polynomial.map_sub, hchi]`. Use the proof step `simp)`.
+
+Use `⟨e, ?_⟩` and prove the remaining obligations. Use `show f (h ^ l ^ e) = 1`. Rewrite using `[map_pow]`. Conclude with `he`.
+-/
 theorem UpperTheory.V.Pa.pl_chBar :
     ∀ (l : ℕ) [Fact l.Prime] (L : Loc) (G : Glob l L) (n : ℕ) (O : Type) [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] [IsCoef l O] [Algebra ℤ_[l] O] (r : Resid G.frame O n) (B : Type) [CommRing B] [Algebra O B] [IsCO O B] (u : Pair r B) (H : Subgroup G.Γ) [H.Normal], IsOpen (H : Set G.Γ) → H ≤ G.η.ker → (∀ a : G.G₀, (a : G.Γ) ∈ H → ∀ i, r.chib i a = 1) → ∀ (Z : Set (MonoidAlgebra B G.G₀)) (k : G.G₀), (k : G.Γ) ∈ PL l H → MonoidAlgebra.single k 1 - 1 ∈ u.D.chBar Z := by
   intro l _ L G n O _ _ _ hO _ r B _ _ _ u H _ _ hH hχ Z k hk

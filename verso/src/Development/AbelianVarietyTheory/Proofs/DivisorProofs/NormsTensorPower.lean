@@ -12,6 +12,11 @@ noncomputable section
 
 namespace GlobalTheory.CoverNorm
 
+/- English proof (translation)
+Introduce `i i' h`. Establish `l₀ : ((lbPow B m).pull j).U i ⊓ ((lbPow B m).pull j).U i' ≤ (B.pull j).U (fun _ => i PUnit.unit PUnit.unit) ⊓ (B.pull j).U fun _ => i' PUnit.unit PUnit.unit` using `fun _ hx => ⟨InducedPow.mem_chart B j m hx.1, InducedPow.mem_chart B j m hx.2⟩`. Establish `l₁ : ((lbPow B m).pull j).U i ⊓ ((lbPow B m).pull j).U i' ≤ j ⁻¹ᵁ ((lbPow B m).U (i PUnit.unit) ⊓ (lbPow B m).U (i' PUnit.unit))` using `fun x hx => ⟨Set.mem_iInter.1 hx.1 PUnit.unit, Set.mem_iInter.1 hx.2 PUnit.unit⟩`. Establish `l₂ : (lbPow B m).U (i PUnit.unit) ⊓ (lbPow B m).U (i' PUnit.unit) ≤ B.U (i PUnit.unit PUnit.unit) ⊓ B.U (i' PUnit.unit PUnit.unit)` using `fun x hx => ⟨Set.mem_iInter.1 hx.1 PUnit.unit, Set.mem_iInter.1 hx.2 PUnit.unit⟩`. Establish `l₃ : (B.pull j).U (fun _ => i PUnit.unit PUnit.unit) ⊓ (B.pull j).U (fun _ => i' PUnit.unit PUnit.unit) ≤ j ⁻¹ᵁ (B.U (i PUnit.unit PUnit.unit) ⊓ B.U (i' PUnit.unit PUnit.unit))` using `fun x hx => ⟨Set.mem_iInter.1 hx.1 PUnit.unit, Set.mem_iInter.1 hx.2 PUnit.unit⟩`.
+
+Rewrite using `[Units.val_pow_eq_pow_val, Units.val_pow_eq_pow_val, hr _ _ (l₀ h), mul_pow, InducedPow.pull_g _ j i i' l₁, InducedPow.pow_g B m _ _ l₂, map_pow, map_pow, InducedPow.pull_g B j _ _ l₃, ← fnOf_resG l₀ h]`. Use `congr 3`. Establish `e : j.appLE _ _ l₃ ≫ Z.presheaf.map (homOfLE l₀).op = X.presheaf.map (homOfLE l₂).op ≫ j.appLE _ _ l₁`. Rewrite using `[Scheme.Hom.appLE_map, Scheme.Hom.map_appLE]`. Conclude with `congrArg (fun ψ => ψ.hom (B.g (i PUnit.unit PUnit.unit) (i' PUnit.unit PUnit.unit)).val) e`.
+-/
 theorem isRatSec_pull_pow {X Z : Scheme.{0}} [IsIntegral Z] (B : LB X) (j : Z ⟶ X) (m : ℕ)
     {r : (B.pull j).ι → Z.functionFieldˣ} (hr : IsRatSec (B.pull j) r) :
     IsRatSec ((lbPow B m).pull j) fun i => r (fun _ => i PUnit.unit PUnit.unit) ^ m := by
@@ -37,6 +42,21 @@ theorem isRatSec_pull_pow {X Z : Scheme.{0}} [IsIntegral Z] (B : LB X) (j : Z �
     rw [Scheme.Hom.appLE_map, Scheme.Hom.map_appLE]
   exact congrArg (fun ψ => ψ.hom (B.g (i PUnit.unit PUnit.unit) (i' PUnit.unit PUnit.unit)).val) e
 
+/- English proof (translation)
+Introduce and unpack `F _ _ Y V L f a l m ⟨r, hr, hu, hc, hf⟩`. Establish `key : ∀ (g : Y.Fn) (i : ((lbPow L.B m).pull V.j).ι), V.φ (g ^ m) * ((r (fun _ => i PUnit.unit PUnit.unit) ^ m : V.G.functionFieldˣ) : V.G.functionField) = (V.φ g * (r (fun _ => i PUnit.unit PUnit.unit) : V.G.functionField)) ^ m`. Introduce `g i`. Rewrite using `[map_pow, Units.val_pow_eq_pow_val, mul_pow]`. Use `⟨fun i => r (fun _ => i PUnit.unit PUnit.unit) ^ m, isRatSec_pull_pow L.B V.j m hr, ?_, ?_, ?_⟩` and prove the remaining obligations.
+
+Introduce `i x hx show UnitAt x (V.φ (f (V.π x) ^ m) * _) erw [key]`. Conclude with `InducedPow.unitAt_pow (hu _ x (InducedPow.mem_chart L.B V.j m hx)) m`. Introduce `σ z y y' i e₁ e₂ hi`. Establish `hi'` using `InducedPow.mem_chart L.B V.j m hi`. Establish `H` using `hc σ z y y' (fun _ => i PUnit.unit PUnit.unit) e₁ e₂ hi'`.
+
+Establish `hπ : V.π (under z) = under y` using `by show _ = y.1 _`. Rewrite using `[e₁]`. Both sides reduce to the same expression. Establish `hU` using `hu _ _ hi'`. Rewrite `hU` using `[hπ]`.
+
+Establish `h₄ : ((L.pow m).φ _).φ (i PUnit.unit) y' = (m : ℝ) * (L.φ _).φ (i PUnit.unit PUnit.unit) y'` using `((L.φ _).zpow_φ _ _ y').trans (by simp)`. Use `show (m : ℝ) * a σ y = Real.log ‖ratVal (V.φ (f (under y) ^ m) * _) z‖ - _`. Use `erw [key, InducedPow.ratVal_pow z hU, norm_pow, Real.log_pow, h₄, H]`. Expand and normalize the polynomial expressions, which then agree. Introduce `v e y z yt i e₁ e₂ hi`.
+
+Establish `hi' : ⊤ ≤ yt ⁻¹ᵁ L.B.U (i PUnit.unit PUnit.unit)` using `fun x hx => Set.mem_iInter.1 (hi hx) PUnit.unit`. Establish `H` using `hf v e y z yt (fun _ => i PUnit.unit PUnit.unit) e₁ e₂ hi'`. Establish `hmem : below z ∈ (L.B.pull V.j).U (fun _ => i PUnit.unit PUnit.unit)`. Establish `h1 : (z ≫ V.j) (IsLocalRing.closedPoint _) ∈ L.B.U (i PUnit.unit PUnit.unit)`. Rewrite using `[← e₂]`.
+
+Conclude with `hi' (Set.mem_univ _)`. Conclude with `Set.mem_iInter.2 fun _ => h1`. Establish `hπ : V.π (below z) = below y.1`. Rewrite using `[← e₁]`. Both sides reduce to the same expression.
+
+Establish `hU` using `hu _ _ hmem`. Rewrite `hU` using `[hπ]`. Use `show (m : ℝ) * l v e y = Real.log (e.w (valAt z (V.φ (f (below y.1) ^ m) * _)))`. Use `erw [key, InducedPow.valAt_pow _ hU.regAt, map_pow, Real.log_pow, H]`.
+-/
 theorem norms_pow : ∀ (F : Type) [Field F] [NumberField F] (Y : Var F) (V : Cover Y) (L : HermLB V.p) (f : Y.X → Y.Fn) (a : ∀ σ : F →+* ℂ, Pts Y σ → ℝ) (l : ∀ v : HeightOneSpectrum (𝓞 F), Ext v → AlgPt Y → ℝ) (m : ℕ), Norms V L f a l → Norms V (L.pow m) (fun x => f x ^ m) (fun σ y => m * a σ y) (fun v e y => m * l v e y) := by
   rintro F _ _ Y V L f a l m ⟨r, hr, hu, hc, hf⟩
   have key : ∀ (g : Y.Fn) (i : ((lbPow L.B m).pull V.j).ι),

@@ -23,6 +23,9 @@ def bc (f : M →ₗ[R] N →ₗ[R] P) : A ⊗[R] M →ₗ[A] A ⊗[R] N →ₗ[
     ((LinearMap.baseChange A (TensorProduct.lift f)).comp
       (TensorProduct.AlgebraTensorModule.distribBaseChange R A M N).symm.toLinearMap)
 
+/- English proof (translation)
+Simplify using `[bc]`.
+-/
 theorem bc_tmul (f : M →ₗ[R] N →ₗ[R] P) (m : M) (n : N) :
     bc A f ((1 : A) ⊗ₜ[R] m) ((1 : A) ⊗ₜ[R] n) = (1 : A) ⊗ₜ[R] f m n := by
   simp [bc]
@@ -41,6 +44,9 @@ def limBil (b : ∀ m, S₁.M m →ₗ[R] S₂.M m →ₗ[R] S₃.M m)
     (fun x y y' => Subtype.ext (funext fun m => by simp))
     (fun c x y => Subtype.ext (funext fun m => by simp))
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem limBil_apply (b : ∀ m, S₁.M m →ₗ[R] S₂.M m →ₗ[R] S₃.M m)
     (hb : ∀ m x y, S₃.r m (b (m + 1) x y) = b m (S₁.r m x) (S₂.r m y)) (x : S₁.lim) (y : S₂.lim) (m : ℕ) :
     (limBil b hb x y).1 m = b m (x.1 m) (y.1 m) := rfl
@@ -49,12 +55,18 @@ end Lim
 
 section One
 
+/- English proof (translation)
+Substitute `e` using the available equality. Conclude with `CrystallineSemistableComparison.P.mapH_cls φ n a ha hb`.
+-/
 theorem mapH_cls' {R R' : Type} [CommRing R] [CommRing R'] {σ : R →+* R'} {K : Cx.{w₁} R} {L : Cx.{w₂} R'}
     (φ : Cx.Hom K L σ) (n : ℕ) (a : K.X n) (ha : K.d n a = 0) (b : L.X n) (hb : L.d n b = 0) (e : φ.f n a = b) :
     φ.mapH n (K.cls a ha) = L.cls b hb := by
   subst e
   exact CrystallineSemistableComparison.P.mapH_cls φ n a ha hb
 
+/- English proof (translation)
+The claim follows from `mapH_cls' m.hom 0 _ _ _ _ (funext fun _ => h1 _)`.
+-/
 theorem pull_one {R R' : Type} [CommRing R] [CommRing R'] {σ : R →+* R'} {C : Type u₁} [Category.{u₂} C]
     {C' : Type u₃} [Category.{w₃} C'] {A : C ⥤ CommAlgCat.{w₁} R} {A' : C' ⥤ CommAlgCat.{w₂} R'}
     (m : CH.Mor (CH.modF A) (CH.modF A') σ) (h1 : ∀ T, m.τ T (1 : A.obj (m.G.obj T)) = (1 : A'.obj T)) :

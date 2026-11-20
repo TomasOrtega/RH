@@ -14,6 +14,13 @@ open scoped TensorProduct
 attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField
 set_option synthInstance.maxHeartbeats 200000
 
+/- English proof (translation)
+Use `haveI := Fintype.ofFinite ι`. Establish `key : ∀ T : Finset ι, ∃ y ∈ P, (∀ i ∈ T, p i y = b i) ∧ ∀ i ∉ T, p i y = 1` using `fun T => by`. Proceed by induction on `T using Finset.induction_on with`. Consider the case `empty => exact ⟨1, one_mem _, by simp, fun i _ => map_one _⟩`. Consider the case `insert a T ha ih`.
+
+Take `⟨y, hy, h1, h2⟩` from `ih`. Take `⟨z, hz, h3, h4⟩` from `h a`. Use `⟨y * z, mul_mem hy hz, fun i hi => ?_, fun i hi => ?_⟩` and prove the remaining obligations. Break down `Finset.mem_insert.1 hi with rfl | hi` into its components or cases. Rewrite using `[map_mul, h2 _ ha, h3, one_mul]`.
+
+Rewrite using `[map_mul, h1 i hi, h4 i (fun e => ha (e ▸ hi)), mul_one]`. Rewrite `hi` using `[Finset.mem_insert, not_or]`. Rewrite using `[map_mul, h2 i hi.2, h4 i hi.1, mul_one]`. Take `⟨y, hy, h1, -⟩` from `key Finset.univ`. Conclude with `⟨y, hy, fun i => h1 i (Finset.mem_univ i)⟩`.
+-/
 private theorem fu_patch {G ι : Type} [Group G] [Finite ι] {H : ι → Type} [∀ i, Group (H i)] (p : ∀ i, G →* H i)
     (P : Subgroup G) (b : ∀ i, H i) (h : ∀ i, ∃ y ∈ P, p i y = b i ∧ ∀ j, j ≠ i → p j y = 1) :
     ∃ y ∈ P, ∀ i, p i y = b i := by
@@ -39,17 +46,34 @@ section
 variable {l : ℕ} [Fact l.Prime] {L Ω : Type} [Field L] [NumberField L] [IsCMField L] [Field Ω] [Algebra L Ω] [IsAlgClosure L Ω]
   {s : HidaSetting l L Ω} {n : ℕ}
 
+/- English proof (translation)
+Use `HeightOneSpectrum.ext (Ideal.ext fun x => ?_)` and prove the remaining obligations. Rewrite using `[← s.hA v x, IsScalarTower.algebraMap_apply (Lp L) L Ω]`. Conclude with `(s.hw v (algebraMap (𝓞 (Lp L)) (𝓞 L) x)).symm`.
+-/
 private theorem fu_under (s : HidaSetting l L Ω) (v : Plc (Lp L)) : (s.w v).under (𝓞 (Lp L)) = v := by
   refine HeightOneSpectrum.ext (Ideal.ext fun x => ?_)
   rw [← s.hA v x, IsScalarTower.algebraMap_apply (Lp L) L Ω]
   exact (s.hw v (algebraMap (𝓞 (Lp L)) (𝓞 L) x)).symm
 
 omit [Fact l.Prime] [IsCMField L] in
+/- English proof (translation)
+Rewrite using `[← map_natCast (algebraMap (𝓞 (Lp L)) (𝓞 L)) l]`. Both sides reduce to the same expression.
+-/
 private theorem fu_l (w : Plc L) : ((l : ℕ) : 𝓞 (Lp L)) ∈ (w.under (𝓞 (Lp L))).asIdeal ↔ ((l : ℕ) : 𝓞 L) ∈ w.asIdeal := by
   rw [← map_natCast (algebraMap (𝓞 (Lp L)) (𝓞 L)) l]
   rfl
 
 open scoped Pointwise in
+/- English proof (translation)
+Assume the negation of the conclusion as `hn`. Establish `uq : ∀ u : Plc L, u.under (𝓞 (Lp L)) = w.under (𝓞 (Lp L)) → u = w` using `fun u hu => by`. Assume the negation of the conclusion as `h`. Conclude with `hn ⟨u, h, hu⟩`. Establish `hA` using `s.hw (w.under (𝓞 (Lp L)))`.
+
+Rewrite `hA` using `[uq _ (fu_under s _)]`. Establish `hD` using `V.split _ hw`. Generalize the expression as in `s.A (w.under (𝓞 (Lp L))) = A at hA hD`. Set `τ : L ≃ₐ[Lp L] L` to `s.c.restrictNormal L`. Establish `hl : IsLift τ.toRingEquiv s.c.toRingEquiv` using `fun x => (AlgEquiv.restrictNormal_commutes s.c L x).symm`.
+
+Establish `h1 : IsPlaceOver (s.c⁻¹ • A) (preplace τ.toRingEquiv w)` using `isPlaceOver_preplace hl (fun x => (ValuationSubring.mem_inv_pointwise_smul_iff (g := s.c) (S := A) (x := x)).symm) hA`. Rewrite using `[uq (preplace τ.toRingEquiv w) (HeightOneSpectrum.ext (Ideal.ext fun x => by`. Express the relevant statement in the definitionally equal form `RingOfIntegers.mapRingEquiv τ.toRingEquiv (algebraMap _ (𝓞 L) x) ∈ w.asIdeal ↔ algebraMap _ (𝓞 L) x ∈ w.asIdeal`. Rewrite `h1` using `[show RingOfIntegers.mapRingEquiv τ.toRingEquiv (algebraMap _ (𝓞 L) x) = algebraMap _ (𝓞 L) x from Subtype.ext (τ.commutes x)]))]`. Take `⟨g, hg⟩` from `exists_smul_eq_of_isPlaceOver (F := L) hA h1`.
+
+Establish `h2 : s.c * W.resP L Ω g ∈ Dec (F` using `Lp L) A := by`. Use `mem_Dec.2 ?_` and prove the remaining obligations. Establish `h3 : W.resP L Ω g • A = s.c⁻¹ • A` using `hg`. Rewrite using `[mul_smul, h3, smul_inv_smul]`. Establish `h4 : s.c ∈ (W.resP L Ω).range` using `(mul_mem_cancel_right (MonoidHom.mem_range.2 ⟨g, rfl⟩)).1 (hD h2)`.
+
+Establish `h5` using `(V.hη _).2 h4`. Rewrite `h5` using `[V.η_c]`. Conclude with `absurd h5 (by decide)`.
+-/
 private theorem fu_split (V : s.Lev) (w : Plc L) (hw : w.under (𝓞 (Lp L)) ∈ V.S') : IsSplitAt w := by
   by_contra hn
   have uq : ∀ u : Plc L, u.under (𝓞 (Lp L)) = w.under (𝓞 (Lp L)) → u = w := fun u hu => by
@@ -77,11 +101,17 @@ private theorem fu_split (V : s.Lev) (w : Plc L) (hw : w.under (𝓞 (Lp L)) ∈
   rw [V.η_c] at h5
   exact absurd h5 (by decide)
 
+/- English proof (translation)
+Rewrite using `[CaseU.cmp, dif_pos h]`. Both sides reduce to the same expression.
+-/
 private theorem fu_cmp {w : Plc L} (h : ((l : ℕ) : 𝓞 L) ∉ w.asIdeal) (g : UA L n) :
     cmp n w ((away l L n).rangeRestrict g) = cLoc w g := by
   rw [CaseU.cmp, dif_pos h]
   rfl
 
+/- English proof (translation)
+Distinguish the cases in `h : ((l : ℕ) : 𝓞 L) ∈ w.asIdeal`. Rewrite using `[CaseU.cmp, dif_neg (not_not.2 h)]`. Conclude with `one_mem _`. Rewrite using `[fu_cmp h]` and apply the resulting hypothesis.
+-/
 private theorem fu_cmp_mem (w : Plc L) (g : UA L n) {P : Subgroup (GLw n w)} (hg : cLoc w g ∈ P) :
     cmp n w ((away l L n).rangeRestrict g) ∈ P := by
   by_cases h : ((l : ℕ) : 𝓞 L) ∈ w.asIdeal
@@ -89,6 +119,11 @@ private theorem fu_cmp_mem (w : Plc L) (g : UA L n) {P : Subgroup (GLw n w)} (hg
     exact one_mem _
   · rwa [fu_cmp h]
 
+/- English proof (translation)
+Set `p : UA L n →* GL (Fin n) (Af L)` to `(Matrix.GeneralLinearGroup.map (pFin L)).comp (UA L n).subtype`. Establish `hp : Continuous p` using `GlobalTheory.DefU.continuous_map_pFin.comp continuous_subtype_val`. Establish `ho : IsOpen (GlobalTheory.GLIntegral.intSubring L : Set (Af L))` using `RestrictedProduct.isOpen_forall_mem (A := fun v : HeightOneSpectrum (𝓞 L) => (v.adicCompletionIntegers L : Set (v.adicCompletion L))) (fun v => Valued.isOpen_valuationSubring _)`. Use `Subgroup.isOpen_mono (H₁ := (GlobalTheory.GLIntegral.glSub (GlobalTheory.GLIntegral.intSubring L)).comap p) (fun g hg => ?_) ((GlobalTheory.GLIntegral.isOpen_glSub _ ho).preimage hp)` and prove the remaining obligations. Establish `hv : ∀ (w : Plc L) (x : w.adicCompletion L), x ∈ w.adicCompletionIntegers L → x ∈ 𝒪[w.adicCompletion L]` using `fun w x hx => by haveI : (Valued.v : Valuation (w.adicCompletion L) (WithZero (Multiplicative ℤ))).Compatible := Valuation.Compatible.ofValuation _`.
+
+Rewrite using `[Valuation.mem_integer_iff, ← map_one (valuation _), ← Valuation.vle_iff_le, Valuation.vle_iff_le Valued.v, map_one]`. Conclude with `hx`. Conclude with `Subgroup.mem_iInf.2 fun w => (GlobalTheory.SplitFlip.mem_KO_iff _).2 ⟨fun i j => hv w _ (hg.1 i j w), fun i j => hv w _ (hg.2 i j w)⟩`.
+-/
 private theorem fu_open : IsOpen ((⨅ w : Plc L, (KO (w.adicCompletion L) (Fin n)).comap (cLoc w) : Subgroup (UA L n)) : Set (UA L n)) := by
   let p : UA L n →* GL (Fin n) (Af L) := (Matrix.GeneralLinearGroup.map (pFin L)).comp (UA L n).subtype
   have hp : Continuous p := GlobalTheory.DefU.continuous_map_pFin.comp continuous_subtype_val
@@ -106,6 +141,9 @@ private theorem fu_open : IsOpen ((⨅ w : Plc L, (KO (w.adicCompletion L) (Fin 
 
 end
 
+/- English proof (translation)
+Establish `key : ∀ I : Ideal 𝒪[k], I = maximalIdeal 𝒪[k] → (Matrix.GeneralLinearGroup.map (n` using `Fin n) (Ideal.Quotient.mk I)).ker = (Matrix.GeneralLinearGroup.map (n := Fin n) (residue 𝒪[k])).ker := by`. Introduce and unpack `_ rfl`. Both sides reduce to the same expression. Rewrite using `[Kc, key _ (pow_one _)]`. Conclude with `GlobalTheory.StepData.isOpen_KOne`.
+-/
 private theorem fu_Kc {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] (n : ℕ) :
     IsOpen (Kc k n 1 : Set (GL (Fin n) k)) := by
   have key : ∀ I : Ideal 𝒪[k], I = maximalIdeal 𝒪[k] → (Matrix.GeneralLinearGroup.map (n := Fin n) (Ideal.Quotient.mk I)).ker =
@@ -115,6 +153,9 @@ private theorem fu_Kc {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k]
   rw [Kc, key _ (pow_one _)]
   exact GlobalTheory.StepData.isOpen_KOne
 
+/- English proof (translation)
+Use `choose x hx t ht y hy e using fun v => (iwMem _ _ 0 _).2.1.1 (hb v)`. Rewrite using `[show b = x * t * y from funext e]`. Conclude with `mul_mem (mul_mem (Subgroup.mem_sup_left (Subgroup.mem_sup_left fun v _ => hx v)) (Subgroup.mem_sup_left (Subgroup.mem_sup_right fun v _ => (glIwa _ n).Tc_le 0 (ht v)))) (Subgroup.mem_sup_right fun v _ => hy v)`.
+-/
 private theorem fu_Iw {L : Type} [Field L] [NumberField L] {n : ℕ} {V : Type} [Fintype V] (S : V → Plc L) (b : GV n S)
     (hb : ∀ v, b v ∈ (glIwa ((S v).adicCompletion L) n).I1 0) : b ∈ (iwS n S).Iw 0 := by
   choose x hx t ht y hy e using fun v => (iwMem _ _ 0 _).2.1.1 (hb v)
@@ -123,11 +164,35 @@ private theorem fu_Iw {L : Type} [Field L] [NumberField L] {n : ℕ} {V : Type} 
     (Subgroup.mem_sup_left (Subgroup.mem_sup_right fun v _ => (glIwa _ n).Tc_le 0 (ht v))))
     (Subgroup.mem_sup_right fun v _ => hy v)
 
+/- English proof (translation)
+Rewrite using `[Subgroup.coe_iInf]`. Conclude with `isOpen_iInter_of_finite h`.
+-/
 private theorem fu_iInf {G ι : Type} [Group G] [TopologicalSpace G] [Finite ι] (H : ι → Subgroup G)
     (h : ∀ i, IsOpen (H i : Set G)) : IsOpen ((⨅ i, H i : Subgroup G) : Set G) := by
   rw [Subgroup.coe_iInf]
   exact isOpen_iInter_of_finite h
 
+/- English proof (translation)
+Introduce `l _ L Ω _ _ _ _ _ _ s n hn V Q c m τ₀ K`. Set `Φ : UA L n →* Ga l L n × GV n (fun v : V.frame.Vl => s.w v.1)` to `MonoidHom.prod (away l L n).rangeRestrict (Pi.monoidHom fun v : V.frame.Vl => cLoc (s.w v.1))`. Establish `hsurj : Function.Surjective Φ`. Introduce and unpack `⟨a, b⟩`. Take `⟨g, rfl⟩` from `(away l L n).rangeRestrict_surjective a`.
+
+Take `⟨y, hy, h1⟩` from `fu_patch (fun v : V.frame.Vl => cLoc (n := n) (s.w v.1)) (away l L n).ker (fun v => (cLoc (s.w v.1) g)⁻¹ * b v) fun v => by`. Take `⟨j, hj, h2, -⟩` from `(secU l L Ω s n hn (s.w v.1) (fu_split V _ (by rw [fu_under]; exact V.sub (Or.inl v.2)))).1`. Establish `h3 : ∀ x, ∀ u : Plc L, u.under (𝓞 (Lp L)) ≠ v.1 → cLoc u (j x) = 1` using `fun x u hu => Subgroup.mem_iInf.1 (Subgroup.mem_iInf.1 (Subgroup.mem_inf.1 (hj x)).2 u) (by rwa [fu_under])`. Use `⟨j _, funext fun u => h3 _ u.1 fun e => u.2 (fu_l u.1 |>.1 (e ▸ v.2)), h2 _, fun v' hv => h3 _ _ ?_⟩` and prove the remaining obligations. Rewrite using `[fu_under]`.
+
+Conclude with `fun e => hv (Subtype.ext e)`. Use `⟨g * y, Prod.ext (Subtype.ext ?_) (funext fun v => ?_)⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `away l L n (g * y) = away l L n g`. Rewrite using `[map_mul, MonoidHom.mem_ker.1 hy, mul_one]`. Express the relevant statement in the definitionally equal form `cLoc (s.w v.1) (g * y) = b v`.
+
+Rewrite using `[map_mul, h1 v, mul_inv_cancel_left]`. Establish `hinf : ∀ x ∈ infU L n, Φ x = 1` using `fun x hx => by`. Establish `h1 : ∀ w, cLoc w x = 1` using `fun w => by`. Establish `h2 : Matrix.GeneralLinearGroup.map (pFin L) x.1 = 1` using `hx`. Express the relevant statement in the definitionally equal form `Matrix.GeneralLinearGroup.map (pLoc L w) (Matrix.GeneralLinearGroup.map (pFin L) x.1) = 1`.
+
+Rewrite using `[h2, map_one]`. Conclude with `Prod.ext (Subtype.ext (funext fun w => h1 w.1)) (funext fun v => h1 _)`. Set `K0 : Subgroup (UA L n)` to `((⨅ w : Plc L, (KO (w.adicCompletion L) (Fin n)).comap (cLoc w)) ⊓ (Kc _ n 1).comap (cLoc (s.w s.v0))) ⊓ ((⨅ q : Q.Q, Subgroup.comap (cLoc (Q.wq q)) (K.1 q)) ⊓ ⨅ v : V.frame.Vl, ((glIwa ((s.w v.1).adicCompletion L) n).I1 0).comap (cLoc (s.w v.1)))`. Establish `ho : IsOpen (K0 : Set (UA L n))`. Use `(fu_open.inter ((fu_Kc n).preimage (GlobalTheory.DefU.Inert.continuous_cLoc _))).inter (IsOpen.inter ?_ ?_)` and prove the remaining obligations.
+
+Conclude with `fu_iInf _ fun q => (K.2 q).1.preimage (GlobalTheory.DefU.Inert.continuous_cLoc _)`. Conclude with `fu_iInf _ fun v => ((glBridge _ n ℂ 1).2.2.1 0).1.preimage (GlobalTheory.DefU.Inert.continuous_cLoc _)`. Take `⟨S, hS⟩` from `GlobalTheory.DefU.ClassFin.classSet_finite L n (K0.comap (GlobalTheory.UnitaryBC.finU L n).subtype) (ho.preimage continuous_subtype_val)`. Use `⟨S.image Φ, fun g => ?_⟩` and prove the remaining obligations. Take `⟨g, rfl⟩` from `hsurj g`.
+
+Take `⟨γ, hγ, x, hx, z, hz, k, ⟨⟨hk1, hk2⟩, hk3, hk4⟩, rfl⟩` from `hS g`. Use `replace hk1 : ∀ w : Plc L, cLoc w k.1 ∈ KO (w.adicCompletion L) (Fin n) := Subgroup.mem_iInf.1 hk1`. Use `replace hk3 : ∀ q : Q.Q, cLoc (Q.wq q) k.1 ∈ K.1 q := Subgroup.mem_iInf.1 hk3`. Set `u : Ub n s` to `⟨(away l L n).rangeRestrict k.1, Subgroup.mem_iInf.2 fun w => fu_cmp_mem _ _ (hk1 _), fu_cmp_mem (s.w s.v0) k.1 (P := Kc _ n 1) hk2⟩`. Use `⟨⟨γ, hγ⟩, Φ x, Finset.mem_image_of_mem _ hx, u, ?_, (Φ k.1).2, fu_Iw _ _ (Subgroup.mem_iInf.1 hk4), ?_⟩` and prove the remaining obligations.
+
+Establish `hq : ∀ q, (Q.wq q).under (𝓞 (Lp L)) ∈ V.S'` using `fun q => Q.range ▸ Or.inr ⟨q, rfl⟩`. Take `⟨y, ⟨hy1, hy2⟩, h1⟩` from `fu_patch (fun q : Q.Q => (cmp n (Q.wq q)).comp (Ub n s).subtype) ((⨆ q : Q.Q, Subgroup.map (sec n s (Q.wq q)) (K.1 q)) ⊓ ⨅ (w : Plc L) (_ : w.under (𝓞 (Lp L)) ∉ V.S'), ((cmp n w).comp (Ub n s).subtype).ker) (fun q => cLoc (Q.wq q) k.1) fun q => by`. Take `⟨-, h2, h3⟩` from `(secU l L Ω s n hn (Q.wq q) (fu_split V _ (hq q))).2 (Q.notS q)`. Establish `h4` using `fun w => Subgroup.mem_iInf.1 (Subgroup.mem_iInf.1 (h3 (cLoc (Q.wq q) k.1)) w)`. Conclude with `⟨sec n s (Q.wq q) _, ⟨Subgroup.mem_iSup_of_mem q ⟨_, hk3 q, rfl⟩, Subgroup.mem_iInf.2 fun w => Subgroup.mem_iInf.2 fun hw => h4 w fun e => hw (e ▸ hq q)⟩, h2 _, fun q' hq' => h4 _ fun e => hq' (Q.inj e)⟩`.
+
+Rewrite using `[← inv_mul_cancel_right u y]`. Use `mul_mem (Subgroup.mem_sup_left ⟨Subgroup.mem_iInf.2 fun w => Subgroup.mem_iInf.2 fun hw => ?_, Subgroup.mem_iInf.2 fun q => ?_⟩) (Subgroup.mem_sup_right hy1)` and prove the remaining obligations. Rewrite using `[Subgroup.mem_comap, map_mul, map_inv, MonoidHom.mem_ker.1 (Subgroup.mem_iInf.1 (Subgroup.mem_iInf.1 hy2 w) hw), inv_one, mul_one]`. Conclude with `fu_cmp_mem _ _ (hk1 _)`. Rewrite using `[MonoidHom.mem_ker, map_mul, map_inv, h1 q, mul_inv_eq_one]`.
+
+Conclude with `fu_cmp (fun h => Q.notS q (Or.inl ((fu_l _).2 h))) _`. Rewrite using `[map_mul, map_mul, map_mul, hinf z hz, mul_one]`. Both sides reduce to the same expression.
+-/
 theorem UpperTheory.V.Hi.finU :
     ∀ (l : ℕ) [Fact l.Prime] (L Ω : Type) [Field L] [NumberField L] [IsCMField L] [Field Ω] [Algebra L Ω] [IsAlgClosure L Ω] (s : HidaSetting l L Ω) (n : ℕ), 1 ≤ n →
     ∀ (V : s.Lev) (Q : QData V) (c : Coef l), ∀ (m : ℕ) (τ₀ : KT n (wt s) →* GL (Fin m) c.O), ∀ K, (hset Q τ₀).X.FinLevel ((hset Q τ₀).lev K) := by

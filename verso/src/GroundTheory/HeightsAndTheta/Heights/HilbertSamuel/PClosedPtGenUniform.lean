@@ -21,6 +21,13 @@ variable {S : Type} [CommRing S] {K : Type} [Fintype K] [LinearOrder K] {ι : K 
   {M : Type} [AddCommGroup M] [Module (MRingOver S ι) M] [Module S M] [IsScalarTower S (MRingOver S ι) M]
   {𝓜 : (K → ℤ) → Submodule S M}
 
+/- English proof (translation)
+Introduce `I x hx`. Take `⟨n, t, c, r, p, z, ht, htc, hp, hz, he⟩` from `h I x hx`. Use `⟨m * n, t, c, r, fun j => q ^ n * p j, z, ht, htc, fun j => ?_, hz, ?_⟩` and prove the remaining obligations. Establish `h'` using `isMultiHomog_mul (isMultiHomog_pow hq n) (hp j)`. Use `h' using 1` and compare the differences between its conclusion and the goal.
+
+Use function extensionality and compare the values at `k`. Establish `hk` using `congrFun hdeg k`. Simplify using `only [Pi.add_apply, Pi.smul_apply, smul_eq_mul] at hk ⊢`. Rewrite using `[mul_comm m n, mul_assoc, hk]`. Expand and normalize the polynomial expressions, which then agree.
+
+Rewrite using `[pow_mul, ← hab, mul_pow, show a ^ n * q ^ n * t = q ^ n * (a ^ n * t) by ring, mul_smul, he, Finset.smul_sum]`. Repeatedly rewrite using `[mul_smul]`.
+-/
 theorem genNear_of_mul_eq_pow {d : K → ℤ} {a q b : MRingOver S ι} {α β δ : K → ℕ} {m : ℕ}
     (h : GenNear S ι 𝓜 d a α) (hq : IsMultiHomog q β) (hab : a * q = b ^ m) (hdeg : m • δ = α + β) :
     GenNear S ι 𝓜 d b δ := by
@@ -38,6 +45,11 @@ theorem genNear_of_mul_eq_pow {d : K → ℤ} {a q b : MRingOver S ι} {α β δ
       Finset.smul_sum]
     simp_rw [mul_smul]
 
+/- English proof (translation)
+Introduce `a`. Proceed by induction on `a with`. Consider the case `zero => simpa using hfd`. Consider the case `succ a ih`. Establish `h'` using `hM S K ι M 𝓜 W (d + a • n) n (f * g ^ a) g (δ + a • γ) γ hgr hW (isMultiHomog_mul hf (isMultiHomog_pow hg a)) hg ih hgn`.
+
+Rewrite using `[succ_nsmul, succ_nsmul, pow_succ, ← mul_assoc, ← add_assoc, ← add_assoc]`. Conclude with `h'`.
+-/
 theorem genNear_mul_pow (hM : GenNearMul.Statement) (hgr : KH.IsMGraded S ι 𝓜) {W : Ideal (MRingOver S ι)}
     (hW : W ≤ Module.annihilator (MRingOver S ι) M) {d n : K → ℤ} {f g : MRingOver S ι} {δ γ : K → ℕ}
     (hf : IsMultiHomog f δ) (hg : IsMultiHomog g γ) (hfd : GenNear S ι 𝓜 d f δ)
@@ -56,6 +68,33 @@ end ClosedPtGenUniform
 
 open ClosedPtGenUniform in
 
+/- English proof (translation)
+Introduce `S _ K _ _ ι _ _ V N hS hH M _ _ _ _ 𝓜 hfin hgr hV e P hP`. Take `⟨hPprime, hPhom, hPrel⟩` from `hP.1`. Use `choose i hi using hPrel`. Set `I : KH.Cell K ι 0` to `⟨fun k => {i k}, fun k => Finset.singleton_nonempty _, by simp⟩`. Establish `hI : ∀ k, ∀ j ∈ I.1 k, (X ⟨k, j⟩ : MRingOver S ι) ∉ P`.
+
+Introduce `k j hj`. Rewrite using `[Finset.mem_singleton.mp hj]`. Conclude with `hi k`. Establish `: IsNoetherianRing (MRingOver S ι)` using `inferInstance`. Take `⟨hWhom, hMsub⟩` from `hG S K ι M 𝓜 hgr`.
+
+Establish `: IsNoetherian (MRingOver S ι) M` using `isNoetherian_of_isNoetherianRing_of_finite _ _`. Establish `hVPM : V ≤ Module.annihilator (MRingOver S ι) (P • ⊤ : Submodule (MRingOver S ι) M)` using `hV.trans (LinearMap.annihilator_le_of_injective (P • ⊤ : Submodule (MRingOver S ι) M).subtype (P • ⊤ : Submodule (MRingOver S ι) M).injective_subtype)`. Take `⟨cM, hcM⟩` from `hH (P • ⊤ : Submodule (MRingOver S ι) M) (subGrading 𝓜 (P • ⊤)) inferInstance (hMsub P hPhom).1 hVPM e`. Take `⟨fM, δM, hfM, hfMP, hgenM⟩` from `hN S K ι M 𝓜 P (e + cM • N) hS hfin hgr hPprime hPhom I hI (hF S K ι M 𝓜 P (e + cM • N) hS hfin hgr hP (hcM cM le_rfl) I hI)`. Use `set W := Module.annihilator (MRingOver S ι) M with hWdef`.
+
+Establish `hWgr : KH.IsMGraded S ι (KH.quotPart S W)` using `QuotPartGraded.proof S K ι W hWhom`. Establish `hQfin : Module.Finite (MRingOver S ι) (MRingOver S ι ⧸ W)` using `inferInstance`. Take `⟨-, hQsub⟩` from `hG S K ι (MRingOver S ι ⧸ W) (KH.quotPart S W) hWgr`. Establish `: IsNoetherian (MRingOver S ι) (MRingOver S ι ⧸ W)` using `isNoetherian_of_isNoetherianRing_of_finite _ _`. Establish `hVQ : V ≤ Module.annihilator (MRingOver S ι) (MRingOver S ι ⧸ W)`.
+
+Rewrite using `[Ideal.annihilator_quotient]`. Conclude with `hV`. Establish `hVPQ : V ≤ Module.annihilator (MRingOver S ι) (P • ⊤ : Submodule (MRingOver S ι) (MRingOver S ι ⧸ W))` using `hVQ.trans (LinearMap.annihilator_le_of_injective (P • ⊤ : Submodule (MRingOver S ι) (MRingOver S ι ⧸ W)).subtype (P • ⊤ : Submodule (MRingOver S ι) (MRingOver S ι ⧸ W)).injective_subtype)`. Take `⟨cO, hcO⟩` from `hH (P • ⊤ : Submodule (MRingOver S ι) (MRingOver S ι ⧸ W)) (subGrading (KH.quotPart S W) (P • ⊤)) inferInstance (hQsub P hPhom).1 hVPQ 0`. Establish `hgenO : ∀ n : ℕ, cO ≤ n → ∃ (g : MRingOver S ι) (γ : K → ℕ), IsMultiHomog g γ ∧ g ∉ P ∧ GenNear S ι (KH.quotPart S W) (0 + n • N) g γ` using `fun n hn => hN S K ι _ (KH.quotPart S W) P (0 + n • N) hS hQfin hWgr hPprime hPhom I hI (hF S K ι _ (KH.quotPart S W) P (0 + n • N) hS hQfin hWgr hP (hcO n hn) I hI)`.
+
+Use `set n₁ := cO + 1 with hn₁`. Take `⟨g₁, γ₁, hg₁, hg₁P, hgen₁⟩` from `hgenO n₁ (by omega)`. Take `⟨g₂, γ₂, hg₂, hg₂P, hgen₂⟩` from `hgenO (n₁ + 1) (by omega)`. Use `⟨fM * g₁ * g₂, δM + γ₁ + γ₂, cM + n₁ * n₁, isMultiHomog_mul (isMultiHomog_mul hfM hg₁) hg₂, ?_, ?_⟩` and prove the remaining obligations. Introduce `hmem`.
+
+Break down `hPprime.mem_or_mem hmem with h | h` into its components or cases. Break down `hPprime.mem_or_mem h with h | h` into its components or cases. Conclude with `hfMP h`. Conclude with `hg₁P h`. Conclude with `hg₂P h`.
+
+Introduce `c hc`. Establish `hpos : 0 < n₁` using `by omega`. Use `set q := (c - cM) / n₁ with hq`. Use `set s := (c - cM) % n₁ with hs`. Establish `hdm : n₁ * q + s = c - cM` using `Nat.div_add_mod (c - cM) n₁`.
+
+Establish `hsn : s < n₁` using `Nat.mod_lt _ hpos`. Establish `hqn : n₁ ≤ q`. Rewrite using `[hq, Nat.le_div_iff_mul_le hpos]`. Use linear arithmetic over natural numbers and integers. Take `⟨a, ha⟩` from `Nat.exists_eq_add_of_le (le_trans hsn.le hqn)`.
+
+Establish `hca : c = cM + a * n₁ + s * (n₁ + 1)`. Establish `h1 : c - cM + cM = c` using `Nat.sub_add_cancel (by omega)`. Rewrite using `[← h1, ← hdm, ha]`. Expand and normalize the polynomial expressions, which then agree. Establish `hA` using `genNear_mul_pow hM hgr le_rfl hfM hg₁ hgenM hgen₁ a`.
+
+Establish `hB` using `genNear_mul_pow hM hgr le_rfl (isMultiHomog_mul hfM (isMultiHomog_pow hg₁ a)) hg₂ hA hgen₂ s`. Establish `htw : e + cM • N + a • (0 + n₁ • N) + s • (0 + (n₁ + 1) • N) = e + c • N`. Rewrite using `[hca]`. Use function extensionality and compare the values at `k`. Simplify using `only [Pi.add_apply, Pi.smul_apply, Pi.zero_apply, smul_eq_mul, zero_add]`.
+
+Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Rewrite `hB` using `[htw]`. Use `genNear_of_mul_eq_pow hB (isMultiHomog_mul (isMultiHomog_mul (isMultiHomog_pow hfM (a + s)) (isMultiHomog_pow hg₁ (s + 1))) (isMultiHomog_pow hg₂ (a + 1))) (m := a + s + 1) (by ring) ?_` and prove the remaining obligations. Use function extensionality and compare the values at `k`.
+
+Simplify using `only [Pi.add_apply, Pi.smul_apply, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem ClosedPtGenUniform.proof (hG : GradedSubmodules.Statement) (hF : ClosedPtFibreLift.Statement)
     (hN : ChartNakayamaGen.Statement) (hM : GenNearMul.Statement) : ClosedPtGenUniform.Statement := by
   intro S _ K _ _ ι _ _ V N hS hH M _ _ _ _ 𝓜 hfin hgr hV e P hP

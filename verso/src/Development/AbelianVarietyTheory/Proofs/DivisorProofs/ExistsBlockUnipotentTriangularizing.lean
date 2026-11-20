@@ -15,6 +15,13 @@ open GlobalTheory.LieFilt
 
 namespace GlobalTheory.LieFilt
 
+/- English proof (translation)
+Establish `hT : Q.BlockTriangular bl`. Introduce `i j hij`. Rewrite using `[hQ i j (not_lt.mpr hij.le), Matrix.one_apply_ne]`. Introduce and unpack `rfl`. Conclude with `lt_irrefl _ hij`.
+
+Rewrite using `[hT.det]`. Use `Finset.prod_eq_one fun a _ => ?_` and prove the remaining obligations. Establish `h1 : Q.toSquareBlock bl a = 1`. Use extensionality with `i j`. Establish `h : ¬ bl i.1 < bl j.1` using `by rw [i.2, j.2]; exact lt_irrefl _`.
+
+Rewrite using `[Matrix.toSquareBlock_def, Matrix.of_apply, hQ _ _ h, Matrix.one_apply, Matrix.one_apply]`. Simplify using `only [Subtype.ext_iff]`. Rewrite using `[h1]`. Use `Matrix.det_one` and compare the differences between its conclusion and the goal.
+-/
 theorem det_eq_one_of_blockUni_elim {R : Type} [CommRing R] {κ : Type} [Fintype κ] (bl : κ → ℕ) (Q : Matrix κ κ R)
     (hQ : BlockUni bl Q) : Q.det = 1 := by
   have hT : Q.BlockTriangular bl := by
@@ -32,6 +39,17 @@ theorem det_eq_one_of_blockUni_elim {R : Type} [CommRing R] {κ : Type} [Fintype
   rw [h1]
   convert Matrix.det_one
 
+/- English proof (translation)
+Set `S : ∀ k : ℕ, Matrix {z // bl z < k} {z // bl z < k} R` to `fun k => (P.submatrix w id).toSquareBlockProp fun z => bl z < k`. Establish `hS : ∀ k, IsUnit (S k).det` using `h`. Set `v : ∀ z' : κ, {z // bl z < bl z'} → R` to `fun z' => (S (bl z'))⁻¹.mulVec fun y => P (w y.1) z'`. Establish `hv : ∀ z', (S (bl z')).mulVec (v z') = fun y => P (w y.1) z'`. Introduce `z'`.
+
+Simplify using `only [v]`. Rewrite using `[Matrix.mulVec_mulVec, Matrix.mul_nonsing_inv _ (hS _), Matrix.one_mulVec]`. Set `N : Matrix κ κ R` to `fun z z' => if hz : bl z < bl z' then v z' ⟨z, hz⟩ else 0`. Establish `hQ : BlockUni bl (1 - N)`. Introduce `z z' hz`.
+
+Rewrite using `[Matrix.sub_apply]`. Simplify using `only [N, dif_neg hz, sub_zero]`. Use `⟨1 - N, hQ, det_eq_one_of_blockUni_elim bl _ hQ, fun z z' hz => ?_⟩` and prove the remaining obligations. Rewrite using `[Matrix.mul_sub, Matrix.mul_one, Matrix.sub_apply, sub_eq_zero]`. Establish `h1` using `congrFun (hv z') ⟨z, hz⟩`.
+
+Simplify using `only at h1`. Rewrite using `[← h1, Matrix.mul_apply, ← Fintype.sum_subtype_add_sum_subtype (fun y => bl y < bl z')]`. Establish `h2 : ∑ y : {y // ¬ bl y < bl z'}, P (w z) y.1 * N y.1 z' = 0` using `Finset.sum_eq_zero fun y _ => by simp only [N, dif_neg y.2, mul_zero]`. Rewrite using `[h2, add_zero]`. Simplify using `only [Matrix.mulVec, dotProduct]`.
+
+Use `Finset.sum_congr rfl fun y _ => ?_` and prove the remaining obligations. Simplify using `only [N, dif_pos y.2]`. Both sides reduce to the same expression.
+-/
 theorem exists_blockUni_mul_eq_zero {R : Type} [CommRing R] {κ : Type} [Fintype κ] (bl : κ → ℕ) {g : ℕ}
     (P : Matrix (Fin g) κ R) (w : κ ≃ Fin g) (h : ∀ k : ℕ, IsUnit (minor bl w k P)) :
     ∃ Q : Matrix κ κ R, BlockUni bl Q ∧ Q.det = 1 ∧ ∀ z z', bl z < bl z' → (P * Q) (w z) z' = 0 := by

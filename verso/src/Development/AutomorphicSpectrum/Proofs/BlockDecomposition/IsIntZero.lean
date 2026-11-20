@@ -22,17 +22,29 @@ def coef (q : ℕ) (c : ℂˣ) (a b i j : ℕ) : ℂ :=
 def pairs (a b k : ℕ) : Finset (ℕ × ℕ) :=
   (Finset.HasAntidiagonal.antidiagonal k).filter fun p => p.1 ≤ a ∧ p.2 ≤ b
 
+/- English proof (translation)
+Simplify using `[pairs, Finset.mem_filter]`.
+-/
 theorem mem_pairs {a b k : ℕ} {p : ℕ × ℕ} : p ∈ pairs a b k ↔ p.1 + p.2 = k ∧ p.1 ≤ a ∧ p.2 ≤ b := by
   simp [pairs, Finset.mem_filter]
 
+/- English proof (translation)
+Introduce `i j` and use `(Ov E w).add_mem (hM i j) (hN i j)`.
+-/
 theorem IsInt.add {E : Type} [Field E] [NumberField E] {w : HeightOneSpectrum (𝓞 E)} {r s : Type}
     {M N : Matrix r s (w.adicCompletion E)} (hM : IsInt w M) (hN : IsInt w N) : IsInt w (M + N) :=
   fun i j => (Ov E w).add_mem (hM i j) (hN i j)
 
+/- English proof (translation)
+Introduce `i j` and use `(Ov E w).neg_mem (hM i j)`.
+-/
 theorem IsInt.neg {E : Type} [Field E] [NumberField E] {w : HeightOneSpectrum (𝓞 E)} {r s : Type}
     {M : Matrix r s (w.adicCompletion E)} (hM : IsInt w M) : IsInt w (-M) :=
   fun i j => (Ov E w).neg_mem (hM i j)
 
+/- English proof (translation)
+Introduce `_ _` and use `(Ov E w).zero_mem`.
+-/
 theorem isInt_zero {E : Type} [Field E] [NumberField E] (w : HeightOneSpectrum (𝓞 E)) (r s : Type) :
     IsInt w (0 : Matrix r s (w.adicCompletion E)) :=
   fun _ _ => (Ov E w).zero_mem

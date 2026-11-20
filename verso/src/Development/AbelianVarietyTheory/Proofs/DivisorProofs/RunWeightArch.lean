@@ -31,6 +31,9 @@ section Model
 
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {r : ℕ}
 
+/- English proof (translation)
+Substitute `hX` using the available equality. Establish `e1 : L = L'` using `funext fun τ => funext fun a => hL τ.1 τ.2 τ.2 a`. Establish `e2 : Fp = Fp'` using `funext fun τ => funext fun a => hF τ.1 τ.2 τ.2 a`. Substitute `e1 e2` using the available equality. Conclude with `h`.
+-/
 theorem archOne_congr {X X' : Data E r} (hX : X = X') {L Fp : Wt X.Ψ r} {L' Fp' : Wt X'.Ψ r} {T : ℕ}
     (hL : ∀ τ (h1 : τ ∈ X.Ψ) (h2 : τ ∈ X'.Ψ) a, L ⟨τ, h1⟩ a = L' ⟨τ, h2⟩ a)
     (hF : ∀ τ (h1 : τ ∈ X.Ψ) (h2 : τ ∈ X'.Ψ) a, Fp ⟨τ, h1⟩ a = Fp' ⟨τ, h2⟩ a) (h : ArchOne X' L' Fp' T) :
@@ -41,6 +44,15 @@ theorem archOne_congr {X X' : Data E r} (hX : X = X') {L Fp : Wt X.Ψ r} {L' Fp'
   subst e1 e2
   exact h
 
+/- English proof (translation)
+Take `⟨c0⟩` from `‹Nonempty C›`. Establish `hΨ : ∀ c, (X (e c)).Ψ = M.Ψ` using `fun c => (congrArg Data.Ψ (hX c)).symm.trans (M.comp_Ψ c)`. Establish `hp : ∀ c, (X (e c)).p0 = M.p0` using `fun c => (congrArg Data.p0 (hX c)).symm.trans (M.comp_basePoint c)`. Establish `mem : ∀ c τ, τ ∈ M.Ψ → τ ∈ (X (e c)).Ψ` using `fun c τ h => (hΨ c).symm ▸ h`. Set `L : Wt M.Ψ r` to `fun τ a => lL (e c0) ⟨τ.1, mem c0 τ.1 τ.2⟩ a`.
+
+Set `Fp : Wt M.Ψ r` to `fun τ a => lF (e c0) ⟨τ.1, mem c0 τ.1 τ.2⟩ a`. Establish `hW0` using `hW (e c0)`. Rewrite `hW0` using `[hp c0, hn]`. Take `⟨w1, w2, w3, w4⟩` from `hW0`. Use `⟨L, Fp, ?_, fun τ a b h1 h2 => w1 ⟨τ.1, mem c0 τ.1 τ.2⟩ a b h1 h2, fun τ a b h1 h2 => w2 ⟨τ.1, mem c0 τ.1 τ.2⟩ a b h1 h2, fun τ a b h1 h2 => w3 ⟨τ.1, mem c0 τ.1 τ.2⟩ a b h1 h2, fun τ a b h1 h2 => w4 ⟨τ.1, mem c0 τ.1 τ.2⟩ a b h1 h2, fun c => ?_⟩` and prove the remaining obligations.
+
+Use function extensionality and compare the values at `τ a`. Rewrite using `[hka c0 τ.1 τ.2 (mem c0 τ.1 τ.2) a, hsum]`. Both sides reduce to the same expression. Use `archOne_congr (hX c) (fun τ h1 h2 a => ?_) (fun τ h1 h2 a => ?_) (hA (e c))` and prove the remaining obligations. Conclude with `hLi (e c0) (e c) τ _ h2 a`.
+
+Conclude with `hFi (e c0) (e c) τ _ h2 a`.
+-/
 theorem archOn_of_comps {U C K : Type} [Group U] [MulAction U C] [Nonempty C] (M : TwoLevels E r U C) (ka : Wt M.Ψ r)
     (X : K → Data E r) (e : C ≃ K) (hX : ∀ c, (M.comp c).toData = X (e c)) (lK lL lF : ∀ k, Wt (X k).Ψ r) (T n : ℕ)
     (hn : n = M.dimY)
@@ -74,6 +86,11 @@ end Model
 
 section Run
 
+/- English proof (translation)
+Establish `hq1 : q ≤ (b : ℕ)` using `by omega`. Establish `hq2 : ¬ q ≤ (a : ℕ)` using `by omega`. Establish `e1 : (a : ℤ) = 0` using `by omega`. Establish `e2 : (b : ℤ) = r - 1` using `by omega`. Establish `e3 : (r : ℤ) = p + q` using `by omega`.
+
+Rewrite using `[hL a, hL b, hF a, hF b, e1, e2]`. Simplify using `only [if_pos hq1, if_neg hq2]`. Rewrite using `[show (b : ℕ) - q = p - 1 by omega, show q - 1 - (a : ℕ) = q - 1 by omega]`. Use the polynomial consequences of the given equalities and inequalities.
+-/
 theorem row_pair {r p q : ℕ} (hpq : p + q = r) (Dm nL nF : ℤ) (hnF : 0 ≤ nF)
     (LP LM FP FM : ℕ → ℤ) (L F : Fin r → ℤ)
     (hL : ∀ a : Fin r, L a = if q ≤ (a : ℕ) then LP (a - q) + nL else -LM (q - 1 - a) - nL)
@@ -93,6 +110,9 @@ theorem row_pair {r p q : ℕ} (hpq : p + q = r) (Dm nL nF : ℤ) (hnF : 0 ≤ n
   rw [show (b : ℕ) - q = p - 1 by omega, show q - 1 - (a : ℕ) = q - 1 by omega]
   nlinarith
 
+/- English proof (translation)
+Use `show F τ c - kLog Ψ r τ c - ((n + 2) • L τ c) = _`. Rewrite using `[nsmul_eq_mul]`. Simplify using `only [kLog]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem expand_weight {E : Type} [Field E] [NumberField E] [IsCMField E] {r : ℕ} {Ψ : Finset (E →+* ℂ)} (F L : Wt Ψ r)
     (n : ℕ) (τ : Ψ) (c : Fin r) :
     (F - kLog Ψ r - (n + 2) • L) τ c = F τ c - (2 * (c : ℤ) - ((r : ℤ) - 1)) - ((n : ℤ) + 2) * L τ c := by
@@ -104,6 +124,29 @@ theorem expand_weight {E : Type} [Field E] [NumberField E] [IsCMField E] {r : �
 
 set_option maxHeartbeats 1000000 in
 
+/- English proof (translation)
+Take `⟨-, hS, -, -, -⟩` from `hP`. Take `⟨-, g1, g2, h4, -, h6, h7, -, -, -, -, -, -, -, hL, hF, -, -, -, h40, h21, -⟩` from `hS`. Take `⟨-, -, -, -, -, hp0, -, tt, hla⟩` from `GlobalTheory.Shares.WtDic.weights_dictionary D T h j hj k`. Establish `hk` using `D.R.m_add_three_le_k`. Establish `hj1` using `hj.1`.
+
+Establish `hp : 0 < (D.R.sigW j).1` using `by show 0 < D.R.k + j - 1; omega`. Establish `hq : 0 < (D.R.sigW j).2` using `by show 0 < D.R.m - j; omega`. Establish `hpq : (D.R.sigW j).1 + (D.R.sigW j).2 = D.R.r` using `by show D.R.k + j - 1 + (D.R.m - j) = D.R.k + D.R.m - 1; omega`. Establish `hTp : ((Tp D j Tn : ℕ) : ℤ) = (Tn : ℤ) + (WeightFamilies.dimY D j : ℤ) + 2` using `by unfold Tp; push_cast; ring`. Establish `h40' : 40 * ((WeightFamilies.dimY D j : ℤ) + 2) ≤ Tn` using `by exact_mod_cast h40`.
+
+Establish `h21' : ((WeightFamilies.dimY D j : ℤ) + 2) * nW + 2 * D.R.r ≤ Tn` using `by exact_mod_cast h21`. Establish `hn : (nW : ℤ) = 2 * ((wL.n / 2 : ℕ) : ℤ)`. Use `hL.1` as an intermediate fact. Take `⟨c, hc⟩` from `wL.n_even`. Use linear arithmetic over natural numbers and integers.
+
+Establish `key` using `fun τ : ((T.U j T.σ₀).X k).Ψ => by`. Establish `bP` using `GlobalTheory.RunWeightDom.block hp (ka.aP (tt τ)) (wL.aP (tt τ)) (wF.aP (tt τ)) Tn (WeightFamilies.dimY D j) D.R.r (((WeightFamilies.dimY D j : ℤ) + 2) * nW + 2 * D.R.r) (Int.natCast_nonneg _) (Int.natCast_nonneg _) h40' h21' (fun i hi => by have := g1 (tt τ) i hi; push_cast at t …`. Establish `h1 : 2 * (Tn : ℝ) ^ 2 ≤ (ka.aP (tt τ) i : ℝ)` using `by have := h6 (tt τ) i hi; linarith`. Conclude with `h1)` after adjusting the coercions. Use the proof step `(fun i => by have := hL.2.1 (tt τ) i; rwa [hTp, sub_sub] at this) (hF.2.1 (tt τ))`.
+
+Establish `bM` using `GlobalTheory.RunWeightDom.block hq (ka.aM (tt τ)) (wL.aM (tt τ)) (wF.aM (tt τ)) Tn (WeightFamilies.dimY D j) D.R.r 0 (Int.natCast_nonneg _) (Int.natCast_nonneg _) h40' (Int.natCast_nonneg _) (fun i hi => by have := g2 (tt τ) i hi; push_cast at this; rwa [hTp] at this) (fun i hi = …`. Establish `h1 : 2 * (Tn : ℝ) ^ 2 ≤ (ka.aM (tt τ) i : ℝ)` using `by have := h7 (tt τ) i hi; linarith`. Conclude with `h1)` after adjusting the coercions. Use the proof step `(fun i => by have := hL.2.2 (tt τ) i; rwa [hTp, ← sub_zero (ka.aM (tt τ) i : ℤ)] at this) (hF.2.2 (tt τ))`. Rewrite `bP` using `[hn]`.
+
+Conclude with `And.intro (GlobalTheory.RunWeightDom.row hpq Tn (WeightFamilies.dimY D j) ((wL.n / 2 : ℕ) : ℤ) ((wF.n / 2 : ℕ) : ℤ) (Int.natCast_nonneg _) (Int.natCast_nonneg _) _ _ _ _ (laR T j wL k τ) (laR T j wF k τ) (Int.natCast_nonneg _) (fun a => by rw [hla, hp0]) (fun a => by rw [hla, hp0 …`. Rewrite `key`, `hq` using `[← hp0]`. Establish `hq' : ((T.U j T.σ₀).X k).p0 < D.R.r` using `by omega`. Establish `e : ∀ (τ : ((T.U j T.σ₀).X k).Ψ) (c : Fin D.R.r), (laR T j wF k - kLog ((T.U j T.σ₀).X k).Ψ D.R.r - (WeightFamilies.dimY D j + 2) • laR T j wL k) τ c = laR T j wF k τ c - (2 * (c : ℤ) - ((D.R.r : ℤ) - 1)) - ((WeightFamilies.dimY D j : ℤ) + 2) * laR T j wL k τ c`. Introduce `τ c`.
+
+Conclude with `expand_weight _ _ _ τ c`. Use `⟨fun τ a b hab hb => ?_, fun τ a b ha hb => ?_, fun τ a b hab hb => ?_, fun τ a b ha hb => ?_⟩` and prove the remaining obligations. Take `⟨⟨k1, k2, -, -, -⟩, -⟩` from `key τ`. Establish `hab' : (a : ℕ) < b` using `by omega`. Distinguish the cases in `hc : (b : ℕ) < ((T.U j T.σ₀).X k).p0`.
+
+Use `k1 a b hab' hc` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Use `k2 a b (by omega) hab'; omega` as an intermediate fact. Take `⟨⟨-, -, -, k4, -⟩, -⟩` from `key τ`. Use `k4 a b (by omega) (by omega)` as an intermediate fact.
+
+Establish `h' : (19 : ℝ) * Tn ≤ 10 * ((laR T j wL k τ b - laR T j wL k τ a : ℤ) : ℝ)` using `by exact_mod_cast this`. Combine the linear equalities and inequalities to obtain the conclusion. Take `⟨⟨-, -, k3, -, -⟩, -⟩` from `key τ`. Use `k3 a b hab hb` as an intermediate fact. Rewrite using `[e τ a, e τ b]`.
+
+Combine the linear equalities and inequalities to obtain the conclusion. Take `⟨-, k5⟩` from `key τ`. Use `k5 a b ha hb hp hq` as an intermediate fact. Rewrite using `[e τ a, e τ b]`. Establish `h1 : (1 : ℤ) ≤ (laR T j wF k τ b - (2 * (b : ℤ) - ((D.R.r : ℤ) - 1)) - ((WeightFamilies.dimY D j : ℤ) + 2) * laR T j wL k τ b) - (laR T j wF k τ a - (2 * (a : ℤ) - ((D.R.r : ℤ) - 1)) - ((WeightFamilies.dimY D j : ℤ) + 2) * laR T j wL k τ a)` using `this`.
+
+Conclude with `h1` after adjusting the coercions.
+-/
 theorem run_weight_arch (D : D7) (T : Top D) (h : LawsP T) (j : ℕ) (hj : InR D j) (large₂ : SizeData₂ D) (H : KHyp)
     (C2 A2 CR CT : ℝ) (ka wL wF : WeightFamilies.Wt D j) (Tn nP nW : ℕ) (h0 : ℝ)
     (hP : FamilyHypotheses.HypPage large₂ (recPJ h j hj) H C2 A2 CR CT ka wL wF Tn nP nW h0) (hjm : j < D.R.m)
@@ -180,6 +223,11 @@ theorem run_weight_arch (D : D7) (T : Top D) (h : LawsP T) (j : ℕ) (hj : InR D
       (laR T j wF k τ a - (2 * (a : ℤ) - ((D.R.r : ℤ) - 1)) - ((WeightFamilies.dimY D j : ℤ) + 2) * laR T j wL k τ a) := this
     exact_mod_cast h1
 
+/- English proof (translation)
+Take `⟨G, hG⟩` from `GlobalTheory.RunJoin.exists_genOK D T h hinj EX p j hj large₂ H C2 A2 CT ka wL wF Tn nP nW h0 hpar.orient hpg`. Take `⟨i, et, he⟩` from `GlobalTheory.EtaBoundForm.exists_etaOK D T h j hj large₂ H C2 A2 CT ka wL wF Tn nP nW h0 hpg hjm`. Set `G'` to `FamilyHypotheses.refill G G.del G.th' G.rz G.alz G.th0 G.zc G.rq G.th i et`. Establish `hG' : GenOK h j hj large₂ G' _ _` using `genOK_refill h j hj large₂ G _ _ hG G.del G.th' G.rz G.alz G.th0 G.zc G.rq G.th i et`. Take `⟨A⟩` from `GlobalTheory.RunJoin.archAt_of_run D T h j hj large₂ H C2 A2 CT ka wL wF Tn nP nW h0 EX p _ nus hpar hpg hC hjm G' hG' he`.
+
+Take `⟨t, -, ⟨Fl⟩⟩` from `GlobalTheory.GenericFlat.exists_generic_flatAt D T h j hj _ wL wF G'.w Tn _ A`. Introduce `k`. Conclude with `⟨A.Xa k, A.hL k, A.hF k, A.hT k, A.mar k, ⟨Fl.Fl k⟩⟩`.
+-/
 theorem archOne_of_run (D : D7) (T : Top D) (h : LawsP T) (hinj : Function.Injective D.what₂.OtoLL) (EX : ErrX D)
     (p j : ℕ) (hj : InR D j) (large₂ : SizeData₂ D) (H : KHyp) (C2 A2 CT : ℝ) (ka wL wF : WeightFamilies.Wt D j) (Tn nP nW : ℕ) (h0 : ℝ)
     (nus : HeightOneSpectrum (𝓞 (recB h.toLawsCore).KO) → ℝ)
@@ -207,6 +255,31 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 set_option maxHeartbeats 4000000 in
 set_option synthInstance.maxHeartbeats 400000 in
 
+/- English proof (translation)
+Take `⟨x₀, hrun⟩` from `GlobalTheory.FinalJoin.runHolds_of_parOK`. Take `⟨CK, hCK⟩` from `GlobalTheory.FinalJoin.RecordRun.exists_pageRun_record_sub_four`. Take `⟨x₂, hpg⟩` from `GlobalTheory.FinalJoin.pageOK_of_pageRun_beyond (fun _ _ => 0)`. Use `Formalism.MainNotions.Closed.imp (GlobalTheory.T.runNumericalConditions_hold_along_family (max ((10 : ℝ) ^ 60) (max (x₀ 20 CK) (x₂ 20 CK)))) ?_` and prove the remaining obligations. Introduce `eps Fm CH _ hx0`.
+
+Take `⟨x0, hx0⟩` from `hx0`. Use `⟨x0, fun x hx hle ι p _ hmore r hr hown i C _ _ M ka hRM => ?_⟩` and prove the remaining obligations. Take `⟨⟨S, hCnW, hg, hC, hCZ, hxl⟩, -⟩` from `hx0 x hx hle ι`. Take `⟨-, hcore, -⟩` from `hmore`. Take `⟨v, e, hXc, hkaC, -⟩` from `hRM`.
+
+Establish `hl` using `hr.laws v`. Establish `hj : InR (Fm.D x ι) ((i : ℕ) + 1)` using `⟨Nat.le_add_left _ _, i.2⟩`. Establish `hinj` using `hcore.inj`. Establish `hpar : ∀ j, InR (Fm.D x ι) j → ParOK (r.used v).full.toTop (Fm.ex x hx ι).errX (ownAt (Fm.D x ι) v) j` using `GlobalTheory.FinalJoin2.liftIndexParameterConditions_of_coreAndShortLaws _ p.T _ _ _ hl.j hl.p hl.sh rfl hcore.canon (hcore.fieldAt v) hcore.halfEX (fun j hj n => ⟨hl.lvA j hj n, hown v j n hj⟩)`. Establish `hO` using `(GlobalTheory.FinalJoin2.fieldSmall_iff_opo (Fm.D x ι) _ hl.p (Fm.L x ι)).1 hcore.small`.
+
+Establish `hP` using `hCK (Fm.D x ι) (Fm.L x ι) _ (Fm.parT x hx ι) (Fm.ex x hx ι).kap_def S hCnW hg ((le_max_left _ _).trans hxl) hC hCZ _ _ _ (recPJ hl.p ((i : ℕ) + 1) hj) hj hO`. Establish `hHC` using `(hrun (Fm.D x ι) _ hl.p hinj _ _ hpar ((i : ℕ) + 1) hj (Fm.L x ι) _ _ _ _ _ _ _ _ _ _ _ hP (((le_max_left _ _).trans (le_max_right _ _)).trans hxl)).2.1`. Establish `hOK` using `(hpg (Fm.D x ι) _ _ ((i : ℕ) + 1) (recPJ hl.p ((i : ℕ) + 1) hj) (Fm.L x ι) _ _ _ _ _ _ _ _ _ _ _ hj hP (((le_max_right _ _).trans (le_max_right _ _)).trans hxl)).1`. Establish `hwd` using `fun k => GlobalTheory.Shares.WtDic.weights_dictionary (Fm.D x ι) (r.used v).full.toTop hl.p ((i : ℕ) + 1) hj k`. Use `haveI : Nonempty C := ⟨e.symm ((r.used v).full.toTop.dict ((i : ℕ) + 1) (r.used v).full.toTop.σ₀ 1).1⟩`.
+
+Take `⟨c0⟩` from `‹Nonempty C›`. Establish `hp0M : M.p0 = ((Fm.D x ι).R.sigW ((i : ℕ) + 1)).2` using `(M.comp_basePoint c0).symm.trans ((congrArg Data.p0 (hXc c0)).trans (hwd (e c0)).2.2.2.2.2.1)`. Establish `hq : ((Fm.D x ι).R.sigW ((i : ℕ) + 1)).2 = (Fm.D x ι).R.m - ((i : ℕ) + 1)` using `rfl`. Establish `hr : (Fm.D x ι).R.r = (Fm.D x ι).R.k + (Fm.D x ι).R.m - 1` using `rfl`. Establish `hk` using `(Fm.D x ι).R.m_add_three_le_k`.
+
+Distinguish the cases in `hjm : (i : ℕ) + 1 < (Fm.D x ι).R.m`. Use `swap`. Use `left`. Use `left`. Rewrite using `[hp0M, hq]`.
+
+Use linear arithmetic over natural numbers and integers. Use `right`. Use `⟨by rw [hp0M, hq]; omega, by rw [hp0M, hq, hr]; omega, ?_⟩` and prove the remaining obligations. Establish `hκ : p.κ i = kaR (Fm.parT x hx ι) (Fm.ex x hx ι).kap_def ((i : ℕ) + 1)` using `GlobalTheory.BigOn.eq_kaR _ _ i (p.κ i) (fun τ => ((fw2 p).kap i τ).1) (fun τ => ((fw2 p).kap i τ).2.1) ((fw2 p).kap i (GlobalTheory.RunDepth.plOf _ (false, Classical.arbitrary _))).2.2`. Establish `hΨ : M.Ψ = (((r.used v).full.U ((i : ℕ) + 1) (r.used v).full.σ₀).X (e c0)).Ψ` using `(M.comp_Ψ c0).symm.trans (congrArg Data.Ψ (hXc c0))`.
+
+Establish `hcard : M.Ψ.card = (Fm.D x ι).R.f` using `by rw [hΨ]; exact (hwd (e c0)).2.2.2.2.2.2.1`. Establish `hr1 : 1 ≤ (Fm.D x ι).R.r` using `by rw [hr]; omega`. Establish `hdim : WeightFamilies.dimY (Fm.D x ι) ((i : ℕ) + 1) = M.dimY`. Unfold `TwoLevels.dimY`. Rewrite using `[hcard]`.
+
+Establish `h2` using `GlobalTheory.ArchInputs.two_mul_dimY _ hj`. Establish `h3 : ((2 * WeightFamilies.dimY (Fm.D x ι) ((i : ℕ) + 1) : ℕ) : ℝ) = (((Fm.D x ι).R.f * ((Fm.D x ι).R.r * ((Fm.D x ι).R.r - 1)) : ℕ) : ℝ)`. Move the coercions through the operations in `[Nat.cast_sub hr1]`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `h4 : 2 * WeightFamilies.dimY (Fm.D x ι) ((i : ℕ) + 1) = (Fm.D x ι).R.f * ((Fm.D x ι).R.r * ((Fm.D x ι).R.r - 1))` using `by exact_mod_cast h3`.
+
+Take `⟨t, ht⟩` from `Nat.even_mul_pred_self (Fm.D x ι).R.r`. Rewrite `h4`, the goal using `[ht]`. Rewrite using `[show (t + t) / 2 = t by omega]`. Rewrite `h4` using `[mul_add]`. Combine the linear equalities and inequalities to obtain the conclusion.
+
+Use `archOn_of_comps M ka (fun k => ((r.used v).full.U ((i : ℕ) + 1) (r.used v).full.σ₀).X k) e hXc (fun k => laR (r.used v).full.toTop ((i : ℕ) + 1) (p.κ i) k) (fun k => laR (r.used v).full.toTop ((i : ℕ) + 1) (lR (Fm.parT x hx ι) (Fm.ex x hx ι).kap_def ((i : ℕ) + 1)) k) (fun k => la …` and prove the remaining obligations. Use `show laR _ _ (p.κ i) k = _`. Rewrite using `[hκ, ← (GlobalTheory.SharesDefinite.weight_and_degree hOK.hyp).1]`. Conclude with `(hwd k).2.2.1 _ _ _`. Simplify using `only [GlobalTheory.Shares.laR, Formalism.L2.Pj.laU, (hwd k).2.2.2.2.2.1, (hwd k').2.2.2.2.2.1]`.
+
+Simplify using `only [GlobalTheory.Shares.laR, Formalism.L2.Pj.laU, (hwd k).2.2.2.2.2.1, (hwd k').2.2.2.2.2.1]`.
+-/
 theorem runModel_arch : AtRuns fun Fm x hx ι p r h => ∀ (i : Fin (Fm.D x ι).R.m) (C : Type) [Finite C]
     [MulAction p.P.Gp C] (M : TwoLevels (Fm.D x ι).host.E (Fm.D x ι).R.r p.P.Gp C) (ka : Wt M.Ψ (Fm.D x ι).R.r),
     RunModel p r h i M ka → (M.p0 = 0 ∨ M.p0 = (Fm.D x ι).R.r) ∨

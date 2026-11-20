@@ -5,11 +5,26 @@ open NumberField IsDedekindDomain Formalism Formalism.ConjugateSelfDual Reciproc
 
 namespace UpperTheory.GalS
 
+/- English proof (translation)
+The claim follows from `GlobalTheory.T.local_global_compatibility_at_types D i r hG5 hHG hr (GlobalTheory.T.tame_descent_conditions_every_localisation D i).2 (GlobalTheory.T.tame_descent_conditions_every_localisation D i).1 fun w hw hwg => ⟨hLgc i r hr w hw hwg, hDZ i w hw hwg⟩`.
+-/
 theorem sq_old (D : D7) (i : D.nd.Loc) (r : D.nd.X i → (GE D.nd →* GL (Fin D.R.nV) (D.nd.O i))) (hG5 : SumRepresentations.ConclusionG5 D)
     (hHG : HG D.nd D.naut i) (hr : GoodR D.nd i r) (hLgc : GlobalTheory.HubX.LgcG D) (hDZ : GlobalTheory.HubX.DepthZeroG D) : PairedCharacterCondition.SetSQ i r :=
   GlobalTheory.T.local_global_compatibility_at_types D i r hG5 hHG hr (GlobalTheory.T.tame_descent_conditions_every_localisation D i).2 (GlobalTheory.T.tame_descent_conditions_every_localisation D i).1 fun w hw hwg => ⟨hLgc i r hr w hw hwg, hDZ i w hw hwg⟩
+/- English proof (translation)
+Introduce `_ _ _ _ _` and use `trivial`.
+-/
 theorem noLgc : ∀ D : D7, SumRepresentations.tie0 D → SumRepresentations.adm1 D → SumRepresentations.adm2 D → SumRepresentations.adm5 D → NoCondition D := fun _ _ _ _ _ => trivial
 
+/- English proof (translation)
+Introduce `D L HW R X hX P hJ hadm hG5 hLgc hDZ CT hCT`. Establish `heta` using `L.etaSz_pos`. Establish `hSc` using `L.Sc_pos`. Establish `hadm' : L.Sc + L.etaSz + D.R.t + 2 ≤ L.sc.b` using `hadm`. Establish `hb : 1 ≤ L.sc.b` using `by linarith`.
+
+Establish `ht : (D.R.t : ℝ) ≤ L.sc.b` using `by linarith`. Take `⟨hnum1, hnum2, hnum3⟩` from `GlobalTheory.typePrime_exceeds_constant D L P (by linarith) hb CT hCT`. Take `⟨hJa, hJb, hJc, -, hJe, -, -⟩` from `hJ`. Establish `hJaAt : AdmissibleParameterJ.hodgeTateJumpsAtModulesForSign D (GlobalTheory.HubX.epJ D)`. Rewrite using `[GlobalTheory.HubX.epJ_eq hJa]`.
+
+Conclude with `hJa.choose_spec`. Establish `hgood : ∀ i, GoodR D.nd i (X.r i)` using `hX.fam.good`. Establish `hpt` using `GlobalTheory.T.pointConditions_of_pointGaloisRepFamilies D X.r X.ρ hX.fam`. Rewrite using `[hX.eta]`. Use `⟨fun i k _ hk hHG => ⟨hgood i, fun π hπ => ⟨(hpt i π hπ).1, (hpt i π hπ).2.1⟩, ?_⟩, hnum2⟩` and prove the remaining obligations.
+
+Take `⟨sg, U, hsg, hU⟩` from `GlobalTheory.T.signs_and_jump_sets_at_type_prime D L (GlobalTheory.HubX.epJ D) hJaAt hJb hJc hJe ht i k (X.r i) hk (hgood i)`. Establish `hSQ` using `sq_old D i (X.r i) hG5 hHG (hgood i) hLgc hDZ`. Use `⟨⌊3 * L.sc.b⌋₊ + 2, 0, sg, U, hnum1, hnum3 k, hsg, hU, hSQ⟩` and prove the remaining obligations.
+-/
 theorem hubX_typePrime_conditions : ∀ (D : D7) (L : SizeData₂ D) (HW : HWOf D.loc) (R : KillingConditions.RowK) (X : KillingConditions.HubData D), GlobalTheory.HubX.Canon L HW R X → ParameterChoice' D L → AdmissibleParameterJ.JumpConditions L → EmbeddingTypeJumps.ParametersPolynomiallyBounded L → SumRepresentations.ConclusionG5 D → GlobalTheory.HubX.LgcG D → GlobalTheory.HubX.DepthZeroG D → ∀ CT : ℕ, (CT : ℝ) ≤ L.sc.b → (∀ (i : D.nd.Loc) (k : Fin 2), TwistedPlaces.TwLoc D i → D.nd.l i = D.host.g k → HG D.nd D.naut i → GoodR D.nd i (X.r i) ∧ (∀ π ∈ D.nd.Z i, IsRhoOf D.nd i π (X.ρ i π) ∧ IsSSRep (rhoChiK D i (X.ρ i π))) ∧ ∃ (s S : ℕ) (sg : HeightOneSpectrum (𝓞 D.host.E) → Bool) (U : HeightOneSpectrum (𝓞 D.host.E) → Finset ℤ), X.eta + D.R.t + 1 < s ∧ CT * ((s + S) * (D.R.nV + 1) ^ 2 + (D.R.nV + 1) ^ 3) < D.host.g k ∧ PairedCharacterCondition.SignOK i sg ∧ PairedCharacterCondition.HostJ i (X.r i) X.eta s S sg U ∧ PairedCharacterCondition.SetSQ i (X.r i)) ∧ (X.eta : ℝ) ≤ 2 * L.etaSz := by
   intro D L HW R X hX P hJ hadm hG5 hLgc hDZ CT hCT
   have heta := L.etaSz_pos

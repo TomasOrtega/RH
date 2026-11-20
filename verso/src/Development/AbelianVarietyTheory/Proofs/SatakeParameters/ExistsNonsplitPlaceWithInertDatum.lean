@@ -15,11 +15,25 @@ namespace GlobalTheory.InertDatumExist
 
 open scoped TensorProduct
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨inferInstance, inferInstance, Algebra.IsQuadraticExtension.finrank_eq_two _ _, fun τ x => IsCMField.complexEmbedding_complexConj E τ x⟩`.
+-/
 theorem isCMExt (E : Type) [Field E] [NumberField E] [IsCMField E] :
     Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.IsCMExt (maximalRealSubfield E) E (IsCMField.complexConj E).toAlgHom :=
   ⟨inferInstance, inferInstance, Algebra.IsQuadraticExtension.finrank_eq_two _ _,
     fun τ x => IsCMField.complexEmbedding_complexConj E τ x⟩
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce `hx`. Establish `hle : Formalism.UG.tensInt (F` using `F) (v.adicCompletion F) (Formalism.UG.intOE E) (Formalism.UG.Ov F v) ≤ (GlobalTheory.AdelicU.intLoc F E v).comap (Algebra.TensorProduct.comm F E (v.adicCompletion F)).toRingHom := by`. Use `Subring.closure_le.2 ?_` and prove the remaining obligations. Introduce and unpack `_ (⟨⟨_, a, rfl⟩, rfl⟩ | ⟨⟨y, hy⟩, rfl⟩)`.
+
+Use `show Algebra.TensorProduct.comm F E _ (((a : E)) ⊗ₜ[F] (1 : v.adicCompletion F)) ∈ GlobalTheory.AdelicU.intLoc F E v`. Rewrite using `[Algebra.TensorProduct.comm_tmul]`. Conclude with `GlobalTheory.AdelicU.tmul_mem_intLoc (one_mem _) a`. Use `show Algebra.TensorProduct.comm F E _ ((1 : E) ⊗ₜ[F] y) ∈ GlobalTheory.AdelicU.intLoc F E v`. Rewrite using `[Algebra.TensorProduct.comm_tmul]`.
+
+Use `GlobalTheory.AdelicU.tmul_mem_intLoc (E := E) hy (1 : 𝓞 E)` as an intermediate fact. Simplify using `using this`. Conclude with `hle hx`. Introduce `hx`. Establish `h` using `GlobalTheory.AdelicU.intLoc_induction (p := fun y => (Algebra.TensorProduct.comm F E (v.adicCompletion F)).symm y ∈ Formalism.UG.tensInt (F := F) (v.adicCompletion F) (Formalism.UG.intOE E) (Formalism.UG.Ov F v)) (fun a ha z => by`.
+
+Establish `e1 : (Algebra.TensorProduct.comm F E (v.adicCompletion F)).symm (a ⊗ₜ[F] (z : E)) = ((z : E) ⊗ₜ[F] (1 : v.adicCompletion F)) * ((1 : E) ⊗ₜ[F] a)`. Rewrite using `[Algebra.TensorProduct.tmul_mul_tmul, mul_one, one_mul]`. Both sides reduce to the same expression. Rewrite using `[e1]`. Conclude with `mul_mem (Subring.subset_closure (Or.inl ⟨⟨(z : E), z, rfl⟩, rfl⟩)) (Subring.subset_closure (Or.inr ⟨⟨a, ha⟩, rfl⟩)))`.
+
+Use the proof step `(by simp) (fun y z hy hz => by rw [map_add]; exact add_mem hy hz)`. Use the proof step `(fun y hy => by rw [map_neg]; exact neg_mem hy) hx`. Simplify using `using h`.
+-/
 theorem mem_tensInt_iff {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
     (v : HeightOneSpectrum (𝓞 F)) (x : E ⊗[F] v.adicCompletion F) :
     x ∈ Formalism.UG.tensInt (F := F) (v.adicCompletion F) (Formalism.UG.intOE E) (Formalism.UG.Ov F v) ↔
@@ -54,6 +68,25 @@ theorem mem_tensInt_iff {F E : Type} [Field F] [NumberField F] [Field E] [Number
       (fun y hy => by rw [map_neg]; exact neg_mem hy) hx
     simpa using h
 
+/- English proof (translation)
+Introduce `D n v hv`. Use `v.isMaximal` as an intermediate fact. Take `⟨Q, hQ, hQv⟩` from `Ideal.exists_maximal_ideal_liesOver_of_isIntegral (S := 𝓞 D.host.E) v.asIdeal`. Set `w : HeightOneSpectrum (𝓞 D.host.E)` to `⟨Q, hQ.isPrime, fun h0 => v.ne_bot (by`. Rewrite using `[hQv.over, h0]`.
+
+Conclude with `Ideal.comap_bot_of_injective _ (FaithfulSMul.algebraMap_injective _ _))⟩`. Establish `hov : NG.OverPl w v` using `hQv.over.symm`. Establish `hunder : w.under (𝓞 (maximalRealSubfield D.host.E)) = v` using `HeightOneSpectrum.ext hov`. Establish `key : ∀ x ∈ w.asIdeal, IsCMField.ringOfIntegersComplexConj D.host.E x ∈ w.asIdeal`. Introduce `x hx`.
+
+Assume the negation of the conclusion as `hc`. Take `⟨s, hs⟩` from `GlobalTheory.SplitConjPlace.exists_splitPlace w x hx hc`. Conclude with `hv s (hs.trans (HeightOneSpectrum.ext hov))`. Establish `hnsp : ¬ IsSplitPl D.host w`. Introduce and unpack `⟨x, hx, hy⟩`.
+
+Conclude with `hy _ (by rw [IsCMField.coe_ringOfIntegersComplexConj, GlobalTheory.SplitPlaceOver.host_conj_eq']) (key x hx)`. Establish `hnsa : ¬ GlobalTheory.UnitaryBC.IsSplitAt w`. Introduce and unpack `⟨u, hne, hu⟩`. Break down `GlobalTheory.SplitConjPlace.eq_or_eq_conjPlE w u (congrArg HeightOneSpectrum.asIdeal hu) with e | e` into its components or cases. Conclude with `hne e`.
+
+Apply `hne` to reduce the goal to its premises. Rewrite using `[e]`. Conclude with `(HeightOneSpectrum.ext (w.isMaximal.eq_of_le (GlobalTheory.SplitConjPlace.conjPlE w).isPrime.ne_top fun x hx => key x hx)).symm`. Establish `hw : Formalism.UG.IsInertAt (maximalRealSubfield D.host.E) D.host.E v w`. Establish `h` using `GlobalTheory.InertPlaceConj.isInertAt_of_not_split w (GlobalTheory.DefiniteBC.host_unramified D.host w) hnsa`.
+
+Rewrite `h` using `[hunder]`. Then use the resulting hypothesis. Take `⟨c, hc, -⟩` from `GlobalTheory.LFun.InertChart.existsUnique_isConjAt (IsCMField.complexConj D.host.E).toAlgHom hw hunder`. Take `⟨ϖ, hU⟩` from `GlobalTheory.LFun.InertChart.exists_isUnramInv (isCMExt D.host.E) hw hc`. Take `⟨k, hk, hke⟩` from `GlobalTheory.LFun.InertChart.exists_congr_antiJ (n := n) hU (B := 1) (one_mem _) (by simp [Formalism.UG.cT, Matrix.map_one])`. Establish `hO : Formalism.UG.Ov D.host.E w = Formalism.UG.intL (w.adicCompletion D.host.E)` using `Subring.ext fun _ => Iff.rfl`.
+
+Set `e` to `(Algebra.TensorProduct.comm (maximalRealSubfield D.host.E) D.host.E (v.adicCompletion (maximalRealSubfield D.host.E))).toRingEquiv.trans (GlobalTheory.LFun.InertChart.complEquiv hw hunder)`. Use `⟨w, hov, hnsp, ⟨⟨e, c, ϖ, k, ?_, hU, ?_, ?_, ?_⟩⟩⟩` and prove the remaining obligations. Introduce `x show GlobalTheory.LFun.toCompl hunder (Algebra.TensorProduct.comm _ _ _ (Formalism.UG.sigR (IsCMField.complexConj D.host.E).toAlgHom _ x)) = c (GlobalTheory.LFun.toCompl hunder (Algebra.TensorProduct.comm _ _ _ x))`. Rewrite using `[hc]`. Use `congr 1`.
+
+Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul a b => rfl`. Consider the case `add x y hx hy => simp only [map_add, hx, hy]`. Introduce `x`.
+
+Rewrite using `[mem_tensInt_iff, GlobalTheory.LFun.InertChart.mem_intLoc_iff hw hunder, hO]`. Conclude with `Iff.rfl`. Rewrite using `[← hO]`. Conclude with `hk`. Simplify using `using hke`.
+-/
 theorem exists_inertDatum : ∀ (D : D7) (n : ℕ) (v : HeightOneSpectrum (𝓞 (maximalRealSubfield D.host.E))),
     (∀ s : SplitPlace D.host.E, s.v ≠ v) → ∃ w : HeightOneSpectrum (𝓞 D.host.E), NG.OverPl w v ∧
       ¬ IsSplitPl D.host w ∧ Nonempty (InertDatum D.host.E n v w) := by

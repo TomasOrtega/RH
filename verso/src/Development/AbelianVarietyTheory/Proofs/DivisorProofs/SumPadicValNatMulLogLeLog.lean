@@ -5,6 +5,11 @@ open Formalism.BasicNotions Formalism.BasicNotions.DV Formalism.MainNotions Form
 
 namespace GlobalTheory.MeanTop
 
+/- English proof (translation)
+Rewrite using `[Real.log_nat_eq_sum_factorization, Finsupp.sum]`. Establish `h1 : ∑ p ∈ S, (padicValNat p n : ℝ) * Real.log p = ∑ p ∈ S, (n.factorization p : ℝ) * Real.log p` using `Finset.sum_congr rfl fun p hp => by rw [Nat.factorization_def n (hS p hp)]`. Rewrite using `[h1]`. Establish `h2 : ∑ p ∈ S ∪ n.factorization.support, (n.factorization p : ℝ) * Real.log p = ∑ p ∈ n.factorization.support, (n.factorization p : ℝ) * Real.log p`. Use `symm`.
+
+Use `Finset.sum_subset Finset.subset_union_right fun p _ hp => ?_` and prove the remaining obligations. Rewrite using `[Finsupp.notMem_support_iff.1 hp]`. Simplify using the standard rewrite rules. Rewrite using `[← h2]`. Conclude with `Finset.sum_le_sum_of_subset_of_nonneg Finset.subset_union_left fun p _ _ => mul_nonneg (Nat.cast_nonneg _) (Real.log_natCast_nonneg p)`.
+-/
 theorem sum_padicValNat_mul_log_le_log (n : ℕ) (S : Finset ℕ) (hS : ∀ p ∈ S, p.Prime) :
     ∑ p ∈ S, (padicValNat p n : ℝ) * Real.log p ≤ Real.log n := by
   classical
@@ -22,6 +27,15 @@ theorem sum_padicValNat_mul_log_le_log (n : ℕ) (S : Finset ℕ) (hS : ∀ p �
   exact Finset.sum_le_sum_of_subset_of_nonneg Finset.subset_union_left
     fun p _ _ => mul_nonneg (Nat.cast_nonneg _) (Real.log_natCast_nonneg p)
 
+/- English proof (translation)
+Introduce `D S hS`. Use `⟨fun p => div_nonneg (Nat.cast_nonneg _) (Nat.cast_nonneg _), ?_⟩` and prove the remaining obligations. Establish `hn : (0 : ℝ) < (Module.finrank ℚ D.host.E : ℝ)` using `by exact_mod_cast Module.finrank_pos`. Establish `hd : (0 : ℝ) < |(discr D.host.E : ℝ)|`. Rewrite using `[abs_pos]`.
+
+Conclude with `discr_ne_zero D.host.E` after adjusting the coercions. Establish `hc : ((WeightThresholdDefs.dE D : ℕ) : ℝ) = |(discr D.host.E : ℝ)|`. Rewrite using `[WeightThresholdDefs.dE, Nat.cast_natAbs, Int.cast_abs]`. Establish `hr : Real.log D.host.rdE = Real.log (WeightThresholdDefs.dE D : ℕ) / (Module.finrank ℚ D.host.E : ℝ)`. Rewrite using `[hc]`.
+
+Unfold `Host.rdE`. Rewrite using `[Real.log_rpow hd]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hr]`. Use `le_trans (le_of_eq ?_) (div_le_div_of_nonneg_right (sum_padicValNat_mul_log_le_log (WeightThresholdDefs.dE D) S hS) hn.le)` and prove the remaining obligations.
+
+Rewrite using `[Finset.sum_div]`. Use `Finset.sum_congr rfl fun p _ => ?_` and prove the remaining obligations. Rewrite using `[vDiff]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem sum_vDiff_mul_log_le :
     ∀ (D : D7) (S : Finset ℕ), (∀ p ∈ S, p.Prime) → (∀ p, 0 ≤ vDiff D p) ∧ ∑ p ∈ S, vDiff D p * Real.log p ≤ Real.log D.host.rdE := by
   intro D S hS

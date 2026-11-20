@@ -13,6 +13,9 @@ namespace GlobalTheory.Frames.SecLoc
 open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalCategory MonObj NumberField
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Geo.Tor Formalism.L2.Pj GlobalTheory.Frames
 
+/- English proof (translation)
+Take `rfl : V' = π ⁻¹ᵁ V` from `le_antisymm h h'`. Rewrite using `[← Scheme.Hom.app_eq_appLE]`. Use `haveI := π.isIso_app V hV`. Conclude with `ConcreteCategory.bijective_of_isIso (π.app V)`.
+-/
 theorem appLE_bijective {Y Z : Scheme.{0}} (π : Z ⟶ Y) [IsOpenImmersion π] {V : Y.Opens} (hV : V ≤ π.opensRange)
     {V' : Z.Opens} (h : V' ≤ π ⁻¹ᵁ V) (h' : π ⁻¹ᵁ V ≤ V') : Function.Bijective (π.appLE V V' h).hom := by
   obtain rfl : V' = π ⁻¹ᵁ V := le_antisymm h h'
@@ -20,6 +23,15 @@ theorem appLE_bijective {Y Z : Scheme.{0}} (π : Z ⟶ Y) [IsOpenImmersion π] {
   haveI := π.isIso_app V hV
   exact ConcreteCategory.bijective_of_isIso (π.app V)
 
+/- English proof (translation)
+Establish `k : ∀ i, U' i ≤ π ⁻¹ᵁ (π.opensRange ⊓ M.U i)` using `fun i z hz => ⟨⟨z, rfl⟩, h i hz⟩`. Establish `hb : ∀ i, Function.Bijective (π.appLE _ _ (k i)).hom` using `fun i => appLE_bijective π inf_le_left (k i) (fun z hz => h' i hz.2)`. Use `choose t ht using fun i => (hb i).2 (f i)`. Establish `hmem : t ∈ secOn M π.opensRange` using `fun i j => by`. Establish `k₂ : U' i ⊓ U' j ≤ π ⁻¹ᵁ (π.opensRange ⊓ M.U i ⊓ M.U j)` using `fun z hz => ⟨k i hz.1, h j hz.2⟩`.
+
+Apply `(appLE_bijective π (inf_le_left.trans inf_le_left) k₂ (fun z hz => ⟨h' i hz.1.2, h' j hz.2⟩)).1` to reduce the goal to its premises. Rewrite using `[map_mul, GlobalTheory.LB.appLE_resG, GlobalTheory.LB.appLE_resG, GlobalTheory.LB.appLE_resG]`. Use `hf i j` as an intermediate fact. Rewrite `this` using `[← ht i, ← ht j, GlobalTheory.LB.resG_appLE, GlobalTheory.LB.resG_appLE]`. Conclude with `this`.
+
+Take `⟨N, u, hu⟩` from `AbLaw.SecOn.exists_pow_smul_eq_restrict hM (V := ⊤) isCompact_univ isQuasiSeparated_univ a le_top ha (GlobalTheory.LB.mkSec t hmem)`. Use `⟨N, AbLaw.SecOn.topEquiv M u, fun i => ?_⟩` and prove the remaining obligations. Establish `e : resG Y inf_le_left (resG Y le_top a ^ N) * t i = resG Y (inf_le_inf_right _ le_top) (GlobalTheory.LB.coord u i)` using `congrArg (fun w => GlobalTheory.LB.coord w i) hu`. Establish `e₂` using `congrArg (π.appLE _ _ (k i)).hom e`. Rewrite `e₂` using `[map_mul, ht, map_pow, map_pow, GlobalTheory.LB.resG_resG, GlobalTheory.LB.appLE_resG, GlobalTheory.LB.appLE_resG]`.
+
+Conclude with `(GlobalTheory.LB.appLE_resG _ _ _ _).trans e₂.symm`.
+-/
 theorem exists_pow_mul_eq {Y Z : Scheme.{0}} [CompactSpace Y] [QuasiSeparatedSpace Y] (π : Z ⟶ Y)
     [IsOpenImmersion π] (a : Γ(Y, ⊤)) (ha : π.opensRange = Y.basicOpen a) {M : LB Y} (hM : M.IsLB)
     (U' : M.ι → Z.Opens) (h : ∀ i, U' i ≤ π ⁻¹ᵁ M.U i) (h' : ∀ i, π ⁻¹ᵁ M.U i ≤ U' i) (f : ∀ i, Γ(Z, U' i))
@@ -49,6 +61,9 @@ theorem exists_pow_mul_eq {Y Z : Scheme.{0}} [CompactSpace Y] [QuasiSeparatedSpa
   rw [map_mul, ht, map_pow, map_pow, GlobalTheory.LB.resG_resG, GlobalTheory.LB.appLE_resG, GlobalTheory.LB.appLE_resG] at e₂
   exact (GlobalTheory.LB.appLE_resG _ _ _ _).trans e₂.symm
 
+/- English proof (translation)
+Substitute `e` using the available equality. Take `⟨N, s, hs⟩` from `exists_pow_mul_eq π a ha (LB.isLB_linComb hL φ ε) (LB.LinComb L (fun k => π ≫ φ k) ε).U (fun _ _ hy => Set.mem_iInter.2 fun k => Set.mem_iInter.1 hy k) (fun _ _ hy => Set.mem_iInter.2 fun k => Set.mem_iInter.1 hy k) s'.f (fun i j => by`. Use `(s'.compat i j).trans (congrArg (· * _) ?_)` and prove the remaining obligations. Conclude with `congrArg Units.val (DVR.linComb_g_comp φ ε π i j))`. Conclude with `⟨N, s, fun j _ => hs j⟩`.
+-/
 theorem exists_pow_mul_eq_linComb {X Y Z : Scheme.{0}} [CompactSpace Y] [QuasiSeparatedSpace Y] (π : Z ⟶ Y)
     [IsOpenImmersion π] (a : Γ(Y, ⊤)) (ha : π.opensRange = Y.basicOpen a) {L : LB X} (hL : L.IsLB)
     {K : Type} [Fintype K] (φ : K → (Y ⟶ X)) (φ' : K → (Z ⟶ X)) (ε : K → ℤ) (e : (fun k => π ≫ φ k) = φ')
@@ -65,6 +80,15 @@ theorem exists_pow_mul_eq_linComb {X Y Z : Scheme.{0}} [CompactSpace Y] [QuasiSe
       exact congrArg Units.val (DVR.linComb_g_comp φ ε π i j))
   exact ⟨N, s, fun j _ => hs j⟩
 
+/- English proof (translation)
+Establish `e : Y.basicOpen (p.appTop.hom (toΓ S g)) = p ⁻¹ᵁ PrimeSpectrum.basicOpen g` using `(Scheme.preimage_basicOpen_top p _).symm.trans (congrArg (p ⁻¹ᵁ ·) (basicOpen_eq_of_affine (R := .of S) g))`. Rewrite using `[e]`. Use extensionality with `y`. Establish `r : Set.range (spMap (algebraMap S (Localization.Away g))) = (PrimeSpectrum.basicOpen g).1` using `PrimeSpectrum.localization_away_comap_range (Localization.Away g) g`. Establish `r'` using `Scheme.Pullback.range_fst p (spMap (algebraMap S (Localization.Away g)))`.
+
+Rewrite `r'` using `[r]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨z, rfl⟩`. Establish `: π z ∈ Set.range (pullback.fst p (spMap (algebraMap S (Localization.Away g))))` using `⟨h.isoPullback.hom z, by rw [← Scheme.Hom.comp_apply, h.isoPullback_hom_fst]⟩`. Rewrite `this` using `[r']`.
+
+Conclude with `this`. Introduce `hy`. Establish `: y ∈ Set.range (pullback.fst p (spMap (algebraMap S (Localization.Away g))))`. Rewrite using `[r']`. Conclude with `hy`.
+
+Take `⟨w, rfl⟩` from `this`. Conclude with `⟨h.isoPullback.inv w, by rw [← Scheme.Hom.comp_apply, h.isoPullback_inv_fst]⟩`.
+-/
 theorem opensRange_of_isPullback {S : Type} [CommRing S] (g : S) {Y Z : Scheme.{0}} {π : Z ⟶ Y} {p : Y ⟶ Sp S}
     {p' : Z ⟶ Sp (Localization.Away g)} (h : IsPullback π p' p (spMap (algebraMap S (Localization.Away g))))
     [IsOpenImmersion π] : π.opensRange = Y.basicOpen (p.appTop.hom (toΓ S g)) := by
@@ -88,6 +112,9 @@ theorem opensRange_of_isPullback {S : Type} [CommRing S] (g : S) {Y Z : Scheme.{
     obtain ⟨w, rfl⟩ := this
     exact ⟨h.isoPullback.inv w, by rw [← Scheme.Hom.comp_apply, h.isoPullback_inv_fst]⟩
 
+/- English proof (translation)
+Establish `e₁ : π.appTop.hom (p.appTop.hom (toΓ S a)) = p'.appTop.hom ((spMap φ).appTop.hom (toΓ S a))`. Rewrite using `[← CommRingCat.comp_apply, ← CommRingCat.comp_apply, ← Scheme.Hom.comp_appTop, ← Scheme.Hom.comp_appTop, w]`. Establish `e₂ : (spMap φ).appTop.hom (toΓ S a) = toΓ T (φ a)` using `(congrArg (fun f => f.hom a) (Scheme.ΓSpecIso_inv_naturality (CommRingCat.ofHom φ))).symm`. Rewrite using `[← e₂, ← e₁]`. Both sides reduce to the same expression.
+-/
 theorem appLE_const {S T : Type} [CommRing S] [CommRing T] (φ : S →+* T) {Y Z : Scheme.{0}} {π : Z ⟶ Y}
     {p : Y ⟶ Sp S} {p' : Z ⟶ Sp T} (w : π ≫ p = p' ≫ spMap φ) (U : Z.Opens) (a : S) :
     (π.appLE ⊤ U le_top).hom (p.appTop.hom (toΓ S a)) = resG Z le_top (p'.appTop.hom (toΓ T (φ a))) := by
@@ -101,16 +128,31 @@ theorem appLE_const {S T : Type} [CommRing S] [CommRing T] (φ : S →+* T) {Y Z
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {Dw : Datum H} {l : Level H}
 variable {Xo : Moduli Dw l}
 
+/- English proof (translation)
+The claim follows from `(IsPullback.of_hasPullback x Xo.univ.t.G.hom).flip`.
+-/
 theorem isPullback_gx {S : Type} [CommRing S] (x : Sp S ⟶ Xo.X) :
     IsPullback (snd (Over.mk x) Xo.univ.t.G).left (fst (Over.mk x) Xo.univ.t.G).left Xo.univ.t.G.hom x :=
   (IsPullback.of_hasPullback x Xo.univ.t.G.hom).flip
 
+/- English proof (translation)
+The claim follows from `IsPullback.of_right (by rw [SecPull.gxMap_snd]; exact isPullback_gx _) (SecPull.gxMap_fst φ x _ rfl) (isPullback_gx x)`.
+-/
 theorem isPullback_gxMap {S T : Type} [CommRing S] [CommRing T] (φ : S →+* T) (x : Sp S ⟶ Xo.X) :
     IsPullback (SecPull.gxMap φ x _ rfl) (fst (Over.mk (spMap φ ≫ x)) Xo.univ.t.G).left
       (fst (Over.mk x) Xo.univ.t.G).left (spMap φ) :=
   IsPullback.of_right (by rw [SecPull.gxMap_snd]; exact isPullback_gx _) (SecPull.gxMap_fst φ x _ rfl)
     (isPullback_gx x)
 
+/- English proof (translation)
+Introduce `E _ _ _ H Dw l Xo S _ x g s'`. Establish `hP` using `isPullback_gxMap (algebraMap S (Localization.Away g)) x`. Establish `hpr : IsProper (fst (Over.mk x) Xo.univ.t.G).left` using `MorphismProperty.of_isPullback (P := @IsProper) (isPullback_gx x) Xo.univ.proper`. Establish `: CompactSpace (Over.mk x).left` using `inferInstanceAs (CompactSpace (Sp S))`. Establish `: QuasiSeparatedSpace (Over.mk x).left` using `inferInstanceAs (QuasiSeparatedSpace (Sp S))`.
+
+Establish `: CompactSpace (Gx x)` using `QuasiCompact.compactSpace_of_compactSpace (fst (Over.mk x) Xo.univ.t.G).left`. Establish `: QuasiSeparatedSpace (Gx x)` using `quasiSeparatedSpace_of_quasiSeparated (fst (Over.mk x) Xo.univ.t.G).left`. Establish `hoi : IsOpenImmersion (spMap (algebraMap S (Localization.Away g)))` using `IsOpenImmersion.of_isLocalization g`. Establish `: IsOpenImmersion (SecPull.gxMap (algebraMap S (Localization.Away g)) x _ rfl)` using `MorphismProperty.of_isPullback (P := @IsOpenImmersion) hP.flip hoi`. Take `⟨N, s, hs⟩` from `exists_pow_mul_eq_linComb _ _ (opensRange_of_isPullback g hP) Xo.univ.t.PP.isLB (K := Fin 1) (fun _ => (snd (Over.mk x) Xo.univ.t.G).left) (fun _ => (snd (Over.mk (spMap (algebraMap S (Localization.Away g)) ≫ x)) Xo.univ.t.G).left) (fun _ => 1) (funext fun _ => SecPull.gxMap_snd …`.
+
+Use `⟨N, s, SecPull.scalSec _ (algebraMap S (Localization.Away g) g ^ N) s', ⟨_, SecPull.gxMap_snd _ x _ rfl, SecPull.gxMap_fst _ x _ rfl, fun i h => ?_⟩, fun _ => rfl⟩` and prove the remaining obligations. Establish `e₁ : scal x 1 i = 1` using `by simp only [scal, Out.liftFun, map_one]`. Rewrite using `[e₁, _root_.one_mul]`. Use `(hs i h).trans (congrArg (· * s'.f i) ?_)` and prove the remaining obligations. Rewrite using `[appLE_const _ hP.w]`.
+
+Simplify using `only [scal, Out.liftFun, map_pow]`. Both sides reduce to the same expression.
+-/
 theorem exists_secBC_pow_mul : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (S : Type) [CommRing S] (x : Sp S ⟶ Xo.X) (g : S) (s' : LB.Sec (PPx (spMap (algebraMap S (Localization.Away g)) ≫ x))), ∃ (N : ℕ) (s : LB.Sec (PPx x)) (s₁ : LB.Sec (PPx (spMap (algebraMap S (Localization.Away g)) ≫ x))), SecBC (algebraMap S (Localization.Away g)) 1 x _ s s₁ ∧ ∀ i, s₁.f i = scal _ ((algebraMap S (Localization.Away g)) g ^ N) i * s'.f i := by
   intro E _ _ _ H Dw l Xo S _ x g s'
   have hP := isPullback_gxMap (algebraMap S (Localization.Away g)) x

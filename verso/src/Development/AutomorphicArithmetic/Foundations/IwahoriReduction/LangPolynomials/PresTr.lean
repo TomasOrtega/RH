@@ -5,6 +5,11 @@ import Development.AutomorphicArithmetic.Foundations.IwahoriReduction.LangPolyno
 open NumberField IsDedekindDomain Formalism.ConjugateSelfDual ReciprocityTheory.Gal Formalism.MainNotions.N GlobalTheory.GalOfCusp UpperTheory.V UpperTheory.V.Af UpperTheory.V.HV GlobalTheory.Ord2 GlobalTheory.KZ GlobalTheory.Col UpperTheory.Kd.C7
 open scoped Pointwise
 
+/- English proof (translation)
+Unfold `pv`. Rewrite using `[Polynomial.expand_eq_comp_X_pow, Polynomial.eval₂_comp, Polynomial.eval₂_X_pow, ← hz]`. Establish `hc : ((τ : Ω →+* Ω)).comp (R0 A).subtype = (R0 A).subtype`. Use extensionality with `r`. Conclude with `r.2.2 τ hτ`.
+
+Establish `e : (τ : Ω →+* Ω) (Polynomial.eval₂ (R0 A).subtype z P) = Polynomial.eval₂ (R0 A).subtype ((τ : Ω →+* Ω) z) P`. Rewrite using `[Polynomial.hom_eval₂, hc]`. Conclude with `e.symm`.
+-/
 private theorem pt_pv {Ω : Type} [Field Ω] [Algebra ℚ Ω] {A : ValuationSubring Ω} {τ : G ℚ Ω}
     (hτ : τ ∈ Ine (F := ℚ) A) (P : Polynomial (R0 A)) (z : Ω) (b : ℕ) (hz : τ z = z ^ b) :
     pv (Polynomial.expand (R0 A) b P) z = τ (pv P z) := by
@@ -18,6 +23,9 @@ private theorem pt_pv {Ω : Type} [Field Ω] [Algebra ℚ Ω] {A : ValuationSubr
     rw [Polynomial.hom_eval₂, hc]
   exact e.symm
 
+/- English proof (translation)
+Establish `h` using `mem_Dec.mp (Ine_le_Dec A hτ)`. Establish `h2` using `ValuationSubring.smul_mem_pointwise_smul τ x A hx`. Rewrite `h2` using `[h]`. Conclude with `h2`.
+-/
 private theorem pt_mem {Ω : Type} [Field Ω] [Algebra ℚ Ω] {A : ValuationSubring Ω} {τ : G ℚ Ω}
     (hτ : τ ∈ Ine (F := ℚ) A) {x : Ω} (hx : x ∈ A) : τ x ∈ A := by
   have h := mem_Dec.mp (Ine_le_Dec A hτ)
@@ -25,6 +33,19 @@ private theorem pt_mem {Ω : Type} [Field Ω] [Algebra ℚ Ω] {A : ValuationSub
   rw [h] at h2
   exact h2
 
+/- English proof (translation)
+Unfold `Cg at h ⊢`. Use `haveI : NeZero (l ^ n) := ⟨(pow_pos (Nat.Prime.pos Fact.out) n).ne'⟩`. Establish `hc : ∀ i, (((((b : ZMod (l ^ n)) * k i).val : ℕ) : Qbar l)) = (b : Qbar l) * ((k i).val : Qbar l) - (l : Qbar l) ^ n * (((b * (k i).val) / l ^ n : ℕ) : Qbar l)`. Introduce `i`. Establish `h1 : ((b : ZMod (l ^ n)) * k i).val = (b * (k i).val) % l ^ n`.
+
+Rewrite using `[← ZMod.val_natCast (l ^ n) (b * (k i).val)]`. Use `congr 1`. Use `push_cast`. Rewrite using `[ZMod.natCast_zmod_val]`. Rewrite using `[h1]`.
+
+Establish `h3 : ((b * (k i).val : ℕ) : Qbar l) = (((b * (k i).val) % l ^ n : ℕ) : Qbar l) + (l : Qbar l) ^ n * (((b * (k i).val) / l ^ n : ℕ) : Qbar l)`. Rewrite using `[← Nat.cast_pow, ← Nat.cast_mul, ← Nat.cast_add, Nat.mod_add_div]`. Rewrite `h3` using `[Nat.cast_mul]`. Take the linear combination `-h3`. Establish `hs : ∑ i, o i * ((((b : ZMod (l ^ n)) * k i).val : ℕ) : Qbar l) = ∑ i, (b : Qbar l) * (o i * ((k i).val : Qbar l)) - ∑ i, o i * ((l : Qbar l) ^ n * (((b * (k i).val) / l ^ n : ℕ) : Qbar l))`.
+
+Rewrite using `[← Finset.sum_sub_distrib]`. Conclude with `Finset.sum_congr rfl (fun i _ => by rw [hc]; ring)`. Establish `key : (b : Qbar l) * x - ∑ i, o i * ((((b : ZMod (l ^ n)) * k i).val : ℕ) : Qbar l) = (b : Qbar l) * (x - ∑ i, o i * ((k i).val : Qbar l)) + ∑ i, o i * ((l : Qbar l) ^ n * (((b * (k i).val) / l ^ n : ℕ) : Qbar l))`. Rewrite using `[hs, mul_sub, Finset.mul_sum]`. Expand and normalize the polynomial expressions, which then agree.
+
+Rewrite using `[key]`. Use `(IsUltrametricDist.norm_add_le_max _ _).trans (max_le ?_ ?_)` and prove the remaining obligations. Rewrite using `[norm_mul]`. Combine the equalities or inequalities in the displayed calculation. Use `IsUltrametricDist.norm_sum_le_of_forall_le_of_nonneg (norm_nonneg _) (fun i _ => ?_)` and prove the remaining obligations.
+
+Rewrite using `[norm_mul, norm_mul]`. Combine the equalities or inequalities in the displayed calculation. Conclude with `ho i`. Conclude with `IsUltrametricDist.norm_natCast_le_one _ _`. Use `_ = ‖(l : Qbar l) ^ n‖ := by ring`.
+-/
 private theorem pt_cg {l : ℕ} [Fact l.Prime] {n : ℕ} {ι : Type} [Fintype ι] (o : ι → Qbar l) (ho : ∀ i, ‖o i‖ ≤ 1)
     (k : ι → ZMod (l ^ n)) (b : ℕ) (x : Qbar l) (h : Cg n x (∑ i, o i * ((k i).val : Qbar l))) :
     Cg n ((b : Qbar l) * x) (∑ i, o i * ((((b : ZMod (l ^ n)) * k i).val : ℕ) : Qbar l)) := by
@@ -69,6 +90,33 @@ private theorem pt_cg {l : ℕ} [Fact l.Prime] {n : ℕ} {ι : Type} [Fintype ι
           · exact IsUltrametricDist.norm_natCast_le_one _ _
       _ = ‖(l : Qbar l) ^ n‖ := by ring
 
+/- English proof (translation)
+Introduce `l _ hl Ω _ _ _ A hOver c β ζ hR Z hI b hb m n P hB`. Use `haveI : IsAlgClosed Ω := IsAlgClosure.isAlgClosed ℚ`. Use `haveI : CharZero Ω := charZero_of_injective_algebraMap (algebraMap ℚ Ω).injective`. Use `haveI : NeZero (l : Ω) := ⟨Nat.cast_ne_zero.mpr (Nat.Prime.ne_zero Fact.out)⟩`. Use `haveI : ∀ i, HasEnoughRootsOfUnity Ω (l ^ i) := fun i => inferInstance`.
+
+Establish `hbu : IsUnit (b : ℤ_[l])`. Rewrite using `[PadicInt.isUnit_iff]`. Use `le_antisymm (PadicInt.norm_le_one _) (not_lt.mp fun h => hb ?_)` and prove the remaining obligations. Establish `h' : ‖((b : ℤ) : ℤ_[l])‖ < 1` using `by simpa using h`. Conclude with `Int.natCast_dvd_natCast.mp ((PadicInt.norm_int_lt_one_iff_dvd _).mp h')`.
+
+Take `⟨τ, hτ, hτc⟩` from `(pFrobEx l hl Ω A hOver).2.2 hbu.unit`. Establish `hmodpow : ∀ (t : Ω) (N a : ℕ), t ^ N = 1 → t ^ a = t ^ (a % N)`. Introduce `t N a ht`. Use `conv_lhs => rw [← Nat.mod_add_div a N]`. Rewrite using `[pow_add, pow_mul, ht, one_pow, mul_one]`.
+
+Establish `hτpow : ∀ (t : Ω) (r : ℕ), t ^ l ^ r = 1 → τ t = t ^ b`. Introduce `t r ht`. Establish `hs` using `cyclotomicCharacter.spec l (MulSemiringAction.toRingAut (G ℚ Ω) Ω τ) t ht`. Establish `e1 : cyclotomicCharacter Ω l (MulSemiringAction.toRingAut (G ℚ Ω) Ω τ) = hbu.unit` using `hτc`. Rewrite `hs` using `[e1, IsUnit.unit_spec, map_natCast, ZMod.val_natCast]`.
+
+Rewrite using `[hmodpow t (l ^ r) b ht]`. Conclude with `hs`. Establish `hcyc : cycMod ℚ Ω l m τ = un b hb m`. Apply `Units.ext` to reduce the goal to its premises. Use `show (PadicInt.toZModPow m) ((cycZ ℚ Ω l τ : ℤ_[l])) = _`.
+
+Rewrite using `[hτc, IsUnit.unit_spec, map_natCast]`. Simplify using `[un]`. Establish `hu' : ∀ i, pv (Polynomial.expand (R0 A) b (P i)) (ζ m) = τ (pv (P i) (ζ m))` using `fun i => pt_pv hτ (P i) (ζ m) b (hτpow (ζ m) m (hR m).1.pow_eq_one)`. Unfold `BPres KumPres at hB ⊢`. Take `⟨hprim, hnm, hunits, hnorm, hmain⟩` from `hB`.
+
+Use `⟨hprim, hnm, fun i => ?_, hnorm, ?_⟩` and prove the remaining obligations. Simplify using `only`. Rewrite using `[hu' i]`. Take `⟨h1, h2, h3⟩` from `hunits i`. Use `⟨pt_mem hτ h1, (map_ne_zero τ).mpr h2, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[← map_inv₀]`. Conclude with `pt_mem hτ h3`. Introduce `s hs hcs hsz`. Establish `hs' : τ⁻¹ * s * τ ∈ Ine A` using `mul_mem (mul_mem (inv_mem hτ) hs) hτ`. Establish `hcs' : cycMod ℚ Ω l m (τ⁻¹ * s * τ) = 1` using `by simp [hcs]`.
+
+Establish `hsz' : (τ⁻¹ * s * τ) (ζ n) = ζ n` using `fix_of_cycMod hnm hcs' hprim.pow_eq_one`. Take `⟨k, hk, hcg⟩` from `hmain _ hs' hcs' hsz'`. Use `haveI : NeZero (l ^ n) := ⟨(pow_pos (Nat.Prime.pos Fact.out) n).ne'⟩`. Use `⟨fun i => (b : ZMod (l ^ n)) * k i, fun i => ?_, ?_⟩` and prove the remaining obligations. Take `⟨v, hv1, hv2⟩` from `hk i`.
+
+Use `⟨τ v, ?_, ?_⟩` and prove the remaining obligations. Use `show (τ v) ^ l ^ n = pv (Polynomial.expand (R0 A) b (P i)) (ζ m)`. Rewrite using `[hu' i, ← map_pow, hv1]`. Establish `e2 : s (τ v) = τ ((τ⁻¹ * s * τ) v)`. Rewrite using `[AlgEquiv.mul_apply, AlgEquiv.mul_apply, AlgEquiv.aut_inv, AlgEquiv.apply_symm_apply]`.
+
+Establish `h1 : ((b : ZMod (l ^ n)) * k i).val = (b * (k i).val) % l ^ n`. Rewrite using `[← ZMod.val_natCast (l ^ n) (b * (k i).val)]`. Use `congr 1`. Use `push_cast`. Rewrite using `[ZMod.natCast_zmod_val]`.
+
+Rewrite using `[e2, hv2, map_mul, map_pow, hτpow (ζ n) n hprim.pow_eq_one, ← pow_mul, h1, ← hmodpow (ζ n) (l ^ n) _ hprim.pow_eq_one]`. Establish `hHm : τ⁻¹ * s * τ ∈ Hm l A m` using `Subgroup.mem_inf.mpr ⟨hs', hcs'⟩`. Establish `hC` using `(pConj l hl Ω A hOver c Z hI m _ hHm τ hτ).2 (un b hb m)`. Establish `e3 : τ * (τ⁻¹ * s * τ) * τ⁻¹ = s` using `by group`. Rewrite `hC` using `[e3, hcyc, mul_inv_cancel]`.
+
+Use `show Cg n ((b : Qbar l) * Z m s (1 * un b hb m)) _`. Rewrite using `[one_mul, hC]`. Conclude with `pt_cg β.val hnorm k b _ hcg`.
+-/
 theorem UpperTheory.Kd.C7.pPresTr :
     UpperTheory.Kd.C7.SPresTr := by
   intro l _ hl Ω _ _ _ A hOver c β ζ hR Z hI b hb m n P hB

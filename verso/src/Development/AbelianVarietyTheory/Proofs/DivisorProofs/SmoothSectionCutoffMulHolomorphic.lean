@@ -7,6 +7,17 @@ open scoped ENNReal ContDiff
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Introduce `n Y _ _ _ _ _ ι La _ A la W χ h hW hχ hsupp hh`. Establish `hzero : ∀ y, y ∉ W → χ y = 0` using `fun y hy => Function.notMem_support.1 (fun hs => hy (hsupp (subset_tsupport χ hs)))`. Use `⟨fun i => ?_, fun i j y hi hj => ?_⟩` and prove the remaining obligations. Introduce `v hv`. Use `ContDiffAt.contDiffWithinAt ?_` and prove the remaining obligations.
+
+Use `set e := A.chart i`. Establish `hvn : e.target ∈ 𝓝 v` using `e.open_target.mem_nhds hv`. Establish `hχv : ContDiffAt ℝ ∞ (fun v => ((χ (e.symm v) : ℝ) : ℂ)) v` using `Complex.ofRealCLM.contDiff.contDiffAt.comp v ((hχ i).contDiffAt hvn)`. Distinguish the cases in `hy : e.symm v ∈ W`. Establish `hU : IsOpen (e.target ∩ e.symm ⁻¹' W)` using `e.isOpen_inter_preimage_symm hW`.
+
+Establish `hh' : ContDiffAt ℝ ∞ (h i ∘ e.symm) v` using `hyq_contDiffAt_of_holo hU (hh.1 i) ⟨hv, hy⟩`. Conclude with `hχv.mul hh'`. Establish `hnt : e.symm v ∉ tsupport χ` using `fun ht => hy (hsupp ht)`. Establish `hev : χ =ᶠ[𝓝 (e.symm v)] 0` using `notMem_tsupport_iff_eventuallyEq.1 hnt`. Establish `hev' : ∀ᶠ v' in 𝓝 v, χ (e.symm v') = 0` using `(e.continuousAt_symm hv).eventually hev`.
+
+Use `(contDiffAt_const (c := (0 : ℂ))).congr_of_eventuallyEq ?_` and prove the remaining obligations. Use `filter_upwards [hev'] with v' hv'`. Simplify using `[hv']`. Distinguish the cases in `hy : y ∈ W`. Use `show (χ y : ℂ) * h i y = A.g la i j y * ((χ y : ℂ) * h j y)`.
+
+Rewrite using `[hh.2 i j y hy hi hj]`. Expand and normalize the polynomial expressions, which then agree. Use `show (χ y : ℂ) * h i y = A.g la i j y * ((χ y : ℂ) * h j y)`. Simplify using `[hzero y hy]`.
+-/
 theorem smooth_cutoff_mul_sec : ∀ (n : ℕ) (Y : Type) [TopologicalSpace Y] [T2Space Y] [SecondCountableTopology Y] [MeasurableSpace Y] [BorelSpace Y] (ι La : Type) [AddCommGroup La] (A : WeightedAtlas n Y ι La), ∀ (la : La) (W : Set Y) (χ : Y → ℝ) (h : ι → Y → ℂ), IsOpen W → A.SmoothFn χ → tsupport χ ⊆ W → A.IsSecOn la W h → A.IsSSec la (fun i y => (χ y : ℂ) * h i y) := by
   intro n Y _ _ _ _ _ ι La _ A la W χ h hW hχ hsupp hh
   have hzero : ∀ y, y ∉ W → χ y = 0 := fun y hy =>

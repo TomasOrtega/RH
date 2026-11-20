@@ -18,6 +18,23 @@ noncomputable section
 
 namespace GlobalTheory.Mum.PowData
 
+/- English proof (translation)
+Introduce `W V _ _ Q V₁ _ _ ρ D₀ D e₀ hR T e he`. Take `⟨β, β₂, wR, hpb, hsq, hwR, hcR, htR⟩` from `hR`. Take `⟨io, hιm, hι⟩` from `grpPullback_iso hpb (isGrpPullback_pullback Q.B (spMap ρ))`. Establish `hprI : ∀ a, IsMonHom (T.pr a ≫ io.hom)` using `fun a => by haveI := T.pr_hom a; haveI := hιm; infer_instance`. Establish `hpr' : ∀ a, (T.pr a ≫ io.hom).left ≫ pullback.fst Q.B.hom (spMap ρ) = (T.pr a).left ≫ β` using `fun a => by`.
+
+Rewrite using `[Over.comp_left, Category.assoc, hι]`. Set `φQ : (Fin 8 × Fin 8) × Fin 4 → (D.P.A.left ⟶ Q.B.left)` to `fun k => lamPts (T.pr k.1.1 ≫ io.hom) (T.pr k.1.2 ≫ io.hom) k.2 ≫ pullback.fst Q.B.hom (spMap ρ)`. Set `εQ : (Fin 8 × Fin 8) × Fin 4 → ℤ` to `fun k => -(W k.1.1 k.1.2 * negε k.2)`. Apply the tactic sequence `obtain ⟨v, hv, hvv⟩ := GlobalTheory.T.exists_tensor_mumfordBundle_iso_of_generator D₀.P.A Q.B D₀.P.L Q.M.L D₀.P.isLB Q.M.isLB β₂ wR hwR W D.P.A T.pr φQ εQ (fun k => GlobalTheory.T.cubePoints_fst_eq_partialSums_grpPullback D₀.P.A Q.B (spMap ρ) β β₂ hpb hsq D.P.A _ _ _ _ (hpr' _) ( …`. Take `⟨w', hw', hwv⟩` from `GlobalTheory.T.exists_lineBundleIso_comp_pullback_id_values (A := D.P.L) (tensφ T.pr) (tensε W) φQ εQ D.P.isLB D₀.P.isLB Q.M.isLB T.w T.w_gen v hv`.
+
+Use `⟨fun a => T.pr a ≫ io.hom, w', hprI, fun T' y => ?_, hw', fun mu a => ?_, fun κ hκ mu z J J' hJ hJ' => ?_⟩` and prove the remaining obligations. Use `⟨Fan.IsLimit.lift T.lim (fun a => y a ≫ io.inv), fun a => ?_, fun x hx => ?_⟩` and prove the remaining obligations. Establish `h` using `Fan.IsLimit.fac T.lim (fun a => y a ≫ io.inv) a`. Express the relevant statement in the definitionally equal form `_ ≫ T.pr a = _ at h`. Use `show _ ≫ T.pr a ≫ io.hom = _`.
+
+Rewrite using `[← Category.assoc, h]`. Simplify using the standard rewrite rules. Use `Fan.IsLimit.hom_ext T.lim _ _ fun a => ?_` and prove the remaining obligations. Establish `h` using `Fan.IsLimit.fac T.lim (fun a => y a ≫ io.inv) a`. Express the relevant statement in the definitionally equal form `_ ≫ T.pr a = _ at h`.
+
+Express the relevant statement in the definitionally equal form `x ≫ T.pr a = _ ≫ T.pr a`. Rewrite using `[h, ← hx a]`. Simplify using the standard rewrite rules. Use `show (D.c (e mu) ≫ T.pr a ≫ io.hom).left ≫ pullback.fst Q.B.hom (spMap ρ) = _`. Rewrite using `[← Category.assoc, Over.comp_left, Category.assoc, hι, T.c_pr, hcR, he]`.
+
+Use `choose J₀ hJ₀ using fun s : (TK V₁).left ⟶ D₀.P.A.left => exists_chart D₀.P.isLB (s z)`. Establish `hJ₀' : Good D₀.P.L z J₀` using `hJ₀`. Establish `h1` using `T.psi (e mu) z J₀ J' hJ₀' hJ'`. Establish `h2` using `hwv _ (D.xK (e mu)) z J J₀ (J' (D.xK (e mu))) (hJ' _) hJ hJ₀'`. Establish `h3` using `hvv _ (D.xK (e mu)) z J J₀ hJ hJ₀'`.
+
+Establish `h4 : ∀ a b, D.xK (e mu) ≫ (lift (T.pr a) (T.pr b)).left = (lift (toUnit (TK V₁) ≫ D₀.c (T.xe (e mu) a)) (toUnit (TK V₁) ≫ D₀.c (T.xe (e mu) b))).left`. Introduce `a b`. Use `show (toUnit (TK V₁) ≫ D.c (e mu)).left ≫ _ = _`. Rewrite using `[← Over.comp_left, comp_lift, Category.assoc, Category.assoc, T.c_pr, T.c_pr]`. Establish `h5 : ∀ a b, val (D₀.tau (T.xe (e mu) a) (T.xe (e mu) b)) (𝟙 _) z J₀ = lamVal wR (lift (toUnit (TK V₁) ≫ D₀.c (T.xe (e mu) a)) (toUnit (TK V₁) ≫ D₀.c (T.xe (e mu) b))).left z J J₀ * val (Q.tau (mu a) (mu b)) κ z J` using `fun a b => by`.
+
+Rewrite using `[htR κ hκ _ _ z J J₀ hJ hJ₀', he, he]`. Rewrite using `[h1]`. Use `erw [h2]`. Rewrite using `[h3]`. Simplify using `only [h4, h5, mul_zpow, Finset.prod_mul_distrib, _root_.mul_assoc]`.
+-/
 theorem sharpRef_of_tens : ∀ (W : Matrix (Fin 8) (Fin 8) ℤ) (V : Type) [CommRing V] [IsDomain V] (Q : Data V) (V₁ : Type) [CommRing V₁] [IsDomain V₁] (ρ : V →+* V₁) (D₀ D : DegPre V₁) (e₀ : D₀.X ≃+ Q.X), Refines Q ρ D₀ e₀ → ∀ (T : Tens D₀ D W) (e : (Fin 8 → Q.X) ≃+ D.X), (∀ mu a, e₀ (T.xe (e mu) a) = mu a) → GlobalTheory.Poinc.Sep.SharpRef W Q ρ D e := by
   intro W V _ _ Q V₁ _ _ ρ D₀ D e₀ hR T e he
   obtain ⟨β, β₂, wR, hpb, hsq, hwR, hcR, htR⟩ := hR

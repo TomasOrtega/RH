@@ -16,6 +16,9 @@ open Formalism.REAL GlobalTheory.HolDict GlobalTheory.HolDict.Lowering
 
 variable {n : ℕ}
 
+/- English proof (translation)
+Establish `: rhoC ε = rhoC ε'`. Use function extensionality and compare the values at `a`. Simplify using `only [rhoC, h]`. Simplify using `only [vNormSq, this]`.
+-/
 lemma vNormSq_congr (ε ε' : Fin n → Bool) (h : ∀ i j, ε i = ε j ↔ ε' i = ε' j) (μ : Fin n → ℝ) :
     vNormSq ε μ = vNormSq ε' μ := by
   have : rhoC ε = rhoC ε' := by
@@ -23,6 +26,15 @@ lemma vNormSq_congr (ε ε' : Fin n → Bool) (h : ∀ i j, ε i = ε j ↔ ε' 
     simp only [rhoC, h]
   simp only [vNormSq, this]
 
+/- English proof (translation)
+Set `ε' : Fin n → Bool` to `fun a => decide ((a : ℕ) < p)`. Establish `h : ∀ i j, ε i = ε j ↔ ε' i = ε' j`. Introduce `i j`. Rewrite using `[hε i, hε j]`. Apply the tactic sequence `by_cases hi : (i : ℕ) < p <;> by_cases hj : (j : ℕ) < p <;> cases s <;> simp [ε', hi, hj]`.
+
+Rewrite using `[vNormSq_congr ε ε' h, vNormSq_congr ε ε' h]`. Use `vNormSq_lt p ε' (fun _ => rfl) _ μ (fun i j hij e => hΛ i j hij ((h i j).2 e)) (fun i j hij e => hμ i j hij ((h i j).2 e)) ?_ a c ?_ ?_ ?_` and prove the remaining obligations. Introduce `a c ha hc`. Rewrite using `[← vNormSq_congr ε ε' h, ← vNormSq_congr ε ε' h]`. Use `GlobalTheory.HolDict.VoganRoot.vNormSq_lowK_sub_root_lt ε hlam ?_` and prove the remaining obligations.
+
+Simplify using `only [ε', decide_eq_true_eq, decide_eq_false_iff_not] at ha hc`. Conclude with `Fin.lt_def.mpr (by omega)`. Rewrite `ha` using `[hε]`. Apply the tactic sequence `by_cases hi : (a : ℕ) < p <;> cases s <;> simp_all [ε']`. Rewrite `hc` using `[hε]`.
+
+Apply the tactic sequence `by_cases hi : (c : ℕ) < p <;> cases s <;> simp_all [ε']`. Take `⟨co, hco, hd⟩` from `hd`. Conclude with `⟨co, fun i j e => ⟨(hco i j e).1, (h i j).1 (hco i j e).2⟩, hd⟩`.
+-/
 lemma vNormSq_lt_of_blocks (p : ℕ) (s : Bool) (ε : Fin n → Bool) (hε : ∀ a : Fin n, ε a = if (a : ℕ) < p then s else !s)
     (lam μ : Fin n → ℝ) (hlam : StrictAnti lam)
     (hΛ : ∀ i j, i < j → ε i = ε j → Formalism.QuantumDeterminants.lowK ε lam j ≤ Formalism.QuantumDeterminants.lowK ε lam i)
@@ -49,6 +61,11 @@ lemma vNormSq_lt_of_blocks (p : ℕ) (s : Bool) (ε : Fin n → Bool) (hε : ∀
   · obtain ⟨co, hco, hd⟩ := hd
     exact ⟨co, fun i j e => ⟨(hco i j e).1, (h i j).1 (hco i j e).2⟩, hd⟩
 
+/- English proof (translation)
+Unfold `conjH`. Rewrite using `[Matrix.inv_eq_left_inv (Jm_mul_self ε)]`. Use extensionality with `i j`. Simplify using `only [Formalism.REAL.Jm, Matrix.neg_apply, Matrix.diagonal_mul, Matrix.mul_diagonal, Matrix.conjTranspose_apply, Matrix.single_apply]`. Distinguish the cases in `h : a = i ∧ c = j`.
+
+Take `⟨rfl, rfl⟩` from `h`. Apply the tactic sequence `cases ha : ε a <;> cases hc : ε c <;> simp_all`. Establish `h' : ¬(c = j ∧ a = i)` using `fun h' => h ⟨h'.2, h'.1⟩`. Simplify using `[h, h']`.
+-/
 lemma conjH_single_ne {ε : Fin n → Bool} (a c : Fin n) (hac : ε a ≠ ε c) :
     conjH (Formalism.REAL.Jm ε) (Matrix.single c a (1 : ℂ)) = Matrix.single a c 1 := by
   unfold conjH
@@ -62,6 +79,57 @@ lemma conjH_single_ne {ε : Fin n → Bool} (a c : Fin n) (hac : ε a ≠ ε c) 
   · have h' : ¬(c = j ∧ a = i) := fun h' => h ⟨h'.2, h'.1⟩
     simp [h, h']
 
+/- English proof (translation)
+Take `⟨hcomp, -, hσ, -, -, ⟨S₀, hS₀⟩, hmin⟩` from `hDS`. Establish `hH : (Formalism.REAL.Jm ε).IsHermitian` using `Jm_conjTranspose ε`. Establish `hdet : (Formalism.REAL.Jm ε).det ≠ 0` using `(Matrix.isUnit_det_of_left_inverse (Jm_mul_self ε)).ne_zero`. Establish `hU : IsURepOn (Formalism.QuantumDeterminants.UH (Formalism.REAL.Jm ε)) σ` using `hσ`. Take `⟨hspan, hsmv⟩` from `GlobalTheory.UnitarySmVec.smoothVec_basic n _ H σ hH hdet hU`.
+
+Establish `hlie` using `GlobalTheory.HolDict.LieAct.main n _ H σ hH hdet hU`. Take `⟨W, hWf, hWK, hWle, hvW⟩` from `exists_fin_stable lam hv`. Use `set J := Formalism.REAL.Jm ε with hJ`. Set `u₀ : ℂ` to `if s then 1 else -1`. Set `V : Submodule ℂ H` to `W ⊓ Submodule.span ℂ {w | SmoothVec (lieH J) σ w}`.
+
+Establish `hVs : ∀ w ∈ V, SmoothVec (lieH J) σ w` using `fun w hw => hspan w hw.2`. Use `haveI : FiniteDimensional ℂ V := Submodule.finiteDimensional_of_le inf_le_left`. Establish `hVK : ∀ g ∈ Kset ε, ∀ w ∈ V, σ g w ∈ V` using `fun g hg w hw => ⟨hWK g hg w hw.1, Submodule.subset_span ((hsmv w (hVs w hw)).1 g (kset_sub hg))⟩`. Establish `hs0 : SmoothVec (lieH J) σ 0` using `hspan 0 (Submodule.zero_mem _)`. Establish `hz1 : ∀ w, SmoothVec (lieH J) σ w → dRepC J σ 0 w = 0`.
+
+Introduce `w hw`. Use `((hlie w w hw hw).1 1 0 0).1` as an intermediate fact. Simplify using `using this`. Establish `hz2 : ∀ Z, dRepC J σ Z 0 = 0`. Introduce `Z`.
+
+Use `((hlie 0 0 hs0 hs0).1 1 Z Z).2.1` as an intermediate fact. Simplify using `using this`. Establish `hsm1 : ∀ w, SmoothVec (lieH J) σ w → ∀ (t : ℂ) Z, dRepC J σ (t • Z) w = t • dRepC J σ Z w`. Introduce `w hw t Z`. Use `((hlie w w hw hw).1 t Z 0).1` as an intermediate fact.
+
+Rewrite `this` using `[add_zero, hz1 w hw, add_zero]`. Then use the resulting hypothesis. Set `B : Mt n →ₗ[ℂ] V →ₗ[ℂ] H` to `LinearMap.mk₂ ℂ (fun Z w => dRepC J σ Z w) (fun Z Z' w => by simpa using ((hlie w w (hVs _ w.2) (hVs _ w.2)).1 1 Z Z').1) (fun t Z w => hsm1 w (hVs _ w.2) t Z) (fun Z w w' => by simpa using ((hlie w w' (hVs _ w.2) (hVs _ w'.2)).1 1 Z Z).2.1) (fun t Z w => by`. Use `((hlie w 0 (hVs _ w.2) hs0).1 t Z Z).2.1` as an intermediate fact. Rewrite using `[add_zero, hz2, add_zero] at this)` and apply the resulting hypothesis. Set `G : Set H` to `{x | ∃ Z : Mt n, (Z * J = u₀ • Z ∧ J * Z = -(u₀ • Z)) ∧ ∃ w ∈ V, x = dRepC J σ Z w}`.
+
+Set `S : Submodule ℂ H` to `Submodule.span ℂ G`. Establish `hSf : FiniteDimensional ℂ S`. Use `Submodule.finiteDimensional_of_le (S₂ := LinearMap.range (TensorProduct.lift B)) ?_` and prove the remaining obligations. Use `Submodule.span_le.2 ?_` and prove the remaining obligations. Introduce and unpack `x ⟨Z, -, w, hw, rfl⟩`.
+
+Conclude with `⟨Z ⊗ₜ ⟨w, hw⟩, rfl⟩`. Establish `hSK : IsKStableOn ε σ S`. Introduce `g hg`. Establish `: S ≤ S.comap (σ g : H →ₗ[ℂ] H)`. Use `Submodule.span_le.2 ?_` and prove the remaining obligations.
+
+Introduce and unpack `x ⟨Z, ⟨hZ1, hZ2⟩, w, hw, rfl⟩`. Use `Submodule.subset_span ⟨g * Z * g⁻¹, ⟨?_, ?_⟩, σ g w, hVK g hg w hw, (hlie w w (hVs w hw) (hVs w hw)).2.2.1 g (kset_sub hg) Z⟩` and prove the remaining obligations. Rewrite using `[kset_inv hg, Matrix.mul_assoc, (kset_star hg).2, ← Matrix.mul_assoc, Matrix.mul_assoc g Z, hZ1]`. Simplify using the standard rewrite rules. Rewrite using `[← Matrix.mul_assoc, ← Matrix.mul_assoc, ← hg.2, Matrix.mul_assoc g _ Z, hZ2]`.
+
+Simplify using the standard rewrite rules. Conclude with `fun x hx => this hx`. Establish `hSs : ∀ x ∈ S, SmoothVec (lieH J) σ x`. Introduce `x hx`. Use `hspan x (Submodule.span_mono ?_ hx)` and prove the remaining obligations.
+
+Introduce and unpack `x ⟨Z, -, w, hw, rfl⟩`. Conclude with `(hsmv w (hVs w hw)).2.2.1 Z`. Assume the negation of the conclusion as `hne`. Establish `hS0 : S ≠ ⊥`. Introduce `h0`.
+
+Use `hne ((Submodule.mem_bot ℂ).1 (h0 ▸ Submodule.subset_span ⟨Matrix.single c a 1, ⟨?_, ?_⟩, v, ⟨hvW, Submodule.subset_span hsm⟩, rfl⟩))` and prove the remaining obligations. Use extensionality with `i j`. Simplify using `only [hJ, Formalism.REAL.Jm, Matrix.mul_diagonal, Matrix.single_apply, Matrix.smul_apply]`. Distinguish the cases in `h : c = i ∧ a = j`. Take `⟨rfl, rfl⟩` from `h`.
+
+Apply the tactic sequence `cases s <;> simp [ha, u₀]`. Simplify using `[h]`. Use extensionality with `i j`. Simplify using `only [hJ, Formalism.REAL.Jm, Matrix.diagonal_mul, Matrix.neg_apply, Matrix.single_apply, Matrix.smul_apply]`. Distinguish the cases in `h : c = i ∧ a = j`.
+
+Take `⟨rfl, rfl⟩` from `h`. Apply the tactic sequence `cases s <;> simp [hc, u₀]`. Simplify using `[h]`. Take `⟨μ, S', hS'le, hS'⟩` from `GlobalTheory.KTypeExists.exists_kType n ε H σ hσ S hSf hSK hS0`. Take `⟨u, huS', hu0, hu⟩` from `hS'.2.2.2.1`.
+
+Establish `huS` using `hS'le huS'`. Establish `hus` using `hSs u huS`. Establish `hex : ∃ a' c' : Fin n, ε a' = s ∧ ε c' = !s ∧ ∃ w ∈ V, ⟪dRepC J σ (Matrix.single c' a' 1) w, u⟫_ℂ ≠ 0`. Assume the negation of the conclusion as `hn`. Use `push Not at hn`.
+
+Establish `h : S ≤ (ℂ ∙ u)ᗮ`. Use `Submodule.span_le.2 ?_` and prove the remaining obligations. Introduce and unpack `x ⟨Z, ⟨hZ1, hZ2⟩, w, hw, rfl⟩`. Establish `h1 : dRepC J σ Z w = ∑ i, ∑ j, Z i j • dRepC J σ (Matrix.single i j 1) w`. Establish `: B Z ⟨w, hw⟩ = ∑ i, ∑ j, Z i j • B (Matrix.single i j 1) ⟨w, hw⟩` using `by conv_lhs => rw [Matrix.matrix_eq_sum_single Z]`.
+
+Simplify using `only [map_sum, LinearMap.sum_apply]`. Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[← LinearMap.smul_apply, ← map_smul, Matrix.smul_single, smul_eq_mul, mul_one]`. Conclude with `this`. Rewrite using `[SetLike.mem_coe, h1]`.
+
+Use `Submodule.sum_mem _ fun i _ => Submodule.sum_mem _ fun j _ => ?_` and prove the remaining obligations. Distinguish the cases in `hij : Z i j = 0`. Rewrite using `[hij, zero_smul]`. Conclude with `Submodule.zero_mem _`. Use `Submodule.smul_mem _ _ (Submodule.mem_orthogonal_singleton_iff_inner_left.2 (hn j i ?_ ?_ w hw))` and prove the remaining obligations.
+
+Use `congrFun (congrFun hZ1 i) j` as an intermediate fact. Simplify using `only [hJ, Formalism.REAL.Jm, Matrix.mul_diagonal, Matrix.smul_apply, smul_eq_mul, u₀] at this`. Assume the negation of the conclusion as `hj`. Consider the cases of `s`. Rewrite `this` using `[if_pos (by simpa using hj), if_neg (by simp)]`.
+
+Conclude with `hij (by linear_combination (1 / 2 : ℂ) * this)`. Rewrite `this` using `[if_neg hj, if_pos rfl]`. Conclude with `hij (by linear_combination (-1 / 2 : ℂ) * this)`. Use `congrFun (congrFun hZ2 i) j` as an intermediate fact. Simplify using `only [hJ, Formalism.REAL.Jm, Matrix.diagonal_mul, Matrix.neg_apply, Matrix.smul_apply, smul_eq_mul, u₀] at this`.
+
+Assume the negation of the conclusion as `hi`. Consider the cases of `s`. Rewrite `this` using `[if_neg (by simpa using hi), if_neg (by simp)]`. Conclude with `hij (by linear_combination (-1 / 2 : ℂ) * this)`. Rewrite `this` using `[if_pos (by simpa using hi), if_pos rfl]`.
+
+Conclude with `hij (by linear_combination (1 / 2 : ℂ) * this)`. Conclude with `hu0 (inner_self_eq_zero.1 (Submodule.mem_orthogonal_singleton_iff_inner_left.1 (h huS)))`. Take `⟨a', c', ha', hc', w, hw, hwu⟩` from `hex`. Apply the tactic sequence `rw [(hlie w u (hVs w hw) hus).2.2.2, neg_ne_zero, hJ, conjH_single_ne a' c' (by rw [ha', hc']; cases s <;> simp), ← hJ] at hwu`. Establish `hy : IsWtOn (Kset ε) σ (μ + root a' c') (dRepC J σ (Matrix.single a' c' 1) u)`.
+
+Introduce `θ hθ`. Establish `h1` using `(hlie u u hus hus).2.2.1 _ (kset_sub hθ) (Matrix.single a' c' 1)`. Establish `h2` using `((hlie u 0 hus hs0).1 (Complex.exp (((∑ a, μ a * θ a : ℝ) : ℂ) * Complex.I)) (Matrix.single a' c' 1) 0).2.1`. Rewrite `h2` using `[add_zero, hz2, add_zero]`. Rewrite using `[h1, tor_conj, hsm1 _ ((hsmv u hus).1 _ (kset_sub hθ)), hu θ hθ, h2, smul_smul, ← Complex.exp_add]`.
+
+Use `congr 2`. Simplify using `only [Pi.add_apply, add_mul, Finset.sum_add_distrib, sum_root_mul]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Establish `hd` using `cdom_of_inner_ne hσ lam hy (hWle hw.1) hwu`.
+
+Conclude with `absurd (hmin μ S' hS') (not_le.2 (vNormSq_lt_of_blocks p s ε hε lam μ hlam (dominant_of_isKTypeOf hσ hS₀) (dominant_of_isKTypeOf hσ hS') a' c' ha' hc' hd))`.
+-/
 theorem dRepC_single_eq_zero (p : ℕ) (s : Bool) (ε : Fin n → Bool) (lam : Fin n → ℝ) (H : Type) [NormedAddCommGroup H]
     [InnerProductSpace ℂ H] (σ : Mt n → (H →L[ℂ] H)) (hlam : StrictAnti lam)
     (hε : ∀ a : Fin n, ε a = if (a : ℕ) < p then s else !s) (hDS : IsDS ε lam σ) (v : H) (hv : v ∈ lowKSub ε lam σ)
@@ -201,6 +269,13 @@ theorem dRepC_single_eq_zero (p : ℕ) (s : Bool) (ε : Fin n → Bool) (lam : F
   exact absurd (hmin μ S' hS') (not_le.2 (vNormSq_lt_of_blocks p s ε hε lam μ hlam (dominant_of_isKTypeOf hσ hS₀)
     (dominant_of_isKTypeOf hσ hS') a' c' ha' hc' hd))
 
+/- English proof (translation)
+Introduce `n H _ _ ε lam π p s hε hlam hDS v hv hsm a b hab hba X hX Y hY hXY`. Establish `hb : ε b = s ∧ ε a = !s`. Rewrite `hab`, the goal using `[hε a, hε b]`. Rewrite `hba` using `[Fin.lt_def]`. Distinguish the cases in `ha : (a : ℕ) < p`.
+
+Rewrite `hab` using `[if_pos ha, if_pos (hba.trans ha)]`. Conclude with `absurd rfl hab`. Distinguish the cases in `hb : (b : ℕ) < p`. Simplify using `[ha, hb]`. Rewrite `hab` using `[if_neg ha, if_neg hb]`.
+
+Conclude with `absurd rfl hab`. Establish `h` using `dRepC_single_eq_zero p s ε lam H π hlam hε hDS v hv hsm b a hb.1 hb.2`. Rewrite `h` using `[← hXY]`. Conclude with `(GlobalTheory.HolDict.LieAct.dRepC_parts (Matrix.isUnit_det_of_left_inverse (Jm_mul_self ε)).ne_zero hX hY v).symm.trans h`.
+-/
 theorem lowK_killed : ∀ (n : ℕ) (H : Type) [NormedAddCommGroup H] [InnerProductSpace ℂ H] (ε : Fin n → Bool) (lam : Fin n → ℝ) (π : Matrix (Fin n) (Fin n) ℂ → (H →L[ℂ] H)) (p : ℕ) (s : Bool), (∀ a : Fin n, ε a = if (a : ℕ) < p then s else !s) → StrictAnti lam → IsDS ε lam π → ∀ v ∈ lowKSub ε lam π, SmoothVec {X : Matrix (Fin n) (Fin n) ℂ | Xᴴ * Formalism.REAL.Jm ε + Formalism.REAL.Jm ε * X = 0} π v → ∀ a b : Fin n, ε a ≠ ε b → b < a → ∀ X ∈ {X : Matrix (Fin n) (Fin n) ℂ | Xᴴ * Formalism.REAL.Jm ε + Formalism.REAL.Jm ε * X = 0}, ∀ Y ∈ {X : Matrix (Fin n) (Fin n) ℂ | Xᴴ * Formalism.REAL.Jm ε + Formalism.REAL.Jm ε * X = 0}, X + Complex.I • Y = Matrix.single a b 1 → dRep π X v + Complex.I • dRep π Y v = 0 := by
   intro n H _ _ ε lam π p s hε hlam hDS v hv hsm a b hab hba X hX Y hY hXY
   have hb : ε b = s ∧ ε a = !s := by

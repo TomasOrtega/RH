@@ -7,6 +7,21 @@ open UpperTheory.V.Af.Fin (emb e1 e2 blk Bdd)
 open GlobalTheory.PRep (fixed)
 open scoped TensorProduct
 
+/- English proof (translation)
+Introduce `hC hL hB hO E _ _ _ a S hS`. Take `⟨L, hLo, hl⟩` from `hS.level`. Take `⟨L', hL'o, hle, T, hT, hsp⟩` from `hL E a L hLo`. Take `⟨h1, h2, h3⟩` from `hO E a S`. Establish `hb` using `hB E a S hS L' hL'o`.
+
+Establish `hK : ∀ w ∉ T, fixed (finRep E a) L' ≤ fixed (fL a w) (KGL w a)` using `fun w hw φ hφ => GlobalTheory.LGrp.mem_fixed.2 fun k hk => GlobalTheory.LGrp.mem_fixed.1 hφ _ ((hsp w hw).1 k hk)`. Use `⟨T, hT, hull S ⊓ fixed (finRep E a) L', le_inf h1 fun φ hφ => ?_, ?_, fun φ hφ => ?_, fun w hw => inf_le_right.trans (hK w hw), ?_⟩` and prove the remaining obligations. Use `GlobalTheory.LGrp.mem_fixed.2 fun u hu => Subtype.ext (funext fun g => ?_)` and prove the remaining obligations. Use `hl _ ⟨φ, hφ, rfl⟩ u (hle hu) g` as an intermediate fact. Rewrite `this` using `[UpperTheory.V.Fb.finEmb_eq]`.
+
+Conclude with `this`. Use `haveI := UpperTheory.V.Af.Fin.formsFinite E a _ hb`. Conclude with `Module.Finite.equiv (Submodule.equivMapOfInjective _ (UpperTheory.V.Cm.smEq E a).injective _).symm`. Conclude with `(UpperTheory.V.Cm.isAutForm_iff φ).2 (UpperTheory.isAutomorphicForm_of_bdd_submodule E a _ hb _ ⟨φ, hφ, rfl⟩)`. Introduce and unpack `(⟨t, u⟩ | ⟨⟨w, hw⟩, h, hh⟩) φ ⟨hφ, hφ'⟩`.
+
+Use `⟨h2 t u φ hφ, GlobalTheory.LGrp.mem_fixed.2 fun k hk => ?_⟩` and prove the remaining obligations. Establish `e` using `LinearMap.congr_fun ((hC E a t u).1 (finGL E a k)).eq φ`. Establish `e' : rt E a (finGL E a k) φ = φ` using `GlobalTheory.LGrp.mem_fixed.1 hφ' k hk`. Rewrite `e` using `[Module.End.mul_apply, Module.End.mul_apply, e']`. Conclude with `e.symm`.
+
+Establish `hc` using `Final.GLintComm E w a`. Use `⟨?_, GlobalTheory.LGrp.mem_fixed.2 fun u hu => ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `heckeVec (fL a w) (KGL w a) h φ ∈ hull S`. Rewrite using `[heckeVec, finsum_eq_sum (fun c : _ ⧸ KGL w a => h c.out • fL a w c.out φ) (finite_heckeVec hc hh (fL a w) φ)]`. Conclude with `Submodule.sum_mem _ fun c _ => Submodule.smul_mem _ _ (h3 _ φ hφ)`.
+
+Express the relevant statement in the definitionally equal form `finRep E a u (heckeVec (fL a w) (KGL w a) h φ) = heckeVec (fL a w) (KGL w a) h φ`. Take `⟨k, hk, u', hu', e1, rfl⟩` from `(hsp w hw).2 u hu`. Establish `e2` using `map_heckeVec hc hh (ρ := fL a w) (ρ' := fL a w) (finRep E a u') (fun g y => by`. Express the relevant statement in the definitionally equal form `finRep E a u' (finRep E a (locGL E a w g) y) = finRep E a (locGL E a w g) (finRep E a u' y)`. Rewrite using `[← Module.End.mul_apply, ← Module.End.mul_apply, ← map_mul, ← map_mul, LocUniq.comm_locGL w e1]) φ`.
+
+Rewrite using `[map_mul, Module.End.mul_apply, e2, GlobalTheory.LGrp.mem_fixed.1 hφ' u' hu']`. Conclude with `GlobalTheory.LGrp.mem_fixed.1 (SatCompare.heckeVec_mem_fixed hc hh (hK w hw hφ')) k hk`.
+-/
 theorem UpperTheory.V.Cj.S.stabSp :
     UpperTheory.V.Cj.S.CapAct → UpperTheory.V.Cj.S.LevelSplit → UpperTheory.V.Cj.S.HullBdd → UpperTheory.V.Cj.S.HullOps → UpperTheory.V.Cj.S.StabSp := by
   intro hC hL hB hO E _ _ _ a S hS

@@ -7,6 +7,11 @@ noncomputable section
 
 namespace PI.ET
 
+/- English proof (translation)
+Simplify using `only [det_apply, mul_apply, Fintype.prod_sum, Finset.smul_sum]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun f _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.mul_sum]`. Use `Finset.sum_congr rfl fun σ _ => ?_` and prove the remaining obligations.
+
+Simplify using `only [Finset.prod_mul_distrib, submatrix_apply, id, Units.smul_def, zsmul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem det_mul_rect {R : Type*} [CommRing R] {k n : ℕ}
     (A : Matrix (Fin k) (Fin n) R) (B : Matrix (Fin n) (Fin k) R) :
     (A * B).det = ∑ f : Fin k → Fin n, (∏ i, B (f i) i) * (A.submatrix id f).det := by
@@ -18,9 +23,25 @@ theorem det_mul_rect {R : Type*} [CommRing R] {k n : ℕ}
   simp only [Finset.prod_mul_distrib, submatrix_apply, id, Units.smul_def, zsmul_eq_mul]
   ring
 
+/- English proof (translation)
+The claim follows from `(Equiv.arrowCongr τ.symm (Equiv.refl (Fin n))).sum_comp F`.
+-/
 theorem sum_comp_perm {M : Type*} [AddCommMonoid M] {k n : ℕ} (F : (Fin k → Fin n) → M)
     (τ : Equiv.Perm (Fin k)) : ∑ f : Fin k → Fin n, F (fun i => f (τ i)) = ∑ f, F f := (Equiv.arrowCongr τ.symm (Equiv.refl (Fin n))).sum_comp F
 
+/- English proof (translation)
+Establish `h2 : ∀ f : Fin k → Fin n, ((Vᴴ * diagonal q).submatrix id f).det = (∏ i, q (f i)) * star (V.submatrix f id).det`. Introduce `f`. Establish `he : (Vᴴ * diagonal q).submatrix id f = (V.submatrix f id)ᴴ * diagonal (fun i => q (f i))`. Use extensionality with `a b`. Simplify using `[conjTranspose_apply, mul_diagonal, submatrix_apply]`.
+
+Rewrite using `[he, det_mul, det_diagonal, det_conjTranspose, mul_comm]`. Establish `h3 : ∀ (f : Fin k → Fin n) (τ : Equiv.Perm (Fin k)), (V.submatrix (fun i => f (τ i)) id).det = Equiv.Perm.sign τ * (V.submatrix f id).det`. Introduce `f τ`. Conclude with `det_permute τ (V.submatrix f id)`. Establish `hperm : ∀ τ : Equiv.Perm (Fin k), ∑ f : Fin k → Fin n, (∏ i, V (f i) i) * ((∏ i, q (f i)) * star (V.submatrix f id).det) = ∑ f : Fin k → Fin n, ((Equiv.Perm.sign τ : ℂ) * ∏ i, V (f (τ i)) i) * ((∏ i, q (f i)) * star (V.submatrix f id).det)`.
+
+Introduce `τ`. Rewrite using `[← sum_comp_perm (fun f : Fin k → Fin n => (∏ i, V (f i) i) * ((∏ i, q (f i)) * star (V.submatrix f id).det)) τ]`. Use `Finset.sum_congr rfl fun f _ => ?_` and prove the remaining obligations. Simplify using `only`. Rewrite using `[h3 f τ, Equiv.prod_comp τ (fun i => q (f i)), star_mul', star_intCast]`.
+
+Expand and normalize the polynomial expressions, which then agree. Rewrite using `[det_mul_rect]`. Repeatedly rewrite using `[h2]`. Rewrite using `[show (k.factorial : ℂ) * ∑ f : Fin k → Fin n, (∏ i, V (f i) i) * ((∏ i, q (f i)) * star (V.submatrix f id).det) = ∑ τ : Equiv.Perm (Fin k), ∑ f : Fin k → Fin n, (∏ i, V (f i) i) * ((∏ i, q (f i)) * star (V.submatrix f id).det) by`. Rewrite using `[Finset.sum_const, Finset.card_univ, Fintype.card_perm, Fintype.card_fin, nsmul_eq_mul]]`.
+
+Rewrite using `[Finset.sum_congr rfl fun τ _ => hperm τ, Finset.sum_comm]`. Use `Finset.sum_congr rfl fun f _ => ?_` and prove the remaining obligations. Establish `hd : (V.submatrix f id).det = ∑ τ : Equiv.Perm (Fin k), (Equiv.Perm.sign τ : ℂ) * ∏ i, V (f (τ i)) i`. Rewrite using `[det_apply']`. Both sides reduce to the same expression.
+
+Rewrite using `[← Finset.sum_mul, ← hd]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem factorial_mul_det (k n : ℕ) (q : Fin n → ℂ) (V : Matrix (Fin n) (Fin k) ℂ) :
     (k.factorial : ℂ) * (Vᴴ * diagonal q * V).det =
       ∑ f : Fin k → Fin n, (∏ i, q (f i)) *
@@ -62,6 +83,17 @@ theorem factorial_mul_det (k n : ℕ) (q : Fin n → ℂ) (V : Matrix (Fin n) (F
   rw [← Finset.sum_mul, ← hd]
   ring
 
+/- English proof (translation)
+Establish `hs : (Finset.univ.image f).card = k`. Rewrite using `[Finset.card_image_of_injective _ hf, Finset.card_univ, Fintype.card_fin]`. Use `set e := (Finset.univ.image f).orderEmbOfFin hs with he`. Establish `h1 : ∏ i, p (f i) = ∏ j : Fin k, p (e j)`. Rewrite using `[← Finset.prod_image (fun i _ j _ h => hf h), ← Finset.map_orderEmbOfFin_univ _ hs, Finset.prod_map]`.
+
+Both sides reduce to the same expression. Establish `h3 : ∀ m (hm : m < k), m ≤ (e ⟨m, hm⟩ : ℕ)`. Introduce `m`. Proceed by induction on `m with`. Consider the case `zero => intro _`.
+
+Conclude with `Nat.zero_le _`. Consider the case `succ m ih`. Introduce `hm`. Establish `hlt : e ⟨m, by omega⟩ < e ⟨m + 1, hm⟩` using `e.strictMono (Fin.mk_lt_mk.2 (Nat.lt_succ_self m))`. Establish `h' : (e ⟨m, by omega⟩ : ℕ) < e ⟨m + 1, hm⟩` using `hlt`.
+
+Use `ih (by omega)` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Rewrite using `[h1]`. Use `Finset.prod_le_prod (fun j _ => hpos _) fun j _ => hp ?_` and prove the remaining obligations. Rewrite using `[Fin.le_iff_val_le_val, Fin.val_castLE]`.
+
+Conclude with `h3 j.1 j.2`.
+-/
 theorem prod_le_of_injective {n k : ℕ} (hk : k ≤ n) (p : Fin n → ℝ) (hp : Antitone p)
     (hpos : ∀ i, 0 ≤ p i) (f : Fin k → Fin n) (hf : Function.Injective f) :
     ∏ i, p (f i) ≤ ∏ i : Fin k, p (Fin.castLE hk i) := by
@@ -88,6 +120,21 @@ theorem prod_le_of_injective {n k : ℕ} (hk : k ≤ n) (p : Fin n → ℝ) (hp 
   rw [Fin.le_iff_val_le_val, Fin.val_castLE]
   exact h3 j.1 j.2
 
+/- English proof (translation)
+Establish `hT` using `factorial_mul_det k n (fun i => (p i : ℂ)) V`. Establish `hU` using `factorial_mul_det k n (fun _ => (1 : ℂ)) V`. Rewrite `hU` using `[diagonal_one, Matrix.mul_one, hV, det_one, mul_one]`. Simplify using `only [Finset.prod_const_one, one_mul] at hU`. Establish `hsq : ∀ f : Fin k → Fin n, (V.submatrix f id).det * star (V.submatrix f id).det = ((‖(V.submatrix f id).det‖ ^ 2 : ℝ) : ℂ)`.
+
+Introduce `f`. Rewrite using `[Complex.star_def, Complex.mul_conj']`. Use `push_cast`. Both sides reduce to the same expression. Rewrite `hU` using `[hsq]`.
+
+Establish `hU' : (k.factorial : ℝ) = ∑ f : Fin k → Fin n, ‖(V.submatrix f id).det‖ ^ 2`. Conclude with `hU` after adjusting the coercions. Use `set P := ∏ i : Fin k, p (Fin.castLE hk i)`. Establish `hterm : ∀ f : Fin k → Fin n, ‖(∏ i, ((p (f i) : ℝ) : ℂ)) * ((V.submatrix f id).det * star (V.submatrix f id).det)‖ ≤ P * ‖(V.submatrix f id).det‖ ^ 2`. Introduce `f`.
+
+Rewrite using `[hsq, norm_mul, Complex.norm_real, Real.norm_of_nonneg (sq_nonneg _), norm_prod]`. Simplify using `only [Complex.norm_real, Real.norm_eq_abs, abs_of_pos (hpos _)]`. Distinguish the cases in `hf : Function.Injective f`. Conclude with `mul_le_mul_of_nonneg_right (prod_le_of_injective hk p hp (fun i => (hpos i).le) f hf) (sq_nonneg _)`. Choose the witnesses or unpack the hypotheses as in `⟨i, j, hij, hne⟩ : ∃ i j, f i = f j ∧ i ≠ j := by`.
+
+Assume the negation of the conclusion as `hc`. Conclude with `hf fun i j h => by_contra fun hne => hc ⟨i, j, h, hne⟩`. Establish `h0 : (V.submatrix f id).det = 0` using `det_zero_of_row_eq hne (by ext c; simp [hij])`. Simplify using `[h0]`. Establish `hfact : (0 : ℝ) < k.factorial` using `by exact_mod_cast Nat.factorial_pos k`.
+
+Establish `hmain : (k.factorial : ℝ) * ‖(Vᴴ * diagonal (fun i => (p i : ℂ)) * V).det‖ ≤ P * k.factorial`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[norm_mul, Complex.norm_natCast]`. Use `_ = ‖∑ f : Fin k → Fin n, (∏ i, ((p (f i) : ℝ) : ℂ)) * ((V.submatrix f id).det * star (V.submatrix f id).det)‖ := by rw [hT]`. Use `_ ≤ ∑ f : Fin k → Fin n, ‖(∏ i, ((p (f i) : ℝ) : ℂ)) * ((V.submatrix f id).det * star (V.submatrix f id).det)‖ := norm_sum_le _ _`.
+
+Use `_ ≤ ∑ f : Fin k → Fin n, P * ‖(V.submatrix f id).det‖ ^ 2 := Finset.sum_le_sum fun f _ => hterm f`. Use `_ = P * k.factorial := by rw [← Finset.mul_sum, hU']`. Use polynomial arithmetic with `[norm_nonneg (Vᴴ * diagonal (fun i => (p i : ℂ)) * V).det]`.
+-/
 theorem kyFan_diag {n k : ℕ} (hk : k ≤ n) (p : Fin n → ℝ) (hp : Antitone p)
     (hpos : ∀ i, 0 < p i) (V : Matrix (Fin n) (Fin k) ℂ) (hV : Vᴴ * V = 1) :
     ‖(Vᴴ * diagonal (fun i => (p i : ℂ)) * V).det‖ ≤ ∏ i : Fin k, p (Fin.castLE hk i) := by
@@ -132,6 +179,13 @@ theorem kyFan_diag {n k : ℕ} (hk : k ≤ n) (p : Fin n → ℝ) (hp : Antitone
       _ = P * k.factorial := by rw [← Finset.mul_sum, hU']
   nlinarith [norm_nonneg (Vᴴ * diagonal (fun i => (p i : ℂ)) * V).det]
 
+/- English proof (translation)
+Introduce `n k hk p W V hp hpos hW hV`. Establish `hW1 : Wᴴ * W = 1`. Use `(mem_unitaryGroup_iff').1 hW` as an intermediate fact. Rewrite `this` using `[star_eq_conjTranspose]`. Then use the resulting hypothesis. Establish `hW2 : W * Wᴴ = 1`.
+
+Use `(mem_unitaryGroup_iff).1 hW` as an intermediate fact. Rewrite `this` using `[star_eq_conjTranspose]`. Then use the resulting hypothesis. Establish `e1 : Vᴴ * (W * diagonal (fun i => (p i : ℂ)) * Wᴴ) * V = (Wᴴ * V)ᴴ * diagonal (fun i => (p i : ℂ)) * (Wᴴ * V)`. Rewrite using `[conjTranspose_mul, conjTranspose_conjTranspose]`. Simplify using `only [Matrix.mul_assoc]`.
+
+Establish `e2 : (Wᴴ * V)ᴴ * (Wᴴ * V) = 1`. Rewrite using `[conjTranspose_mul, conjTranspose_conjTranspose, Matrix.mul_assoc, ← Matrix.mul_assoc W, hW2, Matrix.one_mul, hV]`. Rewrite using `[e1]`. Conclude with `kyFan_diag hk p hp hpos (Wᴴ * V) e2`.
+-/
 theorem kyFanDet : KyFanDet := by
   intro n k hk p W V hp hpos hW hV
   have hW1 : Wᴴ * W = 1 := by

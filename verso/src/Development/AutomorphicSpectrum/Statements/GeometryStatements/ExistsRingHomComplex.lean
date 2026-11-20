@@ -27,6 +27,9 @@ open ReciprocityTheory.AnForm.A ReciprocityTheory.AnForm.M
 open GroundTheory.Heights₂.Heights.Regular hiding le_tmax tmax_le
 open GroundTheory.Heights₂.Heights.LowerBoundFree ReciprocityTheory.ChartRestriction.G.Geo
 
+/- English proof (translation)
+Establish `: x ∈ Function.support kθ`. Unfold `kθ`. Rewrite using `[ContDiffBump.support_normed_eq, mem_ball, Real.dist_eq, sub_zero]`. Conclude with `hx`. Conclude with `lt_of_le_of_ne (kθ_nonneg x) (Ne.symm this)`.
+-/
 theorem kθ_pos {x : ℝ} (hx : |x| < 1 / 2) : 0 < kθ x := by
   have : x ∈ Function.support kθ := by
     unfold kθ
@@ -34,6 +37,19 @@ theorem kθ_pos {x : ℝ} (hx : |x| < 1 / 2) : 0 < kθ x := by
     exact hx
   exact lt_of_le_of_ne (kθ_nonneg x) (Ne.symm this)
 
+/- English proof (translation)
+Rewrite using `[regMax_eq_kK, regMax_eq_kK, ← sub_pos, ← integral_sub (integrable_mul_kK (continuous_tmax_shift ε t)) (integrable_mul_kK (continuous_tmax_shift ε s))]`. Establish `hc : Continuous fun h : ι → ℝ => tmax (fun j => t j + ε * h j) * kK h - tmax (fun j => s j + ε * h j) * kK h` using `((continuous_tmax_shift ε t).mul kK_contDiff.continuous).sub ((continuous_tmax_shift ε s).mul kK_contDiff.continuous)`. Establish `hs : HasCompactSupport fun h : ι → ℝ => tmax (fun j => t j + ε * h j) * kK h - tmax (fun j => s j + ε * h j) * kK h` using `(kK_hasCompactSupport.mul_left).sub (kK_hasCompactSupport.mul_left)`. Use `hc.integral_pos_of_hasCompactSupport_nonneg_nonzero hs (fun h => ?_) (x := Pi.single i (1 / 4)) ?_` and prove the remaining obligations. Establish `: tmax (fun j => s j + ε * h j) ≤ tmax (fun j => t j + ε * h j)` using `tmax_le fun j => le_trans (by linarith [hst j]) (le_tmax (fun j => t j + ε * h j) j)`.
+
+Use `mul_le_mul_of_nonneg_right this (kK_nonneg h)` as an intermediate fact. Simplify using `only [Pi.zero_apply]`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hk : 0 < kK (Pi.single i (1 / 4) : ι → ℝ)`. Use `Finset.prod_pos fun j _ => kθ_pos ?_` and prove the remaining obligations.
+
+Distinguish the cases in `hj : j = i`. Substitute `hj` using the available equality. Simplify using the standard rewrite rules. Evaluate the numerical expressions using `[abs_of_pos]`. Simplify using `[Pi.single_eq_of_ne hj]`.
+
+Establish `h1 : tmax (fun j => s j + ε * (Pi.single i (1 / 4) : ι → ℝ) j) ≤ t i`. Use `tmax_le fun j => ?_` and prove the remaining obligations. Distinguish the cases in `hj : j = i`. Substitute `hj` using the available equality. Simplify using the standard rewrite rules.
+
+Combine the linear equalities and inequalities to obtain the conclusion. Simplify using `[Pi.single_eq_of_ne hj]`. Combine the linear relations using `[hst j, hmax j]`. Establish `h2` using `le_tmax (fun j => t j + ε * (Pi.single i (1 / 4) : ι → ℝ) j) i`. Simplify using `only [Pi.single_eq_same] at h2`.
+
+Rewrite using `[← sub_mul]`. Conclude with `(mul_pos (by linarith) hk).ne'`.
+-/
 theorem regMax_lt {ι : Type} [Fintype ι] [Nonempty ι] {ε : ℝ} (hε : 0 < ε) (s t : ι → ℝ) (i : ι)
     (hst : ∀ j, s j ≤ t j) (hi : s i + ε ≤ t i) (hmax : ∀ j, t j ≤ t i) : regMax ε s < regMax ε t := by
   classical
@@ -96,6 +112,9 @@ def ext (B : BoundedPshData A) (j : Fin B.N) (V U : Set X) (hV : IsOpen V) (hU :
 variable (B : BoundedPshData A) (j : Fin B.N) (V U : Set X) (hV : IsOpen V) (hU : IsOpen U) (hUV : closure U ⊆ V)
     (hVj : V ⊆ B.mid j)
 
+/- English proof (translation)
+The claim follows from `Fin.cases (fun a => contDiffOn_const) fun k => h.smooth k.succ bounds := Fin.cases (fun x _ => ⟨le_rfl, by norm_num⟩) fun k => h.bounds k.succ eq_zero := Fin.cases (fun x hx => absurd hx (Set.notMem_empty x)) fun k => h.eq_zero k.succ eq_neg_one := Fin.cases ⟨∅, isClosed_empty, S …`.
+-/
 theorem ext_cutoff {η : Fin (B.N + 1) → X → ℝ} {C : ℝ} (h : (ext B j V U hV hU hUV hVj).IsCutoffFamily η C) :
     (ext B j V ∅ hV isOpen_empty (by simp) hVj).IsCutoffFamily (Fin.cases (fun _ => -1) fun k => η k.succ)
       (max C 0) where
@@ -116,10 +135,16 @@ theorem ext_cutoff {η : Fin (B.N + 1) → X → ℝ} {C : ℝ} (h : (ext B j V 
 
 def back (k : Fin (B.N + 1)) : Fin B.N := Fin.cases j id k
 
+/- English proof (translation)
+Use `Fin.cases rfl (fun _ => rfl) k` and prove the remaining obligations.
+-/
 theorem ext_phReg (ρ : Mollifier D) (t : ℝ) (k : Fin (B.N + 1)) (x : X) :
     (ext B j V U hV hU hUV hVj).phReg ρ t k x = B.phReg ρ t (back B j k) x := by
   refine Fin.cases rfl (fun _ => rfl) k
 
+/- English proof (translation)
+Use `Fin.cases hVj (fun _ => subset_rfl) k` and prove the remaining obligations.
+-/
 theorem ext_mid (k : Fin (B.N + 1)) : (ext B j V U hV hU hUV hVj).mid k ⊆ B.mid (back B j k) := by
   refine Fin.cases hVj (fun _ => subset_rfl) k
 
@@ -146,6 +171,9 @@ def extS (S : BoundedRegularisationSetting M Xo a w) (j : Fin S.B.N) (V U : Set 
   e1 := S.e1
   e1_ge := S.e1_ge
 
+/- English proof (translation)
+The claim follows from `hS.e1_tendsto_zero compare := hS.compare.mono fun t ht k k' x hx => by have := ht (back S.B j k) (back S.B j k') x ⟨ext_mid S.B j V U hV hU hUV hVj k hx.1, ext_mid S.B j V U hV hU hUV hVj k' hx.2⟩ rw [← ext_phReg S.B j V U hV hU hUV hVj S.ρ t k x, ← ext_phReg S.B j V U hV hU hUV …`.
+-/
 theorem extS_tied (S : BoundedRegularisationSetting M Xo a w) (hS : S.IsTied) (j : Fin S.B.N) (V U : Set M.Xc) (hV : IsOpen V)
     (hU : IsOpen U) (hUV : closure U ⊆ V) (hVj : V ⊆ S.B.mid j) (η : Fin (S.B.N + 1) → M.Xc → ℝ) (C : ℝ)
     (h : (ext S.B j V U hV hU hUV hVj).IsCutoffFamily η C) : (extS S j V U hV hU hUV hVj η C h).IsTied where
@@ -156,6 +184,21 @@ theorem extS_tied (S : BoundedRegularisationSetting M Xo a w) (hS : S.IsTied) (j
     rw [← ext_phReg S.B j V U hV hU hUV hVj S.ρ t k x, ← ext_phReg S.B j V U hV hU hUV hVj S.ρ t k' x] at this
     exact this
 
+/- English proof (translation)
+Establish `hV : IsOpen (S.B.mid j ∩ {x'}ᶜ)` using `(S.B.isOpen_mid j).inter isOpen_compl_singleton`. Establish `hxV : x ∈ S.B.mid j ∩ {x'}ᶜ` using `⟨hj, hxx⟩`. Take `⟨U, hU, hxU, hUV⟩` from `normal_exists_closure_subset (isClosed_singleton (x := x)) hV (Set.singleton_subset_iff.2 hxV)`. Establish `hxU : x ∈ U` using `hxU rfl`. Establish `hVj : S.B.mid j ∩ {x'}ᶜ ⊆ S.B.mid j` using `Set.inter_subset_left`.
+
+Take `⟨η, C, h⟩` from `CutoffsExist.proof M.Xc d M.atlas (ext S.B j _ U hV hU hUV hVj).toPotentialCharts`. Use `⟨extS S j _ U hV hU hUV hVj η C h, extS S j _ ∅ hV isOpen_empty (by simp) hVj _ _ (ext_cutoff S.B j _ U hV hU hUV hVj h), extS_tied S hS .., extS_tied S hS .., rfl, rfl, fun t ht => ⟨?_, fun hm => ?_⟩⟩` and prove the remaining obligations. Use `show regMax _ _ + _ = regMax _ _ + _`. Use `congr 2`. Use function extensionality and compare the values at `k`.
+
+Take `⟨k, hk⟩` from `k`. Use `revert hk`. Use `Fin.cases (fun hk => absurd rfl hk.2) (fun k hk => rfl) k` and prove the remaining obligations. Establish `hε : 0 < S.e1 t` using `ht.trans_le (S.e1_ge t ht) show regMax _ _ + _ < regMax _ _ + _`. Use `add_lt_add_left (regMax_lt hε _ _ ⟨(0 : Fin (S.B.N + 1)), hxV⟩ ?_ ?_ ?_) _` and prove the remaining obligations.
+
+Introduce and unpack `⟨k, hk⟩ revert hk`. Use `Fin.cases (fun hk => ?_) (fun k hk => le_rfl) k` and prove the remaining obligations. Establish `h0 : η (0 : Fin (S.B.N + 1)) x = 0` using `h.eq_zero (0 : Fin (S.B.N + 1)) x hxU`. Use `show S.B.phReg S.ρ t j x + 4 * S.e1 t * (-1) ≤ S.B.phReg S.ρ t j x + 4 * S.e1 t * η (0 : Fin (S.B.N + 1)) x`. Rewrite using `[h0]`.
+
+Combine the linear equalities and inequalities to obtain the conclusion. Establish `h0 : η (0 : Fin (S.B.N + 1)) x = 0` using `h.eq_zero (0 : Fin (S.B.N + 1)) x hxU show S.B.phReg S.ρ t j x + 4 * S.e1 t * (-1) + S.e1 t ≤ S.B.phReg S.ρ t j x + 4 * S.e1 t * η (0 : Fin (S.B.N + 1)) x`. Rewrite using `[h0]`. Combine the linear equalities and inequalities to obtain the conclusion. Introduce and unpack `⟨k, hk⟩`.
+
+Establish `h0 : η (0 : Fin (S.B.N + 1)) x = 0` using `h.eq_zero (0 : Fin (S.B.N + 1)) x hxU`. Establish `h1` using `(h.bounds k x hk).2`. Establish `h2` using `hm _ (ext_mid S.B j _ U hV hU hUV hVj k hk)`. Rewrite `h2` using `[← ext_phReg S.B j _ U hV hU hUV hVj S.ρ t k x]`. Use `show (ext S.B j _ U hV hU hUV hVj).phReg S.ρ t k x + 4 * S.e1 t * η k x ≤ S.B.phReg S.ρ t j x + 4 * S.e1 t * η (0 : Fin (S.B.N + 1)) x`.
+
+Rewrite using `[h0]`. Use the polynomial consequences of the given equalities and inequalities.
+-/
 theorem exists_two (S : BoundedRegularisationSetting M Xo a w) (hS : S.IsTied) {x x' : M.Xc} (hxx : x ≠ x') (j : Fin S.B.N)
     (hj : x ∈ S.B.mid j) : ∃ S₁ S₂ : BoundedRegularisationSetting M Xo a w, S₁.IsTied ∧ S₂.IsTied ∧ S₁.ref = S.ref ∧ S₂.ref = S.ref ∧
       ∀ t, 0 < t → S₁.bregWeight t x' = S₂.bregWeight t x' ∧
@@ -210,6 +253,11 @@ variable {K : Type} [Fintype K] {ι : K → Type} [∀ k, Fintype (ι k)]
   {D : ComponentData II Ψ K ι Ω E} {O Lt : Type} [CommRing O] [AddCommGroup Lt] [Module O Lt]
 
 omit [Fintype K] [∀ k, Fintype (ι k)] in
+/- English proof (translation)
+Establish `he : ∀ f : MRing ι, eval (conjVec z) (map (Int.castRingHom ℂ) f) = starRingEnd ℂ (eval z (map (Int.castRingHom ℂ) f))`. Introduce `f`. Proceed by induction on `f using MvPolynomial.induction_on with`. Consider the case `C a => simp`. Consider the case `add p q hp hq => simp [hp, hq]`.
+
+Consider the case `mul_X p i hp => simp [hp, conjVec]`. Use `⟨fun k => ?_, fun f hf => by rw [he, hz.2 f hf, map_zero]⟩` and prove the remaining obligations. Take `⟨i, hi⟩` from `hz.1 k`. Conclude with `⟨i, by simpa [conjVec] using hi⟩`.
+-/
 theorem conj_mem {P : Ideal (MRing ι)} {z : (Σ k, ι k) → ℂ} (hz : z ∈ mcPts P) : conjVec z ∈ mcPts P := by
   have he : ∀ f : MRing ι, eval (conjVec z) (map (Int.castRingHom ℂ) f) =
       starRingEnd ℂ (eval z (map (Int.castRingHom ℂ) f)) := by
@@ -223,6 +271,15 @@ theorem conj_mem {P : Ideal (MRing ι)} {z : (Σ k, ι k) → ℂ} (hz : z ∈ m
   exact ⟨i, by simpa [conjVec] using hi⟩
 
 omit [DecidableEq Ψ] in
+/- English proof (translation)
+Take `⟨c, hc, hzc⟩` from `exists_eq_smul_orbitRep z`. Establish `hz0` using `hz.1`. Establish `hw0` using `TopNPoly.orbitRep_blocks hz0`. Establish `hwP : orbitRep z ∈ mcPts (mCoordIdeal D.y)`. Establish `h` using `mcPts_smul D.arith.2.1.2.1 (fun k => (c k)⁻¹) (fun k => inv_ne_zero (hc k)) hz`.
+
+Use `h using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `p`. Establish `hp : z p = c p.1 * orbitRep z p` using `congrFun hzc p`. Rewrite using `[hp, ← mul_assoc, inv_mul_cancel₀ (hc _), one_mul]`. Establish `hpr : M.proj (orbitRep z) = M.proj z` using `(M.fibre _ hwP _ hz).2 ⟨c, hc, hzc⟩`.
+
+Establish `hvf : 0 < ∏ p' ∈ D.SB B, D.vertFactor p' (orbitRep z)` using `Finset.prod_pos fun p' hp' => hv p' (Finset.mem_filter.1 hp').1 _ hwP`. Establish `hA` using `A.pos _ hw0`. Establish `hA'` using `D.A'.pos _ hw0`. Establish `hP` using `prod_norm_zpow_pos hc (((1 : ℕ) : ℤ) • muTwDeg H B + ((1 : ℕ) : ℤ) • D.a')`. Use `⟨(∏ k, ‖c k‖ ^ (((1 : ℕ) : ℤ) • muTwDeg H B + ((1 : ℕ) : ℤ) • D.a') k) * A.h (orbitRep z) * (∏ p' ∈ D.SB B, D.vertFactor p' (orbitRep z)) * D.A'.h (orbitRep z), by positivity, ?_⟩` and prove the remaining obligations.
+
+Introduce and unpack `S t rfl`. Unfold `MUc`. Rewrite using `[smoothRepConj_h _ hz, TopNPoly.hermOfFun_h_smul hc hzc hz0 (by positivity), hpr]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem MUc_h {H : HodgeData D} {M : XModel D} {w : ((Σ k, ι k) → ℂ) → ℝ} {z : (Σ k, ι k) → ℂ}
     (hz : z ∈ mcPts (mCoordIdeal D.y)) (hv : ∀ p ∈ D.S, ∀ z ∈ mcPts (mCoordIdeal D.y), 0 < D.vertFactor p z)
     (A : HermLine ι) (B : ℕ) : ∃ c : ℝ, 0 < c ∧ ∀ (S : BoundedRegularisationSetting M D.Xo H.aMu w) (t : ℝ), S.ref = A →
@@ -249,6 +306,17 @@ theorem MUc_h {H : HodgeData D} {M : XModel D} {w : ((Σ k, ι k) → ℂ) → �
   rw [smoothRepConj_h _ hz, TopNPoly.hermOfFun_h_smul hc hzc hz0 (by positivity), hpr]
   ring
 
+/- English proof (translation)
+Assume the negation of the conclusion as `hall`. Use `push Not at hall`. Establish `hev : ∀ (S' : BoundedRegularisationSetting X.M D.Xo X.H.aMu (cuspCorr X.H X.Cd)), S'.IsTied → ∀ᶠ t in 𝓝[>] (0 : ℝ), (MUc X.H S' (4 * D.f + 2) 1 1 t).h (conjVec z) = (MUc X.H S' (4 * D.f + 2) 1 1 t).h z`. Introduce `S' hS'`. Take `⟨t₀, ht₀, h⟩` from `hall S' hS' (4 * D.f + 2) 1 1 le_rfl le_rfl le_rfl`.
+
+Use `filter_upwards [Ioc_mem_nhdsGT ht₀] with t ht`. Conclude with `h t ht.1 ht.2 z`. Establish `key` using `fun j : {j // X.M.proj z ∈ X.S'.B.mid j} => exists_two X.S' X.S'_tied hne j.1 j.2`. Use `choose S₁ S₂ h₁ h₂ r₁ r₂ hw using key`. Establish `e₁` using `eventually_all.2 fun j => hev (S₁ j) (h₁ j)`.
+
+Establish `e₂` using `eventually_all.2 fun j => hev (S₂ j) (h₂ j)`. Take `⟨t, ⟨a₁, a₂⟩, ht⟩` from `((e₁.and e₂).and self_mem_nhdsWithin).exists`. Establish `ht : 0 < t` using `ht`. Take `⟨j, hj⟩` from `Finite.exists_max fun j : {j // X.M.proj z ∈ X.S'.B.mid j} => X.S'.B.phReg X.S'.ρ t j (X.M.proj z)`. Take `⟨c, hc, hcz⟩` from `MUc_h (H := X.H) (M := X.M) (w := cuspCorr X.H X.Cd) hz hv X.S'.ref (4 * D.f + 2)`.
+
+Take `⟨c', -, hcz'⟩` from `MUc_h (H := X.H) (M := X.M) (w := cuspCorr X.H X.Cd) (conj_mem hz) hv X.S'.ref (4 * D.f + 2)`. Establish `b₁` using `a₁ j`. Establish `b₂` using `a₂ j`. Rewrite `b₁` using `[hcz _ _ (r₁ j), hcz' _ _ (r₁ j)]`. Rewrite `b₂` using `[hcz _ _ (r₂ j), hcz' _ _ (r₂ j), ← (hw j t ht).1, b₁]`.
+
+Use `Real.exp_injective (mul_left_cancel₀ hc.ne' b₂)` as an intermediate fact. Establish `hlt` using `(hw j t ht).2 fun k hk => hj ⟨k, hk⟩`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem exists_not_conj (X : ComponentSetting D O Lt) {z : (Σ k, ι k) → ℂ} (hz : z ∈ mcPts (mCoordIdeal D.y))
     (hne : X.M.proj z ≠ X.M.proj (conjVec z))
     (hv : ∀ p ∈ D.S, ∀ z ∈ mcPts (mCoordIdeal D.y), 0 < D.vertFactor p z) :
@@ -282,6 +350,27 @@ theorem exists_not_conj (X : ComponentSetting D O Lt) {z : (Σ k, ι k) → ℂ}
 
 omit [DecidableEq Ψ] in
 
+/- English proof (translation)
+Assume the negation of the conclusion as `hall`. Use `push Not at hall`. Take `⟨z₀, hz₀⟩` from `hne`. Take `⟨a, -⟩` from `D.chart_cover z₀ hz₀`. Use `set χ := D.chart a`.
+
+Establish `hn : 0 < Fintype.card Ψ * D.j * (D.N - D.j)`. Use `D.one_le_j` as an intermediate fact. Use `D.j_le` as an intermediate fact. Use `D.two_le_N` as an intermediate fact. Conclude with `Nat.mul_pos (Nat.mul_pos Fintype.card_pos (by omega)) (by omega)`.
+
+Set `v : Fin (Fintype.card Ψ * D.j * (D.N - D.j)) → ℂ` to `Pi.single ⟨0, hn⟩ 1`. Establish `hv : ‖v‖ = 1` using `by simp [v, Pi.norm_single]`. Establish `h0 : (0 : Fin (Fintype.card Ψ * D.j * (D.N - D.j)) → ℂ) ∈ ball 0 1` using `mem_ball_self one_pos`. Use `choose c hc using (χ.mem 0 h0).1`. Establish `hball : ∀ s ∈ ball (0 : ℂ) 1, s • v ∈ ball (0 : Fin (Fintype.card Ψ * D.j * (D.N - D.j)) → ℂ) 1`.
+
+Introduce `s hs`. Rewrite `hs`, the goal using `[mem_ball_zero_iff]`. Rewrite using `[norm_smul, hv, mul_one]` and apply the resulting hypothesis. Establish `han : ∀ p, AnalyticOnNhd ℂ (fun s : ℂ => χ.γ (s • v) p) (ball 0 1)` using `fun p s hs => by`. Establish `h1 : AnalyticAt ℂ (fun s : ℂ => s • v) s` using `by fun_prop`.
+
+Establish `h2` using `(χ.analytic _ (hball s hs)).comp_of_eq h1 rfl`. Conclude with `analyticAt_pi_iff.1 h2 p`. Establish `hnz : ∀ᶠ s in 𝓝 (0 : ℂ), ∀ k, χ.γ (s • v) ⟨k, c k⟩ ≠ 0` using `eventually_all.2 fun k => (han ⟨k, c k⟩ 0 (mem_ball_self one_pos)).continuousAt.eventually_ne (by simpa using hc k)`. Take `⟨r, hr, hrz⟩` from `Metric.eventually_nhds_iff_ball.1 (hnz.and (ball_mem_nhds (0 : ℂ) one_pos))`. Establish `hconst : ∀ p : Σ k, ι k, ∃ e, ∀ s ∈ ball (0 : ℂ) r, χ.γ (s • v) p / χ.γ (s • v) ⟨p.1, c p.1⟩ = e`.
+
+Introduce `p`. Use `AnalyticOnNhd.eq_const_of_im_eq_const (c₀ := 0) (fun s hs => ?_) (fun s hs => ?_) isOpen_ball (isConnected_ball hr)` and prove the remaining obligations. Conclude with `(han p s (hrz s hs).2).div (han _ s (hrz s hs).2) ((hrz s hs).1 _)`. Establish `hm` using `χ.mem _ (hball s (hrz s hs).2)`. Take `⟨d, hd, he⟩` from `(M.fibre _ hm _ (conj_mem hm)).1 (hall _ hm)`.
+
+Establish `e1 : starRingEnd ℂ (χ.γ (s • v) p) = d p.1 * χ.γ (s • v) p` using `congrFun he p`. Establish `e2 : starRingEnd ℂ (χ.γ (s • v) ⟨p.1, c p.1⟩) = d p.1 * χ.γ (s • v) ⟨p.1, c p.1⟩` using `congrFun he ⟨p.1, c p.1⟩`. Rewrite using `[← Complex.conj_eq_iff_im, map_div₀, e1, e2, mul_div_mul_left _ _ (hd _)]`. Establish `hs : ((r / 2 : ℝ) : ℂ) ∈ ball (0 : ℂ) r`. Rewrite using `[mem_ball_zero_iff, Complex.norm_real, Real.norm_eq_abs, abs_of_pos (by positivity)]`.
+
+Combine the linear equalities and inequalities to obtain the conclusion. Establish `hinj` using `χ.injective _ (hball _ (hrz _ hs).2) 0 h0 (fun k => χ.γ (((r / 2 : ℝ) : ℂ) • v) ⟨k, c k⟩ / χ.γ 0 ⟨k, c k⟩) (fun k => div_ne_zero ((hrz _ hs).1 k) (hc k)) (by`. Use function extensionality and compare the values at `p`. Take `⟨e, he⟩` from `hconst p`. Establish `e1` using `he _ hs`.
+
+Establish `e2` using `he 0 (mem_ball_self hr)`. Rewrite `e2` using `[zero_smul, ← e1, div_eq_div_iff (hc _) ((hrz _ hs).1 _)]`. Simplify using `only [torusSmul]`. Rewrite using `[div_mul_eq_mul_div, eq_div_iff (hc _)]`. Take the linear combination `-e2)`.
+
+Use `congrArg norm hinj` as an intermediate fact. Rewrite `this` using `[norm_smul, hv, mul_one, norm_zero, Complex.norm_real, Real.norm_eq_abs, abs_of_pos (by positivity)]`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem exists_nonreal [Nonempty Ψ] (M : XModel D) (hne : (mcPts (mCoordIdeal D.y)).Nonempty) :
     ∃ z ∈ mcPts (mCoordIdeal D.y), M.proj z ≠ M.proj (conjVec z) := by
   classical
@@ -348,6 +437,11 @@ open MvPolynomial GroundTheory.Heights₂.Heights.Targets.LiftGraphPoints
 variable {K : Type} [Fintype K] {ι : K → Type} [∀ k, Fintype (ι k)] {Ω : Type} [Field Ω]
 
 omit [Fintype K] [∀ k, Fintype (ι k)] in
+/- English proof (translation)
+Establish `h0 : mConeMap y f = 0` using `hf`. Establish `h : ∀ f : MRing ι, aeval (fun p : Σ k, ι k => y p * T p.1) f = eval T (mConeMap y f)`. Introduce `f`. Proceed by induction on `f using MvPolynomial.induction_on with`. Consider the case `C a => simp`.
+
+Consider the case `add p q hp hq => simp [hp, hq]`. Consider the case `mul_X p i hp => rw [map_mul, map_mul, map_mul, hp]`. Simplify using `[mConeMap]`. Rewrite using `[h, h0, map_zero]`.
+-/
 theorem aeval_scaled_eq_zero (y : (Σ k, ι k) → Ω) (T : K → Ω) {f : MRing ι} (hf : f ∈ mCoordIdeal y) :
     aeval (fun p : Σ k, ι k => y p * T p.1) f = 0 := by
   have h0 : mConeMap y f = 0 := hf
@@ -360,11 +454,17 @@ theorem aeval_scaled_eq_zero (y : (Σ k, ι k) → Ω) (T : K → Ω) {f : MRing
   rw [h, h0, map_zero]
 
 omit [Fintype K] [∀ k, Fintype (ι k)] in
+/- English proof (translation)
+Introduce `h0`. Apply `h` to reduce the goal to its premises. Rewrite using `[mCoordIdeal, RingHom.mem_ker, mConeMap, aeval_X, h0, C_0, zero_mul]`.
+-/
 theorem y_ne_of_X_notMem (y : (Σ k, ι k) → Ω) {p : Σ k, ι k} (h : (X p : MRing ι) ∉ mCoordIdeal y) : y p ≠ 0 := by
   intro h0
   apply h
   rw [mCoordIdeal, RingHom.mem_ker, mConeMap, aeval_X, h0, C_0, zero_mul]
 
+/- English proof (translation)
+Take `⟨m, hm⟩` from `Ideal.exists_maximal A`. Use `letI := Ideal.Quotient.field m`. Use `haveI : Module.Finite ℚ (A ⧸ m) := finite_of_finite_type_of_isJacobsonRing ℚ (A ⧸ m)`. Conclude with `⟨(IsAlgClosed.lift (R := ℚ) (S := A ⧸ m) (M := ℂ)).toRingHom.comp (Ideal.Quotient.mk m)⟩`.
+-/
 theorem exists_ringHom_complex (A : Type) [CommRing A] [Nontrivial A] [Algebra ℚ A] [Algebra.FiniteType ℚ A] :
     Nonempty (A →+* ℂ) := by
   obtain ⟨m, hm⟩ := Ideal.exists_maximal A
@@ -372,6 +472,17 @@ theorem exists_ringHom_complex (A : Type) [CommRing A] [Nontrivial A] [Algebra �
   haveI : Module.Finite ℚ (A ⧸ m) := finite_of_finite_type_of_isJacobsonRing ℚ (A ⧸ m)
   exact ⟨(IsAlgClosed.lift (R := ℚ) (S := A ⧸ m) (M := ℂ)).toRingHom.comp (Ideal.Quotient.mk m)⟩
 
+/- English proof (translation)
+Use `choose c hc using hy`. Establish `hyc` using `fun k => y_ne_of_X_notMem y (hc k)`. Set `s : Set Ω` to `Set.range y ∪ Set.range fun k => (y ⟨k, c k⟩)⁻¹`. Establish `hs : s.Finite` using `(Set.finite_range _).union (Set.finite_range _)`. Set `A` to `Algebra.adjoin ℚ s`.
+
+Use `haveI : Algebra.FiniteType ℚ A := by`. Use `⟨(Subalgebra.fg_top A).2 ⟨hs.toFinset, by simp [A]⟩⟩` and prove the remaining obligations. Take `⟨φ⟩` from `exists_ringHom_complex A`. Set `y' : (Σ k, ι k) → A` to `fun p => ⟨y p, Algebra.subset_adjoin (Or.inl ⟨p, rfl⟩)⟩`. Use `⟨fun p => φ (y' p), fun k => ⟨c k, ?_⟩, fun f hf => ?_⟩` and prove the remaining obligations.
+
+Establish `: y' ⟨k, c k⟩ * ⟨(y ⟨k, c k⟩)⁻¹, Algebra.subset_adjoin (Or.inr ⟨k, rfl⟩)⟩ = 1` using `Subtype.ext (mul_inv_cancel₀ (hyc k))`. Establish `h2` using `congrArg φ this`. Rewrite `h2` using `[map_mul, map_one]`. Conclude with `left_ne_zero_of_mul_eq_one h2`. Establish `h1 : aeval y f = 0` using `by simpa using aeval_scaled_eq_zero y 1 hf`.
+
+Establish `h2 : ∀ f : MRing ι, ((aeval y' f : A) : Ω) = aeval y f ∧ φ (aeval y' f) = aeval (fun p => φ (y' p)) f`. Introduce `f`. Proceed by induction on `f using MvPolynomial.induction_on with`. Consider the case `C a => simp`. Consider the case `add p q hp hq => simp [hp.1, hq.1, hp.2, hq.2]`.
+
+Consider the case `mul_X p i hp => simp [hp.1, hp.2, y']`. Establish `h3 : aeval y' f = 0` using `Subtype.ext ((h2 f).1.trans h1)`. Rewrite using `[eval_map_int, ← (h2 f).2, h3, map_zero]`.
+-/
 theorem mcPts_nonempty [Algebra ℚ Ω] (y : (Σ k, ι k) → Ω) (hy : IsRelevant (mCoordIdeal y)) :
     (mcPts (mCoordIdeal y)).Nonempty := by
   classical
@@ -400,6 +511,9 @@ theorem mcPts_nonempty [Algebra ℚ Ω] (y : (Σ k, ι k) → Ω) (hy : IsReleva
     have h3 : aeval y' f = 0 := Subtype.ext ((h2 f).1.trans h1)
     rw [eval_map_int, ← (h2 f).2, h3, map_zero]
 
+/- English proof (translation)
+Use `⟨∑ m ∈ F.support, ∑ p, m p, fun M' hM' m hm k => le_trans ?_ hM'⟩` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem exists_bound (F : MRing ι) : ∃ M : ℕ, ∀ M', M ≤ M' → ∀ m ∈ F.support, ∀ k, ∑ i, m ⟨k, i⟩ ≤ M' := by
   classical
   refine ⟨∑ m ∈ F.support, ∑ p, m p, fun M' hM' m hm k => le_trans ?_ hM'⟩
@@ -408,6 +522,27 @@ theorem exists_bound (F : MRing ι) : ∃ M : ℕ, ∀ M', M ≤ M' → ∀ m �
     _ = ∑ p, m p := (Fintype.sum_sigma _).symm
     _ ≤ _ := Finset.single_le_sum (f := fun m : (Σ k, ι k) →₀ ℕ => ∑ p, m p) (fun _ _ => Nat.zero_le _) hm
 
+/- English proof (translation)
+Establish `hyc : ∀ k, y ⟨k, c k⟩ ≠ 0` using `fun k => y_ne_of_X_notMem y fun hX => hc k (by simpa using hz.2 _ hX)`. Use `set z' : (Σ k, ι k) → ℂ := fun q => (z ⟨q.1, c q.1⟩)⁻¹ * z q with hz'`. Use `set y' : (Σ k, ι k) → Ω := fun q => y q * (y ⟨q.1, c q.1⟩)⁻¹ with hy'`. Establish `hz'P : z' ∈ mcPts (mCoordIdeal y)` using `mcPts_smul hP (fun k => (z ⟨k, c k⟩)⁻¹) (fun k => inv_ne_zero (hc k)) hz`. Establish `hz1 : ∀ k, z' ⟨k, c k⟩ = 1` using `fun k => inv_mul_cancel₀ (hc k)`.
+
+Establish `hy1 : ∀ k, y' ⟨k, c k⟩ = 1` using `fun k => mul_inv_cancel₀ (hyc k)`. Take `⟨u, v, hu, hv, huv⟩` from `h.unit_off_fibre (RingHom.ker (aeval z' : MRing ι →ₐ[ℤ] ℂ)) (RingHom.ker_isPrime _) (fun a ha => by rw [RingHom.mem_ker, ← eval_map_int]; exact hz'P.2 a ha) (fun k => ⟨c k, by simp [RingHom.mem_ker, hz1]⟩) (by simpa [RingHom.mem_ker] using hp)`. Rewrite `hu`, `hv` using `[RingHom.mem_ker]`. Take `⟨Mu, hMu⟩` from `exists_bound u`. Take `⟨Mv, hMv⟩` from `exists_bound v`.
+
+Establish `hU` using `homogAt_isMultiHomog c (Mu + Mv) u (hMu _ (by omega))`. Establish `hV` using `homogAt_isMultiHomog c (Mu + Mv) v (hMv _ (by omega))`. Establish `sy : ∀ q : Σ k, ι k, y q = y ⟨q.1, c q.1⟩ * y' q` using `fun q => by`. Simplify using `only [hy']`. Clear denominators, using `[hyc q.1]` for the nonvanishing conditions.
+
+Establish `sz : ∀ q : Σ k, ι k, z q = z ⟨q.1, c q.1⟩ * z' q` using `fun q => by`. Simplify using `only [hz']`. Clear denominators, using `[hc q.1]` for the nonvanishing conditions. Establish `eU` using `aeval_scale hU (fun k => z ⟨k, c k⟩) z' z sz`. Establish `eV` using `aeval_scale hV (fun k => z ⟨k, c k⟩) z' z sz`.
+
+Establish `eU'` using `aeval_scale hU (fun k => y ⟨k, c k⟩) y' y sy`. Establish `eV'` using `aeval_scale hV (fun k => y ⟨k, c k⟩) y' y sy`. Rewrite `eU`, `eV` using `[aeval_homogAt c _ _ _ hz1]`. Rewrite `eU'`, `eV'` using `[aeval_homogAt c _ _ _ hy1]`. Establish `hzp : (∏ k, z ⟨k, c k⟩ ^ (Mu + Mv)) ≠ 0` using `Finset.prod_ne_zero_iff.2 fun k _ => pow_ne_zero _ (hc k)`.
+
+Establish `hUz : aeval z (homogAt c (Mu + Mv) u) ≠ 0` using `by rw [eU]; exact mul_ne_zero hzp hu`. Establish `hVz : aeval z (homogAt c (Mu + Mv) v) ≠ 0` using `by rw [eV]; exact mul_ne_zero hzp hv`. Establish `hUy : aeval y (homogAt c (Mu + Mv) u) ≠ 0` using `fun h0 => hUz (by rw [← eval_map_int]; exact hz.2 _ (mem_mCoordIdeal_of_aeval_eq_zero y hU h0))`. Take `⟨bf, bg, hf, hg, hb⟩` from `h.degrees`. Establish `hgy : aeval y g ≠ 0` using `fun h0 => h.den_not_mem (mem_mCoordIdeal_of_aeval_eq_zero y hg h0)`.
+
+Establish `ef` using `aeval_scale hf (fun k => y ⟨k, c k⟩) y' y sy`. Establish `eg` using `aeval_scale hg (fun k => y ⟨k, c k⟩) y' y sy`. Establish `e0 : aeval y' (u * f - v * g) = 0` using `aeval_scaled_eq_zero y (fun k => (y ⟨k, c k⟩)⁻¹) huv`. Rewrite `e0` using `[map_sub, map_mul, map_mul]`. Establish `hm : chartMono y c (-b) * ∏ k, y ⟨k, c k⟩ ^ bf k = ∏ k, y ⟨k, c k⟩ ^ bg k`.
+
+Rewrite using `[chartMono, ← Finset.prod_mul_distrib]`. Use `Finset.prod_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[← zpow_natCast, ← zpow_natCast, ← zpow_add₀ (hyc k), ← hb]`. Use `congr 1`. Simplify using the standard rewrite rules.
+
+Establish `hval : IsValueAt y (aeval y f / aeval y g * chartMono y c (-b)) z (eval z (map (Int.castRingHom ℂ) (homogAt c (Mu + Mv) v)) / eval z (map (Int.castRingHom ℂ) (homogAt c (Mu + Mv) u)))`. Use `⟨_, _, _, hV, hU, hUy, ?_, by rwa [eval_map_int], rfl⟩` and prove the remaining obligations. Rewrite using `[div_mul_eq_mul_div, div_mul_eq_mul_div, eq_div_iff hgy, eU', eV', ef, eg, ← hm]`. Take the linear combination `(-(∏ k, y ⟨k, c k⟩ ^ (Mu + Mv)) * chartMono y c (-b) * ∏ k, y ⟨k, c k⟩ ^ bf k) * e0`. Rewrite using `[valAt_eq hz hval, eval_map_int, eval_map_int]`.
+
+Conclude with `div_ne_zero hVz hUz`.
+-/
 theorem valAt_ne_zero {y : (Σ k, ι k) → Ω} {p : ℕ} (hp : p ≠ 0) {b : K → ℤ} {f g : MRing ι}
     (h : IsVerticalDivisorAt (mCoordIdeal y) p b f g) {z : (Σ k, ι k) → ℂ} (hz : z ∈ mcPts (mCoordIdeal y))
     (c : ∀ k, ι k) (hc : ∀ k, z ⟨k, c k⟩ ≠ 0) (hP : IsMultiHomogIdeal (mCoordIdeal y)) :
@@ -467,6 +602,9 @@ theorem valAt_ne_zero {y : (Σ k, ι k) → Ω} {p : ℕ} (hp : p ≠ 0) {b : K 
 variable {II : IntersectionSystem} {Ψ : Type} [Fintype Ψ] [Algebra ℚ Ω]
   {E : Ψ → Type} [∀ τ, AddCommGroup (E τ)] [∀ τ, Module Ω (E τ)]
 
+/- English proof (translation)
+Introduce `p hp z hz`. Unfold `ComponentData.vertFactor`. Use `split_ifs with hc`. Use `mul_pos (norm_pos_iff.2 (valAt_ne_zero (D.S_prime p hp).ne_zero (D.vertical p hp) hz _ hc.choose_spec D.arith.2.1.2.1)) (norm_pos_iff.2 (Finset.prod_ne_zero_iff.2 fun k _ => zpow_ne_zero _ (hc.choose_spec k)))` and prove the remaining obligations. Conclude with `one_pos`.
+-/
 theorem vertFactor_pos (D : ComponentData II Ψ K ι Ω E) :
     ∀ p ∈ D.S, ∀ z ∈ mcPts (mCoordIdeal D.y), 0 < D.vertFactor p z := by
   intro p hp z hz
@@ -476,6 +614,9 @@ theorem vertFactor_pos (D : ComponentData II Ψ K ι Ω E) :
       D.arith.2.1.2.1)) (norm_pos_iff.2 (Finset.prod_ne_zero_iff.2 fun k _ => zpow_ne_zero _ (hc.choose_spec k)))
   · exact one_pos
 
+/- English proof (translation)
+Take `⟨z, hz, hne⟩` from `exists_nonreal X.M (mcPts_nonempty D.y D.arith.2.1.2.2)`. Conclude with `exists_not_conj X hz hne (vertFactor_pos D)`.
+-/
 theorem exists_not_conj' [Nonempty Ψ] {D : ComponentData II Ψ K ι Ω E} {O Lt : Type} [CommRing O] [AddCommGroup Lt]
     [Module O Lt] (X : ComponentSetting D O Lt) :
     ∃ (S' : BoundedRegularisationSetting X.M D.Xo X.H.aMu (cuspCorr X.H X.Cd)) (hS' : S'.IsTied),
@@ -491,6 +632,17 @@ section Final
 open AlgebraicGeometry CategoryTheory NumberField
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Geo.Tor ReciprocityTheory.ChartRestriction.G.Semi
 
+/- English proof (translation)
+Take `⟨τ⟩ : Nonempty (E →+* ℂ)` from `inferInstance`. Establish `h0 : ((H.rt : E)) ^ 2 = -(H.d : E)`. Use `congrArg (algebraMap (𝓞 E) E) H.rt_sq` as an intermediate fact. Simplify using `using this`. Establish `h1 : τ (H.rt : E) ^ 2 = -(H.d : ℂ)` using `by rw [← map_pow, h0]; simp`.
+
+Establish `hd : (0 : ℝ) < H.d` using `by exact_mod_cast H.d_prime.pos`. Establish `hre : (τ (H.rt : E)).re = 0`. Establish `a` using `congrArg Complex.re h1`. Establish `b` using `congrArg Complex.im h1`. Simplify using `[sq] at a b`.
+
+Assume the negation of the conclusion as `hne`. Establish `: (τ (H.rt : E)).im = 0`. Establish `: (τ (H.rt : E)).re * (τ (H.rt : E)).im = 0` using `by linarith`. Conclude with `(mul_eq_zero.1 this).resolve_left hne`. Rewrite `a` using `[this]`.
+
+Use polynomial arithmetic with `[mul_self_nonneg (τ (H.rt : E)).re]`. Break down `sq_eq_sq_iff_eq_or_eq_neg.1 (h1.trans H.sqrt_neg_disc_sq.symm) with h | h` into its components or cases. Conclude with `⟨⟨τ, h⟩⟩`. Use `⟨⟨(starRingEnd ℂ).comp τ, ?_⟩⟩` and prove the remaining obligations. Establish `: H.rt0 = -τ (H.rt : E)` using `by rw [h, neg_neg]`.
+
+Rewrite using `[this]`. Apply the tactic sequence `apply Complex.ext <;> simp [hre]`.
+-/
 theorem cmType_nonempty {E : Type} [Field E] [NumberField E] [IsCMField E] (H : Host E) : Nonempty (CMType H) := by
   obtain ⟨τ⟩ : Nonempty (E →+* ℂ) := inferInstance
   have h0 : ((H.rt : E)) ^ 2 = -(H.d : E) := by
@@ -515,6 +667,9 @@ theorem cmType_nonempty {E : Type} [Field E] [NumberField E] [IsCMField E] (H : 
     rw [this]
     apply Complex.ext <;> simp [hre]
 
+/- English proof (translation)
+The claim follows from `exists_not_conj' _`.
+-/
 theorem line_not_conj : ∃ S' hS', ¬ MUConjInvariant
     { Line.projLineComponentSetting Line.zeroSystem Line.zero_hII with S' := S', S'_tied := hS' } :=
   exists_not_conj' _
@@ -535,6 +690,13 @@ section PullTop
 
 variable {e : ℕ} {X : Type} [TopologicalSpace X]
 
+/- English proof (translation)
+Introduce `x j y hy w`. Take `⟨W, hW, hzW, G, hG, hGe⟩` from `hQ.2 x ((A.chart j).symm y) ((A.chart j).symm y) ⟨hy.2, Q.mem_U _⟩`. Establish `hGa : AnalyticAt ℂ (G ∘ (A.chart j).symm) y` using `hG j y ⟨hy.1, hzW⟩`. Establish `ho : IsOpen ((A.chart j).target ∩ (A.chart j).symm ⁻¹' (W ∩ Q.U x ∩ Q.U ((A.chart j).symm y)))` using `(A.chart j).isOpen_inter_preimage_symm ((hW.inter (Q.isOpen_U x)).inter (Q.isOpen_U _))`. Establish `hev : (Q.φ x ∘ (A.chart j).symm) =ᶠ[𝓝 y] fun v => (Q.φ ((A.chart j).symm y) ∘ (A.chart j).symm) v + 1 * ((G ∘ (A.chart j).symm) v).re` using `by filter_upwards [ho.mem_nhds ⟨hy.1, ⟨hzW, hy.2⟩, Q.mem_U _⟩] with v hv`.
+
+Use `hGe _ hv.2` as an intermediate fact. Simplify using `only [Function.comp_apply]`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `ho2 : IsOpen ((A.chart j).target ∩ (A.chart j).symm ⁻¹' Q.U ((A.chart j).symm y))` using `(A.chart j).isOpen_inter_preimage_symm (Q.isOpen_U _)`. Establish `h2 : ContDiffAt ℝ 2 (Q.φ ((A.chart j).symm y) ∘ (A.chart j).symm) y` using `((hQ.1 _ j).contDiffAt (ho2.mem_nhds ⟨hy.1, Q.mem_U _⟩)).of_le (WithTop.coe_le_coe.2 (le_top : (2 : ℕ∞) ≤ ⊤))`.
+
+Establish `hRe : ContDiffAt ℝ 2 (fun v => ((G ∘ (A.chart j).symm) v).re) y` using `Complex.reCLM.contDiff.contDiffAt.comp y (hGa.restrictScalars (𝕜 := ℝ)).contDiffAt`. Rewrite using `[levi_congr hev, levi_add_smul 1 h2 hRe, levi_re_analytic hGa, mul_zero, add_zero, ← hφ]`. Conclude with `hP _ j y ⟨hy.1, P.mem_U _⟩ w`.
+-/
 theorem isPsh_of_sameFns {A : FinHolAtlas e X} {P Q : LocPot X} (hQ : IsPotential A Q)
     (hφ : P.φ = Q.φ) (hP : IsPsh A P) : IsPsh A Q := by
   intro x j y hy w
@@ -562,6 +724,31 @@ theorem isPsh_of_sameFns {A : FinHolAtlas e X} {P Q : LocPot X} (hQ : IsPotentia
 
 end PullTop
 
+/- English proof (translation)
+Introduce `e e' X X' _ _ _ _ _ _ A A' h hh Θ L Θ' s n n' m W m' W' hΘ hΘp hΘ' hΘ'p hL hs hsnc hs0 hsnc' th ph phT C₅ C t₀ hSW hF hC2`. Take `⟨hth, hSm, hPshOn, hbd⟩` from `hSW`. Establish `hΘpsh : IsPsh A Θ` using `TailBoundAlt.isPsh_of_isPosPot A Θ hΘp`. Establish `hΘ'psh : IsPsh A' Θ'` using `TailBoundAlt.isPsh_of_isPosPot A' Θ' hΘ'p`. Establish `hΘpb : IsPotential A' (Θ.pullback h hh.1)` using `isPotentialPullback A A' h hh Θ hΘ`.
+
+Take `⟨K, hK0, -, hKpsh⟩` from `TailBoundAlt.exists_psh_chern_bound A' Θ' (Θ.pullback h hh.1) hΘ' hΘ'p hΘpb`. Establish `ht₀ : 0 < t₀` using `hF.1`. Establish `hU : IsOpen (bdry s)ᶜ` using `(LeviFormBoundaryTopology.isClosed_bdry hs).isOpen_compl`. Use `set M : ℝ := max 1 K with hM`. Establish `hM1 : 1 ≤ M` using `le_max_left _ _`.
+
+Establish `hMK : K ≤ M` using `le_max_right _ _`. Use `set C' : ℝ := |C| * M with hC'`. Use `set t₁ : ℝ := min t₀ (Real.exp (-Real.exp 1)) with ht₁`. Establish `ht₁0 : 0 < t₁` using `lt_min ht₀ (Real.exp_pos _)`. Establish `ht₁t₀ : t₁ ≤ t₀` using `min_le_left _ _`.
+
+Establish `ht₁e : t₁ ≤ Real.exp (-Real.exp 1)` using `min_le_right _ _`. Establish `hCC' : |C| ≤ C'` using `le_mul_of_one_le_right (abs_nonneg C) hM1`. Establish `F1` using `isRegFamily_mono A Θ L s th ph phT C t₀ |C| t₁ hΘ hΘpsh hth hs0 hF le_rfl ht₁0 ht₁t₀ ht₁e`. Establish `F2` using `isRegFamily_mono A Θ L s th ph phT C t₀ C' t₁ hΘ hΘpsh hth hs0 hF hCC' ht₁0 ht₁t₀ ht₁e`. Use `⟨C', t₁, ⟨isPotentialPullback A A' h hh th hth, ?_, ?_, fun y hy => hbd (h y) hy⟩, ?_, ?_⟩` and prove the remaining obligations.
+
+Use `smoothOn_pull hh hU hSm` as an intermediate fact. Rewrite `this` using `[Set.preimage_compl]`. Then use the resulting hypothesis. Use `isPshOn_pull hh hU hth hSm hPshOn` as an intermediate fact. Rewrite `this` using `[Set.preimage_compl]`. Then use the resulting hypothesis. Take `⟨-, -, F1⟩` from `F1`.
+
+Take `⟨h1, h2, F2⟩` from `F2`. Use `⟨h1, h2, fun t ht htt => ?_⟩` and prove the remaining obligations. Take `⟨a1, a2, a3, a4, -, a6, a7, a8⟩` from `F2 t ht htt`. Take `⟨b1, -, -, -, b5, -⟩` from `F1 t ht htt`. Establish `hsm : A'.Smooth (phT t ∘ h)`.
+
+Use `smoothOn_pull hh isOpen_univ a1` as an intermediate fact. Rewrite `this` using `[Set.preimage_univ]`. Then use the resulting hypothesis. Use `⟨hsm, fun y => a2 (h y), fun y hy => a3 (h y) hy, fun y => a4 (h y), ?_, fun y hy hyr => a6 (h y) hy hyr, fun y hy => a7 (h y) hy, fun t' h1 h2 y => a8 t' h1 h2 (h y)⟩` and prove the remaining obligations. Use `set ε : ℝ := epsT |C| t with hε`. Establish `hq` using `loglog_quot_nonneg ht (htt.trans ht₁e)`.
+
+Establish `hε0 : 0 ≤ ε`. Rewrite using `[hε, epsT_eq_mul]`. Conclude with `mul_nonneg (abs_nonneg C) hq`. Establish `hε' : epsT C' t = M * ε`. Rewrite using `[hε, epsT, epsT, hC']`.
+
+Expand and normalize the polynomial expressions, which then agree. Establish `hεK : 0 ≤ M * ε - K * ε` using `by nlinarith`. Establish `hP0 : IsPotential A (th + LocPot.ofFun (phT t) + Θ.rsmul ε)` using `isPotentialAdd A _ _ (isPotentialAdd A _ _ hth (isPotential_ofFun A _ b1)) (isPotentialRsmul A ε Θ hΘ)`. Establish `hD : IsPotential A' (Θ'.rsmul K + (Θ.pullback h hh.1).rsmul (-1))` using `isPotentialAdd A' _ _ (isPotentialRsmul A' K Θ' hΘ') (isPotentialRsmul A' (-1) _ hΘpb)`. Establish `hS1` using `isPotentialPullback A A' h hh _ hP0`.
+
+Establish `hS1p` using `isPsh_pull hh hP0 b5`. Establish `hS2` using `isPotentialRsmul A' ε _ hD`. Establish `hS2p` using `isPshRsmul A' ε _ hε0 hD hKpsh`. Establish `hS3` using `isPotentialRsmul A' (M * ε - K * ε) Θ' hΘ'`. Establish `hS3p` using `isPshRsmul A' (M * ε - K * ε) Θ' hεK hΘ' hΘ'psh`.
+
+Establish `hS` using `isPshAdd A' _ _ (isPotentialAdd A' _ _ hS1 hS2) hS3 (isPshAdd A' _ _ hS1 hS2 hS1p hS2p) hS3p`. Establish `hT : IsPotential A' (th.pullback h hh.1 + LocPot.ofFun (phT t ∘ h) + Θ'.rsmul (epsT C' t))` using `isPotentialAdd A' _ _ (isPotentialAdd A' _ _ (isPotentialPullback A A' h hh th hth) (isPotential_ofFun A' _ hsm)) (isPotentialRsmul A' _ Θ' hΘ')`. Use `isPsh_of_sameFns hT ?_ hS` and prove the remaining obligations. Use function extensionality and compare the values at `x y`. Use `show th.φ (h x) (h y) + phT t (h y) + ε * Θ.φ (h x) (h y) + ε * (K * Θ'.φ x y + -1 * Θ.φ (h x) (h y)) + (M * ε - K * ε) * Θ'.φ x y = th.φ (h x) (h y) + phT t (h y) + epsT C' t * Θ'.φ x y`.
+
+Rewrite using `[hε']`. Expand and normalize the polynomial expressions, which then agree. Establish `hev : ∀ᶠ t in nhdsWithin (0 : ℝ) (Set.Ioi 0), A.Smooth (phT t)` using `Filter.mem_of_superset (Ioc_mem_nhdsGT ht₀) fun t ht => (hF.2.2 t ht.1 ht.2).1`. Conclude with `regular_family_C2_pullback_of_section A A' h hh L s ph phT hs hSm hev hC2`.
+-/
 theorem pullback_holds : PullbackStatement := by
   intro e e' X X' _ _ _ _ _ _ A A' h hh Θ L Θ' s n n' m W m' W' hΘ hΘp hΘ' hΘ'p hL hs hsnc hs0
     hsnc' th ph phT C₅ C t₀ hSW hF hC2
@@ -634,6 +821,9 @@ theorem pullback_holds : PullbackStatement := by
       Filter.mem_of_superset (Ioc_mem_nhdsGT ht₀) fun t ht => (hF.2.2 t ht.1 ht.2).1
     exact regular_family_C2_pullback_of_section A A' h hh L s ph phT hs hSm hev hC2
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fun h => ⟨h.2.2.2.2.1, h.2.2.2.2.2.2⟩, fun h => ⟨tailBound_holds, convergence_holds, SignedConv.convergenceSigned, convergenceRate_holds, h.1, pullback_holds, h.2⟩⟩`.
+-/
 theorem an_iff : Prov.An ↔ UnifIntStatement ∧ RegGlobalStatement :=
   ⟨fun h => ⟨h.2.2.2.2.1, h.2.2.2.2.2.2⟩, fun h =>
     ⟨tailBound_holds, convergence_holds, SignedConv.convergenceSigned, convergenceRate_holds, h.1, pullback_holds, h.2⟩⟩
@@ -642,17 +832,26 @@ end An
 
 open ReciprocityTheory.ChartRestriction.G.Geo ReciprocityTheory.ChartRestriction.G.ArakelovGeometry GroundTheory.Heights₂.Heights GroundTheory.Heights₂.Heights.LowerBoundFree
 
+/- English proof (translation)
+Take `⟨-, -, -, -, hZ, hD⟩` from `Giv.hsLinks_of_moriwaki hHS hBig`. Conclude with `⟨fun h => h.2.2.2, fun h => ⟨hZ, hD, trivial, h⟩⟩`.
+-/
 theorem nineFree_iff (hHS : MoriwakiHSStatement) (hBig : MoriwakiBigStatement) :
     Prov.ZhangDimensionPushDownGrassmannianHeightBounds ↔ PushDown.Statement ∧ GrassmannianHeightZTwo.Statement := by
   obtain ⟨-, -, -, -, hZ, hD⟩ := Giv.hsLinks_of_moriwaki hHS hBig
   exact ⟨fun h => h.2.2.2, fun h => ⟨hZ, hD, trivial, h⟩⟩
 
+/- English proof (translation)
+Take `⟨g1, z1, z2, g6p, -, -⟩` from `Giv.hsLinks_of_moriwaki hHS hBig`. Conclude with `⟨fun h => h.2.2.2.2.2.2, fun h => ⟨z1, z2, g1, g6p, ForSecondHalf.G6ppB.of_moriwaki hBig hHS, ForSecondHalf.NefBundleMoriwaki.of_moriwaki hHS hP, h⟩⟩`.
+-/
 theorem hs_iff (hHS : MoriwakiHSStatement) (hBig : MoriwakiBigStatement) (hP : PackingStatement) :
     Prov.HS ↔ ArithmeticHilbertSamuelUpperBoundNumberField ∧ HilbertSamuel.G3.Statement ∧ HilbertSamuel.ArithmeticVolumeMultiplicative.Statement := by
   obtain ⟨g1, z1, z2, g6p, -, -⟩ := Giv.hsLinks_of_moriwaki hHS hBig
   exact ⟨fun h => h.2.2.2.2.2.2, fun h =>
     ⟨z1, z2, g1, g6p, ForSecondHalf.G6ppB.of_moriwaki hBig hHS, ForSecondHalf.NefBundleMoriwaki.of_moriwaki hHS hP, h⟩⟩
 
+/- English proof (translation)
+Rewrite using `[Prov.All, hs_iff hHS hBig hP, an_iff, nineFree_iff hHS hBig]`.
+-/
 theorem all_iff (hHS : MoriwakiHSStatement) (hBig : MoriwakiBigStatement) (hP : PackingStatement) :
     Prov.All ↔ (ArithmeticHilbertSamuelUpperBoundNumberField ∧ HilbertSamuel.G3.Statement ∧ HilbertSamuel.ArithmeticVolumeMultiplicative.Statement) ∧
       (ReciprocityTheory.AnForm.P.UnifIntStatement ∧ ReciprocityTheory.AnForm.P.RegGlobalStatement) ∧

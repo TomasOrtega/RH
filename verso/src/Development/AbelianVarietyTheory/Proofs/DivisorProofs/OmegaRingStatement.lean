@@ -15,6 +15,11 @@ open Formalism.MainNotions.DIV.Cons (intO SCF)
 
 namespace GlobalTheory.OmegaHT
 
+/- English proof (translation)
+Establish `hinj` using `IsFractionRing.injective A (FractionRing A)`. Use `haveI : CharZero (FractionRing A) := charZero_of_injective_algebraMap hinj`. Use `haveI : NeZero n := ⟨hn.ne'⟩`. Take `⟨ζ, hζ⟩` from `HasEnoughRootsOfUnity.exists_primitiveRoot (FractionRing A) n`. Establish `hi : IsIntegral A ζ` using `IsIntegral.of_pow hn (by rw [hζ.pow_eq_one]; exact isIntegral_one)`.
+
+Take `⟨z, rfl⟩` from `IsIntegrallyClosed.algebraMap_eq_of_integral hi`. Conclude with `⟨z, hζ.of_map_of_injective hinj⟩`.
+-/
 theorem exists_primitiveRoot_of_isAlgClosed (A : Type) [CommRing A] [IsDomain A] [IsIntegrallyClosed A] [CharZero A]
     [IsAlgClosed (FractionRing A)] (n : ℕ) (hn : 0 < n) : ∃ ζ : A, IsPrimitiveRoot ζ n := by
   have hinj := IsFractionRing.injective A (FractionRing A)
@@ -25,6 +30,11 @@ theorem exists_primitiveRoot_of_isAlgClosed (A : Type) [CommRing A] [IsDomain A]
   obtain ⟨z, rfl⟩ := IsIntegrallyClosed.algebraMap_eq_of_integral hi
   exact ⟨z, hζ.of_map_of_injective hinj⟩
 
+/- English proof (translation)
+Introduce `E _ _ _ H X _ t hX p hp A _ _ _ _ _ x g e he`. Take `⟨n, h, hh⟩` from `GlobalTheory.HTMap.hodgeTate_map E H X t A x g e he p hp.out (exists_primitiveRoot_of_isAlgClosed A p hp.out.pos) (GlobalTheory.LineNorm.splitTors_of_isAlgClosed E H X t A x p hp.out.ne_zero)`. Use `⟨n + g, Fin.append h fun i k => if i = k then (p : A) else 0, ⟨fun i => Fin.append 0 fun k => if i = k then 1 else 0, fun i k => ?_⟩, fun C κ a v hv => ?_⟩` and prove the remaining obligations. Rewrite using `[Fin.sum_univ_add]`. Simplify using the standard rewrite rules.
+
+Establish `key` using `GlobalTheory.HTLevel.mem_latHT_iff HTBound.htBound E H X t p C.S C.norm_p (spMap κ ≫ x) (GlobalTheory.LineNorm.WedgeMax.ext_intO hX _) g _ (GlobalTheory.LineNorm.WedgeMax.isTanBasis_map t κ he) n (fun j i => κ (h j i)) (hh C.S κ).1 (hh C.S κ).2 a v (by simpa only [GlobalTheory.Li …`. Rewrite using `[GlobalTheory.LineNorm.WedgeMax.spMap_comp, Category.assoc, key, Fin.forall_fin_add]`. Use `and_congr (by simp) (forall_congr' fun i => ?_)` and prove the remaining obligations. Rewrite using `[Finset.sum_eq_single i (fun k _ hk => by simp [hk.symm]) (by simp)]`. Simplify using the standard rewrite rules.
+-/
 theorem ringSt : RingSt := by
   intro E _ _ _ H X _ t hX p hp A _ _ _ _ _ x g e he
   obtain ⟨n, h, hh⟩ := GlobalTheory.HTMap.hodgeTate_map E H X t A x g e he p hp.out

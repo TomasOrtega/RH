@@ -15,6 +15,9 @@ variable {K : Type} [Fintype K] {ι : K → Type} [∀ k, Fintype (ι k)]
 
 omit [Fintype K] [∀ k, Fintype (ι k)] in
 
+/- English proof (translation)
+The claim follows from `MvPolynomial.ringHom_ext (fun r => by rw [← RingHom.comp_apply _ C r, ← RingHom.comp_apply _ C r, eq_intCast, eq_intCast]) fun q => by simp`.
+-/
 theorem aeval_flagMap_X (P : Ideal (MRing ι)) {N1 n : ℕ} (B : Matrix (Fin n) (Fin N1) (FnField P)) :
     ((aeval fun q => flagMap P B (X q) : MRing (FlagBundleBlocks ι N1 n) →ₐ[ℤ] MvPolynomial (Fin n × Fin n) (FnField P)) :
       MRing (FlagBundleBlocks ι N1 n) →+* MvPolynomial (Fin n × Fin n) (FnField P)) = flagMap P B :=
@@ -24,6 +27,15 @@ theorem aeval_flagMap_X (P : Ideal (MRing ι)) {N1 n : ℕ} (B : Matrix (Fin n) 
 
 omit [Fintype K] [∀ k, Fintype (ι k)] in
 
+/- English proof (translation)
+Rewrite using `[← Algebra.adjoin_range_eq_range_aeval]`. Apply `le_antisymm` to reduce the goal to its premises. Rewrite using `[Algebra.adjoin_le_iff]`. Introduce and unpack `_ ⟨⟨k | j, i⟩, rfl⟩`. Conclude with `Algebra.subset_adjoin (Or.inl ⟨Ideal.Quotient.mk P (X ⟨k, i⟩), by simp [flagMap, genPt, algebraMap_eq]⟩)`.
+
+Conclude with `Algebra.subset_adjoin (Or.inr ⟨⟨j, i⟩, by simp [flagMap]⟩)`. Rewrite using `[Algebra.adjoin_le_iff]`. Introduce and unpack `_ (⟨d, rfl⟩ | ⟨⟨j, S⟩, rfl⟩)`. Take `⟨f, rfl⟩` from `Ideal.Quotient.mk_surjective d`. Establish `e` using `@aeval_comp_X _ _ _ _ _ inferInstance (Ideal.Quotient.mk P) ((algebraMap (FnField P) (MvPolynomial (Fin n × Fin n) (FnField P))).comp (algebraMap (MRing ι ⧸ P) (FnField P))) f`.
+
+Establish `hm : aeval (fun p => flagMap P B (X (inlV (ι₂` using `PluckerBlocks N1 n) p))) f ∈ Algebra.adjoin ℤ (Set.range fun p => flagMap P B (X (inlV (ι₂ := PluckerBlocks N1 n) p))) := by`. Rewrite using `[Algebra.adjoin_range_eq_range_aeval]`. Conclude with `⟨f, rfl⟩`. Rewrite `hm` using `[flagMap_X_inl]`. Use `Algebra.adjoin_mono ?_ (e ▸ hm)` and prove the remaining obligations.
+
+Introduce and unpack `_ ⟨p, rfl⟩`. Conclude with `⟨_, flagMap_X_inl P B p⟩`. Conclude with `Algebra.subset_adjoin ⟨⟨Sum.inr j, S⟩, by simp [flagMap]⟩`.
+-/
 theorem range_aeval_flagMap_X (P : Ideal (MRing ι)) {N1 n : ℕ} (B : Matrix (Fin n) (Fin N1) (FnField P)) :
     (aeval fun q => flagMap P B (X q) : MRing (FlagBundleBlocks ι N1 n) →ₐ[ℤ] MvPolynomial (Fin n × Fin n) (FnField P)).range =
       Algebra.adjoin ℤ
@@ -52,6 +64,17 @@ theorem range_aeval_flagMap_X (P : Ideal (MRing ι)) {N1 n : ℕ} (B : Matrix (F
         exact ⟨_, flagMap_X_inl P B p⟩
     · exact Algebra.subset_adjoin ⟨⟨Sum.inr j, S⟩, by simp [flagMap]⟩
 
+/- English proof (translation)
+Introduce `K _ ι _ N1 n P B hP hH hB`. Establish `hinj : Function.Injective (algebraMap ℤ (MRing ι ⧸ P))`. Rewrite using `[injective_iff_map_eq_zero]`. Introduce `a ha`. Establish `: C a ∈ P`.
+
+Rewrite using `[← Ideal.Quotient.eq_zero_iff_mem]`. Simplify `ha` using `[Ideal.Quotient.algebraMap_eq, algebraMap_eq]`. Establish `h2 : a ∈ P.comap (C : ℤ →+* MRing ι)` using `this`. Rewrite `h2` using `[hH, Ideal.mem_bot]`. Then use the resulting hypothesis. Establish `e` using `Ideal.quotientKerEquivRange (aeval fun q => flagMap P B (X q) : MRing (FlagBundleBlocks ι N1 n) →ₐ[ℤ] MvPolynomial (Fin n × Fin n) (FnField P))`.
+
+Establish `hk : RingHom.ker (aeval fun q => flagMap P B (X q) : MRing (FlagBundleBlocks ι N1 n) →ₐ[ℤ] MvPolynomial (Fin n × Fin n) (FnField P)) = flagIdeal P B`. Use extensionality with `f`. Establish `h : ((aeval fun q => flagMap P B (X q) : MRing (FlagBundleBlocks ι N1 n) →ₐ[ℤ] MvPolynomial (Fin n × Fin n) (FnField P)) : MRing (FlagBundleBlocks ι N1 n) →+* MvPolynomial (Fin n × Fin n) (FnField P)) f = flagMap P B f`. Rewrite using `[aeval_flagMap_X]`. Rewrite using `[RingHom.mem_ker, flagIdeal, RingHom.mem_ker, ← h, RingHom.coe_coe]`.
+
+Establish `ht : Algebra.trdeg ℤ (MRing (FlagBundleBlocks ι N1 n) ⧸ RingHom.ker (aeval fun q => flagMap P B (X q) : MRing (FlagBundleBlocks ι N1 n) →ₐ[ℤ] MvPolynomial (Fin n × Fin n) (FnField P))) = Algebra.trdeg ℤ (aeval fun q => flagMap P B (X q) : MRing (FlagBundleBlocks ι N1 n) →ₐ[ℤ] MvP …`. Establish `e' : (MRing (FlagBundleBlocks ι N1 n) ⧸ RingHom.ker (aeval fun q => flagMap P B (X q) : MRing (FlagBundleBlocks ι N1 n) →ₐ[ℤ] MvPolynomial (Fin n × Fin n) (FnField P))) ≃ₐ[ℤ] (aeval fun q => flagMap P B (X q) : MRing (FlagBundleBlocks ι N1 n) →ₐ[ℤ] MvPolynomial (Fin n × Fin n) (F …` using `e`. Conclude with `e'.trdeg_eq`. Establish `e2` using `h₂ (FnField P) n N1 B hB`. Rewrite using `[← hk, ht, range_aeval_flagMap_X]`.
+
+Conclude with `(h₁ (MRing ι ⧸ P) (MvPolynomial (Fin n × Fin n) (FnField P)) _ hinj).trans (by rw [e2, h₃])`.
+-/
 theorem FlagConeTrdeg.proof (h₁ : TrdegAdjoinFrac.Statement) (h₂ : FlagMinorsBaseChange.Statement)
     (h₃ : FlagMinorsTrdeg.Statement) : FlagConeTrdeg.Statement := by
   intro K _ ι _ N1 n P B hP hH hB

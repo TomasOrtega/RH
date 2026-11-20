@@ -11,6 +11,9 @@ open scoped ENNReal
 
 namespace GlobalTheory.ChernWeilLine
 
+/- English proof (translation)
+Establish `hp : MeasurePreserving (MeasurableEquiv.toLp 2 (Fin D → ℂ))` using `MeasurePreserving.symm (MeasurableEquiv.toLp 2 (Fin D → ℂ)).symm (volume_preserving_ofLp_complex (Fin D))`. Conclude with `hp.setLIntegral_comp_preimage_emb (MeasurableEquiv.measurableEmbedding _) g U`.
+-/
 theorem lintegral_toV_preimage {D : ℕ} (g : V D → ℝ≥0∞) (U : Set (V D)) :
     ∫⁻ z in GlobalTheory.FinChart.toV D ⁻¹' U, g (GlobalTheory.FinChart.toV D z) = ∫⁻ v in U, g v := by
   have hp : MeasurePreserving (MeasurableEquiv.toLp 2 (Fin D → ℂ)) :=
@@ -18,6 +21,37 @@ theorem lintegral_toV_preimage {D : ℕ} (g : V D → ℝ≥0∞) (U : Set (V D)
       (volume_preserving_ofLp_complex (Fin D))
   exact hp.setLIntegral_comp_preimage_emb (MeasurableEquiv.measurableEmbedding _) g U
 
+/- English proof (translation)
+Introduce `F _ _ Y σ Z _ _ _ A h hA Φ hΦ d hd hl`. Use `CxPts.secondCountableTopology_of_isProjOver σ Y.isProjOver` as an intermediate fact. Use `borelize Z`. Establish `hρ (ε : ℤˣ) (c c' : GlobalTheory.AlgChart Y.str σ Y.dim) (y : Pts Y σ) (hy : y ∈ c.e.source) (hy' : y ∈ c'.e.source) : ENNReal.ofReal (((ε : ℤ) : ℝ) * d c y) = ENNReal.ofReal (‖transDet c.e c'.e y‖ ^ 2) * ENNReal.ofReal (((ε : ℤ) : ℝ) * d c' y)`. Rewrite using `[← ENNReal.ofReal_mul (sq_nonneg _), hd c c' y hy hy']`.
+
+Put the polynomial expressions in normal form. Establish `hglue (ε : ℤˣ) (c : GlobalTheory.AlgChart Y.str σ Y.dim) {S : Set (Pts Y σ)} (hS : MeasurableSet S) (hsub : S ⊆ c.e.source) : glueMeas (fun c : GlobalTheory.AlgChart Y.str σ Y.dim => c.e) (fun c y => ENNReal.ofReal (((ε : ℤ) : ℝ) * d c y)) S = chartMeas c.e (fun y => ENNReal.ofRe …` using `glueMeas_apply _ _ (fun c c' => c.holo_trans c') (fun c c' y hy hy' => hρ ε c c' y hy hy') c hS hsub`. Use `set μ : ℤˣ → Measure Z := fun ε => (glueMeas (fun c : GlobalTheory.AlgChart Y.str σ Y.dim => c.e) (fun c y => ENNReal.ofReal (((ε : ℤ) : ℝ) * d c y))).map h.symm with hμ`. Establish `hres (ε : ℤˣ) (j : Fin A.n) (c : GlobalTheory.AlgChart Y.str σ Y.dim) (hc : A.chart j = h.transOpenPartialHomeomorph c.finChart) : (μ ε).restrict (A.chart j).source = ((volume.restrict (A.chart j).target).withDensity fun z => ENNReal.ofReal (((ε : ℤ) : ℝ) * d c (c.finChart.symm z …`. Use extensionality with `T hT`.
+
+Establish `ht` using `(A.chart j).open_target.measurableSet`. Establish `hs : AEMeasurable (A.chart j).symm (volume.restrict (A.chart j).target)` using `(A.chart j).continuousOn_symm.aemeasurable ht`. Establish `hS : MeasurableSet (h.symm ⁻¹' T ∩ c.e.source)` using `(h.symm.continuous.measurable hT).inter c.e.open_source.measurableSet`. Rewrite using `[Measure.restrict_apply hT, hμ, Measure.map_apply h.symm.continuous.measurable (hT.inter (A.chart j).open_source.measurableSet), Measure.map_apply_of_aemeasurable (hs.mono_ac (withDensity_absolutelyContinuous _ _)) hT, withDensity_apply', Measure.restrict_restrict' ht]`. Establish `e1 : h.symm ⁻¹' (T ∩ (A.chart j).source) = h.symm ⁻¹' T ∩ c.e.source`.
+
+Rewrite using `[hc, Homeomorph.transOpenPartialHomeomorph_source, AlgChart.finChart_source]`. Use extensionality with `y`. Simplify using the standard rewrite rules. Rewrite using `[e1, hglue ε c hS inter_subset_right, chartMeas_apply_of_subset _ _ hS inter_subset_right, inter_comm, c.e.image_source_inter_eq']`. Establish `e2 : (A.chart j).symm ⁻¹' T ∩ (A.chart j).target = GlobalTheory.FinChart.toV Y.dim ⁻¹' (c.e.target ∩ c.e.symm ⁻¹' (h.symm ⁻¹' T))`.
+
+Rewrite using `[hc, Homeomorph.transOpenPartialHomeomorph_symm_apply, Homeomorph.transOpenPartialHomeomorph_target, AlgChart.finChart_target]`. Use extensionality with `z`. Simplify using `only [mem_inter_iff, mem_preimage, Function.comp_apply, AlgChart.finChart_symm_apply]`. The claim follows by propositional logic. Rewrite using `[e2, ← lintegral_toV_preimage]`.
+
+Both sides reduce to the same expression. Use `set P := (existsPartition A).some with hP`. Establish `hm (j : Fin A.n) : Measurable fun y => ENNReal.ofReal (P.χ j y)`. Establish `h1` using `(P.smooth j j).continuousOn`. Rewrite `h1` using `[Set.preimage_univ, Set.inter_univ]`.
+
+Establish `h2 : ContinuousOn (P.χ j) (A.chart j).source`. Use `(h1.comp (A.chart j).continuousOn (fun y hy => (A.chart j).map_source hy)).congr ?_` and prove the remaining obligations. Introduce `y hy`. Simplify using `[(A.chart j).left_inv hy]`. Establish `h3 : Continuous (P.χ j)` using `h2.continuous_of_tsupport_subset (A.chart j).open_source (P.tsupport_subset j)`.
+
+Conclude with `ENNReal.measurable_ofReal.comp h3.measurable`. Establish `key (ε : ℤˣ) (j : Fin A.n) : chartPartMeasure A P Φ ((ε : ℤ) : ℝ) j = (μ ε).withDensity fun y => ENNReal.ofReal (P.χ j y)`. Take `⟨c, hc⟩` from `hA j`. Establish `ht` using `(A.chart j).open_target.measurableSet`. Establish `hs : AEMeasurable (A.chart j).symm (volume.restrict (A.chart j).target)` using `(A.chart j).continuousOn_symm.aemeasurable ht`.
+
+Establish `e : (fun y => ENNReal.ofReal (P.χ j y)) = (A.chart j).source.indicator fun y => ENNReal.ofReal (P.χ j y)`. Use `(indicator_eq_self.2 fun y hy => P.tsupport_subset j (subset_tsupport _ ?_)).symm` and prove the remaining obligations. Conclude with `fun h0 => hy (by simp [h0])`. Establish `hdm : AEMeasurable (fun z => ENNReal.ofReal (((ε : ℤ) : ℝ) * d c (c.finChart.symm z))) (volume.restrict (A.chart j).target)`. Use `locDensCont A Φ hΦ j` as an intermediate fact.
+
+Conclude with `(((this.congr fun z hz => (hl j c hc z hz).symm).aemeasurable ht).const_mul _).ennreal_ofReal`. Rewrite using `[e, withDensity_indicator (A.chart j).open_source.measurableSet, hres ε j c hc, GlobalTheory.ChernMA.map_withDensity (hs.mono_ac (withDensity_absolutelyContinuous _ _)) (hm j), ← withDensity_mul₀ hdm ((hm j).comp_aemeasurable hs), chartPartMeasure]`. Use `congrArg _ (withDensity_congr_ae (ae_restrict_of_forall_mem ht fun z hz => ?_))` and prove the remaining obligations. Simplify using `only [Pi.mul_apply, Function.comp_apply]`. Rewrite using `[hl j c hc z hz, mul_left_comm, ENNReal.ofReal_mul (P.nonneg _ _), mul_comm]`.
+
+Establish `hsum (ε : ℤˣ) : μ ε = ∑ j, chartPartMeasure A P Φ ((ε : ℤ) : ℝ) j`. Use extensionality with `T hT`. Simplify using `only [key, Measure.coe_finsetSum, Finset.sum_apply, withDensity_apply _ hT]`. Rewrite using `[← lintegral_finsetSum _ fun j _ => hm j, ← setLIntegral_one]`. Use `lintegral_congr fun y => ?_` and prove the remaining obligations.
+
+Rewrite using `[← ENNReal.ofReal_sum_of_nonneg fun j _ => P.nonneg j y, P.sum_eq_one, ENNReal.ofReal_one]`. Establish `hi` using `mIntegrableCont A Φ hΦ (fun _ => (1 : ℝ)) continuous_const`. Establish `h1` using `fun (s : ℝ) j => integral_chartPartMeasure A P Φ hΦ s j (fun _ => (1 : ℝ)) measurable_const hi`. Establish `h2 (s : ℝ) (j : Fin A.n) : IntegrableOn (fun y => (fun _ => (1 : ℝ)) ((A.chart j).symm y) * max (s * (P.χ j ((A.chart j).symm y) * locDens A Φ j y)) 0) (A.chart j).target`. Take `⟨hK, hKT, h0⟩` from `chart_weight_compact A P Φ j`.
+
+Establish `hχ : ContinuousOn (fun y => P.χ j ((A.chart j).symm y)) (A.chart j).target` using `(P.smooth j j).continuousOn.mono fun y hy => ⟨hy, mem_univ _⟩`. Use `(((continuousOn_const.mul ((continuousOn_const.mul (hχ.mul (locDensCont A Φ hΦ j))).sup continuousOn_const)).mono hKT).integrableOn_compact hK).of_forall_sdiff_eq_zero (A.chart j).open_target.measurableSet fun y hy => ?_` and prove the remaining obligations. Simplify using `[h0 y hy.1 hy.2]`. Establish `hreal (ε : ℤˣ) : (glueMeas (fun c : GlobalTheory.AlgChart Y.str σ Y.dim => c.e) fun c y => ENNReal.ofReal (((ε : ℤ) : ℝ) * d c y)).real univ = ∑ j, ∫ x, (fun _ => (1 : ℝ)) x ∂chartPartMeasure A P Φ ((ε : ℤ) : ℝ) j`. Rewrite using `[← integral_finsetSum_measure fun j _ => (h1 _ j).1, ← hsum ε, integral_const, smul_eq_mul, mul_one, hμ, Measure.real, Measure.real, Measure.map_apply h.symm.continuous.measurable MeasurableSet.univ, preimage_univ]`.
+
+Rewrite using `[hreal 1, hreal (-1), ← Finset.sum_sub_distrib, mInt, dif_pos (existsPartition A), integralWith]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[(h1 _ j).2, (h1 _ j).2, ← integral_sub (h2 _ j) (h2 _ j)]`. Use `integral_congr_ae (ae_of_all _ fun y => ?_)` and prove the remaining obligations. Simplify using `only [Units.val_one, Units.val_neg, Int.cast_one, Int.cast_neg, one_mul, neg_one_mul, mul_one]`.
+
+Rewrite using `[max_zero_sub_max_neg_zero_eq_self]`.
+-/
 theorem glueMeas_real_sub_eq_mInt : ∀ {F : Type} [Field F] [NumberField F] {Y : Var F} {σ : F →+* ℂ} {Z : Type} [TopologicalSpace Z] [CompactSpace Z] [T2Space Z] (A : FinHolAtlas Y.dim Z) (h : Z ≃ₜ Pts Y σ), (∀ j, ∃ c : GlobalTheory.AlgChart Y.str σ Y.dim, A.chart j = h.transOpenPartialHomeomorph c.finChart) → ∀ (Φ : Fin Y.dim → LocPot Z), (∀ i, IsPotential A (Φ i)) → ∀ (d : GlobalTheory.AlgChart Y.str σ Y.dim → Pts Y σ → ℝ), (∀ c c' y, y ∈ c.e.source → y ∈ c'.e.source → d c y = ‖transDet c.e c'.e y‖ ^ 2 * d c' y) → (∀ j (c : GlobalTheory.AlgChart Y.str σ Y.dim), A.chart j = h.transOpenPartialHomeomorph c.finChart → ∀ z ∈ (A.chart j).target, locDens A Φ j z = d c (c.finChart.symm z)) → (glueMeas (fun c : GlobalTheory.AlgChart Y.str σ Y.dim => c.e) fun c y => ENNReal.ofReal (((1 : ℤˣ) : ℤ) * d c y)).real Set.univ - (glueMeas (fun c : GlobalTheory.AlgChart Y.str σ Y.dim => c.e) fun c y => ENNReal.ofReal (((-1 : ℤˣ) : ℤ) * d c y)).real Set.univ = mInt A Φ (fun _ => 1) := by
   intro F _ _ Y σ Z _ _ _ A h hA Φ hΦ d hd hl
   have := CxPts.secondCountableTopology_of_isProjOver σ Y.isProjOver

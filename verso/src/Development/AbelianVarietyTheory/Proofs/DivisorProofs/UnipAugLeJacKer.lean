@@ -19,12 +19,21 @@ def unipAug (om : Rep σ X W) (H' : Plane E d d₁) (v : Pl F) : Submodule ℂ (
 def jacKer (om : Rep σ X W) (H' : Plane E d d₁) (v : Pl F) : Submodule ℂ ((Fin n × Fin d → Fv F v) → ℂ) :=
   augAt om v ⊔ unipAug om H' v
 
+/- English proof (translation)
+The claim follows from `le_sup_left`.
+-/
 theorem augAt_le_jacKer (om : Rep σ X W) (H' : Plane E d d₁) (v : Pl F) : augAt om v ≤ jacKer om H' v :=
   le_sup_left
 
+/- English proof (translation)
+The claim follows from `le_sup_right`.
+-/
 theorem unipAug_le_jacKer (om : Rep σ X W) (H' : Plane E d d₁) (v : Pl F) : unipAug om H' v ≤ jacKer om H' v :=
   le_sup_right
 
+/- English proof (translation)
+Use `sup_le h₁ ?_` and prove the remaining obligations. Rewrite using `[unipAug, Submodule.span_le]`. Introduce and unpack `z ⟨u, hu, huv, φ₀, h0, φ₁, h1, hact, rfl⟩`. Simplify using `[LinearMap.mem_ker, map_sub, h₂ u hu huv φ₀ h0 φ₁ h1 hact]`.
+-/
 theorem jacKer_le_ker (om : Rep σ X W) (H' : Plane E d d₁) (v : Pl F)
     (ℓ : ((Fin n × Fin d → Fv F v) → ℂ) →ₗ[ℂ] ℂ) (h₁ : augAt om v ≤ LinearMap.ker ℓ)
     (h₂ : ∀ u ∈ unip σ W H', u ∈ UAt σ W (evFin F v) → ∀ φ₀ ∈ SB (Fin n × Fin d → Fv F v),

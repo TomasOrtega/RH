@@ -3,6 +3,15 @@ open MeasureTheory
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Establish `hinj : Set.InjOn f S`. Introduce `a ha b hb hab`. Use `hf a ha b hb` as an intermediate fact. Rewrite `this` using `[hab, sub_self, norm_zero, mul_zero]`. Conclude with `sub_eq_zero.mp (norm_le_zero_iff.mp this)`.
+
+Establish `hg : ∀ a ∈ S, Function.invFunOn f S (f a) = a` using `fun a ha => hinj.leftInvOn_invFunOn ha`. Establish `hlip : LipschitzOnWith K.toNNReal (Function.invFunOn f S) (f '' S)`. Apply `LipschitzOnWith.of_dist_le_mul` to reduce the goal to its premises. Introduce and unpack `_ ⟨a, ha, rfl⟩ _ ⟨b, hb, rfl⟩`. Rewrite using `[hg a ha, hg b hb, dist_eq_norm, dist_eq_norm, Real.coe_toNNReal _ hK]`.
+
+Conclude with `hf a ha b hb`. Establish `himg : Function.invFunOn f S '' (f '' S) = S` using `hinj.invFunOn_image subset_rfl`. Establish `h` using `hlip.hausdorffMeasure_image_le (d := (Fintype.card (Fin N) : ℝ)) (by positivity)`. Rewrite `h` using `[himg, hausdorffMeasure_pi_real, Fintype.card_fin, ENNReal.rpow_natCast]`. Rewrite using `[ENNReal.ofReal_pow hK]`.
+
+Conclude with `h`.
+-/
 theorem volume_le_mul_volume_image_of_expanding (N : ℕ) (S : Set (Fin N → ℝ)) (K : ℝ)
     (f : (Fin N → ℝ) → (Fin N → ℝ)) (hK : 0 ≤ K)
     (hf : ∀ t ∈ S, ∀ t' ∈ S, ‖t - t'‖ ≤ K * ‖f t - f t'‖) :
@@ -24,6 +33,13 @@ theorem volume_le_mul_volume_image_of_expanding (N : ℕ) (S : Set (Fin N → �
   rw [ENNReal.ofReal_pow hK]
   exact h
 
+/- English proof (translation)
+Establish `i₁ : IntegrableOn h₁ A volume` using `c₁.continuousOn.integrableOn_compact hA`. Establish `i₂ : IntegrableOn h₂ Q volume` using `c₂.continuousOn.integrableOn_compact hQ`. Establish `hKN : 0 ≤ K ^ N` using `pow_nonneg hK N`. Establish `hI₂ : 0 ≤ ∫ t in Q, h₂ t` using `integral_nonneg n₂`. Rewrite using `[← ENNReal.ofReal_le_ofReal_iff (mul_nonneg hKN hI₂), ENNReal.ofReal_mul hKN, ofReal_integral_eq_lintegral_ofReal i₁ (Filter.Eventually.of_forall n₁), ofReal_integral_eq_lintegral_ofReal i₂ (Filter.Eventually.of_forall n₂), lintegral_eq_lintegral_meas_lt _ (Filter.Eventually.of_f …`.
+
+Use `lintegral_mono fun r => ?_` and prove the remaining obligations. Establish `m₁ : MeasurableSet {a | r < h₁ a}` using `measurableSet_lt measurable_const c₁.measurable`. Establish `m₂ : MeasurableSet {a | r < h₂ a}` using `measurableSet_lt measurable_const c₂.measurable`. Rewrite using `[Measure.restrict_apply m₁, Measure.restrict_apply m₂]`. Use `(volume_le_mul_volume_image_of_expanding N _ K f hK (fun t ht t' ht' => hf t ht.2 t' ht'.2)).trans ?_` and prove the remaining obligations.
+
+Use `gcongr`. Introduce and unpack `_ ⟨a, ⟨ha, haA⟩, rfl⟩`. Conclude with `⟨lt_of_lt_of_le ha (hm a haA).2, (hm a haA).1⟩`.
+-/
 theorem setIntegral_le_of_expanding (N : ℕ) (A Q : Set (Fin N → ℝ)) (K : ℝ)
     (f : (Fin N → ℝ) → (Fin N → ℝ)) (h₁ h₂ : (Fin N → ℝ) → ℝ)
     (hA : IsCompact A) (hQ : IsCompact Q) (hK : 0 ≤ K) (c₁ : Continuous h₁) (c₂ : Continuous h₂)

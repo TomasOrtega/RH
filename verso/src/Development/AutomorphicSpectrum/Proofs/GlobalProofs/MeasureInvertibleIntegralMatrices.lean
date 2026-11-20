@@ -8,6 +8,23 @@ noncomputable section
 
 namespace GlobalTheory.CompanionTheory.QL.VolK
 
+/- English proof (translation)
+Establish `hq0 : (q : ℝ) ≠ 0` using `by exact_mod_cast hq.ne'`. Establish `hq1 : 1 ≤ q` using `hq`. Rewrite using `[Fin.prod_univ_eq_prod_range (fun i => q ^ r - q ^ i) r, Nat.cast_prod]`. Establish `h1 : ∀ i ∈ Finset.range r, (((q ^ r - q ^ i : ℕ)) : ℝ) = (q : ℝ) ^ r * (1 - (q : ℝ) ^ (-(((r - i : ℕ)) : ℤ)))`. Introduce `i hi`.
+
+Establish `hi' : i ≤ r` using `(Finset.mem_range.1 hi).le`. Rewrite using `[Nat.cast_sub (Nat.pow_le_pow_right hq1 hi'), mul_sub, mul_one]`. Use `push_cast`. Use `congr 1`. Rewrite using `[← zpow_natCast (q : ℝ) r, ← zpow_add₀ hq0, ← zpow_natCast (q : ℝ) i]`.
+
+Use `congr 1`. Move the coercions through the operations in `[Nat.cast_sub hi']`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[Finset.prod_congr rfl h1, Finset.prod_mul_distrib, Finset.prod_const, Finset.card_range]`. Establish `h2 : ((q : ℝ) ^ r) ^ r * (q : ℝ) ^ (-((r * r : ℕ) : ℤ)) = 1`.
+
+Rewrite using `[← pow_mul, ← zpow_natCast (q : ℝ) (r * r), ← zpow_add₀ hq0]`. Simplify using the standard rewrite rules. Establish `h3 : ∏ i ∈ Finset.range r, (1 - (q : ℝ) ^ (-(((r - i : ℕ)) : ℤ))) = qE q 1 r`. Unfold `qE`. Use `Finset.prod_nbij' (fun i => r - i) (fun s => r - s) ?_ ?_ ?_ ?_ ?_` and prove the remaining obligations.
+
+Introduce `i hi`. Use `Finset.mem_range.1 hi` as an intermediate fact. Simplify using `only [Finset.mem_Icc]`. Use linear arithmetic over natural numbers and integers. Introduce `s hs`.
+
+Use `Finset.mem_Icc.1 hs` as an intermediate fact. Simplify using `only [Finset.mem_range]`. Use linear arithmetic over natural numbers and integers. Introduce `i hi`. Use `Finset.mem_range.1 hi` as an intermediate fact.
+
+Use `show r - (r - i) = i`. Use linear arithmetic over natural numbers and integers. Introduce `s hs`. Use `Finset.mem_Icc.1 hs` as an intermediate fact. Use `show r - (r - s) = s`.
+
+Use linear arithmetic over natural numbers and integers. Introduce `i _`. Both sides reduce to the same expression. Rewrite using `[h3]`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem card_scaled (q r : ℕ) (hq : 0 < q) :
     (((∏ i : Fin r, (q ^ r - q ^ (i : ℕ)) : ℕ)) : ℝ) * (q : ℝ) ^ (-((r * r : ℕ) : ℤ)) = qE q 1 r := by
   have hq0 : (q : ℝ) ≠ 0 := by exact_mod_cast hq.ne'
@@ -58,6 +75,9 @@ variable {F : Type} [Field F] [ValuativeRel F]
 def red (x : F) : 𝓀[F] :=
   open Classical in if h : x ∈ 𝒪[F] then IsLocalRing.residue 𝒪[F] ⟨x, h⟩ else 0
 
+/- English proof (translation)
+Simplify using `[red, h]`.
+-/
 theorem red_of_mem {x : F} (h : x ∈ 𝒪[F]) : red x = IsLocalRing.residue 𝒪[F] ⟨x, h⟩ := by
   simp [red, h]
 
@@ -66,16 +86,25 @@ def redM {r : ℕ} (x : Matrix (Fin r) (Fin r) F) : Matrix (Fin r) (Fin r) 𝓀[
 def toO {r : ℕ} {x : Matrix (Fin r) (Fin r) F} (h : x ∈ intMat 𝒪[F] r r) :
     Matrix (Fin r) (Fin r) 𝒪[F] := fun i j => ⟨x i j, h i j⟩
 
+/- English proof (translation)
+Use extensionality with `i j`. Simplify using `[redM, toO, red_of_mem (h i j)]`.
+-/
 theorem redM_eq_map {r : ℕ} {x : Matrix (Fin r) (Fin r) F} (h : x ∈ intMat 𝒪[F] r r) :
     redM x = (IsLocalRing.residue 𝒪[F]).mapMatrix (toO h) := by
   ext i j
   simp [redM, toO, red_of_mem (h i j)]
 
+/- English proof (translation)
+Use extensionality with `i j`. Simplify using `[toO]`.
+-/
 theorem map_toO {r : ℕ} {x : Matrix (Fin r) (Fin r) F} (h : x ∈ intMat 𝒪[F] r r) :
     (𝒪[F].subtype).mapMatrix (toO h) = x := by
   ext i j
   simp [toO]
 
+/- English proof (translation)
+Rewrite using `[← hlt, red_of_mem hx, red_of_mem hy, ← sub_eq_zero, ← map_sub, IsLocalRing.residue_eq_zero_iff, IsLocalRing.mem_maximalIdeal, mem_nonunits_iff, Valuation.Integer.not_isUnit_iff_valuation_lt_one (v := ValuativeRel.valuation F)]`. Both sides reduce to the same expression.
+-/
 theorem red_eq_iff {ϖ : F} (hlt : ∀ x : F, ValuativeRel.valuation F x < 1 ↔ ∃ o ∈ 𝒪[F], x = ϖ * o)
     {x y : F} (hx : x ∈ 𝒪[F]) (hy : y ∈ 𝒪[F]) : red x = red y ↔ ∃ o ∈ 𝒪[F], x - y = ϖ * o := by
   rw [← hlt, red_of_mem hx, red_of_mem hy, ← sub_eq_zero, ← map_sub, IsLocalRing.residue_eq_zero_iff,
@@ -83,6 +112,11 @@ theorem red_eq_iff {ϖ : F} (hlt : ∀ x : F, ValuativeRel.valuation F x < 1 ↔
     Valuation.Integer.not_isUnit_iff_valuation_lt_one (v := ValuativeRel.valuation F)]
   rfl
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce `h i j`. Use `congrFun (congrFun h i) j` as an intermediate fact. Conclude with `(red_eq_iff hlt (hx i j) (hy i j)).1 this`. Introduce `h`.
+
+Use extensionality with `i j`. Conclude with `(red_eq_iff hlt (hx i j) (hy i j)).2 (h i j)`.
+-/
 theorem redM_eq_iff {r : ℕ} {ϖ : F}
     (hlt : ∀ x : F, ValuativeRel.valuation F x < 1 ↔ ∃ o ∈ 𝒪[F], x = ϖ * o)
     {x y : Matrix (Fin r) (Fin r) F} (hx : x ∈ intMat 𝒪[F] r r) (hy : y ∈ intMat 𝒪[F] r r) :
@@ -95,6 +129,19 @@ theorem redM_eq_iff {r : ℕ} {ϖ : F}
     ext i j
     exact (red_eq_iff hlt (hx i j) (hy i j)).2 (h i j)
 
+/- English proof (translation)
+Establish `hdet : (redM x).det = IsLocalRing.residue 𝒪[F] (toO h).det`. Rewrite using `[redM_eq_map h, RingHom.map_det]`. Rewrite using `[hdet, isUnit_map_iff]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨g, ⟨-, hg'⟩, hgx⟩`.
+
+Establish `hgx' : (g : Matrix (Fin r) (Fin r) F) = x` using `hgx`. Establish `hg'' : ((g⁻¹ : GL (Fin r) F) : Matrix (Fin r) (Fin r) F) ∈ intMat 𝒪[F] r r` using `hg'`. Establish `hmul : toO h * toO hg'' = 1`. Establish `h1 : (𝒪[F].subtype).mapMatrix (toO h * toO hg'') = (𝒪[F].subtype).mapMatrix 1`. Rewrite using `[map_mul, map_toO, map_toO, map_one, ← hgx']`.
+
+Conclude with `Units.mul_inv g`. Conclude with `Matrix.map_injective (f := 𝒪[F].subtype) Subtype.val_injective h1`. Conclude with `Matrix.isUnit_det_of_right_inverse hmul`. Introduce `hu`. Take `⟨u, hu'⟩` from `(Matrix.isUnit_iff_isUnit_det _).2 hu`.
+
+Set `φ : Matrix (Fin r) (Fin r) 𝒪[F] →* Matrix (Fin r) (Fin r) F` to `RingHom.toMonoidHom (𝒪[F].subtype).mapMatrix`. Establish `hval : φ (u : Matrix (Fin r) (Fin r) 𝒪[F]) = x`. Rewrite using `[hu']`. Conclude with `map_toO h`. Use `⟨Units.map φ u, ⟨?_, ?_⟩, hval⟩` and prove the remaining obligations.
+
+Introduce `i j`. Establish `: ((Units.map φ u : GL (Fin r) F) : Matrix (Fin r) (Fin r) F) = x` using `hval`. Rewrite using `[this]`. Conclude with `h i j`. Introduce `i j`.
+
+Conclude with `(((u⁻¹ : GL (Fin r) 𝒪[F]) : Matrix (Fin r) (Fin r) 𝒪[F]) i j).2`.
+-/
 theorem mem_Jset_iff {r : ℕ} {x : Matrix (Fin r) (Fin r) F} (h : x ∈ intMat 𝒪[F] r r) :
     x ∈ Jset (GLint 𝒪[F] r) ↔ IsUnit (redM x).det := by
   have hdet : (redM x).det = IsLocalRing.residue 𝒪[F] (toO h).det := by
@@ -127,6 +174,41 @@ theorem mem_Jset_iff {r : ℕ} {x : Matrix (Fin r) (Fin r) F} (h : x ∈ intMat 
 
 end
 
+/- English proof (translation)
+Introduce `F _ _ _ _ _ _ O ϖ nrm q h r dx hinv hone`. Take `⟨hBor, hIopen, -, -, -, -⟩` from `GlobalTheory.T.matrix_additive_haar_normalized h r r`. Establish `hP` using `GlobalTheory.T.measure_uniformizer_multiple_matrices h r r dx hinv hone`. Establish `hlt` using `h.lt_one`. Establish `hcard` using `h.card`.
+
+Establish `hne` using `h.ne`. Establish `hO` using `h.O_eq`. Substitute `hO` using the available equality. Use `haveI := hBor`. Establish `hϖ : ϖ ∈ 𝒪[F]`.
+
+Establish `: ValuativeRel.valuation F ϖ < 1` using `(hlt ϖ).2 ⟨1, one_mem _, by simp⟩`. Conclude with `this.le`. Establish `hPI : ∀ {x : Matrix (Fin r) (Fin r) F}, x ∈ (IIset 𝒪[F] ϖ : Set (Matrix (Fin r) (Fin r) F)) → x ∈ intMat 𝒪[F] r r`. Introduce `x hx i j`. Take `⟨o, ho, e⟩` from `hx i j`.
+
+Rewrite using `[e]`. Conclude with `mul_mem hϖ ho`. Establish `hPopen : IsOpen (IIset 𝒪[F] ϖ : Set (Matrix (Fin r) (Fin r) F))`. Establish `e : (IIset 𝒪[F] ϖ : Set (Matrix (Fin r) (Fin r) F)) = (fun x : Matrix (Fin r) (Fin r) F => ϖ⁻¹ • x) ⁻¹' intMat 𝒪[F] r r`. Use extensionality with `x`.
+
+Prove the components needed by the constructor for the conclusion. Introduce `hx i j`. Take `⟨o, ho, e⟩` from `hx i j`. Simplify `ho` using `[e, hne]`. Introduce `hx i j`.
+
+Use `⟨_, hx i j, ?_⟩` and prove the remaining obligations. Simplify using `[hne]`. Rewrite using `[e]`. Conclude with `hIopen.preimage (continuous_const_smul _)`. Establish `hlift : ∀ g : GL (Fin r) 𝓀[F], ∃ L ∈ intMat 𝒪[F] r r, redM L = (g : Matrix (Fin r) (Fin r) 𝓀[F])`.
+
+Introduce `g`. Use `choose a ha using fun i j => IsLocalRing.residue_surjective ((g : Matrix (Fin r) (Fin r) 𝓀[F]) i j)`. Use `⟨fun i j => (a i j : F), fun i j => (a i j).2, ?_⟩` and prove the remaining obligations. Use extensionality with `i j`. Use `show red (a i j : F) = _`.
+
+Rewrite using `[red_of_mem (a i j).2]`. Conclude with `ha i j`. Use `choose L hLI hLr using hlift`. Establish `hfib : ∀ (g : GL (Fin r) 𝓀[F]) (x : Matrix (Fin r) (Fin r) F), x ∈ (fun x => -L g + x) ⁻¹' (IIset 𝒪[F] ϖ : Set (Matrix (Fin r) (Fin r) F)) → x ∈ intMat 𝒪[F] r r ∧ redM x = (g : Matrix (Fin r) (Fin r) 𝓀[F])`. Introduce `g x hx`.
+
+Establish `hx' : x - L g ∈ (IIset 𝒪[F] ϖ : Set (Matrix (Fin r) (Fin r) F))`. Establish `: -L g + x = x - L g` using `neg_add_eq_sub _ _`. Simplify `hx` using `[this]`. Establish `hxI : x ∈ intMat 𝒪[F] r r` using `fun i j => by`. Establish `h1` using `add_mem (hPI hx' i j) (hLI g i j)`.
+
+Simplify using `using h1`. Conclude with `⟨hxI, ((redM_eq_iff hlt hxI (hLI g)).2 hx').trans (hLr g)⟩`. Establish `hJ : Jset (GLint 𝒪[F] r) = ⋃ g : GL (Fin r) 𝓀[F], (fun x => -L g + x) ⁻¹' (IIset 𝒪[F] ϖ : Set (Matrix (Fin r) (Fin r) F))`. Use extensionality with `x`. Simplify using `only [Set.mem_iUnion]`.
+
+Prove the components needed by the constructor for the conclusion. Introduce `hx`. Establish `hxI : x ∈ intMat 𝒪[F] r r`. Take `⟨g, hg, rfl⟩` from `hx`. Conclude with `hg.1`.
+
+Take `⟨g, hg⟩` from `(Matrix.isUnit_iff_isUnit_det _).2 ((mem_Jset_iff hxI).1 hx)`. Use `⟨g, ?_⟩` and prove the remaining obligations. Establish `h1 : redM x = redM (L g)` using `by rw [hLr, hg]`. Establish `h2` using `(redM_eq_iff hlt hxI (hLI g)).1 h1`. Establish `: -L g + x = x - L g` using `neg_add_eq_sub _ _`.
+
+Simplify `h2` using `[this]`. Introduce and unpack `⟨g, hg⟩`. Take `⟨hxI, hx⟩` from `hfib g x hg`. Rewrite using `[mem_Jset_iff hxI, hx]`. Conclude with `(Matrix.isUnit_iff_isUnit_det _).1 g.isUnit`.
+
+Establish `hcont : ∀ g : GL (Fin r) 𝓀[F], Continuous fun x : Matrix (Fin r) (Fin r) F => -L g + x` using `fun g => continuous_const.add continuous_id`. Establish `hmeas : ∀ g : GL (Fin r) 𝓀[F], MeasurableSet ((fun x => -L g + x) ⁻¹' (IIset 𝒪[F] ϖ : Set (Matrix (Fin r) (Fin r) F)))` using `fun g => (hPopen.preimage (hcont g)).measurableSet`. Use `⟨hJ ▸ MeasurableSet.iUnion hmeas, ?_⟩` and prove the remaining obligations. Use `letI : Fintype 𝓀[F] := Fintype.ofFinite _`. Use `letI : Fintype (GL (Fin r) 𝓀[F]) := Fintype.ofFinite _`.
+
+Establish `hdisj : Pairwise (Function.onFun Disjoint fun g : GL (Fin r) 𝓀[F] => (fun x => -L g + x) ⁻¹' (IIset 𝒪[F] ϖ : Set (Matrix (Fin r) (Fin r) F)))`. Introduce `g g' hgg`. Use `Set.disjoint_left.2 fun x hx hx' => hgg (Units.ext ?_)` and prove the remaining obligations. Conclude with `(hfib g x hx).2.symm.trans (hfib g' x hx').2`. Establish `hq : 0 < q`.
+
+Rewrite using `[hcard]`. Conclude with `Nat.card_pos`. Establish `hGL : Fintype.card (GL (Fin r) 𝓀[F]) = ∏ i : Fin r, (q ^ r - q ^ (i : ℕ))`. Rewrite using `[← Nat.card_eq_fintype_card, Matrix.card_GL_field, hcard, Nat.card_eq_fintype_card]`. Rewrite using `[hJ, measure_iUnion hdisj hmeas, tsum_fintype]`.
+
+Establish `hg : ∀ g : GL (Fin r) 𝓀[F], dx ((fun x => -L g + x) ⁻¹' (IIset 𝒪[F] ϖ : Set (Matrix (Fin r) (Fin r) F))) = ENNReal.ofReal ((q : ℝ) ^ (-((r * r : ℕ) : ℤ)))` using `fun g => by`. Rewrite using `[measure_preimage_add dx (-L g), hP]`. Simplify using `only [hg, Finset.sum_const, Finset.card_univ, nsmul_eq_mul]`. Rewrite using `[← card_scaled q r hq, ← hGL, ENNReal.ofReal_mul (by positivity), ENNReal.ofReal_natCast]`.
+-/
 theorem vol_GLint : ∀ {F : Type} [Field F] [ValuativeRel F] [TopologicalSpace F] [IsNonarchimedeanLocalField F] [MeasurableSpace F] [BorelSpace F] {O : Subring F} {ϖ : F} {nrm : AbsoluteValue F ℝ} {q : ℕ}, LF O ϖ nrm q → ∀ r : ℕ, ∀ (dx : Measure (Matrix (Fin r) (Fin r) F)), dx.IsAddLeftInvariant → dx (intMat O r r) = 1 → MeasurableSet (Jset (GLint O r)) ∧ dx (Jset (GLint O r)) = ENNReal.ofReal (qE q 1 r) := by
   intro F _ _ _ _ _ _ O ϖ nrm q h r dx hinv hone
   obtain ⟨hBor, hIopen, -, -, -, -⟩ := GlobalTheory.T.matrix_additive_haar_normalized h r r

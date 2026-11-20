@@ -11,6 +11,15 @@ namespace SlopeLimitConstant
 
 variable {n : ℕ}
 
+/- English proof (translation)
+Assume the negation of the conclusion as `hne`. Take `⟨i, hi⟩` from `hp.separating_of_T1 (f 1 - f 0) (sub_ne_zero.2 hne)`. Use `set g : ℝ → ℝ := fun t => p i (f t - f 0) with hg`. Establish `hd : ∀ t, HasDerivAt g 0 t`. Introduce `t`.
+
+Rewrite using `[hasDerivAt_iff_tendsto_slope_zero]`. Establish `h1 : Tendsto (fun h : ℝ => p i (((h : ℂ)⁻¹) • (f (t + h) - f t))) (𝓝[≠] 0) (𝓝 0)`. Use `((hp.continuous_seminorm i).tendsto 0).comp (hf t)` as an intermediate fact. Rewrite `this` using `[map_zero]`. Conclude with `this`.
+
+Use `squeeze_zero_norm (fun h => ?_) h1` and prove the remaining obligations. Rewrite using `[norm_smul, Real.norm_eq_abs, Real.norm_eq_abs, map_smul_eq_mul, norm_inv, Complex.norm_real, Real.norm_eq_abs, abs_inv]`. Use `mul_le_mul_of_nonneg_left ?_ (by positivity)` and prove the remaining obligations. Use `abs_sub_map_le_sub (p i) (f (t + h) - f 0) (f t - f 0)` as an intermediate fact. Simplify `this` using `[hg]`.
+
+Establish `hc` using `is_const_of_deriv_eq_zero (fun t => (hd t).differentiableAt) (fun t => (hd t).deriv) 1 0`. Apply `hi` to reduce the goal to its premises. Establish `: g 1 = 0` using `by rw [hc]; simp [hg]`. Simplify `this` using `[hg]`.
+-/
 theorem const_of_slope {E : Type} [AddCommGroup E] [Module ℂ E] [UniformSpace E] [IsUniformAddGroup E] [T2Space E]
     {p : ℕ → Seminorm ℂ E} (hp : WithSeminorms p) (f : ℝ → E)
     (hf : ∀ t, Tendsto (fun h : ℝ => ((h : ℂ)⁻¹) • (f (t + h) - f t)) (𝓝[≠] 0) (𝓝 0)) : f 1 = f 0 := by
@@ -35,6 +44,13 @@ theorem const_of_slope {E : Type} [AddCommGroup E] [Module ℂ E] [UniformSpace 
   have : g 1 = 0 := by rw [hc]; simp [hg]
   simpa [hg] using this
 
+/- English proof (translation)
+Rewrite using `[hπ.withSeminorms.tendsto_nhds _ 0]`. Introduce `i δ hδ`. Take `⟨q, N, hq, hb⟩` from `hπ.growth i`. Establish `h1 : Tendsto (fun x => (1 + hs (g x)) ^ N * q (v x)) l (𝓝 ((1 + hs g₀) ^ N * 0))`. Use `Tendsto.mul ?_ ?_` and prove the remaining obligations.
+
+Conclude with `((tendsto_const_nhds.add ((continuous_hs).tendsto g₀ |>.comp hg₀)).pow N)`. Use `(hq.tendsto 0).comp hv` as an intermediate fact. Rewrite `this` using `[map_zero]`. Conclude with `this`. Rewrite `h1` using `[mul_zero]`.
+
+Use `filter_upwards [(tendsto_order.1 h1).2 δ hδ] with x hx`. Rewrite using `[sub_zero]`. Conclude with `lt_of_le_of_lt (hb (g x) (hg x) (v x)) hx`.
+-/
 theorem tendsto_pi_zero {ε : Fin n → Bool} {E : Type} [AddCommGroup E] [Module ℂ E] [UniformSpace E]
     [IsUniformAddGroup E] {p : ℕ → Seminorm ℂ E} {π dπ : Mx n → (E →L[ℂ] E)} (hπ : IsSmoothModRep ε p π dπ)
     {ι : Type} {l : Filter ι} {v : ι → E} (hv : Tendsto v l (𝓝 0)) {g : ι → Mx n} {g₀ : Mx n}
@@ -53,6 +69,9 @@ theorem tendsto_pi_zero {ε : Fin n → Bool} {E : Type} [AddCommGroup E] [Modul
   rw [sub_zero]
   exact lt_of_le_of_lt (hb (g x) (hg x) (v x)) hx
 
+/- English proof (translation)
+Establish `hy' : Sm ε σ ((-1 : ℂ) • y)`. Rewrite `hy`, the goal using `[sm_iff]`. Conclude with `Submodule.smul_mem _ _ hy`. Rewrite using `[sub_eq_add_neg, ← neg_one_smul ℂ y, Dw_add hσ hl hx hy', Dw_smul hσ hl _ hy, neg_one_smul, ← sub_eq_add_neg]`.
+-/
 theorem Dw_sub {ε : Fin n → Bool} {H : Type} [NormedAddCommGroup H] [InnerProductSpace ℂ H] [CompleteSpace H]
     {σ : Mx n → (H →L[ℂ] H)} (hσ : IsURepOn (UJset ε) σ) {l : List (Mx n)} (hl : ∀ X ∈ l, X ∈ lieSet ε) {x y : H}
     (hx : Sm ε σ x) (hy : Sm ε σ y) : Dw σ l (x - y) = Dw σ l x - Dw σ l y := by
@@ -61,6 +80,25 @@ theorem Dw_sub {ε : Fin n → Bool} {H : Type} [NormedAddCommGroup H] [InnerPro
     exact Submodule.smul_mem _ _ hy
   rw [sub_eq_add_neg, ← neg_one_smul ℂ y, Dw_add hσ hl hx hy', Dw_smul hσ hl _ hy, neg_one_smul, ← sub_eq_add_neg]
 
+/- English proof (translation)
+Establish `hwX : Sm ε σ (dRep σ X w)`. Use `hw.word hσ (l := [X]) (by simpa using hX)` as an intermediate fact. Simplify `this` using `[Dw]`. Establish `hsm : ∀ h : ℝ, Sm ε σ (σ (NormedSpace.exp (h • X)) w - w - (h : ℂ) • dRep σ X w)`. Introduce `h`.
+
+Establish `h1` using `hw.translate hσ (exp_mem_UJ hX h)`. Rewrite `h1`, `hw`, `hwX`, the goal using `[sm_iff]`. Conclude with `Submodule.sub_mem _ (Submodule.sub_mem _ h1 hw) (Submodule.smul_mem _ _ hwX)`. Rewrite using `[hp.tendsto_nhds _ 0]`. Introduce `j δ hδ`.
+
+Take `⟨S, C, hS, hb⟩` from `hT j`. Establish `hl : ∀ l ∈ S, Tendsto (fun h : ℝ => ‖((h : ℂ)⁻¹) • Dw σ l (σ (NormedSpace.exp (h • X)) w - w - (h : ℂ) • dRep σ X w)‖) (𝓝[≠] 0) (𝓝 0)`. Introduce `l hlS`. Establish `hl' : ∀ Y ∈ l, Y ∈ lieSet ε` using `hS l hlS`. Establish `hd` using `hSD l hl' w hw X hX`.
+
+Rewrite `hd` using `[hasDerivAt_iff_tendsto_slope_zero]`. Establish `e0 : Dw σ l (σ (NormedSpace.exp ((0 : ℝ) • X)) w) = Dw σ l w`. Rewrite using `[zero_smul, NormedSpace.exp_zero, sigma_one hσ]`. Rewrite `hd` using `[tendsto_iff_norm_sub_tendsto_zero]`. Use `hd.congr' ?_` and prove the remaining obligations.
+
+Use `filter_upwards [self_mem_nhdsWithin] with h hh`. Establish `hh' : (h : ℂ) ≠ 0` using `by exact_mod_cast hh`. Establish `htr` using `hw.translate hσ (exp_mem_UJ hX h)`. Establish `hsw : Sm ε σ ((h : ℂ) • dRep σ X w)`. Rewrite `hwX`, the goal using `[sm_iff]`.
+
+Conclude with `Submodule.smul_mem _ _ hwX`. Establish `hdiff : Sm ε σ (σ (NormedSpace.exp (h • X)) w - w)`. Rewrite `htr`, `hw`, the goal using `[sm_iff]`. Conclude with `Submodule.sub_mem _ htr hw`. Rewrite using `[Dw_sub hσ hl' hdiff hsw, Dw_sub hσ hl' htr hw, Dw_smul hσ hl' _ hwX, zero_add, e0, ← Complex.coe_smul, Complex.ofReal_inv, smul_sub, smul_sub, smul_sub, smul_smul, inv_mul_cancel₀ hh', one_smul]`.
+
+Establish `hsum : Tendsto (fun h : ℝ => C * (S.map fun l => ‖((h : ℂ)⁻¹) • Dw σ l (σ (NormedSpace.exp (h • X)) w - w - (h : ℂ) • dRep σ X w)‖).sum) (𝓝[≠] 0) (𝓝 0)`. Use `(tendsto_list_sum (l := S) hl).const_mul C` as an intermediate fact. Simplify using `using this`. Establish `hle : ∀ h : ℝ, p j (((h : ℂ)⁻¹) • T (σ (NormedSpace.exp (h • X)) w - w - (h : ℂ) • dRep σ X w) - 0) ≤ C * (S.map fun l => ‖((h : ℂ)⁻¹) • Dw σ l (σ (NormedSpace.exp (h • X)) w - w - (h : ℂ) • dRep σ X w)‖).sum`. Introduce `h`.
+
+Rewrite using `[sub_zero, map_smul_eq_mul]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[sobNorm, mul_left_comm, ← List.sum_map_mul_left]`. Use `congr 2`. Conclude with `List.map_congr_left fun l _ => (norm_smul _ _).symm`.
+
+Use `filter_upwards [(tendsto_order.1 hsum).2 δ hδ] with h hh`. Conclude with `lt_of_le_of_lt (hle h) hh`.
+-/
 theorem tendsto_rem {ε : Fin n → Bool} {H : Type} [NormedAddCommGroup H] [InnerProductSpace ℂ H] [CompleteSpace H]
     {σ : Mx n → (H →L[ℂ] H)} (hσ : IsURepOn (UJset ε) σ) {E : Type} [AddCommGroup E] [Module ℂ E] [UniformSpace E]
     [IsUniformAddGroup E] {p : ℕ → Seminorm ℂ E} (hp : WithSeminorms p) (hSD : SobDiff ε σ) {T : H →ₗ[ℂ] E}
@@ -118,6 +156,19 @@ theorem tendsto_rem {ε : Fin n → Bool} {H : Type} [NormedAddCommGroup H] [Inn
   filter_upwards [(tendsto_order.1 hsum).2 δ hδ] with h hh
   exact lt_of_le_of_lt (hle h) hh
 
+/- English proof (translation)
+Use `set a := T w`. Use `set b := dπ X a`. Establish `hneg : Tendsto (fun h : ℝ => -h) (𝓝[≠] 0) (𝓝[≠] 0)`. Use `tendsto_nhdsWithin_iff.2 ⟨?_, eventually_nhdsWithin_of_forall fun x hx => neg_ne_zero.2 hx⟩` and prove the remaining obligations. Use `((continuous_neg (G := ℝ)).tendsto 0).mono_left (nhdsWithin_le_nhds (s := {(0 : ℝ)}ᶜ))` as an intermediate fact.
+
+Simplify using `using this`. Establish `hg : Tendsto (fun h : ℝ => NormedSpace.exp ((-h) • X)) (𝓝[≠] 0) (𝓝 1)`. Use `((continuous_exp_smul X).tendsto 0).comp (tendsto_nhdsWithin_iff.1 hneg).1` as an intermediate fact. Simplify `this` using `[Function.comp_def]`. Establish `hgU : ∀ h : ℝ, NormedSpace.exp ((-h) • X) ∈ UJset ε` using `fun h => exp_mem_UJ hX (-h)`.
+
+Establish `hgW : Tendsto (fun h : ℝ => NormedSpace.exp ((-h) • X)) (𝓝[≠] 0) (𝓝[UJset ε] 1)` using `tendsto_nhdsWithin_iff.2 ⟨hg, Eventually.of_forall hgU⟩`. Establish `t1` using `tendsto_pi_zero hπ (tendsto_rem hσ hπ.withSeminorms hSD hT hX hw) hgU hg`. Establish `t2 : Tendsto (fun h : ℝ => ((h : ℂ)⁻¹) • (π (NormedSpace.exp ((-h) • X)) a - a)) (𝓝[≠] 0) (𝓝 (-b))`. Use `((hπ.hasDRep X hX a).comp hneg).neg` as an intermediate fact. Use `this.congr' (Eventually.of_forall fun h => ?_)` and prove the remaining obligations.
+
+Simplify using `only [Function.comp_apply, Complex.ofReal_neg, inv_neg, neg_smul, neg_neg]`. Establish `t3 : Tendsto (fun h : ℝ => π (NormedSpace.exp ((-h) • X)) b) (𝓝[≠] 0) (𝓝 b)`. Use `((hπ.continuousOn b) 1 (one_mem_UJ ε)).tendsto.comp hgW` as an intermediate fact. Rewrite `this` using `[hπ.map_one]`. Conclude with `this`.
+
+Establish `hsum` using `(t1.add t2).add t3`. Rewrite `hsum` using `[zero_add, neg_add_cancel]`. Use `hsum.congr' ?_` and prove the remaining obligations. Use `filter_upwards [self_mem_nhdsWithin] with h hh`. Establish `hh' : (h : ℂ) ≠ 0` using `by exact_mod_cast hh`.
+
+Establish `hTu : T (σ (NormedSpace.exp (h • X)) w - w - (h : ℂ) • dRep σ X w) = T (σ (NormedSpace.exp (h • X)) w) - a - (h : ℂ) • b`. Rewrite using `[map_sub, map_sub, map_smul, hc w hw]`. Rewrite using `[hTu, (π (NormedSpace.exp ((-h) • X))).map_smul, map_sub, map_sub, (π (NormedSpace.exp ((-h) • X))).map_smul]`. Rewrite using `[smul_sub, smul_sub, smul_sub, smul_sub, smul_smul, inv_mul_cancel₀ hh', one_smul]`. Normalize the expressions using the abelian group laws.
+-/
 theorem tendsto_key {ε : Fin n → Bool} {H : Type} [NormedAddCommGroup H] [InnerProductSpace ℂ H] [CompleteSpace H]
     {σ : Mx n → (H →L[ℂ] H)} (hσ : IsURepOn (UJset ε) σ) {E : Type} [AddCommGroup E] [Module ℂ E] [UniformSpace E]
     [IsUniformAddGroup E] {p : ℕ → Seminorm ℂ E} {π dπ : Mx n → (E →L[ℂ] E)} (hπ : IsSmoothModRep ε p π dπ)
@@ -162,6 +213,17 @@ theorem tendsto_key {ε : Fin n → Bool} {H : Type} [NormedAddCommGroup H] [Inn
 end SlopeLimitConstant
 
 open SlopeLimitConstant in
+/- English proof (translation)
+Introduce `n ε H _ _ _ σ hU hI E _ _ _ _ _ _ p π dπ hπ hSD T hT X hX hc w hw`. Use `set f : ℝ → E := fun t => π (NormedSpace.exp ((-t) • X)) (T (σ (NormedSpace.exp (t • X)) w)) with hf`. Establish `hmulπ : ∀ a ∈ UJset ε, ∀ b ∈ UJset ε, ∀ y, π a (π b y) = π (a * b) y`. Introduce `a ha b hb y`. Rewrite using `[hπ.map_mul a ha b hb]`.
+
+Both sides reduce to the same expression. Establish `hslope : ∀ t, Tendsto (fun h : ℝ => ((h : ℂ)⁻¹) • (f (t + h) - f t)) (𝓝[≠] 0) (𝓝 0)`. Introduce `t`. Establish `hwt` using `hw.translate hU (exp_mem_UJ hX t)`. Establish `hk` using `tendsto_key hU hπ hSD hT hX hc hwt`.
+
+Use `((π (NormedSpace.exp ((-t) • X))).continuous.tendsto 0).comp hk` as an intermediate fact. Rewrite `this` using `[map_zero]`. Use `this.congr' (Eventually.of_forall fun h => ?_)` and prove the remaining obligations. Simplify using `only [Function.comp_apply, hf, map_smul, map_sub]`. Use `congr 2`.
+
+Rewrite using `[hmulπ _ (exp_mem_UJ hX _) _ (exp_mem_UJ hX _), ← exp_add_smul, ← sigma_mul hU (exp_mem_UJ hX _) (exp_mem_UJ hX _), ← exp_add_smul, neg_add, add_comm h t]`. Establish `h10` using `const_of_slope hπ.withSeminorms f hslope`. Simplify using `only [hf, neg_zero, zero_smul, NormedSpace.exp_zero, sigma_one hU, hπ.map_one] at h10`. Establish `h11` using `congrArg (π (NormedSpace.exp ((1 : ℝ) • X))) h10`. Rewrite `h11` using `[hmulπ _ (exp_mem_UJ hX _) _ (exp_mem_UJ hX _), ← exp_add_smul, add_neg_cancel, zero_smul, NormedSpace.exp_zero, hπ.map_one, one_smul]`.
+
+Simplify using `using h11`.
+-/
 theorem d4b : D4 := by
   intro n ε H _ _ _ σ hU hI E _ _ _ _ _ _ p π dπ hπ hSD T hT X hX hc w hw
   set f : ℝ → E := fun t => π (NormedSpace.exp ((-t) • X)) (T (σ (NormedSpace.exp (t • X)) w)) with hf

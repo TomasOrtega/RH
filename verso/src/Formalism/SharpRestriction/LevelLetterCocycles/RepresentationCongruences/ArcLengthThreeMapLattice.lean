@@ -22,6 +22,15 @@ variable {G : Type} [Group G] [TopologicalSpace G] {Qp K₀ K : Type} [Field Qp]
 
 variable [FiniteDimensional Qp LL]
 
+/- English proof (translation)
+Introduce and unpack `x ⟨y, hy, rfl⟩`. Establish `hN : ∀ x' : W.DD T₁, Formalism.MainNotions.LiftingTheory.InNΔi W T₁ (c - 1) x' → Formalism.MainNotions.LiftingTheory.InNΔi W T₂ (c - 1) (W.map F x')`. Introduce `x' hx'`. Use `⟨TypesA.map_NΔ W F hW₁.1 hW₂.1 hx'.1, ?_⟩` and prove the remaining obligations. Take `⟨m, hm, hmx⟩` from `Submodule.mem_map.1 hx'.2`.
+
+Use `Submodule.mem_map.2 ⟨W.map F m, W.map_N F hW₁.1 hW₂.1 m hm, ?_⟩` and prove the remaining obligations. Rewrite using `[← hmx]`. Simplify using `only [LinearMap.smul_apply, LinearMap.id_apply]`. Rewrite using `[TypesA.map_smulA]`. Establish `h : Pp W T₁ (c - 1) 1 ≤ (Pp W T₂ (c - 1) 1).comap (W.map F).toAddMonoidHom`.
+
+Use `(AddSubgroup.closure_le _).2 ?_` and prove the remaining obligations. Introduce and unpack `z ⟨a, ha, x', hx', rfl⟩`. Use `show W.map F (a • ((W.φD T₁) ^ 1) x') ∈ Pp W T₂ (c - 1) 1`. Rewrite using `[pow_one, TypesA.map_smulA, W.map_φ]`. Conclude with `AddSubgroup.subset_closure ⟨a, ha, W.map F x', hN x' hx', by rw [pow_one]⟩`.
+
+Use `⟨W.map F y, h hy, ?_⟩` and prove the remaining obligations. Rewrite using `[one_smul, one_smul]`.
+-/
 theorem arc_length_three_map_lattice [NeZero n] [Fintype (K →ₐ[Qp] LL)] [IsDomain O] [IsDiscreteValuationRing O] [IsAdicComplete (IsLocalRing.maximalIdeal O) O] (W : LocWach PD LL O v n) (hcase : Formalism.MainNotions.LiftingTheory.CaseA W)
     {T₁ T₂ : LocLat G Qp LL O} (F : LatHom T₁.L T₂.L) {b w S η m : ℕ} {up : ZMod n → Bool}
     {size Mi hi : ZMod n → ℕ} (hB : HypB PD W T₁ T₂ F b w S η m up size Mi hi)
@@ -66,6 +75,11 @@ theorem arc_length_three_map_lattice [NeZero n] [Fintype (K →ₐ[Qp] LL)] [IsD
   refine ⟨W.map F y, h hy, ?_⟩
   rw [one_smul, one_smul]
 
+/- English proof (translation)
+Introduce and unpack `u ⟨y, hy, hyc, rfl⟩`. Establish `hT₁ : IsCrys PD T₁.ρ` using `hW₁.1`. Take `⟨h9c, -⟩` from `NTB.p9mod_of W hcase hP9 T₁ hT₁`. Establish `hΔ : IsUnit (((PD.p - 1 : ℕ) : O))`. Rewrite using `[← h9c]`.
+
+Conclude with `(lemG_units W hcase hP9 hT₁ hO hOv hinj).2.2`. Take `⟨x, hx, hxc, hFx⟩` from `NTB.delta_lift W hcase hP9 F hT₁ hΔ c rr (hkill c hc) hy hyc`. Use `⟨x, ⟨x, hx, hxc, (one_smul _ _).symm⟩, NTB.InI_of_N W hcase hP9 hT₁ c hx hxc, ?_⟩` and prove the remaining obligations. Rewrite using `[hFx, one_smul]`. Both sides reduce to the same expression.
+-/
 theorem arc_length_three_annihilate [NeZero n] [Fintype (K →ₐ[Qp] LL)] [IsDomain O] [IsDiscreteValuationRing O] [IsAdicComplete (IsLocalRing.maximalIdeal O) O] (W : LocWach PD LL O v n) (hcase : Formalism.MainNotions.LiftingTheory.CaseA W)
     {T₁ T₂ : LocLat G Qp LL O} (F : LatHom T₁.L T₂.L) {b w S η m : ℕ} {up : ZMod n → Bool}
     {size Mi hi : ZMod n → ℕ} (hB : HypB PD W T₁ T₂ F b w S η m up size Mi hi)

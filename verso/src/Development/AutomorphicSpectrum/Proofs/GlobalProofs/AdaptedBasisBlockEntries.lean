@@ -15,10 +15,24 @@ noncomputable section
 
 namespace GlobalTheory.CompanionTheory.BlockEntry
 
+/- English proof (translation)
+Simplify using `[Matrix.mul_apply, Matrix.single_apply, Finset.sum_mul, ite_and]`.
+-/
 theorem sandwich_single_apply {A B : Type} [Fintype A] {d : ℕ} (U : Matrix A (Fin d) ℂ) (W : Matrix (Fin d) B ℂ)
     (i j : Fin d) (z : ℂ) (a : A) (c : B) : (U * Matrix.single i j z * W) a c = U a i * z * W j c := by
   simp [Matrix.mul_apply, Matrix.single_apply, Finset.sum_mul, ite_and]
 
+/- English proof (translation)
+Establish `hk` using `k.2`. Establish `hc` using `c.2`. Distinguish the cases in `h1 : c.val < m`. Establish `e : ∀ M : Matrix (Fin m) (Fin n) ℂ, (M * P) k c = (M * X) k ⟨c.val, h1⟩` using `fun M => by`. Simplify using `only [Matrix.mul_apply]`.
+
+Conclude with `Finset.sum_congr rfl fun a _ => by rw [cX c ⟨c.val, h1⟩ rfl a]`. Rewrite using `[e, e, hyx, hxx, Matrix.one_apply, Matrix.zero_apply]`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Distinguish the cases in `e' : c.val = k.val`. Rewrite using `[if_pos e', if_pos (Fin.ext e'.symm)]`.
+
+Rewrite using `[if_neg e', if_neg fun e'' => e' (congrArg Fin.val e'').symm]`. Rewrite using `[if_neg (by omega)]`. Distinguish the cases in `h2 : c.val + m < n`. Rewrite using `[pX c (by omega) h2, pY c (by omega) h2, if_neg (by omega), if_neg (by omega)]`. Conclude with `⟨rfl, rfl⟩`.
+
+Establish `hk' : n - 1 - c.val < m` using `by omega`. Establish `e : ∀ M : Matrix (Fin m) (Fin n) ℂ, (M * P) k c = (M * Y) k ⟨n - 1 - c.val, hk'⟩` using `fun M => by`. Simplify using `only [Matrix.mul_apply]`. Conclude with `Finset.sum_congr rfl fun a _ => by rw [cY c ⟨n - 1 - c.val, hk'⟩ (by simp only; omega) a]`. Rewrite using `[e, e, hyy, hxy, Matrix.one_apply, Matrix.zero_apply]`.
+
+Use `⟨by rw [if_neg (by omega)], ?_⟩` and prove the remaining obligations. Distinguish the cases in `e' : c.val + k.val + 1 = n`. Rewrite using `[if_pos e', if_pos (Fin.ext (by simp only; omega))]`. Rewrite using `[if_neg e', if_neg fun e'' => e' (by have := congrArg Fin.val e''; simp only at this; omega)]`.
+-/
 theorem rows_of_adapted {n m : ℕ} {H P : Matrix (Fin n) (Fin n) ℂ} {X Y : Matrix (Fin n) (Fin m) ℂ}
     (hxx : Xᴴ * H * X = 0) (hyy : Yᴴ * H * Y = 0) (hxy : Xᴴ * H * Y = 1) (hyx : Yᴴ * H * X = 1) (hle : 2 * m ≤ n)
     (cX : ∀ (c : Fin n) (k : Fin m), c.val = k.val → ∀ a, P a c = X a k)
@@ -52,6 +66,27 @@ theorem rows_of_adapted {n m : ℕ} {H P : Matrix (Fin n) (Fin n) ℂ} {X Y : Ma
       · rw [if_pos e', if_pos (Fin.ext (by simp only; omega))]
       · rw [if_neg e', if_neg fun e'' => e' (by have := congrArg Fin.val e''; simp only at this; omega)]
 
+/- English proof (translation)
+Use `set P := C.1.map τ with hP`. Establish `hdet : IsUnit P.det`. Establish `e : P.det = τ C.1.det` using `by rw [hP, ← RingHom.mapMatrix_apply, ← RingHom.map_det]`. Rewrite using `[e]`. Conclude with `((Matrix.isUnit_iff_isUnit_det _).1 C.isUnit).map τ`.
+
+Take `⟨hxx, hyy, hxy⟩` from `GlobalTheory.CentreFin.frame_emb hcm hW τ`. Establish `hJh : (J.map τ)ᴴ = J.map τ` using `GlobalTheory.LeviHC.conjTranspose_map hcm hJ τ`. Establish `hyx` using `GlobalTheory.CentreFin.dual_swap hJh hxy`. Establish `perp : ∀ (A : Matrix (Fin n) (Fin m) E) (c : Fin n), (Formalism.UG.cT (σ : E →+* E) A * J) *ᵥ (fun k => C.1 k c) = 0 → ∀ k, ((A.map τ)ᴴ * J.map τ * P) k c = 0` using `fun A c e k => by`. Establish `e1 : ((Formalism.UG.cT (σ : E →+* E) A * J) *ᵥ (fun k => C.1 k c)) k = 0` using `by rw [e]; rfl`.
+
+Establish `e2` using `congrArg τ e1`. Rewrite `e2` using `[map_zero]`. Rewrite using `[← e2, ← GlobalTheory.CentreFin.map_cT_emb hcm τ A, ← Matrix.map_mul]`. Simplify using `[Matrix.mul_apply, Matrix.mulVec, dotProduct, hP, map_sum, map_mul]`. Establish `what₂` using `rows_of_adapted (P := P) hxx hyy hxy hyx hC.le (fun c k e a => by rw [hP, Matrix.map_apply, hC.colX c k e a, Matrix.map_apply]) (fun c k e a => by rw [hP, Matrix.map_apply, hC.columnBlock c k e a, Matrix.map_apply]) (fun c h1 h2 => perp X c (hC.perpX c h1 h2)) (fun c h1 h2 => per …`.
+
+Use `set Xb := (GlobalTheory.BlockForms.blkCols h X).map τ with hXb`. Use `set Yb := (GlobalTheory.BlockForms.blkCols h Y).map τ with hYb`. Use `set R := Xb * Matrix.single i j z * (Ybᴴ * J.map τ) - Yb * (Matrix.single i j z)ᴴ * (Xbᴴ * J.map τ) with hR`. Set `f : Fin d → Fin m` to `fun a => ⟨l + a.val, by omega⟩`. Establish `sY : ∀ (a : Fin d) (c : Fin n), (Ybᴴ * J.map τ * P) a c = if c.val = l + a.val then 1 else 0` using `fun a c => (what₂ (f a) c).1`.
+
+Establish `sX : ∀ (a : Fin d) (c : Fin n), (Xbᴴ * J.map τ * P) a c = if c.val + (l + a.val) + 1 = n then 1 else 0` using `fun a c => (what₂ (f a) c).2`. Establish `hRP : R * P = P * (z • Matrix.single p q 1 - (starRingEnd ℂ z) • Matrix.single p' q' 1)`. Use extensionality with `a c`. Establish `e1 : R * P = Xb * Matrix.single i j z * (Ybᴴ * J.map τ * P) - Yb * Matrix.single j i (starRingEnd ℂ z) * (Xbᴴ * J.map τ * P)`. Rewrite using `[hR, Matrix.sub_mul, Matrix.conjTranspose_single]`.
+
+Simplify using `only [Matrix.mul_assoc]`. Both sides reduce to the same expression. Establish `e2 : P a p = Xb a i`. Rewrite using `[hP, Matrix.map_apply, hC.colX p (f i) hp a]`. Both sides reduce to the same expression.
+
+Establish `e3 : P a p' = Yb a j`. Rewrite using `[hP, Matrix.map_apply, hC.columnBlock p' (f j) (by simp only [f]; omega) a]; rfl`. Rewrite using `[e1, Matrix.sub_apply, sandwich_single_apply, sandwich_single_apply, sY, sX, Matrix.mul_sub, Matrix.sub_apply, Matrix.mul_smul, Matrix.mul_smul, Matrix.smul_apply, Matrix.smul_apply]`. Establish `e4 : ∀ (u v : Fin n), (P * Matrix.single u v (1 : ℂ)) a c = P a u * (if c = v then 1 else 0)` using `fun u v => by`. Distinguish the cases in `e : c = v`.
+
+Substitute `e` using the available equality. Simplify using `[Matrix.mul_single_apply_same]`. Establish `e' : v ≠ c` using `fun e'' => e e''.symm`. Rewrite using `[if_neg e, mul_zero, Matrix.mul_apply]`. Conclude with `Finset.sum_eq_zero fun b _ => by rw [Matrix.single_apply_of_col_ne _ _ e' _, mul_zero]`.
+
+Rewrite using `[e4, e4, e2, e3]`. Establish `c1 : (c = q) ↔ c.val = l + j.val` using `by rw [Fin.ext_iff, hq]`. Establish `c2 : (c = q') ↔ c.val + (l + i.val) + 1 = n` using `by rw [Fin.ext_iff]; omega`. Simplify using `only [c1, c2, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree.
+
+Combine the equalities or inequalities in the displayed calculation. Simplify using `only [Matrix.mul_sub, Matrix.sub_mul, Matrix.mul_smul, Matrix.smul_mul]`. Use `_ = R := by rw [← hRP, Matrix.mul_nonsing_inv_cancel_right _ _ hdet]`.
+-/
 theorem conj_units_eq {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E}
     (hcm : Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.IsCMExt F E σ) {n : ℕ} {J : Matrix (Fin n) (Fin n) E} (hJ : Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.IsHermND σ J) {m : ℕ}
     {X Y : Matrix (Fin n) (Fin m) E} (hW : IsWittFrame σ J X Y) {l d : ℕ} (h : l + d ≤ m) {C : GL (Fin n) E}
@@ -119,6 +154,17 @@ theorem conj_units_eq {F E : Type} [Field F] [NumberField F] [Field E] [NumberFi
         simp only [Matrix.mul_sub, Matrix.sub_mul, Matrix.mul_smul, Matrix.smul_mul]
     _ = R := by rw [← hRP, Matrix.mul_nonsing_inv_cancel_right _ _ hdet]
 
+/- English proof (translation)
+Introduce `D _ θ hθ V m X Y hW l d h ι hι C hC τ F f hf i j p q p' q' hp hq hp' hq' z x`. Establish `hcm` using `isCMExt_host D`. Establish `hJ` using `GlobalTheory.Doubling.isHermND_gram V`. Take `⟨e, he⟩ : ∃ e : EmbOver D.host.E (placeOf D τ), e.1 = tauE D τ` from `⟨embOverOf D τ, rfl⟩`. Establish `hline` using `isLineOf_blockEmb_exp' _ D.host.E D.sp.cm.sig hcm V.rank V.gram hJ m X Y hW l d h ι hι (placeOf D τ) e (Matrix.single i j z)`.
+
+Establish `hmat` using `conj_units_eq hcm hJ hW h hC (tauE D τ) i j p q p' q' hp hq hp' hq' z`. Rewrite `hline` using `[he, ← hmat]`. Establish `hsk` using `hline.skew hcm`. Rewrite `hsk` using `[he]`. Establish `hZ : z • (C.1.map (tauE D τ) * Matrix.single p q 1 * (C.1.map (tauE D τ))⁻¹) - (starRingEnd ℂ z) • (C.1.map (tauE D τ) * Matrix.single p' q' 1 * (C.1.map (tauE D τ))⁻¹) ∈ lieAt V τ` using `hsk`.
+
+Establish `hγ : ∀ t : ℝ, ι (GlobalTheory.CuspRep.infGL D.host.E d (GlobalTheory.CuspRep.expGLi d (t • (Matrix.single i j z).map (GlobalTheory.CuspRep.atEmb (tauE D τ))))) = oneP θ V τ (z • (C.1.map (tauE D τ) * Matrix.single p q 1 * (C.1.map (tauE D τ))⁻¹) - (starRingEnd ℂ z) • (C.1.map (ta …` using `fun t => by`. Take `⟨y, e1, e2⟩` from `hline t`. Use `Eq.trans e1 ?_` and prove the remaining obligations. Rewrite using `[oneP, ← e2, GlobalTheory.Orb.archMat_eq_archEquiv _ hcm, atTau_archEquiv hθ V e he]`. Establish `h0 : GlobalTheory.CuspRep.atEmb (tauE D τ) 0 = 0` using `by rw [GlobalTheory.CuspRep.atEmb_eq]; simp`.
+
+Establish `hs : Matrix.single i j (GlobalTheory.CuspRep.atEmb (tauE D τ) z) = (Matrix.single i j z).map (GlobalTheory.CuspRep.atEmb (tauE D τ))`. Apply the tactic sequence `ext a b; simp only [Matrix.single_apply, Matrix.map_apply]; split_ifs <;> simp [h0]`. Rewrite using `[GlobalTheory.CuspRep.lieS_apply, hs, lie_eq_deriv_exp' D.host.E d f _ x]`. Express the relevant statement in the definitionally equal form `_ = RderC θ V τ _ F.1 (ι x)`. Rewrite using `[GlobalTheory.SmoothAutCheck.RderC_eq θ V τ hZ]`.
+
+Simplify using `only [hf, map_mul, hγ]`. Both sides reduce to the same expression.
+-/
 theorem lieS_eq_derEnd : ∀ (D : D7) [IsTotallyComplex D.host.E] (θ : D.what₂.Tau → (Ainf D.host.F ⊗[D.host.F] D.host.E →+* ℂ)) (hθ : IsInfFam θ)
     (V : HSp D) (m : ℕ) (X Y : Matrix (Fin V.rank) (Fin m) D.host.E),
     IsWittFrame D.sp.cm.sig V.gram X Y → ∀ (l d : ℕ) (h : l + d ≤ m)

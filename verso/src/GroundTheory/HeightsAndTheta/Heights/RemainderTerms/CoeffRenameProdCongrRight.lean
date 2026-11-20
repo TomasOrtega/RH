@@ -26,26 +26,49 @@ def rho (f N : ℕ) : Fin f × Fin N →₀ ℕ :=
 
 def stairConst (f N : ℕ) : ℝ := (∏ i : Fin N, ((N - 1 - (i : ℕ)).factorial : ℝ)) ^ f
 
+/- English proof (translation)
+Use extensionality with `v`. Simplify using `[stairExp, rho, Equiv.Perm.one_def]`.
+-/
 theorem stairExp_one : stairExp f N 1 = rho f N := by
   ext v; simp [stairExp, rho, Equiv.Perm.one_def]
 
+/- English proof (translation)
+Simplify using `[permSign]`.
+-/
 theorem permSign_one : permSign f N 1 = 1 := by simp [permSign]
 
+/- English proof (translation)
+Simplify using `[permSign, Equiv.Perm.sign_inv]`.
+-/
 theorem permSign_inv (w : Fin f → Equiv.Perm (Fin N)) : permSign f N w⁻¹ = permSign f N w := by
   simp [permSign, Equiv.Perm.sign_inv]
 
+/- English proof (translation)
+Simplify using `[permSign, Equiv.Perm.sign_mul, prod_mul_distrib]`.
+-/
 theorem permSign_mul (u w : Fin f → Equiv.Perm (Fin N)) :
     permSign f N (u * w) = permSign f N u * permSign f N w := by
   simp [permSign, Equiv.Perm.sign_mul, prod_mul_distrib]
 
+/- English proof (translation)
+Rewrite using `[permSign, ← prod_mul_distrib]`. Conclude with `prod_eq_one fun τ _ => by rw [← Units.val_mul, Int.units_mul_self, Units.val_one]`.
+-/
 theorem permSign_mul_self (u : Fin f → Equiv.Perm (Fin N)) :
     permSign f N u * permSign f N u = 1 := by
   rw [permSign, ← prod_mul_distrib]
   exact prod_eq_one fun τ _ => by rw [← Units.val_mul, Int.units_mul_self, Units.val_one]
 
+/- English proof (translation)
+The claim follows from `pow_pos (prod_pos fun i _ => by exact_mod_cast Nat.factorial_pos _) _`.
+-/
 theorem stairConst_pos : 0 < stairConst f N :=
   pow_pos (prod_pos fun i _ => by exact_mod_cast Nat.factorial_pos _) _
 
+/- English proof (translation)
+Rewrite using `[← coeff_rename_mapDomain (Equiv.prodCongrRight w) (Equiv.injective _) P]`. Use `congr 1`. Use extensionality with `v`. Take `⟨u, rfl⟩` from `(Equiv.prodCongrRight w).surjective v`. Rewrite using `[Finsupp.mapDomain_apply (Equiv.injective _)]`.
+
+Simplify using the standard rewrite rules.
+-/
 theorem coeff_rename_prodCongrRight {R : Type*} [CommSemiring R] (w : Fin f → Equiv.Perm (Fin N))
     (P : MvPolynomial (Fin f × Fin N) R) (d : Fin f × Fin N →₀ ℕ) :
     coeff d (rename (Equiv.prodCongrRight w) P) =
@@ -57,6 +80,9 @@ theorem coeff_rename_prodCongrRight {R : Type*} [CommSemiring R] (w : Fin f → 
   rw [Finsupp.mapDomain_apply (Equiv.injective _)]
   simp
 
+/- English proof (translation)
+Rewrite using `[coeff_sum]`. Use `Fintype.sum_equiv (Equiv.inv _) _ _ (fun w => ?_)` and prove the remaining obligations. Rewrite using `[coeff_smul, smul_eq_mul, coeff_rename_prodCongrRight, Equiv.inv_apply, permSign_inv]`. Use `congr 2`.
+-/
 theorem coeff_rho_antisym {R : Type*} [CommRing R] (P : MvPolynomial (Fin f × Fin N) R) :
     coeff (rho f N) (∑ w : Fin f → Equiv.Perm (Fin N),
         ((permSign f N w : ℤ) : R) • rename (Equiv.prodCongrRight w) P) =
@@ -66,6 +92,11 @@ theorem coeff_rho_antisym {R : Type*} [CommRing R] (P : MvPolynomial (Fin f × F
   rw [coeff_smul, smul_eq_mul, coeff_rename_prodCongrRight, Equiv.inv_apply, permSign_inv]
   congr 2
 
+/- English proof (translation)
+Simplify using `only [blockVandermonde, Comb.vandermondeOf_eq_det, Matrix.det_apply', Matrix.of_apply]`. Rewrite using `[prod_univ_sum, Fintype.piFinset_univ]`. Use `sum_congr rfl fun w _ => ?_` and prove the remaining obligations. Rewrite using `[prod_mul_distrib, smul_eq_C_mul, monomial_eq, C_1, one_mul, Finsupp.prod_fintype _ _ (fun _ => pow_zero _), Fintype.prod_prod_type]`. Use `congr 1`.
+
+Simplify using `[permSign]`. Use `prod_congr rfl fun τ _ => ?_` and prove the remaining obligations. Use `symm`. Rewrite using `[← Equiv.prod_comp (w τ)]`. Simplify using `[stairExp]`.
+-/
 theorem blockVandermonde_eq_sum (f N : ℕ) :
     blockVandermonde f N = ∑ w : Fin f → Equiv.Perm (Fin N),
       ((permSign f N w : ℤ) : ℚ) • monomial (stairExp f N w) (1 : ℚ) := by
@@ -81,12 +112,20 @@ theorem blockVandermonde_eq_sum (f N : ℕ) :
     rw [← Equiv.prod_comp (w τ)]
     simp [stairExp]
 
+/- English proof (translation)
+Rewrite using `[blockVandermonde_eq_sum, coeff_sum]`. Simplify using `only [coeff_smul, coeff_monomial, smul_eq_mul]`.
+-/
 theorem coeff_blockVandermonde (α : Fin f × Fin N →₀ ℕ) :
     coeff α (blockVandermonde f N) =
       ∑ w, ((permSign f N w : ℤ) : ℚ) * if stairExp f N w = α then 1 else 0 := by
   rw [blockVandermonde_eq_sum, coeff_sum]
   simp only [coeff_smul, coeff_monomial, smul_eq_mul]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `τ`. Use extensionality with `i`. Establish `h1` using `DFunLike.congr_fun h (τ, w τ i)`. Simplify using `[stairExp, rho] at h1`. Use `(w τ i).isLt` as an intermediate fact.
+
+Use `i.isLt` as an intermediate fact. Simplify using `only [Pi.one_apply, Equiv.Perm.coe_one, id_eq]`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem eq_one_of_stairExp_eq (w : Fin f → Equiv.Perm (Fin N)) (h : stairExp f N w = rho f N) :
     w = 1 := by
   funext τ
@@ -98,6 +137,11 @@ theorem eq_one_of_stairExp_eq (w : Fin f → Equiv.Perm (Fin N)) (h : stairExp f
   simp only [Pi.one_apply, Equiv.Perm.coe_one, id_eq]
   omega
 
+/- English proof (translation)
+Rewrite using `[Finsupp.prod_fintype _ _ (fun _ => by simp), Fintype.prod_prod_type]`. Establish `h : ∀ τ, ∏ i : Fin N, ((stairExp f N w (τ, i)).factorial : ℝ) = ∏ i : Fin N, ((N - 1 - (i : ℕ)).factorial : ℝ)`. Introduce `τ`. Simplify using `only [stairExp, Finsupp.coe_equivFunOnFinite_symm]`. Conclude with `Equiv.prod_comp (w τ).symm (fun i : Fin N => ((N - 1 - (i : ℕ)).factorial : ℝ))`.
+
+Rewrite using `[prod_congr rfl (fun τ _ => h τ), prod_const, card_univ, Fintype.card_fin, stairConst]`.
+-/
 theorem prod_factorial_stairExp (w : Fin f → Equiv.Perm (Fin N)) :
     (stairExp f N w).prod (fun _ e => (e.factorial : ℝ)) = stairConst f N := by
   rw [Finsupp.prod_fintype _ _ (fun _ => by simp), Fintype.prod_prod_type]
@@ -108,6 +152,9 @@ theorem prod_factorial_stairExp (w : Fin f → Equiv.Perm (Fin N)) :
     exact Equiv.prod_comp (w τ).symm (fun i : Fin N => ((N - 1 - (i : ℕ)).factorial : ℝ))
   rw [prod_congr rfl (fun τ _ => h τ), prod_const, card_univ, Fintype.card_fin, stairConst]
 
+/- English proof (translation)
+Rewrite using `[Finsupp.degree_eq_sum, Fintype.sum_prod_type]`. Simplify using `only [rho, Finsupp.coe_equivFunOnFinite_symm, sum_const, card_univ, Fintype.card_fin, smul_eq_mul]`. Rewrite using `[Fin.sum_univ_eq_sum_range (fun i => N - 1 - i) N]`. Establish `h` using `sum_range_reflect (fun i => i) N`. Rewrite using `[h, sum_range_id]`.
+-/
 theorem rho_degree (f N : ℕ) : (rho f N).degree = f * (N * (N - 1) / 2) := by
   rw [Finsupp.degree_eq_sum, Fintype.sum_prod_type]
   simp only [rho, Finsupp.coe_equivFunOnFinite_symm, sum_const, card_univ, Fintype.card_fin,

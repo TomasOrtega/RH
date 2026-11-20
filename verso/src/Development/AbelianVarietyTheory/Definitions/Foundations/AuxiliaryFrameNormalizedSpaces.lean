@@ -17,11 +17,20 @@ namespace Pre
 
 variable (B : Pre)
 
+/- English proof (translation)
+Introduce `p hp` and use `(GlobalTheory.HostSplit.split_of_one_mod B.R B.host p (B.level_cond p hp).1 (B.level_cond p hp).2).1`.
+-/
 theorem level_split_E : ∀ p ∈ B.host.levelPrimes, (placesOver B.host.E p).ncard = Module.finrank ℚ B.host.E := fun p hp =>
   (GlobalTheory.HostSplit.split_of_one_mod B.R B.host p (B.level_cond p hp).1 (B.level_cond p hp).2).1
 
+/- English proof (translation)
+Introduce `k` and use `B.level_split_E _ (B.host.g_level k)`.
+-/
 theorem g_split : ∀ k, (placesOver B.host.E (B.host.g k)).ncard = Module.finrank ℚ B.host.E := fun k => B.level_split_E _ (B.host.g_level k)
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Rewrite using `[← GlobalTheory.HostSplit.ncard_placesOver _ B.host.pde_prime]`. Conclude with `B.level_split_E _ B.host.pde_level.1`. Rewrite using `[← GlobalTheory.HostSplit.ncard_placesOver _ B.host.pde'_prime]`. Conclude with `B.level_split_E _ B.host.pde_level.2`.
+-/
 theorem pde_split :
     (Ideal.primesOver (Ideal.span {(B.host.pde : ℤ)}) (𝓞 B.host.E)).ncard = Module.finrank ℚ B.host.E ∧
     (Ideal.primesOver (Ideal.span {(B.host.pde' : ℤ)}) (𝓞 B.host.E)).ncard = Module.finrank ℚ B.host.E := by
@@ -50,10 +59,19 @@ def spacesNorm : Spaces R F E :=
       exact_mod_cast hT.ne_zero
     z_orth := fun x => diag_ext_single _ _ (fun _ => false) x _ pz le_rfl }
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem spacesNorm_T : (spacesNorm R cm T hT pz hpz).T = T := rfl
 
+/- English proof (translation)
+The claim follows from `spY_sig R j τ`.
+-/
 theorem spacesNorm_Y_sig (j : ℕ) (τ : E →+* ℂ) : ((spacesNorm R cm T hT pz hpz).Y j).sig τ = sigYD R j := spY_sig R j τ
 
+/- English proof (translation)
+Use `(diag_single_single (R.N R.m) (fun _ => false) (⟨R.rankY R.m, by rw [N_top]; omega⟩ : Fin (R.N R.m)) _ pz pz).trans ?_` and prove the remaining obligations. Rewrite using `[if_pos rfl]`. Simplify using `only [sgn, Bool.false_eq_true, if_false, mul_one, hpz]`.
+-/
 theorem spacesNorm_z_norm : ((spacesNorm R cm T hT pz hpz).X R.m).hT (spacesNorm R cm T hT pz hpz).z
     (spacesNorm R cm T hT pz hpz).z = (T : E) := by
   refine (diag_single_single (R.N R.m) (fun _ => false)
@@ -61,6 +79,15 @@ theorem spacesNorm_z_norm : ((spacesNorm R cm T hT pz hpz).X R.m).hT (spacesNorm
   rw [if_pos rfl]
   simp only [sgn, Bool.false_eq_true, if_false, mul_one, hpz]
 
+/- English proof (translation)
+Establish `hi` using `i.isLt`. Establish `hj` using `j.isLt`. Simplify using `only [map_add, LinearMap.add_apply, diag_single_single]`. Rewrite using `[if_neg (show n + (i : ℕ) ≠ n + c + j by omega), if_neg (show n + c + (i : ℕ) ≠ n + j by omega)]`. Establish `h1 : cut N (n + c) ⟨n + i, by omega⟩ = false`.
+
+Simplify using `only [cut, decide_eq_false_iff_not]`. Use linear arithmetic over natural numbers and integers. Establish `h2 : cut N (n + c) ⟨n + c + i, by omega⟩ = true`. Simplify using `only [cut, decide_eq_true_eq]`. Use linear arithmetic over natural numbers and integers.
+
+Rewrite using `[h1, h2]`. Distinguish the cases in `hij : i = j`. Substitute `hij` using the available equality. Simplify using `[sgn]`. Expand and normalize the polynomial expressions, which then agree.
+
+Establish `hij' : (i : ℕ) ≠ j` using `fun e => hij (Fin.ext e)`. Simplify using `[hij', hij]`.
+-/
 theorem diag_pair {N n c : ℕ} (h : n + 2 * c ≤ N) (a b a' b' : E) (i j : Fin c) :
     diagForm N (cut N (n + c))
       (Pi.single (⟨n + i, by omega⟩ : Fin N) a + Pi.single (⟨n + c + i, by omega⟩ : Fin N) b)
@@ -82,6 +109,23 @@ theorem diag_pair {N n c : ℕ} (h : n + 2 * c ≤ N) (a b a' b' : E) (i j : Fin
   · have hij' : (i : ℕ) ≠ j := fun e => hij (Fin.ext e)
     simp [hij', hij]
 
+/- English proof (translation)
+Take `⟨a, ha⟩` from `R.m_even`. Establish `hr : R.N j + (R.m - 1 - j) = R.rankY j`. Simplify using `only [Ranks.N, Ranks.rankY, Ranks.r, mul_add, mul_one]`. Use linear arithmetic over natural numbers and integers. Establish `hp : pY R j = R.N j + (R.m - 1 - j) / 2`.
+
+Simplify using `only [pY]`. Use linear arithmetic over natural numbers and integers. Establish `h2 : R.N j + 2 * ((R.m - 1 - j) / 2) ≤ R.rankY j` using `by omega`. Establish `hcut : cut (R.rankY j) (pY R j) = cut (R.rankY j) (R.N j + (R.m - 1 - j) / 2)` using `by rw [hp]`. Establish `pair : ∀ (a b a' b' : E) (i i' : Fin ((R.m - 1 - j) / 2)), diagForm (R.rankY j) (cut _ (pY R j)) (Pi.single (⟨R.N j + i, by omega⟩ : Fin (R.rankY j)) a + Pi.single (⟨R.N j + (R.m - 1 - j) / 2 + i, by omega⟩ : Fin (R.rankY j)) b) (Pi.single (⟨R.N j + i', by omega⟩ : Fin (R.rankY j …`.
+
+Introduce `a b a' b' i i'`. Rewrite using `[hcut]`. Conclude with `diag_pair h2 a b a' b' i i'`. Establish `orthX : ∀ (x : Fin (R.N j) → E) (k k' : Fin (R.rankY j)) (b b' : E), R.N j ≤ k → R.N j ≤ k' → diagForm (R.rankY j) (cut _ (pY R j)) (extTo (R.N j) (R.rankY j) x) (Pi.single k b + Pi.single k' b') = 0`. Introduce `x k k' b b' hk hk'`.
+
+Rewrite using `[map_add, diag_ext_single _ _ _ x k b hk, diag_ext_single _ _ _ x k' b' hk', add_zero]`. Establish `orthS : ∀ (k k₁ k₂ : Fin (R.rankY j)) (b b₁ b₂ : E), (k : ℕ) ≠ k₁ → (k : ℕ) ≠ k₂ → diagForm (R.rankY j) (cut _ (pY R j)) (Pi.single k b) (Pi.single k₁ b₁ + Pi.single k₂ b₂) = 0`. Introduce `k k₁ k₂ b b₁ b₂ h₁ h₂`. Rewrite using `[map_add, diag_single_single, diag_single_single, if_neg h₁, if_neg h₂, add_zero]`. Use `⟨fun i => Pi.single (⟨R.N j + i, by omega⟩ : Fin (R.rankY j)) (1 : E) + Pi.single (⟨R.N j + (R.m - 1 - j) / 2 + i, by omega⟩ : Fin (R.rankY j)) (1 : E), fun i => Pi.single (⟨R.N j + i, by omega⟩ : Fin (R.rankY j)) (1 / 2 : E) + Pi.single (⟨R.N j + (R.m - 1 - j) / 2 + i, by omega⟩ …` and prove the remaining obligations.
+
+Conclude with `(pair 1 1 1 1 i i').trans (by simp)`. Apply the tactic sequence `exact (pair (1 / 2) (-(1 / 2)) (1 / 2) (-(1 / 2)) i i').trans (by split_ifs <;> simp [star_neg, star_ofNat])`. Apply the tactic sequence `exact (pair 1 1 (1 / 2) (-(1 / 2)) i i').trans (by split_ifs <;> norm_num)`. Conclude with `orthX x _ _ 1 1 (Nat.le_add_right _ _) ((Nat.le_add_right _ _).trans (Nat.le_add_right _ _))`. Conclude with `orthX x _ _ (1 / 2) (-(1 / 2)) (Nat.le_add_right _ _) ((Nat.le_add_right _ _).trans (Nat.le_add_right _ _))`.
+
+Establish `hj2 : R.N j + 2 * ((R.m - 1 - j) / 2) < R.rankY j`. Take `⟨b, hb⟩` from `hev`. Use linear arithmetic over natural numbers and integers. Establish `hneg : cut (R.rankY j) (pY R j) ⟨R.N j + 2 * ((R.m - 1 - j) / 2), hj2⟩ = true`. Simplify using `only [cut, decide_eq_true_eq]`.
+
+Use linear arithmetic over natural numbers and integers. Use `⟨Pi.single (⟨R.N j + 2 * ((R.m - 1 - j) / 2), hj2⟩ : Fin (R.rankY j)) pz, ?_, fun x => ?_, fun i => ⟨?_, ?_⟩⟩` and prove the remaining obligations. Use `(diag_single_single (R.rankY j) (cut _ (pY R j)) (⟨R.N j + 2 * ((R.m - 1 - j) / 2), hj2⟩ : Fin (R.rankY j)) _ pz pz).trans ?_` and prove the remaining obligations. Rewrite using `[if_pos rfl, hneg, spacesNorm_T]`. Simplify using `only [sgn, if_true, mul_neg, mul_one, neg_mul, hpz]`.
+
+Conclude with `diag_ext_single _ _ _ x _ pz (Nat.le_add_right _ _)`. Conclude with `orthS _ (⟨R.N j + i, by omega⟩ : Fin (R.rankY j)) (⟨R.N j + (R.m - 1 - j) / 2 + i, by omega⟩ : Fin (R.rankY j)) pz 1 1 (show R.N j + 2 * ((R.m - 1 - j) / 2) ≠ R.N j + i by omega) (show R.N j + 2 * ((R.m - 1 - j) / 2) ≠ R.N j + (R.m - 1 - j) / 2 + i by omega)`. Conclude with `orthS _ (⟨R.N j + i, by omega⟩ : Fin (R.rankY j)) (⟨R.N j + (R.m - 1 - j) / 2 + i, by omega⟩ : Fin (R.rankY j)) pz (1 / 2) (-(1 / 2)) (show R.N j + 2 * ((R.m - 1 - j) / 2) ≠ R.N j + i by omega) (show R.N j + 2 * ((R.m - 1 - j) / 2) ≠ R.N j + (R.m - 1 - j) / 2 + i by omega)`.
+-/
 theorem auxiliary_frame_normalized_spaces (j : ℕ) (hj : j < R.m) : HasHyperbolicAuxiliaryFrame (spacesNorm R cm T hT pz hpz) j := by
   obtain ⟨a, ha⟩ := R.m_even
   have hr : R.N j + (R.m - 1 - j) = R.rankY j := by
@@ -144,6 +188,27 @@ theorem auxiliary_frame_normalized_spaces (j : ℕ) (hj : j < R.m) : HasHyperbol
 
 end Spaces
 
+/- English proof (translation)
+Establish `hpos : 0 < Fintype.card (ClassGroup (𝓞 E))` using `Fintype.card_pos`. Use `choose rep γ hrep hγ hpow using exists_rep_pow_classNumber E`. Use `choose α hα using fun c : ClassGroup (𝓞 E) => IsAlgClosed.exists_pow_nat_eq (τ (γ c : E)) hpos`. Establish `hαint : ∀ c, IsIntegral ℤ (α c)` using `fun c => IsIntegral.of_pow hpos (by rw [hα c]; exact (RingOfIntegers.isIntegral_coe (γ c)).map τ.toIntAlgHom)`. Use `⟨Finset.univ.image α, ?_, ?_⟩` and prove the remaining obligations.
+
+Introduce `z hz`. Take `⟨c, -, rfl⟩` from `Finset.mem_image.mp hz`. Conclude with `((hαint c).tower_top (A := ℚ)).isAlgebraic`. Introduce `K _ hS hτ 𝔞`. Establish `: NumberField K` using `{}`.
+
+Set `f : E →+* K` to `τ.codRestrict K hτ`. Establish `hset : {x : K | ∃ a ∈ 𝔞, (x : ℂ) = τ (a : E)} = {x : K | ∃ a ∈ 𝔞, x = f (a : E)}`. Use extensionality with `x`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨a, ha, e⟩`.
+
+Conclude with `⟨a, ha, Subtype.ext e⟩`. Introduce and unpack `⟨a, ha, e⟩`. Conclude with `⟨a, ha, congrArg Subtype.val e⟩`. Rewrite using `[hset, span_image_eq_coeSubmodule_map f 𝔞]`. Distinguish the cases in `h0 : 𝔞 = ⊥`.
+
+Use `⟨0, ?_⟩` and prove the remaining obligations. Rewrite using `[h0, Ideal.map_bot, IsLocalization.coeSubmodule_bot, Submodule.span_singleton_eq_bot.mpr rfl]`. Use `set φ := RingOfIntegers.mapRingHom f`. Use `set c := ClassGroup.mk0 (⟨𝔞, mem_nonZeroDivisors_of_ne_zero h0⟩ : (Ideal (𝓞 E))⁰) with hc`. Take `⟨x, y, hx, hy, hxy⟩` from `ClassGroup.mk0_eq_mk0_iff.mp (hrep c).symm`.
+
+Establish `haK : α c ∈ K` using `hS _ (Finset.mem_image_of_mem _ (Finset.mem_univ c))`. Establish `haint : IsIntegral ℤ (⟨α c, haK⟩ : K)` using `(isIntegral_algHom_iff (K.val : K →+* ℂ).toIntAlgHom Subtype.val_injective).mp (hαint c)`. Set `aO : 𝓞 K` to `⟨⟨α c, haK⟩, haint⟩`. Establish `hφγ : φ (γ c) = aO ^ Fintype.card (ClassGroup (𝓞 E))`. Apply `RingOfIntegers.ext` to reduce the goal to its premises.
+
+Apply `Subtype.ext` to reduce the goal to its premises. Simplify using `only [φ, RingOfIntegers.mapRingHom_apply, map_pow]`. Conclude with `(hα c).symm`. Establish `hrepmap : Ideal.map φ (rep c : Ideal (𝓞 E)) = Ideal.span {aO}`. Apply `pow_left_injective hpos.ne'` to reduce the goal to its premises.
+
+Simplify using `only`. Rewrite using `[← Ideal.map_pow, hpow c, Ideal.map_span, Set.image_singleton, hφγ, Ideal.span_singleton_pow]`. Establish `hmap` using `congrArg (fun I => IsLocalization.coeSubmodule K (Ideal.map φ I)) hxy`. Simplify using `only [Ideal.map_mul, hrepmap, Ideal.map_span, Set.image_singleton, IsLocalization.coeSubmodule_mul, IsLocalization.coeSubmodule_span_singleton] at hmap`. Establish `hu : algebraMap (𝓞 K) K (φ x) ≠ 0` using `by show f (x : E) ≠ 0`.
+
+Rewrite using `[map_ne_zero]`. Conclude with `fun h => hx (RingOfIntegers.ext (by simpa using h))`. Use `⟨(algebraMap (𝓞 K) K (φ x))⁻¹ * (algebraMap (𝓞 K) K (φ y) * algebraMap (𝓞 K) K aO), ?_⟩` and prove the remaining obligations. Establish `hone : Submodule.span (𝓞 K) {(algebraMap (𝓞 K) K (φ x))⁻¹} * Submodule.span (𝓞 K) {algebraMap (𝓞 K) K (φ x)} = 1`. Rewrite using `[Submodule.span_mul_span, Set.singleton_mul_singleton, inv_mul_cancel₀ hu, Submodule.one_eq_span]`.
+
+Rewrite using `[← one_mul (IsLocalization.coeSubmodule K (Ideal.map φ 𝔞)), ← hone, mul_assoc, hmap, Submodule.span_mul_span, Set.singleton_mul_singleton, Submodule.span_mul_span, Set.singleton_mul_singleton]`.
+-/
 theorem exists_finset_capitulation (E : Type) [Field E] [NumberField E] (τ : E →+* ℂ) :
     ∃ S : Finset ℂ, (∀ z ∈ S, IsAlgebraic ℚ z) ∧ ∀ (K : IntermediateField ℚ ℂ) [FiniteDimensional ℚ K],
       (∀ z ∈ S, z ∈ K) → (∀ x, τ x ∈ K) → ∀ 𝔞 : Ideal (𝓞 E), ∃ β : K,

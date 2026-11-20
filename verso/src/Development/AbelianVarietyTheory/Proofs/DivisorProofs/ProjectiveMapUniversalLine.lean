@@ -10,6 +10,15 @@ namespace GlobalTheory.LineQuot
 
 set_option backward.isDefEq.respectTransparency false in
 
+/- English proof (translation)
+Introduce `k _ N T φ L hL`. Establish `hM : ((ProjSpace.O1 k N).pull φ).IsLB` using `LB.isLB_pull (ProjSpace.O1_isLB k N) φ`. Use `⟨twist L ((ProjSpace.O1 k N).pull φ), fun j => Twist.secHom L (Cartier.secPull (ProjSpace.coord k N j) φ), hL.twist hM, ?_, ?_⟩` and prove the remaining obligations. Introduce `Z a ha`. Establish `hc` using `ProjSpace.iSup_nonzeroLocus_secPull (ProjSpace.iSup_nonzeroLocus_coord k N) φ`.
+
+Use extensionality with `V q`. Use `Twist.sec_ext_of_cover (fun j => V ⊓ Out.nonzeroLocus (Cartier.secPull (ProjSpace.coord k N j) φ)) (fun _ => inf_le_left) (GlobalTheory.LB.le_iSup_inf hc V) fun j => ?_` and prove the remaining obligations. Rewrite using `[← Twist.app_resM, ← Twist.app_resM]`. Take `⟨t, ht⟩` from `(Twist.bijective_secHom_app (F := L) hM (Cartier.secPull (ProjSpace.coord k N j) φ) (V := V ⊓ Out.nonzeroLocus (Cartier.secPull (ProjSpace.coord k N j) φ)) inf_le_right).2 (Twist.resM _ inf_le_left q)`. Rewrite using `[← ht]`.
+
+Establish `e` using `congrArg (fun m => (Scheme.Modules.Hom.app m (V ⊓ Out.nonzeroLocus (Cartier.secPull (ProjSpace.coord k N j) φ))) t) (ha j)`. Simplify using `only [Scheme.Modules.Hom.comp_app, ConcreteCategory.comp_apply] at e`. Rewrite using `[e]`. Simplify using the standard rewrite rules. Introduce `i j W h t`.
+
+Establish `hW : W ≤ ((ProjSpace.O1 k N).pull φ).U (fun _ => i)` using `h.trans (Cartier.pull_U (ProjSpace.O1 k N) φ fun _ => i).ge`. Apply `(Twist.chartEquiv hM (fun _ => i) hW).injective` to reduce the goal to its premises. Rewrite using `[LinearEquiv.map_smul, Twist.chartEquiv_secHom_app, Twist.chartEquiv_secHom_app, ProjSpace.resG_secPull_coord, ProjSpace.resG_secPull_coord, ProjSpace.pullRatio_self, one_smul]`.
+-/
 theorem exists_taut_quot : ∀ (k : Type) [CommRing k] (N : ℕ) (T : Scheme.{0}) (φ : T ⟶ PSpace k N) (L : T.Modules), IsVB L 1 → ∃ (Q : T.Modules) (s : Fin (N + 1) → (L ⟶ Q)), IsVB Q 1 ∧ JointEpi s ∧ Rel φ s := by
   intro k _ N T φ L hL
   have hM : ((ProjSpace.O1 k N).pull φ).IsLB := LB.isLB_pull (ProjSpace.O1_isLB k N) φ

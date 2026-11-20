@@ -2,6 +2,23 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.CommutativeAlgebra
 
 open IsLocalRing MvPowerSeries UpperTheory.V.Alg
 
+/- English proof (translation)
+Introduce `O R _ _ _ X _ _ _ W S j hS`. Use `haveI := W.fin`. Establish `hMfin : {m : W.σ →₀ ℕ | Minimal (· ∈ S) m}.Finite` using `WellQuasiOrderedLE.finite_of_isAntichain (setOf_minimal_antichain _)`. Establish `hex : ∀ n ∈ S, ∃ m ∈ {m : W.σ →₀ ℕ | Minimal (· ∈ S) m}, m ≤ n`. Introduce `n hn`.
+
+Take `⟨b, hb, hmin⟩` from `(Set.isPWO_of_wellQuasiOrderedLE S).exists_le_minimal hn`. Conclude with `⟨b, hmin, hb⟩`. Use `choose! c hcM hcle using hex`. Use `⟨hMfin.toFinset, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[Set.Finite.coe_toFinset]`.
+
+Conclude with `fun m hm => hm.1`. Introduce `f hf`. Take `⟨b, hb⟩ : ∃ b : (W.σ →₀ ℕ) → MvPowerSeries W.σ O, ∀ m k, coeff k (b m) = if k + m ∈ S ∧ c (k + m) = m then coeff (k + m) f else 0` from `⟨fun m k => if k + m ∈ S ∧ c (k + m) = m then coeff (k + m) f else 0, fun _ _ => rfl⟩`. Use `⟨b, ?_, ?_⟩` and prove the remaining obligations. Introduce `m k hk`.
+
+Rewrite using `[hb, if_neg]`. Introduce and unpack `⟨h1, h2⟩`. Apply `hk` to reduce the goal to its premises. Establish `hm : Finsupp.weight W.wt m = j` using `hS m (by rw [← h2]; exact (hcM _ h1).1)`. Establish `hkm` using `hS _ h1`.
+
+Rewrite `hkm` using `[map_add, hm]`. Simplify using `using hkm`. Use extensionality with `n`. Rewrite using `[map_sum, Finset.sum_congr rfl (g := fun m => if c n = m then (if n ∈ S then coeff n f else 0) else 0), Finset.sum_ite_eq]`. Distinguish the cases in `hn : n ∈ S`.
+
+Rewrite using `[if_pos ((Set.Finite.mem_toFinset hMfin).2 (hcM n hn)), if_pos hn]`. Rewrite using `[hf n hn]`. Simplify using the standard rewrite rules. Introduce `m _`. Rewrite using `[MvPowerSeries.coeff_mul_monomial, mul_one]`.
+
+Distinguish the cases in `hmn : m ≤ n`. Rewrite using `[if_pos hmn, hb, tsub_add_cancel_of_le hmn]`. Apply the tactic sequence `by_cases h1 : n ∈ S <;> by_cases h2 : c n = m <;> simp [h1, h2]`. Rewrite using `[if_neg hmn]`. Distinguish the cases in `h1 : n ∈ S`.
+
+Establish `h3 : c n ≠ m` using `fun h => hmn (h ▸ hcle n h1)`. Simplify using `[h3]`. Simplify using `[h1]`.
+-/
 theorem UpperTheory.V.Alg.part_span :
     ∀ (O R : Type) [CommRing O] [CommRing R] [Algebra O R] (X : Type) [AddCommGroup X] [Module.Free ℤ X] [Module.Finite ℤ X] (W : WPres O X R) (S : Set (W.σ →₀ ℕ)) (j : X), (∀ n ∈ S, Finsupp.weight W.wt n = j) →
       ∃ μ : Finset (W.σ →₀ ℕ), (μ : Set _) ⊆ S ∧ ∀ f : MvPowerSeries W.σ O, (∀ n, n ∉ S → coeff n f = 0) →

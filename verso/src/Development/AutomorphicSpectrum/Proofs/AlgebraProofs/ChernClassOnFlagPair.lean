@@ -26,6 +26,19 @@ open GroundTheory.Heights₂.Heights
 open GroundTheory.Heights₂.Heights.NumbersDVR
 open MvPolynomial
 
+/- English proof (translation)
+Introduce `O _ _ _ K _ _ ι _ P d N x c G hG hc q L Q hQ a`. Establish `hH : (rename (Fin.castAdd q) G * rename (Fin.natAdd N) Q : MvPolynomial (Fin (N + q)) ℤ).IsHomogeneous d`. Establish `h3` using `(hG.rename_isHomogeneous (f := Fin.castAdd q)).mul (hQ.rename_isHomogeneous (f := Fin.natAdd N))`. Rewrite `h3` using `[show c + (d - c) = d by omega]`. Then use the resulting hypothesis. Establish `hZ : ⇑(Finsupp.mapRange (fun n : ℕ => (n : ℤ)) Nat.cast_zero (ReciprocityTheory.ChartRestriction.G.Geo.divCycle P (C a))) = divCycle P (C a)`.
+
+Use function extensionality and compare the values at `W`. Simplify using `[FlagTypings.divCycle_eq]`. Establish `hfin : (Function.support (divCycle P (C a))).Finite`. Rewrite using `[← hZ]`. Conclude with `Finsupp.finite_support _`.
+
+Establish `hcast : Fin.append x L ∘ Fin.castAdd q = x`. Use function extensionality and compare the values at `i`. Simplify using `[Fin.append_left]`. Establish `hnat : Fin.append x L ∘ Fin.natAdd N = L`. Use function extensionality and compare the values at `j`.
+
+Simplify using `[Fin.append_right]`. Establish `key : ∀ W : Ideal (MRing ι O), IndefiniteRowSideFullHecke.NumbersDVR.Bundles.polyNum (fun V _ bs => intNum (IsLocalRing.ResidueField O) V bs) (specialIdeal W) d (Fin.append x L) (rename (Fin.castAdd q) G * rename (Fin.natAdd N) Q) = ∑ μ ∈ Q.support, Q.coeff μ * classNum x G (clas …`. Introduce `W`. Rewrite using `[BundleExamples.polyNum_eq_classNum (Fin.append x L) (Equiv.refl _) (Fin.append x L) rfl hH W]`. Simplify using `only [Equiv.coe_refl, rename_id_apply]`.
+
+Rewrite using `[plainPolynomialPairNumber.classNum_mul_tail _ L _ hnat]`. Use `Finset.sum_congr rfl fun μ _ => ?_` and prove the remaining obligations. Rewrite using `[plainPairNumber.classNum_rename _ (Fin.castAdd_injective _ _), hcast]`. Rewrite using `[BundleExamples.vEval_eq, hZ]`. Simplify using `only [key, cycEval_eq_sum hfin, Finset.mul_sum]`.
+
+Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun μ _ => Finset.sum_congr rfl fun W _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem rootPolyNum : RootPolynomialNumber.Statement := by
   intro O _ _ _ K _ _ ι _ P d N x c G hG hc q L Q hQ a
   have hH : (rename (Fin.castAdd q) G * rename (Fin.natAdd N) Q :
@@ -62,6 +75,9 @@ theorem rootPolyNum : RootPolynomialNumber.Statement := by
   refine Finset.sum_congr rfl fun μ _ => Finset.sum_congr rfl fun W _ => ?_
   ring
 
+/- English proof (translation)
+The claim follows from `ChernClassOnFlagPair.proof (JoinPointFlagModel.proof FlagPairCharacterisation.proof JoinPointModel.proof JoinPointVerticalDivisor.proof) (JoinPointNumbers.proof JoinPointIdeal.proof JoinDivCycle.proof JoinVariety.proof JoinIntNum.proof PairNumberJoinLeft.verticalComponentFibre) G …`.
+-/
 theorem main : ChernClassOnFlagPair.Statement :=
   ChernClassOnFlagPair.proof
     (JoinPointFlagModel.proof FlagPairCharacterisation.proof JoinPointModel.proof

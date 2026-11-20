@@ -13,6 +13,13 @@ open Limits
 
 namespace GlobalTheory.LieLatGen
 
+/- English proof (translation)
+Introduce `E _ _ _ H K _ _ B t₀ m2 F T iK t' n'`. Establish `hF : IsGrpPullback F.P₀.A B.t.G (spMap (algebraMap (𝓞 K) K)) F.φ` using `F.fib.2.1`. Establish `hm : IsGrpPullback t₀.G B.t.G (spMap (algebraMap (𝓞 K) K)) m2.φ` using `m2.cart`. Establish `hn : IsGrpPullback t'.G t₀.G (spMap iK) n'.φ` using `n'.cart`. Establish `hc : IsGrpPullback t'.G B.t.G (spMap iK ≫ spMap (algebraMap (𝓞 K) K)) (n'.φ ≫ m2.φ)` using `hn.comp hm`.
+
+Establish `w : (n'.φ ≫ m2.φ) ≫ B.t.G.hom = (t'.G.hom ≫ spMap iK) ≫ spMap (algebraMap (𝓞 K) K)`. Rewrite using `[hc.1.w, Category.assoc]`. Establish `hq : IsGrpPullback t'.G F.P₀.A (spMap iK) (hF.1.lift _ _ w)` using `IsGrpPullback.cancel hF (hc.congr rfl (hF.1.lift_fst _ _ w).symm) (hF.1.lift_snd _ _ w)`. Use `F.P₀.isAb.comm` as an intermediate fact. Take `⟨v', hb, hv'⟩` from `GlobalTheory.exists_isLieBasis_baseChange K T.Fr iK _ _ _ hq F.P₀.isAb.smooth _ F.v F.basis`.
+
+Use `⟨v', hb, fun k => ?_⟩` and prove the remaining obligations. Rewrite using `[← hF.1.lift_fst _ _ w, ← Category.assoc, hv' k, Category.assoc]`. Both sides reduce to the same expression.
+-/
 theorem exists_isLieBasis_fibre : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (K : Type) [Field K] [NumberField K] (B : GlobalTheory.CM.PAT H (Sp (𝓞 K))) (t₀ : SAB H (Sp K)) (m2 : SABMap t₀ B.t (spMap (algebraMap (𝓞 K) K))) (F : GlobalTheory.CM.GenFib B.pol) (T : CDVR) (iK : K →+* T.Fr) (t' : SAB H (Sp T.Fr)) (n' : SABMap t' t₀ (spMap iK)), ∃ v' : Fin F.P₀.g → (epsR T.Fr ⟶ t'.G), IsLieBasis v' ∧ ∀ k, (v' k).left ≫ n'.φ ≫ m2.φ = spMap (Formalism.L2.Pj.dualMap iK) ≫ (F.v k).left ≫ F.φ := by
   intro E _ _ _ H K _ _ B t₀ m2 F T iK t' n'
   have hF : IsGrpPullback F.P₀.A B.t.G (spMap (algebraMap (𝓞 K) K)) F.φ := F.fib.2.1

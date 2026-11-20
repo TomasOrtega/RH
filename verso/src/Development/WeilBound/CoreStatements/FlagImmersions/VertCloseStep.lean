@@ -15,6 +15,31 @@ open ReciprocityTheory.ChartRestriction.G.AI.I1 (IsBlockMap pullDeg)
 open ReciprocityTheory.ChartRestriction.G.AI.I4 (imageZ IsPullHerm blockFnField)
 open GroundTheory.Heights₂.Heights.IndefiniteRowSideFullHecke.Inter (pullHerm)
 
+/- English proof (translation)
+Establish `hP : (mCoordIdeal y).IsPrime` using `hA.2.1.1`. Establish `hF : IsMultiHomog (∏ r ∈ I, g r) (∑ r ∈ I, dg r)` using `DegBlock.isMultiHomog_prod' I fun r _ => hg r`. Establish `hG : IsMultiHomog (∏ r ∈ I, f r) (∑ r ∈ I, df r)` using `DegBlock.isMultiHomog_prod' I fun r _ => hf r`. Establish `hFP : ∏ r ∈ I, g r ∉ mCoordIdeal y` using `fun h => by`. Take `⟨r, -, hr⟩` from `(Ideal.IsPrime.prod_mem_iff (hp := hP)).1 h`.
+
+Conclude with `hgP r hr`. Establish `hGP : ∏ r ∈ I, f r ∉ mCoordIdeal y` using `fun h => by`. Take `⟨r, -, hr⟩` from `(Ideal.IsPrime.prod_mem_iff (hp := hP)).1 h`. Conclude with `hfP r hr`. Establish `hU : aeval y (∏ r ∈ I, g r) = (∏ r ∈ I, (u r)⁻¹) * aeval y (∏ r ∈ I, f r)`.
+
+Rewrite using `[map_prod, map_prod, ← Finset.prod_mul_distrib]`. Use `Finset.prod_congr rfl fun r _ => ?_` and prove the remaining obligations. Rewrite using `[hu, inv_mul_cancel_left₀ (hu0 r)]`. Establish `hprod : ∀ (W : ValuationSubring Ω) (t : β → Ω), (∀ r, (m : Ω) * t r ^ q ∈ W) → ((m ^ N : ℕ) : Ω) * (∏ r ∈ I, t r) ^ q ∈ W`. Introduce `W t ht`.
+
+Establish `e : ((m ^ N : ℕ) : Ω) * (∏ r ∈ I, t r) ^ q = ((m ^ (N - I.card) : ℕ) : Ω) * ∏ r ∈ I, ((m : Ω) * t r ^ q)`. Rewrite using `[Finset.prod_mul_distrib, Finset.prod_const, Finset.prod_pow, ← mul_assoc]`. Use `congr 1`. Use `push_cast`. Rewrite using `[← pow_add, Nat.sub_add_cancel hI]`.
+
+Rewrite using `[e]`. Conclude with `mul_mem (natCast_mem W _) (prod_mem fun r _ => ht r)`. Establish `hdiv` using `div_close y hA T hT hq (pow_pos hm N) (fun p hp h => hmT p hp (hp.dvd_of_dvd_pow h)) hF hG hFP hGP hU (fun c hc W hW => by`. Establish `e : (∏ r ∈ I, (u r)⁻¹) * ∏ k, y ⟨k, c k⟩ ^ (-((((∑ r ∈ I, dg r) k : ℕ) : ℤ) - ((∑ r ∈ I, df r) k : ℕ))) = ∏ r ∈ I, (u r * ∏ k, y ⟨k, c k⟩ ^ (-((df r k : ℤ) - dg r k)))⁻¹`. Simplify using `only [mul_inv, Finset.prod_mul_distrib]`.
+
+Use `congr 1`. Simplify using `only [← Finset.prod_inv_distrib, ← zpow_neg]`. Rewrite using `[Finset.prod_comm]`. Use `Finset.prod_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[prod_zpow_sum _ (hc k)]`.
+
+Use `congr 1`. Simplify using `[Finset.sum_apply, Finset.sum_sub_distrib]`. Rewrite using `[e]`. Use `⟨hprod W _ fun r => (hval r c hc W hW).2, ?_⟩` and prove the remaining obligations. Rewrite using `[← Finset.prod_inv_distrib]`.
+
+Conclude with `hprod W _ fun r => by rw [inv_inv]; exact (hval r c hc W hW).1)`. Use `⟨_, _, _, _, hF, hG, hFP, hGP, fun k => ?_, fun z hz => ?_, hdiv.1, hdiv.2⟩` and prove the remaining obligations. Rewrite using `[hAa, hBa]`. Simplify using `only [Finset.sum_apply, Pi.neg_apply]`. Use `push_cast`.
+
+Use `Finset.sum_congr (rfl : I = I) fun r _ => hd r k` as an intermediate fact. Simplify using `only [Finset.sum_sub_distrib] at this`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `eA : A.h z = (∏ r ∈ I, (A₁ r).h z)⁻¹`. Establish `hp : 0 < ∏ r ∈ I, (A₁ r).h z` using `Finset.prod_pos fun r _ => (A₁ r).pos z hz.1`.
+
+Use `Real.log_injOn_pos (A.pos z hz.1) (inv_pos.2 hp) ?_` and prove the remaining obligations. Rewrite using `[hAh z hz, Real.log_inv, Real.log_prod fun r _ => ((A₁ r).pos z hz.1).ne']`. Establish `eB : B.h z = (∏ r ∈ I, (B₁ r).h z)⁻¹`. Establish `hp : 0 < ∏ r ∈ I, (B₁ r).h z` using `Finset.prod_pos fun r _ => (B₁ r).pos z hz.1`. Use `Real.log_injOn_pos (B.pos z hz.1) (inv_pos.2 hp) ?_` and prove the remaining obligations.
+
+Rewrite using `[hBh z hz, Real.log_inv, Real.log_prod fun r _ => ((B₁ r).pos z hz.1).ne']`. Rewrite using `[eA, eB, map_prod, map_prod, map_prod, map_prod, norm_prod, norm_prod, ← Finset.prod_inv_distrib, ← Finset.prod_inv_distrib, ← Finset.prod_mul_distrib, ← Finset.prod_mul_distrib]`. Use `Finset.prod_congr rfl fun r _ => ?_` and prove the remaining obligations. Establish `a` using `((A₁ r).pos z hz.1).ne'`. Establish `b` using `((B₁ r).pos z hz.1).ne'`.
+
+Use `hiso r z hz` as an intermediate fact. Clear the denominators using the available nonvanishing facts. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem vertClose_step {K : Type} [Fintype K] {ι : K → Type} [∀ k, Fintype (ι k)] {Ω : Type} [Field Ω]
     (y : (Σ k, ι k) → Ω) {d : ℕ} (hA : IsArithVar (mCoordIdeal y) d) (T : Finset ℕ) (hT : ∀ p ∈ T, p.Prime)
     {q m N : ℕ} (hq : 0 < q) (hm : 0 < m) (hmT : ∀ p : ℕ, p.Prime → p ∣ m → p ∈ T) {β : Type} (I : Finset β)
@@ -108,6 +133,17 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {D : Da
   {i : R.Ω →+* M.Ω} {K : Type} [Fintype K] {ι : K → Type} [∀ k, Fintype (ι k)] {y : (Σ k, ι k) → M.Ω}
   {κ : M.K → K} {v : (Σ k, M.ι k) → Σ k, ι k} {κ₀ : R.K → K} {v₀ : (Σ k, R.ι k) → Σ k, ι k}
 
+/- English proof (translation)
+Take `⟨r, hr, hp⟩` from `LineUnit.exists_prop (y := y) (w₀ := fun j => v ⟨o.k₀, o.ix j⟩) (w₁ := fun j => v₀ ⟨o₀.k₀, o₀.ix j⟩) (fun j => hv.2.2.1 _) (fun j => hv₀.2.2.1 _) (LineUnit.block_onto hv o.k₀ o.ix) (LineUnit.block_onto hv₀ o₀.k₀ o₀.ix) (fun j => by rw [hy, hy₀, o.y_eq, o₀.y_eq, ← hi]; rfl) hz`. Take `⟨a, ha⟩` from `o.π_pt x`. Take `⟨a₀, ha₀⟩` from `o₀.π_pt x₀`. Take `⟨s, hs, e⟩` from `hx`. Take `⟨s₀, hs₀, e₀⟩` from `hx₀`.
+
+Establish `ha0 : a ≠ 0`. Introduce and unpack `rfl`. Take `⟨j, hj⟩` from `(o.Re.R.mem x x (o.Re.R.mem_U x)).1 o.k₀`. Apply `hj` to reduce the goal to its premises. Use `congrFun ha (o.ix.symm j)` as an intermediate fact.
+
+Simplify using `using this`. Use `Fx.pt_inj _ _ (a⁻¹ * s o.k₀ * r * (s₀ o₀.k₀)⁻¹ * a₀) ?_` and prove the remaining obligations. Use function extensionality and compare the values at `j`. Establish `b` using `congrFun ha j`. Establish `b₀` using `congrFun ha₀ j`.
+
+Establish `d` using `congrFun e ⟨o.k₀, o.ix j⟩`. Establish `d₀` using `congrFun e₀ ⟨o₀.k₀, o₀.ix j⟩`. Establish `f` using `hp j`. Simplify using `only [Pi.smul_apply, smul_eq_mul] at b b₀ d d₀ f ⊢`. Establish `n₀` using `hs₀ o₀.k₀`.
+
+Rewrite `b` using `[d, f]`. Rewrite `b₀` using `[d₀]`. Clear the denominators using the available nonvanishing facts. Take the linear combination `(s₀ o₀.k₀) * b.symm + (s o.k₀ * r) * b₀`.
+-/
 theorem pi_agree (hi : i.comp o₀.g = o.g) (hv : IsBlockMap κ v) (hv₀ : IsBlockMap κ₀ v₀) (hy : ∀ p, y (v p) = M.y p)
     (hy₀ : ∀ p, y (v₀ p) = i (R.y p)) {z : (Σ k, ι k) → ℂ} (hz : z ∈ mcPts (mCoordIdeal y)) (x : o.Re.R.X)
     (x₀ : o₀.Re.R.X) (hx : SameOrbit (o.Re.R.lift x x) fun p => z (v p))
@@ -141,6 +177,15 @@ theorem pi_agree (hi : i.comp o₀.g = o.g) (hv : IsBlockMap κ v) (hv₀ : IsBl
   field_simp
   linear_combination (s₀ o₀.k₀) * b.symm + (s o.k₀ * r) * b₀
 
+/- English proof (translation)
+Take `⟨Tp, hx, hx', hvert, hiso⟩` from `LineUnit.lines_isometric E H D l Xo c Y S ∅ M R Sys Fx o o₀ M.Ω K ι y κ v κ₀ v₀ (RingHom.id _) i hv hv₀ hy hy₀ (by rw [hi]; rfl) hA`. Take `⟨⟨bf, bg, hbf, hbg, hb⟩, hfP, hgP, hW⟩` from `hvert ()`. Establish `hdiv : divCycle (mCoordIdeal y) (Tp.f ()) = divCycle (mCoordIdeal y) (Tp.g ())` using `div_eq_of_unit hA.2.1.1 hfP hgP fun W h₁ h₂ h₃ => hW W h₁ h₂ h₃ (by simp)`. Use `⟨Tp.f (), Tp.g (), bf, bg, (GroundTheory.Heights₂.Heights.Bridge.isMultiHomog_iff _ _).1 hbf, (GroundTheory.Heights₂.Heights.Bridge.isMultiHomog_iff _ _).1 hbg, hfP, hgP, fun k => ?_, fun z hz => ?_, fun W _ => by rw [hdiv], fun W _ => ?_⟩` and prove the remaining obligations. Use `congrFun hb k` as an intermediate fact.
+
+Rewrite `this` using `[hx, hx']`. Use `show _ = pullDeg κ (o.Re.line none t).a k - pullDeg κ₀ (o₀.Re.line none t).a k`. Rewrite using `[o.Re.line_deg, o₀.Re.line_deg, o.ref_none.1, o₀.ref_none.1]`. Conclude with `this`. Establish `z₁` using `LineUnit.pull_mem_mcPts (RingHom.id _) hv hy hz`.
+
+Establish `z₀` using `LineUnit.pull_mem_mcPts i hv₀ hy₀ hz`. Establish `e₁` using `line_h_of_phT o.Re hJ h0 h1 (fun x => (Fx.ph_none x).2 t) z₁`. Establish `e₀` using `line_h_of_phT o₀.Re hJ₀ h0 h1 (fun x => (Fx.ph_none x).2 t) z₀`. Use `show _ * (o₀.Re.line none t).h (fun p => z (v₀ p)) = _ * (o.Re.line none t).h (fun p => z (v p))`. Rewrite using `[e₁, e₀, o.ref_none.2 _ z₁, o₀.ref_none.2 _ z₀]`.
+
+Conclude with `(hiso ()).2.2 z hz`. Rewrite using `[hdiv, sub_self, abs_zero]`. Conclude with `mul_nonneg (hα _) (Nat.cast_nonneg _)`.
+-/
 theorem vertClose_none (hi : i.comp o₀.g = o.g) (hv : IsBlockMap κ v) (hv₀ : IsBlockMap κ₀ v₀)
     (hy : ∀ p, y (v p) = M.y p) (hy₀ : ∀ p, y (v₀ p) = i (R.y p))
     (hA : IsArithVar (mCoordIdeal y) (dimFl (CMType H) (D.p + D.q) + 1)) (hJ : o.Re.J = ⊤) (hJ₀ : o₀.Re.J = ⊤)
@@ -170,6 +215,25 @@ theorem vertClose_none (hi : i.comp o₀.g = o.g) (hv : IsBlockMap κ v) (hv₀ 
   · rw [hdiv, sub_self, abs_zero]
     exact mul_nonneg (hα _) (Nat.cast_nonneg _)
 
+/- English proof (translation)
+Take `⟨τ, j⟩` from `r`. Use `haveI : CharZero M.Ω := Sandwich.charZero_of_hodgeCpt o.𝔐`. Establish `hB : Birational y` using `birational_of_block hv hy M.birational`. Establish `hu : ∀ r : RootIx D, i (o₀.e r) / o.e r ≠ 0` using `fun r => div_ne_zero ((map_ne_zero i).2 (o₀.lines r).1) (o.lines r).1`. Use `choose f g df dg hf hg hfP hgP hd hfg using fun r : RootIx D => exists_forms y hB (ne_zero_of_arith hA) (pullDeg κ (M.xdeg r) - pullDeg κ₀ (R.xdeg r)) (hu r)`.
+
+Use `vertClose_step y hA S o.𝔐.S_prime hq hm hmS (Finset.Iic j) (by simpa using (Finset.Iic j).card_le_univ) (fun k => f (τ, k)) (fun k => g (τ, k)) (fun k => df (τ, k)) (fun k => dg (τ, k)) (fun k => i (o₀.e (τ, k)) / o.e (τ, k)) (fun k => pullHerm hv (M.x t (τ, k))) (fun k => pullHe …` and prove the remaining obligations. Rewrite using `[hd] show _ = pullDeg κ (M.x t (τ, k)).a b - pullDeg κ₀ (R.x t (τ, k)).a b`. Rewrite using `[M.x_deg, R.x_deg]`. Both sides reduce to the same expression. Conclude with `GlobalTheory.T.root_origin_height_comparison_three E H D l Xo c Y S ∅ M R R Sys Fx o o₀ o₀ M.Ω K ι y κ v κ₀ v₀ κ₀ v₀ (RingHom.id _) i i hv hv₀ hv₀ hy hy₀ hy₀ (by rw [hi]; rfl) rfl hJ hJ₀ hJ₀ hdeg hA (τ, k) (f _) (g _) (df _) (dg _) ((GroundTheory.Heights₂.Heights.Bridge.isMultiHo …`.
+
+Take `⟨cM, hcM⟩` from `exists_chart hv cc`. Take `⟨cR, hcR⟩` from `exists_chart hv₀ cc`. Establish `eM : ∀ b, M.y ⟨b, cM b⟩ = y ⟨κ b, cc (κ b)⟩` using `fun b => by rw [← hy, hcM]`. Establish `eR : ∀ b, i (R.y ⟨b, cR b⟩) = y ⟨κ₀ b, cc (κ₀ b)⟩` using `fun b => by rw [← hy₀, hcR]`. Establish `w` using `hval (τ, k) cM cR W (fun b => by rw [eM]; exact hc _) (fun b h => hc (κ₀ b) (by rw [← eR, h, map_zero])) (fun b a => by`.
+
+Use `hW (v ⟨b, a⟩)` as an intermediate fact. Rewrite `this` using `[hy]`. Rewrite using `[eM]`. Use `this using 3` and compare the differences between its conclusion and the goal. Conclude with `Sigma.ext (hv.2.2.1 ⟨b, a⟩).symm (by rw [hv.2.2.1 ⟨b, a⟩])) (fun b a => by`.
+
+Use `hW (v₀ ⟨b, a⟩)` as an intermediate fact. Rewrite `this` using `[hy₀]`. Rewrite using `[map_div₀, eR]`. Use `this using 3` and compare the differences between its conclusion and the goal. Conclude with `Sigma.ext (hv₀.2.2.1 ⟨b, a⟩).symm (by rw [hv₀.2.2.1 ⟨b, a⟩]))`.
+
+Establish `e : i (o₀.e (τ, k)) / o.e (τ, k) * ∏ b, y ⟨b, cc b⟩ ^ (-((df (τ, k) b : ℤ) - dg (τ, k) b)) = i ((∏ b, R.y ⟨b, cR b⟩ ^ R.xdeg (τ, k) b) * o₀.e (τ, k)) / ((∏ b, M.y ⟨b, cM b⟩ ^ M.xdeg (τ, k) b) * o.e (τ, k))`. Establish `e1 : ∏ b, y ⟨b, cc b⟩ ^ (-((df (τ, k) b : ℤ) - dg (τ, k) b)) = (∏ b, y ⟨b, cc b⟩ ^ pullDeg κ₀ (R.xdeg (τ, k)) b) / ∏ b, y ⟨b, cc b⟩ ^ pullDeg κ (M.xdeg (τ, k)) b`. Rewrite using `[← Finset.prod_div_distrib]`. Use `Finset.prod_congr rfl fun b _ => ?_` and prove the remaining obligations. Rewrite using `[hd, ← zpow_sub₀ (hc b)]`.
+
+Simplify using the standard rewrite rules. Rewrite using `[e1, prod_pullDeg hv₀.1, prod_pullDeg hv.1, map_mul, map_prod]`. Simplify using `only [map_zpow₀, eM, eR]`. Rewrite using `[div_mul_div_comm, mul_comm, mul_comm (o.e _)]`. Rewrite using `[e, inv_div]`.
+
+Conclude with `w`. Use `show pullDeg κ (o.Re.line (some (τ, j)) t).a = -∑ k ∈ Finset.Iic j, pullDeg κ (M.x t (τ, k)).a`. Rewrite using `[o.Re.line_deg, o.fund_deg, pullDeg_neg_sum hv.1]`. Simplify using `only [M.x_deg]`. Use `show pullDeg κ₀ (o₀.Re.line (some (τ, j)) t).a = -∑ k ∈ Finset.Iic j, pullDeg κ₀ (R.x t (τ, k)).a`.
+
+Rewrite using `[o₀.Re.line_deg, o₀.fund_deg, pullDeg_neg_sum hv₀.1]`. Simplify using `only [R.x_deg]`. Conclude with `o.fund_reg τ j t h0 h1 _ (LineUnit.pull_mem_mcPts (RingHom.id _) hv hy hz)`. Conclude with `o₀.fund_reg τ j t h0 h1 _ (LineUnit.pull_mem_mcPts i hv₀ hy₀ hz)`.
+-/
 theorem vertClose_some (hi : i.comp o₀.g = o.g) (hv : IsBlockMap κ v) (hv₀ : IsBlockMap κ₀ v₀)
     (hy : ∀ p, y (v p) = M.y p) (hy₀ : ∀ p, y (v₀ p) = i (R.y p))
     (hA : IsArithVar (mCoordIdeal y) (dimFl (CMType H) (D.p + D.q) + 1)) (hJ : o.Re.J = ⊤) (hJ₀ : o₀.Re.J = ⊤)

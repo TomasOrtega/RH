@@ -23,6 +23,13 @@ namespace GlobalTheory.FockDegPf
 
 open GlobalTheory.RealLift.PolRangePf GlobalTheory.KFixIrr
 
+/- English proof (translation)
+Use `Finset.sup_le fun m hm => ?_` and prove the remaining obligations. Establish `hc : MvPolynomial.coeff (m + Finsupp.single i 1) g ≠ 0`. Rewrite `hm` using `[MvPolynomial.mem_support_iff, MvPolynomial.coeff_pderiv]`. Introduce `h`. Rewrite `hm` using `[h, zero_mul]`.
+
+Conclude with `hm rfl`. Establish `h1` using `MvPolynomial.le_totalDegree (MvPolynomial.mem_support_iff.2 hc)`. Establish `h2 : ((m + Finsupp.single i 1).sum fun _ e => e) = (m.sum fun _ e => e) + 1`. Rewrite using `[Finsupp.sum_add_index' (fun _ => rfl) (fun _ _ _ => rfl), Finsupp.sum_single_index rfl]`. Rewrite `h1` using `[h2]`.
+
+Use `show (m.sum fun _ e => e) ≤ g.totalDegree`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem totalDegree_pderiv_le_of {σ : Type} (i : σ) (g : MvPolynomial σ ℂ) :
     (MvPolynomial.pderiv i g).totalDegree ≤ g.totalDegree := by
   refine Finset.sup_le fun m hm => ?_
@@ -38,6 +45,19 @@ theorem totalDegree_pderiv_le_of {σ : Type} (i : σ) (g : MvPolynomial σ ℂ) 
   show (m.sum fun _ e => e) ≤ g.totalDegree
   omega
 
+/- English proof (translation)
+Set `N` to `MvPolynomial.restrictTotalDegree (Ln P Q R S) ℂ (g.totalDegree + 1)`. Establish `hr : ∀ l, raiB l g ∈ N` using `fun l => by`. Rewrite using `[MvPolynomial.mem_restrictTotalDegree]`. Unfold `raiB`. Use `split_ifs`.
+
+Rewrite using `[LinearMap.mulLeft_apply]`. Use `(MvPolynomial.totalDegree_mul _ _).trans ?_` and prove the remaining obligations. Rewrite using `[MvPolynomial.totalDegree_X]`. Use linear arithmetic over natural numbers and integers. Rewrite using `[LinearMap.neg_apply, MvPolynomial.totalDegree_neg]`.
+
+Conclude with `(totalDegree_pderiv_le_of _ g).trans (Nat.le_succ _)`. Establish `hl : ∀ l, lowB l g ∈ N` using `fun l => by`. Rewrite using `[MvPolynomial.mem_restrictTotalDegree]`. Unfold `lowB`. Use `split_ifs`.
+
+Conclude with `(totalDegree_pderiv_le_of _ g).trans (Nat.le_succ _)`. Rewrite using `[LinearMap.mulLeft_apply]`. Use `(MvPolynomial.totalDegree_mul _ _).trans ?_` and prove the remaining obligations. Rewrite using `[MvPolynomial.totalDegree_X]`. Use linear arithmetic over natural numbers and integers.
+
+Establish `: heisOp c g ∈ N`. Unfold `heisOp`. Rewrite using `[LinearMap.smul_apply, LinearMap.sum_apply]`. Use `N.smul_mem _ (N.sum_mem fun l _ => ?_)` and prove the remaining obligations. Rewrite using `[LinearMap.sub_apply, LinearMap.smul_apply, LinearMap.smul_apply]`.
+
+Conclude with `N.sub_mem (N.smul_mem _ (hr l)) (N.smul_mem _ (hl l))`. Conclude with `(MvPolynomial.mem_restrictTotalDegree _ _ _).1 this`.
+-/
 theorem heisOp_totalDegree_le {P Q R S : ℕ} (c : Matrix (Ix P Q) (Ix R S) ℂ) (g : Formalism.BasicNotions.TH.Pol P Q R S) :
     (heisOp c g).totalDegree ≤ g.totalDegree + 1 := by
   let N := MvPolynomial.restrictTotalDegree (Ln P Q R S) ℂ (g.totalDegree + 1)
@@ -66,6 +86,13 @@ theorem heisOp_totalDegree_le {P Q R S : ℕ} (c : Matrix (Ix P Q) (Ix R S) ℂ)
     exact N.sub_mem (N.smul_mem _ (hr l)) (N.smul_mem _ (hl l))
   exact (MvPolynomial.mem_restrictTotalDegree _ _ _).1 this
 
+/- English proof (translation)
+Apply `le_antisymm` to reduce the goal to its premises. Use `Submodule.span_le.2 ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨f, hf, rfl⟩`. Establish `h0 : ∀ w, (f w).totalDegree = 0` using `fun w => by`. Use `Finset.single_le_sum (f := fun w => (f w).totalDegree) (fun _ _ => Nat.zero_le _) (Finset.mem_univ w)` as an intermediate fact.
+
+Use linear arithmetic over natural numbers and integers. Establish `hf' : f = fun w => MvPolynomial.coeff 0 (f w) • (1 : Formalism.BasicNotions.TH.Pol P Q R S)`. Use function extensionality and compare the values at `w`. Rewrite using `[MvPolynomial.smul_eq_C_mul, mul_one]`. Conclude with `MvPolynomial.totalDegree_eq_zero_iff_eq_C.1 (h0 w)`.
+
+Rewrite using `[hf', MultilinearMap.map_smul_univ]`. Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span rfl)`. Rewrite using `[Submodule.span_le, Set.singleton_subset_iff]`. Conclude with `tprod_mem_degLE _ (by simp)`.
+-/
 theorem degLE_zero_eq {ι : Type} [Fintype ι] [DecidableEq ι] {P Q R S : ℕ} :
     GlobalTheory.KFixIrr.degLE ι P Q R S 0 = Submodule.span ℂ {PiTensorProduct.tprod ℂ (fun _ : ι => (1 : Formalism.BasicNotions.TH.Pol P Q R S))} := by
   apply le_antisymm
@@ -83,6 +110,13 @@ theorem degLE_zero_eq {ι : Type} [Fintype ι] [DecidableEq ι] {P Q R S : ℕ} 
   · rw [Submodule.span_le, Set.singleton_subset_iff]
     exact tprod_mem_degLE _ (by simp)
 
+/- English proof (translation)
+Establish `hle : GlobalTheory.KFixIrr.degLE ι P Q R S k ≤ (GlobalTheory.KFixIrr.degLE ι P Q R S (k + 1)).comap (atPl (V` using `fun _ : ι => Formalism.BasicNotions.TH.Pol P Q R S) w (heisOp c)) := by`. Use `Submodule.span_le.2 ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨f, hf, rfl⟩`. Rewrite using `[SetLike.mem_coe, Submodule.mem_comap, GlobalTheory.RealLift.atPl_tprod]`. Use `tprod_mem_degLE _ ?_` and prove the remaining obligations.
+
+Establish `e1 : ∑ v, (Function.update f w (heisOp c (f w)) v).totalDegree = ∑ v, Function.update (fun v => (f v).totalDegree) w (heisOp c (f w)).totalDegree v`. Use `Finset.sum_congr rfl fun v _ => ?_` and prove the remaining obligations. Conclude with `Function.apply_update (fun _ p => MvPolynomial.totalDegree p) f w _ v`. Rewrite using `[e1, Finset.sum_update_of_mem (Finset.mem_univ w)]`. Rewrite `hf` using `[Finset.sum_eq_add_sum_sdiff_singleton_of_mem (Finset.mem_univ w)]`.
+
+Use `heisOp_totalDegree_le c (f w)` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Conclude with `hle hT`.
+-/
 theorem atPl_heisOp_mem {ι : Type} [Fintype ι] [DecidableEq ι] {P Q R S : ℕ} (w : ι) (c : Matrix (Ix P Q) (Ix R S) ℂ) (k : ℕ)
     (T : ⨂[ℂ] _ : ι, Formalism.BasicNotions.TH.Pol P Q R S) (hT : T ∈ GlobalTheory.KFixIrr.degLE ι P Q R S k) :
     atPl (V := fun _ : ι => Formalism.BasicNotions.TH.Pol P Q R S) w (heisOp c) T ∈ GlobalTheory.KFixIrr.degLE ι P Q R S (k + 1) := by
@@ -102,6 +136,9 @@ theorem atPl_heisOp_mem {ι : Type} [Fintype ι] [DecidableEq ι] {P Q R S : ℕ
     omega
   exact hle hT
 
+/- English proof (translation)
+Conclude with `GlobalTheory.T.degree_succ_span_multiplication k`.
+-/
 theorem degLE_succ_le {ι : Type} [Fintype ι] [DecidableEq ι] {P Q R S : ℕ} (k : ℕ) :
     GlobalTheory.KFixIrr.degLE ι P Q R S (k + 1) ≤ GlobalTheory.KFixIrr.degLE ι P Q R S k ⊔ Submodule.span ℂ
       {T' | ∃ (w : ι) (l : Ln P Q R S), ∃ T ∈ GlobalTheory.KFixIrr.degLE ι P Q R S k,
@@ -109,6 +146,43 @@ theorem degLE_succ_le {ι : Type} [Fintype ι] [DecidableEq ι] {P Q R S : ℕ} 
           (LinearMap.mulLeft ℂ (MvPolynomial.X l : Formalism.BasicNotions.TH.Pol P Q R S)) T} := by
   exact GlobalTheory.T.degree_succ_span_multiplication k
 
+/- English proof (translation)
+Introduce `hL _hD hV F E _ _ _ _ _ σ n d P Q R S X W M ψ τ A C Φ hcm hψ hfr hθX hθW hΦ`. Establish `hz : ∀ (u : Matrix (Fin n) (Fin d) (AE F E)) (t : ℝ), M.co.rho ψ (realAd F t • u) 0 = 0`. Introduce `u t`. Use function extensionality and compare the values at `x`. Simplify using `[Darboux.rho, schr]`.
+
+Establish `toD : ∀ u (f f₁ : SInf F (Fin n × Fin d)), SD (fun t => M.co.rho ψ (realAd F t • u)) f f₁ → ActsD (evI F) (M.heisLine ψ u) f f₁` using `fun u f f₁ h => (hL F (Fin n × Fin d) f f₁ f₁).1 _ (hz u) h`. Establish `uniq : ∀ u (f f₁ f₂ : SInf F (Fin n × Fin d)), ActsD (evI F) (M.heisLine ψ u) f f₁ → ActsD (evI F) (M.heisLine ψ u) f f₂ → f₁ = f₂` using `fun u f f₁ f₂ h1 h2 => (hL F _ f f₁ f₂).2.2.1 _ h1 h2`. Use `choose A' hA' using fun w => (hfr.2.1 w).2`. Use `choose C' hC' using fun w => (hfr.2.2 w).2`. Establish `decomp : ∀ (u : Matrix (Fin n) (Fin d) (AE F E)) w, u.map (piInf (τ w)) = A w * (A' w * u.map (piInf (τ w)) * (C' w)ᵀ) * (C w)ᵀ`.
+
+Introduce `u w`. Rewrite using `[show A w * (A' w * u.map (piInf (τ w)) * (C' w)ᵀ) * (C w)ᵀ = (A w * A' w) * u.map (piInf (τ w)) * ((C w) * (C' w))ᵀ by`. Rewrite using `[Matrix.transpose_mul]`. Simplify using `only [Matrix.mul_assoc], hA', hC']`. Simplify using the standard rewrite rules.
+
+Establish `der : ∀ u, At (evI F) u → ∀ c : InfinitePlace F → Matrix (Ix P Q) (Ix R S) ℂ, (∀ w, u.map (piInf (τ w)) = A w * c w * (C w)ᵀ) → ∀ T, ActsD (evI F) (M.heisLine ψ u) (Φ T) (Φ (sumPl (fun w => heisOp (c w)) T))` using `fun u hu c hc T => toD _ _ _ (hΦ.2 u hu c hc T)`. Establish `tw : ∀ w (c : Matrix (Ix P Q) (Ix R S) ℂ) (e : ℂ), A w * (e • (Jm P Q * c * Jm R S)) * (C w)ᵀ = e • (X.θ w * (A w * c * (C w)ᵀ) * (W.θ w)ᵀ)`. Introduce `w c e`. Establish `h2 : (C w)ᵀ * (W.θ w)ᵀ = Jm R S * (C w)ᵀ`. Rewrite using `[← Matrix.transpose_mul, hθW w, Matrix.transpose_mul, Jm_transpose']`.
+
+Combine the equalities or inequalities in the displayed calculation. Simplify using `only [Matrix.mul_smul, Matrix.smul_mul, Matrix.mul_assoc]`. Use `_ = _ := by rw [← hθX w, ← h2]; simp only [Matrix.mul_assoc]`. Establish `gauss1 : M.IsGauss ψ τ (Φ (PiTensorProduct.tprod ℂ (fun _ => (1 : Formalism.BasicNotions.TH.Pol P Q R S))))`. Use `⟨fun _ => 1, fun u u' hu hu' hrel f f' hf hf' => ?_⟩` and prove the remaining obligations.
+
+Establish `hc : ∀ w, u.map (piInf (τ w)) = A w * (A' w * u.map (piInf (τ w)) * (C' w)ᵀ) * (C w)ᵀ` using `decomp u`. Establish `hc' : ∀ w, u'.map (piInf (τ w)) = A w * (Complex.I • (Jm P Q * (A' w * u.map (piInf (τ w)) * (C' w)ᵀ) * Jm R S)) * (C w)ᵀ`. Introduce `w`. Rewrite using `[hrel w, tw, ← hc w]`. Simplify using the standard rewrite rules.
+
+Rewrite using `[uniq u _ _ _ hf (der u hu _ hc _), uniq u' _ _ _ hf' (der u' hu' _ hc' _), sumPl_twist_one, map_smul]`. Introduce `k`. Proceed by induction on `k with`. Consider the case `zero`. Rewrite using `[fockDeg_zero, degLE_zero_eq, Submodule.map_span, Set.image_singleton]`.
+
+Apply `le_antisymm` to reduce the goal to its premises. Rewrite using `[Submodule.span_le]`. Introduce `f₀ hf₀`. Take `⟨ε, hε⟩` from `hf₀`. Take `⟨z, hz⟩` from `hV F E σ (Fin n) (Fin d) (Fin n × Fin d) P Q R S ψ τ (incM F X.J) (incM F W.J) M.co 1 Complex.I A C Φ hcm hψ hfr hΦ f₀ ε (fun u u' hu hu' c hc hc' f f' hf hf' => hε u u' hu hu' (fun w => by rw [hc' w, tw, ← hc w]) f f' (toD _ _ _ hf) (toD _ _ _ hf'))`.
+
+Rewrite using `[hz]`. Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span rfl)`. Rewrite using `[Submodule.span_le, Set.singleton_subset_iff]`. Conclude with `Submodule.subset_span gauss1`. Consider the case `succ k ih`.
+
+Rewrite using `[fockDeg_succ, ih]`. Apply `le_antisymm` to reduce the goal to its premises. Use `sup_le (Submodule.map_mono (degLE_mono (Nat.le_succ k))) (Submodule.span_le.2 ?_)` and prove the remaining obligations. Introduce and unpack `f₁ ⟨u, hu, f, ⟨T, hT, rfl⟩, hd⟩`. Rewrite using `[uniq u _ _ _ hd (der u hu _ (decomp u) T)]`.
+
+Use `⟨_, ?_, rfl⟩` and prove the remaining obligations. Rewrite using `[sumPl, LinearMap.sum_apply]`. Conclude with `Submodule.sum_mem _ fun w _ => atPl_heisOp_mem w _ k T hT`. Rewrite using `[Submodule.map_le_iff_le_comap]`. Use `(degLE_succ_le k).trans (sup_le ?_ (Submodule.span_le.2 ?_))` and prove the remaining obligations.
+
+Introduce `T hT`. Conclude with `Submodule.mem_sup_left ⟨T, hT, rfl⟩`. Introduce and unpack `_ ⟨w, l, T, hT, rfl⟩`. Set `N : Submodule ℂ (SInf F (Fin n × Fin d))` to `(GlobalTheory.KFixIrr.degLE (InfinitePlace F) P Q R S k).map Φ ⊔ Submodule.span ℂ {f₁ | ∃ u, At (evI F) u ∧ ∃ f ∈ (GlobalTheory.KFixIrr.degLE (InfinitePlace F) P Q R S k).map Φ, ActsD (evI F) (M.heisLine ψ u) f f₁}`. Set `K : Submodule ℂ (Module.End ℂ (Formalism.BasicNotions.TH.Pol P Q R S))` to `{ carrier := {L | atPl (V := fun _ : InfinitePlace F => Formalism.BasicNotions.TH.Pol P Q R S) w L T ∈ N.comap Φ} add_mem' := fun {a b} ha hb => by`.
+
+Simplify using `only [Set.mem_setOf_eq] at ha hb ⊢`. Rewrite using `[atPl_add', LinearMap.add_apply]`. Conclude with `Submodule.add_mem _ ha hb`. Use the proof step `zero_mem' := by`. Simplify using `only [Set.mem_setOf_eq]`.
+
+Rewrite using `[atPl_zero']`. Conclude with `Submodule.zero_mem _`. Use the proof step `smul_mem' := fun c a ha => by`. Simplify using `only [Set.mem_setOf_eq] at ha ⊢`. Rewrite using `[atPl_smul', LinearMap.smul_apply]`.
+
+Conclude with `Submodule.smul_mem _ c ha }`. Establish `hK : Submodule.span ℂ (Set.range (heisOp (P` using `P) (Q := Q) (R := R) (S := S))) ≤ K := by`. Use `Submodule.span_le.2 ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨c, rfl⟩`. Take `⟨u, hu, hu'⟩` from `exists_mat_at hcm τ (fun w' => A w' * Function.update (0 : InfinitePlace F → Matrix (Ix P Q) (Ix R S) ℂ) w c w' * (C w')ᵀ)`.
+
+Establish `hs : sumPl (fun w' => heisOp (Function.update (0 : InfinitePlace F → Matrix (Ix P Q) (Ix R S) ℂ) w c w')) T = atPl (V` using `fun _ : InfinitePlace F => Formalism.BasicNotions.TH.Pol P Q R S) w (heisOp c) T := by`. Rewrite using `[sumPl, LinearMap.sum_apply, Finset.sum_eq_single w]`. Simplify using the standard rewrite rules. Introduce `b _ hb`. Simplify using `[Function.update_of_ne hb, heisOp_zero, atPl_zero']`.
+
+Simplify using the standard rewrite rules. Establish `hmem : Φ (atPl (V` using `fun _ : InfinitePlace F => Formalism.BasicNotions.TH.Pol P Q R S) w (heisOp c) T) ∈ N := by`. Rewrite using `[← hs]`. Conclude with `Submodule.mem_sup_right (Submodule.subset_span ⟨u, hu, Φ T, ⟨T, hT, rfl⟩, der u hu _ hu' T⟩)`. Conclude with `hmem`.
+
+Conclude with `hK (mulX_mem_span l)`.
+-/
 theorem fockDeg_eq_map : GlobalTheory.RealLift.ActsLaws → GlobalTheory.RealLift.DerEx → GlobalTheory.RealLift.VacLine →
     ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (n d P Q R S : ℕ)
     (X : Spc F E n) (W : Spc F E d) (M : Model σ X W) (ψ : AddChar (AF F) ℂ) (τ : ∀ w : InfinitePlace F, EmbOver E w)

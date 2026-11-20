@@ -10,6 +10,9 @@ open Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotions.product_
 
 variable {D : D7} {u : D.what₂.Word}
 
+/- English proof (translation)
+The claim follows from `hecke_ramified_zero_of_matchings T (CrossDiaZero.upMatch T) (CrossDiaZero.dnMatchAll_holds D u T) (diamond_same_place_of_matchings T hU hD) (trpDia0_of T hU hE) h6`.
+-/
 theorem hecke_ramified_zero_of_same_place (T : Forms0 D u) (hU : UpDiaSame0F T) (hD : DnDiaSame0F T) (hE : EDiaSame0F T)
     (h6 : DUFormulaLevelZero D u) : HeckeRamifiedLevelZero D u :=
   hecke_ramified_zero_of_matchings T (CrossDiaZero.upMatch T) (CrossDiaZero.dnMatchAll_holds D u T) (diamond_same_place_of_matchings T hU hD)
@@ -25,6 +28,11 @@ def ESameAll : Prop := ∀ (D : D7) (u : D.what₂.Word) (T : Forms0 D u), EDiaS
 
 def DUAll : Prop := ∀ (D : D7) (u : D.what₂.Word), Forms0 D u → DUFormulaLevelZero D u
 
+/- English proof (translation)
+Introduce `D u hs ht`. Take `⟨hf, -⟩` from `ht`. Take `⟨Ch, chOf, T, -⟩` from `hf`. Set `F : Forms0 D u` to `{ atT := T.atT cls0 := T.cls 0 (Nat.zero_le _) (Or.inl rfl) val0 := T.val 0 (Nat.zero_le _) (Or.inl rfl) gl := T.gl gl_K := T.gl_K glev0 := T.glev0 lv0 := T.lv 0 (Nat.zero_le _) fMe0 := T.fMe 0 (Nat.zero_le _) (Or.inl rfl) fv0 := T.fv 0 (Nat.zero_le _) (Or.inl rfl) up_natural_lev …`. Take `⟨hU, hD, hE⟩` from `hS D u F`.
+
+Conclude with `hecke_ramified_zero_of_same_place F hU hD hE (h6 D u F)`.
+-/
 theorem hecke_ramified_zero_of_matchings_and_du (hS : SameAll) (h6 : DUAll) :
     ∀ (D : D7) (u : D.what₂.Word), HidaSetting D u → RT.ConcreteFormsLevelZero D u → HeckeRamifiedLevelZero D u := by
   intro D u hs ht

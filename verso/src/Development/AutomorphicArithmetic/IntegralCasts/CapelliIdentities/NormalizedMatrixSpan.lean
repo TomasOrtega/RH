@@ -24,6 +24,11 @@ noncomputable def UpperTheory.Reformulated.B.NormalizedMatrixSpan.gens :
     fun {Γ C : Type} [Group Γ] [Field C] {N : ℕ} (ρ : Γ →* GL (Fin N) C) (A : Subalgebra C (UpperTheory.Reformulated.B.NormalizedMatrixSpan.Mat C N)) ↦
       {x : UpperTheory.Reformulated.B.NormalizedMatrixSpan.Mat C N | ∃ a ∈ A, ∃ (g : Γ), x = a * (↑((ρ : Γ → GL (Fin N) C) g) : Matrix (Fin N) (Fin N) C)}
 
+/- English proof (translation)
+Introduce `Γ C _ _ N ρ A hA x y hx hy`. Establish `h` using `Submodule.mul_mem_mul hx hy`. Rewrite `h` using `[Submodule.span_mul_span]`. Use `Submodule.span_mono ?_ h` and prove the remaining obligations. Introduce and unpack `_ ⟨_, ⟨a, ha, g, rfl⟩, _, ⟨b, hb, k, rfl⟩, rfl⟩`.
+
+Use `⟨a * ((ρ g : Matrix (Fin N) (Fin N) C) * b * (ρ g⁻¹ : Matrix (Fin N) (Fin N) C)), A.mul_mem ha (hA g b hb), g * k, ?_⟩` and prove the remaining obligations. Establish `e : (ρ g⁻¹ : Matrix (Fin N) (Fin N) C) * (ρ (g * k) : Matrix (Fin N) (Fin N) C) = (ρ k : Matrix (Fin N) (Fin N) C)`. Rewrite using `[← Units.val_mul, ← map_mul, inv_mul_cancel_left]`. Simplify using `only [mul_assoc, e]`.
+-/
 theorem UpperTheory.Reformulated.B.NormalizedMatrixSpan.span_mul :
     ∀ {Γ C : Type} [inst : Group Γ] [inst_1 : Field C] {N : ℕ} (ρ : Γ →* GL (Fin N) C)
       (A : Subalgebra C (UpperTheory.Reformulated.B.NormalizedMatrixSpan.Mat C N)),

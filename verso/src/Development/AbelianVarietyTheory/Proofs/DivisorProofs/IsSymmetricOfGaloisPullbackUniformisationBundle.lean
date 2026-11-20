@@ -20,6 +20,23 @@ namespace GlobalTheory.Mum.SymDesc
 
 open GlobalTheory.CechPic
 
+/- English proof (translation)
+Establish `le : ∀ j : K → L.ι, π ⁻¹ᵁ LB.wchart L φ j ≤ LB.wchart L (fun k => π ≫ φ k) j` using `fun j y hy => Set.mem_iInter.2 fun k => Set.mem_iInter.1 hy k`. Establish `inv : ∀ (j : K → L.ι) σ (h₁ : π ⁻¹ᵁ LB.wchart L φ j ≤ act σ ⁻¹ᵁ (π ⁻¹ᵁ LB.wchart L φ j)), ((act σ).appLE _ _ h₁).hom (res (le j) (u.s j)).val = (res (le j) (u.s j)).val`. Introduce `j σ h₁`. Use `fn_ext fun z hz => ?_` and prove the remaining obligations. Establish `hz' : act σ z ∈ π ⁻¹ᵁ LB.wchart L φ j` using `h₁ hz`.
+
+Establish `e₀ : gs (𝟙 Y') z _ (((act σ).appLE _ _ h₁).hom (res (le j) (u.s j)).val) = gs (act σ) z _ (res (le j) (u.s j)).val`. Use `(gs_res (𝟙 Y') z h₁ hz (((act σ).app _).hom (res (le j) (u.s j)).val)).trans (gs_pull (𝟙 Y') (act σ) z _ hz' _)` as an intermediate fact. Rewrite `this` using `[Category.id_comp]`. Conclude with `this`. Rewrite using `[e₀, gs_unit (act σ) z _ hz', gs_unit (𝟙 Y') _ _ hz]`.
+
+Use `choose I hI using fun χ : Y' ⟶ X => exists_chart hL (χ z)`. Establish `c₁` using `gen_trans hu (act σ) z (le j hz') (Good.mem hI _ (act σ))`. Establish `c₂` using `gen_trans hu (𝟙 Y') z (le j hz) (Good.mem hI _ (𝟙 Y'))`. Establish `c₃ : trF (fun k => π ≫ φ k) ε (act σ) z j (fun k => I (act σ ≫ π ≫ φ k)) = trF (fun k => π ≫ φ k) ε (𝟙 Y') z j (fun k => I (𝟙 Y' ≫ π ≫ φ k))`. Use `Finset.prod_congr rfl fun k _ => ?_` and prove the remaining obligations.
+
+Establish `: act σ ≫ π ≫ φ k = 𝟙 Y' ≫ π ≫ φ k` using `by rw [reassoc_of% hact σ, Category.id_comp]`. Use `show gm (act σ ≫ π ≫ φ k) z (L.U (j k) ⊓ L.U (I (act σ ≫ π ≫ φ k))) (L.g (j k) (I (act σ ≫ π ≫ φ k))) ^ _ = gm (𝟙 Y' ≫ π ≫ φ k) z (L.U (j k) ⊓ L.U (I (𝟙 Y' ≫ π ≫ φ k))) (L.g (j k) (I (𝟙 Y' ≫ π ≫ φ k))) ^ _`. Rewrite using `[this]`. Conclude with `congrArg Units.val ((gm_res (act σ) z (le j) hz' _).trans ((c₁.trans ((congrArg₂ (· * ·) c₃ (h σ z I hI)).trans c₂.symm)).trans (gm_res (𝟙 Y') z (le j) hz _).symm))`. Establish `desc : ∀ j : K → L.ι, ∃ a : Γ(Y, LB.wchart L φ j)ˣ, pullU π _ a = res (le j) (u.s j)`.
+
+Introduce `j`. Take `⟨a, ha⟩` from `(H _).2 _ (inv j)`. Take `⟨b, hb⟩` from `(H _).2 (res (le j) (u.s j))⁻¹.val (fun σ h₁ => by`. Use `(Units.mul_left_inj (res (le j) (u.s j))).1 ?_` and prove the remaining obligations. Rewrite using `[Units.inv_mul]`.
+
+Use `conv_lhs => rw [← inv j σ h₁]`. Rewrite using `[← map_mul, Units.inv_mul, map_one])`. Establish `ab : a * b = 1` using `(H _).1 (by rw [map_mul, ha, hb, Units.mul_inv, map_one])`. Conclude with `⟨⟨a, b, ab, (mul_comm b a).trans ab⟩, Units.ext ha⟩`. Use `choose a ha using desc`.
+
+Establish `hv : ∀ j (Z : Scheme.{0}) (r : Z ⟶ Y') (y : Z), π (r y) ∈ LB.wchart L φ j → gm (r ≫ π) y (LB.wchart L φ j) (a j) = gm r y (LB.wchart L (fun k => π ≫ φ k) j) (u.s j)`. Introduce `j Z r y hy`. Conclude with `(gm_pull r π y _ hy _).symm.trans ((congrArg (gm r y _) (ha j)).trans (gm_res r y (le j) hy _))`. Use `⟨⟨a⟩, fun j j' => Units.ext ((H (LB.wchart L φ j ⊓ LB.wchart L φ j')).1 ?_)⟩` and prove the remaining obligations. Use `congrArg Units.val (unit_ext (a := pullU π _ _) (b := pullU π _ _) fun y hy => ?_)` and prove the remaining obligations.
+
+Establish `hy' : π y ∈ LB.wchart L φ j ⊓ LB.wchart L φ j'` using `hy`. Use `(gm_pull (𝟙 Y') π y _ hy' _).trans (Eq.trans ?_ (gm_pull (𝟙 Y') π y _ hy' _).symm)` and prove the remaining obligations. Use `((gm_res (𝟙 Y' ≫ π) y _ hy' _).trans ((hv j _ _ y hy'.1).trans (gen_trans hu (𝟙 Y') y (le j hy'.1) (le j' hy'.2)))).trans (Eq.symm ?_)` and prove the remaining obligations. Use `(map_mul _ _ _).trans (congrArg₂ (· * ·) ((gm_linComb L φ ε (𝟙 Y' ≫ π) y j j' hy'.1 hy'.2).trans ?_) ((gm_res (𝟙 Y' ≫ π) y _ hy' _).trans (hv j' _ _ y hy'.2)))` and prove the remaining obligations. Simplify using `only [trF, Category.id_comp]`.
+-/
 theorem exists_gen_of_invariant {X Y Y' : Scheme.{0}} {K : Type} [Fintype K] {L : LB X} (hL : L.IsLB) (π : Y' ⟶ Y)
     {Γ₀ : Type} (act : Γ₀ → (Y' ⟶ Y')) (hact : ∀ σ, act σ ≫ π = π)
     (H : ∀ V : Y.Opens, Function.Injective (π.app V).hom ∧ ∀ u : Γ(Y', π ⁻¹ᵁ V),
@@ -79,6 +96,11 @@ theorem exists_gen_of_invariant {X Y Y' : Scheme.{0}} {K : Type} [Fintype K] {L 
     ((gm_res (𝟙 Y' ≫ π) y _ hy' _).trans (hv j' _ _ y hy'.2)))
   simp only [trF, Category.id_comp]
 
+/- English proof (translation)
+Establish `e₂ : eSec G ≫ (ι[G]).left = eSec G`. Rewrite using `[eSec, ← Over.comp_left, GrpObj.one_inv]`. Establish `z` using `(cls_eq_zero_iff (LB.isLB_linComb L.isLB _ _)).2 ⟨t, ht⟩`. Rewrite `z` using `[cls_linComb L.isLB, Fin.sum_univ_two]`. Simplify using `only [Matrix.cons_val_zero, Matrix.cons_val_one, one_smul, neg_smul, pull_id, ← sub_eq_add_neg, sub_eq_zero] at z`.
+
+Establish `he : eSec G ≫ (ι[G]).left = 𝟙 _ ≫ eSec G` using `e₂.trans (Category.id_comp _).symm`. Conclude with `⟨he, Unif.RigidifyIso.exists_rigidified_iso S S (𝟙 S) G G _ he L L ((cls_eq_iff L.isLB (pull_isLB L.isLB _)).1 z.symm)⟩`.
+-/
 theorem isSymmetric_of_exists_gen {S : Scheme.{0}} {G : Over S} [GrpObj G] [IsCommMonObj G] (L : RigLB G)
     (t : LB.Gen (LB.LinComb L.L (K := Fin 2) ![(ι[G]).left, 𝟙 G.left] ![1, -1])) (ht : t.IsGen) :
     L.IsSymmetric := by
@@ -92,6 +114,17 @@ theorem isSymmetric_of_exists_gen {S : Scheme.{0}} {G : Over S} [GrpObj G] [IsCo
   exact ⟨he, Unif.RigidifyIso.exists_rigidified_iso S S (𝟙 S) G G _ he L L
     ((cls_eq_iff L.isLB (pull_isLB L.isLB _)).1 z.symm)⟩
 
+/- English proof (translation)
+Take `⟨w, hw⟩` from `hiso`. Establish `hp` using `(isGen_iff w).1 hw`. Establish `hι : (ι[G']).left ≫ β = β ≫ (ι[G]).left`. Establish `e` using `congrArg (fun q => q.left) (map_inv (pushHom gp G') (𝟙 G'))`. Simplify using `only [Hom.inv_def, Category.id_comp] at e`.
+
+Use `e.trans ?_` and prove the remaining obligations. Use `show (𝟙 _ ≫ β) ≫ _ = _`. Rewrite using `[Category.id_comp]`. Establish `e₁ : eSec G' ≫ (ι[G']).left = eSec G'`. Rewrite using `[eSec, ← Over.comp_left, GrpObj.one_inv]`.
+
+Establish `hc : ∀ k : Fin 2, ![(ι[G']).left, 𝟙 G'.left] k ≫ β = β ≫ ![(ι[G]).left, 𝟙 G.left] k` using `fun k => by fin_cases k`. Conclude with `hι`. Conclude with `(Category.id_comp _).trans (Category.comp_id _).symm`. Take `⟨t₁, ht₁, v₁⟩` from `exists_up hp hL hL' s hs`. Take `⟨u, hu, vu⟩` from `exists_gen hL (φ' := fun k : Fin 2 => β ≫ ![(ι[G]).left, 𝟙 G.left] k) (ε' := ![1, -1]) (fun U _ h => Finset.prod_congr rfl fun k _ => congrArg (fun q => h q ^ (![1, -1] : Fin 2 → ℤ) k) (hc k)) t₁ ht₁`.
+
+Use `⟨u, hu, fun Z r z I hI => ?_⟩` and prove the remaining obligations. Use `choose J hJ using fun χ : Z ⟶ G'.left => exists_chart hL' (χ z)`. Rewrite using `[vu Z _ z I hI, val_of t₁ _ z I (fun k => I (((r ≫ eSec G') ≫ ![(ι[G']).left, 𝟙 G'.left] k) ≫ β)) (fun k => congrArg I (Category.assoc _ _ _).symm)]`. Use `(v₁ Z (r ≫ eSec G') z _ _ (Set.mem_iInter.2 fun k => hI (((r ≫ eSec G') ≫ ![(ι[G']).left, 𝟙 G'.left] k) ≫ β)) (Good.mem hJ _ _)).trans ?_` and prove the remaining obligations. Establish `h1 : val s (r ≫ eSec G') z J = 1` using `(val_pull hJ s (eSec G') r).symm.trans ((val_corr hJ hr r).trans (val_one _))`.
+
+Use `(congrArg₂ (· * ·) ?_ h1).trans (_root_.mul_one 1)` and prove the remaining obligations. Establish `k : ∀ (V : Type) [CommGroup V] (q : (Z ⟶ G'.left) → V), ∏ k : Fin 2, q ((r ≫ eSec G') ≫ ![(ι[G']).left, 𝟙 G'.left] k) ^ (![1, -1] : Fin 2 → ℤ) k = 1`. Introduce `V _ q`. Simplify using `[Fin.prod_univ_two, e₁]`. Conclude with `k _ (fun q => gw w q z (I (q ≫ β)) (J q))`.
+-/
 theorem exists_sym_pull {S S' : Scheme.{0}} {G : Over S} [GrpObj G] [IsCommMonObj G] {G' : Over S'} [GrpObj G']
     [IsCommMonObj G'] {f : S' ⟶ S} {β : G'.left ⟶ G.left} (gp : IsGrpPullback G' G f β) {L : LB G.left} (hL : L.IsLB)
     {L' : LB G'.left} (hL' : L'.IsLB) (hiso : LBIso L' (L.pull β))
@@ -137,6 +170,19 @@ namespace GlobalTheory.Mum
 
 open SymDesc
 
+/- English proof (translation)
+Introduce `R _ _ _ _ R' _ _ _ ρ hρ hg D D' hD A' G' _ _ _ U' a G _ _ β hG gp hβ L hL hiso rig hr`. Take `⟨u, hu, h1⟩` from `exists_sym_pull gp hL U'.LG.isLB hiso U'.symG U'.symG_gen U'.symG_rig`. Use `U'.smooth` as an intermediate fact. Use `hG.smooth` as an intermediate fact. Establish `hsurj : Function.Surjective (pullback.snd G'.hom (jK R')).appTop.hom`.
+
+Establish `hw : U'.gen.hom.left ≫ A'.A.hom = pullback.snd G'.hom (jK R')` using `Over.w U'.gen.hom`. Establish `: IsIso U'.gen.hom.left` using `((Over.forget _).mapIso U'.gen).isIso_hom`. Establish `: IsIso U'.gen.hom.left.appTop` using `inferInstanceAs (IsIso (U'.gen.hom.left.app ⊤))`. Rewrite using `[← hw]`. Conclude with `surj_comp (ConcreteCategory.bijective_of_isIso U'.gen.hom.left.appTop).2 (GlobalTheory.SemiRigid.globalFns _ _ A'.isAb).2`.
+
+Establish `he : eSec G' ≫ G'.hom = 𝟙 _` using `Over.w η[G']`. Take `⟨t, ht⟩` from `exists_gen_of_invariant hL β a.act hβ (GlobalTheory.T.galois_invariant_functions_flat_baseChange R R' ρ hρ hg _ _ G.hom G'.hom β inferInstance gp.1 a.act hβ fun σ => (a.cart σ).1.w) _ _ u hu fun σ z J hJ => by`. Establish `key` using `GlobalTheory.ValueForm.gen_unique_of_injective hL (φ := fun k : Fin 2 => a.act σ ≫ β ≫ ![(ι[G]).left, 𝟙 G.left] k) (fun V _ q => Finset.prod_congr rfl fun k _ => by dsimp only`. Rewrite using `[reassoc_of% hβ σ])`. Use the proof step `(pullback.fst G'.hom (jK R')) (GlobalTheory.ValueForm.app_generic_injective _) (pullback.snd _ _)`.
+
+Use the proof step `(pullback.lift (jK R' ≫ eSec G') (𝟙 _) (by`. Rewrite using `[Category.id_comp]`. Conclude with `(Category.assoc _ _ _).trans ((congrArg (jK R' ≫ ·) he).trans (Category.comp_id _))))`. Use the proof step `(pullback.lift_snd _ _ _) hsurj (DVR.pullGen_isGen _ _ _ _ hu (a.act σ)) hu (fun y I hI => by`. Rewrite using `[pullback.lift_fst]`.
+
+Use `(val_pull hI _ _ _).trans (Eq.trans ?_ (h1 _ (jK R') y I hI).symm)` and prove the remaining obligations. Establish `e : (jK R' ≫ eSec G') ≫ a.act σ = (jK R' ≫ (cubeMapOf (a.cart σ)).e) ≫ eSec G'` using `(Category.assoc _ _ _).trans ((congrArg (jK R' ≫ ·) (cubeMapOf (a.cart σ)).e_comm).trans (Category.assoc _ _ _).symm)`. Conclude with `(congrArg (fun q => val u q y I) e).trans (h1 _ _ y I hI)) _ (𝟙 _) z J hJ`. Establish `k₂` using `(val_pull hJ u (a.act σ) (𝟙 _)).symm.trans key`. Rewrite `k₂` using `[Category.id_comp]`. Then use the resulting hypothesis.
+
+Conclude with `isSymmetric_of_exists_gen _ t ht`.
+-/
 theorem isSymmetric_of_pull_iso_unif : ∀ (R : Type) [CommRing R] [IsDomain R] [IsLocalRing R], Base R → ∀ (R' : Type) [CommRing R'] [IsDomain R'] [IsLocalRing R'] (ρ : R →+* R'), FinExt ρ → IsGal ρ → ∀ (D : DegData R (maximalIdeal R)) (D' : DegData R' (maximalIdeal R')) (hD : IsPullDeg ρ D.toPre D'.toPre) (A' : PolAV (Sp (FractionRing R'))) (G' : Over (Sp R')) [GrpObj G'] [IsCommMonObj G'], IsSemiAbelian G' → ∀ (U' : Unif (maximalIdeal R') D' A' G'), ∀ (a : GalAct ρ hD U') (G : Over (Sp R)) [GrpObj G] [IsCommMonObj G] (β : G'.left ⟶ G.left), IsSemiAbelian G → IsGrpPullback G' G (spMap ρ) β → (∀ σ, a.act σ ≫ β = β) → ∀ (L : LB G.left) (hL : L.IsLB), LBIso U'.LG.L (L.pull β) → ∀ (rig : LB.Gen (L.pull (eSec G))) (hr : rig.IsGen), RigLB.IsSymmetric (⟨L, rig, hL, hr⟩ : RigLB G) := by
   intro R _ _ _ _ R' _ _ _ ρ hρ hg D D' hD A' G' _ _ _ U' a G _ _ β hG gp hβ L hL hiso rig hr
   obtain ⟨u, hu, h1⟩ := exists_sym_pull gp hL U'.LG.isLB hiso U'.symG U'.symG_gen U'.symG_rig

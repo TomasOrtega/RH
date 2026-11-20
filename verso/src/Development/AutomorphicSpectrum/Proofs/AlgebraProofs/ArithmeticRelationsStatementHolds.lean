@@ -9,6 +9,19 @@ open MvPolynomial GlobalTheory.CompanionTheory.Ar.Num GroundTheory.Heights₂.He
 open ReciprocityTheory.ChartRestriction.G.Geo (ChartBundle chartRing)
 open GroundTheory.Heights₂.Heights.IndefiniteRowSideFullHecke.NumbersDVR.Bundles (mseg mcIdeal chartMon joinCoord bcCoord pullDeg restrictChart fnField ck rootNum SameGeneric LatLE IsPull IsPullBC)
 
+/- English proof (translation)
+Introduce `O _ _ _ Ω _ _ K _ _ ι _ x _ ϖ hϖ d hmod hfn F _ _ _ n Sg _ r s p hp w χ φ D hD Lie W Om OmHT hB lie om hflag`. Establish `hck` using `GlobalTheory.T.lattice_family_ckRelations O Ω K ι x d hmod hfn p hp w χ φ D hD Lie W Om OmHT hB`. Establish `hp0 : (p : O) ≠ 0` using `hD.char.1`. Establish `hw0 : w ≠ 0`. Introduce and unpack `rfl`.
+
+Take `⟨u, hu, he⟩` from `hD.char.2.1`. Establish `h1 : p - 1 ≠ 0` using `by have := hp.two_le; omega`. Rewrite `he` using `[zero_pow h1]`. Conclude with `hp0 (by`. Break down `mul_eq_zero.mp he.symm with h | h` into its components or cases.
+
+Conclude with `absurd h hu.ne_zero`. Conclude with `h)`. Establish `hsame : ∀ τ, SameGeneric O x (Lie τ) (W τ) ∧ SameGeneric O x (Om τ) (OmHT τ)`. Introduce `τ`. Prove the components needed by the constructor for the conclusion.
+
+Introduce `c hc`. Take `⟨h1, h2, -, -⟩` from `hB τ c hc`. Establish `hinc` using `((hD.base c hc).incl τ)`. Rewrite using `[h1, h2]`. Use `⟨fun v hv => ⟨1, one_ne_zero, ?_⟩, fun v hv => ⟨w, hw0, ?_⟩⟩` and prove the remaining obligations.
+
+Simplify using `using hinc.1 hv`. Conclude with `hinc.2.1 hv`. Introduce `c hc`. Take `⟨-, -, h3, h4⟩` from `hB τ c hc`. Establish `hinc` using `((hD.base c hc).incl τ)`.
+
+Rewrite using `[h3, h4]`. Use `⟨fun v hv => ⟨w, hw0, ?_⟩, fun v hv => ⟨1, one_ne_zero, ?_⟩⟩` and prove the remaining obligations. Conclude with `hinc.2.2.2 hv`. Simplify using `using hinc.2.2.1 hv`. Conclude with `GlobalTheory.T.uniformizer_model_perm_module_lattice O Ω K ι x ϖ hϖ d hmod p hp0 φ (VL := fun τ => Fin (r τ) → Ω) (VO := fun τ => Fin (s τ) → Ω) Lie W Om OmHT hsame hck lie om hflag`.
+-/
 theorem relations : GlobalTheory.CompanionTheory.Ar.Num.RelationsStatement := by
   intro O _ _ _ Ω _ _ K _ _ ι _ x _ ϖ hϖ d hmod hfn F _ _ _ n Sg _ r s p hp w χ φ D hD Lie W Om OmHT hB lie om hflag
   have hck := GlobalTheory.T.lattice_family_ckRelations O Ω K ι x d hmod hfn p hp w χ φ D hD Lie W Om OmHT hB

@@ -7,6 +7,9 @@ namespace GroundTheory.Heights₂.Heights
 
 open MvPolynomial
 
+/- English proof (translation)
+Use extensionality with `g`. Rewrite using `[Ideal.mem_span_singleton, ← hf.2 g]`. Simplify using `only [incIdeal, Ideal.mem_iInf, RingHom.mem_ker]`.
+-/
 theorem IsChowForm.incIdeal_eq_span {F : Type*} [Field F] {n k : ℕ}
     {P : Ideal (MvPolynomial (Fin n) F)} {f : MvPolynomial (Fin k × Fin n) F}
     (hf : IsChowForm P k f) : incIdeal P k = Ideal.span {f} := by
@@ -14,6 +17,9 @@ theorem IsChowForm.incIdeal_eq_span {F : Type*} [Field F] {n k : ℕ}
   rw [Ideal.mem_span_singleton, ← hf.2 g]
   simp only [incIdeal, Ideal.mem_iInf, RingHom.mem_ker]
 
+/- English proof (translation)
+Assume the negation of the conclusion as `h`. Establish `h0` using `hP g hg 0`. Rewrite `h0` using `[homogeneousComponent_zero, ← constantCoeff_eq]`. Conclude with `htop (Ideal.eq_top_of_isUnit_mem _ h0 ((Ne.isUnit h).map C))`.
+-/
 theorem constantCoeff_eq_zero_of_isHomogIdeal {F : Type*} [Field F] {n : ℕ}
     {P : Ideal (MvPolynomial (Fin n) F)} (hP : IsHomogIdeal P) (htop : P ≠ ⊤)
     {g : MvPolynomial (Fin n) F} (hg : g ∈ P) : constantCoeff g = 0 := by
@@ -22,6 +28,11 @@ theorem constantCoeff_eq_zero_of_isHomogIdeal {F : Type*} [Field F] {n : ℕ}
   rw [homogeneousComponent_zero, ← constantCoeff_eq] at h0
   exact htop (Ideal.eq_top_of_isUnit_mem _ h0 ((Ne.isUnit h).map C))
 
+/- English proof (translation)
+Introduce `hfield`. Take `⟨j, hj⟩` from `hP.isRelevant`. Establish `hx : Ideal.Quotient.mk P (X j) ≠ 0`. Rewrite using `[Ne, Ideal.Quotient.eq_zero_iff_mem]` and apply the resulting hypothesis. Take `⟨y, hy⟩` from `hfield.mul_inv_cancel hx`.
+
+Take `⟨g, rfl⟩` from `Ideal.Quotient.mk_surjective y`. Rewrite `hy` using `[← map_mul, ← map_one (Ideal.Quotient.mk P), Ideal.Quotient.eq]`. Use `constantCoeff_eq_zero_of_isHomogIdeal hP.isHomog hP.isPrime.ne_top hy` as an intermediate fact. Simplify using `at this`.
+-/
 theorem IsProjPrime.not_isField_quotient {F : Type*} [Field F] {n : ℕ}
     {P : Ideal (MvPolynomial (Fin n) F)} (hP : IsProjPrime P) :
     ¬ IsField (MvPolynomial (Fin n) F ⧸ P) := by
@@ -35,6 +46,21 @@ theorem IsProjPrime.not_isField_quotient {F : Type*} [Field F] {n : ℕ}
   have := constantCoeff_eq_zero_of_isHomogIdeal hP.isHomog hP.isPrime.ne_top hy
   simp at this
 
+/- English proof (translation)
+Introduce `F _ n k P f hP hf`. Establish `hspan` using `hf.incIdeal_eq_span`. Establish `hprime : (Ideal.span {f}).IsPrime` using `hspan ▸ h₂ F n k P hP.isPrime hP.isRelevant`. Establish `hnu : ¬ IsUnit f` using `fun hu => hprime.ne_top (Ideal.span_singleton_eq_top.mpr hu)`. Establish `hht : (Ideal.span {f}).height = 1` using `Ideal.height_span_singleton_eq_one_of_mem_nonZeroDivisors (mem_nonZeroDivisors_of_ne_zero hf.1) hnu`.
+
+Establish `hdimS : ringKrullDim (MvPolynomial (Fin k × Fin n) F) = ((k * n : ℕ) : WithBot ℕ∞)`. Rewrite using `[MvPolynomial.ringKrullDim_of_isNoetherianRing, ringKrullDim_eq_zero_of_field, zero_add, Nat.card_eq_fintype_card, Fintype.card_prod, Fintype.card_fin, Fintype.card_fin]`. Establish `hform` using `GroundTheory.Arith.Abelian.Jacobian.height_add_ringKrullDim_quotient F (Ideal.span {f})`. Rewrite `hform` using `[hht, hdimS]`. Use `hP.isPrime` as an intermediate fact.
+
+Take `⟨m, hm, -⟩` from `GroundTheory.Arith.Abelian.Jacobian.exists_ringKrullDim_eq_trdeg (k := F) (A := MvPolynomial (Fin n) F ⧸ P)`. Consider the cases of `m with`. Consider the case `zero`. It suffices to derive a contradiction. Establish `: Ring.KrullDimLE 0 (MvPolynomial (Fin n) F ⧸ P)` using `Ring.krullDimLE_iff.mpr (by rw [hm])`.
+
+Conclude with `hP.not_isField_quotient Ring.KrullDimLE.isField_of_isDomain`. Consider the case `succ d`. Establish `h` using `h₁ F n k d P hP hm`. Rewrite `h` using `[hspan]`. Rewrite `hform` using `[h]`.
+
+Establish `h3 : ((1 + (k * n - k + min k d) : ℕ) : WithBot ℕ∞) = ((k * n : ℕ) : WithBot ℕ∞)`. Rewrite using `[Nat.cast_add, Nat.cast_one]`. Use `hform using 2` and compare the differences between its conclusion and the goal. Conclude with `WithBot.coe_one.symm`. Use `replace h3 := Nat.cast_injective h3`.
+
+Rewrite using `[hm]`. Use `congr 1`. Break down `Nat.eq_zero_or_pos n with hn | hn` into its components or cases. Substitute `hn` using the available equality. Use linear arithmetic over natural numbers and integers.
+
+Establish `hkn` using `Nat.le_mul_of_pos_right k hn`. Generalize the expression as in `k * n = N at h3 hkn`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem ConeDimOfChowForm.proof (h₁ : IncIdealDim.Statement) (h₂ : IncIdealPrime.Statement) :
     ConeDimOfChowForm.Statement := by
   intro F _ n k P f hP hf

@@ -9,6 +9,9 @@ open UpperTheory.V.W (Plc Lp)
 
 attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField
 
+/- English proof (translation)
+Use `IsIntegral.map_of_comp_eq (RingHom.id (Ov v)) (starRingEnd (Lsq (Kv v) Δ)) ?_ h` and prove the remaining obligations. Use `RingHom.ext fun a => ?_` and prove the remaining obligations. Apply the tactic sequence `apply QuadraticAlgebra.ext <;> simp [Algebra.algebraMap_eq_smul_one, QuadraticAlgebra.re_star, QuadraticAlgebra.im_star, QuadraticAlgebra.re_one, QuadraticAlgebra.im_one, starRingEnd_apply]`.
+-/
 private theorem star_int {L : Type} [Field L] [NumberField L] (v : Pl L) (Δ : Kv v) (x : Lsq (Kv v) Δ)
     (h : IsIntegral (Ov v) x) : IsIntegral (Ov v) (star x) := by
   refine IsIntegral.map_of_comp_eq (RingHom.id (Ov v)) (starRingEnd (Lsq (Kv v) Δ)) ?_ h
@@ -18,33 +21,62 @@ private theorem star_int {L : Type} [Field L] [NumberField L] (v : Pl L) (Δ : K
 section
 variable {L : Type} [Field L] [NumberField L] [IsCMField L] (R : RingBr L)
 
+/- English proof (translation)
+Take `⟨-, -, -, -, hext, hfin, -⟩` from `uaFacts L 3`. Use `hext x y (fun w => Units.ext (h w)) fun τ => ?_` and prove the remaining obligations. Rewrite using `[((hfin x).1).1 hx τ, ((hfin y).1).1 hy τ]`.
+-/
 private theorem ext3 (x y : UA L 3) (hx : x ∈ finU L 3) (hy : y ∈ finU L 3) (h : ∀ w : Plc L, mL w x = mL w y) : x = y := by
   obtain ⟨-, -, -, -, hext, hfin, -⟩ := uaFacts L 3
   refine hext x y (fun w => Units.ext (h w)) fun τ => ?_
   rw [((hfin x).1).1 hx τ, ((hfin y).1).1 hy τ]
 
+/- English proof (translation)
+The claim follows from `Matrix.UnitaryGroup.star_mul_self (g.1 v)`.
+-/
 private theorem un3 (g : GA R.Δ) (v : Pl (Lp L)) : star (g.1 v : Matrix (Fin 3) (Fin 3) (Lsq (Kv v) (cv v R.Δ))) * (g.1 v : Matrix (Fin 3) (Fin 3) (Lsq (Kv v) (cv v R.Δ))) = 1 :=
   Matrix.UnitaryGroup.star_mul_self (g.1 v)
 
+/- English proof (translation)
+Establish `h : ∀ᶠ v in Filter.cofinite, g.1 v ∈ KU (Ov v) (cv v R.Δ)` using `g.2`. Conclude with `h.mono fun v h i j => (h i j).1`.
+-/
 private theorem co3 (g : GA R.Δ) : ∀ᶠ v in Filter.cofinite, ∀ i j, IsIntegral (Ov v) ((g.1 v : Matrix (Fin 3) (Fin 3) (Lsq (Kv v) (cv v R.Δ))) i j) := by
   have h : ∀ᶠ v in Filter.cofinite, g.1 v ∈ KU (Ov v) (cv v R.Δ) := g.2
   exact h.mono fun v h i j => (h i j).1
 
+/- English proof (translation)
+Conclude with `adEx L R 3 (fun v => (g.1 v : Matrix (Fin 3) (Fin 3) (Lsq (Kv v) (cv v R.Δ)))) (un3 R g) (co3 R g)`.
+-/
 private theorem ex3 (g : GA R.Δ) : ∃ f ∈ finU L 3, ∀ w, mL w f = (g.1 (un w) : Matrix (Fin 3) (Fin 3) _).map (R.ρ _ w rfl) := by
   exact adEx L R 3 (fun v => (g.1 v : Matrix (Fin 3) (Fin 3) (Lsq (Kv v) (cv v R.Δ)))) (un3 R g) (co3 R g)
 
 private noncomputable def f3 (g : GA R.Δ) : UA L 3 := (ex3 R g).choose
+/- English proof (translation)
+The claim follows from `(ex3 R g).choose_spec.1`.
+-/
 private theorem finite_matrix_mem_unitary (g : GA R.Δ) : f3 R g ∈ finU L 3 := (ex3 R g).choose_spec.1
+/- English proof (translation)
+The claim follows from `(ex3 R g).choose_spec.2 w`.
+-/
 private theorem finite_part_isomorphism_local (g : GA R.Δ) (w : Plc L) : mL w (f3 R g) = (g.1 (un w) : Matrix (Fin 3) (Fin 3) _).map (R.ρ _ w rfl) := (ex3 R g).choose_spec.2 w
 
+/- English proof (translation)
+Simplify using `only [mL, map_mul, Units.val_mul]`.
+-/
 private theorem mL_mul (w : Plc L) (x y : UA L 3) : mL w (x * y) = mL w x * mL w y := by
   simp only [mL, map_mul, Units.val_mul]
 
+/- English proof (translation)
+Use `ext3 _ _ (finite_matrix_mem_unitary R _) (mul_mem (finite_matrix_mem_unitary R _) (finite_matrix_mem_unitary R _)) fun w => ?_` and prove the remaining obligations. Rewrite using `[mL_mul, finite_part_isomorphism_local, finite_part_isomorphism_local, finite_part_isomorphism_local]`. Conclude with `Matrix.map_mul (f := R.ρ _ w rfl)`.
+-/
 private theorem finite_part_isomorphism_mul (g h : GA R.Δ) : f3 R (g * h) = f3 R g * f3 R h := by
   refine ext3 _ _ (finite_matrix_mem_unitary R _) (mul_mem (finite_matrix_mem_unitary R _) (finite_matrix_mem_unitary R _)) fun w => ?_
   rw [mL_mul, finite_part_isomorphism_local, finite_part_isomorphism_local, finite_part_isomorphism_local]
   exact Matrix.map_mul (f := R.ρ _ w rfl)
 
+/- English proof (translation)
+Use `Subtype.ext (funext fun v => Subtype.ext ?_)` and prove the remaining obligations. Use `Matrix.ext fun i j => ?_` and prove the remaining obligations. Rewrite using `[← sub_eq_zero]`. Use `R.ρ_inj v _ fun w hw => ?_` and prove the remaining obligations. Substitute `hw` using the available equality.
+
+Use `congrFun (congrFun ((finite_part_isomorphism_local R g w).symm.trans ((congrArg (mL w) e).trans (finite_part_isomorphism_local R h w))) i) j` as an intermediate fact. Simplify `this` using `[sub_eq_zero]`.
+-/
 private theorem finite_part_isomorphism_injective (g h : GA R.Δ) (e : f3 R g = f3 R h) : g = h := by
   refine Subtype.ext (funext fun v => Subtype.ext ?_)
   refine Matrix.ext fun i j => ?_
@@ -54,6 +86,9 @@ private theorem finite_part_isomorphism_injective (g h : GA R.Δ) (e : f3 R g = 
   have := congrFun (congrFun ((finite_part_isomorphism_local R g w).symm.trans ((congrArg (mL w) e).trans (finite_part_isomorphism_local R h w))) i) j
   simpa [sub_eq_zero] using this
 
+/- English proof (translation)
+Take `⟨x, hx, hi, hl⟩` from `adSurj L R 3 y`. Establish `hu : ∀ v, x v ∈ Matrix.unitaryGroup (Fin 3) (Lsq (Kv v) (cv v R.Δ))` using `fun v => Matrix.mem_unitaryGroup_iff'.2 (hx v)`. Set `g : GA R.Δ` to `⟨fun v => ⟨x v, hu v⟩, hi.mono fun v h i j => ⟨h i j, star_int v _ _ (h i j)⟩⟩`. Use `⟨g, ext3 _ _ (finite_matrix_mem_unitary R g) hy fun w => ?_⟩` and prove the remaining obligations. Rewrite using `[finite_part_isomorphism_local, hl]`.
+-/
 private theorem finite_part_isomorphism_surjective (y : UA L 3) (hy : y ∈ finU L 3) : ∃ g, f3 R g = y := by
   obtain ⟨x, hx, hi, hl⟩ := adSurj L R 3 y
   have hu : ∀ v, x v ∈ Matrix.unitaryGroup (Fin 3) (Lsq (Kv v) (cv v R.Δ)) := fun v =>
@@ -64,6 +99,11 @@ private theorem finite_part_isomorphism_surjective (y : UA L 3) (hy : y ∈ finU
 
 end
 
+/- English proof (translation)
+Introduce `L _ _ _ R`. Set `b : GA R.Δ →* finU L 3` to `MonoidHom.mk' (fun g => ⟨f3 R g, finite_matrix_mem_unitary R g⟩) fun g h => Subtype.ext (finite_part_isomorphism_mul R g h)`. Establish `hb : Function.Bijective b` using `⟨fun g h e => finite_part_isomorphism_injective R g h (congrArg Subtype.val e), fun y => by`. Take `⟨g, hg⟩` from `finite_part_isomorphism_surjective R y.1 y.2`. Conclude with `⟨g, Subtype.ext hg⟩⟩`.
+
+Conclude with `⟨MulEquiv.ofBijective b hb, fun g w => finite_part_isomorphism_local R g w⟩`.
+-/
 theorem UpperTheory.V.Z.Sym.Dict.Br.bGEx :
     ∀ (L : Type) [Field L] [NumberField L] [IsCMField L] (R : RingBr L), ∃ b : GA R.Δ ≃* finU L 3, ∀ g w, mL w (b g : UA L 3) = (g.1 (un w) : Matrix (Fin 3) (Fin 3) _).map (R.ρ _ w rfl) := by
   intro L _ _ _ R

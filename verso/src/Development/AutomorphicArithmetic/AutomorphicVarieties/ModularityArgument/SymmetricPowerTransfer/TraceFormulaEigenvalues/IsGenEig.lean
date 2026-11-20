@@ -125,8 +125,14 @@ def mass {H T : Type} [Group H] [Group T] (φ : H →* T) (H₀ : Subgroup H) (C
 def IsGenEig {Λ M : Type} [AddCommGroup M] [Module ℂ M] (u : Λ → Module.End ℂ M) (χ : Λ → ℂ) : Prop :=
   (⨅ a, (u a).maxGenEigenspace (χ a)) ≠ ⊥
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨1, ⊤, 1, 1, ⊥, bot_le, fun _ _ => Subgroup.mem_center_iff.2 fun _ => rfl, fun _ _ => trivial, fun _ _ _ => by simp⟩`.
+-/
 example : Base PUnit PUnit ℂ := ⟨1, ⊤, 1, 1, ⊥, bot_le, fun _ _ => Subgroup.mem_center_iff.2 fun _ => rfl, fun _ _ => trivial, fun _ _ _ => by simp⟩
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fun _ => 1, fun _ _ => rfl, fun _ => by simp, fun _ _ => ⟨1, fun _ => rfl⟩⟩`.
+-/
 example : RPG (I := Unit) PUnit (fun _ => PUnit) fun _ => ⊤ := ⟨fun _ => 1, fun _ _ => rfl, fun _ => by simp, fun _ _ => ⟨1, fun _ => rfl⟩⟩
 
 end UpperTheory.V.Z.Sym

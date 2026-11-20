@@ -5,6 +5,13 @@ open GlobalTheory.CompanionTheory.Ar.BT TensorProduct
 
 namespace PositivityTheory.HtPt.Twhopf
 
+/- English proof (translation)
+Introduce `R _ T _ A hA f hf t`. Establish `key : ∀ g ∈ prodSpan A, (fun h => g (t, h)) ∈ A`. Introduce `g hg`. Proceed by induction on `hg using Submodule.span_induction with`. Consider the case `mem g hg`.
+
+Take `⟨a, ha, b, hb, rfl⟩` from `hg`. Establish `e : (fun h => a (t, h).1 * b (t, h).2) = a t • b`. Use function extensionality and compare the values at `h`. Simplify using `[smul_eq_mul]`. Rewrite using `[e]`.
+
+Conclude with `A.smul_mem hb _`. Consider the case `zero => exact A.zero_mem`. Consider the case `add x y _ _ hx hy => exact A.add_mem hx hy`. Consider the case `smul r x _ hx => exact A.smul_mem hx r`. Conclude with `key _ (hA.comul f hf)`.
+-/
 theorem translate_mem : ∀ (R : Type) [CommRing R] (T : Type) [CommGroup T] (A : Subalgebra R (T → R)), IsHopfOrder A → ∀ f ∈ A, ∀ t, (fun h => f (t * h)) ∈ A := by
   intro R _ T _ A hA f hf t
   have key : ∀ g ∈ prodSpan A, (fun h => g (t, h)) ∈ A := by
@@ -22,6 +29,9 @@ theorem translate_mem : ∀ (R : Type) [CommRing R] (T : Type) [CommGroup T] (A 
     | smul r x _ hx => exact A.smul_mem hx r
   exact key _ (hA.comul f hf)
 
+/- English proof (translation)
+Establish `key : ∀ t : T, ∃ h : H, ι h = ((QuotientGroup.mk t : T ⧸ ι.range).out)⁻¹ * t` using `fun t => MonoidHom.mem_range.mp (QuotientGroup.eq.mp (QuotientGroup.out_eq' _))`. Use `choose κ hκ using key`. Conclude with `⟨κ, fun t => by rw [hκ, mul_inv_cancel_left]⟩`.
+-/
 theorem exists_coset_coord {T H : Type} [CommGroup T] [CommGroup H] (ι : H →* T) :
     ∃ κ : T → H, ∀ t, (QuotientGroup.mk t : T ⧸ ι.range).out * ι (κ t) = t := by
   have key : ∀ t : T, ∃ h : H, ι h = ((QuotientGroup.mk t : T ⧸ ι.range).out)⁻¹ * t := fun t =>
@@ -29,6 +39,61 @@ theorem exists_coset_coord {T H : Type} [CommGroup T] [CommGroup H] (ι : H →*
   choose κ hκ using key
   exact ⟨κ, fun t => by rw [hκ, mul_inv_cancel_left]⟩
 
+/- English proof (translation)
+Introduce `R _ _ T _ _ H _ ι hι A hA`. Establish `: Fintype (T ⧸ ι.range)` using `Fintype.ofFinite _`. Establish `: Module.Finite R A` using `hA.finite`. Establish `: Module.Projective R A` using `hA.projective`. Take `⟨κ, hκ⟩` from `exists_coset_coord ι`.
+
+Establish `hmk : ∀ t h, (QuotientGroup.mk (t * ι h) : T ⧸ ι.range) = QuotientGroup.mk t`. Introduce `t h`. Rewrite using `[QuotientGroup.eq]`. Conclude with `MonoidHom.mem_range.mpr ⟨h⁻¹, by rw [map_inv, mul_inv_rev, inv_mul_cancel_right]⟩`. Establish `hκmul : ∀ t h, κ (t * ι h) = κ t * h`.
+
+Introduce `t h`. Apply `hι` to reduce the goal to its premises. Establish `e1` using `hκ (t * ι h)`. Establish `e2` using `hκ t`. Rewrite `e1` using `[hmk]`.
+
+Rewrite using `[map_mul]`. Apply `mul_left_cancel (a := (QuotientGroup.mk t : T ⧸ ι.range).out)` to reduce the goal to its premises. Rewrite using `[e1, ← mul_assoc, e2]`. Set `ext : T ⧸ ι.range → (H → R) → T → R` to `fun c a x => if (QuotientGroup.mk x : T ⧸ ι.range) = c then a (κ x) else 0`. Establish `hext_mem : ∀ c a, a ∈ A → ext c a ∈ indOrder ι A`.
+
+Introduce `c a ha`. Rewrite using `[OrderApi.mem_indOrder]`. Introduce `t`. Establish `e : (fun h => ext c a (t * ι h)) = if (QuotientGroup.mk t : T ⧸ ι.range) = c then (fun h => a (κ t * h)) else 0`. Use function extensionality and compare the values at `h`.
+
+Simplify using `only [ext, hmk, hκmul]`. Apply the tactic sequence `split_ifs <;> rfl`. Rewrite using `[e]`. Use `split_ifs`. Conclude with `translate_mem R H A hA a ha (κ t)`.
+
+Conclude with `A.zero_mem`. Establish `hdecomp : ∀ f : T → R, ∑ c, ext c (fun h => f (c.out * ι h)) = f`. Introduce `f`. Use function extensionality and compare the values at `x`. Rewrite using `[Finset.sum_apply, Finset.sum_eq_single (QuotientGroup.mk x)]`.
+
+Simplify using `only [ext, ↓reduceIte, hκ]`. Introduce `c _ hc`. Simplify using `only [ext]`. Rewrite using `[if_neg (fun h => hc h.symm)]`. Introduce `h`.
+
+Conclude with `absurd (Finset.mem_univ _) h`. Set `extL : T ⧸ ι.range → (H → R) →ₗ[R] (T → R)` to `fun c => { toFun := ext c map_add' := fun a b => by`. Use function extensionality and compare the values at `x`. Simplify using `only [ext, Pi.add_apply]`. Apply the tactic sequence `split_ifs <;> simp`.
+
+Use the proof step `map_smul' := fun r a => by`. Use function extensionality and compare the values at `x`. Simplify using `only [ext, Pi.smul_apply, RingHom.id_apply]`. Apply the tactic sequence `split_ifs <;> simp }`. Set `Φ : indOrder ι A →ₗ[R] (T ⧸ ι.range → A)` to `{ toFun := fun f c => ⟨fun h => (f : T → R) (c.out * ι h), (OrderApi.mem_indOrder ι A f).mp f.2 c.out⟩ map_add' := fun f g => by`.
+
+Use function extensionality and compare the values at `c`. Conclude with `Subtype.ext rfl`. Use the proof step `map_smul' := fun r f => by`. Use function extensionality and compare the values at `c`. Conclude with `Subtype.ext rfl }`.
+
+Set `Ψ : (T ⧸ ι.range → A) →ₗ[R] indOrder ι A` to `{ toFun := fun a => ⟨∑ c, extL c (a c), Subalgebra.sum_mem _ (fun c _ => hext_mem c (a c) (a c).2)⟩ map_add' := fun a b => by`. Apply `Subtype.ext` to reduce the goal to its premises. Simplify using `only [Pi.add_apply, Subalgebra.coe_add, map_add, Finset.sum_add_distrib]`. Use the proof step `map_smul' := fun r a => by`. Apply `Subtype.ext` to reduce the goal to its premises.
+
+Simplify using `only [Pi.smul_apply, Subalgebra.coe_smul, map_smul, Finset.smul_sum, RingHom.id_apply] }`. Establish `hΨΦ : Ψ.comp Φ = LinearMap.id`. Apply `LinearMap.ext` to reduce the goal to its premises. Introduce `f`. Apply `Subtype.ext` to reduce the goal to its premises.
+
+Conclude with `hdecomp (f : T → R)`. Use `⟨?_, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Conclude with `Module.Finite.of_surjective Ψ (fun f => ⟨Φ f, by`. Rewrite using `[← LinearMap.comp_apply, hΨΦ, LinearMap.id_apply]⟩)`. Establish `: Module.Projective R (T ⧸ ι.range → A)` using `Module.Projective.of_equiv (DFinsupp.linearEquivFunOnFintype (R := R) (M := fun _ : T ⧸ ι.range => A))`.
+
+Conclude with `Module.Projective.of_split Φ Ψ hΨΦ`. Take `⟨d, hd, hdf⟩` from `hA.full`. Use `⟨d, hd, fun f => ?_⟩` and prove the remaining obligations. Rewrite using `[OrderApi.mem_indOrder]`. Introduce `t`.
+
+Conclude with `hdf _`. Introduce `f hf`. Establish `hg : ∀ c c' : T ⧸ ι.range, (fun z : H × H => f (c.out * c'.out * ι (z.1 * z.2))) ∈ prodSpan A` using `fun c c' => hA.comul _ ((OrderApi.mem_indOrder ι A f).mp hf (c.out * c'.out))`. Establish `hlift : ∀ (c c' : T ⧸ ι.range) (G : H × H → R), G ∈ prodSpan A → (fun z : T × T => if (QuotientGroup.mk z.1 : T ⧸ ι.range) = c ∧ (QuotientGroup.mk z.2 : T ⧸ ι.range) = c' then G (κ z.1, κ z.2) else 0) ∈ prodSpan (indOrder ι A)`. Introduce `c c' G hG`.
+
+Proceed by induction on `hG using Submodule.span_induction with`. Consider the case `mem g hg`. Take `⟨a, ha, b, hb, rfl⟩` from `hg`. Establish `e : (fun z : T × T => if (QuotientGroup.mk z.1 : T ⧸ ι.range) = c ∧ (QuotientGroup.mk z.2 : T ⧸ ι.range) = c' then a (κ z.1, κ z.2).1 * b (κ z.1, κ z.2).2 else 0) = fun z => ext c a z.1 * ext c' b z.2`. Use function extensionality and compare the values at `z`.
+
+Apply the tactic sequence `by_cases h1 : (QuotientGroup.mk z.1 : T ⧸ ι.range) = c <;>`. Apply the tactic sequence `by_cases h2 : (QuotientGroup.mk z.2 : T ⧸ ι.range) = c' <;> simp [ext, h1, h2]`. Rewrite using `[e]`. Conclude with `OrderApi.mul_mem_prodSpan (hext_mem c a ha) (hext_mem c' b hb)`. Consider the case `zero`.
+
+Use `(prodSpan (indOrder ι A)).zero_mem using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `z`. Simplify using the standard rewrite rules. Consider the case `add x y _ _ hx hy`. Use `(prodSpan (indOrder ι A)).add_mem hx hy using 1` and compare the differences between its conclusion and the goal.
+
+Use function extensionality and compare the values at `z`. Simplify using `only [Pi.add_apply]`. Apply the tactic sequence `split_ifs <;> simp`. Consider the case `smul r x _ hx`. Use `(prodSpan (indOrder ι A)).smul_mem r hx using 1` and compare the differences between its conclusion and the goal.
+
+Use function extensionality and compare the values at `z`. Simplify using `only [Pi.smul_apply, smul_eq_mul]`. Apply the tactic sequence `split_ifs <;> simp`. Establish `hsum : (fun z : T × T => f (z.1 * z.2)) = ∑ c : T ⧸ ι.range, ∑ c' : T ⧸ ι.range, (fun z : T × T => if (QuotientGroup.mk z.1 : T ⧸ ι.range) = c ∧ (QuotientGroup.mk z.2 : T ⧸ ι.range) = c' then (fun w : H × H => f (c.out * c'.out * ι (w.1 * w.2))) (κ z.1, κ z.2) else 0)`. Use function extensionality and compare the values at `z`.
+
+Rewrite using `[Finset.sum_apply, Finset.sum_eq_single (QuotientGroup.mk z.1)]`. Rewrite using `[Finset.sum_apply, Finset.sum_eq_single (QuotientGroup.mk z.2)]`. Simplify using `only [and_self, ↓reduceIte]`. Combine the equalities or inequalities in the displayed calculation. Introduce `c' _ hc'`.
+
+Rewrite using `[if_neg (fun h => hc' h.2.symm)]`. Introduce `h`. Conclude with `absurd (Finset.mem_univ _) h`. Introduce `c _ hc`. Rewrite using `[Finset.sum_apply]`.
+
+Apply `Finset.sum_eq_zero` to reduce the goal to its premises. Introduce `c' _`. Rewrite using `[if_neg (fun h => hc h.1.symm)]`. Introduce `h`. Conclude with `absurd (Finset.mem_univ _) h`.
+
+Rewrite using `[hsum]`. Conclude with `Submodule.sum_mem _ (fun c _ => Submodule.sum_mem _ (fun c' _ => hlift c c' _ (hg c c')))`. Introduce `f hf`. Rewrite `hf`, the goal using `[OrderApi.mem_indOrder]`. Introduce `t`.
+
+Establish `e : (fun h => f ((t * ι h)⁻¹)) = fun x => (fun h => f (t⁻¹ * ι h)) x⁻¹`. Use function extensionality and compare the values at `h`. Rewrite using `[mul_inv]`. Simplify using `only [map_inv]`. Rewrite using `[e]`.
+
+Conclude with `hA.inv _ (hf t⁻¹)`.
+-/
 theorem ind_hopf : ∀ (R : Type) [CommRing R] [IsDomain R] (T : Type) [CommGroup T] [Finite T] (H : Type) [CommGroup H] (ι : H →* T), Function.Injective ι → ∀ A : Subalgebra R (H → R), IsHopfOrder A → IsHopfOrder (indOrder ι A) := by
   classical
   intro R _ _ T _ _ H _ ι hι A hA
@@ -188,6 +253,21 @@ theorem ind_hopf : ∀ (R : Type) [CommRing R] [IsDomain R] (T : Type) [CommGrou
     rw [e]
     exact hA.inv _ (hf t⁻¹)
 
+/- English proof (translation)
+Apply `le_antisymm` to reduce the goal to its premises. Introduce `x hx`. Take `⟨f, hf, rfl⟩` from `Subalgebra.mem_map.mp hx`. Establish `h1` using `(OrderApi.mem_indOrder _ A f).mp hf 1`. Use `h1 using 1` and compare the differences between its conclusion and the goal.
+
+Use function extensionality and compare the values at `h`. Simplify using `[GlobalTheory.CompanionTheory.Ar.BT.pullFun]`. Introduce `a ha`. Set `f : T → R` to `fun x => if hx : x ∈ H then a ⟨x, hx⟩ else 0`. Establish `hf : f ∈ indOrder H.subtype A`.
+
+Rewrite using `[OrderApi.mem_indOrder]`. Introduce `t`. Distinguish the cases in `ht : t ∈ H`. Establish `e : (fun h : H => f (t * H.subtype h)) = fun h => a (⟨t, ht⟩ * h)`. Use function extensionality and compare the values at `h`.
+
+Simplify using `only [f, Subgroup.coe_subtype]`. Rewrite using `[dif_pos (H.mul_mem ht h.2)]`. Both sides reduce to the same expression. Rewrite using `[e]`. Conclude with `translate_mem R H A hA a ha ⟨t, ht⟩`.
+
+Establish `e : (fun h : H => f (t * H.subtype h)) = 0`. Use function extensionality and compare the values at `h`. Simplify using `only [f, Subgroup.coe_subtype, Pi.zero_apply]`. Rewrite using `[dif_neg]`. Introduce `hm`.
+
+Conclude with `ht (by simpa using H.mul_mem hm (H.inv_mem h.2))`. Rewrite using `[e]`. Conclude with `A.zero_mem`. Conclude with `Subalgebra.mem_map.mpr ⟨f, hf, by`. Use function extensionality and compare the values at `h`.
+
+Simplify using `[GlobalTheory.CompanionTheory.Ar.BT.pullFun, f]⟩`.
+-/
 theorem res_ind {R T : Type} [CommRing R] [CommGroup T] (H : Subgroup T) (A : Subalgebra R (H → R))
     (hA : IsHopfOrder A) : resOrder H.subtype (indOrder H.subtype A) = A := by
   classical

@@ -18,11 +18,19 @@ namespace GlobalTheory.DeepPoint
 
 open Formalism.L2.SG.Pf.unitaryCongruence in
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨K_one I, fun y _ => ⟨0, zero_mem _, by rw [fmat_one, sub_self, Matrix.zero_mulVec, smul_zero]⟩⟩`.
+-/
 theorem kg_one (I : AutInst) (m : ℕ) : (1 : I.Gf) ∈ I.Kg m :=
   ⟨K_one I, fun y _ => ⟨0, zero_mem _, by rw [fmat_one, sub_self, Matrix.zero_mulVec, smul_zero]⟩⟩
 
 open Formalism.L2.SG.Pf.unitaryCongruence in
 
+/- English proof (translation)
+Use `⟨K_mul I hx.1 hy.1, fun v hv => ?_⟩` and prove the remaining obligations. Take `⟨z, hz, hyz⟩` from `hy.2 v hv`. Take `⟨z', hz', hxz⟩` from `hx.2 v hv`. Use `⟨I.fmat x *ᵥ z + z', add_mem (K_mv I hx.1 hz) hz', ?_⟩` and prove the remaining obligations. Establish `e : (I.fmat (x * y) - 1) *ᵥ v = I.fmat x *ᵥ ((I.fmat y - 1) *ᵥ v) + (I.fmat x - 1) *ᵥ v`.
+
+Rewrite using `[fmat_mul, Matrix.sub_mulVec, Matrix.sub_mulVec, Matrix.sub_mulVec, Matrix.mulVec_sub, Matrix.mulVec_mulVec, Matrix.one_mulVec]`. Normalize the expressions using the abelian group laws. Rewrite using `[e, hyz, hxz, Matrix.mulVec_smul, smul_add]`.
+-/
 theorem kg_mul (I : AutInst) (m : ℕ) {x y : I.Gf} (hx : x ∈ I.Kg m) (hy : y ∈ I.Kg m) : x * y ∈ I.Kg m := by
   refine ⟨K_mul I hx.1 hy.1, fun v hv => ?_⟩
   obtain ⟨z, hz, hyz⟩ := hy.2 v hv
@@ -36,6 +44,11 @@ theorem kg_mul (I : AutInst) (m : ℕ) {x y : I.Gf} (hx : x ∈ I.Kg m) (hy : y 
 
 open Formalism.L2.SG.Pf.unitaryCongruence in
 
+/- English proof (translation)
+Use `⟨K_inv I hk.1, fun y hy => ?_⟩` and prove the remaining obligations. Take `⟨z, hz, hkz⟩` from `hk.2 y hy`. Use `⟨-(I.fmat k⁻¹ *ᵥ z), neg_mem (K_mv I (K_inv I hk.1) hz), ?_⟩` and prove the remaining obligations. Establish `h1 : I.fmat k⁻¹ * I.fmat k = 1` using `fmat_inv_mul I k`. Establish `e : (I.fmat k⁻¹ - 1) *ᵥ y = -(I.fmat k⁻¹ *ᵥ ((I.fmat k - 1) *ᵥ y))`.
+
+Rewrite using `[Matrix.mulVec_mulVec, Matrix.mul_sub, h1, mul_one, Matrix.sub_mulVec, Matrix.sub_mulVec, Matrix.one_mulVec]`. Normalize the expressions using the abelian group laws. Rewrite using `[e, hkz, Matrix.mulVec_smul, smul_neg]`.
+-/
 theorem kg_inv (I : AutInst) (m : ℕ) {k : I.Gf} (hk : k ∈ I.Kg m) : k⁻¹ ∈ I.Kg m := by
   refine ⟨K_inv I hk.1, fun y hy => ?_⟩
   obtain ⟨z, hz, hkz⟩ := hk.2 y hy
@@ -46,6 +59,11 @@ theorem kg_inv (I : AutInst) (m : ℕ) {k : I.Gf} (hk : k ∈ I.Kg m) : k⁻¹ �
     abel
   rw [e, hkz, Matrix.mulVec_smul, smul_neg]
 
+/- English proof (translation)
+Use `first`. Consider the case `exact @_root_.GlobalTheory.HermitianFormLinearity.main`. Consider the case `exact _root_.GlobalTheory.HermitianFormLinearity.main`. Consider the case `(apply _root_.GlobalTheory.HermitianFormLinearity.main <;> assumption)`. Consider the case `(intros; apply _root_.GlobalTheory.HermitianFormLinearity.main <;> assumption)`.
+
+Consider the case `(intros; apply @_root_.GlobalTheory.HermitianFormLinearity.main <;> first | assumption | infer_instance)`. Consider the case `(intros; exact _root_.GlobalTheory.HermitianFormLinearity.main ..)`.
+-/
 theorem isIsot_span (I : AutInst) (R : Submodule (𝓞 I.E) (Fin I.n → I.E)) (h0 : R ≠ ⊥)
     (hiso : ∀ y ∈ R, ∀ z ∈ R, Formalism.UG.hform (starRingEnd I.E) I.J y z = 0) :
     I.IsIsot (Submodule.span I.E (R : Set (Fin I.n → I.E))) := by
@@ -57,6 +75,39 @@ theorem isIsot_span (I : AutInst) (R : Submodule (𝓞 I.E) (Fin I.n → I.E)) (
   | (intros; apply @_root_.GlobalTheory.HermitianFormLinearity.main <;> first | assumption | infer_instance)
   | (intros; exact _root_.GlobalTheory.HermitianFormLinearity.main ..)
 
+/- English proof (translation)
+Take `⟨⟨a, S, τ, hF⟩, -, hspec⟩` from `GlobalTheory.PointFlag.flag_spec I x`. Establish `hpiece` using `(hspec a S τ hF).1`. Establish `ha0` using `((hspec a S τ hF).2 hn).1`. Establish `hτ0` using `((hspec a S τ hF).2 hn).2`. Take `⟨hS0, hSmono, hSlast, hτmono, hτ, -⟩` from `hF`.
+
+Establish `ha : 1 ≤ a`. Break down `Nat.eq_zero_or_pos a with h | h` into its components or cases. Conclude with `absurd (ha0.1 h) (not_le.2 hl)`. Conclude with `h`. Establish `hrkS : ∀ i : Fin (a + 1), (i : ℕ) ≤ rkK (S i)`.
+
+Introduce `i`. Proceed by induction on `i using Fin.induction with`. Consider the case `zero => exact Nat.zero_le _`. Consider the case `succ i ih`. Use `(hpiece i).2.1` as an intermediate fact.
+
+Simplify using `only [Fin.coe_castSucc] at ih`. Simplify using `only [Fin.val_succ]`. Use linear arithmetic over natural numbers and integers. Establish `haq : a ≤ q`. Take `⟨v⟩` from `(inferInstance : Nonempty (InfinitePlace I.F))`.
+
+Establish `h1` using `hrkS (Fin.last a)`. Rewrite `h1` using `[hSlast]`. Establish `h2` using `(GlobalTheory.FlagIso.flag_isotropic I x).2.1 v`. Simplify using `only [Fin.val_last] at h1`. Conclude with `h1.trans (h2.trans (hrk v))`.
+
+Use `set τ' : ℕ → ℝ := fun i => if h : i < a then τ ⟨i, h⟩ else 1 / 2 with hτ'`. Establish `hτ'pos : ∀ i ≤ a, 0 < τ' i`. Introduce `i _`. Simplify using `only [hτ']`. Use `split_ifs with h`.
+
+Conclude with `(hτ ⟨i, h⟩).1`. Evaluate the numerical expressions. Establish `hτ'lt : ∀ i < a, τ' i < τ' (i + 1)`. Introduce `i hi`. Simplify using `only [hτ', dif_pos hi]`.
+
+Use `split_ifs with h`. Conclude with `hτmono (Fin.mk_lt_mk.2 (Nat.lt_succ_self i))`. Conclude with `(hτ ⟨i, hi⟩).2.1`. Establish `hτ'a : τ' a = 1 / 2` using `by simp [hτ']`. Establish `hτ'0 : τ' 0 = least I x`.
+
+Simplify using `only [hτ', dif_pos (show 0 < a by omega)]`. Conclude with `hτ0 (by omega)`. Take `⟨b, hb, hratio, hsq⟩` from `GlobalTheory.exists_consecutive_ratio_le_rpow a q τ' ha haq hτ'pos hτ'lt hτ'a`. Rewrite `hratio`, `hsq` using `[hτ'0]`. Use `set i : Fin a := ⟨b, hb⟩ with hi_def`.
+
+Establish `hib : τ' b = τ i` using `by simp [hτ', hb, i]`. Use `⟨S i.succ, τ' (b + 1), τ i, ?_, ?_, ?_, ?_, (hτ i).1, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[(hτ i).2.2.1]`. Conclude with `(GlobalTheory.CountSteps.steps I x _ (hτ i).1).1`. Introduce `h`.
+
+Use `hSmono (Fin.succ_pos i)` as an intermediate fact. Rewrite `this` using `[hS0, h]`. Conclude with `lt_irrefl _ this`. Rewrite using `[← hSlast]`. Conclude with `hSmono.monotone (Fin.le_last _)`.
+
+Rewrite using `[(hτ i).2.2.1]`. Conclude with `sSup_le fun N hN => hN.1`. Conclude with `(hpiece i).2.2.1.le`. Introduce `N hN hNL`. Distinguish the cases in `hb1 : b + 1 < a`.
+
+Establish `eS : S i.succ = S (Fin.castSucc (⟨b + 1, hb1⟩ : Fin a))` using `congrArg S (Fin.ext (by simp [i]))`. Establish `e : τ' (b + 1) = τ ⟨b + 1, hb1⟩` using `by simp [hτ', hb1]`. Rewrite using `[e, eS]`. Rewrite `hN` using `[eS]`. Conclude with `(hpiece ⟨b + 1, hb1⟩).2.2.2.1 N hN hNL`.
+
+Establish `hba : b + 1 = a` using `by omega`. Establish `e : τ' (b + 1) = 1 / 2` using `by rw [hba, hτ'a]`. Establish `eS : S i.succ = stepLt I x (1 / 2)`. Rewrite using `[← hSlast]; exact congrArg S (Fin.ext (by simp [i, hba]))`. Rewrite using `[e, eS]`.
+
+Rewrite `hN` using `[eS]`. Conclude with `(GlobalTheory.CountSteps.steps I x (1 / 2) (by norm_num)).2.2.2.2.2.2.2.1 N hN hNL`. Rewrite using `[← hib]`. Establish `hpos` using `hτ'pos (b + 1) (by omega)`. Rewrite `hratio` using `[div_le_iff₀ hpos]`. Then use the resulting hypothesis.
+
+Rewrite using `[← hib]`. Conclude with `hsq`.
+-/
 theorem exists_step (I : AutInst) (x : I.GA) (q : ℕ) (hn : 1 ≤ I.n)
     (hrk : ∀ v, rkR (I.ε v) ≤ q) (hl : least I x < 1 / 2) :
     ∃ (R : Submodule (𝓞 I.E) (Fin I.n → I.E)) (lo hi : ℝ),
@@ -138,6 +189,23 @@ theorem exists_step (I : AutInst) (x : I.GA) (q : ℕ) (hn : 1 ≤ I.n)
     rwa [div_le_iff₀ hpos] at hratio
   · rw [← hib]; exact hsq
 
+/- English proof (translation)
+Introduce `I x g q hg _ hn hrk hl`. Take `⟨R, lo, hi, hsat, hR0, hRS, hRL, hhi, hlarge, hlo, hhl, hh2⟩` from `exists_step I x q hn hrk hl`. Establish `hisoR : ∀ y ∈ R, ∀ z ∈ R, Formalism.UG.hform (starRingEnd I.E) I.J y z = 0` using `fun y hy z hz => (GlobalTheory.FlagIso.flag_isotropic I x).1 y (hRS hy) z (hRS hz)`. Establish `hperp : R ≤ perpIn I x R` using `fun y hy => Submodule.subset_span ⟨hRL hy, fun s hs => hisoR s hs y hy⟩`. Establish `hWiso : I.IsIsot (Submodule.span I.E (R : Set (Fin I.n → I.E)))` using `isIsot_span I R hR0 hisoR`.
+
+Use `⟨_, hWiso, fun m hm => ?_⟩` and prove the remaining obligations. Take `⟨⟨N, hN⟩, -, hsplit, hdense, -⟩` from `GlobalTheory.UnipApprox.strong_approximation I _ hWiso`. Establish `hU : {c : I.Gf | x.2⁻¹ * c * x.2 ∈ I.Kg g} ∈ nhds (1 : I.Gf)`. Establish `ho : IsOpen (I.Kg g)` using `I.topf_open g hg`. Establish `hc : Continuous fun c : I.Gf => x.2⁻¹ * c * x.2` using `(continuous_const.mul continuous_id).mul continuous_const`.
+
+Use `(ho.preimage hc).mem_nhds ?_` and prove the remaining obligations. Use `show x.2⁻¹ * 1 * x.2 ∈ I.Kg g`. Rewrite using `[mul_one, inv_mul_cancel]`. Conclude with `kg_one I g`. Take `⟨γ, ⟨hγF, hγN⟩, hγU⟩` from `hdense _ hU m hm`.
+
+Establish `hm'N : γ⁻¹ * m ∈ I.NA (Submodule.span I.E (R : Set (Fin I.n → I.E)))`. Rewrite `hγN`, `hm`, the goal using `[← hN]`. Conclude with `N.mul_mem (N.inv_mem hγN) hm`. Establish `hν` using `(hsplit _ hm'N).1`. Take `⟨γ', ⟨hγ'F, -⟩, hγ'K, A, Z, hAZ, heq, hbd, -⟩` from `GlobalTheory.SmallFund.small_fundamental_set I x g R lo hi _ hg hsat hR0 hperp hhi hlarge hlo hhl hh2 _ hν`.
+
+Establish `hk : (x⁻¹ * γ' * x).2⁻¹ * (x.2⁻¹ * (γ⁻¹ * m).2 * x.2) ∈ I.Kg g` using `kg_mul I g (kg_inv I g hγ'K) hγU`. Use `⟨γ * γ', Formalism.MainNotions.LeviCoordinates.rrg_mul_mem I hγF hγ'F, _, hk, (γ'.1 * x.1)⁻¹ * (γ⁻¹ * m).1 * x.1, A, Z, hAZ, fun v => ?_, ?_, hbd⟩` and prove the remaining obligations. Establish `e : uMat (((γ'.1 * x.1)⁻¹ * (γ⁻¹ * m).1 * x.1) v) = uMat ((γ'.1 v * x.1 v)⁻¹) * (uMat ((γ⁻¹ * m).1 v) * uMat (x.1 v))`. Simplify using `only [Pi.mul_apply, Pi.inv_apply]`. Rewrite using `[mul_assoc]`.
+
+Both sides reduce to the same expression. Rewrite using `[e, heq v]`. Establish `e2 : uMat (γ'.1 v) * uMat (x.1 v) = uMat (γ'.1 v * x.1 v)` using `rfl`. Establish `e3 : uMat ((γ'.1 v * x.1 v)⁻¹) * uMat (γ'.1 v * x.1 v) = 1` using `by show uMat ((γ'.1 v * x.1 v)⁻¹ * (γ'.1 v * x.1 v)) = 1`. Rewrite using `[inv_mul_cancel]`.
+
+Both sides reduce to the same expression. Rewrite using `[e2, Matrix.mul_assoc, ← Matrix.mul_assoc (uMat ((γ'.1 v * x.1 v)⁻¹)), e3, Matrix.one_mul]`. Establish `h2 : γ' * x * ((γ'.1 * x.1)⁻¹ * (γ⁻¹ * m).1 * x.1, (x⁻¹ * γ' * x).2⁻¹ * (x.2⁻¹ * (γ⁻¹ * m).2 * x.2)) = (γ⁻¹ * m) * x`. Use `Prod.ext ?_ ?_` and prove the remaining obligations. Simplify using `only [Prod.fst_mul] group`.
+
+Simplify using `only [Prod.snd_mul, Prod.snd_inv] group`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem deep_point : ∀ (I : AutInst) (x : I.GA) (g q : ℕ), 1 ≤ g → 1 ≤ q → 1 ≤ I.n →
     (∀ v, rkR (I.ε v) ≤ q) → least I x < 1 / 2 → ∃ W, I.IsIsot W ∧ ∀ m ∈ I.NA W, ∃ γ ∈ I.GFset,
       ∃ k ∈ I.Kg g, ∃ (u : I.Ginf) (A Z : InfinitePlace I.F → Matrix (Fin I.n) (Fin I.n) ℂ),

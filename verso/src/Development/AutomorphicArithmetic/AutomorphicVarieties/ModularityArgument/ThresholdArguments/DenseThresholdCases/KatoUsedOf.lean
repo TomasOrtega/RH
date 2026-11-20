@@ -10,6 +10,11 @@ set_option synthInstance.maxHeartbeats 200000
 section
 open NumberField IsDedekindDomain Formalism.ConjugateSelfDual ReciprocityTheory.Gal Formalism.MainNotions.N Formalism.BasicNotions Formalism.BasicNotions.Loc GlobalTheory.GalOfCusp Matrix IsLocalRing
 open UpperTheory.V UpperTheory.V.Base UpperTheory.V.HV UpperTheory.V.Alg UpperTheory.V.U3
+/- English proof (translation)
+Use `haveI : IsAlgClosed Ω := IsAlgClosure.isAlgClosed ℚ`. Use `haveI : NeZero ((N : ℕ) : Ω) := ⟨Nat.cast_ne_zero.mpr (NeZero.ne N)⟩`. Take `⟨ζ, hζ⟩` from `HasEnoughRootsOfUnity.exists_primitiveRoot Ω N`. Establish `h1` using `Chr.cls_spec N g ζ hζ.pow_eq_one`. Rewrite `h1` using `[hg ζ hζ.pow_eq_one]`.
+
+Establish `h2 : ζ ^ (1 : ZMod N).val = ζ`. Rewrite using `[ZMod.val_one_eq_one_mod, hζ.eq_orderOf, pow_mod_orderOf, pow_one]`. Apply `Units.ext` to reduce the goal to its premises. Apply `ZMod.val_injective` to reduce the goal to its premises. Conclude with `hζ.pow_inj (ZMod.val_lt _) (ZMod.val_lt _) (h1.symm.trans h2.symm)`.
+-/
 private theorem cls_eq_one {Ω : Type} [Field Ω] [CharZero Ω] [IsAlgClosure ℚ Ω] (N : ℕ) [NeZero N] (g : G ℚ Ω)
     (hg : ∀ ζ : Ω, ζ ^ N = 1 → g ζ = ζ) : Chr.cls ℚ Ω N g = 1 := by
   haveI : IsAlgClosed Ω := IsAlgClosure.isAlgClosed ℚ
@@ -22,6 +27,43 @@ private theorem cls_eq_one {Ω : Type} [Field Ω] [CharZero Ω] [IsAlgClosure �
   apply Units.ext
   apply ZMod.val_injective
   exact hζ.pow_inj (ZMod.val_lt _) (ZMod.val_lt _) (h1.symm.trans h2.symm)
+/- English proof (translation)
+Introduce `hC Ω _ _ _ K _ _ _ l hl c N _ e ψ D U g₁ hM r h hII W hext hcont hW hdet ι hmod`. Take `⟨h11, -, -⟩` from `typeII_facts hC D hM h hII`. Take `⟨-, hηc, hΨc, -, -, -, -, -, -, -, hl1⟩` from `dat_facts D`. Take `⟨A₀, hA₀, -, hIn, -, -, hcyc, hconj⟩` from `dat_loc D`. Use `set θ : G ℚ Ω →* (PadicAlgCl l)ˣ := (Units.map (Int.castRingHom (PadicAlgCl l)).toMonoidHom).comp D.η with hθdef`.
+
+Use `set ψQ : G ℚ Ω →* (Qbar l)ˣ := (Units.map (algebraMap c.O (PadicAlgCl l)).toMonoidHom).comp (Chr.dirG ℚ Ω ψ) with hψdef`. Establish `hθ0 : ∀ g, (θ g : PadicAlgCl l) = ((D.η g : ℤˣ) : ℤ)` using `fun g => rfl`. Establish `hΨ : ∀ g, D.ΨQ g = cycBar ℚ Ω l g ^ (e : ℤ) * ψQ g` using `fun g => by show Units.map (algebraMap c.O (PadicAlgCl l)).toMonoidHom (chiO ℚ Ω l c.O g ^ (e : ℤ) * Chr.dirG ℚ Ω ψ g) = _`. Rewrite using `[map_mul, map_zpow]`. Both sides reduce to the same expression.
+
+Establish `hord` using `typeII_ord hC D hM h hII W hext hcont hdet`. Establish `w0 : wt1 0 = 1` using `by decide`. Establish `w1 : wt1 1 = 0` using `by decide`. Establish `w2 : wt1 2 = -1` using `by decide`. Establish `h00 : ∀ g, (r0 D.η D.ΨQ g).mat 0 0 = (D.ΨQ g : PadicAlgCl l)` using `fun g => by`.
+
+Simplify using `only [GG.mat, unitaryThreeReflection_left, tor_val, Matrix.diagonal_apply_eq, w0, _root_.zpow_one]`. Establish `h22 : ∀ g, (r0 D.η D.ΨQ g).mat 2 2 = (((D.ΨQ g)⁻¹ : (PadicAlgCl l)ˣ) : PadicAlgCl l)` using `fun g => by`. Simplify using `only [GG.mat, unitaryThreeReflection_left, tor_val, Matrix.diagonal_apply_eq, w2, _root_.zpow_neg, _root_.zpow_one]`. Establish `h11' : ∀ g, (r0 D.η D.ΨQ g).mat 1 1 = 1` using `fun g => by`. Simplify using `only [GG.mat, unitaryThreeReflection_left, tor_val, Matrix.diagonal_apply_eq, w1, _root_.zpow_zero, Units.val_one]`.
+
+Establish `htrW : ∀ g, (W g : Matrix (Fin 2) (Fin 2) (PadicAlgCl l)).trace = (θ g : PadicAlgCl l) * (r g).mat 0 0 + (r g).mat 2 2`. Introduce `g`. Rewrite using `[hW, Wfun, hθ0, h.mult g]`. Break down `Int.units_eq_one_or (D.η g) with hg | hg` into its components or cases. Rewrite using `[hg, if_pos rfl, Matrix.trace_fin_two] show (r g).mat 0 0 + (r g).mat 2 2 = _`.
+
+Simplify using the standard rewrite rules. Rewrite using `[hg, if_neg (by decide), Matrix.trace_fin_two, Matrix.mul_diagonal, Matrix.mul_diagonal] show (r g).mat 0 0 * (-1) + (r g).mat 2 2 * 1 = _`. Simplify using the standard rewrite rules. Use `{ l_odd := D.gd.l_odd, e_pos := D.gd.e_pos, gen := D.gd.gen, quad := D.gd.quad, imag := D.gd.imag, l_cop := D.gd.l_cop, N_pos := NeZero.pos N, N_even := D.gd.N_even, cop := D.gd.cop, θ_ker := ?_, θ_sq := fun g => ?_, ψ_mu := fun s hs => ?_, ψ_ord := ⟨orderOf ψ, D.gd.ord, fun g => …` and prove the remaining obligations. Rewrite using `[← D.η_ker]`.
+
+Use extensionality with `g`. Simplify using `only [MonoidHom.mem_ker, Units.ext_iff, hθ0, Units.val_one]`. Apply the tactic sequence `rcases Int.units_eq_one_or (D.η g) with hg | hg <;> rw [hg] <;> norm_num`. Use `show Units.map (Int.castRingHom (PadicAlgCl l)).toMonoidHom (D.η g) ^ 2 = 1`. Rewrite using `[← map_pow, Int.units_sq, map_one]`.
+
+Use `show Units.map (algebraMap c.O (PadicAlgCl l)).toMonoidHom (ψ.toUnitHom (Chr.cls ℚ Ω N s)) = 1`. Rewrite using `[cls_eq_one N s hs, map_one, map_one]`. Use `show Units.map (algebraMap c.O (PadicAlgCl l)).toMonoidHom (ψ.toUnitHom (Chr.cls ℚ Ω N g)) ^ _ = 1`. Rewrite using `[← map_pow]`. Establish `: ψ.toUnitHom (Chr.cls ℚ Ω N g) ^ orderOf ψ = 1`.
+
+Apply `Units.ext` to reduce the goal to its premises. Rewrite using `[Units.val_pow_eq_pow_val, MulChar.coe_toUnitHom, ← MulChar.pow_apply_coe, pow_orderOf_eq_one, MulChar.one_apply_coe, Units.val_one]`. Rewrite using `[this, map_one]`. Take `⟨x, -, hxI⟩` from `hconj A hA`. Establish `h1` using `(hxI s).1 hs`.
+
+Rewrite `h1` using `[← hIn]`. Take `⟨σ, hσI, hσ⟩` from `h1`. Establish `h2` using `D.Ψ_I σ hσI`. Establish `h3 : Loc.cycA l l c.O σ = chiO ℚ Ω l c.O (D.ι σ)` using `by show Units.map _ (Loc.cyc l l σ) = Units.map _ (cycZ ℚ Ω l (D.ι σ))`. Rewrite using `[hcyc]`.
+
+Both sides reduce to the same expression. Establish `h4 : Chr.dirG ℚ Ω ψ (D.ι σ) = Chr.dirG ℚ Ω (comp l ψ) (D.ι σ)`. Rewrite `h2` using `[h3, Chr.Psi, MonoidHom.mul_apply, MonoidHom.zpow_apply, _root_.zpow_natCast]`. Conclude with `mul_left_cancel h2`. Establish `h5 : Chr.dirG ℚ Ω ψ s = Chr.dirG ℚ Ω ψ (D.ι σ)`.
+
+Rewrite using `[hσ]`. Simplify using `only [map_mul, map_inv, inv_mul_cancel_comm]`. Use `show Units.map (algebraMap c.O (PadicAlgCl l)).toMonoidHom (Chr.dirG ℚ Ω ψ s) ^ 2 = 1`. Establish `h6 : Chr.dirG ℚ Ω (comp l ψ) (D.ι σ) ^ 2 = 1`. Apply `Units.ext` to reduce the goal to its premises.
+
+Use `show (((comp l ψ).toUnitHom (Chr.cls ℚ Ω N (D.ι σ)) ^ 2 : c.Oˣ) : c.O) = _`. Rewrite using `[Units.val_pow_eq_pow_val, MulChar.coe_toUnitHom, ← MulChar.pow_apply_coe, D.gd.ine, MulChar.one_apply_coe, Units.val_one]`. Rewrite using `[← map_pow, h5, h4, h6, map_one]`. Rewrite using `[← hΨ] show Units.map _ (D.Ψ D.cc) = 1`. Rewrite using `[hΨc, map_one]`.
+
+Take `⟨hch, -⟩` from `pt_inertia_above hC D hM h A hA`. Establish `hk : s ∈ D.η.ker` using `(hl1 A hA).1 hs`. Establish `htr : (r s).mat.trace = (r0 D.η D.ΨQ s).mat.trace`. Rewrite using `[Matrix.trace_eq_neg_charpoly_coeff, Matrix.trace_eq_neg_charpoly_coeff, hch s hs]`. Rewrite `htr` using `[Matrix.trace_fin_three, Matrix.trace_fin_three, h00, h22, h11', h11 s hk]`.
+
+Rewrite using `[htrW, ← hΨ, hθ0, show D.η s = 1 from hk]`. Simplify using `only [Units.val_one, Int.cast_one, one_mul]`. Take the linear combination `htr`. Rewrite using `[htrW, ← hΨ]`. Establish `a0` using `h.red g 0 0`.
+
+Establish `a2` using `h.red g 2 2`. Rewrite `a0` using `[h00]`. Rewrite `a2` using `[h22]`. Establish `hn : ‖(θ g : PadicAlgCl l)‖ = 1`. Rewrite using `[hθ0]`.
+
+Apply the tactic sequence `rcases Int.units_eq_one_or (D.η g) with hg | hg <;> simp [hg]`. Establish `e1 : (θ g : PadicAlgCl l) * (r g).mat 0 0 + (r g).mat 2 2 - ((θ g : PadicAlgCl l) * (D.ΨQ g : PadicAlgCl l) + (((D.ΨQ g)⁻¹ : (PadicAlgCl l)ˣ) : PadicAlgCl l)) = (θ g : PadicAlgCl l) * ((r g).mat 0 0 - D.ΨQ g) + ((r g).mat 2 2 - (((D.ΨQ g)⁻¹ : (PadicAlgCl l)ˣ) : PadicAlgCl l))`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e1]`. Use `lt_of_le_of_lt (IsUltrametricDist.norm_add_le_max _ _) (max_lt ?_ a2)` and prove the remaining obligations.
+
+Rewrite using `[norm_mul, hn, one_mul]`. Conclude with `a0`. Establish `hdt : GlobalTheory.Ord2.dt W = θ` using `MonoidHom.ext fun g => Units.ext ((hdet g).trans (hθ0 g).symm)`. Rewrite using `[← hdt]`. Conclude with `(_root_.GlobalTheory.Ord2.admissible_typeII_block_alt hC D hM h ι hII W hext hcont hdet hmod).flag`.
+-/
 theorem UpperTheory.V.Z.Kato.used_of_alt :
     CohInp → ∀ {Ω : Type} [Field Ω] [CharZero Ω] [IsAlgClosure ℚ Ω] {K : Type} [Field K] [NumberField K] [Algebra K Ω]
       {l : ℕ} [Fact l.Prime] {c : Coef l} {N : ℕ} [NeZero N] {e : ℕ} {ψ : DirichletCharacter c.O N} (D : Dat Ω K c e ψ) {U : D.ULoc}

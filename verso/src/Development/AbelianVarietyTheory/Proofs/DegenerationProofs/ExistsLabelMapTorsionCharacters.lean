@@ -13,6 +13,13 @@ attribute [local instance] Over.cartesianMonoidalCategory
 noncomputable section
 namespace GlobalTheory.ZH.LabelMap
 
+/- English proof (translation)
+Set `Φ : (T ⟶ G') →* (Over.mk (T.hom ≫ f) ⟶ G)` to `MonoidHom.mk' (fun x => toBase h.1.w x) fun x y => Over.OverMorphism.ext (h.2 T x y _ _ rfl rfl).symm`. Establish `hΦ : ∀ x, (Φ x).left = x.left ≫ φ` using `fun _ => rfl`. Establish `inj : Function.Injective Φ` using `fun x y e => Over.OverMorphism.ext (h.1.hom_ext ((hΦ x).symm.trans ((congrArg (fun z => z.left) e).trans (hΦ y))) ((Over.w x).trans (Over.w y).symm))`. Establish `surj : Function.Surjective Φ` using `fun z => ⟨Over.homMk (h.1.lift z.left T.hom (Over.w z)) (h.1.lift_snd _ _ _), Over.OverMorphism.ext (h.1.lift_fst _ _ _)⟩`. Set `e` to `MulEquiv.ofBijective Φ ⟨inj, surj⟩`.
+
+Set `U : Over.mk (T.hom ≫ f) ⟶ baseOver S` to `Over.homMk (T.hom ≫ f) (Category.comp_id _)`. Set `q : Multiplicative Γ →* (Over.mk (T.hom ≫ f) ⟶ G)` to `MonoidHom.mk' (fun a => U ≫ pt a.toAdd) fun a b => (congrArg (U ≫ ·) (hadd a.toAdd b.toAdd)).trans (MonObj.comp_mul U _ _)`. Establish `key : ∀ a x, x.left ≫ φ = (T.hom ≫ f) ≫ (pt a).left ↔ x = e.symm (q (Multiplicative.ofAdd a))` using `fun a x => ⟨fun H => e.eq_symm_apply.2 (Over.OverMorphism.ext H), fun H => congrArg (fun z => z.left) (e.eq_symm_apply.1 H)⟩`. Use `⟨e.symm.toMonoidHom.comp q, key, fun k hk x hx => ?_⟩` and prove the remaining obligations. Take `⟨a, ha⟩` from `hk (Φ x) (by rw [← map_pow, hx, map_one])`.
+
+Conclude with `⟨a, ((key a x).1 ha.symm).symm⟩`.
+-/
 theorem exists_lift_points {S S' : Scheme.{0}} {G : Over S} {G' : Over S'} [GrpObj G] [GrpObj G'] {f : S' ⟶ S}
     {φ : G'.left ⟶ G.left} (h : IsGrpPullback G' G f φ) (T : Over S') {Γ : Type} [AddCommGroup Γ]
     (pt : Γ → (baseOver S ⟶ G)) (hadd : ∀ a b, pt (a + b) = pt a * pt b) :
@@ -41,6 +48,13 @@ theorem exists_lift_points {S S' : Scheme.{0}} {G : Over S} {G' : Over S'} [GrpO
 
 attribute [local instance] TorusExt.gtGroup in
 
+/- English proof (translation)
+Establish `fz : f (TorusExt.qkZero hB F k) = 1`. Establish `e` using `hadd _ _ _ (TorusExt.qkAdd_qkAdd hB (TorusExt.qkZero hB F k) (TorusExt.qkZero hB F k))`. Rewrite `e` using `[show TorusExt.qkAdd hB (TorusExt.qkZero hB F k) (TorusExt.qkZero hB F k) = TorusExt.qkZero hB F k from TorusExt.qk_ext (add_zero _) (add_zero _)]`. Conclude with `mul_eq_left.1 e.symm`. Set `m : ℕ → QkPt D F k` to `fun n => TorusExt.qkMk hB (n • q.y) (n • q.g) (by`.
+
+Rewrite using `[smul_comm, TorusExt.qk_nsmul hB, map_nsmul])`. Establish `hm : ∀ n, f (m n) = f q ^ n` using `fun n => by`. Proceed by induction on `n with`. Consider the case `zero => exact (congrArg f (TorusExt.qk_ext (zero_nsmul _) (zero_nsmul _))).trans (fz.trans (pow_zero _).symm)`. Consider the case `succ n ih`.
+
+Rewrite using `[pow_succ, ← ih, ← hadd _ _ _ (TorusExt.qkAdd_qkAdd hB _ _)]`. Conclude with `congrArg f (TorusExt.qk_ext (succ_nsmul _ _) (succ_nsmul _ _))`. Rewrite using `[← hm, ← fz]`. Conclude with `(heq _ _ ((TorusExt.equiv_iff hB _ _).2 ⟨q.y, (zero_add _).symm, (TorusExt.qk_nsmul hB q).trans (zero_add _).symm⟩)).symm`.
+-/
 theorem pow_eq_one_of_qkAdd {R : Type} [CommRing R] [IsDomain R] {D : DegPre R} {F : Type} [Field F]
     [Algebra (FractionRing R) F] (hB : D.TauBimult) {k : ℕ} {M : Type} [Group M] (f : QkPt D F k → M)
     (heq : ∀ q q', QkPt.Equiv D F q q' → f q = f q') (hadd : ∀ q q' q'', QkAdd q q' q'' → f q'' = f q * f q')
@@ -62,6 +76,19 @@ theorem pow_eq_one_of_qkAdd {R : Type} [CommRing R] [IsDomain R] {D : DegPre R} 
   exact (heq _ _ ((TorusExt.equiv_iff hB _ _).2
     ⟨q.y, (zero_add _).symm, (TorusExt.qk_nsmul hB q).trans (zero_add _).symm⟩)).symm
 
+/- English proof (translation)
+Introduce `L _ hU o Ω _ _ _ _ S ρ p _ y₀ u`. Use `haveI : CharZero u.V := ((algebraMap (FractionRing u.V) (PadicAlgCl p)).comp (algebraMap u.V _)).charZero`. Establish `hk : 1 ≤ S.r * S.N` using `Nat.mul_pos S.r_pos (by have := S.N_ge; omega)`. Take `⟨f, hrel, honto, heq, hadd, -⟩` from `hU u.V u.complete u.A u.G u.D u.U (PadicAlgCl p) (S.r * S.N) hk`. Take `⟨xx, hxx, hsurj⟩` from `exists_lift_points u.cart (TFK (R := u.V) (PadicAlgCl p)) ρ.pt ρ.pt_add`.
+
+Establish `hy : (TFK (R` using `u.V) (PadicAlgCl p)).hom ≫ spMap u.yK = spMap y₀ := by`. Conclude with `(Spec.map_comp (CommRingCat.ofHom u.yK) (CommRingCat.ofHom (algebraMap _ _))).symm.trans (congrArg spMap u.fac)`. Establish `hsurj'` using `hsurj (S.r * S.N) fun z hz => (ρ.pt_bij (PadicAlgCl p) _ z hz).exists.imp fun a ha => congrArg (fun w => w.left) ha`. Establish `htors : ∀ a : S.Gam, xx (Multiplicative.ofAdd a) ^ (S.r * S.N) = 1` using `fun a => by`. Establish `: (S.r * S.N) • a = 0` using `funext fun i => by`.
+
+Rewrite using `[Pi.smul_apply, nsmul_eq_mul, ZMod.natCast_self, zero_mul]`. Both sides reduce to the same expression. Rewrite using `[← map_pow, ← ofAdd_nsmul, this, ofAdd_zero, map_one]`. Use `choose P hP using fun a => honto _ (htors a)`. Establish `hB` using `u.D.tau_bimult`.
+
+Establish `wd : ∀ q q' : QkPt u.D.toPre (PadicAlgCl p) (S.r * S.N), f q = f q' → (QuotientAddGroup.mk q.y : u.D.toPre.X ⧸ (nsmulAddMonoidHom (S.r * S.N) : u.D.toPre.X →+ u.D.toPre.X).range) = QuotientAddGroup.mk q'.y` using `fun q q' e => by`. Take `⟨z, hz, -⟩` from `(heq q q').1 e`. Conclude with `QuotientAddGroup.eq.2 ⟨z, by rw [hz, neg_add_cancel_left]; rfl⟩`. Establish `ftors : ∀ q, f q ^ (S.r * S.N) = 1` using `pow_eq_one_of_qkAdd hB f (fun q q' e => (heq q q').2 e) hadd`. Use `⟨AddMonoidHom.mk' (fun a => QuotientAddGroup.mk (P a).y) fun a b => ?_, fun c => ?_, fun a pk x hx hφ => ?_⟩` and prove the remaining obligations.
+
+Conclude with `wd _ (TorusExt.qkAdd hB (P a) (P b)) (by`. Rewrite using `[hadd _ _ _ (TorusExt.qkAdd_qkAdd hB _ _), hP, hP, hP, ofAdd_add, map_mul])`. Take `⟨y, rfl⟩` from `QuotientAddGroup.mk_surjective c`. Take `⟨q, rfl⟩` from `TorusExt.exists_qkPt (F := PadicAlgCl p) L.mulN (Or.inr L.polBaseChange) hB (Nat.pos_iff_ne_zero.1 hk) y`. Take `⟨a, ha⟩` from `hsurj' _ (ftors q)`.
+
+Conclude with `⟨a, wd _ _ ((hP a).trans ha)⟩`. Conclude with `wd _ _ ((hP a).trans (((hxx a x).1 (hφ.trans (by rw [hy]))).symm.trans ((hrel pk x).1 hx)))`.
+-/
 theorem exists_labelMap : Laws → Laws2 → UTorsSt → ∀ (o Ω : Type) [CommRing o] [Field Ω] [Algebra o Ω] [ArithBase o Ω] (S : ThetaSys o Ω) (ρ : S.Real) (p : ℕ) [Fact p.Prime] (y₀ : S.R →+* PadicAlgCl p) (u : ρ.UTest p y₀), ∃ yy : S.Gam →+ u.D.toPre.X ⧸ (nsmulAddMonoidHom (S.r * S.N) : u.D.toPre.X →+ u.D.toPre.X).range, Function.Surjective yy ∧ (∀ (a : S.Gam) (pk : QkPt u.D.toPre (PadicAlgCl p) (S.r * S.N)) (x : TFK (R := u.V) (PadicAlgCl p) ⟶ u.A.A), QkToAkU u.U.toUnifPre (PadicAlgCl p) (S.r * S.N) pk x → x.left ≫ u.φ = spMap y₀ ≫ (ρ.pt a).left → yy a = QuotientAddGroup.mk pk.y) := by
   intro L _ hU o Ω _ _ _ _ S ρ p _ y₀ u
   haveI : CharZero u.V := ((algebraMap (FractionRing u.V) (PadicAlgCl p)).comp (algebraMap u.V _)).charZero

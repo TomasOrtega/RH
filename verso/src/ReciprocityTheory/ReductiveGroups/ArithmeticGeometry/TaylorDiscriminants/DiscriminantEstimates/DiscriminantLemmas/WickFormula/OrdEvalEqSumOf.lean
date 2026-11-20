@@ -9,10 +9,20 @@ variable {AA : Type} [Ring AA]
 
 def lprod {n : ℕ} (c : Fin n → AA) (e : Fin n → ℕ) : AA := (List.ofFn fun i => c i ^ e i).prod
 
+/- English proof (translation)
+Simplify using `only [lprod, List.ofFn_succ, List.prod_cons]`.
+-/
 theorem lprod_succ {n : ℕ} (c : Fin (n + 1) → AA) (e : Fin (n + 1) → ℕ) :
     lprod c e = c 0 ^ e 0 * lprod (fun i => c i.succ) (fun i => e i.succ) := by
   simp only [lprod, List.ofFn_succ, List.prod_cons]
 
+/- English proof (translation)
+Proceed by induction on `n with`. Consider the case `zero => exact i.elim0`. Consider the case `succ n ih`. Rewrite using `[lprod_succ c e', lprod_succ c e]`. Break down `Fin.eq_zero_or_eq_succ i with rfl | ⟨j, rfl⟩` into its components or cases.
+
+Establish `ht : (fun j : Fin n => e' j.succ) = fun j => e j.succ`. Use function extensionality and compare the values at `fun j => h2 _ (Fin.succ_ne_zero j)`. Rewrite using `[ht, h1, pow_succ', mul_assoc]`. Establish `h0 : e' 0 = e 0` using `h2 0 (Fin.succ_ne_zero j).symm`. Establish `key` using `ih (fun i => c i.succ) (fun a b => hc _ _) (fun j => e j.succ) (fun j => e' j.succ) j h1 (fun i' hi' => h2 _ (fun h => hi' (Fin.succ_injective _ h)))`.
+
+Rewrite using `[h0, key]`. Simplify using `only [← mul_assoc, ((hc 0 j.succ).pow_left (e 0)).eq]`.
+-/
 theorem lprod_bump {n : ℕ} (c : Fin n → AA) (hc : ∀ i i', Commute (c i) (c i'))
     (e e' : Fin n → ℕ) (i : Fin n) (h1 : e' i = e i + 1) (h2 : ∀ i', i' ≠ i → e' i' = e i') :
     lprod c e' = c i * lprod c e := by
@@ -38,9 +48,15 @@ variable {k AA : Type} [CommRing k] [Ring AA] [Algebra k AA] {r s : ℕ}
 def omon (a : Fin r → AA) (a' : Fin s → AA) (m : Fin r ⊕ Fin s →₀ ℕ) : AA :=
   lprod a (fun i => m (Sum.inl i)) * lprod a' (fun j => m (Sum.inr j))
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem ordEval_eq (a : Fin r → AA) (a' : Fin s → AA) (P : MvPolynomial (Fin r ⊕ Fin s) k) :
     ordEval a a' P = ∑ m ∈ P.support, P.coeff m • omon a a' m := rfl
 
+/- English proof (translation)
+Rewrite using `[ordEval_eq]`. Use `Finset.sum_subset ht fun m _ hm => ?_` and prove the remaining obligations. Establish `h0 : P.coeff m = 0` using `by simpa [MvPolynomial.mem_support_iff] using hm`. Rewrite using `[h0, zero_smul]`.
+-/
 theorem ordEval_eq_sum_of (a : Fin r → AA) (a' : Fin s → AA) (P : MvPolynomial (Fin r ⊕ Fin s) k)
     (t : Finset (Fin r ⊕ Fin s →₀ ℕ)) (ht : P.support ⊆ t) :
     ordEval a a' P = ∑ m ∈ t, P.coeff m • omon a a' m := by
@@ -49,6 +65,9 @@ theorem ordEval_eq_sum_of (a : Fin r → AA) (a' : Fin s → AA) (P : MvPolynomi
   have h0 : P.coeff m = 0 := by simpa [MvPolynomial.mem_support_iff] using hm
   rw [h0, zero_smul]
 
+/- English proof (translation)
+Rewrite using `[ordEval_eq_sum_of a a' (P + Q) (P.support ∪ Q.support) MvPolynomial.support_add, ordEval_eq_sum_of a a' P _ (fun x hx => Finset.mem_union_left _ hx), ordEval_eq_sum_of a a' Q _ (fun x hx => Finset.mem_union_right _ hx), ← Finset.sum_add_distrib]`. Use `Finset.sum_congr rfl fun m _ => ?_` and prove the remaining obligations. Rewrite using `[MvPolynomial.coeff_add, add_smul]`.
+-/
 theorem ordEval_add (a : Fin r → AA) (a' : Fin s → AA) (P Q : MvPolynomial (Fin r ⊕ Fin s) k) :
     ordEval a a' (P + Q) = ordEval a a' P + ordEval a a' Q := by
   rw [ordEval_eq_sum_of a a' (P + Q) (P.support ∪ Q.support) MvPolynomial.support_add,
@@ -57,6 +76,9 @@ theorem ordEval_add (a : Fin r → AA) (a' : Fin s → AA) (P Q : MvPolynomial (
   refine Finset.sum_congr rfl fun m _ => ?_
   rw [MvPolynomial.coeff_add, add_smul]
 
+/- English proof (translation)
+Rewrite using `[ordEval_eq_sum_of a a' (c • P) P.support MvPolynomial.support_smul, ordEval_eq, Finset.smul_sum]`. Use `Finset.sum_congr rfl fun m _ => ?_` and prove the remaining obligations. Rewrite using `[MvPolynomial.coeff_smul, smul_eq_mul, mul_smul]`.
+-/
 theorem ordEval_smul (a : Fin r → AA) (a' : Fin s → AA) (c : k) (P : MvPolynomial (Fin r ⊕ Fin s) k) :
     ordEval a a' (c • P) = c • ordEval a a' P := by
   rw [ordEval_eq_sum_of a a' (c • P) P.support MvPolynomial.support_smul, ordEval_eq, Finset.smul_sum]
@@ -69,6 +91,9 @@ noncomputable def ordL (k : Type) [CommRing k] [Algebra k AA] (a : Fin r → AA)
   map_add' := ordEval_add a a'
   map_smul' := ordEval_smul a a'
 
+/- English proof (translation)
+Rewrite using `[ordEval_eq_sum_of a a' _ {m} MvPolynomial.support_monomial_subset]`. Simplify using `[MvPolynomial.coeff_monomial]`.
+-/
 theorem ordEval_monomial (a : Fin r → AA) (a' : Fin s → AA) (m : Fin r ⊕ Fin s →₀ ℕ) (c : k) :
     ordEval a a' (monomial m c) = c • omon a a' m := by
   rw [ordEval_eq_sum_of a a' _ {m} MvPolynomial.support_monomial_subset]
@@ -76,10 +101,20 @@ theorem ordEval_monomial (a : Fin r → AA) (a' : Fin s → AA) (m : Fin r ⊕ F
 
 end ord
 
+/- English proof (translation)
+Introduce `k AA _ _ _ r s a a'`. Conclude with `⟨ordL k a a', fun P => rfl⟩`.
+-/
 theorem ordLin_holds : OrdLin := by
   intro k AA _ _ _ r s a a'
   exact ⟨ordL k a a', fun P => rfl⟩
 
+/- English proof (translation)
+Introduce `k AA _ _ _ r s a a' ha i R`. Use `MvPolynomial.induction_on' R (fun m c => ?_) (fun p q hp hq => ?_)` and prove the remaining obligations. Establish `hX : (X (Sum.inl i) : MvPolynomial (Fin r ⊕ Fin s) k) * monomial m c = monomial (m + Finsupp.single (Sum.inl i) 1) c`. Rewrite using `[X, monomial_mul, one_mul, add_comm]`. Rewrite using `[hX, ordEval_monomial, ordEval_monomial, mul_smul_comm]`.
+
+Use `congr 1`. Unfold `omon`. Establish `hb` using `lprod_bump a ha (fun j => m (Sum.inl j)) (fun j => (m + Finsupp.single (Sum.inl i) 1 : Fin r ⊕ Fin s →₀ ℕ) (Sum.inl j)) i (by simp) (fun i' hi' => by simp [Finsupp.single_apply, Ne.symm hi'])`. Rewrite using `[hb, mul_assoc]`. Simplify using `[Finsupp.single_apply]`.
+
+Rewrite using `[mul_add, ordEval_add, ordEval_add, hp, hq, mul_add]`.
+-/
 theorem ordX_holds : OrdX := by
   intro k AA _ _ _ r s a a' ha i R
   refine MvPolynomial.induction_on' R (fun m c => ?_) (fun p q hp hq => ?_)

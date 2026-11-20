@@ -51,6 +51,11 @@ def rapid : Submodule ℂ (UA σ J → ℂ) where
     rw [Pi.smul_apply, norm_smul, mul_assoc]
     exact mul_le_mul_of_nonneg_left (hC h) (norm_nonneg _)
 
+/- English proof (translation)
+Unfold `qht`. Rewrite using `[NNReal.iInf_mul]`. Use `le_ciInf fun γ => (ciInf_le (OrderBot.bddBelow _) γ).trans ?_` and prove the remaining obligations. Establish `e : γ.1 * h = γ.1 * (h * y) * y⁻¹` using `by group`. Rewrite using `[e]`.
+
+Conclude with `heightGL_mul_le F (γ.1 * (h * y)).1 (y⁻¹).1`.
+-/
 theorem qht_le_transl (h y : UA σ J) : qht h ≤ qht (h * y) * ht y⁻¹ := by
   unfold qht
   rw [NNReal.iInf_mul]
@@ -59,6 +64,11 @@ theorem qht_le_transl (h y : UA σ J) : qht h ≤ qht (h * y) * ht y⁻¹ := by
   rw [e]
   exact heightGL_mul_le F (γ.1 * (h * y)).1 (y⁻¹).1
 
+/- English proof (translation)
+Take `⟨f1, f2, f3⟩` from `hf`. Use `haveI := (GlobalTheory.UnipCT.topFacts σ J).1`. Use `⟨f1.comp (continuous_id.mul continuous_const), fun γ hγ x => by simp only [mul_assoc, f2 γ hγ], fun N => ?_⟩` and prove the remaining obligations. Take `⟨C, hC⟩` from `f3 N`. Use `⟨C * (ht y⁻¹ : ℝ) ^ N, fun h => ?_⟩` and prove the remaining obligations.
+
+Establish `h1 : (qht h : ℝ) ≤ qht (h * y) * ht y⁻¹` using `by exact_mod_cast qht_le_transl h y`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem transl_mem_rapid (y : UA σ J) {f : UA σ J → ℂ} (hf : f ∈ rapid σ J) : (fun h => f (h * y)) ∈ rapid σ J := by
   obtain ⟨f1, f2, f3⟩ := hf
   haveI := (GlobalTheory.UnipCT.topFacts σ J).1
@@ -71,6 +81,11 @@ theorem transl_mem_rapid (y : UA σ J) {f : UA σ J → ℂ} (hf : f ∈ rapid �
     _ = ‖f (h * y)‖ * (qht (h * y) : ℝ) ^ N * (ht y⁻¹ : ℝ) ^ N := by ring
     _ ≤ C * (ht y⁻¹ : ℝ) ^ N := mul_le_mul_of_nonneg_right (hC _) (by positivity)
 
+/- English proof (translation)
+Take `⟨f1, -, f3⟩` from `hf`. Take `⟨k1, k2, C, m, hC⟩` from `hk`. Take `⟨Cf, hCf⟩` from `f3 m`. Use `haveI : IsFiniteMeasure (μ.restrict D) := isFiniteMeasure_restrict.2 hfin.ne`. Use `haveI : BorelSpace (UA σ J) := ⟨rfl⟩`.
+
+Use `(integrable_const (max C 0 * Cf)).mono' (f1.mul (Complex.continuous_conj.comp k1)).aestronglyMeasurable (Eventually.of_forall fun h => ?_)` and prove the remaining obligations. Rewrite using `[norm_mul, Complex.norm_conj]`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem integrableOn_mul_conj {μ : Measure (UA σ J)} {D : Set (UA σ J)} (hfin : μ D < ⊤) {f k : UA σ J → ℂ}
     (hf : f ∈ rapid σ J) (hk : Continuous k ∧ (∀ γ ∈ ratU σ J, ∀ h, k (γ * h) = k h) ∧
       ∃ (C : ℝ) (m : ℕ), ∀ h, ‖k h‖ ≤ C * (ht h : ℝ) ^ m) :
@@ -88,6 +103,13 @@ theorem integrableOn_mul_conj {μ : Measure (UA σ J)} {D : Set (UA σ J)} (hfin
     _ = max C 0 * (‖f h‖ * (qht h : ℝ) ^ m) := by ring
     _ ≤ max C 0 * Cf := mul_le_mul_of_nonneg_left (hCf h) (le_max_right _ _)
 
+/- English proof (translation)
+Take `⟨i1, i2, i3, -⟩` from `GlobalTheory.UnipCT.topFacts σ J`. Use `haveI : BorelSpace (UA σ J) := ⟨rfl⟩`. Use `haveI := GlobalTheory.UnitaryVol.countable_ratU σ J`. Use `haveI : MeasurableConstSMul (ratU σ J) (UA σ J) := ⟨fun γ => (continuous_const.mul continuous_id : Continuous fun x : UA σ J => γ.1 * x).measurable⟩`. Use `haveI : SMulInvariantMeasure (ratU σ J) (UA σ J) μ := ⟨fun γ A _ => measure_preimage_mul μ γ.1 A⟩`.
+
+Use `haveI : μ.IsMulRightInvariant := GlobalTheory.UnitU.isMulRightInvariant_of_fundamentalDomain _ μ hD (hD.measure_ne_zero (NeZero.ne μ)) hfin.ne`. Establish `hp : MeasurePreserving (MeasurableEquiv.mulRight y⁻¹) μ μ` using `measurePreserving_mul_right μ y⁻¹`. Establish `h2 : IsFundamentalDomain (ratU σ J) ((MeasurableEquiv.mulRight y⁻¹) ⁻¹' D) μ` using `hD.preimage_of_equiv hp.quasiMeasurePreserving (e := id) Function.bijective_id fun γ x => by`. Simplify using `only [id, Subgroup.smul_def, smul_eq_mul, mul_assoc, MeasurableEquiv.coe_mulRight]`. Establish `h3` using `hp.setIntegral_preimage_emb (MeasurableEquiv.mulRight y⁻¹).measurableEmbedding (fun h => φ (h * y)) D`.
+
+Rewrite using `[← h3]`. Simplify using `only [MeasurableEquiv.coe_mulRight, inv_mul_cancel_right]`. Conclude with `h2.setIntegral_eq hD fun γ x => hφ γ.1 γ.2 x`.
+-/
 theorem setIntegral_transl {μ : Measure (UA σ J)} [μ.IsHaarMeasure] {D : Set (UA σ J)}
     (hD : IsFundamentalDomain (ratU σ J) D μ) (hfin : μ D < ⊤) {φ : UA σ J → ℂ}
     (hφ : ∀ γ ∈ ratU σ J, ∀ h, φ (γ * h) = φ h) (y : UA σ J) : ∫ h in D, φ (h * y) ∂μ = ∫ h in D, φ h ∂μ := by
@@ -108,6 +130,13 @@ theorem setIntegral_transl {μ : Measure (UA σ J)} [μ.IsHaarMeasure] {D : Set 
   simp only [MeasurableEquiv.coe_mulRight, inv_mul_cancel_right]
   exact h2.setIntegral_eq hD fun γ x => hφ γ.1 γ.2 x
 
+/- English proof (translation)
+Use `⟨LinearMap.mk₂'ₛₗ (RingHom.id ℂ) (starRingEnd ℂ) (fun f Φ => ∫ h in D, f.1 h * (starRingEnd ℂ) (K Φ h) ∂μ) ?_ ?_ ?_ ?_, fun _ _ => rfl⟩` and prove the remaining obligations. Introduce `f g Φ`. Rewrite using `[← integral_add (integrableOn_mul_conj hfin f.2 (hK Φ)) (integrableOn_mul_conj hfin g.2 (hK Φ))]`. Simplify using `only [Submodule.coe_add, Pi.add_apply, add_mul]`. Introduce `c f Φ`.
+
+Rewrite using `[RingHom.id_apply, ← integral_smul]`. Simplify using `only [Submodule.coe_smul, Pi.smul_apply, smul_eq_mul, mul_assoc]`. Introduce `f Φ Ψ`. Rewrite using `[← integral_add (integrableOn_mul_conj hfin f.2 (hK Φ)) (integrableOn_mul_conj hfin f.2 (hK Ψ))]`. Simplify using `only [map_add, Pi.add_apply, mul_add]`.
+
+Introduce `c f Φ`. Rewrite using `[← integral_smul]`. Simplify using `only [map_smul, Pi.smul_apply, smul_eq_mul, map_mul, mul_left_comm]`.
+-/
 theorem exists_pairing {μ : Measure (UA σ J)} {D : Set (UA σ J)} (hfin : μ D < ⊤) {A : Type} [AddCommGroup A] [Module ℂ A]
     (K : A →ₗ[ℂ] (UA σ J → ℂ)) (hK : ∀ Φ, Continuous (K Φ) ∧ (∀ γ ∈ ratU σ J, ∀ h, K Φ (γ * h) = K Φ h) ∧
       ∃ (C : ℝ) (m : ℕ), ∀ h, ‖K Φ h‖ ≤ C * (ht h : ℝ) ^ m) :
@@ -127,6 +156,17 @@ theorem exists_pairing {μ : Measure (UA σ J)} {D : Set (UA σ J)} (hfin : μ D
     rw [← integral_smul]
     simp only [map_smul, Pi.smul_apply, smul_eq_mul, map_mul, mul_left_comm]
 
+/- English proof (translation)
+Assume the negation of the conclusion as `hcon`. Use `push_neg at hcon`. Establish `key : ∀ z ∈ Submodule.span ℂ s, ∃ hz : z ∈ N, l ⟨z, hz⟩ = 0`. Introduce `z hz`. Proceed by induction on `hz using Submodule.span_induction with`.
+
+Consider the case `mem z hz => exact ⟨hs z hz, hcon z hz⟩`. Consider the case `zero => exact ⟨N.zero_mem, map_zero l⟩`. Consider the case `add z w _ _ hz hw`. Take `⟨z1, z2⟩` from `hz`. Take `⟨w1, w2⟩` from `hw`.
+
+Use `⟨N.add_mem z1 w1, ?_⟩` and prove the remaining obligations. Use `map_add l ⟨z, z1⟩ ⟨w, w1⟩` as an intermediate fact. Rewrite `this` using `[z2, w2, add_zero]`. Conclude with `this`. Consider the case `smul c z _ hz`.
+
+Take `⟨z1, z2⟩` from `hz`. Use `⟨N.smul_mem c z1, ?_⟩` and prove the remaining obligations. Use `map_smulₛₗ l c ⟨z, z1⟩` as an intermediate fact. Rewrite `this` using `[z2, smul_zero]`. Conclude with `this`.
+
+Conclude with `h0 (key x hx).2`.
+-/
 theorem exists_ne_zero_of_span {M : Type} [AddCommGroup M] [Module ℂ M] {τ : ℂ →+* ℂ} (N : Submodule ℂ M)
     (l : N →ₛₗ[τ] ℂ) {s : Set M} (hs : ∀ y ∈ s, y ∈ N) {x : M} (hx : x ∈ Submodule.span ℂ s) (hxN : x ∈ N)
     (h0 : l ⟨x, hxN⟩ ≠ 0) : ∃ y, ∃ hy : y ∈ s, l ⟨y, hs y hy⟩ ≠ 0 := by
@@ -152,6 +192,41 @@ theorem exists_ne_zero_of_span {M : Type} [AddCommGroup M] [Module ℂ M] {τ : 
       exact this
   exact h0 (key x hx).2
 
+/- English proof (translation)
+Introduce `hKP F E _ _ _ _ _ σ B a a' G X om om' R Rf hM c f hf hdec d₂ H hH V₁ M₁ e hV₁ hM₁ hev μ 𝓕 hμ h𝓕 g Ψ hΨ hne`. Establish `hT` using `hM.triple`. Establish `hP` using `(GlobalTheory.ThK.Check.isPair_of_isTriple hT).1`. Establish `hS` using `IsUWeilPair.isUSplitting hT.weil`. Establish `hpres : ∀ x, ∀ Φ ∈ schA F (Fin a × Fin (a + a')), om x Φ ∈ schA F (Fin a × Fin (a + a'))` using `hS.pres`.
+
+Take `⟨ν₀, β₀, ι, ℓ, ψv, m1, m2, m3, m4, m5, m6, m7, m8, hbij, hA, hB, hC⟩` from `GlobalTheory.T.theta_lift_hyp_plane_split hKP F E σ B a a' G X om om' hT d₂ H hH`. Establish `hker` using `GlobalTheory.T.pair_hyp_plane_split hKP F E σ B a (a + a') G.V G.W G.M _ _ om _ _ _ _ hP d₂ H hH V₁ M₁ e hV₁ hM₁ hev`. Establish `hcm` using `hT.base.cm`. Establish `hσ : ∀ x, σ (σ x) = x` using `GlobalTheory.SiegelSet.sigma_sigma hcm`. Establish `hd` using `GlobalTheory.ThK.DescB.Nondeg.det_ne_zero_of_cartan B G.W hT.geo.hW.cartan`.
+
+Take `⟨c₀, hc₀, hcs⟩` from `GlobalTheory.CMImag.exists_imag_ne_zero F E σ hcm`. Establish `hJ` using `GlobalTheory.ThKOrthVInt.isHermND_smul_of_skew hσ hT.geo.hW.skew hd hc₀ hcs`. Use `haveI := hμ`. Establish `hfin` using `GlobalTheory.ThKOrthVInt.measure_fundDom_lt_top_smul hKP.siegelSetUnitary hcm hc₀ hJ h𝓕`. Set `K : schA F (Fin a × Fin (a + a')) →ₗ[ℂ] (UA σ G.W.J → ℂ)` to `{ toFun := fun Φ h => thetaSum F (e (om (1, h) Φ.1)) map_add' := fun Φ Φ' => funext fun h => by`.
+
+Simplify using `only [Submodule.coe_add, map_add, Pi.add_apply]`. Conclude with `thetaSum_add F (hev.maps _ (hpres _ _ Φ.2)) (hev.maps _ (hpres _ _ Φ'.2))`. Use the proof step `map_smul' := fun t Φ => funext fun h => by`. Simplify using `only [Submodule.coe_smul, map_smul, Pi.smul_apply, RingHom.id_apply, smul_eq_mul]`. Conclude with `thetaSum_smul F t _ }`.
+
+Establish `hK : ∀ Φ h, K Φ h = thetaSum F (e (om (1, h) Φ.1))` using `fun _ _ => rfl`. Take `⟨L, hL⟩` from `exists_pairing hfin K fun Φ => hker Φ.1 Φ.2`. Establish `hfN : f ∈ rapid σ G.W.J` using `⟨(GlobalTheory.ThK.DescB.Nondeg.diffs_reg hKP hM c f hf).1, (GlobalTheory.ThK.DescB.Nondeg.diffs_reg hKP hM c f hf).2, hdec⟩`. Establish `hΨ₀ : om (g, 1) Ψ ∈ schA F (Fin a × Fin (a + a'))` using `hpres _ _ hΨ`. Establish `hL0 : L.flip ⟨_, hΨ₀⟩ ⟨f, hfN⟩ ≠ 0`.
+
+Rewrite using `[LinearMap.flip_apply, hL]`. Use `fun h0 => hne (Eq.trans ?_ h0)` and prove the remaining obligations. Use `integral_congr_ae (Eventually.of_forall fun h => ?_)` and prove the remaining obligations. Simplify using `only [hK]`. Rewrite using `[← Module.End.mul_apply, ← map_mul, Prod.mk_mul_mk, one_mul, mul_one]`.
+
+Take `⟨_, ⟨T, hTN, hTa, hTe, φ₀, hφ₀, rfl⟩, hL1⟩` from `exists_ne_zero_of_span (rapid σ G.W.J) (L.flip ⟨_, hΨ₀⟩) (by rintro _ ⟨T, hTN, -, -, φ, hφ, rfl⟩; exact hTN φ hφ) (GlobalTheory.T.matched_diffs_invariant_subspace hKP F E σ B a a' G X om om' R Rf hM c (rapid σ G.W.J) (fun y _ _ h => transl_mem_rapid y h) f hf hfN) hfN hL0`. Rewrite `hL1` using `[LinearMap.flip_apply]`. Take `⟨_, ⟨φ₂, r, hφ₂, hr, rfl⟩, hL2⟩` from `exists_ne_zero_of_span (schA F (Fin a × Fin (a + a'))) (L ⟨T φ₀, hTN φ₀ hφ₀⟩) (by rintro _ ⟨φ, r, hφ, hr, rfl⟩; exact (hr φ hφ).2) (GlobalTheory.PureAtPlace.schA_le_span_tens F B.v₁ (Fin a × Fin (a + a')) hΨ₀) hΨ₀ hL1`. Set `ιr : SB (Fin a × Fin (a + a') → Fv F B.v₁) →ₗ[ℂ] SB (Matrix (Fin a) (Fin (a + a')) (Fv F B.v₁))` to `ι.restrict fun φ hφ => hbij.mapsTo hφ`. Establish `hιr : Function.Bijective ιr`.
+
+Use `⟨fun φ φ' h => Subtype.ext (hbij.injOn φ.2 φ'.2 (congrArg Subtype.val h)), fun Y => ?_⟩` and prove the remaining obligations. Take `⟨φ, hφ, h⟩` from `hbij.surjOn Y.2`. Conclude with `⟨⟨φ, hφ⟩, Subtype.ext h⟩`. Choose the witnesses or unpack the hypotheses as in `⟨j, hj1, hj2⟩ : ∃ j : SB (Matrix (Fin a) (Fin (a + a')) (Fv F B.v₁)) →ₗ[ℂ] SB (Fin a × Fin (a + a') → Fv F B.v₁), (∀ Y, ι (j Y).1 = Y.1) ∧ ∀ Y, ∀ φ ∈ SB (Fin a × Fin (a + a') → Fv F B.v₁), Y.1 = ι φ → (j Y).1 = φ := by`. Establish `h1 : ∀ Y, ι ((LinearEquiv.ofBijective ιr hιr).symm Y).1 = Y.1` using `fun Y => congrArg Subtype.val ((LinearEquiv.ofBijective ιr hιr).apply_symm_apply Y)`.
+
+Conclude with `⟨(LinearEquiv.ofBijective ιr hιr).symm.toLinearMap, h1, fun Y φ hφ h => hbij.injOn ((LinearEquiv.ofBijective ιr hιr).symm Y).2 hφ ((h1 Y).trans h)⟩`. Set `T' : SB (Fin a × Fin (a + a') → Fv F B.v₁) →ₗ[ℂ] rapid σ G.W.J` to `T.restrict hTN`. Set `Rr : SB (Fin a × Fin (a + a') → Fv F B.v₁) →ₗ[ℂ] schA F (Fin a × Fin (a + a'))` to `{ toFun := fun φ => ⟨tens (evFin F B.v₁) φ.1 r, (hr φ.1 φ.2).2⟩ map_add' := fun φ φ' => Subtype.ext (funext fun x => by`. Simplify using `only [tens, Submodule.coe_add, Pi.add_apply, add_mul])`. Use the proof step `map_smul' := fun t φ => Subtype.ext (funext fun x => by`.
+
+Simplify using `only [tens, Submodule.coe_smul, Pi.smul_apply, smul_eq_mul, RingHom.id_apply, mul_assoc]) }`. Take `⟨Bf, hBf⟩ : ∃ Bf : SB (Matrix (Fin a) (Fin (a + a')) (Fv F B.v₁)) →ₗ[ℂ] SB (Matrix (Fin a) (Fin (a + a')) (Fv F B.v₁)) →ₗ⋆[ℂ] ℂ, ∀ Y₁ Y₂, Bf Y₁ Y₂ = L (T' (j Y₁)) (Rr (j Y₂))` from `⟨((L.comp (T'.comp j)).flip.comp (Rr.comp j)).flip, fun _ _ => rfl⟩`. Establish `hBi : ∀ Y₁ Y₂, Bf Y₁ Y₂ = ∫ h in 𝓕, T (j Y₁).1 h * (starRingEnd ℂ) (thetaSum F (e (om (1, h) (tens (evFin F B.v₁) (j Y₂).1 r)))) ∂μ` using `fun Y₁ Y₂ => by`. Rewrite using `[hBf, hL]`. Both sides reduce to the same expression.
+
+Use `⟨ν₀, β₀, ℓ, ψv, Bf, m1, m2, m3, m4, m5, m6, m7, m8, fun h0 => hL2 ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Establish `h1` using `hBi ⟨ι φ₀, hbij.mapsTo hφ₀⟩ ⟨ι φ₂, hbij.mapsTo hφ₂⟩`. Rewrite `h1` using `[hj2 _ φ₀ hφ₀ rfl, hj2 _ φ₂ hφ₂ rfl, h0]`. Rewrite using `[hL]`. Conclude with `h1.symm`.
+
+Introduce `g' Y₁ Y₁' Y₂ hY`. Take `⟨g₁, hg₁, hg⟩` from `hA g'`. Take `⟨φ₁, hφ₁, hact, hι⟩` from `hg _ (j Y₁).2`. Rewrite `hι` using `[hj1, ← hY]`. Establish `h1 : T (φ₁ - (j Y₁).1) = 0` using `hTa (Submodule.subset_span ⟨g₁, hg₁, _, (j Y₁).2, φ₁, hφ₁, hact, rfl⟩)`.
+
+Rewrite `h1` using `[map_sub, sub_eq_zero]`. Rewrite using `[hBi, hBi, hj2 _ φ₁ hφ₁ hι.symm, h1]`. Introduce `h' Y₁ Y₁' Y₂ Y₂' hY₁ hY₂`. Take `⟨y, hy, hyy⟩` from `hB h'`. Take `⟨φ₁, hφ₁, hact₁, hι₁⟩` from `hyy _ (j Y₁).2`.
+
+Take `⟨φ₃, hφ₃, hact₃, hι₃⟩` from `hyy _ (j Y₂).2`. Rewrite `hι₁` using `[hj1, ← hY₁]`. Rewrite `hι₃` using `[hj1, ← hY₂]`. Rewrite using `[hBi, hBi, hj2 _ φ₁ hφ₁ hι₁.symm, hj2 _ φ₃ hφ₃ hι₃.symm, ← hact₃ r (hr _ (j Y₂).2), ← setIntegral_transl h𝓕 hfin (φ := fun h => T (j Y₁).1 h * (starRingEnd ℂ) (thetaSum F (e (om (1, h) (tens (evFin F B.v₁) (j Y₂).1 r))))) (fun γ hγ h => by beta_reduce`. Rewrite using `[(hTN _ (j Y₁).2).2.1 γ hγ h, (hker _ (hr _ (j Y₂).2).2).2.1 γ hγ h]) y]`.
+
+Use `integral_congr_ae (Eventually.of_forall fun h => ?_)` and prove the remaining obligations. Use `beta_reduce`. Rewrite using `[hTe y hy _ (j Y₁).2 φ₁ hφ₁ hact₁ h, ← Module.End.mul_apply, ← map_mul, Prod.mk_mul_mk, one_mul]`. Introduce `z Y₁ Y₂ Y₂' hY`. Take `⟨u, ⟨w, rfl⟩, -, hu⟩` from `hC z`.
+
+Take `⟨φ₃, hφ₃, hact₃, hι₃⟩` from `hu _ (j Y₂).2`. Rewrite `hι₃` using `[hj1, ← hY]`. Rewrite using `[hBi, hBi, hj2 _ φ₃ hφ₃ hι₃.symm, ← hact₃ r (hr _ (j Y₂).2)]`. Use `integral_congr_ae (Eventually.of_forall fun h => ?_)` and prove the remaining obligations. Use `beta_reduce`.
+
+Establish `hΦ` using `(hr _ (j Y₂).2).2`. Rewrite using `[hS.impl (1, h) _ _ hΦ, hev.inv _ _ _ (hpres _ _ hΦ)]`. Use `⟨mat h *ᵥ w, ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `(1 : Matrix _ _ _) * _ * (mat h)ᵀ = _`. Rewrite using `[Matrix.one_mul, Matrix.vecMulVec_mul, Matrix.vecMul_transpose]`.
+-/
 theorem exists_local_form : GlobalTheory.ThK.KP → ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E) (a a' : ℕ) (G : Geo σ a a') (X : Chars F E)
     (om : Rep σ G.V G.W) (om' : Rep σ G.V' G.W) (R : RealMaps F a a') (Rf : FinMaps F a a'), IsMatched B G X om om' R Rf →
     ∀ c : ℂ, ∀ f ∈ GlobalTheory.ThK.DescB.Diffs B G X om om' R Rf c, (∀ N : ℕ, ∃ C : ℝ, ∀ h, ‖f h‖ * (qht h : ℝ) ^ N ≤ C) →

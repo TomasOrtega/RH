@@ -12,19 +12,31 @@ section Affine
 
 variable {L : Type} [Field L] [NumberField L]
 
+/- English proof (translation)
+The claim follows from `FaithfulSMul.algebraMap_injective (𝓞 L) L`.
+-/
 theorem aff_alg_inj : Function.Injective (algebraMap (𝓞 L) L) :=
   FaithfulSMul.algebraMap_injective (𝓞 L) L
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem aff_toK_val (N : ℕ) (g : Gm L N) (a b : Fin N) :
     (toK L N g : Matrix (Fin N) (Fin N) L) a b =
       algebraMap (𝓞 L) L ((g : Matrix (Fin N) (Fin N) (𝓞 L)) a b) :=
   rfl
 
+/- English proof (translation)
+Introduce `a b hab`. Use `Matrix.GeneralLinearGroup.ext fun x y => aff_alg_inj ?_` and prove the remaining obligations. Rewrite using `[← aff_toK_val, ← aff_toK_val, hab]`.
+-/
 theorem aff_toK_inj (N : ℕ) : Function.Injective (toK L N) := by
   intro a b hab
   refine Matrix.GeneralLinearGroup.ext fun x y => aff_alg_inj ?_
   rw [← aff_toK_val, ← aff_toK_val, hab]
 
+/- English proof (translation)
+Use `Matrix.GeneralLinearGroup.ext fun a b => ?_` and prove the remaining obligations. Rewrite using `[aff_toK_val, stab_apply, stab_apply]`. Apply the tactic sequence `split_ifs <;> simp [aff_toK_val]`.
+-/
 theorem aff_toK_stab (n N : ℕ) (h : n ≤ N) (c : Gm L n) :
     toK L N (stab (𝓞 L) n N h c) = stab L n N h (toK L n c) := by
   refine Matrix.GeneralLinearGroup.ext fun a b => ?_
@@ -33,22 +45,48 @@ theorem aff_toK_stab (n N : ℕ) (h : n ≤ N) (c : Gm L n) :
 
 end Affine
 
+/- English proof (translation)
+Rewrite using `[stab_apply, dif_neg (by simp only [Fin.val_natAdd]; omega), Matrix.one_apply]`.
+-/
 theorem aff_stab_low {R : Type} [CommRing R] (n r : ℕ) (g : GL (Fin n) R) (i : Fin r) (b : Fin (n + r)) :
     (stab R n (n + r) (Nat.le_add_right n r) g : Matrix (Fin (n + r)) (Fin (n + r)) R) (Fin.natAdd n i) b =
       (1 : Matrix (Fin (n + r)) (Fin (n + r)) R) (Fin.natAdd n i) b := by
   rw [stab_apply, dif_neg (by simp only [Fin.val_natAdd]; omega), Matrix.one_apply]
 
+/- English proof (translation)
+Rewrite using `[stab_apply, dif_neg (by simp only [Fin.val_natAdd]; omega), Matrix.one_apply]`.
+-/
 theorem aff_stab_lowc {R : Type} [CommRing R] (n r : ℕ) (g : GL (Fin n) R) (i : Fin r) (a : Fin (n + r)) :
     (stab R n (n + r) (Nat.le_add_right n r) g : Matrix (Fin (n + r)) (Fin (n + r)) R) a (Fin.natAdd n i) =
       (1 : Matrix (Fin (n + r)) (Fin (n + r)) R) a (Fin.natAdd n i) := by
   rw [stab_apply, dif_neg (by simp only [Fin.val_natAdd]; omega), Matrix.one_apply]
 
+/- English proof (translation)
+Rewrite using `[stab_apply, dif_pos (by simp only [Fin.val_castAdd]; exact ⟨a.2, b.2⟩)]`. Both sides reduce to the same expression.
+-/
 theorem aff_stab_top {R : Type} [CommRing R] (n r : ℕ) (g : GL (Fin n) R) (a b : Fin n) :
     (stab R n (n + r) (Nat.le_add_right n r) g : Matrix (Fin (n + r)) (Fin (n + r)) R) (Fin.castAdd r a)
       (Fin.castAdd r b) = (g : Matrix (Fin n) (Fin n) R) a b := by
   rw [stab_apply, dif_pos (by simp only [Fin.val_castAdd]; exact ⟨a.2, b.2⟩)]
   rfl
 
+/- English proof (translation)
+Take `⟨S, hS⟩ : ∃ S : Matrix (Fin (n + r)) (Fin (n + r)) K, S = (stab K n (n + r) (Nat.le_add_right n r) h : Matrix (Fin (n + r)) (Fin (n + r)) K)` from `⟨_, rfl⟩`. Take `⟨e, he⟩ : ∃ e : Fin (n + r) → K, e = Pi.single (Fin.natAdd n i) 1` from `⟨_, rfl⟩`. Rewrite using `[← hS, ← he]`. Rewrite `hG` using `[← he]`. Establish `hrow : ∀ b, S (Fin.natAdd n i) b = (1 : Matrix (Fin (n + r)) (Fin (n + r)) K) (Fin.natAdd n i) b`.
+
+Introduce `b`. Rewrite using `[hS]`. Conclude with `aff_stab_low n r h i b`. Establish `hcol : ∀ a, S a (Fin.natAdd n i) = (1 : Matrix (Fin (n + r)) (Fin (n + r)) K) a (Fin.natAdd n i)`. Introduce `a`.
+
+Rewrite using `[hS]`. Conclude with `aff_stab_lowc n r h i a`. Establish `h1 : e ᵥ* S = e`. Use function extensionality and compare the values at `b`. Simplify using `[he, vecMul, dotProduct, Pi.single_apply, hrow, Matrix.one_apply]`.
+
+Apply the tactic sequence `split_ifs with h₁ h₂ h₂ <;> first | rfl | (exfalso; exact h₂ h₁.symm) | (exfalso; exact h₁ h₂.symm)`. Establish `h2 : ((S - 1) *ᵥ y) (Fin.natAdd n i) = 0`. Simplify using `[mulVec, dotProduct, Matrix.sub_apply, hrow]`. Establish `h3 : e ᵥ* vecMulVec ((S - 1) *ᵥ y) e = 0`. Use function extensionality and compare the values at `b`.
+
+Simplify using `only [vecMul, dotProduct, vecMulVec_apply, Pi.zero_apply]`. Rewrite using `[Finset.sum_eq_single (Fin.natAdd n i)]`. Rewrite using `[h2]`. Expand and normalize the polynomial expressions, which then agree. Introduce `c _ hc`.
+
+Rewrite using `[he, Pi.single_apply, if_neg hc]`. Expand and normalize the polynomial expressions, which then agree. Simplify using the standard rewrite rules. Establish `h4 : S *ᵥ e = e`. Use function extensionality and compare the values at `a`.
+
+Simplify using `[he, mulVec, dotProduct, Pi.single_apply, hcol, Matrix.one_apply]`. Establish `key : (1 + vecMulVec (y - e) e) * (S + vecMulVec ((S - 1) *ᵥ y) e) = S * (1 + vecMulVec (y - e) e)`. Rewrite using `[Matrix.add_mul, Matrix.one_mul, Matrix.mul_add, Matrix.vecMulVec_mul, Matrix.vecMulVec_mul, h1, h3, Matrix.mul_add, Matrix.mul_one, Matrix.mul_vecMulVec, Matrix.mulVec_sub, h4]`. Use extensionality with `a b`. Simplify using `only [Matrix.add_apply, vecMulVec_apply, Pi.sub_apply, Pi.zero_apply, Matrix.sub_mulVec, Matrix.one_mulVec]`.
+
+Expand and normalize the polynomial expressions, which then agree. Rewrite using `[Units.val_mul, Units.val_mul, ← hS, hG, Matrix.mul_assoc, ← key, ← Matrix.mul_assoc, ← hG, ← Units.val_mul, inv_mul_cancel, Units.val_one, Matrix.one_mul]`.
+-/
 theorem aff_conj {K : Type} [Field K] (n r : ℕ) (i : Fin r) (h : GL (Fin n) K) (y : Fin (n + r) → K)
     (G : GL (Fin (n + r)) K)
     (hG : (G : Matrix (Fin (n + r)) (Fin (n + r)) K) =
@@ -97,6 +135,51 @@ section Gamma
 
 variable {L : Type} [Field L] [NumberField L]
 
+/- English proof (translation)
+Establish `hmax : (Ideal.span {π}).IsMaximal` using `((Ideal.span_singleton_prime hπ.ne_zero).mpr hπ).isMaximal (by simpa [Ideal.span_singleton_eq_bot] using hπ.ne_zero)`. Take `⟨u, j0, hj0, hu⟩` from `hmax.exists_inv hi`. Take `⟨s, rfl⟩` from `Ideal.mem_span_singleton'.mp hj0`. Take `⟨o, ho⟩ : ∃ o : Fin (n + r), o = ⟨0, by omega⟩` from `⟨_, rfl⟩`. Take `⟨p, hp⟩ : ∃ p : Fin (n + r), p = Fin.natAdd n i` from `⟨_, rfl⟩`.
+
+Rewrite `hu` using `[← ho, ← hp]`. Rewrite using `[← hp]`. Use `set alg := algebraMap (𝓞 L) L with halg`. Establish `hπL : alg π ≠ 0` using `(map_ne_zero_iff _ aff_alg_inj).mpr hπ.ne_zero`. Use `set cL : Matrix (Fin (n + r)) (Fin (n + r)) L := (toK L (n + r) c : Matrix (Fin (n + r)) (Fin (n + r)) L) with hcL`.
+
+Use `set ciL : Matrix (Fin (n + r)) (Fin (n + r)) L := (toK L (n + r) c⁻¹ : Matrix (Fin (n + r)) (Fin (n + r)) L) with hciL`. Use `set e : Fin (n + r) → L := Pi.single p 1 with he`. Use `set vL : Fin (n + r) → L := ciL *ᵥ Pi.single o 1 with hvL`. Use `set y : Fin (n + r) → L := ((alg π)⁻¹ * alg u) • vL + alg s • e with hy`. Establish `hcci : cL * ciL = 1`.
+
+Rewrite using `[hcL, hciL, ← Units.val_mul, ← map_mul, mul_inv_cancel, map_one, Units.val_one]`. Establish `hvp : vL p = alg (((c⁻¹ : Gm L (n + r)) : Matrix (Fin (n + r)) (Fin (n + r)) (𝓞 L)) p o)`. Rewrite using `[hvL, Matrix.mulVec_single_one]`. Both sides reduce to the same expression. Establish `hyp : y p = (alg π)⁻¹`.
+
+Establish `h` using `congrArg alg hu`. Simplify using `only [map_add, map_mul, map_one] at h`. Rewrite using `[hy, Pi.add_apply, Pi.smul_apply, Pi.smul_apply, hvp, he, Pi.single_eq_same, smul_eq_mul, smul_eq_mul]`. Clear the denominators using the available nonvanishing facts. Apply the tactic sequence `try linear_combination h`.
+
+Establish `hdet : (1 + vecMulVec (y - e) e).det ≠ 0`. Establish `h1 : vecMulVec (y - e) e = replicateCol Unit (y - e) * replicateRow Unit e`. Use extensionality with `a b`. Simplify using `[vecMulVec_apply, Matrix.mul_apply]`. Rewrite using `[h1, det_one_add_replicateCol_mul_replicateRow]`.
+
+Establish `h2 : e ⬝ᵥ (y - e) = y p - 1`. Simplify using `[he, dotProduct, Pi.single_apply]`. Rewrite using `[h2, hyp]`. Simplify using `[hπL]`. Use `⟨y, GeneralLinearGroup.mkOfDetNeZero _ hdet, ?_⟩` and prove the remaining obligations.
+
+Use `set qO : Matrix (Fin (n + r)) (Fin (n + r)) (𝓞 L) := diagonal fun a => if (a : ℕ) = 0 then π else 1 with hqO`. Use `set eO : Fin (n + r) → 𝓞 L := Pi.single p 1 with heO`. Use `set zO : Fin (n + r) → 𝓞 L := Pi.single o u + (s - 1) • ((qO * (c : Matrix (Fin (n + r)) (Fin (n + r)) (𝓞 L))) *ᵥ eO) with hzO`. Use `set γM : Matrix (Fin (n + r)) (Fin (n + r)) (𝓞 L) := qO * (c : Matrix (Fin (n + r)) (Fin (n + r)) (𝓞 L)) + vecMulVec zO eO with hγM`. Establish `hqM : ((qel L (n + r) π hπ.ne_zero : GK L (n + r)) : Matrix (Fin (n + r)) (Fin (n + r)) L) = qO.map alg`.
+
+Rewrite using `[hqO, Matrix.diagonal_map (map_zero _)]`. Use `show diagonal _ = _`. Use `congr 1`. Use function extensionality and compare the values at `a`. Apply the tactic sequence `split_ifs <;> first | rfl | simp`.
+
+Establish `hQ : (qO * (c : Matrix (Fin (n + r)) (Fin (n + r)) (𝓞 L))).map alg = ((qel L (n + r) π hπ.ne_zero : GK L (n + r)) : Matrix (Fin (n + r)) (Fin (n + r)) L) * cL`. Rewrite using `[Matrix.map_mul, hqM]`. Both sides reduce to the same expression. Establish `he' : (fun a => alg (eO a)) = e`. Apply the tactic sequence `funext a; rw [heO, he, Pi.single_apply, Pi.single_apply]; split_ifs <;> simp`.
+
+Establish `h1 : cL *ᵥ vL = Pi.single o 1` using `by rw [hvL, Matrix.mulVec_mulVec, hcci, Matrix.one_mulVec]`. Establish `h2 : cL *ᵥ y = ((alg π)⁻¹ * alg u) • Pi.single o 1 + alg s • (cL *ᵥ e)`. Rewrite using `[hy, Matrix.mulVec_add, Matrix.mulVec_smul, Matrix.mulVec_smul, h1]`. Establish `h3 : ((qel L (n + r) π hπ.ne_zero : GK L (n + r)) : Matrix (Fin (n + r)) (Fin (n + r)) L) *ᵥ Pi.single o (1 : L) = Pi.single o (alg π)`. Rewrite using `[hqM, hqO, Matrix.diagonal_map (map_zero _), diagonal_mulVec_single]`.
+
+Use `congr 1`. Simplify using `[ho]`. Establish `h4 : (((qel L (n + r) π hπ.ne_zero : GK L (n + r)) : Matrix (Fin (n + r)) (Fin (n + r)) L) * cL) *ᵥ (y - e) = fun a => alg (zO a)`. Rewrite using `[Matrix.mulVec_sub, ← Matrix.mulVec_mulVec, h2, Matrix.mulVec_add, Matrix.mulVec_smul, Matrix.mulVec_smul, h3, Matrix.mulVec_mulVec]`. Use function extensionality and compare the values at `a`.
+
+Establish `h5 : alg (((qO * (c : Matrix (Fin (n + r)) (Fin (n + r)) (𝓞 L))) *ᵥ eO) a) = ((((qel L (n + r) π hπ.ne_zero : GK L (n + r)) : Matrix (Fin (n + r)) (Fin (n + r)) L) * cL) *ᵥ e) a`. Rewrite using `[RingHom.map_mulVec, hQ]`. Use `congr 1`. Apply the tactic sequence `try exact he'`. Rewrite using `[hzO, Pi.add_apply, Pi.smul_apply, map_add, smul_eq_mul, map_mul, h5, map_sub, map_one]`.
+
+Simplify using `only [Pi.add_apply, Pi.smul_apply, Pi.sub_apply, smul_eq_mul, Pi.single_apply]`. Use `split_ifs`. Apply the tactic sequence `field_simp try ring`. Apply the tactic sequence `simp try ring`. Establish `hγdet : IsUnit γM.det`.
+
+Establish `h6 : γM.map alg = ((qel L (n + r) π hπ.ne_zero : GK L (n + r)) : Matrix (Fin (n + r)) (Fin (n + r)) L) * cL * (1 + vecMulVec (y - e) e)`. Rewrite using `[Matrix.mul_add, Matrix.mul_one, Matrix.mul_vecMulVec, h4, hγM, Matrix.map_add _ (map_add alg), hQ]`. Use `congr 1`. Use extensionality with `a b`. Simplify using `only [Matrix.map_apply, vecMulVec_apply, map_mul]`.
+
+Rewrite using `[← he']`. Establish `h7 : alg γM.det = alg (c : Matrix (Fin (n + r)) (Fin (n + r)) (𝓞 L)).det`. Rewrite using `[RingHom.map_det, RingHom.map_det]`. Use `show (γM.map alg).det = (cL).det`. Rewrite using `[h6, Matrix.det_mul, Matrix.det_mul, hqM, hqO, Matrix.diagonal_map (map_zero _), Matrix.det_diagonal]`.
+
+Establish `h8 : (1 + vecMulVec (y - e) e).det = (alg π)⁻¹`. Establish `h1 : vecMulVec (y - e) e = replicateCol Unit (y - e) * replicateRow Unit e`. Use extensionality with `a b`. Simplify using `[vecMulVec_apply, Matrix.mul_apply]`. Rewrite using `[h1, det_one_add_replicateCol_mul_replicateRow]`.
+
+Establish `h2 : e ⬝ᵥ (y - e) = y p - 1`. Simplify using `[he, dotProduct, Pi.single_apply]`. Rewrite using `[h2, hyp]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[h8, Finset.prod_eq_single o]`.
+
+Simplify using `[ho]`. Clear the denominators using the available nonvanishing facts. Introduce `b _ hb`. Establish `: (b : ℕ) ≠ 0` using `fun h => hb (Fin.ext (by rw [h, ho]))`. Simplify using `[this]`.
+
+Simplify using the standard rewrite rules. Rewrite using `[aff_alg_inj h7]`. Conclude with `(Matrix.isUnits_det_units c)`. Use `⟨GeneralLinearGroup.mk'' γM hγdet, rfl, ?_⟩` and prove the remaining obligations. Use `Matrix.GeneralLinearGroup.ext fun a b => ?_` and prove the remaining obligations.
+
+Rewrite using `[aff_toK_val]`. Establish `h6 : γM.map alg = ((qel L (n + r) π hπ.ne_zero : GK L (n + r)) : Matrix (Fin (n + r)) (Fin (n + r)) L) * cL * (1 + vecMulVec (y - e) e)`. Rewrite using `[Matrix.mul_add, Matrix.mul_one, Matrix.mul_vecMulVec, h4, hγM, Matrix.map_add _ (map_add alg), hQ]`. Use `congr 1`. Use extensionality with `a b`.
+
+Simplify using `only [Matrix.map_apply, vecMulVec_apply, map_mul]`. Rewrite using `[← he']`. Establish `h9` using `congrArg (fun M => M a b) h6`. Simplify using `only [Matrix.map_apply] at h9`. Conclude with `h9`.
+-/
 theorem aff_gamma (π : 𝓞 L) (hπ : Prime π) (n r : ℕ) (hn : 1 ≤ n) (c : Gm L (n + r)) (i : Fin r)
     (hi : ((c⁻¹ : Gm L (n + r)) : Matrix (Fin (n + r)) (Fin (n + r)) (𝓞 L)) (Fin.natAdd n i) ⟨0, by omega⟩ ∉
       Ideal.span {π}) :
@@ -223,6 +306,11 @@ theorem aff_gamma (π : 𝓞 L) (hπ : Prime π) (n r : ℕ) (hn : 1 ≤ n) (c :
 
 end Gamma
 
+/- English proof (translation)
+Establish `hne : Fin.castAdd r b ≠ Fin.natAdd n i`. Introduce `hh`. Use `congrArg Fin.val hh` as an intermediate fact. Simplify using `only [Fin.val_castAdd, Fin.val_natAdd] at this`. Use linear arithmetic over natural numbers and integers.
+
+Rewrite using `[Matrix.add_apply, vecMulVec_apply, Pi.single_apply, if_neg hne, mul_zero, add_zero, aff_stab_top]`.
+-/
 theorem aff_blk_top {K : Type} [Field K] (n r : ℕ) (i : Fin r) (h : GL (Fin n) K) (y : Fin (n + r) → K)
     (a b : Fin n) :
     (((stab K n (n + r) (Nat.le_add_right n r) h : Matrix (Fin (n + r)) (Fin (n + r)) K) +
@@ -235,6 +323,9 @@ theorem aff_blk_top {K : Type} [Field K] (n r : ℕ) (i : Fin r) (h : GL (Fin n)
     omega
   rw [Matrix.add_apply, vecMulVec_apply, Pi.single_apply, if_neg hne, mul_zero, add_zero, aff_stab_top]
 
+/- English proof (translation)
+Establish `h0 : (((stab K n (n + r) (Nat.le_add_right n r) h : Matrix (Fin (n + r)) (Fin (n + r)) K) - 1) *ᵥ y) (Fin.natAdd n a) = 0`. Simplify using `[mulVec, dotProduct, Matrix.sub_apply, aff_stab_low]`. Rewrite using `[Matrix.add_apply, vecMulVec_apply, h0, zero_mul, add_zero, aff_stab_low]`.
+-/
 theorem aff_blk_low {K : Type} [Field K] (n r : ℕ) (i : Fin r) (h : GL (Fin n) K) (y : Fin (n + r) → K)
     (a : Fin r) (b : Fin (n + r)) :
     (((stab K n (n + r) (Nat.le_add_right n r) h : Matrix (Fin (n + r)) (Fin (n + r)) K) +
@@ -246,6 +337,37 @@ theorem aff_blk_low {K : Type} [Field K] (n r : ℕ) (i : Fin r) (h : GL (Fin n)
     simp [mulVec, dotProduct, Matrix.sub_apply, aff_stab_low]
   rw [Matrix.add_apply, vecMulVec_apply, h0, zero_mul, add_zero, aff_stab_low]
 
+/- English proof (translation)
+Introduce `_hCh hEv hAff L _ _ hC k hk π hπ n r hn _hr c ⟨i, hi⟩ F hF hdF H hH w hw`. Take `⟨y, G, γ, hG, hγ⟩` from `aff_gamma π hπ n r hn c i hi`. Use `set q := qel L (n + r) π hπ.ne_zero with hq`. Establish `hex : ∀ h : H, ∃ x : Gm L (n + r), toK L (n + r) x = G⁻¹ * toK L (n + r) (stab (𝓞 L) n (n + r) (Nat.le_add_right n r) (h : Gm L n)) * G`. Introduce `h`.
+
+Take `⟨_, ⟨δ, rfl⟩, hx⟩` from `hH h h.2`. Simplify using `only [MulEquiv.coe_toMonoidHom, MulAut.conj_apply, inv_inv] at hx`. Use `⟨γ⁻¹ * δ * γ, ?_⟩` and prove the remaining obligations. Establish `hδ : toK L (n + r) δ = q * toK L (n + r) (c * stab (𝓞 L) n (n + r) (Nat.le_add_right n r) (h : Gm L n) * c⁻¹) * q⁻¹`. Rewrite using `[← hx]`.
+
+Use `group`. Rewrite using `[map_mul, map_mul, map_inv, hγ, hδ, map_mul, map_mul, map_inv]`. Use `group`. Use `choose fx hfx using hex`. Set `f : H →* Gm L (n + r)` to `MonoidHom.mk' fx (fun a b => aff_toK_inj _ (by`.
+
+Rewrite using `[map_mul, hfx, hfx, hfx, Subgroup.coe_mul, map_mul, map_mul]`. Use the proof step `group))`. Establish `hf : ∀ h : H, toK L (n + r) (f h) = G⁻¹ * toK L (n + r) (stab (𝓞 L) n (n + r) (Nat.le_add_right n r) (h : Gm L n)) * G` using `hfx`. Establish `hM : ∀ h : H, (toK L (n + r) (f h) : Matrix (Fin (n + r)) (Fin (n + r)) L) = (stab L n (n + r) (Nat.le_add_right n r) (toK L n h) : Matrix (Fin (n + r)) (Fin (n + r)) L) + vecMulVec (((stab L n (n + r) (Nat.le_add_right n r) (toK L n h) : Matrix (Fin (n + r)) (Fin (n + r)) L) - 1 …`. Introduce `h`.
+
+Rewrite using `[hf, aff_toK_stab]`. Conclude with `aff_conj n r i (toK L n h) y G hG`. Establish `hblock : ∀ x : H, ∃ B : Matrix (Fin n) (Fin r) (𝓞 L), (f x : Matrix (Fin (n + r)) (Fin (n + r)) (𝓞 L)) = Matrix.reindex finSumFinEquiv finSumFinEquiv (Matrix.fromBlocks (H.subtype x : Matrix (Fin n) (Fin n) (𝓞 L)) B 0 1)`. Introduce `x`. Use `⟨fun a b => (f x : Matrix (Fin (n + r)) (Fin (n + r)) (𝓞 L)) (Fin.castAdd r a) (Fin.natAdd n b), ?_⟩` and prove the remaining obligations.
+
+Use `Matrix.ext fun a b => ?_` and prove the remaining obligations. Take `⟨a, rfl⟩` from `finSumFinEquiv.surjective a`. Take `⟨b, rfl⟩` from `finSumFinEquiv.surjective b`. Apply the tactic sequence `rcases a with a | a <;> rcases b with b | b`. Simplify using `only [Matrix.reindex_apply, Matrix.submatrix_apply, finSumFinEquiv_apply_left, finSumFinEquiv_apply_right, finSumFinEquiv_symm_apply_castAdd, finSumFinEquiv_symm_apply_natAdd, Matrix.fromBlocks_apply₁₁]`.
+
+Apply `aff_alg_inj` to reduce the goal to its premises. Rewrite using `[← aff_toK_val, hM, aff_blk_top]`. Both sides reduce to the same expression. Simplify using `only [Matrix.reindex_apply, Matrix.submatrix_apply, finSumFinEquiv_apply_left, finSumFinEquiv_apply_right, finSumFinEquiv_symm_apply_castAdd, finSumFinEquiv_symm_apply_natAdd]`. Both sides reduce to the same expression.
+
+Simplify using `only [Matrix.reindex_apply, Matrix.submatrix_apply, finSumFinEquiv_apply_left, finSumFinEquiv_apply_right, finSumFinEquiv_symm_apply_castAdd, finSumFinEquiv_symm_apply_natAdd] show (f x : Matrix (Fin (n + r)) (Fin (n + r)) (𝓞 L)) (Fin.natAdd n a) (Fin.castAdd r b) = 0`. Apply `aff_alg_inj` to reduce the goal to its premises. Rewrite using `[map_zero, ← aff_toK_val, hM, aff_blk_low, Matrix.one_apply, if_neg]`. Introduce `hh`. Use `congrArg Fin.val hh` as an intermediate fact.
+
+Simplify using `only [Fin.val_castAdd, Fin.val_natAdd] at this`. Use linear arithmetic over natural numbers and integers. Simplify using `only [Matrix.reindex_apply, Matrix.submatrix_apply, finSumFinEquiv_apply_left, finSumFinEquiv_apply_right, finSumFinEquiv_symm_apply_castAdd, finSumFinEquiv_symm_apply_natAdd] show (f x : Matrix (Fin (n + r)) (Fin (n + r)) (𝓞 L)) (Fin.natAdd n a) (Fin.natAdd n b) = (1 : Matrix (F …`. Apply `aff_alg_inj` to reduce the goal to its premises. Rewrite using `[← aff_toK_val, hM, aff_blk_low, Matrix.one_apply, Matrix.one_apply]`.
+
+Distinguish the cases in `hab : a = b`. Substitute `hab` using the available equality. Simplify using the standard rewrite rules. Rewrite using `[if_neg hab, if_neg (fun hh => hab (Fin.ext (by`. Use `congrArg Fin.val hh` as an intermediate fact.
+
+Simplify using `only [Fin.val_natAdd] at this`. Use the proof step `omega))), map_zero]`. Establish `key : ∀ h : H, q * toK L (n + r) (c * stab (𝓞 L) n (n + r) (Nat.le_add_right n r) ((h : Gm L n) * 1)) = toK L (n + r) γ • ((toK L (n + r)).comp f h • G⁻¹)`. Introduce `h`. Rewrite using `[smul_eq_mul, smul_eq_mul, MonoidHom.comp_apply, hf, hγ, mul_one, map_mul]`.
+
+Use `group`. Establish `hL : ev H.subtype (fun y => F fun j => q * toK L (n + r) (c * stab (𝓞 L) n (n + r) (Nat.le_add_right n r) (y j))) 1 w = ev ((toK L (n + r)).comp f) F G⁻¹ w`. Unfold `ev`. Use `Finsupp.sum_congr fun x _ => ?_` and prove the remaining obligations. Use `congr 1`.
+
+Rewrite using `[← hF γ (fun j => (toK L (n + r)).comp f (Fin.partialProd x j) • G⁻¹)]`. Conclude with `congrArg F (funext fun j => key (Fin.partialProd x j))`. Establish `hR : ev H.subtype (fun y => F fun j => toK L (n + r) (stab (𝓞 L) n (n + r) (Nat.le_add_right n r) (y j))) 1 w = ev (toK L (n + r)) F 1 (cmap ((stab (𝓞 L) n (n + r) (Nat.le_add_right n r)).comp H.subtype) (k + 1) w)`. Rewrite using `[ev_cmap]`. Unfold `ev`.
+
+Use `Finsupp.sum_congr fun x _ => ?_` and prove the remaining obligations. Simplify using `only [MonoidHom.comp_apply, smul_eq_mul, mul_one]`. Establish `hE1` using `hEv H (GK L (n + r)) (GK L (n + r)) ((toK L (n + r)).comp f) k F (fun g y => hF (f g) y) hdF`. Establish `hE2` using `hEv (Gm L (n + r)) (GK L (n + r)) (GK L (n + r)) (toK L (n + r)) k F hF hdF`. Establish `hbd` using `hAff L hC k hk n r H f H.subtype hblock w hw`.
+
+Rewrite using `[hL, hR, hE1.2 G⁻¹ 1 w hw, ← ev_cmap]`. Establish `h0` using `hE2.1 1 _ hbd`. Rewrite `h0` using `[ev_sub]`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem pStabVan : PStabVan := by
   intro _hCh hEv hAff L _ _ hC k hk π hπ n r hn _hr c ⟨i, hi⟩ F hF hdF H hH w hw
   obtain ⟨y, G, γ, hG, hγ⟩ := aff_gamma π hπ n r hn c i hi

@@ -13,6 +13,9 @@ section Alg
 variable {F E : Type} [Field F] [Field E] [Algebra F E] (σ : E →ₐ[F] E) {M : ℕ}
   (J : Matrix (Fin M) (Fin M) E)
 
+/- English proof (translation)
+Simplify using `only [hE, hform, Matrix.vecMul, dotProduct, Finset.sum_mul, RingHom.coe_coe]`. Conclude with `Finset.sum_comm`.
+-/
 theorem hE_eq_dot (u v : Fin M → E) :
     hE σ J u v = Matrix.vecMul (fun i => σ (u i)) J ⬝ᵥ v := by
   simp only [hE, hform, Matrix.vecMul, dotProduct, Finset.sum_mul, RingHom.coe_coe]
@@ -23,10 +26,16 @@ def hLin (u : Fin M → E) : (Fin M → E) →ₗ[E] E where
   map_add' v w := by simp only [hE_eq_dot, dotProduct_add]
   map_smul' a v := by simp only [hE_eq_dot, dotProduct_smul, RingHom.id_apply]
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem hLin_apply (u v : Fin M → E) : hLin σ J u v = hE σ J u v := rfl
 
 variable {σ J}
 
+/- English proof (translation)
+Simplify using `only [hE, hform, map_sum, map_mul, RingHom.coe_coe, hσ]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[hJ]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem hE_conj (hσ : ∀ a, σ (σ a) = a) (hJ : ∀ i j, σ (J j i) = J i j) (u v : Fin M → E) :
     σ (hE σ J u v) = hE σ J v u := by
   simp only [hE, hform, map_sum, map_mul, RingHom.coe_coe, hσ]
@@ -34,6 +43,21 @@ theorem hE_conj (hσ : ∀ a, σ (σ a) = a) (hJ : ∀ i j, σ (J j i) = J i j) 
   refine Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => ?_
   rw [hJ]; ring
 
+/- English proof (translation)
+Establish `hr : Matrix.vecMul (fun i => σ (x i)) J ≠ 0`. Introduce `h0`. Establish `h1` using `Matrix.eq_zero_of_vecMul_eq_zero hJ.2 h0`. Apply `hx` to reduce the goal to its premises. Use function extensionality and compare the values at `i`.
+
+Establish `h3` using `congrFun h1 i`. Simplify using `using h3`. Take `⟨j, hj⟩` from `Function.ne_iff.mp hr`. Establish `hj' : Matrix.vecMul (fun i => σ (x i)) J j ≠ 0` using `hj`. Choose the witnesses or unpack the hypotheses as in `⟨y₀, h1⟩ : ∃ y₀, hE σ J x y₀ = 1 := by`.
+
+Use `⟨Pi.single j (Matrix.vecMul (fun i => σ (x i)) J j)⁻¹, ?_⟩` and prove the remaining obligations. Rewrite using `[hE_eq_dot, dotProduct_single, mul_inv_cancel₀ hj']`. Establish `conj` using `hE_conj (J := J) hσ hJ.1`. Establish `h1' : hE σ J y₀ x = 1` using `by rw [← conj, h1, map_one]`. Establish `hc : σ (hE σ J y₀ y₀) = hE σ J y₀ y₀` using `conj _ _`.
+
+Use `set c := hE σ J y₀ y₀ with hcdef`. Establish `hc2 : σ (c / 2) = c / 2` using `by rw [map_div₀, hc, map_ofNat]`. Establish `hxy : hE σ J x (y₀ - (c / 2) • x) = 1`. Use `(hLin σ J x).map_sub y₀ ((c / 2) • x)` as an intermediate fact. Simplify using `only [map_smul, hLin_apply, smul_eq_mul, hxx, h1] at this`.
+
+Simplify using `using this`. Establish `hy₀y : hE σ J y₀ (y₀ - (c / 2) • x) = c / 2`. Use `(hLin σ J y₀).map_sub y₀ ((c / 2) • x)` as an intermediate fact. Simplify using `only [map_smul, hLin_apply, smul_eq_mul, h1', ← hcdef] at this`. Rewrite using `[this]`.
+
+Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Use `⟨y₀ - (c / 2) • x, hxy, ?_⟩` and prove the remaining obligations. Use `(hLin σ J (y₀ - (c / 2) • x)).map_sub y₀ ((c / 2) • x)` as an intermediate fact. Simplify using `only [map_smul, hLin_apply, smul_eq_mul] at this`.
+
+Rewrite using `[this, ← conj y₀, hy₀y, hc2, ← conj x, hxy, map_one]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem exists_partner (hσ : ∀ a, σ (σ a) = a) (hJ : IsHermND σ J) (h2 : (2 : E) ≠ 0)
     (x : Fin M → E) (hx : x ≠ 0) (hxx : hE σ J x x = 0) :
     ∃ y, hE σ J x y = 1 ∧ hE σ J y y = 0 := by
@@ -68,6 +92,13 @@ theorem exists_partner (hσ : ∀ a, σ (σ a) = a) (hJ : IsHermND σ J) (h2 : (
   rw [this, ← conj y₀, hy₀y, hc2, ← conj x, hxy, map_one]
   ring
 
+/- English proof (translation)
+Establish `hyx : hE σ J y x = 1` using `by rw [← hE_conj hσ hJ, hxy, map_one]`. Establish `hs : Function.Surjective ((hLin σ J x).prod (hLin σ J y))`. Introduce and unpack `⟨a, b⟩`. Use `⟨a • y + b • x, Prod.ext ?_ ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `hLin σ J x (a • y + b • x) = a`.
+
+Simplify using `only [map_add, map_smul, hLin_apply, smul_eq_mul, hxy, hxx, mul_one, mul_zero, add_zero]`. Express the relevant statement in the definitionally equal form `hLin σ J y (a • y + b • x) = b`. Simplify using `only [map_add, map_smul, hLin_apply, smul_eq_mul, hyy, hyx, mul_one, mul_zero, zero_add]`. Establish `h` using `LinearMap.finrank_range_add_finrank_ker ((hLin σ J x).prod (hLin σ J y))`. Rewrite `h` using `[LinearMap.range_eq_top.mpr hs, finrank_top, Module.finrank_prod, Module.finrank_self, Module.finrank_fin_fun]`.
+
+Use linear arithmetic over natural numbers and integers.
+-/
 theorem finrank_perp (hσ : ∀ a, σ (σ a) = a) (hJ : ∀ i j, σ (J j i) = J i j)
     {x y : Fin M → E} (hxx : hE σ J x x = 0) (hyy : hE σ J y y = 0) (hxy : hE σ J x y = 1) :
     Module.finrank E (LinearMap.ker ((hLin σ J x).prod (hLin σ J y))) + 2 = M := by
@@ -84,6 +115,9 @@ theorem finrank_perp (hσ : ∀ a, σ (σ a) = a) (hJ : ∀ i j, σ (J j i) = J 
     Module.finrank_fin_fun] at h
   omega
 
+/- English proof (translation)
+Use extensionality with `a b`. Simplify using `only [Matrix.mul_apply, cT, gramE, hE, hform, Finset.sum_mul, Matrix.transpose_apply, Matrix.map_apply, Matrix.of_apply]`. Conclude with `Finset.sum_comm`.
+-/
 theorem gram_eq {n : ℕ} (c : Fin n → Fin M → E) :
     cT (σ : E →+* E) (Matrix.of c)ᵀ * J * (Matrix.of c)ᵀ = gramE σ J c := by
   ext a b
@@ -91,6 +125,13 @@ theorem gram_eq {n : ℕ} (c : Fin n → Fin M → E) :
     Matrix.map_apply, Matrix.of_apply]
   exact Finset.sum_comm
 
+/- English proof (translation)
+Introduce `h0`. Take `⟨v, hv, hAv⟩` from `Matrix.exists_mulVec_eq_zero_iff.mpr h0`. Apply `h` to reduce the goal to its premises. Use `Matrix.exists_mulVec_eq_zero_iff.mp ⟨Fin.cons 0 (Fin.cons 0 v), ?_, ?_⟩` and prove the remaining obligations. Introduce `h1`.
+
+Apply `hv` to reduce the goal to its premises. Use function extensionality and compare the values at `i`. Simplify using `using congrFun h1 i.succ.succ`. Use function extensionality and compare the values at `a`. Use `Fin.cases ?_ (fun a => Fin.cases ?_ (fun a => ?_) a) a` and prove the remaining obligations.
+
+Simplify using `[Matrix.mulVec, dotProduct, hypJ, Fin.sum_univ_succ]`. Simplify using `[Matrix.mulVec, dotProduct, hypJ, Fin.sum_univ_succ]`. Use `congrFun hAv a` as an intermediate fact. Simplify `this` using `[Matrix.mulVec, dotProduct, hypJ, Fin.sum_univ_succ]`.
+-/
 theorem det_ne_zero_of_hypJ {M₁ : ℕ} (A : Matrix (Fin M₁) (Fin M₁) E) (h : (hypJ A).det ≠ 0) :
     A.det ≠ 0 := by
   intro h0
@@ -108,6 +149,29 @@ theorem det_ne_zero_of_hypJ {M₁ : ℕ} (A : Matrix (Fin M₁) (Fin M₁) E) (h
     · have := congrFun hAv a
       simpa [Matrix.mulVec, dotProduct, hypJ, Fin.sum_univ_succ] using this
 
+/- English proof (translation)
+Establish `conj` using `hE_conj (J := J) hσ hJ.1`. Establish `hyx : hE σ J y x = 1` using `by rw [← conj, hxy, map_one]`. Establish `hfr` using `finrank_perp hσ hJ.1 hxx hyy hxy`. Use `set W := LinearMap.ker ((hLin σ J x).prod (hLin σ J y)) with hW`. Establish `hfr' : Module.finrank E W = M₁` using `by omega`.
+
+Set `b : Module.Basis (Fin M₁) E W` to `Module.finBasisOfFinrankEq E W hfr'`. Establish `hbx : ∀ i, hE σ J x (b i : Fin (M₁ + 2) → E) = 0` using `fun i => by`. Establish `h3 : ((hLin σ J x).prod (hLin σ J y)) (b i : Fin (M₁ + 2) → E) = 0` using `LinearMap.mem_ker.mp (b i).2`. Conclude with `congrArg Prod.fst h3`. Establish `hby : ∀ i, hE σ J y (b i : Fin (M₁ + 2) → E) = 0` using `fun i => by`.
+
+Establish `h3 : ((hLin σ J x).prod (hLin σ J y)) (b i : Fin (M₁ + 2) → E) = 0` using `LinearMap.mem_ker.mp (b i).2`. Conclude with `congrArg Prod.snd h3`. Establish `hbx' : ∀ i, hE σ J (b i : Fin (M₁ + 2) → E) x = 0` using `fun i => by`. Rewrite using `[← conj, hbx, map_zero]`. Establish `hby' : ∀ i, hE σ J (b i : Fin (M₁ + 2) → E) y = 0` using `fun i => by`.
+
+Rewrite using `[← conj, hby, map_zero]`. Set `c : Fin (M₁ + 2) → Fin (M₁ + 2) → E` to `Fin.cons x (Fin.cons y fun i => (b i : Fin (M₁ + 2) → E))`. Establish `hli : LinearIndependent E c`. Rewrite using `[Fintype.linearIndependent_iff]`. Introduce `a ha`.
+
+Rewrite `ha` using `[Fin.sum_univ_succ, Fin.sum_univ_succ]`. Simplify using `only [c, Fin.cons_zero, Fin.cons_succ] at ha`. Establish `e1` using `congrArg (hLin σ J x) ha`. Establish `e2` using `congrArg (hLin σ J y) ha`. Simplify using `only [map_add, map_smul, map_sum, hLin_apply, smul_eq_mul, hxx, hyy, hxy, hyx, hbx, hby, map_zero, mul_zero, zero_add, add_zero, mul_one, Finset.sum_const_zero] at e1 e2`.
+
+Rewrite `ha` using `[e1, e2]`. Simplify using `only [zero_smul, zero_add] at ha`. Establish `e3 : ∑ i, a i.succ.succ • b i = 0`. Apply `Subtype.ext` to reduce the goal to its premises. Simplify using `using ha`.
+
+Establish `e4` using `Fintype.linearIndependent_iff.mp b.linearIndependent _ e3`. Introduce `i`. Use `Fin.cases e2 (fun i => Fin.cases e1 e4 i) i` and prove the remaining obligations. Establish `hunit : IsUnit (Matrix.of c)ᵀ`. Conclude with `(Matrix.linearIndependent_cols_iff_isUnit (A := (Matrix.of c)ᵀ)).mp hli`.
+
+Set `J₁ : Matrix (Fin M₁) (Fin M₁) E` to `gramE σ J fun i => (b i : Fin (M₁ + 2) → E)`. Establish `hgram : hypJ J₁ = gramE σ J c`. Use extensionality with `a b'`. Apply the tactic sequence `refine Fin.cases ?_ (fun a => Fin.cases ?_ (fun a => ?_) a) a <;>`. Apply the tactic sequence `refine Fin.cases ?_ (fun b' => Fin.cases ?_ (fun b' => ?_) b') b' <;>`.
+
+Simplify using `[hypJ, gramE, c, J₁, hxx, hyy, hxy, hyx, hbx, hby, hbx', hby']`. Establish `hdet : (hypJ J₁).det ≠ 0`. Rewrite using `[hgram, ← gram_eq, Matrix.det_mul, Matrix.det_mul]`. Establish `hu : (Matrix.of c)ᵀ.det ≠ 0` using `((Matrix.isUnit_iff_isUnit_det _).mp hunit).ne_zero`. Establish `hcT : (cT (σ : E →+* E) (Matrix.of c)ᵀ).det ≠ 0`.
+
+Rewrite using `[cT, Matrix.det_transpose, ← RingHom.mapMatrix_apply, ← RingHom.map_det]`. Simplify using `using hu`. Conclude with `mul_ne_zero (mul_ne_zero hcT hJ.2) hu`. Use `⟨hunit.unit, J₁, ⟨fun i j => conj _ _, det_ne_zero_of_hypJ J₁ hdet⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[hgram, ← gram_eq]`.
+
+Both sides reduce to the same expression.
+-/
 theorem selfDualLattice_projection_mem_of_unit_length (hσ : ∀ a, σ (σ a) = a) (h2 : (2 : E) ≠ 0) {M₁ : ℕ}
     {J : Matrix (Fin (M₁ + 2)) (Fin (M₁ + 2)) E} (hJ : IsHermND σ J)
     {x y : Fin (M₁ + 2) → E} (hxx : hE σ J x x = 0) (hyy : hE σ J y y = 0)
@@ -173,12 +237,20 @@ theorem selfDualLattice_projection_mem_of_unit_length (hσ : ∀ a, σ (σ a) = 
 
 end Alg
 
+/- English proof (translation)
+Take `⟨τ⟩ : Nonempty (E →+* ℂ)` from `inferInstance`. Apply `τ.injective` to reduce the goal to its premises. Rewrite using `[h.2.2.2, h.2.2.2, star_star]`.
+-/
 theorem sigma_invol {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
     (σ : E →ₐ[F] E) (h : IsCMExt F E σ) (a : E) : σ (σ a) = a := by
   obtain ⟨τ⟩ : Nonempty (E →+* ℂ) := inferInstance
   apply τ.injective
   rw [h.2.2.2, h.2.2.2, star_star]
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ hcm M J hJ x hx hxx`. Establish `hσ` using `sigma_invol σ hcm`. Establish `h2 : (2 : E) ≠ 0` using `two_ne_zero`. Take `⟨y, hxy, hyy⟩` from `exists_partner hσ hJ h2 x hx hxx`. Establish `hfr` using `finrank_perp hσ hJ.1 hxx hyy hxy`.
+
+Take `⟨M₁, rfl⟩ : ∃ M₁, M = M₁ + 2` from `⟨_, hfr.symm⟩`. Take `⟨g, J₁, h1, h3⟩` from `selfDualLattice_projection_mem_of_unit_length hσ h2 hJ hxx hyy hxy`. Conclude with `⟨M₁, rfl, g, J₁, h1, h3⟩`.
+-/
 theorem splitHyp : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E), IsCMExt F E σ → ∀ (M : ℕ) (J : Matrix (Fin M) (Fin M) E), IsHermND σ J → ∀ x : Fin M → E, x ≠ 0 → hE σ J x x = 0 → ∃ (M₁ : ℕ) (hM : M = M₁ + 2) (g : GL (Fin (M₁ + 2)) E) (J₁ : Matrix (Fin M₁) (Fin M₁) E), IsHermND σ J₁ ∧ hypJ J₁ = cT (σ : E →+* E) (g : Matrix (Fin (M₁ + 2)) (Fin (M₁ + 2)) E) * (hM ▸ J) * (g : Matrix (Fin (M₁ + 2)) (Fin (M₁ + 2)) E) := by
   intro F E _ _ _ _ _ σ hcm M J hJ x hx hxx
   have hσ := sigma_invol σ hcm

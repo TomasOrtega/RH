@@ -25,18 +25,30 @@ section Words
 
 variable {V : Type} [NormedAddCommGroup V] [NormedSpace ℂ V]
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem Lap_eq (f : Mat n → V) (g : Mat n) : Lap f g = -∑ p, Rw [p, p] f g := rfl
 
+/- English proof (translation)
+Establish `h : ContDiffOn ℝ ∞ (fun g => ∑ p, Rw [p, p] f g) (GLs n)` using `ContDiffOn.sum fun p _ => Rw_smooth [p, p] hf`. Conclude with `h.neg`.
+-/
 theorem Lap_smooth {f : Mat n → V} (hf : ContDiffOn ℝ ∞ f (GLs n)) : ContDiffOn ℝ ∞ (Lap f) (GLs n) := by
   have h : ContDiffOn ℝ ∞ (fun g => ∑ p, Rw [p, p] f g) (GLs n) :=
     ContDiffOn.sum fun p _ => Rw_smooth [p, p] hf
   exact h.neg
 
+/- English proof (translation)
+Introduce `g hg`. Simplify using `only [Lap_eq]`. Conclude with `congrArg Neg.neg (Finset.sum_congr rfl fun p _ => Rw_congr [p, p] e hg)`.
+-/
 theorem Lap_congr {f f' : Mat n → V} (e : Set.EqOn f f' (GLs n)) : Set.EqOn (Lap f) (Lap f') (GLs n) := by
   intro g hg
   simp only [Lap_eq]
   exact congrArg Neg.neg (Finset.sum_congr rfl fun p _ => Rw_congr [p, p] e hg)
 
+/- English proof (translation)
+Introduce `g hg`. Simplify using `only [Lap_eq, Pi.add_apply]`. Rewrite using `[← neg_add, ← Finset.sum_add_distrib]`. Conclude with `congrArg Neg.neg (Finset.sum_congr rfl fun p _ => Rw_add [p, p] hf hf' hg)`.
+-/
 theorem Lap_add {f f' : Mat n → V} (hf : ContDiffOn ℝ ∞ f (GLs n)) (hf' : ContDiffOn ℝ ∞ f' (GLs n)) :
     Set.EqOn (Lap (f + f')) (Lap f + Lap f') (GLs n) := by
   intro g hg
@@ -44,24 +56,38 @@ theorem Lap_add {f f' : Mat n → V} (hf : ContDiffOn ℝ ∞ f (GLs n)) (hf' : 
   rw [← neg_add, ← Finset.sum_add_distrib]
   exact congrArg Neg.neg (Finset.sum_congr rfl fun p _ => Rw_add [p, p] hf hf' hg)
 
+/- English proof (translation)
+Introduce `g hg`. Simplify using `only [Lap_eq, map_neg, map_sum]`. Conclude with `congrArg Neg.neg (Finset.sum_congr rfl fun p _ => Rw_post [p, p] A hf hg)`.
+-/
 theorem Lap_post (A : V →L[ℂ] V) {f : Mat n → V} (hf : ContDiffOn ℝ ∞ f (GLs n)) :
     Set.EqOn (Lap fun y => A (f y)) (fun y => A (Lap f y)) (GLs n) := by
   intro g hg
   simp only [Lap_eq, map_neg, map_sum]
   exact congrArg Neg.neg (Finset.sum_congr rfl fun p _ => Rw_post [p, p] A hf hg)
 
+/- English proof (translation)
+Proceed by induction on `j generalizing f with`. Consider the case `zero => exact hf`. Consider the case `succ j ih => exact ih (Lap_smooth hf)`.
+-/
 theorem iter_smooth (j : ℕ) {f : Mat n → V} (hf : ContDiffOn ℝ ∞ f (GLs n)) :
     ContDiffOn ℝ ∞ (Lap^[j] f) (GLs n) := by
   induction j generalizing f with
   | zero => exact hf
   | succ j ih => exact ih (Lap_smooth hf)
 
+/- English proof (translation)
+Proceed by induction on `j generalizing f f' with`. Consider the case `zero => exact e`. Consider the case `succ j ih => exact ih (Lap_congr e)`.
+-/
 theorem iter_congr (j : ℕ) {f f' : Mat n → V} (e : Set.EqOn f f' (GLs n)) :
     Set.EqOn (Lap^[j] f) (Lap^[j] f') (GLs n) := by
   induction j generalizing f f' with
   | zero => exact e
   | succ j ih => exact ih (Lap_congr e)
 
+/- English proof (translation)
+Proceed by induction on `j generalizing f f' with`. Consider the case `zero => intro x _`. Both sides reduce to the same expression. Consider the case `succ j ih`. Introduce `x hx`.
+
+Conclude with `(iter_congr j (Lap_add hf hf') hx).trans (ih (Lap_smooth hf) (Lap_smooth hf') hx)`.
+-/
 theorem iter_add (j : ℕ) {f f' : Mat n → V} (hf : ContDiffOn ℝ ∞ f (GLs n))
     (hf' : ContDiffOn ℝ ∞ f' (GLs n)) :
     Set.EqOn (Lap^[j] (f + f')) (Lap^[j] f + Lap^[j] f') (GLs n) := by
@@ -77,16 +103,25 @@ section Sob
 
 variable [MeasurableSpace (G n)] {μ : Measure (G n)} {V : Type} [NormedAddCommGroup V] [InnerProductSpace ℂ V]
 
+/- English proof (translation)
+The claim follows from `sob_congr (f := (-1 : ℂ) • ∑ p, Rd (bs p) (Rd (bs p) f)) (sob_smul _ (sob_sum _ hf fun p => sob_bs p (sob_bs p hf))) fun g _ => by simp [Lap]`.
+-/
 theorem sob_Lap {f : Mat n → V} (hf : Sob μ f) : Sob μ (Lap f) :=
   sob_congr (f := (-1 : ℂ) • ∑ p, Rd (bs p) (Rd (bs p) f))
     (sob_smul _ (sob_sum _ hf fun p => sob_bs p (sob_bs p hf))) fun g _ => by
       simp [Lap]
 
+/- English proof (translation)
+Proceed by induction on `j generalizing f with`. Consider the case `zero => exact hf`. Consider the case `succ j ih => exact ih (sob_Lap hf)`.
+-/
 theorem sob_iter (j : ℕ) {f : Mat n → V} (hf : Sob μ f) : Sob μ (Lap^[j] f) := by
   induction j generalizing f with
   | zero => exact hf
   | succ j ih => exact ih (sob_Lap hf)
 
+/- English proof (translation)
+Rewrite using `[GlobalTheory.CompanionTheory.SecBd.cls_eq μ h, GlobalTheory.CompanionTheory.SecBd.cls_eq μ h', GlobalTheory.CompanionTheory.SecBd.cls_eq μ (f := F + F') (h.add h')]`. Conclude with `MemLp.toLp_add h h'`.
+-/
 theorem cls_add {F F' : Mat n → V} (h : MemLp (fun y : G n => F y.val) 2 μ)
     (h' : MemLp (fun y : G n => F' y.val) 2 μ) : cls μ (F + F') = cls μ F + cls μ F' := by
   rw [GlobalTheory.CompanionTheory.SecBd.cls_eq μ h, GlobalTheory.CompanionTheory.SecBd.cls_eq μ h', GlobalTheory.CompanionTheory.SecBd.cls_eq μ (f := F + F') (h.add h')]
@@ -94,12 +129,36 @@ theorem cls_add {F F' : Mat n → V} (h : MemLp (fun y : G n => F y.val) 2 μ)
 
 end Sob
 
+/- English proof (translation)
+Establish `h1` using `(hR n).2.1 E f hf true 2`. Establish `h2` using `(hR n).2.1 E f hf false 2`. Use `⟨Om_smooth hf.1, fun g hg k => ?_⟩` and prove the remaining obligations. Simplify using `only [Om, Pi.smul_apply, Pi.add_apply, h1.2 g hg k, h2.2 g hg k, map_add, map_smul]`.
+-/
 theorem om_mem (hR : RCalc) (E : KMod n) {f : Mat n → E.V} (hf : f ∈ CE E) : Om f ∈ CE E := by
   have h1 := (hR n).2.1 E f hf true 2
   have h2 := (hR n).2.1 E f hf false 2
   refine ⟨Om_smooth hf.1, fun g hg k => ?_⟩
   simp only [Om, Pi.smul_apply, Pi.add_apply, h1.2 g hg k, h2.2 g hg k, map_add, map_smul]
 
+/- English proof (translation)
+Proceed by induction on `j with`. Consider the case `zero`. Use `⟨1, zero_le_one, fun f hS _ B => ?_⟩` and prove the remaining obligations. Establish `hm : MemLp (fun y : G n => B (f y.val)) 2 μ` using `(sob_post B hS).2 []`. Establish `h` using `GlobalTheory.CompanionTheory.SecBd.norm_le_of_ae μ (f := f) (hS.2 []) (cls μ fun y => B (f y)) B (GlobalTheory.CompanionTheory.SecBd.cls_ae μ hm)`.
+
+Simplify using `using h`. Consider the case `succ j ih`. Take `⟨C, hC, ih⟩` from `ih`. Use `⟨C * (1 + ‖Q‖), by positivity, fun f hS hsec B => ?_⟩` and prove the remaining obligations. Establish `hCE : f ∈ CE E` using `⟨hS.1, hsec⟩`.
+
+Establish `hOS` using `sob_Om hS`. Establish `hOC` using `om_mem hR E hCE`. Set `a : Mat n → E.V` to `fun y => (-B) (Om f y)`. Set `b : Mat n → E.V` to `fun y => (B * Q) (f y)`. Establish `ha : Sob μ a` using `sob_post _ hOS`.
+
+Establish `hb : Sob μ b` using `sob_post _ hS`. Establish `e1 : Set.EqOn (Lap fun y => B (f y)) (a + b) (GLs n)` using `fun g hg => by`. Use `(Lap_post B hS.1 hg).trans ?_` and prove the remaining obligations. Use `show B (Lap f g) = (-B) (Om f g) + (B * Q) (f g)`. Rewrite using `[hL f hCE g hg]`.
+
+Simplify using the standard rewrite rules. Establish `e2 : Set.EqOn (Lap^[j + 1] fun y => B (f y)) (Lap^[j] a + Lap^[j] b) (GLs n)` using `fun g hg => (iter_congr j e1 hg).trans (iter_add j ha.1 hb.1 hg)`. Establish `mA : MemLp (fun y : G n => (Lap^[j] a) y.val) 2 μ` using `(sob_iter j ha).2 []`. Establish `mB : MemLp (fun y : G n => (Lap^[j] b) y.val) 2 μ` using `(sob_iter j hb).2 []`. Establish `e3 : cls μ (Lap^[j + 1] fun y => B (f y)) = cls μ (Lap^[j] a) + cls μ (Lap^[j] b)`.
+
+Rewrite using `[← cls_add mA mB]`. Conclude with `(GlobalTheory.CompanionTheory.SecBd.cls_congr μ (f := Lap^[j] a + Lap^[j] b) (mA.add mB) fun g hg => (e2 hg).symm).symm`. Establish `b1 : ‖cls μ (Lap^[j] a)‖ ≤ C * ‖-B‖ * ∑ i ∈ range (j + 1), ‖cls μ (Om^[i] (Om f))‖` using `ih (Om f) hOS hOC.2 (-B)`. Establish `b2 : ‖cls μ (Lap^[j] b)‖ ≤ C * ‖B * Q‖ * ∑ i ∈ range (j + 1), ‖cls μ (Om^[i] f)‖` using `ih f hS hsec (B * Q)`. Use `set S := ∑ i ∈ range (j + 1 + 1), ‖cls μ (Om^[i] f)‖ with hSdef`.
+
+Establish `s1 : ∑ i ∈ range (j + 1), ‖cls μ (Om^[i] (Om f))‖ ≤ S`. Establish `e` using `Finset.sum_range_succ' (fun i => ‖cls μ (Om^[i] f)‖) (j + 1)`. Rewrite using `[hSdef, e]`. Conclude with `le_add_of_nonneg_right (norm_nonneg _)`. Establish `s2 : ∑ i ∈ range (j + 1), ‖cls μ (Om^[i] f)‖ ≤ S`.
+
+Rewrite using `[hSdef, Finset.sum_range_succ _ (j + 1)]`. Conclude with `le_add_of_nonneg_right (norm_nonneg _)`. Establish `hBQ : ‖B * Q‖ ≤ ‖B‖ * ‖Q‖` using `norm_mul_le _ _`. Establish `c1 : C * ‖-B‖ * ∑ i ∈ range (j + 1), ‖cls μ (Om^[i] (Om f))‖ ≤ C * ‖B‖ * S`. Rewrite using `[norm_neg]`.
+
+Conclude with `mul_le_mul_of_nonneg_left s1 (by positivity)`. Establish `c2 : C * ‖B * Q‖ * ∑ i ∈ range (j + 1), ‖cls μ (Om^[i] f)‖ ≤ C * (‖B‖ * ‖Q‖) * S`. Establish `hS0 : 0 ≤ S` using `Finset.sum_nonneg fun _ _ => norm_nonneg _`. Conclude with `mul_le_mul (mul_le_mul_of_nonneg_left hBQ hC) s2 (Finset.sum_nonneg fun _ _ => norm_nonneg _) (by positivity)`. Rewrite using `[e3]`.
+
+Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem strong [MeasurableSpace (G n)] (μ : Measure (G n)) (E : KMod n) (Q : E.V →L[ℂ] E.V) (hR : RCalc)
     (hL : ∀ f ∈ CE E, ∀ g ∈ GLs n, Lap f g = -Om f g + Q (f g)) (j : ℕ) :
     ∃ C : ℝ, 0 ≤ C ∧ ∀ f : Mat n → E.V, Sob μ f → IsSec E f → ∀ B : E.V →L[ℂ] E.V,
@@ -159,6 +218,9 @@ theorem strong [MeasurableSpace (G n)] (μ : Measure (G n)) (E : KMod n) (Q : E.
       _ ≤ C * ‖B‖ * S + C * (‖B‖ * ‖Q‖) * S := add_le_add (b1.trans c1) (b2.trans c2)
       _ = C * (1 + ‖Q‖) * ‖B‖ * S := by ring
 
+/- English proof (translation)
+Introduce `n _ _ μ _ E Q _ _ hR _ hL j`. Take `⟨C, -, h⟩` from `strong μ E Q hR hL j`. Use `⟨C * ‖(1 : E.V →L[ℂ] E.V)‖, fun f hS hs => ?_⟩` and prove the remaining obligations. Simplify `h f hS hs 1` using `only [ContinuousLinearMap.one_apply]`.
+-/
 theorem sectionBound : ∀ (n : ℕ) [MeasurableSpace (G n)] [BorelSpace (G n)] (μ : Measure (G n)) [μ.IsHaarMeasure] (E : KMod n)
     (Q : E.V →L[ℂ] E.V), LgFacts → Unimod → RCalc → ClsFacts →
     (∀ f ∈ CE E, ∀ g ∈ GLs n, GlobalTheory.CompanionTheory.FcSmooth.Lap f g = -Om f g + Q (f g)) →

@@ -4,6 +4,11 @@ import GroundTheory.GlobalFields.TateThesis.IdeleMeasureQuotient
 open Neutral.B1 Formalism.L2.Host Formalism.ConjugateSelfDual GlobalTheory.CuspRep GlobalTheory.GalOfCusp UpperTheory.V UpperTheory.V.Af UpperTheory.V.Published GroundTheory.Global GroundTheory.Automorphic.GJMatrix
 open UpperTheory.ConvolutionTheory.R2 UpperTheory.ConvolutionTheory.R2.Ff
 
+/- English proof (translation)
+Introduce `E _ _`. Use `⟨normOneMeasure_normOneFundamentalDomain_lt_top E, measurableSet_normOneFundamentalDomain E, ?_⟩` and prove the remaining obligations. Establish `hc : Continuous (fun z : ↥(IdeleGroup.normOneSubgroup E) => ((z : IdeleGroup E) : (A E)ˣ))` using `continuous_subtype_val`. Use `⟨_, (isCompact_closure_normOneFundamentalDomain E).image hc, ?_⟩` and prove the remaining obligations. Introduce `z hz`.
+
+Conclude with `⟨z, subset_closure hz, rfl⟩`.
+-/
 theorem UpperTheory.ConvolutionTheory.RankTwoDescent.Cp.zDom :
     UpperTheory.ConvolutionTheory.RankTwoDescent.Cp.ZDom := by
   intro E _ _

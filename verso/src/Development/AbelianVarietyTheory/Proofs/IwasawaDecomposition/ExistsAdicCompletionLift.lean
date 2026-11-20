@@ -4,6 +4,9 @@ open IsLocalRing
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Introduce `A R _ _ _ _ φ hc hm`. Use `haveI : IsAdicComplete ((maximalIdeal A).map φ) R := hm ▸ hc`. Conclude with `exists_adicCompletion_ringHom_extend (maximalIdeal A) φ`.
+-/
 theorem exists_maximalIdeal_adicCompletion_lift :
     ∀ {A R : Type} [CommRing A] [IsLocalRing A] [CommRing R] [IsLocalRing R] (φ : A →+* R),
       IsAdicComplete (maximalIdeal R) R → (maximalIdeal A).map φ = maximalIdeal R →

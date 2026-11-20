@@ -12,20 +12,35 @@ variable {R A B C : Type*} [CommSemiring R] [Semiring A] [Algebra R A] [Semiring
 scoped instance topologicalSpace : TopologicalSpace (A →ₐ[R] C) :=
   TopologicalSpace.induced (fun p : A →ₐ[R] C => (p : A → C)) inferInstance
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨⟨rfl⟩, DFunLike.coe_injective⟩`.
+-/
 theorem isEmbedding_coe : IsEmbedding (fun p : A →ₐ[R] C => (p : A → C)) :=
   ⟨⟨rfl⟩, DFunLike.coe_injective⟩
 
+/- English proof (translation)
+The claim follows from `(continuous_apply a).comp isEmbedding_coe.continuous`.
+-/
 theorem continuous_eval (a : A) : Continuous fun p : A →ₐ[R] C => p a :=
   (continuous_apply a).comp isEmbedding_coe.continuous
 
+/- English proof (translation)
+Rewrite using `[isEmbedding_coe.tendsto_nhds_iff, tendsto_pi_nhds]`. Both sides reduce to the same expression.
+-/
 theorem tendsto_nhds_iff {X : Type*} {f : X → (A →ₐ[R] C)} {l : Filter X} {p : A →ₐ[R] C} :
     Tendsto f l (𝓝 p) ↔ ∀ a, Tendsto (fun x => f x a) l (𝓝 (p a)) := by
   rw [isEmbedding_coe.tendsto_nhds_iff, tendsto_pi_nhds]; rfl
 
+/- English proof (translation)
+Rewrite using `[isEmbedding_coe.continuous_iff, continuous_pi_iff]`. Both sides reduce to the same expression.
+-/
 theorem continuous_iff {X : Type*} [TopologicalSpace X] {f : X → (A →ₐ[R] C)} :
     Continuous f ↔ ∀ a, Continuous fun x => f x a := by
   rw [isEmbedding_coe.continuous_iff, continuous_pi_iff]; rfl
 
+/- English proof (translation)
+Rewrite using `[isEmbedding_coe.continuousOn_iff, continuousOn_pi]`. Both sides reduce to the same expression.
+-/
 theorem continuousOn_iff {X : Type*} [TopologicalSpace X] {f : X → (A →ₐ[R] C)} {s : Set X} :
     ContinuousOn f s ↔ ∀ a, ContinuousOn (fun x => f x a) s := by
   rw [isEmbedding_coe.continuousOn_iff, continuousOn_pi]; rfl
@@ -35,17 +50,36 @@ scoped instance t2Space [T2Space C] : T2Space (A →ₐ[R] C) := isEmbedding_coe
 def comap (φ : A →ₐ[R] B) (p : B →ₐ[R] C) : A →ₐ[R] C := p.comp φ
 
 omit [TopologicalSpace C] in
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem comap_apply (φ : A →ₐ[R] B) (p : B →ₐ[R] C) (a : A) : comap φ p a = p (φ a) := rfl
 
+/- English proof (translation)
+The claim follows from `continuous_iff.2 fun a => continuous_eval (φ a)`.
+-/
 theorem continuous_comap (φ : A →ₐ[R] B) : Continuous (comap φ : (B →ₐ[R] C) → (A →ₐ[R] C)) :=
   continuous_iff.2 fun a => continuous_eval (φ a)
 
+/- English proof (translation)
+The claim follows from `isClosed_singleton.preimage (continuous_eval f)`.
+-/
 theorem isClosed_zeroSet [T1Space C] (f : A) : IsClosed {p : A →ₐ[R] C | p f = 0} :=
   isClosed_singleton.preimage (continuous_eval f)
 
+/- English proof (translation)
+The claim follows from `(isClosed_zeroSet f).isOpen_compl`.
+-/
 theorem isOpen_nonvanishing [T1Space C] (f : A) : IsOpen {p : A →ₐ[R] C | p f ≠ 0} :=
   (isClosed_zeroSet f).isOpen_compl
 
+/- English proof (translation)
+Use `⟨isEmbedding_coe, ?_⟩` and prove the remaining obligations. Establish `: range (fun p : A →ₐ[R] C => (p : A → C)) = {u | u 1 = 1} ∩ {u | u 0 = 0} ∩ (⋂ a, ⋂ b, {u | u (a * b) = u a * u b}) ∩ (⋂ a, ⋂ b, {u | u (a + b) = u a + u b}) ∩ ⋂ r, {u | u (algebraMap R A r) = algebraMap R C r}`. Use extensionality with `u`. Simplify using `only [mem_range, mem_inter_iff, mem_setOf_eq, mem_iInter]`. Prove the components needed by the constructor for the conclusion.
+
+Introduce and unpack `⟨p, rfl⟩`. Simplify using the standard rewrite rules. Introduce and unpack `⟨⟨⟨⟨h1, h0⟩, hm⟩, ha⟩, hr⟩`. Conclude with `⟨⟨⟨⟨⟨u, h1⟩, hm⟩, h0, ha⟩, hr⟩, rfl⟩`. Rewrite using `[this]`.
+
+Use `((((isClosed_eq ?_ ?_).inter (isClosed_eq ?_ ?_)).inter (isClosed_iInter fun a => isClosed_iInter fun b => isClosed_eq ?_ ?_)).inter (isClosed_iInter fun a => isClosed_iInter fun b => isClosed_eq ?_ ?_)).inter (isClosed_iInter fun r => isClosed_eq ?_ ?_)` and prove the remaining obligations. Apply the tactic sequence `all_goals fun_prop`.
+-/
 theorem isClosedEmbedding_coe [T2Space C] [IsTopologicalSemiring C] :
     IsClosedEmbedding (fun p : A →ₐ[R] C => (p : A → C)) := by
   refine ⟨isEmbedding_coe, ?_⟩
@@ -77,19 +111,33 @@ variable {R A B C : Type*} [CommRing R] [CommRing A] [Algebra R A] [CommRing B] 
 noncomputable def coords (g : MvPolynomial σ R →ₐ[R] A) (p : A →ₐ[R] C) : σ → C := fun i => p (g (X i))
 
 omit [TopologicalSpace C] in
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem coords_apply (g : MvPolynomial σ R →ₐ[R] A) (p : A →ₐ[R] C) (i : σ) :
     coords g p i = p (g (X i)) := rfl
 
 omit [TopologicalSpace C] in
+/- English proof (translation)
+Establish `: (aeval (coords g p) : MvPolynomial σ R →ₐ[R] C) = p.comp g` using `by ext i; simp`. Rewrite using `[this]`. Both sides reduce to the same expression.
+-/
 theorem aeval_coords (g : MvPolynomial σ R →ₐ[R] A) (p : A →ₐ[R] C) (q : MvPolynomial σ R) :
     aeval (coords g p) q = p (g q) := by
   have : (aeval (coords g p) : MvPolynomial σ R →ₐ[R] C) = p.comp g := by ext i; simp
   rw [this]; rfl
 
+/- English proof (translation)
+The claim follows from `continuous_pi fun _ => continuous_eval _`.
+-/
 theorem continuous_coords (g : MvPolynomial σ R →ₐ[R] A) :
     Continuous (coords g : (A →ₐ[R] C) → σ → C) :=
   continuous_pi fun _ => continuous_eval _
 
+/- English proof (translation)
+Proceed by induction on `q using MvPolynomial.induction_on with`. Consider the case `C a => simpa using continuous_const`. Consider the case `add P Q hP hQ => simp only [map_add]`. Conclude with `hP.add hQ`. Consider the case `mul_X P i hP => simp only [map_mul, aeval_X]`.
+
+Conclude with `hP.mul (continuous_apply i)`.
+-/
 theorem continuous_aeval_mvPolynomial [IsTopologicalRing C] (q : MvPolynomial σ R) :
     Continuous fun z : σ → C => aeval z q := by
   induction q using MvPolynomial.induction_on with
@@ -110,6 +158,11 @@ noncomputable def mvPolynomialHomeomorph [IsTopologicalRing C] :
 
 omit [TopologicalSpace C] in
 
+/- English proof (translation)
+Use `⟨(Ideal.Quotient.liftₐ (RingHom.ker φ) p hp).comp (Ideal.quotientKerAlgEquivOfSurjective hφ).symm.toAlgHom, ?_⟩` and prove the remaining obligations. Use extensionality with `a`. Establish `: (Ideal.quotientKerAlgEquivOfSurjective hφ).symm (φ a) = Ideal.Quotient.mk _ a`. Rewrite using `[AlgEquiv.symm_apply_eq]`. Both sides reduce to the same expression.
+
+Conclude with `congrArg (Ideal.Quotient.liftₐ (RingHom.ker φ) p hp) this`.
+-/
 theorem exists_comap_eq_of_surjective (φ : A →ₐ[R] B) (hφ : Function.Surjective φ)
     (p : A →ₐ[R] C) (hp : ∀ a, φ a = 0 → p a = 0) : ∃ q : B →ₐ[R] C, comap φ q = p := by
   refine ⟨(Ideal.Quotient.liftₐ (RingHom.ker φ) p hp).comp
@@ -119,6 +172,17 @@ theorem exists_comap_eq_of_surjective (φ : A →ₐ[R] B) (hφ : Function.Surje
     rw [AlgEquiv.symm_apply_eq]; rfl
   exact congrArg (Ideal.Quotient.liftₐ (RingHom.ker φ) p hp) this
 
+/- English proof (translation)
+Use `⟨⟨?_, ?_⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[isInducing_iff_nhds]`. Introduce `p`. Use `le_antisymm (continuous_comap φ).continuousAt.le_comap ?_` and prove the remaining obligations. Rewrite using `[← tendsto_id', tendsto_nhds_iff]`.
+
+Introduce `b`. Take `⟨a, rfl⟩` from `hφ b`. Conclude with `tendsto_nhds_iff.1 (tendsto_comap (f := comap φ) (x := 𝓝 (comap φ p))) a`. Introduce `p q h`. Use extensionality with `b`.
+
+Take `⟨a, rfl⟩` from `hφ b`. Conclude with `DFunLike.congr_fun h a`. Establish `: range (comap φ : (B →ₐ[R] C) → (A →ₐ[R] C)) = ⋂ a ∈ {a | φ a = 0}, {p | p a = 0}`. Use extensionality with `p`. Simplify using `only [mem_range, mem_iInter, mem_setOf_eq]`.
+
+Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨q, rfl⟩ a ha`. Simplify using `[ha]`. Conclude with `exists_comap_eq_of_surjective φ hφ p`. Rewrite using `[this]`.
+
+Conclude with `isClosed_biInter fun a _ => isClosed_zeroSet a`.
+-/
 theorem isClosedEmbedding_comap [T1Space C] (φ : A →ₐ[R] B) (hφ : Function.Surjective φ) :
     IsClosedEmbedding (comap φ : (B →ₐ[R] C) → (A →ₐ[R] C)) := by
   refine ⟨⟨?_, ?_⟩, ?_⟩
@@ -143,6 +207,9 @@ theorem isClosedEmbedding_comap [T1Space C] (φ : A →ₐ[R] B) (hφ : Function
     rw [this]
     exact isClosed_biInter fun a _ => isClosed_zeroSet a
 
+/- English proof (translation)
+The claim follows from `(mvPolynomialHomeomorph R C σ).isClosedEmbedding.comp (isClosedEmbedding_comap g hg)`.
+-/
 theorem isClosedEmbedding_coords [T1Space C] [IsTopologicalRing C]
     (g : MvPolynomial σ R →ₐ[R] A) (hg : Function.Surjective g) :
     IsClosedEmbedding (coords g : (A →ₐ[R] C) → σ → C) :=
@@ -167,6 +234,11 @@ section Away
 variable {R A B K : Type*} [CommRing R] [CommRing A] [Algebra R A] [CommRing B] [Algebra R B]
   [Algebra A B] [IsScalarTower R A B] [Field K] [Algebra R K]
 
+/- English proof (translation)
+Use extensionality with `p`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨q, rfl⟩`. Conclude with `((IsLocalization.Away.algebraMap_isUnit (S := B) f).map q).ne_zero`. Introduce `hp`.
+
+Use `⟨IsLocalization.liftAlgHom (M := Submonoid.powers f) (f := p) ?_, ?_⟩` and prove the remaining obligations. Introduce and unpack `⟨_, n, rfl⟩`. Simplify using `using (isUnit_iff_ne_zero.2 hp).pow n`. Use extensionality with `a`. Simplify using the standard rewrite rules.
+-/
 theorem range_comap_away (f : A) [IsLocalization.Away f B] :
     range (comap (IsScalarTower.toAlgHom R A B) : (B →ₐ[R] K) → (A →ₐ[R] K)) = {p | p f ≠ 0} := by
   ext p
@@ -179,11 +251,23 @@ theorem range_comap_away (f : A) [IsLocalization.Away f B] :
       simpa using (isUnit_iff_ne_zero.2 hp).pow n
     · ext a; simp
 
+/- English proof (translation)
+Rewrite using `[eq_div_iff (hs.map q).ne_zero, ← map_mul, h]`.
+-/
 theorem apply_eq_div_of_mul_eq (q : B →ₐ[R] K) {b : B} {a s : A} (hs : IsUnit (algebraMap A B s))
     (h : b * algebraMap A B s = algebraMap A B a) :
     q b = q (algebraMap A B a) / q (algebraMap A B s) := by
   rw [eq_div_iff (hs.map q).ne_zero, ← map_mul, h]
 
+/- English proof (translation)
+Establish `key : ∀ b : B, ∃ a s : A, IsUnit (algebraMap A B s) ∧ b * algebraMap A B s = algebraMap A B a` using `fun b => by`. Take `⟨⟨a, s⟩, h⟩` from `IsLocalization.surj (Submonoid.powers f) b`. Conclude with `⟨a, s, IsLocalization.map_units B s, h⟩`. Use `⟨⟨?_, ?_⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[isInducing_iff_nhds]`.
+
+Introduce `p`. Use `le_antisymm (continuous_comap _).continuousAt.le_comap ?_` and prove the remaining obligations. Rewrite using `[← tendsto_id', tendsto_nhds_iff]`. Introduce `b`. Take `⟨a, s, hs, h⟩` from `key b`.
+
+Establish `H` using `tendsto_nhds_iff.1 (tendsto_comap (f := (comap (IsScalarTower.toAlgHom R A B) : (B →ₐ[R] K) → (A →ₐ[R] K))) (x := 𝓝 (comap (IsScalarTower.toAlgHom R A B) p)))`. Simplify using `only [id, fun q : B →ₐ[R] K => apply_eq_div_of_mul_eq q hs h]`. Conclude with `(H a).div (H s) (hs.map p).ne_zero`. Introduce `p q hpq`. Use extensionality with `b`.
+
+Take `⟨a, s, hs, h⟩` from `key b`. Rewrite using `[apply_eq_div_of_mul_eq p hs h, apply_eq_div_of_mul_eq q hs h]`. Conclude with `congrArg₂ (· / ·) (DFunLike.congr_fun hpq a) (DFunLike.congr_fun hpq s)`. Rewrite using `[range_comap_away f]`. Conclude with `isOpen_nonvanishing f`.
+-/
 theorem isOpenEmbedding_comap_away (f : A) [IsLocalization.Away f B]
     [TopologicalSpace K] [T1Space K] [IsTopologicalDivisionRing K] :
     IsOpenEmbedding (comap (IsScalarTower.toAlgHom R A B) : (B →ₐ[R] K) → (A →ₐ[R] K)) := by

@@ -15,15 +15,24 @@ variable {R F : Type} [CommRing R] [Field F] (ψ : R →+* F) (P₁ : Polynomial
 def locMap : Localization.Away P₁ →+* Localization.Away (P₁.map ψ) :=
   IsLocalization.Away.map (Localization.Away P₁) (Localization.Away (Polynomial.mapRingHom ψ P₁)) (Polynomial.mapRingHom ψ) P₁
 
+/- English proof (translation)
+Unfold `locMap IsLocalization.Away.map`. Use `erw [IsLocalization.map_eq]`. Both sides reduce to the same expression.
+-/
 theorem locMap_algebraMap (p : Polynomial R) :
     locMap ψ P₁ (algebraMap (Polynomial R) _ p) = algebraMap (Polynomial F) _ (p.map ψ) := by
   unfold locMap IsLocalization.Away.map
   erw [IsLocalization.map_eq]
   rfl
 
+/- English proof (translation)
+Rewrite using `[Polynomial.eval_map, Polynomial.eval₂_at_apply]`.
+-/
 theorem eval_map_apply' (a : R) (p : Polynomial R) : (p.map ψ).eval (ψ a) = ψ (p.eval a) := by
   rw [Polynomial.eval_map, Polynomial.eval₂_at_apply]
 
+/- English proof (translation)
+Simplify `ha.map ψ` using `[eval_map_apply']`.
+-/
 theorem isUnit_eval (a : R) (ha : IsUnit (Polynomial.evalRingHom a P₁)) :
     IsUnit (Polynomial.evalRingHom (ψ a) (P₁.map ψ)) := by
   simpa [eval_map_apply'] using ha.map ψ
@@ -35,6 +44,9 @@ def evalAt (a : R) (ha : IsUnit (Polynomial.evalRingHom a P₁)) :
     rw [IsScalarTower.algebraMap_apply F (Polynomial F) (Localization.Away (P₁.map ψ))]
     simp [IsLocalization.Away.lift, IsLocalization.lift_eq]
 
+/- English proof (translation)
+Apply `IsLocalization.ringHom_ext (Submonoid.powers P₁)` to reduce the goal to its premises. Use `RingHom.ext fun p => ?_` and prove the remaining obligations. Simplify using `only [RingHom.comp_apply, locMap_algebraMap]`. Simplify using `[evalAt, IsLocalization.Away.lift, IsLocalization.lift_eq, eval_map_apply']`.
+-/
 theorem evalAt_comp (a : R) (ha : IsUnit (Polynomial.evalRingHom a P₁)) :
     (evalAt ψ P₁ a ha).toRingHom.comp (locMap ψ P₁) =
       ψ.comp (IsLocalization.Away.lift (S := Localization.Away P₁) P₁ ha) := by
@@ -43,6 +55,9 @@ theorem evalAt_comp (a : R) (ha : IsUnit (Polynomial.evalRingHom a P₁)) :
   simp only [RingHom.comp_apply, locMap_algebraMap]
   simp [evalAt, IsLocalization.Away.lift, IsLocalization.lift_eq, eval_map_apply']
 
+/- English proof (translation)
+Use `RingHom.ext fun r => ?_` and prove the remaining obligations. Rewrite using `[RingHom.comp_apply, IsScalarTower.algebraMap_apply R (Polynomial R) (Localization.Away P₁), locMap_algebraMap, RingHom.comp_apply, IsScalarTower.algebraMap_apply F (Polynomial F) (Localization.Away (P₁.map ψ))]`. Simplify using `[Polynomial.algebraMap_apply]`.
+-/
 theorem locMap_comp_algebraMap :
     (locMap ψ P₁).comp (algebraMap R (Localization.Away P₁)) =
       (algebraMap F (Localization.Away (P₁.map ψ))).comp ψ := by
@@ -57,6 +72,15 @@ namespace GlobalTheory
 
 open GlobalTheory.CurveBaseChange in
 
+/- English proof (translation)
+Introduce `R F _ _ ψ X P₁ u₁ α β hα hβ hu hlc hne`. Establish `hP : P₁.map ψ ≠ 0`. Introduce `h`. Establish `h'` using `Polynomial.leadingCoeff_map_of_leadingCoeff_ne_zero ψ hlc.ne_zero`. Rewrite `h'` using `[h, Polynomial.leadingCoeff_zero]`.
+
+Conclude with `hlc.ne_zero h'.symm`. Establish `hcomm : (spMap (locMap ψ P₁) ≫ u₁) ≫ X.hom = spMap (algebraMap F (Localization.Away (P₁.map ψ))) ≫ spMap ψ`. Rewrite using `[Category.assoc, hu, ← Geo.Tor.spMap_comp, ← Geo.Tor.spMap_comp, locMap_comp_algebraMap]`. Use `⟨P₁.map ψ, hP, pullback.lift _ _ hcomm, evalAt ψ P₁ α hα, evalAt ψ P₁ β hβ, ?_, ?_⟩` and prove the remaining obligations. Conclude with `pullback.lift_snd _ _ _`.
+
+Introduce `h`. Apply `hne` to reduce the goal to its premises. Establish `h2` using `congrArg (· ≫ pullback.fst X.hom (spMap ψ)) h`. Simplify using `only [Category.assoc] at h2`. Use `erw [pullback.lift_fst] at h2`.
+
+Rewrite using `[← Category.assoc, ← Category.assoc, ← Geo.Tor.spMap_comp, ← Geo.Tor.spMap_comp, ← evalAt_comp, ← evalAt_comp, Geo.Tor.spMap_comp, Geo.Tor.spMap_comp, Category.assoc, Category.assoc]`. Conclude with `h2`.
+-/
 theorem curve_baseChange_two_points : ∀ (R F : Type) [CommRing R] [Field F] (ψ : R →+* F) (X : Over (Sp R)) (P₁ : Polynomial R) (u₁ : Sp (Localization.Away P₁) ⟶ X.left) (α β : R) (hα : IsUnit (Polynomial.evalRingHom α P₁)) (hβ : IsUnit (Polynomial.evalRingHom β P₁)), u₁ ≫ X.hom = spMap (algebraMap R (Localization.Away P₁)) → IsUnit (ψ P₁.leadingCoeff) → spMap ψ ≫ spMap (IsLocalization.Away.lift (S := Localization.Away P₁) P₁ hα) ≫ u₁ ≠ spMap ψ ≫ spMap (IsLocalization.Away.lift (S := Localization.Away P₁) P₁ hβ) ≫ u₁ → ∃ (P' : Polynomial F) (_ : P' ≠ 0) (u' : Sp (Localization.Away P') ⟶ ((Over.pullback (spMap ψ)).obj X).left) (a' b' : Localization.Away P' →ₐ[F] F), u' ≫ ((Over.pullback (spMap ψ)).obj X).hom = spMap (algebraMap F (Localization.Away P')) ∧ spMap a'.toRingHom ≫ u' ≠ spMap b'.toRingHom ≫ u' := by
   intro R F _ _ ψ X P₁ u₁ α β hα hβ hu hlc hne
   have hP : P₁.map ψ ≠ 0 := by

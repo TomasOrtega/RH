@@ -36,6 +36,19 @@ def gamSub (y : I.Gf) : Subgroup I.GA where
 
 def gamInf (y : I.Gf) : Subgroup I.Ginf := (gamSub I y).map (MonoidHom.fst I.Ginf I.Gf)
 
+/- English proof (translation)
+Take `⟨M, -, hv, hf⟩` from `hγ`. Take `⟨v⟩ : Nonempty (NumberField.InfinitePlace I.F)` from `inferInstance`. Establish `hP : I.P v * (I.P v)⁻¹ = 1` using `Matrix.mul_nonsing_inv _ ((Matrix.isUnit_iff_isUnit_det _).1 (I.P_unit v))`. Establish `hP' : (I.P v)⁻¹ * I.P v = 1` using `Matrix.nonsing_inv_mul _ ((Matrix.isUnit_iff_isUnit_det _).1 (I.P_unit v))`. Establish `h` using `hv v`.
+
+Establish `hu : uMat (γ.1 v) = 1` using `by rw [h1]; rfl`. Rewrite `h` using `[hu]`. Establish `hMφ : (M : Matrix (Fin I.n) (Fin I.n) I.E).map (I.φ v) = 1`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [Matrix.mul_assoc, hP, Matrix.mul_one]`.
+
+Rewrite using `[← Matrix.mul_assoc, hP, Matrix.one_mul]`. Use `_ = 1 := by rw [← h, Matrix.mul_one, hP]`. Establish `hM : (M : Matrix (Fin I.n) (Fin I.n) I.E) = 1`. Use extensionality with `i j`. Use `congrFun (congrFun hMφ i) j` as an intermediate fact.
+
+Rewrite `this` using `[Matrix.map_apply]`. Apply `(I.φ v).injective` to reduce the goal to its premises. Rewrite using `[this]`. Distinguish the cases in `hij : i = j`. Substitute `hij` using the available equality.
+
+Simplify using the standard rewrite rules. Simplify using `[Matrix.one_apply_ne hij]`. Establish `hf1 : I.fmat γ.2 = 1`. Rewrite using `[hf, hM, Matrix.map_one _ (map_zero _) (map_one _)]`. Use `Prod.ext h1 ?_` and prove the remaining obligations.
+
+Apply `Subtype.ext` to reduce the goal to its premises. Apply `Units.ext` to reduce the goal to its premises. Conclude with `hf1`.
+-/
 theorem eq_one_of_fst (γ : I.GA) (hγ : γ ∈ I.GFset) (h1 : γ.1 = 1) : γ = 1 := by
   obtain ⟨M, -, hv, hf⟩ := hγ
   obtain ⟨v⟩ : Nonempty (NumberField.InfinitePlace I.F) := inferInstance
@@ -66,6 +79,19 @@ theorem eq_one_of_fst (γ : I.GA) (hγ : γ ∈ I.GFset) (h1 : γ.1 = 1) : γ = 
   apply Units.ext
   exact hf1
 
+/- English proof (translation)
+Use `haveI : T2Space I.Gf := Formalism.L2.SG.Pf.finite_adeles_group_t2 I`. Use `haveI hD : DiscreteTopology (Formalism.MainNotions.LeviCoordinates.rr_GF I) := Formalism.L2.SG.Pf.gf_discrete I`. Establish `hS : IsClosed ((Formalism.MainNotions.LeviCoordinates.rr_GF I : Subgroup I.GA) : Set I.GA)` using `Subgroup.isClosed_of_discrete`. Take `⟨C, hCc, hC1⟩` from `exists_compact_mem_nhds (1 : I.Ginf)`. Use `set Cf : Set I.Gf := (fun k => y * k * y⁻¹) '' I.Kset with hCfdef`.
+
+Establish `hK : IsCompact Cf` using `(PI.WAU.maximal_compact_isCompact I).image (by fun_prop)`. Establish `hC : IsCompact (C ×ˢ Cf)` using `hCc.prod hK`. Use `set Fs : Set I.GA := ((Formalism.MainNotions.LeviCoordinates.rr_GF I : Subgroup I.GA) : Set I.GA) ∩ C ×ˢ Cf with hFsdef`. Establish `hDs : DiscreteTopology Fs` using `DiscreteTopology.of_subset hD inter_subset_left`. Apply the tactic sequence `have hFin : Fs.Finite := IsCompact.finite (hC.inter_left hS) (by first | exact ⟨hDs⟩ | exact hDs | exact isDiscrete_iff_discreteTopology.2 hDs)`.
+
+Use `set T : Set I.Ginf := ((fun γ : I.GA => γ.1) '' Fs) \ {1} with hTdef`. Establish `hT : IsClosed T` using `((hFin.image _).subset diff_subset).isClosed`. Rewrite using `[discreteTopology_iff_isOpen_singleton_one]`. Use `isOpen_induced_iff.2 ⟨interior C \ T, isOpen_interior.sdiff hT, ?_⟩` and prove the remaining obligations. Use extensionality with `⟨h, hh⟩`.
+
+Simplify using `only [mem_preimage, mem_diff, mem_singleton_iff]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨hint, hnT⟩`. Take `⟨γ, ⟨hγF, hγK⟩, rfl⟩` from `Subgroup.mem_map.1 hh`. Apply `Subtype.ext` to reduce the goal to its premises.
+
+Assume the negation of the conclusion as `hne`. Apply `hnT` to reduce the goal to its premises. Establish `hFs : γ ∈ Fs` using `⟨hγF, interior_subset hint, ⟨y⁻¹ * γ.2 * y, hγK, (by group)⟩⟩`. Conclude with `⟨⟨γ, hFs, rfl⟩, hne⟩`. Introduce `h1`.
+
+Establish `e : h = 1` using `congrArg Subtype.val h1`. Substitute `e` using the available equality. Conclude with `⟨mem_interior_iff_mem_nhds.2 hC1, fun hT1 => hT1.2 rfl⟩`.
+-/
 theorem gamInf_discrete (y : I.Gf) : DiscreteTopology (gamInf I y) := by
   haveI : T2Space I.Gf := Formalism.L2.SG.Pf.finite_adeles_group_t2 I
   haveI hD : DiscreteTopology (Formalism.MainNotions.LeviCoordinates.rr_GF I) := Formalism.L2.SG.Pf.gf_discrete I
@@ -97,6 +123,13 @@ theorem gamInf_discrete (y : I.Gf) : DiscreteTopology (gamInf I y) := by
     subst e
     exact ⟨mem_interior_iff_mem_nhds.2 hC1, fun hT1 => hT1.2 rfl⟩
 
+/- English proof (translation)
+Introduce `I y`. Use `haveI := gamInf_discrete I y`. Take `⟨F, hFm, hcov, huniq⟩` from `Formalism.L2.SG.Pf.exists_strictFund (gamInf I y)`. Use `⟨F, hFm, fun z => ?_, fun γ hγ hne => ?_⟩` and prove the remaining obligations. Take `⟨s, hs, hsz⟩` from `hcov z`.
+
+Take `⟨γ, hγ, rfl⟩` from `Subgroup.mem_map.1 hs`. Conclude with `⟨γ, hγ, hsz⟩`. Establish `e : (fun z => γ.1 * z) '' F ∩ F = ∅`. Use extensionality with `w`. Simplify using `only [mem_inter_iff, mem_image, mem_empty_iff_false, iff_false, not_and]`.
+
+Introduce and unpack `⟨x, hx, rfl⟩ hw`. Establish `h1` using `huniq x hx γ.1 (Subgroup.mem_map.2 ⟨γ, hγ, rfl⟩) hw`. Conclude with `hne (eq_one_of_fst I γ hγ.1 h1)`. Rewrite using `[e, measure_empty]`.
+-/
 theorem FundInfExists_holds : FundInfExists := by
   intro I y
   haveI := gamInf_discrete I y

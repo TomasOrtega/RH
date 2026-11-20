@@ -26,6 +26,31 @@ open GlobalTheory.CechPic GlobalTheory.SymLin GlobalTheory.LamOfDouble
 open FreeAbelianGroup in
 set_option maxHeartbeats 1000000 in
 
+/- English proof (translation)
+Take `⟨v, j, a, rv, rj, h₁, h₂, h₃⟩` from `core hG hA hM H (fun n => i (bas n)) (fun n => by rw [← map_mul, mul_self_eq, map_one])`. Substitute `hLe` using the available equality. Establish `hb' : ∀ m, ∃ b : Γ(Sp K, ⊤)ˣ, b * b = a m` using `fun m => by`. Take `⟨b, e⟩` from `IsAlgClosed.exists_pow_nat_eq ((Scheme.ΓSpecIso (CommRingCat.of K)).hom.hom (a m).val : K) two_pos`. Establish `e' : (Scheme.ΓSpecIso (CommRingCat.of K)).inv.hom b * (Scheme.ΓSpecIso (CommRingCat.of K)).inv.hom b = (a m).val`.
+
+Rewrite using `[← map_mul, ← pow_two, e]`. Conclude with `Iso.hom_inv_id_apply _ _`. Establish `hu` using `isUnit_of_mul_isUnit_left (e' ▸ Units.isUnit _)`. Conclude with `⟨hu.unit, Units.ext e'⟩`. Use `choose b hb' using hb'`.
+
+Set `ρ : Multiplicative (Fin n → ZMod 2) →* Monoid.End (Vals M A.left)` to `{ toFun := fun q => pl (tr (i q)).left map_one' := MonoidHom.ext fun f => by rw [map_one, tr_one]; exact pl_id f map_mul' := fun q q' => MonoidHom.ext fun f => by show _ = pl (tr (i q)).left (pl (tr (i q')).left f)`. Rewrite using `[pl_pl, ← Over.comp_left, tr_tr, mul_comm q, map_mul] }`. Establish `ρe : ∀ q f, ρ q f = pl (tr (i q)).left f` using `fun _ _ => rfl`. Establish `ρb : ∀ (x : A ⟶ A) (f : Vals M (Sp K)), pl x.left (pl A.hom f) = pl A.hom f` using `fun x f => by`. Rewrite using `[pl_pl, Over.w]`.
+
+Establish `ii : ∀ q, i q * i q = 1` using `fun q => by rw [← map_mul, mul_self_eq, map_one]`. Take `⟨u, hu, hu'⟩` from `exists_cocycle ρ (fun q f => Rep M (of (𝟙 _) + of (𝟙 _) - of (tr (i q)).left - of (tr (i q)).left) f ∧ f * ρ q j = j * pl (GrpObj.inv : A ⟶ A).left f) ⟨(map_one (uv M A.left) ▸ rep_uv 1).form (by rw [map_one, tr_one, Over.id_left]; abel), by simp⟩ (fun q q' f f' hf hf' => ⟨(hf.1. …`. Simplify using `only [map_add, map_sub, map_of_apply, Category.comp_id]`. Rewrite using `[← Over.comp_left, tr_tr, mul_comm q, map_mul]; abel), by`. Establish `e : pl (GrpObj.inv : A ⟶ A).left (ρ q f') = ρ q (pl (GrpObj.inv : A ⟶ A).left f')`.
+
+Rewrite using `[ρe, ρe, pl_pl, pl_pl, ← Over.comp_left, ← Over.comp_left, tr_inv (ii q)]`. Rewrite using `[map_mul ρ, Monoid.End.coe_mul, Function.comp_apply, _root_.mul_assoc, ← map_mul, hf'.2, map_mul, ← _root_.mul_assoc, hf.2, map_mul, e, _root_.mul_assoc]⟩)`. Use the proof step `(fun n => v n * pl A.hom (uv _ _ (b n)⁻¹))`. Use the proof step `(fun n => ⟨((rv n).mul ((rep_uv _).pull A.hom)).form (by`. Simplify using `only [map_zero, add_zero]), by`.
+
+Rewrite using `[ρe, map_mul, ρb, mul_right_comm, h₃, _root_.mul_assoc]⟩)`. Use the proof step `(fun n => by`. Rewrite using `[ρe, map_mul, ρb, _root_.mul_mul_mul_comm, h₁, ← hb', ← map_mul, ← map_mul, ← map_mul, ← map_mul, ← mul_inv, mul_inv_cancel, map_one, map_one])`. Use the proof step `(fun n m => by`. Rewrite using `[ρe, ρe, map_mul, map_mul, ρb, ρb, _root_.mul_mul_mul_comm, h₂]`.
+
+Use the proof step `ac_rfl)`. Establish `hL' : (lbPow M 2).IsLB` using `LB.isLB_linComb hM _ _`. Set `D : Vals (lbPow M 2) A.left →* Vals M A.left` to `dn M (𝟙 _) ((2 : ℕ) : ℤ) A.left`. Establish `Dpl : ∀ (x : A.left ⟶ A.left) f, D (pl x f) = pl x (D f)` using `fun _ _ => rfl`. Establish `Dinj : ∀ {E} {f f'}, Rep (lbPow M 2) E f → Rep (lbPow M 2) E f' → D f = D f' → f = f'` using `fun {E f f'} hf hf' e => by`.
+
+Take `⟨a, ha⟩` from `((hf.mul hf'.inv).form (add_neg_cancel _)).zero hL'`. Establish `: uv M A.left a = 1`. Use `congrArg D ha` as an intermediate fact. Rewrite `this` using `[map_mul, map_inv, e, mul_inv_cancel]`. Conclude with `this.symm`.
+
+Conclude with `mul_inv_eq_one.1 (ha.trans (uv_eq_one hM _ this))`. Establish `down : ∀ (x : A.left ⟶ A.left) f, Rep M (of (𝟙 _) + of (𝟙 _) - of x - of x) f → ∃ t : LB.Gen (LB.LinComb (lbPow M 2) (K` using `Fin 2) ![𝟙 A.left, x] ![1, -1]), t.IsGen ∧ D (vals t) = f := fun x f hf => Rep.down hM (𝟙 _) ((2 : ℕ) : ℤ) (K := Fin 2) ![𝟙 A.left, x] ![1, -1] (hf.form (by`. Simplify using `only [Fin.sum_univ_two, Matrix.cons_val_zero, Matrix.cons_val_one, Category.comp_id]`. Use the proof step `module))`. Use `choose U hU eU using fun q => down _ _ (hu q).1`.
+
+Take `⟨J₀, hJ₀, eJ⟩` from `down (GrpObj.inv : A ⟶ A).left j rj`. Establish `r₂ : ∀ {x : A.left ⟶ A.left} {t : LB.Gen (LB.LinComb (lbPow M 2) (K` using `Fin 2) ![𝟙 A.left, x] ![1, -1])}, t.IsGen → ∀ y : A.left ⟶ A.left, Rep _ (of y - of (y ≫ x)) (pl y (vals t)) := fun ht y => ((rep_vals ht).pull y).form (by simp [Fin.sum_univ_two, sub_eq_add_neg])`. Establish `r₁` using `fun q => pl_id (M := lbPow M 2) _ ▸ r₂ (hU q) (𝟙 _)`. Establish `r₃` using `pl_id (M := lbPow M 2) _ ▸ r₂ hJ₀ (𝟙 _)`. Simplify using `only [Category.id_comp] at r₁ r₃`.
+
+Use `⟨U, J₀, hU, fun q q' => corr_of_val hL' fun y J hJ => ?_, hJ₀, fun q T x z J hJ => ?_⟩` and prove the remaining obligations. Establish `e` using `Dinj (r₁ (q * q')) (((r₁ q).mul (r₂ (hU q') (tr (i q)).left)).form (by`. Rewrite using `[← Over.comp_left, tr_tr, mul_comm q, map_mul]; abel)) (by rw [map_mul D, Dpl, eU, eU, eU, hu', ρe])`. Rewrite using `[val_mul hJ, val_pull hJ]`. Conclude with `congrFun (congrFun (congrFun (congrFun e _) (𝟙 _)) y) ⟨J, hJ⟩`.
+
+Establish `e` using `Dinj ((r₁ q).mul (r₂ hJ₀ (tr (i q)).left)) ((r₃.mul (r₂ (hU q) (GrpObj.inv : A ⟶ A).left)).form (by`. Rewrite using `[← Over.comp_left, ← Over.comp_left, tr_inv (ii q)]; abel)) (by`. Rewrite using `[map_mul D, map_mul D, Dpl, Dpl, eU, eJ, ← ρe, (hu q).2])`. Rewrite using `[inv_eq_of_mul_eq_one_right (mul_self_eq q), ← comp_tr x (i q), ← comp_inv' x, Over.comp_left, Over.comp_left]`. Conclude with `congrFun (congrFun (congrFun (congrFun e _) x.left) z) ⟨J, hJ⟩`.
+-/
 theorem exists_lin {K : Type} [Field K] [IsAlgClosed K] (hG : Out.GlobalFnsSt) {A : Over (Sp K)} [GrpObj A]
     [IsCommMonObj A] (hA : IsAbelianScheme A) {M : LB A.left} (hM : M.IsLB)
     (H : ∀ T : Over (Sp K),
@@ -119,6 +144,27 @@ theorem exists_lin {K : Type} [Field K] [IsAlgClosed K] (hG : Out.GlobalFnsSt) {
     rw [inv_eq_of_mul_eq_one_right (mul_self_eq q), ← comp_tr x (i q), ← comp_inv' x, Over.comp_left, Over.comp_left]
     exact congrFun (congrFun (congrFun (congrFun e _) x.left) z) ⟨J, hJ⟩
 
+/- English proof (translation)
+Establish `hM : (P.pull (lift (𝟙 A) (𝟙 A)).left).IsLB` using `pull_isLB hP _`. Establish `hΛ : (abelian₂ A L).IsLB` using `LB.isLB_linComb hLB _ _`. Establish `hN : (LB.div (abelian₂ A L) P).IsLB` using `LB.isLB_div hΛ hP`. Establish `hPow : (lbPow (P.pull (lift (𝟙 A) (𝟙 A)).left) 2).IsLB` using `LB.isLB_linComb hM _ _`. Use `set l := cls L hLB with hl`.
+
+Use `set p := cls P hP with hp`. Establish `eΛ : cls _ hΛ = lam l (fst A A) (snd A A)` using `cls_cube_two hLB _ _ hΛ`. Establish `eN : ∀ (T : Over (Sp R)) (x y : T ⟶ A), ev (cls _ hN) x y = lam l x y - ev p x y`. Introduce `T x y`. Rewrite using `[cls_div hΛ hP, eΛ, ev, map_sub, pull_lam, lift_fst, lift_snd]`.
+
+Both sides reduce to the same expression. Establish `r₁ : ∀ (T : Over (Sp R)) (y : T ⟶ A), ev p 1 y = 0` using `fun T y => by`. Use `(bP T 1 1 y).1` as an intermediate fact. Rewrite `this` using `[_root_.mul_one]`. Conclude with `left_eq_add.1 this`.
+
+Establish `n₁ : ∃ t : ((LB.div (abelian₂ A L) P).pull (lift (1 : A ⟶ A) (𝟙 A)).left).Gen, t.IsGen`. Use `(cls_eq_zero_iff (pull_isLB hN _)).1 ((eN _ _ _).trans ?_)` and prove the remaining obligations. Rewrite using `[r₁, lam_one_left, sub_zero]`. Establish `n₂ : ∃ t : ((LB.div (abelian₂ A L) P).pull (lift (𝟙 A) (1 : A ⟶ A)).left).Gen, t.IsGen`. Use `(cls_eq_zero_iff (pull_isLB hN _)).1 ((eN _ _ _).trans ?_)` and prove the remaining obligations.
+
+Rewrite using `[sy, r₁, lam_one_right, sub_zero]`. Establish `bN` using `biadd_of_axes hL.globalFns hA _ hH ha _ hN n₁ n₂`. Establish `dbl : ∀ (T : Over (Sp R)) (x : T ⟶ A), pull (x * x).left l = ev p x x + ev p x x`. Introduce `T x`. Establish `e : 2 • ev p (𝟙 A) (𝟙 A) = pull ((𝟙 A) ^ 2 : A ⟶ A).left l` using `(cls_lbPow hM 2 hPow).symm.trans ((cls_eq_iff hPow (pull_isLB hLB _)).2 hiso)`.
+
+Establish `e'` using `congrArg (pull x.left) e`. Rewrite `e'` using `[map_nsmul, pull_ev, ← pull_comp, ← Over.comp_left, pow_two, MonObj.comp_mul, Category.comp_id, two_smul]`. Conclude with `e'.symm`. Establish `z : ∀ (T : Over (Sp R)) (x y : T ⟶ A), ev (cls _ hN) (x ^ 4) y = 0`. Introduce `T x y`.
+
+Establish `a : ev (cls _ hN) (x * x) (y * y) = 0`. Establish `o₂` using `dbl T 1`. Rewrite `o₂` using `[_root_.mul_one, r₁]`. Rewrite using `[eN, lam, _root_.mul_mul_mul_comm, dbl, dbl, dbl, o₂]`. Simplify using `only [(bP T _ _ _).1, (bP T _ _ _).2, sy T y x]`.
+
+Normalize the expressions using the abelian group laws. Rewrite using `[show x ^ 4 = x * x * (x * x) by rw [← pow_two, ← pow_two, ← pow_mul]]`. Simplify using `only [(bN T _ _ _).1, (bN T _ _ _).2] at a ⊢`. Conclude with `a`. Establish `fin` using `triv_of_pull_pow hL A hA _ hH ha 4 (by norm_num) _ hN n₂ (by`.
+
+Use `(cls_eq_zero_iff (pull_isLB hN _)).1 (Eq.trans ?_ (z _ (fst A A) (snd A A)))` and prove the remaining obligations. Establish `e : ((𝟙 A) ^ 4 : A ⟶ A) ▷ A = lift (fst A A ^ 4) (snd A A)`. Use `ext`. Rewrite using `[whiskerRight_fst, lift_fst, MonObj.comp_pow, Category.comp_id]`. Rewrite using `[whiskerRight_snd, lift_snd]`.
+
+Rewrite using `[e]`. Use the proof step `rfl)`. Rewrite `fin` using `[← cls_eq_zero_iff hN, cls_div hΛ hP, sub_eq_zero]`. Conclude with `(cls_eq_iff hΛ hP).1 fin`.
+-/
 theorem lam_iso (hL : Out.Laws) {R : Type} [CommRing R] {A : Over (Sp R)} [GrpObj A] [IsCommMonObj A]
     (hA : IsAbelianScheme A) {H : LB A.left} (hH : H.IsLB) (ha : Out.RelAmple A H) {P : LB (G2 A).left} (hP : P.IsLB)
     (bP : Biadd (cls P hP)) (sy : ∀ (T : Over (Sp R)) (x y : T ⟶ A), ev (cls P hP) x y = ev (cls P hP) y x)
@@ -177,6 +223,17 @@ theorem lam_iso (hL : Out.Laws) {R : Type} [CommRing R] {A : Over (Sp R)} [GrpOb
   rw [← cls_eq_zero_iff hN, cls_div hΛ hP, sub_eq_zero] at fin
   exact (cls_eq_iff hΛ hP).1 fin
 
+/- English proof (translation)
+Take `⟨g, hg⟩` from `GlobalTheory.AbelianDim.exists_relDim K A hA`. Establish `hn : IsUnit ((2 : ℕ) : Γ(Sp K, ⊤))`. Use `(IsUnit.mk0 ((2 : ℕ) : K) (by norm_num)).map (Scheme.ΓSpecIso (CommRingCat.of K)).inv.hom` as an intermediate fact. Rewrite `this` using `[map_natCast]`. Then use the resulting hypothesis. Take `⟨v, hv, hfree⟩` from `TorsionCover.exists_free (G := 𝟙_ (Over (Sp K)) ⟶ A) (r := 2 * g) (n := 2) two_ne_zero fun d hd => TorsionCover.card_torsion A hA hg (𝟙 (Sp K)) (by`.
+
+Introduce and unpack `h`. Rewrite `h` using `[Nat.cast_eq_zero]`. Substitute `h` using the available equality. Simplify using `at hd)`. Set `i` to `TorsionCover.combHom v hv`.
+
+Use `⟨2 * g, i, fun k _ _ t => ?_⟩` and prove the remaining obligations. Establish `hinj : ∀ c, toUnit (Over.mk t) ≫ i c = 1 → c = 1` using `fun c hc => by`. Take `⟨C, -, hC⟩` from `TorsionCover.exists_clopen_eq_one A hA hn (i c) (TorsionCover.hom_pow_eq_one i c)`. Establish `h1` using `(hC _ _).1 hc`. Establish `h2 : 𝟙 _ ≫ i c = 1` using `(hC _ (𝟙 _)).2 (by`.
+
+Introduce and unpack `y -`. Take `⟨w⟩ : Nonempty (Sp k)` from `inferInstance`. Use `h1 ⟨w, rfl⟩` as an intermediate fact. Rewrite using `[Subsingleton.elim (α := Sp K) y _])` and apply the resulting hypothesis. Rewrite `h2` using `[Category.id_comp]`.
+
+Conclude with `Multiplicative.toAdd.injective (hfree _ h2)`. Conclude with `⟨TorsionCover.pow_eq_one_iff_of_card (r := 2 * g) (TorsionCover.card_torsion A hA hg t (TorsionCover.natCast_ne_zero hn t)) ((preHom (toUnit _)).comp i) hinj, hinj⟩`.
+-/
 theorem exists_labels {K : Type} [Field K] [IsAlgClosed K] [CharZero K] (A : Over (Sp K)) [GrpObj A] [IsCommMonObj A]
     (hA : IsAbelianScheme A) :
     ∃ (n : ℕ) (i : Multiplicative (Fin n → ZMod 2) →* (𝟙_ (Over (Sp K)) ⟶ A)),
@@ -207,6 +264,25 @@ theorem exists_labels {K : Type} [Field K] [IsAlgClosed K] [CharZero K] (A : Ove
   exact ⟨TorsionCover.pow_eq_one_iff_of_card (r := 2 * g)
     (TorsionCover.card_torsion A hA hg t (TorsionCover.natCast_ne_zero hn t)) ((preHom (toUnit _)).comp i) hinj, hinj⟩
 
+/- English proof (translation)
+Introduce and unpack `K _ _ _ A _ _ hA P hP hs hb`. Establish `hL : Out.Laws` using `GlobalTheory.lawsAndExpansions.1.1`. Take `⟨H, hH, ha⟩` from `GlobalTheory.ProjFinite.exists_relAmple_of_isProjBy (GlobalTheory.AbelianProjective.isProjBy_of_isAbelianScheme K A hA)`. Rewrite `hs`, `hb` using `[← cls_eq_zero_iff (LB.isLB_linComb hP _ _), cls_linComb hP]`. Simplify using `only [Fin.sum_univ_two, Fin.sum_univ_three, Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.cons_val, one_smul, neg_smul] at hs hb`.
+
+Use `set p := cls P hP with hp`. Establish `sy : ∀ (T : Over (Sp K)) (x y : T ⟶ A), ev p x y = ev p y x` using `fun T x y => by`. Establish `e` using `congrArg (pull (lift y x).left) hs`. Rewrite `e` using `[map_add, map_neg, map_zero, pull_id, ← pull_comp, ← Over.comp_left, comp_lift, lift_fst, lift_snd, add_neg_eq_zero]`. Conclude with `e`.
+
+Establish `b₁ : ∀ (T : Over (Sp K)) (x x' y : T ⟶ A), ev p (x * x') y = ev p x y + ev p x' y` using `fun T x x' y => by`. Establish `e` using `congrArg (pull (lift x (lift x' y)).left) hb`. Simplify using `only [map_add, map_neg, map_zero, ← pull_comp, ← Over.comp_left, comp_lift, MonObj.comp_mul, lift_fst, lift_snd, lift_snd_assoc] at e`. Unfold `ev`. Rewrite using `[← sub_eq_zero, ← e]`.
+
+Normalize the expressions using the abelian group laws. Establish `bP : Biadd p` using `fun T x x' y => ⟨b₁ T x x' y, by rw [sy, b₁, sy T x, sy T x']⟩`. Establish `hM : (P.pull (lift (𝟙 A) (𝟙 A)).left).IsLB` using `pull_isLB hP _`. Establish `hm : ∀ (T : Over (Sp K)) (x : T ⟶ A), pull x.left (cls _ hM) = ev p x x` using `fun T x => (pull_ev x p (𝟙 A) (𝟙 A)).trans (by rw [Category.comp_id])`. Establish `h1 : ∀ (T : Over (Sp K)) (y : T ⟶ A), ev p 1 y = 0` using `fun T y => by simpa using b₁ T 1 1 y`.
+
+Establish `hi : ∀ (T : Over (Sp K)) (x y : T ⟶ A), ev p x⁻¹ y = -ev p x y` using `fun T x y => eq_neg_of_add_eq_zero_left (by rw [← b₁, inv_mul_cancel, h1])`. Establish `h2 : ∀ (T : Over (Sp K)) (y x : T ⟶ A), y * y = 1 → ev p y x + ev p y x = 0` using `fun T y x hy => by`. Rewrite using `[← b₁, hy, h1]`. Take `⟨n, i, li⟩` from `exists_labels A hA`. Take `⟨u, j, huj⟩` from `exists_lin hL.globalFns hA hM (fun T => by`.
+
+Simplify using `only [hm]`. Use `⟨fun x y hy => ?_, fun y hy => h2 T y y hy, fun x => by rw [hi, sy, hi, neg_neg]⟩` and prove the remaining obligations. Rewrite using `[b₁, sy T y, sy T x, b₁, b₁, sy T x y]`. Take the linear combination `(norm := abel) h2 T y x hy) i _ rfl`. Establish `hn : IsUnit ((2 : ℕ) : Γ(Sp K, ⊤))`.
+
+Use `(IsUnit.mk0 ((2 : ℕ) : K) (by norm_num)).map (Scheme.ΓSpecIso (CommRingCat.of K)).inv.hom` as an intermediate fact. Rewrite `this` using `[map_natCast]`. Then use the resulting hypothesis. Take `⟨p₁, p₂, p₃, p₄⟩` from `GlobalTheory.abelianScheme_id_pow_finite_etale_surjective _ A 2 hA hn`. Establish `hψ : ∀ {T : Over (Sp K)} (x : T ⟶ A), x ≫ ((𝟙 A) ^ 2 : A ⟶ A) = x ^ 2` using `fun x => by`. Rewrite using `[MonObj.comp_pow, Category.comp_id]`.
+
+Take `⟨L, hLB, iM, sM⟩` from `GlobalTheory.LinDescent.exists_descent_symmetric _ A A ((𝟙 A) ^ 2) _ i _ (LB.isLB_linComb hM _ _) p₁ p₂ p₃ p₄ (fun a => by rw [hψ, TorsionCover.hom_pow_eq_one]) (fun k _ _ t => ⟨fun x => by rw [hψ]; exact (li k t).1 x, (li k t).2⟩) u j huj`. Use `⟨L, hLB, fun s => ⟨⊤, trivial, ?_⟩, lam_iso hL hA hH ha hP bP sy hLB iM⟩` and prove the remaining obligations. Establish `e : cls L hLB = pull (GrpObj.inv : A ⟶ A).left (cls L hLB)` using `(cls_eq_iff hLB (pull_isLB hLB _)).2 sM`. Rewrite using `[← cls_eq_zero_iff (LB.isLB_linComb hLB _ _), cls_linComb hLB]`. Simplify using `only [Fin.sum_univ_two, Matrix.cons_val_zero, Matrix.cons_val_one, one_smul, neg_smul]`.
+
+Rewrite using `[pull_comp, ← e, add_neg_cancel]`.
+-/
 theorem exists_sym_lam : ∀ (K : Type) [Field K] [IsAlgClosed K] [CharZero K] (A : Over (Sp K)) [GrpObj A] [IsCommMonObj A], IsAbelianScheme A → ∀ PP : LB (G2 A).left, PP.IsLB → (∃ u : LB.Gen (LB.LinComb PP (K := Fin 2) ![(lift (snd A A) (fst A A) : G2 A ⟶ G2 A).left, 𝟙 (G2 A).left] ![1, -1]), u.IsGen) → (∃ u : LB.Gen (LB.LinComb PP (K := Fin 3) ![(lift (fst A (A ⊗ A) * (snd A (A ⊗ A) ≫ fst A A)) (snd A (A ⊗ A) ≫ snd A A) : A ⊗ (A ⊗ A) ⟶ G2 A).left, (lift (fst A (A ⊗ A)) (snd A (A ⊗ A) ≫ snd A A) : A ⊗ (A ⊗ A) ⟶ G2 A).left, (snd A (A ⊗ A) : A ⊗ (A ⊗ A) ⟶ G2 A).left] ![1, -1, -1]), u.IsGen) → ∃ L : LB A.left, L.IsLB ∧ Out.Sym A L ∧ LBIso (abelian₂ A L) PP := by
   rintro K _ _ _ A _ _ hA P hP hs hb
   have hL : Out.Laws := GlobalTheory.lawsAndExpansions.1.1

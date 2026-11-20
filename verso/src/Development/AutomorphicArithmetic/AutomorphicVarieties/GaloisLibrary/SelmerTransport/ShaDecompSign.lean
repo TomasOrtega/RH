@@ -7,6 +7,11 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.GaloisLibrary.Selm
 
 open NumberField IsDedekindDomain Formalism.ConjugateSelfDual ReciprocityTheory.Gal Formalism.GaloisCohomology UpperTheory.V UpperTheory.V.Base
 
+/- English proof (translation)
+Substitute `ha` using the available equality. Set `s' : Oˣ` to `Units.map (Int.castRingHom O).toMonoidHom s`. Establish `hs' : (s' : O) = ((s : ℤ) : O)` using `rfl`. Use `letI : CommGroup Q := { (inferInstance : Group Q) with mul_comm := fun a b => IsMulCommutative.is_comm.comm a b }`. Conclude with `lenEigSign O (⊤ : Subgroup W) Q N (π.comp (⊤ : Subgroup W).subtype) (p.comp (⊤ : Subgroup W).subtype) (fun q => by`.
+
+Take `⟨g, hg⟩` from `hp q`. Conclude with `⟨⟨g, trivial⟩, hg⟩)`. Use the proof step `(fun g hg x => hker g hg x)`. Use `h2 ⟨c, trivial⟩ s' hc (by rw [← map_mul, Int.units_mul_self, map_one]) T`. Use the proof step `(fun ψ hψ => hT ψ (by rw [← hs', ← hψ]; rfl))`.
+-/
 private theorem signTop {O W Q N : Type} [CommRing O] [IsDomain O] [Group W] [Group Q] [IsMulCommutative Q] [Finite Q]
     [HasEnoughRootsOfUnity O (Monoid.exponent Q)] [Fintype (Q →* Oˣ)] [AddCommGroup N] [Module O N]
     (π : Representation O W N) (p : W →* Q) (hp : Function.Surjective p) (hker : ∀ g, p g = 1 → ∀ x, π g x = x)
@@ -27,6 +32,13 @@ private theorem signTop {O W Q N : Type} [CommRing O] [IsDomain O] [Group W] [Gr
     h2 ⟨c, trivial⟩ s' hc (by rw [← map_mul, Int.units_mul_self, map_one]) T
     (fun ψ hψ => hT ψ (by rw [← hs', ← hψ]; rfl))
 
+/- English proof (translation)
+Introduce `k E Ω _ _ _ _ _ _ _ _ _ _ _ _ l hl O _ _ _ _ _ _ _ D e hl2 c s hc T hT`. Take `⟨hsurj, hker, hlift⟩` from `galQuot k E Ω`. Take `⟨σ, rfl⟩` from `hsurj c`. Establish `h2 : IsUnit (2 : O)`. Use `(dvrFacts l O).2.2.2.2.2.2.2.2 2 fun h => hl2 ((Nat.prime_dvd_prime_iff_eq hl.out Nat.prime_two).1 h)` as an intermediate fact.
+
+Simplify using `using this`. Establish `hχ : chiO k Ω l O ^ (-e) = (Units.map (algebraMap ℤ_[l] O).toMonoidHom).comp (cycZ k Ω l ^ (-e))`. Use extensionality with `g`. Simplify using `[chiO]`. Establish `h1` using `(shaLenEq k E Ω l D e).2 _ σ (hlift σ) ((s : ℤ) : ℤ_[l])`.
+
+Establish `h3` using `(qoBase l (G k Ω) O (cycZ k Ω l ^ (-e)) (galOf k E Ω) (shaFam k Ω l)).2 (conjStable_shaFam k Ω l) σ ((s : ℤ) : ℤ_[l])`. Rewrite using `[h1, hχ]`. Use `(le_of_eq h3.symm).trans ?_` and prove the remaining obligations. Conclude with `signTop (shaRep (twist₂ l ((Units.map (algebraMap ℤ_[l] O).toMonoidHom).comp (cycZ k Ω l ^ (-e)))) l (galOf k E Ω)) (AlgEquiv.restrictNormalHom E) hsurj (fun g hg x => selRep_of_mem _ _ (conjStable_shaFam k Ω l) (hker ▸ MonoidHom.mem_ker.2 hg) x) h2 σ s _ (map_intCast (algebraMap …`.
+-/
 theorem UpperTheory.V.Base.shaDecompSign :
     ∀ (k E Ω : Type) [Field k] [NumberField k] [Field E] [NumberField E] [Field Ω] [Algebra k E] [Algebra k Ω] [Algebra E Ω]
       [IsScalarTower k E Ω] [IsAlgClosure k Ω] [IsAlgClosure E Ω] [IsAbelianGalois k E] (l : ℕ) [Fact l.Prime] (O : Type) [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] [Algebra ℤ_[l] O] [Module.Finite ℤ_[l] O] [HasEnoughRootsOfUnity O (Monoid.exponent (E ≃ₐ[k] E))]

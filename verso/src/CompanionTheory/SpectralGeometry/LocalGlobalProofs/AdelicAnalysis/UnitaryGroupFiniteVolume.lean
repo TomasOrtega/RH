@@ -5,6 +5,9 @@ open scoped TensorProduct ENNReal NNReal Matrix
 
 namespace GlobalTheory.CompanionTheory.SW
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ hσ M J hJ` and use `CompanionTheory.SWFin.finVol F E σ hσ M J hJ`.
+-/
 theorem finVol_unitaryGroup : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E), IsCMExt F E σ → ∀ (M : ℕ) (J : Matrix (Fin M) (Fin M) E), IsHermND σ J → FinVol F E σ M J :=
   fun F E _ _ _ _ _ σ hσ M J hJ => CompanionTheory.SWFin.finVol F E σ hσ M J hJ
 

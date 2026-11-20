@@ -47,6 +47,9 @@ def AllRealisationsPrimitive {𝒜 : FamClass} (sel : _root_.Formalism.L2.TwistS
     {selC : _root_.Formalism.L2.Top4.ColumnChoiceCompatibleSelection 𝒜 sel selP} {selK : _root_.Formalism.L2.Top4.KernelSelection 𝒜 sel} (selI : _root_.Formalism.L2.Top4.IndefiniteRealisationChoice' 𝒜 sel selS selP selDH selC selK) : Prop :=
   ∀ {eps : ℝ} (Fm : FamP eps) (hc : 𝒜 Fm) (x : ℝ) (hx : Fm.x1 < x) (h : (sel Fm hc).1 ≤ x) (i : Fm.Ix x),
     Formalism.IndefR.Links.PrimRows3 (selI Fm hc x hx h i).Rl (selI Fm hc x hx h i).F ∧ (selP Fm hc x hx h i).1.A3.fam3.TypesSep3
+/- English proof (translation)
+Take `⟨hP, hsep⟩` from `hPA Fm hc x hx h i`. Conclude with `(selI Fm hc x hx h i).rowsHold0 (selC Fm hc x hx h i).ok1 hsep hP`.
+-/
 theorem selP_condition_zero_of_primAll {𝒜 : FamClass} {sel : _root_.Formalism.L2.TwistSelection 𝒜} {selS : _root_.Formalism.L2.Top4.SelectionSpectralCondition 𝒜 sel} {selP : _root_.Formalism.L2.Top4.BaseLevelTiedChoiceAlt 𝒜 sel} {selDH : _root_.Formalism.L2.Top3.SelectionDefiniteHeightCondition 𝒜 sel}
     {selC : _root_.Formalism.L2.Top4.ColumnChoiceCompatibleSelection 𝒜 sel selP} {selK : _root_.Formalism.L2.Top4.KernelSelection 𝒜 sel} {selI : _root_.Formalism.L2.Top4.IndefiniteRealisationChoice' 𝒜 sel selS selP selDH selC selK} (hPA : _root_.Formalism.L2.Top4.AllRealisationsPrimitive sel selI)
     {eps : ℝ} (Fm : FamP eps) (hc : 𝒜 Fm) (x : ℝ) (hx : Fm.x1 < x) (h : (sel Fm hc).1 ≤ x) (i : Fm.Ix x) :
@@ -97,6 +100,9 @@ def Wire4Alt {𝒜 : FamClass} (sel : _root_.Formalism.L2.TwistSelection 𝒜) (
     ∃ C x0 : ℝ, ∀ x ≥ x0, ∀ (hx : Fm.x1 < x) (h : (_root_.Formalism.L2.Top4.RankOfDivisionKernel sel selS selP selDH selC selK selI hPA Fm hc).1 ≤ x) (i : Fm.Ix x),
       Nonempty (_root_.Formalism.L2.DIV.DivisionPackageKernel' ((_root_.Formalism.L2.Top4.RankOfDivisionKernel sel selS selP selDH selC selK selI hPA Fm hc).2 x hx h i) C Cabs)
 open Formalism.L2.DIV in
+/- English proof (translation)
+The claim follows from `pkg adm2 := by obtain ⟨x0, a⟩ := a refine ⟨max x0 (Fm.x1 + 1), fun x hx i => a x (le_trans (le_max_left _ _) hx) ?_ i⟩ have := le_trans (le_max_right _ _) hx linarith cut := cut c3 := Formalism.MainNotions.DIV.HookProducts.RBCompl3.rbCompl3 Fm hh := r.hh c2 c2 := c2 c5 := c5 bu : …`.
+-/
 theorem RemainingDivisionBounds.toRows_alt {eps : ℝ} {Fm : FamP eps} {Rt : Σ' x0 : ℝ, ∀ x (hx : Fm.x1 < x), x0 ≤ x → ∀ i : Fm.Ix x, _root_.Formalism.L2.DIV.DivisionKernelData (Fm.ex x hx i)}
     {Cabs CH : ℝ} (r : RemainingDivisionBounds Fm Cabs CH)
     (pkg : DIVinN Fm → ∃ C x0 : ℝ, ∀ x ≥ x0, ∀ (hx : Fm.x1 < x) (h : Rt.1 ≤ x) (i : Fm.Ix x), Nonempty (_root_.Formalism.L2.DIV.DivisionPackageKernel' (Rt.2 x hx h i) C Cabs))

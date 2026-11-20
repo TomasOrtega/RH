@@ -24,6 +24,9 @@ import CompanionTheory.AutomorphicTheory.ZuckermanCommutation.ZuckermanFunctors.
 
 namespace CompanionTheory.Zuck
 
+/- English proof (translation)
+The claim follows from `CompanionTheory.D.DSIC.discrete_series_infinitesimal_character decOfInj := decomposition_of_injective decOfTrace := GlobalTheory.T.DecompositionOfTrace homCat := GlobalTheory.T.HomCategory okTriv := trivial_rep_admissible okVr := vector_rep_admissible okWedge := GlobalTheory.T.Ex …`.
+-/
 theorem zuckerman_ingredients : Steps where
   infChar := CompanionTheory.D.DSIC.discrete_series_infinitesimal_character
   decOfInj := decomposition_of_injective

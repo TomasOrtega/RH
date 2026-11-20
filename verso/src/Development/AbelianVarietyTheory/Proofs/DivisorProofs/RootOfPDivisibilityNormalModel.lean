@@ -18,6 +18,13 @@ noncomputable section
 
 namespace GlobalTheory.ChainParts
 
+/- English proof (translation)
+Use `haveI := hB`. Take `⟨u, hu⟩` from `hg`. Take `⟨v, hv⟩` from `hγ`. Establish `hp0 : p ≠ 0` using `(Fact.out : p.Prime).ne_zero`. Establish `hdvd : (γ ^ p ^ m) ^ p ∣ g ^ p`.
+
+Use `⟨(u * v⁻¹ : Γ(B.X, ⊤)ˣ), ?_⟩` and prove the remaining obligations. Rewrite using `[← pow_mul, ← pow_succ, hv, hu]`. Simplify using `only [Units.val_mul]`. Take the linear combination `(-((u : Γ(B.X, ⊤)) * (p : Γ(B.X, ⊤)))) * v.mul_inv`. Take `⟨c, hc⟩` from `(IsIntegrallyClosed.pow_dvd_pow_iff hp0).mp hdvd`.
+
+Conclude with `⟨c, hc⟩`.
+-/
 theorem dvd_of_isRootOfP_pow_succ {O : Type} [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] (p : ℕ) [Fact p.Prime]
     [CharZero O] [CharP (ResidueField O) p] {B : Vert.Model O} (hB : GlobalTheory.IsNormalScheme B.X) (g γ : Γ(B.X, ⊤)) (m : ℕ)
     (hg : IsRootOfP p g p) (hγ : IsRootOfP p γ (p ^ (m + 1))) : ∃ c : Γ(B.X, ⊤), g = γ ^ p ^ m * c := by

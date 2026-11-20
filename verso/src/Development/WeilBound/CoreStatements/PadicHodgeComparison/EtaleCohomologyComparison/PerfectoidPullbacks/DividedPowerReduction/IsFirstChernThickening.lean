@@ -31,6 +31,9 @@ def toSome (r : ℤ) (c : b.R) (j : ℕ) : HM Q none c j →ₗ[b.R] HM Q (some 
   (sqLe (a := IdF.top _) (a' := IdF.top _) (b := stdI Q none c) (b' := stdI Q (some r) c) (fun _ => le_rfl)
     fun _ => sup_le_sup_right bot_le _).pull j
 
+/- English proof (translation)
+Take `⟨z, rfl⟩` from `Submodule.Quotient.mk_surjective _ z`. Both sides reduce to the same expression.
+-/
 theorem toSome_redM (r : ℤ) (c : b.R) (j : ℕ) (z : HO Q j) : toSome Q r c j (redM Q none c j z) = redM Q (some r) c j z := by
   obtain ⟨z, rfl⟩ := Submodule.Quotient.mk_surjective _ z
   rfl
@@ -54,11 +57,19 @@ variable {O : Type} [CommRing O] {A A' : Type} [CommRing A] [CommRing A'] [Algeb
   {γ : DividedPowers I} {γ' : DividedPowers I'} {X X' : Scheme.{0}} {q : X ⟶ Spec (CommRingCat.of O)} {q' : X' ⟶ Spec (CommRingCat.of O)}
   {σ : A →+* A'} (m : NMor γ q (κA O I) γ' q' (κA O I') σ) (l s : ℕ)
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨h.1, ⊤, rfl, fun _ _ => trivial⟩`.
+-/
 theorem nm_mem (T : Thick (nlFun γ' 0 X' q' (κA O I'))) (h : TS γ' q' l s {⊤} T) : TS γ q l s {⊤} ((m.mor 0).obj T) :=
   ⟨h.1, ⊤, rfl, fun _ _ => trivial⟩
 
 def nmS : SMor (sP (TS γ q l s {⊤})) (sP (TS γ' q' l s {⊤})) σ := m.smor _ _ (nm_mem m l s)
 
+/- English proof (translation)
+Introduce `T x hx`. Establish `e : (T.obj.i.comp σ) ((l : A) ^ n) = T.obj.i ((l : A') ^ n)` using `by rw [map_pow, map_pow, map_natCast, map_natCast]`. Consider the cases of `r`. Express the relevant statement in the definitionally equal form `x ∈ (⊥ : Ideal T.obj.B) ⊔ Ideal.span {(T.obj.i.comp σ) ((l : A) ^ n)} at hx`. Rewrite `hx` using `[e]`.
+
+Conclude with `hx`. Express the relevant statement in the definitionally equal form `x ∈ (T.obj.pdPow _ : Ideal T.obj.B) ⊔ Ideal.span {(T.obj.i.comp σ) ((l : A) ^ n)} at hx`. Rewrite `hx` using `[e]`. Conclude with `hx`.
+-/
 theorem nm_std (r : Option ℤ) (n : ℕ) : (nmS m l s).Le (stdI _ r ((l : A) ^ n)) (stdI _ r ((l : A') ^ n)) := by
   intro T x hx
   have e : (T.obj.i.comp σ) ((l : A) ^ n) = T.obj.i ((l : A') ^ n) := by rw [map_pow, map_pow, map_natCast, map_natCast]

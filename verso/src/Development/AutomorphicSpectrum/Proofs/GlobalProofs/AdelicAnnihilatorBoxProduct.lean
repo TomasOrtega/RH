@@ -9,6 +9,11 @@ open scoped TensorProduct ENNReal NNReal
 
 namespace GlobalTheory.CompanionTheory.Hypotheses₂.OneV.Coef.Test
 
+/- English proof (translation)
+Establish `hfun : (fun x => (S : Set K).indicator (fun _ => (1 : ℂ)) x * p (x * y)) = (S : Set K).indicator (fun _ => (1 : ℂ))`. Use function extensionality and compare the values at `x`. Distinguish the cases in `hx : x ∈ (S : Set K)`. Rewrite using `[Set.indicator_of_mem hx, one_mul, h x hx]`. Rewrite using `[Set.indicator_of_notMem hx, zero_mul]`.
+
+Rewrite using `[hfun, integral_indicator_const _ hSm, measureReal_def, Complex.real_smul, mul_one]`.
+-/
 private theorem integral_indicator_mul_char_of_trivial {K : Type} [CommRing K] [MeasurableSpace K]
     (μ : Measure K) (p : K → ℂ) (S : AddSubgroup K) (hSm : MeasurableSet (S : Set K)) (y : K)
     (h : ∀ s ∈ S, p (s * y) = 1) :
@@ -21,6 +26,15 @@ private theorem integral_indicator_mul_char_of_trivial {K : Type} [CommRing K] [
     · rw [Set.indicator_of_notMem hx, zero_mul]
   rw [hfun, integral_indicator_const _ hSm, measureReal_def, Complex.real_smul, mul_one]
 
+/- English proof (translation)
+Take `⟨s, hs, hps⟩` from `h`. Establish `hI : ∫ x, (S : Set K).indicator (fun _ => (1 : ℂ)) x * p (x * y) ∂μ = p (s * y) * ∫ x, (S : Set K).indicator (fun _ => (1 : ℂ)) x * p (x * y) ∂μ`. Rewrite using `[← integral_const_mul, ← integral_add_left_eq_self (fun x => (S : Set K).indicator (fun _ => (1 : ℂ)) x * p (x * y)) s]`. Use `congr 1`. Use function extensionality and compare the values at `x`.
+
+Use `beta_reduce`. Distinguish the cases in `hx : x ∈ (S : Set K)`. Establish `hsx : s + x ∈ (S : Set K)` using `(S.add_mem_cancel_left hs).mpr hx`. Rewrite using `[Set.indicator_of_mem hsx, Set.indicator_of_mem hx, add_mul, hadd]`. Expand and normalize the polynomial expressions, which then agree.
+
+Establish `hsx : s + x ∉ (S : Set K)` using `fun h' => hx ((S.add_mem_cancel_left hs).mp h')`. Rewrite using `[Set.indicator_of_notMem hsx, Set.indicator_of_notMem hx]`. Expand and normalize the polynomial expressions, which then agree. Establish `h1 : (1 - p (s * y)) * ∫ x, (S : Set K).indicator (fun _ => (1 : ℂ)) x * p (x * y) ∂μ = 0`. Rewrite using `[sub_mul, one_mul, ← hI, sub_self]`.
+
+Break down `mul_eq_zero.mp h1 with h0 | h0` into its components or cases. Conclude with `absurd (sub_eq_zero.mp h0).symm hps`. Conclude with `h0`.
+-/
 private theorem integral_indicator_mul_char_eq_zero {K : Type} [CommRing K] [MeasurableSpace K] [MeasurableAdd K]
     (μ : Measure K) [μ.IsAddLeftInvariant] (p : K → ℂ) (hadd : ∀ x y, p (x + y) = p x * p y)
     (S : AddSubgroup K) (y : K) (h : ∃ s ∈ S, p (s * y) ≠ 1) :
@@ -46,6 +60,27 @@ private theorem integral_indicator_mul_char_eq_zero {K : Type} [CommRing K] [Mea
   · exact absurd (sub_eq_zero.mp h0).symm hps
   · exact h0
 
+/- English proof (translation)
+Take `⟨hHaar, hinv⟩` from `hSD`. Establish `hp0 : p 0 = 1` using `by simpa using (hA 0).mp A.zero_mem 0 U.zero_mem`. Establish `hΦc : Continuous ((U : Set K).indicator (fun _ => (1 : ℂ)))` using `IsClopen.continuous_indicator ⟨hUc.isClosed, hUo⟩ continuous_const`. Establish `hΦs : HasCompactSupport ((U : Set K).indicator (fun _ => (1 : ℂ)))` using `HasCompactSupport.intro hUc (fun x hx => Set.indicator_of_notMem hx _)`. Establish `hFT : ∀ y, ∫ x, (U : Set K).indicator (fun _ => (1 : ℂ)) x * p (x * y) ∂μ = (A : Set K).indicator (fun _ => ((μ (U : Set K)).toReal : ℂ)) y`.
+
+Introduce `y`. Distinguish the cases in `h : ∀ s ∈ U, p (s * y) = 1`. Rewrite using `[integral_indicator_mul_char_of_trivial μ p U hUm y h, Set.indicator_of_mem (show y ∈ (A : Set K) from (hA y).mpr h)]`. Use `push_neg at h`. Rewrite using `[integral_indicator_mul_char_eq_zero μ p hadd U y h, Set.indicator_of_notMem (show y ∉ (A : Set K) from fun h' => by`.
+
+Take `⟨s, hs, hps⟩` from `h`. Conclude with `hps ((hA y).mp h' s hs))]`. Establish `hint : Integrable (fun y => ∫ x, (U : Set K).indicator (fun _ => (1 : ℂ)) x * (fun s t => p (s * t)) x y ∂μ) μ`. Simplify using `only [hFT]`. Conclude with `(integrable_indicator_iff hAm).mpr (integrableOn_const hAf)`.
+
+Establish `key : ∀ z, ((μ (U : Set K)).toReal : ℂ) * ∫ y, (A : Set K).indicator (fun _ => (1 : ℂ)) y * p (y * z) ∂μ = (U : Set K).indicator (fun _ => (1 : ℂ)) (-z)`. Introduce `z`. Rewrite using `[← integral_const_mul, ← hinv _ hΦc hΦs hint z]`. Use `congr 1`. Use function extensionality and compare the values at `y`.
+
+Use `beta_reduce`. Rewrite using `[hFT y]`. Distinguish the cases in `hy : y ∈ (A : Set K)`. Rewrite using `[Set.indicator_of_mem hy, Set.indicator_of_mem hy]`. Expand and normalize the polynomial expressions, which then agree.
+
+Rewrite using `[Set.indicator_of_notMem hy, Set.indicator_of_notMem hy]`. Expand and normalize the polynomial expressions, which then agree. Establish `h0` using `key 0`. Establish `hc0 : ∀ s ∈ A, p (s * 0) = 1` using `fun s _ => by rw [mul_zero, hp0]`. Rewrite `h0` using `[integral_indicator_mul_char_of_trivial μ p A hAm 0 hc0, neg_zero, Set.indicator_of_mem (show (0 : K) ∈ (U : Set K) from U.zero_mem)]`.
+
+Establish `hprod : (μ (U : Set K)).toReal * (μ (A : Set K)).toReal = 1` using `by exact_mod_cast h0`. Use `⟨?_, hprod⟩` and prove the remaining obligations. Use extensionality with `z`. Rewrite using `[hB z]`. Establish `hz` using `key z`.
+
+Prove the components needed by the constructor for the conclusion. Introduce `h`. Rewrite `hz` using `[integral_indicator_mul_char_of_trivial μ p A hAm z h, h0]`. Assume the negation of the conclusion as `hzU`. Rewrite `hz` using `[Set.indicator_of_notMem (show -z ∉ (U : Set K) from fun h' => hzU (by simpa using U.neg_mem h'))]`.
+
+Conclude with `one_ne_zero hz`. Introduce `hzU`. Assume the negation of the conclusion as `h`. Use `push_neg at h`. Rewrite `hz` using `[integral_indicator_mul_char_eq_zero μ p hadd A z h, mul_zero, Set.indicator_of_mem (show -z ∈ (U : Set K) from U.neg_mem hzU)]`.
+
+Conclude with `zero_ne_one hz`.
+-/
 theorem ann_core {K : Type} [CommRing K] [TopologicalSpace K] [T2Space K] [MeasurableSpace K] [MeasurableAdd K]
     (μ : Measure K) (p : K → ℂ) (hadd : ∀ x y, p (x + y) = p x * p y)
     (hSD : SelfDual μ (fun s t => p (s * t)))
@@ -111,6 +146,21 @@ theorem ann_core {K : Type} [CommRing K] [TopologicalSpace K] [T2Space K] [Measu
       Set.indicator_of_mem (show -z ∈ (U : Set K) from U.neg_mem hzU)] at hz
     exact zero_ne_one hz
 
+/- English proof (translation)
+Introduce `F _ _ ψ hψ v lam c _ hSD U hUc hUo`. Take `⟨h1, h2, h3, h4, -⟩` from `GlobalTheory.CompanionTheory.SW.LocFv.isLocR_Fv F v`. Use `haveI := h1`. Use `haveI := h2`. Use `haveI := h3`.
+
+Use `haveI := h4`. Use `haveI : BorelSpace (Fv F v) := ⟨rfl⟩`. Take `⟨hc, y, hy⟩` from `(GlobalTheory.CompanionTheory.AdeleCharLocal.char_nontrivial_at_every_place F ψ hψ).1 v`. Establish `ha` using `psiV_add ψ v`. Establish `h0` using `psiV_zero ψ v`.
+
+Establish `hinv` using `hSD.1`. Establish `hcomp : IsCompact (annV ψ v U)` using `GlobalTheory.CompanionTheory.SW.PiV.ann_isCompact hc h0 hy U hUo`. Establish `hnear : {x | ‖psiV F ψ v x - 1‖ < 1 / 2} ∈ nhds (0 : Fv F v)` using `(isOpen_lt (hc.sub continuous_const).norm continuous_const).mem_nhds (by`. Express the relevant statement in the definitionally equal form `‖psiV F ψ v 0 - 1‖ < 1 / 2`. Rewrite using `[h0]`.
+
+Use the proof step `norm_num)`. Take `⟨m, hm⟩` from `GlobalTheory.CompanionTheory.SW.PiV.exists_ball_subset _ hnear`. Take `⟨n, hn⟩` from `GlobalTheory.CompanionTheory.SW.PiV.exists_ball_of_isCompact _ hUc`. Establish `htriv : ∀ x ∈ GlobalTheory.CompanionTheory.SW.PiV.ball v m, psiV F ψ v x = 1` using `fun x hx => char_eq_one_of_near (GlobalTheory.CompanionTheory.SW.PiV.ball v m) _ h0 ha (fun x hx => hm hx) hx`. Establish `hsub : (GlobalTheory.CompanionTheory.SW.PiV.ball v (m - n) : Set (Fv F v)) ⊆ annV ψ v U`.
+
+Introduce `t ht s hs`. Use `htriv _ ?_` and prove the remaining obligations. Rewrite using `[GlobalTheory.CompanionTheory.SW.PiV.mem_ball, map_mul]`. Combine the equalities or inequalities in the displayed calculation. Establish `hopen : IsOpen (annV ψ v U)` using `AddSubgroup.isOpen_of_mem_nhds (annS ψ v U) (g := 0) (Filter.mem_of_superset ((GlobalTheory.CompanionTheory.SW.PiV.ball_isOpen (m - n)).mem_nhds (GlobalTheory.CompanionTheory.SW.PiV.ball v (m - n)).zero_mem) hsub)`.
+
+Establish `hcore` using `ann_core (c • lam) (psiV F ψ v) ha hSD U (annS ψ v U) (annS ψ v (annV ψ v U)) hUc hUo hUo.measurableSet hopen.measurableSet hcomp.measure_lt_top.ne (fun _ => Iff.rfl) (fun _ => Iff.rfl)`. Use `⟨?_, hcomp, hopen, ?_⟩` and prove the remaining obligations. Rewrite using `[← coe_annS, hcore.1]`. Establish `h5` using `hcore.2`. Rewrite `h5` using `[coe_annS]`.
+
+Simplify using `only [Measure.smul_apply, ENNReal.smul_def, smul_eq_mul, ENNReal.toReal_mul, ENNReal.coe_toReal] at h5`. Rewrite using `[← h5]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem localDual : ∀ (F : Type) [Field F] [NumberField F] (ψ : AddChar (AF F) ℂ), IsCharAF F ψ → ∀ (v : HeightOneSpectrum (𝓞 F)) (lam : Measure (Fv F v)) (c : ℝ≥0), GlobalTheory.CompanionTheory.SW.IsStdV v lam → SelfDual (c • lam) (fun s t => psiV F ψ v (s * t)) → ∀ U : AddSubgroup (Fv F v), IsCompact (U : Set (Fv F v)) → IsOpen (U : Set (Fv F v)) → annV ψ v (annV ψ v U) = U ∧ IsCompact (annV ψ v U) ∧ IsOpen (annV ψ v U) ∧ (c : ℝ) ^ 2 * (lam U).toReal * (lam (annV ψ v U)).toReal = 1 := by
   intro F _ _ ψ hψ v lam c _ hSD U hUc hUo
   obtain ⟨h1, h2, h3, h4, -⟩ := GlobalTheory.CompanionTheory.SW.LocFv.isLocR_Fv F v

@@ -9,12 +9,28 @@ open NumberField ReciprocityTheory.ChartRestriction.G.Geo.Tor ReciprocityTheory.
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {Dw : Datum H} {l : Level H}
   {Xo : Moduli Dw l} {c : Coeff l} {r : ℕ}
 
+/- English proof (translation)
+Introduce `τ₁ τ₂ h`. Use extensionality with `a`. Use `congrArg (fun f : E →+* ℂ => f a) h` as an intermediate fact. Conclude with `congrArg Subtype.val (σ.injective this)`.
+-/
 theorem relab_injective (c : Coeff l) (σ : c.F →+* ℂ) : Function.Injective (relab c σ) := by
   intro τ₁ τ₂ h
   ext a
   have := congrArg (fun f : E →+* ℂ => f a) h
   exact congrArg Subtype.val (σ.injective this)
 
+/- English proof (translation)
+Establish `h0 : H.rt0 ≠ 0`. Introduce `h`. Use `H.sqrt_neg_disc_sq` as an intermediate fact. Rewrite `this` using `[h]`. Establish `hd : (H.d : ℂ) = 0` using `by linear_combination this`.
+
+Conclude with `H.d_prime.ne_zero (by exact_mod_cast hd)`. Establish `hσ0 : σ ⟨H.rt0, c.le (baseKA l).ρ.2⟩ = H.rt0` using `hσ`. Establish `hE : ((H.rt : E)) ^ 2 = -(H.d : E)`. Use `congrArg (fun z : 𝓞 E => (z : E)) H.rt_sq` as an intermediate fact. Simplify using `using this`.
+
+Establish `hsq : (τ' (H.rt : E)) ^ 2 = H.rt0 ^ 2`. Rewrite using `[H.sqrt_neg_disc_sq, ← map_pow, hE, map_neg, map_natCast]`. Establish `hval : relab c σ τ' (H.rt : E) = σ ⟨τ' (H.rt : E), c.conj τ' _⟩` using `rfl`. Break down `sq_eq_sq_iff_eq_or_eq_neg.1 hsq with hx | hx` into its components or cases. Use `⟨fun _ => hx, fun _ => ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[hval, ← hσ0]`. Conclude with `congrArg σ (Subtype.ext hx)`. Use `⟨fun h => ?_, fun h => ?_⟩` and prove the remaining obligations. It suffices to derive a contradiction. Establish `h1 : σ ⟨τ' (H.rt : E), c.conj τ' _⟩ = -σ ⟨H.rt0, c.le (baseKA l).ρ.2⟩`.
+
+Rewrite using `[← map_neg]`. Conclude with `congrArg σ (Subtype.ext hx)`. Rewrite `h1` using `[← hval, h, hσ0]`. Conclude with `h0 (by linear_combination h1 / 2)`. It suffices to derive a contradiction.
+
+Conclude with `h0 (by linear_combination (h.symm.trans hx) / 2)`.
+-/
 theorem relab_rt_iff (c : Coeff l) (σ : c.F →+* ℂ) (hσ : GoodEmb c σ) (τ' : E →+* ℂ) :
     relab c σ τ' (H.rt : E) = H.rt0 ↔ τ' (H.rt : E) = H.rt0 := by
   have h0 : H.rt0 ≠ 0 := by
@@ -44,6 +60,9 @@ theorem relab_rt_iff (c : Coeff l) (σ : c.F →+* ℂ) (hσ : GoodEmb c σ) (τ
     · exfalso
       exact h0 (by linear_combination (h.symm.trans hx) / 2)
 
+/- English proof (translation)
+The claim follows from `RingHom.ext fun z => Complex.conj_conj (τ z)`.
+-/
 theorem conjEmb_conjEmb (τ : E →+* ℂ) : conjEmb (conjEmb τ) = τ :=
   RingHom.ext fun z => Complex.conj_conj (τ z)
 

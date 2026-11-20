@@ -6,6 +6,15 @@ universe u
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Use `⟨⟨?_⟩, ⟨PullbackCone.IsLimit.mk _ (fun s ↦ equalizer.lift s.snd ?_) ?_ ?_ ?_⟩⟩` and prove the remaining obligations. Apply `pullback.hom_ext` to reduce the goal to its premises. Simplify using `[pullback.lift_fst]`. Simplify `equalizer.condition a b` using `[pullback.lift_snd]`. Establish `h1` using `s.condition =≫ pullback.fst _ _`.
+
+Establish `h2` using `s.condition =≫ pullback.snd _ _`. Simplify using `only [Category.assoc, pullback.diagonal_fst, pullback.diagonal_snd, Category.comp_id, pullback.lift_fst, pullback.lift_snd] at h1 h2`. Rewrite using `[← h1, h2]`. Introduce `s`. Establish `h1` using `s.condition =≫ pullback.fst _ _`.
+
+Simplify using `only [Category.assoc, pullback.diagonal_fst, Category.comp_id, pullback.lift_fst] at h1`. Simplify using `[h1]`. Introduce `s`. Simplify using the standard rewrite rules. Introduce `s m _ h`.
+
+Rewrite using `[← cancel_mono (equalizer.ι a b), h]`. Simplify using the standard rewrite rules.
+-/
 theorem isPullback_equalizer_diagonal {X S T : Scheme.{u}} (f : X ⟶ S) {a b : T ⟶ X}
     (hab : a ≫ f = b ≫ f) :
     IsPullback (equalizer.ι a b ≫ a) (equalizer.ι a b) (pullback.diagonal f)
@@ -30,12 +39,18 @@ theorem isPullback_equalizer_diagonal {X S T : Scheme.{u}} (f : X ⟶ S) {a b : 
     rw [← cancel_mono (equalizer.ι a b), h]
     simp
 
+/- English proof (translation)
+The claim follows from `MorphismProperty.of_isPullback (P := @IsOpenImmersion) (isPullback_equalizer_diagonal f hab) inferInstance`.
+-/
 theorem isOpenImmersion_equalizer_ι_of_unramified {X S T : Scheme.{u}} (f : X ⟶ S)
     [FormallyUnramified f] [LocallyOfFiniteType f] {a b : T ⟶ X} (hab : a ≫ f = b ≫ f) :
     IsOpenImmersion (equalizer.ι a b) :=
   MorphismProperty.of_isPullback (P := @IsOpenImmersion)
     (isPullback_equalizer_diagonal f hab) inferInstance
 
+/- English proof (translation)
+The claim follows from `MorphismProperty.of_isPullback (P := @IsClosedImmersion) (isPullback_equalizer_diagonal f hab) inferInstance`.
+-/
 theorem isClosedImmersion_equalizer_ι_of_isSeparated {X S T : Scheme.{u}} (f : X ⟶ S)
     [IsSeparated f] {a b : T ⟶ X} (hab : a ≫ f = b ≫ f) :
     IsClosedImmersion (equalizer.ι a b) :=
@@ -44,6 +59,9 @@ theorem isClosedImmersion_equalizer_ι_of_isSeparated {X S T : Scheme.{u}} (f : 
 
 set_option backward.isDefEq.respectTransparency false in
 
+/- English proof (translation)
+Use `MorphismProperty.of_isPullback ((Limits.isPullback_equalizer_prod a b).map (Over.forget _)).flip ?_` and prove the remaining obligations. Rewrite using `[← MorphismProperty.cancel_right_of_respectsIso @IsOpenImmersion _ (Over.prodLeftIsoPullback X X).hom]`. Use `convert! (inferInstance : IsOpenImmersion (pullback.diagonal X.hom))`. Apply the tactic sequence `ext1 <;> simp [← Over.comp_left]`.
+-/
 theorem isOpenImmersion_equalizer_ι_left_of_unramified {S : Scheme.{u}} {T X : Over S}
     [FormallyUnramified X.hom] [LocallyOfFiniteType X.hom] (a b : T ⟶ X) :
     IsOpenImmersion (equalizer.ι a b).left := by
@@ -54,11 +72,17 @@ theorem isOpenImmersion_equalizer_ι_left_of_unramified {S : Scheme.{u}} {T X : 
   convert! (inferInstance : IsOpenImmersion (pullback.diagonal X.hom))
   ext1 <;> simp [← Over.comp_left]
 
+/- English proof (translation)
+Introduce and unpack `_ ⟨z, rfl⟩`. Conclude with `⟨equalizer.lift j hj z, by rw [← Scheme.Hom.comp_apply, equalizer.lift_ι]⟩`.
+-/
 theorem range_subset_range_equalizer_ι {X T Z : Scheme.{u}} {a b : T ⟶ X} (j : Z ⟶ T)
     (hj : j ≫ a = j ≫ b) : Set.range j ⊆ Set.range (equalizer.ι a b) := by
   rintro _ ⟨z, rfl⟩
   exact ⟨equalizer.lift j hj z, by rw [← Scheme.Hom.comp_apply, equalizer.lift_ι]⟩
 
+/- English proof (translation)
+Use `isOpenImmersion_equalizer_ι_of_unramified f hab` as an intermediate fact. Establish `: IsIso (equalizer.ι a b)` using `isIso_of_isOpenImmersion_of_opensRange_eq_top _ (Opens.ext h)`. Rewrite using `[← cancel_epi (equalizer.ι a b), equalizer.condition]`.
+-/
 theorem eq_of_range_equalizer_ι_eq_univ {X S T : Scheme.{u}} (f : X ⟶ S)
     [FormallyUnramified f] [LocallyOfFiniteType f] {a b : T ⟶ X} (hab : a ≫ f = b ≫ f)
     (h : Set.range (equalizer.ι a b) = Set.univ) : a = b := by
@@ -67,12 +91,18 @@ theorem eq_of_range_equalizer_ι_eq_univ {X S T : Scheme.{u}} (f : X ⟶ S)
     isIso_of_isOpenImmersion_of_opensRange_eq_top _ (Opens.ext h)
   rw [← cancel_epi (equalizer.ι a b), equalizer.condition]
 
+/- English proof (translation)
+The claim follows from `eq_of_range_equalizer_ι_eq_univ f hab (Set.eq_univ_of_univ_subset (j.surjective.range_eq ▸ range_subset_range_equalizer_ι j hj))`.
+-/
 theorem eq_of_surjective_of_unramified {X S T Z : Scheme.{u}} (f : X ⟶ S)
     [FormallyUnramified f] [LocallyOfFiniteType f] {a b : T ⟶ X} (hab : a ≫ f = b ≫ f)
     (j : Z ⟶ T) [Surjective j] (hj : j ≫ a = j ≫ b) : a = b :=
   eq_of_range_equalizer_ι_eq_univ f hab (Set.eq_univ_of_univ_subset
     (j.surjective.range_eq ▸ range_subset_range_equalizer_ι j hj))
 
+/- English proof (translation)
+Use `isOpenImmersion_equalizer_ι_of_unramified f hab` as an intermediate fact. Use `isClosedImmersion_equalizer_ι_of_isSeparated f hab` as an intermediate fact. Use `eq_of_range_equalizer_ι_eq_univ f hab (IsClopen.eq_univ ⟨(equalizer.ι a b).isClosedEmbedding.isClosed_range, (equalizer.ι a b).isOpenEmbedding.isOpen_range⟩ ?_)` and prove the remaining obligations. Conclude with `(Set.range_nonempty j).mono (range_subset_range_equalizer_ι j hj)`.
+-/
 theorem eq_of_preconnected_of_unramified {X S T Z : Scheme.{u}} (f : X ⟶ S)
     [FormallyUnramified f] [LocallyOfFiniteType f] [IsSeparated f] [PreconnectedSpace T]
     {a b : T ⟶ X} (hab : a ≫ f = b ≫ f)
@@ -84,12 +114,18 @@ theorem eq_of_preconnected_of_unramified {X S T Z : Scheme.{u}} (f : X ⟶ S)
       (equalizer.ι a b).isOpenEmbedding.isOpen_range⟩ ?_)
   exact (Set.range_nonempty j).mono (range_subset_range_equalizer_ι j hj)
 
+/- English proof (translation)
+The claim follows from `eq_of_preconnected_of_unramified f hab j hj`.
+-/
 theorem eq_of_connected_of_unramified_of_point {X S T : Scheme.{u}} (f : X ⟶ S)
     [FormallyUnramified f] [LocallyOfFiniteType f] [IsSeparated f] [ConnectedSpace T]
     {a b : T ⟶ X} (hab : a ≫ f = b ≫ f)
     {k : Type u} [Field k] (j : Spec (.of k) ⟶ T) (hj : j ≫ a = j ≫ b) : a = b :=
   eq_of_preconnected_of_unramified f hab j hj
 
+/- English proof (translation)
+Use `isOpenImmersion_equalizer_ι_of_unramified f hab` as an intermediate fact. Use `eq_of_range_equalizer_ι_eq_univ f hab ?_` and prove the remaining obligations. Establish `h` using `(IsLocalRing.closed_point_mem_iff (R := R) (U := (equalizer.ι a b).opensRange)).mp (range_subset_range_equalizer_ι j hj hz)`. Conclude with `congr(SetLike.coe $h)`.
+-/
 theorem eq_of_isLocalRing_of_unramified {X S Z : Scheme.{u}} (f : X ⟶ S)
     [FormallyUnramified f] [LocallyOfFiniteType f] {R : CommRingCat.{u}} [IsLocalRing R]
     {a b : Spec R ⟶ X} (hab : a ≫ f = b ≫ f)
@@ -101,6 +137,11 @@ theorem eq_of_isLocalRing_of_unramified {X S Z : Scheme.{u}} (f : X ⟶ S)
     (U := (equalizer.ι a b).opensRange)).mp (range_subset_range_equalizer_ι j hj hz)
   exact congr(SetLike.coe $h)
 
+/- English proof (translation)
+Establish `hab : (𝟙 X) ≫ f = (f ≫ s) ≫ f` using `by simp [hs]`. Use `isOpenImmersion_equalizer_ι_of_unramified f hab` as an intermediate fact. Establish `h1 : s ≫ 𝟙 X = s ≫ f ≫ s` using `by simp [reassoc_of% hs]`. Establish `h2` using `equalizer.condition (𝟙 X) (f ≫ s)`. Establish `: IsIso (equalizer.lift s h1)` using `⟨equalizer.ι _ _ ≫ f, by simp [hs], by`.
+
+Rewrite using `[← cancel_mono (equalizer.ι _ _)]`. Simplify using `using h2.symm⟩`. Rewrite using `[← equalizer.lift_ι s h1]`. Use `infer_instance`.
+-/
 theorem isOpenImmersion_of_section_of_unramified {X S : Scheme.{u}} (f : X ⟶ S)
     [FormallyUnramified f] [LocallyOfFiniteType f] (s : S ⟶ X) (hs : s ≫ f = 𝟙 S) :
     IsOpenImmersion s := by
@@ -114,17 +155,26 @@ theorem isOpenImmersion_of_section_of_unramified {X S : Scheme.{u}} (f : X ⟶ S
   rw [← equalizer.lift_ι s h1]
   infer_instance
 
+/- English proof (translation)
+The claim follows from `have : IsClosedImmersion (s ≫ f) := hs ▸ inferInstance .of_comp s f`.
+-/
 theorem isClosedImmersion_of_section_of_isSeparated {X S : Scheme.{u}} (f : X ⟶ S)
     [IsSeparated f] (s : S ⟶ X) (hs : s ≫ f = 𝟙 S) : IsClosedImmersion s :=
   have : IsClosedImmersion (s ≫ f) := hs ▸ inferInstance
   .of_comp s f
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨isOpenImmersion_of_section_of_unramified f s hs, isClosedImmersion_of_section_of_isSeparated f s hs⟩`.
+-/
 theorem isOpenImmersion_and_isClosedImmersion_of_section_of_etale {X S : Scheme.{u}} (f : X ⟶ S)
     [Etale f] [IsSeparated f] (s : S ⟶ X) (hs : s ≫ f = 𝟙 S) :
     IsOpenImmersion s ∧ IsClosedImmersion s :=
   ⟨isOpenImmersion_of_section_of_unramified f s hs,
     isClosedImmersion_of_section_of_isSeparated f s hs⟩
 
+/- English proof (translation)
+Establish `: IsDominant i`. Take `⟨n, hn⟩` from `hi`. Rewrite using `[isDominant_iff, denseRange_iff_closure_range, ← i.support_ker, ← i.ker.support_pow (n + 1) (by simp), pow_succ, hn]`. Simplify using the standard rewrite rules. Conclude with `surjective_of_isDominant_of_isClosed_range _ i.isClosedEmbedding.isClosed_range`.
+-/
 theorem surjective_of_isNilpotent_ker {T₀ T : Scheme.{u}} (i : T₀ ⟶ T) [IsClosedImmersion i]
     (hi : IsNilpotent i.ker) : Surjective i := by
   have : IsDominant i := by
@@ -136,6 +186,21 @@ theorem surjective_of_isNilpotent_ker {T₀ T : Scheme.{u}} (i : T₀ ⟶ T) [Is
 
 set_option backward.isDefEq.respectTransparency false in
 
+/- English proof (translation)
+Take `⟨t, rfl⟩` from `(surjective_of_isNilpotent_ker i hi).surj t`. Take `⟨_, ⟨U, hU, rfl⟩, hxU, -⟩` from `S.isBasis_affineOpens.exists_subset_of_mem_open (Set.mem_univ (f (g t))) isOpen_univ`. Take `⟨_, ⟨V, hV, rfl⟩, hxV, hVU : V ≤ f ⁻¹ᵁ U⟩` from `X.isBasis_affineOpens.exists_subset_of_mem_open hxU (f ⁻¹ᵁ U).isOpen`. Take `⟨O, hO, hO'⟩` from `i.isClosedEmbedding.isInducing.isOpen_iff.mp (g ⁻¹ᵁ V).isOpen`. Establish `htO : i t ∈ O`.
+
+Establish `: t ∈ i ⁻¹' O` using `hO' ▸ hxV`. Conclude with `this`. Establish `hth : h (i t) ∈ U`. Rewrite using `[← Scheme.Hom.comp_apply, ← w, Scheme.Hom.comp_apply]`. Conclude with `hxU`.
+
+Take `⟨_, ⟨W, hW, rfl⟩, hxW, hWO⟩` from `T.isBasis_affineOpens.exists_subset_of_mem_open (show i t ∈ O ∩ (h ⁻¹ᵁ U : Set T) from ⟨htO, hth⟩) (hO.inter (h ⁻¹ᵁ U).isOpen)`. Establish `hWU : W ≤ h ⁻¹ᵁ U` using `fun x hx ↦ (hWO hx).2`. Establish `hWV : i ⁻¹ᵁ W ≤ g ⁻¹ᵁ V` using `fun x hx ↦ by`. Establish `: x ∈ i ⁻¹' O` using `(hWO hx).1`. Rewrite `this` using `[hO']`. Then use the resulting hypothesis.
+
+Establish `hsm` using `f.smooth_appLE hU hV hVU`. Use `algebraize [(f.appLE U V hVU).hom, (h.appLE U W hWU).hom, ((h.appLE U W hWU) ≫ i.app W).hom]`. Set `ψ₀ : Γ(X, V) →ₐ[Γ(S, U)] Γ(T₀, i ⁻¹ᵁ W)` to `⟨(g.appLE _ _ hWV).hom, fun r ↦ by`. Simplify using `[RingHom.algebraMap_toAlgebra, ← CategoryTheory.comp_apply, -CommRingCat.hom_comp, Scheme.Hom.app_eq_appLE, Scheme.Hom.appLE_comp_appLE, w, -Scheme.Hom.comp_appLE]⟩`. Set `π : Γ(T, W) →ₐ[Γ(S, U)] Γ(T₀, i ⁻¹ᵁ W)` to `⟨(i.app W).hom, fun r ↦ rfl⟩`.
+
+Establish `hπ : Function.Surjective π` using `i.app_surjective W hW`. Establish `hπ' : IsNilpotent (RingHom.ker (π : Γ(T, W) →+* Γ(T₀, i ⁻¹ᵁ W)))`. Take `⟨n, hn⟩` from `hi`. Conclude with `⟨n, by simpa using! congr(($hn).ideal ⟨W, hW⟩)⟩`. Set `ψ` to `Algebra.FormallySmooth.liftOfSurjective ψ₀ π hπ hπ'`.
+
+Establish `hψ : π.comp ψ = ψ₀` using `Algebra.FormallySmooth.comp_liftOfSurjective ψ₀ π hπ hπ'`. Establish `e₁ : f.appLE U V hVU ≫ CommRingCat.ofHom ψ.toRingHom = h.appLE U W hWU` using `CommRingCat.hom_ext ψ.comp_algebraMap`. Establish `e₂ : CommRingCat.ofHom ψ.toRingHom ≫ i.app W = g.appLE _ _ hWV` using `CommRingCat.hom_ext congr(($hψ).toRingHom)`. Use `⟨W, hxW, Scheme.Opens.toSpecΓ W ≫ Spec.map (CommRingCat.ofHom ψ.toRingHom) ≫ hV.fromSpec, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[Category.assoc, Category.assoc, ← hU.SpecMap_appLE_fromSpec f hV hVU, ← Spec.map_comp_assoc, e₁, hU.SpecMap_appLE_fromSpec h hW hWU, hW.toSpecΓ_fromSpec_assoc]`.
+
+Rewrite using `[← Scheme.Opens.toSpecΓ_naturality_assoc, ← Spec.map_comp_assoc, e₂, hV.SpecMap_appLE_fromSpec g (hW.preimage i) hWV, IsAffineOpen.toSpecΓ_fromSpec_assoc]`.
+-/
 theorem exists_local_lift_of_smooth {X S T₀ T : Scheme.{u}} (f : X ⟶ S) [Smooth f]
     (i : T₀ ⟶ T) [IsClosedImmersion i] (hi : IsNilpotent i.ker)
     (g : T₀ ⟶ X) (h : T ⟶ S) (w : g ≫ f = i ≫ h) (t : T) :
@@ -181,6 +246,17 @@ theorem exists_local_lift_of_smooth {X S T₀ T : Scheme.{u}} (f : X ⟶ S) [Smo
   · rw [← Scheme.Opens.toSpecΓ_naturality_assoc, ← Spec.map_comp_assoc, e₂,
       hV.SpecMap_appLE_fromSpec g (hW.preimage i) hWV, IsAffineOpen.toSpecΓ_fromSpec_assoc]
 
+/- English proof (translation)
+Use `surjective_of_isNilpotent_ker i hi` as an intermediate fact. Use `existsUnique_of_exists_of_unique ?_ fun l₁ l₂ h₁ h₂ ↦ eq_of_surjective_of_unramified f (h₁.2.trans h₂.2.symm) i (h₁.1.trans h₂.1.symm)` and prove the remaining obligations. Use `choose W hW l hl hl' using exists_local_lift_of_smooth f i hi g h w`. Establish `key : ∀ (t : T) {Z : Scheme.{u}} (a : Z ⟶ W t) (b : Z ⟶ T₀), a ≫ (W t).ι = b ≫ i → a ≫ l t = b ≫ g` using `fun t Z a b e ↦ by`. Take `⟨c, hc₁, hc₂⟩` from `(isPullback_morphismRestrict i (W t)).exists_lift a b e`.
+
+Rewrite using `[← hc₁, ← hc₂, Category.assoc, hl', Category.assoc]`. Establish `hcov : IsOpenCover W`. Rewrite using `[IsOpenCover, eq_top_iff]`. Conclude with `fun t _ ↦ Opens.mem_iSup.mpr ⟨t, hW t⟩`. Set `𝒰` to `T.openCoverOfIsOpenCover W hcov`.
+
+Establish `hcomp : ∀ s t : T, pullback.fst (W s).ι (W t).ι ≫ l s = pullback.snd _ _ ≫ l t`. Introduce `s t`. Use `eq_of_surjective_of_unramified f ?_ (pullback.fst (pullback.fst (W s).ι (W t).ι ≫ (W s).ι) i) ?_` and prove the remaining obligations. Simplify using `[hl, pullback.condition_assoc]`. Rewrite using `[← Category.assoc, ← Category.assoc, key s _ (pullback.snd _ _), key t _ (pullback.snd _ _)]`.
+
+Rewrite using `[Category.assoc, ← pullback.condition (f := (W s).ι)]`. Conclude with `pullback.condition`. Rewrite using `[Category.assoc]`. Conclude with `pullback.condition`. Establish `hL : ∀ t : T, (W t).ι ≫ 𝒰.glueMorphisms l hcomp = l t` using `fun t ↦ 𝒰.ι_glueMorphisms l hcomp t`.
+
+Use `⟨𝒰.glueMorphisms l hcomp, ?_, ?_⟩` and prove the remaining obligations. Use `Scheme.hom_ext_of_forall _ _ fun x ↦ ⟨i ⁻¹ᵁ W (i x), hW _, ?_⟩` and prove the remaining obligations. Rewrite using `[← morphismRestrict_ι_assoc, hL, hl']`. Use `Scheme.hom_ext_of_forall _ _ fun x ↦ ⟨W x, hW _, ?_⟩` and prove the remaining obligations. Rewrite using `[reassoc_of% hL, hl]`.
+-/
 theorem existsUnique_lift_of_etale {X S T₀ T : Scheme.{u}} (f : X ⟶ S) [Etale f]
     (i : T₀ ⟶ T) [IsClosedImmersion i] (hi : IsNilpotent i.ker)
     (g : T₀ ⟶ X) (h : T ⟶ S) (w : g ≫ f = i ≫ h) :
@@ -216,6 +292,9 @@ theorem existsUnique_lift_of_etale {X S T₀ T : Scheme.{u}} (f : X ⟶ S) [Etal
   · refine Scheme.hom_ext_of_forall _ _ fun x ↦ ⟨W x, hW _, ?_⟩
     rw [reassoc_of% hL, hl]
 
+/- English proof (translation)
+The claim follows from `Over.OverMorphism.ext (eq_of_preconnected_of_unramified X.hom ((Over.w a).trans (Over.w b).symm) j hj)`.
+-/
 theorem over_eq_of_preconnected_of_unramified {S Z : Scheme.{u}} {T X : Over S}
     [FormallyUnramified X.hom] [LocallyOfFiniteType X.hom] [IsSeparated X.hom]
     [PreconnectedSpace T.left] {a b : T ⟶ X}
@@ -223,6 +302,15 @@ theorem over_eq_of_preconnected_of_unramified {S Z : Scheme.{u}} {T X : Over S}
   Over.OverMorphism.ext
     (eq_of_preconnected_of_unramified X.hom ((Over.w a).trans (Over.w b).symm) j hj)
 
+/- English proof (translation)
+Take `⟨n, hn⟩` from `hπ`. Use `⟨n, Scheme.IdealSheafData.ext_of_isAffine ?_⟩` and prove the remaining obligations. Establish `e : RingHom.ker (Spec.map π).appTop.hom = (RingHom.ker π.hom).map (Scheme.ΓSpecIso R).inv.hom`. Establish `h₁ : (Spec.map π).appTop = (Scheme.ΓSpecIso R).hom ≫ π ≫ (Scheme.ΓSpecIso R₀).inv`. Simplify using `[← Scheme.ΓSpecIso_naturality_assoc]`.
+
+Rewrite using `[h₁]`. Use `Ideal.map_symm (I := RingHom.ker π.hom) (Scheme.ΓSpecIso R).commRingCatIsoToRingEquiv` as an intermediate fact. Use `Eq.trans ?_ this.symm` and prove the remaining obligations. Use extensionality with `x`. Simplify using `only [RingHom.mem_ker, CommRingCat.hom_comp, RingHom.comp_apply, Ideal.mem_comap]`.
+
+Conclude with `map_eq_zero_iff _ (Scheme.ΓSpecIso R₀).symm.commRingCatIsoToRingEquiv.injective`. Establish `e' : (Spec.map π).ker.ideal ⟨⊤, isAffineOpen_top _⟩ = (RingHom.ker π.hom).map (Scheme.ΓSpecIso R).inv.hom`. Rewrite using `[← e, Scheme.Hom.ker_apply]`. Both sides reduce to the same expression. Simplify using `only [Scheme.IdealSheafData.ideal_pow, Pi.pow_apply, e', ← Ideal.map_pow, hn]`.
+
+Simplify using the standard rewrite rules.
+-/
 theorem isNilpotent_ker_specMap {R R₀ : CommRingCat.{u}} (π : R ⟶ R₀)
     (hπ : IsNilpotent (RingHom.ker π.hom)) : IsNilpotent (Spec.map π).ker := by
   obtain ⟨n, hn⟩ := hπ
@@ -243,6 +331,9 @@ theorem isNilpotent_ker_specMap {R R₀ : CommRingCat.{u}} (π : R ⟶ R₀)
   simp only [Scheme.IdealSheafData.ideal_pow, Pi.pow_apply, e', ← Ideal.map_pow, hn]
   simp
 
+/- English proof (translation)
+The claim follows from `have := IsClosedImmersion.spec_of_surjective π hπ existsUnique_lift_of_etale f _ (isNilpotent_ker_specMap π hπ') g h w`.
+-/
 theorem existsUnique_lift_of_etale_of_surjective {X S : Scheme.{u}} (f : X ⟶ S) [Etale f]
     {R R₀ : CommRingCat.{u}} (π : R ⟶ R₀) (hπ : Function.Surjective π)
     (hπ' : IsNilpotent (RingHom.ker π.hom))
@@ -253,6 +344,17 @@ theorem existsUnique_lift_of_etale_of_surjective {X S : Scheme.{u}} (f : X ⟶ S
 
 open Polynomial in
 
+/- English proof (translation)
+Establish `: (RingHom.ker φ).IsPrime` using `RingHom.ker_isPrime φ`. Take `⟨r, hr, hstd⟩` from `Algebra.IsEtaleAt.exists_isStandardEtale (R := B) (RingHom.ker φ)`. Take `⟨P⟩` from `hstd.nonempty_standardEtalePresentation`. Set `φ' : Localization.Away r →ₐ[B] K` to `IsLocalization.Away.liftAlgHom r (f := φ) (Ne.isUnit hr)`. Establish `hφ' : φ'.comp (IsScalarTower.toAlgHom B A _) = φ`.
+
+Use extensionality with `a`. Simplify using `[φ']`. Establish `hx : P.HasMap (φ' P.x)` using `P.hasMap.map φ'`. Establish `hc : (π : R →+* K).comp (algebraMap B R) = algebraMap B K` using `π.comp_algebraMap`. Establish `H` using `((HenselianLocalRing.TFAE R).out 0 2).mp ‹HenselianLocalRing R›`.
+
+Take `⟨a, ha, ha'⟩` from `H (π : R →+* K) hπ (P.f.map (algebraMap B R)) (P.monic_f.map _) (φ' P.x) (by rw [eval₂_map, hc]; exact hx.1) (by rw [derivative_map, eval₂_map, hc]; exact hx.isUnit_derivative_f.ne_zero)`. Use `replace ha' : π a = φ' P.x := ha'`. Establish `hloc : IsLocalHom (π : R →+* K)` using `.of_surjective _ hπ`. Establish `hA : P.HasMap a`. Use `⟨by rwa [aeval_def, ← Polynomial.eval_map], ?_⟩` and prove the remaining obligations.
+
+Use `IsUnit.of_map (π : R →+* K) _ ?_` and prove the remaining obligations. Rewrite using `[RingHom.coe_coe, ← aeval_algHom_apply, ha']`. Conclude with `hx.2`. Use `⟨((P.lift a hA).comp P.equivRing.toAlgHom).comp (IsScalarTower.toAlgHom B A _), ?_⟩` and prove the remaining obligations. Rewrite using `[← hφ', ← AlgHom.comp_assoc]`.
+
+Use `congr 1`. Conclude with `P.hom_ext (by simp [ha'])`.
+-/
 theorem exists_algHom_lift_of_henselian {B A : Type*} {R K : Type u} [CommRing B] [CommRing A]
     [CommRing R] [Field K] [Algebra B A] [Algebra B R] [Algebra B K] [Algebra.Etale B A]
     [HenselianLocalRing R] (π : R →ₐ[B] K) (hπ : Function.Surjective π) (φ : A →ₐ[B] K) :
@@ -282,6 +384,9 @@ theorem exists_algHom_lift_of_henselian {B A : Type*} {R K : Type u} [CommRing B
   congr 1
   exact P.hom_ext (by simp [ha'])
 
+/- English proof (translation)
+Establish `hg' : Set.range g ⊆ Set.range hV.fromSpec` using `by rwa [hV.range_fromSpec]`. Take `⟨φ, hφ⟩` from `Spec.map_surjective (IsOpenImmersion.lift hV.fromSpec g hg')`. Conclude with `⟨φ, by rw [hφ, IsOpenImmersion.lift_fac]⟩`.
+-/
 theorem exists_specMap_fromSpec_eq {X : Scheme.{u}} {R : CommRingCat.{u}} (g : Spec R ⟶ X)
     {V : X.Opens} (hV : IsAffineOpen V) (hg : Set.range g ⊆ V) :
     ∃ φ : Γ(X, V) ⟶ R, Spec.map φ ≫ hV.fromSpec = g := by
@@ -289,6 +394,21 @@ theorem exists_specMap_fromSpec_eq {X : Scheme.{u}} {R : CommRingCat.{u}} (g : S
   obtain ⟨φ, hφ⟩ := Spec.map_surjective (IsOpenImmersion.lift hV.fromSpec g hg')
   exact ⟨φ, by rw [hφ, IsOpenImmersion.lift_fac]⟩
 
+/- English proof (translation)
+Establish `hloc : IsLocalHom π` using `.of_surjective _ hπ`. Establish `hcl : Spec.map (CommRingCat.ofHom π) (IsLocalRing.closedPoint K) = IsLocalRing.closedPoint R` using `IsLocalRing.comap_closedPoint π`. Use `existsUnique_of_exists_of_unique ?_ fun l₁ l₂ h₁ h₂ ↦ eq_of_isLocalRing_of_unramified f (h₁.2.trans h₂.2.symm) _ ⟨_, hcl⟩ (h₁.1.trans h₂.1.symm)` and prove the remaining obligations. Take `⟨_, ⟨U, hU, rfl⟩, hxU, -⟩` from `S.isBasis_affineOpens.exists_subset_of_mem_open (Set.mem_univ (f (g (IsLocalRing.closedPoint K)))) isOpen_univ`. Take `⟨_, ⟨V, hV, rfl⟩, hxV, hVU : V ≤ f ⁻¹ᵁ U⟩` from `X.isBasis_affineOpens.exists_subset_of_mem_open hxU (f ⁻¹ᵁ U).isOpen`.
+
+Use `replace hU : IsAffineOpen U := hU`. Use `replace hV : IsAffineOpen V := hV`. Establish `hgV : g ⁻¹ᵁ V = ⊤` using `(IsLocalRing.closed_point_mem_iff (R := K)).mp hxV`. Establish `hhU : h ⁻¹ᵁ U = ⊤` using `(IsLocalRing.closed_point_mem_iff (R := R)).mp (by`. Establish `: h (Spec.map (CommRingCat.ofHom π) (IsLocalRing.closedPoint K)) ∈ U`.
+
+Establish `e : f (g (IsLocalRing.closedPoint K)) = h (Spec.map (CommRingCat.ofHom π) (IsLocalRing.closedPoint K))` using `congr($w (IsLocalRing.closedPoint K))`. Conclude with `e ▸ hxU`. Rewrite `this` using `[hcl]`. Conclude with `this)`. Take `⟨φ, rfl⟩` from `exists_specMap_fromSpec_eq g hV (by`.
+
+Introduce and unpack `_ ⟨x, rfl⟩`. Conclude with `(hgV.ge (Set.mem_univ x) :))`. Take `⟨α, rfl⟩` from `exists_specMap_fromSpec_eq h hU (by`. Introduce and unpack `_ ⟨x, rfl⟩`. Conclude with `(hhU.ge (Set.mem_univ x) :))`.
+
+Rewrite `w` using `[Category.assoc, ← hU.SpecMap_appLE_fromSpec f hV hVU, ← Spec.map_comp_assoc, ← Spec.map_comp_assoc, cancel_mono, Spec.map_inj]`. Establish `het` using `f.etale_appLE hU hV hVU`. Use `algebraize [(f.appLE U V hVU).hom]`. Use `letI : Algebra Γ(S, U) R := α.hom.toAlgebra`. Use `letI : Algebra Γ(S, U) K := (π.comp α.hom).toAlgebra`.
+
+Take `⟨ψ, hψ⟩` from `exists_algHom_lift_of_henselian (B := Γ(S, U)) (A := Γ(X, V)) ⟨π, fun _ ↦ rfl⟩ hπ ⟨φ.hom, fun r ↦ congr($w r)⟩`. Establish `e₁ : f.appLE U V hVU ≫ CommRingCat.ofHom ψ.toRingHom = α` using `CommRingCat.hom_ext ψ.comp_algebraMap`. Establish `e₂ : CommRingCat.ofHom ψ.toRingHom ≫ CommRingCat.ofHom π = φ` using `CommRingCat.hom_ext congr(($hψ).toRingHom)`. Use `⟨Spec.map (CommRingCat.ofHom ψ.toRingHom) ≫ hV.fromSpec, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[← Spec.map_comp_assoc, e₂]`.
+
+Rewrite using `[Category.assoc, ← hU.SpecMap_appLE_fromSpec f hV hVU, ← Spec.map_comp_assoc, e₁]`.
+-/
 theorem existsUnique_lift_of_etale_of_henselian {X S : Scheme.{u}} (f : X ⟶ S) [Etale f]
     {R K : Type u} [CommRing R] [HenselianLocalRing R] [Field K] (π : R →+* K)
     (hπ : Function.Surjective π) (g : Spec (.of K) ⟶ X) (h : Spec (.of R) ⟶ S)
@@ -340,9 +460,15 @@ def restrictPoints {X S T₀ T : Scheme.{u}} (f : X ⟶ S) (h : T ⟶ S) (i : T�
   fun l ↦ ⟨i ≫ l.1, by rw [Category.assoc, l.2]⟩
 
 @[simp]
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem restrictPoints_val {X S T₀ T : Scheme.{u}} (f : X ⟶ S) (h : T ⟶ S) (i : T₀ ⟶ T)
     (l : {l : T ⟶ X // l ≫ f = h}) : (restrictPoints f h i l).1 = i ≫ l.1 := rfl
 
+/- English proof (translation)
+Rewrite using `[Function.bijective_iff_existsUnique]`. Introduce and unpack `⟨g, hg⟩`. Take `⟨l, ⟨h₁, h₂⟩, h₃⟩` from `H g hg`. Conclude with `⟨⟨l, h₂⟩, Subtype.ext h₁, fun y hy ↦ Subtype.ext (h₃ _ ⟨congr(($hy).1), y.2⟩)⟩`.
+-/
 theorem bijective_restrictPoints_of_existsUnique {X S T₀ T : Scheme.{u}} (f : X ⟶ S) (h : T ⟶ S)
     (i : T₀ ⟶ T)
     (H : ∀ g : T₀ ⟶ X, g ≫ f = i ≫ h → ∃! l : T ⟶ X, i ≫ l = g ∧ l ≫ f = h) :
@@ -352,11 +478,17 @@ theorem bijective_restrictPoints_of_existsUnique {X S T₀ T : Scheme.{u}} (f : 
   obtain ⟨l, ⟨h₁, h₂⟩, h₃⟩ := H g hg
   exact ⟨⟨l, h₂⟩, Subtype.ext h₁, fun y hy ↦ Subtype.ext (h₃ _ ⟨congr(($hy).1), y.2⟩)⟩
 
+/- English proof (translation)
+The claim follows from `bijective_restrictPoints_of_existsUnique f h i fun g w ↦ existsUnique_lift_of_etale f i hi g h w`.
+-/
 theorem bijective_restrictPoints_of_etale {X S T₀ T : Scheme.{u}} (f : X ⟶ S) [Etale f]
     (h : T ⟶ S) (i : T₀ ⟶ T) [IsClosedImmersion i] (hi : IsNilpotent i.ker) :
     Function.Bijective (restrictPoints f h i) :=
   bijective_restrictPoints_of_existsUnique f h i fun g w ↦ existsUnique_lift_of_etale f i hi g h w
 
+/- English proof (translation)
+The claim follows from `bijective_restrictPoints_of_existsUnique f h _ fun g w ↦ existsUnique_lift_of_etale_of_henselian f _ IsLocalRing.residue_surjective g h w`.
+-/
 theorem bijective_restrictPoints_of_etale_of_henselian {X S : Scheme.{u}} (f : X ⟶ S) [Etale f]
     (R : Type u) [CommRing R] [HenselianLocalRing R] (h : Spec (.of R) ⟶ S) :
     Function.Bijective (restrictPoints f h
@@ -364,6 +496,9 @@ theorem bijective_restrictPoints_of_etale_of_henselian {X S : Scheme.{u}} (f : X
   bijective_restrictPoints_of_existsUnique f h _ fun g w ↦
     existsUnique_lift_of_etale_of_henselian f _ IsLocalRing.residue_surjective g h w
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fun f _ _ _ _ _ hab ↦ ⟨isOpenImmersion_equalizer_ι_of_unramified f hab, isClosedImmersion_equalizer_ι_of_isSeparated f hab⟩, fun f _ _ _ _ _ _ hab _ _ j hj ↦ eq_of_connected_of_unramified_of_point f hab j hj, fun f _ _ s hs ↦ isOpenImmersion_and_isClosedImmersion_of_section_of_e …`.
+-/
 theorem unramified_etale_sections :
     (∀ {X S T : Scheme.{u}} (f : X ⟶ S) [FormallyUnramified f] [LocallyOfFiniteType f]
       [IsSeparated f] (a b : T ⟶ X), a ≫ f = b ≫ f →

@@ -15,6 +15,15 @@ variable {K Ω σ : Type*} [CommRing K] [CommRing Ω] [Algebra K Ω]
 noncomputable def coeffMap (δ : Derivation K Ω Ω) (P : MvPolynomial σ Ω) : MvPolynomial σ Ω :=
   ∑ n ∈ P.support, monomial n (δ (coeff n P))
 
+/- English proof (translation)
+Unfold `coeffMap`. Rewrite using `[coeff_sum]`. Distinguish the cases in `h : n ∈ P.support`. Rewrite using `[Finset.sum_eq_single n]`. Rewrite using `[coeff_monomial, if_pos rfl]`.
+
+Introduce `b _ hb`. Rewrite using `[coeff_monomial, if_neg hb]`. Introduce `hn`. Conclude with `absurd h hn`. Establish `h0 : coeff n P = 0`.
+
+Assume the negation of the conclusion as `hc`. Conclude with `h (mem_support_iff.mpr hc)`. Rewrite using `[h0, map_zero]`. Use `Finset.sum_eq_zero fun b hb => ?_` and prove the remaining obligations. Rewrite using `[coeff_monomial, if_neg]`.
+
+Introduce and unpack `rfl`. Conclude with `h hb`.
+-/
 theorem coeff_coeffMap (δ : Derivation K Ω Ω) (P : MvPolynomial σ Ω) (n : σ →₀ ℕ) :
     coeff n (coeffMap δ P) = δ (coeff n P) := by
   classical
@@ -36,6 +45,9 @@ theorem coeff_coeffMap (δ : Derivation K Ω Ω) (P : MvPolynomial σ Ω) (n : �
     rintro rfl
     exact h hb
 
+/- English proof (translation)
+Use extensionality with `m`. Rewrite using `[coeff_coeffMap, coeff_monomial, coeff_monomial]`. Apply the tactic sequence `split_ifs <;> simp`.
+-/
 theorem coeffMap_monomial (δ : Derivation K Ω Ω) (n : σ →₀ ℕ) (a : Ω) :
     coeffMap δ (monomial n a) = monomial n (δ a) := by
   classical
@@ -43,17 +55,30 @@ theorem coeffMap_monomial (δ : Derivation K Ω Ω) (n : σ →₀ ℕ) (a : Ω)
   rw [coeff_coeffMap, coeff_monomial, coeff_monomial]
   split_ifs <;> simp
 
+/- English proof (translation)
+Use extensionality with `m`. Simplify using `only [coeff_add, coeff_coeffMap, map_add]`.
+-/
 theorem coeffMap_add (δ : Derivation K Ω Ω) (P Q : MvPolynomial σ Ω) :
     coeffMap δ (P + Q) = coeffMap δ P + coeffMap δ Q := by
   ext m
   simp only [coeff_add, coeff_coeffMap, map_add]
 
+/- English proof (translation)
+Use extensionality with `m`. Rewrite using `[coeff_coeffMap, coeff_smul, coeff_smul, coeff_coeffMap, Derivation.map_smul]`.
+-/
 theorem coeffMap_smul (δ : Derivation K Ω Ω) (k : K) (P : MvPolynomial σ Ω) :
     coeffMap δ (k • P) = k • coeffMap δ P := by
   ext m
   rw [coeff_coeffMap, coeff_smul, coeff_smul, coeff_coeffMap,
     Derivation.map_smul]
 
+/- English proof (translation)
+Proceed by induction on `P using MvPolynomial.induction_on'`. Name the introduced variables `u a`. Proceed by induction on `Q using MvPolynomial.induction_on'`. Name the introduced variables `v b`. Rewrite using `[monomial_mul, coeffMap_monomial, coeffMap_monomial, coeffMap_monomial, monomial_mul, monomial_mul, Derivation.leibniz, smul_eq_mul, smul_eq_mul, map_add, add_comm v u]`.
+
+Name the introduced variables `p q hp hq`. Simplify using `only [mul_add, add_mul, coeffMap_add, hp, hq]`. Expand and normalize the polynomial expressions, which then agree. Name the introduced variables `p q hp hq`. Simplify using `only [add_mul, mul_add, coeffMap_add, hp, hq]`.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem coeffMap_mul (δ : Derivation K Ω Ω) (P Q : MvPolynomial σ Ω) :
     coeffMap δ (P * Q) = P * coeffMap δ Q + Q * coeffMap δ P := by
   induction P using MvPolynomial.induction_on'
@@ -75,13 +100,22 @@ noncomputable def coeffDer (δ : Derivation K Ω Ω) :
   Derivation.mk' { toFun := coeffMap δ, map_add' := coeffMap_add δ, map_smul' := coeffMap_smul δ }
     (fun P Q => by simp only [LinearMap.coe_mk, AddHom.coe_mk, smul_eq_mul]; exact coeffMap_mul δ P Q)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem coeffDer_apply (δ : Derivation K Ω Ω) (P : MvPolynomial σ Ω) :
     coeffDer δ P = coeffMap δ P := rfl
 
+/- English proof (translation)
+Simplify using `only [coeffDer_apply, C_apply, coeffMap_monomial]`.
+-/
 theorem coeffDer_C (δ : Derivation K Ω Ω) (a : Ω) :
     coeffDer (σ := σ) δ (C a) = C (δ a) := by
   simp only [coeffDer_apply, C_apply, coeffMap_monomial]
 
+/- English proof (translation)
+Rewrite using `[coeffDer_apply]`. Use `show coeffMap δ (monomial (Finsupp.single v 1) 1) = 0`. Rewrite using `[coeffMap_monomial, Derivation.map_one_eq_zero, map_zero]`.
+-/
 theorem coeffDer_X (δ : Derivation K Ω Ω) (v : σ) : coeffDer δ (X v : MvPolynomial σ Ω) = 0 := by
   rw [coeffDer_apply]
   show coeffMap δ (monomial (Finsupp.single v 1) 1) = 0
@@ -89,6 +123,13 @@ theorem coeffDer_X (δ : Derivation K Ω Ω) (v : σ) : coeffDer δ (X v : MvPol
 
 end CoeffDer
 
+/- English proof (translation)
+Use `open Module in`. Take `⟨g, hg⟩` from `LinearMap.exists_extend ((Basis.span hli).coord a)`. Use `⟨g, fun b => ?_⟩` and prove the remaining obligations. Establish `hmem : v b ∈ Submodule.span Ω (Set.range v)` using `Submodule.subset_span ⟨b, rfl⟩`. Establish `h1 : g (v b) = (Basis.span hli).coord a ⟨v b, hmem⟩` using `LinearMap.congr_fun hg ⟨v b, hmem⟩`.
+
+Establish `h2 : (⟨v b, hmem⟩ : Submodule.span Ω (Set.range v)) = Basis.span hli b` using `Subtype.ext (by rw [Basis.span_apply])`. Rewrite using `[h1, h2, Basis.coord_apply, Basis.repr_self]`. Distinguish the cases in `h : a = b`. Substitute `h` using the available equality. Simplify using the standard rewrite rules.
+
+Simplify using `[h]`.
+-/
 private theorem exists_linearMap_dual_of_linearIndependent {Ω V : Type*} [Field Ω] [AddCommGroup V] [Module Ω V]
     {D : ℕ} (v : Fin D → V) (hli : LinearIndependent Ω v) (a : Fin D) :
     ∃ g : V →ₗ[Ω] Ω, ∀ b, g (v b) = if a = b then 1 else 0 := by
@@ -106,6 +147,9 @@ private theorem exists_linearMap_dual_of_linearIndependent {Ω V : Type*} [Field
     simp
   · simp [h]
 
+/- English proof (translation)
+Use `choose g hg using exists_linearMap_dual_of_linearIndependent (fun a => KaehlerDifferential.D K Ω (x (J a))) hli`. Conclude with `⟨fun a => (g a).compDer (KaehlerDifferential.D K Ω), fun a b => hg a b⟩`.
+-/
 theorem exists_dual_derivations {K Ω : Type*} [Field K] [Field Ω] [Algebra K Ω] {D m : ℕ}
     (x : Fin m → Ω) (J : Fin D → Fin m)
     (hli : LinearIndependent Ω fun a => KaehlerDifferential.D K Ω (x (J a))) :
@@ -121,6 +165,9 @@ noncomputable def gFam {Ω : Type*} [CommRing Ω] {D m : ℕ} (x : Fin m → Ω)
     SVars D m ⊕ Fin D → MvPolynomial (SVars D m) Ω :=
   Sum.elim X (yPoly x)
 
+/- English proof (translation)
+Simplify using `only [yPoly, map_neg, map_sum, Derivation.leibniz, coeffDer_X, coeffDer_C, smul_eq_mul, mul_zero, add_zero]`.
+-/
 private theorem coeffDer_linearCombinationPoly_apply {K Ω : Type*} [CommRing K] [CommRing Ω]
     [Algebra K Ω] {D m : ℕ} (δ : Derivation K Ω Ω) (x : Fin m → Ω) (b : Fin D) :
     coeffDer (σ := ReciprocityTheory.MultiplicativeHeights.SVars D m) δ (yPoly x b) =
@@ -128,6 +175,9 @@ private theorem coeffDer_linearCombinationPoly_apply {K Ω : Type*} [CommRing K]
   simp only [yPoly, map_neg, map_sum, Derivation.leibniz, coeffDer_X,
     coeffDer_C, smul_eq_mul, mul_zero, add_zero]
 
+/- English proof (translation)
+Conclude with `congrFun (Derivation.coe_restrictScalars K _) f`.
+-/
 private theorem restrictScalars_pderiv_apply {K Ω σ : Type*} [CommRing K] [CommRing Ω]
     [Algebra K Ω] (w : σ) (f : MvPolynomial σ Ω) :
     ((pderiv w : Derivation Ω (MvPolynomial σ Ω) (MvPolynomial σ Ω)).restrictScalars K) f =
@@ -136,6 +186,11 @@ private theorem restrictScalars_pderiv_apply {K Ω σ : Type*} [CommRing K] [Com
 
 set_option maxHeartbeats 800000 in
 
+/- English proof (translation)
+Take `⟨p, hp⟩ : ∃ p : ReciprocityTheory.MultiplicativeHeights.SVars D m → Ω, ∀ (b : Fin D) (k : Fin m), p (Sum.inr (b.succ, k)) = if k = J b then 1 else 0` from `⟨Sum.elim (fun _ => 0) (fun q => Fin.cases (motive := fun _ => Ω) 0 (fun b => if q.2 = J b then 1 else 0) q.1), fun b k => by simp⟩`. Introduce `h0`. Establish `hmap : (eval p).mapMatrix (Matrix.of fun a b : Fin D => ∑ k, (X (Sum.inr (b.succ, k)) : MvPolynomial (ReciprocityTheory.MultiplicativeHeights.SVars D m) Ω) * C (y a k)) = 1`. Use extensionality with `a b`. Simplify using `[RingHom.mapMatrix_apply, hp, hy, Matrix.one_apply]`.
+
+Establish `h1` using `RingHom.map_det (eval p) (Matrix.of fun a b : Fin D => ∑ k, (X (Sum.inr (b.succ, k)) : MvPolynomial (ReciprocityTheory.MultiplicativeHeights.SVars D m) Ω) * C (y a k))`. Rewrite `h1` using `[h0, map_zero, hmap, Matrix.det_one]`. Conclude with `zero_ne_one h1`.
+-/
 private theorem det_sum_X_mul_C_ne_zero_of_dual_family {Ω : Type*} [Field Ω] {D m : ℕ} (y : Fin D → Fin m → Ω)
     (J : Fin D → Fin m) (hy : ∀ a b, y a (J b) = if a = b then 1 else 0) :
     (Matrix.of fun a b : Fin D =>
@@ -158,6 +213,21 @@ private theorem det_sum_X_mul_C_ne_zero_of_dual_family {Ω : Type*} [Field Ω] {
 
 set_option maxHeartbeats 800000 in
 
+/- English proof (translation)
+Establish `hz_inl : ∀ w, gFam (D` using `D) x (Sum.inl w) = X w := fun _ => rfl`. Establish `hz_inr : ∀ b, gFam (D` using `D) x (Sum.inr b) = yPoly x b := fun _ => rfl`. Take `⟨N, hN⟩ : ∃ N : Matrix (Fin D) (Fin D) (MvPolynomial (ReciprocityTheory.MultiplicativeHeights.SVars D m) Ω), N = Matrix.of fun a b : Fin D => ∑ k, (X (Sum.inr (b.succ, k)) : MvPolynomial (ReciprocityTheory.MultiplicativeHeights.SVars D m) Ω) * C (δ a (x k))` from `⟨_, rfl⟩`. Establish `hNe : ∀ a b, N a b = ∑ k, (X (Sum.inr (b.succ, k)) : MvPolynomial (ReciprocityTheory.MultiplicativeHeights.SVars D m) Ω) * C (δ a (x k))`. Introduce `a b`.
+
+Rewrite using `[hN]`. Both sides reduce to the same expression. Establish `hcd : ∀ a b, coeffDer (σ` using `ReciprocityTheory.MultiplicativeHeights.SVars D m) (δ a) (yPoly x b) = -N a b := by`. Introduce `a b`. Rewrite using `[hNe, coeffDer_linearCombinationPoly_apply]`.
+
+Establish `hdet : N.det ≠ 0`. Rewrite using `[hN]`. Conclude with `det_sum_X_mul_C_ne_zero_of_dual_family (fun a k => δ a (x k)) J hδ`. Use `algebraicIndependent_of_derivations (gFam (D := D) x) (Sum.elim (fun w : ReciprocityTheory.MultiplicativeHeights.SVars D m => (pderiv w : Derivation Ω (MvPolynomial (ReciprocityTheory.MultiplicativeHeights.SVars D m) Ω) (MvPolynomial (ReciprocityTheory.MultiplicativeHeights.SVars …` and prove the remaining obligations. Introduce `c hc`.
+
+Establish `hmv : Matrix.mulVec N (fun b => c (Sum.inr b)) = 0`. Use function extensionality and compare the values at `a`. Establish `h1` using `hc (Sum.inr a)`. Simplify using `only [Sum.elim_inr, Fintype.sum_sum_type, hz_inl, hz_inr, coeffDer_X, mul_zero, Finset.sum_const_zero, zero_add, hcd, mul_neg, Finset.sum_neg_distrib, neg_eq_zero] at h1`. Use `show ∑ b, N a b * c (Sum.inr b) = 0`.
+
+Conclude with `(Finset.sum_congr rfl fun b _ => mul_comm (N a b) (c (Sum.inr b))).trans h1`. Establish `hinr : ∀ b, c (Sum.inr b) = 0` using `fun b => congr_fun (Matrix.eq_zero_of_mulVec_eq_zero hdet hmv) b`. Introduce `i`. Break down `i with w | b` into its components or cases. Establish `h2` using `hc (Sum.inl w)`.
+
+Rewrite `h2` using `[Fintype.sum_sum_type]`. Simplify using `only [Sum.elim_inl, hinr, zero_mul, Finset.sum_const_zero, add_zero, restrictScalars_pderiv_apply, hz_inl] at h2`. Rewrite `h2` using `[Finset.sum_eq_single w]`. Rewrite `h2` using `[pderiv_X_self, mul_one]`. Conclude with `h2`.
+
+Introduce `w' _ hw'`. Rewrite using `[pderiv_X_of_ne hw', mul_zero]`. Introduce `h`. Conclude with `absurd (Finset.mem_univ w) h`. Conclude with `hinr b`.
+-/
 theorem gFam_indep {K Ω : Type*} [Field K] [CharZero K] [Field Ω] [Algebra K Ω] {D m : ℕ}
     (x : Fin m → Ω) (J : Fin D → Fin m) (δ : Fin D → Derivation K Ω Ω)
     (hδ : ∀ a b, δ a (x (J b)) = if a = b then 1 else 0) :
@@ -216,12 +286,18 @@ def eIdx (D m : ℕ) (p : Fin (D + 1) × Fin (m + 1)) : SVars D m ⊕ Fin D :=
     (Fin.cases (motive := fun _ => SVars D m ⊕ Fin D) (Sum.inl (Sum.inl ())) Sum.inr p.1)
     (fun j => Sum.inl (Sum.inr (p.1, j))) p.2
 
+/- English proof (translation)
+Introduce and unpack `⟨i₁, j₁⟩ ⟨i₂, j₂⟩ h`. Apply the tactic sequence `induction j₁ using Fin.cases <;> induction j₂ using Fin.cases <;>`. Apply the tactic sequence `induction i₁ using Fin.cases <;> induction i₂ using Fin.cases <;>`. Simplify using `[eIdx]`.
+-/
 theorem eIdx_injective (D m : ℕ) : Function.Injective (eIdx D m) := by
   rintro ⟨i₁, j₁⟩ ⟨i₂, j₂⟩ h
   induction j₁ using Fin.cases <;> induction j₂ using Fin.cases <;>
     induction i₁ using Fin.cases <;> induction i₂ using Fin.cases <;>
     simp_all [eIdx]
 
+/- English proof (translation)
+Break down `p with ⟨i, j⟩` into its components or cases. Apply the tactic sequence `induction j using Fin.cases <;> induction i using Fin.cases <;>`. Simplify using `[ReciprocityTheory.MultiplicativeHeights.sImage, eIdx, gFam, yPoly]`.
+-/
 theorem sImage_eq {Ω : Type} [Field Ω] {D m : ℕ} (x : Fin m → Ω) (p : Fin (D + 1) × Fin (m + 1)) :
     sImage (D := D) x p =
       algebraMap (MvPolynomial (SVars D m) Ω) (SField Ω D m) (gFam x (eIdx D m p)) := by

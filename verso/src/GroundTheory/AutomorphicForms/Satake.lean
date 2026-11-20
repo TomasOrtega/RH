@@ -15,6 +15,9 @@ namespace Spherical
 
 variable {n : ℕ}
 
+/- English proof (translation)
+Establish `: (evalAt z).comp (polyEmb n) = MvPolynomial.aeval (fun i => (z i : ℂ))`. Use `MvPolynomial.algHom_ext fun i => ?_` and prove the remaining obligations. Rewrite using `[AlgHom.comp_apply, polyEmb_X, evalAt_single, MvPolynomial.aeval_X, one_mul, monomialChar_apply, Finset.prod_eq_single i (fun j _ hj => by simp [hj]) (fun h => absurd (Finset.mem_univ i) h)]`. Simplify using the standard rewrite rules. Conclude with `AlgHom.congr_fun this Q`.
+-/
 theorem evalAt_polyEmb (z : Fin n → ℂˣ) (Q : MvPolynomial (Fin n) ℂ) :
     evalAt z (polyEmb n Q) = MvPolynomial.aeval (fun i => (z i : ℂ)) Q := by
   have : (evalAt z).comp (polyEmb n) = MvPolynomial.aeval (fun i => (z i : ℂ)) := by
@@ -25,16 +28,27 @@ theorem evalAt_polyEmb (z : Fin n → ℂˣ) (Q : MvPolynomial (Fin n) ℂ) :
     simp
   exact AlgHom.congr_fun this Q
 
+/- English proof (translation)
+Introduce `σ` and use `by rw [← polyEmb_rename, MvPolynomial.esymm_isSymmetric (Fin n) ℂ k σ]`.
+-/
 theorem polyEmb_esymm_mem (k : ℕ) :
     polyEmb n (MvPolynomial.esymm (Fin n) ℂ k) ∈ symmetricLaurent n := fun σ => by
   rw [← polyEmb_rename, MvPolynomial.esymm_isSymmetric (Fin n) ℂ k σ]
 
+/- English proof (translation)
+The claim follows from `_root_.UpperTheory.Reformulated.B.Yoa3.exists_perm_of_map_eq h`.
+-/
 theorem exists_perm_of_map_eq {z z' : Fin n → ℂˣ}
     (h : Multiset.map (fun i => (z i : ℂ)) Finset.univ.val =
       Multiset.map (fun i => (z' i : ℂ)) Finset.univ.val) :
     ∃ σ : Equiv.Perm (Fin n), z' = z ∘ σ :=
   _root_.UpperTheory.Reformulated.B.Yoa3.exists_perm_of_map_eq h
 
+/- English proof (translation)
+Apply `exists_perm_of_map_eq` to reduce the goal to its premises. Establish `he : ∀ k, (Multiset.map (fun i => (z i : ℂ)) Finset.univ.val).esymm k = (Multiset.map (fun i => (z' i : ℂ)) Finset.univ.val).esymm k` using `fun k => by`. Use `h _ (polyEmb_esymm_mem k)` as an intermediate fact. Rewrite `this` using `[evalAt_polyEmb, evalAt_polyEmb, MvPolynomial.aeval_esymm_eq_multiset_esymm, MvPolynomial.aeval_esymm_eq_multiset_esymm]`. Then use the resulting hypothesis. Establish `hp : ((Multiset.map (fun i => (z i : ℂ)) Finset.univ.val).map fun t => Polynomial.X - Polynomial.C t).prod = ((Multiset.map (fun i => (z' i : ℂ)) Finset.univ.val).map fun t => Polynomial.X - Polynomial.C t).prod`.
+
+Rewrite using `[Multiset.prod_X_sub_X_eq_sum_esymm, Multiset.prod_X_sub_X_eq_sum_esymm]`. Simplify using `only [Multiset.card_map, he]`. Use `congrArg Polynomial.roots hp` as an intermediate fact. Rewrite `this` using `[Polynomial.roots_multiset_prod_X_sub_C, Polynomial.roots_multiset_prod_X_sub_C]`. Then use the resulting hypothesis.
+-/
 theorem exists_perm_of_evalAt_eq {z z' : Fin n → ℂˣ}
     (h : ∀ p ∈ symmetricLaurent n, evalAt z p = evalAt z' p) :
     ∃ σ : Equiv.Perm (Fin n), z' = z ∘ σ := by
@@ -53,6 +67,9 @@ theorem exists_perm_of_evalAt_eq {z z' : Fin n → ℂˣ}
   have := congrArg Polynomial.roots hp
   rwa [Polynomial.roots_multiset_prod_X_sub_C, Polynomial.roots_multiset_prod_X_sub_C] at this
 
+/- English proof (translation)
+Rewrite using `[← evalAt_permAct, hp σ]`.
+-/
 theorem evalAt_comp_of_mem {p : LaurentRing n} (hp : p ∈ symmetricLaurent n) (z : Fin n → ℂˣ)
     (σ : Equiv.Perm (Fin n)) : evalAt (z ∘ σ) p = evalAt z p := by
   rw [← evalAt_permAct, hp σ]
@@ -64,6 +81,9 @@ section Measure
 variable [MeasurableSpace (GL (Fin n) F)] [BorelSpace (GL (Fin n) F)]
   {μ : Measure (GL (Fin n) F)} [μ.IsHaarMeasure]
 
+/- English proof (translation)
+Use `le_antisymm (fun p hp => ?_) symmetricLaurent_le_range` and prove the remaining obligations. Take `⟨h, rfl⟩` from `(AlgHom.mem_range _).1 hp`. Conclude with `satakeTransform_mem_symmetric h`.
+-/
 theorem range_satakeTransform :
     (satakeTransform μ (F := F) (n := n)).range = symmetricLaurent n := by
   refine le_antisymm (fun p hp => ?_) symmetricLaurent_le_range
@@ -76,15 +96,26 @@ def satakeEquiv : SphericalHecke μ (F := F) (n := n) ≃ₐ[ℂ] symmetricLaure
   (AlgEquiv.ofInjective (satakeTransform μ) satakeTransform_injective).trans
     (Subalgebra.equivOfEq _ _ range_satakeTransform)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem coe_satakeEquiv (h : SphericalHecke μ (F := F) (n := n)) :
     (satakeEquiv μ h : LaurentRing n) = satakeTransform μ h :=
   rfl
 
+/- English proof (translation)
+The claim follows from `evalAt_comp_of_mem (satakeTransform_mem_symmetric h) z σ`.
+-/
 theorem evalAt_comp_satakeTransform (z : Fin n → ℂˣ) (σ : Equiv.Perm (Fin n))
     (h : SphericalHecke μ (F := F) (n := n)) :
     evalAt (z ∘ σ) (satakeTransform μ h) = evalAt z (satakeTransform μ h) :=
   evalAt_comp_of_mem (satakeTransform_mem_symmetric h) z σ
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce `hzz`. Use `exists_perm_of_evalAt_eq fun p hp => ?_` and prove the remaining obligations. Rewrite `hp` using `[← range_satakeTransform (μ := μ) (F := F)]`. Take `⟨h, rfl⟩` from `(AlgHom.mem_range _).1 hp`.
+
+Conclude with `AlgHom.congr_fun hzz h`. Introduce and unpack `⟨σ, rfl⟩`. Conclude with `AlgHom.ext fun h => (evalAt_comp_satakeTransform z σ h).symm`.
+-/
 theorem evalAt_comp_satakeTransform_eq_iff (z z' : Fin n → ℂˣ) :
     (evalAt z).comp (satakeTransform μ (F := F) (n := n)) = (evalAt z').comp (satakeTransform μ) ↔
       ∃ σ : Equiv.Perm (Fin n), z' = z ∘ σ := by
@@ -97,12 +128,20 @@ theorem evalAt_comp_satakeTransform_eq_iff (z z' : Fin n → ℂˣ) :
   · rintro ⟨σ, rfl⟩
     exact AlgHom.ext fun h => (evalAt_comp_satakeTransform z σ h).symm
 
+/- English proof (translation)
+Rewrite using `[satakeTransform_apply, evalAt_normalize, inv_mul_cancel_right, evalAt_satake]`.
+-/
 theorem sphericalCharacter_unramifiedChar_eq (w : Fin n → ℂˣ)
     (h : SphericalHecke μ (F := F) (n := n)) :
     sphericalCharacter μ (isUnramified_unramifiedChar (F := F) w) h =
       evalAt (w * (halfPoint F n)⁻¹) (satakeTransform μ h) := by
   rw [satakeTransform_apply, evalAt_normalize, inv_mul_cancel_right, evalAt_satake]
 
+/- English proof (translation)
+Establish `hsurj : Function.Surjective ω` using `fun c => ⟨algebraMap ℂ _ c, AlgHom.commutes ω c⟩`. Establish `: (RingHom.ker ω).IsMaximal` using `RingHom.ker_isMaximal_of_surjective _ hsurj`. Take `⟨w, hw⟩` from `exists_ker_sphericalCharacter_eq (μ := μ) (RingHom.ker ω)`. Use `⟨w * (halfPoint F n)⁻¹, AlgHom.ext fun h => ?_⟩` and prove the remaining obligations. Rewrite using `[AlgHom.comp_apply, ← sphericalCharacter_unramifiedChar_eq]`.
+
+Establish `hmem : h - algebraMap ℂ _ (ω h) ∈ RingHom.ker ω`. Rewrite using `[RingHom.mem_ker, map_sub, AlgHom.commutes, Algebra.algebraMap_self, RingHom.id_apply, sub_self]`. Rewrite `hmem` using `[← hw, RingHom.mem_ker, map_sub, AlgHom.commutes, Algebra.algebraMap_self, RingHom.id_apply, sub_eq_zero]`. Conclude with `hmem.symm`.
+-/
 theorem exists_eq_evalAt_comp_satakeTransform
     (ω : SphericalHecke μ (F := F) (n := n) →ₐ[ℂ] ℂ) :
     ∃ z : Fin n → ℂˣ, ω = (evalAt z).comp (satakeTransform μ) := by
@@ -118,6 +157,11 @@ theorem exists_eq_evalAt_comp_satakeTransform
     sub_eq_zero] at hmem
   exact hmem.symm
 
+/- English proof (translation)
+Rewrite using `[← evalAt_comp_satakeTransform_eq_iff (μ := μ) (F := F)]`. Prove the components needed by the constructor for the conclusion. Introduce `hzz`. Conclude with `AlgHom.ext fun h => by`. Rewrite using `[AlgHom.comp_apply, AlgHom.comp_apply, ← sphericalCharacter_paramChar, ← sphericalCharacter_paramChar, hzz]`.
+
+Introduce `hzz`. Conclude with `AlgHom.ext fun h => by`. Rewrite using `[sphericalCharacter_paramChar, sphericalCharacter_paramChar]`. Conclude with `AlgHom.congr_fun hzz h`.
+-/
 theorem sphericalCharacter_paramChar_eq_iff (z z' : Fin n → ℂˣ) :
     sphericalCharacter μ (isUnramified_paramChar (F := F) z) =
         sphericalCharacter μ (isUnramified_paramChar (F := F) z') ↔
@@ -139,6 +183,17 @@ def IsSatakeParameter {V : Type*} [AddCommGroup V] [Module ℂ V]
   ∀ (h : SphericalHecke μ (F := F) (n := n)), ∀ v ∈ fixedVectors ρ (integralGL F n),
     heckeAct μ ρ (h : HeckeAlgebra μ) v = evalAt z (satakeTransform μ h) • v
 
+/- English proof (translation)
+Establish `hKc` using `isCompact_integralGL F n`. Establish `hKo` using `isOpen_integralGL F n`. Take `⟨v₀, hv₀, h0⟩` from `Submodule.exists_mem_ne_zero_of_ne_bot hK`. Set `s₀` to `LinearMap.toSpanSingleton (SphericalHecke μ (F := F) (n := n)) (fixedVectors ρ (integralGL F n)) ⟨v₀, hv₀⟩`. Set `I : Ideal (SphericalHecke μ (F` to `F) (n := n)) := LinearMap.ker s₀`.
+
+Establish `hsimple` using `isSimpleModule_fixedVectors (μ := μ) hKc hKo hρ hK`. Establish `hsurj : Function.Surjective s₀` using `((isSimpleModule_iff_toSpanSingleton_surjective).1 hsimple).2 _ fun h => h0 (congrArg Subtype.val h)`. Establish `hI : I.IsMaximal`. Rewrite using `[Ideal.isMaximal_def]`. Conclude with `isSimpleModule_iff_isCoatom.1 (IsSimpleModule.congr (LinearMap.quotKerEquivOfSurjective _ hsurj))`.
+
+Take `⟨w, hw⟩` from `exists_ker_sphericalCharacter_eq (μ := μ) I`. Use `⟨w * (halfPoint F n)⁻¹, fun h v hv => ?_⟩` and prove the remaining obligations. Rewrite using `[← sphericalCharacter_unramifiedChar_eq]`. Use `set c := sphericalCharacter μ (isUnramified_unramifiedChar (F := F) w) h`. Establish `hmem : h - algebraMap ℂ _ c ∈ I`.
+
+Rewrite using `[← hw, RingHom.mem_ker, map_sub, AlgHom.commutes, Algebra.algebraMap_self, RingHom.id_apply, sub_self]`. Take `⟨h', hh'⟩` from `hsurj ⟨v, hv⟩`. Establish `hkill : (h - algebraMap ℂ _ c) • (⟨v, hv⟩ : fixedVectors ρ (integralGL F n)) = 0`. Rewrite using `[← hh', LinearMap.toSpanSingleton_apply, smul_smul, mul_comm, ← smul_smul]`. Establish `: (h - algebraMap ℂ _ c) • (⟨v₀, hv₀⟩ : fixedVectors ρ (integralGL F n)) = 0` using `hmem`.
+
+Rewrite using `[this, smul_zero]`. Rewrite `hkill` using `[sub_smul, sub_eq_zero]`. Establish `hv'` using `congrArg Subtype.val hkill`. Rewrite `hv'` using `[coe_smul_fixedVectors, coe_smul_fixedVectors]`. Rewrite using `[hv', Algebra.algebraMap_eq_smul_one, val_smul, val_one, HeckeAlgebra.coe_smul, heckeAct_smul_left _ (idem μ hKc hKo).mem (smooth_of_mem_fixedVectors hKo hv), heckeAct_idem_of_mem hKc hKo hv]`.
+-/
 theorem exists_satakeParameter {V : Type*} [AddCommGroup V] [Module ℂ V]
     {ρ : Representation ℂ (GL (Fin n) F) V} (hρ : IsSmooth ρ) [ρ.IsIrreducible]
     (hK : fixedVectors ρ (integralGL F n) ≠ ⊥) :
@@ -176,6 +231,9 @@ theorem exists_satakeParameter {V : Type*} [AddCommGroup V] [Module ℂ V]
     heckeAct_smul_left _ (idem μ hKc hKo).mem (smooth_of_mem_fixedVectors hKo hv),
     heckeAct_idem_of_mem hKc hKo hv]
 
+/- English proof (translation)
+Establish `hKc` using `isCompact_integralGL F n`. Establish `hKo` using `isOpen_integralGL F n`. Use `Subtype.ext ?_` and prove the remaining obligations. Rewrite using `[coe_smul_fixedVectors, Algebra.algebraMap_eq_smul_one, val_smul, val_one, HeckeAlgebra.coe_smul, heckeAct_smul_left _ (idem μ hKc hKo).mem (smooth_of_mem_fixedVectors hKo v.2), heckeAct_idem_of_mem hKc hKo v.2]`. Both sides reduce to the same expression.
+-/
 theorem algebraMap_smul_fixedVectors {V : Type*} [AddCommGroup V] [Module ℂ V]
     {ρ : Representation ℂ (GL (Fin n) F) V} (c : ℂ) (v : fixedVectors ρ (integralGL F n)) :
     (algebraMap ℂ (SphericalHecke μ (F := F) (n := n)) c) • v = c • v := by
@@ -187,12 +245,18 @@ theorem algebraMap_smul_fixedVectors {V : Type*} [AddCommGroup V] [Module ℂ V]
       (smooth_of_mem_fixedVectors hKo v.2), heckeAct_idem_of_mem hKc hKo v.2]
   rfl
 
+/- English proof (translation)
+The claim follows from `Subtype.ext (by rw [coe_smul_fixedVectors, Submodule.coe_smul]; exact hz h v v.2)`.
+-/
 theorem smul_fixedVectors_eq {V : Type*} [AddCommGroup V] [Module ℂ V]
     {ρ : Representation ℂ (GL (Fin n) F) V} {z : Fin n → ℂˣ} (hz : IsSatakeParameter ρ μ z)
     (h : SphericalHecke μ (F := F) (n := n)) (v : fixedVectors ρ (integralGL F n)) :
     h • v = evalAt z (satakeTransform μ h) • v :=
   Subtype.ext (by rw [coe_smul_fixedVectors, Submodule.coe_smul]; exact hz h v v.2)
 
+/- English proof (translation)
+Take `⟨v, hv, h0⟩` from `Submodule.exists_mem_ne_zero_of_ne_bot hK`. Use `(evalAt_comp_satakeTransform_eq_iff (μ := μ) z z').1 (AlgHom.ext fun h => ?_)` and prove the remaining obligations. Use `(hz h v hv).symm.trans (hz' h v hv)` as an intermediate fact. Conclude with `smul_left_injective ℂ h0 this`.
+-/
 theorem satakeParameter_unique {V : Type*} [AddCommGroup V] [Module ℂ V]
     {ρ : Representation ℂ (GL (Fin n) F) V} (hK : fixedVectors ρ (integralGL F n) ≠ ⊥)
     {z z' : Fin n → ℂˣ} (hz : IsSatakeParameter ρ μ z) (hz' : IsSatakeParameter ρ μ z') :
@@ -202,12 +266,20 @@ theorem satakeParameter_unique {V : Type*} [AddCommGroup V] [Module ℂ V]
   have := (hz h v hv).symm.trans (hz' h v hv)
   exact smul_left_injective ℂ h0 this
 
+/- English proof (translation)
+Introduce `h v hv` and use `by rw [evalAt_comp_satakeTransform] exact hz h v hv`.
+-/
 theorem isSatakeParameter_comp {V : Type*} [AddCommGroup V] [Module ℂ V]
     {ρ : Representation ℂ (GL (Fin n) F) V} {z : Fin n → ℂˣ} (hz : IsSatakeParameter ρ μ z)
     (σ : Equiv.Perm (Fin n)) : IsSatakeParameter ρ μ (z ∘ σ) := fun h v hv => by
   rw [evalAt_comp_satakeTransform]
   exact hz h v hv
 
+/- English proof (translation)
+Introduce `h v hv`. Establish `hχ` using `isUnramified_paramChar (F := F) z`. Rewrite `hv` using `[fixedVectors_eq_span hχ, Submodule.mem_span_singleton]`. Take `⟨c, rfl⟩` from `hv`. Establish `hs` using `Parabolic.isSmooth_parabolicInd (F := F) (n := n) (β := (id : Fin n → Fin n)) (charRep (paramChar F z))`.
+
+Rewrite using `[heckeAct_smul_right (h : HeckeAlgebra μ).mem c (hs _), heckeAct_sphericalVector hχ, ← sphericalCharacter_apply hχ, sphericalCharacter_paramChar, smul_comm]`.
+-/
 theorem isSatakeParameter_principalSeries (z : Fin n → ℂˣ) :
     IsSatakeParameter (principalSeries F n (paramChar F z)) μ z := by
   intro h v hv
@@ -219,6 +291,9 @@ theorem isSatakeParameter_principalSeries (z : Fin n → ℂˣ) :
   rw [heckeAct_smul_right (h : HeckeAlgebra μ).mem c (hs _), heckeAct_sphericalVector hχ,
     ← sphericalCharacter_apply hχ, sphericalCharacter_paramChar, smul_comm]
 
+/- English proof (translation)
+Rewrite using `[satakeTransform_apply, evalAt_normalize, inv_mul_cancel, evalAt_satake, sphericalCharacter_apply, sphericalEigen]`. Use `congr 1`. Use function extensionality and compare the values at `g`. Rewrite using `[sphericalFun_unramifiedChar, map_one, mul_one]`.
+-/
 theorem evalAt_inv_halfPoint_satakeTransform (h : SphericalHecke μ (F := F) (n := n)) :
     evalAt (halfPoint F n)⁻¹ (satakeTransform μ h) = ∫ g, (h : HeckeAlgebra μ) g ∂μ := by
   rw [satakeTransform_apply, evalAt_normalize, inv_mul_cancel, evalAt_satake,
@@ -229,6 +304,13 @@ theorem evalAt_inv_halfPoint_satakeTransform (h : SphericalHecke μ (F := F) (n 
 
 end Measure
 
+/- English proof (translation)
+Use `borelize (GL (Fin n) F)`. Establish `hKc` using `isCompact_integralGL F n`. Establish `hKo` using `isOpen_integralGL F n`. Take `⟨z, hz⟩` from `exists_satakeParameter (μ := (Measure.haar : Measure (GL (Fin n) F))) hρ hK`. Take `⟨v₀, hv₀, h0⟩` from `Submodule.exists_mem_ne_zero_of_ne_bot hK`.
+
+Establish `hv₀' : (⟨v₀, hv₀⟩ : fixedVectors ρ (integralGL F n)) ≠ 0` using `fun h => h0 (congrArg Subtype.val h)`. Establish `hsimple` using `isSimpleModule_fixedVectors (μ := (Measure.haar : Measure (GL (Fin n) F))) hKc hKo hρ hK`. Establish `hsurj` using `((isSimpleModule_iff_toSpanSingleton_surjective).1 hsimple).2 _ hv₀'`. Establish `htop : (ℂ ∙ (⟨v₀, hv₀⟩ : fixedVectors ρ (integralGL F n))) = ⊤`. Use `Submodule.eq_top_iff'.2 fun v => ?_` and prove the remaining obligations.
+
+Take `⟨h, rfl⟩` from `hsurj v`. Rewrite using `[LinearMap.toSpanSingleton_apply, smul_fixedVectors_eq hz]`. Conclude with `Submodule.smul_mem _ _ (Submodule.mem_span_singleton_self _)`. Rewrite using `[← finrank_top, ← htop, finrank_span_singleton hv₀']`.
+-/
 theorem finrank_fixedVectors_eq_one {V : Type*} [AddCommGroup V] [Module ℂ V]
     {ρ : Representation ℂ (GL (Fin n) F) V} (hρ : IsSmooth ρ) [ρ.IsIrreducible]
     (hK : fixedVectors ρ (integralGL F n) ≠ ⊥) :
@@ -255,6 +337,13 @@ section Classification
 variable [MeasurableSpace (GL (Fin n) F)] [BorelSpace (GL (Fin n) F)]
   {μ : Measure (GL (Fin n) F)} [μ.IsHaarMeasure]
 
+/- English proof (translation)
+Establish `hKc` using `isCompact_integralGL F n`. Establish `hKo` using `isOpen_integralGL F n`. Establish `h1` using `finrank_fixedVectors_eq_one hρ hKρ`. Establish `h2` using `finrank_fixedVectors_eq_one hσ hKσ`. Establish `: FiniteDimensional ℂ (fixedVectors ρ (integralGL F n))` using `Module.finite_of_finrank_pos (by rw [h1]; exact one_pos)`.
+
+Establish `: FiniteDimensional ℂ (fixedVectors σ (integralGL F n))` using `Module.finite_of_finrank_pos (by rw [h2]; exact one_pos)`. Set `f : fixedVectors ρ (integralGL F n) ≃ₗ[ℂ] fixedVectors σ (integralGL F n)` to `LinearEquiv.ofFinrankEq _ _ (h1.trans h2.symm)`. Set `e : fixedVectors ρ (integralGL F n) ≃ₗ[SphericalHecke μ (F` to `F) (n := n)] fixedVectors σ (integralGL F n) := { toFun := f invFun := f.symm map_add' := f.map_add map_smul' := fun h v => by`. Rewrite using `[RingHom.id_apply, smul_fixedVectors_eq hzρ, smul_fixedVectors_eq hzσ, f.map_smul]`. Use `left_inv := f.left_inv`.
+
+Use `right_inv := f.right_inv }`. Conclude with `nonempty_equiv_of_fixedVectors_equiv hKc hKo hρ hσ hKρ e`.
+-/
 theorem nonempty_equiv_of_isSatakeParameter {V W : Type*} [AddCommGroup V] [Module ℂ V]
     [AddCommGroup W] [Module ℂ W] {ρ : Representation ℂ (GL (Fin n) F) V}
     {σ : Representation ℂ (GL (Fin n) F) W} (hρ : IsSmooth ρ) (hσ : IsSmooth σ) [ρ.IsIrreducible]
@@ -282,6 +371,17 @@ theorem nonempty_equiv_of_isSatakeParameter {V W : Type*} [AddCommGroup V] [Modu
       right_inv := f.right_inv }
   exact nonempty_equiv_of_fixedVectors_equiv hKc hKo hρ hσ hKρ e
 
+/- English proof (translation)
+Establish `hKc` using `isCompact_integralGL F n`. Establish `hKo` using `isOpen_integralGL F n`. Use `set ω := (evalAt z).comp (satakeTransform μ (F := F) (n := n))`. Establish `hsurj : Function.Surjective ω` using `fun c => ⟨algebraMap ℂ _ c, AlgHom.commutes ω c⟩`. Use `set I := RingHom.ker ω`.
+
+Establish `hI : I.IsMaximal` using `RingHom.ker_isMaximal_of_surjective _ hsurj`. Establish `: IsSimpleModule (SphericalHecke μ (F` using `F) (n := n)) (SphericalHecke μ (F := F) (n := n) ⧸ I) := isSimpleModule_iff_isCoatom.2 (Ideal.isMaximal_def.1 hI)`. Establish `: Nontrivial (SphericalHecke μ (F` using `F) (n := n) ⧸ I) := IsSimpleModule.nontrivial (SphericalHecke μ (F := F) (n := n)) _`. Take `⟨V, _, _, ρ, hρ, hirr, ⟨e⟩⟩` from `exists_irreducible_fixedVectors_equiv (μ := μ) hKc hKo (SphericalHecke μ (F := F) (n := n) ⧸ I)`. Use `⟨V, _, _, ρ, hρ, hirr, Submodule.nontrivial_iff_ne_bot.1 e.toEquiv.nontrivial, fun h v hv => ?_⟩` and prove the remaining obligations.
+
+Establish `hq : ∀ m : SphericalHecke μ (F` using `F) (n := n) ⧸ I, h • m = ω h • m := by`. Introduce `m`. Take `⟨a, rfl⟩` from `Submodule.Quotient.mk_surjective I m`. Establish `hmem : h - algebraMap ℂ _ (ω h) ∈ I`. Rewrite using `[RingHom.mem_ker, map_sub, AlgHom.commutes, Algebra.algebraMap_self, RingHom.id_apply, sub_self]`.
+
+Rewrite using `[← sub_eq_zero, ← algebraMap_smul (SphericalHecke μ (F := F) (n := n)) (ω h), ← sub_smul, ← Submodule.Quotient.mk_smul, Submodule.Quotient.mk_eq_zero, smul_eq_mul]`. Conclude with `I.mul_mem_right a hmem`. Establish `hv' : h • (⟨v, hv⟩ : fixedVectors ρ (integralGL F n)) = ω h • ⟨v, hv⟩`. Apply `e.injective` to reduce the goal to its premises. Rewrite using `[e.map_smul, hq, ← algebraMap_smul (SphericalHecke μ (F := F) (n := n)) (ω h), ← e.map_smul, algebraMap_smul_fixedVectors]`.
+
+Use `congrArg Subtype.val hv'` as an intermediate fact. Rewrite `this` using `[coe_smul_fixedVectors]`. Conclude with `this`.
+-/
 theorem exists_irreducible_isSatakeParameter (z : Fin n → ℂˣ) :
     ∃ (V : Type u) (_ : AddCommGroup V) (_ : Module ℂ V) (ρ : Representation ℂ (GL (Fin n) F) V),
       IsSmooth ρ ∧ ρ.IsIrreducible ∧ fixedVectors ρ (integralGL F n) ≠ ⊥ ∧

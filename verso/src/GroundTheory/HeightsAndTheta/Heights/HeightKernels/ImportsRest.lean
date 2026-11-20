@@ -27,6 +27,13 @@ def S6.LatticeAsBundle.Statement : Prop :=
             (GroundTheory.Heights₂.Heights.quotDegree (GroundTheory.Heights₂.Heights.idealLattice a)
               (GroundTheory.Heights₂.Heights.diagMetric d) b c)
 
+/- English proof (translation)
+Introduce `a d b c`. Use `⟨fun _ => one_ne_zero, fun _ _ => one_pos, fun _ _ => rfl, ?_, rfl⟩` and prove the remaining obligations. Establish `h : Sum.elim b c = (Pi.basisFun ℚ (Fin 2)) ∘ finSumFinEquiv`. Use function extensionality and compare the values at `i`. Apply the tactic sequence `rcases i with i | i <;> fin_cases i`.
+
+Simplify using `[b, Pi.basisFun_apply]`. Both sides reduce to the same expression. Simplify using `[c, Pi.basisFun_apply]`. Both sides reduce to the same expression. Rewrite using `[h]`.
+
+Conclude with `(Pi.basisFun ℚ (Fin 2)).linearIndependent.comp _ finSumFinEquiv.injective`.
+-/
 theorem S6.LatticeAsBundle.hypotheses_inhabited :
     let a : Fin 2 → FractionalIdeal (𝓞 ℚ)⁰ ℚ := fun _ => 1
     let d : (ℚ →+* ℂ) → Fin 2 → ℝ := fun _ _ => 1

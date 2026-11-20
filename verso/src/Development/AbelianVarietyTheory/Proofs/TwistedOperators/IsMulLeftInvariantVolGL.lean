@@ -13,6 +13,19 @@ variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchim
   [MeasurableSpace k] [BorelSpace k] {n : Type} [Fintype n] [DecidableEq n]
   (ν : Measure k) [ν.IsAddHaarMeasure]
 
+/- English proof (translation)
+Use `haveI := secondCountable k`. Use `haveI := t2Space k`. Use `haveI : BorelSpace (Matrix n n k) := inferInstanceAs (BorelSpace (n → n → k))`. Use `haveI : LocallyCompactSpace (Matrix n n k) := inferInstanceAs (LocallyCompactSpace (n → n → k))`. Use `haveI : SecondCountableTopology (Matrix n n k) := inferInstanceAs (SecondCountableTopology (n → n → k))`.
+
+Use `haveI : (volM ν n n).IsAddHaarMeasure := Measure.pi.isAddHaarMeasure _`. Set `e : Matrix n n k ≃+ Matrix n n k` to `{ toFun := fun x => h.val * x invFun := fun x => (h⁻¹).val * x left_inv := fun x => by simp only [← Matrix.mul_assoc, Units.inv_mul, Matrix.one_mul] right_inv := fun x => by simp only [← Matrix.mul_assoc, Units.mul_inv, Matrix.one_mul] map_add' := fun x y => Matrix.mul_add _ _ _ …`. Establish `c1 : Continuous e` using `continuous_const.matrix_mul continuous_id`. Establish `c2 : Continuous e.symm` using `continuous_const.matrix_mul continuous_id`. Use `haveI := e.isAddHaarMeasure_map (volM ν n n) c1 c2`.
+
+Take `⟨c, hc⟩ : ∃ c : ℝ≥0, (volM ν n n).map e = c • volM ν n n` from `⟨_, Measure.isAddLeftInvariant_eq_smul _ _⟩`. Express the relevant statement in the definitionally equal form `(volM ν n n).map e = _`. Use `set K : Set (Matrix n n k) := {A | ∀ i j, A i j ∈ 𝒪[k]} with hK`. Establish `hKo : IsOpen K` using `SplitFlip.isOpen_intMatrix`. Establish `hKc : IsCompact K` using `SplitFlip.isCompact_intMatrix`.
+
+Establish `h0 : volM ν n n K ≠ 0` using `(hKo.measure_pos _ ⟨0, fun _ _ => zero_mem _⟩).ne'`. Establish `ht : volM ν n n K ≠ ⊤` using `hKc.measure_lt_top.ne`. Establish `hr : (volM ν n n).real K ≠ 0` using `by simp [Measure.real, ENNReal.toReal_eq_zero_iff, h0, ht]`. Establish `key` using `integral_comp_mul_mul_volM ν (1 : GL n k) h (K.indicator fun _ => (1 : ℂ))`. Establish `h1 : ∫ x, K.indicator (fun _ => (1 : ℂ)) (h.val * x * (1 : GL n k).val) ∂(volM ν n n) = ∫ x, K.indicator (fun _ => (1 : ℂ)) x ∂((volM ν n n).map e)`.
+
+Rewrite using `[integral_map c1.measurable.aemeasurable (stronglyMeasurable_const.indicator hKo.measurableSet).aestronglyMeasurable]`. Simplify using `only [Units.val_one, Matrix.mul_one]`. Both sides reduce to the same expression. Rewrite `key` using `[h1, hc, integral_smul_nnreal_measure, integral_indicator_const _ hKo.measurableSet, map_one, nabs_one, Real.one_rpow, mul_one]`. Establish `h2 : (c : ℝ) = nabs k (Matrix.GeneralLinearGroup.det h) ^ (-(Fintype.card n : ℝ))`.
+
+Use `mul_right_cancel₀ hr ?_` and prove the remaining obligations. Simplify using `only [NNReal.smul_def, smul_smul, Complex.real_smul, mul_one] at key`. Conclude with `key` after adjusting the coercions. Rewrite using `[hc, ← h2, ENNReal.ofReal_coe_nnreal]`. Both sides reduce to the same expression.
+-/
 theorem map_mul_left_volM (h : GL n k) :
     (volM ν n n).map (fun x => h.val * x) =
       ENNReal.ofReal (nabs k (Matrix.GeneralLinearGroup.det h) ^ (-(Fintype.card n : ℝ))) • volM ν n n := by
@@ -57,11 +70,29 @@ theorem map_mul_left_volM (h : GL n k) :
   rfl
 
 omit [MeasurableSpace k] [BorelSpace k] in
+/- English proof (translation)
+The claim follows from `(((isLocallyConstant_nabs k).comp_continuous Matrix.GeneralLinearGroup.continuous_det).comp (fun t : ℝ => ENNReal.ofReal (t ^ (-(Fintype.card n : ℝ))))).continuous`.
+-/
 theorem continuous_density_volGL : Continuous fun g : GL n k =>
     ENNReal.ofReal (nabs k (Matrix.GeneralLinearGroup.det g) ^ (-(Fintype.card n : ℝ))) :=
   (((isLocallyConstant_nabs k).comp_continuous Matrix.GeneralLinearGroup.continuous_det).comp
     (fun t : ℝ => ENNReal.ofReal (t ^ (-(Fintype.card n : ℝ))))).continuous
 
+/- English proof (translation)
+Use `haveI := secondCountable k`. Use `haveI : BorelSpace (Matrix n n k) := inferInstanceAs (BorelSpace (n → n → k))`. Establish `hE` using `Model.measurableEmbedding_val (k := k) n`. Establish `hd` using `(continuous_density_volGL (k := k) (n := n)).measurable`. Use `set μ := (volM ν n n).comap (fun g : GL n k => g.val) with hμ`.
+
+Use `set d := fun g : GL n k => ENNReal.ofReal (nabs k (Matrix.GeneralLinearGroup.det g) ^ (-(Fintype.card n : ℝ))) with hdd`. Establish `dmul : ∀ g h, d (g * h) = d g * d h` using `fun g h => by`. Simplify using `only [hdd, map_mul, nabs_mul]`. Rewrite using `[Real.mul_rpow (nabs_pos' _).le (nabs_pos' _).le, ENNReal.ofReal_mul (Real.rpow_nonneg (nabs_pos' _).le _)]`. Establish `done' : d 1 = 1` using `by simp [hdd, nabs_one]`.
+
+Establish `hm : ∀ h : GL n k, μ.map (fun x => h * x) = d h • μ` using `fun h => by`. Use extensionality with `s hs`. Establish `cm : Measurable fun x : Matrix n n k => h.val * x` using `(continuous_const.matrix_mul continuous_id).measurable`. Rewrite using `[Measure.map_apply (measurable_const_mul h) hs, Measure.smul_apply, hE.comap_apply, hE.comap_apply, ← Measure.smul_apply, ← map_mul_left_volM ν h, Measure.map_apply cm (hE.measurableSet_image.2 hs)]`. Use `congr 1`.
+
+Use extensionality with `x`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨g, hg, rfl⟩`. Conclude with `⟨h * g, hg, rfl⟩`. Introduce and unpack `⟨g, hg, e⟩`.
+
+Use `⟨h⁻¹ * g, by simpa using hg, ?_⟩` and prove the remaining obligations. Establish `e' : g.val = h.val * x` using `e`. Simplify using `only [Units.val_mul, e', ← Matrix.mul_assoc, Units.inv_mul, Matrix.one_mul]`. Use `⟨fun h => ?_⟩` and prove the remaining obligations. Use extensionality with `s hs`.
+
+Establish `hs'` using `measurable_const_mul h hs`. Express the relevant statement in the definitionally equal form `(μ.withDensity d).map _ s = μ.withDensity d s`. Rewrite using `[Measure.map_apply (measurable_const_mul h) hs, withDensity_apply _ hs', withDensity_apply _ hs, ← lintegral_indicator hs', ← lintegral_indicator hs]`. Establish `e1 : ∀ x, ((fun x => h * x) ⁻¹' s).indicator d x = d h⁻¹ * s.indicator d (h * x)` using `fun x => by`. Distinguish the cases in `hx : h * x ∈ s`.
+
+Rewrite using `[Set.indicator_of_mem hx, Set.indicator_of_mem (show x ∈ (fun x => h * x) ⁻¹' s from hx), ← dmul, inv_mul_cancel_left]`. Rewrite using `[Set.indicator_of_notMem hx, Set.indicator_of_notMem (show x ∉ (fun x => h * x) ⁻¹' s from hx), mul_zero]`. Repeatedly rewrite using `[e1]`. Rewrite using `[lintegral_const_mul _ (f := fun a => s.indicator d (h * a)) ((hd.indicator hs).comp (measurable_const_mul h)), ← lintegral_map (hd.indicator hs) (measurable_const_mul h), hm, lintegral_smul_measure, smul_eq_mul, ← mul_assoc, ← dmul, inv_mul_cancel, done', one_mul]`.
+-/
 theorem isMulLeftInvariant_volGL : (volGL ν n).IsMulLeftInvariant := by
   haveI := secondCountable k
   haveI : BorelSpace (Matrix n n k) := inferInstanceAs (BorelSpace (n → n → k))
@@ -108,6 +139,13 @@ theorem isMulLeftInvariant_volGL : (volGL ν n).IsMulLeftInvariant := by
     ← lintegral_map (hd.indicator hs) (measurable_const_mul h), hm, lintegral_smul_measure, smul_eq_mul,
     ← mul_assoc, ← dmul, inv_mul_cancel, done', one_mul]
 
+/- English proof (translation)
+Establish `hE` using `Model.measurableEmbedding_val (k := k) n`. Establish `hs` using `(SplitFlip.isOpen_KO (k := k) (n := n)).measurableSet`. Unfold `volGL`. Rewrite using `[withDensity_apply _ hs, setLIntegral_congr_fun hs (g := fun _ => 1), setLIntegral_one, hE.comap_apply]`. Introduce and unpack `_ ⟨u, rfl⟩`.
+
+Establish `h1 : nabs k (Matrix.GeneralLinearGroup.det (Matrix.GeneralLinearGroup.map (algebraMap 𝒪[k] k) u)) = 1`. Rewrite using `[nabs_eq_one_iff]`. Establish `: ((Matrix.GeneralLinearGroup.det (Matrix.GeneralLinearGroup.map (algebraMap 𝒪[k] k) u) : kˣ) : k) = algebraMap 𝒪[k] k u.val.det` using `((algebraMap 𝒪[k] k).map_det u.val).symm`. Rewrite using `[this]`. Conclude with `(Valuation.integer.integers (valuation k)).one_of_isUnit ((Matrix.isUnit_iff_isUnit_det _).1 u.isUnit)`.
+
+Simplify using `only [h1, Real.one_rpow, ENNReal.ofReal_one]`.
+-/
 theorem volGL_KO : volGL ν n (KO k n) = volM ν n n ((fun g : GL n k => g.val) '' (KO k n)) := by
   have hE := Model.measurableEmbedding_val (k := k) n
   have hs := (SplitFlip.isOpen_KO (k := k) (n := n)).measurableSet
@@ -125,6 +163,15 @@ theorem volGL_KO : volGL ν n (KO k n) = volM ν n n ((fun g : GL n k => g.val) 
       ((Matrix.isUnit_iff_isUnit_det _).1 u.isUnit)
   simp only [h1, Real.one_rpow, ENNReal.ofReal_one]
 
+/- English proof (translation)
+Use `haveI := secondCountable k`. Use `haveI := t2Space k`. Use `haveI : (volM ν n n).IsAddHaarMeasure := Measure.pi.isAddHaarMeasure _`. Use `haveI := isMulLeftInvariant_volGL (n := n) ν`. Establish `ho` using `SplitFlip.isOpen_KO (k := k) (n := n)`.
+
+Establish `hc` using `SplitFlip.isCompact_KO (k := k) (n := n)`. Establish `hoe : Topology.IsOpenEmbedding (fun g : GL n k => g.val)`. Use `⟨SplitFlip.isEmbedding_val_GL, ?_⟩` and prove the remaining obligations. Establish `: Set.range (fun g : GL n k => g.val) = {x : Matrix n n k | x.det ≠ 0}`. Use extensionality with `x`.
+
+Simplify using `only [Set.mem_range, Set.mem_setOf_eq]`. Rewrite using `[← isUnit_iff_ne_zero, ← Matrix.isUnit_iff_isUnit_det]`. Both sides reduce to the same expression. Rewrite using `[this]`. Conclude with `isOpen_ne_fun (continuous_id.matrix_det) continuous_const`.
+
+Use `Measure.isHaarMeasure_of_isCompact_nonempty_interior _ _ hc (by rw [ho.interior_eq]; exact ⟨1, one_mem _⟩) ?_ ?_` and prove the remaining obligations. Rewrite using `[volGL_KO]`. Conclude with `((hoe.isOpenMap _ ho).measure_pos _ ⟨_, 1, one_mem _, rfl⟩).ne'`. Rewrite using `[volGL_KO]`. Conclude with `(hc.image hoe.continuous).measure_lt_top.ne`.
+-/
 theorem isHaarMeasure_volGL : (volGL ν n).IsHaarMeasure := by
   haveI := secondCountable k
   haveI := t2Space k
@@ -148,6 +195,9 @@ theorem isHaarMeasure_volGL : (volGL ν n).IsHaarMeasure := by
   · rw [volGL_KO]
     exact (hc.image hoe.continuous).measure_lt_top.ne
 
+/- English proof (translation)
+Introduce `_ _ _ _ _ _ _ n _ _ ν _` and use `haveI := isHaarMeasure_volGL (n := n) ν ⟨SplitFlip.borel_GL, SplitFlip.locallyCompact_GL, SplitFlip.secondCountable_GL, SplitFlip.isCompact_KO, SplitFlip.isOpen_KO, StepData.isOpen_KOne, this, SplitFlip.isMulRightInvariant_of_haar _⟩`.
+-/
 theorem volGL_haar : ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] [MeasurableSpace k] [BorelSpace k] (n : Type) [Fintype n] [DecidableEq n] (ν : Measure k) [ν.IsAddHaarMeasure], BorelSpace (GL n k) ∧ LocallyCompactSpace (GL n k) ∧ SecondCountableTopology (GL n k) ∧ IsCompact (KO k n : Set (GL n k)) ∧ IsOpen (KO k n : Set (GL n k)) ∧ IsOpen (KOne k n : Set (GL n k)) ∧ (volGL ν n).IsHaarMeasure ∧ (volGL ν n).IsMulRightInvariant :=
   fun _ _ _ _ _ _ _ n _ _ ν _ =>
     haveI := isHaarMeasure_volGL (n := n) ν

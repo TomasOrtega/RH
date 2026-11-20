@@ -26,6 +26,15 @@ attribute [local instance] Over.cartesianMonoidalCategory
 
 namespace GlobalTheory.UMin.ExtP
 
+/- English proof (translation)
+Introduce `E _ _ _ H Dw l Xo c R _ _ y t hy`. Take `⟨tK, ⟨m₁⟩, ⟨m₂⟩⟩` from `hy`. Establish `hw₁ : LBIso tK.PP.L (t.PP.L.pull m₁.cm.F)`. Take `⟨w, hw, -⟩` from `m₁.lin`. Conclude with `⟨w, hw⟩`.
+
+Establish `hw₂ : LBIso tK.PP.L (Xo.univ.t.PP.L.pull m₂.cm.F)`. Take `⟨w, hw, -⟩` from `m₂.lin`. Conclude with `⟨w, hw⟩`. Establish `hd` using `GlobalTheory.UMin.polFib_univ E H Dw l Xo c (FractionRing R) (𝟙 _ ≫ y ≫ pullback.fst _ _)`. Take `⟨P, α₀, hgP, hpb₀, hL₀⟩` from `((GlobalTheory.T.principallyPolarisedFibre_iff_of_grpPullback _ _ Xo.univ.t.G Xo.univ.t.PP.L tK.G tK.PP.L (y ≫ pullback.fst _ _) m₂.cm.F Xo.univ.t.PP.isLB tK.PP.isLB m₂.cart hw₂ _ (FractionRing R) (𝟙 _)).1).2 hd`.
+
+Use `⟨P, α₀ ≫ m₂.cm.F, α₀ ≫ m₁.cm.F, hgP, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Establish `h` using `hpb₀.comp m₂.cart`. Rewrite `h` using `[Category.id_comp]`. Then use the resulting hypothesis. Conclude with `LBIso.trans P.isLB (pull_isLB tK.PP.isLB α₀) (pull_isLB Xo.univ.t.PP.isLB _) hL₀ (GlobalTheory.Ex.GenericFibre.lbIso_pull hw₂ α₀ rfl)`. Establish `h` using `hpb₀.comp m₁.cart`.
+
+Rewrite `h` using `[Category.id_comp]`. Then use the resulting hypothesis. Conclude with `LBIso.trans P.isLB (pull_isLB tK.PP.isLB α₀) (pull_isLB t.PP.isLB _) hL₀ (GlobalTheory.Ex.GenericFibre.lbIso_pull hw₁ α₀ rfl)`.
+-/
 theorem genericFibre_polAV : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (Dw : Datum H) (l : Geo.Tor.Level H) (Xo : Moduli Dw l) (c : Coeff l) (R : Type) [CommRing R] [IsDomain R] (y : Sp (FractionRing R) ⟶ Xo.XF c) (t : SAB H (Sp R)), GenOf Xo c y t → ∃ (P : PolAV (Sp (FractionRing R))) (α : P.A.left ⟶ Xo.univ.t.G.left) (α' : P.A.left ⟶ t.G.left), P.g = Module.finrank ℚ E / 2 * (Dw.p + Dw.q) ∧ IsGrpPullback P.A Xo.univ.t.G (y ≫ pullback.fst _ _) α ∧ LBIso P.L (Xo.univ.t.PP.L.pull α) ∧ IsGrpPullback P.A t.G (jK R) α' ∧ LBIso P.L (t.PP.L.pull α') := by
   intro E _ _ _ H Dw l Xo c R _ _ y t hy
   obtain ⟨tK, ⟨m₁⟩, ⟨m₂⟩⟩ := hy
@@ -46,6 +55,21 @@ theorem genericFibre_polAV : ∀ (E : Type) [Field E] [NumberField E] [IsCMField
   · exact LBIso.trans P.isLB (pull_isLB tK.PP.isLB α₀) (pull_isLB t.PP.isLB _) hL₀
       (GlobalTheory.Ex.GenericFibre.lbIso_pull hw₁ α₀ rfl)
 
+/- English proof (translation)
+Introduce `E _ _ _ H Dw l Xo c o _ m n f hm h3 hmu hn hTh b hb R _ _ _ hR t hP y hy σ hσ`. Use `haveI : IsNoetherianRing R := hR.1.1`. Use `haveI : IsIntegrallyClosed R := hR.1.2.2.1`. Use `haveI : CharZero R := hR.2`. Use `haveI : CharZero (FractionRing R) := charZero_of_injective_algebraMap (IsFractionRing.injective R (FractionRing R))`.
+
+Use `set g := Module.finrank ℚ E / 2 * (Dw.p + Dw.q) with hgdef`. Take `⟨σ₀, hnz⟩` from `GlobalTheory.T.exists_polarisation_section_nonvanishing_closed_fibre E H R hR t hP`. Take `⟨P, α, α', hg, hpb, hL, hpb', hL'⟩` from `genericFibre_polAV E H Dw l Xo c R y t hy`. Establish `hpb₁ : IsGrpPullback P.A t.G (spMap (algebraMap R (FractionRing R)) ≫ 𝟙 (Sp R)) α'`. Rewrite using `[Category.comp_id]`.
+
+Conclude with `hpb'`. Establish `hpf : PolFib t.G t.PP.L g (spMap (algebraMap R (FractionRing R)) ≫ 𝟙 (Sp R))` using `⟨P, α', hg, hpb₁, hL'⟩`. Set `θ` to `SecAt.pull t.G t.PP.L σ₀ (algebraMap R (FractionRing R))`. Take `⟨e, he⟩` from `GlobalTheory.T.exists_theta_symmetric_function_values_in_ground_field (Sp R) t.G t.PP.L t.PP.rig t.PP.isLB t.PP.rigGen g m (n + 1) (FractionRing R) (spMap (algebraMap R (FractionRing R)) ≫ 𝟙 (Sp R)) θ hm hn hpf`. Set `β : o →+* R` to `(Spec.preimage σ).hom`.
+
+Establish `hβ : spMap β = σ` using `Spec.map_preimage σ`. Establish `hmR : IsUnit (m : R)` using `by simpa [β] using hmu.map β`. Take `⟨e', he', j, hj⟩` from `GlobalTheory.T.thetaSymmetricFunctions_integral_unit_normalLocalDomain E H (Sp R) t g m (n + 1) R (𝟙 _) σ₀ e hm h3 hmR hn hpf hnz he`. Establish `hne : ∃ j, e j ≠ 0` using `⟨j, fun h0 => hj.ne_zero (IsFractionRing.injective R (FractionRing R) ((he' j).trans (h0.trans (map_zero _).symm)))⟩`. Establish `hgen` using `GlobalTheory.T.generates_sections_of_thetaSymmetricFunctions_ne_zero (Sp R) t.G t.PP.L t.PP.rig t.PP.isLB t.PP.rigGen g m (n + 1) (FractionRing R) _ θ e hm hn hpf he hne`.
+
+Establish `hcrd : PCrd (y ≫ f) e` using `GlobalTheory.T.thetaMap_coords_of_symmetric_theta_isomorphic_fibre Xo.X Xo.univ.t.G Xo.univ.t.PP.L Xo.univ.t.PP.rig Xo.univ.t.PP.isLB Xo.univ.t.PP.rigGen g m n o (Xo.XF c) (pullback.fst _ _) f (Sp R) t.G t.PP.L t.PP.rig (FractionRing R) y (spMap (algebraMap R (FractionRing R)) ≫ …`. Take `⟨ξ, hξ1, hξ2⟩` from `GlobalTheory.T.exists_projectiveSpace_point_of_unit_coordinate o R n β e' ⟨j, hj⟩`. Use `⟨ξ, ?_, hξ1.trans hβ⟩` and prove the remaining obligations. Establish `hc1 : PCrd (jK R ≫ ξ) e`. Use `(GlobalTheory.T.projectiveHomogeneousCoords_basic_properties).1 o R (FractionRing R) n ξ e' (algebraMap R (FractionRing R)) hξ2` as an intermediate fact.
+
+Establish `ee : (fun j => algebraMap R (FractionRing R) (e' j)) = e` using `funext he'`. Rewrite `this` using `[ee]`. Conclude with `this`. Use `(GlobalTheory.T.projectiveHomogeneousCoords_field_determine_descend).1 o (FractionRing R) n (jK R ≫ ξ) (y ≫ f) e ?_ hc1 hcrd` and prove the remaining obligations. Rewrite using `[Category.assoc, hξ1, hβ, Category.assoc, hb]`.
+
+Conclude with `hσ`.
+-/
 theorem extend_theta : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (Dw : Datum H) (l : Geo.Tor.Level H) (Xo : Moduli Dw l) (c : Coeff l) (o : Type) [CommRing o] (m n : ℕ) (f : Xo.XF c ⟶ PSpace o n), Odd m → 3 ≤ m → IsUnit (m : o) → n + 1 = m ^ (4 * (Module.finrank ℚ E / 2 * (Dw.p + Dw.q))) → ThMap Xo.univ.t.G Xo.univ.t.PP.L Xo.univ.t.PP.rig m (pullback.fst _ _ : Xo.XF c ⟶ Xo.X) f → ∀ b : o →+* c.F, f ≫ PSpace.str o n = pullback.snd _ _ ≫ spMap b → ∀ (R : Type) [CommRing R] [IsDomain R] [IsLocalRing R], GlobalTheory.Mum.Base R → ∀ (t : SAB H (Sp R)), Nonempty (PELUnif (IsLocalRing.maximalIdeal R) t) → ∀ y : Sp (FractionRing R) ⟶ Xo.XF c, GenOf Xo c y t → ∀ σ : Sp R ⟶ Sp o, jK R ≫ σ = y ≫ pullback.snd _ _ ≫ spMap b → ∃ ξ : Sp R ⟶ PSpace o n, jK R ≫ ξ = y ≫ f ∧ ξ ≫ PSpace.str o n = σ := by
   intro E _ _ _ H Dw l Xo c o _ m n f hm h3 hmu hn hTh b hb R _ _ _ hR t hP y hy σ hσ
   haveI : IsNoetherianRing R := hR.1.1

@@ -15,6 +15,19 @@ namespace PositivityTheory.Rg.Rsw.L.LGoodEv
 
 variable {D : D7}
 
+/- English proof (translation)
+Take `⟨S₀, hS₀⟩` from `fin_good g hg`. Use `⟨S₀, fun S hS e he x => ?_⟩` and prove the remaining obligations. Take `⟨he1, he2⟩` from `he`. Take `⟨hi1, hi2⟩` from `isIdem_eS S`. Establish `heS : e = eS S` using `ae_ext e (eS S) (fun w => (he1 w).trans (hi1 w).symm) (fun v => (he2 v).trans (hi2 v).symm)`.
+
+Substitute `heS` using the available equality. Establish `hinf : ∀ τ (i : Fin a) (j : Fin b), compAt θ τ (eS S • x) i j = compAt θ τ x i j`. Introduce `τ i j`. Use `show θ τ (infPart D ((eS S • x) i j)) = θ τ (infPart D (x i j))`. Rewrite using `[Matrix.smul_apply, smul_eq_mul, map_mul, infPart_eS, one_mul]`.
+
+Establish `hfin : (fun (i : Fin a) (j : Fin b) => finPart D ((eS S • x) i j)) = sPart S (fun i j => finPart D (x i j))`. Use function extensionality and compare the values at `i j`. Use `show finPart D ((eS S • x) i j) = algebraMap _ _ (indS S) * finPart D (x i j)`. Rewrite using `[Matrix.smul_apply, smul_eq_mul, map_mul, finPart_eS]`. Simplify using `only [hinf]`.
+
+Rewrite using `[hfin, hS₀ S hS (fun i j => finPart D (x i j))]`. Distinguish the cases in `h : IntOff S x`. Establish `h' : ∀ v ∉ S, ∀ (i : Fin a) (j : Fin b), projV v (fun i j => finPart D (x i j)) i j ∈ GlobalTheory.AdelicU.intLoc D.host.F D.host.E v` using `fun v hv i j => by`. Use `h v hv i j` as an intermediate fact. Rewrite `this` using `[cv_eq]`.
+
+Conclude with `this`. Rewrite using `[if_pos h', if_pos h]`. Establish `h' : ¬ ∀ v ∉ S, ∀ (i : Fin a) (j : Fin b), projV v (fun i j => finPart D (x i j)) i j ∈ GlobalTheory.AdelicU.intLoc D.host.F D.host.E v` using `fun h'' => h (fun v hv i j => by`. Use `h'' v hv i j` as an intermediate fact. Rewrite using `[cv_eq]`.
+
+Conclude with `this)`. Rewrite using `[if_neg h', if_neg h, mul_zero]`.
+-/
 theorem gen_good {θ : InfFam D} {a b : ℕ} (f : SchwartzMap (D.what₂.Tau → Fin a → Fin b → ℂ) ℂ)
     (g : (Fin a → Fin b → Af D.host.F ⊗[D.host.F] D.host.E) → ℂ)
     (hg : g ∈ GlobalTheory.WeilM.SB (Fin a → Fin b → Af D.host.F ⊗[D.host.F] D.host.E)) :
@@ -58,6 +71,9 @@ end PositivityTheory.Rg.Rsw.L.LGoodEv
 
 namespace PositivityTheory.Rg.Rsw.L
 
+/- English proof (translation)
+Introduce `_ D θ _ a b Φ hΦ`. Use `LGoodEv.ev_span _ rfl ?_ Φ hΦ` and prove the remaining obligations. Introduce and unpack `φ ⟨f, g, hg, rfl⟩`. Conclude with `LGoodEv.gen_good f g hg`.
+-/
 theorem goodEv : IdemEx → GoodEv := by
   intro _ D θ _ a b Φ hΦ
   refine LGoodEv.ev_span _ rfl ?_ Φ hΦ

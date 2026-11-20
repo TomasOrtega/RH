@@ -26,16 +26,29 @@ def Expand : Prop := ∀ (k j ρ : ℕ) (E : Type) [NormedAddCommGroup E] [Norme
 def Bd (k j ρ κ ℓ : ℕ) (L : FS k (j + ρ)) : Prop :=
   ∀ e ∈ L, e.1.1.totalDegree ≤ κ ∧ e.2.length ≤ ℓ ∧ ∀ X ∈ e.2, inLie k (j + ρ) X
 
+/- English proof (translation)
+Introduce `e he` and use `⟨(h e he).1.trans hκ, (h e he).2.1.trans hℓ, (h e he).2.2⟩`.
+-/
 theorem Bd.mono {k j ρ κ ℓ κ' ℓ' : ℕ} {L : FS k (j + ρ)} (h : Bd k j ρ κ ℓ L) (hκ : κ ≤ κ')
     (hℓ : ℓ ≤ ℓ') : Bd k j ρ κ' ℓ' L :=
   fun e he => ⟨(h e he).1.trans hκ, (h e he).2.1.trans hℓ, (h e he).2.2⟩
 
+/- English proof (translation)
+Use `(totalDegree_mul _ _).trans (Nat.add_le_add_right ?_ _)` and prove the remaining obligations. Use `(totalDegree_mul _ _).trans ?_` and prove the remaining obligations. Simplify using `[totalDegree_C]`.
+-/
 theorem deg_cmul (c : ℂ) {N : ℕ} (q r : MvPolynomial (Vr N) ℂ) :
     (C c * q * r).totalDegree ≤ q.totalDegree + r.totalDegree := by
   refine (totalDegree_mul _ _).trans (Nat.add_le_add_right ?_ _)
   refine (totalDegree_mul _ _).trans ?_
   simp [totalDegree_C]
 
+/- English proof (translation)
+Introduce `e he`. Rewrite `he` using `[step, List.mem_flatMap]`. Take `⟨e₀, he₀, hmem⟩` from `he`. Take `⟨hdeg, hlen, hlie⟩` from `h e₀ he₀`. Simplify using `only [stepOne, List.mem_cons, List.not_mem_nil, or_false] at hmem`.
+
+Break down `hmem with rfl | rfl | rfl | rfl` into its components or cases. Conclude with `⟨(hP _ _ _).trans (hdeg.trans (Nat.le_add_right _ _)), hlen.trans (Nat.le_succ _), hlie⟩`. Conclude with `⟨(deg_cmul _ _ _).trans (Nat.add_le_add hdeg ((hP _ _ _).trans (hD k j ρ).1)), hlen.trans (Nat.le_succ _), hlie⟩`. Conclude with `⟨(deg_cmul _ _ _).trans (Nat.add_le_add hdeg ((hP _ _ _).trans (hD k j ρ).2)), hlen.trans (Nat.le_succ _), hlie⟩`. Use `⟨hdeg.trans (Nat.le_add_right _ _), by simpa using hlen, ?_⟩` and prove the remaining obligations.
+
+Introduce `Y hY`. Break down `List.mem_cons.1 hY with rfl | hY` into its components or cases. Conclude with `hX`. Conclude with `hlie Y hY`.
+-/
 theorem bd_step (hP : DegDP) (hD : DegD) {k j ρ κ ℓ : ℕ} {X : Mat k (j + ρ)} (hX : inLie k (j + ρ) X)
     {L : FS k (j + ρ)} (h : Bd k j ρ κ ℓ L) : Bd k j ρ (κ + j) (ℓ + 1) (step k j ρ X L) := by
   intro e he
@@ -55,6 +68,11 @@ theorem bd_step (hP : DegDP) (hD : DegD) {k j ρ κ ℓ : ℕ} {X : Mat k (j + �
     · exact hX
     · exact hlie Y hY
 
+/- English proof (translation)
+Proceed by induction on `w with`. Consider the case `nil => simpa [steps] using h`. Consider the case `cons X w ih`. Establish `h1` using `bd_step hP hD (hw X (by simp)) (ih (fun Y hY => hw Y (List.mem_cons_of_mem _ hY)))`. Use `show Bd k j ρ _ _ (step k j ρ X (steps k j ρ w L))`.
+
+Conclude with `h1.mono (le_of_eq (by rw [List.length_cons]; ring)) (le_of_eq (by rw [List.length_cons]; ring))`.
+-/
 theorem bd_steps (hP : DegDP) (hD : DegD) {k j ρ κ ℓ : ℕ} {w : List (Mat k (j + ρ))}
     (hw : ∀ X ∈ w, inLie k (j + ρ) X) {L : FS k (j + ρ)} (h : Bd k j ρ κ ℓ L) :
     Bd k j ρ (κ + j * w.length) (ℓ + w.length) (steps k j ρ w L) := by
@@ -70,6 +88,9 @@ section ops
 variable {Wp Wq : Type} [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp]
   [NormedAddCommGroup Wq] [InnerProductSpace ℂ Wq] [FiniteDimensional ℂ Wq]
 
+/- English proof (translation)
+Unfold `hsVec`. Use extensionality with `i`. Simplify using the standard rewrite rules.
+-/
 theorem hsVec_smul (c : ℂ) (A : Wq →L[ℂ] Wp) : hsVec (c • A) = c • hsVec A := by
   unfold hsVec
   ext i
@@ -90,6 +111,9 @@ def mkTerm (k j ρ : ℕ) (e : SC (2 * (j + ρ) + k + 1) × List (Mat k (j + ρ)
     simp only [ContinuousLinearMap.smul_apply, ContinuousLinearMap.id_apply, hsInner, hsVec_smul,
       inner_smul_right, inner_smul_left, Complex.conj_conj]
 
+/- English proof (translation)
+Use `first`. Consider the case `exact if_pos h`. Consider the case `(show (if ∀ X ∈ e.2, inLie k (j + ρ) X then e.2 else []) = e.2; exact if_pos h)`. Consider the case `(simp only [mkTerm]; exact if_pos h)`.
+-/
 theorem mkTerm_word {k j ρ : ℕ} {e : SC (2 * (j + ρ) + k + 1) × List (Mat k (j + ρ))}
     (h : ∀ X ∈ e.2, inLie k (j + ρ) X) : (mkTerm (Wp := Wp) (Wq := Wq) k j ρ e).word = e.2 := by
   first
@@ -97,6 +121,15 @@ theorem mkTerm_word {k j ρ : ℕ} {e : SC (2 * (j + ρ) + k + 1) × List (Mat k
   | (show (if ∀ X ∈ e.2, inLie k (j + ρ) X then e.2 else []) = e.2; exact if_pos h)
   | (simp only [mkTerm]; exact if_pos h)
 
+/- English proof (translation)
+Proceed by induction on `Θ with`. Consider the case `nil => exact ⟨[], fun e he => by simp at he, fun H g => by simp [opApply, shape]⟩`. Consider the case `cons T Θ ih`. Take `⟨L, hL, hEq⟩` from `ih (fun T' hT' => h T' (List.mem_cons_of_mem _ hT'))`. Take `⟨hlen, P, a, b, ⟨q, hq, hPq⟩, hc⟩` from `h T (by simp)`.
+
+Use `⟨((q, a, b), T.word) :: L, ?_, ?_⟩` and prove the remaining obligations. Introduce `e he`. Break down `List.mem_cons.1 he with rfl | he` into its components or cases. Conclude with `⟨hq, hlen, T.word_lie⟩`. Conclude with `hL e he`.
+
+Introduce `H g`. Establish `e1 : opApply (T :: Θ) H g = T.coef g (Rw T.word H g) + opApply Θ H g`. Simplify using `[opApply]`. Rewrite using `[e1, hEq H g, hc g]`. Simplify using `only [shape, List.map_cons, List.sum_cons, ContinuousLinearMap.smul_apply, ContinuousLinearMap.id_apply]`.
+
+Use `congr 1`. Rewrite using `[hPq g]`. Both sides reduce to the same expression.
+-/
 theorem toFS {k j ρ o κ : ℕ} {Θ : DiffOp k (j + ρ) Wp Wq} (h : InDD k j ρ o κ Θ) :
     ∃ L : FS k (j + ρ), Bd k j ρ κ o L ∧ ∀ H g, opApply Θ H g = shape k j ρ H L g := by
   induction Θ with
@@ -119,6 +152,11 @@ theorem toFS {k j ρ o κ : ℕ} {Θ : DiffOp k (j + ρ) Wp Wq} (h : InDD k j ρ
       rw [hPq g]
       rfl
 
+/- English proof (translation)
+Unfold `opApply shape`. Rewrite using `[List.map_map]`. Use `congr 1`. Apply `List.map_congr_left` to reduce the goal to its premises. Introduce `e he`.
+
+Apply the tactic sequence `try simp only [Function.comp_apply]`. Rewrite using `[mkTerm_word (hL e he)]`. Use `first`. Consider the case `rfl`. Consider the case `simp [mkTerm]`.
+-/
 theorem opApply_mk {k j ρ : ℕ} (L : FS k (j + ρ)) (hL : ∀ e ∈ L, ∀ X ∈ e.2, inLie k (j + ρ) X)
     (F : Mat k (j + ρ) → (Wq →L[ℂ] Wp)) (g : Mat k (j + ρ)) :
     opApply (L.map (mkTerm (Wp := Wp) (Wq := Wq) k j ρ)) F g = shape k j ρ F L g := by
@@ -133,6 +171,9 @@ theorem opApply_mk {k j ρ : ℕ} (L : FS k (j + ρ)) (hL : ∀ e ∈ L, ∀ X �
   | rfl
   | simp [mkTerm]
 
+/- English proof (translation)
+Introduce `T hT`. Take `⟨e, he, rfl⟩` from `List.mem_map.1 hT`. Take `⟨hdeg, hlen, hlie⟩` from `h e he`. Use `⟨by rw [mkTerm_word hlie]; exact hlen, fun g => eval (vars g) e.1.1, e.1.2.1, e.1.2.2, ⟨e.1.1, hdeg, fun g => rfl⟩, fun g => rfl⟩` and prove the remaining obligations.
+-/
 theorem inDD_mk {k j ρ κ o : ℕ} (L : FS k (j + ρ)) (h : Bd k j ρ κ o L) :
     InDD k j ρ o κ (L.map (mkTerm (Wp := Wp) (Wq := Wq) k j ρ)) := by
   intro T hT
@@ -143,6 +184,9 @@ theorem inDD_mk {k j ρ κ o : ℕ} (L : FS k (j + ρ)) (h : Bd k j ρ κ o L) :
 
 end ops
 
+/- English proof (translation)
+Simplify using `only [sv, mulSC, map_mul, pow_add]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem sv_mul {k j ρ : ℕ} (s t : SC (2 * (j + ρ) + k + 1)) (g : Mat k (j + ρ)) :
     sv k j ρ (mulSC s t) g = sv k j ρ s g * sv k j ρ t g := by
   simp only [sv, mulSC, map_mul, pow_add]
@@ -152,6 +196,9 @@ section sums
 
 variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℂ E]
 
+/- English proof (translation)
+Proceed by induction on `M with`. Consider the case `nil => simp [shape]`. Consider the case `cons e M ih`. Simplify using `only [shape, List.map_cons, List.sum_cons] at ih ⊢`. Rewrite using `[ih, sv_mul, mul_smul, smul_add]`.
+-/
 theorem shape_mul {k j ρ : ℕ} (F : Mat k (j + ρ) → E) (s : SC (2 * (j + ρ) + k + 1)) (M : FS k (j + ρ))
     (g : Mat k (j + ρ)) :
     shape k j ρ F (M.map fun e => (mulSC s e.1, e.2)) g = sv k j ρ s g • shape k j ρ F M g := by
@@ -161,6 +208,9 @@ theorem shape_mul {k j ρ : ℕ} (F : Mat k (j + ρ) → E) (s : SC (2 * (j + ρ
     simp only [shape, List.map_cons, List.sum_cons] at ih ⊢
     rw [ih, sv_mul, mul_smul, smul_add]
 
+/- English proof (translation)
+Proceed by induction on `L with`. Consider the case `nil => simp [shape]`. Consider the case `cons e L ih`. Rewrite using `[List.flatMap_cons, List.map_cons, List.sum_cons, ← ih]`. Simplify using `only [shape, List.map_append, List.sum_append]`.
+-/
 theorem shape_flatMap {k j ρ : ℕ} (F : Mat k (j + ρ) → E) (L : FS k (j + ρ))
     (f : SC (2 * (j + ρ) + k + 1) × List (Mat k (j + ρ)) → FS k (j + ρ)) (g : Mat k (j + ρ)) :
     shape k j ρ F (L.flatMap f) g = (L.map fun e => shape k j ρ F (f e) g).sum := by
@@ -172,6 +222,19 @@ theorem shape_flatMap {k j ρ : ℕ} (F : Mat k (j + ρ) → E) (L : FS k (j + �
 
 end sums
 
+/- English proof (translation)
+Introduce `k j ρ Wp Wq _ _ _ _ _ o₁ κ₁ o₂ κ₂ Θ₁ Θ₂ h₁ h₂`. Take `⟨L₁, hB₁, hE₁⟩` from `toFS h₁`. Take `⟨L₂, hB₂, hE₂⟩` from `toFS h₂`. Use `set L : FS k (j + ρ) := L₁.flatMap fun e₁ => (steps k j ρ e₁.2 L₂).map fun e => (mulSC e₁.1 e.1, e.2) with hLdef`. Establish `hB : Bd k j ρ (κ₁ + κ₂ + j * o₁) (o₁ + o₂) L`.
+
+Introduce `e he`. Rewrite `he` using `[hLdef, List.mem_flatMap]`. Take `⟨e₁, he₁, he⟩` from `he`. Rewrite `he` using `[List.mem_map]`. Take `⟨e₂, he₂, rfl⟩` from `he`.
+
+Take `⟨d₁, l₁, lie₁⟩` from `hB₁ e₁ he₁`. Take `⟨d₂, l₂, lie₂⟩` from `bd_steps hP hD lie₁ hB₂ e₂ he₂`. Use `⟨?_, ?_, lie₂⟩` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation. Use `show e₂.2.length ≤ o₁ + o₂`.
+
+Use linear arithmetic over natural numbers and integers. Use `⟨L.map (mkTerm (Wp := Wp) (Wq := Wq) k j ρ), inDD_mk L hB, ?_⟩` and prove the remaining obligations. Introduce `F hF g hg hDg`. Rewrite using `[opApply_mk L (fun e he => (hB e he).2.2) F g, hE₁]`. Establish `hfun : opApply Θ₂ F = shape k j ρ F L₂` using `funext (hE₂ F)`.
+
+Rewrite using `[hfun, hLdef, shape_flatMap]`. Use `show _ = (L₁.map fun e => sv k j ρ e.1 g • Rw e.2 (shape k j ρ F L₂) g).sum`. Use `congr 1`. Apply `List.map_congr_left` to reduce the goal to its premises. Introduce `e₁ he₁`.
+
+Rewrite using `[shape_mul, hE k j ρ _ (o₁ + o₂) F hF e₁.2 L₂ (hB₁ e₁ he₁).2.2 (fun e he => (hB₂ e he).2.2) (fun e he => by have := (hB₂ e he).2.1; have := (hB₁ e₁ he₁).2.1; omega) g hg hDg]`.
+-/
 theorem composeDD_of (hP : DegDP) (hD : DegD) (hE : Expand) : ComposeDD := by
   intro k j ρ Wp Wq _ _ _ _ _ o₁ κ₁ o₂ κ₂ Θ₁ Θ₂ h₁ h₂
   obtain ⟨L₁, hB₁, hE₁⟩ := toFS h₁

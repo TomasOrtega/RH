@@ -4,6 +4,15 @@ noncomputable section
 
 namespace UpperTheory.V.Lit.Dr
 
+/- English proof (translation)
+Introduce `Γ M _ _ _ ρ n w hw hlin`. Set `v : Fin n → (Rep.of ρ).ρ.invariants` to `fun i => ⟨w i, (Representation.mem_invariants _ _).2 (hw i)⟩`. Establish `hli : LinearIndependent ℂ v`. Rewrite using `[Fintype.linearIndependent_iff]`. Introduce `g hg`.
+
+Establish `h0 : ∑ i, g i • w i = 0`. Use `congrArg Subtype.val hg` as an intermediate fact. Rewrite `this` using `[Submodule.coe_sum]`. Conclude with `this`. Rewrite using `[hlin g h0]`.
+
+Introduce `i`. Both sides reduce to the same expression. Establish `h1` using `hli.cardinal_le_rank`. Rewrite `h1` using `[Cardinal.mk_fin]`. Establish `hinj : Function.Injective (groupCohomology.H0Iso (Rep.of ρ)).inv.hom` using `(ModuleCat.mono_iff_injective _).1 inferInstance`.
+
+Conclude with `h1.trans (LinearMap.rank_le_of_injective _ hinj)`.
+-/
 theorem shiftZero : ShiftZero := by
   intro Γ M _ _ _ ρ n w hw hlin
   let v : Fin n → (Rep.of ρ).ρ.invariants :=

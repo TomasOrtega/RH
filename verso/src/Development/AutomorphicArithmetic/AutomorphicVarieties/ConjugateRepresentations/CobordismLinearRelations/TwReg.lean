@@ -4,6 +4,11 @@ open NumberField IsDedekindDomain Matrix Formalism.L2.Host GlobalTheory.CuspRep 
 open UpperTheory.V.Af UpperTheory.V.AlgRepEndIrreducible UpperTheory.V.Lit UpperTheory.V.Lit.Geo UpperTheory.V.Lit.Bor UpperTheory.V.Cj
 open scoped TensorProduct
 
+/- English proof (translation)
+Introduce `E _ _ _ a n π μ m hμ hm hr ν hν`. Use `(GlobalTheory.CuspRep.CG.isRegAlg_iff _).2 fun t => ?_` and prove the remaining obligations. Establish `e` using `((hμ t).twist ν).infChar_eq`. Rewrite using `[e, (InfType.expo_of_infType E ν).2.1 _ hν t]`. Take `⟨-, h1, h2⟩` from `hr t`.
+
+Use `⟨(Multiset.nodup_of_le (hm t) h1).map (add_left_injective _), fun z hz => ?_⟩` and prove the remaining obligations. Take `⟨y, hy, rfl⟩` from `Multiset.mem_map.1 hz`. Take `⟨k, rfl⟩` from `h2 y (Multiset.mem_of_le (hm t) hy)`. Conclude with `⟨k, by push_cast; ring⟩`.
+-/
 theorem UpperTheory.V.Cj.twReg :
     UpperTheory.V.Cj.TwReg := by
   intro E _ _ _ a n π μ m hμ hm hr ν hν; refine (GlobalTheory.CuspRep.CG.isRegAlg_iff _).2 fun t => ?_

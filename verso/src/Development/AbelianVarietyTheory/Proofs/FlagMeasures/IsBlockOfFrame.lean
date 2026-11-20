@@ -15,6 +15,21 @@ namespace GlobalTheory.DegVol.TopLayer
 
 open Formalism.HermitianLatticeCounting.P GlobalTheory.DegCnt.NFGeom GlobalTheory.DegCnt.PosJ
 
+/- English proof (translation)
+Proceed by induction on `bs with`. Consider the case `nil => intro a b a' b' _ _ h`. Simplify using `[Loc.ptEntryL] at h`. Consider the case `cons p bs ih`. Take `⟨t, s⟩` from `p`.
+
+Introduce `a b a' b' ha hb h1 h2`. Simplify using `only [Loc.ptEntryL] at h1 h2 ⊢`. Distinguish the cases in `hab : a < (s : ℕ) ∧ b < (s : ℕ)`. Rewrite `h1`, the goal using `[if_pos hab]`. Distinguish the cases in `hab' : a' < (s : ℕ) ∧ b' < (s : ℕ)`.
+
+Rewrite `h2`, the goal using `[if_pos hab']`. Distinguish the cases in `e1 : a + b + 1 = (s : ℕ)`. Distinguish the cases in `e2 : a' + b' + 1 = (s : ℕ)`. Rewrite using `[if_pos e1, if_pos e2]; exact ⟨by omega, rfl⟩`. Rewrite `h2` using `[if_neg e2]`.
+
+Conclude with `absurd rfl h2`. Rewrite `h1` using `[if_neg e1]`. Conclude with `absurd rfl h1`. Rewrite `h2` using `[if_neg hab']`. Establish `hn : ¬ ((s : ℕ) ≤ a' ∧ (s : ℕ) ≤ b')` using `by omega`.
+
+Rewrite `h2` using `[if_neg hn]`. Conclude with `absurd rfl h2`. Rewrite `h1`, the goal using `[if_neg hab]`. Distinguish the cases in `hab2 : (s : ℕ) ≤ a ∧ (s : ℕ) ≤ b`. Rewrite `h1`, the goal using `[if_pos hab2]`.
+
+Establish `hn : ¬ (a' < (s : ℕ) ∧ b' < (s : ℕ))` using `by omega`. Rewrite `h2`, the goal using `[if_neg hn]`. Distinguish the cases in `hab2' : (s : ℕ) ≤ a' ∧ (s : ℕ) ≤ b'`. Rewrite `h2`, the goal using `[if_pos hab2']`. Take `⟨e, e'⟩` from `ih (a - s) (b - s) (a' - s) (b' - s) (by omega) (by omega) h1 h2`.
+
+Conclude with `⟨by omega, e'⟩`. Rewrite `h2` using `[if_neg hab2']`. Conclude with `absurd rfl h2`. Rewrite `h1` using `[if_neg hab2]`. Conclude with `absurd rfl h1`.
+-/
 theorem entry_anti {E : Type} [CommRing E] (bs : List (Eˣ × ℕ+)) : ∀ a b a' b' : ℕ, a < a' → b' < b →
     Loc.ptEntryL bs a b ≠ 0 → Loc.ptEntryL bs a' b' ≠ 0 →
       a + b = a' + b' ∧ Loc.ptEntryL bs a b = Loc.ptEntryL bs a' b' := by
@@ -53,6 +68,11 @@ variable {K V : Type} [Field K] [NumberField K] [StarRing K] [AddCommGroup V] [M
 
 abbrev pr (a b : Fin r) : K := H.B (N.F.e a.castSucc) (N.F'.e b.castSucc)
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Assume the negation of the conclusion as `ha push Not at ha`. Apply `h` to reduce the goal to its premises. Use `show H.B (N.F.e a.castSucc) (N.F'.e b.castSucc) = 0`. Rewrite using `[NFGeom.e_eq N a.castSucc (by simpa using ha), map_smul H.B, LinearMap.smul_apply, N.F'.iso, smul_zero]`.
+
+Assume the negation of the conclusion as `hb push Not at hb`. Apply `h` to reduce the goal to its premises. Use `show H.B (N.F.e a.castSucc) (N.F'.e b.castSucc) = 0`. Rewrite using `[N.same b.castSucc (by simpa using hb), LinearMap.map_smulₛₗ, N.F.iso, smul_zero]`.
+-/
 theorem pr_lt {a b : Fin r} (h : pr N a b ≠ 0) : a.val < N.j ∧ b.val < N.j := by
   constructor
   · by_contra ha
@@ -66,6 +86,11 @@ theorem pr_lt {a b : Fin r} (h : pr N a b ≠ 0) : a.val < N.j ∧ b.val < N.j :
     show H.B (N.F.e a.castSucc) (N.F'.e b.castSucc) = 0
     rw [N.same b.castSucc (by simpa using hb), LinearMap.map_smulₛₗ, N.F.iso, smul_zero]
 
+/- English proof (translation)
+Assume the negation of the conclusion as `hcon`. Use `push Not at hcon`. Apply `NFGeom.Dl_ne N` to reduce the goal to its premises. Apply `Matrix.det_eq_zero_of_row_eq_zero (⟨a.val, ha⟩ : Fin N.j)` to reduce the goal to its premises. Introduce `b`.
+
+Simplify using `only [Formalism.HermitianLatticeCounting.S6.Zhat, Matrix.submatrix_apply, Matrix.of_apply]`. Establish `e1 : Fin.castLE (N.j_le.trans (Nat.le_succ r)) (⟨a.val, ha⟩ : Fin N.j) = a.castSucc` using `Fin.ext (by simp)`. Establish `e2 : Fin.castLE (N.j_le.trans (Nat.le_succ r)) b = (Fin.castLE N.j_le b).castSucc` using `Fin.ext (by simp)`. Rewrite using `[e1, e2]`. Conclude with `hcon _`.
+-/
 theorem pr_exists {a : Fin r} (ha : a.val < N.j) : ∃ b, pr N a b ≠ 0 := by
   by_contra hcon
   push Not at hcon
@@ -78,6 +103,15 @@ theorem pr_exists {a : Fin r} (ha : a.val < N.j) : ∃ b, pr N a b ≠ 0 := by
   rw [e1, e2]
   exact hcon _
 
+/- English proof (translation)
+Take `⟨ha1, hb1⟩` from `pr_lt N h`. Take `⟨ha2, hb2⟩` from `pr_lt N h'`. Establish `key : ∀ x y : Fin r, ∀ (hx : x.val < N.j) (hy : y.val < N.j), pr N x y = N.w.mat ⟨x.val, hx⟩ ⟨y.val, hy⟩ * ((N.sgn ⟨y.val, hy⟩ : ℤ) : K)`. Introduce `x y hx hy`. Establish `hp` using `N.pair ⟨x.val, hx⟩ ⟨y.val, hy⟩`.
+
+Establish `e1 : Fin.castLE (N.j_le.trans (Nat.le_succ r)) (⟨x.val, hx⟩ : Fin N.j) = x.castSucc` using `Fin.ext (by simp)`. Establish `e2 : Fin.castLE (N.j_le.trans (Nat.le_succ r)) (⟨y.val, hy⟩ : Fin N.j) = y.castSucc` using `Fin.ext (by simp)`. Rewrite `hp` using `[e1, e2]`. Conclude with `hp`. Rewrite `h`, the goal using `[key a b ha1 hb1]`.
+
+Rewrite `h'`, the goal using `[key a' b' ha2 hb2]`. Establish `hm1` using `left_ne_zero_of_mul h`. Establish `hm2` using `left_ne_zero_of_mul h'`. Simplify using `only [Loc.Pt.mat] at hm1 hm2 ⊢`. Take `⟨hs, he⟩` from `entry_anti N.w.blocks a.val b.val a'.val b'.val ha hb hm1 hm2`.
+
+Use `⟨hs, ?_⟩` and prove the remaining obligations. Rewrite using `[he]`. Apply the tactic sequence `rcases Int.units_eq_one_or (N.sgn ⟨b.val, hb1⟩) with h1 | h1 <;>`. Apply the tactic sequence `rcases Int.units_eq_one_or (N.sgn ⟨b'.val, hb2⟩) with h2 | h2 <;> simp [h1, h2]`.
+-/
 theorem pr_anti {a b a' b' : Fin r} (ha : a < a') (hb : b' < b) (h : pr N a b ≠ 0) (h' : pr N a' b' ≠ 0) :
     a.val + b.val = a'.val + b'.val ∧ (pr N a b = pr N a' b' ∨ pr N a b = -pr N a' b') := by
   obtain ⟨ha1, hb1⟩ := pr_lt N h
@@ -105,6 +139,25 @@ def IsBlock (β : Fin r → ℕ) : Prop :=
   Monotone β ∧ (∀ a b : Fin r, N.j ≤ b.val → (β a = β b ↔ N.j ≤ a.val)) ∧ (∀ a b, pr N a b ≠ 0 → β a = β b) ∧
     ∀ a b a' b', pr N a b ≠ 0 → pr N a' b' ≠ 0 → β b = β b' → (b = b' → a = a') ∧ (b < b' → a' < a)
 
+/- English proof (translation)
+Take `⟨hreal, -, -, -, ⟨c0, hn⟩, hframe, -, -, -⟩` from `h`. Take `⟨hgG, -, -, hmono, hblk, -, -, hanti⟩` from `hn`. Establish `hZ : ∀ a b : Fin r, pr N a b ≠ 0 → Zr k r g b a ≠ 0`. Introduce `a b hab`. Establish `hs : σ (H.B (N.F.e a.castSucc) (N.F'.e b.castSucc)) = (((ρ ^ (r - a.val) : ℝ) : ℂ) * star (((ρ ^ (r - b.val) : ℝ) : ℂ))) * Zr k r g b a`.
+
+Rewrite using `[← hreal.2.2.1]`. Establish `hu : gᴴ * Hpk k r * g = Hpk k r` using `hgG`. Rewrite using `[← hu, ← RealMat.herm_mulVec, (hframe a).1, (hframe b).2, Matrix.mulVec_smul, RealMat.herm_smul_left, RealMat.herm_smul_right, RealMat.herm_eI]`. Establish `hcol : (g *ᵥ bvec (eI k r a)) (esI k r b) = g (esI k r b) (eI k r a)`. Simplify using `[bvec, Matrix.mulVec, dotProduct, Pi.single_apply]`.
+
+Rewrite using `[hcol]`. Simplify using `only [Zr]`. Expand and normalize the polynomial expressions, which then agree. Establish `h1 : σ (H.B (N.F.e a.castSucc) (N.F'.e b.castSucc)) ≠ 0` using `(map_ne_zero σ).2 hab`. Rewrite `h1` using `[hs]`.
+
+Conclude with `right_ne_zero_of_mul h1`. Establish `hcast : ∀ (x : Fin r) (hx : x.val < N.j), Fin.castLE N.j_le (⟨x.val, hx⟩ : Fin N.j) = x` using `fun x hx => Fin.ext rfl`. Use `⟨hmono, hblk, fun a b hab => ?_, fun a b a' b' h1 h2 hbb => ?_⟩` and prove the remaining obligations. Take `⟨ha, hb⟩` from `pr_lt N hab`. Establish `hz : (Zr k r g).submatrix (Fin.castLE N.j_le) (Fin.castLE N.j_le) ⟨b.val, hb⟩ ⟨a.val, ha⟩ ≠ 0`.
+
+Rewrite using `[Matrix.submatrix_apply, hcast, hcast]`. Conclude with `hZ a b hab`. Establish `e` using `hanti.2.2.1 _ _ hz`. Simplify using `only [hcast] at e`. Conclude with `e.symm`.
+
+Take `⟨ha1, hb1⟩` from `pr_lt N h1`. Take `⟨ha2, hb2⟩` from `pr_lt N h2`. Establish `hz1 : (Zr k r g).submatrix (Fin.castLE N.j_le) (Fin.castLE N.j_le) ⟨b.val, hb1⟩ ⟨a.val, ha1⟩ ≠ 0`. Rewrite using `[Matrix.submatrix_apply, hcast, hcast]`. Conclude with `hZ a b h1`.
+
+Establish `hz2 : (Zr k r g).submatrix (Fin.castLE N.j_le) (Fin.castLE N.j_le) ⟨b'.val, hb2⟩ ⟨a'.val, ha2⟩ ≠ 0`. Rewrite using `[Matrix.submatrix_apply, hcast, hcast]`. Conclude with `hZ a' b' h2`. Establish `hbb' : (fun x : Fin N.j => β (Fin.castLE N.j_le x)) ⟨b.val, hb1⟩ = (fun x : Fin N.j => β (Fin.castLE N.j_le x)) ⟨b'.val, hb2⟩`. Simplify using `only [hcast]`.
+
+Conclude with `hbb`. Take `⟨-, e1, e2⟩` from `hanti.2.2.2 _ _ _ _ hz1 hz2 hbb'`. Use `⟨fun hb => ?_, fun hb => ?_⟩` and prove the remaining obligations. Use `e1 (by subst hb; rfl)` as an intermediate fact. Conclude with `Fin.ext (Fin.mk.inj_iff.mp this)`.
+
+Use `e2 (Fin.mk_lt_mk.mpr (Fin.lt_def.mp hb))` as an intermediate fact. Conclude with `Fin.lt_def.mpr (Fin.mk_lt_mk.mp this)`.
+-/
 theorem isBlock_of_frame [Module (𝓞 K) V] [IsScalarTower (𝓞 K) K V] {k : ℕ} {σ : K →+* ℂ} {ρ : ℝ} (hρ : ρ ≠ 0)
     {β : Fin r → ℕ} {Φ : V → Fin (2 * r + k + 1) → ℂ} {z z' : Fin (2 * r + k + 1) → ℂ} {g : Mat k r}
     (h : IsFrameOf N k σ ρ β Φ z z' g) : IsBlock N β := by
@@ -157,6 +210,11 @@ theorem isBlock_of_frame [Module (𝓞 K) V] [IsScalarTower (𝓞 K) K V] {k : �
 
 variable {N}
 
+/- English proof (translation)
+Take `⟨_, _, h3, h4⟩` from `h`. Establish `hbb : β b = β b'` using `(h3 a b h1).symm.trans (hβ.trans (h3 a' b' h2))`. Break down `lt_trichotomy b b' with hlt | heq | hgt` into its components or cases. Conclude with `absurd (((h4 a b a' b' h1 h2 hbb).2 hlt).trans ha) (lt_irrefl _)`. Substitute `heq` using the available equality.
+
+Conclude with `absurd ((h4 a b a' b h1 h2 hbb).1 rfl) (ne_of_lt ha)`. Conclude with `hgt`.
+-/
 theorem IsBlock.anti {β : Fin r → ℕ} (h : IsBlock N β) {a b a' b' : Fin r} (h1 : pr N a b ≠ 0) (h2 : pr N a' b' ≠ 0)
     (hβ : β a = β a') (ha : a < a') : b' < b := by
   obtain ⟨_, _, h3, h4⟩ := h
@@ -167,6 +225,11 @@ theorem IsBlock.anti {β : Fin r → ℕ} (h : IsBlock N β) {a b a' b' : Fin r}
     exact absurd ((h4 a b a' b h1 h2 hbb).1 rfl) (ne_of_lt ha)
   · exact hgt
 
+/- English proof (translation)
+Take `⟨_, _, h3, h4⟩` from `h`. Establish `hbb : β b = β b'` using `(h3 a b h1).symm.trans (h3 a b' h2)`. Break down `lt_trichotomy b b' with hlt | heq | hgt` into its components or cases. Conclude with `absurd ((h4 a b a b' h1 h2 hbb).2 hlt) (lt_irrefl a)`. Conclude with `heq`.
+
+Conclude with `absurd ((h4 a b' a b h2 h1 hbb.symm).2 hgt) (lt_irrefl a)`.
+-/
 theorem IsBlock.uniq {β : Fin r → ℕ} (h : IsBlock N β) {a b b' : Fin r} (h1 : pr N a b ≠ 0) (h2 : pr N a b' ≠ 0) :
     b = b' := by
   obtain ⟨_, _, h3, h4⟩ := h
@@ -181,6 +244,9 @@ variable (N)
 def IsDual (c : Fin r) (d : V) : Prop :=
   (N.j ≤ c.val ∧ d = N.ist c) ∨ ∃ p, pr N c p ≠ 0 ∧ d = (star (pr N c p))⁻¹ • N.F'.e p.castSucc
 
+/- English proof (translation)
+Distinguish the cases in `hc : N.j ≤ c.val`. Conclude with `⟨_, Or.inl ⟨hc, rfl⟩⟩`. Take `⟨p, hp⟩` from `pr_exists N (not_le.mp hc)`. Conclude with `⟨_, Or.inr ⟨p, hp, rfl⟩⟩`.
+-/
 theorem exists_isDual (c : Fin r) : ∃ d, IsDual N c d := by
   by_cases hc : N.j ≤ c.val
   · exact ⟨_, Or.inl ⟨hc, rfl⟩⟩
@@ -189,6 +255,11 @@ theorem exists_isDual (c : Fin r) : ∃ d, IsDual N c d := by
 
 variable {N}
 
+/- English proof (translation)
+Break down `h with ⟨hc, rfl⟩ | ⟨p, hp, rfl⟩` into its components or cases. Conclude with `N.ist_e a c hc`. Rewrite using `[LinearMap.map_smulₛₗ, map_inv₀, starRingEnd_apply, star_star, smul_eq_mul] split_ifs with hac`. Substitute `hac` using the available equality. Conclude with `inv_mul_cancel₀ hp`.
+
+Establish `h0 : H.B (N.F.e a.castSucc) (N.F'.e p.castSucc) = 0`. Assume the negation of the conclusion as `hne`. Take `⟨_, _, _, h4⟩` from `hβ`. Conclude with `hac ((h4 a p c p hne hp rfl).1 rfl)`. Rewrite using `[h0, mul_zero]`.
+-/
 theorem IsDual.e {β : Fin r → ℕ} (hβ : IsBlock N β) {c : Fin r} {d : V} (h : IsDual N c d) (a : Fin r) :
     H.B (N.F.e a.castSucc) d = if a = c then 1 else 0 := by
   rcases h with ⟨hc, rfl⟩ | ⟨p, hp, rfl⟩
@@ -203,23 +274,37 @@ theorem IsDual.e {β : Fin r → ℕ} (hβ : IsBlock N β) {c : Fin r} {d : V} (
         exact hac ((h4 a p c p hne hp rfl).1 rfl)
       rw [h0, mul_zero]
 
+/- English proof (translation)
+Break down `h with ⟨hc, rfl⟩ | ⟨p, _, rfl⟩` into its components or cases. Conclude with `Submodule.mem_sup_right (Submodule.subset_span ⟨c, hc, rfl⟩)`. Conclude with `Submodule.mem_sup_left (Submodule.mem_sup_right (Submodule.smul_mem _ _ (GlobalTheory.UnipStab.e_mem_X N.F' p)))`.
+-/
 theorem IsDual.mem {c : Fin r} {d : V} (h : IsDual N c d) : d ∈ N.F.X ⊔ N.F'.X ⊔ N.Ist := by
   rcases h with ⟨hc, rfl⟩ | ⟨p, _, rfl⟩
   · exact Submodule.mem_sup_right (Submodule.subset_span ⟨c, hc, rfl⟩)
   · exact Submodule.mem_sup_left (Submodule.mem_sup_right
       (Submodule.smul_mem _ _ (GlobalTheory.UnipStab.e_mem_X N.F' p)))
 
+/- English proof (translation)
+Break down `h with ⟨hc, rfl⟩ | ⟨p, _, rfl⟩` into its components or cases. Conclude with `N.ist_iso c c hc hc`. Rewrite using `[LinearMap.map_smulₛₗ, map_smul H.B, LinearMap.smul_apply, N.F'.iso, smul_zero, smul_zero]`.
+-/
 theorem IsDual.iso {c : Fin r} {d : V} (h : IsDual N c d) : H.B d d = 0 := by
   rcases h with ⟨hc, rfl⟩ | ⟨p, _, rfl⟩
   · exact N.ist_iso c c hc hc
   · rw [LinearMap.map_smulₛₗ, map_smul H.B, LinearMap.smul_apply, N.F'.iso, smul_zero, smul_zero]
 
+/- English proof (translation)
+Break down `h with ⟨hc, rfl⟩ | ⟨p, _, rfl⟩` into its components or cases. Conclude with `N.ist_e' a c ha hc`. Rewrite using `[LinearMap.map_smulₛₗ, N.F'.iso, smul_zero]`.
+-/
 theorem IsDual.e' {c : Fin r} {d : V} (h : IsDual N c d) (a : Fin r) (ha : a.val < N.j) :
     H.B (N.F'.e a.castSucc) d = 0 := by
   rcases h with ⟨hc, rfl⟩ | ⟨p, _, rfl⟩
   · exact N.ist_e' a c ha hc
   · rw [LinearMap.map_smulₛₗ, N.F'.iso, smul_zero]
 
+/- English proof (translation)
+Break down `h with ⟨hc, rfl⟩ | ⟨p, hp, rfl⟩` into its components or cases. Conclude with `N.ist_iso a c ha hc`. Rewrite using `[LinearMap.map_smulₛₗ]`. Establish `hp'` using `(pr_lt N hp).2`. Establish `h0 : H.B (N.ist a) (N.F'.e p.castSucc) = 0`.
+
+Rewrite using `[← H.herm (N.F'.e p.castSucc) (N.ist a), N.ist_e' p a hp' ha, star_zero]`. Rewrite using `[h0, smul_zero]`.
+-/
 theorem IsDual.ist {c : Fin r} {d : V} (h : IsDual N c d) (a : Fin r) (ha : N.j ≤ a.val) :
     H.B (N.ist a) d = 0 := by
   rcases h with ⟨hc, rfl⟩ | ⟨p, hp, rfl⟩
@@ -234,6 +319,19 @@ section Lat
 
 variable [Module (𝓞 K) V] [IsScalarTower (𝓞 K) K V] (N) (L : Submodule (𝓞 K) V)
 
+/- English proof (translation)
+Set `φ : V →ₗ[𝓞 K] K` to `(H.B.flip y).restrictScalars (𝓞 K)`. Establish `hWn : ∀ w ∈ N.Wn, H.B w y = 0` using `fun w hw => (GlobalTheory.HermLat.mem_perp_iff H (N.F.X ⊔ N.F'.X ⊔ N.Ist) w).1 hw y hy`. Establish `hline : ∀ (A' : Submodule (𝓞 K) K) (v : V), (∀ t ∈ A', t * H.B v y ∈ A) → line A' v ≤ A.comap φ`. Introduce `A' v hv`. Introduce and unpack `_ ⟨t, ht, rfl⟩`.
+
+Rewrite using `[Submodule.mem_comap]`. Express the relevant statement in the definitionally equal form `H.B ((LinearMap.toSpanSingleton K V v) t) y ∈ A`. Rewrite using `[LinearMap.toSpanSingleton_apply, map_smul H.B, LinearMap.smul_apply, smul_eq_mul]`. Conclude with `hv t ht`. Establish `hP0 : N.P0 ≤ A.comap φ`.
+
+Unfold `NF.P0`. Use `sup_le (sup_le (sup_le ?_ ?_) ?_) ?_` and prove the remaining obligations. Conclude with `iSup_le fun a => hline _ _ (h1 a)`. Conclude with `iSup_le fun a => iSup_le fun ha => hline _ _ (h2 a ha)`. Use `hline _ _ fun t _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[hWn _ (NFGeom.z_mem_Wn N), mul_zero]`. Conclude with `A.zero_mem`. Conclude with `iSup_le fun a => iSup_le fun ha => hline _ _ (h3 a ha)`. Establish `hRef : N.Ref L ≤ A.comap φ`. Unfold `NF.Ref`.
+
+Use `sup_le hP0 fun w hw => ?_` and prove the remaining obligations. Rewrite using `[Submodule.mem_comap]`. Express the relevant statement in the definitionally equal form `H.B w y ∈ A`. Rewrite using `[hWn w (Submodule.mem_inf.1 hw).2]`. Conclude with `A.zero_mem`.
+
+Conclude with `hRef hx`.
+-/
 theorem ref_pair {y : V} (hy : y ∈ N.F.X ⊔ N.F'.X ⊔ N.Ist) (A : Submodule (𝓞 K) K)
     (h1 : ∀ a : Fin r, ∀ t ∈ N.aa a, t * H.B (N.F.e a.castSucc) y ∈ A)
     (h2 : ∀ a : Fin r, a.val < N.j → ∀ t ∈ N.aa a, t * H.B (N.F'.e a.castSucc) y ∈ A)
@@ -268,18 +366,27 @@ theorem ref_pair {y : V} (hy : y ∈ N.F.X ⊔ N.F'.X ⊔ N.Ist) (A : Submodule 
     exact A.zero_mem
   exact hRef hx
 
+/- English proof (translation)
+Establish `hl : t • N.F.e a.castSucc ∈ line (N.aa a) (N.F.e a.castSucc)` using `⟨t, ht, by simp⟩`. Unfold `NF.Ref NF.P0`. Conclude with `Submodule.mem_sup_left (Submodule.mem_sup_left (Submodule.mem_sup_left (Submodule.mem_sup_left (Submodule.mem_iSup_of_mem a hl))))`.
+-/
 theorem e_mem_ref (a : Fin r) {t : K} (ht : t ∈ N.aa a) : t • N.F.e a.castSucc ∈ N.Ref L := by
   have hl : t • N.F.e a.castSucc ∈ line (N.aa a) (N.F.e a.castSucc) := ⟨t, ht, by simp⟩
   unfold NF.Ref NF.P0
   exact Submodule.mem_sup_left (Submodule.mem_sup_left (Submodule.mem_sup_left
     (Submodule.mem_sup_left (Submodule.mem_iSup_of_mem a hl))))
 
+/- English proof (translation)
+Establish `hl : t • N.F'.e a.castSucc ∈ line (N.aa a) (N.F'.e a.castSucc)` using `⟨t, ht, by simp⟩`. Unfold `NF.Ref NF.P0`. Conclude with `Submodule.mem_sup_left (Submodule.mem_sup_left (Submodule.mem_sup_left (Submodule.mem_sup_right (Submodule.mem_iSup_of_mem a (Submodule.mem_iSup_of_mem ha hl)))))`.
+-/
 theorem e'_mem_ref (a : Fin r) (ha : a.val < N.j) {t : K} (ht : t ∈ N.aa a) : t • N.F'.e a.castSucc ∈ N.Ref L := by
   have hl : t • N.F'.e a.castSucc ∈ line (N.aa a) (N.F'.e a.castSucc) := ⟨t, ht, by simp⟩
   unfold NF.Ref NF.P0
   exact Submodule.mem_sup_left (Submodule.mem_sup_left (Submodule.mem_sup_left
     (Submodule.mem_sup_right (Submodule.mem_iSup_of_mem a (Submodule.mem_iSup_of_mem ha hl)))))
 
+/- English proof (translation)
+Establish `hl : t • N.ist a ∈ line (ipow N.𝔡 ((r : ℤ) - a.val)) (N.ist a)` using `⟨t, ht, by simp⟩`. Unfold `NF.Ref NF.P0`. Conclude with `Submodule.mem_sup_left (Submodule.mem_sup_right (Submodule.mem_iSup_of_mem a (Submodule.mem_iSup_of_mem ha hl)))`.
+-/
 theorem ist_mem_ref (a : Fin r) (ha : N.j ≤ a.val) {t : K} (ht : t ∈ ipow N.𝔡 ((r : ℤ) - a.val)) :
     t • N.ist a ∈ N.Ref L := by
   have hl : t • N.ist a ∈ line (ipow N.𝔡 ((r : ℤ) - a.val)) (N.ist a) := ⟨t, ht, by simp⟩
@@ -289,6 +396,13 @@ theorem ist_mem_ref (a : Fin r) (ha : N.j ≤ a.val) {t : K} (ht : t ∈ ipow N.
 
 variable {N L}
 
+/- English proof (translation)
+Use `ref_pair N L (IsDual.mem h) (N.aa c) ?_ ?_ ?_ hx` and prove the remaining obligations. Introduce `a t ht`. Rewrite using `[IsDual.e hβ h a]`. Use `split_ifs with hac`. Substitute `hac` using the available equality.
+
+Simplify using `using ht`. Rewrite using `[mul_zero]`. Conclude with `zero_mem _`. Introduce `a ha t _`. Rewrite using `[IsDual.e' h a ha, mul_zero]`.
+
+Conclude with `zero_mem _`. Introduce `a ha t _`. Rewrite using `[IsDual.ist h a ha, mul_zero]`. Conclude with `zero_mem _`.
+-/
 theorem IsDual.ref {β : Fin r → ℕ} (hβ : IsBlock N β) {c : Fin r} {d : V} (h : IsDual N c d) {x : V}
     (hx : x ∈ N.Ref L) : H.B x d ∈ N.aa c := by
   refine ref_pair N L (IsDual.mem h) (N.aa c) ?_ ?_ ?_ hx
@@ -309,6 +423,11 @@ theorem IsDual.ref {β : Fin r → ℕ} (hβ : IsBlock N β) {c : Fin r} {d : V}
 end Lat
 
 omit [NumberField K] in
+/- English proof (translation)
+Rewrite `hx` using `[FlagD.Xa, Finsupp.mem_span_image_iff_linearCombination]`. Take `⟨l, hl, rfl⟩` from `hx`. Use `⟨l, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[Finsupp.linearCombination_apply, Finsupp.sum_fintype]`. Simplify using the standard rewrite rules.
+
+Introduce `c hc`. Conclude with `(Finsupp.mem_supported' K l).1 hl c (fun h : c.val < n => absurd h (not_lt.mpr hc))`.
+-/
 theorem exists_coeff (F : FlagD H r) {n : ℕ} {x : V} (hx : x ∈ F.Xa n) :
     ∃ u : Fin r → K, x = ∑ c, u c • F.e c.castSucc ∧ ∀ c : Fin r, n ≤ c.val → u c = 0 := by
   rw [FlagD.Xa, Finsupp.mem_span_image_iff_linearCombination] at hx
@@ -321,6 +440,35 @@ theorem exists_coeff (F : FlagD H r) {n : ℕ} {x : V} (hx : x ∈ F.Xa n) :
 
 variable [FiniteDimensional K V] [Module (𝓞 K) V] [IsScalarTower (𝓞 K) K V] {L : Submodule (𝓞 K) V}
 
+/- English proof (translation)
+Establish `hR : s ∈ N.R` using `(Subgroup.mem_inf.1 hs).1`. Establish `hstab : s ∈ MulAction.stabilizer (V ≃ₗ[K] V) (N.Ref L)` using `(Subgroup.mem_inf.1 hs).2`. Take `⟨hF, hF'⟩` from `(GlobalTheory.UnipStab.mem_R N s).1 hR`. Establish `hmaps : ∀ y ∈ N.Ref L, s y ∈ N.Ref L`. Introduce `y hy`.
+
+Establish `hm` using `Submodule.smul_mem_pointwise_smul y s (N.Ref L) hy`. Rewrite `hm` using `[MulAction.mem_stabilizer_iff.1 hstab]`. Conclude with `hm`. Take `⟨u, hu, hu0⟩` from `exists_coeff N.F (hF.2.2.1 b)`. Establish `hcoef : ∀ (c : Fin r) (d : V), IsDual N c d → H.B ((s : V →ₗ[K] V) (N.F.e b.castSucc) - N.F.e b.castSucc) d = u c`.
+
+Introduce `c d hd`. Rewrite using `[hu, map_sum, LinearMap.sum_apply]`. Simplify using `only [map_smul, LinearMap.smul_apply, IsDual.e hβ hd, smul_eq_mul, mul_ite, mul_one, mul_zero, Finset.sum_ite_eq', Finset.mem_univ, if_true]`. Establish `hlow : ∀ c : Fin r, c < b → ∀ d, IsDual N c d → H.B ((s : V →ₗ[K] V) (N.F.e b.castSucc) - N.F.e b.castSucc) d = H.B (s (N.F.e b.castSucc)) d`. Introduce `c hcb d hd`.
+
+Rewrite using `[map_sub, LinearMap.sub_apply, IsDual.e hβ hd b, if_neg (ne_of_gt hcb), sub_zero]`. Both sides reduce to the same expression. Use `⟨u, eq_add_of_sub_eq' hu, ?_, ?_⟩` and prove the remaining obligations. Introduce `c`. Distinguish the cases in `hcb : b ≤ c`.
+
+Rewrite using `[hu0 c (Fin.le_iff_val_le_val.mp hcb)]`. Conclude with `zero_mem _`. Use `push Not at hcb`. Take `⟨d, hd⟩` from `exists_isDual N c`. Rewrite using `[← hcoef c d hd, hlow c hcb d hd]`.
+
+Apply `mem_ipow_of N.𝔡_ne (m := -((r : ℤ) - b.val))` to reduce the goal to its premises. Introduce `t ht`. Establish `h2 : s (t • N.F.e b.castSucc) ∈ N.Ref L` using `hmaps _ (e_mem_ref N L b ht)`. Establish `h3` using `IsDual.ref hβ hd h2`. Rewrite `h3` using `[map_smul s, map_smul H.B, LinearMap.smul_apply, smul_eq_mul]`.
+
+Establish `e : -((r : ℤ) - b.val) + ((c.val : ℤ) - b.val) = -((r : ℤ) - c.val)` using `by ring`. Rewrite using `[e]`. Conclude with `h3`. Introduce `c hc`. Distinguish the cases in `hcb : b ≤ c`.
+
+Conclude with `hu0 c (Fin.le_iff_val_le_val.mp hcb)`. Use `push Not at hcb`. Establish `hne : β c ≠ β b` using `hc.resolve_left (not_le.mpr hcb)`. Take `⟨d, hd⟩` from `exists_isDual N c`. Rewrite using `[← hcoef c d hd, hlow c hcb d hd]`.
+
+Break down `hd with ⟨hcj, rfl⟩ | ⟨p, hp, rfl⟩` into its components or cases. Conclude with `absurd ((hβ.2.1 c b (le_trans hcj (le_of_lt (Fin.lt_def.mp hcb)))).2 hcj) hne`. Establish `hβcp : β c = β p` using `hβ.2.2.1 c p hp`. Establish `hinv : N.F'.InN ((s⁻¹ : V ≃ₗ[K] V) : V →ₗ[K] V)` using `GlobalTheory.UnipStab.inN_inv hF'`. Take `⟨v, hv, hv0⟩` from `exists_coeff N.F' (hinv.2.2.1 p)`.
+
+Establish `hsi : s ((s⁻¹ : V ≃ₗ[K] V) (N.F'.e p.castSucc)) = N.F'.e p.castSucc` using `s.apply_symm_apply _`. Establish `hmain : H.B (s (N.F.e b.castSucc)) (N.F'.e p.castSucc) = 0`. Establish `hiso : H.B (s (N.F.e b.castSucc)) (s ((s⁻¹ : V ≃ₗ[K] V) (N.F'.e p.castSucc))) = H.B (N.F.e b.castSucc) ((s⁻¹ : V ≃ₗ[K] V) (N.F'.e p.castSucc))` using `hF.1 _ _`. Rewrite `hiso` using `[hsi]`. Rewrite using `[hiso]`.
+
+Establish `hexp : (s⁻¹ : V ≃ₗ[K] V) (N.F'.e p.castSucc) = N.F'.e p.castSucc + ∑ q, v q • N.F'.e q.castSucc` using `eq_add_of_sub_eq' hv`. Rewrite using `[hexp, map_add, map_sum]`. Establish `h0 : H.B (N.F.e b.castSucc) (N.F'.e p.castSucc) = 0`. Assume the negation of the conclusion as `h'`. Conclude with `hne (hβcp.trans (hβ.2.2.1 b p h').symm)`.
+
+Rewrite using `[h0, zero_add]`. Apply `Finset.sum_eq_zero` to reduce the goal to its premises. Introduce `q _`. Rewrite using `[LinearMap.map_smulₛₗ]`. Distinguish the cases in `hqp : p.val ≤ q.val`.
+
+Rewrite using `[hv0 q hqp, map_zero, zero_smul]`. Use `push Not at hqp`. Establish `hq0 : H.B (N.F.e b.castSucc) (N.F'.e q.castSucc) = 0`. Assume the negation of the conclusion as `h'`. Establish `e1 : β b = β q` using `hβ.2.2.1 b q h'`.
+
+Establish `e2 : β q ≤ β p` using `hβ.1 (le_of_lt (Fin.lt_def.mpr hqp))`. Establish `e3 : β c ≤ β b` using `hβ.1 (le_of_lt hcb)`. Conclude with `hne (le_antisymm e3 ((e1.le.trans e2).trans hβcp.ge))`. Rewrite using `[hq0, smul_zero]`. Rewrite using `[LinearMap.map_smulₛₗ, hmain, smul_zero]`.
+-/
 theorem entries {β : Fin r → ℕ} (hβ : IsBlock N β) {s : V ≃ₗ[K] V} (hs : s ∈ N.Gam (N.Ref L)) (b : Fin r) :
     ∃ u : Fin r → K, s (N.F.e b.castSucc) = N.F.e b.castSucc + ∑ c, u c • N.F.e c.castSucc ∧
       (∀ c, u c ∈ ipow N.𝔡 ((c.val : ℤ) - b.val)) ∧ ∀ c, (b ≤ c ∨ β c ≠ β b) → u c = 0 := by
@@ -406,18 +554,29 @@ def elem (H : HermSpace K V) (x v : V) (hx : H.B x x = 0) (hv : H.B v v = 0) (h 
     (by ext y; simp [xv, hx, hv, h, B_swap0 H h]) (by ext y; simp [xv, hx, hv, h, B_swap0 H h])
 
 omit [NumberField K] [FiniteDimensional K V] [Module (𝓞 K) V] [IsScalarTower (𝓞 K) K V] in
+/- English proof (translation)
+Simplify using `only [elem, LinearEquiv.ofLinear_apply, LinearMap.add_apply, LinearMap.id_apply, xv, LinearMap.sub_apply, LinearMap.smulRight_apply, LinearMap.flip_apply]`.
+-/
 theorem elem_apply (x v : V) (hx : H.B x x = 0) (hv : H.B v v = 0) (h : H.B x v = 0) (y : V) :
     elem H x v hx hv h y = y + (H.B y v • x - H.B y x • v) := by
   simp only [elem, LinearEquiv.ofLinear_apply, LinearMap.add_apply, LinearMap.id_apply, xv,
     LinearMap.sub_apply, LinearMap.smulRight_apply, LinearMap.flip_apply]
 
 omit [NumberField K] [FiniteDimensional K V] [Module (𝓞 K) V] [IsScalarTower (𝓞 K) K V] in
+/- English proof (translation)
+Simplify using `only [elem, LinearEquiv.ofLinear_symm_apply, LinearMap.sub_apply, LinearMap.id_apply, xv, LinearMap.smulRight_apply, LinearMap.flip_apply]`.
+-/
 theorem elem_symm_apply (x v : V) (hx : H.B x x = 0) (hv : H.B v v = 0) (h : H.B x v = 0) (y : V) :
     (elem H x v hx hv h).symm y = y - (H.B y v • x - H.B y x • v) := by
   simp only [elem, LinearEquiv.ofLinear_symm_apply, LinearMap.sub_apply, LinearMap.id_apply, xv,
     LinearMap.smulRight_apply, LinearMap.flip_apply]
 
 omit [NumberField K] [FiniteDimensional K V] [Module (𝓞 K) V] [IsScalarTower (𝓞 K) K V] in
+/- English proof (translation)
+Rewrite using `[elem_apply, elem_apply]`. Establish `e1` using `H.herm w v`. Establish `e2` using `H.herm w x`. Establish `e3 : H.B v x = 0` using `B_swap0 H h`. Simplify using `only [map_add, map_sub, map_smul, LinearMap.add_apply, LinearMap.sub_apply, LinearMap.smul_apply, LinearMap.map_smulₛₗ, smul_eq_mul, starRingEnd_apply, hx, hv, h, e3, e1, e2]`.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem elem_isom (x v : V) (hx : H.B x x = 0) (hv : H.B v v = 0) (h : H.B x v = 0) (y w : V) :
     H.B (elem H x v hx hv h y) (elem H x v hx hv h w) = H.B y w := by
   rw [elem_apply, elem_apply]
@@ -428,6 +587,79 @@ theorem elem_isom (x v : V) (hx : H.B x x = 0) (hv : H.B v v = 0) (h : H.B x v =
     LinearMap.map_smulₛₗ, smul_eq_mul, starRingEnd_apply, hx, hv, h, e3, e1, e2]
   ring
 
+/- English proof (translation)
+Take `⟨d, hd⟩` from `exists_isDual N b`. Establish `hab' : a.val < b.val` using `Fin.lt_def.mp hab`. Establish `hx : H.B (N.F.e a.castSucc) (N.F.e a.castSucc) = 0` using `N.F.iso a a`. Establish `hv : H.B (star t • d) (star t • d) = 0`. Rewrite using `[LinearMap.map_smulₛₗ, map_smul H.B, LinearMap.smul_apply, IsDual.iso hd, smul_zero, smul_zero]`.
+
+Establish `hxv : H.B (N.F.e a.castSucc) (star t • d) = 0`. Rewrite using `[LinearMap.map_smulₛₗ, IsDual.e hβ hd a, if_neg (ne_of_lt hab), smul_zero]`. Establish `hBv : ∀ y, H.B y (star t • d) = t * H.B y d`. Introduce `y`. Rewrite using `[LinearMap.map_smulₛₗ, starRingEnd_apply, star_star, smul_eq_mul]`.
+
+Establish `hea : ∀ y, H.B y (N.F.e a.castSucc) = star (H.B (N.F.e a.castSucc) y)` using `fun y => (H.herm (N.F.e a.castSucc) y).symm`. Establish `key : (∀ y ∈ N.Ref L, H.B y (N.F.e a.castSucc) • (star t • d) ∈ N.Ref L) ∧ (∀ c : Fin r, H.B (N.F'.e c.castSucc) (star t • d) • N.F.e a.castSucc - H.B (N.F'.e c.castSucc) (N.F.e a.castSucc) • (star t • d) ∈ N.F'.Xa c.val) ∧ (∀ y : V, (∀ c : Fin r, H.B (N.F'.e c.castSucc) y = 0) → …`. Distinguish the cases in `haj : N.j ≤ a.val`. Establish `hbj : N.j ≤ b.val` using `le_trans haj (le_of_lt hab')`. Establish `hdi : d = N.ist b`.
+
+Break down `hd with ⟨_, rfl⟩ | ⟨p, hp, _⟩` into its components or cases. Both sides reduce to the same expression. Conclude with `absurd (pr_lt N hp).1 (not_lt.mpr hbj)`. Substitute `hdi` using the available equality. Establish `hpa0 : ∀ c : Fin r, H.B (N.F.e a.castSucc) (N.F'.e c.castSucc) = 0`.
+
+Introduce `c`. Assume the negation of the conclusion as `hne`. Conclude with `absurd (pr_lt N hne).1 (not_lt.mpr haj)`. Establish `hea' : N.F.e a.castSucc = N.c⁻¹ • N.F'.e a.castSucc` using `NFGeom.e_eq N a.castSucc (by simpa using haj)`. Use `⟨fun y hy => ?_, fun c => ?_, fun y hy => ?_⟩` and prove the remaining obligations.
+
+Establish `hya : H.B y (N.F.e a.castSucc) ∈ ipow N.𝔡 ((r : ℤ) - a.val)`. Use `ref_pair N L ?_ _ ?_ ?_ ?_ hy` and prove the remaining obligations. Conclude with `Submodule.mem_sup_left (Submodule.mem_sup_left (GlobalTheory.UnipStab.e_mem_X N.F a))`. Introduce `c t' _`. Rewrite using `[N.F.iso c a, mul_zero]`.
+
+Conclude with `zero_mem _`. Introduce `c _ t' _`. Rewrite using `[hea, hpa0 c, star_zero, mul_zero]`. Conclude with `zero_mem _`. Introduce `c hc t' ht'`.
+
+Rewrite using `[hea, N.ist_e a c hc]`. Use `split_ifs with hac`. Substitute `hac` using the available equality. Simplify using `using ht'`. Rewrite using `[star_zero, mul_zero]`.
+
+Conclude with `zero_mem _`. Rewrite using `[smul_smul]`. Apply `ist_mem_ref N L b hbj` to reduce the goal to its premises. Establish `hm` using `ipow_mul N.𝔡_ne hya (star_mem_ipow N.𝔡_ne N.𝔡_star _ t ht)`. Establish `e : ((r : ℤ) - a.val) + ((a.val : ℤ) - b.val) = (r : ℤ) - b.val` using `by ring`.
+
+Rewrite `hm` using `[e]`. Conclude with `hm`. Rewrite using `[hea, hpa0 c, star_zero, zero_smul, sub_zero, hBv]`. Distinguish the cases in `hcb : c = b`. Substitute `hcb` using the available equality.
+
+Use `Submodule.smul_mem _ _ ?_` and prove the remaining obligations. Rewrite using `[hea']`. Conclude with `Submodule.smul_mem _ _ (Formalism.HermitianLatticeCounting.P.e_mem_Xa N.F' a hab')`. Establish `h0 : H.B (N.F'.e c.castSucc) (N.ist b) = 0`. Distinguish the cases in `hcj : N.j ≤ c.val`.
+
+Rewrite using `[N.same c.castSucc (by simpa using hcj), map_smul H.B, LinearMap.smul_apply, N.ist_e c b hbj, if_neg hcb, smul_zero]`. Conclude with `N.ist_e' c b (not_le.mp hcj) hbj`. Rewrite using `[h0, mul_zero, zero_smul]`. Conclude with `zero_mem _`. Establish `h0 : H.B y (N.F.e a.castSucc) = 0`.
+
+Rewrite using `[hea', LinearMap.map_smulₛₗ, ← H.herm (N.F'.e a.castSucc) y, hy a, star_zero, smul_zero]`. Rewrite using `[h0, zero_smul, sub_zero]`. Use `Submodule.smul_mem _ _ ?_` and prove the remaining obligations. Rewrite using `[hea']`. Conclude with `Submodule.smul_mem _ _ (GlobalTheory.UnipStab.e_mem_X N.F' a)`.
+
+Use `push Not at haj`. Establish `hbj : b.val < N.j`. Assume the negation of the conclusion as `hbj`. Use `push Not at hbj`. Conclude with `absurd ((hβ.2.1 a b hbj).1 hb) (not_le.mpr haj)`.
+
+Choose the witnesses or unpack the hypotheses as in `⟨p, hp, hdp⟩ : ∃ p, pr N b p ≠ 0 ∧ d = (star (pr N b p))⁻¹ • N.F'.e p.castSucc := by`. Break down `hd with ⟨hbj', _⟩ | h'` into its components or cases. Conclude with `absurd hbj (not_lt.mpr hbj')`. Conclude with `h'`. Substitute `hdp` using the available equality.
+
+Take `⟨pa, hpa⟩` from `pr_exists N haj`. Establish `hppa : p < pa` using `IsBlock.anti hβ hpa hp hb hab`. Take `⟨hsum, hPQ⟩` from `pr_anti N hab hppa hpa hp`. Establish `hpj : p.val < N.j` using `(pr_lt N hp).2`. Establish `hvX : ∀ n : ℕ, p.val < n → star t • ((star (pr N b p))⁻¹ • N.F'.e p.castSucc) ∈ N.F'.Xa n` using `fun n hn => Submodule.smul_mem _ _ (Submodule.smul_mem _ _ (Formalism.HermitianLatticeCounting.P.e_mem_Xa N.F' p hn))`.
+
+Establish `hBp : ∀ y, H.B y (star t • ((star (pr N b p))⁻¹ • N.F'.e p.castSucc)) = t * (pr N b p)⁻¹ * H.B y (N.F'.e p.castSucc)`. Introduce `y`. Rewrite using `[LinearMap.map_smulₛₗ, LinearMap.map_smulₛₗ, map_inv₀, starRingEnd_apply, starRingEnd_apply, star_star, star_star, smul_eq_mul, smul_eq_mul, mul_assoc]`. Use `⟨fun y hy => ?_, fun c => ?_, fun y hy => ?_⟩` and prove the remaining obligations. Establish `hw : H.B y (N.F.e a.castSucc) * (star (pr N a pa))⁻¹ ∈ N.aa pa`.
+
+Set `A : Submodule (𝓞 K) K` to `(N.aa pa).comap ((LinearMap.mulRight K (star (pr N a pa))⁻¹).restrictScalars (𝓞 K))`. Establish `hA : ∀ z, z ∈ A ↔ z * (star (pr N a pa))⁻¹ ∈ N.aa pa` using `fun z => Iff.rfl`. Rewrite using `[← hA]`. Use `ref_pair N L ?_ A ?_ ?_ ?_ hy` and prove the remaining obligations. Conclude with `Submodule.mem_sup_left (Submodule.mem_sup_left (GlobalTheory.UnipStab.e_mem_X N.F a))`.
+
+Introduce `c t' _`. Rewrite using `[N.F.iso c a, mul_zero]`. Conclude with `zero_mem _`. Introduce `c _ t' ht'`. Rewrite using `[hA, hea]`.
+
+Distinguish the cases in `hcp : c = pa`. Substitute `hcp` using the available equality. Establish `hne : star (pr N a c) ≠ 0` using `star_ne_zero.mpr hpa`. Rewrite using `[mul_assoc, mul_inv_cancel₀ hne, mul_one]`. Conclude with `ht'`.
+
+Establish `h0 : H.B (N.F.e a.castSucc) (N.F'.e c.castSucc) = 0`. Assume the negation of the conclusion as `hne`. Conclude with `hcp (IsBlock.uniq hβ hne hpa)`. Rewrite using `[h0, star_zero, mul_zero, zero_mul]`. Conclude with `zero_mem _`.
+
+Introduce `c hc t' _`. Establish `hac : a ≠ c` using `fun h => absurd (h ▸ hc) (not_le.mpr haj)`. Rewrite using `[hA, hea, N.ist_e a c hc, if_neg hac, star_zero, mul_zero, zero_mul]`. Conclude with `zero_mem _`. Rewrite using `[smul_smul, smul_smul]`.
+
+Apply `e'_mem_ref N L p hpj` to reduce the goal to its premises. Establish `hm` using `ipow_mul N.𝔡_ne hw (star_mem_ipow N.𝔡_ne N.𝔡_star _ t ht)`. Establish `e : -((r : ℤ) - pa.val) + ((a.val : ℤ) - b.val) = -((r : ℤ) - p.val)`. Use linear arithmetic over natural numbers and integers. Rewrite `hm` using `[e]`.
+
+Break down `hPQ with hPQ | hPQ` into its components or cases. Establish `he : H.B y (N.F.e a.castSucc) * star t * (star (pr N b p))⁻¹ = H.B y (N.F.e a.castSucc) * (star (pr N a pa))⁻¹ * star t`. Rewrite using `[show pr N a pa = pr N b p from hPQ]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[he]`.
+
+Conclude with `hm`. Establish `he : H.B y (N.F.e a.castSucc) * star t * (star (pr N b p))⁻¹ = -(H.B y (N.F.e a.castSucc) * (star (pr N a pa))⁻¹ * star t)`. Rewrite using `[show pr N a pa = -pr N b p from hPQ, star_neg, inv_neg]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[he]`.
+
+Conclude with `neg_mem hm`. Rewrite using `[hBp, N.F'.iso c p, mul_zero, zero_smul, zero_sub, hea]`. Distinguish the cases in `h0 : H.B (N.F.e a.castSucc) (N.F'.e c.castSucc) = 0`. Rewrite using `[h0, star_zero, zero_smul, neg_zero]`. Conclude with `zero_mem _`.
+
+Establish `hc : c = pa` using `IsBlock.uniq hβ h0 hpa`. Substitute `hc` using the available equality. Conclude with `neg_mem (Submodule.smul_mem _ _ (hvX _ (Fin.lt_def.mp hppa)))`. Establish `h0 : H.B y (N.F'.e p.castSucc) = 0`. Rewrite using `[← H.herm (N.F'.e p.castSucc) y, hy p, star_zero]`.
+
+Rewrite using `[hBp, h0, mul_zero, zero_smul, zero_sub]`. Conclude with `neg_mem (Submodule.smul_mem _ _ (hvX r p.isLt))`. Take `⟨hK1, hK2, hK3⟩` from `key`. Establish `hT : ∀ y ∈ N.Ref L, H.B y (star t • d) • N.F.e a.castSucc - H.B y (N.F.e a.castSucc) • (star t • d) ∈ N.Ref L`. Introduce `y hy`.
+
+Use `sub_mem ?_ (hK1 y hy)` and prove the remaining obligations. Rewrite using `[hBv]`. Apply `e_mem_ref N L a` to reduce the goal to its premises. Establish `hm` using `ipow_mul N.𝔡_ne ht (IsDual.ref hβ hd hy)`. Establish `e : ((a.val : ℤ) - b.val) + -((r : ℤ) - b.val) = -((r : ℤ) - a.val)` using `by ring`.
+
+Rewrite `hm` using `[e]`. Conclude with `hm`. Establish `hE : ∀ c : Fin r, elem H _ _ hx hv hxv (N.F.e c.castSucc) - N.F.e c.castSucc = (if c = b then t else 0) • N.F.e a.castSucc`. Introduce `c`. Rewrite using `[elem_apply, add_sub_cancel_left, hBv, IsDual.e hβ hd c, N.F.iso c a, zero_smul, sub_zero]`.
+
+Apply the tactic sequence `split_ifs <;> simp`. Establish `hinF : N.F.InN ((elem H _ _ hx hv hxv : V ≃ₗ[K] V) : V →ₗ[K] V)`. Use `⟨fun y w => elem_isom _ _ hx hv hxv y w, (elem H _ _ hx hv hxv).bijective, fun c => ?_, fun y hy => ?_⟩` and prove the remaining obligations. Rewrite using `[LinearEquiv.coe_coe, hE c] split_ifs with hcb`. Substitute `hcb` using the available equality.
+
+Conclude with `Submodule.smul_mem _ _ (Formalism.HermitianLatticeCounting.P.e_mem_Xa N.F a hab')`. Rewrite using `[zero_smul]`. Conclude with `zero_mem _`. Rewrite using `[LinearEquiv.coe_coe, elem_apply, add_sub_cancel_left, hea, hy a, star_zero, zero_smul, sub_zero]`. Conclude with `Submodule.smul_mem _ _ (GlobalTheory.UnipStab.e_mem_X N.F a)`.
+
+Establish `hinF' : N.F'.InN ((elem H _ _ hx hv hxv : V ≃ₗ[K] V) : V →ₗ[K] V)`. Use `⟨fun y w => elem_isom _ _ hx hv hxv y w, (elem H _ _ hx hv hxv).bijective, fun c => ?_, fun y hy => ?_⟩` and prove the remaining obligations. Rewrite using `[LinearEquiv.coe_coe, elem_apply, add_sub_cancel_left]`. Conclude with `hK2 c`. Rewrite using `[LinearEquiv.coe_coe, elem_apply, add_sub_cancel_left]`.
+
+Conclude with `hK3 y hy`. Use `⟨elem H _ _ hx hv hxv, Subgroup.mem_inf.2 ⟨Subgroup.subset_closure ⟨hinF, hinF'⟩, ?_⟩, fun c => eq_add_of_sub_eq' (hE c)⟩` and prove the remaining obligations. Rewrite using `[MulAction.mem_stabilizer_iff]`. Apply `le_antisymm` to reduce the goal to its premises. Introduce `y hy`.
+
+Take `⟨y0, hy0, rfl⟩` from `(Submodule.mem_smul_pointwise_iff_exists _ _ _).1 hy`. Establish `hh : elem H _ _ hx hv hxv y0 ∈ N.Ref L`. Rewrite using `[elem_apply]`. Conclude with `add_mem hy0 (hT y0 hy0)`. Conclude with `hh`.
+
+Introduce `y hy`. Rewrite using `[Submodule.mem_smul_pointwise_iff_exists]`. Use `⟨(elem H _ _ hx hv hxv).symm y, ?_, (elem H _ _ hx hv hxv).apply_symm_apply y⟩` and prove the remaining obligations. Rewrite using `[elem_symm_apply]`. Conclude with `sub_mem hy (hT y hy)`.
+-/
 theorem attained {β : Fin r → ℕ} (hβ : IsBlock N β) {a b : Fin r} (hab : a < b) (hb : β a = β b) {t : K}
     (ht : t ∈ ipow N.𝔡 ((a.val : ℤ) - b.val)) : ∃ s ∈ N.Gam (N.Ref L), ∀ c : Fin r,
       s (N.F.e c.castSucc) = N.F.e c.castSucc + (if c = b then t else 0) • N.F.e a.castSucc := by
@@ -630,6 +862,9 @@ theorem attained {β : Fin r → ℕ} (hβ : IsBlock N β) {a b : Fin r} (hab : 
     rw [elem_symm_apply]
     exact sub_mem hy (hT y hy)
 
+/- English proof (translation)
+Introduce `K V _ _ _ _ _ _ _ _ H _ r N k ι _ σ β Φ z z' g hpl _ hfr L _ _`. Take `⟨v, -, -⟩` from `hpl.2 (Classical.arbitrary (InfinitePlace K))`. Establish `hρ : (2 * Formalism.HermitianLatticesTheory.vInv K : ℝ) ≠ 0` using `mul_ne_zero two_ne_zero (RealMat.vInv_pos K).ne'`. Establish `hβ : IsBlock N β` using `isBlock_of_frame N hρ (hfr v)`. Conclude with `⟨fun s hs _ b _ => entries hβ hs b, fun a b hab hb t ht => attained hβ hab hb ht⟩`.
+-/
 theorem top_layer : ∀ (K V : Type) [Field K] [NumberField K] [StarRing K] [AddCommGroup V] [Module K V] [FiniteDimensional K V] [Module (𝓞 K) V] [IsScalarTower (𝓞 K) K V] (H : HermSpace K V), Formalism.HermitianLatticesTheory.IsCMUnram K → ∀ (r : ℕ), ∀ (N : NF H r) (k : ℕ) (ι : Type) [Fintype ι] (σ : ι → (K →+* ℂ)) (β : Fin r → ℕ) (Φ : ι → V → Fin (2 * r + k + 1) → ℂ) (z z' : ι → Fin (2 * r + k + 1) → ℂ) (g : ι → Mat k r), IsPlaces σ → Module.finrank K V = 2 * r + k + 1 → (∀ v, IsFrameOf N k (σ v) (2 * Formalism.HermitianLatticesTheory.vInv K) β (Φ v) (z v) (z' v) (g v)) → ∀ L : Submodule (𝓞 K) V, IsUnimodMod H L (uPerp N.F N.F') (II N.F N.F') → N.F.z ∈ L → (∀ s ∈ N.Gam (N.Ref L), ∀ a b : Fin r, a < b → ∃ u : Fin r → K, s (N.F.e b.castSucc) = N.F.e b.castSucc + ∑ c, u c • N.F.e c.castSucc ∧ (∀ c, u c ∈ ipow N.𝔡 ((c.val : ℤ) - b.val)) ∧ ∀ c, (b ≤ c ∨ β c ≠ β b) → u c = 0) ∧ ∀ a b : Fin r, a < b → β a = β b → ∀ t ∈ ipow N.𝔡 ((a.val : ℤ) - b.val), ∃ s ∈ N.Gam (N.Ref L), ∀ c : Fin r, s (N.F.e c.castSucc) = N.F.e c.castSucc + (if c = b then t else 0) • N.F.e a.castSucc := by
   intro K V _ _ _ _ _ _ _ _ H _ r N k ι _ σ β Φ z z' g hpl _ hfr L _ _
   obtain ⟨v, -, -⟩ := hpl.2 (Classical.arbitrary (InfinitePlace K))

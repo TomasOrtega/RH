@@ -48,6 +48,9 @@ def grading (n : ℕ) : Submodule o (rees o x) where
 
 variable {o x}
 
+/- English proof (translation)
+Use extensionality with `i`. Rewrite using `[Polynomial.coeff_monomial]`. Use `split_ifs with h`. Rewrite using `[h]`. Conclude with `hf i (Ne.symm h)`.
+-/
 lemma coe_eq_monomial {n : ℕ} {f : rees o x} (hf : f ∈ grading o x n) :
     (f : (Polynomial Ω)) = Polynomial.monomial n ((f : (Polynomial Ω)).coeff n) := by
   ext i
@@ -68,6 +71,13 @@ def comp (i : ℕ) (f : rees o x) : grading o x i :=
     change (Polynomial.monomial i ((f : (Polynomial Ω)).coeff i)).coeff k = 0
     rw [Polynomial.coeff_monomial, if_neg (Ne.symm hk)]⟩
 
+/- English proof (translation)
+Proceed by induction on `y using DirectSum.induction_on with`. Consider the case `zero => simp`. Consider the case `of i a`. Rewrite using `[DirectSum.coeAddMonoidHom_of]`. Distinguish the cases in `h : i = n`.
+
+Substitute `h` using the available equality. Rewrite using `[DirectSum.of_eq_same]`. Rewrite using `[DirectSum.of_eq_of_ne _ _ _ (Ne.symm h), a.2 n (Ne.symm h)]`. Simplify using the standard rewrite rules. Consider the case `add a b ha hb`.
+
+Rewrite using `[map_add, DirectSum.add_apply]`. Simplify using `only [AddMemClass.coe_add, Subalgebra.coe_add, Polynomial.coeff_add, ha, hb]`.
+-/
 lemma coeff_coeAddMonoidHom (y : DirectSum ℕ fun i => grading o x i) (n : ℕ) :
     ((DirectSum.coeAddMonoidHom (grading o x) y : rees o x) : (Polynomial Ω)).coeff n =
       ((y n : rees o x) : (Polynomial Ω)).coeff n := by
@@ -85,6 +95,15 @@ lemma coeff_coeAddMonoidHom (y : DirectSum ℕ fun i => grading o x i) (n : ℕ)
     rw [map_add, DirectSum.add_apply]
     simp only [AddMemClass.coe_add, Subalgebra.coe_add, Polynomial.coeff_add, ha, hb]
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Rewrite using `[injective_iff_map_eq_zero]`. Introduce `y hy`. Use `DFinsupp.ext fun n => ?_` and prove the remaining obligations. Use `Subtype.ext (Subtype.ext ?_)` and prove the remaining obligations.
+
+Establish `h1` using `coeff_coeAddMonoidHom y n`. Rewrite `h1` using `[hy]`. Rewrite using `[coe_eq_monomial (y n).2, ← h1]`. Simplify using the standard rewrite rules. Introduce `f`.
+
+Use `⟨∑ i ∈ (f : (Polynomial Ω)).support, DirectSum.of (fun i => grading o x i) i (comp i f), ?_⟩` and prove the remaining obligations. Rewrite using `[map_sum]`. Use `Subtype.ext ?_` and prove the remaining obligations. Simplify using `only [DirectSum.coeAddMonoidHom_of]`. Rewrite using `[AddSubmonoidClass.coe_finset_sum]`.
+
+Conclude with `(Polynomial.as_sum_support (f : (Polynomial Ω))).symm`.
+-/
 lemma bijective_coeAddMonoidHom :
     Function.Bijective (DirectSum.coeAddMonoidHom (grading o x)) := by
   classical
@@ -132,13 +151,22 @@ variable {Ω : Type} [Field Ω] {o : Type} [CommRing o] [Algebra o Ω] {κ : Typ
 def ev : rees o x →+* Ω :=
   (Polynomial.evalRingHom (1 : Ω)).comp (rees o x).val.toRingHom
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 lemma ev_apply (f : rees o x) : ev f = (f : Polynomial Ω).eval 1 := rfl
 
+/- English proof (translation)
+Rewrite using `[ev_apply, coe_eq_monomial hf, Polynomial.eval_monomial, one_pow, mul_one, Polynomial.coeff_monomial, if_pos rfl]`.
+-/
 lemma ev_of_mem {n : ℕ} {f : rees o x} (hf : f ∈ grading o x n) :
     ev f = (f : Polynomial Ω).coeff n := by
   rw [ev_apply, coe_eq_monomial hf, Polynomial.eval_monomial, one_pow, mul_one,
     Polynomial.coeff_monomial, if_pos rfl]
 
+/- English proof (translation)
+Rewrite `h` using `[ev_of_mem hf]`. Use `Subtype.ext ?_` and prove the remaining obligations. Rewrite using `[coe_eq_monomial hf, h]`. Simplify using the standard rewrite rules.
+-/
 lemma eq_zero_of_ev {n : ℕ} {f : rees o x} (hf : f ∈ grading o x n) (h : ev f = 0) : f = 0 := by
   rw [ev_of_mem hf] at h
   refine Subtype.ext ?_
@@ -155,11 +183,17 @@ def coord (c : κ) : rees o x :=
       exact Submodule.subset_span ⟨c, rfl⟩
     · exact Submodule.zero_mem _⟩
 
+/- English proof (translation)
+Introduce `i hi`. Express the relevant statement in the definitionally equal form `(Polynomial.monomial 1 (x c)).coeff i = 0`. Rewrite using `[Polynomial.coeff_monomial, if_neg (Ne.symm hi)]`.
+-/
 lemma coord_mem (c : κ) : coord (o := o) (x := x) c ∈ grading o x 1 := by
   intro i hi
   change (Polynomial.monomial 1 (x c)).coeff i = 0
   rw [Polynomial.coeff_monomial, if_neg (Ne.symm hi)]
 
+/- English proof (translation)
+Rewrite using `[ev_apply]`. Express the relevant statement in the definitionally equal form `(Polynomial.monomial 1 (x c)).eval 1 = x c`. Simplify using the standard rewrite rules.
+-/
 lemma ev_coord (c : κ) : ev (coord (o := o) (x := x) c) = x c := by
   rw [ev_apply]
   change (Polynomial.monomial 1 (x c)).eval 1 = x c
@@ -171,6 +205,11 @@ def locVal (g : rees o x) (hu : IsUnit (ev g)) : Localization.Away g →+* Ω :=
 def chartVal (g : rees o x) (hu : IsUnit (ev g)) : Away (grading o x) g →+* Ω :=
   (locVal g hu).comp (algebraMap _ _)
 
+/- English proof (translation)
+Establish `h1 : (Localization.mk a ⟨g ^ n, n, rfl⟩ : Localization.Away g) * algebraMap _ _ (g ^ n) = algebraMap _ _ a`. Rewrite using `[Localization.mk_eq_mk']`. Conclude with `IsLocalization.mk'_spec _ _ _`. Establish `h2` using `congrArg (locVal g hu) h1`. Rewrite `h2` using `[map_mul]`.
+
+Establish `h3 : ∀ b : rees o x, locVal g hu (algebraMap _ _ b) = ev b` using `fun b => IsLocalization.Away.lift_eq g hu b`. Rewrite `h2` using `[h3, h3, map_pow]`. Rewrite using `[← h2]`. Simplify using `only [chartVal, RingHom.comp_apply, HomogeneousLocalization.algebraMap_apply, Away.val_mk]`.
+-/
 lemma chartVal_mk {g : rees o x} (hu : IsUnit (ev g)) {d : ℕ} (hg : g ∈ grading o x d) (n : ℕ)
     (a : rees o x) (ha : a ∈ grading o x (n • d)) :
     chartVal g hu (Away.mk (grading o x) hg n a ha) * ev g ^ n = ev a := by
@@ -186,6 +225,11 @@ lemma chartVal_mk {g : rees o x} (hu : IsUnit (ev g)) {d : ℕ} (hg : g ∈ grad
   rw [← h2]
   simp only [chartVal, RingHom.comp_apply, HomogeneousLocalization.algebraMap_apply, Away.val_mk]
 
+/- English proof (translation)
+Rewrite using `[injective_iff_map_eq_zero]`. Introduce `z hz`. Take `⟨n, a, ha, rfl⟩` from `Away.mk_surjective (grading o x) hg z`. Establish `h1` using `chartVal_mk hu hg n a ha`. Rewrite `h1` using `[hz, zero_mul]`.
+
+Establish `h2 : a = 0` using `eq_zero_of_ev ha h1.symm`. Substitute `h2` using the available equality. Use `ext`. Simplify using `[Away.val_mk, Localization.mk_zero]`.
+-/
 lemma chartVal_injective {g : rees o x} (hu : IsUnit (ev g)) {d : ℕ} (hg : g ∈ grading o x d) :
     Function.Injective (chartVal g hu) := by
   rw [injective_iff_map_eq_zero]
@@ -198,6 +242,13 @@ lemma chartVal_injective {g : rees o x} (hu : IsUnit (ev g)) {d : ℕ} (hg : g �
   ext
   simp [Away.val_mk, Localization.mk_zero]
 
+/- English proof (translation)
+Take `⟨n, a, ha, rfl⟩` from `Away.mk_surjective (grading o x) hf z`. Rewrite using `[awayMap_mk]`. Establish `h1` using `chartVal_mk hu hf n a ha`. Establish `h2` using `chartVal_mk hv (hy ▸ SetLike.mul_mem_graded hf hg) n (a * g ^ n) (by rw [smul_add]; exact SetLike.mul_mem_graded ha (SetLike.pow_mem_graded n hg))`. Establish `hgu : IsUnit (ev g)`.
+
+Establish `: IsUnit (ev f * ev g)` using `by rw [← map_mul, ← hy]; exact hv`. Conclude with `isUnit_of_mul_isUnit_right this`. Establish `hfu` using `(hu.mul hgu).pow n`. Establish `hy' : ev y = ev f * ev g` using `by rw [hy, map_mul]`. Rewrite `h2` using `[hy', mul_pow, map_mul, map_pow, ← h1]`.
+
+Rewrite `hfu` using `[mul_pow]`. Use `hfu.mul_right_cancel ?_` and prove the remaining obligations. Rewrite using `[h2]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 lemma chartVal_awayMap {f g y : rees o x} {d e : ℕ} (hf : f ∈ grading o x d)
     (hg : g ∈ grading o x e) (hy : y = f * g) (hu : IsUnit (ev f)) (hv : IsUnit (ev y))
     (z : Away (grading o x) f) :
@@ -218,6 +269,19 @@ lemma chartVal_awayMap {f g y : rees o x} {d e : ℕ} (hf : f ∈ grading o x d)
   rw [h2]
   ring
 
+/- English proof (translation)
+Establish `hV : ∀ w ∈ coordSpan o x, w / x c ∈ Algebra.adjoin o (Set.range fun j => x j / x c)`. Introduce `w hw`. Proceed by induction on `hw using Submodule.span_induction with`. Consider the case `mem w hw`. Take `⟨j, rfl⟩` from `hw`.
+
+Conclude with `Algebra.subset_adjoin ⟨j, rfl⟩`. Consider the case `zero => simp`. Consider the case `add a b _ _ ha hb`. Rewrite using `[add_div]`. Conclude with `add_mem ha hb`.
+
+Consider the case `smul r a _ ha`. Rewrite using `[Algebra.smul_def, mul_div_assoc]`. Conclude with `mul_mem (Subalgebra.algebraMap_mem _ r) ha`. Proceed by induction on `n generalizing v with`. Consider the case `zero`.
+
+Rewrite `hv` using `[pow_zero, Submodule.mem_one]`. Take `⟨r, rfl⟩` from `hv`. Simplify using `using Subalgebra.algebraMap_mem _ r`. Consider the case `succ n ih`. Rewrite `hv` using `[pow_succ]`.
+
+Proceed by induction on `hv using Submodule.mul_induction_on' with`. Consider the case `mem_mul_mem a ha b hb`. Establish `: a * b / x c ^ (n + 1) = (a / x c ^ n) * (b / x c)`. Rewrite using `[pow_succ]`. Clear the denominators using the available nonvanishing facts.
+
+Rewrite using `[this]`. Conclude with `mul_mem (ih ha) (hV b hb)`. Consider the case `add a _ b _ ha hb`. Rewrite using `[add_div]`. Conclude with `add_mem ha hb`.
+-/
 lemma div_pow_mem_adjoin {c : κ} (hc : x c ≠ 0) (n : ℕ) {v : Ω} (hv : v ∈ coordSpan o x ^ n) :
     v / x c ^ n ∈ Algebra.adjoin o (Set.range fun j => x j / x c) := by
   have hV : ∀ w ∈ coordSpan o x, w / x c ∈ Algebra.adjoin o (Set.range fun j => x j / x c) := by
@@ -251,24 +315,49 @@ lemma div_pow_mem_adjoin {c : κ} (hc : x c ≠ 0) (n : ℕ) {v : Ω} (hv : v �
       rw [add_div]
       exact add_mem ha hb
 
+/- English proof (translation)
+Rewrite using `[ev_of_mem ha]`. Conclude with `a.2 n`.
+-/
 lemma ev_mem_pow {n : ℕ} {a : rees o x} (ha : a ∈ grading o x n) : ev a ∈ coordSpan o x ^ n := by
   rw [ev_of_mem ha]
   exact a.2 n
 
+/- English proof (translation)
+Rewrite using `[ev_coord]`. Conclude with `hc.isUnit`.
+-/
 lemma unit_coord {c : κ} (hc : x c ≠ 0) : IsUnit (ev (coord (o := o) (x := x) c)) := by
   rw [ev_coord]
   exact hc.isUnit
 
+/- English proof (translation)
+Introduce `i hi`. Express the relevant statement in the definitionally equal form `(algebraMap o (Polynomial Ω) r).coeff i = 0`. Rewrite using `[Polynomial.algebraMap_apply, Polynomial.coeff_C, if_neg hi]`.
+-/
 lemma algebraMap_mem_grading (r : o) : algebraMap o (rees o x) r ∈ grading o x 0 := by
   intro i hi
   change (algebraMap o (Polynomial Ω) r).coeff i = 0
   rw [Polynomial.algebraMap_apply, Polynomial.coeff_C, if_neg hi]
 
+/- English proof (translation)
+Rewrite using `[ev_apply]`. Express the relevant statement in the definitionally equal form `(algebraMap o (Polynomial Ω) r).eval 1 = _`. Rewrite using `[Polynomial.algebraMap_apply, Polynomial.eval_C]`.
+-/
 lemma ev_algebraMap (r : o) : ev (algebraMap o (rees o x) r) = algebraMap o Ω r := by
   rw [ev_apply]
   change (algebraMap o (Polynomial Ω) r).eval 1 = _
   rw [Polynomial.algebraMap_apply, Polynomial.eval_C]
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce `ha`. Proceed by induction on `ha using Algebra.adjoin_induction with`. Consider the case `mem a ha`. Take `⟨j, rfl⟩` from `ha`.
+
+Use `⟨Away.mk (grading o x) (coord_mem c) 1 (coord j) (by simpa using coord_mem j), ?_⟩` and prove the remaining obligations. Establish `h1` using `chartVal_mk (unit_coord (o := o) hc) (coord_mem c) 1 (coord j) (by simpa using coord_mem j)`. Rewrite `h1` using `[ev_coord, ev_coord, pow_one]`. Express the relevant statement in the definitionally equal form `_ = x j / x c`. Rewrite using `[eq_div_iff hc]`.
+
+Conclude with `h1`. Consider the case `algebraMap r`. Use `⟨Away.mk (grading o x) (coord_mem c) 0 (algebraMap o (rees o x) r) (by simpa using algebraMap_mem_grading r), ?_⟩` and prove the remaining obligations. Establish `h1` using `chartVal_mk (unit_coord (o := o) hc) (coord_mem c) 0 (algebraMap o (rees o x) r) (by simpa using algebraMap_mem_grading r)`. Rewrite `h1` using `[pow_zero, mul_one, ev_algebraMap]`.
+
+Conclude with `h1`. Consider the case `add a b _ _ ha hb => exact add_mem ha hb`. Consider the case `mul a b _ _ ha hb => exact mul_mem ha hb`. Introduce and unpack `⟨z, rfl⟩`. Take `⟨n, a, ha, rfl⟩` from `Away.mk_surjective (grading o x) (coord_mem c) z`.
+
+Establish `h1` using `chartVal_mk (unit_coord (o := o) hc) (coord_mem c) n a ha`. Rewrite `h1` using `[ev_coord]`. Establish `h2 : chartVal (coord c) (unit_coord (o` using `o) hc) (Away.mk (grading o x) (coord_mem c) n a ha) = ev a / x c ^ n := by`. Rewrite using `[eq_div_iff (pow_ne_zero _ hc)]`. Conclude with `h1`.
+
+Rewrite using `[h2]`. Use `div_pow_mem_adjoin hc n ?_` and prove the remaining obligations. Simplify using `using ev_mem_pow ha`.
+-/
 lemma mem_adjoin_iff_mem_range {c : κ} (hc : x c ≠ 0) (a : Ω) :
     a ∈ Algebra.adjoin o (Set.range fun j => x j / x c) ↔
       a ∈ (chartVal (coord c) (unit_coord (o := o) hc)).range := by
@@ -305,6 +394,29 @@ lemma mem_adjoin_iff_mem_range {c : κ} (hc : x c ≠ 0) (a : Ω) :
     refine div_pow_mem_adjoin hc n ?_
     simpa using ev_mem_pow ha
 
+/- English proof (translation)
+Use `set S := Algebra.adjoin (grading o x 0) (Set.range fun c => coord (o := o) (x := x) c) with hS`. Set `S' : Subring (Polynomial Ω)` to `S.toSubring.map (rees o x).val.toRingHom`. Establish `hS' : ∀ s ∈ S, (s : Polynomial Ω) ∈ S'` using `fun s hs => ⟨s, hs, rfl⟩`. Establish `hC : ∀ r : o, Polynomial.C (algebraMap o Ω r) ∈ S'`. Introduce `r`.
+
+Establish `h` using `hS' (algebraMap o (rees o x) r) (by`. Establish `: algebraMap o (rees o x) r = algebraMap (grading o x 0) (rees o x) ⟨_, algebraMap_mem_grading r⟩` using `rfl`. Rewrite using `[this]`. Conclude with `Subalgebra.algebraMap_mem _ _)`. Conclude with `h`.
+
+Establish `hV : ∀ w ∈ coordSpan o x, Polynomial.monomial 1 w ∈ S'`. Introduce `w hw`. Proceed by induction on `hw using Submodule.span_induction with`. Consider the case `mem w hw`. Take `⟨j, rfl⟩` from `hw`.
+
+Conclude with `hS' (coord j) (Algebra.subset_adjoin ⟨j, rfl⟩)`. Consider the case `zero => simpa using zero_mem S'`. Consider the case `add a b _ _ ha hb`. Rewrite using `[map_add]`. Conclude with `add_mem ha hb`.
+
+Consider the case `smul r a _ ha`. Establish `: Polynomial.monomial 1 (r • a) = Polynomial.C (algebraMap o Ω r) * Polynomial.monomial 1 a`. Rewrite using `[Algebra.smul_def, Polynomial.C_mul_monomial]`. Rewrite using `[this]`. Conclude with `mul_mem (hC r) ha`.
+
+Establish `hM : ∀ (n : ℕ) (v : Ω), v ∈ coordSpan o x ^ n → Polynomial.monomial n v ∈ S'`. Introduce `n`. Proceed by induction on `n with`. Consider the case `zero`. Introduce `v hv`.
+
+Rewrite `hv` using `[pow_zero, Submodule.mem_one]`. Take `⟨r, rfl⟩` from `hv`. Simplify using `using hC r`. Consider the case `succ n ih`. Introduce `v hv`.
+
+Rewrite `hv` using `[pow_succ]`. Proceed by induction on `hv using Submodule.mul_induction_on' with`. Consider the case `mem_mul_mem a ha b hb`. Establish `: Polynomial.monomial (n + 1) (a * b) = Polynomial.monomial n a * Polynomial.monomial 1 b`. Rewrite using `[Polynomial.monomial_mul_monomial]`.
+
+Rewrite using `[this]`. Conclude with `mul_mem (ih a ha) (hV b hb)`. Consider the case `add a _ b _ ha hb`. Rewrite using `[map_add]`. Conclude with `add_mem ha hb`.
+
+Rewrite using `[eq_top_iff]`. Introduce `f _`. Establish `hf : (f : Polynomial Ω) ∈ S'`. Rewrite using `[Polynomial.as_sum_support (f : Polynomial Ω)]`. Conclude with `sum_mem fun i _ => hM i _ (f.2 i)`.
+
+Take `⟨s, hs, hsf⟩` from `hf`. Establish `: s = f` using `Subtype.ext hsf`. Conclude with `this ▸ hs`.
+-/
 lemma adjoin_coord_eq_top :
     Algebra.adjoin (grading o x 0) (Set.range fun c => coord (o := o) (x := x) c) = ⊤ := by
   set S := Algebra.adjoin (grading o x 0) (Set.range fun c => coord (o := o) (x := x) c) with hS
@@ -371,6 +483,11 @@ def zeroMap : o →+* grading o x 0 where
   map_zero' := Subtype.ext (map_zero _)
   map_add' a b := Subtype.ext (map_add _ a b)
 
+/- English proof (translation)
+Introduce and unpack `⟨a, ha⟩`. Establish `h0 : ev a ∈ coordSpan o x ^ 0` using `ev_mem_pow ha`. Rewrite `h0` using `[pow_zero, Submodule.mem_one]`. Take `⟨r, hr⟩` from `h0`. Use `⟨r, Subtype.ext (Subtype.ext ?_)⟩` and prove the remaining obligations.
+
+Establish `h1` using `coe_eq_monomial ha`. Rewrite `h1` using `[← ev_of_mem ha, ← hr]`. Express the relevant statement in the definitionally equal form `algebraMap o (Polynomial Ω) r = _`. Rewrite using `[h1, Polynomial.algebraMap_apply]`. Both sides reduce to the same expression.
+-/
 lemma zeroMap_surjective : Function.Surjective (zeroMap (o := o) (x := x)) := by
   rintro ⟨a, ha⟩
   have h0 : ev a ∈ coordSpan o x ^ 0 := ev_mem_pow ha
@@ -391,6 +508,11 @@ open AlgebraicGeometry CategoryTheory
 
 variable {Ω : Type} [Field Ω] {X : Scheme.{0}}
 
+/- English proof (translation)
+Establish `h1` using `Scheme.germ_stalkClosedPointTo_Spec (R := .of B) (S := .of Ω) (CommRingCat.ofHom θ)`. Establish `h4 : (Spec (.of B)).presheaf.germ ⊤ p trivial ≫ (Spec (.of B)).presheaf.stalkSpecializes h ≫ Scheme.stalkClosedPointTo (Spec.map (CommRingCat.ofHom θ)) = (Scheme.ΓSpecIso (.of B)).hom ≫ CommRingCat.ofHom θ`. Use `Eq.trans ?_ h1` and prove the remaining obligations. Conclude with `TopCat.Presheaf.germ_stalkSpecializes_assoc (Spec (.of B)).presheaf (U := ⊤) (y := p) trivial h _`. Establish `h5` using `congrArg (fun k => k.hom ((Scheme.ΓSpecIso (.of B)).inv.hom b)) h4`.
+
+Establish `h6 : ((Scheme.ΓSpecIso (.of B)).hom ≫ CommRingCat.ofHom θ).hom ((Scheme.ΓSpecIso (.of B)).inv.hom b) = θ b`. Simplify using the standard rewrite rules. Conclude with `h5.trans h6`.
+-/
 theorem genMap_toStalk {B : Type} [CommRing B] (θ : B →+* Ω) (p : Spec (.of B))
     (h : genPt (Spec.map (CommRingCat.ofHom θ)) ⤳ p) (b : B) :
     genMap (Spec.map (CommRingCat.ofHom θ)) ⟨p, h⟩ ((StructureSheaf.toStalk B p).hom b) = θ b := by
@@ -406,6 +528,21 @@ theorem genMap_toStalk {B : Type} [CommRing B] (θ : B →+* Ω) (p : Spec (.of 
     simp
   exact h5.trans h6
 
+/- English proof (translation)
+Substitute `hξ` using the available equality. Establish `h' : genPt (Spec.map (CommRingCat.ofHom θ)) ⤳ p` using `(j.isOpenEmbedding.isInducing.specializes_iff).1 h`. Set `e : X.presheaf.stalk (j p) ≅ (Spec (.of B)).presheaf.stalk p` to `asIso (j.stalkMap p)`. Establish `key : X.presheaf.stalkSpecializes h ≫ Scheme.stalkClosedPointTo (Spec.map (CommRingCat.ofHom θ) ≫ j) = j.stalkMap p ≫ (Spec (.of B)).presheaf.stalkSpecializes h' ≫ Scheme.stalkClosedPointTo (Spec.map (CommRingCat.ofHom θ))`. Rewrite using `[Scheme.stalkClosedPointTo_comp]`.
+
+Conclude with `Scheme.Hom.stalkSpecializes_stalkMap_assoc j _ _ h' _`. Establish `hg : ∀ t, genMap (Spec.map (CommRingCat.ofHom θ) ≫ j) ⟨j p, h⟩ (e.inv.hom t) = genMap (Spec.map (CommRingCat.ofHom θ)) ⟨p, h'⟩ t`. Introduce `t`. Establish `h5 : genMap (Spec.map (CommRingCat.ofHom θ) ≫ j) ⟨j p, h⟩ (e.inv.hom t) = ((Spec (.of B)).presheaf.stalkSpecializes h' ≫ Scheme.stalkClosedPointTo (Spec.map (CommRingCat.ofHom θ))).hom ((j.stalkMap p).hom (e.inv.hom t))` using `congrArg (fun k => k.hom (e.inv.hom t)) key`. Establish `h6 : (j.stalkMap p).hom (e.inv.hom t) = t`.
+
+Express the relevant statement in the definitionally equal form `(e.hom).hom (e.inv.hom t) = t`. Simplify using the standard rewrite rules. Rewrite `h5` using `[h6]`. Conclude with `h5`. Use `haveI : p.asIdeal.IsPrime := p.isPrime`.
+
+Set `p' : PrimeSpectrum.Top B` to `p`. Use `haveI hloc : IsLocalization.AtPrime ((structurePresheafInCommRingCat B).stalk p') p'.asIdeal := inferInstance`. Use `⟨(StructureSheaf.toStalk B p ≫ e.inv).hom, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `b`. Conclude with `(hg _).trans (genMap_toStalk θ p h' b)`.
+
+Introduce `s hs`. Establish `h1` using `IsLocalization.map_units (M := p'.asIdeal.primeCompl) ((structurePresheafInCommRingCat B).stalk p') (⟨s, hs⟩ : p'.asIdeal.primeCompl)`. Conclude with `h1.map e.inv.hom`. Introduce `t`. Take `⟨⟨a, s⟩, hs⟩` from `IsLocalization.surj (M := p'.asIdeal.primeCompl) (S := (structurePresheafInCommRingCat B).stalk p') ((j.stalkMap p).hom t)`.
+
+Use `⟨a, s.1, s.2, ?_⟩` and prove the remaining obligations. Establish `h7` using `congrArg e.inv.hom hs`. Establish `h8 : e.inv.hom ((j.stalkMap p).hom t) = t`. Express the relevant statement in the definitionally equal form `(e.inv).hom ((e.hom).hom t) = t`. Simplify using the standard rewrite rules.
+
+Establish `h9 : e.inv.hom ((j.stalkMap p).hom t) * e.inv.hom ((StructureSheaf.toStalk B p).hom s.1) = e.inv.hom ((StructureSheaf.toStalk B p).hom a)` using `(map_mul e.inv.hom _ _).symm.trans h7`. Rewrite `h9` using `[h8]`. Conclude with `h9`.
+-/
 theorem chart_stalk {B : Type} [CommRing B] (θ : B →+* Ω) (j : Spec (.of B) ⟶ X) [IsOpenImmersion j]
     (ξ : Spec (CommRingCat.of Ω) ⟶ X) (hξ : ξ = Spec.map (CommRingCat.ofHom θ) ≫ j)
     (p : Spec (.of B)) (h : genPt ξ ⤳ j p) :
@@ -466,6 +603,11 @@ open AlgebraicGeometry CategoryTheory
 
 variable {Ω : Type} [Field Ω] {X : Scheme.{0}}
 
+/- English proof (translation)
+Use `(PrimeSpectrum.le_iff_specializes _ _).1 ?_` and prove the remaining obligations. Introduce `b hb`. Establish `h1 : θ b ∈ (IsLocalRing.closedPoint Ω).asIdeal` using `hb`. Establish `h2 : θ b = 0`. Assume the negation of the conclusion as `h`.
+
+Conclude with `((IsLocalRing.mem_maximalIdeal _).1 h1) (isUnit_iff_ne_zero.2 h)`. Rewrite using `[(map_eq_zero_iff θ hθ).1 h2]`. Conclude with `Ideal.zero_mem _`.
+-/
 lemma spec_of_injective {B : Type} [CommRing B] (θ : B →+* Ω) (hθ : Function.Injective θ)
     (p : Spec (.of B)) : genPt (Spec.map (CommRingCat.ofHom θ)) ⤳ p := by
   refine (PrimeSpectrum.le_iff_specializes _ _).1 ?_
@@ -477,6 +619,61 @@ lemma spec_of_injective {B : Type} [CommRing B] (θ : B →+* Ω) (hθ : Functio
   rw [(map_eq_zero_iff θ hθ).1 h2]
   exact Ideal.zero_mem _
 
+/- English proof (translation)
+Establish `spec : ∀ c (p : Spec (.of (B c))), genPt ξ ⤳ j c p`. Introduce `c p`. Establish `h1` using `spec_of_injective (θ c) (hinj c) p`. Establish `h2` using `h1.map (j c).continuous`. Rewrite using `[hξ c]`.
+
+Conclude with `h2`. Establish `spec' : ∀ q : X, genPt ξ ⤳ q`. Introduce `q`. Take `⟨c, p, rfl⟩` from `hcover q`. Conclude with `spec c p`.
+
+Establish `reg1 : ∀ c p b, θ c b ∈ regAt ξ ⟨j c p, spec c p⟩`. Introduce `c p b`. Take `⟨φ, h1, -, -⟩` from `chart_stalk (θ c) (j c) ξ (hξ c) p (spec c p)`. Conclude with `⟨φ b, h1 b⟩`. Establish `reg2 : ∀ c p a, a ∈ regAt ξ ⟨j c p, spec c p⟩ → ∃ u s, s ∉ p.asIdeal ∧ a * θ c s = θ c u`.
+
+Introduce `c p a ha`. Take `⟨φ, h1, -, h3⟩` from `chart_stalk (θ c) (j c) ξ (hξ c) p (spec c p)`. Take `⟨t, rfl⟩` from `ha`. Take `⟨u, s, hs, hts⟩` from `h3 t`. Use `⟨u, s, hs, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[← h1, ← h1, ← map_mul, hts]`. Establish `inj : ∀ q : Cpt ξ, Function.Injective (genMap ξ q)`. Introduce and unpack `⟨q, hq⟩`. Take `⟨c, p, rfl⟩` from `hcover q`. Take `⟨φ, h1, h2, h3⟩` from `chart_stalk (θ c) (j c) ξ (hξ c) p hq`.
+
+Rewrite using `[injective_iff_map_eq_zero]`. Introduce `t ht`. Take `⟨u, s, hs, hts⟩` from `h3 t`. Establish `h4` using `congrArg (genMap ξ ⟨j c p, hq⟩) hts`. Rewrite `h4` using `[map_mul, ht, zero_mul, h1]`.
+
+Establish `h5 : u = 0` using `(map_eq_zero_iff (θ c) (hinj c)).1 h4.symm`. Rewrite `hts` using `[h5, map_zero]`. Conclude with `(h2 s hs).mul_left_eq_zero.1 hts`. Establish `chart1 : ∀ (c : {c // x c ≠ 0}) p, InChart ξ x c.1 ⟨j c p, spec c p⟩`. Introduce `c p`.
+
+Use `⟨c.2, fun c' => ?_⟩` and prove the remaining obligations. Take `⟨b, hb⟩` from `(hrange c _).1 (Algebra.subset_adjoin ⟨c', rfl⟩ : x c' / x c ∈ Algebra.adjoin o (Set.range fun i => x i / x c))`. Rewrite using `[← hb]`. Conclude with `reg1 c p b`. Establish `chart2 : ∀ (c : {c // x c ≠ 0}) (q : X) (hq : genPt ξ ⤳ q), InChart ξ x c.1 ⟨q, hq⟩ → ∃ p, j c p = q`.
+
+Introduce `c q hq hch`. Take `⟨d, p, rfl⟩` from `hcover q`. Take `⟨s, hs⟩` from `(hrange d _).1 (Algebra.subset_adjoin ⟨c.1, rfl⟩ : x c / x d ∈ Algebra.adjoin o (Set.range fun i => x i / x d))`. Use `hover c d p s hs ?_` and prove the remaining obligations. Take `⟨u, s', hs', hu⟩` from `reg2 d p _ (hch.2 d.1)`.
+
+Introduce `hsp`. Use `hs' ?_` and prove the remaining obligations. Establish `h1 : θ d (s * u) = θ d s'`. Rewrite using `[map_mul, hs, ← hu]`. Establish `hc : x c ≠ 0` using `c.2`.
+
+Establish `hd : x d ≠ 0` using `d.2`. Clear the denominators using the available nonvanishing facts. Rewrite using `[← hinj d h1]`. Conclude with `Ideal.mul_mem_right _ _ hsp`. Establish `gen : IsCptGen ξ`.
+
+Establish `h0 : genMap ξ ⟨genPt ξ, specializes_rfl⟩ = (Scheme.stalkClosedPointTo ξ).hom`. Establish `h01 : X.presheaf.stalkSpecializes (specializes_rfl : genPt ξ ⤳ genPt ξ) ≫ Scheme.stalkClosedPointTo ξ = Scheme.stalkClosedPointTo ξ` using `(congrArg (· ≫ Scheme.stalkClosedPointTo ξ) (TopCat.Presheaf.stalkSpecializes_refl X.presheaf (genPt ξ))).trans (Category.id_comp _)`. Conclude with `congrArg (fun k => k.hom) h01`. Use `⟨⟨?_, ?_⟩, inj⟩` and prove the remaining obligations. Rewrite using `[← h0]`.
+
+Conclude with `inj _`. Introduce `a`. Take `⟨g, hg, h, hh, hne, rfl⟩` from `hfrac a`. Take `⟨g', rfl⟩` from `(hrange c₀ _).1 hg`. Take `⟨h', rfl⟩` from `(hrange c₀ _).1 hh`.
+
+Set `p : Spec (.of (B c₀))` to `Spec.map (CommRingCat.ofHom (θ c₀)) (IsLocalRing.closedPoint Ω)`. Take `⟨φ, h1, -, -⟩` from `chart_stalk (θ c₀) (j c₀) ξ (hξ c₀) p (spec c₀ p)`. Set `w : B c₀ → X.presheaf.stalk (genPt ξ)` to `fun b => (X.presheaf.stalkSpecializes (spec c₀ p)).hom (φ b)`. Set `f : X.presheaf.stalk (genPt ξ) →+* Ω` to `(Scheme.stalkClosedPointTo ξ).hom`. Use `haveI : IsLocalHom f := Scheme.isLocalHom_stalkClosedPointTo' ξ`.
+
+Establish `hw : ∀ b, f (w b) = θ c₀ b` using `h1`. Establish `hu : IsUnit (w h')`. Use `isUnit_of_map_unit f _ ?_` and prove the remaining obligations. Rewrite using `[hw]`. Conclude with `isUnit_iff_ne_zero.2 hne`.
+
+Take `⟨v, hv⟩` from `hu`. Use `⟨w g' * (↑v⁻¹ : X.presheaf.stalk (genPt ξ)), ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `f (w g' * (↑v⁻¹ : X.presheaf.stalk (genPt ξ))) = _`. Rewrite using `[map_mul, hw, eq_div_iff hne, mul_assoc, ← hw h', ← hv, ← map_mul, Units.inv_mul, map_one, mul_one]`. Use `⟨⟨gen, ?_, ?_, ?_⟩, spec', ?_⟩` and prove the remaining obligations.
+
+Introduce and unpack `⟨q, hq⟩`. Take `⟨c, p, rfl⟩` from `hcover q`. Conclude with `⟨c.1, chart1 c p⟩`. Introduce `c hc`. Use `⟨(j ⟨c, hc⟩).opensRange, isAffineOpen_opensRange _, fun q => ⟨?_, ?_⟩⟩` and prove the remaining obligations.
+
+Introduce and unpack `⟨p, rfl⟩`. Conclude with `⟨spec ⟨c, hc⟩ p, chart1 ⟨c, hc⟩ p⟩`. Introduce and unpack `⟨hq, hch⟩`. Take `⟨p, hp⟩` from `chart2 ⟨c, hc⟩ q hq hch`. Conclude with `⟨p, hp⟩`.
+
+Introduce `c hc a`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `ha ⟨q, hq⟩ hch`. Take `⟨b, rfl⟩` from `(hrange ⟨c, hc⟩ a).1 ha`. Take `⟨p, rfl⟩` from `chart2 ⟨c, hc⟩ q hq hch`.
+
+Conclude with `reg1 ⟨c, hc⟩ p b`. Introduce `ha`. Use `(hrange ⟨c, hc⟩ a).2 ?_` and prove the remaining obligations. Set `J : Ideal (B ⟨c, hc⟩)` to `{ carrier := {b | θ ⟨c, hc⟩ b * a ∈ (θ ⟨c, hc⟩).range} add_mem' := by`. Introduce `b b' hb hb'`.
+
+Rewrite using `[Set.mem_setOf_eq, map_add, add_mul]`. Conclude with `add_mem hb hb'`. Use the proof step `zero_mem' := by`. Rewrite using `[Set.mem_setOf_eq, map_zero, zero_mul]`. Conclude with `zero_mem _`.
+
+Use the proof step `smul_mem' := by`. Introduce `r b hb`. Rewrite using `[Set.mem_setOf_eq, smul_eq_mul, map_mul, mul_assoc]`. Conclude with `mul_mem ⟨r, rfl⟩ hb }`. Establish `hJ : J = ⊤`.
+
+Assume the negation of the conclusion as `hne`. Take `⟨m, hm, hJm⟩` from `Ideal.exists_le_maximal J hne`. Set `p : Spec (.of (B ⟨c, hc⟩))` to `⟨m, hm.isPrime⟩`. Take `⟨u, s, hs, hu⟩` from `reg2 ⟨c, hc⟩ p a (ha _ (chart1 ⟨c, hc⟩ p))`. Use `hs (hJm ?_)` and prove the remaining obligations.
+
+Establish `h3 : θ ⟨c, hc⟩ s * a ∈ (θ ⟨c, hc⟩).range`. Rewrite using `[mul_comm, hu]`. Conclude with `⟨u, rfl⟩`. Conclude with `h3`. Establish `h1 : (1 : B ⟨c, hc⟩) ∈ J` using `hJ ▸ Submodule.mem_top`.
+
+Establish `h2 : θ ⟨c, hc⟩ 1 * a ∈ (θ ⟨c, hc⟩).range` using `h1`. Rewrite `h2` using `[map_one, one_mul]`. Then use the resulting hypothesis. Use `haveI : Nonempty X := ⟨genPt ξ⟩ haveI : IrreducibleSpace X := by`. Establish `h1 : closure {genPt ξ} = (Set.univ : Set X)` using `Set.eq_univ_of_forall fun q => specializes_iff_mem_closure.1 (spec' q)`. Establish `h2` using `(isIrreducible_singleton (x := genPt ξ)).closure`.
+
+Rewrite `h2` using `[h1]`. Use `haveI : PreirreducibleSpace X := ⟨h2.2⟩`. Conclude with `⟨inferInstance⟩`. Use `haveI : ∀ q : X, _root_.IsReduced (X.presheaf.stalk q) := fun q => isReduced_of_injective (genMap ξ ⟨q, spec' q⟩) (inj _)`. Use `haveI : IsReduced X := isReduced_of_isReduced_stalk X`.
+
+Conclude with `isIntegral_of_irreducibleSpace_of_isReduced X`.
+-/
 theorem tie_of_charts (o : Type) [CommRing o] [Algebra o Ω] {κ : Type} (x : κ → Ω)
     (ξ : Spec (CommRingCat.of Ω) ⟶ X)
     (B : {c // x c ≠ 0} → Type) [∀ c, CommRing (B c)] (θ : ∀ c, B c →+* Ω)
@@ -646,6 +843,9 @@ open AlgebraicGeometry CategoryTheory HomogeneousLocalization
 
 variable {Ω : Type} [Field Ω] {o : Type} [CommRing o] [Algebra o Ω] {κ : Type} {x : κ → Ω}
 
+/- English proof (translation)
+Rewrite using `[← Proj.SpecMap_awayMap_awayι (grading o x) hf hd hg hy, ← Spec.map_comp_assoc, ← CommRingCat.ofHom_comp]`. Use `congr 3`. Use extensionality with `z`. Conclude with `(chartVal_awayMap hf hg hy hu hv z).symm`.
+-/
 lemma specMap_chartVal_awayι {f g y : rees o x} {d e : ℕ} (hf : f ∈ grading o x d) (hd : 0 < d)
     (hg : g ∈ grading o x e) (hy : y = f * g) (hu : IsUnit (ev f)) (hv : IsUnit (ev y)) :
     Spec.map (CommRingCat.ofHom (chartVal f hu)) ≫ Proj.awayι (grading o x) f hf hd =
@@ -657,6 +857,9 @@ lemma specMap_chartVal_awayι {f g y : rees o x} {d e : ℕ} (hf : f ∈ grading
   ext z
   exact (chartVal_awayMap hf hg hy hu hv z).symm
 
+/- English proof (translation)
+Establish `hv : IsUnit (ev (coord (o` using `o) (x := x) c * coord d)) := by`. Rewrite using `[map_mul]`. Conclude with `(unit_coord hc).mul (unit_coord hd)`. Rewrite using `[specMap_chartVal_awayι (coord_mem c) one_pos (coord_mem d) rfl (unit_coord hc) hv, specMap_chartVal_awayι (coord_mem d) one_pos (coord_mem c) (mul_comm _ _) (unit_coord hd) hv]`.
+-/
 lemma chart_compat {c d : κ} (hc : x c ≠ 0) (hd : x d ≠ 0) :
     Spec.map (CommRingCat.ofHom (chartVal (coord (o := o) (x := x) c) (unit_coord hc))) ≫
         Proj.awayι (grading o x) (coord c) (coord_mem c) one_pos =
@@ -668,6 +871,13 @@ lemma chart_compat {c d : κ} (hc : x c ≠ 0) (hd : x d ≠ 0) :
   rw [specMap_chartVal_awayι (coord_mem c) one_pos (coord_mem d) rfl (unit_coord hc) hv,
     specMap_chartVal_awayι (coord_mem d) one_pos (coord_mem c) (mul_comm _ _) (unit_coord hd) hv]
 
+/- English proof (translation)
+Establish `h1` using `Proj.iSup_basicOpen_eq_top' (grading o x) (fun c => coord (o := o) (x := x) c) (fun c => ⟨1, coord_mem c⟩) adjoin_coord_eq_top`. Establish `h2 : q ∈ (⊤ : (Proj (grading o x)).Opens)` using `trivial`. Rewrite `h2` using `[← h1, TopologicalSpace.Opens.mem_iSup]`. Take `⟨c, hc⟩` from `h2`. Establish `hxc : x c ≠ 0`.
+
+Introduce `h0`. Establish `h3 : coord (o` using `o) (x := x) c = 0 := by`. Use `Subtype.ext ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `Polynomial.monomial 1 (x c) = 0`. Rewrite using `[h0, map_zero]`.
+
+Rewrite `hc` using `[h3, Proj.basicOpen_zero]`. Conclude with `hc`. Rewrite `hc` using `[← Proj.opensRange_awayι (grading o x) _ (coord_mem c) one_pos]`. Take `⟨p, hp⟩` from `hc`. Conclude with `⟨c, hxc, p, hp⟩`.
+-/
 lemma exists_chart_point (q : Proj (grading o x)) :
     ∃ (c : κ) (hc : x c ≠ 0) (p : Spec (.of (Away (grading o x) (coord (o := o) (x := x) c)))),
       Proj.awayι (grading o x) (coord c) (coord_mem c) one_pos p = q := by
@@ -688,6 +898,15 @@ lemma exists_chart_point (q : Proj (grading o x)) :
   obtain ⟨p, hp⟩ := hc
   exact ⟨c, hxc, p, hp⟩
 
+/- English proof (translation)
+Establish `h1` using `Proj.awayι_preimage_basicOpen (grading o x) (coord_mem (o := o) (x := x) d) one_pos (coord_mem c) one_pos`. Establish `h2 : s = Away.isLocalizationElem (coord_mem (o` using `o) (x := x) d) (coord_mem c) := by`. Use `chartVal_injective (unit_coord hd) (coord_mem d) ?_` and prove the remaining obligations. Establish `h3` using `chartVal_mk (unit_coord (o := o) hd) (coord_mem d) 1 (coord c ^ 1) (by simpa using coord_mem c)`. Establish `e1 : ev (coord (o` using `o) (x := x) d) ^ 1 = x d := by rw [ev_coord, pow_one]`.
+
+Establish `e2 : ev (coord (o` using `o) (x := x) c ^ 1) = x c := by rw [pow_one, ev_coord]`. Rewrite `h3` using `[e1, e2]`. Rewrite using `[hs, div_eq_iff hd]`. Conclude with `h3.symm`. Establish `h4 : p ∈ PrimeSpectrum.basicOpen (Away.isLocalizationElem (coord_mem (o` using `o) (x := x) d) (coord_mem c)) := by`.
+
+Rewrite using `[← h2]`. Conclude with `hp`. Rewrite `h4` using `[← h1]`. Establish `h5 : Proj.awayι (grading o x) (coord d) (coord_mem d) one_pos p ∈ Proj.basicOpen (grading o x) (coord c)` using `h4`. Rewrite `h5` using `[← Proj.opensRange_awayι (grading o x) _ (coord_mem c) one_pos]`.
+
+Conclude with `h5`.
+-/
 lemma chart_overlap {c d : κ} (hc : x c ≠ 0) (hd : x d ≠ 0)
     (p : Spec (.of (Away (grading o x) (coord (o := o) (x := x) d))))
     (s : Away (grading o x) (coord (o := o) (x := x) d))
@@ -715,6 +934,11 @@ lemma chart_overlap {c d : κ} (hc : x c ≠ 0) (hd : x d ≠ 0)
   rw [← Proj.opensRange_awayι (grading o x) _ (coord_mem c) one_pos] at h5
   exact h5
 
+/- English proof (translation)
+Establish `h : (fromZeroRingHom (grading o x) (Submonoid.powers g) a).val = algebraMap (rees o x) (Localization.Away g) a`. Simplify using `only [fromZeroRingHom, RingHom.coe_mk, MonoidHom.coe_mk, OneHom.coe_mk, val_mk]`. Conclude with `Localization.mk_one_eq_algebraMap _`. Express the relevant statement in the definitionally equal form `locVal g hu (fromZeroRingHom (grading o x) _ a).val = _`. Rewrite using `[h]`.
+
+Conclude with `IsLocalization.Away.lift_eq g hu _`.
+-/
 lemma chartVal_fromZero {g : rees o x} (hu : IsUnit (ev g)) (a : grading o x 0) :
     chartVal g hu (fromZeroRingHom (grading o x) _ a) = ev (a : rees o x) := by
   have h : (fromZeroRingHom (grading o x) (Submonoid.powers g) a).val =
@@ -734,6 +958,15 @@ namespace GlobalTheory.CompanionTheory.Ar
 
 open AlgebraicGeometry CategoryTheory Limits ClSch HomogeneousLocalization
 
+/- English proof (translation)
+Introduce `Ω _ o _ _ κ _ x c₀ hc₀ hfrac`. Set `B : {c // x c ≠ 0} → Type` to `fun c => Away (grading o x) (coord (o := o) (x := x) c.1)`. Set `θ : ∀ c : {c // x c ≠ 0}, B c →+* Ω` to `fun c => chartVal (coord c.1) (unit_coord c.2)`. Set `j : ∀ c : {c // x c ≠ 0}, Spec (.of (B c)) ⟶ Proj (grading o x)` to `fun c => Proj.awayι (grading o x) (coord c.1) (coord_mem c.1) one_pos`. Use `haveI : ∀ c, IsOpenImmersion (j c) := fun c => by dsimp only [j]; infer_instance`.
+
+Set `ξ : Spec (CommRingCat.of Ω) ⟶ Proj (grading o x)` to `Spec.map (CommRingCat.ofHom (θ ⟨c₀, hc₀⟩)) ≫ j ⟨c₀, hc₀⟩`. Establish `hξ : ∀ c, ξ = Spec.map (CommRingCat.ofHom (θ c)) ≫ j c` using `fun c => chart_compat hc₀ c.2`. Take `⟨h1, h2, h3⟩` from `tie_of_charts o x ξ B θ j (fun c => chartVal_injective _ (coord_mem c.1)) (fun c a => mem_adjoin_iff_mem_range c.2 a) hξ (fun q => by`. Take `⟨c, hc, p, hp⟩` from `exists_chart_point q`. Conclude with `⟨⟨c, hc⟩, p, hp⟩)`.
+
+Use the proof step `(fun c d p s hs hp => chart_overlap c.2 d.2 p s hs hp)`. Use the proof step `⟨c₀, hc₀⟩ hfrac`. Use `haveI : IsClosedImmersion (Spec.map (CommRingCat.ofHom (zeroMap (o := o) (x := x)))) := IsClosedImmersion.spec_of_surjective _ zeroMap_surjective`. Use `⟨Proj (grading o x), ξ, Proj.toSpecZero (grading o x) ≫ Spec.map (CommRingCat.ofHom (zeroMap (o := o) (x := x))), h1, h2, h3, inferInstance, ?_⟩` and prove the remaining obligations. Establish `h4 : ξ ≫ Proj.toSpecZero (grading o x) = Spec.map (CommRingCat.ofHom (θ ⟨c₀, hc₀⟩)) ≫ Spec.map (CommRingCat.ofHom (fromZeroRingHom (grading o x) _))`.
+
+Simplify using `only [ξ, j, Category.assoc, Proj.awayι_toSpecZero]`. Rewrite using `[← Category.assoc, h4, ← Spec.map_comp, ← Spec.map_comp, ← CommRingCat.ofHom_comp, ← CommRingCat.ofHom_comp]`. Use `congr 2`. Use extensionality with `r`. Conclude with `(chartVal_fromZero (unit_coord hc₀) (zeroMap r)).trans (ev_algebraMap r)`.
+-/
 theorem exists_cl_scheme : ∀ (Ω : Type) [Field Ω] (o : Type) [CommRing o] [Algebra o Ω] (κ : Type) [Finite κ] (x : κ → Ω) (c₀ : κ), x c₀ ≠ 0 → (∀ a : Ω, ∃ g ∈ Algebra.adjoin o (Set.range fun j => x j / x c₀), ∃ h ∈ Algebra.adjoin o (Set.range fun j => x j / x c₀), h ≠ 0 ∧ a = g / h) → ∃ (X : Scheme.{0}) (ξ : Spec (CommRingCat.of Ω) ⟶ X) (s : X ⟶ Spec (CommRingCat.of o)), CoordTie o ξ x ∧ (∀ q : X, genPt ξ ⤳ q) ∧ IsIntegral X ∧ IsProper s ∧ ξ ≫ s = Spec.map (CommRingCat.ofHom (algebraMap o Ω)) := by
   intro Ω _ o _ _ κ _ x c₀ hc₀ hfrac
   let B : {c // x c ≠ 0} → Type := fun c => Away (grading o x) (coord (o := o) (x := x) c.1)

@@ -22,6 +22,11 @@ variable {Ω : Type} [Field Ω] {A : Type} [CommRing A] [Algebra A Ω] [IsIntegr
 
 include m in
 
+/- English proof (translation)
+Establish `hA : Function.Injective (algebraMap A Ω)` using `IsIntegralClosure.algebraMap_injective A ℤ Ω`. Use `(injective_iff_map_eq_zero _).2 fun x hx => ?_` and prove the remaining obligations. Take `⟨a, s, rfl⟩` from `IsLocalization.exists_mk'_eq m.primeCompl x`. Establish `h1 : algebraMap O Ω (IsLocalization.mk' O a s) * algebraMap A Ω (s : A) = algebraMap A Ω a`. Rewrite using `[IsScalarTower.algebraMap_apply A O Ω, IsScalarTower.algebraMap_apply A O Ω a, ← map_mul, IsLocalization.mk'_spec]`.
+
+Rewrite `h1` using `[hx, zero_mul]`. Establish `h2 : a = 0` using `hA (by rw [← h1, map_zero])`. Rewrite using `[h2, IsLocalization.mk'_zero]`.
+-/
 theorem algebraMap_injective : Function.Injective (algebraMap O Ω) := by
   have hA : Function.Injective (algebraMap A Ω) := IsIntegralClosure.algebraMap_injective A ℤ Ω
   refine (injective_iff_map_eq_zero _).2 fun x hx => ?_
@@ -35,12 +40,18 @@ theorem algebraMap_injective : Function.Injective (algebraMap O Ω) := by
 
 include m in
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨algebraMap A O (IsIntegralClosure.mk' A x hx), by rw [← IsScalarTower.algebraMap_apply, IsIntegralClosure.algebraMap_mk']⟩`.
+-/
 theorem exists_of_integral (x : Ω) (hx : IsIntegral ℤ x) : ∃ o : O, algebraMap O Ω o = x :=
   ⟨algebraMap A O (IsIntegralClosure.mk' A x hx), by
     rw [← IsScalarTower.algebraMap_apply, IsIntegralClosure.algebraMap_mk']⟩
 
 include m in
 
+/- English proof (translation)
+Establish `hi` using `algebraMap_injective (Ω := Ω) (A := A) (m := m) (O := O)`. Use `choose g hg using fun a => exists_of_integral (Ω := Ω) (A := A) (m := m) (O := O) (f a) (hf a)`. Conclude with `⟨{ toFun := g map_one' := hi (by rw [hg, map_one, map_one]) map_mul' := fun a b => hi (by rw [hg, map_mul, map_mul, hg, hg]) map_zero' := hi (by rw [hg, map_zero, map_zero]) map_add' := fun a b => hi (by rw [hg, map_add, map_add, hg, hg]) }, hg⟩`.
+-/
 theorem exists_hom {R : Type} [CommRing R] (f : R →+* Ω) (hf : ∀ a, IsIntegral ℤ (f a)) :
     ∃ g : R →+* O, ∀ a, algebraMap O Ω (g a) = f a := by
   have hi := algebraMap_injective (Ω := Ω) (A := A) (m := m) (O := O)
@@ -53,6 +64,15 @@ theorem exists_hom {R : Type} [CommRing R] (f : R →+* Ω) (hf : ∀ a, IsInteg
 
 end Ring
 
+/- English proof (translation)
+Establish `h1 : IsPrimitiveRoot ζ ((p - 1) + 1)` using `by rwa [Nat.sub_add_cancel hp.one_le]`. Establish `h2` using `h1.prod_one_sub_pow_eq_order`. Establish `h3 : Associated (∏ _k ∈ Finset.range (p - 1), (ζ - 1)) (∏ k ∈ Finset.range (p - 1), (1 - ζ ^ (k + 1)))`. Use `Associated.prod _ _ _ fun k hk => ?_` and prove the remaining obligations. Establish `hk' : k + 1 < p` using `by have := Finset.mem_range.1 hk; have := hp.one_le; omega`.
+
+Establish `hc : (k + 1).Coprime p` using `Nat.coprime_comm.1 ((Nat.Prime.coprime_iff_not_dvd hp).2 (Nat.not_dvd_of_pos_of_lt (by omega) hk'))`. Use `h.associated_sub_one_pow_sub_one_of_coprime hc` as an intermediate fact. Establish `e : (1 - ζ ^ (k + 1)) = - (ζ ^ (k + 1) - 1)` using `by ring`. Rewrite using `[e]`. Conclude with `this.trans (Associated.refl _).neg_right`.
+
+Rewrite `h3` using `[h2, Finset.prod_const, Finset.card_range]`. Take `⟨u, hu⟩` from `h3`. Use `⟨((u⁻¹ : Oˣ) : O), Units.isUnit _, ?_⟩` and prove the remaining obligations. Establish `e1 : (((p - 1 : ℕ) : O) + 1) = (p : O)`. Rewrite using `[← Nat.cast_succ, Nat.succ_eq_add_one, Nat.sub_add_cancel hp.one_le]`.
+
+Establish `hu' : (ζ - 1) ^ (p - 1) * (u : O) = (p : O)`. Rewrite using `[hu]`. Apply the tactic sequence `first | exact e1 | (push_cast; exact e1)`. Rewrite using `[← hu', mul_comm]`. Conclude with `(Units.mul_inv_cancel_right _ _).symm`.
+-/
 theorem sub_one_pow_eq {O : Type} [CommRing O] [IsDomain O] {p : ℕ} (hp : p.Prime) {ζ : O}
     (h : IsPrimitiveRoot ζ p) : ∃ u : O, IsUnit u ∧ (ζ - 1) ^ (p - 1) = u * (p : O) := by
   have h1 : IsPrimitiveRoot ζ ((p - 1) + 1) := by rwa [Nat.sub_add_cancel hp.one_le]
@@ -82,6 +102,31 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E]
 
 open NumberField in
 
+/- English proof (translation)
+Use `set w₀ : Ideal (𝓞 E) := RingHom.ker (r t₀) with hw₀`. Use `haveI hprime : w₀.IsPrime := RingHom.ker_isPrime _`. Establish `hpw : (p : 𝓞 E) ∈ w₀`. Rewrite using `[hw₀, RingHom.mem_ker, map_natCast, hpk]`. Establish `hp0 : (p : 𝓞 E) ≠ 0` using `Nat.cast_ne_zero.2 hp.ne_zero`.
+
+Establish `hne : w₀ ≠ ⊥` using `fun h => hp0 (by rwa [h, Ideal.mem_bot] at hpw)`. Use `haveI hmax : w₀.IsMaximal := Ideal.IsPrime.isMaximal hprime hne`. Use `letI fld : Field (𝓞 E ⧸ w₀) := Ideal.Quotient.field w₀`. Use `haveI hfinq : Finite (𝓞 E ⧸ w₀) := Ideal.finiteQuotientOfFreeOfNeBot w₀ hne`. Use `letI fin : Fintype (𝓞 E ⧸ w₀) := Fintype.ofFinite _`.
+
+Establish `hle : Ideal.span {(p : 𝓞 E)} ≤ w₀` using `(Ideal.span_singleton_le_iff_mem _).2 hpw`. Establish `hchar : CharP (𝓞 E ⧸ w₀) p` using `by haveI : Fact p.Prime := ⟨hp⟩`. Use `(CharP.charP_iff_prime_eq_zero hp).2 ?_` and prove the remaining obligations. Establish `: ((p : 𝓞 E) : 𝓞 E ⧸ w₀) = 0` using `Ideal.Quotient.eq_zero_iff_mem.2 hpw`. Simplify using `using this`.
+
+Establish `hker : ∀ s, RingHom.ker (r (φ s)) = RingHom.ker (r s)` using `fun s => by`. Use extensionality with `a`. Rewrite using `[RingHom.mem_ker, RingHom.mem_ker, hF, pow_eq_zero_iff hp.ne_zero]`. Take `⟨ε, h1, -, h3, -, -⟩` from `unramified_prime_idempotent E p hp hd w₀ hpw`. Establish `hsurj : Function.Surjective (Ideal.Quotient.mk w₀)` using `Ideal.Quotient.mk_surjective`.
+
+Set `lf : (𝓞 E ⧸ w₀) → 𝓞 E` to `Function.surjInv hsurj`. Establish `hlf : ∀ a, Ideal.Quotient.mk w₀ (lf a) = a` using `Function.surjInv_eq hsurj`. Set `pq : (𝓞 E ⧸ Ideal.span {(p : 𝓞 E)}) →+* (𝓞 E ⧸ w₀)` to `Ideal.Quotient.factor hle`. Establish `hpq : ∀ a, pq (Ideal.Quotient.mk _ a) = Ideal.Quotient.mk w₀ a` using `fun a => rfl`. Establish `hz : ∀ a ∈ w₀, Ideal.Quotient.mk (Ideal.span {(p : 𝓞 E)}) (ε * a) = 0` using `fun a ha => Ideal.Quotient.eq_zero_iff_mem.2 (Ideal.mem_span_singleton.2 ((h3 a).2 ha))`.
+
+Set `sc : (𝓞 E ⧸ w₀) →+ (𝓞 E ⧸ Ideal.span {(p : 𝓞 E)})` to `AddMonoidHom.mk' (fun a => Ideal.Quotient.mk _ (ε * lf a)) fun a b => by`. Establish `hm : lf (a + b) - (lf a + lf b) ∈ w₀`. Rewrite using `[← Ideal.Quotient.eq_zero_iff_mem, map_sub, map_add, hlf, hlf, hlf, sub_self]`. Use `hz _ hm` as an intermediate fact. Rewrite `this` using `[mul_sub, map_sub, sub_eq_zero, mul_add, map_add]`.
+
+Conclude with `this`. Establish `hsc : ∀ a, sc a = Ideal.Quotient.mk _ (ε * lf a)` using `fun a => rfl`. Set `Sg : Type` to `{t : T // RingHom.ker (r t) = w₀}`. Set `f : Sg → Sg` to `fun τ => ⟨φ τ.1, (hker τ.1).trans τ.2⟩`. Establish `hfi : Function.Injective f` using `fun a b h => Subtype.ext (φ.injective (congrArg Subtype.val h))`.
+
+Use `haveI : Finite Sg := inferInstance`. Set `φ' : Equiv.Perm Sg` to `Equiv.ofBijective f (Finite.injective_iff_bijective.1 hfi)`. Set `σ : Sg → (𝓞 E ⧸ w₀) →+* k` to `fun τ => Ideal.Quotient.lift w₀ (r τ.1) fun a ha => by`. Establish `: a ∈ RingHom.ker (r τ.1)` using `by rw [τ.2]; exact ha`. Conclude with `this`.
+
+Use `⟨Sg, Fintype.ofFinite Sg, Subtype.val, φ', 𝓞 E ⧸ w₀, fld, fin, hchar, pq, sc, σ, ⟨⟨t₀, rfl⟩, rfl⟩, Subtype.val_injective, fun τ => rfl, Ideal.Quotient.factor_surjective hle, fun τ a => rfl, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `t ht`. Use `⟨⟨t, ?_⟩, rfl⟩` and prove the remaining obligations. Use extensionality with `a`. Rewrite using `[RingHom.mem_ker, ht a, hpq, Ideal.Quotient.eq_zero_iff_mem]`.
+
+Introduce `a`. Rewrite using `[hsc, hpq, map_mul, hlf]`. Establish `: Ideal.Quotient.mk w₀ ε = 1`. Rewrite using `[← map_one (Ideal.Quotient.mk w₀)]`. Conclude with `Ideal.Quotient.eq.2 h1`.
+
+Rewrite using `[this, _root_.one_mul]`. Introduce `u a hu`. Take `⟨u', rfl⟩` from `Ideal.Quotient.mk_surjective u`. Establish `hu' : u' ∈ w₀` using `Ideal.Quotient.eq_zero_iff_mem.1 hu`. Rewrite using `[hsc, ← map_mul]`.
+
+Use `hz _ (w₀.mul_mem_right (lf a) hu')` as an intermediate fact. Rewrite using `[show u' * (ε * lf a) = ε * (u' * lf a) by ring]`. Conclude with `this`.
+-/
 theorem orbit_abstract {p : ℕ} (hp : p.Prime) (hd : ¬ (p : ℤ) ∣ NumberField.discr E) {T : Type} [Finite T] (t₀ : T)
     (φ : Equiv.Perm T) {k : Type} [Field k] (r : T → 𝓞 E →+* k) (hpk : (p : k) = 0)
     (hF : ∀ s a, r (φ s) a = (r s a) ^ p) :
@@ -163,6 +208,19 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {D : Da
   {Xo : Moduli D l} {c : Coeff l} {O₀ : Type} [CommRing O₀] {β : O₀ →+* c.F} {Y : Model Xo c β} {S : Finset ℕ}
   {Ω : Type} [Field Ω] {K : Type} [Fintype K] {J : K → Type} {y : (Σ k, J k) → Ω}
 
+/- English proof (translation)
+Establish `: IsProper Y.s` using `projProper O₀ Y.X Y.s Y.proj`. Establish `: IsLocallyNoetherian (pullback Y.s (spMap β))` using `LocallyOfFiniteType.isLocallyNoetherian (pullback.snd Y.s (spMap β))`. Establish `: CompactSpace ↥(pullback Y.s (spMap β))` using `QuasiCompact.compactSpace_of_compactSpace (pullback.snd Y.s (spMap β))`. Establish `: IsNoetherian (pullback Y.s (spMap β))` using `{}`. Use `Y.jQ_open` as an intermediate fact.
+
+Set `pt₀ : Sp Ω ⟶ pullback Y.s (spMap β)` to `pullback.lift (A.ξ ≫ A.f) (spMap A.cst) (by`. Rewrite using `[Category.assoc, A.cst_over]`. Conclude with `Spec.map_comp (CommRingCat.ofHom β) (CommRingCat.ofHom A.cst))`. Establish `hpt₀ : pt₀ ≫ pullback.fst _ _ = A.ξ ≫ A.f` using `pullback.lift_fst _ _ _`. Establish `hpt : pullback.fst Y.s (spMap β) (pt₀ (IsLocalRing.closedPoint Ω)) = genPt A.ξ₀`.
+
+Establish `: Subsingleton (Spec (CommRingCat.of A.Ω₀))` using `inferInstanceAs (Subsingleton (PrimeSpectrum A.Ω₀))`. Establish `h0 : pt₀ ≫ pullback.fst _ _ = Spec.map (CommRingCat.ofHom A.fn) ≫ A.ξ₀` using `hpt₀.trans A.fn_over`. Use `(Scheme.Hom.comp_apply _ _ _).symm.trans ?_` and prove the remaining obligations. Rewrite using `[h0]`. Conclude with `(Scheme.Hom.comp_apply _ _ _).trans (congrArg A.ξ₀ (Subsingleton.elim _ _))`.
+
+Take `⟨q, hqU, hq⟩` from `GlobalTheory.CompanionTheory.Ar.CmpHodgeDiag.exists_gen Y.jQ.isOpenEmbedding.isOpen_range Y.jQ_dense (pt₀ (IsLocalRing.closedPoint Ω))`. Establish `h1` using `hq.map (pullback.fst Y.s (spMap β)).continuous`. Rewrite `h1` using `[hpt]`. Establish `h2` using `GlobalTheory.CompanionTheory.Ar.CmpHodgeDiag.eq_of_specializes A.gen₀ h1`. Establish `hr : Set.range pt₀ ⊆ Set.range Y.jQ`.
+
+Introduce and unpack `_ ⟨a, rfl⟩`. Establish `: Subsingleton (Sp Ω)` using `inferInstanceAs (Subsingleton (PrimeSpectrum Ω))`. Rewrite using `[Subsingleton.elim a (IsLocalRing.closedPoint Ω), ← Y.ab_gen, Set.mem_preimage, hpt, ← h2]`. Establish `h3 : q ∈ pullback.fst Y.s (spMap β) ⁻¹' abLocus Y.t.G` using `by rw [Y.ab_gen]; exact hqU`. Conclude with `h3`.
+
+Use `⟨IsOpenImmersion.lift Y.jQ pt₀ hr, ?_⟩` and prove the remaining obligations. Rewrite using `[Model.j, ← Category.assoc, IsOpenImmersion.lift_fac, hpt₀]`.
+-/
 theorem exists_point (A : HodgeCpt Y S y) : ∃ x : Sp Ω ⟶ Xo.XF c, A.ξ ≫ A.f = x ≫ Y.j := by
   have : IsProper Y.s := projProper O₀ Y.X Y.s Y.proj
   have : IsLocallyNoetherian (pullback Y.s (spMap β)) :=
@@ -194,6 +252,11 @@ theorem exists_point (A : HodgeCpt Y S y) : ∃ x : Sp Ω ⟶ Xo.XF c, A.ξ ≫ 
   refine ⟨IsOpenImmersion.lift Y.jQ pt₀ hr, ?_⟩
   rw [Model.j, ← Category.assoc, IsOpenImmersion.lift_fac, hpt₀]
 
+/- English proof (translation)
+Use `haveI : CharZero Ω := charZero_of_injective_ringHom A.cst.injective`. Take `⟨x, hx⟩` from `exists_point A`. Take `⟨s0, o, ⟨m0⟩⟩` from `GlobalTheory.T.abelian_scheme_point_object E H D l Xo c O₀ β Y A.X A.f A.t A.m Ω A.ξ x hx`. Establish `hN : 0 < p ^ A.R p` using `pow_pos hp.pos _`. Take `⟨ζ, hζ⟩` from `GlobalTheory.CompanionTheory.Ar.OmLink.root o A.t m0 (A.tors p hpS) hN hpq`.
+
+Establish `hR : 1 ≤ A.R p` using `by have := A.R_ge p hpS; omega`. Use `⟨ζ ^ (p ^ (A.R p - 1)), hζ.pow hN ?_⟩` and prove the remaining obligations. Rewrite using `[← pow_succ, Nat.sub_add_cancel hR]`.
+-/
 theorem exists_root (A : HodgeCpt Y S y) (hpq : 0 < D.p + D.q) {p : ℕ} (hp : p.Prime) (hpS : p ∈ S) :
     ∃ ζ : Ω, IsPrimitiveRoot ζ p := by
   haveI : CharZero Ω := charZero_of_injective_ringHom A.cst.injective
@@ -207,6 +270,27 @@ theorem exists_root (A : HodgeCpt Y S y) (hpq : 0 < D.p + D.q) {p : ℕ} (hp : p
 
 end Root
 
+/- English proof (translation)
+Introduce `E _ _ _ H D l Xo c O₀ _ β Y S Ω _ K _ _ J _ y 𝔐 d _ hpq p hfact hpS _ hp2 hdisc φ hφ A _ _ _ m _ hpm O _ _ _ _ _ _ _ t₀`. Establish `hp : p.Prime` using `hfact.out`. Establish `hinj` using `algebraMap_injective (Ω := Ω) (A := A) (m := m) (O := O)`. Use `haveI : CharZero Ω := charZero_of_injective_ringHom 𝔐.cst.injective`. Take `⟨ζ, hζ⟩` from `exists_root 𝔐 hpq hp hpS`.
+
+Establish `hζi : IsIntegral ℤ ζ` using `IsIntegral.of_pow hp.pos (by rw [hζ.pow_eq_one]; exact isIntegral_one)`. Take `⟨z, hz⟩` from `exists_of_integral (A := A) (m := m) (O := O) ζ hζi`. Establish `hzp : IsPrimitiveRoot z p` using `IsPrimitiveRoot.of_map_of_injective (f := algebraMap O Ω) (by rwa [hz]) hinj`. Take `⟨u, hu, huw⟩` from `sub_one_pow_eq hp hzp`. Use `choose g hg using fun t => exists_hom (A := A) (m := m) (O := O) (𝔐.emb t) (fun a => (Algebra.IsIntegral.isIntegral (R := ℤ) a).map (𝔐.emb t).toIntAlgHom)`.
+
+Establish `hpm' : (p : O) ∈ IsLocalRing.maximalIdeal O`. Use `(IsLocalization.AtPrime.to_map_mem_maximal_iff O m (p : A)).2 hpm` as an intermediate fact. Simplify using `using this`. Establish `hnu : ¬ IsUnit (p : O)` using `hpm'`. Establish `hp0 : (p : O) ≠ 0` using `fun h => by`.
+
+Establish `h1 : algebraMap O Ω (p : O) = 0` using `by rw [h, map_zero]`. Rewrite `h1` using `[map_natCast]`. Conclude with `hp.ne_zero (Nat.cast_eq_zero.1 h1)`. Establish `hpk : ((p : ℕ) : IsLocalRing.ResidueField O) = 0`. Use `(IsLocalRing.residue_eq_zero_iff (p : O)).2 hpm'` as an intermediate fact.
+
+Simplify using `using this`. Take `⟨inc, hinc⟩` from `exists_hom (A := A) (m := m) (O := O) (𝔐.cst.comp (algebraMap (𝓞 c.F) c.F)) (fun a => (Algebra.IsIntegral.isIntegral (R := ℤ) a).map (𝔐.cst.comp (algebraMap (𝓞 c.F) c.F)).toIntAlgHom)`. Establish `hel : ∀ s (a : 𝓞 E), ∃ v : 𝓞 c.F, (v : c.F) = labelEmb c s a ∧ inc v = g s a`. Introduce `s a`. Establish `hi : IsIntegral ℤ (labelEmb c s a)` using `(Algebra.IsIntegral.isIntegral (R := ℤ) a).map (labelEmb c s).toIntAlgHom`.
+
+Use `⟨IsIntegralClosure.mk' _ _ hi, IsIntegralClosure.algebraMap_mk' _ _ _, hinj ?_⟩` and prove the remaining obligations. Rewrite using `[hinc, hg, RingHom.comp_apply, IsIntegralClosure.algebraMap_mk']`. Both sides reduce to the same expression. Establish `hF : ∀ s (a : 𝓞 E), IsLocalRing.residue O (g (φ s) a) = (IsLocalRing.residue O (g s a)) ^ p`. Introduce `s a`.
+
+Take `⟨u', hu1, hu2⟩` from `hel (φ s) a`. Take `⟨v', hv1, hv2⟩` from `hel s a`. Establish `hn` using `hφ (Ideal.comap inc (IsLocalRing.maximalIdeal O)) inferInstance (by rw [Ideal.mem_comap, map_natCast]; exact hpm') s a u' v' hu1 hv1`. Rewrite `hn` using `[Ideal.mem_comap, map_sub, map_pow, hu2, hv2]`. Establish `h2` using `(IsLocalRing.residue_eq_zero_iff _).2 hn`.
+
+Rewrite `h2` using `[map_sub, map_pow, sub_eq_zero]`. Conclude with `h2`. Take `⟨Sg, i1, e, φ', F, i2, i3, i4, pq, sc, σ, a1, a2, a3, a4, a5, a6, a7⟩` from `orbit_abstract hp hdisc t₀ φ (fun t => (IsLocalRing.residue O).comp (g t)) hpk hF`. Use `⟨Sg, i1, e, φ', F, i2, i3, i4, pq, sc, z - 1, σ, ⟨a1, a2, a3, a4, ?_, ?_, ⟨hp0, ⟨u, hu, huw⟩, hnu⟩, ?_⟩, a7⟩` and prove the remaining obligations. Introduce `τ a`.
+
+Conclude with `⟨g (e τ) a, hg _ _, a5 τ a⟩`. Introduce `t ht`. Conclude with `a6 t fun a => ht a (g t a) (hg t a)`. Unfold `HT.IsCp`. Rewrite using `[if_neg hp2]`.
+
+Conclude with `⟨ζ, hζ, by rw [map_sub, map_one, hz]⟩`.
+-/
 theorem orbit_exists : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (D : Datum H) (l : Level H) (Xo : Moduli D l) (c : Coeff l) (O₀ : Type) [CommRing O₀] (β : O₀ →+* c.F) (Y : Model Xo c β) (S : Finset ℕ) (Ω : Type) [Field Ω] (K : Type) [Fintype K] [DecidableEq K] (J : K → Type) [∀ k, Fintype (J k)] (y : (Σ k, J k) → Ω) (𝔐 : HodgeCpt Y S y) (d : ℕ), IsArithVar (mCoordIdeal y) (d + 1) → 0 < D.p + D.q → ∀ (p : ℕ) [Fact p.Prime], p ∈ S → HT.HTFree 𝔐 p → p ≠ 2 → ¬ (p : ℤ) ∣ NumberField.discr E → ∀ φ : Equiv.Perm (CMType H ⊕ CMType H), IsFrobLabels c p φ → ∀ (A : Type) [CommRing A] [Algebra A Ω] [IsIntegralClosure A ℤ Ω] (m : Ideal A) [m.IsPrime], (p : A) ∈ m → ∀ (O : Type) [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] [Algebra A O] [IsLocalization.AtPrime O m] [Algebra O Ω] [IsScalarTower A O Ω], ∀ t₀ : CMType H ⊕ CMType H, ∃ (Sg : Type) (_ : Fintype Sg) (e : Sg → CMType H ⊕ CMType H) (φ' : Equiv.Perm Sg) (F : Type) (_ : Field F) (_ : Fintype F) (_ : CharP F p) (pq : (𝓞 E ⧸ Ideal.span {(p : 𝓞 E)}) →+* F) (sc : F →+ (𝓞 E ⧸ Ideal.span {(p : 𝓞 E)})) (w : O) (σ : Sg → F →+* IsLocalRing.ResidueField O), IsOrbit O 𝔐 p φ t₀ e φ' pq w σ ∧ IsSec pq sc := by
   intro E _ _ _ H D l Xo c O₀ _ β Y S Ω _ K _ _ J _ y 𝔐 d _ hpq p hfact hpS _ hp2 hdisc φ hφ A _ _ _ m _ hpm O _ _ _ _ _ _ _ t₀
   have hp : p.Prime := hfact.out

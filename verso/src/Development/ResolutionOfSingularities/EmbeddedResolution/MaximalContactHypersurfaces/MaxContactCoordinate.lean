@@ -22,30 +22,52 @@ open scoped TensorProduct
 
 namespace FunctorialResolution.EmbeddedResolution
 
+/- English proof (translation)
+Rewrite using `[Subsingleton.elim f g]`.
+-/
 private theorem presheaf_map_op_eq_map_op {X : Scheme.{u}} {A B : X.Opens} (f g : B ⟶ A) :
     X.presheaf.map f.op = X.presheaf.map g.op := by
   rw [Subsingleton.elim f g]
 
+/- English proof (translation)
+Rewrite using `[← CommRingCat.hom_comp, Iso.inv_hom_id, CommRingCat.hom_id]`.
+-/
 private theorem topIso_hom_comp_inv {X : Scheme.{u}} (U : X.Opens) :
     (U.topIso.hom.hom).comp (U.topIso.inv.hom) = RingHom.id _ := by
   rw [← CommRingCat.hom_comp, Iso.inv_hom_id, CommRingCat.hom_id]
 
+/- English proof (translation)
+Rewrite using `[← CommRingCat.hom_comp, Iso.hom_inv_id, CommRingCat.hom_id]`.
+-/
 private theorem topIso_inv_comp_hom {X : Scheme.{u}} (U : X.Opens) :
     (U.topIso.inv.hom).comp (U.topIso.hom.hom) = RingHom.id _ := by
   rw [← CommRingCat.hom_comp, Iso.hom_inv_id, CommRingCat.hom_id]
 
+/- English proof (translation)
+Rewrite using `[Scheme.Opens.ι_appLE, Scheme.Opens.topIso_inv]`. Conclude with `presheaf_map_op_eq_map_op _ _`.
+-/
 private theorem appLE_opensι_top_eq_topIso_inv {X : Scheme.{u}} (U : X.Opens)
     (h : (⊤ : (↑U : Scheme.{u}).Opens) ≤ U.ι ⁻¹ᵁ U) :
     Scheme.Hom.appLE U.ι U ⊤ h = U.topIso.inv := by
   rw [Scheme.Opens.ι_appLE, Scheme.Opens.topIso_inv]
   exact presheaf_map_op_eq_map_op _ _
 
+/- English proof (translation)
+Rewrite using `[appLE_opensι_top_eq_topIso_inv]`. Conclude with `topIso_hom_comp_inv U`.
+-/
 private theorem topIso_hom_comp_appLE_ι {X : Scheme.{u}} (U : X.Opens)
     (h : (⊤ : (↑U : Scheme.{u}).Opens) ≤ U.ι ⁻¹ᵁ U) :
     (U.topIso.hom.hom).comp ((Scheme.Hom.appLE U.ι U ⊤ h).hom) = RingHom.id _ := by
   rw [appLE_opensι_top_eq_topIso_inv]
   exact topIso_hom_comp_inv U
 
+/- English proof (translation)
+Establish `hmat : b.toMatrix (fun i => KaehlerDifferential.D k S (Function.update y i0 z i)) = Matrix.updateCol (1 : Matrix ι ι S) i0 a`. Use extensionality with `i j`. Rewrite using `[Module.Basis.toMatrix_apply, Matrix.updateCol_apply]`. Distinguish the cases in `hj : j = i0`. Substitute `hj` using the available equality.
+
+Rewrite using `[if_pos rfl, Function.update_self, hz]`. Simplify using `[Finsupp.single_apply]`. Rewrite using `[if_neg hj, Function.update_of_ne hj, ← hb, Matrix.one_apply]`. Simplify using `[Module.Basis.repr_self, Finsupp.single_apply, eq_comm]`. Rewrite using `[Module.Basis.det_apply, hmat, ← Matrix.cramer_apply]`.
+
+Simplify using `[Matrix.cramer_one]`.
+-/
 private theorem basis_det_D_update_eq_coeff {k : Type*} {S : Type*} [CommRing k] [CommRing S] [Algebra k S]
     {ι : Type*} [Fintype ι] [DecidableEq ι] (b : Module.Basis ι S (KaehlerDifferential k S))
     (y : ι → S) (hb : ∀ i, b i = KaehlerDifferential.D k S (y i))
@@ -67,6 +89,17 @@ private theorem basis_det_D_update_eq_coeff {k : Type*} {S : Type*} [CommRing k]
 
 section
 
+/- English proof (translation)
+Introduce `h`. Apply `ha2` to reduce the goal to its premises. Establish `hker : IsLocalRing.maximalIdeal A ≤ LinearMap.ker (LinearMap.toSpanSingleton A (↥(IsLocalRing.maximalIdeal A) →ₗ[A] (IsLocalRing.maximalIdeal A).Cotangent) (Ideal.toCotangent (IsLocalRing.maximalIdeal A)))`. Introduce `b hb`. Rewrite using `[LinearMap.mem_ker]`.
+
+Use extensionality with `y`. Establish `hy : ((b • y : ↥(IsLocalRing.maximalIdeal A)) : A) ∈ IsLocalRing.maximalIdeal A ^ 2`. Rewrite using `[pow_two]`. Conclude with `Ideal.mul_mem_mul hb y.2`. Establish `h0 : (Ideal.toCotangent (IsLocalRing.maximalIdeal A)) (b • y) = 0` using `(Ideal.toCotangent_eq_zero (IsLocalRing.maximalIdeal A) (b • y)).mpr hy`.
+
+Rewrite `h0` using `[map_smul]`. Use `show b • (Ideal.toCotangent (IsLocalRing.maximalIdeal A)) y = 0`. Conclude with `h0`. Establish `h' : (1 : A ⧸ IsLocalRing.maximalIdeal A) ⊗ₜ[A] (⟨a, ha⟩ : ↥(IsLocalRing.maximalIdeal A)) = 0` using `h`. Establish `key` using `congrArg (TensorProduct.lift (Submodule.liftQ (IsLocalRing.maximalIdeal A) _ hker)) h'`.
+
+Rewrite `key` using `[TensorProduct.lift.tmul, map_zero]`. Establish `h1 : (Submodule.liftQ (IsLocalRing.maximalIdeal A) (LinearMap.toSpanSingleton A (↥(IsLocalRing.maximalIdeal A) →ₗ[A] (IsLocalRing.maximalIdeal A).Cotangent) (Ideal.toCotangent (IsLocalRing.maximalIdeal A))) hker) (1 : A ⧸ IsLocalRing.maximalIdeal A) = Ideal.toCotangent (IsLocalRi …`. Establish `e1 : (1 : A ⧸ IsLocalRing.maximalIdeal A) = Submodule.Quotient.mk (1 : A)` using `rfl`. Rewrite using `[e1, Submodule.liftQ_apply, LinearMap.toSpanSingleton_apply, one_smul]`. Rewrite `key` using `[h1]`.
+
+Conclude with `(Ideal.toCotangent_eq_zero (IsLocalRing.maximalIdeal A) ⟨a, ha⟩).mp key`.
+-/
 private theorem one_tmul_ne_zero_of_notMem_maximalIdeal_sq {A : Type*} [CommRing A] [IsLocalRing A]
     (a : A) (ha : a ∈ IsLocalRing.maximalIdeal A)
     (ha2 : a ∉ IsLocalRing.maximalIdeal A ^ 2) :
@@ -106,6 +139,11 @@ private theorem one_tmul_ne_zero_of_notMem_maximalIdeal_sq {A : Type*} [CommRing
   rw [h1] at key
   exact (Ideal.toCotangent_eq_zero (IsLocalRing.maximalIdeal A) ⟨a, ha⟩).mp key
 
+/- English proof (translation)
+Establish `key : LinearIndependent (IsLocalRing.ResidueField A) (fun _ : Fin 1 => (1 : IsLocalRing.ResidueField A) ⊗ₜ[A] (⟨a, ha⟩ : ↥(IsLocalRing.maximalIdeal A)))`. Rewrite using `[Fintype.linearIndependent_iff]`. Introduce `g hg i`. Rewrite `hg` using `[Fin.sum_univ_one]`. Break down `smul_eq_zero.mp hg with hzero | hzero` into its components or cases.
+
+Rewrite using `[Subsingleton.elim i 0]`. Conclude with `hzero`. Conclude with `absurd hzero (one_tmul_ne_zero_of_notMem_maximalIdeal_sq a ha ha2)`. Conclude with `linearIndependent_tensor_D_of_maximalIdeal k A (fun _ : Fin 1 => (⟨a, ha⟩ : ↥(IsLocalRing.maximalIdeal A))) key`.
+-/
 theorem linearIndependent_one_tmul_D_of_notMem_maximalIdeal_sq
     (k : Type*) (A : Type*) [CommRing k] [CommRing A] [Algebra k A] [IsLocalRing A]
     [IsNoetherianRing A] [Algebra.FormallySmooth k A]
@@ -136,6 +174,19 @@ section
 
 variable (k : Type u) [Field k] {X : Scheme.{u}} (p : X ⟶ Spec (CommRingCat.of k))
 
+/- English proof (translation)
+Establish `: IsAffine (↑U : Scheme.{u})` using `hU`. Establish `htop : IsAffineOpen (⊤ : (↑U : Scheme.{u}).Opens)` using `isAffineOpen_top _`. Take `⟨t, htdef⟩ : ∃ t : Γ((↑U : Scheme.{u}), ⊤), t = (c.map.appTop).hom (AffineSpace.coord (Spec (CommRingCat.of k)) (ULift.up j))` from `⟨_, rfl⟩`. Establish `hcoord : c.coord j = U.topIso.hom.hom t` using `by rw [htdef]; rfl`. Rewrite using `[EtaleChart.coordIdeal_eq_comap_coordSubspaceIdeal, coordSubspaceIdeal_eq_ofIdealTop_span_coord, restrictIdeal_eq_comap_ι, Scheme.IdealSheafData.comap_ofIdealTop]`.
+
+Simplify using `only [Ideal.map_span, Set.image_singleton, Finset.coe_singleton]`. Rewrite using `[← htdef]`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Establish `h2` using `h ⟨⊤, htop⟩`.
+
+Rewrite `h2` using `[Scheme.IdealSheafData.comap_ideal_eq_map_appLE J U.ι ⟨U, hU⟩ ⟨⊤, htop⟩ (by simp), Scheme.IdealSheafData.ofIdealTop_ideal_top]`. Establish `ht` using `h2 (Ideal.mem_span_singleton_self t)`. Establish `hmem2` using `Ideal.mem_map_of_mem (U.topIso.hom.hom) ht`. Rewrite `hmem2` using `[Ideal.map_map, topIso_hom_comp_appLE_ι U (by simp), Ideal.map_id]`. Rewrite using `[hcoord]`.
+
+Conclude with `hmem2`. Introduce `h V`. Rewrite using `[Scheme.IdealSheafData.comap_ideal_eq_map_appLE J U.ι ⟨U, hU⟩ V (by simp), Scheme.IdealSheafData.ofIdealTop_ideal, Ideal.map_span, Set.image_singleton, Ideal.span_le, Set.singleton_subset_iff]`. Establish `hmorph : Scheme.Hom.appLE U.ι U (V : (↑U : Scheme.{u}).Opens) (by simp) = U.topIso.inv ≫ (↑U : Scheme.{u}).presheaf.map (homOfLE (le_top : (V : (↑U : Scheme.{u}).Opens) ≤ ⊤)).op`. Rewrite using `[← appLE_opensι_top_eq_topIso_inv U (by simp), Scheme.Hom.appLE_map]`.
+
+Rewrite using `[hmorph, CommRingCat.hom_comp, ← Ideal.map_map]`. Use `Ideal.mem_map_of_mem _ ?_` and prove the remaining obligations. Establish `e2 : U.topIso.inv.hom (c.coord j) = t`. Rewrite using `[hcoord]`. Conclude with `DFunLike.congr_fun (topIso_inv_comp_hom U) t`.
+
+Rewrite using `[← e2]`. Conclude with `Ideal.mem_map_of_mem _ h`.
+-/
 theorem coordIdeal_singleton_le_restrictIdeal_iff {U : X.Opens} (hU : IsAffineOpen U) {n : ℕ}
     (c : EtaleChart p U n) (j : Fin n) (J : X.IdealSheafData) :
     c.coordIdeal {j} ≤ restrictIdeal J U ↔ c.coord j ∈ J.ideal ⟨U, hU⟩ := by
@@ -180,17 +231,26 @@ def IsMaxContactCoord (I : X.IdealSheafData) (m : ℕ) {U : X.Opens} {n : ℕ}
     (c : EtaleChart p U n) (j : Fin n) : Prop :=
   c.coordIdeal {j} ≤ restrictIdeal (maxContactIdeal k p I m) U
 
+/- English proof (translation)
+Unfold both sides. The equivalence is reflexive.
+-/
 theorem isMaxContactCoord_iff (I : X.IdealSheafData) (m : ℕ) {U : X.Opens} {n : ℕ}
     (c : EtaleChart p U n) (j : Fin n) :
     IsMaxContactCoord k p I m c j ↔
       c.coordIdeal {j} ≤ restrictIdeal (maxContactIdeal k p I m) U :=
   Iff.rfl
 
+/- English proof (translation)
+Rewrite using `[isMaxContactCoord_iff, maxContactIdeal_one k p I]`.
+-/
 theorem isMaxContactCoord_one_iff (I : X.IdealSheafData) {U : X.Opens} {n : ℕ}
     (c : EtaleChart p U n) (j : Fin n) :
     IsMaxContactCoord k p I 1 c j ↔ c.coordIdeal {j} ≤ restrictIdeal I U := by
   rw [isMaxContactCoord_iff, maxContactIdeal_one k p I]
 
+/- English proof (translation)
+The claim follows from `coordIdeal_singleton_le_restrictIdeal_iff k p hU c j (maxContactIdeal k p I m)`.
+-/
 theorem isMaxContactCoord_iff_coord_mem (I : X.IdealSheafData) (m : ℕ) {U : X.Opens}
     (hU : IsAffineOpen U) {n : ℕ} (c : EtaleChart p U n) (j : Fin n) :
     IsMaxContactCoord k p I m c j ↔ c.coord j ∈ (maxContactIdeal k p I m).ideal ⟨U, hU⟩ :=
@@ -198,6 +258,9 @@ theorem isMaxContactCoord_iff_coord_mem (I : X.IdealSheafData) (m : ℕ) {U : X.
 
 variable [CharZero k] [AlgebraicGeometry.Smooth p]
 
+/- English proof (translation)
+Establish `h` using `support_derivIdealSheafIterate_eq_orderAtLeastLocus k p I hm`. Establish `hx' : x ∈ ((derivIdealSheafIterate k p (m - 1) I).support : Set X)`. Rewrite using `[h]`. Conclude with `hx`. Conclude with `hx'`.
+-/
 theorem mem_support_maxContactIdeal_of_mem_orderAtLeastLocus (I : X.IdealSheafData) {m : ℕ}
     (hm : 1 ≤ m) {x : X} (hx : x ∈ orderAtLeastLocus I m) :
     x ∈ (maxContactIdeal k p I m).support := by
@@ -206,12 +269,18 @@ theorem mem_support_maxContactIdeal_of_mem_orderAtLeastLocus (I : X.IdealSheafDa
     rw [h]; exact hx
   exact hx'
 
+/- English proof (translation)
+Establish `h` using `orderAt_derivIdealSheafIterate_eq_sub k p I x hx (Nat.sub_le m 1)`. Rewrite using `[maxContactIdeal_eq_derivIdealSheafIterate, h, show m - (m - 1) = 1 from by omega, Nat.cast_one]`.
+-/
 theorem orderAt_maxContactIdeal_eq_one (I : X.IdealSheafData) {m : ℕ} (hm : 1 ≤ m) {x : X}
     (hx : orderAt I x = (m : ℕ∞)) :
     orderAt (maxContactIdeal k p I m) x = (1 : ℕ∞) := by
   have h := orderAt_derivIdealSheafIterate_eq_sub k p I x hx (Nat.sub_le m 1)
   rw [maxContactIdeal_eq_derivIdealSheafIterate, h, show m - (m - 1) = 1 from by omega, Nat.cast_one]
 
+/- English proof (translation)
+Establish `h1 : orderAt (maxContactIdeal k p I m) x = (1 : ℕ∞)` using `orderAt_maxContactIdeal_eq_one k p I hm hx`. Establish `h2` using `(le_orderAt_iff (maxContactIdeal k p I m) x 1).mp (by rw [Nat.cast_one, h1])`. Rewrite `h2` using `[pow_one]`. Conclude with `h2`.
+-/
 theorem stalkIdeal_maxContactIdeal_le_maximalIdeal (I : X.IdealSheafData) {m : ℕ}
     (hm : 1 ≤ m) {x : X} (hx : orderAt I x = (m : ℕ∞)) :
     stalkIdeal (maxContactIdeal k p I m) x ≤
@@ -222,6 +291,13 @@ theorem stalkIdeal_maxContactIdeal_le_maximalIdeal (I : X.IdealSheafData) {m : �
   rw [pow_one] at h2
   exact h2
 
+/- English proof (translation)
+Establish `h1 : orderAt (maxContactIdeal k p I m) x = (1 : ℕ∞)` using `orderAt_maxContactIdeal_eq_one k p I hm hx`. Establish `hle : stalkIdeal (maxContactIdeal k p I m) x ≤ IsLocalRing.maximalIdeal ↑(X.presheaf.stalk x)` using `stalkIdeal_maxContactIdeal_le_maximalIdeal k p I hm hx`. Establish `hmap : stalkIdeal (maxContactIdeal k p I m) x = Ideal.map (X.presheaf.germ U x hxU).hom ((maxContactIdeal k p I m).ideal ⟨U, hU⟩)` using `stalkIdeal_eq_map_germ _ x ⟨U, hU⟩ hxU`. Assume the negation of the conclusion as `hno`. Use `push Not at hno`.
+
+Establish `h2 : stalkIdeal (maxContactIdeal k p I m) x ≤ IsLocalRing.maximalIdeal ↑(X.presheaf.stalk x) ^ 2`. Rewrite using `[hmap, Ideal.map_le_iff_le_comap]`. Introduce `s hs`. Simplify using `only [Ideal.mem_comap]`. Conclude with `hno s hs (hle (germ_mem_stalkIdeal _ x ⟨U, hU⟩ hxU hs))`.
+
+Establish `h3` using `(le_orderAt_iff (maxContactIdeal k p I m) x 2).mpr h2`. Rewrite `h3` using `[h1]`. Simplify using `at h3`.
+-/
 theorem exists_section_maxContactIdeal_notMem_maximalIdeal_sq (I : X.IdealSheafData) {m : ℕ}
     (hm : 1 ≤ m) {x : X} (hx : orderAt I x = (m : ℕ∞)) {U : X.Opens} (hU : IsAffineOpen U)
     (hxU : x ∈ U) :
@@ -249,6 +325,49 @@ theorem exists_section_maxContactIdeal_notMem_maximalIdeal_sq (I : X.IdealSheafD
   rw [h1] at h3
   simp at h3
 
+/- English proof (translation)
+Take `⟨U, n, hxU, hU, ⟨c⟩⟩` from `exists_etaleChart p x`. Take `⟨s, hs, hs1, hs2⟩` from `exists_section_maxContactIdeal_notMem_maximalIdeal_sq k p I hm hx hU hxU`. Set `_instSections : Algebra k Γ(X, U)` to `sectionsAlgebra k p U`. Set `_instChart : Algebra (MvPolynomial (ULift.{u} (Fin n)) k) Γ(X, U)` to `c.algebra`. Establish `: IsScalarTower k (MvPolynomial (ULift.{u} (Fin n)) k) Γ(X, U)` using `c.isScalarTower`.
+
+Establish `: Algebra.FormallyEtale (MvPolynomial (ULift.{u} (Fin n)) k) Γ(X, U)` using `c.algebra_formallyEtale hU`. Set `_instStalk : Algebra k ↑(X.presheaf.stalk x)` to `stalkAlgebra k p x`. Set `_instGerm : Algebra Γ(X, U) ↑(X.presheaf.stalk x)` to `(X.presheaf.germ U x hxU).hom.toAlgebra`. Establish `: IsScalarTower k Γ(X, U) ↑(X.presheaf.stalk x)` using `isScalarTower_stalk k p U x hxU (algebraMap_sectionsAlgebra k p U) (algebraMap_stalkAlgebra k p x) rfl`. Establish `: IsNoetherianRing ↑(X.presheaf.stalk x)` using `isNoetherianRing_stalk k p x`.
+
+Establish `: Algebra.FormallySmooth k ↑(X.presheaf.stalk x)` using `formallySmooth_stalk k p x`. Establish `: Module.Finite ↑(X.presheaf.stalk x) (KaehlerDifferential k ↑(X.presheaf.stalk x))` using `finite_kaehlerDifferential_stalk k p x`. Establish `: Module.Free ↑(X.presheaf.stalk x) (KaehlerDifferential k ↑(X.presheaf.stalk x))` using `free_kaehlerDifferential_stalk k p x`. Set `_instResidue : Algebra k (IsLocalRing.ResidueField ↑(X.presheaf.stalk x))` to `((IsLocalRing.residue ↑(X.presheaf.stalk x)).comp (stalkAlgebraMap k p x)).toAlgebra`. Establish `: IsScalarTower k ↑(X.presheaf.stalk x) (IsLocalRing.ResidueField ↑(X.presheaf.stalk x))` using `IsScalarTower.of_algebraMap_eq fun _ => rfl`.
+
+Establish `: Algebra.FormallySmooth k (IsLocalRing.ResidueField ↑(X.presheaf.stalk x))` using `formallySmooth_residueField k p x rfl`. Establish `hli` using `linearIndependent_one_tmul_D_of_notMem_maximalIdeal_sq k ↑(X.presheaf.stalk x) ((X.presheaf.germ U x hxU).hom s) hs1 hs2`. Establish `hne : (1 : IsLocalRing.ResidueField ↑(X.presheaf.stalk x)) ⊗ₜ[↑(X.presheaf.stalk x)] KaehlerDifferential.D k ↑(X.presheaf.stalk x) ((X.presheaf.germ U x hxU).hom s) ≠ 0` using `hli.ne_zero 0`. Take `⟨a, ha⟩ : ∃ a : ULift.{u} (Fin n) → Γ(X, U), ∀ i, a i = (EtaleCoordinates.basisKaehler k (ULift.{u} (Fin n)) Γ(X, U)).repr (KaehlerDifferential.D k Γ(X, U) s) i` from `⟨_, fun i => rfl⟩`. Establish `hrepr : KaehlerDifferential.D k Γ(X, U) s = ∑ i, a i • (EtaleCoordinates.basisKaehler k (ULift.{u} (Fin n)) Γ(X, U) i)`.
+
+Establish `h` using `(Module.Basis.sum_repr (EtaleCoordinates.basisKaehler k (ULift.{u} (Fin n)) Γ(X, U)) (KaehlerDifferential.D k Γ(X, U) s)).symm`. Simplify `h` using `only [← ha]`. Establish `hex : ∃ i : ULift.{u} (Fin n), IsUnit ((X.presheaf.germ U x hxU).hom (a i))`. Assume the negation of the conclusion as `hcon`. Use `push Not at hcon`.
+
+Apply `hne` to reduce the goal to its premises. Use `show (1 : IsLocalRing.ResidueField ↑(X.presheaf.stalk x)) ⊗ₜ[↑(X.presheaf.stalk x)] KaehlerDifferential.D k ↑(X.presheaf.stalk x) (algebraMap Γ(X, U) ↑(X.presheaf.stalk x) s) = 0`. Establish `h0 : KaehlerDifferential.D k ↑(X.presheaf.stalk x) (algebraMap Γ(X, U) ↑(X.presheaf.stalk x) s) = ∑ i, (KaehlerDifferential.map k k Γ(X, U) ↑(X.presheaf.stalk x)) (a i • (EtaleCoordinates.basisKaehler k (ULift.{u} (Fin n)) Γ(X, U) i))`. Rewrite using `[← KaehlerDifferential.map_D k k Γ(X, U) ↑(X.presheaf.stalk x) s, hrepr, map_sum]`. Rewrite using `[h0, TensorProduct.tmul_sum]`.
+
+Use `Finset.sum_eq_zero fun i _ => ?_` and prove the remaining obligations. Establish `h1 : (KaehlerDifferential.map k k Γ(X, U) ↑(X.presheaf.stalk x)) (a i • (EtaleCoordinates.basisKaehler k (ULift.{u} (Fin n)) Γ(X, U) i)) = ((X.presheaf.germ U x hxU).hom (a i)) • (KaehlerDifferential.map k k Γ(X, U) ↑(X.presheaf.stalk x)) (EtaleCoordinates.basisKaehler k (ULift.{ …`. Rewrite using `[map_smul]`. Conclude with `(algebraMap_smul (↑(X.presheaf.stalk x)) (a i) _).symm`. Rewrite using `[h1, ← TensorProduct.smul_tmul]`.
+
+Establish `h2 : ((X.presheaf.germ U x hxU).hom (a i)) • (1 : IsLocalRing.ResidueField ↑(X.presheaf.stalk x)) = 0`. Rewrite using `[Algebra.smul_def, mul_one, IsLocalRing.ResidueField.algebraMap_eq, IsLocalRing.residue_eq_zero_iff]`. Conclude with `(IsLocalRing.mem_maximalIdeal _).mpr (mem_nonunits_iff.mpr (hcon i))`. Rewrite using `[h2, TensorProduct.zero_tmul]`. Take `⟨i0, hunit⟩` from `hex`.
+
+Establish `hV : IsAffineOpen (X.basicOpen (a i0))` using `hU.basicOpen (a i0)`. Establish `hxV : x ∈ X.basicOpen (a i0)` using `(X.toLocallyRingedSpace.toRingedSpace.mem_basicOpen (a i0) x hxU).mpr hunit`. Set `_instBasicOpen : Algebra k Γ(X, X.basicOpen (a i0))` to `sectionsAlgebra k p (X.basicOpen (a i0))`. Set `_instRestrict : Algebra Γ(X, U) Γ(X, X.basicOpen (a i0))` to `(X.presheaf.map (homOfLE (X.basicOpen_le (a i0))).op).hom.toAlgebra`. Establish `: IsScalarTower k Γ(X, U) Γ(X, X.basicOpen (a i0))` using `isScalarTower_sections k p U (a i0) (algebraMap_sectionsAlgebra k p U) (algebraMap_sectionsAlgebra k p (X.basicOpen (a i0))) rfl`.
+
+Establish `: IsLocalization.Away (a i0) Γ(X, X.basicOpen (a i0))` using `hU.isLocalization_basicOpen (a i0)`. Establish `: Algebra.FormallyEtale Γ(X, U) Γ(X, X.basicOpen (a i0))` using `Algebra.FormallyEtale.of_isLocalization (Submonoid.powers (a i0))`. Establish `: Algebra.FormallySmooth k Γ(X, X.basicOpen (a i0))` using `formallySmooth_sections k p (X.basicOpen (a i0)) hV (algebraMap_sectionsAlgebra k p (X.basicOpen (a i0)))`. Take `⟨e, he⟩ : ∃ e : Module.Basis (ULift.{u} (Fin n)) Γ(X, X.basicOpen (a i0)) (KaehlerDifferential k Γ(X, X.basicOpen (a i0))), e = JacobianCriterion.inducedBasis k (ULift.{u} (Fin n)) Γ(X, U) Γ(X, X.basicOpen (a i0)) (EtaleCoordinates.basisKaehler k (ULift.{u} (Fin n)) Γ(X, U))` from `⟨_, rfl⟩`. Establish `he_apply : ∀ i, e i = (KaehlerDifferential.map k k Γ(X, U) Γ(X, X.basicOpen (a i0))) (EtaleCoordinates.basisKaehler k (ULift.{u} (Fin n)) Γ(X, U) i)`.
+
+Introduce `i`. Rewrite using `[he]`. Conclude with `JacobianCriterion.inducedBasis_apply k (ULift.{u} (Fin n)) Γ(X, U) Γ(X, X.basicOpen (a i0)) (EtaleCoordinates.basisKaehler k (ULift.{u} (Fin n)) Γ(X, U)) i`. Establish `hbT : ∀ i, e i = KaehlerDifferential.D k Γ(X, X.basicOpen (a i0)) (algebraMap Γ(X, U) Γ(X, X.basicOpen (a i0)) (EtaleCoordinates.coord k (ULift.{u} (Fin n)) Γ(X, U) i))`. Introduce `i`.
+
+Rewrite using `[he]`. Conclude with `JacobianCriterion.inducedBasis_apply_D k (ULift.{u} (Fin n)) Γ(X, U) Γ(X, X.basicOpen (a i0)) (EtaleCoordinates.basisKaehler k (ULift.{u} (Fin n)) Γ(X, U)) (fun i => EtaleCoordinates.coord k (ULift.{u} (Fin n)) Γ(X, U) i) (fun i => EtaleCoordinates.basisKaehler_apply k (ULift.{u} …`. Establish `hz : KaehlerDifferential.D k Γ(X, X.basicOpen (a i0)) (algebraMap Γ(X, U) Γ(X, X.basicOpen (a i0)) s) = ∑ i, (algebraMap Γ(X, U) Γ(X, X.basicOpen (a i0)) (a i)) • e i`. Rewrite using `[← KaehlerDifferential.map_D k k Γ(X, U) Γ(X, X.basicOpen (a i0)) s, hrepr, map_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[map_smul, he_apply i, algebraMap_smul]`. Take `⟨w, hw⟩ : ∃ w : ULift.{u} (Fin n) → Γ(X, X.basicOpen (a i0)), w = Function.update (fun i => algebraMap Γ(X, U) Γ(X, X.basicOpen (a i0)) (EtaleCoordinates.coord k (ULift.{u} (Fin n)) Γ(X, U) i)) i0 (algebraMap Γ(X, U) Γ(X, X.basicOpen (a i0)) s)` from `⟨_, rfl⟩`. Establish `hdet0 : (e.det fun i => KaehlerDifferential.D k Γ(X, X.basicOpen (a i0)) (w i)) = algebraMap Γ(X, U) Γ(X, X.basicOpen (a i0)) (a i0)`. Rewrite using `[hw]`. Conclude with `basis_det_D_update_eq_coeff e _ hbT i0 _ (fun i => algebraMap Γ(X, U) Γ(X, X.basicOpen (a i0)) (a i)) hz`.
+
+Establish `hdet : IsUnit (e.det fun i => KaehlerDifferential.D k Γ(X, X.basicOpen (a i0)) (w i))`. Rewrite using `[hdet0]`. Conclude with `IsLocalization.map_units Γ(X, X.basicOpen (a i0)) (⟨a i0, Submonoid.mem_powers _⟩ : Submonoid.powers (a i0))`. Take `⟨f, hf⟩ : ∃ f : MvPolynomial (ULift.{u} (Fin n)) k →+* Γ(X, X.basicOpen (a i0)), f = (MvPolynomial.aeval w : MvPolynomial (ULift.{u} (Fin n)) k →ₐ[k] Γ(X, X.basicOpen (a i0))).toRingHom` from `⟨_, rfl⟩`. Establish `hC : ∀ b : k, f (MvPolynomial.C b) = sectionsAlgebraMap k p (X.basicOpen (a i0)) b`.
+
+Introduce `b`. Rewrite using `[hf]`. Use `show MvPolynomial.aeval w (MvPolynomial.C b) = _`. Rewrite using `[MvPolynomial.aeval_C, algebraMap_sectionsAlgebra]`. Establish `hXc : ∀ i : ULift.{u} (Fin n), f (MvPolynomial.X i) = w i`.
+
+Introduce `i`. Rewrite using `[hf]`. Use `show MvPolynomial.aeval w (MvPolynomial.X i) = _`. Rewrite using `[MvPolynomial.aeval_X]`. Establish `hfet : f.Etale`.
+
+Substitute `hf` using the available equality. Set `inst : Algebra (MvPolynomial (ULift.{u} (Fin n)) k) Γ(X, X.basicOpen (a i0))` to `(MvPolynomial.aeval w : MvPolynomial (ULift.{u} (Fin n)) k →ₐ[k] Γ(X, X.basicOpen (a i0))).toRingHom.toAlgebra`. Establish `: @Algebra.FormallyEtale (MvPolynomial (ULift.{u} (Fin n)) k) Γ(X, X.basicOpen (a i0)) _ _ inst` using `EtaleCoordinates.formallyEtale_aeval_of_isUnit_det e w hdet`. Establish `: IsScalarTower k (MvPolynomial (ULift.{u} (Fin n)) k) Γ(X, X.basicOpen (a i0))` using `IsScalarTower.of_algebraMap_eq fun r => (hC r).symm`. Establish `: Algebra.FiniteType k Γ(X, X.basicOpen (a i0))` using `finiteType_sections k p ⟨X.basicOpen (a i0), hV⟩ (algebraMap_sectionsAlgebra k p (X.basicOpen (a i0)))`.
+
+Establish `: Algebra.FiniteType (MvPolynomial (ULift.{u} (Fin n)) k) Γ(X, X.basicOpen (a i0))` using `Algebra.FiniteType.of_restrictScalars_finiteType k (MvPolynomial (ULift.{u} (Fin n)) k) Γ(X, X.basicOpen (a i0))`. Establish `: Algebra.FinitePresentation (MvPolynomial (ULift.{u} (Fin n)) k) Γ(X, X.basicOpen (a i0))` using `Algebra.FinitePresentation.of_finiteType.mp inferInstance`. Conclude with `(⟨inferInstance, inferInstance⟩ : Algebra.Etale (MvPolynomial (ULift.{u} (Fin n)) k) Γ(X, X.basicOpen (a i0)))`. Take `⟨c', hc'⟩` from `exists_etaleChart_coord_eq p hV w f hC hXc hfet`. Establish `hwi : w (ULift.up i0.down) = algebraMap Γ(X, U) Γ(X, X.basicOpen (a i0)) s`.
+
+Rewrite using `[ULift.up_down, hw, Function.update_self]`. Use `⟨X.basicOpen (a i0), hV, hxV, n, c', i0.down, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[isMaxContactCoord_iff_coord_mem k p I m hV c' i0.down, hc' i0.down, hwi]`. Establish `h2 : Ideal.map ((X.presheaf.map (homOfLE (X.basicOpen_le (a i0))).op).hom) ((maxContactIdeal k p I m).ideal ⟨U, hU⟩) = (maxContactIdeal k p I m).ideal ⟨X.basicOpen (a i0), hV⟩` using `Scheme.IdealSheafData.map_ideal_basicOpen _ ⟨U, hU⟩ (a i0)`. Rewrite using `[← h2]`.
+
+Conclude with `Ideal.mem_map_of_mem _ hs`. Rewrite using `[hc' i0.down, hwi]`. Establish `h3` using `DFunLike.congr_fun (congrArg CommRingCat.Hom.hom (X.presheaf.germ_res (homOfLE (X.basicOpen_le (a i0))) x hxV)) s`. Simplify using `only [CommRingCat.hom_comp, RingHom.coe_comp, Function.comp_apply] at h3`. Establish `h4 : (X.presheaf.germ (X.basicOpen (a i0)) x hxV).hom (algebraMap Γ(X, U) Γ(X, X.basicOpen (a i0)) s) = (X.presheaf.germ U x hxU).hom s` using `h3`.
+
+Rewrite using `[h4]`. Conclude with `hs1`.
+-/
 theorem exists_isMaxContactCoord (I : X.IdealSheafData) {m : ℕ} (hm : 1 ≤ m) (x : X)
     (hx : orderAt I x = (m : ℕ∞)) :
     ∃ (U : X.Opens) (_ : IsAffineOpen U) (hxU : x ∈ U) (n : ℕ) (c : EtaleChart p U n)

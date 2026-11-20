@@ -40,6 +40,9 @@ def RowHyp {D : D7} (p : RowPk D) : Prop :=
 
 set_option maxHeartbeats 4000000 in
 
+/- English proof (translation)
+Establish `hr` using `R3.RowsLvl.range_eE_and_norm D G Pl0 I0 T A3 Ks R F cG X0 Y hP hH`. Take `⟨plg, iso, h⟩` from `hP.keep.grp`. Conclude with `⟨hP.char.base.lev, hP.char.base.grp.levels, ⟨R.eG.trans cG, plg, iso, h⟩, hP.char.base.models, hr.1, hr.2, Y.dall⟩`.
+-/
 theorem rowHyp_read {D : D7} {G : Type} [Group G] [Fintype G] {Pl0 I0 T : Type} {A3 : FamIn3 D.what₂.LL G Pl0 I0 (List ℕ) T D.R.m}
     {Ks : Type} [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] (R : RealDat3 D A3 Ks) (F : Face3 D A3)
     (cG : G0 R.Pg D.R.r ≃* G0g D.nd) {X0 : BaseLevelRowSide D} (Y : R3.Read (A3 := A3) R.toRealDat F.lv2 X0) (hP : R3.Pins R F cG)
@@ -52,6 +55,9 @@ variable {K : Ctx} {B : Base} {f : Fr B.toPre} {T : TwDat B} {w : ColW B f T}
 
 set_option maxHeartbeats 4000000 in
 
+/- English proof (translation)
+The claim follows from `(by with_unfolding_all exact ((rowHyp_read r.r.z.R r.r.z.F r.r.z.cG r.r.Y r.r.z.pins r.r.intersectionNumber_baseChange) :))`.
+-/
 theorem rowHyp_pkOf {Z : w.Lt} {Wt : Set B.places.Pl} {p0 : BaseLevelRowSide (w.D Z)} (r : RowsT K w Z Wt p0) : RowHyp (pkOf r) :=
   (by with_unfolding_all exact ((rowHyp_read r.r.z.R r.r.z.F r.r.z.cG r.r.Y r.r.z.pins r.r.intersectionNumber_baseChange) :))
 
@@ -65,6 +71,9 @@ def SatNew : Prop :=
       (F₁ : ∀ u, Forms0 (reL a ⟨Zs, N, hh⟩).D u), SameL a ⟨Zs, N, hh⟩ F0 F₁ → Nonempty (SAtL a ⟨Zs, N, hh⟩ p.R p.F p.eE F₁)
 
 set_option maxHeartbeats 4000000 in
+/- English proof (translation)
+Introduce `B C a p F0 P g i l r d e ⟨a1, a2, a3, a4, a5, a6, a7⟩` and use `GlobalTheory.T.exists_spectralObjects_over_replacedStages h1 h2 h3 h4 h5 B C a p.G' p.Pl0 p.T p.A p.Ks p.R p.F F0 p.eE P g i l r d a1 a2 a3 e a4 a5 a6 a7`.
+-/
 theorem satOfDiscreteSeries (h1 : GlobalTheory.Dec.DSInfChar) (h2 : GlobalTheory.Published.HarishChandraFinite) (h3 : GlobalTheory.Published.CuspRapidDecay)
     (h4 : GlobalTheory.Published.DiscreteSeriesUpqUnique) (h5 : Formalism.L2.SG.RowsDef.RowsFinDim) : SatNew :=
   fun B C a p F0 P g i l r d e ⟨a1, a2, a3, a4, a5, a6, a7⟩ =>
@@ -72,6 +81,11 @@ theorem satOfDiscreteSeries (h1 : GlobalTheory.Dec.DSInfChar) (h2 : GlobalTheory
 
 set_option maxHeartbeats 8000000 in
 
+/- English proof (translation)
+Set `Zn : New (Late.D a)` to `⟨Zs, (by with_unfolding_all exact (N :)), (by with_unfolding_all exact (h :))⟩`. Take `⟨C', hC⟩` from `ColRe.exists_colsTiedSym (Late.D a) Zn col.C`. Set `F₀ : ∀ u, Forms0 (reD (Late.D a) Zn) u` to `fun u => (C'.forms u).to0`. Set `F₁ : ∀ u, Forms0 (reL a Zn).D u` to `(by with_unfolding_all exact (F₀ :))`. Establish `hF : SameL a Zn (fun u => (col.C.forms u).to0) F₁` using `(by with_unfolding_all exact (hC :))`.
+
+Take `⟨s⟩` from `H Zn.N Zn.h F₁ hF`. Establish `c` using `CarModel.sameStd B f T w a Zn col ((by with_unfolding_all exact (col' :))) F₁ hF`. Conclude with `⟨CarModel.satCar (D := Late.D (upL a (reSt a Zs) N h)) (F := (by with_unfolding_all exact (F₁ :))) ((by with_unfolding_all exact (c :))) (p.up a (reSt a Zs) N h) ((by with_unfolding_all exact (s :)))⟩`.
+-/
 theorem sat_col (a : w.Lt) (col : ColT w a) (p : RowPk (Late.D a)) (Zs : SNew (Late.D a))
     (H : ∀ (N : ∀ u, Submodule (𝓞 (Late.D a).what₂.LL) ((Late.D a).div.Nu u).V) (hh : (Late.D a).what₂.Word → ℝ)
       (F₁ : ∀ u, Forms0 (reL a ⟨Zs, N, hh⟩).D u), SameL a ⟨Zs, N, hh⟩ (fun u => (col.C.forms u).to0) F₁ →
@@ -94,12 +108,24 @@ def PackEx : Prop := ∀ (D : D7) (F : ∀ u, Forms0 D u), GapHyp D → Formalis
 
 set_option maxHeartbeats 4000000 in
 
+/- English proof (translation)
+The claim follows from `hR (w.D a) (g a.W a.V a.S a.N).1 ((by with_unfolding_all exact (hs :))) ((by with_unfolding_all exact (hd :)))`.
+-/
 theorem real_of (hR : RealOf) (a : w.Lt) (g : GIs2 K w a.G) (hs : a.S.s.cdScale = Vol.trueScale a.G.cd)
     (hd : ∀ τ, a.S.dsig τ = Vol.trueDsig B.R (B.hc τ)) : RealTied (w.D a) :=
   hR (w.D a) (g a.W a.V a.S a.N).1 ((by with_unfolding_all exact (hs :))) ((by with_unfolding_all exact (hd :)))
 
 set_option maxHeartbeats 8000000 in
 
+/- English proof (translation)
+Take `⟨vt, -, ⟨col⟩⟩` from `l.g a.W a.V a.S a.N`. Establish `col₀ : ColT w a` using `col.toColT`. Take `⟨P, hI⟩` from `hP (Late.D a) (fun u => (col₀.C.forms u).to0) gap loc`. Establish `real₀ : RealTied (Late.D a)` using `(by with_unfolding_all exact ((real_of hR a l.g hs hd) :))`. Establish `dstar : (Late.D a).what₂.Dstar = StandardLattice.DstarD (Late.D a)` using `(sizes_eq_count K (Late.st a) hO (hV _ real₀.vol) hd).2`.
+
+Establish `e0 : IdempotentRealFixed (Late.D a)` using `hE _ (l.what₂.grp.eSerTie a.V a.S a.G)`. Take `⟨Zs, H⟩` from `hN B w.C a (pkOf l.what₂) _ P gap hI loc real₀ dstar e0 (rowHyp_pkOf l.what₂)`. Set `b : w.Lt` to `upL a (reSt a Zs) (fun u => (a.V.div.Nu u).L) a.V.div.h`. Take `⟨l', e⟩` from `hM K B f T w a l (reSt a Zs) (fun u => (a.V.div.Nu u).L) a.V.div.h`. Take `⟨-, -, ⟨col'⟩⟩` from `l'.g b.W b.V b.S b.N`.
+
+Establish `col₁ : ColumnDataSplitPrimes K w b` using `col'`. Take `⟨s⟩` from `sat_col a col₀ (pkOf l.what₂) Zs H _ _ col₁.toColT`. Establish `s' : SX K B f T w b l'.Wt l'.p0 l'.what₂ col₁.toColT`. Rewrite using `[sx_eq l'.what₂ col₁.toColT, e]`. Conclude with `s`.
+
+Establish `x : p.S K B f T w b l'.Wt l'.p0 l'.what₂ col₁.toColT s'`. Rewrite using `[hS]`. Conclude with `PUnit.unit`. Conclude with `⟨b, ⟨⟨l', col₁, real_of hR b l'.g ((by with_unfolding_all exact (hs :))) ((by with_unfolding_all exact (hd :))), (by with_unfolding_all exact (hd :)), (by with_unfolding_all exact (hdel :)), ⟨s', x⟩⟩⟩⟩`.
+-/
 theorem lv4_of {hL : GlobalTheory.Published.LocalLanglandsGL} (p : Prm hL) (hS : p.S = SExt.none) (hM : LevelThreeCondition p.s) (hN : SatNew) (hR : RealOf)
     (hP : PackEx) (hV : ∀ D : D7, VolTieG D → StandardLattice.VolumeEqMass₂ D) (hE : ∀ D : D7, GlobalTheory.GLq.ESerTie D → IdempotentRealFixed D) (hO : K.Over B.toPre)
     (a : w.Lt) (l : Lv3 p.s K w a) (gap : GapHyp (Late.D a)) (hdel : a.S.s.Del = (Delv K.s K.cD : ℚ))
@@ -127,6 +153,9 @@ theorem lv4_of {hL : GlobalTheory.Published.LocalLanglandsGL} (p : Prm hL) (hS :
 
 set_option maxHeartbeats 8000000 in
 
+/- English proof (translation)
+Use `Step.of_evG ((evG_of_ev GlobalTheory.Mem.Top.NodeGap.ev_gapHyp).imp fun K _ _ _ _ gap B f T hO _ _ _ w => ?_)` and prove the remaining obligations. Introduce and unpack `⟨-, Z, ⟨l⟩⟩`. Take `⟨S, hdel, hs, hd, loc⟩` from `GlobalTheory.Mem.SProv.exists_sStage_true K B w.C Z.W Z.G.cd hO (SpectralModel.colsPos_of Z.S) (SpectralModel.rows_le_of Z.S)`. Take `⟨l₀, -⟩` from `hM K B f T w Z l S (fun u => (Z.V.div.Nu u).L) Z.V.div.h`. Conclude with `lv4_of p hS hM hN hR hP hV hE hO _ l₀ (gap _ hO) hdel hs hd ((by with_unfolding_all exact ((loc (upL Z S (fun u => (Z.V.div.Nu u).L) Z.V.div.h).V Z.N Z.G) :)))`.
+-/
 theorem step_of {hL : GlobalTheory.Published.LocalLanglandsGL} (p : Prm hL) (hS : p.S = SExt.none) (hM : LevelThreeCondition p.s) (hN : SatNew) (hR : RealOf)
     (hP : PackEx) (hV : ∀ D : D7, VolTieG D → StandardLattice.VolumeEqMass₂ D) (hE : ∀ D : D7, GlobalTheory.GLq.ESerTie D → IdempotentRealFixed D) :
     StepW (pinAnd (Has3 p.s)) (Has4 p.s) := by
@@ -136,6 +165,13 @@ theorem step_of {hL : GlobalTheory.Published.LocalLanglandsGL} (p : Prm hL) (hS 
   obtain ⟨l₀, -⟩ := hM K B f T w Z l S (fun u => (Z.V.div.Nu u).L) Z.V.div.h
   exact lv4_of p hS hM hN hR hP hV hE hO _ l₀ (gap _ hO) hdel hs hd ((by with_unfolding_all exact ((loc (upL Z S (fun u => (Z.V.div.Nu u).L) Z.V.div.h).V Z.N Z.G) :)))
 
+/- English proof (translation)
+Introduce `D hv hs hd`. Use `⟨?_, ?_, ?_, hv⟩` and prove the remaining obligations. Rewrite using `[Vol.cdScaleTie_iff, hs]`. Conclude with `GlobalTheory.Mem.Vol.ScaleExists.trueScale_isScale D.cd`. Introduce `τ`.
+
+Unfold `Formalism.L2.Theta.IsDsig`. Rewrite using `[hs, hd τ]`. Conclude with `(GlobalTheory.T.exists_discreteSeries_formalDegree_product h1 h2 D.cd D.R (D.hc τ)).1`. Introduce `τ H _ _ σ d hσ hf`. Rewrite `hf` using `[hs]`.
+
+Rewrite using `[hd τ]`. Conclude with `(GlobalTheory.T.exists_discreteSeries_formalDegree_product h1 h2 D.cd D.R (D.hc τ)).2 H σ d hσ hf`.
+-/
 theorem realOf (h1 : Vol.DiscreteSeriesExist) (h2 : Vol.FormalDegreeFormula₂) : RealOf := by
   intro D hv hs hd
   refine ⟨?_, ?_, ?_, hv⟩
@@ -150,6 +186,9 @@ theorem realOf (h1 : Vol.DiscreteSeriesExist) (h2 : Vol.FormalDegreeFormula₂) 
     rw [hd τ]
     exact (GlobalTheory.T.exists_discreteSeries_formalDegree_product h1 h2 D.cd D.R (D.hc τ)).2 H σ d hσ hf
 
+/- English proof (translation)
+The claim follows from `GlobalTheory.GoodIdemReal.star_coeff_of_reverse D fun k g hm h0 x => by haveI : Fact (D.host.g k).Prime := ⟨D.host.g_prime k⟩ obtain ⟨L, -, he⟩ := h k rw [he, he] exact DFunLike.congr_fun (GlobalTheory.GLq.GalSer.eSerC_map L _ D.R.r hm (GlobalTheory.SeriesSupport.rel_dual L hm h0 …`.
+-/
 theorem goodIdempotent_real_of_harishChandra_series (D : D7) (h : GlobalTheory.GLq.ESerTie D) : IdempotentRealFixed D :=
   GlobalTheory.GoodIdemReal.star_coeff_of_reverse D fun k g hm h0 x => by
     haveI : Fact (D.host.g k).Prime := ⟨D.host.g_prime k⟩
@@ -157,6 +196,9 @@ theorem goodIdempotent_real_of_harishChandra_series (D : D7) (h : GlobalTheory.G
     rw [he, he]
     exact DFunLike.congr_fun (GlobalTheory.GLq.GalSer.eSerC_map L _ D.R.r hm (GlobalTheory.SeriesSupport.rel_dual L hm h0)) x
 
+/- English proof (translation)
+Introduce `h1 h2 h3 h4 h5 hW hB hD hF _ _ p hS hM` and use `step_of p hS hM (satOfDiscreteSeries h1 h2 h3 h4 h5) (realOf hD hF) (GlobalTheory.Mem.SRe.exists_sPack_integrable hW hB h5) (GlobalTheory.Mem.VolMass.volumes_eq_masses_of_unfold (GlobalTheory.VolRatioFromSiegelWeil.volumeRatio hW)) goodIdempotent_real_of_harishChandra_series`.
+-/
 theorem stepW_has4 : GlobalTheory.Dec.DSInfChar → GlobalTheory.Published.HarishChandraFinite → GlobalTheory.Published.CuspRapidDecay → GlobalTheory.Published.DiscreteSeriesUpqUnique → Formalism.L2.SG.RowsDef.RowsFinDim → HeckeCharacterZeroLocus.SiegelWeilU.SiegelWeilUnitaryConvergent → PI.BesselMapUniq.BesselMapUniq → Vol.DiscreteSeriesExist → Vol.FormalDegreeFormula₂ → StandardLattice.SiegelMassRatioCM → ∀ (hL : GlobalTheory.Published.LocalLanglandsGL) (p : Prm hL), p.S = SExt.none → LevelThreeCondition p.s → StepW (pinAnd (Has3 p.s)) (Has4 p.s) :=
   fun h1 h2 h3 h4 h5 hW hB hD hF _ _ p hS hM =>
     step_of p hS hM (satOfDiscreteSeries h1 h2 h3 h4 h5) (realOf hD hF) (GlobalTheory.Mem.SRe.exists_sPack_integrable hW hB h5)

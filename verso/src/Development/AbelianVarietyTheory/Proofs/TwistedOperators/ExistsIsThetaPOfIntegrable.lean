@@ -8,6 +8,15 @@ open MeasureTheory Formalism.IndefR
 
 namespace GlobalTheory.ThetaIntegralLinear
 
+/- English proof (translation)
+Use `⟨LinearMap.mk₂ ℂ (fun f e g => ∫ h in 𝓕, th g h (pt (io e ((f : H' → Tau) h))) ∂ν) ?_ ?_ ?_ ?_, hint, ?_⟩` and prove the remaining obligations. Introduce `f₁ f₂ e`. Use function extensionality and compare the values at `g`. Simplify using `only [Submodule.coe_add, Pi.add_apply, map_add]`. Conclude with `integral_add (hint f₁ e g) (hint f₂ e g)`.
+
+Introduce `c f e`. Use function extensionality and compare the values at `g`. Simplify using `only [Submodule.coe_smul, Pi.smul_apply, map_smul, smul_eq_mul]`. Conclude with `integral_const_mul c _`. Introduce `f e₁ e₂`.
+
+Use function extensionality and compare the values at `g`. Simplify using `only [map_add, LinearMap.add_apply, Pi.add_apply]`. Conclude with `integral_add (hint f e₁ g) (hint f e₂ g)`. Introduce `c f e`. Use function extensionality and compare the values at `g`.
+
+Simplify using `only [map_smul, LinearMap.smul_apply, Pi.smul_apply, smul_eq_mul]`. Conclude with `integral_const_mul c _`. Introduce `f e g`. Both sides reduce to the same expression.
+-/
 theorem exists_isThetaP_of_integrable {G' H' S' Sinf TK Tau : Type} [MeasurableSpace H'] [AddCommGroup S'] [Module ℂ S']
     [AddCommGroup Sinf] [Module ℂ Sinf] [AddCommGroup TK] [Module ℂ TK] [AddCommGroup Tau] [Module ℂ Tau]
     (ν : Measure H') (𝓕 : Set H') (th : G' → H' → S' →ₗ[ℂ] ℂ) (pt : Sinf →ₗ[ℂ] S')

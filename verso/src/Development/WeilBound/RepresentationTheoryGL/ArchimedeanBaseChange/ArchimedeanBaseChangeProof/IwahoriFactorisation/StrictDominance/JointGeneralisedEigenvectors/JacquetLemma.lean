@@ -16,12 +16,21 @@ noncomputable section
 
 namespace PositivityTheory.SphericalProduct
 
+/- English proof (translation)
+The claim follows from `GlobalTheory.T.jacquet_projection_hecke_holds G`.
+-/
 theorem jacquet_hecke (G : Type) [Group G] [TopologicalSpace G] [IsTopologicalGroup G] : A2 G :=
   GlobalTheory.T.jacquet_projection_hecke_holds G
 
+/- English proof (translation)
+The claim follows from `GlobalTheory.T.iwahori_unipotent_datum`.
+-/
 theorem iwahori_u : IwahoriU :=
   GlobalTheory.T.iwahori_unipotent_datum
 
+/- English proof (translation)
+The claim follows from `GlobalTheory.T.dominant_unipotent_contraction`.
+-/
 theorem dom_u : DomU :=
   GlobalTheory.T.dominant_unipotent_contraction
 

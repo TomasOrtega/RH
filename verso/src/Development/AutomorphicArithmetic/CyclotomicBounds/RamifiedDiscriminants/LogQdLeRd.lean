@@ -8,6 +8,21 @@ import Development.AutomorphicArithmetic.FrobeniusLocalisation.VdTwo
 open UpperTheory.HF
 open NumberField Formalism.HC
 
+/- English proof (translation)
+Introduce `φ H hP`. Establish `hq : H.q ∈ H.ram` using `(UpperTheory.HF.inert_q H).2.2.2.2 hP`. Take `⟨hA, hB, -⟩` from `UpperTheory.HF.ram_eq H`. Establish `hd : H.d ∈ H.ram` using `(hA _).2 (Or.inr (Or.inr rfl))`. Establish `h2 : 2 ∈ H.ram` using `(Finset.mem_inter.1 hB).2`.
+
+Take `⟨hs, -, -, hrd⟩` from `UpperTheory.HF.log_rd_sum H`. Establish `vq : 1 / 2 ≤ H.vdH H.q` using `(UpperTheory.HF.mem_ram H H.q_prime).2.2.2.1 hq`. Establish `vd : 1 / 2 ≤ H.vdH H.d` using `(UpperTheory.HF.mem_ram H H.d_prime).2.2.2.1 hd`. Establish `v2 : 11 / 4 ≤ H.vdH 2` using `(UpperTheory.HF.vd_two H).2.1`. Establish `n2q : 2 ≠ H.q` using `fun h => H.q_notMem_small (h ▸ H.two_mem_small)`.
+
+Establish `n2d : 2 ≠ H.d` using `fun h => H.d_notMem_small (h ▸ H.two_mem_small)`. Establish `nqd : H.q ≠ H.d` using `H.q_ne_d`. Establish `hsub : ({2, H.q, H.d} : Finset ℕ) ⊆ H.ram`. Introduce `l hl`. Simplify using `only [Finset.mem_insert, Finset.mem_singleton] at hl`.
+
+Apply the tactic sequence `rcases hl with rfl | rfl | rfl <;> assumption`. Establish `hle` using `Finset.sum_le_sum_of_subset_of_nonneg (f := fun l : ℕ => H.vdH l * Real.log l) hsub (fun l _ _ => mul_nonneg (H.vdH_nonneg l) (Real.log_natCast_nonneg l))`. Rewrite `hle` using `[← hs, Finset.sum_insert (by simp [n2q, n2d]), Finset.sum_pair nqd]`. Establish `lq` using `Real.log_natCast_nonneg H.q`. Establish `ld` using `Real.log_natCast_nonneg H.d`.
+
+Establish `l2 : 0 < Real.log 2` using `Real.log_pos one_lt_two`. Establish `hq0 : (0 : ℝ) < H.q` using `Nat.cast_pos.2 H.q_prime.pos`. Establish `hd0 : (0 : ℝ) < H.d` using `Nat.cast_pos.2 H.d_prime.pos`. Move the coercions through the operations in `at hle`. Establish `key : Real.log 2 + (Real.log H.q + Real.log H.d) / 2 ≤ Real.log H.rd`.
+
+Use polynomial arithmetic with `[mul_le_mul_of_nonneg_right vq lq, mul_le_mul_of_nonneg_right vd ld, mul_le_mul_of_nonneg_right v2 l2.le]`. Establish `hsq : 0 < Real.sqrt ((H.q : ℝ) * H.d)` using `Real.sqrt_pos.2 (mul_pos hq0 hd0)`. Establish `h4 : 2 * Real.sqrt ((H.q : ℝ) * H.d) ≤ H.rd`. Rewrite using `[← Real.log_le_log_iff (by positivity) hrd, Real.log_mul two_ne_zero hsq.ne', Real.log_sqrt (mul_pos hq0 hd0).le, Real.log_mul hq0.ne' hd0.ne']`. Conclude with `key`.
+
+Conclude with `⟨hq, by linarith, by linarith, h4⟩`.
+-/
 theorem UpperTheory.KR.log_qd_le_rd :
     ∀ {φ : Frame} (H : HostAx φ), H.toHostRaw.PsQ → H.q ∈ H.ram ∧ Real.log H.q + Real.log H.d ≤ 2 * Real.log H.rd ∧ Real.sqrt ((H.q : ℝ) * H.d) ≤ H.rd ∧ 2 * Real.sqrt ((H.q : ℝ) * H.d) ≤ H.rd := by
   intro φ H hP

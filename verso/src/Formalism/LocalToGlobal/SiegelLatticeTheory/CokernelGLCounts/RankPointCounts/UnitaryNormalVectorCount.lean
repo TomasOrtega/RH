@@ -33,6 +33,13 @@ def UnitaryNormalVectorCount : Prop :=
           coefA Y u u' t0 t1 = coefA Y u u' t0 t2 → coefA' Y u u' t0 t1 = coefA' Y u u' t0 t2 →
           nmlOf Y u u' t1 = nmlOf Y u u' t2
 
+/- English proof (translation)
+Introduce `Cg cb Cw cT CT C0`. Take `⟨A1, B1, h1⟩` from `hP Cg cb Cw cT CT C0`. Take `⟨A2, B2, h2⟩` from `hG Cg cb Cw cT CT C0`. Use `⟨max A1 A2, max B1 B2, fun C' Cl hC hl D large₂ X Y u u' hctx γ hγ t0 t1 t2 g0 g1 g2 p0 p1 p2 r1 r2 ca ca' => ?_⟩` and prove the remaining obligations. Establish `hdc` using `h1 C' Cl (le_of_max_le_left hC) (le_of_max_le_left hl) D large₂ X Y u u' hctx γ hγ t1 t2 g1 g2 p1 p2 (r1.1.trans r2.1.symm)`.
+
+Establish `e0` using `gval_occ (t := t0) (hG := p0 ▸ hγ)`. Establish `e1` using `gval_occ (t := t1) (hG := p1 ▸ hγ)`. Establish `e2` using `gval_occ (t := t2) (hG := p2 ▸ hγ)`. Establish `hG1 : t1.G = t0.G`. Rewrite using `[Formalism.L2.SG.Pf.SatGram.gterm_G (Y := Y) (t := t1), Formalism.L2.SG.Pf.SatGram.gterm_G (Y := Y) (t := t0)]`.
+
+Rewrite using `[e1, e0, p1, p0]`. Establish `hG2 : t2.G = t0.G`. Rewrite using `[Formalism.L2.SG.Pf.SatGram.gterm_G (Y := Y) (t := t2), Formalism.L2.SG.Pf.SatGram.gterm_G (Y := Y) (t := t0)]`. Rewrite using `[e2, e0, p2, p0]`. Conclude with `h2 C' Cl (le_of_max_le_right hC) (le_of_max_le_right hl) D large₂ X Y u u' hctx t0 t1 t2 g0 g1 g2 r1 r2 hG1 hG2 hdc ca ca'`.
+-/
 theorem nmlSep_of (hP : NmlPtDC) (hG : UnitaryNormalVectorCount) : NmlSep := by
   intro Cg cb Cw cT CT C0
   obtain ⟨A1, B1, h1⟩ := hP Cg cb Cw cT CT C0

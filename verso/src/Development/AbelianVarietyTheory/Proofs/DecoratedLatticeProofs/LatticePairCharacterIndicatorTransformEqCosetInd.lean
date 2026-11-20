@@ -14,6 +14,13 @@ noncomputable section
 namespace GlobalTheory.KapStep
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
+/- English proof (translation)
+Introduce `D k _ _ _ _ p L T n _ _ β ζ s hs FL hFL a c hc`. Use function extensionality and compare the values at `y`. Rewrite using `[GlobalTheory.LocMod.Witness.ext_apply, hc, colFun]`. Use `if_congr Iff.rfl ?_ rfl` and prove the remaining obligations. Use `congr 1`.
+
+Use function extensionality and compare the values at `r`. Simplify using `only [GlobalTheory.LocMod.Place.down, GlobalTheory.FinPl.ExtZero.zcol, Pi.smul_apply, smul_eq_mul, Matrix.mul_apply, Matrix.mulVec, dotProduct, map_sum, map_mul, hFL, Matrix.map_apply, Finset.sum_mul, Finset.mul_sum]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Use `show s⁻¹ * (β.b' r i * p.pr (y i j) * (s * p.pr (incA D (ζ j)))) = _`.
+
+Clear the denominators using the available nonvanishing facts.
+-/
 theorem colExt : ∀ (D : D7) (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] (p : SplitPt D k) (L T : HSp D) (n : Type) [Fintype n] [DecidableEq n] (β : Frame p T n) (ζ : Fin L.rank → D.host.E) (s : k), s ≠ 0 → ∀ (FL : GlobalTheory.LocMod.Frame k L.rank Unit), (∀ r, FL.β r () = s * (GlobalTheory.LocMod.Place.ofSplitPt p).pr (ζ r)) → ∀ (a : (n → k) → ℂ) (c : SB (Matrix n Unit k)), (∀ M, c.1 M = a (s⁻¹ • fun r => M r ())) → GlobalTheory.LocMod.Witness.ext (GlobalTheory.LocMod.Place.ofSplitPt p) FL (GlobalTheory.LocMod.Frame.ofFinPl β) c = colFun β ζ a := by
   intro D k _ _ _ _ p L T n _ _ β ζ s hs FL hFL a c hc
   classical
@@ -29,6 +36,21 @@ theorem colExt : ∀ (D : D7) (k : Type) [Field k] [ValuativeRel k] [Topological
   show s⁻¹ * (β.b' r i * p.pr (y i j) * (s * p.pr (incA D (ζ j)))) = _
   field_simp
 
+/- English proof (translation)
+Introduce `D k _ _ _ _ p T L n _ _ β ζ hζ FL hFL b Φ hΦ`. Use function extensionality and compare the values at `x`. Rewrite using `[GlobalTheory.LocMod.Witness.ext_apply, hΦ, rowFun]`. Use `if_congr Iff.rfl ?_ rfl` and prove the remaining obligations. Use `congr 1`.
+
+Use `set P := GlobalTheory.LocMod.Place.ofSplitPt p with hP`. Use `set f := GlobalTheory.LocMod.Witness.prH P with hf`. Establish `hfa : ∀ a, f a = p.pr (incA D a)` using `fun _ => rfl`. Use `set h : D.host.E := star ζ ⬝ᵥ Matrix.mulVec L.gram ζ with hh`. Establish `h0 : f h ≠ 0` using `(map_ne_zero f).2 hζ.2`.
+
+Use `set u : Fin L.rank → k := fun j => f ((Matrix.vecMul (star ζ) L.gram) j) with hu`. Establish `hu1 : ∑ j, u j * f (ζ j) = f h`. Rewrite using `[hh, Matrix.dotProduct_mulVec, dotProduct, map_sum]`. Conclude with `Finset.sum_congr rfl fun j _ => (map_mul f _ _).symm`. Establish `hγ : ∀ j, FL.γ () j = (f h)⁻¹ * u j` using `fun j => by`.
+
+Establish `h1 : ∀ i, f (ζ i) * FL.γ () j = (1 : Matrix _ _ k) i j` using `fun i => by`. Rewrite using `[← FL.βγ, Matrix.mul_apply]`. Simplify using `only [Finset.univ_unique, Finset.sum_singleton]`. Conclude with `congrArg (· * _) (hFL i).symm`. Establish `h2 : u j = f h * FL.γ () j`.
+
+Rewrite using `[← hu1, Finset.sum_mul]`. Simplify using `only [mul_assoc, h1, Matrix.one_apply, mul_ite, mul_one, mul_zero, Finset.sum_ite_eq', Finset.mem_univ, if_true]`. Rewrite using `[h2, inv_mul_cancel_left₀ h0]`. Use function extensionality and compare the values at `r`. Simplify using `only [GlobalTheory.LocMod.Place.down, GlobalTheory.FinPl.ExtZero.zrow, Pi.smul_apply, smul_eq_mul, Matrix.mul_apply, hγ, Matrix.map_apply]`.
+
+Use `show _ = (f h)⁻¹ * ∑ i, p.pr (∑ j, incA D (Matrix.vecMul (star ζ) L.gram j) * x j i) * β.b i r`. Rewrite using `[Finset.mul_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[map_sum, ← mul_assoc, Finset.mul_sum]`. Use `congr 1`.
+
+Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[map_mul, mul_assoc]`. Both sides reduce to the same expression.
+-/
 theorem rowExt : ∀ (D : D7) (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] (p : SplitPt D k) (T L : HSp D) (n : Type) [Fintype n] [DecidableEq n] (β : Frame p T n) (ζ₀ : Fin L.rank → D.host.E), IsLineVec L ζ₀ → ∀ (FL : GlobalTheory.LocMod.Frame k L.rank Unit), (∀ r, FL.β r () = (GlobalTheory.LocMod.Place.ofSplitPt p).pr (ζ₀ r)) → ∀ (b : (n → k) → ℂ) (Φ : SB (Matrix Unit n k)), (∀ M, Φ.1 M = b (M ())) → GlobalTheory.LocMod.Witness.ext (GlobalTheory.LocMod.Place.ofSplitPt p) (GlobalTheory.LocMod.Frame.ofFinPl β) FL Φ = rowFun β ζ₀ b := by
   intro D k _ _ _ _ p T L n _ _ β ζ hζ FL hFL b Φ hΦ
   classical
@@ -67,6 +89,37 @@ theorem rowExt : ∀ (D : D7) (k : Type) [Field k] [ValuativeRel k] [Topological
 
 open GlobalTheory.IndefiniteRowSideFullHecke.AppendedVectorData (Lifts InDual resUnit) in
 
+/- English proof (translation)
+Introduce `k _ _ _ _ _ _ ν hν n _ _ χ hχ q ψk xi s hψk hs w hw Q`. Use `haveI : T2Space k := GlobalTheory.SplitWeil.t2Space k`. Use `haveI := secondCountable k`. Use `haveI := hν`. Take `⟨F, hF⟩` from `GlobalTheory.FinPl.CosetPairing.exists_lifts Q`.
+
+Use `set wk : k := ((w : 𝒪[k]) : k) with hwk`. Use `set wi : k := (((w⁻¹ : 𝒪[k]ˣ) : 𝒪[k]) : k) with hwi`. Establish `hww : wk * wi = 1` using `by rw [hwk, hwi, ← Subring.coe_mul, Units.mul_inv]; rfl`. Establish `hF' : Lifts Q.lat (wi • F) ((resUnit w)⁻¹ • Q).red` using `fun y => by`. Take `⟨t, ht, hr⟩` from `hF y`.
+
+Use `⟨(w⁻¹ : 𝒪[k]ˣ) * t, by rw [smul_dotProduct, ← ht]; rfl, ?_⟩` and prove the remaining obligations. Rewrite using `[map_mul, hr]`. Both sides reduce to the same expression. Set `L' : Submodule 𝒪[k] (n → k)` to `Q.lat.comap ((LinearMap.lsmul k (n → k) s⁻¹).restrictScalars 𝒪[k])`. Establish `hc : (fun M : Matrix n Unit k => charInd (resChar χ hχ q) Q (s⁻¹ • fun r => M r ())) ∈ SB (Matrix n Unit k)` using `GlobalTheory.FinPl.Comm.comp_mem_SB (GlobalTheory.FinPl.SBFacts.charInd_mem _ Q) (s := fun y => Matrix.of fun r _ => s * y r) (by fun_prop) (continuous_pi fun r => continuous_pi fun _ => by simp only [Matrix.of_apply]; fun_prop) fun M => by`.
+
+Use extensionality with `r u`. Simplify using `[hs]`. Establish `hΨ : (fun M : Matrix Unit n k => cosetInd q Q.lat ((resUnit w)⁻¹ • Q).red (M ())) ∈ SB (Matrix Unit n k)` using `GlobalTheory.FinPl.Comm.comp_mem_SB (GlobalTheory.FinPl.CosetSB.cosetInd_mem_SB k n q Q.lat _) (s := fun y => Matrix.of fun _ r => y r) (by fun_prop) (continuous_pi fun _ => continuous_pi fun r => by simp only [Matrix.of_apply]; fun_prop) fun M => rfl`. Use `⟨∫ y, vecInd L' y ∂(MeasureTheory.Measure.pi fun _ => ν), ⟨_, hc⟩, ⟨_, hΨ⟩, fun _ => rfl, fun _ => rfl, fun η => ?_⟩` and prove the remaining obligations. Use `set η' : n → k := η () - q.inv • wi • F with hη'`.
+
+Establish `e1 : cosetInd q Q.lat ((resUnit w)⁻¹ • Q).red (η ()) = dualInd Q.lat η'`. Rewrite using `[← GlobalTheory.FinPl.CosetPairing.cosetInd_add q hF' η', hη', sub_add_cancel]`. Establish `e2 : ∀ y : n → k, charInd (resChar χ hχ q) Q (s⁻¹ • y) * (ψk (-1 * (η () ⬝ᵥ y)) : ℂ) = vecInd L' y * (χ (wk * s⁻¹ * (η' ⬝ᵥ y)) : ℂ)` using `fun y => by`. Distinguish the cases in `hy : s⁻¹ • y ∈ Q.lat`. Establish `hy' : y ∈ L'` using `hy`.
+
+Take `⟨t, ht, hr⟩` from `hF ⟨_, hy⟩`. Establish `hr' : Q.ev (s⁻¹ • y) = residue 𝒪[k] t` using `((Q.hasVal_fn ⟨_, hy⟩).ev_eq).trans hr.symm`. Rewrite using `[charInd, vecInd, vecInd, if_pos hy, if_pos hy', hr', ← map_neg, resChar_residue, hψk, mul_one, one_mul, ← Circle.coe_mul, ← AddChar.map_add_eq_mul]`. Use `congr 2`. Establish `ht' : (t : k) = s⁻¹ * (F ⬝ᵥ y)` using `by rw [ht]; simp`.
+
+Establish `hx : xi = -wk * s⁻¹` using `by rw [← hw]; field_simp`. Rewrite using `[hη', sub_dotProduct, smul_dotProduct, smul_dotProduct, Subring.coe_neg, ht', hx, smul_eq_mul, smul_eq_mul]`. Take the linear combination `(q.inv * s⁻¹ * (F ⬝ᵥ y)) * hww`. Establish `hy' : y ∉ L'` using `hy`. Rewrite using `[charInd, vecInd, vecInd, if_neg hy, if_neg hy', mul_zero, zero_mul, zero_mul]`.
+
+Use `show _ * cosetInd q Q.lat ((resUnit w)⁻¹ • Q).red (η ()) = ∫ y, charInd (resChar χ hχ q) Q (s⁻¹ • y) * (ψk (-1 * (η () ⬝ᵥ y)) : ℂ) ∂(MeasureTheory.Measure.pi fun _ => ν)`. Simplify using `only [e2]`. Rewrite using `[e1, dualInd]`. Use `split_ifs with hd`. Rewrite using `[mul_one]`.
+
+Use `congr 1`. Use function extensionality and compare the values at `y`. Distinguish the cases in `hy : y ∈ L'`. Establish `h1 : wk * s⁻¹ * (η' ⬝ᵥ y) ∈ 𝒪[k]`. Use `mul_mem (w : 𝒪[k]).2 (hd _ hy)` as an intermediate fact.
+
+Use `this using 1` and compare the differences between its conclusion and the goal. Simplify using `[mul_assoc, hwk]`. Rewrite using `[apply_int_eq_one hχ ⟨_, h1⟩]`. Simplify using the standard rewrite rules. Rewrite using `[vecInd, if_neg hy, zero_mul]`.
+
+Rewrite using `[mul_zero]`. Choose the witnesses or unpack the hypotheses as in `⟨y, hy, hn⟩ : ∃ y ∈ Q.lat, η' ⬝ᵥ y ∉ 𝒪[k] := by`. Assume the negation of the conclusion as `h`. Use `push Not at h`. Conclude with `hd h`.
+
+Establish `h0 : η' ⬝ᵥ y ≠ 0` using `fun h => hn (h ▸ zero_mem _)`. Choose the witnesses or unpack the hypotheses as in `⟨z, hz, hz1⟩ : ∃ z, valuation k z ≤ valuation k (η' ⬝ᵥ y) ∧ χ z ≠ 1 := by`. Assume the negation of the conclusion as `h`. Use `push Not at h`. Conclude with `hn ((Valuation.mem_integer_iff _ _).2 (by simpa using (hχ _).1 h))`.
+
+Establish `ht : z / (η' ⬝ᵥ y) ∈ 𝒪[k]`. Rewrite using `[Valuation.mem_integer_iff, map_div₀]`. Conclude with `div_le_one_of_le₀ hz zero_le'`. Set `t : 𝒪[k]` to `(w⁻¹ : 𝒪[k]ˣ) * ⟨_, ht⟩`. Establish `hy₀ : s • t • y ∈ L'` using `by show s⁻¹ • s • t • y ∈ Q.lat`.
+
+Rewrite using `[inv_smul_smul₀ hs]`. Conclude with `Q.lat.smul_mem t hy`. Use `(GlobalTheory.FinPl.Comm.integral_vecInd_eq_zero χ _ _ L' η' hy₀ ?_).symm` and prove the remaining obligations. Use `hz1 using 2` and compare the differences between its conclusion and the goal. Use `show wk * s⁻¹ * (η' ⬝ᵥ s • (wi * (z / (η' ⬝ᵥ y))) • y) = z`.
+
+Rewrite using `[dotProduct_smul, dotProduct_smul, smul_eq_mul, smul_eq_mul, mul_assoc wi, div_mul_cancel₀ _ h0]`. Clear the denominators using the available nonvanishing facts. Take the linear combination `z * hww`.
+-/
 theorem fourier : ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] [MeasurableSpace k] [BorelSpace k] (ν : MeasureTheory.Measure k), ν.IsAddHaarMeasure → ∀ (n : Type) [Fintype n] [DecidableEq n] (χ : AddChar k Circle) (hχ : HasConductor χ 1) (q : Unif k) (ψk : AddChar k Circle) (xi s : k), (∀ x, ψk x = χ (xi * x)) → s ≠ 0 → ∀ w : 𝒪[k]ˣ, -(xi * s) = ((w : 𝒪[k]) : k) → ∀ Q : Pair k n, ∃ (C : ℂ) (c : SB (Matrix n Unit k)) (Ψ : SB (Matrix Unit n k)), (∀ M, c.1 M = charInd (resChar χ hχ q) Q (s⁻¹ • fun r => M r ())) ∧ (∀ M, Ψ.1 M = cosetInd q Q.lat ((GlobalTheory.IndefiniteRowSideFullHecke.AppendedVectorData.resUnit w)⁻¹ • Q).red (M ())) ∧ ∀ η, C * Ψ.1 η = GlobalTheory.StepData.hat ψk ν (-1) (fun y => c.1 (Matrix.of fun r _ => y r)) (η ()) := by
   intro k _ _ _ _ _ _ ν hν n _ _ χ hχ q ψk xi s hψk hs w hw Q
   classical
@@ -151,6 +204,31 @@ theorem fourier : ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k]
     field_simp
     linear_combination z * hww
 
+/- English proof (translation)
+Introduce `D k _ _ _ _ p q ψ hψ hU χ hχ hc n _ _ L S L'' ζ ζ₀ hζ hζ₀ τ lam hτ hlam hG`. Use `set P := GlobalTheory.LocMod.Place.ofSplitPt p with hP`. Use `set l : k := p.pr (incA D lam) with hl`. Establish `hl0 : l ≠ 0` using `fun h => by rw [h, map_zero] at hlam; exact zero_ne_one hlam`. Establish `hlO : l ∈ 𝒪[k]` using `(Valuation.mem_integer_iff _ _).2 hlam.le`.
+
+Establish `hliO : l⁻¹ ∈ 𝒪[k]` using `(Valuation.mem_integer_iff _ _).2 (by rw [map_inv₀, hlam, inv_one])`. Set `w : 𝒪[k]ˣ` to `⟨⟨l, hlO⟩, ⟨l⁻¹, hliO⟩, Subtype.ext (mul_inv_cancel₀ hl0), Subtype.ext (inv_mul_cancel₀ hl0)⟩`. Use `⟨(GlobalTheory.IndefiniteRowSideFullHecke.AppendedVectorData.resUnit w)⁻¹, ?_⟩` and prove the remaining obligations. Introduce `β LS hLS Q g₁ T₁ hg₁ hT₁`. Use `letI : MeasurableSpace k := borel k`.
+
+Use `haveI : BorelSpace k := ⟨rfl⟩`. Establish `hν : (MeasureTheory.Measure.addHaar : MeasureTheory.Measure k).IsAddHaarMeasure` using `inferInstance`. Establish `hxi : P.xi ≠ 0` using `GlobalTheory.LocMod.Witness.xi_ne P`. Use `set s : k := -l / P.xi with hs`. Establish `hs0 : s ≠ 0` using `div_ne_zero (neg_ne_zero.2 hl0) hxi`.
+
+Establish `hxs : -(P.xi * s) = ((w : 𝒪[k]) : k)` using `by show -(P.xi * (-l / P.xi)) = l`. Clear the denominators using the available nonvanishing facts. Establish `hζne : ∃ r, ζ r ≠ 0`. Assume the negation of the conclusion as `h`. Use `push Not at h`.
+
+Apply `hζ.2` to reduce the goal to its premises. Establish `: ζ = 0` using `funext h`. Simplify using `[this]`. Establish `hz : (fun r => s * P.pr (ζ r)) ≠ 0`. Take `⟨r, hr⟩` from `hζne`.
+
+Introduce `h`. Establish `h1` using `congrFun h r`. Simplify using `only [Pi.zero_apply] at h1`. Break down `mul_eq_zero.1 h1 with h2 | h2` into its components or cases. Conclude with `hs0 h2`.
+
+Conclude with `hr ((GlobalTheory.LocMod.Witness.prH P).injective (h2.trans (map_zero _).symm))`. Take `⟨FL, hFL⟩` from `GlobalTheory.KappaModel.exists_frame_col hζ.1 _ hz`. Use `set FS := GlobalTheory.LocMod.Frame.ofFinPl β with hFS`. Establish `hTLS` using `GlobalTheory.LineLatModel.isModel_ext D k p ψ hψ hU L S ζ hζ LS hLS g₁ T₁ hg₁ hT₁ n FL FS`. Set `ψk : AddChar k Circle` to `χ.compAddMonoidHom (AddMonoidHom.mulLeft P.xi)`.
+
+Establish `hψk : ∀ x, ψk x = χ (P.xi * x)` using `fun _ => rfl`. Establish `hk : P.IsChar ψ ψk` using `(GlobalTheory.LocMod.Place.isChar_ofSplitPt p hc).2 hψk`. Use `set z₀ : Fin L''.rank → k := fun i => P.pr (ζ₀ i) with hz₀`. Establish `hτz : (τ.map P.pr).mulVec z₀ = (-(P.xi * s)) • fun i => P.pr (ζ i)`. Rewrite using `[hxs]`.
+
+Use function extensionality and compare the values at `i`. Establish `h2` using `congrArg (fun v => GlobalTheory.LocMod.Witness.prH P (v i)) hτ`. Simplify using `only [Pi.smul_apply, smul_eq_mul, map_mul, RingHom.map_mulVec] at h2`. Simplify using `only [Pi.smul_apply, smul_eq_mul]`. Conclude with `h2`.
+
+Take `⟨FL'', hFL'', TL, hTL, hTLc⟩` from `GlobalTheory.KappaModel.kappa_model D k P MeasureTheory.Measure.addHaar hν ψ hψ ψk hk L S L'' ζ τ hζ₀.1 hG s z₀ hs0 hτz n FS FL hFL _ hTLS`. Take `⟨C, c, Ψ, hc1, hΨ, hCΨ⟩` from `fourier k MeasureTheory.Measure.addHaar hν n χ hχ q ψk P.xi s hψk hs0 w hxs Q`. Take `⟨g₃, T₃, hg₃, hT₃, hT₃e⟩` from `GlobalTheory.T.exists_splitPlaceModel_extension_lineLattice D k p ψ hψ hU S L'' ζ₀ hζ₀ LS hLS n FS FL'' (C • TL) (GlobalTheory.LocMod.Witness.isModel_smul P hTL C)`. Use `⟨g₃, T₃, hg₃, hT₃, ?_⟩` and prove the remaining obligations. Establish `hrow` using `rowExt D k p S L'' n β ζ₀ hζ₀ FL'' hFL'' _ Ψ hΨ`.
+
+Establish `hcol` using `colExt D k p L S n β ζ s hs0 FL hFL _ c hc1`. Rewrite using `[← hrow, hT₃e, LinearMap.smul_apply, ← map_smul]`. Use function extensionality and compare the values at `w'`. Rewrite using `[hTLc c (C • Ψ) (fun η => by rw [← hCΨ η]; rfl) w']`. Use `show T₁ (GlobalTheory.LocMod.Witness.ext P FL FS c) _ = _`.
+
+Rewrite using `[hcol]`. Both sides reduce to the same expression.
+-/
 theorem kapStep : ∀ (D : D7) (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] (p : SplitPt D k) (q : Unif k) (ψ : AddChar (AF D.host.F) ℂ), IsStdChar D ψ (-1) → p.UnitAA → ∀ (χ : AddChar k Circle) (hχ : HasConductor χ 1), p.IsChar ψ χ → ∀ (n : Type) [Fintype n] [DecidableEq n] (L S L'' : HSp D) (ζ : Fin L.rank → D.host.E) (ζ₀ : Fin L''.rank → D.host.E), IsLineVec L ζ → IsLineVec L'' ζ₀ → ∀ (τ : Matrix (Fin L.rank) (Fin L''.rank) D.host.E) (lam : D.host.E), Matrix.mulVec τ ζ₀ = lam • ζ → valuation k (p.pr (incA D lam)) = 1 → τ.conjTranspose * (L.gram * τ) = (-(D.host.xi0 * star D.host.xi0)) • L''.gram → ∃ ε : 𝓀[k]ˣ, ∀ (β : Frame p S n) (LS : Lat S), IsSelfDualC S LS → ∀ (Q : Pair k n) (g₁ : WO L S → ℂ) (T₁ : (WO L S → ℂ) →ₗ[ℂ] (WO L S → ℂ)), IsThetaFunO ψ L S g₁ → IsPlaceModel ψ (symplO L S) (heisO ψ L S) p.e (latO L S ((Submodule.span (NumberField.RingOfIntegers D.host.E) {ζ} : Lat L) : Set _) (LS : Set _) (· = p.v)) 1 g₁ T₁ → ∃ (g₃ : WO S L'' → ℂ) (T₃ : (WO S L'' → ℂ) →ₗ[ℂ] (WO S L'' → ℂ)), IsThetaFunO ψ S L'' g₃ ∧ IsPlaceModel ψ (symplO S L'') (heisO ψ S L'') p.e (latO S L'' (LS : Set _) ((Submodule.span (NumberField.RingOfIntegers D.host.E) {ζ₀} : Lat L'') : Set _) (· = p.v)) 1 g₃ T₃ ∧ T₃ (rowFun β ζ₀ (cosetInd q Q.lat (ε • Q).red)) = fun w => T₁ (colFun β ζ (charInd (resChar χ hχ q) Q)) (kap τ S w) := by
   intro D k _ _ _ _ p q ψ hψ hU χ hχ hc n _ _ L S L'' ζ ζ₀ hζ hζ₀ τ lam hτ hlam hG
   set P := GlobalTheory.LocMod.Place.ofSplitPt p with hP

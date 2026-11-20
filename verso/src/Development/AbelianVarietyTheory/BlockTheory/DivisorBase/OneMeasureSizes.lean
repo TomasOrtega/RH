@@ -53,11 +53,17 @@ def adFun {s : T.Q.c.F →+* ℂ} (hV : T.V ((i : ℕ) + 1) s = Wc D i) (f : FDS
     adel (T.V ((i : ℕ) + 1) s) (T.dict ((i : ℕ) + 1) s)
       (muPin (T.V ((i : ℕ) + 1) s) (T.dict ((i : ℕ) + 1) s) (T.mu ((i : ℕ) + 1) s) (T.cE ((i : ℕ) + 1) s)) f)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem probSq_rdU (s : T.Q.c.F →+* ℂ) (f : T.R ((i : ℕ) + 1)) :
     probSq T i s (rdU (T.U ((i : ℕ) + 1) s) f) =
       petAt (T.U ((i : ℕ) + 1) s) (xiR D) (T.V ((i : ℕ) + 1) s) (T.dict ((i : ℕ) + 1) s)
         (muQ1 (T.V ((i : ℕ) + 1) s)) (expW D i) f ^ 2 := rfl
 
+/- English proof (translation)
+Unfold `adFun phiC CoreJ.phiJ expW`. Rewrite using `[lieFacZ_wtZ]`.
+-/
 theorem adFun_rdU {s : T.Q.c.F →+* ℂ} (hV : T.V ((i : ℕ) + 1) s = Wc D i) (f : T.R ((i : ℕ) + 1)) :
     adFun T i hV (rdU (T.U ((i : ℕ) + 1) s) f) = phiC T hV (wtA (kapTop D i)) f := by
   unfold adFun phiC CoreJ.phiJ expW
@@ -97,6 +103,15 @@ def OneMeasure (D : D7) : Prop :=
 
 omit [Algebra T.Q.c.F D.what₂.LL] in
 
+/- English proof (translation)
+Take `⟨-, hdim, hmeas⟩` from `h Tu R.toLevCh A.μ0 hl i R.toLevCh.triv`. Take `⟨h0, htop, hex, hbd⟩` from `hmeas (R.νW i) (R.fdW i) (hm.νW i)`. Establish `hpos : 0 < ratio D i (R.νW i) (R.fdW i)` using `mul_pos (ENNReal.toReal_pos h0 htop) (Finset.prod_pos fun τ _ => lt_of_lt_of_le one_pos (hdim τ))`. Establish `hn0 : 0 < n` using `lt_of_lt_of_le one_pos hn`. Take `⟨-, -, hb3⟩` from `hbd large₂.sc.L hs`.
+
+Use `⟨ratio D i (R.νW i) (R.fdW i) / n, div_pos hpos hn0, ?_, ?_⟩` and prove the remaining obligations. Conclude with `(Real.log_le_log (div_pos hpos hn0) (div_le_self hpos.le hn)).trans hb3`. Introduce `σ hV x f hf hcorr`. Establish `hmem : (R.HW i σ).e x ∈ R.Wall i σ`. Rewrite using `[← (hm.HW i σ).2.1]`.
+
+Conclude with `LinearMap.mem_range_self _ x`. Establish `hip` using `(hex T hT ha R.θ hm.inf σ (R.MW i σ) hV _ hmem f hf hcorr).2`. Establish `hnorm : ((‖x‖ ^ 2 : ℝ) : ℂ) = ((ratio D i (R.νW i) (R.fdW i) * probSq T i (gd T σ) f : ℝ) : ℂ)`. Rewrite using `[← hip, ← (hm.HW i σ).2.2 x x, inner_self_eq_norm_sq_to_K]`. Use `norm_cast`.
+
+Rewrite using `[Complex.ofReal_injective hnorm]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem OneMeasure.models (h : OneMeasure D) {G : Type} [Group G] [Fintype G] {Pl0 Tu : Type}
     {A : FamIn D.what₂.LL G Pl0 Tu D.R.m} [Algebra T.Q.c.F D.what₂.LL] (R : RealDat D A T.Q.c.F)
     (hl : R.toLevCh.Is A.μ0) (hm : R.IsModels) (hT : LawsJ T) (ha : AlgTie T) (large₂ : SizeData₂ D) (hs : Sizes D large₂.sc.L)

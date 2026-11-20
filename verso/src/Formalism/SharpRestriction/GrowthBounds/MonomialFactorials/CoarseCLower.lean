@@ -21,6 +21,33 @@ structure SegFacts (C0 CE1 CE2 : ℝ) (X : flipOneThree.Inst) : Prop where
   xa0 : 0 ≤ X.xa
   xa : X.xa ≤ 2 * X.L.J0 C0
 
+/- English proof (translation)
+Establish `hF` using `hiFacts C0 CYb Cde Ck CD Cb Cc X (by linarith) hH`. Take `⟨h0, -, hxa0, hxa, -, -, -, -, -, -⟩` from `hH`. Take `⟨hY, hpk, ⟨s0, hs0, -⟩, -, hseg, hN1, hm, hLa8, hb0, hbl, hbh, h12, hbw, hYb, hk2, hlog, hde, hpa, hCk, hband, hccl0, hccl1, hDLP, hcs, hbig⟩` from `h0`. Establish `hk : X.L.k = (X.L.m : ℝ) + 1` using `rfl`. Establish `hp25` using `p25 hF`.
+
+Establish `hp1 : 1 ≤ X.L.p`. Establish `: (1 : ℝ) ≤ (X.L.p : ℝ)` using `by linarith`. Conclude with `this` after adjusting the coercions. Establish `hN : (1 : ℝ) ≤ X.L.N`. Establish `: 1 ≤ X.L.TT.card` using `Finset.card_pos.2 ⟨s0, hs0⟩`.
+
+Use `show (1 : ℝ) ≤ (X.L.TT.card : ℝ)`. Conclude with `this` after adjusting the coercions. Establish `hQ1 : (1 : ℝ) ≤ X.L.Q` using `by show (1 : ℝ) ≤ (X.L.p : ℝ) ^ X.L.G'`. Conclude with `one_le_pow₀ (by linarith)`. Establish `hk1 : (1 : ℝ) ≤ X.L.k` using `by rw [hk]; have : (0 : ℝ) ≤ X.L.m := Nat.cast_nonneg _; linarith`.
+
+Establish `hlogb : 0 ≤ Real.logb X.L.p X.L.a` using `Real.logb_nonneg (by linarith) hF.a1`. Establish `hDLP0 : 0 ≤ X.L.DLP`. Use `le_trans ?_ hDLP` and prove the remaining obligations. Establish `: (0 : ℝ) ≤ (X.L.N1 : ℝ) ^ 5 + X.L.k ^ 3` using `by positivity`. Establish `: 0 ≤ X.L.N` using `by linarith`.
+
+Check the signs of the components of the expression. Establish `hM : (1 : ℝ) ≤ X.L.cs + X.L.N * X.L.ccl + X.L.n' * X.L.ccl`. Establish `h1 : 0 ≤ X.L.N * X.L.ccl` using `mul_nonneg (by linarith) hccl0`. Establish `h2 : 0 ≤ (X.L.n' : ℝ) * X.L.ccl` using `mul_nonneg (Nat.cast_nonneg _) hccl0`. Combine the linear equalities and inequalities to obtain the conclusion.
+
+Establish `hkQ : X.L.k * X.L.Q ≤ X.L.b'`. Use `le_trans ?_ hbig` and prove the remaining obligations. Establish `e1 : X.L.k ≤ X.L.k ^ 3` using `le_self_pow₀ hk1 (by norm_num)`. Establish `e2 : X.L.Q ≤ X.L.Q ^ 4` using `le_self_pow₀ hQ1 (by norm_num)`. Combine the equalities or inequalities in the displayed calculation.
+
+Establish `hPQ : ∀ i, (X.S C0 CE1 CE2).P X.p i ≤ (X.S C0 CE1 CE2).Qj X.p` using `fun i => Nat.pow_le_pow_right (lt_of_lt_of_le zero_lt_one hp1) (Nat.sub_le _ _)`. Establish `hQj : ((X.S C0 CE1 CE2).Qj X.p : ℝ) ≤ X.L.Q` using `by show ((X.L.p ^ segG X.L.TT X.j : ℕ) : ℝ) ≤ (X.L.p : ℝ) ^ X.L.G'`. Use `push_cast`. Conclude with `pow_le_pow_right₀ (by exact_mod_cast hp1) (hseg X.j).1`. Establish `hE0 : 0 ≤ (X.S C0 CE1 CE2).E0` using `by show 0 ≤ errorTermBound CE1 CE2 X.L.p X.L.k X.L.N1 X.L.Q X.L.c X.L.a X.L.b' (X.L.La C0)`.
+
+Unfold `errorTermBound`. Establish `h1` using `hF.La0`. Establish `h2` using `hF.b0.le`. Establish `h3 : (0 : ℝ) ≤ X.L.k` using `by linarith`. Establish `h4 : (0 : ℝ) ≤ X.L.Q` using `by linarith`.
+
+Check the signs of the components of the expression. Use `⟨hF, fun i => ?_, fun i => Nat.one_le_pow _ _ (lt_of_lt_of_le zero_lt_one hp1), hPQ, ?_, hE0, fun i => ?_, ?_, hY, hxa0, hxa⟩` and prove the remaining obligations. Establish `h1 : ((X.S C0 CE1 CE2).P X.p i : ℝ) ≤ X.L.Q` using `le_trans (by exact_mod_cast hPQ i) hQj`. Establish `h2 : X.L.k * ((X.S C0 CE1 CE2).P X.p i : ℝ) ≤ X.L.b'` using `le_trans (mul_le_mul_of_nonneg_left h1 (by linarith)) hkQ`. Conclude with `h2`.
+
+Establish `hYb2 : 2 ≤ X.L.Yb` using `le_trans hCYb hYb`. Establish `: 4 * X.L.La C0 ≤ 2 * X.L.Yb * X.L.N * X.L.La C0`. Establish `h0` using `hF.La0`. Establish `hYN : 2 ≤ X.L.Yb * X.L.N` using `by nlinarith only [hYb2, hN]`. Use `mul_le_mul_of_nonneg_right hYN h0` as an intermediate fact.
+
+Combine the linear relations using `only [this]`. Establish `h2 : 4 * X.L.La C0 < X.L.k` using `by linarith`. Conclude with `h2`. Conclude with `hF.bT_le _ (segPos_mem X.L.TT X.j i)`. Establish `h1` using `hF.b_lt`.
+
+Establish `h2 : ((X.r : ℝ) + 1) ^ 2 ≤ (X.L.p : ℝ)` using `hF.p_ge`. Establish `hm4 : (4 : ℝ) ≤ (X.L.m : ℝ)` using `by exact_mod_cast hF.m4`. Establish `hb` using `hF.b0`. Establish `h4 : 4 * ((X.L.m : ℝ) + 1) ≤ (X.L.p : ℝ)` using `by nlinarith only [h2, hm4]`. Establish `h5` using `mul_le_mul_of_nonneg_right h4 hb.le`.
+
+Establish `h3 : ((X.L.m : ℝ) + 1) * X.L.b' ≤ (X.L.a : ℝ) / 4` using `by linarith only [h5, h1]`. Conclude with `h3`.
+-/
 theorem segFacts {CYb Cde Ck CD Cb Cc : ℝ} (hCYb : 2 ≤ CYb) (hCb : 1 ≤ Cb) (hCD : 0 ≤ CD) (hCE1 : 0 ≤ CE1)
     (hCE2 : 0 ≤ CE2) (hH : flipOneThree.HI C0 CYb Cde Ck CD Cb Cc X) : SegFacts C0 CE1 CE2 X := by
   have hF := hiFacts C0 CYb Cde Ck CD Cb Cc X (by linarith) hH
@@ -100,6 +127,13 @@ section Coarse
 variable (hS : SegFacts C0 CE1 CE2 X)
 include hS
 
+/- English proof (translation)
+Use `set P := (X.S C0 CE1 CE2).P X.p i`. Establish `hP : 1 ≤ P` using `hS.P1 i`. Take `⟨h1, -, h3⟩` from `hD`. Take `⟨hle, hdvd⟩` from `h3 i`. Establish `e : coarseC X.p (X.S C0 CE1 CE2) aTop b i * P = aTop i - ∑ c, b.ry i c` using `Nat.div_mul_cancel hdvd`.
+
+Establish `hρ : ∑ c, b.ry i c ≤ (X.r + 1) * P`. Combine the equalities or inequalities in the displayed calculation. Establish `e2 : ((coarseC X.p (X.S C0 CE1 CE2) aTop b i : ℕ) : ℝ) * (P : ℝ) = (aTop i : ℝ) - ((∑ c, b.ry i c : ℕ) : ℝ)`. Rewrite using `[← Nat.cast_mul, e, Nat.cast_sub hle]`. Rewrite using `[e2]`.
+
+Establish `: ((∑ c, b.ry i c : ℕ) : ℝ) ≤ ((X.r : ℝ) + 1) * (P : ℝ)` using `by exact_mod_cast hρ`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem coarseC_lower (aTop : Fin X.s → ℕ) (b : SegBlock X.s X.r) (hD : DigitsOK X.p (X.S C0 CE1 CE2) aTop b)
     (i : Fin X.s) :
     (aTop i : ℝ) - ((X.r : ℝ) + 1) * ((X.S C0 CE1 CE2).P X.p i : ℝ) ≤
@@ -118,6 +152,9 @@ theorem coarseC_lower (aTop : Fin X.s → ℕ) (b : SegBlock X.s X.r) (hD : Digi
   have : ((∑ c, b.ry i c : ℕ) : ℝ) ≤ ((X.r : ℝ) + 1) * (P : ℝ) := by exact_mod_cast hρ
   linarith
 
+/- English proof (translation)
+Establish `h1 : coarseA X.p (X.S C0 CE1 CE2) b i * (X.S C0 CE1 CE2).P X.p i ≤ (X.S C0 CE1 CE2).bTop i` using `(Nat.div_mul_le_self _ _).trans (Nat.sub_le _ _)`. Establish `h2 : ((coarseA X.p (X.S C0 CE1 CE2) b i * (X.S C0 CE1 CE2).P X.p i : ℕ) : ℝ) ≤ ((X.S C0 CE1 CE2).bTop i : ℝ)`. Conclude with `h1` after adjusting the coercions. Move the coercions through the operations in `at h2`. Conclude with `h2.trans (hS.bTop i)`.
+-/
 theorem coarseA_upper (b : SegBlock X.s X.r) (i : Fin X.s) :
     (coarseA X.p (X.S C0 CE1 CE2) b i : ℝ) * ((X.S C0 CE1 CE2).P X.p i : ℝ) ≤ 5 / 2 * X.L.b' := by
   have h1 : coarseA X.p (X.S C0 CE1 CE2) b i * (X.S C0 CE1 CE2).P X.p i ≤ (X.S C0 CE1 CE2).bTop i :=
@@ -127,6 +164,9 @@ theorem coarseA_upper (b : SegBlock X.s X.r) (i : Fin X.s) :
   push_cast at h2
   exact h2.trans (hS.bTop i)
 
+/- English proof (translation)
+Use `(Finset.mem_Icc.1 (Fintype.mem_piFinset.1 hT i)).1` as an intermediate fact. Conclude with `this` after adjusting the coercions.
+-/
 theorem win_ge (aTop : Fin X.s → ℕ) (hT : aTop ∈ Fintype.piFinset (fun _ : Fin X.s => X.winA)) (i : Fin X.s) :
     (X.L.a : ℝ) ≤ aTop i := by
   have := (Finset.mem_Icc.1 (Fintype.mem_piFinset.1 hT i)).1

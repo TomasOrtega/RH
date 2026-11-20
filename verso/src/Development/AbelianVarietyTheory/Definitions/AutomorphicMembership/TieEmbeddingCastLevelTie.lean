@@ -23,11 +23,17 @@ variable {Os Ks O Kf O' Kf' : Type} [CommRing Os] [Field Ks] [Algebra Os Ks] [Co
   [IsDiscreteValuationRing O] [Field Kf] [Algebra O Kf] [CommRing O'] [IsDomain O'] [IsDiscreteValuationRing O'] [Field Kf']
   [Algebra O' Kf']
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem extMap_φ (X : ExtOf Os Ks O Kf) (eO : O ≃+* O') (eK : Kf ≃+* Kf')
     (hc : ∀ x, eK (algebraMap O Kf x) = algebraMap O' Kf' (eO x)) (hfrac : IsFractionRing O' Kf')
     (hcomp : IsAdicComplete (IsLocalRing.maximalIdeal O') O') (x : Os) :
     (X.map eO eK hc hfrac hcomp).φ x = eO (X.φ x) := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem extMap_φK (X : ExtOf Os Ks O Kf) (eO : O ≃+* O') (eK : Kf ≃+* Kf')
     (hc : ∀ x, eK (algebraMap O Kf x) = algebraMap O' Kf' (eO x)) (hfrac : IsFractionRing O' Kf')
     (hcomp : IsAdicComplete (IsLocalRing.maximalIdeal O') O') (y : Ks) :
@@ -79,8 +85,14 @@ end Ties
 
 section Bridge
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem frobOrder_eq (D : D7) (p : ℕ) : frobOrder D p = nFr D p := rfl
 
+/- English proof (translation)
+Use `first`. Consider the case `with_reducible rfl`. Consider the case `(delta pack locPackC frobOrder nFr; with_reducible rfl)`.
+-/
 theorem pack_eq (D : D7) (u : D.what₂.Word)
     (Lc : ColLevel D.R D.host.F D.host.E D.sp D.host.g (D.mem u).C (D.mem u).A (D.clsLat u)) (w : D.what₂.places.Pl)
     (h5 : 5 ≤ D.what₂.places.resChar w) (h2 : 2 ≤ nFr D (D.what₂.places.resChar w))
@@ -109,10 +121,16 @@ variable (D : D7) (sc : Scale) (Ce : ℝ)
   (hd : ∀ u w h, ((packC D Lc I ψ u w h).gat (rSc sc D.R.k (D.what₂.places.resChar w))
     (epSc D.R sc Ce (D.what₂.places.resChar w))).d = Module.finrank ℂ (D.mem u).A.Mu0)
 
+/- English proof (translation)
+Use function extensionality and compare the values at `u w h`. Conclude with `pack_eq D u (Lc u) w h.2.1 (nFr_spec D h).1 (nFr_spec D h).2 (I u w h) (ψ u w h)`.
+-/
 theorem packAll_eq : packAll D Lc I ψ = packC D Lc I ψ := by
   funext u w h
   exact pack_eq D u (Lc u) w h.2.1 (nFr_spec D h).1 (nFr_spec D h).2 (I u w h) (ψ u w h)
 
+/- English proof (translation)
+Establish `key : ∀ X X' (_ : X = X') h h', recG D sc Ce Lc X h = recG D sc Ce Lc X' h'`. Introduce `X X' e h h'`. Substitute `e` using the available equality. Both sides reduce to the same expression. Conclude with `key _ _ (packAll_eq D Lc I ψ) hd' hd`.
+-/
 theorem record_eq (hd' : ∀ u w h, ((packAll D Lc I ψ u w h).gat (rSc sc D.R.k (D.what₂.places.resChar w))
     (epSc D.R sc Ce (D.what₂.places.resChar w))).d = Module.finrank ℂ (D.mem u).A.Mu0) :
     record D sc Ce Lc I ψ hd' = recC D sc Ce Lc I ψ hd := by
@@ -122,19 +140,31 @@ theorem record_eq (hd' : ∀ u w h, ((packAll D Lc I ψ u w h).gat (rSc sc D.R.k
     rfl
   exact key _ _ (packAll_eq D Lc I ψ) hd' hd
 
+/- English proof (translation)
+The claim follows from `hL u`.
+-/
 theorem recordAllTies_level (H0 : Formalism.L2.Herm.Herm0 (recC D sc Ce Lc I ψ hd)) (hL : ∀ u, H0.lev0 u = Lc u)
     (T : ∀ u : D.what₂.Word, Forms0 (recC D sc Ce Lc I ψ hd) u)
     (B : GL (Fin D.R.k) D.host.E) (hBs : Cmp.StdB (recC D sc Ce Lc I ψ hd) B) (hB) (CH) (hH) (u : D.what₂.Word) :
     (groupCompatibilityOfRecursion D sc Ce Lc I ψ hd H0 hL T B hBs hB CH hH).herm.lev0 u = Lc u := hL u
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem recordAllTies_forms (H0 : Formalism.L2.Herm.Herm0 (recC D sc Ce Lc I ψ hd)) (hL : ∀ u, H0.lev0 u = Lc u)
     (T : ∀ u : D.what₂.Word, Forms0 (recC D sc Ce Lc I ψ hd) u)
     (B : GL (Fin D.R.k) D.host.E) (hBs : Cmp.StdB (recC D sc Ce Lc I ψ hd) B) (hB) (CH) (hH) :
     (groupCompatibilityOfRecursion D sc Ce Lc I ψ hd H0 hL T B hBs hB CH hH).forms = T := rfl
 
+/- English proof (translation)
+The claim follows from `standardSub_of_ringTie _ (ringTie_record D sc Ce Lc I ψ hd)`.
+-/
 example : Joints.StdSubAt (recC D sc Ce Lc I ψ hd) :=
   standardSub_of_ringTie _ (ringTie_record D sc Ce Lc I ψ hd)
 
+/- English proof (translation)
+The claim follows from `localIs_of_hyperspecial D sc Ce Lc (packC D Lc I ψ) hd Lc (fun _ => rfl) (fun u w h => isHyperbolicAt_rec_of_placeIdentification D u w h (I u w h)) u w hg`.
+-/
 example (u : D.what₂.Word) (w : D.what₂.places.Pl) (hg : GIdx D.host (D.mem u).A.T (D.what₂.places.resChar w)) :
     LocalIs (recC D sc Ce Lc I ψ hd) Lc u w hg :=
   localIs_of_hyperspecial D sc Ce Lc (packC D Lc I ψ) hd Lc (fun _ => rfl)
@@ -146,23 +176,38 @@ abbrev IsConcrete := @Formalism.L2.G.IsRecC
 
 alias IsConcrete.intro := Formalism.L2.G.IsRecC.intro
 
+/- English proof (translation)
+The claim follows from `gTiedAll_of_isRecC h`.
+-/
 theorem IsConcrete.nonempty_allTies {D : D7} {Gt : GatTies D} {c : LatCmp D} (h : IsConcrete D Gt c) :
     Nonempty (GroupCompatibilityAll D Gt c) :=
   gTiedAll_of_isRecC h
 
+/- English proof (translation)
+The claim follows from `standardSub_of_ringTie D G.ring`.
+-/
 theorem AllTies.standardSub {D : D7} {Gt : GatTies D} {c : LatCmp D} (G : AllTies D Gt c) : Joints.StdSubAt D :=
   standardSub_of_ringTie D G.ring
 
+/- English proof (translation)
+The claim follows from `h.nonempty_allTies.elim fun G => G.ring u w hg v`.
+-/
 theorem IsConcrete.ringTie {D : D7} {Gt : GatTies D} {c : LatCmp D} (h : IsConcrete D Gt c) (u : D.what₂.Word)
     (w : D.what₂.places.Pl) (hg : GIdx D.host (D.mem u).A.T (D.what₂.places.resChar w)) (v : Fin (D.gat u w hg).P.nV) :
     RingTie D u w hg v :=
   h.nonempty_allTies.elim fun G => G.ring u w hg v
 
+/- English proof (translation)
+The claim follows from `h.elim fun e _ => ⟨e⟩`.
+-/
 example {D : D7} {u : D.what₂.Word} {w : D.what₂.places.Pl} {hg : GIdx D.host (D.mem u).A.T (D.what₂.places.resChar w)}
     {v : Fin (D.gat u w hg).P.nV} (h : RingTie D u w hg v) :
     Nonempty (WQ (D.what₂.places.resChar w) ((D.gat u w hg).P.n' v) ≃+* (D.gat u w hg).P.W v) :=
   h.elim fun e _ => ⟨e⟩
 
+/- English proof (translation)
+Unfold both sides. The equivalence is reflexive.
+-/
 example {D : D7} {Gt : GatTies D} {c : LatCmp D} : IsConcrete D Gt c ↔ IsRecC D Gt c := Iff.rfl
 
 end GlobalTheory.Mem.LocalPack

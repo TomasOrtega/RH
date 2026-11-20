@@ -9,6 +9,11 @@ noncomputable section
 
 namespace GlobalTheory.CompanionTheory.BZSegQuot
 
+/- English proof (translation)
+Introduce `k _ _ _ _ hI hL h N Δ x hd hΔ ho W _ _ τ f hf hW`. Establish `hs : IsSmooth τ` using `(IsSubquotient.of_surjective f hf).isSmooth (isSmooth_prodIrr x hd)`. Establish `hl : HasFiniteLength τ` using `IsFiniteLength.of_surjective (hL h N x hd) (f := Representation.IntertwiningMap.equivLinearMapAsModule _ τ f) hf`. Take `⟨Y, _, _, τ', -, hi, q, hq⟩` from `GlobalTheory.SmGL.IrrQuot.exists_irreducible_smooth_quotient τ hs hl hW`. Take `⟨ψ, hc, h1, hg⟩` from `hI h N Δ x hd hΔ ho Y τ' (q.comp f) (hq.comp hf) hi`.
+
+Use `⟨ψ, hc, h1, nontrivial_twJacquet_of_surjective q.toLinearMap hq (fun u v => ?_) hg⟩` and prove the remaining obligations. Use `Submodule.subset_span ⟨u, q v, ?_⟩` and prove the remaining obligations. Rewrite using `[map_sub, map_smul]`. Conclude with `congrArg (· - _) (q.isIntertwining _ _ (u : GL (Fin N) k) v)`.
+-/
 theorem stdQuotGeneric_of_irr : ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k]
     [IsNonarchimedeanLocalField k], GlobalTheory.BZSeg.StdIrrQuotGeneric k → GlobalTheory.BZSeg.ProdIrrFiniteLength k →
     GlobalTheory.BZSeg.StdQuotGeneric k := by

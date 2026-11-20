@@ -25,6 +25,13 @@ namespace GlobalTheory.BaseChain
 open GlobalTheory.ChainOnto
 variable {D : D7} {L : SizeData₂ D} {hT : GatTies D} {Gi : Formalism.MainNotions.G.Inst D L} {Gl : Formalism.MainNotions.G.LatInst D} {Kc : Formalism.MainNotions.G.Consts}
   {Yd : DivX D} {cX : ExtraC} {ex : Extra D L hT Gi Gl Kc Yd cX}
+/- English proof (translation)
+Unfold `Com.S`. Rewrite using `[Finset.mem_image]`. Break down `GlobalTheory.ConjOverQuad.div_or_conj_div D (_root_.GlobalTheory.Fam.pk_z W).C.P k P hk with h1 | ⟨P', h1, hc⟩` into its components or cases. Conclude with `⟨P, (hL.Pg P).2 ⟨k, h1⟩, rfl⟩`. Use `⟨P', (hL.Pg P').2 ⟨k, h1⟩, ?_⟩` and prove the remaining obligations.
+
+Use extensionality with `x`. Use `show algebraMap _ _ x ∈ P'.asIdeal ↔ algebraMap _ _ x ∈ P.asIdeal`. Rewrite using `[hc, Formalism.L2.Col.mem_conjIdeal]`. Establish `: Formalism.L2.Col.cO D.host.E (algebraMap (𝓞 D.host.F) (𝓞 D.host.E) x) = algebraMap _ _ x`. Apply `RingOfIntegers.ext` to reduce the goal to its premises.
+
+Conclude with `(D.sp.cm.fixed _).2 ⟨x, rfl⟩`. Rewrite using `[this]`.
+-/
 theorem under_mem_S_alt {W : _root_.GlobalTheory.MiS.RealPackAlt ex} (hL : (_root_.GlobalTheory.Fam.pk_z W).toLevCh.Is W.P.A3.A.μ0) (k : Fin 2) (P : Pl D.host.E)
     (hk : ((D.host.g k : ℕ) : 𝓞 D.host.E) ∈ P.asIdeal) : P.under (𝓞 D.host.F) ∈ (_root_.GlobalTheory.BaseChain.com_z W).S := by
   classical
@@ -40,6 +47,19 @@ theorem under_mem_S_alt {W : _root_.GlobalTheory.MiS.RealPackAlt ex} (hL : (_roo
       apply RingOfIntegers.ext
       exact (D.sp.cm.fixed _).2 ⟨x, rfl⟩
     rw [this]
+/- English proof (translation)
+Establish `hC` using `hP.bot.hyp.2.2.2.1`. Establish `hL : (_root_.GlobalTheory.Fam.pk_z W).toLevCh.Is W.P.A3.A.μ0` using `hC.lev`. Establish `hM : (_root_.GlobalTheory.Fam.pk_z W).IsModels` using `hC.models`. Establish `hQ` using `_root_.GlobalTheory.BaseChain.Q_base_eq_empty W`. Establish `hm : min j D.R.m = j` using `min_eq_left hj.le`.
+
+Take `⟨c, hc⟩` from `hL.βY j hj`. Establish `hν : ((_root_.GlobalTheory.Fam.pk_z W).νY W.P.A3.A.μ0 j).IsHaarMeasure ∧ IsFundamentalDomain (GQ (Yc D j)) ((_root_.GlobalTheory.Fam.pk_z W).fdY W.P.A3.A.μ0 j) ((_root_.GlobalTheory.Fam.pk_z W).νY W.P.A3.A.μ0 j)`. Distinguish the cases in `h1 : j + 1 < D.R.m`. Conclude with `⟨(hM.νY _ j h1).1.1, (hM.νY _ j h1).2⟩`. Establish `: j = D.R.m - 1` using `by omega`.
+
+Substitute `this` using the available equality. Conclude with `⟨(hM.νY' _).1.1, (hM.νY' _).2⟩`. Use `haveI := hν.1`. Use `⟨?_, D.sp.Y_sig _, fun τ => ?_, ?_, GlobalTheory.SDFrameLattice.isSelfDualC_of_isSDFrame D _ _ _ _ ⟨c, hc⟩, hc.1, ⟨_, hc, fun P hP hN => hP ?_⟩, ⟨r_le_Y j, (_root_.GlobalTheory.Fam.pk_z W).xiR W.P.A3.A.μ0, ?_⟩, ?_, ?_⟩` and prove the remaining obligations. Use `show (D.sp.Y (min j D.R.m)).rank = _`.
+
+Rewrite using `[D.sp.Y_rank _ (min_le_right _ _), hm]`. Use `show (D.sp.Y (min j D.R.m)).sig τ = _`. Rewrite using `[D.Y_sigval _ (min_le_right _ _), hm]`. Use `show parB _ (min j D.R.m) = _`. Rewrite using `[hm]`.
+
+Move the coercions through the operations in `at hN`. Use `P.isPrime.mem_of_pow_mem _ hN` as an intermediate fact. Break down `P.isPrime.mem_or_mem this with h0 | h0` into its components or cases. Conclude with `_root_.GlobalTheory.BaseChain.under_mem_S_alt hL 0 P h0`. Conclude with `_root_.GlobalTheory.BaseChain.under_mem_S_alt hL 1 P h0`.
+
+Use `show Lev.datY _ _ _ _ _ _ ((_root_.GlobalTheory.Fam.pk_z W).Q W.P.A3.A.μ0) _ _ _ _ = _`. Rewrite using `[hQ]`. Both sides reduce to the same expression. Conclude with `(MeasureTheory.Measure.IsHaarMeasure.smul _ (_root_.GlobalTheory.BaseChain.cH_ne_zero_alt W) (_root_.GlobalTheory.BaseChain.inverse_level_cardinality_ne_infinity W) : (_root_.GlobalTheory.BaseChain.inverseLevelCardinality W • (_root_.GlobalTheory.Fam.pk_z W).νY W.P.A3.A.μ0 j).IsH …`. Conclude with `hν.2.mono (MeasureTheory.Measure.smul_absolutelyContinuous)`.
+-/
 theorem stage_y_is (W : _root_.GlobalTheory.MiS.RealPackAlt ex) (hP : _root_.GlobalTheory.Fam.PackageHypotheses W) (j : ℕ) (hj : j < D.R.m) :
     (_root_.GlobalTheory.BaseChain.stageOfSpaceY W j).Is (_root_.GlobalTheory.BaseChain.com_z W) j := by
   have hC := hP.bot.hyp.2.2.2.1

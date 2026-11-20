@@ -19,6 +19,15 @@ namespace GlobalTheory.FockOrder
 
 variable {D : D7}
 
+/- English proof (translation)
+Use `set p := (Finset.univ.filter fun a => ε a = true).card with hp`. Use `set q := (Finset.univ.filter fun a => ¬ ε a = true).card with hq`. Establish `hpq : p + q = n`. Rewrite using `[hp, hq, Finset.card_filter_add_card_filter_not]`. Simplify using the standard rewrite rules.
+
+Establish `e1 : {a // ε a = true} ≃ Fin p` using `Fintype.equivFinOfCardEq (by rw [Fintype.card_subtype])`. Establish `e2 : {a // ¬ ε a = true} ≃ Fin q` using `Fintype.equivFinOfCardEq (by rw [Fintype.card_subtype])`. Use `⟨(finCongr hpq.symm).trans (finSumFinEquiv.symm.trans ((Equiv.sumCongr e1.symm e2.symm).trans (Equiv.sumCompl _))), fun a => ?_⟩` and prove the remaining obligations. Distinguish the cases in `ha : a.val < p`. Establish `h : finCongr hpq.symm a = Fin.castAdd q ⟨a.val, ha⟩` using `Fin.ext rfl`.
+
+Simplify using `only [Equiv.trans_apply, h, finSumFinEquiv_symm_apply_castAdd, Equiv.sumCongr_apply, Sum.map_inl, Equiv.sumCompl_apply_inl]`. Rewrite using `[(e1.symm _).2]`. Simplify using `[ha]`. Establish `h : finCongr hpq.symm a = Fin.natAdd p ⟨a.val - p, by omega⟩` using `Fin.ext (by simp; omega)`. Simplify using `only [Equiv.trans_apply, h, finSumFinEquiv_symm_apply_natAdd, Equiv.sumCongr_apply, Sum.map_inr, Equiv.sumCompl_apply_inr]`.
+
+Establish `h2` using `(e2.symm ⟨a.val - p, by omega⟩).2`. Simplify using `only [Bool.not_eq_true] at h2`. Rewrite using `[h2]`. Simplify using `[ha]`.
+-/
 theorem exists_sortPerm {n : ℕ} (ε : Fin n → Bool) :
     ∃ π : Equiv.Perm (Fin n), ∀ a, ε (π a) = decide (a.val < (Finset.univ.filter fun a => ε a = true).card) := by
   classical

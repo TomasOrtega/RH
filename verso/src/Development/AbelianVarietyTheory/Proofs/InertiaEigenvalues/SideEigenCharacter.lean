@@ -9,6 +9,11 @@ noncomputable section
 
 namespace GlobalTheory.ChiExtend
 
+/- English proof (translation)
+Establish `h0 : Ideal.span {((p : ℕ) : 𝓞 E)} ≠ 0`. Rewrite using `[Ne, Ideal.zero_eq_bot, Ideal.span_singleton_eq_bot]`. Conclude with `hp` after adjusting the coercions. Use `(Ideal.finite_factors h0).subset fun v hv => ?_` and prove the remaining obligations. Use `show v.asIdeal ∣ _`.
+
+Rewrite using `[Ideal.dvd_iff_le, Ideal.span_singleton_le_iff_mem]`. Conclude with `hv`.
+-/
 theorem placesOver_finite' (E : Type) [Field E] [NumberField E] (p : ℕ) (hp : p ≠ 0) :
     (placesOver E p).Finite := by
   have h0 : Ideal.span {((p : ℕ) : 𝓞 E)} ≠ 0 := by
@@ -19,6 +24,11 @@ theorem placesOver_finite' (E : Type) [Field E] [NumberField E] (p : ℕ) (hp : 
   rw [Ideal.dvd_iff_le, Ideal.span_singleton_le_iff_mem]
   exact hv
 
+/- English proof (translation)
+Substitute `h` using the available equality. Establish `hc : φ.comp (algebraMap ℤ_[p] O₀) = algebraMap ℤ_[p] O₁`. Use extensionality with `z`. Conclude with `hφ z z HEq.rfl`. Use `haveI : (Ideal.comap φ (IsLocalRing.maximalIdeal O₁)).IsPrime := Ideal.comap_isPrime _ _`.
+
+Establish `h1 : (Ideal.comap (algebraMap ℤ_[p] O₀) (Ideal.comap φ (IsLocalRing.maximalIdeal O₁))).IsMaximal`. Rewrite using `[Ideal.comap_comap, hc]`. Conclude with `Ideal.isMaximal_comap_of_isIntegral_of_isMaximal _`. Establish `h2` using `Ideal.isMaximal_of_isIntegral_of_isMaximal_comap _ h1`. Rewrite using `[IsLocalRing.eq_maximalIdeal h2]`.
+-/
 theorem maximalIdeal_le_comap {p q : ℕ} [Fact p.Prime] [Fact q.Prime] (h : p = q) {O₀ O₁ : Type}
     [CommRing O₀] [IsDomain O₀] [IsDiscreteValuationRing O₀] [Algebra ℤ_[p] O₀] [Module.Finite ℤ_[p] O₀]
     [CommRing O₁] [IsDomain O₁] [IsDiscreteValuationRing O₁] [Algebra ℤ_[q] O₁] [Module.Finite ℤ_[q] O₁]
@@ -35,6 +45,11 @@ theorem maximalIdeal_le_comap {p q : ℕ} [Fact p.Prime] [Fact q.Prime] (h : p =
   have h2 := Ideal.isMaximal_of_isIntegral_of_isMaximal_comap _ h1
   rw [IsLocalRing.eq_maximalIdeal h2]
 
+/- English proof (translation)
+Use `continuous_of_continuousAt_zero φ ?_` and prove the remaining obligations. Rewrite using `[ContinuousAt, map_zero]`. Introduce `s hs`. Take `⟨n, hn⟩` from `(isAdic_iff.1 h₁).2 s hs`. Establish `ho` using `(isAdic_iff.1 h₀).1 n`.
+
+Use `Filter.mem_map.2 <| Filter.mem_of_superset (ho.mem_nhds (Ideal.zero_mem _)) fun x hx => hn ?_` and prove the remaining obligations. Conclude with `(Ideal.pow_right_mono hφ n |>.trans (Ideal.le_comap_pow φ n)) hx`.
+-/
 theorem continuous_of_le_comap {O₀ O₁ : Type} [CommRing O₀] [IsLocalRing O₀] [TopologicalSpace O₀]
     [IsTopologicalRing O₀] [CommRing O₁] [IsLocalRing O₁] [TopologicalSpace O₁] [IsTopologicalRing O₁]
     (h₀ : IsAdic (IsLocalRing.maximalIdeal O₀)) (h₁ : IsAdic (IsLocalRing.maximalIdeal O₁))
@@ -48,6 +63,9 @@ theorem continuous_of_le_comap {O₀ O₁ : Type} [CommRing O₀] [IsLocalRing O
   refine Filter.mem_map.2 <| Filter.mem_of_superset (ho.mem_nhds (Ideal.zero_mem _)) fun x hx => hn ?_
   exact (Ideal.pow_right_mono hφ n |>.trans (Ideal.le_comap_pow φ n)) hx
 
+/- English proof (translation)
+Substitute `h` using the available equality. Both sides reduce to the same expression.
+-/
 theorem cyc_heq (F Ω : Type) [Field F] [Field Ω] [Algebra F Ω] {p q : ℕ} [Fact p.Prime] [Fact q.Prime] (h : p = q)
     (σ : G F Ω) : HEq ((cycZ F Ω p σ : ℤ_[p]ˣ) : ℤ_[p]) ((cycZ F Ω q σ : ℤ_[q]ˣ) : ℤ_[q]) := by
   subst h
@@ -57,12 +75,22 @@ end GlobalTheory.ChiExtend
 
 namespace GlobalTheory.ChiExtend
 
+/- English proof (translation)
+Use `show Function.Injective (((A.iotaQC i).toRingHom.comp (A.iotaQ i)).comp (algebraMap (N.O i) (FractionRing (N.O i))))`. Simplify using `only [RingHom.coe_comp]`. Conclude with `(A.iotaQC i).injective.comp ((A.iotaQ i).injective.comp (IsFractionRing.injective _ _))`.
+-/
 theorem iotaO_injective {R : Ranks} {H : Host R} {what₂ : Rows.Data R} (N : NData R H what₂) (A : NAut N) (i : N.Loc) :
     Function.Injective (iotaO N A i) := by
   show Function.Injective (((A.iotaQC i).toRingHom.comp (A.iotaQ i)).comp (algebraMap (N.O i) (FractionRing (N.O i))))
   simp only [RingHom.coe_comp]
   exact (A.iotaQC i).injective.comp ((A.iotaQ i).injective.comp (IsFractionRing.injective _ _))
 
+/- English proof (translation)
+Use function extensionality and compare the values at `x`. Rewrite using `[← sub_eq_zero]`. Apply `hH.haus' (f x - g x)` to reduce the goal to its premises. Introduce `n`. Rewrite using `[SModEq.sub_mem, sub_zero, smul_eq_mul, Ideal.mul_top]`.
+
+Establish `hcl : IsClosed ((fun y => f y - g y) ⁻¹' ((IsLocalRing.maximalIdeal O ^ n : Ideal O) : Set O))`. Use `IsClosed.preimage (hf.sub hg) ?_` and prove the remaining obligations. Conclude with `AddSubgroup.isClosed_of_isOpen (IsLocalRing.maximalIdeal O ^ n).toAddSubgroup ((isAdic_iff.1 h).1 n)`. Establish `hsub : s ⊆ (fun y => f y - g y) ⁻¹' ((IsLocalRing.maximalIdeal O ^ n : Ideal O) : Set O)`. Introduce `y hy`.
+
+Simplify using `only [Set.mem_preimage, he y hy, sub_self, SetLike.mem_coe]`. Conclude with `Ideal.zero_mem _`. Use `closure_minimal hsub hcl` as an intermediate fact. Rewrite `this` using `[hs.closure_eq]`. Conclude with `this (Set.mem_univ x)`.
+-/
 theorem eq_of_dense {X O : Type*} [TopologicalSpace X] [CommRing O] [IsLocalRing O] [TopologicalSpace O]
     [IsTopologicalRing O] (h : IsAdic (IsLocalRing.maximalIdeal O)) (hH : IsHausdorff (IsLocalRing.maximalIdeal O) O)
     {f g : X → O} (hf : Continuous f) (hg : Continuous g) {s : Set X} (hs : Dense s) (he : ∀ x ∈ s, f x = g x) :
@@ -88,6 +116,27 @@ end GlobalTheory.ChiExtend
 
 open GlobalTheory.ChiExtend in
 
+/- English proof (translation)
+Introduce `_ D cf jE A low Pq S hL eig θ Bs M C tp _ _ _ _ _ hCheb big₀ big₁ L₀ L₁ hB₀ hB₁ i₀ i₁ hw hj φ hφ hφalg c hc1 hct σ`. Take `⟨Sp₀, ⟨AS₀⟩, -⟩` from `hB₀`. Take `⟨Sp₁, ⟨AS₁⟩, -⟩` from `hB₁`. Establish `hw' : L₀.X.nd.w i₀ = L₁.X.nd.w i₁` using `hw`. Establish `hj' : L₀.X.nd.j i₀ = L₁.X.nd.j i₁` using `hj`.
+
+Establish `hl : L₀.lay.fixZ.nd.l i₀ = L₁.lay.fixZ.nd.l i₁`. Rewrite using `[← L₀.lay.fixZ.nd.w_l i₀, ← L₁.lay.fixZ.nd.w_l i₁, hw]`. Establish `hmu : L₀.Y.muC i₀ = L₁.Y.muC i₁`. Establish `hr` using `L₀.X.nd.j_range i₀`. Set `jj : Fin D.R.m` to `⟨L₀.X.nd.j i₀ - 1, by omega⟩`.
+
+Establish `e₀` using `AS₀.muC i₀ jj (by show L₀.X.nd.j i₀ - 1 + 1 = L₀.X.nd.j i₀; omega)`. Establish `e₁` using `AS₁.muC i₁ jj (by show L₀.X.nd.j i₀ - 1 + 1 = L₁.X.nd.j i₁; omega)`. Apply `A.chr.e1.injective` to reduce the goal to its premises. Apply `Subtype.ext` to reduce the goal to its premises. Establish `hm : L₀.X.nd.mu i₀ = L₁.X.nd.mu i₁`.
+
+Conclude with `(L₀.X.mu_w i₀).trans ((congrArg D.what₂.muTw hw').trans (L₁.X.mu_w i₁).symm)`. Conclude with `e₀.trans ((congrArg (fun m => tp.tup m jj) hm).trans e₁.symm)`. Establish `hl₀` using `(L₀.lay.fixZ.nd.lPrime i₀).out.ne_zero`. Establish `hfin : (placesOver D.host.E (L₀.lay.fixZ.nd.l i₀) ∪ ((L₀.lay.fixZ.nd.S i₀ : Set (PlE D.host)) ∪ (L₀.lay.fixZ.nd.Q i₀ : Set (PlE D.host))) ∪ ((L₁.lay.fixZ.nd.S i₁ : Set (PlE D.host)) ∪ (L₁.lay.fixZ.nd.Q i₁ : Set (PlE D.host)))).Finite` using `((placesOver_finite' _ _ hl₀).union ((Finset.finite_toSet _).union (Finset.finite_toSet _))).union ((Finset.finite_toSet _).union (Finset.finite_toSet _))`. Establish `hout : ∀ w ∉ hfin.toFinset, IsSplitPl D.host w → SplitOut L₀.lay.fixZ.nd i₀ w ∧ SplitOut L₁.lay.fixZ.nd i₁ w`.
+
+Introduce `w hwF hsp`. Simplify using `only [Set.Finite.mem_toFinset, Set.mem_union, Finset.mem_coe, not_or] at hwF`. Take `⟨⟨hpl, hS₀, hQ₀⟩, hS₁, hQ₁⟩` from `hwF`. Conclude with `⟨⟨hsp, hpl, hS₀, hQ₀⟩, ⟨hsp, hl ▸ hpl, hS₁, hQ₁⟩⟩`. Establish `hone : (fun σ : GE L₁.lay.fixZ.nd => ((L₁.lay.fixZ.nd.chi i₁ 1 σ : (L₁.lay.fixZ.nd.O i₁)ˣ) : L₁.lay.fixZ.nd.O i₁)) = fun σ => φ ((L₀.lay.fixZ.nd.chi i₀ 1 σ : (L₀.lay.fixZ.nd.O i₀)ˣ) : L₀.lay.fixZ.nd.O i₀)` using `by haveI := L₁.lay.fixZ.nd.O_complete i₁`.
+
+Use `eq_of_dense (L₁.lay.fixZ.nd.O_adic i₁) inferInstance (L₁.lay.fixZ.nd.chi_cont i₁ 1) ((continuous_of_le_comap (L₀.lay.fixZ.nd.O_adic i₀) (L₁.lay.fixZ.nd.O_adic i₁) φ (maximalIdeal_le_comap hl φ hφalg)).comp (L₀.lay.fixZ.nd.chi_cont i₀ 1)) (hCheb hfin.toFinset) ?_` and prove the remaining obligations. Introduce and unpack `σ ⟨w, hwF, hsp, B, hB, hσ⟩`. Take `⟨ho₀, ho₁⟩` from `hout w hwF hsp`. Establish `e₀` using `(L₀.lay.fixZ.naut.chi_mu i₀ w ho₀).2 B σ hB hσ`. Establish `e₁` using `(L₁.lay.fixZ.naut.chi_mu i₁ w ho₁).2 B σ hB hσ`.
+
+Establish `em` using `congrArg (fun m => D.naut.frobEig (D.naut.lpTw (D.naut.locG (D.naut.tw m D.naut.etaTinv) w) (((D.R.t : ℝ) - 1) / 2 + (1 - (D.R.nV : ℝ)) / 2))) hmu`. Establish `e` using `Multiset.singleton_inj.1 (e₀.symm.trans (em.trans e₁))`. Apply `iotaO_injective L₁.lay.fixZ.nd L₁.lay.fixZ.naut i₁` to reduce the goal to its premises. Rewrite using `[hφ]`. Conclude with `e.symm`.
+
+Establish `hu1 : L₁.lay.fixZ.nd.chi i₁ 1 σ = Units.map (φ : L₀.lay.fixZ.nd.O i₀ →* L₁.lay.fixZ.nd.O i₁) (L₀.lay.fixZ.nd.chi i₀ 1 σ)` using `Units.ext (congrFun hone σ)`. Establish `key : L₁.lay.fixZ.nd.chi i₁ c σ = Units.map (φ : L₀.lay.fixZ.nd.O i₀ →* L₁.lay.fixZ.nd.O i₁) (L₀.lay.fixZ.nd.chi i₀ c σ)`. Rewrite using `[L₁.lay.fixZ.nd.chi_def i₁ c hc1 hct, L₀.lay.fixZ.nd.chi_def i₀ c hc1 hct]`. Simplify using `only [MonoidHom.mul_apply, MonoidHom.zpow_apply, MonoidHom.comp_apply, map_mul, map_zpow]`. Use `erw [MonoidHom.mul_apply, MonoidHom.zpow_apply, MonoidHom.comp_apply, map_mul, map_zpow]`.
+
+Rewrite using `[hu1]`. Use `congrArg _ (congrArg (· ^ _) ?_)` and prove the remaining obligations. Apply `Units.ext` to reduce the goal to its premises. Simplify using `only [Units.coe_map, RingHom.toMonoidHom_eq_coe, MonoidHom.coe_coe]`. Conclude with `(hφalg _ _ (cyc_heq _ _ hl σ)).symm`.
+
+Conclude with `congrArg Units.val key`.
+-/
 theorem GlobalTheory.ChiExtend.chi_eq_of_ext : HeckeStdPlain → ∀ (D : D7) (cf : CharFrame D) (jE : D.host.E →+* Qb) (A : SideA D cf jE) (low : Finset ℕ) (Pq : HeightOneSpectrum (𝓞 (maximalRealSubfield D.host.E)) → PlE D.host) (S : RatDat D.ntw) (hL : ∀ j, ℕ → PlE D.host → Module.End D.what₂.LL (S.WL j)) (eig : ℕ → D.what₂.FT → ℕ → PlE D.host → ↥D.LL0) (θ : ∀ kk : Fin 2, Multiplicative (ZMod (D.host.g kk)) →* (↥D.LL0)ˣ) (Bs : SideB D cf A.row low Pq S hL eig θ) (M : MtFam D) (C : NChoice D) (tp : TupTied D cf C), ChoiceSide D cf M Bs.exp C tp → MtInput D M tp.tup C.Q → (∀ x : D.LL0, star (x : D.what₂.LL) ∈ D.LL0) → (∀ j g, ∃ z : ℤ, eExp D j g = z) → (∀ v, v ∈ placesOver D.host.E D.host.pde ∨ v ∈ placesOver D.host.E D.host.pde' → IsSplitPl D.host v) → GlobalTheory.RowTie.ChebSplit D.nd → ∀ (big₀ big₁ : D.what₂.places.Pl → Finset ℂ) (L₀ L₁ : LocAll (lay0 D)), Built A M C tp.tup big₀ L₀ → Built A M C tp.tup big₁ L₁ → ∀ (i₀ : L₀.lay.fixZ.nd.Loc) (i₁ : L₁.lay.fixZ.nd.Loc), L₀.lay.fixZ.nd.w i₀ = L₁.lay.fixZ.nd.w i₁ → L₀.lay.fixZ.nd.j i₀ = L₁.lay.fixZ.nd.j i₁ → ∀ φ : L₀.lay.fixZ.nd.O i₀ →+* L₁.lay.fixZ.nd.O i₁, (∀ z, iotaO L₁.lay.fixZ.nd L₁.lay.fixZ.naut i₁ (φ z) = iotaO L₀.lay.fixZ.nd L₀.lay.fixZ.naut i₀ z) → (∀ (z : ℤ_[L₀.lay.fixZ.nd.l i₀]) (z' : ℤ_[L₁.lay.fixZ.nd.l i₁]), HEq z z' → φ (algebraMap _ _ z) = algebraMap _ _ z') → ∀ c, 1 ≤ c → c ≤ D.R.t → ∀ σ : GE L₁.lay.fixZ.nd, ((L₁.lay.fixZ.nd.chi i₁ c σ : (L₁.lay.fixZ.nd.O i₁)ˣ) : L₁.lay.fixZ.nd.O i₁) = φ ((L₀.lay.fixZ.nd.chi i₀ c σ : (L₀.lay.fixZ.nd.O i₀)ˣ) : L₀.lay.fixZ.nd.O i₀) := by
   intro _ D cf jE A low Pq S hL eig θ Bs M C tp _ _ _ _ _ hCheb big₀ big₁ L₀ L₁ hB₀ hB₁ i₀ i₁ hw hj φ hφ hφalg c hc1 hct σ
   obtain ⟨Sp₀, ⟨AS₀⟩, -⟩ := hB₀

@@ -10,14 +10,23 @@ variable {R : Type} [CommRing R]
 abbrev evU (U : Scheme.{0}) : Shv R ⥤ ModuleCat.{1} (ULift.{1} R) :=
   sheafToPresheaf _ _ ⋙ (evaluation _ _).obj (op U)
 
+/- English proof (translation)
+Establish `hm : Mono ((evU U).map (kernel.ι φ))` using `inferInstance`. Conclude with `(ModuleCat.mono_iff_injective _).1 hm`.
+-/
 theorem kerSec_inj {F G : Shv R} (φ : F ⟶ G) (U : Scheme.{0}) :
     Function.Injective (Sec.map (kernel.ι φ) (U := U)) := by
   have hm : Mono ((evU U).map (kernel.ι φ)) := inferInstance
   exact (ModuleCat.mono_iff_injective _).1 hm
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem secMap_comp {F G K : Shv R} (f : F ⟶ G) (g : G ⟶ K) {U : Scheme.{0}} (x : Sec F U) :
     Sec.map (f ≫ g) x = Sec.map g (Sec.map f x) := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem secMap_zero {F G : Shv R} {U : Scheme.{0}} (x : Sec F U) : Sec.map (0 : F ⟶ G) x = 0 := rfl
 
 def LeafKumMuUnits : Prop := ∀ (q : ℕ) [NeZero q] (B : Type) [CommRing B], IsUnit (q : B) →
@@ -29,6 +38,13 @@ def LeafKumMuSec : Prop := ∀ (q : ℕ) [NeZero q] (B : Type) [CommRing B], IsU
   ∃ κ : (restr (Int.castRingHom (ZMod q))).obj (tw q 1) ⟶ kernel (LateralTheory.E.H2CurveOrder.LeafKumSeqPf.powGm q),
     ∀ U : Scheme.{0}, Nonempty (Sx (sp B) 0 U) → Function.Bijective (Sec.map κ (U := U))
 
+/- English proof (translation)
+Introduce `q _ B _ hq`. Take `⟨κ, h0, hκ⟩` from `hU q B hq`. Use `⟨kernel.lift _ κ h0, fun U hUB => ?_⟩` and prove the remaining obligations. Take `⟨hi, hs⟩` from `hκ U hUB`. Establish `hc : ∀ t : Sec ((restr (Int.castRingHom (ZMod q))).obj (tw q 1)) U, Sec.map (kernel.ι _) (Sec.map (kernel.lift _ κ h0) t) = Sec.map κ t`.
+
+Introduce `t`. Rewrite using `[← secMap_comp, kernel.lift_ι]`. Use `⟨fun a b hab => hi ?_, fun y => ?_⟩` and prove the remaining obligations. Rewrite using `[← hc, ← hc, hab]`. Take `⟨t, ht⟩` from `hs (Sec.map (kernel.ι _) y) (by rw [← secMap_comp, kernel.condition, secMap_zero])`.
+
+Conclude with `⟨t, kerSec_inj _ U (by rw [hc, ht])⟩`.
+-/
 theorem LeafKumMuSec_of (hU : LeafKumMuUnits) : LeafKumMuSec := by
   intro q _ B _ hq
   obtain ⟨κ, h0, hκ⟩ := hU q B hq
@@ -41,6 +57,9 @@ theorem LeafKumMuSec_of (hU : LeafKumMuUnits) : LeafKumMuSec := by
   · obtain ⟨t, ht⟩ := hs (Sec.map (kernel.ι _) y) (by rw [← secMap_comp, kernel.condition, secMap_zero])
     exact ⟨t, kerSec_inj _ U (by rw [hc, ht])⟩
 
+/- English proof (translation)
+Introduce `_ q _ B _ hq`. Take `⟨κ, hκ⟩` from `LeafKumMuSec_of hU q B hq`. Establish `b1` using `h8 ℤ (ZMod q) (Int.castRingHom (ZMod q)) (sp B) (tw q 1) 1`. Establish `b2` using `h10 ℤ (sp B) κ hκ 1`. Conclude with `⟨((AddEquiv.ofBijective _ b1).trans (AddEquiv.ofBijective _ b2)).symm⟩`.
+-/
 theorem LeafKumMu_of (h8 : A8) (h10 : A10) (hU : LeafKumMuUnits) : LateralTheory.E.H2CurveOrder.LeafKumSeqPf.LeafKumMu := by
   intro _ q _ B _ hq
   obtain ⟨κ, hκ⟩ := LeafKumMuSec_of hU q B hq

@@ -19,6 +19,11 @@ namespace GlobalTheory.SplitSBProd
 
 open Filter Topology
 
+/- English proof (translation)
+Establish `h1 : ∀ᶠ a in 𝓝 (0 : K), ∀ x ∈ C, a • x ∈ U`. Apply `hC.eventually_forall_of_forall_eventually` to reduce the goal to its premises. Introduce `x _`. Establish `hc' : Continuous fun z : K × M => z.1 • z.2` using `continuous_smul`. Apply `hc'.continuousAt.eventually_mem` to reduce the goal to its premises.
+
+Simplify using `using hU`. Conclude with `hc.eventually h1`.
+-/
 theorem eventually_pow_smul_mem {K M : Type} [Semiring K] [TopologicalSpace K] [AddCommMonoid M] [Module K M]
     [TopologicalSpace M] [ContinuousSMul K M] {c : K} (hc : Tendsto (fun n : ℕ => c ^ n) atTop (𝓝 0))
     {C U : Set M} (hC : IsCompact C) (hU : U ∈ 𝓝 (0 : M)) : ∀ᶠ n in atTop, ∀ x ∈ C, c ^ n • x ∈ U := by
@@ -34,6 +39,9 @@ section Local
 
 variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
 
+/- English proof (translation)
+Use `⟨ringChar 𝓀[k], Nat.pos_of_ne_zero (CharP.char_ne_zero_of_finite 𝓀[k] _), GlobalTheory.LocalTraceSum.tendsto_pow ?_⟩` and prove the remaining obligations. Use `(residue_eq_zero_iff_lt ((ringChar 𝓀[k] : ℕ) : 𝒪[k])).1 (by rw [map_natCast]; exact ringChar.Nat.cast_ringChar)` as an intermediate fact. Simplify using `using this`.
+-/
 theorem exists_nat_pow_tendsto_zero : ∃ p : ℕ, 0 < p ∧ Tendsto (fun n : ℕ => (p : k) ^ n) atTop (𝓝 0) := by
   refine ⟨ringChar 𝓀[k], Nat.pos_of_ne_zero (CharP.char_ne_zero_of_finite 𝓀[k] _),
     GlobalTheory.LocalTraceSum.tendsto_pow ?_⟩
@@ -46,9 +54,15 @@ end Local
 variable {D : D7} {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
   {Y Y' : Type} [Fintype Y] [DecidableEq Y] [Fintype Y'] [DecidableEq Y'] {S T : HSp D}
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem down_eq (q : GlobalTheory.FinPl.SplitPt D k) (FS : Frame k S.rank Y') (FT : Frame k T.rank Y) (x : WO S T) :
     (ofSplit q).down FS FT x = FT.γ * (x : Matrix (Fin T.rank) (Fin S.rank) (AE D)).map q.pr * FS.β := rfl
 
+/- English proof (translation)
+Rewrite using `[down_eq, down_eq, down_eq]`. Establish `: ((x + y : WO S T) : Matrix (Fin T.rank) (Fin S.rank) (AE D)).map q.pr = (x : Matrix (Fin T.rank) (Fin S.rank) (AE D)).map q.pr + (y : Matrix (Fin T.rank) (Fin S.rank) (AE D)).map q.pr`. Use extensionality with `i j`. Simplify using the standard rewrite rules. Rewrite using `[this, Matrix.mul_add, Matrix.add_mul]`.
+-/
 theorem down_add (q : GlobalTheory.FinPl.SplitPt D k) (FS : Frame k S.rank Y') (FT : Frame k T.rank Y) (x y : WO S T) :
     (ofSplit q).down FS FT (x + y) = (ofSplit q).down FS FT x + (ofSplit q).down FS FT y := by
   rw [down_eq, down_eq, down_eq]
@@ -57,6 +71,9 @@ theorem down_add (q : GlobalTheory.FinPl.SplitPt D k) (FS : Frame k S.rank Y') (
     ext i j; simp
   rw [this, Matrix.mul_add, Matrix.add_mul]
 
+/- English proof (translation)
+Rewrite using `[down_eq, down_eq]`. Establish `: ((n • x : WO S T) : Matrix (Fin T.rank) (Fin S.rank) (AE D)).map q.pr = n • (x : Matrix (Fin T.rank) (Fin S.rank) (AE D)).map q.pr`. Use extensionality with `i j`. Simplify using the standard rewrite rules. Rewrite using `[this, Matrix.mul_smul, Matrix.smul_mul]`.
+-/
 theorem down_nsmul (q : GlobalTheory.FinPl.SplitPt D k) (FS : Frame k S.rank Y') (FT : Frame k T.rank Y) (n : ℕ) (x : WO S T) :
     (ofSplit q).down FS FT (n • x) = n • (ofSplit q).down FS FT x := by
   rw [down_eq, down_eq]
@@ -72,6 +89,13 @@ namespace GlobalTheory.SplitSBProd
 variable {D : D7} {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
   {S T : HSp D}
 
+/- English proof (translation)
+Take `⟨M, hM, h⟩` from `GlobalTheory.PlaceDatum.exists_den_latO (S := S) (T := T) hS hT`. Use `⟨M, hM, fun u hu i j => ?_⟩` and prove the remaining obligations. Establish `hfe : finPart D q.e ∈ intAE D` using `GlobalTheory.AdIdem.idempotent_mem_intAE D _ (by rw [← RingHom.map_mul, q.split.1])`. Establish `hu'` using `GlobalTheory.LatticeStable.smul_mem_latO D S T _ _ _ q.e hfe u hu`. Establish `h1` using `h _ hu' i j`.
+
+Establish `h2 : finPart D (q.e * ((M : AE D) * u i j)) ∈ intAE D`. Apply `GlobalTheory.PlaceDatum.finPart_mem_of_toEAf` to reduce the goal to its premises. Establish `e1 : q.e * ((M : AE D) * u i j) = (M : AE D) * (q.e • u) i j`. Rewrite using `[Matrix.smul_apply, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree.
+
+Rewrite using `[e1, RingHom.map_mul, map_natCast]`. Conclude with `h1`. Establish `e2 : (M : k) * q.pr (u i j) = q.pr ((M : AE D) * u i j)` using `by rw [map_mul, map_natCast]`. Rewrite using `[e2, q.int_iff, q.sec_pr]`. Conclude with `h2`.
+-/
 theorem exists_den_pr (q : GlobalTheory.FinPl.SplitPt D k) {ΛS : Submodule (𝓞 D.host.E) (Fin S.rank → D.host.E)}
     {ΛT : Submodule (𝓞 D.host.E) (Fin T.rank → D.host.E)} (hS : ΛS.FG) (hT : ΛT.FG) :
     ∃ M : ℕ, 0 < M ∧ ∀ u ∈ latO S T (ΛS : Set (Fin S.rank → D.host.E)) (ΛT : Set (Fin T.rank → D.host.E)) (fun _ => True),
@@ -91,6 +115,9 @@ theorem exists_den_pr (q : GlobalTheory.FinPl.SplitPt D k) {ΛS : Submodule (�
   rw [e2, q.int_iff, q.sec_pr]
   exact h2
 
+/- English proof (translation)
+Apply `GlobalTheory.IdemRes.toEAf_mem_of_finPart` to reduce the goal to its premises. Rewrite using `[← q.sec_pr]`. Conclude with `(q.int_iff _).1 hx`.
+-/
 theorem toEAf_mem_of_pr (q : GlobalTheory.FinPl.SplitPt D k) {x : AE D} (hx : q.pr x ∈ 𝒪[k]) :
     toEAf D (q.e * x) ∈ Formalism.L2.Herm.intAf D.host.F D.host.E := by
   apply GlobalTheory.IdemRes.toEAf_mem_of_finPart
@@ -103,6 +130,41 @@ namespace GlobalTheory.SplitSBProd
 
 set_option maxHeartbeats 1600000 in
 
+/- English proof (translation)
+Introduce `D k _ _ _ _ q Y Y' _ _ _ _ S T FS FT ΛS ΛT hS hT e he hqe Ω hΩ Φ`. Take `⟨-, kΩ, hkΩ, hΩinv, hΩsup⟩` from `hΩ`. Take `⟨M, hM, hMden⟩` from `exists_den_pr (S := S) (T := T) q hS.fg hT.fg`. Take `⟨K₀, hK₀, hK₀mem⟩` from `GlobalTheory.PlaceDatum.exists_nsmul_mem_latO hS hT`. Take `⟨p, hp, hpt⟩` from `exists_nat_pow_tendsto_zero (k := k)`.
+
+Establish `hU` using `GlobalTheory.HalfCoordSB.eventually_invariant Φ.2.1 Φ.2.2`. Establish `hCa : IsCompact ((fun A : Matrix (Fin T.rank) (Fin S.rank) k => FT.γ * A * FS.β) '' {A | ∀ i j, A i j ∈ 𝒪[k]})` using `GlobalTheory.SplitFlip.isCompact_intMatrix.image (by fun_prop)`. Establish `hCb : IsCompact ((fun z : Matrix Y Y' k => FT.β * z * FS.γ) '' tsupport Φ.1)` using `Φ.2.2.isCompact.image (by fun_prop)`. Take `⟨N, hNa, hNb⟩` from `((eventually_pow_smul_mem hpt hCa hU).and (eventually_pow_smul_mem hpt hCb (GlobalTheory.SplitFlip.isOpen_intMatrix.mem_nhds fun i j => zero_mem _))).exists`. Establish `hqe1 : e * q.e = q.e` using `by rw [mul_comm]; exact hqe`.
+
+Establish `hqq : q.e * q.e = q.e` using `q.split.1`. Establish `h1e : finPart D (1 - q.e) ∈ intAE D` using `GlobalTheory.AdIdem.idempotent_mem_intAE D _ (by`. Rewrite using `[← RingHom.map_mul, sub_mul, one_mul, mul_sub, mul_one, hqq, sub_self, sub_zero])`. Establish `hinvΦ : ∀ u ∈ latO S T (ΛS : Set (Fin S.rank → D.host.E)) (ΛT : Set (Fin T.rank → D.host.E)) (fun _ => True), ∀ (j : ℕ) x, Φ.1 (x + j • ((p ^ N * M) • (ofSplit q).down FS FT u)) = Φ.1 x`. Introduce `u hu j`.
+
+Establish `hw : ∀ y, Φ.1 (y + (p ^ N * M) • (ofSplit q).down FS FT u) = Φ.1 y`. Use `hNa _ ⟨M • (u : Matrix (Fin T.rank) (Fin S.rank) (AE D)).map q.pr, fun i j => by` as an intermediate fact. Rewrite using `[Matrix.smul_apply, Matrix.map_apply, nsmul_eq_mul]`. Conclude with `hMden u hu i j, rfl⟩`. Simplify using `only [Set.mem_setOf_eq] at this`.
+
+Rewrite `this` using `[← Nat.cast_pow, Nat.cast_smul_eq_nsmul, Matrix.mul_smul, Matrix.smul_mul, ← down_eq, ← mul_smul]`. Conclude with `this`. Proceed by induction on `j with`. Consider the case `zero => intro x`. Rewrite using `[zero_smul, add_zero]`.
+
+Consider the case `succ j ih => intro x`. Rewrite using `[succ_nsmul, ← add_assoc, hw, ih]`. Establish `hsupp : ∀ t : WO S T, Φ.1 ((ofSplit q).down FS FT t) ≠ 0 → K₀ • ((p ^ N) • (q.e • t)) ∈ latO S T (ΛS : Set (Fin S.rank → D.host.E)) (ΛT : Set (Fin T.rank → D.host.E)) (fun _ => True)`. Introduce `t hΦt`. Establish `hint` using `hNb _ ⟨_, subset_tsupport _ hΦt, by`.
+
+Simplify using `only [down_eq, Matrix.mul_assoc, FS.βγ, Matrix.mul_one]`. Rewrite using `[← Matrix.mul_assoc, FT.βγ, Matrix.one_mul]⟩`. Rewrite `hint` using `[← Nat.cast_pow, Nat.cast_smul_eq_nsmul]`. Use `hK₀mem _ (Matrix.ext fun i j => ?_) fun i j => ?_` and prove the remaining obligations. Simplify using `only [Matrix.map_apply, Matrix.smul_apply, smul_eq_mul, nsmul_eq_mul, map_mul, map_natCast, GlobalTheory.SplitScalar.infPart_splitIdem q.split, zero_mul, mul_zero, Matrix.zero_apply]`.
+
+Establish `hx : q.pr ((p ^ N) • t i j) ∈ 𝒪[k]`. Use `hint i j` as an intermediate fact. Rewrite using `[map_nsmul]`. Conclude with `this`. Establish `e1 : ((p ^ N) • (q.e • t)) i j = q.e * ((p ^ N) • t i j)`.
+
+Express the relevant statement in the definitionally equal form `(p ^ N) • (q.e * t i j) = _`. Rewrite using `[nsmul_eq_mul, nsmul_eq_mul, mul_left_comm]`. Rewrite using `[e1]`. Conclude with `toEAf_mem_of_pr q hx`. Use `⟨fun t ht => ?_, kΩ * K₀ * (p ^ N * M), Nat.mul_pos (Nat.mul_pos hkΩ hK₀) (Nat.mul_pos (pow_pos hp N) hM), fun u hu hue t => ?_, fun t ht => ?_⟩` and prove the remaining obligations.
+
+Assume the negation of the conclusion as `h`. Conclude with `ht (if_neg h)`. Establish `hKu : IsHalf e ((kΩ * K₀ * (p ^ N * M)) • u)` using `GlobalTheory.HalfCoordSB.isHalf_nsmul hue _ dsimp only`. Distinguish the cases in `ht : IsHalf e t`. Rewrite using `[if_pos ht, if_pos (GlobalTheory.HalfCoordSB.isHalf_add ht hKu)]`.
+
+Establish `hΦe : Φ.1 ((ofSplit q).down FS FT (t + (kΩ * K₀ * (p ^ N * M)) • u)) = Φ.1 ((ofSplit q).down FS FT t)`. Rewrite using `[down_add, down_nsmul, mul_smul]`. Conclude with `hinvΦ u hu _ _`. Use `set v := (K₀ * (p ^ N * M)) • ((1 - q.e) • u) with hv`. Establish `hvΛ : v ∈ latO S T (ΛS : Set (Fin S.rank → D.host.E)) (ΛT : Set (Fin T.rank → D.host.E)) (fun _ => True)` using `nsmul_mem (GlobalTheory.LatticeStable.smul_mem_latO D S T _ _ _ _ h1e u hu) _`.
+
+Establish `hvh : IsHalf (e - q.e) v` using `fun i j => by`. Rewrite using `[hv, Matrix.smul_apply, Matrix.smul_apply, smul_eq_mul, nsmul_eq_mul]`. Establish `hfac : (e - q.e) * (1 - q.e) = e - q.e`. Rewrite using `[mul_sub, mul_one, sub_mul, hqe1, hqq, sub_self, sub_zero]`. Establish `hx2 : (e - q.e) * u i j = (1 - q.e) * u i j` using `by rw [sub_mul, sub_mul, one_mul, hue i j]`.
+
+Rewrite using `[mul_left_comm, ← mul_assoc (e - q.e), hfac, hx2]`. Establish `hΩe : Ω ((1 - q.e) • (t + (kΩ * K₀ * (p ^ N * M)) • u)) = Ω ((1 - q.e) • t)`. Establish `e2 : (1 - q.e) • (t + (kΩ * K₀ * (p ^ N * M)) • u) = (1 - q.e) • t + kΩ • v`. Rewrite using `[hv, smul_add, smul_comm (1 - q.e) (kΩ * K₀ * (p ^ N * M)) u, mul_assoc kΩ, mul_smul]`. Rewrite using `[e2]`.
+
+Conclude with `hΩinv v hvΛ hvh _`. Rewrite using `[hΦe, hΩe]`. Establish `hn : ¬ IsHalf e (t + (kΩ * K₀ * (p ^ N * M)) • u)` using `fun h => ht (by simpa using GlobalTheory.HalfCoordSB.isHalf_sub h hKu)`. Rewrite using `[if_neg ht, if_neg hn]`. Simplify using `only at ht`.
+
+Establish `hh : IsHalf e t`. Assume the negation of the conclusion as `h`. Conclude with `ht (if_neg h)`. Rewrite `ht` using `[if_pos hh]`. Establish `hΦt : Φ.1 ((ofSplit q).down FS FT t) ≠ 0` using `left_ne_zero_of_mul ht`.
+
+Establish `hΩt : Ω ((1 - q.e) • t) ≠ 0` using `right_ne_zero_of_mul ht`. Establish `e3 : t = q.e • t + (1 - q.e) • t` using `by rw [← add_smul, add_sub_cancel, one_smul]`. Establish `e4 : kΩ * K₀ * (p ^ N * M) = (kΩ * M) * (K₀ * p ^ N)` using `by ring`. Establish `e5 : kΩ * K₀ * (p ^ N * M) = (K₀ * (p ^ N * M)) * kΩ` using `by ring`. Rewrite using `[e3, nsmul_add]`.
+
+Use `add_mem ?_ ?_` and prove the remaining obligations. Rewrite using `[e4, mul_smul, mul_smul K₀]`. Conclude with `nsmul_mem (hsupp t hΦt) _`. Rewrite using `[e5, mul_smul]`. Conclude with `nsmul_mem (hΩsup _ hΩt) _`.
+-/
 theorem isSBHalf_splitProd : ∀ (D : D7) (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] (q : GlobalTheory.FinPl.SplitPt D k) (Y Y' : Type) [Fintype Y] [DecidableEq Y] [Fintype Y'] [DecidableEq Y'] (S T : HSp D) (FS : Frame k S.rank Y') (FT : Frame k T.rank Y) (ΛS : Submodule (𝓞 D.host.E) (Fin S.rank → D.host.E)) (ΛT : Submodule (𝓞 D.host.E) (Fin T.rank → D.host.E)), Submodule.IsLattice D.host.E ΛS → Submodule.IsLattice D.host.E ΛT → ∀ e : AE D, e * e = e → q.e * e = q.e → ∀ Ω : WO S T → ℂ, IsSBHalf (e - q.e) (latO S T ΛS ΛT fun _ => True) Ω → ∀ Φ : SB (Matrix Y Y' k), IsSBHalf e (latO S T ΛS ΛT fun _ => True) (fun x : WO S T => if IsHalf e x then Φ.1 ((ofSplit q).down FS FT x) * Ω ((1 - q.e) • x) else 0) := by
   intro D k _ _ _ _ q Y Y' _ _ _ _ S T FS FT ΛS ΛT hS hT e he hqe Ω hΩ Φ
   obtain ⟨-, kΩ, hkΩ, hΩinv, hΩsup⟩ := hΩ

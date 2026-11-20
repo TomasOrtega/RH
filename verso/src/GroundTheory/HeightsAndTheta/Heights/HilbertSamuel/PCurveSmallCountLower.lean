@@ -9,11 +9,17 @@ open MvPolynomial ReciprocityTheory.ChartRestriction.G.Geo
 
 namespace CurveSmallCountLower
 
+/- English proof (translation)
+Unfold both sides. The equivalence is reflexive.
+-/
 theorem statement_iff : CurveSmallCountLower.Statement ↔ Targets.CurveCountLower.Statement :=
   Iff.rfl
 
 end CurveSmallCountLower
 
+/- English proof (translation)
+The claim follows from `CurveSmallCountLower.statement_iff.mpr (Targets.CurveCountLower.proof hD hV hL hN)`.
+-/
 theorem CurveSmallCountLower.proof (hD : Targets.CurveDegreeVert.Statement) (hV : Targets.CurveVertIndex.Statement)
     (hL : Targets.CurveIndexLinear.Statement) (hN : Targets.CurveBoxCount.Statement) :
     CurveSmallCountLower.Statement :=

@@ -20,6 +20,37 @@ namespace GlobalTheory.HL.AmpLoc
 
 set_option maxHeartbeats 1000000 in
 
+/- English proof (translation)
+Introduce `D X Y u u' hst hk w F00 F'0 FP hw hG hbase G c t₀ ρ U U' hmv R S1 Om d hout hOm hover Q`. Establish `hT : G.IsTerm (G.datOf (c.lat ρ t₀.lam)) (c.lat ρ t₀.lam)` using `(GlobalTheory.T.movedTermLattice_isGlobalTerm_phase D X Y u u' hst hk w F00 F'0 FP hw hG hbase G c t₀ ρ U U' hmv).1`. Establish `hW` using `fun p => GlobalTheory.T.terms_orbits_heights_amplitudes_in_coordinates (Y.M p) (Y.agree p).1 (locH (⟨Y.δ, Y.M, Y.agree⟩ : LocDat D) p) D.R.rS D.R.k (FP p) (G.S p) (c.c p)`. Take `⟨-, -, -, -, hgood⟩` from `GlobalTheory.HL.BadPlaces.bad_places _ _ _ G hk _ _ hT`. Establish `hOmS : G.Om ⊆ (S1 : Set (PlF D))`.
+
+Introduce `p hp`. Assume the negation of the conclusion as `hn`. Conclude with `hp ((hW p).2.2.2.1 (hout p hn))`. Take `⟨κ, hκ, hdec⟩` from `GlobalTheory.T.amplitude_expansion_over_finite_places _ _ _ G hk _ ⟨_, hT⟩ S1 hOmS`. Rewrite using `[hdec Q, norm_mul, hκ, one_mul]`.
+
+Establish `hloc : ∀ p : {p // p ∈ S1}, (G.S p.1).amp (G.datOf (c.lat ρ t₀.lam) p.1) (fun Λ => ¬ (G.S p.1).BBzero (G.datOf (c.lat ρ t₀.lam) p.1) Λ) = LocNG.amp (R p.1) (d p) (LocNG.BBne (H` using `locH (⟨Y.δ, Y.M, Y.agree⟩ : LocDat D) p.1)) ∧ (G.S p.1).amp (G.datOf (c.lat ρ t₀.lam) p.1) ((G.S p.1).BBzero (G.datOf (c.lat ρ t₀.lam) p.1)) = LocNG.amp (R p.1) (d p) (fun t => ¬ LocNG.BBne (H := locH (⟨Y.δ, Y.M, Y.agree⟩ : LocDat D) p.1) t) := by`. Introduce `p`. Use `haveI := ((placesOf (⟨Y.δ, Y.M, Y.agree⟩ : LocDat D)).loc p.1).lf`. Use `haveI := ((placesOf (⟨Y.δ, Y.M, Y.agree⟩ : LocDat D)).loc p.1).char0`. Establish `hu : (Function.update (G.datOf (c.lat ρ t₀.lam)) p.1 ((c.c p.1).dat (d p))) p.1 = (c.c p.1).dat (d p)` using `Function.update_self _ _ _`.
+
+Take `⟨h, hh, hδ⟩` from `GlobalTheory.T.localDatum_of_term_in_movedLattice_orbit D X Y u u' hst hk w F00 F'0 FP hw hG hbase G c t₀ ρ U U' hmv p.1 (d p) (hover p) _ hu`. Rewrite `hδ` using `[hu]`. Take `⟨e1, e2⟩` from `(hW p.1).2.2.2.2 (R p.1) (d p)`. Rewrite using `[e1, e2, ← hδ]`. Prove the components needed by the constructor for the conclusion.
+
+Use `(GlobalTheory.InvH.amp_mass_smul _ _ _ _ h hh _ _ _ ?_ ?_).1` and prove the remaining obligations. Introduce `s hs Λ hΛ hq hb`. Conclude with `hq ((GlobalTheory.FrameAct.stabiliser_acts_on_terms _ _ _ _ _ Λ hΛ s hs).2.2.2.2.2.2.2.1.1 hb)`. Introduce `Λ hΛ`. Take `⟨-, -, -, hM, hs, -⟩` from `GlobalTheory.HL.ComplAct.main _ _ _ _ _ Λ hΛ h hh`.
+
+Conclude with `not_congr ⟨fun e => hM.trans (e.trans hs.symm), fun e => hM.symm.trans (e.trans hs)⟩`. Use `(GlobalTheory.InvH.amp_mass_smul _ _ _ _ h hh _ _ _ ?_ ?_).1` and prove the remaining obligations. Introduce `s hs Λ hΛ hq`. Conclude with `(GlobalTheory.FrameAct.stabiliser_acts_on_terms _ _ _ _ _ Λ hΛ s hs).2.2.2.2.2.2.2.1.2 hq`. Introduce `Λ hΛ`.
+
+Take `⟨-, -, -, hM, hs, -⟩` from `GlobalTheory.HL.ComplAct.main _ _ _ _ _ Λ hΛ h hh`. Conclude with `⟨fun e => hM.trans (e.trans hs.symm), fun e => hM.symm.trans (e.trans hs)⟩`. Establish `hzero : ∀ p ∈ S1, (FP p).PrimeTo → (G.S p).amp (G.datOf (c.lat ρ t₀.lam) p) (fun Λ => ¬ (G.S p).BBzero (G.datOf (c.lat ρ t₀.lam) p) Λ) = 0`. Introduce `p _ hp`. Establish `hBB` using `(hgood p (fun hm => hm ((hW p).2.2.2.1 hp))).1`.
+
+Unfold `Frames.amp`. Conclude with `(tsum_congr fun o => if_neg fun hh => hh.2 (hBB _ _ hh.1)).trans tsum_zero`. Use `congr 1`. Use `symm`. Set `emb : {p // p ∈ S1} ↪ PlF D` to `Function.Embedding.subtype _`.
+
+Set `embF : Finset {p // p ∈ S1} ↪ Finset (PlF D)` to `⟨fun A => A.map emb, Finset.map_injective emb⟩`. Combine the equalities or inequalities in the displayed calculation. Use `Finset.sum_congr rfl fun A _ => ?_` and prove the remaining obligations. Rewrite using `[← Finset.prod_coe_sort S1]`. Use `Finset.prod_congr rfl fun p _ => ?_` and prove the remaining obligations.
+
+Establish `hm : (p.1 ∈ A.map emb) ↔ p ∈ A` using `Finset.mem_map' emb`. Distinguish the cases in `hp : p ∈ A`. Rewrite using `[if_pos hp, if_pos (hm.2 hp), (hloc p).1]`. Rewrite using `[if_neg hp, if_neg (fun h => hp (hm.1 h)), (hloc p).2]`. Use `_ = ∑ B ∈ (Om.powerset.filter (fun A => Q A.Nonempty)).map embF, ∏ p ∈ S1, (if p ∈ B then (G.S p).amp (G.datOf (c.lat ρ t₀.lam) p) (fun Λ => ¬ (G.S p).BBzero (G.datOf (c.lat ρ t₀.lam) p) Λ) else (G.S p).amp (G.datOf (c.lat ρ t₀.lam) p) ((G.S p).BBzero (G.datOf (c.lat ρ t₀.lam) p) …`.
+
+Use `_ = _ := by`. Apply `Finset.sum_subset` to reduce the goal to its premises. Introduce `B hB`. Take `⟨A, hA, rfl⟩` from `Finset.mem_map.1 hB`. Rewrite `hA`, the goal using `[Finset.mem_filter, Finset.mem_powerset]`.
+
+Use `⟨fun x hx => ?_, ?_⟩` and prove the remaining obligations. Take `⟨y, -, rfl⟩` from `Finset.mem_map.1 hx`. Conclude with `y.2`. Use `show Q (A.map emb).Nonempty`. Rewrite using `[Finset.map_nonempty]`.
+
+Conclude with `hA.2`. Introduce `B hB hn`. Rewrite `hB` using `[Finset.mem_filter, Finset.mem_powerset]`. Distinguish the cases in `hall : ∀ p ∈ B, ¬ (FP p).PrimeTo`. It suffices to derive a contradiction.
+
+Apply `hn` to reduce the goal to its premises. Establish `e : (B.subtype (· ∈ S1)).map emb = B` using `Finset.subtype_map_of_mem hB.1`. Use `Finset.mem_map.2 ⟨B.subtype (· ∈ S1), ?_, e⟩` and prove the remaining obligations. Rewrite using `[Finset.mem_filter, Finset.mem_powerset]`. Use `⟨fun q hq => (hOm q).2 (hall q.1 (Finset.mem_subtype.1 hq)), ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[← Finset.map_nonempty (f := emb), e]`. Conclude with `hB.2`. Use `push_neg at hall`. Take `⟨p, hpB, hp⟩` from `hall`. Conclude with `Finset.prod_eq_zero (hB.1 hpB) (by rw [if_pos hpB]; exact hzero p (hB.1 hpB) hp)`.
+-/
 theorem global_amp_local : ∀ (D : D7) (X : HidaSetting D) (Y : Full X) (u u' : D.what₂.Word), Formalism.MainNotions.S.Cnt.Stand D u u' → 4 * D.R.rS + 7 ≤ D.R.k → ∀ (w : Point D.host.E (D.R.rS + 1)) (F00 : LFlag (VS D) D.R.rS ((Tu D u : ℕ) : D.host.E)) (F'0 : LFlag (VS D) D.R.rS ((Tu D u' : ℕ) : D.host.E)) (FP : ∀ p : PlF D, LocNG.FPair (locH (⟨Y.δ, Y.M, Y.agree⟩ : LocDat D) p) D.R.rS), ZhatOM (ZhatL F00 F'0) = ptMat w → Gval F00 F'0 ≠ 0 → (∀ p, AtBase (⟨Y.δ, Y.M, Y.agree⟩ : LocDat D) p F00 F'0 (Tu D u) (Tu D u') (FP p) ∧ (FP p).RelG (LocNG.theta (Y.M p))) → ∀ (G : GFrames (placesOf (⟨Y.δ, Y.M, Y.agree⟩ : LocDat D)) D.R.rS D.R.k) (c : GCoord (⟨Y.δ, Y.M, Y.agree⟩ : LocDat D) F00 F'0 FP G), ∀ (t₀ : TauC Y u u') (ρ : ((VS D).V ≃ₗ[D.host.E] (VS D).V)) (U U' : Formalism.L2.SG.PairVal.MatR D), MovesTo F00 F'0 (lf D (X.Fu u)) t₀.frame ρ U U' → ∀ (R : ∀ p, LocNG.Reps (FP p)) (S1 : Finset (PlF D)) (Om : Finset {p // p ∈ S1}) (d : ∀ p : {p // p ∈ S1}, LocNG.Datum (FP p.1)), (∀ p, p ∉ S1 → (FP p).PrimeTo) → (∀ p, p ∈ Om ↔ ¬ (FP p.1).PrimeTo) → (∀ p : {p // p ∈ S1}, Over (FP p.1) (d p) (locU (⟨Y.δ, Y.M, Y.agree⟩ : LocDat D) p.1 t₀.toTerm.lam (lf D (X.Fu u)) (Quot.out t₀.toTerm.cls).1 (Tu D u) (Tu D u'))) → ∀ Q : Prop → Prop, ‖G.amp (G.datOf (c.lat ρ t₀.lam)) (fun Γ => Q (¬ G.Gen (G.datOf (c.lat ρ t₀.lam)) Γ))‖ = ‖∑ A ∈ Om.powerset.filter (fun A => Q A.Nonempty), ∏ p, (if p ∈ A then LocNG.amp (R p.1) (d p) (LocNG.BBne (H := locH (⟨Y.δ, Y.M, Y.agree⟩ : LocDat D) p.1)) else LocNG.amp (R p.1) (d p) (fun t => ¬ LocNG.BBne (H := locH (⟨Y.δ, Y.M, Y.agree⟩ : LocDat D) p.1) t))‖ := by
   intro D X Y u u' hst hk w F00 F'0 FP hw hG hbase G c t₀ ρ U U' hmv R S1 Om d hout hOm hover Q
   have hT : G.IsTerm (G.datOf (c.lat ρ t₀.lam)) (c.lat ρ t₀.lam) :=

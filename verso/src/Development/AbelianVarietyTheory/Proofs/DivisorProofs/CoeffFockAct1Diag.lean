@@ -7,6 +7,13 @@ noncomputable section
 
 namespace GlobalTheory.LowIrr
 
+/- English proof (translation)
+Proceed by induction on `f using MvPolynomial.induction_on' with`. Consider the case `monomial u r`. Establish `e : (monomial u r : Pol P Q R S) = r • monomial u 1`. Rewrite using `[smul_monomial, smul_eq_mul, mul_one]`. Rewrite using `[e, map_smul, cartan1, coeff_smul, coeff_smul, coeff_smul, coeff_monomial]`.
+
+Distinguish the cases in `h : u = α`. Substitute `h` using the available equality. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Simplify using `[h]`.
+
+Consider the case `add p q hp hq => simp only [map_add, coeff_add, hp, hq, mul_add]`.
+-/
 theorem coeff_fockAct1_diag {P Q R S : ℕ} (a : Ix P Q) (f : Pol P Q R S) (α : Ln P Q R S →₀ ℕ) :
     coeff α (fockAct1 P Q R S (Eab a a) f) =
       (∑ c, lineSign a c * (((α (a, c) : ℕ) : ℂ) + 1 / 2)) * coeff α f := by
@@ -20,6 +27,9 @@ theorem coeff_fockAct1_diag {P Q R S : ℕ} (a : Ix P Q) (f : Pol P Q R S) (α :
     · simp [h]
   | add p q hp hq => simp only [map_add, coeff_add, hp, hq, mul_add]
 
+/- English proof (translation)
+Rewrite using `[Fintype.sum_sum_type]`. Simplify using `only [lineSign, one_mul, neg_one_mul, Finset.sum_add_distrib, Finset.sum_neg_distrib, Finset.sum_const, Finset.card_univ, Fintype.card_fin, nsmul_eq_mul, Nat.cast_sum]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem eig_inl {P Q R S : ℕ} (i : Fin P) (α : Ln P Q R S →₀ ℕ) :
     (∑ c, lineSign (Sum.inl i : Ix P Q) c * (((α (Sum.inl i, c) : ℕ) : ℂ) + 1 / 2)) =
       ((∑ c : Fin R, α (Sum.inl i, Sum.inl c) : ℕ) : ℂ) - ((∑ d : Fin S, α (Sum.inl i, Sum.inr d) : ℕ) : ℂ)
@@ -29,6 +39,9 @@ theorem eig_inl {P Q R S : ℕ} (i : Fin P) (α : Ln P Q R S →₀ ℕ) :
     Finset.sum_const, Finset.card_univ, Fintype.card_fin, nsmul_eq_mul, Nat.cast_sum]
   ring
 
+/- English proof (translation)
+Rewrite using `[Fintype.sum_sum_type]`. Simplify using `only [lineSign, one_mul, neg_one_mul, Finset.sum_add_distrib, Finset.sum_neg_distrib, Finset.sum_const, Finset.card_univ, Fintype.card_fin, nsmul_eq_mul, Nat.cast_sum]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem eig_inr {P Q R S : ℕ} (j : Fin Q) (α : Ln P Q R S →₀ ℕ) :
     (∑ c, lineSign (Sum.inr j : Ix P Q) c * (((α (Sum.inr j, c) : ℕ) : ℂ) + 1 / 2)) =
       ((∑ d : Fin S, α (Sum.inr j, Sum.inr d) : ℕ) : ℂ) - ((∑ c : Fin R, α (Sum.inr j, Sum.inl c) : ℕ) : ℂ)
@@ -38,6 +51,11 @@ theorem eig_inr {P Q R S : ℕ} (j : Fin Q) (α : Ln P Q R S →₀ ℕ) :
     Finset.sum_const, Finset.card_univ, Fintype.card_fin, nsmul_eq_mul, Nat.cast_sum]
   ring
 
+/- English proof (translation)
+Establish `hKC : IsKC (Eab a a : Mat P Q)`. Break down `a with a | a` into its components or cases. Conclude with `eab_isKC_inl a a`. Conclude with `eab_isKC_inr a a`. Establish `h` using `congrArg (coeff α) ((GlobalTheory.KFixIrr.mem_chiOne x f).1 hf _ hKC)`.
+
+Rewrite `h` using `[coeff_fockAct1_diag, coeff_smul, Eab, Matrix.trace_single_eq_same, mul_one, smul_eq_mul]`. Conclude with `mul_right_cancel₀ (mem_support_iff.1 hα) h`.
+-/
 theorem eig_eq_of_mem {P Q R S : ℕ} {x : ℚ} {f : Pol P Q R S} (hf : f ∈ GlobalTheory.KFixIrr.chiOne P Q R S x)
     (a : Ix P Q) {α : Ln P Q R S →₀ ℕ} (hα : α ∈ f.support) :
     (∑ c, lineSign a c * (((α (a, c) : ℕ) : ℂ) + 1 / 2)) = (x : ℂ) := by
@@ -49,6 +67,19 @@ theorem eig_eq_of_mem {P Q R S : ℕ} {x : ℚ} {f : Pol P Q R S} (hf : f ∈ Gl
   rw [coeff_fockAct1_diag, coeff_smul, Eab, Matrix.trace_single_eq_same, mul_one, smul_eq_mul] at h
   exact mul_right_cancel₀ (mem_support_iff.1 hα) h
 
+/- English proof (translation)
+Establish `cx : (x : ℂ) - ((R : ℂ) - S) / 2 = k`. Use `congrArg (fun q : ℚ => (q : ℂ)) hx` as an intermediate fact. Simplify `this` using `[cPair]`. Establish `cx' : (x : ℂ) + ((R : ℂ) - S) / 2 = k'`. Use `congrArg (fun q : ℚ => (q : ℂ)) hx'` as an intermediate fact.
+
+Simplify `this` using `[cPair]`. Establish `hR : ∀ i : Fin P, ∑ c : Fin R, α (Sum.inl i, Sum.inl c) = k + ∑ d : Fin S, α (Sum.inl i, Sum.inr d)`. Introduce `i`. Establish `h` using `eig_eq_of_mem hf (Sum.inl i) hα`. Rewrite `h` using `[eig_inl]`.
+
+Establish `: ((∑ c : Fin R, α (Sum.inl i, Sum.inl c) : ℕ) : ℂ) = ((k + ∑ d : Fin S, α (Sum.inl i, Sum.inr d) : ℕ) : ℂ)`. Move the coercions through the operations in `at h ⊢`. Take the linear combination `h + cx`. Conclude with `this` after adjusting the coercions. Establish `hS : ∀ j : Fin Q, ∑ d : Fin S, α (Sum.inr j, Sum.inr d) = k' + ∑ c : Fin R, α (Sum.inr j, Sum.inl c)`.
+
+Introduce `j`. Establish `h` using `eig_eq_of_mem hf (Sum.inr j) hα`. Rewrite `h` using `[eig_inr]`. Establish `: ((∑ d : Fin S, α (Sum.inr j, Sum.inr d) : ℕ) : ℂ) = ((k' + ∑ c : Fin R, α (Sum.inr j, Sum.inl c) : ℕ) : ℂ)`. Move the coercions through the operations in `at h ⊢`.
+
+Take the linear combination `h + cx'`. Conclude with `this` after adjusting the coercions. Rewrite using `[Finsupp.degree_eq_sum, Fintype.sum_prod_type, Fintype.sum_sum_type]`. Simplify using `only [Fintype.sum_sum_type]`. Rewrite using `[Finset.sum_congr rfl fun i _ => congrArg (· + _) (hR i), Finset.sum_congr rfl fun j _ => congrArg (_ + ·) (hS j)]`.
+
+Simplify using `only [Finset.sum_add_distrib, Finset.sum_const, Finset.card_univ, Fintype.card_fin, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem degree_of_mem {P Q R S : ℕ} {x : ℚ} {k k' : ℕ} (hx : x - cPair R S = k) (hx' : x + cPair R S = k')
     {f : Pol P Q R S} (hf : f ∈ GlobalTheory.KFixIrr.chiOne P Q R S x) {α : Ln P Q R S →₀ ℕ} (hα : α ∈ f.support) :
     α.degree = P * k + Q * k' + 2 * ((∑ i : Fin P, ∑ d : Fin S, α (Sum.inl i, Sum.inr d)) +
@@ -82,6 +113,15 @@ theorem degree_of_mem {P Q R S : ℕ} {x : ℚ} {k k' : ℕ} (hx : x - cPair R S
   simp only [Finset.sum_add_distrib, Finset.sum_const, Finset.card_univ, Fintype.card_fin, smul_eq_mul]
   ring
 
+/- English proof (translation)
+Introduce `P Q R S x k k' hx hx' f hf`. Take `⟨hc, hdeg⟩` from `(GlobalTheory.KFixIrr.mem_lowOne x _ f).1 hf`. Establish `key : ∀ α ∈ f.support, ((∑ i : Fin P, ∑ d : Fin S, α (Sum.inl i, Sum.inr d)) = 0 ∧ ∑ j : Fin Q, ∑ c : Fin R, α (Sum.inr j, Sum.inl c) = 0) ∧ α.degree = P * k + Q * k'`. Introduce `α hα`. Establish `h1` using `degree_of_mem hx hx' hc hα`.
+
+Establish `h2 : α.degree ≤ f.totalDegree` using `le_totalDegree hα`. Use linear arithmetic over natural numbers and integers. Use `⟨fun l hl => ?_, fun d hd => ?_⟩` and prove the remaining obligations. Take `⟨α, hα, hl⟩` from `mem_vars l |>.1 hl`. Take `⟨⟨h1, h2⟩, -⟩` from `key α hα`.
+
+Rewrite `hl` using `[Finsupp.mem_support_iff]`. Break down `l with ⟨a | a, c | c⟩` into its components or cases. Both sides reduce to the same expression. Conclude with `absurd (Finset.sum_eq_zero_iff.1 (Finset.sum_eq_zero_iff.1 h1 a (Finset.mem_univ _)) c (Finset.mem_univ _)) hl`. Conclude with `absurd (Finset.sum_eq_zero_iff.1 (Finset.sum_eq_zero_iff.1 h2 a (Finset.mem_univ _)) c (Finset.mem_univ _)) hl`.
+
+Both sides reduce to the same expression. Rewrite using `[← (key d (mem_support_iff.2 hd)).2, Finsupp.degree_eq_weight_one]`. Both sides reduce to the same expression.
+-/
 theorem lowShape : ∀ (P Q R S : ℕ) (x : ℚ) (k k' : ℕ), x - Formalism.BasicNotions.TH.cPair R S = k →
     x + Formalism.BasicNotions.TH.cPair R S = k' → ∀ f ∈ GlobalTheory.KFixIrr.lowOne P Q R S x (P * k + Q * k'),
     (∀ l ∈ f.vars, Formalism.BasicNotions.TH.linePos l = true) ∧ f.IsHomogeneous (P * k + Q * k') := by

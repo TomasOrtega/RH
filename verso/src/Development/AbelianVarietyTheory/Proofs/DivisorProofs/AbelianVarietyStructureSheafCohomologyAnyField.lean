@@ -14,6 +14,11 @@ attribute [local instance] Over.cartesianMonoidalCategory
 
 namespace GlobalTheory.AbCoh
 
+/- English proof (translation)
+Introduce `K _ A _ g hab hsm`. Set `L` to `AlgebraicClosure K`. Set `σ : K →+* L` to `algebraMap K L`. Establish `hpb : IsPullback (pullback.fst A.hom (spMap σ)) (pullback.snd A.hom (spMap σ)) A.hom (spMap σ)` using `IsPullback.of_hasPullback _ _`. Take `⟨inst, hgp, habB, hsmB⟩` from `GlobalTheory.T.exists_grpObj_isGrpPullback_of_isPullback' K L σ A _ _ _ hpb`.
+
+Establish `hB` using `@GlobalTheory.T.structureSheafCohomology_abelianVariety_algClosed L _ _ (Over.mk (pullback.snd A.hom (spMap σ))) inst g (habB hab) (hsmB g hsm)`. Take `⟨hfin, hrk, hw, hnp, hax⟩` from `hB`. Take `⟨hfinA, hrkA⟩` from `@GlobalTheory.T.structure_h1_rank_descends_field K L _ _ _ A _ _ inst _ hgp hab g hfin hrk`. Take `⟨hnpA, haxA⟩` from `@GlobalTheory.T.primitive_axes_descend_field K L _ _ _ A _ _ inst _ hgp hab`. Conclude with `⟨hfinA, hrkA, @GlobalTheory.T.wedge_property_descends_field K L _ _ _ A _ _ inst _ hgp hab hw, hnpA hnp, haxA hax⟩`.
+-/
 theorem abelian_HO_field_any : ∀ (K : Type) [Field K] (A : Over (Sp K)) [GrpObj A] (g : ℕ),
     IsAbelianScheme A → SmoothOfRelativeDimension g A.hom → Module.Finite K (HO1 A.hom) ∧
       Module.finrank K (HO1 A.hom) = g ∧ WedgeO (OAff A.hom) ∧ NoPrimitiveStructureSheafH2 A ∧ AxesVanishingStructureSheafDegOne A := by

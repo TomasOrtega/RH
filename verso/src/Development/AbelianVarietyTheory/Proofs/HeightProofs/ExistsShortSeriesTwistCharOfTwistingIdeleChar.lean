@@ -18,6 +18,9 @@ open NumberField IsDedekindDomain ReciprocityTheory.ChartRestriction.G.Geo.Tor R
 open scoped TensorProduct Matrix Topology
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
+/- English proof (translation)
+Establish `h : D.conjF = (cF D : D.host.E →ₐ[D.host.F] D.host.E)` using `AlgHom.ext fun a => (D.conjF_eq a).trans (GlobalTheory.TwistFieldCompare.cF_eq a).symm`. Unfold `cjFin`. Rewrite using `[h]`. Both sides reduce to the same expression.
+-/
 theorem cjFin_val (D : D7) (y : (AfE D)ˣ) :
     ((cjFin D y : (AfE D)ˣ) : AfE D) = GlobalTheory.NormOneChar.bar (cF D) (y : AfE D) := by
   have h : D.conjF = (cF D : D.host.E →ₐ[D.host.F] D.host.E) :=
@@ -26,17 +29,37 @@ theorem cjFin_val (D : D7) (y : (AfE D)ˣ) :
   rw [h]
   rfl
 
+/- English proof (translation)
+Unfold both sides. The equivalence is reflexive.
+-/
 theorem normOne_iff {D : D7} (x : (AfE D)ˣ) :
     NormOne x ↔ (x : AfE D) * GlobalTheory.NormOneChar.bar (cF D) (x : AfE D) = 1 := Iff.rfl
 
+/- English proof (translation)
+Unfold `CongOne`. Simplify using `only [GlobalTheory.CharFin.integralFiniteAdeles_eq_adelicCompletion_integers, nsmul_eq_mul]`. Conclude with `Iff.rfl`.
+-/
 theorem congOne_iff {D : D7} (N : ℕ) (x : (AfE D)ˣ) :
     x ∈ GlobalTheory.NormOneChar.congOne (cF D) N ↔ CongOne N x ∧ NormOne x := by
   unfold CongOne
   simp only [GlobalTheory.CharFin.integralFiniteAdeles_eq_adelicCompletion_integers, nsmul_eq_mul]
   exact Iff.rfl
 
+/- English proof (translation)
+The claim follows from `star_star y`.
+-/
 theorem cF_cF (D : D7) (y : D.host.E) : cF D (cF D y) = y := star_star y
 
+/- English proof (translation)
+Establish `key : ∀ b : D.host.E, b ≠ 0 → (x : AfE D) * GlobalTheory.NormOneChar.diag D.host.F D.host.E (cF D b) = GlobalTheory.NormOneChar.diag D.host.F D.host.E b → ∃ (y : (AfE D)ˣ) (b : D.host.E), (y : AfE D) = 1 ⊗ₜ b ∧ x = y / cjFin D y` using `fun b hb e => by`. Use `⟨(GlobalTheory.NormOneChar.isUnit_diag D.host.F D.host.E hb).unit, b, rfl, eq_div_iff_mul_eq'.2 (Units.ext ?_)⟩` and prove the remaining obligations. Rewrite using `[Units.val_mul, cjFin_val]`. Conclude with `e`. Establish `hx : (x : AfE D) = GlobalTheory.NormOneChar.diag D.host.F D.host.E a` using `h`.
+
+Distinguish the cases in `ha : 1 + a = 0`. Establish `hc : cF D ≠ 1`. Establish `: cF D = IsCMField.complexConj D.host.E` using `AlgEquiv.ext fun _ => rfl`. Rewrite using `[this]`. Conclude with `IsCMField.complexConj_ne_one _`.
+
+Choose the witnesses or unpack the hypotheses as in `⟨z, hz⟩ : ∃ z, cF D z ≠ z := by`. Assume the negation of the conclusion as `h0`. Use `push_neg at h0`. Conclude with `hc (AlgEquiv.ext h0)`. Use `key (z - cF D z) (sub_ne_zero.2 hz.symm) ?_` and prove the remaining obligations.
+
+Rewrite using `[hx, ← map_mul, map_sub, cF_cF]`. Use `congr 1`. Take the linear combination `(cF D z - z) * ha`. Use `key (1 + a) ha ?_` and prove the remaining obligations. Establish `h1 : (x : AfE D) * GlobalTheory.NormOneChar.diag D.host.F D.host.E (cF D a) = 1`.
+
+Use `(normOne_iff x).1 hn` as an intermediate fact. Rewrite `this` using `[h]`. Rewrite using `[h]`. Conclude with `this`. Rewrite using `[map_add, map_one, map_add, map_add, map_one, mul_add, h1, ← hx, mul_one, add_comm]`.
+-/
 theorem exists_rat {D : D7} (x : (AfE D)ˣ) (a : D.host.E) (h : (x : AfE D) = 1 ⊗ₜ a) (hn : NormOne x) :
     ∃ (y : (AfE D)ˣ) (b : D.host.E), (y : AfE D) = 1 ⊗ₜ b ∧ x = y / cjFin D y := by
   have key : ∀ b : D.host.E, b ≠ 0 → (x : AfE D) * GlobalTheory.NormOneChar.diag D.host.F D.host.E (cF D b) =
@@ -67,6 +90,15 @@ theorem exists_rat {D : D7} (x : (AfE D)ˣ) (a : D.host.E) (h : (x : AfE D) = 1 
       exact this
     rw [map_add, map_one, map_add, map_add, map_one, mul_add, h1, ← hx, mul_one, add_comm]
 
+/- English proof (translation)
+Establish `hv : ((y / cjFin D y : (AfE D)ˣ) : AfE D) = (y : AfE D) * GlobalTheory.NormOneChar.bar (cF D) ((y⁻¹ : (AfE D)ˣ) : AfE D)`. Rewrite using `[div_eq_mul_inv, ← map_inv, Units.val_mul, cjFin_val]`. Establish `h1 : (y : AfE D) * ((y⁻¹ : (AfE D)ˣ) : AfE D) = 1` using `Units.mul_inv y`. Establish `h2 : GlobalTheory.NormOneChar.bar (cF D) (y : AfE D) * GlobalTheory.NormOneChar.bar (cF D) ((y⁻¹ : (AfE D)ˣ) : AfE D) = 1`. Rewrite using `[← map_mul, h1, map_one]`.
+
+Rewrite using `[← congOne_iff]`. Take `⟨-, hi⟩` from `hu`. Take `⟨w, hw, e⟩` from `hy`. Rewrite `hi`, `hw` using `[GlobalTheory.CharFin.integralFiniteAdeles_eq_adelicCompletion_integers]`. Rewrite `e` using `[nsmul_eq_mul]`.
+
+Establish `e'` using `congrArg (GlobalTheory.NormOneChar.bar (cF D)) e`. Rewrite `e'` using `[map_sub, map_one, map_mul, map_natCast]`. Establish `hi'` using `GlobalTheory.NormOneChar.bar_mem (cF D) hi`. Establish `hw'` using `GlobalTheory.NormOneChar.bar_mem (cF D) hw`. Use `⟨⟨(w - GlobalTheory.NormOneChar.bar (cF D) w) * GlobalTheory.NormOneChar.bar (cF D) ((y⁻¹ : (AfE D)ˣ) : AfE D), mul_mem (sub_mem hw hw') hi', ?_⟩, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[hv]`. Take the linear combination `(GlobalTheory.NormOneChar.bar (cF D) ((y⁻¹ : (AfE D)ˣ) : AfE D)) * (e - e') + h2`. Rewrite using `[hv, map_mul, GlobalTheory.NormOneChar.bar_bar _ (cF_cF D)]`. Take the linear combination `((y : AfE D) * ((y⁻¹ : (AfE D)ˣ) : AfE D)) * h2 + h1`.
+-/
 theorem cong_div {D : D7} (N : ℕ) (y : (AfE D)ˣ) (hu : IntUnit y) (hy : CongOne N y) :
     CongOne N (y / cjFin D y) ∧ NormOne (y / cjFin D y) := by
   have hv : ((y / cjFin D y : (AfE D)ˣ) : AfE D) =
@@ -91,6 +123,19 @@ theorem cong_div {D : D7} (N : ℕ) (y : (AfE D)ˣ) (hu : IntUnit y) (hy : CongO
   · rw [hv, map_mul, GlobalTheory.NormOneChar.bar_bar _ (cF_cF D)]
     linear_combination ((y : AfE D) * ((y⁻¹ : (AfE D)ˣ) : AfE D)) * h2 + h1
 
+/- English proof (translation)
+Introduce `D p de hp h`. Take `⟨h90, hfix, hcong⟩` from `GlobalTheory.T.finiteIdeles_normOne_eq_div_conj_of_congOne D`. Establish `hpp : p.Prime ∧ p % 15 = 1`. Break down `hp with rfl | rfl` into its components or cases. Conclude with `⟨D.host.pde_prime, D.host.pde_mod.1⟩`.
+
+Conclude with `⟨D.host.pde'_prime, D.host.pde_mod.2⟩`. Establish `hp2 : p ≠ 2` using `by rintro rfl; exact absurd hpp.2 (by norm_num)`. Set `q : (AfE D)ˣ →* (AfE D)ˣ` to `MonoidHom.id _ / cjFin D`. Take `⟨xi, hxi⟩` from `GlobalTheory.PrimaryCharacter.exists_factor_of_ker_le q de fun x hx => by`. Establish `h1 : x = cjFin D x` using `div_eq_one.1 hx`.
+
+Take `⟨a, ha⟩` from `hfix x h1.symm`. Conclude with `h.real x a ha`. Establish `ht : XiTilde xi de` using `hxi`. Use `⟨xi, ⟨fun x a ha hn => ?_, fun x hn hc => ?_, ?_, ?_, fun x hn => ?_⟩, ht⟩` and prove the remaining obligations. Take `⟨y, b, hb, rfl⟩` from `exists_rat x a ha hn`.
+
+Rewrite using `[ht, h.rat y b hb]`. Take `⟨y, hy, hyc, rfl⟩` from `hcong p _ x hpp.1 hp2 (Dvd.intro_left _ rfl) (Nat.mul_pos (Nat.mul_pos (D.host.g_prime 0).pos (D.host.g_prime 1).pos) hpp.1.pos) hn hc`. Rewrite using `[ht, h.tame y hy hyc]`. Take `⟨y, hy, hyc, hne⟩` from `h.ram`. Take `⟨c1, c2⟩` from `cong_div _ y hy hyc`.
+
+Conclude with `⟨_, c2, c1, by rwa [ht]⟩`. Take `⟨m, hm, hf⟩` from `h.fin`. Use `⟨m, hm, fun x hn => ?_⟩` and prove the remaining obligations. Take `⟨y, rfl⟩` from `h90 x hn`. Rewrite using `[ht, hf]`.
+
+Take `⟨y, rfl⟩` from `h90 x hn`. Rewrite using `[ht]`. Conclude with `h.val y`.
+-/
 theorem exists_xiOK_xiTilde : ∀ (D : D7) (p : ℕ) (de : (AfE D)ˣ →* ℂˣ), (p = D.host.pde ∨ p = D.host.pde') → XiRec D p de → ∃ xi, XiOK D p xi ∧ XiTilde xi de := by
   intro D p de hp h
   obtain ⟨h90, hfix, hcong⟩ := GlobalTheory.T.finiteIdeles_normOne_eq_div_conj_of_congOne D

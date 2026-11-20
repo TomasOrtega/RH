@@ -30,9 +30,15 @@ section Derive
 
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E}
 
+/- English proof (translation)
+The claim follows from `(UAtSub σ X ev).one_mem`.
+-/
 theorem one_mem_UAt {n : ℕ} (X : Spc F E n) {R : Type} [Zero R] (ev : AF F → R) : (1 : UA σ X.J) ∈ UAt σ X ev :=
   (UAtSub σ X ev).one_mem
 
+/- English proof (translation)
+Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[GlobalTheory.StabHaar.mat_one, Matrix.one_mulVec, Units.val_one, one_smul]`. Rewrite using `[GlobalTheory.StabHaar.mat_one, Matrix.one_mulVec, inv_one, Units.val_one, map_one, one_smul]`. Rewrite using `[GlobalTheory.StabHaar.mat_one, GlobalTheory.StabHaar.mat_one, Matrix.one_mul, Matrix.mul_one]`.
+-/
 theorem isLevi_one {d d₁ : ℕ} {W : Spc F E d} {W₁ : Spc F E d₁} (H' : Plane E d d₁) :
     IsLevi H' 1 (1 : UA σ W₁.J) (1 : UA σ W.J) := by
   refine ⟨?_, ?_, ?_⟩
@@ -40,13 +46,22 @@ theorem isLevi_one {d d₁ : ℕ} {W : Spc F E d} {W₁ : Spc F E d₁} (H' : Pl
   · rw [GlobalTheory.StabHaar.mat_one, Matrix.one_mulVec, inv_one, Units.val_one, map_one, one_smul]
   · rw [GlobalTheory.StabHaar.mat_one, GlobalTheory.StabHaar.mat_one, Matrix.one_mul, Matrix.mul_one]
 
+/- English proof (translation)
+Simplify using `[fac]`.
+-/
 theorem fac_one (χ : Chr F E) (z : ℝ) : fac χ z 1 = 1 := by
   simp [fac]
 
+/- English proof (translation)
+The claim follows from `locOp_of_fix (fun Φ _ => by rw [show ((1 : UA σ X.J), (1 : UA σ W.J)) = 1 from rfl, map_one]; rfl) hφ`.
+-/
 theorem locOp_one {n d : ℕ} {X : Spc F E n} {W : Spc F E d} (om : Rep σ X W) (v : Pl F)
     {φ : (Fin n × Fin d → Fv F v) → ℂ} (hφ : φ ∈ SB (Fin n × Fin d → Fv F v)) : locOp v (om (1, 1)) φ = φ :=
   locOp_of_fix (fun Φ _ => by rw [show ((1 : UA σ X.J), (1 : UA σ W.J)) = 1 from rfl, map_one]; rfl) hφ
 
+/- English proof (translation)
+Establish `hact` using `acts_locOp_om hA hP hg (one_mem_UAt W (evFin F v)) hψ`. Establish `hmem : locOp v (om (g, 1)) ψ - ψ ∈ augAt om v` using `Submodule.subset_span ⟨g, hg, ψ, hψ, _, locOp_mem v _ ψ, hact, rfl⟩`. Establish `h` using `hp hmem`. Rewrite `h` using `[LinearMap.mem_ker, map_sub, sub_eq_zero]`. Then use the resulting hypothesis.
+-/
 theorem p_locOp_eq (hA : ActsEx) {B : Base F E} {n d : ℕ} {X : Spc F E n} {W : Spc F E d} {M : Model σ X W}
     {χX χW : Chr F E} {om : Rep σ X W} {r s r' s' : ℕ} (hP : IsPair B M χX χW om r s r' s') {v : Pl F} {P : Type}
     [AddCommGroup P] [Module ℂ P] (p : ((Fin n × Fin d → Fv F v) → ℂ) →ₗ[ℂ] P) (hp : augAt om v ≤ LinearMap.ker p)
@@ -58,14 +73,31 @@ theorem p_locOp_eq (hA : ActsEx) {B : Base F E} {n d : ℕ} {X : Spc F E n} {W :
   have h := hp hmem
   rwa [LinearMap.mem_ker, map_sub, sub_eq_zero] at h
 
+/- English proof (translation)
+Rewrite using `[Prod.mk_mul_mk, one_mul]`.
+-/
 theorem prod_one_mul {G₁ G₂ : Type} [Monoid G₁] [Monoid G₂] (u h : G₂) :
     ((1 : G₁), u * h) = ((1 : G₁), u) * (1, h) := by
   rw [Prod.mk_mul_mk, one_mul]
 
+/- English proof (translation)
+Rewrite using `[Prod.mk_mul_mk, Prod.mk_mul_mk, one_mul, mul_one, mul_one, one_mul]`.
+-/
 theorem prod_comm_one {G₁ G₂ : Type} [Monoid G₁] [Monoid G₂] (g : G₁) (h : G₂) :
     ((1 : G₁), h) * (g, 1) = (g, (1 : G₂)) * (1, h) := by
   rw [Prod.mk_mul_mk, Prod.mk_mul_mk, one_mul, mul_one, mul_one, one_mul]
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ B n d X W M χX χW om r s r' s' hP d₁ W₁ H' i₀ i₁ M₁ om₁ r₁ s₁ hH' hP₁ e he ei ev hev v`. Establish `hSB : ∀ ψ ∈ SB (Fin n × Fin d → Fv F v), ev v ψ ∈ SB (Fin n × Fin d₁ → Fv F v)` using `fun ψ hψ => (hev.2.1 v).2 ▸ Submodule.mem_map_of_mem hψ`. Establish `law` using `hL F E σ B n d X W M χX χW om r s r' s' hP d₁ W₁ H' i₀ i₁ M₁ om₁ r₁ s₁ hH' hP₁ e he ei ev hev v`. Establish `mul` using `hM F E σ B n d X W M χX χW om r s r' s' hP v`. Establish `h1X` using `one_mem_UAt (σ := σ) X (evFin F v)`.
+
+Establish `h1W` using `one_mem_UAt (σ := σ) W (evFin F v)`. Establish `h1W₁` using `one_mem_UAt (σ := σ) W₁ (evFin F v)`. Use `⟨fun u hu huv h hh φ hφ => ?_, fun t h₁ m hl hm hh₁ h hh φ hφ => ?_, fun P₁ _ _ p₁ hp g hg h hh φ hφ => ?_⟩` and prove the remaining obligations. Rewrite using `[prod_one_mul, mul (1, u) (1, h) h1X huv h1X hh φ hφ]`. Use `law 1 h1X 1 1 1 (isLevi_one H') h1W h1W₁ u hu huv (locOp v (om (1, h)) φ) (locOp_mem v _ φ)` as an intermediate fact.
+
+Rewrite `this` using `[mul_one]`. Rewrite using `[this, fac_one, one_smul, locOp_one om₁ v (hSB _ (locOp_mem v _ φ))]`. Rewrite using `[prod_one_mul, mul (1, m) (1, h) h1X hm h1X hh φ hφ]`. Use `law 1 h1X t h₁ m hl hm hh₁ 1 (Subgroup.one_mem _) h1W (locOp v (om (1, h)) φ) (locOp_mem v _ φ)` as an intermediate fact. Rewrite `this` using `[one_mul]`. Then use the resulting hypothesis.
+
+Establish `e3 : locOp v (om (1, h)) (locOp v (om (g, 1)) φ) = locOp v (om (g, 1)) (locOp v (om (1, h)) φ)`. Rewrite using `[← mul (1, h) (g, 1) h1X hh hg h1W φ hφ, ← mul (g, 1) (1, h) hg h1W h1X hh φ hφ, prod_comm_one]`. Rewrite using `[e3]`. Use `law g hg 1 1 1 (isLevi_one H') h1W h1W₁ 1 (Subgroup.one_mem _) h1W (locOp v (om (1, h)) φ) (locOp_mem v _ φ)` as an intermediate fact. Rewrite `this` using `[mul_one]`.
+
+Rewrite using `[this, fac_one, one_smul, p_locOp_eq hA hP₁ p₁ hp hg (hSB _ (locOp_mem v _ φ))]`.
+-/
 theorem lemFZero_of (hA : ActsEx) (hM : LocOpMul) (hL : EvZeroLocLaw) : LemFZero := by
   intro F E _ _ _ _ _ σ B n d X W M χX χW om r s r' s' hP d₁ W₁ H' i₀ i₁ M₁ om₁ r₁ s₁ hH' hP₁ e he ei ev hev v
   have hSB : ∀ ψ ∈ SB (Fin n × Fin d → Fv F v), ev v ψ ∈ SB (Fin n × Fin d₁ → Fv F v) := fun ψ hψ =>
@@ -91,6 +123,15 @@ theorem lemFZero_of (hA : ActsEx) (hM : LocOpMul) (hL : EvZeroLocLaw) : LemFZero
     rw [mul_one] at this
     rw [this, fac_one, one_smul, p_locOp_eq hA hP₁ p₁ hp hg (hSB _ (locOp_mem v _ φ))]
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ B a b G G₁ H H' hc e' he' ei' ev' hev' K hK X om om' om₁ om₁' hT hT₁ v μK μ hμK hμ`. Establish `hP'` using `GlobalTheory.ThK.Inhab.pairV' hT`. Establish `hP₁'` using `GlobalTheory.ThK.Inhab.pairV' hT₁`. Take `⟨hSBc, hU, hLv⟩` from `hL F E σ B a b G G₁ H H' hc e' he' ei' ev' hev' K hK X om om' om₁ om₁' hT hT₁ v μK μ hμK hμ`. Establish `mul` using `hM F E σ B _ _ _ _ _ _ _ _ _ _ _ _ hP' v`.
+
+Establish `h1X` using `one_mem_UAt (σ := σ) G.V' (evFin F v)`. Establish `h1W` using `one_mem_UAt (σ := σ) G.W (evFin F v)`. Use `⟨fun u hu huv h hh φ hφ => ?_, fun t h₁ m hl hm hh₁ h hh φ hφ => ?_, fun P₁ _ _ p₁ hp g hg h hh φ hφ => ?_⟩` and prove the remaining obligations. Rewrite using `[prod_one_mul, mul (1, u) (1, h) h1X huv h1X hh φ hφ]`. Conclude with `hU u hu huv _ (locOp_mem v _ φ)`.
+
+Rewrite using `[prod_one_mul, mul (1, m) (1, h) h1X hm h1X hh φ hφ]`. Conclude with `hLv t h₁ m hl hm hh₁ _ (locOp_mem v _ φ)`. Establish `e3 : locOp v (om' (1, h)) (locOp v (om' (g, 1)) φ) = locOp v (om' (g, 1)) (locOp v (om' (1, h)) φ)`. Rewrite using `[← mul (1, h) (g, 1) h1X hh hg h1W φ hφ, ← mul (g, 1) (1, h) hg h1W h1X hh φ hφ, prod_comm_one]`. Rewrite using `[e3]`.
+
+Establish `key : ∀ f : Module.Dual ℂ P₁, f (p₁ (coneFin B G.M' om' v (ev' v) K μK μ (shiftB σ H H') X.ν ((a - (b + 2)) / 2 + 1) (locOp v (om' (g, 1)) (locOp v (om' (1, h)) φ)))) = f (p₁ (coneFin B G.M' om' v (ev' v) K μK μ (shiftB σ H H') X.ν ((a - (b + 2)) / 2 + 1) (locOp v (om' (1, h)) φ) …` using `fun f => hI F E σ B a b G G₁ H H' hc e' he' ei' ev' hev' K hK X om om' om₁ om₁' hT hT₁ v μK μ hμK hμ (f ∘ₗ p₁) (fun g₀ hg₀ ψ hψ => by rw [LinearMap.comp_apply, LinearMap.comp_apply, p_locOp_eq hA hP₁' p₁ hp hg₀ hψ]) g hg _ (locOp_mem v _ φ)`. Conclude with `sub_eq_zero.1 ((Module.forall_dual_apply_eq_zero_iff ℂ _).1 fun f => by rw [map_sub, key f, sub_self])`.
+-/
 theorem lemFConeB_of (hA : ActsEx) (hM : LocOpMul) (hL : ConeLawB) (hI : ConeInvB) : LemFConeB := by
   intro F E _ _ _ _ _ σ B a b G G₁ H H' hc e' he' ei' ev' hev' K hK X om om' om₁ om₁' hT hT₁ v μK μ hμK hμ
   have hP' := GlobalTheory.ThK.Inhab.pairV' hT
@@ -117,6 +158,15 @@ theorem lemFConeB_of (hA : ActsEx) (hM : LocOpMul) (hL : ConeLawB) (hI : ConeInv
         g hg _ (locOp_mem v _ φ)
     exact sub_eq_zero.1 ((Module.forall_dual_apply_eq_zero_iff ℂ _).1 fun f => by rw [map_sub, key f, sub_self])
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ B b a' G G₁ H H' hc e he ei ev hev K hK X om om' om₁ om₁' hT hT₁ v μK μ hμK hμ`. Establish `hP` using `GlobalTheory.ThK.Inhab.pairV hT`. Establish `hP₁` using `GlobalTheory.ThK.Inhab.pairV hT₁`. Take `⟨hSBc, hU, hLv⟩` from `hL F E σ B b a' G G₁ H H' hc e he ei ev hev K hK X om om' om₁ om₁' hT hT₁ v μK μ hμK hμ`. Establish `mul` using `hM F E σ B _ _ _ _ _ _ _ _ _ _ _ _ hP v`.
+
+Establish `h1X` using `one_mem_UAt (σ := σ) G.V (evFin F v)`. Establish `h1W` using `one_mem_UAt (σ := σ) G.W (evFin F v)`. Use `⟨fun u hu huv h hh φ hφ => ?_, fun t h₁ m hl hm hh₁ h hh φ hφ => ?_, fun P₁ _ _ p₁ hp g hg h hh φ hφ => ?_⟩` and prove the remaining obligations. Rewrite using `[prod_one_mul, mul (1, u) (1, h) h1X huv h1X hh φ hφ]`. Conclude with `hU u hu huv _ (locOp_mem v _ φ)`.
+
+Rewrite using `[prod_one_mul, mul (1, m) (1, h) h1X hm h1X hh φ hφ]`. Conclude with `hLv t h₁ m hl hm hh₁ _ (locOp_mem v _ φ)`. Establish `e3 : locOp v (om (1, h)) (locOp v (om (g, 1)) φ) = locOp v (om (g, 1)) (locOp v (om (1, h)) φ)`. Rewrite using `[← mul (1, h) (g, 1) h1X hh hg h1W φ hφ, ← mul (g, 1) (1, h) hg h1W h1X hh φ hφ, prod_comm_one]`. Rewrite using `[e3]`.
+
+Establish `key : ∀ f : Module.Dual ℂ P₁, f (p₁ (coneFin B G.M om v (ev v) K μK μ (shiftA H H') X.ν ((b + 2 - a') / 2) (locOp v (om (g, 1)) (locOp v (om (1, h)) φ)))) = f (p₁ (coneFin B G.M om v (ev v) K μK μ (shiftA H H') X.ν ((b + 2 - a') / 2) (locOp v (om (1, h)) φ)))` using `fun f => hI F E σ B b a' G G₁ H H' hc e he ei ev hev K hK X om om' om₁ om₁' hT hT₁ v μK μ hμK hμ (f ∘ₗ p₁) (fun g₀ hg₀ ψ hψ => by rw [LinearMap.comp_apply, LinearMap.comp_apply, p_locOp_eq hA hP₁ p₁ hp hg₀ hψ]) g hg _ (locOp_mem v _ φ)`. Conclude with `sub_eq_zero.1 ((Module.forall_dual_apply_eq_zero_iff ℂ _).1 fun f => by rw [map_sub, key f, sub_self])`.
+-/
 theorem lemFConeA_of (hA : ActsEx) (hM : LocOpMul) (hL : ConeLawA) (hI : ConeInvA) : LemFConeA := by
   intro F E _ _ _ _ _ σ B b a' G G₁ H H' hc e he ei ev hev K hK X om om' om₁ om₁' hT hT₁ v μK μ hμK hμ
   have hP := GlobalTheory.ThK.Inhab.pairV hT
@@ -149,6 +199,9 @@ end GlobalTheory.ThK.LemF
 
 namespace GlobalTheory.ThK.LemF
 
+/- English proof (translation)
+Introduce `hPr` and use `have hA : ActsEx := GlobalTheory.T.theta_action_exists hPr ⟨GlobalTheory.T.local_operator_mul_of_classicalTheorems hPr, GlobalTheory.T.eval_zero_local_law_of_hypotheses hPr, GlobalTheory.T.eval_zero_infinite_law_of_hypotheses hPr, GlobalTheory.T.cone_law_second_of_hypotheses hPr, …`.
+-/
 theorem lemF : GlobalTheory.FunPr.Hypotheses₂ → LocOpMul ∧ EvZeroLocLaw ∧ EvZeroInfLaw ∧ ConeLawB ∧ ConeLawA ∧ ConeInvB ∧ ConeInvA ∧
     EvInvB ∧ EvInvA ∧ InfInvB ∧ InfInvA ∧ LemFZero ∧ LemFConeB ∧ LemFConeA := fun hPr =>
   have hA : ActsEx := GlobalTheory.T.theta_action_exists hPr

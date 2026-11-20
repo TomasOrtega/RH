@@ -15,29 +15,47 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.S
 
 variable {X Y Z : Scheme.{0}}
 
+/- English proof (translation)
+Express the relevant statement in the definitionally equal form `((X.presheaf.map (homOfLE h₁).op ≫ X.presheaf.map (homOfLE h₂).op).hom) a = _`. Rewrite using `[← Functor.map_comp]`. Both sides reduce to the same expression.
+-/
 theorem resG_resG {U V W : X.Opens} (h₁ : V ≤ U) (h₂ : W ≤ V) (a : Γ(X, U)) :
     resG X h₂ (resG X h₁ a) = resG X (h₂.trans h₁) a := by
   change ((X.presheaf.map (homOfLE h₁).op ≫ X.presheaf.map (homOfLE h₂).op).hom) a = _
   rw [← Functor.map_comp]
   rfl
 
+/- English proof (translation)
+Express the relevant statement in the definitionally equal form `(X.presheaf.map (homOfLE h).op).hom a = a`. Rewrite using `[show homOfLE h = 𝟙 U from rfl, op_id, CategoryTheory.Functor.map_id]`. Both sides reduce to the same expression.
+-/
 theorem resG_self {U : X.Opens} (h : U ≤ U) (a : Γ(X, U)) : resG X h a = a := by
   change (X.presheaf.map (homOfLE h).op).hom a = a
   rw [show homOfLE h = 𝟙 U from rfl, op_id, CategoryTheory.Functor.map_id]
   rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem val_res {U V : X.Opens} (h : V ≤ U) (u : Γ(X, U)ˣ) :
     ((res h u : Γ(X, V)ˣ) : Γ(X, V)) = resG X h (u : Γ(X, U)) := rfl
 
+/- English proof (translation)
+The claim follows from `X.presheaf.germ_res_apply (homOfLE h) x hx a`.
+-/
 theorem germ_resG {U V : X.Opens} (h : V ≤ U) (x : X) (hx : x ∈ V) (a : Γ(X, U)) :
     (X.presheaf.germ V x hx).hom (resG X h a) = (X.presheaf.germ U x (h hx)).hom a :=
   X.presheaf.germ_res_apply (homOfLE h) x hx a
 
+/- English proof (translation)
+The claim follows from `TopCat.Presheaf.section_ext X.sheaf U a b h`.
+-/
 theorem ext_germ {U : X.Opens} {a b : Γ(X, U)}
     (h : ∀ x (hx : x ∈ U), (X.presheaf.germ U x hx).hom a = (X.presheaf.germ U x hx).hom b) :
     a = b :=
   TopCat.Presheaf.section_ext X.sheaf U a b h
 
+/- English proof (translation)
+Express the relevant statement in the definitionally equal form `((X.presheaf.map (homOfLE h).op ≫ φ.app V).hom) a = _`. Rewrite using `[Scheme.Hom.naturality]`. Both sides reduce to the same expression.
+-/
 theorem app_resG (φ : Y ⟶ X) {U V : X.Opens} (h : V ≤ U) (a : Γ(X, U)) :
     (φ.app V).hom (resG X h a) = resG Y (φ.preimage_mono h) ((φ.app U).hom a) := by
   change ((X.presheaf.map (homOfLE h).op ≫ φ.app V).hom) a = _
@@ -51,33 +69,63 @@ namespace IsRegularFn
 
 variable {U : X.Opens} {a b : Γ(X, U)}
 
+/- English proof (translation)
+Use `ha U le_rfl` as an intermediate fact. Rewrite `this` using `[resG_self]`. Then use the resulting hypothesis.
+-/
 theorem mem (ha : IsRegularFn a) : a ∈ nonZeroDivisors Γ(X, U) := by
   have := ha U le_rfl
   rwa [resG_self] at this
 
+/- English proof (translation)
+Introduce `W hW` and use `by rw [resG_resG]; exact ha W _`.
+-/
 theorem resG (ha : IsRegularFn a) {V : X.Opens} (h : V ≤ U) : IsRegularFn (resG X h a) :=
   fun W hW => by rw [resG_resG]; exact ha W _
 
+/- English proof (translation)
+Introduce `W hW` and use `by rw [map_mul]; exact mul_mem (ha W hW) (hb W hW)`.
+-/
 theorem mul (ha : IsRegularFn a) (hb : IsRegularFn b) : IsRegularFn (a * b) :=
   fun W hW => by rw [map_mul]; exact mul_mem (ha W hW) (hb W hW)
 
+/- English proof (translation)
+Introduce `W hW` and use `by rw [map_pow]; exact pow_mem (ha W hW) n`.
+-/
 theorem pow (ha : IsRegularFn a) (n : ℕ) : IsRegularFn (a ^ n) :=
   fun W hW => by rw [map_pow]; exact pow_mem (ha W hW) n
 
+/- English proof (translation)
+Introduce `_ hW` and use `(ha.map (Geo.Tor.resG X hW)).mem_nonZeroDivisors`.
+-/
 theorem of_isUnit (ha : IsUnit a) : IsRegularFn a :=
   fun _ hW => (ha.map (Geo.Tor.resG X hW)).mem_nonZeroDivisors
 
+/- English proof (translation)
+Introduce `W hW` and use `by obtain ⟨c, rfl⟩ := h have := hb W hW rw [map_mul] at this exact (mul_mem_nonZeroDivisors.1 this).1`.
+-/
 theorem of_dvd (hb : IsRegularFn b) (h : a ∣ b) : IsRegularFn a := fun W hW => by
   obtain ⟨c, rfl⟩ := h
   have := hb W hW
   rw [map_mul] at this
   exact (mul_mem_nonZeroDivisors.1 this).1
 
+/- English proof (translation)
+The claim follows from `(mul_cancel_right_mem_nonZeroDivisors ha.mem).1 h`.
+-/
 theorem mul_right_cancel (ha : IsRegularFn a) {c d : Γ(X, U)} (h : c * a = d * a) : c = d :=
   (mul_cancel_right_mem_nonZeroDivisors ha.mem).1 h
 
 end IsRegularFn
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce `ha x hx`. Use `mem_nonZeroDivisors_iff_right.2 fun t ht => ?_` and prove the remaining obligations. Take `⟨V, hV, b, rfl⟩` from `X.presheaf.exists_germ_eq t`. Establish `hm : x ∈ U ⊓ V` using `⟨hx, hV⟩`.
+
+Establish `e : (X.presheaf.germ (U ⊓ V) x hm).hom (resG X inf_le_right b * resG X inf_le_left a) = (X.presheaf.germ (U ⊓ V) x hm).hom 0`. Rewrite using `[map_mul, germ_resG, germ_resG, map_zero]`. Conclude with `ht`. Take `⟨W, hW, i₁, i₂, e'⟩` from `X.presheaf.germ_eq x hm hm _ _ e`. Establish `le : W ≤ U ⊓ V` using `i₁.le`.
+
+Establish `e'' : resG X le (resG X inf_le_right b * resG X inf_le_left a) = resG X le 0` using `e'`. Rewrite `e''` using `[map_mul, resG_resG, resG_resG, map_zero]`. Establish `hb` using `mem_nonZeroDivisors_iff_right.1 (ha W _) _ e''`. Rewrite using `[← germ_resG (le.trans inf_le_right) x hW b, hb, map_zero]`. Introduce `h V hV`.
+
+Use `mem_nonZeroDivisors_iff_right.2 fun t ht => ext_germ fun x hx => ?_` and prove the remaining obligations. Use `congrArg (X.presheaf.germ V x hx).hom ht` as an intermediate fact. Rewrite `this` using `[map_mul, germ_resG, map_zero]`. Rewrite using `[map_zero]`. Conclude with `mem_nonZeroDivisors_iff_right.1 (h x (hV hx)) _ this`.
+-/
 theorem isRegularFn_iff_germ {U : X.Opens} {a : Γ(X, U)} :
     IsRegularFn a ↔ ∀ x (hx : x ∈ U),
       (X.presheaf.germ U x hx).hom a ∈ nonZeroDivisors (X.presheaf.stalk x) := by
@@ -102,6 +150,9 @@ theorem isRegularFn_iff_germ {U : X.Opens} {a : Γ(X, U)} :
     rw [map_zero]
     exact mem_nonZeroDivisors_iff_right.1 (h x (hV hx)) _ this
 
+/- English proof (translation)
+Use `isRegularFn_iff_germ.2 fun x hx => ?_` and prove the remaining obligations. Take `⟨V, hV, hxV, hr⟩` from `h x hx`. Use `isRegularFn_iff_germ.1 hr x hxV` as an intermediate fact. Rewrite `this` using `[germ_resG]`. Then use the resulting hypothesis.
+-/
 theorem isRegularFn_of_locally {U : X.Opens} {a : Γ(X, U)}
     (h : ∀ x ∈ U, ∃ (V : X.Opens) (hV : V ≤ U), x ∈ V ∧ IsRegularFn (resG X hV a)) :
     IsRegularFn a := by
@@ -110,6 +161,9 @@ theorem isRegularFn_of_locally {U : X.Opens} {a : Γ(X, U)}
   have := isRegularFn_iff_germ.1 hr x hxV
   rwa [germ_resG] at this
 
+/- English proof (translation)
+Use `⟨IsRegularFn.mem, fun ha => isRegularFn_iff_germ.2 fun x hx => ?_⟩` and prove the remaining obligations. Use `letI : Algebra Γ(X, U) (X.presheaf.stalk x) := X.presheaf.algebra_section_stalk ⟨x, hx⟩`. Use `haveI := hU.isLocalization_stalk ⟨x, hx⟩`. Conclude with `IsLocalization.nonZeroDivisors_le_comap (hU.primeIdealOf ⟨x, hx⟩).asIdeal.primeCompl (X.presheaf.stalk x) ha`.
+-/
 theorem isRegularFn_iff_of_isAffineOpen {U : X.Opens} (hU : IsAffineOpen U) {a : Γ(X, U)} :
     IsRegularFn a ↔ a ∈ nonZeroDivisors Γ(X, U) := by
   refine ⟨IsRegularFn.mem, fun ha => isRegularFn_iff_germ.2 fun x hx => ?_⟩
@@ -118,11 +172,17 @@ theorem isRegularFn_iff_of_isAffineOpen {U : X.Opens} (hU : IsAffineOpen U) {a :
   exact IsLocalization.nonZeroDivisors_le_comap (hU.primeIdealOf ⟨x, hx⟩).asIdeal.primeCompl
     (X.presheaf.stalk x) ha
 
+/- English proof (translation)
+The claim follows from `isRegularFn_iff_germ.2 fun x hx => mem_nonZeroDivisors_of_ne_zero fun h => ha (germ_injective_of_isIntegral X x hx (h.trans (map_zero _).symm))`.
+-/
 theorem isRegularFn_of_ne_zero [IsIntegral X] {U : X.Opens} {a : Γ(X, U)} (ha : a ≠ 0) :
     IsRegularFn a :=
   isRegularFn_iff_germ.2 fun x hx => mem_nonZeroDivisors_of_ne_zero fun h =>
     ha (germ_injective_of_isIntegral X x hx (h.trans (map_zero _).symm))
 
+/- English proof (translation)
+Take `⟨⟨x, hx⟩⟩` from `hU`. Introduce and unpack `rfl`. Use `isRegularFn_iff_germ.1 ha x hx` as an intermediate fact. Rewrite `this` using `[map_zero]`. Conclude with `zero_notMem_nonZeroDivisors this`.
+-/
 theorem IsRegularFn.ne_zero {U : X.Opens} [hU : Nonempty U] {a : Γ(X, U)} (ha : IsRegularFn a) :
     a ≠ 0 := by
   obtain ⟨⟨x, hx⟩⟩ := hU
@@ -131,10 +191,18 @@ theorem IsRegularFn.ne_zero {U : X.Opens} [hU : Nonempty U] {a : Γ(X, U)} (ha :
   rw [map_zero] at this
   exact zero_notMem_nonZeroDivisors this
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨IsRegularFn.ne_zero, isRegularFn_of_ne_zero⟩`.
+-/
 theorem isRegularFn_iff_ne_zero [IsIntegral X] {U : X.Opens} [Nonempty U] {a : Γ(X, U)} :
     IsRegularFn a ↔ a ≠ 0 :=
   ⟨IsRegularFn.ne_zero, isRegularFn_of_ne_zero⟩
 
+/- English proof (translation)
+Use `isRegularFn_iff_germ.2 fun y hy => ?_` and prove the remaining obligations. Set `_` to `(φ.stalkMap y).hom.toAlgebra`. Establish `: Module.Flat (X.presheaf.stalk (φ y)) (Y.presheaf.stalk y)` using `Flat.stalkMap φ y`. Establish `h1` using `Module.Flat.isSMulRegular_of_nonZeroDivisors (M := Y.presheaf.stalk y) (isRegularFn_iff_germ.1 ha (φ y) hy)`. Establish `e` using `Scheme.Hom.germ_stalkMap_apply φ U y hy a`.
+
+Use `mem_nonZeroDivisors_iff_left.2 fun t ht => h1 ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `(φ.stalkMap y).hom _ * t = (φ.stalkMap y).hom _ * 0`. Rewrite using `[mul_zero]`. Conclude with `(congrArg (· * t) e).trans ht`.
+-/
 theorem IsRegularFn.app_of_flat (φ : Y ⟶ X) [Flat φ] {U : X.Opens} {a : Γ(X, U)}
     (ha : IsRegularFn a) : IsRegularFn ((φ.app U).hom a) := by
   refine isRegularFn_iff_germ.2 fun y hy => ?_
@@ -148,6 +216,17 @@ theorem IsRegularFn.app_of_flat (φ : Y ⟶ X) [Flat φ] {U : X.Opens} {a : Γ(X
   rw [mul_zero]
   exact (congrArg (· * t) e).trans ht
 
+/- English proof (translation)
+Establish `loc : ∀ x : U, ∃ (V : X.Opens) (hV : V ≤ U) (_ : x.1 ∈ V) (c : Γ(X, V)), Geo.Tor.resG X hV b = c * Geo.Tor.resG X hV a`. Introduce and unpack `⟨x, hx⟩`. Take `⟨t, ht⟩` from `h x hx`. Take `⟨V, hV, c, rfl⟩` from `X.presheaf.exists_germ_eq t`. Establish `hm : x ∈ U ⊓ V` using `⟨hx, hV⟩`.
+
+Establish `e : (X.presheaf.germ (U ⊓ V) x hm).hom (Geo.Tor.resG X inf_le_left b) = (X.presheaf.germ (U ⊓ V) x hm).hom (Geo.Tor.resG X inf_le_right c * Geo.Tor.resG X inf_le_left a)`. Rewrite using `[map_mul, germ_resG, germ_resG, germ_resG, ht, mul_comm]`. Take `⟨W, hW, i₁, i₂, e'⟩` from `X.presheaf.germ_eq x hm hm _ _ e`. Establish `le : W ≤ U ⊓ V` using `i₁.le`. Establish `e'' : Geo.Tor.resG X le (Geo.Tor.resG X inf_le_left b) = Geo.Tor.resG X le (Geo.Tor.resG X inf_le_right c * Geo.Tor.resG X inf_le_left a)` using `e'`.
+
+Rewrite `e''` using `[map_mul, resG_resG, resG_resG, resG_resG]`. Conclude with `⟨W, le.trans inf_le_left, hW, _, e''⟩`. Use `choose V hV hx c hc using loc`. Take `⟨s, hs, -⟩` from `X.sheaf.existsUnique_gluing' V U (fun i => homOfLE (hV i)) (fun x hx' => Opens.mem_iSup.2 ⟨⟨x, hx'⟩, hx _⟩) c (fun i j => by`. Establish `e₁` using `congrArg (Geo.Tor.resG X (inf_le_left : V i ⊓ V j ≤ V i)) (hc i)`.
+
+Establish `e₂` using `congrArg (Geo.Tor.resG X (inf_le_right : V i ⊓ V j ≤ V j)) (hc j)`. Rewrite `e₁`, `e₂` using `[map_mul, resG_resG, resG_resG]`. Conclude with `(ha.resG (inf_le_left.trans (hV i))).mul_right_cancel (e₁.symm.trans e₂))`. Use `⟨s, ext_germ fun x hx' => ?_⟩` and prove the remaining obligations. Establish `e` using `congrArg (X.presheaf.germ _ x (hx ⟨x, hx'⟩)).hom (hc ⟨x, hx'⟩)`.
+
+Establish `hs' : ∀ s' : Γ(X, U), Geo.Tor.resG X (hV ⟨x, hx'⟩) s' = c ⟨x, hx'⟩ → (X.presheaf.germ U x hx').hom b = (X.presheaf.germ U x hx').hom (a * s')` using `fun s' hs' => by`. Rewrite `e` using `[← hs', ← map_mul (Geo.Tor.resG X _), germ_resG, germ_resG, mul_comm]`. Conclude with `e`. Conclude with `hs' s (hs ⟨x, hx'⟩)`.
+-/
 theorem IsRegularFn.dvd_of_germ {U : X.Opens} {a b : Γ(X, U)} (ha : IsRegularFn a)
     (h : ∀ x (hx : x ∈ U), (X.presheaf.germ U x hx).hom a ∣ (X.presheaf.germ U x hx).hom b) :
     a ∣ b := by
@@ -182,6 +261,9 @@ theorem IsRegularFn.dvd_of_germ {U : X.Opens} {a b : Γ(X, U)} (ha : IsRegularFn
     exact e
   exact hs' s (hs ⟨x, hx'⟩)
 
+/- English proof (translation)
+Take `⟨c, rfl⟩` from `h₁`. Take `⟨d, hd⟩` from `h₂`. Establish `: c * d = 1` using `ha.mul_right_cancel (by rw [one_mul]; linear_combination -hd)`. Conclude with `⟨Units.mkOfMulEqOne c d this, rfl⟩`.
+-/
 theorem IsRegularFn.associated_of_dvd_dvd {U : X.Opens} {a b : Γ(X, U)} (ha : IsRegularFn a)
     (h₁ : a ∣ b) (h₂ : b ∣ a) : Associated a b := by
   obtain ⟨c, rfl⟩ := h₁
@@ -189,6 +271,9 @@ theorem IsRegularFn.associated_of_dvd_dvd {U : X.Opens} {a b : Γ(X, U)} (ha : I
   have : c * d = 1 := ha.mul_right_cancel (by rw [one_mul]; linear_combination -hd)
   exact ⟨Units.mkOfMulEqOne c d this, rfl⟩
 
+/- English proof (translation)
+The claim follows from `ha.associated_of_dvd_dvd (ha.dvd_of_germ fun x hx => Ideal.span_singleton_le_span_singleton.1 (h x hx).ge) (hb.dvd_of_germ fun x hx => Ideal.span_singleton_le_span_singleton.1 (h x hx).le)`.
+-/
 theorem IsRegularFn.associated_of_germ {U : X.Opens} {a b : Γ(X, U)} (ha : IsRegularFn a)
     (hb : IsRegularFn b)
     (h : ∀ x (hx : x ∈ U), Ideal.span {(X.presheaf.germ U x hx).hom a} =
@@ -197,12 +282,18 @@ theorem IsRegularFn.associated_of_germ {U : X.Opens} {a b : Γ(X, U)} (ha : IsRe
     (ha.dvd_of_germ fun x hx => Ideal.span_singleton_le_span_singleton.1 (h x hx).ge)
     (hb.dvd_of_germ fun x hx => Ideal.span_singleton_le_span_singleton.1 (h x hx).le)
 
+/- English proof (translation)
+Take `⟨s, _⟩` from `s`. Take `⟨t, _⟩` from `t`. Take `rfl : s = t` from `funext h`. Both sides reduce to the same expression.
+-/
 theorem sec_ext {L : LB X} {s t : L.Sec} (h : ∀ i, s.f i = t.f i) : s = t := by
   obtain ⟨s, _⟩ := s
   obtain ⟨t, _⟩ := t
   obtain rfl : s = t := funext h
   rfl
 
+/- English proof (translation)
+Use `congrArg (resG X (le_inf hi hj)) (s.compat i j)` as an intermediate fact. Rewrite `this` using `[map_mul, resG_resG, resG_resG]`. Then use the resulting hypothesis.
+-/
 theorem sec_compat {L : LB X} (s : L.Sec) (i j : L.ι) {W : X.Opens} (hi : W ≤ L.U i)
     (hj : W ≤ L.U j) :
     resG X hi (s.f i) = resG X (le_inf hi hj) (L.g i j : Γ(X, L.U i ⊓ L.U j)) * resG X hj (s.f j) := by
@@ -216,6 +307,9 @@ def SecMaps {A B : LB X} (w : LB.Iso A B) (a : A.Sec) (b : B.Sec) : Prop :=
     (@id (Γ(X, B.U p.1 ⊓ A.U p.2)ˣ) (w.s p) : Γ(X, B.U p.1 ⊓ A.U p.2)) *
       resG X (inf_le_right : B.U p.1 ⊓ A.U p.2 ≤ A.U p.2) (a.f p.2)
 
+/- English proof (translation)
+Use `congrArg (resG X (le_inf hp hq)) (h (p, q))` as an intermediate fact. Rewrite `this` using `[map_mul, resG_resG, resG_resG]`. Then use the resulting hypothesis.
+-/
 theorem SecMaps.on {A B : LB X} {w : LB.Iso A B} {a : A.Sec} {b : B.Sec} (h : SecMaps w a b)
     (p : B.ι) (q : A.ι) {W : X.Opens} (hp : W ≤ B.U p) (hq : W ≤ A.U q) :
     resG X hp (b.f p) = resG X (le_inf hp hq)
@@ -223,12 +317,22 @@ theorem SecMaps.on {A B : LB X} {w : LB.Iso A B} {a : A.Sec} {b : B.Sec} (h : Se
   have := congrArg (resG X (le_inf hp hq)) (h (p, q))
   rwa [map_mul, resG_resG, resG_resG] at this
 
+/- English proof (translation)
+The claim follows from `forall_congr' fun _ => ⟨fun h => Units.ext h, fun h => congrArg Units.val h⟩`.
+-/
 theorem secMaps_genSec_iff {A B : LB X} (w : LB.Iso A B) (a : A.Gen) (ha : a.IsGen) (b : B.Gen)
     (hb : b.IsGen) :
     SecMaps w ⟨fun i => (a.s i).val, fun i j => congrArg Units.val (ha i j)⟩
       ⟨fun i => (b.s i).val, fun i j => congrArg Units.val (hb i j)⟩ ↔ LB.Gen.Maps w a b :=
   forall_congr' fun _ => ⟨fun h => Units.ext h, fun h => congrArg Units.val h⟩
 
+/- English proof (translation)
+Introduce and unpack `⟨p, q⟩ ⟨p', q'⟩`. Establish `hp : B.U p ⊓ A.U q ⊓ (B.U p' ⊓ A.U q') ≤ B.U p` using `inf_le_left.trans inf_le_left`. Establish `hq : B.U p ⊓ A.U q ⊓ (B.U p' ⊓ A.U q') ≤ A.U q` using `inf_le_left.trans inf_le_right`. Establish `hp' : B.U p ⊓ A.U q ⊓ (B.U p' ⊓ A.U q') ≤ B.U p'` using `inf_le_right.trans inf_le_left`. Establish `hq' : B.U p ⊓ A.U q ⊓ (B.U p' ⊓ A.U q') ≤ A.U q'` using `inf_le_right.trans inf_le_right`.
+
+Establish `key : res (le_inf hp hq) (@id (Γ(X, B.U p ⊓ A.U q)ˣ) (w.s (p, q))) * res (le_inf hq hq') (A.g q q') = res (le_inf hp hp') (B.g p p') * res (le_inf hp' hq') (@id (Γ(X, B.U p' ⊓ A.U q')ˣ) (w.s (p', q')))`. Use `Units.ext (((ha q').resG hq').mul_right_cancel ?_)` and prove the remaining obligations. Simplify using `only [Units.val_mul, val_res]`. Rewrite using `[mul_assoc, mul_assoc, ← sec_compat a q q' hq hq', ← h.on p' q' hp' hq', ← h.on p q hp hq, ← sec_compat b p p' hp hp']`. Express the relevant statement in the definitionally equal form `res (le_inf hp hq) (@id (Γ(X, B.U p ⊓ A.U q)ˣ) (w.s (p, q))) = res (le_inf hp hp') (B.g p p') * (res (le_inf hq hq') (A.g q q'))⁻¹ * res (le_inf hp' hq') (@id (Γ(X, B.U p' ⊓ A.U q')ˣ) (w.s (p', q')))`.
+
+Rewrite using `[mul_right_comm, ← key, mul_inv_cancel_right]`.
+-/
 theorem SecMaps.isGen {A B : LB X} {w : LB.Iso A B} {a : A.Sec} {b : B.Sec} (h : SecMaps w a b)
     (ha : IsRegularSec a) : w.IsGen := by
   rintro ⟨p, q⟩ ⟨p', q'⟩
@@ -248,6 +352,9 @@ theorem SecMaps.isGen {A B : LB X} {w : LB.Iso A B} {a : A.Sec} {b : B.Sec} (h :
       res (le_inf hp' hq') (@id (Γ(X, B.U p' ⊓ A.U q')ˣ) (w.s (p', q')))
   rw [mul_right_comm, ← key, mul_inv_cancel_right]
 
+/- English proof (translation)
+Take `⟨w⟩` from `w`. Take `⟨w'⟩` from `w'`. Use `congr 1`. Use function extensionality and compare the values at `p`. Conclude with `Units.ext (((ha p.2).resG inf_le_right).mul_right_cancel ((h p).symm.trans (h' p)))`.
+-/
 theorem SecMaps.unique {A B : LB X} {w w' : LB.Iso A B} {a : A.Sec} {b : B.Sec}
     (h : SecMaps w a b) (h' : SecMaps w' a b) (ha : IsRegularSec a) : w = w' := by
   obtain ⟨w⟩ := w
@@ -256,6 +363,9 @@ theorem SecMaps.unique {A B : LB X} {w w' : LB.Iso A B} {a : A.Sec} {b : B.Sec}
   funext p
   exact Units.ext (((ha p.2).resG inf_le_right).mul_right_cancel ((h p).symm.trans (h' p)))
 
+/- English proof (translation)
+The claim follows from `sec_ext fun p => ext_germ fun x hx => by obtain ⟨q, hq⟩ := LB.mem_of_cover hA x have hm : x ∈ B.U p ⊓ A.U q := ⟨hx, hq⟩ have := congrArg (X.presheaf.germ (B.U p ⊓ A.U q) x hm).hom ((h (p, q)).trans (h' (p, q)).symm) rwa [germ_resG, germ_resG] at this`.
+-/
 theorem SecMaps.eq {A B : LB X} (hA : A.IsLB) {w : LB.Iso A B} {a : A.Sec} {b b' : B.Sec}
     (h : SecMaps w a b) (h' : SecMaps w a b') : b = b' :=
   sec_ext fun p => ext_germ fun x hx => by
@@ -265,6 +375,9 @@ theorem SecMaps.eq {A B : LB X} (hA : A.IsLB) {w : LB.Iso A B} {a : A.Sec} {b b'
       ((h (p, q)).trans (h' (p, q)).symm)
     rwa [germ_resG, germ_resG] at this
 
+/- English proof (translation)
+Introduce `p` and use `isRegularFn_of_locally fun x hx => by obtain ⟨q, hq⟩ := LB.mem_of_cover hA x refine ⟨B.U p ⊓ A.U q, inf_le_left, ⟨hx, hq⟩, ?_⟩ rw [h (p, q)] exact (IsRegularFn.of_isUnit (Units.isUnit _)).mul ((ha q).resG _)`.
+-/
 theorem SecMaps.isRegularSec {A B : LB X} (hA : A.IsLB) {w : LB.Iso A B} {a : A.Sec} {b : B.Sec}
     (h : SecMaps w a b) (ha : IsRegularSec a) : IsRegularSec b := fun p =>
   isRegularFn_of_locally fun x hx => by
@@ -273,6 +386,9 @@ theorem SecMaps.isRegularSec {A B : LB X} (hA : A.IsLB) {w : LB.Iso A B} {a : A.
     rw [h (p, q)]
     exact (IsRegularFn.of_isUnit (Units.isUnit _)).mul ((ha q).resG _)
 
+/- English proof (translation)
+Use `choose u hu using h`. Set `w : LB.Iso A B` to `⟨fun p => u p.1 p.2⟩`. Establish `hw : SecMaps w a b` using `fun p => ((mul_comm _ _).trans (hu p.1 p.2)).symm`. Conclude with `⟨w, ⟨hw.isGen ha, hw⟩, fun w' hw' => hw'.2.unique hw ha⟩`.
+-/
 theorem existsUnique_secMaps {A B : LB X} {a : A.Sec} {b : B.Sec} (ha : IsRegularSec a)
     (h : ∀ (p : B.ι) (q : A.ι), Associated (resG X (inf_le_right : B.U p ⊓ A.U q ≤ A.U q) (a.f q))
       (resG X (inf_le_left : B.U p ⊓ A.U q ≤ B.U p) (b.f p))) :
@@ -282,6 +398,11 @@ theorem existsUnique_secMaps {A B : LB X} {a : A.Sec} {b : B.Sec} (ha : IsRegula
   have hw : SecMaps w a b := fun p => ((mul_comm _ _).trans (hu p.1 p.2)).symm
   exact ⟨w, ⟨hw.isGen ha, hw⟩, fun w' hw' => hw'.2.unique hw ha⟩
 
+/- English proof (translation)
+Use `⟨fun h => ?_, fun h => Opens.mem_iSup.2 ⟨i, h⟩⟩` and prove the remaining obligations. Take `⟨j, hj⟩` from `Opens.mem_iSup.1 h`. Establish `hxj : x ∈ L.U j` using `X.basicOpen_le _ hj`. Establish `hm : x ∈ L.U i ⊓ L.U j` using `⟨hx, hxj⟩`. Establish `e` using `congrArg (X.presheaf.germ (L.U i ⊓ L.U j) x hm).hom (s.compat i j)`.
+
+Rewrite `e` using `[map_mul, germ_resG, germ_resG]`. Rewrite using `[X.mem_basicOpen _ x hx]`. Rewrite `hj` using `[X.mem_basicOpen _ x hxj]`. Conclude with `(congrArg IsUnit e).mpr (((L.g i j).isUnit.map _).mul hj)`.
+-/
 theorem mem_nonzeroLocus_iff {L : LB X} (s : L.Sec) (i : L.ι) {x : X} (hx : x ∈ L.U i) :
     x ∈ Out.nonzeroLocus s ↔ x ∈ X.basicOpen (s.f i) := by
   refine ⟨fun h => ?_, fun h => Opens.mem_iSup.2 ⟨i, h⟩⟩
@@ -294,6 +415,13 @@ theorem mem_nonzeroLocus_iff {L : LB X} (s : L.Sec) (i : L.ι) {x : X} (hx : x �
   rw [X.mem_basicOpen _ x hxj] at hj
   exact (congrArg IsUnit e).mpr (((L.g i j).isUnit.map _).mul hj)
 
+/- English proof (translation)
+Use extensionality with `x`. Take `⟨q, hq⟩` from `LB.mem_of_cover hA x`. Take `⟨p, hp⟩` from `LB.mem_of_cover hB x`. Establish `hm : x ∈ B.U p ⊓ A.U q` using `⟨hp, hq⟩`. Establish `e` using `congrArg (X.presheaf.germ (B.U p ⊓ A.U q) x hm).hom (h (p, q))`.
+
+Rewrite `e` using `[map_mul, germ_resG, germ_resG]`. Use `(mem_nonzeroLocus_iff a q hq).trans (Iff.trans ?_ (mem_nonzeroLocus_iff b p hp).symm)` and prove the remaining obligations. Rewrite using `[X.mem_basicOpen _ x hq, X.mem_basicOpen _ x hp]`. Use `Iff.trans ?_ (iff_of_eq (congrArg IsUnit e)).symm` and prove the remaining obligations. Rewrite using `[IsUnit.mul_iff]`.
+
+Conclude with `⟨fun h => ⟨(Units.isUnit _).map _, h⟩, fun h => h.2⟩`.
+-/
 theorem SecMaps.nonzeroLocus_eq {A B : LB X} (hA : A.IsLB) (hB : B.IsLB) {w : LB.Iso A B}
     {a : A.Sec} {b : B.Sec} (h : SecMaps w a b) : Out.nonzeroLocus a = Out.nonzeroLocus b := by
   ext x
@@ -308,6 +436,9 @@ theorem SecMaps.nonzeroLocus_eq {A B : LB X} (hA : A.IsLB) (hB : B.IsLB) {w : LB
   rw [IsUnit.mul_iff]
   exact ⟨fun h => ⟨(Units.isUnit _).map _, h⟩, fun h => h.2⟩
 
+/- English proof (translation)
+Introduce `j` and use `isRegularFn_iff_germ.2 fun x hx => by have hne : (L.U i : Set X).Nonempty := by by_contra h exact hi (ext_germ fun y hy => (h ⟨y, hy⟩).elim) obtain ⟨y, hy⟩ := nonempty_preirreducible_inter (L.U i).isOpen (L.U j).isOpen hne ⟨x, hx⟩ have hj : s.f j ≠ 0 := fun h0 => hi (germ_injecti …`.
+-/
 theorem isRegularSec_of_ne_zero [IsIntegral X] {L : LB X} (s : L.Sec) {i : L.ι} (hi : s.f i ≠ 0) :
     IsRegularSec s := fun j => isRegularFn_iff_germ.2 fun x hx => by
   have hne : (L.U i : Set X).Nonempty := by
@@ -320,9 +451,15 @@ theorem isRegularSec_of_ne_zero [IsIntegral X] {L : LB X} (s : L.Sec) {i : L.ι}
     exact e.trans (map_zero _).symm))
   exact isRegularFn_iff_germ.1 (isRegularFn_of_ne_zero hj) x hx
 
+/- English proof (translation)
+The claim follows from `le_antisymm (LB.wchart_le L (fun _ => φ) j ⟨⟩) fun _ hy => Set.mem_iInter.2 fun _ => hy`.
+-/
 theorem pull_U (L : LB X) (φ : Y ⟶ X) (j : PUnit → L.ι) : (L.pull φ).U j = φ ⁻¹ᵁ L.U (j ⟨⟩) :=
   le_antisymm (LB.wchart_le L (fun _ => φ) j ⟨⟩) fun _ hy => Set.mem_iInter.2 fun _ => hy
 
+/- English proof (translation)
+Express the relevant statement in the definitionally equal form `LB.lcg L (fun _ : PUnit => φ) (fun _ => 1) j j' = _`. Rewrite using `[LB.lcg, Fintype.prod_unique, zpow_one]`.
+-/
 theorem pull_g (L : LB X) (φ : Y ⟶ X) (j j' : PUnit → L.ι) :
     (L.pull φ).g j j' = res (LB.wchart_inter_le L (fun _ => φ) j j' ⟨⟩)
       (pullU φ _ (L.g (j ⟨⟩) (j' ⟨⟩))) := by
@@ -339,6 +476,13 @@ def secPull {L : LB X} (s : L.Sec) (φ : Y ⟶ X) : (L.pull φ).Sec where
     refine (resG_resG _ _ _).trans (e.trans ?_)
     exact congrArg₂ (· * ·) (congrArg Units.val (pull_g L φ j j')).symm (resG_resG _ _ _).symm
 
+/- English proof (translation)
+Establish `key : ∀ j : PUnit → L.ι, Y.basicOpen ((secPull s φ).f j) = φ ⁻¹ᵁ X.basicOpen (s.f (j ⟨⟩))`. Introduce `j`. Use `(Y.basicOpen_res _ (homOfLE (pull_U L φ j).le).op).trans ?_` and prove the remaining obligations. Rewrite using `[Scheme.preimage_basicOpen]`. Conclude with `inf_eq_right.2 ((Y.basicOpen_le _).trans (pull_U L φ j).ge)`.
+
+Use extensionality with `y`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Take `⟨j, hj⟩` from `Opens.mem_iSup.1 h`. Conclude with `Opens.mem_iSup.2 ⟨j ⟨⟩, (key j).le hj⟩`.
+
+Introduce `h`. Take `⟨i, hi⟩` from `Opens.mem_iSup.1 (show φ y ∈ Out.nonzeroLocus s from h)`. Conclude with `Opens.mem_iSup.2 ⟨fun _ => i, (key fun _ => i).ge hi⟩`.
+-/
 theorem nonzeroLocus_secPull {L : LB X} (s : L.Sec) (φ : Y ⟶ X) :
     Out.nonzeroLocus (secPull s φ) = φ ⁻¹ᵁ Out.nonzeroLocus s := by
   have key : ∀ j : PUnit → L.ι, Y.basicOpen ((secPull s φ).f j) = φ ⁻¹ᵁ X.basicOpen (s.f (j ⟨⟩)) := by
@@ -355,9 +499,15 @@ theorem nonzeroLocus_secPull {L : LB X} (s : L.Sec) (φ : Y ⟶ X) :
     obtain ⟨i, hi⟩ := Opens.mem_iSup.1 (show φ y ∈ Out.nonzeroLocus s from h)
     exact Opens.mem_iSup.2 ⟨fun _ => i, (key fun _ => i).ge hi⟩
 
+/- English proof (translation)
+The claim follows from `le_antisymm (LB.wchart_le L (fun _ => 𝟙 X) j ⟨⟩) fun _ hy => Set.mem_iInter.2 fun _ => hy`.
+-/
 theorem lbPow_U (L : LB X) (n : ℕ) (j : PUnit → L.ι) : (lbPow L n).U j = L.U (j ⟨⟩) :=
   le_antisymm (LB.wchart_le L (fun _ => 𝟙 X) j ⟨⟩) fun _ hy => Set.mem_iInter.2 fun _ => hy
 
+/- English proof (translation)
+Express the relevant statement in the definitionally equal form `LB.lcg L (fun _ : PUnit => 𝟙 X) (fun _ => (n : ℤ)) j j' = _`. Rewrite using `[LB.lcg, Fintype.prod_unique, zpow_natCast]`. Both sides reduce to the same expression.
+-/
 theorem lbPow_g (L : LB X) (n : ℕ) (j j' : PUnit → L.ι) :
     (lbPow L n).g j j' = res (inf_le_inf (lbPow_U L n j).le (lbPow_U L n j').le)
       (L.g (j ⟨⟩) (j' ⟨⟩)) ^ n := by
@@ -375,6 +525,9 @@ def secPow {L : LB X} (s : L.Sec) (n : ℕ) : (lbPow L n).Sec where
     exact congrArg (· * _) ((congrArg Units.val (lbPow_g L n j j')).trans
       (Units.val_pow_eq_pow_val _ _)).symm
 
+/- English proof (translation)
+Introduce `j` and use `((hs (j ⟨⟩)).resG _).pow n`.
+-/
 theorem IsRegularSec.secPow {L : LB X} {s : L.Sec} (hs : IsRegularSec s) (n : ℕ) :
     IsRegularSec (secPow s n) := fun j => ((hs (j ⟨⟩)).resG _).pow n
 
@@ -382,13 +535,22 @@ section Rational
 
 variable [IsIntegral X]
 
+/- English proof (translation)
+The claim follows from `((genericPoint_spec X).mem_open_set_iff W.isOpen).mpr (by simpa using h)`.
+-/
 theorem genericPoint_mem (W : X.Opens) [h : Nonempty W] : genericPoint X ∈ W :=
   ((genericPoint_spec X).mem_open_set_iff W.isOpen).mpr (by simpa using h)
 
+/- English proof (translation)
+The claim follows from `germ_resG h _ _ a`.
+-/
 theorem germK_resG {U V : X.Opens} [Nonempty U] [Nonempty V] (h : V ≤ U) (a : Γ(X, U)) :
     (X.germToFunctionField V).hom (resG X h a) = (X.germToFunctionField U).hom a :=
   germ_resG h _ _ a
 
+/- English proof (translation)
+Distinguish the cases in `hU : Nonempty U`. Conclude with `germ_injective_of_isIntegral X _ (genericPoint_mem U) (h _)`. Conclude with `ext_germ fun x hx => (hU ⟨⟨x, hx⟩⟩).elim`.
+-/
 theorem ext_germK {U : X.Opens} {a b : Γ(X, U)}
     (h : ∀ hU : genericPoint X ∈ U, (X.presheaf.germ U _ hU).hom a = (X.presheaf.germ U _ hU).hom b) :
     a = b := by
@@ -396,6 +558,13 @@ theorem ext_germK {U : X.Opens} {a b : Γ(X, U)}
   · exact germ_injective_of_isIntegral X _ (genericPoint_mem U) (h _)
   · exact ext_germ fun x hx => (hU ⟨⟨x, hx⟩⟩).elim
 
+/- English proof (translation)
+Establish `loc : ∀ x : U, ∃ (V : X.Opens) (_ : V ≤ U) (_ : x.1 ∈ V) (c : Γ(X, V)), ∀ hV : genericPoint X ∈ V, (X.presheaf.germ V _ hV).hom c = t`. Introduce and unpack `⟨x, hx⟩`. Take `⟨r, hr⟩` from `h x hx`. Take `⟨V, hV, c, rfl⟩` from `X.presheaf.exists_germ_eq r`. Establish `: Nonempty V` using `⟨⟨x, hV⟩⟩`.
+
+Use `⟨U ⊓ V, inf_le_left, ⟨hx, hV⟩, resG X inf_le_right c, fun hV' => ?_⟩` and prove the remaining obligations. Rewrite using `[germ_resG, ← hr]`. Conclude with `(Scheme.algebraMap_germ_eq_germToFunctionField X hV c).symm`. Use `choose V hV hx c hc using loc`. Take `⟨s, hs, -⟩` from `X.sheaf.existsUnique_gluing' V U (fun i => homOfLE (hV i)) (fun x hx' => Opens.mem_iSup.2 ⟨⟨x, hx'⟩, hx _⟩) c (fun i j => ext_germK fun hη => ((germ_resG inf_le_left _ hη (c i)).trans (hc i _)).trans ((germ_resG inf_le_right _ hη (c j)).trans (hc j _)).symm)`.
+
+Take `⟨x⟩` from `‹Nonempty U›`. Establish `: Nonempty (V x)` using `⟨⟨x.1, hx x⟩⟩`. Use `⟨s, ?_⟩` and prove the remaining obligations. Rewrite using `[← hc x (genericPoint_mem _), ← hs x]`. Conclude with `(germ_resG (hV x) _ (genericPoint_mem _) s).symm`.
+-/
 theorem exists_germK_eq_of_stalk (U : X.Opens) [Nonempty U] (t : X.functionField)
     (h : ∀ x ∈ U, t ∈ Set.range (algebraMap (X.presheaf.stalk x) X.functionField)) :
     ∃ a : Γ(X, U), (X.germToFunctionField U).hom a = t := by
@@ -435,6 +604,13 @@ def ratSecs {L : LB X} (s : L.Sec) (V : X.Opens) [Nonempty V] :
     rw [map_mul, ha, germK_resG, Algebra.smul_def, mul_left_comm]
     rfl
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce `hh i x hxV hx`. Establish `hm : x ∈ V ⊓ L.U i` using `⟨hxV, hx⟩`. Establish `: Nonempty (V ⊓ L.U i : X.Opens)` using `⟨⟨x, hm⟩⟩`. Take `⟨a, ha⟩` from `hh i`.
+
+Use `⟨(X.presheaf.germ _ x hm).hom a, ?_⟩` and prove the remaining obligations. Rewrite using `[← germ_resG (inf_le_right : V ⊓ L.U i ≤ L.U i) x hm]`. Conclude with `(Scheme.algebraMap_germ_eq_germToFunctionField X hm a).trans (ha.trans (congrArg (· * h) (Scheme.algebraMap_germ_eq_germToFunctionField X hm _).symm))`. Introduce `hh i _`. Use `exists_germK_eq_of_stalk _ _ fun x hx => ?_` and prove the remaining obligations.
+
+Use `hh i x hx.1 hx.2` as an intermediate fact. Rewrite `this` using `[← germ_resG (inf_le_right : V ⊓ L.U i ≤ L.U i) x hx]`. Conclude with `(congrArg (fun r => r * h ∈ Set.range (algebraMap (X.presheaf.stalk x) X.functionField)) (Scheme.algebraMap_germ_eq_germToFunctionField X hx _)).mp this`.
+-/
 theorem mem_ratSecs_iff_stalk {L : LB X} (s : L.Sec) (V : X.Opens) [Nonempty V]
     (h : X.functionField) :
     h ∈ ratSecs s V ↔ ∀ (i : L.ι) (x : X) (_ : x ∈ V) (hx : x ∈ L.U i),
@@ -456,6 +632,15 @@ theorem mem_ratSecs_iff_stalk {L : LB X} (s : L.Sec) (V : X.Opens) [Nonempty V]
     exact (congrArg (fun r => r * h ∈ Set.range (algebraMap (X.presheaf.stalk x) X.functionField))
       (Scheme.algebraMap_germ_eq_germToFunctionField X hx _)).mp this
 
+/- English proof (translation)
+Establish `key : ∀ (p : B.ι) (q : A.ι) (x : X) (hp : x ∈ B.U p) (hq : x ∈ A.U q), Associated ((X.presheaf.germ _ x hq).hom (a.f q)) ((X.presheaf.germ _ x hp).hom (b.f p))`. Introduce `p q x hp hq`. Establish `hm : x ∈ B.U p ⊓ A.U q` using `⟨hp, hq⟩`. Establish `e` using `congrArg (X.presheaf.germ (B.U p ⊓ A.U q) x hm).hom (hw (p, q))`. Rewrite `e` using `[map_mul, germ_resG, germ_resG]`.
+
+Conclude with `(congrArg (Associated _) e).mpr (associated_unit_mul_right _ _ ((Units.isUnit _).map _))`. Establish `mv : ∀ (x : X) (r r' : X.presheaf.stalk x) (h : X.functionField), r ∣ r' → algebraMap _ X.functionField r * h ∈ Set.range (algebraMap (X.presheaf.stalk x) _) → algebraMap _ X.functionField r' * h ∈ Set.range (algebraMap (X.presheaf.stalk x) _)`. Introduce and unpack `x r _ h ⟨c, rfl⟩ ⟨d, hd⟩`. Conclude with `⟨c * d, by rw [map_mul, map_mul, hd]; ring⟩`. Use extensionality with `h`.
+
+Rewrite using `[mem_ratSecs_iff_stalk, mem_ratSecs_iff_stalk]`. Prove the components needed by the constructor for the conclusion. Introduce `H p x hV hp`. Take `⟨q, hq⟩` from `LB.mem_of_cover hA x`. Conclude with `mv x _ _ h (key p q x hp hq).dvd (H q x hV hq)`.
+
+Introduce `H q x hV hq`. Take `⟨p, hp⟩` from `LB.mem_of_cover hB x`. Conclude with `mv x _ _ h (key p q x hp hq).symm.dvd (H p x hV hp)`.
+-/
 theorem SecMaps.ratSecs_eq {A B : LB X} (hA : A.IsLB) (hB : B.IsLB) {w : LB.Iso A B} {a : A.Sec}
     {b : B.Sec} (hw : SecMaps w a b) (V : X.Opens) [Nonempty V] : ratSecs a V = ratSecs b V := by
   have key : ∀ (p : B.ι) (q : A.ι) (x : X) (hp : x ∈ B.U p) (hq : x ∈ A.U q),
@@ -483,6 +668,9 @@ theorem SecMaps.ratSecs_eq {A B : LB X} (hA : A.IsLB) (hB : B.IsLB) {w : LB.Iso 
 
 def genericChart {L : LB X} (hL : L.IsLB) : L.ι := (LB.mem_of_cover hL (genericPoint X)).choose
 
+/- English proof (translation)
+The claim follows from `(LB.mem_of_cover hL (genericPoint X)).choose_spec`.
+-/
 theorem mem_genericChart {L : LB X} (hL : L.IsLB) : genericPoint X ∈ L.U (genericChart hL) :=
   (LB.mem_of_cover hL (genericPoint X)).choose_spec
 
@@ -495,6 +683,9 @@ def ratOf {L : LB X} (hL : L.IsLB) (s : L.Sec) (V : X.Opens) [Nonempty V] :
   map_zero' := by rw [Pi.zero_apply, map_zero, zero_mul]
   map_add' t t' := by rw [Pi.add_apply, map_add, add_mul]
 
+/- English proof (translation)
+Establish `hm : genericPoint X ∈ V ⊓ L.U (genericChart hL)` using `⟨genericPoint_mem V, mem_genericChart hL⟩`. Express the relevant statement in the definitionally equal form `(X.presheaf.germ _ _ hm).hom (resG X inf_le_left c * t _) * _ = _`. Rewrite using `[map_mul, germ_resG, mul_assoc]`. Both sides reduce to the same expression.
+-/
 theorem ratOf_smul {L : LB X} (hL : L.IsLB) (s : L.Sec) (V : X.Opens) [Nonempty V] (c : Γ(X, V))
     (t : ∀ i, Γ(X, V ⊓ L.U i)) :
     ratOf hL s V (fun i => resG X inf_le_left c * t i) = c • ratOf hL s V t := by
@@ -504,6 +695,13 @@ theorem ratOf_smul {L : LB X} (hL : L.IsLB) (s : L.Sec) (V : X.Opens) [Nonempty 
   rw [map_mul, germ_resG, mul_assoc]
   rfl
 
+/- English proof (translation)
+Establish `hi : genericPoint X ∈ V ⊓ L.U i` using `genericPoint_mem _`. Establish `h0` using `mem_genericChart hL`. Establish `hm : genericPoint X ∈ V ⊓ L.U i ⊓ L.U (genericChart hL)` using `⟨hi, h0⟩`. Establish `hm' : genericPoint X ∈ L.U i ⊓ L.U (genericChart hL)` using `⟨hi.2, h0⟩`. Establish `e₁` using `congrArg (X.presheaf.germ _ _ hm).hom (ht i (genericChart hL))`.
+
+Establish `e₂` using `congrArg (X.presheaf.germ _ _ hm').hom (s.compat i (genericChart hL))`. Rewrite `e₁` using `[map_mul, germ_resG, germ_resG, germ_resG]`. Rewrite `e₂` using `[map_mul, germ_resG, germ_resG]`. Establish `hne : @id X.functionField ((X.presheaf.germ _ _ h0).hom (s.f (genericChart hL))) ≠ 0` using `nonZeroDivisors.ne_zero (isRegularFn_iff_germ.1 (hs _) _ h0)`. Establish `key : ∀ g a b : X.functionField, b ≠ 0 → g * a = g * b * (a * b⁻¹)` using `fun g a b hb => by`.
+
+Clear the denominators using the available nonvanishing facts. Use `e₁.trans ((key _ _ _ hne).trans ?_)` and prove the remaining obligations. Conclude with `congrArg (· * ratOf hL s V t) (e₂.symm.trans (germ_resG (inf_le_right : V ⊓ L.U i ≤ L.U i) _ hi (s.f i)).symm)`.
+-/
 theorem germK_eq_mul_ratOf {L : LB X} (hL : L.IsLB) {s : L.Sec} (hs : IsRegularSec s)
     (V : X.Opens) [Nonempty V] {t : ∀ i, Γ(X, V ⊓ L.U i)} (ht : t ∈ secOn L V) (i : L.ι)
     [Nonempty (V ⊓ L.U i : X.Opens)] :
@@ -525,6 +723,17 @@ theorem germK_eq_mul_ratOf {L : LB X} (hL : L.IsLB) {s : L.Sec} (hs : IsRegularS
   exact congrArg (· * ratOf hL s V t) (e₂.symm.trans
     (germ_resG (inf_le_right : V ⊓ L.U i ≤ L.U i) _ hi (s.f i)).symm)
 
+/- English proof (translation)
+Use `⟨fun t ht i _ => ⟨t i, germK_eq_mul_ratOf hL hs V ht i⟩, fun t ht t' ht' e => ?_, fun h hh => ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `i`. Use `ext_germK fun hη => ?_` and prove the remaining obligations. Establish `: Nonempty (V ⊓ L.U i : X.Opens)` using `⟨⟨_, hη⟩⟩`. Conclude with `(germK_eq_mul_ratOf hL hs V ht i).trans ((congrArg _ e).trans (germK_eq_mul_ratOf hL hs V ht' i).symm)`.
+
+Establish `ex : ∀ i, ∃ a : Γ(X, V ⊓ L.U i), ∀ hη : genericPoint X ∈ V ⊓ L.U i, (X.presheaf.germ _ _ hη).hom a = (X.presheaf.germ _ _ hη.2).hom (s.f i) * h`. Introduce `i`. Distinguish the cases in `hi : Nonempty (V ⊓ L.U i : X.Opens)`. Take `⟨a, ha⟩` from `hh i`. Conclude with `⟨a, fun hη => ha.trans (congrArg (· * h) (germ_resG _ _ hη _))⟩`.
+
+Conclude with `⟨0, fun hη => (hi ⟨⟨_, hη⟩⟩).elim⟩`. Use `choose t ht using ex`. Establish `hts : t ∈ secOn L V` using `fun i j => ext_germK fun hη => by`. Establish `hm' : genericPoint X ∈ L.U i ⊓ L.U j` using `⟨hη.1.2, hη.2⟩`. Establish `e₂` using `congrArg (X.presheaf.germ _ _ hm').hom (s.compat i j)`.
+
+Rewrite `e₂` using `[map_mul, germ_resG, germ_resG]`. Rewrite using `[map_mul, germ_resG, germ_resG, germ_resG, ht, ht, ← mul_assoc]`. Conclude with `congrArg (· * h) e₂`. Use `⟨t, hts, ?_⟩` and prove the remaining obligations. Establish `hm : genericPoint X ∈ V ⊓ L.U (genericChart hL)` using `⟨genericPoint_mem V, mem_genericChart hL⟩`.
+
+Establish `hne : @id X.functionField ((X.presheaf.germ _ _ (mem_genericChart hL)).hom (s.f (genericChart hL))) ≠ 0` using `nonZeroDivisors.ne_zero (isRegularFn_iff_germ.1 (hs _) _ _)`. Establish `key : ∀ b : X.functionField, b ≠ 0 → b * h * b⁻¹ = h` using `fun b hb => by field_simp`. Conclude with `(congrArg (· * _) (ht _ hm)).trans (key _ hne)`.
+-/
 theorem bijOn_ratOf {L : LB X} (hL : L.IsLB) {s : L.Sec} (hs : IsRegularSec s) (V : X.Opens)
     [Nonempty V] : Set.BijOn (ratOf hL s V) (secOn L V) (ratSecs s V) := by
   refine ⟨fun t ht i _ => ⟨t i, germK_eq_mul_ratOf hL hs V ht i⟩, fun t ht t' ht' e => ?_,
@@ -559,6 +768,13 @@ theorem bijOn_ratOf {L : LB X} (hL : L.IsLB) {s : L.Sec} (hs : IsRegularSec s) (
 
 end Rational
 
+/- English proof (translation)
+Establish `hk : ∀ W : Y.affineOpens, J.ideal W = RingHom.ker (J.subschemeι.app W.1).hom` using `fun W => by`. Rewrite using `[← Scheme.Hom.ker_apply, Scheme.IdealSheafData.ker_subschemeι]`. Prove the components needed by the constructor for the conclusion. Introduce `hb W h`. Rewrite using `[hk, RingHom.mem_ker, app_resG, hb, map_zero]`.
+
+Introduce `h`. Use `ext_germ fun z hz => ?_` and prove the remaining obligations. Take `⟨_, ⟨W, hW, rfl⟩, hzW, hWV⟩` from `Y.isBasis_affineOpens.exists_subset_of_mem_open (a := J.subschemeι z) hz V.isOpen`. Establish `hWV' : W ≤ V` using `hWV`. Use `h ⟨W, hW⟩ hWV'` as an intermediate fact.
+
+Rewrite `this` using `[hk, RingHom.mem_ker, app_resG]`. Rewrite using `[← germ_resG (J.subschemeι.preimage_mono hWV') z hzW, this, map_zero, map_zero]`.
+-/
 theorem app_subschemeι_eq_zero_iff (J : Y.IdealSheafData) {V : Y.Opens} (b : Γ(Y, V)) :
     (J.subschemeι.app V).hom b = 0 ↔
       ∀ (W : Y.affineOpens) (h : W.1 ≤ V), resG Y h b ∈ J.ideal W := by
@@ -576,6 +792,9 @@ theorem app_subschemeι_eq_zero_iff (J : Y.IdealSheafData) {V : Y.Opens} (b : Γ
     rw [hk, RingHom.mem_ker, app_resG] at this
     rw [← germ_resG (J.subschemeι.preimage_mono hWV') z hzW, this, map_zero, map_zero]
 
+/- English proof (translation)
+Rewrite using `[← Scheme.IdealSheafData.le_map_iff_comap_le, Scheme.IdealSheafData.map, Scheme.Hom.ker, Scheme.IdealSheafData.le_ofIdeals_iff]`. Use `forall_congr' fun U => forall₂_congr fun a _ => ?_` and prove the remaining obligations. Conclude with `app_subschemeι_eq_zero_iff J ((φ.app U.1).hom a)`.
+-/
 theorem comap_le_iff (I : X.IdealSheafData) (φ : Y ⟶ X) (J : Y.IdealSheafData) :
     I.comap φ ≤ J ↔ ∀ (U : X.affineOpens), ∀ a ∈ I.ideal U, ∀ (W : Y.affineOpens)
       (h : W.1 ≤ φ ⁻¹ᵁ U.1), resG Y h ((φ.app U.1).hom a) ∈ J.ideal W := by

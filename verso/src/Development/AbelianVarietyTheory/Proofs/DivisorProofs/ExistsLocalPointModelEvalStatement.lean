@@ -10,6 +10,9 @@ open NumberField IsDedekindDomain MeasureTheory Filter Topology Formalism.MainNo
 open scoped Classical
 
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.FinComm.exists_At_locPt_eq | exact GlobalTheory.FinComm.exists_At_locPt_eq | (intros; apply GlobalTheory.FinComm.exists_At_locPt_eq <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.exists_local_point_model_eval : ∀ {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E} {n d : ℕ}
     {X : Spc F E n} {W : Spc F E d} (M : Model σ X W) (v : Pl F)
     (p : (Fin n × Fin d → Fv F v) × (Fin n × Fin d → Fv F v)),

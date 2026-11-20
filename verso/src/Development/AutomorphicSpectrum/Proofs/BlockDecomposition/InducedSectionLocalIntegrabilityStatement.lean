@@ -12,5 +12,8 @@ open PositivityTheory.Rg.Rsw PositivityTheory.Rg.Rsw.L
 open GlobalTheory.CompanionTheory.ColumnSplitting
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.CompanionTheory.ColumnSplitting.ikLint | exact GlobalTheory.CompanionTheory.ColumnSplitting.ikLint | (intros; apply GlobalTheory.CompanionTheory.ColumnSplitting.ikLint <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.induced_section_local_integrability : IkLint := by
   first | exact @GlobalTheory.CompanionTheory.ColumnSplitting.ikLint | exact GlobalTheory.CompanionTheory.ColumnSplitting.ikLint | (intros; apply GlobalTheory.CompanionTheory.ColumnSplitting.ikLint <;> assumption)

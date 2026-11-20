@@ -44,6 +44,13 @@ end GlobalTheory.BCT.TrKer
 
 namespace GlobalTheory.BCT.TrKer
 
+/- English proof (translation)
+Set `bc` to `fun c => Module.Free.chooseBasis ℂ (M c)`. Set `B` to `Basis.piTensorProduct bc`. Rewrite using `[LinearMap.trace_eq_matrix_trace ℂ B]`. Establish `hc : ∀ c, LinearMap.trace ℂ (M c) (f c) = ∑ j, (bc c).repr (f c (bc c j)) j`. Introduce `c`.
+
+Rewrite using `[LinearMap.trace_eq_matrix_trace ℂ (bc c), Matrix.trace]`. Simplify using `only [Matrix.diag, LinearMap.toMatrix_apply]`. Simplify using `only [hc]`. Rewrite using `[Fintype.prod_sum, Matrix.trace]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[Matrix.diag, LinearMap.toMatrix_apply, Basis.piTensorProduct_apply, PiTensorProduct.map_tprod, Basis.piTensorProduct_repr_tprod_apply]`.
+-/
 theorem trace_piMap {ι : Type} [Fintype ι] {M : ι → Type} [∀ c, AddCommGroup (M c)] [∀ c, Module ℂ (M c)]
     [∀ c, Module.Finite ℂ (M c)] (f : ∀ c, M c →ₗ[ℂ] M c) :
     LinearMap.trace ℂ (PiTensorProduct ℂ M) (PiTensorProduct.map f) =
@@ -62,6 +69,9 @@ theorem trace_piMap {ι : Type} [Fintype ι] {M : ι → Type} [∀ c, AddCommGr
   rw [Matrix.diag, LinearMap.toMatrix_apply, Basis.piTensorProduct_apply, PiTensorProduct.map_tprod,
     Basis.piTensorProduct_repr_tprod_apply]
 
+/- English proof (translation)
+Rewrite using `[← LinearMap.trace_id, ← PiTensorProduct.map_id, trace_piMap]`. Unfold `dimW`. Simplify using the standard rewrite rules.
+-/
 theorem finrank_wsp {E : Type} [Field E] [NumberField E] [IsCMField E] {n : ℕ} (lam : InfinitePlace E → DomWeight n) :
     (Module.finrank ℂ (Wsp lam) : ℂ) = dimW lam := by
   rw [← LinearMap.trace_id, ← PiTensorProduct.map_id, trace_piMap]

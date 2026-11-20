@@ -7,11 +7,21 @@ noncomputable section
 
 namespace GlobalTheory.CompanionTheory.Ar.FlagBun.Sm.Cell
 
+/- English proof (translation)
+Rewrite using `[Matrix.det_apply']`. Conclude with `D.sum_mem fun σ _ => D.mul_mem (intCast_mem D _) (D.prod_mem fun a _ => hA _ _)`.
+-/
 theorem det_mem_subring {F : Type} [CommRing F] (D : Subring F) {k : ℕ} (A : Matrix (Fin k) (Fin k) F)
     (hA : ∀ a b, A a b ∈ D) : A.det ∈ D := by
   rw [Matrix.det_apply']
   exact D.sum_mem fun σ _ => D.mul_mem (intCast_mem D _) (D.prod_mem fun a _ => hA _ _)
 
+/- English proof (translation)
+Establish `h1 : (Y.submatrix id (Fin.castLE hm) * (Y.submatrix J (Fin.castLE hm)).adjugate) i j = Matrix.cramer (Y.submatrix J (Fin.castLE hm)).transpose (Y.submatrix id (Fin.castLE hm) i) j`. Rewrite using `[Matrix.cramer_eq_adjugate_mulVec, ← Matrix.adjugate_transpose]`. Simplify using `[Matrix.mul_apply, Matrix.mulVec, dotProduct, mul_comm]`. Rewrite using `[h1, Matrix.cramer_transpose_apply]`. Unfold `kMinor`.
+
+Use `congr 1`. Use extensionality with `a b`. Distinguish the cases in `hab : a = j`. Substitute `hab` using the available equality. Simplify using the standard rewrite rules.
+
+Simplify using `[Matrix.updateRow_ne hab, Function.update_of_ne hab]`.
+-/
 theorem mul_adjugate_apply_eq_kMinor {F : Type} [Field F] {n r : ℕ} (Y : Matrix (Fin n) (Fin r) F) (m : ℕ)
     (hm : m ≤ r) (J : Fin m → Fin n) (i : Fin n) (j : Fin m) :
     (Y.submatrix id (Fin.castLE hm) * (Y.submatrix J (Fin.castLE hm)).adjugate) i j =
@@ -30,6 +40,9 @@ theorem mul_adjugate_apply_eq_kMinor {F : Type} [Field F] {n r : ℕ} (Y : Matri
     simp
   · simp [Matrix.updateRow_ne hab, Function.update_of_ne hab]
 
+/- English proof (translation)
+Establish `e : (Y.submatrix id (Fin.castLE hm) * (Y.submatrix J (Fin.castLE hm))⁻¹) i j = kMinor Y m hm (Function.update J j i) / kMinor Y m hm J`. Rewrite using `[Matrix.inv_def, Matrix.mul_smul, Matrix.smul_apply, mul_adjugate_apply_eq_kMinor, Ring.inverse_eq_inv', smul_eq_mul, div_eq_inv_mul]`. Both sides reduce to the same expression. Rewrite using `[e]`. Conclude with `hJ.2 _`.
+-/
 theorem normAt_mul_inv_mem {F : Type} [Field F] (O : Subring F) {n r : ℕ} (Y : Matrix (Fin n) (Fin r) F)
     (m : ℕ) (hm : m ≤ r) (J : Fin m → Fin n) (hJ : NormAt O Y m hm J) (i : Fin n) (j : Fin m) :
     (Y.submatrix id (Fin.castLE hm) * (Y.submatrix J (Fin.castLE hm))⁻¹) i j ∈ O := by
@@ -42,6 +55,31 @@ theorem normAt_mul_inv_mem {F : Type} [Field F] (O : Subring F) {n r : ℕ} (Y :
   rw [e]
   exact hJ.2 _
 
+/- English proof (translation)
+Establish `hk0 : k ≤ r` using `Nat.le_of_succ_le hk`. Establish `hM' : IsUnit (Y.submatrix I' (Fin.castLE hk)).det` using `isUnit_iff_ne_zero.2 h'.1`. Establish `hM : IsUnit (Y.submatrix I (Fin.castLE hk0)).det` using `isUnit_iff_ne_zero.2 h.1`. Take `⟨Z, hZdef⟩ : ∃ Z, Z = Y.submatrix id (Fin.castLE hk) * (Y.submatrix I' (Fin.castLE hk))⁻¹` from `⟨_, rfl⟩`. Take `⟨Z', hZ'def⟩ : ∃ Z', Z' = Y.submatrix id (Fin.castLE hk0) * (Y.submatrix I (Fin.castLE hk0))⁻¹` from `⟨_, rfl⟩`.
+
+Establish `hZ : ∀ a b, Z a b ∈ O` using `fun a b => by`. Rewrite using `[hZdef]`. Conclude with `normAt_mul_inv_mem O Y _ hk I' h' a b`. Establish `hZ' : ∀ a b, Z' a b ∈ O` using `fun a b => by`. Rewrite using `[hZ'def]`.
+
+Conclude with `normAt_mul_inv_mem O Y _ hk0 I h a b`. Establish `e1 : Y.submatrix id (Fin.castLE hk) = Z * Y.submatrix I' (Fin.castLE hk)`. Rewrite using `[hZdef, Matrix.mul_assoc, Matrix.nonsing_inv_mul _ hM', Matrix.mul_one]`. Establish `hY0 : Y.submatrix id (Fin.castLE hk0) = Z * (Y.submatrix I' (Fin.castLE hk0))`. Use extensionality with `a b`.
+
+Use `congrFun (congrFun e1 a) (Fin.castSucc b)` as an intermediate fact. Simplify `this` using `[Matrix.mul_apply]`. Establish `hD : ∀ {m : ℕ} (J : Fin m → Fin n), Z'.submatrix J id = Y.submatrix J (Fin.castLE hk0) * (Y.submatrix I (Fin.castLE hk0))⁻¹`. Introduce `m J`. Rewrite using `[hZ'def]`.
+
+Use extensionality with `a b`. Simplify using `[Matrix.mul_apply]`. Establish `hZZ : Z' = Z * Z'.submatrix I' id`. Rewrite using `[hD, ← Matrix.mul_assoc, ← hY0, hZ'def]`. Establish `hI : Z'.submatrix I id = 1`.
+
+Rewrite using `[hD, Matrix.mul_nonsing_inv _ hM]`. Establish `hone : Z.submatrix I id * Z'.submatrix I' id = 1`. Rewrite using `[← hI]`. Use `conv_rhs => rw [hZZ]`. Use extensionality with `a b`.
+
+Simplify using `[Matrix.mul_apply]`. Establish `hsum` using `det_mul_expand (Z.submatrix I id) (Z'.submatrix I' id)`. Rewrite `hsum` using `[hone, Matrix.det_one]`. Take `⟨f, -, hne, hinv⟩` from `exists_unit_of_sum_eq_one O Finset.univ _ (fun f _ => O.mul_mem (O.prod_mem fun a _ => hZ _ _) (det_mem_subring O _ fun a b => hZ' _ _)) hsum.symm`. Establish `hc : (∏ a, (Z.submatrix I id) a (f a)) ≠ 0` using `left_ne_zero_of_mul hne`.
+
+Establish `hd : ((Z'.submatrix I' id).submatrix f id).det ≠ 0` using `right_ne_zero_of_mul hne`. Establish `hdet : ((Z'.submatrix I' id).submatrix f id).det = kMinor Y k hk0 (I' ∘ f) / kMinor Y k hk0 I`. Establish `e2 : (Z'.submatrix I' id).submatrix f id = Z'.submatrix (I' ∘ f) id`. Use extensionality with `a b`. Simplify using the standard rewrite rules.
+
+Rewrite using `[e2, hD, Matrix.det_mul, Matrix.det_nonsing_inv, Ring.inverse_eq_inv', div_eq_mul_inv]`. Both sides reduce to the same expression. Establish `hinj : Function.Injective f`. Introduce `a b hab`. Assume the negation of the conclusion as `hne'`.
+
+Conclude with `hd (Matrix.det_zero_of_row_eq hne' (by ext c; simp [hab]))`. Use `⟨f, hinj, ?_, fun I'' => ?_⟩` and prove the remaining obligations. Introduce `h0`. Apply `hd` to reduce the goal to its premises. Rewrite using `[hdet, h0, zero_div]`.
+
+Establish `hP` using `h.1`. Establish `hQ : kMinor Y k hk0 (I' ∘ f) ≠ 0`. Introduce `h0`. Apply `hd` to reduce the goal to its premises. Rewrite using `[hdet, h0, zero_div]`.
+
+Establish `e : kMinor Y k hk0 I'' / kMinor Y k hk0 (I' ∘ f) = (kMinor Y k hk0 I'' / kMinor Y k hk0 I) * ((∏ a, (Z.submatrix I id) a (f a)) * ((∏ a, (Z.submatrix I id) a (f a)) * ((Z'.submatrix I' id).submatrix f id).det)⁻¹)`. Rewrite using `[hdet]`. Clear the denominators using the available nonvanishing facts. Rewrite using `[e]`. Conclude with `O.mul_mem (h.2 I'') (O.mul_mem (O.prod_mem fun a _ => hZ _ _) hinv)`.
+-/
 theorem normAt_exchange {F : Type} [Field F] (O : Subring F) [IsLocalRing O] {n r : ℕ}
     (Y : Matrix (Fin n) (Fin r) F) (k : ℕ) (hk : k + 1 ≤ r) (I' : Fin (k + 1) → Fin n) (I : Fin k → Fin n)
     (h' : NormAt O Y (k + 1) hk I') (h : NormAt O Y k (Nat.le_of_succ_le hk) I) :

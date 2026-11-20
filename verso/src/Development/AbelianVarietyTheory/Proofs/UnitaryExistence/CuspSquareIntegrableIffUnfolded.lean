@@ -34,12 +34,18 @@ def archHom (V : HSp D) (τ : D.host.E →+* ℂ) : GA D V →* Matrix (Fin V.ra
     h.choose.mapMatrix.toMonoidHom.comp ((Units.coeHom _).comp (infHom V))
   else 1
 
+/- English proof (translation)
+Establish `h' : ∃ θ : Ainf D.host.F ⊗[D.host.F] D.host.E →+* ℂ, Formalism.MainNotions.StandardLattice.IsInfEmb τ θ` using `⟨θ, h⟩`. Rewrite using `[archHom, dif_pos h', GlobalTheory.LettersCheck.isInfEmb_unique τ _ θ h'.choose_spec h]`. Both sides reduce to the same expression.
+-/
 theorem archHom_eq (V : HSp D) {τ : D.host.E →+* ℂ} {θ : Ainf D.host.F ⊗[D.host.F] D.host.E →+* ℂ}
     (h : Formalism.MainNotions.StandardLattice.IsInfEmb τ θ) (g : GA D V) : archHom V τ g = Pj.archM V θ g := by
   have h' : ∃ θ : Ainf D.host.F ⊗[D.host.F] D.host.E →+* ℂ, Formalism.MainNotions.StandardLattice.IsInfEmb τ θ := ⟨θ, h⟩
   rw [archHom, dif_pos h', GlobalTheory.LettersCheck.isInfEmb_unique τ _ θ h'.choose_spec h]
   rfl
 
+/- English proof (translation)
+Use extensionality with `a b`. Establish `h` using `V.herm.eq (V.frame b) (V.frame a)`. Use `show star (τ (V.hT (V.frame b) (V.frame a))) = τ (V.hT (V.frame a) (V.frame b))`. Rewrite using `[← h]`. Conclude with `(IsCMField.complexEmbedding_complexConj D.host.E τ _).symm`.
+-/
 theorem isHermitian_gram (V : HSp D) (τ : D.host.E →+* ℂ) : (V.gram.map τ).IsHermitian := by
   ext a b
   have h := V.herm.eq (V.frame b) (V.frame a)
@@ -47,6 +53,33 @@ theorem isHermitian_gram (V : HSp D) (τ : D.host.E →+* ℂ) : (V.gram.map τ)
   rw [← h]
   exact (IsCMField.complexEmbedding_complexConj D.host.E τ _).symm
 
+/- English proof (translation)
+Substitute `hr` using the available equality. Use `haveI := Formalism.L2.GlobalTheoryTheory.GenusMassVolumes.Unfold.topGroupHA D.sp.cm.sig V.gram`. Use `haveI := Formalism.L2.GlobalTheoryTheory.GenusMassVolumes.Unfold.borelHA D.sp.cm.sig V.gram`. Use `haveI := Formalism.L2.GlobalTheoryTheory.GenusMassVolumes.Unfold.measurableMulHA D.sp.cm.sig V.gram`. Use `haveI : Countable (GQ V) := Formalism.L2.GlobalTheoryTheory.GenusMassVolumes.Unfold.countableGamma D.sp.cm.sig V.gram`.
+
+Take `⟨_, _, _⟩` from `GlobalTheory.AdelicUnitaryTop.lcsc_adelicUnitary D.host.F D.host.E D.sp.cm.sig V.rank V.gram`. Use `haveI : μ.IsMulRightInvariant := ⟨GlobalTheory.AutQuotCheck.rightInvariant_of_covolume (GQ V) μ h𝓕 h0 h1⟩`. Establish `hmem : ∀ h, h ∈ (Kf.map (finHom V)).comap (finHom V) ↔ ∃ a ∈ GinfC V, ∃ z ∈ Kf, h = a * z`. Introduce `h`. Prove the components needed by the constructor for the conclusion.
+
+Introduce and unpack `⟨z, hz, e⟩`. Use `⟨h * z⁻¹, ?_, z, hz, (inv_mul_cancel_right _ _).symm⟩` and prove the remaining obligations. Use `show finHom V (h * z⁻¹) = 1`. Rewrite using `[map_mul, map_inv, e, mul_inv_cancel]`. Introduce and unpack `⟨a, ha, z, hz, rfl⟩`.
+
+Use `⟨z, hz, ?_⟩` and prove the remaining obligations. Rewrite using `[map_mul, show finHom V a = 1 from ha, one_mul]`. Establish `hopen : IsOpen (((Kf.map (finHom V)).comap (finHom V) : Subgroup (GA D V)) : Set (GA D V))`. Use `Subgroup.isOpen_of_mem_nhds _ (g := 1) (Filter.mem_of_superset (GlobalTheory.LevelOpen.level_mem_nhds D V N Kf hN hK 1) ?_)` and prove the remaining obligations. Introduce and unpack `_ ⟨z, hz, a, ha, rfl⟩`.
+
+Use `⟨z, hz, ?_⟩` and prove the remaining obligations. Rewrite using `[one_mul, map_mul, show finHom V a = 1 from ha, mul_one]`. Establish `hg` using `fun k => (GlobalTheory.UnitaryGlue.adelic_glue D V).2 (X k).Ψ (th k) (X k).cmType (hth k)`. Establish `ha : ∀ k (τ : (X k).Ψ) g, archHom V τ.1 g = Pj.archM V (th k τ) g` using `fun k τ g => archHom_eq V (hth k τ) g`. Establish `htr : ∀ (u J : Matrix (Fin V.rank) (Fin V.rank) ℂ), uᵀ * Jᵀ * u.map (starRingEnd ℂ) = Jᵀ ↔ (u.map (starRingEnd ℂ))ᵀ * J * u = J`.
+
+Introduce `u J`. Rewrite using `[← Matrix.transpose_inj]`. Simplify using `only [Matrix.transpose_mul, Matrix.transpose_transpose, Matrix.mul_assoc]`. Take `⟨dL, dR, ⟨x0, d0, dI⟩, dD, -, dF⟩` from `hd`. Use `lintegral_dict X μ (GQ V) (GinfC V) Kf _ h𝓕 h0 h1 hopen.measurableSet hmem dict (archHom V) (fun τ => (V.gram.map τ)ᵀ) x0 hΨ (fun τ => ⟨(isHermitian_gram V τ).transpose, ?_⟩) (fun k τ => ?_) (fun k τ g => ?_) (fun k u hu => ?_) (fun k τ z hz => ?_) (fun k γ hγ h => ?_) dL dR d0 ( …` and prove the remaining obligations.
+
+Rewrite using `[Matrix.det_transpose, ← RingHom.mapMatrix_apply, ← RingHom.map_det]`. Conclude with `(map_ne_zero τ).2 (GlobalTheory.UnitaryGlue.gram_det_ne_zero V)`. Conclude with `((hg k).2.2.1 τ).congr fun g => (ha k τ g).symm`. Rewrite using `[htr, ha]`. Conclude with `GlobalTheory.RecDictModel.archM_unitary V (hth k τ) g`.
+
+Take `⟨h, hh, e⟩` from `(hg k).2.2.2 u fun τ => (htr _ _).1 (hu τ)`. Conclude with `⟨h, hh, fun τ => (ha k τ h).trans (e τ)⟩`. Rewrite using `[ha, Pj.archM, show infHom V z = 1 from ((hK z).1 hz).1]`. Conclude with `Matrix.map_one _ (map_zero _) (map_one _)`. Choose the witnesses or unpack the hypotheses as in `⟨τ⟩ : Nonempty (X k).Ψ := by`.
+
+Take `⟨τ⟩ : Nonempty (D.host.E →+* ℂ)` from `inferInstance`. Distinguish the cases in `hτ : τ ∈ (X k).Ψ`. Conclude with `⟨⟨τ, hτ⟩⟩`. Conclude with `⟨⟨_, not_not.1 (mt ((X k).cmType τ).2 hτ)⟩⟩`. Take `⟨γ₀, -, e0⟩` from `Subgroup.mem_subgroupOf.1 hγ`.
+
+Establish `e1 : (matHom V γ).1 = (γ₀ : Matrix (Fin V.rank) (Fin V.rank) D.host.E).map (inclR (AF D.host.F))` using `(congrArg Units.val e0).symm`. Establish `e2 : Pj.archM V (th k τ) γ = (γ₀ : Matrix (Fin V.rank) (Fin V.rank) D.host.E).map τ.1`. Establish `: ((γ₀ : Matrix (Fin V.rank) (Fin V.rank) D.host.E).map (inclR (Ainf D.host.F))).map (th k τ) = (γ₀ : Matrix (Fin V.rank) (Fin V.rank) D.host.E).map τ.1`. Use extensionality with `i j`. Conclude with `(hth k τ).1 _`.
+
+Rewrite using `[← this, ← GlobalTheory.UnitaryGlue.map_map_inclR (fstA D.host.F), ← e1]`. Both sides reduce to the same expression. Establish `e3 : (γ₀ : Matrix (Fin V.rank) (Fin V.rank) D.host.E) = 1`. Use `Matrix.map_injective τ.1.injective ?_` and prove the remaining obligations. Use `show (γ₀ : Matrix (Fin V.rank) (Fin V.rank) D.host.E).map τ.1 = (1 : Matrix (Fin V.rank) (Fin V.rank) D.host.E).map τ.1`.
+
+Rewrite using `[← e2, ← ha, h τ, Matrix.map_one _ (map_zero _) (map_one _)]`. Use `Subtype.ext (Units.ext (e1.trans ?_))` and prove the remaining obligations. Rewrite using `[e3]`. Conclude with `Matrix.map_one _ (map_zero _) (map_one _)`. Simplify using `only [ha]`.
+
+Conclude with `dI g h hh`.
+-/
 theorem lintegral_adelic (V : HSp D) {Comp : Type} [Fintype Comp] {r : ℕ} (X : Comp → Data D.host.E r)
     (dict : GA D V → Σ k, Frame (X k).Ψ r) {Kf : Subgroup (GA D V)}
     {th : ∀ k, (X k).Ψ → (Ainf D.host.F ⊗[D.host.F] D.host.E →+* ℂ)} {hr : V.rank = r} {N : ℕ} (hN : 0 < N)
@@ -129,6 +162,17 @@ theorem lintegral_adelic (V : HSp D) {Comp : Type} [Fintype Comp] {r : ℕ} (X :
 variable {H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host D.host.E} {Dw : Datum H} {l : Level H} {Xo : Moduli Dw l} {c : Coeff l}
   {r : ℕ} (U : ∀ σ : c.F →+* ℂ, Pj.Unf Xo c σ r)
 
+/- English proof (translation)
+Establish `hloc` using `GlobalTheory.DictLocTest.locClause_of_unif_places hd (fun k hk => ((hK k).1 hk).1) (GlobalTheory.LevelOpen.level_mem_nhds D V N Kf hN hK) fun k τ => ⟨τ.1, hth k τ⟩`. Establish `hC : Continuous fun g => mu g * P (dict g).1 (dict g).2`. Rewrite using `[continuous_iff_continuousAt]`. Introduce `g₀`. Take `⟨M, hM, k, x, hx, hs⟩` from `hloc g₀`.
+
+Establish `h1 : ContinuousOn (fun g => mu g * P k (x g)) M` using `hc.continuousOn.mul ((hP k).comp hx fun g hg => (hs g hg).1)`. Use `(h1.continuousAt hM).congr ?_` and prove the remaining obligations. Use `filter_upwards [hM] with g hg`. Take `⟨hxd, γ, hγ, he⟩` from `hs g hg`. Rewrite using `[he]`.
+
+Conclude with `congrArg (mu g * ·) (hΓ k γ hγ _ hxd).symm`. Establish `hL : ∀ g g', g * g'⁻¹ ∈ GQ V → mu g' * P (dict g').1 (dict g').2 = mu g * P (dict g).1 (dict g).2`. Introduce `g g' h4`. Take `⟨γ, hγ, e⟩` from `hd.1 _ h4 g'`. Establish `e'` using `hm.1 (g * g'⁻¹) g'`.
+
+Rewrite `e`, `e'` using `[inv_mul_cancel_right]`. Rewrite `e'` using `[hm.2.2.1 _ h4, one_mul]`. Rewrite using `[e, e']`. Conclude with `congrArg (mu g' * ·) (hΓ _ γ hγ _ (hd.2.2.2.1 _)).symm`. Use `haveI := Formalism.L2.GlobalTheoryTheory.GenusMassVolumes.Unfold.borelHA D.sp.cm.sig V.gram`.
+
+Rewrite using `[measurable_from_quotient]`. Establish `: (Pj.onQ V (Pj.adel V dict mu P) ∘ Quotient.mk'') = fun g => mu g * P (dict g).1 (dict g).2`. Use function extensionality and compare the values at `fun g => hL g (Pj.autMk V g).out (QuotientGroup.rightRel_apply.1 (Quotient.mk_out g))`. Rewrite using `[this]`. Conclude with `hC.measurable`.
+-/
 theorem measurable_onQ_adel (V : HSp D) {Comp : Type} {X : Comp → Data D.host.E r}
     {dict : GA D V → Σ k, Frame (X k).Ψ r} {mu : GA D V → ℂ} {Kf : Subgroup (GA D V)}
     {th : ∀ k, (X k).Ψ → (Ainf D.host.F ⊗[D.host.F] D.host.E →+* ℂ)} {hr : V.rank = r} {N : ℕ} (hN : 0 < N)

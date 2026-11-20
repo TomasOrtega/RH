@@ -18,6 +18,15 @@ open scoped TensorProduct Quaternion
 
 namespace GlobalTheory.CompanionTheory.PlaneSA
 
+/- English proof (translation)
+Establish `hd0 : d ≠ 0`. Introduce and unpack `rfl`. Use `hanis ⟨0, 1, 0, 0⟩ (by simp [qn])` as an intermediate fact. Simplify using `using congrArg QuaternionAlgebra.imI this`. Establish `hβ0 : β ≠ 0`.
+
+Introduce and unpack `rfl`. Use `hanis ⟨0, 0, 1, 0⟩ (by simp [qn])` as an intermediate fact. Simplify using `using congrArg QuaternionAlgebra.imJ this`. Establish `one_mem : (1 : Q d β (AF F)) ∈ SAQ d β s` using `⟨1, qn_one, 1, ⟨qn_one, fun u _ => map_one _⟩, by simp⟩`. Introduce `T g hg`.
+
+Use `GlobalTheory.T.support_product_over_places d β _ (subset_closure one_mem) (GlobalTheory.T.strong_approx_closure_mul d β s) (fun w a ha => ?_) T hg` and prove the remaining obligations. Distinguish the cases in `hw : w = s`. Substitute `hw` using the available equality. Conclude with `subset_closure ⟨1, qn_one, a, ha, by simp⟩`. Establish `hreg` using `GlobalTheory.T.support_closure_regular_trace d β hd0 hβ0 w a ha`.
+
+Use `closure_minimal (fun a' ha' => ?_) isClosed_closure hreg` and prove the remaining obligations. Take `⟨c, hc⟩` from `GlobalTheory.T.quaternion_norm_one_conj_closure d β hanis s w hs hw a' ha'.1 ha'.2`. Conclude with `GlobalTheory.T.closure_conjugation_invariant d β hanis s w a' ha'.1 c hc`.
+-/
 theorem aniso {F : Type} [Field F] [NumberField F] (d β : F) (hanis : ∀ x : Q d β F, qn x = 0 → x = 0)
     (s : Pl F) (hs : ∃ x : Q d β (Kp s), x ≠ 0 ∧ qn x = 0) : QSA d β s := by
   have hd0 : d ≠ 0 := by
@@ -40,6 +49,11 @@ theorem aniso {F : Type} [Field F] [NumberField F] (d β : F) (hanis : ∀ x : Q
     obtain ⟨c, hc⟩ := GlobalTheory.T.quaternion_norm_one_conj_closure d β hanis s w hs hw a' ha'.1 ha'.2
     exact GlobalTheory.T.closure_conjugation_invariant d β hanis s w a' ha'.1 c hc
 
+/- English proof (translation)
+Use `GlobalTheory.T.plane_prop_of_all_strong_approx ?_` and prove the remaining obligations. Introduce `F E _ _ _ _ _ σ hcm β hβ`. Take `⟨d, hd, ξ, hξ, hσ⟩` from `GlobalTheory.T.cm_extension_imaginary_generator σ hcm`. Use `GlobalTheory.T.plane_approx_of_quaternion_approx σ hcm β hβ d hd ξ hξ hσ fun s hs => ?_` and prove the remaining obligations. Distinguish the cases in `hanis : ∀ x : Q d β F, qn x = 0 → x = 0`.
+
+Conclude with `aniso d β hanis s hs`. Use `push Not at hanis`. Take `⟨x, hx, hx0⟩` from `hanis`. Conclude with `GlobalTheory.T.quaternion_isotropic_split_all_places d β hd hβ ⟨x, hx0, hx⟩ s`.
+-/
 theorem plane : Sa2.PropPlane := by
   refine GlobalTheory.T.plane_prop_of_all_strong_approx ?_
   intro F E _ _ _ _ _ σ hcm β hβ

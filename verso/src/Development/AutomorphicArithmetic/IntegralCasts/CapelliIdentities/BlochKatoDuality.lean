@@ -5,6 +5,19 @@ import Development.AutomorphicArithmetic.IntegralCasts.CapelliIdentities.Measura
 import Development.AutomorphicArithmetic.IntegralCasts.CapelliIdentities.InvolutionMapCompactFinite
 
 open MeasureTheory Formalism.QuantumDeterminants Formalism.FourierDecayAlt.B Formalism.FourierDecayAlt.B2 in
+/- English proof (translation)
+Introduce `huniq k r U μ hU hμ`. Establish `hm : Measurable (invM : Mt k r → Mt k r)` using `UpperTheory.measurable_matrix_inv _`. Establish `hUc : IsClosed (X` using `Mt k r) U := hU.closed`. Establish `hmem : ∀ x : Mt k r, x ∈ U → invM x ∈ U` using `fun x hx => hU.inv_mem x hx`. Establish `hinv : ∀ x : Mt k r, x ∈ U → invM (invM x) = x` using `fun x hx => Matrix.nonsing_inv_nonsing_inv (Matrix.of x) (hU.unit x hx)`.
+
+Establish `hae : ∀ᵐ x ∂μ, (x : Mt k r) ∈ U` using `hμ.conc`. Establish `hcont : ContinuousOn (invM : Mt k r → Mt k r) U`. Introduce `x hx`. Take `⟨u, hu⟩` from `hU.unit x hx`. Establish `h1 : ContinuousAt Ring.inverse (Matrix.of x : Mat k r).det`.
+
+Establish `h2` using `NormedRing.inverse_continuousAt u`. Rewrite `h2` using `[hu]`. Conclude with `h2`. Conclude with `(continuousAt_matrix_inv (Matrix.of x : Mat k r) h1).continuousWithinAt`. Establish `hfin` using `UpperTheory.involution_map_compact_finite (Mt k r) μ U invM hm hUc hcont hmem hinv hμ.conc hμ.finite_compact`.
+
+Establish `hconc : (μ.map invM) (Uᶜ : Set (Mat k r)) = 0`. Establish `h : ∀ᵐ x ∂(μ.map invM), (x : Mt k r) ∈ U` using `(ae_map_iff hm.aemeasurable hUc.measurableSet).2 (hae.mono hmem)`. Conclude with `h`. Establish `hleft : ∀ a ∈ U, (μ.map invM).map (lmulM a) = μ.map invM`. Introduce `a ha`.
+
+Establish `hl : Measurable (lmulM a : Mt k r → Mt k r)` using `Continuous.measurable (α := Mt k r) (γ := Mt k r) (Continuous.matrix_mul (continuous_const (y := a)) (continuous_id (X := Mat k r)))`. Establish `hr : Measurable (rmulF a⁻¹ : Mt k r → Mt k r)` using `Continuous.measurable (α := Mt k r) (γ := Mt k r) (Continuous.matrix_mul (continuous_id (X := Mat k r)) (continuous_const (y := a⁻¹)))`. Establish `he : (lmulM a ∘ invM : Mt k r → Mt k r) = invM ∘ rmulF a⁻¹`. Use function extensionality and compare the values at `x`. Express the relevant statement in the definitionally equal form `a * (Matrix.of x : Mat k r)⁻¹ = (Matrix.of x * a⁻¹ : Mat k r)⁻¹`.
+
+Rewrite using `[Matrix.mul_inv_rev, Matrix.nonsing_inv_nonsing_inv a (hU.unit a ha)]`. Rewrite using `[Measure.map_map hl hm, he, ← Measure.map_map hm hr, hμ.right _ (hU.inv_mem a ha)]`. Take `⟨c, hc⟩` from `huniq k r U μ (μ.map invM) hU hμ hconc hleft hfin`. Use `haveI : IsFiniteMeasureOnCompacts μ := ⟨fun K hK => hμ.finite_compact K hK⟩`. Conclude with `UpperTheory.map_involution_eq_self (Mt k r) μ invM c hm (hae.mono hinv) hc`.
+-/
 theorem UpperTheory.Reformulated.B.BlochKatoDuality.haarInvFromUnique :
     Formalism.FourierDecayAlt.B2.HaarInvFromUnique := by
   intro huniq k r U μ hU hμ

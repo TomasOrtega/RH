@@ -19,6 +19,27 @@ open GlobalTheory.UT ReciprocityTheory.ChartRestriction.G.DVR
 noncomputable section
 namespace GlobalTheory.Poinc.Sep.ExactSums
 
+/- English proof (translation)
+Establish `pw : ∀ a b : ZMod n, ω ^ a.val * ω ^ b.val = ω ^ (a + b).val` using `fun a b => by`. Rewrite using `[← pow_add, ZMod.val_add]`. Use `conv_lhs => rw [← Nat.mod_add_div (a.val + b.val) n, pow_add, pow_mul, hω.pow_eq_one, one_pow, _root_.mul_one]`. Establish `hchar : ∀ mu, ∑ τ, ω ^ (-(w κ τ)).val * ω ^ (w mu τ).val = if (∀ τ, w mu τ = w κ τ) then (Fintype.card G : V) else 0`. Introduce `mu`.
+
+Repeatedly rewrite using `[pw]`. Use `split_ifs with hmu`. Simplify using `[hmu]`. Use `push_neg at hmu`. Take `⟨τ₀, h0⟩` from `hmu`.
+
+Use `set χ : G → V := fun τ => ω ^ (-(w κ τ) + w mu τ).val with hχ`. Establish `hmul : ∀ τ, χ (τ + τ₀) = χ τ * χ τ₀` using `fun τ => by`. Simplify using `only [χ, hw, pw]`. Use `congr 2`. Expand and normalize the polynomial expressions, which then agree.
+
+Establish `hne : χ τ₀ ≠ 1`. Introduce `h1`. Rewrite `h1` using `[hχ, hω.pow_eq_one_iff_dvd]`. Establish `hv : (-(w κ τ₀) + w mu τ₀).val ≠ 0`. Rewrite using `[ne_eq, ZMod.val_eq_zero]`.
+
+Introduce `h`. Conclude with `h0 (neg_add_eq_zero.1 h).symm`. Conclude with `hv (Nat.eq_zero_of_dvd_of_lt h1 (ZMod.val_lt _))`. Establish `hsum : ∑ τ, χ τ = χ τ₀ * ∑ τ, χ τ`. Combine the equalities or inequalities in the displayed calculation.
+
+Establish `h2 : (χ τ₀ - 1) * ∑ τ, χ τ = 0` using `by rw [sub_mul, ← hsum, _root_.one_mul, sub_self]`. Conclude with `(mul_eq_zero.1 h2).resolve_left (sub_ne_zero.2 hne)`. Establish `hT : ∀ T : Finset G, SumI I (fun mu => ∑ τ ∈ T, ω ^ (-(w κ τ)).val * (ω ^ (w mu τ).val * x mu)) (∑ τ ∈ T, ω ^ (-(w κ τ)).val * s τ)`. Introduce `T`. Proceed by induction on `T using Finset.induction_on with`.
+
+Consider the case `empty`. Simplify using `only [Finset.sum_empty]`. Conclude with `⟨⊥, Submodule.fg_bot, Submodule.zero_mem _, fun _ => Submodule.zero_mem _, fun _ => ⟨∅, fun _ _ => by simp⟩⟩`. Consider the case `insert a T ha ih`. Simplify using `only [Finset.sum_insert ha]`.
+
+Conclude with `GlobalTheory.AdicSum.sumI_add (GlobalTheory.AdicSum.sumI_map (LinearMap.mulLeft V (ω ^ (-(w κ a)).val)) (h a)) ih`. Establish `hS` using `GlobalTheory.AdicSum.sumI_map (LinearMap.mulLeft V d) (hT Finset.univ)`. Simplify using `only [LinearMap.mulLeft_apply] at hS`. Use `hS using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `mu`.
+
+Establish `e : ∑ τ, ω ^ (-(w κ τ)).val * (ω ^ (w mu τ).val * x mu) = (∑ τ, ω ^ (-(w κ τ)).val * ω ^ (w mu τ).val) * x mu`. Rewrite using `[Finset.sum_mul]`. Conclude with `Finset.sum_congr rfl fun τ _ => (_root_.mul_assoc _ _ _).symm`. Rewrite using `[e, hchar]`. Use `split_ifs with hmu`.
+
+Rewrite using `[hf1 mu hmu, ← _root_.mul_assoc, hd, _root_.one_mul]`. Rewrite using `[hf0 mu hmu, zero_mul, mul_zero]`.
+-/
 theorem sumI_fourier {V : Type} [CommRing V] [IsDomain V] (I : Ideal V) {n : ℕ} [NeZero n] {ω : V}
     (hω : IsPrimitiveRoot ω n) {G : Type} [AddCommGroup G] [Fintype G] (d : V) (hd : d * (Fintype.card G : V) = 1)
     {Ix : Type} (w : Ix → G → ZMod n) (hw : ∀ mu τ τ', w mu (τ + τ') = w mu τ + w mu τ') (κ : Ix)
@@ -77,6 +98,19 @@ theorem sumI_fourier {V : Type} [CommRing V] [IsDomain V] (I : Ideal V) {n : ℕ
   · rw [hf1 mu hmu, ← _root_.mul_assoc, hd, _root_.one_mul]
   · rw [hf0 mu hmu, zero_mul, mul_zero]
 
+/- English proof (translation)
+Take `⟨l, hl⟩ : ∃ l : (Fin 8 → X) → S.Gam, ∀ mu, YY (l mu) mu` from `⟨fun mu => (h2 mu).choose, fun mu => (h2 mu).choose_spec⟩`. Establish `sub : ∀ a a' mu, YY a mu → YY a' mu → a - a' ∈ H`. Introduce `a a' mu ha ha'`. Take `⟨b, hb⟩` from `h2 (-mu)`. Establish `e1` using `h4 _ _ _ _ ha hb`.
+
+Establish `e2` using `h4 _ _ _ _ ha' hb`. Rewrite `e1`, `e2` using `[add_neg_cancel]`. Use `H.sub_mem ((hH _).2 e1) ((hH _).2 e2)` as an intermediate fact. Simplify using `using this`. Establish `D1 : ∀ τ ∈ S.perp H, ∀ a mu, YY a mu → eStd S.g _ τ a = eStd S.g _ τ (l mu)`.
+
+Introduce `τ hτ a mu ha`. Establish `h0 : eStd S.g _ τ (a - l mu) = 0` using `hτ _ (sub a (l mu) mu ha (hl mu))`. Establish `e : a = (a - l mu) + l mu` using `(sub_add_cancel a (l mu)).symm`. Use `conv_lhs => rw [e]`. Rewrite using `[eStd_add_right, h0, zero_add]`.
+
+Use `⟨l, hl, D1, fun mu κ => ⟨fun h => ?_, fun h τ hτ => ?_⟩⟩` and prove the remaining obligations. Establish `hb : l mu - l κ ∈ H`. Rewrite using `[← TestBasis.perp_perp S H]`. Introduce `τ hτ`. Establish `e : eStd S.g _ τ (l mu) = eStd S.g _ τ (l mu - l κ) + eStd S.g _ τ (l κ)`.
+
+Rewrite using `[← eStd_add_right, sub_add_cancel]`. Establish `h0 : eStd S.g _ τ (l mu - l κ) = 0` using `by rw [h τ hτ] at e; simpa using e.symm`. Rewrite using `[eStd_swap, h0, neg_zero]`. Establish `e1` using `h4 _ _ _ _ (hl κ) ((hH _).1 hb)`. Rewrite `e1` using `[add_sub_cancel, add_zero]`.
+
+Introduce `v`. Take `⟨w, hw⟩` from `((h3 _ _ _ (hl mu)).1 e1) v`. Conclude with `⟨-w, by rw [hw, smul_neg, add_neg_cancel_right]⟩`. Conclude with `(D1 τ hτ (l κ) mu ((h3 _ _ _ (hl κ)).2 h)).symm`.
+-/
 theorem labels {o Ω : Type} [CommRing o] [Field Ω] [Algebra o Ω] (S : ThetaSys o Ω) (H : AddSubgroup S.Gam)
     {X : Type} [AddCommGroup X] (YY : S.Gam → (Fin 8 → X) → Prop)
     (h1 : ∀ a, ∃ mu, YY a mu) (h2 : ∀ mu, ∃ a, YY a mu)
@@ -116,6 +150,15 @@ theorem labels {o Ω : Type} [CommRing o] [Field Ω] [Algebra o Ω] (S : ThetaSy
     exact ⟨-w, by rw [hw, smul_neg, add_neg_cancel_right]⟩
   · exact (D1 τ hτ (l κ) mu ((h3 _ _ _ (hl κ)).2 h)).symm
 
+/- English proof (translation)
+Introduce `j`. Take `⟨M, -, -, -, hS⟩` from `h`. Take `⟨S₀, hS₀⟩` from `hS j`. Set `P : (Fin s → Φ.X y) → Prop` to `fun mu => ∀ v, CongMod N (mu v) (κ v)`. Set `L` to `(PreModel.low_finite Φ y P j).toFinset`.
+
+Set `T` to `S₀ ∪ L`. Use `⟨T.filter P, fun mu hmu => (Finset.mem_filter.1 hmu).2, fun mu hP hn => ?_, ?_⟩` and prove the remaining obligations. Assume the negation of the conclusion as `hlt push_neg at hlt`. Conclude with `hn (Finset.mem_filter.2 ⟨Finset.mem_union_right _ ((Set.Finite.mem_toFinset _).2 ⟨hP, hlt⟩), hP⟩)`. Establish `h1` using `hS₀ T Finset.subset_union_left`.
+
+Establish `h2 : ∑ mu ∈ T, f mu = io (∑ mu ∈ T.filter P, Φ.term y mu c)`. Rewrite using `[map_sum, Finset.sum_filter]`. Use `Finset.sum_congr rfl fun mu _ => ?_` and prove the remaining obligations. Use `split_ifs with hP`. Conclude with `hf1 mu hP`.
+
+Conclude with `hf0 mu hP`. Rewrite using `[← h2]`. Establish `hle : maximalIdeal V' ^ j • M ≤ maximalIdeal V' ^ j`. Combine the equalities or inequalities in the displayed calculation. Conclude with `hle h1`.
+-/
 theorem isClassSum_of_sumI {O : Type} [CommRing O] {bar : O → O} {q s : ℕ} {W : Matrix (Fin s) (Fin s) ℤ}
     {A : Type} [CommRing A] [IsLocalRing A] (Φ : VPre bar q W A) (y : Φ.Y) (N : ℕ) (κ : Fin s → Φ.X y) (c : Φ.Q)
     {V' : Type} [CommRing V'] [IsLocalRing V'] (io : Φ.V y →+* V') (x : V') (f : (Fin s → Φ.X y) → V')
@@ -146,6 +189,9 @@ theorem isClassSum_of_sumI {O : Type} [CommRing O] {bar : O → O} {q s : ℕ} {
         _ = maximalIdeal V' ^ j := by rw [smul_eq_mul, Ideal.mul_top]
     exact hle h1
 
+/- English proof (translation)
+Establish `: NeZero (n : V)` using `⟨hn⟩`. Establish `h₀ : 0 < n` using `Nat.pos_of_ne_zero fun e => hn (by rw [e, Nat.cast_zero])`. Establish `h` using `(hζ.isRoot_cyclotomic h₀).map (f := φ)`. Rewrite `h` using `[Polynomial.map_cyclotomic]`. Conclude with `Polynomial.isRoot_cyclotomic_iff.1 h`.
+-/
 theorem isPrimitiveRoot_map' {R V : Type} [CommRing R] [IsDomain R] [CommRing V] [IsDomain V] (φ : R →+* V) {n : ℕ}
     (hn : (n : V) ≠ 0) {ζ : R} (hζ : IsPrimitiveRoot ζ n) : IsPrimitiveRoot (φ ζ) n := by
   have : NeZero (n : V) := ⟨hn⟩
@@ -159,6 +205,31 @@ end GlobalTheory.Poinc.Sep.ExactSums
 namespace GlobalTheory.Poinc.Sep.ExactSums
 open Classical in
 
+/- English proof (translation)
+Introduce `g n F W Z i X₁ z₁ act x₀ Φ lab hG`. Take `⟨hdiv, hlab, hmem⟩` from `hG`. Introduce `y κ c`. Take `⟨𝔪, hT⟩` from `hmem y`. Use `haveI : NeZero (X₁.S.r * X₁.S.N) := ⟨Nat.mul_ne_zero (by have := X₁.S.r_pos; omega) (by have := X₁.S.N_ge; omega)⟩`.
+
+Use `haveI : IsDomain X₁.o₁ := X₁.ar.ded.toIsDomain`. Take `⟨yy1, yy2, yy3, yy4⟩` from `GlobalTheory.T.surjective_labelHom_lattice_mod_level_thetaMember g n F W Z i X₁ z₁ act (Φ.V y) (Φ.ev y) (Φ.X y) (Φ.m y) (Φ.t y) (Φ.δ y) 𝔪`. Establish `hH` using `GlobalTheory.T.dividingThetaConstants_generate_integral_torsion_labels g n F W Z i X₁ z₁ act x₀ hdiv (Φ.V y) (Φ.ev y) (Φ.X y) (Φ.m y) (Φ.t y) (Φ.δ y) 𝔪`. Take `⟨l, -, hlY, hlC⟩` from `labels X₁.S (X₁.S.HH X₁.M z₁) 𝔪.YY yy1 yy2 yy3 yy4 hH`. Take `⟨sg, eps, hlink⟩` from `GlobalTheory.T.theta_constants_torus_translates_twisted_sums g n F W Z i X₁ z₁ act x₀ hdiv`.
+
+Set `φ : X₁.o₁ →+* X₁.M.Z.presheaf.stalk z₁` to `(X₁.M.stalkEquiv z₁).symm.toRingHom.comp (algebraMap X₁.o₁ (X₁.M.O z₁))`. Establish `hsh : ∀ b : X₁.M.O z₁, X₁.M.stalkHom z₁ ((X₁.M.stalkEquiv z₁).symm b) = b` using `fun b => by`. Rewrite using `[← RatModel.coe_stalkEquiv (M := X₁.M), RingEquiv.apply_symm_apply]`. Establish `hφ : ∀ a, X₁.M.stalkHom z₁ (φ a) = algebraMap X₁.o₁ X₁.Ω₁ a` using `fun a => hsh _`. Set `zt` to `φ (X₁.S.ζ ^ (X₁.S.r * X₁.S.N))`.
+
+Establish `hzt : X₁.M.stalkHom z₁ zt = algebraMap X₁.o₁ X₁.Ω₁ (X₁.S.ζ ^ (X₁.S.r * X₁.S.N))` using `hφ _`. Establish `hunitV : IsUnit (((X₁.S.r * X₁.S.N : ℕ) : Φ.V y))`. Use `X₁.S.unit.map ((Φ.ev y).comp φ)` as an intermediate fact. Rewrite `this` using `[map_natCast]`. Then use the resulting hypothesis. Establish `hω : IsPrimitiveRoot (Φ.ev y zt) (X₁.S.r * X₁.S.N)`.
+
+Establish `h0 : IsPrimitiveRoot (X₁.S.ζ ^ (X₁.S.r * X₁.S.N)) (X₁.S.r * X₁.S.N)` using `X₁.S.prim.pow (pow_pos (Nat.pos_of_ne_zero (NeZero.ne _)) 2) (sq _)`. Conclude with `isPrimitiveRoot_map' ((Φ.ev y).comp φ) hunitV.ne_zero h0`. Set `TT` to `X₁.S.TT X₁.M z₁`. Establish `hmemO : ∀ τ : TT, algebraMap X₁.o₁ X₁.Ω₁ (X₁.S.ζ ^ eps (lab c) τ) * X₁.S.th (lab c + τ) / X₁.S.th x₀ ∈ X₁.M.O z₁` using `fun τ => by rw [mul_div_assoc]; exact mul_mem (Subalgebra.algebraMap_mem _ _) (hdiv.2 _)`. Set `hτ : TT → X₁.M.Z.presheaf.stalk z₁` to `fun τ => (X₁.M.stalkEquiv z₁).symm ⟨_, hmemO τ⟩`.
+
+Establish `hhτ : ∀ τ : TT, X₁.M.stalkHom z₁ (hτ τ) = algebraMap X₁.o₁ X₁.Ω₁ (X₁.S.ζ ^ eps (lab c) τ) * X₁.S.th (lab c + τ) / X₁.S.th x₀` using `fun τ => hsh _`. Establish `hcard : IsUnit ((Fintype.card TT : ℕ) : X₁.o₁)`. Establish `h1 : Fintype.card TT ∣ Fintype.card X₁.S.Gam`. Rewrite using `[← Nat.card_eq_fintype_card, ← Nat.card_eq_fintype_card]`. Conclude with `AddSubgroup.card_addSubgroup_dvd_card _`.
+
+Establish `h2 : IsUnit ((Fintype.card X₁.S.Gam : ℕ) : X₁.o₁)`. Rewrite using `[Fintype.card_fun, ZMod.card, Nat.cast_pow]`. Conclude with `X₁.S.unit.pow _`. Conclude with `isUnit_of_dvd_unit (Nat.cast_dvd_cast h1) h2`. Take `⟨u, hu⟩` from `hcard.map φ`.
+
+Set `d` to `((u⁻¹ : (X₁.M.Z.presheaf.stalk z₁)ˣ) : X₁.M.Z.presheaf.stalk z₁)`. Establish `hd : Φ.ev y d * (Fintype.card TT : Φ.V y) = 1`. Rewrite using `[← map_natCast (Φ.ev y), ← map_mul, ← map_natCast φ, ← hu, Units.inv_mul, map_one]`. Set `w : (Fin 8 → Φ.X y) → TT → ZMod (X₁.S.r * X₁.S.N)` to `fun mu τ => (sg : ℤ) • eStd X₁.S.g _ (τ : X₁.S.Gam) (l mu)`. Establish `hw : ∀ mu τ τ', w mu (τ + τ') = w mu τ + w mu τ'` using `fun mu τ τ' => by`.
+
+Simplify using `only [w, AddSubgroup.coe_add, eStd_add_left, smul_add]`. Establish `hsg : ∀ a b : ZMod (X₁.S.r * X₁.S.N), (sg : ℤ) • a = (sg : ℤ) • b → a = b` using `fun a b h => by`. Use `congrArg (fun t => (sg : ℤ) • t) h` as an intermediate fact. Apply the tactic sequence `have e : ((sg : ℤ) * sg) = 1 := by rcases Int.units_eq_one_or sg with h | h <;> simp [h]`. Simplify `this` using `only [smul_smul, e, one_smul]`.
+
+Establish `hwκ : ∀ mu, (∀ τ, w mu τ = w κ τ) ↔ ∀ v, CongMod (X₁.S.r * X₁.S.N) (mu v) (κ v)` using `fun mu => by`. Rewrite using `[← hlC mu κ]`. Conclude with `⟨fun h τ hτ' => hsg _ _ (h ⟨τ, hτ'⟩), fun h τ => by simp only [w, h τ τ.2]⟩`. Establish `hlab' : ∀ c, lab c ∈ X₁.S.HH X₁.M z₁` using `fun c => by`. Rewrite using `[← SetLike.mem_coe, ← hlab]`.
+
+Conclude with `Set.mem_range_self c`. Establish `hsum : ∀ τ : TT, SumI (maximalIdeal (Φ.V y)) (fun mu => Φ.ev y zt ^ (w mu τ).val * Φ.term y mu c) (Φ.ev y (hτ τ))` using `fun τ => hlink (Φ.V y) (Φ.ev y) (Φ.X y) (Φ.m y) (Φ.t y) (Φ.δ y) 𝔪 Φ.Q lab hlab' (Φ.term y) hT c τ τ.2 zt (hτ τ) hzt (hhτ τ) (fun mu => w mu τ) (fun a mu hY => by simp only [w, hlY τ τ.2 a mu hY])`. Set `f : (Fin 8 → Φ.X y) → Φ.V y` to `fun mu => if ∀ v, CongMod (X₁.S.r * X₁.S.N) (mu v) (κ v) then Φ.term y mu c else 0`. Establish `hf` using `sumI_fourier (maximalIdeal (Φ.V y)) hω (Φ.ev y d) hd w hw κ (fun mu => Φ.term y mu c) (fun τ => Φ.ev y (hτ τ)) hsum f (fun mu h => if_pos ((hwκ mu).1 h)) (fun mu h => if_neg fun h' => h ((hwκ mu).2 h'))`. Use `⟨d * ∑ τ : TT, zt ^ (-(w κ τ)).val * hτ τ, isClassSum_of_sumI Φ y _ κ c (RingHom.id _) _ f (fun mu h => if_pos h) (fun mu h => if_neg h) ?_⟩` and prove the remaining obligations.
+
+Simplify `hf` using `only [map_mul, map_sum, map_pow]`.
+-/
 theorem exact_of_isGeo : ∀ (g n : ℕ) (F : SFam g n (zetaAway n)) (W : Matrix (Fin 8) (Fin 8) ℤ) (Z : Scheme.{0}) (i : F.X ⟶ Z) (X₁ : Setup F W i) (z₁ : X₁.M.Z) (act : Matrix (Fin 8) (Fin 8) ℤ → (X₁.ρ.P.A ⟶ X₁.ρ.P.A)) (x₀ : X₁.S.Gam) (Φ : VPre (id : ℤ → ℤ) g W (X₁.M.Z.presheaf.stalk z₁)) (lab : Φ.Q → X₁.S.Gam), IsGeo X₁ z₁ act x₀ Φ lab → Φ.Exact (X₁.S.r * X₁.S.N) := by
   intro g n F W Z i X₁ z₁ act x₀ Φ lab hG
   obtain ⟨hdiv, hlab, hmem⟩ := hG

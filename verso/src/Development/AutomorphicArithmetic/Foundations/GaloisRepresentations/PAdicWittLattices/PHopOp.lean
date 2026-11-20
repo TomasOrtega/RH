@@ -4,17 +4,31 @@ open CategoryTheory Limits AlgebraicGeometry GlobalTheory.EtC GlobalTheory.GalV 
 open UpperTheory.Gal.Int.Geo (FEt Cover gen piece IsHEig)
 universe u v
 
+/- English proof (translation)
+The claim follows from `(Iff.rfl)`.
+-/
 private theorem mem_lev {G : Type} [Group G] {K : Subgroup G} {h u : G} :
     u ∈ lev K h ↔ u ∈ K ∧ h * u * h⁻¹ ∈ K := (Iff.rfl)
 
+/- English proof (translation)
+Simplify using `[ind, Set.indicator_of_mem hx]`.
+-/
 private theorem ind_eq_one {G : Type} [Group G] (R : Type) [Field R] {K : Subgroup G} {g x : G}
     (hx : x ∈ DoubleCoset.doubleCoset g (K : Set G) K) : ind R K g x = 1 := by
   simp [ind, Set.indicator_of_mem hx]
 
+/- English proof (translation)
+Simplify using `[ind, Set.indicator_of_notMem hx]`.
+-/
 private theorem ind_eq_zero {G : Type} [Group G] (R : Type) [Field R] {K : Subgroup G} {g x : G}
     (hx : x ∉ DoubleCoset.doubleCoset g (K : Set G) K) : ind R K g x = 0 := by
   simp [ind, Set.indicator_of_notMem hx]
 
+/- English proof (translation)
+Substitute `e` using the available equality. Establish `h0 : (p⁻¹ * (QuotientGroup.mk p : K ⧸ (lev K h).subgroupOf K).out : K) ∈ (lev K h).subgroupOf K` using `QuotientGroup.eq.mp (QuotientGroup.out_eq' _).symm`. Establish `h1` using `(mem_lev.mp (Subgroup.mem_subgroupOf.mp h0)).2`. Rewrite using `[QuotientGroup.eq]`. Use `h1 using 1` and compare the differences between its conclusion and the goal.
+
+Use `push_cast`. Use `group`.
+-/
 private theorem class_eq {G : Type} [Group G] {K : Subgroup G} {h : G}
     (p : K) (b : K ⧸ (lev K h).subgroupOf K) (e : (QuotientGroup.mk p : K ⧸ (lev K h).subgroupOf K) = b) :
     (QuotientGroup.mk ((p : G) * h⁻¹) : G ⧸ K) = QuotientGroup.mk (((b.out : K) : G) * h⁻¹) := by
@@ -27,6 +41,11 @@ private theorem class_eq {G : Type} [Group G] {K : Subgroup G} {h : G}
   push_cast
   group
 
+/- English proof (translation)
+Rewrite `e` using `[QuotientGroup.eq]`. Rewrite using `[← QuotientGroup.out_eq' b, ← QuotientGroup.out_eq' b', QuotientGroup.eq, Subgroup.mem_subgroupOf, mem_lev]`. Use `⟨(b.out⁻¹ * b'.out).2, ?_⟩` and prove the remaining obligations. Use `e using 1` and compare the differences between its conclusion and the goal. Use `push_cast`.
+
+Use `group`.
+-/
 private theorem fib_inj {G : Type} [Group G] {K : Subgroup G} {h : G}
     (b b' : K ⧸ (lev K h).subgroupOf K)
     (e : (QuotientGroup.mk (((b.out : K) : G) * h⁻¹) : G ⧸ K) = QuotientGroup.mk (((b'.out : K) : G) * h⁻¹)) :
@@ -38,6 +57,25 @@ private theorem fib_inj {G : Type} [Group G] {K : Subgroup G} {h : G}
   push_cast
   group
 
+/- English proof (translation)
+Establish `hLK : lev K h ≤ K` using `inf_le_left`. Establish `hle' : K'.subgroupOf K ≤ (lev K h).subgroupOf K` using `fun x hx => Subgroup.mem_subgroupOf.mpr (hle (Subgroup.mem_subgroupOf.mp hx))`. Set `e` to `Subgroup.quotientEquivProdOfLE hle'`. Use `haveI : Finite ((K ⧸ (lev K h).subgroupOf K) × ((lev K h).subgroupOf K ⧸ (K'.subgroupOf K).subgroupOf ((lev K h).subgroupOf K))) := Finite.of_equiv _ e`. Use `haveI : Nonempty ((lev K h).subgroupOf K ⧸ (K'.subgroupOf K).subgroupOf ((lev K h).subgroupOf K)) := ⟨QuotientGroup.mk 1⟩`.
+
+Use `haveI : Nonempty (K ⧸ (lev K h).subgroupOf K) := ⟨QuotientGroup.mk 1⟩`. Use `haveI : Finite (K ⧸ (lev K h).subgroupOf K) := Finite.prod_left ((lev K h).subgroupOf K ⧸ (K'.subgroupOf K).subgroupOf ((lev K h).subgroupOf K))`. Use `haveI : Finite ((lev K h).subgroupOf K ⧸ (K'.subgroupOf K).subgroupOf ((lev K h).subgroupOf K)) := Finite.prod_right (K ⧸ (lev K h).subgroupOf K)`. Use `letI := Fintype.ofFinite (K ⧸ (lev K h).subgroupOf K)`. Use `letI := Fintype.ofFinite ((lev K h).subgroupOf K ⧸ (K'.subgroupOf K).subgroupOf ((lev K h).subgroupOf K))`.
+
+Establish `key : ∀ a, (e a).1 = QuotientGroup.mk (a.out : K)`. Introduce `a`. Use `conv_lhs => rw [← QuotientGroup.out_eq' a]`. Both sides reduce to the same expression. Establish `hcard : Fintype.card ((lev K h).subgroupOf K ⧸ (K'.subgroupOf K).subgroupOf ((lev K h).subgroupOf K)) = K'.relIndex (lev K h)`.
+
+Rewrite using `[← Nat.card_eq_fintype_card]`. Conclude with `Subgroup.relIndex_subgroupOf hLK`. Establish `hψ : Function.Injective (fun b : K ⧸ (lev K h).subgroupOf K => (QuotientGroup.mk (((b.out : K) : G) * h⁻¹) : G ⧸ K))` using `fun b b' hb => fib_inj b b' hb`. Establish `hR : ∑ᶠ y : G ⧸ K, (ind R K h⁻¹ y.out) • φ y = ∑ b : K ⧸ (lev K h).subgroupOf K, φ (QuotientGroup.mk (((b.out : K) : G) * h⁻¹))`. Rewrite using `[finsum_eq_sum_of_support_subset (s := Finset.univ.image (fun b : K ⧸ (lev K h).subgroupOf K => (QuotientGroup.mk (((b.out : K) : G) * h⁻¹) : G ⧸ K))) _ ?sub]`.
+
+Rewrite using `[Finset.sum_image (fun b _ b' _ hb => hψ hb)]`. Use `Finset.sum_congr rfl (fun b _ => ?_)` and prove the remaining obligations. Take `⟨k, hk⟩` from `QuotientGroup.mk_out_eq_mul K (((b.out : K) : G) * h⁻¹)`. Establish `hm : (QuotientGroup.mk (((b.out : K) : G) * h⁻¹) : G ⧸ K).out ∈ DoubleCoset.doubleCoset h⁻¹ (K : Set G) K`. Rewrite using `[hk, DoubleCoset.mem_doubleCoset]`.
+
+Conclude with `⟨b.out, b.out.2, k, k.2, rfl⟩`. Rewrite using `[ind_eq_one R hm, one_smul]`. Introduce `y hy`. Rewrite `hy` using `[Function.mem_support]`. Establish `hm : y.out ∈ DoubleCoset.doubleCoset h⁻¹ (K : Set G) K`.
+
+Assume the negation of the conclusion as `hn`. Rewrite `hy` using `[ind_eq_zero R hn, zero_smul]`. Conclude with `hy rfl`. Take `⟨k1, hk1, k2, hk2, he⟩` from `DoubleCoset.mem_doubleCoset.mp hm`. Use `Finset.mem_coe.mpr (Finset.mem_image.mpr ⟨QuotientGroup.mk ⟨k1, hk1⟩, Finset.mem_univ _, ?_⟩)` and prove the remaining obligations.
+
+Use `show (QuotientGroup.mk ((((QuotientGroup.mk ⟨k1, hk1⟩ : K ⧸ (lev K h).subgroupOf K).out : K) : G) * h⁻¹) : G ⧸ K) = y`. Rewrite using `[← class_eq ⟨k1, hk1⟩ _ rfl, ← QuotientGroup.out_eq' y, he, QuotientGroup.eq]`. Establish `hk2' : k2 ∈ K` using `hk2`. Use `show (k1 * h⁻¹)⁻¹ * (k1 * h⁻¹ * k2) ∈ K`. Simplify `hk2'` using `[mul_assoc]`.
+
+Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Fintype.sum_prod_type]`. Simplify using `only [Finset.sum_const, Finset.card_univ, Finset.smul_sum]`. Use `_ = _ := by rw [hcard, hR]`.
+-/
 private theorem count {G : Type} [Group G] {R : Type} {M : Type v} [Field R] [AddCommGroup M] [Module R M]
     (K K' : Subgroup G) (h : G) (hle : K' ≤ lev K h) [Finite (K ⧸ K'.subgroupOf K)] [Fintype (K ⧸ K'.subgroupOf K)]
     (φ : G ⧸ K → M) :
@@ -110,6 +148,9 @@ private theorem count {G : Type} [Group G] {R : Type} {M : Type v} [Field R] [Ad
         simp only [Finset.sum_const, Finset.card_univ, Finset.smul_sum]
     _ = _ := by rw [hcard, hR]
 
+/- English proof (translation)
+Substitute `hc` using the available equality. Conclude with `⟨W, c, Γ, inferInstance, inferInstance, a, J, inferInstance, σ, h, h1, h2, h3⟩`.
+-/
 private theorem isOp_of {B : Scheme.{0}} {R : Type} [Field R] (T : Th.{u} B R) {Z Y Z' W : Scheme.{0}} (p : Z ⟶ B)
     (p' : Z' ⟶ B) (s : Y ⟶ Z) (t : Y ⟶ Z') (A : T.H p' →ₗ[R] T.H p) (r : W ⟶ B) (c : W ⟶ Z) (hc : c ≫ p = r)
     (Γ : Type) [Group Γ] [Finite Γ] (a : Γ → (W ⟶ W)) (J : Type) [Fintype J] (σ : J → (W ⟶ Y))
@@ -118,11 +159,41 @@ private theorem isOp_of {B : Scheme.{0}} {R : Type} [Field R] (T : Th.{u} B R) {
   subst hc
   exact ⟨W, c, Γ, inferInstance, inferInstance, a, J, inferInstance, σ, h, h1, h2, h3⟩
 
+/- English proof (translation)
+Substitute `e` using the available equality. Both sides reduce to the same expression.
+-/
 private theorem pull_eq {B : Scheme.{0}} {R : Type} [Field R] (T : Th.{u} B R) {Y Z : Scheme.{0}} {p : Z ⟶ B} {q : Y ⟶ B}
     {f g : Y ⟶ Z} (e : f = g) (hf : f ≫ p = q) (hg : g ≫ p = q) (x : T.H p) : T.pull f hf x = T.pull g hg x := by
   subst e
   rfl
 
+/- English proof (translation)
+Introduce `hF hE hS hG B G _ X R _ _ T hT i j h a b`. Establish `hij : X.K i ≤ X.K j` using `fun u hu => by simpa using a.2 u hu`. Establish `hil : X.K i ≤ lev (X.K j) h` using `fun u hu => mem_lev.mpr ⟨hij hu, b.2 u hu⟩`. Establish `hL : lev (X.K j) h ≤ X.K j` using `inf_le_left`. Establish `hn : (X.K i).relIndex (lev (X.K j) h) ≠ 0`.
+
+Use `X.idx i j` as an intermediate fact. Rewrite `this` using `[← Subgroup.relIndex_mul_relIndex _ _ _ hil hL]`. Conclude with `left_ne_zero_of_mul this`. Use `⟨hn, ?_⟩` and prove the remaining obligations. Take `⟨m, hmj, hnorm, hS'⟩` from `X.deep j {(i, (1 : G))}`.
+
+Establish `hmi : X.K m ≤ X.K i` using `fun u hu => by`. Simplify using `using hS' (i, 1) (Finset.mem_singleton_self _) u hu`. Use `haveI : Finite (X.K j ⧸ (X.K i).subgroupOf (X.K j)) := Nat.finite_of_card_ne_zero (X.idx i j)`. Use `letI : Fintype (X.K j ⧸ (X.K i).subgroupOf (X.K j)) := Fintype.ofFinite _`. Establish `bm : X.admitted m j 1` using `X.isAdmissibleIntegralBasisChange_one hmj`.
+
+Establish `bmi : X.admitted m i 1` using `X.isAdmissibleIntegralBasisChange_one hmi`. Establish `admr : ∀ c : X.K j ⧸ (X.K i).subgroupOf (X.K j), X.admitted m i ((c.out : G))⁻¹` using `fun c => ⟨X.K_le j _ (inv_mem c.out.2), fun u hu => hmi (hnorm _ (inv_mem c.out.2) u hu)⟩`. Take `⟨Γ, _, _, r', c', -, -, hgal⟩` from `hG X m j bm hnorm`. Establish `hsplit` using `hS X m i j a bm hmi hnorm (X.K j ⧸ (X.K i).subgroupOf (X.K j)) (fun c => ((c.out : G))⁻¹) admr (fun c => inv_mem c.out.2) (by`. Introduce `k hk`.
+
+Use `⟨QuotientGroup.mk ⟨k⁻¹, inv_mem hk⟩, ?_, ?_⟩` and prove the remaining obligations. Take `⟨u, hu⟩` from `QuotientGroup.mk_out_eq_mul ((X.K i).subgroupOf (X.K j)) (⟨k⁻¹, inv_mem hk⟩ : X.K j)`. Simplify using `only [inv_inv]`. Rewrite using `[hu]`. Establish `hu' : ((u : X.K j) : G) ∈ X.K i` using `Subgroup.mem_subgroupOf.mp u.2`.
+
+Simplify `hu'` using `[mul_assoc]`. Introduce `c hc`. Simplify using `only [inv_inv] at hc`. Rewrite using `[← QuotientGroup.out_eq' c, QuotientGroup.eq, Subgroup.mem_subgroupOf]`. Simplify `inv_mem hc)` using `[mul_inv_rev]`.
+
+Establish `hσ : ∀ c : X.K j ⧸ (X.K i).subgroupOf (X.K j), (X.tr m i ((c.out : G))⁻¹ (admr c).1 (admr c).2 ≫ X.tr i j h b.1 b.2) ≫ X.q j = X.q m`. Introduce `c`. Rewrite using `[Category.assoc, X.tr_q, X.tr_q]`. Establish `hfn : X.IsFn j (ind R (X.K j) h⁻¹)` using `(hF X R j).1 h b.1`. Establish `hhop` using `(hE X T hT j _ hfn).1`.
+
+Establish `hadm : ∀ g : G, ind R (X.K j) h⁻¹ g ≠ 0 → X.admitted m j g⁻¹`. Introduce `g hg`. Establish `hm : g ∈ DoubleCoset.doubleCoset h⁻¹ (X.K j : Set G) (X.K j)`. Assume the negation of the conclusion as `hn'`. Conclude with `hg (ind_eq_zero R hn')`.
+
+Take `⟨k1, hk1, k2, hk2, rfl⟩` from `DoubleCoset.mem_doubleCoset.mp hm`. Establish `e1 : (k1 * h⁻¹ * k2)⁻¹ = k2⁻¹ * (h * (1 * k1⁻¹))` using `by group`. Rewrite using `[e1]`. Establish `hk1' : k1⁻¹ ∈ X.K j` using `inv_mem hk1`. Establish `hk2' : k2⁻¹ ∈ X.K j` using `inv_mem hk2`.
+
+Establish `a1 : X.admitted m m k1⁻¹` using `⟨X.K_le j _ hk1', fun u hu => hnorm _ hk1' u hu⟩`. Conclude with `Tower.admitted.mul (Tower.admitted.mul (Tower.admitted.mul a1 bmi) b) (X.tower_admissible_self hk2')`. Use `show T.IsOp (X.q j) (X.q j) _ _ _`. Use `isOp_of T _ _ _ _ _ (X.q m) (X.tr m j 1 bm.1 bm.2) (X.tr_q _ _ _ _ _) Γ _ (X.K j ⧸ (X.K i).subgroupOf (X.K j)) (fun c => X.tr m i ((c.out : G))⁻¹ (admr c).1 (admr c).2) hσ hgal hsplit ?_` and prove the remaining obligations. Introduce `x`.
+
+Establish `hφ : ∀ c : X.K j ⧸ (X.K i).subgroupOf (X.K j), T.pull (X.tr m i ((c.out : G))⁻¹ (admr c).1 (admr c).2 ≫ X.tr i j h b.1 b.2) (hσ c) x = X.pl T m j ((QuotientGroup.mk ((c.out : G) * h⁻¹) : G ⧸ X.K j).out)⁻¹ x`. Introduce `c`. Establish `adm1 : X.admitted m j (h * ((c.out : G))⁻¹)` using `Tower.admitted.mul (admr c) b`. Rewrite using `[pull_eq T (X.tr_mul _ _ _ _ _ _ _ _ _ adm1.1 adm1.2) _ (X.tr_q _ _ _ _ _), ← X.pl_eq T adm1]`. Take `⟨u, hu⟩` from `QuotientGroup.mk_out_eq_mul (X.K j) ((c.out : G) * h⁻¹)`.
+
+Rewrite using `[hu]`. Establish `e2 : ((c.out : G) * h⁻¹ * u)⁻¹ = (u : G)⁻¹ * (h * (c.out : G)⁻¹)` using `by group`. Rewrite using `[e2, X.pl_left T adm1 (inv_mem u.2)]`. Establish `hc` using `count (R := R) (X.K j) (X.K i) h hil (fun y : G ⧸ X.K j => X.pl T m j (y.out)⁻¹ x)`. Use `beta_reduce at hc`.
+
+Rewrite using `[Finset.sum_congr rfl (fun c _ => hφ c), hc, LinearMap.smul_apply, map_smul, ← X.pl_eq T bm, hhop m hmj hadm x]`. Simplify using `[Nat.cast_smul_eq_nsmul]`.
+-/
 theorem UpperTheory.Gal.G3.pHopOp :
     FnRing → HopEx.{u} → TwSplit → TwGal → HopOp.{u} := by
   intro hF hE hS hG B G _ X R _ _ T hT i j h a b

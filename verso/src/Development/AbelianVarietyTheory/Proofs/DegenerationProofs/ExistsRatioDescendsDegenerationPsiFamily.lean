@@ -11,17 +11,28 @@ noncomputable section
 namespace GlobalTheory.FieldPull
 open GlobalTheory.ArcPull GlobalTheory.PsiEvenPull
 
+/- English proof (translation)
+The claim follows from `TauTwist.exists_ratio (F := FractionRing R) D.P.isLB (fun _ _ _ => rfl) (D.psi_gen χ) (hψ χ)`.
+-/
 theorem exists_psi_ratio {R : Type} [CommRing R] [IsDomain R] (D : DegPre R) (ψ : TauTwist.PsiFam D)
     (hψ : ∀ χ, (ψ χ).IsGen) (χ : D.X) : ∃ u : (FractionRing R)ˣ, ∀ (z : (TK R).left) J, Good D.P.L z J →
       val (D.psi χ) (𝟙 _) z J = TauTwist.unitAt (A := FractionRing R) (Z := (TK R).left) (𝟙 _) z u * val (ψ χ) (𝟙 _) z J :=
   TauTwist.exists_ratio (F := FractionRing R) D.P.isLB (fun _ _ _ => rfl) (D.psi_gen χ) (hψ χ)
 
+/- English proof (translation)
+The claim follows from `(congrArg (fun r => TauTwist.unitAt (A := FractionRing K₁) r z v) (Category.id_comp _).symm).trans (TauTwist.unitAt_spMap (𝟙 _) (fracMap β.injective) z v)`.
+-/
 theorem unitAt_genMap {K₁ K : Type} [Field K₁] [Field K] (β : K₁ →+* K) (z : (TK K).left) (v : (FractionRing K₁)ˣ) :
     TauTwist.unitAt (A := FractionRing K₁) (genMap β.injective) z v =
       TauTwist.unitAt (A := FractionRing K) (Z := (TK K).left) (𝟙 _) z (Units.map (fracMap β.injective).toMonoidHom v) :=
   (congrArg (fun r => TauTwist.unitAt (A := FractionRing K₁) r z v) (Category.id_comp _).symm).trans
     (TauTwist.unitAt_spMap (𝟙 _) (fracMap β.injective) z v)
 
+/- English proof (translation)
+Establish `key : ∀ (x : D.X) (z : (TK K).left) J J', Good D₁.P.L z J → Good D.P.L z J' → val ((TauTwist.rescale D₁ q).psi (h.xe x)) (genMap β.injective) z J = (om h.w z J J' (D.xK x))⁻¹ * val (D.psi x) (𝟙 _) z J'` using `fun x z J J' hJ hJ' => by`. Establish `e` using `psi_val (D := D₁) (D' := TauTwist.withPsi D ψ hψ) h (genMap β.injective) (𝟙 _) (fracMap_sq β.injective) hJ hJ' x`. Rewrite `e` using `[Category.id_comp]`. Use `(TauTwist.val_psi_rescale q (h.xe x) _ hJ).trans ((congrArg₂ (· * ·) (unitAt_genMap β z _) e).trans ?_)` and prove the remaining obligations. Conclude with `(mul_left_comm _ _ _).trans (congrArg₂ (· * ·) rfl (hq x z J' hJ')).symm`.
+
+Take `⟨hD, hp, -, -⟩` from `exists_isPullDeg_of_val β (TauTwist.rescale D₁ q) D (Φ := proj (D := D₁) (D' := TauTwist.withPsi D ψ hψ) h) (pull_grp (D := D₁) (D' := TauTwist.withPsi D ψ hψ) h) h.w ((isGen_iff h.w).1 h.w_gen) (pmaps_rig (D := D₁) (D' := TauTwist.withPsi D ψ hψ) h) h.xe h.c_pr key`. Conclude with `⟨hD, hp⟩`.
+-/
 theorem exists_isPullDeg_rescale {K₁ K : Type} [Field K₁] [Field K] (β : K₁ →+* K) (D₁ : DegPre K₁) (D : DegPre K)
     (ψ : TauTwist.PsiFam D) (hψ : ∀ χ, (ψ χ).IsGen) (h : IsPullDeg β D₁ (TauTwist.withPsi D ψ hψ))
     (q : D₁.X → (FractionRing K₁)ˣ)
@@ -41,6 +52,13 @@ theorem exists_isPullDeg_rescale {K₁ K : Type} [Field K₁] [Field K] (β : K�
     ((isGen_iff h.w).1 h.w_gen) (pmaps_rig (D := D₁) (D' := TauTwist.withPsi D ψ hψ) h) h.xe h.c_pr key
   exact ⟨hD, hp⟩
 
+/- English proof (translation)
+Use `choose u hu using exists_psi_ratio D ψ hψ`. Use `⟨fun χ => FractionRing.algEquiv K K (u χ).val, fun K₁ _ β D₁ h ha => ?_⟩` and prove the remaining obligations. Use `choose a₁ ha₁ using ha`. Establish `key : ∀ χ, fracMap β.injective (algebraMap K₁ (FractionRing K₁) (a₁ χ)) = (u χ).val` using `fun χ => by`. Rewrite using `[fracMap_algebraMap, ha₁]`.
+
+Conclude with `(FractionRing.algEquiv K K).injective ((FractionRing.algEquiv K K).commutes _)`. Establish `hne : ∀ χ, algebraMap K₁ (FractionRing K₁) (a₁ χ) ≠ 0` using `fun χ e => (u χ).ne_zero (by`. Rewrite using `[← key, e, map_zero])`. Take `⟨q, hq⟩ : ∃ q : D₁.X → (FractionRing K₁)ˣ, ∀ χ, Units.map (fracMap β.injective).toMonoidHom (q (h.xe χ)) = u χ` from `⟨fun y => Units.mk0 _ (hne (h.xe.symm y)), fun χ => Units.ext (by show fracMap β.injective (algebraMap K₁ (FractionRing K₁) (a₁ (h.xe.symm (h.xe χ)))) = _`. Rewrite using `[AddEquiv.symm_apply_apply, key])⟩`.
+
+Take `⟨hD, hp⟩` from `exists_isPullDeg_rescale β D₁ D ψ hψ h q fun χ z J hJ => by`. Rewrite using `[hq]`. Conclude with `hu χ z J hJ`. Conclude with `⟨_, _, hD, hp⟩`.
+-/
 theorem exists_ratio_descends (K : Type) [Field K] (D : DegPre K) (ψ : TauTwist.PsiFam D) (hψ : ∀ χ, (ψ χ).IsGen) :
     ∃ a : D.X → K, ∀ (K₁ : Type) [Field K₁] (β : K₁ →+* K) (D₁ : DegPre K₁)
       (h : IsPullDeg β D₁ (TauTwist.withPsi D ψ hψ)), (∀ χ, a χ ∈ Set.range β) →

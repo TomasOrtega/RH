@@ -9,6 +9,9 @@ open scoped CategoryTheory.Obj
 attribute [local instance] Over.cartesianMonoidalCategory
 
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.AbDatum.linFrob_isEquivariant | exact GlobalTheory.AbDatum.linFrob_isEquivariant | (intros; apply GlobalTheory.AbDatum.linFrob_isEquivariant <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.frobenius_equivariant_de_rham : ∀ (O : Type) [CommRing O] (T : Scheme.{0}) (A : Over T) [GrpObj A] (i : OAct O A) (H : T.Modules)
     (e : ∀ (V : T.Opens) (hV : IsAffineOpen V), Γ(H, V) ≃ₗ[Γ(T, V)] primDR (onAff A hV))
     (p : ℕ) [Fact p.Prime] (h0 : (p : Γ(T, ⊤)) = 0) (ρ : O →+* End H) (Ψ : (frobPull p h0).obj H ⟶ H),

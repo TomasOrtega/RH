@@ -12,12 +12,26 @@ set_option autoImplicit false
 
 namespace GlobalTheory.PinchLift
 
+/- English proof (translation)
+Rewrite using `[gm_val f y U (hle hy)]`. Conclude with `TopCat.Presheaf.germ_res_apply Y.presheaf (homOfLE hle) y hy _`.
+-/
 theorem germ_appLE_eq_gm_val {Y X : Scheme.{0}} (f : Y ⟶ X) (U : X.Opens) (O : Y.Opens) (hle : O ≤ f ⁻¹ᵁ U)
     (y : Y) (hy : y ∈ O) (a : Γ(X, U)ˣ) :
     (Y.presheaf.germ O y hy).hom ((f.appLE U O hle).hom a.val) = (gm f y U a).val := by
   rw [gm_val f y U (hle hy)]
   exact TopCat.Presheaf.germ_res_apply Y.presheaf (homOfLE hle) y hy _
 
+/- English proof (translation)
+Introduce `X X' Z Z' p i i' p' _ hG V a b hab`. Establish `key : ∀ (a : Γ(X', p ⁻¹ᵁ V)ˣ) (b : Γ(Z, i ⁻¹ᵁ V)ˣ), (∀ z : Z', p (i' z) ∈ V → gm i' z (p ⁻¹ᵁ V) a = gm p' z (i ⁻¹ᵁ V) b) → ∃! s : Γ(X, V), (p.app V).hom s = a.val ∧ (i.app V).hom s = b.val`. Introduce `a b hab`. Apply `hG V` to reduce the goal to its premises. Apply `TopCat.Presheaf.section_ext Z'.sheaf` to reduce the goal to its premises.
+
+Introduce `z hz`. Conclude with `(germ_appLE_eq_gm_val i' _ _ inf_le_left z hz a).trans ((congrArg Units.val (hab z hz.1)).trans (germ_appLE_eq_gm_val p' _ _ inf_le_right z hz b).symm)`. Take `⟨s, ⟨hs₁, hs₂⟩, -⟩` from `key a b hab`. Take `⟨t, ⟨ht₁, ht₂⟩, -⟩` from `key a⁻¹ b⁻¹ (fun z hz => by rw [map_inv, map_inv, hab z hz])`. Establish `h₁` using `key 1 1 (fun z _ => by rw [map_one, map_one])`.
+
+Establish `e : s * t = 1`. Apply `h₁.unique` to reduce the goal to its premises. Prove the components needed by the constructor for the conclusion. Rewrite using `[map_mul, hs₁, ht₁, Units.mul_inv, Units.val_one]`. Rewrite using `[map_mul, hs₂, ht₂, Units.mul_inv, Units.val_one]`.
+
+Prove the components needed by the constructor for the conclusion. Rewrite using `[map_one, Units.val_one]`. Rewrite using `[map_one, Units.val_one]`. Use `⟨⟨s, t, e, (mul_comm _ _).trans e⟩, fun x hx => ?_, fun x hx => ?_⟩` and prove the remaining obligations. Apply `Units.ext` to reduce the goal to its premises.
+
+Rewrite using `[gm_val p x V hx, gm_val (𝟙 X') x (p ⁻¹ᵁ V) hx]`. Conclude with `congrArg (X'.presheaf.germ (p ⁻¹ᵁ V) x hx).hom hs₁`. Apply `Units.ext` to reduce the goal to its premises. Rewrite using `[gm_val i x V hx, gm_val (𝟙 Z) x (i ⁻¹ᵁ V) hx]`. Conclude with `congrArg (Z.presheaf.germ (i ⁻¹ᵁ V) x hx).hom hs₂`.
+-/
 theorem exists_unit_of_glues : ∀ (X X' Z Z' : Scheme.{0}) (p : X' ⟶ X) (i : Z ⟶ X) (i' : Z' ⟶ X') (p' : Z' ⟶ Z), i' ≫ p = p' ≫ i → GlobalTheory.PinchLift.Glues p i i' p' → ∀ (V : X.Opens) (a : Γ(X', p ⁻¹ᵁ V)ˣ) (b : Γ(Z, i ⁻¹ᵁ V)ˣ), (∀ z : Z', p (i' z) ∈ V → gm i' z (p ⁻¹ᵁ V) a = gm p' z (i ⁻¹ᵁ V) b) → ∃ u : Γ(X, V)ˣ, (∀ x' : X', p x' ∈ V → gm p x' V u = gm (𝟙 X') x' (p ⁻¹ᵁ V) a) ∧ (∀ z : Z, i z ∈ V → gm i z V u = gm (𝟙 Z) z (i ⁻¹ᵁ V) b) := by
   intro X X' Z Z' p i i' p' _ hG V a b hab
   have key : ∀ (a : Γ(X', p ⁻¹ᵁ V)ˣ) (b : Γ(Z, i ⁻¹ᵁ V)ˣ),

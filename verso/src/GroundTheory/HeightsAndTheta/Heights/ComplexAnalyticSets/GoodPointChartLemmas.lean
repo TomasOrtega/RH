@@ -8,6 +8,19 @@ open scoped ContDiff
 
 noncomputable section
 
+/- English proof (translation)
+Proceed by induction on `q using MvPolynomial.induction_on with`. Consider the case `C a`. Establish `e1 : (fun z : σ → ℂ => eval z (C a)) = fun _ => a`. Use function extensionality and compare the values at `z`. Simplify using the standard rewrite rules.
+
+Rewrite using `[e1]`. Use `hasFDerivAt_const (𝕜 := ℂ) a x` and compare the differences between its conclusion and the goal. Use extensionality with `v`. Simplify using the standard rewrite rules. Consider the case `add p q hp hq`.
+
+Establish `e1 : (fun z : σ → ℂ => eval z (p + q)) = fun z => eval z p + eval z q`. Use function extensionality and compare the values at `z`. Simplify using the standard rewrite rules. Rewrite using `[e1]`. Use `(hp.add hq).congr_fderiv ?_` and prove the remaining obligations.
+
+Use extensionality with `v`. Simplify using `[Finset.sum_add_distrib, add_mul]`. Consider the case `mul_X p i hp`. Establish `hfun : (fun z : σ → ℂ => eval z (p * X i)) = (fun z => eval z p) * (fun z => z i)`. Use function extensionality and compare the values at `z`.
+
+Simplify using the standard rewrite rules. Rewrite using `[hfun]`. Use `(hp.mul (hasFDerivAt_apply i x)).congr_fderiv ?_` and prove the remaining obligations. Use `ContinuousLinearMap.ext fun v => ?_` and prove the remaining obligations. Simplify using `only [ContinuousLinearMap.add_apply, ContinuousLinearMap.smul_apply, ContinuousLinearMap.coe_sum', Finset.sum_apply, ContinuousLinearMap.proj_apply, smul_eq_mul, pderiv_mul, pderiv_X, map_add, map_mul, eval_X, Pi.single_apply, add_mul, Finset.sum_add_distrib]`.
+
+Simplify using `only [apply_ite, map_one, map_zero, mul_one, mul_zero, Finset.sum_ite_eq', Finset.mem_univ, if_true, Finset.mul_sum]`. Rewrite using `[add_comm]`. Use `congr 1`. Conclude with `Finset.sum_congr rfl fun j _ => by ring`. Apply the tactic sequence `by_cases hij : i = i <;> simp [mul_comm]`.
+-/
 theorem hasFDerivAt_eval {σ : Type} [Fintype σ] [DecidableEq σ] (q : MvPolynomial σ ℂ) (x : σ → ℂ) :
     HasFDerivAt (fun z : σ → ℂ => eval z q)
       (∑ j, eval x (pderiv j q) • ContinuousLinearMap.proj j : (σ → ℂ) →L[ℂ] ℂ) x := by
@@ -45,11 +58,21 @@ theorem hasFDerivAt_eval {σ : Type} [Fintype σ] [DecidableEq σ] (q : MvPolyno
     · exact Finset.sum_congr rfl fun j _ => by ring
     · by_cases hij : i = i <;> simp [mul_comm]
 
+/- English proof (translation)
+Rewrite using `[(hasFDerivAt_eval q x).fderiv]`. Simplify using the standard rewrite rules.
+-/
 theorem fderiv_eval_apply {σ : Type} [Fintype σ] [DecidableEq σ] (q : MvPolynomial σ ℂ) (x v : σ → ℂ) :
     fderiv ℂ (fun z : σ → ℂ => eval z q) x v = ∑ s, eval x (pderiv s q) * v s := by
   rw [(hasFDerivAt_eval q x).fderiv]
   simp
 
+/- English proof (translation)
+Take `⟨q, hq⟩` from `(LinearMap.ker L).exists_isCompl`. Establish `hdK : Module.finrank ℂ (LinearMap.ker L) = d`. Use `L.finrank_range_add_finrank_ker` as an intermediate fact. Rewrite `this` using `[LinearMap.range_eq_top.2 hL, finrank_top]`. Use linear arithmetic over natural numbers and integers.
+
+Set `eK : LinearMap.ker L ≃ₗ[ℂ] (Fin d → ℂ)` to `LinearEquiv.ofFinrankEq _ (Fin d → ℂ) (by simp [hdK])`. Use `⟨LinearMap.toContinuousLinearMap (eK.toLinearMap ∘ₗ (LinearMap.ker L).projectionOnto q hq), fun v hA hLv => ?_⟩` and prove the remaining obligations. Establish `h2 : v ∈ LinearMap.ker L` using `LinearMap.mem_ker.2 hLv`. Establish `h3 : (LinearMap.ker L).projectionOnto q hq v = 0` using `eK.injective (by simpa using hA)`. Rewrite `h3` using `[Submodule.projectionOnto_apply_of_mem_left hq h2]`.
+
+Simplify using `using congrArg Subtype.val h3`.
+-/
 theorem exists_clm_ker_inf {E : Type*} [NormedAddCommGroup E] [NormedSpace ℂ E] [FiniteDimensional ℂ E]
     {F : Type*} [AddCommGroup F] [Module ℂ F] [FiniteDimensional ℂ F]
     (L : E →ₗ[ℂ] F) (hL : Function.Surjective L) (d : ℕ)
@@ -68,6 +91,37 @@ theorem exists_clm_ker_inf {E : Type*} [NormedAddCommGroup E] [NormedSpace ℂ E
   rw [Submodule.projectionOnto_apply_of_mem_left hq h2] at h3
   simpa using congrArg Subtype.val h3
 
+/- English proof (translation)
+Use `set P : (σ → ℂ) →L[ℂ] (κ ⊕ ι → ℂ) := ContinuousLinearMap.pi fun k => fderiv ℂ (q k) a with hP`. Establish `hPinj : Function.Injective P`. Introduce `v v' hvv`. Rewrite using `[← sub_eq_zero]`. Use `hinj _ fun k => ?_` and prove the remaining obligations.
+
+Use `congrFun hvv k` as an intermediate fact. Simplify using `only [hP, ContinuousLinearMap.pi_apply] at this`. Rewrite using `[map_sub, this, sub_self]`. Establish `hPbij : Function.Bijective (P : (σ → ℂ) →ₗ[ℂ] (κ ⊕ ι → ℂ))` using `⟨hPinj, (LinearMap.injective_iff_surjective_of_finrank_eq_finrank (by simp [Module.finrank_fintype_fun_eq_card, Fintype.card_sum, hcard])).1 hPinj⟩`. Use `set Pe : (σ → ℂ) ≃L[ℂ] (κ ⊕ ι → ℂ) := (LinearEquiv.ofBijective _ hPbij).toContinuousLinearEquiv with hPe`.
+
+Establish `hPeP : (Pe : (σ → ℂ) →L[ℂ] (κ ⊕ ι → ℂ)) = P` using `by ext1 x; rfl`. Use `set F : (σ → ℂ) → κ ⊕ ι → ℂ := fun z k => q k z with hF`. Establish `hFan : ∀ z, (∀ k, AnalyticAt ℂ (q k) z) → AnalyticAt ℂ F z` using `fun z hz => analyticAt_pi_iff.2 hz`. Establish `hFd : HasFDerivAt F (Pe : (σ → ℂ) →L[ℂ] _) a`. Rewrite using `[hPeP]`.
+
+Conclude with `hasFDerivAt_pi.2 fun k => (hq k).differentiableAt.hasFDerivAt`. Establish `hst : HasStrictFDerivAt F (Pe : (σ → ℂ) →L[ℂ] _) a`. Use `(hFan a hq).hasStrictFDerivAt` as an intermediate fact. Rewrite `this` using `[hFd.fderiv]`. Then use the resulting hypothesis. Use `set Φ := hst.toOpenPartialHomeomorph F with hΦ`.
+
+Establish `hev : ∀ᶠ t in 𝓝 a, (∀ k, AnalyticAt ℂ (q k) t) ∧ t ∈ W ∧ fderiv ℂ F t ∈ Set.range ((↑) : ((σ → ℂ) ≃L[ℂ] (κ ⊕ ι → ℂ)) → _)`. Use `(Filter.eventually_all.2 fun k => (hq k).eventually_analyticAt).and ((show ∀ᶠ t in 𝓝 a, t ∈ W from hW).and ?_)` and prove the remaining obligations. Conclude with `(hFan a hq).fderiv.continuousAt.preimage_mem_nhds (ContinuousLinearEquiv.isOpen.mem_nhds ⟨Pe, hFd.fderiv.symm⟩)`. Take `⟨V₀, hV₀, hV₀o, haV₀⟩` from `eventually_nhds_iff.1 hev`. Use `set Ψ := Φ.restrOpen V₀ hV₀o with hΨ`.
+
+Establish `hΨs : Ψ.source = Φ.source ∩ V₀` using `OpenPartialHomeomorph.restrOpen_source _ _ _`. Establish `hΨF : ∀ z, Ψ z = F z` using `fun z => rfl`. Establish `haΨ : a ∈ Ψ.source` using `hΨs ▸ ⟨hst.mem_toOpenPartialHomeomorph_source, haV₀⟩`. Establish `hsrc : ∀ t ∈ Ψ.source, (∀ k, AnalyticAt ℂ (q k) t) ∧ t ∈ W ∧ fderiv ℂ F t ∈ Set.range ((↑) : ((σ → ℂ) ≃L[ℂ] (κ ⊕ ι → ℂ)) → _)` using `fun t ht => hV₀ t (hΨs ▸ ht).2`. Establish `hembA : ∀ y, AnalyticAt ℂ (fun y : κ → ℂ => Sum.elim y (0 : ι → ℂ)) y` using `fun y => analyticAt_pi_iff.2 fun k => by`.
+
+Break down `k with i | j` into its components or cases. Conclude with `(ContinuousLinearMap.proj (R := ℂ) (φ := fun _ : κ => ℂ) i).analyticAt y`. Conclude with `analyticAt_const`. Establish `hemb : Continuous (fun y : κ → ℂ => Sum.elim y (0 : ι → ℂ))` using `continuous_iff_continuousAt.2 fun y => (hembA y).continuousAt`. Use `set O : Set (κ → ℂ) := (fun y => Sum.elim y (0 : ι → ℂ)) ⁻¹' Ψ.target with hO`.
+
+Establish `hOo : IsOpen O` using `Ψ.open_target.preimage hemb`. Establish `hφV : ∀ y ∈ O, Ψ.symm (Sum.elim y 0) ∈ Ψ.source` using `fun y hy => Ψ.map_target hy`. Establish `hFφ : ∀ y ∈ O, F (Ψ.symm (Sum.elim y 0)) = Sum.elim y 0` using `fun y hy => Ψ.right_inv hy`. Establish `hφan : AnalyticOnNhd ℂ (fun y => Ψ.symm (Sum.elim y 0)) O`. Introduce `y hy`.
+
+Establish `hp : Sum.elim y (0 : ι → ℂ) ∈ Ψ.target` using `hy`. Take `⟨han, -, e', he'⟩` from `hsrc _ (Ψ.map_target hp)`. Establish `hFe : HasFDerivAt Ψ (e' : (σ → ℂ) →L[ℂ] _) (Ψ.symm (Sum.elim y 0))`. Rewrite using `[he']`. Conclude with `(hFan _ han).differentiableAt.hasFDerivAt`.
+
+Establish `hc : ContDiffAt ℂ ω Ψ.symm (Sum.elim y 0)` using `Ψ.contDiffAt_symm hp hFe (hFan _ han).contDiffAt`. Conclude with `AnalyticAt.comp (g := Ψ.symm) (f := fun y : κ → ℂ => Sum.elim y (0 : ι → ℂ)) (x := y) hc.analyticAt (hembA y)`. Use `⟨Ψ.source, O, fun y => Ψ.symm (Sum.elim y 0), Ψ.open_source, haΨ, fun t ht => (hsrc t ht).2.1, hOo, hφan, hφV, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `y hy i`. Conclude with `congrFun (hFφ y hy) (Sum.inl i)`.
+
+Introduce `y hy j`. Conclude with `congrFun (hFφ y hy) (Sum.inr j)`. Introduce `z hz hz0`. Establish `hFz : F z = Sum.elim (fun i => q (Sum.inl i) z) 0`. Use function extensionality and compare the values at `k`.
+
+Break down `k with i | j` into its components or cases. Both sides reduce to the same expression. Conclude with `hz0 j`. Establish `ht : F z ∈ Ψ.target` using `by rw [← hΨF]; exact Ψ.map_source hz`. Use `⟨show Sum.elim (fun i => q (Sum.inl i) z) (0 : ι → ℂ) ∈ Ψ.target from hFz ▸ ht, ?_⟩` and prove the remaining obligations.
+
+Use `show Ψ.symm (Sum.elim (fun i => q (Sum.inl i) z) (0 : ι → ℂ)) = z`. Rewrite using `[← hFz, ← hΨF]`. Conclude with `Ψ.left_inv hz`. Introduce `y hy v`. Establish `hyn : O ∈ 𝓝 y` using `hOo.mem_nhds hy`.
+
+Establish `hφd : HasFDerivAt (fun y => Ψ.symm (Sum.elim y 0)) (fderiv ℂ (fun y => Ψ.symm (Sum.elim y 0)) y) y` using `(hφan y hy).differentiableAt.hasFDerivAt`. Establish `hcomp : ∀ k, fderiv ℂ (fun y' => q k (Ψ.symm (Sum.elim y' 0))) y = (fderiv ℂ (q k) (Ψ.symm (Sum.elim y 0))).comp (fderiv ℂ (fun y => Ψ.symm (Sum.elim y 0)) y)` using `fun k => ((((hsrc _ (hφV y hy)).1 k).differentiableAt.hasFDerivAt).comp y hφd).fderiv`. Use `⟨fun i => ?_, fun j => ?_⟩` and prove the remaining obligations. Establish `he : (fun y' => q (Sum.inl i) (Ψ.symm (Sum.elim y' 0))) =ᶠ[𝓝 y] fun y' => y' i` using `Filter.eventually_of_mem hyn fun y' hy' => congrFun (hFφ y' hy') (Sum.inl i)`. Use `congrArg (fun L : (κ → ℂ) →L[ℂ] ℂ => L v) ((hcomp (Sum.inl i)).symm.trans (he.fderiv_eq.trans (hasFDerivAt_apply i y).fderiv))` as an intermediate fact.
+
+Simplify using `using this`. Establish `he : (fun y' => q (Sum.inr j) (Ψ.symm (Sum.elim y' 0))) =ᶠ[𝓝 y] fun _ => (0 : ℂ)` using `Filter.eventually_of_mem hyn fun y' hy' => congrFun (hFφ y' hy') (Sum.inr j)`. Use `congrArg (fun L : (κ → ℂ) →L[ℂ] ℂ => L v) ((hcomp (Sum.inr j)).symm.trans (he.fderiv_eq.trans (hasFDerivAt_const (0 : ℂ) y).fderiv))` as an intermediate fact. Simplify using `using this`.
+-/
 theorem exists_coordChart {σ κ ι : Type} [Fintype σ] [Fintype κ] [Fintype ι]
     (q : κ ⊕ ι → (σ → ℂ) → ℂ) (a : σ → ℂ) (W : Set (σ → ℂ))
     (hq : ∀ k, AnalyticAt ℂ (q k) a)

@@ -20,6 +20,17 @@ noncomputable def UpperTheory.Reformulated.B.Qe26.IsIrr :
     {k : Type} → [inst : Field k] → {n : ℕ} → GL (Fin n) k → k :=
     fun {k : Type} [Field k] {n : ℕ} (g : GL (Fin n) k) ↦ (↑g : Matrix (Fin n) (Fin n) k).trace
 
+/- English proof (translation)
+Establish `hsimple : IsSimpleModule S V`. Rewrite using `[isSimpleModule_iff]`. Use `⟨fun p ↦ ?_⟩` and prove the remaining obligations. Break down `h (p.restrictScalars k) (fun s hs v hv ↦ p.smul_mem ⟨s, hs⟩ hv) with h1 | h1` into its components or cases. Use `left`.
+
+Simplify using `using h1`. Use `right`. Simplify using `using h1`. Establish `hb` using `IsSimpleModule.algebraMap_end_bijective_of_isAlgClosed (A := S) (V := V) k`. Establish `hfin : Module.Finite (Module.End S V) V` using `Module.Finite.of_restrictScalars_finite k _ _`.
+
+Rewrite using `[eq_top_iff]`. Introduce `T _`. Set `T' : Module.End (Module.End S V) V` to `{ toFun := T map_add' := T.map_add map_smul' := fun c v ↦ by`. Take `⟨a, rfl⟩` from `hb.2 c`. Simplify using `}`.
+
+Take `⟨s, hs⟩` from `Module.Finite.toModuleEnd_moduleEnd_surjective (R := S) (M := V) T'`. Establish `: T = s.1`. Use extensionality with `v`. Conclude with `(LinearMap.congr_fun hs v).symm`. Rewrite using `[this]`.
+
+Conclude with `s.2`.
+-/
 private theorem UpperTheory.Reformulated.B.Qe26.subalgebra_eq_top {k V : Type} [Field k] [IsAlgClosed k]
     [AddCommGroup V] [Module k V] [FiniteDimensional k V] [Nontrivial V]
     (S : Subalgebra k (Module.End k V))
@@ -51,6 +62,13 @@ private theorem UpperTheory.Reformulated.B.Qe26.subalgebra_eq_top {k V : Type} [
   rw [this]
   exact s.2
 
+/- English proof (translation)
+Take `⟨h0, -, h1⟩` from `hR`. Use `set L := MonoidAlgebra.lift k (Matrix (Fin n) (Fin n) k) H ((Units.coeHom (Matrix (Fin n) (Fin n) k)).comp R) with hL`. Establish `hnt : Nontrivial (Fin n → k)` using `(Submodule.nontrivial_iff k).1 ⟨⟨_, _, h0⟩⟩`. Establish `htop` using `UpperTheory.Reformulated.B.Qe26.subalgebra_eq_top (((Matrix.toLinAlgEquiv' (R := k) (n := Fin n)).toAlgHom.comp L).range) (by`. Introduce `W hW`.
+
+Use `h1 W le_top (fun g v hv ↦ ?_)` and prove the remaining obligations. Use `hW _ ⟨MonoidAlgebra.single g 1, rfl⟩ v hv` as an intermediate fact. Simplify `this)` using `[hL]`. Introduce `M`. Establish `hM : Matrix.toLinAlgEquiv' M ∈ ((Matrix.toLinAlgEquiv' (R` using `k) (n := Fin n)).toAlgHom.comp L).range := by`.
+
+Rewrite using `[htop]`. Discharge the goal by the elementary cases of `trivial`. Take `⟨x, hx⟩` from `hM`. Conclude with `⟨x, (Matrix.toLinAlgEquiv' (R := k) (n := Fin n)).injective hx⟩`.
+-/
 private theorem UpperTheory.Reformulated.B.Qe26.lift_surjective {k : Type} [Field k] [IsAlgClosed k] {H : Type}
     [Group H] {n : ℕ} (R : H →* GL (Fin n) k) (hR : UpperTheory.Reformulated.B.Qe26.IsIrr R) :
     Function.Surjective (MonoidAlgebra.lift k (Matrix (Fin n) (Fin n) k) H
@@ -72,6 +90,25 @@ private theorem UpperTheory.Reformulated.B.Qe26.lift_surjective {k : Type} [Fiel
   obtain ⟨x, hx⟩ := hM
   exact ⟨x, (Matrix.toLinAlgEquiv' (R := k) (n := Fin n)).injective hx⟩
 
+/- English proof (translation)
+Introduce `k _ _ H _ n R hR x₀ B _ _ _ φ f hf`. Establish `hsurj` using `UpperTheory.Reformulated.B.Qe26.lift_surjective R hR`. Use `set L := MonoidAlgebra.lift k (Matrix (Fin n) (Fin n) k) H ((Units.coeHom (Matrix (Fin n) (Fin n) k)).comp R) with hL`. Use `set Φ := MonoidAlgebra.lift k B H φ with hΦ`. Establish `htr : ∀ y, ((x₀ : Matrix (Fin n) (Fin n) k) * L y).trace = f (Φ y)`.
+
+Introduce `y`. Proceed by induction on `y using MonoidAlgebra.induction_linear with`. Consider the case `zero => simp`. Consider the case `add a b ha hb => simp [mul_add, ha, hb]`. Consider the case `single g c`.
+
+Use `hf g` as an intermediate fact. Simplify using `only [UpperTheory.Reformulated.B.Qe26.tr, Units.val_mul] at this`. Simplify using `[hL, hΦ, ← this]`. Establish `hker : ∀ x, Φ x = 0 → L x = 0`. Introduce `x hx`.
+
+Rewrite using `[Matrix.ext_iff_trace_mul_left]`. Introduce `M`. Take `⟨y, hy⟩` from `hsurj ((↑x₀⁻¹ : Matrix (Fin n) (Fin n) k) * M)`. Use `htr (y * x)` as an intermediate fact. Rewrite `this` using `[map_mul, map_mul, hx, hy, mul_zero, map_zero, ← mul_assoc, Units.mul_inv_cancel_left]`.
+
+Simplify using `using this`. Use `⟨?_, hker⟩` and prove the remaining obligations. Establish `hle : LinearMap.ker Φ.toLinearMap ≤ LinearMap.ker L.toLinearMap` using `fun x hx ↦ hker x hx`. Establish `hrange : LinearMap.range Φ.toLinearMap ≤ Subalgebra.toSubmodule (Algebra.adjoin k (Set.range φ))`. Introduce and unpack `_ ⟨y, rfl⟩`.
+
+Proceed by induction on `y using MonoidAlgebra.induction_linear with`. Consider the case `zero => simp`. Consider the case `add a b ha hb => rw [map_add]`. Conclude with `add_mem ha hb`. Consider the case `single g c`.
+
+Establish `: Φ.toLinearMap (MonoidAlgebra.single g c) = c • φ g` using `by simp [hΦ]`. Rewrite using `[this]`. Conclude with `Submodule.smul_mem _ _ (Algebra.subset_adjoin ⟨g, rfl⟩)`. Set `ψ : LinearMap.range Φ.toLinearMap →ₗ[k] Matrix (Fin n) (Fin n) k` to `((LinearMap.ker Φ.toLinearMap).liftQ L.toLinearMap hle).comp Φ.toLinearMap.quotKerEquivRange.symm.toLinearMap`. Establish `hψ : Function.Surjective ψ`.
+
+Introduce `M`. Take `⟨y, rfl⟩` from `hsurj M`. Conclude with `⟨Φ.toLinearMap.quotKerEquivRange (Submodule.Quotient.mk y), by simp [ψ]⟩`. Combine the equalities or inequalities in the displayed calculation. Simplify using `[Module.finrank_matrix, sq]`.
+
+Use `_ ≤ Module.finrank k (LinearMap.range Φ.toLinearMap) := LinearMap.finrank_le_finrank_of_surjective hψ`. Use `_ ≤ Module.finrank k (Subalgebra.toSubmodule (Algebra.adjoin k (Set.range φ))) := Submodule.finrank_mono hrange`. Use `_ = _ := rfl`.
+-/
 theorem UpperTheory.Reformulated.B.Qe26.kerLe :
     ∀ (k : Type) [inst : Field k] [IsAlgClosed k] (H : Type) [inst_2 : Group H] (n : ℕ) (R : H →* GL (Fin n) k),
       UpperTheory.Reformulated.B.Qe26.IsIrr R →

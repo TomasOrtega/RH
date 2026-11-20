@@ -30,14 +30,26 @@ def thetaG : MulAut (GP a b R) where
   right_inv _ := Prod.ext (thetaGL_thetaGL _) (thetaGL_thetaGL _)
   map_mul' _ _ := Prod.ext (thetaGL_mul _ _) (thetaGL_mul _ _)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem cartan_involution_apply (g : GP a b R) : th0 g = star g⁻¹ := rfl
 
+/- English proof (translation)
+Rewrite using `[cartan_involution_apply, cartan_involution_apply, star_inv, star_star, inv_inv]`.
+-/
 @[simp] theorem cartan_involution_involutive (g : GP a b R) : th0 (th0 g) = g := by
   rw [cartan_involution_apply, cartan_involution_apply, star_inv, star_star, inv_inv]
 
+/- English proof (translation)
+Conclude with `Prod.ext (thetaGL_thetaGL g.1) (thetaGL_thetaGL g.2)`.
+-/
 @[simp] theorem thetaG_thetaG (g : GP a b R) : thetaG (thetaG g) = g := by
   exact Prod.ext (thetaGL_thetaGL g.1) (thetaGL_thetaGL g.2)
 
+/- English proof (translation)
+Rewrite using `[cartan_involution_apply]`. Apply the tactic sequence `refine Prod.ext ?_ ?_ <;> simp [PhiG, star_inv, star_PhiGL]`.
+-/
 theorem cartan_involution_frobenius : th0 (PhiG a b R) = PhiG a b R := by
   rw [cartan_involution_apply]
   refine Prod.ext ?_ ?_ <;> simp [PhiG, star_inv, star_PhiGL]
@@ -90,18 +102,33 @@ instance borelSpace_GR : BorelSpace (GR a b) := ⟨rfl⟩
 
 def mat : GR a b →* LieG a b := (Units.coeHom _).prodMap (Units.coeHom _)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem mat_apply (g : GR a b) : mat g = (g.1.val, g.2.val) := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem mat_star (g : GR a b) : mat (star g) = star (mat g) := rfl
 
+/- English proof (translation)
+Introduce `g h e`. Rewrite `e` using `[mat_apply, mat_apply, Prod.mk.injEq]`. Conclude with `Prod.ext (Units.ext e.1) (Units.ext e.2)`.
+-/
 theorem mat_injective : Function.Injective (mat : GR a b → LieG a b) := by
   intro g h e
   rw [mat_apply, mat_apply, Prod.mk.injEq] at e
   exact Prod.ext (Units.ext e.1) (Units.ext e.2)
 
+/- English proof (translation)
+Rewrite using `[← map_mul, mul_inv_cancel, map_one]`.
+-/
 @[simp] theorem mat_mul_inv (g : GR a b) : mat g * mat g⁻¹ = 1 := by
   rw [← map_mul, mul_inv_cancel, map_one]
 
+/- English proof (translation)
+Rewrite using `[← map_mul, inv_mul_cancel, map_one]`.
+-/
 @[simp] theorem mat_inv_mul (g : GR a b) : mat g⁻¹ * mat g = 1 := by
   rw [← map_mul, inv_mul_cancel, map_one]
 
@@ -109,23 +136,51 @@ def expG (X : LieG a b) : GR a b := ((Matrix.isUnit_exp X.1).unit, (Matrix.isUni
 
 def KR (a b : ℕ) : Subgroup (GR a b) := (th0 : MulAut (GR a b)).toMonoidHom.eqLocus (MonoidHom.id _)
 
+/- English proof (translation)
+Conclude with `Iff.rfl`.
+-/
 theorem mem_KR {k : GR a b} : k ∈ KR a b ↔ th0 k = k := by
   exact Iff.rfl
 
+/- English proof (translation)
+Rewrite using `[mem_KR, cartan_involution_apply, star_inv, inv_eq_iff_eq_inv]`.
+-/
 theorem mem_KR_iff_star {k : GR a b} : k ∈ KR a b ↔ star k = k⁻¹ := by
   rw [mem_KR, cartan_involution_apply, star_inv, inv_eq_iff_eq_inv]
 
+/- English proof (translation)
+Rewrite using `[mem_KR_iff_star, eq_comm, ← mul_eq_one_iff_inv_eq, ← mat_injective.eq_iff, map_mul, map_one, mat_star]`.
+-/
 theorem mem_KR_iff_mat {k : GR a b} : k ∈ KR a b ↔ mat k * star (mat k) = 1 := by
   rw [mem_KR_iff_star, eq_comm, ← mul_eq_one_iff_inv_eq, ← mat_injective.eq_iff, map_mul, map_one, mat_star]
 
+/- English proof (translation)
+Rewrite using `[mem_KR_iff_mat, mat_apply, Matrix.mem_unitaryGroup_iff, Matrix.mem_unitaryGroup_iff]`. Simplify using `only [Prod.ext_iff, Prod.fst_mul, Prod.snd_mul, Prod.fst_star, Prod.snd_star, Prod.fst_one, Prod.snd_one]`.
+-/
 theorem mem_KR_iff_unitary {k : GR a b} :
     k ∈ KR a b ↔ k.1.val ∈ unitaryGroup (Fin a) ℂ ∧ k.2.val ∈ unitaryGroup (Fin b) ℂ := by
   rw [mem_KR_iff_mat, mat_apply, Matrix.mem_unitaryGroup_iff, Matrix.mem_unitaryGroup_iff]
   simp only [Prod.ext_iff, Prod.fst_mul, Prod.snd_mul, Prod.fst_star, Prod.snd_star, Prod.fst_one, Prod.snd_one]
 
+/- English proof (translation)
+Conclude with `mem_KR.2 cartan_involution_frobenius`.
+-/
 theorem PhiG_mem_KR : PhiG a b ℂ ∈ KR a b := by
   exact mem_KR.2 cartan_involution_frobenius
 
+/- English proof (translation)
+Establish `hU : IsCompact (unitaryGroup (Fin n) ℂ : Set (Matrix (Fin n) (Fin n) ℂ))`. Establish `hcl : IsClosed (unitaryGroup (Fin n) ℂ : Set (Matrix (Fin n) (Fin n) ℂ))`. Establish `e : (unitaryGroup (Fin n) ℂ : Set (Matrix (Fin n) (Fin n) ℂ)) = (fun A : Matrix (Fin n) (Fin n) ℂ => A * star A) ⁻¹' {1}`. Use extensionality with `A`. Conclude with `Matrix.mem_unitaryGroup_iff`.
+
+Rewrite using `[e]`. Conclude with `isClosed_singleton.preimage (continuous_id.mul continuous_star)`. Establish `hbd : (unitaryGroup (Fin n) ℂ : Set (Matrix (Fin n) (Fin n) ℂ)) ⊆ Set.univ.pi fun _ => Set.univ.pi fun _ => Metric.closedBall (0 : ℂ) 1`. Introduce `A hA i _ j _`. Establish `h` using `congrFun (congrFun (Matrix.mem_unitaryGroup_iff.1 hA) i) i`.
+
+Rewrite `h` using `[Matrix.mul_apply, Matrix.one_apply_eq]`. Simplify using `only [Matrix.star_apply, Complex.star_def, Complex.mul_conj] at h`. Establish `h2 : ∑ k, Complex.normSq (A i k) = 1` using `by exact_mod_cast h`. Establish `h3 : Complex.normSq (A i j) ≤ 1` using `h2 ▸ Finset.single_le_sum (fun k _ => Complex.normSq_nonneg (A i k)) (Finset.mem_univ j)`. Rewrite using `[Metric.mem_closedBall, dist_zero_right]`.
+
+Rewrite `h3` using `[Complex.normSq_eq_norm_sq]`. Use polynomial arithmetic with `[norm_nonneg (A i j)]`. Conclude with `(isCompact_univ_pi fun _ => isCompact_univ_pi fun _ => isCompact_closedBall 0 1).of_isClosed_subset hcl hbd`. Establish `: CompactSpace (unitaryGroup (Fin n) ℂ)` using `isCompact_iff_compactSpace.1 hU`. Set `φ : unitaryGroup (Fin n) ℂ → GL (Fin n) ℂ` to `fun u => ⟨u.1, star u.1, Unitary.mul_star_self_of_mem u.2, Unitary.star_mul_self_of_mem u.2⟩`.
+
+Establish `hφ : Continuous φ` using `Units.continuous_iff.2 ⟨continuous_subtype_val, continuous_star.comp continuous_subtype_val⟩`. Establish `hr : Set.range φ = {k : GL (Fin n) ℂ | k.val ∈ unitaryGroup (Fin n) ℂ}`. Use extensionality with `k`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨u, rfl⟩`.
+
+Conclude with `u.2`. Introduce `hk`. Conclude with `⟨⟨k.val, hk⟩, Units.ext rfl⟩`. Rewrite using `[← hr]`. Conclude with `isCompact_range hφ`.
+-/
 theorem isCompact_unitary_GL (n : ℕ) : IsCompact {k : GL (Fin n) ℂ | k.val ∈ unitaryGroup (Fin n) ℂ} := by
   have hU : IsCompact (unitaryGroup (Fin n) ℂ : Set (Matrix (Fin n) (Fin n) ℂ)) := by
     have hcl : IsClosed (unitaryGroup (Fin n) ℂ : Set (Matrix (Fin n) (Fin n) ℂ)) := by
@@ -162,6 +217,9 @@ theorem isCompact_unitary_GL (n : ℕ) : IsCompact {k : GL (Fin n) ℂ | k.val �
   rw [← hr]
   exact isCompact_range hφ
 
+/- English proof (translation)
+Establish `e : (KR a b : Set (GR a b)) = {k : GL (Fin a) ℂ | k.val ∈ unitaryGroup (Fin a) ℂ} ×ˢ {k : GL (Fin b) ℂ | k.val ∈ unitaryGroup (Fin b) ℂ}`. Use extensionality with `k`. Conclude with `mem_KR_iff_unitary`. Rewrite using `[e]`. Conclude with `(isCompact_unitary_GL a).prod (isCompact_unitary_GL b)`.
+-/
 theorem isCompact_KR : IsCompact (KR a b : Set (GR a b)) := by
   have e : (KR a b : Set (GR a b)) = {k : GL (Fin a) ℂ | k.val ∈ unitaryGroup (Fin a) ℂ} ×ˢ
       {k : GL (Fin b) ℂ | k.val ∈ unitaryGroup (Fin b) ℂ} := by
@@ -182,6 +240,9 @@ def pSp (a b : ℕ) : Submodule ℝ (LieG a b) := selfAdjoint.submodule ℝ (Lie
 
 def kSp (a b : ℕ) : Submodule ℝ (LieG a b) := skewAdjoint.submodule ℝ (LieG a b)
 
+/- English proof (translation)
+Conclude with `selfAdjoint.mem_iff`.
+-/
 theorem mem_pSp {X : LieG a b} : X ∈ pSp a b ↔ star X = X := by
   exact selfAdjoint.mem_iff
 
@@ -192,6 +253,9 @@ def BForm (a b : ℕ) : LinearMap.BilinForm ℝ (LieG a b) :=
 
 def AdLie (g : GR a b) : LieG a b →ₗ[ℝ] LieG a b := LinearMap.mulLeftRight ℝ (mat g, mat g⁻¹)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem AdLie_apply (g : GR a b) (X : LieG a b) : AdLie g X = mat g * X * mat g⁻¹ := rfl
 
 def dth0 : LieG a b →ₗ[ℝ] LieG a b where
@@ -199,23 +263,38 @@ def dth0 : LieG a b →ₗ[ℝ] LieG a b where
   map_add' X Y := by rw [star_add, neg_add]
   map_smul' c X := by simp
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem diff_cartan_involution_apply (X : LieG a b) : dth0 X = -star X := rfl
 
 def dtheta : LieG a b →ₗ[ℝ] LieG a b := AdLie (PhiG a b ℂ) ∘ₗ dth0
 
 def AdT (δ : GR a b) : LieG a b →ₗ[ℝ] LieG a b := AdLie δ ∘ₗ dtheta
 
+/- English proof (translation)
+Use `LinearMap.ext fun X => ?_` and prove the remaining obligations. Simplify using `only [LinearMap.comp_apply, AdLie_apply, map_mul, _root_.mul_inv_rev, mul_assoc]`.
+-/
 theorem AdLie_mul (g h : GR a b) : AdLie (g * h) = AdLie g ∘ₗ AdLie h := by
   refine LinearMap.ext fun X => ?_
   simp only [LinearMap.comp_apply, AdLie_apply, map_mul, _root_.mul_inv_rev, mul_assoc]
 
+/- English proof (translation)
+Use `LinearMap.ext fun X => ?_` and prove the remaining obligations. Simplify using `[AdLie_apply]`.
+-/
 @[simp] theorem AdLie_one : AdLie (1 : GR a b) = LinearMap.id := by
   refine LinearMap.ext fun X => ?_
   simp [AdLie_apply]
 
+/- English proof (translation)
+Simplify using `only [AdT, dtheta, toTh0, AdLie_mul, LinearMap.comp_assoc]`.
+-/
 theorem AdT_eq (δ : GR a b) : AdT δ = AdLie (toTh0 δ) ∘ₗ dth0 := by
   simp only [AdT, dtheta, toTh0, AdLie_mul, LinearMap.comp_assoc]
 
+/- English proof (translation)
+Rewrite `hX`, the goal using `[mem_pSp]`. Establish `hk'` using `mem_KR_iff_star.1 hk`. Establish `e1 : star (mat k) = mat k⁻¹` using `by rw [← mat_star, hk']`. Establish `e2 : star (mat k⁻¹) = mat k` using `by rw [← mat_star, star_inv, hk', inv_inv]`. Rewrite using `[AdLie_apply, star_mul, star_mul, e1, e2, hX, mul_assoc]`.
+-/
 theorem AdLie_mem_pSp {k : GR a b} (hk : k ∈ KR a b) {X : LieG a b} (hX : X ∈ pSp a b) : AdLie k X ∈ pSp a b := by
   rw [mem_pSp] at hX ⊢
   have hk' := mem_KR_iff_star.1 hk
@@ -223,6 +302,9 @@ theorem AdLie_mem_pSp {k : GR a b} (hk : k ∈ KR a b) {X : LieG a b} (hX : X �
   have e2 : star (mat k⁻¹) = mat k := by rw [← mat_star, star_inv, hk', inv_inv]
   rw [AdLie_apply, star_mul, star_mul, e1, e2, hX, mul_assoc]
 
+/- English proof (translation)
+Rewrite using `[AdT_eq, LinearMap.comp_apply]`. Apply `AdLie_mem_pSp (mul_mem hk PhiG_mem_KR)` to reduce the goal to its premises. Rewrite using `[diff_cartan_involution_apply, mem_pSp.1 hX]`. Conclude with `neg_mem hX`.
+-/
 theorem AdT_mem_pSp {k : GR a b} (hk : k ∈ KR a b) {X : LieG a b} (hX : X ∈ pSp a b) : AdT k X ∈ pSp a b := by
   rw [AdT_eq, LinearMap.comp_apply]
   apply AdLie_mem_pSp (mul_mem hk PhiG_mem_KR)

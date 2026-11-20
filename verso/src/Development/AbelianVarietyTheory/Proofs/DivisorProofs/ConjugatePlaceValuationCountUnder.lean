@@ -27,11 +27,17 @@ namespace GlobalTheory.ConjPlace
 
 open GlobalTheory.IdemSupport (cP cO mem_cP cO_cO cO_coe)
 
+/- English proof (translation)
+Apply `RingOfIntegers.ext` to reduce the goal to its premises. Rewrite using `[cO_coe, Formalism.BasicNotions.Examples₂.star_eq_conj]`. Both sides reduce to the same expression.
+-/
 theorem conj_smul_eq (D : D7) (x : 𝓞 D.host.E) : D.host.conj • x = cO D x := by
   apply RingOfIntegers.ext
   rw [cO_coe, Formalism.BasicNotions.Examples₂.star_eq_conj]
   rfl
 
+/- English proof (translation)
+Rewrite using `[Ideal.mem_pointwise_smul_iff_inv_smul_mem]`. Establish `: D.host.conj⁻¹ • x = cO D x`. Rewrite using `[inv_smul_eq_iff, conj_smul_eq, cO_cO]`. Rewrite using `[this]`.
+-/
 theorem mem_conj_smul (D : D7) (I : Ideal (𝓞 D.host.E)) (x : 𝓞 D.host.E) :
     x ∈ (D.host.conj • I : Ideal (𝓞 D.host.E)) ↔ cO D x ∈ I := by
   rw [Ideal.mem_pointwise_smul_iff_inv_smul_mem]
@@ -39,6 +45,11 @@ theorem mem_conj_smul (D : D7) (I : Ideal (𝓞 D.host.E)) (x : 𝓞 D.host.E) :
     rw [inv_smul_eq_iff, conj_smul_eq, cO_cO]
   rw [this]
 
+/- English proof (translation)
+Establish `h' : (D.host.conj • 𝔞 : Ideal (𝓞 D.host.E)) ≠ 0` using `fun e => h (by`. Use `congrArg (fun I : Ideal (𝓞 D.host.E) => D.host.conj⁻¹ • I) e` as an intermediate fact. Simplify using `using this)`. Rewrite using `[FractionalIdeal.count_coe _ _ h', FractionalIdeal.count_coe _ _ h]`. Use `congr 1`.
+
+Use `eq_of_forall_le_iff fun k => ?_` and prove the remaining obligations. Rewrite using `[← Associates.prime_pow_dvd_iff_le (Associates.mk_ne_zero.2 h') (cP w).associates_irreducible, ← Associates.prime_pow_dvd_iff_le (Associates.mk_ne_zero.2 h) w.associates_irreducible, ← Associates.mk_pow, ← Associates.mk_pow, Associates.mk_le_mk_iff_dvd, Associates.mk_le_mk_iff_dv …`.
+-/
 theorem count_conj (D : D7) (w : HeightOneSpectrum (𝓞 D.host.E)) (hw : (cP w).asIdeal = D.host.conj • w.asIdeal)
     (𝔞 : Ideal (𝓞 D.host.E)) (h : 𝔞 ≠ ⊥) :
     FractionalIdeal.count D.host.E (cP w)
@@ -55,6 +66,11 @@ theorem count_conj (D : D7) (w : HeightOneSpectrum (𝓞 D.host.E)) (hw : (cP w)
     ← Associates.mk_pow, ← Associates.mk_pow, Associates.mk_le_mk_iff_dvd, Associates.mk_le_mk_iff_dvd,
     Ideal.dvd_iff_le, Ideal.dvd_iff_le, hw, ← smul_pow', Ideal.pointwise_smul_le_pointwise_smul_iff]
 
+/- English proof (translation)
+Establish `hm : ((x * cO D x : 𝓞 D.host.E) : D.host.E) ∈ maximalRealSubfield D.host.E`. Rewrite using `[← IsCMField.complexConj_eq_self_iff]`. Express the relevant statement in the definitionally equal form `star ((x * cO D x : 𝓞 D.host.E) : D.host.E) = _`. Rewrite using `[← cO_coe, map_mul, cO_cO, mul_comm]`. Use `⟨⟨⟨_, hm⟩, ?_⟩, rfl⟩` and prove the remaining obligations.
+
+Conclude with `(isIntegral_algebraMap_iff (algebraMap D.host.F D.host.E).injective).1 (x * cO D x).isIntegral_coe`.
+-/
 theorem exists_norm (D : D7) (x : 𝓞 D.host.E) :
     ∃ y : 𝓞 D.host.F, algebraMap (𝓞 D.host.F) (𝓞 D.host.E) y = x * cO D x := by
   have hm : ((x * cO D x : 𝓞 D.host.E) : D.host.E) ∈ maximalRealSubfield D.host.E := by
@@ -64,18 +80,31 @@ theorem exists_norm (D : D7) (x : 𝓞 D.host.E) :
   refine ⟨⟨⟨_, hm⟩, ?_⟩, rfl⟩
   exact (isIntegral_algebraMap_iff (algebraMap D.host.F D.host.E).injective).1 (x * cO D x).isIntegral_coe
 
+/- English proof (translation)
+Apply `RingOfIntegers.ext` to reduce the goal to its premises. Rewrite using `[cO_coe]`. Conclude with `(IsCMField.complexConj_eq_self_iff D.host.E _).2 (y : D.host.F).2`.
+-/
 theorem cO_algebraMap (D : D7) (y : 𝓞 D.host.F) :
     cO D (algebraMap (𝓞 D.host.F) (𝓞 D.host.E) y) = algebraMap (𝓞 D.host.F) (𝓞 D.host.E) y := by
   apply RingOfIntegers.ext
   rw [cO_coe]
   exact (IsCMField.complexConj_eq_self_iff D.host.E _).2 (y : D.host.F).2
 
+/- English proof (translation)
+Use extensionality with `y`. Express the relevant statement in the definitionally equal form `algebraMap (𝓞 D.host.F) (𝓞 D.host.E) y ∈ (cP w).asIdeal ↔ algebraMap (𝓞 D.host.F) (𝓞 D.host.E) y ∈ w.asIdeal`. Rewrite using `[mem_cP, cO_algebraMap]`.
+-/
 theorem under_cP (D : D7) (w : HeightOneSpectrum (𝓞 D.host.E)) :
     (cP w).under (𝓞 D.host.F) = w.under (𝓞 D.host.F) := by
   ext y
   change algebraMap (𝓞 D.host.F) (𝓞 D.host.E) y ∈ (cP w).asIdeal ↔ algebraMap (𝓞 D.host.F) (𝓞 D.host.E) y ∈ w.asIdeal
   rw [mem_cP, cO_algebraMap]
 
+/- English proof (translation)
+Use `⟨fun h => ?_, ?_⟩` and prove the remaining obligations. Establish `hs : (w''.asIdeal : Set (𝓞 D.host.E)) ⊆ w.asIdeal ∪ (cP w).asIdeal` using `fun x hx => by`. Take `⟨y, hy⟩` from `exists_norm D x`. Establish `h1 : y ∈ (w''.under (𝓞 D.host.F)).asIdeal`. Express the relevant statement in the definitionally equal form `algebraMap (𝓞 D.host.F) (𝓞 D.host.E) y ∈ w''.asIdeal`.
+
+Rewrite using `[hy]`. Conclude with `Ideal.mul_mem_right _ _ hx`. Rewrite `h1` using `[h]`. Express the relevant statement in the definitionally equal form `algebraMap (𝓞 D.host.F) (𝓞 D.host.E) y ∈ w.asIdeal at h1`. Rewrite `h1` using `[hy]`.
+
+Conclude with `w.isPrime.mem_or_mem h1`. Conclude with `(Ideal.subset_union.1 hs).imp GlobalTheory.IdemSupport.eq_of_le GlobalTheory.IdemSupport.eq_of_le`. Introduce and unpack `(rfl | rfl)`. Both sides reduce to the same expression. Conclude with `under_cP D w`.
+-/
 theorem under_eq_iff (D : D7) (w w'' : HeightOneSpectrum (𝓞 D.host.E)) :
     w''.under (𝓞 D.host.F) = w.under (𝓞 D.host.F) ↔ w'' = w ∨ w'' = cP w := by
   refine ⟨fun h => ?_, ?_⟩
@@ -93,6 +122,13 @@ theorem under_eq_iff (D : D7) (w w'' : HeightOneSpectrum (𝓞 D.host.E)) :
     · rfl
     · exact under_cP D w
 
+/- English proof (translation)
+Introduce `D w`. Establish `hw : (cP w).asIdeal = D.host.conj • w.asIdeal`. Use extensionality with `x`. Rewrite using `[mem_cP, mem_conj_smul]`. Use `⟨cP w, hw, fun x => ?_, count_conj D w hw, under_eq_iff D w⟩` and prove the remaining obligations.
+
+Establish `hc : w = GlobalTheory.CuspRep.conjSrc (D.host.conj : D.host.E ≃+* D.host.E) (cP w)` using `GlobalTheory.CuspRep.eq_conjSrc fun y => by`. Use `GlobalTheory.ConjVal.valuation_cP w y` as an intermediate fact. Rewrite `this` using `[Formalism.BasicNotions.Examples₂.star_eq_conj]`. Conclude with `this`. Rewrite using `[GlobalTheory.BotFormula.toFinE_sgA]`.
+
+Use `((GlobalTheory.CuspRep.conjLoc_spec (D.host.conj : D.host.E ≃+* D.host.E) (cP w)).2.2 (GlobalTheory.BotFormula.toFinE D x (GlobalTheory.CuspRep.conjSrc (D.host.conj : D.host.E ≃+* D.host.E) (cP w)))).trans ?_` and prove the remaining obligations. Rewrite using `[← hc]`.
+-/
 theorem conj_place : ∀ (D : D7), ∀ w : HeightOneSpectrum (𝓞 D.host.E), ∃ w' : HeightOneSpectrum (𝓞 D.host.E), w'.asIdeal = D.host.conj • w.asIdeal ∧
     (∀ x : Formalism.MainNotions.StandardLatticesGL3.AE D, Valued.v (GlobalTheory.BotFormula.toFinE D (Formalism.MainNotions.StandardLatticesGL3.sgA D x) w') = Valued.v (GlobalTheory.BotFormula.toFinE D x w)) ∧
     (∀ 𝔞 : Ideal (𝓞 D.host.E), 𝔞 ≠ ⊥ → FractionalIdeal.count D.host.E w' ((D.host.conj • 𝔞 : Ideal (𝓞 D.host.E)) : FractionalIdeal (𝓞 D.host.E)⁰ D.host.E) =

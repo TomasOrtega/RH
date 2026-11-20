@@ -12,6 +12,9 @@ open Formalism.BasicNotions Formalism.MainNotions.S Formalism.L2.SG.HidaSetting
 
 variable {D : D7} (X : Formalism.L2.SG.HidaSetting.HidaSetting D)
 
+/- English proof (translation)
+Establish `hnS : n ∈ X.SinfU w` using `fun v => (hn v).1`. Establish `haS` using `Formalism.L2.SG.RealObj.InfCut.hsetU_sub X w ha`. Rewrite using `[(X.piU_rep w).2.1 a haS h hh, (X.piU_rep w).2.1 n hnS a haS, (X.piU_rep w).2.2.2.1 n hn, one_mul]`. Both sides reduce to the same expression.
+-/
 theorem pi_levi (w : D.what₂.Word) {n a h : X.B.I.Ginf} (hn : n ∈ X.NinfU w) (ha : a ∈ Formalism.L2.SG.RealObj.HsetU X w)
     (hh : h ∈ X.SinfU w) : X.piU w (a * h) = (X.piU w (n * a)).comp (X.piU w h) := by
   have hnS : n ∈ X.SinfU w := fun v => (hn v).1
@@ -49,6 +52,11 @@ def CommonDC : Prop :=
               (Formalism.L2.SG.RealObj.gamW X u u' (Formalism.L2.SG.PairVal.ptOf s.1.toTerm)) h h' →
             decVal X Y u u' vR i0 i0' νq g g' h h' s.1 = ζ • frameVal X Y u u' vR i0 i0' νq U U' s.1
 
+/- English proof (translation)
+Establish `hs : ∀ (w : D.what₂.Word) (a : X.B.I.Ginf) (ha : a ∈ X.SinfU w) (y : X.Vpi w), (Formalism.L2.SG.RealObj.InfCut.piIso X w a ha).symm y = X.piU w a⁻¹ y` using `fun w a ha y => by`. Use `congrArg (fun T : X.Vpi w →L[ℂ] X.Vpi w => T y) (Formalism.L2.SG.RealObj.InfCut.piIso_symm X w a ha)` as an intermediate fact. Conclude with `this`. Unfold `frameVal decVal`. Use `congr 1`.
+
+Use extensionality with `x`. Simplify using `only [ContinuousLinearMap.comp_apply, ContinuousLinearEquiv.coe_coe, LinearIsometryEquiv.coe_toContinuousLinearEquiv, LinearIsometryEquiv.trans_apply, LinearIsometryEquiv.symm_trans, Formalism.L2.SG.RealObj.InfCut.piIso_apply, hs]`.
+-/
 theorem classFrameOO3_frameVal_trans (g g' h h' : X.B.I.Ginf) (hg : g ∈ X.SinfU u) (hg' : g' ∈ X.SinfU u')
     (hh : h ∈ X.SinfU u) (hh' : h' ∈ X.SinfU u')
     (s : Formalism.L2.SG.TermOp.GTerm X u u' (X.Fu u) (X.Fu u') (Y.what₂ u) (Y.what₂ u')) :
@@ -66,6 +74,19 @@ theorem classFrameOO3_frameVal_trans (g g' h h' : X.B.I.Ginf) (hg : g ∈ X.Sinf
     LinearIsometryEquiv.coe_toContinuousLinearEquiv, LinearIsometryEquiv.trans_apply,
     LinearIsometryEquiv.symm_trans, Formalism.L2.SG.RealObj.InfCut.piIso_apply, hs]
 
+/- English proof (translation)
+Take `⟨hpt, g, hg, g', hg', hdec, hph⟩` from `h3 R ρ s hrel`. Establish `hDF : ∃ p : X.B.I.Ginf × X.B.I.Ginf, Formalism.L2.SG.RealObj.IsDFrameX X u u' 1 i0 i0' (Formalism.L2.SG.RealObj.gamW X u u' (Formalism.L2.SG.PairVal.ptOf s.1.toTerm)) p.1 p.2`. Take `⟨h, h', hh⟩` from `h4 one_pos _ hpt (h4' R ρ s hrel)`. Conclude with `⟨(h, h'), hh⟩`. Establish `hcS : hDF.choose.1 ∈ X.SinfU u` using `Formalism.L2.SG.RealObj.InfCut.hsetU_sub X u hDF.choose_spec.1`.
+
+Establish `hcS' : hDF.choose.2 ∈ X.SinfU u'` using `Formalism.L2.SG.RealObj.InfCut.hsetU_sub X u' hDF.choose_spec.2.1`. Establish `hcSi : hDF.choose.1⁻¹ ∈ X.SinfU u` using `Formalism.L2.SG.RealObj.InfCut.sinfU_inv X u hcS`. Use `⟨g, hg, g', hg', hdec, hDF.choose.1, hDF.choose.2, hDF.choose_spec, ?_⟩` and prove the remaining obligations. Rewrite using `[← classFrameOO3_frameVal_trans X Y u u' vR i0 i0' νq g g' _ _ hg hg' hcS hcS']`. Establish `hat : s.1.toTerm.atPt (Formalism.L2.SG.PairVal.ptOf s.1.toTerm)`.
+
+Take `⟨w0, hw0⟩` from `h1 R ρ s hrel`. Conclude with `Formalism.L2.SG.PairVal.ptOf_spec _ ⟨w0, hw0, hrel⟩`. Establish `hcT : Formalism.L2.SG.PairVal.cTerm vR s.1.toTerm = Formalism.L2.SG.PairVal.phaseAt s.1.toTerm (Formalism.L2.SG.PairVal.ptOf s.1.toTerm) * (vR s.1.toTerm : ℂ)` using `Formalism.L2.SG.PairVal.cTerm_of_atPt vR _ hat (fun w' hw' => h2 _ w' _ hw' hat)`. Establish `hV : Formalism.L2.SG.RealObj.unscaledOperatorAtPointRepresentative X u u' 1 i0 i0' νq (Formalism.L2.SG.PairVal.ptOf s.1.toTerm) = (X.piU u hDF.choose.1⁻¹).comp ((haveI` using `FiniteDimensional.complete ℂ (X.Vpi u) Formalism.L2.SG.TermOp.OO (νq (Formalism.L2.SG.RealObj.gamW X u u' (Formalism.L2.SG.PairVal.ptOf s.1.toTerm))) Set.univ (X.Wu u) (X.Wu u') (Formalism.L2.SG.RealObj.gamW X u u' (Formalism.L2.SG.PairVal.ptOf s.1.toTerm))).comp (X.piU u' hDF.ch …`. Unfold `Formalism.L2.SG.RealObj.unscaledOperatorAtPointRepresentative Formalism.L2.SG.RealObj.unscaledFrameConjugatedOperator`.
+
+Rewrite using `[if_pos hpt, dif_pos hDF]`. Establish `hO : Formalism.L2.SG.TermOp.OOt s.1 = (((vR s.1.toTerm : ℝ) : ℂ) * (X.psiInfU u g * conj (X.psiInfU u' g'))) • (((Formalism.L2.SG.RealObj.InfCut.piIso X u g hg).toContinuousLinearEquiv : X.Vpi u →L[ℂ] X.Vpi u).comp ((haveI` using `FiniteDimensional.complete ℂ (X.Vpi u) Formalism.L2.SG.TermOp.OO (νq (Formalism.L2.SG.RealObj.gamW X u u' (Formalism.L2.SG.PairVal.ptOf s.1.toTerm))) Set.univ (X.Wu u) (X.Wu u') (Formalism.L2.SG.RealObj.gamW X u u' (Formalism.L2.SG.PairVal.ptOf s.1.toTerm))).comp ((Formalism.L2.S …`. Rewrite using `[h5 R ρ s hrel g hg g' hg' hdec, ← smul_smul]`. Use `congr 1`. Rewrite using `[hdec]`.
+
+Conclude with `ClassFrameNormal.oo_map_mulLeft _ _ _ _ g g' _ _ _ _ (fun x => (X.Wu_spec u).1 g hg x) (fun x => (X.Wu_spec u').1 g' hg' x)`. Establish `e1 : ∀ z, X.piU u hDF.choose.1 (X.piU u hDF.choose.1⁻¹ z) = z` using `fun z => ClassFrameUnitaryProducts.piU_mul_inv_apply X u hcS z`. Establish `e2 : ∀ y, X.piU u' hDF.choose.2 ((Formalism.L2.SG.RealObj.InfCut.piIso X u' hDF.choose.2 hcS').symm y) = y` using `fun y => (Formalism.L2.SG.RealObj.InfCut.piIso X u' hDF.choose.2 hcS').apply_symm_apply y`. Unfold `chiOO frameVal`. Rewrite using `[hO, hcT, hV, smul_smul, ← hph]`.
+
+Establish `hsc : ∀ a c r : ℂ, a * (r * c) = a * c * r` using `fun a c r => by ring`. Rewrite using `[hsc]`. Use `congr 1`. Use extensionality with `x`. Simplify using `only [ContinuousLinearMap.comp_apply, ContinuousLinearEquiv.coe_coe, LinearIsometryEquiv.coe_toContinuousLinearEquiv, LinearIsometryEquiv.trans_apply, LinearIsometryEquiv.symm_trans, Formalism.L2.SG.RealObj.InfCut.piIso_apply, e1, e2]`.
+-/
 theorem chiOO_decomp (h1 : LiftAtSomeC X Y u u' κ)
     (h2 : Formalism.L2.SG.PairVal.CellPtUnique D u u' (X.Fu u) (Y.what₂ u))
     (h3 : DecompPhaseC X Y u u' κ) (h4 : DFrameAtS X u u' i0 i0' 1) (h4' : LiftGPosC X Y u u' κ)
@@ -138,6 +159,11 @@ def DFrameMoveHC : Prop :=
     n ∈ X.NinfU u → a ∈ Formalism.L2.SG.RealObj.HsetU X u → n' ∈ X.NinfU u' → a' ∈ Formalism.L2.SG.RealObj.HsetU X u' →
       Formalism.L2.SG.RealObj.IsDFrameX X u u' 1 i0 i0' (n * a * γ * a'⁻¹ * n'⁻¹) (a * h) (a' * h')
 
+/- English proof (translation)
+Introduce `γ h h' g g' hD hg hg'`. Take `⟨n, hn, a, ha, rfl⟩` from `hS g hg`. Take `⟨n', hn', a', ha', rfl⟩` from `hS' g' hg'`. Use `⟨a * h, a' * h', ?_, ?_, ?_⟩` and prove the remaining obligations. Establish `e : n * a * γ * (n' * a')⁻¹ = n * a * γ * a'⁻¹ * n'⁻¹` using `by group`.
+
+Rewrite using `[e]`. Conclude with `hM γ h h' n a n' a' hD hn ha hn' ha'`. Conclude with `Formalism.L2.SG.Pf.RowForm.ClassFrameLeviDecomposition.pi_levi X u hn ha (Formalism.L2.SG.RealObj.InfCut.hsetU_sub X u hD.1)`. Conclude with `Formalism.L2.SG.Pf.RowForm.ClassFrameLeviDecomposition.pi_levi X u' hn' ha' (Formalism.L2.SG.RealObj.InfCut.hsetU_sub X u' hD.2.1)`.
+-/
 theorem dFrameMoveC_of (hS : SDecompC X u) (hS' : SDecompC X u') (hM : DFrameMoveHC X u u' i0 i0') :
     DFrameMoveC X u u' i0 i0' := by
   intro γ h h' g g' hD hg hg'
@@ -150,6 +176,17 @@ theorem dFrameMoveC_of (hS : SDecompC X u) (hS' : SDecompC X u') (hM : DFrameMov
   · exact Formalism.L2.SG.Pf.RowForm.ClassFrameLeviDecomposition.pi_levi X u hn ha (Formalism.L2.SG.RealObj.InfCut.hsetU_sub X u hD.1)
   · exact Formalism.L2.SG.Pf.RowForm.ClassFrameLeviDecomposition.pi_levi X u' hn' ha' (Formalism.L2.SG.RealObj.InfCut.hsetU_sub X u' hD.2.1)
 
+/- English proof (translation)
+Introduce `R ρ s hrel`. Take `⟨g, hg, g', hg', hdec, h, h', hDF, hval⟩` from `chiOO_decomp X Y u u' vR i0 i0' νq κ h1 h2 h3 h4 h4' h5 R ρ s hrel`. Take `⟨k, k', hK, hk, hk'⟩` from `hM _ h h' g g' hDF hg hg'`. Use `⟨k, k', hdec ▸ hK, ?_⟩` and prove the remaining obligations. Establish `hkS : k ∈ X.SinfU u` using `Formalism.L2.SG.RealObj.InfCut.hsetU_sub X u hK.1`.
+
+Establish `hki : k⁻¹ ∈ X.SinfU u` using `Formalism.L2.SG.RealObj.InfCut.sinfU_inv X u hkS`. Establish `hgi : g'⁻¹ ∈ X.SinfU u'` using `Formalism.L2.SG.RealObj.InfCut.sinfU_inv X u' hg'`. Establish `hhi : h'⁻¹ ∈ X.SinfU u'` using `Formalism.L2.SG.RealObj.InfCut.sinfU_inv X u' (Formalism.L2.SG.RealObj.InfCut.hsetU_sub X u' hDF.2.1)`. Establish `c1 : ∀ y, X.piU u k⁻¹ (X.piU u k y) = y` using `fun y => by`. Use `ClassFrameUnitaryProducts.piU_mul_inv_apply X u hki y` as an intermediate fact.
+
+Rewrite `this` using `[inv_inv]`. Then use the resulting hypothesis. Establish `c2 : ∀ y, X.piU u' g'⁻¹ (X.piU u' g' y) = y` using `fun y => by`. Use `ClassFrameUnitaryProducts.piU_mul_inv_apply X u' hgi y` as an intermediate fact. Rewrite `this` using `[inv_inv]`. Then use the resulting hypothesis. Establish `c3 : ∀ y, X.piU u' h'⁻¹ (X.piU u' h' y) = y` using `fun y => by`.
+
+Use `ClassFrameUnitaryProducts.piU_mul_inv_apply X u' hhi y` as an intermediate fact. Rewrite `this` using `[inv_inv]`. Then use the resulting hypothesis. Establish `hk1 : ∀ y, X.piU u g (X.piU u h y) = X.piU u k y` using `fun y => by rw [hk]; rfl`. Establish `hk2 : ∀ y, X.piU u' k' y = X.piU u' g' (X.piU u' h' y)` using `fun y => by rw [hk']; rfl`. Rewrite using `[hval]`.
+
+Unfold `decVal`. Use extensionality with `x`. Simplify using `only [ContinuousLinearMap.comp_apply, ContinuousLinearMap.smul_apply, map_smul, hk2, c2, c3, hk1, c1]`.
+-/
 theorem ptValueC_of (h1 : LiftAtSomeC X Y u u' κ)
     (h2 : Formalism.L2.SG.PairVal.CellPtUnique D u u' (X.Fu u) (Y.what₂ u))
     (h3 : DecompPhaseC X Y u u' κ) (h4 : DFrameAtS X u u' i0 i0' 1) (h4' : LiftGPosC X Y u u' κ)
@@ -180,6 +217,13 @@ theorem ptValueC_of (h1 : LiftAtSomeC X Y u u' κ)
   ext x
   simp only [ContinuousLinearMap.comp_apply, ContinuousLinearMap.smul_apply, map_smul, hk2, c2, c3, hk1, c1]
 
+/- English proof (translation)
+Introduce `R ρ`. Take `⟨U, U', ζ, hζ, hc⟩` from `hD R ρ`. Use `⟨U, U', ζ, hζ, fun s A B hAB => ?_⟩` and prove the remaining obligations. Rewrite using `[← hAB]`. Distinguish the cases in `hrel : s.1.relevant`.
+
+Take `⟨g, hg, g', hg', hdec, h, h', hDF, hval⟩` from `chiOO_decomp X Y u u' vR i0 i0' νq κ h1 h2 h3 h4 h4' h5 R ρ s hrel`. Rewrite using `[hval]`. Conclude with `hc s hrel g hg g' hg' hdec h h' hDF`. Take `⟨h0, hc0⟩` from `irrelZeroC_of X Y u u' vR i0 i0' νq κ hV hAt R ρ s hrel`. Rewrite using `[h0]`.
+
+Unfold `frameVal`. Break down `hc0 with hc0 | hc0` into its components or cases. Rewrite using `[hc0, zero_smul, smul_zero]`. Rewrite using `[hc0]`. Simplify using the standard rewrite rules.
+-/
 theorem commonFrameC_of_D (h1 : LiftAtSomeC X Y u u' κ)
     (h2 : Formalism.L2.SG.PairVal.CellPtUnique D u u' (X.Fu u) (Y.what₂ u))
     (h3 : DecompPhaseC X Y u u' κ) (h4 : DFrameAtS X u u' i0 i0' 1) (h4' : LiftGPosC X Y u u' κ)
@@ -203,6 +247,9 @@ theorem commonFrameC_of_D (h1 : LiftAtSomeC X Y u u' κ)
     · rw [hc0]
       simp
 
+/- English proof (translation)
+The claim follows from `commonFrameC_of_scalar X Y u u' vR i0 i0' νq κ (ptValueC_of X Y u u' vR i0 i0' νq κ h1 h2 h3 h4 h4' h5 hM) hF hNu hVI hS hV hAt`.
+-/
 theorem commonFrameC_of_move (h1 : LiftAtSomeC X Y u u' κ)
     (h2 : Formalism.L2.SG.PairVal.CellPtUnique D u u' (X.Fu u) (Y.what₂ u))
     (h3 : DecompPhaseC X Y u u' κ) (h4 : DFrameAtS X u u' i0 i0' 1) (h4' : LiftGPosC X Y u u' κ)

@@ -34,6 +34,11 @@ open scoped TensorProduct GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorMode
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 open GlobalTheory.SquareComm GlobalTheory.SquareAgree
 
+/- English proof (translation)
+Introduce `hU hR hM hP D ψ θ W W₁ X A A₁ B α β ν 𝓕 ν₁ 𝓕₁ ωA ωB e Bs Γ Xc om om' cA cB hθ hT hO hT' R Rf hRf Pi rf rl p p' hm Φ hΦ ΦD hΦD hD`. Take `⟨K₁, g₁, ne₁, max₁, h₁⟩` from `GlobalTheory.T.seesaw_unfolding_measure hP D ψ θ W W₁ X A A₁ B α β ν 𝓕 ν₁ 𝓕₁ ωA ωB e Bs Γ Xc om om' cA cB hθ hT hO hT' Pi rf rl p p' hm`. Take `⟨K₂, g₂, ne₂, h₂⟩` from `GlobalTheory.T.matched_maps_triple_factor hP _ _ _ Bs _ _ Γ Xc om om' hT' R Rf hRf`. Establish `hle : K₁ ≤ K₂` using `fun x hx => (h₂ x (g₁.1.1 hx)).2 (GlobalTheory.T.triple_geometry_unitary hU hR hM hP _ _ _ Bs _ _ Γ Xc om om' hT' R Rf hRf K₁ g₁ ne₁ x hx)`. Break down `max₁ K₂ g₂ hle with h | h` into its components or cases.
+
+Rewrite using `[← h₁ Φ hΦ ΦD hΦD hD, ← h, h₂ ΦD hΦD]`. Conclude with `absurd h ne₂`.
+-/
 private theorem GlobalTheory.BotUniqT.kerA : GlobalTheory.Published.HoweDualityUnitary → GlobalTheory.Published.HoweDualityReal → GlobalTheory.Published.MinguezThetaGL → GlobalTheory.FunPr.Hypotheses₂ → ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ) (θ : InfFam D) (W W₁ X : HSp D) (A : Fr W) (A₁ : Fr W₁)
     (B : Fr X) (α β : (AE D)ˣ →* Circle) (ν : Measure (GA D W)) (𝓕 : Set (GA D W)) (ν₁ : Measure (GA D W₁))
     (𝓕₁ : Set (GA D W₁)) (ωA : WRep W X) (ωB : WRep W₁ X) (e : Fin X.rank ≃ Fin (W.rank + W₁.rank))
@@ -72,6 +77,15 @@ open GlobalTheory.SquareComm GlobalTheory.SquareAgree
 
 namespace GlobalTheory.SquareAgree
 
+/- English proof (translation)
+Introduce `hU hR hG hP D ψ θ W W₁ X A A₁ B α β ν 𝓕 ν₁ 𝓕₁ ωA ωB e Bs Γ Xc om om' cA cB hθ hT hO hT' R Rf hM Pi rf rl p p' hm Φ₀ hΦ₀ Φ₀D hΦ₀D hD`. Take `⟨K, hK, hKs, hKne⟩` from `GlobalTheory.T.seesaw_unfolding_fundamental_domain hP D ψ θ W W₁ X A A₁ B α β ν 𝓕 ν₁ 𝓕₁ ωA ωB e Bs Γ Xc om om' cA cB hθ hT hO hT' Pi rf rl p p' hm`. Take `⟨KD, hKD, hKDs, hKDne⟩` from `GlobalTheory.T.matched_maps_finite_identity hP Bs Γ Xc om om' R Rf hM`. Establish `h1 : K ≤ KD` using `fun Φ hΦ => (hKD Φ).2 ⟨hKs.le hΦ, GlobalTheory.T.matched_maps_real_finite hU hR hG hP Bs Γ Xc om om' R Rf hM K hKs hKne Φ hΦ⟩`. Establish `h2 : KD = K` using `(GlobalTheory.T.seesaw_unfolding_integrable hP D ψ θ W W₁ X A A₁ B α β ν 𝓕 ν₁ 𝓕₁ ωA ωB e Bs Γ Xc om om' cA cB hθ hT hO hT' Pi rf rl p p' hm K KD hK hKDs h1).resolve_right hKDne`.
+
+Prove the components needed by the constructor for the conclusion. Introduce `h0`. Establish `hm : Φ₀D ∈ K` using `(hK Φ₀D).2 ⟨hΦ₀D, Φ₀, hΦ₀, hD, h0⟩`. Rewrite `hm` using `[← h2]`. Conclude with `((hKD _).1 hm).2`.
+
+Introduce `hpm`. Establish `hm : Φ₀D ∈ KD` using `(hKD _).2 ⟨hΦ₀D, hpm⟩`. Rewrite `hm` using `[h2]`. Take `⟨_, Φ₁, _, hD₁, h0⟩` from `(hK _).1 hm`. Rewrite using `[IsDatum.fun_eq Γ.M' ψ cB cB.surjective hD hD₁]`.
+
+Conclude with `h0`.
+-/
 private theorem _root_.GlobalTheory.BotUniqT.kerB : GlobalTheory.Published.HoweDualityUnitary → GlobalTheory.Published.HoweDualityReal → GlobalTheory.Published.MinguezThetaGL → GlobalTheory.FunPr.Hypotheses₂ → ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ) (θ : InfFam D) (W W₁ X : HSp D) (A : Fr W) (A₁ : Fr W₁)
     (B : Fr X) (α β : (AE D)ˣ →* Circle) (ν : Measure (GA D W)) (𝓕 : Set (GA D W)) (ν₁ : Measure (GA D W₁))
     (𝓕₁ : Set (GA D W₁)) (ωA : WRep W X) (ωB : WRep W₁ X) (e : Fin X.rank ≃ Fin (W.rank + W₁.rank))
@@ -119,6 +133,17 @@ noncomputable section
 
 namespace GlobalTheory.BotUniqT
 
+/- English proof (translation)
+Establish `s₀ : Function.Surjective (p₀.domRestrict S)`. Introduce `y`. Establish `hy : y ∈ S.map p₀` using `h₀ ▸ Submodule.mem_top`. Take `⟨x, hx, rfl⟩` from `hy`. Conclude with `⟨⟨x, hx⟩, rfl⟩`.
+
+Establish `s : Function.Surjective (p.domRestrict S)`. Introduce `y`. Establish `hy : y ∈ S.map p` using `h ▸ Submodule.mem_top`. Take `⟨x, hx, rfl⟩` from `hy`. Conclude with `⟨⟨x, hx⟩, rfl⟩`.
+
+Establish `hker : LinearMap.ker (p₀.domRestrict S) = LinearMap.ker (p.domRestrict S)`. Use extensionality with `x`. Simplify using `only [LinearMap.mem_ker, LinearMap.domRestrict_apply]`. Conclude with `hk x.1 x.2`. Set `E : P₀ ≃ₗ[ℂ] P` to `((p₀.domRestrict S).quotKerEquivOfSurjective s₀).symm.trans ((Submodule.quotEquivOfEq _ _ hker).trans ((p.domRestrict S).quotKerEquivOfSurjective s))`.
+
+Use `⟨E, fun x hx => ?_⟩` and prove the remaining obligations. Establish `e1 : ((p₀.domRestrict S).quotKerEquivOfSurjective s₀).symm (p₀ x) = Submodule.Quotient.mk ⟨x, hx⟩`. Rewrite using `[LinearEquiv.symm_apply_eq]`. Both sides reduce to the same expression. Use `show p x = ((p.domRestrict S).quotKerEquivOfSurjective s) ((Submodule.quotEquivOfEq _ _ hker) (((p₀.domRestrict S).quotKerEquivOfSurjective s₀).symm (p₀ x)))`.
+
+Rewrite using `[e1]`. Both sides reduce to the same expression.
+-/
 private theorem exists_equiv_of_ker {V P₀ P : Type} [AddCommGroup V] [Module ℂ V] [AddCommGroup P₀] [Module ℂ P₀]
     [AddCommGroup P] [Module ℂ P] (S : Submodule ℂ V) (p₀ : V →ₗ[ℂ] P₀) (p : V →ₗ[ℂ] P)
     (h₀ : S.map p₀ = ⊤) (h : S.map p = ⊤) (hk : ∀ x ∈ S, p₀ x = 0 ↔ p x = 0) :
@@ -147,6 +172,9 @@ private theorem exists_equiv_of_ker {V P₀ P : Type} [AddCommGroup V] [Module �
   rw [e1]
   rfl
 
+/- English proof (translation)
+Establish `hx : x ∈ S.map p₀` using `h₀ ▸ Submodule.mem_top`. Take `⟨Φ, hΦ, rfl⟩` from `hx`. Take `⟨Φ', hΦ', h1, h2⟩` from `H Φ hΦ`. Rewrite using `[← h1, ← hE Φ' hΦ', h2, hE Φ hΦ]`.
+-/
 private theorem intertwine {V P₀ P : Type} [AddCommGroup V] [Module ℂ V] [AddCommGroup P₀] [Module ℂ P₀]
     [AddCommGroup P] [Module ℂ P] (S : Submodule ℂ V) (p₀ : V →ₗ[ℂ] P₀) (p : V →ₗ[ℂ] P) (E : P₀ ≃ₗ[ℂ] P)
     (hE : ∀ x ∈ S, p x = E (p₀ x)) (h₀ : S.map p₀ = ⊤) (a : Module.End ℂ P₀) (b : Module.End ℂ P)
@@ -156,6 +184,9 @@ private theorem intertwine {V P₀ P : Type} [AddCommGroup V] [Module ℂ V] [Ad
   obtain ⟨Φ', hΦ', h1, h2⟩ := H Φ hΦ
   rw [← h1, ← hE Φ' hΦ', h2, hE Φ hΦ]
 
+/- English proof (translation)
+Use extensionality with `x`. Simplify using `only [Module.End.mul_apply, LinearEquiv.coe_coe, LinearEquiv.trans_apply]`. Rewrite using `[hE, LinearEquiv.symm_apply_eq, hE', LinearEquiv.apply_symm_apply]`.
+-/
 private theorem comm_of_intertwine {P₀ P : Type} [AddCommGroup P₀] [Module ℂ P₀] [AddCommGroup P] [Module ℂ P]
     (E E' : P₀ ≃ₗ[ℂ] P) (a : Module.End ℂ P₀) (b : Module.End ℂ P) (hE : ∀ x, E (a x) = b (E x))
     (hE' : ∀ x, E' (a x) = b (E' x)) :
@@ -164,6 +195,23 @@ private theorem comm_of_intertwine {P₀ P : Type} [AddCommGroup P₀] [Module �
   simp only [Module.End.mul_apply, LinearEquiv.coe_coe, LinearEquiv.trans_apply]
   rw [hE, LinearEquiv.symm_apply_eq, hE', LinearEquiv.apply_symm_apply]
 
+/- English proof (translation)
+Establish `hθ : IsInfFam W.θ` using `hX.is.isVac.2.inf`. Take `⟨e, Bs, Γ, Xc, om, om', cA, cB, hO, hTD⟩` from `GlobalTheory.T.exists_placewise_seesaw_triple_over_hermitian D W.ψ W.θ hθ A A' WW FA FA' FW _ _ hT X.m X.fd X.m' X.fd' hX.is.meas hX.is.meas' (X.ω t) (X.ω' t) hm.weilA hm.weilB`. Take `⟨R, Rf, hR⟩` from `hL D.host.F D.host.E D.sp.cm.sig Bs A.rank A'.rank Γ Xc om om' hTD`. Establish `kA : ∀ Φ ∈ algF W.ψ W.θ true FA FW, p₀ Φ = 0 ↔ p Φ = 0` using `fun Φ hΦ => by`. Take `⟨ΦD, hΦD, hD⟩` from `hO.algA Φ hΦ`.
+
+Rewrite using `[GlobalTheory.BotUniqT.kerA hP.howeDualityUnitary hH hP.minguezThetaGL hP D _ _ A A' WW FA FA' FW _ _ _ _ _ _ _ _ e Bs Γ Xc om om' cA cB hθ hT hO hTD R Rf hR Pi₀ rf₀ rl₀ p₀ p₀' hm₀ Φ hΦ ΦD hΦD hD, GlobalTheory.BotUniqT.kerA hP.howeDualityUnitary hH hP.minguezThetaGL hP D _ _ A A' …`. Establish `kB : ∀ Φ ∈ algF W.ψ W.θ false FA' FW, p₀' Φ = 0 ↔ p' Φ = 0` using `fun Φ hΦ => by`. Take `⟨ΦD, hΦD, hD⟩` from `hO.algB Φ hΦ`. Rewrite using `[GlobalTheory.BotUniqT.kerB hP.howeDualityUnitary hH hP.minguezThetaGL hP D _ _ A A' WW FA FA' FW _ _ _ _ _ _ _ _ e Bs Γ Xc om om' cA cB hθ hT hO hTD R Rf hR Pi₀ rf₀ rl₀ p₀ p₀' hm₀ Φ hΦ ΦD hΦD hD, GlobalTheory.BotUniqT.kerB hP.howeDualityUnitary hH hP.minguezThetaGL hP D _ _ A A' …`. Take `⟨EA, hEA⟩` from `exists_equiv_of_ker _ p₀ p hm₀.mapA.onto hm.mapA.onto kA`.
+
+Take `⟨EB, hEB⟩` from `exists_equiv_of_ker _ p₀' p' hm₀.mapB.onto hm.mapB.onto kB`. Establish `fA : ∀ h ∈ GfC WW, ∀ x, EA (rf₀ h x) = rf h (EA x)` using `fun h hh => intertwine _ p₀ p EA hEA hm₀.mapA.onto _ _ fun Φ hΦ => ⟨_, hm₀.mapA.stabX.1 h hh Φ hΦ, hm₀.mapA.eqf h hh Φ hΦ, hm.mapA.eqf h hh Φ hΦ⟩`. Establish `fB : ∀ h ∈ GfC WW, ∀ x, EB (rf₀ h x) = rf h (EB x)` using `fun h hh => intertwine _ p₀' p' EB hEB hm₀.mapB.onto _ _ fun Φ hΦ => ⟨_, hm₀.mapB.stabX.1 h hh Φ hΦ, hm₀.mapB.eqf h hh Φ hΦ, hm.mapB.eqf h hh Φ hΦ⟩`. Establish `lA : ∀ τ, ∀ Y ∈ lieAt WW τ, ∀ x, EA (rl₀ τ Y x) = rl τ Y (EA x)` using `fun τ Y hY => intertwine _ p₀ p EA hEA hm₀.mapA.onto _ _ fun Φ hΦ => by`. Take `⟨Φ', hΦ', hd⟩` from `hm₀.mapA.stabX.2 τ Y hY Φ hΦ`.
+
+Conclude with `⟨Φ', hΦ', hm₀.mapA.eql τ Y hY Φ hΦ Φ' hΦ' hd, hm.mapA.eql τ Y hY Φ hΦ Φ' hΦ' hd⟩`. Establish `lB : ∀ τ, ∀ Y ∈ lieAt WW τ, ∀ x, EB (rl₀ τ Y x) = rl τ Y (EB x)` using `fun τ Y hY => intertwine _ p₀' p' EB hEB hm₀.mapB.onto _ _ fun Φ hΦ => by`. Take `⟨Φ', hΦ', hd⟩` from `hm₀.mapB.stabX.2 τ Y hY Φ hΦ`. Conclude with `⟨Φ', hΦ', hm₀.mapB.eql τ Y hY Φ hΦ Φ' hΦ' hd, hm.mapB.eql τ Y hY Φ hΦ Φ' hΦ' hd⟩`. Set `ι` to `{g // g ∈ GfC WW} ⊕ {x : D.what₂.Tau × Matrix (Fin WW.rank) (Fin WW.rank) ℂ // x.2 ∈ lieAt WW x.1}`.
+
+Set `ρ : ι → Module.End ℂ Pi₀` to `Sum.elim (fun g => rf₀ g.1) (fun x => rl₀ x.1.1 x.1.2)`. Establish `hrank : Module.rank ℂ Pi₀ ≤ Cardinal.aleph0` using `GlobalTheory.SquareAgree.rank_pi_le_aleph0 hP.howeDualityUnitary hH hP D _ _ A A' WW FA FA' FW _ _ _ _ _ _ _ _ e Bs Γ Xc om om' cA cB hθ hT hO hTD R Rf hR Pi₀ rf₀ rl₀ p₀ p₀' hm₀`. Establish `hirr : ∀ N : Submodule ℂ Pi₀, (∀ k, ∀ x ∈ N, ρ k x ∈ N) → N = ⊥ ∨ N = ⊤` using `fun N hN => hm₀.irred.2 N (fun g hg x hx => hN (Sum.inl ⟨g, hg⟩) x hx) fun τ Y hY x hx => hN (Sum.inr ⟨(τ, Y), hY⟩) x hx`. Establish `hcomm : ∀ k, ((EA.trans EB.symm : Pi₀ ≃ₗ[ℂ] Pi₀) : Module.End ℂ Pi₀) * ρ k = ρ k * ((EA.trans EB.symm : Pi₀ ≃ₗ[ℂ] Pi₀) : Module.End ℂ Pi₀)`. Introduce and unpack `(⟨g, hg⟩ | ⟨⟨τ, Y⟩, hY⟩)`.
+
+Conclude with `comm_of_intertwine EA EB _ _ (fA g hg) (fB g hg)`. Conclude with `comm_of_intertwine EA EB _ _ (lA τ Y hY) (lB τ Y hY)`. Take `⟨c, hc⟩` from `GlobalTheory.dixmier_commutant_scalar ι Pi₀ ρ hrank hirr _ hcomm`. Establish `hT' : ∀ x, EB.symm (EA x) = c • x` using `fun x => by`. Use `LinearMap.congr_fun hc x` as an intermediate fact.
+
+Simplify using `using this`. Use `haveI : Nontrivial Pi₀ := hm₀.irred.1`. Establish `hc0 : c ≠ 0`. Introduce and unpack `rfl`. Take `⟨x, hx⟩` from `exists_ne (0 : Pi₀)`.
+
+Establish `h1` using `hT' x`. Rewrite `h1` using `[zero_smul, LinearEquiv.map_eq_zero_iff, LinearEquiv.map_eq_zero_iff]`. Conclude with `hx h1`. Use `⟨EB, c, hc0, fun Φ hΦ => ?_, fun Φ hΦ => hEB Φ hΦ⟩` and prove the remaining obligations. Rewrite using `[hEA Φ hΦ, ← LinearEquiv.map_smul, ← hT', LinearEquiv.apply_symm_apply]`.
+-/
 private theorem uniq_of_triple (hH : GlobalTheory.Published.HoweDualityReal) (hP : GlobalTheory.FunPr.Hypotheses₂) (hL : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.LocalMatching)
     {D : D7} {T : Type} {Lc : LevCh D T} {sc : GlobalTheory.ChiGrid.Consts} (G : GridData Lc sc) (W : G.Weil) (i j : Fin D.R.m)
     {A A' WW : HSp D} (X : Tri T A A' WW) (hX : IsBottomTri W i j X) (t : T)
@@ -252,6 +300,11 @@ open GlobalTheory.ChiGrid GlobalTheory.FunObj GlobalTheory.FunObj.SqNum GlobalTh
 open GlobalTheory.IndefiniteRowSideFullHecke.UnitCharTriangle (Tri)
 open scoped TensorProduct
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
+/- English proof (translation)
+Introduce `hH hP hK hL`. Take `⟨CF0, h⟩` from `GlobalTheory.T.definiteBottom_dictionary_frames_exponents_kernel`. Use `⟨CF0, fun ε CF hCF => ?_⟩` and prove the remaining obligations. Take `⟨C0, x0, h⟩` from `h ε CF hCF`. Use `⟨C0, x0, fun C hC D large₂ he hx hr T Lc μ hμ G => ?_⟩` and prove the remaining obligations.
+
+Introduce `W i j A A' WW X hX FA FA' FW t Pi₀ rf₀ rl₀ p₀ p₀' Pi rf rl p p' hm₀ hm`. Take `⟨FA₀, FA₀', FW₀, a, b, s₁, s₂, s₃, hall⟩` from `h C hC D large₂ he hx hr T Lc μ hμ G W i j A A' WW X hX`. Conclude with `GlobalTheory.BotUniqT.uniq_of_triple hH hP hL G W i j X hX t (hall t).1 FA FA' FW Pi₀ rf₀ rl₀ p₀ p₀' Pi rf rl p p' hm₀ hm`.
+-/
 theorem _root_.GlobalTheory.T.bottom_triangle_matched_factors : GlobalTheory.Published.HoweDualityReal → GlobalTheory.FunPr.Hypotheses₂ → GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.ThetaIntegralsAgree → GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.LocalMatching → GBig fun {D} {T} {Lc} {sc} G _ _ _ _ => ∀ (W : G.Weil) (i j : Fin D.R.m) (A A' WW : HSp D) (X : Tri T A A' WW), IsBottomTri W i j X → ∀ (FA : GlobalTheory.ChainFr.Fr A) (FA' : GlobalTheory.ChainFr.Fr A') (FW : GlobalTheory.ChainFr.Fr WW) (t : T), ∀ (Pi₀ : ModuleCat.{0} ℂ) rf₀ rl₀ p₀ p₀' (Pi : ModuleCat.{0} ℂ) rf rl p p', IsMatch W.ψ W.θ FA FA' FW (Lc.mu t (j + 1) * Lc.eta ^ (rankV D i j % 2)) (G.ch.chi (D.R.m - i) * Lc.eta ^ (rankV D i j % 2)) (X.ω t) (X.ω' t) Pi₀ rf₀ rl₀ p₀ p₀' → IsMatch W.ψ W.θ FA FA' FW (Lc.mu t (j + 1) * Lc.eta ^ (rankV D i j % 2)) (G.ch.chi (D.R.m - i) * Lc.eta ^ (rankV D i j % 2)) (X.ω t) (X.ω' t) Pi rf rl p p' → ∃ (E : Pi₀ ≃ₗ[ℂ] Pi) (c : ℂ), c ≠ 0 ∧ (∀ Φ ∈ algF W.ψ W.θ true FA FW, p Φ = c • E (p₀ Φ)) ∧ ∀ Φ' ∈ algF W.ψ W.θ false FA' FW, p' Φ' = E (p₀' Φ') := by
   intro hH hP hK hL
   obtain ⟨CF0, h⟩ := GlobalTheory.T.definiteBottom_dictionary_frames_exponents_kernel

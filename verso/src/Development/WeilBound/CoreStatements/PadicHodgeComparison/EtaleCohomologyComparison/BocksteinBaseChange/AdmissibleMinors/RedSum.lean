@@ -12,6 +12,11 @@ namespace CrystallineSemistableComparison.Inj
 
 variable {l : ℕ} [Fact l.Prime] {K : IntermediateField ℚ_[l] (PadicAlgCl l)} {R : Per l K} {G : Model l K → Prop}
 
+/- English proof (translation)
+Establish `hexp : ∀ v, P.c M n v φ = ∑ j, R.q (e.coord j v) * P.c M n (e j) φ`. Introduce `v`. Use `conv_lhs => rw [← e.sum_repr v]`. Rewrite using `[map_sum, AddMonoidHom.finsetSum_apply]`. Simplify using `only [P.lin, Module.Basis.coord_apply]`.
+
+Repeatedly rewrite using `[← P.nat M N u hu n hM hN, Finset.sum_mul]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun m _ => ?_` and prove the remaining obligations. Rewrite using `[hexp (Model.pullV u hu n (b m)), Finset.mul_sum]`. Conclude with `Finset.sum_congr rfl fun j _ => by ring`.
+-/
 theorem red_sum (P : Pre G R) {M N : Model l K} (u : M.X ⟶ N.X) (hu : u ≫ N.p = M.p) (hM : G M) (hN : G N) (n : ℕ)
     {a c : ℕ} (b : Module.Basis (Fin a) ℚ_[l] (N.V n)) (e : Module.Basis (Fin c) ℚ_[l] (M.V n)) (z : Fin a → R.B)
     (φ : Module.Dual K (HdR M.q n)) :
@@ -28,6 +33,19 @@ theorem red_sum (P : Pre G R) {M N : Model l K} (u : M.X ⟶ N.X) (hu : u ≫ N.
   rw [hexp (Model.pullV u hu n (b m)), Finset.mul_sum]
   exact Finset.sum_congr rfl fun j _ => by ring
 
+/- English proof (translation)
+Introduce `M hM n`. Take `⟨r, Q, d, u, hu, hQ, hinj⟩` from `hE.comp M hM`. Establish `: ∀ a, FiniteDimensional ℚ_[l] ((Q a).V n)` using `fun a => hE.fin _ (hQ a).1 n`. Set `e : ∀ a, Module.Basis (Fin (Module.finrank ℚ_[l] ((Q a).V n))) ℚ_[l] ((Q a).V n)` to `fun a => Module.finBasis _ _`. Set `f : (Σ a, Fin (Module.finrank ℚ_[l] ((Q a).V n))) → Module.Dual ℚ_[l] (M.V n)` to `fun i => (e i.1).coord i.2 ∘ₗ Model.pullV (u i.1) (hu i.1) n`.
+
+Establish `hf : ∀ v, (∀ i, f i v = 0) → v = 0`. Introduce `v hv`. Use `hinj n v fun a => (e a).ext_elem fun j => ?_` and prove the remaining obligations. Simplify `hv ⟨a, j⟩` using `[f, Module.Basis.coord_apply]`. Use `⟨fun {c} b z hz => ?_, fun {c} b z hz => ?_⟩` and prove the remaining obligations.
+
+Use function extensionality and compare the values at `m`. Establish `hm` using `red_abs R.q ⊥ (fun x s hs => by rw [AddSubgroup.mem_bot] at hs ⊢; rw [hs, mul_zero]) f hf b z ?_ m`. Simplify using `using hm`. Introduce and unpack `⟨a, j⟩`. Establish `hc` using `(hconn (Q a) (hQ a).1 (d a) (hQ a).2 n).1 (e a) (fun j => ∑ m, z m * R.q (f ⟨a, j⟩ (b m))) (fun φ => by`.
+
+Establish `h` using `hz (φ ∘ₗ pullR n (Model.genMap (u a) (hu a)) (Model.genMap_q (u a) (hu a)))`. Rewrite `h` using `[← red_sum P (u a) (hu a) (hQ a).1 hM n b (e a) z φ]`. Conclude with `h)`. Rewrite using `[AddSubgroup.mem_bot]`. Conclude with `congrFun hc j`.
+
+Introduce `m`. Use `red_abs R.q R.P.toAddSubgroup (fun x s hs => R.P.mul_mem (hR.q_mem x) hs) f hf b z ?_ m` and prove the remaining obligations. Introduce and unpack `⟨a, j⟩`. Use `(hconn (Q a) (hQ a).1 (d a) (hQ a).2 n).2 (e a) (fun j => ∑ m, z m * R.q (f ⟨a, j⟩ (b m))) (fun r φ hφ => ?_) j` and prove the remaining obligations. Establish `h` using `hz r (φ ∘ₗ pullR n (Model.genMap (u a) (hu a)) (Model.genMap_q (u a) (hu a))) (fun x hx => hφ _ (hpull (Q a) M (u a) (hu a) n (r + 1) x hx))`.
+
+Rewrite `h` using `[← red_sum P (u a) (hu a) (hQ a).1 hM n b (e a) z φ]`. Conclude with `h`.
+-/
 theorem reduce (P : Pre G R) (hR : R.Facts) (hE : EtSide G)
     (hpull : ∀ (M N : Model l K) (u : M.X ⟶ N.X) (hu : u ≫ N.p = M.p) (n r : ℕ), ∀ x ∈ FilR N.q n r,
       pullR n (Model.genMap u hu) (Model.genMap_q u hu) x ∈ FilR M.q n r)

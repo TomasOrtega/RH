@@ -15,6 +15,19 @@ open GlobalTheory.WeilM Matrix
 
 section Local
 
+/- English proof (translation)
+Take `⟨δ, hδ, h⟩` from `Metric.continuousAt_iff.1 (hψ.continuousAt (x := 0)) (1 / 2) (by norm_num)`. Simplify using `only [AddChar.map_zero_eq_one, dist_eq_norm, sub_zero] at h`. Establish `key : ∀ k : ℕ, ∀ x : K, ‖x‖ < δ → ‖ψ x - 1‖ ≤ (2 / 3) ^ k`. Introduce `k`. Proceed by induction on `k with`.
+
+Consider the case `zero => intro x hx`. Use `h hx` as an intermediate fact. Simplify using `only [pow_zero]`. Combine the linear equalities and inequalities to obtain the conclusion. Consider the case `succ k ih`.
+
+Introduce `x hx`. Establish `h2` using `ih (x + x) (lt_of_le_of_lt (IsUltrametricDist.norm_add_le_max x x) (by simpa using hx))`. Establish `e : ψ (x + x) - 1 = (ψ x - 1) * (2 + (ψ x - 1))` using `by rw [AddChar.map_add_eq_mul]; ring`. Establish `h3 : (3 / 2 : ℝ) ≤ ‖2 + (ψ x - 1)‖`. Establish `h4` using `norm_sub_norm_le (2 : ℂ) (-(ψ x - 1))`.
+
+Rewrite `h4` using `[sub_neg_eq_add, norm_neg]`. Use `h hx` as an intermediate fact. Simplify using `only [Complex.norm_ofNat] at h4`. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite `h2` using `[e, norm_mul]`.
+
+Rewrite using `[pow_succ]`. Use polynomial arithmetic with `[norm_nonneg (ψ x - 1)]`. Establish `h1 : ∀ x : K, ‖x‖ < δ → ψ x = 1` using `fun x hx => by`. Use `ge_of_tendsto' (tendsto_pow_atTop_nhds_zero_of_lt_one (r := (2 / 3 : ℝ)) (by norm_num) (by norm_num)) (fun k => key k x hx)` as an intermediate fact. Conclude with `sub_eq_zero.1 (norm_le_zero_iff.1 this)`.
+
+Use `(IsLocallyConstant.iff_eventually_eq _).2 fun x => ?_` and prove the remaining obligations. Use `filter_upwards [Metric.ball_mem_nhds x hδ] with y hy`. Rewrite using `[← add_sub_cancel x y, AddChar.map_add_eq_mul, h1 (y - x) (by simpa [dist_eq_norm] using hy), mul_one]`.
+-/
 private theorem locConst {K : Type} [NormedField K] [IsUltrametricDist K] (ψ : AddChar K ℂ) (hψ : Continuous ψ) :
     IsLocallyConstant ψ := by
   obtain ⟨δ, hδ, h⟩ := Metric.continuousAt_iff.1 (hψ.continuousAt (x := 0)) (1 / 2) (by norm_num)
@@ -44,16 +57,25 @@ private theorem locConst {K : Type} [NormedField K] [IsUltrametricDist K] (ψ : 
   filter_upwards [Metric.ball_mem_nhds x hδ] with y hy
   rw [← add_sub_cancel x y, AddChar.map_add_eq_mul, h1 (y - x) (by simpa [dist_eq_norm] using hy), mul_one]
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨hf.1.comp_continuous h.continuous, hf.2.comp_homeomorph h⟩`.
+-/
 private theorem sb_comp {X Y : Type} [TopologicalSpace X] [TopologicalSpace Y] (h : X ≃ₜ Y) {f : Y → ℂ}
     (hf : f ∈ SB Y) : f ∘ h ∈ SB X :=
   ⟨hf.1.comp_continuous h.continuous, hf.2.comp_homeomorph h⟩
 
+/- English proof (translation)
+The claim follows from `Set.InvOn.bijOn (f' := LinearMap.funLeft ℂ ℂ h.symm) ⟨fun f _ => funext fun y => by simp [LinearMap.funLeft_apply], fun f _ => funext fun y => by simp [LinearMap.funLeft_apply]⟩ (fun _ hf => sb_comp h hf) (fun _ hf => sb_comp h.symm hf)`.
+-/
 private theorem bij_comp {X Y : Type} [TopologicalSpace X] [TopologicalSpace Y] (h : X ≃ₜ Y) :
     Set.BijOn (LinearMap.funLeft ℂ ℂ h) (SB Y : Set _) (SB X : Set _) :=
   Set.InvOn.bijOn (f' := LinearMap.funLeft ℂ ℂ h.symm)
     ⟨fun f _ => funext fun y => by simp [LinearMap.funLeft_apply], fun f _ => funext fun y => by
       simp [LinearMap.funLeft_apply]⟩ (fun _ hf => sb_comp h hf) (fun _ hf => sb_comp h.symm hf)
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨hc.mul hf.1, hf.2.mul_left⟩`.
+-/
 private theorem sb_mul {X : Type} [TopologicalSpace X] {c f : X → ℂ} (hc : IsLocallyConstant c)
     (hf : f ∈ SB X) : c * f ∈ SB X :=
   ⟨hc.mul hf.1, hf.2.mul_left⟩
@@ -61,6 +83,23 @@ private theorem sb_mul {X : Type} [TopologicalSpace X] {c f : X → ℂ} (hc : I
 variable {K : Type} [NontriviallyNormedField K] [IsUltrametricDist K] [ProperSpace K] [Invertible (2 : K)]
   {ψ : AddChar K ℂ} {κ : Type} [Fintype κ] [DecidableEq κ]
 
+/- English proof (translation)
+Use `UpperTheory.symplectic_generation K κ (fun f => ∃ ι : ((κ → K) → ℂ) →ₗ[ℂ] ((κ → K) → ℂ), Set.BijOn ι (SB (κ → K) : Set _) (SB (κ → K) : Set _) ∧ ∀ w, ∀ φ ∈ SB (κ → K), ι (schr ψ (f w) φ) = schr ψ w (ι φ)) ?_ ?_ ?_ ?_ g hg` and prove the remaining obligations. Introduce and unpack `f g ⟨a, ha, ha'⟩ ⟨b, hb, hb'⟩`. Conclude with `⟨b ∘ₗ a, hb.comp ha, fun w φ hφ => by`. Simplify using `only [LinearMap.comp_apply, Function.comp_apply]`. Rewrite using `[ha' _ _ hφ, hb' _ _ (ha.mapsTo hφ)]⟩`.
+
+Take `⟨T, hT, ht, hm⟩` from `UpperTheory.fourier_transform_bijective K ψ hψ h1 κ`. Use `⟨LinearMap.funLeft ℂ ℂ (Homeomorph.neg (κ → K)) ∘ₗ T, (bij_comp _).comp hT, fun w φ hφ => ?_⟩` and prove the remaining obligations. Establish `e : schr ψ (w.2, -w.1) φ = ψ (⅟(2 : K) * (w.2 ⬝ᵥ (-w.1))) • fun x => ψ (x ⬝ᵥ (-w.1)) * (fun x => φ (x + w.2)) x`. Use function extensionality and compare the values at `x`. Simplify using `only [schr, AddChar.map_add_eq_mul, Pi.smul_apply, smul_eq_mul]`.
+
+Expand and normalize the polynomial expressions, which then agree. Establish `hφ'` using `sb_comp (Homeomorph.addRight w.2) hφ`. Use function extensionality and compare the values at `y`. Simplify using `only [LinearMap.comp_apply, LinearMap.funLeft_apply, Homeomorph.coe_neg, Pi.neg_apply]`. Rewrite using `[e, map_smul, Pi.smul_apply, hm (fun x => φ (x + w.2)) hφ'.1 hφ'.2, ht φ hφ.1 hφ.2]`.
+
+Simplify using `only [schr, LinearMap.funLeft_apply, Homeomorph.coe_neg, Pi.neg_apply, smul_eq_mul, ← mul_assoc, neg_add, ← AddChar.map_add_eq_mul]`. Use `congr 2`. Simplify using `only [dotProduct_comm w.2, neg_dotProduct, add_dotProduct]`. Take the linear combination `(-(w.1 ⬝ᵥ w.2)) * invOf_mul_self (2 : K)`. Introduce `S hS`.
+
+Establish `hq : ∀ c : K, IsLocallyConstant fun x : κ → K => ψ (c * (x ⬝ᵥ S *ᵥ x))` using `fun c => hψ.comp_continuous (continuous_const.mul (continuous_id.dotProduct (continuous_const.matrix_mulVec continuous_id)))`. Use `⟨LinearMap.mulLeft ℂ (fun x : κ → K => ψ (⅟(2 : K) * (x ⬝ᵥ S *ᵥ x))), Set.InvOn.bijOn (f' := LinearMap.mulLeft ℂ (fun x : κ → K => ψ (-⅟(2 : K) * (x ⬝ᵥ S *ᵥ x)))) ⟨fun f _ => funext fun y => ?_, fun f _ => funext fun y => ?_⟩ (fun _ hf => sb_mul (hq _) hf) (fun _ hf => sb_mul (hq …` and prove the remaining obligations. Simplify using `only [LinearMap.mulLeft_apply, Pi.mul_apply, ← mul_assoc, ← AddChar.map_add_eq_mul]`. Simplify using the standard rewrite rules. Simplify using `only [LinearMap.mulLeft_apply, Pi.mul_apply, ← mul_assoc, ← AddChar.map_add_eq_mul]`.
+
+Simplify using the standard rewrite rules. Simplify using `only [schr, LinearMap.mulLeft_apply, Pi.mul_apply, ← mul_assoc, ← AddChar.map_add_eq_mul]`. Use `congr 2`. Establish `e : w.1 ⬝ᵥ S *ᵥ x = x ⬝ᵥ S *ᵥ w.1`. Rewrite using `[dotProduct_mulVec, ← mulVec_transpose, hS.eq, dotProduct_comm]`.
+
+Simplify using `only [dotProduct_add, add_dotProduct, mulVec_add, e]`. Take the linear combination `(-(x ⬝ᵥ S *ᵥ w.1)) * invOf_mul_self (2 : K)`. Introduce `A A' hA`. Establish `hA' : A * A' = 1` using `mul_eq_one_comm.1 hA`. Set `h : (κ → K) ≃ₜ (κ → K)` to `{ toFun := fun x => A *ᵥ x invFun := fun x => A' *ᵥ x left_inv := fun x => by simp [hA] right_inv := fun x => by simp [hA'] continuous_toFun := continuous_const.matrix_mulVec continuous_id continuous_invFun := continuous_const.matrix_mulVec continuous_id }`.
+
+Use `⟨LinearMap.funLeft ℂ ℂ h, bij_comp h, fun w φ hφ => funext fun x => ?_⟩` and prove the remaining obligations. Establish `e : ∀ a b : κ → K, (A *ᵥ a) ⬝ᵥ (A'ᵀ *ᵥ b) = a ⬝ᵥ b` using `fun a b => by`. Rewrite using `[dotProduct_mulVec, vecMul_transpose, mulVec_mulVec, hA, one_mulVec]`. Express the relevant statement in the definitionally equal form `schr ψ _ φ (A *ᵥ x) = _ * φ (A *ᵥ (x + w.1))`. Simplify using `only [schr, e, mulVec_add]`.
+-/
 private theorem inter (hψ : IsLocallyConstant ψ) (h1 : ∃ t, ψ t ≠ 1)
     (g : (κ → K) × (κ → K) →ₗ[K] (κ → K) × (κ → K))
     (hg : ∀ w w', (g w).1 ⬝ᵥ (g w').2 - (g w').1 ⬝ᵥ (g w).2 = w.1 ⬝ᵥ w'.2 - w'.1 ⬝ᵥ w.2) :
@@ -118,6 +157,23 @@ private theorem inter (hψ : IsLocallyConstant ψ) (h1 : ∃ t, ψ t ≠ 1)
     change schr ψ _ φ (A *ᵥ x) = _ * φ (A *ᵥ (x + w.1))
     simp only [schr, e, mulVec_add]
 
+/- English proof (translation)
+Set `ω : ((κ → K) × (κ → K)) →ₗ[K] ((κ → K) × (κ → K)) →ₗ[K] K` to `LinearMap.mk₂ K (fun w w' => w.1 ⬝ᵥ w'.2 - w'.1 ⬝ᵥ w.2) (fun _ _ _ => by simp; ring) (fun _ _ _ => by simp; ring) (fun _ _ _ => by simp; ring) (fun _ _ _ => by simp; ring)`. Establish `hω : ∀ w w', ω w w' = w.1 ⬝ᵥ w'.2 - w'.1 ⬝ᵥ w.2` using `fun _ _ => rfl`. Establish `hanti : ∀ w w', ω w w' = -ω w' w` using `fun _ _ => by simp [hω]`. Set `β : (κ → K) →ₗ[K] (κ → K) →ₗ[K] K` to `ω.compl₁₂ (G ∘ₗ LinearMap.inl K _ _) (G ∘ₗ LinearMap.inr K _ _)`. Establish `hβ : ∀ y z, β y z = ω (G (y, 0)) (G (0, z))` using `fun _ _ => rfl`.
+
+Set `N : (κ → K) →ₗ[K] (κ → K)` to `LinearMap.pi fun i => β (Pi.single i 1)`. Establish `hN : ∀ y z, y ⬝ᵥ N z = β y z` using `fun y z => by conv_rhs => rw [← Finset.univ_sum_single y]`. Rewrite using `[map_sum, LinearMap.sum_apply]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[show (Pi.single i (y i) : κ → K) = y i • Pi.single i 1 by rw [← Pi.single_smul]; simp, map_smul]`.
+
+Both sides reduce to the same expression. Establish `hsp : ∀ w, G w = G (w.1, 0) + G (0, w.2)` using `fun w => by rw [← map_add]; simp`. Establish `hNi : Function.Injective N` using `(injective_iff_map_eq_zero _).2 fun z hz => by`. Establish `h0 : ∀ w, ω w (G (0, z)) = 0` using `fun w => by`. Take `⟨w, rfl⟩` from `LinearMap.injective_iff_surjective.1 hG w`.
+
+Rewrite using `[hsp, map_add, LinearMap.add_apply, ← hβ, ← hN, hz, hω, hb]`. Simplify using the standard rewrite rules. Establish `: G (0, z) = G 0`. Rewrite using `[map_zero]`. Use `Prod.ext (funext fun i => ?_) (funext fun i => ?_)` and prove the remaining obligations.
+
+Simplify `h0 (0, Pi.single i 1)` using `[hω]`. Simplify `h0 (Pi.single i 1, 0)` using `[hω]`. Conclude with `congrArg Prod.snd (hG this)`. Set `e` to `LinearEquiv.ofInjectiveEndo N hNi`. Establish `he : ∀ z, N (e.symm z) = z` using `e.apply_symm_apply`.
+
+Establish `he' : ∀ z, e.symm (N z) = z` using `e.symm_apply_apply`. Take `⟨ι, hι, H⟩` from `inter hψ h1 (G ∘ₗ LinearMap.prodMap LinearMap.id e.symm.toLinearMap) fun w w' => by`. Express the relevant statement in the definitionally equal form `ω (G (w.1, e.symm w.2)) (G (w'.1, e.symm w'.2)) = _`. Rewrite using `[hsp (w.1, _), hsp (w'.1, _)]`. Simplify using `only [map_add, LinearMap.add_apply]`.
+
+Rewrite using `[hanti (G (0, _)) (G (_, 0)), ← hβ, ← hβ, ← hN, ← hN, he, he, hω, hω, ha, hb]`. Expand and normalize the polynomial expressions, which then agree. Use `⟨ι, hι, fun y φ hφ Y => ?_, fun z φ hφ Y => ?_⟩` and prove the remaining obligations. Simplify `congrFun (H (y, 0) φ hφ) Y` using `[schr]`. Use `congrFun (H (0, N z) φ hφ) Y` as an intermediate fact.
+
+Rewrite using `[← hω, ← hβ, ← hN]`. Simplify `this` using `[schr, he']`.
+-/
 private theorem inter2 (hψ : IsLocallyConstant ψ) (h1 : ∃ t, ψ t ≠ 1)
     (G : (κ → K) × (κ → K) →ₗ[K] (κ → K) × (κ → K)) (hG : Function.Injective G)
     (ha : ∀ y z, (G (y, 0)).1 ⬝ᵥ (G (z, 0)).2 - (G (z, 0)).1 ⬝ᵥ (G (y, 0)).2 = 0)
@@ -177,8 +233,16 @@ variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algeb
 
 private def sL (v : Pl F) : Fv F v →ₗ[F] AF F := (LinearMap.inr F (Ainf F) (Af F)).comp (singleFin v)
 
+/- English proof (translation)
+The claim follows from `evalV_singleFin_self v a`.
+-/
 private theorem eval_single_local (v : Pl F) (a : Fv F v) : evFin F v (sL v a) = a := evalV_singleFin_self v a
 
+/- English proof (translation)
+Use `Prod.ext ((mul_zero _).trans rfl) (af_ext fun w => ?_)` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `evalV F w (u.2 * singleFin v a) = evalV F w (singleFin v (evFin F v u * a))`. Rewrite using `[map_mul]`. Distinguish the cases in `h : w = v`. Substitute `h` using the available equality.
+
+Rewrite using `[evalV_singleFin_self, evalV_singleFin_self]`. Both sides reduce to the same expression. Rewrite using `[evalV_singleFin_ne h, evalV_singleFin_ne h, mul_zero]`.
+-/
 private theorem mul_s (v : Pl F) (u : AF F) (a : Fv F v) : u * sL v a = sL v (evFin F v u * a) := by
   refine Prod.ext ((mul_zero _).trans rfl) (af_ext fun w => ?_)
   change evalV F w (u.2 * singleFin v a) = evalV F w (singleFin v (evFin F v u * a))
@@ -187,9 +251,15 @@ private theorem mul_s (v : Pl F) (u : AF F) (a : Fv F v) : u * sL v a = sL v (ev
   · subst h; rw [evalV_singleFin_self, evalV_singleFin_self]; rfl
   · rw [evalV_singleFin_ne h, evalV_singleFin_ne h, mul_zero]
 
+/- English proof (translation)
+Rewrite using `[mul_comm, mul_s, mul_one]`.
+-/
 private theorem sL_one_mul_eq_sL_evFin (v : Pl F) (u : AF F) : sL v 1 * u = sL v (evFin F v u) := by
   rw [mul_comm, mul_s, mul_one]
 
+/- English proof (translation)
+Use `⟨fun h => ?_, fun h u hu => ?_⟩` and prove the remaining obligations. Use `h (1 - sL v 1) (by rw [map_sub, map_one, eval_single_local, sub_self])` as an intermediate fact. Rewrite `this` using `[sub_smul, one_smul, sub_eq_zero]`. Conclude with `this.symm`. Rewrite using `[← h, smul_smul, mul_s, hu, zero_mul, map_zero, zero_smul]`.
+-/
 private theorem at_iff {M : Type} [AddCommGroup M] [Module (AF F) M] (v : Pl F) (z : M) :
     At (evFin F v) z ↔ sL v 1 • z = z := by
   refine ⟨fun h => ?_, fun h u hu => ?_⟩
@@ -198,16 +268,31 @@ private theorem at_iff {M : Type} [AddCommGroup M] [Module (AF F) M] (v : Pl F) 
     exact this.symm
   · rw [← h, smul_smul, mul_s, hu, zero_mul, map_zero, zero_smul]
 
+/- English proof (translation)
+The claim follows from `continuous_const.prodMk (continuous_singleFin v)`.
+-/
 private theorem leviSection_continuous (v : Pl F) : Continuous (sL v) :=
   continuous_const.prodMk (continuous_singleFin v)
 
 private def psiK (ψ : AddChar (AF F) ℂ) (v : Pl F) : AddChar (Fv F v) ℂ := ψ.compAddMonoidHom (sL v).toAddMonoidHom
 
+/- English proof (translation)
+Rewrite `h` using `[sL_one_mul_eq_sL_evFin]`. Conclude with `(congrArg ψ h).symm`.
+-/
 private theorem psi_at (ψ : AddChar (AF F) ℂ) (v : Pl F) {a : AF F} (h : sL v 1 * a = a) :
     ψ a = psiK ψ v (evFin F v a) := by
   rw [sL_one_mul_eq_sL_evFin] at h
   exact (congrArg ψ h).symm
 
+/- English proof (translation)
+Take `⟨a, h1, h2, h3⟩` from `UpperTheory.standard_additive_character F ψ h.1 h.2.1 (fun a ha => h.2.2 a fun u hu => by`. Establish `hu1 : u.1 = 0` using `(InfiniteAdeleRing.ringEquiv_mixedSpace F).injective (hu.trans (map_zero _).symm)`. Use `Prod.ext ?_ ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `u.1 * a.1 = 0`. Rewrite using `[hu1, zero_mul]`.
+
+Express the relevant statement in the definitionally equal form `u.2 * a.2 = 0`. Rewrite using `[ha, mul_zero]) v`. Use `⟨evFin F v a, fun e => h3 (Eq.trans (psi_at ψ v ?_) e)⟩` and prove the remaining obligations. Rewrite using `[sL_one_mul_eq_sL_evFin]`. Use `Prod.ext h1.symm (af_ext fun w => ?_)` and prove the remaining obligations.
+
+Express the relevant statement in the definitionally equal form `evalV F w (singleFin v _) = _`. Distinguish the cases in `h : w = v`. Substitute `h` using the available equality. Rewrite using `[evalV_singleFin_self]`. Both sides reduce to the same expression.
+
+Rewrite using `[evalV_singleFin_ne h]`. Conclude with `(h2 w h).symm`.
+-/
 private theorem psiK_ne {ψ : AddChar (AF F) ℂ} (h : IsStd ψ) (v : Pl F) : ∃ t, psiK ψ v t ≠ 1 := by
   obtain ⟨a, h1, h2, h3⟩ := UpperTheory.standard_additive_character F ψ h.1 h.2.1 (fun a ha => h.2.2 a fun u hu => by
     have hu1 : u.1 = 0 := (InfiniteAdeleRing.ringEquiv_mixedSpace F).injective (hu.trans (map_zero _).symm)
@@ -224,6 +309,11 @@ private theorem psiK_ne {ψ : AddChar (AF F) ℂ} (h : IsStd ψ) (v : Pl F) : �
   · subst h; rw [evalV_singleFin_self]; rfl
   · rw [evalV_singleFin_ne h]; exact (h2 w h).symm
 
+/- English proof (translation)
+Set `b : ContDiffBump (0 : V)` to `⟨1, 2, one_pos, one_lt_two⟩`. Establish `h1 : HasCompactSupport fun x => (b x : ℂ)` using `b.hasCompactSupport.comp_left (g := fun t : ℝ => (t : ℂ)) rfl`. Establish `h2 : ContDiff ℝ (⊤ : ℕ∞) fun x => (b x : ℂ)` using `Complex.ofRealCLM.contDiff.comp b.contDiff`. Use `⟨h1.toSchwartzMap h2, ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `((b 0 : ℝ) : ℂ) = 1`.
+
+Rewrite using `[b.one_of_mem_closedBall (Metric.mem_closedBall_self zero_le_one), Complex.ofReal_one]`.
+-/
 private theorem exists_schwartz (V : Type) [NormedAddCommGroup V] [NormedSpace ℝ V] [FiniteDimensional ℝ V] :
     ∃ f : SchwartzMap V ℂ, f 0 = 1 := by
   let b : ContDiffBump (0 : V) := ⟨1, 2, one_pos, one_lt_two⟩
@@ -236,11 +326,33 @@ private theorem exists_schwartz (V : Type) [NormedAddCommGroup V] [NormedSpace �
 private def evp {κ : Type} (v : Pl F) (w : (κ → AF F) × (κ → AF F)) : (κ → Fv F v) × (κ → Fv F v) :=
   (fun i => evFin F v (w.1 i), fun i => evFin F v (w.2 i))
 
+/- English proof (translation)
+Simplify using `only [dotProduct, map_sum, map_mul]`.
+-/
 private theorem ev_dot {κ : Type} [Fintype κ] (v : Pl F) (a b : κ → AF F) :
     evFin F v (a ⬝ᵥ b) = (fun i => evFin F v (a i)) ⬝ᵥ fun i => evFin F v (b i) := by
   simp only [dotProduct, map_sum, map_mul]
 
 open Classical in
+/- English proof (translation)
+Take `⟨f, hf⟩` from `exists_schwartz (κ → mixedEmbedding.mixedSpace F)`. Set `S : Set (κ → Af F)` to `{z | ∀ i u, u ≠ v → z i u ∈ u.adicCompletionIntegers F}`. Set `r : (κ → AF F) → ℂ` to `fun x => f (fun i => evI F (x i)) * S.indicator 1 fun i => (x i).2`. Establish `hr : ∀ x z : κ → AF F, sL v 1 • z = z → r (x + z) = r x` using `fun x z hz => by`. Establish `h0 : ∀ i, z i = sL v (evFin F v (z i))` using `fun i => (congrFun hz i).symm.trans (sL_one_mul_eq_sL_evFin v _)`.
+
+Establish `h1 : (fun i => evI F ((x + z) i)) = fun i => evI F (x i)` using `funext fun i => by`. Establish `: (z i).1 = 0` using `by rw [h0]; rfl`. Express the relevant statement in the definitionally equal form `InfiniteAdeleRing.ringEquiv_mixedSpace F ((x i).1 + (z i).1) = _`. Rewrite using `[this, add_zero]`. Both sides reduce to the same expression.
+
+Establish `h2 : (fun i => ((x + z) i).2) ∈ S ↔ (fun i => (x i).2) ∈ S`. Use `forall_congr' fun i => forall_congr' fun u => forall_congr' fun hu => ?_` and prove the remaining obligations. Establish `: evalV F u (z i).2 = 0` using `by rw [h0]; exact evalV_singleFin_ne hu _`. Express the relevant statement in the definitionally equal form `evalV F u ((x i).2 + (z i).2) ∈ _ ↔ evalV F u (x i).2 ∈ _`. Rewrite using `[map_add, this, add_zero]`.
+
+Simplify using `only [r, h1, Set.indicator, h2, Pi.one_apply]`. Establish `hg` using `UpperTheory.schwartz_function_generation F (fun u => (locField u).toLocallyCompactSpace) κ v φ hφ.1 hφ.2 _ fun _ => rfl`. Establish `hR : Rest (evFin F v) φ r` using `⟨fun x z hz => hr x z ((at_iff v z).1 hz), Submodule.subset_span ⟨f, _, hg, funext fun x => mul_left_comm _ _ _⟩⟩`. Establish `hr0 : r 0 = 1`. Establish `h1 : (fun i => evI F ((0 : κ → AF F) i)) = 0` using `funext fun i => map_zero (InfiniteAdeleRing.ringEquiv_mixedSpace F)`.
+
+Establish `h2 : (fun i => ((0 : κ → AF F) i).2) ∈ S` using `fun i u _ => zero_mem _`. Simplify using `only [r, h1, hf, Set.indicator_of_mem h2, Pi.one_apply, mul_one]`. Use function extensionality and compare the values at `X`. Set `x : κ → AF F` to `fun i => sL v (X i)`. Establish `hx : sL v 1 • x = x` using `funext fun i => by`.
+
+Express the relevant statement in the definitionally equal form `sL v 1 * sL v (X i) = sL v (X i)`. Rewrite using `[sL_one_mul_eq_sL_evFin, eval_single_local]`. Establish `hw1 : sL v 1 • w.1 = w.1` using `congrArg Prod.fst hw`. Establish `hw2 : sL v 1 • w.2 = w.2` using `congrArg Prod.snd hw`. Establish `hx1 : r x = 1` using `by rw [← zero_add x, hr _ _ hx, hr0]`.
+
+Establish `hX : (fun i => evFin F v (x i)) = X` using `funext fun i => eval_single_local v _`. Establish `h2 : evFin F v (⅟(2 : AF F)) = ⅟(2 : Fv F v)`. Use `(invOf_eq_right_inv ?_).symm` and prove the remaining obligations. Rewrite using `[← map_ofNat (evFin F v) 2, ← map_mul, mul_invOf_self, map_one]`. Use `congrFun (h r hR) x` as an intermediate fact.
+
+Simplify using `only [tens, schr] at this`. Rewrite using `[hr _ _ hw1, hx1, hX, mul_one, mul_one, psi_at ψ v (by`. Rewrite `this` using `[mul_add, mul_left_comm, ← smul_eq_mul (sL v 1), ← smul_eq_mul (sL v 1), ← dotProduct_smul, ← dotProduct_smul, hw2]), map_add, map_mul, ev_dot, ev_dot, hX, h2]`. Rewrite using `[← this]`. Simplify using `only [schr, evp, Pi.add_apply, map_add]`.
+
+Use `congr 2`. Use function extensionality and compare the values at `i`. Conclude with `congrArg (· + _) (eval_single_local v _)`.
+-/
 private theorem acts_eq {κ : Type} [Fintype κ] (ψ : AddChar (AF F) ℂ) (v : Pl F) [Invertible (2 : Fv F v)]
     {w : (κ → AF F) × (κ → AF F)} (hw : sL v 1 • w = w) {φ φ₁ : (κ → Fv F v) → ℂ} (hφ : φ ∈ SB _)
     (h : Acts (evFin F v) (schr ψ w) φ φ₁) : φ₁ = schr (psiK ψ v) (evp v w) φ := by
@@ -289,18 +401,29 @@ private theorem acts_eq {κ : Type} [Fintype κ] (ψ : AddChar (AF F) ℂ) (v : 
   funext i
   exact congrArg (· + _) (eval_single_local v _)
 
+/- English proof (translation)
+Proceed by induction on `y using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `add x y hx hy => simp only [map_add, hx, hy]`. Consider the case `tmul a e => exact congrArg (· ⊗ₜ[F] e) (eval_single_local v a)`.
+-/
 private theorem comp_rT (v : Pl F) (y : Fv F v ⊗[F] E) : compFin F E v (LinearMap.rTensor E (sL v) y) = y := by
   induction y using TensorProduct.induction_on with
   | zero => simp
   | add x y hx hy => simp only [map_add, hx, hy]
   | tmul a e => exact congrArg (· ⊗ₜ[F] e) (eval_single_local v a)
 
+/- English proof (translation)
+Proceed by induction on `z using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `add x y hx hy => simp only [map_add, hx, hy, smul_add]`. Consider the case `tmul a e => exact congrArg (· ⊗ₜ[F] e) (sL_one_mul_eq_sL_evFin v a).symm`.
+-/
 private theorem rT_comp (v : Pl F) (z : AE F E) : LinearMap.rTensor E (sL v) (compFin F E v z) = sL v 1 • z := by
   induction z using TensorProduct.induction_on with
   | zero => simp
   | add x y hx hy => simp only [map_add, hx, hy, smul_add]
   | tmul a e => exact congrArg (· ⊗ₜ[F] e) (sL_one_mul_eq_sL_evFin v a).symm
 
+/- English proof (translation)
+Proceed by induction on `y using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `add x y hx hy => simp only [map_add, hx, hy, smul_add]`. Consider the case `tmul b e`. Use `congrArg (· ⊗ₜ[F] e) (?_ : sL v (a * b) = sL v a * sL v b)` and prove the remaining obligations.
+
+Rewrite using `[mul_s, eval_single_local]`.
+-/
 private theorem rT_smul (v : Pl F) (a : Fv F v) (y : Fv F v ⊗[F] E) :
     LinearMap.rTensor E (sL v) (a • y) = sL v a • LinearMap.rTensor E (sL v) y := by
   induction y using TensorProduct.induction_on with
@@ -310,6 +433,9 @@ private theorem rT_smul (v : Pl F) (a : Fv F v) (y : Fv F v ⊗[F] E) :
     refine congrArg (· ⊗ₜ[F] e) (?_ : sL v (a * b) = sL v a * sL v b)
     rw [mul_s, eval_single_local]
 
+/- English proof (translation)
+Proceed by induction on `z using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `add x y hx hy => simp only [map_add, hx, hy]`. Consider the case `tmul b e => rfl`.
+-/
 private theorem piW_cA {v : Pl F} (t : E →ₐ[F] Fv F v) (z : AE F E) : piW t (cA σ z) = piW (t.comp σ) z := by
   induction z using TensorProduct.induction_on with
   | zero => simp
@@ -318,6 +444,13 @@ private theorem piW_cA {v : Pl F} (t : E →ₐ[F] Fv F v) (z : AE F E) : piW t 
 
 variable {n d : ℕ}
 
+/- English proof (translation)
+Establish `h0 : compFin F E v (hTens (cA σ) JA JB x u) = 0`. Use `split_ext h t ?_ ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `piW t _ = _`. Simplify using `only [hTens, map_sum, map_mul, hx, zero_mul, Finset.sum_const_zero, map_zero]`. Express the relevant statement in the definitionally equal form `piW (t.comp σ) _ = _`.
+
+Simplify using `only [hTens, map_sum, map_mul, piW_cA, comp_conj_conj h, hu, mul_zero, Finset.sum_const_zero, map_zero]`. Establish `h1` using `rT_comp v (hTens (cA σ) JA JB x u)`. Rewrite `h1` using `[h0, map_zero]`. Establish `h2 : sL v 1 * symp (R` using `AF F) (cA σ) (-1) JA JB x u = 0 := by`. Rewrite using `[symp, ← smul_eq_mul, ← map_smul, ← mul_smul_comm, ← h1, mul_zero, map_zero]`.
+
+Establish `h3` using `congrArg (evFin F v) h2`. Rewrite `h3` using `[map_mul, eval_single_local, one_mul, map_zero]`. Then use the resulting hypothesis.
+-/
 private theorem iso_symp (h : IsCMExt F E σ) {v : Pl F} (t : E →ₐ[F] Fv F v) (JA : Matrix (Fin n) (Fin n) (AE F E))
     (JB : Matrix (Fin d) (Fin d) (AE F E)) {x u : Matrix (Fin n) (Fin d) (AE F E)} (hx : ∀ i j, piW t (x i j) = 0)
     (hu : ∀ i j, piW t (u i j) = 0) : evFin F v (symp (R := AF F) (cA σ) (-1) JA JB x u) = 0 := by
@@ -340,27 +473,45 @@ private def liftM (h : IsCMExt F E σ) {v : Pl F} (t : E →ₐ[F] Fv F v)
 
 variable (h : IsCMExt F E σ) {v : Pl F} (t : E →ₐ[F] Fv F v)
 
+/- English proof (translation)
+The claim follows from `Matrix.ext fun i j => by simp only [liftM, Matrix.of_apply, Matrix.add_apply, ← map_add]; rfl`.
+-/
 private theorem liftM_add (p q : (Fin n × Fin d → Fv F v) × (Fin n × Fin d → Fv F v)) :
     liftM h t (p + q) = liftM h t p + liftM h t q := Matrix.ext fun i j => by
   simp only [liftM, Matrix.of_apply, Matrix.add_apply, ← map_add]; rfl
 
+/- English proof (translation)
+The claim follows from `Matrix.ext fun i j => by simp only [liftM, Matrix.of_apply, Matrix.smul_apply, ← rT_smul, ← map_smul]; rfl`.
+-/
 private theorem liftM_smul (a : Fv F v) (p : (Fin n × Fin d → Fv F v) × (Fin n × Fin d → Fv F v)) :
     liftM h t (a • p) = sL v a • liftM h t p := Matrix.ext fun i j => by
   simp only [liftM, Matrix.of_apply, Matrix.smul_apply, ← rT_smul, ← map_smul]; rfl
 
+/- English proof (translation)
+Rewrite using `[← liftM_smul, one_smul]`.
+-/
 private theorem liftM_at (p : (Fin n × Fin d → Fv F v) × (Fin n × Fin d → Fv F v)) :
     sL v 1 • liftM h t p = liftM h t p := by rw [← liftM_smul, one_smul]
 
+/- English proof (translation)
+Express the relevant statement in the definitionally equal form `splitProj t (compFin F E v (LinearMap.rTensor E (sL v) _)) = _`. Rewrite using `[comp_rT, splitProj_symm]`.
+-/
 private theorem piW_liftM (p : (Fin n × Fin d → Fv F v) × (Fin n × Fin d → Fv F v)) (i j) :
     piW t (liftM h t p i j) = p.1 (i, j) := by
   change splitProj t (compFin F E v (LinearMap.rTensor E (sL v) _)) = _
   rw [comp_rT, splitProj_symm]
 
+/- English proof (translation)
+Express the relevant statement in the definitionally equal form `splitProj (t.comp σ) (compFin F E v (LinearMap.rTensor E (sL v) _)) = _`. Rewrite using `[comp_rT, splitProj_comp_symm]`.
+-/
 private theorem piW_liftM' (p : (Fin n × Fin d → Fv F v) × (Fin n × Fin d → Fv F v)) (i j) :
     piW (t.comp σ) (liftM h t p i j) = p.2 (i, j) := by
   change splitProj (t.comp σ) (compFin F E v (LinearMap.rTensor E (sL v) _)) = _
   rw [comp_rT, splitProj_comp_symm]
 
+/- English proof (translation)
+The claim follows from `Matrix.ext fun i j => by change LinearMap.rTensor E (sL v) ((splitAlgEquiv h t).symm (splitAlgEquiv h t (compFin F E v (u i j)))) = _ rw [AlgEquiv.symm_apply_apply, rT_comp] exact congrFun₂ hu i j`.
+-/
 private theorem liftM_piW {u : Matrix (Fin n) (Fin d) (AE F E)} (hu : sL v 1 • u = u) :
     liftM h t (fun k => piW t (u k.1 k.2), fun k => piW (t.comp σ) (u k.1 k.2)) = u := Matrix.ext fun i j => by
   change LinearMap.rTensor E (sL v) ((splitAlgEquiv h t).symm (splitAlgEquiv h t (compFin F E v (u i j)))) = _
@@ -376,6 +527,29 @@ open NumberField IsDedekindDomain Formalism.MainNotions.GlobalTheoryTheory.Genus
 
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E} {n d : ℕ}
 
+/- English proof (translation)
+Use `letI : NontriviallyNormedField (Fv F v) := Valued.toNontriviallyNormedField (Fv F v) (WithZero (Multiplicative ℤ))`. Use `haveI : LocallyCompactSpace (Fv F v) := (locField v).toLocallyCompactSpace`. Use `haveI : ProperSpace (Fv F v) := .of_nontriviallyNormedField_of_weaklyLocallyCompactSpace _`. Use `haveI : IsUltrametricDist (Fv F v) := inferInstance`. Use `letI : Invertible (2 : Fv F v) := invertibleOfNonzero (by`.
+
+Rewrite using `[← map_ofNat (algebraMap F (Fv F v)) 2]`. Conclude with `(map_ne_zero _).2 two_ne_zero)`. Set `G : ((Fin n × Fin d → Fv F v) × (Fin n × Fin d → Fv F v)) →ₗ[Fv F v] ((Fin n × Fin d → Fv F v) × (Fin n × Fin d → Fv F v))` to `{ toFun := fun p => evp v (M.co.e (liftM h t p)) map_add' := fun p q => by`. Rewrite using `[liftM_add, map_add]`. Conclude with `Prod.ext (funext fun i => map_add (evFin F v) _ _) (funext fun i => map_add (evFin F v) _ _)`.
+
+Use the proof step `map_smul' := fun a p => by`. Rewrite using `[liftM_smul, map_smul]`. Conclude with `Prod.ext (funext fun i => (map_mul (evFin F v) _ _).trans (congrArg (· * _) (eval_single_local v a))) (funext fun i => (map_mul (evFin F v) _ _).trans (congrArg (· * _) (eval_single_local v a))) }`. Establish `hG : ∀ p, G p = evp v (M.co.e (liftM h t p))` using `fun _ => rfl`. Establish `hf : ∀ x u, evFin F v (symp (R` using `AF F) (cA σ) (-1) (incM F X.J) (incM F W.J) x u) = (evp v (M.co.e x)).1 ⬝ᵥ (evp v (M.co.e u)).2 - (evp v (M.co.e u)).1 ⬝ᵥ (evp v (M.co.e x)).2 := fun x u => by`.
+
+Rewrite using `[M.co.form, map_sub, ev_dot, ev_dot]`. Both sides reduce to the same expression. Establish `hinj : Function.Injective G` using `(injective_iff_map_eq_zero _).2 fun p hp => by`. Establish `h1 : M.co.e (liftM h t p) = 0`. Rewrite using `[← liftM_at, map_smul]`.
+
+Use `Prod.ext (funext fun i => (sL_one_mul_eq_sL_evFin v _).trans ?_) (funext fun i => (sL_one_mul_eq_sL_evFin v _).trans ?_)` and prove the remaining obligations. Conclude with `(congrArg (sL v) (congrFun (congrArg Prod.fst hp) i)).trans (map_zero _)`. Conclude with `(congrArg (sL v) (congrFun (congrArg Prod.snd hp) i)).trans (map_zero _)`. Establish `h2 : liftM h t p = 0` using `M.co.e.map_eq_zero_iff.1 h1`. Use `Prod.ext (funext fun k => ?_) (funext fun k => ?_)` and prove the remaining obligations.
+
+Rewrite using `[← piW_liftM h t p k.1 k.2, h2]`. Conclude with `map_zero _`. Rewrite using `[← piW_liftM' h t p k.1 k.2, h2]`. Conclude with `map_zero _`. Establish `hcc : ∀ z : AE F E, piW t z = piW ((t.comp σ).comp σ) z` using `fun z => by rw [comp_conj_conj h]`.
+
+Take `⟨ι, hι, ht, hm⟩` from `inter2 (locConst (psiK ψ v) (hψ.1.comp (leviSection_continuous v))) (psiK_ne hψ v) G hinj (fun y z => (hf _ _).symm.trans (iso_symp h (t.comp σ) _ _ (fun i j => piW_liftM' h t _ i j) fun i j => piW_liftM' h t _ i j)) (fun y z => (hf _ _).symm.trans (iso_symp h t _ _ (fun i j => p …`. Set `c : Matrix (Fin n) (Fin d) (Fv F v) ≃ₜ (Fin n × Fin d → Fv F v)` to `{ toFun := fun Y k => Y k.1 k.2 invFun := fun y => Matrix.of fun i j => y (i, j) left_inv := fun _ => rfl right_inv := fun _ => rfl continuous_toFun := continuous_pi fun k => continuous_id.matrix_elem k.1 k.2 continuous_invFun := continuous_matrix fun i j => continuous_apply _ }`. Establish `hco : ∀ u : Matrix (Fin n) (Fin d) (AE F E), ((1 : GL (Fin n) (Fv F v))⁻¹).1 * u.map (piW t) * ((1 : GL (Fin d) (Fv F v))⁻¹).1ᵀ = u.map (piW t)` using `fun u => by simp`. Establish `h1 : ∀ u : Matrix (Fin n) (Fin d) (AE F E), At (evFin F v) u → u.map (piW (t.comp σ)) = 0 → G (c (u.map (piW t)), 0) = evp v (M.co.e u)` using `fun u hu h0 => by`. Rewrite using `[hG]`.
+
+Use `conv_rhs => rw [← liftM_piW h t ((at_iff v u).1 hu)]`. Use `congr 4`. Conclude with `funext fun k => (congrFun₂ h0 k.1 k.2).symm`. Establish `h0 : ∀ u : Matrix (Fin n) (Fin d) (AE F E), At (evFin F v) u → u.map (piW t) = 0 → G (0, c (u.map (piW (t.comp σ)))) = evp v (M.co.e u)` using `fun u hu h0 => by`. Rewrite using `[hG]`.
+
+Use `conv_rhs => rw [← liftM_piW h t ((at_iff v u).1 hu)]`. Use `congr 4`. Conclude with `funext fun k => (congrFun₂ h0 k.1 k.2).symm`. Establish `hat : ∀ u : Matrix (Fin n) (Fin d) (AE F E), At (evFin F v) u → sL v 1 • M.co.e u = M.co.e u` using `fun u hu => by`. Rewrite using `[← map_smul, (at_iff v u).1 hu]`.
+
+Use `⟨LinearMap.funLeft ℂ ℂ c ∘ₗ ι, (bij_comp c).comp hι, fun u hu hu0 φ hφ φ₁ _ hA Y => ?_, fun u hu hu0 φ hφ φ₁ _ hA x hx hx0 => ?_⟩` and prove the remaining obligations. Rewrite using `[acts_eq ψ v (hat u hu) hφ hA, ← h1 u hu hu0, hco]`. Conclude with `ht _ φ hφ (c Y)`. Rewrite using `[acts_eq ψ v (hat u hu) hφ hA, hco, psi_at ψ v (a := symp (R := AF F) (cA σ) (-1) _ _ x u) (by`. Establish `e1 : sL v 1 • (M.co.e u).1 = (M.co.e u).1` using `congrArg Prod.fst (hat u hu)`.
+
+Establish `e2 : sL v 1 • (M.co.e u).2 = (M.co.e u).2` using `congrArg Prod.snd (hat u hu)`. Rewrite using `[M.co.form, mul_sub, ← smul_eq_mul (sL v 1), ← smul_eq_mul (sL v 1), ← dotProduct_smul, ← smul_dotProduct, e1, e2]), hf, ← h0 u hu hu0, ← h1 x hx hx0]`. Conclude with `hm _ φ hφ _`.
+-/
 private theorem main {X : Spc F E n} {W : Spc F E d} (M : Model σ X W) {ψ : AddChar (AF F) ℂ} (hψ : IsStd ψ)
     (h : IsCMExt F E σ) (v : Pl F) (t : E →ₐ[F] Fv F v) :
     ∃ ι : ((Fin n × Fin d → Fv F v) → ℂ) →ₗ[ℂ] Matrix (Fin n) (Fin d) (Fv F v) → ℂ, M.IsLinW ψ t 1 1 ι := by
@@ -455,6 +629,9 @@ end UpperTheory.Reformulated.B.SingleLocalAdele
 
 end
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ n d X W B M χX χW om r s r' s' H v t`. Conclude with `UpperTheory.Reformulated.B.SingleLocalAdele.main M H.base.std H.base.cm v t`.
+-/
 theorem UpperTheory.Reformulated.B.SingleLocalAdele.exists_linW :
     ∀ {F E : Type} [inst : Field F] [inst_1 : NumberField F] [inst_2 : Field E] [inst_3 : NumberField E]
       [inst_4 : Algebra F E] {σ : E →ₐ[F] E} {n d : ℕ} {X : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Spc F E n} {W : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Spc F E d}

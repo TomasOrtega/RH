@@ -14,6 +14,9 @@ set_option synthInstance.maxHeartbeats 400000
 
 namespace GlobalTheory.Mem.LevDisj
 
+/- English proof (translation)
+Introduce `X px I U L hI _ _ t`. Rewrite using `[Finset.disjoint_left]`. Introduce `P hG hQ`. Conclude with `GlobalTheory.KFormsCmp.disj (GlobalTheory.BasePrimes.primes_ok X.B px).1 hI.sel_ok t.1 hI.g_mem hQ hG`.
+-/
 theorem places_disjoint : ∀ (X : Stages) (px : PreX X.B.toPre) (I : Col2.ColIn X.B px) (U : Set I.ι) (L : Formalism.IndefR.Links.LevCh X.toD7 (TupU I U)),
     I.Ok → ValsIn I → LevOf X I U L → ∀ t : TupU I U, Disjoint (X.B.primes px).vGs (Formalism.L2.Col.QE I.sel t.1) := by
   intro X px I U L hI _ _ t

@@ -4,6 +4,25 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.GaloisLibrary.Simu
 open Module
 universe u v
 
+/- English proof (translation)
+Introduce `Γ H Z V _ _ _ _ _ ι K ξ _ ζ hc M hM hne hst`. Use `haveI : FiniteDimensional ℂ M := Submodule.finiteDimensional_of_le hM`. Use `haveI : Nontrivial M := Submodule.nontrivial_iff_ne_bot.2 hne`. Set `R : Z → Module.End ℂ M` to `fun z => { toFun := fun Φ => ⟨fun g => (Φ : H → V) (g * ζ z), hst Φ Φ.2 z⟩ map_add' := fun _ _ => rfl map_smul' := fun _ _ => rfl }`. Establish `hcomm : ∀ i j : Z, R i * R j = R j * R i`.
+
+Introduce `i j`. Use `LinearMap.ext fun Φ => Subtype.ext (funext fun g => ?_)` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `(Φ : H → V) (g * ζ i * ζ j) = (Φ : H → V) (g * ζ j * ζ i)`. Rewrite using `[mul_assoc, mul_assoc, hc i (ζ j)]`. Take `⟨v, -, hv0, hv⟩` from `UpperTheory.V.LinAlg.simEig R hcomm _ (⊤ : Submodule ℂ M) rfl top_ne_bot (fun _ _ _ => Submodule.mem_top)`.
+
+Use `choose a ha using hv`. Establish `hΦ : ∀ z g, (v : H → V) (g * ζ z) = a z • (v : H → V) g` using `fun z g => congrFun (congrArg Subtype.val (ha z)) g`. Establish `hv0' : (v : H → V) ≠ 0` using `fun h => hv0 (Subtype.ext h)`. Take `⟨g₀, hg₀⟩` from `Function.ne_iff.1 hv0'`. Establish `hg₀' : (v : H → V) g₀ ≠ 0` using `hg₀`.
+
+Establish `cancel : ∀ b c : ℂ, b • (v : H → V) g₀ = c • (v : H → V) g₀ → b = c` using `fun b c h => smul_left_injective ℂ hg₀' h`. Establish `a1 : a 1 = 1`. Apply `cancel` to reduce the goal to its premises. Rewrite using `[← hΦ, map_one, mul_one, one_smul]`. Establish `amul : ∀ x y, a (x * y) = a x * a y`.
+
+Introduce `x y`. Apply `cancel` to reduce the goal to its premises. Rewrite using `[← hΦ, map_mul, ← mul_assoc, hΦ, hΦ, smul_smul, mul_comm]`. Set `ψ : Z →* ℂˣ` to `({ toFun := a, map_one' := a1, map_mul' := amul } : Z →* ℂ).toHomUnits`. Establish `hψ : ∀ z, (ψ z : ℂ) = a z` using `fun z => by`.
+
+Simplify using `only [ψ, MonoidHom.coe_toHomUnits]`. Both sides reduce to the same expression. Use `⟨(v : H → V), v.2, hv0', ψ, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `z g`. Rewrite using `[hψ, hΦ]`.
+
+Introduce `z hz`. Apply `Units.ext` to reduce the goal to its premises. Rewrite using `[hψ, Units.val_one]`. Apply `cancel` to reduce the goal to its premises. Rewrite using `[← hΦ, one_smul]`.
+
+Conclude with `(hM v.2).2 _ hz g₀`. Introduce `z γ b hz hb`. Rewrite using `[hψ]`. Apply `cancel` to reduce the goal to its premises. Rewrite using `[← hΦ, ← hb, ← hc z g₀, hz]`.
+
+Conclude with `(hM v.2).1 γ g₀`.
+-/
 theorem UpperTheory.Gal.CertificateRingHomMap.pCentralEig_holds :
     UpperTheory.Gal.CertificateRingHomMap.CentralEig := by
   intro Γ H Z V _ _ _ _ _ ι K ξ _ ζ hc M hM hne hst

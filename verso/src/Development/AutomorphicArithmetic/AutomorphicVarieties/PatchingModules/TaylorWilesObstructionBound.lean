@@ -70,11 +70,17 @@ def globOf (V : s.Lev) : Glob l (locOf r) where
   φu u := V.pr.comp (Dec (F := L) (s.A (Subtype.val u))).subtype
   φu_cont _ := (V.pr_cont continuous_resP).comp continuous_subtype_val
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 example : (globOf r V0).frame = reIu V0.frame (globOf r V0).frame.Iu := rfl
 
 def residOf : Resid (globOf r V0).frame O n :=
   ⟨r.chib, r.chib_open, r.chib_inj, r.polar, r.psib, r.psib_open, r.th, r.th_comm⟩
 
+/- English proof (translation)
+Introduce and unpack `g ⟨⟨γ, ⟨h1, -⟩, rfl⟩, h2⟩`. Conclude with `⟨⟨Subtype.val γ, h1, rfl⟩, h2⟩`.
+-/
 theorem residOf_Ip_le (u : V0.frame.St) : (residOf r).Ip u ≤ r.Ip u := by
   rintro g ⟨⟨γ, ⟨h1, -⟩, rfl⟩, h2⟩
   exact ⟨⟨Subtype.val γ, h1, rfl⟩, h2⟩

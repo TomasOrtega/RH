@@ -11,6 +11,25 @@ open scoped TensorProduct NNReal Matrix
 open NumberField IsDedekindDomain MeasureTheory Filter Topology Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes
 open GlobalTheory.WeilM GlobalTheory.AdelicU GlobalTheory.LFun GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels GlobalTheory.ThK GlobalTheory.ThK.DescB GlobalTheory.ThK.FlagCT GlobalTheory.ThK.FlagPar
 
+/- English proof (translation)
+Substitute `hm` using the available equality. Establish `hre : L.comp (GlobalTheory.LocTypeGood.glReindex (finCongr (rfl : x + x' = x + x'))) = L` using `MonoidHom.ext fun h => congrArg L (Units.ext (Matrix.ext fun i j => rfl))`. Rewrite `hf` using `[hre]`. Use `set π := GlobalTheory.ThK.MidJac.detInd x x' α β with hπ`. Use `set ρ : Representation ℂ (GL (Fin (x + x')) k) (H → ℂ) := (GlobalTheory.PRep.rightReg ℂ H ℂ).comp L with hρ`.
+
+Establish `hρa : ∀ g (u : H → ℂ), ρ g u = fun y => u (y * L g)` using `fun _ _ => rfl`. Establish `hst : ∀ g, ∀ u ∈ M, ρ g u ∈ M`. Introduce `g u hu`. Rewrite `hu`, the goal using `[hM]`. Use `(Submodule.span_le (p := (Submodule.span ℂ (Set.range fun g => fun y => f (y * L g))).comap (ρ g))).2 ?_ hu` and prove the remaining obligations.
+
+Introduce and unpack `_ ⟨a, rfl⟩`. Use `Submodule.subset_span ⟨g * a, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `y`. Use `show f (y * L (g * a)) = f (y * L g * L a)`. Rewrite using `[map_mul, mul_assoc]`.
+
+Establish `hfM : f ∈ M`. Rewrite using `[hM]`. Conclude with `Submodule.subset_span ⟨1, by funext y; simp⟩`. Establish `hsp` using `GlobalTheory.T.invariant_submodule_in_image_span _ _ _ π ρ (GlobalTheory.T.determinant_induced_irreducible_admissible hK k x x' α β hα hβ).1 M hst f hfM hf`. Set `N : Submodule ℂ (H → ℂ)` to `(LinearMap.ker P).map M.subtype`.
+
+Establish `hN : ∀ u (hu : u ∈ M), u ∈ N ↔ P ⟨u, hu⟩ = 0` using `fun u hu => ⟨fun ⟨w, h1, h2⟩ => by rw [← show w = ⟨u, hu⟩ from Subtype.ext h2]; exact h1, fun h => ⟨⟨u, hu⟩, h, rfl⟩⟩`. Establish `hgen : ∀ T : _ →ₗ[ℂ] (H → ℂ), (∀ g, T ∘ₗ π g = ρ g ∘ₗ T) → (∀ u, T u ∈ M) → ∀ u, T u ∈ N`. Introduce `T hTe hT u`. Establish `h0` using `GlobalTheory.DetEqv.no_pairing_of_lt k x x' n hn α β hα.1 hβ.1 hne (P ∘ₗ T.codRestrict M hT) (fun h w Φ Φ' hΦ => by`. Establish `e : T (π h w) = fun y => T w (y * L h)` using `LinearMap.congr_fun (hTe h) w`.
+
+Establish `e' : T.codRestrict M hT (π h w) = ⟨fun y => T w (y * L h), e ▸ hT _⟩` using `Subtype.ext e`. Use `show P (T.codRestrict M hT (π h w)) Φ' = P (T.codRestrict M hT w) Φ`. Rewrite using `[e']`. Conclude with `hP h (T w) (hT w) _ Φ Φ' hΦ)`. Conclude with `(hN _ (hT u)).2 (LinearMap.congr_fun h0 u)`.
+
+Establish `hall : ∀ g, ρ g f ∈ N`. Introduce `g`. Use `(Submodule.span_le (p := N.comap (ρ g))).2 ?_ hsp` and prove the remaining obligations. Introduce and unpack `_ ⟨T, hTe, hT, u, rfl⟩`. Establish `e : ρ g (T u) = T (π g u)` using `(LinearMap.congr_fun (hTe g) u).symm`.
+
+Use `show ρ g (T u) ∈ N`. Rewrite using `[e]`. Conclude with `hgen T hTe hT _`. Establish `hle : M ≤ N` using `by conv_lhs => rw [hM]`. Use `Submodule.span_le.2 ?_` and prove the remaining obligations.
+
+Introduce and unpack `_ ⟨g, rfl⟩`. Conclude with `hall g`. Conclude with `LinearMap.ext fun u => (hN u.1 u.2).1 (hle u.2)`.
+-/
 private theorem liftSmall_pairing_zero (hK : GlobalTheory.ThK.KP) {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k]
     [IsNonarchimedeanLocalField k] {x x' n m : ℕ} (hm : x + x' = m) (hn : n < x') {α β : kˣ →* ℂˣ}
     (hα : GlobalTheory.KSplit.IsSmU α) (hβ : GlobalTheory.KSplit.IsSmU β) (hne : ∀ t : ℝ, α * β⁻¹ ≠ GlobalTheory.SmGL.absPow k (t : ℂ))
@@ -73,6 +92,17 @@ private theorem liftSmall_pairing_zero (hK : GlobalTheory.ThK.KP) {k : Type} [Fi
   exact LinearMap.ext fun u => (hN u.1 u.2).1 (hle u.2)
 
 attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField in
+/- English proof (translation)
+Introduce `hK F E _ _ _ _ _ σ B a a' G X om om' R Rf hM hq d₁ H' i₀ i₁ sp pl hH hiso c h0 hj i hi f hf _ hdec n k JX hk hnk hX hXd`. Assume the negation of the conclusion as `hne`. Establish `hT` using `hM.triple`. Establish `hcm` using `hT.base.cm`. Establish `hσ : ∀ x, σ (σ x) = x` using `GlobalTheory.SiegelSet.sigma_sigma hcm`.
+
+Establish `hsk` using `NextStep.skew_sp hσ B hT.geo.hW.skew hH hiso i hi.le`. Establish `hd` using `Nondeg.det_ne_zero_of_cartan B (sp i) (hiso i hi).2.2.2.2.2.2.1`. Establish `hν : IsHecke F E (X.α / X.β)` using `⟨hT.chars.heckeα.1.div' hT.chars.heckeβ.1, fun x => by`. Rewrite using `[MonoidHom.div_apply, hT.chars.heckeα.2 x, hT.chars.heckeβ.2 x, div_one]⟩`. Establish `hrank` using `hH.rank`.
+
+Establish `hbig` using `hT.geo.eBig`. Take `⟨hfc, hfl⟩` from `Nondeg.lev_reg hK hM hH hiso c h0 hj i hi f hf`. Establish `hα` using `(GlobalTheory.T.splitPlaceCharacterComponent_smooth_unitary_conductor F E X.α hT.chars.heckeα B.v₁ B.τ₁).1`. Establish `hβ` using `(GlobalTheory.T.splitPlaceCharacterComponent_smooth_unitary_conductor F E X.β hT.chars.heckeβ B.v₁ B.τ₁).1`. Establish `hermW : ∀ k l, σ ((sp i).J l k) = algebraMap F E (-1) * (sp i).J k l` using `fun k l => by`.
+
+Rewrite using `[hsk k l, map_neg, map_one, neg_one_mul]`. Establish `hJW : IsUnit ((sp i).J.map B.τ₁).det`. Rewrite using `[show ((sp i).J.map B.τ₁).det = B.τ₁ (sp i).J.det from (AlgHom.map_det B.τ₁ (sp i).J).symm]`. Conclude with `isUnit_iff_ne_zero.2 ((map_ne_zero B.τ₁).2 hd)`. Establish `hm : a - 2 * (i + 1) + a' = d₁ - 2 * i` using `by omega`.
+
+Establish `hloc` using `GlobalTheory.LocTypeGood.locType hK F E σ B a a' G X om om' R Rf hM hq d₁ H' i₀ i₁ sp pl hH hiso c h0 hj i hi B.v₁ hT.chars.good B.τ₁ hcm (-1) hermW hJW (finCongr hm) f hf 1`. Simplify using `only [mul_one] at hloc`. Take `⟨P, hP0, hP⟩` from `GlobalTheory.ThK.LiftPair.exists_pairing hK hcm B.ψ hT.base.std JX (sp i).J hX hXd hsk hd X.α (X.α / X.β) hT.chars.heckeα hν f hfc hfl hdec hne B.v₁ B.τ₁`. Conclude with `hP0 (liftSmall_pairing_zero hK hm (by omega) hα hβ (GlobalTheory.LocTypeGood.notRealPow_of_good F E σ B a a' G X om om' hT B.v₁ hT.chars.good B.τ₁) (GlobalTheory.ThK.LiftPair.liftSk hcm B.τ₁ (sp i).J hsk hd) f _ rfl hloc P hP)`.
+-/
 theorem _root_.GlobalTheory.T.theta_tower_descent_period : GlobalTheory.ThK.KP → ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E) (a a' : ℕ)
     (G : Geo σ a a') (X : Chars F E) (om : Rep σ G.V G.W) (om' : Rep σ G.V' G.W) (R : RealMaps F a a') (Rf : FinMaps F a a'),
     IsMatched B G X om om' R Rf → 1 ≤ G.q →

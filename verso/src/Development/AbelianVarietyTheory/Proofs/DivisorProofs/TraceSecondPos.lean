@@ -20,6 +20,9 @@ namespace GlobalTheory.RouteCoordsW
 
 open GlobalTheory.RouteCoords GlobalTheory.WeilM GlobalTheory.IndefiniteRowSideFullHecke.UnitaryConjugation
 
+/- English proof (translation)
+Rewrite using `[← trace_second c hc ξ hξ g p pi hg hp hpi Z Z', ← map_neg, ← mul_neg, ← trace_neg]`. Use `congr 3`. Simplify using `only [Matrix.neg_mul, neg_neg]`.
+-/
 theorem trace_second_pos {A : Type} [CommRing A] (c : A →+* A) {n b : ℕ} (hc : ∀ z, c (c z) = z) (ξ : A) (hξ : c ξ = -ξ)
     (g : Matrix (Fin n) (Fin n) A) (p pi : Matrix (Fin b) (Fin b) A) (hg : (g.map c)ᵀ = g) (hp : (p.map c)ᵀ = p)
     (hpi : pi * p = 1) (Z Z' : Matrix (Fin n) (Fin b) A) :

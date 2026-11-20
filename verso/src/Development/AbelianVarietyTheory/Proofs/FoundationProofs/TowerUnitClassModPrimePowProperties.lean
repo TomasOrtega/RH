@@ -13,15 +13,26 @@ variable {l : ℕ} [Fact l.Prime] {G : Type} [AddCommGroup G]
 abbrev Q (l : ℕ) [Fact l.Prime] (n : ℕ) (G : Type) [AddCommGroup G] : Type :=
   (ℤ_[l] ⊗[ℤ] G) ⧸ ((idl l) ^ n • (⊤ : Submodule ℤ_[l] (ℤ_[l] ⊗[ℤ] G)))
 
+/- English proof (translation)
+Rewrite using `[PadicInt.ker_toZModPow, Ideal.span_singleton_pow]`.
+-/
 theorem idl_pow_eq_ker (n : ℕ) : (idl l) ^ n = RingHom.ker (PadicInt.toZModPow (p := l) n) := by
   rw [PadicInt.ker_toZModPow, Ideal.span_singleton_pow]
 
+/- English proof (translation)
+The claim follows from `Submodule.smul_mem_smul (by rw [idl_pow_eq_ker]; exact ha) trivial`.
+-/
 theorem smul_mem_of_toZModPow {n : ℕ} {a : ℤ_[l]} (ha : PadicInt.toZModPow n a = 0) (m : ℤ_[l] ⊗[ℤ] G) :
     a • m ∈ (idl l) ^ n • (⊤ : Submodule ℤ_[l] (ℤ_[l] ⊗[ℤ] G)) :=
   Submodule.smul_mem_smul (by rw [idl_pow_eq_ker]; exact ha) trivial
 
 instance neZero_pow (n : ℕ) : NeZero (l ^ n) := ⟨pow_ne_zero _ (Fact.out : l.Prime).ne_zero⟩
 
+/- English proof (translation)
+Rewrite using `[Submodule.Quotient.eq]`. Establish `h : c ⊗ₜ[ℤ] g - (1 : ℤ_[l]) ⊗ₜ[ℤ] (((PadicInt.toZModPow n c).val : ℕ) • g) = (c - ((PadicInt.toZModPow n c).val : ℤ_[l])) • ((1 : ℤ_[l]) ⊗ₜ[ℤ] g)`. Rewrite using `[TensorProduct.smul_tmul', smul_eq_mul, mul_one, TensorProduct.sub_tmul, ← TensorProduct.smul_tmul, nsmul_eq_mul, mul_one]`. Rewrite using `[h]`. Apply `smul_mem_of_toZModPow` to reduce the goal to its premises.
+
+Rewrite using `[map_sub, map_natCast, ZMod.natCast_zmod_val, sub_self]`.
+-/
 theorem mk_tmul (n : ℕ) (c : ℤ_[l]) (g : G) :
     (Submodule.Quotient.mk (c ⊗ₜ[ℤ] g) : Q l n G) =
       Submodule.Quotient.mk ((1 : ℤ_[l]) ⊗ₜ[ℤ] (((PadicInt.toZModPow n c).val : ℕ) • g)) := by
@@ -34,6 +45,11 @@ theorem mk_tmul (n : ℕ) (c : ℤ_[l]) (g : G) :
   apply smul_mem_of_toZModPow
   rw [map_sub, map_natCast, ZMod.natCast_zmod_val, sub_self]
 
+/- English proof (translation)
+Take `⟨m, rfl⟩` from `Submodule.Quotient.mk_surjective _ y`. Proceed by induction on `m using TensorProduct.induction_on with`. Consider the case `zero => exact ⟨0, by simp⟩`. Consider the case `tmul c g => exact ⟨_, (mk_tmul n c g).symm⟩`. Consider the case `add x y hx hy`.
+
+Take `⟨gx, hx⟩` from `hx`. Take `⟨gy, hy⟩` from `hy`. Conclude with `⟨gx + gy, by rw [TensorProduct.tmul_add, Submodule.Quotient.mk_add, hx, hy, Submodule.Quotient.mk_add]⟩`.
+-/
 theorem exists_mk (n : ℕ) (y : Q l n G) : ∃ g : G, Submodule.Quotient.mk ((1 : ℤ_[l]) ⊗ₜ[ℤ] g) = y := by
   obtain ⟨m, rfl⟩ := Submodule.Quotient.mk_surjective _ y
   induction m using TensorProduct.induction_on with
@@ -53,6 +69,9 @@ def psi (n : ℕ) : ℤ_[l] →+ (G →+ G ⧸ H l n G) :=
     rw [← QuotientAddGroup.mk_zsmul, QuotientAddGroup.eq_zero_iff]
     exact ⟨g, by rw [nsmulAddMonoidHom_apply, ← natCast_zsmul, Nat.cast_pow]⟩⟩).comp (PadicInt.toZModPow n).toAddMonoidHom
 
+/- English proof (translation)
+Establish `e : (1 : ZMod (l ^ n)) = ((1 : ℤ) : ZMod (l ^ n))` using `by simp`. Simplify using `only [psi, AddMonoidHom.comp_apply, RingHom.toAddMonoidHom_eq_coe, AddMonoidHom.coe_coe, map_one]`. Rewrite using `[e, ZMod.lift_coe]`. Simplify using the standard rewrite rules.
+-/
 theorem psi_one (n : ℕ) (g : G) : psi (l := l) n 1 g = QuotientAddGroup.mk g := by
   have e : (1 : ZMod (l ^ n)) = ((1 : ℤ) : ZMod (l ^ n)) := by simp
   simp only [psi, AddMonoidHom.comp_apply, RingHom.toAddMonoidHom_eq_coe, AddMonoidHom.coe_coe, map_one]
@@ -62,9 +81,17 @@ theorem psi_one (n : ℕ) (g : G) : psi (l := l) n 1 g = QuotientAddGroup.mk g :
 def phi (n : ℕ) : ℤ_[l] ⊗[ℤ] G →+ G ⧸ H l n G :=
   TensorProduct.liftAddHom (psi n) (fun r c g => by rw [map_zsmul, AddMonoidHom.zsmul_apply, map_zsmul])
 
+/- English proof (translation)
+The claim follows from `TensorProduct.liftAddHom_tmul _ _ _ _`.
+-/
 theorem phi_tmul (n : ℕ) (c : ℤ_[l]) (g : G) : phi n (c ⊗ₜ[ℤ] g) = psi n c g :=
   TensorProduct.liftAddHom_tmul _ _ _ _
 
+/- English proof (translation)
+Use `Submodule.smul_induction_on hx (fun a ha m hm => ?_) (fun x y hx hy => by rw [map_add, hx, hy, add_zero])` and prove the remaining obligations. Use `clear hm`. Rewrite `ha` using `[idl_pow_eq_ker, RingHom.mem_ker]`. Proceed by induction on `m using TensorProduct.induction_on with`. Consider the case `zero => simp`.
+
+Consider the case `tmul c g`. Rewrite using `[TensorProduct.smul_tmul', phi_tmul, smul_eq_mul]`. Simplify using `[psi, ha]`. Consider the case `add x y hx hy => rw [smul_add, map_add, hx, hy, add_zero]`.
+-/
 theorem phi_eq_zero (n : ℕ) (x : ℤ_[l] ⊗[ℤ] G) (hx : x ∈ (idl l) ^ n • (⊤ : Submodule ℤ_[l] (ℤ_[l] ⊗[ℤ] G))) :
     phi n x = 0 := by
   refine Submodule.smul_induction_on hx (fun a ha m hm => ?_) (fun x y hx hy => by rw [map_add, hx, hy, add_zero])
@@ -77,6 +104,13 @@ theorem phi_eq_zero (n : ℕ) (x : ℤ_[l] ⊗[ℤ] G) (hx : x ∈ (idl l) ^ n �
     simp [psi, ha]
   | add x y hx hy => rw [smul_add, map_add, hx, hy, add_zero]
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce `e`. Rewrite `e` using `[Submodule.Quotient.eq, ← TensorProduct.tmul_sub]`. Establish `h0` using `phi_eq_zero n _ e`. Rewrite `h0` using `[phi_tmul, psi_one, QuotientAddGroup.eq_zero_iff]`.
+
+Take `⟨h, hh⟩` from `h0`. Use `⟨h, ?_⟩` and prove the remaining obligations. Simplify using `only [nsmulAddMonoidHom_apply] at hh`. Rewrite using `[hh]`. Normalize the expressions using the abelian group laws.
+
+Introduce and unpack `⟨h, rfl⟩`. Rewrite using `[Submodule.Quotient.eq, ← TensorProduct.tmul_sub, add_sub_cancel_left, TensorProduct.tmul_smul, ← Nat.cast_smul_eq_nsmul ℤ_[l]]`. Apply `smul_mem_of_toZModPow` to reduce the goal to its premises. Rewrite using `[map_natCast, ZMod.natCast_self]`.
+-/
 theorem mk_eq_iff (n : ℕ) (g g' : G) :
     (Submodule.Quotient.mk ((1 : ℤ_[l]) ⊗ₜ[ℤ] g) : Q l n G) = Submodule.Quotient.mk ((1 : ℤ_[l]) ⊗ₜ[ℤ] g') ↔
       ∃ h : G, g = g' + (l ^ n) • h := by
@@ -99,6 +133,21 @@ end GlobalTheory.KZ.ClsMod
 
 open GlobalTheory.KZ.ClsMod in
 
+/- English proof (translation)
+Introduce `Ω _ _ ε X l _ n`. Use `⟨?_, ?_, ?_, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `y`. Take `⟨g, hg⟩` from `exists_mk n y`. Conclude with `⟨Additive.toMul g, hg⟩`.
+
+Introduce `f f'`. Unfold `Tower.cls`. Rewrite using `[mk_eq_iff]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨h, hh⟩`.
+
+Use `⟨Additive.toMul h, ?_⟩` and prove the remaining obligations. Apply `Additive.ofMul.injective` to reduce the goal to its premises. Rewrite using `[hh, ofMul_mul, ofMul_pow]`. Both sides reduce to the same expression. Introduce and unpack `⟨g, rfl⟩`.
+
+Conclude with `⟨Additive.ofMul g, by rw [ofMul_mul, ofMul_pow]⟩`. Introduce `f f'`. Unfold `Tower.cls`. Rewrite using `[ofMul_mul, TensorProduct.tmul_add, Submodule.Quotient.mk_add]`. Unfold `Tower.cls`.
+
+Rewrite using `[ofMul_one, TensorProduct.tmul_zero, Submodule.Quotient.mk_zero]`. Introduce `c f`. Unfold `Tower.cls`. Rewrite using `[← Submodule.Quotient.mk_smul, TensorProduct.smul_tmul', smul_eq_mul, mul_one, mk_tmul, ofMul_pow]`. Introduce `φ x f hx`.
+
+Rewrite `hx`, the goal using `[AdicCompletion.eval_apply]`. Establish `e` using `AdicCompletion.map_val_apply (idl l) (LinearMap.baseChange ℤ_[l] (AddMonoidHom.toIntLinearMap (MonoidHom.toAdditive (Units.map φ.toMonoidHom)))) (n := n) x`. Use `(e.trans ?_)` and prove the remaining obligations. Rewrite using `[hx, Tower.cls, LinearMap.reduceModIdeal_apply, LinearMap.baseChange_tmul]`. Both sides reduce to the same expression.
+
+Introduce `x f hx`. Rewrite `hx`, the goal using `[AdicCompletion.eval_apply]`. Rewrite using `[← AdicCompletion.transitionMap_comp_eval_apply (idl l) (X.Kl l) (Nat.le_succ n) x, hx]`. Both sides reduce to the same expression.
+-/
 theorem GlobalTheory.KZ.H3.cls_props : ∀ (Ω : Type) [Field Ω] [Algebra ℚ Ω] (ε : Ω →+* ℂ) (X : Tower Ω ε) (l : ℕ) [Fact l.Prime], ∀ n : ℕ, (∀ y, ∃ f, X.cls l n f = y) ∧ (∀ f f' : X.Kˣ, X.cls l n f = X.cls l n f' ↔ ∃ g : X.Kˣ, f = f' * g ^ (l ^ n)) ∧ (∀ f f' : X.Kˣ, X.cls l n (f * f') = X.cls l n f + X.cls l n f') ∧ X.cls l n 1 = 0 ∧ (∀ (c : ℤ_[l]) (f : X.Kˣ), c • X.cls l n f = X.cls l n (f ^ (PadicInt.toZModPow n c).val)) ∧ (∀ (φ : X.K ≃+* X.K) (x : X.Khat l) (f : X.Kˣ), AdicCompletion.eval (idl l) (X.Kl l) n x = X.cls l n f → AdicCompletion.eval (idl l) (X.Kl l) n (X.kmap l φ x) = X.cls l n (Units.map φ.toMonoidHom f)) ∧ (∀ (x : X.Khat l) (f : X.Kˣ), AdicCompletion.eval (idl l) (X.Kl l) (n + 1) x = X.cls l (n + 1) f → AdicCompletion.eval (idl l) (X.Kl l) n x = X.cls l n f) := by
   intro Ω _ _ ε X l _ n
   refine ⟨?_, ?_, ?_, ?_, ?_, ?_, ?_⟩

@@ -9,6 +9,11 @@ namespace DualCokernel
 
 variable {R : Type} [CommRing R]
 
+/- English proof (translation)
+Establish `h1 : (⟨p, hp⟩ : PrimeSpectrum R) ∉ Module.support R N`. Rewrite using `[Module.mem_support_iff_nontrivial_residueField_tensorProduct]`. Conclude with `not_nontrivial_iff_subsingleton.mpr h`. Rewrite `h1` using `[Module.mem_support_iff_of_finite]`. Take `⟨s, hs, hs'⟩` from `Set.not_subset.mp h1`.
+
+Conclude with `⟨s, hs', Module.mem_annihilator.mp hs⟩`.
+-/
 theorem exists_smul_eq_zero_of_fibre (p : Ideal R) [hp : p.IsPrime] (N : Type) [AddCommGroup N]
     [Module R N] [Module.Finite R N] (h : Subsingleton (p.ResidueField ⊗[R] N)) :
     ∃ s, s ∉ p ∧ ∀ x : N, s • x = 0 := by
@@ -19,6 +24,21 @@ theorem exists_smul_eq_zero_of_fibre (p : Ideal R) [hp : p.IsPrime] (N : Type) [
   obtain ⟨s, hs, hs'⟩ := Set.not_subset.mp h1
   exact ⟨s, hs', Module.mem_annihilator.mp hs⟩
 
+/- English proof (translation)
+Establish `hb : ∀ x, b (h₁ (b x)) = s • b x` using `fun x => by simpa [hbc] using hh (b x)`. Use `set π : M₁ →ₗ[R] M₁ := s • LinearMap.id - h₁ ∘ₗ b with hπ`. Establish `hbπ : b ∘ₗ π = 0`. Use extensionality with `x`. Simplify using `[hπ, hb]`.
+
+Use `set N := LinearMap.range a ⊔ LinearMap.range (h₁ ∘ₗ b) with hN`. Establish `hsub : Subsingleton (p.ResidueField ⊗[R] (M₁ ⧸ N))`. Use `subsingleton_of_forall_eq 0 fun y => ?_` and prove the remaining obligations. Take `⟨x, rfl⟩` from `LinearMap.lTensor_surjective p.ResidueField N.mkQ_surjective y`. Establish `h1 : b.lTensor p.ResidueField (π.lTensor p.ResidueField x) = 0`.
+
+Rewrite using `[← LinearMap.comp_apply, ← LinearMap.lTensor_comp, hbπ]`. Simplify using the standard rewrite rules. Take `⟨z, hz⟩` from `(hex _).1 h1`. Establish `h2 : N.mkQ ∘ₗ a = 0`. Use extensionality with `w`.
+
+Conclude with `(Submodule.Quotient.mk_eq_zero N).2 (Submodule.mem_sup_left ⟨w, rfl⟩)`. Establish `h3 : N.mkQ ∘ₗ π = s • N.mkQ`. Use extensionality with `w`. Establish `: N.mkQ (h₁ (b w)) = 0` using `(Submodule.Quotient.mk_eq_zero N).2 (Submodule.mem_sup_right ⟨w, rfl⟩)`. Simplify using `only [hπ, LinearMap.comp_apply, LinearMap.sub_apply, LinearMap.smul_apply, LinearMap.id_apply, map_sub, this, sub_zero, map_smul]`.
+
+Establish `h4` using `congrArg (N.mkQ.lTensor p.ResidueField) hz`. Rewrite `h4` using `[← LinearMap.comp_apply, ← LinearMap.lTensor_comp, h2, ← LinearMap.comp_apply, ← LinearMap.lTensor_comp, h3, LinearMap.lTensor_zero, LinearMap.zero_apply, LinearMap.lTensor_smul, LinearMap.smul_apply, ← algebraMap_smul p.ResidueField]`. Conclude with `(smul_eq_zero.mp h4.symm).resolve_left (fun h0 => hs (Ideal.algebraMap_residueField_eq_zero.mp h0))`. Take `⟨t, ht, htN⟩` from `exists_smul_eq_zero_of_fibre p (M₁ ⧸ N) hsub`. Establish `hmem : ∀ x, (t • π) x ∈ LinearMap.range a`.
+
+Introduce `x`. Establish `h1 : t • x ∈ N` using `(Submodule.Quotient.mk_eq_zero N).1 (htN (N.mkQ x))`. Take `⟨_, ⟨u, rfl⟩, _, ⟨v, rfl⟩, huv⟩` from `Submodule.mem_sup.mp h1`. Rewrite using `[LinearMap.smul_apply, ← map_smul, ← huv]`. Use `⟨s • u, ?_⟩` and prove the remaining obligations.
+
+Simplify using `[hπ, hab, hb]`. Take `⟨k, hk⟩` from `Module.projective_lifting_property a.rangeRestrict (LinearMap.codRestrict _ _ hmem) a.surjective_rangeRestrict`. Use `⟨t * s, fun h => (hp.mem_or_mem h).elim ht hs, k, t • h₁, fun x => ?_⟩` and prove the remaining obligations. Establish `: a (k x) = (t • π) x` using `congrArg Subtype.val (LinearMap.congr_fun hk x)`. Simplify using `[this, hπ, smul_sub, mul_smul]`.
+-/
 theorem exists_homotopy_step (p : Ideal R) [hp : p.IsPrime] {M₀ M₁ M₂ M₃ : Type}
     [AddCommGroup M₀] [Module R M₀] [AddCommGroup M₁] [Module R M₁] [AddCommGroup M₂] [Module R M₂]
     [AddCommGroup M₃] [Module R M₃] [Module.Finite R M₁] [Module.Projective R M₁]
@@ -78,6 +98,9 @@ variable [IsLocalRing R]
 abbrev ExtZero (M : Type) [AddCommGroup M] [Module R M] (n : ℕ) : Prop :=
   Subsingleton (Abelian.Ext.{0} (ModuleCat.of R (R ⧸ maximalIdeal R)) (ModuleCat.of R M) n)
 
+/- English proof (translation)
+Establish `hS : (ModuleCat.shortComplexOfCompEqZero f q hex.linearMap_comp_eq_zero).ShortExact` using `ModuleCat.shortComplex_shortExact _ hex hf hq`. Use `subsingleton_of_forall_eq 0 fun x => ?_` and prove the remaining obligations. Take `⟨y, rfl⟩` from `Ext.covariant_sequence_exact₃ _ hS x rfl (@Subsingleton.elim _ hX _ _)`. Rewrite using `[@Subsingleton.elim _ hF y 0]`. Conclude with `Ext.zero_comp _ _ _ _ _`.
+-/
 theorem extZero_coker {X F : Type} [AddCommGroup X] [Module R X] [AddCommGroup F] [Module R F]
     {Y : Type} [AddCommGroup Y] [Module R Y] (f : X →ₗ[R] F) (q : F →ₗ[R] Y) (hf : Injective f)
     (hq : Surjective q) (hex : Exact f q) (n : ℕ) (hX : ExtZero (R := R) X (n + 1))
@@ -89,6 +112,9 @@ theorem extZero_coker {X F : Type} [AddCommGroup X] [Module R X] [AddCommGroup F
   rw [@Subsingleton.elim _ hF y 0]
   exact Ext.zero_comp _ _ _ _ _
 
+/- English proof (translation)
+Establish `hid : 𝟙 (ModuleCat.of R X) = ModuleCat.ofHom f ≫ ModuleCat.ofHom q`. Rewrite using `[← ModuleCat.ofHom_comp, h, ModuleCat.ofHom_id]`. Use `subsingleton_of_forall_eq 0 fun x => ?_` and prove the remaining obligations. Rewrite using `[← Ext.comp_mk₀_id x, hid, ← Ext.mk₀_comp_mk₀, ← Ext.comp_assoc_of_second_deg_zero, @Subsingleton.elim _ hF (x.comp _ _) 0, Ext.zero_comp]`.
+-/
 theorem extZero_retract {X F : Type} [AddCommGroup X] [Module R X] [AddCommGroup F] [Module R F]
     (f : X →ₗ[R] F) (q : F →ₗ[R] X) (h : q ∘ₗ f = LinearMap.id) (n : ℕ)
     (hF : ExtZero (R := R) F n) : ExtZero (R := R) X n := by
@@ -100,6 +126,13 @@ theorem extZero_retract {X F : Type} [AddCommGroup X] [Module R X] [AddCommGroup
 
 variable [IsNoetherianRing R]
 
+/- English proof (translation)
+Assume the negation of the conclusion as `h0`. Take `⟨P, hP, hle⟩` from `exists_le_isAssociatedPrime_of_isNoetherianRing R x h0`. Distinguish the cases in `hm : P = maximalIdeal R`. Substitute `hm` using the available equality. Take `⟨-, f, hf⟩` from `(isAssociatedPrime_iff_exists_injective_linearMap _ _).1 hP`.
+
+Establish `h1 : Subsingleton (ModuleCat.of R (R ⧸ maximalIdeal R) ⟶ ModuleCat.of R M)` using `Ext.addEquiv₀.subsingleton_congr.mp h`. Establish `h2 : f = 0` using `congrArg ModuleCat.Hom.hom (h1.elim (ModuleCat.ofHom f) 0)`. Establish `: Nontrivial (R ⧸ maximalIdeal R)` using `Ideal.Quotient.nontrivial_iff.mpr (maximalIdeal.isMaximal R).ne_top`. Conclude with `one_ne_zero (hf (a₁ := 1) (a₂ := 0) (by simp [h2]))`. Take `⟨s, hs, hsx⟩` from `hx P hP.isPrime hm`.
+
+Conclude with `hs (hle (by simpa [Submodule.mem_colon_singleton] using hsx))`.
+-/
 theorem eq_zero_of_extZero {M : Type} [AddCommGroup M] [Module R M] (h : ExtZero (R := R) M 0)
     (x : M) (hx : ∀ p : Ideal R, p.IsPrime → p ≠ maximalIdeal R → ∃ s, s ∉ p ∧ s • x = 0) :
     x = 0 := by
@@ -117,6 +150,21 @@ theorem eq_zero_of_extZero {M : Type} [AddCommGroup M] [Module R M] (h : ExtZero
   · obtain ⟨s, hs, hsx⟩ := hx P hP.isPrime hm
     exact hs (hle (by simpa [Submodule.mem_colon_singleton] using hsx))
 
+/- English proof (translation)
+Set `μ : (D₁ ⧸ LinearMap.range β) →ₗ[R] (D₁ ⧸ LinearMap.range β)` to `ϖ • LinearMap.id`. Establish `hμ : ExtZero (R` using `R) ((D₁ ⧸ LinearMap.range β) ⧸ LinearMap.range μ) 0 := extZero_coker μ _ hQ (Submodule.mkQ_surjective _) μ.exact_map_mkQ_range 0 (hE 1 (by omega)) (hE 0 (by omega))`. Establish `hker : LinearMap.ker α ≤ LinearMap.range β`. Use `Submodule.le_of_le_smul_of_le_jacobson_bot (I := maximalIdeal R) (IsNoetherian.noetherian _) (maximalIdeal_le_jacobson _) fun x hx => ?_` and prove the remaining obligations. Establish `h1` using `eq_zero_of_extZero hμ ((LinearMap.range μ).mkQ ((LinearMap.range β).mkQ x)) fun p hp hm => by`.
+
+Distinguish the cases in `hϖp : ϖ ∈ p`. Take `⟨s, hs, hs'⟩` from `h₁ p hp hϖp hm`. Use `⟨s, hs, ?_⟩` and prove the remaining obligations. Rewrite using `[← map_smul, ← map_smul, Submodule.mkQ_apply (LinearMap.range β), (Submodule.Quotient.mk_eq_zero _).2 (hs' x hx), map_zero]`. Use `⟨ϖ, hϖp, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[← map_smul]`. Conclude with `(Submodule.Quotient.mk_eq_zero _).2 ⟨_, rfl⟩`. Take `⟨z, hz⟩` from `(Submodule.Quotient.mk_eq_zero _).1 h1`. Take `⟨z, rfl⟩` from `Submodule.mkQ_surjective _ z`. Take `⟨y, hy⟩ : ϖ • z - x ∈ LinearMap.range β` from `(Submodule.Quotient.eq _).1 hz`.
+
+Establish `hz0 : α z = 0`. Use `hαβ y` as an intermediate fact. Rewrite `this` using `[hy, map_sub, LinearMap.mem_ker.mp hx, sub_zero, map_smul]`. Conclude with `hD₀ (this.trans (smul_zero ϖ).symm)`. Establish `: x = -β y + ϖ • z` using `by rw [hy]; abel`.
+
+Rewrite using `[this]`. Conclude with `Submodule.add_mem_sup (neg_mem ⟨y, rfl⟩) (Submodule.smul_mem_smul hϖ hz0)`. Establish `hle : LinearMap.range β ≤ LinearMap.ker α`. Introduce and unpack `_ ⟨y, rfl⟩`. Conclude with `hαβ y`.
+
+Establish `hE' : ∀ j < n + 1, ExtZero (R` using `R) (D₀ ⧸ LinearMap.range α) j := fun j hj => extZero_coker ((LinearMap.range β).liftQ α hle) (LinearMap.range α).mkQ (LinearMap.ker_eq_bot.mp (Submodule.ker_liftQ_eq_bot _ _ _ hker)) (Submodule.mkQ_surjective _) (by rw [LinearMap.exact_iff, Submodule.ker_mkQ, Submodule.range_lift …`. Use `⟨IsSMulRegular.of_right_eq_zero_of_smul fun x hx => ?_, hE'⟩` and prove the remaining obligations. Use `eq_zero_of_extZero (hE' 0 (by omega)) x fun p hp hm => ?_` and prove the remaining obligations. Distinguish the cases in `hϖp : ϖ ∈ p`. Take `⟨s, hs, hs'⟩` from `h₀ p hp hϖp hm`.
+
+Take `⟨x, rfl⟩` from `Submodule.mkQ_surjective _ x`. Conclude with `⟨s, hs, (Submodule.Quotient.mk_eq_zero _).2 (hs' x ((Submodule.Quotient.mk_eq_zero _).1 hx))⟩`. Conclude with `⟨ϖ, hϖp, hx⟩`.
+-/
 theorem coker_step (ϖ : R) (hϖ : ϖ ∈ maximalIdeal R) {D₀ D₁ D₂ : Type}
     [AddCommGroup D₀] [Module R D₀] [AddCommGroup D₁] [Module R D₁] [AddCommGroup D₂] [Module R D₂]
     [Module.Finite R D₁] (β : D₂ →ₗ[R] D₁) (α : D₁ →ₗ[R] D₀) (hαβ : ∀ x, α (β x) = 0)
@@ -174,6 +222,19 @@ theorem coker_step (ϖ : R) (hϖ : ϖ ∈ maximalIdeal R) {D₀ D₁ D₂ : Type
       (hs' x ((Submodule.Quotient.mk_eq_zero _).1 hx))⟩
   · exact ⟨ϖ, hϖp, hx⟩
 
+/- English proof (translation)
+Take `⟨xs, h, hd⟩` from `exists_ofList_eq_maximalIdeal_length_eq (R ⧸ Ideal.span {ϖ})`. Establish `hreg` using `isRegular_of_ofList_eq_maximalIdeal h hd.le`. Establish `hlen : xs.length = g`. Rewrite `hd` using `[hg]`. Conclude with `hd` after adjusting the coercions.
+
+Set `σ` to `Function.surjInv (Ideal.Quotient.mk_surjective (I := Ideal.span {ϖ}))`. Establish `hσ : ∀ a, Ideal.Quotient.mk _ (σ a) = a` using `Function.surjInv_eq _`. Establish `hmap : (xs.map σ).map (algebraMap R (R ⧸ Ideal.span {ϖ})) = xs`. Rewrite using `[List.map_map]`. Conclude with `List.map_id'' hσ xs`.
+
+Establish `h1 : RingTheory.Sequence.IsRegular (R ⧸ Ideal.span {ϖ}) (xs.map σ)`. Rewrite `hreg` using `[← hmap]`. Conclude with `((AddEquiv.refl _).isRegular_congr <| List.forall₂_map_left_iff.mpr <| List.forall₂_same.mpr fun r _ => algebraMap_smul _ r).1 hreg`. Establish `e : QuotSMulTop ϖ R ≃ₗ[R] R ⧸ Ideal.span {ϖ}` using `Submodule.quotEquivOfEq _ _ (by`. Rewrite using `[← Submodule.ideal_span_singleton_smul, smul_eq_mul, Ideal.mul_top])`.
+
+Establish `h2 : RingTheory.Sequence.IsRegular R (ϖ :: xs.map σ)`. Rewrite using `[RingTheory.Sequence.isRegular_cons_iff, e.isRegular_congr]`. Conclude with `⟨(isRegular_iff_mem_nonZeroDivisors.mpr hϖ).left.isSMulRegular, h1⟩`. Use `ModuleCat.subsingleton_ext_of_exists_isRegular (maximalIdeal R) _ ?_ _ ?_ _ ?_ h2 j (by simpa [hlen] using hj)` and prove the remaining obligations. Rewrite using `[Module.support_eq_zeroLocus, Ideal.annihilator_quotient]`.
+
+Rewrite using `[smul_eq_mul, Ideal.mul_top]`. Conclude with `(maximalIdeal.isMaximal R).ne_top.lt_top`. Introduce `r hr`. Break down `List.mem_cons.mp hr with rfl | hr` into its components or cases. Conclude with `hm`.
+
+Take `⟨x, hx, rfl⟩` from `List.mem_map.mp hr`. Establish `hx' : x ∈ maximalIdeal _` using `h ▸ Ideal.subset_span hx`. Rewrite `hx'`, the goal using `[mem_maximalIdeal, mem_nonunits_iff]`. Conclude with `fun hu => hx' (hσ x ▸ hu.map (Ideal.Quotient.mk _))`.
+-/
 theorem extZero_self (ϖ : R) (g : ℕ) (hϖ : ϖ ∈ nonZeroDivisors R) (hm : ϖ ∈ maximalIdeal R)
     [IsRegularLocalRing (R ⧸ Ideal.span {ϖ})] (hg : ringKrullDim (R ⧸ Ideal.span {ϖ}) = g)
     (j : ℕ) (hj : j < g + 1) : ExtZero (R := R) R j := by
@@ -216,10 +277,16 @@ section Complex
 
 variable (C : CochainComplex (ModuleCat.{0} R) ℕ)
 
+/- English proof (translation)
+Rewrite using `[← LinearMap.comp_apply, ← ModuleCat.hom_comp, C.d_comp_d]`. Both sides reduce to the same expression.
+-/
 theorem d_d_apply (i j k : ℕ) (x : C.X i) : (C.d j k).hom ((C.d i j).hom x) = 0 := by
   rw [← LinearMap.comp_apply, ← ModuleCat.hom_comp, C.d_comp_d]
   rfl
 
+/- English proof (translation)
+Set `` to `φ.toAlgebra`. Apply the tactic sequence `rw [← exact_lTensor_iff_residueField p K hφ, ← isZero_homology_extendScalars_iff K C (by cases i <;> simp) (by simp), ← HomologicalComplex.exactAt_iff_isZero_homology]`. Conclude with `h`.
+-/
 theorem exact_fibre (p : Ideal R) [p.IsPrime] {K : Type} [Field K] (φ : R →+* K)
     (hφ : RingHom.ker φ = p) (i : ℕ)
     (h : (((ModuleCat.extendScalars φ).mapHomologicalComplex _).obj C).ExactAt i) :
@@ -231,6 +298,11 @@ theorem exact_fibre (p : Ideal R) [p.IsPrime] {K : Type} [Field K] (φ : R →+*
     ← HomologicalComplex.exactAt_iff_isZero_homology]
   exact h
 
+/- English proof (translation)
+Proceed by induction on `hk : n + 1 - i generalizing i with`. Consider the case `zero`. Use `ModuleCat.subsingleton_of_isZero (hn i (by omega))` as an intermediate fact. Conclude with `⟨1, (Ideal.ne_top_iff_one p).1 hp.ne_top, 0, 0, fun x => Subsingleton.elim _ _⟩`. Consider the case `succ k ih`.
+
+Take `⟨s, hs, h₁, h₂, hh⟩` from `ih (i + 1) (by omega)`. Use `(hF i).1` as an intermediate fact. Use `(hF i).2` as an intermediate fact. Conclude with `exists_homotopy_step p _ _ _ (d_d_apply C _ _ _) (d_d_apply C _ _ _) (h i) s hs h₁ h₂ hh`.
+-/
 theorem exists_homotopy (hF : ∀ i, Module.Free R (C.X i) ∧ Module.Finite R (C.X i))
     (n : ℕ) (hn : ∀ i, n < i → IsZero (C.X i)) (p : Ideal R) [hp : p.IsPrime]
     (h : ∀ i, Exact ((C.d (i - 1) i).hom.lTensor p.ResidueField)
@@ -253,6 +325,27 @@ end DualCokernel
 
 open DualCokernel in
 
+/- English proof (translation)
+Introduce `A _ _ _ ϖ g hϖ hreg hg C hF ⟨n, hn⟩ hex`. Establish `hfree` using `fun i => (hF i).1`. Establish `hfin` using `fun i => (hF i).2`. Establish `hm : ϖ ∈ maximalIdeal A`. Use `le_maximalIdeal (Ideal.Quotient.nontrivial_iff.mp inferInstance) (Ideal.mem_span_singleton_self ϖ)` and prove the remaining obligations.
+
+Establish `hDreg : ∀ i, IsSMulRegular (Module.Dual A (C.X i)) ϖ` using `fun i => IsSMulRegular.of_right_eq_zero_of_smul fun f hf => LinearMap.ext fun x => (mem_nonZeroDivisors_iff.mp hϖ).1 _ (LinearMap.congr_fun hf x)`. Establish `hDext : ∀ i, ∀ j < g + 1, ExtZero (R` using `A) (Module.Dual A (C.X i)) j := fun i j hj => FiniteLengthComplex.subsingleton_ext_free _ j (extZero_self ϖ g hϖ hm hg j hj) _`. Establish `hdd : ∀ i j k f, (C.d i j).hom.dualMap ((C.d j k).hom.dualMap f) = 0` using `fun i j k f => by`. Use extensionality with `x`. Simplify using `[d_d_apply]`.
+
+Establish `hloc : ∀ i, ∀ p : Ideal A, p.IsPrime → ϖ ∈ p → p ≠ maximalIdeal A → ∃ s, s ∉ p ∧ ∀ f, (C.d (i - 1) i).hom.dualMap f = 0 → s • f ∈ LinearMap.range (C.d i (i + 1)).hom.dualMap`. Introduce `i p hp hϖp hpm`. Take `⟨K, _, φ, hφ, hK⟩` from `hex ⟨p, hp⟩ hϖp`. Take `⟨t, ht, k₀, k₁, hk⟩` from `exists_homotopy C hF n hn p (fun j => exact_fibre C p φ hφ j (hK j (Or.inl hpm))) i`. Use `⟨t, ht, fun f hf => ⟨k₁.dualMap f, LinearMap.ext fun x => ?_⟩⟩` and prove the remaining obligations.
+
+Establish `h1 : f ((C.d (i - 1) i).hom (k₀ x)) = 0` using `LinearMap.congr_fun hf (k₀ x)`. Establish `h2` using `congrArg f (hk x)`. Rewrite `h2` using `[map_add, h1, zero_add, map_smul]`. Conclude with `h2`. Establish `key : ∀ k i, i + k = g → IsSMulRegular (Module.Dual A (C.X i) ⧸ LinearMap.range (C.d i (i + 1)).hom.dualMap) ϖ ∧ ∀ j < i + 1, ExtZero (R` using `A) (Module.Dual A (C.X i) ⧸ LinearMap.range (C.d i (i + 1)).hom.dualMap) j := by`.
+
+Introduce `k`. Proceed by induction on `k with`. Consider the case `zero`. Introduce and unpack `i rfl`. Take `⟨K, _, φ, hφ, hK⟩` from `hex ⟨maximalIdeal A, inferInstance⟩ hm`.
+
+Take `⟨s, t, hst⟩` from `exists_homotopy_of_forall_exact_residueField (f := (C.d i (i + 1)).hom) (g := (C.d (i + 1) (i + 1 + 1)).hom) (LinearMap.ext (d_d_apply C _ _ _)) fun m hm' => by`. Conclude with `exact_fibre C m φ (hφ.trans (eq_maximalIdeal hm').symm) (i + 1) (hK _ (Or.inr (by omega)))`. Establish `hds : ∀ x, (C.d i (i + 1)).hom (s ((C.d i (i + 1)).hom x)) = (C.d i (i + 1)).hom x` using `fun x => by simpa [d_d_apply] using LinearMap.congr_fun hst ((C.d i (i + 1)).hom x)`. Set `ι` to `(LinearMap.range (C.d i (i + 1)).hom.dualMap).liftQ (LinearMap.id - (C.d i (i + 1)).hom.dualMap ∘ₗ s.dualMap) (by`. Introduce and unpack `_ ⟨f, rfl⟩`.
+
+Use extensionality with `x`. Simplify using `[hds])`. Establish `hι : (LinearMap.range (C.d i (i + 1)).hom.dualMap).mkQ ∘ₗ ι = LinearMap.id`. Use `Submodule.linearMap_qext _ (LinearMap.ext fun f => ?_)` and prove the remaining obligations. Use `(Submodule.Quotient.eq _).2 ⟨-s.dualMap f, ?_⟩` and prove the remaining obligations.
+
+Simplify using `[ι]`. Establish `hinj : Injective ι` using `HasLeftInverse.injective ⟨_, LinearMap.congr_fun hι⟩`. Conclude with `⟨(hDreg i).of_injective ι hinj, fun j hj => extZero_retract ι _ hι j (hDext i j hj)⟩`. Consider the case `succ k ih`. Introduce `i hi`.
+
+Take `⟨h1, h2⟩` from `ih (i + 1) (by omega)`. Use `coker_step ϖ hm _ _ (hdd _ _ _) (hDreg i) i (fun j hj => hDext i j (by omega)) h1 h2 (hloc (i + 1)) fun p hp hϖp hpm => ?_` and prove the remaining obligations. Take `⟨s, hs, hs'⟩` from `hloc i p hp hϖp hpm`. Use `⟨s, hs, fun f ⟨y, hy⟩ => hs' f (hDreg _ ?_)⟩` and prove the remaining obligations. Use `hdd (i - 1) i (i + 1) y` as an intermediate fact.
+
+Rewrite `this` using `[hy, map_smul]`. Conclude with `this.trans (smul_zero ϖ).symm`. Conclude with `(key g 0 (zero_add g)).1`.
+-/
 theorem isSMulRegular_coker_dualMap_of_exact_fibres :
     ∀ (A : Type) [CommRing A] [IsNoetherianRing A] [IsLocalRing A] (ϖ : A) (g : ℕ),
       ϖ ∈ nonZeroDivisors A → IsRegularLocalRing (A ⧸ Ideal.span {ϖ}) →

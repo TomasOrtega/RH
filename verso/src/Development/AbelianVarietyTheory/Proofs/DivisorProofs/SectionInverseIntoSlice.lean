@@ -4,6 +4,9 @@ open Matrix MeasureTheory ValuativeRel GlobalTheory.SplitFlip GlobalTheory.SmGL 
 
 namespace GlobalTheory.RankFibreKer
 
+/- English proof (translation)
+Apply `idx.injective` to reduce the goal to its premises. Break down `lt_trichotomy (idx J) (idx J') with hl | he | hl` into its components or cases. Conclude with `absurd ((h'.2 J).2 hl) (not_lt.2 (h.2 J').1)`. Conclude with `he`. Conclude with `absurd ((h.2 J').2 hl) (not_lt.2 (h'.2 J).1)`.
+-/
 theorem eq_of_isFirstMax_of_isFirstMax {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
     {a d : ℕ} {Y : Matrix (Fin a) (Fin d) k} {J J' : Fin a ↪ Fin d} (h : IsFirstMax Y J) (h' : IsFirstMax Y J') :
     J = J' := by
@@ -13,6 +16,19 @@ theorem eq_of_isFirstMax_of_isFirstMax {k : Type} [Field k] [ValuativeRel k] [To
   · exact he
   · exact absurd ((h.2 J').2 hl) (not_lt.2 (h'.2 J).1)
 
+/- English proof (translation)
+Introduce `k _ _ _ _ a d Y J hJ`. Establish `hex : ∃ J, IsFirstMax Y J` using `⟨J, hJ⟩`. Establish `hc : hex.choose = J` using `eq_of_isFirstMax_of_isFirstMax hex.choose_spec hJ`. Establish `hs : (sec Y).val = Y.submatrix id J`. Unfold `sec`.
+
+Rewrite using `[dif_pos hex]`. Use `show Y.submatrix id hex.choose = _`. Rewrite using `[hc]`. Establish `hsub : (((sec Y)⁻¹).val * Y).submatrix id J = ((sec Y)⁻¹).val * Y.submatrix id J`. Use extensionality with `i j`.
+
+Simplify using `[Matrix.mul_apply]`. Establish `hdet : (((sec Y)⁻¹).val).det = (minor Y J)⁻¹`. Establish `e` using `congrArg Matrix.det (sec Y).inv_mul`. Rewrite `e` using `[Matrix.det_mul, Matrix.det_one, hs]`. Conclude with `eq_inv_of_mul_eq_one_left e`.
+
+Use `⟨J, ?_, fun J' => ?_⟩` and prove the remaining obligations. Rewrite using `[hsub, ← hs]`. Conclude with `(sec Y).inv_mul`. Rewrite using `[minor_mul, hdet, map_mul, map_inv₀]`. Establish `h0 : valuation k (minor Y J) ≠ 0` using `by simpa using hJ.1`.
+
+Prove the components needed by the constructor for the conclusion. Rewrite using `[inv_mul_le_iff₀ (zero_lt_iff.2 h0), mul_one]`. Conclude with `(hJ.2 J').1`. Introduce `hl`. Rewrite using `[inv_mul_lt_iff₀ (zero_lt_iff.2 h0), mul_one]`.
+
+Conclude with `(hJ.2 J').2 hl`.
+-/
 theorem sec_inv_mul_mem_slice : ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] (a d : ℕ) (Y : Matrix (Fin a) (Fin d) k) (J : Fin a ↪ Fin d), IsFirstMax Y J →
     ((sec Y)⁻¹).val * Y ∈ slice k a d := by
   intro k _ _ _ _ a d Y J hJ

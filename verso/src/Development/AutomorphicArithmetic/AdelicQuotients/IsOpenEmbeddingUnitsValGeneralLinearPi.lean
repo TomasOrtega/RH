@@ -1,5 +1,18 @@
 import Mathlib
 
+/- English proof (translation)
+Introduce `W _ K _ n`. Establish `hdet : Continuous (fun M : Matrix (Fin n) (Fin n) (∀ w, K w) => M.det)` using `continuous_id.matrix_det`. Establish `hadj : Continuous (fun M : Matrix (Fin n) (Fin n) (∀ w, K w) => M.adjugate)` using `continuous_id.matrix_adjugate`. Establish `hU : ∀ M : Matrix (Fin n) (Fin n) (∀ w, K w), IsUnit M ↔ ∀ w, M.det w ≠ 0`. Introduce `M`.
+
+Rewrite using `[Matrix.isUnit_iff_isUnit_det, Pi.isUnit_iff]`. Simplify using `only [isUnit_iff_ne_zero]`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Use `Units.isEmbedding_val_mk' (f := fun M : Matrix (Fin n) (Fin n) (∀ w, K w) => (fun w => (M.det w)⁻¹ : ∀ w, K w) • M.adjugate) ?_ ?_` and prove the remaining obligations. Establish `h1 : ContinuousOn (fun M : Matrix (Fin n) (Fin n) (∀ w, K w) => (fun w => (M.det w)⁻¹ : ∀ w, K w)) {x | IsUnit x}`.
+
+Use `continuousOn_pi.2 fun w => ?_` and prove the remaining obligations. Conclude with `(((continuous_apply w).comp hdet).continuousOn).inv₀ fun M hM => (hU M).1 hM w`. Use `continuousOn_pi.2 fun i => continuousOn_pi.2 fun j => ?_` and prove the remaining obligations. Conclude with `h1.mul (hadj.matrix_elem i j).continuousOn`. Introduce `u`.
+
+Establish `hu` using `(hU u.1).1 u.isUnit`. Use `symm`. Use `Units.inv_eq_of_mul_eq_one_right ?_` and prove the remaining obligations. Rewrite using `[Matrix.mul_smul, Matrix.mul_adjugate, smul_smul]`. Establish `: ((fun w => ((u.1).det w)⁻¹ : ∀ w, K w) * (u.1).det) = 1`.
+
+Use function extensionality and compare the values at `w`. Conclude with `inv_mul_cancel₀ (hu w)`. Rewrite using `[this, one_smul]`. Establish `: Set.range (Units.val : GL (Fin n) (∀ w, K w) → Matrix (Fin n) (Fin n) (∀ w, K w)) = ⋂ w, {M : Matrix (Fin n) (Fin n) (∀ w, K w) | M.det w ≠ 0}`. Use extensionality with `M`.
+
+Simplify using `only [Set.mem_iInter, Set.mem_setOf_eq]`. Conclude with `hU M`. Rewrite using `[this]`. Conclude with `isOpen_iInter_of_finite fun w => isOpen_ne_fun ((continuous_apply w).comp hdet) continuous_const`.
+-/
 theorem UpperTheory.isOpenEmbedding_units_val_generalLinearPi :
     ∀ (W : Type) [Finite W] (K : W → Type) [∀ w, NontriviallyNormedField (K w)] (n : ℕ), Topology.IsOpenEmbedding (Units.val : GL (Fin n) (∀ w, K w) → Matrix (Fin n) (Fin n) (∀ w, K w)) := by
   intro W _ K _ n

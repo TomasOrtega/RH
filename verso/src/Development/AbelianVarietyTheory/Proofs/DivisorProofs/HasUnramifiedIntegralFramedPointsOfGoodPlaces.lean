@@ -41,6 +41,21 @@ open scoped CategoryTheory.Obj
 
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E}
 
+/- English proof (translation)
+Establish `hn0 : 0 < n` using `Nat.pos_of_ne_zero fun h => hn (h ▸ dvd_zero q)`. Take `⟨N, _, _, ω, C, C₀, ψ, hω, hψ, hy⟩` from `GlobalTheory.T.exists_cmEllipticCurve_galois_torsion_sections E H n hn0`. Establish `h1 : wC H (1, 0) = 1` using `by simp [wC]`. Take `⟨F', _, hF, h⟩` from `GlobalTheory.T.exists_unramified_field_of_inertia_property N q hq (fun τ => ∃ io, C₀.ActsBy τ io n (1, 0)) (by`. Introduce and unpack `τ τ' ⟨i, hi, hi'⟩ ⟨j, hj, hj'⟩`.
+
+Establish `e : spMap (τ' : ℂ →+* ℂ) ≫ spMap (τ : ℂ →+* ℂ) = spMap ((τ.trans τ' : ℂ ≃+* ℂ) : ℂ →+* ℂ)`. Rewrite using `[← Spec.map_comp]`. Both sides reduce to the same expression. Use `⟨j ≫ i, (hj.comp hi).congr e rfl, fun a => ?_⟩` and prove the remaining obligations. Establish `k` using `hi' a`.
+
+Establish `k'` using `hj' a`. Rewrite `k`, `k'`, the goal using `[h1, _root_.one_mul]`. Rewrite using `[← Category.assoc, k', Category.assoc, k, ← Category.assoc, e])`. Use the proof step `(by`. Introduce `τ 𝔮 h𝔮 hq𝔮 hτ`.
+
+Use `haveI := C.act.hom (GlobalTheory.CM.wK H)`. Establish `hu : 1 - ω - ω ∉ 𝔮` using `fun hm => by`. Establish `h2 : (H.d : 𝓞 N) ∈ 𝔮`. Establish `: (H.d : 𝓞 N) = -((1 - ω - ω) * (1 - ω - ω))` using `by linear_combination hω`. Rewrite using `[this]`.
+
+Conclude with `neg_mem (𝔮.mul_mem_left _ hm)`. Take `⟨u, v, huv⟩` from `Nat.isCoprime_iff_coprime.2 ((Nat.Prime.coprime_iff_not_dvd hq).2 hd)`. Use `h𝔮.ne_top ((Ideal.eq_top_iff_one _).2 ?_)` and prove the remaining obligations. Establish `h3 : (u : 𝓞 N) * (q : 𝓞 N) + (v : 𝓞 N) * (H.d : 𝓞 N) = 1` using `by exact_mod_cast congrArg (Int.cast : ℤ → 𝓞 N) huv`. Rewrite using `[← h3]`.
+
+Conclude with `add_mem (𝔮.mul_mem_left _ hq𝔮) (𝔮.mul_mem_left _ h2)`. Take `⟨io, hio, hx⟩` from `GlobalTheory.T.inertia_fixes_complex_fibre_pure_endomorphism_torsion hA hG N C.P _ (1 - ω) ω (GlobalTheory.T.cmEllipticCurve_isPureHodgeEndomorphismBaseChange hR E H _ ω C) q hq 𝔮 h𝔮 hq𝔮 hu τ hτ C₀.P.A ψ hψ`. Use `⟨io, hio, fun a => ?_⟩` and prove the remaining obligations. Take `⟨y, hy1, hy2⟩` from `hy a`. Rewrite using `[h1, _root_.one_mul]`.
+
+Conclude with `hx n hn y hy1 _ (Over.w (C₀.u.ex fun _ => C₀.c * (wC H a / n))) hy2)`. Conclude with `⟨F', inferInstance, hF, fun τ hτ => ⟨C₀, h τ hτ⟩⟩`.
+-/
 theorem exists_curveOver (hA : GlobalTheory.Published.FormalAlgebraisation) (hG : GlobalTheory.Published.GrothendieckMessing)
     (hR : GlobalTheory.Published.AbelianDeRham) (H : Host E) {n q : ℕ} (hq : q.Prime) (hn : ¬ q ∣ n) (hd : ¬ q ∣ H.d) :
     ∃ (F' : IntermediateField ℚ ℂ) (_ : NumberField F'), ¬ (q : ℤ) ∣ discr F' ∧ CurveOver H F' n := by
@@ -77,6 +92,11 @@ theorem exists_curveOver (hA : GlobalTheory.Published.FormalAlgebraisation) (hG 
       exact hx n hn y hy1 _ (Over.w (C₀.u.ex fun _ => C₀.c * (wC H a / n))) hy2)
   exact ⟨F', inferInstance, hF, fun τ hτ => ⟨C₀, h τ hτ⟩⟩
 
+/- English proof (translation)
+Establish `h0 : (m : ℂ) ≠ 0` using `Nat.cast_ne_zero.2 hm.ne'`. Establish `e : F.ex i P ((m : ℂ)⁻¹ • P t) = F.ex i P ((m : ℂ)⁻¹ • P w)` using `Over.OverMorphism.ext h`. Establish `e'` using `F.ex_add i P hP ((m : ℂ)⁻¹ • P (w - t)) ((m : ℂ)⁻¹ • P t)`. Rewrite `e'` using `[← smul_add, ← map_add, sub_add_cancel, e]`. Take `⟨x, hx⟩` from `(F.ex_ker i P hP _).1 (mul_eq_right.1 e'.symm)`.
+
+Use `⟨x, ?_⟩` and prove the remaining obligations. Rewrite using `[← sub_eq_iff_eq_add']`. Apply `hP.2.1` to reduce the goal to its premises. Rewrite using `[map_nsmul, hx, ← Nat.cast_smul_eq_nsmul ℂ, smul_smul, mul_inv_cancel₀ h0, one_smul]`.
+-/
 theorem exists_eq_add_nsmul {D : Datum H} {l : Level H} {Xo : Moduli D l} {σ : KA l →+* ℂ} {g : ℕ}
     {ty : Fin g → (E →+* ℂ)} (F : FamilyUnif Xo σ ty) {i : Fin F.n} {P : (F.Di i).La →+ (Fin g → ℂ)}
     (hP : IsPeriod (F.Di i) ty P) {m : ℕ} (hm : 0 < m) {t w : (F.Di i).La}
@@ -91,6 +111,17 @@ theorem exists_eq_add_nsmul {D : Datum H} {l : Level H} {Xo : Moduli D l} {σ : 
   apply hP.2.1
   rw [map_nsmul, hx, ← Nat.cast_smul_eq_nsmul ℂ, smul_smul, mul_inv_cancel₀ h0, one_smul]
 
+/- English proof (translation)
+Take `⟨C, io, hC⟩` from `hfix`. Establish `hτ : τ H.rt0 = H.rt0`. Rewrite using `[← hσ]`. Conclude with `RingHom.congr_fun hτσ _`. Take `⟨i', P', hP', hu⟩` from `F.onto (spMap (τ : ℂ →+* ℂ) ≫ F.u i P) (by rw [Category.assoc, F.over_σ i P hP, GlobalTheory.ConjPermutes.spMap_comp, hτσ])`.
+
+Establish `hM : 0 < l.M` using `lt_of_lt_of_le (by norm_num) l.three_le`. Establish `hA : 0 < l.A` using `l.A_pos`. Establish `hdiv : ∀ m : ℕ, m ∣ N * l.M' → C.ActsBy τ io m (1, 0)` using `((GlobalTheory.CompRat.Acts.main E H C τ hτ io hC.1 _ (Nat.mul_pos hN (Nat.lcm_pos hM hA))).2 _ hC).2`. Take `⟨Φ, hE, hp, hm, hact⟩` from `GlobalTheory.T.exists_lattice_isometry_conj_point_split_up_to_index E H D l Xo σ g ty F hD hσ hty τ hτ C io hC.1 i P hP i' P' hP' N hN hs hu.symm (hdiv _ (dvd_mul_right _ _))`. Take `⟨L, hL⟩` from `GlobalTheory.T.exists_complexLinear_of_pure_types_finite_index E H _ _ g ty P P' hP hP' Φ N hN hs hp hm`.
+
+Establish `tu : ∀ (y : Sp ℂ ⟶ Xo.X) (s : 𝟙_ (Over Xo.X) ⟶ Xo.univ.t.G), (toUnit (Over.mk y) ≫ s).left = y ≫ s.left`. Introduce `y s`. Rewrite using `[Over.comp_left]`. Use `congr 1`. Establish `hA' : ∀ v, ∃ x, Φ (F.t i v) = F.t i' v + l.A • x` using `fun v => by`.
+
+Establish `key` using `hact l.A hA (hdiv _ (Nat.mul_dvd_mul_left _ (Nat.dvd_lcm_right _ _))) (F.t i v)`. Rewrite `key` using `[← F.ex_etaA i P hP v, tu, ← Category.assoc, hu.symm, ← tu, F.ex_etaA i' P' hP' v]`. Conclude with `exists_eq_add_nsmul F hP' hA key`. Use `hu.symm.trans ((GlobalTheory.UnifPoint.point_eq_iff_isometry_closed GlobalTheory.thetaUnifAV_all GlobalTheory.firstFiveLaws.1 E H D l Xo σ g ty hD hσ hty (F.Di i) (F.Di i') (F.t i) (F.t i') P P' (F.u i P) (F.u i' P') (F.ex i P) (F.ex i' P') ⟨F.over_σ i P hP, hP, ⟨F.ex_add i P hP, …` and prove the remaining obligations. Establish `key` using `hact l.M hM (hdiv _ (Nat.mul_dvd_mul_left _ (Nat.dvd_lcm_left _ _))) (F.t i v)`.
+
+Rewrite `key` using `[← F.ex_eta i P hP v hv, tu, ← Category.assoc, hu.symm, ← tu, F.ex_eta i' P' hP' v hv]`. Conclude with `exists_eq_add_nsmul F hP' hM key`.
+-/
 theorem conj_point_eq {D : Datum H} {l : Level H} {Xo : Moduli D l} {σ : KA l →+* ℂ} {g : ℕ}
     {ty : Fin g → (E →+* ℂ)} (F : FamilyUnif Xo σ ty)
     (hD : 1 ≤ D.p + D.q) (hσ : σ (baseKA l).ρ = H.rt0) (hty : IsTypeFn H D.p D.q ty) (τ : ℂ ≃+* ℂ)
@@ -143,6 +174,25 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.S
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E} {Dw : Datum H}
   {l : Level H} {Xo : Moduli Dw l} {c : Coeff l}
 
+/- English proof (translation)
+Establish `hex : ∃ (g : ℕ) (ty : Fin g → (E →+* ℂ)), IsTypeFn H Dw.p Dw.q ty` using `by classical`. Set `m : (E →+* ℂ) → ℕ` to `fun τ => if τ (H.rt : E) = H.rt0 then Dw.p else Dw.q`. Set `e` to `(Fintype.equivFin (Σ τ : E →+* ℂ, Fin (m τ))).symm`. Establish `h : ∀ τ, Nat.card {i // (e i).1 = τ} = m τ` using `fun τ => by`. Rewrite using `[Nat.card_congr ((e.subtypeEquiv (q := fun x => x.1 = τ) fun _ => Iff.rfl).trans (Equiv.sigmaSubtype τ))]`.
+
+Simplify using the standard rewrite rules. Conclude with `⟨_, fun i => (e i).1, fun τ => ⟨fun hτ => by rw [h]; simp [m, hτ], fun hτ => by rw [h]; simp [m, hτ]⟩⟩`. Take `⟨g, ty, hty⟩` from `hex`. Take `⟨F⟩` from `GlobalTheory.closing_of_abelianSchemeLaws E H Dw l Xo (algebraMap (KA l) ℂ) g ty hD rfl hty`. Take `⟨L, _, _, j, x₁, hx₁, hZ₁⟩` from `exists_numberField_point Z`.
+
+Use `letI : Algebra c.F L := j.toAlgebra`. Set `k : L →ₐ[c.F] ℂ` to `IsAlgClosed.lift`. Take `⟨h1, h2⟩` from `GlobalTheory.FlatLine.point_ext hx₁ hZ₁ k.toRingHom`. Establish `e : k.toRingHom.comp j = algebraMap c.F ℂ` using `k.comp_algebraMap`. Rewrite `h1` using `[e]`.
+
+Generalize the expression as in `spMap k.toRingHom ≫ x₁ = x₂ at h1 h2`. Establish `hsp : spMap (algebraMap (KA l) ℂ) = spMap (algebraMap c.F ℂ) ≫ spMap (IntermediateField.inclusion c.le).toRingHom`. Rewrite using `[← Spec.map_comp]`. Both sides reduce to the same expression. Take `⟨i, P, hP, hu⟩` from `F.onto (x₂ ≫ prX Xo c) (by`.
+
+Rewrite using `[Category.assoc, pullback.condition, ← Category.assoc, h1, hsp])`. Take `⟨Lp, Lm, N, hN, hs, ho, hp, hm⟩` from `GlobalTheory.T.exists_lattice_split_index_prime_to E H (F.Di i) q hq hqd`. Establish `hN0 : 0 < N` using `Nat.pos_of_ne_zero fun h => hN (h ▸ dvd_zero q)`. Take `⟨P₀, hP₀, k₁, k₂⟩` from `GlobalTheory.CM.FamCompare.exists_period (F.Di i) Lp Lm (fun z => ⟨N, hN0, hs z⟩) ho hp hm (ty := ty) (by rw [(F.sig i).1, (F.sig i).2]; exact hty)`. Set `x : Sp ℂ ⟶ Xo.XF c` to `pullback.lift (F.u i P₀) (spMap (algebraMap c.F ℂ)) (by rw [F.over_σ i P₀ hP₀, hsp])`.
+
+Establish `hx1 : x ≫ prX Xo c = F.u i P₀` using `pullback.lift_fst _ _ _`. Establish `hx2 : x ≫ strK = spMap (algebraMap c.F ℂ)` using `pullback.lift_snd _ _ _`. Use `⟨N, x, hN, hx2, fun p => ?_, fun τ hτ hC => ?_⟩` and prove the remaining obligations. Take `⟨f, hf⟩` from `exists_indicator (CompSplitPfB.cspB_isClopen (CompSplitPfD.cspD_comp_disj Xo c) Z)`. Establish `key` using `valAt_eq_of_finite_values_anyLevel E H Dw l Xo _ g ty F hD rfl hty c (algebraMap c.F ℂ) f {0, 1} (Set.toFinite _) (fun y _ => by`.
+
+Rewrite using `[valAt'_top]`. Distinguish the cases in `h : y p ∈ (Z : Set (Xo.XF c))`. Use `exacts [Or.inr ((hf y p).1 h), Or.inl ((hf y p).2 h)]) i P₀ P hP₀ hP x x₂ hx1 hx2 hu.symm h1`. Rewrite `key` using `[valAt'_top, valAt'_top, (hf x₂ p).1 (h2 p)]`. Assume the negation of the conclusion as `h`.
+
+Conclude with `zero_ne_one (((hf x p).2 h).symm.trans key)`. Establish `h` using `conj_point_eq F hD rfl hty τ (RingHom.ext fun a => hτ _ (c.le a.2)) hN0 hC i P₀ hP₀ fun v => sup_le_sup k₁ k₂ (hs v)`. Apply `pullback.hom_ext` to reduce the goal to its premises. Rewrite using `[Category.assoc, hx1, h]`. Rewrite using `[Category.assoc, hx2, ← Spec.map_comp]`.
+
+Use `congr 1`. Use extensionality with `a`. Conclude with `hτ _ a.2`.
+-/
 theorem exists_fixed_point (hD : 1 ≤ Dw.p + Dw.q) {q : ℕ} (hq : q.Prime) (hqd : ¬ q ∣ 2 * H.d * (discr E).natAbs)
     (Z : Comp Xo c) :
     ∃ (N : ℕ) (x : Sp ℂ ⟶ Xo.XF c), ¬ q ∣ N ∧ x ≫ strK = spMap (algebraMap c.F ℂ) ∧
@@ -207,6 +257,17 @@ open NumberField IsDedekindDomain Formalism.L2.Pj ReciprocityTheory.ChartRestric
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E} {Dw : Datum H}
   {l : Level H} {Xo : Moduli Dw l} {c : Coeff l}
 
+/- English proof (translation)
+Take `⟨T, k, hk, hfin, -⟩` from `GlobalTheory.PlaceCompletion.exists_initial_completion K 𝔭`. Establish `ho : OverLa w T.V (k.comp j) 1` using `⟨Nat.one_pos, fun a => by rw [← hv a]; exact hk.2 _⟩`. Establish `hqT : (q : T.V) ∈ IsLocalRing.maximalIdeal T.V`. Rewrite using `[← GlobalTheory.PlaceCompletion.valV_algebraMap_lt_one_iff (K' := T.Fr), map_natCast, ← map_natCast (k.comp j), GlobalTheory.PlaceCompletion.valV_eq_pow_of_overLa ho, pow_one, ← map_natCast (algebraMap (𝓞 c.F) c.F)]`. Conclude with `(w.valuation_lt_one_iff_mem _).2 hw`.
+
+Take `⟨O, _, β, Y, hPI, b, hb⟩` from `GlobalTheory.exists_model_pushInvertible_under_cdvr GlobalTheory.partI_closed GlobalTheory.Moduli.moduli_scheme_exists E H Dw l Xo c hpq T (k.comp j) q hq hqT hg`. Establish `hT` using `GlobalTheory.abelianSchemeLaws_all.2.secTwist`. Establish `hIF : IntFramesSt Xo c` using `GlobalTheory.intFrames_of_laws GlobalTheory.abelianSchemeLaws_all.1.secBaseChange hT E H Dw l Xo c`. Set `_` to `(k.comp j).toAlgebra`. Establish `hs : (spMap k ≫ z) ≫ Limits.pullback.snd _ _ = spMap (k.comp j)`.
+
+Rewrite using `[Category.assoc, ← GlobalTheory.EtaVal.spMap_comp_spMap]`. Conclude with `congrArg _ hz`. Establish `hx : ((spMap k ≫ z) ≫ Limits.pullback.fst _ _) ≫ Xo.s = sOf c T.Fr`. Rewrite using `[Category.assoc, Limits.pullback.condition, ← Category.assoc, hs, GlobalTheory.EtaVal.spMap_comp_spMap]`. Both sides reduce to the same expression.
+
+Take `⟨y₀, -, h0, -, -⟩` from `gfp_frPt_gen (Xo := Xo) (c := c) (L := T.Fr) (L' := T.Fr) hT (fun _ => rfl) _ hx (fun _ i j => if i = j then 1 else 0) (fun _ _ => if_pos rfl) (fun _ _ _ h => if_neg h.ne')`. Take `⟨y', t, hbor⟩` from `intFr_of_model hIF T (k.comp j) Y hPI b hb y₀`. Use `⟨T, k.comp j, y', ho, hfin, fun p => ?_⟩` and prove the remaining obligations. Establish `h1 : y'.1.x = y₀.x` using `hbor.1`. Establish `h2 : ptF y'.1 = spMap k ≫ z`.
+
+Apply `Limits.pullback.hom_ext` to reduce the goal to its premises. Conclude with `(Limits.pullback.lift_fst _ _ _).trans (h1.trans h0)`. Conclude with `(Limits.pullback.lift_snd _ _ _).trans hs.symm`. Rewrite using `[h2]`. Conclude with `hZ (spMap k p)`.
+-/
 theorem exists_intFr (hpq : 1 ≤ Dw.p + Dw.q) {q : ℕ} (hq : q.Prime) (hg : l.GoodAt q) (Z : Comp Xo c) {K : Type}
     [Field K] [NumberField K] (j : c.F →+* K) (z : Sp K ⟶ Xo.XF c) (hz : z ≫ strK = spMap j)
     (hZ : ∀ p, z p ∈ (Z : Set (Xo.XF c))) (w : HeightOneSpectrum (𝓞 c.F)) (hw : ((q : ℕ) : 𝓞 c.F) ∈ w.asIdeal)
@@ -247,6 +308,23 @@ end Integral
 open NumberField IsDedekindDomain ReciprocityTheory.ChartRestriction.G.Geo.Tor ReciprocityTheory.ChartRestriction.G.FD Formalism.L2.Pj Formalism.BasicNotions Formalism.BasicNotions.TH Formalism.L2.Theta GlobalTheory.AllWt GlobalTheory.FlatLine GlobalTheory.FlatTw GlobalTheory.IndefiniteRowSideFullHecke.ComponentMassSum GlobalTheory.ShFam GlobalTheory.LamT GlobalTheory.KeyFourth GlobalTheory.IndefiniteRowSideFullHecke.DifferentConjugateDefects
 open AlgebraicGeometry CategoryTheory
 
+/- English proof (translation)
+Introduce `hA hG hR E _ _ _ H Dw l Xo c hD`. Use `UnramPts.of_index_one fun Z w hw => ?_` and prove the remaining obligations. Choose the witnesses or unpack the hypotheses as in `⟨q, hq, hqw⟩ : ∃ q : ℕ, q.Prime ∧ ((q : ℕ) : 𝓞 c.F) ∈ w.asIdeal := by`. Establish `gen : ∀ n : ℕ, n ≠ 0 → (n : 𝓞 c.F) ∈ w.asIdeal → ∃ p : ℕ, p.Prime ∧ (p : 𝓞 c.F) ∈ w.asIdeal`. Introduce `n`.
+
+Proceed by induction on `n using Nat.recOnMul with`. Consider the case `zero => exact fun h => absurd rfl h`. Consider the case `one => exact fun _ h => absurd ((Ideal.eq_top_iff_one _).2 (by simpa using h)) w.isPrime.ne_top`. Consider the case `prime p hp => exact fun _ h => ⟨p, hp, h⟩`. Consider the case `mul a b ha hb`.
+
+Introduce `h0 h`. Rewrite `h` using `[Nat.cast_mul]`. Conclude with `(w.isPrime.mem_or_mem h).elim (ha (left_ne_zero_of_mul h0)) (hb (right_ne_zero_of_mul h0))`. Conclude with `gen _ (fun h => w.ne_bot (Ideal.absNorm_eq_zero_iff.1 h)) (Ideal.absNorm_mem _)`. Establish `hM : l.M' ≠ 0` using `Nat.lcm_ne_zero (by have := l.three_le; omega) l.A_pos.ne'`.
+
+Establish `hb : ¬ q ∣ 2 * H.d * (discr E).natAbs * l.M'` using `fun h => hw q (Nat.mem_primeFactors.2 ⟨hq, h, mul_ne_zero (mul_ne_zero (mul_ne_zero two_ne_zero H.d_prime.ne_zero) (Int.natAbs_ne_zero.mpr (discr_ne_zero E))) hM⟩) hqw`. Establish `hqM : ¬ q ∣ l.M'` using `fun h => hb (h.mul_left _)`. Establish `hg : l.GoodAt q`. Establish `h0 : l.M.factorization q = 0` using `Nat.factorization_eq_zero_of_not_dvd fun h => hqM (h.trans (Nat.dvd_lcm_left _ _))`. Rewrite using `[Level.GoodAt, h0, pow_zero, Nat.div_one]`.
+
+Conclude with `l.three_le`. Take `⟨N, x, hN, hx, hZ, hfix⟩` from `exists_fixed_point hD hq (fun h => hb (h.mul_right _)) Z`. Take `⟨F', _, hF, hC⟩` from `exists_curveOver hA hG hR H (n := N * l.M') hq (fun h => (hq.dvd_mul.1 h).elim hN hqM) (fun h => hb (((h.mul_left _).mul_right _).mul_right _))`. Use `haveI := c.fin`. Use `haveI : NumberField (c.F ⊔ F' : IntermediateField ℚ ℂ) := ⟨⟩`.
+
+Establish `hle : c.F ≤ c.F ⊔ F'` using `le_sup_left`. Take `⟨𝔭, h𝔭⟩` from `GlobalTheory.UnramCompositum.exists_vLa_eq c.F F' _ hle rfl q hq hF w hqw`. Take `⟨g, rfl⟩` from `GlobalTheory.FixedPoint.exists_descent (c.F ⊔ F') x fun τ hτ => hfix τ (fun a ha => hτ a (hle ha)) (hC τ fun a ha => hτ a (le_sup_right (a := c.F) ha))`. Use `exists_intFr hD hq hg Z (IntermediateField.inclusion hle).toRingHom g ?_ (fun s => ?_) w hqw 𝔭 h𝔭` and prove the remaining obligations. Rewrite `hx` using `[Category.assoc, ← Spec.map_preimage (g ≫ strK), ← Spec.map_comp]`.
+
+Rewrite using `[← Spec.map_preimage (g ≫ strK)]`. Use `congr 1`. Use extensionality with `a`. Conclude with `congrArg (fun f => f.hom a) (Spec.map_injective hx)`. Take `⟨p⟩ : Nonempty (Sp ℂ)` from `⟨(⟨⊥, Ideal.isPrime_bot⟩ : PrimeSpectrum ℂ)⟩`.
+
+Establish `h` using `hZ p`. Rewrite `h` using `[Scheme.Hom.comp_apply]`. Establish `e : s = _` using `Subsingleton.elim (α := PrimeSpectrum (c.F ⊔ F' : IntermediateField ℚ ℂ)) s (spMap (algebraMap (c.F ⊔ F' : IntermediateField ℚ ℂ) ℂ) p)`. Conclude with `e ▸ h`.
+-/
 theorem unramPts : GlobalTheory.Published.FormalAlgebraisation → GlobalTheory.Published.GrothendieckMessing → GlobalTheory.Published.AbelianDeRham → ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l), 1 ≤ Dw.p + Dw.q → UnramPts Xo c (badPrimes H l) := by
   intro hA hG hR E _ _ _ H Dw l Xo c hD
   refine UnramPts.of_index_one fun Z w hw => ?_

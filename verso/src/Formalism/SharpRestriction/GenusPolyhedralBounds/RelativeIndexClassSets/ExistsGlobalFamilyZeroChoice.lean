@@ -10,6 +10,15 @@ namespace Formalism.MainNotions.Gaps.EtaleWeightGaps
 
 section LinAlg
 
+/- English proof (translation)
+Establish `hspan : Submodule.span F (Set.range fun l : Fin d => fun k : Fin ρ => u k l) = ⊤`. Apply `Submodule.eq_top_of_finrank_eq` to reduce the goal to its premises. Establish `h1` using `Matrix.rank_eq_finrank_span_cols (u : Matrix (Fin ρ) (Fin d) F)`. Establish `h2` using `Matrix.rank_eq_finrank_span_row (u : Matrix (Fin ρ) (Fin d) F)`. Establish `h3 : Module.finrank F (Submodule.span F (Set.range u)) = ρ`.
+
+Rewrite using `[finrank_span_eq_card hu, Fintype.card_fin]`. Rewrite using `[Module.finrank_fin_fun]`. Conclude with `h1.symm.trans (h2.trans h3)`. Take `⟨κ, a, ha, hsp, hli⟩` from `exists_linearIndependent' (K := F) (fun l : Fin d => fun k : Fin ρ => u k l)`. Use `haveI : Finite κ := Finite.of_injective a ha`.
+
+Use `haveI := Fintype.ofFinite κ`. Establish `hcard : Fintype.card κ = ρ`. Establish `h` using `finrank_span_eq_card hli`. Rewrite `h` using `[hsp, hspan, finrank_top, Module.finrank_fin_fun]`. Conclude with `h.symm`.
+
+Set `e : Fin ρ ≃ κ` to `(Fintype.equivFinOfCardEq hcard).symm`. Use `⟨a ∘ e, ?_⟩` and prove the remaining obligations. Establish `hrows : LinearIndependent F (fun i => (Matrix.of fun i k => u k ((a ∘ e) i)) i)` using `hli.comp e e.injective`. Establish `hU` using `Matrix.linearIndependent_rows_iff_isUnit.mp hrows`. Conclude with `((Matrix.isUnit_iff_isUnit_det _).mp hU).ne_zero`.
+-/
 theorem exists_minor_of_li {F : Type} [Field F] {ρ d : ℕ} (u : Fin ρ → Fin d → F) (hu : LinearIndependent F u) :
     ∃ J : Fin ρ → Fin d, (Matrix.of fun i k => u k (J i)).det ≠ 0 := by
   classical
@@ -36,6 +45,17 @@ theorem exists_minor_of_li {F : Type} [Field F] {ρ d : ℕ} (u : Fin ρ → Fin
   have hU := Matrix.linearIndependent_rows_iff_isUnit.mp hrows
   exact ((Matrix.isUnit_iff_isUnit_det _).mp hU).ne_zero
 
+/- English proof (translation)
+Use `haveI := Fintype.ofFinite I`. Use `set v : I → Fin d → F := fun i l => algebraMap A F (c i l) with hv`. Take `⟨κ, a, ha, hsp, hli⟩` from `exists_linearIndependent' (K := F) v`. Use `haveI : Finite κ := Finite.of_injective a ha`. Use `haveI := Fintype.ofFinite κ`.
+
+Set `e0 : Fin (Fintype.card κ) ≃ κ` to `(Fintype.equivFin κ).symm`. Establish `hli' : LinearIndependent F (v ∘ (a ∘ e0))` using `hli.comp e0 e0.injective`. Take `⟨J, hJ⟩` from `exists_minor_of_li (v ∘ (a ∘ e0)) hli'`. Use `⟨Fintype.card κ, a ∘ e0, J, ?_, ?_⟩` and prove the remaining obligations. Introduce `h`.
+
+Apply `hJ` to reduce the goal to its premises. Establish `hM : (algebraMap A F).mapMatrix (Matrix.of fun i k => c ((a ∘ e0) k) (J i)) = Matrix.of fun i k => (v ∘ (a ∘ e0)) k (J i)`. Use extensionality with `i k`. Simplify using `[hv]`. Rewrite using `[← hM, ← RingHom.map_det, h, map_zero]`.
+
+Introduce `i0`. Establish `hr : Set.range (v ∘ (a ∘ e0)) = Set.range (v ∘ a)` using `e0.surjective.range_comp (v ∘ a)`. Establish `hmem : v i0 ∈ Submodule.span F (Set.range (v ∘ (a ∘ e0)))`. Rewrite using `[hr, hsp]`. Conclude with `Submodule.subset_span (Set.mem_range_self i0)`.
+
+Take `⟨b, hb⟩` from `(Submodule.mem_span_range_iff_exists_fun (R := F)).1 hmem`. Use `⟨b, fun l => ?_⟩` and prove the remaining obligations. Simplify `(congrFun hb l).symm` using `[hv, Finset.sum_apply, smul_eq_mul]`.
+-/
 theorem exists_max_indep {A F : Type} [CommRing A] [Field F] [Algebra A F] {I : Type} [Finite I] {d : ℕ}
     (c : I → Fin d → A) :
     ∃ (ρ : ℕ) (e : Fin ρ → I) (J : Fin ρ → Fin d), (Matrix.of fun i k => c (e k) (J i)).det ≠ 0 ∧
@@ -74,6 +94,11 @@ section Transport
 
 variable (X : PJ D B P j) (la : HeightOneSpectrum (𝓞 B.KO)) (N : ℕ)
 
+/- English proof (translation)
+Rewrite using `[injective_iff_map_eq_zero]`. Introduce `p hp`. Assume the negation of the conclusion as `hne`. Take `⟨β, hβ⟩` from `MvPolynomial.ne_zero_iff.mp hne`. Use `addVal_le_vAdd X la N p β 0 hβ (by rw [map_zero, hp])` as an intermediate fact.
+
+Rewrite `this` using `[IsDiscreteValuationRing.addVal_zero]`. Conclude with `absurd (top_le_iff.mp this) (ENat.natCast_ne_top _)`.
+-/
 theorem jF_injective : Function.Injective (jF X la N) := by
   rw [injective_iff_map_eq_zero]
   intro p hp
@@ -83,10 +108,22 @@ theorem jF_injective : Function.Injective (jF X la N) := by
   rw [IsDiscreteValuationRing.addVal_zero] at this
   exact absurd (top_le_iff.mp this) (ENat.natCast_ne_top _)
 
+/- English proof (translation)
+Rewrite using `[emb_smul, jF_C, algebraMap_smul (Kp X la N) (algebraMap B.KO (X.Kl la) a)]`.
+-/
 theorem emb_smul_jF (a : B.KO) (F : X.Forms) :
     emb X la N (a • F) = jF X la N (MvPolynomial.C a) • emb X la N F := by
   rw [emb_smul, jF_C, algebraMap_smul (Kp X la N) (algebraMap B.KO (X.Kl la) a)]
 
+/- English proof (translation)
+Rewrite using `[SizeBoundsAlt.polynomial_eq_sum_monomials (inc := fun w => (X.inc w).toAddMonoidHom) zc h, map_sum]`. Establish `h1 : ∀ l, jF X la N (SizeBoundsAlt.polyOf (b.coord l) zc) = ∑ β ∈ zc.support, jF X la N (MvPolynomial.monomial β 1) * jF X la N (MvPolynomial.C (b.coord l (zc β)))`. Introduce `l`. Unfold `SizeBoundsAlt.polyOf`. Rewrite using `[Finsupp.sum, map_sum]`.
+
+Use `Finset.sum_congr rfl fun β _ => ?_` and prove the remaining obligations. Rewrite using `[← map_mul, mul_comm, MvPolynomial.C_mul_monomial, mul_one]`. Simplify using `only [h1, Finset.sum_smul]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun β _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[psi_monomial]`. Use `show jF X la N (MvPolynomial.monomial β 1) • emb X la N (X.inc ka (zc β)) = _`. Use `conv_lhs => rw [← b.sum_repr (zc β)]`. Rewrite using `[map_sum, map_sum, Finset.smul_sum]`. Use `Finset.sum_congr rfl fun l _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[map_smul, emb_smul_jF, smul_smul]`. Both sides reduce to the same expression.
+-/
 theorem psi_eq_sum_coord (ka : WeightFamilies.Wt D j) {d : ℕ} (b : Basis (Fin d) B.KO (B.Cusp j ka))
     (p : MvPolynomial (Idx D j N) X.Forms) (zc : (Idx D j N →₀ ℕ) →₀ B.Cusp j ka)
     (h : ∀ β, X.inc ka (zc β) = p.coeff β) :
@@ -114,6 +151,11 @@ end Transport
 
 section Coeff
 
+/- English proof (translation)
+Establish `pmul : ∀ (w w' : WeightFamilies.Wt D j) (F : B.Cusp j w) (F' : B.Cusp j w'), True → True → ∃ H : B.Cusp j (wadd w w'), (X.inc _).toAddMonoidHom H = (X.inc w).toAddMonoidHom F * (X.inc w').toAddMonoidHom F' ∧ True`. Introduce `w w' F F' _ _`. Take `⟨H, hH⟩` from `X.inc_mul w w' F F'`. Conclude with `⟨H, hH.symm, trivial⟩`. Establish `hs : ∀ i : Fin (WeightFamilies.dimY D j), SizeBoundsAlt.Cf (fun w => (X.inc w).toAddMonoidHom) (fun _ _ => True) wL (∑ k, MvPolynomial.X (i.succ, k) * MvPolynomial.C (X.inc wL (w k)))` using `fun i => SizeBoundsAlt.Cf_lin (fun _ => trivial) (fun _ _ _ _ _ => trivial) (fun k => (i.succ, k)) w fun _ => trivial`.
+
+Take `⟨z, hz, -⟩` from `SizeBoundsAlt.Cf_word (inc := fun w => (X.inc w).toAddMonoidHom) (Pr := fun _ _ => True) (fun _ => trivial) (fun _ _ _ _ _ => trivial) pmul _ hs θ trivial al`. Conclude with `⟨z, hz⟩`.
+-/
 theorem exists_zc (X : PJ D B P j) {wL w0 : WeightFamilies.Wt D j} {N : ℕ} (w : Fin N → B.Cusp j wL)
     (al : Fin (WeightFamilies.dimY D j) → ℕ) (θ : B.Cusp j w0) :
     ∃ z : ((Fin (WeightFamilies.dimY D j + 1) × Fin N) →₀ ℕ) →₀ B.Cusp j (SizeBoundsAlt.wtIter wadd wL w0 (∑ i, al i)),
@@ -135,6 +177,23 @@ end Coeff
 
 section Choice
 
+/- English proof (translation)
+Set `I : Type` to `↥(Finset.piAntidiag (Finset.univ : Finset (Fin (WeightFamilies.dimY D j))) (a0 D j T)) × ↥Sh`. Establish `hI : ∀ i : I, ∑ m, i.1.1 m = a0 D j T` using `fun i => (Finset.mem_piAntidiag.mp i.1.2).1`. Establish `hex : ∀ i : I, ∃ z : ((Fin (WeightFamilies.dimY D j + 1) × Fin N) →₀ ℕ) →₀ B.Cusp j ka, ∀ β, X.inc ka (z β) = (SizeBoundsAlt.zPoly X w i.1.1 i.2.1).coeff β`. Introduce `i`. Use `exists_zc X w i.1.1 i.2.1` as an intermediate fact.
+
+Rewrite `this` using `[hI i, hwt]`. Conclude with `this`. Use `choose zI hzI using hex`. Set `b : Basis (Fin (finrank B.KO (B.Cusp j ka))) B.KO (B.Cusp j ka)` to `Module.finBasis B.KO (B.Cusp j ka)`. Set `A : Type` to `MvPolynomial (Idx D j N) B.KO`.
+
+Take `⟨ρ, e, J, hdet, hsp⟩` from `exists_max_indep (A := A) (F := FractionRing A) (I := I) (fun i l => SizeBoundsAlt.polyOf (b.coord l) (zI i))`. Use `⟨ρ, fun k => (e k).1.1, fun k => (e k).2.1, fun k => zI (e k), fun k => hI (e k), fun k => (e k).2.2, fun k β => hzI (e k) β, ⟨fun i => b.coord (J i), hdet⟩, fun la => ?_⟩` and prove the remaining obligations. Set `g : FractionRing A →+* Kp X la N` to `IsFractionRing.lift (jF_injective X la N)`. Establish `hg : ∀ q : A, g (algebraMap A (FractionRing A) q) = jF X la N q` using `fun q => IsFractionRing.lift_algebraMap (jF_injective X la N) q`. Establish `hval : ∀ i : I, secPow X la w i.1.1 * emb X la N (X.inc _ i.2.1) = ∑ l, jF X la N (SizeBoundsAlt.polyOf (b.coord l) (zI i)) • emb X la N (X.inc ka (b l))` using `fun i => by`.
+
+Rewrite using `[← psi_zPoly, psi_eq_sum_coord X la N ka b _ (zI i) (hzI i)]`. Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨al, θ, hal, hθ, rfl⟩`. Proceed by induction on `hθ using Submodule.span_induction with`. Consider the case `mem θ hθ`.
+
+Set `i0 : I` to `(⟨al, Finset.mem_piAntidiag.mpr ⟨hal, fun _ _ => Finset.mem_univ _⟩⟩, ⟨θ, hθ⟩)`. Take `⟨a, ha⟩` from `hsp i0`. Establish `hsum : secPow X la w al * emb X la N (X.inc _ θ) = ∑ k, g (a k) • (secPow X la w (e k).1.1 * emb X la N (X.inc _ (e k).2.1))`. Rewrite using `[hval i0]`. Simplify using `only [hval (e _), Finset.smul_sum]`.
+
+Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun l _ => ?_` and prove the remaining obligations. Rewrite using `[← hg, ha l, map_sum, Finset.sum_smul]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[map_mul, hg, smul_smul]`.
+
+Use `show secPow X la w al * emb X la N (X.inc _ θ) ∈ _`. Rewrite using `[hsum]`. Conclude with `Submodule.sum_mem _ fun k _ => Submodule.smul_mem _ _ (Submodule.subset_span ⟨k, rfl⟩)`. Consider the case `zero => simp only [map_zero, mul_zero]`. Conclude with `Submodule.zero_mem _`.
+
+Consider the case `add x y _ _ hx hy => simp only [map_add, mul_add]`. Conclude with `Submodule.add_mem _ hx hy`. Consider the case `smul a x _ hx`. Simplify using `only [map_smul, emb_smul_jF, mul_smul_comm]`. Conclude with `Submodule.smul_mem _ _ hx`.
+-/
 theorem exists_zChoice (X : PJ D B P j) (ka wL wF : WeightFamilies.Wt D j) (T : ℕ)
     (hwt : SizeBoundsAlt.wtIter wadd wL (X.wF0 wL wF) (a0 D j T) = ka) {N : ℕ} (w : Fin N → B.Cusp j wL)
     (Sh : Finset (B.Cusp j (X.wF0 wL wF))) :
@@ -196,6 +255,9 @@ theorem exists_zChoice (X : PJ D B P j) (ka wL wF : WeightFamilies.Wt D j) (T : 
     simp only [map_smul, emb_smul_jF, mul_smul_comm]
     exact Submodule.smul_mem _ _ hx
 
+/- English proof (translation)
+The claim follows from `exists_zChoice X (addL wF wL T) wL wF T (iterated_weight_at_vanishingOrder X wL wF T hDT) w Sh`.
+-/
 theorem exists_zChoice_addL (X : PJ D B P j) (wL wF : WeightFamilies.Wt D j) (T : ℕ) (hDT : WeightFamilies.dimY D j ≤ T) {N : ℕ}
     (w : Fin N → B.Cusp j wL) (Sh : Finset (B.Cusp j (X.wF0 wL wF))) :
     ∃ (rz : ℕ) (alz : Fin rz → Fin (WeightFamilies.dimY D j) → ℕ) (th0 : Fin rz → B.Cusp j (X.wF0 wL wF))
@@ -212,6 +274,11 @@ theorem exists_zChoice_addL (X : PJ D B P j) (wL wF : WeightFamilies.Wt D j) (T 
             (Set.range fun k => secPow X la w (alz k) * emb X la N (X.inc _ (th0 k))) :=
   exists_zChoice X (addL wF wL T) wL wF T (iterated_weight_at_vanishingOrder X wL wF T hDT) w Sh
 
+/- English proof (translation)
+Take `⟨Sh, hSh, hspan, hshort⟩` from `hS4`. Take `⟨rz, alz, th0, zc, hal, hth, hzc, hdet, hin⟩` from `exists_zChoice X ka wL wF T hwt G0.w Sh`. Use `⟨rz, alz, th0, zc, ⟨fun k => ⟨hSh (hth k), hM (hSh (hth k)), hshort _ (hth k), hal k⟩, hzc, hdet⟩, fun la => ?_⟩` and prove the remaining obligations. Use `le_trans (Submodule.span_mono ?_) (hin la)` and prove the remaining obligations. Introduce and unpack `v ⟨al, θ, h1, -, h3⟩`.
+
+Conclude with `⟨al, θ, h1, by rw [hspan]; trivial, h3⟩`.
+-/
 theorem exists_global_family_zero_choice {X : PJ D B P j} {ka wL wF : WeightFamilies.Wt D j} (G0 : GlobalFamilyData X ka wL wF) (S : Scal B) (T : ℕ) (Gc : ℝ)
     (hwt : SizeBoundsAlt.wtIter wadd wL (X.wF0 wL wF) (a0 D j T) = ka)
     (hS4 : ShortG X (X.wF0 wL wF) (X.Thc S.s0 (X.wF0 wL wF)) (Gc * (X.wF0 wL wF).size))
@@ -231,6 +298,21 @@ end Choice
 
 section Rank
 
+/- English proof (translation)
+Take `⟨φ, hφ⟩` from `hdet`. Use `choose φ1 hφ1 using fun i => exists_ext X la N ka (φ i)`. Set `z1 : Fin ρ → ↥(Vw X la N ka)` to `fun k => ∑ β ∈ (zc k).support, jF X la N (MvPolynomial.monomial β 1) • uV X la N ka (zc k β)`. Establish `hent : ∀ i k, φ1 i (z1 k) = jF X la N (SizeBoundsAlt.polyOf (φ i) (zc k))`. Introduce `i k`.
+
+Unfold `SizeBoundsAlt.polyOf`. Rewrite using `[Finsupp.sum, map_sum, map_sum]`. Use `Finset.sum_congr rfl fun γ _ => ?_` and prove the remaining obligations. Rewrite using `[map_smul, smul_eq_mul, hφ1, ← map_mul, mul_comm, MvPolynomial.C_mul_monomial, mul_one]`. Establish `hd : (Matrix.of fun i k => φ1 i (z1 k)).det = jF X la N (SizeBoundsAlt.detPoly φ zc)`.
+
+Unfold `SizeBoundsAlt.detPoly`. Rewrite using `[RingHom.map_det]`. Use `congr 1`. Use function extensionality and compare the values at `i k`. Simplify using `[hent]`.
+
+Establish `hd0 : (Matrix.of fun i k => φ1 i (z1 k)).det ≠ 0`. Rewrite using `[hd]`. Conclude with `(map_ne_zero_iff _ (jF_injective X la N)).mpr hφ`. Establish `hli : LinearIndependent (Kp X la N) z1`. Rewrite using `[Fintype.linearIndependent_iff]`.
+
+Introduce `g hg`. Establish `hmv : (Matrix.of fun i k => φ1 i (z1 k)).mulVec g = 0`. Use function extensionality and compare the values at `i`. Use `congrArg (φ1 i) hg` as an intermediate fact. Rewrite `this` using `[map_sum, map_zero]`.
+
+Simplify using `only [map_smul, smul_eq_mul] at this`. Simplify using `only [Matrix.mulVec, dotProduct, Matrix.of_apply, Pi.zero_apply]`. Rewrite using `[← this]`. Conclude with `Finset.sum_congr rfl fun k _ => mul_comm _ _`. Conclude with `fun k => congrFun (Matrix.eq_zero_of_mulVec_eq_zero hd0 hmv) k`.
+
+Establish `h2` using `hli.map' (Vw X la N ka).subtype (Submodule.ker_subtype _)`. Establish `h3 : (⇑(Vw X la N ka).subtype ∘ z1) = fun k => secPow X la w (al k) * emb X la N (X.inc w0 (th k))`. Use function extensionality and compare the values at `k`. Conclude with `coe_zSum X la w ka (al k) (th k) (zc k) (hzc k)`. Rewrite `h2` using `[h3]`. Then use the resulting hypothesis.
+-/
 theorem zFam_linearIndependent (X : PJ D B P j) (la : HeightOneSpectrum (𝓞 B.KO)) {N ρ : ℕ} {wL w0 : WeightFamilies.Wt D j}
     (w : Fin N → B.Cusp j wL) (ka : WeightFamilies.Wt D j) (al : Fin ρ → Fin (WeightFamilies.dimY D j) → ℕ) (th : Fin ρ → B.Cusp j w0)
     (zc : Fin ρ → (Idx D j N →₀ ℕ) →₀ B.Cusp j ka)
@@ -274,6 +356,11 @@ theorem zFam_linearIndependent (X : PJ D B P j) (la : HeightOneSpectrum (𝓞 B.
     exact coe_zSum X la w ka (al k) (th k) (zc k) (hzc k)
   rwa [h3] at h2
 
+/- English proof (translation)
+Establish `hli : LinearIndependent (Kp X la G.N) (zK G la)` using `zFam_linearIndependent X la G.w ka G.alz G.th0 G.zc hT.2.1 hT.2.2`. Establish `heq : Submodule.span (Kp X la G.N) {v | ∃ (al : Fin (WeightFamilies.dimY D j) → ℕ) (θ : B.Cusp j (X.wF0 wL wF)), ∑ i, al i = a0 D j T ∧ θ ∈ X.Thc S.s0 (X.wF0 wL wF) ∧ v = secPow X la G.w al * emb X la G.N (X.inc _ θ)} = Submodule.span (Kp X la G.N) (Set.range (zK G la))`. Use `le_antisymm hZ (Submodule.span_mono ?_)` and prove the remaining obligations. Introduce and unpack `_ ⟨k, rfl⟩`. Conclude with `⟨G.alz k, G.th0 k, (hT.1 k).2.2.2, (hT.1 k).1, rfl⟩`.
+
+Rewrite using `[heq, finrank_span_eq_card hli, Fintype.card_fin]`.
+-/
 theorem rz_eq_finrank {X : PJ D B P j} {ka wL wF : WeightFamilies.Wt D j} (G : GlobalFamilyData X ka wL wF) (S : Scal B) (T : ℕ) (Gc : ℝ)
     (la : HeightOneSpectrum (𝓞 B.KO)) (hT : G.TiedZ S T Gc) (hZ : InContainZ G la S T) :
     finrank (Kp X la G.N) ↥(Submodule.span (Kp X la G.N)

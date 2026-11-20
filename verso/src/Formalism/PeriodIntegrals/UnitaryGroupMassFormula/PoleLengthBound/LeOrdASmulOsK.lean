@@ -13,12 +13,18 @@ section
 
 variable (G : GlobalFamilyData X ka wL wF) (la : HeightOneSpectrum (𝓞 B.KO))
 
+/- English proof (translation)
+Unfold `rD`. Rewrite using `[dif_pos h]`.
+-/
 theorem rD_eq (β : Idx D j G.N →₀ ℕ) (x : ↥(HK X la G.w wF))
     (h : hasse X la G.w β (x : Lw X la G.w) ∈ HK X la G.w wF) :
     rD G la β x = toA0K X la G.w wF ⟨_, h⟩ := by
   unfold rD
   rw [dif_pos h]
 
+/- English proof (translation)
+Establish `hP` using `hasse_preserves_kernel G la`. Rewrite using `[rD_eq G la β _ (hP β _ (x + y).2), rD_eq G la β _ (hP β _ x.2), rD_eq G la β _ (hP β _ y.2), ← map_add]`. Use `congr 1`. Apply `Subtype.ext` to reduce the goal to its premises. Conclude with `(hasse X la G.w β).map_add _ _`.
+-/
 theorem rD_add (β : Idx D j G.N →₀ ℕ) (x y : ↥(HK X la G.w wF)) :
     rD G la β (x + y) = rD G la β x + rD G la β y := by
   have hP := hasse_preserves_kernel G la
@@ -30,12 +36,21 @@ theorem rD_add (β : Idx D j G.N →₀ ℕ) (x y : ↥(HK X la G.w wF)) :
 def rDh (β : Idx D j G.N →₀ ℕ) : ↥(HK X la G.w wF) →+ SectionSheafQuotient X la G.w wF :=
   AddMonoidHom.mk' (rD G la β) (rD_add G la β)
 
+/- English proof (translation)
+The claim follows from `map_sum (rDh G la β) f s`.
+-/
 theorem rD_sum (β : Idx D j G.N →₀ ℕ) {ι : Type*} (s : Finset ι) (f : ι → ↥(HK X la G.w wF)) :
     rD G la β (∑ i ∈ s, f i) = ∑ i ∈ s, rD G la β (f i) :=
   map_sum (rDh G la β) f s
 
+/- English proof (translation)
+The claim follows from `(rDh G la β).map_zero`.
+-/
 theorem rD_zero (β : Idx D j G.N →₀ ℕ) : rD G la β 0 = 0 := (rDh G la β).map_zero
 
+/- English proof (translation)
+Establish `hA : ∀ (q : Idx D j G.N →₀ ℕ) (a : Op X la G.N), PI.HJP.H X la G.w q (algebraMap (Rp X la G.N) (Lw X la G.w) (algebraMap (Op X la G.N) (Rp X la G.N) a)) = algebraMap (Rp X la G.N) (Lw X la G.w) (algebraMap (Op X la G.N) (Rp X la G.N) (hasseOp X la G.N q a))` using `fun q a => hasse_algebraMap_Op X la G.w q a`. Establish `e0 : ((algebraMap (Op X la G.N) (Kp X la G.N) r • x : ↥(HK X la G.w wF)) : Lw X la G.w) = algebraMap (Rp X la G.N) (Lw X la G.w) (algebraMap (Op X la G.N) (Rp X la G.N) r) * (x : Lw X la G.w)` using `(algebraMap_Op_mul la G.w r x).symm`. Use `show PI.HJP.H X la G.w β _ = ∑ q ∈ antidiagonal β, algebraMap (Op X la G.N) (Kp X la G.N) (hasseOp X la G.N q.1 r) • PI.HJP.H X la G.w q.2 (x : Lw X la G.w)`. Rewrite using `[e0, PI.HJP.H_mul]`. Simplify using `only [hA, algebraMap_Op_mul la G.w]`.
+-/
 theorem hasse_smul_Op (β : Idx D j G.N →₀ ℕ) (r : Op X la G.N) (x : ↥(HK X la G.w wF)) :
     hasse X la G.w β ((algebraMap (Op X la G.N) (Kp X la G.N) r • x : ↥(HK X la G.w wF)) : Lw X la G.w) =
       ∑ q ∈ antidiagonal β, algebraMap (Op X la G.N) (Kp X la G.N) (hasseOp X la G.N q.1 r) •
@@ -52,6 +67,11 @@ theorem hasse_smul_Op (β : Idx D j G.N →₀ ℕ) (r : Op X la G.N) (x : ↥(H
   rw [e0, PI.HJP.H_mul]
   simp only [hA, algebraMap_Op_mul la G.w]
 
+/- English proof (translation)
+Establish `hP` using `hasse_preserves_kernel G la`. Rewrite using `[rD_eq G la β _ (hP β _ (algebraMap (Op X la G.N) (Kp X la G.N) r • x).2)]`. Establish `e : (⟨_, hP β _ (algebraMap (Op X la G.N) (Kp X la G.N) r • x).2⟩ : ↥(HK X la G.w wF)) = ∑ q ∈ antidiagonal β, algebraMap (Op X la G.N) (Kp X la G.N) (hasseOp X la G.N q.1 r) • (⟨_, hP q.2 _ x.2⟩ : ↥(HK X la G.w wF))`. Apply `Subtype.ext` to reduce the goal to its premises. Rewrite using `[Submodule.coe_sum]`.
+
+Conclude with `hasse_smul_Op G la β r x`. Rewrite using `[e, map_sum]`. Use `Finset.sum_congr rfl fun q _ => ?_` and prove the remaining obligations. Rewrite using `[LinearMap.map_smul_of_tower, rD_eq G la q.2 x (hP q.2 _ x.2)]`. Both sides reduce to the same expression.
+-/
 theorem rD_smul (β : Idx D j G.N →₀ ℕ) (r : Op X la G.N) (x : ↥(HK X la G.w wF)) :
     rD G la β (algebraMap (Op X la G.N) (Kp X la G.N) r • x) =
       ∑ q ∈ antidiagonal β, hasseOp X la G.N q.1 r • rD G la q.2 x := by
@@ -74,6 +94,13 @@ section
 
 variable {G : GlobalFamilyData X ka wL wF} {la : HeightOneSpectrum (𝓞 B.KO)} (Q : LocalPointData G la)
 
+/- English proof (translation)
+Use `isDVRAt_of_curve Q hC ζ` as an intermediate fact. Establish `hU` using `isUnif_of_curve Q hC`. Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty`. Rewrite using `[Finset.sum_empty]`.
+
+Use `show t ≤ ordV _ ζ Q.e Q.c 0`. Rewrite using `[ordV_zero Q.c ζ hU hC.2.2]`. Conclude with `le_top`. Consider the case `insert a s ha ih`. Rewrite using `[Finset.sum_insert ha]`.
+
+Conclude with `le_trans (le_min (h a (Finset.mem_insert_self _ _)) (ih fun i hi => h i (Finset.mem_insert_of_mem hi))) (ordV_add Q.c ζ hU hC.2.2 _ _)`.
+-/
 theorem le_ordA_sum (hC : Q.InCurve) (ζ : PtsG G la) {ι : Type*} (s : Finset ι) (f : ι → SectionSheafQuotient X la G.w wF)
     (t : WithTop ℤ) (h : ∀ i ∈ s, t ≤ Q.ordA ζ (f i)) : t ≤ Q.ordA ζ (∑ i ∈ s, f i) := by
   classical
@@ -90,6 +117,9 @@ theorem le_ordA_sum (hC : Q.InCurve) (ζ : PtsG G la) {ι : Type*} (s : Finset �
     exact le_trans (le_min (h a (Finset.mem_insert_self _ _)) (ih fun i hi => h i (Finset.mem_insert_of_mem hi)))
       (ordV_add Q.c ζ hU hC.2.2 _ _)
 
+/- English proof (translation)
+Use `isDVRAt_of_curve Q hC ζ` as an intermediate fact. Establish `hU` using `isUnif_of_curve Q hC`. Use `show t ≤ ordV _ ζ Q.e Q.c _`. Rewrite using `[ordV_smul Q.c ζ hU hC.2.2]`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem le_ordA_smul_OsK (hC : Q.InCurve) (ζ : PtsG G la) (a : OsK X la G.w) (ha : 0 ≤ ord (unifO X la G.N) ζ a)
     (v : SectionSheafQuotient X la G.w wF) (t : WithTop ℤ) (h : t ≤ Q.ordA ζ v) : t ≤ Q.ordA ζ (a • v) := by
   have := isDVRAt_of_curve Q hC ζ
@@ -99,6 +129,9 @@ theorem le_ordA_smul_OsK (hC : Q.InCurve) (ζ : PtsG G la) (a : OsK X la G.w) (h
   calc t = 0 + t := (zero_add t).symm
     _ ≤ _ := add_le_add ha h
 
+/- English proof (translation)
+Use `isDVRAt_of_curve Q hC ζ` as an intermediate fact. Establish `hU` using `isUnif_of_curve Q hC`. Rewrite using `[← algebraMap_smul (OsK X la G.w) r v]`. Conclude with `le_ordA_smul_OsK Q hC ζ _ (ord_nonneg ζ hU (Subalgebra.algebraMap_mem _ r)) v t h`.
+-/
 theorem le_ordA_smul_Op (hC : Q.InCurve) (ζ : PtsG G la) (r : Op X la G.N) (v : SectionSheafQuotient X la G.w wF) (t : WithTop ℤ)
     (h : t ≤ Q.ordA ζ v) : t ≤ Q.ordA ζ (r • v) := by
   have := isDVRAt_of_curve Q hC ζ
@@ -112,6 +145,9 @@ def GoodP (T : ℕ) (m : PtsG G la → ℕ) (x : ↥(HK X la G.w wF)) : Prop :=
 
 variable {Q}
 
+/- English proof (translation)
+Introduce `β hβ ζ` and use `by have := isDVRAt_of_curve Q hC ζ have hU := isUnif_of_curve Q hC rw [rD_add] exact (le_min (hx β hβ ζ) (hy β hβ ζ)).trans (ordV_add Q.c ζ hU hC.2.2 _ _)`.
+-/
 theorem good_add (hC : Q.InCurve) {T : ℕ} {m : PtsG G la → ℕ} {x y : ↥(HK X la G.w wF)}
     (hx : GoodP Q T m x) (hy : GoodP Q T m y) : GoodP Q T m (x + y) := fun β hβ ζ => by
   have := isDVRAt_of_curve Q hC ζ
@@ -119,6 +155,9 @@ theorem good_add (hC : Q.InCurve) {T : ℕ} {m : PtsG G la → ℕ} {x y : ↥(H
   rw [rD_add]
   exact (le_min (hx β hβ ζ) (hy β hβ ζ)).trans (ordV_add Q.c ζ hU hC.2.2 _ _)
 
+/- English proof (translation)
+Introduce `β hβ ζ` and use `by have := isDVRAt_of_curve Q hC ζ have hU := isUnif_of_curve Q hC rw [vanishingOnQuadric G la (a0 D j T) β x hx (by omega)] show _ ≤ ordV _ ζ Q.e Q.c 0 rw [ordV_zero Q.c ζ hU hC.2.2] exact le_top`.
+-/
 theorem good_of_mem (hC : Q.InCurve) {T : ℕ} {m : PtsG G la → ℕ} (ha : 0 < a0 D j T) {x : ↥(HK X la G.w wF)}
     (hx : x ∈ Jid X la G.w ^ a0 D j T • (⊤ : Submodule ↥(Frac0 X la G.w) ↥(HK X la G.w wF))) :
     GoodP Q T m x := fun β hβ ζ => by
@@ -129,6 +168,9 @@ theorem good_of_mem (hC : Q.InCurve) {T : ℕ} {m : PtsG G la → ℕ} (ha : 0 <
   rw [ordV_zero Q.c ζ hU hC.2.2]
   exact le_top
 
+/- English proof (translation)
+Introduce `β hβ ζ` and use `by rw [rD_smul] refine le_ordA_sum Q hC ζ _ _ _ fun q hq => le_ordA_smul_Op Q hC ζ _ _ _ (hx q.2 ?_ ζ) rw [mem_antidiagonal] at hq rw [PI.HJP.sum_eq_degree] at hβ ⊢ have : Finsupp.degree β = Finsupp.degree q.1 + Finsupp.degree q.2 := by rw [← hq, map_add] omega`.
+-/
 theorem good_smul (hC : Q.InCurve) {T : ℕ} {m : PtsG G la → ℕ} {x : ↥(HK X la G.w wF)} (hx : GoodP Q T m x)
     (r : Op X la G.N) : GoodP Q T m (algebraMap (Op X la G.N) (Kp X la G.N) r • x) := fun β hβ ζ => by
   rw [rD_smul]
@@ -138,6 +180,21 @@ theorem good_smul (hC : Q.InCurve) {T : ℕ} {m : PtsG G la → ℕ} {x : ↥(HK
   have : Finsupp.degree β = Finsupp.degree q.1 + Finsupp.degree q.2 := by rw [← hq, map_add]
   omega
 
+/- English proof (translation)
+Unfold `LocalPointData.AAp at hz`. Proceed by induction on `hz using Submodule.span_induction with`. Consider the case `mem z hz`. Take `⟨g, ⟨hg1, hg2⟩, rfl⟩` from `hz`. Introduce `x hx`.
+
+Establish `hgood : GoodP Q T m g` using `fun β hβ ζ => by rw [rD_eq G la β g (hg1 β hβ)]; exact hg2 β hβ ζ`. Establish `hd : x - g ∈ Jid X la G.w ^ a0 D j T • (⊤ : Submodule ↥(Frac0 X la G.w) ↥(HK X la G.w wF))`. Rewrite using `[← toWK_eq_zero_iff, map_sub, hx, sub_self]`. Use `good_add hC hgood (good_of_mem hC ha hd)` as an intermediate fact. Use `this using 1` and compare the differences between its conclusion and the goal.
+
+Normalize the expressions using the abelian group laws. Consider the case `zero`. Introduce `x hx`. Conclude with `good_of_mem hC ha ((toWK_eq_zero_iff X la G.w wF _ x).1 hx)`. Consider the case `add z1 z2 _ _ h1 h2`.
+
+Introduce `x hx`. Take `⟨x1, rfl⟩` from `toWK_surjective X la G.w wF _ z1`. Establish `hx2 : toWK X la G.w wF (a0 D j T) (x - x1) = z2` using `by rw [map_sub, hx, add_sub_cancel_left]`. Use `good_add hC (h1 x1 rfl) (h2 _ hx2)` as an intermediate fact. Use `this using 1` and compare the differences between its conclusion and the goal.
+
+Normalize the expressions using the abelian group laws. Consider the case `smul r z _ h`. Introduce `x hx`. Take `⟨x1, rfl⟩` from `toWK_surjective X la G.w wF _ z`. Establish `e : toWK X la G.w wF (a0 D j T) (algebraMap (Op X la G.N) (Kp X la G.N) r • x1) = r • toWK X la G.w wF (a0 D j T) x1`.
+
+Rewrite using `[LinearMap.map_smul_of_tower]`. Both sides reduce to the same expression. Establish `hd : x - algebraMap (Op X la G.N) (Kp X la G.N) r • x1 ∈ Jid X la G.w ^ a0 D j T • (⊤ : Submodule ↥(Frac0 X la G.w) ↥(HK X la G.w wF))`. Rewrite using `[← toWK_eq_zero_iff, map_sub, hx, e, sub_self]`. Use `good_add hC (good_smul hC (h x1 rfl) r) (good_of_mem hC ha hd)` as an intermediate fact.
+
+Use `this using 1` and compare the differences between its conclusion and the goal. Normalize the expressions using the abelian group laws.
+-/
 theorem good_of_mem_AAp (hC : Q.InCurve) {T : ℕ} {m : PtsG G la → ℕ} (ha : 0 < a0 D j T)
     {z : WK X la G.w wF (a0 D j T)} (hz : z ∈ Q.AAp T m) :
     ∀ x : ↥(HK X la G.w wF), toWK X la G.w wF (a0 D j T) x = z → GoodP Q T m x := by

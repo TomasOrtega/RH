@@ -16,6 +16,11 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar GlobalTheory.Local
 
 namespace GlobalTheory.CompanionTheory.StabBasis
 
+/- English proof (translation)
+Establish `hi : Function.Injective fun A : Matrix (Fin n) (Fin n) S => A.map S.subtype` using `Matrix.map_injective Subtype.val_injective`. Use `⟨⟨Matrix.of fun i j => ⟨_, h1 i j⟩, Matrix.of fun i j => ⟨_, h2 i j⟩, hi ?_, hi ?_⟩, Units.ext rfl⟩` and prove the remaining obligations. Simplify using `only [Matrix.map_mul, Matrix.map_one _ (map_zero _) (map_one _)]`. Conclude with `g.mul_inv`. Simplify using `only [Matrix.map_mul, Matrix.map_one _ (map_zero _) (map_one _)]`.
+
+Conclude with `g.inv_mul`.
+-/
 theorem exists_bc_eq_of_entries {R : Type} [CommRing R] (S : Subring R) {n : ℕ} (g : GL (Fin n) R)
     (h1 : ∀ i j, g.1 i j ∈ S) (h2 : ∀ i j, g⁻¹.1 i j ∈ S) :
     ∃ y : GL (Fin n) S, Formalism.UG.bc S.subtype y = g := by
@@ -27,6 +32,15 @@ theorem exists_bc_eq_of_entries {R : Type} [CommRing R] (S : Subring R) {n : ℕ
   · simp only [Matrix.map_mul, Matrix.map_one _ (map_zero _) (map_one _)]
     exact g.inv_mul
 
+/- English proof (translation)
+Introduce `D n β x h`. Establish `hent : ∀ (w : Pl D.host.E) (g : GL (Fin n) (Kw w)), g ∈ KO (Kw w) (Fin n) → ∀ i j, g.1 i j ∈ Formalism.UG.Ov D.host.E w`. Introduce `w g hg i j`. Rewrite `hg` using `[GlobalTheory.SmGL.SphCompletion.KO_completion w n]`. Take `⟨u, rfl⟩` from `hg`.
+
+Conclude with `(u.1 i j).2`. Establish `e2 : (β⁻¹ * x * β)⁻¹ = β⁻¹ * x⁻¹ * β` using `by group`. Establish `a1 : ∀ i j, (β⁻¹ * x * β).1 i j ∈ Formalism.L2.Herm.intAf D.host.F D.host.E` using `fun i j => (mem_OA_iff _).2 fun w => by`. Use `hent w _ (h w) i j` as an intermediate fact. Rewrite `this` using `[inBasis_apply]`. Then use the resulting hypothesis.
+
+Establish `a2 : ∀ i j, (β⁻¹ * x * β)⁻¹.1 i j ∈ Formalism.L2.Herm.intAf D.host.F D.host.E` using `fun i j => (mem_OA_iff _).2 fun w => by`. Use `hent w _ ((KO (Kw w) (Fin n)).inv_mem (h w)) i j` as an intermediate fact. Rewrite `this` using `[← map_inv, inBasis_apply]`. Rewrite using `[e2]` and apply the resulting hypothesis. Take `⟨y, hy⟩` from `exists_bc_eq_of_entries _ _ a1 a2`.
+
+Use `⟨y, ?_⟩` and prove the remaining obligations. Establish `e : Formalism.L2.DIV.intGL D.host.F D.host.E n y = β⁻¹ * x * β` using `hy`. Use `show β * Formalism.L2.DIV.intGL D.host.F D.host.E n y * β⁻¹ = x`. Rewrite using `[e]`. Use `group`.
+-/
 theorem mem_St_of_inBasis_mem_KO : ∀ {D : D7} {n : ℕ} (β x : GL (Fin n) (Lev.EAf D)),
     (∀ w : Pl D.host.E, inBasis rfl β w x ∈ KO (Kw w) (Fin n)) → x ∈ St β := by
   intro D n β x h
@@ -69,6 +83,9 @@ open GlobalTheory.FunObj GlobalTheory.ChiGrid GlobalTheory.SplitFlip GlobalTheor
 
 attribute [local instance] Formalism.BasicNotions.Host.cmStar GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField GlobalTheory.FunObj.borelKw GlobalTheory.FunObj.borelSpaceKw
 
+/- English proof (translation)
+Apply the tactic sequence `first | exact @StabilizerBasis.GlobalTheory.CompanionTheory.StabBasis.mem_St_of_inBasis_mem_KO | exact StabilizerBasis.GlobalTheory.CompanionTheory.StabBasis.mem_St_of_inBasis_mem_KO | (intros; apply StabilizerBasis.GlobalTheory.CompanionTheory.StabBasis.mem_St_of_inBasis_mem_KO …`.
+-/
 theorem _root_.GlobalTheory.Adopt.mem_latticeStabilizer_of_local_integral_inBasis : ∀ {D : D7} {n : ℕ} (β x : GL (Fin n) (Lev.EAf D)), (∀ w : Pl D.host.E, inBasis rfl β w x ∈ KO (Kw w) (Fin n)) → x ∈ St β := by
   first | exact @StabilizerBasis.GlobalTheory.CompanionTheory.StabBasis.mem_St_of_inBasis_mem_KO | exact StabilizerBasis.GlobalTheory.CompanionTheory.StabBasis.mem_St_of_inBasis_mem_KO | (intros; apply StabilizerBasis.GlobalTheory.CompanionTheory.StabBasis.mem_St_of_inBasis_mem_KO <;> assumption)
 

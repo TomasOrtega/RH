@@ -15,6 +15,15 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar GlobalTheory.Local
 
 namespace GlobalTheory.RealActCont
 
+/- English proof (translation)
+Introduce `D T L sc G θ hθ fr X Λ w`. Take `⟨hc, -⟩` from `GlobalTheory.CoefModel.realGL_laws hθ (G.V X)`. Establish `hG : ∀ _τ : D.what₂.Tau, (1 : Matrix (Fin (G.V X).rank) (Fin (G.V X).rank) ℂ).PosDef` using `fun _ => Matrix.PosDef.one`. Set `A : GinfC (G.V X) → D.what₂.Tau → GL (Fin (G.V X).rank) ℂ` to `fun k => invTrK (realIn θ fr X ((k : GA D (G.V X))⁻¹))`. Establish `hA : ∀ τ, Continuous fun k => (A k τ : Matrix (Fin (G.V X).rank) (Fin (G.V X).rank) ℂ)`.
+
+Introduce `τ`. Establish `e : ∀ k : GinfC (G.V X), (A k τ : Matrix (Fin (G.V X).rank) (Fin (G.V X).rank) ℂ) = Matrix.transpose ((((frGL fr X τ)⁻¹ : GL (Fin (G.V X).rank) ℂ) : Matrix (Fin (G.V X).rank) (Fin (G.V X).rank) ℂ) * Formalism.L2.Pj.archM (G.V X) (θ τ) (k : GA D (G.V X)) * (frGL fr X τ : Matrix (F …`. Introduce `k`. Simplify using `only [A, map_inv]`. Use `show ((((realIn θ fr X (k : GA D (G.V X)) τ)⁻¹)⁻¹ : GL (Fin (G.V X).rank) ℂ) : Matrix (Fin (G.V X).rank) (Fin (G.V X).rank) ℂ).transpose = _`.
+
+Rewrite using `[inv_inv]`. Simplify using `[realIn, MulAut.conj_apply, GlobalTheory.CoefModel.realGL_coe]`. Use `Continuous.congr ?_ fun k => (e k).symm` and prove the remaining obligations. Conclude with `((continuous_const.mul ((hc τ).comp continuous_subtype_val)).mul continuous_const).matrix_transpose`. Establish `key` using `GlobalTheory.CoefModel.continuous_rhoH (wt G X) hG A hA (GlobalTheory.CoefModel.toHilb (wt G X) hG w)`.
+
+Establish `hΛ : Continuous (Λ ∘ₗ (GlobalTheory.CoefModel.toHilb (wt G X) hG).symm.toLinearMap)` using `LinearMap.continuous_of_finiteDimensional _`. Use `(hΛ.comp key).congr fun k => ?_` and prove the remaining obligations. Simplify using `only [Function.comp_apply, GlobalTheory.CoefModel.rhoH_toHilb, LinearMap.comp_apply, LinearEquiv.coe_coe, LinearEquiv.symm_apply_apply]`. Both sides reduce to the same expression.
+-/
 theorem realAct_inv_continuous : ∀ {D : D7} {T : Type} {L : LevCh D T} {sc : Consts} {G : GridData L sc} (θ : InfFam D), IsInfFam θ →
     ∀ (fr : ∀ X : Node, GL (Fin (G.V X).rank) D.host.E) (X : Node) (Λ : Module.Dual ℂ (VV ℂ (wt G X))) (w : VV ℂ (wt G X)),
     Continuous fun k : GinfC (G.V X) => Λ (realAct θ fr X ((k : GA D (G.V X))⁻¹) w) := by

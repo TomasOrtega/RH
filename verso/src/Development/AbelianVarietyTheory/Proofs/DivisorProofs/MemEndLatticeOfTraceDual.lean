@@ -8,6 +8,9 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {r : ℕ}
 noncomputable def rankOneHerm (G : Matrix (Fin r) (Fin r) E) (l y : Fin r → E) : Matrix (Fin r) (Fin r) E :=
   Matrix.of fun a b => l a * ∑ k, G b k * cc (y k)
 
+/- English proof (translation)
+Use extensionality with `a`. Simplify using `only [rankOneHerm, mulVec, dotProduct, of_apply, Pi.smul_apply, smul_eq_mul, herm]`. Repeatedly rewrite using `[Finset.mul_sum, Finset.sum_mul]`. Use `Finset.sum_congr rfl fun b _ => Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem rankOneHerm_mulVec (G : Matrix (Fin r) (Fin r) E) (l y x : Fin r → E) :
     rankOneHerm G l y *ᵥ x = herm G x y • l := by
   ext a
@@ -16,6 +19,11 @@ theorem rankOneHerm_mulVec (G : Matrix (Fin r) (Fin r) E) (l y x : Fin r → E) 
   refine Finset.sum_congr rfl fun b _ => Finset.sum_congr rfl fun k _ => ?_
   ring
 
+/- English proof (translation)
+Simplify using `only [trace, diag, mul_apply, rankOneHerm, of_apply, herm, mulVec, dotProduct]`. Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Repeatedly rewrite using `[Finset.mul_sum, Finset.sum_mul]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun k _ => Finset.sum_congr rfl fun b _ => ?_` and prove the remaining obligations.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem trace_mul_rankOneHerm (G Y : Matrix (Fin r) (Fin r) E) (l y : Fin r → E) :
     (Y * rankOneHerm G l y).trace = herm G (Y *ᵥ l) y := by
   simp only [trace, diag, mul_apply, rankOneHerm, of_apply, herm, mulVec, dotProduct]
@@ -25,12 +33,18 @@ theorem trace_mul_rankOneHerm (G Y : Matrix (Fin r) (Fin r) E) (l y : Fin r → 
   refine Finset.sum_congr rfl fun k _ => Finset.sum_congr rfl fun b _ => ?_
   ring
 
+/- English proof (translation)
+Introduce `x hx` and use `by rw [rankOneHerm_mulVec] exact smul_mem_of_isIntegral (((hΛ.2.2.2.2 x).mpr hx) y hy) hl`.
+-/
 theorem rankOneHerm_mem_endLat {G : Matrix (Fin r) (Fin r) E} {Λ : Submodule (𝓞 E) (Fin r → E)}
     (hΛ : SelfDualLat G Λ) {l y : Fin r → E} (hl : l ∈ Λ) (hy : y ∈ Λ) :
     rankOneHerm G l y ∈ endLat Λ := fun x hx => by
   rw [rankOneHerm_mulVec]
   exact smul_mem_of_isIntegral (((hΛ.2.2.2.2 x).mpr hx) y hy) hl
 
+/- English proof (translation)
+Introduce `l hl`. Use `(hΛ.2.2.2.2 _).mp fun y hy => ?_` and prove the remaining obligations. Rewrite using `[← trace_mul_rankOneHerm]`. Conclude with `hY _ (rankOneHerm_mem_endLat hΛ hl hy)`.
+-/
 theorem mem_endLat_of_trace_integral (E : Type) [Field E] [NumberField E] [IsCMField E] (r : ℕ)
     (G : Matrix (Fin r) (Fin r) E) (Λ : Submodule (𝓞 E) (Fin r → E)) (Y : Matrix (Fin r) (Fin r) E)
     (hΛ : SelfDualLat G Λ) (hY : ∀ Z ∈ endLat Λ, IsIntegral ℤ (Y * Z).trace) : Y ∈ endLat Λ := by

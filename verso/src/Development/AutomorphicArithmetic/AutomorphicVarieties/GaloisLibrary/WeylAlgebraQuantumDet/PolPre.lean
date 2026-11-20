@@ -5,6 +5,25 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.GaloisLibrary.Weyl
 
 open Matrix UpperTheory.V.Weyl
 
+/- English proof (translation)
+Introduce `n N`. Set `V` to `MvPolynomial.restrictTotalDegree (Fin n × Fin n) ℂ N`. Establish `mem : ∀ (g : Matrix (Fin n) (Fin n) ℂ) (f : V), rtr g (f : Pol n) ∈ V`. Introduce `g f`. Rewrite using `[MvPolynomial.mem_restrictTotalDegree]`.
+
+Conclude with `(rtrDeg n g f).trans ((MvPolynomial.mem_restrictTotalDegree _ _ _).1 f.2)`. Set `R : Matrix (Fin n) (Fin n) ℂ → V →ₗ[ℂ] V` to `fun g => LinearMap.codRestrict V ((rtr g).toLinearMap.comp V.subtype) (mem g)`. Establish `hR : ∀ g (f : V), ((R g f : V) : Pol n) = rtr g (f : Pol n)` using `fun g f => rfl`. Set `b` to `Module.finBasis ℂ V`. Set `M : Matrix (Fin n) (Fin n) ℂ → Matrix (Fin (Module.finrank ℂ V)) (Fin (Module.finrank ℂ V)) ℂ` to `fun g => LinearMap.toMatrix b b (R g)`.
+
+Establish `hR1 : R 1 = LinearMap.id`. Use extensionality with `f`. Rewrite using `[hR, (rtrMul n).1]`. Both sides reduce to the same expression. Establish `hRm : ∀ g h, R (g * h) = R g ∘ₗ R h`.
+
+Introduce `g h`. Use extensionality with `f`. Rewrite using `[hR, (rtrMul n).2]`. Both sides reduce to the same expression. Set `mat : Matrix (Fin n) (Fin n) ℂ →* Matrix (Fin (Module.finrank ℂ V)) (Fin (Module.finrank ℂ V)) ℂ` to `{ toFun := M map_one' := by show LinearMap.toMatrix b b (R 1) = 1`.
+
+Rewrite using `[hR1, LinearMap.toMatrix_id]`. Use the proof step `map_mul' := by`. Introduce `g h`. Use `show LinearMap.toMatrix b b (R (g * h)) = LinearMap.toMatrix b b (R g) * LinearMap.toMatrix b b (R h)`. Rewrite using `[hRm]`.
+
+Conclude with `LinearMap.toMatrix_comp b b b (R g) (R h) }`. Establish `poly : ∀ i j : Fin (Module.finrank ℂ V), ∃ p : Pol n, ∀ g : Matrix (Fin n) (Fin n) ℂ, mat g i j = MvPolynomial.eval (fun ab => g ab.1 ab.2) p`. Introduce `i j`. Take `⟨φ, hφ⟩` from `LinearMap.exists_extend (b.coord i)`. Take `⟨p, hp⟩` from `rtrPoly n ((b j : V) : Pol n) φ`.
+
+Use `⟨p, fun g => ?_⟩` and prove the remaining obligations. Rewrite using `[← hp]`. Use `show LinearMap.toMatrix b b (R g) i j = _`. Rewrite using `[LinearMap.toMatrix_apply, ← hR, ← b.coord_apply, ← hφ]`. Both sides reduce to the same expression.
+
+Use `⟨⟨Module.finrank ℂ V, mat, poly⟩, b.equivFun, ?_⟩` and prove the remaining obligations. Introduce `g f f' hf`. Use `show LinearMap.toMatrix b b (R g) *ᵥ b.repr f = b.repr f'`. Rewrite using `[LinearMap.toMatrix_mulVec_repr]`. Use `congr 2`.
+
+Apply `Subtype.ext` to reduce the goal to its premises. Rewrite using `[hR, hf]`.
+-/
 theorem UpperTheory.V.Weyl.polPre :
     ∀ (n N : ℕ), ∃ (Ξ : Pre n) (e : MvPolynomial.restrictTotalDegree (Fin n × Fin n) ℂ N ≃ₗ[ℂ] (Fin Ξ.d → ℂ)),
       ∀ (g : Matrix (Fin n) (Fin n) ℂ) (f f' : MvPolynomial.restrictTotalDegree (Fin n × Fin n) ℂ N),

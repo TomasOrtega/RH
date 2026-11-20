@@ -26,13 +26,22 @@ def BhattScholzeCrystallineLattices : Prop :=
       ∀ f : T →ₗ[ℤ_[l]] T', (∀ g x, f (ρ g x) = ρ' g (f x)) →
         ∃! u : FHom E E', ∀ x, j' (u.u P₀ x) = f.lTensor (WCb l) (j x))
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 example (l : ℕ) [Fact l.Prime] (K LL : FinExt l) (T : LocLat ↥(GK K) ℚ_[l] ↥LL.1 ↥(OL LL)) (g : ↥(GK K))
     (x : ↥T.L.T) : actTZ LL T g x = T.actT g x := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 example (l : ℕ) [Fact l.Prime] (LL : FinExt l) :
     (inferInstance : TopologicalSpace ↥LL.1) =
       TopologicalSpace.induced Subtype.val (PseudoMetricSpace.toUniformSpace.toTopologicalSpace) := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 example (l : ℕ) [Fact l.Prime] (K : FinExt l) :
     (inferInstance : TopologicalSpace ↥(GK K)) =
       TopologicalSpace.induced Subtype.val (krullTopology ℚ_[l] (Om l)) := rfl

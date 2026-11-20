@@ -16,6 +16,9 @@ open scoped ComplexOrder ENNReal NNReal ContDiff
 
 namespace GlobalTheory.Unf
 
+/- English proof (translation)
+Establish `hpos : 0 < (1 + r) ^ N` using `by positivity`. Rewrite using `[ENNReal.ofReal_inv_of_pos hpos, ← div_eq_mul_inv]`. Rewrite using `[ENNReal.le_div_iff_mul_le (Or.inl (by simpa using hpos)) (Or.inl ENNReal.ofReal_ne_top)]`. Conclude with `h`.
+-/
 theorem le_mul_ofReal_inv_of_mul_le {a b : ℝ≥0∞} {r : ℝ} (hr : 0 ≤ r) (N : ℕ)
     (h : a * ENNReal.ofReal ((1 + r) ^ N) ≤ b) : a ≤ b * ENNReal.ofReal (((1 + r) ^ N)⁻¹) := by
   have hpos : 0 < (1 + r) ^ N := by positivity
@@ -23,6 +26,13 @@ theorem le_mul_ofReal_inv_of_mul_le {a b : ℝ≥0∞} {r : ℝ} (hr : 0 ≤ r) 
   rw [ENNReal.le_div_iff_mul_le (Or.inl (by simpa using hpos)) (Or.inl ENNReal.ofReal_ne_top)]
   exact h
 
+/- English proof (translation)
+Introduce `D ψ hψ θ hθ S S₀ T ρ d v U hU`. Take `⟨K, hK, hsupp⟩` from `GlobalTheory.T.mixedModelSource_support_finiteComponentInBox D ψ hψ S S₀ T ρ d v U hU`. Use `⟨K, hK, fun N => ?_⟩` and prove the remaining obligations. Take `⟨C, hC⟩` from `GlobalTheory.T.mixedCoordinate_decay_realEntries D ψ hψ θ hθ S S₀ T ρ d v N`. Use `⟨C, fun f hf x w => ?_⟩` and prove the remaining obligations.
+
+Distinguish the cases in `h0 : d.mixS T ψ v.μ v.𝓕 f x w = 0`. Rewrite using `[h0]`. Simplify using the standard rewrite rules. Establish `hbox` using `hsupp f hf x w h0`. Establish `hmaj : maj θ K N x = ((1 + realSize θ x) ^ N)⁻¹`.
+
+Unfold `maj`. Rewrite using `[if_pos hbox]`. Rewrite using `[hmaj]`. Conclude with `le_mul_ofReal_inv_of_mul_le (realSize_nonneg θ x) N (hC f hf.1 x w)`.
+-/
 theorem mixS_le_maj : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ), IsStdChar D ψ (-1) → ∀ θ : InfFam D, IsInfFam θ →
     ∀ (S S₀ T : HSp D) (ρ : ℕ) (d : HypDec S S₀ ρ) (v : VolM D T.rank ρ) (U : AddSubgroup (WO S T)),
     IsOpen (U : Set (WO S T)) → ∃ K : Set (Mx D T.rank ρ), IsCompact K ∧ ∀ N : ℕ, ∃ C : ℝ≥0,

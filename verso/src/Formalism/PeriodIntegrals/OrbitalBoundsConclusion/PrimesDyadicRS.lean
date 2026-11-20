@@ -4,5 +4,8 @@ import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.DyadicPrimeIntervals.Cl
 import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.DyadicPrimeIntervals.RealIneq
 import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.DyadicPrimeIntervals.SmallNaturalNumbersBound
 
+/- English proof (translation)
+The claim follows from `PI.PrimesDyadicRS.W.claim_of_two PI.PrimesDyadicRS.K.small_natural_numbers_bound PI.PrimesDyadicRS.W.real_dyadic_inequality`.
+-/
 theorem primes_dyadic_range : PI.PrimesDyadicRS.Claim :=
   PI.PrimesDyadicRS.W.claim_of_two PI.PrimesDyadicRS.K.small_natural_numbers_bound PI.PrimesDyadicRS.W.real_dyadic_inequality

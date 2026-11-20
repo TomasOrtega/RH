@@ -18,9 +18,15 @@ def coeffX1 : Fin 2 → F := fun j => if j = 0 then 0 else 1
 
 def pointChowForm : MvPolynomial (Fin 1 × Fin 2) F := X (0, 1)
 
+/- English proof (translation)
+Simplify using `[linForm, coeffX1, Fin.sum_univ_two]`.
+-/
 theorem linearForm_coeffX1 : linForm (coeffX1 F) = (X 1 : MvPolynomial (Fin 2) F) := by
   simp [linForm, coeffX1, Fin.sum_univ_two]
 
+/- English proof (translation)
+Rewrite using `[linearForm_coeffX1, Ideal.mem_bot]`. Conclude with `X_ne_zero 1`.
+-/
 theorem linearFormX1_ne_zero : linForm (coeffX1 F) ∉ (⊥ : Ideal (MvPolynomial (Fin 2) F)) := by
   rw [linearForm_coeffX1, Ideal.mem_bot]
   exact X_ne_zero 1

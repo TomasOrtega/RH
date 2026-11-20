@@ -18,6 +18,9 @@ open NumberField ReciprocityTheory.Gal Formalism.ConjugateSelfDual IsDedekindDom
 
 namespace GlobalTheory.SpehRec
 
+/- English proof (translation)
+Take `⟨m, x, hd, hx, hc⟩` from `h`. Conclude with `⟨m, x, hd, hx, hc.of_equiv e (.refl _)⟩`.
+-/
 theorem isL_of_equiv {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
     {N : ℕ} {V W : Type} [AddCommGroup V] [Module ℂ V] [AddCommGroup W] [Module ℂ W]
     {𝔪 : Multiset (Segment k)} {π : Representation ℂ (GL (Fin N) k) V} {π' : Representation ℂ (GL (Fin N) k) W}
@@ -30,6 +33,9 @@ section Sum
 variable {E Ω : Type} [Field E] [NumberField E] [Field Ω] [Algebra E Ω] [IsAlgClosure E Ω]
   {A : ValuationSubring Ω} {w : HeightOneSpectrum (𝓞 E)} {h : IsPlaceOver A w}
 
+/- English proof (translation)
+Proceed by induction on `l with`. Consider the case `nil => simp [sumList, WD.lpSum_comm (WD.lpZero h), WD.lpSum_zero]`. Consider the case `cons x l ih`. Simplify using `only [List.cons_append, sumList, List.foldr_cons] at ih ⊢`. Rewrite using `[ih, WD.lpSum_assoc]`.
+-/
 theorem sumList_append (l l' : List (WD h)) : sumList (l ++ l') = (sumList l).lpSum (sumList l') := by
   induction l with
   | nil => simp [sumList, WD.lpSum_comm (WD.lpZero h), WD.lpSum_zero]
@@ -37,6 +43,9 @@ theorem sumList_append (l l' : List (WD h)) : sumList (l ++ l') = (sumList l).lp
     simp only [List.cons_append, sumList, List.foldr_cons] at ih ⊢
     rw [ih, WD.lpSum_assoc]
 
+/- English proof (translation)
+Proceed by induction on `L with`. Consider the case `nil => rfl`. Consider the case `cons x L ih`. Rewrite using `[List.flatMap_cons, sumList_append, ih]`. Both sides reduce to the same expression.
+-/
 theorem sumList_flatMap {α : Type*} (L : List α) (f : α → List (WD h)) :
     sumList (L.flatMap f) = sumList (L.map fun i => sumList (f i)) := by
   induction L with
@@ -47,6 +56,9 @@ theorem sumList_flatMap {α : Type*} (L : List α) (f : α → List (WD h)) :
 
 end Sum
 
+/- English proof (translation)
+The claim follows from `GlobalTheory.LocalData.isLocalField w ∀ (h : IsPlaceOver A w) (rc : IrrGL (w.adicCompletion E) → WD h), IsRec h rc → GlobalTheory.Published.GenericUnitaryDualGL → GlobalTheory.Published.StandardCosocleGL → ∀ (a d n : ℕ) (hd : ∑ _ : Fin d, a = n) (σ : LocIrr w a) (σ' : LocIrr w n) …`.
+-/
 theorem rec_spehQuot : ∀ (E Ω : Type) [Field E] [NumberField E] [Field Ω] [Algebra E Ω] [IsAlgClosure E Ω]
     (A : ValuationSubring Ω) (w : HeightOneSpectrum (𝓞 E)),
     letI := GlobalTheory.LocalData.complRel w

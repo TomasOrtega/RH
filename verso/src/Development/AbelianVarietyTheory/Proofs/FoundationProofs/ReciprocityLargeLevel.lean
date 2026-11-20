@@ -13,6 +13,15 @@ open ModularForm (E₄ E₆)
 
 namespace GlobalTheory.FN
 
+/- English proof (translation)
+Introduce `Ω _ _ _ ε T f`. Take `⟨a, b, hb, hab⟩` from `T.io_surj f`. Establish `hbK : T.io b ≠ 0`. Introduce `h`. Conclude with `hb (T.io_inj (by rw [h, map_zero]))`.
+
+Establish `hf : f = T.io a / T.io b`. Rewrite using `[eq_div_iff hbK, hab]`. Take `⟨Na, wa, hNa, hLa⟩` from `((GlobalTheory.T.mem_modularFunctionRingOver_iff_hasSomeLevelOver ε.range).1 a).1 a.2`. Take `⟨Nb, wb, hNb, hLb⟩` from `((GlobalTheory.T.mem_modularFunctionRingOver_iff_hasSomeLevelOver ε.range).1 b).1 b.2`. Use `⟨Na * Nb, Nat.mul_pos hNa hNb, ?_⟩` and prove the remaining obligations.
+
+Introduce `N hN hdiv s d hs γ γ' hc`. Establish `hLa' : Lv ε.range N wa a` using `GlobalTheory.T.lv_mono_of_dvd_of_le ε.range Na N wa wa a hN (dvd_trans (dvd_mul_right Na Nb) hdiv) le_rfl hLa`. Establish `hLb' : Lv ε.range N wb b` using `GlobalTheory.T.lv_mono_of_dvd_of_le ε.range Nb N wb wb b hN (dvd_trans (dvd_mul_left Nb Na) hdiv) le_rfl hLb`. Establish `ra` using `GlobalTheory.T.galois_slTwo_action_modularFunctionRing_of_congr Ω ε T a N wa hN hLa' s d hs γ γ' hc`. Establish `rb` using `GlobalTheory.T.galois_slTwo_action_modularFunctionRing_of_congr Ω ε T b N wb hN hLb' s d hs γ γ' hc`.
+
+Rewrite using `[hf, map_div₀, map_div₀, map_div₀, map_div₀, ra, rb]`.
+-/
 theorem reciprocity_large_level : ∀ (Ω : Type) [Field Ω] [Algebra ℚ Ω] [IsAlgClosure ℚ Ω] (ε : Ω →+* ℂ) (T : Frac Ω ε) (f : T.K), ∃ N₀ : ℕ, 0 < N₀ ∧ ∀ N : ℕ, 0 < N → N₀ ∣ N → ∀ (s : Ω ≃ₐ[ℚ] Ω) (d : ℤ), s (eOm ε (1 / N)) = eOm ε (1 / N) ^ d → ∀ γ γ' : SL(2, ℤ), Cong N d γ γ' → T.gal s (T.sl (ofSL γ) f) = T.sl (ofSL γ') (T.gal s f) := by
   intro Ω _ _ _ ε T f
   obtain ⟨a, b, hb, hab⟩ := T.io_surj f

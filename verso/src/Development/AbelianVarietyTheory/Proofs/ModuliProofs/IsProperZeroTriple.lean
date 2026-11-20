@@ -39,12 +39,22 @@ def zeroTriple (H : Host E) (S : Scheme.{0}) : SAB H S where
   prim := ⟨⟨fun _ => 1⟩, ZJ.isGen_one_of_g_eq_one _
     (ZJ.div_g_eq_one _ _ (Out.Inh.linComb_triv_g _ _) fun _ _ => rfl)⟩
 
+/- English proof (translation)
+The claim follows from `Set.eq_univ_of_forall fun _ _ _ _ _ _ => inferInstance`.
+-/
 theorem abLocus_eq_univ {S : Scheme.{0}} (G : Over S) [IsProper G.hom] : abLocus G = Set.univ :=
   Set.eq_univ_of_forall fun _ _ _ _ _ _ => inferInstance
 
 instance isProper_zeroTriple (H : Host E) (S : Scheme.{0}) : IsProper (zeroTriple H S).G.hom :=
   (Out.Inh.zeroPolAV S).isAb.proper
 
+/- English proof (translation)
+Set `s : (Out.Inh.trivLB (Sp R)).Sec` to `⟨fun _ => 1, fun _ _ => (map_one _).trans ((congrArg₂ (· * ·) rfl (map_one _)).trans (_root_.mul_one _)).symm⟩`. Establish `hs : ⨆ i : Fin (0 + 1), Out.nonzeroLocus ((fun _ => s) i) = ⊤`. Simplify using `only [iSup_const, Out.nonzeroLocus, s, Scheme.basicOpen_one]`. Conclude with `(Out.Inh.trivLB_isLB _).cover`. Establish `h` using `ProjSpace.toProj_str (𝟙 (Sp R)) (fun _ => s) hs`.
+
+Use `⟨0, _, ?_, h⟩` and prove the remaining obligations. Use `isProper_str R 0` as an intermediate fact. Establish `: IsClosedImmersion (ProjSpace.toProj (𝟙 (Sp R)) (fun _ => s) hs ≫ PSpace.str R 0)`. Rewrite using `[h]`. Use `infer_instance`.
+
+Conclude with `IsClosedImmersion.of_comp _ (PSpace.str R 0)`.
+-/
 theorem isProjOver_id (R : Type) [CommRing R] : IsProjOver (𝟙 (Sp R)) := by
   let s : (Out.Inh.trivLB (Sp R)).Sec :=
     ⟨fun _ => 1, fun _ _ =>

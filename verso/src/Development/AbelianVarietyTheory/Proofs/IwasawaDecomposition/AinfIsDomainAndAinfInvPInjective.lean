@@ -6,6 +6,11 @@ open scoped Formalism.Per
 
 namespace GlobalTheory.MemLoc
 
+/- English proof (translation)
+Introduce `l _`. Establish `: IsDomain (Per.Fl l)` using `inferInstance`. Establish `h : IsDomain (Per.Ainf l)` using `inferInstance`. Establish `hp : (l : Per.Ainf l) ≠ 0` using `WittVector.p_nonzero l _`. Establish `hle : Submonoid.powers (l : Per.Ainf l) ≤ nonZeroDivisors _` using `powers_le_nonZeroDivisors_of_noZeroDivisors hp`.
+
+Conclude with `⟨h, IsLocalization.isDomain_of_le_nonZeroDivisors (Per.AinfP l) hle, IsLocalization.injective _ hle⟩`.
+-/
 theorem ainf_isDomain_and_injective : ∀ (l : ℕ) [Fact l.Prime], IsDomain (Per.Ainf l) ∧ IsDomain (Per.AinfP l) ∧
     Function.Injective (algebraMap (Per.Ainf l) (Per.AinfP l)) := by
   intro l _

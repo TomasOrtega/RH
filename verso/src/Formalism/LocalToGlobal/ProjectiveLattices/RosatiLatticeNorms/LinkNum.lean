@@ -9,6 +9,13 @@ open NumberField Formalism.MainNotions Formalism.MainNotions.WeightAlgebra Forma
 
 variable {D : D7}
 
+/- English proof (translation)
+Establish `hfib : ∀ τ : K →+* ℂ, (Finset.univ.filter fun σ : L →+* ℂ => σ.comp (algebraMap K L) = τ).card = Module.finrank K L`. Introduce `τ`. Set `_ : Algebra K ℂ` to `τ.toAlgebra`. Set `e : {σ : L →+* ℂ // σ.comp (algebraMap K L) = τ} ≃ (L →ₐ[K] ℂ)` to `{ toFun := fun σ => ⟨σ.1, fun a => congrFun (congrArg DFunLike.coe σ.2) a⟩ invFun := fun φ => ⟨φ.toRingHom, RingHom.ext fun a => φ.commutes a⟩ left_inv := fun σ => rfl right_inv := fun φ => rfl }`. Rewrite using `[← Fintype.card_subtype, Fintype.card_congr e, AlgHom.card]`.
+
+Rewrite using `[← Finset.sum_fiberwise Finset.univ (fun σ : L →+* ℂ => σ.comp (algebraMap K L)) (fun σ => f (σ.comp (algebraMap K L)))]`. Establish `h1 : ∀ τ : K →+* ℂ, (∑ σ ∈ Finset.univ.filter fun σ : L →+* ℂ => σ.comp (algebraMap K L) = τ, f (σ.comp (algebraMap K L))) = (Module.finrank K L : ℝ) * f τ`. Introduce `τ`. Rewrite using `[Finset.sum_congr rfl fun σ hσ => by rw [(Finset.mem_filter.1 hσ).2], Finset.sum_const, hfib τ, nsmul_eq_mul]`. Simplify using `only [h1, ← Finset.mul_sum]`.
+
+Rewrite using `[← Module.finrank_mul_finrank ℚ K L]`. Establish `hK : (0 : ℝ) < Module.finrank ℚ K` using `by exact_mod_cast Module.finrank_pos`. Establish `hKL : (0 : ℝ) < Module.finrank K L` using `by exact_mod_cast Module.finrank_pos`. Use `push_cast`. Clear the denominators using the available nonvanishing facts.
+-/
 theorem mean_restrict {K L : Type} [Field K] [NumberField K] [Field L] [NumberField L] [Algebra K L]
     (f : (K →+* ℂ) → ℝ) :
     (∑ σ : L →+* ℂ, f (σ.comp (algebraMap K L))) / (Module.finrank ℚ L : ℝ) =

@@ -3,6 +3,13 @@ import Mathlib
 open Matrix
 open scoped ComplexOrder
 
+/- English proof (translation)
+Introduce `ι _ _ N E A`. Establish `key : (Matrix.of fun s t : Fin N × ι => ∑ φ, star (E φ s.2) * A φ s.1 t.1 * E φ t.2) = (Matrix.kronecker (1 : Matrix (Fin N) (Fin N) ℂ) E)ᴴ * Matrix.blockDiagonal A * Matrix.kronecker (1 : Matrix (Fin N) (Fin N) ℂ) E`. Use extensionality with `⟨i, a⟩ ⟨j, b⟩`. Simplify using `[Matrix.mul_apply, Fintype.sum_prod_type, Matrix.one_apply, Matrix.blockDiagonal_apply, Matrix.kronecker, Matrix.kroneckerMap_apply, ite_mul, mul_ite, Finset.sum_ite_eq, Finset.sum_ite_eq', Matrix.conjTranspose_apply]`. Use `Finset.sum_congr rfl fun x _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[Finset.sum_eq_single i]`. Simplify using the standard rewrite rules. Introduce `k _ hk`. Simplify using `[hk]`. Simplify using the standard rewrite rules.
+
+Rewrite using `[key, Matrix.det_mul, Matrix.det_mul, Matrix.det_conjTranspose, Matrix.kronecker, Matrix.det_kronecker, Matrix.det_blockDiagonal]`. Simplify using `[star_pow, mul_pow]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem UpperTheory.V.KT.blockdet :
     ∀ (ι : Type) [Fintype ι] [DecidableEq ι] (N : ℕ) (E : Matrix ι ι ℂ) (A : ι → Matrix (Fin N) (Fin N) ℂ),
     (Matrix.of fun s t : Fin N × ι => ∑ φ, star (E φ s.2) * A φ s.1 t.1 * E φ t.2).det =

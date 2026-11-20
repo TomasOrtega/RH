@@ -4,6 +4,19 @@ import Mathlib.FieldTheory.Finite.Basic
 open NumberField IsDedekindDomain UpperTheory.V.Kum UpperTheory.V.Stick
 open scoped nonZeroDivisors
 
+/- English proof (translation)
+Establish `hp2` using `hp.out.two_le`. Break down `lt_or_ge n (p - 1) with h | h` into its components or cases. Rewrite using `[if_neg h.ne]`. Use `FiniteField.sum_pow_lt_card_sub_one (ZMod p) n (by rw [ZMod.card]; exact h)` as an intermediate fact. Conclude with `this`.
+
+Establish `hn0 : n ≠ 0` using `by omega`. Set `φ : (ZMod p)ˣ ↪ ZMod p` to `⟨fun x => x, Units.val_injective⟩`. Establish `hmap : Finset.univ.map φ = Finset.univ \ {0}`. Use extensionality with `x`. Simplify using `only [Finset.mem_map, Finset.mem_univ, true_and, Finset.mem_sdiff, Finset.mem_singleton, φ, Function.Embedding.coeFn_mk]`.
+
+Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨u, rfl⟩`. Conclude with `u.ne_zero`. Introduce `hx`. Conclude with `⟨Units.mk0 x hx, rfl⟩`.
+
+Establish `hs : ∑ x : ZMod p, x ^ n = ∑ x : (ZMod p)ˣ, (x : ZMod p) ^ n`. Rewrite using `[← Finset.sum_sdiff (Finset.subset_univ ({0} : Finset (ZMod p))), Finset.sum_singleton, zero_pow hn0, add_zero, ← hmap, Finset.sum_map]`. Both sides reduce to the same expression. Rewrite using `[hs, FiniteField.sum_pow_units, ZMod.card]`. Establish `hiff : p - 1 ∣ n ↔ n = p - 1`.
+
+Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨c, rfl⟩`. Break down `c with _ | _ | c` into its components or cases. Use linear arithmetic over natural numbers and integers. Expand and normalize the polynomial expressions, which then agree.
+
+Use the polynomial consequences of the given equalities and inequalities. Introduce and unpack `rfl`. Conclude with `dvd_refl _`. Simplify using `only [hiff]`.
+-/
 private theorem ffsum_pow (p : ℕ) [hp : Fact p.Prime] (n : ℕ) (hn : n < 2 * (p - 1)) :
     ∑ x : ZMod p, x ^ n = if n = p - 1 then -1 else 0 := by
   classical
@@ -39,6 +52,25 @@ private theorem ffsum_pow (p : ℕ) [hp : Fact p.Prime] (n : ℕ) (hn : n < 2 * 
         exact dvd_refl _
     simp only [hiff]
 
+/- English proof (translation)
+Introduce `p hp i j hi0 hip hj0 hjp`. Establish `hpp : p.Prime` using `hp.out`. Establish `key : ∑ x : ZMod p, x ^ i * (1 - x) ^ j = ∑ m ∈ Finset.range (j + 1), (-1) ^ m * (j.choose m : ZMod p) * ∑ x : ZMod p, x ^ (i + m)`. Establish `h1 : ∀ x : ZMod p, (1 - x) ^ j = ∑ m ∈ Finset.range (j + 1), (-x) ^ m * 1 ^ (j - m) * (j.choose m : ZMod p)`. Introduce `x`.
+
+Rewrite using `[← add_pow, neg_add_eq_sub]`. Repeatedly rewrite using `[h1, Finset.mul_sum]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun m _ => Finset.sum_congr rfl fun x _ => ?_` and prove the remaining obligations. Rewrite using `[neg_pow, one_pow, pow_add]`.
+
+Expand and normalize the polynomial expressions, which then agree. Establish `key2 : ∑ m ∈ Finset.range (j + 1), (-1) ^ m * (j.choose m : ZMod p) * ∑ x : ZMod p, x ^ (i + m) = ∑ m ∈ Finset.range (j + 1), if p - 1 - i = m then -((-1) ^ m * (j.choose m : ZMod p)) else 0`. Use `Finset.sum_congr rfl fun m hm => ?_` and prove the remaining obligations. Rewrite `hm` using `[Finset.mem_range]`. Rewrite using `[ffsum_pow p (i + m) (by omega)]`.
+
+Distinguish the cases in `h : i + m = p - 1`. Rewrite using `[if_pos h, if_pos (by omega)]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[if_neg h, if_neg (by omega), mul_zero]`. Rewrite using `[key, key2, Finset.sum_ite_eq]`.
+
+Use `split_ifs with h`. Rewrite `h` using `[Finset.mem_range]`. Prove the components needed by the constructor for the conclusion. Introduce `h0`. It suffices to derive a contradiction.
+
+Establish `hc : (j.choose (p - 1 - i) : ZMod p) ≠ 0`. Rewrite using `[Ne, ZMod.natCast_eq_zero_iff]`. Introduce `hd`. Establish `hdf : p ∣ j.factorial`. Rewrite using `[← Nat.choose_mul_factorial_mul_factorial (show p - 1 - i ≤ j by omega), mul_assoc]`.
+
+Conclude with `Dvd.dvd.mul_right hd _`. Use `(Nat.Prime.dvd_factorial hpp).mp hdf` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish `hu : ((-1 : ZMod p) ^ (p - 1 - i)) ≠ 0` using `pow_ne_zero _ (neg_ne_zero.mpr one_ne_zero)`. Conclude with `mul_ne_zero hu hc (neg_eq_zero.mp h0)`.
+
+Introduce `h'`. Use linear arithmetic over natural numbers and integers. Rewrite `h` using `[Finset.mem_range]`. Prove the components needed by the constructor for the conclusion. Introduce `_`.
+
+Use linear arithmetic over natural numbers and integers. Introduce `_`. Both sides reduce to the same expression.
+-/
 theorem UpperTheory.V.Stick.ffsum :
     ∀ (p : ℕ) [Fact p.Prime] (i j : ℕ), 0 < i → i < p - 1 → 0 < j → j < p - 1 →
     (∑ x : ZMod p, x ^ i * (1 - x) ^ j = 0 ↔ i + j < p - 1) := by

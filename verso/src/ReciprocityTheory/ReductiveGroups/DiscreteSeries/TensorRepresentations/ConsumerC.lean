@@ -14,12 +14,20 @@ namespace ReciprocityTheory.ChartRestriction.DS
 
 variable {n : ℕ}
 
+/- English proof (translation)
+Substitute `h` using the available equality. Take `⟨φ, hφ, -⟩` from `HW.kType_unique T₁ T₂`. Conclude with `⟨φ, hφ⟩`.
+-/
 theorem cns_kType_iso {ε : Fin n → Bool} {Λ₁ Λ₂ : Fin n → ℝ} (h : Λ₁ = Λ₂) (T₁ : S7.KType ε Λ₁)
     (T₂ : S7.KType ε Λ₂) : ∃ φ : T₁.V ≃ₗᵢ[ℂ] T₂.V, ∀ k v, φ (T₁.op k v) = T₂.op k (φ v) := by
   subst h
   obtain ⟨φ, hφ, -⟩ := HW.kType_unique T₁ T₂
   exact ⟨φ, hφ⟩
 
+/- English proof (translation)
+Take `⟨-, hst1, -, ⟨v1, hv1S, hv10, hv1w⟩, hdom1⟩` from `h₁`. Take `⟨-, -, hirr2, ⟨v2, -, hv20, hv2w⟩, hdom2⟩` from `h₂`. Establish `hS1 : S₁ = ⊤`. Break down `hirr2 S₁ le_top hst1 with h | h` into its components or cases. Rewrite `hv1S` using `[h]`.
+
+Conclude with `absurd ((Submodule.mem_bot ℂ).1 hv1S) hv10`. Conclude with `h`. Establish `c1 : Formalism.MainNotions.S.CDom ε Λ₁ Λ₂` using `hdom2 Λ₁ v1 Submodule.mem_top hv10 hv1w`. Establish `c2 : Formalism.MainNotions.S.CDom ε Λ₂ Λ₁` using `hdom1 Λ₂ v2 (hS1 ▸ Submodule.mem_top) hv20 hv2w`. Conclude with `cdom_antisymm ε c1 c2`.
+-/
 theorem cns_kt_weight_eq {ε : Fin n → Bool} {H : Type*} [NormedAddCommGroup H] [InnerProductSpace ℂ H]
     {σ : Matrix (Fin n) (Fin n) ℂ → (H →L[ℂ] H)} {Λ₁ Λ₂ : Fin n → ℝ} {S₁ : Submodule ℂ H}
     (h₁ : Formalism.MainNotions.S.IsKTypeOf ε σ Λ₁ S₁) (h₂ : Formalism.MainNotions.S.IsKTypeOf ε σ Λ₂ ⊤) : Λ₁ = Λ₂ := by
@@ -34,6 +42,35 @@ theorem cns_kt_weight_eq {ε : Fin n → Bool} {H : Type*} [NormedAddCommGroup H
   have c2 : Formalism.MainNotions.S.CDom ε Λ₂ Λ₁ := hdom1 Λ₂ v2 (hS1 ▸ Submodule.mem_top) hv20 hv2w
   exact cdom_antisymm ε c1 c2
 
+/- English proof (translation)
+Set `R : HW.KRep ε` to `{ V := PiLp 2 (fun _ : Fin n => T.V), τ := HW.tensTau T ρ, cont := HW.tensTau_cont T ρ hc, dτ := HW.tensD T dρ, hasDeriv := fun X hX γ hγ => HW.tensD_hasDeriv T ρ dρ hX γ hγ (hd X hX γ hγ) }`. Establish `hRu : R.units = HW.tensAct (HW.kunits T) (fun a b => dρ (Matrix.single a b 1))` using `HW.tensKRep_units T ρ dρ hc hd`. Establish `hRop : ∀ k, R.op k = HW.tensOp T ρ k` using `fun k => rfl`. Take `⟨hrelR, hunitR⟩` from `HW.kRepRel n ε R`. Take `⟨m, x, μ, hx, horth, htop, -, -, hT⟩` from `HW.compRed n ε R`.
+
+Rewrite `hrelR`, `hunitR`, `hx`, `horth`, `htop`, `hT` using `[hRu]`. Use `choose idx hidx hdom using fun i => hP1 (μ i) (x i) (hx i).1 (hx i).2`. Establish `hidx_inj : Function.Injective idx`. Introduce `i i' hii`. Assume the negation of the conclusion as `hne`.
+
+Establish `hk : x i ∈ HW.khwSub ε (HW.tensAct (HW.kunits T) (fun a b => dρ (Matrix.single a b 1))) (Λ + γw (idx i))` using `(HW.count_mem_khwSub_iff _ _ _ _).2 (by rw [← hidx i]; exact (hx i).2)`. Establish `hk' : x i' ∈ HW.khwSub ε (HW.tensAct (HW.kunits T) (fun a b => dρ (Matrix.single a b 1))) (Λ + γw (idx i))` using `(HW.count_mem_khwSub_iff _ _ _ _).2 (by rw [hii, ← hidx i']; exact (hx i').2)`. Conclude with `HW.count_not_two_of_finrank_le_one _ (hP2 (idx i)) hk hk' (hx i).1 (hx i').1 (horth i i' hne _ (HW.count_mem_kSpan_self _ _ _) _ (HW.count_mem_kSpan_self _ _ _))`. Establish `hpiece : ∀ (ν : Fin n → ℝ) (y : PiLp 2 (fun _ : Fin n => T.V)), y ≠ 0 → Formalism.REAL.KHighest ε (HW.tensAct (HW.kunits T) (fun a b => dρ (Matrix.single a b 1))) ν y → ∃ k, μ k = ν`. Introduce `ν y hy0 hy`.
+
+Assume the negation of the conclusion as `hno`. Use `push Not at hno`. Apply `hy0` to reduce the goal to its premises. Use `HW.count_eq_zero_of_orth _ htop y fun k z hz => ?_` and prove the remaining obligations. Conclude with `Formalism.REAL.kOrth _ n ε _ ν (μ k) y (x k) hrelR hunitR hy (hx k).2 (hno k).symm y (HW.count_mem_kSpan_self _ _ _) z hz`.
+
+Establish `hsurj : ∀ s ∈ Sm, ∃ i, idx i = s`. Introduce `s hs`. Take `⟨y, hy0, hy⟩` from `hP3 s ((hSm s).1 hs)`. Take `⟨i, hi⟩` from `hpiece _ y hy0 hy`. Conclude with `⟨i, hinj (add_left_cancel ((hidx i).symm.trans hi))⟩`.
+
+Establish `hmem : ∀ i, idx i ∈ Sm` using `fun i => (hSm _).2 (hdom i)`. Establish `hj : ∀ s, ∃ js : (Ts s).V →ₗ[ℂ] PiLp 2 (fun _ : Fin n => T.V), s ∈ Sm → ∃ i, idx i = s ∧ (∀ v, js v ∈ Formalism.REAL.kSpan ε (HW.tensAct (HW.kunits T) (fun a b => dρ (Matrix.single a b 1))) (x i)) ∧ (∀ y ∈ Formalism.REAL.kSpan ε (HW.tensAct (HW.kunits T) (fun a b => dρ (Matrix.si …`. Introduce `s`. Distinguish the cases in `hs : s ∈ Sm`. Take `⟨i, hi⟩` from `hsurj s hs`.
+
+Take `⟨Tk, φ, -, hφ, -, -⟩` from `hT i`. Take `⟨ψ, hψ⟩` from `cns_kType_iso (show Λs s = μ i by rw [hΛs s hs, hidx i, hi]) (Ts s) Tk`. Use `⟨(Formalism.REAL.kSpan ε (HW.tensAct (HW.kunits T) (fun a b => dρ (Matrix.single a b 1))) (x i)).subtype ∘ₗ φ.toLinearEquiv.toLinearMap ∘ₗ ψ.toLinearEquiv.toLinearMap, fun _ => ⟨i, hi, ?_, ?_, ?_, ?_⟩⟩` and prove the remaining obligations. Introduce `v`. Conclude with `(φ (ψ v)).2`.
+
+Introduce `y hy`. Use `⟨ψ.symm (φ.symm ⟨y, hy⟩), ?_⟩` and prove the remaining obligations. Use `show (φ (ψ (ψ.symm (φ.symm ⟨y, hy⟩)))).1 = y`. Rewrite using `[LinearIsometryEquiv.apply_symm_apply, LinearIsometryEquiv.apply_symm_apply]`. Introduce `v w show inner ℂ (φ (ψ v)).1 (φ (ψ w)).1 = inner ℂ v w`.
+
+Rewrite using `[← Submodule.coe_inner, LinearIsometryEquiv.inner_map_map, LinearIsometryEquiv.inner_map_map]`. Introduce `k v show (φ (ψ ((Ts s).op k v))).1 = HW.tensOp T ρ k (φ (ψ v)).1`. Rewrite using `[hψ, hφ, hRop]`. Conclude with `⟨0, fun h => absurd h hs⟩`. Use `choose j hj using hj`.
+
+Use `⟨j, fun s hs => (hj s hs).choose_spec.2.2.2.1, fun s hs => (hj s hs).choose_spec.2.2.2.2, fun s hs s' hs' hne v v' => ?_, fun y => ?_⟩` and prove the remaining obligations. Take `⟨i, hi, hin, -⟩` from `hj s hs`. Take `⟨i', hi', hin', -⟩` from `hj s' hs'`. Establish `hii : i ≠ i'` using `fun h => hne (hi.symm.trans (h ▸ hi'))`. Conclude with `horth i i' hii _ (hin v) _ (hin' v')`.
+
+Establish `hy : y ∈ ⨆ i ∈ (univ : Finset (Fin m)), Formalism.REAL.kSpan ε (HW.tensAct (HW.kunits T) (fun a b => dρ (Matrix.single a b 1))) (x i)`. Establish `e : (⨆ i ∈ (univ : Finset (Fin m)), Formalism.REAL.kSpan ε (HW.tensAct (HW.kunits T) (fun a b => dρ (Matrix.single a b 1))) (x i)) = ⨆ i, Formalism.REAL.kSpan ε (HW.tensAct (HW.kunits T) (fun a b => dρ (Matrix.single a b 1))) (x i)`. Simplify using the standard rewrite rules. Rewrite using `[e, htop]`. Conclude with `Submodule.mem_top`.
+
+Take `⟨μf, hμf⟩` from `(Submodule.mem_iSup_finset_iff_exists_sum _ y).1 hy`. Establish `hv : ∀ s, ∃ v : (Ts s).V, s ∈ Sm → ∀ i, idx i = s → j s v = (μf i : PiLp 2 (fun _ : Fin n => T.V))`. Introduce `s`. Distinguish the cases in `hs : s ∈ Sm`. Take `⟨i, hi, -, hsur, -⟩` from `hj s hs`.
+
+Take `⟨v, hv⟩` from `hsur _ (μf i).2`. Use `⟨v, fun _ i' hi' => ?_⟩` and prove the remaining obligations. Establish `: i' = i` using `hidx_inj (hi'.trans hi.symm)`. Substitute `this` using the available equality. Conclude with `hv`.
+
+Conclude with `⟨0, fun h => absurd h hs⟩`. Use `choose v hv using hv`. Use `⟨v, ?_⟩` and prove the remaining obligations. Rewrite using `[← hμf]`. Conclude with `Finset.sum_bij (fun a _ => idx a) (fun a _ => hmem a) (fun a _ b _ h => hidx_inj h) (fun b hb => let ⟨a, ha⟩ := hsurj b hb; ⟨a, mem_univ _, ha⟩) (fun a _ => (hv (idx a) (hmem a) a rfl).symm)`.
+-/
 theorem cns_cpt_dec {ε : Fin n → Bool} {Λ : Fin n → ℝ} (T : S7.KType ε Λ)
     (ρ : S7.KG ε →* unitary (Matrix (Fin n) (Fin n) ℂ))
     (dρ : Matrix (Fin n) (Fin n) ℂ →ₗ[ℂ] Matrix (Fin n) (Fin n) ℂ)

@@ -11,6 +11,13 @@ noncomputable section
 
 namespace GlobalTheory.DegPullId
 
+/- English proof (translation)
+Introduce `R _ _ I hR D`. Establish `: IsMonHom (Iso.refl D.toPre.P.A).hom` using `inferInstanceAs (IsMonHom (𝟙 D.toPre.P.A))`. Establish `gp : IsGrpPullback D.toPre.P.A D.toPre.P.A (specOf (RingHom.id R)) (Iso.refl D.toPre.P.A).hom.left` using `(isGrpPullback_of_iso (Iso.refl D.toPre.P.A)).congr (specOf_id R).symm rfl`. Take `⟨e, me, hF⟩` from `grpPullback_iso gp (isGrpPullback_pullback D.toPre.P.A (specOf (RingHom.id R)))`. Establish `hF' : e.hom.left ≫ pullback.fst D.toPre.P.A.hom (specOf (RingHom.id R)) = 𝟙 _` using `hF`.
+
+Take `⟨W, hW, ⟨ψW⟩⟩` from `psiOnExists R I hR D`. Take `⟨hD, h₁, -, h₃⟩` from `UnifUniq.exists_isPullDeg_id D.toPre D.toPre W hW ψW e me (isoPullId (Geo.Tor.idIso D.toPre.P.L) hF') ((isGen_iff _).2 (isoPullId_pgen (idIso_isGen D.toPre.P.isLB) hF')) ((congrArg (_ ≫ ·) hF').trans (Category.comp_id _)) (NoTorus.pmaps_id hF' (K := PUnit) (fun _ => eSec D.toPre. …`. Use `⟨hD, fun x => ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[h₃]`. Both sides reduce to the same expression.
+
+Rewrite using `[h₁]`. Conclude with `hF'`.
+-/
 theorem exists_isPullDeg_id_self : ∀ (R : Type) [CommRing R] [IsDomain R] (I : Ideal R), AdmBase R I → ∀ (D : DegData R I),
     ∃ h : IsPullDeg (RingHom.id R) D.toPre D.toPre, (∀ x, h.xe x = x) ∧
       h.e.hom.left ≫ pullback.fst D.toPre.P.A.hom (specOf (RingHom.id R)) = 𝟙 _ := by

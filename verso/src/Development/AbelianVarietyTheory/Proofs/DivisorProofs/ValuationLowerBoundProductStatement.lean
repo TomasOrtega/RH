@@ -21,6 +21,9 @@ open scoped Classical
 attribute [local instance] Over.cartesianMonoidalCategory
 
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.ValArith.val_sq_div_ge | exact GlobalTheory.ValArith.val_sq_div_ge | (intros; apply GlobalTheory.ValArith.val_sq_div_ge <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.valuation_lower_bound_product : ∀ (R : Type) [CommRing R] [IsDomain R] [IsDiscreteValuationRing R] (l : ℕ),
     (l : R) ∈ IsLocalRing.maximalIdeal R → (l : R) ≠ 0 →
     ∀ (a b δ : FractionRing R) (u : Rˣ) (ca cd : ℚ), a ≠ 0 → b ≠ 0 → δ ≠ 0 →

@@ -11,5 +11,8 @@ open GlobalTheory.IndefiniteRowSideFullHecke.ModerateGrowthSchwartz (schwartzA)
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.CompanionTheory.WSum.integrable_schwartzA_haar | exact GlobalTheory.CompanionTheory.WSum.integrable_schwartzA_haar | (intros; apply GlobalTheory.CompanionTheory.WSum.integrable_schwartzA_haar <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.integrable_of_mem_schwartzA : ∀ (D : D7) (θ : InfFam D), IsInfFam θ → ∀ (m n : ℕ) (μ : Measure (Mx D m n)) [μ.IsAddHaarMeasure] (φ : Mx D m n → ℂ), φ ∈ schwartzA θ m n → Integrable φ μ := by
   first | exact @GlobalTheory.CompanionTheory.WSum.integrable_schwartzA_haar | exact GlobalTheory.CompanionTheory.WSum.integrable_schwartzA_haar | (intros; apply GlobalTheory.CompanionTheory.WSum.integrable_schwartzA_haar <;> assumption)

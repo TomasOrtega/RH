@@ -7,6 +7,9 @@ open CategoryTheory Limits AlgebraicGeometry Polynomial GlobalTheory.EtC
 
 namespace LateralTheory.E.DomCoverPf
 
+/- English proof (translation)
+The claim follows from `_root_.UpperTheory.Reformulated.B.Qn19.aicFrac R L φ hR h`.
+-/
 theorem aicFrac (R L : Type) [CommRing R] [CommRing L] (φ : R →+* L) (hR : AIC R)
     (h : ∀ z : L, ∃ a b : R, IsUnit (φ b) ∧ z * φ b = φ a) : AIC L :=
   _root_.UpperTheory.Reformulated.B.Qn19.aicFrac R L φ hR h
@@ -16,6 +19,9 @@ def IdemCover : Prop := ∀ (C : CommRingCat.{0}), ∃ (D : CommRingCat.{0}) (g 
     ∀ z : Localization.AtPrime r, ∃ a b : C, IsUnit (algebraMap D (Localization.AtPrime r) (g.hom b)) ∧
       z * algebraMap D (Localization.AtPrime r) (g.hom b) = algebraMap D (Localization.AtPrime r) (g.hom a)
 
+/- English proof (translation)
+Introduce `C hC`. Take `⟨D, g, hi, hs, hr⟩` from `h2 C`. Use `⟨D, g, hi, hs, fun r _ => ⟨(hr r).1, ?_⟩⟩` and prove the remaining obligations. Conclude with `aicFrac C (Localization.AtPrime r) ((algebraMap D (Localization.AtPrime r)).comp g.hom) hC (hr r).2`.
+-/
 theorem DomCover_of (h2 : IdemCover) : t_E3Cut.DomCover := by
   intro C hC
   obtain ⟨D, g, hi, hs, hr⟩ := h2 C

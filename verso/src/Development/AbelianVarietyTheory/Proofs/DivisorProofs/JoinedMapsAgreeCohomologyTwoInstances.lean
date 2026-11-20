@@ -9,6 +9,17 @@ namespace GlobalTheory.CxCoh.JoinedTwoProof
 
 universe a b
 
+/- English proof (translation)
+Introduce `C _ C' _ K K' m m' θ j c`. Take `⟨⟨⟨z, w, η⟩, hc⟩, rfl⟩` from `QuotientAddGroup.mk_surjective c`. Take `⟨h1, h2, h3, -⟩` from `hc`. Simplify using `only at h1 h2 h3`. Use `QuotientAddGroup.eq.2 ⟨(fun T T' φ ↦ m'.a0 T' (z _ _ _ (θ.app T) (m'.G.map φ) - z _ _ _ (m.G.map φ) (θ.app T')), fun T ↦ m'.a1 T (w _ _ (θ.app T))), ?_⟩` and prove the remaining obligations.
+
+Use `Prod.ext (funext fun T ↦ funext fun T' ↦ funext fun T'' ↦ funext fun φ ↦ funext fun ψ ↦ ?_) (Prod.ext (funext fun T ↦ funext fun T' ↦ funext fun φ ↦ ?_) (funext fun T ↦ ?_))` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `K'.M0.map ψ (m'.a0 T' (z _ _ _ (θ.app T) (m'.G.map φ) - z _ _ _ (m.G.map φ) (θ.app T'))) - m'.a0 T'' (z _ _ _ (θ.app T) (m'.G.map (φ ≫ ψ)) - z _ _ _ (m.G.map (φ ≫ ψ)) (θ.app T'')) + m'.a0 T'' (z _ _ _ (θ.app T') (m'.G.map ψ) - z _ _ _ (m.G.map ψ) (θ.app T'')) = -m.a0 T'' (z _ _ _ …`. Establish `e1` using `congrArg (m'.a0 T'') (h1 _ _ _ _ (m.G.map φ) (m.G.map ψ) (θ.app T''))`. Establish `e2` using `congrArg (m'.a0 T'') (h1 _ _ _ _ (m.G.map φ) (θ.app T') (m'.G.map ψ))`. Establish `e3` using `congrArg (m'.a0 T'') (h1 _ _ _ _ (θ.app T) (m'.G.map φ) (m'.G.map ψ))`.
+
+Rewrite `e1` using `[θ.naturality ψ]`. Rewrite `e2` using `[θ.naturality φ]`. Rewrite `e1` using `[← m.G.map_comp]`. Rewrite `e3` using `[← m'.G.map_comp]`. Simplify using `only [map_add, j.e0, m'.compDegreeZero_natural] at e1 e2 e3`.
+
+Simplify using `only [map_sub, m'.compDegreeZero_natural]`. Take the linear combination `(norm := abel1) e1 - e2 + e3`. Express the relevant statement in the definitionally equal form `m'.a1 T' (w _ _ (θ.app T')) - K'.M1.map φ (m'.a1 T (w _ _ (θ.app T))) - K'.d0 T' (m'.a0 T' (z _ _ _ (θ.app T) (m'.G.map φ) - z _ _ _ (m.G.map φ) (θ.app T'))) = -m.a1 T' (w _ _ (m.G.map φ)) + m'.a1 T' (w _ _ (m'.G.map φ))`. Establish `e` using `congrArg (m'.a1 T') ((h2 _ _ _ (m.G.map φ) (θ.app T')).symm.trans ((congrArg (w _ _) (θ.naturality φ)).trans (h2 _ _ _ (θ.app T) (m'.G.map φ))))`. Simplify using `only [map_add, j.e1, m'.compDegreeOne_natural, m'.comp_commutes_diffZero] at e`.
+
+Simplify using `only [map_sub]`. Take the linear combination `(norm := abel1) e`. Express the relevant statement in the definitionally equal form `K'.d1 T (m'.a1 T (w _ _ (θ.app T))) = -m.a2 T (η _) + m'.a2 T (η _)`. Rewrite using `[h3 _ _ (θ.app T), map_add, j.e2, m'.comp_commutes_diffOne]`. Normalize the expressions using the abelian group laws.
+-/
 theorem main : JoinedTwo.{a, b} := by
   intro C _ C' _ K K' m m' θ j c
   obtain ⟨⟨⟨z, w, η⟩, hc⟩, rfl⟩ := QuotientAddGroup.mk_surjective c
@@ -43,6 +54,9 @@ theorem main : JoinedTwo.{a, b} := by
   · change K'.d1 T (m'.a1 T (w _ _ (θ.app T))) = -m.a2 T (η _) + m'.a2 T (η _)
     rw [h3 _ _ (θ.app T), map_add, j.e2, m'.comp_commutes_diffOne]; abel
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨main, main, main⟩`.
+-/
 theorem joinedTwo_inst : JoinedTwo.{1,1} ∧ JoinedTwo.{1,0} ∧ JoinedTwo.{0,0} := ⟨main, main, main⟩
 
 end GlobalTheory.CxCoh.JoinedTwoProof

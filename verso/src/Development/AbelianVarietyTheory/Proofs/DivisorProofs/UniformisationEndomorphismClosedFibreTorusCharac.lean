@@ -14,6 +14,11 @@ noncomputable section
 
 namespace GlobalTheory.Poinc.Eq8
 
+/- English proof (translation)
+Use `(GlobalTheory.SplitTorus.eq_torusMap_iff t h).2 fun b => ?_` and prove the remaining obligations. Establish `e` using `congrArg Units.val (ht b)`. Establish `: (res (fun x _ => show t.left.base x ∈ (⊤ : TopologicalSpace.Opens _) from trivial) (pullU t.left ⊤ (charUnit S X b)) : Γ((splitTorus S X).left, ⊤)ˣ).val = t.left.appTop.hom (charUnit S X b).val`. Rewrite using `[Scheme.Hom.appTop, Scheme.Hom.app_eq_appLE]`. Both sides reduce to the same expression.
+
+Rewrite `e` using `[this, GlobalTheory.SplitTorus.charUnit_val, GlobalTheory.SplitTorus.charUnit_val]`. Conclude with `e`.
+-/
 theorem eq_torusMap_of_torusEndOf {S : Scheme.{0}} {X : Type} [AddCommGroup X] (h : X →+ X)
     (t : splitTorus S X ⟶ splitTorus S X) (ht : TorusEndOf X h t) : t = GlobalTheory.SplitTorus.torusMap S h := by
   refine (GlobalTheory.SplitTorus.eq_torusMap_iff t h).2 fun b => ?_
@@ -25,6 +30,13 @@ theorem eq_torusMap_of_torusEndOf {S : Scheme.{0}} {X : Type} [AddCommGroup X] (
   rw [this, GlobalTheory.SplitTorus.charUnit_val, GlobalTheory.SplitTorus.charUnit_val] at e
   exact e
 
+/- English proof (translation)
+Introduce `V₁ _ _ _ _ D P G _ _ _ U E κ _ a ha G₀ _ φ h f₀ hf`. Take `⟨t, ht, hi⟩` from `E.i_lin 0`. Establish `htm` using `eq_torusMap_of_torusEndOf E.h t ht`. Establish `k` using `GlobalTheory.TorusPart.isGrpPullback_thickLift ha h`. Establish `e : f₀.left ≫ GlobalTheory.TorusPart.thickLift ha h = GlobalTheory.TorusPart.thickLift ha h ≫ ((Over.pullback (thick V₁ (maximalIdeal V₁) 0)).map E.aG).left`.
+
+Apply `pullback.hom_ext` to reduce the goal to its premises. Rewrite using `[Category.assoc, GlobalTheory.TorusPart.thickLift_fst, hf, Category.assoc]`. Simplify using `only [GlobalTheory.TorusPart.thickLift, Over.pullback_map_left]`. Rewrite using `[pullback.lift_fst, pullback.lift_fst_assoc]`. Simplify using `only [GlobalTheory.TorusPart.thickLift, Over.pullback_map_left]`.
+
+Rewrite using `[Category.assoc, pullback.lift_snd, Category.assoc, pullback.lift_snd, pullback.lift_snd, ← Category.assoc, Over.w]`. Establish `hc` using `GlobalTheory.TorusPart.pullTorus_comp k k _ f₀ e (U.gt 0).i`. Unfold `GlobalTheory.TorusPart.gtTorus`. Rewrite using `[← hc, hi, htm, GlobalTheory.TorusPart.pullTorus_torusMap_comp]`.
+-/
 theorem endChar_endU : ∀ (V₁ : Type) [CommRing V₁] [IsDomain V₁] [IsLocalRing V₁], IsCN V₁ → ∀ (D : DegData V₁ (maximalIdeal V₁)) (P : PolAV (Sp (FractionRing V₁))) (G : Over (Sp V₁)) [GrpObj G] [IsCommMonObj G], IsSemiAbelian G → ∀ (U : Unif (maximalIdeal V₁) D P G) (E : EndU U.toUnifPre), EndChar U E.aG E.h := by
   intro V₁ _ _ _ _ D P G _ _ _ U E κ _ a ha G₀ _ φ h f₀ hf
   obtain ⟨t, ht, hi⟩ := E.i_lin 0

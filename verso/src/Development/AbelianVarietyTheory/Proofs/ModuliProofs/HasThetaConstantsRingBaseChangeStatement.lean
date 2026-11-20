@@ -10,5 +10,8 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.S
 open scoped CategoryTheory.Obj TensorProduct
 open GlobalTheory.ZM
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.hasTh_baseChange | exact GlobalTheory.hasTh_baseChange | (intros; apply GlobalTheory.hasTh_baseChange <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.hasThetaConstants_ring_baseChange : Out.Laws2 → ∀ (o : Type) [CommRing o] (g N' : ℕ) (J : Type) (b : TBase o (N' ^ 2)) (S : Scheme.{0}) (s : S ⟶ Sp o) (t : TObj g (N' ^ 2) J b s) (R R' : Type) [CommRing R] [CommRing R'] (φ : R →+* R') (x : Sp R ⟶ S) (v : Ix g (N' ^ 2) → R), t.HasTh x v → t.HasTh (spMap φ ≫ x) (fun a => φ (v a)) := by
   first | exact @GlobalTheory.hasTh_baseChange | exact GlobalTheory.hasTh_baseChange | (intros; apply GlobalTheory.hasTh_baseChange <;> assumption)

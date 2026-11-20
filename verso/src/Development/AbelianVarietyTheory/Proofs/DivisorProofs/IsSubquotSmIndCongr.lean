@@ -12,6 +12,9 @@ variable (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchim
 
 open MeasureTheory ValuativeRel in
 open scoped NNReal in
+/- English proof (translation)
+Substitute `h` using the available equality. Take `rfl : σ = σ'` from `MonoidHom.ext fun g => hσ g g.2`. Both sides reduce to the same expression.
+-/
 private theorem isSubquotient_smInd_congr {G V W : Type} [Group G] [TopologicalSpace G]
     [IsTopologicalGroup G] [AddCommGroup V] [Module ℂ V] [AddCommGroup W] [Module ℂ W]
     {H H' : Subgroup G} (h : H = H') (σ : Representation ℂ H W) (σ' : Representation ℂ H' W)
@@ -24,12 +27,18 @@ private theorem isSubquotient_smInd_congr {G V W : Type} [Group G] [TopologicalS
 
 open MeasureTheory ValuativeRel in
 open scoped NNReal in
+/- English proof (translation)
+The claim follows from `_root_.GlobalTheory.SmGL.blk_apply (_root_.GlobalTheory.SmGL.points n) j ()`.
+-/
 private theorem blk_points (n : Type) (j : n) :
     _root_.GlobalTheory.SmGL.blk (_root_.GlobalTheory.SmGL.points n) j = j :=
   _root_.GlobalTheory.SmGL.blk_apply (_root_.GlobalTheory.SmGL.points n) j ()
 
 open MeasureTheory ValuativeRel in
 open scoped NNReal in
+/- English proof (translation)
+Use extensionality with `g`. Simplify using `only [_root_.GlobalTheory.SmGL.mem_parab, blk_points]`. Conclude with `⟨fun h i j hij => h hij, fun h i j hij => h i j hij⟩`.
+-/
 private theorem borelGL_Q_eq_parab_points (k : Type) [Field k] [TopologicalSpace k]
     [IsTopologicalRing k] [T2Space k] (n : Type) [Fintype n] [DecidableEq n] [LinearOrder n] :
     (_root_.GlobalTheory.LGrp.borelGL k n).Q =
@@ -40,6 +49,9 @@ private theorem borelGL_Q_eq_parab_points (k : Type) [Field k] [TopologicalSpace
 
 open MeasureTheory ValuativeRel in
 open scoped NNReal in
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 private theorem borelGL_p_apply_eq_diag (k : Type) [Field k] [TopologicalSpace k]
     [IsTopologicalRing k] [T2Space k] (n : Type) [Fintype n] [DecidableEq n] [LinearOrder n]
     (q : (_root_.GlobalTheory.LGrp.borelGL k n).Q) (i : n) :
@@ -47,6 +59,11 @@ private theorem borelGL_p_apply_eq_diag (k : Type) [Field k] [TopologicalSpace k
 
 open MeasureTheory ValuativeRel in
 open scoped NNReal in
+/- English proof (translation)
+Use function extensionality and compare the values at `a`. Use extensionality with `i j`. Rewrite using `[_root_.GlobalTheory.SmGL.leviProj_apply]`. Consider the cases of `i`. Consider the cases of `j`.
+
+Simplify using `[_root_.GlobalTheory.SmGL.leviTorus, _root_.GlobalTheory.SmGL.points, borelGL_p_apply_eq_diag]`.
+-/
 private theorem leviProj_points_eq_leviTorus_borel_p (k : Type) [Field k] [TopologicalSpace k]
     [IsTopologicalRing k] [T2Space k] (n : Type) [Fintype n] [DecidableEq n] [LinearOrder n]
     (q : (_root_.GlobalTheory.LGrp.borelGL k n).Q)
@@ -61,6 +78,17 @@ private theorem leviProj_points_eq_leviTorus_borel_p (k : Type) [Field k] [Topol
 
 open MeasureTheory ValuativeRel in
 open scoped NNReal in
+/- English proof (translation)
+Take `⟨x, hg⟩` from `x`. Simplify using `only at hx`. Substitute `hx` using the available equality. Substitute `hU` using the available equality. Use `letI : MeasurableSpace (_root_.GlobalTheory.SmGL.unipRad k e) := borel _`.
+
+Use `haveI : BorelSpace (_root_.GlobalTheory.SmGL.unipRad k e) := ⟨rfl⟩`. Use `haveI : LocallyCompactSpace (_root_.GlobalTheory.SmGL.unipRad k e) := hc.isClosedEmbedding_subtypeVal.locallyCompactSpace`. Set `μ : Measure (_root_.GlobalTheory.SmGL.unipRad k e)` to `Measure.haar`. Take `⟨K⟩ : Nonempty (TopologicalSpace.PositiveCompacts (_root_.GlobalTheory.SmGL.unipRad k e))` from `inferInstance`. Establish `hK : MeasurableSet (K : Set (_root_.GlobalTheory.SmGL.unipRad k e))` using `K.isCompact.isClosed.measurableSet`.
+
+Establish `h1` using `_root_.GlobalTheory.LGrp.modulus_measure _ hc μ ⟨_, hg⟩ (K : Set _)`. Establish `h2` using `_root_.GlobalTheory.SmGL.UnipHaar.haar_conj_eq_modulus_mul k α n m e μ g _ hK`. Establish `hset : (_root_.GlobalTheory.LGrp.conjAut (_root_.GlobalTheory.SmGL.unipRad k e) ⟨_, hg⟩) '' (K : Set _) = {u : _root_.GlobalTheory.SmGL.unipRad k e | ∃ s ∈ (K : Set (_root_.GlobalTheory.SmGL.unipRad k e)), (u : GL n k) = _root_.GlobalTheory.SmGL.leviEmb k e g * (s : GL n k) * (_r …`. Use extensionality with `u`. Prove the components needed by the constructor for the conclusion.
+
+Introduce and unpack `⟨s, hs, rfl⟩`. Conclude with `⟨s, hs, _root_.GlobalTheory.LGrp.conjAut_coe _ _ _⟩`. Introduce and unpack `⟨s, hs, hu⟩`. Conclude with `⟨s, hs, Subtype.ext ((_root_.GlobalTheory.LGrp.conjAut_coe _ _ _).trans hu.symm)⟩`. Rewrite `h1` using `[hset, h2]`.
+
+Establish `hpos : μ K ≠ 0` using `(Measure.measure_pos_of_nonempty_interior μ K.interior_nonempty).ne'`. Establish `hfin : μ K ≠ ⊤` using `K.isCompact.measure_lt_top.ne`. Establish `h3` using `(ENNReal.mul_left_inj hpos hfin).1 h1`. Rewrite `h3` using `[← ENNReal.ofReal_coe_nnreal]`. Conclude with `((ENNReal.ofReal_eq_ofReal_iff (_root_.GlobalTheory.SmGL.modulus_pos k g).le (NNReal.coe_nonneg _)).1 h3).symm`.
+-/
 private theorem modulus_leviEmb_eq_smGL_modulus (k : Type) [Field k] [ValuativeRel k]
     [TopologicalSpace k] [IsNonarchimedeanLocalField k] {α n : Type} {m : α → Type} [Fintype α]
     [LinearOrder α] [(a : α) → Fintype (m a)] [(a : α) → DecidableEq (m a)] [Fintype n]
@@ -104,6 +132,13 @@ private theorem modulus_leviEmb_eq_smGL_modulus (k : Type) [Field k] [ValuativeR
 
 open MeasureTheory ValuativeRel in
 open scoped NNReal in
+/- English proof (translation)
+Use extensionality with `g`. Rewrite using `[_root_.GlobalTheory.LGrp.LeviDatum.mem_U, _root_.GlobalTheory.SmGL.mem_unipRad, ← borelGL_Q_eq_parab_points]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨hQ, hp⟩`. Use `⟨hQ, fun a i j => ?_⟩` and prove the remaining obligations.
+
+Establish `h` using `congrArg (fun u : kˣ => (u : k)) (congrFun hp a)`. Simplify using `only [borelGL_p_apply_eq_diag, Pi.one_apply, Units.val_one] at h`. Consider the cases of `i`. Consider the cases of `j`. Simplify using `using h`.
+
+Introduce and unpack `⟨hQ, hd⟩`. Use `⟨hQ, funext fun a => Units.ext ?_⟩` and prove the remaining obligations. Rewrite using `[borelGL_p_apply_eq_diag]`. Simplify using `using hd a () ()`.
+-/
 private theorem borelGL_U_eq_unipRad_points (k : Type) [Field k] [TopologicalSpace k]
     [IsTopologicalRing k] [T2Space k] (n : Type) [Fintype n] [DecidableEq n] [LinearOrder n] :
     (_root_.GlobalTheory.LGrp.borelGL k n).U = _root_.GlobalTheory.SmGL.unipRad k (_root_.GlobalTheory.SmGL.points n) := by
@@ -124,6 +159,9 @@ private theorem borelGL_U_eq_unipRad_points (k : Type) [Field k] [TopologicalSpa
 
 open MeasureTheory ValuativeRel in
 open scoped NNReal in
+/- English proof (translation)
+Use extensionality with `i j`. Express the relevant statement in the definitionally equal form `((_root_.GlobalTheory.LGrp.diagHom k n t : GL n k) : Matrix n n k) i j = _`. Rewrite using `[_root_.GlobalTheory.LGrp.diagHom_val]`. Simplify using `[_root_.GlobalTheory.SmGL.leviEmb, _root_.GlobalTheory.SmGL.leviTorus, _root_.GlobalTheory.SmGL.points]`. Apply the tactic sequence `by_cases h : i = j <;> simp [Matrix.diagonal_apply, h]`.
+-/
 private theorem borelGL_s_eq_leviEmb_points_leviTorus (k : Type) [Field k] [TopologicalSpace k]
     [IsTopologicalRing k] [T2Space k] (n : Type) [Fintype n] [DecidableEq n] [LinearOrder n]
     (t : n → kˣ) :
@@ -137,6 +175,9 @@ private theorem borelGL_s_eq_leviEmb_points_leviTorus (k : Type) [Field k] [Topo
 
 open MeasureTheory ValuativeRel in
 open scoped NNReal in
+/- English proof (translation)
+Rewrite using `[_root_.GlobalTheory.LGrp.LeviDatum.deltaHalf_coe, _root_.GlobalTheory.SmGL.val_deltaHalf, _root_.GlobalTheory.LGrp.LeviDatum.delta_apply, modulus_leviEmb_eq_smGL_modulus k (_root_.GlobalTheory.SmGL.points n) _ (borelGL_U_eq_unipRad_points k n) _ _ _ (borelGL_s_eq_leviEmb_points_ …`.
+-/
 private theorem borelGL_deltaHalf_eq_smGL_deltaHalf_leviTorus (k : Type) [Field k] [ValuativeRel k]
     [TopologicalSpace k] [IsNonarchimedeanLocalField k] (n : Type) [Fintype n] [DecidableEq n]
     [LinearOrder n] (q : (_root_.GlobalTheory.LGrp.borelGL k n).Q) :
@@ -153,6 +194,11 @@ open scoped NNReal in
 variable (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
   (n : Type) [Fintype n] [DecidableEq n] [LinearOrder n] in
 
+/- English proof (translation)
+Express the relevant statement in the definitionally equal form `_root_.GlobalTheory.SmGL.IsSubquotient π (_root_.GlobalTheory.LGrp.psGL k α) ↔ _`. Unfold `_root_.GlobalTheory.LGrp.psGL _root_.GlobalTheory.LGrp.LeviDatum.nInd _root_.GlobalTheory.LGrp.LeviDatum.nIndQ`. Unfold `_root_.GlobalTheory.SmGL.prinSeries _root_.GlobalTheory.SmGL.indB _root_.GlobalTheory.SmGL.parInd`. Use `isSubquotient_smInd_congr (borelGL_Q_eq_parab_points k n) _ _ (fun g hg => ?_) π` and prove the remaining obligations. Use `LinearMap.ext fun z => ?_` and prove the remaining obligations.
+
+Simplify using `only [MonoidHom.comp_apply, _root_.GlobalTheory.LGrp.twist_apply, _root_.GlobalTheory.LGrp.charRep_apply, _root_.GlobalTheory.SmGL.twist_apply, _root_.GlobalTheory.SmGL.ofChar_apply]`. Rewrite using `[leviProj_points_eq_leviTorus_borel_p k n ⟨g, hg⟩, borelGL_deltaHalf_eq_smGL_deltaHalf_leviTorus]`. Simplify using `[_root_.GlobalTheory.SmGL.torusChar_apply, _root_.GlobalTheory.LGrp.unrTorus_apply, _root_.GlobalTheory.LGrp.unrChar_eq]`.
+-/
 theorem _root_.GlobalTheory.LGrp.SatakeCompare.isSubquot_ps_iff {V : Type} [AddCommGroup V] [Module ℂ V]
     (π : Representation ℂ (GL n k) V) (α : n → ℂˣ) :
     _root_.GlobalTheory.LGrp.IsSubquot π (_root_.GlobalTheory.LGrp.psGL k α) ↔
@@ -175,6 +221,13 @@ open scoped NNReal in
 variable (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
   (n : Type) [Fintype n] [DecidableEq n] [LinearOrder n] in
 
+/- English proof (translation)
+Introduce `k _ _ _ _ n V _ _ _ _ _ π S`. Unfold `_root_.GlobalTheory.LGrp.HasSatakeGL _root_.GlobalTheory.LGrp.InUPSGL _root_.GlobalTheory.SmGL.HasSatake _root_.GlobalTheory.SmGL.IsSpherical _root_.GlobalTheory.LGrp.IsIrrSmooth`. Rewrite using `[_root_.GlobalTheory.LGrp.isSpherical_iff]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨⟨α, hα, ⟨-, hirr⟩, hsub⟩, hsph⟩`.
+
+Conclude with `⟨α, hα, hirr, hsph, (_root_.GlobalTheory.LGrp.SatakeCompare.isSubquot_ps_iff k n π α).1 hsub⟩`. Introduce and unpack `⟨α, hα, hirr, hsph, hsub⟩`. Establish `hsub'` using `(_root_.GlobalTheory.LGrp.SatakeCompare.isSubquot_ps_iff k n π α).2 hsub`. Use `⟨⟨α, hα, ⟨?_, hirr⟩, hsub'⟩, hsph⟩` and prove the remaining obligations. Use `_root_.GlobalTheory.SmGL.IsSubquotient.isSmooth hsub' ?_` and prove the remaining obligations.
+
+Unfold `_root_.GlobalTheory.LGrp.psGL _root_.GlobalTheory.LGrp.LeviDatum.nInd`. Conclude with `_root_.GlobalTheory.LGrp.LeviDatum.nInd_isSmooth _ _`.
+-/
 theorem _root_.GlobalTheory.LGrp.SatakeCompare.hasSatakeGL_iff : ∀ (k : Type) [Field k] [ValuativeRel k]
     [TopologicalSpace k] [IsNonarchimedeanLocalField k] (n V : Type) [Fintype n] [DecidableEq n]
     [LinearOrder n] [AddCommGroup V] [Module ℂ V] (π : Representation ℂ (GL n k) V)

@@ -27,6 +27,9 @@ noncomputable section
 
 namespace GlobalTheory.VacFixPair
 
+/- English proof (translation)
+Introduce `m`. Proceed by induction on `m with`. Consider the case `zero => rw [pow_zero, pow_zero, map_one, Module.End.one_apply, one_smul]`. Consider the case `succ m ih`. Rewrite using `[pow_succ, map_mul, Module.End.mul_apply, hc, map_smul, ih, smul_smul, pow_succ, mul_comm]`.
+-/
 theorem om_pow_eq {D : D7} {S V : HSp D} (om : GA D S × GA D V →* Module.End ℂ (WO S V → ℂ))
     (g : GA D S × GA D V) (f : WO S V → ℂ) (c : ℂ) (hc : om g f = c • f) : ∀ m : ℕ, om (g ^ m) f = c ^ m • f := by
   intro m
@@ -37,6 +40,31 @@ theorem om_pow_eq {D : D7} {S V : HSp D} (om : GA D S × GA D V →* Module.End 
 
 set_option maxHeartbeats 1000000 in
 
+/- English proof (translation)
+Introduce `D ψ θ S T sS sT ΛS ΛT v χS χT om hvac hsdS hsdT hcS hcT hW`. Establish `hθ : IsInfFam θ` using `hvac.2.inf`. Establish `hev` using `(GlobalTheory.LatNhds.eventually_actO D S T ΛS ΛT hsdS hsdT (GlobalTheory.LatFinGen.latO_finitely_generated D S T ΛS ΛT hsdS hsdT)).1`. Choose the witnesses or unpack the hypotheses as in `⟨n₁, hn₁⟩ : ∃ n : ℕ, ∀ x ∈ GfC S, ∀ x' ∈ GfC T, GlobalTheory.Member.FinCong S n.factorial x → GlobalTheory.Member.FinCong T n.factorial x' → ∀ u ∈ (latO S T (ΛS : Set (Fin S.rank → D.host.E)) (ΛT : Set (Fin T.rank → D.host.E)) fun _ => True), actO S T x x' u ∈ (latO S T (ΛS : Set …`. Assume the negation of the conclusion as `hne`.
+
+Use `push_neg at hne`. Use `choose k hk k' hk' hkc hkc' u hu hu' using hne`. Establish `ht : Filter.Tendsto (fun n => ((k n, k' n) : GA D S × GA D T)) Filter.atTop (𝓝 1)` using `(GlobalTheory.SplitCharTrivial.tendsto_one_of_finCong hk hkc).prodMk_nhds (GlobalTheory.SplitCharTrivial.tendsto_one_of_finCong hk' hkc')`. Take `⟨n, hn⟩` from `(ht.eventually hev).exists`. Conclude with `hu' n (hn _ (hu n))`.
+
+Establish `hscal : ∀ k ∈ GfC S, ∀ k' ∈ GfC T, GlobalTheory.Member.FinCong S n₁.factorial k → GlobalTheory.Member.FinCong T n₁.factorial k' → ∃ c : ℂ, ‖c‖ = 1 ∧ om (k, k') v = c • v`. Introduce `k hk k' hk' hc hc'`. Establish `hΛ : ∀ u : WO S T, u ∈ (latO S T (ΛS : Set (Fin S.rank → D.host.E)) (ΛT : Set (Fin T.rank → D.host.E)) fun _ => True) ↔ ∃ u₀ ∈ (latO S T (ΛS : Set (Fin S.rank → D.host.E)) (ΛT : Set (Fin T.rank → D.host.E)) fun _ => True), u = actO S T k k' u₀`. Introduce `u`. Prove the components needed by the constructor for the conclusion.
+
+Introduce `hu`. Use `⟨actO S T k⁻¹ k'⁻¹ u, hn₁ k⁻¹ (inv_mem hk) k'⁻¹ (inv_mem hk') (GlobalTheory.Member.PrincLevel.finCong_inv hc) (GlobalTheory.Member.PrincLevel.finCong_inv hc') u hu, ?_⟩` and prove the remaining obligations. Use `GlobalTheory.WeilVacMove.actO_inv_actO k⁻¹ k'⁻¹ u` as an intermediate fact. Rewrite `this` using `[inv_inv, inv_inv]`. Conclude with `this.symm`.
+
+Introduce and unpack `⟨u₀, hu₀, rfl⟩`. Conclude with `hn₁ k hk k' hk' hc hc' u₀ hu₀`. Establish `hvac'` using `GlobalTheory.WeilVacMove.isVacO_om D ψ θ S T χS χT om hW hθ sS sS sT sT _ _ _ _ k k' (fun τ => by rw [GlobalTheory.OrientedHeis.compAt_mt_of_mem_GfC θ S hk τ, Matrix.one_mul, Matrix.mul_one]) (fun τ => by rw [GlobalTheory.OrientedHeis.compAt_mt_of_mem_GfC θ T hk' τ, Matrix.one_mu …`. Conclude with `GlobalTheory.VacUnique.vacUniqueO D ψ θ hvac.1 hθ (Formalism.L2.Fam.ThC.fixSig S) (Formalism.L2.Fam.ThC.fixSig T) sS sT (Formalism.L2.Fam.ThC.fixSig_ok _) (Formalism.L2.Fam.ThC.fixSig_ok _) hcS hcT ΛS ΛT hsdS hsdT v _ (GlobalTheory.VacFixTarget.isVacO_fixSig hvac) (GlobalTheory.V …`. Take `⟨w₀, hw₀⟩` from `GlobalTheory.SmoothVac.exists_ne_zero_of_isVacO hvac`.
+
+Establish `hcont : Continuous fun p : GA D S × GA D T => om p v w₀` using `hW.om_cont _ hvac.2.theta w₀`. Establish `key : ∃ n : ℕ, ∀ k ∈ GfC S, ∀ k' ∈ GfC T, GlobalTheory.Member.FinCong S (n₁.factorial * n.factorial) k → GlobalTheory.Member.FinCong T (n₁.factorial * n.factorial) k' → om (k, k') v = v`. Assume the negation of the conclusion as `hne`. Use `push_neg at hne`. Use `choose k hk k' hk' hkc hkc' hkne using hne`.
+
+Establish `hpow : ∀ n, ∃ m : ℕ, ∃ c : ℂ, om (k n ^ m, k' n ^ m) v = c • v ∧ ¬ ‖c - 1‖ ≤ 1 / 2`. Introduce `n`. Take `⟨c, -, hc⟩` from `hscal (k n) (hk n) (k' n) (hk' n) (GlobalTheory.SmoothVac.finCong_of_mul_left (hkc n)) (GlobalTheory.SmoothVac.finCong_of_mul_left (hkc' n))`. Establish `hc1 : c ≠ 1`. Introduce and unpack `rfl`.
+
+Conclude with `hkne n (by rw [hc, one_smul])`. Assume the negation of the conclusion as `h`. Use `push_neg at h`. Conclude with `hc1 (GlobalTheory.Doubling.eq_one_of_forall_norm_pow_sub_one_le (A := ℂ) fun m => h m (c ^ m) (by rw [← Prod.pow_mk]; exact om_pow_eq om _ v c hc m))`. Use `choose m c hmc hc using hpow`.
+
+Establish `hmem : ∀ n, k n ^ m n ∈ GlobalTheory.Member.PrincLevel.levelGroup S (n₁.factorial * n.factorial)` using `fun n => pow_mem (show k n ∈ GlobalTheory.Member.PrincLevel.levelGroup S (n₁.factorial * n.factorial) from ⟨hk n, hkc n⟩) _`. Establish `hmem' : ∀ n, k' n ^ m n ∈ GlobalTheory.Member.PrincLevel.levelGroup T (n₁.factorial * n.factorial)` using `fun n => pow_mem (show k' n ∈ GlobalTheory.Member.PrincLevel.levelGroup T (n₁.factorial * n.factorial) from ⟨hk' n, hkc' n⟩) _`. Establish `ht : Filter.Tendsto (fun n => ((k n ^ m n, k' n ^ m n) : GA D S × GA D T)) Filter.atTop (𝓝 1)` using `(GlobalTheory.SplitCharTrivial.tendsto_one_of_finCong (k := fun n => k n ^ m n) (fun n => (hmem n).1) (fun n => GlobalTheory.SmoothVac.finCong_of_mul_right (hmem n).2)).prodMk_nhds (GlobalTheory.SplitCharTrivial.tendsto_one_of_finCong (k := fun n => k' n ^ m n) (fun n => (hmem' n …`. Establish `e1 : om (1 : GA D S × GA D T) v w₀ = v w₀`. Rewrite using `[map_one]`.
+
+Both sides reduce to the same expression. Establish `h2 : Filter.Tendsto (fun n => om (k n ^ m n, k' n ^ m n) v w₀) Filter.atTop (𝓝 (v w₀))`. Use `(hcont.tendsto 1).comp ht` as an intermediate fact. Rewrite using `[← e1]`. Conclude with `this`.
+
+Establish `hpos : 0 < ‖v w₀‖ / 2` using `half_pos (norm_pos_iff.2 hw₀)`. Take `⟨n, hn⟩` from `(h2.eventually (Metric.ball_mem_nhds _ hpos)).exists`. Rewrite `hn` using `[hmc n, Pi.smul_apply, smul_eq_mul, dist_eq_norm, ← sub_one_mul, norm_mul]`. Use `hc n` as an intermediate fact. Use `push_neg at this`.
+
+Use polynomial arithmetic with `[norm_nonneg (v w₀)]`. Take `⟨n, hn⟩` from `key`. Conclude with `⟨n₁.factorial * n.factorial, Nat.mul_pos n₁.factorial_pos n.factorial_pos, fun k hk k' hk' hc hc' => hn k hk k' hk' hc hc'⟩`.
+-/
 theorem pair_fix_vacO : ∀ {D : D7} {ψ : AddChar (AF D.host.F) ℂ} {θ : InfFam D} {S T : HSp D}
     {sS : D.what₂.Tau → Matrix (Fin S.rank) (Fin S.rank) ℂ} {sT : D.what₂.Tau → Matrix (Fin T.rank) (Fin T.rank) ℂ}
     {ΛS : Submodule (𝓞 D.host.E) (Fin S.rank → D.host.E)} {ΛT : Submodule (𝓞 D.host.E) (Fin T.rank → D.host.E)} {v : WO S T → ℂ}

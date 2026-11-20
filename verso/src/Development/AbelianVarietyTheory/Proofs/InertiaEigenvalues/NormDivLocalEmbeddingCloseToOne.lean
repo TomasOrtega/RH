@@ -11,6 +11,11 @@ open NumberField IsDedekindDomain TensorProduct
 
 namespace GlobalTheory.NormCompat.RatioClose
 
+/- English proof (translation)
+Rewrite using `[Algebra.norm_apply, Algebra.norm_apply, ← LinearMap.det_baseChange]`. Use `congr 1`. Apply `LinearMap.ext` to reduce the goal to its premises. Introduce `z`. Proceed by induction on `z using TensorProduct.induction_on with`.
+
+Consider the case `zero => simp`. Consider the case `tmul a b => simp [Algebra.TensorProduct.tmul_mul_tmul]`. Consider the case `add a b ha hb => rw [map_add, map_add, ha, hb]`.
+-/
 theorem norm_one_tmul' {F E K : Type} [Field F] [Field E] [Field K] [Algebra F E] [Algebra F K]
     [Module.Finite F E] (y : E) :
     Algebra.norm K ((1 : K) ⊗ₜ[F] y) = algebraMap F K (Algebra.norm F y) := by
@@ -23,6 +28,43 @@ theorem norm_one_tmul' {F E K : Type} [Field F] [Field E] [Field K] [Algebra F E
   | tmul a b => simp [Algebra.TensorProduct.tmul_mul_tmul]
   | add a b ha hb => rw [map_add, map_add, ha, hb]
 
+/- English proof (translation)
+Introduce `E E' _ _ _ _ _ w w' σ hσ hv M`. Take `⟨M₁, hM₁⟩` from `GlobalTheory.NormCompat.NormCont.norm_close_to_one E E' w M`. Use `⟨M₁, fun z hz0 hz => ?_⟩` and prove the remaining obligations. Use `set K := w.adicCompletion E`. Set `σA : E' →ₐ[E] K` to `{ σ with commutes' := hσ }`.
+
+Set `ψ : K ⊗[E] E' →ₐ[K] K` to `Algebra.TensorProduct.lift (Algebra.ofId K K) σA (fun _ _ => Commute.all _ _)`. Establish `hψ : ∀ x : E', ψ ((1 : K) ⊗ₜ x) = σ x` using `fun x => by`. Simplify using `[ψ, σA, Algebra.TensorProduct.lift_tmul]`. Take `⟨e, he1, he⟩` from `GlobalTheory.T.exists_tensor_idempotent_of_algHom_to_base E K E' ψ`. Establish `hee : e * e = e` using `by rw [he, he1, map_one, one_mul]`.
+
+Take `⟨s, b, hb⟩` from `FiniteDimensional.exists_is_basis_integral (𝓞 E) E E'`. Establish `hb' : ∀ i, IsIntegral ℤ (b i)` using `fun i => isIntegral_trans _ (hb i)`. Establish `hvK : ∀ x : E, Valued.v (algebraMap E K x) = w.valuation E x` using `fun x => HeightOneSpectrum.valuedAdicCompletion_eq_valuation' w x`. Establish `hβ : ∀ x : E', x ≠ 0 → algebraMap E K (Algebra.norm E x) / σ x = Algebra.norm K (e + (1 - e) * ((1 : K) ⊗ₜ x))`. Introduce `x hx`.
+
+Establish `h2` using `GlobalTheory.T.norm_eq_mul_norm_idempotent_corner K (K ⊗[E] E') ψ e he1 he ((1 : K) ⊗ₜ x)`. Rewrite `h2` using `[norm_one_tmul', hψ]`. Rewrite using `[h2, mul_div_cancel_left₀ _ ((map_ne_zero σ).2 hx)]`. Set `Z : K ⊗[E] E'` to `(1 : K) ⊗ₜ z`. Use `set p : K ⊗[E] E' := e + (1 - e) * Z with hp`.
+
+Use `set q : K ⊗[E] E' := (1 - e) * (1 - Z) with hq`. Take `⟨K₀, hK₂, hK₁, hK₃⟩ : ∃ K₀ : ℕ, M ≤ K₀ ∧ M₁ ≤ K₀ ∧ 1 ≤ K₀` from `⟨M + M₁ + 1, by omega, by omega, by omega⟩`. Use `set m : ℤ := (w'.valuation E' (z - 1)).log with hm`. Take `⟨n, hn1, hn2⟩ : ∃ n : ℕ, M ≤ n ∧ (K₀ : ℤ) + m ≤ n` from `⟨M + K₀ + m.toNat, by omega, by omega⟩`. Take `⟨ε, hε1, hε2, hε3⟩` from `GlobalTheory.T.exists_global_element_near_idempotent_adicCompletion E E' w b ψ e hee he1 p q n`.
+
+Use `set y : E' := ε + (1 - ε) * z with hy`. Establish `hy1 : y - 1 = (1 - ε) * (z - 1)` using `by rw [hy]; ring`. Establish `hw'ε : w'.valuation E' (ε - 1) ≤ WithZero.exp (-(n : ℤ))`. Rewrite using `[← hv, map_sub, map_one, ← hψ]`. Conclude with `hε2`.
+
+Establish `hw'y : w'.valuation E' (y - 1) ≤ WithZero.exp (-(K₀ : ℤ))`. Rewrite using `[hy1, map_mul, Valuation.map_sub_swap]`. Distinguish the cases in `hz1 : w'.valuation E' (z - 1) = 0`. Rewrite using `[hz1, mul_zero]`. Conclude with `zero_le'`.
+
+Combine the equalities or inequalities in the displayed calculation. Rewrite using `[hm, WithZero.exp_log hz1]`. Conclude with `mul_le_mul' hw'ε le_rfl`. Use `_ = WithZero.exp (-(n : ℤ) + m) := (WithZero.exp_add _ _).symm`. Use `_ ≤ WithZero.exp (-(K₀ : ℤ)) := by`.
+
+Rewrite using `[WithZero.exp_le_exp]`. Use linear arithmetic over natural numbers and integers. Establish `hall : ∀ w'' : HeightOneSpectrum (𝓞 E'), w''.asIdeal.comap (algebraMap (𝓞 E) (𝓞 E')) = w.asIdeal → w''.valuation E' (y - 1) ≤ WithZero.exp (-(M₁ : ℤ))`. Introduce `w'' h1`. Distinguish the cases in `h2 : w'' = w'`.
+
+Substitute `h2` using the available equality. Conclude with `hw'y.trans (WithZero.exp_le_exp.2 (by omega))`. Rewrite using `[hy1, map_mul]`. Establish `hi` using `GlobalTheory.T.valuation_le_one_of_sq_sub_self_integral_basis E E' b hb' w w'' h1 ε hε1`. Establish `h1e : w''.valuation E' (1 - ε) ≤ 1` using `(Valuation.map_sub _ _ _).trans (max_le (by simp) hi)`.
+
+Combine the equalities or inequalities in the displayed calculation. Establish `hN` using `hM₁ y hall`. Establish `hσy : Valued.v (σ y - 1) ≤ WithZero.exp (-(K₀ : ℤ))`. Rewrite using `[← map_one σ, ← map_sub, hv]`. Conclude with `hw'y`.
+
+Establish `hσy1 : Valued.v (σ y) = 1`. Establish `hlt : Valued.v (σ y - 1) < Valued.v (1 : K)`. Rewrite using `[map_one]`. Use `hσy.trans_lt ?_` and prove the remaining obligations. Rewrite using `[← WithZero.exp_zero, WithZero.exp_lt_exp]`.
+
+Use linear arithmetic over natural numbers and integers. Rewrite using `[Valuation.map_eq_of_sub_lt _ hlt, map_one]`. Establish `hσy0 : σ y ≠ 0` using `fun h => by rw [h, map_zero] at hσy1; exact zero_ne_one hσy1`. Establish `hy0 : y ≠ 0` using `fun h => hσy0 (by rw [h, map_zero])`. Establish `hry : Valued.v (algebraMap E K (Algebra.norm E y) / σ y - 1) ≤ WithZero.exp (-(M : ℤ))`.
+
+Rewrite using `[div_sub_one hσy0, map_div₀, hσy1, div_one]`. Establish `: algebraMap E K (Algebra.norm E y) - σ y = (algebraMap E K (Algebra.norm E y) - 1) - (σ y - 1)` using `by ring`. Rewrite using `[this]`. Use `(Valuation.map_sub _ _ _).trans (max_le ?_ (hσy.trans (WithZero.exp_le_exp.2 (by omega))))` and prove the remaining obligations. Rewrite using `[← map_one (algebraMap E K), ← map_sub, hvK]`.
+
+Conclude with `hN`. Establish `hid : e + (1 - e) * ((1 : K) ⊗ₜ y) = p + q * ((1 : K) ⊗ₜ ε - e)`. Establish `h1 : (1 : K) ⊗ₜ[E] y = (1 : K) ⊗ₜ ε + (1 - (1 : K) ⊗ₜ ε) * Z`. Use `map_add (Algebra.TensorProduct.includeRight (R := E) (A := K) (B := E')) ε ((1 - ε) * z)` as an intermediate fact. Simplify using `only [Algebra.TensorProduct.includeRight_apply, map_mul, map_sub, map_one] at this`.
+
+Rewrite using `[hy, this]`. Rewrite using `[h1, hp, hq]`. Take the linear combination `(Z - 1) * hee`. Establish `hbz` using `hβ z hz0`. Establish `hby : algebraMap E K (Algebra.norm E y) / σ y = Algebra.norm K (p + q * ((1 : K) ⊗ₜ ε - e))`.
+
+Rewrite using `[hβ y hy0, hid]`. Rewrite using `[hbz]`. Establish `: Algebra.norm K p - 1 = (Algebra.norm K (p + q * ((1 : K) ⊗ₜ ε - e)) - 1) - (Algebra.norm K (p + q * ((1 : K) ⊗ₜ ε - e)) - Algebra.norm K p)` using `by ring`. Rewrite using `[this]`. Use `(Valuation.map_sub _ _ _).trans (max_le (hby ▸ hry) (hε3.trans (WithZero.exp_le_exp.2 ?_)))` and prove the remaining obligations.
+
+Use linear arithmetic over natural numbers and integers.
+-/
 theorem norm_div_close_to_one : ∀ (E E' : Type) [Field E] [NumberField E] [Field E'] [NumberField E'] [Algebra E E'] (w : IsDedekindDomain.HeightOneSpectrum (NumberField.RingOfIntegers E)) (w' : IsDedekindDomain.HeightOneSpectrum (NumberField.RingOfIntegers E')) (σ : E' →+* w.adicCompletion E), (∀ x : E, σ (algebraMap E E' x) = algebraMap E _ x) → (∀ x : E', Valued.v (σ x) = w'.valuation E' x) → ∀ M : ℕ, ∃ M' : ℕ, ∀ z : E', z ≠ 0 → (∀ w'' : IsDedekindDomain.HeightOneSpectrum (NumberField.RingOfIntegers E'), w''.asIdeal.comap (algebraMap (NumberField.RingOfIntegers E) (NumberField.RingOfIntegers E')) = w.asIdeal → w'' ≠ w' → w''.valuation E' (z - 1) ≤ WithZero.exp (-(M' : ℤ))) → Valued.v (algebraMap E (w.adicCompletion E) (Algebra.norm E z) / σ z - 1) ≤ WithZero.exp (-(M : ℤ)) := by
   intro E E' _ _ _ _ _ w w' σ hσ hv M
   classical

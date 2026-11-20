@@ -12,6 +12,9 @@ namespace PositivityTheory.ThKG.Tow
 open scoped TensorProduct NNReal Matrix
 open NumberField IsDedekindDomain MeasureTheory Filter Topology Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes
 open GlobalTheory.WeilM GlobalTheory.AdelicU GlobalTheory.LFun GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels GlobalTheory.ThK
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ B n X r s hB hX`. Establish `hc` using `_root_.PositivityTheory.ThKG.Tow.Stab.isCompact_stabK_k hB hX`. Take `⟨μK, hμK⟩` from `Stab.exists_haar_of_isCompact _ hc`. Take `⟨μ, hμ⟩` from `Stab.exists_haar_idele (F := F) (E := E)`. Conclude with `⟨Stab.stabK B X, μK, μ, Stab.isStab_stabK B X, hc, hμK, hμ⟩`.
+-/
 theorem stabEx_k : _root_.GlobalTheory.ThK.StabEx_k := by
   intro F E _ _ _ _ _ σ B n X r s hB hX
   have hc := _root_.PositivityTheory.ThKG.Tow.Stab.isCompact_stabK_k hB hX

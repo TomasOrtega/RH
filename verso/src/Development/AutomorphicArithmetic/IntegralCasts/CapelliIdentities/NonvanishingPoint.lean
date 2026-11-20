@@ -1,5 +1,16 @@
 import Mathlib
 
+/- English proof (translation)
+Introduce `k _ _ B _ _ _ _ c hc`. Use `haveI : IsJacobsonRing B := isJacobsonRing_of_finiteType (A := k)`. Establish `hrad : (⊥ : Ideal B).IsRadical`. Introduce `x hx`. Take `⟨n, hn⟩` from `hx`.
+
+Conclude with `(Ideal.mem_bot).2 (IsNilpotent.eq_zero ⟨n, (Ideal.mem_bot).1 hn⟩)`. Establish `hj : (⊥ : Ideal B).jacobson = ⊥` using `IsJacobsonRing.out ‹_› hrad`. Establish `hcj : c ∉ (⊥ : Ideal B).jacobson`. Rewrite using `[hj]`. Conclude with `fun h => hc ((Ideal.mem_bot).1 h)`.
+
+Rewrite `hcj` using `[Ideal.jacobson, Ideal.mem_sInf]`. Use `push Not at hcj`. Take `⟨m, ⟨-, hm⟩, hcm⟩` from `hcj`. Use `letI : Field (B ⧸ m) := Ideal.Quotient.field m`. Use `haveI : Module.Finite k (B ⧸ m) := finite_of_finite_type_of_isJacobsonRing k (B ⧸ m)`.
+
+Set `f : (B ⧸ m) →ₐ[k] k` to `IsAlgClosed.lift`. Use `⟨f.comp (Ideal.Quotient.mkₐ k m), ?_⟩` and prove the remaining obligations. Introduce `h`. Apply `hcm` to reduce the goal to its premises. Establish `h1 : f (Ideal.Quotient.mk m c) = 0` using `h`.
+
+Establish `h2 : Ideal.Quotient.mk m c = 0` using `(map_eq_zero f).1 h1`. Conclude with `Ideal.Quotient.eq_zero_iff_mem.1 h2`.
+-/
 theorem UpperTheory.Reformulated.B.NonvanishingPoint.exists_point_nonvanishing_reduced :
     ∀ (k : Type) [inst : Field k] [IsAlgClosed k] (B : Type)
     [inst_2 : CommRing B] [inst_3 : Algebra k B] [Algebra.FiniteType k B] [IsReduced B] {c : B},

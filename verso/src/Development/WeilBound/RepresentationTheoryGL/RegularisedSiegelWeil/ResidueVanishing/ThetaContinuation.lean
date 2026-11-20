@@ -16,6 +16,9 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 namespace PositivityTheory.Rg.Rsw.Kplug
 
+/- English proof (translation)
+Establish `hi` using `leftInv_dblIntegrand hμ hEi h₁i h₂i`. Establish `hc` using `continuous_dblIntegrand hμ hE h₁ h₂`. Establish `hint : IntegrableOn (dblIntegrand A μ E f₁ f₂) (X ×ˢ X) (m.prod m)` using `(hc.continuousOn.integrableOn_compact (hK.prod hK)).mono_set (Set.prod_mono hXK hXK)`. Conclude with `(((dblConv_iff hi hc.measurable hX).2 hint).dblInt_eq hX).2`.
+-/
 theorem dblInt_eq_fd {D : D7} (A : HSp D) {μ : (AE D)ˣ →* Circle} (hμ : IsHeckeChar D μ) (m : Measure (GA D A))
     [m.IsHaarMeasure] {E : GA D (dblSp A) → ℂ} {f₁ f₂ : GA D A → ℂ} (hE : Continuous E)
     (hEi : LeftInv (GQ (dblSp A)) E) (h₁ : Continuous f₁) (h₁i : LeftInv (GQ A) f₁) (h₂ : Continuous f₂)
@@ -28,6 +31,25 @@ theorem dblInt_eq_fd {D : D7} (A : HSp D) {μ : (AE D)ˣ →* Circle} (hμ : IsH
     (hc.continuousOn.integrableOn_compact (hK.prod hK)).mono_set (Set.prod_mono hXK hXK)
   exact (((dblConv_iff hi hc.measurable hX).2 hint).dblInt_eq hX).2
 
+/- English proof (translation)
+Introduce `D ψ θ A cA a hA W χ omh hW ν 𝓨 hν μ hμ κ hκ omS hT p m hm u hu hui hKi F hF hFi hX`. Take `⟨-, X, K, hXm, hXf, hKc, hXK⟩` from `GlobalTheory.T.definite_unitary_quotient_compact_fundamentalDomain D A hA.sig hA.pos m hm`. Establish `hχ` using `(GlobalTheory.T.isHeckeChar_restrictionEta_inv D χ W.rank hW.hecT hW.resT).1`. Take `⟨hκc, -⟩` from `GlobalTheory.T.continuous_standardUnitaryChart_and_symm D A μ hμ κ hκ`. Establish `hG'` using `GlobalTheory.T.standardUnitaryChart_mem_rational_iff D A μ hμ κ hκ`.
+
+Establish `hcu : Continuous fun g => conj (u g)` using `Complex.continuous_conj.comp hu`. Establish `hcui : LeftInv (GQ A) fun g => conj (u g)` using `fun γ hγ g => by simp only [hui γ hγ g]`. Use `set w : GA D A × GA D A → ℂ := dblIntegrand A χ⁻¹ (fun _ => 1) (fun g => conj (u g)) (fun g => conj (u g)) with hw_def`. Establish `hw : Continuous w` using `continuous_dblIntegrand hχ continuous_const hcu hcu`. Establish `hsplit : ∀ (E : GA D (dblSp A) → ℂ) x, dblIntegrand A χ⁻¹ E (fun g => conj (u g)) (fun g => conj (u g)) x = E (io A x) * w x` using `fun E x => by`.
+
+Simplify using `only [hw_def, dblIntegrand]`. Expand and normalize the polynomial expressions, which then agree. Set `c : GA D A × GA D A → G D A.rank` to `fun x => if x ∈ K ×ˢ K then κ (io A x * p) else 1`. Establish `hKK : IsCompact (K ×ˢ K)` using `hKc.prod hKc`. Establish `hXX : X ×ˢ X ⊆ K ×ˢ K` using `Set.prod_mono hXK hXK`.
+
+Establish `hcK : ∀ x ∈ X ×ˢ X, c x = κ (io A x * p)` using `fun x hx => if_pos (hXX hx)`. Establish `hc0 : Continuous fun x : GA D A × GA D A => κ (io A x * p)` using `hκc.comp ((continuous_io A).mul continuous_const)`. Establish `hcm : Measurable c` using `Measurable.ite hKK.isClosed.measurableSet hc0.measurable measurable_const`. Establish `hcr : IsCompact (closure (Set.range c))`. Use `((hKK.image hc0).union (isCompact_singleton (x := (1 : G D A.rank)))).closure_of_subset ?_` and prove the remaining obligations.
+
+Introduce and unpack `_ ⟨x, rfl⟩`. Distinguish the cases in `h : x ∈ K ×ˢ K`. Conclude with `Or.inl ⟨x, h, (if_pos h).symm⟩`. Conclude with `Or.inr (if_neg h)`. Establish `: IsFiniteMeasure ((m.prod m).restrict (X ×ˢ X))` using `isFiniteMeasure_restrict.2 ((measure_mono hXX).trans_lt hKK.measure_lt_top).ne`.
+
+Establish `hwi : Integrable w ((m.prod m).restrict (X ×ˢ X))` using `(hw.continuousOn.integrableOn_compact hKK).mono_set hXX`. Establish `hXXm : MeasurableSet (X ×ˢ X)` using `hXm.prod hXm`. Establish `hE : Continuous fun g : GA D (dblSp A) => F (κ (g * p))` using `hF.comp (hκc.comp (continuous_id.mul continuous_const))`. Establish `hEi : LeftInv (GQ (dblSp A)) fun g => F (κ (g * p))` using `fun γ hγ g => by`. Simplify using `only [mul_assoc, map_mul]`.
+
+Conclude with `hFi _ ((hG' γ).1 hγ) _`. Establish `key` using `hX (GA D A × GA D A) ((m.prod m).restrict (X ×ˢ X)) c hcm hcr w hwi ?_`. Rewrite using `[dblInt_eq_fd A hχ m hE hEi hcu hcui hcu hcui hXf hKc hXK, ← key]`. Use `setIntegral_congr_fun hXXm fun x hx => ?_` and prove the remaining obligations. Simplify using `only [hsplit, hcK x hx]`.
+
+Introduce `Ψ h`. Take `⟨f, hf, he⟩` from `theta_kernel_identity D ψ θ hA.inf A W χ omh hW ν 𝓨 hν κ omS hT p Ψ`. Establish `hk` using `hKi f hf h`. Establish `hkc : Continuous fun g => thetaKO omh g h f` using `(hW.om_cont f hf 0).comp (Continuous.prodMk_left h)`. Establish `hki : LeftInv (GQ (dblSp A)) fun g => thetaKO omh g h f` using `fun γ hγ g => GlobalTheory.Core.Rk.Aniso.thetaKernel_rationalSource_invariant hW hf hγ g h`.
+
+Rewrite `hk` using `[dblInt_eq_fd A hχ m hkc hki hcu hcui hcu hcui hXf hKc hXK]`. Rewrite using `[← hk]`. Use `setIntegral_congr_fun hXXm fun x hx => ?_` and prove the remaining obligations. Simplify using `only [hsplit, hcK x hx, he]`.
+-/
 theorem theta_continuation : K4 := by
   intro D ψ θ A cA a hA W χ omh hW ν 𝓨 hν μ hμ κ hκ omS hT p m hm u hu hui hKi F hF hFi hX
   obtain ⟨-, X, K, hXm, hXf, hKc, hXK⟩ := GlobalTheory.T.definite_unitary_quotient_compact_fundamentalDomain D A hA.sig hA.pos m hm

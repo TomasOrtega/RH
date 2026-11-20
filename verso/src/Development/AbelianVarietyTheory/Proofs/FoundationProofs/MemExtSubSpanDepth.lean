@@ -10,6 +10,13 @@ open scoped TensorProduct
 open NumberField IsDedekindDomain Matrix
 open Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes Formalism.BasicNotions Formalism.UG GlobalTheory.IndefiniteRowSideFullHecke.AdelicUnitaryGroups GlobalTheory.AutFunCompare
 
+/- English proof (translation)
+Proceed by induction on `k with`. Consider the case `zero => exact ⟨∅, linearIndepOn_empty _ _, Set.empty_subset _, fun i hi => by`. Rewrite using `[Nat.le_zero.1 hi, h0]`. Conclude with `bot_le⟩`. Consider the case `succ k ih`.
+
+Take `⟨s, hs, h1, h2⟩` from `ih`. Establish `h3 : s ⊆ X (k + 1)` using `h1.trans (hX k.le_succ)`. Use `⟨hs.extend h3, hs.linearIndepOn_extend h3, hs.extend_subset h3, fun i hi => ?_⟩` and prove the remaining obligations. Break down `Nat.le_succ_iff.1 hi with h | rfl` into its components or cases. Conclude with `(h2 i h).trans (Submodule.span_mono (Set.inter_subset_inter_left _ (hs.subset_extend h3)))`.
+
+Rewrite using `[Set.inter_eq_left.2 (hs.extend_subset h3)]`. Conclude with `hs.subset_span_extend h3`.
+-/
 theorem exists_adapted_set {K M : Type} [Field K] [AddCommGroup M] [Module K M] (X : ℕ → Submodule K M)
     (hX : Monotone X) (h0 : X 0 = ⊥) (k : ℕ) :
     ∃ s : Set M, LinearIndepOn K id s ∧ s ⊆ X k ∧ ∀ i ≤ k, X i ≤ Submodule.span K (s ∩ X i) := by
@@ -25,6 +32,15 @@ theorem exists_adapted_set {K M : Type} [Field K] [AddCommGroup M] [Module K M] 
     · rw [Set.inter_eq_left.2 (hs.extend_subset h3)]
       exact hs.subset_span_extend h3
 
+/- English proof (translation)
+Take `⟨s, hs, h1, h2⟩` from `exists_adapted_set X hX h0 k`. Establish `hf : Finite s` using `LinearIndependent.finite (R := K) hs`. Take `⟨r, ⟨q⟩⟩` from `Finite.exists_equiv_fin s`. Set `e : Fin r → M` to `fun j => (q.symm j).1`. Establish `he : LinearIndependent K e` using `LinearIndependent.comp hs q.symm q.symm.injective`.
+
+Establish `hex : ∀ j, ∃ i, e j ∈ X (i + 1)` using `fun j => ⟨k, hX k.le_succ (h1 (q.symm j).2)⟩`. Establish `hd : ∀ j i, Nat.find (hex j) < i ↔ e j ∈ X i` using `fun j i => by`. Use `⟨fun h => hX (Nat.succ_le_of_lt h) (Nat.find_spec (hex j)), fun h => ?_⟩` and prove the remaining obligations. Consider the cases of `i with`. Consider the case `zero => rw [h0] at h`.
+
+Conclude with `absurd h (he.ne_zero j)`. Consider the case `succ i => exact Nat.lt_succ_of_le (Nat.find_min' _ h)`. Use `⟨r, e, fun j => Nat.find (hex j), he, fun j => (hd j k).2 (h1 (q.symm j).2), fun i hi => le_antisymm ((h2 i hi).trans (Submodule.span_mono ?_)) (Submodule.span_le.2 ?_)⟩` and prove the remaining obligations. Introduce and unpack `x ⟨hx, hx'⟩`. Establish `: e (q ⟨x, hx⟩) = x` using `by simp [e]`.
+
+Conclude with `⟨q ⟨x, hx⟩, (hd _ _).2 (this.symm ▸ hx'), this⟩`. Introduce and unpack `_ ⟨j, hj, rfl⟩`. Conclude with `(hd _ _).1 hj`.
+-/
 theorem exists_adapted_basis {K M : Type} [Field K] [AddCommGroup M] [Module K M] [Module.Finite K M]
     (X : ℕ → Submodule K M) (hX : Monotone X) (h0 : X 0 = ⊥) (k : ℕ) :
     ∃ (r : ℕ) (e : Fin r → M) (d : Fin r → ℕ), LinearIndependent K e ∧ (∀ j, d j < k) ∧
@@ -54,6 +70,17 @@ variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [StarR
 
 omit [NumberField F] in
 
+/- English proof (translation)
+Set `C' : Matrix (Fin V.rank) (Fin r) E` to `fun a j => if d j < i then C a j else 0`. Establish `e : Submodule.span E ((fun k => vecOf V (Cᵀ k)) '' {j | d j < i}) = colSpan V C'`. Use `le_antisymm (Submodule.span_mono ?_) (Submodule.span_le.2 ?_)` and prove the remaining obligations. Introduce and unpack `_ ⟨j, hj, rfl⟩`. Conclude with `⟨j, congrArg (vecOf V) (funext fun a => if_pos hj)⟩`.
+
+Introduce and unpack `_ ⟨j, rfl⟩`. Distinguish the cases in `hj : d j < i`. Conclude with `Submodule.subset_span ⟨j, hj, congrArg (vecOf V) (funext fun a => (if_pos hj).symm)⟩`. Establish `: C'ᵀ j = 0` using `funext fun a => if_neg hj`. Simplify using `[this, vecOf]`.
+
+Rewrite using `[e, AutFunCompare.mem_extSub_colSpan]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨a, rfl⟩`. Use `⟨fun j => if d j < i then a j else 0, fun j hj => if_neg (not_lt.2 hj), funext fun b => ?_⟩` and prove the remaining obligations. Simplify using `only [Matrix.mulVec, dotProduct, Matrix.map_apply]`.
+
+Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Apply the tactic sequence `by_cases hj : d j < i <;> simp [C', hj]`. Introduce and unpack `⟨a, ha, rfl⟩`. Use `⟨a, funext fun b => ?_⟩` and prove the remaining obligations. Simplify using `only [Matrix.mulVec, dotProduct, Matrix.map_apply]`.
+
+Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Distinguish the cases in `hj : d j < i`. Simplify using `[C', hj]`. Rewrite using `[ha j (not_lt.1 hj), mul_zero, mul_zero]`.
+-/
 theorem mem_extSub_span_depth {R : Type} [CommRing R] [Algebra F R] {r : ℕ} {C : Matrix (Fin V.rank) (Fin r) E}
     (d : Fin r → ℕ) (i : ℕ) (y : Fin V.rank → R ⊗[F] E) :
     y ∈ extSub (F := F) V R (Submodule.span E ((fun k => vecOf V (Cᵀ k)) '' {j | d j < i})) ↔
@@ -83,6 +110,11 @@ theorem mem_extSub_span_depth {R : Type} [CommRing R] [Algebra F R] {r : ℕ} {C
     · simp [C', hj]
     · rw [ha j (not_lt.1 hj), mul_zero, mul_zero]
 
+/- English proof (translation)
+Establish `: Module.Finite E V.V` using `Module.Finite.of_basis V.frame`. Take `⟨r, e, d, he, hd, hX⟩` from `exists_adapted_basis (K := E) (fun i => 𝔉.X ⟨min i 𝔉.k, Nat.lt_succ_of_le (min_le_right _ _)⟩) (fun a b h => 𝔉.strictMono.monotone (Fin.mk_le_mk.2 (min_le_min_right _ h))) (by rw [← 𝔉.zero]; congr 1) 𝔉.k`. Use `⟨r, Matrix.of fun a j => V.frame.repr (e j) a, d, he.map' V.frame.equivFun.toLinearMap (LinearEquiv.ker _), hd, fun i => ?_⟩` and prove the remaining obligations. Establish `e1 : (fun k => vecOf V ((Matrix.of fun a j => V.frame.repr (e j) a)ᵀ k)) = e`. Use function extensionality and compare the values at `fun k => V.frame.equivFun.symm_apply_apply (e k)`.
+
+Rewrite using `[e1, ← hX i (Nat.lt_succ_iff.1 i.2)]`. Use `congr 1`. Use `ext`. Simplify using `[Nat.lt_succ_iff.1 i.2]`.
+-/
 theorem exists_adapted_frame (𝔉 : IsoFlag V) : ∃ (r : ℕ) (C : Matrix (Fin V.rank) (Fin r) E) (d : Fin r → ℕ),
     LinearIndependent E Cᵀ ∧ (∀ j, d j < 𝔉.k) ∧
       ∀ i, 𝔉.X i = Submodule.span E ((fun k => vecOf V (Cᵀ k)) '' {j | d j < i.val}) := by
@@ -100,6 +132,25 @@ theorem exists_adapted_frame (𝔉 : IsoFlag V) : ∃ (r : ℕ) (C : Matrix (Fin
   ext
   simp [Nat.lt_succ_iff.1 i.2]
 
+/- English proof (translation)
+Take `⟨r, C, d, hC, hd, hX⟩` from `exists_adapted_frame 𝔉`. Establish `ht : 𝔉.top = colSpan V C` using `(hX _).trans (congrArg (Submodule.span _) (by`. Rewrite using `[← Set.image_univ]`. Use `congr 1`. Conclude with `Set.eq_univ_of_forall fun j => hd j))`.
+
+Establish `h0 : cT (hc.sig : E →+* E) C * V.gram * C = 0`. Establish `h` using `𝔉.iso`. Express the relevant statement in the definitionally equal form `𝔉.top ≤ perp V 𝔉.top at h`. Rewrite `h` using `[ht]`. Use extensionality with `a k`.
+
+Use `(mem_perp_colSpan hc V C _).1 (h (Submodule.subset_span ⟨k, rfl⟩))` as an intermediate fact. Simplify using `only [repr_vecOf] at this`. Conclude with `congrFun this a`. Establish `hm : ∀ (g : GA hc V) (x : Fin V.rank → E), ((HA.mat _ hc.sig V.gram g).1 - 1) *ᵥ (fun i => inclR (F` using `F) (AF F) (x i)) = act hc V g (coordR V _ (vecOf V x)) - coordR V _ (vecOf V x) := fun g x => by`. Establish `: coordR (F` using `F) V (AF F) (vecOf V x) = fun i => inclR (F := F) (AF F) (x i) :=`.
+
+Use function extensionality and compare the values at `fun i => by rw [coordR, repr_vecOf]`. Rewrite using `[this, Matrix.sub_mulVec, Matrix.one_mulVec]`. Both sides reduce to the same expression. Establish `e : 𝔉.unip hc (AF F) = Subgroup.closure (Mem.UnipCocompact.radSet hc V C d)`. Rewrite using `[← Subgroup.closure_eq (𝔉.unip hc (AF F))]`.
+
+Use `congr 1`. Use extensionality with `g`. Use `IsoFlag.mem_unip_iff.trans (and_congr ⟨fun h i => ?_, fun h i x hx => ?_⟩ ⟨fun h x hx => ?_, fun h x hx => ?_⟩)` and prove the remaining obligations. Use `h ⟨d i, hd i⟩ (vecOf V (Cᵀ i)) (by` as an intermediate fact. Rewrite using `[hX]`.
+
+Conclude with `Submodule.subset_span ⟨i, Nat.lt_succ_self _, rfl⟩)`. Rewrite `this` using `[hX, ← hm]`. Conclude with `(mem_extSub_span_depth d _ _).1 this`. Rewrite `hx`, the goal using `[hX]`. Use `act_sub_mem_of_mem_span ?_ hx` and prove the remaining obligations.
+
+Introduce and unpack `_ ⟨j, hj, rfl⟩`. Take `⟨a, ha, h'⟩` from `h j`. Conclude with `(mem_extSub_span_depth d _ _).2 ⟨a, fun l hl => ha l (Nat.le_trans (Nat.lt_succ_iff.1 hj) hl), (hm g _).symm.trans h'⟩`. Rewrite `h` using `[ht]`. Rewrite using `[hm]`.
+
+Conclude with `(mem_extSub_colSpan V _ C _).1 (h _ ((mem_perp_colSpan hc V C _).2 (by simpa only [repr_vecOf] using hx)))`. Rewrite `hx`, the goal using `[ht]`. Use `h _ ((mem_perp_colSpan hc V C _).1 hx)` as an intermediate fact. Rewrite `this` using `[hm, show vecOf V (fun i => V.frame.repr x i) = x from V.frame.equivFun.symm_apply_apply x]`. Conclude with `(mem_extSub_colSpan V _ C _).2 this`.
+
+Rewrite using `[e]`. Take `⟨K, hK, h⟩` from `Mem.UnipCocompact.closure_radSet_cocompact hc V C hC h0 d`. Use `⟨K, hK, fun n => ?_⟩` and prove the remaining obligations. Take `⟨γ, hγ, k, hk, rfl⟩` from `h n`. Conclude with `⟨γ⁻¹, inv_mem hγ, by rwa [inv_mul_cancel_left]⟩`.
+-/
 theorem unip_cocompact (hc : CMData F E) (𝔉 : IsoFlag V) : Cocompact (ratPts hc V) (𝔉.unip hc (AF F)) := by
   obtain ⟨r, C, d, hC, hd, hX⟩ := exists_adapted_frame 𝔉
   have ht : 𝔉.top = colSpan V C := (hX _).trans (congrArg (Submodule.span _) (by
@@ -155,6 +206,9 @@ open Formalism.BasicNotions Formalism.BasicNotions.TH Formalism.MainNotions.Glob
 
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
+/- English proof (translation)
+Introduce `D V 𝔉` and use `by rw [AutFunCompare.GQ_eq] exact FlagCocompact.unip_cocompact D.sp.cm 𝔉`.
+-/
 theorem cocompact_flag : ∀ (D : D7) (V : HSp D) (𝔉 : IsoFlag V), Cocompact (GQ V) (NA 𝔉) := fun D V 𝔉 => by
   rw [AutFunCompare.GQ_eq]
   exact FlagCocompact.unip_cocompact D.sp.cm 𝔉

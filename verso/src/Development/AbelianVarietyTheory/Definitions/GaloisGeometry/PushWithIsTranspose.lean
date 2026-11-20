@@ -10,18 +10,30 @@ namespace GlobalTheory.EtC.Gysin
 
 open GlobalTheory.EtC
 
+/- English proof (translation)
+Substitute `hn` using the available equality. Substitute `hi` using the available equality. Both sides reduce to the same expression.
+-/
 theorem Ht.cast_add {q : ℕ} {E : Spc} {n i n' i' : ℤ} (hn : n = n') (hi : i = i') (x y : Ht q E n i) :
     (x + y).cast hn hi = x.cast hn hi + y.cast hn hi := by
   subst hn; subst hi; rfl
 
+/- English proof (translation)
+Substitute `hn` using the available equality. Substitute `hi` using the available equality. Both sides reduce to the same expression.
+-/
 theorem Ht.cast_zero {q : ℕ} {E : Spc} {n i n' i' : ℤ} (hn : n = n') (hi : i = i') :
     (0 : Ht q E n i).cast hn hi = 0 := by
   subst hn; subst hi; rfl
 
+/- English proof (translation)
+Substitute `hn` using the available equality. Substitute `hi` using the available equality. Substitute `hn'` using the available equality. Substitute `hi'` using the available equality. Both sides reduce to the same expression.
+-/
 theorem Ht.cast_cast {q : ℕ} {E : Spc} {n i n' i' n'' i'' : ℤ} (hn : n = n') (hi : i = i') (hn' : n' = n'')
     (hi' : i' = i'') (x : Ht q E n i) : (x.cast hn hi).cast hn' hi' = x.cast (hn.trans hn') (hi.trans hi') := by
   subst hn; subst hi; subst hn'; subst hi'; rfl
 
+/- English proof (translation)
+Substitute `hn` using the available equality. Substitute `hi` using the available equality. Both sides reduce to the same expression.
+-/
 theorem cup_cast_left {q : ℕ} {E : Spc} {n i n' i' m j : ℤ} (hn : n = n') (hi : i = i') (a : Ht q E n i)
     (b : Ht q E m j) :
     cup q (a.cast hn hi) b = (cup q a b).cast (by rw [hn]) (by rw [hi]) := by
@@ -87,8 +99,14 @@ section API
 
 variable {q : ℕ}
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem Ht.cast_self {E : Spc} {n i : ℤ} (hn : n = n) (hi : i = i) (x : Ht q E n i) : x.cast hn hi = x := rfl
 
+/- English proof (translation)
+Substitute `hm` using the available equality. Substitute `hj` using the available equality. Both sides reduce to the same expression.
+-/
 theorem cup_cast_right {E : Spc} {n i m j m' j' : ℤ} (hm : m = m') (hj : j = j') (a : Ht q E n i)
     (b : Ht q E m j) :
     cup q a (b.cast hm hj) = (cup q a b).cast (by rw [hm]) (by rw [hj]) := by
@@ -99,13 +117,22 @@ def Ht.castHom {E : Spc} {n i n' i' : ℤ} (hn : n = n') (hi : i = i') : Ht q E 
   map_zero' := Ht.cast_zero hn hi
   map_add' := Ht.cast_add hn hi
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem Ht.castHom_apply {E : Spc} {n i n' i' : ℤ} (hn : n = n') (hi : i = i') (x : Ht q E n i) :
     Ht.castHom hn hi x = x.cast hn hi := rfl
 
 variable {Z X : Scheme.{0}} (f : Z ⟶ X) (dZ dX : ℕ) (tZ : Ht q (sch.obj Z) (2 * dZ) dZ →+ ZMod q)
   (tX : Ht q (sch.obj X) (2 * dX) dX →+ ZMod q) (b i : ℤ)
 
+/- English proof (translation)
+Expand and normalize the polynomial expressions, which then agree.
+-/
 private theorem hm : 2 * (dX : ℤ) - (b + 2 * ((dX : ℤ) - dZ)) = 2 * dZ - b := by ring
+/- English proof (translation)
+Expand and normalize the polynomial expressions, which then agree.
+-/
 private theorem hj : (dX : ℤ) - (i + ((dX : ℤ) - dZ)) = dZ - i := by ring
 
 def form (a : Ht q (sch.obj Z) b i) :
@@ -113,20 +140,34 @@ def form (a : Ht q (sch.obj Z) b i) :
   ((tZ.comp (Ht.castHom (by ring) (by ring))).comp (cup q a)).comp
     ((pull _ (sch.map f) _ _).comp (Ht.castHom (hm dZ dX b) (hj dZ dX i)))
 
+/- English proof (translation)
+Use extensionality with `y`. Simplify using `only [form, AddMonoidHom.comp_apply, map_add, AddMonoidHom.add_apply]`.
+-/
 theorem form_add (a a' : Ht q (sch.obj Z) b i) : form f dZ dX tZ b i (a + a') = form f dZ dX tZ b i a + form f dZ dX tZ b i a' := by
   ext y
   simp only [form, AddMonoidHom.comp_apply, map_add, AddMonoidHom.add_apply]
 
 variable {f dZ dX tZ tX b i}
 
+/- English proof (translation)
+Simplify using `only [pairing, map_add, AddMonoidHom.add_apply, Ht.cast_add]`.
+-/
 theorem pairing_add {d : ℕ} (t : Ht q (sch.obj X) (2 * d) d →+ ZMod q) {n j : ℤ} (c c' : Ht q (sch.obj X) n j)
     (y : Ht q (sch.obj X) (2 * d - n) (d - j)) : pairing q d t (c + c') y = pairing q d t c y + pairing q d t c' y := by
   simp only [pairing, map_add, AddMonoidHom.add_apply, Ht.cast_add]
 
+/- English proof (translation)
+Simplify using `only [pairing, map_zero, AddMonoidHom.zero_apply, Ht.cast_zero]`.
+-/
 theorem pairing_zero {d : ℕ} (t : Ht q (sch.obj X) (2 * d) d →+ ZMod q) {n j : ℤ}
     (y : Ht q (sch.obj X) (2 * d - n) (d - j)) : pairing q d t (0 : Ht q (sch.obj X) n j) y = 0 := by
   simp only [pairing, map_zero, AddMonoidHom.zero_apply, Ht.cast_zero]
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce `h y`. Use `h (y.cast (hm dZ dX b).symm (hj dZ dX i).symm)` as an intermediate fact. Simplify using `only [form, pairing, AddMonoidHom.comp_apply, Ht.castHom_apply, Ht.cast_cast, Ht.cast_self, cup_cast_right] at this`. Conclude with `this.symm`.
+
+Introduce `h y`. Use `h (y.cast (hm dZ dX b) (hj dZ dX i))` as an intermediate fact. Simplify using `only [form, pairing, AddMonoidHom.comp_apply, Ht.castHom_apply, cup_cast_right, Ht.cast_cast] at this ⊢`. Conclude with `this.symm`.
+-/
 theorem pairing_iff (a : Ht q (sch.obj Z) b i) (c : Ht q (sch.obj X) (b + 2 * ((dX : ℤ) - dZ)) (i + ((dX : ℤ) - dZ))) :
     (∀ y, form f dZ dX tZ b i a y = pairing q dX tX c y) ↔
       ∀ y : Ht q (sch.obj X) (2 * dZ - b) (dZ - i),
@@ -142,25 +183,40 @@ theorem pairing_iff (a : Ht q (sch.obj Z) b i) (c : Ht q (sch.obj X) (b + 2 * ((
     simp only [form, pairing, AddMonoidHom.comp_apply, Ht.castHom_apply, cup_cast_right, Ht.cast_cast] at this ⊢
     exact this.symm
 
+/- English proof (translation)
+Use `choose c hc hu using fun a => hX _ _ (form f dZ dX tZ b i a)`. Use `⟨AddMonoidHom.mk' c fun a a' => ?_, fun a y => ((pairing_iff a (c a)).1 (hc a)) y⟩` and prove the remaining obligations. Use `(hu (a + a') _ fun y => ?_).symm` and prove the remaining obligations. Rewrite using `[form_add, AddMonoidHom.add_apply, hc a y, hc a' y, pairing_add]`.
+-/
 theorem exists_isTranspose (hX : IsPerfect q dX tX) : ∃ γ, IsTranspose q f dZ dX tZ tX b i γ := by
   choose c hc hu using fun a => hX _ _ (form f dZ dX tZ b i a)
   refine ⟨AddMonoidHom.mk' c fun a a' => ?_, fun a y => ((pairing_iff a (c a)).1 (hc a)) y⟩
   refine (hu (a + a') _ fun y => ?_).symm
   rw [form_add, AddMonoidHom.add_apply, hc a y, hc a' y, pairing_add]
 
+/- English proof (translation)
+Use extensionality with `a`. Take `⟨c, _, hu⟩` from `hX _ _ (form f dZ dX tZ b i a)`. Conclude with `(hu _ ((pairing_iff a (γ a)).2 (h a))).trans (hu _ ((pairing_iff a (γ' a)).2 (h' a))).symm`.
+-/
 theorem IsTranspose.unique (hX : IsPerfect q dX tX) {γ γ' : Ht q (sch.obj Z) b i →+ Ht q (sch.obj X) (b + 2 * ((dX : ℤ) - dZ)) (i + ((dX : ℤ) - dZ))}
     (h : IsTranspose q f dZ dX tZ tX b i γ) (h' : IsTranspose q f dZ dX tZ tX b i γ') : γ = γ' := by
   ext a
   obtain ⟨c, _, hu⟩ := hX _ _ (form f dZ dX tZ b i a)
   exact (hu _ ((pairing_iff a (γ a)).2 (h a))).trans (hu _ ((pairing_iff a (γ' a)).2 (h' a))).symm
 
+/- English proof (translation)
+The claim follows from `pick_spec (exists_isTranspose hX)`.
+-/
 theorem pushWith_isTranspose (hX : IsPerfect q dX tX) : IsTranspose q f dZ dX tZ tX b i (pushWith q f dZ dX tZ tX b i) :=
   pick_spec (exists_isTranspose hX)
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fun e => e ▸ pushWith_isTranspose hX, fun h => (pushWith_isTranspose hX).unique hX h⟩`.
+-/
 theorem pushWith_eq_iff (hX : IsPerfect q dX tX) (γ : Ht q (sch.obj Z) b i →+ Ht q (sch.obj X) (b + 2 * ((dX : ℤ) - dZ)) (i + ((dX : ℤ) - dZ))) :
     pushWith q f dZ dX tZ tX b i = γ ↔ IsTranspose q f dZ dX tZ tX b i γ :=
   ⟨fun e => e ▸ pushWith_isTranspose hX, fun h => (pushWith_isTranspose hX).unique hX h⟩
 
+/- English proof (translation)
+Rewrite using `[pushWith_eq_iff ht]`. Introduce `a y`. Rewrite using `[CategoryTheory.Functor.map_id, pull_id, Ht.castHom_apply, cup_cast_left, Ht.cast_cast]`.
+-/
 theorem pushWith_id {d : ℕ} {t : Ht q (sch.obj X) (2 * d) d →+ ZMod q} (ht : IsPerfect q d t) :
     pushWith q (𝟙 X) d d t t b i = Ht.castHom (by ring) (by ring) := by
   rw [pushWith_eq_iff ht]
@@ -169,20 +225,32 @@ theorem pushWith_id {d : ℕ} {t : Ht q (sch.obj X) (2 * d) d →+ ZMod q} (ht :
 
 end API
 
+/- English proof (translation)
+The claim follows from `pick_spec h`.
+-/
 theorem tr_spec (h : ∃ T, IsTraceFam T) : IsTraceFam tr := pick_spec h
 
+/- English proof (translation)
+The claim follows from `pushWith_isTranspose ((tr_spec h k).1 q hq p dX)`.
+-/
 theorem gysin_isTranspose (h : ∃ T, IsTraceFam T) (k : Type) [Field k] [IsAlgClosed k] (q : ℕ) [NeZero q]
     (hq : IsUnit (q : k)) {Z X : Scheme.{0}} (f : Z ⟶ X) (p : X ⟶ Spec (CommRingCat.of k)) [IsProper p] (dZ dX : ℕ)
     [SmoothOfRelativeDimension dX p] (b i : ℤ) :
     IsTranspose q f dZ dX (tr q Z dZ) (tr q X dX) b i (gysin q f dZ dX b i) :=
   pushWith_isTranspose ((tr_spec h k).1 q hq p dX)
 
+/- English proof (translation)
+The claim follows from `pushWith_id ((tr_spec h k).1 q hq p d)`.
+-/
 theorem gysin_id (h : ∃ T, IsTraceFam T) (k : Type) [Field k] [IsAlgClosed k] (q : ℕ) [NeZero q]
     (hq : IsUnit (q : k)) {X : Scheme.{0}} (p : X ⟶ Spec (CommRingCat.of k)) [IsProper p] (d : ℕ)
     [SmoothOfRelativeDimension d p] (b i : ℤ) :
     gysin q (𝟙 X) d d b i = Ht.castHom (by ring) (by ring) :=
   pushWith_id ((tr_spec h k).1 q hq p d)
 
+/- English proof (translation)
+Introduce `h`. Establish `h2 : IsUnit ((2 : ℕ) : AlgebraicClosure ℚ)` using `isUnit_iff_ne_zero.2 (by norm_num)`. Use `(h (AlgebraicClosure ℚ)).2.1 2 h2 (𝟙 (Spec (CommRingCat.of (AlgebraicClosure ℚ))))` as an intermediate fact. Simplify using `at this`.
+-/
 example : ¬ IsTraceFam 0 := by
   intro h
   have h2 : IsUnit ((2 : ℕ) : AlgebraicClosure ℚ) := isUnit_iff_ne_zero.2 (by norm_num)
@@ -200,12 +268,18 @@ def gysinHQ {Z X : Scheme.{0}} (f : Z ⟶ X) (dZ dX : ℕ) (b i : ℤ) :
     HQ l (sch.obj Z) b i →ₗ[ℚ_[l]] HQ l (sch.obj X) (b + 2 * ((dX : ℤ) - dZ)) (i + ((dX : ℤ) - dZ)) :=
   (gysinHl l f dZ dX b i).baseChange ℚ_[l]
 
+/- English proof (translation)
+The claim follows from `pick_spec h x k`.
+-/
 theorem gysinHl_apply {Z X : Scheme.{0}} (f : Z ⟶ X) (dZ dX : ℕ) (b i : ℤ)
     (h : ∃ g : Hl l (sch.obj Z) b i →ₗ[ℤ_[l]] Hl l (sch.obj X) (b + 2 * ((dX : ℤ) - dZ)) (i + ((dX : ℤ) - dZ)),
       ∀ (x : Hl l (sch.obj Z) b i) (k : ℕ), (g x).1 k = gysin (l ^ k) f dZ dX b i (x.1 k))
     (x : Hl l (sch.obj Z) b i) (k : ℕ) : (gysinHl l f dZ dX b i x).1 k = gysin (l ^ k) f dZ dX b i (x.1 k) :=
   pick_spec h x k
 
+/- English proof (translation)
+The claim follows from `(Ht.castHom (by push_cast [Nat.cast_sub hs, Nat.cast_sub (Nat.le_of_succ_le hs)]; ring) (by push_cast [Nat.cast_sub hs, Nat.cast_sub (Nat.le_of_succ_le hs)]; ring)).comp (gysin (l ^ 2) (GlobalTheory.Strata.δ I s j) (d - (s + 1)) (d - s) b i)`.
+-/
 example {ι : Type} [LinearOrder ι] {X : Scheme.{0}} (I : ι → X.IdealSheafData) (s : ℕ) (j : Fin (s + 2)) (d : ℕ)
     (hs : s + 1 ≤ d) (b i : ℤ) :
     Ht (l ^ 2) (sch.obj (GlobalTheory.Strata.Ystr I (s + 1))) b i →+ Ht (l ^ 2) (sch.obj (GlobalTheory.Strata.Ystr I s)) (b + 2) (i + 1) :=

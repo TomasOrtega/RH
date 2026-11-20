@@ -8,6 +8,15 @@ namespace GroundTheory.Heights₂.Heights.RestTerms
 
 open MvPolynomial Finset
 
+/- English proof (translation)
+Introduce `N k P hsym hhom`. Take `⟨S₀, hS₀⟩` from `Flag.exists_powerSumHom_eq hsym`. Set `w : Fin N → ℕ` to `fun i => (i : ℕ) + 1`. Use `⟨weightedHomogeneousComponent w k S₀, ?_, weightedHomogeneousComponent_isWeightedHomogeneous k S₀⟩` and prove the remaining obligations. Establish `hfin` using `weightedHomogeneousComponent_finsupp (w := w) S₀`.
+
+Establish `hsum` using `sum_weightedHomogeneousComponent w S₀`. Rewrite `hsum` using `[finsum_eq_sum _ hfin]`. Establish `hterm : ∀ m : ℕ, homogeneousComponent k (powerSumHom N (weightedHomogeneousComponent w m S₀)) = if k = m then powerSumHom N (weightedHomogeneousComponent w m S₀) else 0` using `fun m => homogeneousComponent_of_mem (h1 N m _ (weightedHomogeneousComponent_isWeightedHomogeneous m S₀))`. Establish `key : homogeneousComponent k (powerSumHom N S₀) = powerSumHom N (weightedHomogeneousComponent w k S₀)` using `by conv_lhs => rw [← hsum]`. Rewrite using `[map_sum, map_sum]`.
+
+Simplify using `only [hterm, Finset.sum_ite_eq]`. Use `split_ifs with hk`. Both sides reduce to the same expression. Establish `hk0 : weightedHomogeneousComponent w k S₀ = 0`. Assume the negation of the conclusion as `hne`.
+
+Conclude with `hk (Set.Finite.mem_toFinset (hs := hfin) |>.mpr hne)`. Rewrite using `[hk0, map_zero]`. Rewrite using `[← key, hS₀, homogeneousComponent_eq_self hhom]`.
+-/
 theorem SchWeightedPreimage.proof (h1 : SchPowerSumHomWeighted.Statement) :
     SchWeightedPreimage.Statement := by
   classical

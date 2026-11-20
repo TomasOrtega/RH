@@ -13,6 +13,9 @@ section Summation
 
 variable (K) in
 
+/- English proof (translation)
+Take `⟨y, hy⟩` from `ValuativeRel.valuation_surjective ((IsNonarchimedeanLocalField.valueGroupWithZeroIsoInt K).symm (WithZero.exp n))`. Conclude with `⟨y, by rw [normalizedValuation_apply, hy]; simp⟩`.
+-/
 theorem exists_normalizedValuation_eq (n : ℤ) :
     ∃ y : K, normalizedValuation K y = WithZero.exp n := by
   obtain ⟨y, hy⟩ := ValuativeRel.valuation_surjective
@@ -27,17 +30,31 @@ def valBall (n : ℤ) : AddSubgroup K where
   add_mem' hx hy := (normalizedValuation K).map_add_le hx hy
   neg_mem' hx := by simpa using hx
 
+/- English proof (translation)
+Unfold both sides. The equivalence is reflexive.
+-/
 theorem mem_valBall {n : ℤ} {x : K} :
     x ∈ valBall K n ↔ normalizedValuation K x ≤ WithZero.exp (-n) := Iff.rfl
 
+/- English proof (translation)
+The claim follows from `fun x hx ↦ hx.trans (WithZero.exp_le_exp.mpr (by omega))`.
+-/
 theorem valBall_antitone {m n : ℤ} (h : m ≤ n) : valBall K n ≤ valBall K m := fun x hx ↦
   hx.trans (WithZero.exp_le_exp.mpr (by omega))
 
+/- English proof (translation)
+Rewrite using `[mem_valBall, map_mul, neg_add, WithZero.exp_add]`. Conclude with `mul_le_mul' hx hy`.
+-/
 theorem mul_mem_valBall {m n : ℤ} {x y : K} (hx : x ∈ valBall K m) (hy : y ∈ valBall K n) :
     x * y ∈ valBall K (m + n) := by
   rw [mem_valBall, map_mul, neg_add, WithZero.exp_add]
   exact mul_le_mul' hx hy
 
+/- English proof (translation)
+Proceed by induction on `k with`. Consider the case `zero => simp [mem_valBall]`. Consider the case `succ k ih`. Rewrite using `[pow_succ]`. Use `mul_mem_valBall ih hx using 2` and compare the differences between its conclusion and the goal.
+
+Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem pow_mem_valBall {n : ℤ} {x : K} (hx : x ∈ valBall K n) (k : ℕ) :
     x ^ k ∈ valBall K (k * n) := by
   induction k with
@@ -47,6 +64,13 @@ theorem pow_mem_valBall {n : ℤ} {x : K} (hx : x ∈ valBall K n) (k : ℕ) :
     convert mul_mem_valBall ih hx using 2
     push_cast; ring
 
+/- English proof (translation)
+Take `⟨y, hy⟩` from `exists_normalizedValuation_eq K (-n)`. Establish `hy0 : valuation K y ≠ 0`. Introduce `h`. Rewrite `hy` using `[normalizedValuation_apply, h, map_zero]`. Conclude with `WithZero.exp_ne_zero hy.symm`.
+
+Establish `: (valBall K n : Set K) = {z : K | valuation K (z - 0) ≤ valuation K y}`. Use extensionality with `z`. Simplify using `only [sub_zero, SetLike.mem_coe, mem_valBall, ← hy, normalizedValuation_le_iff]`. Both sides reduce to the same expression. Rewrite using `[this]`.
+
+Conclude with `isOpen_setOf_valuation_sub_le hy0`.
+-/
 theorem isOpen_valBall (n : ℤ) : IsOpen (valBall K n : Set K) := by
   obtain ⟨y, hy⟩ := exists_normalizedValuation_eq K (-n)
   have hy0 : valuation K y ≠ 0 := by
@@ -60,9 +84,15 @@ theorem isOpen_valBall (n : ℤ) : IsOpen (valBall K n : Set K) := by
   rw [this]
   exact isOpen_setOf_valuation_sub_le hy0
 
+/- English proof (translation)
+The claim follows from `AddSubgroup.isClosed_of_isOpen _ (isOpen_valBall n)`.
+-/
 theorem isClosed_valBall (n : ℤ) : IsClosed (valBall K n : Set K) :=
   AddSubgroup.isClosed_of_isOpen _ (isOpen_valBall n)
 
+/- English proof (translation)
+The claim follows from `(isOpen_valBall n).mem_nhds (zero_mem _)`.
+-/
 theorem valBall_mem_nhds (n : ℤ) : (valBall K n : Set K) ∈ 𝓝 (0 : K) :=
   (isOpen_valBall n).mem_nhds (zero_mem _)
 
@@ -76,6 +106,13 @@ instance nonarchimedeanRing : NonarchimedeanRing K where
     obtain ⟨γ, -, hγ⟩ := (IsValuativeTopology.hasBasis_nhds_zero K).mem_iff.mp hU
     exact ⟨⟨(valuation K).ltAddSubgroup γ, isOpen_setOf_valuation_lt⟩, hγ⟩
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce `hf N`. Conclude with `hf (valBall_mem_nhds N)`. Introduce `hf`. Rewrite using `[(IsValuativeTopology.hasBasis_nhds_zero K).tendsto_right_iff]`.
+
+Introduce `γ _`. Take `⟨ϖ, hϖ⟩` from `IsDiscreteValuationRing.exists_irreducible 𝒪[K]`. Take `⟨n, -, hn⟩` from `exists_pow_lt hϖ γ.ne_zero`. Use `filter_upwards [hf n] with i hi`. Use `lt_of_le_of_lt ?_ hn` and prove the remaining obligations.
+
+Rewrite using `[← map_pow, ← normalizedValuation_le_iff, map_pow, normalizedValuation_uniformizer hϖ, ← WithZero.exp_nsmul]`. Simplify `hi` using `[mem_valBall]`.
+-/
 theorem tendsto_zero_iff_valBall {ι : Type*} {l : Filter ι} {f : ι → K} :
     Tendsto f l (𝓝 0) ↔ ∀ N : ℤ, ∀ᶠ i in l, f i ∈ valBall K N := by
   constructor
@@ -92,11 +129,17 @@ theorem tendsto_zero_iff_valBall {ι : Type*} {l : Filter ι} {f : ι → K} :
       ← WithZero.exp_nsmul]
     simpa [mem_valBall] using hi
 
+/- English proof (translation)
+Set `` to `IsTopologicalAddGroup.rightUniformSpace K`. Use `isUniformAddGroup_of_addCommGroup (G := K)` as an intermediate fact. Conclude with `NonarchimedeanAddGroup.summable_of_tendsto_cofinite_zero (by rwa [Nat.cofinite_eq_atTop])`.
+-/
 theorem summable_of_tendsto_zero {f : ℕ → K} (hf : Tendsto f atTop (𝓝 0)) : Summable f := by
   let := IsTopologicalAddGroup.rightUniformSpace K
   have := isUniformAddGroup_of_addCommGroup (G := K)
   exact NonarchimedeanAddGroup.summable_of_tendsto_cofinite_zero (by rwa [Nat.cofinite_eq_atTop])
 
+/- English proof (translation)
+Distinguish the cases in `hs : Summable f`. Conclude with `(isClosed_valBall N).mem_of_tendsto hs.hasSum.tendsto_sum_nat (Eventually.of_forall fun s ↦ AddSubgroup.sum_mem _ fun k _ ↦ h k)`. Rewrite using `[tsum_eq_zero_of_not_summable hs]`. Conclude with `zero_mem _`.
+-/
 theorem tsum_mem_valBall {f : ℕ → K} {N : ℤ} (h : ∀ k, f k ∈ valBall K N) :
     ∑' k, f k ∈ valBall K N := by
   by_cases hs : Summable f
@@ -109,6 +152,11 @@ end Summation
 
 section Arithmetic
 
+/- English proof (translation)
+Proceed by induction on `v with`. Consider the case `zero => norm_num`. Consider the case `succ v ih`. Break down `Nat.lt_or_ge v 3 with h | h` into its components or cases. Apply the tactic sequence `interval_cases v <;> norm_num`.
+
+Rewrite using `[pow_succ]`. Use the polynomial consequences of the given equalities and inequalities.
+-/
 theorem mul_self_le_two_pow_succ (v : ℕ) : v * v ≤ 2 ^ (v + 1) := by
   induction v with
   | zero => norm_num
@@ -117,6 +165,11 @@ theorem mul_self_le_two_pow_succ (v : ℕ) : v * v ≤ 2 ^ (v + 1) := by
     · interval_cases v <;> norm_num
     · rw [pow_succ]; nlinarith
 
+/- English proof (translation)
+Use `set v := padicValNat p n`. Establish `h1 : 2 ^ v ≤ p ^ v` using `Nat.pow_le_pow_left hp.out.two_le v`. Establish `h2 : p ^ v ≤ n` using `Nat.le_of_dvd (Nat.pos_of_ne_zero hn) pow_padicValNat_dvd`. Establish `h3` using `mul_self_le_two_pow_succ v`. Rewrite `h3` using `[pow_succ]`.
+
+Break down `Nat.lt_or_ge v (8 * c) with h | h` into its components or cases. Use the polynomial consequences of the given equalities and inequalities. Use the polynomial consequences of the given equalities and inequalities.
+-/
 theorem four_mul_padicValNat_le (p : ℕ) [hp : Fact p.Prime] (c : ℕ) {n : ℕ} (hn : n ≠ 0) :
     4 * c * padicValNat p n ≤ n + 32 * c ^ 2 := by
   set v := padicValNat p n
@@ -128,6 +181,9 @@ theorem four_mul_padicValNat_le (p : ℕ) [hp : Fact p.Prime] (c : ℕ) {n : ℕ
   · nlinarith
   · nlinarith
 
+/- English proof (translation)
+Establish `h : padicValNat p n ≤ padicValNat p n.factorial`. Rewrite using `[← padicValNat_dvd_iff_le (Nat.factorial_ne_zero n)]`. Conclude with `pow_padicValNat_dvd.trans (Nat.dvd_factorial (Nat.pos_of_ne_zero hn) le_rfl)`. Conclude with `lt_of_le_of_lt (Nat.mul_le_mul_left _ h) (sub_one_mul_padicValNat_factorial_lt_of_ne_zero p hn)`.
+-/
 theorem sub_one_mul_padicValNat_lt (p : ℕ) [hp : Fact p.Prime] {n : ℕ} (hn : n ≠ 0) :
     (p - 1) * padicValNat p n < n := by
   have h : padicValNat p n ≤ padicValNat p n.factorial := by
@@ -146,6 +202,11 @@ noncomputable def absRamificationIndex : ℕ := (ord ((ringChar 𝓀[K] : ℕ) :
 
 variable (p : ℕ) [hp : Fact p.Prime] [CharP 𝓀[K] p] [CharZero K]
 
+/- English proof (translation)
+Establish `hp0 : (p : K) ≠ 0` using `Nat.cast_ne_zero.mpr hp.out.ne_zero`. Establish `hr : ringChar 𝓀[K] = p` using `ringChar.eq 𝓀[K] p`. Establish `hlt : normalizedValuation K (p : K) < 1`. Rewrite using `[← map_one (normalizedValuation K), normalizedValuation_lt_iff, map_one]`. Conclude with `CharZero.valuation_p_lt_one K p`.
+
+Rewrite `hlt`, the goal using `[normalizedValuation_eq_exp_ord hp0]`. Rewrite `hlt` using `[← WithZero.exp_zero, WithZero.exp_lt_exp]`. Rewrite using `[absRamificationIndex, hr, Int.toNat_of_nonneg (by omega)]`.
+-/
 theorem normalizedValuation_natCast_prime :
     normalizedValuation K (p : K) = WithZero.exp (-(absRamificationIndex K : ℤ)) := by
   have hp0 : (p : K) ≠ 0 := Nat.cast_ne_zero.mpr hp.out.ne_zero
@@ -158,6 +219,11 @@ theorem normalizedValuation_natCast_prime :
   rw [absRamificationIndex, hr, Int.toNat_of_nonneg (by omega)]
 
 include p in
+/- English proof (translation)
+Establish `h` using `normalizedValuation_natCast_prime (K := K) p`. Establish `hlt : normalizedValuation K (p : K) < 1`. Rewrite using `[← map_one (normalizedValuation K), normalizedValuation_lt_iff, map_one]`. Conclude with `CharZero.valuation_p_lt_one K p`. Rewrite `hlt` using `[h, ← WithZero.exp_zero, WithZero.exp_lt_exp]`.
+
+Use linear arithmetic over natural numbers and integers.
+-/
 theorem one_le_absRamificationIndex : 1 ≤ absRamificationIndex K := by
   have h := normalizedValuation_natCast_prime (K := K) p
   have hlt : normalizedValuation K (p : K) < 1 := by
@@ -167,12 +233,20 @@ theorem one_le_absRamificationIndex : 1 ≤ absRamificationIndex K := by
   omega
 
 omit hp [CharZero K] in
+/- English proof (translation)
+Rewrite using `[← map_one (normalizedValuation K), normalizedValuation_eq_iff, map_one]`. Use `(CharZero.valuation_intCast_eq_one_iff K p (m : ℤ)).mpr (by exact_mod_cast hm)` as an intermediate fact. Conclude with `this` after adjusting the coercions.
+-/
 theorem normalizedValuation_natCast_of_not_dvd {m : ℕ} (hm : ¬ p ∣ m) :
     normalizedValuation K (m : K) = 1 := by
   rw [← map_one (normalizedValuation K), normalizedValuation_eq_iff, map_one]
   have := (CharZero.valuation_intCast_eq_one_iff K p (m : ℤ)).mpr (by exact_mod_cast hm)
   exact_mod_cast this
 
+/- English proof (translation)
+Take `⟨k, m, hm, rfl⟩` from `Nat.exists_eq_pow_mul_and_not_dvd hn p hp.out.ne_one`. Establish `hm0 : m ≠ 0` using `by rintro rfl; exact hm (dvd_zero p)`. Rewrite using `[padicValNat.mul (pow_ne_zero _ hp.out.ne_zero) hm0, padicValNat.prime_pow, padicValNat.eq_zero_of_not_dvd hm]`. Use `push_cast`. Rewrite using `[map_mul, map_pow, normalizedValuation_natCast_prime p, normalizedValuation_natCast_of_not_dvd p hm, mul_one, ← WithZero.exp_nsmul]`.
+
+Use `congr 1`. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem normalizedValuation_natCast {n : ℕ} (hn : n ≠ 0) :
     normalizedValuation K (n : K) =
       WithZero.exp (-(absRamificationIndex K * padicValNat p n : ℤ)) := by
@@ -186,6 +260,9 @@ theorem normalizedValuation_natCast {n : ℕ} (hn : n ≠ 0) :
   congr 1
   simp; ring
 
+/- English proof (translation)
+Rewrite using `[mem_valBall, map_div₀, normalizedValuation_natCast p hn, div_eq_mul_inv, ← WithZero.exp_neg, neg_neg, neg_sub, sub_eq_add_neg, WithZero.exp_add, mul_comm]`. Conclude with `mul_le_mul_right hx _`.
+-/
 theorem div_natCast_mem_valBall {a : ℤ} {x : K} (hx : x ∈ valBall K a) {n : ℕ} (hn : n ≠ 0) :
     x / n ∈ valBall K (a - absRamificationIndex K * padicValNat p n) := by
   rw [mem_valBall, map_div₀, normalizedValuation_natCast p hn, div_eq_mul_inv,
@@ -202,6 +279,9 @@ noncomputable def expSeries (x : K) : K := ∑' k : ℕ, x ^ k / (k.factorial : 
 
 variable (p : ℕ) [hp : Fact p.Prime] [CharP 𝓀[K] p] [CharZero K]
 
+/- English proof (translation)
+Establish `h1 : (-1 : K) ^ k * x ^ (k + 1) ∈ valBall K ((k + 1 : ℕ) * a)`. Rewrite using `[mem_valBall, map_mul, map_pow, Valuation.map_neg, map_one, one_pow, one_mul]`. Conclude with `pow_mem_valBall hx (k + 1)`. Use `div_natCast_mem_valBall p h1 (by omega : k + 1 ≠ 0)` as an intermediate fact. Simplify `this` using `only [Nat.cast_add, Nat.cast_one]`.
+-/
 theorem logTerm_mem {a : ℤ} {x : K} (hx : x ∈ valBall K a) (k : ℕ) :
     (-1) ^ k * x ^ (k + 1) / ((k + 1 : ℕ) : K) ∈
       valBall K ((k + 1) * a - absRamificationIndex K * padicValNat p (k + 1)) := by
@@ -211,18 +291,31 @@ theorem logTerm_mem {a : ℤ} {x : K} (hx : x ∈ valBall K a) (k : ℕ) :
   have := div_natCast_mem_valBall p h1 (by omega : k + 1 ≠ 0)
   simpa only [Nat.cast_add, Nat.cast_one] using this
 
+/- English proof (translation)
+The claim follows from `div_natCast_mem_valBall p (pow_mem_valBall hx k) (Nat.factorial_ne_zero k)`.
+-/
 theorem expTerm_mem {a : ℤ} {x : K} (hx : x ∈ valBall K a) (k : ℕ) :
     x ^ k / (k.factorial : K) ∈
       valBall K (k * a - absRamificationIndex K * padicValNat p k.factorial) :=
   div_natCast_mem_valBall p (pow_mem_valBall hx k) (Nat.factorial_ne_zero k)
 
 omit [CharP 𝓀[K] p] [CharZero K] in
+/- English proof (translation)
+The claim follows from `(sub_one_mul_padicValNat_factorial k).le.trans (Nat.sub_le _ _)`.
+-/
 theorem sub_one_mul_padicValNat_factorial_le (k : ℕ) :
     (p - 1) * padicValNat p k.factorial ≤ k :=
   (sub_one_mul_padicValNat_factorial k).le.trans (Nat.sub_le _ _)
 
 include p in
 
+/- English proof (translation)
+Use `summable_of_tendsto_zero (tendsto_zero_iff_valBall.mpr fun N ↦ ?_)` and prove the remaining obligations. Rewrite using `[eventually_atTop]`. Use `set e := absRamificationIndex K`. Use `⟨4 * N.toNat + 32 * e ^ 2, fun k hk ↦ valBall_antitone ?_ (logTerm_mem p hx k)⟩` and prove the remaining obligations. Establish `h1` using `four_mul_padicValNat_le p e (Nat.succ_ne_zero k)`.
+
+Establish `h2 : N ≤ (N.toNat : ℤ)` using `Int.self_le_toNat N`. Establish `h3 : ((4 * N.toNat + 32 * e ^ 2 : ℕ) : ℤ) ≤ k` using `by exact_mod_cast hk`. Establish `h4 : ((4 * e * padicValNat p (k + 1) : ℕ) : ℤ) ≤ ((k + 1 + 32 * e ^ 2 : ℕ) : ℤ)`. Conclude with `h1` after adjusting the coercions. Simplify using `only [Nat.cast_add, Nat.cast_mul, Nat.cast_pow, Nat.cast_ofNat, Nat.cast_one, ] at h3 h4`.
+
+Use the polynomial consequences of the given equalities and inequalities.
+-/
 theorem summable_logSeries {x : K} (hx : x ∈ valBall K 1) :
     Summable fun k : ℕ ↦ (-1) ^ k * x ^ (k + 1) / ((k + 1 : ℕ) : K) := by
   refine summable_of_tendsto_zero (tendsto_zero_iff_valBall.mpr fun N ↦ ?_)
@@ -238,6 +331,9 @@ theorem summable_logSeries {x : K} (hx : x ∈ valBall K 1) :
     ] at h3 h4
   nlinarith
 
+/- English proof (translation)
+Establish `he` using `one_le_absRamificationIndex (K := K) p`. Establish `hp2 : (2 : ℤ) ≤ p` using `by exact_mod_cast hp.out.two_le`. Assume the negation of the conclusion as `h`. Use `push Not at h`. Use the polynomial consequences of the given equalities and inequalities.
+-/
 theorem one_le_of_lt_sub_one_mul {a : ℤ} (ha : (absRamificationIndex K : ℤ) < (p - 1 : ℤ) * a) :
     1 ≤ a := by
   have he := one_le_absRamificationIndex (K := K) p
@@ -246,6 +342,17 @@ theorem one_le_of_lt_sub_one_mul {a : ℤ} (ha : (absRamificationIndex K : ℤ) 
   push Not at h
   nlinarith
 
+/- English proof (translation)
+Establish `ha1` using `one_le_of_lt_sub_one_mul p ha`. Establish `hs` using `summable_logSeries p (valBall_antitone ha1 hx)`. Rewrite using `[logSeries, hs.tsum_eq_zero_add]`. Simplify using `only [pow_zero, zero_add, pow_one, one_mul, Nat.cast_one, div_one, add_sub_cancel_left]`. Use `tsum_mem_valBall fun k ↦ valBall_antitone ?_ (logTerm_mem p hx (k + 1))` and prove the remaining obligations.
+
+Establish `h1` using `sub_one_mul_padicValNat_lt p (Nat.succ_ne_zero (k + 1))`. Use `set v := padicValNat p (k + 1 + 1)`. Use `set e := absRamificationIndex K`. Establish `hp2 : (2 : ℤ) ≤ p` using `by exact_mod_cast hp.out.two_le`. Establish `h1' : ((p : ℤ) - 1) * v ≤ k + 1`.
+
+Establish `: ((p - 1) * v : ℕ) < k + 1 + 1` using `h1`. Establish `hp1 : ((p - 1 : ℕ) : ℤ) = (p : ℤ) - 1`. Rewrite using `[Nat.cast_sub hp.out.one_le]`. Simplify using the standard rewrite rules. Establish `: (((p - 1) * v : ℕ) : ℤ) < k + 1 + 1` using `by exact_mod_cast this`.
+
+Move the coercions through the operations in `[hp1] at this`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hv : (0 : ℤ) ≤ v` using `by positivity`. Establish `he : (0 : ℤ) ≤ e` using `by positivity`. Use `push_cast`.
+
+Use polynomial arithmetic with `[mul_le_mul_of_nonneg_left h1' he]`.
+-/
 theorem logSeries_sub_self_mem {a : ℤ} {x : K} (hx : x ∈ valBall K a)
     (ha : (absRamificationIndex K : ℤ) < (p - 1 : ℤ) * a) :
     logSeries x - x ∈ valBall K (a + 1) := by
@@ -278,6 +385,13 @@ variable (p : ℕ) [hp : Fact p.Prime] [CharP 𝓀[K] p] [CharZero K]
 
 omit [CharP 𝓀[K] p] [CharZero K] in
 
+/- English proof (translation)
+Establish `h1` using `sub_one_mul_padicValNat_factorial_le p k`. Use `set v := padicValNat p k.factorial`. Use `set e := absRamificationIndex K`. Establish `hp2 : (2 : ℤ) ≤ p` using `by exact_mod_cast hp.out.two_le`. Establish `h1' : ((p : ℤ) - 1) * v ≤ k`.
+
+Establish `hp1 : ((p - 1 : ℕ) : ℤ) = (p : ℤ) - 1`. Rewrite using `[Nat.cast_sub hp.out.one_le]`. Simplify using the standard rewrite rules. Establish `: (((p - 1) * v : ℕ) : ℤ) ≤ k` using `by exact_mod_cast h1`. Move the coercions through the operations in `[hp1] at this`.
+
+Combine the linear equalities and inequalities to obtain the conclusion. Establish `he : (0 : ℤ) ≤ e` using `by positivity`. Establish `hk : (0 : ℤ) ≤ k` using `by positivity`. Use polynomial arithmetic with `[mul_le_mul_of_nonneg_left h1' he, mul_le_mul_of_nonneg_left ha.le hk]`.
+-/
 theorem expTerm_order_bound {a : ℤ} (ha : (absRamificationIndex K : ℤ) < (p - 1 : ℤ) * a)
     (k : ℕ) : (k : ℤ) ≤ (p - 1 : ℤ) * (k * a - absRamificationIndex K * padicValNat p k.factorial)
     := by
@@ -295,6 +409,13 @@ theorem expTerm_order_bound {a : ℤ} (ha : (absRamificationIndex K : ℤ) < (p 
   have hk : (0 : ℤ) ≤ k := by positivity
   nlinarith [mul_le_mul_of_nonneg_left h1' he, mul_le_mul_of_nonneg_left ha.le hk]
 
+/- English proof (translation)
+Use `summable_of_tendsto_zero (tendsto_zero_iff_valBall.mpr fun N ↦ ?_)` and prove the remaining obligations. Rewrite using `[eventually_atTop]`. Use `⟨(p - 1) * N.toNat, fun k hk ↦ valBall_antitone ?_ (expTerm_mem p hx k)⟩` and prove the remaining obligations. Establish `h1` using `expTerm_order_bound p ha k`. Establish `h2 : N ≤ (N.toNat : ℤ)` using `Int.self_le_toNat N`.
+
+Establish `hp2 : (2 : ℤ) ≤ p` using `by exact_mod_cast hp.out.two_le`. Establish `hp1 : ((p - 1 : ℕ) : ℤ) = (p : ℤ) - 1`. Rewrite using `[Nat.cast_sub hp.out.one_le]`. Simplify using the standard rewrite rules. Establish `h3 : (((p - 1) * N.toNat : ℕ) : ℤ) ≤ k` using `by exact_mod_cast hk`.
+
+Move the coercions through the operations in `[hp1] at h3`. Use the polynomial consequences of the given equalities and inequalities.
+-/
 theorem summable_expSeries {a : ℤ} {x : K} (hx : x ∈ valBall K a)
     (ha : (absRamificationIndex K : ℤ) < (p - 1 : ℤ) * a) :
     Summable fun k : ℕ ↦ x ^ k / (k.factorial : K) := by
@@ -310,6 +431,17 @@ theorem summable_expSeries {a : ℤ} {x : K} (hx : x ∈ valBall K a)
   push_cast [hp1] at h3
   nlinarith
 
+/- English proof (translation)
+Establish `hs` using `summable_expSeries p hx ha`. Rewrite using `[expSeries, hs.tsum_eq_zero_add, ((summable_nat_add_iff 1).mpr hs).tsum_eq_zero_add]`. Simplify using `only [pow_zero, Nat.factorial_zero, Nat.cast_one, div_one, zero_add, pow_one, Nat.factorial_one]`. Establish `: ∀ t : K, 1 + (x + t) - 1 - x = t` using `fun t ↦ by ring`. Rewrite using `[this]`.
+
+Use `tsum_mem_valBall fun k ↦ valBall_antitone ?_ (expTerm_mem p hx (k + 1 + 1))` and prove the remaining obligations. Establish `h1` using `expTerm_order_bound p ha (k + 1 + 1)`. Establish `h0` using `sub_one_mul_padicValNat_factorial_lt_of_ne_zero p (by omega : k + 1 + 1 ≠ 0)`. Use `set v := padicValNat p (k + 1 + 1).factorial`. Use `set e := absRamificationIndex K`.
+
+Establish `hp2 : (2 : ℤ) ≤ p` using `by exact_mod_cast hp.out.two_le`. Establish `hp1 : ((p - 1 : ℕ) : ℤ) = (p : ℤ) - 1`. Rewrite using `[Nat.cast_sub hp.out.one_le]`. Simplify using the standard rewrite rules. Establish `h0' : (((p - 1) * v : ℕ) : ℤ) < k + 1 + 1` using `by exact_mod_cast h0`.
+
+Move the coercions through the operations in `[hp1] at h0' h1`. Establish `he : (0 : ℤ) ≤ e` using `by positivity`. Establish `h0'' : ((p : ℤ) - 1) * v ≤ k + 1` using `by linarith`. Establish `ha' : (e : ℤ) + 1 ≤ ((p : ℤ) - 1) * a` using `by linarith`. Establish `hk : (0 : ℤ) ≤ k + 1` using `by positivity`.
+
+Use `push_cast`. Use polynomial arithmetic with `[mul_le_mul_of_nonneg_left h0'' he, mul_le_mul_of_nonneg_left ha' hk]`.
+-/
 theorem expSeries_sub_one_sub_self_mem {a : ℤ} {x : K} (hx : x ∈ valBall K a)
     (ha : (absRamificationIndex K : ℤ) < (p - 1 : ℤ) * a) :
     expSeries x - 1 - x ∈ valBall K (a + 1) := by
@@ -336,6 +468,17 @@ theorem expSeries_sub_one_sub_self_mem {a : ℤ} {x : K} (hx : x ∈ valBall K a
   push_cast
   nlinarith [mul_le_mul_of_nonneg_left h0'' he, mul_le_mul_of_nonneg_left ha' hk]
 
+/- English proof (translation)
+Set `` to `IsTopologicalAddGroup.rightUniformSpace K`. Use `isUniformAddGroup_of_addCommGroup (G := K)` as an intermediate fact. Establish `hsx` using `summable_expSeries p hx ha`. Establish `hsy` using `summable_expSeries p hy ha`. Establish `hxy` using `hsx.mul_of_nonarchimedean hsy`.
+
+Unfold `expSeries`. Rewrite using `[hsx.tsum_mul_tsum_eq_tsum_sum_antidiagonal hsy hxy]`. Use `tsum_congr fun n ↦ ?_` and prove the remaining obligations. Rewrite using `[(Commute.all x y).add_pow', Finset.sum_div]`. Use `Finset.sum_congr rfl fun ij hij ↦ ?_` and prove the remaining obligations.
+
+Take `⟨i, j⟩` from `ij`. Rewrite `hij` using `[Finset.HasAntidiagonal.mem_antidiagonal]`. Substitute `hij` using the available equality. Establish `key : ((i + j).choose i : K) * (i.factorial : K) * (j.factorial : K) = ((i + j).factorial : K)`. Establish `h` using `Nat.choose_mul_factorial_mul_factorial (Nat.le_add_right i j)`.
+
+Rewrite `h` using `[Nat.add_sub_cancel_left]`. Conclude with `h` after adjusting the coercions. Establish `hi : (i.factorial : K) ≠ 0` using `Nat.cast_ne_zero.mpr (Nat.factorial_ne_zero i)`. Establish `hj : (j.factorial : K) ≠ 0` using `Nat.cast_ne_zero.mpr (Nat.factorial_ne_zero j)`. Establish `hc : ((i + j).choose i : K) ≠ 0` using `Nat.cast_ne_zero.mpr (Nat.choose_pos (Nat.le_add_right i j)).ne'`.
+
+Simplify using `only [nsmul_eq_mul]`. Rewrite using `[← key]`. Clear the denominators using the available nonvanishing facts.
+-/
 theorem expSeries_add {a : ℤ} {x y : K} (hx : x ∈ valBall K a) (hy : y ∈ valBall K a)
     (ha : (absRamificationIndex K : ℤ) < (p - 1 : ℤ) * a) :
     expSeries (x + y) = expSeries x * expSeries y := by
@@ -365,6 +508,9 @@ theorem expSeries_add {a : ℤ} {x y : K} (hx : x ∈ valBall K a) (hy : y ∈ v
   rw [← key]
   field_simp
 
+/- English proof (translation)
+Establish `h` using `add_mem (valBall_antitone (by omega : a ≤ a + 1) (expSeries_sub_one_sub_self_mem p hx ha)) hx`. Simplify using `using h`.
+-/
 theorem expSeries_sub_one_mem {a : ℤ} {x : K} (hx : x ∈ valBall K a)
     (ha : (absRamificationIndex K : ℤ) < (p - 1 : ℤ) * a) :
     expSeries x - 1 ∈ valBall K a := by
@@ -372,6 +518,9 @@ theorem expSeries_sub_one_mem {a : ℤ} {x : K} (hx : x ∈ valBall K a)
     (expSeries_sub_one_sub_self_mem p hx ha)) hx
   simpa using h
 
+/- English proof (translation)
+Establish `h` using `add_mem (valBall_antitone (by omega : a ≤ a + 1) (logSeries_sub_self_mem p hx ha)) hx`. Simplify using `using h`.
+-/
 theorem logSeries_mem_valBall {a : ℤ} {x : K} (hx : x ∈ valBall K a)
     (ha : (absRamificationIndex K : ℤ) < (p - 1 : ℤ) * a) :
     logSeries x ∈ valBall K a := by

@@ -13,5 +13,8 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 open GlobalTheory.SWLink
 
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.SWLink.Conj.exists_conj | exact GlobalTheory.SWLink.Conj.exists_conj | (intros; apply GlobalTheory.SWLink.Conj.exists_conj <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.unitary_group_conj_hermitian_automorphisms : ∀ (D : D7) (V : HSp D), ∃ ι : UD D (-V.gram) ≃ₜ* GA D V, IsConjV V ι ∧ ∀ h, h ∈ ratU D.sp.cm.sig (-V.gram) ↔ ι h ∈ GQ V := by
   first | exact @GlobalTheory.SWLink.Conj.exists_conj | exact GlobalTheory.SWLink.Conj.exists_conj | (intros; apply GlobalTheory.SWLink.Conj.exists_conj <;> assumption)

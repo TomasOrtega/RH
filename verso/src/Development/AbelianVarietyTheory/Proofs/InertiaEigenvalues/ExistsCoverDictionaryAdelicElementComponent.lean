@@ -18,6 +18,17 @@ open GlobalTheory.ShortMove GlobalTheory.ShortMoveIso GlobalTheory.TwistTie
 
 set_option maxHeartbeats 1000000 in
 
+/- English proof (translation)
+Establish `hty` using `(GlobalTheory.Relab.relab_good _ H l c σ hσ).2.2.2 Dw g e`. Apply the tactic sequence `have hpt := point_eq_of_isometry F hr hσ hty hA gam hEF hM hP hP' h`. Take `rfl` from `F.disj k k' P P' hP hP' hpt`. Take `⟨m, hm⟩ : l.M ∣ l.M'` from `Nat.dvd_lcm_left _ _`. Establish `hM' : ∀ b ∈ Mfr l • (⊤ : Submodule (𝓞 E) (F.Di k).La), ∃ x, gam b = b + l.M • x`.
+
+Introduce `b hb`. Use `Submodule.smul_induction_on hb (fun s hs b _ => ?_) ?_` and prove the remaining obligations. Take `⟨a, d, rfl⟩` from `F.t_surj k b`. Take `⟨x, hx⟩` from `hM (s • a) (Submodule.smul_mem_smul hs Submodule.mem_top)`. Use `⟨x + m • (gam (s • d) - s • d), ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[smul_add, ← map_smul, map_add, hx, smul_comm s l.M' d, map_nsmul, hm, smul_add, ← mul_smul, smul_sub]`. Normalize the expressions using the abelian group laws. Introduce and unpack `a b ⟨x, hx⟩ ⟨z, hz⟩`. Conclude with `⟨x + z, by rw [map_add, hx, hz, smul_add]; abel⟩`. Take `⟨-, -, hex⟩` from `GlobalTheory.FamRigid.ex_eq_of_level_group GlobalTheory.latMinkowski E H Dw l Xo _ g _ F k P P' gam 1 hP hP' hEF hM' (fun a => ⟨gam a - a, by rw [hA, one_smul, add_sub_cancel]⟩) (fun a => by rw [Matrix.one_mulVec, h])`.
+
+Simplify using `only [Matrix.one_mulVec] at hex`. Use `(GlobalTheory.Frames.frBor_calculus E H Dw l Xo c (CAt σ) y y' y').2.1 (hy'.trans (hpt.symm.trans hy.symm)) fun τ i => ⟨(Pi.single i (1 : ℂ) : Fin (Dw.mult τ) → ℂ), ?_, fun j hj => Pi.single_eq_of_ne hj.ne' _, ?_⟩` and prove the remaining obligations. Rewrite using `[Pi.single_eq_same]`. Conclude with `isUnit_one (M := ℂ)`. Rewrite using `[hy]`.
+
+Use `(GlobalTheory.DerLin.isCombAt_iff_isDerivAt0 E H Dw l Xo _ g _ F k P hP _ (y.u τ) (fun i => Pi.single (e.symm ⟨τ, i⟩) 1) (hu τ) _ (y'.u τ i)).2 ?_` and prove the remaining obligations. Establish `d` using `hu' τ i`. Simplify using `only [hex] at d`. Rewrite using `[Finset.sum_eq_single i (fun b _ hb => by rw [Pi.single_eq_of_ne hb, zero_smul]) (by simp), Pi.single_eq_same, one_smul]`. Conclude with `d`.
+-/
 theorem frBor_of_isometry {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E}
     {Dw : Datum H} {l : Geo.Tor.Level H} {Xo : Moduli Dw l} {c : Coeff l} {σ : c.F →+* ℂ} {g : ℕ}
     (e : Fin g ≃ Σ τ : E →+* ℂ, Fin (Dw.mult τ))
@@ -65,6 +76,27 @@ theorem frBor_of_isometry {E : Type} [Field E] [NumberField E] [IsCMField E] {H 
 
 set_option maxHeartbeats 1000000 in
 
+/- English proof (translation)
+Substitute `hr` using the available equality. Establish `hx₀ : ∀ k, IsOrthogonalFrame (U.X k) x₀` using `fun k τ hτ => by`. Rewrite using `[(hW k).1, (hU.2.1 k).1]`. Conclude with `hx τ (((hU.2.1 k).2 τ).1 hτ)`. Establish `hty` using `(GlobalTheory.Relab.relab_good _ H l c σ hσ).2.2.2 Dw g e`.
+
+Take `⟨x, hxd⟩` from `GlobalTheory.Member.onto_dom_nonempty (U.X k)`. Take `⟨h1, h4⟩` from `GlobalTheory.UnitFrames.frame_mul_triangular_orthonormal D.host.E V.rank (U.X k).p0 (U.X k).Ψ (U.X k).Gm (U.X k).Gm_herm`. Take `⟨x₁, b, -, ho, -⟩` from `h1 x hxd`. Establish `hx₁d : x₁ ∈ (U.X k).dom` using `((GlobalTheory.UnitFrames.unit_frame_eq_orthonormal_mul_triangular D.host.E V.rank (U.X k).p0 (U.X k).Ψ (U.X k).Gm (U.X k).Gm_herm).2.1 x₁ ho).1`. Take `⟨θ, hθ⟩` from `(GlobalTheory.Member.infiniteAdele_bijective D).1`.
+
+Take `⟨hAr, -, hL⟩` from `GlobalTheory.T.archimedeanMatrix_unitary_continuous_multiplicative D V θ hθ`. Establish `hG : ∀ k, (U.X k).Gm = -V.gramᵀ` using `fun k => (hW k).1`. Establish `hmem : ∀ k (τ : D.host.E →+* ℂ), τ ∈ (U.X k).Ψ ↔ τ D.host.sqrtMinusD = D.host.φ₀ D.host.sqrtMinusD`. Introduce `k τ`. Rewrite using `[(hU.2.1 k).2 τ, hι.rt, hι.rt0]`.
+
+Establish `hex : ∀ τ : D.host.E →+* ℂ, ∃ u : Matrix (Fin V.rank) (Fin V.rank) ℂ, ∀ hτ : τ ∈ (U.X k).Ψ, uᵀ * (-V.gramᵀ).map τ * u.map (starRingEnd ℂ) = (-V.gramᵀ).map τ ∧ mat x₁ ⟨τ, hτ⟩ = u * x₀ τ`. Introduce `τ`. Distinguish the cases in `hτ : τ ∈ (U.X k).Ψ`. Take `⟨u, hu⟩` from `h4 τ (x₀ τ) (mat x₁ ⟨τ, hτ⟩) (hx₀ k τ hτ) ((ho ⟨τ, hτ⟩).trans (hx₀ k τ hτ).symm)`. Rewrite `hu` using `[hG]`.
+
+Conclude with `⟨u, fun _ => hu⟩`. Conclude with `⟨1, fun h' => absurd h' hτ⟩`. Use `choose u hu using hex`. Take `⟨a, ha, hau⟩` from `hL u fun τ hτ => (hu τ ((hmem k τ).2 hτ)).1`. Take `⟨h₀, hh₀⟩` from `GlobalTheory.ShortMove.exists_marked_of_component D V H Dw l Xo _ g _ F hty _ rfl (U.X k) (ik k) (φ k) io (hW k) (hD.1.1 k) hι.emb hι.isom`.
+
+Take `⟨a₀, ha₀, f, hf, rfl⟩` from `(GlobalTheory.UnitarySplit.real_finite_split D V).1 h₀`. Establish `hfin : finHom V (a₀ * f) = finHom V (a * f)`. Rewrite using `[map_mul, map_mul, show finHom V a₀ = 1 from ha₀, show finHom V a = 1 from ha]`. Establish `hh : Marked V rfl io l (U.X k).Λ (fun a => (φ k (F.t (ik k) a) : Fin V.rank → D.host.E)) (a * f)`. Take `⟨e₁, e₂⟩` from `(GlobalTheory.T.adelicUnitaryLattice_rationalTranslate_invariance D V).2.1 _ _ hfin`.
+
+Unfold `Marked at hh₀ ⊢`. Rewrite `hh₀` using `[e₁, e₂, hfin]`. Then use the resulting hypothesis. Use `⟨a * f, ?_⟩` and prove the remaining obligations. Take `⟨γ, hγ, hΛ, hm, hfr⟩` from `hD.2 (a * f)`. Take `⟨δ, hδu, hδf, hδa⟩` from `GlobalTheory.MarkCoset.rational_matrix V γ hγ`.
+
+Take `⟨gam, e₁, t₁, hgam⟩` from `marked_isometry_half V l io (U.X k) (U.X (dict (a * f)).1) _ _ (φ k) (φ _) (F.t _) (F.t _) LinearMap.id (a * f) γ 1 (hW k) (hW _) (hD.1.1 k) (hD.1.1 _) δ hδu hδf rfl (fun a _ => ⟨0, zero_mem _, by`. Rewrite using `[map_one, Units.val_one, Matrix.one_mulVec, smul_zero, add_zero]`. Use the proof step `rfl⟩) hh`. Use the proof step `(by rw [mul_one]; exact ⟨hΛ, hm⟩)`. Take `⟨P, hPe, hP, hy, hd⟩` from `hD.1.2 k ⟨x₁, hx₁d⟩`.
+
+Take `⟨P', hPe', hP', hy', hd'⟩` from `hD.1.2 (dict (a * f)).1 ⟨_, hdom _⟩`. Apply the tactic sequence `obtain ⟨_, -, _, -, hk⟩ := (hU.2.2.2.1 k (dict (a * f)).1 ⟨x₁, hx₁d⟩ ⟨_, hdom _⟩).1 (frBor_of_isometry e F hpq hσ hA gam e₁ t₁ hP hP' (fun v => funext fun j => by`. Rewrite using `[hPe, hPe', hgam]`. Use `perFr_of_unitary _ _ (fun τ => by rw [hmem, hmem]) (by rw [hG, hG]) (by rw [(hU.2.1 _).1, (hU.2.1 _).1]) (by rw [hG]; exact hδu) (fun τ h h' => ?_) _ _ _` and prove the remaining obligations. Rewrite using `[hfr ⟨τ, h'⟩, GlobalTheory.LettersCheck.isInfEmb_unique τ _ _ (hth _ ⟨τ, h'⟩) (hθ τ), (hAr τ).2.1, (hAr τ).2.1, (hAr τ).2.2.1 f hf, hδa τ _ (hθ τ), hau τ ((hmem k τ).1 h), (hu τ h).2, Matrix.mul_one, ← Matrix.mul_assoc]`.
+
+Use the proof step `rfl) _ _ hy hy' hd hd')`. Conclude with `congrArg Sigma.fst hk`.
+-/
 theorem exists_dict_comp {D : D7} (V : HSp D) {H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host D.host.E} {Dw : Datum H}
     {l : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Level H} {Xo : Moduli Dw l} {c : Coeff l} {σ : c.F →+* ℂ} {r : ℕ} (hr : V.rank = r)
     (U : Unf Xo c σ r) (dict : GA D V → Σ k, Frame (U.X k).Ψ r)
@@ -137,6 +169,11 @@ theorem exists_dict_comp {D : D7} (V : HSp D) {H : ReciprocityTheory.ChartRestri
 
 open GlobalTheory.CoverRead GlobalTheory.Member in
 
+/- English proof (translation)
+Introduce `D T hT j hj σ hσ C hC k₂`. Take `⟨-, hA, hinc, hU, hdom, hr, g, e, F, ik, φ, th, hW, hth, hD⟩` from `hC`. Take `⟨hio, hx₀⟩` from `GlobalTheory.TupleCover.iotaOK_and_frame T hT j hj σ hσ _ rfl hr`. Establish `hpq` using `(exists_iotaOK D T.Q hT.pins _ hj).2`. Establish `hσ₂ : GoodEmb C.d.c₂ C.σ₂`.
+
+Rewrite `hσ` using `[← hinc]`. Conclude with `hσ`. Conclude with `exists_dict_comp _ hr C.U₂ C.dict₂ _ e F ik φ th _ hσ₂ hA (by omega) hU hW hD hio hth hx₀ hdom k₂`.
+-/
 theorem exists_dict₂_comp : ∀ (D : D7) (T : CoreJ D), LawsJ T → ∀ j, Formalism.L2.Pj.InR D j → ∀ σ : T.Q.c.F →+* ℂ, GoodEmb T.Q.c σ → ∀ C : Cover T j σ, C.IsUnif → ∀ k₂ : C.U₂.Comp, ∃ h : GA D (T.V j σ), (C.dict₂ h).1 = k₂ := by
   intro D T hT j hj σ hσ C hC k₂
   obtain ⟨-, hA, hinc, hU, hdom, hr, g, e, F, ik, φ, th, hW, hth, hD⟩ := hC

@@ -8,6 +8,13 @@ namespace PI.TOW.MonoW
 
 open PI.TO PI.TOW
 
+/- English proof (translation)
+Introduce `K _ n' k μ`. Simplify using `only [embS, rename_monomial]`. It suffices to establish `hμ : μ = ∑ t, Finsupp.mapDomain (fun c => (t, c)) (partS μ t) by`. Rewrite using `[← MvPolynomial.monomial_sum_one, ← hμ]`. Use extensionality with `⟨t, c⟩`.
+
+Rewrite using `[Finsupp.finset_sum_apply, Finset.sum_eq_single t]`. Rewrite using `[Finsupp.mapDomain_apply (fun a b h => by simpa using h)]`. Simplify using `[partS]`. Introduce `t' _ ht'`. Rewrite using `[Finsupp.mapDomain_notin_range]`.
+
+Introduce and unpack `⟨c', hc'⟩`. Conclude with `ht' (congrArg Prod.fst hc')`. Simplify using the standard rewrite rules.
+-/
 theorem stepMonoFactor : StepMonoFactor := by
   intro K _ n' k μ
   simp only [embS, rename_monomial]

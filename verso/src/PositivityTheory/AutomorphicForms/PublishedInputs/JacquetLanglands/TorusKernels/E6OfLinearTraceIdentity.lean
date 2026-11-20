@@ -9,6 +9,11 @@ namespace UpperTheory.Esk.LinearTraceIdentity
 
 open UpperTheory.Esk
 
+/- English proof (translation)
+Use `show ∑ i, D.Kern k y (y.2, D.rep y.1 * a i) = ∑' γ : PG F, D.kk k a γ y`. Simplify using `only [Dat.Kern, Dat.kk, Dat.kt, Dat.Te]`. Rewrite using `[← Summable.tsum_finsetSum (fun i _ => hs i)]`. Use `tsum_congr fun γ => ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_mul]`.
+
+Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Simplify using `only [mul_assoc]`.
+-/
 theorem op_kern {F I Gf ι : Type} [Field F] [Group Gf] [Fintype I] [Fintype ι] (D : Dat F I Gf) (k : I → ℕ) (a : ι → Gf)
     (y : D.Y) (hs : ∀ i, Summable fun γ : PG F =>
       D.ee ((D.rep y.1)⁻¹ * (D.j γ.out)⁻¹ * (D.rep y.1 * a i)) * (qq k y.2 (D.act γ.out y.2) * D.J k γ.out y.2)) :
@@ -23,6 +28,35 @@ theorem op_kern {F I Gf ι : Type} [Field F] [Group Gf] [Fintype I] [Fintype ι]
 
 end UpperTheory.Esk.LinearTraceIdentity
 
+/- English proof (translation)
+Introduce `hE0a hE0b _ hE3 hE4 hE4b hE5 hLin`. Introduce `F I Gf ι _ _ _ _ D k a hH hfd h b hb`. Establish `hM : ∀ f, f ∈ D.M k ↔ D.IsForm k f` using `(hE0b F I Gf D hH.ax k).1`. Establish `hE4'` using `hE4 F I Gf D hH.ax k hH.four hH.compat`. Establish `hE4b'` using `hE4b F I Gf D hH.ax k hH.four hH.compat`.
+
+Establish `hE5'` using `hE5 F I Gf D hH.ax k hH.four hH.compat b hb`. Establish `hbm : Measurable fun y => (b y).toNNReal` using `hb.meas.real_toNNReal`. Take `⟨ν, hν⟩ : ∃ ν : Measure D.Y, ν = D.μY.withDensity fun y => ((b y).toNNReal : ℝ≥0∞)` from `⟨_, rfl⟩`. Use `haveI : IsFiniteMeasure ν := by`. Rewrite using `[hν]`.
+
+Conclude with `MeasureTheory.isFiniteMeasure_withDensity (hE3 F I Gf D hH.ax b hb).ne`. Establish `hint : ∀ g : D.Y → ℂ, ∫ y, g y ∂ν = ∫ y, b y • g y ∂D.μY`. Introduce `g`. Rewrite using `[hν, integral_withDensity_eq_integral_smul hbm]`. Use `integral_congr_ae (Filter.Eventually.of_forall fun y => ?_)` and prove the remaining obligations.
+
+Simplify using `only [NNReal.smul_def, Real.coe_toNNReal _ (hb.nonneg y)]`. Take `⟨K, hK⟩ : ∃ K : D.Y → D.M k, ∀ y, (K y).1 = D.Kern k y` from `⟨fun y => ⟨D.Kern k y, (hM _).2 (hE4' y)⟩, fun _ => rfl⟩`. Establish `hn0 : Measurable fun z : X I => nrm k z`. Unfold `nrm`. Use `Finset.measurable_prod _ fun v _ => ?_` and prove the remaining obligations.
+
+Conclude with `(continuous_abs.measurable.comp (Complex.measurable_im.comp (measurable_subtype_coe.comp (measurable_pi_apply v)))).pow_const _`. Establish `hn_meas : Measurable fun y : D.Y => nrm k y.2` using `hn0.comp measurable_snd`. Establish `hn_pos : ∀ y : D.Y, 0 < nrm k y.2` using `fun y => Finset.prod_pos fun v _ => Real.rpow_pos_of_pos (abs_pos.mpr (y.2 v).2) _`. Establish `hK_meas : ∀ p, Measurable fun y => (K y).1 p`. Introduce `p`.
+
+Simplify using `only [hK]`. Conclude with `(hE4b' p).2.1`. Establish `hf_meas : ∀ f : D.M k, Measurable fun y : D.Y => f.1 (y.2, D.rep y.1)`. Introduce `f`. Establish `hF` using `(hM f.1).1 f.2`.
+
+Use `haveI : Countable D.Om := hH.ax.cO`. Use `measurable_from_prod_countable_right fun ω => ?_` and prove the remaining obligations. Establish `hc : Measurable fun z : X I => f.1 (z, D.rep ω)` using `((hF.hol (D.rep ω)).1).measurable`. Conclude with `hc`. Establish `hK_bdd : ∀ p, ∃ C, ∀ y, ‖(K y).1 p‖ ≤ C * nrm k y.2`.
+
+Introduce `p`. Simplify using `only [hK]`. Conclude with `(hE4b' p).2.2`. Establish `hf_bdd : ∀ f : D.M k, ∃ C, ∀ y : D.Y, ‖f.1 (y.2, D.rep y.1)‖ * nrm k y.2 ≤ C`. Introduce `f`.
+
+Take `⟨C, hC⟩` from `((hM f.1).1 f.2).bdd`. Conclude with `⟨C, fun y => hC _ _⟩`. Establish `hrep : ∀ (f : D.M k) p, ∫ y, (K y).1 p * f.1 (y.2, D.rep y.1) ∂ν = f.1 p`. Introduce `f p`. Rewrite using `[hint]`.
+
+Simplify using `only [hK]`. Conclude with `hE5' f.1 ((hM f.1).1 f.2) p`. Take `⟨hmeas, ⟨C, hC⟩, htr⟩` from `hLin (X I × Gf) D.Y ν (D.M k) ((Dat.Op a).restrict h) K (fun y => (y.2, D.rep y.1)) (fun y => nrm k y.2) hn_meas hn_pos hK_meas hf_meas hK_bdd hf_bdd hrep`. Establish `hval : ∀ y : D.Y, ((Dat.Op a).restrict h (K y)).1 (y.2, D.rep y.1) = ∑' γ : PG F, D.kk k a γ y`. Introduce `y`.
+
+Rewrite using `[LinearMap.restrict_coe_apply, hK]`. Conclude with `LinearTraceIdentity.op_kern D k a y (fun i => ((hE4b' (y.2, D.rep y.1 * a i)).1 y).of_norm)`. Establish `hm2 : Measurable fun y => ∑' γ : PG F, D.kk k a γ y`. Simplify `hmeas` using `only [hval]`. Use `⟨?_, ?_⟩` and prove the remaining obligations.
+
+Establish `hgi : Integrable (fun y => ∑' γ : PG F, D.kk k a γ y) ν`. Use `(integrable_const C).mono' hm2.aestronglyMeasurable (Filter.Eventually.of_forall fun y => ?_)` and prove the remaining obligations. Use `hC y` as an intermediate fact. Simplify using `only [hval] at this`. Conclude with `this`.
+
+Rewrite `hgi` using `[hν, MeasureTheory.integrable_withDensity_iff_integrable_smul hbm]`. Use `hgi.congr (Filter.Eventually.of_forall fun y => ?_)` and prove the remaining obligations. Simplify using `only [NNReal.smul_def, Real.coe_toNNReal _ (hb.nonneg y)]`. Rewrite using `[htr, hint]`. Use `integral_congr_ae (Filter.Eventually.of_forall fun y => ?_)` and prove the remaining obligations.
+
+Simplify using `only [hval]`.
+-/
 theorem UpperTheory.Esk.e6_of_linear_trace_identity : UpperTheory.Esk.E0a → UpperTheory.Esk.FormsStableUnderOperators → UpperTheory.Esk.KernelTermsInvariantBounded → UpperTheory.Esk.E3 → UpperTheory.Esk.E4 → UpperTheory.Esk.faceMap_zero_comp_eq_one → UpperTheory.Esk.E5 → UpperTheory.Esk.LinTr → UpperTheory.Esk.E6 := by
   intro hE0a hE0b _ hE3 hE4 hE4b hE5 hLin
   intro F I Gf ι _ _ _ _ D k a hH hfd h b hb

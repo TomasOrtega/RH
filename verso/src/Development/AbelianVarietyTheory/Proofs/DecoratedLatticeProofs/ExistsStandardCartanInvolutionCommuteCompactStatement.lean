@@ -13,5 +13,8 @@ open GlobalTheory.IndefiniteRowSideFullHecke.SphericalVolumeLift (RealMat IsFock
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.StdUnn.KComm.exists_stdInv_comm_K | exact GlobalTheory.StdUnn.KComm.exists_stdInv_comm_K | (intros; apply GlobalTheory.StdUnn.KComm.exists_stdInv_comm_K <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.exists_standardCartanInvolution_commute_compact : ∀ (D : D7) (A : HSp D) (μ : D.host.E), IsSkew μ → ∀ κ : GA D (dblSp A) ≃* G D A.rank, IsChart A μ κ → ∀ θ : InfFam D, IsInfFam θ → ∃ s' : RealMat (dblSp A), IsStdInv A μ s' ∧ ∀ k : GA D (dblSp A), κ k ∈ K D A.rank → ∀ τ, compAt θ τ (Formalism.L2.Theta.mt (dblSp A) k) * s' τ = s' τ * compAt θ τ (Formalism.L2.Theta.mt (dblSp A) k) := by
   first | exact @GlobalTheory.StdUnn.KComm.exists_stdInv_comm_K | exact GlobalTheory.StdUnn.KComm.exists_stdInv_comm_K | (intros; apply GlobalTheory.StdUnn.KComm.exists_stdInv_comm_K <;> assumption)

@@ -14,6 +14,11 @@ open NumberField IsDedekindDomain MeasureTheory Filter Topology Formalism.MainNo
 open GlobalTheory.WeilM GlobalTheory.AdelicU GlobalTheory.LFun GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels GlobalTheory.ThK.Dbl GlobalTheory.Cont PositivityTheory.Rg.Sw
 namespace PositivityTheory.SiegelWeilFormula.KFock
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E}
+/- English proof (translation)
+Take `⟨T, hT⟩` from `piProdSch (InfinitePlace F) (Fin d.m → Fin d.n → ℂ) S`. Take `⟨L, hL⟩` from `_root_.PositivityTheory.SiegelWeilFormula.KFock.archEquiv_k d R`. Rewrite using `[_root_.PositivityTheory.SiegelWeilFormula.SD_k.schM, Submodule.mem_comap]`. Use `Submodule.subset_span ⟨SchwartzMap.compCLMOfContinuousLinearEquiv ℂ L T, g, hg, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `c`.
+
+Simplify using `only [LinearMap.funLeft_apply, pureA, SchwartzMap.compCLMOfContinuousLinearEquiv_apply, Function.comp, hT, hL, _root_.PositivityTheory.SiegelWeilFormula.KFock.crd_cmb_k]`.
+-/
 theorem prodGen_mem_k (d : _root_.PositivityTheory.SiegelWeilFormula.SD_k σ) (R : _root_.PositivityTheory.SiegelWeilFormula.RD_k d) (S : InfinitePlace F → 𝓢(Fin d.m → Fin d.n → ℂ, ℂ))
     (g : (Fin d.m × Fin d.n × Fin 2 → Af F) → ℂ) (hg : g ∈ SB (Fin d.m × Fin d.n × Fin 2 → Af F)) :
     (fun X => (∏ w, S w (R.loc w X)) * g fun k => (d.crd X k).2) ∈ d.schM := by
@@ -24,6 +29,11 @@ theorem prodGen_mem_k (d : _root_.PositivityTheory.SiegelWeilFormula.SD_k σ) (R
   funext c
   simp only [LinearMap.funLeft_apply, pureA, SchwartzMap.compCLMOfContinuousLinearEquiv_apply, Function.comp, hT, hL,
     _root_.PositivityTheory.SiegelWeilFormula.KFock.crd_cmb_k]
+/- English proof (translation)
+Use `Submodule.span_le.mpr ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨P, g, hg, rfl⟩`. Establish `h` using `_root_.PositivityTheory.SiegelWeilFormula.KFock.prodGen_mem_k d R (fun w => (isSw_fP (P w)).choose) g hg`. Establish `e : (fun X => (∏ w, fP (P w) (R.loc w X)) * g fun k => (d.crd X k).2) = fun X => (∏ w, (isSw_fP (P w)).choose (R.loc w X)) * g fun k => (d.crd X k).2`. Use function extensionality and compare the values at `X`.
+
+Use `congr 1`. Conclude with `Finset.prod_congr rfl fun w _ => by rw [(isSw_fP (P w)).choose_spec]`. Express the relevant statement in the definitionally equal form `_ ∈ d.schM`. Rewrite using `[e]`. Conclude with `h`.
+-/
 theorem fock_le_k (d : _root_.PositivityTheory.SiegelWeilFormula.SD_k σ) (R : _root_.PositivityTheory.SiegelWeilFormula.RD_k d) : R.fock ≤ d.schM := by
   refine Submodule.span_le.mpr ?_
   rintro _ ⟨P, g, hg, rfl⟩
@@ -36,6 +46,13 @@ theorem fock_le_k (d : _root_.PositivityTheory.SiegelWeilFormula.SD_k σ) (R : _
   change _ ∈ d.schM
   rw [e]
   exact h
+/- English proof (translation)
+Take `⟨φ, hφ⟩` from `hf`. Establish `h : R.away w ≤ d.schM.comap (_root_.PositivityTheory.SiegelWeilFormula.KFock.tensL_k R w f)`. Use `Submodule.span_le.mpr ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨P, g, hg, rfl⟩`. Establish `h` using `_root_.PositivityTheory.SiegelWeilFormula.KFock.prodGen_mem_k d R (Function.update (fun w' => (isSw_fP (P w')).choose) w φ) g hg`.
+
+Use `show R.tens w f _ ∈ d.schM`. Use `h using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `X`. Use `show f (R.loc w X) * ((∏ w' ∈ Finset.univ.erase w, fP (P w') (R.loc w' X)) * g fun k => (d.crd X k).2) = (∏ w', (Function.update (fun w' => (isSw_fP (P w')).choose) w φ w') (R.loc w' X)) * g fun k => (d.crd X k).2`. Rewrite using `[← Finset.mul_prod_erase Finset.univ _ (Finset.mem_univ w), Function.update_self, hφ, mul_assoc]`.
+
+Use `congr 2`. Use `Finset.prod_congr rfl fun w' hw' => ?_` and prove the remaining obligations. Rewrite using `[Function.update_of_ne (Finset.ne_of_mem_erase hw'), (isSw_fP (P w')).choose_spec]`. Conclude with `h hΨ`.
+-/
 theorem tens_mem_k (d : _root_.PositivityTheory.SiegelWeilFormula.SD_k σ) (R : _root_.PositivityTheory.SiegelWeilFormula.RD_k d) (w : InfinitePlace F) (f : (Fin d.m → Fin d.n → ℂ) → ℂ) (hf : IsSw f)
     (Ψ : Mx F E d.m d.n → ℂ) (hΨ : Ψ ∈ R.away w) : R.tens w f Ψ ∈ d.schM := by
   obtain ⟨φ, hφ⟩ := hf

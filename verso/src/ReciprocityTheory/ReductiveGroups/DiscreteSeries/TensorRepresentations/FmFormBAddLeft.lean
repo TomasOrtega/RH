@@ -14,20 +14,41 @@ variable {n : ℕ}
 section
 variable {H : Type*} [NormedAddCommGroup H] [InnerProductSpace ℂ H] {D : Submodule ℂ H} {ε : Fin n → Bool}
 
+/- English proof (translation)
+Apply the tactic sequence `split_ifs <;> simp`.
+-/
 theorem fm_sgn_star (c : Fin n) : starRingEnd ℂ (if ε c then (1 : ℂ) else -1) = if ε c then 1 else -1 := by
   split_ifs <;> simp
 
+/- English proof (translation)
+Simplify using `only [formB, Pi.add_apply, Submodule.coe_add, inner_add_left, mul_add, sum_add_distrib]`.
+-/
 theorem fm_formB_add_left (f f' g : Fin n → D) : formB ε (f + f') g = formB ε f g + formB ε f' g := by
   simp only [formB, Pi.add_apply, Submodule.coe_add, inner_add_left, mul_add, sum_add_distrib]
 
+/- English proof (translation)
+Rewrite using `[Finset.sum_eq_single a (fun c _ hc => by rw [if_neg hc]; simp) (fun h => absurd (Finset.mem_univ a) h), if_pos rfl]`.
+-/
 theorem fm_sum_ite_left (w : Fin n → ℂ) (a : Fin n) (x : D) (G : Fin n → D) :
     ∑ c, w c * inner ℂ (((if c = a then x else 0 : D)) : H) ((G c : D) : H) = w a * inner ℂ (x : H) ((G a : D) : H) := by
   rw [Finset.sum_eq_single a (fun c _ hc => by rw [if_neg hc]; simp) (fun h => absurd (Finset.mem_univ a) h), if_pos rfl]
 
+/- English proof (translation)
+Rewrite using `[Finset.sum_eq_single a (fun c _ hc => by rw [if_neg hc]; simp) (fun h => absurd (Finset.mem_univ a) h), if_pos rfl]`.
+-/
 theorem fm_sum_ite_right (w : Fin n → ℂ) (a : Fin n) (x : D) (G : Fin n → D) :
     ∑ c, w c * inner ℂ ((G c : D) : H) (((if c = a then x else 0 : D)) : H) = w a * inner ℂ ((G a : D) : H) (x : H) := by
   rw [Finset.sum_eq_single a (fun c _ hc => by rw [if_neg hc]; simp) (fun h => absurd (Finset.mem_univ a) h), if_pos rfl]
 
+/- English proof (translation)
+Establish `hU' : ∀ (x y : D), inner ℂ ((E a b x : D) : H) (y : H) = adjSign ε a b * inner ℂ (x : H) ((E b a y : D) : H)`. Introduce `x y`. Simplify `hU a b x y` using `only [Submodule.coe_inner]`. Consider the cases of `dual`. Simplify using `only [formB, tensF, cond_false, tensV_coord, Submodule.coe_add, inner_add_left, inner_add_right, hU', mul_add, sum_add_distrib, mul_sum]`.
+
+Establish `h2 : ∑ i, adjSign ε a b * ((if ε i then (1 : ℂ) else -1) * inner ℂ ((f i : D) : H) (((if i = b then g a else 0 : D)) : H)) = adjSign ε a b * ((if ε b then (1 : ℂ) else -1) * inner ℂ ((f b : D) : H) ((g a : D) : H))`. Rewrite using `[Finset.sum_eq_single b (fun c _ hc => by rw [if_neg hc]; simp) (fun h => absurd (Finset.mem_univ b) h), if_pos rfl]`. Rewrite using `[h2, fm_sum_ite_left, ← tfa_sign ε a b]`. Use `congr 1`. Conclude with `sum_congr rfl fun c _ => by ring`.
+
+Expand and normalize the polynomial expressions, which then agree. Simplify using `only [formB, tensF, cond_true, tensVd_coord, Submodule.coe_sub, inner_sub_left, inner_sub_right, hU', mul_sub, sum_sub_distrib, mul_sum]`. Establish `h2 : ∑ i, adjSign ε a b * ((if ε i then (1 : ℂ) else -1) * inner ℂ ((f i : D) : H) (((if i = a then g b else 0 : D)) : H)) = adjSign ε a b * ((if ε a then (1 : ℂ) else -1) * inner ℂ ((f a : D) : H) ((g b : D) : H))`. Rewrite using `[Finset.sum_eq_single a (fun c _ hc => by rw [if_neg hc]; simp) (fun h => absurd (Finset.mem_univ a) h), if_pos rfl]`. Rewrite using `[h2, fm_sum_ite_left, ← tfa_sign' ε b a]`.
+
+Use `congr 1`. Conclude with `sum_congr rfl fun c _ => by ring`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem fm_formB_tensF (dual : Bool) {E : Fin n → Fin n → Module.End ℂ D} (hU : IsInfUnitary ε E) (a b : Fin n)
     (f g : Fin n → D) :
     formB ε (tensF dual E a b f) g = adjSign ε a b * formB ε f (tensF dual E b a g) := by
@@ -62,11 +83,19 @@ end
 section
 variable {H : Type*} [NormedAddCommGroup H] [InnerProductSpace ℂ H] {ε : Fin n → Bool}
 
+/- English proof (translation)
+Take `⟨h1, -⟩` from `rq_K_unit hk`. Use `show kᴴ * Jm ε * k = Jm ε`. Rewrite using `[Matrix.mul_assoc, ← hk.2, ← Matrix.mul_assoc, h1, Matrix.one_mul]`.
+-/
 theorem fm_kset_uj {k : Matrix (Fin n) (Fin n) ℂ} (hk : k ∈ Kset ε) : k ∈ UJset ε := by
   obtain ⟨h1, -⟩ := rq_K_unit hk
   show kᴴ * Jm ε * k = Jm ε
   rw [Matrix.mul_assoc, ← hk.2, ← Matrix.mul_assoc, h1, Matrix.one_mul]
 
+/- English proof (translation)
+Establish `h` using `congrFun (congrFun (fm_kset_uj hk : kᴴ * Jm ε * k = Jm ε) d) e`. Rewrite `h` using `[Matrix.mul_apply]`. Simplify using `only [Jm, Matrix.mul_diagonal, Matrix.conjTranspose_apply, Matrix.diagonal_apply] at h`. Rewrite using `[← h]`. Use `sum_congr rfl fun c _ => ?_` and prove the remaining obligations.
+
+Simplify using `only [RCLike.star_def]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem fm_JJ {k : Matrix (Fin n) (Fin n) ℂ} (hk : k ∈ Kset ε) (d e : Fin n) :
     ∑ c, (if ε c then (1 : ℂ) else -1) * (star (k c d) * k c e) = if d = e then (if ε d then (1 : ℂ) else -1) else 0 := by
   have h := congrFun (congrFun (fm_kset_uj hk : kᴴ * Jm ε * k = Jm ε) d) e
@@ -77,6 +106,19 @@ theorem fm_JJ {k : Matrix (Fin n) (Fin n) ℂ} (hk : k ∈ Kset ε) (d e : Fin n
   simp only [RCLike.star_def]
   ring
 
+/- English proof (translation)
+Establish `hin : ∀ u v : H, inner ℂ (σ k u) (σ k v) = inner ℂ u v` using `fun u v => UnitB.sig_inner hσ (UnitB.toG k (fm_kset_uj hk)) u v`. Use `set m : Fin n → Fin n → ℂ := fun c d => cond dual (star (k c d)) (k c d) with hm`. Establish `hJ : ∀ d e, ∑ c, (if ε c then (1 : ℂ) else -1) * (star (m c d) * m c e) = if d = e then (if ε d then (1 : ℂ) else -1) else 0`. Introduce `d e`. Consider the cases of `dual`.
+
+Conclude with `fm_JJ hk d e`. Establish `h` using `congrArg star (fm_JJ hk d e)`. Rewrite `h` using `[star_sum]`. Apply the tactic sequence `have h2 : star (if d = e then (if ε d then (1 : ℂ) else -1) else 0) = if d = e then (if ε d then (1 : ℂ) else -1) else 0 := by split_ifs <;> simp`. Rewrite `h` using `[h2]`.
+
+Rewrite using `[← h]`. Use `sum_congr rfl fun c _ => ?_` and prove the remaining obligations. Simplify using `only [hm, cond_true, star_mul, star_star]`. Apply the tactic sequence `split_ifs <;> simp [mul_comm]`. Establish `hk1 : ∀ (F : Fin n → H) c, kDiag dual σ k F c = ∑ d, m c d • σ k (F d)` using `fun F c => rfl`.
+
+Simplify using `only [hk1, sum_inner, inner_sum, inner_smul_left, inner_smul_right, hin, mul_sum]`. Establish `key : ∀ X : Fin n → Fin n → Fin n → ℂ, ∑ c, ∑ e, ∑ d, X c e d = ∑ d, ∑ e, ∑ c, X c e d`. Introduce `X`. Rewrite using `[show (∑ c, ∑ e, ∑ d, X c e d) = ∑ c, ∑ d, ∑ e, X c e d from sum_congr rfl fun c _ => sum_comm, sum_comm]`. Conclude with `sum_congr rfl fun d _ => sum_comm`.
+
+Use `(key _).trans ?_` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation. Use `sum_congr rfl fun d _ => sum_congr rfl fun e _ => ?_` and prove the remaining obligations. Rewrite using `[← hJ d e, sum_mul]`. Use `sum_congr rfl fun c _ => ?_` and prove the remaining obligations.
+
+Simplify using `only [RCLike.star_def]`. Expand and normalize the polynomial expressions, which then agree. Use `_ = _ := by simp only [ite_mul, zero_mul, sum_ite_eq, mem_univ, if_true]`.
+-/
 theorem fm_formBH_kDiag (dual : Bool) {σ : Matrix (Fin n) (Fin n) ℂ → (H →L[ℂ] H)} (hσ : IsURepOn (UJset ε) σ)
     {k : Matrix (Fin n) (Fin n) ℂ} (hk : k ∈ Kset ε) (F G : Fin n → H) :
     ∑ c, (if ε c then (1 : ℂ) else -1) * inner ℂ (kDiag dual σ k F c) (kDiag dual σ k G c) =

@@ -5,6 +5,27 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.CommutativeAlgebra
 
 open IsLocalRing MvPowerSeries UpperTheory.V.Alg
 
+/- English proof (translation)
+Set `a : τ → MvPowerSeries σ O` to `fun s => monomial (g s) 1`. Establish `ha : HasSubst a` using `hasSubst_of_constantCoeff_zero fun s => by show constantCoeff (monomial (g s) (1 : O)) = 0`. Rewrite using `[← coeff_zero_eq_constantCoeff_apply, coeff_monomial, if_neg (hg0 s).symm]`. Establish `hprod : ∀ d : τ →₀ ℕ, (d.prod fun s e => a s ^ e) = monomial (Finsupp.linearCombination ℕ g d) (1 : O)`. Introduce `d`.
+
+Proceed by induction on `d using Finsupp.induction_linear with`. Consider the case `zero => simp`. Consider the case `add d d' h h'`. Rewrite using `[Finsupp.prod_add_index' (by simp) (fun s m n => pow_add _ _ _), h, h', map_add, monomial_mul_monomial, one_mul]`. Consider the case `single s k`.
+
+Rewrite using `[Finsupp.prod_single_index (by simp), Finsupp.linearCombination_single]`. Use `show (monomial (g s) (1 : O)) ^ k = _`. Proceed by induction on `k with`. Consider the case `zero => simp`. Consider the case `succ k ih => rw [pow_succ, ih, monomial_mul_monomial, one_mul, succ_nsmul]`.
+
+Establish `hw : ∀ d : τ →₀ ℕ, Finsupp.weight wt (Finsupp.linearCombination ℕ g d) = 0`. Introduce `d`. Proceed by induction on `d using Finsupp.induction_linear with`. Consider the case `zero => simp`. Consider the case `add d d' h h' => rw [map_add, map_add, h, h', add_zero]`.
+
+Consider the case `single s k => rw [Finsupp.linearCombination_single, map_nsmul, hgw, nsmul_zero]`. Establish `hco : ∀ (F : MvPowerSeries τ O) n, coeff n (substAlgHom ha F) = ∑ᶠ d, coeff d F * (if n = Finsupp.linearCombination ℕ g d then 1 else 0)`. Introduce `F n`. Rewrite using `[coe_substAlgHom, coeff_subst ha]`. Use `finsum_congr fun d => ?_` and prove the remaining obligations.
+
+Rewrite using `[hprod, coeff_monomial, smul_eq_mul]`. Use `⟨substAlgHom ha, fun F n hn => ?_, fun f hf => ?_⟩` and prove the remaining obligations. Rewrite using `[hco]`. Use `finsum_eq_zero_of_forall_eq_zero fun d => ?_` and prove the remaining obligations. Rewrite using `[if_neg, mul_zero]`.
+
+Introduce and unpack `rfl`. Conclude with `hn (hw d)`. Use `choose! e he using hgen`. Set `F : MvPowerSeries τ O` to `fun d => if d = e (Finsupp.linearCombination ℕ g d) then coeff (Finsupp.linearCombination ℕ g d) f else 0`. Establish `hF : ∀ d, coeff d F = if d = e (Finsupp.linearCombination ℕ g d) then coeff (Finsupp.linearCombination ℕ g d) f else 0` using `fun _ => rfl`.
+
+Use `⟨F, ?_⟩` and prove the remaining obligations. Use extensionality with `n`. Rewrite using `[hco]`. Distinguish the cases in `hn : Finsupp.weight wt n = 0`. Rewrite using `[finsum_eq_single _ (e n)]`.
+
+Rewrite using `[hF, he n hn, if_pos rfl, if_pos rfl, mul_one]`. Introduce `d hd`. Distinguish the cases in `h : n = Finsupp.linearCombination ℕ g d`. Rewrite using `[hF, ← h, if_neg hd, zero_mul]`. Rewrite using `[if_neg h, mul_zero]`.
+
+Rewrite using `[hf n hn]`. Use `finsum_eq_zero_of_forall_eq_zero fun d => ?_` and prove the remaining obligations. Rewrite using `[if_neg, mul_zero]`. Introduce and unpack `rfl`. Conclude with `hn (hw d)`.
+-/
 private theorem weight_zero_power_series_surjective (O : Type) [CommRing O] {σ τ X : Type} [Finite τ] [AddCommGroup X] (wt : σ → X)
     (g : τ → (σ →₀ ℕ)) (hg0 : ∀ s, g s ≠ 0) (hgw : ∀ s, Finsupp.weight wt (g s) = 0)
     (hgen : ∀ n, Finsupp.weight wt n = 0 → ∃ d : τ →₀ ℕ, Finsupp.linearCombination ℕ g d = n) :
@@ -68,6 +89,19 @@ private theorem weight_zero_power_series_surjective (O : Type) [CommRing O] {σ 
       rintro rfl
       exact hn (hw d)
 
+/- English proof (translation)
+Introduce `O _ _ _ _ X _ _ _ _ R _ _ _ W _`. Take `⟨g, hg, hgen, -⟩` from `UpperTheory.V.Alg.gordan W.σ X W.wt`. Take `⟨φ, hφ, hs⟩` from `weight_zero_power_series_surjective O W.wt (fun s : g => (s : W.σ →₀ ℕ)) (fun s => (hg s s.2).1) (fun s => (hg s s.2).2) (fun n hn => by`. Establish `h` using `hgen n hn`. Proceed by induction on `h using AddSubmonoid.closure_induction with`.
+
+Consider the case `mem x hx => exact ⟨Finsupp.single ⟨x, hx⟩ 1, by simp⟩`. Consider the case `zero => exact ⟨0, map_zero _⟩`. Consider the case `add x y hx hy ihx ihy`. Establish `hw : ∀ z ∈ AddSubmonoid.closure (g : Set (W.σ →₀ ℕ)), Finsupp.weight W.wt z = 0`. Introduce `z hz`.
+
+Proceed by induction on `hz using AddSubmonoid.closure_induction with`. Consider the case `mem x hx => exact (hg x hx).2`. Consider the case `zero => exact map_zero _`. Consider the case `add x y _ _ hx hy => rw [map_add, hx, hy, add_zero]`. Take `⟨d, hd⟩` from `ihx (hw x hx)`.
+
+Take `⟨d', hd'⟩` from `ihy (hw y hy)`. Conclude with `⟨d + d', by rw [map_add, hd, hd']⟩)`. Establish `hp : ∀ F, W.π (φ F) ∈ W.part 0` using `fun F => ⟨φ F, hφ F, rfl⟩`. Set `p : MvPowerSeries g O →ₐ[O] W.gr 0` to `{ toFun := fun F => ⟨⟨W.π (φ F), W.part_le_A (hp F)⟩, hp F⟩ map_one' := Subtype.ext (Subtype.ext (by simp)) map_mul' := fun F G => Subtype.ext (Subtype.ext (by simp)) map_zero' := Subtype.ext (Subtype.ext (by simp)) map_add' := fun F G => Subtype.ext (Subtype.ext (by simp)) commu …`. Rewrite using `[AlgHom.commutes, AlgHom.commutes])) }`.
+
+Use `haveI : IsCO O (MvPowerSeries g O) := UpperTheory.V.Alg.co_mvps O O g`. Use `haveI : Nontrivial (W.gr 0) := ⟨⟨0, 1, fun h => zero_ne_one (α := R) (congrArg (fun x : W.gr 0 => ((x : W.A) : R)) h)⟩⟩`. Use `UpperTheory.V.Alg.co_quot O (MvPowerSeries g O) (W.gr 0) p ?_` and prove the remaining obligations. Introduce and unpack `⟨⟨x, hxA⟩, f, hf, hx⟩`. Take `⟨F, rfl⟩` from `hs f hf`.
+
+Conclude with `⟨F, Subtype.ext (Subtype.ext hx)⟩`.
+-/
 theorem UpperTheory.V.Alg.wPres_gr_zero_isCO_of_mem_maximalIdeal :
     ∀ (O : Type) [CommRing O] [IsLocalRing O] [IsNoetherianRing O] [IsAdicComplete (maximalIdeal O) O] (X : Type) [AddCommGroup X] [Module.Free ℤ X] [Module.Finite ℤ X] [DecidableEq X] (R : Type) [CommRing R] [Algebra O R] [IsCO O R] (W : WPres O X R), (∀ s, W.z s ∈ maximalIdeal R) → IsCO O (W.gr 0) := by
   intro O _ _ _ _ X _ _ _ _ R _ _ _ W _

@@ -22,12 +22,18 @@ def bcBil (σ' : L →+* ℂ) (f : C →ₛₗ[σ] W) : L →+ C →+ W where
   map_zero' := by ext F : 1; simp
   map_add' s t := by ext F : 1; simp [add_smul]
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem bcBil_apply (σ' : L →+* ℂ) (f : C →ₛₗ[σ] W) (t : L) (x : C) : bcBil σ' f t x = σ' t • f x := rfl
 
 def bcAdd (hσ : ∀ a, σ' (algebraMap K L a) = σ a) (f : C →ₛₗ[σ] W) : L ⊗[K] C →+ W :=
   TensorProduct.liftAddHom (bcBil σ' f) fun a t x => by
     rw [bcBil_apply, bcBil_apply, LinearMap.map_smulₛₗ, Algebra.smul_def a t, map_mul, hσ a, smul_smul, mul_comm]
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem bcAdd_tmul (hσ : ∀ a, σ' (algebraMap K L a) = σ a) (f : C →ₛₗ[σ] W) (t : L) (x : C) :
     bcAdd hσ f (t ⊗ₜ x) = σ' t • f x := rfl
 
@@ -92,6 +98,9 @@ instance instModuleCfT (w : WeightFamilies.Wt D j) : Module (KT T j N) (CfT T j 
 def rdGen {σ' : KT T j N →+* ℂ} (hσ : IsExt σ') (w : WeightFamilies.Wt D j) : CfT T j N w →ₛₗ[σ'] FDSec (T.X₀ j) :=
   bcMap hσ (rd T j w)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem rdGen_tmul {σ' : KT T j N →+* ℂ} (hσ : IsExt σ') (w : WeightFamilies.Wt D j) (t : KT T j N) (F : Cf T j w) :
     rdGen hσ w (t ⊗ₜ F) = σ' t • rd T j w F := rfl
 
@@ -154,10 +163,16 @@ def TieRead : Prop :=
 def MaxCusps : Prop :=
   ∀ (D : D7) (T : Top D), LawsP T → ∀ j, InR D j → DualIsLat T.toCore j ∧ ∀ w c, MaxCuspsC T.toCore j w c
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fun hd k => ⟨hP k, hd k⟩, fun hd k => (hd k).2⟩`.
+-/
 example (T : Core D) (j : ℕ) (w : WeightFamilies.Wt D j) (c : ℝ) (P : FDSec (T.X₀ j)) (hP : IsHolCusp (T.X₀ j) (la T j w) P) :
     Deep T j w c P ↔ ∀ k, P k ∈ (T.X₀ j k).SSgt (la T j w k) c :=
   ⟨fun hd k => ⟨hP k, hd k⟩, fun hd k => (hd k).2⟩
 
+/- English proof (translation)
+Rewrite using `[rdGen_tmul, map_one, one_smul]`.
+-/
 example (T : Core D) (j N : ℕ) {σ' : KT T j N →+* ℂ} (hσ : IsExt σ') (w : WeightFamilies.Wt D j) (F : Cf T j w) :
     rdGen hσ w (1 ⊗ₜ F) = rd T j w F := by
   rw [rdGen_tmul, map_one, one_smul]

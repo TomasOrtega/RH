@@ -9,6 +9,11 @@ noncomputable section
 namespace GlobalTheory.RootHs
 open Metric Complex
 
+/- English proof (translation)
+Establish `hRe : 0 ≤ R - ε` using `by linarith`. Rewrite using `[Metric.mem_ball, Complex.dist_eq]`. Establish `hsq : ‖u - (R : ℂ) * I‖ ^ 2 = u.re ^ 2 + (u.im - R) ^ 2`. Rewrite using `[Complex.sq_norm, Complex.normSq_apply]`. Simplify using `only [Complex.sub_re, Complex.sub_im, Complex.mul_re, Complex.mul_im, Complex.ofReal_re, Complex.ofReal_im, Complex.I_re, Complex.I_im]`.
+
+Expand and normalize the polynomial expressions, which then agree. Establish `hlt : ‖u - (R : ℂ) * I‖ ^ 2 < (R - ε) ^ 2`. Rewrite using `[hsq]`. Use polynomial arithmetic with `[mul_nonneg (by linarith : (0:ℝ) ≤ R) (by linarith : (0:ℝ) ≤ u.im - 2 * ε), sq_nonneg ε]`. Use polynomial arithmetic with `[norm_nonneg (u - (R : ℂ) * I)]`.
+-/
 lemma mem_ball_big (u : ℂ) (R ε : ℝ) (hε : 0 < ε) (hu : 2 * ε ≤ u.im) (hR : u.re ^ 2 + u.im ^ 2 < R * u.im)
     (hRε : ε < R) : u ∈ ball ((R : ℂ) * I) (R - ε) := by
   have hRe : 0 ≤ R - ε := by linarith
@@ -23,6 +28,11 @@ lemma mem_ball_big (u : ℂ) (R ε : ℝ) (hε : 0 < ε) (hu : 2 * ε ≤ u.im) 
     nlinarith [mul_nonneg (by linarith : (0:ℝ) ≤ R) (by linarith : (0:ℝ) ≤ u.im - 2 * ε), sq_nonneg ε]
   nlinarith [norm_nonneg (u - (R : ℂ) * I)]
 
+/- English proof (translation)
+Introduce `z hz`. Rewrite `hz` using `[Metric.mem_closedBall, Complex.dist_eq]`. Establish `h1` using `Complex.abs_im_le_norm (z - (R : ℂ) * I)`. Establish `h2 : (z - (R : ℂ) * I).im = z.im - R` using `by simp`. Rewrite `h1` using `[h2]`.
+
+Use `show 0 < z.im`. Establish `h3` using `neg_abs_le (z.im - R)`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 lemma closedBall_big_sub (R ε : ℝ) (hε : 0 < ε) : closedBall ((R : ℂ) * I) (R - ε) ⊆ Hs := by
   intro z hz
   rw [Metric.mem_closedBall, Complex.dist_eq] at hz
@@ -33,6 +43,13 @@ lemma closedBall_big_sub (R ε : ℝ) (hε : 0 < ε) : closedBall ((R : ℂ) * I
   have h3 := neg_abs_le (z.im - R)
   linarith
 
+/- English proof (translation)
+Use `set ε : ℝ := min z₀.im z.im / 2 with hεdef`. Establish `hε : 0 < ε` using `half_pos (lt_min h₀ hz)`. Establish `h2ε₀ : 2 * ε ≤ z₀.im` using `by rw [hεdef]; linarith [min_le_left z₀.im z.im]`. Establish `h2ε : 2 * ε ≤ z.im` using `by rw [hεdef]; linarith [min_le_right z₀.im z.im]`. Establish `ha : 0 ≤ (z₀.re ^ 2 + z₀.im ^ 2) / z₀.im` using `div_nonneg (by positivity) h₀.le`.
+
+Establish `hb : 0 ≤ (z.re ^ 2 + z.im ^ 2) / z.im` using `div_nonneg (by positivity) hz.le`. Use `set R : ℝ := (z₀.re ^ 2 + z₀.im ^ 2) / z₀.im + (z.re ^ 2 + z.im ^ 2) / z.im + ε + 1 with hRdef`. Establish `hR₀ : z₀.re ^ 2 + z₀.im ^ 2 < R * z₀.im` using `(div_lt_iff₀ h₀).mp (by rw [hRdef]; linarith)`. Establish `hR : z.re ^ 2 + z.im ^ 2 < R * z.im` using `(div_lt_iff₀ hz).mp (by rw [hRdef]; linarith)`. Establish `hRε : ε < R` using `by rw [hRdef]; linarith`.
+
+Conclude with `⟨(R : ℂ) * I, R - ε, closedBall_big_sub R ε hε, mem_ball_big z₀ R ε hε h2ε₀ hR₀ hRε, mem_ball_big z R ε hε h2ε hR hRε⟩`.
+-/
 lemma exists_disc (z₀ z : ℂ) (h₀ : 0 < z₀.im) (hz : 0 < z.im) :
     ∃ (c : ℂ) (r : ℝ), closedBall c r ⊆ Hs ∧ z₀ ∈ ball c r ∧ z ∈ ball c r := by
   set ε : ℝ := min z₀.im z.im / 2 with hεdef
@@ -48,6 +65,17 @@ lemma exists_disc (z₀ z : ℂ) (h₀ : 0 < z₀.im) (hz : 0 < z.im) :
   exact ⟨(R : ℂ) * I, R - ε, closedBall_big_sub R ε hε, mem_ball_big z₀ R ε hε h2ε₀ hR₀ hRε,
     mem_ball_big z R ε hε h2ε hR hRε⟩
 
+/- English proof (translation)
+Introduce and unpack `h m hm hh hdiv ⟨z₀, hz₀, hne⟩ c r hsub`. Break down `le_or_gt r 0 with hr | hr` into its components or cases. Use `⟨fun _ => 0, differentiableOn_const 0, fun z hz => ?_⟩` and prove the remaining obligations. Rewrite `hz` using `[Metric.ball_eq_empty.mpr hr]`. Conclude with `absurd hz (Set.notMem_empty z)`.
+
+Establish `hHsOpen : IsOpen Hs` using `by show IsOpen {z : ℂ | 0 < z.im}`. Conclude with `isOpen_lt continuous_const Complex.continuous_im`. Establish `hHsConn : IsPreconnected Hs` using `by show IsPreconnected {z : ℂ | 0 < z.im}`. Conclude with `(convex_halfSpace_im_gt (r := 0)).isPreconnected`. Establish `han : AnalyticOnNhd ℂ h Hs` using `hh.analyticOnNhd hHsOpen`.
+
+Use `GlobalTheory.KZ.RootDisc.exists_root_disc h m c r hm hr (han.mono hsub) ?_` and prove the remaining obligations. Introduce `τ hτ`. Establish `hτ'` using `hsub hτ`. Establish `hfin : analyticOrderAt h τ ≠ ⊤`. Introduce `htop`.
+
+Rewrite `htop` using `[analyticOrderAt_eq_top]`. Conclude with `hne (han.eqOn_zero_of_preconnected_of_eventuallyEq_zero hHsConn hτ' htop hz₀)`. Take `⟨n, hn⟩` from `ENat.ne_top_iff_exists.mp hfin`. Establish `hmer : meromorphicOrderAt h τ = ((n : ℤ) : WithTop ℤ)`. Rewrite using `[(han τ hτ').meromorphicOrderAt_eq, ← hn]`.
+
+Both sides reduce to the same expression. Take `⟨k, hk⟩` from `Int.natCast_dvd_natCast.mp (hdiv τ hτ' n hmer)`. Conclude with `⟨k, by rw [← hn, hk]⟩`.
+-/
 theorem discRoot : ∀ (h : ℂ → ℂ) (m : ℕ), 0 < m → DifferentiableOn ℂ h Hs →
     (∀ τ ∈ Hs, ∀ k : ℤ, meromorphicOrderAt h τ = (k : WithTop ℤ) → (m : ℤ) ∣ k) →
     (∃ z₀ ∈ Hs, h z₀ ≠ 0) → ∀ (c : ℂ) (r : ℝ), Metric.closedBall c r ⊆ Hs →
@@ -78,6 +106,15 @@ theorem discRoot : ∀ (h : ℂ → ℂ) (m : ℕ), 0 < m → DifferentiableOn �
   obtain ⟨k, hk⟩ := Int.natCast_dvd_natCast.mp (hdiv τ hτ' n hmer)
   exact ⟨k, by rw [← hn, hk]⟩
 
+/- English proof (translation)
+Introduce `U g₁ g₂ m z₀ hm hU hC hg₁ hg₂ hpow hz₀ heq hne`. Establish `hc₁ : ContinuousAt g₁ z₀` using `(hg₁.differentiableAt (hU.mem_nhds hz₀)).continuousAt`. Establish `hc₂ : ContinuousAt g₂ z₀` using `(hg₂.differentiableAt (hU.mem_nhds hz₀)).continuousAt`. Establish `hq : ContinuousAt (fun z => g₂ z / g₁ z) z₀` using `hc₂.div hc₁ hne`. Establish `hq0 : g₂ z₀ / g₁ z₀ = 1` using `by rw [← heq, div_self hne]`.
+
+Use `set S : Finset ℂ := (Polynomial.nthRoots m (1 : ℂ)).toFinset.erase 1 with hSdef`. Establish `hS : IsClosed (S : Set ℂ)` using `S.finite_toSet.isClosed`. Establish `hopen : (S : Set ℂ)ᶜ ∈ 𝓝 (g₂ z₀ / g₁ z₀)`. Rewrite using `[hq0]`. Conclude with `hS.isOpen_compl.mem_nhds (by simp [hSdef])`.
+
+Establish `hev : g₁ =ᶠ[𝓝 z₀] g₂` using `by filter_upwards [hq.preimage_mem_nhds hopen, hc₁.eventually_ne hne, hU.mem_nhds hz₀] with z hzS hz1 hzU`. Establish `hroot : g₂ z / g₁ z ∈ Polynomial.nthRoots m (1 : ℂ)`. Rewrite using `[Polynomial.mem_nthRoots hm, div_pow, ← hpow z hzU, div_self (pow_ne_zero _ hz1)]`. Establish `h1 : g₂ z / g₁ z = 1`. Assume the negation of the conclusion as `hne1`.
+
+Conclude with `hzS (Finset.mem_erase.mpr ⟨hne1, Multiset.mem_toFinset.mpr hroot⟩)`. Rewrite `h1` using `[div_eq_one_iff_eq hz1]`. Conclude with `h1.symm`. Conclude with `AnalyticOnNhd.eqOn_of_preconnected_of_eventuallyEq (hg₁.analyticOnNhd hU) (hg₂.analyticOnNhd hU) hC hz₀ hev`.
+-/
 theorem rootUnique : ∀ (U : Set ℂ) (g₁ g₂ : ℂ → ℂ) (m : ℕ) (z₀ : ℂ), 0 < m → IsOpen U → IsPreconnected U →
     DifferentiableOn ℂ g₁ U → DifferentiableOn ℂ g₂ U → (∀ z ∈ U, g₁ z ^ m = g₂ z ^ m) → z₀ ∈ U →
     g₁ z₀ = g₂ z₀ → g₁ z₀ ≠ 0 → Set.EqOn g₁ g₂ U := by
@@ -102,6 +139,25 @@ theorem rootUnique : ∀ (U : Set ℂ) (g₁ g₂ : ℂ → ℂ) (m : ℕ) (z₀
     exact h1.symm
   exact AnalyticOnNhd.eqOn_of_preconnected_of_eventuallyEq (hg₁.analyticOnNhd hU) (hg₂.analyticOnNhd hU) hC hz₀ hev
 
+/- English proof (translation)
+Introduce `h m hm hh hdiv`. Distinguish the cases in `hz : ∃ z₀ ∈ Hs, h z₀ ≠ 0`. Use `swap`. Simplify using `only [not_exists, not_and, not_not] at hz`. Use `⟨fun _ => 0, differentiableOn_const 0, fun z hz' => ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[hz z hz', zero_pow hm.ne']`. Take `⟨z₀, hz₀, hne⟩` from `hz`. Take `⟨w₀, hw₀⟩` from `IsAlgClosed.exists_pow_nat_eq (h z₀) hm`. Establish `hw₀ne : w₀ ≠ 0`. Introduce and unpack `rfl`.
+
+Conclude with `hne (by rw [← hw₀, zero_pow hm.ne'])`. Establish `hHsOpen : IsOpen Hs` using `by show IsOpen {z : ℂ | 0 < z.im}`. Conclude with `isOpen_lt continuous_const Complex.continuous_im`. Establish `key : ∀ z ∈ Hs, ∃ (c : ℂ) (r : ℝ), z₀ ∈ ball c r ∧ z ∈ ball c r ∧ ∃ g : ℂ → ℂ, DifferentiableOn ℂ g (ball c r) ∧ (∀ y ∈ ball c r, g y ^ m = h y) ∧ g z₀ = w₀`. Introduce `z hz`.
+
+Take `⟨c, r, hsub, h0, h1⟩` from `exists_disc z₀ z hz₀ hz`. Take `⟨g, hgd, hgp⟩` from `discRoot h m hm hh hdiv ⟨z₀, hz₀, hne⟩ c r hsub`. Establish `hg0 : g z₀ ≠ 0`. Introduce `h0'`. Apply `hne` to reduce the goal to its premises.
+
+Rewrite using `[← hgp z₀ h0, h0', zero_pow hm.ne']`. Use `⟨c, r, h0, h1, fun y => (w₀ / g z₀) * g y, hgd.const_mul _, fun y hy => ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[mul_pow, div_pow, hgp y hy, hw₀, hgp z₀ h0, div_self hne, one_mul]`. Conclude with `div_mul_cancel₀ w₀ hg0`. Use `choose c r h0 h1 g hgd hgp hgz using key`.
+
+Establish `hloc : ∀ z₁ (hz₁ : z₁ ∈ Hs) z (hz : z ∈ Hs), z ∈ ball (c z₁ hz₁) (r z₁ hz₁) → g z hz z = g z₁ hz₁ z`. Introduce `z₁ hz₁ z hz hzb`. Establish `hU : IsOpen (ball (c z hz) (r z hz) ∩ ball (c z₁ hz₁) (r z₁ hz₁))` using `isOpen_ball.inter isOpen_ball`. Establish `hC : IsPreconnected (ball (c z hz) (r z hz) ∩ ball (c z₁ hz₁) (r z₁ hz₁))` using `((convex_ball _ _).inter (convex_ball _ _)).isPreconnected`. Use `rootUnique _ (g z hz) (g z₁ hz₁) m z₀ hm hU hC ((hgd z hz).mono Set.inter_subset_left) ((hgd z₁ hz₁).mono Set.inter_subset_right) (fun y hy => by rw [hgp z hz y hy.1, hgp z₁ hz₁ y hy.2]) ⟨h0 z hz, h0 z₁ hz₁⟩ ((hgz z hz).trans (hgz z₁ hz₁).symm) (by rw [hgz z hz]; exact hw₀ne) ⟨h1 …` and prove the remaining obligations.
+
+Use `⟨fun z => if h' : z ∈ Hs then g z h' z else 0, ?_, ?_⟩` and prove the remaining obligations. Introduce `z₁ hz₁`. Establish `hev : (fun z => if h' : z ∈ Hs then g z h' z else 0) =ᶠ[𝓝 z₁] g z₁ hz₁`. Establish `hmem : ball (c z₁ hz₁) (r z₁ hz₁) ∩ Hs ∈ 𝓝 z₁` using `(isOpen_ball.inter hHsOpen).mem_nhds ⟨h1 z₁ hz₁, hz₁⟩`. Use `filter_upwards [hmem] with z hz`.
+
+Use `show (if h' : z ∈ Hs then g z h' z else 0) = g z₁ hz₁ z`. Rewrite using `[dif_pos hz.2]`. Conclude with `hloc z₁ hz₁ z hz.2 hz.1`. Conclude with `(((hgd z₁ hz₁).differentiableAt (isOpen_ball.mem_nhds (h1 z₁ hz₁))).congr_of_eventuallyEq hev).differentiableWithinAt`. Introduce `z hz show (if h' : z ∈ Hs then g z h' z else 0) ^ m = h z`.
+
+Rewrite using `[dif_pos hz]`. Conclude with `hgp z hz z (h1 z hz)`.
+-/
 theorem rootHs : ∀ (h : ℂ → ℂ) (m : ℕ), 0 < m → DifferentiableOn ℂ h Hs →
     (∀ τ ∈ Hs, ∀ k : ℤ, meromorphicOrderAt h τ = (k : WithTop ℤ) → (m : ℤ) ∣ k) →
     ∃ g : ℂ → ℂ, DifferentiableOn ℂ g Hs ∧ ∀ z ∈ Hs, g z ^ m = h z := by

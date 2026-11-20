@@ -16,9 +16,15 @@ abbrev dX : P7 := MvPolynomial.X 3 - MvPolynomial.X 5
 
 abbrev Univ : Type := Localization.Away dX
 
+/- English proof (translation)
+The claim follows from `sub_ne_zero.mpr fun h => absurd (MvPolynomial.X_injective h) (by decide)`.
+-/
 theorem dX_ne_zero : dX ≠ 0 :=
   sub_ne_zero.mpr fun h => absurd (MvPolynomial.X_injective h) (by decide)
 
+/- English proof (translation)
+The claim follows from `powers_le_nonZeroDivisors_of_noZeroDivisors dX_ne_zero`.
+-/
 theorem powers_le : Submonoid.powers dX ≤ nonZeroDivisors P7 :=
   powers_le_nonZeroDivisors_of_noZeroDivisors dX_ne_zero
 

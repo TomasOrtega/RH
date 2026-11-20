@@ -10,6 +10,29 @@ namespace ObjectsChow
 
 open MvPolynomial
 
+/- English proof (translation)
+Introduce `F _ n I i hI hdim hXi`. Use `hI.isPrime` as an intermediate fact. Use `set ξ := genPt I`. Establish `hξ : ξ i ≠ 0` using `fun h => hXi ((ChartZeroTrdeg.aeval_genPt_eq_zero_iff' I (X i)).1 (by simpa using h))`. Use `set g : MvPolynomial (Fin n) F →ₐ[F] FractionRing (MvPolynomial (Fin n) F ⧸ I) := aeval fun m => ξ m * (ξ i)⁻¹ with hg`.
+
+Establish `hhom : ∀ (h : MvPolynomial (Fin n) F) (d : ℕ), h.IsHomogeneous d → ChartZeroTrdeg.homogAt h i d = h`. Introduce `h d hh`. Use `conv_rhs => rw [h.as_sum]`. Use `Finset.sum_congr rfl fun α hα => ?_` and prove the remaining obligations. Establish `hα' : (α.sum fun _ e => e) = d`.
+
+Use `hh (mem_support_iff.mp hα)` as an intermediate fact. Simplify `this` using `[Finsupp.weight_apply, Finsupp.sum, Pi.one_apply, smul_eq_mul, mul_one]`. Rewrite using `[hα', Nat.sub_self, pow_zero, mul_one]`. Establish `hker : RingHom.ker g = I ⊔ Ideal.span {X i - 1}`. Apply `le_antisymm` to reduce the goal to its premises.
+
+Introduce `p hp`. Rewrite `hp` using `[RingHom.mem_ker]`. Establish `hH : ChartZeroTrdeg.homogAt p i p.totalDegree ∈ I`. Rewrite using `[← ChartZeroTrdeg.aeval_genPt_eq_zero_iff', ChartZeroTrdeg.aeval_homogAt p i _ le_rfl ξ hξ]`. Rewrite using `[← hg, hp, mul_zero]`.
+
+Establish `hd : p - ChartZeroTrdeg.homogAt p i p.totalDegree ∈ Ideal.span {X i - 1}`. Rewrite using `[← Ideal.Quotient.eq]`. Establish `h1 : Ideal.Quotient.mk (Ideal.span {X i - 1}) (X i : MvPolynomial (Fin n) F) = 1`. Rewrite using `[← map_one (Ideal.Quotient.mk _), Ideal.Quotient.eq]`. Conclude with `Ideal.subset_span rfl`.
+
+Use `conv_lhs => rw [p.as_sum]`. Simplify using `only [ChartZeroTrdeg.homogAt, map_sum, map_mul, map_pow, h1, one_pow, mul_one]`. Use `(I ⊔ Ideal.span {X i - 1}).add_mem (Ideal.mem_sup_left hH) (Ideal.mem_sup_right hd)` as an intermediate fact. Simplify using `using this`. Use `sup_le ?_ ?_` and prove the remaining obligations.
+
+Introduce `f hf`. Rewrite using `[RingHom.mem_ker, ← sum_homogeneousComponent f, map_sum]`. Use `Finset.sum_eq_zero fun d _ => ?_` and prove the remaining obligations. Establish `hh : (homogeneousComponent d f).IsHomogeneous d` using `homogeneousComponent_isHomogeneous d f`. Establish `h0 : aeval ξ (homogeneousComponent d f) = 0` using `(ChartZeroTrdeg.aeval_genPt_eq_zero_iff' I _).2 (hI.isHomog f hf d)`.
+
+Distinguish the cases in `hz : homogeneousComponent d f = 0`. Rewrite using `[hz, map_zero]`. Use `ChartZeroTrdeg.aeval_homogAt (homogeneousComponent d f) i d (hh.totalDegree hz).le ξ hξ` as an intermediate fact. Rewrite `this` using `[hhom _ d hh, h0]`. Conclude with `(mul_eq_zero.mp this.symm).resolve_left (pow_ne_zero _ hξ)`.
+
+Rewrite using `[Ideal.span_le, Set.singleton_subset_iff]`. Express the relevant statement in the definitionally equal form `g (X i - 1) = 0`. Simplify using `[hg, hξ]`. Set `e : (MvPolynomial (Fin n) F ⧸ (I ⊔ Ideal.span {X i - 1})) ≃ₐ[F] g.range` to `(Ideal.quotientEquivAlgOfEq F (hker.symm.trans (AlgHom.ker_rangeRestrict g).symm)).trans (Ideal.quotientKerAlgEquivOfSurjective g.rangeRestrict_surjective)`. Establish `htr` using `GroundTheory.Heights₂.Heights.AffineChartTrdeg.proof F n 0 I i hI (by simpa using hdim) hXi`.
+
+Rewrite `htr` using `[Algebra.adjoin_range_eq_range_aeval]`. Establish `halg : Algebra.IsAlgebraic F g.range` using `trdeg_eq_zero_iff.1 (by simpa using htr)`. Establish `hfield : IsField g.range` using `isField_of_isIntegral_of_isField' (Field.toIsField F)`. Establish `: Algebra.FiniteType F g.range` using `Algebra.FiniteType.of_surjective g.rangeRestrict g.rangeRestrict_surjective`. Establish `: Module.Finite F g.range` using `Algebra.IsIntegral.finite`.
+
+Conclude with `⟨MulEquiv.isField hfield e.toMulEquiv, Module.Finite.equiv e.symm.toLinearEquiv⟩`.
+-/
 theorem ClosedPointChartField.proof : ClosedPointChartField.Statement := by
   intro F _ n I i hI hdim hXi
   have := hI.isPrime

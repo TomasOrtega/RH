@@ -13,6 +13,9 @@ open GlobalTheory.NormSum (Pair Tup)
 open Classical
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.BottomRebase.rebase | exact GlobalTheory.BottomRebase.rebase | (intros; apply GlobalTheory.BottomRebase.rebase <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.bottom_triangle_root_of_unity_twist : GlobalTheory.FunPr.Hypotheses₂ →
     GlobalTheory.SqTop.GBig fun {D} T _ _ G _ _ _ _ => ∀ (W : G.Weil), IsStdChar D W.ψ (-1) → ∀ (i j : Fin D.R.m) (A A' WW : HSp D)
       (X : Tri T A A' WW) (c0 : T → ℂ), IsBottomTri W i j X → X.IsConst W.ψ W.θ c0 →

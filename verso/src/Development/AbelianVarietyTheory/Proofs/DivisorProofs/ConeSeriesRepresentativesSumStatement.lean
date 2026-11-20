@@ -16,6 +16,9 @@ open GlobalTheory.Doubling (absE)
 open GlobalTheory.ConeSmallMidJB
 
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.ConeSmallSerInt.summable_norm_le_of_distinct | exact GlobalTheory.ConeSmallSerInt.summable_norm_le_of_distinct | (intros; apply GlobalTheory.ConeSmallSerInt.summable_norm_le_of_distinct <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.cone_series_representatives_sum : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (n : ℕ)
     (J : Matrix (Fin n) (Fin n) E) (x : Fin n → E) (T : Set (UA σ J)), GlobalTheory.ConeSmallCT.IsReps T x →
     ∀ f : UA σ J → ℂ, (∀ p ∈ ratU σ J, GlobalTheory.ConeSmallSer.StabLn x p → ∀ h, f (p * h) = f h) →

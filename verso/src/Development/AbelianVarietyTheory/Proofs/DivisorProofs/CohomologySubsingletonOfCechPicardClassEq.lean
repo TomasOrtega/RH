@@ -11,6 +11,9 @@ open scoped TensorProduct
 
 namespace GlobalTheory.Div
 
+/- English proof (translation)
+Introduce `X M N hM hN e q h`. Take `⟨i⟩` from `nonempty_twist_iso_of_cls_eq (structureModule X) hM hN e`. Conclude with `(cohOn.mapIso Γ(X, ⊤) ⊤ q ((Twist.unitTwistIso M).symm ≪≫ i ≪≫ Twist.unitTwistIso N)).toEquiv.subsingleton_congr.1 h`.
+-/
 theorem coh_subsingleton_of_cls_eq : ∀ (X : Scheme.{0}) (M N : LB X) (hM : M.IsLB) (hN : N.IsLB),
     cls M hM = cls N hN → ∀ q : ℕ, Subsingleton (coh (LB.toMod M) q) →
       Subsingleton (coh (LB.toMod N) q) := by

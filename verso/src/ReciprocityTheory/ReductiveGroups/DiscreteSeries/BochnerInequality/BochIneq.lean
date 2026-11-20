@@ -13,6 +13,19 @@ section Boch
 variable {M : Type*} [NormedAddCommGroup M] [InnerProductSpace ℂ M] {ε : Fin n → Bool}
   {E : Fin n → Fin n → Module.End ℂ M} {V : Submodule ℂ M} {lam : Fin n → ℝ}
 
+/- English proof (translation)
+Establish `hc : casimirK ε (mAct E k) P = (casValK ε (lowK ε lam) : ℂ) • P`. Use extensionality with `κ`. Rewrite using `[casimirK_mAct_apply, PiLp.smul_apply]`. Apply `casimirK_irr hE hV` to reduce the goal to its premises. Establish `h1` using `(Submodule.mem_iInf _).1 hP κ`.
+
+Rewrite `h1` using `[Submodule.mem_comap]`. Use `split_ifs at h1 with h2`. Simplify `h1` using `[coord]`. Establish `h3 : coord k κ P = 0` using `(Submodule.mem_bot ℂ).1 h1`. Establish `h4 : P κ = 0` using `by simpa [coord] using h3`.
+
+Rewrite using `[h4]`. Conclude with `V.zero_mem`. Establish `hpositions : ∀ i : Fin k, 2 * (h - n + 1) * ‖P‖ ^ 2 ≤ 2 * RCLike.re (inner ℂ (crossOp ε E k i P) P)` using `fun i => crossOp_position_bound hE hU hV hmono hh hbig i (fun κ => hposition i κ)`. Establish `hnn` using `factorCasimir_nonneg (M := M) (ε := ε) k P`. Establish `key : RCLike.re (inner ℂ (casimirK ε (bAct E k) P) P) = RCLike.re (inner ℂ (factorCasimir (M` using `M) ε k P) P) + casValK ε (lowK ε lam) * ‖P‖ ^ 2 + ∑ i, 2 * RCLike.re (inner ℂ (crossOp ε E k i P) P) := by`.
+
+Rewrite using `[casimirK_bAct (ε := ε) (E := E) k]`. Simplify using `only [LinearMap.add_apply, hc, inner_add_left, two_nsmul, inner_smul_left, map_add, inner_self_eq_norm_sq_to_K]`. Simplify using `[Complex.conj_ofReal]`. Rewrite using `[sum_inner, Complex.re_sum, ← Finset.sum_add_distrib]`. Use `norm_cast`.
+
+Use `congr 1`. Conclude with `Finset.sum_congr rfl fun i _ => by ring`. Establish `hsum : ∑ _i : Fin k, 2 * (h - n + 1) * ‖P‖ ^ 2 ≤ ∑ i, 2 * RCLike.re (inner ℂ (crossOp ε E k i P) P)` using `Finset.sum_le_sum fun i _ => hpositions i`. Rewrite `hsum` using `[Finset.sum_const, Finset.card_univ, Fintype.card_fin, nsmul_eq_mul]`. Rewrite using `[key]`.
+
+Use polynomial arithmetic with `[hsum, hnn]`.
+-/
 theorem bochner_ineq (hE : IsGlRep E) (hU : IsInfUnitary ε E) (hV : IsKIrrHW ε E (lowK ε lam) V)
     (hmono : StrictAnti lam) {h : ℝ} (hh : GapAtLeast ε lam h)
     (hbig : (n : ℝ) * (pOf ε : ℝ) * (qOf ε : ℝ) + 1 < h) {k : ℕ} {P : Big n k M} (hP : P ∈ ncV ε V k)

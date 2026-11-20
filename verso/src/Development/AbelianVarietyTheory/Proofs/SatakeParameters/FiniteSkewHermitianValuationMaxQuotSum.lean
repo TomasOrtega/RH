@@ -6,6 +6,23 @@ open Matrix
 
 namespace GlobalTheory.Hk3.GramSep
 
+/- English proof (translation)
+Introduce `L _ _ ϖ σ hϖ hR r e`. Establish `hle1 : Valued.v ϖ ≤ 1`. Rewrite using `[hϖ]`. Conclude with `(by decide : (Multiplicative.ofAdd (-1 : ℤ) : Multiplicative ℤ) ≤ 1)` after adjusting the coercions. Use `set K : ℕ := ∑ k, ∑ j, (e k + e j) with hK`.
+
+Take `⟨R, -, hRc⟩` from `hR K`. Establish `hKge : ∀ k j, e k + e j ≤ K`. Introduce `k j`. Establish `h1 : e k + e j ≤ ∑ j', (e k + e j')` using `Finset.single_le_sum (f := fun j' => e k + e j') (fun _ _ => Nat.zero_le _) (Finset.mem_univ j)`. Establish `h2 : ∑ j', (e k + e j') ≤ ∑ k', ∑ j', (e k' + e j')` using `Finset.single_le_sum (f := fun k' => ∑ j', (e k' + e j')) (fun _ _ => Nat.zero_le _) (Finset.mem_univ k)`.
+
+Conclude with `h1.trans h2`. Establish `hint : ∀ Γ : ↥(gam σ ϖ e), ∀ k j, (Γ : Matrix (Fin r) (Fin r) L) k j ∈ Formalism.UG.intL L`. Introduce `Γ k j`. Use `show Valued.v ((Γ : Matrix (Fin r) (Fin r) L) k j) ≤ 1`. Conclude with `(Γ.2.2 k j).trans (pow_le_one' hle1 _)`.
+
+Establish `hch : ∀ Γ : ↥(gam σ ϖ e), ∀ k j, ∃ x ∈ R, Valued.v ((Γ : Matrix (Fin r) (Fin r) L) k j - x) ≤ Valued.v ϖ ^ K` using `fun Γ k j => hRc _ (hint Γ k j)`. Set `g : ↥(gam σ ϖ e) → (Fin r → Fin r → ↥R)` to `fun Γ k j => ⟨(hch Γ k j).choose, (hch Γ k j).choose_spec.1⟩`. Establish `hg : ∀ (Γ : ↥(gam σ ϖ e)) k j, Valued.v ((Γ : Matrix (Fin r) (Fin r) L) k j - (g Γ k j : L)) ≤ Valued.v ϖ ^ K` using `fun Γ k j => (hch Γ k j).choose_spec.2`. Set `h : (↥(gam σ ϖ e) ⧸ (gam0 σ ϖ e).addSubgroupOf (gam σ ϖ e)) → (Fin r → Fin r → ↥R)` to `fun q => g (Quotient.out q)`. Establish `hinj : Function.Injective h`.
+
+Introduce `q1 q2 hq`. Rewrite using `[← QuotientAddGroup.out_eq' q1, ← QuotientAddGroup.out_eq' q2, QuotientAddGroup.eq, AddSubgroup.mem_addSubgroupOf]`. Use `set a := Quotient.out q1`. Use `set b := Quotient.out q2`. Establish `hab : g a = g b` using `hq`.
+
+Establish `hmem : ((-a + b : ↥(gam σ ϖ e)) : Matrix (Fin r) (Fin r) L) ∈ gam σ ϖ e` using `(-a + b).2`. Use `⟨hmem.1, fun k j => ?_⟩` and prove the remaining obligations. Establish `e1 : ((-a + b : ↥(gam σ ϖ e)) : Matrix (Fin r) (Fin r) L) k j = ((b : Matrix (Fin r) (Fin r) L) k j - (g b k j : L)) - ((a : Matrix (Fin r) (Fin r) L) k j - (g a k j : L))`. Rewrite using `[hab]`. Simplify using the standard rewrite rules.
+
+Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e1]`. Use `(Valuation.map_sub _ _ _).trans (max_le ?_ ?_)` and prove the remaining obligations. Conclude with `(hg b k j).trans (pow_le_pow_right_of_le_one' hle1 (hKge k j))`. Conclude with `(hg a k j).trans (pow_le_pow_right_of_le_one' hle1 (hKge k j))`.
+
+Conclude with `Finite.of_injective h hinj`.
+-/
 theorem gam_quot_finite : ∀ (L : Type) [Field L] [Valued L (WithZero (Multiplicative ℤ))] (ϖ : L) (σ : L →+* L), Valued.v ϖ = ((Multiplicative.ofAdd (-1 : ℤ) : Multiplicative ℤ) : WithZero (Multiplicative ℤ)) → (∀ K : ℕ, ∃ R : Finset L, (∀ r ∈ R, r ∈ Formalism.UG.intL L) ∧ ∀ c ∈ Formalism.UG.intL L, ∃ r ∈ R, Valued.v (c - r) ≤ Valued.v ϖ ^ K) →
   ∀ (r : ℕ) (e : Fin r → ℕ), Finite (↥(GlobalTheory.Hk3.GramSep.gam σ ϖ e) ⧸
     (GlobalTheory.Hk3.GramSep.gam0 σ ϖ e).addSubgroupOf (GlobalTheory.Hk3.GramSep.gam σ ϖ e)) := by

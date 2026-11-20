@@ -23,6 +23,11 @@ def IsRayField (K L : Type) [Field K] [NumberField K] [Field L] [NumberField L] 
       ((∀ χ : (L ≃ₐ[K] L) →* ℂˣ, heckeIdeal L χ I = 1) ↔
         ∃ α β : 𝓞 K, RayPair 𝔮 α β ∧ I * Ideal.span {β} = Ideal.span {α})
 
+/- English proof (translation)
+Use `forall₃_congr fun K _ _ => forall₂_congr fun 𝔮 _ => ?_` and prove the remaining obligations. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨L, _, _, _, h, h'⟩`. Conclude with `⟨L, _, inferInstance, _, h, h'⟩`. Introduce and unpack `⟨L, _, _, _, h, h'⟩`.
+
+Conclude with `⟨L, _, inferInstance, _, h, h'⟩`.
+-/
 theorem rayField_iff : RayField ↔ ∀ (K : Type) [Field K] [NumberField K] (𝔮 : Ideal (𝓞 K)), 𝔮 ≠ ⊥ →
     ∃ (L : Type) (_ : Field L) (_ : NumberField L) (_ : Algebra K L), IsRayField K L 𝔮 := by
   refine forall₃_congr fun K _ _ => forall₂_congr fun 𝔮 _ => ?_
@@ -37,6 +42,11 @@ variable {K L L' : Type} [Field K] [NumberField K] [Field L] [NumberField L] [Al
 
 omit [NumberField K] [NumberField L] [NumberField L'] in
 
+/- English proof (translation)
+Take `⟨P, hP, hPo, hx⟩` from `h`. Set `f : 𝓞 L' ≃ₐ[𝓞 K] 𝓞 L` to `RingOfIntegers.mapAlgEquiv e.symm`. Use `⟨P.comap f, inferInstance, inferInstance, fun x => ?_⟩` and prove the remaining obligations. Establish `h1 : f (e.autCongr σ • x) = σ • f x`. Apply `RingOfIntegers.ext` to reduce the goal to its premises.
+
+Express the relevant statement in the definitionally equal form `e.symm (e (σ (e.symm x))) = σ (e.symm x)`. Rewrite using `[e.symm_apply_apply]`. Rewrite using `[Ideal.mem_comap, map_sub, map_pow, h1]`. Conclude with `hx _`.
+-/
 theorem exists_prime_congr (e : L ≃ₐ[K] L') (𝔭 : Ideal (𝓞 K)) (σ : L ≃ₐ[K] L) (n : ℕ)
     (h : ∃ P : Ideal (𝓞 L), P.IsPrime ∧ P.LiesOver 𝔭 ∧ ∀ x : 𝓞 L, σ • x - x ^ n ∈ P) :
     ∃ P : Ideal (𝓞 L'), P.IsPrime ∧ P.LiesOver 𝔭 ∧ ∀ x : 𝓞 L', e.autCongr σ • x - x ^ n ∈ P := by
@@ -52,6 +62,9 @@ theorem exists_prime_congr (e : L ≃ₐ[K] L') (𝔭 : Ideal (𝓞 K)) (σ : L 
 
 omit [NumberField L] [NumberField L'] in
 
+/- English proof (translation)
+Use `⟨fun h => ?_, exists_prime_congr e _ σ _⟩` and prove the remaining obligations. Establish `h1` using `exists_prime_congr e.symm _ _ _ h`. Rewrite `h1` using `[show e.symm.autCongr (e.autCongr σ) = σ from e.autCongr.symm_apply_apply σ]`. Then use the resulting hypothesis.
+-/
 theorem isFrob_congr (e : L ≃ₐ[K] L') (𝔭 : HeightOneSpectrum (𝓞 K)) (σ : L ≃ₐ[K] L) :
     IsFrob L' 𝔭 (e.autCongr σ) ↔ IsFrob L 𝔭 σ := by
   refine ⟨fun h => ?_, exists_prime_congr e _ σ _⟩
@@ -60,6 +73,11 @@ theorem isFrob_congr (e : L ≃ₐ[K] L') (𝔭 : HeightOneSpectrum (𝓞 K)) (�
 
 omit [NumberField K] [NumberField L] [NumberField L'] in
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce `h`. Establish `h1` using `exists_prime_congr e.symm 𝔭.asIdeal (e.autCongr σ) 1 (by simpa only [pow_one, InInertia] using h)`. Rewrite `h1` using `[show e.symm.autCongr (e.autCongr σ) = σ from e.autCongr.symm_apply_apply σ]`. Simplify `h1` using `only [pow_one, InInertia]`.
+
+Introduce `h`. Simplify `exists_prime_congr e 𝔭.asIdeal σ 1 (by simpa only [pow_one, InInertia] using h)` using `only [pow_one, InInertia]`.
+-/
 theorem inInertia_congr (e : L ≃ₐ[K] L') (𝔭 : HeightOneSpectrum (𝓞 K)) (σ : L ≃ₐ[K] L) :
     InInertia L' 𝔭 (e.autCongr σ) ↔ InInertia L 𝔭 σ := by
   constructor
@@ -70,6 +88,11 @@ theorem inInertia_congr (e : L ≃ₐ[K] L') (𝔭 : HeightOneSpectrum (𝓞 K))
   · intro h
     simpa only [pow_one, InInertia] using exists_prime_congr e 𝔭.asIdeal σ 1 (by simpa only [pow_one, InInertia] using h)
 
+/- English proof (translation)
+Distinguish the cases in `h : ∀ τ, InInertia L' 𝔭 τ → χ τ = 1`. Take `⟨σ, hσ⟩` from `exists_isFrob L 𝔭`. Rewrite using `[heckeVal_eq L _ 𝔭 (fun τ hτ => h _ ((inInertia_congr e 𝔭 τ).2 hτ)) hσ, heckeVal_eq L' χ 𝔭 h ((isFrob_congr e 𝔭 σ).2 hσ)]`. Both sides reduce to the same expression. Rewrite using `[heckeVal_eq_zero L' χ 𝔭 h, heckeVal_eq_zero L _ 𝔭 fun h' => h fun τ hτ => ?_]`.
+
+Take `⟨σ, rfl⟩` from `e.autCongr.surjective τ`. Conclude with `h' σ ((inInertia_congr e 𝔭 σ).1 hτ)`.
+-/
 theorem heckeVal_congr [IsGalois K L] [IsGalois K L'] (e : L ≃ₐ[K] L') (χ : (L' ≃ₐ[K] L') →* ℂˣ)
     (𝔭 : HeightOneSpectrum (𝓞 K)) : heckeVal L (χ.comp e.autCongr.toMonoidHom) 𝔭 = heckeVal L' χ 𝔭 := by
   by_cases h : ∀ τ, InInertia L' 𝔭 τ → χ τ = 1
@@ -81,6 +104,13 @@ theorem heckeVal_congr [IsGalois K L] [IsGalois K L'] (e : L ≃ₐ[K] L') (χ :
     obtain ⟨σ, rfl⟩ := e.autCongr.surjective τ
     exact h' σ ((inInertia_congr e 𝔭 σ).1 hτ)
 
+/- English proof (translation)
+Take `⟨hab, hun, hgen, hart⟩` from `h`. Establish `hab' : IsAbelianGalois K L'` using `IsAbelianGalois.of_algHom (e.symm : L' →ₐ[K] L)`. Use `⟨hab', fun 𝔭 h𝔭 τ hτ => ?_, ?_, fun I hI hc => ?_⟩` and prove the remaining obligations. Take `⟨σ, rfl⟩` from `e.autCongr.surjective τ`. Rewrite using `[hun 𝔭 h𝔭 σ ((inInertia_congr e 𝔭 σ).1 hτ), map_one]`.
+
+Rewrite using `[eq_top_iff, ← Subgroup.map_top_of_surjective e.autCongr.toMonoidHom e.autCongr.surjective, ← hgen, MonoidHom.map_closure]`. Use `Subgroup.closure_mono ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨σ, ⟨𝔭, h𝔭, hσ⟩, rfl⟩`. Conclude with `⟨𝔭, h𝔭, (isFrob_congr e 𝔭 σ).2 hσ⟩`. Rewrite using `[← hart I hI hc]`.
+
+Establish `key : ∀ χ : (L' ≃ₐ[K] L') →* ℂˣ, heckeIdeal L (χ.comp e.autCongr.toMonoidHom) I = heckeIdeal L' χ I` using `fun χ => by simp only [heckeIdeal, heckeVal_congr]`. Use `⟨fun h χ => ?_, fun h χ => key χ ▸ h _⟩` and prove the remaining obligations. Rewrite using `[← h (χ.comp e.autCongr.symm.toMonoidHom), ← key]`. Use `congr 1`. Conclude with `MonoidHom.ext fun σ => (congrArg χ (e.autCongr.symm_apply_apply σ)).symm`.
+-/
 theorem IsRayField.of_algEquiv {𝔮 : Ideal (𝓞 K)} (h : IsRayField K L 𝔮) (e : L ≃ₐ[K] L') : IsRayField K L' 𝔮 := by
   obtain ⟨hab, hun, hgen, hart⟩ := h
   have hab' : IsAbelianGalois K L' := IsAbelianGalois.of_algHom (e.symm : L' →ₐ[K] L)
@@ -100,6 +130,15 @@ theorem IsRayField.of_algEquiv {𝔮 : Ideal (𝓞 K)} (h : IsRayField K L 𝔮)
     congr 1
     exact MonoidHom.ext fun σ => (congrArg χ (e.autCongr.symm_apply_apply σ)).symm
 
+/- English proof (translation)
+Use `⟨inferInstance, fun _ _ σ _ => Subsingleton.elim _ _, Subsingleton.elim _ _, fun I hI _ => ?_⟩` and prove the remaining obligations. Use `iff_of_true (fun χ => ?_) ?_` and prove the remaining obligations. Rewrite using `[Subsingleton.elim χ 1]`. Simplify using `[heckeIdeal, heckeVal_one]`. Establish `: IsPrincipalIdealRing (𝓞 ℚ)` using `IsPrincipalIdealRing.of_surjective (Rat.ringOfIntegersEquiv.symm : ℤ ≃+* 𝓞 ℚ).toRingHom Rat.ringOfIntegersEquiv.symm.surjective`.
+
+Take `⟨a, rfl⟩` from `(IsPrincipalIdealRing.principal I).principal`. Establish `ha : a ≠ 0` using `fun h => hI (by simp [h])`. Establish `ha' : (a : ℚ) ≠ 0` using `fun h => ha (RingOfIntegers.ext h)`. Establish `hc : ∀ J : Ideal (𝓞 ℚ), IsCoprime J ⊤` using `fun J => by`. Rewrite using `[← Ideal.one_eq_top]`.
+
+Conclude with `isCoprime_one_right`. Break down `lt_or_gt_of_ne ha' with h | h` into its components or cases. Use `⟨-a, 1, ⟨neg_ne_zero.2 ha, one_ne_zero, hc _, hc _, trivial, fun φ => ?_⟩, ?_⟩` and prove the remaining obligations. Simplify using `using h`. Simplify using `[Ideal.span_singleton_neg]`.
+
+Use `⟨a, 1, ⟨ha, one_ne_zero, hc _, hc _, trivial, fun φ => ?_⟩, ?_⟩` and prove the remaining obligations. Simplify using `using h`. Simplify using the standard rewrite rules.
+-/
 theorem isRayField_rat_top : IsRayField ℚ ℚ ⊤ := by
   refine ⟨inferInstance, fun _ _ σ _ => Subsingleton.elim _ _, Subsingleton.elim _ _, fun I hI _ => ?_⟩
   refine iff_of_true (fun χ => ?_) ?_
@@ -121,6 +160,19 @@ theorem isRayField_rat_top : IsRayField ℚ ℚ ⊤ := by
       · simpa using h
       · simp
 
+/- English proof (translation)
+Introduce `h`. Set `e` to `Rat.ringOfIntegersEquiv`. Establish `hco : IsCoprime (2 : 𝓞 ℚ) 3` using `⟨-1, 1, by norm_num⟩`. Take `⟨α, β, ⟨-, -, -, hβ, hm, hpos⟩, hI⟩` from `(h.2.2.2 (Ideal.span {2}) (by simp) ((Ideal.isCoprime_span_singleton_iff _ _).2 hco)).1 fun χ => by`. Rewrite using `[Subsingleton.elim χ 1]`.
+
+Simplify using `[heckeIdeal, heckeVal_one]`. Rewrite `hI` using `[Ideal.span_singleton_mul_span_singleton, Ideal.span_singleton_eq_span_singleton]`. Establish `h1` using `Int.associated_iff.1 (hI.map e)`. Establish `h2` using `((Ideal.isCoprime_span_singleton_iff _ _).1 hβ).map e.toRingHom`. Establish `h3` using `map_dvd e (Ideal.mem_span_singleton.1 hm)`.
+
+Establish `h4 : (0 : ℚ) < ((e α * e β : ℤ) : ℚ)`. Use `hpos (algebraMap ℚ ℝ)` as an intermediate fact. Rewrite `this` using `[← map_mul, eq_ratCast, Rat.cast_pos]`. Rewrite using `[Int.cast_mul, Rat.ringOfIntegersEquiv_apply_coe, Rat.ringOfIntegersEquiv_apply_coe]` and apply the resulting hypothesis. Establish `h5 : 0 < e α * e β` using `by exact_mod_cast h4`.
+
+Rewrite `h1` using `[map_mul, map_ofNat]`. Rewrite `h3` using `[map_sub, map_ofNat]`. Rewrite `h2` using `[map_ofNat]`. Establish `h6 : ¬ (3 : ℤ) ∣ e β` using `fun hd => by`. Use `h2.isUnit_of_dvd' hd dvd_rfl` as an intermediate fact.
+
+Rewrite `this` using `[Int.isUnit_iff]`. Use linear arithmetic over natural numbers and integers. Break down `h1 with h1 | h1` into its components or cases. Use linear arithmetic over natural numbers and integers. Establish `: e α = -(2 * e β)` using `by omega`.
+
+Rewrite `h5` using `[this]`. Use polynomial arithmetic with `[sq_nonneg (e β)]`.
+-/
 theorem not_isRayField_rat_three : ¬ IsRayField ℚ ℚ (Ideal.span {3}) := by
   intro h
   let e := Rat.ringOfIntegersEquiv
@@ -159,14 +211,23 @@ abbrev rootOne (N : ℕ) : ℂ := Complex.exp (2 * Real.pi * Complex.I / (N : �
 
 def cycField (N : ℕ) : IntermediateField ℚ ℂ := ℚ⟮rootOne N⟯
 
+/- English proof (translation)
+The claim follows from `IntermediateField.adjoin_simple_le_iff`.
+-/
 theorem cycField_le_iff {N : ℕ} {M : IntermediateField ℚ ℂ} : cycField N ≤ M ↔ rootOne N ∈ M :=
   IntermediateField.adjoin_simple_le_iff
 
+/- English proof (translation)
+Establish `: NeZero N` using `⟨hN⟩`. Take `⟨i, -, rfl⟩` from `(Complex.isPrimitiveRoot_exp N hN).eq_pow_of_pow_eq_one hz`. Conclude with `pow_mem (IntermediateField.mem_adjoin_simple_self ℚ _) i`.
+-/
 theorem mem_cycField {N : ℕ} (hN : N ≠ 0) {z : ℂ} (hz : z ^ N = 1) : z ∈ cycField N := by
   have : NeZero N := ⟨hN⟩
   obtain ⟨i, -, rfl⟩ := (Complex.isPrimitiveRoot_exp N hN).eq_pow_of_pow_eq_one hz
   exact pow_mem (IntermediateField.mem_adjoin_simple_self ℚ _) i
 
+/- English proof (translation)
+The claim follows from `cycField_le_iff.2 (mem_cycField hN' (((Complex.isPrimitiveRoot_exp N (ne_zero_of_dvd_ne_zero hN' h)).pow_eq_one_iff_dvd N').2 h))`.
+-/
 theorem cycField_mono {N N' : ℕ} (hN' : N' ≠ 0) (h : N ∣ N') : cycField N ≤ cycField N' :=
   cycField_le_iff.2 (mem_cycField hN'
     (((Complex.isPrimitiveRoot_exp N (ne_zero_of_dvd_ne_zero hN' h)).pow_eq_one_iff_dvd N').2 h))
@@ -175,8 +236,14 @@ variable {E : Type} [Field E] [NumberField E] (φ : E →+* ℂ)
 
 def imField : IntermediateField ℚ ℂ := φ.toRatAlgHom.fieldRange
 
+/- English proof (translation)
+Unfold both sides. The equivalence is reflexive.
+-/
 theorem mem_imField {z : ℂ} : z ∈ imField φ ↔ ∃ x, φ x = z := Iff.rfl
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fun h x => h ⟨x, rfl⟩, fun h _ ⟨x, hx⟩ => hx ▸ h x⟩`.
+-/
 theorem imField_le_iff {M : IntermediateField ℚ ℂ} : imField φ ≤ M ↔ ∀ x, φ x ∈ M :=
   ⟨fun h x => h ⟨x, rfl⟩, fun h _ ⟨x, hx⟩ => hx ▸ h x⟩
 
@@ -185,16 +252,25 @@ theorem imField_le_iff {M : IntermediateField ℚ ℂ} : imField φ ≤ M ↔ �
 
 omit [NumberField E] in
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem algOf_apply (M : IntermediateField ℚ ℂ) (h : ∀ x, φ x ∈ M) (x : E) :
     letI := algOf φ M h; ((algebraMap E M x : M) : ℂ) = φ x := rfl
 
 def degOver (M : IntermediateField ℚ ℂ) (h : ∀ x, φ x ∈ M) : ℕ := letI := algOf φ M h; Module.finrank E M
 
+/- English proof (translation)
+Set `` to `algOf φ M h`. Conclude with `Module.finrank_mul_finrank ℚ E M`.
+-/
 theorem finrank_mul_degOver (M : IntermediateField ℚ ℂ) (h : ∀ x, φ x ∈ M) :
     Module.finrank ℚ E * degOver φ M h = Module.finrank ℚ M := by
   let := algOf φ M h
   exact Module.finrank_mul_finrank ℚ E M
 
+/- English proof (translation)
+Establish `h1` using `finrank_mul_degOver φ M h`. Establish `h2 : 0 < Module.finrank ℚ M` using `Module.finrank_pos`. Conclude with `Nat.pos_of_ne_zero fun h0 => by rw [h0, mul_zero] at h1; omega`.
+-/
 theorem degOver_pos (M : IntermediateField ℚ ℂ) [NumberField M] (h : ∀ x, φ x ∈ M) : 0 < degOver φ M h := by
   have h1 := finrank_mul_degOver φ M h
   have h2 : 0 < Module.finrank ℚ M := Module.finrank_pos
@@ -205,19 +281,33 @@ def IsRayFieldIn (𝔮 : Ideal (𝓞 E)) (M : IntermediateField ℚ ℂ) : Prop 
 
 variable {φ} in
 
+/- English proof (translation)
+The claim follows from `h.1 x`.
+-/
 theorem IsRayFieldIn.emb_mem {𝔮 : Ideal (𝓞 E)} {M : IntermediateField ℚ ℂ} (h : IsRayFieldIn φ 𝔮 M) (x : E) :
     φ x ∈ M := h.1 x
 
 variable {φ} in
 
+/- English proof (translation)
+The claim follows from `h.2.1`.
+-/
 theorem IsRayFieldIn.numberField {𝔮 : Ideal (𝓞 E)} {M : IntermediateField ℚ ℂ} (h : IsRayFieldIn φ 𝔮 M) :
     NumberField M := h.2.1
 
 variable {φ} in
 
+/- English proof (translation)
+The claim follows from `h.2.2`.
+-/
 theorem IsRayFieldIn.isRayField {𝔮 : Ideal (𝓞 E)} {M : IntermediateField ℚ ℂ} [NumberField M]
     (h : IsRayFieldIn φ 𝔮 M) : letI := algOf φ M h.emb_mem; IsRayField E M 𝔮 := h.2.2
 
+/- English proof (translation)
+Set `` to `φ.toAlgebra`. Set `ψ : L →ₐ[E] ℂ` to `IsAlgClosed.lift`. Establish `hm : ∀ x, φ x ∈ imField (ψ : L →+* ℂ)` using `fun x => ⟨algebraMap E L x, ψ.commutes x⟩`. Set `e₀ : L ≃ₐ[ℚ] imField (ψ : L →+* ℂ)` to `AlgEquiv.ofInjectiveField (ψ : L →+* ℂ).toRatAlgHom`. Establish `: FiniteDimensional ℚ (imField (ψ : L →+* ℂ))` using `e₀.toLinearEquiv.finiteDimensional`.
+
+Establish `hN : NumberField (imField (ψ : L →+* ℂ))` using `NumberField.of_module_finite ℚ _`. Set `` to `algOf φ _ hm`. Conclude with `⟨_, hm, hN, h.of_algEquiv (AlgEquiv.ofRingEquiv (f := e₀.toRingEquiv) fun x => Subtype.ext (ψ.commutes x))⟩`.
+-/
 theorem IsRayField.exists_isRayFieldIn {L : Type} [Field L] [NumberField L] [Algebra E L] {𝔮 : Ideal (𝓞 E)}
     (h : IsRayField E L 𝔮) : ∃ M, IsRayFieldIn φ 𝔮 M := by
   let := φ.toAlgebra
@@ -230,16 +320,25 @@ theorem IsRayField.exists_isRayFieldIn {L : Type} [Field L] [NumberField L] [Alg
   exact ⟨_, hm, hN, h.of_algEquiv
     (AlgEquiv.ofRingEquiv (f := e₀.toRingEquiv) fun x => Subtype.ext (ψ.commutes x))⟩
 
+/- English proof (translation)
+Take `⟨L, _, _, _, hL⟩` from `rayField_iff.1 h E 𝔮 h𝔮`. Conclude with `hL.exists_isRayFieldIn φ`.
+-/
 theorem exists_isRayFieldIn (h : RayField) {𝔮 : Ideal (𝓞 E)} (h𝔮 : 𝔮 ≠ ⊥) : ∃ M, IsRayFieldIn φ 𝔮 M := by
   obtain ⟨L, _, _, _, hL⟩ := rayField_iff.1 h E 𝔮 h𝔮
   exact hL.exists_isRayFieldIn φ
 
+/- English proof (translation)
+The claim follows from `isRayField_rat_top.exists_isRayFieldIn _`.
+-/
 example : ∃ M, IsRayFieldIn (algebraMap ℚ ℂ) ⊤ M := isRayField_rat_top.exists_isRayFieldIn _
 
 variable (E) in
 
 abbrev natIdeal (n : ℕ) : Ideal (𝓞 E) := Ideal.span {(n : 𝓞 E)}
 
+/- English proof (translation)
+Simplify using `using hn`.
+-/
 theorem natIdeal_ne_bot {n : ℕ} (hn : n ≠ 0) : natIdeal E n ≠ ⊥ := by
   simpa using hn
 
@@ -251,24 +350,42 @@ def powIdealElts (h : ℕ) : Set E :=
 def kummerField (h : ℕ) : IntermediateField ℚ ℂ :=
   imField φ ⊔ cycField h ⊔ IntermediateField.adjoin ℚ {z | ∃ y ∈ powIdealElts E h, z ^ h = φ y}
 
+/- English proof (translation)
+The claim follows from `le_sup_left.trans le_sup_left`.
+-/
 theorem imField_le_kummerField (h : ℕ) : imField φ ≤ kummerField φ h := le_sup_left.trans le_sup_left
 
+/- English proof (translation)
+The claim follows from `le_sup_right.trans le_sup_left`.
+-/
 theorem cycField_le_kummerField (h : ℕ) : cycField h ≤ kummerField φ h := le_sup_right.trans le_sup_left
 
+/- English proof (translation)
+The claim follows from `(le_sup_right : _ ≤ kummerField φ h) (IntermediateField.subset_adjoin ℚ _ ⟨y, hy, hz⟩)`.
+-/
 theorem mem_kummerField {h : ℕ} {y : E} (hy : y ∈ powIdealElts E h) {z : ℂ} (hz : z ^ h = φ y) :
     z ∈ kummerField φ h :=
   (le_sup_right : _ ≤ kummerField φ h) (IntermediateField.subset_adjoin ℚ _ ⟨y, hy, hz⟩)
 
+/- English proof (translation)
+Rewrite using `[kummerField, sup_le_iff, sup_le_iff, imField_le_iff, cycField_le_iff, IntermediateField.adjoin_le_iff, and_assoc]`. Conclude with `and_congr_right' (and_congr_right' ⟨fun H y hy z hz => H ⟨y, hy, hz⟩, fun H z ⟨y, hy, hz⟩ => H y hy z hz⟩)`.
+-/
 theorem kummerField_le_iff {h : ℕ} {M : IntermediateField ℚ ℂ} : kummerField φ h ≤ M ↔
     (∀ x, φ x ∈ M) ∧ rootOne h ∈ M ∧ ∀ y ∈ powIdealElts E h, ∀ z : ℂ, z ^ h = φ y → z ∈ M := by
   rw [kummerField, sup_le_iff, sup_le_iff, imField_le_iff, cycField_le_iff, IntermediateField.adjoin_le_iff, and_assoc]
   exact and_congr_right' (and_congr_right' ⟨fun H y hy z hz => H ⟨y, hy, hz⟩, fun H z ⟨y, hy, hz⟩ => H y hy z hz⟩)
 
+/- English proof (translation)
+Take `⟨h0, 𝔞, ha⟩` from `hy`. Conclude with `⟨pow_ne_zero _ h0, 𝔞, by rw [← FractionalIdeal.spanSingleton_pow, ha, pow_mul]⟩`.
+-/
 theorem pow_mem_powIdealElts {h : ℕ} {y : E} (hy : y ∈ powIdealElts E h) (k : ℕ) :
     y ^ k ∈ powIdealElts E (h * k) := by
   obtain ⟨h0, 𝔞, ha⟩ := hy
   exact ⟨pow_ne_zero _ h0, 𝔞, by rw [← FractionalIdeal.spanSingleton_pow, ha, pow_mul]⟩
 
+/- English proof (translation)
+Use `sup_le (sup_le (imField_le_kummerField φ _) ((cycField_mono h0 hd).trans (cycField_le_kummerField φ _))) ?_` and prove the remaining obligations. Take `⟨k, rfl⟩` from `hd`. Rewrite using `[IntermediateField.adjoin_le_iff]`. Introduce and unpack `z ⟨y, hy, hz⟩`. Conclude with `mem_kummerField φ (pow_mem_powIdealElts hy k) (by rw [pow_mul, hz, map_pow])`.
+-/
 theorem kummerField_mono {h h' : ℕ} (h0 : h' ≠ 0) (hd : h ∣ h') : kummerField φ h ≤ kummerField φ h' := by
   refine sup_le (sup_le (imField_le_kummerField φ _) ((cycField_mono h0 hd).trans (cycField_le_kummerField φ _))) ?_
   obtain ⟨k, rfl⟩ := hd
@@ -276,6 +393,9 @@ theorem kummerField_mono {h h' : ℕ} (h0 : h' ≠ 0) (hd : h ∣ h') : kummerFi
   rintro z ⟨y, hy, hz⟩
   exact mem_kummerField φ (pow_mem_powIdealElts hy k) (by rw [pow_mul, hz, map_pow])
 
+/- English proof (translation)
+Use `le_antisymm ((kummerField_le_iff φ).2 ⟨fun x => ⟨x, rfl⟩, ?_, fun y _ z hz => ⟨y, ?_⟩⟩) (imField_le_kummerField φ 1)` and prove the remaining obligations. Establish `h : rootOne 1 = 1` using `(pow_one _).symm.trans (Complex.isPrimitiveRoot_exp 1 one_ne_zero).pow_eq_one`. Conclude with `h ▸ one_mem _`. Rewrite `hz` using `[pow_one]`. Conclude with `hz.symm`.
+-/
 theorem kummerField_one : kummerField φ 1 = imField φ := by
   refine le_antisymm ((kummerField_le_iff φ).2 ⟨fun x => ⟨x, rfl⟩, ?_, fun y _ z hz => ⟨y, ?_⟩⟩)
     (imField_le_kummerField φ 1)
@@ -284,6 +404,9 @@ theorem kummerField_one : kummerField φ 1 = imField φ := by
   · rw [pow_one] at hz
     exact hz.symm
 
+/- English proof (translation)
+The claim follows from `mem_kummerField φ (y := -1) ⟨by simp, 1, by rw [one_pow, ← FractionalIdeal.spanSingleton_one, FractionalIdeal.spanSingleton_eq_spanSingleton] exact ⟨-1, by simp⟩⟩ (by simp)`.
+-/
 example : Complex.I ∈ kummerField φ 2 :=
   mem_kummerField φ (y := -1) ⟨by simp, 1, by
     rw [one_pow, ← FractionalIdeal.spanSingleton_one, FractionalIdeal.spanSingleton_eq_spanSingleton]
@@ -293,6 +416,9 @@ def valueSet (χ : HChar E) (s : ℝ) : Set ℂ := {z | ∃ v, χ.UnrAt v ∧ z 
 
 def valueField (χ : HChar E) (s : ℝ) : IntermediateField ℚ ℂ := IntermediateField.adjoin ℚ (valueSet χ s)
 
+/- English proof (translation)
+Rewrite using `[valueField, IntermediateField.adjoin_le_iff]`. Conclude with `⟨fun h v hv => ⟨⟨_, h ⟨v, hv, rfl⟩⟩, rfl⟩, fun h z ⟨v, hv, hz⟩ => by`. Take `⟨y, hy⟩` from `h v hv`. Conclude with `hz ▸ hy ▸ y.2⟩`.
+-/
 theorem valueField_le_iff {χ : HChar E} {s : ℝ} {M : IntermediateField ℚ ℂ} :
     valueField χ s ≤ M ↔ χ.ValuesIn s M.val.toRingHom := by
   rw [valueField, IntermediateField.adjoin_le_iff]
@@ -300,6 +426,9 @@ theorem valueField_le_iff {χ : HChar E} {s : ℝ} {M : IntermediateField ℚ �
     obtain ⟨y, hy⟩ := h v hv
     exact hz ▸ hy ▸ y.2⟩
 
+/- English proof (translation)
+Rewrite using `[valueField, IntermediateField.adjoin_le_iff]`. Conclude with `⟨fun h z ⟨v, hv, hz⟩ => hz ▸ h v hv, fun h v hv => h ⟨v, hv, rfl⟩⟩`.
+-/
 theorem valuesIn_iff {χ : HChar E} {s : ℝ} {C : Type} [Field C] [NumberField C] (e : C →+* ℂ) :
     χ.ValuesIn s e ↔ valueField χ s ≤ imField e := by
   rw [valueField, IntermediateField.adjoin_le_iff]
@@ -312,18 +441,29 @@ section Curve
 def torsionCoords (W : WeierstrassCurve ℂ) (n : ℕ) : Set ℂ :=
   {z | ∃ (x y : ℂ) (h : W.toAffine.Nonsingular x y), n • WeierstrassCurve.Affine.Point.some x y h = 0 ∧ (z = x ∨ z = y)}
 
+/- English proof (translation)
+Introduce and unpack `z ⟨x, y, hxy, h0, hz⟩`. Take `⟨k, rfl⟩` from `h`. Conclude with `⟨x, y, hxy, by rw [mul_comm, mul_smul, h0, smul_zero], hz⟩`.
+-/
 theorem torsionCoords_mono (W : WeierstrassCurve ℂ) {n n' : ℕ} (h : n ∣ n') :
     torsionCoords W n ⊆ torsionCoords W n' := by
   rintro z ⟨x, y, hxy, h0, hz⟩
   obtain ⟨k, rfl⟩ := h
   exact ⟨x, y, hxy, by rw [mul_comm, mul_smul, h0, smul_zero], hz⟩
 
+/- English proof (translation)
+Use `Set.eq_empty_of_forall_notMem ?_` and prove the remaining obligations. Introduce and unpack `z ⟨x, y, hxy, h0, -⟩`. Rewrite `h0` using `[one_smul]`. Conclude with `WeierstrassCurve.Affine.Point.some_ne_zero hxy h0`.
+-/
 theorem torsionCoords_one (W : WeierstrassCurve ℂ) : torsionCoords W 1 = ∅ := by
   refine Set.eq_empty_of_forall_notMem ?_
   rintro z ⟨x, y, hxy, h0, -⟩
   rw [one_smul] at h0
   exact WeierstrassCurve.Affine.Point.some_ne_zero hxy h0
 
+/- English proof (translation)
+Use `torsionCoords_mono _ (show 2 ∣ 12 by norm_num) ⟨Complex.I, 0, ?_, ?_, Or.inl rfl⟩` and prove the remaining obligations. Rewrite using `[WeierstrassCurve.Affine.nonsingular_iff, WeierstrassCurve.Affine.equation_iff]`. Simplify using `[pow_succ]`. Evaluate the numerical expressions. Rewrite using `[two_smul]`.
+
+Conclude with `WeierstrassCurve.Affine.Point.add_self_of_Y_eq (by simp [WeierstrassCurve.Affine.negY])`.
+-/
 example : Complex.I ∈ torsionCoords ⟨0, 0, 0, 1, 0⟩ 12 := by
   refine torsionCoords_mono _ (show 2 ∣ 12 by norm_num) ⟨Complex.I, 0, ?_, ?_, Or.inl rfl⟩
   · rw [WeierstrassCurve.Affine.nonsingular_iff, WeierstrassCurve.Affine.equation_iff]
@@ -342,16 +482,30 @@ def torsionField : IntermediateField ℚ ℂ :=
 def discField : IntermediateField ℚ ℂ :=
   torsionField d A ⊔ IntermediateField.adjoin ℚ {z : ℂ | z ^ 12 = (A.Δ : ℂ)}
 
+/- English proof (translation)
+The claim follows from `le_sup_left`.
+-/
 theorem hilbertField_le_torsionField : hilbertField d F ≤ torsionField d A := le_sup_left
 
+/- English proof (translation)
+The claim follows from `le_sup_left`.
+-/
 theorem torsionField_le_discField : torsionField d A ≤ discField d A := le_sup_left
 
+/- English proof (translation)
+Simplify using `only [discField, torsionField, hilbertField, sup_le_iff, IntermediateField.adjoin_le_iff, and_assoc, Set.singleton_subset_iff, SetLike.mem_coe]`. Both sides reduce to the same expression.
+-/
 theorem discField_le_iff {M : IntermediateField ℚ ℂ} : discField d A ≤ M ↔
     sqrtNegNat d ∈ M ∧ F ≤ M ∧ torsionCoords (A.baseChange ℂ) 12 ⊆ M ∧ ∀ z : ℂ, z ^ 12 = (A.Δ : ℂ) → z ∈ M := by
   simp only [discField, torsionField, hilbertField, sup_le_iff, IntermediateField.adjoin_le_iff, and_assoc,
     Set.singleton_subset_iff, SetLike.mem_coe]
   rfl
 
+/- English proof (translation)
+Apply the tactic sequence `refine le_antisymm (sup_le le_sup_left ?_) (sup_le le_sup_left ?_) <;> rw [IntermediateField.adjoin_le_iff]`. Introduce `z (hz : z ^ 12 = _)`. Establish `h1 : z / u ∈ discField d A` using `((discField_le_iff d A).1 le_rfl).2.2.2 _ (by rw [div_pow, hz]; field_simp)`. Simplify `mul_mem h1 (torsionField_le_discField d A hu)` using `[h0]`. Introduce `z (hz : z ^ 12 = _)`.
+
+Establish `h1` using `(le_sup_right : _ ≤ torsionField d A ⊔ _) (IntermediateField.subset_adjoin ℚ {z : ℂ | z ^ 12 = u ^ 12 * (A.Δ : ℂ)} (show (u * z) ^ 12 = _ by rw [mul_pow, hz]))`. Simplify `mul_mem (inv_mem ((le_sup_left : torsionField d A ≤ _) hu)) h1` using `[h0]`.
+-/
 theorem discField_eq_of_mem {u : ℂ} (hu : u ∈ torsionField d A) (h0 : u ≠ 0) :
     torsionField d A ⊔ IntermediateField.adjoin ℚ {z : ℂ | z ^ 12 = u ^ 12 * (A.Δ : ℂ)} = discField d A := by
   refine le_antisymm (sup_le le_sup_left ?_) (sup_le le_sup_left ?_) <;> rw [IntermediateField.adjoin_le_iff]
@@ -366,6 +520,9 @@ theorem discField_eq_of_mem {u : ℂ} (hu : u ∈ torsionField d A) (h0 : u ≠ 
 
 variable {d A} in
 
+/- English proof (translation)
+Rewrite using `[hilbertField, h.field_eq hL, ← IntermediateField.adjoin_union]`. Both sides reduce to the same expression.
+-/
 theorem hilbertField_eq (h : IsGoodCMCurve d F A) {L : PeriodPair} (hL : IsIntegersLattice d L) :
     hilbertField d F = ℚ⟮sqrtNegNat d, (latticeCurve L).j⟯ := by
   rw [hilbertField, h.field_eq hL, ← IntermediateField.adjoin_union]
@@ -381,13 +538,22 @@ variable {R : Ranks} (H : Host R)
 
 def typeNorm (p q : ℕ) (γ : H.E) : H.E := ∏ g : Tau R, (H.sigmaOf g γ ^ p * H.sigmaOf g (H.conj γ) ^ q)
 
+/- English proof (translation)
+Rewrite using `[typeNorm, typeNorm, typeNorm, ← Finset.prod_mul_distrib]`. Conclude with `Finset.prod_congr rfl fun g _ => by rw [map_mul, map_mul, map_mul]; ring`.
+-/
 theorem typeNorm_mul (p q : ℕ) (γ γ' : H.E) : typeNorm H p q (γ * γ') = typeNorm H p q γ * typeNorm H p q γ' := by
   rw [typeNorm, typeNorm, typeNorm, ← Finset.prod_mul_distrib]
   exact Finset.prod_congr rfl fun g _ => by rw [map_mul, map_mul, map_mul]; ring
 
+/- English proof (translation)
+The claim follows from `Finset.prod_ne_zero_iff.2 fun g _ => mul_ne_zero (pow_ne_zero _ (by simpa using h)) (pow_ne_zero _ (by simpa using h))`.
+-/
 theorem typeNorm_ne_zero (p q : ℕ) {γ : H.E} (h : γ ≠ 0) : typeNorm H p q γ ≠ 0 :=
   Finset.prod_ne_zero_iff.2 fun g _ => mul_ne_zero (pow_ne_zero _ (by simpa using h)) (pow_ne_zero _ (by simpa using h))
 
+/- English proof (translation)
+Simplify using `only [typeNorm, map_natCast, Finset.prod_const, Finset.card_univ, card_Tau H, ← pow_add, ← pow_mul]`. Rewrite using `[mul_comm]`.
+-/
 theorem typeNorm_natCast (p q n : ℕ) : typeNorm H p q (n : H.E) = (n : H.E) ^ (R.f * (p + q)) := by
   simp only [typeNorm, map_natCast, Finset.prod_const, Finset.card_univ, card_Tau H, ← pow_add, ← pow_mul]
   rw [mul_comm]
@@ -396,6 +562,13 @@ def kPsiField (b : ClassBasis H.E) (p q : ℕ) : IntermediateField ℚ ℂ :=
   imField H.φ₀ ⊔ cycField (classNumber H.E) ⊔
     IntermediateField.adjoin ℚ {z | ∃ i, z ^ b.h i = H.φ₀ (typeNorm H p q (b.γ i : H.E))}
 
+/- English proof (translation)
+Use `le_antisymm (sup_le le_sup_left ?_) (sup_le_sup_left (IntermediateField.adjoin.mono _ _ _ ?_) _)` and prove the remaining obligations. Rewrite using `[IntermediateField.adjoin_le_iff]`. Introduce and unpack `z ⟨i, hz⟩`. Establish `h0 : ψ i ≠ 0` using `fun h => by`. Establish `h1` using `hψ i`.
+
+Rewrite `h1` using `[h, zero_pow (b.h_pos i).ne']`. Conclude with `typeNorm_ne_zero H p q (b.γ i).ne_zero ((map_eq_zero _).1 h1.symm)`. Take `⟨k, hk⟩ : b.h i ∣ classNumber H.E` from `orderOf_dvd_card`. Establish `h1 : z / ψ i ∈ cycField (classNumber H.E)` using `mem_cycField (classNumber_ne_zero _) (by`. Rewrite using `[hk, pow_mul, div_pow, hz, ← hψ i, div_self (pow_ne_zero _ h0), one_pow])`.
+
+Establish `h2` using `mul_mem ((le_sup_right.trans le_sup_left : _ ≤ imField H.φ₀ ⊔ cycField (classNumber H.E) ⊔ IntermediateField.adjoin ℚ (Set.range ψ)) h1) ((le_sup_right : _ ≤ imField H.φ₀ ⊔ cycField (classNumber H.E) ⊔ IntermediateField.adjoin ℚ (Set.range ψ)) (IntermediateField.subset_adjoin ℚ ( …`. Simplify `h2` using `[h0]`. Introduce and unpack `_ ⟨i, rfl⟩`. Conclude with `⟨i, hψ i⟩`.
+-/
 theorem kPsiField_eq (b : ClassBasis H.E) (p q : ℕ) (ψ : Fin b.k → ℂ)
     (hψ : ∀ i, ψ i ^ b.h i = H.φ₀ (typeNorm H p q (b.γ i : H.E))) :
     kPsiField H b p q = imField H.φ₀ ⊔ cycField (classNumber H.E) ⊔ IntermediateField.adjoin ℚ (Set.range ψ) := by
@@ -423,12 +596,18 @@ abbrev Chars (P : Pre) : Type := HFrame P.host (fun j τ => (P.hc τ).e j)
 
 def modulus (P : Pre) : ℕ := P.host.g 0 * P.host.g 1 * P.host.pde * P.host.pde'
 
+/- English proof (translation)
+The claim follows from `mul_ne_zero (mul_ne_zero (mul_ne_zero (P.host.g_prime 0).ne_zero (P.host.g_prime 1).ne_zero) P.host.pde_prime.ne_zero) P.host.pde'_prime.ne_zero`.
+-/
 theorem modulus_ne_zero (P : Pre) : modulus P ≠ 0 :=
   mul_ne_zero (mul_ne_zero (mul_ne_zero (P.host.g_prime 0).ne_zero (P.host.g_prime 1).ne_zero)
     P.host.pde_prime.ne_zero) P.host.pde'_prime.ne_zero
 
 def rootOrder (P : Pre) : ℕ := Nat.lcm P.restRowsFiniteGroupCard (3 ^ 4 * 5 ^ 4)
 
+/- English proof (translation)
+The claim follows from `Nat.lcm_ne_zero P.restRowsFiniteGroupCard_pos.ne' (by norm_num)`.
+-/
 theorem rootOrder_ne_zero (P : Pre) : rootOrder P ≠ 0 := Nat.lcm_ne_zero P.restRowsFiniteGroupCard_pos.ne' (by norm_num)
 
 structure FieldDat (P : Pre) where
@@ -443,6 +622,9 @@ structure FieldDat (P : Pre) where
 
   basis : GlobalTheory.IndefiniteRowSideFullHecke.RootValueClassBasis.ClassBasis P.host.E
 
+/- English proof (translation)
+Take `⟨M, hM⟩` from `exists_isRayFieldIn P.host.φ₀ hR (natIdeal_ne_bot (modulus_ne_zero P))`. Establish `h16 : P.host.d % 16 = 7` using `P.host.hyp.2.2.2.1`. Take `⟨F, A, hF⟩` from `hA.exists_isGoodCMCurve P.host.hyp.2.1 (by omega) (by omega)`. Conclude with `⟨⟨M, hM, F, A, hF, Classical.choice inferInstance⟩⟩`.
+-/
 theorem nonempty_fieldDat (hR : RayField) (hA : CMCurveGoodOutsidePrimeSt) (P : Pre) : Nonempty (FieldDat P) := by
   obtain ⟨M, hM⟩ := exists_isRayFieldIn P.host.φ₀ hR (natIdeal_ne_bot (modulus_ne_zero P))
   have h16 : P.host.d % 16 = 7 := P.host.hyp.2.2.2.1
@@ -457,8 +639,14 @@ instance rayNumberField : NumberField D.ray := D.isRay.numberField
 
 def hstar : ℕ := degOver P.host.φ₀ D.ray D.isRay.emb_mem
 
+/- English proof (translation)
+The claim follows from `degOver_pos _ _ _`.
+-/
 theorem hstar_pos : 0 < D.hstar := degOver_pos _ _ _
 
+/- English proof (translation)
+The claim follows from `finrank_mul_degOver _ _ _`.
+-/
 theorem finrank_mul_hstar : Module.finrank ℚ P.host.E * D.hstar = Module.finrank ℚ D.ray :=
   finrank_mul_degOver _ _ _
 
@@ -472,18 +660,39 @@ def Om : IntermediateField ℚ ℂ := D.M' ⊔ D.ray ⊔ cycField (rootOrder P) 
 
 def KPsi (j : ℕ) : IntermediateField ℚ ℂ := kPsiField P.host D.basis (P.R.sigW j).1 (P.R.sigW j).2
 
+/- English proof (translation)
+The claim follows from `torsionField_le_discField _ _`.
+-/
 theorem M_le_M' : D.M ≤ D.M' := torsionField_le_discField _ _
 
+/- English proof (translation)
+The claim follows from `(le_sup_left.trans le_sup_left).trans le_sup_left`.
+-/
 theorem M'_le_Om : D.M' ≤ D.Om := (le_sup_left.trans le_sup_left).trans le_sup_left
 
+/- English proof (translation)
+The claim follows from `(le_sup_right.trans le_sup_left).trans le_sup_left`.
+-/
 theorem ray_le_Om : D.ray ≤ D.Om := (le_sup_right.trans le_sup_left).trans le_sup_left
 
+/- English proof (translation)
+The claim follows from `le_sup_right.trans le_sup_left`.
+-/
 theorem cycField_le_Om : cycField (rootOrder P) ≤ D.Om := le_sup_right.trans le_sup_left
 
+/- English proof (translation)
+The claim follows from `le_sup_right`.
+-/
 theorem V_le_Om : D.V ≤ D.Om := le_sup_right
 
+/- English proof (translation)
+The claim follows from `(imField_le_kummerField _ _).trans D.V_le_Om`.
+-/
 theorem imField_le_Om : imField P.host.φ₀ ≤ D.Om := (imField_le_kummerField _ _).trans D.V_le_Om
 
+/- English proof (translation)
+The claim follows from `cycField_le_iff.1 ((cycField_mono (rootOrder_ne_zero P) ((show 15 ∣ 3 ^ 4 * 5 ^ 4 by norm_num).trans (Nat.dvd_lcm_right _ _))).trans D.cycField_le_Om)`.
+-/
 example : rootOne 15 ∈ D.Om :=
   cycField_le_iff.1 ((cycField_mono (rootOrder_ne_zero P)
     ((show 15 ∣ 3 ^ 4 * 5 ^ 4 by norm_num).trans (Nat.dvd_lcm_right _ _))).trans D.cycField_le_Om)
@@ -501,11 +710,19 @@ def charField {P : Pre} (C : Chars P) : IntermediateField ℚ ℂ :=
 def listField {P : Pre} (D : FieldDat P) (C : Chars P) : IntermediateField ℚ ℂ :=
   imField P.host.φ₀ ⊔ D.M' ⊔ D.ray ⊔ rootsField P ⊔ charField C ⊔ ⨆ j ∈ Set.Icc 1 P.R.m, D.KPsi j
 
+/- English proof (translation)
+Simplify using `only [listField, sup_le_iff, iSup_le_iff, and_assoc, Set.mem_Icc, and_imp]`.
+-/
 theorem listField_le_iff {P : Pre} (D : FieldDat P) (C : Chars P) {N : IntermediateField ℚ ℂ} :
     listField D C ≤ N ↔ imField P.host.φ₀ ≤ N ∧ D.M' ≤ N ∧ D.ray ≤ N ∧ rootsField P ≤ N ∧ charField C ≤ N ∧
       ∀ j, 1 ≤ j → j ≤ P.R.m → D.KPsi j ≤ N := by
   simp only [listField, sup_le_iff, iSup_le_iff, and_assoc, Set.mem_Icc, and_imp]
 
+/- English proof (translation)
+Establish `hp` using `P.host.g_prime k`. Establish `: Fact (P.host.g k).Prime` using `⟨hp⟩`. Establish `h : ((C.W.om k a : ℂˣ) : ℂ) ∈ cycField (P.host.g k * (P.host.g k - 1))` using `mem_cycField (mul_ne_zero hp.ne_zero (by have := hp.two_le; omega)) (by`. Rewrite using `[mul_comm, pow_mul, ← Units.val_pow_eq_pow_val, ← map_pow, ZMod.units_pow_card_sub_one_eq_one]`. Use the proof step `simp)`.
+
+Establish `h' : cycField (P.host.g k * (P.host.g k - 1)) ≤ rootsField P` using `by fin_cases k`. Conclude with `((le_sup_right.trans le_sup_left).trans le_sup_left).trans le_sup_left`. Conclude with `(le_sup_right.trans le_sup_left).trans le_sup_left`. Conclude with `h' h`.
+-/
 theorem om_mem_rootsField {P : Pre} (C : Chars P) (k : Fin 2) (a : (ZMod (P.host.g k))ˣ) :
     ((C.W.om k a : ℂˣ) : ℂ) ∈ rootsField P := by
   have hp := P.host.g_prime k
@@ -538,19 +755,40 @@ def AutomorphicRingToComplex : B.LL0 →+* ℂ := B.embLL.comp B.LL0.val.toRingH
 
 def KstoC : B.Ks →+* ℂ := B.embLL.comp B.Ks.val.toRingHom
 
+/- English proof (translation)
+Unfold both sides. The equivalence is reflexive.
+-/
 theorem mem_LLC {z : ℂ} : z ∈ B.LLC ↔ ∃ x, B.embLL x = z := Iff.rfl
 
+/- English proof (translation)
+Unfold both sides. The equivalence is reflexive.
+-/
 theorem mem_LL0C {z : ℂ} : z ∈ B.fixedCoefficientFieldInComplex ↔ ∃ x ∈ B.LL0, B.embLL x = z := Iff.rfl
 
+/- English proof (translation)
+Unfold both sides. The equivalence is reflexive.
+-/
 theorem mem_KsC {z : ℂ} : z ∈ B.KsC ↔ ∃ x ∈ B.Ks, B.embLL x = z := Iff.rfl
 
+/- English proof (translation)
+Introduce `_ ⟨x, hx, h⟩` and use `⟨x, B.Ks_le hx, h⟩`.
+-/
 theorem KsC_le_LL0C : B.KsC ≤ B.fixedCoefficientFieldInComplex := fun _ ⟨x, hx, h⟩ => ⟨x, B.Ks_le hx, h⟩
 
+/- English proof (translation)
+Introduce `_ ⟨x, _, h⟩` and use `⟨x, h⟩`.
+-/
 theorem fixedField_le_coefficientField : B.fixedCoefficientFieldInComplex ≤ B.LLC := fun _ ⟨x, _, h⟩ => ⟨x, h⟩
 
+/- English proof (translation)
+The claim follows from `le_antisymm (fun _ ⟨x, h⟩ => ⟨x.1, x.2, h⟩) fun _ ⟨x, hx, h⟩ => ⟨⟨x, hx⟩, h⟩`.
+-/
 theorem imField_KstoC : imField B.KstoC = B.KsC :=
   le_antisymm (fun _ ⟨x, h⟩ => ⟨x.1, x.2, h⟩) fun _ ⟨x, hx, h⟩ => ⟨⟨x, hx⟩, h⟩
 
+/- English proof (translation)
+The claim follows from `le_antisymm (fun _ ⟨x, h⟩ => ⟨x.1, x.2, h⟩) fun _ ⟨x, hx, h⟩ => ⟨⟨x, hx⟩, h⟩`.
+-/
 theorem imField_LL0toC : imField B.AutomorphicRingToComplex = B.fixedCoefficientFieldInComplex :=
   le_antisymm (fun _ ⟨x, h⟩ => ⟨x.1, x.2, h⟩) fun _ ⟨x, hx, h⟩ => ⟨⟨x, hx⟩, h⟩
 
@@ -560,13 +798,25 @@ instance numberField_KsC : NumberField B.KsC :=
   have : FiniteDimensional ℚ B.KsC := B.KsEquiv.toLinearEquiv.finiteDimensional
   NumberField.of_module_finite ℚ _
 
+/- English proof (translation)
+The claim follows from `B.KsEquiv.toLinearEquiv.finrank_eq.symm`.
+-/
 theorem finrank_KsC : Module.finrank ℚ B.KsC = Module.finrank ℚ B.Ks := B.KsEquiv.toLinearEquiv.finrank_eq.symm
 
+/- English proof (translation)
+The claim follows from `(discr_eq_discr_of_algEquiv _ B.KsEquiv).symm`.
+-/
 theorem discr_KsC : discr B.KsC = discr B.Ks := (discr_eq_discr_of_algEquiv _ B.KsEquiv).symm
 
+/- English proof (translation)
+The claim follows from `(imField_le_iff _).2 fun x => ⟨B.embE x, B.E_le_Ks x, RingHom.congr_fun B.embE_φ₀ x⟩`.
+-/
 theorem imField_le_KsC : imField B.host.φ₀ ≤ B.KsC :=
   (imField_le_iff _).2 fun x => ⟨B.embE x, B.E_le_Ks x, RingHom.congr_fun B.embE_φ₀ x⟩
 
+/- English proof (translation)
+Simplify using `only [rootsField, sup_le_iff, cycField_le_iff]`. Conclude with `⟨⟨⟨⟨B.roots_Ks _ (by simp), B.roots_Ks _ (by simp)⟩, B.roots_Ks _ (by simp)⟩, B.roots_Ks _ (by simp)⟩, B.roots_Ks _ (by simp)⟩`.
+-/
 theorem rootsField_le_KsC : rootsField B.toPre ≤ B.KsC := by
   simp only [rootsField, sup_le_iff, cycField_le_iff]
   exact ⟨⟨⟨⟨B.roots_Ks _ (by simp), B.roots_Ks _ (by simp)⟩, B.roots_Ks _ (by simp)⟩, B.roots_Ks _ (by simp)⟩,
@@ -599,18 +849,27 @@ def LowerOK : Prop := B.RayIn D ∧ B.CurveIn D ∧ B.ValIn C ∧ B.RootsIn c M 
 
 def FieldsOK : Prop := B.LowerOK D C c M ∧ B.KsLeOm D
 
+/- English proof (translation)
+Simplify using `only [ValIn, charField, valuesIn_iff, imField_KstoC, imField_LL0toC, sup_le_iff, iSup_le_iff, and_assoc, IntermediateField.adjoin_le_iff]`. Use `and_congr_right' (and_congr_right' (and_congr_right' (and_congr_right' (and_congr_left' ?_))))` and prove the remaining obligations. Conclude with `⟨fun h z ⟨k, a, hz⟩ => hz ▸ h k a, fun h k a => h ⟨k, a, rfl⟩⟩`.
+-/
 theorem valIn_iff : B.ValIn C ↔ charField C ≤ B.KsC ∧ valueField C.chiPsi 0 ≤ B.fixedCoefficientFieldInComplex := by
   simp only [ValIn, charField, valuesIn_iff, imField_KstoC, imField_LL0toC, sup_le_iff, iSup_le_iff, and_assoc,
     IntermediateField.adjoin_le_iff]
   refine and_congr_right' (and_congr_right' (and_congr_right' (and_congr_right' (and_congr_left' ?_))))
   exact ⟨fun h z ⟨k, a, hz⟩ => hz ▸ h k a, fun h k a => h ⟨k, a, rfl⟩⟩
 
+/- English proof (translation)
+Rewrite using `[LowerOK, RayIn, valIn_iff, listField_le_iff]`. Conclude with `⟨fun ⟨⟨h1, h2⟩, h3, ⟨h4, h5⟩, h6, h7⟩ => ⟨⟨B.imField_le_KsC, h3, h1, B.rootsField_le_KsC, h4, h7⟩, h5, h6, h2⟩, fun ⟨⟨_, h3, h1, _, h4, h7⟩, h5, h6, h2⟩ => ⟨⟨h1, h2⟩, h3, ⟨h4, h5⟩, h6, h7⟩⟩`.
+-/
 theorem lowerOK_iff : B.LowerOK D C c M ↔
     listField D C ≤ B.KsC ∧ valueField C.chiPsi 0 ≤ B.fixedCoefficientFieldInComplex ∧ B.RootsIn c M ∧ B.RayInLL := by
   rw [LowerOK, RayIn, valIn_iff, listField_le_iff]
   exact ⟨fun ⟨⟨h1, h2⟩, h3, ⟨h4, h5⟩, h6, h7⟩ => ⟨⟨B.imField_le_KsC, h3, h1, B.rootsField_le_KsC, h4, h7⟩, h5, h6, h2⟩,
     fun ⟨⟨_, h3, h1, _, h4, h7⟩, h5, h6, h2⟩ => ⟨⟨h1, h2⟩, h3, ⟨h4, h5⟩, h6, h7⟩⟩
 
+/- English proof (translation)
+Rewrite using `[FieldsOK, lowerOK_iff, KsLeOm]`. The claim follows by propositional logic.
+-/
 theorem fieldsOK_iff : B.FieldsOK D C c M ↔ (listField D C ≤ B.KsC ∧ B.KsC ≤ D.Om) ∧
     valueField C.chiPsi 0 ≤ B.fixedCoefficientFieldInComplex ∧ B.RootsIn c M ∧ B.RayInLL := by
   rw [FieldsOK, lowerOK_iff, KsLeOm]
@@ -618,6 +877,9 @@ theorem fieldsOK_iff : B.FieldsOK D C c M ↔ (listField D C ≤ B.KsC ∧ B.KsC
 
 variable {B D C c M}
 
+/- English proof (translation)
+Establish `key : ∀ {χ : HChar B.host.E} {s : ℝ}, χ.ValuesIn s B.KstoC → χ.ValuesIn s B.AutomorphicRingToComplex` using `fun hχ v hv => by`. Take `⟨y, hy⟩` from `hχ v hv`. Conclude with `⟨⟨y.1, B.Ks_le y.2⟩, hy⟩`. Conclude with `⟨fun j => key (h.1 j), key h.2.1, h.2.2.2.2.2, key h.2.2.1, key h.2.2.2.1⟩`.
+-/
 theorem ValIn.characterValues_mem_fixedField (h : B.ValIn C) :
     (∀ j, (C.mu0 j).ValuesIn 0 B.AutomorphicRingToComplex) ∧ C.eta.ValuesIn (1 / 2) B.AutomorphicRingToComplex ∧ C.chiPsi.ValuesIn 0 B.AutomorphicRingToComplex ∧
       C.del.ValuesIn 0 B.AutomorphicRingToComplex ∧ C.del'.ValuesIn 0 B.AutomorphicRingToComplex := by
@@ -626,17 +888,26 @@ theorem ValIn.characterValues_mem_fixedField (h : B.ValIn C) :
     exact ⟨⟨y.1, B.Ks_le y.2⟩, hy⟩
   exact ⟨fun j => key (h.1 j), key h.2.1, h.2.2.2.2.2, key h.2.2.1, key h.2.2.2.1⟩
 
+/- English proof (translation)
+Establish `key : ∀ {p a a' : ℕ}, p ≠ 0 → a' ≤ a → rootOne (p ^ a) ∈ B.fixedCoefficientFieldInComplex → rootOne (p ^ a') ∈ B.fixedCoefficientFieldInComplex` using `fun hp ha h => cycField_le_iff.1 ((cycField_mono (pow_ne_zero _ hp) (pow_dvd_pow _ ha)).trans (cycField_le_iff.2 h))`. Conclude with `⟨key (by norm_num) hc h.1, key B.host.pde_prime.ne_zero (by omega) h.2.1, key B.host.pde'_prime.ne_zero (by omega) h.2.2⟩`.
+-/
 theorem RootsIn.mono (h : B.RootsIn c M) {c' M' : ℕ} (hc : c' ≤ c) (hM : M' ≤ M) : B.RootsIn c' M' := by
   have key : ∀ {p a a' : ℕ}, p ≠ 0 → a' ≤ a → rootOne (p ^ a) ∈ B.fixedCoefficientFieldInComplex → rootOne (p ^ a') ∈ B.fixedCoefficientFieldInComplex :=
     fun hp ha h => cycField_le_iff.1 ((cycField_mono (pow_ne_zero _ hp) (pow_dvd_pow _ ha)).trans (cycField_le_iff.2 h))
   exact ⟨key (by norm_num) hc h.1, key B.host.pde_prime.ne_zero (by omega) h.2.1,
     key B.host.pde'_prime.ne_zero (by omega) h.2.2⟩
 
+/- English proof (translation)
+Take `⟨-, h1, h2, -, h3, h4⟩` from `(listField_le_iff D C).1 h.ge`. Conclude with `⟨h2, h1, h3, h4⟩`.
+-/
 theorem KsExact.lower (h : B.KsExact D C) :
     D.ray ≤ B.KsC ∧ B.CurveIn D ∧ charField C ≤ B.KsC ∧ B.KummerIn D := by
   obtain ⟨-, h1, h2, -, h3, h4⟩ := (listField_le_iff D C).1 h.ge
   exact ⟨h2, h1, h3, h4⟩
 
+/- English proof (translation)
+Rewrite using `[KsLeOm, show B.KsC = listField D C from h]`.
+-/
 theorem KsExact.ksLeOm_iff (h : B.KsExact D C) : B.KsLeOm D ↔ listField D C ≤ D.Om := by
   rw [KsLeOm, show B.KsC = listField D C from h]
 
@@ -645,18 +916,39 @@ namespace FieldsOK
 variable (h : B.FieldsOK D C c M)
 include h
 
+/- English proof (translation)
+The claim follows from `h.1.1`.
+-/
 theorem rayIn : B.RayIn D := h.1.1
 
+/- English proof (translation)
+The claim follows from `h.1.2.1`.
+-/
 theorem curveIn : B.CurveIn D := h.1.2.1
 
+/- English proof (translation)
+The claim follows from `h.1.2.2.1`.
+-/
 theorem valIn : B.ValIn C := h.1.2.2.1
 
+/- English proof (translation)
+The claim follows from `h.1.2.2.2.1`.
+-/
 theorem rootsIn : B.RootsIn c M := h.1.2.2.2.1
 
+/- English proof (translation)
+The claim follows from `h.1.2.2.2.2`.
+-/
 theorem kummerIn : B.KummerIn D := h.1.2.2.2.2
 
+/- English proof (translation)
+The claim follows from `h.2`.
+-/
 theorem ksLeOm : B.KsLeOm D := h.2
 
+/- English proof (translation)
+The claim follows from `((B.fieldsOK_iff D C c M).1 h).1.1`.
+-/
 theorem listField_le : listField D C ≤ B.KsC := ((B.fieldsOK_iff D C c M).1 h).1.1
 
 end FieldsOK

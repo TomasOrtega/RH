@@ -4,10 +4,20 @@ open NumberField Filter Topology
 
 namespace ReciprocityTheory.Cheb
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨by rw [← hP, under_asIdeal]⟩`.
+-/
 theorem liesOver_of_under_eq {E E' : Type} [Field E] [NumberField E] [Field E'] [NumberField E'] [Algebra E E']
     (P : Prm E') (q : Prm E) (hP : under P = q) : P.asIdeal.LiesOver q.asIdeal :=
   ⟨by rw [← hP, under_asIdeal]⟩
 
+/- English proof (translation)
+Establish `hlp : l.Prime` using `Fact.out`. Establish `: NeZero l` using `⟨hlp.ne_zero⟩`. Use `set M := CyclotomicField l E`. Establish `hz` using `(IsCyclotomicExtension.zeta_spec l E M).toInteger_isPrimitiveRoot`. Establish `h1 : Ideal.absNorm P.asIdeal ≠ 1` using `Ideal.absNorm_eq_one_iff.not.mpr P.isPrime.ne_top`.
+
+Establish `hq` using `hz.idealQuotient_mk (I := P.asIdeal) h1 hl`. Establish `: P.asIdeal.IsMaximal` using `P.isMaximal`. Set `_` to `Ideal.Quotient.field P.asIdeal`. Establish `hu` using `hq.isUnit hlp.ne_zero`. Establish `hu' : IsPrimitiveRoot hu.unit l` using `IsPrimitiveRoot.coe_units_iff.mp hq`.
+
+Establish `hd : orderOf hu.unit ∣ Nat.card (𝓞 M ⧸ P.asIdeal)ˣ` using `orderOf_dvd_natCard _`. Rewrite `hd` using `[← hu'.eq_orderOf, Nat.card_units]`. Simplify `hd` using `[Nrm, Ideal.absNorm_apply, Submodule.cardQuot_apply]`.
+-/
 theorem prime_dvd_norm_sub_one_cyclotomic (E : Type) [Field E] [NumberField E] (l : ℕ) [Fact l.Prime]
     (P : Prm (CyclotomicField l E)) (hl : Nat.Coprime (Nrm P) l) : l ∣ Nrm P - 1 := by
   have hlp : l.Prime := Fact.out
@@ -24,6 +34,9 @@ theorem prime_dvd_norm_sub_one_cyclotomic (E : Type) [Field E] [NumberField E] (
   rw [← hu'.eq_orderOf, Nat.card_units] at hd
   simpa [Nrm, Ideal.absNorm_apply, Submodule.cardQuot_apply] using hd
 
+/- English proof (translation)
+Establish `hlp : l.Prime` using `Fact.out`. Use `liesOver_of_under_eq P q hP` as an intermediate fact. Establish `hN : Nrm q ^ P.asIdeal.inertiaDeg (𝓞 E) = Nrm P` using `Ideal.absNorm_pow_inertiaDeg q.asIdeal P.asIdeal`. Establish `hcq : Nat.Coprime (Nrm q) l` using `(Nat.coprime_comm).mp ((Nat.Prime.coprime_iff_not_dvd hlp).mpr hl)`. Conclude with `hN ▸ Nat.Coprime.pow_left _ hcq`.
+-/
 theorem norm_coprime_of_not_dvd_under (E : Type) [Field E] [NumberField E] (l : ℕ) [Fact l.Prime] (q : Prm E)
     (P : Prm (CyclotomicField l E)) (hP : under P = q) (hl : ¬ l ∣ Nrm q) : Nat.Coprime (Nrm P) l := by
   have hlp : l.Prime := Fact.out
@@ -33,6 +46,11 @@ theorem norm_coprime_of_not_dvd_under (E : Type) [Field E] [NumberField E] (l : 
   have hcq : Nat.Coprime (Nrm q) l := (Nat.coprime_comm).mp ((Nat.Prime.coprime_iff_not_dvd hlp).mpr hl)
   exact hN ▸ Nat.Coprime.pow_left _ hcq
 
+/- English proof (translation)
+Establish `: q.asIdeal.IsMaximal` using `q.isMaximal`. Set `_` to `Ideal.Quotient.field q.asIdeal`. Set `_ : Fintype (𝓞 E ⧸ q.asIdeal)` to `Fintype.ofFinite _`. Use `ringChar.charP (𝓞 E ⧸ q.asIdeal)` as an intermediate fact. Take `⟨k, hcp, hcard⟩` from `FiniteField.card (𝓞 E ⧸ q.asIdeal) (ringChar (𝓞 E ⧸ q.asIdeal))`.
+
+Establish `hN : Nrm q = ringChar (𝓞 E ⧸ q.asIdeal) ^ (k : ℕ)`. Rewrite using `[← hcard, Nrm, Ideal.absNorm_apply, Submodule.cardQuot_apply, Nat.card_eq_fintype_card]`. Rewrite using `[← Ideal.Quotient.eq_zero_iff_mem, map_natCast, CharP.cast_eq_zero_iff (𝓞 E ⧸ q.asIdeal) (ringChar (𝓞 E ⧸ q.asIdeal))]`. Assume the negation of the conclusion as `hd`. Conclude with `h (hN ▸ Nat.Coprime.pow_left _ ((Nat.Prime.coprime_iff_not_dvd hcp).mpr hd))`.
+-/
 theorem natCast_mem_of_not_coprime (E : Type) [Field E] [NumberField E] (n : ℕ) (q : Prm E)
     (h : ¬ Nat.Coprime (Nrm q) n) : ((n : ℕ) : 𝓞 E) ∈ q.asIdeal := by
   have : q.asIdeal.IsMaximal := q.isMaximal
@@ -46,6 +64,17 @@ theorem natCast_mem_of_not_coprime (E : Type) [Field E] [NumberField E] (n : ℕ
   by_contra hd
   exact h (hN ▸ Nat.Coprime.pow_left _ ((Nat.Prime.coprime_iff_not_dvd hcp).mpr hd))
 
+/- English proof (translation)
+Establish `hlp : l.Prime` using `Fact.out`. Establish `: NeZero l` using `⟨hlp.ne_zero⟩`. Use `set M := CyclotomicField l E`. Establish `hz0` using `IsCyclotomicExtension.zeta_spec l E M`. Establish `hz` using `hz0.toInteger_isPrimitiveRoot`.
+
+Use `set ζ := hz0.toInteger`. Establish `h1 : Ideal.absNorm P.asIdeal ≠ 1` using `Ideal.absNorm_eq_one_iff.not.mpr P.isPrime.ne_top`. Establish `hq` using `hz.idealQuotient_mk (I := P.asIdeal) h1 hl`. Establish `hgl : (g • ζ) ^ l = 1` using `by rw [← smul_pow', hz.pow_eq_one, smul_one]`. Take `⟨i, hi, hiz⟩` from `hz.eq_pow_of_pow_eq_one hgl`.
+
+Establish `hmem : g • ζ - ζ ∈ P.asIdeal` using `hg ζ`. Rewrite `hmem` using `[← hiz, ← Ideal.Quotient.eq, map_pow]`. Establish `hi1 : i = 1` using `hq.pow_inj hi hlp.one_lt (by rw [hmem, pow_one])`. Rewrite `hiz` using `[hi1, pow_one]`. Establish `hfix : g (IsCyclotomicExtension.zeta l E M) = IsCyclotomicExtension.zeta l E M`.
+
+Use `congrArg (fun x : 𝓞 M => (x : M)) hiz` as an intermediate fact. Conclude with `this.symm`. Establish `hext : (g : M →ₐ[E] M) = AlgHom.id E M`. Use `AlgHom.ext_of_adjoin_eq_top (IsCyclotomicExtension.adjoin_primitive_root_eq_top hz0) ?_` and prove the remaining obligations. Introduce `x hx`.
+
+Rewrite `hx` using `[Set.mem_singleton_iff]`. Substitute `hx` using the available equality. Conclude with `hfix`. Use extensionality with `x`. Conclude with `DFunLike.congr_fun hext x`.
+-/
 theorem inertia_trivial_cyclotomic_coprime (E : Type) [Field E] [NumberField E] (l : ℕ) [Fact l.Prime]
     [IsGalois E (CyclotomicField l E)]
     (P : Prm (CyclotomicField l E)) (hl : Nat.Coprime (Nrm P) l)
@@ -76,6 +105,17 @@ theorem inertia_trivial_cyclotomic_coprime (E : Type) [Field E] [NumberField E] 
   ext x
   exact DFunLike.congr_fun hext x
 
+/- English proof (translation)
+Establish `hlp : l.Prime` using `Fact.out`. Establish `: NeZero l` using `⟨hlp.ne_zero⟩`. Use `set M := CyclotomicField l E`. Establish `: IsGalois E M` using `IsCyclotomicExtension.isGalois {l} E M`. Establish `hfin : (q.asIdeal.primesOver (𝓞 M)).Finite` using `Algebra.QuasiFinite.finite_primesOver q.asIdeal`.
+
+Establish `hinj : Function.Injective (fun P : Prm M => P.asIdeal)` using `fun a b h => IsDedekindDomain.HeightOneSpectrum.ext h`. Establish `hmaps : ∀ P ∈ {P : Prm M | under P = q}, P.asIdeal ∈ q.asIdeal.primesOver (𝓞 M)`. Introduce `P hP`. Use `liesOver_of_under_eq P q hP` as an intermediate fact. Conclude with `⟨P.isPrime, this⟩`.
+
+Use `⟨hfin.preimage hinj.injOn |>.subset hmaps, ?_⟩` and prove the remaining obligations. Establish `h1` using `Set.ncard_le_ncard_of_injOn _ hmaps hinj.injOn hfin`. Establish `h2` using `Ideal.ncard_primesOver_mul_ramificationIdxIn_mul_inertiaDegIn q.asIdeal (𝓞 M) Gal(M/E)`. Establish `h3 : Nat.card Gal(M/E) = l - 1`. Rewrite using `[IsGalois.card_aut_eq_finrank, IsCyclotomicExtension.finrank M hirr, Nat.totient_prime hlp]`.
+
+Rewrite `h2` using `[h3]`. Establish `h4 : q.asIdeal.ramificationIdxIn (𝓞 M) * q.asIdeal.inertiaDegIn (𝓞 M) ≠ 0`. Introduce `h`. Rewrite `h2` using `[h, mul_zero]`. Use `hlp.two_le` as an intermediate fact.
+
+Use linear arithmetic over natural numbers and integers. Establish `h5` using `Nat.le_mul_of_pos_right ((q.asIdeal.primesOver (𝓞 M)).ncard) (Nat.pos_of_ne_zero h4)`. Conclude with `h1.trans (h5.trans h2.le)`.
+-/
 theorem splitA_fibre (E : Type) [Field E] [NumberField E] (l : ℕ) [Fact l.Prime]
     (hirr : Irreducible (Polynomial.cyclotomic l E)) (q : Prm E) :
     {P : Prm (CyclotomicField l E) | under P = q}.Finite ∧
@@ -102,6 +142,15 @@ theorem splitA_fibre (E : Type) [Field E] [NumberField E] (l : ℕ) [Fact l.Prim
   have h5 := Nat.le_mul_of_pos_right ((q.asIdeal.primesOver (𝓞 M)).ncard) (Nat.pos_of_ne_zero h4)
   exact h1.trans (h5.trans h2.le)
 
+/- English proof (translation)
+Establish `hlp : l.Prime` using `Fact.out`. Use `liesOver_of_under_eq P q hP` as an intermediate fact. Establish `hN : Nrm q ^ P.asIdeal.inertiaDeg (𝓞 E) = Nrm P` using `Ideal.absNorm_pow_inertiaDeg q.asIdeal P.asIdeal`. Establish `hf` using `Ideal.inertiaDeg_pos P.asIdeal (𝓞 E)`. Establish `hcq : Nat.Coprime (Nrm q) l` using `(Nat.coprime_comm).mp ((Nat.Prime.coprime_iff_not_dvd hlp).mpr hl)`.
+
+Establish `hcP : Nat.Coprime (Nrm P) l` using `hN ▸ Nat.Coprime.pow_left _ hcq`. Establish `hd` using `prime_dvd_norm_sub_one_cyclotomic E l P hcP`. Establish `hq0 : Nrm q ≠ 0`. Introduce `h`. Conclude with `hl (h ▸ dvd_zero l)`.
+
+Break down `Nat.lt_or_ge (P.asIdeal.inertiaDeg (𝓞 E)) 2 with h2 | h2` into its components or cases. Establish `h1 : P.asIdeal.inertiaDeg (𝓞 E) = 1` using `by omega`. Rewrite `hN` using `[h1, pow_one]`. Use `Or.inl ⟨hN.symm, ?_⟩` and prove the remaining obligations. Rewrite `hd` using `[← hN]`.
+
+Establish `h3 : ((Nrm q - 1 : ℕ) : ZMod l) = 0` using `(ZMod.natCast_eq_zero_iff _ _).mpr hd`. Establish `h4 : Nrm q = (Nrm q - 1) + 1` using `by omega`. Rewrite using `[h4, Nat.cast_add, h3, Nat.cast_one, zero_add]`. Conclude with `Or.inr (hN ▸ Nat.pow_le_pow_right (Nat.pos_of_ne_zero hq0) h2)`.
+-/
 theorem splitA_norm (E : Type) [Field E] [NumberField E] (l : ℕ) [Fact l.Prime] (q : Prm E)
     (P : Prm (CyclotomicField l E)) (hP : under P = q) (hl : ¬ l ∣ Nrm q) :
     (Nrm P = Nrm q ∧ ((Nrm q : ℕ) : ZMod l) = 1) ∨ Nrm q ^ 2 ≤ Nrm P := by
@@ -125,6 +174,9 @@ theorem splitA_norm (E : Type) [Field E] [NumberField E] (l : ℕ) [Fact l.Prime
     rw [h4, Nat.cast_add, h3, Nat.cast_one, zero_add]
   · exact Or.inr (hN ▸ Nat.pow_le_pow_right (Nat.pos_of_ne_zero hq0) h2)
 
+/- English proof (translation)
+Establish `h0 : Ideal.span {((n : ℕ) : 𝓞 E)} ≠ 0`. Rewrite using `[Ne, Ideal.zero_eq_bot, Ideal.span_singleton_eq_bot]`. Conclude with `hn` after adjusting the coercions. Use `(Ideal.finite_factors h0).subset fun q hq => ?_` and prove the remaining obligations. Conclude with `(Ideal.dvd_span_singleton).mpr (natCast_mem_of_not_coprime E n q hq)`.
+-/
 theorem splitA_finite_not_coprime (E : Type) [Field E] [NumberField E] (n : ℕ) (hn : n ≠ 0) :
     {q : Prm E | ¬ Nat.Coprime (Nrm q) n}.Finite := by
   have h0 : Ideal.span {((n : ℕ) : 𝓞 E)} ≠ 0 := by
@@ -133,6 +185,11 @@ theorem splitA_finite_not_coprime (E : Type) [Field E] [NumberField E] (n : ℕ)
   refine (Ideal.finite_factors h0).subset fun q hq => ?_
   exact (Ideal.dvd_span_singleton).mpr (natCast_mem_of_not_coprime E n q hq)
 
+/- English proof (translation)
+Establish `hlp : l.Prime` using `Fact.out`. Establish `: NeZero l` using `⟨hlp.ne_zero⟩`. Establish `: IsGalois E (CyclotomicField l E)` using `IsCyclotomicExtension.isGalois {l} E (CyclotomicField l E)`. Use `liesOver_of_under_eq P q hP` as an intermediate fact. Establish `: q.asIdeal.IsMaximal` using `q.isMaximal`.
+
+Establish `: Finite q.asIdeal.ResidueField` using `Finite.of_surjective _ q.asIdeal.bijective_algebraMap_quotient_residueField.surjective`. Establish `hcP` using `norm_coprime_of_not_dvd_under E l q P hP hl`. Establish `hbot : P.asIdeal.inertia Gal(CyclotomicField l E/E) = ⊥` using `(Subgroup.eq_bot_iff_forall _).mpr fun g hg => inertia_trivial_cyclotomic_coprime E l P hcP g hg`. Rewrite using `[← Ideal.ramificationIdxIn_eq_ramificationIdx q.asIdeal P.asIdeal Gal(CyclotomicField l E/E), ← Ideal.card_inertia_eq_ramificationIdxIn (G := Gal(CyclotomicField l E/E)) q.asIdeal P.asIdeal, hbot, Subgroup.card_bot]`.
+-/
 theorem splitA_unram (E : Type) [Field E] [NumberField E] (l : ℕ) [Fact l.Prime] (q : Prm E)
     (P : Prm (CyclotomicField l E)) (hP : under P = q) (hl : ¬ l ∣ Nrm q) :
     P.asIdeal.ramificationIdx (𝓞 E) = 1 := by

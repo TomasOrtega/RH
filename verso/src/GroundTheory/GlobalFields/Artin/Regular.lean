@@ -9,6 +9,13 @@ open NumberField IsDedekindDomain IntermediateField GroundTheory.LocalField
 
 namespace GroundTheory.Global.Artin
 
+/- English proof (translation)
+Use `set f := RingOfIntegers.mapRingEquiv e`. Use function extensionality and compare the values at `s`. Unfold `dedekindZeta`. Use `congr 1`. Use function extensionality and compare the values at `n`.
+
+Use `congr 1`. Use `Nat.card_congr (Equiv.subtypeEquiv (Ideal.relIsoOfBijective f.symm.toRingHom f.symm.bijective).toEquiv fun I ↦ ?_)` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `Ideal.absNorm I = n ↔ Ideal.absNorm (I.comap f.symm.toRingHom) = n`. Establish `h : Ideal.absNorm (I.comap f.symm.toRingHom) = Ideal.absNorm I`. Rewrite using `[Ideal.absNorm_apply, Ideal.absNorm_apply, Submodule.cardQuot_apply, Submodule.cardQuot_apply]`.
+
+Conclude with `Nat.card_congr (Ideal.quotientEquiv I (I.comap f.symm.toRingHom) f (by rw [Ideal.map_comap_of_equiv]; rfl)).toEquiv.symm`. Rewrite using `[h]`.
+-/
 theorem dedekindZeta_congr {F F' : Type*} [Field F] [NumberField F] [Field F'] [NumberField F']
     (e : F ≃+* F') : dedekindZeta F = dedekindZeta F' := by
   set f := RingOfIntegers.mapRingEquiv e
@@ -35,6 +42,15 @@ section Finite
 
 variable [Fintype G]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `g`. Rewrite using `[indFun_apply, character_leftRegular_apply, Subgroup.card_bot, Nat.cast_one, inv_one, one_mul]`. Establish `h : ∀ t : G, (∑ h : (⊥ : Subgroup G), if ((⊥ : Subgroup G).subtype h) = t⁻¹ * g * t then (1 : (⊥ : Subgroup G) → ℂ) h else 0) = if g = 1 then 1 else 0` using `fun t ↦ by`. Rewrite using `[Fintype.sum_unique]`. Establish `: ((⊥ : Subgroup G).subtype (default : (⊥ : Subgroup G))) = 1` using `rfl`.
+
+Rewrite using `[this, Pi.one_apply]`. Distinguish the cases in `hg : g = 1`. Simplify using `[hg]`. Rewrite using `[if_neg hg, if_neg]`. Introduce `h1`.
+
+Apply `hg` to reduce the goal to its premises. Use `congrArg (fun x ↦ t * x * t⁻¹) h1` as an intermediate fact. Simplify `this.symm` using `[mul_assoc]`. Repeatedly rewrite using `[h]`. Rewrite using `[Finset.sum_const, Finset.card_univ, nsmul_eq_mul]`.
+
+Apply the tactic sequence `split_ifs <;> simp`.
+-/
 theorem indFun_bot_one [Fintype (⊥ : Subgroup G)] :
     indFun (⊥ : Subgroup G).subtype 1 = (Representation.leftRegular ℂ G).character := by
   classical
@@ -70,8 +86,14 @@ variable {K L : Type*} [Field K] [NumberField K] [Field L] [NumberField L] [Alge
 
 omit [IsGalois K L] in
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem fixedFieldFun_one (H : Subgroup Gal(L/K)) : fixedFieldFun H (1 : H → ℂ) = 1 := rfl
 
+/- English proof (translation)
+Establish `h1 : IsClassFun (1 : (⊥ : Subgroup Gal(L/K)) → ℂ)` using `fun _ _ ↦ rfl`. Rewrite using `[← indFun_bot_one, artinL_indFun (⊥ : Subgroup Gal(L/K)) h1 hs, fixedFieldFun_one, artinL_one hs]`. Conclude with `congrFun (dedekindZeta_congr ((equivOfEq (fixedField_bot (F := K) (E := L))).trans topEquiv).toRingEquiv) s`.
+-/
 theorem artinL_leftRegular [Fintype Gal(L/K)] {s : ℂ} (hs : 1 < s.re) :
     artinL K L (Representation.leftRegular ℂ Gal(L/K)).character s = dedekindZeta L s := by
   classical

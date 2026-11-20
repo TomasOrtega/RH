@@ -19,11 +19,17 @@ open PositivityTheory.Rg.BcB.F
 
 attribute [local instance] borelG borelF borelA
 
+/- English proof (translation)
+Use `open scoped GlobalTheory.CuspRep.CuspidalL2GL in`. Use `haveI : BorelSpace (GA E a) := ⟨rfl⟩`. Conclude with `⟨Measure.haar, inferInstance⟩`.
+-/
 theorem haarGA_ex (E : Type) [Field E] [NumberField E] (a : ℕ) : ∃ μ : Measure (GA E a), μ.IsHaarMeasure := by
   open scoped GlobalTheory.CuspRep.CuspidalL2GL in
   haveI : BorelSpace (GA E a) := ⟨rfl⟩
   exact ⟨Measure.haar, inferInstance⟩
 
+/- English proof (translation)
+Use `haveI : BorelSpace (G a) := ⟨rfl⟩`. Use `haveI : LocallyCompactSpace (Matrix (Fin a) (Fin a) ℂ) := inferInstanceAs (LocallyCompactSpace (Fin a → Fin a → ℂ))`. Use `haveI : LocallyCompactSpace (Matrix (Fin a) (Fin a) ℂ)ᵐᵒᵖ := MulOpposite.opHomeomorph.symm.isClosedEmbedding.locallyCompactSpace`. Use `haveI : LocallyCompactSpace (G a) := Units.isClosedEmbedding_embedProduct.locallyCompactSpace`. Conclude with `⟨Measure.haar, inferInstance⟩`.
+-/
 theorem haarG_ex (a : ℕ) : ∃ ν : Measure (G a), ν.IsHaarMeasure := by
   haveI : BorelSpace (G a) := ⟨rfl⟩
   haveI : LocallyCompactSpace (Matrix (Fin a) (Fin a) ℂ) :=
@@ -35,10 +41,28 @@ theorem haarG_ex (a : ℕ) : ∃ ν : Measure (G a), ν.IsHaarMeasure := by
 
 def dw0 (N : ℕ) : DomWeight N := ⟨fun _ => 0, fun _ _ _ => le_rfl⟩
 
+/- English proof (translation)
+Use `haveI : IsEmpty (Fin (n - n)) := by rw [Nat.sub_self]; infer_instance`. Simplify using `[infOfWeight]`.
+-/
 theorem infinitesimal_weight_zero (n : ℕ) : infOfWeight (dw0 (n - n)) = 0 := by
   haveI : IsEmpty (Fin (n - n)) := by rw [Nat.sub_self]; infer_instance
   simp [infOfWeight]
 
+/- English proof (translation)
+Introduce `E _ _ _ hE n hn μ e hμ lam`. Take `⟨ι, hι, a, l₁, l₂, sg, hsg, hgeo⟩` from `h2 E hE n hn μ e hμ lam`. Use `choose μG hG using haarGA_ex E`. Use `choose νC hC using haarG_ex`. Establish `c4 : ∀ a b : ℕ, ∃ c : ℂ, c ≠ 0 ∧ _` using `fun a b => @h4 E _ _ _ hE a b _ ⟨rfl⟩ _ ⟨rfl⟩ _ ⟨rfl⟩ _ ⟨rfl⟩ (μG a) (hG a) (μG b) (hG b) (νC a) (hC a) (νC b) (hC b)`.
+
+Use `choose c hc0 hc using c4`. Set `K : ℕ` to `n * Fintype.card (InfinitePlace E)`. Use `⟨{ ι := Option ι a := fun o => o.elim n a l₁ := fun o => match o with | none => lam | some i => l₁ i l₂ := fun o => match o with | none => fun _ => dw0 (n - n) | some i => l₂ i le := fun o => match o with | none => le_rfl | some i => (hsg i).2.1 inf := fun o v => match o with` and prove the remaining obligations. Consider the case `none => by simp [infinitesimal_weight_zero]`. Consider the case `some i => (hsg i).2.2 v`.
+
+Use `μG := μG`. Use `hG := hG`. Use `νC := νC`. Use `hC := hC`. Use `c := fun o => match o with | none => 0 | some i => sg i / (c (a i) (n - a i) * 2 ^ K)`.
+
+Use `eq := ?_ }⟩`. Introduce `S hS K' f hK' hf u₁ u₂ hu φ₁ φ₂ hφ hreg val ψ hlef z hz`. Rewrite using `[Fintype.sum_option]`. Simplify using `only [zero_mul, zero_add]`. Establish `hstep : ∀ i : ι, sg i / (c (a i) (n - a i) * 2 ^ K) * ellSum2 (μG (a i)) (μG (n - a i)) (adel S (u₁ (a i)) (u₂ (a i)) (ψ (some i)) (φ₁ (a i)) (φ₂ (a i))) = z * (sg i * geomSt2 S (l₁ i) (l₂ i) (seen (φ₁ (a i)) (φ₂ (a i))))`.
+
+Introduce `i`. Establish `hai` using `(hsg i).2.1`. Take `⟨t₁, t₂, t₃, -⟩` from `hφ (a i) hai`. Rewrite using `[hc (a i) (n - a i) S hS (u₁ (a i)) (u₂ (a i)) (hu (a i)).1 (hu (a i)).2 (l₁ i) (l₂ i) (val (some i)) (ψ (some i)) (φ₁ (a i)) (φ₂ (a i)) (hlef (some i)) t₁ t₂, hz (some i), h3 E hE (a i) (n - a i) S hS (l₁ i) (l₂ i) _ t₃ (hreg (some i))]`. Establish `hK : (a i + (n - a i)) * Fintype.card (InfinitePlace E) = K`.
+
+Simplify using `only [K, Nat.add_sub_of_le hai]`. Rewrite using `[hK]`. Establish `h2K : (2 : ℂ) ^ K ≠ 0` using `pow_ne_zero _ two_ne_zero`. Establish `hc'` using `hc0 (a i) (n - a i)`. Clear the denominators using the available nonvanishing facts.
+
+Combine the equalities or inequalities in the displayed calculation. Rewrite using `[← Finset.mul_sum]`. Conclude with `congrArg (z * ·) (hgeo S hS K' f (fun a' => seen (φ₁ a') (φ₂ a')) hK' hf fun a' ha' => ⟨(hφ a' ha').2.2.1, (hφ a' ha').2.2.2⟩)`. Use `_ = _ := Finset.sum_congr rfl fun i _ => (hstep i).symm`.
+-/
 theorem chainEx_of (h2 : G8.GlobalComplexCoefficients) (h3 : G8.G3) (h4 : G8.G4) : ChainEx := by
   intro E _ _ _ hE n hn μ e hμ lam
   obtain ⟨ι, hι, a, l₁, l₂, sg, hsg, hgeo⟩ := h2 E hE n hn μ e hμ lam

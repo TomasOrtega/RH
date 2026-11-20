@@ -11,6 +11,11 @@ open GlobalTheory.Mum
 
 namespace GlobalTheory.Mum
 
+/- English proof (translation)
+Introduce `R _ _ _ hA S π hP hS hI G' _ _ hG' N hL`. Establish `hNoeth : IsNoetherianRing R` using `hA.1`. Establish `hIC : IsIntegrallyClosed R` using `hA.2.2.1`. Take `⟨φ, hφ⟩` from `GlobalTheory.T.exists_descentDatum_of_descendedMultiplication R hA S π hP hS hI G' hG' N hL`. Take `⟨G, β, i, hsm, hpb, hop, hu, hc⟩` from `GlobalTheory.T.semiAbelian_descends_near_closedFibre R hA S π hP hS hI G' hG' N hL φ hφ`.
+
+Take `⟨g, c, hsa, hgp⟩` from `GlobalTheory.T.exists_semiAbelian_descent_along_proper_surjective R S π hP hS hI G' hG' G β hsm hpb φ hφ.1 hc`. Conclude with `⟨G, g, c, β, i, hsa, hgp, hop, hu⟩`.
+-/
 theorem descend_of_near : ∀ (R : Type) [CommRing R] [IsDomain R] [IsLocalRing R], AdmBase R (maximalIdeal R) →
     ∀ (S : Scheme.{0}) (π : S ⟶ Sp R), IsProper π → Surjective π → IsIntegral S → ∀ (G' : Over S) [GrpObj G']
     [IsCommMonObj G'], IsSemiAbelian G' → ∀ N : Near π G', N.Law → ∃ (G : Over (Sp R)) (_ : GrpObj G)

@@ -8,6 +8,15 @@ attribute [local instance] Over.cartesianMonoidalCategory
 
 namespace GlobalTheory.SqZeroMove
 
+/- English proof (translation)
+Establish `hsq : ∀ (u v : Fin g → C), (∑ a, u a * n a) * (∑ b, v b * n b) = 0`. Introduce `u v`. Rewrite using `[Finset.sum_mul_sum]`. Use `Finset.sum_eq_zero (fun a _ => Finset.sum_eq_zero (fun b _ => ?_))` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation.
+
+Use `⟨{ toFun := fun x => ψ x + ∑ a, ψ (D a x) * n a, map_one' := ?_, map_mul' := ?_, map_zero' := ?_, map_add' := ?_ }, fun x => rfl⟩` and prove the remaining obligations. Simplify using `[h1]`. Introduce `x y`. Establish `e` using `hsq (fun a => ψ (D a x)) (fun a => ψ (D a y))`. Simplify using `only [hL, map_add, map_mul, add_mul, Finset.sum_add_distrib]`.
+
+Establish `ex : ∑ a, ψ x * ψ (D a y) * n a = ψ x * ∑ a, ψ (D a y) * n a`. Rewrite using `[Finset.mul_sum]; exact Finset.sum_congr rfl (fun a _ => by ring)`. Establish `ey : ∑ a, ψ y * ψ (D a x) * n a = ψ y * ∑ a, ψ (D a x) * n a`. Rewrite using `[Finset.mul_sum]; exact Finset.sum_congr rfl (fun a _ => by ring)`. Rewrite using `[ex, ey]`.
+
+Take the linear combination `(-1 : C) * e`. Simplify using the standard rewrite rules. Introduce `x y`. Simplify using `only [map_add, add_mul, Finset.sum_add_distrib]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem gen_hom {A C : Type} [CommRing A] [CommRing C] {g : ℕ} (ψ : A →+* C) (D : Fin g → A →+ A)
     (h1 : ∀ a, D a 1 = 0) (hL : ∀ a x y, D a (x * y) = x * D a y + y * D a x)
     (n : Fin g → C) (hn : ∀ a b, n a * n b = 0) :
@@ -35,6 +44,11 @@ theorem gen_hom {A C : Type} [CommRing A] [CommRing C] {g : ℕ} (ψ : A →+* C
     simp only [map_add, add_mul, Finset.sum_add_distrib]
     ring
 
+/- English proof (translation)
+Use `first`. Consider the case `exact @_root_.GlobalTheory.TensorLeibnizRule.lTensor_leibniz`. Consider the case `exact _root_.GlobalTheory.TensorLeibnizRule.lTensor_leibniz`. Consider the case `(apply _root_.GlobalTheory.TensorLeibnizRule.lTensor_leibniz <;> assumption)`. Consider the case `(intros; apply _root_.GlobalTheory.TensorLeibnizRule.lTensor_leibniz <;> assumption)`.
+
+Consider the case `(intros; apply @_root_.GlobalTheory.TensorLeibnizRule.lTensor_leibniz <;> first | assumption | infer_instance)`. Consider the case `(intros; exact _root_.GlobalTheory.TensorLeibnizRule.lTensor_leibniz ..)`.
+-/
 theorem lTensor_leibniz {R S : Type} [CommRing R] [Algebra ℂ R] [CommRing S] [Algebra ℂ S]
     (d : Derivation ℂ S S) (x y : R ⊗[ℂ] S) :
     LinearMap.lTensor R d.toLinearMap (x * y) =
@@ -47,11 +61,17 @@ theorem lTensor_leibniz {R S : Type} [CommRing R] [Algebra ℂ R] [CommRing S] [
   | (intros; apply @_root_.GlobalTheory.TensorLeibnizRule.lTensor_leibniz <;> first | assumption | infer_instance)
   | (intros; exact _root_.GlobalTheory.TensorLeibnizRule.lTensor_leibniz ..)
 
+/- English proof (translation)
+Rewrite using `[Algebra.TensorProduct.one_def, LinearMap.lTensor_tmul, Derivation.coeFn_coe, Derivation.map_one_eq_zero, TensorProduct.tmul_zero]`.
+-/
 theorem lTensor_one {R S : Type} [CommRing R] [Algebra ℂ R] [CommRing S] [Algebra ℂ S]
     (d : Derivation ℂ S S) : LinearMap.lTensor R d.toLinearMap (1 : R ⊗[ℂ] S) = 0 := by
   rw [Algebra.TensorProduct.one_def, LinearMap.lTensor_tmul, Derivation.coeFn_coe, Derivation.map_one_eq_zero,
     TensorProduct.tmul_zero]
 
+/- English proof (translation)
+Introduce `g W₀ R _ _ C _ ψ n hn`. Conclude with `gen_hom ψ (fun a => (LinearMap.lTensor R (dw (W := W₀) a).toLinearMap).toAddMonoidHom) (fun a => lTensor_one _) (fun a x y => lTensor_leibniz _ x y) n hn`.
+-/
 theorem sqZeroMove : ∀ {g : ℕ} {W₀ : Opens (Tot Empty g)} {R : Type} [CommRing R] [Algebra ℂ R] {C : Type} [CommRing C] (ψ : R ⊗[ℂ] Hol W₀ →+* C) (n : Fin g → C), (∀ a b, n a * n b = 0) → ∃ ψ' : R ⊗[ℂ] Hol W₀ →+* C, ∀ x, ψ' x = ψ x + ∑ a, ψ (LinearMap.lTensor R (dw a).toLinearMap x) * n a := by
   intro g W₀ R _ _ C _ ψ n hn
   exact gen_hom ψ (fun a => (LinearMap.lTensor R (dw (W := W₀) a).toLinearMap).toAddMonoidHom)

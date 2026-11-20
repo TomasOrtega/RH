@@ -7,6 +7,27 @@ set_option autoImplicit false
 
 namespace GlobalTheory.FGFun
 
+/- English proof (translation)
+Introduce `F _ G _ sG hproj P Ω _ _ φ t ι h`. Use `letI := φ.toAlgebra`. Take `⟨τ, rfl⟩` from `Spec.map_surjective t`. Take `⟨β, hβ⟩` from `Spec.map_surjective (G.fromSpecStalk (genericPoint G) ≫ sG)`. Establish `hβτ : ∀ c : F, β.hom c = φ (τ.hom c)`.
+
+Rewrite `h` using `[← hβ]`. Simplify using `only [← Spec.map_comp] at h`. Establish `h'` using `Spec.map_injective h`. Introduce `c`. Apply `ι.injective` to reduce the goal to its premises.
+
+Use `congrArg (fun f => f.hom c) h'` as an intermediate fact. Simplify using `using this`. Establish `hft : LocallyOfFiniteType sG`. Take `⟨N, i, hi, rfl⟩` from `hproj`. Use `haveI := isProper_str F N`.
+
+Use `infer_instance`. Take `⟨U, hU, hx, -⟩` from `TopologicalSpace.Opens.isBasis_iff_nbhd.1 G.isBasis_affineOpens (TopologicalSpace.Opens.mem_top (genericPoint G))`. Use `haveI : Nonempty U := ⟨⟨_, hx⟩⟩`. Establish `e : U ≤ sG ⁻¹ᵁ ⊤` using `by simp`. Establish `hfin` using `HasRingHomProperty.appLE (P := @LocallyOfFiniteType) sG hft ⟨⊤, isAffineOpen_top _⟩ ⟨U, hU⟩ e`.
+
+Establish `key : sG.appLE ⊤ U e ≫ G.presheaf.germ U _ hx = (Scheme.ΓSpecIso (.of F)).hom ≫ β`. Rewrite using `[← Scheme.ΓSpecIso_naturality, hβ, Scheme.Hom.comp_appTop, Scheme.fromSpecStalk_appTop, Scheme.Hom.appLE, Category.assoc, TopCat.Presheaf.germ_res]`. Establish `h3 : (Spec (G.presheaf.stalk (genericPoint G))).presheaf.map (homOfLE (le_top : (⊤ : (Spec (G.presheaf.stalk (genericPoint G))).Opens) ≤ ⊤)).op = 𝟙 _`. Rewrite using `[Subsingleton.elim (homOfLE _) (𝟙 _)]`. Conclude with `CategoryTheory.Functor.map_id _ _`.
+
+Rewrite using `[h3]`. Simplify using the standard rewrite rules. Use `letI : Algebra Γ(Sp F, ⊤) Γ(G, U) := (sG.appLE ⊤ U e).hom.toAlgebra`. Establish `hfin' : Algebra.FiniteType Γ(Sp F, ⊤) Γ(G, U)` using `hfin`. Take `⟨s, hs⟩` from `hfin'.out`.
+
+Establish `hmem : ∀ a : Γ(G, U), (G.presheaf.germ U _ hx).hom a ∈ IntermediateField.adjoin P ((s.image (G.presheaf.germ U _ hx).hom : Finset _) : Set G.functionField)`. Introduce `a`. Establish `ha : a ∈ Algebra.adjoin Γ(Sp F, ⊤) (s : Set Γ(G, U))` using `hs ▸ Algebra.mem_top`. Proceed by induction on `ha using Algebra.adjoin_induction with`. Consider the case `mem x hx'`.
+
+Conclude with `IntermediateField.subset_adjoin _ _ (by rw [Finset.coe_image]; exact ⟨x, hx', rfl⟩)`. Consider the case `algebraMap r`. Use `congrArg (fun f => f.hom r) key` as an intermediate fact. Simplify using `only [CommRingCat.hom_comp, RingHom.comp_apply] at this`. Rewrite using `[RingHom.algebraMap_toAlgebra, this, hβτ]`.
+
+Conclude with `IntermediateField.algebraMap_mem _ _`. Consider the case `add x y _ _ hx hy => rw [map_add]`. Conclude with `add_mem hx hy`. Consider the case `mul x y _ _ hx hy => rw [map_mul]`. Conclude with `mul_mem hx hy`.
+
+Use `⟨s.image (G.presheaf.germ U _ hx).hom, eq_top_iff.2 fun f _ => ?_⟩` and prove the remaining obligations. Use `functionField_isFractionRing_of_isAffineOpen G U hU` as an intermediate fact. Take `⟨a, b, -, rfl⟩` from `IsFractionRing.div_surjective (A := Γ(G, U)) f`. Conclude with `div_mem (hmem a) (hmem b)`.
+-/
 theorem fg_functionField : ∀ (F : Type) [Field F] (G : Scheme.{0}) [IsIntegral G] (sG : G ⟶ Sp F), IsProjOver sG → ∀ (P Ω : Type) [Field P] [Field Ω] (φ : P →+* G.functionField) (t : Sp P ⟶ Sp F) (ι : G.functionField →+* Ω), spMap ι ≫ G.fromSpecStalk (genericPoint G) ≫ sG = spMap ι ≫ spMap φ ≫ t → (letI := φ.toAlgebra; (⊤ : IntermediateField P G.functionField).FG) := by
   intro F _ G _ sG hproj P Ω _ _ φ t ι h
   letI := φ.toAlgebra

@@ -18,6 +18,11 @@ open MvPolynomial (X)
 
 namespace GlobalTheory.IntChartExists
 
+/- English proof (translation)
+Introduce `E _ _ _ H Dw l Xo c _`. Establish `h3 : (∀ a : 𝓞 E, star a = H.bar a) → ∀ (T : CDVR) (io : c.F →+* T.Fr) (y : IntFr Xo c T io), ∃ C : IntegralChartA3 Xo c T io y, FrTrunc C.I.G (𝟙 (Sp T.V)) (chD C.ch) C.xT C.eT` using `fun hs => GlobalTheory.IntChartTrunc.exists_intChart_frTrunc GlobalTheory.T.integral_charts_complete_dvr E H Dw l Xo c hs (GlobalTheory.T.integralChart_transport_to_framedPoint E H Dw l Xo c)`. Use `⟨fun hs T io y => ⟨(h3 hs T io y).choose⟩, fun hs => ?_, h3⟩` and prove the remaining obligations. Unfold `IntChartEx`. Use `intros`.
+
+Conclude with `⟨(h3 hs _ _ _).choose⟩`.
+-/
 theorem intChart_exists : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l) [StarRing (𝓞 E)], IntegralChartExists Xo c ∧ ((∀ a : 𝓞 E, star a = H.bar a) → IntChartEx Xo c) ∧ ((∀ a : 𝓞 E, star a = H.bar a) → ∀ (T : CDVR) (io : c.F →+* T.Fr) (y : IntFr Xo c T io), ∃ C : IntegralChartA3 Xo c T io y, FrTrunc C.I.G (𝟙 (Sp T.V)) (chD C.ch) C.xT C.eT) := by
   intro E _ _ _ H Dw l Xo c _
   have h3 : (∀ a : 𝓞 E, star a = H.bar a) → ∀ (T : CDVR) (io : c.F →+* T.Fr) (y : IntFr Xo c T io),

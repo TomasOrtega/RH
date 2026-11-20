@@ -5,6 +5,9 @@ open CategoryTheory Limits AlgebraicGeometry LateralTheory.E.E4 LateralTheory.E.
 
 namespace LateralTheory.E.LeafIrredPf
 
+/- English proof (translation)
+Take `⟨z, hz, -⟩` from `Scheme.Pullback.exists_preimage_pullback (f := q) (g := t) x y hxy`. Use `⟨h.isoPullback.inv z, ?_⟩` and prove the remaining obligations. Rewrite using `[← hz, ← h.isoPullback_inv_fst]`. Both sides reduce to the same expression.
+-/
 lemma mem_range {C0 D0 S T : Scheme.{0}} {v0 : C0 ⟶ D0} {c0 : C0 ⟶ T} {q : D0 ⟶ S} {t : T ⟶ S}
     (h : IsPullback v0 c0 q t) (x : D0) (y : T) (hxy : q x = t y) : x ∈ Set.range v0 := by
   obtain ⟨z, hz, -⟩ := Scheme.Pullback.exists_preimage_pullback (f := q) (g := t) x y hxy
@@ -12,6 +15,13 @@ lemma mem_range {C0 D0 S T : Scheme.{0}} {v0 : C0 ⟶ D0} {c0 : C0 ⟶ T} {q : D
   rw [← hz, ← h.isoPullback_inv_fst]
   rfl
 
+/- English proof (translation)
+Apply `(PrimeSpectrum.le_iff_specializes (R := R) ((toR R) y) p).mp` to reduce the goal to its premises. Introduce `a ha`. Establish `hA : (toR R).base y = PrimeSpectrum.comap (algebraMap R Ω) y`. Rewrite using `[Spec.map_base]`. Both sides reduce to the same expression.
+
+Express the relevant statement in the definitionally equal form `a ∈ ((toR R).base y).asIdeal at ha`. Rewrite `ha` using `[hA]`. Set `y' : PrimeSpectrum Ω` to `y`. Establish `ha' : algebraMap R Ω a ∈ y'.asIdeal` using `ha`. Rewrite `ha'` using `[Ideal.eq_bot_of_prime y'.asIdeal, Ideal.mem_bot]`.
+
+Establish `ha` using `ha'`. Establish `: a = 0` using `Subtype.ext (by simpa using ha)`. Rewrite using `[this]`. Conclude with `p.asIdeal.zero_mem`.
+-/
 lemma spec_gen {k Ω : Type} [Field k] [Field Ω] [Algebra k Ω] (R : Subalgebra k Ω) (y : Sp Ω) (p : Sp R) :
     toR R y ⤳ p := by
   apply (PrimeSpectrum.le_iff_specializes (R := R) ((toR R) y) p).mp
@@ -27,6 +37,17 @@ lemma spec_gen {k Ω : Type} [Field k] [Field Ω] [Algebra k Ω] (R : Subalgebra
   have : a = 0 := Subtype.ext (by simpa using ha)
   rw [this]; exact p.asIdeal.zero_mem
 
+/- English proof (translation)
+Introduce `k _ Ω _ _ R _ C0 D0 c0 q v0 hc hq h`. Take `⟨hint, -, -⟩` from `hc`. Use `hint` as an intermediate fact. Use `hq` as an intermediate fact. Establish `: Smooth q` using `SmoothOfRelativeDimension.smooth 1 q`.
+
+Establish `: UniversallyOpen q` using `UniversallyOpen.of_flat q`. Establish `: IrreducibleSpace C0` using `irreducibleSpace_of_isIntegral C0`. Establish `hirr : IsIrreducible (Set.range v0)`. Simplify `(IrreducibleSpace.isIrreducible_univ C0).image v0 v0.continuous.continuousOn` using `[Set.image_univ]`. Establish `hdense : Dense (Set.range v0)`.
+
+Rewrite using `[dense_iff_inter_open]`. Introduce and unpack `U hU ⟨x, hx⟩`. Take `⟨c⟩` from `(inferInstance : Nonempty C0)`. Establish `hopen : IsOpen (q '' U)` using `q.isOpenMap U hU`. Establish `hmem : toR R (c0 c) ∈ q '' U` using `(spec_gen R (c0 c) (q x)).mem_open hopen ⟨x, hx, rfl⟩`.
+
+Take `⟨x', hx'U, hx'⟩` from `hmem`. Conclude with `⟨x', hx'U, mem_range h x' (c0 c) hx'⟩`. Establish `: IsIrreducible (Set.univ : Set D0)`. Rewrite using `[← hdense.closure_eq]`. Conclude with `hirr.closure`.
+
+Conclude with `{ isPreirreducible_univ := this.2, toNonempty := ⟨this.1.some⟩ }`.
+-/
 theorem LeafIrred_of : LeafIrred := by
   intro k _ Ω _ _ R _ C0 D0 c0 q v0 hc hq h
   obtain ⟨hint, -, -⟩ := hc

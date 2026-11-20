@@ -8,6 +8,11 @@ noncomputable section
 
 namespace Formalism.HF.P
 
+/- English proof (translation)
+Establish `hset : {p : ℕ | p.Prime ∧ p ∈ S} = {p : ℕ | p.Prime ∧ p ∈ T}`. Use extensionality with `p`. Simplify using `only [Set.mem_ofPred_eq]`. Conclude with `⟨fun ⟨hp, hs⟩ => ⟨hp, (hST p hp).1 hs⟩, fun ⟨hp, ht⟩ => ⟨hp, (hST p hp).2 ht⟩⟩`. Unfold `DirDensity at h ⊢`.
+
+Rewrite using `[← hset]`. Conclude with `h`.
+-/
 theorem dirDensity_congr {S T : Set ℕ} {δ : ℝ} (h : DirDensity S δ)
     (hST : ∀ p : ℕ, p.Prime → (p ∈ S ↔ p ∈ T)) : DirDensity T δ := by
   have hset : {p : ℕ | p.Prime ∧ p ∈ S} = {p : ℕ | p.Prime ∧ p ∈ T} := by
@@ -18,6 +23,9 @@ theorem dirDensity_congr {S T : Set ℕ} {δ : ℝ} (h : DirDensity S δ)
   rw [← hset]
   exact h
 
+/- English proof (translation)
+Establish `hprime : (span {(p : ℤ)} : Ideal ℤ).IsPrime` using `(Ideal.span_singleton_prime (by exact_mod_cast hp.ne_zero)).mpr (Nat.prime_iff_prime_int.mp hp)`. Establish `hne : (span {(p : ℤ)} : Ideal ℤ) ≠ ⊥`. Rewrite using `[Ne, Ideal.span_singleton_eq_bot]`. Conclude with `hp.ne_zero` after adjusting the coercions. Conclude with `hprime.isMaximal hne`.
+-/
 theorem span_maximal (p : ℕ) (hp : p.Prime) : (span {(p : ℤ)} : Ideal ℤ).IsMaximal := by
   have hprime : (span {(p : ℤ)} : Ideal ℤ).IsPrime :=
     (Ideal.span_singleton_prime (by exact_mod_cast hp.ne_zero)).mpr (Nat.prime_iff_prime_int.mp hp)
@@ -26,6 +34,13 @@ theorem span_maximal (p : ℕ) (hp : p.Prime) : (span {(p : ℤ)} : Ideal ℤ).I
     exact_mod_cast hp.ne_zero
   exact hprime.isMaximal hne
 
+/- English proof (translation)
+Establish `: Fact p.Prime` using `⟨hp⟩`. Prove the components needed by the constructor for the conclusion. Introduce `H i`. Use `span_maximal p hp` as an intermediate fact. Take `⟨P, hPm, hPl⟩` from `Ideal.exists_maximal_ideal_liesOver_of_isIntegral (S := 𝓞 E) (span {(p : ℤ)})`.
+
+Establish `: P.IsPrime` using `hPm.isPrime`. Use `hPl` as an intermediate fact. Take `⟨σ, hσ⟩` from `(hostFrob q hq E α hE p hpq P).1`. Establish `h1` using `H P σ hσ`. Establish `h2` using `((hostFrob q hq E α hE p hpq P).2 σ).1 hσ i`.
+
+Rewrite using `[← h2, h1]`. Introduce `H P _ _ σ hσ`. Establish `h2` using `((hostFrob q hq E α hE p hpq P).2 σ).1 hσ`. Use function extensionality and compare the values at `i`. Conclude with `Units.ext ((h2 i).trans (H i))`.
+-/
 theorem frob_iff_chi (q : Fin 3 → ℕ) (hq : Hyp3 q) (E : Type) [Field E] [NumberField E]
     (α : Fin 3 → E) (hE : IsHost q α) (g : Gal3) (p : ℕ) (hp : p.Prime)
     (hpq : ∀ i, p ≠ q i) :
@@ -53,6 +68,11 @@ end Formalism.HF.P
 
 namespace Formalism.HF
 
+/- English proof (translation)
+Introduce `q hq E _ _ α hE g`. Use `P.dirDensity_congr (hA q hq g).2 ?_` and prove the remaining obligations. Introduce `p hp`. Simplify using `only [Set.mem_ofPred_eq]`. Prove the components needed by the constructor for the conclusion.
+
+Introduce and unpack `⟨hpq, hchi⟩`. Conclude with `⟨hpq, (P.frob_iff_chi q hq E α hE g p hp hpq).2 hchi⟩`. Introduce and unpack `⟨hpq, hfrob⟩`. Conclude with `⟨hpq, (P.frob_iff_chi q hq E α hE g p hp hpq).1 hfrob⟩`.
+-/
 theorem hostDensity_of (hA : HostDensityArith) : HostDensity := by
   intro q hq E _ _ α hE g
   refine P.dirDensity_congr (hA q hq g).2 ?_

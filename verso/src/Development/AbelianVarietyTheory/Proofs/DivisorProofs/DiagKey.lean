@@ -4,6 +4,9 @@ namespace GlobalTheory.DiagonalKeyIdentity
 
 open Matrix
 
+/- English proof (translation)
+Rewrite using `[diagonal_mul_diagonal, diagonal_add, diagonal_add, ← diagonal_zero]`. Use `congr 1`. Use function extensionality and compare the values at `i`. Conclude with `h i`.
+-/
 theorem diag_key {A : Type} [CommRing A] {q : ℕ} (a b : Fin q → A)
     (h : ∀ i, a i + b i + a i * b i = 0) :
     diagonal a + diagonal b + diagonal a * diagonal b = (0 : Matrix (Fin q) (Fin q) A) := by
@@ -12,6 +15,17 @@ theorem diag_key {A : Type} [CommRing A] {q : ℕ} (a b : Fin q → A)
   funext i
   exact h i
 
+/- English proof (translation)
+Introduce `A _ n q J X Xc Y Yc a b h1 h2 h3 h4 hab`. Establish `k1` using `diag_key a b hab`. Establish `k2 : diagonal b + diagonal a + diagonal b * diagonal a = (0 : Matrix (Fin q) (Fin q) A)`. Apply `diag_key b a` to reduce the goal to its premises. Introduce `i`.
+
+Rewrite using `[add_comm (b i), mul_comm (b i)]`. Conclude with `hab i`. Establish `g1 : ∀ {m : ℕ} (Z : Matrix (Fin q) (Fin m) A), Xᵀ * (J * (Xc * Z)) = 0`. Introduce `m Z`. Rewrite using `[← Matrix.mul_assoc, ← Matrix.mul_assoc, h1, Matrix.zero_mul]`.
+
+Establish `g2 : ∀ {m : ℕ} (Z : Matrix (Fin q) (Fin m) A), Xᵀ * (J * (Yc * Z)) = Z`. Introduce `m Z`. Rewrite using `[← Matrix.mul_assoc, ← Matrix.mul_assoc, h2, Matrix.one_mul]`. Establish `g3 : ∀ {m : ℕ} (Z : Matrix (Fin q) (Fin m) A), Yᵀ * (J * (Xc * Z)) = Z`. Introduce `m Z`.
+
+Rewrite using `[← Matrix.mul_assoc, ← Matrix.mul_assoc, h3, Matrix.one_mul]`. Establish `g4 : ∀ {m : ℕ} (Z : Matrix (Fin q) (Fin m) A), Yᵀ * (J * (Yc * Z)) = 0`. Introduce `m Z`. Rewrite using `[← Matrix.mul_assoc, ← Matrix.mul_assoc, h4, Matrix.zero_mul]`. Combine the equalities or inequalities in the displayed calculation.
+
+Simplify using `only [Matrix.mul_add, Matrix.add_mul, Matrix.mul_assoc, Matrix.mul_one, Matrix.one_mul, g1, g2, g3, g4, Matrix.mul_zero, Matrix.zero_mul, add_zero, zero_add]`. Normalize the expressions using the abelian group laws. Use `_ = J := by rw [k1, k2]; simp`.
+-/
 theorem main : ∀ {A : Type} [inst : CommRing A] {n q : ℕ} (J : Matrix (Fin n) (Fin n) A) (X Xc Y Yc : Matrix (Fin n) (Fin q) A) (a b : Fin q → A), Matrix.transpose X * J * Xc = (0 : Matrix (Fin q) (Fin q) A) → Matrix.transpose X * J * Yc = (1 : Matrix (Fin q) (Fin q) A) → Matrix.transpose Y * J * Xc = (1 : Matrix (Fin q) (Fin q) A) → Matrix.transpose Y * J * Yc = (0 : Matrix (Fin q) (Fin q) A) → (∀ (i : Fin q), a i + b i + a i * b i = (0 : A)) → ((1 : Matrix (Fin n) (Fin n) A) + J * Yc * Matrix.diagonal a * Matrix.transpose X + J * Xc * Matrix.diagonal b * Matrix.transpose Y) * J * ((1 : Matrix (Fin n) (Fin n) A) + Xc * Matrix.diagonal a * (Matrix.transpose Y * J) + Yc * Matrix.diagonal b * (Matrix.transpose X * J)) = J := by
   intro A _ n q J X Xc Y Yc a b h1 h2 h3 h4 hab
   have k1 := diag_key a b hab

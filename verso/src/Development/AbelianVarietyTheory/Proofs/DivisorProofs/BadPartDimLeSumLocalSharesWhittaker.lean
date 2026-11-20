@@ -9,6 +9,13 @@ open Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotions.Arithmet
 
 namespace GlobalTheory.BadCount
 
+/- English proof (translation)
+Introduce `D Γ V _ _ _ _ _ π ι hs ρ P lam ψ hW lamb hlamb H hH n c hemb hn ψ₀ hψ₀`. Use `haveI : Fintype Γ := Fintype.ofFinite Γ`. Use `haveI : Finite (G0g D.nd) := Finite.of_injective ι (fun a b h => by`. Use `congrArg π h` as an intermediate fact. Rewrite using `[hs.1, hs.1] at this)` and apply the resulting hypothesis.
+
+Use `letI : Fintype (G0g D.nd) := Fintype.ofFinite _`. Take `⟨S, hbad, hsplit⟩` from `GlobalTheory.T.one_sub_goodIdempotent_eq_badTupleSums D`. Establish `hloc : ∀ k, locShare D (fun k' v => eUk D k' (ψ ⟨k', v⟩)) k (S k) = locShare D (fun k _ => eUk D k (ψ₀ k)) k (S k)`. Introduce `k`. Unfold `locShare`.
+
+Use `Finset.sum_congr rfl fun t _ => Finset.prod_congr rfl fun v _ => ?_` and prove the remaining obligations. Conclude with `GlobalTheory.T.weight_upperUnitriangularIdempotent_indep_character D k _ _ (hW.1 ⟨k, v⟩) (hψ₀ k) (t v)`. Use `⟨S, hbad, ?_⟩` and prove the remaining obligations. Establish `key` using `GlobalTheory.T.finrank_eigen_inf_ker_le_of_semidirect_split (G0g D.nd) Γ V π ι hs ρ P lam lamb hlamb H n D.ntypes.e0 (fun k => badElt D k (S k)) (fun k => locShare D (fun k _ => eUk D k (ψ₀ k)) k (S k)) c hemb hn (fun k => (GlobalTheory.BadCount.IdemCen.badElt_idem_central D k (S …`. Simplify using `using key`.
+-/
 theorem bad_part_le_locShare : ∀ (D : D7) (Γ V : Type) [Group Γ] [Finite Γ] [AddCommGroup V] [Module ℂ V] [FiniteDimensional ℂ V] (π : Γ →* G0g D.nd) (ι : G0g D.nd →* Γ), IsSplit π ι → ∀ (ρ : Representation ℂ Γ V) (P : Subgroup (G0g D.nd)) (lam : P →* ℂˣ) (ψ : ∀ kv : (Σ k : Fin 2, D.nd.PlG k), AddChar (ZMod (D.host.g kv.1)) ℂ), IsWhit D P lam ψ → ∀ (lamb : P.comap π →* ℂˣ), (∀ γ : P.comap π, lamb γ = lam ⟨π γ, γ.2⟩) → ∀ (H : Fin 2 → Subgroup (G0g D.nd)), (∀ k, IsHalf D k (H k)) → ∀ (n : Fin 2 → ℕ) (c : ℝ), (∀ k, EmbReg ρ ((H k).comap π) (n k)) → (∀ k, (n k : ℝ) * Nat.card ((H k).comap π) ≤ c * Nat.card (P.comap π) * finrank ℂ (eig ρ (P.comap π) lamb)) → ∀ ψ₀ : ∀ k : Fin 2, AddChar (ZMod (D.host.g k)) ℂ, (∀ k, ψ₀ k ≠ 1) → ∃ S : ∀ k : Fin 2, Finset (Tup D k), (∀ k, ∀ t ∈ S k, ¬ goodAt D k t) ∧ (finrank ℂ (eig ρ (P.comap π) lamb ⊓ LinearMap.ker (Representation.asAlgebraHom (ρ.comp ι : Representation ℂ (G0g D.nd) V) D.ntypes.e0) : Submodule ℂ V) : ℝ) ≤ c * (locShare D (fun k _ => eUk D k (ψ₀ k)) 0 (S 0) + locShare D (fun k _ => eUk D k (ψ₀ k)) 1 (S 1)) * finrank ℂ (eig ρ (P.comap π) lamb) := by
   intro D Γ V _ _ _ _ _ π ι hs ρ P lam ψ hW lamb hlamb H hH n c hemb hn ψ₀ hψ₀
   classical

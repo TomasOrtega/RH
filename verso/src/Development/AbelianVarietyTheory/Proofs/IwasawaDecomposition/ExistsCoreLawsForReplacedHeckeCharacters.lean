@@ -24,11 +24,23 @@ variable {D : D7} {E : Type} [Field E] [NumberField E] [IsCMField E] {r : ℕ} {
   {K : Type} [Field K] {C : Type} [AddCommGroup C] [Module K C] {σ : K →+* ℂ} {V : HSp D}
   {X : Comp → Data E r} {rd : C →ₛₗ[σ] FDSec X} {dict : GA D V → Σ c, Frame (X c).Ψ r} {mu mu' : GA D V → ℂ}
 
+/- English proof (translation)
+Use `show ‖mu' q.out * rd f (dict q.out).1 (dict q.out).2‖ = ‖mu q.out * rd f (dict q.out).1 (dict q.out).2‖`. Rewrite using `[norm_mul, norm_mul, h.2.1, h'.2.1]`.
+-/
 theorem norm_jFn_eq_of_muUnit (h : MuUnit V dict mu) (h' : MuUnit V dict mu') (f : C) (q : AutQ V) :
     ‖jFn V σ rd dict mu' f q‖ = ‖jFn V σ rd dict mu f q‖ := by
   show ‖mu' q.out * rd f (dict q.out).1 (dict q.out).2‖ = ‖mu q.out * rd f (dict q.out).1 (dict q.out).2‖
   rw [norm_mul, norm_mul, h.2.1, h'.2.1]
 
+/- English proof (translation)
+Introduce `f`. Establish `hne : ∀ g, mu g ≠ 0` using `fun g h0 => by`. Use `h.2.1 g` as an intermediate fact. Rewrite `this` using `[h0, norm_zero]`. Conclude with `zero_ne_one this`.
+
+Establish `hinv : ∀ γ ∈ GQ V, ∀ g, (fun g => mu' g / mu g) (γ * g) = (fun g => mu' g / mu g) g`. Introduce `γ hγ g`. Use `show mu' (γ * g) / mu (γ * g) = mu' g / mu g`. Rewrite using `[h.1, h'.1, h.2.2.1 γ hγ, h'.2.2.1 γ hγ, one_mul, one_mul]`. Establish `hm : AEStronglyMeasurable (onQ V (fun g => mu' g / mu g)) (muQ1 V)` using `by haveI : BorelSpace (GA D V) := ⟨rfl⟩`.
+
+Rewrite using `[onQ_eq_lift _ hinv]`. Use `Measurable.aestronglyMeasurable ?_` and prove the remaining obligations. Conclude with `measurable_from_quotient.2 (hc'.div hc hne).measurable`. Establish `he : jFn V σ rd dict mu' f = onQ V (fun g => mu' g / mu g) * jFn V σ rd dict mu f`. Use function extensionality and compare the values at `q`.
+
+Use `show mu' q.out * rd f (dict q.out).1 (dict q.out).2 = mu' q.out / mu q.out * (mu q.out * rd f (dict q.out).1 (dict q.out).2)`. Rewrite using `[← mul_assoc, div_mul_cancel₀ _ (hne _)]`. Use `(hL f).congr_norm ?_ (Filter.Eventually.of_forall fun q => (norm_jFn_eq_of_muUnit h h' f q).symm)` and prove the remaining obligations. Rewrite using `[he]`. Conclude with `hm.mul (hL f).aestronglyMeasurable`.
+-/
 theorem jMemL2_of_muUnit (h : MuUnit V dict mu) (h' : MuUnit V dict mu') (hc : Continuous mu)
     (hc' : Continuous mu') (hL : JMemL2 V σ rd dict mu) : JMemL2 V σ rd dict mu' := by
   intro f
@@ -54,6 +66,9 @@ theorem jMemL2_of_muUnit (h : MuUnit V dict mu) (h' : MuUnit V dict mu') (hc : C
   rw [he]
   exact hm.mul (hL f).aestronglyMeasurable
 
+/- English proof (translation)
+Use `show ‖(hL' f).toLp _‖ = ‖(hL f).toLp _‖`. Rewrite using `[Lp.norm_toLp, Lp.norm_toLp, eLpNorm_congr_norm_ae (Filter.Eventually.of_forall fun q => norm_jFn_eq_of_muUnit h h' f q)]`.
+-/
 theorem peterson_norm_independent_of_unitary_character (h : MuUnit V dict mu) (h' : MuUnit V dict mu') (hL : JMemL2 V σ rd dict mu)
     (hL' : JMemL2 V σ rd dict mu') (f : C) : l2NormAlt V σ rd dict mu' hL' f = l2NormAlt V σ rd dict mu hL f := by
   show ‖(hL' f).toLp _‖ = ‖(hL f).toLp _‖
@@ -62,6 +77,13 @@ theorem peterson_norm_independent_of_unitary_character (h : MuUnit V dict mu) (h
 
 end Change
 
+/- English proof (translation)
+Introduce `D T chiW hJ hC hchi`. Establish `hex : ∀ j σ, ∃ mu : GA D (T.V j σ) → ℂ, InR D j → GoodEmb T.Q.c σ → MuVal (T.V j σ) (chiW j σ) mu ∧ MuUnit (T.V j σ) (T.dict j σ) mu ∧ Continuous mu`. Introduce `j σ`. Distinguish the cases in `h : InR D j ∧ GoodEmb T.Q.c σ`. Take `⟨mu, h1, h2, h3, h4, h5⟩` from `GlobalTheory.Member.exists_muVal D (T.V j σ) (chiW j σ) (hchi j h.1 σ h.2).1 (hchi j h.1 σ h.2).2.1`.
+
+Conclude with `⟨mu, fun hj hσ => ⟨h1, ⟨h2, h3, h4, (hJ.muUnit j hj σ hσ).2.2.2⟩, h5⟩⟩`. Conclude with `⟨fun _ => 1, fun hj hσ => absurd ⟨hj, hσ⟩ h⟩`. Use `choose mu hmu using hex`. Establish `hL : ∀ j, InR D j → ∀ σ, GoodEmb T.Q.c σ → CuspL2 (T.U j) σ (T.V j σ) (T.dict j σ) (mu j σ)` using `fun j hj σ hσ a n hd => jMemL2_of_muUnit (hJ.muUnit j hj σ hσ) (hmu j σ hj hσ).2.1 (hJ.muCont j hj σ hσ) (hmu j σ hj hσ).2.2 (hJ.cuspidalL2Subspace j hj σ hσ a n hd)`. Establish `hLM : LawsM (reCore T T.dict mu chiW T.x₀ T.cE).toCore` using `{ pins := hJ.pins half := hJ.half evalWD := hJ.evalWD unf := hJ.unf unTest := hJ.unTest chiTriv := hJ.chiTriv dictU := hJ.dictU spaceW := hJ.spaceW levelK := hJ.levelK xiAbs := hJ.xiAbs muUnit := fun j hj σ hσ => (hmu j σ hj hσ).2.1 muCont := fun j hj σ hσ => (hmu j σ hj hσ).2.2 …`.
+
+Use `⟨mu, ?_, ?_⟩` and prove the remaining obligations. Conclude with `{ toLawsM := hLM cUnit := hJ.cUnit muVal := fun j hj σ hσ => (hmu j σ hj hσ).1 muConj := fun j hj σ hσ => (hchi j hj σ hσ).2.2 intAll := hJ.intAll modelW := hJ.modelW familyUniformisationBasePointOrthogonal := hJ.familyUniformisationBasePointOrthogonal kfHalf := hJ.kfHalf adPin : …`. Conclude with `{ toLawsM := hLM cuspMul := hC.cuspMul latZ := hC.latZ cuNe := hC.cuNe expo := hC.expo }`.
+-/
 theorem exists_mu_reCore : ∀ (D : D7) (T : CoreJ D) (chiW : ℕ → (T.Q.c.F →+* ℂ) → (AE D)ˣ →* Circle), LawsJ T → LawsCore T.toCore → (∀ j, InR D j → ∀ σ, GoodEmb T.Q.c σ → IsHeckeChar D (chiW j σ) ∧ (∀ a, chiW j σ (idF D a) = 1) ∧ MuConj T.σ₀ σ (chiW j T.σ₀) (chiW j σ)) → ∃ mu, LawsJ (reCore T T.dict mu chiW T.x₀ T.cE) ∧ LawsCore (reCore T T.dict mu chiW T.x₀ T.cE).toCore := by
   intro D T chiW hJ hC hchi
   have hex : ∀ j σ, ∃ mu : GA D (T.V j σ) → ℂ, InR D j → GoodEmb T.Q.c σ →

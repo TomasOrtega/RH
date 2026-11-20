@@ -19,6 +19,9 @@ section Val
 
 variable {K K' : Type} [Field K] [Field K'] {Z : Scheme.{0}} [IsIntegral Z] (y : Sp K ⟶ Z) {f g : Z.functionField}
 
+/- English proof (translation)
+Establish `h : RegAt (below y) (algebraMap _ Z.functionField a)` using `⟨a, rfl⟩`. Rewrite using `[valAt, dif_pos h, IsFractionRing.injective (Z.presheaf.stalk (below y)) Z.functionField h.choose_spec]`.
+-/
 theorem valAt_algebraMap (a : Z.presheaf.stalk (below y)) :
     valAt y (algebraMap _ Z.functionField a) = (Scheme.stalkClosedPointTo y).hom a := by
   have h : RegAt (below y) (algebraMap _ Z.functionField a) := ⟨a, rfl⟩
@@ -26,23 +29,38 @@ theorem valAt_algebraMap (a : Z.presheaf.stalk (below y)) :
 
 variable {y}
 
+/- English proof (translation)
+Take `⟨a, rfl⟩` from `hf`. Take `⟨b, rfl⟩` from `hg`. Rewrite using `[← map_add, valAt_algebraMap, valAt_algebraMap, valAt_algebraMap, map_add]`.
+-/
 theorem valAt_add (hf : RegAt (below y) f) (hg : RegAt (below y) g) : valAt y (f + g) = valAt y f + valAt y g := by
   obtain ⟨a, rfl⟩ := hf
   obtain ⟨b, rfl⟩ := hg
   rw [← map_add, valAt_algebraMap, valAt_algebraMap, valAt_algebraMap, map_add]
 
+/- English proof (translation)
+Take `⟨a, rfl⟩` from `hf`. Take `⟨b, rfl⟩` from `hg`. Rewrite using `[← map_mul, valAt_algebraMap, valAt_algebraMap, valAt_algebraMap, map_mul]`.
+-/
 theorem valAt_mul (hf : RegAt (below y) f) (hg : RegAt (below y) g) : valAt y (f * g) = valAt y f * valAt y g := by
   obtain ⟨a, rfl⟩ := hf
   obtain ⟨b, rfl⟩ := hg
   rw [← map_mul, valAt_algebraMap, valAt_algebraMap, valAt_algebraMap, map_mul]
 
+/- English proof (translation)
+Take `⟨a, rfl⟩` from `hf`. Rewrite using `[← map_pow, valAt_algebraMap, valAt_algebraMap, map_pow]`.
+-/
 theorem valAt_pow (hf : RegAt (below y) f) (m : ℕ) : valAt y (f ^ m) = valAt y f ^ m := by
   obtain ⟨a, rfl⟩ := hf
   rw [← map_pow, valAt_algebraMap, valAt_algebraMap, map_pow]
 
+/- English proof (translation)
+The claim follows from `have ⟨a, ha⟩ := hf; ⟨a ^ m, by rw [map_pow, ha]⟩`.
+-/
 theorem regAt_pow {x : Z} (hf : RegAt x f) (m : ℕ) : RegAt x (f ^ m) :=
   have ⟨a, ha⟩ := hf; ⟨a ^ m, by rw [map_pow, ha]⟩
 
+/- English proof (translation)
+Take `⟨a, ha, rfl⟩` from `hf`. Rewrite using `[valAt_algebraMap]`. Conclude with `(ha.map _).ne_zero`.
+-/
 theorem valAt_ne_zero (hf : UnitAt (below y) f) : valAt y f ≠ 0 := by
   obtain ⟨a, ha, rfl⟩ := hf
   rw [valAt_algebraMap]
@@ -50,17 +68,33 @@ theorem valAt_ne_zero (hf : UnitAt (below y) f) : valAt y f ≠ 0 := by
 
 variable (y)
 
+/- English proof (translation)
+Rewrite using `[← map_zero (algebraMap (Z.presheaf.stalk (below y)) Z.functionField), valAt_algebraMap, map_zero]`.
+-/
 theorem valAt_zero : valAt y 0 = 0 := by
   rw [← map_zero (algebraMap (Z.presheaf.stalk (below y)) Z.functionField), valAt_algebraMap, map_zero]
 
+/- English proof (translation)
+Rewrite using `[← map_one (algebraMap (Z.presheaf.stalk (below y)) Z.functionField), valAt_algebraMap, map_one]`.
+-/
 theorem valAt_one : valAt y 1 = 1 := by
   rw [← map_one (algebraMap (Z.presheaf.stalk (below y)) Z.functionField), valAt_algebraMap, map_one]
 
 omit [IsIntegral Z] in
 
+/- English proof (translation)
+Conclude with `(Scheme.Hom.comp_apply _ _ _).trans (congrArg y (Subsingleton.elim (α := PrimeSpectrum K) _ _))`.
+-/
 theorem below_comp (φ : K →+* K') : below (spMap φ ≫ y) = below y := by
   exact (Scheme.Hom.comp_apply _ _ _).trans (congrArg y (Subsingleton.elim (α := PrimeSpectrum K) _ _))
 
+/- English proof (translation)
+Distinguish the cases in `h : RegAt (below y) f`. Take `⟨U, hU, a, rfl⟩` from `h.exists_fnOf`. Establish `hU' : below (spMap φ ≫ y) ∈ U` using `(below_comp y φ).symm ▸ hU`. Establish `e : spMap φ ≫ y = Spec.map (Scheme.stalkClosedPointTo y ≫ CommRingCat.ofHom φ) ≫ Z.fromSpecStalk (below y)`. Rewrite using `[Spec.map_comp, Category.assoc, Scheme.Spec_stalkClosedPointTo_fromSpecStalk]`.
+
+Establish `: IsLocalHom (Scheme.stalkClosedPointTo y ≫ CommRingCat.ofHom φ).hom`. Rewrite using `[CommRingCat.hom_comp]`. Conclude with `RingHom.isLocalHom_comp φ _`. Use `conv_rhs => rw [← algebraMap_germ hU a, valAt_algebraMap]`. Rewrite using `[← algebraMap_germ hU' a, valAt_algebraMap]`.
+
+Use `revert hU'`. Rewrite using `[e]`. Introduce `hU'`. Conclude with `congrArg (fun q => q.hom a) (Scheme.germ_stalkClosedPointTo_Spec_fromSpecStalk (Scheme.stalkClosedPointTo y ≫ CommRingCat.ofHom φ) U hU')`. Rewrite using `[valAt, valAt, dif_neg h, dif_neg ((below_comp y φ).symm ▸ h), map_zero]`.
+-/
 theorem valAt_comp (φ : K →+* K') (f : Z.functionField) : valAt (spMap φ ≫ y) f = φ (valAt y f) := by
   by_cases h : RegAt (below y) f
   · obtain ⟨U, hU, a, rfl⟩ := h.exists_fnOf
@@ -82,17 +116,28 @@ theorem valAt_comp (φ : K →+* K') (f : Z.functionField) : valAt (spMap φ ≫
 
 variable {y} in
 
+/- English proof (translation)
+Rewrite using `[← algebraMap_germ hy a, valAt_algebraMap]`. Conclude with `congrArg (fun q => q.hom a) (Scheme.germ_stalkClosedPointTo y U hy)`.
+-/
 theorem valAt_fnOf {U : Z.Opens} (hy : below y ∈ U) (h : genericPoint Z ∈ U) (a : Γ(Z, U)) :
     valAt y (fnOf U h a) = TangentOrigin.evalPt y U ((Points.le_preimage_iff _ _).2 hy) a := by
   rw [← algebraMap_germ hy a, valAt_algebraMap]
   exact congrArg (fun q => q.hom a) (Scheme.germ_stalkClosedPointTo y U hy)
 
+/- English proof (translation)
+Take `⟨U, hU, a, rfl⟩` from `hf.exists_fnOf`. Rewrite using `[ratVal_fnOf (CxPts.mem_ptsIn.2 hU), valAt_fnOf hU, CxPts.ev_eq (CxPts.mem_ptsIn.2 hU)]`. Both sides reduce to the same expression.
+-/
 theorem ratVal_eq_valAt {k : Type} [CommRing k] {q : Z ⟶ Sp k} {σ : k →+* ℂ} (z : CxPts q σ)
     (hf : RegAt (under z) f) : ratVal f z = valAt z.1 f := by
   obtain ⟨U, hU, a, rfl⟩ := hf.exists_fnOf
   rw [ratVal_fnOf (CxPts.mem_ptsIn.2 hU), valAt_fnOf hU, CxPts.ev_eq (CxPts.mem_ptsIn.2 hU)]
   rfl
 
+/- English proof (translation)
+Rewrite using `[IsScalarTower.algebraMap_apply k Γ(Y.X, ⊤) Y.Fn]`. Use `(valAt_fnOf (U := ⊤) trivial trivial _).trans ?_` and prove the remaining obligations. Establish `e` using `congrArg (fun q => q.hom a) (Scheme.ΓSpecIso_inv_naturality (CommRingCat.ofHom φ))`. Establish `e' : (y.appTop).hom (algebraMap k Γ(Y.X, ⊤) a) = (Scheme.ΓSpecIso (.of K)).inv.hom (φ a)`. Use `Eq.trans ?_ e.symm` and prove the remaining obligations.
+
+Express the relevant statement in the definitionally equal form `((y ≫ Y.str).appTop).hom _ = ((spMap φ).appTop).hom _`. Rewrite using `[h]`. Use `Eq.trans (congrArg (Scheme.ΓSpecIso (.of K)).hom.hom (Eq.trans ?_ e')) (Iso.inv_hom_id_apply _ _)` and prove the remaining obligations. Conclude with `congrArg (fun q => q.hom (algebraMap k Γ(Y.X, ⊤) a)) (Scheme.Hom.appLE_eq_app y (U := ⊤))`.
+-/
 theorem valAt_const {k : Type} [Field k] {Y : Var k} {y : Sp K ⟶ Y.X} {φ : k →+* K} (h : y ≫ Y.str = spMap φ) (a : k) :
     valAt y (algebraMap k Y.Fn a) = φ a := by
   rw [IsScalarTower.algebraMap_apply k Γ(Y.X, ⊤) Y.Fn]
@@ -135,19 +180,31 @@ variable {Y E} (σ : AlgebraicClosure E ≃ₐ[E] AlgebraicClosure E) (y : GeomP
 
 omit [NumberField F] [NumberField E] in
 
+/- English proof (translation)
+The claim follows from `below_comp _ _`.
+-/
 theorem below_smul : below (σ • y).1 = below y.1 := below_comp _ _
 
 omit [NumberField F] [NumberField E] in
 
+/- English proof (translation)
+The claim follows from `valAt_comp _ _ _`.
+-/
 theorem valAt_smul (f : Y.Fn) : valAt (σ • y).1 f = σ (valAt y.1 f) := valAt_comp _ _ _
 
 omit [NumberField F] [NumberField E] [Algebra F E] in
 
+/- English proof (translation)
+The claim follows from `σ.commutes _`.
+-/
 theorem map_coef (i : Fin Y.dim) (l : Fin n) : σ (coef Y E c i l) = coef Y E c i l := σ.commutes _
 
 omit [NumberField F] [NumberField E] in
 variable {w c y} in
 
+/- English proof (translation)
+Introduce `k hk i` and use `by have := congrArg σ (hy k (below_smul σ y ▸ hk) i) simpa only [map_sum, map_mul, map_coef, map_zero, valAt_smul] using this`.
+-/
 theorem smul_mem_cutSet (hy : y ∈ cutSet Y E w c) : σ • y ∈ cutSet Y E w c := fun k hk i => by
   have := congrArg σ (hy k (below_smul σ y ▸ hk) i)
   simpa only [map_sum, map_mul, map_coef, map_zero, valAt_smul] using this
@@ -187,15 +244,26 @@ variable {Y E w c} {x : Y.X} {y : GeomPt Y E} {k k' : Fin n} {g g' e : Y.Fnˣ} {
 
 omit [NumberField F] in
 
+/- English proof (translation)
+The claim follows from `(unitAt_iff (div_ne_zero h.1 h'.1)).2 ⟨h'.2 k, by rw [inv_div]; exact h.2 k'⟩`.
+-/
 theorem GenAt.unitAt (h : GenAt Y w x k) (h' : GenAt Y w x k') : UnitAt x (w k / w k') :=
   (unitAt_iff (div_ne_zero h.1 h'.1)).2 ⟨h'.2 k, by rw [inv_div]; exact h.2 k'⟩
 
 omit [NumberField F] in
 
+/- English proof (translation)
+The claim follows from `(Δ.exists_isEqn x).choose_spec`.
+-/
 theorem isEqn_eqn (Δ : Y.Dv) (x : Y.X) : Δ.IsEqn x (eqn Δ x) := (Δ.exists_isEqn x).choose_spec
 
 omit [NumberField F] in
 
+/- English proof (translation)
+Take `⟨k', hk', h⟩` from `h`. Use `((he.add hg).regularAt_iff.1 h).mul (regAt_pow (hk.2 k') Y.dim)` as an intermediate fact. Use `this using 1` and compare the differences between its conclusion and the goal. Use `hk'.1` as an intermediate fact. Rewrite using `[Units.val_mul, div_pow]`.
+
+Clear the denominators using the available nonvanishing facts.
+-/
 theorem ResReg.regAt (h : ResReg Y w Δ f x) (hk : GenAt Y w x k) (hg : Y.KY.IsEqn x g) (he : Δ.IsEqn x e) :
     RegAt x (f * e * g / w k ^ Y.dim) := by
   obtain ⟨k', hk', h⟩ := h
@@ -207,6 +275,9 @@ theorem ResReg.regAt (h : ResReg Y w Δ f x) (hk : GenAt Y w x k) (hg : Y.KY.IsE
 
 omit [NumberField F] [NumberField E] in
 
+/- English proof (translation)
+Rewrite using `[dsVal, Finset.sum_eq_single l _ (by simp)]`. Simplify using `[coef, hc]`. Introduce `l' _ hl`. Take `⟨i, hi⟩` from `Function.ne_iff.1 hl`. Rewrite using `[Finset.prod_eq_zero (Finset.mem_univ i) (by simp [coef, hc, hi]), zero_mul]`.
+-/
 theorem dsVal_pick {l : Fin Y.dim → Fin n} (hc : ∀ i j, c i j = if j = l i then 1 else 0) (g : Y.Fn) :
     dsVal Y E w c y k g = valAt y.1 (jacRat Y (fun i => w (l i) / w k) * g) := by
   rw [dsVal, Finset.sum_eq_single l _ (by simp)]
@@ -217,6 +288,9 @@ theorem dsVal_pick {l : Fin Y.dim → Fin n} (hc : ∀ i j, c i j = if j = l i t
 
 omit [NumberField F] [NumberField E] in
 
+/- English proof (translation)
+Establish `h0` using `hk.1`. Rewrite using `[resAt, div_eq_one_iff_eq hd, dsVal_pick hc]`. Use `congr 1`. Clear the denominators using the available nonvanishing facts.
+-/
 example {l : Fin Y.dim → Fin n} (hc : ∀ i j, c i j = if j = l i then 1 else 0) (hk : GenAt Y w (below y.1) k)
     (hd : dsVal Y E w c y k g ≠ 0) :
     resAt Y E w c (w k ^ Y.dim * jacRat Y (fun i => w (l i) / w k) / e) y k g e = 1 := by
@@ -227,6 +301,9 @@ example {l : Fin Y.dim → Fin n} (hc : ∀ i j, c i j = if j = l i then 1 else 
 
 omit [NumberField F] [NumberField E] in
 
+/- English proof (translation)
+Rewrite using `[resVal, resVal, below_smul]`. Consider the cases of `genIdx Y w (below y.1) with`. Consider the case `none => exact (map_zero σ).symm`. Consider the case `some k => simp only [Option.elim, resAt, dsVal, valAt_smul, map_div₀, map_sum, map_mul, map_prod, map_coef]`.
+-/
 theorem resVal_smul (σ : AlgebraicClosure E ≃ₐ[E] AlgebraicClosure E) (Δ : Y.Dv) (f : Y.Fn) (y : GeomPt Y E) :
     resVal Y E w c Δ f (σ • y) = σ (resVal Y E w c Δ f y) := by
   rw [resVal, resVal, below_smul]
@@ -264,6 +341,9 @@ def IsCutHerm (H : ReciprocityTheory.GeometryOfNumbersTheory.HermFam E (cutSec Y
 
 variable {w c A} in
 
+/- English proof (translation)
+Establish `e : H.form = H'.form` using `funext fun τ => funext fun g => funext fun g' => (h τ g g').trans (h' τ g g').symm`. Consider the cases of `H`. Consider the cases of `H'`. Reduce the equality to equality of the corresponding arguments.
+-/
 theorem IsCutHerm.unique {H H' : ReciprocityTheory.GeometryOfNumbersTheory.HermFam E (cutSec Y E w c)} (h : IsCutHerm w c A H)
     (h' : IsCutHerm w c A H') : H = H' := by
   have e : H.form = H'.form := funext fun τ => funext fun g => funext fun g' => (h τ g g').trans (h' τ g g').symm

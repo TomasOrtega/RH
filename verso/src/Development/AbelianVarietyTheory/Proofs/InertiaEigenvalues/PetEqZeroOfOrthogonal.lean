@@ -17,6 +17,11 @@ namespace GlobalTheory.KeepOrth
 
 variable {E : Type} [Field E] [NumberField E] [IsTotallyComplex E] {a : ℕ}
 
+/- English proof (translation)
+Use `h.zfin` as an intermediate fact. Set `L : Polynomial ℂ →ₗ[ℂ] Submodule.span ℂ ((fun z : Module.End ℂ (Sm E a) => z f) '' Zalg E a)` to `LinearMap.codRestrict _ (LinearMap.applyₗ f ∘ₗ (Polynomial.aeval z).toLinearMap) fun p => Submodule.subset_span ⟨_, (Algebra.adjoin_le (S := Zalg E a) (Set.singleton_subset_iff.2 hz)) (Polynomial.aeval_mem_adjoin_singleton ℂ _), rfl⟩`. Use `by_contra! hc`. Establish `hi : Function.Injective L` using `(injective_iff_map_eq_zero L).2 fun p hp => by`. Assume the negation of the conclusion as `h0`.
+
+Conclude with `hc p h0 (congrArg Subtype.val hp)`. Conclude with `Polynomial.not_finite (Module.Finite.of_injective L hi)`.
+-/
 theorem exists_poly_central {f : Sm E a} (h : IsAutForm f) {z : Module.End ℂ (Sm E a)} (hz : z ∈ Zalg E a) :
     ∃ p : Polynomial ℂ, p ≠ 0 ∧ Polynomial.aeval z p f = 0 := by
   have := h.zfin
@@ -30,6 +35,9 @@ theorem exists_poly_central {f : Sm E a} (h : IsAutForm f) {z : Module.End ℂ (
     exact hc p h0 (congrArg Subtype.val hp)
   exact Polynomial.not_finite (Module.Finite.of_injective L hi)
 
+/- English proof (translation)
+Use `h.kfin` as an intermediate fact. Set `U` to `Submodule.span ℂ (Set.range fun k => cptRep E a k f)`. Set `v : Kinf E a → U` to `fun k => ⟨cptRep E a k f, Submodule.subset_span ⟨k, rfl⟩⟩`. Set `T : Module.Dual ℂ U →ₗ[ℂ] (Kinf E a → ℂ)` to `{ toFun := fun l k => l (v k) map_add' := fun _ _ => rfl map_smul' := fun _ _ => rfl }`. Conclude with `⟨LinearMap.range T, inferInstance, fun g => ⟨(LinearMap.proj g).comp ((Sm E a).subtype.comp U.subtype), rfl⟩⟩`.
+-/
 theorem exists_kTypes {f : Sm E a} (h : IsAutForm f) : ∃ W : Submodule ℂ (Kinf E a → ℂ), FiniteDimensional ℂ W ∧
     ∀ g : GA E a, (fun k : Kinf E a => (cptRep E a k f).1 g) ∈ W := by
   have := h.kfin
@@ -42,6 +50,19 @@ theorem exists_kTypes {f : Sm E a} (h : IsAutForm f) : ∃ W : Submodule ℂ (Ki
   exact ⟨LinearMap.range T, inferInstance, fun g =>
     ⟨(LinearMap.proj g).comp ((Sm E a).subtype.comp U.subtype), rfl⟩⟩
 
+/- English proof (translation)
+Take `⟨W, hW, hK⟩` from `exists_kTypes h`. Take `⟨q, hq0, hq⟩` from `GlobalTheory.HCKTypes.exists_casK_poly E a W hW`. Use `choose r hr0 hr using fun τ : E →+* ℂ => exists_poly_central h (GlobalTheory.CasCentre.cas_Eop_mem_Zalg E a τ)`. Set `A : Option (E →+* ℂ) → Module.End ℂ (Sm E a)` to `fun o => o.elim (casKOp E a) fun τ => Formalism.REAL.Cas (Eop τ)`. Set `c : Option (E →+* ℂ) → ℂ` to `fun o => o.elim 2 fun _ => 4`.
+
+Set `P : Option (E →+* ℂ) → Polynomial ℂ` to `fun o => o.elim q r`. Establish `hZ : ∀ τ : E →+* ℂ, ∀ X, Commute (Formalism.REAL.Cas (Eop (a` using `a) τ)) (lie E a X) := fun τ X => GlobalTheory.CuspRep.Zalg_mul_lie E a X _ (GlobalTheory.CasCentre.cas_Eop_mem_Zalg E a τ)`. Establish `hc : ∀ i j, Commute (A i) (A j)`. Introduce and unpack `(_ | τ) (_ | τ')`. Conclude with `Commute.refl _`.
+
+Conclude with `(GlobalTheory.GLPoly.commute_casKOp' (hZ τ')).symm`. Conclude with `GlobalTheory.GLPoly.commute_casKOp' (hZ τ)`. Conclude with `GlobalTheory.GLPoly.commute_cas' (hZ τ) τ'`. Establish `hP : ∀ i, P i ≠ 0`. Introduce and unpack `(_ | τ)`.
+
+Conclude with `hq0`. Conclude with `hr0 τ`. Take `⟨p, hp0, hp⟩` from `GlobalTheory.CommutingPoly.exists_poly_annihilates_linear_combination A hc c P hP`. Use `⟨p, hp0, ?_⟩` and prove the remaining obligations. Establish `e : ∑ i, c i • A i = lapOp E a`.
+
+Rewrite using `[GlobalTheory.HCAlpha.lapOp_eq_casKOp_add_cas E a, Fintype.sum_option]`. Both sides reduce to the same expression. Rewrite using `[← e]`. Use `hp f ?_` and prove the remaining obligations. Introduce and unpack `(_ | τ)`.
+
+Conclude with `hq f hK`. Conclude with `hr τ`.
+-/
 theorem exists_poly_lap {f : Sm E a} (h : IsAutForm f) :
     ∃ p : Polynomial ℂ, p ≠ 0 ∧ Polynomial.aeval (lapOp E a) p f = 0 := by
   obtain ⟨W, hW, hK⟩ := exists_kTypes h
@@ -78,6 +99,11 @@ open GlobalTheory.HCA GroundTheory.Automorphic
 
 attribute [local instance] Matrix.linftyOpNormedRing Matrix.linftyOpNormedAlgebra
 
+/- English proof (translation)
+Take `⟨d, b, P, hPm, -, hP⟩` from `solG_of_polyLap E a p hp`. Introduce `t₀ _`. Take `⟨hf, h0⟩` from `(mem_solG _ _).1 (hP F hF (x * infGL E a (expGL X t₀)))`. Establish `han` using `(glH E a).analyticAt_of_aeval_laplacian_eq_zero (b.map (glH E a).lieEquiv.symm) P hPm ⟨_, hf⟩ h0 1`. Set `XL : glL E a` to `⟨Matrix.of X, Submodule.mem_top⟩`.
+
+Establish `hlin : AnalyticAt ℝ (fun t : ℝ => (t - t₀) • XL) t₀` using `(analyticAt_id.sub analyticAt_const).smul analyticAt_const`. Use `(han.comp_of_eq hlin (by simp)).congr (Filter.Eventually.of_forall fun t => ?_)` and prove the remaining obligations. Establish `e : (((glH E a).expG ((t - t₀) • XL) : glG E a) : GL (Fin a) (Cinf E)) = expGL X (t - t₀)` using `Units.ext rfl`. Simplify using `only [Function.comp_apply, glRes, one_mul, e]`. Rewrite using `[mul_assoc, ← map_mul, ← expGL_add, add_sub_cancel]`.
+-/
 theorem analyticOnNhd_along {F : Sm E a} {p : Polynomial ℂ} (hp : p ≠ 0) (hF : Polynomial.aeval (lapOp E a) p F = 0)
     (x : GA E a) (X : Lie E a) : AnalyticOnNhd ℝ (fun t : ℝ => F.1 (x * infGL E a (expGL X t))) Set.univ := by
   obtain ⟨d, b, P, hPm, -, hP⟩ := solG_of_polyLap E a p hp
@@ -94,6 +120,9 @@ theorem analyticOnNhd_along {F : Sm E a} {p : Polynomial ℂ} (hp : p ≠ 0) (hF
 
 end Analytic
 
+/- English proof (translation)
+Proceed by induction on `k with`. Consider the case `zero => rfl`. Consider the case `succ k ih`. Rewrite using `[iteratedDeriv_succ, ih, pow_succ']`. Conclude with `funext fun t => (hasDerivAt_along X _ x t).deriv`.
+-/
 theorem iteratedDeriv_along (X : Lie E a) (x : GA E a) (k : ℕ) (F : Sm E a) :
     iteratedDeriv k (fun t : ℝ => F.1 (x * infGL E a (expGL X t))) =
       fun t => ((lie E a X ^ k) F).1 (x * infGL E a (expGL X t)) := by
@@ -103,6 +132,13 @@ theorem iteratedDeriv_along (X : Lie E a) (x : GA E a) (k : ℕ) (F : Sm E a) :
     rw [iteratedDeriv_succ, ih, pow_succ']
     exact funext fun t => (hasDerivAt_along X _ x t).deriv
 
+/- English proof (translation)
+Take `⟨p, r, hp⟩` from `hf 0 (Set.mem_univ 0)`. Establish `hF : ∀ n, iteratedFDeriv ℝ n (fun t : ℝ => F.1 (x * infGL E a (expGL X t))) 0 = 0`. Introduce `n`. Use extensionality with `m`. Rewrite using `[iteratedFDeriv_apply_eq_iteratedDeriv_mul_prod, iteratedDeriv_along]`.
+
+Simplify using `[expGL_zero, h0]`. Establish `hev : (fun t : ℝ => F.1 (x * infGL E a (expGL X t))) =ᶠ[𝓝 0] 0` using `by filter_upwards [Metric.eball_mem_nhds (0 : ℝ) hp.r_pos] with y hy`. Establish `h` using `hp.hasSum_iteratedFDeriv hy`. Simplify using `only [hF, ContinuousMultilinearMap.zero_apply, smul_zero, zero_add] at h`. Conclude with `h.unique hasSum_zero`.
+
+Conclude with `hf.eqOn_zero_of_preconnected_of_eventuallyEq_zero isPreconnected_univ (Set.mem_univ 0) hev (Set.mem_univ t)`.
+-/
 theorem eq_zero_along {F : Sm E a} {x : GA E a} {X : Lie E a}
     (hf : AnalyticOnNhd ℝ (fun t : ℝ => F.1 (x * infGL E a (expGL X t))) Set.univ)
     (h0 : ∀ k : ℕ, ((lie E a X ^ k) F).1 x = 0) (t : ℝ) : F.1 (x * infGL E a (expGL X t)) = 0 := by
@@ -119,6 +155,15 @@ theorem eq_zero_along {F : Sm E a} {x : GA E a} {X : Lie E a}
     exact h.unique hasSum_zero
   exact hf.eqOn_zero_of_preconnected_of_eventuallyEq_zero isPreconnected_univ (Set.mem_univ 0) hev (Set.mem_univ t)
 
+/- English proof (translation)
+Use `haveI : PreconnectedSpace (GL (Fin a) (Cinf E)) := ⟨by`. Rewrite using `[← (GlobalTheory.CuspQuot.isOpenEmbedding_val (E := E) (a := a)).isInducing.isPreconnected_image]`. Rewrite using `[Set.image_univ]`. Conclude with `GlobalTheory.AlgInfChar.isPreconnected_invSet (E := E) (a := a)⟩`. Establish `hn : ∀ y : GL (Fin a) (Cinf E), ∀ᶠ z in 𝓝 y, ∃ X, z = y * expGL X 1` using `fun y => by`.
+
+Establish `h` using `GlobalTheory.GLFin.expGL_image_ball_mem_nhds E a 1 one_pos`. Establish `h2 : Tendsto (fun z => y⁻¹ * z) (𝓝 y) (𝓝 1)` using `(continuous_const_mul y⁻¹).tendsto' y 1 (inv_mul_cancel y)`. Use `filter_upwards [h2 h] with z hz`. Take `⟨X, -, hX⟩` from `hz`. Conclude with `⟨X, by rw [show expGL X 1 = y⁻¹ * z from hX, mul_inv_cancel_left]⟩`.
+
+Use `IsClopen.eq_univ ⟨⟨isOpen_iff_mem_nhds.2 fun y hy => ?_⟩, isOpen_iff_mem_nhds.2 fun y hy => ?_⟩ ⟨1, h1⟩` and prove the remaining obligations. Use `filter_upwards [hn y] with z hz hzS`. Take `⟨X, rfl⟩` from `hz`. Use `hS _ hzS X (-1)` as an intermediate fact. Rewrite `this` using `[mul_assoc, ← expGL_add, add_neg_cancel, expGL_zero, mul_one]`.
+
+Conclude with `hy this`. Use `filter_upwards [hn y] with z hz`. Take `⟨X, rfl⟩` from `hz`. Conclude with `hS y hy X 1`.
+-/
 theorem eq_univ_of_exp {S : Set (GL (Fin a) (Cinf E))} (h1 : 1 ∈ S) (hS : ∀ y ∈ S, ∀ X t, y * expGL X t ∈ S) :
     S = Set.univ := by
   haveI : PreconnectedSpace (GL (Fin a) (Cinf E)) := ⟨by
@@ -151,11 +196,19 @@ def crd (i : Fin (Module.finrank ℝ (Lie E a))) (z : Lie E a) : Lie E a →L[�
   (LinearMap.toContinuousLinearMap ((bas E a).coord i)).comp (lmul (invL z))
 
 omit [IsTotallyComplex E] in
+/- English proof (translation)
+The claim follows from `contDiffOn_clm_apply.2 fun v z hz => ((LinearMap.toContinuousLinearMap ((bas E a).coord i)).contDiff.contDiffAt.comp z (GlobalTheory.AutGrowth.contDiff_lmul_uncurry.contDiffAt.comp z ((contDiffAt_invL hz).prodMk (contDiffAt_const (c := v))))).contDiffWithinAt`.
+-/
 theorem contDiffOn_crd (i : Fin (Module.finrank ℝ (Lie E a))) : ContDiffOn ℝ (⊤ : ℕ∞) (crd i) (invSet E a) :=
   contDiffOn_clm_apply.2 fun v z hz => ((LinearMap.toContinuousLinearMap ((bas E a).coord i)).contDiff.contDiffAt.comp z
     (GlobalTheory.AutGrowth.contDiff_lmul_uncurry.contDiffAt.comp z
       ((contDiffAt_invL hz).prodMk (contDiffAt_const (c := v))))).contDiffWithinAt
 
+/- English proof (translation)
+Unfold `chart`. Use `split_ifs`. Use `conv_lhs => rw [← (bas E a).sum_repr X]`. Simplify using `only [map_sum, map_smul, LinearMap.sum_apply, LinearMap.smul_apply, Submodule.coe_sum, Finset.sum_apply, Module.Basis.coord_apply]`. Both sides reduce to the same expression.
+
+Simplify using the standard rewrite rules.
+-/
 theorem chart_lie (X : Lie E a) (φ : Sm E a) (g : GA E a) (z : Lie E a) :
     chart (lie E a X φ).1 g z = ∑ i, (bas E a).coord i X • chart (lie E a (bas E a i) φ).1 g z := by
   unfold chart
@@ -166,6 +219,11 @@ theorem chart_lie (X : Lie E a) (φ : Sm E a) (g : GA E a) (z : Lie E a) :
     rfl
   · simp
 
+/- English proof (translation)
+Use `((contDiffAt_chart φ.2 g hz).differentiableAt (by simp)).hasFDerivAt.congr_fderiv ?_` and prove the remaining obligations. Use `ext1 v`. Establish `e : rmul (lmul (invL z) v) z = v` using `Matrix.mul_nonsing_inv_cancel_left _ _ ((Matrix.isUnit_iff_isUnit_det _).1 hz)`. Establish `h` using `chart_lieD φ.2 (lmul (invL z) v) g hz`. Rewrite `h` using `[e]`.
+
+Rewrite using `[← h]`. Simplify using `only [ContinuousLinearMap.sum_apply, ContinuousLinearMap.smulRight_apply]`. Conclude with `chart_lie _ φ g z`.
+-/
 theorem hasFDerivAt_chart (φ : Sm E a) (g : GA E a) {z : Lie E a} (hz : z ∈ invSet E a) :
     HasFDerivAt (chart φ.1 g) (∑ i, (crd i z).smulRight (chart (lie E a (bas E a i) φ).1 g z)) z := by
   refine ((contDiffAt_chart φ.2 g hz).differentiableAt (by simp)).hasFDerivAt.congr_fderiv ?_
@@ -184,6 +242,9 @@ variable (ψ) in
 
 def coef (φ : GA E a → ℂ) (x : GA E a) : ℂ := pet (latticeGL E a) μ (fun g => φ (g * x)) ψ
 
+/- English proof (translation)
+Unfold `chart`. Use `split_ifs`. Simplify using `only [coef, pet, descend, mul_assoc]`. Simplify using the standard rewrite rules.
+-/
 theorem chart_coef (φ : GA E a → ℂ) (x : GA E a) (z : Lie E a) :
     chart (coef μ ψ φ) x z = ∫ q, chart φ (q.out * x) z * conj (ψ q.out) ∂(GlobalTheory.AutomorphicL2Unitary.quotMeasure (latticeGL E a) μ) := by
   unfold chart
@@ -191,11 +252,23 @@ theorem chart_coef (φ : GA E a → ℂ) (x : GA E a) (z : Lie E a) :
   · simp only [coef, pet, descend, mul_assoc]
   · simp
 
+/- English proof (translation)
+The claim follows from `integrable_mul_conj μ hω (mul_right_mem_bddForms (chart_mem_bddForms h z) x) h'`.
+-/
 theorem integrable_chart (hω : ω.IsUnitary) (h' : ψ ∈ bddForms E a ω) {φ : GA E a → ℂ} (h : φ ∈ bddForms E a ω)
     (x : GA E a) (z : Lie E a) :
     Integrable (fun q => chart φ (q.out * x) z * conj (ψ q.out)) (GlobalTheory.AutomorphicL2Unitary.quotMeasure (latticeGL E a) μ) :=
   integrable_mul_conj μ hω (mul_right_mem_bddForms (chart_mem_bddForms h z) x) h'
 
+/- English proof (translation)
+Use `haveI := GlobalTheory.CovolGL.isFiniteMeasure_quotMeasure E a μ`. Take `⟨D, hD⟩` from `h'.2.2.2`. Use `choose C hC using fun i => (hl (bas E a i)).2.2.2`. Establish `hs : ∀ᶠ y in 𝓝 z, y ∈ invSet E a ∧ ∀ i, ‖crd i y‖ ≤ ‖crd i z‖ + 1`. Use `Filter.Eventually.and (isOpen_invSet.mem_nhds hz) (eventually_all.2 fun i => ?_)` and prove the remaining obligations.
+
+Conclude with `(((contDiffOn_crd i).continuousOn.continuousAt (isOpen_invSet.mem_nhds hz)).norm.eventually_lt_const (lt_add_one _)).mono fun _ => le_of_lt`. Establish `hi : ∀ i, Integrable (fun q : Quot (latticeGL E a) => (crd i z).smulRight (chart (lie E a (bas E a i) φ).1 (q.out * x) z * conj (ψ q.out))) (GlobalTheory.AutomorphicL2Unitary.quotMeasure (latticeGL E a) μ)` using `fun i => (ContinuousLinearMap.smulRightL ℝ _ ℂ (crd i z)).integrable_comp (integrable_chart μ hω h' (hl _) x z)`. Establish `key` using `hasFDerivAt_integral_of_dominated_of_fderiv_le (𝕜 := ℝ) (μ := GlobalTheory.AutomorphicL2Unitary.quotMeasure (latticeGL E a) μ) (F := fun y q => chart φ.1 (q.out * x) y * conj (ψ q.out)) (F' := fun y q => ∑ i, (crd i y).smulRight (chart (lie E a (bas E a i) φ).1 (q.out * x) y * co …`. Rewrite using `[ContinuousLinearMap.norm_smulRight_apply, norm_mul, Complex.norm_conj]`. Conclude with `mul_le_mul (hy.2 i) (mul_le_mul (GlobalTheory.CuspQuot.norm_chart_le (hC i) _ _) (hD _) (norm_nonneg _) ((norm_nonneg _).trans (hC i 1))) (by positivity) (by positivity)))`.
+
+Use the proof step `(integrable_const _)`. Use the proof step `(.of_forall fun q y hy => by`. Use `((hasFDerivAt_chart φ (q.out * x) hy.1).mul_const (conj (ψ q.out))).congr_fderiv ?_` and prove the remaining obligations. Use `ext1 v`. Simplify using `[Finset.mul_sum, mul_comm, mul_left_comm])`.
+
+Rewrite `key` using `[integral_finset_sum _ fun i _ => hi i]`. Rewrite using `[funext (chart_coef μ φ.1 x)]`. Use `key.congr_fderiv (Finset.sum_congr rfl fun i _ => ?_)` and prove the remaining obligations. Rewrite using `[chart_coef]`. Conclude with `(ContinuousLinearMap.smulRightL ℝ _ ℂ (crd i z)).integral_comp_comm (integrable_chart μ hω h' (hl _) x z)`.
+-/
 theorem hasFDerivAt_coef (hω : ω.IsUnitary) (h' : ψ ∈ bddForms E a ω) {φ : Sm E a} (h : φ.1 ∈ bddForms E a ω)
     (hl : ∀ X, (lie E a X φ).1 ∈ bddForms E a ω) (x : GA E a) {z : Lie E a} (hz : z ∈ invSet E a) :
     HasFDerivAt (chart (coef μ ψ φ.1) x)
@@ -233,6 +306,11 @@ theorem hasFDerivAt_coef (hω : ω.IsUnitary) (h' : ψ ∈ bddForms E a ω) {φ 
 
 variable {V : Submodule ℂ (Sm E a)}
 
+/- English proof (translation)
+Introduce `x`. Establish `hd` using `fun φ (hφ : φ ∈ V) z (hz : z ∈ invSet E a) => hasFDerivAt_coef μ hω h' (hV φ hφ) (fun X => hV _ (hl X φ hφ)) x hz`. Use `contDiffOn_infty.2 fun n => ?_` and prove the remaining obligations. Proceed by induction on `n generalizing φ with`. Consider the case `zero => exact contDiffOn_zero.2 fun z hz => (hd φ hφ z hz).continuousAt.continuousWithinAt`.
+
+Consider the case `succ n ih`. Rewrite using `[Nat.cast_succ, contDiffOn_succ_iff_fderiv_of_isOpen isOpen_invSet]`. Use `⟨fun z hz => (hd φ hφ z hz).differentiableAt.differentiableWithinAt, by simp, ?_⟩` and prove the remaining obligations. Use `ContDiffOn.congr (ContDiffOn.sum fun i _ => ContDiffOn.smulRight ((contDiffOn_crd i).of_le (by` and prove the remaining obligations. Conclude with `le_top)) (ih (hl (bas E a i) φ hφ))) fun z hz => (hd φ hφ z hz).fderiv` after adjusting the coercions.
+-/
 theorem coef_mem_Sm (hω : ω.IsUnitary) (h' : ψ ∈ bddForms E a ω) (hV : ∀ φ ∈ V, φ.1 ∈ bddForms E a ω)
     (hl : ∀ X, ∀ φ ∈ V, lie E a X φ ∈ V) {φ : Sm E a} (hφ : φ ∈ V) : coef μ ψ φ.1 ∈ Sm E a := by
   intro x
@@ -247,6 +325,13 @@ theorem coef_mem_Sm (hω : ω.IsUnitary) (h' : ψ ∈ bddForms E a ω) (hV : ∀
     refine ContDiffOn.congr (ContDiffOn.sum fun i _ => ContDiffOn.smulRight ((contDiffOn_crd i).of_le (by
       exact_mod_cast le_top)) (ih (hl (bas E a i) φ hφ))) fun z hz => (hd φ hφ z hz).fderiv
 
+/- English proof (translation)
+Use function extensionality and compare the values at `x`. Establish `e : ∀ F : GA E a → ℂ, F x = chart F x (oneL E a)` using `fun F => by simpa using (chart_val F x 1).symm`. Establish `e1 : lmul (invL (oneL E a)) X = X`. Express the relevant statement in the definitionally equal form `(1 : Matrix (Fin a) (Fin a) (Cinf E))⁻¹ * Matrix.of X = Matrix.of X`. Simplify using the standard rewrite rules.
+
+Rewrite using `[lieD, (hasFDerivAt_coef μ hω h' h hl x (z := oneL E a) isUnit_one).fderiv, e (coef μ ψ _)]`. Simplify using `only [ContinuousLinearMap.sum_apply, ContinuousLinearMap.smulRight_apply, chart_coef, chart_lie X, Finset.sum_mul, smul_mul_assoc]`. Use `Eq.trans (Finset.sum_congr rfl fun i _ => ?_) (integral_finset_sum _ fun i _ => (integrable_chart μ hω h' (hl (bas E a i)) x (oneL E a)).smul ((bas E a).coord i X)).symm` and prove the remaining obligations. Simplify using `only [Pi.smul_apply]`. Rewrite using `[integral_smul, crd, ContinuousLinearMap.comp_apply, e1]`.
+
+Both sides reduce to the same expression.
+-/
 theorem lieD_coef (hω : ω.IsUnitary) (h' : ψ ∈ bddForms E a ω) {φ : Sm E a} (h : φ.1 ∈ bddForms E a ω)
     (hl : ∀ X, (lie E a X φ).1 ∈ bddForms E a ω) (X : Lie E a) :
     lieD X (coef μ ψ φ.1) = coef μ ψ (lie E a X φ).1 := by
@@ -271,6 +356,13 @@ def coefL (hω : ω.IsUnitary) (h' : ψ ∈ bddForms E a ω) (hV : ∀ φ ∈ V,
     pet_add_left μ hω (mul_right_mem_bddForms (hV _ φ.2) x) (mul_right_mem_bddForms (hV _ φ'.2) x) h')
   map_smul' c φ := Subtype.ext (funext fun x => pet_smul_left μ c (fun g => φ.1.1 (g * x)) ψ)
 
+/- English proof (translation)
+Set `S : Subalgebra ℂ (Module.End ℂ (Sm E a))` to `{ carrier := {z | ∀ φ : V, ∃ h : z φ.1 ∈ V, T ⟨_, h⟩ = z (T φ)} mul_mem' := fun {x y} hx hy φ => by`. Take `⟨h1, e1⟩` from `hy φ`. Take `⟨h2, e2⟩` from `hx ⟨_, h1⟩`. Conclude with `⟨h2, e2.trans (congrArg x e1)⟩`. Use the proof step `add_mem' := fun {x y} hx hy φ => by`.
+
+Take `⟨h1, e1⟩` from `hx φ`. Take `⟨h2, e2⟩` from `hy φ`. Conclude with `⟨add_mem h1 h2, (map_add T ⟨_, h1⟩ ⟨_, h2⟩).trans (congrArg₂ (· + ·) e1 e2)⟩`. Use the proof step `algebraMap_mem' := fun c φ => ⟨V.smul_mem c φ.2, map_smul T c φ⟩ }`. Establish `hL : ∀ X, lie E a X ∈ S` using `fun X φ => ⟨hl X _ φ.2, hT X φ⟩`.
+
+Establish `hΔ : lapOp E a ∈ S` using `S.sum_mem fun τ _ => S.sum_mem fun i _ => S.sum_mem fun j _ => S.add_mem (S.pow_mem (hL _) 2) (S.pow_mem (hL _) 2)`. Conclude with `(Algebra.adjoin_le (S := S) (Set.singleton_subset_iff.2 hΔ)) (Polynomial.aeval_mem_adjoin_singleton ℂ _) φ`.
+-/
 theorem aeval_lapOp_comm (hl : ∀ X, ∀ φ ∈ V, lie E a X φ ∈ V) (T : V →ₗ[ℂ] Sm E a)
     (hT : ∀ X (φ : V), T ⟨_, hl X _ φ.2⟩ = lie E a X (T φ)) (p : Polynomial ℂ) (φ : V) :
     ∃ h : Polynomial.aeval (lapOp E a) p φ.1 ∈ V, T ⟨_, h⟩ = Polynomial.aeval (lapOp E a) p (T φ) := by
@@ -290,6 +382,15 @@ theorem aeval_lapOp_comm (hl : ∀ X, ∀ φ ∈ V, lie E a X φ ∈ V) (T : V �
     S.sum_mem fun τ _ => S.sum_mem fun i _ => S.sum_mem fun j _ => S.add_mem (S.pow_mem (hL _) 2) (S.pow_mem (hL _) 2)
   exact (Algebra.adjoin_le (S := S) (Set.singleton_subset_iff.2 hΔ)) (Polynomial.aeval_mem_adjoin_singleton ℂ _) φ
 
+/- English proof (translation)
+Set `T` to `coefL μ hω h' hV hl`. Establish `hT : ∀ X (φ : V), T ⟨_, hl X _ φ.2⟩ = lie E a X (T φ)` using `fun X φ => Subtype.ext (lieD_coef μ hω h' (hV _ φ.2) (fun X => hV _ (hl X _ φ.2)) X).symm`. Establish `key` using `eq_univ_of_exp (S := {y | ∀ φ : V, (T φ).1 (infGL E a y) = 0}) (fun φ => by simpa [T, coefL, coef] using h0 _ φ.2) fun y hy X t φ => by`. Take `⟨p, hp0, hp⟩` from `exists_poly_lap (hA _ φ.2)`. Take `⟨h1, e⟩` from `aeval_lapOp_comm hl T hT p φ`.
+
+Establish `e0 : (⟨_, h1⟩ : V) = 0` using `Subtype.ext hp`. Rewrite `e` using `[e0, map_zero]`. Rewrite using `[map_mul]`. Use `eq_zero_along (analyticOnNhd_along hp0 e.symm _ X) (fun k => ?_) t` and prove the remaining obligations. It suffices to establish `h : ∃ φ' : V, (lie E a X ^ k) (T φ) = T φ' by`.
+
+Take `⟨φ', e'⟩` from `h`. Rewrite using `[e']`. Conclude with `hy φ'`. Proceed by induction on `k with`. Consider the case `zero => exact ⟨φ, rfl⟩`.
+
+Consider the case `succ k ih`. Take `⟨φ', e'⟩` from `ih`. Conclude with `⟨_, by rw [pow_succ', Module.End.mul_apply, e', ← hT]⟩`. Conclude with `(key ▸ Set.mem_univ y : y ∈ {y | ∀ φ : V, (T φ).1 (infGL E a y) = 0}) ⟨φ, hφ⟩`.
+-/
 theorem pet_translate_eq_zero (hω : ω.IsUnitary) (h' : ψ ∈ bddForms E a ω) (hV : ∀ φ ∈ V, φ.1 ∈ bddForms E a ω)
     (hl : ∀ X, ∀ φ ∈ V, lie E a X φ ∈ V) (hA : ∀ φ ∈ V, IsAutForm φ)
     (h0 : ∀ φ ∈ V, pet (latticeGL E a) μ φ.1 ψ = 0) {φ : Sm E a} (hφ : φ ∈ V) (y : GL (Fin a) (Cinf E)) :
@@ -315,6 +416,19 @@ theorem pet_translate_eq_zero (hω : ω.IsUnitary) (h' : ψ ∈ bddForms E a ω)
         exact ⟨_, by rw [pow_succ', Module.End.mul_apply, e', ← hT]⟩
   exact (key ▸ Set.mem_univ y : y ∈ {y | ∀ φ : V, (T φ).1 (infGL E a y) = 0}) ⟨φ, hφ⟩
 
+/- English proof (translation)
+Establish `b : ∀ φ ∈ π.V, φ.1 ∈ bddForms E a ω` using `fun φ => mem_bddForms_of_cuspSub hB hω h`. Establish `b' : ∀ φ ∈ π'.V, φ.1 ∈ bddForms E a ω` using `fun φ => mem_bddForms_of_cuspSub hB hω h'`. Establish `H : ∀ φ ∈ π.V, ∀ ψ ∈ π'.V, ∀ y : GL (Fin a) (Cinf E), pet (latticeGL E a) μ (fun g => φ.1 (g * infGL E a y)) ψ.1 = 0` using `fun φ hφ ψ hψ y => pet_translate_eq_zero μ hω (b' ψ hψ) b (fun X => π.stable (.lie X)) (fun φ hφ => (π.cusp φ hφ).1) (fun φ hφ => h0 φ hφ ψ hψ) hφ y`. Use `⟨H, ?_⟩` and prove the remaining obligations. Establish `ext : ∀ (ρ : CuspSub E a), ρ.HasCentChar ω → ∀ ψ ∈ bddForms E a ω, (∀ φ ∈ ρ.V, ∀ y, pet (latticeGL E a) μ (fun g => φ.1 (g * infGL E a y)) ψ = 0) → ∀ F ∈ withSmoothings ρ, pet (latticeGL E a) μ F.1 ψ = 0`.
+
+Introduce `ρ hρ ψ hψ hy F hF`. Set `K : Submodule ℂ (Sm E a)` to `{ carrier := {F | F.1 ∈ bddForms E a ω ∧ pet (latticeGL E a) μ F.1 ψ = 0} add_mem' := fun {F G} hF hG => ⟨add_mem hF.1 hG.1, by`. Rewrite using `[Submodule.coe_add, pet_add_left μ hω hF.1 hG.1 hψ, hF.2, hG.2, add_zero]⟩`. Use the proof step `zero_mem' := ⟨zero_mem _, by simp [pet, descend]⟩`. Use the proof step `smul_mem' := fun c F hF => ⟨Submodule.smul_mem _ c hF.1, by`.
+
+Rewrite using `[Submodule.coe_smul, pet_smul_left, hF.2, mul_zero]⟩ }`. Use `((sup_le (fun φ hφ => ⟨mem_bddForms_of_cuspSub hB hω hρ hφ, by simpa using hy φ hφ 1⟩) (Submodule.span_le.2 ?_) : withSmoothings ρ ≤ K) hF).2` and prove the remaining obligations. Introduce and unpack `G ⟨f, φ, hf, hφ, e⟩`. Establish `bφ` using `mem_bddForms_of_cuspSub hB hω hρ hφ`. Express the relevant statement in the definitionally equal form `G.1 ∈ _ ∧ pet _ μ G.1 ψ = 0`.
+
+Rewrite using `[e]`. Use `⟨by exact smoothing_mem_bddForms volume hf bφ, ?_⟩` and prove the remaining obligations. Use `Eq.trans (by exact pet_smoothing_left μ (volume : Measure (Lie E a)) hω hf bφ hψ) ?_` and prove the remaining obligations. Use `integral_eq_zero_of_ae (.of_forall fun x => mul_eq_zero_of_right _ ?_)` and prove the remaining obligations. Unfold `chart`.
+
+Use `split_ifs`. Conclude with `hy φ hφ _`. Simplify using `[pet, descend]`. Introduce `F hF F' hF'`. Establish `bF` using `mem_bddForms_of_withSmoothings hB hω h hF`.
+
+Rewrite using `[← conj_pet, ext π' h' F.1 bF (fun ψ hψ y => ?_) F' hF', map_zero]`. Rewrite using `[← conj_pet, ext π h _ (mul_right_mem_bddForms (b' ψ hψ) _) (fun φ hφ x => ?_) F hF, map_zero]`. Rewrite using `[← H φ hφ ψ hψ (y⁻¹ * x), ← pet_mul_right μ hω (mul_right_mem_bddForms (b φ hφ) _) (b' ψ hψ) (infGL E a y)]`. Simplify using `only [map_mul, map_inv, mul_assoc, mul_inv_cancel_left]`.
+-/
 theorem pet_eq_zero_of_orthogonal (hB : GlobalTheory.Published.CuspFormsBoundedGL) (E : Type) [Field E] [NumberField E]
     [IsTotallyComplex E] (a : ℕ) (π π' : CuspSub E a) (ω : HChar E) (hω : ω.IsUnitary) (h : π.HasCentChar ω)
     (h' : π'.HasCentChar ω) (μ : Measure (GA E a)) [μ.IsHaarMeasure]

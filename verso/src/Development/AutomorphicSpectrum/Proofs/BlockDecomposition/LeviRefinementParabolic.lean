@@ -10,6 +10,11 @@ open DoubleCoset (doubleCoset)
 
 namespace GlobalTheory.CompanionTheory.RelUnipBridge
 
+/- English proof (translation)
+Distinguish the cases in `h : r = s`. Substitute `h` using the available equality. Simplify using the standard rewrite rules. Rewrite using `[Matrix.one_apply_ne h, Matrix.one_apply_ne]`. Introduce `h'`.
+
+Use `e.injective h'` as an intermediate fact. Simplify using `only [Sigma.mk.injEq, heq_eq_eq, true_and] at this`. Conclude with `h this`.
+-/
 theorem one_apply_sigma {k n α : Type} [Zero k] [One k] [DecidableEq n] {m : α → Type}
     [∀ a, DecidableEq (m a)] (e : (Σ a, m a) ≃ n) (a : α) (r s : m a) :
     (1 : Matrix n n k) (e ⟨a, r⟩) (e ⟨a, s⟩) = (1 : Matrix (m a) (m a) k) r s := by
@@ -21,6 +26,25 @@ theorem one_apply_sigma {k n α : Type} [Zero k] [One k] [DecidableEq n] {m : α
     simp only [Sigma.mk.injEq, heq_eq_eq, true_and] at this
     exact h this
 
+/- English proof (translation)
+Introduce `k _ _ _ _ α β' _ _ _ _ N m _ _ c _ _ e f δ hδ x`. Rewrite using `[GroundTheory.Automorphic.Parabolic.mem_unipotentRadical]`. Prove the components needed by the constructor for the conclusion. Introduce `hx`. Establish `hx' : ∀ a, x a ∈ unipRad k (f a)` using `fun a => hx a trivial`.
+
+Use `⟨fun r s hrs => ?_, fun r s hrs => ?_⟩` and prove the remaining obligations. Take `⟨⟨a, r⟩, rfl⟩` from `e.surjective r`. Take `⟨⟨b, s⟩, rfl⟩` from `e.surjective s`. Distinguish the cases in `hab : a = b`. Substitute `hab` using the available equality.
+
+Rewrite using `[leviEmb_apply_same]`. Take `⟨⟨j, t⟩, rfl⟩` from `(f a).surjective r`. Take `⟨⟨j', t'⟩, rfl⟩` from `(f a).surjective s`. Conclude with `mem_parab_iff.1 (mem_unipRad.1 (hx' a)).1 j j' t t' ((hδ a j' j t' t).1 hrs)`. Conclude with `leviEmb_apply_ne k e x hab r s`.
+
+Take `⟨⟨a, r⟩, rfl⟩` from `e.surjective r`. Take `⟨⟨b, s⟩, rfl⟩` from `e.surjective s`. Distinguish the cases in `hab : a = b`. Substitute `hab` using the available equality. Rewrite using `[leviEmb_apply_same, one_apply_sigma]`.
+
+Take `⟨⟨j, t⟩, rfl⟩` from `(f a).surjective r`. Take `⟨⟨j', t'⟩, rfl⟩` from `(f a).surjective s`. Establish `hjj : j = j'`. Break down `lt_trichotomy j j' with h | h | h` into its components or cases. Conclude with `absurd ((hδ a j j' t t').2 h) hrs.not_lt`.
+
+Conclude with `h`. Conclude with `absurd ((hδ a j' j t' t).2 h) hrs.symm.not_lt`. Substitute `hjj` using the available equality. Rewrite using `[one_apply_sigma]`. Conclude with `(mem_unipRad.1 (hx' a)).2 j t t'`.
+
+Rewrite using `[leviEmb_apply_ne k e x hab r s, Matrix.one_apply_ne]`. Introduce `h`. Conclude with `hab (congrArg Sigma.fst (e.injective h))`. Introduce and unpack `⟨hP, h1⟩ a -`. Use `mem_unipRad.2 ⟨mem_parab_iff.2 fun j j' t t' hjj => ?_, fun j t t' => ?_⟩` and prove the remaining obligations.
+
+Use `hP ((hδ a j' j t' t).2 hjj)` as an intermediate fact. Rewrite `this` using `[leviEmb_apply_same]`. Then use the resulting hypothesis. Establish `hd : δ (e ⟨a, f a ⟨j, t⟩⟩) = δ (e ⟨a, f a ⟨j, t'⟩⟩)`. Break down `lt_trichotomy (δ (e ⟨a, f a ⟨j, t⟩⟩)) (δ (e ⟨a, f a ⟨j, t'⟩⟩)) with h | h | h` into its components or cases. Conclude with `absurd ((hδ a j j t t').1 h) (lt_irrefl j)`.
+
+Conclude with `h`. Conclude with `absurd ((hδ a j j t' t).1 h) (lt_irrefl j)`. Use `h1 _ _ hd` as an intermediate fact. Rewrite `this` using `[leviEmb_apply_same, one_apply_sigma, one_apply_sigma]`. Then use the resulting hypothesis.
+-/
 theorem mem_relUnip_iff_leviEmb_mem : ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] {α β' : Type} [Fintype α] [LinearOrder α] [Fintype β'] [LinearOrder β'] {N : ℕ} {m : α → Type} [∀ i, Fintype (m i)] [∀ i, DecidableEq (m i)] {c : α → β' → Type} [∀ i j, Fintype (c i j)] [∀ i j, DecidableEq (c i j)] (e : (Σ i, m i) ≃ Fin N) (f : ∀ i, (Σ j, c i j) ≃ m i) (δ : Fin N → ℕ) (hδ : ∀ i j j' (t : c i j) (t' : c i j'), δ (e ⟨i, f i ⟨j, t⟩⟩) < δ (e ⟨i, f i ⟨j', t'⟩⟩) ↔ j < j') (x : Levi k m), x ∈ relUnip k f ↔ leviEmb k e x ∈ unipotentRadical k N δ := by
   intro k _ _ _ _ α β' _ _ _ _ N m _ _ c _ _ e f δ hδ x
   rw [GroundTheory.Automorphic.Parabolic.mem_unipotentRadical]

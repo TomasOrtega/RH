@@ -11,6 +11,37 @@ noncomputable section
 
 namespace GlobalTheory.SplitVacF
 
+/- English proof (translation)
+Use `haveI : Fintype (Y ⧸ Q) := Fintype.ofFinite _`. Set `wf : (Y → ℂ) → V` to `fun χ => ∑ a : Y ⧸ Q, χ (Quotient.out a) • ρ (Quotient.out a) v`. Establish `hout : ∀ a : Y ⧸ Q, ((Quotient.out a : Y) : Y ⧸ Q) = a` using `fun a => QuotientAddGroup.out_eq' a`. Establish `heig : ∀ χ ∈ X, ∀ y, χ y • ρ y (wf χ) = wf χ`. Introduce `χ hχ y`.
+
+Establish `h0 : χ 0 = 1` using `hQχ χ hχ 0 Q.zero_mem`. Establish `hterm : ∀ a : Y ⧸ Q, χ (Quotient.out a) • ρ y (ρ (Quotient.out a) v) = χ (-y) • (χ (Quotient.out ((y : Y ⧸ Q) + a)) • ρ (Quotient.out ((y : Y ⧸ Q) + a)) v)`. Introduce `a`. Use `set b := (y : Y ⧸ Q) + a`. Establish `hq : -(Quotient.out b) + (y + Quotient.out a) ∈ Q`.
+
+Rewrite using `[← QuotientAddGroup.eq, hout, QuotientAddGroup.mk_add, hout]`. Use `set q := -(Quotient.out b) + (y + Quotient.out a) with hqdef`. Establish `e1 : y + Quotient.out a = Quotient.out b + q` using `by rw [hqdef]; abel`. Establish `e2 : Quotient.out a = -y + (Quotient.out b + q)` using `by rw [← e1]; abel`. Rewrite using `[← hρ, e1, hρ, hQ q hq, smul_smul, e2, hmul χ hχ, hmul χ hχ, hQχ χ hχ q hq, mul_one]`.
+
+Combine the equalities or inequalities in the displayed calculation. Simplify using `only [wf, map_sum, map_smul]`. Use `_ = χ y • ∑ a : Y ⧸ Q, χ (-y) • (χ (Quotient.out ((y : Y ⧸ Q) + a)) • ρ (Quotient.out ((y : Y ⧸ Q) + a)) v) := by`. Simplify using `only [hterm]`. Use `_ = (χ y * χ (-y)) • ∑ a : Y ⧸ Q, χ (Quotient.out ((y : Y ⧸ Q) + a)) • ρ (Quotient.out ((y : Y ⧸ Q) + a)) v := by`.
+
+Rewrite using `[← Finset.smul_sum, smul_smul]`. Use `_ = wf χ := by`. Rewrite using `[← hmul χ hχ, add_neg_cancel, h0, one_smul]`. Conclude with `Fintype.sum_equiv (Equiv.addLeft (y : Y ⧸ Q)) _ _ (fun _ => rfl)`. Establish `hne : ∃ χ ∈ X, wf χ ≠ 0`.
+
+Assume the negation of the conclusion as `hc`. Use `push_neg at hc`. Set `Φ : (Y → ℂ) →ₗ[ℂ] V` to `∑ a : Y ⧸ Q, (LinearMap.proj (Quotient.out a) : (Y → ℂ) →ₗ[ℂ] ℂ).smulRight (ρ (Quotient.out a) v)`. Establish `hΦ : ∀ h, Φ h = wf h` using `fun h => by simp [Φ, wf]`. Set `M` to `Submodule.span ℂ X`.
+
+Establish `hker : M ≤ LinearMap.ker Φ` using `Submodule.span_le.2 fun χ hχ => by show Φ χ = 0`. Rewrite using `[hΦ]`. Conclude with `hc χ hχ`. Establish `hMM : ∀ f ∈ M, ∀ g ∈ M, f * g ∈ M`. Introduce `f hf g hg`.
+
+Establish `h1 : f * g ∈ M * M` using `Submodule.mul_mem_mul hf hg`. Rewrite `h1` using `[Submodule.span_mul_span]`. Use `Submodule.span_mono ?_ h1` and prove the remaining obligations. Introduce and unpack `_ ⟨a, ha, b, hb, rfl⟩`. Conclude with `hclos a ha b hb`.
+
+Establish `hsep' : ∀ a : Y ⧸ Q, a ≠ 0 → ∃ χ ∈ X, χ (Quotient.out a) ≠ 1`. Introduce `a ha`. Use `hsep _ fun hm => ha ?_` and prove the remaining obligations. Rewrite using `[← hout a]`. Conclude with `(QuotientAddGroup.eq_zero_iff _).2 hm`.
+
+Use `choose! χa hχa hχne using hsep'`. Set `fac : Y ⧸ Q → (Y → ℂ)` to `fun a => (1 - χa a (Quotient.out a))⁻¹ • (χa a - χa a (Quotient.out a) • (1 : Y → ℂ))`. Set `p : Y → ℂ` to `∏ a ∈ Finset.univ.filter (fun a : Y ⧸ Q => a ≠ 0), fac a`. Establish `hpM : p ∈ M`. Use `Finset.prod_induction _ (· ∈ M) (fun f g hf hg => hMM f hf g hg) (Submodule.subset_span hone) ?_` and prove the remaining obligations.
+
+Introduce `a ha`. Establish `ha'` using `(Finset.mem_filter.1 ha).2`. Conclude with `Submodule.smul_mem _ _ (Submodule.sub_mem _ (Submodule.subset_span (hχa a ha')) (Submodule.smul_mem _ _ (Submodule.subset_span hone)))`. Establish `hp0 : ∀ a : Y ⧸ Q, a ≠ 0 → p (Quotient.out a) = 0`. Introduce `a ha`.
+
+Simplify using `only [p, Finset.prod_apply]`. Use `Finset.prod_eq_zero (i := a) (Finset.mem_filter.2 ⟨Finset.mem_univ _, ha⟩) ?_` and prove the remaining obligations. Simplify using `[fac]`. Establish `hp1 : p (Quotient.out (0 : Y ⧸ Q)) = 1`. Establish `hq0 : Quotient.out (0 : Y ⧸ Q) ∈ Q` using `(QuotientAddGroup.eq_zero_iff _).1 (hout 0)`.
+
+Simplify using `only [p, Finset.prod_apply]`. Use `Finset.prod_eq_one fun a ha => ?_` and prove the remaining obligations. Establish `ha'` using `(Finset.mem_filter.1 ha).2`. Establish `h1 : 1 - χa a (Quotient.out a) ≠ 0` using `sub_ne_zero.2 (Ne.symm (hχne a ha'))`. Simplify using `only [fac, Pi.smul_apply, Pi.sub_apply, Pi.one_apply, smul_eq_mul, mul_one, hQχ _ (hχa a ha') _ hq0]`.
+
+Conclude with `inv_mul_cancel₀ h1`. Establish `hΦp : Φ p = v`. Rewrite using `[hΦ]`. Simplify using `only [wf]`. Rewrite using `[Finset.sum_eq_single (0 : Y ⧸ Q) (fun a _ ha => by rw [hp0 a ha, zero_smul]) (fun h => absurd (Finset.mem_univ _) h), hp1, one_smul]`.
+
+Conclude with `hQ _ ((QuotientAddGroup.eq_zero_iff _).1 (hout 0))`. Conclude with `hv (by rw [← hΦp]; exact hker hpM)`. Take `⟨χ, hχ, hw⟩` from `hne`. Use `⟨χ, hχ, wf χ, Submodule.sum_mem _ fun a _ => Submodule.smul_mem _ _ (Submodule.subset_span ⟨_, rfl⟩), hw, heig χ hχ⟩` and prove the remaining obligations.
+-/
 theorem exists_eigen_of_sep {Y V : Type} [AddCommGroup Y] [AddCommGroup V] [Module ℂ V]
     (ρ : Y → V →ₗ[ℂ] V) (hρ : ∀ a b w, ρ (a + b) w = ρ a (ρ b w))
     (Q : AddSubgroup Y) [Finite (Y ⧸ Q)] (v : V) (hv : v ≠ 0) (hQ : ∀ q ∈ Q, ρ q v = v)
@@ -115,15 +146,28 @@ variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algeb
 variable {σ : E →ₐ[F] E} {nS nT : ℕ} {JS : Matrix (Fin nS) (Fin nS) E} {JT : Matrix (Fin nT) (Fin nT) E} {xi0 : E}
   {ψ : AddChar (AF F) ℂ}
 
+/- English proof (translation)
+Take `⟨h1, h2, v, ε, hpl, hsum⟩` from `he`. Use `⟨by rw [← map_mul, h1], ?_, v, ε, hpl, ?_⟩` and prove the remaining obligations. Rewrite using `[cAF_cAF ⟨h1, h2, v, ε, hpl, hsum⟩, mul_comm, h2]`. Rewrite using `[cAF_cAF ⟨h1, h2, v, ε, hpl, hsum⟩, add_comm, hsum]`.
+-/
 theorem isSplitIdemF_conj {e : AEF F E} (he : IsSplitIdemF σ e) : IsSplitIdemF σ (cAF σ e) := by
   obtain ⟨h1, h2, v, ε, hpl, hsum⟩ := he
   refine ⟨by rw [← map_mul, h1], ?_, v, ε, hpl, ?_⟩
   · rw [cAF_cAF ⟨h1, h2, v, ε, hpl, hsum⟩, mul_comm, h2]
   · rw [cAF_cAF ⟨h1, h2, v, ε, hpl, hsum⟩, add_comm, hsum]
 
+/- English proof (translation)
+Introduce `i j` and use `by rw [cAF_cAF he]; exact hx i j`.
+-/
 theorem mem_conjHalf_conj {e : AEF F E} (he : IsSplitIdemF σ e) {x : WOF F E nS nT} (hx : ∀ i j, e * x i j = x i j) :
     x ∈ conjHalf σ (cAF σ e) nS nT := fun i j => by rw [cAF_cAF he]; exact hx i j
 
+/- English proof (translation)
+Take `⟨h1, h2, v, ε, hpl, hsum⟩` from `he`. Establish `hs` using `congrArg (infPartF F E) hsum`. Rewrite `hs` using `[map_add, GlobalTheory.WeilPartsF.infPartF_placeIdem hpl]`. Establish `hc : infPartF F E (cAF σ e) = 0`. Establish `a1 : infPartF F E (cAF σ e) * infPartF F E (cAF σ e) = infPartF F E (cAF σ e)`.
+
+Rewrite using `[← map_mul, ← map_mul, h1]`. Establish `a2 : infPartF F E (cAF σ e) * infPartF F E e = 0` using `by rw [← map_mul, mul_comm, h2, map_zero]`. Take the linear combination `-a1 - a2 + infPartF F E (cAF σ e) * hs`. Use extensionality with `i j`. Use `show infPartF F E (u i j) = 0`.
+
+Rewrite using `[← hu i j, map_mul, hc, zero_mul]`.
+-/
 theorem fin_of_mem {e : AEF F E} (he : IsSplitIdemF σ e) {u : WOF F E nS nT} (hu : u ∈ conjHalf σ e nS nT) :
     u.map (infPartF F E) = 0 := by
   obtain ⟨h1, h2, v, ε, hpl, hsum⟩ := he
@@ -138,29 +182,49 @@ theorem fin_of_mem {e : AEF F E} (he : IsSplitIdemF σ e) {u : WOF F E nS nT} (h
   show infPartF F E (u i j) = 0
   rw [← hu i j, map_mul, hc, zero_mul]
 
+/- English proof (translation)
+Unfold `commF`. Rewrite using `[← AddChar.map_add_eq_mul, GlobalTheory.HeisThetaF.symplOHF_add_left, GlobalTheory.HeisThetaF.symplOHF_add_right]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem commF_add_left (u u' y : WOF F E nS nT) :
     commF σ JS JT xi0 ψ (u + u') y = commF σ JS JT xi0 ψ u y * commF σ JS JT xi0 ψ u' y := by
   unfold commF
   rw [← AddChar.map_add_eq_mul, GlobalTheory.HeisThetaF.symplOHF_add_left, GlobalTheory.HeisThetaF.symplOHF_add_right]
   congr 1; ring
 
+/- English proof (translation)
+Unfold `commF`. Rewrite using `[← AddChar.map_add_eq_mul, GlobalTheory.HeisThetaF.symplOHF_add_left, GlobalTheory.HeisThetaF.symplOHF_add_right]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem commF_add_right (u y y' : WOF F E nS nT) :
     commF σ JS JT xi0 ψ u (y + y') = commF σ JS JT xi0 ψ u y * commF σ JS JT xi0 ψ u y' := by
   unfold commF
   rw [← AddChar.map_add_eq_mul, GlobalTheory.HeisThetaF.symplOHF_add_left, GlobalTheory.HeisThetaF.symplOHF_add_right]
   congr 1; ring
 
+/- English proof (translation)
+Unfold `commF`. Rewrite using `[GlobalTheory.HeisThetaF.symplOHF_zero_left, GlobalTheory.HeisThetaF.symplOHF_zero_right, sub_zero, AddChar.map_zero_eq_one]`.
+-/
 theorem commF_zero_left (y : WOF F E nS nT) : commF σ JS JT xi0 ψ 0 y = 1 := by
   unfold commF
   rw [GlobalTheory.HeisThetaF.symplOHF_zero_left, GlobalTheory.HeisThetaF.symplOHF_zero_right, sub_zero, AddChar.map_zero_eq_one]
 
+/- English proof (translation)
+Unfold `commF`. Rewrite using `[GlobalTheory.HeisThetaF.symplOHF_zero_left, GlobalTheory.HeisThetaF.symplOHF_zero_right, sub_zero, AddChar.map_zero_eq_one]`.
+-/
 theorem commF_zero_right (u : WOF F E nS nT) : commF σ JS JT xi0 ψ u 0 = 1 := by
   unfold commF
   rw [GlobalTheory.HeisThetaF.symplOHF_zero_left, GlobalTheory.HeisThetaF.symplOHF_zero_right, sub_zero, AddChar.map_zero_eq_one]
 
+/- English proof (translation)
+Rewrite using `[← commF_add_right, neg_add_cancel, commF_zero_right]`.
+-/
 theorem commF_neg_right (u y : WOF F E nS nT) : commF σ JS JT xi0 ψ u (-y) * commF σ JS JT xi0 ψ u y = 1 := by
   rw [← commF_add_right, neg_add_cancel, commF_zero_right]
 
+/- English proof (translation)
+Unfold `commF`. Establish `h1` using `GlobalTheory.HeisThetaF.symplOHF_add_right (σ := σ) (JS := JS) (JT := JT) (xi0 := xi0) y (-u) u`. Establish `h2` using `GlobalTheory.HeisThetaF.symplOHF_add_left (σ := σ) (JS := JS) (JT := JT) (xi0 := xi0) (-u) u y`. Rewrite `h1` using `[neg_add_cancel, GlobalTheory.HeisThetaF.symplOHF_zero_right]`. Rewrite `h2` using `[neg_add_cancel, GlobalTheory.HeisThetaF.symplOHF_zero_left]`.
+
+Use `congr 1`. Take the linear combination `-h1 + h2`.
+-/
 theorem commF_swap (u y : WOF F E nS nT) : commF σ JS JT xi0 ψ y (-u) = commF σ JS JT xi0 ψ u y := by
   unfold commF
   have h1 := GlobalTheory.HeisThetaF.symplOHF_add_right (σ := σ) (JS := JS) (JT := JT) (xi0 := xi0) y (-u) u
@@ -170,22 +234,34 @@ theorem commF_swap (u y : WOF F E nS nT) : commF σ JS JT xi0 ψ y (-u) = commF 
   congr 1
   linear_combination -h1 + h2
 
+/- English proof (translation)
+Proceed by induction on `n with`. Consider the case `zero => rw [zero_smul, commF_zero_left, pow_zero]`. Consider the case `succ n ih => rw [succ_nsmul, commF_add_left, ih, pow_succ]`.
+-/
 theorem commF_nsmul_left (u y : WOF F E nS nT) (n : ℕ) :
     commF σ JS JT xi0 ψ (n • u) y = commF σ JS JT xi0 ψ u y ^ n := by
   induction n with
   | zero => rw [zero_smul, commF_zero_left, pow_zero]
   | succ n ih => rw [succ_nsmul, commF_add_left, ih, pow_succ]
 
+/- English proof (translation)
+Unfold `commF`. Rewrite using `[symplOHF_half he hx hy, symplOHF_half he hy hx, sub_zero, AddChar.map_zero_eq_one]`.
+-/
 theorem commF_half {e : AEF F E} (he : IsSplitIdemF σ e) {x y : WOF F E nS nT} (hx : x ∈ conjHalf σ e nS nT)
     (hy : y ∈ conjHalf σ e nS nT) : commF σ JS JT xi0 ψ x y = 1 := by
   unfold commF
   rw [symplOHF_half he hx hy, symplOHF_half he hy hx, sub_zero, AddChar.map_zero_eq_one]
 
+/- English proof (translation)
+Rewrite using `[heisOF_heisOF, symplOHF_half he hx hy, AddChar.map_zero_eq_one, one_smul]`.
+-/
 theorem heisOF_add_half {e : AEF F E} (he : IsSplitIdemF σ e) {x y : WOF F E nS nT} (hx : x ∈ conjHalf σ e nS nT)
     (hy : y ∈ conjHalf σ e nS nT) (f : WOF F E nS nT → ℂ) :
     heisOF σ JS JT xi0 ψ (x + y) f = heisOF σ JS JT xi0 ψ x (heisOF σ JS JT xi0 ψ y f) := by
   rw [heisOF_heisOF, symplOHF_half he hx hy, AddChar.map_zero_eq_one, one_smul]
 
+/- English proof (translation)
+Proceed by induction on `n with`. Consider the case `zero => rw [zero_smul, heisOF_zero]`. Consider the case `succ n ih => rw [succ_nsmul, heisOF_add_half he (nsmul_mem hx n) hx, hf, ih]`.
+-/
 theorem heisOF_nsmul_fix {e : AEF F E} (he : IsSplitIdemF σ e) {x : WOF F E nS nT} (hx : x ∈ conjHalf σ e nS nT)
     {f : WOF F E nS nT → ℂ} (hf : heisOF σ JS JT xi0 ψ x f = f) (n : ℕ) : heisOF σ JS JT xi0 ψ (n • x) f = f := by
   induction n with
@@ -202,6 +278,41 @@ namespace GlobalTheory.SplitVacF
 
 open GlobalTheory.SplitInvFormF
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ B hB nS nT JS JT hS hT ξ₀ hξ hσξ e he f₀ hf₀ hf₀0`. Establish `he'` using `isSplitIdemF_conj he`. Set `Y` to `conjHalf σ e nS nT`. Set `X` to `conjHalf σ (cAF σ e) nS nT`. Take `⟨U, hU, hUf⟩` from `hf₀.level`.
+
+Take `⟨G, hGX, hGU⟩` from `GlobalTheory.T.exists_finset_pairing_trivial_imp_mem_open_subgroup F E σ B hB nS nT JS JT hS hT ξ₀ hξ hσξ e he U hU`. Establish `hGX' : ∀ g ∈ G, g ∈ X` using `fun g hg => mem_conjHalf_conj he (hGX g hg)`. Set `YK : AddSubgroup (WOF F E nS nT)` to `{ carrier := {y | y ∈ Y ∧ ∀ k ∈ X, heisOF σ JS JT ξ₀ B.ψ k f₀ = f₀ → commF σ JS JT ξ₀ B.ψ k y = 1} add_mem' := fun {a b} ha hb => ⟨Y.add_mem ha.1 hb.1, fun k hk hkf => by`. Rewrite using `[commF_add_right, ha.2 k hk hkf, hb.2 k hk hkf, one_mul]⟩`. Use the proof step `zero_mem' := ⟨Y.zero_mem, fun k _ _ => commF_zero_right k⟩`.
+
+Use the proof step `neg_mem' := fun {a} ha => ⟨Y.neg_mem ha.1, fun k hk hkf => by`. Use `commF_neg_right (σ := σ) (JS := JS) (JT := JT) (xi0 := ξ₀) (ψ := B.ψ) k a` as an intermediate fact. Rewrite using `[ha.2 k hk hkf, mul_one] at this⟩ }` and apply the resulting hypothesis. Set `Q : AddSubgroup YK` to `{ carrier := {y | ∀ g ∈ G, commF σ JS JT ξ₀ B.ψ g (y : WOF F E nS nT) = 1} add_mem' := fun {a b} ha hb g hg => by`. Rewrite using `[AddSubgroup.coe_add, commF_add_right, ha g hg, hb g hg, one_mul]`.
+
+Use the proof step `zero_mem' := fun g _ => commF_zero_right g`. Use the proof step `neg_mem' := fun {a} ha g hg => by`. Use `commF_neg_right (σ := σ) (JS := JS) (JT := JT) (xi0 := ξ₀) (ψ := B.ψ) g (a : WOF F E nS nT)` as an intermediate fact. Rewrite using `[ha g hg, mul_one] at this }` and apply the resulting hypothesis. Establish `hQfix : ∀ q ∈ Q, heisOF σ JS JT ξ₀ B.ψ (q : WOF F E nS nT) f₀ = f₀` using `fun q hq => hUf _ (hGU _ q.2.1 hq) (fin_of_mem he q.2.1)`.
+
+Establish `hN : ∀ g ∈ G, ∃ k : ℕ, 0 < k ∧ heisOF σ JS JT ξ₀ B.ψ (k • g) f₀ = f₀` using `fun g hg => exists_nsmul_fix he' (hGX' g hg) hf₀`. Use `choose! Ng hNg0 hNg using hN`. Use `set N := ∏ g ∈ G, Ng g with hNdef`. Establish `hN0 : 0 < N` using `Finset.prod_pos fun g hg => hNg0 g hg`. Establish `hpowN : ∀ g ∈ G, ∀ y : YK, commF σ JS JT ξ₀ B.ψ g (y : WOF F E nS nT) ^ N = 1`.
+
+Introduce `g hg y`. Take `⟨m, hm⟩ : Ng g ∣ N` from `Finset.dvd_prod_of_mem _ hg`. Rewrite using `[← commF_nsmul_left]`. Use `y.2.2 _ (nsmul_mem (hGX' g hg) N) ?_` and prove the remaining obligations. Rewrite using `[hm, mul_nsmul]`.
+
+Conclude with `heisOF_nsmul_fix he' (nsmul_mem (hGX' g hg) _) (hNg g hg) m`. Use `haveI : Finite (YK ⧸ Q) := by`. Set `S` to `(Polynomial.nthRoots N (1 : ℂ)).toFinset`. Use `Finite.of_injective (β := G → S) (fun a g => ⟨commF σ JS JT ξ₀ B.ψ g (Quotient.out a : YK), ?_⟩) ?_` and prove the remaining obligations. Rewrite using `[Multiset.mem_toFinset, Polynomial.mem_nthRoots hN0]`.
+
+Conclude with `hpowN g g.2 _`. Introduce `a b hab`. Rewrite using `[← QuotientAddGroup.out_eq' a, ← QuotientAddGroup.out_eq' b, QuotientAddGroup.eq]`. Introduce `g hg`. Establish `h1` using `congrArg Subtype.val (congrFun hab ⟨g, hg⟩)`.
+
+Simplify using `only at h1`. Use `show commF σ JS JT ξ₀ B.ψ g ((-Quotient.out a + Quotient.out b : YK) : WOF F E nS nT) = 1`. Rewrite using `[AddSubgroup.coe_add, commF_add_right, ← h1, AddSubgroup.coe_neg, commF_neg_right]`. Set `Ch : Set (YK → ℂ)` to `{χ | ∃ x ∈ X, (∀ q ∈ Q, commF σ JS JT ξ₀ B.ψ x (q : WOF F E nS nT) = 1) ∧ χ = fun y : YK => commF σ JS JT ξ₀ B.ψ x (y : WOF F E nS nT)}`. Take `⟨χ, ⟨x, hxX, -, rfl⟩, w, hwspan, hw0, hweig⟩` from `exists_eigen_of_sep (fun y : YK => heisL σ JS JT ξ₀ B.ψ (y : WOF F E nS nT)) (fun a b f => heisOF_add_half he a.2.1 b.2.1 f) Q f₀ hf₀0 hQfix Ch (by rintro _ ⟨x, -, -, rfl⟩ a b; exact commF_add_right x a b) (by rintro _ ⟨x, -, hx, rfl⟩ q hq; exact hx q hq) (by`.
+
+Introduce and unpack `_ ⟨x, hx, hxQ, rfl⟩ _ ⟨x', hx', hxQ', rfl⟩`. Use `⟨x + x', X.add_mem hx hx', fun q hq => by rw [commF_add_left, hxQ q hq, hxQ' q hq, one_mul], ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `y`. Simplify using `only [Pi.mul_apply, commF_add_left])`. Use the proof step `⟨0, X.zero_mem, fun q _ => commF_zero_left _, by funext y; simp only [Pi.one_apply, commF_zero_left]⟩`.
+
+Use the proof step `(fun y hy => by`. Establish `hy' : ¬ ∀ g ∈ G, commF σ JS JT ξ₀ B.ψ g (y : WOF F E nS nT) = 1` using `hy`. Use `push_neg at hy'`. Take `⟨g, hg, hne⟩` from `hy'`. Conclude with `⟨_, ⟨g, hGX' g hg, fun q hq => hq g hg, rfl⟩, hne⟩)`.
+
+Establish `hspan_theta : Submodule.span ℂ (Set.range fun y : YK => heisL σ JS JT ξ₀ B.ψ (y : WOF F E nS nT) f₀) ≤ GlobalTheory.WeilPartsF.thetaSubF σ JS JT ξ₀ B.ψ` using `Submodule.span_le.2 (by`. Introduce and unpack `_ ⟨y, rfl⟩`. Conclude with `GlobalTheory.HeisThetaF.isThetaFunOF_heisOF F E σ B hB nS nT JS JT ξ₀ _ _ hf₀)`. Establish `hspan_fix : ∀ k ∈ X, heisOF σ JS JT ξ₀ B.ψ k f₀ = f₀ → Submodule.span ℂ (Set.range fun y : YK => heisL σ JS JT ξ₀ B.ψ (y : WOF F E nS nT) f₀) ≤ LinearMap.eqLocus (heisL σ JS JT ξ₀ B.ψ k) LinearMap.id` using `fun k hk hkf => Submodule.span_le.2 (by`. Introduce and unpack `_ ⟨y, rfl⟩`.
+
+Use `show heisOF σ JS JT ξ₀ B.ψ k (heisOF σ JS JT ξ₀ B.ψ (y : WOF F E nS nT) f₀) = heisOF σ JS JT ξ₀ B.ψ (y : WOF F E nS nT) f₀`. Rewrite using `[heisOF_comm, y.2.2 k hk hkf, one_smul, hkf])`. Establish `hwθ : IsThetaFunOF σ JS JT ξ₀ B.ψ w` using `hspan_theta hwspan`. Use `⟨heisOF σ JS JT ξ₀ B.ψ (-x) w, GlobalTheory.HeisThetaF.isThetaFunOF_heisOF F E σ B hB nS nT JS JT ξ₀ _ _ hwθ, ?_, ?_⟩` and prove the remaining obligations. Introduce `h0`.
+
+Apply `hw0` to reduce the goal to its premises. Use `heisOF_add_half (JS := JS) (JT := JT) (xi0 := ξ₀) (ψ := B.ψ) he' hxX (X.neg_mem hxX) w` as an intermediate fact. Rewrite `this` using `[add_neg_cancel, heisOF_zero]`. Rewrite using `[this, show heisOF σ JS JT ξ₀ B.ψ (-x) w = 0 from h0]`. Conclude with `map_zero (heisL σ JS JT ξ₀ B.ψ x)`.
+
+Introduce `y hy`. Distinguish the cases in `hyK : ∀ k ∈ X, heisOF σ JS JT ξ₀ B.ψ k f₀ = f₀ → commF σ JS JT ξ₀ B.ψ k y = 1`. Use `left`. Establish `hyy : y ∈ YK` using `⟨hy, hyK⟩`. Establish `h1` using `hweig ⟨y, hyy⟩`.
+
+Express the relevant statement in the definitionally equal form `commF σ JS JT ξ₀ B.ψ x y • heisOF σ JS JT ξ₀ B.ψ y w = w at h1`. Rewrite using `[heisOF_comm, commF_swap]`. Use `conv_rhs => rw [← h1]`. Conclude with `(GlobalTheory.WeilPartsF.heisOF_smul _ _ _).symm`. Use `right push_neg at hyK`.
+
+Take `⟨k, hk, hkf, hne⟩` from `hyK`. Use `⟨k, ?_, hne⟩` and prove the remaining obligations. Rewrite using `[heisOF_comm, commF_half he' hk (X.neg_mem hxX), one_smul]`. Use `congr 1`. Conclude with `hspan_fix k hk hkf hwspan`.
+-/
 theorem exists_vac_split : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E),
     B.IsGood σ → ∀ (nS nT : ℕ) (JS : Matrix (Fin nS) (Fin nS) E) (JT : Matrix (Fin nT) (Fin nT) E),
       IsHermND σ JS → IsHermND σ JT → ∀ ξ₀ : E, ξ₀ ≠ 0 → σ ξ₀ = -ξ₀ →

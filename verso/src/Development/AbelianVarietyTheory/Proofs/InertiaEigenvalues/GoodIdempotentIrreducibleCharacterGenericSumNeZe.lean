@@ -18,6 +18,9 @@ def addOf {p : ℕ} (θ : Multiplicative (ZMod p) →* ℂˣ) : AddChar (ZMod p)
   map_zero_eq_one' := by simp
   map_add_eq_mul' a b := by simp [ofAdd_add]
 
+/- English proof (translation)
+Introduce `h1`. Apply `h` to reduce the goal to its premises. Use `MonoidHom.ext fun z => Units.ext ?_` and prove the remaining obligations. Establish `h2 : addOf θ (Multiplicative.toAdd z) = 1` using `by rw [h1]; rfl`. Conclude with `h2`.
+-/
 theorem addOf_ne_one {p : ℕ} (θ : Multiplicative (ZMod p) →* ℂˣ) (h : θ ≠ 1) : addOf θ ≠ 1 := by
   intro h1
   apply h
@@ -25,11 +28,21 @@ theorem addOf_ne_one {p : ℕ} (θ : Multiplicative (ZMod p) →* ℂˣ) (h : θ
   have h2 : addOf θ (Multiplicative.toAdd z) = 1 := by rw [h1]; rfl
   exact h2
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem addCharHom_addOf {p r : ℕ} (θ : Multiplicative (ZMod p) →* ℂˣ) (h : unip (ZMod p) r) :
     ((addCharHom (addOf θ) (supHom (ZMod p) r) h : ℂˣ) : ℂ) =
       (θ (Multiplicative.ofAdd (Formalism.L2.NX.supSum r ((h : GL (Fin r) (ZMod p)) : Matrix (Fin r) (Fin r) (ZMod p)))) : ℂ) :=
   rfl
 
+/- English proof (translation)
+Take `⟨d, b, σ, hσ, hθe⟩` from `hθ`. Use `haveI : NeZero p := ⟨hp.out.ne_zero⟩`. Use `haveI := GlobalTheory.IndefiniteRowSideFullHecke.GenericMultiplicityOne.finite_parInd (F := ZMod p) b σ`. Establish `h1` using `GlobalTheory.GenericProduct.sum_unip_eq (addOf θ') (parInd b σ)`. Rewrite `h1` using `[GlobalTheory.T.whittakerSpaceDim_parabolicInduction_cuspidal_eq_one (ZMod p) (addOf θ') (addOf_ne_one θ' h') r _ b σ hσ, Nat.cast_one, mul_one]`.
+
+Establish `e : ∀ h : unip (ZMod p) r, θ h * (((θ' (Multiplicative.ofAdd (Formalism.L2.NX.supSum r ((h : GL (Fin r) (ZMod p)) : Matrix (Fin r) (Fin r) (ZMod p)))))⁻¹ : ℂˣ) : ℂ) = LinearMap.trace ℂ _ (parInd b σ h) * (((addCharHom (addOf θ') (supHom (ZMod p) r) h)⁻¹ : ℂˣ) : ℂ)`. Introduce `h`. Rewrite using `[hθe, Units.val_inv_eq_inv_val, Units.val_inv_eq_inv_val, addCharHom_addOf]`. Both sides reduce to the same expression. Rewrite using `[Finset.sum_congr rfl fun h _ => e h, h1]`.
+
+Conclude with `Nat.cast_ne_zero.2 Nat.card_pos.ne'`.
+-/
 theorem local_sum_ne_zero {p : ℕ} [hp : Fact p.Prime] {r : ℕ} [Fintype (unip (ZMod p) r)] (θ : GL (Fin r) (ZMod p) → ℂ)
     (hθ : GlobalTheory.IndefiniteRowSideFullHecke.CuspidalProductMultiplicity.IsCuspProdChar θ) (θ' : Multiplicative (ZMod p) →* ℂˣ) (h' : θ' ≠ 1) :
     ∑ h : unip (ZMod p) r, θ h *
@@ -55,6 +68,15 @@ namespace GlobalTheory.WhittakerMeets
 
 open Formalism.L2.DIV GlobalTheory.FinGL
 
+/- English proof (translation)
+Introduce `D S _ U _ hU ψ hψ hr χ hχ he`. Substitute `hU` using the available equality. Use `haveI hF : ∀ kv : (Σ k : Fin 2, D.nd.PlG k), Fact (D.host.g kv.1).Prime := fun kv => ⟨D.host.g_prime kv.1⟩`. Use `haveI hN : ∀ kv : (Σ k : Fin 2, D.nd.PlG k), NeZero (D.host.g kv.1) := fun kv => ⟨(D.host.g_prime kv.1).ne_zero⟩`. Take `⟨θ, hθ, hχe⟩` from `GlobalTheory.GoodFactor.irreducible_character_good_idempotent_cuspidal_product D (fun k => ⟨_, S.O k, S.eSer_def k⟩) χ hχ he`.
+
+Take `⟨θ', hθ'1, hψe⟩` from `hψ`. Establish `hθ'` using `hθ'1 hr`. Use `letI : ∀ kv : (Σ k : Fin 2, D.nd.PlG k), Fintype (unip (ZMod (D.host.g kv.1)) D.R.r) := fun kv => Fintype.ofFinite _`. Set `f : ∀ kv : (Σ k : Fin 2, D.nd.PlG k), unip (ZMod (D.host.g kv.1)) D.R.r → ℂ` to `fun kv h => θ kv h * (((θ' kv (Multiplicative.ofAdd (Formalism.L2.NX.supSum D.R.r ((h : GL (Fin D.R.r) (ZMod (D.host.g kv.1))) : Matrix (Fin D.R.r) (Fin D.R.r) (ZMod (D.host.g kv.1))))))⁻¹ : ℂˣ) : ℂ)`. Set `e : Formalism.L2.NX.Uup (fun kv : (Σ k : Fin 2, D.nd.PlG k) => D.host.g kv.1) D.R.r ≃ ∀ kv : (Σ k : Fin 2, D.nd.PlG k), unip (ZMod (D.host.g kv.1)) D.R.r` to `{ toFun := fun u kv => ⟨u.1 kv, (u.2 kv).1, (u.2 kv).2⟩ invFun := fun y => ⟨fun kv => (y kv).1, fun kv => ⟨(y kv).2.1, (y kv).2.2⟩⟩ left_inv := fun _ => rfl right_inv := fun _ => rfl }`.
+
+Establish `hterm : ∀ u : Formalism.L2.NX.Uup (fun kv : (Σ k : Fin 2, D.nd.PlG k) => D.host.g kv.1) D.R.r, χ u * (((ψ u)⁻¹ : ℂˣ) : ℂ) = ∏ kv, f kv (e u kv)`. Introduce `u`. Rewrite using `[hχe, hψe, Formalism.L2.NX.stdVal, ← Finset.prod_inv_distrib, Units.coe_prod, ← Finset.prod_mul_distrib]`. Both sides reduce to the same expression. Rewrite using `[Finset.sum_congr rfl fun u _ => hterm u, Fintype.sum_equiv e _ (fun y => ∏ kv, f kv (y kv)) fun _ => rfl, ← Fintype.prod_sum]`.
+
+Conclude with `Finset.prod_ne_zero_iff.2 fun kv _ => local_sum_ne_zero (θ kv) (hθ kv) (θ' kv) (hθ' kv)`.
+-/
 theorem sum_ne_zero : ∀ (D : D7), GrpSide D → ∀ [Fintype (G0g D.nd)] (U : Subgroup (G0g D.nd)) [Fintype U], U = Formalism.L2.NX.Uup (fun kv : (Σ k : Fin 2, D.nd.PlG k) => D.host.g kv.1) D.R.r → ∀ ψ : U →* ℂˣ, Formalism.L2.NX.IsStdGeneric (fun kv : (Σ k : Fin 2, D.nd.PlG k) => D.host.g kv.1) D.R.r ψ → 2 ≤ D.R.r → ∀ χ : G0g D.nd → ℂ, Formalism.L2.NT.IsIrrChar χ → ∑ g, D.ntypes.e0.coeff g * χ g = χ 1 → ∑ u : U, χ u * (((ψ u)⁻¹ : ℂˣ) : ℂ) ≠ 0 := by
   intro D S _ U _ hU ψ hψ hr χ hχ he
   classical

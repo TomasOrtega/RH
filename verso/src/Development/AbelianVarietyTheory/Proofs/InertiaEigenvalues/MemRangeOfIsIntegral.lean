@@ -10,6 +10,9 @@ open scoped Formalism.Per
 
 namespace GlobalTheory.ExpImage.EmbFil
 
+/- English proof (translation)
+The claim follows from `IsAlgClosed.algebraMap_bijective_of_isIntegral (k := Ω) (K := integralClosure Ω B) |>.2 ⟨ι x, (hx.map ι).tower_top⟩ |>.imp fun _ h => congrArg Subtype.val h`.
+-/
 theorem mem_range_of_isIntegral {F Ω L B : Type*} [Field F] [Field Ω] [IsAlgClosed Ω] [Algebra F Ω]
     [CommRing L] [Algebra F L] [CommRing B] [IsDomain B] [Algebra F B] [Algebra Ω B]
     [IsScalarTower F Ω B] (ι : L →ₐ[F] B) {x : L} (hx : IsIntegral F x) :
@@ -17,6 +20,9 @@ theorem mem_range_of_isIntegral {F Ω L B : Type*} [Field F] [Field Ω] [IsAlgCl
   IsAlgClosed.algebraMap_bijective_of_isIntegral (k := Ω) (K := integralClosure Ω B) |>.2
     ⟨ι x, (hx.map ι).tower_top⟩ |>.imp fun _ h => congrArg Subtype.val h
 
+/- English proof (translation)
+Take `⟨y, h1, -⟩` from `T.om a`. Take `⟨-, hone, -⟩` from `GlobalTheory.MemLoc.filD_laws l`. Use `(T.fil _ 0 _).2 ?_` and prove the remaining obligations. Use `Submodule.smul_mem _ y hone` as an intermediate fact. Rewrite `this` using `[Algebra.smul_def, mul_one, ← h1]`. Then use the resulting hypothesis.
+-/
 theorem algebraMap_mem_zero {l : ℕ} [Fact l.Prime] {P : LocPrime l} {AI : LocAinf l P}
     (T : LocTied l P AI) (a : Om l) : algebraMap (Om l) P.R.BdR a ∈ GlobalTheory.ExpImage.FilB P 0 := by
   obtain ⟨y, h1, -⟩ := T.om a
@@ -25,6 +31,11 @@ theorem algebraMap_mem_zero {l : ℕ} [Fact l.Prime] {P : LocPrime l} {AI : LocA
   have := Submodule.smul_mem _ y hone
   rwa [Algebra.smul_def, mul_one, ← h1] at this
 
+/- English proof (translation)
+Introduce `l _ P AI T LL ι x`. Use `(GlobalTheory.Per.TiedField.tied_field l P AI T).1.isDomain` as an intermediate fact. Establish `: FiniteDimensional ℚ_[l] ↥LL.1` using `LL.2`. Take `⟨a, ha⟩` from `mem_range_of_isIntegral (Ω := Om l) ι (IsIntegral.of_finite ℚ_[l] x)`. Rewrite using `[← ha]`.
+
+Conclude with `algebraMap_mem_zero T a`.
+-/
 theorem emb_mem_fil_zero : ∀ (l : ℕ) [Fact l.Prime] (P : LocPrime l) (AI : LocAinf l P),
     LocTied l P AI → ∀ (LL : FinExt l) (ι : ↥LL.1 →ₐ[ℚ_[l]] P.R.BdR) (x : ↥LL.1),
       ι x ∈ GlobalTheory.ExpImage.FilB P 0 := by

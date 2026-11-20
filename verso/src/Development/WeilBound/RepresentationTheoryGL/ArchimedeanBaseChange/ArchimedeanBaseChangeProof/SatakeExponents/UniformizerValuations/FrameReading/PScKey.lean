@@ -18,6 +18,9 @@ namespace PositivityTheory.Rg.BcB.F.Tail.PSc
 
 variable {E : Type} [Field E] [NumberField E] [IsCMField E]
 
+/- English proof (translation)
+Use `haveI : CompactSpace K := isCompact_iff_compactSpace.1 hK`. Use `haveI := Subgroup.quotient_finite_of_isOpen (U.subgroupOf K) (hU.preimage continuous_subtype_val)`. Conclude with `Subgroup.index_ne_zero_of_finite`.
+-/
 theorem relIndex_ne_zero_open {G : Type} [Group G] [TopologicalSpace G] [IsTopologicalGroup G] {K U : Subgroup G}
     (hK : IsCompact (K : Set G)) (hU : IsOpen (U : Set G)) : U.relIndex K ≠ 0 := by
   haveI : CompactSpace K := isCompact_iff_compactSpace.1 hK
@@ -28,6 +31,11 @@ section Key
 
 variable {n a b : ℕ}
 
+/- English proof (translation)
+Establish `hab : absHalf w ((m * k).1.val.det ^ b / (m * k).2.val.det ^ a) = absHalf w (m.1.val.det ^ b / m.2.val.det ^ a)` using `(absHalf_blockDet_KGL_invariant E a b w m k hk1 hk2).2`. Establish `e : (fun X : Multiplicative (Matrix (Fin a) (Fin b) (w.adicCompletion E)) => f (g⁻¹ * blk h w (m * k) (Multiplicative.toAdd X) * y)) = fun X => (fun Y : Multiplicative (Matrix (Fin a) (Fin b) (w.adicCompletion E)) => f (g⁻¹ * blk h w m (Multiplicative.toAdd Y) * y)) (Multiplicati …`. Use function extensionality and compare the values at `X`. Rewrite using `[(CtLevel.blk_mul_dgM E a b n h w m k _).2]`. Establish `hc : y⁻¹ * CtLevel.dgM h w k * y ∈ K'` using `by simpa using hN y⁻¹ (inv_mem hy) _ hd`.
+
+Establish `e2 : g⁻¹ * (blk h w m (k.1.val * Multiplicative.toAdd X * (k.2⁻¹).val) * CtLevel.dgM h w k) * y = 1 * (g⁻¹ * blk h w m (k.1.val * Multiplicative.toAdd X * (k.2⁻¹).val) * y) * (y⁻¹ * CtLevel.dgM h w k * y)` using `by group`. Rewrite using `[e2, hf _ K'.one_mem _ hc]`. Both sides reduce to the same expression. Unfold `phi3`. Rewrite using `[hab, e, HintInv.hint_intMat_mul_mul E a b w (fun Y => f (g⁻¹ * blk h w m (Multiplicative.toAdd Y) * y)) k.1 k.2⁻¹ hk1 (inv_mem hk2)]`.
+-/
 theorem parabolic_function_right_invariant (h : a + b = n) (w : Pl E) (K' : Subgroup (GLw n w))
     (hN : ∀ k ∈ GlobalTheory.LFun.KGL w n, ∀ k' ∈ K', k * k' * k⁻¹ ∈ K')
     (f : GLw n w → ℂ) (hf : ∀ k₁ ∈ K', ∀ k₂ ∈ K', ∀ g, f (k₁ * g * k₂) = f g)
@@ -54,6 +62,11 @@ theorem parabolic_function_right_invariant (h : a + b = n) (w : Pl E) (K' : Subg
   rw [hab, e, HintInv.hint_intMat_mul_mul E a b w (fun Y => f (g⁻¹ * blk h w m (Multiplicative.toAdd Y) * y))
     k.1 k.2⁻¹ hk1 (inv_mem hk2)]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `m`. Unfold `phi3`. Use `congr 2`. Use function extensionality and compare the values at `X`. Establish `e : (g * k)⁻¹ * blk h w m (Multiplicative.toAdd X) * y = k⁻¹ * (g⁻¹ * blk h w m (Multiplicative.toAdd X) * y) * 1` using `by group`.
+
+Rewrite using `[e, hf _ (inv_mem hk) _ K'.one_mem]`.
+-/
 theorem parabolic_function_left_invariant (h : a + b = n) (w : Pl E) (K' : Subgroup (GLw n w)) (f : GLw n w → ℂ)
     (hf : ∀ k₁ ∈ K', ∀ k₂ ∈ K', ∀ g, f (k₁ * g * k₂) = f g) (g y : GLw n w) (k : GLw n w) (hk : k ∈ K') :
     phi3 h w f (g * k) y = phi3 h w f g y := by
@@ -65,6 +78,15 @@ theorem parabolic_function_left_invariant (h : a + b = n) (w : Pl E) (K' : Subgr
       k⁻¹ * (g⁻¹ * blk h w m (Multiplicative.toAdd X) * y) * 1 := by group
   rw [e, hf _ (inv_mem hk) _ K'.one_mem]
 
+/- English proof (translation)
+Establish `hA` using `GlobalTheory.AbsHalfLevi.absHalf_det_div_eq_deltaHalf E a b w`. Establish `hmul : absHalf w (m.1.val.det ^ b / m.2.val.det ^ a) = absHalf w (m₀.1.val.det ^ b / m₀.2.val.det ^ a) * absHalf w ((m₀⁻¹ * m).1.val.det ^ b / (m₀⁻¹ * m).2.val.det ^ a)`. Rewrite using `[hA, hA, hA, ← Units.val_mul, ← map_mul, ← map_mul, mul_inv_cancel_left]`. Use `set m' := m₀⁻¹ * m with hm'`. Use `set C : Matrix (Fin a) (Fin b) (w.adicCompletion E) := (m'.1⁻¹).val * X₀ * m'.2.val with hC`.
+
+Establish `hb : ∀ Y : Matrix (Fin a) (Fin b) (w.adicCompletion E), blk h w m Y = blk h w m₀ X₀ * blk h w m' (-C + Y)`. Introduce `Y`. Rewrite using `[GlobalTheory.LeviFubini.blk_mul_blk, hm', mul_inv_cancel_left, ← hm', ← hC]`. Use `congr 1`. Normalize the expressions using the abelian group laws.
+
+Establish `e : (fun X : Multiplicative (Matrix (Fin a) (Fin b) (w.adicCompletion E)) => f ((blk h w m₀ X₀ * g)⁻¹ * blk h w m (Multiplicative.toAdd X) * y)) = fun X => (fun Y : Multiplicative (Matrix (Fin a) (Fin b) (w.adicCompletion E)) => f (g⁻¹ * blk h w m' (Multiplicative.toAdd Y) * y)) …`. Use function extensionality and compare the values at `X`. Rewrite using `[hb]`. Use `congr 1`. Simplify using `only [toAdd_mul, toAdd_ofAdd]`.
+
+Use `group`. Unfold `phi3`. Rewrite using `[hmul, e, GlobalTheory.CompanionTheory.CtMulSplit.hint_left (intMat a b w) (Multiplicative.ofAdd (-C)) (fun Y => f (g⁻¹ * blk h w m' (Multiplicative.toAdd Y) * y))]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem parabolic_function_transform (h : a + b = n) (w : Pl E) (f : GLw n w → ℂ) (g y : GLw n w) (m₀ : GLw a w × GLw b w)
     (X₀ : Matrix (Fin a) (Fin b) (w.adicCompletion E)) (m : GLw a w × GLw b w) :
     phi3 h w f (blk h w m₀ X₀ * g) y m =
@@ -101,6 +123,13 @@ def fv (h : a + b = n) (w : Pl E) (U : Subgroup (GLw a w × GLw b w)) {W : Type}
   ∑ y ∈ X, (((U.relIndex ((GlobalTheory.LFun.KGL w a).prod (GlobalTheory.LFun.KGL w b)) : ℕ) : ℂ))⁻¹ •
     ∑ᶠ q : (GLw a w × GLw b w) ⧸ U, phi3 h w f g y q.out • ρ q.out (v y)
 
+/- English proof (translation)
+Unfold `fv`. Rewrite using `[map_sum]`. Use `Finset.sum_congr rfl fun y hy => ?_` and prove the remaining obligations. Establish `hfin` using `GlobalTheory.CompanionTheory.DiagAvg.finite_cosets U hUo _ (GlobalTheory.CompanionTheory.GL3BlockMatrixLocal.constant_term_compact_support h w f hfc g y)`. Rewrite using `[map_smul, smul_eq_mul, GlobalTheory.CompanionTheory.HintLevel.hint_eq_level _ _ U _ hUK ?_ hne, map_finsum lw (hfin.subset fun q hq h0 => hq (by show phi3 h w f g y q.out • ρ q.out (v y) = 0`.
+
+Rewrite using `[h0, zero_smul]))]`. Use `congr 1`. Use `finsum_congr fun q => ?_` and prove the remaining obligations. Rewrite using `[map_smul, smul_eq_mul]`. Introduce `k hk m show phi3 h w f g y (m * k) * lw (ρ (m * k) (v y)) = phi3 h w f g y m * lw (ρ m (v y))`.
+
+Rewrite using `[hinv y hy k hk, map_mul, Module.End.mul_apply, hvU y hy k hk]`.
+-/
 theorem lw_fv (h : a + b = n) (w : Pl E) (U : Subgroup (GLw a w × GLw b w)) {W : Type} [AddCommGroup W]
     [Module ℂ W] (ρ : Representation ℂ (GLw a w × GLw b w) W) (f : GLw n w → ℂ) (hfc : HasCompactSupport f)
     (X : Finset (GLw n w)) (v : GLw n w → W) (g : GLw n w)
@@ -131,6 +160,9 @@ section Key2
 
 variable {n a b : ℕ}
 
+/- English proof (translation)
+Unfold `fv`. Simplify using `only [parabolic_function_left_invariant h w K' f hf g _ k hk]`.
+-/
 theorem fv_right (h : a + b = n) (w : Pl E) (U : Subgroup (GLw a w × GLw b w)) {W : Type} [AddCommGroup W]
     [Module ℂ W] (ρ : Representation ℂ (GLw a w × GLw b w) W) (K' : Subgroup (GLw n w)) (f : GLw n w → ℂ)
     (hf : ∀ k₁ ∈ K', ∀ k₂ ∈ K', ∀ g, f (k₁ * g * k₂) = f g) (X : Finset (GLw n w)) (v : GLw n w → W)
@@ -138,6 +170,13 @@ theorem fv_right (h : a + b = n) (w : Pl E) (U : Subgroup (GLw a w × GLw b w)) 
   unfold fv
   simp only [parabolic_function_left_invariant h w K' f hf g _ k hk]
 
+/- English proof (translation)
+Rewrite using `[← sub_eq_zero]`. Use `(Module.forall_dual_apply_eq_zero_iff ℂ _).1 fun lw => ?_` and prove the remaining obligations. Rewrite using `[map_sub, sub_eq_zero, map_smul, smul_eq_mul, lw_fv h w U ρ f hfc X v _ hUK hUo hne (hinv _) hvU lw]`. Establish `e2` using `lw_fv h w U ρ f hfc X v g hUK hUo hne (hinv g) hvU (lw ∘ₗ ρ m₀)`. Rewrite `e2` using `[LinearMap.comp_apply]`.
+
+Rewrite using `[e2, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun y _ => ?_` and prove the remaining obligations. Rewrite using `[← GlobalTheory.CompanionTheory.CtMulSplit.hint_left _ m₀]`. Simplify using `only [parabolic_function_transform, inv_mul_cancel_left, map_mul, Module.End.mul_apply, LinearMap.comp_apply]`. Establish `e3` using `GlobalTheory.CompanionTheory.HeckeAct.hint_mul_const ((GlobalTheory.LFun.KGL w a).prod (GlobalTheory.LFun.KGL w b)) (fun m => phi3 h w f g y m * lw (ρ m₀ (ρ m (v y)))) (absHalf w (m₀.1.val.det ^ b / m₀.2.val.det ^ a))`.
+
+Rewrite using `[mul_comm, ← e3]`. Use `congr 1`. Use function extensionality and compare the values at `m`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem fv_law (h : a + b = n) (w : Pl E) (U : Subgroup (GLw a w × GLw b w)) {W : Type} [AddCommGroup W]
     [Module ℂ W] (ρ : Representation ℂ (GLw a w × GLw b w) W) (f : GLw n w → ℂ) (hfc : HasCompactSupport f)
     (X : Finset (GLw n w)) (v : GLw n w → W)
@@ -167,6 +206,29 @@ theorem fv_law (h : a + b = n) (w : Pl E) (U : Subgroup (GLw a w × GLw b w)) {W
 
 end Key2
 
+/- English proof (translation)
+Take `⟨hKa, hKac⟩` from `GlobalTheory.LFun.SatCompare.isOpen_isCompact_KGL (E := E) w a`. Take `⟨hKb, hKbc⟩` from `GlobalTheory.LFun.SatCompare.isOpen_isCompact_KGL (E := E) w b`. Use `set K2' : Subgroup (GLw a w × GLw b w) := (GlobalTheory.LFun.KGL w a).prod (GlobalTheory.LFun.KGL w b) with hK2'`. Use `set U : Subgroup (GLw a w × GLw b w) := U₀ ⊓ K2' ⊓ K'.comap (CtLevel.dgM h w) with hUdef`. Establish `hUK : U ≤ K2'` using `fun k hk => hk.1.2`.
+
+Establish `hK2o : IsOpen (K2' : Set (GLw a w × GLw b w))`. Rewrite using `[hK2', Subgroup.coe_prod]`. Conclude with `hKa.prod hKb`. Establish `hK2c : IsCompact (K2' : Set (GLw a w × GLw b w))`. Rewrite using `[hK2', Subgroup.coe_prod]`.
+
+Conclude with `hKac.prod hKbc`. Establish `hUo : IsOpen (U : Set (GLw a w × GLw b w))`. Rewrite using `[hUdef, Subgroup.coe_inf, Subgroup.coe_inf, Subgroup.coe_comap]`. Conclude with `(hU₀.inter hK2o).inter (hK'o.preimage (GlobalTheory.CompanionTheory.GL3BlockMatrixLocal.continuous_dgM h w))`. Establish `hne : U.relIndex K2' ≠ 0` using `relIndex_ne_zero_open hK2c hUo`.
+
+Establish `hf` using `he.2.2.2`. Establish `hinv : ∀ g, ∀ y ∈ X, ∀ k ∈ U, ∀ m, phi3 h w e g y (m * k) = phi3 h w e g y m`. Introduce `g y hy k hk m`. Establish `hk2 : k ∈ K2'` using `hk.1.2`. Rewrite `hk2` using `[hK2', Subgroup.mem_prod]`.
+
+Conclude with `parabolic_function_right_invariant h w K' hnorm e hf g y (hXK y hy) k hk2.1 hk2.2 hk.2 m`. Establish `hvU : ∀ y ∈ X, ∀ k ∈ U, ρ k (v y) = v y`. Introduce `y hy k hk`. Use `hv y hy ⟨k, hk.1.1⟩` as an intermediate fact. Simplify using `using this`.
+
+Use `set F : GLw n w → W := fv h w U ρ e X v with hF`. Use `set H := GlobalTheory.SmGL.parab (w.adicCompletion E) (GlobalTheory.SmGL.two (GlobalTheory.SmGL.stdSum h))`. Use `set σ : Representation ℂ H W := (GlobalTheory.SmGL.twist (ρ.comp (GlobalTheory.SmGL.leviTwo (w.adicCompletion E) (Fin a) (Fin b)).symm.toMonoidHom) (GlobalTheory.SmGL.deltaHalf (w.adicCompletion E) (GlobalTheory.SmGL.Two (Fin a) (Fin b)))).comp (GlobalTheory.SmGL.leviProj (w.adic …`. Establish `hlaw : F ∈ GlobalTheory.PRep.indSpace H σ`. Introduce `p g`.
+
+Use `set m₀ := GlobalTheory.LeviFubini.levH h w p with hm₀`. Establish `hp1 : GlobalTheory.LeviFubini.levH h w ((GlobalTheory.LeviFubini.sM h w m₀)⁻¹ * p) = 1`. Rewrite using `[map_mul, map_inv, GlobalTheory.LeviFubini.levH_sM, inv_mul_cancel]`. Take `⟨X₀, hX₀⟩` from `GlobalTheory.LeviFubini.exists_uN h w _ hp1`. Establish `hp : (p : GLw n w) = blk h w m₀ (Multiplicative.toAdd X₀)`.
+
+Rewrite using `[← GlobalTheory.LeviFubini.sM_mul_uN, hX₀, mul_inv_cancel_left]`. Use `show F (p * g) = σ p (F g)`. Rewrite using `[hp, hF, fv_law h w U ρ e he.2.2.1 X v hUK hUo hne hinv hvU m₀ _ g]`. Simplify using `only [σ, MonoidHom.comp_apply, GlobalTheory.SmGL.twist_apply, MulEquiv.toMonoidHom_eq_coe, MonoidHom.coe_coe]`. Rewrite using `[GlobalTheory.AbsHalfLevi.absHalf_det_div_eq_deltaHalf E a b w m₀]`.
+
+Both sides reduce to the same expression. Establish `hsm : (⟨F, hlaw⟩ : GlobalTheory.PRep.indSpace H σ) ∈ GlobalTheory.PRep.smoothPart (GlobalTheory.PRep.ind H σ)`. Use `GlobalTheory.CompanionTheory.NodeSep.isOpen_fix (GlobalTheory.PRep.ind H σ) hK'o fun k hk => Subtype.ext (funext fun g => ?_)` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `F (g * k) = F g`. Conclude with `fv_right h w U ρ K' e hf X v g k hk`.
+
+Set `u : GlobalTheory.SmGL.IndSp (GlobalTheory.SmGL.two (GlobalTheory.SmGL.stdSum h)) (ρ.comp (GlobalTheory.SmGL.leviTwo (w.adicCompletion E) (Fin a) (Fin b)).symm.toMonoidHom)` to `⟨⟨F, hlaw⟩, hsm⟩`. Use `⟨u, ?_, fun x hx lw => ?_⟩` and prove the remaining obligations. Introduce `k`. Rewrite using `[MonoidHom.one_apply, Units.val_one, one_smul]`. Use `Subtype.ext (Subtype.ext (funext fun g => ?_))` and prove the remaining obligations.
+
+Use `show F (g * k) = F g`. Conclude with `fv_right h w U ρ K' e hf X v g k k.2`. Use `show lw (F x) = _`. Conclude with `lw_fv h w U ρ e he.2.2.1 X v x hUK hUo hne (hinv x) hvU lw`.
+-/
 theorem key_ind {n a b : ℕ} (h : a + b = n) (w : Pl E) (K' : Subgroup (GLw n w)) (hK'o : IsOpen (K' : Set (GLw n w)))
     (hK'le : K' ≤ GlobalTheory.LFun.KGL w n) (hnorm : ∀ k ∈ GlobalTheory.LFun.KGL w n, ∀ k' ∈ K', k * k' * k⁻¹ ∈ K')
     (X : Finset (GLw n w)) (hXK : ∀ x ∈ X, x ∈ GlobalTheory.LFun.KGL w n) (hX : ∀ k ∈ GlobalTheory.LFun.KGL w n, ∃! x ∈ X, x⁻¹ * k ∈ K')

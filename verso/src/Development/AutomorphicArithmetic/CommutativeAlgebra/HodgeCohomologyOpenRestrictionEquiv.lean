@@ -7,6 +7,17 @@ import GroundTheory.ArithmeticGeometry.SchemeCohomology.ProperCohomology.Pullbac
 
 open CategoryTheory AlgebraicGeometry ReciprocityTheory.ChartRestriction.G.Geo.Tor GlobalTheory GlobalTheory.HodgeCoh GlobalTheory.CechDR KaehlerDifferential
 
+/- English proof (translation)
+Use `haveI := isIso_ι_app V W h`. Establish `hsα` using `semiHom_appSec (s := s) (s' := V.ι ≫ s) (f := V.ι) rfl W`. Set `α` to `appSec s (V.ι ≫ s) V.ι W`. Set `β : Sec (V.ι ≫ s) (V.ι ⁻¹ᵁ W) →+* Sec s W` to `(inv (V.ι.app W)).hom`. Establish `hαβ : ∀ b, α (β b) = b` using `fun b => by`.
+
+Simplify using `only [α, β, appSec]`. Conclude with `IsIso.inv_hom_id_apply (V.ι.app W) b`. Establish `hβα : ∀ b, β (α b) = b` using `fun b => by`. Simplify using `only [α, β, appSec]`. Conclude with `IsIso.hom_inv_id_apply (V.ι.app W) b`.
+
+Establish `hαinj : Function.Injective α` using `fun x y hxy => by`. Rewrite using `[← hβα x, ← hβα y, hxy]`. Establish `hsβ : SemiHom (RingHom.id k) β` using `fun r b => by`. Apply `hαinj` to reduce the goal to its premises. Rewrite using `[hαβ, hsα, hαβ]`.
+
+Both sides reduce to the same expression. Establish `hid₁ : SemiHom (RingHom.id k) (RingHom.id (Sec s W))` using `fun r b => rfl`. Establish `hid₂ : SemiHom (RingHom.id k) (RingHom.id (Sec (V.ι ≫ s) (V.ι ⁻¹ᵁ W)))` using `fun r b => rfl`. Establish `hf : formPull (f` using `V.ι) (s' := V.ι ≫ s) rfl W a = hsα.mOm a := rfl`. Rewrite using `[hf, Function.bijective_iff_has_inverse]`.
+
+Use `⟨hsβ.mOm a, fun x => ?_, fun y => ?_⟩` and prove the remaining obligations. Rewrite using `[SemiHom.mOm_mOm hsα hsβ hid₁ hβα x, SemiHom.mOm_id hid₁ (fun _ => rfl)]`. Rewrite using `[SemiHom.mOm_mOm hsβ hsα hid₂ hαβ y, SemiHom.mOm_id hid₂ (fun _ => rfl)]`.
+-/
 private theorem formPull_ι_bijective {k : Type} [CommRing k] {Z : Scheme.{0}} (s : Z ⟶ Sp k)
     (V W : Z.Opens) (h : W ≤ V) (a : ℕ) :
     Function.Bijective (formPull (f := V.ι) (s' := V.ι ≫ s) rfl W a) := by
@@ -34,6 +45,11 @@ private theorem formPull_ι_bijective {k : Type} [CommRing k] {Z : Scheme.{0}} (
   · rw [SemiHom.mOm_mOm hsα hsβ hid₁ hβα x, SemiHom.mOm_id hid₁ (fun _ => rfl)]
   · rw [SemiHom.mOm_mOm hsβ hsα hid₂ hαβ y, SemiHom.mOm_id hid₂ (fun _ => rfl)]
 
+/- English proof (translation)
+Establish `comm : (omegaPull (f` using `V.ι) (s' := V.ι ≫ s) rfl a).app W ∘ toOm s a W = toOm (V.ι ≫ s) a (V.ι ⁻¹ᵁ W) ∘ formPull (f := V.ι) (s' := V.ι ≫ s) rfl W a :=`. Use function extensionality and compare the values at `fun x ↦ omegaPull_toOmega (f := V.ι) (s' := V.ι ≫ s) rfl a W x`. Establish `hb : Function.Bijective ((omegaPull (f` using `V.ι) (s' := V.ι ≫ s) rfl a).app W ∘ toOm s a W) := by`. Rewrite using `[comm]`. Conclude with `(toOm_bijective (V.ι ≫ s) a hW').comp (formPull_ι_bijective s V W h a)`.
+
+Conclude with `(Function.Bijective.of_comp_iff _ (toOm_bijective s a hW)).1 hb`.
+-/
 private theorem omegaPull_ι_app_bijective {k : Type} [CommRing k] {Z : Scheme.{0}} (s : Z ⟶ Sp k)
     (V W : Z.Opens) (h : W ≤ V) (hW : IsAffineOpen W) (hW' : IsAffineOpen (V.ι ⁻¹ᵁ W)) (a : ℕ) :
     Function.Bijective ((omegaPull (f := V.ι) (s' := V.ι ≫ s) rfl a).app W) := by
@@ -45,6 +61,11 @@ private theorem omegaPull_ι_app_bijective {k : Type} [CommRing k] {Z : Scheme.{
     exact (toOm_bijective (V.ι ≫ s) a hW').comp (formPull_ι_bijective s V W h a)
   exact (Function.Bijective.of_comp_iff _ (toOm_bijective s a hW)).1 hb
 
+/- English proof (translation)
+Apply `GroundTheory.Arith.SchemeCoh.isIso_of_bijective_app_affine` to reduce the goal to its premises. Introduce `U hU`. Establish `hle : V.ι ''ᵁ U ≤ V` using `Scheme.Opens.ι_image_le V U`. Establish `hW` using `hU.image_of_isOpenImmersion V.ι`. Establish `hW' : IsAffineOpen (V.ι ⁻¹ᵁ (V.ι ''ᵁ U))`.
+
+Rewrite using `[Scheme.Hom.preimage_image_eq]`. Conclude with `hU`. Conclude with `omegaPull_ι_app_bijective s V (V.ι ''ᵁ U) hle hW hW' a`.
+-/
 private theorem isIso_restrict_omegaPull {k : Type} [CommRing k] {Z : Scheme.{0}} (s : Z ⟶ Sp k)
     (V : Z.Opens) (a : ℕ) :
     IsIso ((Scheme.Modules.restrictFunctor V.ι).map (omegaPull (f := V.ι) (s' := V.ι ≫ s) rfl a)) := by
@@ -58,6 +79,17 @@ private theorem isIso_restrict_omegaPull {k : Type} [CommRing k] {Z : Scheme.{0}
   exact omegaPull_ι_app_bijective s V (V.ι ''ᵁ U) hle hW hW' a
 
 set_option maxHeartbeats 800000 in
+/- English proof (translation)
+Introduce `Z s V a b`. Use `haveI := isIso_restrict_omegaPull s V a`. Set `θ : (Omega s a).restrict V.ι ⟶ Omega (V.ι ≫ s) a` to `(Scheme.Modules.restrictFunctor V.ι).map (omegaPull (f := V.ι) (s' := V.ι ≫ s) rfl a) ≫ (Scheme.Modules.restrictAdjunction V.ι).counit.app _`. Use `haveI : IsIso θ := by dsimp only [θ] infer_instance`. Establish `hZ : ∀ r : ℤ, (ConcreteCategory.hom (Scheme.Hom.appTop V.ι)) ((algebraMap ℤ Γ(Z, ⊤)) r) = (algebraMap ℤ Γ((V : Scheme), ⊤)) r` using `fun r => by simp`.
+
+Establish `himg : V.ι ''ᵁ ⊤ = V` using `by simp`. Establish `hmor : (Scheme.Modules.restrictAdjunction V.ι).unit.app (Omega s a) ≫ (Scheme.Modules.pushforward V.ι).map θ = omegaPull (f` using `V.ι) (s' := V.ι ≫ s) rfl a := by`. Establish `key` using `(Scheme.Modules.restrictAdjunction V.ι).unit_naturality (omegaPull (f := V.ι) (s' := V.ι ≫ s) rfl a)`. Establish `tri` using `(Scheme.Modules.restrictAdjunction V.ι).right_triangle_components (Omega (V.ι ≫ s) a)`. Simplify using `only [θ]`.
+
+Rewrite using `[Functor.map_comp, ← Category.assoc, key, Category.assoc, tri, Category.comp_id]`. Establish `hle : (⊤ : (V : Scheme).Opens) ≤ V.ι ⁻¹ᵁ V`. Simplify using the standard rewrite rules. Establish `h1 : ∀ y, cohOn.restrictEquiv ℤ hZ (Omega s a) himg b y = cohOn.pull (σ` using `RingHom.id ℤ) hZ ((Scheme.Modules.restrictAdjunction V.ι).unit.app (Omega s a)) hle b y := by`. Introduce `y`.
+
+Both sides reduce to the same expression. Use `⟨((cohOn.restrictEquiv ℤ hZ (Omega s a) himg b).trans (cohOn.mapIso ℤ ⊤ b (asIso θ))).toEquiv, fun (x : cohOn (Omega s a) ⊤ b) => ?_⟩` and prove the remaining obligations. Establish `htop : (⊤ : (V : Scheme).Opens) ≤ V.ι ⁻¹ᵁ ⊤` using `le_top`. Establish `hA` using `cohOn.pull_res (G := (Omega s a).restrict V.ι) (σ := RingHom.id ℤ) hZ ((Scheme.Modules.restrictAdjunction V.ι).unit.app (Omega s a)) (le_top : V ≤ ⊤) hle x`. Establish `hB` using `cohOn.map_pull (G := (Omega s a).restrict V.ι) (σ := RingHom.id ℤ) hZ ((Scheme.Modules.restrictAdjunction V.ι).unit.app (Omega s a)) θ htop x`.
+
+Establish `hC : cohOn.pull (σ` using `RingHom.id ℤ) hZ ((Scheme.Modules.restrictAdjunction V.ι).unit.app (Omega s a) ≫ (Scheme.Modules.pushforward V.ι).map θ) htop b x = cohOn.pull (σ := RingHom.id ℤ) hZ (omegaPull (f := V.ι) (s' := V.ι ≫ s) rfl a) htop b x := congrArg (fun φ => cohOn.pull (σ := RingHom.id ℤ) hZ φ ht …`. Establish `h3 : cohOn.map ℤ θ ⊤ b (cohOn.restrictEquiv ℤ hZ (Omega s a) himg b (cohOn.res ℤ (Omega s a) (le_top : V ≤ ⊤) b x)) = cohOn.pull (σ` using `RingHom.id ℤ) hZ (omegaPull (f := V.ι) (s' := V.ι ≫ s) rfl a) htop b x := (congrArg (cohOn.map ℤ θ ⊤ b) ((h1 _).trans hA)).trans (hB.trans hC)`. Conclude with `h3`.
+-/
 theorem UpperTheory.hodgeCohomology_open_restriction_equiv :
     ∀ (Z : Scheme.{0}) (s : Z ⟶ Sp ℂ) (V : Z.Opens) (a b : ℕ), ∃ e : cohOn (Omega s a) V b ≃ hodgeH (V.ι ≫ s) a b, ∀ x : hodgeH s a b, e (cohOn.res ℤ (Omega s a) (le_top : V ≤ ⊤) b x) = hodgePull (f := V.ι) (s' := V.ι ≫ s) rfl a b x := by
   intro Z s V a b

@@ -31,6 +31,9 @@ open GlobalTheory.KeyPow GlobalTheory.KeyKa
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Introduce `hF` and use `have hL := GlobalTheory.T.abelianScheme_laws_unconditional.1 have hR := GlobalTheory.KeyTop.exists_keyRule_charHalf hL GlobalTheory.T.theta_uniformisation_complex_abelian_varieties GlobalTheory.ThetaInversion.inversion (GlobalTheory.phHolo_of_phKoecher GlobalTheory.phKoecher) Glo …`.
+-/
 theorem keyFormula_of_connFam : GlobalTheory.KeyKa.ConnFam → KeyFormula := fun hF =>
   have hL := GlobalTheory.T.abelianScheme_laws_unconditional.1
   have hR := GlobalTheory.KeyTop.exists_keyRule_charHalf hL GlobalTheory.T.theta_uniformisation_complex_abelian_varieties GlobalTheory.ThetaInversion.inversion (GlobalTheory.phHolo_of_phKoecher GlobalTheory.phKoecher) GlobalTheory.torusAlgebraic_holds

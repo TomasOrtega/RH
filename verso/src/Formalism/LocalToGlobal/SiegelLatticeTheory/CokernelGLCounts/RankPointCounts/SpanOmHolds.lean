@@ -12,6 +12,29 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 open SpanOmPf in
 
+/- English proof (translation)
+Introduce `T T' F F' hdet hG m hm`. Use `set ω := Gom F.fvec F'.fvec with hω`. Use `set Dd := GDl F.fvec F'.fvec (D.R.rS + 1) with hDd`. Use `set Dr := GDl F.fvec F'.fvec D.R.rS with hDr`. Establish `hD : Dd ≠ 0` using `by rw [hDd, GDl_top', SpanOmPf.GZ_eq]; exact hdet`.
+
+Establish `hG' : Dd * star Dd - T * T' * (Dr * star Dr) ≠ 0`. Rewrite using `[hDd, hDr, SpanOmPf.GDl_eq, SpanOmPf.GDl_eq]`. Conclude with `hG`. Use `set W0 := orth (VS D) (F.Xplus ⊔ F'.Xplus) with hW0`. Use `set U := F'.X ⊔ W0 ⊔ Submodule.span D.host.E {F'.z, ω} with hU`.
+
+Establish `key : ∀ u ∈ orth (VS D) U, u ∈ F'.X`. Introduce `u hu`. Rewrite `hu` using `[PI.UnitaryGroupMassFormula.BetaLUniq.mem_orth]`. Establish `h1 : ∀ y ∈ F'.X, (VS D).hT y u = 0` using `fun y hy => hu y (Submodule.mem_sup_left (Submodule.mem_sup_left hy))`. Establish `h2 : ∀ w ∈ W0, (VS D).hT w u = 0` using `fun w hw => hu w (Submodule.mem_sup_left (Submodule.mem_sup_right hw))`.
+
+Establish `h3 : (VS D).hT F'.z u = 0` using `hu _ (Submodule.mem_sup_right (Submodule.subset_span (Set.mem_insert _ _)))`. Establish `h4 : (VS D).hT ω u = 0` using `hu _ (Submodule.mem_sup_right (Submodule.subset_span (Set.mem_insert_of_mem _ rfl)))`. Establish `hP : u ∈ F.Xplus ⊔ F'.Xplus` using `BwdNA.mem_of_orth_orth (VS D) _ (fun w hw => by rw [SpanOmPf.hsw', h2 w hw, star_zero])`. Take `⟨x, hx, y, hy, rfl⟩` from `Submodule.mem_sup.1 hP`. Take `⟨y', hy', s, hs, rfl⟩` from `Submodule.mem_sup.1 hy`.
+
+Take `⟨β, rfl⟩` from `Submodule.mem_span_singleton.1 hs`. Establish `hxX : ∀ y0 ∈ F'.X, (VS D).hT y0 x = 0`. Introduce `y0 hy0`. Use `h1 y0 hy0` as an intermediate fact. Rewrite `this` using `[map_add, map_add, SpanOmPf.iso_X F' hy0 hy', map_smul, SpanOmPf.isotropicSpan_orthogonal_anisotropicVector F' hy0, smul_zero, add_zero, add_zero]`.
+
+Conclude with `this`. Take `⟨c, rfl⟩` from `SpanOmPf.om_uniq F F' hD (by rw [← SpanOmPf.Xplus_eq]; exact hx) hxX`. Establish `hzo : (VS D).hT F'.z ω = star Dd` using `by rw [SpanOmPf.hsw', SpanOmPf.omega_hermitian_z]`. Establish `e3 : c * star Dd + β * -T' = 0`. Use `h3` as an intermediate fact.
+
+Rewrite `this` using `[map_add, map_add, map_smul, map_smul, hzo, SpanOmPf.z_orth_X F' hy', F'.z_norm, smul_eq_mul, smul_eq_mul, zero_add]`. Conclude with `this`. Establish `e4 : c * (-T * (Dr * star Dr)) + β * Dd = 0`. Use `h4` as an intermediate fact. Rewrite `this` using `[map_add, map_add, map_smul, map_smul, SpanOmPf.om_om, SpanOmPf.om_X' F F' hy', SpanOmPf.omega_hermitian_z, smul_eq_mul, smul_eq_mul, zero_add]`.
+
+Conclude with `this`. Establish `hc : c = 0`. Establish `hcG : c * (Dd * star Dd - T * T' * (Dr * star Dr)) = 0`. Take the linear combination `Dd * e3 + T' * e4`. Conclude with `(mul_eq_zero.1 hcG).resolve_right hG'`.
+
+Establish `hβ : β = 0`. Rewrite `e4` using `[hc]`. Establish `: β * Dd = 0` using `by linear_combination e4`. Conclude with `(mul_eq_zero.1 this).resolve_right hD`. Rewrite using `[hc, hβ, zero_smul, zero_smul, add_zero, zero_add]`.
+
+Conclude with `hy'`. Establish `hmU : m ∈ U` using `BwdNA.mem_of_orth_orth (VS D) U (fun u hu => by`. Rewrite using `[SpanOmPf.hsw', (PI.UnitaryGroupMassFormula.BetaLUniq.mem_orth (VS D)).1 hm u (key u hu), star_zero])`. Take `⟨y, hy, s, hs, rfl⟩` from `Submodule.mem_sup.1 hmU`. Take `⟨x', hx', w, hw, rfl⟩` from `Submodule.mem_sup.1 hy`.
+
+Take `⟨a, b, rfl⟩` from `Submodule.mem_span_pair.1 hs`. Conclude with `⟨x', hx', w, hw, a, b, by abel⟩`.
+-/
 theorem spanOm_holds (D : Formalism.BasicNotions.D7) : SpanOm D := by
   intro T T' F F' hdet hG m hm
   set ω := Gom F.fvec F'.fvec with hω

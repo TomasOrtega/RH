@@ -10,6 +10,11 @@ open GlobalTheory.CuspRep GlobalTheory.WeilDeligne GlobalTheory.Pst GlobalTheory
 attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField
 open GlobalTheory.GalCut GlobalTheory.UnitaryBC GlobalTheory.Cong GlobalTheory.Published GlobalTheory.AboveL
 
+/- English proof (translation)
+Introduce `E _ _ _ a w hw`. Take `⟨e, he⟩` from `GlobalTheory.locU_equiv_GL E a w hw`. Establish `hf : ((cLoc w).comp (locU a w).subtype : locU a w → GL (Fin a) (w.adicCompletion E)) = e`. Use function extensionality and compare the values at `x`. Conclude with `(he x).symm`.
+
+Rewrite using `[hf]`. Conclude with `⟨e.bijective, e.toHomeomorph.isOpenMap, e.continuous⟩`.
+-/
 theorem GlobalTheory.Cong.cLoc_locU_bijective_open_continuous : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (a : ℕ) (w : HeightOneSpectrum (𝓞 E)), IsSplitAt w → Function.Bijective ((cLoc w).comp (locU a w).subtype) ∧ IsOpenMap ((cLoc w).comp (locU a w).subtype) ∧ Continuous ((cLoc w).comp (locU a w).subtype) := by
   intro E _ _ _ a w hw
   obtain ⟨e, he⟩ := GlobalTheory.locU_equiv_GL E a w hw

@@ -4,6 +4,37 @@ namespace GlobalTheory
 
 open Matrix
 
+/- English proof (translation)
+Set `c : (Fin N → R) →ₗ[R] (Fin N → F)` to `(Algebra.linearMap R F).compLeft (Fin N)`. Establish `hc : ∀ x i, c x i = (x i : F)` using `fun _ _ => rfl`. Establish `hcs : ∀ (a : R) x, c (a • x) = (a : F) • c x`. Introduce `a x`. Use extensionality with `i`.
+
+Simplify using `[hc]`. Set `M : Submodule R (Fin N → R)` to `LinearMap.eqLocus (((Matrix.toLin' e).restrictScalars R) ∘ₗ c) c`. Establish `hM : ∀ x, x ∈ M ↔ e.mulVec (c x) = c x`. Introduce `x`. Simplify using `[M, LinearMap.mem_eqLocus]`.
+
+Take `⟨n, snf⟩` from `Submodule.smithNormalForm (Pi.basisFun R (Fin N)) M`. Establish `ha : ∀ k, snf.a k ≠ 0`. Introduce `k h`. Use `snf.snf k` as an intermediate fact. Rewrite `this` using `[h, zero_smul]`.
+
+Conclude with `snf.bN.ne_zero k (Subtype.ext this)`. Establish `hmem : ∀ k, e.mulVec (c (snf.bM (snf.f k))) = c (snf.bM (snf.f k))`. Introduce `k`. Establish `h1` using `(hM _).1 (snf.bN k).2`. Rewrite `h1` using `[snf.snf k, hcs, Matrix.mulVec_smul]`.
+
+Establish `: (snf.a k : F) ≠ 0` using `fun h => ha k (Subtype.ext h)`. Conclude with `smul_right_injective _ this h1`. Set `u : Matrix (Fin N) (Fin n) F` to `fun i k => (snf.bM (snf.f k) i : F)`. Set `l : Matrix (Fin n) (Fin N) F` to `fun k j => (snf.bM.repr (Pi.single j 1) (snf.f k) : F)`. Establish `hl : ∀ (x : Fin N → R) k, l.mulVec (c x) k = (snf.bM.repr x (snf.f k) : F)`.
+
+Introduce `x k`. Establish `hx : x = ∑ j, x j • (Pi.single j 1 : Fin N → R)`. Use extensionality with `i`. Simplify using `[Finset.sum_apply, Pi.single_apply]`. Use `conv_rhs => rw [hx]`.
+
+Simplify using `[Matrix.mulVec, dotProduct, l, hc, mul_comm, Finset.sum_apply']`. Use `⟨n, u, l, fun i k => Subtype.property _, fun i k => Subtype.property _, ?_, ?_, ?_⟩` and prove the remaining obligations. Use extensionality with `i k`. Conclude with `congrFun (hmem k) i`. Use extensionality with `k k'`.
+
+Use `hl (snf.bM (snf.f k')) k` as an intermediate fact. Use `Eq.trans this ?_` and prove the remaining obligations. Distinguish the cases in `h : k = k'`. Substitute `h` using the available equality. Simplify using the standard rewrite rules.
+
+Establish `: snf.f k' ≠ snf.f k` using `fun h' => h (snf.f.injective h').symm`. Simplify using `[h, Finsupp.single_apply, this]`. Establish `key : ∀ y : Fin N → R, y ∈ M → (u * l).mulVec (c y) = c y`. Introduce `y hy`. Rewrite using `[← Matrix.mulVec_mulVec]`.
+
+Establish `h1 : y = ∑ k, snf.bM.repr y (snf.f k) • snf.bM (snf.f k)` using `by conv_lhs => rw [← snf.bM.sum_repr y]`. Use `symm`. Use `Finset.sum_of_injOn snf.f (snf.f.injective.injOn) (by simp) ?_ (by simp)` and prove the remaining obligations. Introduce `j _ hj`. Establish `: j ∉ Set.range snf.f` using `by simpa using hj`.
+
+Use `snf.repr_eq_zero_of_notMem_range ⟨y, hy⟩ this` as an intermediate fact. Simplify using `at this`. Simplify using `[this]`. Rewrite using `[show l.mulVec (c y) = _ from funext (hl y)]`. Use extensionality with `i`.
+
+Use `conv_rhs => rw [h1]`. Simplify using `[Matrix.mulVec, dotProduct, hc, u, mul_comm, Finset.sum_apply]`. Introduce `x hx`. Use `choose d hdR hd0 hdx using hd`. Set `D : F` to `∏ j, d (x j)`.
+
+Establish `hD : D ≠ 0` using `Finset.prod_ne_zero_iff.2 fun j _ => hd0 _`. Establish `hDx : ∀ j, D * x j ∈ R`. Introduce `j`. Establish `: D * x j = (∏ i ∈ Finset.univ.erase j, d (x i)) * (d (x j) * x j)`. Simplify using `only [D]`.
+
+Rewrite using `[← Finset.mul_prod_erase _ _ (Finset.mem_univ j)]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[this]`. Conclude with `R.mul_mem (R.prod_mem fun i _ => hdR _) (hdx _)`. Set `y : Fin N → R` to `fun j => ⟨D * x j, hDx j⟩`.
+
+Establish `hy : c y = D • x` using `by ext j; simp [hc, y]`. Use `key y ((hM y).2 (by rw [hy, Matrix.mulVec_smul, hx]))` as an intermediate fact. Rewrite `this` using `[hy, Matrix.mulVec_smul]`. Conclude with `smul_right_injective _ hD this`.
+-/
 theorem exists_integral_basis_fixed_vectors (F : Type) [Field F] (R : Subring F)
     (hR : IsPrincipalIdealRing R) (hd : ∀ x : F, ∃ d ∈ R, d ≠ 0 ∧ d * x ∈ R)
     (N : ℕ) (e : Matrix (Fin N) (Fin N) F) :
@@ -82,6 +113,27 @@ theorem exists_integral_basis_fixed_vectors (F : Type) [Field F] (R : Subring F)
     rw [hy, Matrix.mulVec_smul] at this
     exact smul_right_injective _ hD this
 
+/- English proof (translation)
+Introduce `F _ R hR hd ι _ _ N e he hs`. Use `choose n u l hu hl heu hlu hx using fun τ => exists_integral_basis_fixed_vectors F R hR hd N (e τ)`. Establish `hule : ∀ τ, u τ * l τ * e τ = e τ`. Introduce `τ`. Use extensionality with `i j`.
+
+Establish `h1 : (e τ).mulVec (fun i => e τ i j) = fun i => e τ i j`. Use extensionality with `i`. Use `congrFun (congrFun (he τ τ) i) j` as an intermediate fact. Simplify `this` using `[Matrix.mul_apply, Matrix.mulVec, dotProduct]`. Conclude with `congrFun (hx τ _ h1) i`.
+
+Set `Q : Matrix (Fin N) (Σ τ, Fin (n τ)) F` to `fun i p => u p.1 i p.2`. Set `P : Matrix (Σ τ, Fin (n τ)) (Fin N) F` to `fun p j => (l p.1 * e p.1) p.2 j`. Establish `hPQ : P * Q = 1`. Use extensionality with `⟨σ, k⟩ ⟨τ, k'⟩`. Establish `h1 : (P * Q) ⟨σ, k⟩ ⟨τ, k'⟩ = (l σ * e σ * u τ) k k'` using `rfl`.
+
+Rewrite using `[h1, ← heu τ, Matrix.mul_assoc, ← Matrix.mul_assoc (e σ), he]`. Distinguish the cases in `h : σ = τ`. Substitute `h` using the available equality. Simplify using `[heu, hlu, Matrix.one_apply]`. Simplify using `[h, Matrix.one_apply]`.
+
+Establish `hQP : Q * P = 1`. Rewrite using `[← hs]`. Use extensionality with `i j`. Rewrite using `[Matrix.mul_apply, Matrix.sum_apply, Fintype.sum_sigma]`. Use `Finset.sum_congr rfl fun τ _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[← hule τ, Matrix.mul_assoc]`. Both sides reduce to the same expression. Establish `hcard : Fintype.card (Σ τ, Fin (n τ)) = N`. Use `(Matrix.toLin'OfInv hPQ hQP).finrank_eq` as an intermediate fact. Simplify using `only [Module.finrank_fintype_fun_eq_card, Fintype.card_fin] at this`.
+
+Use linear arithmetic over natural numbers and integers. Set `φ` to `(Fintype.equivFinOfCardEq hcard).symm`. Use `⟨fun s => (φ s).1, fun i s => u (φ s).1 i (φ s).2, fun r j => l (φ r).1 (φ r).2 j, fun i j => ⟨hu _ _ _, hl _ _ _⟩, ?_, ?_⟩` and prove the remaining obligations. Introduce `s`. Use extensionality with `i`.
+
+Conclude with `congrFun (congrFun (heu (φ s).1) i) (φ s).2`. Introduce `r s hrs`. Establish `hiff : r = s ↔ φ r = φ s` using `φ.injective.eq_iff.symm`. Express the relevant statement in the definitionally equal form `(l (φ r).1 * u (φ s).1) (φ r).2 (φ s).2 = _`. Simplify using `only [hiff]`.
+
+Simplify using `only at hrs`. Use `revert hrs`. Generalize the expression as in `φ r = p`. Generalize the expression as in `φ s = q`. Take `⟨σ, k⟩` from `p`.
+
+Take `⟨τ, k'⟩` from `q`. Introduce `h`. Simplify using `only at h`. Substitute `h` using the available equality. Simplify using `[hlu, Matrix.one_apply]`.
+-/
 theorem exists_integral_block_bases_of_projectors :
     ∀ (F : Type) [Field F] (R : Subring F), IsPrincipalIdealRing R → (∀ x : F, ∃ d ∈ R, d ≠ 0 ∧ d * x ∈ R) →
     ∀ (ι : Type) [Fintype ι] [DecidableEq ι] (N : ℕ) (e : ι → Matrix (Fin N) (Fin N) F),

@@ -15,8 +15,14 @@ namespace GlobalTheory.Poinc.PreSys
 
 variable {g n : ℕ} {F : SFam g n (zetaAway n)} {W : Matrix (Fin 8) (Fin 8) ℤ} {Z : Scheme.{0}} {i : F.X ⟶ Z}
 
+/- English proof (translation)
+The claim follows from `GlobalTheory.T.siegelTrait_characterGroup_finrank_le_genus_of_three_le g n F hn T`.
+-/
 theorem rank_le (hn : 3 ≤ n) (T : Trait F) : Module.finrank ℤ T.D.toPre.X ≤ g := GlobalTheory.T.siegelTrait_characterGroup_finrank_le_genus_of_three_le g n F hn T
 
+/- English proof (translation)
+The claim follows from `GlobalTheory.T.thetaSetup_classicalTraitPeriods_bounded_below_maxIdeal _ n F W Z i X₁ X₁.one_le X₁.three_le X₁.odd X₁.imm hE hT X₁.projM p z₁ hz`.
+-/
 theorem lam (hE : IsE8 W) (hT : ThetaInt F W i) (X₁ : Setup F W i) (p : ℕ) [Fact p.Prime] (z₁ : X₁.M.Z)
     (hz : IsClosed ({z₁} : Set X₁.M.Z)) : ∃ C : ℝ, ∀ (c : CTrait X₁ p z₁) (x : c.T.D.toPre.X), x ≠ 0 →
       ∃ h ∈ maximalIdeal (X₁.M.Z.presheaf.stalk z₁), Real.exp (-(C * (c.sc * c.T.β x x))) ≤ ‖c.val h‖ :=
@@ -27,16 +33,32 @@ variable {X₁ : Setup F W i} {p : ℕ} [Fact p.Prime] {z₁ : X₁.M.Z}
 def evC (c : CTrait X₁ p z₁) : X₁.M.Z.presheaf.stalk z₁ →+* PadicAlgCl p :=
   (RatModel.valHomOf (gPt p ≫ c.y) z₁ (RatModel.gPt_specializes c.cen)).comp (X₁.M.stalkEquiv z₁).toRingHom
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem evC_apply (c : CTrait X₁ p z₁) (a : X₁.M.Z.presheaf.stalk z₁) : evC c a = c.val a := rfl
 
+/- English proof (translation)
+The claim follows from `RatModel.norm_val_le_one c.cen (X₁.M.stalkEquiv z₁ a).2`.
+-/
 theorem norm_evC_le (c : CTrait X₁ p z₁) (a : X₁.M.Z.presheaf.stalk z₁) : ‖evC c a‖ ≤ 1 :=
   RatModel.norm_val_le_one c.cen (X₁.M.stalkEquiv z₁ a).2
 
+/- English proof (translation)
+Establish `h1 : ¬ IsUnit (X₁.M.stalkEquiv z₁ a)` using `fun hu => ha ((isUnit_map_iff (X₁.M.stalkEquiv z₁) a).1 hu)`. Conclude with `(RatModel.norm_val_lt_one_iff c.cen (X₁.M.stalkEquiv z₁ a).2).2 h1`.
+-/
 theorem norm_evC_lt (c : CTrait X₁ p z₁) (a : X₁.M.Z.presheaf.stalk z₁) (ha : a ∈ maximalIdeal _) :
     ‖evC c a‖ < 1 := by
   have h1 : ¬ IsUnit (X₁.M.stalkEquiv z₁ a) := fun hu => ha ((isUnit_map_iff (X₁.M.stalkEquiv z₁) a).1 hu)
   exact (RatModel.norm_val_lt_one_iff c.cen (X₁.M.stalkEquiv z₁ a).2).2 h1
 
+/- English proof (translation)
+Establish `hϖ0 : algebraMap c.T.V (FractionRing c.T.V) c.T.ϖ ≠ 0` using `(map_ne_zero_iff _ (IsFractionRing.injective _ _)).2 c.T.irr.ne_zero`. Establish `h0 : c.ι (algebraMap c.T.V (FractionRing c.T.V) c.T.ϖ) ≠ 0` using `(map_ne_zero _).2 hϖ0`. Establish `hlt : ‖c.ι (algebraMap c.T.V (FractionRing c.T.V) c.T.ϖ)‖ < 1`. Assume the negation of the conclusion as `hge`. Use `push_neg at hge`.
+
+Establish `hinv : ‖c.ι (algebraMap c.T.V (FractionRing c.T.V) c.T.ϖ)⁻¹‖ ≤ 1`. Rewrite using `[map_inv₀, norm_inv]`. Conclude with `inv_le_one_of_one_le₀ hge`. Take `⟨w, hw⟩` from `(c.int _).1 hinv`. Apply `c.T.irr.not_isUnit` to reduce the goal to its premises.
+
+Use `isUnit_iff_exists_inv.2 ⟨w, IsFractionRing.injective c.T.V (FractionRing c.T.V) ?_⟩` and prove the remaining obligations. Rewrite using `[map_mul, hw, map_one, mul_inv_cancel₀ hϖ0]`. Unfold `CTrait.sc`. Use `Real.log_neg (norm_pos_iff.2 h0) hlt` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem sc_pos (c : CTrait X₁ p z₁) : 0 < c.sc := by
   have hϖ0 : algebraMap c.T.V (FractionRing c.T.V) c.T.ϖ ≠ 0 :=
     (map_ne_zero_iff _ (IsFractionRing.injective _ _)).2 c.T.irr.ne_zero
@@ -55,6 +77,9 @@ theorem sc_pos (c : CTrait X₁ p z₁) : 0 < c.sc := by
   have := Real.log_neg (norm_pos_iff.2 h0) hlt
   linarith
 
+/- English proof (translation)
+Take `⟨j, hj⟩` from `IsMonomial.exists_pos (IsLocalRing.maximalIdeal.isMaximal c.T.V).ne_top c.T.mono hx`. Use `fin_cases j`. Simplify using `using hj`.
+-/
 theorem beta_pos (c : CTrait X₁ p z₁) (x : c.T.D.toPre.X) (hx : x ≠ 0) : 0 < c.T.β x x := by
   obtain ⟨j, hj⟩ := IsMonomial.exists_pos (IsLocalRing.maximalIdeal.isMaximal c.T.V).ne_top c.T.mono hx
   fin_cases j
@@ -80,6 +105,9 @@ def coord (c : CTrait X₁ p z₁) : (Fin (Module.finrank ℤ c.T.D.toPre.X) →
 def keyOf (c : CTrait X₁ p z₁) : Key X₁ p :=
   (c.y, ⟨Module.finrank ℤ c.T.D.toPre.X, fun u v => c.sc * c.T.β (coord c u) (coord c v)⟩)
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨rfl, coord c, fun _ _ => rfl⟩`.
+-/
 theorem rep_keyOf (c : CTrait X₁ p z₁) : Rep c (keyOf c) := ⟨rfl, coord c, fun _ _ => rfl⟩
 
 variable (X₁ p z₁) in
@@ -88,6 +116,9 @@ def Pts : Type := {q : Key X₁ p // ∃ c : CTrait X₁ p z₁, Rep c q}
 
 noncomputable def pick (y : Pts X₁ p z₁) : CTrait X₁ p z₁ := Classical.choose y.2
 
+/- English proof (translation)
+The claim follows from `Classical.choose_spec y.2`.
+-/
 theorem pick_rep (y : Pts X₁ p z₁) : Rep (pick y) y.1 := Classical.choose_spec y.2
 
 variable (X₁ p z₁) in
@@ -105,6 +136,13 @@ noncomputable def sys : FPre (id : ℤ → ℤ) g p (X₁.M.Z.presheaf.stalk z�
   sc y := (pick y).sc
   sc_pos y := sc_pos _
 
+/- English proof (translation)
+Introduce `c`. Use `⟨⟨keyOf c, c, rep_keyOf c⟩, fun a => ?_, ?_⟩` and prove the remaining obligations. Take `⟨hy, -⟩` from `pick_rep ⟨keyOf c, c, rep_keyOf c⟩ show evC _ a = c.val a`. Rewrite using `[evC_apply]`. Unfold `CTrait.val`.
+
+Rewrite using `[hy]`. Both sides reduce to the same expression. Take `⟨-, e', he'⟩` from `pick_rep ⟨keyOf c, c, rep_keyOf c⟩`. Establish `key : ∀ a b : (pick ⟨keyOf c, c, rep_keyOf c⟩).T.D.toPre.X, (pick ⟨keyOf c, c, rep_keyOf c⟩).sc * (pick ⟨keyOf c, c, rep_keyOf c⟩).T.β a b = c.sc * c.T.β (coord c (e'.symm a)) (coord c (e'.symm b))`. Introduce `a b`.
+
+Establish `h` using `he' (e'.symm a) (e'.symm b)`. Rewrite `h` using `[e'.apply_symm_apply, e'.apply_symm_apply]`. Conclude with `h.symm`. Conclude with `⟨e'.symm.trans (coord c), key⟩`.
+-/
 theorem sys_matches : (sys X₁ p z₁ (g := g)).Matches := by
   intro c
   refine ⟨⟨keyOf c, c, rep_keyOf c⟩, fun a => ?_, ?_⟩
@@ -124,6 +162,9 @@ theorem sys_matches : (sys X₁ p z₁ (g := g)).Matches := by
       exact h.symm
     exact ⟨e'.symm.trans (coord c), key⟩
 
+/- English proof (translation)
+Take `⟨C, hC⟩` from `lam hE hT X₁ p z₁ hz`. Conclude with `⟨C, fun y x hx => by`. Take `⟨h, hm, hle⟩` from `hC (pick y) x hx`. Conclude with `⟨h, hm, hle⟩⟩`.
+-/
 theorem sys_lam (hE : IsE8 W) (hT : ThetaInt F W i) (hz : IsClosed ({z₁} : Set X₁.M.Z)) :
     (sys X₁ p z₁ (g := g)).abelian₂ := by
   obtain ⟨C, hC⟩ := lam hE hT X₁ p z₁ hz
@@ -131,6 +172,9 @@ theorem sys_lam (hE : IsE8 W) (hT : ThetaInt F W i) (hz : IsClosed ({z₁} : Set
     obtain ⟨h, hm, hle⟩ := hC (pick y) x hx
     exact ⟨h, hm, hle⟩⟩
 
+/- English proof (translation)
+Introduce `g n F W Z i hE hT X₁ p _ z₁ hz`. Conclude with `⟨sys X₁ p z₁, sys_matches, sys_lam hE hT hz, fun y => ⟨pick y, fun a => rfl, LinearEquiv.refl ℤ _, fun a b => rfl⟩⟩`.
+-/
 theorem main : ∀ (g n : ℕ) (F : SFam g n (zetaAway n)) (W : Matrix (Fin 8) (Fin 8) ℤ) (Z : Scheme.{0}) (i : F.X ⟶ Z),
     IsE8 W → ThetaInt F W i → ∀ (X₁ : Setup F W i) (p : ℕ) [Fact p.Prime] (z₁ : X₁.M.Z), IsClosed ({z₁} : Set X₁.M.Z) →
       ∃ Φ : FPre (id : ℤ → ℤ) g p (X₁.M.Z.presheaf.stalk z₁), Φ.Matches ∧ Φ.abelian₂ ∧

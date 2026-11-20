@@ -15,6 +15,11 @@ noncomputable section
 
 namespace GlobalTheory.Mass.FewOrbits
 
+/- English proof (translation)
+Rewrite using `[finprod_mem_eq_finite_toFinset_prod _ hA]`. Prove the components needed by the constructor for the conclusion. Introduce `hP`. Conclude with `⟨hm P hP, Ideal.prod_le_inf.trans (Finset.inf_le (hA.mem_toFinset.2 hP))⟩`. Introduce and unpack `⟨hPm, hle⟩`.
+
+Take `⟨Q, hQ, hQP⟩` from `(Ideal.IsPrime.prod_le hPm.isPrime).1 hle`. Establish `hQm` using `hm Q (hA.mem_toFinset.1 hQ)`. Conclude with `(hQm.eq_of_le hPm.ne_top hQP) ▸ hA.mem_toFinset.1 hQ`.
+-/
 theorem mem_iff_prod_le {R : Type*} [CommRing R] {A : Set (Ideal R)} (hA : A.Finite)
     (hm : ∀ P ∈ A, P.IsMaximal) (P : Ideal R) : P ∈ A ↔ P.IsMaximal ∧ ∏ᶠ Q ∈ A, Q ≤ P := by
   rw [finprod_mem_eq_finite_toFinset_prod _ hA]
@@ -26,6 +31,11 @@ theorem mem_iff_prod_le {R : Type*} [CommRing R] {A : Set (Ideal R)} (hA : A.Fin
     have hQm := hm Q (hA.mem_toFinset.1 hQ)
     exact (hQm.eq_of_le hPm.ne_top hQP) ▸ hA.mem_toFinset.1 hQ
 
+/- English proof (translation)
+Take `⟨τ⟩ : Nonempty (K →+* ℂ)` from `inferInstance`. Establish `key : ∀ x : V, h x x = 0 → x = 0`. Introduce `x hx`. Assume the negation of the conclusion as `hne`. Use `hp τ x hne` as an intermediate fact.
+
+Rewrite `this` using `[hx, map_zero, Complex.zero_re]`. Conclude with `lt_irrefl _ this`. Conclude with `⟨fun x hx => key x (hx x), fun y hy => key y (hy y)⟩`.
+-/
 theorem nondeg {K V : Type} [Field K] [NumberField K] [StarRing K] [AddCommGroup V] [Module K V]
     (h : V →ₗ⋆[K] V →ₗ[K] K) (hp : PD h) : h.Nondegenerate := by
   obtain ⟨τ⟩ : Nonempty (K →+* ℂ) := inferInstance
@@ -37,6 +47,35 @@ theorem nondeg {K V : Type} [Field K] [NumberField K] [StarRing K] [AddCommGroup
     exact lt_irrefl _ this
   exact ⟨fun x hx => key x (hx x), fun y hy => key y (hy y)⟩
 
+/- English proof (translation)
+Introduce `K V _ _ _ _ _ _ _ _ h hK hs hp hO j n hn`. Establish `hW` using `GlobalTheory.T.witt_extension_totally_definite_hermitian K V h hK hs hp`. Establish `hmaxOf : ∀ (U : Submodule K V) (M : Submodule (𝓞 K) U), ∀ P ∈ badP (hRes h U) M, P.IsMaximal`. Introduce `U M P hP`. Unfold `badP at hP`.
+
+Conclude with `hP.1`. Take `⟨Q, hQ⟩ : ∃ Q : Submodule K V → Ideal (𝓞 K) → Prop, ∀ U I, Q U I ↔ (Module.finrank K U = j ∧ ∃ M : Submodule (𝓞 K) U, IsMaxLat (hRes h U) M ∧ ∏ᶠ P ∈ badP (hRes h U) M, P = I)` from `⟨_, fun _ _ => Iff.rfl⟩`. Establish `hpick : ∀ I : Ideal (𝓞 K), ∃ U₀ : Submodule K V, (∃ U, Q U I) → Q U₀ I`. Introduce `I`. Distinguish the cases in `hI : ∃ U, Q U I`.
+
+Take `⟨U, hU⟩` from `hI`. Conclude with `⟨U, fun _ => hU⟩`. Conclude with `⟨⊥, fun h' => absurd h' hI⟩`. Use `choose pick hpickQ using hpick`. Take `⟨hfin, hcard⟩` from `Formalism.HermitianLatticeCounting.P.ideal_norm_le_count K (n : ℝ) (by exact_mod_cast hn)`.
+
+Use `⟨(hfin.toFinset.filter (fun I => ∃ U, Q U I)).image pick, ?_, ?_, ?_⟩` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation. Conclude with `Finset.card_image_le.trans (Finset.card_filter_le _ _)` after adjusting the coercions. Use `_ = _ := by rw [Set.ncard_eq_toFinset_card _ hfin]`. Use `_ ≤ _ := hcard`.
+
+Introduce `U hU`. Take `⟨I, hI, rfl⟩` from `Finset.mem_image.1 hU`. Conclude with `((hQ _ _).1 (hpickQ I (Finset.mem_filter.1 hI).2)).1`. Introduce `U hUj hne`. Take `⟨L, hL⟩` from `hne`.
+
+Unfold `latsDisc at hL`. Take `⟨hLi, hLd⟩` from `hL`. Take `⟨-, hsU, hpU, -⟩` from `hW.2 U`. Establish `hnU` using `nondeg (hRes h U) hpU`. Take `⟨M, hM, hLM⟩` from `(GlobalTheory.T.exists_maximal_integralHermitianLattice_orthonormal_maximal K U (hRes h U) hK hsU hnU).1 L hLi`.
+
+Establish `hd` using `(GlobalTheory.Mass.DiscOrder.main K U (hRes h U) hK hsU hnU L hLi).2.2.1 M hM.1 hLM`. Take `⟨hbf, hdisc, -, -⟩` from `GlobalTheory.MaxLatStruct.main K U (hRes h U) hK hsU hnU M hM`. Take `⟨I, hIdef⟩ : ∃ I, ∏ᶠ P ∈ badP (hRes h U) M, P = I` from `⟨_, rfl⟩`. Establish `hnorm : Ideal.absNorm I = discN (hRes h U) M`. Rewrite using `[hdisc, ← hIdef, finprod_mem_eq_finite_toFinset_prod _ hbf, finprod_mem_eq_finite_toFinset_prod _ hbf, map_prod]`.
+
+Establish `hdv : Ideal.absNorm I ∣ n` using `⟨idxN M L ^ 2, by rw [hnorm, ← hLd]; exact hd.2⟩`. Establish `hpos : 0 < Ideal.absNorm I` using `Nat.pos_of_dvd_of_pos hdv hn`. Establish `hID : I ∈ hfin.toFinset`. Use `hfin.mem_toFinset.2 ⟨fun hb => by simp [hb] at hpos, ?_⟩` and prove the remaining obligations. Conclude with `Nat.le_of_dvd hn hdv` after adjusting the coercions.
+
+Establish `hex : ∃ U', Q U' I` using `⟨U, (hQ U I).2 ⟨hUj, M, hM, hIdef⟩⟩`. Take `⟨hj0, M₀, hM₀, hkey⟩` from `(hQ _ _).1 (hpickQ I hex)`. Take `⟨-, hs0, hp0, -⟩` from `hW.2 (pick I)`. Establish `hn0` using `nondeg (hRes h (pick I)) hp0`. Take `⟨hbf0, -, -, -⟩` from `GlobalTheory.MaxLatStruct.main K (pick I) (hRes h (pick I)) hK hs0 hn0 M₀ hM₀`.
+
+Establish `hbeq : badP (hRes h (pick I)) M₀ = badP (hRes h U) M`. Use extensionality with `P`. Rewrite using `[mem_iff_prod_le hbf0 (hmaxOf _ _) P, mem_iff_prod_le hbf (hmaxOf _ _) P, hkey, hIdef]`. Take `⟨e, he⟩` from `GlobalTheory.T.definite_hermitian_isometric_of_same_bad_primes K (pick I) (hRes h (pick I)) hK hs0 hp0 hO (↥U) (hRes h U) hsU hpU (by rw [hj0, hUj]) M₀ M hM₀ hM hbeq`. Take `⟨g, hg, hgx⟩` from `hW.1 (pick I) U e (fun x y => he x y)`.
+
+Use `⟨pick I, Finset.mem_image.2 ⟨I, Finset.mem_filter.2 ⟨hID, hex⟩, rfl⟩, ⟨g, hg⟩, ?_⟩` and prove the remaining obligations. Use extensionality with `y`. Express the relevant statement in the definitionally equal form `y ∈ Formalism.HermitianLatticesTheory.gmap g (pick I) ↔ y ∈ U`. Unfold `Formalism.HermitianLatticesTheory.gmap`. Rewrite using `[Submodule.mem_map]`.
+
+Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨x, hx, rfl⟩`. Use `hgx ⟨x, hx⟩` as an intermediate fact. Express the relevant statement in the definitionally equal form `g x ∈ U`. Rewrite using `[this]`.
+
+Conclude with `(e ⟨x, hx⟩).2`. Introduce `hy`. Use `⟨(e.symm ⟨y, hy⟩ : V), (e.symm ⟨y, hy⟩).2, ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `g _ = y`. Rewrite using `[hgx (e.symm ⟨y, hy⟩)]`.
+
+Simplify using the standard rewrite rules.
+-/
 theorem main : ∀ (K V : Type) [Field K] [NumberField K] [StarRing K] [AddCommGroup V] [Module K V] [FiniteDimensional K V] [Module (𝓞 K) V] [IsScalarTower (𝓞 K) K V] (h : V →ₗ⋆[K] V →ₗ[K] K), IsCMUnram K → h.IsSymm → PD h → (∀ (W : Type) [AddCommGroup W] [Module K W] [FiniteDimensional K W] [Module (𝓞 K) W] [IsScalarTower (𝓞 K) K W] (k : W →ₗ⋆[K] W →ₗ[K] K), k.IsSymm → PD k → (∃ L : Submodule (𝓞 K) W, Submodule.IsLattice K L ∧ IsUnimodular k L) → ∃ I : Submodule (𝓞 K) W, IsOrthoLattice k I (Module.finrank K W)) → ∀ (j n : ℕ), 1 ≤ n → ∃ s : Finset (Submodule K V), (s.card : ℝ) ≤ (n : ℝ) ^ (1 + Real.logb 2 (Module.finrank ℚ K)) ∧ (∀ U ∈ s, Module.finrank K U = j) ∧ ∀ U : Submodule K V, Module.finrank K U = j → (latsDisc (R := 𝓞 K) (hRes h U) n).Nonempty → ∃ U₀ ∈ s, ∃ g : isom h, g • U₀ = U := by
   intro K V _ _ _ _ _ _ _ _ h hK hs hp hO j n hn
   have hW := GlobalTheory.T.witt_extension_totally_definite_hermitian K V h hK hs hp

@@ -14,6 +14,31 @@ open scoped TensorProduct Matrix
 noncomputable section
 namespace GlobalTheory.InertVacLag
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ B a a' G X om om' hT v w hin hv m C hC l hl g hg φ hφ φ₁ hφ₁ hA`. Take `⟨R, hR0, hR⟩` from `GlobalTheory.T.exists_complementary_adelicSchwartz_restFunction (F := F) (Fin a' × Fin (a + a')) v`. Establish `htadd : ∀ f f' : (Fin a' × Fin (a + a') → Fv F v) → ℂ, tens (evFin F v) (f + f') R = tens (evFin F v) f R + tens (evFin F v) f' R` using `fun f f' => by`. Use function extensionality and compare the values at `x`. Simplify using `[tens, add_mul]`.
+
+Establish `htsmul : ∀ (c : ℂ) (f : (Fin a' × Fin (a + a') → Fv F v) → ℂ), tens (evFin F v) (c • f) R = c • tens (evFin F v) f R` using `fun c f => by`. Use function extensionality and compare the values at `x`. Simplify using `[tens, mul_assoc]`. Set `Sop : UA σ G.V'.J → (((Fin a' × Fin (a + a') → Fv F v) → ℂ) →ₗ[ℂ] ((Fin a' × Fin (a + a') → Fv F v) → ℂ))` to `fun g => { toFun := fun f t => (R 0)⁻¹ * om' (g, 1) (tens (evFin F v) f R) (fun i => GlobalTheory.LatVac.liftV v (t i)) map_add' := fun f f' => by`. Use function extensionality and compare the values at `t`.
+
+Simplify using `only [htadd, map_add, Pi.add_apply]`. Expand and normalize the polynomial expressions, which then agree. Use the proof step `map_smul' := fun c f => by`. Use function extensionality and compare the values at `t`. Simplify using `only [htsmul, map_smul, Pi.smul_apply, smul_eq_mul, RingHom.id_apply]`.
+
+Use `ring }`. Establish `hSop : ∀ g f t, Sop g f t = (R 0)⁻¹ * om' (g, 1) (tens (evFin F v) f R) (fun i => GlobalTheory.LatVac.liftV v (t i))` using `fun _ _ _ => rfl`. Establish `huniq : ∀ (T : ((Fin a' × Fin (a + a') → AF F) → ℂ) → (Fin a' × Fin (a + a') → AF F) → ℂ) (f f₁ : (Fin a' × Fin (a + a') → Fv F v) → ℂ), f ∈ SB _ → Acts (evFin F v) T f f₁ → ∀ t, f₁ t = (R 0)⁻¹ * T (tens (evFin F v) f R) (fun i => GlobalTheory.LatVac.liftV v (t i))`. Introduce `T f f₁ hf hA t`. Rewrite using `[hA R (hR f hf)]`.
+
+Establish `hat : At (evFin F v) (fun i => GlobalTheory.LatVac.liftV v (t i))`. Introduce `u hu`. Use function extensionality and compare the values at `i`. Conclude with `GlobalTheory.LatVac.at_liftV v _ u hu`. Establish `h1 : R (fun i => GlobalTheory.LatVac.liftV v (t i)) = R 0`.
+
+Simplify using `using (hR f hf).1 0 _ hat`. Simplify using `only [tens, h1, GlobalTheory.LatVac.evFin_liftV]`. Clear the denominators using the available nonvanishing facts. Establish `hS : ∀ g ∈ UAt σ G.V' (evFin F v), ∀ f ∈ SB (Fin a' × Fin (a + a') → Fv F v), Sop g f ∈ SB (Fin a' × Fin (a + a') → Fv F v) ∧ Acts (evFin F v) (om' (g, 1)) f (Sop g f)`. Introduce `g hg f hf`.
+
+Take `⟨S₀, hS₀⟩` from `GlobalTheory.T.weilRepresentationLocality_unitaryGroupV' B G X om om' hT v g hg`. Establish `e : S₀ f = Sop g f` using `funext fun t => (huniq _ f _ hf (hS₀ f hf).2 t).trans (hSop g f t).symm`. Rewrite using `[← e]`. Conclude with `hS₀ f hf`. Take `⟨φ₀, hφ₀, hline⟩` from `GlobalTheory.T.heisenberg_invariant_form_vanishes_lagrangian_test F E σ a' (a + a') G.V' G.W G.M' B.ψ v (hT.base.inert v w hin).2.2 m C hC`.
+
+Distinguish the cases in `hz : ∀ f ∈ SB (Fin a' × Fin (a + a') → Fv F v), l f = 0`. Rewrite using `[hz φ₁ hφ₁, hz φ hφ]`. Use `push_neg at hz`. Establish `hl0 : l φ₀ ≠ 0` using `fun h => by`. Take `⟨f, hf, hne⟩` from `hz`.
+
+Conclude with `hne (hline l hl h f hf)`. Set `c : UA σ G.V'.J → ℂ` to `fun g => l (Sop g φ₀) / l φ₀`. Establish `hlaw : ∀ g ∈ UAt σ G.V' (evFin F v), ∀ f ∈ SB (Fin a' × Fin (a + a') → Fv F v), ∀ f₁ ∈ SB (Fin a' × Fin (a + a') → Fv F v), Acts (evFin F v) (om' (g, 1)) f f₁ → l f₁ = c g * l f`. Introduce `g hg f hf f₁ hf₁ hA`. Establish `hf₁eq : f₁ = Sop g f` using `funext fun t => (huniq _ f f₁ hf hA t).trans (hSop g f t).symm`.
+
+Establish `hE` using `GlobalTheory.T.heisenbergInvariantForm_comp_localWeilOperator F E σ B a a' G X om om' hT v m C l hl g hg (Sop g) (hS g hg)`. Establish `hl' : GlobalTheory.InertVacLag.HeisInv G.M' B.ψ v C (l ∘ₗ Sop g - c g • l)`. Introduce `u hu f hf f₁ hf₁ hA'`. Simplify using `only [LinearMap.sub_apply, LinearMap.smul_apply, smul_eq_mul]`. Rewrite using `[hE u hu f hf f₁ hf₁ hA', hl u hu f hf f₁ hf₁ hA']`.
+
+Establish `h0 : (l ∘ₗ Sop g - c g • l) φ₀ = 0`. Simplify using `only [LinearMap.sub_apply, LinearMap.smul_apply, smul_eq_mul, LinearMap.comp_apply, c]`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Establish `h1` using `hline _ hl' h0 f hf`.
+
+Simplify using `only [LinearMap.sub_apply, LinearMap.smul_apply, smul_eq_mul, LinearMap.comp_apply] at h1`. Rewrite using `[hf₁eq]`. Take the linear combination `h1`. Establish `hc` using `GlobalTheory.T.inert_place_transforming_character_eq_one F E σ B a a' G X om om' hT v w hin hv m C hC l hl hz c hlaw g hg`. Rewrite using `[hlaw g hg φ hφ φ₁ hφ₁ hA, hc, one_mul]`.
+-/
 theorem inv_of_heisInv : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E)
     (a a' : ℕ) (G : Geo σ a a') (X : Chars F E) (om : Rep σ G.V G.W) (om' : Rep σ G.V' G.W), IsTriple B G X om om' →
     ∀ (v : Pl F) (w : HeightOneSpectrum (𝓞 E)), Formalism.UG.IsInertAt F E v w → v ∉ X.T →

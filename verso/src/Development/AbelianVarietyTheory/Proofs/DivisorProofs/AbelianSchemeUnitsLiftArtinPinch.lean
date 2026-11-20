@@ -10,6 +10,13 @@ open scoped CategoryTheory.Obj
 
 namespace GlobalTheory.PinchUnitLift
 
+/- English proof (translation)
+Break down `subsingleton_or_nontrivial R₀ with h0 | h0` into its components or cases. Conclude with `⟨1, isUnit_one, Subsingleton.elim _ _⟩`. Establish `hf : Function.Surjective f₁`. Introduce `a`. Take `⟨b, hb⟩` from `h₂ (g₁ a)`.
+
+Take `⟨p, hp, -⟩` from `Types.exists_of_isPullback (h.map (forget CommRingCat)) a b hb.symm`. Conclude with `⟨p, hp⟩`. Use `haveI : Nontrivial R₁ := g₁.hom.domain_nontrivial`. Use `haveI : IsLocalRing R₁ := IsLocalRing.of_surjective' f₁.hom hf`. Use `haveI : IsLocalHom g₁.hom := IsLocalHom.of_surjective g₁.hom h₁`.
+
+Take `⟨s, rfl⟩` from `h₁ r`. Conclude with `⟨s, IsUnit.of_map g₁.hom s hr, rfl⟩`.
+-/
 theorem unit_lift (P R₁ R₂ R₀ : CommRingCat.{0}) (f₁ : P ⟶ R₁) (f₂ : P ⟶ R₂) (g₁ : R₁ ⟶ R₀) (g₂ : R₂ ⟶ R₀)
     (h : IsPullback f₁ f₂ g₁ g₂) [IsLocalRing P] (h₁ : Function.Surjective g₁) (h₂ : Function.Surjective g₂)
     (r : R₀) (hr : IsUnit r) : ∃ s : R₁, IsUnit s ∧ g₁ s = r := by
@@ -26,6 +33,19 @@ theorem unit_lift (P R₁ R₂ R₀ : CommRingCat.{0}) (f₁ : P ⟶ R₁) (f₂
   obtain ⟨s, rfl⟩ := h₁ r
   exact ⟨s, IsUnit.of_map g₁.hom s hr, rfl⟩
 
+/- English proof (translation)
+Introduce `P R₁ R₂ R₀ f₁ f₂ g₁ g₂ h hP _ h₁ h₂ B _ hB X₁ q ρ hρ u`. Establish `hb` using `GlobalTheory.globalFns_holds _ B hB`. Take `⟨t, ht⟩` from `hb.2 u.val`. Take `⟨t', ht'⟩` from `hb.2 (u⁻¹).val`. Establish `htu : IsUnit t`.
+
+Use `IsUnit.of_mul_eq_one t' (hb.1 ?_)` and prove the remaining obligations. Rewrite using `[map_mul, map_one, ht, ht']`. Conclude with `u.mul_inv`. Take `⟨s, hs, hst⟩` from `unit_lift P R₁ R₂ R₀ f₁ f₂ g₁ g₂ h h₁ h₂ ((Scheme.ΓSpecIso R₀).hom t) (htu.map (Scheme.ΓSpecIso R₀).hom.hom)`. Establish `hv : IsUnit (q.appTop.hom ((Scheme.ΓSpecIso R₁).inv.hom s))` using `(hs.map _).map _`.
+
+Use `⟨hv.unit, fun x => Units.ext ?_⟩` and prove the remaining obligations. Rewrite using `[gm_val ρ x ⊤ trivial, gm_val (𝟙 B.left) x ⊤ trivial]`. Establish `e : ρ.appTop.hom (q.appTop.hom ((Scheme.ΓSpecIso R₁).inv.hom s)) = u.val`. Establish `e1 : ρ.appTop.hom (q.appTop.hom ((Scheme.ΓSpecIso R₁).inv.hom s)) = (ρ ≫ q).appTop.hom ((Scheme.ΓSpecIso R₁).inv.hom s)`. Rewrite using `[Scheme.Hom.comp_appTop]`.
+
+Both sides reduce to the same expression. Establish `e2 : (Spec.map g₁).appTop.hom ((Scheme.ΓSpecIso R₁).inv.hom s) = t`. Use `congrArg (fun φ => φ.hom s) (Scheme.ΓSpecIso_inv_naturality g₁)` as an intermediate fact. Simplify using `only [CommRingCat.hom_comp, RingHom.comp_apply] at this`. Rewrite using `[← this]`.
+
+Establish `hst' : g₁.hom s = (Scheme.ΓSpecIso R₀).hom.hom t` using `hst`. Rewrite using `[hst']`. Conclude with `(Scheme.ΓSpecIso R₀).hom_inv_id_apply t`. Rewrite using `[e1, hρ, Scheme.Hom.comp_appTop, ← ht, ← e2]`. Both sides reduce to the same expression.
+
+Conclude with `congrArg (B.left.presheaf.germ ⊤ x trivial).hom e`.
+-/
 theorem main : ∀ (P R₁ R₂ R₀ : CommRingCat.{0}) (f₁ : P ⟶ R₁) (f₂ : P ⟶ R₂) (g₁ : R₁ ⟶ R₀) (g₂ : R₂ ⟶ R₀), IsPullback f₁ f₂ g₁ g₂ → IsLocalRing P → IsArtinianRing P → Function.Surjective g₁ → Function.Surjective g₂ → ∀ (B : Over (Spec R₀)) [GrpObj B], IsAbelianScheme B → ∀ (X₁ : Scheme.{0}) (q : X₁ ⟶ Spec R₁) (ρ : B.left ⟶ X₁), ρ ≫ q = B.hom ≫ Spec.map g₁ → ∀ u : Γ(B.left, ⊤)ˣ, ∃ v : Γ(X₁, ⊤)ˣ, ∀ x : B.left, gm ρ x ⊤ v = gm (𝟙 B.left) x ⊤ u := by
   intro P R₁ R₂ R₀ f₁ f₂ g₁ g₂ h hP _ h₁ h₂ B _ hB X₁ q ρ hρ u
   have hb := GlobalTheory.globalFns_holds _ B hB

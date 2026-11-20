@@ -8,6 +8,13 @@ open NumberField IsDedekindDomain Matrix Polynomial Filter GlobalTheory.CuspRep 
 open scoped Classical TensorProduct
 attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField
 
+/- English proof (translation)
+Introduce `E _ _ _ hE μ e hμ S hS a b P₁ P₂ h₁ h₂ hc`. Establish `hR : resultant P₁ P₂ ≠ 0` using `Polynomial.resultant_ne_zero P₁ P₂ hc`. Take `⟨fm, hm⟩` from `UpperTheory.ConvolutionTheory.G2.muProd E μ e hμ _ hR`. Take `⟨fa, ha⟩` from `UpperTheory.ConvolutionTheory.G2.absProd E _ hR`. Establish `fg` using `(fm.union fa).subset (Function.mulSupport_mul (fun u : Pl E => UpperTheory.ConvolutionTheory.G2.muAt μ u (resultant P₁ P₂)) (fun u : Pl E => absHalf u (algebraMap E (u.adicCompletion E) (resultant P₁ P₂))))`.
+
+Take `⟨fG, hG⟩` from `UpperTheory.ConvolutionTheory.G2.regroup E S hS _ fg`. Establish `hd` using `UpperTheory.ConvolutionTheory.G2.deltaLoc E hE μ e hμ a b P₁ P₂ h₁ h₂ hc`. Simplify using `only [hd]`. Use `⟨fG, ?_⟩` and prove the remaining obligations. Rewrite using `[hG, finprod_mul_distrib fm fa]`.
+
+Simplify using `only [UpperTheory.ConvolutionTheory.G2.phase]`. Rewrite using `[Finset.prod_mul_distrib, mul_mul_mul_comm, hm, ha, one_mul]`.
+-/
 theorem UpperTheory.ConvolutionTheory.G2.deltaProd :
     UpperTheory.ConvolutionTheory.G2.DeltaProd := by
   intro E _ _ _ hE μ e hμ S hS a b P₁ P₂ h₁ h₂ hc

@@ -21,12 +21,27 @@ variable {D : D7}
 abbrev dI (D : D7) : Ideal (𝓞 D.host.E) :=
   Ideal.map (algebraMap (𝓞 D.host.F) (𝓞 D.host.E)) (differentIdeal ℤ (𝓞 D.host.F))
 
+/- English proof (translation)
+The claim follows from `(NumberField.IsCMField.complexConj D.host.E).commutes c`.
+-/
 theorem star_F (c : D.host.F) : star (algebraMap D.host.F D.host.E c) = algebraMap D.host.F D.host.E c :=
   (NumberField.IsCMField.complexConj D.host.E).commutes c
 
+/- English proof (translation)
+Conclude with `⟨⟨star (o : D.host.E), o.isIntegral_coe.map (starRingEnd D.host.E).toIntAlgHom⟩, rfl⟩`.
+-/
 theorem star_int (o : 𝓞 D.host.E) : ∃ o' : 𝓞 D.host.E, (o' : D.host.E) = star (o : D.host.E) := by
   exact ⟨⟨star (o : D.host.E), o.isIntegral_coe.map (starRingEnd D.host.E).toIntAlgHom⟩, rfl⟩
 
+/- English proof (translation)
+Rewrite `hy`, the goal using `[← Ideal.map_pow]`. Establish `hy' : y ∈ Submodule.span (𝓞 D.host.E) (algebraMap (𝓞 D.host.F) (𝓞 D.host.E) '' ((differentIdeal ℤ (𝓞 D.host.F) ^ n : Ideal (𝓞 D.host.F)) : Set (𝓞 D.host.F)))` using `hy`. Use `clear hy`. Proceed by induction on `hy' using Submodule.span_induction with`. Consider the case `mem x hx`.
+
+Take `⟨c, hc, rfl⟩` from `hx`. Use `⟨algebraMap (𝓞 D.host.F) (𝓞 D.host.E) c, Ideal.mem_map_of_mem _ hc, ?_⟩` and prove the remaining obligations. Establish `e : ((algebraMap (𝓞 D.host.F) (𝓞 D.host.E) c : 𝓞 D.host.E) : D.host.E) = algebraMap D.host.F D.host.E (c : D.host.F)` using `rfl`. Rewrite using `[e, star_F]`. Consider the case `zero => exact ⟨0, Ideal.zero_mem _, by simp⟩`.
+
+Consider the case `add x y _ _ hx hy`. Take `⟨x', hx', ex⟩` from `hx`. Take `⟨y', hy', ey⟩` from `hy`. Use `⟨x' + y', Ideal.add_mem _ hx' hy', ?_⟩` and prove the remaining obligations. Rewrite using `[show ((x' + y' : 𝓞 D.host.E) : D.host.E) = (x' : D.host.E) + (y' : D.host.E) from rfl, show ((x + y : 𝓞 D.host.E) : D.host.E) = (x : D.host.E) + (y : D.host.E) from rfl, ex, ey, star_add]`.
+
+Consider the case `smul a x _ hx`. Take `⟨x', hx', ex⟩` from `hx`. Take `⟨a', ea⟩` from `star_int a`. Use `⟨a' * x', Ideal.mul_mem_left _ _ hx', ?_⟩` and prove the remaining obligations. Rewrite using `[smul_eq_mul, show ((a' * x' : 𝓞 D.host.E) : D.host.E) = (a' : D.host.E) * (x' : D.host.E) from rfl, show ((a * x : 𝓞 D.host.E) : D.host.E) = (a : D.host.E) * (x : D.host.E) from rfl, ea, ex, star_mul, mul_comm]`.
+-/
 theorem star_mem_pow (n : ℕ) (y : 𝓞 D.host.E) (hy : y ∈ dI D ^ n) :
     ∃ y' ∈ dI D ^ n, (y' : D.host.E) = star (y : D.host.E) := by
   rw [← Ideal.map_pow] at hy ⊢
@@ -54,11 +69,19 @@ theorem star_mem_pow (n : ℕ) (y : 𝓞 D.host.E) (hy : y ∈ dI D ^ n) :
     rw [smul_eq_mul, show ((a' * x' : 𝓞 D.host.E) : D.host.E) = (a' : D.host.E) * (x' : D.host.E) from rfl,
       show ((a * x : 𝓞 D.host.E) : D.host.E) = (a : D.host.E) * (x : D.host.E) from rfl, ea, ex, star_mul, mul_comm]
 
+/- English proof (translation)
+Establish `h : dI D ≠ ⊥` using `Ideal.map_ne_bot_of_ne_bot differentIdeal_ne_bot`. Rewrite `h`, the goal using `[← Ideal.zero_eq_bot]`. Conclude with `pow_ne_zero n h`.
+-/
 theorem dI_ne_bot (n : ℕ) : dI D ^ n ≠ ⊥ := by
   have h : dI D ≠ ⊥ := Ideal.map_ne_bot_of_ne_bot differentIdeal_ne_bot
   rw [← Ideal.zero_eq_bot] at h ⊢
   exact pow_ne_zero n h
 
+/- English proof (translation)
+Establish `hJ' : (J : FractionalIdeal (nonZeroDivisors (𝓞 D.host.E)) D.host.E) ≠ 0` using `FractionalIdeal.coeIdeal_ne_zero.mpr hJ`. Rewrite using `[FractionalIdeal.mem_inv_iff hJ']`. Prove the components needed by the constructor for the conclusion. Introduce `h y hy`. Take `⟨o, ho⟩` from `(FractionalIdeal.mem_one_iff _).mp (h _ (FractionalIdeal.mem_coeIdeal_of_mem _ hy))`.
+
+Conclude with `⟨o, ho⟩`. Introduce `h z hz`. Take `⟨y, hy, rfl⟩` from `(FractionalIdeal.mem_coeIdeal _).mp hz`. Take `⟨o, ho⟩` from `h y hy`. Conclude with `(FractionalIdeal.mem_one_iff _).mpr ⟨o, ho⟩`.
+-/
 theorem mem_inv_coe {J : Ideal (𝓞 D.host.E)} (hJ : J ≠ ⊥) (x : D.host.E) :
     x ∈ ((J : FractionalIdeal (nonZeroDivisors (𝓞 D.host.E)) D.host.E))⁻¹ ↔
       ∀ y ∈ J, ∃ o : 𝓞 D.host.E, (o : D.host.E) = x * (y : D.host.E) := by
@@ -74,6 +97,11 @@ theorem mem_inv_coe {J : Ideal (𝓞 D.host.E)} (hJ : J ≠ ⊥) (x : D.host.E) 
     obtain ⟨o, ho⟩ := h y hy
     exact (FractionalIdeal.mem_one_iff _).mpr ⟨o, ho⟩
 
+/- English proof (translation)
+Rewrite `hx`, the goal using `[mem_inv_coe (dI_ne_bot n)]`. Introduce `y hy`. Take `⟨y', hy', ey⟩` from `star_mem_pow n y hy`. Take `⟨o, ho⟩` from `hx y' hy'`. Take `⟨o', eo⟩` from `star_int o`.
+
+Use `⟨o', ?_⟩` and prove the remaining obligations. Rewrite using `[eo, ho, ey, star_mul, star_star, mul_comm]`.
+-/
 theorem star_mem_inv (n : ℕ) {x : D.host.E}
     (hx : x ∈ (((dI D ^ n : Ideal (𝓞 D.host.E)) : FractionalIdeal (nonZeroDivisors (𝓞 D.host.E)) D.host.E))⁻¹) :
     star x ∈ (((dI D ^ n : Ideal (𝓞 D.host.E)) : FractionalIdeal (nonZeroDivisors (𝓞 D.host.E)) D.host.E))⁻¹ := by
@@ -93,6 +121,17 @@ variable {D : D7}
 
 local notation "FI" => FractionalIdeal (nonZeroDivisors (𝓞 D.host.E)) D.host.E
 
+/- English proof (translation)
+Use `set Z := (VS D).hT v v' with hZ`. Use `set A : FI := (((dI D ^ m : Ideal (𝓞 D.host.E)) : FI))⁻¹`. Use `set B : FI := (((dI D ^ n : Ideal (𝓞 D.host.E)) : FI))⁻¹`. Establish `hJ : (((dI D ^ (m + n) : Ideal (𝓞 D.host.E)) : FI)) = (A * B)⁻¹`. Rewrite using `[mul_inv, inv_inv, inv_inv, ← FractionalIdeal.coeIdeal_mul, ← pow_add]`.
+
+Establish `hAB0 : A * B ≠ 0`. Apply the tactic sequence `refine mul_ne_zero (inv_ne_zero ?_) (inv_ne_zero ?_) <;>`. Apply the tactic sequence `rw [Ne, FractionalIdeal.coeIdeal_eq_zero] <;> exact dI_ne_bot _`. Establish `hmem : Z ∈ (A * B)⁻¹`. Rewrite using `[FractionalIdeal.mem_inv_iff hAB0]`.
+
+Introduce `w hw`. Use `FractionalIdeal.mul_induction_on hw ?_ ?_` and prove the remaining obligations. Introduce `a ha b hb`. Establish `ha' : star a ∈ A` using `star_mem_inv m ha`. Take `⟨c, hc⟩` from `Formalism.MainNotions.LatticeGluingRadicals.d_Lam_int hun (hv _ ha') (hv' _ hb)`.
+
+Use `(FractionalIdeal.mem_one_iff _).2 ⟨c, ?_⟩` and prove the remaining obligations. Use `show (c : D.host.E) = _`. Rewrite using `[hc, LinearMap.map_smulₛₗ₂, LinearMap.map_smulₛₗ, RingHom.id_apply, starRingEnd_apply, star_star, smul_eq_mul, smul_eq_mul, hZ]`. Expand and normalize the polynomial expressions, which then agree. Introduce `x y hx hy`.
+
+Rewrite using `[mul_add]`. Conclude with `Submodule.add_mem _ hx hy`. Rewrite `hmem` using `[← hJ]`. Take `⟨o, ho, e⟩` from `(FractionalIdeal.mem_coeIdeal _).1 hmem`. Conclude with `⟨o, ho, e⟩`.
+-/
 theorem hT_mem {Λ : Submodule (𝓞 D.host.E) (VS D).V} (hun : Formalism.HermitianLatticesTheory.IsUnimodular (VS D).hT Λ) (m n : ℕ)
     (v v' : (VS D).V) (hv : ∀ x ∈ (((dI D ^ m : Ideal (𝓞 D.host.E)) : FI))⁻¹, x • v ∈ Λ)
     (hv' : ∀ y ∈ (((dI D ^ n : Ideal (𝓞 D.host.E)) : FI))⁻¹, y • v' ∈ Λ) :
@@ -124,6 +163,11 @@ theorem hT_mem {Λ : Submodule (𝓞 D.host.E) (VS D).V} (hun : Formalism.Hermit
   obtain ⟨o, ho, e⟩ := (FractionalIdeal.mem_coeIdeal _).1 hmem
   exact ⟨o, ho, e⟩
 
+/- English proof (translation)
+Rewrite using `[Matrix.det_apply]`. Use `Ideal.sum_mem _ fun σ _ => ?_` and prove the remaining obligations. Establish `h` using `Ideal.prod_mem_prod (s := Finset.univ) (I := fun i => dI D ^ (m (σ i) + m i)) (x := fun i => M (σ i) i) (fun i _ => hM (σ i) i)`. Rewrite `h` using `[Finset.prod_pow_eq_pow_sum, Finset.sum_add_distrib, Equiv.sum_comp σ m, ← two_mul]`. Rewrite using `[Units.smul_def]`.
+
+Conclude with `zsmul_mem h _`.
+-/
 theorem det_mem {q : ℕ} (M : Matrix (Fin q) (Fin q) (𝓞 D.host.E)) (m : Fin q → ℕ)
     (hM : ∀ i j, M i j ∈ dI D ^ (m i + m j)) : M.det ∈ dI D ^ (2 * ∑ i, m i) := by
   rw [Matrix.det_apply]
@@ -134,6 +178,9 @@ theorem det_mem {q : ℕ} (M : Matrix (Fin q) (Fin q) (𝓞 D.host.E)) (m : Fin 
   rw [Units.smul_def]
   exact zsmul_mem h _
 
+/- English proof (translation)
+The claim follows from `| 0, _ => by simp | q + 1, hq => by rw [Fin.sum_univ_castSucc] simp only [Fin.val_castSucc, Fin.val_last] rw [mul_add, two_sum_sub r q (by omega)] have h1 : q ≤ r := by omega obtain ⟨d, rfl⟩ := Nat.exists_eq_add_of_le h1 have e1 : 2 * (q + d) + 1 - q = q + 2 * d + 1 := by omega h …`.
+-/
 theorem two_sum_sub (r : ℕ) : ∀ q : ℕ, q ≤ r + 1 → 2 * ∑ i : Fin q, (r - (i : ℕ)) = q * (2 * r + 1 - q)
   | 0, _ => by simp
   | q + 1, hq => by
@@ -154,19 +201,37 @@ section Norm
 
 variable {D : D7}
 
+/- English proof (translation)
+The claim follows from `D.host.der.discr_sq`.
+-/
 theorem discr_sq : NumberField.discr D.host.E = NumberField.discr D.host.F ^ 2 :=
   D.host.der.discr_sq
 
+/- English proof (translation)
+Establish `h` using `Formalism.MainNotions.BridgeLemma.szf_normDD D discr_sq`. Unfold `Formalism.MainNotions.BridgeLemma.SzfNormDD Formalism.MainNotions.S.ddE at h`. Rewrite `h` using `[FractionalIdeal.coeIdeal_absNorm]`. Conclude with `h` after adjusting the coercions.
+-/
 theorem absNorm_dI : ((Ideal.absNorm (dI D) : ℕ) : ℝ) = (D.host.rdE ^ D.R.f) ^ 2 := by
   have h := Formalism.MainNotions.BridgeLemma.szf_normDD D discr_sq
   unfold Formalism.MainNotions.BridgeLemma.SzfNormDD Formalism.MainNotions.S.ddE at h
   rw [FractionalIdeal.coeIdeal_absNorm] at h
   exact_mod_cast h
 
+/- English proof (translation)
+Unfold `Formalism.BasicNotions.Host.rdE`. Conclude with `Real.rpow_pos_of_pos (abs_pos.mpr (Int.cast_ne_zero.mpr (NumberField.discr_ne_zero _))) _`.
+-/
 theorem rd_pos : 0 < D.host.rdE := by
   unfold Formalism.BasicNotions.Host.rdE
   exact Real.rpow_pos_of_pos (abs_pos.mpr (Int.cast_ne_zero.mpr (NumberField.discr_ne_zero _))) _
 
+/- English proof (translation)
+Use `Formalism.MainNotions.InterlacingSignCuts.host_totallyComplex D` as an intermediate fact. Establish `h1` using `InfinitePlace.prod_eq_abs_norm (o : D.host.E)`. Establish `h2 : ∏ w : InfinitePlace D.host.E, w (o : D.host.E) ^ w.mult = ∏ w : InfinitePlace D.host.E, w (o : D.host.E) ^ 2` using `Finset.prod_congr rfl fun w _ => by rw [(IsTotallyComplex.isComplex w).mult_eq_two]`. Rewrite using `[← h2, h1, ← Algebra.coe_norm_int]`. Establish `ho0 : o ≠ 0` using `fun h => h0 (by rw [h]; simp)`.
+
+Establish `hspan : Ideal.span {o} ≤ dI D ^ n` using `(Ideal.span_singleton_le_iff_mem _).2 ho`. Establish `hdvd` using `Ideal.absNorm_dvd_absNorm_of_le hspan`. Rewrite `hdvd` using `[Ideal.absNorm_span_singleton, map_pow]`. Establish `hne : (Algebra.norm ℤ o).natAbs ≠ 0`. Rewrite using `[Int.natAbs_ne_zero]`.
+
+Conclude with `Algebra.norm_ne_zero_iff.2 ho0`. Establish `hle` using `Nat.le_of_dvd (Nat.pos_of_ne_zero hne) hdvd`. Establish `hle' : ((Ideal.absNorm (dI D) ^ n : ℕ) : ℝ) ≤ ((Algebra.norm ℤ o).natAbs : ℝ)` using `by exact_mod_cast hle`. Rewrite `hle'` using `[Nat.cast_pow, absNorm_dI, ← pow_mul]`. Establish `e : (((Algebra.norm ℤ o).natAbs : ℕ) : ℝ) = ((|((Algebra.norm ℤ o : ℤ) : ℚ)| : ℚ) : ℝ)`.
+
+Simplify using `[Nat.cast_natAbs, Rat.cast_abs]`. Rewrite using `[← e]`. Conclude with `hle'`.
+-/
 theorem prod_sq_ge (n : ℕ) (o : 𝓞 D.host.E) (ho : o ∈ dI D ^ n) (h0 : (o : D.host.E) ≠ 0) :
     (D.host.rdE ^ D.R.f) ^ (2 * n) ≤ ∏ w : InfinitePlace D.host.E, w (o : D.host.E) ^ 2 := by
   have := Formalism.MainNotions.InterlacingSignCuts.host_totallyComplex D

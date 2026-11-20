@@ -15,6 +15,11 @@ noncomputable section
 
 namespace GlobalTheory.Obs
 
+/- English proof (translation)
+Introduce `R R₀ _ _ I hI π _ _ B B₀ _ _ _ _ p hs _ _ B' B₀' _ _ _ _ p' hs' hp' hker' _ φ`. Use `letI : Algebra R B₀ := ((algebraMap R₀ B₀).comp π).toAlgebra`. Use `letI : Algebra R B₀' := ((algebraMap R₀ B₀').comp π).toAlgebra`. Set `P : B →ₐ[R] B₀'` to `{ (φ : B₀ →+* B₀').comp p with commutes' := fun r ↦ by show φ (p (algebraMap R B r)) = algebraMap R₀ B₀' (π r)`. Rewrite using `[hs.map_algebraMap r]`.
+
+Conclude with `φ.commutes (π r) }`. Set `P' : B' →ₐ[R] B₀'` to `{ p' with commutes' := fun r ↦ hs'.map_algebraMap r }`. Establish `hn` using `LocalIsomorphism.nil I P' hker' (map_sq hI B')`. Conclude with `⟨Algebra.FormallySmooth.liftOfSurjective P P' hp' hn, fun b ↦ Algebra.FormallySmooth.liftOfSurjective_apply P P' hp' hn b⟩`.
+-/
 theorem homLift : ∀ (R R₀ : Type) [CommRing R] [CommRing R₀] (I : Ideal R) (hI : I ^ 2 = 0) (π : R →+* R₀) (hπ : Function.Surjective π) (hk : RingHom.ker π = I) (B B₀ : Type) [CommRing B] [Algebra R B] [CommRing B₀] [Algebra R₀ B₀] (p : B →+* B₀) (hs : SemiHom π p) (hp : Function.Surjective p) (hker : ∀ b, p b = 0 ↔ b ∈ I.map (algebraMap R B)) (B' B₀' : Type) [CommRing B'] [Algebra R B'] [CommRing B₀'] [Algebra R₀ B₀'] (p' : B' →+* B₀') (hs' : SemiHom π p') (hp' : Function.Surjective p') (hker' : ∀ b, p' b = 0 ↔ b ∈ I.map (algebraMap R B')) [Algebra.FormallySmooth R B] (φ : B₀ →ₐ[R₀] B₀'), ∃ ρ : B →ₐ[R] B', ∀ b, p' (ρ b) = φ (p b) := by
   intro R R₀ _ _ I hI π _ _ B B₀ _ _ _ _ p hs _ _ B' B₀' _ _ _ _ p' hs' hp' hker' _ φ
   letI : Algebra R B₀ := ((algebraMap R₀ B₀).comp π).toAlgebra

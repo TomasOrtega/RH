@@ -28,11 +28,20 @@ def transRep (Ξ : AlgRep E a) (q : ℕ) : Representation ℂ (GL (Fin a) (Af E)
       (finRep E a x).rTensor (Fin Ξ.d → ℂ) ((finRep E a y).rTensor (Fin Ξ.d → ℂ) (α X))
     rw [map_mul, LinearMap.rTensor_mul]; rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem transRep_apply {Ξ : AlgRep E a} {q : ℕ} (x : GL (Fin a) (Af E)) (α : Co Ξ q) : transRep Ξ q x α = trans x α := rfl
 
+/- English proof (translation)
+Rewrite using `[← transRep_apply, map_one]`. Both sides reduce to the same expression.
+-/
 theorem trans_one {Ξ : AlgRep E a} {q : ℕ} (α : Co Ξ q) : trans 1 α = α := by
   rw [← transRep_apply, map_one]; rfl
 
+/- English proof (translation)
+Express the relevant statement in the definitionally equal form `cmp i ((finRep E a x).rTensor (Fin Ξ.d → ℂ) (α X)) = _`. Proceed by induction on `α X using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `add y z hy hz => simp only [map_add, hy, hz]`. Consider the case `tmul φ v => simp`.
+-/
 theorem cmp_trans {Ξ : AlgRep E a} {q : ℕ} (x : GL (Fin a) (Af E)) (α : Co Ξ q) (X : Fin q → Herm E a) (i : Fin Ξ.d) :
     cmp i (trans x α X) = finRep E a x (cmp i (α X)) := by
   change cmp i ((finRep E a x).rTensor (Fin Ξ.d → ℂ) (α X)) = _
@@ -41,6 +50,9 @@ theorem cmp_trans {Ξ : AlgRep E a} {q : ℕ} (x : GL (Fin a) (Af E)) (α : Co �
   | add y z hy hz => simp only [map_add, hy, hz]
   | tmul φ v => simp
 
+/- English proof (translation)
+Use `AlternatingMap.ext fun X => ?_` and prove the remaining obligations. Establish `ap : ∀ Y, (s • α + β) Y = s • α Y + β Y` using `fun _ => rfl`. Express the relevant statement in the definitionally equal form `_ = s • dCo (smLie Ξ) α X + dCo (smLie Ξ) β X`. Simplify using `only [dCo_apply, ap, map_add, map_smul, smul_add, Finset.sum_add_distrib, Finset.smul_sum]`. Conclude with `congrArg (· + _) (Finset.sum_congr rfl fun i _ => smul_comm _ _ _)`.
+-/
 theorem dCo_comb {Ξ : AlgRep E a} {q : ℕ} (s : ℂ) (α β : Co Ξ q) :
     dCo (smLie Ξ) (s • α + β) = s • dCo (smLie Ξ) α + dCo (smLie Ξ) β := by
   refine AlternatingMap.ext fun X => ?_
@@ -159,6 +171,19 @@ def Embed : Prop :=
       ∃ j : τ'.V →ₗ[ℂ] Sm E a, j ≠ 0 ∧ (∀ g v, j (τ'.ρ g v) = finRep E a g (j v)) ∧ (∀ v, IsAutForm (j v)) ∧
         ∀ v, S.HasCap (j v) m
 
+/- English proof (translation)
+Introduce `E _ _ _ a ha π σ Ξ Ξ' ⟨h, hσ⟩ hC m hm τ τ' hτ ⟨T, T1, T2⟩`. Take `⟨n, e, he⟩` from `h9 E a`. Take `⟨r, hr⟩` from `h10 E a Ξ`. Take `⟨q, ω, ω0, hω⟩` from `h5 E a ha π Ξ r n e he hr hC`. Take `⟨P, P1, P2⟩` from `h4 E a π Ξ r n e q`.
+
+Take `⟨Φ, F1, F2, F3⟩` from `h7 E a π τ hτ Ξ q P ((Submodule.ne_bot_iff _).2 ⟨ω, (P1 ω).2 hω, ω0⟩) P2 fun ω hω => ((P1 ω).1 hω).2.2.2`. Take `⟨M, M1, M2, M3, M4, M5⟩` from `hH E a ha Ξ' m hm q`. Take `⟨R1, R2, R3, R4⟩` from `h1 E a ha σ Ξ Ξ' h hσ q`. Establish `hF` using `fun v => (P1 _).1 (F2 v)`. Establish `hz : ∀ Θ : AlgRep E a, Exact Θ (0 : Co Θ q)` using `fun Θ => by`.
+
+Take `⟨U, u1, u2, -⟩` from `hω.1`. Use `⟨U, u1, u2, ?_⟩` and prove the remaining obligations. Consider the cases of `q with`. Consider the case `zero => rfl`. Consider the case `succ q`.
+
+Conclude with `⟨0, ⟨fun k X => by simp, fun X i _ => rfl, fun X => Submodule.zero_mem _⟩, AlternatingMap.ext fun X => by simp [dCo_apply]⟩`. Take `⟨J, J1, J2, J3⟩` from `h8 _ τ.V τ'.V (Co Ξ' q) τ.ρ τ'.ρ (transRep Ξ' q) σ T T1 T2 M M1 (fun v β => Rel σ h (Φ v) β) (fun s v v' w w' a b => by simpa only [map_add, map_smul] using R1 s _ _ _ _ a b) (fun g v w b => by rw [F3]; exact R2 g _ _ b) (fun v => h3 h2 E a ha σ Ξ Ξ' h hσ q M M2 M5 _ (hF v).1 (hF …`. Establish `: Nontrivial τ'.V` using `((isIrreducible_iff τ'.ρ).1 τ'.irred).1`. Take `⟨v, hv⟩` from `exists_ne (0 : τ'.V)`. Establish `hX : ∃ X i, cmp i (J v X) ≠ 0`.
+
+Assume the negation of the conclusion as `hn`. Use `push Not at hn`. Use `hv ((map_eq_zero_iff J J1).1 (AlternatingMap.ext fun X => ?_))` and prove the remaining obligations. Rewrite using `[← sum_cmp (J v X)]`. Simplify using `[hn X]`.
+
+Take `⟨X, i, hX⟩` from `hX`. Use `⟨{ toFun := fun v => cmp i (J v X) map_add' := fun x y => by rw [map_add, AlternatingMap.add_apply, map_add] map_smul' := fun c x => by rw [map_smul, AlternatingMap.smul_apply, map_smul]; rfl }, fun e0 => hX (LinearMap.congr_fun e0 v), fun g v => ?_, fun v => (M3 _ (J2 v) X i).1, …` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `cmp i (J _ X) = finRep E a g (cmp i (J v X))`. Rewrite using `[J3, transRep_apply, cmp_trans]`.
+-/
 theorem embed_of (hH : PartH) (h1 : RelFacts) (h2 : PartA) (h3 : RelOnto) (h4 : HarmSub) (h5 : HarmNe) (h6 : HarmInj) (h7 : IrrCo)
     (h8 : Graph) (h9 : FrameEx) (h10 : OneReal) (h11 : CuspRapid) : Embed := by
   intro E _ _ _ a ha π σ Ξ Ξ' ⟨h, hσ⟩ hC m hm τ τ' hτ ⟨T, T1, T2⟩
@@ -228,6 +253,17 @@ def NoEis : Prop :=
       ¬ ∀ᶠ w : HeightOneSpectrum (𝓞 E) in Filter.cofinite, ∃ B : ι → Multiset ℂˣ,
         (∀ i, (P i).HasSat w (B i)) ∧ HasSatGL w (S.locOf τ'.ρ w) (∑ i, B i)
 
+/- English proof (translation)
+Introduce `E _ _ _ a`. Express the relevant statement in the definitionally equal form `1 ≤ a → ConjAt E a`. Proceed by induction on `a using Nat.strong_induction_on with | _ a ih => ?_`. Introduce `ha π hπ σ`. Take `⟨Ξ, hΞ⟩` from `h1 E a π hπ`.
+
+Take `⟨Ξ', c1, c2⟩` from `h2 E a Ξ σ`. Take `⟨τ, hτ⟩` from `hF E a π`. Take `⟨τ', hτ'⟩` from `h4 E a σ τ`. Establish `hC'` using `hC E a ha π Ξ hΞ`. Use `choose m₀ m1 m2 using hΞ`.
+
+Establish `e1 : ∀ t : E →+* ℂ, σ.toRingHom.comp (σ.symm.toRingHom.comp t) = t` using `fun t => RingHom.ext fun x => σ.apply_symm_apply _`. Establish `e2 : ∀ t : E →+* ℂ, σ.symm.toRingHom.comp (σ.toRingHom.comp t) = t` using `fun t => RingHom.ext fun x => σ.symm_apply_apply _`. Take `⟨j, j0, j1, j2, j3⟩` from `h5 E a ha π σ Ξ Ξ' c1 hC' (fun t => m₀ (σ.symm.toRingHom.comp t)) (fun t => by simpa only [e1] using c2 _ _ (m2 (σ.symm.toRingHom.comp t))) τ τ' hτ hτ'`. Break down `h3 E a ha τ' _ j j0 j1 j2 j3 with ⟨π', p1, p2⟩ | ⟨ι, _, n, P, μ, k1, k2, k3, -, k4, k5, k6⟩` into its components or cases. Use `⟨π', τ, τ', hτ, p1, hτ', fun φ m hm => ?_⟩` and prove the remaining obligations.
+
+Use `p2 (σ.toRingHom.comp φ)` as an intermediate fact. Rewrite `this` using `[e2, (m1 φ).unique hm]`. Then use the resulting hypothesis. Use `absurd k6 (h6 hJ E a ha (fun b h hb => ih b hb h) π σ τ τ' hτ hτ' _ (fun t => ?_) ι n P μ k1 k2 k3 k4 k5)` and prove the remaining obligations. Establish `h : (CG.mk π).HasInfChar _ _` using `m1 (σ.symm.toRingHom.comp t)`. Rewrite using `[← h.infChar_eq]`.
+
+Conclude with `⟨CG.card_infChar _ _, hπ _⟩`.
+-/
 theorem clozelConjC_of_steps (hJ : GlobalTheory.Published.JacquetShalikaRigidity) (hC : Published.ClozelCohC) (hF : FinExC) (h1 : R.ExAlgRepCusp)
     (h2 : R.ConjAlgRep) (h3 : S.CuspSupport) (h4 : ConjEx) (h5 : Embed) (h6 : NoEis) : Published.ClozelConjC := by
   intro E _ _ _ a

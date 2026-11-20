@@ -8,6 +8,15 @@ open Formalism.BasicNotions Formalism.BasicNotions.LevelStarExponents Formalism.
 
 namespace GlobalTheory.EX
 
+/- English proof (translation)
+Establish `hx0 : 0 < x` using `by linarith`. Establish `hl : 0 ≤ Real.log x` using `Real.log_nonneg hx.le`. Establish `hk0 : 0 < k` using `lt_of_lt_of_le (Real.rpow_pos_of_pos hx0 _) hk`. Establish `he0 : 0 < x ^ e` using `Real.rpow_pos_of_pos hx0 _`. Establish `e1 : x ^ (2 + 10 * e) = x ^ (2 + 8 * e) * x ^ e * x ^ e`.
+
+Rewrite using `[← Real.rpow_add hx0, ← Real.rpow_add hx0]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree. Establish `e2 : x ^ (5 / 2 + 10 * e) = x ^ (-2 : ℝ) * x ^ (9 / 2 + 10 * e)`. Rewrite using `[← Real.rpow_add hx0]`.
+
+Use `congr 1`. Expand and normalize the polynomial expressions, which then agree. Establish `hnδ : n * δ ≤ 2 * x ^ (2 + 8 * e)` using `(mul_le_of_le_one_right hn0 hδ).trans hn`. Establish `t1 : 4 * (2 * n * δ) * x ^ e * La ≤ x ^ (5 / 2 + 10 * e) / 2`. Combine the equalities or inequalities in the displayed calculation.
+
+Establish `t2 : c * Real.log x * La ≤ x ^ (5 / 2 + 10 * e) / 2`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[← add_div, div_le_iff₀ hk0]`. Establish `t3 : x ^ (-2 : ℝ) * x ^ (9 / 2 + 10 * e) ≤ x ^ (-2 : ℝ) * k` using `mul_le_mul_of_nonneg_left hk (Real.rpow_pos_of_pos hx0 _).le`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem bandWidth_real_inequality_le_inv_sq {x e n δ k La A c : ℝ} (hx : 1 < x) (hδ : δ ≤ 1)
     (hn : n ≤ 2 * x ^ (2 + 8 * e)) (hn0 : 0 ≤ n) (hk : x ^ (9 / 2 + 10 * e) ≤ k) (hLa0 : 0 ≤ La)
     (hLa : La ≤ A * Real.log x ^ 2 * x ^ e) (hc : 0 ≤ c)
@@ -38,6 +47,19 @@ theorem bandWidth_real_inequality_le_inv_sq {x e n δ k La A c : ℝ} (hx : 1 < 
     mul_le_mul_of_nonneg_left hk (Real.rpow_pos_of_pos hx0 _).le
   linarith
 
+/- English proof (translation)
+Introduce `eps h0 h1 C hC`. Establish `hLa : 1 ≤ C.GK.La` using `hC.2.2.2.2.2.2.2.2.2.2.2.2.2.2.1 _ (by simp [FC.cMid])`. Establish `hrho : 1 ≤ C.P.Crho` using `hC.2.2.2.2.2.2.2.2.2.2.2.2.2.2.2 _ (by simp [FC.cLast])`. Take `⟨CN, x1, hx1⟩` from `GlobalTheory.topCount_and_lambda_bounds eps h0 h1`. Take `⟨x2, hx2⟩` from `GlobalTheory.const_mul_rpow_mul_log_pow_le_rpow (2 + 10 * eps) (5 / 2 + 10 * eps) (32 * (2 * C.GK.La * CN ^ 2)) 2 (by linarith)`.
+
+Take `⟨x3, hx3⟩` from `GlobalTheory.const_mul_rpow_mul_log_pow_le_rpow eps (5 / 2 + 10 * eps) (2 * C.P.Crho * (2 * C.GK.La * CN ^ 2)) 3 (by linarith)`. Use `⟨0, fun cD _ => ⟨0, fun ch _ => ⟨max x1 (max x2 x3), fun D L he hx V => ⟨?_, ?_, ?_⟩⟩⟩⟩` and prove the remaining obligations. Use `V.host.2.1.2` as an intermediate fact. Unfold `LevelStarExponents.Nstar`. Combine the linear equalities and inequalities to obtain the conclusion.
+
+Establish `hx1' : x1 ≤ L.sc.x` using `(le_max_left _ _).trans hx`. Establish `hx2' : x2 ≤ L.sc.x` using `((le_max_left _ _).trans (le_max_right _ _)).trans hx`. Establish `hx3' : x3 ≤ L.sc.x` using `((le_max_right _ _).trans (le_max_right _ _)).trans hx`. Take `⟨-, -, hK⟩` from `hx1 L.sc he hx1'`. Take `⟨hlo, hup⟩` from `hK C.GK hLa`.
+
+Establish `hxp : 0 < L.sc.x` using `lt_trans one_pos L.sc.one_lt_alt`. Establish `a2` using `hx2 _ hx2'`. Establish `a3` using `hx3 _ hx3'`. Rewrite `a2`, `a3` using `[← he]`. Unfold `rhoP LevelStarExponents.Nstar`.
+
+Rewrite using `[V.La_eq]`. Establish `hδ : L.sc.delta1 ≤ L.sc.x ^ (-(L.sc.eps / 100))` using `Real.rpow_le_rpow_of_exponent_le L.sc.one_lt_alt.le (by have := L.sc.eps_pos; linarith)`. Establish `hδ0 : 0 ≤ L.sc.delta1` using `Real.rpow_nonneg hxp.le _`. Establish `hn : (D.R.n : ℝ) * L.sc.delta1 ≤ 2 * L.sc.x ^ (2 + 8 * L.sc.eps)`. Combine the equalities or inequalities in the displayed calculation.
+
+Establish `key` using `bandWidth_real_inequality_le_inv_sq (A := 2 * C.GK.La * CN ^ 2) (c := C.P.Crho) L.sc.one_lt_alt (le_refl (1 : ℝ)) hn (mul_nonneg (Nat.cast_nonneg _) hδ0) V.ranks.2.2.1.1 ((Real.rpow_pos_of_pos hxp _).le.trans hlo) (hup.trans (le_of_eq (by ring))) (by linarith) a2 a3`. Rewrite `key` using `[mul_one, ← mul_assoc 2]`. Conclude with `key`. Conclude with `V.bT_le`.
+-/
 theorem szRow_tops_band_bottoms :
     SzRow (fun C D L => ((D.host.TT.card : ℝ) ≤ Nstar L) ∧ (rhoP L C.P.Crho ≤ L.sc.x ^ (-2 : ℝ)) ∧
       (∀ t, (L.bT t : ℝ) ≤ L.sc.b' + Nstar L * L.sc.x ^ L.sc.eps * L.LaG * L.sc.b' / D.R.k)) := by

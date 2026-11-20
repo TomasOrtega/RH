@@ -13,6 +13,9 @@ namespace PositivityTheory.Lit1.PTN
 
 attribute [local instance 2000] Rep.hV2
 
+/- English proof (translation)
+Apply the tactic sequence `apply hasse_kummer_unram' <;> assumption`.
+-/
 theorem hasse_kummer_unram {K Ω : Type} [Field K] [ValuativeRel K] [TopologicalSpace K]
     [IsNonarchimedeanLocalField K] [Field Ω] [Algebra K Ω] [IsSepClosure K Ω] (N : ℕ+)
     (ϖ : Kˣ) (hϖ : ord (ϖ : K) = 1) (Y : Ω) (hY : Y ^ (N : ℕ) = algebraMap K Ω ϖ)
@@ -24,11 +27,17 @@ theorem hasse_kummer_unram {K Ω : Type} [Field K] [ValuativeRel K] [Topological
     brauerInvZOfIsSepClosure K Ω (cohomologyπ _ 2 c) = - zmodToQZ (N : ℕ) 1 := by
   apply hasse_kummer_unram' <;> assumption
 
+/- English proof (translation)
+Apply the tactic sequence `apply exists_uniformizer_ord' <;> assumption`.
+-/
 theorem exists_uniformizer_ord (F : Type) [Field F] [NumberField F] (v : HeightOneSpectrum (𝓞 F)) :
     ∃ ϖ : 𝓞 F, ϖ ∈ v.asIdeal ∧ ϖ ∉ v.asIdeal ^ 2 ∧
       ord ((ϖ : F) : v.adicCompletion F) = 1 := by
   apply exists_uniformizer_ord' <;> assumption
 
+/- English proof (translation)
+Apply the tactic sequence `apply exists_kummer' <;> assumption`.
+-/
 theorem exists_kummer (F : Type) [Field F] [NumberField F] {l r : ℕ} [Fact l.Prime]
     (A : ValuationSubring (AlgebraicClosure ℚ)) [Algebra F (AlgebraicClosure ℚ)]
     [IsAlgClosure F (AlgebraicClosure ℚ)]
@@ -42,6 +51,9 @@ theorem exists_kummer (F : Type) [Field F] [NumberField F] {l r : ℕ} [Fact l.P
           ZMod (l ^ r)) * κ h := by
   apply exists_kummer' <;> assumption
 
+/- English proof (translation)
+Apply the tactic sequence `apply exists_chi' <;> assumption`.
+-/
 theorem exists_chi (Kf : FiniteSubfield) [NumberField Kf.1] [IsAlgClosure Kf.1 (AlgebraicClosure ℚ)]
     (v : HeightOneSpectrum (𝓞 Kf.1)) (A : ValuationSubring (AlgebraicClosure ℚ)) (hA : IsPlaceOver A v)
     (N : ℕ+)

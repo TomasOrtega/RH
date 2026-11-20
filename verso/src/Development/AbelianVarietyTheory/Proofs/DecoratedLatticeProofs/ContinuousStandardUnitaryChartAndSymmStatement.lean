@@ -8,5 +8,8 @@ open Formalism.BasicNotions Formalism.BasicNotions.TH Formalism.MainNotions.Glob
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.StdUnn.chart_continuous | exact GlobalTheory.StdUnn.chart_continuous | (intros; apply GlobalTheory.StdUnn.chart_continuous <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.continuous_standardUnitaryChart_and_symm : ∀ (D : D7) (A : HSp D) (μ : D.host.E), IsSkew μ → ∀ κ : GA D (dblSp A) ≃* G D A.rank, IsChart A μ κ → Continuous κ ∧ Continuous κ.symm := by
   first | exact @GlobalTheory.StdUnn.chart_continuous | exact GlobalTheory.StdUnn.chart_continuous | (intros; apply GlobalTheory.StdUnn.chart_continuous <;> assumption)

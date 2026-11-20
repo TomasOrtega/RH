@@ -15,6 +15,15 @@ namespace GlobalTheory.UnitLemma.Move
 
 variable {K : UQ} (B : InvAlg K)
 
+/- English proof (translation)
+Introduce `h0`. Take `⟨v, hv, hMv⟩` from `Matrix.exists_mulVec_eq_zero_iff.2 h0`. Take `⟨b, hb⟩` from `exists_basis_pow_of_separable K B hP`. Establish `hk : ∀ k : Fin (Module.finrank K.E B.A), Algebra.trace K.E B.A (B.g ^ (k : ℕ) * ∑ l, v l • e l) = 0`. Introduce `k`.
+
+Use `congrFun hMv k` as an intermediate fact. Simplify using `only [Matrix.mulVec, dotProduct, Matrix.of_apply, Pi.zero_apply] at this`. Rewrite using `[Finset.mul_sum, map_sum, ← this]`. Use `Finset.sum_congr rfl fun l _ => ?_` and prove the remaining obligations. Rewrite using `[mul_smul_comm, map_smul, smul_eq_mul, mul_comm]`.
+
+Establish `hall : ∀ w : B.A, Algebra.trace K.E B.A ((∑ l, v l • e l) * w) = 0`. Introduce `w`. Rewrite using `[← b.sum_repr w, Finset.mul_sum, map_sum]`. Use `Finset.sum_eq_zero fun k _ => ?_` and prove the remaining obligations. Rewrite using `[mul_smul_comm, map_smul, hb k, mul_comm, hk k, smul_zero]`.
+
+Establish `hz0 : ∑ l, v l • e l = 0` using `(Sandwich.traceForm_nondegenerate B hP).1 _ (fun w => by rw [Algebra.traceForm_apply]; exact hall w)`. Apply `hv` to reduce the goal to its premises. Apply `e.equivFun.symm.injective` to reduce the goal to its premises. Rewrite using `[Module.Basis.equivFun_symm_apply, hz0, map_zero]`.
+-/
 theorem det_trace_ne_zero (hP : B.P.Separable)
     (e : Module.Basis (Fin (Module.finrank K.E B.A)) K.E B.A) :
     (Matrix.of fun k l : Fin (Module.finrank K.E B.A) =>
@@ -42,6 +51,11 @@ theorem det_trace_ne_zero (hP : B.P.Separable)
   apply e.equivFun.symm.injective
   rw [Module.Basis.equivFun_symm_apply, hz0, map_zero]
 
+/- English proof (translation)
+Simplify using `only [mulLat, Submodule.mem_map, LinearMap.mulLeft_apply]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨x, hx, rfl⟩`. Simplify using `using hx`. Introduce `h`.
+
+Conclude with `⟨_, h, by simp⟩`.
+-/
 theorem mem_mulLat (M : Submodule K.O B.A) (y : B.Aˣ) (z : B.A) :
     z ∈ mulLat K.O (y : B.A) M ↔ ((y⁻¹ : B.Aˣ) : B.A) * z ∈ M := by
   simp only [mulLat, Submodule.mem_map, LinearMap.mulLeft_apply]
@@ -51,11 +65,23 @@ theorem mem_mulLat (M : Submodule K.O B.A) (y : B.Aˣ) (z : B.A) :
   · intro h
     exact ⟨_, h, by simp⟩
 
+/- English proof (translation)
+Use extensionality with `z`. Rewrite using `[mem_mulLat, mem_mulLat, inv_inv, Units.inv_mul_cancel_left]`.
+-/
 theorem mulLat_inv (M : Submodule K.O B.A) (y : B.Aˣ) :
     mulLat K.O ((y⁻¹ : B.Aˣ) : B.A) (mulLat K.O (y : B.A) M) = M := by
   ext z
   rw [mem_mulLat, mem_mulLat, inv_inv, Units.inv_mul_cancel_left]
 
+/- English proof (translation)
+Take `⟨⟨hfg, hsp⟩, hg, hσ⟩` from `hM`. Establish `hyi : B.σ ((y⁻¹ : B.Aˣ) : B.A) = ((y⁻¹ : B.Aˣ) : B.A)`. Establish `h1 : B.σ ((y⁻¹ : B.Aˣ) : B.A) * (y : B.A) = 1` using `by conv_lhs => rw [← hy]`. Rewrite using `[← map_mul, Units.inv_mul, map_one]`. Combine the equalities or inequalities in the displayed calculation.
+
+Rewrite using `[mul_assoc, Units.mul_inv, mul_one]`. Use `_ = _ := by rw [h1, one_mul]`. Use `⟨⟨hfg.map _, ?_⟩, fun z hz => ?_, fun z hz => ?_⟩` and prove the remaining obligations. Establish `h1 : ((mulLat K.O (y : B.A) M : Submodule K.O B.A) : Set B.A) = (LinearMap.mulLeft K.E (y : B.A)) '' (M : Set B.A)`. Rewrite using `[mulLat, Submodule.map_coe]`.
+
+Both sides reduce to the same expression. Rewrite using `[h1, Submodule.span_image, hsp, Submodule.map_top, LinearMap.range_eq_top]`. Introduce `x`. Conclude with `⟨((y⁻¹ : B.Aˣ) : B.A) * x, by simp⟩`. Rewrite `hz`, the goal using `[mem_mulLat]`.
+
+Rewrite using `[mul_left_comm]`. Conclude with `hg _ hz`. Rewrite `hz`, the goal using `[mem_mulLat]`. Use `hσ _ hz` as an intermediate fact. Rewrite `this` using `[map_mul, hyi]`. Then use the resulting hypothesis.
+-/
 theorem mulLat_mem_Lin (y : B.Aˣ) (hy : B.σ (y : B.A) = y) (M : Submodule K.O B.A) (hM : M ∈ B.Lin) :
     mulLat K.O (y : B.A) M ∈ B.Lin := by
   obtain ⟨⟨hfg, hsp⟩, hg, hσ⟩ := hM
@@ -81,6 +107,15 @@ theorem mulLat_mem_Lin (y : B.Aˣ) (hy : B.σ (y : B.A) = y) (M : Submodule K.O 
     have := hσ _ hz
     rwa [map_mul, hyi] at this
 
+/- English proof (translation)
+Take `⟨e, he, -⟩` from `GlobalTheory.GaloisDescentLattice.exists_fixed_basis K B M hM hσ`. Set `f : B.A ≃ₗ[K.E] B.A` to `LinearEquiv.ofLinear (LinearMap.mulLeft K.E (y : B.A)) (LinearMap.mulLeft K.E ((y⁻¹ : B.Aˣ) : B.A)) (by ext x; simp) (by ext x; simp)`. Set `e'` to `e.map f`. Establish `he' : ∀ l, e' l = (y : B.A) * e l` using `fun l => rfl`. Establish `hspan : mulLat K.O (y : B.A) M = Submodule.span K.O (Set.range e')`.
+
+Rewrite using `[← he, mulLat, Submodule.map_span, ← Set.range_comp]`. Both sides reduce to the same expression. Establish `hN : Algebra.norm K.E (y : B.A) ≠ 0` using `(y.isUnit.map (Algebra.norm K.E)).ne_zero`. Establish `hmat : (Matrix.of fun k l : Fin (Module.finrank K.E B.A) => Algebra.trace K.E B.A (B.g ^ (k : ℕ) * e' l)) = (Matrix.of fun k l : Fin (Module.finrank K.E B.A) => Algebra.trace K.E B.A (B.g ^ (k : ℕ) * e l)) * Algebra.leftMulMatrix e (y : B.A)`. Use extensionality with `k l`.
+
+Simplify using `only [Matrix.mul_apply, Matrix.of_apply, Algebra.leftMulMatrix_eq_repr_mul]`. Rewrite using `[he' l]`. Use `conv_lhs => rw [← e.sum_repr ((y : B.A) * e l)]`. Rewrite using `[Finset.mul_sum, map_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[mul_smul_comm, map_smul, smul_eq_mul, mul_comm]`. Rewrite using `[hspan, SgnBasis.sgnLat_span_basis, ← he, SgnBasis.sgnLat_span_basis, hmat, Matrix.det_mul, ← Algebra.norm_eq_matrix_det, Desc.eta_mul (det_trace_ne_zero B hP e) hN, mul_comm]`.
+-/
 theorem sgnLat_mulLat (hP : B.P.Separable) (M : Submodule K.O B.A) (hM : IsLat K.O K.E M)
     (hσ : ∀ y ∈ M, B.σ y ∈ M) (y : B.Aˣ) :
     B.sgnLat (mulLat K.O (y : B.A) M) = K.eta (Algebra.norm K.E (y : B.A)) * B.sgnLat M := by
@@ -108,6 +143,13 @@ theorem sgnLat_mulLat (hP : B.P.Separable) (M : Submodule K.O B.A) (hM : IsLat K
   rw [hspan, SgnBasis.sgnLat_span_basis, ← he, SgnBasis.sgnLat_span_basis, hmat, Matrix.det_mul,
     ← Algebra.norm_eq_matrix_det, Desc.eta_mul (det_trace_ne_zero B hP e) hN, mul_comm]
 
+/- English proof (translation)
+Unfold `InDual`. Prove the components needed by the constructor for the conclusion. Introduce `h z hz`. Use `h ((y : B.A) * z) (by rw [mem_mulLat, Units.inv_mul_cancel_left]; exact hz)` as an intermediate fact. Establish `e : t * ((y : B.A) * z) = (y : B.A) * t * z` using `by ring`.
+
+Rewrite `this` using `[e]`. Then use the resulting hypothesis. Introduce `h z hz`. Rewrite `hz` using `[mem_mulLat]`. Use `h _ hz` as an intermediate fact. Establish `e : (y : B.A) * t * (((y⁻¹ : B.Aˣ) : B.A) * z) = t * z`.
+
+Rewrite using `[mul_comm (y : B.A) t, mul_assoc, Units.mul_inv_cancel_left]`. Rewrite `this` using `[e]`. Then use the resulting hypothesis.
+-/
 theorem inDual_mulLat (M : Submodule K.O B.A) (y : B.Aˣ) (t : B.A) :
     InDual B t (mulLat K.O (y : B.A) M) ↔ InDual B ((y : B.A) * t) M := by
   unfold InDual
@@ -123,6 +165,13 @@ theorem inDual_mulLat (M : Submodule K.O B.A) (y : B.Aˣ) (t : B.A) :
       rw [mul_comm (y : B.A) t, mul_assoc, Units.mul_inv_cancel_left]
     rwa [e] at this
 
+/- English proof (translation)
+Unfold `term dlt`. Use `congr 1`. Use `Finset.sum_congr rfl fun J _ => ?_` and prove the remaining obligations. Unfold `indM`. Establish `e : ((y⁻¹ : B.Aˣ) : B.A) * ((∏ j ∈ J, π j) * ((y : B.A) * u)) = (∏ j ∈ J, π j) * u`.
+
+Rewrite using `[mul_left_comm, Units.inv_mul_cancel_left]`. Simplify using `only [mem_mulLat, e]`. Use `Finset.sum_congr rfl fun J _ => ?_` and prove the remaining obligations. Unfold `indD`. Establish `e : (y : B.A) * ((∏ j ∈ J, π j) * s) = (∏ j ∈ J, π j) * ((y : B.A) * s)` using `by ring`.
+
+Simplify using `only [inDual_mulLat, e]`.
+-/
 theorem term_mulLat {ι : Type} (π : ι → B.A) (I I' : Finset ι) (u s : B.A) (M : Submodule K.O B.A)
     (y : B.Aˣ) :
     term B π I I' ((y : B.A) * u) s (mulLat K.O (y : B.A) M) = term B π I I' u ((y : B.A) * s) M := by
@@ -139,6 +188,17 @@ theorem term_mulLat {ι : Type} (π : ι → B.A) (I I' : Finset ι) (u s : B.A)
     have e : (y : B.A) * ((∏ j ∈ J, π j) * s) = (∏ j ∈ J, π j) * ((y : B.A) * s) := by ring
     simp only [inDual_mulLat, e]
 
+/- English proof (translation)
+Introduce `K B ι π I I' u s y hB hy`. Take `⟨⟨yu, rfl⟩, hσ⟩` from `hy`. Establish `hσ' : B.σ ((yu⁻¹ : B.Aˣ) : B.A) = ((yu⁻¹ : B.Aˣ) : B.A)`. Establish `h1 : B.σ ((yu⁻¹ : B.Aˣ) : B.A) * (yu : B.A) = 1` using `by conv_lhs => rw [← hσ]`. Rewrite using `[← map_mul, Units.inv_mul, map_one]`.
+
+Combine the equalities or inequalities in the displayed calculation. Rewrite using `[mul_assoc, Units.mul_inv, mul_one]`. Use `_ = _ := by rw [h1, one_mul]`. Unfold `HH`. Rewrite using `[mul_finsum_mem]`.
+
+Use `symm`. Use `finsum_mem_eq_of_bijOn (fun M => mulLat K.O (yu : B.A) M) ?_ ?_` and prove the remaining obligations. Use `Set.InvOn.bijOn (f' := fun M => mulLat K.O ((yu⁻¹ : B.Aˣ) : B.A) M) ⟨fun M _ => ?_, fun M _ => ?_⟩ (fun M hM => mulLat_mem_Lin B yu hσ M hM) (fun M hM => ?_)` and prove the remaining obligations. Conclude with `mulLat_inv B M yu`. Use `mulLat_inv B M yu⁻¹` as an intermediate fact.
+
+Rewrite `this` using `[inv_inv]`. Then use the resulting hypothesis. Use `mulLat_mem_Lin B yu⁻¹ hσ' M hM` as an intermediate fact. Conclude with `this`. Introduce `M hM`. Rewrite using `[sgnLat_mulLat B hB.2 M hM.1 hM.2.2 yu, term_mulLat]`.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem HH_mul_unit : ∀ (K : UQ) (B : InvAlg K) (ι : Type) (π : ι → B.A) (I I' : Finset ι) (u s y : B.A),
     B.LieReg → B.Plus y → HH B π I I' (y * u) s = K.eta (Algebra.norm K.E y) * HH B π I I' u (y * s) := by
   intro K B ι π I I' u s y hB hy

@@ -15,6 +15,9 @@ open StandardDualImageBottom
 
 variable {K : Type} [Field K] [NumberField K] {i : ℕ} {T : Type} [Fintype T]
 
+/- English proof (translation)
+Simplify using `only [linForm, map_sum, map_mul, Finset.sum_mul, mConeMap, aeval_X, eq_intCast, map_intCast]`. Use `Finset.sum_congr rfl fun t _ => ?_` and prove the remaining obligations. Rewrite using `[mul_assoc]`.
+-/
 theorem mConeMap_linForm (b : Module.Basis T ℤ (dualLattice (HermLattice.standard K i)))
     (q : Σ _ : Unit, Fin i) :
     mConeMap (dualLatticeCoord b) (linForm (ι₂ := PBlk i) (dualStdCoordMat b) q) =
@@ -29,11 +32,17 @@ def coneLift (b : Module.Basis T ℤ (dualLattice (HermLattice.standard K i))) :
     (mConeMap (dualLatticeCoord b) : MRing (dualBlocks T) →+* MvPolynomial Unit (ProjField K i)) fun _ ha => ha
 
 omit [Fintype T] in
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem coneLift_mk (b : Module.Basis T ℤ (dualLattice (HermLattice.standard K i))) (f : MRing (dualBlocks T)) :
     coneLift b (Ideal.Quotient.mk _ f) = mConeMap (dualLatticeCoord b) f :=
   rfl
 
 omit [Fintype T] in
+/- English proof (translation)
+The claim follows from `RingHom.lift_injective_of_ker_le_ideal _ _ fun _ ha => ha`.
+-/
 theorem coneLift_injective (b : Module.Basis T ℤ (dualLattice (HermLattice.standard K i))) :
     Function.Injective (coneLift b) :=
   RingHom.lift_injective_of_ker_le_ideal _ _ fun _ ha => ha
@@ -43,11 +52,19 @@ def modelMap (b : Module.Basis T ℤ (dualLattice (HermLattice.standard K i))) :
   (algebraMap (MvPolynomial Unit (MvPolynomial Unit (ProjField K i))) _).comp (MvPolynomial.map (coneLift b))
 
 omit [Fintype T] in
+/- English proof (translation)
+The claim follows from `(IsFractionRing.injective (MvPolynomial Unit (MvPolynomial Unit (ProjField K i))) (dualStdModelField K i)).comp (MvPolynomial.map_injective _ (coneLift_injective b))`.
+-/
 theorem modelMap_injective (b : Module.Basis T ℤ (dualLattice (HermLattice.standard K i))) :
     Function.Injective (modelMap b) :=
   (IsFractionRing.injective (MvPolynomial Unit (MvPolynomial Unit (ProjField K i))) (dualStdModelField K i)).comp
     (MvPolynomial.map_injective _ (coneLift_injective b))
 
+/- English proof (translation)
+Use `MvPolynomial.ringHom_ext (fun r => by simp) ?_` and prove the remaining obligations. Apply the tactic sequence `rintro ⟨(u | u), j⟩ <;> cases u`. Simplify using `[graphMap, modelMap, coneLift_mk, dualStdModelPt, dualStdModelEmb, dualStdModelS, mConeMap]`. Establish `h` using `mConeMap_linForm b ⟨(), j⟩`. Rewrite `h` using `[aeval_linForm]`.
+
+Simplify using `only [RingHom.comp_apply, graphMap, eval₂Hom_X', modelMap, map_mul, map_C, map_X, coneLift_mk, h, dualStdModelPt, dualStdModelEmb, dualStdModelS, dualStdModelT, genPt]`.
+-/
 theorem modelMap_comp_graphMap [DecidableEq T]
     (b : Module.Basis T ℤ (dualLattice (HermLattice.standard K i))) :
     (modelMap b).comp (graphMap (dualIdeal b) (linForm (ι₂ := PBlk i) (dualStdCoordMat b))) =
@@ -66,6 +83,9 @@ end StandardDualGraphModel
 
 open StandardDualGraphModel in
 
+/- English proof (translation)
+Introduce `K _ _ i T _ _ b`. Rewrite using `[← modelMap_comp_graphMap b]`. Use extensionality with `f`. Rewrite using `[graphIdeal, RingHom.mem_ker, RingHom.mem_ker, RingHom.comp_apply, map_eq_zero_iff _ (modelMap_injective b)]`.
+-/
 theorem DualStdGraphModel.proof : DualStdGraphModel.Statement := by
   intro K _ _ i T _ _ b
   rw [← modelMap_comp_graphMap b]

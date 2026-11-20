@@ -13,6 +13,25 @@ section Uniform
 variable {X : Type*} [UniformSpace X] [CompactSpace X] [MeasurableSpace X] [BorelSpace X]
   (μ : Measure X) [IsFiniteMeasure μ]
 
+/- English proof (translation)
+Use `UniformContinuous.continuous ?_` and prove the remaining obligations. Use `(Metric.uniformity_basis_dist.tendsto_right_iff).2 fun ε hε => ?_` and prove the remaining obligations. Use `set A := ‖a‖`. Use `set B := ‖b‖`. Use `set M := μ.real univ`.
+
+Use `set δ : ℝ := ε / ((A + B) * M + 1)`. Establish `hδ : 0 < δ` using `by positivity`. Take `⟨u₁, hu₁, v₁, hv₁, h₁⟩` from `entourageProd_subset (CompactSpace.uniformContinuous_of_continuous a.continuous (Metric.dist_mem_uniformity hδ))`. Take `⟨u₂, hu₂, v₂, hv₂, h₂⟩` from `entourageProd_subset (CompactSpace.uniformContinuous_of_continuous b.continuous (Metric.dist_mem_uniformity hδ))`. Use `filter_upwards [entourageProd_mem_uniformity hu₁ hv₂] with w hw`.
+
+Take `⟨⟨x, z⟩, ⟨x', z'⟩⟩` from `w`. Take `⟨hx, hz⟩` from `hw`. Express the relevant statement in the definitionally equal form `dist (∫ y, a (x, y) * b (y, z) ∂μ) (∫ y, a (x', y) * b (y, z') ∂μ) < ε`. Establish `hrowa : ∀ x, Continuous fun y => a (x, y)` using `fun x => a.continuous.comp (continuous_const.prodMk continuous_id)`. Establish `hcolb : ∀ z, Continuous fun y => b (y, z)` using `fun z => b.continuous.comp (continuous_id.prodMk continuous_const)`.
+
+Establish `hint : ∀ x z, Integrable (fun y => a (x, y) * b (y, z)) μ` using `fun x z => integrable_of_continuous_compact ((hrowa x).mul (hcolb z)) μ`. Rewrite using `[dist_eq_norm, ← integral_sub (hint x z) (hint x' z')]`. Establish `hpt : ∀ y, ‖a (x, y) * b (y, z) - a (x', y) * b (y, z')‖ ≤ δ * B + A * δ`. Introduce `y`. Establish `ha : ‖a (x, y) - a (x', y)‖ < δ`.
+
+Rewrite using `[← dist_eq_norm]`. Conclude with `h₁ (show ((x, y), (x', y)) ∈ entourageProd u₁ v₁ from ⟨hx, refl_mem_uniformity hv₁⟩)`. Establish `hb : ‖b (y, z) - b (y, z')‖ < δ`. Rewrite using `[← dist_eq_norm]`. Conclude with `h₂ (show ((y, z), (y, z')) ∈ entourageProd u₂ v₂ from ⟨refl_mem_uniformity hu₂, hz⟩)`.
+
+Establish `e : a (x, y) * b (y, z) - a (x', y) * b (y, z') = (a (x, y) - a (x', y)) * b (y, z) + a (x', y) * (b (y, z) - b (y, z'))` using `by ring`. Rewrite using `[e]`. Use `(norm_add_le _ _).trans (add_le_add ?_ ?_)` and prove the remaining obligations. Rewrite using `[norm_mul]`. Conclude with `mul_le_mul ha.le (b.norm_coe_le_norm _) (norm_nonneg _) hδ.le`.
+
+Rewrite using `[norm_mul]`. Conclude with `mul_le_mul (a.norm_coe_le_norm _) hb.le (norm_nonneg _) (norm_nonneg _)`. Use `(norm_integral_le_of_norm_le_const (ae_of_all _ hpt)).trans_lt ?_` and prove the remaining obligations. Establish `hM : 0 ≤ M` using `measureReal_nonneg`. Establish `hAB : 0 ≤ A + B` using `by positivity`.
+
+Establish `e : (δ * B + A * δ) * M = ε * ((A + B) * M / ((A + B) * M + 1))`. Simplify using `only [δ]`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e]`.
+
+Establish `: (A + B) * M / ((A + B) * M + 1) < 1` using `(div_lt_one (by positivity)).2 (lt_add_one _)`. Use the polynomial consequences of the given equalities and inequalities.
+-/
 theorem continuous_integral_mul_of_uniformSpace (a b : C(X × X, ℂ)) :
     Continuous fun z : X × X => ∫ y, a (z.1, y) * b (y, z.2) ∂μ := by
   refine UniformContinuous.continuous ?_
@@ -75,9 +94,23 @@ def compKernel (a b : C(X × X, ℂ)) : C(X × X, ℂ) where
     let _ : UniformSpace X := uniformSpaceOfCompactR1
     exact continuous_integral_mul_of_uniformSpace μ a b
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem compKernel_apply (a b : C(X × X, ℂ)) (z : X × X) :
     compKernel μ a b z = ∫ y, a (z.1, y) * b (y, z.2) ∂μ := rfl
 
+/- English proof (translation)
+Use `ext1 f`. Use `Lp.ext ?_` and prove the remaining obligations. Use `filter_upwards [contKernelOp_apply_ae μ a (contKernelOp μ b f), contKernelOp_apply_ae μ (compKernel μ a b) f] with x h1 h2`. Rewrite using `[ContinuousLinearMap.comp_apply, h1, h2]`. Establish `h3 : (fun y => a (x, y) * contKernelOp μ b f y) =ᵐ[μ] fun y => ∫ z, a (x, y) * (b (y, z) * f z) ∂μ` using `by filter_upwards [contKernelOp_apply_ae μ b f] with y hy`.
+
+Rewrite using `[hy, integral_const_mul]`. Rewrite using `[integral_congr_ae h3]`. Establish `hf : Integrable (fun z => f z) μ` using `(Lp.memLp f).integrable one_le_two`. Establish `hab : Continuous fun p : X × X => a (x, p.1) * b (p.1, p.2)` using `(a.continuous.comp (continuous_const.prodMk continuous_fst)).mul b.continuous`. Establish `hint : Integrable (Function.uncurry fun y z => a (x, y) * (b (y, z) * f z)) (μ.prod μ)`.
+
+Establish `h1 : Integrable (fun p : X × X => (1 : ℂ) * f p.2) (μ.prod μ)` using `(integrable_const (1 : ℂ)).mul_prod hf`. Establish `h2` using `h1.bdd_mul (c := ‖a‖ * ‖b‖) (measurable_of_continuous_compactProd hab).aestronglyMeasurable (ae_of_all _ fun p => by`. Rewrite using `[norm_mul]`. Conclude with `mul_le_mul (a.norm_coe_le_norm _) (b.norm_coe_le_norm _) (norm_nonneg _) (norm_nonneg _))`. Use `h2.congr (ae_of_all _ fun p => ?_)` and prove the remaining obligations.
+
+Take `⟨y, z⟩` from `p`. Simplify using `only [Function.uncurry_apply_pair]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[integral_integral_swap hint]`. Use `integral_congr_ae (ae_of_all _ fun z => ?_)` and prove the remaining obligations.
+
+Simplify using `only [compKernel_apply]`. Rewrite using `[← integral_mul_const]`. Use `integral_congr_ae (ae_of_all _ fun y => ?_)` and prove the remaining obligations. Simplify using `only`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem contKernelOp_comp (a b : C(X × X, ℂ)) :
     (contKernelOp μ a).comp (contKernelOp μ b) = contKernelOp μ (compKernel μ a b) := by
   ext1 f

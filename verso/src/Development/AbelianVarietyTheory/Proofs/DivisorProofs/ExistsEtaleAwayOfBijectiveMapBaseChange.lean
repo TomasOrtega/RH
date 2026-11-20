@@ -12,6 +12,13 @@ noncomputable section
 namespace GlobalTheory.Mum
 open KaehlerDifferential TensorProduct
 
+/- English proof (translation)
+Establish `: Module.Free R N` using `Module.free_of_flat_of_isLocalRing`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Take `⟨l', hl'⟩` from `(IsLocalRing.split_injective_iff_lTensor_residueField_injective l).mpr h.1`. Conclude with `Function.HasLeftInverse.injective ⟨l', LinearMap.congr_fun hl'⟩`. Establish `hex` using `lTensor_exact (ResidueField R) (LinearMap.exact_map_mkQ_range l) (Submodule.mkQ_surjective _)`.
+
+Establish `hsub : Subsingleton (ResidueField R ⊗[R] (N ⧸ LinearMap.range l))`. Use `subsingleton_of_forall_eq 0 fun y => ?_` and prove the remaining obligations. Take `⟨x, rfl⟩` from `LinearMap.lTensor_surjective (ResidueField R) (Submodule.mkQ_surjective _) y`. Take `⟨z, rfl⟩` from `h.2 x`. Conclude with `hex.apply_apply_eq_zero z`.
+
+Rewrite `hsub` using `[IsLocalRing.subsingleton_tensorProduct]`. Rewrite using `[← LinearMap.range_eq_top]`. Conclude with `Submodule.Quotient.subsingleton_iff.mp hsub`.
+-/
 theorem bijective_of_bijective_lTensor_residueField {R M N : Type*} [CommRing R] [IsLocalRing R]
     [AddCommGroup M] [Module R M] [AddCommGroup N] [Module R N]
     [Module.Finite R M] [Module.Finite R N] [Module.Projective R N] (l : M →ₗ[R] N)
@@ -31,6 +38,13 @@ theorem bijective_of_bijective_lTensor_residueField {R M N : Type*} [CommRing R]
     rw [← LinearMap.range_eq_top]
     exact Submodule.Quotient.subsingleton_iff.mp hsub
 
+/- English proof (translation)
+Establish `h1 : Subsingleton Ω[B⁄P]`. Use `subsingleton_of_forall_eq 0 fun x => ?_` and prove the remaining obligations. Take `⟨y, rfl⟩` from `map_surjective R P B x`. Conclude with `(exact_mapBaseChange_map R P B y).mpr (h.2 y)`. Establish `h2 : Subsingleton (Algebra.H1Cotangent P B)`.
+
+Use `subsingleton_of_forall_eq 0 fun x => ?_` and prove the remaining obligations. Establish `h3 : Algebra.H1Cotangent.δ R P B x = 0`. Apply `h.1` to reduce the goal to its premises. Rewrite using `[map_zero]`. Conclude with `(Algebra.H1Cotangent.exact_δ_mapBaseChange R P B _).mpr ⟨x, rfl⟩`.
+
+Take `⟨y, rfl⟩` from `(Algebra.H1Cotangent.exact_map_δ R P B x).mp h3`. Rewrite using `[Subsingleton.elim y 0, map_zero]`. Conclude with `⟨h1, h2⟩`.
+-/
 theorem formallyEtale_of_bijective_mapBaseChange (R P B : Type*) [CommRing R] [CommRing P]
     [CommRing B] [Algebra R P] [Algebra R B] [Algebra P B] [IsScalarTower R P B]
     [Algebra.FormallySmooth R B] (h : Function.Bijective (mapBaseChange R P B)) :
@@ -49,6 +63,15 @@ theorem formallyEtale_of_bijective_mapBaseChange (R P B : Type*) [CommRing R] [C
     rw [Subsingleton.elim y 0, map_zero]
   exact ⟨h1, h2⟩
 
+/- English proof (translation)
+Set `BQ` to `Localization.AtPrime Q`. Set `k` to `ResidueField BQ`. Set `eM` to `AlgebraTensorModule.cancelBaseChange B BQ k k M`. Set `eN` to `AlgebraTensorModule.cancelBaseChange B BQ k k N`. Establish `key : ∀ x, eN ((φ.baseChange BQ).lTensor k x) = φ.lTensor Q.ResidueField (eM x)`.
+
+Introduce `x`. Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `add x y hx hy => simp only [map_add, hx, hy]`. Consider the case `tmul c y`.
+
+Proceed by induction on `y using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `add y z hy hz => simp only [tmul_add, map_add] at hy hz ⊢`. Rewrite using `[hy, hz]`. Consider the case `tmul q m => simp [eM, eN]`.
+
+Establish `: ⇑((φ.baseChange BQ).lTensor k) = eN.symm ∘ (φ.lTensor Q.ResidueField) ∘ eM`. Use function extensionality and compare the values at `x`. Simplify using `[← key]`. Rewrite using `[this]`. Conclude with `eN.symm.bijective.comp (h.comp eM.bijective)`.
+-/
 theorem bijective_lTensor_baseChange_of_bijective {B M N : Type*} [CommRing B]
     [AddCommGroup M] [Module B M] [AddCommGroup N] [Module B N] (Q : Ideal B) [Q.IsPrime]
     (φ : M →ₗ[B] N) (h : Function.Bijective (φ.lTensor Q.ResidueField)) :
@@ -73,6 +96,9 @@ theorem bijective_lTensor_baseChange_of_bijective {B M N : Type*} [CommRing B]
   rw [this]
   exact eN.symm.bijective.comp (h.comp eM.bijective)
 
+/- English proof (translation)
+Establish `: ((map A A B BQ).restrictScalars C).comp (map A A C B) = map A A C BQ`. Apply `Derivation.liftKaehlerDifferential_unique` to reduce the goal to its premises. Use extensionality with `x`. Simplify using `[map_D, ← IsScalarTower.algebraMap_apply]`. Conclude with `LinearMap.congr_fun this ω`.
+-/
 theorem kaehler_map_map_apply (A C B BQ : Type) [CommRing A] [CommRing C] [CommRing B] [CommRing BQ] [Algebra A C] [Algebra A B] [Algebra C B] [IsScalarTower A C B]
    [Algebra B BQ] [Algebra A BQ] [Algebra C BQ] [IsScalarTower A B BQ] [IsScalarTower C B BQ] [IsScalarTower A C BQ] (ω : Ω[C⁄A]) :
     map A A B BQ (map A A C B ω) = map A A C BQ ω := by
@@ -82,6 +108,21 @@ theorem kaehler_map_map_apply (A C B BQ : Type) [CommRing A] [CommRing C] [CommR
     simp [map_D, ← IsScalarTower.algebraMap_apply]
   exact LinearMap.congr_fun this ω
 
+/- English proof (translation)
+Introduce `A C B _ _ _ _ _ _ _ _ _ Q _ h`. Set `BQ` to `Localization.AtPrime Q`. Set `φ` to `mapBaseChange A C B`. Establish `hψ₀ : Function.Bijective (φ.baseChange BQ)` using `bijective_of_bijective_lTensor_residueField _ (bijective_lTensor_baseChange_of_bijective Q φ h)`. Set `eM` to `AlgebraTensorModule.cancelBaseChange C B BQ BQ Ω[C⁄A]`.
+
+Establish `hbc : IsBaseChange BQ (map A A B BQ)` using `(isLocalizedModule_iff_isBaseChange Q.primeCompl BQ _).mp (isLocalizedModule_map A B BQ Q.primeCompl)`. Set `eN` to `hbc.equiv`. Establish `key : ∀ x, mapBaseChange A C BQ (eM x) = eN (φ.baseChange BQ x)`. Introduce `x`. Proceed by induction on `x using TensorProduct.induction_on with`.
+
+Consider the case `zero => simp`. Consider the case `add x y hx hy => simp only [map_add, hx, hy]`. Consider the case `tmul q y`. Proceed by induction on `y using TensorProduct.induction_on with`. Consider the case `zero => simp`.
+
+Consider the case `add y z hy hz => simp only [tmul_add, map_add] at hy hz ⊢`. Rewrite using `[hy, hz]`. Consider the case `tmul b ω`. Simplify using `only [eM, eN, φ, AlgebraTensorModule.cancelBaseChange_tmul, mapBaseChange_tmul, LinearMap.baseChange_tmul]`. Rewrite using `[IsBaseChange.equiv_tmul, map_smul, kaehler_map_map_apply, smul_assoc, smul_comm q b]`.
+
+Establish `hψ : Function.Bijective (mapBaseChange A C BQ)`. Establish `: ⇑(mapBaseChange A C BQ) = eN ∘ (φ.baseChange BQ) ∘ eM.symm`. Use function extensionality and compare the values at `x`. Simplify using `[← key]`. Rewrite using `[this]`.
+
+Conclude with `eN.bijective.comp (hψ₀.comp eM.symm.bijective)`. Use `haveI : Algebra.FormallySmooth B BQ := Algebra.FormallySmooth.of_isLocalization Q.primeCompl`. Use `haveI : Algebra.FormallySmooth A BQ := Algebra.FormallySmooth.comp A B BQ`. Use `haveI : Algebra.IsEtaleAt C Q := formallyEtale_of_bijective_mapBaseChange A C BQ hψ`. Use `haveI : Algebra.FinitePresentation C B := Algebra.FinitePresentation.of_restrict_scalars_finitePresentation A C B`.
+
+Conclude with `Algebra.exists_etale_of_isEtaleAt Q`.
+-/
 theorem exists_etale_away_of_bijective_mapBaseChange : ∀ (A C B : Type) [CommRing A] [CommRing C]
     [CommRing B] [Algebra A C] [Algebra A B] [Algebra C B] [IsScalarTower A C B] [Algebra.Smooth A C]
     [Algebra.Smooth A B] (Q : Ideal B) [Q.IsPrime],

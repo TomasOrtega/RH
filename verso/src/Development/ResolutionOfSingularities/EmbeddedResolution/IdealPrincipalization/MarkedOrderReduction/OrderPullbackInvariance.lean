@@ -24,6 +24,9 @@ def OrderAtPullbackInvariant (T : MarkedIdealWithBoundary.{u}) {Y : Scheme.{u}} 
     ∀ (A : B.IdealSheafData) (y : ↥Q),
       orderAt (A.comap q) y = orderAt A (q.base y)
 
+/- English proof (translation)
+Introduce `B b pB IB EB hB hcomm Q q p hpb A y`. Establish `: CharZero T.base` using `hB.charZero`. Establish `: AlgebraicGeometry.Smooth pB` using `hB.smooth`. Establish `: AlgebraicGeometry.Smooth q` using `MorphismProperty.IsStableUnderBaseChange.of_isPullback (P := @AlgebraicGeometry.Smooth) hpb.flip inferInstance`. Conclude with `orderAt_comap T.base pB q A y`.
+-/
 theorem orderAtPullbackInvariant_of_smooth (T : MarkedIdealWithBoundary.{u}) (_hT : T.IsAdmissible)
     {Y : Scheme.{u}} (g : Y ⟶ T.scheme) [AlgebraicGeometry.Smooth g] :
     OrderAtPullbackInvariant T g := by
@@ -35,6 +38,13 @@ theorem orderAtPullbackInvariant_of_smooth (T : MarkedIdealWithBoundary.{u}) (_h
       (P := @AlgebraicGeometry.Smooth) hpb.flip inferInstance
   exact orderAt_comap T.base pB q A y
 
+/- English proof (translation)
+Introduce `B b pB IB EB hB hcomm Q q p hpb A y`. Establish `hbig : IsPullback q (p ≫ pullback.snd T.structMap (specMapOfFieldHom T.base L f)) pB (specMapOfFieldHom T.base L f)`. Rewrite using `[← hcomm]`. Conclude with `hpb.paste_vert (IsPullback.of_hasPullback T.structMap (specMapOfFieldHom T.base L f))`. Establish `he : hbig.isoPullback.hom ≫ pullback.fst pB (specMapOfFieldHom T.base L f) = q` using `hbig.isoPullback_hom_fst`.
+
+Establish `: IsOpenImmersion hbig.isoPullback.hom` using `inferInstance`. Establish `hkey` using `hG.orderAt_baseChange (MarkedIdealWithBoundary.mk T.base B pB IB T.mult EB) hB L f A (hbig.isoPullback.hom.base y)`. Establish `hq : (pullback.fst pB (specMapOfFieldHom T.base L f)).base (hbig.isoPullback.hom.base y) = q.base y` using `congrArg (fun m : Q ⟶ B => m.base y) he`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[he]`.
+
+Use `_ = orderAt ((A.comap (pullback.fst pB (specMapOfFieldHom T.base L f))).comap hbig.isoPullback.hom) y := by`. Rewrite using `[Scheme.IdealSheafData.comap_comp]`. Use `_ = orderAt (A.comap (pullback.fst pB (specMapOfFieldHom T.base L f))) (hbig.isoPullback.hom.base y) := orderAt_comap_of_isOpenImmersion _ _ y`. Use `_ = orderAt A ((pullback.fst pB (specMapOfFieldHom T.base L f)).base (hbig.isoPullback.hom.base y)) := hkey`. Use `_ = orderAt A (q.base y) := by rw [hq]`.
+-/
 theorem orderAtPullbackInvariant_baseChange_field (hG : PrincipalizationGeometryHypotheses.{u}) (T : MarkedIdealWithBoundary.{u})
     (_hT : T.IsAdmissible) (L : Type u) [Field L] [CharZero L] (f : T.base →+* L) :
     OrderAtPullbackInvariant T (pullback.fst T.structMap (specMapOfFieldHom T.base L f)) := by

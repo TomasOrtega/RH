@@ -57,6 +57,13 @@ def subIso (e : M ≃+ M₁) (h1 : ∀ a : A, ∃ b : B, ∀ x, e (a • x) = b 
     · intro h y hy
       exact h hy
 
+/- English proof (translation)
+Set `e' : ↥p ≃+ ↥p₁` to `{ toFun := fun x => ⟨e x, (hp _).2 (by simp)⟩ invFun := fun y => ⟨e.symm y, (hp _).1 y.2⟩ left_inv := fun x => by simp right_inv := fun y => by simp map_add' := fun x y => by simp }`. Use `⟨QuotientAddGroup.congr (q.comap p.subtype).toAddSubgroup (q₁.comap p₁.subtype).toAddSubgroup e' ?_, fun a b hab z => ?_⟩` and prove the remaining obligations. Use extensionality with `y`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨x, hx, rfl⟩`.
+
+Express the relevant statement in the definitionally equal form `e x ∈ q₁`. Rewrite using `[hq, AddEquiv.symm_apply_apply]`. Conclude with `hx`. Introduce `hy`. Conclude with `⟨e'.symm y, (hq _).1 hy, e'.apply_symm_apply y⟩`.
+
+Take `⟨x, rfl⟩` from `Submodule.Quotient.mk_surjective _ z`. Express the relevant statement in the definitionally equal form `Submodule.Quotient.mk (e' (a • x)) = Submodule.Quotient.mk (b • e' x)`. Use `congr 1`. Conclude with `Subtype.ext (hab x)`.
+-/
 theorem exists_subquot (e : M ≃+ M₁) (p q : Submodule A M) (p₁ q₁ : Submodule B M₁)
     (hp : ∀ y, y ∈ p₁ ↔ e.symm y ∈ p) (hq : ∀ y, y ∈ q₁ ↔ e.symm y ∈ q) :
     ∃ f : (↥p ⧸ q.comap p.subtype) ≃+ (↥p₁ ⧸ q₁.comap p₁.subtype),
@@ -84,6 +91,17 @@ theorem exists_subquot (e : M ≃+ M₁) (p q : Submodule A M) (p₁ q₁ : Subm
 
 variable {N N₁ : Type} [AddCommGroup N] [Module A N] [AddCommGroup N₁] [Module B N₁]
 
+/- English proof (translation)
+Take `⟨s, t, s0, s1, t0, t1, c, hc⟩` from `h`. Set `o` to `subIso e (fun a => (h1 a).imp fun _ h => h.1) (fun a => (h2 a).imp fun _ h => h.1)`. Set `o'` to `subIso e' (fun a => (h1 a).imp fun _ h => h.2) (fun a => (h2 a).imp fun _ h => h.2)`. Set `s' : CompositionSeries (Submodule B M₁)` to `{ length := s.length toFun := fun i => o (s i) step := fun i => (apply_covBy_apply_iff o).mpr (s.step i) }`. Set `t' : CompositionSeries (Submodule B N₁)` to `{ length := t.length toFun := fun i => o' (t i) step := fun i => (apply_covBy_apply_iff o').mpr (t.step i) }`.
+
+Use `⟨s', t', ?_, ?_, ?_, ?_, c, fun i => ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `o s.head = ⊥`. Rewrite using `[s0, map_bot]`. Express the relevant statement in the definitionally equal form `o s.last = ⊤`. Rewrite using `[s1, map_top]`.
+
+Express the relevant statement in the definitionally equal form `o' t.head = ⊥`. Rewrite using `[t0, map_bot]`. Express the relevant statement in the definitionally equal form `o' t.last = ⊤`. Rewrite using `[t1, map_top]`. Take `⟨g⟩` from `hc i`.
+
+Take `⟨f, hf⟩` from `exists_subquot e (s i.succ) (s i.castSucc) (o (s i.succ)) (o (s i.castSucc)) (fun _ => Iff.rfl) (fun _ => Iff.rfl)`. Take `⟨f', hf'⟩` from `exists_subquot e' (t (c i).succ) (t (c i).castSucc) (o' (t (c i).succ)) (o' (t (c i).castSucc)) (fun _ => Iff.rfl) (fun _ => Iff.rfl)`. Use `⟨{ (f.symm.trans g.toAddEquiv).trans f' with map_smul' := fun b y => ?_ }⟩` and prove the remaining obligations. Take `⟨a, ha, ha'⟩` from `h2 b`. Take `⟨z, rfl⟩` from `f.surjective y`.
+
+Express the relevant statement in the definitionally equal form `f' (g (f.symm (b • f z))) = b • f' (g (f.symm (f z)))`. Rewrite using `[← hf a b ha, AddEquiv.symm_apply_apply, AddEquiv.symm_apply_apply, map_smul, hf' a b ha']`.
+-/
 theorem sameFactors_transfer (e : M ≃+ M₁) (e' : N ≃+ N₁)
     (h1 : ∀ a : A, ∃ b : B, (∀ x, e (a • x) = b • e x) ∧ ∀ x, e' (a • x) = b • e' x)
     (h2 : ∀ b : B, ∃ a : A, (∀ x, e (a • x) = b • e x) ∧ ∀ x, e' (a • x) = b • e' x)
@@ -119,6 +137,9 @@ theorem sameFactors_transfer (e : M ≃+ M₁) (e' : N ≃+ N₁)
     change f' (g (f.symm (b • f z))) = b • f' (g (f.symm (f z)))
     rw [← hf a b ha, AddEquiv.symm_apply_apply, AddEquiv.symm_apply_apply, map_smul, hf' a b ha']
 
+/- English proof (translation)
+Use `⟨sameFactors_transfer e e' h1 h2, sameFactors_transfer e.symm e'.symm (fun b => ?_) (fun a => ?_)⟩` and prove the remaining obligations. Take `⟨a, ha, ha'⟩` from `h2 b`. Conclude with `⟨a, fun x => by rw [AddEquiv.symm_apply_eq, ha, AddEquiv.apply_symm_apply], fun x => by rw [AddEquiv.symm_apply_eq, ha', AddEquiv.apply_symm_apply]⟩`. Take `⟨b, ha, ha'⟩` from `h1 a`. Conclude with `⟨b, fun x => by rw [AddEquiv.symm_apply_eq, ha, AddEquiv.apply_symm_apply], fun x => by rw [AddEquiv.symm_apply_eq, ha', AddEquiv.apply_symm_apply]⟩`.
+-/
 theorem sameFactors_iff (e : M ≃+ M₁) (e' : N ≃+ N₁)
     (h1 : ∀ a : A, ∃ b : B, (∀ x, e (a • x) = b • e x) ∧ ∀ x, e' (a • x) = b • e' x)
     (h2 : ∀ b : B, ∃ a : A, (∀ x, e (a • x) = b • e x) ∧ ∀ x, e' (a • x) = b • e' x) :
@@ -136,6 +157,11 @@ end Transfer
 section Reps
 variable {O k G : Type} [CommRing O] [CommRing k] [Algebra O k] [Group G]
 
+/- English proof (translation)
+Establish `h1 : ((MonoidAlgebra.single g a : MonoidAlgebra O G) • x : π.asModule) = (a • π g x : M)`. Express the relevant statement in the definitionally equal form `π.asAlgebraHom (MonoidAlgebra.single g a) x = _`. Simplify using the standard rewrite rules. Both sides reduce to the same expression. Establish `h2 : ((MonoidAlgebra.single g (algebraMap O k a) : MonoidAlgebra k G) • e x : τ.asModule) = (algebraMap O k a • τ g (e x) : W)`.
+
+Express the relevant statement in the definitionally equal form `τ.asAlgebraHom (MonoidAlgebra.single g _) (e x) = _`. Simplify using the standard rewrite rules. Both sides reduce to the same expression. Rewrite using `[h1, h2, hs]`. Conclude with `congrArg (fun y : W => algebraMap O k a • y) (hg g x)`.
+-/
 theorem single_smul_compat {M W : Type} [AddCommGroup M] [Module O M] [AddCommGroup W] [Module k W]
     (π : Representation O G M) (τ : Representation k G W) (e : π.asModule ≃+ τ.asModule)
     (hg : ∀ g (x : M), e (π g x) = τ g (e x))
@@ -154,6 +180,15 @@ theorem single_smul_compat {M W : Type} [AddCommGroup M] [Module O M] [AddCommGr
   rw [h1, h2, hs]
   exact congrArg (fun y : W => algebraMap O k a • y) (hg g x)
 
+/- English proof (translation)
+Set `E : π.asModule ≃+ τ.asModule` to `e`. Set `E' : π'.asModule ≃+ τ'.asModule` to `e'`. Use `sameFactors_iff E E' (fun a => ?_) (fun b => ?_)` and prove the remaining obligations. Proceed by induction on `a using MonoidAlgebra.induction_linear with`. Consider the case `zero => exact ⟨0, fun x => by simp, fun x => by simp⟩`.
+
+Consider the case `add a a' ha ha'`. Take `⟨b, h1, h2⟩` from `ha`. Take `⟨b', h3, h4⟩` from `ha'`. Conclude with `⟨b + b', fun x => by rw [add_smul, add_smul, map_add, h1, h3], fun x => by rw [add_smul, add_smul, map_add, h2, h4]⟩`. Consider the case `single g a => exact ⟨_, single_smul_compat π τ E hg hs g a, single_smul_compat π' τ' E' hg' hs' g a⟩`.
+
+Proceed by induction on `b using MonoidAlgebra.induction_linear with`. Consider the case `zero => exact ⟨0, fun x => by simp, fun x => by simp⟩`. Consider the case `add a a' ha ha'`. Take `⟨b, h1, h2⟩` from `ha`. Take `⟨b', h3, h4⟩` from `ha'`.
+
+Conclude with `⟨b + b', fun x => by rw [add_smul, add_smul, map_add, h1, h3], fun x => by rw [add_smul, add_smul, map_add, h2, h4]⟩`. Consider the case `single g b`. Take `⟨a, rfl⟩` from `hk b`. Conclude with `⟨_, single_smul_compat π τ E hg hs g a, single_smul_compat π' τ' E' hg' hs' g a⟩`.
+-/
 theorem sameSS_iff_of_surjective (hk : Function.Surjective (algebraMap O k))
     {M W M' W' : Type} [AddCommGroup M] [Module O M] [AddCommGroup W] [Module k W]
     [AddCommGroup M'] [Module O M'] [AddCommGroup W'] [Module k W']
@@ -189,6 +224,9 @@ end Reps
 section Field
 variable {k G : Type} [Field k] [Group G]
 
+/- English proof (translation)
+Introduce `Γ k _ _ a ρ ρ' h h' hc`. Take `⟨P, hP⟩` from `GlobalTheory.T.brauer_nesbitt_semisimple_matrix_representations a ((Units.coeHom _).comp ρ) ((Units.coeHom _).comp ρ') (fun W hW => (h W hW).imp fun _ h => ⟨h.2, h.1⟩) (fun W hW => (h' W hW).imp fun _ h => ⟨h.2, h.1⟩) hc`. Use `⟨P, fun g => ?_⟩` and prove the remaining obligations. Rewrite using `[eq_mul_inv_iff_mul_eq]`. Conclude with `Units.ext (hP g).symm`.
+-/
 theorem brauerNesbitt : GlobalTheory.ConstituentsCompare.BrauerNesbitt := by
   intro Γ k _ _ a ρ ρ' h h' hc
   obtain ⟨P, hP⟩ := GlobalTheory.T.brauer_nesbitt_semisimple_matrix_representations a ((Units.coeHom _).comp ρ) ((Units.coeHom _).comp ρ')
@@ -197,6 +235,9 @@ theorem brauerNesbitt : GlobalTheory.ConstituentsCompare.BrauerNesbitt := by
   rw [eq_mul_inv_iff_mul_eq]
   exact Units.ext (hP g).symm
 
+/- English proof (translation)
+The claim follows from `inferInstanceAs (FiniteDimensional k V) LinearMap.charpoly (ρ g) = GlobalTheory.ConsCompare.cpOn k (MonoidAlgebra.of k G g) ρ.asModule := by unfold GlobalTheory.ConsCompare.cpOn rw [← LinearEquiv.charpoly_conj ρ.asModuleEquiv] congr 1 ext v simp [LinearEquiv.conj_apply] rfl`.
+-/
 theorem charpoly_eq_cpOn {V : Type} [AddCommGroup V] [Module k V] [FiniteDimensional k V]
     (ρ : Representation k G V) (g : G) :
     haveI : FiniteDimensional k ρ.asModule := inferInstanceAs (FiniteDimensional k V)
@@ -208,6 +249,9 @@ theorem charpoly_eq_cpOn {V : Type} [AddCommGroup V] [Module k V] [FiniteDimensi
   simp [LinearEquiv.conj_apply]
   rfl
 
+/- English proof (translation)
+Use `⟨fun h g => ?_, fun h => GlobalTheory.ConsCompare.sameSS_of_charpoly_eq brauerNesbitt ρ σ h⟩` and prove the remaining obligations. Use `haveI : FiniteDimensional k ρ.asModule := inferInstanceAs (FiniteDimensional k V)`. Use `haveI : FiniteDimensional k σ.asModule := inferInstanceAs (FiniteDimensional k W)`. Rewrite using `[charpoly_eq_cpOn, charpoly_eq_cpOn]`. Conclude with `GlobalTheory.ConsCompare.cpOn_eq_of_sameFactors _ h`.
+-/
 theorem sameSS_iff_charpoly {V W : Type} [AddCommGroup V] [Module k V] [FiniteDimensional k V]
     [AddCommGroup W] [Module k W] [FiniteDimensional k W] (ρ : Representation k G V) (σ : Representation k G W) :
     SameSS ρ σ ↔ ∀ g, LinearMap.charpoly (ρ g) = LinearMap.charpoly (σ g) := by
@@ -224,6 +268,15 @@ variable {G LL O V : Type} [Group G] [Field LL] [CommRing O] [IsDomain O] [Algeb
   [AddCommGroup V] [Module LL V] [Module O V] [IsScalarTower O LL V] [FiniteDimensional LL V]
   {ρ : Representation LL G V}
 
+/- English proof (translation)
+Set `b` to `Module.Free.chooseBasis O L.T`. Establish `hli : LinearIndependent LL (L.T.subtype ∘ b)` using `(LinearIndependent.iff_fractionRing O LL).mp (b.linearIndependent.map' L.T.subtype L.T.ker_subtype)`. Establish `hsum : ∀ x : L.T, (x : V) = ∑ i, algebraMap O LL (b.repr x i) • (L.T.subtype ∘ b) i` using `fun x => by conv_lhs => rw [← b.sum_repr x]`. Simplify using `only [Submodule.coe_sum, Submodule.coe_smul, algebraMap_smul]`. Both sides reduce to the same expression.
+
+Establish `hsp : ⊤ ≤ Submodule.span LL (Set.range (L.T.subtype ∘ b))`. Rewrite using `[← L.span, Submodule.span_le]`. Introduce `x hx`. Rewrite using `[show x = _ from hsum ⟨x, hx⟩]`. Conclude with `Submodule.sum_mem _ fun i _ => Submodule.smul_mem _ _ (Submodule.subset_span ⟨i, rfl⟩)`.
+
+Set `B` to `Module.Basis.mk hli hsp`. Rewrite using `[← LinearMap.charpoly_toMatrix _ B, ← LinearMap.charpoly_toMatrix _ b, ← Matrix.charpoly_map]`. Use `congr 1`. Use extensionality with `i j`. Rewrite using `[Matrix.map_apply, LinearMap.toMatrix_apply, LinearMap.toMatrix_apply]`.
+
+Establish `: ρ g (B j) = ∑ i, algebraMap O LL (b.repr (latRep L g (b j)) i) • B i`. Simplify using `only [B, Module.Basis.mk_apply]`. Conclude with `hsum (latRep L g (b j))`. Rewrite using `[this, B.repr_sum_self]`.
+-/
 theorem charpoly_lattice (L : Lattice (O := O) ρ) [Module.Free O L.T] [Module.Finite O L.T] (g : G) :
     LinearMap.charpoly (ρ g) = (LinearMap.charpoly (latRep L g)).map (algebraMap O LL) := by
   classical
@@ -255,6 +308,9 @@ def bcRep {O G M : Type} (k : Type) [CommRing O] [CommRing k] [Algebra O k] [Gro
     (π : Representation O G M) : Representation k G (k ⊗[O] M) :=
   (Module.End.baseChangeHom O k M).toMonoidHom.comp π
 
+/- English proof (translation)
+Use `((sameSS_iff_of_surjective hk α (bcRep k π) e.toAddEquiv he (fun a x => by rw [algebraMap_smul]; exact map_smul e a x) α' (bcRep k π') e'.toAddEquiv he' (fun a x => by rw [algebraMap_smul]; exact map_smul e' a x)).trans (sameSS_iff_charpoly _ _)).trans ?_` and prove the remaining obligations. Use `forall_congr' fun g => ?_` and prove the remaining obligations. Rewrite using `[← LinearMap.charpoly_baseChange, ← LinearMap.charpoly_baseChange]`. Both sides reduce to the same expression.
+-/
 theorem sameSS_iff_map_charpoly {O k G M M' N N' : Type} [CommRing O] [Nontrivial O] [Field k] [Algebra O k]
     (hk : Function.Surjective (algebraMap O k)) [Group G] [AddCommGroup M] [Module O M]
     [Module.Free O M] [Module.Finite O M] [AddCommGroup M'] [Module O M'] [Module.Free O M'] [Module.Finite O M']
@@ -271,6 +327,9 @@ theorem sameSS_iff_map_charpoly {O k G M M' N N' : Type} [CommRing O] [Nontrivia
   rw [← LinearMap.charpoly_baseChange, ← LinearMap.charpoly_baseChange]
   rfl
 
+/- English proof (translation)
+Take `⟨x, rfl⟩` from `Submodule.Quotient.mk_surjective _ x`. Conclude with `QuotSMulTop.equivQuotTensor_naturality_mk c (α g) x`.
+-/
 theorem equivQuotTensor_modRep {O G N : Type} [CommRing O] [Group G] [AddCommGroup N] [Module O N]
     (α : Representation O G N) (c : O) (g : G) (x : QuotSMulTop c N) :
     QuotSMulTop.equivQuotTensor c N (modRep α c g x) =
@@ -278,6 +337,11 @@ theorem equivQuotTensor_modRep {O G N : Type} [CommRing O] [Group G] [AddCommGro
   obtain ⟨x, rfl⟩ := Submodule.Quotient.mk_surjective _ x
   exact QuotSMulTop.equivQuotTensor_naturality_mk c (α g) x
 
+/- English proof (translation)
+Use `letI := Ideal.Quotient.field (Ideal.span {c})`. Use `(sameSS_iff_map_charpoly (k := O ⧸ Ideal.span {c}) Ideal.Quotient.mk_surjective π π' _ _ (QuotSMulTop.equivQuotTensor c M) (QuotSMulTop.equivQuotTensor c M') (equivQuotTensor_modRep π c) (equivQuotTensor_modRep π' c)).trans ?_` and prove the remaining obligations. Use `forall_congr' fun g => ?_` and prove the remaining obligations. Rewrite using `[← sub_eq_zero, ← Polynomial.map_sub, Polynomial.ext_iff]`. Use `forall_congr' fun j => ?_` and prove the remaining obligations.
+
+Rewrite using `[Polynomial.coeff_map, Polynomial.coeff_zero, ← Ideal.mem_span_singleton]`. Conclude with `Ideal.Quotient.eq_zero_iff_mem`.
+-/
 theorem sameSS_modRep_iff {O G M M' : Type} [CommRing O] [Nontrivial O] [Group G] [AddCommGroup M] [Module O M]
     [Module.Free O M] [Module.Finite O M] [AddCommGroup M'] [Module O M'] [Module.Free O M'] [Module.Finite O M']
     (π : Representation O G M) (π' : Representation O G M') (c : O) (hc : (Ideal.span {c}).IsMaximal) :

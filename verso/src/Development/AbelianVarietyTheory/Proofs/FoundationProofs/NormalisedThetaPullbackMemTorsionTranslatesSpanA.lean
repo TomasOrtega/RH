@@ -12,6 +12,11 @@ open scoped BigOperators
 
 namespace GlobalTheory.ThetaConj
 
+/- English proof (translation)
+Take `⟨-, -, hP, -, -⟩` from `GlobalTheory.OnCoord.coords_of_orthonormal_basis D hG cc δ N N' r b hb`. Unfold `U U1 pullB Hf`. Rewrite using `[Finset.prod_mul_distrib, ← Complex.exp_sum, hP, hP]`. Use `congr 1`. Conclude with `Finset.prod_congr rfl fun j _ => by rw [coordB_add]`.
+
+Use `congr 1`. Simplify using `only [Finset.sum_div, Finset.mul_sum, ← Finset.sum_sub_distrib]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Simplify using `only [tor0]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem U_pullB_eq_prod (D : D7) (hG : admG1 D) (cc : Ideal (𝓞 D.host.K)) (δ : ℂ) {N N' r : ℕ}
     (b : Fin r → Matrix (Fin N') (Fin N) D.host.E) (hb : OnB D b) (g : ℂ → ℂ) (t z : VC D N N') :
     U D (tor0 D cc δ) t (pullB D (tor0 D cc δ) b g) z =
@@ -27,6 +32,15 @@ theorem U_pullB_eq_prod (D : D7) (hG : admG1 D) (cc : Ideal (𝓞 D.host.K)) (δ
     simp only [tor0]
     ring
 
+/- English proof (translation)
+Establish `hG : admG1 D` using `(GlobalTheory.InducedType.induced_type D).1`. Establish `hgood` using `isTraceCompatibleTorusEmbedding_standardTorus D hG cc δ`. Take `⟨-, -, -, hL, -⟩` from `GlobalTheory.OnCoord.coords_of_orthonormal_basis D hG cc δ N N' r b hb`. Use `set t : VC D N N' := ∑ j, (fun _ : Fin r => t0) j • embV D (tor0 D cc δ) (b j) with htdef`. Establish `hco : ∀ j, coordB D (tor0 D cc δ) b j t = t0` using `fun j => hgood.coordB_sum hb.1 _ j`.
+
+Establish `h2 : (2 : ℕ) • t ∈ LaB D (tor0 D cc δ) b`. Rewrite using `[hL]`. Introduce `k`. Rewrite using `[two_nsmul, coordB_add, hco, ← two_mul]`. Conclude with `ht.1`.
+
+Establish `hq : U1 (lamOf D cc δ) t0 (sgStar (lamOf D cc δ)) 0 ∈ Qbar`. Use `(GlobalTheory.T.forall_use1 D cc δ hc).1 t0 ⟨2, two_pos, by exact_mod_cast ht.1⟩ 0` as an intermediate fact. Simplify `this` using `[coef1]`. Establish `hmem : U D (tor0 D cc δ) t (pullB D (tor0 D cc δ) b (sgStar (lamOf D cc δ))) ∈ Tr D (tor0 D cc δ) b` using `Submodule.subset_span ⟨t, ⟨2, two_pos, h2⟩, rfl⟩`. Use `Submodule.smul_mem _ (⟨(U1 (lamOf D cc δ) t0 (sgStar (lamOf D cc δ)) 0)⁻¹ ^ r, pow_mem (inv_mem hq) r⟩ : Qbar) hmem` as an intermediate fact.
+
+Use `this using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `z`. Express the relevant statement in the definitionally equal form `_ = (U1 (lamOf D cc δ) t0 (sgStar (lamOf D cc δ)) 0)⁻¹ ^ r * U D (tor0 D cc δ) t (pullB D (tor0 D cc δ) b (sgStar (lamOf D cc δ))) z`. Rewrite using `[U_pullB_eq_prod D hG cc δ b hb]`. Simplify using `only [hco, pullB, GL3Theta.th0, div_eq_inv_mul, Finset.prod_mul_distrib, Finset.prod_const, Finset.card_univ, Fintype.card_fin]`.
+-/
 theorem normalisedThetaPullback_mem_torsionTranslatesSpan (D : D7) (cc : Ideal (𝓞 D.host.K)) (δ : ℂ) (hc : Crv D cc δ) (t0 : ℂ)
     (ht : GL3Theta.IsTwoTorsionPointUnkilled D (lamOf D cc δ) t0) (N N' r : ℕ)
     (b : Fin r → Matrix (Fin N') (Fin N) D.host.E) (hb : OnB D b) :

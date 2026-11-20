@@ -3,6 +3,13 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.CommutativeAlgebra
 
 open NumberField IsDedekindDomain Formalism.ConjugateSelfDual ReciprocityTheory.Gal Module UpperTheory.V UpperTheory.V.X
 
+/- English proof (translation)
+Set `b` to `Module.finBasis k M`. Establish `hset : (ρ.ker : Set Γ) = ⋂ i, {g | ρ g (b i) = b i}`. Use extensionality with `g`. Simplify using `only [SetLike.mem_coe, MonoidHom.mem_ker, Set.mem_iInter, Set.mem_setOf_eq]`. Prove the components needed by the constructor for the conclusion.
+
+Introduce `hg i`. Rewrite using `[hg]`. Both sides reduce to the same expression. Introduce `hg`. Conclude with `b.ext fun i => by simpa using hg i`.
+
+Rewrite using `[hset]`. Apply `isOpen_iInter_of_finite` to reduce the goal to its premises. Introduce `i`. Establish `hc : Continuous fun g : Γ => ρ g (b i)` using `(show Continuous fun p : Γ × M => ρ p.1 p.2 from h).comp (continuous_id.prodMk continuous_const)`. Conclude with `hc.isOpen_preimage {b i} (isOpen_discrete _)`.
+-/
 private theorem ker_open {k Γ M : Type} [Field k] [Group Γ] [TopologicalSpace Γ] [AddCommGroup M] [Module k M]
     [Module.Finite k M] [TopologicalSpace M] [DiscreteTopology M] (ρ : Representation k Γ M) (h : ContAction ρ) :
     IsOpen (ρ.ker : Set Γ) := by
@@ -23,6 +30,15 @@ private theorem ker_open {k Γ M : Type} [Field k] [Group Γ] [TopologicalSpace 
     (show Continuous fun p : Γ × M => ρ p.1 p.2 from h).comp (continuous_id.prodMk continuous_const)
   exact hc.isOpen_preimage {b i} (isOpen_discrete _)
 
+/- English proof (translation)
+Establish `hB : (B1 ρ).FG` using `by show (LinearMap.range (d0 ρ)).FG`. Rewrite using `[LinearMap.range_eq_map]`. Conclude with `(Module.Finite.fg_top).map _`. Use `haveI : IsNoetherian k ↥(B1 ρ) := isNoetherian_of_fg_of_noetherian _ hB`. Establish `hK : (Submodule.comap (Z1 ρ).subtype (B1 ρ)).FG` using `Submodule.fg_of_fg_map_injective (Z1 ρ).subtype Subtype.val_injective (Submodule.FG.of_le_of_isNoetherian (Submodule.map_comap_le _ _))`.
+
+Establish `hZ : (⊤ : Submodule k ↥(Z1 ρ)).FG`. Apply `Submodule.fg_of_fg_map_of_fg_inf_ker (Submodule.mkQ (Submodule.comap (Z1 ρ).subtype (B1 ρ)))` to reduce the goal to its premises. Conclude with `IsNoetherian.noetherian _`. Rewrite using `[top_inf_eq, Submodule.ker_mkQ]`. Conclude with `hK`.
+
+Use `haveI : Module.Finite k ↥(Z1 ρ) := ⟨hZ⟩`. Establish `hZ1 : (Z1 ρ).FG` using `Module.Finite.iff_fg.mp inferInstance`. Establish `hP : ((Z1 ρ).prod (⊤ : Submodule k (F.T → M))).FG` using `hZ1.prod Module.Finite.fg_top`. Use `haveI := isNoetherian_of_fg_of_noetherian _ hP`. Establish `hle : F.H1c ρ ≤ (Z1 ρ).prod ⊤`.
+
+Introduce and unpack `x ⟨hlc, hcoc, -, -, -⟩`. Conclude with `⟨⟨hlc.continuous, hcoc⟩, trivial⟩`. Conclude with `Module.Finite.iff_fg.mpr (Submodule.FG.of_le_of_isNoetherian hle)`.
+-/
 private theorem finite_compactly_supported_H1 {k Γ M : Type} [Field k] [Group Γ] [TopologicalSpace Γ] [AddCommGroup M] [Module k M]
     [Module.Finite k M] [TopologicalSpace M] [DiscreteTopology M] (F : Alg.Frame Γ) (ρ : Representation k Γ M)
     [Module.Finite k (H1 ρ)] : Module.Finite k (F.H1c ρ) := by
@@ -48,6 +64,11 @@ private theorem finite_compactly_supported_H1 {k Γ M : Type} [Field k] [Group �
     exact ⟨⟨hlc.continuous, hcoc⟩, trivial⟩
   exact Module.Finite.iff_fg.mpr (Submodule.FG.of_le_of_isNoetherian hle)
 
+/- English proof (translation)
+Introduce `k Γ M _ _ _ _ _ _ _ _ _ F ρ hc hN hH`. Use `⟨finite_compactly_supported_H1 F ρ, ?_⟩` and prove the remaining obligations. Establish `e` using `Alg.finrank_compact_support_H1 k Γ M ρ (ker_open ρ hc) F hN hH`. Establish `hs : finrank k ↥(selF F ρ) = finrank k ↥(Sha1 ρ F.φ F.hφ ⊓ Sel ρ F.ψ F.hψ fun q => H1ur (ρ.comp (F.ψ q)) (F.N q))` using `rfl`. Rewrite using `[hs]`.
+
+Use linear arithmetic over natural numbers and integers.
+-/
 theorem UpperTheory.V.X.framed_h1_euler_formula :
     ∀ {k Γ M : Type} [Field k] [Group Γ] [TopologicalSpace Γ] [IsTopologicalGroup Γ] [AddCommGroup M] [Module k M] [Module.Finite k M] [TopologicalSpace M] [DiscreteTopology M] (F : Alg.Frame Γ) (ρ : Representation k Γ M), ContAction ρ → (∀ q, ∀ n ∈ F.N q, ρ (F.ψ q n) = 1) → Module.Finite k (H1 ρ) → Module.Finite k (F.H1c ρ) ∧ finrank k (F.H1c ρ) + finrank k (H0 ρ) = finrank k (selF F ρ) + ∑ v, finrank k (H0 (ρ.comp (F.φ v))) := by
   intro k Γ M _ _ _ _ _ _ _ _ _ F ρ hc hN hH

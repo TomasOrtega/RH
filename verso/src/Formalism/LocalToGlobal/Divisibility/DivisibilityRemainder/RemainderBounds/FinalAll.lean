@@ -10,6 +10,11 @@ open Formalism.BasicNotions Formalism.BasicNotions.DV Formalism.MainNotions Form
 
 namespace Formalism.L2.DIV.RestAll
 
+/- English proof (translation)
+Establish `hf` using `Formalism.L2.DIV.FunSharpTop.closed_funSharp_thr 𝒜 sel selS selP selDH selC selB hRB hPA hDivG rRows Formalism.L2.DIV.SlopeMaxB.EbMu Formalism.MainNotions.DIV.HookProducts.Row4C.EcHH`. Establish `hh : Closed (D3 3 𝒜) fun Fm CH => ∀ _ : D3 3 𝒜 Fm, Formalism.MainNotions.TuSize Fm → Formalism.MainNotions.DGamSize Fm → LocalQuadraticParts.ComplementTwoFamily Fm → DIVinN Fm → LocalQuadraticParts.FrameNumberBoundFamily Fm Fm.Csz CH` using `(tie.and ((Formalism.L2.DIV.LinkGCl.linkG_frame 𝒜 sel).and hf)).imp fun Fm CH _ h hc hTu hDG c2 hN => by`. Take `⟨CF0, hL, he⟩` from `h.2.2 hc hTu hDG`. Establish `hE` using `Formalism.L2.DIV.LvlWire.lvlF_of_ties Fm h.1 hTu`. Establish `hrk` using `Formalism.L2.DIV.LvlWire.muRank_of_lvl Fm (by norm_num : (0 : ℝ) < 3) (Formalism.L2.DIV.LvlWire.proviso_of_working_class Fm hc) hE hTu`.
+
+Establish `lMu` using `Formalism.SlopeId.linkMu_of_full Fm hTu hDG (Formalism.L2.DIV.LvlWire.nuFullF_of_lvl Fm hE) hrk`. Conclude with `Formalism.L2.DIV.LvlWire.hh_of_lvl Fm CH Formalism.L2.DIV.SlopeMaxB.EbMu CF0 hL hE hTu hrk (h.2.1 hc hTu hDG) lMu c2 (Formalism.L2.DIV.SlopeMaxB.boundB_of_sel (sel Fm (d3_a hc)) hTu) (he hN)`. Establish `br` using `Formalism.L2.DIV.RatFullFam.buRat_rrFull_closed 𝒜 sel selS selP selDH selC selB hPA hDivG hDcPtG rRows`. Conclude with `(hh.and br).imp fun Fm _ _ h hc hT hD => show RemainingDivisionBounds Fm Cabs _ from { hh := h.1 hc hT hD, bu := (h.2 hc hT hD).1, rr := (h.2 hc hT hD).2, la := Formalism.L2.DIV.Wire.la_of Fm }`.
+-/
 theorem bRest_all (𝒜 : FamClass) (Cabs : ℝ)
     (sel : Formalism.L2.TSel 𝒜)
     (selS : SelS 𝒜 sel)

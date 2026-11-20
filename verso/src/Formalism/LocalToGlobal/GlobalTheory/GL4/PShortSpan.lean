@@ -16,6 +16,13 @@ def ShortSpan (S : HSpace E) (q : ℕ) (ρ : ℝ) : Prop :=
   ∀ L : Submodule (𝓞 E) S.V, Submodule.IsLattice E L → LatT S q L →
     Submodule.span E {x | x ∈ L ∧ meanAbs (S.hT x x) ≤ ρ} = ⊤
 
+/- English proof (translation)
+Introduce `L hL hq`. Use `set s : Set S.V := {x | x ∈ L ∧ meanAbs (S.hT x x) ≤ ρ} with hs`. Take `⟨t, hts, htsp, hti⟩` from `exists_linearIndependent E s`. Establish `htop : ⊤ ≤ Submodule.span E (Set.range ((↑) : t → S.V))`. Rewrite using `[Subtype.range_coe, htsp, hs, h L hL hq]`.
+
+Set `B : Module.Basis t E S.V` to `Module.Basis.mk hti htop`. Set `b : Module.Basis (Fin S.rank) E S.V` to `B.reindex (B.indexEquiv S.frame)`. Establish `hb : ∀ c, b c ∈ s` using `fun c ↦ by`. Simplify using `only [b, Module.Basis.reindex_apply, B, Module.Basis.mk_apply]`. Conclude with `hts (Subtype.prop _)`.
+
+Conclude with `⟨b, fun c ↦ (hb c).1, fun c ↦ (hb c).2⟩`.
+-/
 theorem shortFrame_of_span (S : HSpace E) (q : ℕ) (ρ : ℝ) (h : ShortSpan S q ρ) : ShortFrame S q ρ := by
   intro L hL hq
   set s : Set S.V := {x | x ∈ L ∧ meanAbs (S.hT x x) ≤ ρ} with hs

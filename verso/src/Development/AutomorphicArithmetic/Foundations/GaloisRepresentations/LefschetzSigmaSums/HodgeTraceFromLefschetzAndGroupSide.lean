@@ -18,6 +18,9 @@ open scoped Classical
 
 namespace UpperTheory.Gal.LocalSmoothExtension
 
+/- English proof (translation)
+Use `IsPullback.of_bot (v₂₁ := pullback.snd p g) (v₂₂ := p) (h₃₁ := g) ?_ (bcMap_fst g f h).symm (IsPullback.of_hasPullback p g)` and prove the remaining obligations. Rewrite using `[bcMap_snd, h]`. Conclude with `IsPullback.of_hasPullback q g`.
+-/
 theorem isPullback_bcMap {B B' X Y : Scheme.{0}} (g : B ⟶ B') {p : X ⟶ B'} {q : Y ⟶ B'} (f : Y ⟶ X) (h : f ≫ p = q) :
     IsPullback (pullback.fst q g) (bcMap g f h) f (pullback.fst p g) := by
   refine IsPullback.of_bot (v₂₁ := pullback.snd p g) (v₂₂ := p) (h₃₁ := g) ?_ (bcMap_fst g f h).symm (IsPullback.of_hasPullback p g)
@@ -77,6 +80,9 @@ abbrev qAt (T : KS L gb k) (N : Lv p) : T.X.Z (T.lev N) ⟶ Sp ℂ := T.X.q (T.l
 def al (T : KS L gb k) (N : Lv p) (α : Fin k → 𝓞 D.F) : T.X.Z (T.lev N) ⟶ T.X.Z (T.lev N) :=
   (T.e N).hom ≫ (GlobalTheory.KS.matEnd (T.M N).univ.act (diagO D α)).left ≫ (T.e N).inv
 
+/- English proof (translation)
+Establish `h` using `T.e_q N`. Rewrite using `[al, qAt, Category.assoc, Category.assoc]`. Use `conv_lhs => rw [← h]`. Rewrite using `[Iso.inv_hom_id_assoc, ← Category.assoc (GlobalTheory.KS.matEnd (T.M N).univ.act (diagO D α)).left, Over.w, h]`.
+-/
 theorem al_q (T : KS L gb k) (N : Lv p) (α : Fin k → 𝓞 D.F) : al T N α ≫ qAt T N = qAt T N := by
   have h := T.e_q N
   rw [al, qAt, Category.assoc, Category.assoc]
@@ -92,6 +98,9 @@ def cutD (T : KS L gb k) (N : Lv p) (c : (Fin k → 𝓞 D.F) →₀ ℂ) (a b :
 def leg (T : KS L gb k) (N' N : Lv p) (h : G.GAf) (b : T.X.admitted (T.lev N') (T.lev N) h) (α : Fin k → 𝓞 D.F) :
     T.X.Z (T.lev N') ⟶ T.X.Z (T.lev N) := T.X.tr _ _ h b.1 b.2 ≫ al T N α
 
+/- English proof (translation)
+Rewrite using `[leg, Category.assoc, al_q, qAt, T.X.tr_q]`.
+-/
 theorem leg_q (T : KS L gb k) (N' N : Lv p) (h : G.GAf) (b : T.X.admitted (T.lev N') (T.lev N) h) (α : Fin k → 𝓞 D.F) :
     leg T N' N h b α ≫ qAt T N = qAt T N' := by
   rw [leg, Category.assoc, al_q, qAt, T.X.tr_q]

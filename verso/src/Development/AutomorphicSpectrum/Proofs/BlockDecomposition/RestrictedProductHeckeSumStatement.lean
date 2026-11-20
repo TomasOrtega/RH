@@ -15,6 +15,9 @@ open scoped Classical
 open GlobalTheory.CompanionTheory.FinActS
 
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.CompanionTheory.FinActSum.sum_formula | exact GlobalTheory.CompanionTheory.FinActSum.sum_formula | (intros; apply GlobalTheory.CompanionTheory.FinActSum.sum_formula <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.restricted_product_hecke_sum : ∀ {ι Γ : Type} [Group Γ] {Hl : ι → Type} [∀ i, Group (Hl i)] (p : ∀ i, Γ →* Hl i) (e : ∀ i, Hl i →* Γ) (KH V : ∀ i, Subgroup (Hl i)) (f : ∀ i, Hl i → ℂ)
     (hpe : ∀ i m, p i (e i m) = m) (hpe' : ∀ i j m, i ≠ j → p j (e i m) = 1)
     (hsep : ∀ x y : Γ, (∀ i, p i x = p i y) → x = y)

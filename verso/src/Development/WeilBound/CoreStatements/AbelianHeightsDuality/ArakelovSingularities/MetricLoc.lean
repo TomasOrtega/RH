@@ -14,6 +14,23 @@ namespace GlobalTheory.AmbMetric
 
 variable {k : Type} [CommRing k]
 
+/- English proof (translation)
+Take `⟨W, ι, _, g, F, O, h₁, h₂, h₃, h₄, h₅⟩` from `hf`. Establish `hu₀ : x₀.1 (IsLocalRing.closedPoint ℂ) ∈ W` using `mem_ptsIn.1 h₁`. Take `⟨U, hU, hiu, -⟩` from `exists_isAffineOpen_mem_and_subset (X := P) (x := i (x₀.1 (IsLocalRing.closedPoint ℂ))) (U := ⊤) trivial`. Establish `hU' : IsAffineOpen (i ⁻¹ᵁ U)` using `hU.preimage i`. Take `⟨h, hhV, hxh⟩` from `hU'.exists_basicOpen_le (V := W ⊓ i ⁻¹ᵁ U) ⟨x₀.1 (IsLocalRing.closedPoint ℂ), ⟨hu₀, hiu⟩⟩ hiu`.
+
+Take `⟨H, hH⟩` from `i.app_surjective U hU h`. Establish `hUa : IsAffineOpen (P.basicOpen H)` using `hU.basicOpen H`. Establish `hpre : i ⁻¹ᵁ P.basicOpen H = X.basicOpen h`. Rewrite using `[Scheme.preimage_basicOpen]`. Conclude with `congrArg X.basicOpen hH`.
+
+Establish `hle : i ⁻¹ᵁ P.basicOpen H ≤ W` using `hpre.le.trans (hhV.trans inf_le_left)`. Use `choose G hG using fun a => i.app_surjective (P.basicOpen H) hUa (resG X hle (g a))`. Establish `hmem (x : CxPts p σ) : PtsOver.map i hi (spMap σ) x ∈ ptsIn q σ (P.basicOpen H) ↔ x ∈ ptsIn p σ (i ⁻¹ᵁ P.basicOpen H)`. Rewrite using `[mem_ptsIn, mem_ptsIn]`. Both sides reduce to the same expression.
+
+Establish `hev (x : CxPts p σ) (hx : PtsOver.map i hi (spMap σ) x ∈ ptsIn q σ (P.basicOpen H)) (a : ι) : ev q σ (P.basicOpen H) (G a) (PtsOver.map i hi (spMap σ) x) = ev p σ W (g a) x`. Rewrite using `[← ev_app i hi (P.basicOpen H) (G a) x]`. Establish `e : (i.app (P.basicOpen H)) (G a) = resG X hle (g a)` using `hG a`. Rewrite using `[e, ev_res hle ((hmem x).1 hx)]`. Establish `hemb` using `PtsOver.isClosedEmbedding_map (C := ℂ) i hi (spMap σ)`.
+
+Establish `hN : {x | f x = F fun a => ev p σ W (g a) x} ∈ 𝓝 x₀` using `h₅`. Rewrite `hN` using `[hemb.isInducing.nhds_eq_comap]`. Take `⟨t, ht, hts⟩` from `Filter.mem_comap.1 hN`. Take `⟨V', hV't, hV'o, hx₀V'⟩` from `mem_nhds_iff.1 ht`. Establish `hcont : ContinuousOn (fun y (a : ι) => ev q σ (P.basicOpen H) (G a) y) (ptsIn q σ (P.basicOpen H))` using `continuousOn_pi.2 fun a => continuousOn_ev (G a)`.
+
+Use `⟨V' ∩ (ptsIn q σ (P.basicOpen H) ∩ (fun y (a : ι) => ev q σ (P.basicOpen H) (G a) y) ⁻¹' O), fun y => F fun a => ev q σ (P.basicOpen H) (G a) y, hV'o.inter (hcont.isOpen_inter_preimage (isOpen_ptsIn _) h₂), ?_, ?_, ?_⟩` and prove the remaining obligations. Establish `hx₀ : PtsOver.map i hi (spMap σ) x₀ ∈ ptsIn q σ (P.basicOpen H)`. Rewrite using `[hmem, mem_ptsIn, hpre]`. Conclude with `hxh`. Use `⟨hx₀V', hx₀, ?_⟩` and prove the remaining obligations.
+
+Simplify using `only [Set.mem_preimage, hev x₀ hx₀]`. Conclude with `h₃`. Introduce and unpack `y ⟨-, hy₁, hy₂⟩`. Conclude with `⟨P.basicOpen H, ι, inferInstance, G, F, O, hy₁, h₂, hy₂, h₄, EventuallyEq.rfl⟩`. Introduce and unpack `x ⟨hx₁, hx₂, -⟩`.
+
+Establish `e : f x = F fun a => ev p σ W (g a) x` using `hts (hV't hx₁)`. Rewrite using `[e]`. Conclude with `congrArg F (funext fun a => hev x hx₂ a)`.
+-/
 theorem exists_local_ext {P X : Scheme.{0}} {q : P ⟶ Sp k} {p : X ⟶ Sp k} (i : X ⟶ P) [IsClosedImmersion i]
     (hi : i ≫ q = p) {σ : k →+* ℂ} (f : CxPts p σ → ℝ) (x₀ : CxPts p σ) (hf : CInfAt f x₀) :
     ∃ (V : Set (CxPts q σ)) (θ : CxPts q σ → ℝ), IsOpen V ∧ PtsOver.map i hi (spMap σ) x₀ ∈ V ∧

@@ -17,6 +17,11 @@ def red {E : Type} [Field E] [NumberField E] {n : ℕ} (M : ℕ) (A : Matrix (Fi
     Fin n → Fin n → (𝓞 E ⧸ Ideal.span {(M : 𝓞 E)}) := fun i j =>
   if h : IsIntegral ℤ (A i j) then Ideal.Quotient.mk _ ⟨A i j, h⟩ else 0
 
+/- English proof (translation)
+Introduce `i j`. Establish `e` using `congrFun (congrFun h i) j`. Simplify using `only [red, dif_pos (hA i j), dif_pos (hB i j)] at e`. Take `⟨b, hb⟩` from `Ideal.mem_span_singleton'.1 (Ideal.Quotient.eq.1 e)`. Use `clear e`.
+
+Use `⟨b, RingOfIntegers.isIntegral_coe b, ?_⟩` and prove the remaining obligations. Use `congrArg (fun z : 𝓞 E => (z : E)) hb` as an intermediate fact. Simplify using `only [map_mul, map_natCast, map_sub] at this`. Rewrite using `[Matrix.sub_apply, mul_comm]`. Conclude with `this.symm`.
+-/
 theorem sub_of_red {E : Type} [Field E] [NumberField E] {n : ℕ} (M : ℕ) {A B : Matrix (Fin n) (Fin n) E}
     (hA : ∀ i j, IsIntegral ℤ (A i j)) (hB : ∀ i j, IsIntegral ℤ (B i j)) (h : red M A = red M B) :
     ∀ i j, ∃ b : E, IsIntegral ℤ b ∧ (A - B) i j = (M : E) * b := by
@@ -31,6 +36,11 @@ theorem sub_of_red {E : Type} [Field E] [NumberField E] {n : ℕ} (M : ℕ) {A B
   rw [Matrix.sub_apply, mul_comm]
   exact this.symm
 
+/- English proof (translation)
+Introduce `i j`. Use `choose b hb hb' using hD`. Use `⟨∑ k, C i k * b k j, IsIntegral.sum _ fun k _ => (hC i k).mul (hb k j), ?_⟩` and prove the remaining obligations. Rewrite using `[Matrix.mul_apply, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[hb' k j]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem mul_cong {E : Type} [Field E] [NumberField E] {n : ℕ} (M : ℕ) {C D : Matrix (Fin n) (Fin n) E}
     (hC : ∀ i j, IsIntegral ℤ (C i j)) (hD : ∀ i j, ∃ b : E, IsIntegral ℤ b ∧ D i j = (M : E) * b) :
     ∀ i j, ∃ a : E, IsIntegral ℤ a ∧ (C * D) i j = (M : E) * a := by
@@ -41,6 +51,9 @@ theorem mul_cong {E : Type} [Field E] [NumberField E] {n : ℕ} (M : ℕ) {C D :
   refine Finset.sum_congr rfl fun k _ => ?_
   rw [hb' k j]; ring
 
+/- English proof (translation)
+Establish `ho` using `I.topf_open 1 le_rfl`. Use `Filter.mem_of_superset (ho.mem_nhds ?_) fun x hx => hx.1` and prove the remaining obligations. Use `⟨(Formalism.UG.stabGL _).one_mem, fun y hy => ⟨0, Submodule.zero_mem _, by simp⟩⟩` and prove the remaining obligations.
+-/
 theorem kset_nhds (I : AutInst) : I.Kset ∈ 𝓝 (1 : I.Gf) := by
   have ho := I.topf_open 1 le_rfl
   refine Filter.mem_of_superset (ho.mem_nhds ?_) fun x hx => hx.1
@@ -54,12 +67,20 @@ def fp (I : AutInst) (γ : GL (Fin I.n) I.E) (hγ : γ ∈ Formalism.UG.UJ (star
   ⟨Formalism.UG.bc (Formalism.UG.inclE (F := I.F) (Af I.F)) γ,
     Formalism.UG.Final.RatPtsLe I.F I.E (Fin I.n) I.cm.sig I.J (Af I.F) (Subgroup.mem_map_of_mem _ hγ)⟩
 
+/- English proof (translation)
+Apply `Subtype.ext` to reduce the goal to its premises. Simplify using `[fp, map_mul, map_inv]`.
+-/
 theorem fp_mul (I : AutInst) {γ δ : GL (Fin I.n) I.E} (hγ : γ ∈ Formalism.UG.UJ (starRingEnd I.E) I.J)
     (hδ : δ ∈ Formalism.UG.UJ (starRingEnd I.E) I.J) :
     fp I (γ⁻¹ * δ) (mul_mem (inv_mem hγ) hδ) = (fp I γ hγ)⁻¹ * fp I δ hδ := by
   apply Subtype.ext
   simp [fp, map_mul, map_inv]
 
+/- English proof (translation)
+Establish `h2 : A.map (I.φ v) = B.map (I.φ v)`. Use `congrArg (fun X => I.P v * X * (I.P v)⁻¹) h` as an intermediate fact. Establish `hp` using `Formalism.MainNotions.LeviCoordinates.rrg_P_mul_inv I v`. Simplify using `only [← Matrix.mul_assoc, hp, Matrix.one_mul] at this`. Simplify `this` using `only [Matrix.mul_assoc, hp, Matrix.mul_one]`.
+
+Use extensionality with `i j`. Conclude with `(I.φ v).injective (congrFun (congrFun h2 i) j)`.
+-/
 theorem eq_of_real (I : AutInst) (v : InfinitePlace I.F) {A B : Matrix (Fin I.n) (Fin I.n) I.E}
     (h : (I.P v)⁻¹ * A.map (I.φ v) * I.P v = (I.P v)⁻¹ * B.map (I.φ v) * I.P v) : A = B := by
   have h2 : A.map (I.φ v) = B.map (I.φ v) := by
@@ -74,6 +95,25 @@ end GlobalTheory.IntUnitCpt
 
 namespace GlobalTheory.IntUnitCpt
 
+/- English proof (translation)
+Introduce `I`. Take `⟨M, hM, hcong⟩` from `CompanionTheory.D.gk.RF.congruence_subgroup_compact_open I I.Kset (kset_nhds I)`. Set `T : Set (GL (Fin I.n) I.E)` to `{γ | γ ∈ Formalism.UG.UJ (starRingEnd I.E) I.J ∧ (∀ i j, IsIntegral ℤ ((γ : Matrix (Fin I.n) (Fin I.n) I.E) i j)) ∧ ∀ i j, IsIntegral ℤ (((γ⁻¹ : GL (Fin I.n) I.E) : Matrix (Fin I.n) (Fin I.n) I.E) i j)}`. Use `haveI : Finite (𝓞 I.E ⧸ Ideal.span {(M : 𝓞 I.E)}) := Ideal.finiteQuotientOfFreeOfNeBot _ (by`. Rewrite using `[Ne, Ideal.span_singleton_eq_bot]`.
+
+Conclude with `(Nat.one_le_iff_ne_zero.1 hM))` after adjusting the coercions. Set `Kq : (Fin I.n → Fin I.n → (𝓞 I.E ⧸ Ideal.span {(M : 𝓞 I.E)})) → Set I.Gf` to `fun q => if h : ∃ γ, γ ∈ T ∧ red M (γ : Matrix (Fin I.n) (Fin I.n) I.E) = q then (fun k => fp I h.choose h.choose_spec.1.1 * k) '' I.Kset else ∅`. Use `⟨⋃ q, Kq q, isCompact_iUnion fun q => ?_, fun γ hγ hi hi' => ?_⟩` and prove the remaining obligations. Simplify using `only [Kq] split_ifs`. Conclude with `(Formalism.L2.SG.Closed.AutKCompact_holds I).image (continuous_const_mul _)`.
+
+Conclude with `isCompact_empty`. Establish `hex : ∃ γ', γ' ∈ T ∧ red M (γ' : Matrix (Fin I.n) (Fin I.n) I.E) = red M (γ : Matrix (Fin I.n) (Fin I.n) I.E)` using `⟨γ, ⟨hγ, hi, hi'⟩, rfl⟩`. Use `⟨(fun v => Formalism.L2.S.S7.DensRat.ratReal I γ hγ v, fp I γ hγ), ⟨γ, hγ, fun v => rfl, rfl⟩, Set.mem_iUnion.2 ⟨red M (γ : Matrix (Fin I.n) (Fin I.n) I.E), ?_⟩, fun v => rfl⟩` and prove the remaining obligations. Simplify using `only [Kq, dif_pos hex]`. Take `⟨hT', hr⟩` from `hex.choose_spec`.
+
+Use `set γ' := hex.choose with hγ'def`. Use `⟨(fp I γ' hT'.1)⁻¹ * fp I γ hγ, ?_, mul_inv_cancel_left _ _⟩` and prove the remaining obligations. Establish `hδ : γ'⁻¹ * γ ∈ Formalism.UG.UJ (starRingEnd I.E) I.J` using `mul_mem (inv_mem hT'.1) hγ`. Establish `hsub` using `sub_of_red M hT'.2.1 hi hr`. Establish `c1 : CompanionTheory.D.gk.RF.Cong I M ((γ'⁻¹ * γ : GL (Fin I.n) I.E) : Matrix (Fin I.n) (Fin I.n) I.E)`.
+
+Establish `e : ((γ'⁻¹ * γ : GL (Fin I.n) I.E) : Matrix (Fin I.n) (Fin I.n) I.E) - 1 = ((γ'⁻¹ : GL (Fin I.n) I.E) : Matrix (Fin I.n) (Fin I.n) I.E) * ((γ : Matrix (Fin I.n) (Fin I.n) I.E) - (γ' : Matrix (Fin I.n) (Fin I.n) I.E))`. Rewrite using `[Matrix.mul_sub, Units.val_mul, ← Units.val_mul γ'⁻¹ γ', inv_mul_cancel, Units.val_one]`. Introduce `i j`. Rewrite using `[e]`. Use `mul_cong M hT'.2.2 (fun k l => ?_) i j` and prove the remaining obligations.
+
+Take `⟨b, hb, hb'⟩` from `hsub k l`. Conclude with `⟨-b, hb.neg, by rw [Matrix.sub_apply] at hb' ⊢; rw [← neg_sub, hb']; ring⟩`. Establish `c2 : CompanionTheory.D.gk.RF.Cong I M (((γ'⁻¹ * γ)⁻¹ : GL (Fin I.n) I.E) : Matrix (Fin I.n) (Fin I.n) I.E)`. Establish `e : (((γ'⁻¹ * γ)⁻¹ : GL (Fin I.n) I.E) : Matrix (Fin I.n) (Fin I.n) I.E) - 1 = ((γ⁻¹ : GL (Fin I.n) I.E) : Matrix (Fin I.n) (Fin I.n) I.E) * ((γ' : Matrix (Fin I.n) (Fin I.n) I.E) - (γ : Matrix (Fin I.n) (Fin I.n) I.E))`. Rewrite using `[_root_.mul_inv_rev, inv_inv, Matrix.mul_sub, Units.val_mul, ← Units.val_mul γ⁻¹ γ, inv_mul_cancel, Units.val_one]`.
+
+Introduce `i j`. Rewrite using `[e]`. Use `mul_cong M hi' (fun k l => ?_) i j` and prove the remaining obligations. Take `⟨b, hb, hb'⟩` from `hsub k l`. Conclude with `⟨b, hb, by rw [Matrix.sub_apply] at hb' ⊢; exact hb'⟩`.
+
+Take `⟨x, hxK, γ₀, hγ₀, hreal, hfin⟩` from `hcong (fun v => Formalism.L2.S.S7.DensRat.ratReal I (γ'⁻¹ * γ) hδ v) ⟨γ'⁻¹ * γ, ⟨hδ, c1, c2⟩, fun v => rfl⟩`. Take `⟨v⟩` from `(inferInstance : Nonempty (InfinitePlace I.F))`. Establish `h0 : γ₀ = γ'⁻¹ * γ` using `Units.ext (eq_of_real I v (hreal v).symm)`. Establish `hx : x = fp I (γ'⁻¹ * γ) hδ`. Apply `Subtype.ext` to reduce the goal to its premises.
+
+Apply `Units.ext` to reduce the goal to its premises. Conclude with `hfin.trans (by rw [h0]; rfl)`. Rewrite using `[← fp_mul I hT'.1 hγ, ← hx]`. Conclude with `hxK`.
+-/
 theorem intUnit_compact : ∀ I : AutInst, ∃ K : Set I.Gf, IsCompact K ∧ ∀ γ : GL (Fin I.n) I.E,
     γ ∈ Formalism.UG.UJ (starRingEnd I.E) I.J → (∀ i j, IsIntegral ℤ ((γ : Matrix (Fin I.n) (Fin I.n) I.E) i j)) →
     (∀ i j, IsIntegral ℤ (((γ⁻¹ : GL (Fin I.n) I.E) : Matrix (Fin I.n) (Fin I.n) I.E) i j)) →

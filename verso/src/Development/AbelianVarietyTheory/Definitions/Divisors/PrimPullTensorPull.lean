@@ -39,11 +39,20 @@ variable {C : Type} [CommRing C] {n : ℕ}
 def comp (X : DRChain.{u} C n) : ∀ i : Fin (n + 1), X.M 0 →ₗ[C] X.M i :=
   Fin.induction LinearMap.id (fun i h ↦ X.f i ∘ₗ h)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem comp_zero (X : DRChain.{u} C n) : X.comp 0 = LinearMap.id := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem comp_succ (X : DRChain.{u} C n) (i : Fin n) :
     X.comp i.succ = X.f i ∘ₗ X.comp i.castSucc := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem comp_eq_chainComp (X : DRChain.{0} C n) : X.comp = chainComp X.f := rfl
 
 def ofLMPoint {ϖ : C} [NeZero n] (P : LMPoint C ϖ n) : DRChain.{0} C n where
@@ -61,19 +70,31 @@ namespace GlobalTheory.DeRham
 variable {C : Type} [CommRing C] {O : Type} [Ring O]
   {B B' B'' : Over (Sp C)} [GrpObj B] [GrpObj B'] [GrpObj B'']
 
+/- English proof (translation)
+The claim follows from `LinearMap.ext fun c ↦ (GrpMor.pull_pull (homMor (dp0 C) (𝟙 _) g) (homMor (dp0 C) (𝟙 _) f) (homMor (dp0 C) (𝟙 _) (f ≫ g)) (fun _ ↦ rfl) rfl c).symm`.
+-/
 theorem primPull_comp (f : B ⟶ B') (g : B' ⟶ B'') [IsMonHom f] [IsMonHom g] :
     primPull (dp0 C) (𝟙 _) (f ≫ g) = primPull (dp0 C) (𝟙 _) f ∘ₗ primPull (dp0 C) (𝟙 _) g :=
   LinearMap.ext fun c ↦ (GrpMor.pull_pull (homMor (dp0 C) (𝟙 _) g) (homMor (dp0 C) (𝟙 _) f)
     (homMor (dp0 C) (𝟙 _) (f ≫ g)) (fun _ ↦ rfl) rfl c).symm
 
+/- English proof (translation)
+Substitute `e` using the available equality. Both sides reduce to the same expression.
+-/
 theorem primPull_congr {f g : B ⟶ B'} [IsMonHom f] [IsMonHom g] (e : f = g) :
     primPull (dp0 C) (𝟙 _) f = primPull (dp0 C) (𝟙 _) g := by
   subst e; rfl
 
+/- English proof (translation)
+The claim follows from `LinearMap.ext fun c ↦ Subtype.ext (c.2 B f g)`.
+-/
 theorem primPull_mul (f g : B ⟶ B') [IsMonHom f] [IsMonHom g] [IsMonHom (f * g)] :
     primPull (dp0 C) (𝟙 _) (f * g) = primPull (dp0 C) (𝟙 _) f + primPull (dp0 C) (𝟙 _) g :=
   LinearMap.ext fun c ↦ Subtype.ext (c.2 B f g)
 
+/- English proof (translation)
+The claim follows from `LinearMap.ext fun c ↦ Subtype.ext (IsMor.pullCohomologyOne_id _ c.1)`.
+-/
 theorem primPull_id : primPull (dp0 C) (𝟙 _) (𝟙 B) = LinearMap.id :=
   LinearMap.ext fun c ↦ Subtype.ext (IsMor.pullCohomologyOne_id _ c.1)
 
@@ -83,12 +104,18 @@ def opPull (ρ : RingAct B O) (x : O) : Module.End C (primDR B) :=
   haveI := ρ.hom x
   primPull (dp0 C) (𝟙 _) (ρ.act x)
 
+/- English proof (translation)
+Use `haveI := ρ.hom`. Establish `e : ρ.act (x + y) = ρ.act x * ρ.act y` using `ρ.map_add x y`. Use `haveI : IsMonHom (ρ.act x * ρ.act y) := e ▸ ρ.hom _`. Conclude with `(primPull_congr e).trans (primPull_mul _ _)`.
+-/
 theorem opPull_add (ρ : RingAct B O) (x y : O) : opPull ρ (x + y) = opPull ρ x + opPull ρ y := by
   haveI := ρ.hom
   have e : ρ.act (x + y) = ρ.act x * ρ.act y := ρ.map_add x y
   haveI : IsMonHom (ρ.act x * ρ.act y) := e ▸ ρ.hom _
   exact (primPull_congr e).trans (primPull_mul _ _)
 
+/- English proof (translation)
+Use `haveI := ρ.hom`. Conclude with `(primPull_congr ρ.map_one).trans primPull_id`.
+-/
 theorem opPull_one (ρ : RingAct B O) : opPull ρ 1 = 1 := by
   haveI := ρ.hom
   exact (primPull_congr ρ.map_one).trans primPull_id
@@ -105,6 +132,9 @@ def tensorPull (ρ : RingAct B O) : C ⊗[ℤ] O →ₗ[ℤ] Module.End C (primD
       change c • opPullHom ρ (k • x) = k • (c • opPullHom ρ x)
       rw [map_zsmul, smul_comm]))
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem tensorPull_tmul (ρ : RingAct B O) (c : C) (x : O) :
     tensorPull ρ (c ⊗ₜ x) = c • opPull ρ x := rfl
 
@@ -112,6 +142,9 @@ def eigSub (ρ : RingAct B O) {K : Type} [CommRing K] [Algebra K O] (χ : K →+
     Submodule C (primDR B) :=
   ⨅ x : K, LinearMap.ker (opPull ρ (algebraMap K O x) - χ x • (1 : Module.End C (primDR B)))
 
+/- English proof (translation)
+Simplify using `[eigSub, Submodule.mem_iInf, sub_eq_zero]`.
+-/
 theorem mem_eigSub {ρ : RingAct B O} {K : Type} [CommRing K] [Algebra K O] {χ : K →+* C}
     {h : primDR B} : h ∈ eigSub ρ χ ↔ ∀ x, opPull ρ (algebraMap K O x) h = χ x • h := by
   simp [eigSub, Submodule.mem_iInf, sub_eq_zero]
@@ -120,6 +153,9 @@ def epsPart (ρ : RingAct B O) {K : Type} [CommRing K] [Algebra K O] (χ : K →
     Submodule C (primDR B) :=
   eigSub ρ χ ⊓ LinearMap.range (tensorPull ρ ε)
 
+/- English proof (translation)
+The claim follows from `hu.hom primPull (dp0 C) (𝟙 _) u ∘ₗ opPull ρ x = opPull ρ' x ∘ₗ primPull (dp0 C) (𝟙 _) u := by haveI := hu.hom haveI := ρ.hom haveI := ρ'.hom unfold opPull rw [← primPull_comp, ← primPull_comp] exact primPull_congr (hu.comm x).symm`.
+-/
 theorem primPull_opPull {ρ : RingAct B O} {ρ' : RingAct B' O} {u : B' ⟶ B}
     (hu : GlobalTheory.IwLevel.IsLin ρ' ρ u) (x : O) :
     haveI := hu.hom
@@ -131,6 +167,9 @@ theorem primPull_opPull {ρ : RingAct B O} {ρ' : RingAct B' O} {u : B' ⟶ B}
   rw [← primPull_comp, ← primPull_comp]
   exact primPull_congr (hu.comm x).symm
 
+/- English proof (translation)
+The claim follows from `hu.hom primPull (dp0 C) (𝟙 _) u ∘ₗ tensorPull ρ z = tensorPull ρ' z ∘ₗ primPull (dp0 C) (𝟙 _) u := by haveI := hu.hom induction z using TensorProduct.induction_on with | zero => simp | tmul c x => rw [tensorPull_tmul, tensorPull_tmul, LinearMap.comp_smul, LinearMap.smul_comp, pri …`.
+-/
 theorem primPull_tensorPull {ρ : RingAct B O} {ρ' : RingAct B' O} {u : B' ⟶ B}
     (hu : GlobalTheory.IwLevel.IsLin ρ' ρ u) (z : C ⊗[ℤ] O) :
     haveI := hu.hom
@@ -155,6 +194,9 @@ def pullPart {ρ : RingAct B O} {ρ' : RingAct B' O} {K : Type} [CommRing K] [Al
       rw [← hy]
       exact (LinearMap.congr_fun (primPull_tensorPull hu ε) y).symm
 
+/- English proof (translation)
+The claim follows from `hu.hom (pullPart χ ε u hu h : primDR B') = primPull (dp0 C) (𝟙 _) u h := rfl`.
+-/
 theorem pullPart_apply {ρ : RingAct B O} {ρ' : RingAct B' O} {K : Type} [CommRing K] [Algebra K O]
     (χ : K →+* C) (ε : C ⊗[ℤ] O) (u : B' ⟶ B) (hu : GlobalTheory.IwLevel.IsLin ρ' ρ u) (h : epsPart ρ χ ε) :
     haveI := hu.hom
@@ -172,6 +214,9 @@ variable {C : Type} [CommRing C] {A : Over (Sp C)} [GrpObj A] [IsCommMonObj A] {
 def close (i : Fin (n + 1)) {a : O} (ha : a ∈ 𝔴) : X.B i ⟶ A :=
   (X.existsUnique_close i ha).exists.choose
 
+/- English proof (translation)
+The claim follows from `(X.existsUnique_close i ha).exists.choose_spec`.
+-/
 theorem π_close (i : Fin (n + 1)) {a : O} (ha : a ∈ 𝔴) : X.π i ≫ X.close i ha = ρ.act a :=
   (X.existsUnique_close i ha).exists.choose_spec
 
@@ -193,6 +238,11 @@ instance close_isMonHom (i : Fin (n + 1)) {a : O} (ha : a ∈ 𝔴) : IsMonHom (
       _ = (X.π i ⊗ₘ X.π i) ≫ (X.close i ha ⊗ₘ X.close i ha) ≫ μ := by
           rw [← Category.assoc, tensorHom_comp_tensorHom, e]
 
+/- English proof (translation)
+Use `⟨X.close_isMonHom i ha, fun x ↦ ?_⟩` and prove the remaining obligations. Establish `h` using `X.π_deg i`. Use `h.flat` as an intermediate fact. Use `h.surj` as an intermediate fact. Use `haveI := GlobalTheory.FlatQuotient.epi_of_flat_surjective (X.π i)`.
+
+Rewrite using `[← cancel_epi (X.π i), ← Category.assoc, ← (X.π_lin i).comm, Category.assoc, X.π_close, ← Category.assoc, X.π_close, ← ρ.map_mul, ← ρ.map_mul, hc]`.
+-/
 theorem close_isLin (i : Fin (n + 1)) {a : O} (ha : a ∈ 𝔴) (hc : ∀ x, a * x = x * a) :
     IsLin (X.act i) ρ (X.close i ha) := by
   refine ⟨X.close_isMonHom i ha, fun x ↦ ?_⟩
@@ -203,6 +253,9 @@ theorem close_isLin (i : Fin (n + 1)) {a : O} (ha : a ∈ 𝔴) (hc : ∀ x, a *
   rw [← cancel_epi (X.π i), ← Category.assoc, ← (X.π_lin i).comm, Category.assoc, X.π_close,
     ← Category.assoc, X.π_close, ← ρ.map_mul, ← ρ.map_mul, hc]
 
+/- English proof (translation)
+Substitute `h` using the available equality. Simplify using `using IsLin.id (X.act i)`.
+-/
 theorem isLin_eqToHom {i j : Fin (n + 1)} (h : i = j) :
     IsLin (X.act i) (X.act j) (eqToHom (congrArg X.B h)) := by
   subst h
@@ -212,6 +265,9 @@ def stepRev (j : Fin n) : X.B (Fin.rev j.succ) ⟶ X.B (Fin.rev j.castSucc) :=
   eqToHom (congrArg X.B (Fin.rev_succ j)) ≫ X.φ (Fin.rev j) ≫
     eqToHom (congrArg X.B (Fin.rev_castSucc j).symm)
 
+/- English proof (translation)
+The claim follows from `(X.isLin_eqToHom (Fin.rev_succ j)).comp ((X.φ_lin _).comp (X.isLin_eqToHom (Fin.rev_castSucc j).symm))`.
+-/
 theorem stepRev_isLin (j : Fin n) : IsLin (X.act _) (X.act _) (X.stepRev j) :=
   (X.isLin_eqToHom (Fin.rev_succ j)).comp ((X.φ_lin _).comp (X.isLin_eqToHom (Fin.rev_castSucc j).symm))
 
@@ -219,6 +275,9 @@ def closeRev {a : O} (ha : a ∈ 𝔴) : X.B (Fin.rev 0) ⟶ X.B (Fin.rev (Fin.l
   eqToHom (congrArg X.B (Fin.rev_zero n)) ≫ X.close (Fin.last n) ha ≫ X.π 0 ≫
     eqToHom (congrArg X.B (Fin.rev_last n).symm)
 
+/- English proof (translation)
+The claim follows from `(X.isLin_eqToHom (Fin.rev_zero n)).comp ((X.close_isLin _ ha hc).comp (X.π_zero_lin.comp (X.isLin_eqToHom (Fin.rev_last n).symm)))`.
+-/
 theorem closeRev_isLin {a : O} (ha : a ∈ 𝔴) (hc : ∀ x, a * x = x * a) :
     IsLin (X.act _) (X.act _) (X.closeRev ha) :=
   (X.isLin_eqToHom (Fin.rev_zero n)).comp ((X.close_isLin _ ha hc).comp
@@ -267,8 +326,16 @@ open GlobalTheory.SSG
 
 variable {C : Type} [CommRing C]
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 example (n : ℕ) [NeZero n] : (DRChain.ofLMPoint (LMPoint.worst (C := C) n)).g = LinearMap.id := rfl
 
+/- English proof (translation)
+Rewrite using `[show (Fin.last 1 : Fin 2) = (0 : Fin 1).succ from rfl, DRChain.comp_succ]`. Express the relevant statement in the definitionally equal form `stdStep (0 : C) (0 : Fin 1) (fun _ ↦ 1) = 0`. Use function extensionality and compare the values at `j`. Use `fin_cases j`. Simplify using `only [stdStep, LinearMap.coe_mk, AddHom.coe_mk]`.
+
+Simplify using the standard rewrite rules.
+-/
 example : (DRChain.ofLMPoint (LMPoint.worst (C := C) 1)).comp (Fin.last 1) (fun _ ↦ 1) = 0 := by
   rw [show (Fin.last 1 : Fin 2) = (0 : Fin 1).succ from rfl, DRChain.comp_succ]
   change stdStep (0 : C) (0 : Fin 1) (fun _ ↦ 1) = 0
@@ -277,6 +344,9 @@ example : (DRChain.ofLMPoint (LMPoint.worst (C := C) 1)).comp (Fin.last 1) (fun 
   simp only [stdStep, LinearMap.coe_mk, AddHom.coe_mk]
   simp
 
+/- English proof (translation)
+Rewrite using `[GlobalTheory.DeRham.tensorPull_tmul, GlobalTheory.DeRham.opPull_one, one_smul]`.
+-/
 example {O : Type} [Ring O] {B : Over (Sp C)} [GrpObj B] [IsCommMonObj B] (ρ : RingAct B O) :
     GlobalTheory.DeRham.tensorPull ρ (1 ⊗ₜ 1) = 1 := by
   rw [GlobalTheory.DeRham.tensorPull_tmul, GlobalTheory.DeRham.opPull_one, one_smul]
@@ -290,10 +360,16 @@ open GlobalTheory.UPel.HT GlobalTheory.IwLevel
 variable {p : ℕ} [Fact p.Prime] {D : Datum p} {R : Type} [CommRing R] {b : Base D R} {N : ℕ}
   {C : Type} [CommRing C] {σ : R →+* C}
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 example {o : Obj b N (spMap σ)} {w : Ideal (𝓞 D.F)} (c : HTIw o w) (i : Fin D.a) (ε : C ⊗[ℤ] D.O)
     {a : 𝓞 D.F} (ha : a ∈ w) (j : Fin (D.n + 1)) :
     (c.drChain i ε ha).M j = GlobalTheory.DeRham.epsPart (c.act (Fin.rev j)) (σ.comp (b.t i)) ε := rfl
 
+/- English proof (translation)
+The claim follows from `(Chain.stepRev_isLin c j).hom ((show GlobalTheory.DeRham.epsPart (c.act (Fin.rev j.succ)) (σ.comp (b.t i)) ε from (c.drChain i ε ha).f j h) : GlobalTheory.DeRham.primDR (c.B (Fin.rev j.succ))) = GlobalTheory.DeRham.primPull (GlobalTheory.Cris.dp0 C) (𝟙 _) (Chain.stepRev c j) (h : …`.
+-/
 example {o : Obj b N (spMap σ)} {w : Ideal (𝓞 D.F)} (c : HTIw o w) (i : Fin D.a) (ε : C ⊗[ℤ] D.O)
     {a : 𝓞 D.F} (ha : a ∈ w) (j : Fin D.n)
     (h : GlobalTheory.DeRham.epsPart (c.act (Fin.rev j.castSucc)) (σ.comp (b.t i)) ε) :

@@ -7,6 +7,9 @@ namespace GroundTheory.Heights₂.Heights.IndefiniteRowSideFullHecke.ComplexSets
 
 open IsLocalRing
 
+/- English proof (translation)
+The claim follows from `_root_.UpperTheory.Reformulated.B.Qe31.proof`.
+-/
 theorem LocalGeneratorsClearDenominators.proof : LocalGeneratorsClearDenominators.Statement :=
   _root_.UpperTheory.Reformulated.B.Qe31.proof
 

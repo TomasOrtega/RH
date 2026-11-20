@@ -15,18 +15,42 @@ open Classical in
 def Fx {I : Type} (f : X I → ℂ) (w : I → ℂ) : ℂ :=
   if h : ∀ v, (w v).im ≠ 0 then f (fun v => ⟨w v, h v⟩) else 0
 
+/- English proof (translation)
+Rewrite using `[Fx, dif_pos h]`.
+-/
 theorem Fx_eq {I : Type} (f : X I → ℂ) {w : I → ℂ} (h : ∀ v, (w v).im ≠ 0) :
     Fx f w = f (fun v => ⟨w v, h v⟩) := by
   rw [Fx, dif_pos h]
 
+/- English proof (translation)
+The claim follows from `Fx_eq f (fun v => (z v).2)`.
+-/
 theorem Fx_val {I : Type} (f : X I → ℂ) (z : X I) : Fx f (fun v => (z v).1) = f z :=
   Fx_eq f (fun v => (z v).2)
 
+/- English proof (translation)
+Rewrite using `[Set.ofPred_forall]`. Conclude with `isOpen_iInter_of_finite fun v => isOpen_ne_fun (Complex.continuous_im.comp (continuous_apply v)) continuous_const`.
+-/
 theorem isOpen_U (I : Type) [Finite I] : IsOpen {w : I → ℂ | ∀ v, (w v).im ≠ 0} := by
   rw [Set.ofPred_forall]
   exact isOpen_iInter_of_finite fun v =>
     isOpen_ne_fun (Complex.continuous_im.comp (continuous_apply v)) continuous_const
 
+/- English proof (translation)
+Take `⟨hc, hh⟩` from `hf`. Use `hO I _ (isOpen_U I) (Fx f) ?_ ?_` and prove the remaining obligations. Rewrite using `[continuousOn_iff_continuous_domRestrict]`. Establish `e : Set.domRestrict {w : I → ℂ | ∀ v, (w v).im ≠ 0} (Fx f) = fun w => f (fun v => ⟨w.1 v, w.2 v⟩)`. Use function extensionality and compare the values at `w`.
+
+Conclude with `Fx_eq f w.2`. Rewrite using `[e]`. Use `hc.comp (continuous_pi fun v => ?_)` and prove the remaining obligations. Conclude with `Continuous.subtype_mk ((continuous_apply v).comp continuous_subtype_val) _`. Introduce `w hw v`.
+
+Establish `hw' : ∀ u, (w u).im ≠ 0` using `hw`. Set `z : X I` to `fun u => ⟨w u, hw' u⟩`. Establish `hd` using `hh z v`. Establish `hopen : IsOpen {t : ℂ | t.im ≠ 0}` using `isOpen_ne_fun Complex.continuous_im continuous_const`. Establish `hmem : {t : ℂ | t.im ≠ 0} ∈ nhds (w v)` using `hopen.mem_nhds (hw' v)`.
+
+Use `(DifferentiableOn.differentiableAt hd hmem).congr_of_eventuallyEq ?_` and prove the remaining obligations. Use `filter_upwards [hmem] with t ht`. Establish `ht' : t.im ≠ 0` using `ht`. Establish `hu : ∀ u, (Function.update w v t u).im ≠ 0`. Introduce `u`.
+
+Distinguish the cases in `huv : u = v`. Substitute `huv` using the available equality. Simplify using `using ht'`. Simplify `hw' u` using `[Function.update_of_ne huv]`. Rewrite using `[Fx_eq f hu]`.
+
+Unfold `ext1`. Rewrite using `[dif_pos ht']`. Use `congr 1`. Use function extensionality and compare the values at `u`. Apply `Subtype.ext` to reduce the goal to its premises.
+
+Conclude with `(Function.apply_update (fun _ (p : P) => p.1) z v ⟨t, ht'⟩ u).symm`.
+-/
 theorem analytic_Fx (hO : Osg) {I : Type} [Fintype I] (f : X I → ℂ) (hf : SepHol f) :
     AnalyticOnNhd ℂ (Fx f) {w : I → ℂ | ∀ v, (w v).im ≠ 0} := by
   classical
@@ -70,15 +94,26 @@ def dt (M : Matrix (Fin 2) (Fin 2) ℝ) : ℝ := M 0 0 * M 1 1 - M 0 1 * M 1 0
 
 def jj (k : ℕ) (M : Matrix (Fin 2) (Fin 2) ℝ) : ℂ := dn M ^ k * ((|dt M| ^ (-(k : ℝ) / 2) : ℝ) : ℂ)
 
+/- English proof (translation)
+Rewrite using `[coe_smul, div_eq_mul_inv]`. Both sides reduce to the same expression.
+-/
 theorem smul_iP (g : GL (Fin 2) ℝ) : (g • iP).1 = nm g.val * (dn g.val)⁻¹ := by
   rw [coe_smul, div_eq_mul_inv]
   rfl
 
+/- English proof (translation)
+Unfold `j1 jj dt`. Rewrite using `[det_eq]`. Both sides reduce to the same expression.
+-/
 theorem automorphy_factor_at_i_eq (k : ℕ) (g : GL (Fin 2) ℝ) : j1 k g iP = jj k g.val := by
   unfold j1 jj dt
   rw [det_eq]
   rfl
 
+/- English proof (translation)
+Introduce `e`. Establish `h1` using `congrArg Complex.re e`. Establish `h2` using `congrArg Complex.im e`. Simplify using `[dn] at h1 h2`. Apply `h` to reduce the goal to its premises.
+
+Simplify using `[dt, h1, h2]`.
+-/
 theorem dn_ne {M : Matrix (Fin 2) (Fin 2) ℝ} (h : dt M ≠ 0) : dn M ≠ 0 := by
   intro e
   have h1 := congrArg Complex.re e
@@ -87,6 +122,13 @@ theorem dn_ne {M : Matrix (Fin 2) (Fin 2) ℝ} (h : dt M ≠ 0) : dn M ≠ 0 := 
   apply h
   simp [dt, h1, h2]
 
+/- English proof (translation)
+Establish `hC : ∀ i j, ContDiffAt ℝ ∞ (fun m => ((M m i j : ℝ) : ℂ)) m0` using `fun i j => Complex.ofRealCLM.contDiff.contDiffAt.comp m0 (hM i j)`. Establish `hdn : ContDiffAt ℝ ∞ (fun m => dn (M m)) m0`. Unfold `dn`. Conclude with `((hC 1 0).mul contDiffAt_const).add (hC 1 1)`. Establish `hnm : ContDiffAt ℝ ∞ (fun m => nm (M m)) m0`.
+
+Unfold `nm`. Conclude with `((hC 0 0).mul contDiffAt_const).add (hC 0 1)`. Establish `hdt : ContDiffAt ℝ ∞ (fun m => dt (M m)) m0`. Unfold `dt`. Conclude with `((hM 0 0).mul (hM 1 1)).sub ((hM 0 1).mul (hM 1 0))`.
+
+Use `⟨hnm.mul (hdn.inv (dn_ne h0)), ?_⟩` and prove the remaining obligations. Unfold `jj`. Conclude with `(hdn.pow k).mul (Complex.ofRealCLM.contDiff.contDiffAt.comp m0 ((hdt.abs h0).rpow_const_of_ne (p := -(k : ℝ) / 2) (abs_ne_zero.2 h0)))`.
+-/
 theorem cd_parts {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E] (M : E → Matrix (Fin 2) (Fin 2) ℝ) (m0 : E)
     (hM : ∀ i j, ContDiffAt ℝ ∞ (fun m => M m i j) m0) (h0 : dt (M m0) ≠ 0) (k : ℕ) :
     ContDiffAt ℝ ∞ (fun m => nm (M m) * (dn (M m))⁻¹) m0 ∧ ContDiffAt ℝ ∞ (fun m => jj k (M m)) m0 := by
@@ -106,6 +148,27 @@ theorem cd_parts {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E] (M : E �
   exact (hdn.pow k).mul (Complex.ofRealCLM.contDiff.contDiffAt.comp m0
     ((hdt.abs h0).rpow_const_of_ne (p := -(k : ℝ) / 2) (abs_ne_zero.2 h0)))
 
+/- English proof (translation)
+Take `⟨-, hj1, -⟩` from `hB`. Take `⟨y0, x0, rfl⟩ : ∃ (y0 : GL (Fin 2) (TR.Rinf F)) (x0 : GF F), g0 = TR.infGL F 2 y0 * finGL F 2 x0` from `⟨_, _, (TR.infGL_mul_finGL g0).symm⟩`. Establish `hj : ∀ g : GL (Fin 2) (TR.Rinf F), ∏ v, j1 (k v) (gv v g) iP ≠ 0` using `fun g => Finset.prod_ne_zero_iff.2 fun v _ => hj1 _ _ _`. Establish `key : ∀ y : GL (Fin 2) (TR.Rinf F), TR.chart φ (TR.infGL F 2 y0 * finGL F 2 x0) (TR.toL y.val) = f (fun v => gv v (y0 * y) • iP, x0) * (∏ v, j1 (k v) (gv v (y0 * y)) iP)⁻¹`. Introduce `y`.
+
+Establish `e : TR.infGL F 2 y0 * finGL F 2 x0 * TR.infGL F 2 y = TR.infGL F 2 (y0 * y) * finGL F 2 x0`. Rewrite using `[mul_assoc, ← TR.infGL_comm, ← mul_assoc, ← map_mul]`. Rewrite using `[TR.chart_val, e, eq_mul_inv_iff_mul_eq₀ (hj _)]`. Conclude with `hR (y0 * y) x0`. Set `A : Matrix (Fin 2) (Fin 2) (TR.Rinf F)` to `y0.val`.
+
+Set `M : InfinitePlace F → TR.Lie F 2 → Matrix (Fin 2) (Fin 2) ℝ` to `fun v m i j => ∑ l, A i l v * m l j v`. Establish `hM : ∀ (y : GL (Fin 2) (TR.Rinf F)) v, M v (TR.toL y.val) = (gv v (y0 * y)).val`. Introduce `y v`. Use extensionality with `i j`. Simplify using `only [M, A]`.
+
+Express the relevant statement in the definitionally equal form `_ = ((y0 * y).val i j) v`. Rewrite using `[Units.val_mul, Matrix.mul_apply, Finset.sum_apply]`. Both sides reduce to the same expression. Set `G : TR.Lie F 2 → ℂ` to `fun m => Fx (fun z => f (z, x0)) (fun v => nm (M v m) * (dn (M v m))⁻¹) * (∏ v, jj (k v) (M v m))⁻¹`. Establish `hG : ∀ y : GL (Fin 2) (TR.Rinf F), TR.chart φ (TR.infGL F 2 y0 * finGL F 2 x0) (TR.toL y.val) = G (TR.toL y.val)`.
+
+Introduce `y`. Rewrite using `[key]`. Simplify using `only [G, hM, ← smul_iP, ← automorphy_factor_at_i_eq]`. Rewrite using `[Fx_val]`. Establish `hA` using `analytic_Fx hO (fun z => f (z, x0)) (hf x0)`.
+
+Use `ContDiffOn.congr (f := G) (fun m hm => ?_) (fun m hm => ?_)` and prove the remaining obligations. Take `⟨y, rfl⟩` from `id hm`. Establish `hE : ∀ v i j, ContDiffAt ℝ ∞ (fun m : TR.Lie F 2 => M v m i j) (TR.toL y.val)`. Introduce `v i j`. Establish `hc : ∀ l, ContDiff ℝ ∞ (fun m : TR.Lie F 2 => m l j v)` using `fun l => (contDiff_apply ℝ ℝ v).comp ((contDiff_apply ℝ _ j).comp (contDiff_apply ℝ _ l))`.
+
+Conclude with `(ContDiff.sum fun l _ => contDiff_const.mul (hc l)).contDiffAt`. Establish `hdt : ∀ v, dt (M v (TR.toL y.val)) ≠ 0`. Introduce `v`. Rewrite using `[hM]`. Establish `h` using `(gv v (y0 * y)).det_ne_zero`.
+
+Rewrite `h` using `[det_eq]`. Conclude with `h`. Establish `hP : ∀ v, ContDiffAt ℝ ∞ (fun m => nm (M v m) * (dn (M v m))⁻¹) (TR.toL y.val) ∧ ContDiffAt ℝ ∞ (fun m => jj (k v) (M v m)) (TR.toL y.val)` using `fun v => cd_parts (M v) _ (hE v) (hdt v) (k v)`. Establish `hw : ∀ v, (nm (M v (TR.toL y.val)) * (dn (M v (TR.toL y.val)))⁻¹).im ≠ 0`. Introduce `v`.
+
+Rewrite using `[hM, ← smul_iP]`. Conclude with `(gv v (y0 * y) • iP).2`. Establish `h1 : ContDiffAt ℝ ∞ (fun m => Fx (fun z => f (z, x0)) (fun v => nm (M v m) * (dn (M v m))⁻¹)) (TR.toL y.val)` using `ContDiffAt.comp (g := Fx (fun z => f (z, x0))) (TR.toL y.val) ((hA (fun v => nm (M v (TR.toL y.val)) * (dn (M v (TR.toL y.val)))⁻¹) hw).contDiffAt.restrict_scalars ℝ) ((contDiffAt_pi (Φ := fun m v => nm (M v m) * (dn (M v m))⁻¹)).2 fun v => (hP v).1)`. Establish `h2 : ContDiffAt ℝ ∞ (fun m => ∏ v, jj (k v) (M v m)) (TR.toL y.val)` using `contDiffAt_prod fun v _ => (hP v).2`. Establish `h3 : (∏ v, jj (k v) (M v (TR.toL y.val))) ≠ 0`.
+
+Simplify using `only [hM, ← automorphy_factor_at_i_eq]`. Conclude with `hj (y0 * y)`. Conclude with `(h1.mul (h2.inv h3)).contDiffWithinAt`. Take `⟨y, rfl⟩` from `id hm`. Conclude with `hG y`.
+-/
 theorem chart_smooth (hO : Osg) (hB : B1b) (F : Type) [Field F] [NumberField F] [IsTotallyReal F]
     (k : InfinitePlace F → ℕ) (f : X (InfinitePlace F) × GF F → ℂ) (φ : GA F 2 → ℂ)
     (hf : ∀ x, SepHol fun z => f (z, x)) (hR : Rel k f φ) (g0 : GA F 2) :
@@ -175,6 +238,9 @@ theorem chart_smooth (hO : Osg) (hB : B1b) (F : Type) [Field F] [NumberField F] 
 
 end UpperTheory.Esk.ImaginaryUnitActionLemmas
 
+/- English proof (translation)
+Introduce `hO hB F _ _ _ k c _ om χ _ _ _ _ f φ hf hR g`. Conclude with `UpperTheory.Esk.ImaginaryUnitActionLemmas.chart_smooth hO hB F k f φ hf.hol hR g`.
+-/
 theorem UpperTheory.Esk.hyperbolic_orbit_bound_proof : UpperTheory.Esk.Osg → UpperTheory.Esk.B1b → UpperTheory.Esk.H2b := by
   intro hO hB F _ _ _ k c _ om χ _ _ _ _ f φ hf hR g
   exact UpperTheory.Esk.ImaginaryUnitActionLemmas.chart_smooth hO hB F k f φ hf.hol hR g

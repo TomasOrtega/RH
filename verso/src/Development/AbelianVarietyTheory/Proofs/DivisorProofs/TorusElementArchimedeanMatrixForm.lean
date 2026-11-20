@@ -8,6 +8,11 @@ open GlobalTheory.WeilM GlobalTheory.AdelicU GlobalTheory.LFun GlobalTheory.Inde
 
 namespace GlobalTheory.SiegelTorusMat
 
+/- English proof (translation)
+Establish `h : ∀ a : Fin q → ℂ, Matrix.diagonal (fun i => a i - 1) = Matrix.diagonal a - 1` using `fun a => by`. Rewrite using `[← Matrix.diagonal_one, Matrix.diagonal_sub]`. Rewrite `hZ` using `[Matrix.mul_sub, Matrix.mul_sub, ← Matrix.mul_assoc, ← Matrix.mul_assoc, hX, hY, Matrix.mul_one, sub_sub, sub_eq_iff_eq_add]`. Rewrite using `[h, h, hZ]`. Simplify using `only [Matrix.mul_sub, Matrix.sub_mul, Matrix.mul_one]`.
+
+Normalize the expressions using the abelian group laws.
+-/
 theorem eq_of_scales {n q : ℕ} {A : Matrix (Fin n) (Fin n) ℂ} {X Y : Matrix (Fin n) (Fin q) ℂ}
     {P Q : Matrix (Fin q) (Fin n) ℂ} {d e : Fin q → ℂ} (hX : A * X = X * Matrix.diagonal d)
     (hY : A * Y = Y * Matrix.diagonal e) (hZ : A * (1 - X * P - Y * Q) = 1 - X * P - Y * Q) :
@@ -20,6 +25,9 @@ theorem eq_of_scales {n q : ℕ} {A : Matrix (Fin n) (Fin n) ℂ} {X Y : Matrix 
   simp only [Matrix.mul_sub, Matrix.sub_mul, Matrix.mul_one]
   abel
 
+/- English proof (translation)
+Establish `h : X * Matrix.diagonal d * Matrix.diagonal e = X`. Rewrite using `[Matrix.mul_assoc, Matrix.diagonal_mul_diagonal]`. Simplify using `only [hde, Matrix.diagonal_one, Matrix.mul_one]`. Use `conv_lhs => rw [← h, ← hX, ← Matrix.mul_assoc, ← Matrix.mul_assoc, hBA, Matrix.one_mul]`.
+-/
 theorem inv_scales {n q : ℕ} {A B : Matrix (Fin n) (Fin n) ℂ} (hBA : B * A = 1) {X : Matrix (Fin n) (Fin q) ℂ}
     {d e : Fin q → ℂ} (hde : ∀ i, d i * e i = 1) (hX : A * X = X * Matrix.diagonal d) :
     B * X = X * Matrix.diagonal e := by
@@ -28,6 +36,21 @@ theorem inv_scales {n q : ℕ} {A B : Matrix (Fin n) (Fin n) ℂ} (hBA : B * A =
     simp only [hde, Matrix.diagonal_one, Matrix.mul_one]
   conv_lhs => rw [← h, ← hX, ← Matrix.mul_assoc, ← Matrix.mul_assoc, hBA, Matrix.one_mul]
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ h n J hJ q X Y hW t ht a ha w τ`. Establish `cc : ∀ Z : Matrix (Fin n) (Fin q) E, Formalism.UG.cT (σ : E →+* E) (Formalism.UG.cT (σ : E →+* E) Z) = Z` using `fun Z => Matrix.ext fun i j => GlobalTheory.SiegelSet.sigma_sigma h _`. Establish `hJ' : Formalism.UG.cT (σ : E →+* E) J = J` using `Matrix.ext fun i j => hJ.1 _ _`. Establish `yx : Formalism.UG.cT (σ : E →+* E) Y * J * X = 1`. Use `congrArg (Formalism.UG.cT (σ : E →+* E)) hW.xy` as an intermediate fact.
+
+Rewrite `this` using `[Formalism.UG.cT_mul, Formalism.UG.cT_mul, cc, hJ', Formalism.UG.cT_one, ← Matrix.mul_assoc]`. Then use the resulting hypothesis. Establish `xx` using `hW.xx`. Establish `yy` using `hW.yy`. Establish `xy` using `hW.xy`. Take `⟨hX, hY, hz⟩` from `ha.2 w τ`.
+
+Generalize the expression as in `Formalism.UG.cT (σ : E →+* E) Y * J = P at *`. Generalize the expression as in `Formalism.UG.cT (σ : E →+* E) X * J = Q at *`. Establish `hBA : GlobalTheory.Orb.archMat σ J τ (projArch σ J w a⁻¹) * GlobalTheory.Orb.archMat σ J τ (projArch σ J w a) = 1`. Rewrite using `[← map_mul, ← map_mul, inv_mul_cancel, map_one, map_one]`. Generalize the expression as in `GlobalTheory.Orb.archMat σ J τ (projArch σ J w a) = A at *`.
+
+Generalize the expression as in `GlobalTheory.Orb.archMat σ J τ (projArch σ J w a⁻¹) = B at *`. Establish `hQ : Q * (1 - X * P - Y * Q) = 0`. Rewrite using `[Matrix.mul_sub, Matrix.mul_sub, ← Matrix.mul_assoc, ← Matrix.mul_assoc, xx, xy]`. Simplify using the standard rewrite rules. Establish `hP : P * (1 - X * P - Y * Q) = 0`.
+
+Rewrite using `[Matrix.mul_sub, Matrix.mul_sub, ← Matrix.mul_assoc, ← Matrix.mul_assoc, yx, yy]`. Simplify using the standard rewrite rules. Establish `hZ0 : A * (1 - X * P - Y * Q).map τ.1 = (1 - X * P - Y * Q).map τ.1`. Generalize the expression as in `(1 - X * P - Y * Q) = Z at *`. Use extensionality with `i j`.
+
+Conclude with `congrFun (hz (fun k => Z k j) (funext fun k => congrFun (congrFun hQ k) j) (funext fun k => congrFun (congrFun hP k) j)) i`. Establish `hm : (1 - X * P - Y * Q).map τ.1 = 1 - X.map τ.1 * P.map τ.1 - Y.map τ.1 * Q.map τ.1`. Rewrite using `[← Matrix.map_mul, ← Matrix.map_mul, ← RingHom.mapMatrix_apply, map_sub, map_sub, map_one]`. Both sides reduce to the same expression. Rewrite `hZ0` using `[hm]`.
+
+Establish `ht' : ∀ i, ((t i : ℝ) : ℂ) ≠ 0` using `fun i => Complex.ofReal_ne_zero.2 (ht i).ne'`. Use `⟨eq_of_scales hX hY hZ0, eq_of_scales (inv_scales hBA (fun i => ?_) hX) (inv_scales hBA (fun i => ?_) hY) ?_⟩` and prove the remaining obligations. Rewrite using `[Complex.ofReal_inv, mul_inv_cancel₀ (ht' i)]`. Rewrite using `[Complex.ofReal_inv, inv_inv, inv_mul_cancel₀ (ht' i)]`. Use `conv_lhs => rw [← hZ0, ← Matrix.mul_assoc, hBA, Matrix.one_mul]`.
+-/
 theorem archMat_torus : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E), IsCMExt F E σ →
     ∀ (n : ℕ) (J : Matrix (Fin n) (Fin n) E), IsHermND σ J →
     ∀ (q : ℕ) (Xf Yf : Matrix (Fin n) (Fin q) E), GlobalTheory.SiegelSet.IsWittFrame σ J Xf Yf →

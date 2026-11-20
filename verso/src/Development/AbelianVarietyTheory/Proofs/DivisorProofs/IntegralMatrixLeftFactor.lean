@@ -8,6 +8,35 @@ open Classical
 
 namespace GlobalTheory.GJReg
 
+/- English proof (translation)
+Introduce `hs X`. Use `set S : Matrix (Fin n) (Fin n) k := s • (1 : Matrix (Fin n) (Fin n) k) with hS`. Set `v : Fin n ⊕ Fin n → (Fin n → k)` to `Sum.elim X S`. Set `L : Submodule 𝒪[k] (Fin n → k)` to `Submodule.span 𝒪[k] (Set.range v)`. Use `haveI : Module.Finite 𝒪[k] L := Module.Finite.span_of_finite _ (Set.finite_range v)`.
+
+Use `haveI : Module.IsTorsionFree 𝒪[k] L := ⟨fun r hr x y hxy => by`. Establish `h0 : (r : k) ≠ 0`. Introduce `h`. Conclude with `hr.ne_zero (Subtype.ext h)`. Apply `Subtype.ext` to reduce the goal to its premises.
+
+Use `congrArg Subtype.val hxy` as an intermediate fact. Simplify using `only [Submodule.coe_smul, Subring.smul_def] at this`. Conclude with `smul_right_injective _ h0 this⟩`. Use `haveI : Module.Free 𝒪[k] L := Module.free_of_finite_type_torsion_free'`. Establish `hSdet : S.det ≠ 0`.
+
+Simplify using `[hS, Matrix.det_smul, hs]`. Establish `hSli : LinearIndependent k (fun i => S i)`. Conclude with `Matrix.linearIndependent_rows_of_isUnit ((Matrix.isUnit_iff_isUnit_det S).2 (isUnit_iff_ne_zero.2 hSdet))`. Establish `hSmem : ∀ i, S i ∈ L` using `fun i => Submodule.subset_span ⟨Sum.inr i, rfl⟩`. Establish `hXmem : ∀ i, X i ∈ L` using `fun i => Submodule.subset_span ⟨Sum.inl i, rfl⟩`.
+
+Establish `hr : Module.finrank 𝒪[k] L = n`. Apply `le_antisymm` to reduce the goal to its premises. Establish `hb` using `(Module.finBasis 𝒪[k] L).linearIndependent.map' L.subtype (by simp)`. Rewrite `hb` using `[LinearIndependent.iff_fractionRing 𝒪[k] k]`. Simplify using `using hb.fintype_card_le_finrank`.
+
+Establish `hli : LinearIndependent 𝒪[k] (fun i => (⟨S i, hSmem i⟩ : L))`. Apply `LinearIndependent.of_comp L.subtype` to reduce the goal to its premises. Conclude with `(LinearIndependent.iff_fractionRing 𝒪[k] k).2 hSli`. Simplify using `using hli.fintype_card_le_finrank`. Set `b` to `Module.finBasisOfFinrankEq 𝒪[k] L hr`.
+
+Establish `hexp : ∀ (y : Fin n → k) (hy : y ∈ L) (l : Fin n), y l = ∑ j, ((b.repr ⟨y, hy⟩ j : 𝒪[k]) : k) * (b j : Fin n → k) l`. Introduce `y hy l`. Use `congrArg (fun z : L => (z : Fin n → k) l) (b.sum_repr ⟨y, hy⟩)` as an intermediate fact. Use `this.symm.trans ?_` and prove the remaining obligations. Simplify using `only [Submodule.coe_sum, Submodule.coe_smul, Finset.sum_apply, Pi.smul_apply, Subring.smul_def, smul_eq_mul]`.
+
+Set `H : Matrix (Fin n) (Fin n) k` to `Matrix.of fun i l => (b i : Fin n → k) l`. Set `C : Matrix (Fin n) (Fin n) k` to `Matrix.of fun i j => ((b.repr ⟨X i, hXmem i⟩ j : 𝒪[k]) : k)`. Set `D : Matrix (Fin n) (Fin n) k` to `Matrix.of fun i j => ((b.repr ⟨S i, hSmem i⟩ j : 𝒪[k]) : k)`. Establish `hC : X = C * H`. Use extensionality with `i l`.
+
+Rewrite using `[Matrix.mul_apply, hexp (X i) (hXmem i) l]`. Both sides reduce to the same expression. Establish `hD : S = D * H`. Use extensionality with `i l`. Rewrite using `[Matrix.mul_apply, hexp (S i) (hSmem i) l]`.
+
+Both sides reduce to the same expression. Establish `hHdet : H.det ≠ 0`. Introduce `h0`. Apply `hSdet` to reduce the goal to its premises. Rewrite using `[hD, Matrix.det_mul, h0, mul_zero]`.
+
+Establish `hmem : ∀ i, ∃ c : Fin n ⊕ Fin n → 𝒪[k], ∑ x, c x • v x = (b i : Fin n → k)` using `fun i => (Submodule.mem_span_range_iff_exists_fun 𝒪[k]).1 (b i).2`. Use `choose c hc using hmem`. Set `A : Matrix (Fin n) (Fin n) k` to `Matrix.of fun i j => ((c i (Sum.inl j) : 𝒪[k]) : k)`. Set `B : Matrix (Fin n) (Fin n) k` to `Matrix.of fun i j => ((c i (Sum.inr j) : 𝒪[k]) : k)`. Establish `hAB : H = A * X + s • B`.
+
+Use extensionality with `i l`. Use `congrFun (hc i) l` as an intermediate fact. Establish `hv1 : ∀ j, v (Sum.inl j) = X j` using `fun _ => rfl`. Establish `hv2 : ∀ j, v (Sum.inr j) = S j` using `fun _ => rfl`. Rewrite `this` using `[Fintype.sum_sum_type]`.
+
+Simplify using `only [hv1, hv2] at this`. Simplify using `only [Finset.sum_apply, Pi.add_apply, Pi.smul_apply, Subring.smul_def, smul_eq_mul, v, Sum.elim_inl, Sum.elim_inr, hS, Matrix.smul_apply, Matrix.one_apply, mul_ite, mul_one, mul_zero, Finset.sum_ite_eq', Finset.mem_univ, if_true] at this`. Simplify using `only [H, A, B, Matrix.add_apply, Matrix.mul_apply, Matrix.smul_apply, Matrix.of_apply, smul_eq_mul]`. Rewrite using `[← this]`. Expand and normalize the polynomial expressions, which then agree.
+
+Use `⟨Matrix.nonsingInvUnit H (isUnit_iff_ne_zero.2 hHdet), A, B, C, D, fun i j => (c i (Sum.inl j)).2, fun i j => (c i (Sum.inr j)).2, fun i j => (b.repr ⟨X i, hXmem i⟩ j).2, fun i j => (b.repr ⟨S i, hSmem i⟩ j).2, hAB, hC, hD⟩` and prove the remaining obligations.
+-/
 theorem exists_gl_rowSpan_int (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] (n : ℕ) (s : k) :
     s ≠ 0 → ∀ X : Matrix (Fin n) (Fin n) k, ∃ (h : GL (Fin n) k) (A B C D : Matrix (Fin n) (Fin n) k),
       A ∈ intM k (Fin n) (Fin n) ∧ B ∈ intM k (Fin n) (Fin n) ∧ C ∈ intM k (Fin n) (Fin n) ∧ D ∈ intM k (Fin n) (Fin n) ∧

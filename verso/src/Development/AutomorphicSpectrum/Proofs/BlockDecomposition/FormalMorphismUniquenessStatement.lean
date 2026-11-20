@@ -4,6 +4,9 @@ import Development.WeilBound.CoreStatements.TemperedRepresentationTheory.FormalA
 import Development.AbelianVarietyTheory.PublishedTheorems.Divisors₂.FormalAlgebraisation
 open CategoryTheory CategoryTheory.Limits AlgebraicGeometry ReciprocityTheory.ChartRestriction.G.Out PositivityTheory.FormalThickening
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.CompanionTheory.FormalUniq.eq_of_comp_thickenings_eq | exact GlobalTheory.CompanionTheory.FormalUniq.eq_of_comp_thickenings_eq | (intros; apply GlobalTheory.CompanionTheory.FormalUniq.eq_of_comp_thickenings_eq <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.formal_morphism_uniqueness : ∀ (R : Type) [CommRing R] [IsNoetherianRing R] (I : Ideal R), IsAdicComplete I R →
   ∀ (X Z : Over (Spec (CommRingCat.of R))), IsProper X.hom → IsSeparated Z.hom →
   ∀ (Y : ∀ e : ℕ, Over (Spec (CommRingCat.of (R ⧸ I ^ (e + 1))))) (b : ∀ e, (Y e).left ⟶ X.left),

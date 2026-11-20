@@ -28,12 +28,20 @@ namespace KernSum
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {r g n : ℕ} {X : Data E r}
   {bas : (Fin g ⊕ Fin g → ℤ) ≃ₗ[ℤ] X.Λ} {idx : Fin g ≃ X.Ψ × Fin r}
 
+/- English proof (translation)
+Unfold `wG`. Use `split_ifs with h`. Conclude with `h.choose_spec.1`. Conclude with `isSB_zero`.
+-/
 theorem isSB_wG (γ : GL (Fin r) E) (φ : TF n g) : IsSB (wG X bas idx γ φ) := by
   unfold wG
   split_ifs with h
   · exact h.choose_spec.1
   · exact isSB_zero
 
+/- English proof (translation)
+Take `⟨-, -, -, hcψ, -⟩` from `GlobalTheory.T.rationalSchwartzBruhat_algebra_integral_linear ℚ (Fin n) (Fin g) ψ ψ hψ hψ`. Take `⟨-, -, hprod, -⟩` from `GlobalTheory.T.rationalSchwartzBruhat_algebra_integral_linear ℚ (Fin n) (Fin g) φ _ hφ hcψ`. Take `⟨-, -, -, -, -, hsmul, -⟩` from `GlobalTheory.T.rationalSchwartzBruhat_algebra_integral_linear ℚ (Fin n) (Fin g) _ _ hprod hprod`. Establish `e : (fun x => φ x * conj ((c • ψ) x)) = conj c • (φ * fun x => conj (ψ x))`. Use function extensionality and compare the values at `x`.
+
+Simplify using `only [Pi.smul_apply, Pi.mul_apply, smul_eq_mul, map_mul]`. Expand and normalize the polynomial expressions, which then agree. Unfold `ip`. Rewrite using `[e, hsmul, mul_comm]`. Both sides reduce to the same expression.
+-/
 theorem ip_smul_right {φ ψ : TF n g} (hφ : IsSB φ) (hψ : IsSB ψ) (c : ℂ) :
     ip φ (c • ψ) = ip φ ψ * conj c := by
   obtain ⟨-, -, -, hcψ, -⟩ := GlobalTheory.T.rationalSchwartzBruhat_algebra_integral_linear ℚ (Fin n) (Fin g) ψ ψ hψ hψ
@@ -47,6 +55,25 @@ theorem ip_smul_right {φ ψ : TF n g} (hφ : IsSB φ) (hψ : IsSB ψ) (c : ℂ)
   rw [e, hsmul, mul_comm]
   rfl
 
+/- English proof (translation)
+Use `set φ₁ := Φ L₁ Λ with hφ₁def`. Use `set φ₂ := Φ L₂ Λ with hφ₂def`. Establish `hφ₁ : IsSB φ₁` using `hS.sb L₁ h₁ Λ hΛ`. Establish `hφ₂ : IsSB φ₂` using `hS.sb L₂ h₂ Λ hΛ`. Establish `hψ : IsSB (dbl X bas idx φ₁ φ₂)` using `(GlobalTheory.T.doubledHermitianTestFunction_spec E r X g bas idx n hb hn φ₁ φ₂ hφ₁ hφ₂).1`.
+
+Take `⟨hT, hZ, -⟩` from `GlobalTheory.SW.dblZ_mem_Hn E r X x₁ hx₁ x₂ hx₂`. Establish `hsum` using `(GlobalTheory.SW.eis_automorphy_linear E X.Ψ hT n r hn h4 _ hψ _ hZ).1 (dblz X idx x₁ x₂ z w) (dblz' X idx x₁ x₂ z w)`. Establish `hU` using `(hsum.of_norm.hasSum).mul_left (kZero X idx x₁ x₂ z w)`. Establish `hun1 : IsUn X (1 : GL (Fin r) E)`. Introduce `u v`.
+
+Simplify using the standard rewrite rules. Set `lagOf : Δ → Lag E r` to `fun γ => ⟨botSpan (iota X 1 γ), iota X 1 γ, DblPair.iota_mem X hun1 (hS.un γ γ.2), rfl⟩`. Establish `hinj : Function.Injective lagOf`. Introduce `γ γ' h`. Establish `h' : botSpan (iota X 1 (γ : GL (Fin r) E)) = botSpan (iota X 1 (γ' : GL (Fin r) E))` using `congrArg Subtype.val h`.
+
+Conclude with `Subtype.ext ((GlobalTheory.T.maximalIsotropic_doubled_graph_or_isotropic E r X).1 γ γ' (hS.un γ γ.2) (hS.un γ' γ'.2) h')`. Establish `hterm : ∀ γ : GL (Fin r) E, IsUn X γ → ∀ U : Lag E r, botSpan (iota X 1 γ) = U.1 → kZero X idx x₁ x₂ z w * eisTerm X.Ψ U.2.choose (dbl X bas idx φ₁ φ₂) (dblZ X x₁ x₂) (dblz X idx x₁ x₂ z w) (dblz' X idx x₁ x₂ z w) = a * ip φ₁ (wG X bas idx γ φ₂) * kZero X idx x₁ (lact γ x₂) z w`. Introduce `γ hγ U hUγ`. Establish `e1` using `(GlobalTheory.T.hermitianWeilAction_siegelParabolic_explicit E X.Ψ hT n r hn _ hψ).2 U.2.choose U.2.choose_spec.1 (iota X 1 γ) (DblPair.iota_mem X hun1 hγ) (U.2.choose_spec.2.trans hUγ.symm) _ hZ (dblz X idx x₁ x₂ z w) (dblz' X idx x₁ x₂ z w)`. Establish `e2` using `GlobalTheory.T.eisensteinSeries_term_unitary_graph E r X g bas idx n hb hn γ hγ φ₁ φ₂ hφ₁ hφ₂ x₁ hx₁ x₂ hx₂ z w`.
+
+Establish `e3` using `ha φ₁ _ hφ₁ (isSB_wG (X := X) (bas := bas) (idx := idx) γ φ₂)`. Rewrite using `[e1, e2, e3]`. Establish `hzero : ∀ U ∉ Set.range lagOf, kZero X idx x₁ x₂ z w * eisTerm X.Ψ U.2.choose (dbl X bas idx φ₁ φ₂) (dblZ X x₁ x₂) (dblz X idx x₁ x₂ z w) (dblz' X idx x₁ x₂ z w) = 0`. Introduce `U hU'`. Break down `(GlobalTheory.T.maximalIsotropic_doubled_graph_or_isotropic E r X).2 U with ⟨γ, hγ, hUγ⟩ | ⟨ξ, hξ0, hξ, hmem⟩` into its components or cases.
+
+Establish `hγΔ : γ ∉ Δ` using `fun hΔ => hU' ⟨⟨γ, hΔ⟩, Subtype.ext hUγ⟩`. Establish `e1` using `hterm γ hγ U hUγ`. Establish `e2` using `hS.supp γ hγ hγΔ L₁ h₁ L₂ h₂ Λ hΛ`. Rewrite using `[e1, e2]`. Expand and normalize the polynomial expressions, which then agree.
+
+Establish `hw : weil X.Ψ U.2.choose (dbl X bas idx φ₁ φ₂) 0 = 0` using `GlobalTheory.T.weil_doubledTestFunction_zero_eq_zero E r X g bas idx n hb hn φ₁ φ₂ hφ₁ hφ₂ ξ (hS.cusp ξ hξ0 hξ L₁ h₁ Λ hΛ) U.2.choose U.2.choose_spec.1 (by rw [U.2.choose_spec.2]; exact hmem)`. Unfold `eisTerm`. Rewrite using `[hw]`. Expand and normalize the polynomial expressions, which then agree. Establish `hmain` using `(hinj.hasSum_iff hzero).2 hU`.
+
+Unfold `eis`. Use `hmain using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `γ`. Establish `hΦ' : IsSB (Φ (mapL γ L₂) Λ)` using `hS.sb _ (hS.stab γ γ.2 L₂ h₂) Λ hΛ`. Establish `e1` using `hterm γ (hS.un γ γ.2) (lagOf γ) rfl`.
+
+Establish `e2` using `(hS.mu γ γ.2 L₂ h₂).2 Λ hΛ`. Establish `e3` using `ip_smul_right hφ₁ hΦ' (μ γ L₂)`. Simplify using `only [Function.comp_apply]`. Rewrite using `[e1, e2, e3]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem hasSum_eis (hb : IsSympl X bas) (hn : Even n) (h4 : 4 * r < n) {M : ℕ}
     {Δ : Subgroup (GL (Fin r) E)} {𝓛 : Set (Lt E r)} {Φ : Lt E r → Lt E n → TF n g}
     {μ : GL (Fin r) E → Lt E r → ℂ} (hS : IsSystem X bas idx M Δ 𝓛 Φ μ) {a : ℂ}
@@ -116,6 +143,9 @@ theorem hasSum_eis (hb : IsSympl X bas) (hn : Even n) (h4 : 4 * r < n) {M : ℕ}
 
 end KernSum
 
+/- English proof (translation)
+Set `B' : V →L[ℂ] V →L[ℂ] ℂ` to `LinearMap.toContinuousLinearMap (LinearMap.toContinuousLinearMap.toLinearMap ∘ₗ B)`. Establish `h0 : AnalyticAt ℂ (fun v : V => (v, v)) p` using `analyticAt_id.prod analyticAt_id`. Establish `h1 : AnalyticAt ℂ (fun v : V => B' v v) p` using `AnalyticAt.comp (g := fun x : V × V => B' x.1 x.2) (f := fun v : V => (v, v)) (B'.analyticAt_bilinear (p, p)) h0`. Conclude with `analyticAt_const.mul h1.cexp`.
+-/
 private theorem analyticAt_mul_cexp_bilin_diag {V : Type} [NormedAddCommGroup V] [NormedSpace ℂ V]
     [FiniteDimensional ℂ V] (A : ℂ) (B : V →ₗ[ℂ] V →ₗ[ℂ] ℂ) (p : V) :
     AnalyticAt ℂ (fun v => A * cexp (B v v)) p := by
@@ -126,6 +156,13 @@ private theorem analyticAt_mul_cexp_bilin_diag {V : Type} [NormedAddCommGroup V]
     (f := fun v : V => (v, v)) (B'.analyticAt_bilinear (p, p)) h0
   exact analyticAt_const.mul h1.cexp
 
+/- English proof (translation)
+Establish `hFa : ∀ i p, AnalyticAt ℂ (F i) p`. Introduce `i p`. Establish `e : F i = fun v => A i * cexp (B i v v)` using `funext (hF i)`. Rewrite using `[e]`. Conclude with `analyticAt_mul_cexp_bilin_diag (A i) (B i) p`.
+
+Use `KernSum.bd_hasSum P Q u hFa hS fun R => ?_` and prove the remaining obligations. Establish `hsum : ∀ v, Summable fun i => A i * cexp (B i v v)`. Introduce `v`. Establish `e : (fun i => A i * cexp (B i v v)) = fun i => F i v` using `funext fun i => (hF i v).symm`. Rewrite using `[e]`.
+
+Conclude with `(hS v).summable`. Take `⟨v, hv, hle⟩` from `KernSum.exists_majorant A B hsum R`. Use `⟨v, hv, fun i p hp => ?_⟩` and prove the remaining obligations. Rewrite using `[hF i p]`. Conclude with `hle i p hp`.
+-/
 private theorem analyticAt_and_hasSum_bd_of_hasSum_gaussian {W : Type} [NormedAddCommGroup W] [NormedSpace ℂ W]
     [FiniteDimensional ℂ W] {σ : Type} (P Q : MvPolynomial σ ℂ) (u : σ → W) {ι : Type}
     (F : ι → W × W → ℂ) (S : W × W → ℂ) (A : ι → ℂ) (B : ι → (W × W) →ₗ[ℂ] (W × W) →ₗ[ℂ] ℂ)
@@ -147,6 +184,9 @@ private theorem analyticAt_and_hasSum_bd_of_hasSum_gaussian {W : Type} [NormedAd
   rw [hF i p]
   exact hle i p hp
 
+/- English proof (translation)
+Establish `h1 : AnalyticAt ℂ (fun q : W × W => f q.1) p` using `(hf p.1).comp analyticAt_fst`. Establish `h2 : AnalyticAt ℂ (fun q : W × W => conj (h (star q.2))) p` using `(KernSum.analyticAt_conj hh p.2).comp analyticAt_snd`. Conclude with `h1.mul h2`.
+-/
 private theorem analyticAt_mul_conj_comp_star_prod {W : Type} [NormedAddCommGroup W] [NormedSpace ℂ W]
     [FiniteDimensional ℂ W] [StarAddMonoid W] [StarModule ℂ W] [ContinuousStar W] {f h : W → ℂ}
     (hf : ∀ p, AnalyticAt ℂ f p) (hh : ∀ p, AnalyticAt ℂ h p) (p : W × W) :
@@ -156,6 +196,11 @@ private theorem analyticAt_mul_conj_comp_star_prod {W : Type} [NormedAddCommGrou
     (KernSum.analyticAt_conj hh p.2).comp analyticAt_snd
   exact h1.mul h2
 
+/- English proof (translation)
+Establish `hA : ∀ k p, AnalyticAt ℂ (fun q : W × W => wv k * (f k q.1 * conj (h k (star q.2)))) p` using `fun k p => analyticAt_const.mul (analyticAt_mul_conj_comp_star_prod (hf k) (hh k) p)`. Use `⟨fun p => ?_, ?_⟩` and prove the remaining obligations. Establish `h1` using `Finset.analyticAt_sum (𝕜 := ℂ) (Finset.univ : Finset κ) fun k _ => hA k p`. Rewrite `h1` using `[Finset.sum_fn]`. Conclude with `h1`.
+
+Rewrite using `[KernSum.bd_sum P (barP P) u Finset.univ fun k => hA k]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[KernSum.bd_const_mul P (barP P) u (wv k) fun p => analyticAt_mul_conj_comp_star_prod (hf k) (hh k) p, KernSum.bd_prod P P u hu (hf k) (hh k)]`.
+-/
 private theorem bd_sum_prod_lemma_4 {W : Type} [NormedAddCommGroup W] [NormedSpace ℂ W]
     [FiniteDimensional ℂ W] [StarAddMonoid W] [StarModule ℂ W] [ContinuousStar W] {σ : Type}
     (P : MvPolynomial σ ℂ) (u : σ → W) (hu : ∀ s, star (u s) = u s) {κ : Type} [Fintype κ]
@@ -178,6 +223,47 @@ private theorem bd_sum_prod_lemma_4 {W : Type} [NormedAddCommGroup W] [NormedSpa
 
 open KernSum in
 
+/- English proof (translation)
+Introduce `E _ _ _ r X g q0 hr bas idx n hb hn h4 M Δ 𝓛 Φ μ hM hS`. Take `⟨a, ha0, b, -, hab⟩` from `GlobalTheory.T.doubledHermitianTestFunction_zero_and_norm E r X g bas idx n hb hn`. Use `⟨a, ha0, ?_⟩` and prove the remaining obligations. Introduce `c c' m P hP hInv L₁ h₁ L₂ h₂ x₁ hx₁ x₂ hx₂`. Establish `ha : ∀ φ₁ φ₂ : TF n g, IsSB φ₁ → IsSB φ₂ → dbl X bas idx φ₁ φ₂ 0 = a * ip φ₁ φ₂` using `fun φ₁ φ₂ e₁ e₂ => (hab φ₁ φ₂ e₁ e₂).1`.
+
+Establish `hT : IsType X.Ψ` using `Base.isType_data X`. Establish `: Fintype (Cls E n M)` using `@Fintype.ofFinite _ (finite_cls_and_stab E n M hM).1`. Establish `hcs : ∀ f : Lt E n → ℂ, classSum M f = ∑ cl : Cls E n M, (wt M (Quot.out cl).1 : ℂ) * f (Quot.out cl).1` using `fun f => finsum_eq_sum_of_fintype _`. Establish `hu : ∀ s : Harm.Var X.Ψ q0 X.p0 (Fin n), star (letterDir X hr idx s) = letterDir X hr idx s`. Introduce `s`.
+
+Use function extensionality and compare the values at `k i`. Unfold `letterDir`. Simplify using `only [Pi.star_apply, Pi.single_apply]`. Use `split_ifs`. Apply the tactic sequence `simp only [Pi.single_apply] split_ifs <;> simp`.
+
+Simplify using the standard rewrite rules. Establish `hφ : ∀ (L : Lt E r), L ∈ 𝓛 → ∀ cl : Cls E n M, IsSB (Φ L (Quot.out cl).1)` using `fun L hL cl => hS.sb L hL _ (Quot.out cl).2`. Establish `hthA : ∀ (j : Fin m) (L : Lt E r), L ∈ 𝓛 → ∀ cl : Cls E n M, ∀ x ∈ X.dom, ∀ p, AnalyticAt ℂ (thA X bas idx (Φ L (Quot.out cl).1) x) p`. Introduce `j L hL cl x hx p`. Conclude with `(GlobalTheory.T.thetaSeries_testFunction_holomorphic_weight E r X g q0 hr bas idx n hb hn c c' _ (hφ L hL cl) (P j) (hP j)).2.2.2 x hx p (Set.mem_univ p)`.
+
+Establish `hq` using `fun γ : Δ => KernSum.kZero_quad (n := n) X idx x₁ (lact (γ : GL (Fin r) E) x₂)`. Use `choose A B hAB using hq`. Establish `hK0 : ∀ γ : Δ, ∀ p, AnalyticAt ℂ (fun q : (Fin n → Fin g → ℂ) × (Fin n → Fin g → ℂ) => kZero X idx x₁ (lact (γ : GL (Fin r) E) x₂) q.1 q.2) p`. Introduce `γ p`. Establish `e : (fun q : (Fin n → Fin g → ℂ) × (Fin n → Fin g → ℂ) => kZero X idx x₁ (lact (γ : GL (Fin r) E) x₂) q.1 q.2) = fun q => A γ * cexp (B γ q q)`.
+
+Use function extensionality and compare the values at `(hAB γ)`. Rewrite using `[e]`. Conclude with `analyticAt_mul_cexp_bilin_diag (A γ) (B γ) p`. Take `⟨S, hSd⟩ : ∃ S : (Fin n → Fin g → ℂ) × (Fin n → Fin g → ℂ) → ℂ, ∀ p, S p = ∑ cl : Cls E n M, (wt M (Quot.out cl).1 : ℂ) * (kZero X idx x₁ x₂ p.1 p.2 * eis X.Ψ (dbl X bas idx (Φ L₁ (Quot.out cl).1) (Φ L₂ (Quot.out cl).1)) (dblZ X x₁ x₂) (dblz X idx x₁ x₂ p.1 p.2) (dblz' X idx x₁ x …` from `⟨_, fun p => rfl⟩`. Take `⟨T, hTd⟩ : ∃ T : (Fin n → Fin g → ℂ) × (Fin n → Fin g → ℂ) → ℂ, ∀ p, T p = ∑ cl : Cls E n M, (wt M (Quot.out cl).1 : ℂ) * (thA X bas idx (Φ L₁ (Quot.out cl).1) x₁ p.1 * conj (thA X bas idx (Φ L₂ (Quot.out cl).1) x₂ (star p.2)))` from `⟨_, fun p => rfl⟩`.
+
+Establish `hpt : ∀ p : (Fin n → Fin g → ℂ) × (Fin n → Fin g → ℂ), HasSum (fun γ : Δ => (a * classSum M (fun Λ => ip (Φ L₁ Λ) (Φ (mapL γ L₂) Λ)) * conj (μ γ L₂)) * kZero X idx x₁ (lact (γ : GL (Fin r) E) x₂) p.1 p.2) (S p)`. Introduce `p`. Establish `h` using `hasSum_sum (s := (Finset.univ : Finset (Cls E n M))) fun cl _ => (KernSum.hasSum_eis hb hn h4 hS ha h₁ h₂ hx₁ hx₂ (Quot.out cl).2 p.1 p.2).mul_left (wt M (Quot.out cl).1 : ℂ)`. Establish `e : ∀ γ : Δ, (a * classSum M (fun Λ => ip (Φ L₁ Λ) (Φ (mapL γ L₂) Λ)) * conj (μ γ L₂)) * kZero X idx x₁ (lact (γ : GL (Fin r) E) x₂) p.1 p.2 = ∑ cl : Cls E n M, (wt M (Quot.out cl).1 : ℂ) * (a * ip (Φ L₁ (Quot.out cl).1) (Φ (mapL γ L₂) (Quot.out cl).1) * conj (μ γ L₂) * kZero X i …`. Introduce `γ`.
+
+Rewrite using `[hcs, Finset.mul_sum, Finset.sum_mul, Finset.sum_mul]`. Use `Finset.sum_congr rfl fun cl _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree. Simplify using `only [e]`. Rewrite using `[hSd p]`.
+
+Conclude with `h`. Establish `hHS : ∀ j, (∀ p, AnalyticAt ℂ S p) ∧ HasSum (fun γ : Δ => KernSum.bd (P j) (barP (P j)) (letterDir X hr idx) (fun p => (a * classSum M (fun Λ => ip (Φ L₁ Λ) (Φ (mapL γ L₂) Λ)) * conj (μ γ L₂)) * kZero X idx x₁ (lact (γ : GL (Fin r) E) x₂) p.1 p.2)) (KernSum.bd (P j) (barP (P j)) …`. Introduce `j`. Use `analyticAt_and_hasSum_bd_of_hasSum_gaussian (P j) (barP (P j)) (letterDir X hr idx) _ S (fun γ => (a * classSum M (fun Λ => ip (Φ L₁ Λ) (Φ (mapL γ L₂) Λ)) * conj (μ γ L₂)) * A γ) B (fun γ p => ?_) hpt` and prove the remaining obligations. Use `beta_reduce`.
+
+Rewrite using `[hAB γ p]`. Expand and normalize the polynomial expressions, which then agree. Establish `eT : T = fun q : (Fin n → Fin g → ℂ) × (Fin n → Fin g → ℂ) => ∑ cl : Cls E n M, (fun cl => (wt M (Quot.out cl).1 : ℂ)) cl * ((fun cl => thA X bas idx (Φ L₁ (Quot.out cl).1) x₁) cl q.1 * conj ((fun cl => thA X bas idx (Φ L₂ (Quot.out cl).1) x₂) cl (star q.2)))`. Use function extensionality and compare the values at `hTd`. Establish `hTP` using `fun j : Fin m => bd_sum_prod_lemma_4 (P j) (letterDir X hr idx) hu (fun cl : Cls E n M => (wt M (Quot.out cl).1 : ℂ)) (fun cl => thA X bas idx (Φ L₁ (Quot.out cl).1) x₁) (fun cl => thA X bas idx (Φ L₂ (Quot.out cl).1) x₂) (fun cl => hthA j L₁ h₁ cl x₁ hx₁) (fun cl => hthA j L₂ h₂ …`.
+
+Establish `hTa : ∀ j : Fin m, ∀ p, AnalyticAt ℂ T p`. Introduce `j p`. Rewrite using `[eT]`. Conclude with `(hTP j).1 p`. Establish `hTj : ∀ j : Fin m, KernSum.bd (P j) (barP (P j)) (letterDir X hr idx) T = ∑ cl : Cls E n M, (wt M (Quot.out cl).1 : ℂ) * (thP X hr bas idx (Φ L₁ (Quot.out cl).1) (P j) x₁ * conj (thP X hr bas idx (Φ L₂ (Quot.out cl).1) (P j) x₂))`.
+
+Introduce `j`. Rewrite using `[eT]`. Conclude with `(hTP j).2`. Take `⟨R, hAdm⟩` from `hS.adm L₁ h₁ L₂ h₂`. Establish `hheat` using `GlobalTheory.T.isHeat_swd_of_adm E X.Ψ hT n r hn h4 M R _ hAdm`.
+
+Establish `hsw : ∀ Z ∈ Hn X.Ψ r, swd X.Ψ M (fun Λ => dbl X bas idx (Φ L₁ Λ) (Φ L₂ Λ)) Z 0 0 = 0` using `fun Z hZ => GlobalTheory.T.siegelWeil_definiteHermitian_of_four_mul_lt E X.Ψ hT n r hn h4 M R _ hAdm Z hZ`. Establish `hrn : r ≤ n` using `by omega`. Establish `h0` using `GlobalTheory.T.invariant_polyDeriv_kills_doubled_heat_solution E r X g q0 hr idx n m P hrn hInv _ hheat hsw x₁ hx₁ x₂ hx₂`. Establish `hTS : (fun p => T p + (-1) * S p) = fun p : (Fin n → Fin g → ℂ) × (Fin n → Fin g → ℂ) => kZero X idx x₁ x₂ p.1 p.2 * swd X.Ψ M (fun Λ => dbl X bas idx (Φ L₁ Λ) (Φ L₂ Λ)) (dblZ X x₁ x₂) (dblz X idx x₁ x₂ p.1 p.2) (dblz' X idx x₁ x₂ p.1 p.2)`. Use function extensionality and compare the values at `p`.
+
+Establish `e : swd X.Ψ M (fun Λ => dbl X bas idx (Φ L₁ Λ) (Φ L₂ Λ)) (dblZ X x₁ x₂) (dblz X idx x₁ x₂ p.1 p.2) (dblz' X idx x₁ x₂ p.1 p.2) = classSum M (fun Λ => thH X.Ψ (dbl X bas idx (Φ L₁ Λ) (Φ L₂ Λ)) (dblZ X x₁ x₂) (dblz X idx x₁ x₂ p.1 p.2) (dblz' X idx x₁ x₂ p.1 p.2) - eis X.Ψ (dbl X b …` using `rfl`. Rewrite using `[hTd p, hSd p, e, hcs, Finset.mul_sum, Finset.mul_sum, ← Finset.sum_add_distrib]`. Use `Finset.sum_congr rfl fun cl _ => ?_` and prove the remaining obligations. Establish `hD` using `(GlobalTheory.T.doubledHermitianTestFunction_spec E r X g bas idx n hb hn _ _ (hφ L₁ h₁ cl) (hφ L₂ h₂ cl)).2.1 x₁ hx₁ x₂ hx₂ p.1 p.2`. Establish `hst : star p.2 = fun k i => conj (p.2 k i)` using `rfl`.
+
+Rewrite using `[hst, hD]`. Expand and normalize the polynomial expressions, which then agree. Establish `hsplit : ∀ j, KernSum.bd (P j) (barP (P j)) (letterDir X hr idx) (fun p => T p + (-1) * S p) = KernSum.bd (P j) (barP (P j)) (letterDir X hr idx) T + (-1) * KernSum.bd (P j) (barP (P j)) (letterDir X hr idx) S`. Introduce `j`. Establish `e1` using `KernSum.bd_add (P j) (barP (P j)) (letterDir X hr idx) (hTa j) (fun p => (analyticAt_const.mul ((hHS j).1 p) : AnalyticAt ℂ (fun q => (-1 : ℂ) * S q) p))`.
+
+Establish `e2` using `KernSum.bd_const_mul (P j) (barP (P j)) (letterDir X hr idx) (-1) ((hHS j).1)`. Rewrite using `[← e2]`. Conclude with `e1`. Establish `hzero : ∑ j, KernSum.bd (P j) (barP (P j)) (letterDir X hr idx) (fun p => T p + (-1) * S p) = 0`. Rewrite using `[hTS]`.
+
+Conclude with `h0`. Simplify using `only [hsplit, Finset.sum_add_distrib, ← Finset.mul_sum] at hzero`. Establish `hval : classSum M (fun Λ => ∑ j, thP X hr bas idx (Φ L₁ Λ) (P j) x₁ * conj (thP X hr bas idx (Φ L₂ Λ) (P j) x₂)) = ∑ j, KernSum.bd (P j) (barP (P j)) (letterDir X hr idx) S`. Establish `e : ∑ j, KernSum.bd (P j) (barP (P j)) (letterDir X hr idx) T = ∑ j, KernSum.bd (P j) (barP (P j)) (letterDir X hr idx) S`. Take the linear combination `hzero`.
+
+Rewrite using `[← e, hcs]`. Simplify using `only [hTj]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun cl _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.mul_sum]`.
+
+Establish `hfun : ∀ γ : Δ, a * classSum M (fun Λ => ip (Φ L₁ Λ) (Φ (mapL γ L₂) Λ)) * conj (μ γ L₂) * kern X hr idx P x₁ (lact (γ : GL (Fin r) E) x₂) = ∑ j, KernSum.bd (P j) (barP (P j)) (letterDir X hr idx) (fun p => (a * classSum M (fun Λ => ip (Φ L₁ Λ) (Φ (mapL γ L₂) Λ)) * conj (μ γ L₂)) …`. Introduce `γ`. Establish `e : kern X hr idx P x₁ (lact (γ : GL (Fin r) E) x₂) = ∑ j, KernSum.bd (P j) (barP (P j)) (letterDir X hr idx) (fun p => kZero X idx x₁ (lact (γ : GL (Fin r) E) x₂) p.1 p.2)` using `rfl`. Rewrite using `[e, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations.
+
+Conclude with `(KernSum.bd_const_mul (P j) (barP (P j)) (letterDir X hr idx) _ (hK0 γ)).symm`. Simplify using `only [hfun]`. Rewrite using `[hval]`. Conclude with `hasSum_sum fun j _ => (hHS j).2`.
+-/
 theorem kernel_identity : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (r : ℕ) (X : Data E r) (g q0 : ℕ) (hr : X.p0 + q0 = r) (bas : (Fin g ⊕ Fin g → ℤ) ≃ₗ[ℤ] X.Λ) (idx : Fin g ≃ X.Ψ × Fin r) (n : ℕ), IsSympl X bas → Even n → 4 * r < n → ∀ (M : ℕ) (Δ : Subgroup (GL (Fin r) E)) (𝓛 : Set (Lt E r)) (Φ : Lt E r → Lt E n → TF n g) (μ : GL (Fin r) E → Lt E r → ℂ), 0 < M → IsSystem X bas idx M Δ 𝓛 Φ μ → ∃ a : ℂ, a ≠ 0 ∧ ∀ (c : X.Ψ → Fin q0 → ℕ) (c' : X.Ψ → Fin X.p0 → ℕ), ∀ (m : ℕ) (P : Fin m → Harm.Poly ℂ X.Ψ q0 X.p0 (Fin n)), (∀ j, P j ∈ Harm.rowHighest ℂ c c') → InvFam P → ∀ L₁ ∈ 𝓛, ∀ L₂ ∈ 𝓛, ∀ x₁ ∈ X.dom, ∀ x₂ ∈ X.dom, HasSum (fun γ : Δ => a * classSum M (fun Λ => ip (Φ L₁ Λ) (Φ (mapL γ L₂) Λ)) * conj (μ γ L₂) * kern X hr idx P x₁ (lact γ x₂)) (classSum M (fun Λ => ∑ j, thP X hr bas idx (Φ L₁ Λ) (P j) x₁ * conj (thP X hr bas idx (Φ L₂ Λ) (P j) x₂))) := by
   intro E _ _ _ r X g q0 hr bas idx n hb hn h4 M Δ 𝓛 Φ μ hM hS
   obtain ⟨a, ha0, b, -, hab⟩ := GlobalTheory.T.doubledHermitianTestFunction_zero_and_norm E r X g bas idx n hb hn

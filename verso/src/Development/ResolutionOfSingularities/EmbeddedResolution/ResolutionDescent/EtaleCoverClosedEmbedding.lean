@@ -28,27 +28,76 @@ noncomputable section
 
 namespace FunctorialResolution.EmbeddedResolution
 
+/- English proof (translation)
+Establish `hrh : HasRingHomProperty (@LocallyOfFiniteType.{u}) RingHom.FiniteType` using `inferInstance`. Conclude with `@HasRingHomProperty.instIsZariskiLocalAtSource (@LocallyOfFiniteType.{u}) _ hrh`.
+-/
 private theorem isZariskiLocalAtSource_locallyOfFiniteType :
     IsZariskiLocalAtSource (@LocallyOfFiniteType.{u}) := by
   have hrh : HasRingHomProperty (@LocallyOfFiniteType.{u}) RingHom.FiniteType := inferInstance
   exact @HasRingHomProperty.instIsZariskiLocalAtSource (@LocallyOfFiniteType.{u}) _ hrh
 
+/- English proof (translation)
+Establish `hrh : HasRingHomProperty (@Flat.{u}) RingHom.Flat` using `inferInstance`. Conclude with `@HasRingHomProperty.instIsZariskiLocalAtSource (@Flat.{u}) _ hrh`.
+-/
 private theorem isZariskiLocalAtSource_flat :
     IsZariskiLocalAtSource (@Flat.{u}) := by
   have hrh : HasRingHomProperty (@Flat.{u}) RingHom.Flat := inferInstance
   exact @HasRingHomProperty.instIsZariskiLocalAtSource (@Flat.{u}) _ hrh
 
+/- English proof (translation)
+Use `isZariskiLocalAtSource_locallyOfFiniteType` as an intermediate fact. Conclude with `IsZariskiLocalAtSource.sigmaDesc hf`.
+-/
 private theorem locallyOfFiniteType_sigmaDesc {ι : Type u} {X : ι → Scheme.{u}} {Z : Scheme.{u}}
     (f : ∀ i, X i ⟶ Z) (hf : ∀ i, LocallyOfFiniteType (f i)) :
     LocallyOfFiniteType (Limits.Sigma.desc f) := by
   have := isZariskiLocalAtSource_locallyOfFiniteType
   exact IsZariskiLocalAtSource.sigmaDesc hf
 
+/- English proof (translation)
+Use `isZariskiLocalAtSource_flat` as an intermediate fact. Conclude with `IsZariskiLocalAtSource.sigmaDesc hf`.
+-/
 private theorem flat_sigmaDesc {ι : Type u} {X : ι → Scheme.{u}} {Z : Scheme.{u}}
     (f : ∀ i, X i ⟶ Z) (hf : ∀ i, Flat (f i)) : Flat (Limits.Sigma.desc f) := by
   have := isZariskiLocalAtSource_flat
   exact IsZariskiLocalAtSource.sigmaDesc hf
 
+/- English proof (translation)
+Establish `hsubs : Subsingleton ↥(Spec (CommRingCat.of k))` using `inferInstance`. Establish `hDaff : ∀ i, IsAffine (((ch i).chartDomain).toScheme)` using `fun i => (ch i).isAffineOpen_chartDomain`. Establish `hambaff : ∀ i, IsAffine ((ch i).ambient)` using `fun i => (ch i).isAffine_ambient`. Establish `hBaff : ∀ i, IsAffine ((H.ambient.basicOpen ((ch i).func)).toScheme)` using `fun i => (isAffineOpen_top H.ambient).basicOpen ((ch i).func)`. Establish `hVaff : IsAffine (sigmaOpens V fun i => (ch i).chartDomain)` using `isAffine_sigmaOpens V _ fun i => (ch i).isAffineOpen_chartDomain`.
+
+Establish `hVcs : CompactSpace ↥(sigmaOpens V fun i => (ch i).chartDomain)` using `inferInstance`. Choose the witnesses or unpack the hypotheses as in `⟨e, he⟩ : ∃ e : ι → k, Function.Injective e := by`. Use `⟨fun i => ((Fintype.equivFin ι i : ℕ) : k), fun a b hab => ?_⟩` and prove the remaining obligations. Establish `h2 : (Fintype.equivFin ι a : ℕ) = (Fintype.equivFin ι b : ℕ)` using `Nat.cast_injective hab`. Conclude with `(Fintype.equivFin ι).injective (Fin.eq_of_val_eq h2)`.
+
+Use `⟨sigmaOpens V (fun i => (ch i).chartDomain), (sigmaOpensDesc V fun i => (ch i).chartDomain) ≫ pV, sigmaOpensDesc V (fun i => (ch i).chartDomain), hVaff, inferInstance, inferInstance, quasiCompact_of_compactSpace_of_subsingleton .., inferInstance, surjective_sigmaOpensDesc V _ hco …` and prove the remaining obligations. Establish `hpullbackG : IsPullback (Limits.Sigma.map fun i => (ch i).imm) ((sigmaOpensDesc V fun i => (ch i).chartDomain) ≫ u) (Limits.Sigma.desc fun i => (ch i).toAmbient) G.emb`. Establish `h0 : IsPullback (Limits.Sigma.map fun i => (ch i).imm) (Limits.Sigma.desc fun i => ((ch i).chartDomain).ι ≫ u) (Limits.Sigma.desc fun i => (ch i).toAmbient) G.emb` using `isPullback_sigmaMap_sigmaDesc G.emb (fun i => (ch i).ambient) (fun i => ((ch i).chartDomain).toScheme) (fun i => (ch i).imm) (fun i => ((ch i).chartDomain).ι ≫ u) (fun i => (ch i).toAmbient) (fun i => (ch i).isPullback)`. Establish `hdescu : (Limits.Sigma.desc fun i => ((ch i).chartDomain).ι ≫ u) = (sigmaOpensDesc V fun i => (ch i).chartDomain) ≫ u`. Use `Limits.Sigma.hom_ext _ _ fun i => ?_` and prove the remaining obligations.
+
+Simplify using the standard rewrite rules. Rewrite `h0` using `[hdescu]`. Then use the resulting hypothesis. Establish `hsmfG : Smooth (Limits.Sigma.desc fun i => (ch i).toAmbient)` using `smooth_sigmaDesc _ fun i => (ch i).smooth_toAmbient`. Establish `hstructeq : (Limits.Sigma.desc fun i => (ch i).toAmbient) ≫ G.ambientStruct = Limits.Sigma.desc fun i => (ch i).ambientStruct`. Use `Limits.Sigma.hom_ext _ _ fun i => ?_` and prove the remaining obligations.
+
+Simplify using `[(ch i).comp_eq]`. Establish `hsmstructG : Smooth ((Limits.Sigma.desc fun i => (ch i).toAmbient) ≫ G.ambientStruct)`. Rewrite using `[hstructeq]`. Conclude with `smooth_sigmaDesc _ fun i => (ch i).smooth_ambientStruct`. Establish `hlftstructG : LocallyOfFiniteType ((Limits.Sigma.desc fun i => (ch i).toAmbient) ≫ G.ambientStruct)`.
+
+Rewrite using `[hstructeq]`. Conclude with `locallyOfFiniteType_sigmaDesc _ fun i => (ch i).locallyOfFiniteType_ambientStruct`. Establish `hGaff : IsAffine (∐ fun i => (ch i).ambient)` using `inferInstance`. Establish `hGcs : CompactSpace ↥(∐ fun i => (ch i).ambient)` using `inferInstance`. Establish `hqcstructG : QuasiCompact ((Limits.Sigma.desc fun i => (ch i).toAmbient) ≫ G.ambientStruct)` using `quasiCompact_of_compactSpace_of_subsingleton ..`.
+
+Establish `hCIembG : IsClosedImmersion (Limits.Sigma.map fun i => (ch i).imm)` using `MorphismProperty.of_isPullback (P := (@IsClosedImmersion : MorphismProperty Scheme.{u})) hpullbackG.flip G.isClosedImmersion_emb`. Establish `hqcGemb : QuasiCompact G.emb` using `inferInstance`. Establish `hqcembG : QuasiCompact (Limits.Sigma.map fun i => (ch i).imm)` using `quasiCompact_of_isPullback hpullbackG.flip`. Establish `hflatfG : Flat (Limits.Sigma.desc fun i => (ch i).toAmbient)` using `flat_sigmaDesc _ fun i => inferInstance`. Establish `hkerG : (Limits.Sigma.map fun i => (ch i).imm).ker = G.emb.ker.comap (Limits.Sigma.desc fun i => (ch i).toAmbient)` using `ker_eq_comap_ker_of_isPullback_of_flat hpullbackG.flip`.
+
+Establish `hnzG : NonzeroOnComponents (Limits.Sigma.map fun i => (ch i).imm).ker`. Rewrite using `[hkerG]`. Conclude with `NonzeroOnComponents.comap_of_flat G.nonzeroOnComponents_ker _`. Establish `hcompG : (Limits.Sigma.map fun i => (ch i).imm) ≫ ((Limits.Sigma.desc fun i => (ch i).toAmbient) ≫ G.ambientStruct) = (sigmaOpensDesc V fun i => (ch i).chartDomain) ≫ pV`. Rewrite using `[← Category.assoc, hpullbackG.w, Category.assoc, G.comp_eq, Category.assoc, hu]`.
+
+Use `⟨embeddingDatumOfClosedImmersion (∐ fun i => (ch i).ambient) ((Limits.Sigma.desc fun i => (ch i).toAmbient) ≫ G.ambientStruct) (Limits.Sigma.map fun i => (ch i).imm) hnzG hcompG (hsnc _ _ hsmstructG), Limits.Sigma.desc fun i => (ch i).toAmbient, ⟨?_⟩, hsmfG, rfl, hpullbackG⟩` and prove the remaining obligations. Establish `hpres : ∀ i, ∃ σ : (ch i).ambient ⟶ affineSpaceIndexedBy k (ULift.{u, 0} (Fin (P.dim + N + 1))), IsClosedImmersion σ ∧ σ ≫ affineSpaceIndexedByToSpec k (ULift.{u, 0} (Fin (P.dim + N + 1))) = (ch i).ambientStruct ∧ HasSmoothCoordCodim (affineSpaceIndexedByToSpec k (ULift.{u, 0} (F …` using `fun i => (ch i).presentation N (hN i)`. Use `choose σ hσCI hσcomp hσcod using hpres`. Establish `hσCI' : ∀ i, IsClosedImmersion (σ i)` using `hσCI`. Establish `hCIunionG : IsClosedImmersion (coproductSliceMap k (P.dim + N + 1) e (fun i => (ch i).ambient) σ)` using `isClosedImmersion_coproductSliceMap k (P.dim + N + 1) e he (fun i => (ch i).ambient) σ`.
+
+Establish `hCIfinG : IsClosedImmersion (coproductSliceMapReindexed k (P.dim + N + 1) e (fun i => (ch i).ambient) σ)` using `inferInstance`. Use `⟨P.codimBound + (N - r) + 1 + 1, P.dim + N + 1 + 1, coproductSliceMapReindexed k (P.dim + N + 1) e (fun i => (ch i).ambient) σ, by omega, by omega, hCIfinG, ?_, ?_⟩` and prove the remaining obligations. Use `coproductSliceMapReindexed_comp_affineSpaceIndexedByToSpec k (P.dim + N + 1) e (fun i => (ch i).ambient) σ _ ?_` and prove the remaining obligations. Introduce `i`. Use `show Limits.Sigma.ι (fun j => (ch j).ambient) i ≫ ((Limits.Sigma.desc fun j => (ch j).toAmbient) ≫ G.ambientStruct) = σ i ≫ affineSpaceIndexedByToSpec k (ULift.{u, 0} (Fin (P.dim + N + 1)))`.
+
+Simplify using `[(ch i).comp_eq, hσcomp i]`. Conclude with `hasSmoothCoordCodim_coproductSliceMapReindexed hsm k (P.dim + N + 1) (P.codimBound + (N - r) + 1) e he (fun i => (ch i).ambient) σ hσcod`. Establish `hpullbackH : IsPullback (Limits.Sigma.map fun i => (H.emb ∣_ H.ambient.basicOpen ((ch i).func))) (sigmaOpensDesc V fun i => (ch i).chartDomain) (sigmaOpensDesc H.ambient fun i => H.ambient.basicOpen ((ch i).func)) H.emb` using `isPullback_sigmaMap_sigmaDesc H.emb (fun i => (H.ambient.basicOpen ((ch i).func)).toScheme) (fun i => ((ch i).chartDomain).toScheme) (fun i => H.emb ∣_ H.ambient.basicOpen ((ch i).func)) (fun i => ((ch i).chartDomain).ι) (fun i => (H.ambient.basicOpen ((ch i).func)).ι) (fun i => …`. Establish `hsmg : Smooth (sigmaOpensDesc H.ambient fun i => H.ambient.basicOpen ((ch i).func))` using `smooth_sigmaDesc _ fun i => inferInstance`. Establish `hlftg : LocallyOfFiniteType (sigmaOpensDesc H.ambient fun i => H.ambient.basicOpen ((ch i).func))` using `inferInstance`.
+
+Establish `hflatg : Flat (sigmaOpensDesc H.ambient fun i => H.ambient.basicOpen ((ch i).func))` using `flat_sigmaDesc _ fun i => inferInstance`. Establish `hHaff : IsAffine (sigmaOpens H.ambient fun i => H.ambient.basicOpen ((ch i).func))` using `isAffine_sigmaOpens H.ambient _ fun i => (isAffineOpen_top H.ambient).basicOpen ((ch i).func)`. Establish `hHcs : CompactSpace ↥(sigmaOpens H.ambient fun i => H.ambient.basicOpen ((ch i).func))` using `inferInstance`. Establish `hsmq : Smooth ((sigmaOpensDesc H.ambient fun i => H.ambient.basicOpen ((ch i).func)) ≫ H.ambientStruct)` using `inferInstance`. Establish `hlftq : LocallyOfFiniteType ((sigmaOpensDesc H.ambient fun i => H.ambient.basicOpen ((ch i).func)) ≫ H.ambientStruct)` using `inferInstance`.
+
+Establish `hqcq : QuasiCompact ((sigmaOpensDesc H.ambient fun i => H.ambient.basicOpen ((ch i).func)) ≫ H.ambientStruct)` using `quasiCompact_of_compactSpace_of_subsingleton ..`. Establish `hCIembH : IsClosedImmersion (Limits.Sigma.map fun i => (H.emb ∣_ H.ambient.basicOpen ((ch i).func)))` using `MorphismProperty.of_isPullback (P := (@IsClosedImmersion : MorphismProperty Scheme.{u})) hpullbackH.flip H.isClosedImmersion_emb`. Establish `hqcHemb : QuasiCompact H.emb` using `inferInstance`. Establish `hqcembH : QuasiCompact (Limits.Sigma.map fun i => (H.emb ∣_ H.ambient.basicOpen ((ch i).func)))` using `quasiCompact_of_isPullback hpullbackH.flip`. Establish `hkerH : (Limits.Sigma.map fun i => (H.emb ∣_ H.ambient.basicOpen ((ch i).func))).ker = H.emb.ker.comap (sigmaOpensDesc H.ambient fun i => H.ambient.basicOpen ((ch i).func))` using `ker_eq_comap_ker_of_isPullback_of_flat hpullbackH.flip`.
+
+Establish `hnzH : NonzeroOnComponents (Limits.Sigma.map fun i => (H.emb ∣_ H.ambient.basicOpen ((ch i).func))).ker`. Rewrite using `[hkerH]`. Conclude with `NonzeroOnComponents.comap_of_flat H.nonzeroOnComponents_ker _`. Establish `hcompH : (Limits.Sigma.map fun i => (H.emb ∣_ H.ambient.basicOpen ((ch i).func))) ≫ ((sigmaOpensDesc H.ambient fun i => H.ambient.basicOpen ((ch i).func)) ≫ H.ambientStruct) = (sigmaOpensDesc V fun i => (ch i).chartDomain) ≫ pV`. Rewrite using `[← Category.assoc, hpullbackH.w, Category.assoc, H.comp_eq]`.
+
+Use `⟨embeddingDatumOfClosedImmersion (sigmaOpens H.ambient fun i => H.ambient.basicOpen ((ch i).func)) ((sigmaOpensDesc H.ambient fun i => H.ambient.basicOpen ((ch i).func)) ≫ H.ambientStruct) (Limits.Sigma.map fun i => (H.emb ∣_ H.ambient.basicOpen ((ch i).func))) hnzH hcompH (hsnc …` and prove the remaining obligations. Establish `hCIrho : ∀ i, IsClosedImmersion (basicOpenEmbedding k Q.dim Q.toAffine ((ch i).func) ≫ (affineSpaceIsoOfEquiv (uliftFinSumEquiv.{u} Q.dim 1) (Spec (CommRingCat.of k))).hom)` using `fun i => inferInstance`. Establish `hrhocomp : ∀ i, (basicOpenEmbedding k Q.dim Q.toAffine ((ch i).func) ≫ (affineSpaceIsoOfEquiv (uliftFinSumEquiv.{u} Q.dim 1) (Spec (CommRingCat.of k))).hom) ≫ affineSpaceIndexedByToSpec k (ULift.{u, 0} (Fin (Q.dim + 1))) = (H.ambient.basicOpen ((ch i).func)).ι ≫ H.ambientStruct`. Introduce `i`. Rewrite using `[Category.assoc, affineSpaceIsoOfEquiv_hom_comp_toSpec]`.
+
+Conclude with `basicOpenEmbedding_comp_affineSpaceIndexedByToSpec k Q.dim Q.toAffine ((ch i).func) H.ambientStruct Q.toAffine_comp`. Establish `hrhocod : ∀ i, HasSmoothCoordCodim (affineSpaceIndexedByToSpec k (ULift.{u, 0} (Fin (Q.dim + 1)))) (basicOpenEmbedding k Q.dim Q.toAffine ((ch i).func) ≫ (affineSpaceIsoOfEquiv (uliftFinSumEquiv.{u} Q.dim 1) (Spec (CommRingCat.of k))).hom) (Q.codimBound + 1)` using `fun i => hasSmoothCoordCodim_basicOpenEmbedding hsm k Q.dim Q.codimBound Q.toAffine ((ch i).func) Q.locallyConstCodim`. Establish `hCIunionH : IsClosedImmersion (coproductSliceMap k (Q.dim + 1) e (fun i => (H.ambient.basicOpen ((ch i).func)).toScheme) (fun i => basicOpenEmbedding k Q.dim Q.toAffine ((ch i).func) ≫ (affineSpaceIsoOfEquiv (uliftFinSumEquiv.{u} Q.dim 1) (Spec (CommRingCat.of k))).hom))` using `isClosedImmersion_coproductSliceMap k (Q.dim + 1) e he (fun i => (H.ambient.basicOpen ((ch i).func)).toScheme) (fun i => basicOpenEmbedding k Q.dim Q.toAffine ((ch i).func) ≫ (affineSpaceIsoOfEquiv (uliftFinSumEquiv.{u} Q.dim 1) (Spec (CommRingCat.of k))).hom)`. Establish `hCIfinH : IsClosedImmersion (coproductSliceMapReindexed k (Q.dim + 1) e (fun i => (H.ambient.basicOpen ((ch i).func)).toScheme) (fun i => basicOpenEmbedding k Q.dim Q.toAffine ((ch i).func) ≫ (affineSpaceIsoOfEquiv (uliftFinSumEquiv.{u} Q.dim 1) (Spec (CommRingCat.of k))).hom))` using `inferInstance`. Use `⟨Q.codimBound + 1 + 1, Q.dim + 1 + 1, coproductSliceMapReindexed k (Q.dim + 1) e (fun i => (H.ambient.basicOpen ((ch i).func)).toScheme) (fun i => basicOpenEmbedding k Q.dim Q.toAffine ((ch i).func) ≫ (affineSpaceIsoOfEquiv (uliftFinSumEquiv.{u} Q.dim 1) (Spec (CommRingCat.of k)) …` and prove the remaining obligations.
+
+Use `coproductSliceMapReindexed_comp_affineSpaceIndexedByToSpec k (Q.dim + 1) e (fun i => (H.ambient.basicOpen ((ch i).func)).toScheme) (fun i => basicOpenEmbedding k Q.dim Q.toAffine ((ch i).func) ≫ (affineSpaceIsoOfEquiv (uliftFinSumEquiv.{u} Q.dim 1) (Spec (CommRingCat.of k))).hom) …` and prove the remaining obligations. Introduce `i`. Use `show Limits.Sigma.ι (fun j => (H.ambient.basicOpen ((ch j).func)).toScheme) i ≫ ((sigmaOpensDesc H.ambient fun j => H.ambient.basicOpen ((ch j).func)) ≫ H.ambientStruct) = (basicOpenEmbedding k Q.dim Q.toAffine ((ch i).func) ≫ (affineSpaceIsoOfEquiv (uliftFinSumEquiv.{u} Q.dim 1) …`. Rewrite using `[hrhocomp i]`. Simplify using the standard rewrite rules.
+
+Conclude with `hasSmoothCoordCodim_coproductSliceMapReindexed hsm k (Q.dim + 1) (Q.codimBound + 1) e he (fun i => (H.ambient.basicOpen ((ch i).func)).toScheme) (fun i => basicOpenEmbedding k Q.dim Q.toAffine ((ch i).func) ≫ (affineSpaceIsoOfEquiv (uliftFinSumEquiv.{u} Q.dim 1) (Spec (CommRingCa …`.
+-/
 private theorem exists_etaleCover_closedEmbeddingIntoAffineSpace_of_localCharts (hsm : AffineSpaceIsSmooth.{u})
     (k : Type u) [Field k] [CharZero k]
     (hsnc : ∀ (A : Scheme.{u}) (q : A ⟶ Spec (CommRingCat.of k)),
@@ -298,6 +347,13 @@ private theorem exists_etaleCover_closedEmbeddingIntoAffineSpace_of_localCharts 
           (affineSpaceIsoOfEquiv (uliftFinSumEquiv.{u} Q.dim 1) (Spec (CommRingCat.of k))).hom)
         hrhocod
 
+/- English proof (translation)
+Establish `hVcs : CompactSpace ↥V` using `inferInstance`. Establish `hch : ∀ y : ↥V, Nonempty (PresentedLocalChart P H u r y)` using `fun y => nonempty_presentedLocalChart hS hsm k Y V pY pV G P H u r hu y`. Take `⟨t, ht⟩` from `isCompact_univ.elim_finite_subcover (fun y : ↥V => ((((hch y).some.chartDomain) : V.Opens) : Set ↥V)) (fun y => ((hch y).some.chartDomain).isOpen) (by intro x _; exact Set.mem_iUnion.mpr ⟨x, (hch x).some.mem_domain⟩)`. Establish `hfin : Fintype { y : ↥V // y ∈ t }` using `FinsetCoe.fintype t`. Take `⟨N, hN⟩ : ∃ N : ℕ, ∀ i : { y : ↥V // y ∈ t }, ((hch i.1).some).threshold ≤ N` from `⟨Finset.univ.sup fun i : { y : ↥V // y ∈ t } => ((hch i.1).some).threshold, fun i => Finset.le_sup (f := fun i : { y : ↥V // y ∈ t } => ((hch i.1).some).threshold) (Finset.mem_univ i)⟩`.
+
+Use `exists_etaleCover_closedEmbeddingIntoAffineSpace_of_localCharts hsm k hsnc Y V pY pV G P H Q u r hu { y : ↥V // y ∈ t } (fun i => i.1) (fun i => (hch i.1).some) N hN ?_` and prove the remaining obligations. Use `TopologicalSpace.Opens.ext ?_` and prove the remaining obligations. Rewrite using `[TopologicalSpace.Opens.coe_iSup, TopologicalSpace.Opens.coe_top]`. Use `Set.eq_univ_of_univ_subset fun x _ => ?_` and prove the remaining obligations. Take `⟨y, hy, hxy⟩` from `Set.mem_iUnion₂.mp (ht (Set.mem_univ x))`.
+
+Conclude with `Set.mem_iUnion.mpr ⟨⟨y, hy⟩, hxy⟩`.
+-/
 theorem exists_etaleCover_closedEmbeddingIntoAffineSpace_of_smooth
     (hS : SmoothPullbackHasLocalAmbientEmbedding.{u}) (hsm : AffineSpaceIsSmooth.{u})
     (k : Type u) [Field k] [CharZero k]

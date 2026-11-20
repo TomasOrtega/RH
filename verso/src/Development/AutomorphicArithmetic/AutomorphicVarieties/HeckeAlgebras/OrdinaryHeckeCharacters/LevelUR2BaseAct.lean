@@ -9,6 +9,19 @@ open scoped TensorProduct
 attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField
 set_option synthInstance.maxHeartbeats 200000
 
+/- English proof (translation)
+Introduce `L Ω _ _ _ _ _ l _ n c H _ A _ _ _ θ _ a K R _ _ D₀ ψ₀ lam J hJ`. Break down `hJ with ⟨h0, hJ⟩ | ⟨x, x1, f, hne, hmap, hsurj, hlam, hker⟩` into its components or cases. Use `haveI : Subsingleton (H.MK θ a K) := by`. Rewrite using `[h0]`. Use `infer_instance`.
+
+Use `haveI : Subsingleton (Module.End A (H.MK θ a K)) := inferInstance`. Set `μ : R →+* Module.End A (H.MK θ a K)` to `{ toFun := fun _ => 0 map_one' := Subsingleton.elim _ _ map_mul' := fun _ _ => Subsingleton.elim _ _ map_zero' := rfl map_add' := fun _ _ => Subsingleton.elim _ _ }`. Use `⟨μ, ?_, ?_, Or.inl h0⟩` and prove the remaining obligations. Introduce `b y`. Conclude with `Subsingleton.elim _ _`.
+
+Rewrite using `[hJ]`. Use extensionality with `t`. Simplify using `only [RingHom.mem_ker, Submodule.mem_top, iff_true]`. Conclude with `Subsingleton.elim _ _`. Use `⟨(UpperTheory.V.Hi.heckeAlg (H.MK θ a K) (H.op A)).val.toRingHom.comp f.toRingHom, ?_, ?_, Or.inr ⟨x, x1, f, hmap, fun t => rfl⟩⟩` and prove the remaining obligations.
+
+Introduce `b y`. Establish `h` using `hlam b`. Use `show ((f (lam b) : Module.End A (H.MK θ a K))) y = b • y`. Rewrite using `[h]`. Both sides reduce to the same expression.
+
+Rewrite using `[hker]`. Use extensionality with `t`. Simplify using `only [RingHom.mem_ker, RingHom.comp_apply, AlgHom.toRingHom_eq_coe, RingHom.coe_coe]`. Prove the components needed by the constructor for the conclusion. Introduce `ht`.
+
+Conclude with `Subtype.ext ht`. Introduce `ht`. Rewrite using `[ht]`. Both sides reduce to the same expression.
+-/
 theorem UpperTheory.V.Hi.levelUR2BaseAct :
     ∀ (L Ω : Type) [Field L] [NumberField L] [Field Ω] [Algebra L Ω] [IsAlgClosure L Ω] (l : ℕ) [Fact l.Prime] (n : ℕ) (c : Coef l) (H : HSet L Ω l n c), H.Ax →
     ∀ (A : Type) [CommRing A] [Algebra c.O A] [Alg.IsCO c.O A] (θ : H.X.I.T →* Aˣ), H.IsWt θ →

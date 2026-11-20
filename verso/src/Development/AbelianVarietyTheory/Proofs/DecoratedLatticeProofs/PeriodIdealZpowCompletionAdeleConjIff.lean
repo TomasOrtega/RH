@@ -23,9 +23,15 @@ abbrev conjR (D : D7) : D.host.E ≃+* D.host.E := (D.host.conj : D.host.E ≃�
 def conjFI (D : D7) : FI D ≃+* FI D :=
   FractionalIdeal.ringEquivOfRingEquiv D.host.E D.host.E (NumberField.RingOfIntegers.mapRingEquiv (conjR D))
 
+/- English proof (translation)
+Rewrite using `[← bridge_star_holds D.R D.host, ← bridge_star_holds D.R D.host, star_star]`.
+-/
 theorem conj_conj_host (D : D7) (x : D.host.E) : D.host.conj (D.host.conj x) = x := by
   rw [← bridge_star_holds D.R D.host, ← bridge_star_holds D.R D.host, star_star]
 
+/- English proof (translation)
+Take `⟨a, b, -, rfl⟩` from `IsFractionRing.div_surjective (A := 𝓞 D.host.E) x`. Rewrite using `[map_div₀, IsFractionRing.ringEquivOfRingEquiv_algebraMap, IsFractionRing.ringEquivOfRingEquiv_algebraMap, map_div₀]`. Both sides reduce to the same expression.
+-/
 theorem fracEquiv_conj (D : D7) (x : D.host.E) :
     IsFractionRing.ringEquivOfRingEquiv (K := D.host.E) (L := D.host.E)
       (NumberField.RingOfIntegers.mapRingEquiv (conjR D)) x = D.host.conj x := by
@@ -34,6 +40,11 @@ theorem fracEquiv_conj (D : D7) (x : D.host.E) :
     IsFractionRing.ringEquivOfRingEquiv_algebraMap, map_div₀]
   rfl
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨y, hy, rfl⟩`. Establish `h` using `(congrArg D.host.conj (fracEquiv_conj D y)).trans (conj_conj_host D y)`. Conclude with `h.symm ▸ hy`. Introduce `h`.
+
+Conclude with `⟨D.host.conj x, h, (fracEquiv_conj D _).trans (conj_conj_host D x)⟩`.
+-/
 theorem mem_conjFI {D : D7} {𝔞 : FI D} {x : D.host.E} : x ∈ conjFI D 𝔞 ↔ D.host.conj x ∈ 𝔞 := by
   constructor
   · rintro ⟨y, hy, rfl⟩
@@ -42,29 +53,49 @@ theorem mem_conjFI {D : D7} {𝔞 : FI D} {x : D.host.E} : x ∈ conjFI D 𝔞 �
   · intro h
     exact ⟨D.host.conj x, h, (fracEquiv_conj D _).trans (conj_conj_host D x)⟩
 
+/- English proof (translation)
+Rewrite using `[mem_conjFI, conj_conj_host]`.
+-/
 theorem conj_mem_conjFI {D : D7} {𝔞 : FI D} {x : D.host.E} : D.host.conj x ∈ conjFI D 𝔞 ↔ x ∈ 𝔞 := by
   rw [mem_conjFI, conj_conj_host]
 
+/- English proof (translation)
+Use extensionality with `x`. Rewrite using `[mem_conjFI]`. Use `⟨fun h => ?_, fun h => Formalism.L2.Pj.conj_mem_AA D h⟩` and prove the remaining obligations. Simplify `Formalism.L2.Pj.conj_mem_AAbar D h` using `only [conj_conj_host]`.
+-/
 theorem conjFI_AA (D : D7) : conjFI D D.host.AA = D.host.AAbar := by
   ext x
   rw [mem_conjFI]
   refine ⟨fun h => ?_, fun h => Formalism.L2.Pj.conj_mem_AA D h⟩
   simpa only [conj_conj_host] using Formalism.L2.Pj.conj_mem_AAbar D h
 
+/- English proof (translation)
+Rewrite using `[map_zpow₀, conjFI_AA]`.
+-/
 theorem conjFI_AA_zpow (D : D7) (n : ℤ) : conjFI D (D.host.AA ^ n) = D.host.AAbar ^ n := by
   rw [map_zpow₀, conjFI_AA]
 
+/- English proof (translation)
+Express the relevant statement in the definitionally equal form `α ⊗ₜ[D.host.F] star a = _`. Rewrite using `[bridge_star_holds D.R D.host]`.
+-/
 theorem cA_tmul (D : D7) (α : AF D.host.F) (a : D.host.E) :
     cA D (α ⊗ₜ[D.host.F] a) = α ⊗ₜ[D.host.F] D.host.conj a := by
   change α ⊗ₜ[D.host.F] star a = _
   rw [bridge_star_holds D.R D.host]
 
+/- English proof (translation)
+Proceed by induction on `z using TensorProduct.induction_on with`. Consider the case `zero => rw [map_zero, map_zero]`. Consider the case `add x y hx hy => rw [map_add, map_add, hx, hy]`. Consider the case `tmul a x => rw [cA_tmul, cA_tmul, conj_conj_host]`.
+-/
 theorem cA_cA (D : D7) (z : AE D) : cA D (cA D z) = z := by
   induction z using TensorProduct.induction_on with
   | zero => rw [map_zero, map_zero]
   | add x y hx hy => rw [map_add, map_add, hx, hy]
   | tmul a x => rw [cA_tmul, cA_tmul, conj_conj_host]
 
+/- English proof (translation)
+Establish `hle : idV 𝔞 v ≤ (idV (conjFI D 𝔞) v).comap (cA D).toAddMonoidHom`. Rewrite using `[idV, AddSubgroup.closure_le]`. Introduce and unpack `_ ⟨α, hα, hv, a, ha, rfl⟩`. Use `show cA D _ ∈ idV (conjFI D 𝔞) v`. Rewrite using `[cA_tmul]`.
+
+Conclude with `AddSubgroup.subset_closure ⟨α, hα, hv, D.host.conj a, conj_mem_conjFI.2 ha, rfl⟩`. Conclude with `hle hs`.
+-/
 theorem cA_mem_idV {D : D7} {𝔞 : FI D} {v : Pl D} {s : AE D} (hs : s ∈ idV 𝔞 v) :
     cA D s ∈ idV (conjFI D 𝔞) v := by
   have hle : idV 𝔞 v ≤ (idV (conjFI D 𝔞) v).comap (cA D).toAddMonoidHom := by
@@ -75,12 +106,18 @@ theorem cA_mem_idV {D : D7} {𝔞 : FI D} {v : Pl D} {s : AE D} (hs : s ∈ idV 
     exact AddSubgroup.subset_closure ⟨α, hα, hv, D.host.conj a, conj_mem_conjFI.2 ha, rfl⟩
   exact hle hs
 
+/- English proof (translation)
+Use `⟨cA_mem_idV, fun h => ?_⟩` and prove the remaining obligations. Establish `h2` using `cA_mem_idV h`. Rewrite `h2` using `[cA_cA, show conjFI D (conjFI D 𝔞) = 𝔞 from by ext x; rw [mem_conjFI, conj_mem_conjFI]]`. Then use the resulting hypothesis.
+-/
 theorem idV_cA_iff (D : D7) (v : Pl D) (𝔞 : FI D) (s : AE D) :
     s ∈ idV 𝔞 v ↔ cA D s ∈ idV (conjFI D 𝔞) v := by
   refine ⟨cA_mem_idV, fun h => ?_⟩
   have h2 := cA_mem_idV h
   rwa [cA_cA, show conjFI D (conjFI D 𝔞) = 𝔞 from by ext x; rw [mem_conjFI, conj_mem_conjFI]] at h2
 
+/- English proof (translation)
+Introduce `D v n s`. Rewrite using `[idV_cA_iff D v, conjFI_AA_zpow]`.
+-/
 theorem idV_AA_zpow_conj : ∀ (D : D7) (v : Pl D) (n : ℤ) (s : AE D),
     s ∈ idV (D.host.AA ^ n) v ↔ cA D s ∈ idV (D.host.AAbar ^ n) v := by
   intro D v n s

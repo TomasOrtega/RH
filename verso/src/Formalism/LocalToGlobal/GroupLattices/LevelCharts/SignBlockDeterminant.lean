@@ -9,23 +9,38 @@ namespace Formalism.L2.G
 
 def lvlX (a t x : ℕ) : ℕ := if x < a then x else a + (x - a) / t
 
+/- English proof (translation)
+The claim follows from `if_pos h`.
+-/
 theorem lvlX_of_lt {a t x : ℕ} (h : x < a) : lvlX a t x = x := if_pos h
 
+/- English proof (translation)
+Simplify using `only [lvlX, h, if_false]`. Conclude with `Nat.le_add_right _ _`.
+-/
 theorem lvlX_ge {a t x : ℕ} (h : ¬ x < a) : a ≤ lvlX a t x := by
   simp only [lvlX, h, if_false]; exact Nat.le_add_right _ _
 
+/- English proof (translation)
+Distinguish the cases in `hy : y < a`. Rewrite using `[lvlX_of_lt hy]`. Use `lvlX_ge (t := t) hy` as an intermediate fact. Apply the tactic sequence `constructor <;> intro h' <;> omega`.
+-/
 theorem lvlX_eq_iff {a t x y : ℕ} (h : x < a) : lvlX a t y = x ↔ y = x := by
   by_cases hy : y < a
   · rw [lvlX_of_lt hy]
   · have := lvlX_ge (t := t) hy
     constructor <;> intro h' <;> omega
 
+/- English proof (translation)
+Distinguish the cases in `hy : y < a`. Rewrite using `[lvlX_of_lt hy]`. Use `lvlX_ge (t := t) hy` as an intermediate fact. Apply the tactic sequence `constructor <;> intro h' <;> omega`.
+-/
 theorem lvlX_lt_iff {a t x y : ℕ} (h : x < a) : lvlX a t y < x ↔ y < x := by
   by_cases hy : y < a
   · rw [lvlX_of_lt hy]
   · have := lvlX_ge (t := t) hy
     constructor <;> intro h' <;> omega
 
+/- English proof (translation)
+Distinguish the cases in `hy : y < a`. Rewrite using `[lvlX_of_lt hy]`. Use `lvlX_ge (t := t) hy` as an intermediate fact. Apply the tactic sequence `constructor <;> intro h' <;> omega`.
+-/
 theorem lt_lvlX_iff {a t x y : ℕ} (h : x < a) : x < lvlX a t y ↔ x < y := by
   by_cases hy : y < a
   · rw [lvlX_of_lt hy]
@@ -38,6 +53,11 @@ section Bar
 
 variable {κ : Type} [CommRing κ] {N : ℕ} {a t : ℕ}
 
+/- English proof (translation)
+Rewrite using `[Matrix.mul_apply]`. Use `Finset.sum_congr rfl fun z _ => ?_` and prove the remaining obligations. Distinguish the cases in `hz : b z = b x`. Rewrite using `[if_pos hz]`. Rewrite using `[if_neg hz]`.
+
+Break down `lt_or_gt_of_ne hz with h | h` into its components or cases. Rewrite using `[hM h, zero_mul]`. Rewrite using `[hM' (hxy ▸ h), mul_zero]`.
+-/
 theorem mul_apply_block {α : Type} [LinearOrder α] {b : Fin N → α} {M M' : Matrix (Fin N) (Fin N) κ}
     (hM : M.BlockTriangular b) (hM' : M'.BlockTriangular b) {x y : Fin N} (hxy : b x = b y) :
     (M * M') x y = ∑ z, if b z = b x then M x z * M' z y else 0 := by
@@ -50,6 +70,9 @@ theorem mul_apply_block {α : Type} [LinearOrder α] {b : Fin N → α} {M M' : 
     · rw [hM h, zero_mul]
     · rw [hM' (hxy ▸ h), mul_zero]
 
+/- English proof (translation)
+Use extensionality with `⟨x, hx⟩ ⟨y, hy⟩`. Rewrite using `[Matrix.mul_apply]`. Use `show (M * M') x y = ∑ z : {z // b z = c}, M x z.1 * M' z.1 y`. Rewrite using `[mul_apply_block hM hM' (hx.trans hy.symm), hx, ← Finset.sum_filter]`. Conclude with `Finset.sum_subtype _ (fun z => by simp) _`.
+-/
 theorem toSquareBlock_mul {α : Type} [LinearOrder α] {b : Fin N → α} {M M' : Matrix (Fin N) (Fin N) κ}
     (hM : M.BlockTriangular b) (hM' : M'.BlockTriangular b) (c : α) :
     (M * M').toSquareBlock b c = M.toSquareBlock b c * M'.toSquareBlock b c := by
@@ -59,6 +82,13 @@ theorem toSquareBlock_mul {α : Type} [LinearOrder α] {b : Fin N → α} {M M' 
   rw [mul_apply_block hM hM' (hx.trans hy.symm), hx, ← Finset.sum_filter]
   exact Finset.sum_subtype _ (fun z => by simp) _
 
+/- English proof (translation)
+Rewrite using `[mul_apply_block hM hM' rfl, Finset.sum_eq_single x]`. Rewrite using `[if_pos rfl]`. Introduce `z _ hz`. Rewrite using `[if_neg]`. Introduce `h`.
+
+Apply `hz` to reduce the goal to its premises. Establish `h1 : lvlX a t z.val = x.val`. Establish `: lvlX a t z.val = lvlX a t x.val` using `h`. Rewrite `this` using `[lvlX_of_lt hx]`. Then use the resulting hypothesis. Conclude with `Fin.ext ((lvlX_eq_iff hx).1 h1)`.
+
+Introduce `h`. Conclude with `absurd (Finset.mem_univ x) h`.
+-/
 theorem mul_diag {M M' : Matrix (Fin N) (Fin N) κ} (hM : M.BlockTriangular (lvF N a t))
     (hM' : M'.BlockTriangular (lvF N a t)) {x : Fin N} (hx : x.val < a) : (M * M') x x = M x x * M' x x := by
   rw [mul_apply_block hM hM' rfl, Finset.sum_eq_single x]
@@ -127,6 +157,17 @@ def JBar (κ : Type) [CommRing κ] (N a t : ℕ) (fixLast : Bool) (fc : ℕ) : S
 
 def entN (M : Matrix (Fin N) (Fin N) κ) (x y : ℕ) : κ := if h : x < N ∧ y < N then M ⟨x, h.1⟩ ⟨y, h.2⟩ else 0
 
+/- English proof (translation)
+Unfold `entN`. Distinguish the cases in `h : x < N ∧ x + 1 < N`. Simplify using `only [h, and_self, dif_pos]`. Rewrite using `[Matrix.mul_apply]`. Establish `hne : (⟨x, h.1⟩ : Fin N) ≠ ⟨x + 1, h.2⟩`.
+
+Introduce `e`. Use `congrArg Fin.val e` as an intermediate fact. Simplify using `at this`. Rewrite using `[← Finset.sum_subset (Finset.subset_univ ({⟨x, h.1⟩, ⟨x + 1, h.2⟩} : Finset (Fin N)))]`. Rewrite using `[Finset.sum_pair hne, h1 ⟨x, h.1⟩ (by show x < a; omega), h1' ⟨x + 1, h.2⟩ hx, one_mul, mul_one, add_comm]`.
+
+Introduce `z _ hz`. Simplify using `only [Finset.mem_insert, Finset.mem_singleton, not_or] at hz`. Establish `hz1 : z.val ≠ x` using `fun e => hz.1 (Fin.ext e)`. Establish `hz2 : z.val ≠ x + 1` using `fun e => hz.2 (Fin.ext e)`. Break down `Nat.lt_or_ge z.val x with hlt | hge` into its components or cases.
+
+Establish `: M ⟨x, h.1⟩ z = 0` using `hM (by show lvlX a t z.val < lvlX a t x`. Rewrite using `[lvlX_of_lt (show x < a by omega)]`. Conclude with `(lvlX_lt_iff (by omega)).2 hlt)`. Rewrite using `[this, zero_mul]`. Establish `: M' z ⟨x + 1, h.2⟩ = 0` using `hM' (by show lvlX a t (x + 1) < lvlX a t z.val`.
+
+Rewrite using `[lvlX_of_lt hx]`. Conclude with `(lt_lvlX_iff hx).2 (by omega))`. Rewrite using `[this, mul_zero]`. Simplify using `only [h, dif_neg, not_false_eq_true, add_zero]`.
+-/
 theorem entN_mul {M M' : Matrix (Fin N) (Fin N) κ} (hM : M.BlockTriangular (lvF N a t))
     (hM' : M'.BlockTriangular (lvF N a t)) (h1 : ∀ x : Fin N, x.val < a → M x x = 1)
     (h1' : ∀ x : Fin N, x.val < a → M' x x = 1) {x : ℕ} (hx : x + 1 < a) :
@@ -204,6 +245,9 @@ section Cong
 
 variable {A R : Type} [CommRing A] [CommRing R] {n : Type} [Fintype n] [DecidableEq n]
 
+/- English proof (translation)
+Introduce `x y hxy`. Apply `Units.ext` to reduce the goal to its premises. Establish `h2 : (x : Matrix n n R).map ι = (y : Matrix n n R).map ι` using `congrArg Units.val hxy`. Conclude with `Matrix.map_injective h h2`.
+-/
 theorem bc_injective (ι : R →+* A) (h : Function.Injective ι) : Function.Injective (bc (n := n) ι) := by
   intro x y hxy
   apply Units.ext
@@ -215,6 +259,9 @@ def congChar {Z : Type} [Group Z] (ι : R →+* A) (hι : Function.Injective ι)
   (lam.comp ((redGL I).subgroupComap H)).comp
     ((H.comap (redGL I)).equivMapOfInjective (bc ι) (bc_injective ι hι)).symm.toMonoidHom
 
+/- English proof (translation)
+Establish `h : ((H.comap (redGL I)).equivMapOfInjective (bc ι) (bc_injective ι hι)).symm ⟨bc ι g, hm⟩ = (⟨g, hg⟩ : H.comap (redGL I))`. Rewrite using `[MulEquiv.symm_apply_eq]`. Conclude with `Subtype.ext rfl`. Conclude with `congrArg (fun z => lam ((redGL I).subgroupComap H z)) h`.
+-/
 theorem congChar_apply {Z : Type} [Group Z] (ι : R →+* A) (hι : Function.Injective ι) (I : Ideal R)
     (H : Subgroup (GL n (R ⧸ I))) (lam : H →* Z) (g : GL n R) (hg : redGL I g ∈ H) (hm : bc ι g ∈ congPre ι I H) :
     congChar ι hι I H lam ⟨bc ι g, hm⟩ = lam ⟨redGL I g, hg⟩ := by
@@ -224,9 +271,17 @@ theorem congChar_apply {Z : Type} [Group Z] (ι : R →+* A) (hι : Function.Inj
     exact Subtype.ext rfl
   exact congrArg (fun z => lam ((redGL I).subgroupComap H z)) h
 
+/- English proof (translation)
+The claim follows from `Subgroup.map_mono (Subgroup.comap_mono bot_le)`.
+-/
 theorem princ_le_congPre (ι : R →+* A) (I : Ideal R) (H : Subgroup (GL n (R ⧸ I))) : princ ι I ≤ congPre ι I H :=
   Subgroup.map_mono (Subgroup.comap_mono bot_le)
 
+/- English proof (translation)
+Take `⟨g, hg, hgx⟩` from `hx`. Establish `hg1 : redGL I g = 1` using `hg`. Establish `hgH : redGL I g ∈ H` using `by rw [hg1]; exact H.one_mem`. Establish `hm : bc ι g ∈ congPre ι I H` using `hgx ▸ x.2`. Establish `hx' : x = ⟨bc ι g, hm⟩` using `Subtype.ext hgx.symm`.
+
+Rewrite using `[hx', congChar_apply ι hι I H lam g hgH hm]`. Establish `: (⟨redGL I g, hgH⟩ : H) = 1` using `Subtype.ext hg1`. Rewrite using `[this, map_one]`.
+-/
 theorem congChar_princ {Z : Type} [Group Z] (ι : R →+* A) (hι : Function.Injective ι) (I : Ideal R)
     (H : Subgroup (GL n (R ⧸ I))) (lam : H →* Z) (x : congPre ι I H) (hx : (x : GL n A) ∈ princ ι I) :
     congChar ι hι I H lam x = 1 := by
@@ -247,6 +302,9 @@ variable (F : Type) [Field F] [NumberField F] (v : HeightOneSpectrum (𝓞 F))
 
 abbrev resV : Type := (v.adicCompletionIntegers F) ⧸ IsLocalRing.maximalIdeal (v.adicCompletionIntegers F)
 
+/- English proof (translation)
+Introduce `_ _ h` and use `Subtype.ext h`.
+-/
 theorem algMapV_injective :
     Function.Injective (algebraMap (v.adicCompletionIntegers F) (v.adicCompletion F)) :=
   fun _ _ h => Subtype.ext h
@@ -270,6 +328,9 @@ variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algeb
 def toFr : GL (Fin N) (E ⊗[F] v.adicCompletion F) →* GL (Fin N) (v.adicCompletion F) :=
   (MulAut.conj fr⁻¹).toMonoidHom.comp (bc ((RingHom.fst _ _).comp spl.toRingHom))
 
+/- English proof (translation)
+Use `show (MulAut.conj fr⁻¹) (bc ((RingHom.fst _ _).comp spl.toRingHom) x) = _`. Rewrite using `[MulAut.conj_apply, inv_inv]`.
+-/
 theorem toFr_apply (x : GL (Fin N) (E ⊗[F] v.adicCompletion F)) :
     toFr v spl fr x = fr⁻¹ * bc ((RingHom.fst _ _).comp spl.toRingHom) x * fr := by
   show (MulAut.conj fr⁻¹) (bc ((RingHom.fst _ _).comp spl.toRingHom) x) = _
@@ -278,6 +339,9 @@ theorem toFr_apply (x : GL (Fin N) (E ⊗[F] v.adicCompletion F)) :
 def JU (a t : ℕ) (fixLast : Bool) (fc : ℕ) : Subgroup (GL (Fin N) (E ⊗[F] v.adicCompletion F)) :=
   UPts σE J (v.adicCompletion F) ⊓ (JLoc F v N a t fixLast fc).comap (toFr v spl fr)
 
+/- English proof (translation)
+Rewrite using `[JU, Subgroup.mem_inf, Subgroup.mem_comap, toFr_apply]`.
+-/
 theorem mem_JU (a t : ℕ) (fixLast : Bool) (fc : ℕ) (x : GL (Fin N) (E ⊗[F] v.adicCompletion F)) :
     x ∈ JU σE J v spl fr a t fixLast fc ↔ x ∈ UPts σE J (v.adicCompletion F) ∧
       fr⁻¹ * bc ((RingHom.fst _ _).comp spl.toRingHom) x * fr ∈ JLoc F v N a t fixLast fc := by

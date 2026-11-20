@@ -6,6 +6,13 @@ open NumberField IsDedekindDomain MeasureTheory ValuativeRel Matrix Formalism.L2
 
 namespace GlobalTheory.OpenVolIndex
 
+/- English proof (translation)
+Introduce `G _ _ _ _ _ μ _ H L hHL hH hL hμL`. Use `haveI : CompactSpace L := isCompact_iff_compactSpace.mp hL`. Establish `hHo : IsOpen ((H.subgroupOf L : Subgroup L) : Set L)` using `hH.preimage continuous_subtype_val`. Use `haveI : Finite (L ⧸ H.subgroupOf L) := Subgroup.quotient_finite_of_isOpen _ hHo`. Use `haveI : (H.subgroupOf L).FiniteIndex := Subgroup.finiteIndex_of_finite_quotient`.
+
+Establish `key` using `GlobalTheory.BaseModule.relIndex_mul_measure' H L hHL hH.measurableSet μ`. Rewrite `key` using `[hμL]`. Establish `htop : μ (H : Set G) ≠ ⊤` using `ne_top_of_le_ne_top (by rw [hμL]; exact ENNReal.one_ne_top) (measure_mono hHL)`. Establish `hr : (H.relIndex L : ℝ) * (μ (H : Set G)).toReal = 1`. Use `congrArg ENNReal.toReal key` as an intermediate fact.
+
+Simplify `this` using `[ENNReal.toReal_mul]`. Conclude with `(eq_inv_of_mul_eq_one_left hr).symm`.
+-/
 theorem measure_toReal_inv_eq_relIndex : ∀ {G : Type} [Group G] [TopologicalSpace G] [IsTopologicalGroup G] [MeasurableSpace G] [BorelSpace G] (μ : MeasureTheory.Measure G) [μ.IsHaarMeasure] (H L : Subgroup G), H ≤ L → IsOpen (H : Set G) → IsCompact (L : Set G) → μ (L : Set G) = 1 → (μ (H : Set G)).toReal⁻¹ = (H.relIndex L : ℝ) := by
   intro G _ _ _ _ _ μ _ H L hHL hH hL hμL
   haveI : CompactSpace L := isCompact_iff_compactSpace.mp hL

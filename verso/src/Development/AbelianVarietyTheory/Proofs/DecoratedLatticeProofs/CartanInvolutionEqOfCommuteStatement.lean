@@ -11,5 +11,8 @@ open GlobalTheory.IndefiniteRowSideFullHecke.SphericalZero (swSec sZero)
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.StdUnn.isCartanInv_eq_of_commute | exact GlobalTheory.StdUnn.isCartanInv_eq_of_commute | (intros; apply GlobalTheory.StdUnn.isCartanInv_eq_of_commute <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.cartanInvolution_eq_of_commute : ∀ (k : ℕ) (G s s' : Matrix (Fin k) (Fin k) ℂ), IsCartanInv G s → IsCartanInv G s' → s * s' = s' * s → s = s' := by
   first | exact @GlobalTheory.StdUnn.isCartanInv_eq_of_commute | exact GlobalTheory.StdUnn.isCartanInv_eq_of_commute | (intros; apply GlobalTheory.StdUnn.isCartanInv_eq_of_commute <;> assumption)

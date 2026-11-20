@@ -12,6 +12,9 @@ section Exp2
 
 variable (A : Type) [CommRing A] [Algebra ℚ A]
 
+/- English proof (translation)
+Use `first`. Consider the case `exact MvPowerSeries.coeff_X_pow e i n`. Consider the case `(classical exact MvPowerSeries.coeff_X_pow e i n)`. Consider the case `simp [MvPowerSeries.coeff_X_pow]`.
+-/
 theorem gt_coeff_X_pow (i : Fin 2) (n : ℕ) (e : Fin 2 →₀ ℕ) :
     coeff e ((X i : MvPowerSeries (Fin 2) A) ^ n) = if e = single i n then 1 else 0 := by
   first
@@ -19,6 +22,11 @@ theorem gt_coeff_X_pow (i : Fin 2) (n : ℕ) (e : Fin 2 →₀ ℕ) :
     | (classical exact MvPowerSeries.coeff_X_pow e i n)
     | simp [MvPowerSeries.coeff_X_pow]
 
+/- English proof (translation)
+Establish `ha : PowerSeries.HasSubst (X i : MvPowerSeries (Fin 2) A)` using `PowerSeries.HasSubst.of_constantCoeff_zero (by simp)`. Rewrite using `[PowerSeries.coeff_subst ha]`. Repeatedly rewrite using `[gt_coeff_X_pow A i, PowerSeries.coeff_exp]`. Rewrite using `[finsum_eq_single _ (e i)]`. Apply the tactic sequence `split_ifs <;> simp`.
+
+Introduce `m hm split_ifs with h`. Conclude with `absurd (by rw [h]; simp) hm`. Simplify using the standard rewrite rules.
+-/
 theorem gt_coeff_expX (i : Fin 2) (e : Fin 2 →₀ ℕ) :
     coeff e (PowerSeries.subst (X i : MvPowerSeries (Fin 2) A) (PowerSeries.exp A)) =
       if e = single i (e i) then algebraMap ℚ A (1 / (e i).factorial) else 0 := by
@@ -33,10 +41,26 @@ theorem gt_coeff_expX (i : Fin 2) (e : Fin 2 →₀ ℕ) :
     · exact absurd (by rw [h]; simp) hm
     · simp
 
+/- English proof (translation)
+Use extensionality with `j`. Apply the tactic sequence `fin_cases j <;> simp [Finsupp.single_apply]`.
+-/
 theorem gt_single_add (e : Fin 2 →₀ ℕ) : e = single 0 (e 0) + single 1 (e 1) := by
   ext j
   fin_cases j <;> simp [Finsupp.single_apply]
 
+/- English proof (translation)
+Establish `hterm : ∀ m, coeff e ((X 0 : MvPowerSeries (Fin 2) A) ^ m * X 1 ^ (n - m) * ((n.choose m : ℕ) : MvPowerSeries (Fin 2) A)) = if e = single 0 m + single 1 (n - m) then ((n.choose m : ℕ) : A) else 0`. Introduce `m`. Rewrite using `[mul_comm _ ((n.choose m : ℕ) : MvPowerSeries (Fin 2) A), ← nsmul_eq_mul, map_nsmul, nsmul_eq_mul, MvPowerSeries.X_pow_eq, MvPowerSeries.X_pow_eq, MvPowerSeries.monomial_mul_monomial, MvPowerSeries.coeff_monomial]`. Apply the tactic sequence `split_ifs <;> simp`. Rewrite using `[add_pow, map_sum]`.
+
+Repeatedly rewrite using `[hterm]`. Rewrite using `[Finset.sum_eq_single (e 0)]`. Distinguish the cases in `h : e 0 + e 1 = n`. Rewrite using `[if_pos h, if_pos]`. Rewrite using `[show n - e 0 = e 1 by omega]`.
+
+Conclude with `gt_single_add e`. Rewrite using `[if_neg h] split_ifs with he`. Establish `h1 : e 1 = n - e 0` using `by simpa using DFunLike.congr_fun he 1`. Establish `hlt : n < e 0` using `by omega`. Rewrite using `[Nat.choose_eq_zero_of_lt hlt, Nat.cast_zero]`.
+
+Both sides reduce to the same expression. Introduce `b _ hb`. Rewrite using `[if_neg]`. Introduce `he`. Apply `hb` to reduce the goal to its premises.
+
+Establish `h0 : e 0 = b` using `by simpa using DFunLike.congr_fun he 0`. Conclude with `h0.symm`. Introduce `hn`. Establish `hlt : n < e 0`. Simplify using `only [Finset.mem_range, not_lt] at hn`.
+
+Use linear arithmetic over natural numbers and integers. Use `split_ifs`. Rewrite using `[Nat.choose_eq_zero_of_lt hlt, Nat.cast_zero]`. Both sides reduce to the same expression.
+-/
 theorem gt_coeff_sum_pow (n : ℕ) (e : Fin 2 →₀ ℕ) :
     coeff e (((X 0 : MvPowerSeries (Fin 2) A) + X 1) ^ n) =
       if e 0 + e 1 = n then ((n.choose (e 0) : ℕ) : A) else 0 := by
@@ -75,6 +99,27 @@ theorem gt_coeff_sum_pow (n : ℕ) (e : Fin 2 →₀ ℕ) :
     · rw [Nat.choose_eq_zero_of_lt hlt, Nat.cast_zero]
     · rfl
 
+/- English proof (translation)
+Use extensionality with `e`. Establish `ha : PowerSeries.HasSubst ((X 0 : MvPowerSeries (Fin 2) A) + X 1)` using `PowerSeries.HasSubst.of_constantCoeff_zero (by simp)`. Rewrite using `[PowerSeries.coeff_subst ha, MvPowerSeries.coeff_mul]`. Repeatedly rewrite using `[gt_coeff_sum_pow A, gt_coeff_expX A, PowerSeries.coeff_exp]`. Rewrite using `[finsum_eq_single _ (e 0 + e 1)]`.
+
+Rewrite using `[if_pos rfl]`. Rewrite using `[Finset.sum_eq_single (single 0 (e 0), single 1 (e 1))]`. Simplify using `only [Finsupp.single_eq_same, eq_self_iff_true, if_true, ite_true]`. Rewrite using `[smul_eq_mul, ← map_natCast (algebraMap ℚ A), ← map_mul, ← map_mul]`. Use `congr 1`.
+
+Establish `f0 : ((e 0 + e 1).factorial : ℚ) ≠ 0` using `by positivity`. Establish `f1 : ((e 0).factorial : ℚ) ≠ 0` using `by positivity`. Establish `f2 : ((e 1).factorial : ℚ) ≠ 0` using `by positivity`. Rewrite using `[Nat.cast_choose ℚ (Nat.le_add_right (e 0) (e 1)), Nat.add_sub_cancel_left]`. Clear the denominators using the available nonvanishing facts.
+
+Apply the tactic sequence `all_goals ring`. Introduce `p hp hne`. Establish `hp' : p.1 + p.2 = e` using `by simpa using hp`. Distinguish the cases in `h1 : p.1 = single 0 (p.1 0)`. Distinguish the cases in `h2 : p.2 = single 1 (p.2 1)`.
+
+It suffices to derive a contradiction. Establish `a1 : p.2 0 = 0`. Rewrite using `[h2]`. Simplify using the standard rewrite rules. Establish `a2 : p.1 1 = 0`.
+
+Rewrite using `[h1]`. Simplify using the standard rewrite rules. Establish `c0` using `DFunLike.congr_fun hp' 0`. Establish `c1` using `DFunLike.congr_fun hp' 1`. Simplify using `only [Finsupp.add_apply] at c0 c1`.
+
+Apply `hne` to reduce the goal to its premises. Use `Prod.ext ?_ ?_` and prove the remaining obligations. Use `show p.1 = single 0 (e 0)`. Rewrite using `[h1]`. Use `congr 1`.
+
+Use linear arithmetic over natural numbers and integers. Use `show p.2 = single 1 (e 1)`. Rewrite using `[h2]`. Use `congr 1`. Use linear arithmetic over natural numbers and integers.
+
+Rewrite using `[if_neg h2, mul_zero]`. Rewrite using `[if_neg h1, zero_mul]`. Introduce `hnot`. It suffices to derive a contradiction. Apply `hnot` to reduce the goal to its premises.
+
+Simplify using `using (gt_single_add e).symm`. Introduce `d hd`. Rewrite using `[if_neg (fun h => hd h.symm), smul_zero]`.
+-/
 theorem exp_subst_add_two_vars :
     PowerSeries.subst ((X 0 : MvPowerSeries (Fin 2) A) + X 1) (PowerSeries.exp A) =
       PowerSeries.subst (X 0 : MvPowerSeries (Fin 2) A) (PowerSeries.exp A) *
@@ -137,29 +182,44 @@ variable {k : Type} [CommRing k] {d : ℕ}
 
 def GP {n : ℕ} (a : Pt k n d) : Prop := ∀ i, constantCoeff (a i) = 0
 
+/- English proof (translation)
+Use `first`. Consider the case `exact MvPowerSeries.hasSubst_of_constantCoeff_zero (fun p => ha p.1 p.2)`.
+-/
 theorem gt_hasSubst {m n : ℕ} (a : Fin m → Pt k n d) (ha : ∀ j, GP (a j)) :
     MvPowerSeries.HasSubst (fun p : Fin m × Fin d => a p.1 p.2) := by
   first
     | exact MvPowerSeries.hasSubst_of_constantCoeff_zero (fun p => ha p.1 p.2)
 
+/- English proof (translation)
+Use `first`. Consider the case `exact MvPowerSeries.subst_add (gt_hasSubst a ha) f g`. Consider the case `exact map_add (MvPowerSeries.substAlgHom (gt_hasSubst a ha)) f g`.
+-/
 theorem gt_ev_add {m n : ℕ} (a : Fin m → Pt k n d) (ha : ∀ j, GP (a j)) (f g : PS k m d) :
     ev a (f + g) = ev a f + ev a g := by
   first
     | exact MvPowerSeries.subst_add (gt_hasSubst a ha) f g
     | exact map_add (MvPowerSeries.substAlgHom (gt_hasSubst a ha)) f g
 
+/- English proof (translation)
+Use `first`. Consider the case `exact MvPowerSeries.subst_sub (gt_hasSubst a ha) f g`. Consider the case `rw [eq_sub_iff_add_eq, ← gt_ev_add a ha, sub_add_cancel]`.
+-/
 theorem gt_ev_sub {m n : ℕ} (a : Fin m → Pt k n d) (ha : ∀ j, GP (a j)) (f g : PS k m d) :
     ev a (f - g) = ev a f - ev a g := by
   first
     | exact MvPowerSeries.subst_sub (gt_hasSubst a ha) f g
     | rw [eq_sub_iff_add_eq, ← gt_ev_add a ha, sub_add_cancel]
 
+/- English proof (translation)
+Use `first`. Consider the case `exact MvPowerSeries.subst_mul (gt_hasSubst a ha) f g`. Consider the case `exact map_mul (MvPowerSeries.substAlgHom (gt_hasSubst a ha)) f g`.
+-/
 theorem gt_ev_mul {m n : ℕ} (a : Fin m → Pt k n d) (ha : ∀ j, GP (a j)) (f g : PS k m d) :
     ev a (f * g) = ev a f * ev a g := by
   first
     | exact MvPowerSeries.subst_mul (gt_hasSubst a ha) f g
     | exact map_mul (MvPowerSeries.substAlgHom (gt_hasSubst a ha)) f g
 
+/- English proof (translation)
+Establish `h` using `gt_ev_add a ha (0 : PS k m d) 0`. Rewrite `h` using `[add_zero]`. Use `first`. Consider the case `linear_combination -h`. Consider the case `simpa using h`.
+-/
 theorem gt_ev_zero {m n : ℕ} (a : Fin m → Pt k n d) (ha : ∀ j, GP (a j)) :
     ev a (0 : PS k m d) = 0 := by
   have h := gt_ev_add a ha (0 : PS k m d) 0
@@ -168,12 +228,18 @@ theorem gt_ev_zero {m n : ℕ} (a : Fin m → Pt k n d) (ha : ∀ j, GP (a j)) :
     | linear_combination -h
     | simpa using h
 
+/- English proof (translation)
+Use `first`. Consider the case `exact MvPowerSeries.subst_X (gt_hasSubst a ha) (j, i)`. Consider the case `simp [ev, MvPowerSeries.subst_X (gt_hasSubst a ha)]`.
+-/
 theorem gt_ev_X {m n : ℕ} (a : Fin m → Pt k n d) (ha : ∀ j, GP (a j)) (j : Fin m) (i : Fin d) :
     ev a (X (j, i) : PS k m d) = a j i := by
   first
     | exact MvPowerSeries.subst_X (gt_hasSubst a ha) (j, i)
     | simp [ev, MvPowerSeries.subst_X (gt_hasSubst a ha)]
 
+/- English proof (translation)
+Use `first`. Consider the case `exact MvPowerSeries.subst_comp_subst_apply (gt_hasSubst b hb) (gt_hasSubst a ha) f`. Consider the case `exact MvPowerSeries.subst_comp_subst_apply (gt_hasSubst a ha) (gt_hasSubst b hb) f`.
+-/
 theorem gt_ev_ev {l m n : ℕ} (a : Fin m → Pt k n d) (b : Fin l → Pt k m d) (ha : ∀ j, GP (a j))
     (hb : ∀ j, GP (b j)) (f : PS k l d) :
     ev a (ev b f) = ev (fun j i => ev a (b j i)) f := by
@@ -181,6 +247,13 @@ theorem gt_ev_ev {l m n : ℕ} (a : Fin m → Pt k n d) (b : Fin l → Pt k m d)
     | exact MvPowerSeries.subst_comp_subst_apply (gt_hasSubst b hb) (gt_hasSubst a ha) f
     | exact MvPowerSeries.subst_comp_subst_apply (gt_hasSubst a ha) (gt_hasSubst b hb) f
 
+/- English proof (translation)
+Rewrite using `[MvPowerSeries.constantCoeff_subst (MvPowerSeries.hasSubst_of_constantCoeff_zero ha)]`. Rewrite using `[finsum_eq_single _ 0]`. Simplify using the standard rewrite rules. Introduce `e he`. Choose the witnesses or unpack the hypotheses as in `⟨s, hs⟩ : ∃ s, e s ≠ 0 := by`.
+
+Assume the negation of the conclusion as `hne`. Use `push_neg at hne`. Conclude with `he (Finsupp.ext hne)`. Establish `h0 : constantCoeff (e.prod fun s n => a s ^ n) = 0`. Rewrite using `[Finsupp.prod, map_prod]`.
+
+Conclude with `Finset.prod_eq_zero (Finsupp.mem_support_iff.mpr hs) (by rw [map_pow, ha s, zero_pow hs])`. Rewrite using `[h0, smul_zero]`.
+-/
 private theorem gt_cc_lemma {σ τ : Type} [Finite σ] (a : σ → MvPowerSeries τ k)
     (ha : ∀ s, constantCoeff (a s) = 0) (f : MvPowerSeries σ k) :
     constantCoeff (MvPowerSeries.subst a f) = constantCoeff f := by
@@ -197,26 +270,41 @@ private theorem gt_cc_lemma {σ τ : Type} [Finite σ] (a : σ → MvPowerSeries
       exact Finset.prod_eq_zero (Finsupp.mem_support_iff.mpr hs) (by rw [map_pow, ha s, zero_pow hs])
     rw [h0, smul_zero]
 
+/- English proof (translation)
+Conclude with `(gt_cc_lemma (fun p : Fin m × Fin d => a p.1 p.2) (fun p => ha p.1 p.2) f).trans hf`.
+-/
 theorem gt_const_ev {m n : ℕ} (a : Fin m → Pt k n d) (ha : ∀ j, GP (a j)) (f : PS k m d)
     (hf : constantCoeff f = 0) : constantCoeff (ev a f) = 0 := by
   exact (gt_cc_lemma (fun p : Fin m × Fin d => a p.1 p.2) (fun p => ha p.1 p.2) f).trans hf
 
+/- English proof (translation)
+Use `show ∀ i, _`. Introduce `i`. Simplify using `[pt]`.
+-/
 theorem gp_pt {n : ℕ} (j : Fin n) : GP (pt k d j) := by
   show ∀ i, _
   intro i
   simp [pt]
 
+/- English proof (translation)
+Use `show ∀ i, _`. Introduce `i`. Simplify using the standard rewrite rules.
+-/
 theorem gp_zero₂ {n : ℕ} : GP (0 : Pt k n d) := by
   show ∀ i, _
   intro i
   simp
 
+/- English proof (translation)
+Use `show ∀ i, _`. Introduce `i`. Apply the tactic sequence `exact gt_const_ev ![a] (fun j => by first | (rw [Matrix.cons_val_fin_one]; exact ha) | (fin_cases j; exact ha)) (φ i) (hφ i)`.
+-/
 theorem gp_comp1 {n : ℕ} (φ : Pt k 1 d) (a : Pt k n d) (hφ : GP φ) (ha : GP a) : GP (comp1 φ a) := by
   show ∀ i, _
   intro i
   exact gt_const_ev ![a]
     (fun j => by first | (rw [Matrix.cons_val_fin_one]; exact ha) | (fin_cases j; exact ha)) (φ i) (hφ i)
 
+/- English proof (translation)
+Use `show ∀ i, _`. Introduce `i`. Apply the tactic sequence `exact gt_const_ev ![a, b] (fun j => by fin_cases j <;> first | assumption | simpa using ha | simpa using hb) (F i) (hF i)`.
+-/
 theorem gp_addOf {n : ℕ} (F : Fin d → PS k 2 d) (hF : ∀ i, constantCoeff (F i) = 0) (a b : Pt k n d)
     (ha : GP a) (hb : GP b) : GP (addOf F a b) := by
   show ∀ i, _
@@ -224,17 +312,28 @@ theorem gp_addOf {n : ℕ} (F : Fin d → PS k 2 d) (hF : ∀ i, constantCoeff (
   exact gt_const_ev ![a, b]
     (fun j => by fin_cases j <;> first | assumption | simpa using ha | simpa using hb) (F i) (hF i)
 
+/- English proof (translation)
+Conclude with `MvPowerSeries.subst_comp_subst_apply (MvPowerSeries.hasSubst_of_constantCoeff_zero (fun _ : Unit => hf)) (gt_hasSubst a ha) (PowerSeries.exp k)`.
+-/
 theorem gt_ev_expS [Algebra ℚ k] {m n : ℕ} (a : Fin m → Pt k n d) (ha : ∀ j, GP (a j)) (f : PS k m d)
     (hf : constantCoeff f = 0) : ev a (FB.expS k f) = FB.expS k (ev a f) := by
   exact MvPowerSeries.subst_comp_subst_apply
     (MvPowerSeries.hasSubst_of_constantCoeff_zero (fun _ : Unit => hf)) (gt_hasSubst a ha) (PowerSeries.exp k)
 
+/- English proof (translation)
+The claim follows from `MvPowerSeries.subst_comp_subst_apply (MvPowerSeries.hasSubst_of_constantCoeff_zero (fun _ : Unit => hp)) hb _`.
+-/
 private theorem gt_substExp_lemma [Algebra ℚ k] {τ : Type} {b : Fin 2 → MvPowerSeries τ k}
     (hb : MvPowerSeries.HasSubst b) (p : MvPowerSeries (Fin 2) k) (hp : constantCoeff p = 0) :
     MvPowerSeries.subst b (PowerSeries.subst p (PowerSeries.exp k)) =
       PowerSeries.subst (MvPowerSeries.subst b p) (PowerSeries.exp k) :=
   MvPowerSeries.subst_comp_subst_apply (MvPowerSeries.hasSubst_of_constantCoeff_zero (fun _ : Unit => hp)) hb _
 
+/- English proof (translation)
+Apply the tactic sequence `have hb : MvPowerSeries.HasSubst (![f, g] : Fin 2 → PS k n d) := MvPowerSeries.hasSubst_of_constantCoeff_zero (fun j => by fin_cases j <;> simp [hf, hg])`. Establish `key` using `congrArg (MvPowerSeries.subst (![f, g] : Fin 2 → PS k n d)) (exp_subst_add_two_vars k)`. Establish `e1` using `gt_substExp_lemma hb ((X 0 : MvPowerSeries (Fin 2) k) + X 1) (by simp)`. Establish `e2` using `gt_substExp_lemma hb (X 0 : MvPowerSeries (Fin 2) k) (by simp)`. Establish `e3` using `gt_substExp_lemma hb (X 1 : MvPowerSeries (Fin 2) k) (by simp)`.
+
+Rewrite `key` using `[MvPowerSeries.subst_mul hb, e1, e2, e3, MvPowerSeries.subst_add hb, MvPowerSeries.subst_X hb, MvPowerSeries.subst_X hb]`. Simplify `key` using `[FB.expS]`.
+-/
 theorem gt_expS_add [Algebra ℚ k] {n : ℕ} (f g : PS k n d) (hf : constantCoeff f = 0)
     (hg : constantCoeff g = 0) : FB.expS k (f + g) = FB.expS k f * FB.expS k g := by
   have hb : MvPowerSeries.HasSubst (![f, g] : Fin 2 → PS k n d) :=
@@ -255,6 +354,9 @@ variable {k : Type} [CommRing k] {d : ℕ}
 
 def evP {m n : ℕ} (V : Fin m → Pt k n d) (a : Pt k m d) : Pt k n d := fun i => ev V (a i)
 
+/- English proof (translation)
+Introduce `j`. Use `first`. Consider the case `(rw [Matrix.cons_val_fin_one]; exact ha)`. Consider the case `(fin_cases j; exact ha)`. Consider the case `(fin_cases j; simpa using ha)`.
+-/
 theorem single_point_zero_constant {n : ℕ} {a : Pt k n d} (ha : GP a) : ∀ j, GP (![a] j) := by
   intro j
   first
@@ -262,25 +364,42 @@ theorem single_point_zero_constant {n : ℕ} {a : Pt k n d} (ha : GP a) : ∀ j,
     | (fin_cases j; exact ha)
     | (fin_cases j; simpa using ha)
 
+/- English proof (translation)
+Introduce `j`. Apply the tactic sequence `fin_cases j <;> first | assumption | simpa using ha | simpa using hb`.
+-/
 theorem pair_points_zero_constant {n : ℕ} {a b : Pt k n d} (ha : GP a) (hb : GP b) : ∀ j, GP (![a, b] j) := by
   intro j
   fin_cases j <;> first | assumption | simpa using ha | simpa using hb
 
+/- English proof (translation)
+Introduce `j`. Apply the tactic sequence `fin_cases j <;> first | assumption | simpa using ha | simpa using hb | simpa using hc`.
+-/
 theorem triple_points_zero_constant {n : ℕ} {a b c : Pt k n d} (ha : GP a) (hb : GP b) (hc : GP c) : ∀ j, GP (![a, b, c] j) := by
   intro j
   fin_cases j <;> first | assumption | simpa using ha | simpa using hb | simpa using hc
 
+/- English proof (translation)
+Use `show ∀ i, _`. Introduce `i`. Conclude with `gt_const_ev V hV (a i) (ha i)`.
+-/
 theorem gp_evP {m n : ℕ} (V : Fin m → Pt k n d) (hV : ∀ j, GP (V j)) (a : Pt k m d) (ha : GP a) :
     GP (evP V a) := by
   show ∀ i, _
   intro i
   exact gt_const_ev V hV (a i) (ha i)
 
+/- English proof (translation)
+Use function extensionality and compare the values at `i`. Conclude with `gt_ev_X V hV j i`.
+-/
 theorem evP_pt {m n : ℕ} (V : Fin m → Pt k n d) (hV : ∀ j, GP (V j)) (j : Fin m) :
     evP V (pt k d j) = V j := by
   funext i
   exact gt_ev_X V hV j i
 
+/- English proof (translation)
+Use function extensionality and compare the values at `i`. Use `show ev V (ev ![a] (φ i)) = ev ![evP V a] (φ i)`. Rewrite using `[gt_ev_ev V ![a] hV (single_point_zero_constant ha) (φ i)]`. Use `congr 1`. Use function extensionality and compare the values at `j l`.
+
+Use `fin_cases j`. Both sides reduce to the same expression.
+-/
 theorem evP_comp1 {m n : ℕ} (V : Fin m → Pt k n d) (hV : ∀ j, GP (V j)) (φ : Pt k 1 d) (a : Pt k m d)
     (ha : GP a) : evP V (comp1 φ a) = comp1 φ (evP V a) := by
   funext i
@@ -291,6 +410,11 @@ theorem evP_comp1 {m n : ℕ} (V : Fin m → Pt k n d) (hV : ∀ j, GP (V j)) (�
   fin_cases j
   rfl
 
+/- English proof (translation)
+Use function extensionality and compare the values at `i`. Use `show ev V (ev ![a, b] (F i)) = ev ![evP V a, evP V b] (F i)`. Rewrite using `[gt_ev_ev V ![a, b] hV (pair_points_zero_constant ha hb) (F i)]`. Use `congr 1`. Use function extensionality and compare the values at `j l`.
+
+Apply the tactic sequence `fin_cases j <;> rfl`.
+-/
 theorem evP_addOf {m n : ℕ} (V : Fin m → Pt k n d) (hV : ∀ j, GP (V j)) (F : Fin d → PS k 2 d)
     (a b : Pt k m d) (ha : GP a) (hb : GP b) : evP V (addOf F a b) = addOf F (evP V a) (evP V b) := by
   funext i
@@ -300,9 +424,17 @@ theorem evP_addOf {m n : ℕ} (V : Fin m → Pt k n d) (hV : ∀ j, GP (V j)) (F
   funext j l
   fin_cases j <;> rfl
 
+/- English proof (translation)
+The claim follows from `gt_ev_ev V W hV hW f`.
+-/
 theorem gt_ev_ev' {l m n : ℕ} (V : Fin m → Pt k n d) (W : Fin l → Pt k m d) (hV : ∀ j, GP (V j))
     (hW : ∀ j, GP (W j)) (f : PS k l d) : ev V (ev W f) = ev (fun j => evP V (W j)) f := gt_ev_ev V W hV hW f
 
+/- English proof (translation)
+Use function extensionality and compare the values at `i`. Use `show ev ![a] (ev ![g] (f i)) = ev ![comp1 g a] (f i)`. Rewrite using `[gt_ev_ev ![a] ![g] (single_point_zero_constant ha) (single_point_zero_constant hg) (f i)]`. Use `congr 1`. Use function extensionality and compare the values at `j l`.
+
+Use `fin_cases j`. Both sides reduce to the same expression.
+-/
 theorem gt_comp1_comp1 {n : ℕ} (f g : Pt k 1 d) (hg : GP g) (a : Pt k n d) (ha : GP a) :
     comp1 (comp1 f g) a = comp1 f (comp1 g a) := by
   funext i
@@ -313,24 +445,39 @@ theorem gt_comp1_comp1 {n : ℕ} (f g : Pt k 1 d) (hg : GP g) (a : Pt k n d) (ha
   fin_cases j
   rfl
 
+/- English proof (translation)
+Use function extensionality and compare the values at `i`. Conclude with `gt_ev_X ![a] (single_point_zero_constant ha) 0 i`.
+-/
 theorem gt_comp1_pt {n : ℕ} (a : Pt k n d) (ha : GP a) : comp1 (pt k (n := 1) d 0) a = a := by
   funext i
   exact gt_ev_X ![a] (single_point_zero_constant ha) 0 i
 
+/- English proof (translation)
+Take `⟨h1, h2, h3, h4⟩` from `h`. Rewrite using `[← gt_comp1_comp1 φ φi h2 a ha, h3, gt_comp1_pt a ha]`.
+-/
 theorem gt_comp_inv {n : ℕ} {φ φi : Pt k 1 d} (h : IsInvPair φ φi) (a : Pt k n d) (ha : GP a) :
     comp1 φ (comp1 φi a) = a := by
   obtain ⟨h1, h2, h3, h4⟩ := h
   rw [← gt_comp1_comp1 φ φi h2 a ha, h3, gt_comp1_pt a ha]
 
+/- English proof (translation)
+Take `⟨h1, h2, h3, h4⟩` from `h`. Rewrite using `[← gt_comp1_comp1 φi φ h1 a ha, h4, gt_comp1_pt a ha]`.
+-/
 theorem gt_comp_inv' {n : ℕ} {φ φi : Pt k 1 d} (h : IsInvPair φ φi) (a : Pt k n d) (ha : GP a) :
     comp1 φi (comp1 φ a) = a := by
   obtain ⟨h1, h2, h3, h4⟩ := h
   rw [← gt_comp1_comp1 φi φ h1 a ha, h4, gt_comp1_pt a ha]
 
+/- English proof (translation)
+Conclude with `gt_cc_lemma (fun p : Fin m × Fin d => V p.1 p.2) (fun p => hV p.1 p.2) f`.
+-/
 theorem gt_const_ev_eq {m n : ℕ} (V : Fin m → Pt k n d) (hV : ∀ j, GP (V j)) (f : PS k m d) :
     constantCoeff (ev V f) = constantCoeff f := by
   exact gt_cc_lemma (fun p : Fin m × Fin d => V p.1 p.2) (fun p => hV p.1 p.2) f
 
+/- English proof (translation)
+Use `first`. Consider the case `(ext e; simp)`. Consider the case `simp`.
+-/
 theorem gt_map_id {σ : Type} (f : MvPowerSeries σ k) : MvPowerSeries.map (algebraMap k k) f = f := by
   first
     | (ext e; simp)
@@ -342,11 +489,21 @@ section Calc2
 
 variable {k : Type} [CommRing k] {d : ℕ}
 
+/- English proof (translation)
+Use function extensionality and compare the values at `j`. Apply the tactic sequence `fin_cases j <;> rfl`.
+-/
 theorem eval_pair_points {m n : ℕ} (V : Fin m → Pt k n d) (a b : Pt k m d) :
     (fun j => evP V (![a, b] j)) = ![evP V a, evP V b] := by
   funext j
   fin_cases j <;> rfl
 
+/- English proof (translation)
+Establish `hz : ∀ j, GP ((fun (_ : Fin m) (_ : Fin d) => (0 : PS k 0 d)) j)`. Introduce `j`. Use `show ∀ i, _`. Introduce `i`. Simplify using the standard rewrite rules.
+
+Establish `he : ∀ j, GP ((Fin.elim0 : Fin 0 → Pt k n d) j)` using `fun j => Fin.elim0 j`. Establish `h1` using `gt_ev_ev (Fin.elim0 : Fin 0 → Pt k n d) (fun (_ : Fin m) (_ : Fin d) => (0 : PS k 0 d)) he hz f`. Establish `h2 : ev (fun (_ : Fin m) (_ : Fin d) => (0 : PS k 0 d)) f = 0`. Use extensionality with `e`. Rewrite using `[Subsingleton.elim e 0]`.
+
+Simplify using `using gt_const_ev (fun (_ : Fin m) (_ : Fin d) => (0 : PS k 0 d)) hz f hf`. Simplify using `only [h2, gt_ev_zero _ he] at h1`. Use `first`. Consider the case `exact h1.symm`. Consider the case `exact h1`.
+-/
 private theorem gt_evz_lemma {m n : ℕ} (f : PS k m d) (hf : constantCoeff f = 0) :
     ev (fun (_ : Fin m) (_ : Fin d) => (0 : PS k n d)) f = 0 := by
   have hz : ∀ j, GP ((fun (_ : Fin m) (_ : Fin d) => (0 : PS k 0 d)) j) := by
@@ -365,6 +522,11 @@ private theorem gt_evz_lemma {m n : ℕ} (f : PS k m d) (hf : constantCoeff f = 
     | exact h1.symm
     | exact h1
 
+/- English proof (translation)
+Use function extensionality and compare the values at `i`. Establish `h0 : (![(0 : Pt k n d)] : Fin 1 → Pt k n d) = fun _ _ => 0`. Use function extensionality and compare the values at `j l`. Use `fin_cases j`. Both sides reduce to the same expression.
+
+Use `show ev ![(0 : Pt k n d)] (φ i) = 0`. Rewrite using `[h0]`. Conclude with `gt_evz_lemma (φ i) (hφ i)`.
+-/
 theorem gt_comp1_zero {n : ℕ} (φ : Pt k 1 d) (hφ : GP φ) : comp1 φ (0 : Pt k n d) = 0 := by
   funext i
   have h0 : (![(0 : Pt k n d)] : Fin 1 → Pt k n d) = fun _ _ => 0 := by
@@ -375,10 +537,18 @@ theorem gt_comp1_zero {n : ℕ} (φ : Pt k 1 d) (hφ : GP φ) : comp1 φ (0 : Pt
   rw [h0]
   exact gt_evz_lemma (φ i) (hφ i)
 
+/- English proof (translation)
+Use function extensionality and compare the values at `i`. Conclude with `gt_ev_zero V hV`.
+-/
 theorem evP_zero {m n : ℕ} (V : Fin m → Pt k n d) (hV : ∀ j, GP (V j)) : evP V (0 : Pt k m d) = 0 := by
   funext i
   exact gt_ev_zero V hV
 
+/- English proof (translation)
+Establish `h : (fun p : Fin 1 × Fin d => (![pt k (n` using `1) d 0] : Fin 1 → Pt k 1 d) p.1 p.2) = MvPowerSeries.X := by`. Use function extensionality and compare the values at `p`. Take `⟨j, i⟩` from `p`. Use `fin_cases j`. Both sides reduce to the same expression.
+
+Use `show MvPowerSeries.subst _ f = f`. Use `first`. Consider the case `(rw [h, MvPowerSeries.subst_self]; rfl)`. Consider the case `rw [h, MvPowerSeries.subst_self]`. Consider the case `simp [h, MvPowerSeries.subst_self]`.
+-/
 theorem gt_ev_pt_self (f : PS k 1 d) : ev ![pt k (n := 1) d 0] f = f := by
   have h : (fun p : Fin 1 × Fin d => (![pt k (n := 1) d 0] : Fin 1 → Pt k 1 d) p.1 p.2) =
       MvPowerSeries.X := by
@@ -392,6 +562,9 @@ theorem gt_ev_pt_self (f : PS k 1 d) : ev ![pt k (n := 1) d 0] f = f := by
     | rw [h, MvPowerSeries.subst_self]
     | simp [h, MvPowerSeries.subst_self]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `i`. Conclude with `gt_ev_pt_self (φ i)`.
+-/
 theorem gt_comp1_pt_right (φ : Pt k 1 d) : comp1 φ (pt k (n := 1) d 0) = φ := by
   funext i
   exact gt_ev_pt_self (φ i)
@@ -400,6 +573,9 @@ end Calc2
 
 section Main
 
+/- English proof (translation)
+Rewrite using `[gt_ev_ev' V ![x, y] hV (pair_points_zero_constant hx hy) f]`. Use `congr 1`. Use function extensionality and compare the values at `j`. Apply the tactic sequence `fin_cases j <;> rfl`.
+-/
 private theorem gt_ev2_lemma {k : Type} [CommRing k] {d m n : ℕ} (V : Fin m → Pt k n d)
     (hV : ∀ j, GP (V j)) (x y : Pt k m d) (hx : GP x) (hy : GP y) (f : PS k 2 d) :
     ev V (ev ![x, y] f) = ev ![evP V x, evP V y] f := by
@@ -408,18 +584,79 @@ private theorem gt_ev2_lemma {k : Type} [CommRing k] {d m n : ℕ} (V : Fin m �
   funext j
   fin_cases j <;> rfl
 
+/- English proof (translation)
+Rewrite using `[map_sub, map_add, gt_const_ev V1 h1 f hf, gt_const_ev V2 h2 f hf, gt_const_ev V3 h3 f hf]`. Apply the tactic sequence `all_goals simp`.
+-/
 private theorem gt_cc3_lemma {k : Type} [CommRing k] {d n : ℕ} (f : PS k 2 d) (hf : constantCoeff f = 0)
     (V1 V2 V3 : Fin 2 → Pt k n d) (h1 : ∀ j, GP (V1 j)) (h2 : ∀ j, GP (V2 j)) (h3 : ∀ j, GP (V3 j)) :
     constantCoeff (ev V1 f + ev V2 f - ev V3 f) = 0 := by
   rw [map_sub, map_add, gt_const_ev V1 h1 f hf, gt_const_ev V2 h2 f hf, gt_const_ev V3 h3 f hf]
   all_goals simp
 
+/- English proof (translation)
+Rewrite using `[map_sub, gt_const_ev V1 h1 f hf, gt_const_ev V2 h2 f hf]`. Apply the tactic sequence `all_goals simp`.
+-/
 private theorem gt_cc2_lemma {k : Type} [CommRing k] {d n : ℕ} (f : PS k 2 d) (hf : constantCoeff f = 0)
     (V1 V2 : Fin 2 → Pt k n d) (h1 : ∀ j, GP (V1 j)) (h2 : ∀ j, GP (V2 j)) :
     constantCoeff (ev V1 f - ev V2 f) = 0 := by
   rw [map_sub, gt_const_ev V1 h1 f hf, gt_const_ev V2 h2 f hf]
   all_goals simp
 
+/- English proof (translation)
+Introduce `k _ _ d O _ _ B B' φ φi lam hinv hl0 hl1 hF hA hp1 hp2 hsy had h hh`. Take `⟨hφ, hφi, hc1, hc2⟩` from `id hinv`. Establish `z1 : GP (0 : Pt k 1 d)` using `gp_zero₂`. Establish `q1 : GP (pt k (n` using `1) d 0) := gp_pt 0`. Establish `q2 : ∀ j : Fin 2, GP (pt k (n` using `2) d j) := fun j => gp_pt j`.
+
+Establish `q3 : ∀ j : Fin 3, GP (pt k (n` using `3) d j) := fun j => gp_pt j`. Establish `hFc : ∀ i, constantCoeff (B.G.F i) = 0` using `B.G.const`. Establish `hFc' : ∀ i, constantCoeff (B'.G.F i) = 0` using `B'.G.const`. Establish `hAc : ∀ a, GP (B.A.act a)` using `fun a => B.A.const a`. Establish `hAc' : ∀ a, GP (B'.A.act a)` using `fun a => B'.A.const a`.
+
+Establish `hΦ2 : ∀ j, GP ((![comp1 φ (pt k (n` using `2) d 0), comp1 φ (pt k (n := 2) d 1)] : Fin 2 → Pt k 2 d) j) := pair_points_zero_constant (gp_comp1 φ _ hφ (q2 0)) (gp_comp1 φ _ hφ (q2 1))`. Establish `hΦ3 : ∀ j, GP ((![comp1 φ (pt k (n` using `3) d 0), comp1 φ (pt k (n := 3) d 1), comp1 φ (pt k (n := 3) d 2)] : Fin 3 → Pt k 3 d) j) := triple_points_zero_constant (gp_comp1 φ _ hφ (q3 0)) (gp_comp1 φ _ hφ (q3 1)) (gp_comp1 φ _ hφ (q3 2))`. Establish `ev20 : evP ![comp1 φ (pt k (n` using `2) d 0), comp1 φ (pt k (n := 2) d 1)] (pt k (n := 2) d 0) = comp1 φ (pt k (n := 2) d 0) := evP_pt _ hΦ2 0`. Establish `ev21 : evP ![comp1 φ (pt k (n` using `2) d 0), comp1 φ (pt k (n := 2) d 1)] (pt k (n := 2) d 1) = comp1 φ (pt k (n := 2) d 1) := evP_pt _ hΦ2 1`. Establish `ev30 : evP ![comp1 φ (pt k (n` using `3) d 0), comp1 φ (pt k (n := 3) d 1), comp1 φ (pt k (n := 3) d 2)] (pt k (n := 3) d 0) = comp1 φ (pt k (n := 3) d 0) := evP_pt _ hΦ3 0`.
+
+Establish `ev31 : evP ![comp1 φ (pt k (n` using `3) d 0), comp1 φ (pt k (n := 3) d 1), comp1 φ (pt k (n := 3) d 2)] (pt k (n := 3) d 1) = comp1 φ (pt k (n := 3) d 1) := evP_pt _ hΦ3 1`. Establish `ev32 : evP ![comp1 φ (pt k (n` using `3) d 0), comp1 φ (pt k (n := 3) d 1), comp1 φ (pt k (n := 3) d 2)] (pt k (n := 3) d 2) = comp1 φ (pt k (n := 3) d 2) := evP_pt _ hΦ3 2`. Establish `hFK : B.FK k = B.G.F`. Use function extensionality and compare the values at `i`. Conclude with `gt_map_id _`.
+
+Establish `hFK' : B'.FK k = B'.G.F`. Use function extensionality and compare the values at `i`. Conclude with `gt_map_id _`. Establish `hAK : ∀ a, B.actK k a = B.A.act a` using `fun a => by`. Use function extensionality and compare the values at `i`.
+
+Conclude with `gt_map_id _`. Establish `hAK' : ∀ a, B'.actK k a = B'.A.act a` using `fun a => by`. Use function extensionality and compare the values at `i`. Conclude with `gt_map_id _`. Establish `hh0 : constantCoeff h = 0`.
+
+Rewrite using `[← gt_const_ev_eq _ (pair_points_zero_constant z1 q1) h, hh.ax0, map_zero]`. Establish `hl0' : constantCoeff lam = 0`. Rewrite using `[← gt_const_ev_eq _ (pair_points_zero_constant z1 q1) lam, hl0, map_zero]`. Establish `K2 : ∀ {m : ℕ} (x y : Pt k m d), GP x → GP y → ∀ f : PS k 2 d, ev ![x, y] (ev (n` using `2) ![comp1 φ (pt k (n := 2) d 0), comp1 φ (pt k (n := 2) d 1)] f) = ev ![comp1 φ x, comp1 φ y] f := by`. Introduce `m x y hx hy f`.
+
+Establish `a0 : evP ![x, y] (pt k (n` using `2) d 0) = x := evP_pt _ (pair_points_zero_constant hx hy) 0`. Establish `a1 : evP ![x, y] (pt k (n` using `2) d 1) = y := evP_pt _ (pair_points_zero_constant hx hy) 1`. Rewrite using `[gt_ev2_lemma ![x, y] (pair_points_zero_constant hx hy) _ _ (gp_comp1 φ _ hφ (q2 0)) (gp_comp1 φ _ hφ (q2 1)) f, evP_comp1 ![x, y] (pair_points_zero_constant hx hy) φ _ (q2 0), evP_comp1 ![x, y] (pair_points_zero_constant hx hy) φ _ (q2 1), a0, a1]`. Establish `KH : ∀ {m : ℕ} (x y : Pt k m d), GP x → GP y → ev ![x, y] (ev (n` using `2) ![comp1 φ (pt k (n := 2) d 0), comp1 φ (pt k (n := 2) d 1)] h + lam) = ev ![comp1 φ x, comp1 φ y] h + ev ![x, y] lam := by`. Introduce `m x y hx hy`.
+
+Rewrite using `[gt_ev_add _ (pair_points_zero_constant hx hy), K2 x y hx hy h]`. Establish `TI : ∀ {m : ℕ} (x y : Pt k m d), GP x → GP y → addOf B'.G.F x y = comp1 φi (addOf B.G.F (comp1 φ x) (comp1 φ y))`. Introduce `m x y hx hy`. Establish `hxy` using `pair_points_zero_constant hx hy`. Establish `a0 : evP ![x, y] (pt k (n` using `2) d 0) = x := evP_pt _ hxy 0`.
+
+Establish `a1 : evP ![x, y] (pt k (n` using `2) d 1) = y := evP_pt _ hxy 1`. Establish `hA2 : GP (addOf B.G.F (comp1 φ (pt k (n` using `2) d 0)) (comp1 φ (pt k (n := 2) d 1))) := gp_addOf _ hFc _ _ (gp_comp1 φ _ hφ (q2 0)) (gp_comp1 φ _ hφ (q2 1))`. Establish `hE : evP ![x, y] (addOf B.G.F (comp1 φ (pt k (n` using `2) d 0)) (comp1 φ (pt k (n := 2) d 1))) = addOf B.G.F (comp1 φ x) (comp1 φ y) := by`. Rewrite using `[evP_addOf _ hxy _ _ _ (gp_comp1 φ _ hφ (q2 0)) (gp_comp1 φ _ hφ (q2 1)), evP_comp1 _ hxy φ _ (q2 0), evP_comp1 _ hxy φ _ (q2 1), a0, a1]`. Use function extensionality and compare the values at `i`.
+
+Use `show ev ![x, y] (B'.G.F i) = ev ![addOf B.G.F (comp1 φ x) (comp1 φ y)] (φi i)`. Rewrite using `[hF i]`. Use `show ev ![x, y] (ev ![addOf B.G.F (comp1 φ (pt k (n := 2) d 0)) (comp1 φ (pt k (n := 2) d 1))] (φi i)) = _`. Rewrite using `[gt_ev_ev' _ _ hxy (single_point_zero_constant hA2) (φi i), ← hE]`. Use `congr 1`.
+
+Use function extensionality and compare the values at `j`. Use `fin_cases j`. Both sides reduce to the same expression. Establish `TI' : ∀ {m : ℕ} (x y : Pt k m d), GP x → GP y → comp1 φ (addOf B'.G.F x y) = addOf B.G.F (comp1 φ x) (comp1 φ y)`. Introduce `m x y hx hy`.
+
+Rewrite using `[TI x y hx hy]`. Conclude with `gt_comp_inv hinv _ (gp_addOf _ hFc _ _ (gp_comp1 φ x hφ hx) (gp_comp1 φ y hφ hy))`. Establish `TA : ∀ (a : O) {m : ℕ} (x : Pt k m d), GP x → comp1 φ (comp1 (B'.A.act a) x) = comp1 (B.A.act a) (comp1 φ x)`. Introduce `a m x hx`. Rewrite using `[hA a, gt_comp1_comp1 φi _ (gp_comp1 _ φ (hAc a) hφ) x hx, gt_comp1_comp1 (B.A.act a) φ hφ x hx]`.
+
+Conclude with `gt_comp_inv hinv _ (gp_comp1 _ _ (hAc a) (gp_comp1 φ x hφ hx))`. Establish `f0 : ev (n` using `1) ![0, pt k (n := 1) d 0] (ev (n := 2) ![comp1 φ (pt k (n := 2) d 0), comp1 φ (pt k (n := 2) d 1)] h + lam) = 0 := by`. Rewrite using `[gt_ev_add _ (pair_points_zero_constant z1 q1), hl0, add_zero, K2 _ _ z1 q1, gt_comp1_zero φ hφ, gt_comp1_pt_right]`. Establish `e` using `congrArg (ev ![φ]) hh.ax0`. Rewrite `e` using `[gt_ev2_lemma ![φ] (single_point_zero_constant hφ) _ _ z1 q1, evP_zero ![φ] (single_point_zero_constant hφ), evP_pt ![φ] (single_point_zero_constant hφ), gt_ev_zero ![φ] (single_point_zero_constant hφ)]`.
+
+Conclude with `e`. Establish `f1 : ev (n` using `1) ![pt k (n := 1) d 0, 0] (ev (n := 2) ![comp1 φ (pt k (n := 2) d 0), comp1 φ (pt k (n := 2) d 1)] h + lam) = 0 := by`. Rewrite using `[gt_ev_add _ (pair_points_zero_constant q1 z1), hl1, add_zero, K2 _ _ q1 z1, gt_comp1_zero φ hφ, gt_comp1_pt_right]`. Establish `e` using `congrArg (ev ![φ]) hh.ax1`. Rewrite `e` using `[gt_ev2_lemma ![φ] (single_point_zero_constant hφ) _ _ q1 z1, evP_zero ![φ] (single_point_zero_constant hφ), evP_pt ![φ] (single_point_zero_constant hφ), gt_ev_zero ![φ] (single_point_zero_constant hφ)]`.
+
+Conclude with `e`. Establish `gF3 : GP (addOf B.G.F (pt k (n` using `3) d 0) (pt k (n := 3) d 1)) := gp_addOf _ hFc _ _ (q3 0) (q3 1)`. Establish `gF3' : GP (addOf B'.G.F (pt k (n` using `3) d 0) (pt k (n := 3) d 1)) := gp_addOf _ hFc' _ _ (q3 0) (q3 1)`. Establish `gG3 : GP (addOf B.G.F (pt k (n` using `3) d 1) (pt k (n := 3) d 2)) := gp_addOf _ hFc _ _ (q3 1) (q3 2)`. Establish `gG3' : GP (addOf B'.G.F (pt k (n` using `3) d 1) (pt k (n := 3) d 2)) := gp_addOf _ hFc' _ _ (q3 1) (q3 2)`.
+
+Establish `e1 : B.ph1 = FB.expS k (ev (n` using `3) ![pt k (n := 3) d 0, pt k (n := 3) d 2] h + ev (n := 3) ![pt k (n := 3) d 1, pt k (n := 3) d 2] h - ev (n := 3) ![addOf B.G.F (pt k (n := 3) d 0) (pt k (n := 3) d 1), pt k (n := 3) d 2] h) := by`. Establish `e` using `hh.ph1`. Rewrite `e` using `[hFK]`. Conclude with `(gt_map_id _).symm.trans e`. Establish `e2 : B.ph2 = FB.expS k (ev (n` using `3) ![pt k (n := 3) d 0, pt k (n := 3) d 1] h + ev (n := 3) ![pt k (n := 3) d 0, pt k (n := 3) d 2] h - ev (n := 3) ![pt k (n := 3) d 0, addOf B.G.F (pt k (n := 3) d 1) (pt k (n := 3) d 2)] h) := by`.
+
+Establish `e` using `hh.ph2`. Rewrite `e` using `[hFK]`. Conclude with `(gt_map_id _).symm.trans e`. Establish `esy : B.sy = FB.expS k (ev (n` using `2) ![pt k (n := 2) d 1, pt k (n := 2) d 0] h - h) := (gt_map_id _).symm.trans hh.sy`. Establish `ead : ∀ a, B.ad a = FB.expS k (ev (n` using `2) ![comp1 (B.A.act a) (pt k (n := 2) d 0), pt k (n := 2) d 1] h - ev (n := 2) ![pt k (n := 2) d 0, comp1 (B.A.act (star a)) (pt k (n := 2) d 1)] h) := by`.
+
+Introduce `a`. Establish `e` using `hh.ad a`. Rewrite `e` using `[hAK a, hAK (star a)]`. Conclude with `(gt_map_id _).symm.trans e`. Establish `ccM` using `gt_cc3_lemma h hh0 _ _ _ (pair_points_zero_constant (q3 0) (q3 2)) (pair_points_zero_constant (q3 1) (q3 2)) (pair_points_zero_constant gF3 (q3 2))`.
+
+Establish `ccL1` using `gt_cc3_lemma lam hl0' _ _ _ (pair_points_zero_constant (q3 0) (q3 2)) (pair_points_zero_constant (q3 1) (q3 2)) (pair_points_zero_constant gF3' (q3 2))`. Establish `ccM2` using `gt_cc3_lemma h hh0 _ _ _ (pair_points_zero_constant (q3 0) (q3 1)) (pair_points_zero_constant (q3 0) (q3 2)) (pair_points_zero_constant (q3 0) gG3)`. Establish `ccL2` using `gt_cc3_lemma lam hl0' _ _ _ (pair_points_zero_constant (q3 0) (q3 1)) (pair_points_zero_constant (q3 0) (q3 2)) (pair_points_zero_constant (q3 0) gG3')`. Establish `ccS : constantCoeff (ev (n` using `2) ![pt k (n := 2) d 1, pt k (n := 2) d 0] h - h) = 0 := by`. Rewrite using `[map_sub, gt_const_ev_eq _ (pair_points_zero_constant (q2 1) (q2 0)), sub_self]`.
+
+Establish `ccLS : constantCoeff (ev (n` using `2) ![pt k (n := 2) d 1, pt k (n := 2) d 0] lam - lam) = 0 := by`. Rewrite using `[map_sub, gt_const_ev_eq _ (pair_points_zero_constant (q2 1) (q2 0)), sub_self]`. Establish `f2 : B'.ph1 = FB.expS k (ev (n` using `3) ![pt k (n := 3) d 0, pt k (n := 3) d 2] (ev (n := 2) ![comp1 φ (pt k (n := 2) d 0), comp1 φ (pt k (n := 2) d 1)] h + lam) + ev (n := 3) ![pt k (n := 3) d 1, pt k (n := 3) d 2] (ev (n := 2) ![comp1 φ (pt k (n := 2) d 0), comp1 φ (pt k (n := 2) d 1)] h + lam) - ev (n := 3) ![add …`. Rewrite using `[hp1, e1, gt_ev_expS _ hΦ3 _ ccM, ← gt_expS_add _ _ (gt_const_ev _ hΦ3 _ ccM) ccL1]`. Use `congr 1`.
+
+Rewrite using `[KH _ _ (q3 0) (q3 2), KH _ _ (q3 1) (q3 2), KH _ _ gF3' (q3 2), TI' _ _ (q3 0) (q3 1), gt_ev_sub _ hΦ3, gt_ev_add _ hΦ3, gt_ev2_lemma _ hΦ3 _ _ (q3 0) (q3 2), gt_ev2_lemma _ hΦ3 _ _ (q3 1) (q3 2), gt_ev2_lemma _ hΦ3 _ _ gF3 (q3 2), evP_addOf _ hΦ3 _ _ _ (q3 0) (q3 1), ev30, ev31 …`. Expand and normalize the polynomial expressions, which then agree. Establish `f3 : B'.ph2 = FB.expS k (ev (n` using `3) ![pt k (n := 3) d 0, pt k (n := 3) d 1] (ev (n := 2) ![comp1 φ (pt k (n := 2) d 0), comp1 φ (pt k (n := 2) d 1)] h + lam) + ev (n := 3) ![pt k (n := 3) d 0, pt k (n := 3) d 2] (ev (n := 2) ![comp1 φ (pt k (n := 2) d 0), comp1 φ (pt k (n := 2) d 1)] h + lam) - ev (n := 3) ![pt …`. Rewrite using `[hp2, e2, gt_ev_expS _ hΦ3 _ ccM2, ← gt_expS_add _ _ (gt_const_ev _ hΦ3 _ ccM2) ccL2]`. Use `congr 1`.
+
+Rewrite using `[KH _ _ (q3 0) (q3 1), KH _ _ (q3 0) (q3 2), KH _ _ (q3 0) gG3', TI' _ _ (q3 1) (q3 2), gt_ev_sub _ hΦ3, gt_ev_add _ hΦ3, gt_ev2_lemma _ hΦ3 _ _ (q3 0) (q3 1), gt_ev2_lemma _ hΦ3 _ _ (q3 0) (q3 2), gt_ev2_lemma _ hΦ3 _ _ (q3 0) gG3, evP_addOf _ hΦ3 _ _ _ (q3 1) (q3 2), ev30, ev31 …`. Expand and normalize the polynomial expressions, which then agree. Establish `f4 : B'.sy = FB.expS k (ev (n` using `2) ![pt k (n := 2) d 1, pt k (n := 2) d 0] (ev (n := 2) ![comp1 φ (pt k (n := 2) d 0), comp1 φ (pt k (n := 2) d 1)] h + lam) - (ev (n := 2) ![comp1 φ (pt k (n := 2) d 0), comp1 φ (pt k (n := 2) d 1)] h + lam)) := by`. Rewrite using `[hsy, esy, gt_ev_expS _ hΦ2 _ ccS, ← gt_expS_add _ _ (gt_const_ev _ hΦ2 _ ccS) ccLS]`. Use `congr 1`.
+
+Rewrite using `[KH _ _ (q2 1) (q2 0), gt_ev_sub _ hΦ2, gt_ev2_lemma _ hΦ2 _ _ (q2 1) (q2 0), ev21, ev20]`. Expand and normalize the polynomial expressions, which then agree. Establish `f5 : ∀ a, B'.ad a = FB.expS k (ev (n` using `2) ![comp1 (B'.A.act a) (pt k (n := 2) d 0), pt k (n := 2) d 1] (ev (n := 2) ![comp1 φ (pt k (n := 2) d 0), comp1 φ (pt k (n := 2) d 1)] h + lam) - ev (n := 2) ![pt k (n := 2) d 0, comp1 (B'.A.act (star a)) (pt k (n := 2) d 1)] (ev (n := 2) ![comp1 φ (pt k (n := 2) d 0), comp1 φ …`. Introduce `a`. Establish `ccA` using `gt_cc2_lemma h hh0 _ _ (pair_points_zero_constant (gp_comp1 _ _ (hAc a) (q2 0)) (q2 1)) (pair_points_zero_constant (q2 0) (gp_comp1 _ _ (hAc (star a)) (q2 1)))`.
+
+Establish `ccLA` using `gt_cc2_lemma lam hl0' _ _ (pair_points_zero_constant (gp_comp1 _ _ (hAc' a) (q2 0)) (q2 1)) (pair_points_zero_constant (q2 0) (gp_comp1 _ _ (hAc' (star a)) (q2 1)))`. Rewrite using `[had a, ead a, gt_ev_expS _ hΦ2 _ ccA, ← gt_expS_add _ _ (gt_const_ev _ hΦ2 _ ccA) ccLA]`. Use `congr 1`. Rewrite using `[KH _ _ (gp_comp1 _ _ (hAc' a) (q2 0)) (q2 1), KH _ _ (q2 0) (gp_comp1 _ _ (hAc' (star a)) (q2 1)), TA a _ (q2 0), TA (star a) _ (q2 1), gt_ev_sub _ hΦ2, gt_ev2_lemma _ hΦ2 _ _ (gp_comp1 _ _ (hAc a) (q2 0)) (q2 1), gt_ev2_lemma _ hΦ2 _ _ (q2 0) (gp_comp1 _ _ (hAc (star a)) (q2 1) …`. Expand and normalize the polynomial expressions, which then agree.
+
+Use `⟨f0, f1, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[hFK']`. Conclude with `(gt_map_id _).trans f2`. Rewrite using `[hFK']`. Conclude with `(gt_map_id _).trans f3`.
+
+Conclude with `(gt_map_id _).trans f4`. Introduce `a`. Rewrite using `[hAK' a, hAK' (star a)]`. Conclude with `(gt_map_id _).trans (f5 a)`.
+-/
 theorem gauge_transformation : GaugeTransSt := by
   intro k _ _ d O _ _ B B' φ φi lam hinv hl0 hl1 hF hA hp1 hp2 hsy had h hh
   obtain ⟨hφ, hφi, hc1, hc2⟩ := id hinv

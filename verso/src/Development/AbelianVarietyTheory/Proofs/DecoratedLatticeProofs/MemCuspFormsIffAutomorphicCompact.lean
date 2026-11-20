@@ -39,9 +39,15 @@ variable {D : D7}
 def latIn (V : HSp D) (L : Lat V) : Submodule (𝓞 D.host.E) V.V :=
   L.map (V.frame.equivFun.symm.toLinearMap.restrictScalars (𝓞 D.host.E))
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨by rintro ⟨y, hy, rfl⟩; exact (V.frame.equivFun.apply_symm_apply y).symm ▸ hy, fun h => ⟨_, h, V.frame.equivFun.symm_apply_apply x⟩⟩`.
+-/
 theorem mem_latIn {V : HSp D} {L : Lat V} {x : V.V} : x ∈ latIn V L ↔ V.frame.equivFun x ∈ L :=
   ⟨by rintro ⟨y, hy, rfl⟩; exact (V.frame.equivFun.apply_symm_apply y).symm ▸ hy, fun h => ⟨_, h, V.frame.equivFun.symm_apply_apply x⟩⟩
 
+/- English proof (translation)
+Use `conv_lhs => rw [← V.frame.sum_equivFun x, ← V.frame.sum_equivFun y]`. Simplify using `only [map_sum, map_smulₛₗ, map_smul, LinearMap.sum_apply, LinearMap.smul_apply, smul_eq_mul, HSpace.gram, Finset.mul_sum, starRingEnd_apply, RingHom.id_apply]`. Rewrite using `[Finset.sum_comm]`. Conclude with `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => by ring`.
+-/
 theorem hT_eq (V : HSp D) (x y : V.V) :
     V.hT x y = ∑ i, ∑ j, star (V.frame.equivFun x i) * V.gram i j * V.frame.equivFun y j := by
   conv_lhs => rw [← V.frame.sum_equivFun x, ← V.frame.sum_equivFun y]
@@ -50,12 +56,20 @@ theorem hT_eq (V : HSp D) (x y : V.V) :
   rw [Finset.sum_comm]
   exact Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => by ring
 
+/- English proof (translation)
+The claim follows from `h.1.fg.map _ span_eq_top := by have := congrArg (Submodule.map V.frame.equivFun.symm.toLinearMap) h.1.span_eq_top rwa [Submodule.map_span, Submodule.map_top, LinearEquiv.range] at this`.
+-/
 theorem latIn_lat {V : HSp D} {L : Lat V} (h : IsSelfDualC V L) : Submodule.IsLattice D.host.E (latIn V L) where
   fg := h.1.fg.map _
   span_eq_top := by
     have := congrArg (Submodule.map V.frame.equivFun.symm.toLinearMap) h.1.span_eq_top
     rwa [Submodule.map_span, Submodule.map_top, LinearEquiv.range] at this
 
+/- English proof (translation)
+Use extensionality with `y`. Rewrite using `[mem_latIn, h.2]`. Simplify using `only [Formalism.HermitianLatticesTheory.dual, Formalism.E.hdual, Submodule.mem_iInf, Submodule.mem_comap, Submodule.mem_one, LinearMap.restrictScalars_apply]`. Prove the components needed by the constructor for the conclusion. Introduce `hy x hx`.
+
+Take `⟨b, hb⟩` from `hy _ (mem_latIn.2 (by rwa [LinearEquiv.apply_symm_apply] : V.frame.equivFun (V.frame.equivFun.symm x) ∈ L))`. Conclude with `⟨b, by rw [hT_eq, LinearEquiv.apply_symm_apply] at hb; exact hb⟩`. Introduce `hy x hx`. Take `⟨b, hb⟩` from `hy _ (mem_latIn.1 hx)`. Conclude with `⟨b, by rw [hT_eq]; exact hb⟩`.
+-/
 theorem latIn_unimod {V : HSp D} {L : Lat V} (h : IsSelfDualC V L) : Formalism.HermitianLatticesTheory.IsUnimodular V.hT (latIn V L) := by
   ext y
   rw [mem_latIn, h.2]
@@ -72,6 +86,9 @@ theorem latIn_unimod {V : HSp D} {L : Lat V} (h : IsSelfDualC V L) : Formalism.H
 def reset (V : HSp D) (L : Lat V) (h : IsSelfDualC V L) (s : (D.host.E →+* ℂ) → ℕ × ℕ) : HSp D :=
   { V with sig := s, L0 := latIn V L, standardTuple_isLattice := latIn_lat h, baseLattice_isUnimodular := latIn_unimod h }
 
+/- English proof (translation)
+Use extensionality with `x`. Conclude with `(mem_latIn (V := V) (L := L) (x := V.frame.equivFun.symm x)).trans (by rw [V.frame.equivFun.apply_symm_apply x]; rfl)`.
+-/
 theorem frameLat_reset (V : HSp D) (L : Lat V) (h : IsSelfDualC V L) (s : (D.host.E →+* ℂ) → ℕ × ℕ) :
     frameLat (reset V L h s) = L := by
   ext x

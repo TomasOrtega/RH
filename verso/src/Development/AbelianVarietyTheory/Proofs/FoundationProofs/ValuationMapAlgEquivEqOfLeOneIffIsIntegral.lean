@@ -3,6 +3,33 @@ open scoped NNReal TensorProduct
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Establish `hle : ∀ a b : Ω, v (g a) ≤ v (g b) ↔ v a ≤ v b`. Introduce `a b`. Distinguish the cases in `hb : b = 0`. Substitute `hb` using the available equality. Simplify using the standard rewrite rules.
+
+Establish `hgb : g b ≠ 0` using `by simpa using hb`. Establish `hvb : 0 < v b` using `by simpa [pos_iff_ne_zero] using hb`. Establish `hvgb : 0 < v (g b)` using `by simpa [pos_iff_ne_zero] using hgb`. Establish `h1 : v (a / b) ≤ 1 ↔ v a ≤ v b` using `by rw [map_div₀, div_le_one hvb]`. Establish `h2 : v (g (a / b)) ≤ 1 ↔ v (g a) ≤ v (g b)`.
+
+Rewrite using `[map_div₀ g, map_div₀, div_le_one hvgb]`. Rewrite using `[← h1, ← h2, hv, hv, isIntegral_algEquiv]`. Establish `hlt : ∀ a b : Ω, v (g a) < v (g b) ↔ v a < v b`. Introduce `a b`. Rewrite using `[← not_le, ← not_le, hle]`.
+
+Choose the witnesses or unpack the hypotheses as in `⟨k, l, hkl, heq⟩ : ∃ k l : ℕ, k < l ∧ (g ^ k) x = (g ^ l) x := by`. Take `⟨p, hp0, hpx⟩` from `Algebra.IsAlgebraic.isAlgebraic (R := R) x`. Establish `hmap : p.map (algebraMap R Ω) ≠ 0`. Rewrite using `[Ne, Polynomial.map_eq_zero_iff hinj]` and apply the resulting hypothesis. Establish `hsub : Set.range (fun k : ℕ => (g ^ k) x) ⊆ p.rootSet Ω`.
+
+Introduce and unpack `_ ⟨k, rfl⟩`. Rewrite using `[Polynomial.mem_rootSet']`. Use `⟨hmap, ?_⟩` and prove the remaining obligations. Rewrite using `[Polynomial.aeval_algEquiv]`. Simplify using `[hpx]`.
+
+Establish `hfin` using `(Polynomial.rootSet_finite p Ω).subset hsub`. Establish `hni : ¬ Function.Injective (fun k : ℕ => (g ^ k) x)` using `fun hi => Set.infinite_range_of_injective hi hfin`. Simplify using `only [Function.Injective, not_forall] at hni`. Take `⟨a, b, hab, hne⟩` from `hni`. Break down `lt_or_gt_of_ne hne with h | h` into its components or cases.
+
+Conclude with `⟨a, b, h, hab⟩`. Conclude with `⟨b, a, h, hab.symm⟩`. Establish `hstep : ∀ k : ℕ, (g ^ (k + 1)) x = g ((g ^ k) x)`. Introduce `k`. Rewrite using `[pow_succ', AlgEquiv.mul_apply]`.
+
+Assume the negation of the conclusion as `hne`. Break down `lt_or_gt_of_ne hne with h | h` into its components or cases. Establish `hs : ∀ n : ℕ, v ((g ^ (n + 1)) x) < v ((g ^ n) x)`. Introduce `n`. Proceed by induction on `n with`.
+
+Consider the case `zero => simpa using h`. Consider the case `succ n ih`. Rewrite using `[hstep (n + 1), hstep n, hlt]`. Rewrite `ih` using `[hstep n]`. Simplify `ih` using `[hstep]`.
+
+Establish `hanti : StrictAnti (fun n : ℕ => v ((g ^ n) x))` using `strictAnti_nat_of_succ_lt hs`. Use `hanti hkl` as an intermediate fact. Simplify using `only [heq] at this`. Conclude with `lt_irrefl _ this`. Establish `hs : ∀ n : ℕ, v ((g ^ n) x) < v ((g ^ (n + 1)) x)`.
+
+Introduce `n`. Proceed by induction on `n with`. Consider the case `zero => simpa using h`. Consider the case `succ n ih`. Rewrite using `[hstep (n + 1), hstep n, hlt]`.
+
+Rewrite `ih` using `[hstep n]`. Simplify `ih` using `[hstep]`. Establish `hmono : StrictMono (fun n : ℕ => v ((g ^ n) x))` using `strictMono_nat_of_lt_succ hs`. Use `hmono hkl` as an intermediate fact. Simplify using `only [heq] at this`.
+
+Conclude with `lt_irrefl _ this`.
+-/
 theorem valuation_map_algEquiv_eq_of_le_one_iff_isIntegral (R Ω : Type) [CommRing R] [Nontrivial R]
     [Field Ω] [Algebra R Ω] [Algebra.IsAlgebraic R Ω]
     (hinj : Function.Injective (algebraMap R Ω)) (v : Valuation Ω ℝ≥0)

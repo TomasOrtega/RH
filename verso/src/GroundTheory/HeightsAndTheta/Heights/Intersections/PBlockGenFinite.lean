@@ -15,6 +15,13 @@ namespace BlockGenFinite
 variable {K : Type} [Fintype K] {ι : K → Type} [∀ k, Fintype (ι k)]
   {K' : Type} [Fintype K'] {ι' : K' → Type} [∀ k, Fintype (ι' k)]
 
+/- English proof (translation)
+Rewrite using `[eval_map, eval_map, eval₂_eq', eval₂_eq', Finset.mul_sum]`. Use `Finset.sum_congr rfl fun d hd ↦ ?_` and prove the remaining obligations. Establish `hprod : ∏ p, (c p.1 * u p) ^ d p = (∏ k, c k ^ a k) * ∏ p, u p ^ d p`. Simplify using `only [mul_pow, Finset.prod_mul_distrib]`. Use `congr 1`.
+
+Rewrite using `[Fintype.prod_sigma]`. Use `Finset.prod_congr rfl fun k _ ↦ ?_` and prove the remaining obligations. Use `show ∏ i, c k ^ d ⟨k, i⟩ = c k ^ a k`. Rewrite using `[Finset.prod_pow_eq_pow_sum, hs d hd k]`. Rewrite using `[hprod]`.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem eval_smul_of_isMultiHomog {s : MRing ι} {a : K → ℕ} (hs : IsMultiHomog s a) (c : K → ℂ)
     (u : (Σ k, ι k) → ℂ) :
     eval (fun p ↦ c p.1 * u p) (map (Int.castRingHom ℂ) s) =
@@ -33,6 +40,9 @@ theorem eval_smul_of_isMultiHomog {s : MRing ι} {a : K → ℕ} (hs : IsMultiHo
 
 omit [Fintype K] [∀ k, Fintype (ι k)] [Fintype K'] [∀ k, Fintype (ι' k)] in
 
+/- English proof (translation)
+Rewrite using `[map_rename, eval_rename]`. Both sides reduce to the same expression.
+-/
 theorem eval_map_rename (v : (Σ k, ι k) → (Σ k', ι' k')) (s : MRing ι) (z' : (Σ k', ι' k') → ℂ) :
     eval z' (map (Int.castRingHom ℂ) (rename v s)) = eval (fun p ↦ z' (v p)) (map (Int.castRingHom ℂ) s) := by
   rw [map_rename, eval_rename]
@@ -42,6 +52,35 @@ end BlockGenFinite
 
 open BlockGenFinite in
 
+/- English proof (translation)
+Introduce `K _ ι _ K' _ ι' _ κ v P' n hv hP' hP`. Establish `hrel` using `hP'.2.1.2.2`. Establish `hpr` using `hP'.2.1.1`. Establish `hrel' : ∀ k : FibreBlock κ, ∃ i : ι' k.1, (X (⟨k.1, i⟩ : Σ k', ι' k') : MRing ι') ∉ P'` using `fun k ↦ hrel k.1`. Use `choose c hc using hrel'`.
+
+Establish `hA` using `fun q : (Σ k : FibreBlock κ, ι' k.1) ↦ hR K ι K' ι' κ v P' n hv hP' hP ⟨q.1.1, q.2⟩ ⟨q.1.1, c q.1⟩ rfl (hc q.1)`. Use `choose m A a hAh hAl hAP using hA`. Use `⟨(∏ q, rename v (A q (Fin.last (m q)))) * ∏ k : FibreBlock κ, X ⟨k.1, c k⟩, (∑ q, Function.extend κ (a q) 0) + ∑ k : FibreBlock κ, Pi.single k.1 1, ?_, ?_, ?_⟩` and prove the remaining obligations. Conclude with `AvoidRing.isMultiHomog_mul (AvoidRing.isMultiHomog_prod _ _ _ fun q _ ↦ ArithmeticIntersectionHorizontal.isMultiHomog_rename hv (hAh q _)) (AvoidRing.isMultiHomog_prod _ _ _ fun k _ ↦ AvoidRing.isMultiHomog_X _ _)`. Introduce `h`.
+
+Break down `hpr.mul_mem_iff_mem_or_mem.mp h with h | h` into its components or cases. Take `⟨q, -, hq⟩` from `hpr.prod_mem_iff.mp h`. Conclude with `hAl q hq`. Take `⟨k, -, hk⟩` from `hpr.prod_mem_iff.mp h`. Conclude with `hc k hk`.
+
+Introduce `u`. Take `⟨pol, hpol⟩ : ∃ pol : (Σ k : FibreBlock κ, ι' k.1) → Polynomial ℂ, ∀ q, pol q = ∑ j : Fin (m q + 1), Polynomial.C (eval u (map (Int.castRingHom ℂ) (A q j))) * Polynomial.X ^ (j : ℕ)` from `⟨_, fun _ ↦ rfl⟩`. Take `⟨build, hbuild⟩ : ∃ build : ((Σ k : FibreBlock κ, ι' k.1) → ℂ) → (Σ k', ι' k') → ℂ, ∀ ρ p', build ρ p' = if h : p'.1 ∈ Set.range κ then u (hv.2.2.2 p' h).choose else ρ ⟨⟨p'.1, h⟩, p'.2⟩` from `⟨_, fun _ _ ↦ rfl⟩`. Use `⟨(Fintype.piFinset fun q ↦ (pol q).roots.toFinset).image build, ?_⟩` and prove the remaining obligations. Introduce and unpack `z' hz' hf0 ⟨d, hd, hzd⟩`.
+
+Establish `hzd' : ∀ p, z' (v p) = d p.1 * u p` using `fun p ↦ congrFun hzd p`. Simplify using `only [map_mul, map_prod, map_X, eval_X] at hf0`. Establish `hcz : ∀ k : FibreBlock κ, z' ⟨k.1, c k⟩ ≠ 0` using `fun k ↦ Finset.prod_ne_zero_iff.mp (right_ne_zero_of_mul hf0) k (Finset.mem_univ _)`. Establish `hlead : ∀ q, eval u (map (Int.castRingHom ℂ) (A q (Fin.last (m q)))) ≠ 0`. Introduce `q h`.
+
+Use `Finset.prod_ne_zero_iff.mp (left_ne_zero_of_mul hf0) q (Finset.mem_univ _)` as an intermediate fact. Rewrite `this` using `[eval_map_rename, show (fun p ↦ z' (v p)) = fun p ↦ d p.1 * u p from hzd, eval_smul_of_isMultiHomog (hAh q _), h, mul_zero]`. Conclude with `this rfl`. Establish `hroot : ∀ q, z' ⟨q.1.1, q.2⟩ / z' ⟨q.1.1, c q.1⟩ ∈ (pol q).roots.toFinset`. Introduce `q`.
+
+Establish `hne : pol q ≠ 0`. Introduce `h0`. Establish `h1` using `congrArg (fun f ↦ Polynomial.coeff f (m q)) h0`. Simplify using `only [hpol, Polynomial.finsetSum_coeff, Polynomial.coeff_C_mul_X_pow, Polynomial.coeff_zero] at h1`. Rewrite `h1` using `[Finset.sum_eq_single (Fin.last (m q))]`.
+
+Simplify using `only [Fin.val_last, if_true] at h1`. Conclude with `hlead q h1`. Introduce `j _ hj`. Rewrite using `[if_neg]`. Introduce `e`.
+
+Conclude with `hj (Fin.ext (by simp [e]))`. Simplify using the standard rewrite rules. Rewrite using `[Multiset.mem_toFinset, Polynomial.mem_roots hne, Polynomial.IsRoot.def]`. Establish `hrel0` using `hz'.2 _ (hAP q)`. Simplify using `only [map_sum, map_mul, map_pow, map_X, eval_X, eval_map_rename, show (fun p ↦ z' (v p)) = fun p ↦ d p.1 * u p from hzd, eval_smul_of_isMultiHomog (hAh q _)] at hrel0`.
+
+Establish `hD : (∏ k, d k ^ a q k) * z' ⟨q.1.1, c q.1⟩ ^ m q ≠ 0` using `mul_ne_zero (Finset.prod_ne_zero_iff.mpr fun k _ ↦ pow_ne_zero _ (hd k)) (pow_ne_zero _ (hcz q.1))`. Use `(mul_eq_zero.mp ?_).resolve_left hD` and prove the remaining obligations. Rewrite using `[hpol, Polynomial.eval_finsetSum, Finset.mul_sum, ← hrel0]`. Use `Finset.sum_congr rfl fun j _ ↦ ?_` and prove the remaining obligations. Establish `hj : (j : ℕ) ≤ m q` using `Nat.lt_succ_iff.mp j.2`.
+
+Simplify using `only [Polynomial.eval_mul, Polynomial.eval_C, Polynomial.eval_pow, Polynomial.eval_X]`. Rewrite using `[← pow_sub_mul_pow (z' ⟨q.1.1, c q.1⟩) hj, div_pow]`. Clear denominators, using `[pow_ne_zero _ (hcz q.1)]` for the nonvanishing conditions. Use `⟨build fun q ↦ z' ⟨q.1.1, q.2⟩ / z' ⟨q.1.1, c q.1⟩, Finset.mem_image_of_mem _ (Fintype.mem_piFinset.mpr hroot), ?_⟩` and prove the remaining obligations. Use `⟨fun k' ↦ if h : k' ∈ Set.range κ then d h.choose else z' ⟨k', c ⟨k', h⟩⟩, fun k' ↦ ?_, funext fun p' ↦ ?_⟩` and prove the remaining obligations.
+
+Simplify using `only split_ifs with h`. Conclude with `hd _`. Conclude with `hcz ⟨k', h⟩`. Rewrite using `[hbuild]`. Distinguish the cases in `h : p'.1 ∈ Set.range κ`.
+
+Rewrite using `[dif_pos h] dsimp only`. Rewrite using `[dif_pos h]`. Take `⟨p, rfl⟩` from `hv.2.2.2 p' h`. Rewrite using `[show h.choose = p.1 from hv.1 (h.choose_spec.trans (hv.2.2.1 p)), show (hv.2.2.2 (v p) h).choose = p from hv.2.1 (hv.2.2.2 (v p) h).choose_spec]`. Conclude with `hzd' p`.
+
+Rewrite using `[dif_neg h] dsimp only`. Rewrite using `[dif_neg h]`. Establish `hc'` using `hcz ⟨p'.1, h⟩`. Simplify using `only at hc'`. Clear denominators, using `[hc']` for the nonvanishing conditions.
+-/
 theorem BlockGenFinite.proof (hR : BlockRatioAlg.Statement) : BlockGenFinite.Statement := by
   classical
   intro K _ ι _ K' _ ι' _ κ v P' n hv hP' hP

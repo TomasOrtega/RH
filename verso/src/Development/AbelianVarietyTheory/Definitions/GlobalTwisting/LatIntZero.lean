@@ -32,12 +32,22 @@ def Per (d : ℕ) (ι : ℂ ≃+* ℂ_[q]) (δ₀ : ℂ) (θ : ℂ → ℂ) (Ω 
   (∀ ι' : ℂ ≃+* ℂ_[q], ∃ Ω' : ℂ_[q], ‖Ω'‖ = 1 ∧ ThetaLaws ι' d (Ω' / ι' δ₀) θ) ∧
   ‖Ω‖ = 1 ∧ ThetaLaws ι d (Ω / ι δ₀) θ ∧ ∃ M : Mdl q, M.ι = ι ∧ IsOK d M.L ∧ M.MChart (Ω / ι δ₀)
 
+/- English proof (translation)
+Introduce `κ _ v _`. Use `⟨0, by simp, ?_⟩` and prove the remaining obligations. Introduce `k j f _`. Simplify using the standard rewrite rules.
+-/
 theorem latInt_zero (ι : ℂ ≃+* ℂ_[q]) (ω : ℂ_[q]) (Λ : AddSubgroup V) : LatInt ι ω Λ (fun _ => 0) := by
   intro κ _ v _
   refine ⟨0, by simp, ?_⟩
   intro k j f _
   simp
 
+/- English proof (translation)
+Introduce `κ _ v _`. Use `⟨ContinuousMap.evalCLM ℂ_[q] 0, ?_, ?_⟩` and prove the remaining obligations. Use `ContinuousLinearMap.opNorm_le_bound _ zero_le_one fun f => ?_` and prove the remaining obligations. Rewrite using `[one_mul]`. Conclude with `f.norm_coe_le_norm 0`.
+
+Introduce `k j f hf`. Rewrite using `[ContinuousMap.evalCLM_apply, hf]`. Consider the cases of `k with`. Consider the case `zero => simp`. Consider the case `succ k`.
+
+Rewrite using `[iteratedFDeriv_const_of_ne (Nat.succ_ne_zero k), Finset.prod_eq_zero (Finset.mem_univ 0)]`. Simplify using the standard rewrite rules. Simplify using `[zc]`.
+-/
 theorem latInt_one (ι : ℂ ≃+* ℂ_[q]) (ω : ℂ_[q]) (Λ : AddSubgroup V) : LatInt ι ω Λ (fun _ => 1) := by
   intro κ _ v _
   refine ⟨ContinuousMap.evalCLM ℂ_[q] 0, ?_, ?_⟩

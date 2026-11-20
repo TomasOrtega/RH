@@ -17,6 +17,11 @@ open scoped TensorProduct
 
 namespace GlobalTheory.CompanionTheory.BZPsiPG.FibKer
 
+/- English proof (translation)
+Introduce `k _ _ _ _ t _ _ μ _ c hc`. Establish `h0 : (0 : Fin t → k) ∈ cosetSet t c 0` using `by show Multiplicative.ofAdd ((0 : Fin t → k) - 0) ∈ Lc t c`. Rewrite using `[sub_zero, ofAdd_zero]`. Conclude with `one_mem _`. Establish `hpos : 0 < μ (cosetSet t c 0)` using `(isClopen_cosetSet t c 0).isOpen.measure_pos μ ⟨0, h0⟩`.
+
+Establish `hfin : μ (cosetSet t c 0) < ⊤` using `(isCompact_cosetSet t hc 0).measure_lt_top`. Rewrite using `[Complex.ofReal_ne_zero]`. Conclude with `(ENNReal.toReal_pos hpos.ne' hfin.ne).ne'`.
+-/
 theorem volume_cosetSet_ne_zero : ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] (t : ℕ) [MeasurableSpace (Fin t → k)] [BorelSpace (Fin t → k)] (μ : MeasureTheory.Measure (Fin t → k)) [μ.IsAddHaarMeasure] (c : k), c ≠ 0 → (((μ (cosetSet t c 0)).toReal : ℝ) : ℂ) ≠ 0 := by
   intro k _ _ _ _ t _ _ μ _ c hc
   have h0 : (0 : Fin t → k) ∈ cosetSet t c 0 := by

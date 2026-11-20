@@ -28,6 +28,11 @@ def toOp (k r : ℕ) : Q.Mx k r ≃ₗ[ℝ] MxOp k r where
   left_inv _ := rfl
   right_inv _ := rfl
 
+/- English proof (translation)
+Introduce `k r z _ _`. Take `⟨O, hO, h1, Λ, hΛ, hΛg⟩` from `RadicalReductionUnitary.locLogOp (k := k) (r := r) z`. Establish `hΛ' : ContDiffOn ℝ ∞ (fun x : MxOp k r => @id (MxOp k r) (Λ x)) (@id (Set (MxOp k r)) O)` using `hΛ`. Establish `hO' : IsOpen (O : Set (Q.Mx k r))` using `hO`. Use `⟨O, hO', h1, Λ, ?_, hΛg⟩` and prove the remaining obligations.
+
+Establish `hL1` using `(toOp k r).toContinuousLinearEquiv.toContinuousLinearMap.contDiff (n := ∞)`. Establish `hL2` using `(toOp k r).toContinuousLinearEquiv.symm.toContinuousLinearMap.contDiff (n := ∞)`. Establish `h` using `hL2.comp_contDiffOn (hΛ'.comp (s := (O : Set (Q.Mx k r))) hL1.contDiffOn (fun x hx => hx))`. Conclude with `h.congr (fun x _ => rfl)`.
+-/
 theorem locLog : NFRadRedR.LocLog := by
   intro k r z _ _
   obtain ⟨O, hO, h1, Λ, hΛ, hΛg⟩ := RadicalReductionUnitary.locLogOp (k := k) (r := r) z
@@ -43,6 +48,9 @@ end Formalism.FourierDecayAlt.P.RadicalReductionOperator
 
 namespace Formalism.FourierDecayAlt.P
 
+/- English proof (translation)
+The claim follows from `RadicalReductionOperator.locLog`.
+-/
 theorem local_logarithm_unitary : NFRadRedR.LocLog := RadicalReductionOperator.locLog
 
 end Formalism.FourierDecayAlt.P

@@ -2,6 +2,9 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.PatchingModules.Se
 
 open IsLocalRing Matrix Filter UpperTheory.V.Alg UpperTheory.V.W UpperTheory.V.AlgebraTools UpperTheory.V.Pa
 
+/- English proof (translation)
+Rewrite using `[MonoidAlgebra.mapDomainRingHom_apply, MonoidAlgebra.mapDomainRingHom_apply]`. Apply `MonoidAlgebra.coeff_injective` to reduce the goal to its premises. Simplify using `only [MonoidAlgebra.coeff_map, MonoidAlgebra.coeff_mapDomain]`. Conclude with `Finsupp.mapDomain_mapRange _ _ _ _ (map_add φ)`.
+-/
 private theorem md_comm {A B G G' : Type} [CommRing A] [CommRing B] [Group G] [Group G'] (f : G →* G')
     (φ : A →+ B) (y : MonoidAlgebra A G) :
     MonoidAlgebra.mapDomainRingHom B f (MonoidAlgebra.map φ y) =
@@ -11,12 +14,18 @@ private theorem md_comm {A B G G' : Type} [CommRing A] [CommRing B] [Group G] [G
   simp only [MonoidAlgebra.coeff_map, MonoidAlgebra.coeff_mapDomain]
   exact Finsupp.mapDomain_mapRange _ _ _ _ (map_add φ)
 
+/- English proof (translation)
+Conclude with `md_comm f φ.toAddMonoidHom y`.
+-/
 private theorem md_comm' {A B G G' : Type} [CommRing A] [CommRing B] [Group G] [Group G'] (f : G →* G')
     (φ : A →+* B) (y : MonoidAlgebra A G) :
     MonoidAlgebra.mapDomainRingHom B f (MonoidAlgebra.mapRingHom G φ y) =
       MonoidAlgebra.mapRingHom G' φ (MonoidAlgebra.mapDomainRingHom A f y) := by
   exact md_comm f φ.toAddMonoidHom y
 
+/- English proof (translation)
+Introduce `y`. Take `⟨x, hx⟩` from `Finsupp.mapDomain_surjective hf y.coeff`. Use `⟨MonoidAlgebra.ofCoeff x, ?_⟩` and prove the remaining obligations. Apply `MonoidAlgebra.coeff_injective` to reduce the goal to its premises. Rewrite using `[MonoidAlgebra.mapDomainRingHom_apply, MonoidAlgebra.coeff_mapDomain, MonoidAlgebra.coeff_ofCoeff, hx]`.
+-/
 private theorem md_surj (A : Type) {G G' : Type} [CommRing A] [Group G] [Group G'] (f : G →* G')
     (hf : Function.Surjective f) : Function.Surjective (MonoidAlgebra.mapDomainRingHom A f) := by
   intro y
@@ -25,6 +34,9 @@ private theorem md_surj (A : Type) {G G' : Type} [CommRing A] [Group G] [Group G
   apply MonoidAlgebra.coeff_injective
   rw [MonoidAlgebra.mapDomainRingHom_apply, MonoidAlgebra.coeff_mapDomain, MonoidAlgebra.coeff_ofCoeff, hx]
 
+/- English proof (translation)
+Use `show D.D (Polynomial A) (MonoidAlgebra.mapDomainRingHom _ f (MonoidAlgebra.single 1 Polynomial.X - MonoidAlgebra.mapRingHom G Polynomial.C y)) = _`. Rewrite using `[map_sub, md_comm', MonoidAlgebra.mapDomainRingHom_apply (Polynomial A) f (MonoidAlgebra.single 1 Polynomial.X), MonoidAlgebra.mapDomain_single, map_one]`. Both sides reduce to the same expression.
+-/
 private theorem comap_chi {n : ℕ} {A G G' : Type} [CommRing A] [Group G] [Group G'] (f : G →* G') (D : GDet n A G')
     (y : MonoidAlgebra A G) : (D.comap f).chi y = D.chi (MonoidAlgebra.mapDomainRingHom A f y) := by
   show D.D (Polynomial A) (MonoidAlgebra.mapDomainRingHom _ f
@@ -33,6 +45,9 @@ private theorem comap_chi {n : ℕ} {A G G' : Type} [CommRing A] [Group G] [Grou
     MonoidAlgebra.mapDomain_single, map_one]
   rfl
 
+/- English proof (translation)
+Unfold `GDet.gen`. Rewrite using `[map_sum]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[MonoidAlgebra.mapDomainRingHom_apply, MonoidAlgebra.mapDomain_smul, ← MonoidAlgebra.mapDomainRingHom_apply, md_comm']`.
+-/
 private theorem md_gen {A G G' : Type} [CommRing A] [Group G] [Group G'] (f : G →* G') {m : ℕ}
     (y : Fin m → MonoidAlgebra A G) :
     MonoidAlgebra.mapDomainRingHom _ f (GDet.gen y) = GDet.gen fun j => MonoidAlgebra.mapDomainRingHom A f (y j) := by
@@ -42,6 +57,13 @@ private theorem md_gen {A G G' : Type} [CommRing A] [Group G] [Group G'] (f : G 
   rw [MonoidAlgebra.mapDomainRingHom_apply, MonoidAlgebra.mapDomain_smul,
     ← MonoidAlgebra.mapDomainRingHom_apply, md_comm']
 
+/- English proof (translation)
+Simplify using `only [GDet.CH, Set.mem_setOf_eq]`. Use `exists_congr fun m => exists_congr fun y => exists_congr fun β => ?_` and prove the remaining obligations. Prove the components needed by the constructor for the conclusion. Introduce `h`. Apply `MonoidAlgebra.coeff_injective` to reduce the goal to its premises.
+
+Use extensionality with `g`. Rewrite using `[h g, MonoidAlgebra.coeff_map, Finsupp.mapRange_apply]`. Both sides reduce to the same expression. Introduce `h g`. Rewrite using `[h, MonoidAlgebra.coeff_map, Finsupp.mapRange_apply]`.
+
+Both sides reduce to the same expression.
+-/
 private theorem mem_CH {n : ℕ} {A G : Type} [CommRing A] [Group G] (D : GDet n A G) (z : MonoidAlgebra A G) :
     z ∈ D.CH ↔ ∃ (m : ℕ) (y : Fin m → MonoidAlgebra A G) (β : Fin m →₀ ℕ),
       z = MonoidAlgebra.map (MvPolynomial.coeffAddMonoidHom β) (Polynomial.aeval (GDet.gen y)
@@ -58,6 +80,11 @@ private theorem mem_CH {n : ℕ} {A G : Type} [CommRing A] [Group G] (D : GDet n
     rw [h, MonoidAlgebra.coeff_map, Finsupp.mapRange_apply]
     rfl
 
+/- English proof (translation)
+Rewrite using `[md_comm]`. Use `congr 1`. Establish `hc : ((D.comap f).map (MvPolynomial.C : A →+* MvPolynomial (Fin m) A)).chi (GDet.gen y) = (D.map (MvPolynomial.C : A →+* MvPolynomial (Fin m) A)).chi (GDet.gen fun j => MonoidAlgebra.mapDomainRingHom A f (y j))`. Rewrite using `[← md_gen]`. Conclude with `comap_chi f (D.map MvPolynomial.C) (GDet.gen y)`.
+
+Rewrite using `[hc, ← md_gen]`. Conclude with `(Polynomial.aeval_algHom_apply (MonoidAlgebra.mapDomainAlgHom (R := MvPolynomial (Fin m) A) (A := MvPolynomial (Fin m) A) f) _ _).symm`.
+-/
 private theorem md_CH {n : ℕ} {A G G' : Type} [CommRing A] [Group G] [Group G'] (f : G →* G') (D : GDet n A G')
     {m : ℕ} (y : Fin m → MonoidAlgebra A G) (β : Fin m →₀ ℕ) :
     MonoidAlgebra.mapDomainRingHom A f (MonoidAlgebra.map (MvPolynomial.coeffAddMonoidHom β)
@@ -78,6 +105,23 @@ private theorem md_CH {n : ℕ} {A G G' : Type} [CommRing A] [Group G] [Group G'
   exact (Polynomial.aeval_algHom_apply
     (MonoidAlgebra.mapDomainAlgHom (R := MvPolynomial (Fin m) A) (A := MvPolynomial (Fin m) A) f) _ _).symm
 
+/- English proof (translation)
+Introduce `n A G G' _ _ _ f D`. Use `⟨comap_chi f D, ?_, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `i y`. Simplify using `only [GDet.lam, comap_chi]`. Introduce `y`.
+
+Simplify using `only [GDet.tr, GDet.lam, comap_chi]`. Introduce `B _ φ`. Apply `GDet.ext` to reduce the goal to its premises. Introduce `C _ _ x`. Both sides reduce to the same expression.
+
+Introduce `ρ`. Apply `GDet.ext` to reduce the goal to its premises. Introduce `B _ _ x`. Establish `key : ((GDet.repAlg ρ B).comp (MonoidAlgebra.mapDomainAlgHom (R` using `B) (A := B) f)) = GDet.repAlg (ρ.comp f) B := by`. Apply `MonoidAlgebra.algHom_ext` to reduce the goal to its premises.
+
+Introduce `g`. Simplify using `[GDet.repAlg, MonoidAlgebra.mapDomainAlgHom]`. Conclude with `Subsingleton.elim _ _`. Use `show Matrix.det (GDet.repAlg ρ B (MonoidAlgebra.mapDomainRingHom B f x)) = Matrix.det (GDet.repAlg (ρ.comp f) B x)`. Rewrite using `[← key]`.
+
+Both sides reduce to the same expression. Introduce `hf`. Prove the components needed by the constructor for the conclusion. Introduce `D' h`. Apply `GDet.ext` to reduce the goal to its premises.
+
+Introduce `B _ _ x`. Take `⟨x', rfl⟩` from `md_surj B f hf x`. Conclude with `congrArg (fun E : GDet n A G => E.D B x') h`. Use extensionality with `z`. Prove the components needed by the constructor for the conclusion.
+
+Introduce and unpack `⟨w, hw, rfl⟩`. Take `⟨m, y, β, rfl⟩` from `(mem_CH _ _).1 hw`. Conclude with `(mem_CH _ _).2 ⟨m, _, β, md_CH f D y β⟩`. Introduce `hz`. Take `⟨m, y', β, rfl⟩` from `(mem_CH _ _).1 hz`.
+
+Use `choose y hy using fun j => md_surj A f hf (y' j)`. Establish `hy' : (fun j => MonoidAlgebra.mapDomainRingHom A f (y j)) = y'` using `funext hy`. Use `⟨_, (mem_CH _ _).2 ⟨m, y, β, rfl⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[md_CH, hy']`.
+-/
 theorem UpperTheory.V.Pa.comap_lam :
     ∀ (n : ℕ) (A G G' : Type) [CommRing A] [Group G] [Group G'] (f : G →* G') (D : GDet n A G'), (∀ y, (D.comap f).chi y = D.chi (MonoidAlgebra.mapDomainRingHom A f y)) ∧ (∀ i y, (D.comap f).lam i y = D.lam i (MonoidAlgebra.mapDomainRingHom A f y)) ∧ (∀ y, (D.comap f).tr y = D.tr (MonoidAlgebra.mapDomainRingHom A f y)) ∧ (∀ (B : Type) [CommRing B] (φ : A →+* B), (D.comap f).map φ = (D.map φ).comap f) ∧ (∀ ρ : G' →* Matrix (Fin n) (Fin n) A, (GDet.ofRep ρ).comap f = GDet.ofRep (ρ.comp f)) ∧ (Function.Surjective f → (∀ D' : GDet n A G', D'.comap f = D.comap f → D' = D) ∧ MonoidAlgebra.mapDomainRingHom A f '' (D.comap f).CH = D.CH) := by
   intro n A G G' _ _ _ f D

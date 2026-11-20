@@ -16,18 +16,33 @@ variable {p : ℕ} [Fact p.Prime]
 local notation "𝔹" => BDeRhamPlus (normInteger ℂ_[p]) p
 local notation "𝔹dR" => BDeRham (normInteger ℂ_[p]) p
 
+/- English proof (translation)
+The claim follows from `IsPerfectoidField.isLocalization_away_bDeRham maximalIdeal_eq_span_tBdR`.
+-/
 theorem isLocalization_away_tBdR : IsLocalization.Away (tBdR p) 𝔹dR :=
   IsPerfectoidField.isLocalization_away_bDeRham maximalIdeal_eq_span_tBdR
 
+/- English proof (translation)
+The claim follows from `Field.toIsField _`.
+-/
 theorem isField_bDeRham : IsField 𝔹dR := Field.toIsField _
 
+/- English proof (translation)
+The claim follows from `IsPerfectoidField.algebraMap_ne_zero_of_maximalIdeal_eq_span maximalIdeal_eq_span_tBdR`.
+-/
 theorem algebraMap_tBdR_ne_zero : algebraMap 𝔹 𝔹dR (tBdR p) ≠ 0 :=
   IsPerfectoidField.algebraMap_ne_zero_of_maximalIdeal_eq_span maximalIdeal_eq_span_tBdR
 
+/- English proof (translation)
+The claim follows from `IsPerfectoidField.fil_eq_span maximalIdeal_eq_span_tBdR i`.
+-/
 theorem fil_eq_span_tBdR (i : ℤ) :
     IsPerfectoidField.fil ℂ_[p] p i = Submodule.span 𝔹 {algebraMap 𝔹 𝔹dR (tBdR p) ^ i} :=
   IsPerfectoidField.fil_eq_span maximalIdeal_eq_span_tBdR i
 
+/- English proof (translation)
+The claim follows from `IsPerfectoidField.mem_fil_iff maximalIdeal_eq_span_tBdR`.
+-/
 theorem mem_fil_iff_tBdR {i : ℤ} {x : 𝔹dR} :
     x ∈ IsPerfectoidField.fil ℂ_[p] p i ↔
       ∃ b : 𝔹, x = algebraMap 𝔹 𝔹dR (tBdR p) ^ i * algebraMap 𝔹 𝔹dR b :=
@@ -40,24 +55,41 @@ variable {L : IntermediateField ℚ_[p] (PadicAlgCl p)}
 def cycloUnitBdR (σ : Gal(PadicAlgCl p/L)) : 𝔹ˣ :=
   Units.map ((algebraMap ℚ_[p] 𝔹).toMonoidHom.comp PadicInt.Coe.ringHom.toMonoidHom) (cycloChar L σ)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem coe_cycloUnitBdR (σ : Gal(PadicAlgCl p/L)) :
     (cycloUnitBdR σ : 𝔹) = algebraMap ℚ_[p] 𝔹 ((cycloChar L σ : ℤ_[p]) : ℚ_[p]) := rfl
 
+/- English proof (translation)
+Rewrite using `[cycloUnitBdR, ← map_zpow, Units.coe_map]`. Conclude with `thetaBDeRhamPlusField_algebraMap p _`.
+-/
 theorem thetaBDeRhamPlusField_cycloUnitBdR_zpow (σ : Gal(PadicAlgCl p/L)) (i : ℤ) :
     IsPerfectoidField.thetaBDeRhamPlusField p ((cycloUnitBdR σ ^ i : 𝔹ˣ) : 𝔹) = twistScalar L i σ := by
   rw [cycloUnitBdR, ← map_zpow, Units.coe_map]
   exact thetaBDeRhamPlusField_algebraMap p _
 
+/- English proof (translation)
+The claim follows from `gal_smul_tBdR σ`.
+-/
 theorem gal_smul_tBdR_eq_unit_mul (σ : Gal(PadicAlgCl p/L)) :
     σ • tBdR p = (cycloUnitBdR σ : 𝔹) * tBdR p :=
   gal_smul_tBdR σ
 
+/- English proof (translation)
+Rewrite using `[gal_smul_bDeRham_def, map_zpow₀, galBdRField_algebraMap, gal_smul_tBdR_eq_unit_mul, map_mul, mul_zpow, IsPerfectoidField.algebraMap_units_zpow]`.
+-/
 theorem gal_smul_algebraMap_tBdR_zpow (σ : Gal(PadicAlgCl p/L)) (i : ℤ) :
     σ • (algebraMap 𝔹 𝔹dR (tBdR p) ^ i) =
       algebraMap 𝔹 𝔹dR ((cycloUnitBdR σ ^ i : 𝔹ˣ) : 𝔹) * algebraMap 𝔹 𝔹dR (tBdR p) ^ i := by
   rw [gal_smul_bDeRham_def, map_zpow₀, galBdRField_algebraMap, gal_smul_tBdR_eq_unit_mul, map_mul,
     mul_zpow, IsPerfectoidField.algebraMap_units_zpow]
 
+/- English proof (translation)
+Take `⟨b, hb⟩` from `mem_fil_iff_tBdR.1 x.2`. Establish `hσx : σ • (x : 𝔹dR) = algebraMap 𝔹 𝔹dR (tBdR p) ^ i * algebraMap 𝔹 𝔹dR ((cycloUnitBdR σ ^ i : 𝔹ˣ) * (σ • b))`. Rewrite using `[hb, smul_mul', gal_smul_algebraMap_tBdR_zpow, gal_smul_algebraMap_bDeRham, map_mul]`. Expand and normalize the polynomial expressions, which then agree. Establish `hmem : algebraMap 𝔹 𝔹dR (tBdR p) ^ i * algebraMap 𝔹 𝔹dR ((cycloUnitBdR σ ^ i : 𝔹ˣ) * (σ • b)) ∈ IsPerfectoidField.fil ℂ_[p] p i` using `hσx ▸ gal_smul_mem_fil σ x.2`.
+
+Establish `hmemx : algebraMap 𝔹 𝔹dR (tBdR p) ^ i * algebraMap 𝔹 𝔹dR b ∈ IsPerfectoidField.fil ℂ_[p] p i` using `hb ▸ x.2`. Establish `e1 : (⟨σ • (x : 𝔹dR), gal_smul_mem_fil σ x.2⟩ : IsPerfectoidField.fil ℂ_[p] p i) = ⟨_, hmem⟩` using `Subtype.ext hσx`. Establish `e2 : x = ⟨_, hmemx⟩` using `Subtype.ext hb`. Rewrite using `[e1, IsPerfectoidField.grMap_mk, e2, IsPerfectoidField.grMap_mk, map_mul, thetaBDeRhamPlusField_cycloUnitBdR_zpow, thetaBDeRhamPlusField_gal_smul, cpTwistRep_apply]`.
+-/
 theorem grMap_tBdR_gal_smul (σ : Gal(PadicAlgCl p/L)) {i : ℤ}
     (x : IsPerfectoidField.fil ℂ_[p] p i) :
     IsPerfectoidField.grMap maximalIdeal_eq_span_tBdR i
@@ -79,6 +111,9 @@ theorem grMap_tBdR_gal_smul (σ : Gal(PadicAlgCl p/L)) {i : ℤ}
   rw [e1, IsPerfectoidField.grMap_mk, e2, IsPerfectoidField.grMap_mk, map_mul,
     thetaBDeRhamPlusField_cycloUnitBdR_zpow, thetaBDeRhamPlusField_gal_smul, cpTwistRep_apply]
 
+/- English proof (translation)
+Rewrite using `[IsPerfectoidField.grEquiv_mk, IsPerfectoidField.grEquiv_mk, grMap_tBdR_gal_smul]`.
+-/
 theorem grEquiv_tBdR_gal_smul (σ : Gal(PadicAlgCl p/L)) {i : ℤ}
     (x : IsPerfectoidField.fil ℂ_[p] p i) :
     IsPerfectoidField.grEquiv maximalIdeal_eq_span_tBdR i
@@ -87,6 +122,9 @@ theorem grEquiv_tBdR_gal_smul (σ : Gal(PadicAlgCl p/L)) {i : ℤ}
         (IsPerfectoidField.grEquiv maximalIdeal_eq_span_tBdR i (Submodule.Quotient.mk x)) := by
   rw [IsPerfectoidField.grEquiv_mk, IsPerfectoidField.grEquiv_mk, grMap_tBdR_gal_smul]
 
+/- English proof (translation)
+Rewrite using `[← smul_sub]`. Conclude with `gal_smul_mem_fil σ h`.
+-/
 theorem gal_smul_sub_mem_fil_succ (σ : Gal(PadicAlgCl p/L)) {i : ℤ} {x y : 𝔹dR}
     (h : x - y ∈ IsPerfectoidField.fil ℂ_[p] p (i + 1)) :
     σ • x - σ • y ∈ IsPerfectoidField.fil ℂ_[p] p (i + 1) := by

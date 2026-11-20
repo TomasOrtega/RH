@@ -11,6 +11,25 @@ open scoped ContDiff ENNReal Matrix
 
 namespace GlobalTheory.WeightSizes
 
+/- English proof (translation)
+Introduce `E _ _ _ r X la x z hx hz`. Establish `h : (r : ℝ) ^ 2 * ‖z‖ ≤ 1 / 100`. Break down `Nat.eq_zero_or_pos r with rfl | hr` into its components or cases. Evaluate the numerical expressions. Establish `hr' : (0 : ℝ) < (r : ℝ) ^ 2` using `by positivity`.
+
+Combine the equalities or inequalities in the displayed calculation. Take `⟨hdom, hd⟩` from `GlobalTheory.dmin_rmul_near_one X x hx (nmat X z) (norm_nonneg z) (by linarith) (fun τ a b => GlobalTheory.ChartNearOne.nmat_entry_le X z τ a b)`. Express the relevant statement in the definitionally equal form `cpt X x z ∈ X.dom at hdom`. Establish `hL : ∀ τ i, |IW.Lm X (cpt X x z) τ i| ≤ 9 / 100` using `fun τ i => by`. Establish `h9` using `(hd τ i).2`.
+
+Express the relevant statement in the definitionally equal form `|Real.log ‖dmin X.Gm (cpt X x z) τ i‖| ≤ _ at h9`. Unfold `IW.Lm`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hz' : z ∈ OmF X x` using `hdom`. Use `⟨hz', ?_, ?_, ?_, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[IW.phla_eq X hdom la]`. Use `(Finset.abs_sum_le_sum_abs _ _).trans (Finset.sum_le_sum fun τ _ => ?_)` and prove the remaining obligations. Use `(Finset.abs_sum_le_sum_abs _ _).trans (Finset.sum_le_sum fun i _ => ?_)` and prove the remaining obligations. Rewrite using `[abs_mul]`. Establish `h1 : |IW.Lm X (cpt X x z) τ i.succ - IW.Lm X (cpt X x z) τ i.castSucc| ≤ 1`.
+
+Establish `ha` using `abs_le.1 (hL τ i.succ)`. Establish `hb` using `abs_le.1 (hL τ i.castSucc)`. Rewrite using `[abs_le]`. Apply the tactic sequence `constructor <;> linarith [ha.1, ha.2, hb.1, hb.2]`. Combine the equalities or inequalities in the displayed calculation.
+
+Unfold `rhF`. Rewrite using `[abs_neg]`. Establish `hs : ∑ τ : X.Ψ, |Real.log ‖dmin X.Gm (cpt X x z) τ ⟨X.p0, Nat.lt_succ_of_le X.p0_le⟩‖| ≤ ∑ _τ : X.Ψ, (1 : ℝ)` using `Finset.sum_le_sum fun τ _ => by`. Establish `h9` using `hL τ ⟨X.p0, Nat.lt_succ_of_le X.p0_le⟩`. Unfold `IW.Lm at h9`.
+
+Combine the linear equalities and inequalities to obtain the conclusion. Use `(Finset.abs_sum_le_sum_abs _ _).trans (hs.trans ?_)` and prove the remaining obligations. Simplify using the standard rewrite rules. Rewrite using `[IW.log_densF_eq X x hz']`. Establish `hs : ∑ τ : X.Ψ, ∑ i : Fin r, |(-2) * IW.Lm X (cpt X x z) τ i.castSucc| ≤ ∑ _τ : X.Ψ, ∑ _i : Fin r, (1 : ℝ)` using `Finset.sum_le_sum fun τ _ => Finset.sum_le_sum fun i _ => by`.
+
+Establish `h9` using `hL τ i.castSucc`. Rewrite using `[abs_mul]`. Evaluate the numerical expressions. Combine the linear equalities and inequalities to obtain the conclusion. Use `(Finset.abs_sum_le_sum_abs _ _).trans ((Finset.sum_le_sum fun τ _ => Finset.abs_sum_le_sum_abs _ _).trans (hs.trans ?_))` and prove the remaining obligations.
+
+Simplify using the standard rewrite rules. Unfold `densF`. Conclude with `Finset.prod_pos fun τ _ => Finset.prod_pos fun i _ => zpow_pos (norm_pos_iff.2 (IW.dmin_ne_zero X hdom τ _)) _`.
+-/
 theorem chart_ball_sizes : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (r : ℕ) (X : Data E r) (la : Wt X.Ψ r) (x : Frame X.Ψ r) (z : V (nd X)), IsOrth X x → ‖z‖ ≤ 1 / (100 * (r : ℝ) ^ 2) → z ∈ OmF X x ∧ |phla X la (cpt X x z)| ≤ ∑ τ, ∑ a, |(la τ a : ℝ)| ∧ |rhF X x z| ≤ (X.Ψ.card : ℝ) ∧ |Real.log (densF X x z)| ≤ (X.Ψ.card : ℝ) * r ∧ 0 < densF X x z := by
   intro E _ _ _ r X la x z hx hz
   have h : (r : ℝ) ^ 2 * ‖z‖ ≤ 1 / 100 := by

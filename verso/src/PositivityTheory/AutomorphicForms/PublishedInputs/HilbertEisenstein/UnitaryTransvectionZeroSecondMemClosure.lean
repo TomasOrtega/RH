@@ -18,6 +18,11 @@ namespace UpperTheory.HilbertEisensteinWeightOne.FourierExpansionEisenstein.L2
 
 variable {F : Type} [Field F] [NumberField F] [IsTotallyReal F]
 
+/- English proof (translation)
+Take `⟨n, hn, hpow⟩` from `h.exists_pow_eq_one`. Establish `h1 : (ω.1 x) ^ n = 1`. Use `congrArg (fun χ : HChar F => (χ.1 x)) hpow` as an intermediate fact. Simplify using `using this`. Establish `h2 : ((ω.1 x : ℂˣ) : ℂ) ^ n = 1`.
+
+Rewrite using `[← Units.val_pow_eq_pow_val, h1, Units.val_one]`. Establish `h3 : ‖((ω.1 x : ℂˣ) : ℂ)‖ ^ n = 1` using `by rw [← norm_pow, h2, norm_one]`. Conclude with `(pow_eq_one_iff_of_nonneg (norm_nonneg _) hn.ne').1 h3`.
+-/
 theorem norm_omega_eq_one {ω : HChar F} (h : IsOfFinOrder ω) (x : Ideles F) :
     ‖((ω.1 x : ℂˣ) : ℂ)‖ = 1 := by
   obtain ⟨n, hn, hpow⟩ := h.exists_pow_eq_one
@@ -29,6 +34,11 @@ theorem norm_omega_eq_one {ω : HChar F} (h : IsOfFinOrder ω) (x : Ideles F) :
   have h3 : ‖((ω.1 x : ℂˣ) : ℂ)‖ ^ n = 1 := by rw [← norm_pow, h2, norm_one]
   exact (pow_eq_one_iff_of_nonneg (norm_nonneg _) hn.ne').1 h3
 
+/- English proof (translation)
+Take `⟨m, hm, hω⟩` from `isOfFinOrder_iff_pow_eq_one.1 hH.fin`. Establish `ho` using `GlobalTheory.HeckeGal.isOpen_ker_of_pow ω.1 ω.2.1 hm fun x => by`. Use `congrArg (fun ξ : HChar F => ξ.1 x) hω` as an intermediate fact. Simplify using `using this`. Take `⟨S, M, hS, key⟩` from `GlobalTheory.OpenIdeleCongr.localIdele_mem_of_isOpen ω.1.ker ho`.
+
+Use `hS.subset fun w hw => ?_` and prove the remaining obligations. Assume the negation of the conclusion as `hwS`. Conclude with `hw (Nat.le_zero.1 ((hH.cond w).2 fun x hu _ => MonoidHom.mem_ker.1 (key w x hu fun h => absurd h hwS)))`.
+-/
 theorem finite_support {ω : HChar F} {c : HeightOneSpectrum (𝓞 F) → ℕ} (hH : Hyp ω c) :
     {w | c w ≠ 0}.Finite := by
   obtain ⟨m, hm, hω⟩ := isOfFinOrder_iff_pow_eq_one.1 hH.fin
@@ -43,6 +53,9 @@ theorem finite_support {ω : HChar F} {c : HeightOneSpectrum (𝓞 F) → ℕ} (
 def Nc (c : HeightOneSpectrum (𝓞 F) → ℕ) : (FractionalIdeal (𝓞 F)⁰ F)ˣ :=
   ∏ᶠ w, primeIdealUnit w ^ (c w : ℤ)
 
+/- English proof (translation)
+Use `count_finprod_primeIdealUnit_zpow (fun w => (c w : ℤ)) ?_ v` and prove the remaining obligations. Use `Filter.eventually_cofinite.2 ((finite_support hH).subset fun w hw => ?_)` and prove the remaining obligations. Introduce `h`. Conclude with `hw (by simp [h])`.
+-/
 theorem count_Nc {ω : HChar F} {c : HeightOneSpectrum (𝓞 F) → ℕ} (hH : Hyp ω c) (v : HeightOneSpectrum (𝓞 F)) :
     FractionalIdeal.count F v ((Nc c : (FractionalIdeal (𝓞 F)⁰ F)ˣ) : FractionalIdeal (𝓞 F)⁰ F) = c v := by
   refine count_finprod_primeIdealUnit_zpow (fun w => (c w : ℤ)) ?_ v
@@ -54,6 +67,9 @@ def gfin (c : HeightOneSpectrum (𝓞 F) → ℕ) : Af F → ℂ := cosetIndicat
 
 def oddPoly (x : mixedSpace F) : ℂ := ∏ w : {w : InfinitePlace F // InfinitePlace.IsReal w}, (Complex.I * ((x.1 w : ℝ) : ℂ))
 
+/- English proof (translation)
+Use `hasTemperateGrowth_finsetProd _ fun w _ => ?_` and prove the remaining obligations. Establish `h` using `((Complex.ofRealCLM.comp ((ContinuousLinearMap.proj w : ({w : InfinitePlace F // w.IsReal} → ℝ) →L[ℝ] ℝ).comp (ContinuousLinearMap.fst ℝ ({w : InfinitePlace F // w.IsReal} → ℝ) ({w : InfinitePlace F // w.IsComplex} → ℂ))) : mixedSpace F →L[ℝ] ℂ)).hasTemperateGrowth`. Conclude with `(Function.HasTemperateGrowth.const Complex.I).mul h`.
+-/
 theorem hasTemperateGrowth_oddPoly : (oddPoly (F := F)).HasTemperateGrowth := by
   refine hasTemperateGrowth_finsetProd _ fun w _ => ?_
   have h := ((Complex.ofRealCLM.comp ((ContinuousLinearMap.proj w :
@@ -68,6 +84,9 @@ def oddSchwartz : 𝓢(mixedSpace F, ℂ) :=
     (SchwartzMap.compCLMOfContinuousLinearEquiv ℂ (mixedToEuclidean F)
       (gaussianSchwartz (euclidean.mixedSpace F)))
 
+/- English proof (translation)
+Rewrite using `[oddSchwartz, SchwartzMap.smulLeftCLM_apply_apply hasTemperateGrowth_oddPoly, SchwartzMap.compCLMOfContinuousLinearEquiv_apply, Function.comp_apply, gaussianSchwartz_apply, norm_mixedToEuclidean_sq, smul_eq_mul]`.
+-/
 theorem oddSchwartz_apply (x : mixedSpace F) :
     oddSchwartz F x = oddPoly x *
       ((Real.exp (-Real.pi * (∑ w, x.1 w ^ 2 + 2 * ∑ w, ‖x.2 w‖ ^ 2)) : ℝ) : ℂ) := by
@@ -78,10 +97,20 @@ theorem oddSchwartz_apply (x : mixedSpace F) :
 instance isEmpty_complexPlaces : IsEmpty {w : InfinitePlace F // w.IsComplex} :=
   ⟨fun w => (InfinitePlace.not_isComplex_iff_isReal.2 (IsTotallyReal.isReal w.1)) w.2⟩
 
+/- English proof (translation)
+Rewrite using `[homeomorphMixedSpace_apply]`. Both sides reduce to the same expression.
+-/
 theorem pInf_apply_eq (x : Ad F) (v : InfinitePlace F) :
     UpperTheory.V.TR.pInf F x v = (homeomorphMixedSpace F x.1).1 ⟨v, IsTotallyReal.isReal v⟩ := by
   rw [homeomorphMixedSpace_apply]; rfl
 
+/- English proof (translation)
+Use `set m := homeomorphMixedSpace F B.1 with hm`. Establish `hb : ∀ v : InfinitePlace F, UpperTheory.V.TR.pInf F B v = m.1 ⟨v, IsTotallyReal.isReal v⟩` using `fun v => pInf_apply_eq B v`. Establish `hc : (∑ w : {w : InfinitePlace F // w.IsComplex}, ‖m.2 w‖ ^ 2) = 0` using `by simp`. Rewrite using `[oddSchwartz_apply, hc, mul_zero, add_zero, Complex.ofReal_exp]`. Use `push_cast`.
+
+Rewrite using `[Finset.mul_sum, Complex.exp_sum, oddPoly, ← Finset.prod_mul_distrib]`. Unfold `arch`. Rewrite using `[Finset.prod_subtype Finset.univ (p := fun v : InfinitePlace F => v.IsReal) (fun v => by simp [IsTotallyReal.isReal v])]`. Use `Finset.prod_congr rfl fun w _ => ?_` and prove the remaining obligations. Rewrite using `[hb w.1]`.
+
+Simplify using `only [map_zero, Pi.zero_apply, Complex.ofReal_zero, zero_add, Subtype.coe_eta]`. Put the polynomial expressions in normal form.
+-/
 theorem arch_zero_eq (B : Ad F) :
     arch (UpperTheory.V.TR.pInf F 0) (UpperTheory.V.TR.pInf F B) = oddSchwartz F (homeomorphMixedSpace F B.1) := by
   set m := homeomorphMixedSpace F B.1 with hm
@@ -101,6 +130,15 @@ theorem arch_zero_eq (B : Ad F) :
 
 def f0 (c : HeightOneSpectrum (𝓞 F) → ℕ) (B : Ad F) : ℂ := Phi c ![0, B]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `B`. Establish `hcond : (∀ w, Valued.v (pLoc F w (pFin F ((![0, B] : Fin 2 → Ad F) 0))) ≤ WithZero.exp (-(c w : ℤ)) ∧ Valued.v (pLoc F w (pFin F ((![0, B] : Fin 2 → Ad F) 1)) - 1) ≤ WithZero.exp (-(c w : ℤ))) ↔ B.2 - 1 ∈ idealFiniteAdeles (Nc c)`. Simplify using `only [Matrix.cons_val_zero, Matrix.cons_val_one]`. Rewrite using `[mem_idealFiniteAdeles]`. Use `forall_congr' fun w => ?_` and prove the remaining obligations.
+
+Rewrite using `[count_Nc hH]`. Simplify using `only [map_zero, zero_le, true_and]`. Both sides reduce to the same expression. Unfold `f0 Phi`. Rewrite using `[schwartzBruhatTensor, gfin, cosetIndicator_apply]`.
+
+Establish `ha : arch (UpperTheory.V.TR.pInf F ((![0, B] : Fin 2 → Ad F) 0)) (UpperTheory.V.TR.pInf F ((![0, B] : Fin 2 → Ad F) 1)) = oddSchwartz F (homeomorphMixedSpace F B.1)` using `arch_zero_eq B`. Rewrite using `[ha]`. Use `congr 1`. Use `split_ifs with h1 h2 h2`. Both sides reduce to the same expression.
+
+Conclude with `absurd (hcond.1 h1) h2`. Conclude with `absurd (hcond.2 h2) h1`. Both sides reduce to the same expression.
+-/
 theorem eisensteinFxConstantTerm_rationalIndex_eq {ω : HChar F} {c : HeightOneSpectrum (𝓞 F) → ℕ} (hH : Hyp ω c) :
     f0 c = schwartzBruhatTensor (oddSchwartz F) (gfin c) := by
   funext B
@@ -125,10 +163,18 @@ theorem eisensteinFxConstantTerm_rationalIndex_eq {ω : HChar F} {c : HeightOneS
   · exact absurd (hcond.2 h2) h1
   · rfl
 
+/- English proof (translation)
+Rewrite using `[eisensteinFxConstantTerm_rationalIndex_eq hH]`. Conclude with `schwartzBruhatTensor_mem _ (cosetIndicator_mem_finiteSchwartzBruhat _ _)`.
+-/
 theorem unitaryTransvection_zero_second_mem_closure {ω : HChar F} {c : HeightOneSpectrum (𝓞 F) → ℕ} (hH : Hyp ω c) : f0 c ∈ schwartzBruhat F := by
   rw [eisensteinFxConstantTerm_rationalIndex_eq hH]
   exact schwartzBruhatTensor_mem _ (cosetIndicator_mem_finiteSchwartzBruhat _ _)
 
+/- English proof (translation)
+Establish `h : arch (UpperTheory.V.TR.pInf F 0) (UpperTheory.V.TR.pInf F 0) = 0`. Unfold `arch`. Use `Finset.prod_eq_zero (Finset.mem_univ (Classical.arbitrary (InfinitePlace F))) ?_` and prove the remaining obligations. Simplify using the standard rewrite rules. Unfold `f0 Phi`.
+
+Simplify using `only [Matrix.cons_val_zero, Matrix.cons_val_one]`. Rewrite using `[h, zero_mul]`.
+-/
 theorem test_function_at_zero (c : HeightOneSpectrum (𝓞 F) → ℕ) : f0 c 0 = 0 := by
   have h : arch (UpperTheory.V.TR.pInf F 0) (UpperTheory.V.TR.pInf F 0) = 0 := by
     unfold arch
@@ -138,6 +184,23 @@ theorem test_function_at_zero (c : HeightOneSpectrum (𝓞 F) → ℕ) : f0 c 0 
   simp only [Matrix.cons_val_zero, Matrix.cons_val_one]
   rw [h, zero_mul]
 
+/- English proof (translation)
+Use `set w₀ : {w : InfinitePlace F // w.IsReal} := ⟨w0 F, IsTotallyReal.isReal _⟩`. Use `set σ₁ : ({w : InfinitePlace F // w.IsReal} → ℝ) → ({w : InfinitePlace F // w.IsReal} → ℝ) := fun a i => (fun i (r : ℝ) => if i = w₀ then -r else r) i (a i) with hσ₁def`. Establish `hσ₁ : MeasurePreserving σ₁ volume volume`. Use `volume_preserving_pi (ι := {w : InfinitePlace F // w.IsReal}) (f := fun i (r : ℝ) => if i = w₀ then -r else r) fun i => ?_` and prove the remaining obligations. Distinguish the cases in `h : i = w₀`.
+
+Establish `e : (fun r : ℝ => if i = w₀ then -r else r) = Neg.neg` using `funext fun r => if_pos h`. Rewrite using `[e]`. Conclude with `Measure.measurePreserving_neg volume`. Establish `e : (fun r : ℝ => if i = w₀ then -r else r) = id` using `funext fun r => if_neg h`. Rewrite using `[e]`.
+
+Conclude with `MeasurePreserving.id volume`. Use `set σ : mixedSpace F → mixedSpace F := Prod.map σ₁ id with hσdef`. Establish `hσ : MeasurePreserving σ volume volume`. Rewrite using `[Measure.volume_eq_prod]`. Conclude with `hσ₁.prod (MeasurePreserving.id volume)`.
+
+Establish `hodd : ∀ x, oddSchwartz F (σ x) = - oddSchwartz F x`. Introduce `x`. Establish `hsq : ∀ w, (σ x).1 w ^ 2 = x.1 w ^ 2` using `fun w => by`. Simplify using `only [hσdef, hσ₁def, Prod.map_fst]`. Apply the tactic sequence `split_ifs <;> simp`.
+
+Establish `hg : (∑ w, (σ x).1 w ^ 2 + 2 * ∑ w, ‖(σ x).2 w‖ ^ 2) = (∑ w, x.1 w ^ 2 + 2 * ∑ w, ‖x.2 w‖ ^ 2)`. Simplify using `only [hsq]`. Both sides reduce to the same expression. Establish `hp : oddPoly (σ x) = - oddPoly x`. Unfold `oddPoly`.
+
+Rewrite using `[Fintype.prod_eq_mul_prod_compl w₀, Fintype.prod_eq_mul_prod_compl w₀ (fun w => Complex.I * ((x.1 w : ℝ) : ℂ))]`. Establish `hrest : ∏ i ∈ ({w₀}ᶜ : Finset _), Complex.I * (((σ x).1 i : ℝ) : ℂ) = ∏ i ∈ ({w₀}ᶜ : Finset _), Complex.I * ((x.1 i : ℝ) : ℂ)`. Use `Finset.prod_congr rfl fun i hi => ?_` and prove the remaining obligations. Establish `: i ≠ w₀` using `by simpa using hi`. Simplify using `[hσdef, hσ₁def, this]`.
+
+Rewrite using `[hrest]`. Simplify using `[hσdef, hσ₁def]`. Rewrite using `[oddSchwartz_apply, oddSchwartz_apply, hp, hg, neg_mul]`. Establish `hI : ∫ x, oddSchwartz F x ∂volume = 0`. Establish `h1 : ∫ x, oddSchwartz F x ∂volume = ∫ x, oddSchwartz F (σ x) ∂volume` using `by conv_lhs => rw [← hσ.map_eq]`.
+
+Conclude with `integral_map hσ.measurable.aemeasurable (oddSchwartz F).continuous.aestronglyMeasurable`. Simplify using `only [hodd, integral_neg] at h1`. Establish `h2 : (2 : ℂ) * ∫ x, oddSchwartz F x ∂volume = 0` using `by linear_combination h1`. Simplify using `using h2`. Rewrite using `[selfDualMeasure, integral_smul_measure, hI, smul_zero]`.
+-/
 theorem integral_oddSchwartz : ∫ x, oddSchwartz F x ∂selfDualMeasure F = 0 := by
   set w₀ : {w : InfinitePlace F // w.IsReal} := ⟨w0 F, IsTotallyReal.isReal _⟩
   set σ₁ : ({w : InfinitePlace F // w.IsReal} → ℝ) → ({w : InfinitePlace F // w.IsReal} → ℝ) :=
@@ -181,6 +244,11 @@ theorem integral_oddSchwartz : ∫ x, oddSchwartz F x ∂selfDualMeasure F = 0 :
     simpa using h2
   rw [selfDualMeasure, integral_smul_measure, hI, smul_zero]
 
+/- English proof (translation)
+Rewrite using `[eisensteinFxConstantTerm_rationalIndex_eq hH, adelicFourier_schwartzBruhatTensor]`. Simplify using `only [schwartzBruhatTensor, mixedFourierSchwartz_apply]`. Establish `h0 : homeomorphMixedSpace F (0 : Ad F).1 = 0`. Rewrite using `[homeomorphMixedSpace_apply]`. Conclude with `map_zero _`.
+
+Rewrite using `[h0, mixedFourier_apply]`. Establish `: (fun x : mixedSpace F => 𝐞 (-mixedTraceForm F x 0) • oddSchwartz F x) = fun x => oddSchwartz F x`. Use function extensionality and compare the values at `x`. Simplify using the standard rewrite rules. Rewrite using `[this, integral_oddSchwartz, zero_mul]`.
+-/
 theorem fourier_test_function_at_zero {ω : HChar F} {c : HeightOneSpectrum (𝓞 F) → ℕ} (hH : Hyp ω c) :
     adelicFourier F (f0 c) 0 = 0 := by
   rw [eisensteinFxConstantTerm_rationalIndex_eq hH, adelicFourier_schwartzBruhatTensor]
@@ -193,6 +261,15 @@ theorem fourier_test_function_at_zero {ω : HChar F} {c : HeightOneSpectrum (�
     simp
   rw [this, integral_oddSchwartz, zero_mul]
 
+/- English proof (translation)
+Use `set g : F → ℂ := fun ξ => f0 c (τ • algebraMap F (Ad F) ξ) with hg`. Establish `hs : Summable g` using `(summable_norm_smul_algebraMap τ (unitaryTransvection_zero_second_mem_closure hH)).of_norm`. Establish `h0 : g 0 = 0` using `by simp only [hg, map_zero, smul_zero]; exact test_function_at_zero c`. Rewrite using `[adelicTheta]`. Express the relevant statement in the definitionally equal form `_ = ∑' ξ : F, g ξ`.
+
+Rewrite using `[hs.tsum_eq_add_tsum_ite 0, h0, zero_add]`. Establish `e1 : zeroRow c τ = ∑' x : {ξ : F // ξ ≠ 0}, g x`. Rewrite using `[← (unitsEquivNeZero (G₀ := F)).tsum_eq]`. Use `tsum_congr fun b => ?_` and prove the remaining obligations. Simplify using `only [g, f0, Units.smul_def]`.
+
+Both sides reduce to the same expression. Rewrite using `[e1, show (∑' x : {ξ : F // ξ ≠ 0}, g x) = ∑' x : ({ξ : F | ξ ≠ 0} : Set F), g x from rfl, tsum_subtype {ξ : F | ξ ≠ 0} g]`. Use `tsum_congr fun ξ => ?_` and prove the remaining obligations. Distinguish the cases in `h : ξ = 0`. Simplify using `[h]`.
+
+Simplify using `[h]`.
+-/
 theorem zeroRow_eq (c : HeightOneSpectrum (𝓞 F) → ℕ) {ω : HChar F} (hH : Hyp ω c) (τ : IdeleGroup F) :
     zeroRow c τ = adelicTheta (f0 c) τ := by
   set g : F → ℂ := fun ξ => f0 c (τ • algebraMap F (Ad F) ξ) with hg
@@ -213,6 +290,9 @@ theorem zeroRow_eq (c : HeightOneSpectrum (𝓞 F) → ℕ) {ω : HChar F} (hH :
   · simp [h]
   · simp [h]
 
+/- English proof (translation)
+Establish `hC : IsCompact ((Subtype.val : normOneSubgroup F → IdeleGroup F) '' closure (normOneFundamentalDomain F))` using `(isCompact_closure_normOneFundamentalDomain F).image continuous_subtype_val`. Take `⟨M, hM⟩` from `exists_norm_adelicTheta_sub_le (w0 F) (unitaryTransvection_zero_second_mem_closure hH) hC 2`. Use `⟨M, fun t ht u hu => ?_⟩` and prove the remaining obligations. Use `hM (u : IdeleGroup F) ⟨u, subset_closure hu, rfl⟩ t ht` as an intermediate fact. Rewrite `this` using `[test_function_at_zero, sub_zero, ← zeroRow_eq c hH]`. Then use the resulting hypothesis.
+-/
 theorem bound_large {ω : HChar F} {c : HeightOneSpectrum (𝓞 F) → ℕ} (hH : Hyp ω c) :
     ∃ M : ℝ, ∀ t : {r : ℝ // 0 < r}, 1 ≤ (t : ℝ) → ∀ u ∈ normOneFundamentalDomain F,
       ‖zeroRow c (tau t u)‖ ≤ ((t : ℝ) ^ 2)⁻¹ * M := by
@@ -223,6 +303,15 @@ theorem bound_large {ω : HChar F} {c : HeightOneSpectrum (𝓞 F) → ℕ} (hH 
   have := hM (u : IdeleGroup F) ⟨u, subset_closure hu, rfl⟩ t ht
   rwa [test_function_at_zero, sub_zero, ← zeroRow_eq c hH] at this
 
+/- English proof (translation)
+Establish `hC : IsCompact ((fun x : IdeleGroup F => x⁻¹) '' ((Subtype.val : normOneSubgroup F → IdeleGroup F) '' closure (normOneFundamentalDomain F)))` using `((isCompact_closure_normOneFundamentalDomain F).image continuous_subtype_val).image continuous_inv`. Take `⟨M, hM⟩` from `exists_norm_adelicTheta_sub_le (w0 F) (adelicFourier_mem_schwartzBruhat (unitaryTransvection_zero_second_mem_closure hH)) hC 2`. Use `⟨M, fun t ht u hu => ?_⟩` and prove the remaining obligations. Establish `ht0 : 0 < (t : ℝ)` using `t.2`. Establish `hti : 1 ≤ ((t⁻¹ : {r : ℝ // 0 < r}) : ℝ)`.
+
+Rewrite using `[Positive.coe_inv]`. Conclude with `(one_le_inv₀ ht0).2 ht`. Establish `h1` using `hM ((u : IdeleGroup F)⁻¹) ⟨u, ⟨u, subset_closure hu, rfl⟩, rfl⟩ t⁻¹ hti`. Rewrite `h1` using `[fourier_test_function_at_zero hH, sub_zero]`. Establish `hinv : (tau t u)⁻¹ = moduleSection (w0 F) t⁻¹ * (u : IdeleGroup F)⁻¹`.
+
+Rewrite using `[tau, mul_inv, map_inv, mul_comm]`. Establish `hmod : (ideleModule F (tau t u) : ℝ) = t`. Establish `hu1 : ideleModule F (u : IdeleGroup F) = 1` using `u.2`. Rewrite using `[tau, map_mul, ideleModule_moduleSection, hu1, mul_one]`. Rewrite using `[zeroRow_eq c hH, adelicTheta_eq (unitaryTransvection_zero_second_mem_closure hH), hinv, hmod, norm_mul]`.
+
+Rewrite `h1` using `[Positive.coe_inv]`. Establish `h2 : ‖(((t : ℝ) : ℂ))⁻¹‖ = (t : ℝ)⁻¹`. Rewrite using `[norm_inv, Complex.norm_real, Real.norm_of_nonneg ht0.le]`. Rewrite using `[h2]`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem bound_small {ω : HChar F} {c : HeightOneSpectrum (𝓞 F) → ℕ} (hH : Hyp ω c) :
     ∃ M : ℝ, ∀ t : {r : ℝ // 0 < r}, (t : ℝ) ≤ 1 → ∀ u ∈ normOneFundamentalDomain F,
       ‖zeroRow c (tau t u)‖ ≤ (t : ℝ) * M := by
@@ -250,6 +339,15 @@ theorem bound_small {ω : HChar F} {c : HeightOneSpectrum (𝓞 F) → ℕ} (hH 
       ≤ (t : ℝ)⁻¹ * ((((t : ℝ))⁻¹ ^ 2)⁻¹ * M) := mul_le_mul_of_nonneg_left h1 (inv_nonneg.2 ht0.le)
     _ = (t : ℝ) * M := by field_simp
 
+/- English proof (translation)
+Establish `hmeas : Measurable fun t : {r : ℝ // 0 < r} => ENNReal.ofReal (min (t : ℝ) (t : ℝ)⁻¹)` using `ENNReal.measurable_ofReal.comp ((continuous_subtype_val.min (continuous_subtype_val.inv₀ fun t => t.2.ne')).measurable)`. Rewrite using `[posRealMeasure_eq_map_expPos, lintegral_map hmeas measurable_expPos]`. Establish `key : ∀ y : ℝ, 0 ≤ y → (Real.exp y)⁻¹ ≤ 2 * (1 + y ^ 2)⁻¹` using `fun y hy => by`. Establish `h1` using `Real.quadratic_le_exp_of_nonneg hy`. Rewrite using `[← div_eq_mul_inv, le_div_iff₀ (by positivity), inv_mul_le_iff₀ (Real.exp_pos y)]`.
+
+Use the polynomial consequences of the given equalities and inequalities. Establish `hle : ∀ x : ℝ, ENNReal.ofReal (min ((expPos x : {r : ℝ // 0 < r}) : ℝ) ((expPos x : {r : ℝ // 0 < r}) : ℝ)⁻¹) ≤ ENNReal.ofReal (2 * (1 + x ^ 2)⁻¹)`. Introduce `x`. Apply `ENNReal.ofReal_le_ofReal` to reduce the goal to its premises. Simplify using `only [coe_expPos]`.
+
+Break down `le_total 0 x with hx | hx` into its components or cases. Conclude with `(min_le_right _ _).trans (key x hx)`. Use `(min_le_left _ _).trans ?_` and prove the remaining obligations. Use `key (-x) (by linarith)` as an intermediate fact. Rewrite `this` using `[Real.exp_neg, inv_inv, neg_sq]`. Then use the resulting hypothesis.
+
+Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem lintegral_min_lt_top :
     ∫⁻ t, ENNReal.ofReal (min (t : ℝ) (t : ℝ)⁻¹) ∂posRealMeasure < ⊤ := by
   have hmeas : Measurable fun t : {r : ℝ // 0 < r} => ENNReal.ofReal (min (t : ℝ) (t : ℝ)⁻¹) :=
@@ -273,6 +371,9 @@ theorem lintegral_min_lt_top :
   calc _ ≤ ∫⁻ x, ENNReal.ofReal (2 * (1 + x ^ 2)⁻¹) := lintegral_mono hle
     _ < ⊤ := (integrable_inv_one_add_sq.const_mul 2).lintegral_lt_top
 
+/- English proof (translation)
+Establish `hc : Continuous fun t : {r : ℝ // 0 < r} => min (t : ℝ) (t : ℝ)⁻¹` using `continuous_subtype_val.min (continuous_subtype_val.inv₀ fun t => t.2.ne')`. Use `⟨hc.aestronglyMeasurable, ?_⟩` and prove the remaining obligations. Rewrite using `[hasFiniteIntegral_iff_ofReal (Filter.Eventually.of_forall fun t => le_min t.2.le (inv_nonneg.2 t.2.le))]`. Conclude with `lintegral_min_lt_top`.
+-/
 theorem integrable_min : Integrable (fun t : {r : ℝ // 0 < r} => min (t : ℝ) (t : ℝ)⁻¹) posRealMeasure := by
   have hc : Continuous fun t : {r : ℝ // 0 < r} => min (t : ℝ) (t : ℝ)⁻¹ :=
     continuous_subtype_val.min (continuous_subtype_val.inv₀ fun t => t.2.ne')
@@ -281,6 +382,11 @@ theorem integrable_min : Integrable (fun t : {r : ℝ // 0 < r} => min (t : ℝ)
     le_min t.2.le (inv_nonneg.2 t.2.le))]
   exact lintegral_min_lt_top
 
+/- English proof (translation)
+Establish `htau : Continuous fun p : {r : ℝ // 0 < r} × normOneSubgroup F => tau p.1 p.2` using `((continuous_moduleSection (w0 F)).comp continuous_fst).mul (continuous_subtype_val.comp continuous_snd)`. Establish `h1 : Continuous fun p : {r : ℝ // 0 < r} × normOneSubgroup F => zeroRow c (tau p.1 p.2)`. Simplify using `only [zeroRow_eq c hH]`. Conclude with `(continuous_adelicTheta (unitaryTransvection_zero_second_mem_closure hH)).comp htau`. Establish `h2 : Continuous fun p : {r : ℝ // 0 < r} × normOneSubgroup F => ((ω.1 (tau p.1 p.2) : ℂˣ) : ℂ)` using `Units.continuous_val.comp (ω.2.1.comp htau)`.
+
+Establish `h3 : Continuous fun p : {r : ℝ // 0 < r} × normOneSubgroup F => wt ω p.1 p.2` using `(h2.inv₀ fun p => Units.ne_zero _).mul (Complex.continuous_ofReal.comp (continuous_subtype_val.comp continuous_fst))`. Conclude with `h1.mul h3`.
+-/
 theorem continuous_integrand {ω : HChar F} {c : HeightOneSpectrum (𝓞 F) → ℕ} (hH : Hyp ω c) :
     Continuous (fun p : {r : ℝ // 0 < r} × normOneSubgroup F => zeroRow c (tau p.1 p.2) * wt ω p.1 p.2) := by
   have htau : Continuous fun p : {r : ℝ // 0 < r} × normOneSubgroup F => tau p.1 p.2 :=
@@ -299,6 +405,19 @@ end UpperTheory.HilbertEisensteinWeightOne.FourierExpansionEisenstein.L2
 namespace UpperTheory.HilbertEisensteinWeightOne.FourierExpansionEisenstein
 
 open L2 in
+/- English proof (translation)
+Introduce `F _ _ _ ω c hH`. Take `⟨M₁, h₁⟩` from `bound_large hH`. Take `⟨M₂, h₂⟩` from `bound_small hH`. Use `set C : ℝ := max (max M₁ M₂) 0`. Establish `hE : MeasurableSet (normOneFundamentalDomain F)` using `measurableSet_normOneFundamentalDomain F`.
+
+Establish `: IsFiniteMeasure ((normOneMeasure F).restrict (normOneFundamentalDomain F))` using `isFiniteMeasure_restrict.2 (normOneMeasure_normOneFundamentalDomain_lt_top F).ne`. Establish `hg : Integrable (fun p : {r : ℝ // 0 < r} × normOneSubgroup F => (C * min (p.1 : ℝ) (p.1 : ℝ)⁻¹) * 1) (muE F)` using `(integrable_min.const_mul C).mul_prod (integrable_const (1 : ℝ))`. Use `hg.mono' (continuous_integrand hH).aestronglyMeasurable ?_` and prove the remaining obligations. Establish `hae : ∀ᵐ p ∂(muE F), p.2 ∈ normOneFundamentalDomain F` using `Measure.quasiMeasurePreserving_snd.ae (ae_restrict_mem hE)`. Use `filter_upwards [hae] with p hp`.
+
+Take `⟨t, u⟩` from `p`. Establish `ht0 : 0 < (t : ℝ)` using `t.2`. Establish `hw : ‖wt ω t u‖ = (t : ℝ)`. Rewrite using `[wt, norm_mul, norm_inv, norm_omega_eq_one hH.fin, inv_one, one_mul, Complex.norm_real, Real.norm_of_nonneg ht0.le]`. Rewrite using `[norm_mul, hw, mul_one]`.
+
+Establish `hC1 : M₁ ≤ C` using `(le_max_left _ _).trans (le_max_left _ _)`. Establish `hC2 : M₂ ≤ C` using `(le_max_right _ _).trans (le_max_left _ _)`. Establish `hC0 : 0 ≤ C` using `le_max_right _ _`. Break down `le_total 1 (t : ℝ) with ht | ht` into its components or cases. Establish `hmin : min (t : ℝ) (t : ℝ)⁻¹ = (t : ℝ)⁻¹` using `min_eq_right ((inv_le_one₀ ht0).2 ht |>.trans ht)`.
+
+Rewrite using `[hmin]`. Combine the equalities or inequalities in the displayed calculation. Establish `hmin : min (t : ℝ) (t : ℝ)⁻¹ = (t : ℝ)` using `min_eq_left (ht.trans ((one_le_inv₀ ht0).2 ht))`. Rewrite using `[hmin]`. Combine the equalities or inequalities in the displayed calculation.
+
+Establish `: (t : ℝ) * M₂ ≤ (t : ℝ) * C` using `mul_le_mul_of_nonneg_left hC2 ht0.le`. Conclude with `mul_le_mul this ht ht0.le (mul_nonneg ht0.le hC0)`. Use `_ = C * (t : ℝ) := by ring`.
+-/
 theorem zero_term_holds : SZero := by
   intro F _ _ _ ω c hH
   obtain ⟨M₁, h₁⟩ := bound_large hH

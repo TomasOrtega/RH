@@ -21,14 +21,26 @@ variable {R : Ranks} {ι : Type} [Fintype ι] {hc : ι → HCParam R}
 
 def castCls {C C' : ColumnChain R ι hc} (h : C = C') (j : ℕ) (c : C.cls j) : C'.cls j := h ▸ c
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem castCls_rfl {C : ColumnChain R ι hc} (j : ℕ) (c : C.cls j) : castCls (rfl : C = C) j c = c := rfl
 
+/- English proof (translation)
+Substitute `h` using the available equality. Conclude with `fun _ _ h => h`.
+-/
 theorem castCls_inj {C C' : ColumnChain R ι hc} (h : C = C') (j : ℕ) : Function.Injective (castCls h j) := by
   subst h; exact fun _ _ h => h
 
+/- English proof (translation)
+Substitute `h` using the available equality. Conclude with `fun c => ⟨c, rfl⟩`.
+-/
 theorem castCls_surj {C C' : ColumnChain R ι hc} (h : C = C') (j : ℕ) : Function.Surjective (castCls h j) := by
   subst h; exact fun c => ⟨c, rfl⟩
 
+/- English proof (translation)
+Substitute `h` using the available equality. Both sides reduce to the same expression.
+-/
 theorem castCls_card {C C' : ColumnChain R ι hc} (h : C = C') (j : ℕ) (c : C.cls j) :
     Nat.card (C'.stab j (castCls h j c)) = Nat.card (C.stab j c) := by
   subst h; rfl
@@ -56,6 +68,9 @@ def clsAt (X : LabIn I) (H : CmpJHyp c I) : ∀ j, Lv.comp j → (Fl.Pj j).Tup �
     if hj : j + 1 ≤ D.R.m then castCls (X.onCh j hj) (j + 1) (clsOf (S := (I.at' j hj).st) (H.core j hj) a L)
     else X.fill (j + 1) (by omega) a
 
+/- English proof (translation)
+The claim follows from `dif_pos hj`.
+-/
 theorem clsAt_succ (X : LabIn I) (H : CmpJHyp c I) (j : ℕ) (hj : j + 1 ≤ D.R.m) (a : Lv.comp (j + 1)) (L : (Fl.Pj (j + 1)).Tup) :
     clsAt X H (j + 1) a L = castCls (X.onCh j hj) (j + 1) (clsOf (S := (I.at' j hj).st) (H.core j hj) a L) := dif_pos hj
 
@@ -113,18 +128,33 @@ def kaAtAny (X : LabIn I) (H : CmpJHyp c I) (Gt : GatTies D) (Ch : Chain Lv)
     TwTie.KerAtMu D c Tw u μ w h Ch :=
   kerAtMu_any (labAt X H) H Formalism.L2.G.RelativeIndexFlags.blockRationality_holds Gt Ch hCh
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem kaAt_cls (X : LabIn I) (H : CmpJHyp c I) (Gt : GatTies D) : (kaAt X H Gt).cls = clsAt X H := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem kaAtAny_cls (X : LabIn I) (H : CmpJHyp c I) (Gt : GatTies D) (Ch : Chain Lv) (hCh) :
     (kaAtAny X H Gt Ch hCh).cls = clsAt X H := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem kaAtAny_cmp_eq (X : LabIn I) (H : CmpJHyp c I) (Gt : GatTies D) (Ch : Chain Lv) (hCh) :
     (kaAtAny X H Gt Ch hCh).cmp = (kaAt X H Gt).cmp := rfl
 
+/- English proof (translation)
+The claim follows from `kerAtMu_cmpJ_cmp (labAt X H) H Formalism.L2.G.RelativeIndexFlags.blockRationality_holds Gt j hj x`.
+-/
 theorem kaAt_cmp (X : LabIn I) (H : CmpJHyp c I) (Gt : GatTies D) (j : ℕ) (hj : j + 1 ≤ D.R.m) (x : ((Tw.fm u μ).lat (j + 1)).V) :
     (kaAt X H Gt).cmp (j + 1) x = (I.at' j hj).st.cmpJ (c.embW u w h) ((I.at' j hj).eps.symm x) :=
   kerAtMu_cmpJ_cmp (labAt X H) H Formalism.L2.G.RelativeIndexFlags.blockRationality_holds Gt j hj x
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨_, clsAt_succ X H j hj a L, clsOf_chart (S := (I.at' j hj).st) (H.core j hj) a L hL, cg_spec (S := (I.at' j hj).st) (H.core j hj) a L hL⟩`.
+-/
 theorem kaAt_chart (X : LabIn I) (H : CmpJHyp c I) (Gt : GatTies D) (j : ℕ) (hj : j + 1 ≤ D.R.m) (a : Lv.comp (j + 1))
     (L : (Fl.Pj (j + 1)).Tup) (hL : (Fl.Pj (j + 1)).IsLatTup L) :
     ∃ c₀ : (I.at' j hj).C.cls (j + 1), (kaAt X H Gt).cls (j + 1) a L = castCls (X.onCh j hj) (j + 1) c₀ ∧
@@ -132,12 +162,20 @@ theorem kaAt_chart (X : LabIn I) (H : CmpJHyp c I) (Gt : GatTies D) (j : ℕ) (h
   ⟨_, clsAt_succ X H j hj a L, clsOf_chart (S := (I.at' j hj).st) (H.core j hj) a L hL,
     cg_spec (S := (I.at' j hj).st) (H.core j hj) a L hL⟩
 
+/- English proof (translation)
+Rewrite using `[((kaAt X H Gt).cls_iff (j + 1) hj a a' L L' hL hL').1 e |>.1]`.
+-/
 theorem kaAt_sameChart (X : LabIn I) (H : CmpJHyp c I) (Gt : GatTies D) (j : ℕ) (hj : j + 1 ≤ D.R.m) (a a' : Lv.comp (j + 1))
     (L L' : (Fl.Pj (j + 1)).Tup) (hL : (Fl.Pj (j + 1)).IsLatTup L) (hL' : (Fl.Pj (j + 1)).IsLatTup L')
     (e : (kaAt X H Gt).cls (j + 1) a L = (kaAt X H Gt).cls (j + 1) a' L') :
     ((I.at' j hj).st.eC.symm a).1 = ((I.at' j hj).st.eC.symm a').1 := by
   rw [((kaAt X H Gt).cls_iff (j + 1) hj a a' L L' hL hL').1 e |>.1]
 
+/- English proof (translation)
+Establish `hLt : (Fl.Pj (j + 1)).IsLatTup L` using `isLatTup_of_bases (G := gatJ Lv (j + 1)) L g hL`. Establish `hs` using `cg_spec (S := (I.at' j hj).st) (H.core j hj) ((I.at' j hj).st.eC ⟨β, a0⟩) L hLt`. Establish `hc : (I.at' j hj).st.chOf (clsOf (S` using `(I.at' j hj).st) (H.core j hj) ((I.at' j hj).st.eC ⟨β, a0⟩) L) = β := by`. Rewrite using `[hs.chart, Equiv.symm_apply_apply]`. Take `⟨κ, e⟩` from `hs.pt (H.core j hj) hc g hL x hx`.
+
+Conclude with `⟨hc, κ, hs.mem, e⟩`.
+-/
 theorem kaAt_pt (H : CmpJHyp c I) (j : ℕ) (hj : j + 1 ≤ D.R.m) (β : (I.at' j hj).st.Ch) (a0 : (I.at' j hj).st.cmpt β)
     (L : (Fl.Pj (j + 1)).Tup) (g : ∀ v, GL (Fin ((Fl.Pj (j + 1)).m + 1)) ((Fl.Pj (j + 1)).Qq v))
     (hL : ∀ v, L v = colSpan ((Fl.Pj (j + 1)).W v) (g v : Matrix (Fin ((Fl.Pj (j + 1)).m + 1)) (Fin ((Fl.Pj (j + 1)).m + 1))
@@ -156,6 +194,9 @@ theorem kaAt_pt (H : CmpJHyp c I) (j : ℕ) (hj : j + 1 ≤ D.R.m) (β : (I.at' 
   obtain ⟨κ, e⟩ := hs.pt (H.core j hj) hc g hL x hx
   exact ⟨hc, κ, hs.mem, e⟩
 
+/- English proof (translation)
+The claim follows from `(cg_spec (S := (I.at' j hj).st) (H.core j hj) ((I.at' j hj).st.eC ⟨β, a0⟩) L hL).smul (H.core j hj) γ`.
+-/
 theorem isCG_smul_at (H : CmpJHyp c I) (j : ℕ) (hj : j + 1 ≤ D.R.m) (β : (I.at' j hj).st.Ch) (a0 : (I.at' j hj).st.cmpt β)
     (L : (Fl.Pj (j + 1)).Tup) (hL : (Fl.Pj (j + 1)).IsLatTup L) (γ : (Lv.lev (j + 1) ((I.at' j hj).st.eC ⟨β, a0⟩)).Γ) :
     IsCG (I.at' j hj).st ((I.at' j hj).st.eC ⟨β, a0⟩) ((Lv.lev (j + 1) ((I.at' j hj).st.eC ⟨β, a0⟩)).smul γ L)
@@ -167,6 +208,9 @@ section OnTw
 
 variable {st : ∀ j (hj : j + 1 ≤ D.R.m), StepIn (Tw.fm u μ) (j + 1) hj (gatJ Lv (j + 1))}
 
+/- English proof (translation)
+Establish `e : (labAt X H).cls (j + 1) a L = clsOf (S` using `(st j hj)) (H.core j hj) a L := clsAt_succ X H j hj a L`. Rewrite using `[e]`. Conclude with `clsOf_chart (S := (st j hj)) (H.core j hj) a L hL`.
+-/
 theorem labAt_chOf (X : LabIn (inTw st)) (H : CmpJHyp c (inTw st)) (j : ℕ) (hj : j + 1 ≤ D.R.m) (a : Lv.comp (j + 1))
     (L : (Fl.Pj (j + 1)).Tup) (hL : (Fl.Pj (j + 1)).IsLatTup L) :
     (st j hj).chOf ((labAt X H).cls (j + 1) a L) = ((st j hj).eC.symm a).1 := by
@@ -174,6 +218,9 @@ theorem labAt_chOf (X : LabIn (inTw st)) (H : CmpJHyp c (inTw st)) (j : ℕ) (hj
   rw [e]
   exact clsOf_chart (S := (st j hj)) (H.core j hj) a L hL
 
+/- English proof (translation)
+Introduce `j hj β a L g hL c₀ γ₀ κ₀ hγ₀ hpt`. Establish `e : (labAt X H).cls (j + 1) ((st j hj).eC ⟨β, a⟩) L = clsOf (S` using `(st j hj)) (H.core j hj) ((st j hj).eC ⟨β, a⟩) L := clsAt_succ X H j hj _ L`. Rewrite using `[e]`. Conclude with `clsOf_eq (S := (st j hj)) (H.core j hj) ⟨β, a, c₀.2, g, κ₀, rfl, hL, hγ₀, hpt⟩`.
+-/
 theorem clsPt_labAt (X : LabIn (inTw st)) (H : CmpJHyp c (inTw st)) : ClsPt (labAt X H) st := by
   intro j hj β a L g hL c₀ γ₀ κ₀ hγ₀ hpt
   have e : (labAt X H).cls (j + 1) ((st j hj).eC ⟨β, a⟩) L = clsOf (S := (st j hj)) (H.core j hj) ((st j hj).eC ⟨β, a⟩) L :=
@@ -194,6 +241,9 @@ structure ChTie (st : ∀ j (hj : j + 1 ≤ D.R.m), StepIn (Tw.fm u μ) (j + 1) 
 
 variable {T}
 
+/- English proof (translation)
+Introduce `j hj a L hL`. Consider the cases of `j with`. Consider the case `zero => exact h0 a L hL`. Consider the case `succ j => rw [E.chOf j hj, labAt_chOf X H j hj a L hL, hch j hj]`.
+-/
 theorem clsCharted_labAt (X : LabIn (inTw st)) (H : CmpJHyp c (inTw st)) (E : ChTie T st) (ch : ∀ j, Lv.comp j → T.Ch u μ j)
     (h0 : ∀ (a : Lv.comp 0) (L : (Fl.Pj 0).Tup), (Fl.Pj 0).IsLatTup L → T.chOf u μ 0 (X.c0.cls a L) = ch 0 a)
     (hch : ∀ j hj a, ch (j + 1) a = E.eCh j hj ((st j hj).eC.symm a).1) : ClsCharted T (labAt X H) ch := by
@@ -202,6 +252,9 @@ theorem clsCharted_labAt (X : LabIn (inTw st)) (H : CmpJHyp c (inTw st)) (E : Ch
   | zero => exact h0 a L hL
   | succ j => rw [E.chOf j hj, labAt_chOf X H j hj a L hL, hch j hj]
 
+/- English proof (translation)
+Use `((labAt X H).cls_iff (D.R.m - 1) (Nat.sub_le _ _) a a' L L' hL hL').1 he` as an intermediate fact. Rewrite using `[this.1]`.
+-/
 theorem ybOf_eq_labAt (X : LabIn (inTw st)) (H : CmpJHyp c (inTw st)) (ch : ∀ j, Lv.comp j → T.Ch u μ j)
     (h1 : 1 ≤ D.R.m - 1) (a a' : Lv.comp (D.R.m - 1)) (L L' : (Fl.Pj (D.R.m - 1)).Tup)
     (hL : (Fl.Pj (D.R.m - 1)).IsLatTup L) (hL' : (Fl.Pj (D.R.m - 1)).IsLatTup L')

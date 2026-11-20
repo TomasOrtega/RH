@@ -7,5 +7,8 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.S
 open ReciprocityTheory.ChartRestriction.G.Out (nonzeroLocus)
 open GlobalTheory GlobalTheory.CxPts GlobalTheory.VB
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.chernInt_curve_eq_finsum_secOrd | exact GlobalTheory.chernInt_curve_eq_finsum_secOrd | (intros; apply GlobalTheory.chernInt_curve_eq_finsum_secOrd <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.chern_integral_eq_order_sum : ∀ (k : Type) [CommRing k] (X : Scheme.{0}) (p : X ⟶ Sp k) [IsIntegral X], IsArithVar p 1 → ∀ σ : k →+* ℂ, Nonempty (AnRead p σ 1) → ∀ (L : LB X) (φ : Weight p σ L), φ.IsCInf → ∀ s : L.Sec, genericPoint X ∈ nonzeroLocus s → φ.chernInt 1 Set.univ (fun _ => 1) = ∑ᶠ y : CxPts p σ, (secOrd φ.isLB s y.pt : ℝ) := by
   first | exact @GlobalTheory.chernInt_curve_eq_finsum_secOrd | exact GlobalTheory.chernInt_curve_eq_finsum_secOrd | (intros; apply GlobalTheory.chernInt_curve_eq_finsum_secOrd <;> assumption)

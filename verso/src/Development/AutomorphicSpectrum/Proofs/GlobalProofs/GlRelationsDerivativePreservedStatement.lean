@@ -2,6 +2,9 @@ import Mathlib
 import Development.AutomorphicSpectrum.Proofs.GlobalProofs.GlRelationsDerivativePreserved
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.DiscreteSpectrumOfResidual
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.CompanionTheory.Dblock.CentreManyBlocks.monic_relations_along_block | exact GlobalTheory.CompanionTheory.Dblock.CentreManyBlocks.monic_relations_along_block | (intros; apply GlobalTheory.CompanionTheory.Dblock.CentreManyBlocks.monic_relations_along_blo …`.
+-/
 theorem _root_.GlobalTheory.T.gl_relations_triangular_annihilation : ∀ (W Q : Type) [AddCommGroup W] [Module ℂ W] [AddCommGroup Q] [Module ℂ Q] (c N : ℕ) (n : Fin c → ℕ) (h : ∑ i, n i = N)
     (Xf : Fin N → Fin N → Module.End ℂ W), Formalism.REAL.GlRel Xf → ∀ Wn : Submodule ℂ W, (∀ p q, ∀ F ∈ Wn, Xf p q F ∈ Wn) →
     ∀ L : W →ₗ[ℂ] Q, (∀ p q, GlobalTheory.SmGL.blk (GlobalTheory.SmGL.stdBlocks n h) p < GlobalTheory.SmGL.blk (GlobalTheory.SmGL.stdBlocks n h) q → ∀ F ∈ Wn, L (Xf p q F) = 0) →

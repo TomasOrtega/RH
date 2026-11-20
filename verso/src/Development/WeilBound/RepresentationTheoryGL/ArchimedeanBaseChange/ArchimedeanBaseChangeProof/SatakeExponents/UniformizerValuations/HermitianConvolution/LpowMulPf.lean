@@ -17,6 +17,9 @@ namespace LpowMulPf
 
 open PositivityTheory.Rg.BcB.F.FinConv (cv cv_hecke)
 
+/- English proof (translation)
+Use `⟨(h * z.out)⁻¹ * (h • z).out, ?_, (mul_inv_cancel_left _ _).symm⟩` and prove the remaining obligations. Rewrite using `[← QuotientGroup.eq, QuotientGroup.out_eq']`. Use `conv_rhs => rw [← QuotientGroup.out_eq' z]`. Both sides reduce to the same expression.
+-/
 theorem out_smul {H : Type} [Group H] (L : Subgroup H) (h : H) (z : H ⧸ L) :
     ∃ c ∈ L, (h • z : H ⧸ L).out = h * z.out * c := by
   refine ⟨(h * z.out)⁻¹ * (h • z).out, ?_, (mul_inv_cancel_left _ _).symm⟩
@@ -32,6 +35,9 @@ def one : H → ℂ := (K' : Set H).indicator fun _ => ((K'.relIndex K : ℕ) : 
 
 variable {K K'}
 
+/- English proof (translation)
+Unfold `cv`. Use `GlobalTheory.CompanionTheory.HintLevel.hint_eq_level _ K K' _ hKK (fun k hk x => ?_) hN` and prove the remaining obligations. Use `show f₁ (x * k) * f₂ ((x * k)⁻¹ * y) = f₁ x * f₂ (x⁻¹ * y)`. Rewrite using `[h₁ x k hk, mul_inv_rev, mul_assoc, h₂ _ (K'.inv_mem hk)]`.
+-/
 theorem conv_eq (hKK : K' ≤ K) (hN : K'.relIndex K ≠ 0) (f₁ f₂ : H → ℂ) (h₁ : ∀ x, ∀ k ∈ K', f₁ (x * k) = f₁ x)
     (h₂ : ∀ k ∈ K', ∀ x, f₂ (k * x) = f₂ x) (y : H) :
     cv K f₁ f₂ y = ((K'.relIndex K : ℕ) : ℂ)⁻¹ * ∑ᶠ q : H ⧸ K', f₁ q.out * f₂ (q.out⁻¹ * y) := by
@@ -40,6 +46,11 @@ theorem conv_eq (hKK : K' ≤ K) (hN : K'.relIndex K ≠ 0) (f₁ f₂ : H → �
   show f₁ (x * k) * f₂ ((x * k)⁻¹ * y) = f₁ x * f₂ (x⁻¹ * y)
   rw [h₁ x k hk, mul_inv_rev, mul_assoc, h₂ _ (K'.inv_mem hk)]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `y`. Establish `hr : ∀ x, ∀ k ∈ K', one K K' (x * k) = one K K' x`. Introduce `x k hk`. Simplify using `only [one, Set.indicator_apply, SetLike.mem_coe, K'.mul_mem_cancel_right hk]`. Rewrite using `[conv_eq hKK hN _ _ hr h, finsum_eq_single _ (((1 : H)) : H ⧸ K')]`.
+
+Establish `h1 : (((1 : H)) : H ⧸ K').out ∈ K'` using `(PositivityTheory.Rg.BcB.F.Hint.out_mem K' _).2 rfl`. Rewrite using `[one, Set.indicator_of_mem (show _ ∈ (K' : Set H) from h1), h _ (K'.inv_mem h1), ← mul_assoc, inv_mul_cancel₀ (Nat.cast_ne_zero.2 hN), one_mul]`. Introduce `q hq`. Establish `: q.out ∉ (K' : Set H)` using `fun hm => hq ((PositivityTheory.Rg.BcB.F.Hint.out_mem K' q).1 hm)`. Rewrite using `[one, Set.indicator_of_notMem this, zero_mul]`.
+-/
 theorem one_left (hKK : K' ≤ K) (hN : K'.relIndex K ≠ 0) (f : H → ℂ) (h : ∀ k ∈ K', ∀ x, f (k * x) = f x) :
     cv K (one K K') f = f := by
   funext y
@@ -54,6 +65,31 @@ theorem one_left (hKK : K' ≤ K) (hN : K'.relIndex K ≠ 0) (f : H → ℂ) (h 
     have : q.out ∉ (K' : Set H) := fun hm => hq ((PositivityTheory.Rg.BcB.F.Hint.out_mem K' q).1 hm)
     rw [one, Set.indicator_of_notMem this, zero_mul]
 
+/- English proof (translation)
+Establish `h12 : IsHecke K' (cv K f₁ f₂)`. Use `cv_hecke K K' K' f₁ f₂ h₁ h₂` as an intermediate fact. Rewrite `this` using `[inf_idem]`. Then use the resulting hypothesis. Establish `h23 : IsHecke K' (cv K f₂ f₃)`. Use `cv_hecke K K' K' f₂ f₃ h₂ h₃` as an intermediate fact.
+
+Rewrite `this` using `[inf_idem]`. Then use the resulting hypothesis. Use function extensionality and compare the values at `y`. Establish `hc : HasCompactSupport (fun x : H => f₃ (x⁻¹ * y))` using `h₃.1.comp_homeomorph ((Homeomorph.inv H).trans (Homeomorph.mulRight y))`. Use `set S := (PositivityTheory.Rg.BcB.F.Hint.fin_supp K' hO f₁ h₁.1).toFinset with hS`. Use `set T := (PositivityTheory.Rg.BcB.F.Hint.fin_supp K' hO _ hc).toFinset with hT`.
+
+Establish `hSz : ∀ q : H ⧸ K', q ∉ S → f₁ q.out = 0`. Introduce `q hq`. Assume the negation of the conclusion as `h`. Conclude with `hq (by simpa [hS] using h)`. Establish `hTz : ∀ r : H ⧸ K', r ∉ T → f₃ (r.out⁻¹ * y) = 0`.
+
+Introduce `r hr`. Assume the negation of the conclusion as `h`. Conclude with `hr (by simpa [hT] using h)`. Use `set N : ℂ := ((K'.relIndex K : ℕ) : ℂ)`. Establish `L : cv K (cv K f₁ f₂) f₃ y = N⁻¹ * ∑ r ∈ T, (N⁻¹ * ∑ q ∈ S, f₁ q.out * f₂ (q.out⁻¹ * r.out)) * f₃ (r.out⁻¹ * y)`.
+
+Rewrite using `[conv_eq hKK hN _ _ (fun x k hk => (h12.2 k hk x).2) (fun k hk x => (h₃.2 k hk x).1)]`. Use `congr 1`. Rewrite using `[finsum_eq_sum_of_support_subset (s := T)]`. Use `Finset.sum_congr rfl fun r _ => ?_` and prove the remaining obligations. Rewrite using `[conv_eq hKK hN _ _ (fun x k hk => (h₁.2 k hk x).2) (fun k hk x => (h₂.2 k hk x).1)]`.
+
+Use `congr 2`. Rewrite using `[finsum_eq_sum_of_support_subset (s := S)]`. Introduce `q hq`. Assume the negation of the conclusion as `h`. Conclude with `hq (by simp [hSz q h])`.
+
+Introduce `r hr`. Assume the negation of the conclusion as `h`. Conclude with `hr (by simp [hTz r h])`. Establish `R : cv K f₁ (cv K f₂ f₃) y = N⁻¹ * ∑ q ∈ S, f₁ q.out * (N⁻¹ * ∑ r ∈ T, f₂ (q.out⁻¹ * r.out) * f₃ (r.out⁻¹ * y))`. Rewrite using `[conv_eq hKK hN _ _ (fun x k hk => (h₁.2 k hk x).2) (fun k hk x => (h23.2 k hk x).1)]`.
+
+Use `congr 1`. Rewrite using `[finsum_eq_sum_of_support_subset (s := S)]`. Use `Finset.sum_congr rfl fun q _ => ?_` and prove the remaining obligations. Rewrite using `[conv_eq hKK hN _ _ (fun x k hk => (h₂.2 k hk x).2) (fun k hk x => (h₃.2 k hk x).1)]`. Use `congr 2`.
+
+Rewrite using `[finsum_eq_of_bijective (fun z : H ⧸ K' => q.out • z) (MulAction.bijective q.out) (g := fun r : H ⧸ K' => f₂ (q.out⁻¹ * r.out) * f₃ (r.out⁻¹ * y))]`. Rewrite using `[finsum_eq_sum_of_support_subset (s := T)]`. Introduce `r hr`. Assume the negation of the conclusion as `h`. Conclude with `hr (by simp [hTz r h])`.
+
+Introduce `z`. Take `⟨c, hc, e⟩` from `out_smul K' q.out z`. Use `show _ = f₂ (q.out⁻¹ * (q.out • z).out) * f₃ ((q.out • z).out⁻¹ * y)`. Rewrite using `[e, show q.out⁻¹ * (q.out * z.out * c) = z.out * c by group, (h₂.2 c hc _).2, show (q.out * z.out * c)⁻¹ * y = c⁻¹ * (z.out⁻¹ * (q.out⁻¹ * y)) by group, (h₃.2 _ (K'.inv_mem hc) _).1]`. Introduce `q hq`.
+
+Assume the negation of the conclusion as `h`. Conclude with `hq (by simp [hSz q h])`. Rewrite using `[L, R]`. Repeatedly rewrite using `[Finset.mul_sum, Finset.sum_mul, Finset.mul_sum]`. Rewrite using `[Finset.sum_comm]`.
+
+Use `Finset.sum_congr rfl fun _ _ => Finset.sum_congr rfl fun _ _ => by ring` and prove the remaining obligations.
+-/
 theorem conv_assoc (hKK : K' ≤ K) (hN : K'.relIndex K ≠ 0) (hO : IsOpen (K' : Set H)) (f₁ f₂ f₃ : H → ℂ)
     (h₁ : IsHecke K' f₁) (h₂ : IsHecke K' f₂) (h₃ : IsHecke K' f₃) :
     cv K (cv K f₁ f₂) f₃ = cv K f₁ (cv K f₂ f₃) := by
@@ -123,6 +159,23 @@ end Gen
 
 end LpowMulPf
 
+/- English proof (translation)
+Introduce `E _ _ _ n w K' g hO hKK hg m k`. Establish `hK : IsCompact (KL n w : Set (UL n w))`. Rewrite using `[KL, Subgroup.coe_subgroupOf]`. Conclude with `(GlobalTheory.CompanionTheory.LevelU.isClosed_UL n w).isClosedEmbedding_subtypeVal.isCompact_preimage (GlobalTheory.LFun.SatCompare.isOpen_isCompact_KGL w n).2`. Establish `hN : K'.relIndex (KL n w) ≠ 0` using `PositivityTheory.Rg.BcB.F.Hint.relIndex_ne_zero hO hK`.
+
+Establish `hC : IsClosed (K' : Set (UL n w))` using `K'.isClosed_of_isOpen hO`. Establish `hK'c : IsCompact (K' : Set (UL n w))` using `hK.of_isClosed_subset hC hKK`. Establish `hone : IsHecke K' (U.lone K')`. Use `⟨HasCompactSupport.intro' hK'c hC fun x hx => Set.indicator_of_notMem hx _, fun k hk x => ⟨?_, ?_⟩⟩` and prove the remaining obligations. Simplify using `only [U.lone, Set.indicator_apply, SetLike.mem_coe, K'.mul_mem_cancel_left hk]`.
+
+Simplify using `only [U.lone, Set.indicator_apply, SetLike.mem_coe, K'.mul_mem_cancel_right hk]`. Establish `hconv : ∀ f₁ f₂, IsHecke K' f₁ → IsHecke K' f₂ → IsHecke K' (lconv f₁ f₂)`. Introduce `f₁ f₂ h₁ h₂`. Use `PositivityTheory.Rg.BcB.F.FinConv.cv_hecke (KL n w) K' K' f₁ f₂ h₁ h₂` as an intermediate fact. Rewrite `this` using `[inf_idem]`. Then use the resulting hypothesis.
+
+Establish `hpow : ∀ j, IsHecke K' (U.lpow K' g j)`. Introduce `j`. Proceed by induction on `j with`. Consider the case `zero => exact hone`. Consider the case `succ j ih => exact hconv _ _ hg ih`.
+
+Establish `hadd : ∀ a b, U.lpow K' g (a + b) = lconv (U.lpow K' g a) (U.lpow K' g b)`. Introduce `a b`. Proceed by induction on `a with`. Consider the case `zero`. Rewrite using `[zero_add]`.
+
+Conclude with `(LpowMulPf.one_left hKK hN _ fun k hk x => ((hpow b).2 k hk x).1).symm`. Consider the case `succ a ih`. Rewrite using `[Nat.add_right_comm]`. Use `show lconv g (U.lpow K' g (a + b)) = lconv (lconv g (U.lpow K' g a)) (U.lpow K' g b)`. Rewrite using `[ih]`.
+
+Conclude with `(LpowMulPf.conv_assoc hKK hN hO g _ _ hg (hpow a) (hpow b)).symm`. Proceed by induction on `k with`. Consider the case `zero => show U.lone K' = U.lpow K' g (m * 0)`. Rewrite using `[Nat.mul_zero]`. Both sides reduce to the same expression.
+
+Consider the case `succ k ih => show lconv (U.lpow K' g m) (U.lpow K' (U.lpow K' g m) k) = _`. Rewrite using `[ih, Nat.mul_succ, Nat.add_comm, hadd]`.
+-/
 theorem lpowMul : LpowMul := by
   intro E _ _ _ n w K' g hO hKK hg m k
   have hK : IsCompact (KL n w : Set (UL n w)) := by

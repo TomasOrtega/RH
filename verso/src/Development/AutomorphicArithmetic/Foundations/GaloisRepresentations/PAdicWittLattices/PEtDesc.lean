@@ -5,6 +5,13 @@ open UpperTheory.Gal.Int.Geo (Lv IsTrans Integ KS Mem FEt KSEx KSNice)
 open scoped TensorProduct
 universe u
 
+/- English proof (translation)
+Introduce `hE W Z Y B _ c _ _ _ pZ pY _ f hf hpts`. Use `haveI : Flat c := inferInstance`. Use `haveI : EffectiveEpi c := inferInstance`. Use `haveI : IsReduced (pullback c c) := GlobalTheory.isReduced_of_smooth_of_isReduced (pullback.fst c c)`. Establish `key : pullback.fst c c ≫ f = pullback.snd c c ≫ f`.
+
+Use `hE pY _ _ ?_ ?_` and prove the remaining obligations. Rewrite using `[Category.assoc, Category.assoc, hf, ← Category.assoc, ← Category.assoc, pullback.condition]`. Introduce `Ω _ _ x`. Apply the tactic sequence `refine hpts Ω (x ≫ pullback.fst c c) (x ≫ pullback.snd c c) ?_ |>.trans ?_ <;> simp [pullback.condition]`. Use `⟨inferInstance, EffectiveEpi.desc c f (fun {T} g₁ g₂ h => ?_), EffectiveEpi.fac _ _ _⟩` and prove the remaining obligations.
+
+Establish `e₁ : pullback.lift g₁ g₂ h ≫ pullback.fst c c = g₁` using `pullback.lift_fst _ _ _`. Establish `e₂ : pullback.lift g₁ g₂ h ≫ pullback.snd c c = g₂` using `pullback.lift_snd _ _ _`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem UpperTheory.Gal.G3.pEtDesc :
     ExtPts → EtDesc := by
   intro hE W Z Y B _ c _ _ _ pZ pY _ f hf hpts

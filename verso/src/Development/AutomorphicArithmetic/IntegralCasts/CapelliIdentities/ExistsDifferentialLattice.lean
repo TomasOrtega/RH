@@ -4,6 +4,11 @@ import Formalism.LocalToGlobal.SiegelLatticeTheory.HaarTransversals.HidaSetting
 import Formalism.SharpRestriction.CuspSpanNormBounds.GlobAut
 
 open NumberField in
+/- English proof (translation)
+Take `⟨⟨t, m, hm, rfl⟩, ht⟩` from `multiple_mem_span_of_mem_localization_span (Algebra.algebraMapSubmonoid (𝓞 E) (nonZeroDivisors ℤ)) E (L : Set V) x (h ▸ Submodule.mem_top)`. Establish `hm0 : m ≠ 0` using `nonZeroDivisors.ne_zero hm`. Establish `h1 : m • x ∈ L` using `by simpa [Submonoid.smul_def, Int.cast_smul_eq_zsmul] using ht`. Use `⟨(m * m).toNat, by have := mul_self_pos.mpr hm0; omega, ?_⟩` and prove the remaining obligations. Rewrite using `[Nat.cast_smul_eq_nsmul, ← natCast_zsmul, Int.toNat_of_nonneg (mul_self_nonneg m), mul_smul]`.
+
+Conclude with `L.smul_of_tower_mem m h1`.
+-/
 private theorem UpperTheory.Reformulated.B.ExistsNatMultipleBasisVectorMemLattice.aux {E V : Type} [Field E] [NumberField E] [AddCommGroup V] [Module E V]
     [Module (𝓞 E) V] [IsScalarTower (𝓞 E) E V] (L : Submodule (𝓞 E) V)
     (h : Submodule.span E (L : Set V) = ⊤) (x : V) : ∃ d : ℕ, 0 < d ∧ (d : E) • x ∈ L := by
@@ -15,6 +20,11 @@ private theorem UpperTheory.Reformulated.B.ExistsNatMultipleBasisVectorMemLattic
   rw [Nat.cast_smul_eq_nsmul, ← natCast_zsmul, Int.toNat_of_nonneg (mul_self_nonneg m), mul_smul]
   exact L.smul_of_tower_mem m h1
 
+/- English proof (translation)
+Introduce `D X`. Use `choose d hd hL using fun i : Fin X.B.I.n => UpperTheory.Reformulated.B.ExistsNatMultipleBasisVectorMemLattice.aux X.B.I.L X.B.I.L_span (Pi.single i (1 : X.B.I.E))`. Use `⟨∏ i, d i, Finset.prod_pos fun i _ => hd i, fun i => ?_⟩` and prove the remaining obligations. Take `⟨c, hc⟩` from `Finset.dvd_prod_of_mem d (Finset.mem_univ i)`. Rewrite using `[hc, mul_comm, Nat.cast_mul, mul_smul, Nat.cast_smul_eq_nsmul]`.
+
+Conclude with `X.B.I.L.smul_of_tower_mem c (hL i)`.
+-/
 theorem UpperTheory.Reformulated.B.ExistsNatMultipleBasisVectorMemLattice.exists_dL :
     ∀ {D : Formalism.BasicNotions.D7} (X : Formalism.L2.SG.HidaSetting.HidaSetting D),
     ∃ (dL : ℕ),

@@ -18,6 +18,13 @@ open Classical
 
 namespace GlobalTheory.AdjRedOff
 
+/- English proof (translation)
+Take `⟨⟨es, hes, rfl⟩, -⟩` from `he`. Use `choose hi _ using fun Q : P => GlobalTheory.IdemRes.resS_idem_eq_one D (es Q) Q (hes Q Q.2)`. Set `t : P → Formalism.L2.Herm.intAf D.host.F D.host.E` to `fun Q => ⟨toEAf D (es Q), hi Q⟩`. Establish `e1 : (⟨toEAf D (∑ Q ∈ P, es Q), hI⟩ : Formalism.L2.Herm.intAf D.host.F D.host.E) = ∑ Q, t Q`. Apply `Subtype.ext` to reduce the goal to its premises.
+
+Express the relevant statement in the definitionally equal form `toEAf D (∑ Q ∈ P, es Q) = _`. Rewrite using `[← Finset.sum_coe_sort P]`. Use `(GlobalTheory.TameProd.map_sum_ringHom (toEAf D) _ _).trans ?_` and prove the remaining obligations. Conclude with `(map_sum (Formalism.L2.Herm.intAf D.host.F D.host.E).subtype t Finset.univ).symm`. Rewrite using `[e1, map_sum]`.
+
+Use `Finset.sum_eq_zero fun Q _ => ?_` and prove the remaining obligations. Conclude with `GlobalTheory.TameProd.resS_idem_eq_zero (hes Q Q.2) (fun h => hPP (by rw [← h]; exact Q.2)) _`.
+-/
 theorem resS_idemSum_eq_zero {D : D7} {e : AE D} {P : Finset (Pl D.host.E)} (he : IsIdemSum e P)
     (hI : toEAf D e ∈ Formalism.L2.Herm.intAf D.host.F D.host.E) {PP : Pl D.host.E} (hPP : PP ∉ P) :
     Formalism.L2.DIV.resS D.host.F PP ⟨toEAf D e, hI⟩ = 0 := by
@@ -36,6 +43,11 @@ theorem resS_idemSum_eq_zero {D : D7} {e : AE D} {P : Finset (Pl D.host.E)} (he 
 
 end GlobalTheory.AdjRedOff
 
+/- English proof (translation)
+Introduce `D G _ _ Pl0 T A Ks _ _ _ R F _ i t σ s P cμ cη m ω BW f₀ f c io _ e he x hx hint PP hPP`. Take `⟨hI, -⟩` from `GlobalTheory.TameProd.resS_idemSum he`. Use extensionality with `a b`. Establish `hm` using `hint a b`. Simplify using `only [redM, dif_pos hm, Matrix.zero_apply]`.
+
+Establish `e1 : (⟨frMapAdj (Vc D i) (Wc D i) (R.βV i) (R.βW i) x a b, hm⟩ : Formalism.L2.Herm.intAf D.host.F D.host.E) = ⟨toEAf D e, hI⟩ * ⟨frMapAdj (Vc D i) (Wc D i) (R.βV i) (R.βW i) x a b, hm⟩` using `Subtype.ext (GlobalTheory.AdjVecLocal.frMapAdj_half _ _ _ _ hx a b).symm`. Rewrite using `[e1, map_mul, GlobalTheory.AdjRedOff.resS_idemSum_eq_zero he hI hPP, zero_mul]`.
+-/
 theorem GlobalTheory.AdjRedOff.redM_frMapAdj_off : ∀ {D : D7} {G : Type} [Group G] [Fintype G] {Pl0 T : Type} {A : FamIn D.what₂.LL G Pl0 T D.R.m} {Ks : Type} [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] (R : RealDat D A Ks) (F : Face D A), GlobalTheory.IndefiniteRowSideFullHecke.RestrictedTensorSplitting.PlaceModels D → ∀ i t σ s P cμ cη m ω BW f₀ f c io, GlobalTheory.LiftRows.IsLiftDataC R F i t σ s P cμ cη m ω BW f₀ f c io → ∀ e : AE D, IsIdemSum e (R.Pg ∪ R.Q t) → ∀ x : WO (Vc D i) (Wc D i), IsHalf (cA D e) x → IsIntM (frMapAdj (Vc D i) (Wc D i) (R.βV i) (R.βW i) x) →
   ∀ PP : Pl D.host.E, PP ∉ R.Pg ∪ R.Q t → redM PP (frMapAdj (Vc D i) (Wc D i) (R.βV i) (R.βW i) x) = 0 := by
   intro D G _ _ Pl0 T A Ks _ _ _ R F _ i t σ s P cμ cη m ω BW f₀ f c io _ e he x hx hint PP hPP

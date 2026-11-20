@@ -8,6 +8,43 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 namespace GlobalTheory.TwV.DelA
 
+/- English proof (translation)
+Unfold `GlobalTheory.TwV.AllSites`. Introduce `D _ hT _ _ _ _ _ ex u μ w hg Lv I H X _ std t J S d j hj h La e φ P hφ V`. Establish `hp` using `J.pins.frm j hj`. Establish `hde` using `(t.O u μ).frm_de j hj`. Establish `hdetU : ∀ (A : GL (Fin (D.R.N j)) D.host.E) τ, IsUnit ((A : Matrix (Fin (D.R.N j)) (Fin (D.R.N j)) D.host.E).map (embT D τ)).det`.
+
+Introduce `A τ`. Establish `e1` using `RingHom.map_det (embT D τ) (A : Matrix (Fin (D.R.N j)) (Fin (D.R.N j)) D.host.E)`. Rewrite `e1` using `[RingHom.mapMatrix_apply]`. Rewrite using `[← e1]`. Conclude with `(Matrix.isUnits_det_units A).map _`.
+
+Establish `hmul : ∀ (A A' : GL (Fin (D.R.N j)) D.host.E) τ, ((A * A' : GL (Fin (D.R.N j)) D.host.E) : Matrix (Fin (D.R.N j)) (Fin (D.R.N j)) D.host.E).map (embT D τ) = (A : Matrix (Fin (D.R.N j)) (Fin (D.R.N j)) D.host.E).map (embT D τ) * (A' : Matrix (Fin (D.R.N j)) (Fin (D.R.N j)) D.host. …`. Introduce `A A' τ`. Rewrite using `[Units.val_mul, Matrix.map_mul]`. Establish `hinv : ∀ (A : GL (Fin (D.R.N j)) D.host.E) τ, ((A⁻¹ : GL (Fin (D.R.N j)) D.host.E) : Matrix (Fin (D.R.N j)) (Fin (D.R.N j)) D.host.E).map (embT D τ) * (A : Matrix (Fin (D.R.N j)) (Fin (D.R.N j)) D.host.E).map (embT D τ) = 1`. Introduce `A τ`.
+
+Rewrite using `[← hmul, inv_mul_cancel, Units.val_one, Matrix.map_one _ (map_zero _) (map_one _)]`. Establish `hinv' : ∀ (A : GL (Fin (D.R.N j)) D.host.E) τ, (A : Matrix (Fin (D.R.N j)) (Fin (D.R.N j)) D.host.E).map (embT D τ) * ((A⁻¹ : GL (Fin (D.R.N j)) D.host.E) : Matrix (Fin (D.R.N j)) (Fin (D.R.N j)) D.host.E).map (embT D τ) = 1`. Introduce `A τ`. Rewrite using `[← hmul, mul_inv_cancel, Units.val_one, Matrix.map_one _ (map_zero _) (map_one _)]`. Establish `hMB : mM d j hj La * (bAt J j hj La.1)⁻¹ = J.A.crd j hj * (d.gam j hj La)⁻¹`.
+
+Unfold `mM`. Conclude with `mul_inv_cancel_right _ _`. Establish `hat : ∀ τ, (atR D (mM d j hj La * (bAt J j hj La.1)⁻¹) τ : Matrix (Fin (D.R.N j)) (Fin (D.R.N j)) ℂ) = (J.A.crd j hj : Matrix (Fin (D.R.N j)) (Fin (D.R.N j)) D.host.E).map (embT D τ) * ((d.gam j hj La)⁻¹ : GL (Fin (D.R.N j)) D.host.E).1.map (embT D τ)`. Introduce `τ`. Rewrite using `[hMB, ← hmul]`.
+
+Both sides reduce to the same expression. Establish `alg : ∀ (z' : Fr D j hj) (f : Fr1 D (D.R.N j)), (∀ τ, f.1 τ = (J.A.crd j hj : Matrix (Fin (D.R.N j)) (Fin (D.R.N j)) D.host.E).map (embT D τ) * z'.1 τ) → d.chi j hj La * ((D.chiD ((t.O u μ).dt j (clsAt X H j La.1 La.2)) : ℂˣ) : ℂ) ^ cTw D j * dPow (bAt J j hj La.1).1 (fun _ => -( …`. Introduce `z' f hf`. Establish `hfr : (t.O u μ).frm j ((J.St j hj).eY.symm z') = f.1`. Use function extensionality and compare the values at `τ`.
+
+Rewrite using `[hp, Equiv.apply_symm_apply, hf]`. Both sides reduce to the same expression. Establish `hfp : frPoly (t.O u μ) j P ((J.St j hj).eY.symm z') = GL3Theta.evFr D P f.1`. Rewrite using `[← hfr]`. Both sides reduce to the same expression.
+
+Establish `hdef : ∀ τ, (D.chTw u μ).de j ((J.St j hj).eY.symm z') τ = (f.1 τ).det` using `fun τ => by rw [hde, hfr]`. Establish `hsm : GL3Theta.evFr D (sPt d j hj La • P) f.1 = sPt d j hj La * GL3Theta.evFr D P f.1`. Unfold `GL3Theta.evFr`. Rewrite using `[MvPolynomial.smul_eval]`. Rewrite using `[hφ, hfp, hsm]`.
+
+Simplify using `only [hdef]`. Establish `ha : ∀ τ, embT D τ (J.A.crd j hj : Matrix (Fin (D.R.N j)) (Fin (D.R.N j)) D.host.E).det ≠ 0` using `fun τ => ((Matrix.isUnits_det_units (J.A.crd j hj)).map (embT D τ)).ne_zero`. Establish `hw : ∀ τ, (z'.1 τ).det ≠ 0` using `fun τ => (z'.2 τ).ne_zero`. Establish `hdf : ∀ τ, (f.1 τ).det = embT D τ (J.A.crd j hj : Matrix (Fin (D.R.N j)) (Fin (D.R.N j)) D.host.E).det * (z'.1 τ).det`. Introduce `τ`.
+
+Rewrite using `[hf, Matrix.det_mul, RingHom.map_det, RingHom.mapMatrix_apply]`. Establish `huB : dPow (uB J j hj La.1).1 (fun _ => -(cTw D j)) = ∏ τ, (embT D τ (J.A.crd j hj : Matrix (Fin (D.R.N j)) (Fin (D.R.N j)) D.host.E).det * embT D τ (bAt J j hj La.1 : Matrix (Fin (D.R.N j)) (Fin (D.R.N j)) D.host.E).det) ^ (-(cTw D j))`. Unfold `dPow uB`. Use `Finset.prod_congr rfl fun τ _ => ?_` and prove the remaining obligations. Rewrite using `[Units.val_mul, Matrix.det_mul, map_mul]`.
+
+Establish `hprod : dPow (bAt J j hj La.1).1 (fun _ => -(cTw D j)) * detF (cTw D j) z' * (∏ τ, (f.1 τ).det ^ e τ)⁻¹ = (∏ τ, (f.1 τ).det ^ (-(e τ - cTw D j))) * dPow (uB J j hj La.1).1 (fun _ => -(cTw D j))`. Rewrite using `[huB]`. Unfold `dPow detF`. Rewrite using `[← Finset.prod_inv_distrib, ← Finset.prod_mul_distrib, ← Finset.prod_mul_distrib, ← Finset.prod_mul_distrib]`. Use `Finset.prod_congr rfl fun τ _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[hdf τ]`. Establish `h1` using `ha τ`. Establish `h2` using `hw τ`. Rewrite using `[mul_zpow, mul_zpow, mul_zpow, neg_sub, zpow_sub₀ h1, zpow_sub₀ h2, zpow_neg, zpow_neg]`. Clear the denominators using the available nonvanishing facts.
+
+Unfold `sPt`. Take the linear combination `(d.chi j hj La * ((D.chiD ((t.O u μ).dt j (clsAt X H j La.1 La.2)) : ℂˣ) : ℂ) ^ cTw D j * GL3Theta.evFr D P f.1) * hprod`. Unfold `RealAt Realises`. Prove the components needed by the constructor for the conclusion. Introduce `hR f`.
+
+Set `z' : Fr D j hj` to `⟨fun τ => ((J.A.crd j hj)⁻¹ : GL (Fin (D.R.N j)) D.host.E).1.map (embT D τ) * f.1 τ, fun τ => by rw [Matrix.det_mul]; exact (hdetU _ τ).mul (f.2 τ)⟩`. Set `z : Fr D j hj` to `⟨fun τ => (d.gam j hj La : Matrix (Fin (D.R.N j)) (Fin (D.R.N j)) D.host.E).map (embT D τ) * z'.1 τ, fun τ => by rw [Matrix.det_mul]; exact (hdetU _ τ).mul (z'.2 τ)⟩`. Establish `hzz : IsTr (atInf (embT D) (d.gam j hj La).1) z' z` using `fun τ => rfl`. Establish `hf' : ∀ τ, f.1 τ = (J.A.crd j hj : Matrix (Fin (D.R.N j)) (Fin (D.R.N j)) D.host.E).map (embT D τ) * z'.1 τ`. Introduce `τ`.
+
+Use `show _ = _ * (_ * _)`. Rewrite using `[← Matrix.mul_assoc, hinv', Matrix.one_mul]`. Establish `hfz : ∀ τ, f.1 τ = (atR D (mM d j hj La * (bAt J j hj La.1)⁻¹) τ : Matrix (Fin (D.R.N j)) (Fin (D.R.N j)) ℂ) * z.1 τ`. Introduce `τ`. Rewrite using `[hat]`.
+
+Use `show _ = _ * _ * (_ * _)`. Rewrite using `[Matrix.mul_assoc, ← Matrix.mul_assoc (((d.gam j hj La)⁻¹ : GL (Fin (D.R.N j)) D.host.E).1.map (embT D τ)), hinv, Matrix.one_mul, hf']`. Establish `key` using `(GlobalTheory.T.evalBasisCoords_against_blockAction (sysS H X std) D (hT.gat_pos u w hg) j h (gramC (gramN D j hj) (embT D)) (bAt J j hj La.1) (mM d j hj La) V z f hfz).1`. Rewrite using `[← key, hR z z' hzz, alg z' f hf']`. Introduce `hR z z' hzz`.
+
+Set `f : Fr1 D (D.R.N j)` to `⟨fun τ => (J.A.crd j hj : Matrix (Fin (D.R.N j)) (Fin (D.R.N j)) D.host.E).map (embT D τ) * z'.1 τ, fun τ => by rw [Matrix.det_mul]; exact (hdetU _ τ).mul (z'.2 τ)⟩`. Establish `hfz : ∀ τ, f.1 τ = (atR D (mM d j hj La * (bAt J j hj La.1)⁻¹) τ : Matrix (Fin (D.R.N j)) (Fin (D.R.N j)) ℂ) * z.1 τ`. Introduce `τ`. Rewrite using `[hat, hzz τ]`. Use `show _ = _ * _ * ((d.gam j hj La : Matrix (Fin (D.R.N j)) (Fin (D.R.N j)) D.host.E).map (embT D τ) * _)`.
+
+Rewrite using `[Matrix.mul_assoc, ← Matrix.mul_assoc (((d.gam j hj La)⁻¹ : GL (Fin (D.R.N j)) D.host.E).1.map (embT D τ)), hinv, Matrix.one_mul]`. Establish `key` using `(GlobalTheory.T.evalBasisCoords_against_blockAction (sysS H X std) D (hT.gat_pos u w hg) j h (gramC (gramN D j hj) (embT D)) (bAt J j hj La.1) (mM d j hj La) V z f hfz).1`. Rewrite using `[key, hR f, alg z' f (fun τ => rfl)]`.
+-/
 theorem realAt_iff_realises : AllSites (fun {D L hT Gi Gl Kc Dx cX ex u μ w hg Lv I H X} [Fact (D.what₂.places.resChar w).Prime] {std t J} S => ∀ (d : Dec J std) j (hj : j ≤ D.R.m) (h : ((sysS H X std).Pj j).m + 1 = D.R.N j) (La : (sysS H X std).Lt j) (e : D.what₂.Tau → ℤ) (φ : (D.chTw u μ).cls j → (D.chTw u μ).Y j → ℂ) (P : MvPolynomial (GL3Theta.FrV D (D.R.N j)) ℂ), (∀ y, φ (clsAt X H j La.1 La.2) y = (∏ τ, (D.chTw u μ).de j y τ ^ e τ)⁻¹ * frPoly (t.O u μ) j P y) → ∀ V, RealAt d j hj h La φ V ↔ Realises (sysS H X std) D (hT.gat_pos u w hg) j h (fun τ => e τ - cTw D j) (sPt d j hj La • P) (actC (sysS H X std) D (hT.gat_pos u w hg) j h (mM d j hj La) V)) := by
   unfold GlobalTheory.TwV.AllSites
   intro D _ hT _ _ _ _ _ ex u μ w hg Lv I H X _ std t J S d j hj h La e φ P hφ V

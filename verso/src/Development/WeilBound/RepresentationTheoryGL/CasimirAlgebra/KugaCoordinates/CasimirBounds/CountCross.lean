@@ -10,6 +10,13 @@ section
 variable {n : ℕ} {Q : Type} [Fintype Q] [DecidableEq Q] {C : Type} [DecidableEq C] {col : Q → C}
   {b : Q → Fin n} {S : Finset Q}
 
+/- English proof (translation)
+Take `⟨y, hyS, hyc, hyb⟩` from `hx`. Rewrite using `[Finset.sum_ite, Finset.sum_const_zero, add_zero, Finset.sum_const, Finset.filter_filter]`. Establish `e : (S.filter fun z => col z = c ∧ b z = b x) = {y}`. Use extensionality with `z`. Simplify using `only [Finset.mem_filter, Finset.mem_singleton]`.
+
+Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨_, hzc, hzb⟩`. Conclude with `hT.1 z y (hzc.trans hyc.symm) (hzb.trans hyb.symm)`. Introduce and unpack `rfl`. Conclude with `⟨hyS, hyc, hyb⟩`.
+
+Rewrite using `[e, Finset.card_singleton, one_smul]`.
+-/
 private theorem isWH_coeff_one_polynomial (hT : IsTab col b) (N : ℝ) (c : C) (x : Q)
     (hx : ∃ y ∈ S, col y = c ∧ b y = b x) :
     ∑ y ∈ S.filter (fun y => col y = c), (if b y = b x then N else 0) = N := by
@@ -25,6 +32,17 @@ private theorem isWH_coeff_one_polynomial (hT : IsTab col b) (N : ℝ) (c : C) (
       exact ⟨hyS, hyc, hyb⟩
   rw [e, Finset.card_singleton, one_smul]
 
+/- English proof (translation)
+Distinguish the cases in `h : ∀ p ∈ S, col p = c → ∃ q ∈ S, col q = d ∧ b q = b p`. Use `Finset.sum_le_sum fun p hp => ?_` and prove the remaining obligations. Rewrite `hp` using `[Finset.mem_filter]`. Rewrite using `[isWH_coeff_one_polynomial hT N d p (h p hp.1 hp.2)]`. Conclude with `hcross p hp.1 d (by rw [hp.2]; exact Ne.symm hcd)`.
+
+Use `push_neg at h`. Take `⟨p0, hp0S, hp0c, hp0⟩` from `h`. Establish `h' : ∀ q ∈ S, col q = d → ∃ p ∈ S, col p = c ∧ b p = b q`. Introduce `q hqS hqd`. Break down `lt_trichotomy (b p0) (b q) with hl | he | hg` into its components or cases.
+
+Take `⟨p, hpc, hpb⟩` from `hT.2 p0 (b q) hl`. Conclude with `⟨p, (hS p p0 hpc).2 hp0S, hpc.trans hp0c, hpb⟩`. Conclude with `absurd he.symm (hp0 q hqS hqd)`. Take `⟨q', hq'c, hq'b⟩` from `hT.2 q (b p0) hg`. Conclude with `absurd hq'b (hp0 q' ((hS q' q hq'c).2 hqS) (hq'c.trans hqd))`.
+
+Rewrite using `[Finset.sum_comm, Finset.sum_comm (s := S.filter (fun p => col p = c))]`. Use `Finset.sum_le_sum fun q hq => ?_` and prove the remaining obligations. Rewrite `hq` using `[Finset.mem_filter]`. Establish `e : ∑ p ∈ S.filter (fun p => col p = c), (if b q = b p then N else 0) = N` using `(Finset.sum_congr rfl fun p _ => if_congr eq_comm rfl rfl).trans (isWH_coeff_one_polynomial hT N c q (h' q hq.1 hq.2))`. Rewrite using `[e, Finset.sum_congr rfl fun p _ => hsymm p q]`.
+
+Conclude with `hcross q hq.1 c (by rw [hq.2]; exact hcd)`.
+-/
 private theorem sum_filter_col_le_sum_ite_of_bound (hT : IsTab col b) (hS : ∀ p q, col p = col q → (p ∈ S ↔ q ∈ S))
     (R : Q → Q → ℝ) (N : ℝ) (hsymm : ∀ p q, R p q = R q p)
     (hcross : ∀ p ∈ S, ∀ c, c ≠ col p → ∑ q ∈ S.filter (fun q => col q = c), R p q ≤ N)
@@ -56,6 +74,15 @@ private theorem sum_filter_col_le_sum_ite_of_bound (hT : IsTab col b) (hS : ∀ 
     rw [e, Finset.sum_congr rfl fun p _ => hsymm p q]
     exact hcross q hq.1 c (by rw [hq.2]; exact hcd)
 
+/- English proof (translation)
+Use `symm`. Combine the equalities or inequalities in the displayed calculation. Use `Finset.sum_congr rfl fun c _ => Finset.sum_congr rfl fun d _ => ?_` and prove the remaining obligations. Use `split_ifs with h`. Use `Finset.sum_congr rfl fun p hp => Finset.sum_congr rfl fun q hq => ?_` and prove the remaining obligations.
+
+Rewrite `hp`, `hq` using `[Finset.mem_filter]`. Rewrite using `[if_pos (by rw [hp.2, hq.2]; exact h)]`. Use `symm`. Use `Finset.sum_eq_zero fun p hp => Finset.sum_eq_zero fun q hq => ?_` and prove the remaining obligations. Rewrite `hp`, `hq` using `[Finset.mem_filter]`.
+
+Rewrite using `[if_neg (by rw [hp.2, hq.2]; exact h)]`. Use `_ = ∑ c ∈ S.image col, ∑ p ∈ S.filter (fun p => col p = c), ∑ d ∈ S.image col, ∑ q ∈ S.filter (fun q => col q = d), (if col q ≠ col p then F p q else 0) := by`. Use `Finset.sum_congr rfl fun c _ => Finset.sum_comm` and prove the remaining obligations. Use `_ = ∑ p ∈ S, ∑ q ∈ S, (if col q ≠ col p then F p q else 0) := by`. Rewrite using `[Finset.sum_fiberwise_of_maps_to (fun p hp => Finset.mem_image_of_mem col hp)]`.
+
+Use `Finset.sum_congr rfl fun p _ => ?_` and prove the remaining obligations. Conclude with `Finset.sum_fiberwise_of_maps_to (fun q hq => Finset.mem_image_of_mem col hq) _`.
+-/
 private theorem sum_sum_ite_col_ne_eq_sum_by_col (F : Q → Q → ℝ) :
     ∑ p ∈ S, ∑ q ∈ S, (if col q ≠ col p then F p q else 0) =
       ∑ c ∈ S.image col, ∑ d ∈ S.image col, (if d ≠ c then
@@ -82,6 +109,13 @@ private theorem sum_sum_ite_col_ne_eq_sum_by_col (F : Q → Q → ℝ) :
         refine Finset.sum_congr rfl fun p _ => ?_
         exact Finset.sum_fiberwise_of_maps_to (fun q hq => Finset.mem_image_of_mem col hq) _
 
+/- English proof (translation)
+Rewrite using `[sum_sum_ite_col_ne_eq_sum_by_col (S := S) (col := col) R]`. Establish `hR : ∀ p q, (if col q ≠ col p ∧ b q = b p then N else 0) = (if col q ≠ col p then (if b q = b p then N else 0) else 0)`. Introduce `p q`. Apply the tactic sequence `by_cases h1 : col q ≠ col p <;> by_cases h2 : b q = b p <;> simp [h1, h2]`. Repeatedly rewrite using `[hR]`.
+
+Establish `e2` using `sum_sum_ite_col_ne_eq_sum_by_col (S := S) (col := col) (fun p q => if b q = b p then N else 0)`. Use `beta_reduce at e2`. Rewrite using `[e2]`. Use `Finset.sum_le_sum fun c _ => Finset.sum_le_sum fun d _ => ?_` and prove the remaining obligations. Use `split_ifs with h`.
+
+Conclude with `sum_filter_col_le_sum_ite_of_bound hT hS R N hsymm hcross c d (Ne.symm h)`. Conclude with `le_rfl`.
+-/
 theorem count_cross (hT : IsTab col b) (hS : ∀ p q, col p = col q → (p ∈ S ↔ q ∈ S)) (R : Q → Q → ℝ) (N : ℝ)
     (hsymm : ∀ p q, R p q = R q p)
     (hcross : ∀ p ∈ S, ∀ c, c ≠ col p → ∑ q ∈ S.filter (fun q => col q = c), R p q ≤ N) :
@@ -101,6 +135,23 @@ theorem count_cross (hT : IsTab col b) (hS : ∀ p q, col p = col q → (p ∈ S
   · exact sum_filter_col_le_sum_ite_of_bound hT hS R N hsymm hcross c d (Ne.symm h)
   · exact le_rfl
 
+/- English proof (translation)
+Rewrite using `[count_rhs, Finset.sum_mul]`. Establish `hsplit : ∀ p, ∑ q ∈ S.erase p, R p q = (∑ q ∈ S, (if col q = col p ∧ q ≠ p then (1:ℝ) else 0)) * (-N) + ∑ q ∈ S, (if col q ≠ col p then R p q else 0)`. Introduce `p`. Rewrite using `[Finset.sum_mul, ← Finset.sum_add_distrib]`. Rewrite using `[← Finset.filter_ne' S p, Finset.sum_filter]`.
+
+Use `Finset.sum_congr rfl fun q _ => ?_` and prove the remaining obligations. Distinguish the cases in `hq : q = p`. Substitute `hq` using the available equality. Simplify using the standard rewrite rules. Distinguish the cases in `hc : col q = col p`.
+
+Simplify using `[hq, hc, hsame p q hc.symm (Ne.symm hq)]`. Simplify using `[hq, hc]`. Repeatedly rewrite using `[hsplit]`. Rewrite using `[Finset.sum_add_distrib, ← Finset.sum_mul, count_same hT]`. Establish `hup : ∑ p ∈ S, ∑ q ∈ S, (if col q = col p ∧ b p < b q then (1:ℝ) else 0) = ∑ p ∈ S, ((n:ℝ) - 1 - (b p : ℕ))`.
+
+Use `Finset.sum_congr rfl fun p hp => ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_boole]`. Conclude with `count_up hT hS p hp`. Establish `heq : ∑ p ∈ S, ∑ q ∈ S, (if col q ≠ col p ∧ b q = b p then N else 0) = ∑ p ∈ S, (((S.filter fun q => b q = b p).card : ℝ) - 1) * N`. Use `Finset.sum_congr rfl fun p hp => ?_` and prove the remaining obligations.
+
+Rewrite using `[count_eqb hT p hp, add_sub_cancel_left, Finset.sum_mul]`. Use `Finset.sum_congr rfl fun q _ => ?_` and prove the remaining obligations. Apply the tactic sequence `split_ifs <;> simp`. Establish `hc` using `count_cross hT hS R N hsymm hcross`. Rewrite `hc` using `[heq]`.
+
+Rewrite using `[hup]`. Establish `hcard : ((n * S.card : ℕ) : ℝ) = ∑ p ∈ S, (n : ℝ)`. Rewrite using `[Finset.sum_const, nsmul_eq_mul]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+
+Rewrite using `[hcard]`. Establish `e3 : ∑ p ∈ S, (((S.filter fun q => b q = b p).card : ℝ) + 2 * (b p : ℕ) + 1 - n) * N = (∑ p ∈ S, (n:ℝ)) * N + (2 * ∑ p ∈ S, ((n:ℝ) - 1 - (b p : ℕ))) * (-N) + ∑ p ∈ S, (((S.filter fun q => b q = b p).card : ℝ) - 1) * N`. Simplify using `only [Finset.sum_mul, Finset.mul_sum]`. Rewrite using `[← Finset.sum_add_distrib, ← Finset.sum_add_distrib]`. Conclude with `Finset.sum_congr rfl fun p _ => by ring`.
+
+Rewrite using `[e3]`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem cas_count (hT : IsTab col b) (hS : ∀ p q, col p = col q → (p ∈ S ↔ q ∈ S))
     (R : Q → Q → ℝ) (N : ℝ) (hsymm : ∀ p q, R p q = R q p)
     (hsame : ∀ p q, col p = col q → p ≠ q → R p q = -N)

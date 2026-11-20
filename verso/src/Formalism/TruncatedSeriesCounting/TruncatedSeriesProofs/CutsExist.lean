@@ -21,6 +21,9 @@ def ClustersZ : Prop :=
 
 variable {j th}
 
+/- English proof (translation)
+Use `⟨1, fun k => if k = 0 then a else b, le_rfl, by simp, by simp, ?_⟩` and prove the remaining obligations. Introduce `k hk`. Establish `hk0 : k = 0` using `by omega`. Substitute `hk0` using the available equality. Simplify using `using h`.
+-/
 lemma chain_of_step {a b : ℤ} (h : Step j th a b) : Chain j th a b := by
   refine ⟨1, fun k => if k = 0 then a else b, le_rfl, by simp, by simp, ?_⟩
   intro k hk
@@ -28,6 +31,17 @@ lemma chain_of_step {a b : ℤ} (h : Step j th a b) : Chain j th a b := by
   subst hk0
   simpa using h
 
+/- English proof (translation)
+Take `⟨m1, c1, hm1, h10, h1m, hs1⟩` from `h1`. Take `⟨m2, c2, hm2, h20, h2m, hs2⟩` from `h2`. Use `⟨m1 + m2, fun k => if k ≤ m1 then c1 k else c2 (k - m1), by omega, ?_, ?_, ?_⟩` and prove the remaining obligations. Simplify using `[h10]`. Establish `hn : ¬ (m1 + m2 ≤ m1)` using `by omega`.
+
+Simplify using `only [hn, if_false]`. Rewrite using `[Nat.add_sub_cancel_left]`. Conclude with `h2m`. Introduce `k hk`. Distinguish the cases in `hk1 : k + 1 ≤ m1`.
+
+Establish `hk0 : k ≤ m1` using `by omega`. Simplify using `only [hk0, hk1, if_true]`. Conclude with `hs1 k (by omega)`. Distinguish the cases in `hkm : k = m1`. Substitute `hkm` using the available equality.
+
+Simplify using `only [le_refl, if_true, hk1, if_false]`. Rewrite using `[h1m, ← h20, show k + 1 - k = 0 + 1 by omega]`. Conclude with `hs2 0 hm2`. Establish `hk0 : ¬ k ≤ m1` using `by omega`. Simplify using `only [hk0, hk1, if_false]`.
+
+Rewrite using `[show k + 1 - m1 = (k - m1) + 1 by omega]`. Conclude with `hs2 (k - m1) (by omega)`.
+-/
 lemma chain_trans {a b d : ℤ} (h1 : Chain j th a b) (h2 : Chain j th b d) :
     Chain j th a d := by
   obtain ⟨m1, c1, hm1, h10, h1m, hs1⟩ := h1
@@ -53,6 +67,25 @@ lemma chain_trans {a b d : ℤ} (h1 : Chain j th a b) (h2 : Chain j th b d) :
         rw [show k + 1 - m1 = (k - m1) + 1 by omega]
         exact hs2 (k - m1) (by omega)
 
+/- English proof (translation)
+Proceed by induction on `s using Nat.strong_induction_on with`. Consider the case `_ s ih`. Introduce `a e hs hfree hae hea hcard`. Distinguish the cases in `h2 : s < 2 * j`. Apply `chain_of_step` to reduce the goal to its premises.
+
+Use `⟨?_, by omega, by omega, ?_⟩` and prove the remaining obligations. Introduce `i hi1 hij`. Apply the tactic sequence `apply hfree <;> omega`. Combine the equalities or inequalities in the displayed calculation. Apply `Finset.card_le_card` to reduce the goal to its premises.
+
+Introduce `i hi`. Simplify using `only [Finset.mem_filter, Finset.mem_Ioc] at hi ⊢`. Use `⟨⟨?_, hi.1.2⟩, hi.2⟩` and prove the remaining obligations. Assume the negation of the conclusion as `hc`. Use `push Not at hc`.
+
+Conclude with `hfree i hi.1.1 hc hi.2`. Use `_ ≤ 2 := hcard`. Use `push Not at h2`. Apply `chain_trans (b := a + j)` to reduce the goal to its premises. Apply `chain_of_step` to reduce the goal to its premises.
+
+Use `⟨?_, by omega, by omega, ?_⟩` and prove the remaining obligations. Introduce `i hi1 hij`. Apply the tactic sequence `apply hfree <;> omega`. Establish `he : (Finset.Ioc a (a + j)).filter th = ∅`. Apply `Finset.filter_false_of_mem` to reduce the goal to its premises.
+
+Introduce `i hi`. Simplify using `only [Finset.mem_Ioc] at hi`. Conclude with `hfree i hi.1 (by omega)`. Rewrite using `[he]`. Simplify using the standard rewrite rules.
+
+Establish `hsj : ((s - j : ℕ) : ℤ) = (s : ℤ) - j`. Rewrite using `[Nat.cast_sub (by omega)]`. Establish `hpt : a + (j : ℤ) + ((s - j : ℕ) : ℤ) = a + s` using `by rw [hsj]; ring`. Apply `ih (s - j) (by omega) (a + j) e (by omega)` to reduce the goal to its premises. Introduce `i hi1 hi2`.
+
+Conclude with `hfree i (by omega) (by rw [hpt] at hi2; exact hi2)`. Rewrite using `[hpt]`. Conclude with `hae`. Rewrite using `[hpt]`. Conclude with `hea`.
+
+Rewrite using `[hpt]`. Conclude with `hcard`.
+-/
 lemma fill (hj : 1 ≤ j) (s : ℕ) : ∀ (a e : ℤ), j ≤ s →
     (∀ i : ℤ, a < i → i ≤ a + s → ¬ th i) → a + s ≤ e → e ≤ a + s + j + 1 →
     ((Finset.Ioc (a + s) e).filter th).card ≤ 2 → Chain j th a e := by
@@ -97,6 +130,17 @@ lemma fill (hj : 1 ≤ j) (s : ℕ) : ∀ (a e : ℤ), j ≤ s →
         · rw [hpt]; exact hea
         · rw [hpt]; exact hcard
 
+/- English proof (translation)
+Take `⟨k, hk⟩ : ∃ k : ℕ, (k : ℤ) = g - f` from `⟨_, Int.toNat_of_nonneg (by omega)⟩`. Establish `hgk : g - (k : ℤ) = f` using `by omega`. Break down `hC g hg with h1 | ⟨d, hd1, hdj, _hgd, hrest⟩` into its components or cases. Conclude with `absurd (by rw [hgk]; exact hf) (h1 k (by omega) (by omega))`. Establish `hkd : k = d`.
+
+Assume the negation of the conclusion as `hne`. Conclude with `hrest k (by omega) (by omega) hne (by rw [hgk]; exact hf)`. Prove the components needed by the constructor for the conclusion. Introduce `i hi1 hi2 hi`. Take `⟨k', hk'⟩ : ∃ k' : ℕ, (k' : ℤ) = g - i` from `⟨_, Int.toNat_of_nonneg (by omega)⟩`.
+
+Conclude with `hrest k' (by omega) (by omega) (by omega) (by rw [show g - (k' : ℤ) = i by omega]; exact hi)`. Introduce `h hh1 hh2 hh`. Take `⟨k'', hk''⟩ : ∃ k'' : ℕ, (k'' : ℤ) = h - g` from `⟨_, Int.toNat_of_nonneg (by omega)⟩`. Establish `hhk : h - (k'' : ℤ) = g` using `by omega`. Break down `hC h hh with h1' | ⟨d', hd1', hdj', _hhd, hrest'⟩` into its components or cases.
+
+Conclude with `h1' k'' (by omega) (by omega) (by rw [hhk]; exact hg)`. Establish `hkd' : k'' = d'`. Assume the negation of the conclusion as `hne`. Conclude with `hrest' k'' (by omega) (by omega) hne (by rw [hhk]; exact hg)`. Take `⟨k3, hk3⟩ : ∃ k3 : ℕ, (k3 : ℤ) = h - f` from `⟨_, Int.toNat_of_nonneg (by omega)⟩`.
+
+Conclude with `hrest' k3 (by omega) (by omega) (by omega) (by rw [show h - (k3 : ℤ) = f by omega]; exact hf)`.
+-/
 lemma pair (hC : ClustersZ j th) {f g : ℤ} (hf : th f) (hg : th g) (hfg : f < g)
     (hgf : g ≤ f + j) :
     (∀ i : ℤ, f < i → i < g → ¬ th i) ∧ (∀ i : ℤ, g < i → i ≤ g + j → ¬ th i) := by
@@ -122,6 +166,29 @@ lemma pair (hC : ClustersZ j th) {f g : ℤ} (hf : th f) (hg : th g) (hfg : f < 
     obtain ⟨k3, hk3⟩ : ∃ k3 : ℕ, (k3 : ℤ) = h - f := ⟨_, Int.toNat_of_nonneg (by omega)⟩
     exact hrest' k3 (by omega) (by omega) (by omega) (by rw [show h - (k3 : ℤ) = f by omega]; exact hf)
 
+/- English proof (translation)
+Introduce `N`. Proceed by induction on `N using Nat.strong_induction_on with`. Consider the case `_ N ih`. Introduce `a hN haB hfree`. Establish `hex : ∃ k : ℕ, th (a + 1 + k)` using `⟨(B - a - 1).toNat, by rw [Int.toNat_of_nonneg (by omega)]; convert hB using 1; ring⟩`.
+
+Use `set k0 := Nat.find hex with hk0`. Establish `hfth : th (a + 1 + k0)` using `Nat.find_spec hex`. Establish `hkB : k0 ≤ (B - a - 1).toNat` using `Nat.find_min' hex (by rw [Int.toNat_of_nonneg (by omega)]; convert hB using 1; ring)`. Establish `hkB' : a + 1 + (k0 : ℤ) ≤ B`. Use `Int.toNat_of_nonneg (show (0 : ℤ) ≤ B - a - 1 by omega)` as an intermediate fact.
+
+Use linear arithmetic over natural numbers and integers. Establish `hmin : ∀ i : ℤ, a < i → i < a + 1 + k0 → ¬ th i`. Introduce `i hi1 hi2 hi`. Take `⟨k', hk'⟩ : ∃ k' : ℕ, (k' : ℤ) = i - a - 1` from `⟨_, Int.toNat_of_nonneg (by omega)⟩`. Establish `hlt : k' < k0` using `by omega`.
+
+Conclude with `Nat.find_min hex hlt (by rw [show a + 1 + (k' : ℤ) = i by omega]; exact hi)`. Use `set f : ℤ := a + 1 + k0 with hfdef`. Establish `hfa : a + j < f`. Assume the negation of the conclusion as `hc`. Use `push Not at hc`.
+
+Conclude with `hfree f (by omega) hc hfth`. Take `⟨s, hs⟩ : ∃ s : ℕ, (s : ℤ) = f - 1 - a` from `⟨_, Int.toNat_of_nonneg (by omega)⟩`. Establish `hsfree : ∀ i : ℤ, a < i → i ≤ a + s → ¬ th i` using `fun i h1 h2 => hmin i h1 (by omega)`. Establish `cont : ∀ e : ℤ, a < e → e ≤ B → (∀ i : ℤ, e < i → i ≤ e + j → ¬ th i) → Chain j th a e → Chain j th a B`. Introduce `e hae heB hel hc`.
+
+Break down `eq_or_lt_of_le heB with h | h` into its components or cases. Rewrite using `[← h]`. Conclude with `hc`. Take `⟨N', hN'⟩ : ∃ N' : ℕ, (N' : ℤ) = B - e` from `⟨_, Int.toNat_of_nonneg (by omega)⟩`. Conclude with `chain_trans hc (ih N' (by omega) e (by omega) h hel)`.
+
+Distinguish the cases in `hl : ∀ i : ℤ, f < i → i ≤ f + j → ¬ th i`. Apply `cont f (by omega) hkB' hl` to reduce the goal to its premises. Apply `fill hj s a f (by omega) hsfree (by omega) (by omega)` to reduce the goal to its premises. Combine the equalities or inequalities in the displayed calculation. Use `push Not at hl`.
+
+Take `⟨g, hfg, hgf, hg⟩` from `hl`. Take `⟨hmid, hgl⟩` from `pair hC hfth hg hfg hgf`. Establish `hgB : g ≤ B`. Assume the negation of the conclusion as `hc`. Use `push Not at hc`.
+
+Break down `eq_or_lt_of_le hkB' with h | h` into its components or cases. Conclude with `hBl g (by omega) (by omega) hg`. Conclude with `hmid B h hc hB`. Apply `cont g (by omega) hgB hgl` to reduce the goal to its premises. Apply `fill hj s a g (by omega) hsfree (by omega) (by omega)` to reduce the goal to its premises.
+
+Combine the equalities or inequalities in the displayed calculation. Apply `Finset.card_le_card` to reduce the goal to its premises. Introduce `i hi`. Simplify using `only [Finset.mem_filter, Finset.mem_Ioc] at hi`. Simplify using `only [Finset.mem_insert, Finset.mem_singleton]`.
+
+Assume the negation of the conclusion as `hc`. Use `push Not at hc`. Conclude with `hmid i (by omega) (lt_of_le_of_ne hi.1.2 hc.2) hi.2`. Use `_ ≤ 2 := Finset.card_le_two`.
+-/
 lemma cluster_chain (hC : ClustersZ j th) (hj : 1 ≤ j) (B : ℤ) (hB : th B)
     (hBl : ∀ i : ℤ, B < i → i ≤ B + j → ¬ th i) :
     ∀ (N : ℕ) (a : ℤ), B - a ≤ N → a < B → (∀ i : ℤ, a < i → i ≤ a + j → ¬ th i) →
@@ -187,6 +254,15 @@ lemma cluster_chain (hC : ClustersZ j th) (hj : 1 ≤ j) (B : ℤ) (hB : th B)
             exact hmid i (by omega) (lt_of_le_of_ne hi.1.2 hc.2) hi.2
         _ ≤ 2 := Finset.card_le_two
 
+/- English proof (translation)
+Distinguish the cases in `hex : ∃ t : ℤ, th t`. Take `⟨t0, ht0⟩` from `hex`. Choose the witnesses or unpack the hypotheses as in `⟨t, ht, htl⟩ : ∃ t : ℤ, th t ∧ ∀ i : ℤ, t < i → i ≤ t + j → ¬ th i := by`. Distinguish the cases in `hl : ∀ i : ℤ, t0 < i → i ≤ t0 + j → ¬ th i`. Conclude with `⟨t0, ht0, hl⟩`.
+
+Use `push Not at hl`. Take `⟨g, h1, h2, hg⟩` from `hl`. Conclude with `⟨g, hg, (pair hC ht0 hg h1 h2).2⟩`. Use `⟨t, cluster_chain hC hj (t + n) ((hper t).2 ht) ?_ n t (by omega) (by omega) htl⟩` and prove the remaining obligations. Introduce `i hi1 hi2 hi`.
+
+Establish `: th (i - n)` using `(hper (i - n)).1 (by rw [sub_add_cancel]; exact hi)`. Conclude with `htl (i - n) (by omega) (by omega) this`. Use `push Not at hex`. Use `⟨0, fill hj n 0 (0 + n) (by omega) (fun i _ _ => hex i) (by omega) (by omega) ?_⟩` and prove the remaining obligations. Rewrite using `[Finset.filter_false_of_mem (fun i _ => hex i)]`.
+
+Simplify using the standard rewrite rules.
+-/
 lemma main (n : ℕ) (hj : 1 ≤ j) (hn : j + 1 ≤ n) (hper : ∀ i : ℤ, th (i + n) ↔ th i)
     (hC : ClustersZ j th) : ∃ a : ℤ, Chain j th a (a + n) := by
   by_cases hex : ∃ t : ℤ, th t

@@ -23,6 +23,27 @@ noncomputable section
 
 namespace GlobalTheory.USep.FrameInt
 
+/- English proof (translation)
+Introduce `m hm hm3 V₁ _ _ _ hV hunit D X C _ e u mo hmo hT K _ _ ev ρ₀ hρ₀ th hth`. Take `⟨θ, hθ, -⟩` from `ThetaOne.main hV D`. Take `⟨b, t, s₀, hcov, htg, hκ, hid⟩` from `GlobalTheory.T.integral_thetaTerms_torsionPoints_frames m hm hm3 V₁ hV hunit D X C e u mo hmo hT θ hθ ρ₀ hρ₀`. Take `⟨Λ, hΛ⟩` from `GlobalTheory.T.thetaFibre_section_eq_scalar_mul_integralTheta V₁ D θ hθ K ev th`. Use `⟨(m ^ 2) ^ 2, Λ * ev s₀, Nat.one_le_pow _ _ (by positivity), ?_⟩` and prove the remaining obligations.
+
+Introduce `x τ c hτ hval`. Take `⟨c₀, rfl⟩` from `hcov K (spMap ev) x hτ.1`. Take `⟨ζ, hζ, hζv⟩` from `GlobalTheory.T.torsionFrame_mul_integralFrame_eq_root_mul_rig V₁ D K ev ρ₀ hρ₀ (m ^ 2) (Nat.one_le_pow _ _ (by omega)) (b c₀) τ hτ (t c₀) (htg c₀) (fun κ hκn z J hJ => hκ c₀ κ hκn _ _ z J hJ)`. Establish `hζ0 : ζ ≠ 0`. Introduce and unpack `rfl`.
+
+Rewrite `hζ` using `[zero_pow (by positivity)]`. Conclude with `zero_ne_one hζ`. Use `⟨c₀, ζ⁻¹, by rw [inv_pow, hζ, inv_one], ?_⟩` and prove the remaining obligations. Set `z : (Over.mk (spMap ev)).left` to `(⟨⊥, Ideal.isPrime_bot⟩ : PrimeSpectrum K)`. Use `choose J hJ using fun χ : (Over.mk (spMap ev)).left ⟶ D.P.A.left => exists_chart D.P.isLB (χ z)`.
+
+Establish `hG : Good D.P.L z J` using `hJ`. Establish `h1` using `GlobalTheory.CoordSep.sv_value hval hG`. Establish `h2` using `hΛ _ (lift (𝟙 _) (toUnit _ ≫ b c₀)).left z J hG`. Establish `h3` using `hid c₀ _ (Over.mk (spMap ev)).hom z J hG`. Establish `h4` using `hζv z J hG`.
+
+Establish `eT : (toUnit (Over.mk (spMap ev))).left = (Over.mk (spMap ev)).hom`. Simplify using `using Over.w (toUnit (Over.mk (spMap ev)))`. Establish `e1 : (lift (𝟙 (Over.mk (spMap ev))) (toUnit _ ≫ b c₀)).left ≫ (fst (Over.mk (spMap ev)) D.P.A).left = 𝟙 _`. Rewrite using `[← Over.comp_left, lift_fst]`. Both sides reduce to the same expression.
+
+Establish `e2 : (lift (𝟙 (Over.mk (spMap ev))) (toUnit _ ≫ b c₀)).left ≫ (snd (Over.mk (spMap ev)) D.P.A).left = (Over.mk (spMap ev)).hom ≫ (b c₀).left`. Rewrite using `[← Over.comp_left, lift_snd, Over.comp_left, eT]`. Rewrite `h2` using `[e1, e2]`. Rewrite `h1` using `[GlobalTheory.UT.NonVan.val_powFrame]`. Establish `e11 : val τ (𝟙 (Over.mk (spMap ev)).left) z J ^ (((1 : ℕ) : ℤ)) = val τ (𝟙 (Over.mk (spMap ev)).left) z J` using `zpow_one _`.
+
+Rewrite `h1` using `[e11]`. Simplify using `only [GlobalTheory.VVRank.sv] at h1`. Set `G : K →+* (Over.mk (spMap ev)).left.presheaf.stalk z` to `RatioVal.germConst K z`. Establish `g1 : ∀ a : K, gs (𝟙 (Over.mk (spMap ev)).left) z ⊤ (GlobalTheory.Ex.fnOf a) = G a` using `fun a => RatioVal.gs_id_const z a`. Establish `g2 : ∀ a : V₁, gs (Over.mk (spMap ev)).hom z ⊤ ((Scheme.ΓSpecIso (CommRingCat.of V₁)).inv.hom a) = G (ev a)` using `fun a => (RatioVal.gs_specMap ev z _).trans (congrArg (fun y => G (ev y)) (by rw [← CommRingCat.comp_apply, Iso.inv_hom_id, CommRingCat.id_apply]))`.
+
+Establish `g3 : gs (𝟙 (Over.mk (spMap ev)).left) z ⊤ (GlobalTheory.Ex.fnOf Λ) = G Λ` using `g1 Λ`. Rewrite `h1`, `h4` using `[g1]`. Rewrite `h2` using `[g3]`. Rewrite `h3` using `[g2]`. Establish `key : G (c * ζ) * ↑(val ρ₀ (Over.mk (spMap ev)).hom z J) = G (Λ * ev (s₀ * u 0 c₀)) * ↑(val ρ₀ (Over.mk (spMap ev)).hom z J)`.
+
+Rewrite using `[map_mul, map_mul, _root_.mul_assoc, ← h4, ← _root_.mul_assoc, ← h1, h2, _root_.mul_assoc, h3, _root_.mul_assoc]`. Establish `key2` using `(Units.mul_left_inj _).1 key`. Establish `key3 : c * ζ = Λ * ev (s₀ * u 0 c₀)` using `G.injective key2`. Rewrite `key3` using `[map_mul]`. Clear the denominators using the available nonvanishing facts.
+
+Take the linear combination `key3`.
+-/
 theorem frameValue_eq_lam_root_mul : ∀ (m : ℕ), Odd m → 3 ≤ m → ∀ (V₁ : Type) [CommRing V₁] [IsDomain V₁] [IsLocalRing V₁], IsCN V₁ → (∀ k : ℕ, k ≠ 0 → IsUnit (k : V₁)) → ∀ (D : DegPre V₁) (X C : Type) [AddCommGroup X] (e : X ≃+ D.X) (u : X → C → V₁) (mo : X → V₁), (∀ mu, mo mu ≠ 0 ∧ ∃ c, IsUnit (u mu c)) → GlobalTheory.Poinc.Sep.IsThetaTerms D (m ^ 2) e (fun mu c => u mu c * mo mu) → ∀ (K : Type) [Field K] [IsAlgClosed K] (ev : V₁ →+* K) (ρ₀ : LB.Gen (D.P.L.pull (eSec D.P.A))), ρ₀.IsGen → ∀ (th : LB.Sec (LPow D.P.A D.P.L ((1 : ℕ) : ℤ) (Over.mk (spMap ev)))), IsGenSec D.P.A D.P.L ((1 : ℕ) : ℤ) th → ∃ (M : ℕ) (lam : K), 1 ≤ M ∧ ∀ (x : Over.mk (spMap ev) ⟶ D.P.A) (τ : LB.Gen (LB.LinComb D.P.L (Y := (Over.mk (spMap ev)).left) (K := Fin 1) (fun _ => x.left) (fun _ => 1))) (c : K), IsTorsFrame D.P ρ₀ (m ^ 2) x τ → IsValueAt D.P.A D.P.L ((1 : ℕ) : ℤ) th x (powFrame D.P.A D.P.L x τ ((1 : ℕ) : ℤ)) (GlobalTheory.Ex.fnOf c) → ∃ (c₀ : C) (ζ : K), ζ ^ M = 1 ∧ c = lam * ζ * ev (u 0 c₀) := by
   intro m hm hm3 V₁ _ _ _ hV hunit D X C _ e u mo hmo hT K _ _ ev ρ₀ hρ₀ th hth
   obtain ⟨θ, hθ, -⟩ := ThetaOne.main hV D

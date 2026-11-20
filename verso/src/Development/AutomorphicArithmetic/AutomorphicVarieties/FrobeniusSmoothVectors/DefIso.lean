@@ -6,6 +6,11 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.FrobeniusSmoothVec
 
 open IsLocalRing Matrix UpperTheory.V.Alg UpperTheory.V.U3 UpperTheory.V.Fr
 
+/- English proof (translation)
+Use extensionality with `z`. Take `⟨a, ha⟩` from `IsCO.res_surj (O := O') z`. Establish `h1 : (res O' C) z = (res O' C) (algebraMap O' C a)`. Rewrite using `[← sub_eq_zero, ← map_sub, res_eq_zero_iff]`. Conclude with `ha`.
+
+Establish `h2 : IsLocalRing.residue C z = IsLocalRing.residue C (algebraMap O' C a)`. Rewrite using `[← sub_eq_zero, ← map_sub, IsLocalRing.residue_eq_zero_iff]`. Conclude with `ha`. Rewrite using `[RingHom.comp_apply, RingHom.coe_coe, h1, h2, AlgHom.commutes]`. Conclude with `(IsLocalRing.ResidueField.map_residue _ a).symm`.
+-/
 private theorem residue_eq_residueField_map_comp_res {O' C : Type} [CommRing O'] [IsLocalRing O'] [CommRing C] [Algebra O' C]
     [IsCO O' C] [IsLocalHom (algebraMap O' C)] :
     IsLocalRing.residue C =
@@ -21,6 +26,11 @@ private theorem residue_eq_residueField_map_comp_res {O' C : Type} [CommRing O']
   rw [RingHom.comp_apply, RingHom.coe_coe, h1, h2, AlgHom.commutes]
   exact (IsLocalRing.ResidueField.map_residue _ a).symm
 
+/- English proof (translation)
+Unfold `NRep.IsBar`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨h1, h2⟩`. Conclude with `⟨fun g i => j.injective (h1 g i), fun v i g => j.injective (h2 v i g)⟩`. Introduce and unpack `⟨h1, h2⟩`.
+
+Conclude with `⟨fun g i => congrArg j (h1 g i), fun v i g => congrArg j (h2 v i g)⟩`.
+-/
 private theorem nRep_isBar_comp_map_iff {l : ℕ} [Fact l.Prime] {k : Type} [Field k] {F : Frame l k} {n : ℕ}
     {K K' : Type} [Field K] [CommRing K'] [Nontrivial K'] (f : k →+* K) (j : K →+* K')
     (σ : NRep F n K) : NRep.IsBar (j.comp f) (NRep.map j σ) ↔ NRep.IsBar f σ := by
@@ -31,6 +41,43 @@ private theorem nRep_isBar_comp_map_iff {l : ℕ} [Fact l.Prime] {k : Type} [Fie
   · rintro ⟨h1, h2⟩
     exact ⟨fun g i => congrArg j (h1 g i), fun v i g => congrArg j (h2 v i g)⟩
 
+/- English proof (translation)
+Introduce `l _ O _ _ _ _ F C₀ n hF hn S x L C _ _ _ ρ hc hres`. Establish `hOloc : IsLocalHom (algebraMap O L.O')`. Use `⟨fun a ha => ?_⟩` and prove the remaining obligations. Assume the negation of the conclusion as `h`. Establish `hm : algebraMap O L.O' a ∈ maximalIdeal L.O'`.
+
+Rewrite using `[← L.unr]`. Conclude with `Ideal.mem_map_of_mem _ ((IsLocalRing.mem_maximalIdeal a).mpr h)`. Conclude with `(IsLocalRing.mem_maximalIdeal _).mp hm ha`. Use `haveI : IsLocalHom (algebraMap L.O' C) := IsCO.isLocalHom`. Use `haveI : IsLocalHom (algebraMap L.O' L.R) := IsCO.isLocalHom`.
+
+Use `letI : Algebra O C := ((algebraMap L.O' C).comp (algebraMap O L.O')).toAlgebra`. Use `haveI : IsScalarTower O L.O' C := IsScalarTower.of_algebraMap_eq (fun _ => rfl)`. Establish `hCloc : IsLocalHom (algebraMap O C)` using `inferInstanceAs (IsLocalHom ((algebraMap L.O' C).comp (algebraMap O L.O')))`. Establish `hCL : UpperTheory.V.CA.IsCL O C`. Use `⟨inferInstance, IsCO.complete (O := L.O'), hCloc, ?_⟩` and prove the remaining obligations.
+
+Set `φ : L.O' →ₐ[O] ResidueField C` to `(IsScalarTower.toAlgHom O C (ResidueField C)).comp (IsScalarTower.toAlgHom O L.O' C)`. Use `Module.Finite.of_surjective φ.toLinearMap ?_` and prove the remaining obligations. Introduce `y`. Take `⟨z, rfl⟩` from `IsLocalRing.residue_surjective y`. Take `⟨a, ha⟩` from `IsCO.res_surj (O := L.O') z`.
+
+Use `⟨a, ?_⟩` and prove the remaining obligations. Use `show IsLocalRing.residue C (algebraMap L.O' C a) = IsLocalRing.residue C z`. Rewrite using `[← sub_eq_zero, ← map_sub, IsLocalRing.residue_eq_zero_iff, ← neg_sub]`. Conclude with `neg_mem ha`. Set `f0 : ResidueField O →+* ResidueField L.O'` to `IsLocalRing.ResidueField.map (algebraMap O L.O')`.
+
+Set `jC : ResidueField L.O' →+* ResidueField C` to `IsLocalRing.ResidueField.map (algebraMap L.O' C)`. Set `jR : ResidueField L.O' →+* ResidueField L.R` to `IsLocalRing.ResidueField.map (algebraMap L.O' L.R)`. Establish `hfC : IsResMap O C (jC.comp f0)`. Introduce `a`. Use `show jC (f0 (IsLocalRing.residue O a)) = _`.
+
+Rewrite using `[IsLocalRing.ResidueField.map_residue, IsLocalRing.ResidueField.map_residue]`. Both sides reduce to the same expression. Establish `hfR : IsResMap O L.R (jR.comp f0)`. Introduce `a`. Use `show jR (f0 (IsLocalRing.residue O a)) = _`.
+
+Rewrite using `[IsLocalRing.ResidueField.map_residue, IsLocalRing.ResidueField.map_residue, IsScalarTower.algebraMap_apply O L.O' L.R a]`. Establish `hbR` using `(loc_rho hF hn S x L).2.1 _ hfR`. Rewrite `hbR` using `[residue_eq_residueField_map_comp_res (O' := L.O') (C := L.R)]`. Establish `hσ : NRep.IsBar f0 (NRep.map (res L.O' L.R : L.R →+* ResidueField L.O') L.ρ)` using `(nRep_isBar_comp_map_iff f0 jR _).mp hbR`. Establish `hbar : NRep.IsBar (jC.comp f0) (NRep.map (IsLocalRing.residue C) ρ)`.
+
+Rewrite using `[residue_eq_residueField_map_comp_res (O' := L.O') (C := C)]`. Use `show NRep.IsBar (jC.comp f0) (NRep.map jC (NRep.map (res L.O' C : C →+* ResidueField L.O') ρ))`. Rewrite using `[hres]`. Conclude with `(nRep_isBar_comp_map_iff f0 jC _).mpr hσ`. Take `⟨ξ, hξ, hξx⟩` from `point_loc hF hn S C hCL (jC.comp f0) hfC ρ hc hbar`.
+
+Establish `hx0 : S.x0 ≤ x`. Unfold `Space.x0`. Conclude with `Ideal.map_le_iff_le_comap.mpr (loc_flat hF hn S x L).2.2`. Set `ξ1 : S.A →ₐ[O] ResidueField L.O'` to `((res L.O' C).restrictScalars O).comp ξ`. Set `ξ2 : S.A →ₐ[O] ResidueField L.O'` to `((res L.O' L.R).restrictScalars O).comp L.ι`.
+
+Establish `h12 : ξ1 = ξ2`. Use `ext_A hF hn S (ResidueField L.O') ξ1 ξ2 ?_ ?_ ?_` and prove the remaining obligations. Conclude with `(congrArg (NRep.map (res L.O' C : C →+* ResidueField L.O')) hξ).trans hres`. Introduce `a ha`. Use `Ideal.mem_comap.mpr ?_` and prove the remaining obligations.
+
+Use `show res L.O' C (ξ a) ∈ _`. Rewrite using `[(res_eq_zero_iff L.O' C (ξ a)).mpr (hξx ha)]`. Conclude with `zero_mem _`. Introduce `a ha`. Establish `hm : a ∈ Ideal.comap (L.ι : S.A →+* L.R) (maximalIdeal L.R)`.
+
+Rewrite using `[L.lies]`. Conclude with `hx0 ha`. Use `Ideal.mem_comap.mpr ?_` and prove the remaining obligations. Use `show res L.O' L.R (L.ι a) ∈ _`. Rewrite using `[(res_eq_zero_iff L.O' L.R (L.ι a)).mpr hm]`.
+
+Conclude with `zero_mem _`. Take `⟨g, hg, huniq⟩` from `L.univ C ξ (fun a => AlgHom.congr_fun h12 a)`. Establish `hgι : (g : L.R →+* C).comp (L.ι : S.A →+* L.R) = (ξ : S.A →+* C)` using `RingHom.ext hg`. Use `⟨g, ?_, fun g' hg' => huniq g' ?_⟩` and prove the remaining obligations. Use `show NRep.map ((g : L.R →+* C).comp (L.ι : S.A →+* L.R)) S.u = ρ`.
+
+Rewrite using `[hgι]`. Conclude with `hξ`. Set `ξ' : S.A →ₐ[O] C` to `(g'.restrictScalars O).comp L.ι`. Establish `h' : ξ' = ξ`. Use `ext_A hF hn S C ξ' ξ ?_ ?_ hξx` and prove the remaining obligations.
+
+Conclude with `hg'.trans hξ.symm`. Introduce `a ha`. Establish `hm : a ∈ Ideal.comap (L.ι : S.A →+* L.R) (maximalIdeal L.R)`. Rewrite using `[L.lies]`. Conclude with `hx0 ha`.
+
+Use `Ideal.mem_comap.mpr ?_` and prove the remaining obligations. Use `show g' (L.ι a) ∈ maximalIdeal C`. Rewrite using `[← res_eq_zero_iff L.O' C, res_map]`. Conclude with `(res_eq_zero_iff L.O' L.R _).mpr hm`. Introduce `a`.
+
+Conclude with `AlgHom.congr_fun h' a`.
+-/
 theorem UpperTheory.V.Fr.def_iso :
     ∀ {l : ℕ} [Fact l.Prime] {O : Type} [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] [IsCoef l O] {F : Frame l (ResidueField O)} {C₀ : ℕ} {n : ℕ}, F.Ok C₀ → (n = 2 ∨ n = 3) → ∀ S : Space O F n, ∀ (x : Ideal S.A) (L : S.Loc x), ∀ (C : Type) [CommRing C] [Algebra L.O' C] [IsCO L.O' C] (ρ : NRep F n C), ρ.Cont (maximalIdeal C) → ρ.map (res L.O' C : C →+* ResidueField L.O') = L.ρ.map (res L.O' L.R : L.R →+* ResidueField L.O') → ∃! g : L.R →ₐ[L.O'] C, L.ρ.map (g : L.R →+* C) = ρ := by
   intro l _ O _ _ _ _ F C₀ n hF hn S x L C _ _ _ ρ hc hres

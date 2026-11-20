@@ -8,6 +8,17 @@ attribute [local instance] Over.cartesianMonoidalCategory
 
 namespace GlobalTheory.CechPer
 
+/- English proof (translation)
+Introduce `A _ g L u hA U K W h x hx`. Take `⟨-, -, -, -, hinf, hmono, hsup, -, -, -, hbasic, -⟩` from `GlobalTheory.T.uniformisation_preimage_value_rules A g L u`. Take `⟨V, hV, hxV, hVU⟩` from `TopologicalSpace.Opens.isBasis_iff_nbhd.mp A.left.isBasis_affineOpens hx`. Establish `hV' : IsAffineOpen V` using `hV`. Set `p : Ideal Γ(A.left, V)` to `(IsLocalRing.maximalIdeal (A.left.presheaf.stalk x)).comap (A.left.presheaf.germ V x hxV).hom`.
+
+Establish `hp : p ≠ ⊤` using `Ideal.comap_ne_top _ (IsLocalRing.maximalIdeal.isMaximal _).ne_top`. Take `⟨m, hm, hpm⟩` from `Ideal.exists_le_maximal p hp`. Take `⟨z, hzV, hz⟩` from `GlobalTheory.T.maximalIdeal_affineOpen_eq_vanishing_uniformisationPoint A g L u hA V hV' m hm`. Take `⟨i, hi⟩` from `h z (hmono U V hVU hzV)`. Establish `hzi : z ∈ pre u.ex (W i ⊓ V)` using `by rw [hinf]; exact ⟨hi, hzV⟩`.
+
+Establish `hle : W i ⊓ V ≤ ⨆ b : {b : Γ(A.left, V) // A.left.basicOpen b ≤ W i}, A.left.basicOpen b.1`. Introduce `y hy`. Take `⟨f, hf, hyf⟩` from `hV'.exists_basicOpen_le (V := W i) ⟨y, hy.1⟩ hy.2`. Conclude with `TopologicalSpace.Opens.mem_iSup.mpr ⟨⟨f, hf⟩, hyf⟩`. Take `⟨⟨b, hb⟩, hzb⟩` from `(hsup _ _ z).mp (hmono _ _ hle hzi)`.
+
+Establish `hbm : b ∉ m` using `fun hh ↦ (hbasic V b z).mp hzb ((hz b).mp hh)`. Establish `hxb : x ∈ A.left.basicOpen b`. Rewrite using `[Scheme.mem_basicOpen _ b x hxV]`. Assume the negation of the conclusion as `hn`. Conclude with `hbm (hpm (Ideal.mem_comap.mpr ((IsLocalRing.mem_maximalIdeal _).mpr hn)))`.
+
+Conclude with `TopologicalSpace.Opens.mem_iSup.mpr ⟨i, hb hxb⟩`.
+-/
 theorem le_iSup_of_pre_cover : ∀ (A : Over (Sp ℂ)) [GrpObj A] (g : ℕ) (L : LB A.left) (u : HolUnif A L g), IsAbelianScheme A → ∀ (U : A.left.Opens) (K : Type) (W : K → A.left.Opens), (∀ z ∈ pre u.ex U, ∃ i, z ∈ pre u.ex (W i)) → U ≤ ⨆ i, W i := by
   intro A _ g L u hA U K W h x hx
   obtain ⟨-, -, -, -, hinf, hmono, hsup, -, -, -, hbasic, -⟩ := GlobalTheory.T.uniformisation_preimage_value_rules A g L u

@@ -9,12 +9,18 @@ namespace GlobalTheory.SW.TwistAdm
 
 variable {E : Type} [Field E] [NumberField E] {n N : ℕ}
 
+/- English proof (translation)
+Rewrite using `[Int.cast_smul_eq_zsmul]`. Conclude with `zsmul_mem h k`.
+-/
 theorem int_smul_mem (Λ : Lt E n) (k : ℤ) {v : Fin n → E} (h : v ∈ Λ) : (k : E) • v ∈ Λ := by
   rw [Int.cast_smul_eq_zsmul]; exact zsmul_mem h k
 
 open Matrix Complex NumberField Filter Topology in
 open scoped ComplexConjugate ComplexOrder Real Classical in
 variable {E : Type} [Field E] [NumberField E] {n N : ℕ} in
+/- English proof (translation)
+The claim follows from `_root_.GlobalTheory.SW.Base.nat_smul_mem Λ k h`.
+-/
 theorem _root_.GlobalTheory.SW.TwistAdm.nat_smul_mem (Λ : _root_.GlobalTheory.SW.Lt E n) (k : ℕ)
     {v : Fin n → E} (h : v ∈ Λ) : (k : E) • v ∈ Λ :=
   _root_.GlobalTheory.SW.Base.nat_smul_mem Λ k h
@@ -22,6 +28,9 @@ theorem _root_.GlobalTheory.SW.TwistAdm.nat_smul_mem (Λ : _root_.GlobalTheory.S
 open Matrix Complex NumberField Filter Topology in
 open scoped ComplexConjugate ComplexOrder Real Classical in
 variable {E : Type} [Field E] [NumberField E] {n N : ℕ} in
+/- English proof (translation)
+Unfold `_root_.GlobalTheory.SW.stdL`. Conclude with `Submodule.subset_span ⟨a, rfl⟩`.
+-/
 theorem _root_.GlobalTheory.SW.TwistAdm.single_mem_std (a : Fin N) :
     (Pi.single a 1 : Fin N → E) ∈ _root_.GlobalTheory.SW.stdL E N := by
   unfold _root_.GlobalTheory.SW.stdL
@@ -30,6 +39,9 @@ theorem _root_.GlobalTheory.SW.TwistAdm.single_mem_std (a : Fin N) :
 open Matrix Complex NumberField Filter Topology in
 open scoped ComplexConjugate ComplexOrder Real Classical in
 variable {E : Type} [Field E] [NumberField E] {n N : ℕ} in
+/- English proof (translation)
+Use extensionality with `i`. Simplify using `[Matrix.mulVec_single]`.
+-/
 theorem _root_.GlobalTheory.SW.TwistAdm.col_eq (x : Matrix (Fin n) (Fin N) E) (a : Fin N) :
     xᵀ a = x *ᵥ Pi.single a 1 := by
   ext i
@@ -38,6 +50,13 @@ theorem _root_.GlobalTheory.SW.TwistAdm.col_eq (x : Matrix (Fin n) (Fin N) E) (a
 open Matrix Complex NumberField Filter Topology in
 open scoped ComplexConjugate ComplexOrder Real Classical in
 variable {E : Type} [Field E] [NumberField E] {n N : ℕ} in
+/- English proof (translation)
+Unfold `_root_.GlobalTheory.SW.stdL at hv`. Proceed by induction on `hv using Submodule.span_induction with`. Consider the case `mem w hw`. Take `⟨a, rfl⟩` from `hw`. Rewrite using `[← _root_.GlobalTheory.SW.TwistAdm.col_eq]`.
+
+Conclude with `h a`. Consider the case `zero => simp [Λ.zero_mem]`. Consider the case `add u w _ _ hu hw`. Rewrite using `[Matrix.mulVec_add]`. Conclude with `Λ.add_mem hu hw`.
+
+Consider the case `smul r w _ hw`. Rewrite using `[Matrix.mulVec_smul]`. Conclude with `Λ.smul_mem r hw`.
+-/
 theorem _root_.GlobalTheory.SW.TwistAdm.colsIn_mulVec {Λ : _root_.GlobalTheory.SW.Lt E n}
     {y : Matrix (Fin n) (Fin N) E} (h : _root_.GlobalTheory.SW.ColsIn Λ y)
     {v : Fin N → E} (hv : v ∈ _root_.GlobalTheory.SW.stdL E N) : y *ᵥ v ∈ Λ := by
@@ -58,6 +77,9 @@ theorem _root_.GlobalTheory.SW.TwistAdm.colsIn_mulVec {Λ : _root_.GlobalTheory.
 open Matrix Complex NumberField Filter Topology in
 open scoped ComplexConjugate ComplexOrder Real Classical in
 variable {E : Type} [Field E] [NumberField E] {n N : ℕ} in
+/- English proof (translation)
+The claim follows from `_root_.GlobalTheory.SW.Base.mem_of_coprime Λ h hu hw`.
+-/
 theorem _root_.GlobalTheory.SW.TwistAdm.mem_of_coprime (Λ : _root_.GlobalTheory.SW.Lt E n) {u w : ℕ}
     (h : u.Coprime w) {v : Fin n → E}
     (hu : (u : E) • v ∈ Λ) (hw : (w : E) • v ∈ Λ) : v ∈ Λ :=
@@ -66,6 +88,15 @@ theorem _root_.GlobalTheory.SW.TwistAdm.mem_of_coprime (Λ : _root_.GlobalTheory
 open Matrix Complex NumberField Filter Topology in
 open scoped ComplexConjugate ComplexOrder Real Classical in
 variable {E : Type} [Field E] [NumberField E] {n N : ℕ} in
+/- English proof (translation)
+Use `set I : Ideal (𝓞 E) := Ideal.span {(t : 𝓞 E)} with hIdef`. Establish `hI : I ≠ ⊥`. Rewrite using `[hIdef, Ne, Ideal.span_singleton_eq_bot]`. Conclude with `ht.ne'` after adjusting the coercions. Use `haveI : Finite (𝓞 E ⧸ I) := Ideal.finiteQuotientOfFreeOfNeBot I hI`.
+
+Use `haveI : Finite (B ⧸ (⊤ : Submodule (𝓞 E) B)) := inferInstance`. Establish `hfin : Finite (B ⧸ I • (⊤ : Submodule (𝓞 E) B))` using `Submodule.finite_quotient_smul I ((Submodule.fg_top B).mpr hB)`. Establish `hle : I • (⊤ : Submodule (𝓞 E) B) ≤ A.comap B.subtype`. Rewrite using `[Submodule.smul_le]`. Introduce `r hr b _`.
+
+Take `⟨r', rfl⟩` from `Ideal.mem_span_singleton'.mp hr`. Establish `key : ((t : 𝓞 E)) • (b : Fin N → E) = (t : E) • (b : Fin N → E)`. Rewrite using `[Nat.cast_smul_eq_nsmul, Nat.cast_smul_eq_nsmul]`. Simplify using `only [Submodule.mem_comap, Submodule.subtype_apply, Submodule.coe_smul, mul_smul, key]`. Conclude with `A.smul_mem r' (h b b.2)`.
+
+Use `haveI : Finite (B ⧸ A.comap B.subtype) := Finite.of_surjective (Submodule.factor hle) (by`. Introduce and unpack `⟨x⟩`. Conclude with `⟨Submodule.Quotient.mk x, rfl⟩)`. Conclude with `@AddSubgroup.index_ne_zero_of_finite _ _ _ this`.
+-/
 theorem _root_.GlobalTheory.SW.TwistAdm.relIndex_ne_zero (A B : _root_.GlobalTheory.SW.Lt E N)
     (hB : B.FG) {t : ℕ} (ht : 0 < t)
     (h : ∀ v ∈ B, (t : E) • v ∈ A) : A.toAddSubgroup.relIndex B.toAddSubgroup ≠ 0 := by
@@ -94,6 +125,9 @@ theorem _root_.GlobalTheory.SW.TwistAdm.relIndex_ne_zero (A B : _root_.GlobalThe
 open Matrix Complex NumberField Filter Topology in
 open scoped ComplexConjugate ComplexOrder Real Classical in
 variable {E : Type} [Field E] [NumberField E] {n N : ℕ} in
+/- English proof (translation)
+Unfold `_root_.GlobalTheory.SW.stdL`. Conclude with `Submodule.fg_span (Set.finite_range _)`.
+-/
 theorem _root_.GlobalTheory.SW.TwistAdm.std_fg : (_root_.GlobalTheory.SW.stdL E N).FG := by
   unfold _root_.GlobalTheory.SW.stdL
   exact Submodule.fg_span (Set.finite_range _)
@@ -101,6 +135,11 @@ theorem _root_.GlobalTheory.SW.TwistAdm.std_fg : (_root_.GlobalTheory.SW.stdL E 
 open Matrix Complex NumberField Filter Topology in
 open scoped ComplexConjugate ComplexOrder Real Classical in
 variable {E : Type} [Field E] [NumberField E] {n N : ℕ} in
+/- English proof (translation)
+Introduce `a`. Establish `h1` using `hx _ (hs _ (_root_.GlobalTheory.SW.TwistAdm.single_mem_std a))`. Establish `e : ((R : E) • ((s : E) • x))ᵀ a = (R : E) • (x *ᵥ ((s : E) • Pi.single a 1))`. Rewrite using `[_root_.GlobalTheory.SW.TwistAdm.col_eq, Matrix.smul_mulVec, Matrix.smul_mulVec, Matrix.mulVec_smul]`. Rewrite using `[e]`.
+
+Conclude with `h1`.
+-/
 theorem _root_.GlobalTheory.SW.TwistAdm.cols_of_cond {R s : ℕ} {𝔛 : _root_.GlobalTheory.SW.Lt E N}
     {Λ : _root_.GlobalTheory.SW.Lt E n} {x : Matrix (Fin n) (Fin N) E}
     (hs : ∀ v ∈ _root_.GlobalTheory.SW.stdL E N, (s : E) • v ∈ 𝔛)
@@ -116,6 +155,11 @@ theorem _root_.GlobalTheory.SW.TwistAdm.cols_of_cond {R s : ℕ} {𝔛 : _root_.
 
 variable [IsCMField E]
 
+/- English proof (translation)
+Take `⟨k, hk⟩` from `hs.symm.dvd`. Establish `h1 : (s : E) = 1 + R * (k * R)`. Use `congrArg (Int.cast : ℤ → E) hk` as an intermediate fact. Move the coercions through the operations in `at this`. Take the linear combination `this`.
+
+Establish `: (s : E) • x = x + (R : E) • ((k : E) • ((R : E) • x))`. Rewrite using `[h1, add_smul, one_smul, smul_smul, smul_smul, mul_assoc]`. Rewrite using `[this]`. Use `hφ.per Λ hΛ _ _ fun a => ?_` and prove the remaining obligations. Conclude with `int_smul_mem Λ k (hx a)`.
+-/
 theorem val_smul {M R : ℕ} {φ : Fam E n N} (hφ : admitted M R φ) {Λ : Lt E n} (hΛ : Λ ∈ Vset E n M)
     {x : Matrix (Fin n) (Fin N) E} {s : ℕ} (hs : s ≡ 1 [MOD R ^ 2])
     (hx : ColsIn Λ ((R : E) • x)) : φ Λ ((s : E) • x) = φ Λ x := by
@@ -135,6 +179,13 @@ open scoped ComplexConjugate ComplexOrder Real Classical in
 variable {E : Type} [Field E] [NumberField E] {n N : ℕ} in
 variable [IsCMField E] in
 omit [IsCMField E] in
+/- English proof (translation)
+Take `⟨s, -, hcop, -, hstd⟩` from `h`. Establish `hc : s.Coprime (R ^ 2)` using `Nat.Coprime.pow_right 2 (Nat.Coprime.coprime_dvd_right (dvd_mul_right R M) hcop)`. Break down `Nat.lt_or_ge 1 (R ^ 2) with hlt | hle` into its components or cases. Take `⟨m, -, hm⟩` from `Nat.exists_mul_mod_eq_one_of_coprime hc hlt`. Use `⟨s * m, ?_, fun v hv => ?_⟩` and prove the remaining obligations.
+
+Use `show s * m % R ^ 2 = 1 % R ^ 2`. Rewrite using `[hm, Nat.mod_eq_of_lt hlt]`. Use `_root_.GlobalTheory.SW.TwistAdm.nat_smul_mem 𝔛 m (hstd v hv)` as an intermediate fact. Rewrite `this` using `[smul_smul, ← Nat.cast_mul, Nat.mul_comm]`. Then use the resulting hypothesis. Establish `hR1 : R ^ 2 = 1` using `le_antisymm hle (Nat.one_le_iff_ne_zero.mpr (pow_ne_zero 2 hR.ne'))`.
+
+Conclude with `⟨s, by rw [hR1]; exact Nat.modEq_one, hstd⟩`.
+-/
 theorem _root_.GlobalTheory.SW.TwistAdm.exists_mult {M R : ℕ} (hR : 0 < R)
     {𝔛 : _root_.GlobalTheory.SW.Lt E N}
     (h : _root_.GlobalTheory.SW.Agree (R * M) 𝔛 (_root_.GlobalTheory.SW.stdL E N)) :
@@ -158,6 +209,11 @@ open scoped ComplexConjugate ComplexOrder Real Classical in
 variable {E : Type} [Field E] [NumberField E] {n N : ℕ} in
 variable [IsCMField E] in
 omit [IsCMField E] in
+/- English proof (translation)
+Distinguish the cases in `h : ∀ ξ ∈ 𝔛, (R : E) • (x *ᵥ ξ) ∈ Λ`. Rewrite using `[if_pos h]`. Simplify using `only [_root_.GlobalTheory.SW.twist]`. Rewrite using `[dif_pos ⟨h, hex⟩]`. Rewrite using `[if_neg h]`.
+
+Simplify using `only [_root_.GlobalTheory.SW.twist]`. Rewrite using `[dif_neg (fun h' => h h'.1)]`.
+-/
 theorem _root_.GlobalTheory.SW.TwistAdm.twist_eq {R : ℕ} {𝔛 : _root_.GlobalTheory.SW.Lt E N}
     (φ : _root_.GlobalTheory.SW.Fam E n N)
     (hex : ∃ s : ℕ, s ≡ 1 [MOD R ^ 2] ∧ ∀ v ∈ _root_.GlobalTheory.SW.stdL E N, (s : E) • v ∈ 𝔛)
@@ -176,6 +232,13 @@ open Matrix Complex NumberField Filter Topology in
 open scoped ComplexConjugate ComplexOrder Real Classical in
 variable {E : Type} [Field E] [NumberField E] {n N : ℕ} in
 variable [IsCMField E] in
+/- English proof (translation)
+Establish `hnat : ∀ (z : Matrix (Fin n) (Fin N) E) (m : ℕ), φ Λ (z + ((R : E) * (m : E)) • y) = φ Λ z`. Introduce `z m`. Rewrite using `[mul_smul]`. Use `hφ.per Λ hΛ z _ (fun a => ?_)` and prove the remaining obligations. Rewrite using `[Matrix.transpose_smul]`.
+
+Conclude with `_root_.GlobalTheory.SW.TwistAdm.nat_smul_mem Λ m (hy a)`. Take `⟨m, rfl | rfl⟩` from `Int.eq_nat_or_neg k`. Simplify using `using hnat x m`. Use `hnat (x + ((R : E) * (((-(m : ℤ)) : ℤ) : E)) • y) m` as an intermediate fact. Rewrite using `[← this]`.
+
+Use `congr 1`. Use `push_cast`. Rewrite using `[add_assoc, ← add_smul]`. Simplify using the standard rewrite rules.
+-/
 private theorem adm_apply_add_mul_intCast_smul {M R : ℕ} {φ : _root_.GlobalTheory.SW.Fam E n N}
     (hφ : _root_.GlobalTheory.SW.admitted M R φ) {Λ : _root_.GlobalTheory.SW.Lt E n}
     (hΛ : Λ ∈ _root_.GlobalTheory.SW.Vset E n M) (x y : Matrix (Fin n) (Fin N) E)
@@ -200,6 +263,13 @@ open Matrix Complex NumberField Filter Topology in
 open scoped ComplexConjugate ComplexOrder Real Classical in
 variable {E : Type} [Field E] [NumberField E] {n N : ℕ} in
 variable [IsCMField E] in
+/- English proof (translation)
+Take `⟨k, hk⟩` from `Nat.modEq_iff_dvd.mp hu.symm`. Establish `hkE : (u : E) = 1 + (R : E) ^ 2 * (k : E)`. Use `congrArg (Int.cast : ℤ → E) hk` as an intermediate fact. Move the coercions through the operations in `at this`. Take the linear combination `this`.
+
+Establish `e : ((t * u : ℕ) : E) = (t : E) + ((R : E) * (k : E)) * ((R : E) * (t : E))`. Use `push_cast`. Rewrite using `[hkE]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[← adm_apply_add_mul_intCast_smul hφ hΛ ((t : E) • x) _ ht k]`.
+
+Use `congr 1`. Simplify using `only [e, add_smul, mul_smul]`.
+-/
 private theorem adm_apply_mul_congr_one_mod_sq {M R : ℕ} {φ : _root_.GlobalTheory.SW.Fam E n N}
     (hφ : _root_.GlobalTheory.SW.admitted M R φ) {Λ : _root_.GlobalTheory.SW.Lt E n}
     (hΛ : Λ ∈ _root_.GlobalTheory.SW.Vset E n M) (x : Matrix (Fin n) (Fin N) E) {t u : ℕ}
@@ -222,6 +292,9 @@ open Matrix Complex NumberField Filter Topology in
 open scoped ComplexConjugate ComplexOrder Real Classical in
 variable {E : Type} [Field E] [NumberField E] {n N : ℕ} in
 variable [IsCMField E] in
+/- English proof (translation)
+Take `⟨-, hR⟩` from `hφ.pos`. Establish `hex` using `_root_.GlobalTheory.SW.TwistAdm.exists_mult hR hA`. Rewrite using `[_root_.GlobalTheory.SW.TwistAdm.twist_eq φ hex, if_pos h]`. Establish `hc0` using `_root_.GlobalTheory.SW.TwistAdm.cols_of_cond hex.choose_spec.2 h`. Rewrite using `[← adm_apply_mul_congr_one_mod_sq hφ hΛ x hs hc0, Nat.mul_comm hex.choose s, adm_apply_mul_congr_one_mod_sq hφ hΛ x hex.choose_spec.1 hx]`.
+-/
 theorem _root_.GlobalTheory.SW.TwistAdm.twist_val {M R : ℕ} {φ : _root_.GlobalTheory.SW.Fam E n N}
     {𝔛 : _root_.GlobalTheory.SW.Lt E N} (hφ : _root_.GlobalTheory.SW.admitted M R φ)
     (hA : _root_.GlobalTheory.SW.Agree (R * M) 𝔛 (_root_.GlobalTheory.SW.stdL E N))
@@ -236,6 +309,11 @@ theorem _root_.GlobalTheory.SW.TwistAdm.twist_val {M R : ℕ} {φ : _root_.Globa
   rw [← adm_apply_mul_congr_one_mod_sq hφ hΛ x hs hc0, Nat.mul_comm hex.choose s,
     adm_apply_mul_congr_one_mod_sq hφ hΛ x hex.choose_spec.1 hx]
 
+/- English proof (translation)
+Establish `hA : Agree (R * M) (stdL E N) (stdL E N)` using `⟨1, one_pos, Nat.coprime_one_left _, fun v hv => by simpa using hv, fun v hv => by simpa using hv⟩`. Use function extensionality and compare the values at `x`. Distinguish the cases in `h : ∀ ξ ∈ stdL E N, (R : E) • (x *ᵥ ξ) ∈ Λ`. Rewrite using `[twist_val hφ hA hΛ x 1 rfl h (cols_of_cond (fun v hv => by simpa using hv) h)]`. Simplify using the standard rewrite rules.
+
+Rewrite using `[twist_eq φ (exists_mult hφ.pos.2 hA), if_neg h]`. Assume the negation of the conclusion as `h0`. Use `h fun ξ hξ => ?_` and prove the remaining obligations. Rewrite using `[← Matrix.smul_mulVec]`. Conclude with `colsIn_mulVec (hφ.supp Λ hΛ x (Ne.symm h0)) hξ`.
+-/
 theorem twist_std {M R : ℕ} {φ : Fam E n N} (hφ : admitted M R φ) {Λ : Lt E n} (hΛ : Λ ∈ Vset E n M) :
     twist R (stdL E N) φ Λ = φ Λ := by
   have hA : Agree (R * M) (stdL E N) (stdL E N) :=
@@ -254,6 +332,25 @@ open Matrix Complex NumberField Filter Topology in
 open scoped ComplexConjugate ComplexOrder Real Classical in
 variable {E : Type} [Field E] [NumberField E] {n N : ℕ} in
 variable [IsCMField E] in
+/- English proof (translation)
+Take `⟨-, hR⟩` from `hφ.pos`. Establish `hex` using `_root_.GlobalTheory.SW.TwistAdm.exists_mult hR hA`. Use `⟨fun x hx => ?_, fun x y hy => ?_⟩` and prove the remaining obligations. Establish `hx' : _root_.GlobalTheory.SW.twist R 𝔛 φ Λ (x * a) ≠ 0` using `hx`. Rewrite `hx'` using `[_root_.GlobalTheory.SW.TwistAdm.twist_eq φ hex]`.
+
+Establish `hcond : ∀ ξ ∈ 𝔛, (R : E) • ((x * a) *ᵥ ξ) ∈ Λ`. Assume the negation of the conclusion as `hc`. Conclude with `hx' (if_neg hc)`. Introduce `b`. Take `⟨ξ, hξ, hξa⟩` from `h1 _ (_root_.GlobalTheory.SW.TwistAdm.single_mem_std b)`.
+
+Establish `hmem` using `hcond ξ hξ`. Rewrite `hmem` using `[← Matrix.mulVec_mulVec, hξa, Matrix.mulVec_smul, smul_smul]`. Rewrite using `[_root_.GlobalTheory.SW.TwistAdm.col_eq, Matrix.smul_mulVec, Nat.cast_mul]`. Conclude with `hmem`. Use `show _root_.GlobalTheory.SW.twist R 𝔛 φ Λ ((x + ((R * c : ℕ) : E) • y) * a) = _root_.GlobalTheory.SW.twist R 𝔛 φ Λ (x * a)`.
+
+Establish `hmv : ∀ ξ, ((x + ((R * c : ℕ) : E) • y) * a) *ᵥ ξ = (x * a) *ᵥ ξ + (R : E) • (y *ᵥ ((c : E) • (a *ᵥ ξ)))`. Introduce `ξ`. Rewrite using `[Matrix.add_mul, Matrix.add_mulVec, Matrix.smul_mul, Matrix.smul_mulVec]`. Simplify using `only [← Matrix.mulVec_mulVec, Matrix.mulVec_smul, smul_smul, Nat.cast_mul]`. Establish `hiff : (∀ ξ ∈ 𝔛, (R : E) • (((x + ((R * c : ℕ) : E) • y) * a) *ᵥ ξ) ∈ Λ) ↔ ∀ ξ ∈ 𝔛, (R : E) • ((x * a) *ᵥ ξ) ∈ Λ`.
+
+Use `forall₂_congr fun ξ hξ => ?_` and prove the remaining obligations. Rewrite using `[hmv, smul_add]`. Conclude with `Λ.add_mem_iff_left (_root_.GlobalTheory.SW.TwistAdm.nat_smul_mem Λ R (_root_.GlobalTheory.SW.TwistAdm.nat_smul_mem Λ R (_root_.GlobalTheory.SW.TwistAdm.colsIn_mulVec hy (h2 ξ hξ))))`. Rewrite using `[_root_.GlobalTheory.SW.TwistAdm.twist_eq φ hex, _root_.GlobalTheory.SW.TwistAdm.twist_eq φ hex]`. Distinguish the cases in `hc : ∀ ξ ∈ 𝔛, (R : E) • ((x * a) *ᵥ ξ) ∈ Λ`.
+
+Rewrite using `[if_pos (hiff.mpr hc), if_pos hc]`. Establish `hs` using `hex.choose_spec.2`. Establish `hcols : _root_.GlobalTheory.SW.ColsIn Λ ((hex.choose : E) • (y * ((c : E) • a)))`. Introduce `b`. Establish `hb` using `h2 _ (hs _ (_root_.GlobalTheory.SW.TwistAdm.single_mem_std b))`.
+
+Establish `hmem` using `_root_.GlobalTheory.SW.TwistAdm.colsIn_mulVec hy hb`. Establish `e : ((hex.choose : E) • (y * ((c : E) • a)))ᵀ b = y *ᵥ ((c : E) • (a *ᵥ ((hex.choose : E) • Pi.single b 1)))`. Rewrite using `[_root_.GlobalTheory.SW.TwistAdm.col_eq, Matrix.smul_mulVec, ← Matrix.mulVec_mulVec, Matrix.smul_mulVec, Matrix.mulVec_smul, Matrix.mulVec_smul, Matrix.mulVec_smul, Matrix.mulVec_smul, smul_comm]`. Rewrite using `[e]`. Conclude with `hmem`.
+
+Establish `key : (hex.choose : E) • ((x + ((R * c : ℕ) : E) • y) * a) = (hex.choose : E) • (x * a) + (R : E) • ((hex.choose : E) • (y * ((c : E) • a)))`. Rewrite using `[Matrix.add_mul, Matrix.smul_mul, Matrix.mul_smul]`. Use `push_cast`. Use `module`. Rewrite using `[key]`.
+
+Conclude with `hφ.per Λ hΛ _ _ hcols`. Rewrite using `[if_neg (mt hiff.mp hc), if_neg hc]`.
+-/
 theorem _root_.GlobalTheory.SW.TwistAdm.twist_level {M R : ℕ}
     {φ : _root_.GlobalTheory.SW.Fam E n N} {𝔛 : _root_.GlobalTheory.SW.Lt E N}
     (hφ : _root_.GlobalTheory.SW.admitted M R φ)
@@ -321,6 +418,23 @@ open Matrix Complex NumberField Filter Topology in
 open scoped ComplexConjugate ComplexOrder Real Classical in
 variable {E : Type} [Field E] [NumberField E] {n N : ℕ} in
 variable [IsCMField E] in
+/- English proof (translation)
+Take `⟨hM, hR⟩` from `hφ.pos`. Take `⟨t, ht0, htcop, hXstd, hstdX⟩` from `id hA`. Establish `hex` using `_root_.GlobalTheory.SW.TwistAdm.exists_mult hR hA`. Establish `hlev : ∀ Λ ∈ _root_.GlobalTheory.SW.Vset E n M, _root_.GlobalTheory.SW.LevelL Λ (R * t) (_root_.GlobalTheory.SW.twist R 𝔛 φ Λ)`. Introduce `Λ hΛ`.
+
+Use `_root_.GlobalTheory.SW.TwistAdm.twist_level hφ hA (1 : Matrix (Fin N) (Fin N) E) t (fun v hv => ⟨(t : E) • v, hstdX v hv, by rw [Matrix.one_mulVec]⟩) (fun ξ hξ => by rw [Matrix.one_mulVec]; exact hXstd ξ hξ) hΛ` as an intermediate fact. Simplify `this` using `only [Matrix.mul_one]`. Use `⟨R * t, ⟨⟨hM, Nat.mul_pos hR ht0⟩, ?_, fun Λ hΛ => (hlev Λ hΛ).1, fun Λ hΛ => (hlev Λ hΛ).2, ?_⟩⟩` and prove the remaining obligations. Introduce `h hh Λ hΛ Λ' hΛ' hcar x`. Establish `hcar' : ∀ v, v ∈ Λ ↔ h *ᵥ v ∈ Λ'` using `hcar`.
+
+Establish `hiff : (∀ ξ ∈ 𝔛, (R : E) • ((h * x) *ᵥ ξ) ∈ Λ') ↔ ∀ ξ ∈ 𝔛, (R : E) • (x *ᵥ ξ) ∈ Λ`. Use `forall₂_congr fun ξ _ => ?_` and prove the remaining obligations. Rewrite using `[← Matrix.mulVec_mulVec, ← Matrix.mulVec_smul, ← hcar']`. Rewrite using `[_root_.GlobalTheory.SW.TwistAdm.twist_eq φ hex, _root_.GlobalTheory.SW.TwistAdm.twist_eq φ hex]`. Distinguish the cases in `hc : ∀ ξ ∈ 𝔛, (R : E) • (x *ᵥ ξ) ∈ Λ`.
+
+Rewrite using `[if_pos (hiff.mpr hc), if_pos hc, ← Matrix.mul_smul]`. Conclude with `hφ.equiv h hh Λ hΛ Λ' hΛ' hcar _`. Rewrite using `[if_neg (mt hiff.mp hc), if_neg hc]`. Introduce `Λ hΛ Λ' hΛ' hagr x hx hx'`. Take `⟨u, hu0, hucop, hΛΛ', hΛ'Λ⟩` from `id hagr`.
+
+Establish `hut1 : u.Coprime t` using `Nat.Coprime.coprime_dvd_right ((dvd_mul_left t R).mul_right M) hucop`. Establish `hut : u.Coprime (t * t)` using `Nat.Coprime.mul_right hut1 hut1`. Establish `transfer : ∀ {A B : _root_.GlobalTheory.SW.Lt E n}, _root_.GlobalTheory.SW.ColsIn B (((R * t : ℕ) : E) • x) → (∀ v ∈ A, (u : E) • v ∈ B) → ∀ ξ ∈ 𝔛, (R : E) • (x *ᵥ ξ) ∈ A → (R : E) • (x *ᵥ ξ) ∈ B`. Introduce `A B hB hAB ξ hξ hmem`. Use `_root_.GlobalTheory.SW.TwistAdm.mem_of_coprime B hut (hAB _ hmem) ?_` and prove the remaining obligations.
+
+Establish `hB'` using `_root_.GlobalTheory.SW.TwistAdm.colsIn_mulVec hB (hXstd ξ hξ)`. Establish `e : ((t * t : ℕ) : E) • (R : E) • (x *ᵥ ξ) = (((R * t : ℕ) : E) • x) *ᵥ ((t : E) • ξ)`. Simplify using `only [Matrix.smul_mulVec, Matrix.mulVec_smul, smul_smul]`. Use `congr 1`. Use `push_cast`.
+
+Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e]`. Conclude with `hB'`. Establish `hiff : (∀ ξ ∈ 𝔛, (R : E) • (x *ᵥ ξ) ∈ Λ) ↔ ∀ ξ ∈ 𝔛, (R : E) • (x *ᵥ ξ) ∈ Λ'` using `⟨fun hc ξ hξ => transfer hx' hΛΛ' ξ hξ (hc ξ hξ), fun hc ξ hξ => transfer hx hΛ'Λ ξ hξ (hc ξ hξ)⟩`. Rewrite using `[_root_.GlobalTheory.SW.TwistAdm.twist_eq φ hex, _root_.GlobalTheory.SW.TwistAdm.twist_eq φ hex]`.
+
+Distinguish the cases in `hc : ∀ ξ ∈ 𝔛, (R : E) • (x *ᵥ ξ) ∈ Λ`. Rewrite using `[if_pos hc, if_pos (hiff.mp hc)]`. Establish `hagrRM : _root_.GlobalTheory.SW.Agree (R * M) Λ Λ'` using `⟨u, hu0, Nat.Coprime.coprime_dvd_right (Nat.mul_dvd_mul (dvd_mul_right R t) dvd_rfl) hucop, hΛΛ', hΛ'Λ⟩`. Conclude with `hφ.loc Λ hΛ Λ' hΛ' hagrRM _ (_root_.GlobalTheory.SW.TwistAdm.cols_of_cond hex.choose_spec.2 hc) (_root_.GlobalTheory.SW.TwistAdm.cols_of_cond hex.choose_spec.2 (hiff.mp hc))`. Rewrite using `[if_neg hc, if_neg (mt hiff.mpr hc)]`.
+-/
 theorem _root_.GlobalTheory.SW.TwistAdm.twist_adm {M R : ℕ}
     {φ : _root_.GlobalTheory.SW.Fam E n N} {𝔛 : _root_.GlobalTheory.SW.Lt E N}
     (hφ : _root_.GlobalTheory.SW.admitted M R φ)
@@ -380,6 +494,9 @@ theorem _root_.GlobalTheory.SW.TwistAdm.twist_adm {M R : ℕ}
     · rw [if_neg hc, if_neg (mt hiff.mpr hc)]
 
 omit [IsCMField E] in
+/- English proof (translation)
+Take `⟨t, ht, -, h1, h2⟩` from `hA`. Conclude with `div_pos (Nat.cast_pos.2 (Nat.pos_of_ne_zero (relIndex_ne_zero _ _ hfg ht h1))) (Nat.cast_pos.2 (Nat.pos_of_ne_zero (relIndex_ne_zero _ _ std_fg ht h2)))`.
+-/
 theorem gidx_pos {m : ℕ} {𝔛 : Lt E N} (hfg : 𝔛.FG) (hA : Agree m 𝔛 (stdL E N)) : 0 < gidx 𝔛 := by
   obtain ⟨t, ht, -, h1, h2⟩ := hA
   exact div_pos (Nat.cast_pos.2 (Nat.pos_of_ne_zero (relIndex_ne_zero _ _ hfg ht h1)))
@@ -390,6 +507,15 @@ end GlobalTheory.SW.TwistAdm
 open Matrix Complex NumberField Filter Topology in
 open scoped ComplexConjugate ComplexOrder Real Classical in
 
+/- English proof (translation)
+Introduce `E _ _ _ n N M R φ 𝔛 hφ hfg hA`. Use `⟨fun Λ hΛ x s hs h hx => _root_.GlobalTheory.SW.TwistAdm.twist_val hφ hA hΛ x s hs h hx, fun Λ hΛ => ?_, _root_.GlobalTheory.SW.Base.gidx_stdL, ?_, _root_.GlobalTheory.SW.TwistAdm.twist_adm hφ hA, fun a c _ _ h1 h2 Λ hΛ => _root_.GlobalTheory.SW.TwistAdm.twist_level hφ hA a c h1 …` and prove the remaining obligations. Establish `hstd1 : ∀ v ∈ _root_.GlobalTheory.SW.stdL E N, ((1 : ℕ) : E) • v ∈ _root_.GlobalTheory.SW.stdL E N` using `fun v hv => by`. Rewrite using `[Nat.cast_one, one_smul]` and apply the resulting hypothesis. Establish `hAstd : _root_.GlobalTheory.SW.Agree (R * M) (_root_.GlobalTheory.SW.stdL E N) (_root_.GlobalTheory.SW.stdL E N)` using `⟨1, one_pos, Nat.coprime_one_left _, hstd1, hstd1⟩`.
+
+Use function extensionality and compare the values at `x`. Distinguish the cases in `hc : ∀ ξ ∈ _root_.GlobalTheory.SW.stdL E N, (R : E) • (x *ᵥ ξ) ∈ Λ`. Establish `hcols` using `_root_.GlobalTheory.SW.TwistAdm.cols_of_cond hstd1 hc`. Rewrite using `[_root_.GlobalTheory.SW.TwistAdm.twist_val hφ hAstd hΛ x 1 (Nat.ModEq.refl 1) hc hcols, Nat.cast_one, one_smul]`. Establish `hex : ∃ s : ℕ, s ≡ 1 [MOD R ^ 2] ∧ ∀ v ∈ _root_.GlobalTheory.SW.stdL E N, (s : E) • v ∈ _root_.GlobalTheory.SW.stdL E N` using `⟨1, Nat.ModEq.refl 1, hstd1⟩`.
+
+Rewrite using `[_root_.GlobalTheory.SW.TwistAdm.twist_eq φ hex, if_neg hc]`. Assume the negation of the conclusion as `hne`. Conclude with `hc fun ξ hξ => by`. Rewrite using `[← Matrix.smul_mulVec]`. Conclude with `_root_.GlobalTheory.SW.TwistAdm.colsIn_mulVec (hφ.supp Λ hΛ x (Ne.symm hne)) hξ`.
+
+Take `⟨t, ht0, -, hXstd, hstdX⟩` from `id hA`. Unfold `_root_.GlobalTheory.SW.gidx`. Establish `h1` using `_root_.GlobalTheory.SW.TwistAdm.relIndex_ne_zero (_root_.GlobalTheory.SW.stdL E N) 𝔛 hfg ht0 hXstd`. Establish `h2` using `_root_.GlobalTheory.SW.TwistAdm.relIndex_ne_zero 𝔛 _ _root_.GlobalTheory.SW.TwistAdm.std_fg ht0 hstdX`. Conclude with `div_pos (Nat.cast_pos.mpr (Nat.pos_of_ne_zero h1)) (Nat.cast_pos.mpr (Nat.pos_of_ne_zero h2))`.
+-/
 theorem _root_.GlobalTheory.SW.twist_admissible : ∀ (E : Type) [Field E]
     [NumberField E] [IsCMField E] (n N M R : ℕ) (φ : _root_.GlobalTheory.SW.Fam E n N)
     (𝔛 : _root_.GlobalTheory.SW.Lt E N), _root_.GlobalTheory.SW.admitted M R φ → 𝔛.FG →

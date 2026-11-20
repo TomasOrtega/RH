@@ -2,6 +2,17 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.WeilGroupCharacter
 
 open IsLocalRing UpperTheory.V.Alg UpperTheory.V.W
 
+/- English proof (translation)
+Set `p : Pair r T` to `⟨D, ψ, hc, hred, fun v i => (hpsi v i).1, hrel.1, hrel.2.1, hrel.2.2⟩`. Take `⟨f, hf, -⟩` from `B.univ T p`. Use `⟨f, hf.1, hf.2, ?_⟩` and prove the remaining obligations. Set `κ' : ∀ v, Fin n → F.Iv v →* Tˣ` to `fun v i => (ψ v i).comp (F.Iv v).subtype`. Establish `hin : IsInert r κ'` using `fun v i => ⟨ψ v i, (hpsi v i).1, rfl⟩`.
+
+Take `⟨g, -, hu⟩` from `Λ.univ T κ' hin`. Establish `h1 : ∀ v i, pushCh ((f.comp (Λ.toPair B.u) : Λ.Λ →ₐ[O] T) : Λ.Λ →+* T) (Λ.κ v i) = κ' v i`. Introduce `v i`. Establish `e1` using `LamObj.toPair_spec r Λ B.u v i`. Establish `e2` using `hf.2 v i`.
+
+Combine the equalities or inequalities in the displayed calculation. Use extensionality with `s`. Both sides reduce to the same expression. Use `_ = pushCh (f : B.B →+* T) ((B.u.ψ v i).comp (F.Iv v).subtype) := by rw [e1]`. Use `_ = (pushCh (f : B.B →+* T) (B.u.ψ v i)).comp (F.Iv v).subtype := by`.
+
+Use extensionality with `s`. Both sides reduce to the same expression. Use `_ = κ' v i := by rw [e2]`. Establish `h2 : ∀ v i, pushCh (φ : Λ.Λ →+* T) (Λ.κ v i) = κ' v i` using `fun v i => (hpsi v i).2`. Establish `heq` using `(hu _ h1).trans (hu _ h2).symm`.
+
+Introduce `b`. Conclude with `DFunLike.congr_fun heq b`.
+-/
 theorem UpperTheory.V.Hi.JEx.map_of_rel {l : ℕ} [Fact l.Prime] {F : GFrame l} {O : Type} [CommRing O] [IsLocalRing O]
     [Algebra ℤ_[l] O] {n : ℕ} {r : Resid F O n} (B : UniversalOrdinaryDeterminantRing r) (Λ : LamObj r) {T : Type} [CommRing T] [Algebra O T]
     [IsCO O T] (φ : Λ.Λ →ₐ[O] T) (D : GDet n T F.G₀) (ψ : ∀ v, Fin n → F.Gv v →* Tˣ) (hc : D.IsCont (maximalIdeal T))

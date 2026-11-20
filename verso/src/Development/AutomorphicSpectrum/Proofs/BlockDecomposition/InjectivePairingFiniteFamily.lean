@@ -15,6 +15,9 @@ namespace GlobalTheory.CompanionTheory.WSum.Sep
 
 variable {D : D7} {r : ℕ}
 
+/- English proof (translation)
+Establish `h : infPart D (incA D x) = (1 : Ainf D.host.F) ⊗ₜ[D.host.F] x`. Simplify using `[infPart, incA, inclR]`. Rewrite using `[h]`. Conclude with `(hθ τ).1 x`.
+-/
 theorem theta_incA {θ : InfFam D} (hθ : IsInfFam θ) (τ : D.what₂.Tau) (x : D.host.E) :
     θ τ (infPart D (incA D x)) = tauE D τ x := by
   have h : infPart D (incA D x) = (1 : Ainf D.host.F) ⊗ₜ[D.host.F] x := by
@@ -22,6 +25,9 @@ theorem theta_incA {θ : InfFam D} (hθ : IsInfFam θ) (τ : D.what₂.Tau) (x :
   rw [h]
   exact (hθ τ).1 x
 
+/- English proof (translation)
+Unfold `pairF lam`. Simplify using `only [← map_mul, theta_incA hθ]`.
+-/
 theorem pairF_eq {θ : InfFam D} (hθ : IsInfFam θ) (α : D.host.F) (a β : HermE D r) :
     pairF θ α a β =
       -∑ τ, (tauE D τ (algebraMap D.host.F D.host.E α * Matrix.trace (β.1 * a.1))).re := by
@@ -49,11 +55,17 @@ def hermQ (D : D7) (r : ℕ) : Submodule ℚ (Matrix (Fin r) (Fin r) D.host.E) w
     simp only [Matrix.transpose_apply, Matrix.map_apply] at h1 ⊢
     simp only [Matrix.smul_apply, map_rat_smul, h1]
 
+/- English proof (translation)
+Take `⟨w⟩ : Nonempty (NumberField.InfinitePlace D.host.F)` from `inferInstance`. Take `⟨τ, -⟩` from `(GlobalTheory.CMTypePlaces.places_bijective D).2 w`. Conclude with `⟨τ⟩`.
+-/
 theorem tau_nonempty (D : D7) : Nonempty D.what₂.Tau := by
   obtain ⟨w⟩ : Nonempty (NumberField.InfinitePlace D.host.F) := inferInstance
   obtain ⟨τ, -⟩ := (GlobalTheory.CMTypePlaces.places_bijective D).2 w
   exact ⟨τ⟩
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce `h i j`. Conclude with `congrFun (congrFun h i) j`. Introduce `h`. Conclude with `Matrix.ext fun i j => h i j`.
+-/
 theorem mem_hermQ {b : Matrix (Fin r) (Fin r) D.host.E} :
     b ∈ hermQ D r ↔ ∀ i j, D.sp.cm.sig (b j i) = b i j := by
   constructor
@@ -70,25 +82,40 @@ def formH (α : D.host.F) (δ : Matrix (Fin r) (Fin r) D.host.E) : hermQ D r →
       simp only [Submodule.coe_add, mul_add, Matrix.trace_add, map_add, Complex.add_re,
         Finset.sum_add_distrib])
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem formH_apply (α : D.host.F) (δ : Matrix (Fin r) (Fin r) D.host.E) (a : hermQ D r) :
     formH α δ a =
       ∑ τ, (tauE D τ (algebraMap D.host.F D.host.E α * Matrix.trace (δ * a.1))).re := rfl
 
+/- English proof (translation)
+Establish `e : (formH α δ).toRatLinearMap = 0` using `b.ext (fun k => by simpa using h k)`. Simplify using `using LinearMap.congr_fun e a`.
+-/
 theorem formH_eq_zero {d : ℕ} (b : Module.Basis (Fin d) ℚ (hermQ D r)) {α : D.host.F}
     {δ : Matrix (Fin r) (Fin r) D.host.E} (h : ∀ k, formH α δ (b k) = 0) (a : hermQ D r) :
     formH α δ a = 0 := by
   have e : (formH α δ).toRatLinearMap = 0 := b.ext (fun k => by simpa using h k)
   simpa using LinearMap.congr_fun e a
 
+/- English proof (translation)
+Simplify using `only [formH_apply, sub_mul, Matrix.trace_sub, mul_sub, map_sub, Complex.sub_re, Finset.sum_sub_distrib]`.
+-/
 theorem formH_sub_left (α : D.host.F) (b b' : Matrix (Fin r) (Fin r) D.host.E) (a : hermQ D r) :
     formH α (b - b') a = formH α b a - formH α b' a := by
   simp only [formH_apply, sub_mul, Matrix.trace_sub, mul_sub, map_sub, Complex.sub_re,
     Finset.sum_sub_distrib]
 
+/- English proof (translation)
+The claim follows from `pairF_eq hθ α ⟨a.1, a.2⟩ β`.
+-/
 theorem pairF_eq_formH {θ : InfFam D} (hθ : IsInfFam θ) (α : D.host.F) (β : HermE D r)
     (a : hermQ D r) : pairF θ α ⟨a.1, a.2⟩ β = -formH α β.1 a :=
   pairF_eq hθ α ⟨a.1, a.2⟩ β
 
+/- English proof (translation)
+Establish `e` using `pairF_eq_formH hθ α β a`. Establish `e'` using `pairF_eq_formH hθ α β' a`. Establish `e''` using `formH_sub_left α β.1 β'.1 a`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem formH_sub {θ : InfFam D} (hθ : IsInfFam θ) (α : D.host.F) (β β' : HermE D r)
     (a : hermQ D r) :
     formH α (β.1 - β'.1) a = pairF θ α ⟨a.1, a.2⟩ β' - pairF θ α ⟨a.1, a.2⟩ β := by
@@ -97,6 +124,17 @@ theorem formH_sub {θ : InfFam D} (hθ : IsInfFam θ) (α : D.host.F) (β β' : 
   have e'' := formH_sub_left α β.1 β'.1 a
   linarith
 
+/- English proof (translation)
+Introduce `hn`. Take `⟨τ⟩` from `tau_nonempty D`. Establish `hm` using `mem_hermQ.1 hδ`. Establish `hcm` using `Formalism.MainNotions.UnusedSlot34.isCMExt_D D`. Establish `hc : ∀ i j, tauE D τ (δ j i) = starRingEnd ℂ (tauE D τ (δ i j))`.
+
+Introduce `i j`. Rewrite using `[← hm j i]`. Conclude with `hcm.2.2.2 _ _`. Establish `hs : ((∑ i, ∑ j, Complex.normSq (tauE D τ (δ i j)) : ℝ) : ℂ) = 0`. Establish `e : tauE D τ (Matrix.trace (δ * δ)) = ((∑ i, ∑ j, Complex.normSq (tauE D τ (δ i j)) : ℝ) : ℂ)`.
+
+Use `push_cast`. Simplify using `only [Matrix.trace, Matrix.diag_apply, Matrix.mul_apply, map_sum, map_mul]`. Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[hc i j, Complex.mul_conj]`. Rewrite using `[← e, hn, map_zero]`.
+
+Establish `hs' : (∑ i, ∑ j, Complex.normSq (tauE D τ (δ i j))) = 0` using `by exact_mod_cast hs`. Apply `h0` to reduce the goal to its premises. Use extensionality with `i j`. Establish `h1` using `(Finset.sum_eq_zero_iff_of_nonneg (fun i _ => Finset.sum_nonneg fun j _ => Complex.normSq_nonneg _)).1 hs' i (Finset.mem_univ i)`. Establish `h2` using `(Finset.sum_eq_zero_iff_of_nonneg (fun j _ => Complex.normSq_nonneg _)).1 h1 j (Finset.mem_univ j)`.
+
+Establish `h3 : tauE D τ (δ i j) = 0` using `Complex.normSq_eq_zero.1 h2`. Simplify using `using h3`.
+-/
 theorem trace_sq_ne_zero {δ : Matrix (Fin r) (Fin r) D.host.E} (hδ : δ ∈ hermQ D r) (h0 : δ ≠ 0) :
     Matrix.trace (δ * δ) ≠ 0 := by
   intro hn
@@ -125,18 +163,37 @@ theorem trace_sq_ne_zero {δ : Matrix (Fin r) (Fin r) D.host.E} (hδ : δ ∈ he
   have h3 : tauE D τ (δ i j) = 0 := Complex.normSq_eq_zero.1 h2
   simpa using h3
 
+/- English proof (translation)
+Establish `hm` using `mem_hermQ.1 hδ`. Simplify using `only [Matrix.trace, Matrix.diag_apply, Matrix.mul_apply, map_sum, map_mul, hm]`. Rewrite using `[Finset.sum_comm]`.
+-/
 theorem sig_trace_sq {δ : Matrix (Fin r) (Fin r) D.host.E} (hδ : δ ∈ hermQ D r) :
     D.sp.cm.sig (Matrix.trace (δ * δ)) = Matrix.trace (δ * δ) := by
   have hm := mem_hermQ.1 hδ
   simp only [Matrix.trace, Matrix.diag_apply, Matrix.mul_apply, map_sum, map_mul, hm]
   rw [Finset.sum_comm]
 
+/- English proof (translation)
+Establish `hm` using `mem_hermQ.1 hδ`. Use `mem_hermQ.2 fun i j => ?_` and prove the remaining obligations. Simplify using `only [Matrix.smul_apply, smul_eq_mul, map_mul, map_inv₀, hx, hm]`.
+-/
 theorem inv_smul_mem {δ : Matrix (Fin r) (Fin r) D.host.E} (hδ : δ ∈ hermQ D r) {x : D.host.E}
     (hx : D.sp.cm.sig x = x) : x⁻¹ • δ ∈ hermQ D r := by
   have hm := mem_hermQ.1 hδ
   refine mem_hermQ.2 fun i j => ?_
   simp only [Matrix.smul_apply, smul_eq_mul, map_mul, map_inv₀, hx, hm]
 
+/- English proof (translation)
+Introduce `D r θ hθ α hα`. Set `b` to `Module.finBasis ℚ (hermQ D r)`. Use `⟨_, fun k => ⟨(b k).1, (b k).2⟩, ?_⟩` and prove the remaining obligations. Introduce `β β' h`. Assume the negation of the conclusion as `hne`.
+
+Establish `hδ : β.1 - β'.1 ∈ hermQ D r` using `sub_mem (show β.1 ∈ hermQ D r from β.2) (show β'.1 ∈ hermQ D r from β'.2)`. Establish `hδ0 : β.1 - β'.1 ≠ 0` using `sub_ne_zero.2 fun e => hne (Subtype.ext e)`. Establish `hz : ∀ a, formH α (β.1 - β'.1) a = 0`. Use `formH_eq_zero b fun k => ?_` and prove the remaining obligations. Rewrite using `[formH_sub hθ]`.
+
+Use `congrFun h k` as an intermediate fact. Conclude with `sub_eq_zero.2 this.symm`. Use `set δ := β.1 - β'.1 with hδdef`. Establish `hn` using `trace_sq_ne_zero hδ hδ0`. Establish `hαE : algebraMap D.host.F D.host.E α ≠ 0`.
+
+Simplify using `using hα`. Use `set x := algebraMap D.host.F D.host.E α * Matrix.trace (δ * δ) with hx`. Establish `hx0 : x ≠ 0` using `mul_ne_zero hαE hn`. Establish `hxs : D.sp.cm.sig x = x`. Rewrite using `[hx, map_mul, sig_trace_sq hδ, AlgHom.commutes]`.
+
+Establish `hv` using `hz ⟨x⁻¹ • δ, inv_smul_mem hδ hxs⟩`. Rewrite `hv` using `[formH_apply]`. Establish `h1 : algebraMap D.host.F D.host.E α * Matrix.trace (δ * (x⁻¹ • δ)) = 1`. Rewrite using `[Matrix.mul_smul, Matrix.trace_smul, smul_eq_mul, ← mul_assoc, mul_comm _ x⁻¹, mul_assoc, ← hx, inv_mul_cancel₀ hx0]`. Simplify using `only [h1, map_one, Complex.one_re, Finset.sum_const, Finset.card_univ, nsmul_eq_mul, mul_one] at hv`.
+
+Use `haveI := tau_nonempty D`. Establish `: (Fintype.card D.what₂.Tau : ℝ) ≠ 0`. Conclude with `Fintype.card_ne_zero` after adjusting the coercions. Conclude with `this hv`.
+-/
 theorem exists_separating : ∀ (D : D7) (r : ℕ) (θ : InfFam D), IsInfFam θ → ∀ α : D.host.F, α ≠ 0 →
     ∃ (d : ℕ) (a : Fin d → HermE D r),
       Function.Injective (fun (β : HermE D r) (k : Fin d) => pairF θ α (a k) β) := by

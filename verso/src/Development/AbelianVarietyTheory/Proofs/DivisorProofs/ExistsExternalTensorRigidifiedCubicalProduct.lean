@@ -14,6 +14,11 @@ namespace GlobalTheory.GrpBox
 
 open GlobalTheory.SumDeg
 
+/- English proof (translation)
+Introduce `Z r z J₁ J₂ J hJ₁ hJ₂ hJ`. Establish `hE` using `good_ext (f₁ := f₁) (f₂ := f₂) hJ₁ hJ₂`. Establish `key` using `gen_trans (isGen_extGen L₁ L₂ f₁ f₂ ψ ε h₁ φ₁ e₁ t₁ h₂ φ₂ e₂ t₂ ht₁ ht₂) r z (hE.mem ψ r) (hJ.mem ψ r)`. Establish `k2` using `gm_extGen L₁ L₂ f₁ f₂ ψ ε h₁ φ₁ e₁ t₁ h₂ φ₂ e₂ t₂ r z _ (hE.mem ψ r)`. Rewrite using `[val_of t₁ (r ≫ h₁) z J₁ (fun k => J₁ ((r ≫ ψ k) ≫ f₁)) (fun k => by rw [Category.assoc, Category.assoc, e₁]), val_of t₂ (r ≫ h₂) z J₂ (fun k => J₂ ((r ≫ ψ k) ≫ f₂)) (fun k => by rw [Category.assoc, Category.assoc, e₂])]`.
+
+Conclude with `key.symm.trans k2`.
+-/
 theorem isBoxGen_extGen {X X₁ X₂ Y Y₁ Y₂ : Scheme.{0}} (L₁ : LB X₁) (L₂ : LB X₂) (f₁ : X ⟶ X₁) (f₂ : X ⟶ X₂)
     {K : Type} [Fintype K] (ψ : K → (Y ⟶ X)) (ε : K → ℤ)
     (h₁ : Y ⟶ Y₁) (φ₁ : K → (Y₁ ⟶ X₁)) (e₁ : ∀ k, ψ k ≫ f₁ = h₁ ≫ φ₁ k) (t₁ : LB.Gen (LB.LinComb L₁ φ₁ ε))
@@ -38,6 +43,15 @@ def pullCub (L : RigLB A₁) (c : CubicalStr A₁ L) (a : A ⟶ A₁) [IsMonHom 
     (LBxP.isGen_pullAlong L.L a.left (𝟙 _) (fun _ : PUnit => eSec A₁) (fun _ => 1)
       (fun _ => eSec A) (fun _ => (CubeMap.ofHom a).e_comm) L.rig L.rigGen)
 
+/- English proof (translation)
+Establish `hL` using `isLB_extLB L₁.isLB L₂.isLB a₁.left a₂.left`. Use `⟨⟨extLB L₁.L L₂.L a₁.left a₂.left, extAt L₁.L L₂.L a₁.left a₂.left (eSec A) 1 _ (eSec_comp a₁) L₁.rig _ (eSec_comp a₂) L₂.rig, hL, isGen_extAt _ _ _ _ _ _ _ _ _ _ _ _ L₁.rigGen L₂.rigGen⟩, tensCub (pullCub L₁ c₁ a₁) (pullCub L₂ c₂ a₂) _ hL _, extGen L₁.L L₂.L a₁.left a₂.left _ _ …` and prove the remaining obligations. Use `corr_of_val hL fun y J hJ => ?_` and prove the remaining obligations. Take `⟨J₁, hJ₁⟩` from `BoxFamily.exists_good_at L₁.isLB y`. Take `⟨J₂, hJ₂⟩` from `BoxFamily.exists_good_at L₂.isLB y`.
+
+Establish `o : eSec A ≫ (ι[A]).left = eSec A` using `congrArg (fun m => m.left) (GrpObj.one_inv : η[A] ≫ ι[A] = η[A])`. Establish `v₁ : val s₁ (eSec A₁) y J₁ = 1`. Establish `v` using `val_corr hJ₁ n₁ (𝟙 _)`. Rewrite `v` using `[val_pull hJ₁, Category.id_comp, val_one]`. Then use the resulting hypothesis. Establish `v₂ : val s₂ (eSec A₂) y J₂ = 1`.
+
+Establish `v` using `val_corr hJ₂ n₂ (𝟙 _)`. Rewrite `v` using `[val_pull hJ₂, Category.id_comp, val_one]`. Then use the resulting hypothesis. Establish `e` using `(val_extGen L₁.L L₂.L a₁.left a₂.left _ _ a₁.left _ (inv_comp a₁) s₁ a₂.left _ (inv_comp a₂) s₂ hs₁ hs₂ (eSec A) hJ hJ₁ hJ₂).trans (congrArg₂ (· * ·) (prod_sym (eSec A) _) rfl)`. Rewrite `e` using `[o, mul_inv_cancel, eSec_comp, eSec_comp, v₁, v₂, _root_.mul_one, _root_.mul_one]`. Rewrite using `[val_pull hJ, Category.id_comp, val_one]`.
+
+Conclude with `e`.
+-/
 theorem exists_strBox (a₁ : A ⟶ A₁) (a₂ : A ⟶ A₂) [IsMonHom a₁] [IsMonHom a₂]
     (L₁ : RigLB A₁) (L₂ : RigLB A₂) (c₁ : CubicalStr A₁ L₁) (c₂ : CubicalStr A₂ L₂)
     (s₁ : SymGen A₁ L₁.L) (s₂ : SymGen A₂ L₂.L) (hs₁ : s₁.IsGen) (hs₂ : s₂.IsGen)
@@ -79,6 +93,9 @@ theorem exists_strBox (a₁ : A ⟶ A₁) (a₂ : A ⟶ A₂) [IsMonHom a₁] [I
 
 end Grp
 
+/- English proof (translation)
+Introduce `S G₁ G₂ _ _ _ _ L₁ L₂ c₁ c₂ s₁ s₂ hs₁ hs₂ n₁ n₂`. Conclude with `exists_strBox (fst G₁ G₂) (snd G₁ G₂) L₁ L₂ c₁ c₂ s₁ s₂ hs₁ hs₂ n₁ n₂`.
+-/
 theorem exists_prod : ∀ (S : Scheme.{0}) (G₁ G₂ : Over S) [GrpObj G₁] [IsCommMonObj G₁] [GrpObj G₂] [IsCommMonObj G₂] (L₁ : RigLB G₁) (L₂ : RigLB G₂) (c₁ : CubicalStr G₁ L₁) (c₂ : CubicalStr G₂ L₂) (s₁ : SymGen G₁ L₁.L) (s₂ : SymGen G₂ L₂.L), s₁.IsGen → s₂.IsGen → LB.Gen.Corr L₁.L _ _ _ _ (LB.pullGen L₁.L _ _ s₁ (eSec G₁)) (LB.oneGen L₁.L) → LB.Gen.Corr L₂.L _ _ _ _ (LB.pullGen L₂.L _ _ s₂ (eSec G₂)) (LB.oneGen L₂.L) → ∃ (L : RigLB (G₁ ⊗ G₂)) (c : CubicalStr (G₁ ⊗ G₂) L) (s : SymGen (G₁ ⊗ G₂) L.L) (w : LB.Iso L.L (extLB L₁.L L₂.L (fst G₁ G₂).left (snd G₁ G₂).left)), s.IsGen ∧ LB.Gen.Corr L.L _ _ _ _ (LB.pullGen L.L _ _ s (eSec (G₁ ⊗ G₂))) (LB.oneGen L.L) ∧ StrBox (fst G₁ G₂) (snd G₁ G₂) w L.rig L₁.rig L₂.rig c.t c₁.t c₂.t s s₁ s₂ := by
   intro S G₁ G₂ _ _ _ _ L₁ L₂ c₁ c₂ s₁ s₂ hs₁ hs₂ n₁ n₂
   exact exists_strBox (fst G₁ G₂) (snd G₁ G₂) L₁ L₂ c₁ c₂ s₁ s₂ hs₁ hs₂ n₁ n₂

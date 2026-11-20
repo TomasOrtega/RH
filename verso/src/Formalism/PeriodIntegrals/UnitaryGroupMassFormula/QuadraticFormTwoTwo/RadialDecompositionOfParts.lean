@@ -17,10 +17,32 @@ open Formalism.REAL Formalism.QuantumDeterminants Formalism.FourierDecayAlt.Q
 
 attribute [local instance] Matrix.normedAddCommGroup Matrix.normedSpace
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨h.1, h.2.1, fun a v hv => h.2.2 a v (hs v hv)⟩`.
+-/
 theorem frame_sub {k r m : ℕ} {vs vs' : List (Fin (2 * r + k + 1) → ℂ)} {Bs : Fin m → Fin (2 * r + k + 1) → ℂ}
     (h : IsFrameOf k r vs Bs) (hs : ∀ v ∈ vs', v ∈ vs) : IsFrameOf k r vs' Bs :=
   ⟨h.1, h.2.1, fun a v hv => h.2.2 a v (hs v hv)⟩
 
+/- English proof (translation)
+Introduce `_hC2 _hCC hCap hRTA hBr hTP`. Introduce `Wp Wq _ _ _ _ _ _ P z z' π π' D hPl hD hGGD J hJ`. Take `⟨hP, hz, hz', hTz, hTz', hπ, hπ'⟩` from `hPl`. Establish `hT : 0 < Tz P.k P.r z` using `by rw [hTz]; exact hP.T_pos`. Establish `hT' : 0 < Tz P.k P.r z'` using `by rw [hTz']; exact hP.T'_pos`.
+
+Take `⟨Y₀, hY₀⟩` from `exists_sep hP`. Take `⟨f, hfi, hfx, hfr⟩` from `comb_match hP`. Establish `hloc : ∀ g : Mx P.k P.r, ∃ (Bs : Fin (P.k - 1) → Fin (2 * P.r + P.k + 1) → ℂ) (e : Fin (2 * P.r + P.k + 1) → ℂ) (S : M.Ty (Pp P) → Submodule ℂ Wq), g ∈ Glev P.k P.r (Fin.last P.r) ∩ D → IsFrameOf P.k P.r [g⁻¹ *ᵥ z, z'] Bs ∧ inWb P.k P.r e ∧ herm (Hpk P.k P.r) e z = 0 ∧ herm (Hpk …`. Introduce `g`. Distinguish the cases in `hg : g ∈ Glev P.k P.r (Fin.last P.r) ∩ D`.
+
+Take `⟨Bs, e', e, hB1, he', he'z, he'e, hB2, he, hez, hee, hB3⟩` from `geom_package hz hz' hT hT' hg.1 (hGGD g hg.2)`. Take `⟨S, hSi, -, hSe⟩` from `hBr Wq (Pp P) (Pp_OK hP) rfl z' e' π' hz' hT' hπ' he' he'z he'e`. Conclude with `⟨Bs, e, S, fun _ => ⟨hB1, he, hez, hee, hB3, hSi, fun σ v hv w => hSe Bs hB2 σ w v hv⟩⟩`. Conclude with `⟨fun _ _ => 0, 0, fun _ => ⊥, fun h => absurd h hg⟩`. Use `choose Bs e S hBS using hloc`.
+
+Take `⟨dec, hdecF, hsum, heigd, hcomp⟩` from `spec_abstract (FFl P.k P.r z z' π π' (Fin.last P.r) D) (Glev P.k P.r (Fin.last P.r) ∩ D) ff_zero (fun F₁ h₁ F₂ h₂ => ff_add h₁ h₂) (fun F h c => ff_smul h c) (fun Y F => tL P.k P.r z z' (Fin.last P.r) Y 1 1 F) (fun x => (GGl P.k P.r z z' x : ℂ)) (fun g hg => by exact_mod_cast hGG …`. Introduce `F hF g hg σ v hv Y`. Establish `hc : Y + ((P.k : ℂ) - 2) / 2 - ((P.k : ℂ) - 2) / 2 = Y` using `by ring`. Rewrite using `[top_level_pointwise_identity hCap hRTA hz hz' hD hπ'.2.1 hπ'.2.2.1 hF hg (hGGD g hg.2) (Bs g) (hBS g hg).1 Y v, (hBS g hg).2.2.2.2.2.2 σ v hv _, hc, ContinuousLinearMap.map_smul, smul_smul])`. Use `J hJ`.
+
+Establish `hvan : ∀ σ, σ ∉ Set.range f → ∀ g ∈ Glev P.k P.r (Fin.last P.r) ∩ D, dec σ g = 0`. Introduce `σ hσ g hg`. Use extensionality with `v`. Take `⟨w, hw, hdw⟩` from `hcomp g hg σ v`. Rewrite using `[hdw, _root_.zero_apply]`.
+
+Assume the negation of the conclusion as `hne`. Take `⟨hB1, he, hez, hee, hB3, -, hSe⟩` from `hBS g hg`. Establish `hsm` using `J_smoothVec hz hz' hD hπ'.2.1.1 hJ hg w`. Establish `hlin : ∀ W : ℂ, IsLinearMap ℂ (capRep P.k P.r π (fun a => g *ᵥ Bs g a) W)` using `fun W => capRep_linear hπ hne hsm (fun a => g *ᵥ Bs g a) (frame_sub hB3 (by simp)) W`. Establish `hμ : ∀ W : ℂ, capRep P.k P.r π (fun a => g *ᵥ Bs g a) W (J g w) = M.xC (Pp P) σ (W - ((P.k : ℂ) - 2) / 2) • J g w`.
+
+Introduce `W`. Rewrite using `[← left_ad hz hz' hD hπ'.2.1.1 hJ hg (Bs g) (frame_sub hB1 (by simp)) W w, hRTA Wp Wq P.k P.r (P.k - 1) z z' π π' D hz hz' hD hπ'.2.1 hπ'.2.2.1 J hJ g hg (Bs g) (frame_sub hB1 (by simp)) W w, hSe σ w hw W, ContinuousLinearMap.map_smul]`. Take `⟨ρ, hρ⟩` from `vanish_match hBr hP hz hT hπ he hez hee _ hB3 hlin hne _ hμ`. Conclude with `hσ (hfr σ ρ hρ)`. Use `⟨fun ρ => dec (f ρ), fun ρ => hdecF (f ρ), ?_, ?_⟩` and prove the remaining obligations.
+
+Introduce `g hg`. Establish `h1 : ∑ σ ∈ Finset.univ.image f, dec σ g = ∑ σ, dec σ g` using `Finset.sum_subset (Finset.subset_univ _) (fun σ _ hσ => hvan σ (fun ⟨ρ, hρ⟩ => hσ (hρ ▸ Finset.mem_image_of_mem f (Finset.mem_univ ρ))) g hg)`. Rewrite using `[hsum g hg, ← h1, Finset.sum_image (fun a _ b _ h => hfi h)]`. Introduce `ρ Y g hg`. Establish `h` using `heigd (f ρ) Y g hg`.
+
+Rewrite using `[h, hfx ρ Y]`.
+-/
 theorem radial_decomposition_of_parts' : RadialDecompositionOfParts := by
   intro _hC2 _hCC hCap hRTA hBr hTP
   intro Wp Wq _ _ _ _ _ _ P z z' π π' D hPl hD hGGD J hJ

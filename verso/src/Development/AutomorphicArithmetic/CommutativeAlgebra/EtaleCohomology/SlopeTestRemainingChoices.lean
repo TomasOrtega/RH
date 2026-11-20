@@ -115,10 +115,16 @@ def bm {U V : Scheme.{0}} {u : U ⟶ S} {v : V ⟶ S} (g : V ⟶ U) (h : g ≫ u
   ((Over.pullback p').map (Over.homMk g h : Over.mk v ⟶ Over.mk u)).left
 
 @[reassoc (attr := simp)]
+/- English proof (translation)
+The claim follows from `pullback.lift_fst _ _ _ @[reassoc (attr := simp)]`.
+-/
 theorem bm_fst {U V : Scheme.{0}} {u : U ⟶ S} {v : V ⟶ S} (g : V ⟶ U) (h : g ≫ u = v) :
     bm p' g h ≫ pullback.fst u p' = pullback.fst v p' ≫ g := pullback.lift_fst _ _ _
 
 @[reassoc (attr := simp)]
+/- English proof (translation)
+The claim follows from `pullback.lift_snd _ _ _`.
+-/
 theorem bm_snd {U V : Scheme.{0}} {u : U ⟶ S} {v : V ⟶ S} (g : V ⟶ U) (h : g ≫ u = v) :
     bm p' g h ≫ pullback.snd u p' = pullback.snd v p' := pullback.lift_snd _ _ _
 

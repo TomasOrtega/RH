@@ -23,21 +23,38 @@ def archSize (x : AE F E) : ℝ := ∑ i, ∑ v : InfinitePlace F, ‖(GlobalThe
 
 def finCrd (x : AE F E) : Fin (Module.finrank F E) → Af F := fun i => (GlobalTheory.XTermMaj.crd F E x i).2
 
+/- English proof (translation)
+Unfold `GlobalTheory.XTermMaj.crd`. Conclude with `IsModuleTopology.continuous_of_linearMap (Algebra.TensorProduct.basis (AF F) (Module.finBasis F E)).equivFun.toLinearMap`.
+-/
 theorem continuous_crd : Continuous (GlobalTheory.XTermMaj.crd F E) := by
   unfold GlobalTheory.XTermMaj.crd
   exact IsModuleTopology.continuous_of_linearMap
     (Algebra.TensorProduct.basis (AF F) (Module.finBasis F E)).equivFun.toLinearMap
 
+/- English proof (translation)
+Unfold `archSize`. Use `continuous_finset_sum _ fun i _ => continuous_finset_sum _ fun v _ => ?_` and prove the remaining obligations. Conclude with `((continuous_apply v).comp (continuous_fst.comp ((continuous_apply i).comp (continuous_crd F E)))).norm`.
+-/
 theorem continuous_archSize : Continuous (archSize F E) := by
   unfold archSize
   refine continuous_finset_sum _ fun i _ => continuous_finset_sum _ fun v _ => ?_
   exact ((continuous_apply v).comp (continuous_fst.comp ((continuous_apply i).comp (continuous_crd F E)))).norm
 
+/- English proof (translation)
+The claim follows from `continuous_pi fun i => continuous_snd.comp ((continuous_apply i).comp (continuous_crd F E))`.
+-/
 theorem continuous_finCrd : Continuous (finCrd F E) :=
   continuous_pi fun i => continuous_snd.comp ((continuous_apply i).comp (continuous_crd F E))
 
+/- English proof (translation)
+Unfold `archSize`. Check the signs of the components of the expression.
+-/
 theorem archSize_nonneg (x : AE F E) : 0 ≤ archSize F E x := by unfold archSize; positivity
 
+/- English proof (translation)
+Unfold `GlobalTheory.XTermMaj.maj`. Distinguish the cases in `h : finCrd F E x ∈ U`. Rewrite using `[Set.indicator_of_mem (by exact h), Set.indicator_of_mem (show x ∈ {y | finCrd F E y ∈ U} from h), ENNReal.toReal_ofReal]`. Both sides reduce to the same expression. Apply `Real.rpow_nonneg` to reduce the goal to its premises.
+
+Use `archSize_nonneg F E x` as an intermediate fact. Conclude with `le_trans zero_le_one (le_add_of_nonneg_right this)`. Rewrite using `[Set.indicator_of_notMem (by exact h), Set.indicator_of_notMem (show x ∉ {y | finCrd F E y ∈ U} from h)]`. Both sides reduce to the same expression.
+-/
 theorem maj_toReal (N : ℕ) (U : Set (Fin (Module.finrank F E) → Af F)) (x : AE F E) :
     (GlobalTheory.XTermMaj.maj F E N U x).toReal = {y | finCrd F E y ∈ U}.indicator (fun y => (1 + archSize F E y) ^ (-(N : ℝ))) x := by
   unfold GlobalTheory.XTermMaj.maj
@@ -51,6 +68,11 @@ theorem maj_toReal (N : ℕ) (U : Set (Fin (Module.finrank F E) → Af F)) (x : 
   · rw [Set.indicator_of_notMem (by exact h), Set.indicator_of_notMem (show x ∉ {y | finCrd F E y ∈ U} from h)]
     rfl
 
+/- English proof (translation)
+Use `haveI : BorelSpace (AE F E)ˣ := ⟨rfl⟩`. Repeatedly rewrite using `[maj_toReal]`. Establish `hc : Continuous fun l : (AE F E)ˣ => (l : AE F E)` using `Units.continuous_val`. Establish `hS : MeasurableSet {l : (AE F E)ˣ | finCrd F E (l : AE F E) ∈ U}` using `(hU.isClosed.preimage ((continuous_finCrd F E).comp hc)).measurableSet`. Establish `hne : ∀ l : (AE F E)ˣ, 1 + archSize F E (l : AE F E) ≠ 0 ∨ 0 ≤ -(N : ℝ)` using `fun l => Or.inl (ne_of_gt (by have := archSize_nonneg F E (l : AE F E); linarith))`.
+
+Establish `hf : Measurable fun l : (AE F E)ˣ => (1 + archSize F E (l : AE F E)) ^ (-(N : ℝ))` using `((continuous_const.add ((continuous_archSize F E).comp hc)).rpow_const hne).measurable`. Establish `heq : (fun l : (AE F E)ˣ => {y | finCrd F E y ∈ U}.indicator (fun y => (1 + archSize F E y) ^ (-(N : ℝ))) (l : AE F E)) = {l : (AE F E)ˣ | finCrd F E (l : AE F E) ∈ U}.indicator (fun l => (1 + archSize F E (l : AE F E)) ^ (-(N : ℝ)))`. Both sides reduce to the same expression. Rewrite using `[heq]`. Conclude with `hf.indicator hS`.
+-/
 theorem measurable_maj (N : ℕ) {U : Set (Fin (Module.finrank F E) → Af F)} (hU : IsCompact U) :
     Measurable fun l : (AE F E)ˣ => (GlobalTheory.XTermMaj.maj F E N U (l : AE F E)).toReal := by
   haveI : BorelSpace (AE F E)ˣ := ⟨rfl⟩
@@ -68,6 +90,17 @@ theorem measurable_maj (N : ℕ) {U : Set (Fin (Module.finrank F E) → Af F)} (
   rw [heq]
   exact hf.indicator hS
 
+/- English proof (translation)
+Use `haveI : BorelSpace (AE F E)ˣ := ⟨rfl⟩`. Take `⟨N, k, L, C', hk, hb⟩` from `GlobalTheory.TateConv.bound F E hs hU`. Establish `hpow : Continuous fun l : (AE F E)ˣ => (absE F E l : ℝ) ^ s` using `(NNReal.continuous_coe.comp GlobalTheory.Doubling.continuous_absE).rpow_const fun _ => Or.inr (by linarith)`. Use `⟨(hgm.mul hpow.measurable).aestronglyMeasurable, ?_⟩` and prove the remaining obligations. Unfold `HasFiniteIntegral`.
+
+Use `set c := max (C N) 0`. Establish `hle : ∀ l : (AE F E)ˣ, ‖g l * (absE F E l : ℝ) ^ s‖ₑ ≤ ENNReal.ofReal c * ENNReal.ofReal (C' * (infiniteZetaBound s k (IdeleGroup.toInfinite E (GlobalTheory.TateConv.idl F E l)) * finiteZetaBound L s (IdeleGroup.toFinite E (GlobalTheory.TateConv.idl F E l))))`. Introduce `l`. Establish `ha : 0 ≤ (absE F E l : ℝ) ^ s` using `Real.rpow_nonneg (NNReal.coe_nonneg _) _`. Establish `hm0 : 0 ≤ (GlobalTheory.XTermMaj.maj F E N U (l : AE F E)).toReal` using `ENNReal.toReal_nonneg`.
+
+Rewrite using `[Real.enorm_of_nonneg (mul_nonneg (hg0 l) ha)]`. Combine the equalities or inequalities in the displayed calculation. Apply `ENNReal.ofReal_le_ofReal` to reduce the goal to its premises. Use `mul_le_mul_of_nonneg_right ((hC N l).trans ?_) ha` and prove the remaining obligations. Conclude with `mul_le_mul_of_nonneg_right (le_max_left _ _) hm0`.
+
+Use `_ = ENNReal.ofReal c * (ENNReal.ofReal (GlobalTheory.XTermMaj.maj F E N U (l : AE F E)).toReal * ENNReal.ofReal ((absE F E l : ℝ) ^ s)) := by`. Rewrite using `[ENNReal.ofReal_mul (by positivity), ENNReal.ofReal_mul (le_max_right _ _), mul_assoc]`. Use `_ ≤ ENNReal.ofReal c * (GlobalTheory.XTermMaj.maj F E N U (l : AE F E) * ENNReal.ofReal ((absE F E l : ℝ) ^ s)) := by gcongr`. Conclude with `ENNReal.ofReal_toReal_le`. Use `_ ≤ _ := by gcongr; exact hb l`.
+
+Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem integrable_of_le_maj (μ : Measure (AE F E)ˣ) [μ.IsHaarMeasure] {U : Set (Fin (Module.finrank F E) → Af F)}
     (hU : IsCompact U) (g : (AE F E)ˣ → ℝ) (hgm : Measurable g) (hg0 : ∀ l, 0 ≤ g l) (C : ℕ → ℝ)
     (hC : ∀ N l, g l ≤ C N * (GlobalTheory.XTermMaj.maj F E N U (l : AE F E)).toReal) {s : ℝ} (hs : 1 < s) :
@@ -105,6 +138,17 @@ theorem integrable_of_le_maj (μ : Measure (AE F E)ˣ) [μ.IsHaarMeasure] {U : S
 end GlobalTheory.ConeMaj
 
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Introduce `hKP F E _ _ _ _ _ σ B a b G G₁ H H' hcfg e' he' K μK μ hK hμK hμ X om om' om₁ om₁' hT hT₁ Φ' hΦ' h`. Take `⟨U, hU, hsupp⟩` from `GlobalTheory.T.config_B_triple_stabilizer hKP F E σ B a b G G₁ H H' hcfg e' he' K hK X om om' om₁ om₁' hT hT₁ Φ' hΦ' h`. Use `choose C hC using GlobalTheory.T.config_B_triple_compare hKP F E σ B a b G G₁ H H' hcfg e' he' K hK X om om' om₁ om₁' hT hT₁ Φ' hΦ' h`. Establish `hbd : ∀ N (k : K) (l : (AE F E)ˣ), ‖G₁.M'.I om₁' (e' (G.M'.co.rho B.ψ (shiftB σ H H' l) (om' (k.1, h) Φ'))) 1‖ ≤ C N * (GlobalTheory.XTermMaj.maj F E N U (l : AE F E)).toReal`. Introduce `N k l`.
+
+Rewrite using `[GlobalTheory.ConeMaj.maj_toReal]`. Distinguish the cases in `hl : GlobalTheory.ConeMaj.finCrd F E (l : AE F E) ∈ U`. Rewrite using `[Set.indicator_of_mem (show (l : AE F E) ∈ {y | GlobalTheory.ConeMaj.finCrd F E y ∈ U} from hl)]`. Conclude with `hC N k l`. Rewrite using `[Set.indicator_of_notMem (show (l : AE F E) ∉ {y | GlobalTheory.ConeMaj.finCrd F E y ∈ U} from hl), mul_zero]`.
+
+Rewrite using `[hsupp k l hl, norm_zero]`. Take `⟨g, hg⟩ : ∃ g : (AE F E)ˣ → ℝ, g = fun l : (AE F E)ˣ => ⨅ N : ℕ, C N * (GlobalTheory.XTermMaj.maj F E N U (l : AE F E)).toReal` from `⟨_, rfl⟩`. Establish `hbb : ∀ l : (AE F E)ˣ, BddBelow (Set.range fun N : ℕ => C N * (GlobalTheory.XTermMaj.maj F E N U (l : AE F E)).toReal)` using `fun l => ⟨0, by rintro _ ⟨N, rfl⟩; exact (norm_nonneg _).trans (hbd N 1 l)⟩`. Establish `hfg : ∀ (k : K) (l : (AE F E)ˣ), ‖G₁.M'.I om₁' (e' (G.M'.co.rho B.ψ (shiftB σ H H' l) (om' (k.1, h) Φ'))) 1‖ ≤ g l` using `fun k l => by rw [hg]; exact le_ciInf fun N => hbd N k l`. Establish `hgC : ∀ N (l : (AE F E)ˣ), g l ≤ C N * (GlobalTheory.XTermMaj.maj F E N U (l : AE F E)).toReal` using `fun N l => by`.
+
+Rewrite using `[hg]`. Conclude with `ciInf_le (hbb l) N`. Establish `hg0 : ∀ l, 0 ≤ g l` using `fun l => (norm_nonneg _).trans (hfg 1 l)`. Establish `hgm : Measurable g`. Rewrite using `[hg]`.
+
+Conclude with `Measurable.iInf fun N => measurable_const.mul (GlobalTheory.ConeMaj.measurable_maj F E N hU)`. Use `⟨g, fun s hs => GlobalTheory.ConeMaj.integrable_of_le_maj F E μ hU g hgm hg0 C hgC hs, fun k l => hfg k l⟩` and prove the remaining obligations.
+-/
 theorem GlobalTheory.ConeMaj.cone_integrand_majorant : GlobalTheory.ThK.KP → ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E) (a b : ℕ)
     (G : Geo σ a (b + 2)) (G₁ : Geo σ a b) (H : Plane E (b + 2) b) (H' : Plane E (a + (b + 2)) (a + b)), CfgB B G G₁ H H' →
     ∀ e', IsEv B G.M' G₁.M' H.ι H'.ι (isoB H H') e' → ∀ (K : Subgroup (UA σ G.V'.J)) (μK : Measure K) (μ : Measure (AE F E)ˣ),

@@ -15,6 +15,41 @@ open scoped ENNReal NNReal
 
 namespace GlobalTheory.KSp
 
+/- English proof (translation)
+Introduce `F _ _ _ _ _ E _ _ _ _ c δ hE α _ _ ν _ _ Q hQ ψ hψ hψ1 hψne χ hχ hres _ _ μ _ κ ω hKW μ' _ g φ`. Take `⟨hfd, htr, hinv, ht2, hc, hn, htrc, hmat⟩` from `GlobalTheory.T.quadExt_topological_properties F E c δ hE`. Take `⟨hmt, hgood⟩` from `hmat α ν`. Use `haveI := hfd`. Use `haveI := hmt`.
+
+Use `haveI := hgood.grp`. Use `haveI := hgood.t2`. Use `haveI := hgood.lc`. Use `haveI := hgood.sc`. Set `N : SB (Matrix α ν E) → ℝ≥0∞` to `fun f => ∫⁻ x, ‖(f : Matrix α ν E → ℂ) x‖ₑ ^ 2 ∂μ`.
+
+Set `U : Subgroup (UG c (stdJ ν E))` to `{ carrier := {g | ∀ φ, N (ω g φ) = N φ} one_mem' := by intro φ; simp mul_mem' := by`. Introduce `g h hg hh φ`. Use `show N (ω (g * h) φ) = N φ`. Rewrite using `[map_mul, Module.End.mul_apply, hg, hh]`. Use the proof step `inv_mem' := by`.
+
+Introduce `g hg φ`. Use `hg (ω g⁻¹ φ)` as an intermediate fact. Rewrite `this` using `[← Module.End.mul_apply, ← map_mul, mul_inv_cancel, map_one, Module.End.one_apply]`. Conclude with `this.symm }`. Establish `hsieg : sieg c ν ≤ U`.
+
+Introduce `p hp φ`. Use `show N (ω p φ) = N φ`. Simplify using `only [N]`. Rewrite using `[hKW.par p hp φ]`. Conclude with `GlobalTheory.T.lintegral_sq_siegelParabolicOperator_eq F E c δ hE α ν Q hQ ψ hψ hψ1 hψne χ hχ hres μ p hp φ`.
+
+Take `⟨β, hβ, hβs, hβn, -, -⟩` from `GlobalTheory.T.hermitianMatrixColumnPairing_algebraic_properties F E c δ hE α ν Q hQ`. Establish `hpair : IsPair (fun x y : Matrix α ν E => ψ (pr c Q x y))`. Use `GlobalTheory.T.isSelfDualBicharacterPairing_of_symmBilinForm F (Matrix α ν E) ψ hψ hψ1 hψne β hβs hβn` as an intermediate fact. Simplify `this` using `only [hβ]`. Take `⟨C, hC, hfi⟩` from `GlobalTheory.T.bicharacterFourierTransform_twice_eq_pos_smul_reflect (Matrix α ν E) hgood μ _ hpair`.
+
+Establish `hpl` using `GlobalTheory.T.lintegral_four_sq_eq_mul_of_inversion (Matrix α ν E) hgood μ _ hpair C hC hfi`. Establish `hw : ∀ φ : SB (Matrix α ν E), N (ω (weyl c ν) φ) = (‖κ‖ₑ ^ 2 * ENNReal.ofReal C) * N φ`. Introduce `φ`. Simplify using `only [N]`. Rewrite using `[hKW.wey φ]`.
+
+Simplify using `only [Pi.smul_apply, smul_eq_mul, enorm_mul, mul_pow]`. Rewrite using `[lintegral_const_mul' _ _ (by simp), fou, hpl _ φ.2, mul_assoc]`. Establish `hww : weyl c ν * weyl c ν ∈ sieg c ν`. Rewrite using `[mem_sieg]`. Use `show ((stdJ ν E) * (stdJ ν E)).toBlocks₂₁ = 0`.
+
+Rewrite using `[stdJ_mul_stdJ]`. Use extensionality with `i j`. Simplify using `[toBlocks₂₁]`. Take `⟨L, hLc, hLo, -⟩` from `hgood.large ∅ isCompact_empty`. Establish `hmem : (L : Set (Matrix α ν E)).indicator (1 : Matrix α ν E → ℂ) ∈ SB (Matrix α ν E)`.
+
+Use `⟨?_, ?_⟩` and prove the remaining obligations. Establish `hcl : IsClopen (L : Set (Matrix α ν E))` using `⟨AddSubgroup.isClosed_of_isOpen L hLo, hLo⟩`. Conclude with `(LocallyConstant.charFn ℂ hcl).isLocallyConstant`. Conclude with `HasCompactSupport.intro hLc (fun x hx => Set.indicator_of_notMem hx _)`. Use `set φ₀ : SB (Matrix α ν E) := ⟨_, hmem⟩ with hφ₀`.
+
+Establish `hN0 : N φ₀ = μ L`. Simplify using `only [N, hφ₀]`. Establish `e : (fun x => ‖(L : Set (Matrix α ν E)).indicator (1 : Matrix α ν E → ℂ) x‖ₑ ^ 2) = (L : Set (Matrix α ν E)).indicator 1`. Use function extensionality and compare the values at `x`. Apply the tactic sequence `by_cases hx : x ∈ (L : Set (Matrix α ν E)) <;> simp [hx]`.
+
+Rewrite using `[e, lintegral_indicator_one hLo.measurableSet]`. Establish `hpos : μ L ≠ 0` using `(hLo.measure_pos μ ⟨0, L.zero_mem⟩).ne'`. Establish `hfin : μ L ≠ ∞` using `hLc.measure_lt_top.ne`. Use `set k : ℝ≥0∞ := ‖κ‖ₑ ^ 2 * ENNReal.ofReal C with hk`. Establish `hkk : k * k = 1`.
+
+Establish `h1 : N (ω (weyl c ν * weyl c ν) φ₀) = N φ₀` using `hsieg hww φ₀`. Rewrite `h1` using `[map_mul, Module.End.mul_apply, hw, hw, ← mul_assoc, hN0]`. Establish `h2` using `congrArg (· / μ L) h1`. Simplify `h2` using `[ENNReal.mul_div_cancel_right hpos hfin, ENNReal.div_self hpos hfin]`. Establish `hk1 : k = 1`.
+
+Break down `lt_trichotomy k 1 with h | h | h` into its components or cases. Establish `: k * k ≤ k * 1` using `by gcongr`. Rewrite `this` using `[hkk, mul_one]`. Conclude with `absurd this (not_le.mpr h)`. Conclude with `h`.
+
+Establish `: 1 * k ≤ k * k` using `by gcongr`. Rewrite `this` using `[hkk, one_mul]`. Conclude with `absurd this (not_le.mpr h)`. Establish `hwU : weyl c ν ∈ U`. Introduce `φ`.
+
+Use `show N (ω (weyl c ν) φ) = N φ`. Rewrite using `[hw, hk1, one_mul]`. Establish `htop : U = ⊤` using `GlobalTheory.T.siegelParabolic_weylElement_generate_unitary F E c δ hE ν U hsieg hwU`. Establish `hgU : g ∈ U` using `htop ▸ Subgroup.mem_top g`. Establish `hμ' : μ' = Measure.addHaarScalarFactor μ' μ • μ` using `Measure.isAddLeftInvariant_eq_smul μ' μ`.
+
+Rewrite using `[hμ', lintegral_smul_measure, lintegral_smul_measure]`. Conclude with `congrArg _ (hgU φ)`.
+-/
 theorem weil_representation_preserves_L2 : ∀ (F : Type) [Field F] [CharZero F] [ValuativeRel F] [TopologicalSpace F] [IsNonarchimedeanLocalField F] (E : Type) [Field E] [Algebra F E] [TopologicalSpace E] [IsModuleTopology F E] (c : E →ₐ[F] E) (δ : E) (hE : IsQuad c δ) (α : Type) [Fintype α] [DecidableEq α] (ν : Type) [Fintype ν] [DecidableEq ν] (Q : Matrix α α E) (_ : IsHerm c Q) (ψ : AddChar F ℂ) (hψ : Continuous ψ) (_ : ∀ t, ‖ψ t‖ = 1) (_ : ψ ≠ 1) (χ : Eˣ →* Circle) (_ : Continuous χ) (_ : ResEtaPow (R := F) ⊥ χ (Fintype.card α)) [MeasurableSpace (Matrix α ν E)] [BorelSpace (Matrix α ν E)] (μ : Measure (Matrix α ν E)) [μ.IsAddHaarMeasure] (κ : ℂ) (ω : Representation ℂ (UG c (stdJ ν E)) (SB (Matrix α ν E))), IsKW c ψ χ Q μ κ ω → ∀ (μ' : Measure (Matrix α ν E)) [μ'.IsAddHaarMeasure] (g : UG c (stdJ ν E)) (φ : SB (Matrix α ν E)), ∫⁻ x, ‖(ω g φ : Matrix α ν E → ℂ) x‖ₑ ^ 2 ∂μ' = ∫⁻ x, ‖(φ : Matrix α ν E → ℂ) x‖ₑ ^ 2 ∂μ' := by
   intro F _ _ _ _ _ E _ _ _ _ c δ hE α _ _ ν _ _ Q hQ ψ hψ hψ1 hψne χ hχ hres _ _ μ _ κ ω hKW μ' _ g φ
   obtain ⟨hfd, htr, hinv, ht2, hc, hn, htrc, hmat⟩ := GlobalTheory.T.quadExt_topological_properties F E c δ hE

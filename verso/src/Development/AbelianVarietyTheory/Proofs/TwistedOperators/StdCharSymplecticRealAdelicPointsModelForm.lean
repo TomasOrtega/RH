@@ -12,6 +12,11 @@ open GlobalTheory.IndefiniteRowSideFullHecke.OrthonormalLatticeThetaValues Matri
 
 variable {D : D7}
 
+/- English proof (translation)
+Establish `h1 : bᴴ * (HSpace.gram V * b) = 1`. Use `Matrix.ext fun a a' => ?_` and prove the remaining obligations. Use `hb.1 a a'` as an intermediate fact. Simplify using `only [Matrix.mul_apply, Matrix.conjTranspose_apply, Matrix.one_apply, Finset.mul_sum] at this ⊢`. Rewrite using `[← this]`.
+
+Conclude with `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => by ring`. Establish `h2 : (HSpace.gram V * b) * bᴴ = 1` using `mul_eq_one_comm.1 h1`. Rewrite `h2` using `[Matrix.mul_assoc]`. Conclude with `Matrix.inv_eq_right_inv h2`.
+-/
 theorem gram_inv_eq (V : HSp D) (b : Matrix (Fin V.rank) (Fin V.rank) D.host.E) (hb : IsONLatBasis V b) :
     (HSpace.gram V)⁻¹ = b * bᴴ := by
   have h1 : bᴴ * (HSpace.gram V * b) = 1 := by
@@ -24,9 +29,25 @@ theorem gram_inv_eq (V : HSp D) (b : Matrix (Fin V.rank) (Fin V.rank) D.host.E) 
   rw [Matrix.mul_assoc] at h2
   exact Matrix.inv_eq_right_inv h2
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem infPart_realPt (S T : HSp D) (X : Matrix (Fin T.rank) (Fin S.rank) D.host.E) (i : Fin T.rank) (j : Fin S.rank) :
     infPart D (realPt S T X i j) = infPart D (incA D (X i j)) := rfl
 
+/- English proof (translation)
+Establish `h1 : ((Algebra.trace ℚ D.host.E e : ℚ) : ℂ) = ∑ σ : D.host.E →+* ℂ, σ e`. Use `trace_eq_sum_embeddings (K := ℚ) (L := D.host.E) ℂ (x := e)` as an intermediate fact. Rewrite `this` using `[eq_ratCast]`. Rewrite using `[this]`. Conclude with `(Fintype.sum_equiv (RingHom.equivRatAlgHom D.host.E ℂ) _ _ fun _ => rfl).symm`.
+
+Establish `hi` using `GlobalTheory.StdRat.tauE_injective D`. Establish `hcm` using `GlobalTheory.StdRat.tauE_cm D`. Establish `hb : Function.Bijective (Sum.elim (tauE D) fun t => ComplexEmbedding.conjugate (tauE D t))`. Establish `hc : ∀ σ : D.host.E →+* ℂ, ComplexEmbedding.conjugate (ComplexEmbedding.conjugate σ) = σ` using `fun σ => star_star σ`. Prove the components needed by the constructor for the conclusion.
+
+Apply the tactic sequence `rintro (a | a) (b | b) h <;> simp only [Sum.elim_inl, Sum.elim_inr] at h`. Rewrite using `[hi h]`. Conclude with `absurd ⟨a, h⟩ ((hcm (tauE D b)).1 ⟨b, rfl⟩)`. Conclude with `absurd ⟨b, h.symm⟩ ((hcm (tauE D a)).1 ⟨a, rfl⟩)`. Use `congrArg ComplexEmbedding.conjugate h` as an intermediate fact.
+
+Rewrite `this` using `[hc, hc]`. Rewrite using `[hi this]`. Introduce `σ`. Distinguish the cases in `h : ∃ t, tauE D t = ComplexEmbedding.conjugate σ`. Take `⟨t, ht⟩` from `h`.
+
+Conclude with `⟨Sum.inr t, by simp only [Sum.elim_inr]; rw [ht, hc]⟩`. Take `⟨t, ht⟩` from `(hcm σ).2 h`. Conclude with `⟨Sum.inl t, ht⟩`. Establish `h4` using `hb.sum_comp fun σ : D.host.E →+* ℂ => σ e`. Rewrite `h4` using `[Fintype.sum_sum_type, ← h1]`.
+
+Simplify using `only [Sum.elim_inl, Sum.elim_inr, ComplexEmbedding.conjugate_coe_eq] at h4`. Rewrite using `[← h4, ← Finset.sum_add_distrib]`. Use `Finset.sum_congr rfl fun t _ => ?_` and prove the remaining obligations. Rewrite using `[Complex.add_conj]`.
+-/
 theorem sum_two_re_tauE (D : D7) (e : D.host.E) :
     ∑ t, (((2 * (tauE D t e).re : ℝ)) : ℂ) = ((Algebra.trace ℚ D.host.E e : ℚ) : ℂ) := by
   classical
@@ -73,22 +94,34 @@ set_option synthInstance.maxHeartbeats 400000
 def hRat (S T : HSp D) (X Y : Matrix (Fin T.rank) (Fin S.rank) D.host.E) : D.host.E :=
   Matrix.trace ((HSpace.gram S)⁻¹ * Yᴴ * HSpace.gram T * X)
 
+/- English proof (translation)
+Rewrite using `[GlobalTheory.PhaseReal.infPart_cA, infPart_realPt, ← GlobalTheory.PhaseReal.infPart_cA, GlobalTheory.DualPairCheck.cA_incA]`.
+-/
 theorem infPart_cA_realPt (S T : HSp D) (X : Matrix (Fin T.rank) (Fin S.rank) D.host.E) (i : Fin T.rank)
     (j : Fin S.rank) : infPart D (cA D (realPt S T X i j)) = infPart D (incA D (star (X i j))) := by
   rw [GlobalTheory.PhaseReal.infPart_cA, infPart_realPt, ← GlobalTheory.PhaseReal.infPart_cA, GlobalTheory.DualPairCheck.cA_incA]
 
+/- English proof (translation)
+Rewrite using `[GlobalTheory.PhaseReal.hO_eq_trace, hRat]`. Simplify using `only [Matrix.trace, Matrix.diag, Matrix.mul_apply, map_sum, map_mul, Matrix.map_apply, Matrix.transpose_apply, Matrix.conjTranspose_apply, infPart_realPt, infPart_cA_realPt]`.
+-/
 theorem infPart_hO_realPt (S T : HSp D) (X Y : Matrix (Fin T.rank) (Fin S.rank) D.host.E) :
     infPart D (hO S T (realPt S T X) (realPt S T Y)) = infPart D (incA D (hRat S T X Y)) := by
   rw [GlobalTheory.PhaseReal.hO_eq_trace, hRat]
   simp only [Matrix.trace, Matrix.diag, Matrix.mul_apply, map_sum, map_mul, Matrix.map_apply,
     Matrix.transpose_apply, Matrix.conjTranspose_apply, infPart_realPt, infPart_cA_realPt]
 
+/- English proof (translation)
+Establish `h : ∀ i j, finPart D (realPt S T X i j) = 0` using `fun i j => congrFun (congrFun (GlobalTheory.FrameConst.realPt_fin S T X) i) j`. Simplify using `only [hO, map_sum, map_mul, h, mul_zero, Finset.sum_const_zero]`.
+-/
 theorem finPart_hO_realPt (S T : HSp D) (X Y : Matrix (Fin T.rank) (Fin S.rank) D.host.E) :
     finPart D (hO S T (realPt S T X) (realPt S T Y)) = 0 := by
   have h : ∀ i j, finPart D (realPt S T X i j) = 0 := fun i j =>
     congrFun (congrFun (GlobalTheory.FrameConst.realPt_fin S T X) i) j
   simp only [hO, map_sum, map_mul, h, mul_zero, Finset.sum_const_zero]
 
+/- English proof (translation)
+Rewrite using `[Finset.mul_sum, Finset.sum_mul, Finset.mul_sum, ← Finset.sum_neg_distrib]`. Use `Finset.sum_congr rfl fun x _ => ?_` and prove the remaining obligations. Establish `hst : star (v x) = ReciprocityTheory.ChartRestriction.G.FD.cc (v x)` using `rfl`. Rewrite using `[hst]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem hermitian_column_sum_neg_mul_rearrange {n : ℕ} (ξ u : D.host.E) (v : Fin n → D.host.E) (G : Matrix (Fin n) (Fin n) D.host.E) (c : Fin n) :
     - -ξ * ∑ x, u * -G x c * ReciprocityTheory.ChartRestriction.G.FD.cc (v x) = -(ξ * ((∑ j, star (v j) * G j c) * u)) := by
   rw [Finset.mul_sum, Finset.sum_mul, Finset.mul_sum, ← Finset.sum_neg_distrib]
@@ -97,6 +130,13 @@ theorem hermitian_column_sum_neg_mul_rearrange {n : ℕ} (ξ u : D.host.E) (v : 
   rw [hst]
   ring
 
+/- English proof (translation)
+Substitute `hr` using the available equality. Take `⟨hG, hξ⟩` from `hX`. Establish `e1 : hRat V W Xm Ym = Matrix.trace ((Ym * b)ᴴ * HSpace.gram W * (Xm * b))`. Rewrite using `[hRat, gram_inv_eq V b hb, Matrix.conjTranspose_mul, Matrix.mul_assoc b, Matrix.mul_assoc b, Matrix.mul_assoc b, Matrix.trace_mul_comm b]`. Simplify using `only [Matrix.mul_assoc]`.
+
+Rewrite using `[e1, hξ, hG, Matrix.trace, Finset.mul_sum, ← Finset.sum_neg_distrib]`. Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Simplify using `only [ReciprocityTheory.ChartRestriction.G.FD.herm, Matrix.diag, Matrix.mul_apply, Matrix.conjTranspose_apply, Matrix.neg_apply, Matrix.transpose_apply, Matrix.reindex_apply, Matrix.submatrix_apply, finCongr_refl, Equiv.refl_symm, Equiv.refl_apply, Fin.cast_eq_self]`. Use `conv_lhs => rw [Finset.mul_sum]`. Use `conv_rhs => rw [Finset.mul_sum, ← Finset.sum_neg_distrib]`.
+
+Apply `Finset.sum_congr rfl` to reduce the goal to its premises. Introduce `c _`. Conclude with `hermitian_column_sum_neg_mul_rearrange (n := W.rank) _ _ (fun j : Fin W.rank => ∑ k : Fin V.rank, Ym j k * b k a) _ c`.
+-/
 theorem sum_herm_eq (V W : HSp D) (b : Matrix (Fin V.rank) (Fin V.rank) D.host.E) (hb : IsONLatBasis V b) (r : ℕ)
     (hr : W.rank = r) (X : ReciprocityTheory.ChartRestriction.G.FD.Data D.host.E r) (hX : ModelW W hr X)
     (Xm Ym : Matrix (Fin W.rank) (Fin V.rank) D.host.E) :
@@ -126,6 +166,19 @@ open GlobalTheory.IndefiniteRowSideFullHecke.OrthonormalLatticeThetaValues Matri
 
 set_option synthInstance.maxHeartbeats 400000 in
 
+/- English proof (translation)
+Introduce `D ψ hψ V W b hb r hr X hX Xm Ym`. Take `⟨θ, hθ⟩` from `hψ.2.1`. Use `set t := incA D D.host.xi0 * hO V W (realPt V W Xm) (realPt V W Ym) with ht`. Establish `hfin : finPart D t = 0` using `by rw [ht, map_mul, finPart_hO_realPt, mul_zero]`. Establish `hT` using `GlobalTheory.PhaseReal.trace_real hfin`.
+
+Use `set T := Algebra.trace (AF D.host.F) (AE D) t with hTdef`. Establish `hθt : ∀ ρ, θ ρ (infPart D t) = tauE D ρ (D.host.xi0 * hRat V W Xm Ym)` using `fun ρ => by`. Rewrite using `[ht, map_mul (infPart D), infPart_hO_realPt, ← map_mul (infPart D), ← map_mul (incA D)]`. Conclude with `(hθ ρ).1 _`. Establish `hL : symplOH V W (realPt V W Xm) (realPt V W Ym) = pairA D.host.F (algebraMap D.host.F (Ainf D.host.F) (1 / 2) * fstA D.host.F T) 0`.
+
+Unfold `symplOH symplO`. Rewrite using `[← ht, ← hTdef, hT]`. Conclude with `Prod.ext rfl (mul_zero _)`. Establish `hs : ∀ ρ, θ ρ ((algebraMap D.host.F (Ainf D.host.F) (1 / 2) * fstA D.host.F T) ⊗ₜ[D.host.F] (1 : D.host.E)) = (1 / 2 : ℂ) * ((2 * (tauE D ρ (D.host.xi0 * hRat V W Xm Ym)).re : ℝ) : ℂ)` using `fun ρ => by`. Rewrite using `[show (algebraMap D.host.F (Ainf D.host.F) (1 / 2) * fstA D.host.F T) ⊗ₜ[D.host.F] (1 : D.host.E) = ((algebraMap D.host.F (Ainf D.host.F) (1 / 2)) ⊗ₜ[D.host.F] (1 : D.host.E)) * ((fstA D.host.F T) ⊗ₜ[D.host.F] (1 : D.host.E)) by rw [Algebra.TensorProduct.tmul_mul_tmul, one_mul], …`.
+
+Use `congr 1`. Simplify using `only [one_div, map_inv₀]`. Rewrite using `[map_ofNat (algebraMap D.host.F D.host.E) 2, map_ofNat]`. Rewrite using `[hL]`. Express the relevant statement in the definitionally equal form `psiInf D.host.F ψ _ = _`.
+
+Rewrite using `[hψ.2.2 θ hθ]`. Simplify using `only [hs]`. Rewrite using `[← Finset.mul_sum, sum_two_re_tauE, ← Rat.cast_sum, ← map_sum, sum_herm_eq V W b hb r hr X hX Xm Ym, map_neg]`. Use `congr 1`. Use `push_cast`.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem psi_symplOH_realPt : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ), IsStdChar D ψ (-1) → ∀ (V W : HSp D)
     (b : Matrix (Fin V.rank) (Fin V.rank) D.host.E), GlobalTheory.IndefiniteRowSideFullHecke.OrthonormalLatticeThetaValues.IsONLatBasis V b → ∀ (r : ℕ) (hr : W.rank = r)
     (X : ReciprocityTheory.ChartRestriction.G.FD.Data D.host.E r), ModelW W hr X → ∀ (Xm Ym : Matrix (Fin W.rank) (Fin V.rank) D.host.E),

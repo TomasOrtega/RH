@@ -17,6 +17,11 @@ open Formalism.MainNotions.S.Lat GlobalTheory.LocOver
 
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
+/- English proof (translation)
+Establish `hI : IntUni M (1 : Matrix (Fin (r + 1)) (Fin (r + 1)) E)`. Use `⟨fun a b h => Matrix.one_apply_ne h.ne', fun a => Matrix.one_apply_eq a, fun a b => ?_⟩` and prove the remaining obligations. Rewrite using `[Matrix.one_apply]`. Use `split_ifs`. Conclude with `M.L.O.one_mem`.
+
+Conclude with `M.L.O.zero_mem`. Use `⟨1, 1, hI, hI, fun a b => ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[sub_self]`. Conclude with `Submodule.zero_mem _`. Rewrite using `[Matrix.transpose_one, Matrix.map_one _ (map_zero _) (map_one _), Matrix.one_mul, Matrix.mul_one]`.
+-/
 theorem mem_clsLoc_self {F : Type} [Field F] [ValuativeRel F] [TopologicalSpace F]
     {E : Type} [CommRing E] [Algebra F E] [TopologicalSpace E] [MeasurableSpace E]
     (M : Formalism.MainNotions.S.Loc.Model F E) {r : ℕ} (Y0 : Matrix (Fin (r + 1)) (Fin (r + 1)) E) : Y0 ∈ clsLoc M Y0 := by
@@ -30,6 +35,37 @@ theorem mem_clsLoc_self {F : Type} [Field F] [ValuativeRel F] [TopologicalSpace 
   · rw [sub_self]; exact Submodule.zero_mem _
   · rw [Matrix.transpose_one, Matrix.map_one _ (map_zero _) (map_one _), Matrix.one_mul, Matrix.mul_one]
 
+/- English proof (translation)
+Introduce `D X Y u u' Cl TS cls hG hrow t₀ ht₀ hrel`. Take `⟨w, hw, hat, hfin⟩` from `GlobalTheory.T.terms_at_point_of_relevant_term_relevant_finite D X Y u u' t₀ (hG t₀ ht₀) hrel`. Establish `hRL : IsRowLat D (X.Fu u) t₀.toTerm.lam` using `(Y.rowsOK u).1 t₀.lam t₀.mem`. Take `⟨-, hG0, hcell0⟩` from `hat t₀ rfl`. Take `⟨F00, F'0, F'1, FP, d0, hn, hZ, -, hcell1, hp, hfinP⟩` from `GlobalTheory.T.baseData_of_global_term D (zOf Y) u u' (X.Fu u) t₀.toTerm.lam hRL (Quot.out t₀.toTerm.cls).1 (Quot.out t₀.toTerm.cls).2 hG0 w hcell0`.
+
+Establish `hreps` using `fun p => GlobalTheory.LocOver.orbit_reps_over ((zOf Y).M p) ((zOf Y).agree p).1 (locH (zOf Y) p) D.R.rS (FP p)`. Set `R : ∀ p : PlF D, LocNG.Reps (FP p)` to `fun p => (hreps p).2.1.some`. Set `LT : Formalism.L2.SG.TermDef.Term D u u' (X.Fu u) (Y.what₂ u) → ∀ p : PlF D, Formalism.MainNotions.S.Loc.Term (Vp D p) ((zOf Y).M p) D.R.rS` to `fun s p => locU (zOf Y) p s.lam (lf D (X.Fu u)) (Quot.out s.cls).1 (Tu D u) (Tu D u')`. Set `rho : Formalism.L2.SG.TermDef.Term D u u' (X.Fu u) (Y.what₂ u) → ∀ p : PlF D, LocNG.Datum (FP p)` to `fun s p => if h : ∃ d ∈ (R p).RD, Over (FP p) d (LT s p) then h.choose else d0 p`. Establish `hover : ∀ t : TauC Y u u', ptPN t = ptPN t₀ → ∀ p, ∃ d, Over (FP p) d (LT t.toTerm p)`.
+
+Introduce `t ht p`. Take `⟨-, hGt, hct⟩` from `hat t ht`. Apply the tactic sequence `exact GlobalTheory.T.globalTerm_lies_over_localDatum_after_isometry D (zOf Y) u u' (X.Fu u) t.toTerm.lam ((Y.rowsOK u).1 t.lam t.mem) (Quot.out t.toTerm.cls).1 (Quot.out t.toTerm.cls).2 hGt w F00 F'0 hct hZ p (FP p) (hp p).1`. Establish `hrho : ∀ t : TauC Y u u', ptPN t = ptPN t₀ → ∀ p, rho t.toTerm p ∈ (R p).RD ∧ Over (FP p) (rho t.toTerm p) (LT t.toTerm p)`. Introduce `t ht p`.
+
+Take `⟨d, hd⟩` from `hover t ht p`. Take `⟨y, hy, hyd⟩` from `(R p).hRD.2.1 d (Set.mem_univ _)`. Establish `hex : ∃ d ∈ (R p).RD, Over (FP p) d (LT t.toTerm p)` using `⟨y, hy, (hreps p).2.2 d y _ ((hreps p).1.symm hyd) hd⟩`. Establish `e : rho t.toTerm p = hex.choose` using `dif_pos hex`. Rewrite using `[e]`.
+
+Conclude with `hex.choose_spec`. Set `γ` to `ptPN t₀`. Set `Pf : Finset (PlF D)` to `hfinP.toFinset`. Set `Om : Finset {p // p ∈ Pf}` to `Pf.attach.filter (fun p => ¬ (FP p.1).PrimeTo)`. Set `Ds : ∀ p : PlF D, Finset (LocNG.Datum (FP p))` to `fun p => hfin.toFinset.image (fun s => rho s p)`.
+
+Establish `hmemDs : ∀ t : TauC Y u u', ptPN t = γ → ∀ p, rho t.toTerm p ∈ Ds p` using `fun t ht p => Finset.mem_image_of_mem _ (hfin.mem_toFinset.2 ⟨t, ht, rfl⟩)`. Set `dat : Cl → NuC D → Option (∀ p : {p // p ∈ Pf}, {d // d ∈ Ds p.1})` to `fun c ν => if h : ∃ t ∈ TS, cls t = c ∧ ptPN t = γ ∧ nmlOf Y u u' t = ν then some (fun p => ⟨rho h.choose.toTerm p.1, hmemDs _ h.choose_spec.2.2.1 p.1⟩) else none`. Set `rw : Cl → ℝ` to `fun c => if h : ∃ t ∈ TS, cls t = c then (Formalism.L2.SG.TermOp.wt h.choose) ^ 2 else 0`. Set `ngenL : PlF D → ℝ` to `fun p => (ngenLoc (R p) (d0 p) (clsLoc ((zOf Y).M p) ((locH (zOf Y) p).Zhat (locF Y p (lf D (X.Fu u))) (locF' Y p F'1)))).toReal`. Set `Fm0 : LocFam (zOf Y) Cl (NuC D)` to `⟨Pf, Om, FP, R, d0, Ds, ngenL, 0, rw, dat⟩`.
+
+Set `Fm : LocFam (zOf Y) Cl (NuC D)` to `{ Fm0 with V0 := if h : ∃ v, OrbitFamilyIdentityAt Fm0 v then h.choose else 0 }`. Establish `hDs : ∀ p ∈ Fm.P, ∀ d ∈ Fm.Ds p, d ∈ (Fm.R p).RD`. Introduce `p _ d hd`. Take `⟨s, hs, rfl⟩` from `Finset.mem_image.1 hd`. Take `⟨t, ht, rfl⟩` from `hfin.mem_toFinset.1 hs`.
+
+Conclude with `(hrho t ht p).1`. Establish `hnotP : ∀ p, p ∉ Pf → (FP p).PrimeTo ∧ LocNG.IsTermOver (FP p) (d0 p) ⟨lattice₂ D (zOf Y).M p t₀.toTerm.lam, scaled (zOf Y) p (frame F00), scaled (zOf Y) p (frame F'0), ((Tu D u : ℕ) : (D.s.atP p).Fp), ((Tu D u' : ℕ) : (D.s.atP p).Fp)⟩`. Introduce `p hp'`. Assume the negation of the conclusion as `hc`. Conclude with `hp' (hfinP.mem_toFinset.2 hc)`.
+
+Use `⟨Fm, ⟨w, F00, F'0, F'1, hw, hDs, rfl, hn, hZ, fun p => (hp p).1, ?_, fun p hp' => (hnotP p hp').1, ?_, ⟨t₀, ht₀, rfl, fun p _ => (hp p).2.2.1⟩, fun p _ => ⟨_, (hp p).2.2.1⟩, ⟨t₀.toTerm.lam, hRL.1.1, fun p hp' => (hnotP p hp').2⟩, ?_, hcell1, fun p _ => ⟨rfl, d0 p, _, (hp p).2.2.1 …` and prove the remaining obligations. Introduce `p`. Conclude with `Finset.mem_filter.trans (and_iff_right (Finset.mem_attach _ _))`. Introduce `p hp' t _ ht`. Take `⟨-, hGt, hct⟩` from `hat t ht`.
+
+Apply the tactic sequence `obtain ⟨d, g, hg, d', hdd', hto⟩ := GlobalTheory.T.globalTerm_lies_over_localDatum_after_isometry D (zOf Y) u u' (X.Fu u) t.toTerm.lam ((Y.rowsOK u).1 t.lam t.mem) (Quot.out t.toTerm.cls).1 (Quot.out t.toTerm.cls).2 hGt w F00 F'0 hct hZ p (FP p) (hp p).1`. Establish `hpr` using `(hnotP p hp').1`. Establish `hrel' : LocNG.Datum.Rel (d0 p) d'` using `GlobalTheory.T.hermitianData_with_term_single_orbit_primeTo ((zOf Y).M p) ((zOf Y).agree p).1 (locH (zOf Y) p) D.R.rS D.R.k (FP p) (rank_Vp p) (hp p).2.1 hpr (d0 p) d' _ _ (hp p).2.2.1 hto`. Conclude with `⟨g, hg, d', hrel', hto⟩`. Introduce `c ν`.
+
+Distinguish the cases in `h : ∃ t ∈ TS, cls t = c ∧ ptPN t = γ ∧ nmlOf Y u u' t = ν`. Establish `e : Fm.dat c ν = some (fun p => ⟨rho h.choose.toTerm p.1, hmemDs _ h.choose_spec.2.2.1 p.1⟩)` using `dif_pos h`. Rewrite using `[e]`. Take `⟨hc1, hc2, hc3, hc4⟩` from `h.choose_spec`. Use `⟨h, fun t ht hct hpt hnt => ⟨fun p _ => ?_, ?_⟩⟩` and prove the remaining obligations.
+
+Establish `hsame` using `GlobalTheory.T.terms_same_row_same_weight_same_localData D X Y u u' h.choose t (hG _ hc1) (hrow _ hc1 t ht (hc2.trans hct.symm))`. Take `⟨g, hg, d', hdd', hto⟩` from `hsame.2 (hc4.trans hnt.symm) p (FP p) (hp p).2.1 _ (hrho _ hc3 p).2`. Conclude with `⟨g, hg, d', hdd', hto⟩`. Establish `hc : ∃ t ∈ TS, cls t = c` using `⟨t, ht, hct⟩`. Establish `e2 : Fm.rw c = (Formalism.L2.SG.TermOp.wt hc.choose) ^ 2` using `dif_pos hc`.
+
+Rewrite using `[e2]`. Take `⟨hh1, hh2⟩` from `hc.choose_spec`. Rewrite using `[(GlobalTheory.T.terms_same_row_same_weight_same_localData D X Y u u' hc.choose t (hG _ hh1) (hrow _ hh1 t ht (hh2.trans hct.symm))).1]`. Establish `e : Fm.dat c ν = none` using `dif_neg h`. Rewrite using `[e]`.
+
+Conclude with `h`. Use `show (locH (zOf Y) p).Zhat (locU (zOf Y) p t₀.toTerm.lam (lf D (X.Fu u)) (Quot.out t₀.toTerm.cls).1 (Tu D u) (Tu D u')).f (locU (zOf Y) p t₀.toTerm.lam (lf D (X.Fu u)) (Quot.out t₀.toTerm.cls).1 (Tu D u) (Tu D u')).f' ∈ _`. Establish `hm` using `mem_clsLoc_self ((zOf Y).M p) ((locH (zOf Y) p).Zhat (locF Y p (lf D (X.Fu u))) (locF' Y p F'1))`. Use `hm using 3` and compare the differences between its conclusion and the goal. Apply the tactic sequence `all_goals first | rfl | exact (hp p).2.2.2`.
+
+Use `show 0 ≤ (if h : ∃ t ∈ TS, cls t = c then (Formalism.L2.SG.TermOp.wt h.choose) ^ 2 else 0) split_ifs`. Conclude with `sq_nonneg _`. Conclude with `le_rfl`.
+-/
 theorem exists_famTie : ∀ (D : D7) (X : HidaSetting D) (Y : Full X) (u u' : D.what₂.Word), ∀ {Cl : Type} (TS : Set (TauC Y u u')) (cls : TauC Y u u' → Cl), (∀ t ∈ TS, t.G ≠ 0) → (∀ t ∈ TS, ∀ t' ∈ TS, cls t = cls t' → (Y.tO u u').rowOf t = (Y.tO u u').rowOf t') → ∀ t₀ ∈ TS, t₀.relevant → ∃ Fm : LocFam (zOf Y) Cl (NuC D), FamTie TS cls (nmlOf Y u u') (ptPN t₀) Fm ∧ (∀ p ∈ Fm.P, (Fm.FP p).RelG (LocNG.theta ((zOf Y).M p))) ∧ (∀ p ∈ Fm.P, ∃ (d : LocNG.Datum (Fm.FP p)) (t : Loc.Term (Vp D p) ((zOf Y).M p) D.R.rS), LocNG.IsTermOver (Fm.FP p) d t) ∧ (∀ p ∈ Fm.P, ∀ d ∈ Fm.Ds p, d ∈ (Fm.R p).RD) ∧ (∀ c, 0 ≤ Fm.rw c) := by
   intro D X Y u u' Cl TS cls hG hrow t₀ ht₀ hrel
   obtain ⟨w, hw, hat, hfin⟩ := GlobalTheory.T.terms_at_point_of_relevant_term_relevant_finite D X Y u u' t₀ (hG t₀ ht₀) hrel

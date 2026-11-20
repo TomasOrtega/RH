@@ -15,6 +15,13 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 namespace GlobalTheory.SeeSaw
 
+/- English proof (translation)
+Introduce `hP D θ hθ V S M J χ G hG v`. Establish `hM` using `(GlobalTheory.MultMem.mem_mult_iff _ _ _ _ _ _ _ _).1 ((mem_multT _ _ _ _ _).1 hG)`. Proceed by induction on `v using PiTensorProduct.induction_on with`. Consider the case `smul_tprod r w`. Establish `h1` using `GlobalTheory.Grow.rapidDec_of_cuspForm hP hθ (hM.aut w) (hM.cusp w)`.
+
+Establish `h2 : G (r • PiTensorProduct.tprod ℂ w) = r • PiTensorProduct.lift.symm G w`. Simplify using `[PiTensorProduct.lift_symm]`. Rewrite using `[h2]`. Conclude with `GlobalTheory.Grow.RapidDec.smul r h1`. Consider the case `add x y hx hy`.
+
+Rewrite using `[map_add]`. Conclude with `hx.add hy`.
+-/
 theorem rapidVal_of_cuspRapidDecay : GlobalTheory.Published.CuspRapidDecay → ∀ D : D7, RapidVal D := by
   intro hP D θ hθ V S M J χ G hG v
   have hM := (GlobalTheory.MultMem.mem_mult_iff _ _ _ _ _ _ _ _).1 ((mem_multT _ _ _ _ _).1 hG)

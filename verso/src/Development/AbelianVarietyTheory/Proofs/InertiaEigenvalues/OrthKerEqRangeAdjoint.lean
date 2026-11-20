@@ -7,6 +7,11 @@ noncomputable section
 
 namespace GlobalTheory.EtaJoin.TypeSum
 
+/- English proof (translation)
+Establish `h : (LinearMap.range (LinearMap.adjoint A))ᗮ = LinearMap.ker A`. Use extensionality with `x`. Simplify using `only [Submodule.mem_orthogonal, LinearMap.mem_range, LinearMap.mem_ker, forall_exists_index, forall_apply_eq_imp_iff, LinearMap.adjoint_inner_left]`. Prove the components needed by the constructor for the conclusion. Introduce `hx`.
+
+Conclude with `ext_inner_left ℂ (fun y => by rw [hx y, inner_zero_right])`. Introduce `hx y`. Rewrite using `[hx, inner_zero_right]`. Rewrite using `[← h, Submodule.orthogonal_orthogonal]`.
+-/
 theorem orth_ker_eq_range_adjoint {V W : Type} [NormedAddCommGroup V] [InnerProductSpace ℂ V]
     [FiniteDimensional ℂ V] [NormedAddCommGroup W] [InnerProductSpace ℂ W] [FiniteDimensional ℂ W]
     (A : V →ₗ[ℂ] W) : (LinearMap.ker A)ᗮ = LinearMap.range (LinearMap.adjoint A) := by
@@ -27,20 +32,32 @@ def eqvMt {μ μ' : D.what₂.Tup} {j j' : ℕ} (hμ : μ' = μ) (hj : j' = j) :
     D.what₂.Mt μ' j' ≃ₗ[ℂ] D.what₂.Mt μ j := by
   subst hμ; subst hj; exact LinearEquiv.refl ℂ _
 
+/- English proof (translation)
+The claim follows from `Submodule.map_id V`.
+-/
 theorem map_eqvMt_self {μ : D.what₂.Tup} {j : ℕ} (hμ : μ = μ) (hj : j = j) (V : Submodule ℂ (D.what₂.Mt μ j)) :
     V.map (eqvMt hμ hj).toLinearMap = V :=
   Submodule.map_id V
 
+/- English proof (translation)
+Substitute `hμ` using the available equality. Substitute `hj` using the available equality. Conclude with `map_eqvMt_self _ _ _`.
+-/
 theorem map_eqvMt_thetaT_isot {μ μ' : D.what₂.Tup} {j j' : ℕ} (hμ : μ' = μ) (hj : j' = j) (σ : D.what₂.FT) :
     ((D.what₂.isot j' σ).map (D.what₂.thetaT μ' j')).map (eqvMt hμ hj).toLinearMap =
       (D.what₂.isot j σ).map (D.what₂.thetaT μ j) := by
   subst hμ; subst hj; exact map_eqvMt_self _ _ _
 
+/- English proof (translation)
+Substitute `hμ` using the available equality. Substitute `hj` using the available equality. Conclude with `map_eqvMt_self _ _ _`.
+-/
 theorem map_eqvMt_range_thetaT {μ μ' : D.what₂.Tup} {j j' : ℕ} (hμ : μ' = μ) (hj : j' = j) :
     (LinearMap.range (D.what₂.thetaT μ' j')).map (eqvMt hμ hj).toLinearMap =
       LinearMap.range (D.what₂.thetaT μ j) := by
   subst hμ; subst hj; exact map_eqvMt_self _ _ _
 
+/- English proof (translation)
+Unfold `NG.isoTyp`. Use `congr 1`. Use extensionality with `T`. Conclude with `⟨fun ⟨h1, h2⟩ => ⟨h1, (h.symm hS).trans h2⟩, fun ⟨h1, h2⟩ => ⟨h1, h.trans h2⟩⟩`.
+-/
 theorem isoTyp_eq_of_isoRep {L : Type} [Field L] [NumberField L] [IsCMField L] {n : ℕ} {W : Type}
     [AddCommGroup W] [Module ℂ W] (ρ : Representation ℂ (GQ L n) W) {S S' : Submodule ℂ (GAf L n → W)}
     (hS : ∀ h, ∀ f ∈ S, NG.rt L n h f ∈ S) (h : NG.IsoRep S S') : NG.isoTyp ρ S = NG.isoTyp ρ S' := by
@@ -51,6 +68,11 @@ theorem isoTyp_eq_of_isoRep {L : Type} [Field L] [NumberField L] [IsCMField L] {
 
 variable {M : MtFam D}
 
+/- English proof (translation)
+Substitute `hμ` using the available equality. Substitute `hj` using the available equality. Take `⟨P, hP⟩` from `A.surj i S' hirr hne`. Use `⟨P, ?_⟩` and prove the remaining obligations. Establish `e` using `isoTyp_eq_of_isoRep (M.loc i).wt.ρ (A.irr i P).1.stable hP`.
+
+Rewrite using `[map_eqvMt_self, A.typeV i P, e]`. Both sides reduce to the same expression.
+-/
 theorem typeV_of_transport (A : AVTied D M) (i : D.nd.Loc) {μ' : D.what₂.Tup} {j' : ℕ}
     (hμ : μ' = D.nd.mu i) (hj : j' = D.nd.j i) (h1 : 1 ≤ j') (h2 : j' ≤ D.R.m)
     (S' : Submodule ℂ (GAf D.host.E D.R.nV → (M μ' j' h1 h2).wt.W))
@@ -65,6 +87,11 @@ theorem typeV_of_transport (A : AVTied D M) (i : D.nd.Loc) {μ' : D.what₂.Tup}
   rw [map_eqvMt_self, A.typeV i P, e]
   rfl
 
+/- English proof (translation)
+Substitute `hμ` using the available equality. Substitute `hj` using the available equality. Rewrite `hV` using `[map_eqvMt_self]`. Substitute `hV` using the available equality. Take `⟨y, hy, hy0⟩` from `Submodule.exists_mem_ne_zero_of_ne_bot (D.naut.typeV_ne i P)`.
+
+Establish `e1` using `A.eigen i P x hx w k s ϖ hw hc hu k1 k2 y hy`. Establish `e2` using `hV' y hy`. Establish `hr : (M.loc i).real y ≠ 0` using `fun h => hy0 ((M.loc i).real_inj (h.trans (map_zero _).symm))`. Conclude with `smul_left_injective ℂ hr (e2.symm.trans e1)`.
+-/
 theorem eig_of_transport (A : AVTied D M) (i : D.nd.Loc) (P : D.naut.AV i) (x : D.nd.X i)
     (hx : D.naut.ptV i P = some x) {μ' : D.what₂.Tup} {j' : ℕ}
     (hμ : μ' = D.nd.mu i) (hj : j' = D.nd.j i) (h1 : 1 ≤ j') (h2 : j' ≤ D.R.m)
@@ -87,6 +114,43 @@ end GlobalTheory.EtaJoin.TypeSum
 
 namespace GlobalTheory.EtaJoin.TypeSum
 
+/- English proof (translation)
+Introduce `D M i HT A SU TO TC II PZ EX`. Establish `hZ0 : Idx.Z0 D (D.nd.mu i) (D.nd.j i) = LinearMap.range (D.what₂.thetaT (D.nd.mu i) (D.nd.j i))`. Unfold `Idx.Z0`. Rewrite using `[orth_ker_eq_range_adjoint]`. Conclude with `inf_eq_left.2 TC`.
+
+Establish `hmu : ∀ i' ∈ D.nd.locs (D.nd.j i) (D.nd.w i), D.nd.mu i' = D.nd.mu i` using `fun i' hi' => by`. Rewrite using `[D.nd.mu_w, D.nd.mu_w, ((D.nd.locs_mem _ _ i').1 hi').2]`. Set `G : Set (D.naut.AV i)` to `{P | ∃ i' ∈ D.nd.locs (D.nd.j i) (D.nd.w i), ∃ x' ∈ Formalism.MainNotions.N.ZgoodN D.nd D.naut i', ∃ P' : D.naut.AV i', D.naut.ptV i' P' = some x' ∧ ∃ (hμ : D.nd.mu i' = D.nd.mu i) (hj : D.nd.j i' = D.nd.j i), (D.naut.typeV i' P').map (eqvMt hμ hj).toLinearMap = D.naut.typeV i P}`. Establish `hin : ∀ P ∈ G, D.naut.typeV i P ≤ LinearMap.range (D.what₂.thetaT (D.nd.mu i) (D.nd.j i))`. Introduce and unpack `P ⟨i', hi', x', hx', P', hP', hμ, hj, he⟩`.
+
+Establish `hZ` using `(PZ i' ⟨x', hx'⟩).2.1`. Establish `h1 : D.naut.typeV i' P' ≤ LinearMap.range (D.what₂.thetaT (D.nd.mu i') (D.nd.j i'))`. Use `le_trans ?_ (LinearMap.map_le_range (f := D.what₂.thetaT (D.nd.mu i') (D.nd.j i')) (p := Formalism.MainNotions.N.goodPartM D.nd D.naut i'))` and prove the remaining obligations. Rewrite using `[hZ]`. Use `le_trans ?_ (le_biSup (fun x => Formalism.MainNotions.N.eigC D.nd D.naut i' x) hx')` and prove the remaining obligations.
+
+Unfold `Formalism.MainNotions.N.eigC`. Conclude with `le_biSup (fun Q => D.naut.typeV i' Q) (show P' ∈ {Q | D.naut.ptV i' Q = some x'} from hP')`. Rewrite using `[← he, ← map_eqvMt_range_thetaT hμ hj]`. Conclude with `Submodule.map_mono h1`. Establish `hsub : LinearMap.range (D.what₂.thetaT (D.nd.mu i) (D.nd.j i)) ≤ ⨆ P ∈ G, D.naut.typeV i P`.
+
+Rewrite using `[LinearMap.range_eq_map, ← ((II (D.nd.j i) (D.nd.j_range i).1 (D.nd.j_range i).2).submodule_iSup_eq_top), Submodule.map_iSup]`. Use `iSup_le fun σ => ?_` and prove the remaining obligations. Distinguish the cases in `h0 : D.what₂.isot (D.nd.j i) σ = ⊥`. Rewrite using `[h0, Submodule.map_bot]`. Conclude with `bot_le`.
+
+Take `⟨hg, i', hi', hHG, hAt⟩` from `EX σ h0`. Establish `hj : D.nd.j i' = D.nd.j i` using `((D.nd.locs_mem _ _ i').1 hi').1`. Establish `hμ` using `hmu i' hi'`. Establish `h1 : D.what₂.isot (D.nd.j i') σ ≤ Formalism.MainNotions.N.goodPartM D.nd D.naut i'` using `le_biSup (fun τ => D.what₂.isot (D.nd.j i') τ) (show σ ∈ {τ | D.nd.goodRow τ ∧ Formalism.MainNotions.N.AtM D.nd D.naut i' τ} from ⟨hg, hAt⟩)`. Establish `h2` using `Submodule.map_mono (f := D.what₂.thetaT (D.nd.mu i') (D.nd.j i')) h1`.
+
+Rewrite `h2` using `[(PZ i' hHG).2.1]`. Rewrite using `[← map_eqvMt_thetaT_isot hμ hj]`. Use `le_trans (Submodule.map_mono h2) ?_` and prove the remaining obligations. Rewrite using `[Submodule.map_le_iff_le_comap]`. Use `iSup₂_le fun x' hx' => ?_` and prove the remaining obligations.
+
+Unfold `Formalism.MainNotions.N.eigC`. Use `iSup₂_le fun P' hP' => ?_` and prove the remaining obligations. Rewrite using `[← Submodule.map_le_iff_le_comap]`. Establish `hne : (NG.isoTyp (M.loc i').wt.ρ (A.S i' P')).comap (M.loc i').real ≠ ⊥`. Rewrite using `[← A.typeV i' P']`.
+
+Conclude with `D.naut.typeV_ne i' P'`. Take `⟨P, hP⟩` from `typeV_of_transport A i hμ hj (D.nd.j_range i').1 (D.nd.j_range i').2 (A.S i' P') (A.irr i' P') hne`. Establish `hT : (D.naut.typeV i' P').map (eqvMt hμ hj).toLinearMap = D.naut.typeV i P`. Rewrite using `[A.typeV i' P']`. Conclude with `hP`.
+
+Rewrite using `[hT]`. Conclude with `le_biSup (fun Q => D.naut.typeV i Q) (show P ∈ G from ⟨i', hi', x', hx', P', hP', hμ, hj, hT⟩)`. Establish `hZG : LinearMap.range (D.what₂.thetaT (D.nd.mu i) (D.nd.j i)) = ⨆ P ∈ G, D.naut.typeV i P` using `le_antisymm hsub (iSup₂_le hin)`. Establish `hout : ∀ P, P ∉ G → D.naut.typeV i P ≤ (LinearMap.range (D.what₂.thetaT (D.nd.mu i) (D.nd.j i)))ᗮ`. Introduce `P hP`.
+
+Rewrite using `[← Submodule.isOrtho_iff_le]`. Apply `Submodule.IsOrtho.symm` to reduce the goal to its premises. Rewrite using `[Submodule.isOrtho_iff_le, hZG]`. Use `iSup₂_le fun Q hQ => ?_` and prove the remaining obligations. Rewrite using `[← Submodule.isOrtho_iff_le]`.
+
+Conclude with `TO Q P (fun h => hP (h ▸ hQ))`. Unfold `ZSpec`. Rewrite using `[hZ0]`. Introduce `P`. Use `⟨(em (P ∈ G)).elim (fun h => Or.inl (hin P h)) (fun h => Or.inr (hout P h)), fun x hx => ⟨fun hg => ?_, fun hb => hout P ?_⟩⟩` and prove the remaining obligations.
+
+Conclude with `hin P ⟨i, (D.nd.locs_mem _ _ i).2 ⟨rfl, rfl⟩, x, (D.Zgood_tie i x).1 hg, P, hx, rfl, rfl, map_eqvMt_self _ _ _⟩`. Introduce and unpack `⟨i', hi', x', hx', P', hP', hμ, hj, he⟩`. Take `⟨hj', hw'⟩` from `(D.nd.locs_mem _ _ i').1 hi'`. Distinguish the cases in `hii : i' = i`. Substitute `hii` using the available equality.
+
+Rewrite `he` using `[map_eqvMt_self]`. Establish `hPP : P' = P`. Assume the negation of the conclusion as `hne`. Establish `hd : Disjoint (D.naut.typeV i' P') (D.naut.typeV i' P)` using `(D.naut.typeV_indep i').pairwiseDisjoint hne`. Rewrite `hd` using `[he]`.
+
+Conclude with `D.naut.typeV_ne i' P (disjoint_self.1 hd)`. Substitute `hPP` using the available equality. Rewrite `hP'` using `[hx]`. Consider the cases of `hP'`. Conclude with `hb ((D.Zgood_tie _ _).2 hx')`.
+
+Take `⟨φ, hφ⟩` from `HT.sameO i i' hj'.symm hw'.symm`. Take `⟨v, k, hv, hv', k1, k2, hunit⟩` from `HT.sep i i' φ hφ hj'.symm hw'.symm (Ne.symm hii) x x'`. Take `⟨s, ϖ, hc, hu⟩` from `SU v hv.1`. Establish `e` using `eig_of_transport A i P x hx hμ hj (D.nd.j_range i').1 (D.nd.j_range i').2 (D.naut.typeV i' P') he v k s ϖ hv hc hu k1 k2 _ (fun y hy => A.eigen i' P' x' hP' v k s ϖ hv' hc hu k1 k2 y hy)`. Rewrite `e` using `[hφ]`.
+
+Establish `hinj : Function.Injective (iotaOC D i')`. Introduce `a b h`. Simplify using `only [iotaOC, RingHom.coe_comp, Function.comp_apply] at h`. Conclude with `IsFractionRing.injective (D.nd.O i') (FractionRing (D.nd.O i')) ((D.naut.iotaQ i').injective ((D.naut.iotaQC i').injective h))`. Rewrite `hunit` using `[hinj e, sub_self]`.
+
+Conclude with `not_isUnit_zero hunit`.
+-/
 theorem main : ∀ (D : D7) (M : MtFam D) (i : D.nd.Loc), HeckeTied D M → AVTied D M → SplitUnif D → TypeOrth D i →
     ThetaCut D (D.nd.mu i) (D.nd.j i) → Rows.IsotInternal D.what₂ → Formalism.MainNotions.SumRepresentations.ConclusionZ D →
     (∀ σ, D.what₂.isot (D.nd.j i) σ ≠ ⊥ → D.nd.goodRow σ ∧ ∃ i' ∈ D.nd.locs (D.nd.j i) (D.nd.w i),

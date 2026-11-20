@@ -6,15 +6,26 @@ noncomputable section
 
 namespace GlobalTheory.KerDia.SharpPoly
 
+/- English proof (translation)
+Unfold `DomWeight.detShift`. Rewrite using `[dif_pos h, dif_pos h]`. Both sides reduce to the same expression.
+-/
 theorem detShift_shW {N : ℕ} (lam : DomWeight N) (c : ℤ) (h : 0 < N) :
     (GlobalTheory.Mem.Col2.shW lam c).detShift = lam.detShift + c := by
   unfold DomWeight.detShift; rw [dif_pos h, dif_pos h]; rfl
 
+/- English proof (translation)
+Take `⟨a, ha⟩` from `R.t_odd`. Establish `h : (R.t + 1) / 2 = a + 1` using `by omega`. Rewrite using `[h, ha]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem half_cast (R : Ranks) : ((((R.t + 1) / 2 : ℕ) : ℤ) : ℚ) = ((R.t : ℚ) + 1) / 2 := by
   obtain ⟨a, ha⟩ := R.t_odd
   have h : (R.t + 1) / 2 = a + 1 := by omega
   rw [h, ha]; push_cast; ring
 
+/- English proof (translation)
+Establish `hN : R.N (i + 1) = R.k + i * (R.t + 1) + R.t + 1` using `by unfold Ranks.N; ring`. Establish `hq : Examples₂.blkN R (R.N (i + 1) - 1) = i`. Unfold `Examples₂.blkN`. Rewrite using `[hN, show R.k + i * (R.t + 1) + R.t + 1 - 1 - R.k = R.t + (R.t + 1) * i by`. Rewrite using `[Nat.mul_comm (R.t + 1) i]`.
+
+Use the proof step `omega]`. Rewrite using `[Nat.add_mul_div_left _ _ (Nat.succ_pos _), Nat.div_eq_of_lt (Nat.lt_succ_self _), Nat.zero_add]`. Unfold `Examples₂.wtN`. Rewrite using `[dif_neg (by omega), dif_pos (by rw [hq]; exact hi)]`. Simplify using `only [hq]`.
+-/
 theorem wtN_last {R : Ranks} (P : HCParam R) (i : ℕ) (hi : i < R.m) :
     Examples₂.wtN P (R.N (i + 1) - 1) = -wG R (P.e ⟨i, hi⟩) (i + 1) := by
   have hN : R.N (i + 1) = R.k + i * (R.t + 1) + R.t + 1 := by unfold Ranks.N; ring
@@ -27,6 +38,17 @@ theorem wtN_last {R : Ranks} (P : HCParam R) (i : ℕ) (hi : i < R.m) :
   rw [dif_neg (by omega), dif_pos (by rw [hq]; exact hi)]
   simp only [hq]
 
+/- English proof (translation)
+Establish `hN` using `R.N_pos i`. Establish `h1 : ((GlobalTheory.Mem.Col2.lamT hc i τ).detShift : ℚ) = Examples₂.wtN (hc τ) (R.N i - 1) - (i : ℚ) * (((R.t : ℚ) + 1) / 2)`. Unfold `GlobalTheory.Mem.Col2.lamT`. Rewrite using `[detShift_shW _ _ hN]`. Unfold `DomWeight.detShift`.
+
+Rewrite using `[dif_pos hN]`. Rewrite using `[Int.cast_add, Int.cast_neg, Int.cast_mul, half_cast, Examples₂.lamOf_eq _ i hi.le, Examples₂.wtQ_eq_wtN]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Establish `h2` using `wtN_last (hc τ) i hi`.
+
+Establish `hle : R.N i ≤ R.N (i + 1)`. Unfold `Ranks.N`. Conclude with `Nat.add_le_add_left (Nat.mul_le_mul_right _ (Nat.le_succ _)) _`. Establish `hlt : R.N (i + 1) - 1 < R.N R.m`. Use `Examples₂.N_mono (R := R) (j := i + 1) (by omega)` as an intermediate fact.
+
+Use `R.N_pos (i + 1)` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish `h3` using `Examples₂.wtN_anti (hc τ) (show R.N i - 1 ≤ R.N (i + 1) - 1 by omega) hlt`. Establish `h4 : (((GlobalTheory.Mem.Col2.lamT hc i τ).detShift + s : ℤ) : ℚ) ≥ 0`. Rewrite using `[Int.cast_add, h1, hs]`.
+
+Rewrite `h3` using `[h2]`. Simplify using `only [wG, sExp', Ranks.N] at h3 ⊢`. Move the coercions through the operations in `at h3 ⊢`. Combine the linear equalities and inequalities to obtain the conclusion. Conclude with `h4` after adjusting the coercions.
+-/
 theorem exp_nonneg {R : Ranks} {ι : Type} (hc : ι → HCParam R) (i : ℕ) (hi : i < R.m) (τ : ι) (s : ℤ)
     (hs : (s : ℚ) = sExp' R ((hc τ).e ⟨i, hi⟩) (i + 1)) : 0 ≤ (GlobalTheory.Mem.Col2.lamT hc i τ).detShift + s := by
   have hN := R.N_pos i
@@ -61,6 +83,9 @@ namespace GlobalTheory.KerDia.SharpPoly
 def detP {ι : Type} (n : ℕ) (τ : ι) : MvPolynomial (ι × Fin n × Fin n) ℂ :=
   (Matrix.of fun a b => (MvPolynomial.X (τ, a, b) : MvPolynomial (ι × Fin n × Fin n) ℂ)).det
 
+/- English proof (translation)
+Unfold `detP`. Rewrite using `[RingHom.map_det]`. Use `congr 1`. Use extensionality with `a b`. Simplify using the standard rewrite rules.
+-/
 theorem eval_detP {ι : Type} {n : ℕ} (y : ι → Matrix (Fin n) (Fin n) ℂ) (τ : ι) :
     MvPolynomial.eval (fun x : ι × Fin n × Fin n => y x.1 x.2.1 x.2.2) (detP n τ) = (y τ).det := by
   unfold detP
@@ -71,6 +96,13 @@ theorem eval_detP {ι : Type} {n : ℕ} (y : ι → Matrix (Fin n) (Fin n) ℂ) 
 
 end GlobalTheory.KerDia.SharpPoly
 
+/- English proof (translation)
+Introduce `B X I l u a i hi x hx`. Take `⟨P, -, rfl⟩` from `Submodule.mem_map.mp hx`. Use `set n : Tau B.R → ℤ := fun τ => (lamT (B.hcW u) i τ).detShift + (I.chain l u a).sSharp i τ with hn`. Establish `hn0 : ∀ τ, 0 ≤ n τ` using `fun τ => GlobalTheory.KerDia.SharpPoly.exp_nonneg (B.hcW u) i hi τ _ ((I.chain l u a).sSharp_eq i hi τ)`. Use `⟨P * ∏ τ, GlobalTheory.KerDia.SharpPoly.detP (B.R.N i) τ ^ (n τ).toNat, ?_⟩` and prove the remaining obligations.
+
+Use function extensionality and compare the values at `y`. Establish `hd : ∀ τ, (y.1 τ).det ≠ 0` using `fun τ => (y.2 τ).ne_zero`. Simplify using `only [fnOf, LinearMap.coe_mk, AddHom.coe_mk, ColumnChain.sharp, mulFun, Pi.one_apply, Matrix.one_mul, zpow_zero, Finset.prod_const_one, one_mul, map_mul, map_prod, map_pow, GlobalTheory.KerDia.SharpPoly.eval_detP]`. Establish `key : ∀ τ, deFr y τ ^ (I.chain l u a).sSharp i τ * (y.1 τ).det ^ shiftOf (lamT (B.hcW u) i) τ = (y.1 τ).det ^ (n τ).toNat`. Introduce `τ`.
+
+Rewrite using `[deFr, ← zpow_add₀ (hd τ), ← zpow_natCast, Int.toNat_of_nonneg (hn0 τ), hn, shiftOf, add_comm]`. Simplify using `only [Pi.zero_apply, zpow_zero, Finset.prod_const_one, one_mul]`. Rewrite using `[← mul_assoc, ← Finset.prod_mul_distrib, mul_comm]`. Use `congr 1`. Conclude with `Finset.prod_congr rfl fun τ _ => (key τ).symm`.
+-/
 theorem GlobalTheory.KerDia.sharp_mem_range : ∀ {B : Base} {X : PreX B.toPre} (I : TC B X) (l : I.Laws) (u : B.Word) (a : I.ι) (i : ℕ), i < B.R.m → ∀ x ∈ ValC (Gr B.fields.emb B.embLL (B.R.N i)) (lamT (B.hcW u) i), (I.chain l u a).sharp i x ∈ LinearMap.range (fnOf (Gr B.fields.emb B.embLL (B.R.N i)) 0 1) := by
   intro B X I l u a i hi x hx
   obtain ⟨P, -, rfl⟩ := Submodule.mem_map.mp hx

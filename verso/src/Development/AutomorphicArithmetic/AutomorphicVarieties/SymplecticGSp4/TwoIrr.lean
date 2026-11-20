@@ -8,17 +8,30 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.SymplecticGSp4.GeA
 import Development.AutomorphicArithmetic.AutomorphicVarieties.SymplecticGSp4.PtInSmul
 open NumberField IsDedekindDomain Formalism.ConjugateSelfDual ReciprocityTheory.Gal IsLocalRing UpperTheory.V UpperTheory.V.Base UpperTheory.V.Alg UpperTheory.V.HV UpperTheory.V.GradeZeroInterpolatingElement
 
+/- English proof (translation)
+Use `show (wv t (wt i j) : K) * X i j = 0 ↔ _`. Rewrite using `[mul_eq_zero, or_iff_right (Units.ne_zero _)]`.
+-/
 private theorem twoIrr_entry {K : Type} [Field K] (t : Kˣ × Kˣ) (X : M4 K) (i j : Fin 4) :
     tconj t X i j = 0 ↔ X i j = 0 := by
   show (wv t (wt i j) : K) * X i j = 0 ↔ _
   rw [mul_eq_zero, or_iff_right (Units.ne_zero _)]
 
+/- English proof (translation)
+Unfold `Ge`. Use `exists_congr fun g => ?_` and prove the remaining obligations. Rewrite using `[h g, Ne, Ne, twoIrr_entry]`.
+-/
 private theorem twoIrr_ge {H K : Type} [Group H] [Field K] (t : Kˣ × Kˣ) (r r' : H →* M4 K)
     (h : ∀ g, r g = tconj t (r' g)) (i j : Fin 4) : Ge r i j ↔ Ge r' i j := by
   unfold Ge
   refine exists_congr fun g => ?_
   rw [h g, Ne, Ne, twoIrr_entry]
 
+/- English proof (translation)
+Set `L : M4 K →ₗ[K] M4 K` to `{ toFun := fun X => Matrix.of fun i j => (((wv t (wt i j))⁻¹ : Kˣ) : K) * X i j map_add' := fun X Y => by ext i j; simp [mul_add] map_smul' := fun a X => by ext i j; simp [mul_left_comm] }`. Establish `hL : ∀ X, L (tconj t X) = X` using `fun X => by`. Use extensionality with `i j`. Use `show (((wv t (wt i j))⁻¹ : Kˣ) : K) * ((wv t (wt i j) : K) * X i j) = X i j`. Rewrite using `[Units.inv_mul_cancel_left]`.
+
+Unfold `Irr at *`. Rewrite using `[eq_top_iff]`. Introduce `X _`. Establish `h1 : tconj t X ∈ Submodule.span K (Set.range r)` using `by rw [hr]; trivial`. Establish `h2` using `Submodule.mem_map_of_mem (f := L) h1`.
+
+Rewrite `h2` using `[hL, Submodule.map_span]`. Use `Submodule.span_mono ?_ h2` and prove the remaining obligations. Introduce and unpack `_ ⟨_, ⟨g, rfl⟩, rfl⟩`. Conclude with `⟨g, by rw [h g, hL]⟩`.
+-/
 private theorem twoIrr_irr {H K : Type} [Group H] [Field K] (t : Kˣ × Kˣ) (r r' : H →* M4 K)
     (h : ∀ g, r g = tconj t (r' g)) (hr : Irr r) : Irr r' := by
   let L : M4 K →ₗ[K] M4 K :=
@@ -39,6 +52,17 @@ private theorem twoIrr_irr {H K : Type} [Group H] [Field K] (t : Kˣ × Kˣ) (r 
   rintro _ ⟨_, ⟨g, rfl⟩, rfl⟩
   exact ⟨g, by rw [h g, hL]⟩
 
+/- English proof (translation)
+Introduce `Ω _ _ _ l _ c D hD M _ hP hSo hF hNE ξ h2`. Take `⟨t, r, hr, hrt⟩` from `ptScale D hD M hF ξ`. Establish `hge` using `twoIrr_ge t r _ hrt`. Take `⟨hn, hp, -⟩` from `signs D hD M hF ξ`. Break down `tri D hD hP r hr with h | h | ⟨h02, h20, h⟩` into its components or cases.
+
+Conclude with `twoIrr_irr t r _ hrt h`. It suffices to derive a contradiction. Break down `diagCases D hD hSo r hr h with ⟨-, h⟩ | ⟨-, h⟩` into its components or cases. Conclude with `h2.1 (hn fun i j hij hg => h i j hij ((hge i j).2 hg))`. Conclude with `h2.2 (hp fun i j hij hg => h i j hij ((hge i j).2 hg))`.
+
+It suffices to derive a contradiction. Take `⟨ξ₀, h₀⟩` from `ptLimit D hD M hF ξ (h.imp (fun h i j hij hg => h i j hij ((hge i j).2 hg)) (fun h i j hij hg => h i j hij ((hge i j).2 hg)))`. Take `⟨t₀, r₀, hr₀, hrt₀⟩` from `ptScale D hD M hF ξ₀`. Establish `hge₀` using `twoIrr_ge t₀ r₀ _ hrt₀`. Take `⟨hm, -, -, -, -, he, -⟩` from `ptIn D hD (PadicAlgCl l) r₀ hr₀`.
+
+Take `⟨-, -, -, -, -, h6⟩` from `geAlg (PadicAlgCl l) r₀ _ hm he`. Establish `hb : ∀ g, IsBlock (r₀ g)` using `fun g i j hij => by`. Rewrite using `[hrt₀, twoIrr_entry, h₀, if_neg hij]`. Establish `key : ∀ i j, lamW i = lamW j → Ge r i j → Ge r₀ i j` using `fun i j hij hg => by`. Take `⟨g, hg⟩` from `(hge i j).1 hg`.
+
+Conclude with `(hge₀ i j).2 ⟨g, by rw [h₀, if_pos hij]; exact hg⟩`. Conclude with `hNE r₀ hr₀ hb (h6 (key 0 2 (by decide) h02) (key 2 0 (by decide) h20) hb)`.
+-/
 theorem UpperTheory.V.GradeZeroInterpolatingElement.twoIrr :
     ∀ {Ω : Type} [Field Ω] [CharZero Ω] [IsAlgClosure ℚ Ω] {l : ℕ} [Fact l.Prime] {c : Coef l} (D : Raw Ω c), D.Good → ∀ M : Model D, ∀ [GradedAlgebra M.gr], Loc.LocalPublishedTheorems → SoV Ω l → D.Fin0 → D.NoEnd → ∀ ξ : M.SS →ₐ[c.O] PadicAlgCl l, TwoSigned M.gr (ξ.comp M.toSS) → Irr (M.rep ξ) := by
   intro Ω _ _ _ l _ c D hD M _ hP hSo hF hNE ξ h2

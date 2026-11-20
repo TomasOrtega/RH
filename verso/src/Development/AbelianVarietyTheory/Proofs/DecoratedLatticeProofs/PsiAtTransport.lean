@@ -22,42 +22,72 @@ def Lt (A : Matrix (Fin a) (Fin b) k) : Prop := ∀ i j, v (A i j) < 1
 
 variable {v}
 
+/- English proof (translation)
+Introduce `i j` and use `(h i j).le`.
+-/
 theorem Lt.le {A : Matrix (Fin a) (Fin b) k} (h : Lt v A) : Le v A := fun i j => (h i j).le
 
+/- English proof (translation)
+Introduce `i j` and use `Valuation.map_add_le _ (h i j) (h' i j)`.
+-/
 theorem Le.add {A B : Matrix (Fin a) (Fin b) k} (h : Le v A) (h' : Le v B) : Le v (A + B) :=
   fun i j => Valuation.map_add_le _ (h i j) (h' i j)
 
+/- English proof (translation)
+Introduce `i j` and use `Valuation.map_sub_le _ (h i j) (h' i j)`.
+-/
 theorem Le.sub {A B : Matrix (Fin a) (Fin b) k} (h : Le v A) (h' : Le v B) : Le v (A - B) :=
   fun i j => Valuation.map_sub_le _ (h i j) (h' i j)
 
+/- English proof (translation)
+Introduce `i j` and use `Valuation.map_add_lt _ (h i j) (h' i j)`.
+-/
 theorem Lt.add {A B : Matrix (Fin a) (Fin b) k} (h : Lt v A) (h' : Lt v B) : Lt v (A + B) :=
   fun i j => Valuation.map_add_lt _ (h i j) (h' i j)
 
+/- English proof (translation)
+Introduce `i j` and use `Valuation.map_sub_lt _ (h i j) (h' i j)`.
+-/
 theorem Lt.sub {A B : Matrix (Fin a) (Fin b) k} (h : Lt v A) (h' : Lt v B) : Lt v (A - B) :=
   fun i j => Valuation.map_sub_lt _ (h i j) (h' i j)
 
+/- English proof (translation)
+Introduce `i j` and use `by rw [Matrix.mul_apply] exact Valuation.map_sum_le _ fun l _ => by rw [map_mul]; exact mul_le_one' (h i l) (h' l j)`.
+-/
 theorem Le.mul {A : Matrix (Fin a) (Fin b) k} {B : Matrix (Fin b) (Fin c) k} (h : Le v A) (h' : Le v B) : Le v (A * B) :=
   fun i j => by
     rw [Matrix.mul_apply]
     exact Valuation.map_sum_le _ fun l _ => by rw [map_mul]; exact mul_le_one' (h i l) (h' l j)
 
+/- English proof (translation)
+Introduce `i j` and use `by rw [Matrix.mul_apply] exact Valuation.map_sum_lt _ one_ne_zero fun l _ => by rw [map_mul]; exact (mul_le_of_le_one_left' (h i l)).trans_lt (h' l j)`.
+-/
 theorem Le.mul_lt {A : Matrix (Fin a) (Fin b) k} {B : Matrix (Fin b) (Fin c) k} (h : Le v A) (h' : Lt v B) : Lt v (A * B) :=
   fun i j => by
     rw [Matrix.mul_apply]
     exact Valuation.map_sum_lt _ one_ne_zero fun l _ => by
       rw [map_mul]; exact (mul_le_of_le_one_left' (h i l)).trans_lt (h' l j)
 
+/- English proof (translation)
+Introduce `i j` and use `by rw [Matrix.mul_apply] exact Valuation.map_sum_lt _ one_ne_zero fun l _ => by rw [map_mul]; exact (mul_le_of_le_one_right' (h' l j)).trans_lt (h i l)`.
+-/
 theorem Lt.mul_le {A : Matrix (Fin a) (Fin b) k} {B : Matrix (Fin b) (Fin c) k} (h : Lt v A) (h' : Le v B) : Lt v (A * B) :=
   fun i j => by
     rw [Matrix.mul_apply]
     exact Valuation.map_sum_lt _ one_ne_zero fun l _ => by
       rw [map_mul]; exact (mul_le_of_le_one_right' (h' l j)).trans_lt (h i l)
 
+/- English proof (translation)
+Establish `h1 : Le v (1 : Matrix (Fin a) (Fin a) k)` using `GlobalTheory.Mem.ColAd.sm_one (v := v)`. Use `h.le.add h1` as an intermediate fact. Rewrite `this` using `[sub_add_cancel]`. Then use the resulting hypothesis.
+-/
 theorem Lt.le_of_sub_one {A : Matrix (Fin a) (Fin a) k} (h : Lt v (A - 1)) : Le v A := by
   have h1 : Le v (1 : Matrix (Fin a) (Fin a) k) := GlobalTheory.Mem.ColAd.sm_one (v := v)
   have := h.le.add h1
   rwa [sub_add_cancel] at this
 
+/- English proof (translation)
+Introduce `i j`. Take `⟨m, -, hm⟩` from `Finset.exists_max_image (Finset.univ : Finset (Fin a × Fin a)) (fun l => v ((A - 1) l.1 l.2)) ⟨(i, i), Finset.mem_univ _⟩`. Conclude with `GlobalTheory.Mem.ColAd.int_of_mulVec (v := v) (A := A) (fun r s => hm (r, s) (Finset.mem_univ _)) (h _ _) (x := fun l => B l j) (fun r => h' r j) i`.
+-/
 theorem le_of_mul_left {A : Matrix (Fin a) (Fin a) k} {B : Matrix (Fin a) (Fin b) k} (h : Lt v (A - 1)) (h' : Le v (A * B)) :
     Le v B := by
   intro i j
@@ -66,6 +96,11 @@ theorem le_of_mul_left {A : Matrix (Fin a) (Fin a) k} {B : Matrix (Fin a) (Fin b
   exact GlobalTheory.Mem.ColAd.int_of_mulVec (v := v) (A := A) (fun r s => hm (r, s) (Finset.mem_univ _)) (h _ _) (x := fun l => B l j)
     (fun r => h' r j) i
 
+/- English proof (translation)
+Use `le_of_mul_left (v := v) (A := Aᵀ) (B := Bᵀ) (fun i j => by` as an intermediate fact. Use `h j i` as an intermediate fact. Rewrite using `[Matrix.sub_apply, Matrix.one_apply, show (if j = i then (1 : k) else 0) = (1 : Matrix (Fin b) (Fin b) k) i j by` and apply the resulting hypothesis. Rewrite using `[Matrix.one_apply]; exact if_congr eq_comm rfl rfl] at this) (fun i j => by`. Rewrite using `[← Matrix.transpose_mul]`.
+
+Conclude with `h' j i)`. Conclude with `fun i j => this j i`.
+-/
 theorem le_of_mul_right {A : Matrix (Fin b) (Fin b) k} {B : Matrix (Fin a) (Fin b) k} (h : Lt v (A - 1)) (h' : Le v (B * A)) :
     Le v B := by
   have := le_of_mul_left (v := v) (A := Aᵀ) (B := Bᵀ) (fun i j => by
@@ -75,6 +110,11 @@ theorem le_of_mul_right {A : Matrix (Fin b) (Fin b) k} {B : Matrix (Fin a) (Fin 
     rw [← Matrix.transpose_mul]; exact h' j i)
   exact fun i j => this j i
 
+/- English proof (translation)
+Establish `h1 : Le v X → Le v Z` using `fun h => le_of_mul_right hB (e ▸ hA.le_of_sub_one.mul h)`. Use `⟨⟨h1, fun h => le_of_mul_left hA (e ▸ h.mul hB.le_of_sub_one)⟩, fun h => ?_⟩` and prove the remaining obligations. Establish `e2 : X - Z = Z * (B - 1) - (A - 1) * X`. Rewrite using `[Matrix.mul_sub, Matrix.sub_mul, e, Matrix.mul_one, Matrix.one_mul]`. Normalize the expressions using the abelian group laws.
+
+Rewrite using `[e2]`. Conclude with `((h1 h).mul_lt hB).sub (hA.mul_le h)`.
+-/
 theorem two_sided {A : Matrix (Fin a) (Fin a) k} {B : Matrix (Fin b) (Fin b) k} {X Z : Matrix (Fin a) (Fin b) k}
     (hA : Lt v (A - 1)) (hB : Lt v (B - 1)) (e : A * X = Z * B) : (Le v X ↔ Le v Z) ∧ (Le v X → Lt v (X - Z)) := by
   have h1 : Le v X → Le v Z := fun h => le_of_mul_right hB (e ▸ hA.le_of_sub_one.mul h)
@@ -95,6 +135,19 @@ open GlobalTheory.Mem.Col2.PtExist (mat mat_mulVec)
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] [StarRing E] {n a b : ℕ}
   {hc : CMData F E} {ST SG Q : Finset (HeightOneSpectrum (𝓞 E))}
 
+/- English proof (translation)
+Introduce `i j`. Take `⟨s, hs, h1⟩` from `(mem_locP _ _ _).1 ((hf.1 _).2 (single_mem_stdAt j))`. Take `⟨r, hr, h2⟩` from `h.be w _ h1 i`. Establish `h3 : p.deco.1.be w (s • f (Pi.single j 1)) i = Ideal.Quotient.mk w.1.asIdeal (s * if i = j then 1 else 0)`. Rewrite using `[p.deco.2.be_smul w s _ ((hf.1 _).2 (single_mem_stdAt j)), hf.2 _ (single_mem_stdAt j), Pi.smul_apply, smul_eq_mul, map_mul]`.
+
+Use `congr 1`. Rewrite using `[← reduction_coe]`. Unfold `redV`. Rewrite using `[Pi.single_apply]`. Use `congr 1`.
+
+Apply the tactic sequence `split_ifs <;> simp`. Rewrite `hr` using `[h3, Ideal.Quotient.eq]`. Establish `h4 : Valued.v (algebraMap E (w.1.adicCompletion E) (algebraMap (𝓞 E) E (r - s * if i = j then 1 else 0))) < 1`. Rewrite using `[valued_algebraMap, HeightOneSpectrum.valuation_lt_one_iff_mem]`. Conclude with `hr`.
+
+Establish `h5 : Valued.v (algebraMap E (w.1.adicCompletion E) (algebraMap (𝓞 E) E s)) = 1`. Rewrite using `[valued_algebraMap]`. Conclude with `CharValCompare.val_of_notMem hs`. Establish `e : adAt F w.1 (Col2.pullV g (s • f (Pi.single j 1)) i) = algebraMap E (w.1.adicCompletion E) (algebraMap (𝓞 E) E s) * (locM w.1 g⁻¹ * ratM w.1 f) i j`. Simplify using `only [Col2.pullV, Matrix.mulVec, dotProduct, map_sum, map_mul, adAt_inclE, Matrix.mul_apply, Finset.mul_sum, Pi.smul_apply, Algebra.smul_def]`.
+
+Conclude with `Finset.sum_congr rfl fun l _ => by rw [mul_left_comm]; rfl`. Establish `h6` using `Valuation.map_add_lt _ h2 h4`. Rewrite `h6` using `[e, map_sub, map_sub, sub_add_sub_cancel, map_mul, map_mul, ← mul_sub, map_mul, h5, one_mul]`. Rewrite using `[Matrix.sub_apply, Matrix.one_apply]`. Use `h6 using 3` and compare the differences between its conclusion and the goal.
+
+Apply the tactic sequence `split_ifs <;> simp`.
+-/
 theorem lift_cong {g : GL (Fin n) (AfE F E)} {p : DecoF E n ST SG Q} (h : IsPtOf hc g p) (w : SG) {f : Sp E n ≃ₗ[E] Sp E n}
     (hf : IsLiftFr p.deco.1 w f) : Lt Valued.v (locM w.1 g⁻¹ * ratM w.1 f - 1) := by
   classical
@@ -132,6 +185,11 @@ def homM (P : HeightOneSpectrum (𝓞 E)) (x : HomE E a b) : Matrix (Fin b) (Fin
 
 omit [StarRing E] in
 
+/- English proof (translation)
+Establish `e : ∀ {m : ℕ} (g : Sp E m ≃ₗ[E] Sp E m), ratM P g = homM P g.toLinearMap` using `fun g => by`. Use extensionality with `i j`. Simplify using `[ratM, homM, mat]`. Rewrite using `[e, e]`. Unfold `homM`.
+
+Rewrite using `[← Matrix.map_mul, ← Matrix.map_mul, ← LinearMap.toMatrix'_comp, ← LinearMap.toMatrix'_comp]`. Use `congr 2`. Conclude with `LinearMap.ext fun z => f'.apply_symm_apply _`.
+-/
 theorem ratM_mul_homM (P : HeightOneSpectrum (𝓞 E)) (f : Sp E a ≃ₗ[E] Sp E a) (f' : Sp E b ≃ₗ[E] Sp E b) (x : HomE E a b) :
     ratM P f' * homM P (inFr f f' x) = homM P x * ratM P f := by
   have e : ∀ {m : ℕ} (g : Sp E m ≃ₗ[E] Sp E m), ratM P g = homM P g.toLinearMap := fun g => by
@@ -143,6 +201,11 @@ theorem ratM_mul_homM (P : HeightOneSpectrum (𝓞 E)) (f : Sp E a ≃ₗ[E] Sp 
   congr 2
   exact LinearMap.ext fun z => f'.apply_symm_apply _
 
+/- English proof (translation)
+Establish `e : ∀ i j, homM P x i j = algebraMap E _ (x (Pi.single j 1) i)` using `fun i j => by simp [homM]`. Use `⟨fun h i j => ?_, fun h y hy => mem_stdAt.2 fun i => ?_⟩` and prove the remaining obligations. Rewrite using `[e]`. Conclude with `mem_stdAt_val.1 (h _ (single_mem_stdAt j)) i`. Rewrite using `[apply_eq_sum]`.
+
+Use `intAt_sum _ fun j _ => (mem_stdAt.1 hy j).mul ?_` and prove the remaining obligations. Use `h i j` as an intermediate fact. Rewrite `this` using `[e, valued_algebraMap, ← CharValCompare.intAt_iff]`. Then use the resulting hypothesis.
+-/
 theorem mem_homS_iff (P : HeightOneSpectrum (𝓞 E)) (x : HomE E a b) :
     x ∈ GlobalTheory.LastSteps.homS (stdAt E a P) (stdAt E b P) ↔ Le Valued.v (homM P x) := by
   have e : ∀ i j, homM P x i j = algebraMap E _ (x (Pi.single j 1) i) := fun i j => by simp [homM]
@@ -156,6 +219,13 @@ theorem mem_homS_iff (P : HeightOneSpectrum (𝓞 E)) (x : HomE E a b) :
 
 omit [StarRing E] in
 
+/- English proof (translation)
+Establish `e : P.valuation E ((qOf P : ℕ) : E) = P.intValuation ((qOf P : ℕ) : 𝓞 E)`. Rewrite using `[← HeightOneSpectrum.valuation_of_algebraMap (K := E)]`. Simplify using the standard rewrite rules. Rewrite `hq` using `[← HeightOneSpectrum.intValuation_le_pow_iff_mem, not_le]`. Rewrite using `[e]`.
+
+Generalize the expression as in `P.intValuation ((qOf P : ℕ) : 𝓞 E) = t at hq`. Distinguish the cases in `h0 : z = 0`. Simplify using `[h0]`. Establish `ht : t ≠ 0` using `(zero_le.trans_lt hq).ne'`. Rewrite `hz` using `[← WithZero.exp_log h0, ← WithZero.exp_zero, WithZero.exp_lt_exp]`.
+
+Rewrite `hq` using `[← WithZero.exp_log ht, WithZero.exp_lt_exp]`. Rewrite using `[← WithZero.exp_log h0, ← WithZero.exp_log ht, WithZero.exp_le_exp]`. Move the coercions through the operations in `at hq`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem val_le_q {P : HeightOneSpectrum (𝓞 E)} (hq : ((qOf P : ℕ) : 𝓞 E) ∉ P.asIdeal ^ 2) {z : WithZero (Multiplicative ℤ)}
     (hz : z < 1) : z ≤ P.valuation E ((qOf P : ℕ) : E) := by
   have e : P.valuation E ((qOf P : ℕ) : E) = P.intValuation ((qOf P : ℕ) : 𝓞 E) := by
@@ -173,6 +243,13 @@ theorem val_le_q {P : HeightOneSpectrum (𝓞 E)} (hq : ((qOf P : ℕ) : 𝓞 E)
   push_cast at hq
   omega
 
+/- English proof (translation)
+Distinguish the cases in `h : Le Valued.v (homM P x)`. Establish `hq0 : ((qOf P : ℕ) : E) ≠ 0` using `qOf_ne_zero`. Establish `hz : ((qOf P : ℕ) : E)⁻¹ • (x - x₀) ∈ GlobalTheory.LastSteps.homS (stdAt E a P) (stdAt E b P)`. Use `(mem_homS_iff P _).2 fun i j => ?_` and prove the remaining obligations. Establish `h3` using `val_le_q hq (h2 h i j)`.
+
+Establish `e : homM P (((qOf P : ℕ) : E)⁻¹ • (x - x₀)) i j = algebraMap E _ ((qOf P : ℕ) : E)⁻¹ * (homM P x - homM P x₀) i j`. Simplify using `[homM]`. Rewrite using `[e, map_mul, valued_algebraMap, map_inv₀]`. Conclude with `(inv_mul_le_one₀ (zero_lt_iff.2 ((Valuation.ne_zero_iff _).2 hq0))).2 h3`. Use `hΦ.2.1 x₀ _ hz` as an intermediate fact.
+
+Rewrite `this` using `[smul_inv_smul₀ hq0, add_sub_cancel]`. Conclude with `this.symm`. Establish `a1 : Φ x = 0` using `by_contra fun h0 => h ((mem_homS_iff P _).1 (hΦ.1 _ h0))`. Establish `a2 : Φ x₀ = 0` using `by_contra fun h0 => h (h1.2 ((mem_homS_iff P _).1 (hΦ.1 _ h0)))`. Rewrite using `[a1, a2]`.
+-/
 theorem good_eq {K : Type} [Field K] {P : HeightOneSpectrum (𝓞 E)} (hq : ((qOf P : ℕ) : 𝓞 E) ∉ P.asIdeal ^ 2) {Φ : HomE E a b → K}
     (hΦ : GlobalTheory.LastSteps.Good P (GlobalTheory.LastSteps.homS (stdAt E a P) (stdAt E b P)) Φ) {x x₀ : HomE E a b}
     (h1 : Le Valued.v (homM P x) ↔ Le Valued.v (homM P x₀)) (h2 : Le Valued.v (homM P x) → Lt Valued.v (homM P x - homM P x₀)) :
@@ -194,10 +271,22 @@ theorem good_eq {K : Type} [Field K] {P : HeightOneSpectrum (𝓞 E)} (hq : ((qO
     have a2 : Φ x₀ = 0 := by_contra fun h0 => h (h1.2 ((mem_homS_iff P _).1 (hΦ.1 _ h0)))
     rw [a1, a2]
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨sm_glint (⟨f, hf⟩ : GLint E n P), sm_glint ((⟨f, hf⟩ : GLint E n P)⁻¹)⟩`.
+-/
 theorem le_ratM {P : HeightOneSpectrum (𝓞 E)} {f : Sp E n ≃ₗ[E] Sp E n} (hf : ∀ x, f x ∈ stdAt E n P ↔ x ∈ stdAt E n P) :
     Le Valued.v (ratM P f) ∧ Le Valued.v (ratM P f⁻¹) :=
   ⟨sm_glint (⟨f, hf⟩ : GLint E n P), sm_glint ((⟨f, hf⟩ : GLint E n P)⁻¹)⟩
 
+/- English proof (translation)
+Establish `hk : Le Valued.v (locM P k)` using `le_of_mul_right c1 (by`. Rewrite using `[← Matrix.mul_assoc, ← locM_mul, mul_inv_cancel, locM_one, Matrix.one_mul]`. Conclude with `(le_ratM hf).1)`. Establish `hk' : Le Valued.v (locM P k'⁻¹)`. Use `c2.le_of_sub_one.mul (le_ratM hf').2` as an intermediate fact.
+
+Rewrite `this` using `[Matrix.mul_assoc, ← ratM_mul, mul_inv_cancel, ratM_one, Matrix.mul_one]`. Then use the resulting hypothesis. Establish `hD` using `(hk'.mul_lt hx).mul_le hk`. Establish `e1` using `two_sided c2 c1 (X := homM P (inFr f f' x₀)) (Z := locM P k'⁻¹ * homM P x₀ * locM P k) (by`. Rewrite using `[Matrix.mul_assoc, ratM_mul_homM, Matrix.mul_assoc, ← Matrix.mul_assoc (locM P k), ← locM_mul, mul_inv_cancel, locM_one, Matrix.one_mul, Matrix.mul_assoc])`. Establish `e2` using `two_sided c4 c3 (X := homM P (inFr g g' x)) (Z := locM P (y' * k')⁻¹ * homM P x * locM P (y * k)) (by`.
+
+Rewrite using `[Matrix.mul_assoc, ratM_mul_homM, Matrix.mul_assoc, ← Matrix.mul_assoc (locM P (y * k)), ← locM_mul, mul_inv_cancel, locM_one, Matrix.one_mul, Matrix.mul_assoc])`. Establish `e3 : locM P k'⁻¹ * (locM P y'⁻¹ * homM P x * locM P y - homM P x₀) * locM P k = locM P (y' * k')⁻¹ * homM P x * locM P (y * k) - locM P k'⁻¹ * homM P x₀ * locM P k`. Rewrite using `[_root_.mul_inv_rev, locM_mul, locM_mul, Matrix.mul_sub, Matrix.sub_mul]`. Simplify using `only [Matrix.mul_assoc]`. Rewrite `hD` using `[e3]`.
+
+Establish `e4 : Le Valued.v (locM P (y' * k')⁻¹ * homM P x * locM P (y * k)) ↔ Le Valued.v (locM P k'⁻¹ * homM P x₀ * locM P k)` using `⟨fun h => by simpa only [sub_sub_cancel] using h.sub hD.le, fun h => by simpa only [sub_add_cancel] using hD.le.add h⟩`. Establish `e5` using `e2.1.trans (e4.trans e1.1.symm)`. Use `⟨e5, fun h => ?_⟩` and prove the remaining obligations. Use `((e2.2 h).add hD).sub (e1.2 (e5.1 h))` as an intermediate fact. Rewrite `this` using `[sub_add_sub_cancel, sub_sub_sub_cancel_right]`. Then use the resulting hypothesis.
+-/
 theorem frames_cong {P : HeightOneSpectrum (𝓞 E)} {k y : GL (Fin a) (AfE F E)} {k' y' : GL (Fin b) (AfE F E)}
     {f g : Sp E a ≃ₗ[E] Sp E a} {f' g' : Sp E b ≃ₗ[E] Sp E b}
     (hf : ∀ x, f x ∈ stdAt E a P ↔ x ∈ stdAt E a P) (hf' : ∀ x, f' x ∈ stdAt E b P ↔ x ∈ stdAt E b P)
@@ -245,6 +334,13 @@ variable {X : Fields} {Pr : Primes X} {R : Ranks} {Ch : Chars X Pr R.m}
   {sel : HeightOneSpectrum (𝓞 X.F) → HeightOneSpectrum (𝓞 X.E)} {S : Set ℕ} {mu : Tup X.F X.E X.K S}
   {cst : LocCst X (rowSG Pr sel mu)} {L : ChIdx X Pr R (QE sel (mu : Chr X.F X.E X.K))} {G : ChGlob X R.m} {m2 : ℕ}
 
+/- English proof (translation)
+Establish `hm : m2 + 1 + 1 = R.m` using `hL.hm.symm`. Establish `h1 : (frsF sel mu p.1.1 P).symm (repY p.1.2) ∈ cosetIn p P` using `⟨_, p.repY_mem hm, by simp⟩`. Rewrite `h1` using `[← h]`. Take `⟨z, hz, h2⟩` from `h1`. Rewrite `h2` using `[if_pos hP, pow_zero, inv_one, one_smul]`.
+
+Establish `h3` using `add_mem h2 ((GlobalTheory.TopLaw.coset_sub q.1.1 (q.mem_ybSet hm) hz (q.repY_mem hm) P).1 hP)`. Rewrite `h3` using `[sub_add_sub_cancel]`. Establish `h4` using `hL.psiInv al P x ((frsF sel mu q.1.1 P).symm (repY q.1.2)) _ fun i => by`. Rewrite using `[if_pos hP, pow_zero, inv_one, one_mul]`. Conclude with `mem_stdAt.1 h3 i`.
+
+Rewrite `h4` using `[add_sub_cancel]`. Then use the resulting hypothesis.
+-/
 theorem psiAt_cosetIn (hL : L.Ok Ch sel mu cst G m2) (al : L.β m2) (P : rowSG Pr sel mu) (hP : P.1 ∈ Pr.vGs) {u : Pr.Word}
     (p q : PtAt R sel mu cst u (m2 + 1)) (h : cosetIn q = cosetIn p) (x : HomE X.E (R.N m2) (R.N (m2 + 1))) :
     PsiAt Ch sel mu cst m2 P (L.h m2 al P) x ((frsF sel mu p.1.1 P).symm (repY p.1.2)) =
@@ -261,6 +357,11 @@ theorem psiAt_cosetIn (hL : L.Ok Ch sel mu cst G m2) (al : L.β m2) (P : rowSG P
     exact mem_stdAt.1 h3 i
   rwa [add_sub_cancel] at h4
 
+/- English proof (translation)
+Rewrite using `[psiAt_cosetIn hL al P hP p' q' h]`. Establish `hlift : ∀ {j : ℕ} (r : ChPt (R` using `R) sel mu u j), IsLiftFr r.deco.1 ⟨P.1, hP⟩ (frsF sel mu r P) := fun r => by`. Unfold `frsF`. Rewrite using `[dif_pos hP]`. Conclude with `liftFr_spec r.deco.2 _`.
+
+Establish `key` using `frames_cong (P := P.1) (k := k) (y := y) (k' := k') (y' := y') (f := frsF sel mu p.1.1 P) (g := frsF sel mu q.1.1 P) (f' := frsF sel mu p'.1.1 P) (g' := frsF sel mu q'.1.1 P) (fun z => by have := (hlift p.1.1).1 z; rwa [Deco.at, hN] at this) (fun z => by have := (hlift p'.1.1).1 …`. Establish `h1` using `good_eq (qOf_notMem_sq hX hPr hP) (GlobalTheory.LastSteps.good_PsiAt Ch sel mu cst hL.hm P hP (hL.stabG m2 al P hP) ((frsF sel mu q'.1.1 P).symm (repY q'.1.2))) key.1 key.2`. Conclude with `h1`.
+-/
 theorem psiAt_frames (hX : X.Ok) (hPr : Pr.Ok) (hL : L.Ok Ch sel mu cst G m2) (al : L.β m2) (P : rowSG Pr sel mu) (hP : P.1 ∈ Pr.vGs)
     {u : Pr.Word} {F : Type} [Field F] [NumberField F] [Algebra F X.E] {hc : CMData F X.E}
     (p q : PtAt R sel mu cst u m2) (p' q' : PtAt R sel mu cst u (m2 + 1)) {k y : GL (Fin (R.N m2)) (AfE F X.E)}
@@ -293,6 +394,11 @@ section Cong
 
 open NumberField IsDedekindDomain Formalism.BasicNotions Formalism.L2.Col Formalism.L2.DIV GlobalTheory.Mem GlobalTheory.Mem.Col2 GlobalTheory.TopStep
 
+/- English proof (translation)
+Establish `hv : Valued.v (((qOf P * c : ℕ) : ℕ) : P.adicCompletion B.host.E) < 1`. Rewrite using `[← map_natCast (algebraMap B.host.E (P.adicCompletion B.host.E)), valued_algebraMap, Nat.cast_mul, map_mul]`. Use `(mul_le_of_le_one_right' ?_).trans_lt ColAd.val_qOf_lt` and prove the remaining obligations. Conclude with `GlobalTheory.CharValCompare.intAt_iff.1 (intAt_nat _)`. Introduce `r s`.
+
+Use `lt_of_le_of_lt (le_of_eq_of_le ?_ (hx r s)) hv` and prove the remaining obligations. Use `congr 1`. Simplify using `only [Matrix.sub_apply, Matrix.mul_apply, map_sub, map_sum, map_mul, Matrix.map_apply, adAt_inclE, ColAd.locM, homM]`.
+-/
 theorem lt_of_congAt {B : Base} {a b : ℕ} {P : HeightOneSpectrum (𝓞 B.host.E)} {c : ℕ} {y : TC.GA B a} {y' : TC.GA B b}
     {x x₀ : HomE B.host.E a b} (hx : GlobalTheory.Transport.CongAt B P (qOf P * c) y y' x x₀) :
     Lt Valued.v (ColAd.locM P y'⁻¹ * homM P x * ColAd.locM P y - homM P x₀) := by

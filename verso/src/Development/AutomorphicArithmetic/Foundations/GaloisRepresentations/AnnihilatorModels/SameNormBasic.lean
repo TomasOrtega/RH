@@ -7,6 +7,11 @@ open CategoryTheory AlgebraicGeometry TensorProduct
 
 namespace UpperTheory.Gal.crystallineComparison
 
+/- English proof (translation)
+Unfold `pts`. Establish `h` using `map_sum (Multiset.mapAddMonoidHom g) (fun j => a j • Multiset.map (v j) Finset.univ.val) Finset.univ`. Simplify using `only [Multiset.mapAddMonoidHom_apply] at h`. Rewrite using `[h]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[Multiset.map_nsmul, Multiset.map_map]`. Both sides reduce to the same expression.
+-/
 theorem pts_map {J P Q : Type} [Fintype J] {I : J → Type} [∀ j, Fintype (I j)] (a : J → ℕ) (v : ∀ j, I j → P) (g : P → Q) :
     (pts a v).map g = pts a fun j i => g (v j i) := by
   unfold pts

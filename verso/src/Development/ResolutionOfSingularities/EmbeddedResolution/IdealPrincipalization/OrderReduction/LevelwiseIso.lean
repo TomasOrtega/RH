@@ -18,6 +18,9 @@ noncomputable section
 
 namespace FunctorialResolution.EmbeddedResolution
 
+/- English proof (translation)
+Establish `h` using `comap_le_strictTransform f Z (⊤ : X.IdealSheafData)`. Establish `h2 : (⊤ : X'.IdealSheafData) ≤ Blowup.strictTransform f Z ⊤`. Use `le_trans ?_ h` and prove the remaining obligations. Simplify using the standard rewrite rules. Conclude with `top_le_iff.mp h2`.
+-/
 theorem strictTransform_top_eq_top {X' X : Scheme.{u}} (f : X' ⟶ X) (Z : X.IdealSheafData) :
     Blowup.strictTransform f Z ⊤ = ⊤ := by
   have h := comap_le_strictTransform f Z (⊤ : X.IdealSheafData)
@@ -26,6 +29,11 @@ theorem strictTransform_top_eq_top {X' X : Scheme.{u}} (f : X' ⟶ X) (Z : X.Ide
     simp
   exact top_le_iff.mp h2
 
+/- English proof (translation)
+Proceed by induction on `i with`. Consider the case `zero`. Rewrite using `[BlowupSequenceData.iteratedStrictTransform_zero]`. Simplify using the standard rewrite rules. Consider the case `succ i ih`.
+
+Rewrite using `[BlowupSequenceData.iteratedStrictTransform_succ, ih, strictTransform_top_eq_top]`.
+-/
 theorem BlowupSequenceData.iteratedStrictTransform_top {X : Scheme.{u}} (d : BlowupSequenceData X) (i : ℕ) :
     d.iteratedStrictTransform i ⊤ = ⊤ := by
   induction i with
@@ -54,6 +62,9 @@ structure BlowupSequenceData.LevelwiseIsoOver {Y₁ Y₂ : Scheme.{u}} (φ : Y�
   center_compat : ∀ (i : ℕ) (hi : i < t₁.length),
     (t₂.center i).comap (iso i hi.le).hom = t₁.center i
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 private theorem nontrivialPart_nil {X : Scheme.{u}} :
     MarkedIdealWithBoundary.nontrivialPart ([] : List X.IdealSheafData) = [] := rfl
 

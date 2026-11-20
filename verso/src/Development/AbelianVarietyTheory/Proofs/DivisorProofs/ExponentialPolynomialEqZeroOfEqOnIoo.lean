@@ -3,6 +3,21 @@ open NumberField MeasureTheory GlobalTheory.CuspRep GlobalTheory.HCF Topology
 
 namespace GlobalTheory.HCF
 
+/- English proof (translation)
+Introduce `l`. Proceed by induction on `l with`. Consider the case `nil => intro f hf _ _ _ _`. Conclude with `mem_expSol_nil.1 hf`. Consider the case `cons c l ih`.
+
+Introduce `f hf s t hst h0`. Rewrite `hf` using `[mem_expSol_cons]`. Take `⟨hd, hg⟩` from `hf`. Establish `hg0 : deriv f - c • f = 0`. Use `ih _ hg s t hst (fun x hx => ?_)` and prove the remaining obligations.
+
+Establish `hev : f =ᶠ[𝓝 x] (fun _ => (0 : ℂ))` using `Filter.eventually_of_mem (isOpen_Ioo.mem_nhds hx) (fun y hy => h0 y hy)`. Simplify using `[Pi.sub_apply, hev.deriv_eq, h0 x hx]`. Establish `hder : ∀ x, HasDerivAt f (c * f x) x`. Introduce `x`. Establish `h1` using `congrFun hg0 x`.
+
+Simplify using `only [Pi.sub_apply, Pi.smul_apply, smul_eq_mul, Pi.zero_apply] at h1`. Establish `e : deriv f x = c * f x` using `sub_eq_zero.1 h1`. Rewrite using `[← e]`. Conclude with `(hd x).hasDerivAt`. Use `set k : ℝ → ℂ := fun x => Complex.exp (-c * x) * f x with hk`.
+
+Establish `hkd : ∀ x, HasDerivAt k 0 x`. Introduce `x`. Establish `h1 : HasDerivAt (fun y : ℝ => (y : ℂ)) 1 x` using `(hasDerivAt_id x).ofReal_comp`. Establish `h2` using `((h1.const_mul (-c)).cexp).mul (hder x)`. Establish `h3` using `h2.congr_deriv (show _ = (0 : ℂ) by ring)`.
+
+Conclude with `h3`. Establish `hkc : ∀ x y, k x = k y` using `fun x y => is_const_of_deriv_eq_zero (fun z => (hkd z).differentiableAt) (fun z => (hkd z).deriv) x y`. Establish `hm : (s + t) / 2 ∈ Set.Ioo s t` using `⟨by linarith, by linarith⟩`. Use function extensionality and compare the values at `x`. Use `hkc x ((s + t) / 2)` as an intermediate fact.
+
+Simplify using `only [hk, h0 _ hm, mul_zero] at this`. Simplify `this` using `[Complex.exp_ne_zero]`.
+-/
 theorem expSol_eq_zero_of_eqOn_Ioo :
     ∀ (l : List ℂ) (f : ℝ → ℂ), f ∈ expSol l → ∀ s t : ℝ, s < t → (∀ x ∈ Set.Ioo s t, f x = 0) → f = 0 := by
   intro l

@@ -1,5 +1,20 @@
 import Mathlib
 
+/- English proof (translation)
+Introduce `O Λ T K _ _ _ _ _ _ _ _ _ _ _ P y hP`. Use `haveI hprime : (RingHom.ker y).IsPrime := RingHom.ker_isPrime y`. Take `⟨Q, hPQ, hQ, hQc⟩` from `Ideal.exists_ideal_over_prime_of_isIntegral (RingHom.ker y) P hP`. Establish `hker : ∀ a ∈ Q.comap (algebraMap Λ T), (y : Λ →+* K) a = 0`. Introduce `a ha`.
+
+Rewrite `ha` using `[hQc]`. Conclude with `ha`. Set `ybar : (Λ ⧸ Q.comap (algebraMap Λ T)) →+* K` to `Ideal.Quotient.lift _ (y : Λ →+* K) hker`. Establish `hinj : Function.Injective ybar`. Rewrite using `[injective_iff_map_eq_zero]`.
+
+Introduce `a ha`. Take `⟨a, rfl⟩` from `Ideal.Quotient.mk_surjective a`. Rewrite using `[Ideal.Quotient.eq_zero_iff_mem, hQc]`. Conclude with `ha`. Use `letI : Algebra (Λ ⧸ Q.comap (algebraMap Λ T)) K := ybar.toAlgebra`.
+
+Use `haveI : FaithfulSMul (Λ ⧸ Q.comap (algebraMap Λ T)) K := (faithfulSMul_iff_algebraMap_injective _ _).2 hinj`. Use `haveI : FaithfulSMul (Λ ⧸ Q.comap (algebraMap Λ T)) (T ⧸ Q) := (faithfulSMul_iff_algebraMap_injective _ _).2 Ideal.algebraMap_quotient_injective`. Use `haveI : Module.IsTorsionFree (Λ ⧸ Q.comap (algebraMap Λ T)) (T ⧸ Q) := FaithfulSMul.to_isTorsionFree _ _`. Use `haveI : Module.IsTorsionFree (Λ ⧸ Q.comap (algebraMap Λ T)) K := FaithfulSMul.to_isTorsionFree _ _`. Use `haveI hint : Algebra.IsIntegral (Λ ⧸ Q.comap (algebraMap Λ T)) (T ⧸ Q) := Algebra.IsIntegral.quotient`.
+
+Use `haveI : Algebra.IsAlgebraic (Λ ⧸ Q.comap (algebraMap Λ T)) (T ⧸ Q) := Algebra.IsIntegral.isAlgebraic`. Set `z : (T ⧸ Q) →ₐ[Λ ⧸ Q.comap (algebraMap Λ T)] K` to `IsAlgClosed.lift`. Establish `hz : ∀ a : Λ, z (Ideal.Quotient.mk Q (algebraMap Λ T a)) = y a` using `fun a => z.commutes (Ideal.Quotient.mk _ a)`. Use `⟨{ (z : (T ⧸ Q) →+* K).comp (Ideal.Quotient.mk Q) with commutes' := fun o => ?_ }, ?_, hz⟩` and prove the remaining obligations. Establish `h` using `hz (algebraMap O Λ o)`.
+
+Rewrite `h` using `[← IsScalarTower.algebraMap_apply, y.commutes]`. Conclude with `h`. Introduce `t ht`. Establish `h0 : Ideal.Quotient.mk Q t = 0` using `Ideal.Quotient.eq_zero_iff_mem.2 (hPQ ht)`. Use `show z (Ideal.Quotient.mk Q t) = 0`.
+
+Rewrite using `[h0, map_zero]`.
+-/
 theorem UpperTheory.Reformulated.B.Qi4.extendPt :
     ∀ (O Λ T K : Type) [inst : CommRing O] [inst_1 : CommRing Λ] [inst_2 : CommRing T]
     [inst_3 : Field K] [IsAlgClosed K] [inst_5 : Algebra O Λ] [inst_6 : Algebra O T] [inst_7 : Algebra Λ T]

@@ -9,6 +9,9 @@ open scoped LaurentSeries
 
 namespace GlobalTheory.ArcQ
 
+/- English proof (translation)
+Introduce `E _ _ _ H Dw l Xo c σ r U h`. Take `⟨-, -, -, -, -, g, e, F, ik, φ, hiso, hP⟩` from `h`. Use `choose Pm h1 h2 h3 h4 h5 using hP`. Conclude with `⟨⟨g, e, F, ik, φ, hiso, Pm, h1, h2, fun k x => ⟨h3 k x, h4 k x⟩, h5⟩⟩`.
+-/
 theorem nonempty_unfWit_of_isUnf : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l) (σ : c.F →+* ℂ) (r : ℕ) (U : Unf Xo c σ r), IsUnf U → Nonempty (UnfWit U) := by
   intro E _ _ _ H Dw l Xo c σ r U h
   obtain ⟨-, -, -, -, -, g, e, F, ik, φ, hiso, hP⟩ := h

@@ -16,18 +16,31 @@ abbrev splitFd : Set (GA E a) :=
   (fun p : normOneGL E a × ℝ => splitCentre E a p.2 * (p.1 : GA E a)) ''
     (RightCosetSpace.fundamentalDomain (rationalGLOne E a) ×ˢ Set.Ico (0 : ℝ) 1)
 
+/- English proof (translation)
+Take `⟨γ, hγ⟩ : ((δ : normOneGL E a) : GA E a) ∈ AdelicGLn.rationalGL E a` from `δ.2`. Rewrite using `[← hγ]`. Conclude with `ratGL_mem_latticeGL γ`.
+-/
 theorem coe_rationalGLOne_mem_latticeGL (δ : rationalGLOne E a) :
     ((δ : normOneGL E a) : GA E a) ∈ latticeGL E a := by
   obtain ⟨γ, hγ⟩ : ((δ : normOneGL E a) : GA E a) ∈ AdelicGLn.rationalGL E a := δ.2
   rw [← hγ]
   exact ratGL_mem_latticeGL γ
 
+/- English proof (translation)
+Simplify using `only [mul_assoc]`. Rewrite using `[← mul_assoc (splitCentre E a t) d x, splitCentre_comm t d, mul_assoc d, ← mul_assoc (splitCentre E a s) d, splitCentre_comm s d, mul_assoc]`.
+-/
 theorem splitCentre_mul_mul_swap (s t : ℝ) (d x : GA E a) :
     splitCentre E a s * splitCentre E a t * (d * x) = d * splitCentre E a s * (splitCentre E a t * x) := by
   simp only [mul_assoc]
   rw [← mul_assoc (splitCentre E a t) d x, splitCentre_comm t d, mul_assoc d, ← mul_assoc (splitCentre E a s) d,
     splitCentre_comm s d, mul_assoc]
 
+/- English proof (translation)
+Take `⟨e, he⟩` from `GlobalTheory.T.adelic_GL_norm_one_split E a ha`. Take `⟨⟨x, t⟩, rfl⟩` from `e.surjective g`. Rewrite using `[he]`. Take `⟨δ, hδ, -⟩` from `RightCosetSpace.existsUnique_smul_mem_fundamentalDomain (rationalGLOne E a) x`. Establish `hn : splitCentre E a ((-⌊t⌋ : ℤ) : ℝ) ∈ latticeGL E a`.
+
+Rewrite using `[splitCentre_intCast]`. Conclude with `zpow_mem_latticeGL _`. Use `⟨⟨((δ : normOneGL E a) : GA E a) * splitCentre E a ((-⌊t⌋ : ℤ) : ℝ), mul_mem (coe_rationalGLOne_mem_latticeGL δ) hn⟩, ⟨δ • x, Int.fract t⟩, ⟨hδ, Int.fract_nonneg t, Int.fract_lt_one t⟩, ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `splitCentre E a (Int.fract t) * (((δ : normOneGL E a) : GA E a) * (x : GA E a)) = ((δ : normOneGL E a) : GA E a) * splitCentre E a ((-⌊t⌋ : ℤ) : ℝ) * (splitCentre E a t * (x : GA E a))`. Establish `hf : Int.fract t = ((-⌊t⌋ : ℤ) : ℝ) + t`.
+
+Rewrite using `[Int.fract]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hf, splitCentre_add, splitCentre_mul_mul_swap]`.
+-/
 theorem exists_lattice_smul_mem_splitFd (ha : 0 < a) (g : GA E a) :
     ∃ l : latticeGL E a, l • g ∈ splitFd E a := by
   obtain ⟨e, he⟩ := GlobalTheory.T.adelic_GL_norm_one_split E a ha
@@ -48,6 +61,17 @@ theorem exists_lattice_smul_mem_splitFd (ha : 0 < a) (g : GA E a) :
     ring
   rw [hf, splitCentre_add, splitCentre_mul_mul_swap]
 
+/- English proof (translation)
+Take `⟨e, he⟩` from `GlobalTheory.T.adelic_GL_norm_one_split E a ha`. Take `⟨γ, m, rfl⟩` from `mem_latticeGL_iff.1 hl`. Take `⟨⟨x, s⟩, ⟨hx, hs⟩, rfl⟩` from `hg`. Take `⟨⟨y, u⟩, ⟨hy, hu⟩, hyu⟩` from `h`. Simplify using `only at hx hs hy hu hyu`.
+
+Establish `hγ : ratGL E a γ ∈ normOneGL E a` using `rationalGL_le_normOneGL ⟨γ, rfl⟩`. Establish `key : e (y, u) = e (⟨ratGL E a γ, hγ⟩ * x, (m : ℝ) + s)`. Rewrite using `[he, he, hyu, splitCentre_add, ← splitCentre_intCast]`. Conclude with `(splitCentre_mul_mul_swap (m : ℝ) s (ratGL E a γ) (x : GA E a)).symm`. Take `⟨h1, h2⟩` from `Prod.mk.inj (e.injective key)`.
+
+Establish `hm : m = 0`. Establish `h3 : (m : ℝ) < 1` using `by linarith [hs.1, hu.2]`. Establish `h4 : (-1 : ℝ) < m` using `by linarith [hs.2, hu.1]`. Establish `h5 : m < 1` using `by exact_mod_cast h3`. Establish `h6 : -1 < m` using `by exact_mod_cast h4`.
+
+Use linear arithmetic over natural numbers and integers. Substitute `hm` using the available equality. Set `δ : rationalGLOne E a` to `⟨⟨ratGL E a γ, hγ⟩, ⟨γ, rfl⟩⟩`. Establish `h7 : δ = 1` using `(RightCosetSpace.existsUnique_smul_mem_fundamentalDomain (rationalGLOne E a) x).unique (show δ • x ∈ _ from by`. Express the relevant statement in the definitionally equal form `((⟨ratGL E a γ, hγ⟩ : normOneGL E a) * x) ∈ _`.
+
+Rewrite using `[← h1]`. Conclude with `hy) (by simpa using hx)`. Establish `h8 : ratGL E a γ = 1` using `congrArg (fun d : rationalGLOne E a => ((d : normOneGL E a) : GA E a)) h7`. Rewrite using `[h8, zpow_zero, mul_one]`.
+-/
 theorem eq_one_of_mul_mem_splitFd (ha : 0 < a) {l g : GA E a} (hl : l ∈ latticeGL E a) (hg : g ∈ splitFd E a)
     (h : l * g ∈ splitFd E a) : l = 1 := by
   obtain ⟨e, he⟩ := GlobalTheory.T.adelic_GL_norm_one_split E a ha
@@ -76,6 +100,9 @@ theorem eq_one_of_mul_mem_splitFd (ha : 0 < a) {l g : GA E a} (hl : l ∈ lattic
   have h8 : ratGL E a γ = 1 := congrArg (fun d : rationalGLOne E a => ((d : normOneGL E a) : GA E a)) h7
   rw [h8, zpow_zero, mul_one]
 
+/- English proof (translation)
+Take `⟨e, he⟩` from `GlobalTheory.T.adelic_GL_norm_one_split E a ha`. Establish `h : (fun p : normOneGL E a × ℝ => splitCentre E a p.2 * (p.1 : GA E a)) = e`. Use function extensionality and compare the values at `fun p => (he p.1 p.2).symm`. Rewrite using `[splitFd, h]`. Conclude with `e.isClosedEmbedding.measurableEmbedding.measurableSet_image.2 ((RightCosetSpace.measurableSet_fundamentalDomain _).prod measurableSet_Ico)`.
+-/
 theorem measurableSet_splitFd (ha : 0 < a) : MeasurableSet (splitFd E a) := by
   obtain ⟨e, he⟩ := GlobalTheory.T.adelic_GL_norm_one_split E a ha
   have h : (fun p : normOneGL E a × ℝ => splitCentre E a p.2 * (p.1 : GA E a)) = e :=
@@ -84,6 +111,11 @@ theorem measurableSet_splitFd (ha : 0 < a) : MeasurableSet (splitFd E a) := by
   exact e.isClosedEmbedding.measurableEmbedding.measurableSet_image.2
     ((RightCosetSpace.measurableSet_fundamentalDomain _).prod measurableSet_Ico)
 
+/- English proof (translation)
+Introduce `E _ _ _ a ha μ _`. Use `IsFundamentalDomain.mk' (measurableSet_splitFd ha).nullMeasurableSet fun g => ?_` and prove the remaining obligations. Take `⟨l, hl⟩` from `exists_lattice_smul_mem_splitFd ha g`. Use `⟨l, hl, fun l' hl' => ?_⟩` and prove the remaining obligations. Establish `h1 : ((l' : GA E a) * (l : GA E a)⁻¹) * ((l : GA E a) * g) ∈ splitFd E a`.
+
+Establish `e0 : (l' : GA E a) * (l : GA E a)⁻¹ * ((l : GA E a) * g) = (l' : GA E a) * g` using `by group`. Rewrite using `[e0]`. Conclude with `hl'`. Establish `h2` using `eq_one_of_mul_mem_splitFd ha (mul_mem l'.2 (inv_mem l.2)) hl h1`. Conclude with `Subtype.ext (mul_inv_eq_one.1 h2)`.
+-/
 theorem isFundamentalDomain_splitFd : ∀ (E : Type) [Field E] [NumberField E] [IsTotallyComplex E] (a : ℕ), 0 < a →
     ∀ (μ : Measure (GA E a)) [μ.IsHaarMeasure], IsFundamentalDomain (latticeGL E a)
       ((fun p : normOneGL E a × ℝ => splitCentre E a p.2 * (p.1 : GA E a)) ''

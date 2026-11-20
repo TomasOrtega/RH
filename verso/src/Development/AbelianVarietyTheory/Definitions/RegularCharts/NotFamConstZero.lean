@@ -13,6 +13,11 @@ open NumberField ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRes
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {Dw : Datum H} {l : Level H}
   {Xo : Moduli Dw l} {c : Coeff l} {O : Type} [CommRing O] {β : O →+* c.F}
 
+/- English proof (translation)
+Establish `h : P.B ≤ (P.R e).toSubring`. Use `Subring.closure_le.2 ?_` and prove the remaining obligations. Introduce and unpack `y (⟨a, rfl⟩ | hy)`. Conclude with `(P.R e).algebraMap_mem _`. Conclude with `Algebra.subset_adjoin (Set.mem_insert_of_mem _ hy)`.
+
+Conclude with `h hx`.
+-/
 theorem mem_R_of_mem_B (P : PChart Xo c β) (e : P.Ω) {x : P.Ω} (hx : x ∈ P.B) : x ∈ P.R e := by
   have h : P.B ≤ (P.R e).toSubring := by
     refine Subring.closure_le.2 ?_
@@ -21,11 +26,21 @@ theorem mem_R_of_mem_B (P : PChart Xo c β) (e : P.Ω) {x : P.Ω} (hx : x ∈ P.
     · exact Algebra.subset_adjoin (Set.mem_insert_of_mem _ hy)
   exact h hx
 
+/- English proof (translation)
+The claim follows from `IsUnit.of_mul_eq_one ⟨e⁻¹, Algebra.subset_adjoin (Set.mem_insert _ _)⟩ (Subtype.ext (mul_inv_cancel₀ (P.es_mem e he).1))`.
+-/
 theorem isUnit_e (P : PChart Xo c β) {e : P.Ω} (he : e ∈ P.es) :
     IsUnit (⟨e, mem_R_of_mem_B P e (P.es_mem e he).2⟩ : P.R e) :=
   IsUnit.of_mul_eq_one ⟨e⁻¹, Algebra.subset_adjoin (Set.mem_insert _ _)⟩
     (Subtype.ext (mul_inv_cancel₀ (P.es_mem e he).1))
 
+/- English proof (translation)
+Use `IsFractionRing.of_field _ _ fun z => ?_` and prove the remaining obligations. Establish `hz : z ∈ Subfield.closure (Set.range (algebraMap c.F P.Ω) ∪ (P.gens : Set P.Ω))`. Rewrite using `[P.frac]`. Discharge the goal by the elementary cases of `trivial`. Take `⟨a, ha, b, hb, rfl⟩` from `Subfield.mem_closure_iff.1 hz`.
+
+Establish `h : Subring.closure (Set.range (algebraMap c.F P.Ω) ∪ (P.gens : Set P.Ω)) ≤ (P.R e).toSubring`. Use `Subring.closure_le.2 ?_` and prove the remaining obligations. Introduce and unpack `y (⟨a, rfl⟩ | hy)`. Conclude with `(P.R e).algebraMap_mem _`. Conclude with `Algebra.subset_adjoin (Set.mem_insert_of_mem _ hy)`.
+
+Conclude with `⟨⟨a, h ha⟩, ⟨b, h hb⟩, rfl⟩`.
+-/
 theorem isFractionRing_R (P : PChart Xo c β) (e : P.Ω) : IsFractionRing (P.R e) P.Ω := by
   refine IsFractionRing.of_field _ _ fun z => ?_
   have hz : z ∈ Subfield.closure (Set.range (algebraMap c.F P.Ω) ∪ (P.gens : Set P.Ω)) := by
@@ -38,6 +53,15 @@ theorem isFractionRing_R (P : PChart Xo c β) (e : P.Ω) : IsFractionRing (P.R e
     · exact Algebra.subset_adjoin (Set.mem_insert_of_mem _ hy)
   exact ⟨⟨a, h ha⟩, ⟨b, h hb⟩, rfl⟩
 
+/- English proof (translation)
+Proceed by induction on `hx using Subring.closure_induction with`. Consider the case `mem y hy`. Break down `hy with ⟨a, rfl⟩ | hy` into its components or cases. Use `ψ.commutes (β a)` as an intermediate fact. Conclude with `(this ▸ hO a : ψ (algebraMap c.F (P.R e) (β a)) ∈ W)`.
+
+Conclude with `hg _ hy`. Consider the case `zero => exact (map_zero ψ ▸ W.zero_mem : ψ 0 ∈ W)`. Consider the case `one => exact (map_one ψ ▸ W.one_mem : ψ 1 ∈ W)`. Consider the case `add x y hx hy ihx ihy`. Use `W.add_mem _ _ ihx ihy` as an intermediate fact.
+
+Rewrite `this` using `[← map_add]`. Then use the resulting hypothesis. Consider the case `neg x hx ih`. Use `W.neg_mem _ ih` as an intermediate fact. Rewrite `this` using `[← map_neg]`. Then use the resulting hypothesis. Consider the case `mul x y hx hy ihx ihy`.
+
+Use `W.mul_mem _ _ ihx ihy` as an intermediate fact. Rewrite `this` using `[← map_mul]`. Then use the resulting hypothesis.
+-/
 theorem map_B_mem (P : PChart Xo c β) {L : Type} [Field L] [Algebra c.F L] (W : ValuationSubring L)
     (hO : ∀ a : O, algebraMap c.F L (β a) ∈ W) (e : P.Ω) (ψ : P.R e →ₐ[c.F] L)
     (hg : ∀ g : P.R e, (g : P.Ω) ∈ P.gens → ψ g ∈ W) {x : P.Ω} (hx : x ∈ P.B) :
@@ -60,17 +84,37 @@ theorem map_B_mem (P : PChart Xo c β) {L : Type} [Field L] [Algebra c.F L] (W :
     have := W.mul_mem _ _ ihx ihy
     rwa [← map_mul] at this
 
+/- English proof (translation)
+Introduce and unpack `⟨k, -⟩`. Conclude with `k.elim0`.
+-/
 theorem not_fam_zero (P : PChart Xo c β) (ws : Fin 0 → Rul Xo c) : ¬ P.Fam ws := by
   rintro ⟨k, -⟩; exact k.elim0
 
+/- English proof (translation)
+Introduce and unpack `⟨k, h, -⟩`. Conclude with `h (evalAt_zero _ _ _)`.
+-/
 theorem not_fam_const_zero (P : PChart Xo c β) (m : ℕ) : ¬ P.Fam (fun _ : Fin m => (0 : Rul Xo c)) := by
   rintro ⟨k, h, -⟩; exact h (evalAt_zero _ _ _)
 
+/- English proof (translation)
+Introduce `h`. Take `⟨j, -⟩` from `h P.Ω ⊤ (fun _ => trivial) P.yg`. Conclude with `isEmptyElim j`.
+-/
 theorem not_covers_empty (P : PChart Xo c β) {J : Type} [IsEmpty J] (Q : J → PChart Xo c β) : ¬ Covers Q := by
   intro h
   obtain ⟨j, -⟩ := h P.Ω ⊤ (fun _ => trivial) P.yg
   exact isEmptyElim j
 
+/- English proof (translation)
+Set `R : Subalgebra c.F c.F` to `Algebra.adjoin c.F (insert (1 : c.F)⁻¹ (((∅ : Finset c.F)) : Set c.F))`. Take `⟨y₁, h₁⟩` from `hbc c.F R (Algebra.ofId c.F R) y₀`. Take `⟨y₂, h₂⟩` from `hbc R c.F R.val y₁`. Establish `hbij : Function.Bijective (Algebra.ofId c.F R)` using `⟨(Algebra.ofId c.F R).toRingHom.injective, fun x => ⟨x.1, Subtype.ext rfl⟩⟩`. Use `⟨{ Ω := c.F gens := ∅ frac := top_le_iff.1 fun x _ => Subfield.subset_closure (Or.inl ⟨x, rfl⟩) es := {1} es_ne := Finset.singleton_nonempty _ es_mem := fun e he => by` and prove the remaining obligations.
+
+Rewrite using `[Finset.mem_singleton.1 he]`. Conclude with `⟨one_ne_zero, Subring.one_mem _⟩`. Use `sm := fun e he => by`. Take `rfl` from `Finset.mem_singleton.1 he`. Conclude with `Algebra.Smooth.of_equiv (AlgEquiv.ofBijective _ hbij)`.
+
+Use `yg := y₂`. Use `y := fun e he => (Finset.mem_singleton.1 he).symm ▸ y₁`. Use `gen := fun e he => by`. Take `rfl` from `Finset.mem_singleton.1 he`. Conclude with `h₂`.
+
+Use `int := fun e he T io => by`. Take `rfl` from `Finset.mem_singleton.1 he`. Use `letI := io.toAlgebra`. Introduce `ψ hO _ z hz`. Establish `: FrMap (ψ.comp (Algebra.ofId c.F R)) y₀ z` using `frMap_trans _ _ _ _ ψ _ _ _ h₁ hz`.
+
+Rewrite `this` using `[Subsingleton.elim (ψ.comp (Algebra.ofId c.F R)) (Algebra.ofId c.F T.Fr)]`. Conclude with `hy T io hO z this }⟩`.
+-/
 theorem nonempty_of_point (hbc : FrBC Xo c) (y₀ : FrPt Xo c c.F)
     (hy : ∀ (T : CDVR) (io : c.F →+* T.Fr), letI := io.toAlgebra
       (∀ a : O, io (β a) ∈ Set.range (algebraMap T.V T.Fr)) →
@@ -105,6 +149,11 @@ theorem nonempty_of_point (hbc : FrBC Xo c) (y₀ : FrPt Xo c c.F)
       rw [Subsingleton.elim (ψ.comp (Algebra.ofId c.F R)) (Algebra.ofId c.F T.Fr)] at this
       exact hy T io hO z this }⟩
 
+/- English proof (translation)
+Establish `hy` using `h.test S y`. Establish `h1` using `hy.choose_spec.choose_spec.choose_spec`. Establish `h2` using `frMap_trans _ _ _ _ φ _ _ _ h1 hyz`. Establish `hz : FromTest (K` using `c.F) (fun S _ _ => FrPt Xo c S) (fun φ y z => FrMap φ y z) z := ⟨_, _, _, h2⟩`. Unfold `evR evalAt`.
+
+Rewrite using `[dif_pos hy, dif_pos hz]`. Conclude with `h.wd f hf T _ _ _ (φ.comp _) _ _ z hz.choose_spec.choose_spec.choose_spec h2`.
+-/
 theorem evR_map (h : EvLaws Xo c) {f : Rul Xo c}
     (hf : IsNatural (K := c.F) (fun S _ _ => FrPt Xo c S) (fun φ y z => FrMap φ y z) f)
     {S T : Type} [CommRing S] [IsReduced S] [Algebra c.F S] [CommRing T] [Algebra c.F T] (φ : S →ₐ[c.F] T)
@@ -117,6 +166,9 @@ theorem evR_map (h : EvLaws Xo c) {f : Rul Xo c}
   rw [dif_pos hy, dif_pos hz]
   exact h.wd f hf T _ _ _ (φ.comp _) _ _ z hz.choose_spec.choose_spec.choose_spec h2
 
+/- English proof (translation)
+Rewrite using `[evR_map h hf.1 (P.R e).val (P.gen e he)]`. Conclude with `Subtype.property _`.
+-/
 theorem evR_mem_R (h : EvLaws Xo c) (P : PChart Xo c β) {a : (E →+* ℂ) × ℕ → ℕ} {n : ℕ} {f : Rul Xo c}
     (hf : f ∈ sec Xo c a n) {e : P.Ω} (he : e ∈ P.es) : evR Xo c f P.yg ∈ P.R e := by
   rw [evR_map h hf.1 (P.R e).val (P.gen e he)]

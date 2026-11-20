@@ -43,12 +43,18 @@ def H1fSubmodule : Submodule O (LatticeCohomology (resLat T H)) :=
 
 def resFun : (G → T.V) →ₗ[O] (H → T.V) := LinearMap.funLeft O T.V (Subtype.val : H → G)
 
+/- English proof (translation)
+Take `⟨⟨hcont, hcoc⟩, hmem⟩` from `hc`. Use `⟨⟨hcont.comp continuous_subtype_val, fun g h => hcoc g h⟩, ?_⟩` and prove the remaining obligations. Introduce `g _`. Conclude with `hmem g (Set.mem_univ _)`.
+-/
 theorem resFun_Z1T (c : G → T.V) (hc : c ∈ latticeCocycles T.L) : resFun H T c ∈ latticeCocycles (resLat T H) := by
   obtain ⟨⟨hcont, hcoc⟩, hmem⟩ := hc
   refine ⟨⟨hcont.comp continuous_subtype_val, fun g h => hcoc g h⟩, ?_⟩
   intro g _
   exact hmem g (Set.mem_univ _)
 
+/- English proof (translation)
+Take `⟨x, hx, rfl⟩` from `hc`. Conclude with `⟨x, hx, by ext h; rfl⟩`.
+-/
 theorem resFun_B1T (c : G → T.V) (hc : c ∈ latticeCoboundaries T.L) : resFun H T c ∈ latticeCoboundaries (resLat T H) := by
   obtain ⟨x, hx, rfl⟩ := hc
   exact ⟨x, hx, by ext h; rfl⟩
@@ -402,6 +408,9 @@ def ConclusionW₂ : Prop := WachMainTheorem W Pt ∧ ConsW W Pt ∧ Prop2W W �
 def Adm2W (Font : LocLat G Qp LL O → Prop) : Prop :=
   ∀ T : LocLat G Qp LL O, IsCrys PD T.ρ → Font T → p2a W T ∧ p2aK W T
 
+/- English proof (translation)
+Use `⟨fun g x hx => W.N_Γ T g x hx, fun g x hx => ?_⟩` and prove the remaining obligations. Take `⟨y, hy, hxy⟩` from `W.N_π T g x hx`. Rewrite using `[hxy]`. Conclude with `Submodule.mem_map.mpr ⟨y, hy, rfl⟩`.
+-/
 theorem wach_gamma_stable_first (T : LocLat G Qp LL O) :
     (∀ g, ∀ x ∈ W.N T, W.γD T g x ∈ W.N T) ∧
       (∀ g, ∀ x ∈ W.N T, W.γD T g x - x ∈ (aN W) T letπ) := by
@@ -449,6 +458,9 @@ def Adm1W : Prop :=
     (∀ x, E.jD T (W.φD T x) = TWmap φR T (E.jD T x)) ∧
     ∀ (g : G) x, E.jD T (W.γD T (W.resΓ g) x) = TWact (gR g) T g (E.jD T x)
 
+/- English proof (translation)
+Introduce `T hT` and use `⟨W.N_fg T, W.N_base T hT, (wach_gamma_stable_first W T).1, (wach_gamma_stable_first W T).2, E.jD_inj T, E.jD_span T, E.jD_φ T, E.jD_act T⟩`.
+-/
 theorem prismatic_comparison_holds : Adm1W W E := fun T hT =>
   ⟨W.N_fg T, W.N_base T hT, (wach_gamma_stable_first W T).1, (wach_gamma_stable_first W T).2, E.jD_inj T, E.jD_span T, E.jD_φ T,
     E.jD_act T⟩
@@ -617,6 +629,9 @@ def PrismaticComparisonLocal : Prop :=
   ∀ (l : ℕ) [Fact l.Prime] (K : FinExt l) (s : ℕ) (LL : FinExt l) (h : Good K s LL),
     Adm1W ((HW l).W K s LL h) ((Et l).E K s LL h).tie
 
+/- English proof (translation)
+Introduce `l _ K s LL h` and use `prismatic_comparison_holds _ _`.
+-/
 theorem prismatic_comparison_local_holds : PrismaticComparisonLocal LT AI HW Et := fun l _ K s LL h => prismatic_comparison_holds _ _
 
 def HerrDescriptionLocal : Prop :=
@@ -665,6 +680,9 @@ def lem3 (D : Formalism.BasicNotions.D7) (HW : HWOf D.loc) (F : FonOf D.loc D.lo
 
 def adm1 (D : Formalism.BasicNotions.D7) (HW : HWOf D.loc) (F : FonOf D.loc D.locA HW) : Prop := PrismaticComparisonLocal D.loc D.locA HW F
 
+/- English proof (translation)
+The claim follows from `prismatic_comparison_local_holds D.loc D.locA HW F`.
+-/
 theorem chebyshev_bounds_one_fifth (D : Formalism.BasicNotions.D7) (HW : HWOf D.loc) (F : FonOf D.loc D.locA HW) : adm1 D HW F :=
   prismatic_comparison_local_holds D.loc D.locA HW F
 
@@ -686,6 +704,11 @@ structure Pend (D : Formalism.BasicNotions.D7) (HW : HWOf D.loc) (F : FonOf D.lo
 def Stmt (D : Formalism.BasicNotions.D7) (HW : HWOf D.loc) (F : FonOf D.loc D.locA HW) (C : CmpOf D.loc D.locA HW F) : Prop :=
   admitted D HW F → aux₃ D HW F C ∧ ConclusionE D HW F
 
+/- English proof (translation)
+Unfold `thm1 wachTheoremLocal WachMainTheorem P1 P2 P3 P4 P5 P6 P7 P8 P9 product_first_zeroth_parts p1L p2L p3L p4L p5L p6L p7L p8L p9L p10L`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Conclude with `⟨fun l _ K s LL hg => (h l K s LL hg).1, fun l _ K s LL hg => (h l K s LL hg).2.1, fun l _ K s LL hg => (h l K s LL hg).2.2.1, fun l _ K s LL hg => (h l K s LL hg).2.2.2.1, fun l _ K s LL hg => (h l K s LL hg).2.2.2.2.1, fun l _ K s LL hg => (h l K s LL hg).2.2.2.2.2.1, fun l _ K …`. Introduce and unpack `⟨h1, h2, h3, h4, h5, h6, h7, h8, h9, h10⟩ l _ K s LL hg`.
+
+Conclude with `⟨h1 l K s LL hg, h2 l K s LL hg, h3 l K s LL hg, h4 l K s LL hg, h5 l K s LL hg, h6 l K s LL hg, h7 l K s LL hg, h8 l K s LL hg, h9 l K s LL hg, h10 l K s LL hg⟩`.
+-/
 theorem wach_theorem_iff_properties (D : Formalism.BasicNotions.D7) (HW : HWOf D.loc) (F : FonOf D.loc D.locA HW) (C : CmpOf D.loc D.locA HW F) : thm1 D HW F C ↔ P1 D HW F ∧ P2 D HW F ∧ P3 D HW F C ∧ P4 D HW F C ∧
     P5 D HW F ∧ P6 D HW F ∧ P7 D HW F ∧ P8 D HW F ∧ P9 D HW F ∧ product_first_zeroth_parts D HW F := by
   unfold thm1 wachTheoremLocal WachMainTheorem P1 P2 P3 P4 P5 P6 P7 P8 P9 product_first_zeroth_parts p1L p2L p3L p4L p5L p6L p7L p8L p9L p10L
@@ -704,6 +727,11 @@ theorem wach_theorem_iff_properties (D : Formalism.BasicNotions.D7) (HW : HWOf D
   · rintro ⟨h1, h2, h3, h4, h5, h6, h7, h8, h9, h10⟩ l _ K s LL hg
     exact ⟨h1 l K s LL hg, h2 l K s LL hg, h3 l K s LL hg, h4 l K s LL hg, h5 l K s LL hg, h6 l K s LL hg, h7 l K s LL hg, h8 l K s LL hg, h9 l K s LL hg, h10 l K s LL hg⟩
 
+/- English proof (translation)
+Unfold `prop2 prop2L Prop2W Pr2a Pr2b Pr2c Pr2d p2aL p2bL p2cL p2dL`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Conclude with `⟨fun l _ K s LL hg => (h l K s LL hg).1, fun l _ K s LL hg => (h l K s LL hg).2.1, fun l _ K s LL hg => (h l K s LL hg).2.2.1, fun l _ K s LL hg => (h l K s LL hg).2.2.2⟩`. Introduce and unpack `⟨h1, h2, h3, h4⟩ l _ K s LL hg`.
+
+Conclude with `⟨h1 l K s LL hg, h2 l K s LL hg, h3 l K s LL hg, h4 l K s LL hg⟩`.
+-/
 theorem herr_prop_two_iff (D : Formalism.BasicNotions.D7) (HW : HWOf D.loc) (F : FonOf D.loc D.locA HW) : prop2 D HW F ↔ Pr2a D HW F ∧ Pr2b D HW F ∧ Pr2c D HW F ∧ Pr2d D HW F := by
   unfold prop2 prop2L Prop2W Pr2a Pr2b Pr2c Pr2d p2aL p2bL p2cL p2dL
   constructor

@@ -4,6 +4,9 @@ noncomputable section
 open CategoryTheory Limits AlgebraicGeometry GlobalTheory.EtC LateralTheory.EtaleTrace CrystallineSemistableComparison ReciprocityTheory.ChartRestriction.G.Geo.Tor UpperTheory.Gal.KunnethLefschetz
 open scoped TensorProduct DirectSum
 
+/- English proof (translation)
+Use `IsPullback.of_right ?_ (pullback.lift_fst _ _ _) (IsPullback.of_hasPullback q t).flip` and prove the remaining obligations. Rewrite using `[pullback.lift_snd, hu]`. Conclude with `(IsPullback.of_hasPullback p t).flip`.
+-/
 private theorem isPullback_lift_fst {X Y S T : Scheme.{0}} (p : X ⟶ S) (q : Y ⟶ S) (t : T ⟶ S) (u : X ⟶ Y)
     (hu : u ≫ q = p) (w : (pullback.fst p t ≫ u) ≫ q = pullback.snd p t ≫ t) :
     IsPullback (pullback.lift (pullback.fst p t ≫ u) (pullback.snd p t) w) (pullback.fst p t)
@@ -12,6 +15,9 @@ private theorem isPullback_lift_fst {X Y S T : Scheme.{0}} (p : X ⟶ S) (q : Y 
   rw [pullback.lift_snd, hu]
   exact (IsPullback.of_hasPullback p t).flip
 
+/- English proof (translation)
+Unfold `UpperTheory.Gal.KunnethLefschetz.GeomPb`. Introduce `l _ K M N u hu`. Conclude with `IsPullback.paste_vert (isPullback_lift_fst M.q N.q _ (Model.genMap u hu) (Model.genMap_q u hu) _) (isPullback_lift_fst M.p N.p _ u hu _)`.
+-/
 theorem UpperTheory.Gal.KunnethLefschetz.geomPb_holds :
     UpperTheory.Gal.KunnethLefschetz.GeomPb := by
   unfold UpperTheory.Gal.KunnethLefschetz.GeomPb

@@ -11,6 +11,11 @@ open NumberField IsDedekindDomain Formalism.BasicNotions Formalism.MainNotions F
 
 namespace GlobalTheory.EtaVal
 
+/- English proof (translation)
+Establish `h5 : (N : ℝ) / ((5 : ℕ) : ℝ) ^ 4 = 2 * i`. Rewrite using `[hN]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Rewrite `hv` using `[h5, ← hp]`.
+
+Conclude with `hv`.
+-/
 theorem two_mul_le_of_card_div_le {N i : ℕ} {a p p' : ℝ} {v : EReal} (hN : N = 2 * 5 ^ 4 * i) (hp : p = p')
     (hv : (((N : ℝ) / ((5 : ℕ) : ℝ) ^ 4 * (a * p') : ℝ) : EReal) ≤ v) : ((2 * i * (a * p) : ℝ) : EReal) ≤ v := by
   have h5 : (N : ℝ) / ((5 : ℕ) : ℝ) ^ 4 = 2 * i := by
@@ -18,6 +23,13 @@ theorem two_mul_le_of_card_div_le {N i : ℕ} {a p p' : ℝ} {v : EReal} (hN : N
   rw [h5, ← hp] at hv
   exact hv
 
+/- English proof (translation)
+Take `⟨S, io, e, ho, y', hy, eta, hl, hq⟩` from `y.2`. Establish `hi : imgV y = eta` using `congrArg Prod.snd hq`. Establish `hf : vAtV y f = nval S.V e (evI y' f)` using `congrFun (congrArg Prod.fst hq) f`. Rewrite using `[hi, hf]`. Take `⟨z, hr, hz⟩` from `hl h2`.
+
+Take `⟨A, bA, hb, hv⟩` from `GlobalTheory.T.phiC_le_normalized_valuation_product_form_algebraic D.host.E _ (Q.Dw j) _ (Q.Xo j) Q.c la (G.Tw j (WeightAlgebra.resCh la)) (hT j h1 h2 _ (resCh_prime la)) S io e y' z ho hy hz (fun x : D.host.E => D.host.conj x) (fun a => by`. Apply `D.host.φ₀.injective` to reduce the goal to its premises. Rewrite using `[NumberField.IsCMField.complexEmbedding_complexConj]`. Conclude with `WeightFamilies.emb_conj D _ a)`. Establish `hphi` using `In66.phiCy_eq G hL h1 h2 ⟨S, io, e, y', ho, hy, hz⟩ hr A bA hb`.
+
+Establish `key` using `hv 5 (by decide) (by norm_num) J n cf xs f hsp hrule`. Conclude with `two_mul_le_of_card_div_le hcard hphi key`.
+-/
 theorem val_at_partner {D : D7} {Q : Par D} (G : In66 Q) (hT : G.PinTower) (hL : G.PinLat) {j : ℕ} (h1 : 1 ≤ j)
     (h2 : j < D.R.m) (i : ℕ) (f : Rul (Q.Xo j) Q.c) (J : Type) [Fintype J] (n : ℕ) (cf : J → ℤ)
     (xs : J → Fin n → LatMod (Q.Dw j) (5 ^ 4)) (hcard : Nat.card (LevGrp (Q.Dw j) (5 ^ 4)) = 2 * 5 ^ 4 * i)
@@ -39,6 +51,9 @@ theorem val_at_partner {D : D7} {Q : Par D} (G : In66 Q) (hT : G.PinTower) (hL :
   have key := hv 5 (by decide) (by norm_num) J n cf xs f hsp hrule
   exact two_mul_le_of_card_div_le hcard hphi key
 
+/- English proof (translation)
+Unfold `WeightAlgebra.PJ.phiC`. Rewrite using `[if_pos h2]`. Both sides reduce to the same expression.
+-/
 theorem recPJ_phiC {D : D7} {T : Top D} (h : LawsP T) {j : ℕ} (hj : InR D j) (h2 : j < D.R.m)
     (la : HeightOneSpectrum (𝓞 T.Q.c.F)) (y : T.PtA j la) :
     (recPJ h j hj).phiC la y =
@@ -47,6 +62,11 @@ theorem recPJ_phiC {D : D7} {T : Top D} (h : LawsP T) {j : ℕ} (hj : InR D j) (
   rw [if_pos h2]
   rfl
 
+/- English proof (translation)
+Introduce `D T h j h1 h2 i η J _ n cf xs hcard hsp hrule la y`. Establish `e1` using `recPJ_vAt_inc h j ⟨h1, h2.le⟩ la y _ η`. Establish `e2` using `recPJ_phiC h ⟨h1, h2.le⟩ h2 la y`. Establish `key` using `val_at_partner T.G h.tower h.lattice_condition h1 h2 i η.1 J n cf xs hcard hsp hrule la y`. Rewrite `key` using `[← e2, ← e1]`.
+
+Conclude with `key`.
+-/
 theorem etVal_of_isEtaRule : ∀ (D : D7) (T : Top D) (h : LawsP T) (j : ℕ) (h1 : 1 ≤ j) (h2 : j < D.R.m) (i : ℕ) (η : (recB h.toLawsCore).Cusp j (wEt D j i)) (J : Type) [Fintype J] (n : ℕ) (cf : J → ℤ) (xs : J → Fin n → LatMod (T.Q.Dw j) (5 ^ 4)), Nat.card (LevGrp (T.Q.Dw j) (5 ^ 4)) = 2 * 5 ^ 4 * i → Spans xs → IsEtaRule (T.Q.Xo j) T.Q.c 5 cf xs η.1 → EtVal h j ⟨h1, h2.le⟩ i η := by
   intro D T h j h1 h2 i η J _ n cf xs hcard hsp hrule la y
   have e1 := recPJ_vAt_inc h j ⟨h1, h2.le⟩ la y _ η

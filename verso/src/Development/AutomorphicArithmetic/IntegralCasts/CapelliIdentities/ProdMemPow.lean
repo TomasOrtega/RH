@@ -1,5 +1,10 @@
 import Mathlib
 
+/- English proof (translation)
+Introduce `R k _ _ _ J β t x e h`. Proceed by induction on `t using Finset.induction_on with`. Consider the case `empty`. Rewrite using `[Finset.prod_empty, Finset.sum_empty, pow_zero]`. Conclude with `Submodule.one_le.mp le_rfl`.
+
+Consider the case `insert a s ha ih`. Rewrite using `[Finset.prod_insert ha, Finset.sum_insert ha, pow_add]`. Conclude with `Submodule.mul_mem_mul (h a (Finset.mem_insert_self a s)) (ih fun b hb => h b (Finset.mem_insert_of_mem hb))`.
+-/
 theorem UpperTheory.Reformulated.B.Qk22.prod_mem_pow :
     ∀ {R k : Type} [inst : CommRing R] [inst_1 : CommRing k]
     [inst_2 : Algebra R k] (J : Submodule R k) {β : Type} (t : Finset β) (x : β → k) (e : β → ℕ),

@@ -14,9 +14,19 @@ variable {p : ℕ} [Fact p.Prime]
 def teichU (L : GlobalTheory.GLq.LabelDatum p) : (ZMod p)ˣ →* ℂˣ :=
   (L.teich.comp (((algebraMap (ZMod p) (Fbar p)).toMonoidHom).comp (Units.coeHom (ZMod p)))).toHomUnits
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem teichU_val (L : GlobalTheory.GLq.LabelDatum p) (a : (ZMod p)ˣ) :
     ((teichU L a : ℂˣ) : ℂ) = L.teich (algebraMap (ZMod p) (Fbar p) (a : ZMod p)) := rfl
 
+/- English proof (translation)
+Establish `h : ∃ m : ℕ, L.gen 1 ^ n = L.gen 1 ^ m` using `⟨n, rfl⟩`. Unfold `GlobalTheory.GLq.thetaOf`. Rewrite using `[dif_pos h]`. Establish `hpos : 0 < p ^ 1 - 1` using `Nat.sub_pos_of_lt (Nat.one_lt_pow one_ne_zero (Fact.out : p.Prime).one_lt)`. Establish `hfin : IsOfFinOrder (L.gen 1)`.
+
+Rewrite using `[← orderOf_pos_iff, L.gen_order 1 one_pos]`. Conclude with `hpos`. Establish `hm : n ≡ h.choose [MOD p ^ 1 - 1]`. Rewrite using `[← L.gen_order 1 one_pos]`. Conclude with `hfin.pow_eq_pow_iff_modEq.1 h.choose_spec`.
+
+Establish `h1 : L.teich x ^ (p ^ 1 - 1) = 1` using `by rw [← map_pow, hx, map_one]`. Rewrite using `[pow_eq_pow_mod h.choose h1, pow_eq_pow_mod n h1, hm]`.
+-/
 theorem theta_gen_pow (L : GlobalTheory.GLq.LabelDatum p) {x : Fbar p} (hx : x ^ (p ^ 1 - 1) = 1) (n : ℕ) :
     GlobalTheory.GLq.thetaOf L 1 x (L.gen 1 ^ n) = L.teich x ^ n := by
   have h : ∃ m : ℕ, L.gen 1 ^ n = L.gen 1 ^ m := ⟨n, rfl⟩
@@ -30,9 +40,21 @@ theorem theta_gen_pow (L : GlobalTheory.GLq.LabelDatum p) {x : Fbar p} (hx : x ^
   have h1 : L.teich x ^ (p ^ 1 - 1) = 1 := by rw [← map_pow, hx, map_one]
   rw [pow_eq_pow_mod h.choose h1, pow_eq_pow_mod n h1, hm]
 
+/- English proof (translation)
+Rewrite using `[← Subgroup.card_eq_iff_eq_top, Nat.card_zpowers, Nat.card_eq_fintype_card, ZMod.card_units]`.
+-/
 theorem zpowers_top_iff (γ : (ZMod p)ˣ) : Subgroup.zpowers γ = ⊤ ↔ orderOf γ = p - 1 := by
   rw [← Subgroup.card_eq_iff_eq_top, Nat.card_zpowers, Nat.card_eq_fintype_card, ZMod.card_units]
 
+/- English proof (translation)
+Establish `ho` using `L.gen_order 1 one_pos`. Take `⟨g, hg⟩` from `GlobalTheory.GoodCharsCompare.exists_unit_of_pow (g := p) (y := L.gen 1) (by rw [← ho, pow_orderOf_eq_one])`. Establish `hog : orderOf g = p - 1`. Rewrite `ho` using `[← hg, pow_one]`. Rewrite using `[← ho, ← orderOf_units]`.
+
+Conclude with `(orderOf_injective (algebraMap (ZMod p) (Fbar p)).toMonoidHom (algebraMap (ZMod p) (Fbar p)).injective _).symm`. Establish `hval : ∀ (a : (ZMod p)ˣ) (n : ℕ), GlobalTheory.GLq.thetaOf L 1 (algebraMap (ZMod p) (Fbar p) (a : ZMod p)) (algebraMap (ZMod p) (Fbar p) ((g ^ n : (ZMod p)ˣ) : ZMod p)) = ((teichU L a : ℂˣ) : ℂ) ^ n`. Introduce `a n`. Rewrite using `[Units.val_pow_eq_pow_val, map_pow, teichU_val]`. Use `theta_gen_pow L (GlobalTheory.GoodCharsCompare.unit_pow a) n` as an intermediate fact.
+
+Rewrite `this` using `[← hg]`. Conclude with `this`. Use `⟨g, hog, fun χ a => ⟨fun h => ?_, fun h u => ?_⟩⟩` and prove the remaining obligations. Use `hval a 1` as an intermediate fact. Rewrite `this` using `[pow_one, pow_one, h g]`.
+
+Conclude with `Units.ext this`. Establish `hu : u ∈ Subgroup.zpowers g` using `by rw [(zpowers_top_iff g).2 hog]; trivial`. Take `⟨n, rfl⟩` from `(mem_powers_iff_mem_zpowers).2 hu`. Rewrite using `[hval, map_pow, h, Units.val_pow_eq_pow_val]`.
+-/
 theorem exists_gen (L : GlobalTheory.GLq.LabelDatum p) : ∃ g : (ZMod p)ˣ, orderOf g = p - 1 ∧
     ∀ (χ : (ZMod p)ˣ →* ℂˣ) (a : (ZMod p)ˣ), LabelsTame L χ a ↔ χ g = teichU L a := by
   have ho := L.gen_order 1 one_pos

@@ -14,9 +14,17 @@ open Classical
 
 def sumOfSquaredModuli {κ : Type} [Fintype κ] (y : κ → ℂ) : ℝ := ∏ v, ((max 1 (‖y v‖ / 1)) ^ 3)⁻¹
 
+/- English proof (translation)
+The claim follows from `Finset.prod_nonneg fun _ _ => inv_nonneg.2 (pow_nonneg (le_trans zero_le_one (le_max_left _ _)) 3)`.
+-/
 theorem rows_psi_nonneg {κ : Type} [Fintype κ] (y : κ → ℂ) : 0 ≤ sumOfSquaredModuli y :=
   Finset.prod_nonneg fun _ _ => inv_nonneg.2 (pow_nonneg (le_trans zero_le_one (le_max_left _ _)) 3)
 
+/- English proof (translation)
+Take `⟨hs, hle⟩` from `Formalism.HermitianLatticeCounting.Final.LatticeSumBounds.latticeSum κ Λ 1 le_rfl hΛ`. Establish `e : ∑ y ∈ T.subtype (fun y => y ∈ Λ), sumOfSquaredModuli (y : κ → ℂ) = ∑ y ∈ T, sumOfSquaredModuli y` using `Finset.sum_subtype_of_mem (fun y => sumOfSquaredModuli y) hT`. Rewrite using `[← e]`. Establish `h1 : ∑ y ∈ T.subtype (fun y => y ∈ Λ), sumOfSquaredModuli (y : κ → ℂ) ≤ ∑' y : Λ, ∏ v, ((max 1 (‖(y : κ → ℂ) v‖ / 1)) ^ 3)⁻¹` using `Summable.sum_le_tsum (f := fun y : Λ => ∏ v, ((max 1 (‖(y : κ → ℂ) v‖ / 1)) ^ 3)⁻¹) _ (fun y _ => rows_psi_nonneg (y : κ → ℂ)) hs`. Use `h1.trans (hle.trans ?_)` and prove the remaining obligations.
+
+Evaluate the numerical expressions.
+-/
 theorem rows_finsum_le {κ : Type} [Fintype κ] (Λ : AddSubgroup (κ → ℂ))
     (hΛ : ∀ x ∈ Λ, x ≠ 0 → 1 ≤ ∏ v, ‖x v‖) (T : Finset (κ → ℂ)) (hT : ∀ y ∈ T, y ∈ Λ) :
     ∑ y ∈ T, sumOfSquaredModuli y ≤ (41 : ℝ) ^ Fintype.card κ := by
@@ -31,6 +39,15 @@ theorem rows_finsum_le {κ : Type} [Fintype κ] (Λ : AddSubgroup (κ → ℂ))
   refine h1.trans (hle.trans ?_)
   norm_num
 
+/- English proof (translation)
+Use `set T : ι → Finset (κ → ℂ) := fun i => S.image (fun Z => x Z i) with hT`. Establish `e1 : ∑ Z ∈ S, ∏ i, sumOfSquaredModuli (x Z i) = ∑ y ∈ S.image x, ∏ i, sumOfSquaredModuli (y i)` using `(Finset.sum_image (f := fun y : ι → κ → ℂ => ∏ i, sumOfSquaredModuli (y i)) (fun Z hZ Z' hZ' h => hinj Z hZ Z' hZ' h)).symm`. Establish `sub : S.image x ⊆ Fintype.piFinset T`. Introduce `y hy`. Take `⟨Z, hZ, rfl⟩` from `Finset.mem_image.1 hy`.
+
+Conclude with `Fintype.mem_piFinset.2 fun i => Finset.mem_image.2 ⟨Z, hZ, rfl⟩`. Establish `e2 : ∑ y ∈ S.image x, ∏ i, sumOfSquaredModuli (y i) ≤ ∑ y ∈ Fintype.piFinset T, ∏ i, sumOfSquaredModuli (y i)` using `Finset.sum_le_sum_of_subset_of_nonneg sub fun y _ _ => Finset.prod_nonneg fun i _ => rows_psi_nonneg _`. Establish `e3 : ∑ y ∈ Fintype.piFinset T, ∏ i, sumOfSquaredModuli (y i) = ∏ i, ∑ y ∈ T i, sumOfSquaredModuli y` using `(Finset.prod_univ_sum T (fun _ y => sumOfSquaredModuli y)).symm`. Rewrite using `[e1]`. Use `e2.trans ?_` and prove the remaining obligations.
+
+Rewrite using `[e3]`. Combine the equalities or inequalities in the displayed calculation. Take `⟨Z, hZ, rfl⟩` from `Finset.mem_image.1 hy`. Conclude with `hx Z hZ i`. Use `_ = ((41 : ℝ) ^ Fintype.card κ) ^ Fintype.card ι := by`.
+
+Rewrite using `[Finset.prod_const, Finset.card_univ]`.
+-/
 theorem rows_sum_prod_le {α ι κ : Type} [Fintype ι] [Fintype κ] (Λ : ι → AddSubgroup (κ → ℂ))
     (hΛ : ∀ i, ∀ x ∈ Λ i, x ≠ 0 → 1 ≤ ∏ v, ‖x v‖) (S : Finset α) (x : α → ι → κ → ℂ)
     (hx : ∀ Z ∈ S, ∀ i, x Z i ∈ Λ i) (hinj : ∀ Z ∈ S, ∀ Z' ∈ S, x Z = x Z' → Z = Z') :
@@ -66,10 +83,16 @@ variable {D : D7}
 def gramEntryFunction (D : D7) (Z : GramM D) (i : Fin (D.R.rS + 1) × Fin (D.R.rS + 1)) : D.what₂.Tau → ℂ :=
   fun τ => ((rhoF D i.1 * rhoF D i.2 : ℝ) : ℂ) * embS D τ (Z i.1 i.2)
 
+/- English proof (translation)
+Unfold `rhoF`. Conclude with `Real.rpow_pos_of_pos hrd _`.
+-/
 theorem rows_rhoF_pos (hrd : 0 < D.host.rdE) (a : Fin (D.R.rS + 1)) : 0 < rhoF D a := by
   unfold rhoF
   exact Real.rpow_pos_of_pos hrd _
 
+/- English proof (translation)
+Unfold `gramEntryFunction`. Rewrite using `[norm_mul, Complex.norm_real, Real.norm_eq_abs, abs_of_pos (mul_pos (rows_rhoF_pos hrd _) (rows_rhoF_pos hrd _)), mul_comm]`.
+-/
 theorem rows_norm_entry (hrd : 0 < D.host.rdE) (Z : GramM D) (i : Fin (D.R.rS + 1) × Fin (D.R.rS + 1))
     (τ : D.what₂.Tau) : ‖gramEntryFunction D Z i τ‖ = ‖embS D τ (Z i.1 i.2)‖ * (rhoF D i.1 * rhoF D i.2) := by
   unfold gramEntryFunction
@@ -79,19 +102,33 @@ theorem rows_norm_entry (hrd : 0 < D.host.rdE) (Z : GramM D) (i : Fin (D.R.rS + 
 def rows_one (N : ℕ) (a : Fin N) : Fin 1 ↪o Fin N :=
   OrderEmbedding.ofStrictMono (fun _ => a) (fun x y h => absurd h (by rw [Subsingleton.elim x y]; exact lt_irrefl _))
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem rows_one_apply (N : ℕ) (a : Fin N) (x : Fin 1) : rows_one N a x = a := rfl
 
+/- English proof (translation)
+Unfold `UnitaryVolumeMass.absMinor`. Rewrite using `[Matrix.det_fin_one]`. Simplify using `[rows_one_apply]`.
+-/
 theorem rows_absMinor_one (Z : GramM D) (a b : Fin (D.R.rS + 1)) (τ : D.what₂.Tau) :
     UnitaryVolumeMass.absMinor D Z (rows_one _ a) (rows_one _ b) τ = ‖embS D τ (Z a b)‖ * (rhoF D a * rhoF D b) := by
   unfold UnitaryVolumeMass.absMinor
   rw [Matrix.det_fin_one]
   simp [rows_one_apply]
 
+/- English proof (translation)
+Rewrite using `[Matrix.det_fin_one]`. Simplify using `[rows_one_apply]`.
+-/
 theorem rows_det_one (Z : GramM D) (a b : Fin (D.R.rS + 1)) :
     (Z.submatrix (rows_one _ a) (rows_one _ b)).det = Z a b := by
   rw [Matrix.det_fin_one]
   simp [rows_one_apply]
 
+/- English proof (translation)
+Establish `hc : 0 < Fintype.card D.what₂.Tau` using `by rw [D.what₂.card_Tau]; exact hf`. Take `⟨τ⟩` from `Fintype.card_pos_iff.1 hc`. Use `Matrix.ext fun a b => ?_` and prove the remaining obligations. Establish `h1` using `congrFun (congrFun h (a, b)) τ`. Unfold `gramEntryFunction at h1`.
+
+Establish `hne : (((rhoF D a * rhoF D b : ℝ)) : ℂ) ≠ 0`. Conclude with `(mul_pos (rows_rhoF_pos hrd a) (rows_rhoF_pos hrd b)).ne'` after adjusting the coercions. Conclude with `(embS D τ).injective (mul_left_cancel₀ hne h1)`.
+-/
 theorem rows_entry_inj (hrd : 0 < D.host.rdE) (hf : 0 < D.R.f) (Z Z' : GramM D)
     (h : gramEntryFunction D Z = gramEntryFunction D Z') : Z = Z' := by
   have hc : 0 < Fintype.card D.what₂.Tau := by rw [D.what₂.card_Tau]; exact hf
@@ -103,6 +140,15 @@ theorem rows_entry_inj (hrd : 0 < D.host.rdE) (hf : 0 < D.R.f) (Z Z' : GramM D)
     exact_mod_cast (mul_pos (rows_rhoF_pos hrd a) (rows_rhoF_pos hrd b)).ne'
   exact (embS D τ).injective (mul_left_cancel₀ hne h1)
 
+/- English proof (translation)
+Establish `hP : ∏ τ, max 1 ‖gramEntryFunction D Z i τ‖ ≤ M`. Distinguish the cases in `h0 : Z i.1 i.2 = 0`. Establish `: ∀ τ, max 1 ‖gramEntryFunction D Z i τ‖ = 1` using `fun τ => by`. Apply the tactic sequence `rw [rows_norm_entry hrd, h0, map_zero, norm_zero, zero_mul]`. Conclude with `max_eq_left zero_le_one`.
+
+Rewrite using `[Finset.prod_congr rfl fun τ _ => this τ, Finset.prod_const_one]`. Conclude with `hM`. Establish `h` using `hred 1 (rows_one _ i.1) (rows_one _ i.2) (by rw [rows_det_one]; exact h0)`. Use `le_trans (le_of_eq ?_) h` and prove the remaining obligations. Use `Finset.prod_congr rfl fun τ _ => ?_` and prove the remaining obligations.
+
+Apply the tactic sequence `rw [rows_absMinor_one, rows_norm_entry hrd]`. Establish `hP0 : 0 < ∏ τ, max 1 ‖gramEntryFunction D Z i τ‖` using `Finset.prod_pos fun τ _ => lt_of_lt_of_le one_pos (le_max_left _ _)`. Establish `e : sumOfSquaredModuli (gramEntryFunction D Z i) = ((∏ τ, max 1 ‖gramEntryFunction D Z i τ‖) ^ 3)⁻¹`. Unfold `sumOfSquaredModuli`. Rewrite using `[Finset.prod_inv_distrib, Finset.prod_pow]`.
+
+Simplify using `only [div_one]`. Rewrite using `[e]`. Conclude with `inv_anti₀ (pow_pos hP0 3) (pow_le_pow_left₀ hP0.le hP 3)`.
+-/
 theorem rows_psi_ge (hrd : 0 < D.host.rdE) (Z : GramM D) (M : ℝ) (hM : 1 ≤ M)
     (hred : ∀ (j : ℕ) (I J : Fin j ↪o Fin (D.R.rS + 1)), (Z.submatrix I J).det ≠ 0 →
       ∏ τ, max 1 (UnitaryVolumeMass.absMinor D Z I J τ) ≤ M) (i : Fin (D.R.rS + 1) × Fin (D.R.rS + 1)) :
@@ -126,6 +172,21 @@ theorem rows_psi_ge (hrd : 0 < D.host.rdE) (Z : GramM D) (M : ℝ) (hM : 1 ≤ M
   rw [e]
   exact inv_anti₀ (pow_pos hP0 3) (pow_le_pow_left₀ hP0.le hP 3)
 
+/- English proof (translation)
+Use `choose Λ hΛ hmem using hE`. Establish `hcard : Fintype.card (Fin (D.R.rS + 1) × Fin (D.R.rS + 1)) = (D.R.rS + 1) ^ 2`. Rewrite using `[Fintype.card_prod, Fintype.card_fin, sq]`. Establish `key` using `rows_sum_prod_le (fun i : Fin (D.R.rS + 1) × Fin (D.R.rS + 1) => Λ i.1 i.2) (fun i => hΛ i.1 i.2) S (fun Z => gramEntryFunction D Z) (fun Z hZ i => by`. Take `⟨t, hG, hr, hz⟩` from `hterm Z hZ`.
+
+Conclude with `hmem i.1 i.2 t Z hG hr hz)`. Use the proof step `(fun Z _ Z' _ h => rows_entry_inj hrd hf Z Z' h)`. Rewrite `key` using `[hcard, D.what₂.card_Tau]`. Establish `each : ∀ Z ∈ S, sg Z ^ (-e) ≤ (B ^ 3) ^ ((D.R.rS + 1) ^ 2) * ∏ i : Fin (D.R.rS + 1) × Fin (D.R.rS + 1), sumOfSquaredModuli (gramEntryFunction D Z i)`. Introduce `Z hZ`.
+
+Establish `h1` using `hsg Z hZ`. Establish `s0 : 0 < sg Z` using `lt_of_lt_of_le one_pos h1`. Establish `hM : 1 ≤ B * sg Z ^ 4`. Establish `: 1 ≤ sg Z ^ 4` using `one_le_pow₀ h1`. Use the polynomial consequences of the given equalities and inequalities.
+
+Establish `hp : ((((B * sg Z ^ 4) ^ 3)⁻¹) ^ ((D.R.rS + 1) ^ 2)) ≤ ∏ i : Fin (D.R.rS + 1) × Fin (D.R.rS + 1), sumOfSquaredModuli (gramEntryFunction D Z i)`. Rewrite using `[← hcard, ← Finset.card_univ, ← Finset.prod_const]`. Conclude with `Finset.prod_le_prod (fun i _ => by positivity) fun i _ => rows_psi_ge hrd Z _ hM (hred Z hZ) i`. Establish `hB3 : 0 < (B ^ 3) ^ ((D.R.rS + 1) ^ 2)` using `by positivity`. Use `le_trans ?_ (mul_le_mul_of_nonneg_left hp hB3.le)` and prove the remaining obligations.
+
+Establish `e1 : (B ^ 3) ^ ((D.R.rS + 1) ^ 2) * (((B * sg Z ^ 4) ^ 3)⁻¹) ^ ((D.R.rS + 1) ^ 2) = (sg Z ^ (12 * (D.R.rS + 1) ^ 2))⁻¹`. Rewrite using `[← mul_pow, mul_pow B, mul_inv, ← mul_assoc, mul_inv_cancel₀ (by positivity), one_mul, inv_pow, ← pow_mul, ← pow_mul]`. Use `congr 2`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e1, ← Real.rpow_natCast, ← Real.rpow_neg s0.le]`.
+
+Use `Real.rpow_le_rpow_of_exponent_le h1 ?_` and prove the remaining obligations. Use `push_cast`. Combine the linear equalities and inequalities to obtain the conclusion. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Finset.mul_sum]`.
+
+Use `_ ≤ (B ^ 3) ^ ((D.R.rS + 1) ^ 2) * ((41 : ℝ) ^ D.R.f) ^ ((D.R.rS + 1) ^ 2) := mul_le_mul_of_nonneg_left key (by positivity)`. Use `_ = ((41 : ℝ) ^ D.R.f * B ^ 3) ^ ((D.R.rS + 1) ^ 2) := by rw [mul_pow, mul_comm]`.
+-/
 theorem rows_sizeSum (X : TermTie D) {u u' : D.what₂.Word} (hE : wordPairEntriesInLattice X u u') (hrd : 0 < D.host.rdE)
     (hf : 0 < D.R.f) (S : Finset (GramM D)) (sg : GramM D → ℝ) (hsg : ∀ Z ∈ S, 1 ≤ sg Z) (B : ℝ) (hB : 1 ≤ B)
     (hterm : ∀ Z ∈ S, ∃ t : D.s.Term u u', D.s.Gterm t ≠ 0 ∧ D.s.relevant t ∧ ZEquiv (termGramMatrix X t) Z)
@@ -184,6 +245,11 @@ section Reduced
 
 variable {D : D7} {large₂ : SizeData₂ D} {X : TermTie D} {u u' : D.what₂.Word} {C1 : ℝ} (Y : LoopTie D large₂ X u u' C1)
 
+/- English proof (translation)
+Use `⟨⟨X.lift' t, ?_, ?_⟩, Y.frame_ok t⟩` and prove the remaining obligations. Use `X.adm t` as an intermediate fact. Rewrite `this` using `[Y.fl_eq t]`. Then use the resulting hypothesis. Establish `h` using `X.G_eq t`. Rewrite `h` using `[Y.fl_eq t]`.
+
+Rewrite using `[← h]`. Conclude with `(map_ne_zero_iff _ (algebraMap D.host.F D.host.E).injective).2 hG`.
+-/
 theorem rows_isTermF' (t : D.s.Term u u') (hG : D.s.Gterm t ≠ 0) :
     IsTermF D (X.abelian₂ t) (lf D Y.F0) (X.fl' t) := by
   refine ⟨⟨X.lift' t, ?_, ?_⟩, Y.frame_ok t⟩
@@ -196,6 +262,13 @@ theorem rows_isTermF' (t : D.s.Term u u') (hG : D.s.Gterm t ≠ 0) :
 
 include Y in
 
+/- English proof (translation)
+Establish `hR : RelZ D (ZhatL (lf D Y.F0) (X.fl' t))`. Establish `h` using `X.pt_cell t hG hrel`. Rewrite `h` using `[Y.fl_eq t]`. Conclude with `⟨_, h⟩`. Take `⟨_, _, _, Z, hZ, hm⟩` from `hHH hH Y.F0 Y.flag_e_eq_hyperbolic Y.formsAtZero (X.abelian₂ t) (Y.isRows.1 _ (Y.Lam_mem t)) (X.fl' t) (rows_isTermF' Y t hG) hR`.
+
+Use `⟨Z, ?_, fun j I J h => ?_⟩` and prove the remaining obligations. Unfold `termGramMatrix`. Rewrite using `[Y.fl_eq t]`. Conclude with `hZ`. Unfold `termGramMatrix`.
+
+Rewrite using `[Y.fl_eq t]`. Conclude with `(hm j I J h).1`.
+-/
 theorem rows_reduced_exists {C' Cl Cg cb Cu cT CT C0 A C : ℝ} (hH : Cnt.Hyp D large₂ u u' C' Cl Cg cb Cu cT CT C0 A)
     (hHH : UnitaryVolumeMass.stHH D large₂ u u' C' Cl Cg cb Cu cT CT C0 A C) (t : D.s.Term u u') (hG : D.s.Gterm t ≠ 0)
     (hrel : D.s.relevant t) :

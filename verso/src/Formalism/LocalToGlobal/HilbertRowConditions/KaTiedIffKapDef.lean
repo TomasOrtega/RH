@@ -23,6 +23,9 @@ variable {D : D7} {T : HostTied D} {C : CharFrame D} (X : OTied D T C)
 
 def toQb (D : D7) (T : HostTied D) : D.what₂.O →+* Qb := T.jLL.comp D.what₂.OtoLL
 
+/- English proof (translation)
+The claim follows from `(RingHom.injective T.jLL).comp X.inj`.
+-/
 theorem toQb_injective (X : OTied D T C) : Function.Injective (toQb D T) :=
   (RingHom.injective T.jLL).comp X.inj
 
@@ -30,13 +33,22 @@ def eO : D.what₂.O ≃+* (toQb D T).range :=
   RingEquiv.ofBijective (toQb D T).rangeRestrict ⟨fun _ _ h => X.toQb_injective (congrArg Subtype.val h),
     (toQb D T).rangeRestrict_surjective⟩
 
+/- English proof (translation)
+Rewrite using `[RingHom.mem_range]`. Conclude with `X.range x`.
+-/
 theorem mem_range_iff (x : Qb) : x ∈ (toQb D T).range ↔ x ∈ OsQ (KsQ D T C X.pieces) := by
   rw [RingHom.mem_range]
   exact X.range x
 
+/- English proof (translation)
+The claim follows from `Set.ext fun x => X.mem_range_iff x`.
+-/
 theorem range_eq : ((toQb D T).range : Set Qb) = OsQ (KsQ D T C X.pieces) :=
   Set.ext fun x => X.mem_range_iff x
 
+/- English proof (translation)
+Take `⟨y, hy⟩` from `RingHom.mem_range.1 ((X.mem_range_iff x).2 hx)`. Use `show x ∈ T.jLL.toRatAlgHom.fieldRange`. Rewrite using `[AlgHom.mem_fieldRange]`. Conclude with `⟨D.what₂.OtoLL y, hy⟩`.
+-/
 theorem Os_le_LL (x : Qb) (hx : x ∈ OsQ (KsQ D T C X.pieces)) : x ∈ T.LLQ := by
   obtain ⟨y, hy⟩ := RingHom.mem_range.1 ((X.mem_range_iff x).2 hx)
   show x ∈ T.jLL.toRatAlgHom.fieldRange
@@ -53,12 +65,18 @@ structure KappaCompatible (D : D7) : Prop where
   small : ∀ j, 1 ≤ j → j ≤ D.R.m → ∀ (τ : D.what₂.Tau) (c : Fin (D.R.sigW j).2),
     ((D.what₂.kaSmall j τ c : ℤ) : ℚ) = kaSmallOf D j τ c
 
+/- English proof (translation)
+Unfold `getQ`. Use `split_ifs with h`. Conclude with `hf _`. Conclude with `⟨0, by simp⟩`.
+-/
 theorem getQ_int {n : ℕ} (f : Fin n → ℚ) (hf : ∀ i, ∃ z : ℤ, f i = z) (i : ℕ) : ∃ z : ℤ, getQ f i = z := by
   unfold getQ
   split_ifs with h
   · exact hf _
   · exact ⟨0, by simp⟩
 
+/- English proof (translation)
+Unfold `vPar`. Use `split_ifs`. Conclude with `getQ_int _ (D.hc τ).v_int i`. Take `⟨z, hz⟩` from `getQ_int _ (D.hc τ).b_int (i - (D.R.k - 1))`. Conclude with `⟨-z, by rw [hz]; push_cast; ring⟩`.
+-/
 theorem vPar_int (D : D7) (τ : D.what₂.Tau) (i : ℕ) : ∃ z : ℤ, vPar D τ i = z := by
   unfold vPar
   split_ifs
@@ -66,6 +84,15 @@ theorem vPar_int (D : D7) (τ : D.what₂.Tau) (i : ℕ) : ∃ z : ℤ, vPar D �
   · obtain ⟨z, hz⟩ := getQ_int _ (D.hc τ).b_int (i - (D.R.k - 1))
     exact ⟨-z, by rw [hz]; push_cast; ring⟩
 
+/- English proof (translation)
+Take `⟨a, ha⟩` from `vPar_int D τ i`. Take `⟨b, hb⟩` from `getQ_int _ (D.hc τ).e_int (j - 1)`. Take `⟨s, hs⟩` from `D.R.t_odd`. Establish `hk` using `D.R.m_add_three_le_k`. Establish `n1 : D.R.nV = D.R.k + D.R.m + 2 * s` using `by show D.R.k + D.R.m - 1 + D.R.t = _`.
+
+Use linear arithmetic over natural numbers and integers. Establish `n2 : (D.R.sigW j).1 + 1 = D.R.k + j` using `by show D.R.k + j - 1 + 1 = D.R.k + j`. Use linear arithmetic over natural numbers and integers. Establish `n3 : (D.R.sigW j).2 + j = D.R.m` using `by show D.R.m - j + j = D.R.m`. Use linear arithmetic over natural numbers and integers.
+
+Establish `q1 : (D.R.nV : ℚ) = D.R.k + D.R.m + 2 * s` using `by exact_mod_cast n1`. Establish `q2 : (((D.R.sigW j).1 : ℕ) : ℚ) + 1 = D.R.k + j` using `by exact_mod_cast n2`. Establish `q3 : (((D.R.sigW j).2 : ℕ) : ℚ) + j = D.R.m` using `by exact_mod_cast n3`. Use `⟨a + b - ((D.R.k : ℤ) + s - 1 - i + j), ?_⟩` and prove the remaining obligations. Unfold `aPlus`.
+
+Use `push_cast`. Take the linear combination `ha + hb + (-1/2 : ℚ) * q1 + (-1/2 : ℚ) * q2 + (1/2 : ℚ) * q3`.
+-/
 theorem aPlus_int (D : D7) (j : ℕ) (hj : 1 ≤ j) (hjm : j ≤ D.R.m) (τ : D.what₂.Tau) (i : ℕ) :
     ∃ z : ℤ, aPlus D j τ i = z := by
   obtain ⟨a, ha⟩ := vPar_int D τ i
@@ -89,6 +116,11 @@ theorem aPlus_int (D : D7) (j : ℕ) (hj : 1 ≤ j) (hjm : j ≤ D.R.m) (τ : D.
   push_cast
   linear_combination ha + hb + (-1/2 : ℚ) * q1 + (-1/2 : ℚ) * q2 + (1/2 : ℚ) * q3
 
+/- English proof (translation)
+Take `⟨bb, hbb⟩` from `getQ_int _ (D.hc τ).b_int (j + c₀)`. Take `⟨ee, hee⟩` from `getQ_int _ (D.hc τ).e_int (j - 1)`. Take `⟨s, hs⟩` from `D.R.t_odd`. Establish `qt : (D.R.t : ℚ) = 2 * s + 1` using `by exact_mod_cast hs`. Use `⟨-(bb - ee - ((s : ℤ) + 1 + c₀)), ?_⟩` and prove the remaining obligations.
+
+Unfold `kaSmallOf aMinusAt`. Use `push_cast`. Take the linear combination `(-1 : ℚ) * hbb + hee + (1/2 : ℚ) * qt`.
+-/
 theorem kaSmallOf_int (D : D7) (j : ℕ) (τ : D.what₂.Tau) (c₀ : ℕ) : ∃ z : ℤ, kaSmallOf D j τ c₀ = z := by
   obtain ⟨bb, hbb⟩ := getQ_int _ (D.hc τ).b_int (j + c₀)
   obtain ⟨ee, hee⟩ := getQ_int _ (D.hc τ).e_int (j - 1)
@@ -99,15 +131,26 @@ theorem kaSmallOf_int (D : D7) (j : ℕ) (τ : D.what₂.Tau) (c₀ : ℕ) : ∃
   push_cast
   linear_combination (-1 : ℚ) * hbb + hee + (1/2 : ℚ) * qt
 
+/- English proof (translation)
+Unfold `vPar DV.sigPar getQ`. Apply the tactic sequence `split_ifs <;> first | rfl | simp`.
+-/
 theorem vPar_eq_sigPar (D : D7) (τ : D.what₂.Tau) (i : ℕ) : vPar D τ i = DV.sigPar D τ i := by
   unfold vPar DV.sigPar getQ
   split_ifs <;> first | rfl | simp
 
+/- English proof (translation)
+Unfold `getQ DV.eQ`. Apply the tactic sequence `split_ifs <;> first | rfl | (exfalso; omega)`.
+-/
 theorem getQ_e_eq (D : D7) (j : ℕ) (hj : 1 ≤ j) (hjm : j ≤ D.R.m) (τ : D.what₂.Tau) :
     getQ (D.hc τ).e (j - 1) = DV.eQ D j τ := by
   unfold getQ DV.eQ
   split_ifs <;> first | rfl | (exfalso; omega)
 
+/- English proof (translation)
+Establish `n2 : (D.R.sigW j).1 + 1 = D.R.k + j` using `by show D.R.k + j - 1 + 1 = D.R.k + j`. Use linear arithmetic over natural numbers and integers. Establish `n3 : (D.R.sigW j).2 + j = D.R.m` using `by show D.R.m - j + j = D.R.m`. Use linear arithmetic over natural numbers and integers. Establish `q2 : (((D.R.sigW j).1 : ℕ) : ℚ) + 1 = D.R.k + j` using `by exact_mod_cast n2`.
+
+Establish `q3 : (((D.R.sigW j).2 : ℕ) : ℚ) + j = D.R.m` using `by exact_mod_cast n3`. Unfold `aPlus DV.aPlusQ`. Rewrite using `[vPar_eq_sigPar, getQ_e_eq D j hj hjm τ]`. Take the linear combination `(-1/2 : ℚ) * q2 + (1/2 : ℚ) * q3`.
+-/
 theorem aPlus_eq (D : D7) (j : ℕ) (hj : 1 ≤ j) (hjm : j ≤ D.R.m) (τ : D.what₂.Tau) (i : ℕ) :
     aPlus D j τ i = DV.aPlusQ D j τ i := by
   have n2 : (D.R.sigW j).1 + 1 = D.R.k + j := by
@@ -122,6 +165,9 @@ theorem aPlus_eq (D : D7) (j : ℕ) (hj : 1 ≤ j) (hjm : j ≤ D.R.m) (τ : D.w
   rw [vPar_eq_sigPar, getQ_e_eq D j hj hjm τ]
   linear_combination (-1/2 : ℚ) * q2 + (1/2 : ℚ) * q3
 
+/- English proof (translation)
+Unfold `kaSmallOf aMinusAt DV.aMinusQ`. Rewrite using `[getQ_e_eq D j hj hjm τ]`. Unfold `getQ`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem kaSmallOf_eq (D : D7) (j : ℕ) (hj : 1 ≤ j) (hjm : j ≤ D.R.m) (τ : D.what₂.Tau) (c : ℕ) :
     kaSmallOf D j τ c = -DV.aMinusQ D j τ c := by
   unfold kaSmallOf aMinusAt DV.aMinusQ
@@ -129,6 +175,13 @@ theorem kaSmallOf_eq (D : D7) (j : ℕ) (hj : 1 ≤ j) (hjm : j ≤ D.R.m) (τ :
   unfold getQ
   ring
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce `h j hj hjm τ`. Use `⟨fun i => ?_, fun c => ?_⟩` and prove the remaining obligations. Rewrite using `[← aPlus_eq D j hj hjm τ i]`. Conclude with `h.big j hj hjm τ i` after adjusting the coercions.
+
+Rewrite using `[← kaSmallOf_eq D j hj hjm τ c]`. Conclude with `h.small j hj hjm τ c` after adjusting the coercions. Introduce `h`. Use `⟨fun j hj hjm τ i => ?_, fun j hj hjm τ c => ?_⟩` and prove the remaining obligations. Rewrite using `[aPlus_eq D j hj hjm τ i]`.
+
+Conclude with `(h j hj hjm τ).1 i` after adjusting the coercions. Rewrite using `[kaSmallOf_eq D j hj hjm τ c]`. Conclude with `(h j hj hjm τ).2 c` after adjusting the coercions.
+-/
 theorem kaTied_iff_kapDef (D : D7) : KappaCompatible D ↔ DV.KapDef D := by
   constructor
   · intro h j hj hjm τ

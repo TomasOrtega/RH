@@ -16,6 +16,13 @@ section Rev
 variable {ε : Fin (2 * r + k + 1) → Bool} {e f : Fin r → Fin (2 * r + k + 1) → ℂ}
   {wf : Fin k → Fin (2 * r + k + 1) → ℂ} {z0 : Fin (2 * r + k + 1) → ℂ}
 
+/- English proof (translation)
+Establish `hy' : y = ∑ i, y i • bvec i`. Use extensionality with `j`. Simplify using `[bvec, Pi.single_apply, Finset.sum_apply]`. Rewrite using `[hy', Matrix.mulVec_sum]`. Use `Submodule.sum_mem _ fun i _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[Matrix.mulVec_smul, Qm_mulVec_bvec]`. Distinguish the cases in `hi : i.val < p`. Establish `: colQ e f wf z0 i = e ⟨i.val, by omega⟩`. Unfold `colQ; rw [dif_pos (by omega)]`. Rewrite using `[this]`.
+
+Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span ⟨⟨i.val, by omega⟩, by simp only [Set.mem_setOf_eq]; exact hi, rfl⟩)`. Rewrite using `[hy i (by omega), zero_smul]; exact Submodule.zero_mem _`.
+-/
 theorem Qm_mulVec_mem_span {p : ℕ} (hp : p ≤ r) (y : Fin (2 * r + k + 1) → ℂ)
     (hy : ∀ i : Fin (2 * r + k + 1), p ≤ i.val → y i = 0) :
     Qm e f wf z0 *ᵥ y ∈ Submodule.span ℂ (e '' {b | b.1 < p}) := by
@@ -31,6 +38,11 @@ theorem Qm_mulVec_mem_span {p : ℕ} (hp : p ≤ r) (y : Fin (2 * r + k + 1) →
     exact Submodule.smul_mem _ _ (Submodule.subset_span ⟨⟨i.val, by omega⟩, by simp only [Set.mem_setOf_eq]; exact hi, rfl⟩)
   · rw [hy i (by omega), zero_smul]; exact Submodule.zero_mem _
 
+/- English proof (translation)
+Take `⟨-, hfix, hzB⟩` from `hh`. Establish `hQz : Qi ε e f wf z0 *ᵥ z = zB` using `by rw [← hz, Matrix.mulVec_mulVec, Qi_mul_Qm hF, Matrix.one_mulVec]`. Use `⟨fun a => ?_, fun a => ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[← Matrix.mulVec_mulVec, ← Matrix.mulVec_mulVec, Qi_e hF, (hfix a).1, Qm_mulVec_bvec, colQ_eI]`. Rewrite using `[← Matrix.mulVec_mulVec, ← Matrix.mulVec_mulVec, Qi_f hF, (hfix a).2, Qm_mulVec_bvec, colQ_esI]`.
+
+Rewrite using `[← Matrix.mulVec_mulVec, ← Matrix.mulVec_mulVec, hQz, hzB, hz]`.
+-/
 theorem rev_UW (hF : IsFrameJ ε e f wf z0) {zB z : Fin (2 * r + k + 1) → ℂ} (hz : Qm e f wf z0 *ᵥ zB = z)
     {h : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ} (hh : h ∈ UWset k r zB) :
     (∀ a, (Qm e f wf z0 * h * Qi ε e f wf z0) *ᵥ e a = e a) ∧
@@ -43,6 +55,23 @@ theorem rev_UW (hF : IsFrameJ ε e f wf z0) {zB z : Fin (2 * r + k + 1) → ℂ}
   · rw [← Matrix.mulVec_mulVec, ← Matrix.mulVec_mulVec, Qi_f hF, (hfix a).2, Qm_mulVec_bvec, colQ_esI]
   · rw [← Matrix.mulVec_mulVec, ← Matrix.mulVec_mulVec, hQz, hzB, hz]
 
+/- English proof (translation)
+Take `⟨-, hcol, hW⟩` from `hm`. Establish `hQz : Qi ε e f wf z0 *ᵥ z = zB` using `by rw [← hz, Matrix.mulVec_mulVec, Qi_mul_Qm hF, Matrix.one_mulVec]`. Establish `key : ∀ y : Fin (2 * r + k + 1) → ℂ, (Qm e f wf z0 * m * Qi ε e f wf z0 - 1) *ᵥ y = Qm e f wf z0 *ᵥ ((m - 1) *ᵥ (Qi ε e f wf z0 *ᵥ y))`. Introduce `y`. Rewrite using `[Matrix.sub_mulVec, Matrix.sub_mulVec, Matrix.mulVec_sub, Matrix.one_mulVec, Matrix.one_mulVec, Matrix.mulVec_mulVec, Matrix.mulVec_mulVec, Matrix.mulVec_mulVec, Qm_mul_Qi hF, Matrix.one_mulVec]`.
+
+Establish `hcolX : ∀ (b : Fin r) (j : Fin (2 * r + k + 1)), b.val ≤ j.val → (m - 1) j (eI k r b) = 0`. Introduce `b j hj`. Apply the tactic sequence `rw [Matrix.sub_apply, hcol b j hj, Matrix.one_apply]; split_ifs <;> simp`. Establish `hcolW : ∀ i j : Fin (2 * r + k + 1), r ≤ i.val → i.val ≤ r + k → r ≤ j.val → (m - 1) j i = 0`. Introduce `i j hi1 hi2 hj`.
+
+Apply the tactic sequence `rw [Matrix.sub_apply, hW j i hi1 hi2 hj, Matrix.one_apply]; split_ifs <;> simp`. Use `⟨⟨fun a => ?_, ?_⟩, fun y hy => ?_⟩` and prove the remaining obligations. Rewrite using `[key, Qi_e hF]`. Use `Qm_mulVec_mem_span (le_of_lt a.isLt) _ fun j hj => ?_` and prove the remaining obligations. Rewrite using `[← mat_apply_bvec]`.
+
+Conclude with `hcolX a j hj`. Rewrite using `[key, hQz]`. Use `Qm_mulVec_mem_span le_rfl _ fun j hj => ?_` and prove the remaining obligations. Simplify using `only [mulVec, dotProduct]`. Use `Finset.sum_eq_zero fun i _ => ?_` and prove the remaining obligations.
+
+Distinguish the cases in `hi : i.val < r ∨ r + k < i.val`. Rewrite using `[hzB i hi, mul_zero]`. Use `push_neg at hi`. Rewrite using `[hcolW i j hi.1 hi.2 hj, zero_mul]`. Rewrite using `[key]`.
+
+Use `Qm_mulVec_mem_span le_rfl _ fun j hj => ?_` and prove the remaining obligations. Rewrite using `[show ((m - 1) *ᵥ (Qi ε e f wf z0 *ᵥ y)) j = ∑ i, (m - 1) j i * (Qi ε e f wf z0 *ᵥ y) i from rfl]`. Use `Finset.sum_eq_zero fun i _ => ?_` and prove the remaining obligations. Distinguish the cases in `hi1 : i.val < r`. Establish `: i = eI k r ⟨i.val, hi1⟩` using `Fin.ext (by rw [eI_val])`.
+
+Rewrite using `[this, hcolX _ j (by simp only; omega), zero_mul]`. Distinguish the cases in `hi2 : i.val ≤ r + k`. Rewrite using `[hcolW i j (by omega) hi2 hj, zero_mul]`. Establish `hi3 : 2 * r + k - i.val < r` using `by have := i.isLt; omega`. Establish `: i = esI k r ⟨2 * r + k - i.val, hi3⟩` using `Fin.ext (by rw [esI_val]; simp only; have := i.isLt; omega)`.
+
+Rewrite using `[this, Qi_mulVec, sgn_esI, sig_esI_eq, colQ_eI, hy, mul_zero, mul_zero]`.
+-/
 theorem rev_N (hF : IsFrameJ ε e f wf z0) {zB z : Fin (2 * r + k + 1) → ℂ} (hz : Qm e f wf z0 *ᵥ zB = z)
     (hzB : ∀ i : Fin (2 * r + k + 1), i.val < r ∨ r + k < i.val → zB i = 0)
     {m : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ} (hm : m ∈ Nset k r) :
@@ -92,8 +121,20 @@ section Levi
 variable {ε : Fin (2 * r + k + 1) → Bool} {e f : Fin r → Fin (2 * r + k + 1) → ℂ}
   {wf : Fin k → Fin (2 * r + k + 1) → ℂ} {z0 : Fin (2 * r + k + 1) → ℂ}
 
+/- English proof (translation)
+The claim follows from `Subtype.ext (Units.ext h)`.
+-/
 theorem UJ_ext {a b : Formalism.REAL.UJ ε} (h : uMat a = uMat b) : a = b := Subtype.ext (Units.ext h)
 
+/- English proof (translation)
+Establish `hspan : ∀ p, ∀ y ∈ spanLt e p, h *ᵥ y = y`. Introduce `p y hy`. Proceed by induction on `hy using Submodule.span_induction with`. Consider the case `mem x hx => obtain ⟨b, -, rfl⟩ := hx`. Conclude with `he b`.
+
+Consider the case `zero => simp`. Consider the case `add x y _ _ hx hy => rw [Matrix.mulVec_add, hx, hy]`. Consider the case `smul c x _ hx => rw [Matrix.mulVec_smul, hx]`. Take `⟨⟨h1, h2⟩, -⟩` from `hn`. Use `⟨fun a => ?_, ?_⟩` and prove the remaining obligations.
+
+Establish `: (h * n - 1) *ᵥ e a = h *ᵥ ((n - 1) *ᵥ e a)`. Rewrite using `[Matrix.sub_mulVec, Matrix.sub_mulVec, Matrix.mulVec_sub, ← Matrix.mulVec_mulVec, Matrix.one_mulVec]`. Simplify using `only [he]`. Rewrite using `[this, hspan _ _ (h1 a)]`. Conclude with `h1 a`.
+
+Establish `: (h * n - 1) *ᵥ z = h *ᵥ ((n - 1) *ᵥ z)`. Rewrite using `[Matrix.sub_mulVec, Matrix.sub_mulVec, Matrix.mulVec_sub, ← Matrix.mulVec_mulVec, Matrix.one_mulVec]`. Simplify using `only [hz]`. Rewrite using `[this, hspan _ _ h2]`. Conclude with `h2`.
+-/
 theorem inS_mul {z : Fin (2 * r + k + 1) → ℂ} {h n : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ}
     (he : ∀ a, h *ᵥ e a = e a) (hz : h *ᵥ z = z) (hn : InN ε e z n) : InS e z (h * n) := by
   have hspan : ∀ p, ∀ y ∈ spanLt e p, h *ᵥ y = y := by
@@ -114,6 +155,15 @@ theorem inS_mul {z : Fin (2 * r + k + 1) → ℂ} {h n : Matrix (Fin (2 * r + k 
       simp only [hz]
     rw [this, hspan _ _ h2]; exact h2
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨hB, hhB, mB, hmB, heq⟩`. Establish `hUh` using `conjQ_UJ hF hhB.1`. Establish `hUn` using `conjQ_UJ hF hmB.1`. Use `⟨toUJ _ hUh, toUJ _ hUn, UJ_ext ?_, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[uMat_mul, uMat_toUJ, uMat_toUJ]`. Establish `: Qm e f wf z0 * hB * Qi ε e f wf z0 * (Qm e f wf z0 * mB * Qi ε e f wf z0) = Qm e f wf z0 * (hB * mB) * Qi ε e f wf z0`. Simplify using `only [← Matrix.mul_assoc]`. Rewrite using `[Matrix.mul_assoc _ (Qi ε e f wf z0) (Qm e f wf z0), Qi_mul_Qm hF, Matrix.mul_one]`. Rewrite using `[this, ← heq]`.
+
+Simplify using `only [← Matrix.mul_assoc, Qm_mul_Qi hF, Matrix.one_mul]`. Rewrite using `[Matrix.mul_assoc, Qm_mul_Qi hF, Matrix.mul_one]`. Take `⟨h1, h2, h3⟩` from `rev_UW hF hz hhB`. Conclude with `⟨h1, h2, h3, rev_N hF hz hzB hmB⟩`. Introduce and unpack `⟨h, n, rfl, he, hf, hzz, hn⟩`.
+
+Use `⟨_, conj_mem_UWset hF hz (uMat_mem h) he hf hzz, _, conj_mem_Nset hF hz0 (uMat_mem n) hn, ?_⟩` and prove the remaining obligations. Rewrite using `[uMat_mul]`. Simplify using `only [← Matrix.mul_assoc]`. Rewrite using `[Matrix.mul_assoc (Qi ε e f wf z0 * uMat h) (Qm e f wf z0) (Qi ε e f wf z0), Qm_mul_Qi hF, Matrix.mul_one]`.
+-/
 theorem HNset_iff (hF : IsFrameJ ε e f wf z0) {zB z : Fin (2 * r + k + 1) → ℂ} (hz : Qm e f wf z0 *ᵥ zB = z)
     (hzB : ∀ i : Fin (2 * r + k + 1), i.val < r ∨ r + k < i.val → zB i = 0) (hz0 : ∃ t : ℂ, z0 = t • z)
     (s : Formalism.REAL.UJ ε) :
@@ -140,12 +190,30 @@ theorem HNset_iff (hF : IsFrameJ ε e f wf z0) {zB z : Fin (2 * r + k + 1) → �
     simp only [← Matrix.mul_assoc]
     rw [Matrix.mul_assoc (Qi ε e f wf z0 * uMat h) (Qm e f wf z0) (Qi ε e f wf z0), Qm_mul_Qi hF, Matrix.mul_one]
 
+/- English proof (translation)
+Take `⟨h, n, rfl, he, -, hzz, hn⟩` from `(HNset_iff hF hz hzB hz0 s).1 hs`. Rewrite using `[uMat_mul]`. Conclude with `inS_mul he hzz hn`.
+-/
 theorem inS_of_HNset (hF : IsFrameJ ε e f wf z0) {zB z : Fin (2 * r + k + 1) → ℂ} (hz : Qm e f wf z0 *ᵥ zB = z)
     (hzB : ∀ i : Fin (2 * r + k + 1), i.val < r ∨ r + k < i.val → zB i = 0) (hz0 : ∃ t : ℂ, z0 = t • z)
     {s : Formalism.REAL.UJ ε} (hs : s ∈ HNset ε e f wf z0 zB) : InS e z (uMat s) := by
   obtain ⟨h, n, rfl, he, -, hzz, hn⟩ := (HNset_iff hF hz hzB hz0 s).1 hs
   rw [uMat_mul]; exact inS_mul he hzz hn
 
+/- English proof (translation)
+Establish `hQz : Qi ε e f wf z0 *ᵥ z = zBv k r T`. Rewrite using `[← hz, Matrix.mulVec_mulVec, Qi_mul_Qm hF, Matrix.one_mulVec]`. Use `hLevi k r T hT _ (conj_mem_UH hF (uMat_mem s)) (fun a i hai => ?_) (fun i hi => ?_)` and prove the remaining obligations. Rewrite using `[conj_apply, colQ_eI]`. Take `⟨y, hy, hny⟩ : ∃ y ∈ spanLt e a.val, uMat s *ᵥ e a = e a + y` from `⟨(uMat s - 1) *ᵥ e a, hs.1 a, by rw [Matrix.sub_mulVec, Matrix.one_mulVec]; abel⟩`.
+
+Rewrite using `[hny, Matrix.mulVec_add, Pi.add_apply, Qi_e hF, bvec_apply]`. Establish `h0 : (Qi ε e f wf z0 *ᵥ y) i = 0`. Use `coord_span_zero i _ ?_ hy` and prove the remaining obligations. Introduce and unpack `x ⟨b, hb, rfl⟩`. Use `Qi_e_apply hF b i ?_` and prove the remaining obligations.
+
+Introduce `h`. Use `congrArg Fin.val h` as an intermediate fact. Rewrite `this` using `[eI_val]`. Simplify using `only [Set.mem_setOf_eq] at hb`. Use linear arithmetic over natural numbers and integers.
+
+Rewrite using `[h0, add_zero]`. Establish `e1 : (Qi ε e f wf z0 * uMat s * Qm e f wf z0) *ᵥ (((Real.sqrt T : ℝ) : ℂ) • bvec (wI k r (Fin.last k))) = Qi ε e f wf z0 *ᵥ (uMat s *ᵥ z)`. Establish `hz' : Qm e f wf z0 *ᵥ (((Real.sqrt T : ℝ) : ℂ) • bvec (wI k r (Fin.last k))) = z` using `hz`. Rewrite using `[← Matrix.mulVec_mulVec, ← Matrix.mulVec_mulVec, hz']`. Rewrite using `[e1]`.
+
+Take `⟨y, hy, hny⟩ : ∃ y ∈ spanLt e r, uMat s *ᵥ z = z + y` from `⟨(uMat s - 1) *ᵥ z, hs.2, by rw [Matrix.sub_mulVec, Matrix.one_mulVec]; abel⟩`. Rewrite using `[hny, Matrix.mulVec_add, Pi.add_apply, hQz]`. Establish `h0 : (Qi ε e f wf z0 *ᵥ y) i = 0`. Use `coord_span_zero i _ ?_ hy` and prove the remaining obligations. Introduce and unpack `x ⟨b, -, rfl⟩`.
+
+Use `Qi_e_apply hF b i ?_` and prove the remaining obligations. Introduce `h`. Use `congrArg Fin.val h` as an intermediate fact. Rewrite `this` using `[eI_val]`. Use `b.isLt` as an intermediate fact.
+
+Use linear arithmetic over natural numbers and integers. Rewrite using `[h0, add_zero]`. Both sides reduce to the same expression.
+-/
 theorem HNset_of_inS (hLevi : BesselLevi) (hF : IsFrameJ ε e f wf z0) {T : ℝ} (hT : 0 < T)
     {z : Fin (2 * r + k + 1) → ℂ} (hz : Qm e f wf z0 *ᵥ zBv k r T = z) {s : Formalism.REAL.UJ ε}
     (hs : InS e z (uMat s)) : s ∈ HNset ε e f wf z0 (zBv k r T) := by

@@ -14,6 +14,13 @@ variable {E : Type} [Field E] [NumberField E] [StarRing E]
 def bIdeal (S : HSpace E) (L : Submodule (𝓞 E) S.V) (z : S.V) : Ideal (𝓞 E) :=
   L.comap (LinearMap.toSpanSingleton (𝓞 E) S.V z) ⊓ differentIdeal ℤ (𝓞 E)
 
+/- English proof (translation)
+Use `set g : 𝓞 E →+ S.V := (LinearMap.toSpanSingleton (𝓞 E) S.V z).toAddMonoidHom with hg`. Establish `hc : (L.comap (LinearMap.toSpanSingleton (𝓞 E) S.V z)).toAddSubgroup = L.toAddSubgroup.comap g`. Use extensionality with `w`. Both sides reduce to the same expression. Establish `hb : (bIdeal S L z).toAddSubgroup = (L.comap (LinearMap.toSpanSingleton (𝓞 E) S.V z)).toAddSubgroup ⊓ (differentIdeal ℤ (𝓞 E)).toAddSubgroup`.
+
+Use extensionality with `w`. Both sides reduce to the same expression. Rewrite using `[hb, AddSubgroup.inf_relIndex_right, hc, AddSubgroup.relIndex_comap]`. Establish `hle : (differentIdeal ℤ (𝓞 E)).toAddSubgroup.map g ≤ dualSub S L`. Introduce and unpack `_ ⟨δ, hδ, rfl⟩`.
+
+Conclude with `diff_smul_mem S L z hz hδ`. Establish `hq' : L.toAddSubgroup.relIndex (dualSub S L) ≠ 0` using `by rw [hL.2]; exact hq`. Use `⟨hL.2 ▸ AddSubgroup.relIndex_le_of_le_right hle hq', fun h ↦ hq' ?_⟩` and prove the remaining obligations. Conclude with `AddSubgroup.relIndex_eq_zero_of_le_right hle h`.
+-/
 theorem relIndex_bIdeal (S : HSpace E) (q : ℕ) (L : Submodule (𝓞 E) S.V) (hL : LatT S q L) (hq : q ≠ 0)
     (z : S.V) (hz : TrDual S L z) :
     (bIdeal S L z).toAddSubgroup.relIndex (differentIdeal ℤ (𝓞 E)).toAddSubgroup ≤ q ∧
@@ -32,6 +39,11 @@ theorem relIndex_bIdeal (S : HSpace E) (q : ℕ) (L : Submodule (𝓞 E) S.V) (h
   refine ⟨hL.2 ▸ AddSubgroup.relIndex_le_of_le_right hle hq', fun h ↦ hq' ?_⟩
   exact AddSubgroup.relIndex_eq_zero_of_le_right hle h
 
+/- English proof (translation)
+Take `⟨h1, h2⟩` from `relIndex_bIdeal S q L hL hq z hz`. Establish `hd : Ideal.absNorm (differentIdeal ℤ (𝓞 E)) = (discr E).natAbs` using `absNorm_differentIdeal E (𝓞 E)`. Establish `hd0 : (discr E).natAbs ≠ 0` using `Int.natAbs_ne_zero.2 (discr_ne_zero E)`. Establish `hmul` using `AddSubgroup.relIndex_mul_index (H := (bIdeal S L z).toAddSubgroup) (K := (differentIdeal ℤ (𝓞 E)).toAddSubgroup) (fun x hx ↦ hx.2)`. Rewrite `hmul` using `[← Ideal.absNorm_eq_index, ← Ideal.absNorm_eq_index, hd]`.
+
+Rewrite using `[← hmul]`. Conclude with `⟨Nat.mul_le_mul_right _ h1, mul_ne_zero h2 hd0⟩`.
+-/
 theorem absNorm_bIdeal (S : HSpace E) (q : ℕ) (L : Submodule (𝓞 E) S.V) (hL : LatT S q L) (hq : q ≠ 0)
     (z : S.V) (hz : TrDual S L z) :
     Ideal.absNorm (bIdeal S L z) ≤ q * (discr E).natAbs ∧ Ideal.absNorm (bIdeal S L z) ≠ 0 := by
@@ -44,6 +56,27 @@ theorem absNorm_bIdeal (S : HSpace E) (q : ℕ) (L : Submodule (𝓞 E) S.V) (hL
   rw [← hmul]
   exact ⟨Nat.mul_le_mul_right _ h1, mul_ne_zero h2 hd0⟩
 
+/- English proof (translation)
+Use `set a := S.hT z z with ha_def`. Use `set 𝔟 := bIdeal S L z with h𝔟`. Use `set 𝔡 := differentIdeal ℤ (𝓞 E) with h𝔡`. Take `⟨hbn, hb0⟩` from `absNorm_bIdeal S q L hL hq z hz`. Establish `hd : Ideal.absNorm 𝔡 = (discr E).natAbs` using `absNorm_differentIdeal E (𝓞 E)`.
+
+Establish `hd0 : (discr E).natAbs ≠ 0` using `Int.natAbs_ne_zero.2 (discr_ne_zero E)`. Establish `hle1 : spanSingleton (𝓞 E)⁰ a * (𝔟 : FractionalIdeal (𝓞 E)⁰ E) ≤ dual ℤ ℚ (1 : FractionalIdeal (𝓞 E)⁰ E)`. Rewrite using `[FractionalIdeal.mul_le]`. Introduce `i hi j hj`. Take `⟨w, rfl⟩` from `(mem_spanSingleton _).1 hi`.
+
+Take `⟨b, hb, rfl⟩` from `(mem_coeIdeal _).1 hj`. Establish `hwb : w * b ∈ 𝔟` using `𝔟.mul_mem_left w hb`. Establish `hL' : (w * b) • z ∈ L` using `hwb.1`. Establish `hm` using `hT_right_mem_dual S hσ L z hz hL'`. Establish `e : S.hT z ((w * b) • z) = w • a * algebraMap (𝓞 E) E b`.
+
+Rewrite using `[← algebraMap_smul E (w * b) z, map_smul, smul_eq_mul, Algebra.smul_def, map_mul]`. Expand and normalize the polynomial expressions, which then agree. Rewrite `hm` using `[e]`. Then use the resulting hypothesis. Establish `hJ : spanSingleton (𝓞 E)⁰ a * (𝔟 : FractionalIdeal (𝓞 E)⁰ E) * (𝔡 : FractionalIdeal (𝓞 E)⁰ E) ≤ 1` using `(FractionalIdeal.mul_le.2 fun i hi j hj ↦ mul_mem_mul (hle1 hi) hj).trans dual_mul_diff.le`. Establish `hJ0 : spanSingleton (𝓞 E)⁰ a * (𝔟 : FractionalIdeal (𝓞 E)⁰ E) * (𝔡 : FractionalIdeal (𝓞 E)⁰ E) ≠ 0`.
+
+Use `mul_ne_zero (mul_ne_zero ?_ ?_) ?_` and prove the remaining obligations. Rewrite using `[Ne, spanSingleton_eq_zero_iff]` and apply the resulting hypothesis. Rewrite using `[Ne, coeIdeal_eq_zero]`. Introduce `h`. Apply `hb0` to reduce the goal to its premises.
+
+Express the relevant statement in the definitionally equal form `Ideal.absNorm 𝔟 = 0`. Rewrite using `[h, Ideal.absNorm_bot]`. Rewrite using `[Ne, coeIdeal_eq_zero]`. Introduce `h`. Apply `hd0` to reduce the goal to its premises.
+
+Rewrite using `[← hd, h, Ideal.absNorm_bot]`. Take `⟨I, hI⟩` from `le_one_iff_exists_coeIdeal.1 hJ`. Establish `hI0 : I ≠ ⊥`. Introduce `h`. Apply `hJ0` to reduce the goal to its premises.
+
+Rewrite using `[← hI, h, coeIdeal_bot]`. Establish `hnI : (1 : ℚ) ≤ Ideal.absNorm I`. Establish `: Ideal.absNorm I ≠ 0` using `fun h ↦ hI0 (Ideal.absNorm_eq_zero_iff.1 h)`. Conclude with `Nat.one_le_iff_ne_zero.2 this` after adjusting the coercions. Establish `hval : FractionalIdeal.absNorm (spanSingleton (𝓞 E)⁰ a * (𝔟 : FractionalIdeal (𝓞 E)⁰ E) * (𝔡 : FractionalIdeal (𝓞 E)⁰ E)) = |Algebra.norm ℚ a| * Ideal.absNorm 𝔟 * Ideal.absNorm 𝔡`.
+
+Rewrite using `[map_mul, map_mul, absNorm_span_singleton, coeIdeal_absNorm, coeIdeal_absNorm]`. Rewrite `hval` using `[← hI, coeIdeal_absNorm]`. Rewrite `hnI` using `[hval, hd]`. Establish `hbq : (Ideal.absNorm 𝔟 : ℚ) ≤ q * (discr E).natAbs` using `by exact_mod_cast hbn`. Establish `hN : 0 ≤ |Algebra.norm ℚ a|` using `abs_nonneg _`.
+
+Establish `hD : (0 : ℚ) ≤ (discr E).natAbs` using `by positivity`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem one_le_norm (S : HSpace E) (hσ : ∀ (φ : E →+* ℂ) a, φ (star a) = star (φ a)) (q : ℕ)
     (L : Submodule (𝓞 E) S.V) (hL : LatT S q L) (hq : q ≠ 0) (z : S.V) (hz : TrDual S L z)
     (ha : S.hT z z ≠ 0) :

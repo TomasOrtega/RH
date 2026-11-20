@@ -7,6 +7,13 @@ open IsLocalRing Matrix UpperTheory.V.Alg UpperTheory.V.W UpperTheory.V.AlgebraT
 
 namespace UpperTheory.V.Pa
 
+/- English proof (translation)
+Introduce `l _ L G G0 h n x O _ _ _ _ _ _ r B _ _ _ u P Bh _ _ _ _ hcomp hker z`. Take `⟨⟨a, b⟩, rfl⟩` from `IsLocalization.mk'_surjective (nonZeroDivisors x.A) z`. Take `⟨a', rfl⟩` from `(f_surj P).1 a`. Take `⟨b', hb'⟩` from `(f_surj P).1 (b : x.A)`. Establish `hu : IsUnit (algebraMap B Bh b')`.
+
+Assume the negation of the conclusion as `hn`. Establish `hm : algebraMap B Bh b' ∈ maximalIdeal Bh` using `(mem_maximalIdeal _).2 hn`. Rewrite `hm` using `[← hker, RingHom.mem_ker, hcomp, hb']`. Conclude with `nonZeroDivisors.coe_ne_zero b ((IsFractionRing.injective x.A (FractionRing x.A)) (hm.trans (map_zero _).symm))`. Take `⟨v, hv⟩` from `hu`.
+
+Use `⟨algebraMap B Bh a' * ↑v⁻¹, ?_⟩` and prove the remaining obligations. Rewrite using `[IsLocalization.eq_mk'_iff_mul_eq, ← hb', ← hcomp, ← hv, ← map_mul, mul_assoc, Units.inv_mul, mul_one, hcomp]`.
+-/
 theorem rF_surj : ∀ {l : ℕ} [Fact l.Prime] {L : Loc} {G G0 : Glob l L} {h : G.Hom G0} {n : ℕ} {x : NP G0.frame n}
     {O : Type} [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] [IsCoef l O] [Algebra ℤ_[l] O] [Algebra O x.K]
     {r : Resid G.frame O n} {B : Type} [CommRing B] [Algebra O B] [IsCO O B] {u : Pair r B} (P : OoPt h x u)

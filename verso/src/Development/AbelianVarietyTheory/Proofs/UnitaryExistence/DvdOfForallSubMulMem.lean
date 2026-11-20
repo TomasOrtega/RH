@@ -8,6 +8,11 @@ section Basis
 
 variable {k : Type} [Field k] {p : ℕ} {B : Set k}
 
+/- English proof (translation)
+Proceed by induction on `n generalizing f with`. Consider the case `zero => exact ⟨f, by simp, fun b hb => by simpa using (h b hb).symm⟩`. Consider the case `succ n ih`. Take `⟨σ₁, h1, h2⟩` from `hB Q f (fun b => g b ^ p ^ n) fun b hb => by`. Rewrite using `[← pow_mul, ← pow_succ, h b hb]`.
+
+Take `⟨σ, h3, h4⟩` from `ih σ₁ fun b hb => (h2 b hb).symm`. Conclude with `⟨σ, fun x => by rw [pow_succ', pow_mul, h3, h1], h4⟩`.
+-/
 theorem exists_ringHom_pow
     (hB : ∀ (Q : Type) [CommRing Q] (f : k →+* Q) (g : k → Q), (∀ b ∈ B, g b ^ p = f b) →
       ∃ σ : k →+* Q, (∀ x, σ (x ^ p) = f x) ∧ ∀ b ∈ B, σ b = g b)
@@ -21,6 +26,13 @@ theorem exists_ringHom_pow
     obtain ⟨σ, h3, h4⟩ := ih σ₁ fun b hb => (h2 b hb).symm
     exact ⟨σ, fun x => by rw [pow_succ', pow_mul, h3, h1], h4⟩
 
+/- English proof (translation)
+Use `Fact.mk hp` as an intermediate fact. Establish `: CharP k p` using `(CharP.charP_iff_prime_eq_zero hp).2 h0`. Proceed by induction on `n with`. Consider the case `zero => exact eq_top_iff.2 fun x _ => Subring.subset_closure (Or.inl ⟨x, by simp⟩)`. Consider the case `succ n ih => set K := Subring.closure (Set.range (fun x : k => x ^ p ^ (n + 1)) ∪ B)`.
+
+Establish `h1 : K.comap (frobenius k p) = ⊤`. Rewrite using `[eq_top_iff, ← ih, Subring.closure_le]`. Introduce and unpack `_ (⟨x, rfl⟩ | hb)`. Conclude with `Subring.subset_closure (Or.inl ⟨x, by simp [frobenius_def, pow_succ, pow_mul]⟩)`. Conclude with `pow_mem (Subring.subset_closure (Or.inr hb) : _ ∈ K) p`.
+
+Rewrite using `[eq_top_iff, ← hB, Subring.closure_le]`. Introduce and unpack `_ (⟨x, rfl⟩ | hb)`. Conclude with `h1.ge (Subring.mem_top x)`. Conclude with `Subring.subset_closure (Or.inr hb)`.
+-/
 theorem closure_pow_eq_top (hp : p.Prime) (h0 : (p : k) = 0)
     (hB : Subring.closure (Set.range (fun x : k => x ^ p) ∪ B) = ⊤) (n : ℕ) :
     Subring.closure (Set.range (fun x : k => x ^ p ^ n) ∪ B) = ⊤ := by
@@ -49,20 +61,35 @@ def level (n : ℕ) : Subring S :=
 
 variable {p L}
 
+/- English proof (translation)
+The claim follows from `Subring.subset_closure (Or.inl (Or.inl ⟨x, rfl⟩))`.
+-/
 theorem pow_mem_level (n : ℕ) (x : S) : x ^ p ^ n ∈ level p L n :=
   Subring.subset_closure (Or.inl (Or.inl ⟨x, rfl⟩))
 
+/- English proof (translation)
+The claim follows from `Subring.subset_closure (Or.inl (Or.inr hx))`.
+-/
 theorem mem_level_of_mem {n : ℕ} {x : S} (hx : x ∈ L) : x ∈ level p L n :=
   Subring.subset_closure (Or.inl (Or.inr hx))
 
+/- English proof (translation)
+The claim follows from `Subring.subset_closure (Or.inr hx)`.
+-/
 theorem mem_level_of_mem_pow {n : ℕ} {x : S} (hx : x ∈ maximalIdeal S ^ (n + 1)) :
     x ∈ level p L n :=
   Subring.subset_closure (Or.inr hx)
 
+/- English proof (translation)
+Simplify using `using add_mem (mem_level_of_mem_pow hx) ha`.
+-/
 theorem mem_level_of_sub_mem {n : ℕ} {x a : S} (ha : a ∈ level p L n)
     (hx : x - a ∈ maximalIdeal S ^ (n + 1)) : x ∈ level p L n := by
   simpa using add_mem (mem_level_of_mem_pow hx) ha
 
+/- English proof (translation)
+Use `antitone_nat_of_succ_le fun n => Subring.closure_le.2 ?_` and prove the remaining obligations. Introduce and unpack `_ ((⟨x, rfl⟩ | hx) | hx)`. Simplify `pow_mem_level n (x ^ p)` using `only [pow_succ', pow_mul, SetLike.mem_coe]`. Conclude with `mem_level_of_mem hx`. Conclude with `mem_level_of_mem_pow (Ideal.pow_le_pow_right (by omega) hx)`.
+-/
 theorem level_antitone : Antitone (level p L) := by
   refine antitone_nat_of_succ_le fun n => Subring.closure_le.2 ?_
   rintro _ ((⟨x, rfl⟩ | hx) | hx)
@@ -70,6 +97,11 @@ theorem level_antitone : Antitone (level p L) := by
   · exact mem_level_of_mem hx
   · exact mem_level_of_mem_pow (Ideal.pow_le_pow_right (by omega) hx)
 
+/- English proof (translation)
+Establish `h1` using `closure_pow_eq_top hp (by rw [← map_natCast (residue S), residue_eq_zero_iff]; exact h0) hB n`. Establish `h2 : (level p L n).map (residue S) = ⊤`. Rewrite using `[eq_top_iff, ← h1, Subring.closure_le]`. Introduce and unpack `_ (⟨x, rfl⟩ | ⟨x, hx, rfl⟩)`. Take `⟨x, rfl⟩` from `residue_surjective x`.
+
+Conclude with `⟨_, pow_mem_level n x, map_pow _ _ _⟩`. Conclude with `⟨x, mem_level_of_mem hx, rfl⟩`. Take `⟨t, ht, h⟩` from `h2.ge (Subring.mem_top (residue S s))`. Conclude with `⟨t, ht, by rw [← residue_eq_zero_iff, map_sub, h, sub_self]⟩`.
+-/
 theorem exists_level_sub_mem (hp : p.Prime) (h0 : (p : S) ∈ maximalIdeal S)
     (hB : Subring.closure (Set.range (fun x : ResidueField S => x ^ p) ∪ residue S '' L) = ⊤)
     (n : ℕ) (s : S) : ∃ t ∈ level p L n, s - t ∈ maximalIdeal S := by
@@ -84,10 +116,18 @@ theorem exists_level_sub_mem (hp : p.Prime) (h0 : (p : S) ∈ maximalIdeal S)
   obtain ⟨t, ht, h⟩ := h2.ge (Subring.mem_top (residue S s))
   exact ⟨t, ht, by rw [← residue_eq_zero_iff, map_sub, h, sub_self]⟩
 
+/- English proof (translation)
+The claim follows from `SModEq.sub_mem.1 ((SModEq.sub_mem.2 h).pow_pow_add_one h0 n)`.
+-/
 theorem pow_sub_pow_mem (h0 : (p : S) ∈ maximalIdeal S) {x y : S} (h : x - y ∈ maximalIdeal S)
     (n : ℕ) : x ^ p ^ n - y ^ p ^ n ∈ maximalIdeal S ^ (n + 1) :=
   SModEq.sub_mem.1 ((SModEq.sub_mem.2 h).pow_pow_add_one h0 n)
 
+/- English proof (translation)
+Set `π` to `Ideal.Quotient.mk (maximalIdeal S ^ (n + 1))`. Establish `: level p L n ≤ ((level p L (n + 1)).map π).comap π`. Use `Subring.closure_le.2 ?_` and prove the remaining obligations. Introduce and unpack `_ ((⟨x, rfl⟩ | hx) | hx)`. Take `⟨t, ht, hxt⟩` from `hs (n + 1) x`.
+
+Conclude with `⟨t ^ p ^ n, pow_mem ht _, (Ideal.Quotient.eq.2 (pow_sub_pow_mem h0 hxt n)).symm⟩`. Conclude with `⟨_, mem_level_of_mem hx, rfl⟩`. Conclude with `⟨0, Subring.zero_mem _, (map_zero π).trans (Ideal.Quotient.eq_zero_iff_mem.2 hx).symm⟩`. Take `⟨t, ht, h'⟩` from `this h`. Conclude with `⟨t, ht, Ideal.Quotient.eq.1 h'.symm⟩`.
+-/
 theorem exists_level_succ (h0 : (p : S) ∈ maximalIdeal S)
     (hs : ∀ n s, ∃ t ∈ level p L n, s - t ∈ maximalIdeal S) (n : ℕ) {s : S}
     (h : s ∈ level p L n) : ∃ t ∈ level p L (n + 1), s - t ∈ maximalIdeal S ^ (n + 1) := by
@@ -102,6 +142,15 @@ theorem exists_level_succ (h0 : (p : S) ∈ maximalIdeal S)
   obtain ⟨t, ht, h'⟩ := this h
   exact ⟨t, ht, Ideal.Quotient.eq.1 h'.symm⟩
 
+/- English proof (translation)
+Use `choose F hF hF' using fun n (t : level p L n) => exists_level_succ h0 hs n t.2`. Set `u : ∀ n, level p L n` to `fun n => Nat.rec (motive := fun n => level p L n) ⟨s, by simpa using pow_mem_level (p := p) (L := L) 0 s⟩ (fun n t => ⟨F n t, hF n t⟩) n`. Establish `hu : ∀ n : ℕ, (u n).1 - (u (n + 1)).1 ∈ maximalIdeal S ^ (n + 1)` using `fun n => hF' n (u n)`. Establish `hc : AdicCompletion.IsAdicCauchy (maximalIdeal S) S fun n => (u n).1`. Rewrite using `[AdicCompletion.isAdicCauchy_iff]`.
+
+Conclude with `fun n => SModEq.sub_mem.2 (by simpa using Ideal.pow_le_pow_right n.le_succ (hu n))`. Take `⟨a, ha⟩` from `IsPrecomplete.prec' (I := maximalIdeal S) (fun n => (u n).1) hc`. Establish `ha' : ∀ n, a - (u n).1 ∈ maximalIdeal S ^ (n + 1)` using `fun n => by`. Establish `h1 : (u (n + 1)).1 - a ∈ maximalIdeal S ^ (n + 1)`. Simplify using `using SModEq.sub_mem.1 (ha (n + 1))`.
+
+Use `neg_mem (add_mem (hu n) h1)` as an intermediate fact. Use `this using 1` and compare the differences between its conclusion and the goal. Expand and normalize the polynomial expressions, which then agree. Use `⟨a, Subring.mem_iInf.2 fun n => mem_level_of_sub_mem (u n).2 (ha' n), ?_⟩` and prove the remaining obligations. Establish `: a - s ∈ maximalIdeal S ^ (0 + 1)` using `ha' 0`.
+
+Simplify using `using neg_mem this`.
+-/
 theorem exists_iInf_sub_mem [IsAdicComplete (maximalIdeal S) S] (h0 : (p : S) ∈ maximalIdeal S)
     (hs : ∀ n s, ∃ t ∈ level p L n, s - t ∈ maximalIdeal S) (s : S) :
     ∃ a ∈ ⨅ n, level p L n, s - a ∈ maximalIdeal S := by
@@ -125,6 +174,33 @@ theorem exists_iInf_sub_mem [IsAdicComplete (maximalIdeal S) S] (h0 : (p : S) �
   have : a - s ∈ maximalIdeal S ^ (0 + 1) := ha' 0
   simpa using neg_mem this
 
+/- English proof (translation)
+Set `J : Ideal (level p L n)` to `Ideal.span {(p : level p L n)} ⊔ (maximalIdeal S ^ (n + 1)).comap (level p L n).subtype`. Set `π` to `Ideal.Quotient.mk J`. Set `ρ : level p L n →+* ResidueField S` to `(residue S).comp (level p L n).subtype`. Establish `hπ : ∀ x y : level p L n, (x : S) - y ∈ maximalIdeal S ^ (n + 1) → π x = π y` using `fun x y h => Ideal.Quotient.eq.2 (Ideal.mem_sup_right h)`. Establish `hp0 : (p : level p L n ⧸ J) = 0`.
+
+Rewrite using `[← map_natCast π]`. Conclude with `Ideal.Quotient.eq_zero_iff_mem.2 (Ideal.mem_sup_left (Ideal.mem_span_singleton_self _))`. Establish `hq : p ^ n ≠ 0` using `pow_ne_zero _ hp.ne_zero`. Set `φ : level p L n →+* level p L n ⧸ J` to `{ toFun := fun x => π x ^ p ^ n map_one' := by simp map_mul' := fun x y => by simp [mul_pow] map_zero' := by rw [map_zero, zero_pow hq] map_add' := fun x y => by`. Take `⟨r, hr⟩` from `exists_add_pow_prime_pow_eq hp (π x) (π y) n`.
+
+Rewrite using `[map_add, hr, hp0]`. Simplify using `}`. Establish `hρ : Function.Surjective ρ` using `fun x => by`. Take `⟨x, rfl⟩` from `residue_surjective x`. Take `⟨t, ht, h⟩` from `hs n x`.
+
+Conclude with `⟨⟨t, ht⟩, (Ideal.Quotient.eq.2 h).symm⟩`. Establish `hker : RingHom.ker ρ ≤ RingHom.ker φ` using `fun x hx => by`. Establish `h1 : (x : S) - 0 ∈ maximalIdeal S` using `by simpa using (residue_eq_zero_iff _).1 hx`. Establish `h2` using `hπ (x ^ p ^ n) (0 ^ p ^ n) (pow_sub_pow_mem h0 h1 n)`. Rewrite `h2` using `[zero_pow hq, map_zero, map_pow]`.
+
+Conclude with `h2`. Set `f` to `ρ.liftOfSurjective hρ ⟨φ, hker⟩`. Establish `hf : ∀ x, f (ρ x) = π x ^ p ^ n` using `fun x => ρ.liftOfSurjective_comp_apply hρ ⟨φ, hker⟩ x`. Set `g : ResidueField S → level p L n ⧸ J` to `fun b => if h : b ∈ residue S '' L then π ⟨h.choose, mem_level_of_mem h.choose_spec.1⟩ else 0`. Establish `hg : ∀ x (hx : x ∈ L), g (residue S x) = π ⟨x, mem_level_of_mem hx⟩` using `fun x hx => by`.
+
+Establish `h : residue S x ∈ residue S '' L` using `⟨x, hx, rfl⟩`. Simplify using `only [g, dif_pos h, hL h.choose_spec.1 hx h.choose_spec.2]`. Take `⟨σ, h1, h2⟩` from `exists_ringHom_pow hB n _ f g (by`. Introduce and unpack `_ ⟨x, hx, rfl⟩`. Rewrite using `[hg x hx, ← hf]`.
+
+Use the proof step `rfl)`. Establish `key : ∀ x (hx : x ∈ level p L n), σ (residue S x) = π ⟨x, hx⟩`. Introduce `x hx`. Proceed by induction on `hx using Subring.closure_induction with`. Consider the case `mem x hx`.
+
+Break down `hx with (⟨x, rfl⟩ | hx) | hx` into its components or cases. Take `⟨t, ht, h⟩` from `hs n x`. Establish `h3 : residue S x = ρ ⟨t, ht⟩` using `Ideal.Quotient.eq.2 h`. Rewrite using `[map_pow, h1, h3, hf, ← map_pow]`. Conclude with `(hπ _ _ (pow_sub_pow_mem h0 h n)).symm`.
+
+Rewrite using `[h2 _ ⟨x, hx, rfl⟩, hg x hx]`. Rewrite using `[(residue_eq_zero_iff _).2 (Ideal.pow_le_self n.succ_ne_zero hx), map_zero]`. Conclude with `((hπ _ 0 (by simpa using hx)).trans (map_zero π)).symm`. Consider the case `zero => rw [map_zero, map_zero]`. Conclude with `(map_zero π).symm`.
+
+Consider the case `one => rw [map_one, map_one]`. Conclude with `(map_one π).symm`. Consider the case `add x y hx hy ihx ihy => rw [map_add, map_add, ihx, ihy, ← map_add]`. Both sides reduce to the same expression. Consider the case `neg x hx ihx => rw [map_neg, map_neg, ihx, ← map_neg]`.
+
+Both sides reduce to the same expression. Consider the case `mul x y hx hy ihx ihy => rw [map_mul, map_mul, ihx, ihy, ← map_mul]`. Both sides reduce to the same expression. Establish `h3` using `key a ha`. Rewrite `h3` using `[(residue_eq_zero_iff _).2 ha', map_zero, eq_comm]`.
+
+Take `⟨y, hy, z, hz, hyz⟩` from `Submodule.mem_sup.1 (Ideal.Quotient.eq_zero_iff_mem.1 h3)`. Take `⟨t, rfl⟩` from `Ideal.mem_span_singleton.1 hy`. Use `⟨t, t.2, ?_⟩` and prove the remaining obligations. Establish `h4 : (p : S) * t + z = a` using `by simpa using congrArg Subtype.val hyz`. Rewrite using `[← h4, add_sub_cancel_left]`.
+
+Conclude with `hz`.
+-/
 theorem exists_sub_mul_mem (hp : p.Prime) (h0 : (p : S) ∈ maximalIdeal S)
     (hL : Set.InjOn (residue S) L)
     (hB : ∀ (Q : Type) [CommRing Q] (f : ResidueField S →+* Q) (g : ResidueField S → Q),
@@ -200,6 +276,11 @@ theorem exists_sub_mul_mem (hp : p.Prime) (h0 : (p : S) ∈ maximalIdeal S)
   exact hz
 
 omit [IsLocalRing S] in
+/- English proof (translation)
+Take `⟨c, hc⟩` from `Ideal.exists_pow_inf_eq_pow_smul I (M := S) (Ideal.span {r})`. Use `⟨c, fun n x hx => ?_⟩` and prove the remaining obligations. Establish `h` using `hc (n + c) (Nat.le_add_left _ _)`. Establish `hm : r * x ∈ I ^ (n + c) • (⊤ : Submodule S S) ⊓ Ideal.span {r}` using `⟨by rw [Ideal.smul_eq_mul, Ideal.mul_top]; exact hx, Ideal.mul_mem_right _ _ (Ideal.mem_span_singleton_self r)⟩`. Rewrite `hm` using `[h, Nat.add_sub_cancel]`.
+
+Establish `hm' : r * x ∈ I ^ n * Ideal.span {r}` using `Submodule.smul_mono le_rfl inf_le_right hm`. Take `⟨z, hz, hzx⟩` from `Ideal.mem_mul_span_singleton.1 hm'`. Rewrite `hzx` using `[mul_comm]`. Rewrite using `[← mul_left_cancel₀ hr hzx]` and apply the resulting hypothesis.
+-/
 theorem exists_mem_pow_of_mul_mem [IsDomain S] [IsNoetherianRing S] (I : Ideal S) {r : S}
     (hr : r ≠ 0) : ∃ c : ℕ, ∀ (n : ℕ) (x : S), r * x ∈ I ^ (n + c) → x ∈ I ^ n := by
   obtain ⟨c, hc⟩ := Ideal.exists_pow_inf_eq_pow_smul I (M := S) (Ideal.span {r})
@@ -214,6 +295,11 @@ theorem exists_mem_pow_of_mul_mem [IsDomain S] [IsNoetherianRing S] (I : Ideal S
   rw [mul_comm] at hzx
   rwa [← mul_left_cancel₀ hr hzx]
 
+/- English proof (translation)
+Establish `h1` using `Ideal.iInf_pow_smul_eq_bot_of_isLocalRing (M := S ⧸ Ideal.span {r}) (maximalIdeal S) (maximalIdeal.isMaximal S).ne_top`. Rewrite using `[← Ideal.mem_span_singleton, ← Ideal.Quotient.eq_zero_iff_mem, ← Submodule.mem_bot S, ← h1, Submodule.mem_iInf]`. Introduce `n`. Take `⟨t, ht⟩` from `h n`. Establish `: Ideal.Quotient.mk (Ideal.span {r}) a = (a - r * t) • (1 : S ⧸ Ideal.span {r})`.
+
+Rewrite using `[← Algebra.algebraMap_eq_smul_one, Ideal.Quotient.algebraMap_eq, Ideal.Quotient.eq]`. Simplify using `[Ideal.mem_span_singleton]`. Rewrite using `[this]`. Conclude with `Submodule.smul_mem_smul ht trivial`.
+-/
 theorem dvd_of_forall_sub_mul_mem [IsNoetherianRing S] {r a : S}
     (h : ∀ n, ∃ t, a - r * t ∈ maximalIdeal S ^ n) : r ∣ a := by
   have h1 := Ideal.iInf_pow_smul_eq_bot_of_isLocalRing (M := S ⧸ Ideal.span {r}) (maximalIdeal S)
@@ -228,6 +314,15 @@ theorem dvd_of_forall_sub_mul_mem [IsNoetherianRing S] {r a : S}
   rw [this]
   exact Submodule.smul_mem_smul ht trivial
 
+/- English proof (translation)
+Use `choose l hl using residue_surjective (R := S)`. Establish `hL : residue S '' (l '' B) = B` using `by simp [Set.image_image, hl]`. Establish `hinj : Set.InjOn (residue S) (l '' B)`. Introduce and unpack `_ ⟨x, -, rfl⟩ _ ⟨y, -, rfl⟩ h`. Rewrite `h` using `[hl, hl]`.
+
+Rewrite using `[h]`. Rewrite `hB`, `hB'` using `[← hL]`. Establish `hs` using `exists_level_sub_mem hp h0 hB`. Use `⟨⨅ n, level p (l '' B) n, exists_iInf_sub_mem h0 hs, fun a ha => ?_, fun s h => ?_⟩` and prove the remaining obligations. Use `choose t ht ht' using fun n => exists_sub_mul_mem hp h0 hinj hB' hs n (Subring.mem_iInf.1 a.2 n) ha`.
+
+Take `⟨s, hs'⟩` from `dvd_of_forall_sub_mul_mem fun n => ⟨t n, Ideal.pow_le_pow_right n.le_succ (ht' n)⟩`. Take `⟨c, hc⟩` from `exists_mem_pow_of_mul_mem (maximalIdeal S) hp0`. Use `⟨⟨s, Subring.mem_iInf.2 fun n => ?_⟩, Subtype.ext (by simpa using hs')⟩` and prove the remaining obligations. Use `mem_level_of_sub_mem (level_antitone (Nat.le_add_right n c) (ht (n + c))) (hc _ _ ?_)` and prove the remaining obligations. Rewrite using `[mul_sub, ← hs', add_right_comm]`.
+
+Conclude with `ht' _`. Use `Subring.mem_iInf.2 fun n => ?_` and prove the remaining obligations. Take `⟨a, ha, h'⟩` from `h (n + 1)`. Conclude with `mem_level_of_sub_mem (Subring.mem_iInf.1 ha n) h'`.
+-/
 theorem exists_coeffSubring [IsDomain S] [IsNoetherianRing S] [IsAdicComplete (maximalIdeal S) S]
     (hp : p.Prime) (hp0 : (p : S) ≠ 0) (h0 : (p : S) ∈ maximalIdeal S) {B : Set (ResidueField S)}
     (hB : Subring.closure (Set.range (fun x : ResidueField S => x ^ p) ∪ B) = ⊤)

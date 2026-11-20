@@ -4,12 +4,32 @@ open Finset
 
 namespace Formalism.NG
 
+/- English proof (translation)
+Rewrite using `[padicValInt.of_ne_one_ne_zero hl.out.ne_one hz]`. Conclude with `(FiniteMultiplicity.emultiplicity_eq_multiplicity (Int.finiteMultiplicity_iff.mpr ⟨by simpa using hl.out.ne_one, hz⟩)).symm`.
+-/
 private lemma vInt_eq_emult (l : ℕ) [hl : Fact l.Prime] {z : ℤ} (hz : z ≠ 0) :
     (padicValInt l z : ℕ∞) = emultiplicity (l : ℤ) z := by
   rw [padicValInt.of_ne_one_ne_zero hl.out.ne_one hz]
   exact (FiniteMultiplicity.emultiplicity_eq_multiplicity
     (Int.finiteMultiplicity_iff.mpr ⟨by simpa using hl.out.ne_one, hz⟩)).symm
 
+/- English proof (translation)
+Introduce `l hl hl2 x hx1 hx2 a b hab`. Establish `hp : l.Prime` using `hl.out`. Establish `hodd : Odd l` using `hp.odd_of_ne_two hl2`. Establish `hpi : Prime (l : ℤ)` using `Nat.prime_iff_prime_int.mp hp`. Establish `hx : ¬ (l : ℤ) ∣ x`.
+
+Introduce `h`. Establish `h1 : (l : ℤ) ∣ 1`. Use `dvd_sub h hx1` as an intermediate fact. Simplify using `using this`. Conclude with `hpi.not_dvd_one h1`.
+
+Establish `hx1ne : x - 1 ≠ 0`. Introduce `h; exact hx2 (by rw [h]; exact dvd_zero _)`. Establish `hv1 : padicValInt l (x - 1) = 1`. Establish `h1` using `(padicValInt_dvd_iff (p := l) 1 (x - 1)).mp (by simpa using hx1)`. Establish `h2 : ¬ (2 ≤ padicValInt l (x - 1))` using `fun h => hx2 ((padicValInt_dvd_iff (p := l) 2 (x - 1)).mpr (Or.inr h))`.
+
+Break down `h1 with h1 | h1` into its components or cases. Conclude with `absurd h1 hx1ne`. Use linear arithmetic over natural numbers and integers. Use `set n := b - a with hn`. Establish `hn0 : n ≠ 0` using `by omega`.
+
+Establish `hlte` using `Int.emultiplicity_pow_sub_pow hp hodd (x := x) (y := 1) (by simpa using hx1) hx n`. Rewrite `hlte` using `[one_pow]`. Rewrite `hlte` using `[← vInt_eq_emult l hx1ne, hv1, ← padicValNat_eq_emultiplicity_of_ne_one hp.ne_one hn0]`. Establish `hne : x ^ n - 1 ≠ 0`. Introduce `h`.
+
+Rewrite `hlte` using `[h, emultiplicity_zero]`. Establish `h' : ((1 + padicValNat l n : ℕ) : ℕ∞) = ⊤` using `by push_cast; exact hlte.symm`. Conclude with `ENat.natCast_ne_top _ h'`. Establish `hv : padicValInt l (x ^ n - 1) = 1 + padicValNat l n`. Rewrite `hlte` using `[← vInt_eq_emult l hne]`.
+
+Conclude with `hlte` after adjusting the coercions. Establish `hxa : x ^ a ≠ 0` using `pow_ne_zero _ (fun h => hx (by rw [h]; exact dvd_zero _))`. Establish `hfac : x ^ b - x ^ a = x ^ a * (x ^ n - 1)`. Establish `: b = a + n` using `by omega`. Rewrite using `[this, pow_add]`.
+
+Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hfac, padicValInt.mul hxa hne, hv, padicValInt.eq_zero_of_not_dvd (fun h => hx (hpi.dvd_of_dvd_pow h))]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem powSubPow : StatPowSubPow := by
   intro l hl hl2 x hx1 hx2 a b hab
   have hp : l.Prime := hl.out
@@ -51,11 +71,31 @@ theorem powSubPow : StatPowSubPow := by
     padicValInt.eq_zero_of_not_dvd (fun h => hx (hpi.dvd_of_dvd_pow h))]
   ring
 
+/- English proof (translation)
+Rewrite using `[Fin.univ_succ, Finset.erase_cons, Finset.prod_map]`. Both sides reduce to the same expression.
+-/
 private lemma prod_erase_zero {M : Type*} [CommMonoid M] (t : ℕ) (f : Fin (t + 1) → M) :
     ∏ i ∈ univ.erase (0 : Fin (t + 1)), f i = ∏ i : Fin t, f i.succ := by
   rw [Fin.univ_succ, Finset.erase_cons, Finset.prod_map]
   rfl
 
+/- English proof (translation)
+Introduce `l hl hl2 u hu w t`. Establish `hp : l.Prime` using `hl.out`. Establish `h2 : (2 : ℤ) ≤ l` using `by exact_mod_cast hp.two_le`. Establish `hnot : ¬ (l : ℤ) ^ 2 ∣ (1 + (l : ℤ)) - 1`. Rewrite using `[show (1 + (l : ℤ)) - 1 = (l : ℤ) by ring]`.
+
+Introduce `h`. Use `Int.le_of_dvd (by omega) h` as an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Establish `hF : ∀ i : ℕ, (u * (1 + (l : ℤ)) ^ w - u * (1 + (l : ℤ)) ^ (w + (i + 1))) ≠ 0 ∧ padicValInt l (u * (1 + (l : ℤ)) ^ w - u * (1 + (l : ℤ)) ^ (w + (i + 1))) = 1 + padicValNat l (i + 1)`. Introduce `i`.
+
+Establish `hrw : u * (1 + (l : ℤ)) ^ w - u * (1 + (l : ℤ)) ^ (w + (i + 1)) = (-u) * ((1 + (l : ℤ)) ^ (w + (i + 1)) - (1 + (l : ℤ)) ^ w)` using `by ring`. Establish `hps` using `powSubPow l hl2 (1 + (l : ℤ)) (by simp) hnot w (w + (i + 1)) (by omega)`. Rewrite `hps` using `[Nat.add_sub_cancel_left]`. Establish `hne : (1 + (l : ℤ)) ^ (w + (i + 1)) - (1 + (l : ℤ)) ^ w ≠ 0`. Introduce `h`.
+
+Rewrite `hps` using `[h, padicValInt.zero]`. Use linear arithmetic over natural numbers and integers. Establish `hu0 : -u ≠ 0`. Introduce `h; exact hu (by rw [neg_eq_zero.mp h]; exact dvd_zero _)`. Rewrite using `[hrw]`.
+
+Use `⟨mul_ne_zero hu0 hne, ?_⟩` and prove the remaining obligations. Rewrite using `[padicValInt.mul hu0 hne, hps, padicValInt.eq_zero_of_not_dvd (by rwa [dvd_neg])]`. Expand and normalize the polynomial expressions, which then agree. Establish `hclaim : ∀ s : ℕ, (∏ i ∈ range s, (u * (1 + (l : ℤ)) ^ w - u * (1 + (l : ℤ)) ^ (w + (i + 1)))) ≠ 0 ∧ padicValInt l (∏ i ∈ range s, (u * (1 + (l : ℤ)) ^ w - u * (1 + (l : ℤ)) ^ (w + (i + 1)))) = s + padicValNat l s.factorial`. Introduce `s`.
+
+Proceed by induction on `s with`. Consider the case `zero => simp`. Consider the case `succ s ih`. Rewrite using `[prod_range_succ]`. Use `⟨mul_ne_zero ih.1 (hF s).1, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[padicValInt.mul ih.1 (hF s).1, ih.2, (hF s).2, Nat.factorial_succ, padicValNat.mul (Nat.succ_ne_zero s) (Nat.factorial_ne_zero s)]`. Expand and normalize the polynomial expressions, which then agree. Unfold `delta`. Rewrite using `[prod_erase_zero]`. Simplify using `only [Fin.val_succ, Fin.val_zero, add_zero]`.
+
+Rewrite using `[Fin.prod_univ_eq_prod_range (fun i => u * (1 + (l : ℤ)) ^ w - u * (1 + (l : ℤ)) ^ (w + (i + 1))) t]`. Conclude with `(hclaim t).2`.
+-/
 theorem deltaVal : StatDeltaVal := by
   intro l hl hl2 u hu w t
   have hp : l.Prime := hl.out
@@ -101,6 +141,9 @@ theorem deltaVal : StatDeltaVal := by
     (fun i => u * (1 + (l : ℤ)) ^ w - u * (1 + (l : ℤ)) ^ (w + (i + 1))) t]
   exact (hclaim t).2
 
+/- English proof (translation)
+Introduce `l hl hl2 u hu w t`. Rewrite using `[deltaVal l hl2 u hu w t]`. Use `padicValNat_factorial_le (p := l) t` as an intermediate fact. Use linear arithmetic over natural numbers and integers.
+-/
 theorem deltaValLe : StatDeltaValLe := by
   intro l hl hl2 u hu w t
   rw [deltaVal l hl2 u hu w t]

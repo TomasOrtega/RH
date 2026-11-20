@@ -5,6 +5,15 @@ open scoped TensorProduct ContDiff nonZeroDivisors
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Use `Subalgebra.isSimpleOrder_of_finrank h2` as an intermediate fact. Break down `eq_bot_or_eq_top (AlgHom.equalizer σ (AlgHom.id F E)) with h | h` into its components or cases. Establish `hm : e ∈ AlgHom.equalizer σ (AlgHom.id F E)`. Rewrite using `[AlgHom.mem_equalizer]`. Simplify using `using he`.
+
+Rewrite `hm` using `[h]`. Conclude with `Algebra.mem_bot.mp hm`. It suffices to derive a contradiction. Take `⟨τ⟩ : Nonempty (E →+* ℂ)` from `inferInstance`. Apply `IsTotallyComplex.complexEmbedding_not_isReal τ` to reduce the goal to its premises.
+
+Rewrite using `[ComplexEmbedding.isReal_iff]`. Use extensionality with `x`. Establish `hm : x ∈ AlgHom.equalizer σ (AlgHom.id F E)` using `by rw [h]; trivial`. Rewrite `hm` using `[AlgHom.mem_equalizer]`. Establish `h1` using `hσ τ x`.
+
+Rewrite `h1` using `[hm]`. Rewrite using `[ComplexEmbedding.conjugate_coe_eq]`. Conclude with `h1.symm`.
+-/
 theorem mem_range_algebraMap_of_conj_fixed (F E : Type) [Field F] [Field E] [NumberField E]
     [Algebra F E] (σ : E →ₐ[F] E) (hE : IsTotallyComplex E) (h2 : Module.finrank F E = 2)
     (hσ : ∀ (τ : E →+* ℂ) (x : E), τ (σ x) = star (τ x)) (e : E) (he : σ e = e) :
@@ -27,6 +36,21 @@ theorem mem_range_algebraMap_of_conj_fixed (F E : Type) [Field F] [Field E] [Num
     rw [ComplexEmbedding.conjugate_coe_eq]
     exact h1.symm
 
+/- English proof (translation)
+Establish `hinv : ∀ x, σ (σ x) = x`. Introduce `x`. Take `⟨τ⟩ : Nonempty (E →+* ℂ)` from `inferInstance`. Apply `τ.injective` to reduce the goal to its premises. Rewrite using `[hσ, hσ, star_star]`.
+
+Use `set φ := Algebra.TensorProduct.map (AlgHom.id F R) σ with hφ`. Establish `key : ∀ y z : R ⊗[F] E, ∃ n : R, y * φ z + z * φ y = algebraMap R (R ⊗[F] E) n`. Introduce `y z`. Proceed by induction on `y using TensorProduct.induction_on with`. Consider the case `zero => exact ⟨0, by simp⟩`.
+
+Consider the case `add y₁ y₂ h₁ h₂`. Take `⟨n₁, h₁⟩` from `h₁`. Take `⟨n₂, h₂⟩` from `h₂`. Conclude with `⟨n₁ + n₂, by rw [map_add, map_add, ← h₁, ← h₂]; ring⟩`. Consider the case `tmul a e`.
+
+Proceed by induction on `z using TensorProduct.induction_on with`. Consider the case `zero => exact ⟨0, by simp⟩`. Consider the case `add z₁ z₂ h₁ h₂`. Take `⟨n₁, h₁⟩` from `h₁`. Take `⟨n₂, h₂⟩` from `h₂`.
+
+Conclude with `⟨n₁ + n₂, by rw [map_add, map_add, ← h₁, ← h₂]; ring⟩`. Consider the case `tmul b f`. Take `⟨c, hc⟩` from `mem_range_algebraMap_of_conj_fixed F E σ hE h2 hσ (e * σ f + f * σ e) (by rw [map_add, map_mul, map_mul, hinv, hinv]; ring)`. Use `⟨c • (a * b), ?_⟩` and prove the remaining obligations. Rewrite using `[hφ, Algebra.TensorProduct.map_tmul, Algebra.TensorProduct.map_tmul, Algebra.TensorProduct.tmul_mul_tmul, Algebra.TensorProduct.tmul_mul_tmul, AlgHom.id_apply, AlgHom.id_apply, mul_comm b a, ← TensorProduct.tmul_add, ← hc, Algebra.TensorProduct.algebraMap_apply, Algebra.algebraMa …`.
+
+Take `⟨n, hn⟩` from `key y y`. Use `⟨algebraMap F R (1 / 2) * n, ?_⟩` and prove the remaining obligations. Establish `h : algebraMap F R (1 / 2) * 2 = 1`. Rewrite using `[← map_ofNat (algebraMap F R) 2, ← map_mul]`. Evaluate the numerical expressions.
+
+Establish `h' : algebraMap R (R ⊗[F] E) (algebraMap F R (1 / 2)) * 2 = 1`. Rewrite using `[← map_ofNat (algebraMap R (R ⊗[F] E)) 2, ← map_mul, h, map_one]`. Rewrite using `[map_mul, ← hn, ← two_mul, ← mul_assoc, h', one_mul]`.
+-/
 theorem exists_mul_conj_eq_algebraMap (F E : Type) [Field F] [NumberField F] [Field E]
     [NumberField E]
     [Algebra F E] (σ : E →ₐ[F] E) (hE : IsTotallyComplex E) (h2 : Module.finrank F E = 2)
@@ -71,6 +95,11 @@ theorem exists_mul_conj_eq_algebraMap (F E : Type) [Field F] [NumberField F] [Fi
     rw [← map_ofNat (algebraMap R (R ⊗[F] E)) 2, ← map_mul, h, map_one]
   rw [map_mul, ← hn, ← two_mul, ← mul_assoc, h', one_mul]
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ _ hE h2 hσ R _ _ x`. Take `⟨n, hn⟩` from `exists_mul_conj_eq_algebraMap F E σ hE h2 hσ R (x : R ⊗[F] E)`. Take `⟨m, hm⟩` from `exists_mul_conj_eq_algebraMap F E σ hE h2 hσ R ((x⁻¹ : (R ⊗[F] E)ˣ) : R ⊗[F] E)`. Establish `hinj : Function.Injective (algebraMap R (R ⊗[F] E))` using `Algebra.TensorProduct.includeLeft_injective (S := R) (algebraMap F E).injective`. Establish `hnm : n * m = 1`.
+
+Apply `hinj` to reduce the goal to its premises. Rewrite using `[map_mul, map_one, ← hn, ← hm, mul_mul_mul_comm, ← map_mul, Units.mul_inv, map_one, mul_one]`. Conclude with `⟨⟨n, m, hnm, by rw [mul_comm, hnm]⟩, hn⟩`.
+-/
 theorem exists_unit_mul_conj_eq_algebraMap :
     ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E), IsTotallyReal F → IsTotallyComplex E → Module.finrank F E = 2 → (∀ (τ : E →+* ℂ) (x : E), τ (σ x) = star (τ x)) → ∀ (R : Type) [CommRing R] [Algebra F R] (x : (R ⊗[F] E)ˣ), ∃ n : Rˣ, (x : R ⊗[F] E) * Algebra.TensorProduct.map (AlgHom.id F R) σ (x : R ⊗[F] E) = algebraMap R (R ⊗[F] E) n := by
   intro F E _ _ _ _ _ σ _ hE h2 hσ R _ _ x

@@ -16,6 +16,11 @@ open PI.RhsWLim
 
 variable {k r : ℕ}
 
+/- English proof (translation)
+Establish `hu` using `HU.isUnit_of_uh hp`. Establish `hp' : pᴴ * Hpk k r * p = Hpk k r` using `hp`. Establish `key : pᴴ * Hpk k r = Hpk k r * p⁻¹`. Combine the equalities or inequalities in the displayed calculation. Unfold `herm`.
+
+Rewrite using `[Matrix.star_mulVec, ← Matrix.dotProduct_mulVec, Matrix.mulVec_mulVec, key, ← Matrix.mulVec_mulVec]`.
+-/
 theorem herm_mulVec_right {p : Mat k r} (hp : p ∈ UH (Hpk k r)) (v u : Fin (2 * r + k + 1) → ℂ) :
     herm (Hpk k r) v (p *ᵥ u) = herm (Hpk k r) (p⁻¹ *ᵥ v) u := by
   have hu := HU.isUnit_of_uh hp
@@ -27,22 +32,36 @@ theorem herm_mulVec_right {p : Mat k r} (hp : p ∈ UH (Hpk k r)) (v u : Fin (2 
   unfold herm
   rw [Matrix.star_mulVec, ← Matrix.dotProduct_mulVec, Matrix.mulVec_mulVec, key, ← Matrix.mulVec_mulVec]
 
+/- English proof (translation)
+Unfold `HU.tau wI`. Apply `Fin.ext` to reduce the goal to its premises. Simplify using `only [Fin.val_last]`. Apply the tactic sequence `split_ifs <;> omega`.
+-/
 theorem tau_wLast : HU.tau k r (wI k r (Fin.last k)) = wI k r (Fin.last k) := by
   unfold HU.tau wI
   apply Fin.ext
   simp only [Fin.val_last]
   split_ifs <;> omega
 
+/- English proof (translation)
+Unfold `HU.sgn wI`. Simplify using the standard rewrite rules.
+-/
 theorem sgn_wLast : HU.sgn k r (wI k r (Fin.last k)) = -1 := by
   unfold HU.sgn wI
   simp
 
+/- English proof (translation)
+Simplify using `only [Matrix.mulVec, dotProduct, HU.hpk_row, tau_wLast, sgn_wLast, ite_mul, zero_mul, Finset.sum_ite_eq', Finset.mem_univ, if_true]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem hpk_mulVec_wLast (v : Fin (2 * r + k + 1) → ℂ) :
     (Hpk k r *ᵥ v) (wI k r (Fin.last k)) = -v (wI k r (Fin.last k)) := by
   simp only [Matrix.mulVec, dotProduct, HU.hpk_row, tau_wLast, sgn_wLast, ite_mul, zero_mul,
     Finset.sum_ite_eq', Finset.mem_univ, if_true]
   ring
 
+/- English proof (translation)
+Establish `hs : star ((s : ℂ) • wLast k r) = Pi.single (wI k r (Fin.last k)) (s : ℂ)`. Use function extensionality and compare the values at `j`. Simplify using `only [wLast, bvec, Pi.star_apply, Pi.smul_apply, Pi.single_apply, smul_eq_mul]`. Apply the tactic sequence `split_ifs <;> simp [Complex.conj_ofReal]`. Unfold `herm`.
+
+Rewrite using `[hs, single_dotProduct, hpk_mulVec_wLast, mul_neg]`.
+-/
 theorem herm_wLast (v : Fin (2 * r + k + 1) → ℂ) (s : ℝ) :
     herm (Hpk k r) v ((s : ℂ) • wLast k r) = -((s : ℂ) * v (wI k r (Fin.last k))) := by
   have hs : star ((s : ℂ) • wLast k r) = Pi.single (wI k r (Fin.last k)) (s : ℂ) := by
@@ -52,14 +71,23 @@ theorem herm_wLast (v : Fin (2 * r + k + 1) → ℂ) (s : ℝ) :
   unfold herm
   rw [hs, single_dotProduct, hpk_mulVec_wLast, mul_neg]
 
+/- English proof (translation)
+The claim follows from `herm_wLast _ _`.
+-/
 theorem pairF_std (z' : Fin (2 * r + k + 1) → ℂ) (s : ℝ) (x : Mt k r) :
     pairF k r ((s : ℂ) • wLast k r) z' x = -((s : ℂ) * (Matrix.of x *ᵥ z') (wI k r (Fin.last k))) :=
   herm_wLast _ _
 
+/- English proof (translation)
+Unfold `rmulM`. Conclude with `(continuous_id (X := Mat k r)).matrix_mul continuous_const`.
+-/
 theorem rmulM_cont (p : Mat k r) : Continuous (rmulM p : Mt k r → Mt k r) := by
   unfold rmulM
   exact (continuous_id (X := Mat k r)).matrix_mul continuous_const
 
+/- English proof (translation)
+Establish `hc : Continuous fun x : Mt k r => Matrix.of x *ᵥ z'` using `Continuous.matrix_mulVec (continuous_id (X := Mat k r)) continuous_const`. Conclude with `(continuous_pi fun i => (continuous_apply (wI k r (Fin.castSucc i))).comp hc).prodMk ((continuous_apply (wI k r (Fin.last k))).comp hc)`.
+-/
 theorem continuous_coords (z' : Fin (2 * r + k + 1) → ℂ) :
     Continuous fun x : Mt k r => ((fun i : Fin k => (Matrix.of x *ᵥ z') (wI k r (Fin.castSucc i))),
       (Matrix.of x *ᵥ z') (wI k r (Fin.last k))) := by
@@ -68,6 +96,15 @@ theorem continuous_coords (z' : Fin (2 * r + k + 1) → ℂ) :
   exact (continuous_pi fun i => (continuous_apply (wI k r (Fin.castSucc i))).comp hc).prodMk
     ((continuous_apply (wI k r (Fin.last k))).comp hc)
 
+/- English proof (translation)
+Introduce `k r z' hk hz' hT' νg hG f hf`. Take `⟨p, hp, hpz⟩` from `hT k r z' hz' hT'`. Use `set zs := ((Real.sqrt (Tz k r z') : ℂ) • wLast k r) with hzs`. Establish `hFm` using `hf.comp (continuous_coords (k := k) (r := r) zs).measurable`. Establish `e : ∀ x : Mt k r, Matrix.of x *ᵥ z' = Matrix.of (rmulM p x) *ᵥ zs`.
+
+Introduce `x`. Rewrite using `[← hpz]`. Use `show Matrix.of x *ᵥ (p *ᵥ zs) = (Matrix.of x * p) *ᵥ zs`. Rewrite using `[Matrix.mulVec_mulVec]`. Combine the equalities or inequalities in the displayed calculation.
+
+Use `lintegral_congr fun x => ?_` and prove the remaining obligations. Simplify using `only [e x]`. Use `_ = ∫⁻ y, f (fun i => (Matrix.of y *ᵥ zs) (wI k r (Fin.castSucc i)), (Matrix.of y *ᵥ zs) (wI k r (Fin.last k))) ∂(νg.map (rmulM p)) := (lintegral_map hFm (rmulM_cont p).measurable).symm`. Use `_ = _ := by`. Rewrite using `[hU k r νg hk hG p hp]`.
+
+Conclude with `hO k r (Tz k r z') hk hT' νg hG f hf`.
+-/
 theorem orbitPushG_of (hO : OrbitPush) (hT : TransW) (hU : UnimodW) : OrbitPushG := by
   intro k r z' hk hz' hT' νg hG f hf
   obtain ⟨p, hp, hpz⟩ := hT k r z' hz' hT'
@@ -91,6 +128,27 @@ theorem orbitPushG_of (hO : OrbitPush) (hT : TransW) (hU : UnimodW) : OrbitPushG
         rw [hU k r νg hk hG p hp]
         exact hO k r (Tz k r z') hk hT' νg hG f hf
 
+/- English proof (translation)
+Introduce `k r νg hk hG z z' hz hz' hTz hTz' g hg`. Take `⟨p, hp, hpz⟩` from `hT k r z hz hTz`. Use `set s := Real.sqrt (Tz k r z) with hs`. Establish `hs0 : (s : ℂ) ≠ 0`. Rewrite using `[Complex.ofReal_ne_zero]`.
+
+Conclude with `(Real.sqrt_pos.2 hTz).ne'`. Use `set zs := ((s : ℂ) • wLast k r) with hzs`. Establish `e1 : ∀ x : Mt k r, pairF k r z z' x = pairF k r zs z' (lmulM p⁻¹ x)`. Introduce `x`. Unfold `pairF`.
+
+Rewrite using `[← hpz, herm_mulVec_right hp.1, Matrix.mulVec_mulVec]`. Both sides reduce to the same expression. Establish `hgm : Measurable fun y : Mt k r => g (pairF k r zs z' y)` using `hg.comp (continuous_pairF k r zs z').measurable`. Establish `hpinv` using `HU.uwb_inv hp`. Establish `step1 : ∫⁻ x, g (pairF k r z z' x) ∂νg = ∫⁻ y, g (pairF k r zs z' y) ∂νg`.
+
+Combine the equalities or inequalities in the displayed calculation. Use `lintegral_congr fun x => ?_` and prove the remaining obligations. Simplify using `only [e1 x]`. Use `_ = ∫⁻ y, g (pairF k r zs z' y) ∂(νg.map (lmulM p⁻¹)) := (lintegral_map hgm (HU.lmulM_cont _).measurable).symm`. Use `_ = _ := by rw [hG.1.2.2.2 _ hpinv]`.
+
+Use `set f : (Fin k → ℂ) × ℂ → ℝ≥0∞ := fun v => g (-((s : ℂ) * v.2)) with hf`. Establish `hfm : Measurable f` using `hg.comp (continuous_const.mul continuous_snd).neg.measurable`. Establish `step2` using `hO k r z' hk hz' hTz' νg hG f hfm`. Use `set G : ℝ → ℂ → ℝ≥0∞ := fun _ c => g (-((s : ℂ) * c)) with hGdef`. Establish `hGm : Measurable (Function.uncurry G)` using `hg.comp (continuous_const.mul continuous_snd).neg.measurable`.
+
+Establish `step3` using `h4 k (Tz k r z) (Tz k r z') hk hTz hTz' G hGm`. Rewrite `step3` using `[← hs]`. Establish `hcancel : ∀ ζ : ℂ, -((s : ℂ) * -(ζ / (s : ℂ))) = ζ`. Introduce `ζ`. Clear the denominators using the available nonvanishing facts.
+
+Rewrite using `[step1]`. Establish `e2 : ∫⁻ y, g (pairF k r zs z' y) ∂νg = ∫⁻ x, f (fun i => (Matrix.of x *ᵥ z') (wI k r (Fin.castSucc i)), (Matrix.of x *ᵥ z') (wI k r (Fin.last k))) ∂νg`. Use `lintegral_congr fun x => ?_` and prove the remaining obligations. Rewrite using `[pairF_std]`. Rewrite using `[e2, step2]`.
+
+Establish `e3 : hypMeas k (Tz k r z') f = hypMeas k (Tz k r z') (fun v => G ‖(WithLp.equiv 2 (Fin k → ℂ)).symm v.1‖ v.2)` using `rfl`. Rewrite using `[e3, step3]`. Simplify using `only [hGdef, hcancel]`. Rewrite using `[← mul_assoc, ← ENNReal.ofReal_mul (by have := volU_pos k; positivity)]`. Use `congr 2`.
+
+Establish `hV` using `h5 k hk`. Establish `h1` using `volU_pos (k - 1)`. Establish `h2 : ((k - 1).factorial : ℝ) ≠ 0` using `by positivity`. Establish `h3` using `Real.pi_pos`. Establish `h4 : Tz k r z ≠ 0` using `hTz.ne'`.
+
+Establish `h5 : Tz k r z' ≠ 0` using `hTz'.ne'`. Unfold `pairConst`. Rewrite using `[hV]`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem pairPush_of (hT : TransW) (hO : OrbitPushG) (h4 : PolarHyp) (h5 : VolURatio) : PairPush := by
   intro k r νg hk hG z z' hz hz' hTz hTz' g hg
   obtain ⟨p, hp, hpz⟩ := hT k r z hz hTz
@@ -148,6 +206,9 @@ theorem pairPush_of (hT : TransW) (hO : OrbitPushG) (h4 : PolarHyp) (h5 : VolURa
   field_simp
   ring
 
+/- English proof (translation)
+The claim follows from `constVal_of hR (pairPush_of hT (orbitPushG_of hO hT hU) h4 volURatio)`.
+-/
 theorem constVal_of_polarHyp (hR : RhsTest) (hT : TransW) (hU : UnimodW) (hO : OrbitPush) (h4 : PolarHyp) :
     ConstVal :=
   constVal_of hR (pairPush_of hT (orbitPushG_of hO hT hU) h4 volURatio)

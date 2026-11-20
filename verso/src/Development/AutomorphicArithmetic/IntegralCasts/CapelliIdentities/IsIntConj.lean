@@ -1,5 +1,10 @@
 import Mathlib
 
+/- English proof (translation)
+Introduce `O _ B _ _ a b k hab hba hk`. Set `f : B →ₐ[O] B` to `{ toFun := fun x => a * x * b map_one' := by rw [mul_one, hab] map_mul' := fun x y => by`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[hba, mul_one, mul_assoc a x y]`. Use `_ = a * x * b * (a * y * b) := by simp only [mul_assoc]`.
+
+Use the proof step `map_zero' := by rw [mul_zero, zero_mul]`. Use the proof step `map_add' := fun x y => by rw [mul_add, add_mul]`. Use the proof step `commutes' := fun r => by`. Rewrite using `[← Algebra.commutes r a, mul_assoc, hab, mul_one] }`. Conclude with `hk.map f`.
+-/
 theorem UpperTheory.Reformulated.B.Qf45.isInt_conj :
     ∀ {O : Type} [inst : CommRing O]
     {B : Type} [inst_1 : Ring B] [inst_2 : Algebra O B] (a b k : B),

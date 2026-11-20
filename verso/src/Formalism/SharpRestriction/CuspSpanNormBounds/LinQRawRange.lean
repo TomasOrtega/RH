@@ -22,6 +22,9 @@ namespace HermSp
 
 variable {M : Model F E} {V : Type} [AddCommGroup V] [Module E V] (H : HermSp M V)
 
+/- English proof (translation)
+Establish `h` using `H.h_add_left 0 0 y`. Rewrite `h` using `[add_zero]`. Take the linear combination `-h`.
+-/
 lemma h_zero_left (y : V) : H.h 0 y = 0 := by
   have h := H.h_add_left 0 0 y
   rw [add_zero] at h
@@ -185,6 +188,15 @@ def linQRaw {m : ℕ} (ZZ : M.Mat m) (row : Fin m → M.R) : (Fin m → M.R) →
       ((ZZ.Z.map M.R.subtype)⁻¹.mulVecLin.restrictScalars M.R) |> (LinearMap.proj (0 : Fin 1)).comp) ∘ₗ
     (LinearMap.compLeft (Algebra.linearMap M.R E) (Fin m))
 
+/- English proof (translation)
+Introduce and unpack `_ ⟨w, rfl⟩`. Rewrite using `[LinearMap.mem_ker]`. Establish `hinv : (ZZ.Z.map M.R.subtype)⁻¹ * ZZ.Z.map M.R.subtype = 1` using `Matrix.nonsing_inv_mul _ ZZ.unit`. Establish `hv : (fun i => ((ZZ.Z.mulVecLin w i : M.R) : E)) = (ZZ.Z.map M.R.subtype).mulVec (fun i => (w i : E))`. Use function extensionality and compare the values at `i`.
+
+Conclude with `RingHom.map_mulVec M.R.subtype ZZ.Z w i`. Establish `key : (ZZ.Z.map M.R.subtype)⁻¹.mulVec (fun i => ((ZZ.Z.mulVecLin w i : M.R) : E)) = fun i => (w i : E)`. Rewrite using `[hv, Matrix.mulVec_mulVec, hinv, Matrix.one_mulVec]`. Simplify using `only [linQRaw, LinearMap.coe_comp, Function.comp_apply, LinearMap.coe_restrictScalars, Matrix.mulVecLin_apply, LinearMap.proj_apply]`. Express the relevant statement in the definitionally equal form `Submodule.mkQ M.Rsub _ = 0`.
+
+Rewrite using `[Submodule.mkQ_apply, Submodule.Quotient.mk_eq_zero]`. Establish `key' : (ZZ.Z.map M.R.subtype)⁻¹.mulVec ((Algebra.linearMap M.R E).compLeft (Fin m) (ZZ.Z.mulVec w)) = fun i => (w i : E)` using `key`. Rewrite using `[key']`. Use `⟨∑ j, row j * w j, ?_⟩` and prove the remaining obligations. Simplify using `[Matrix.mulVec, dotProduct]`.
+
+Both sides reduce to the same expression.
+-/
 lemma linQRaw_range {m : ℕ} (ZZ : M.Mat m) (row : Fin m → M.R) :
     LinearMap.range ZZ.Z.mulVecLin ≤ LinearMap.ker (M.linQRaw ZZ row) := by
   rintro _ ⟨w, rfl⟩

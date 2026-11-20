@@ -35,6 +35,9 @@ def dia : 𝓀[k]ˣ →* Module.End ℂ (Form k n M) where
     ext φ P
     simp [mul_comm c d, mul_smul]
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem dia_apply (c : 𝓀[k]ˣ) (φ : Form k n M) (P : Pair k n) : dia c φ P = φ (c • P) := rfl
 
 def Nm : Module.End ℂ (Form k n M) :=
@@ -81,58 +84,106 @@ def FFStar (q : Unif k) (χ : AddChar 𝓀[k] ℂ) : Module.End ℂ (Form k n M)
 
 variable (q : Unif k) (χ : AddChar 𝓀[k] ℂ) (φ : Form k n M)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem sumOp_apply (S : Pair k n → Finset (Pair k n)) (w : Pair k n → Pair k n → ℂ) (P : Pair k n) :
     sumOp S w φ P = ∑ Q ∈ S P, w P Q • φ Q := rfl
 
+/- English proof (translation)
+Simplify using `only [Nm, LinearMap.sum_apply, Finset.sum_apply, dia_apply]`. Use `congr!`.
+-/
 theorem Nm_apply [Fintype 𝓀[k]ˣ] (P : Pair k n) : Nm φ P = ∑ c : 𝓀[k]ˣ, φ (c • P) := by
   simp only [Nm, LinearMap.sum_apply, Finset.sum_apply, dia_apply]
   congr!
 
+/- English proof (translation)
+Simplify using `only [Mram, LinearMap.mem_ker, funext_iff, Nm_apply, Pi.zero_apply]`.
+-/
 theorem mem_Mram [Fintype 𝓀[k]ˣ] : φ ∈ Mram k n M ↔ ∀ P, ∑ c : 𝓀[k]ˣ, φ (c • P) = 0 := by
   simp only [Mram, LinearMap.mem_ker, funext_iff, Nm_apply, Pi.zero_apply]
 
+/- English proof (translation)
+Simplify using `only [Gs, LinearMap.sum_apply, Finset.sum_apply, LinearMap.smul_apply, Pi.smul_apply, dia_apply]`. Use `congr!`.
+-/
 theorem Gs_apply [Fintype 𝓀[k]ˣ] (P : Pair k n) : Gs χ φ P = ∑ c : 𝓀[k]ˣ, χ c • φ (c • P) := by
   simp only [Gs, LinearMap.sum_apply, Finset.sum_apply, LinearMap.smul_apply, Pi.smul_apply, dia_apply]
   congr!
 
+/- English proof (translation)
+Simplify using `only [GsStar, LinearMap.sum_apply, Finset.sum_apply, LinearMap.smul_apply, Pi.smul_apply, dia_apply]`. Use `congr!`.
+-/
 theorem GsStar_apply [Fintype 𝓀[k]ˣ] (P : Pair k n) :
     GsStar χ φ P = ∑ c : 𝓀[k]ˣ, χ (-(c : 𝓀[k])) • φ (c⁻¹ • P) := by
   simp only [GsStar, LinearMap.sum_apply, Finset.sum_apply, LinearMap.smul_apply, Pi.smul_apply, dia_apply]
   congr!
 
+/- English proof (translation)
+Simplify using `[trLat]`.
+-/
 theorem trLat_apply (L : Submodule 𝒪[k] (n → k)) : trLat L φ = ∑ P ∈ withLat L, φ P := by simp [trLat]
 
+/- English proof (translation)
+Simplify using `[trKer]`.
+-/
 theorem trKer_apply (L : Submodule 𝒪[k] (n → k)) : trKer L φ = ∑ P ∈ withKer L, φ P := by simp [trKer]
 
+/- English proof (translation)
+The claim follows from `trLat_apply φ _`.
+-/
 theorem tr_apply (P : Pair k n) : tr φ P = ∑ Q ∈ withLat P.lat, φ Q := trLat_apply φ _
 
+/- English proof (translation)
+The claim follows from `trKer_apply φ _`.
+-/
 theorem tr'_apply (P : Pair k n) : tr' φ P = ∑ Q ∈ withKer P.ker, φ Q := trKer_apply φ _
 
 open Classical in
 
+/- English proof (translation)
+Simplify using `[Da, sumOp_apply]`.
+-/
 theorem Da_apply (a : 𝓀[k]) (P₁ : Pair k n) :
     Da q a φ P₁ = ∑ P ∈ withLat P₁.ker with cross q P₁ P = a, φ P := by simp [Da, sumOp_apply]
 
 open Classical in
 
+/- English proof (translation)
+The claim follows from `Da_apply q φ 1 P₁`.
+-/
 theorem D_apply (P₁ : Pair k n) : D q φ P₁ = ∑ P ∈ withLat P₁.ker with cross q P₁ P = 1, φ P := Da_apply q φ 1 P₁
 
 open Classical in
 
+/- English proof (translation)
+Simplify using `[U, sumOp_apply]`.
+-/
 theorem U_apply (P : Pair k n) : U q φ P = ∑ P₁ ∈ withKer P.lat with cross q P₁ P = 1, φ P₁ := by
   simp [U, sumOp_apply]
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem FF_apply (P₁ : Pair k n) : FF q χ φ P₁ = ∑ P ∈ withLat P₁.ker, χ (cross q P₁ P) • φ P := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem FFStar_apply (P : Pair k n) : FFStar q χ φ P = ∑ P₁ ∈ withKer P.lat, χ (-cross q P₁ P) • φ P₁ := rfl
 
 section Formulas
 variable (L : Submodule 𝒪[k] (n → k)) [L.IsLattice k]
 
+/- English proof (translation)
+Simplify using `only [FF_apply, up_ker, sum_withLat, cross_up_ofDual]`.
+-/
 theorem FF_up [Fintype {f : Module.Dual 𝓀[k] (Red L) // f ≠ 0}] (x : {x : Red L // x ≠ 0}) :
     FF q χ φ (up L q x) = ∑ f : {f : Module.Dual 𝓀[k] (Red L) // f ≠ 0}, χ (f.1 x.1) • φ (ofDual L f) := by
   simp only [FF_apply, up_ker, sum_withLat, cross_up_ofDual]
 
+/- English proof (translation)
+Simplify using `only [FFStar_apply, ofDual_lat, sum_withKer L q, cross_up_ofDual]`.
+-/
 theorem FFStar_ofDual [Fintype {x : Red L // x ≠ 0}] (f : {f : Module.Dual 𝓀[k] (Red L) // f ≠ 0}) :
     FFStar q χ φ (ofDual L f) = ∑ x : {x : Red L // x ≠ 0}, χ (-f.1 x.1) • φ (up L q x) := by
   simp only [FFStar_apply, ofDual_lat, sum_withKer L q, cross_up_ofDual]
@@ -144,12 +195,18 @@ def cntIp (φ φ' : Form k n ℂ) : ℂ := ∑ᶠ P, φ P * (starRingEnd ℂ) (�
 def IsAdj (A B : Module.End ℂ (Form k n ℂ)) : Prop :=
   ∀ φ φ' : Form k n ℂ, (Function.support φ).Finite → (Function.support φ').Finite → cntIp (A φ) φ' = cntIp φ (B φ')
 
+/- English proof (translation)
+Use `letI := Fintype.ofFinite 𝓀[k]ˣ`. Use `(mem_Mram _).2 fun P => ?_` and prove the remaining obligations. Simplify using `only [Pi.sub_apply, dia_apply, Finset.sum_sub_distrib, smul_smul, sub_eq_zero]`. Conclude with `Equiv.sum_comp (Equiv.mulLeft c) fun d => φ (d • P)`.
+-/
 theorem dia_sub_mem_Mram (c : 𝓀[k]ˣ) : dia c φ - φ ∈ Mram k n M := by
   letI := Fintype.ofFinite 𝓀[k]ˣ
   refine (mem_Mram _).2 fun P => ?_
   simp only [Pi.sub_apply, dia_apply, Finset.sum_sub_distrib, smul_smul, sub_eq_zero]
   exact Equiv.sum_comp (Equiv.mulLeft c) fun d => φ (d • P)
 
+/- English proof (translation)
+Use `⟨fun h => ?_, fun h => by simp [h]⟩` and prove the remaining obligations. Use `Pair.dia_hasVal.1 (h.symm ▸ P.hasVal_vec : (c • P).HasVal P.vec 1)` as an intermediate fact. Establish `h2` using `this.unique P.hasVal_vec`. Simplify using `using h2`.
+-/
 theorem dia_smul_eq_iff {c : 𝓀[k]ˣ} {P : Pair k n} : c • P = P ↔ c = 1 := by
   refine ⟨fun h => ?_, fun h => by simp [h]⟩
   have := Pair.dia_hasVal.1 (h.symm ▸ P.hasVal_vec : (c • P).HasVal P.vec 1)
@@ -159,10 +216,16 @@ theorem dia_smul_eq_iff {c : 𝓀[k]ˣ} {P : Pair k n} : c • P = P ↔ c = 1 :
 section Equivariance
 variable [Fintype n] [DecidableEq n]
 
+/- English proof (translation)
+The claim follows from `(Finset.sum_equiv (MulAction.toPerm g) (fun P => by simp) fun _ _ => rfl).symm`.
+-/
 theorem sum_withLat_smul {A : Type*} [AddCommMonoid A] (g : GL n k) (L : Submodule 𝒪[k] (n → k)) (F : Pair k n → A) :
     ∑ P ∈ withLat (g • L), F P = ∑ P ∈ withLat L, F (g • P) :=
   (Finset.sum_equiv (MulAction.toPerm g) (fun P => by simp) fun _ _ => rfl).symm
 
+/- English proof (translation)
+The claim follows from `(Finset.sum_equiv (MulAction.toPerm g) (fun P => by simp) fun _ _ => rfl).symm`.
+-/
 theorem sum_withKer_smul {A : Type*} [AddCommMonoid A] (g : GL n k) (L : Submodule 𝒪[k] (n → k)) (F : Pair k n → A) :
     ∑ P ∈ withKer (g • L), F P = ∑ P ∈ withKer L, F (g • P) :=
   (Finset.sum_equiv (MulAction.toPerm g) (fun P => by simp) fun _ _ => rfl).symm
@@ -176,6 +239,9 @@ def transl : Representation ℂ (GL n k) (Form k n M) where
     ext φ P
     simp [mul_smul]
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem transl_apply (g : GL n k) (P : Pair k n) : transl g φ P = φ (g⁻¹ • P) := rfl
 
 variable (π : Representation ℂ (GL n k) M)
@@ -195,6 +261,9 @@ def levelVec (P₀ : Pair k n) : Submodule ℂ M where
 def formOf (P₀ : Pair k n) (v : levelVec π P₀) : Form k n M := fun P =>
   π (MulAction.exists_smul_eq (GL n k) P₀ P).choose v
 
+/- English proof (translation)
+Establish `h` using `(MulAction.exists_smul_eq (GL n k) P₀ (g • P₀)).choose_spec`. Rewrite using `[formOf]`. Generalize the expression as in `(MulAction.exists_smul_eq (GL n k) P₀ (g • P₀)).choose = g' at h`. Use `v.2 (g⁻¹ * g') (by rw [mul_smul, h, inv_smul_smul])` as an intermediate fact. Rewrite using `[← mul_inv_cancel_left g g', map_mul, Module.End.mul_apply, this]`.
+-/
 theorem formOf_smul (P₀ : Pair k n) (v : levelVec π P₀) (g : GL n k) : formOf π P₀ v (g • P₀) = π g v := by
   have h := (MulAction.exists_smul_eq (GL n k) P₀ (g • P₀)).choose_spec
   rw [formOf]
@@ -202,6 +271,9 @@ theorem formOf_smul (P₀ : Pair k n) (v : levelVec π P₀) (g : GL n k) : form
   have := v.2 (g⁻¹ * g') (by rw [mul_smul, h, inv_smul_smul])
   rw [← mul_inv_cancel_left g g', map_mul, Module.End.mul_apply, this]
 
+/- English proof (translation)
+Introduce `g P` and use `by obtain ⟨h, rfl⟩ := MulAction.exists_smul_eq (GL n k) P₀ P rw [smul_smul, formOf_smul, formOf_smul, map_mul, Module.End.mul_apply]`.
+-/
 theorem formOf_mem (P₀ : Pair k n) (v : levelVec π P₀) : formOf π P₀ v ∈ EqForm π := fun g P => by
   obtain ⟨h, rfl⟩ := MulAction.exists_smul_eq (GL n k) P₀ P
   rw [smul_smul, formOf_smul, formOf_smul, map_mul, Module.End.mul_apply]
@@ -216,6 +288,9 @@ def evalEquiv (P₀ : Pair k n) : EqForm π ≃ₗ[ℂ] levelVec π P₀ where
     exact (formOf_smul π P₀ _ h).trans (φ.2 h P₀).symm)
   right_inv v := Subtype.ext (by simpa using formOf_smul π P₀ v 1)
 
+/- English proof (translation)
+Introduce `g P` and use `by rw [h1, ← h2] exact congrArg (T · P) (funext (h g))`.
+-/
 theorem map_mem_EqForm {T : Module.End ℂ (Form k n M)}
     (h1 : ∀ (g : GL n k) φ P, T φ (g • P) = T (fun Q => φ (g • Q)) P)
     (h2 : ∀ (g : GL n k) (φ : Form k n M) P, T (fun Q => π g (φ Q)) P = π g (T φ P))
@@ -225,33 +300,57 @@ theorem map_mem_EqForm {T : Module.End ℂ (Form k n M)}
 
 variable (g : GL n k) (P : Pair k n)
 
+/- English proof (translation)
+Simplify using `only [dia_apply, smul_comm g c]`.
+-/
 theorem dia_smul (c : 𝓀[k]ˣ) : dia c φ (g • P) = dia c (fun Q => φ (g • Q)) P := by
   simp only [dia_apply, smul_comm g c]
 
+/- English proof (translation)
+Simplify using `only [U_apply, Finset.sum_filter, Pair.smul_lat, sum_withKer_smul]`. Conclude with `Finset.sum_congr rfl fun Q hQ => by rw [cross_smul q (mem_withKer.1 hQ).symm]`.
+-/
 theorem U_smul : U q φ (g • P) = U q (fun Q => φ (g • Q)) P := by
   classical
   simp only [U_apply, Finset.sum_filter, Pair.smul_lat, sum_withKer_smul]
   exact Finset.sum_congr rfl fun Q hQ => by rw [cross_smul q (mem_withKer.1 hQ).symm]
 
+/- English proof (translation)
+Simplify using `only [FF_apply, Pair.smul_ker, sum_withLat_smul]`. Conclude with `Finset.sum_congr rfl fun Q hQ => by rw [cross_smul q (mem_withLat.1 hQ)]`.
+-/
 theorem FF_smul : FF q χ φ (g • P) = FF q χ (fun Q => φ (g • Q)) P := by
   simp only [FF_apply, Pair.smul_ker, sum_withLat_smul]
   exact Finset.sum_congr rfl fun Q hQ => by rw [cross_smul q (mem_withLat.1 hQ)]
 
+/- English proof (translation)
+Simplify using `only [FFStar_apply, Pair.smul_lat, sum_withKer_smul]`. Conclude with `Finset.sum_congr rfl fun Q hQ => by rw [cross_smul q (mem_withKer.1 hQ).symm]`.
+-/
 theorem FFStar_smul : FFStar q χ φ (g • P) = FFStar q χ (fun Q => φ (g • Q)) P := by
   simp only [FFStar_apply, Pair.smul_lat, sum_withKer_smul]
   exact Finset.sum_congr rfl fun Q hQ => by rw [cross_smul q (mem_withKer.1 hQ).symm]
 
 variable {π φ}
 
+/- English proof (translation)
+The claim follows from `map_mem_EqForm π (fun g φ P => dia_smul φ g P c) (fun _ _ _ => rfl) h`.
+-/
 theorem dia_mem_EqForm (c : 𝓀[k]ˣ) (h : φ ∈ EqForm π) : dia c φ ∈ EqForm π :=
   map_mem_EqForm π (fun g φ P => dia_smul φ g P c) (fun _ _ _ => rfl) h
 
+/- English proof (translation)
+The claim follows from `map_mem_EqForm π (fun g φ P => U_smul q φ g P) (fun _ _ _ => by simp [U_apply]) h`.
+-/
 theorem U_mem_EqForm (h : φ ∈ EqForm π) : U q φ ∈ EqForm π :=
   map_mem_EqForm π (fun g φ P => U_smul q φ g P) (fun _ _ _ => by simp [U_apply]) h
 
+/- English proof (translation)
+The claim follows from `map_mem_EqForm π (fun g φ P => FF_smul q χ φ g P) (fun _ _ _ => by simp [FF_apply]) h`.
+-/
 theorem FF_mem_EqForm (h : φ ∈ EqForm π) : FF q χ φ ∈ EqForm π :=
   map_mem_EqForm π (fun g φ P => FF_smul q χ φ g P) (fun _ _ _ => by simp [FF_apply]) h
 
+/- English proof (translation)
+The claim follows from `map_mem_EqForm π (fun g φ P => FFStar_smul q χ φ g P) (fun _ _ _ => by simp [FFStar_apply]) h`.
+-/
 theorem FFStar_mem_EqForm (h : φ ∈ EqForm π) : FFStar q χ φ ∈ EqForm π :=
   map_mem_EqForm π (fun g φ P => FFStar_smul q χ φ g P) (fun _ _ _ => by simp [FFStar_apply]) h
 
@@ -261,9 +360,15 @@ end Forms
 section Character
 open SplitWeil
 
+/- English proof (translation)
+The claim follows from `(hψ x).2 (by simpa using (Valuation.mem_integer_iff _ _).1 x.2) x le_rfl`.
+-/
 theorem apply_int_eq_one {ψ : AddChar k Circle} (hψ : HasConductor ψ 1) (x : 𝒪[k]) : ψ x = 1 :=
   (hψ x).2 (by simpa using (Valuation.mem_integer_iff _ _).1 x.2) x le_rfl
 
+/- English proof (translation)
+Take `⟨u, hu⟩` from `q.mem_max_iff.1 ((residue_eq_zero_iff (s - t)).1 (by rw [map_sub, h, sub_self]))`. Establish `: q.inv * s = q.inv * t + u`. Establish `hu' : (s : k) = t + q.1 * u` using `by exact_mod_cast congrArg Subtype.val (sub_eq_iff_eq_add'.1 hu)`. Rewrite using `[hu', mul_add, Unif.inv, inv_mul_cancel_left₀ q.ne_zero]`. Rewrite using `[this, AddChar.map_add_eq_mul, apply_int_eq_one hψ, mul_one]`.
+-/
 theorem apply_inv_mul_congr {ψ : AddChar k Circle} (hψ : HasConductor ψ 1) (q : Unif k) {s t : 𝒪[k]}
     (h : residue 𝒪[k] s = residue 𝒪[k] t) : ψ (q.inv * s) = ψ (q.inv * t) := by
   obtain ⟨u, hu⟩ := q.mem_max_iff.1 ((residue_eq_zero_iff (s - t)).1 (by rw [map_sub, h, sub_self]))
@@ -284,16 +389,29 @@ def resChar (ψ : AddChar k Circle) (hψ : HasConductor ψ 1) (q : Unif k) : Add
         (residue_surjective (R := 𝒪[k]) _).choose_spec])]
     simp [mul_add, AddChar.map_add_eq_mul]
 
+/- English proof (translation)
+The claim follows from `congrArg (fun z : Circle => (z : ℂ)) (apply_inv_mul_congr hψ q (residue_surjective (R := 𝒪[k]) _).choose_spec)`.
+-/
 theorem resChar_residue {ψ : AddChar k Circle} (hψ : HasConductor ψ 1) (q : Unif k) (s : 𝒪[k]) :
     resChar ψ hψ q (residue 𝒪[k] s) = ψ (q.inv * s) :=
   congrArg (fun z : Circle => (z : ℂ)) (apply_inv_mul_congr hψ q (residue_surjective (R := 𝒪[k]) _).choose_spec)
 
+/- English proof (translation)
+Take `⟨s, rfl⟩` from `residue_surjective (R := 𝒪[k]) a`. Rewrite using `[← map_neg, resChar_residue, resChar_residue, ← Circle.coe_inv_eq_conj, ← AddChar.map_neg_eq_inv]`. Simplify using the standard rewrite rules.
+-/
 theorem conj_resChar {ψ : AddChar k Circle} (hψ : HasConductor ψ 1) (q : Unif k) (a : 𝓀[k]) :
     (starRingEnd ℂ) (resChar ψ hψ q a) = resChar ψ hψ q (-a) := by
   obtain ⟨s, rfl⟩ := residue_surjective (R := 𝒪[k]) a
   rw [← map_neg, resChar_residue, resChar_residue, ← Circle.coe_inv_eq_conj, ← AddChar.map_neg_eq_inv]
   simp
 
+/- English proof (translation)
+Introduce `h`. Establish `h0 : valuation k (q.1 : k) ≠ 0` using `(Valuation.ne_zero_iff _).2 q.ne_zero`. Establish `h1 : valuation k q.inv ≤ valuation k ((1 : kˣ) : k)` using `(hψ q.inv).1 fun y hy => by`. Establish `hy' : (q.1 : k) * y ∈ 𝒪[k]`. Rewrite using `[Valuation.mem_integer_iff, map_mul]`.
+
+Rewrite `hy` using `[Unif.inv, map_inv₀]`. Conclude with `(mul_le_mul_right hy _).trans_eq (mul_inv_cancel₀ h0)`. Use `resChar_residue hψ q ⟨_, hy'⟩` as an intermediate fact. Rewrite `this` using `[h, AddChar.one_apply, Unif.inv, inv_mul_cancel_left₀ q.ne_zero]`. Conclude with `Circle.ext this.symm`.
+
+Establish `h2 : q.inv ∈ 𝒪[k]` using `(Valuation.mem_integer_iff _ _).2 (by simpa using h1)`. Conclude with `q.2.not_isUnit (IsUnit.of_mul_eq_one ⟨_, h2⟩ (Subtype.ext (mul_inv_cancel₀ q.ne_zero)))`.
+-/
 theorem resChar_ne_one {ψ : AddChar k Circle} (hψ : HasConductor ψ 1) (q : Unif k) : resChar ψ hψ q ≠ 1 := by
   intro h
   have h0 : valuation k (q.1 : k) ≠ 0 := (Valuation.ne_zero_iff _).2 q.ne_zero
@@ -308,6 +426,9 @@ theorem resChar_ne_one {ψ : AddChar k Circle} (hψ : HasConductor ψ 1) (q : Un
   have h2 : q.inv ∈ 𝒪[k] := (Valuation.mem_integer_iff _ _).2 (by simpa using h1)
   exact q.2.not_isUnit (IsUnit.of_mul_eq_one ⟨_, h2⟩ (Subtype.ext (mul_inv_cancel₀ q.ne_zero)))
 
+/- English proof (translation)
+Introduce `x` and use `by have hv : ∀ w : 𝒪[k]ˣ, ∀ y : k, valuation k (((w : 𝒪[k]) : k) * y) ≤ valuation k y := fun w y => by rw [map_mul] exact mul_le_of_le_one_left' ((Valuation.mem_integer_iff _ _).1 (w : 𝒪[k]).2) rw [← hψ x] refine ⟨fun h y hy => ?_, fun h y hy => h _ ((hv u y).trans hy)⟩ have := h …`.
+-/
 theorem hasConductor_mulShift {ψ : AddChar k Circle} (hψ : HasConductor ψ 1) (u : 𝒪[k]ˣ) :
     HasConductor (ψ.mulShift ((u : 𝒪[k]) : k)) 1 := fun x => by
   have hv : ∀ w : 𝒪[k]ˣ, ∀ y : k, valuation k (((w : 𝒪[k]) : k) * y) ≤ valuation k y := fun w y => by
@@ -337,10 +458,16 @@ def phiOne (P : Pair k n') (Q : Pair k n) (x : Matrix n n' k) : ℂ := if Maps P
 
 variable {P : Pair k n'} {Q : Pair k n} {x : Matrix n n' k}
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fun ⟨h, h'⟩ y _ ⟨hy, ha⟩ => ⟨h y hy, ha ▸ h' ⟨y, hy⟩⟩, fun h => ⟨fun y hy => (h y _ (P.hasVal_fn ⟨y, hy⟩)).mem, fun y => (h y _ (P.hasVal_fn y)).2⟩⟩`.
+-/
 theorem maps_iff_hasVal : Maps P Q x ↔ ∀ y a, P.HasVal y a → Q.HasVal (x *ᵥ y) a :=
   ⟨fun ⟨h, h'⟩ y _ ⟨hy, ha⟩ => ⟨h y hy, ha ▸ h' ⟨y, hy⟩⟩,
     fun h => ⟨fun y hy => (h y _ (P.hasVal_fn ⟨y, hy⟩)).mem, fun y => (h y _ (P.hasVal_fn y)).2⟩⟩
 
+/- English proof (translation)
+Rewrite using `[maps_iff_hasVal, ← Pair.hasVal_one_iff he']`. Use `⟨fun h => ⟨fun y hy => Pair.mem_ker.2 (h _ _ (Pair.mem_ker.1 hy)), h _ _ he⟩, fun h y a hy => ?_⟩` and prove the remaining obligations. Take `⟨s, rfl, hs⟩` from `(Pair.hasVal_iff he).1 hy`. Use `(Pair.hasVal_iff h.2).2 ⟨s, rfl, ?_⟩` and prove the remaining obligations. Simplify `h.1 _ hs` using `only [mulVec_sub, mulVec_smul]`.
+-/
 theorem maps_iff_glue {e : n' → k} {e' : n → k} (he : P.HasVal e 1) (he' : Q.HasVal e' 1) :
     Maps P Q x ↔ (∀ y ∈ P.ker, x *ᵥ y ∈ Q.ker) ∧ x *ᵥ e - e' ∈ Q.ker := by
   rw [maps_iff_hasVal, ← Pair.hasVal_one_iff he']
@@ -349,10 +476,16 @@ theorem maps_iff_glue {e : n' → k} {e' : n → k} (he : P.HasVal e 1) (he' : Q
   refine (Pair.hasVal_iff h.2).2 ⟨s, rfl, ?_⟩
   simpa only [mulVec_sub, mulVec_smul] using h.1 _ hs
 
+/- English proof (translation)
+Simplify using `only [maps_iff_hasVal, Pair.dia_hasVal]`. Conclude with `⟨fun h y a => by simpa using h y (c * a), fun h y a => h y _⟩`.
+-/
 theorem maps_dia (c : 𝓀[k]ˣ) : Maps (c • P) (c • Q) x ↔ Maps P Q x := by
   simp only [maps_iff_hasVal, Pair.dia_hasVal]
   exact ⟨fun h y a => by simpa using h y (c * a), fun h y a => h y _⟩
 
+/- English proof (translation)
+Use extensionality with `x`. Conclude with `if_congr (maps_dia c) rfl rfl`.
+-/
 theorem phiOne_dia (c : 𝓀[k]ˣ) : phiOne (c • P) (c • Q) = phiOne P Q := by
   ext x
   classical
@@ -360,17 +493,28 @@ theorem phiOne_dia (c : 𝓀[k]ˣ) : phiOne (c • P) (c • Q) = phiOne P Q := 
 
 variable [DecidableEq n'] [Fintype n] [DecidableEq n]
 
+/- English proof (translation)
+Simplify using `only [maps_iff_hasVal, Pair.smul_hasVal, ← mulVec_mulVec]`. Use `⟨fun H y a hy => H (g • y) a (by simpa using hy), fun H y a hy => ?_⟩` and prove the remaining obligations. Use `H _ a hy` as an intermediate fact. Rewrite `this` using `[show g.val *ᵥ (g⁻¹ • y) = y from smul_inv_smul g y]`. Then use the resulting hypothesis.
+-/
 theorem maps_smul (g : GL n' k) (h : GL n k) : Maps (g • P) (h • Q) x ↔ Maps P Q ((h⁻¹ : GL n k).val * x * g.val) := by
   simp only [maps_iff_hasVal, Pair.smul_hasVal, ← mulVec_mulVec]
   refine ⟨fun H y a hy => H (g • y) a (by simpa using hy), fun H y a hy => ?_⟩
   have := H _ a hy
   rwa [show g.val *ᵥ (g⁻¹ • y) = y from smul_inv_smul g y] at this
 
+/- English proof (translation)
+Conclude with `if_congr (maps_smul g h) rfl rfl`.
+-/
 theorem phiOne_smul (g : GL n' k) (h : GL n k) :
     phiOne (g • P) (h • Q) x = phiOne P Q ((h⁻¹ : GL n k).val * x * g.val) := by
   classical
   exact if_congr (maps_smul g h) rfl rfl
 
+/- English proof (translation)
+Establish `: (∀ y ∈ g • S, x *ᵥ y ∈ h • L) ↔ ∀ y ∈ S, ((h⁻¹ : GL n k).val * x * g.val) *ᵥ y ∈ L`. Simplify using `only [mem_smul_iff, ← mulVec_mulVec]`. Use `⟨fun H y hy => H (g • y) (by simpa using hy), fun H y hy => ?_⟩` and prove the remaining obligations. Use `H _ hy` as an intermediate fact. Rewrite `this` using `[show g.val *ᵥ (g⁻¹ • y) = y from smul_inv_smul g y]`. Then use the resulting hypothesis.
+
+Conclude with `if_congr this rfl rfl`.
+-/
 theorem latInd_smul (g : GL n' k) (h : GL n k) (S : Submodule 𝒪[k] (n' → k)) (L : Submodule 𝒪[k] (n → k)) :
     latInd (g • S) (h • L) x = latInd S L ((h⁻¹ : GL n k).val * x * g.val) := by
   have : (∀ y ∈ g • S, x *ᵥ y ∈ h • L) ↔ ∀ y ∈ S, ((h⁻¹ : GL n k).val * x * g.val) *ᵥ y ∈ L := by
@@ -399,6 +543,9 @@ def avec (c p : ℕ) : n ⊕ Fin c → k := Sum.elim 0 fun i => if i.val + 1 = p
 
 omit [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] in
 
+/- English proof (translation)
+Apply the tactic sequence `ext (j | j) <;> simp [avec, Fin.val_inj]`.
+-/
 theorem sum_smul_avec (z : Fin c → k) : ∑ i : Fin c, z i • avec k n c (i.val + 1) = Sum.elim (0 : n → k) z := by
   ext (j | j) <;> simp [avec, Fin.val_inj]
 
@@ -411,6 +558,11 @@ def gluedS (q : Unif k) (c : ℕ) (L : Submodule 𝒪[k] (n → k)) (f : n → k
   L.map (inX k n c) ⊔ Submodule.span 𝒪[k] {q.inv • avec k n c 1 + inX k n c f} ⊔
     Submodule.span 𝒪[k] {y | ∃ i, 2 ≤ i ∧ i ≤ c ∧ y = q.inv • avec k n c i}
 
+/- English proof (translation)
+Establish `: {y | ∃ i, 1 ≤ i ∧ i < 1 ∧ i ≤ c ∧ y = avec k n c i} = ∅`. Use extensionality with `y`. Simplify using `only [Set.mem_setOf_eq, Set.mem_empty_iff_false, iff_false]`. Introduce and unpack `⟨i, h1, h2, -⟩`. Use linear arithmetic over natural numbers and integers.
+
+Rewrite using `[gluedLat, this, Submodule.span_empty, sup_bot_eq]`. Both sides reduce to the same expression.
+-/
 theorem gluedLat_one (q : Unif k) (c : ℕ) (L : Submodule 𝒪[k] (n → k)) (f : n → k) :
     gluedLat q c 1 L f = gluedS q c L f := by
   have : {y | ∃ i, 1 ≤ i ∧ i < 1 ∧ i ≤ c ∧ y = avec k n c i} = ∅ := by
@@ -421,6 +573,35 @@ theorem gluedLat_one (q : Unif k) (c : ℕ) (L : Submodule 𝒪[k] (n → k)) (f
   rw [gluedLat, this, Submodule.span_empty, sup_bot_eq]
   rfl
 
+/- English proof (translation)
+Set `T : Submodule 𝒪[k] (n ⊕ Fin c → k)` to `{ carrier := {y | ∃ s : 𝒪[k], y ∘ Sum.inl - s • f ∈ L ∧ ∀ i : Fin c, (i.val + 1 < p → y (Sum.inr i) ∈ 𝒪[k]) ∧ (i.val + 1 = p → y (Sum.inr i) = q.inv * s) ∧ (p < i.val + 1 → (q.1 : k) * y (Sum.inr i) ∈ 𝒪[k])} zero_mem' := ⟨0, by simp, fun i => by simp⟩ add_mem' := by`. Introduce and unpack `y z ⟨s, hs, h⟩ ⟨t, ht, h'⟩`. Use `⟨s + t, ?_, fun i => ⟨fun hi => add_mem ((h i).1 hi) ((h' i).1 hi), fun hi => ?_, fun hi => ?_⟩⟩` and prove the remaining obligations. Use `add_mem hs ht using 1` and compare the differences between its conclusion and the goal. Rewrite using `[Pi.add_comp, add_smul]`.
+
+Normalize the expressions using the abelian group laws. Simplify using `[(h i).2.1 hi, (h' i).2.1 hi, mul_add]`. Simplify `add_mem ((h i).2.2 hi) ((h' i).2.2 hi)` using `[mul_add]`. Use the proof step `smul_mem' := by`. Introduce and unpack `t y ⟨s, hs, h⟩`.
+
+Use `⟨t * s, ?_, fun i => ⟨fun hi => mul_mem t.2 ((h i).1 hi), fun hi => ?_, fun hi => ?_⟩⟩` and prove the remaining obligations. Use `L.smul_mem t hs using 1` and compare the differences between its conclusion and the goal. Rewrite using `[smul_sub, mul_smul]`. Both sides reduce to the same expression. Express the relevant statement in the definitionally equal form `(t : k) * y _ = _`.
+
+Simplify using `[(h i).2.1 hi, mul_left_comm]`. Express the relevant statement in the definitionally equal form `(q.1 : k) * ((t : k) * y _) ∈ _`. Rewrite using `[mul_left_comm]`. Conclude with `mul_mem t.2 ((h i).2.2 hi) }`. Establish `hq : (q.1 : k) * q.inv = 1` using `mul_inv_cancel₀ q.ne_zero`.
+
+Prove the components needed by the constructor for the conclusion. Use `fun hy => (?_ : gluedLat q c p L f ≤ T) hy` and prove the remaining obligations. Use `sup_le (sup_le (sup_le ?_ (Submodule.span_le.2 ?_)) (Submodule.span_le.2 ?_)) (Submodule.span_le.2 ?_)` and prove the remaining obligations. Introduce and unpack `_ ⟨x, hx, rfl⟩`. Conclude with `⟨0, by simpa [inX] using hx, fun i => by simp [inX]⟩`.
+
+Introduce and unpack `_ rfl`. Use `⟨1, ?_, fun i => ⟨fun hi => ?_, fun hi => ?_, fun hi => ?_⟩⟩` and prove the remaining obligations. Use `L.zero_mem` and compare the differences between its conclusion and the goal. Use extensionality with `j`. Simplify using `[inX, avec]`.
+
+Simplify using `[inX, avec, hi.ne]`. Simplify using `[inX, avec, hi]`. Simplify using `[inX, avec, hi.ne']`. Introduce and unpack `_ ⟨j, -, hj, -, rfl⟩`. Use `⟨0, by simp [avec], fun i => ⟨fun hi => ?_, fun hi => ?_, fun hi => ?_⟩⟩` and prove the remaining obligations.
+
+Simplify using `only [avec, Sum.elim_inr] split_ifs exacts [one_mem _, zero_mem _]`. Simplify using `[avec, show i.val + 1 ≠ j by omega]`. Simplify using `[avec, show i.val + 1 ≠ j by omega]`. Introduce and unpack `_ ⟨j, hj, -, rfl⟩`. Use `⟨0, ?_, fun i => ⟨fun hi => ?_, fun hi => ?_, fun hi => ?_⟩⟩` and prove the remaining obligations.
+
+Use `L.zero_mem` and compare the differences between its conclusion and the goal. Use extensionality with `j`. Simplify using `[avec]`. Simplify using `[avec, show i.val + 1 ≠ j by omega]`. Simplify using `[avec, show i.val + 1 ≠ j by omega]`.
+
+Apply the tactic sequence `by_cases h : i.val + 1 = j <;> simp [avec, h, hq]`. Introduce and unpack `⟨s, hs, h⟩`. Establish `hy : y = inX k n c (y ∘ Sum.inl - s • f) + s • (q.inv • avec k n c p + inX k n c f) + ∑ i : Fin c, (if i.val + 1 = p then 0 else y (Sum.inr i)) • avec k n c (i.val + 1)`. Rewrite using `[sum_smul_avec]`. Use extensionality with `(j | j)`.
+
+Simplify using `[inX, avec]`. Establish `hs' : ∀ z : k, s • z = (s : k) * z` using `fun _ => rfl`. Distinguish the cases in `hj : j.val + 1 = p`. Simplify using `[inX, avec, Fin.val_inj, hj, (h j).2.1 hj, hs', mul_comm]`. Simplify using `[inX, avec, Fin.val_inj, hj]`.
+
+Rewrite using `[hy]`. Use `add_mem (add_mem ?_ ?_) (sum_mem fun i _ => ?_)` and prove the remaining obligations. Conclude with `Submodule.mem_sup_left (Submodule.mem_sup_left (Submodule.mem_sup_left ⟨_, hs, rfl⟩))`. Conclude with `Submodule.mem_sup_left (Submodule.mem_sup_left (Submodule.mem_sup_right (Submodule.smul_mem _ _ (Submodule.mem_span_singleton_self _))))`. Break down `lt_trichotomy (i.val + 1) p with hi | hi | hi` into its components or cases.
+
+Rewrite using `[if_neg hi.ne]`. Conclude with `Submodule.mem_sup_left (Submodule.mem_sup_right (Submodule.smul_mem _ (⟨_, (h i).1 hi⟩ : 𝒪[k]) (Submodule.subset_span ⟨_, by omega, hi, i.2, rfl⟩)))`. Simplify using `[hi]`. Rewrite using `[if_neg hi.ne']`. Use `Submodule.smul_mem _ (⟨_, (h i).2.2 hi⟩ : 𝒪[k]) (Submodule.subset_span (R := 𝒪[k]) (s := {y | ∃ i, p < i ∧ i ≤ c ∧ y = q.inv • avec k n c i}) ⟨_, hi, i.2, rfl⟩)` as an intermediate fact.
+
+Use `Submodule.mem_sup_right ?_` and prove the remaining obligations. Use `this using 1` and compare the differences between its conclusion and the goal. Express the relevant statement in the definitionally equal form `_ = ((q.1 : k) * y (Sum.inr i)) • q.inv • avec k n c (i.val + 1)`. Rewrite using `[smul_smul, mul_right_comm, hq, one_mul]`.
+-/
 theorem mem_gluedLat {q : Unif k} {p : ℕ} {L : Submodule 𝒪[k] (n → k)} {f : n → k} {y : n ⊕ Fin c → k} :
     y ∈ gluedLat q c p L f ↔ ∃ s : 𝒪[k], y ∘ Sum.inl - s • f ∈ L ∧ ∀ i : Fin c,
       (i.val + 1 < p → y (Sum.inr i) ∈ 𝒪[k]) ∧ (i.val + 1 = p → y (Sum.inr i) = q.inv * s) ∧
@@ -506,6 +687,9 @@ theorem mem_gluedLat {q : Unif k} {p : ℕ} {L : Submodule 𝒪[k] (n → k)} {f
         change _ = ((q.1 : k) * y (Sum.inr i)) • q.inv • avec k n c (i.val + 1)
         rw [smul_smul, mul_right_comm, hq, one_mul]
 
+/- English proof (translation)
+Use extensionality with `y`. Simplify using `only [mem_gluedLat]`. Use `exists_congr fun s => and_congr_left' ?_` and prove the remaining obligations. Rewrite using `[← L.add_mem_iff_left (L.smul_mem s h), smul_sub, sub_add_sub_cancel]`.
+-/
 theorem gluedLat_congr (q : Unif k) (c p : ℕ) {L : Submodule 𝒪[k] (n → k)} {f f' : n → k} (h : f - f' ∈ L) :
     gluedLat q c p L f = gluedLat q c p L f' := by
   ext y
@@ -513,6 +697,11 @@ theorem gluedLat_congr (q : Unif k) (c p : ℕ) {L : Submodule 𝒪[k] (n → k)
   refine exists_congr fun s => and_congr_left' ?_
   rw [← L.add_mem_iff_left (L.smul_mem s h), smul_sub, sub_add_sub_cancel]
 
+/- English proof (translation)
+Rewrite using `[mem_gluedLat]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨s, hs, h⟩`. Establish `h0` using `(h ⟨p - 1, by omega⟩).2.1 (by simp; omega)`. Establish `: s = 0` using `by simpa [inX, Unif.inv, q.ne_zero] using h0`.
+
+Simplify `hs` using `[this, inX]`. Conclude with `fun hx => ⟨0, by simpa [inX] using hx, fun i => by simp [inX]⟩`.
+-/
 theorem inX_mem_gluedLat {q : Unif k} {p : ℕ} (h1 : 1 ≤ p) (hp : p ≤ c) {L : Submodule 𝒪[k] (n → k)} {f x : n → k} :
     inX k n c x ∈ gluedLat q c p L f ↔ x ∈ L := by
   rw [mem_gluedLat]
@@ -565,6 +754,11 @@ instance (P : Pair k n) (q : Unif k) (c p : ℕ) : (P.glued q c p).IsLattice k :
 
 variable [Fintype n] [DecidableEq n]
 
+/- English proof (translation)
+Use extensionality with `y`. Establish `h : (RootEx.embX c g)⁻¹ • y = Sum.elim (g⁻¹ • (y ∘ Sum.inl)) (y ∘ Sum.inr)`. Rewrite using `[← map_inv]`. Express the relevant statement in the definitionally equal form `fromBlocks (g⁻¹ : GL n k).val 0 0 1 *ᵥ y = _`. Rewrite using `[fromBlocks_mulVec]`.
+
+Simplify using `only [zero_mulVec, one_mulVec, add_zero, zero_add]`. Both sides reduce to the same expression. Simplify using `only [mem_smul_iff, h, mem_gluedLat, Sum.elim_comp_inl, Sum.elim_inr, Function.comp_apply, smul_sub, smul_comm g⁻¹, inv_smul_smul]`.
+-/
 theorem embX_smul_gluedLat (g : GL n k) (q : Unif k) (c p : ℕ) (L : Submodule 𝒪[k] (n → k)) (f : n → k) :
     RootEx.embX c g • gluedLat q c p L f = gluedLat q c p (g • L) (g • f) := by
   ext y
@@ -582,6 +776,11 @@ end Glued
 section Spherical
 variable [Fintype n] [DecidableEq n]
 
+/- English proof (translation)
+Set `e : L ≃ₗ[𝒪[k]] L'` to `LinearEquiv.ofFinrankEq _ _ (by`. Rewrite using `[Submodule.IsLattice.finrank_of_pi k, Submodule.IsLattice.finrank_of_pi k])`. Take `⟨g, hg⟩` from `exists_gl_of_equiv e`. Use `⟨g, Submodule.ext fun x => mem_smul_iff.trans ⟨fun h => ?_, fun h => ?_⟩⟩` and prove the remaining obligations. Rewrite using `[← smul_inv_smul g x, hg ⟨_, h⟩]`.
+
+Conclude with `(e _).2`. Take `⟨y, hy⟩` from `e.surjective ⟨x, h⟩`. Establish `hx : x = g • (y : n → k)` using `by rw [hg, hy]`. Rewrite using `[hx, inv_smul_smul]`. Conclude with `y.2`.
+-/
 theorem exists_smul_lat (L L' : Submodule 𝒪[k] (n → k)) [L.IsLattice k] [L'.IsLattice k] :
     ∃ g : GL n k, g • L = L' := by
   let e : L ≃ₗ[𝒪[k]] L' := LinearEquiv.ofFinrankEq _ _ (by
@@ -612,19 +811,33 @@ end Spherical
 
 section Examples
 
+/- English proof (translation)
+The claim follows from `if_pos (maps_iff_hasVal.2 fun y a h => by simpa using h)`.
+-/
 example [Fintype n] [DecidableEq n] (P : Pair k n) : phiOne P P 1 = 1 :=
   if_pos (maps_iff_hasVal.2 fun y a h => by simpa using h)
 
+/- English proof (translation)
+The claim follows from `if_neg fun h => by have h1 := maps_iff_hasVal.1 h _ _ P.hasVal_vec rw [zero_mulVec] at h1 exact one_ne_zero (h1.unique (Pair.mem_ker.1 (zero_mem _)))`.
+-/
 example [Fintype n'] (P : Pair k n') (Q : Pair k n) : phiOne P Q 0 = 0 :=
   if_neg fun h => by
     have h1 := maps_iff_hasVal.1 h _ _ P.hasVal_vec
     rw [zero_mulVec] at h1
     exact one_ne_zero (h1.unique (Pair.mem_ker.1 (zero_mem _)))
 
+/- English proof (translation)
+Simplify using `only [Pair.mem_ker, stdPair_hasVal, residue_eq_zero_iff]`.
+-/
 example [Fintype n] (i : n) (x : n → k) :
     x ∈ (stdPair k i).ker ↔ ∃ h : ∀ j, x j ∈ 𝒪[k], (⟨x i, h i⟩ : 𝒪[k]) ∈ maximalIdeal 𝒪[k] := by
   simp only [Pair.mem_ker, stdPair_hasVal, residue_eq_zero_iff]
 
+/- English proof (translation)
+Use `Pair.ext fun x a => ?_` and prove the remaining obligations. Take `⟨y, rfl⟩ : ∃ y, x = g • y` from `⟨g⁻¹ • x, (smul_inv_smul g x).symm⟩`. Rewrite using `[Pair.smul_hasVal, inv_smul_smul, Pair.dia_hasVal, inv_inv, hg]`. Use `⟨fun h => h.smul _, fun h => ?_⟩` and prove the remaining obligations. Use `h.smul (s⁻¹ : 𝒪[k]ˣ)` as an intermediate fact.
+
+Rewrite `this` using `[smul_smul, Units.inv_mul, one_smul]`. Use `this using 1` and compare the differences between its conclusion and the goal. Express the relevant statement in the definitionally equal form `a = _ * (residue 𝒪[k] s * a)`. Rewrite using `[← mul_assoc, ← map_mul, Units.inv_mul, map_one, one_mul]`.
+-/
 theorem scalar_smul_eq [Fintype n] [DecidableEq n] (g : GL n k) (s : 𝒪[k]ˣ) (hg : ∀ x : n → k, g • x = (s : 𝒪[k]) • x)
     (P : Pair k n) : g • P = (Units.map (residue 𝒪[k]).toMonoidHom s)⁻¹ • P := by
   refine Pair.ext fun x a => ?_
@@ -637,6 +850,11 @@ theorem scalar_smul_eq [Fintype n] [DecidableEq n] (g : GL n k) (s : 𝒪[k]ˣ) 
   change a = _ * (residue 𝒪[k] s * a)
   rw [← mul_assoc, ← map_mul, Units.inv_mul, map_one, one_mul]
 
+/- English proof (translation)
+Take `⟨P⟩ : Nonempty (Pair k n)` from `inferInstance`. Introduce `h`. Establish `h1` using `dia_sub_mem_Mram (k := k) (n := n) (Pi.single P (1 : ℂ)) c`. Rewrite `h1` using `[h, Submodule.mem_bot]`. Establish `h2` using `congrFun h1 P`.
+
+Simplify using `[dia_smul_eq_iff, hc] at h2`.
+-/
 theorem Mram_ne_bot [Fintype n] [Nonempty n] {c : 𝓀[k]ˣ} (hc : c ≠ 1) : Mram k n ℂ ≠ ⊥ := by
   classical
   obtain ⟨P⟩ : Nonempty (Pair k n) := inferInstance
@@ -646,10 +864,16 @@ theorem Mram_ne_bot [Fintype n] [Nonempty n] {c : 𝓀[k]ˣ} (hc : c ≠ 1) : Mr
   have h2 := congrFun h1 P
   simp [dia_smul_eq_iff, hc] at h2
 
+/- English proof (translation)
+Rewrite using `[Pair.glued, mem_gluedLat, Pair.mem_lat_iff]`. Simplify using `[inX, Pair.hasVal_iff P.hasVal_vec]`.
+-/
 example (P : Pair k n) (q : Unif k) (x : n → k) : inX k n 0 x ∈ P.glued q 0 1 ↔ x ∈ P.lat := by
   rw [Pair.glued, mem_gluedLat, Pair.mem_lat_iff]
   simp [inX, Pair.hasVal_iff P.hasVal_vec]
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨(stdPair k 0).toGlue⟩`.
+-/
 example (r : ℕ) : Nonempty (GluePair k (Fin (r + 1))) := ⟨(stdPair k 0).toGlue⟩
 
 end Examples

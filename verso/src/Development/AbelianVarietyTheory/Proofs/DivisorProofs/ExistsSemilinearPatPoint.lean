@@ -29,9 +29,17 @@ section Lie
 variable {O : Type} [CommRing O] {G : Over (Sp O)} [GrpObj G] [IsCommMonObj G]
 
 omit [IsCommMonObj G] in
+/- English proof (translation)
+The claim follows from `Chart.isTan_iff w`.
+-/
 theorem isTangent_iff (w : epsR O ⟶ G) :
     ptMap (TrivSqZeroExt.fstHom O O O) ≫ w = toUnit (specO O O) ≫ η[G] ↔ IsTangent w := Chart.isTan_iff w
 
+/- English proof (translation)
+Take `⟨h₁, h₂, h₃, -⟩` from `LieComb.lieComb_algebra O G n e he.1`. Use `choose co hco hu using fun x : LieG G => he.2 x.1 ((isTangent_iff _).1 x.2)`. Establish `hb : Function.Bijective co` using `⟨fun x y h => Subtype.ext ((h₁ _).unique (hco x) (h ▸ hco y)), fun a => by`. Take `⟨w, hw, -⟩` from `h₁ a`. Conclude with `⟨⟨w, (isTangent_iff _).2 (h₂ _ _ hw)⟩, (hu _ _ hw).symm⟩⟩`.
+
+Use `⟨Equiv.ofBijective co hb, fun x y => ?_, fun c x => ?_, fun x a h => (hu x a h).symm⟩` and prove the remaining obligations. Use `h₃ 2 ![co x, co y] ![x.1, y.1] ![1, 1] _ (fun i => by fin_cases i; exacts [hco x, hco y]) (IntCoord.isLieComb_mul x.1 y.1)` as an intermediate fact. Simplify using `using (hu (lieAdd x y) _ this).symm`. Use `h₃ 1 ![co x] ![x.1] ![c] _ (fun i => by fin_cases i; exact hco x) ((IntCoord.isLieComb_one_iff c x.1 _).2 rfl)` as an intermediate fact. Simplify using `using (hu (AvDefs.lieScale G c x) _ this).symm`.
+-/
 theorem exists_coord {n : ℕ} {e : Fin n → (epsR O ⟶ G)} (he : IsLieBasis e) :
     ∃ co : LieG G ≃ (Fin n → O), (∀ x y, co (lieAdd x y) = co x + co y) ∧
       (∀ c x, co (AvDefs.lieScale G c x) = c • co x) ∧ ∀ x a, IsLieComb a e x.1 → co x = a := by
@@ -51,6 +59,31 @@ theorem exists_coord {n : ℕ} {e : Fin n → (epsR O ⟶ G)} (he : IsLieBasis e
 variable {K : Type} [Field K] [NumberField K] {C : Type} [Field C] [Algebra O C] {i : K →+* C} {j : 𝓞 K →+* O}
   {P : Out.PolAV (Sp (𝓞 K))} (F : GenFib P) {φ : G.left ⟶ P.A.left}
 
+/- English proof (translation)
+Take `⟨N, r, M, hr, hM, -, hloc⟩` from `LieGlue.exists_cover_lieLat K P F`. Choose the witnesses or unpack the hypotheses as in `⟨t, ht⟩ : ∃ t, IsUnit (j (r t)) := by`. Assume the negation of the conclusion as `h`. Use `Ideal.comap_ne_top j (IsLocalRing.maximalIdeal.isMaximal O).ne_top ?_` and prove the remaining obligations. Rewrite using `[eq_top_iff, ← hr]`.
+
+Conclude with `Ideal.span_le.2 (by rintro _ ⟨t, rfl⟩; exact fun hu => h ⟨t, hu⟩)`. Set `R` to `Localization.subalgebra.ofField K (Submonoid.powers (r t)) (powers_le_nonZeroDivisors_of_noZeroDivisors (hM t).1)`. Establish `e₁ : (algebraMap R K).comp (algebraMap (𝓞 K) R) = algebraMap (𝓞 K) K` using `(IsScalarTower.algebraMap_eq _ _ _).symm`. Set `ψ : R →+* O` to `IsLocalization.Away.lift (r t) ht`. Establish `hρ : ψ.comp (algebraMap (𝓞 K) R) = j` using `IsLocalization.Away.lift_comp _ ht`.
+
+Establish `hψi : (algebraMap O C).comp ψ = i.comp (algebraMap R K)`. Use `IsLocalization.ringHom_ext (Submonoid.powers (r t)) ?_` and prove the remaining obligations. Rewrite using `[RingHom.comp_assoc, hρ, RingHom.comp_assoc, e₁]`. Conclude with `RingHom.ext hj`. Set `GR` to `(Over.pullback (spMap (algebraMap (𝓞 K) R))).obj P.A`.
+
+Establish `hp : IsGrpPullback GR P.A (spMap (algebraMap (𝓞 K) R)) (pullback.fst _ _)` using `isGrpPullback_pullback _ _`. Establish `es₁ : spMap (algebraMap (𝓞 K) K) = spMap (algebraMap R K) ≫ spMap (algebraMap (𝓞 K) R)`. Rewrite using `[spMap_comp_spMap, e₁]`. Establish `hF : IsGrpPullback F.P₀.A P.A (spMap (algebraMap (𝓞 K) K)) F.φ` using `F.fib.2.1`. Establish `w₁ : F.φ ≫ P.A.hom = (F.P₀.A.hom ≫ spMap (algebraMap R K)) ≫ spMap (algebraMap (𝓞 K) R)`.
+
+Rewrite using `[hF.1.w, es₁, Category.assoc]`. Establish `f₁` using `hp.1.lift_fst _ _ w₁`. Establish `hζ : IsGrpPullback F.P₀.A GR (spMap (algebraMap R K)) (hp.1.lift _ _ w₁)` using `IsGrpPullback.cancel hp (hF.congr es₁ f₁.symm) (hp.1.lift_snd _ _ w₁)`. Take `⟨e, he, hx⟩` from `hloc t R GR (pullback.fst _ _) (hp.1.lift _ _ w₁) (IsLocalization.map_units R (⟨r t, Submonoid.mem_powers _⟩ : Submonoid.powers (r t))) hp hζ f₁`. Use `choose e₀ he₀ hM₀ using hx`.
+
+Establish `hin` using `(LieLoc.lieLat_localization K P F R (Submonoid.powers (r t)) GR (pullback.fst _ _) (hp.1.lift _ _ w₁) e e₀ (M t) hp hζ f₁ he fun k => ⟨he₀ k, hM₀ k⟩).1`. Establish `es₂ : spMap j = spMap ψ ≫ spMap (algebraMap (𝓞 K) R)` using `by rw [spMap_comp_spMap, hρ]`. Establish `w₂ : φ ≫ P.A.hom = (G.hom ≫ spMap ψ) ≫ spMap (algebraMap (𝓞 K) R)`. Rewrite using `[hφ.1.w, es₂, Category.assoc]`. Establish `f₂` using `hp.1.lift_fst _ _ w₂`.
+
+Establish `hq : IsGrpPullback G GR (spMap ψ) (hp.1.lift _ _ w₂)` using `IsGrpPullback.cancel hp (hφ.congr es₂ f₂.symm) (hp.1.lift_snd _ _ w₂)`. Use `haveI := P.isAb.comm`. Use `haveI := F.P₀.isAb.comm`. Establish `hsm : Smooth GR.hom` using `by haveI := P.smoothDim haveI : Smooth P.A.hom := SmoothOfRelativeDimension.smooth P.g _`. Conclude with `MorphismProperty.of_isPullback (P := @Smooth) hp.1 inferInstance`.
+
+Take `⟨e', hb, he'⟩` from `GlobalTheory.exists_isLieBasis_baseChange R O ψ GR G _ hq hsm _ e he`. Use `⟨e', M t, hb, (hM t).2, fun k => ?_, fun u c x ⟨hu, w, hw, hc⟩ hx => ?_⟩` and prove the remaining obligations. Take `⟨_, ⟨m, rfl⟩, hs⟩` from `hin k`. Take `⟨s, hs'⟩` from `(ht.pow m).exists_left_inv`. Establish `eq : i ∘ M t k = s • i ∘ (r t ^ m • M t k)` using `funext fun l => by`.
+
+Use `congrArg (algebraMap O C) hs'` as an intermediate fact. Rewrite `this` using `[map_mul, ← map_pow, hj, map_one]`. Rewrite using `[Pi.smul_apply, Function.comp_apply, Function.comp_apply, Pi.smul_apply, Algebra.smul_def, Algebra.smul_def, map_mul, ← _root_.mul_assoc]`. Conclude with `((congrArg (· * _) this).trans (_root_.one_mul _)).symm`. Rewrite using `[eq]`.
+
+Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span ⟨_, hs, rfl⟩)`. Take `⟨u', hu', -⟩` from `existsUnique_isVecOver (f := algebraMap (𝓞 K) R) (A' := GR) hp.1 u`. Take `⟨a, ha, -⟩` from `he.2 u' (hu'.isTangent hp hu)`. Establish `h₃` using `Chart.comb_baseChange _ hζ ha he₀ (EllComp.isVecOver_cancel hp.1 hζ.1 hu' (by rw [e₁, f₁]; exact hw))`. Establish `h₄` using `Chart.comb_baseChange _ hq ha he' (EllComp.isVecOver_cancel hp.1 hq.1 hu' (by rw [hρ, f₂]; exact hx))`.
+
+Take `⟨-, ht', hcomp, -⟩` from `LieComb.lieComb_algebra K F.P₀.A _ F.v F.basis.1`. Use `⟨_, h₄, funext fun l => ?_⟩` and prove the remaining obligations. Rewrite using `[(F.basis.2 w (ht' _ _ hc)).unique hc (hcomp _ (M t) e₀ _ w hM₀ h₃)]`. Rewrite using `[Function.comp_apply, Finset.sum_apply, Finset.sum_apply, map_sum]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[Pi.smul_apply, Pi.smul_apply, smul_eq_mul, map_mul, Algebra.smul_def]`. Conclude with `congrArg (· * i (M t k l)) (RingHom.congr_fun hψi (a k)).symm`.
+-/
 theorem exists_basis [IsLocalRing O] (hj : ∀ a, algebraMap O C (j a) = i a) (hφ : IsGrpPullback G P.A (spMap j) φ) :
     ∃ (e : Fin F.P₀.g → (epsR O ⟶ G)) (M : Matrix (Fin F.P₀.g) (Fin F.P₀.g) K), IsLieBasis e ∧ M.det ≠ 0 ∧
       (∀ k, i ∘ M k ∈ Submodule.span O ((fun c => i ∘ c) '' (F.lieLat : Set (Fin F.P₀.g → K)))) ∧
@@ -123,6 +156,47 @@ theorem exists_basis [IsLocalRing O] (hj : ∀ a, algebraMap O C (j a) = i a) (h
     rw [Pi.smul_apply, Pi.smul_apply, smul_eq_mul, map_mul, Algebra.smul_def]
     exact congrArg (· * i (M t k l)) (RingHom.congr_fun hψi (a k)).symm
 
+/- English proof (translation)
+Take `⟨e, M, he, hM, hML, hover⟩` from `exists_basis F hj hφ`. Take `⟨co, c₁, c₂, c₃⟩` from `exists_coord he`. Establish `hd : IsUnit (M.map i).det`. Rewrite using `[← RingHom.mapMatrix_apply, ← RingHom.map_det]`. Conclude with `((map_ne_zero i).2 hM).isUnit`.
+
+Set `ν : (Fin F.P₀.g → O) →ₗ[O] (Fin F.P₀.g → C)` to `Fintype.linearCombination O fun k => i ∘ M k`. Establish `hν : ∀ a, ν a = Matrix.vecMul (algebraMap O C ∘ a) (M.map i)` using `fun a => funext fun l => by`. Simplify using `[ν, Fintype.linearCombination_apply, Matrix.vecMul, dotProduct, Algebra.smul_def]`. Establish `hν' : ∀ a, Matrix.vecMul (ν a) (M.map i)⁻¹ = algebraMap O C ∘ a` using `fun a => by`. Rewrite using `[hν, Matrix.vecMul_vecMul, Matrix.mul_nonsing_inv _ hd, Matrix.vecMul_one]`.
+
+Establish `hinj : ∀ x y, ν (co x) = ν (co y) → x = y` using `fun x y h => co.injective (funext fun k => hO (congrFun ((hν' (co x)).symm.trans ((congrArg (Matrix.vecMul · (M.map i)⁻¹) h).trans (hν' (co y)))) k))`. Establish `hκ : ∀ u c (x : LieG G), F.IsCoord u c → IsVecOver j φ u x.1 → ν (co x) = i ∘ c` using `fun u c x hc hx => by`. Take `⟨a, ha, e⟩` from `hover u c x.1 hc hx`. Rewrite using `[c₃ x a ha, e, Fintype.linearCombination_apply]`. Set `bl : (Fin F.P₀.g → O) →ₗ[O] W` to `{ toFun := fun a => b (co.symm a) map_add' := fun a a' => by`.
+
+Rewrite using `[← hadd]`. Conclude with `congrArg b (co.symm_apply_eq.2 (by rw [c₁, co.apply_symm_apply, co.apply_symm_apply]))`. Use the proof step `map_smul' := fun c a => by`. Rewrite using `[RingHom.id_apply, ← hsmul]`. Conclude with `congrArg b (co.symm_apply_eq.2 (by rw [c₂, co.apply_symm_apply])) }`.
+
+Set `β : (Fin F.P₀.g → C) →ₗ[C] W` to `Fintype.linearCombination C (fun k => bl (Pi.single k 1)) ∘ₗ Matrix.vecMulLinear (M.map i)⁻¹`. Establish `hβ : ∀ x, β (ν (co x)) = b x` using `fun x => by`. Establish `: b x = bl (co x)` using `congrArg b (co.symm_apply_apply x).symm`. Rewrite using `[this, LinearMap.comp_apply, Matrix.vecMulLinear_apply, hν', Fintype.linearCombination_apply, LinearMap.pi_apply_eq_sum_univ bl]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[Function.comp_apply, algebraMap_smul]`. Use `congr 2`. Use function extensionality and compare the values at `l`. Simplify using `[Pi.single_apply, eq_comm]`. Set `θ : (Fin F.P₀.g → K) →ₛₗ[i] W` to `{ toFun := fun c => β (i ∘ c) map_add' := fun c c' => by rw [← map_add]; exact congrArg β (funext fun l => map_add i _ _) map_smul' := fun s c => by rw [← map_smul]; exact congrArg β (funext fun l => map_mul i _ _) }`.
+
+Use `⟨θ, fun u c x hc hx => by rw [← hβ, hκ u c x hc hx]; rfl, fun {Λ} _ act α hα τ w => ?_⟩` and prove the remaining obligations. Take `⟨r, hr, hre⟩` from `GenFib.exists_lieRep_eigLat K P F Λ act`. Establish `lift : ∀ c ∈ F.lieLat, ∃ x, ν (co x) = i ∘ c ∧ ∀ a, ν (co (AvDefs.lieAct G α a x)) = i ∘ r a c` using `fun c hc => by`. Take `⟨u, hu⟩` from `((integral_tangent_coordinates K P F).2.2.2.2.1 c).1 hc`. Take `⟨x, hx, -⟩` from `existsUnique_isVecOver hφ.1 u`.
+
+Use `⟨⟨x, (isTangent_iff _).2 (hx.isTangent hφ hu.1)⟩, hκ u c _ hu hx, fun a => hκ _ _ _ (hr a u c hu) ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `(x ≫ α.act a).left ≫ φ = _`. Rewrite using `[Over.comp_left, Over.comp_left, Category.assoc, hα, ← Category.assoc, hx, Category.assoc]`. Establish `hmv : ∀ (A : Matrix (Fin F.P₀.g) (Fin F.P₀.g) K) c, (A.map i).mulVec (i ∘ c) = i ∘ A.mulVec c` using `fun A c =>`. Use function extensionality and compare the values at `fun l => (RingHom.map_mulVec i A c l).symm`.
+
+Establish `hlin : ∀ a, ∀ z ∈ Submodule.span O ((fun c => i ∘ c) '' (F.lieLat : Set (Fin F.P₀.g → K))), ∃ x, ν (co x) = z ∧ ν (co (AvDefs.lieAct G α a x)) = ((LinearMap.toMatrix' (r a)).map i).mulVec z` using `fun a z hz => by haveI := α.hom a`. Proceed by induction on `hz using Submodule.span_induction with`. Consider the case `mem _ hc`. Take `⟨c, hc, rfl⟩` from `hc`. Take `⟨x, h₁, h₂⟩` from `lift c hc`.
+
+Conclude with `⟨x, h₁, by rw [h₂, hmv, LinearMap.toMatrix'_mulVec]⟩`. Consider the case `zero`. Use `⟨AvDefs.lieScale G 0 (lieZero G), by rw [c₂, zero_smul, map_zero], ?_⟩` and prove the remaining obligations. Rewrite using `[show AvDefs.lieAct G α a (AvDefs.lieScale G 0 (lieZero G)) = AvDefs.lieScale G 0 (AvDefs.lieAct G α a (lieZero G)) from Subtype.ext (Category.assoc _ _ _), c₂, zero_smul, map_zero, Matrix.mulVec_zero]`. Consider the case `add _ _ _ _ hx hy`.
+
+Take `⟨x, rfl, hx⟩` from `hx`. Take `⟨y, rfl, hy⟩` from `hy`. Use `⟨lieAdd x y, by rw [c₁, map_add], ?_⟩` and prove the remaining obligations. Rewrite using `[show AvDefs.lieAct G α a (lieAdd x y) = lieAdd (AvDefs.lieAct G α a x) (AvDefs.lieAct G α a y) from Subtype.ext (MonObj.mul_comp _ _ _), c₁, map_add, hx, hy, Matrix.mulVec_add]`. Consider the case `smul s _ _ hx`.
+
+Take `⟨x, rfl, hx⟩` from `hx`. Use `⟨AvDefs.lieScale G s x, by rw [c₂, map_smul], ?_⟩` and prove the remaining obligations. Rewrite using `[show AvDefs.lieAct G α a (AvDefs.lieScale G s x) = AvDefs.lieScale G s (AvDefs.lieAct G α a x) from Subtype.ext (Category.assoc _ _ _), c₂, map_smul, hx, Matrix.mulVec_smul]`. Establish `hτ : ∀ a (z : Fin F.P₀.g → C), j (τ a) • z = i (τ a : 𝓞 K) • z` using `fun a z => by`. Rewrite using `[← hj, algebraMap_smul]`.
+
+Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨⟨x, hx⟩, rfl⟩`. Establish `h₀ : ν (co x) ∈ Submodule.span O ((fun c => i ∘ c) '' (F.lieLat : Set (Fin F.P₀.g → K)))`. Rewrite using `[Fintype.linearCombination_apply]`. Conclude with `Submodule.sum_mem _ fun k _ => Submodule.smul_mem _ _ (hML k)`.
+
+Establish `h₁` using `mem_span_solutions hO hj F.lieLat (fun a => LinearMap.toMatrix' (r a) - ((τ a : 𝓞 K) : K) • (1 : Matrix (Fin F.P₀.g) (Fin F.P₀.g) K)) h₀ fun a => by`. Take `⟨y, h₂, h₃⟩` from `hlin a _ h₀`. Rewrite `h₃` using `[hinj _ _ h₂, hx a, c₂, map_smul, RingHom.comp_apply, hτ]`. Establish `: (((τ a : 𝓞 K) : K) • (1 : Matrix (Fin F.P₀.g) (Fin F.P₀.g) K)).map i = i (τ a : 𝓞 K) • 1`. Use extensionality with `k l`.
+
+Rewrite using `[Matrix.map_apply, Matrix.smul_apply, Matrix.smul_apply, smul_eq_mul, smul_eq_mul, map_mul, Matrix.one_apply, Matrix.one_apply, apply_ite i, map_one, map_zero]`. Rewrite using `[Matrix.map_sub _ (map_sub i), Matrix.sub_mulVec, ← h₃, this, Matrix.smul_mulVec, Matrix.one_mulVec, sub_self]`. Establish `h₄` using `Submodule.mem_map_of_mem (f := β.restrictScalars O) h₁`. Rewrite `h₄` using `[Submodule.map_span, LinearMap.restrictScalars_apply, hβ]`. Use `Submodule.span_mono ?_ h₄` and prove the remaining obligations.
+
+Introduce and unpack `_ ⟨_, ⟨c, ⟨hc, hc'⟩, rfl⟩, rfl⟩`. Use `⟨c, (hre τ c).1.2 ⟨hc, fun a => ?_⟩, rfl⟩` and prove the remaining obligations. Use `hc' a` as an intermediate fact. Rewrite `this` using `[Matrix.sub_mulVec, Matrix.smul_mulVec, Matrix.one_mulVec, LinearMap.toMatrix'_mulVec, sub_eq_zero]`. Then use the resulting hypothesis. Introduce `hw`.
+
+Proceed by induction on `hw using Submodule.span_induction with`. Consider the case `mem _ hc`. Take `⟨c, hc, rfl⟩` from `hc`. Take `⟨h₁, h₂⟩` from `(hre τ c).1.1 hc`. Take `⟨x, h₃, h₄⟩` from `lift c h₁`.
+
+Use `⟨⟨x, fun a => hinj _ _ ?_⟩, by rw [← hβ, h₃]; rfl⟩` and prove the remaining obligations. Rewrite using `[h₄, h₂, c₂, map_smul, h₃, RingHom.comp_apply, hτ]`. Conclude with `funext fun l => map_mul i _ _`. Consider the case `zero => exact ⟨⟨_, isEig_lieScale α 0 (isEig_lieZero α _)⟩, by rw [hsmul, zero_smul]⟩`. Consider the case `add _ _ _ _ hx hy`.
+
+Take `⟨x, rfl⟩` from `hx`. Take `⟨y, rfl⟩` from `hy`. Conclude with `⟨⟨_, isEig_lieAdd α x.2 y.2⟩, hadd _ _⟩`. Consider the case `smul s _ _ hx`. Take `⟨x, rfl⟩` from `hx`.
+
+Conclude with `⟨⟨_, isEig_lieScale α s x.2⟩, hsmul _ _⟩`.
+-/
 theorem exists_semilinear [IsLocalRing O] (hO : Function.Injective (algebraMap O C))
     (hj : ∀ a, algebraMap O C (j a) = i a) (hφ : IsGrpPullback G P.A (spMap j) φ) {W : Type} [AddCommGroup W]
     [Module C W] [Module O W] [IsScalarTower O C W] (b : LieG G → W) (hadd : ∀ x y, b (lieAdd x y) = b x + b y)
@@ -246,6 +320,13 @@ theorem exists_semilinear [IsLocalRing O] (hO : Function.Injective (algebraMap O
 
 end Lie
 
+/- English proof (translation)
+Establish `key : ∀ a, Submodule.span O {ψ a (y a)} = Submodule.span O (θ '' S.map ((M a).restrictScalars (𝓞 K)))` using `fun a => by`. Use `congrArg (Submodule.map ((ψ a).restrictScalars O)) (hy a)` as an intermediate fact. Rewrite `this` using `[Submodule.map_span, Submodule.map_span, Set.image_singleton, Set.image_image]`. Use `this.trans ?_` and prove the remaining obligations. Rewrite using `[Submodule.map_coe, Set.image_image]`.
+
+Conclude with `congrArg _ (Set.image_congr (h a))`. Use `le_antisymm (Submodule.span_le.2 ?_) (Submodule.span_le.2 ?_)` and prove the remaining obligations. Introduce and unpack `_ ⟨a, rfl⟩`. Conclude with `Submodule.span_mono (Set.image_mono (le_iSup (fun a => S.map ((M a).restrictScalars (𝓞 K))) a)) ((key a).le (Submodule.mem_span_singleton_self _))`. Introduce and unpack `_ ⟨c, hc, rfl⟩`.
+
+Use `Submodule.iSup_induction _ (motive := fun c => θ c ∈ Submodule.span O (Set.range fun a => ψ a (y a))) hc (fun a c hc => ?_) (by simp) fun _ _ h₁ h₂ => by rw [map_add]; exact add_mem h₁ h₂` and prove the remaining obligations. Conclude with `Submodule.span_mono (Set.singleton_subset_iff.2 (Set.mem_range_self (f := fun a => ψ a (y a)) a)) ((key a).ge (Submodule.subset_span ⟨c, hc, rfl⟩))`.
+-/
 theorem span_range_eq {K C O V V' W W' J : Type} [Field K] [NumberField K] [Field C] [CommRing O] [Algebra O C]
     [AddCommGroup V] [Module K V] [Module (𝓞 K) V] [IsScalarTower (𝓞 K) K V] [AddCommGroup V'] [Module K V']
     [Module (𝓞 K) V'] [IsScalarTower (𝓞 K) K V'] [AddCommGroup W] [Module C W] [Module O W] [IsScalarTower O C W]
@@ -273,6 +354,9 @@ theorem span_range_eq {K C O V V' W W' J : Type} [Field K] [NumberField K] [Fiel
 
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {K : Type} [Field K] [NumberField K]
 
+/- English proof (translation)
+The claim follows from `(GlobalTheory.T.lieLattice_fg_and_span_eq_top_ringOfIntegers K P F).1.of_le (Submodule.span_mono fun _ ⟨u, h, _⟩ => ⟨u, h⟩)`.
+-/
 theorem fg_eigLat {P : Out.PolAV (Sp (𝓞 K))} (F : GenFib P) {Λ : Type} [CommRing Λ] (act : OAct Λ P.A)
     (τ : Λ →+* 𝓞 K) : (F.eigLat act τ).FG :=
   (GlobalTheory.T.lieLattice_fg_and_span_eq_top_ringOfIntegers K P F).1.of_le (Submodule.span_mono fun _ ⟨u, h, _⟩ => ⟨u, h⟩)
@@ -283,6 +367,11 @@ variable {ℓ : ℕ} [Fact ℓ.Prime] {C : Type} [Field C] [IsAlgClosed C] [Char
   [CommRing O] [Algebra O C] [Fact ¬IsUnit (ℓ : O)] [IsAdicComplete (Ideal.span {(ℓ : O)}) O] [Algebra ℤ_[ℓ] O]
   [Algebra ℤ_[ℓ] C] [IsScalarTower ℤ_[ℓ] O C] (hv : v.Integers O) (ε : Eps ℓ C) (i : K →+* C)
 
+/- English proof (translation)
+Use `letI := H.starRing`. Use `haveI : IsDomain O := hv.hom_inj.isDomain (algebraMap O C)`. Use `haveI : ValuationRing O := ValuationRing.of_integers v hv`. Take `⟨θ, h₁, h₂⟩` from `@exists_semilinear O _ (patPoint hv ε i T).Gt _ (patPoint hv ε i T).commGt K _ _ C _ _ i _ _ F _ _ hv.hom_inj (algebraMap_embO hv i) (isGrpPullback_pullback T.t.G (spMap (embO hv i))) _ _ _ _ _ (patPoint hv ε i T).bLie (patPoint hv ε i T).bLie_add (patPoint hv ε i T).bLie_scale`. Use `⟨θ, h₁, fun τ => Submodule.ext fun w => h₂ T.t.act (patPoint hv ε i T).oGt (fun a => ?_) τ w⟩` and prove the remaining obligations.
+
+Rewrite using `[goodPoint_oGt]`. Conclude with `pullback.lift_fst _ _ _`.
+-/
 theorem exists_semilinear_patPoint (T : PAT H (Sp (𝓞 K))) (F : GenFib T.pol) : letI := H.starRing
     ∃ θ : (Fin F.P₀.g → K) →ₛₗ[i] (patPoint hv ε i T).V,
       (∀ u c (x : LieG (patPoint hv ε i T).Gt), F.IsCoord u c →
@@ -301,6 +390,15 @@ theorem exists_semilinear_patPoint (T : PAT H (Sp (𝓞 K))) (F : GenFib T.pol) 
   rw [goodPoint_oGt]
   exact pullback.lift_fst _ _ _
 
+/- English proof (translation)
+Use `letI := H.starRing`. Substitute `hχ` using the available equality. Introduce `x y m hx hxs hy hm`. Take `⟨θ, h₁, h₂⟩` from `exists_semilinear_patPoint hv ε i B FB`. Take `⟨θ', h₁', h₂'⟩` from `exists_semilinear_patPoint hv ε i T FT`.
+
+Use `map_idx_eq hv.hom_inj (algebraMap_embO hv i) θ (iSup_le fun a => ?_) (fg_eigLat _ _ _) hr hx (hxs.trans (h₂ τ)) m ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨c, hc, rfl⟩`. Conclude with `LamF.diff_mem_eigLat (hf a).comm (hM a) τ hc`. Use `Eq.trans ?_ (span_range_eq θ θ' M (fun a => patV hv ε i (hf a)) _ (fun a c hc => ?_) _ fun a => (hy a).trans (h₂' τ))` and prove the remaining obligations. Conclude with `congrArg (fun z => Submodule.span O (Set.range z)) (funext fun a => ((patV_bLie hv ε i (hf a) (y a)).trans (hm a)).symm)`.
+
+Take `⟨u, hu, -⟩` from `((integral_tangent_coordinates K _ FT).2.2.2.2.2 _ _ τ c).1 hc`. Establish `hφ` using `isGrpPullback_pullback T.t.G (spMap (embO hv i))`. Take `⟨z, hz, -⟩` from `existsUnique_isVecOver (f := embO hv i) (A' := (patPoint hv ε i T).Gt) hφ.1 u`. Set `z' : LieG (patPoint hv ε i T).Gt` to `⟨z, (isTangent_iff _).2 (hz.isTangent hφ hu.1)⟩`. Use `(congrArg _ (h₁' u c z' hu hz).symm).trans ((patV_bLie hv ε i (hf a) z').trans (h₁ _ _ _ (hM a u c hu) ?_))` and prove the remaining obligations.
+
+Establish `e : ((Over.pullback (spMap (embO hv i))).map (f a)).left ≫ pullback.fst B.t.G.hom (spMap (embO hv i)) = pullback.fst T.t.G.hom (spMap (embO hv i)) ≫ (f a).left` using `pullback.lift_fst _ _ _`. Conclude with `(Category.assoc _ _ _).trans ((congrArg (z.left ≫ ·) e).trans ((Category.assoc _ _ _).symm.trans ((congrArg (· ≫ (f a).left) hz).trans (Category.assoc _ _ _))))`.
+-/
 theorem map_idx_pat {T B : PAT H (Sp (𝓞 K))} {n : ℕ} {f : Fin n → (T.t.G ⟶ B.t.G)}
     (hf : ∀ a, Serre.IsLinearHom T.t.act B.t.act (f a)) (FT : GenFib T.pol) (FB : GenFib B.pol)
     (M : Fin n → ((Fin FT.P₀.g → K) →ₗ[K] (Fin FB.P₀.g → K))) (hM : ∀ a, FT.IsDiffOf FB (f a) (M a))
@@ -344,22 +442,43 @@ variable {ρ : 𝓞 K} {σ₁ : K →+* ℂ} {p q : ℕ} {X : CMObj H K ρ σ₁
   {MP : Fin p → ((Fin FP.P₀.g → K) →ₗ[K] (Fin FB.P₀.g → K))} {MQ : Fin q → ((Fin FQ.P₀.g → K) →ₗ[K] (Fin FB.P₀.g → K))}
   {τ : 𝓞 E →+* 𝓞 K}
 
+/- English proof (translation)
+Introduce `h` and use `H.d_prime.ne_zero (by simpa [neg_eq_self.1 h] using X.ρ_sq)`.
+-/
 theorem neg_ne (X : CMObj H K ρ σ₁ p q) : -ρ ≠ ρ := fun h =>
   H.d_prime.ne_zero (by simpa [neg_eq_self.1 h] using X.ρ_sq)
 
+/- English proof (translation)
+Rewrite using `[← hτ, ← map_neg, ← EigDec.bar_rt]`. Both sides reduce to the same expression.
+-/
 theorem comp_bar_rt (hτ : τ H.rt = ρ) : τ.comp (H.bar : 𝓞 E →+* 𝓞 E) H.rt = -ρ := by
   rw [← hτ, ← map_neg, ← EigDec.bar_rt]
   rfl
 
+/- English proof (translation)
+Establish `h` using `(EigDec.eigen_decomposition E H K ρ X.B FB p q X.split X.typeB X.ρ_sq).1`. Conclude with `⟨(h _).trans (if_pos hτ), (h _).trans (if_neg (by rw [comp_bar_rt hτ]; exact neg_ne X))⟩`.
+-/
 theorem latRank_eigLat (FB : GenFib X.B.pol) (hτ : τ H.rt = ρ) : latRank K (FB.eigLat X.B.t.act τ) = p ∧
     latRank K (FB.eigLat X.B.t.act (τ.comp (H.bar : 𝓞 E →+* 𝓞 E))) = q := by
   have h := (EigDec.eigen_decomposition E H K ρ X.B FB p q X.split X.typeB X.ρ_sq).1
   exact ⟨(h _).trans (if_pos hτ), (h _).trans (if_neg (by rw [comp_bar_rt hτ]; exact neg_ne X))⟩
 
+/- English proof (translation)
+The claim follows from `(Submodule.finrank_eq_zero.1 h).le (Submodule.subset_span hc)`.
+-/
 theorem eq_zero_of_latRank {n : ℕ} {L : Submodule (𝓞 K) (Fin n → K)} (h : latRank K L = 0) {c : Fin n → K} (hc : c ∈ L) :
     c = 0 :=
   (Submodule.finrank_eq_zero.1 h).le (Submodule.subset_span hc)
 
+/- English proof (translation)
+Set `FA : ∀ b, GenFib (X.A b).pol` to `fun b => match b with`. Consider the case `true => FP`. Consider the case `false => FQ`. Set `M : ∀ k : Fin p ⊕ Fin q, (Fin (FA k.isLeft).P₀.g → K) →ₗ[K] (Fin FB.P₀.g → K)` to `fun k => match k with`. Consider the case `.inl a => MP a`.
+
+Consider the case `.inr a => MQ a`. Establish `h` using `(NumCompare.ind_concl_iff X FA FB M).1 (Indep.letters_independent thetaUnifAV_all abelianSchemeLaws_all.1 E H K ρ σ₁ p q X FA FB M fun k => match k with`. Consider the case `.inl a => hD.1 a`. Consider the case `.inr a => hD.2 a)`. Use `⟨idx_ne_bot _ (fg_eigLat _ _ _) ((h _).2.trans (Submodule.span_le.2 ?_)), idx_ne_bot _ (fg_eigLat _ _ _) ((h _).2.trans (Submodule.span_le.2 ?_))⟩` and prove the remaining obligations.
+
+Introduce and unpack `_ ⟨a | a, c, hc, rfl⟩`. Conclude with `Submodule.subset_span (Submodule.mem_iSup_of_mem a ⟨c, hc, rfl⟩)`. Rewrite using `[eq_zero_of_latRank (((NumCompare.pure_decomposition X false FQ).1 τ).trans (if_neg (by rw [hτ]; exact (neg_ne X).symm))) hc]`. Conclude with `Set.mem_of_eq_of_mem (map_zero (MQ a)) (zero_mem _)`. Introduce and unpack `_ ⟨a | a, c, hc, rfl⟩`.
+
+Rewrite using `[eq_zero_of_latRank (((NumCompare.pure_decomposition X true FP).1 _).trans (if_neg (by rw [comp_bar_rt hτ]; exact neg_ne X))) hc]`. Conclude with `Set.mem_of_eq_of_mem (map_zero (MP a)) (zero_mem _)`. Conclude with `Submodule.subset_span (Submodule.mem_iSup_of_mem a ⟨c, hc, rfl⟩)`.
+-/
 theorem idx_sub_ne_bot (hD : IsDiffs FP FQ FB MP MQ) (hτ : τ H.rt = ρ) :
     idx K p (FB.eigLat X.B.t.act τ) (subP FP FB MP τ) ≠ ⊥ ∧
     idx K q (FB.eigLat X.B.t.act (τ.comp (H.bar : 𝓞 E →+* 𝓞 E))) (subQ FQ FB MQ (τ.comp (H.bar : 𝓞 E →+* 𝓞 E))) ≠ ⊥ := by
@@ -392,6 +511,9 @@ variable {ℓ : ℕ} [Fact ℓ.Prime] {C : Type} [Field C] [IsAlgClosed C] [Char
   [CommRing O] [Algebra O C] [Fact ¬IsUnit (ℓ : O)] [IsAdicComplete (Ideal.span {(ℓ : O)}) O] [Algebra ℤ_[ℓ] O]
   [Algebra ℤ_[ℓ] C] [IsScalarTower ℤ_[ℓ] O C] (hv : v.Integers O) (ε : Eps ℓ C) (i : K →+* C)
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨idx_sub_ne_bot hD hτ, fun _ hχ x y m h₁ h₂ h₃ h₄ => map_idx_pat hv ε i (T := X.A true) (f := phiP X) (fun a => X.lin (Sum.inl a)) FP FB MP hD.1 τ (latRank_eigLat FB hτ).1.le hχ x y m h₁ h₂ h₃ fun a => (patV_bLie hv ε i _ (y a)).symm.trans (h₄ a), fun _ hχ x y m h₁ h₂ h₃ h₄ => ma …`.
+-/
 theorem lie_index (hD : IsDiffs FP FQ FB MP MQ) (hτ : τ H.rt = ρ) : letI := H.starRing
     (idx K p (FB.eigLat X.B.t.act τ) (subP FP FB MP τ) ≠ ⊥ ∧
       idx K q (FB.eigLat X.B.t.act (τ.comp (H.bar : 𝓞 E →+* 𝓞 E))) (subQ FQ FB MQ (τ.comp (H.bar : 𝓞 E →+* 𝓞 E))) ≠ ⊥) ∧

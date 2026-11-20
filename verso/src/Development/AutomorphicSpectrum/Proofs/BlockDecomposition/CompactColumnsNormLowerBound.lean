@@ -14,18 +14,31 @@ def trGL {n : ℕ} {R : Type*} [CommRing R] (m : GL (Fin n) R) : GL (Fin n) R :=
     by rw [← transpose_mul, Units.inv_mul, transpose_one],
     by rw [← transpose_mul, Units.mul_inv, transpose_one]⟩
 
+/- English proof (translation)
+Use `Units.continuous_iff.2 ⟨?_, ?_⟩` and prove the remaining obligations. Conclude with `(Units.continuous_val (M := Matrix (Fin n) (Fin n) R)).matrix_transpose`. Conclude with `(Units.continuous_coe_inv (M := Matrix (Fin n) (Fin n) R)).matrix_transpose`.
+-/
 theorem continuous_trGL {n : ℕ} {R : Type*} [CommRing R] [TopologicalSpace R] :
     Continuous (trGL : GL (Fin n) R → GL (Fin n) R) := by
   refine Units.continuous_iff.2 ⟨?_, ?_⟩
   · exact (Units.continuous_val (M := Matrix (Fin n) (Fin n) R)).matrix_transpose
   · exact (Units.continuous_coe_inv (M := Matrix (Fin n) (Fin n) R)).matrix_transpose
 
+/- English proof (translation)
+Use extensionality with `i`. Simplify using `[trGL]`.
+-/
 theorem single_vecMul_trGL {n : ℕ} {R : Type*} [CommRing R] (m : GL (Fin n) R) (j : Fin n) :
     (Pi.single j (1 : R) : Fin n → R) ᵥ* ((trGL m : GL (Fin n) R) : Matrix (Fin n) (Fin n) R) =
       fun i => (m : Matrix (Fin n) (Fin n) R) i j := by
   ext i
   simp [trGL]
 
+/- English proof (translation)
+Introduce `K _ _ C hC`. Take `⟨ε, hε, h⟩` from `Reduction.exists_pos_le_height (hC.image continuous_trGL)`. Use `⟨ε, hε, fun m hm j => ?_⟩` and prove the remaining obligations. Establish `hcol` using `single_vecMul_trGL m j`. Prove the components needed by the constructor for the conclusion.
+
+Rewrite using `[← hcol]`. Conclude with `(Reduction.hasFiniteContent_single_one j).vecMul (trGL m)`. Establish `hx : (Pi.single j (1 : K) : Fin 3 → K) ≠ 0`. Introduce `h0`. Simplify using `using congrFun h0 j`.
+
+Use `h (trGL m) ⟨m, hm, rfl⟩ _ hx` as an intermediate fact. Rewrite `this` using `[Reduction.height, Reduction.ratVec_single_one]`. Rewrite using `[← hcol]` and apply the resulting hypothesis.
+-/
 theorem column_bound :
     ∀ (K : Type) [Field K] [NumberField K] (C : Set (AdelicGLn.AdelicGL K 3)), IsCompact C →
       ∃ ε : ℝ, 0 < ε ∧ ∀ m ∈ C, ∀ j : Fin 3,

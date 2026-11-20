@@ -41,6 +41,9 @@ structure IsUAct {U : Type} [NormedAddCommGroup U] [InnerProductSpace ℂ U] (b 
 def ctr (R : DSRep T₁) (U : Type) [AddCommGroup U] [Module ℂ U] (v : R.HK.V) : R.HK.V ⊗[ℂ] U →ₗ[ℂ] U :=
   TensorProduct.lift (LinearMap.lsmul ℂ U ∘ₗ (innerₛₗ ℂ (R.ι v) ∘ₗ R.ι))
 
+/- English proof (translation)
+Simplify using `[ctr]`.
+-/
 theorem ctr_tmul (R : DSRep T₁) (U : Type) [AddCommGroup U] [Module ℂ U] (v x : R.HK.V) (y : U) :
     ctr R U v (x ⊗ₜ y) = ⟪R.ι v, R.ι x⟫_ℂ • y := by
   simp [ctr]
@@ -198,6 +201,9 @@ end Side
 def IsFrameOf {n : ℕ} (G s : Mn n) (ε : Fin n → Bool) (fr : Mn n) : Prop :=
   IsUnit fr ∧ frᴴ * Formalism.REAL.Jm ε * fr = G ∧ s = fr⁻¹ * Formalism.REAL.Jm ε * fr
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨M.fr_unit τ, M.fr_gram τ, rfl⟩`.
+-/
 theorem isFrameOf_model {D : D7} {V : HSp D} {S : D.what₂.Tau → SPar} (M : DSModel V S) (τ : D.what₂.Tau) :
     IsFrameOf (gramAt D V τ) (cart M τ) (M.ε τ) (M.fr τ) := ⟨M.fr_unit τ, M.fr_gram τ, rfl⟩
 

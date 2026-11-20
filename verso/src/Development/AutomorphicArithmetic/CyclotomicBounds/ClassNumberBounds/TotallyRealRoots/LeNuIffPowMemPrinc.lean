@@ -46,24 +46,39 @@ noncomputable def levelInertia (N : ℕ) : Subgroup (ZMod N)ˣ :=
 
 variable {l}
 
+/- English proof (translation)
+Rewrite using `[princ, MonoidHom.mem_ker, ← Ideal.mem_span_singleton, ← PadicInt.ker_toZModPow, RingHom.mem_ker, map_sub, map_one, sub_eq_zero, Units.ext_iff]`. Simplify using `[redPow]`.
+-/
 theorem mem_princ {a : ℕ} {u : ℤ_[l]ˣ} : u ∈ princ l a ↔ (l : ℤ_[l]) ^ a ∣ (u : ℤ_[l]) - 1 := by
   rw [princ, MonoidHom.mem_ker, ← Ideal.mem_span_singleton, ← PadicInt.ker_toZModPow, RingHom.mem_ker,
     map_sub, map_one, sub_eq_zero, Units.ext_iff]
   simp [redPow]
 
+/- English proof (translation)
+Rewrite using `[nu, le_nuStar_iff, Set.forall_mem_image]`. Both sides reduce to the same expression.
+-/
 theorem le_nu_iff {U : Subgroup ℤ_[l]ˣ} {tr n : ℕ} :
     (n : ℕ∞) ≤ nu l U tr ↔ ∀ u ∈ U, (l : ℤ_[l]) ^ n ∣ (u : ℤ_[l]) ^ tr - 1 := by
   rw [nu, le_nuStar_iff, Set.forall_mem_image]
   rfl
 
+/- English proof (translation)
+Rewrite using `[le_nu_iff]`. Simplify using `only [mem_princ, Units.val_pow_eq_pow_val]`.
+-/
 theorem le_nu_iff_pow_mem_princ {U : Subgroup ℤ_[l]ˣ} {tr n : ℕ} :
     (n : ℕ∞) ≤ nu l U tr ↔ ∀ u ∈ U, u ^ tr ∈ princ l n := by
   rw [le_nu_iff]
   simp only [mem_princ, Units.val_pow_eq_pow_val]
 
+/- English proof (translation)
+Unfold both sides. The equivalence is reflexive.
+-/
 theorem mem_twistInv {A : Type*} [AddCommGroup A] [Module ℤ_[l] A] {U : Subgroup ℤ_[l]ˣ} {tr : ℕ}
     {x : A} : x ∈ twistInv l A U tr ↔ ∀ u ∈ U, ((u : ℤ_[l]) ^ tr) • x = x := Iff.rfl
 
+/- English proof (translation)
+Unfold both sides. The equivalence is reflexive.
+-/
 theorem mem_levelGroup {N : ℕ} {H : Subgroup (ZMod N)ˣ} {u : ℤ_[l]ˣ} :
     u ∈ levelGroup l N H ↔
       ∃ h ∈ H, ZMod.unitsMap (Nat.ordProj_dvd N l) h = redPow l (N.factorization l) u := Iff.rfl

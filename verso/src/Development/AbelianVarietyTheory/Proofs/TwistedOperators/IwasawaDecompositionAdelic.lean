@@ -27,6 +27,11 @@ variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algeb
 
 open Classical in
 
+/- English proof (translation)
+Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => exact ⟨1, fun v => map_one _, fun w => by simp⟩`. Consider the case `insert w s hw ih`. Take `⟨q, h1, h2⟩` from `ih`. Use `⟨embArch σ J w (x w) * q, fun v => by simp [h1 v], fun u => ?_⟩` and prove the remaining obligations.
+
+Distinguish the cases in `e : u = w`. Substitute `e` using the available equality. Simplify using `[h2 u, hw]`. Rewrite using `[map_mul, projArch_embArch_ne σ J e, one_mul, h2 u]`. Simplify using `[Finset.mem_insert, e]`.
+-/
 theorem exists_arch_part (x : ∀ w : InfinitePlace F, GArch σ J w) (s : Finset (InfinitePlace F)) :
     ∃ q : GAd σ J, (∀ v, proj σ J v q = 1) ∧ ∀ w, projArch σ J w q = if w ∈ s then x w else 1 := by
   classical
@@ -41,6 +46,11 @@ theorem exists_arch_part (x : ∀ w : InfinitePlace F, GArch σ J w) (s : Finset
 
 open Classical in
 
+/- English proof (translation)
+Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => exact ⟨1, fun w => map_one _, fun v => by simp⟩`. Consider the case `insert v s hv ih`. Take `⟨q, h1, h2⟩` from `ih`. Use `⟨emb σ J v (x v) * q, fun w => by simp [h1 w], fun u => ?_⟩` and prove the remaining obligations.
+
+Distinguish the cases in `e : u = v`. Substitute `e` using the available equality. Simplify using `[h2 u, hv]`. Rewrite using `[map_mul, proj_emb_ne σ J e, one_mul, h2 u]`. Simplify using `[Finset.mem_insert, e]`.
+-/
 theorem exists_fin_part (x : ∀ v : HeightOneSpectrum (𝓞 F), GLoc σ J v) (s : Finset (HeightOneSpectrum (𝓞 F))) :
     ∃ q : GAd σ J, (∀ w, projArch σ J w q = 1) ∧ ∀ v, proj σ J v q = if v ∈ s then x v else 1 := by
   classical
@@ -59,6 +69,17 @@ namespace GlobalTheory.AdelicIwasawa
 
 open GlobalTheory.AdelicU GlobalTheory.AdelicIwasawaGlue
 
+/- English proof (translation)
+Introduce `D V Φ L a hG g`. Use `haveI : Submodule.IsLattice _ L := hG.1`. Use `choose pf hpf kf hkf hf using fun v => GlobalTheory.T.local_iwasawa_decomposition D V Φ L a hG v (proj _ _ v g)`. Use `choose pa hpa ka hka ha using fun w => GlobalTheory.T.archimedean_iwasawa_decomposition D V Φ L a hG w (projArch _ _ w g)`. Establish `hS` using `(eventually_proj_mem_stabLoc D.sp.cm.sig V.gram L g)`.
+
+Use `set S := (Filter.eventually_cofinite.1 hS).toFinset with hSdef`. Take `⟨qa, qa1, qa2⟩` from `exists_arch_part D.sp.cm.sig V.gram pa Finset.univ`. Take `⟨qf, qf1, qf2⟩` from `exists_fin_part D.sp.cm.sig V.gram pf S`. Establish `hp : qa * qf ∈ PA Φ.flag0`. Use `GlobalTheory.Cusp.IsoFlag.mem_par_adelic.2 ⟨fun w => ?_, fun v => ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[map_mul, qa2 w, qf1 w, mul_one, if_pos (Finset.mem_univ w)]`. Conclude with `hpa w`. Rewrite using `[map_mul, qa1 v, qf2 v, one_mul] split_ifs`. Conclude with `hpf v`. Conclude with `one_mem _`.
+
+Use `⟨⟨qa * qf, hp⟩, (qa * qf)⁻¹ * g, mem_levelAll.2 ⟨fun v => ?_, fun w => ?_⟩, (mul_inv_cancel_left (qa * qf) g).symm⟩` and prove the remaining obligations. Rewrite using `[map_mul, map_inv, map_mul, qa1 v, qf2 v, one_mul] split_ifs with h`. Rewrite using `[hf v, inv_mul_cancel_left]`. Conclude with `hkf v`. Rewrite using `[inv_one, one_mul]`.
+
+Assume the negation of the conclusion as `hc`. Conclude with `h ((Set.Finite.mem_toFinset _).2 hc)`. Rewrite using `[map_mul, map_inv, map_mul, qa2 w, qf1 w, mul_one, if_pos (Finset.mem_univ w), ha w, inv_mul_cancel_left]`. Conclude with `hka w`.
+-/
 theorem iwasawa : ∀ (D : D7) (V : HSp D) (Φ : WittFrame V) (L : _) (a : _), Φ.IsGood D.sp.cm L a → ∀ g : GA D V, ∃ p : PA Φ.flag0, ∃ k ∈ (levelAll D.sp.cm.sig V.gram L a), g = p * k := by
   classical
   intro D V Φ L a hG g

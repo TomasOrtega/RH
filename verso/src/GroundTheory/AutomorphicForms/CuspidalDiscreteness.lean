@@ -16,6 +16,11 @@ namespace UnitaryRep
 variable {G : Type*} [Group G] [TopologicalSpace G] [MeasurableSpace G] [BorelSpace G]
   {H : Type*} [NormedAddCommGroup H] [InnerProductSpace ℂ H] [CompleteSpace H]
 
+/- English proof (translation)
+Establish `hf` using `f.continuous.memLp_of_hasCompactSupport (μ := ν) (p := 1) f.hasCompactSupport`. Establish `hf'` using `f'.continuous.memLp_of_hasCompactSupport (μ := ν) (p := 1) f'.hasCompactSupport`. Establish `h1 : UnitaryRep.ccToL1 ν f - UnitaryRep.ccToL1 ν f' = (hf.sub hf').toLp (⇑f - ⇑f')` using `(MemLp.toLp_sub hf hf').symm`. Establish `h2 : ‖UnitaryRep.ccToL1 ν f - UnitaryRep.ccToL1 ν f'‖ = ∫ x, ‖f x - f' x‖ ∂ν`. Rewrite using `[h1, L1.norm_eq_integral_norm]`.
+
+Conclude with `integral_congr_ae ((hf.sub hf').coeFn_toLp.mono fun x hx => congrArg norm hx)`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[ContinuousLinearMap.map_sub]`. Use `_ ≤ ‖UnitaryRep.ccToL1 ν f - UnitaryRep.ccToL1 ν f'‖ := π.norm_integrated_le ν _`. Use `_ = ∫ x, ‖f x - f' x‖ ∂ν := h2`.
+-/
 theorem dist_integrated_ccToL1_le (π : UnitaryRep G H) (ν : Measure G)
     [IsFiniteMeasureOnCompacts ν] (f f' : CompactlySupportedContinuousMap G ℂ) :
     dist (π.integrated ν (UnitaryRep.ccToL1 ν f)) (π.integrated ν (UnitaryRep.ccToL1 ν f')) ≤
@@ -35,6 +40,11 @@ theorem dist_integrated_ccToL1_le (π : UnitaryRep G H) (ν : Measure G)
     _ ≤ ‖UnitaryRep.ccToL1 ν f - UnitaryRep.ccToL1 ν f'‖ := π.norm_integrated_le ν _
     _ = ∫ x, ‖f x - f' x‖ ∂ν := h2
 
+/- English proof (translation)
+Establish `hcl` using `isClosed_setOfPred_isCompactOperator (𝕜₁ := ℂ) (σ₁₂ := RingHom.id ℂ) (M₁ := H) (M₂ := H)`. Establish `hmem : π.integrated ν (UnitaryRep.ccToL1 ν f) ∈ closure {T : H →L[ℂ] H | IsCompactOperator T}`. Use `Metric.mem_closure_iff.2 fun ε hε => ?_` and prove the remaining obligations. Take `⟨f', hc, hf'⟩` from `h f (ε / 2) (half_pos hε)`. Conclude with `⟨_, hc, (π.dist_integrated_ccToL1_le ν f f').trans_lt (hf'.trans_lt (half_lt_self hε))⟩`.
+
+Conclude with `hcl.closure_subset hmem`.
+-/
 theorem isCompactOperator_integrated_of_approx (π : UnitaryRep G H) (ν : Measure G)
     [IsFiniteMeasureOnCompacts ν]
     (h : ∀ (f : CompactlySupportedContinuousMap G ℂ) (ε : ℝ), 0 < ε →
@@ -64,6 +74,9 @@ variable (μ : Measure (normOneGL K n)) [μ.IsHaarMeasure]
 
 include μ in
 
+/- English proof (translation)
+Take `⟨U, hU, β, hβ, hβc, hβu, -, hclose⟩` from `exists_smooth_approx μ ν g hε`. Take `⟨B, hB⟩` from `exists_norm_rconv_le_uniform μ ν hβ hβc hβu U hU g`. Conclude with `⟨_, ⟨B, hB⟩, le_of_eq_of_le (integral_congr_ae (Eventually.of_forall fun x => norm_sub_rev _ _)) hclose⟩`.
+-/
 theorem exists_approx_bound (ν : Measure (ArchUnits K n)) [ν.IsHaarMeasure]
     (g : CompactlySupportedContinuousMap (normOneGL K n) ℂ) {ε : ℝ} (hε : 0 < ε) :
     ∃ f' : CompactlySupportedContinuousMap (normOneGL K n) ℂ,
@@ -74,6 +87,9 @@ theorem exists_approx_bound (ν : Measure (ArchUnits K n)) [ν.IsHaarMeasure]
   exact ⟨_, ⟨B, hB⟩,
     le_of_eq_of_le (integral_congr_ae (Eventually.of_forall fun x => norm_sub_rev _ _)) hclose⟩
 
+/- English proof (translation)
+The claim follows from `Exists.elim (⟨Measure.haar, inferInstance⟩ : ∃ ν : Measure (ArchUnits K n), ν.IsHaarMeasure) fun ν hν => (cuspRep μ).isCompactOperator_integrated_of_approx μ (fun g _ hε => (@exists_approx_bound K _ _ n μ _ ν hν g _ hε).imp fun f' hf' => ⟨isCompactOperator_of_forall_norm_rconv_le …`.
+-/
 theorem isCompactOperator_cuspRep (f : CompactlySupportedContinuousMap (normOneGL K n) ℂ) :
     IsCompactOperator ((cuspRep μ).integrated μ (UnitaryRep.ccToL1 μ f)) :=
   Exists.elim (⟨Measure.haar, inferInstance⟩ : ∃ ν : Measure (ArchUnits K n), ν.IsHaarMeasure)
@@ -81,6 +97,9 @@ theorem isCompactOperator_cuspRep (f : CompactlySupportedContinuousMap (normOneG
       (@exists_approx_bound K _ _ n μ _ ν hν g _ hε).imp fun f' hf' =>
         ⟨isCompactOperator_of_forall_norm_rconv_le μ f' hf'.1.choose hf'.1.choose_spec, hf'.2⟩) f
 
+/- English proof (translation)
+The claim follows from `UnitaryRep.exists_isHilbertSum_isIrreducible (isCompactOperator_cuspRep μ)`.
+-/
 theorem exists_isHilbertSum_isIrreducible_cuspidal :
     ∃ s : Set (Submodule ℂ (cuspidalL2 μ)),
       ∃ _ : ∀ V : s, CompleteSpace (V : Submodule ℂ (cuspidalL2 μ)),

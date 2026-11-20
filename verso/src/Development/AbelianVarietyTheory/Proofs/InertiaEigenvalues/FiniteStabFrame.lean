@@ -15,6 +15,19 @@ noncomputable section
 
 namespace GlobalTheory.FormInner
 
+/- English proof (translation)
+Establish `hinj : Function.Injective fun i => φ.symm (y i)` using `fun i j e => by`. Establish `e' : y i = y j` using `φ.symm.injective e`. Conclude with `(hy (y i)).unique ⟨1, 1, by simp⟩ ⟨1, 1, by simp [e']⟩`. Establish `key : ∀ g i, (∃ (γ : ι.range.comap φ.toMonoidHom) (κ : A), κ ∈ J.comap φ.toMonoidHom ∧ g = (γ : A) * φ.symm (y i) * κ) ↔ ∃ (γ : Γ) (k : J), φ g = ι γ * y i * k` using `fun g i => by`. Prove the components needed by the constructor for the conclusion.
+
+Introduce and unpack `⟨γ, κ, hκ, rfl⟩`. Take `⟨δ, hδ⟩` from `γ.2`. Conclude with `⟨δ, ⟨φ κ, hκ⟩, by simp [hδ]⟩`. Introduce and unpack `⟨γ, k, e⟩`. Use `⟨⟨φ.symm (ι γ), ⟨γ, by simp⟩⟩, φ.symm k, by simp, φ.injective (by simp [e])⟩` and prove the remaining obligations.
+
+Use `⟨Finset.univ.image fun i => φ.symm (y i), fun g => ?_, fun F F' => ?_⟩` and prove the remaining obligations. Take `⟨i, hi, hu⟩` from `hy (φ g)`. Use `⟨φ.symm (y i), ⟨Finset.mem_image_of_mem _ (Finset.mem_univ _), (key g i).2 hi⟩, ?_⟩` and prove the remaining obligations. Introduce and unpack `t ⟨ht, h⟩`. Take `⟨j, -, rfl⟩` from `Finset.mem_image.1 ht`.
+
+Rewrite using `[hu j ((key g j).1 h)]`. Rewrite using `[wsum, Finset.sum_image fun i _ j _ e => hinj e, Formalism.IndefR.Bridge.adInner]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[MulEquiv.apply_symm_apply]`. Use `congr 3`.
+
+Use `symm`. Use `Nat.card_congr (Equiv.ofBijective (fun δ : Formalism.IndefR.Bridge.stab ι J (y i) => (⟨⟨φ.symm (ι δ), ⟨δ, by simp⟩⟩, mem_stabQ.2 (by simpa using (Formalism.IndefR.Bridge.mem_stab ι).1 δ.2)⟩ : stabQ (ι.range.comap φ.toMonoidHom) (J.comap φ.toMonoidHom) (φ.symm (y i)))) ⟨fun δ δ' e …` and prove the remaining obligations. Conclude with `Subtype.ext (hι (φ.symm.injective (congrArg (fun z => (z.1 : A)) e)))`. Take `⟨δ, hδ⟩` from `γ.1.2`. Use `⟨⟨δ, (Formalism.IndefR.Bridge.mem_stab ι).2 ?_⟩, Subtype.ext (Subtype.ext (by simp [hδ]))⟩` and prove the remaining obligations.
+
+Simplify `mem_stabQ.1 γ.2` using `[hδ]`.
+-/
 theorem wsum_transport {A G Γ W I : Type} [Group A] [Group G] [Group Γ] [NormedAddCommGroup W] [InnerProductSpace ℂ W] [Fintype I]
     (ι : Γ →* G) (hι : Function.Injective ι) (φ : A ≃* G) (J : Subgroup G) (y : I → G) (hy : Formalism.IndefR.Bridge.IsReps ι J y) :
     ∃ T, Reps (ι.range.comap φ.toMonoidHom) (J.comap φ.toMonoidHom) T ∧ ∀ F F' : G → W,
@@ -55,6 +68,13 @@ section Std
 
 variable {L : Type} [Field L] [NumberField L] [IsCMField L] {n : ℕ}
 
+/- English proof (translation)
+Establish `: ∀ f₀ ∈ F, ∃ u, (∃ κ ∈ K, f₀⁻¹ * κ ∈ H) → u ∈ K ∧ f₀⁻¹ * u ∈ H` using `fun f₀ _ => by`. Distinguish the cases in `h : ∃ κ ∈ K, f₀⁻¹ * κ ∈ H`. Take `⟨u, hu⟩` from `h`. Conclude with `⟨u, fun _ => hu⟩`. Conclude with `⟨1, fun h' => absurd h' h⟩`.
+
+Use `choose! u hu using this`. Rewrite using `[← Subgroup.inf_relIndex_right]`. Use `relIndex_ne_zero_of_cover (F.image u) (fun κ hκ => ?_) inf_le_right` and prove the remaining obligations. Take `⟨f₀, h₀, h₁⟩` from `hF κ hκ`. Take `⟨h2, h3⟩` from `hu f₀ h₀ ⟨κ, hκ, h₁⟩`.
+
+Use `⟨u f₀, Finset.mem_image_of_mem _ h₀, ?_, K.mul_mem (K.inv_mem h2) hκ⟩` and prove the remaining obligations. Use `H.mul_mem (H.inv_mem h3) h₁` as an intermediate fact. Simplify `this` using `[mul_assoc]`.
+-/
 theorem relIndex_ne_zero_of_cover' {G : Type} [Group G] {H K : Subgroup G} (F : Finset G) (hF : ∀ κ ∈ K, ∃ f ∈ F, f⁻¹ * κ ∈ H) :
     H.relIndex K ≠ 0 := by
   classical
@@ -72,19 +92,36 @@ theorem relIndex_ne_zero_of_cover' {G : Type} [Group G] {H K : Subgroup G} (F : 
   have := H.mul_mem (H.inv_mem h3) h₁
   simpa [mul_assoc] using this
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨{1}, fun κ hκ => ⟨1, by simp, by simpa using h hκ⟩⟩`.
+-/
 theorem bounded_of_le {J : Subgroup (GAf L n)} (h : J ≤ ReciprocityTheory.Aut.Umax L n) : IsBounded J :=
   ⟨{1}, fun κ hκ => ⟨1, by simp, by simpa using h hκ⟩⟩
 
+/- English proof (translation)
+Take `⟨F, hF⟩` from `(GlobalTheory.CongIndex.finite_index_conj L n J hJ 1 N hN).2.1`. Conclude with `relIndex_ne_zero_of_cover' F hF`.
+-/
 theorem congSub_relIndex {J : Subgroup (GAf L n)} (hJ : IsBounded J) {N : ℕ} (hN : 0 < N) : (congSub L n N).relIndex J ≠ 0 := by
   obtain ⟨F, hF⟩ := (GlobalTheory.CongIndex.finite_index_conj L n J hJ 1 N hN).2.1
   exact relIndex_ne_zero_of_cover' F hF
 
+/- English proof (translation)
+Introduce `h0` and use `hne (Subgroup.relIndex_eq_zero_of_le_left h h0)`.
+-/
 theorem relIndex_of_le {G : Type} [Group G] {H H' K : Subgroup G} (h : H ≤ H') (hne : H.relIndex K ≠ 0) : H'.relIndex K ≠ 0 :=
   fun h0 => hne (Subgroup.relIndex_eq_zero_of_le_left h h0)
 
+/- English proof (translation)
+Introduce `h0` and use `hne (Subgroup.relIndex_eq_zero_of_le_right h h0)`.
+-/
 theorem relIndex_of_le' {G : Type} [Group G] {H K K' : Subgroup G} (h : K' ≤ K) (hne : H.relIndex K ≠ 0) : H.relIndex K' ≠ 0 :=
   fun h0 => hne (Subgroup.relIndex_eq_zero_of_le_right h h0)
 
+/- English proof (translation)
+Take `⟨N, hN, h⟩` from `(GlobalTheory.CongIndex.finite_index_conj L n _ (bounded_of_le le_rfl) x 1 one_pos).1`. Establish `h1 : (TwoLattices.cj (ReciprocityTheory.Aut.Umax L n) x).relIndex (ReciprocityTheory.Aut.Umax L n) ≠ 0` using `relIndex_of_le (fun κ hκ => mem_cj.2 (h κ hκ).1) (congSub_relIndex (bounded_of_le le_rfl) hN)`. Establish `h2 : (TwoLattices.cj K x).relIndex (TwoLattices.cj (ReciprocityTheory.Aut.Umax L n) x) ≠ 0`. Rewrite using `[TwoLattices.cj, TwoLattices.cj, Subgroup.relIndex_comap, Subgroup.map_comap_eq_self_of_surjective (MulAut.conj x⁻¹).surjective]`. Conclude with `hne`.
+
+Conclude with `relIndex_of_le' hle (Subgroup.relIndex_ne_zero_trans h2 h1)`.
+-/
 theorem cj_relIndex {K : Subgroup (GAf L n)} (hle : K ≤ ReciprocityTheory.Aut.Umax L n) (hne : K.relIndex (ReciprocityTheory.Aut.Umax L n) ≠ 0) (x) :
     (TwoLattices.cj K x).relIndex K ≠ 0 := by
   obtain ⟨N, hN, h⟩ := (GlobalTheory.CongIndex.finite_index_conj L n _ (bounded_of_le le_rfl) x 1 one_pos).1
@@ -95,13 +132,22 @@ theorem cj_relIndex {K : Subgroup (GAf L n)} (hle : K ≤ ReciprocityTheory.Aut.
     exact hne
   exact relIndex_of_le' hle (Subgroup.relIndex_ne_zero_trans h2 h1)
 
+/- English proof (translation)
+Take `⟨T, hT⟩` from `GlobalTheory.ClassFinConj.exists_finset_double_cosets_conj L n 1`. Conclude with `⟨T, fun g => by obtain ⟨γ, hγ, t, ht, κ, hκ, e⟩ := hT g; exact ⟨t, ht, ⟨γ, hγ⟩, κ, hκ.1, e⟩⟩`.
+-/
 theorem cover_umax : Cover (ReciprocityTheory.Aut.GQ L n) (ReciprocityTheory.Aut.Umax L n) := by
   obtain ⟨T, hT⟩ := GlobalTheory.ClassFinConj.exists_finset_double_cosets_conj L n 1
   exact ⟨T, fun g => by obtain ⟨γ, hγ, t, ht, κ, hκ, e⟩ := hT g; exact ⟨t, ht, ⟨γ, hγ⟩, κ, hκ.1, e⟩⟩
 
+/- English proof (translation)
+The claim follows from `(Equiv.subtypeEquivRight fun _ => mem_stabQ).finite_iff.2 (GlobalTheory.StabFin.finite_conj_mem L n J hJ t)`.
+-/
 theorem finite_stabQ {J : Subgroup (GAf L n)} (hJ : IsBounded J) (t) : Finite (stabQ (ReciprocityTheory.Aut.GQ L n) J t) :=
   (Equiv.subtypeEquivRight fun _ => mem_stabQ).finite_iff.2 (GlobalTheory.StabFin.finite_conj_mem L n J hJ t)
 
+/- English proof (translation)
+Take `⟨S, hS⟩` from `hc`. Use `(GlobalTheory.UnimodMass.mass_eq_relIndex_mul Γ K U hle (GlobalTheory.UnimodMass.finite_dc_of_cover ⟨S, fun g => ?_⟩) fun t => (Equiv.subtypeEquivRight fun _ => mem_stabQ).finite_iff.1 (hf t)).1` and prove the remaining obligations. Take `⟨s, hs, γ, κ, hκ, e⟩` from `hS g`. Conclude with `⟨γ, γ.2, s, hs, κ, hκ, e⟩`.
+-/
 theorem relIndex_of_cover {G : Type} [Group G] {Γ K U : Subgroup G} (hle : K ≤ U) (hc : Cover Γ K)
     (hf : ∀ t, Finite (stabQ Γ U t)) : K.relIndex U ≠ 0 := by
   obtain ⟨S, hS⟩ := hc
@@ -110,10 +156,22 @@ theorem relIndex_of_cover {G : Type} [Group G] {Γ K U : Subgroup G} (hle : K �
   obtain ⟨s, hs, γ, κ, hκ, e⟩ := hS g
   exact ⟨γ, γ.2, s, hs, κ, hκ, e⟩
 
+/- English proof (translation)
+Simplify using `only [classSum, wsum, card_stabQ_eq]`.
+-/
 theorem classSum_eq_wsum (a : NG.AlgWt L n) (β : a.W →ₗ⋆[ℂ] a.W →ₗ[ℂ] ℂ) (J : Subgroup (GAf L n)) (T : Finset (GAf L n))
     (f f' : GAf L n → a.W) : classSum a β J T f f' = wsum (ReciprocityTheory.Aut.GQ L n) J T fun g => β (f g) (f' g) := by
   simp only [classSum, wsum, card_stabQ_eq]
 
+/- English proof (translation)
+Set `U : Subrepresentation a.ρ` to `⟨Submodule.span ℂ (Set.range f), fun g w hw => by`. Use `Submodule.span_induction (p := fun w _ => a.ρ g w ∈ Submodule.span ℂ (Set.range f)) ?_ ?_ ?_ ?_ hw` and prove the remaining obligations. Introduce and unpack `_ ⟨h, rfl⟩`. Conclude with `Submodule.subset_span ⟨g * h, hf.1 g h⟩`. Simplify using the standard rewrite rules.
+
+Introduce `a b _ _ ha hb`. Rewrite using `[map_add]`. Conclude with `add_mem ha hb`. Introduce `c a _ ha`. Rewrite using `[map_smul]`.
+
+Conclude with `Submodule.smul_mem _ c ha⟩`. Establish `hU : U = ⊤` using `by haveI := a.irr`. Use `(eq_bot_or_eq_top U).resolve_left fun hb => h₀ ?_` and prove the remaining obligations. Use function extensionality and compare the values at `g`. Establish `: f g ∈ U.toSubmodule` using `Submodule.subset_span ⟨g, rfl⟩`.
+
+Rewrite `this` using `[hb]`. Conclude with `this`. Conclude with `congrArg Subrepresentation.toSubmodule hU`.
+-/
 theorem span_values (a : NG.AlgWt L n) {f : GAf L n → a.W} (hf : f ∈ NG.AFall L n a.ρ) (h₀ : f ≠ 0) :
     Submodule.span ℂ (Set.range f) = ⊤ := by
   let U : Subrepresentation a.ρ := ⟨Submodule.span ℂ (Set.range f), fun g w hw => by
@@ -134,6 +192,13 @@ theorem span_values (a : NG.AlgWt L n) {f : GAf L n → a.W} (hf : f ∈ NG.AFal
     exact this
   exact congrArg Subrepresentation.toSubmodule hU
 
+/- English proof (translation)
+Take `⟨_, ι, _, _, b, -⟩` from `a.alg`. Use `haveI : Module.Finite ℂ a.W := Module.Finite.of_basis b`. Establish `h` using `span_values a hf h₀`. Take `⟨s, hs, hsp, hli⟩` from `exists_linearIndependent ℂ (Set.range f)`. Use `haveI : Finite s := hli.finite`.
+
+Take `⟨m, ⟨e⟩⟩` from `Finite.exists_equiv_fin s`. Use `choose g hg using fun v : s => hs v.2`. Use `⟨m, fun i => g (e.symm i), ?_⟩` and prove the remaining obligations. Rewrite using `[← h, ← hsp]`. Use `congr 1`.
+
+Use extensionality with `v`. Conclude with `⟨by rintro ⟨i, rfl⟩; simp only [hg]; exact (e.symm i).2, fun hv => ⟨e ⟨v, hv⟩, by simp [hg]⟩⟩`.
+-/
 theorem span_finite_values (a : NG.AlgWt L n) {f : GAf L n → a.W} (hf : f ∈ NG.AFall L n a.ρ) (h₀ : f ≠ 0) :
     ∃ (m : ℕ) (g : Fin m → GAf L n), Submodule.span ℂ (Set.range fun i => f (g i)) = ⊤ := by
   obtain ⟨_, ι, _, _, b, -⟩ := a.alg
@@ -155,6 +220,35 @@ variable {D : D7} {μ : D.what₂.Tup} {j : ℕ} (X : MtReal D μ j) {G Γ W : T
   [InnerProductSpace ℂ W] (ι : Γ →* G) (φ : GAf D.host.E D.R.nV ≃* G) (ρ : Γ →* Module.End ℂ W) (J : Subgroup G) (χ : J →* ℂˣ)
   (e : X.wt.W ≃ₗ[ℂ] W) (Fm : D.what₂.Mt μ j → G → W)
 
+/- English proof (translation)
+Establish `hA : ∀ x, X.real x ∈ NG.TypeSp X.wt.ρ X.J X.χ` using `fun x => X.real_range ▸ LinearMap.mem_range_self _ x`. Take `⟨N, hN, hNJ⟩` from `X.J_open`. Take `⟨T', hT', htr⟩` from `wsum_transport (W := W) ι hι φ J y hy`. Use `set Γ₂ := ι.range.comap φ.toMonoidHom with hΓ₂`. Use `set J₂ := J.comap φ.toMonoidHom with hJ₂`.
+
+Establish `hNU` using `congSub_relIndex (bounded_of_le (le_refl (ReciprocityTheory.Aut.Umax D.host.E D.R.nV))) hN`. Establish `hJU : J₂.relIndex (ReciprocityTheory.Aut.Umax D.host.E D.R.nV) ≠ 0` using `relIndex_of_cover hJ hT'.cover hfin`. Use `set K := congSub D.host.E D.R.nV N ⊓ J₂ with hK`. Establish `hKU : K.relIndex (ReciprocityTheory.Aut.Umax D.host.E D.R.nV) ≠ 0` using `Subgroup.relIndex_inf_ne_zero hNU hJU`. Establish `hKle : K ≤ ReciprocityTheory.Aut.Umax D.host.E D.R.nV` using `inf_le_right.trans hJ`.
+
+Establish `hKJ : K ≤ X.J` using `fun κ hκ => (hNJ κ hκ.1).1`. Establish `hc₁ : Cover (ReciprocityTheory.Aut.GQ D.host.E D.R.nV) K` using `cover_umax.of_relIndex hKU`. Establish `hK₁ : K.relIndex X.J ≠ 0` using `relIndex_of_cover hKJ hc₁ (finite_stabQ hX)`. Establish `hK₂ : K.relIndex J₂ ≠ 0` using `relIndex_of_le' hJ hKU`. Establish `hc₂ : Cover Γ₂ K` using `hT'.cover.of_relIndex hK₂`.
+
+Take `⟨T, hT⟩` from `(hc₁.mono hKJ).reps`. Use `⟨hX, ?_⟩` and prove the remaining obligations. Distinguish the cases in `hz : ∀ x : D.what₂.Mt μ j, x = 0`. Take `⟨β, hβ⟩` from `GlobalTheory.InvFormBdd.exists_isInvForm _ _ X.wt`. Use `⟨β, T, 1, hβ, hT, one_pos, fun x x' => ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[hz x]`. Simplify using `[classSum]`. Take `⟨x₀, h₀⟩` from `not_forall.1 hz`. Take `⟨m, g, hg⟩` from `span_finite_values X.wt (hA x₀).1 fun h => h₀ (X.real_inj (by rw [h, map_zero]))`. Establish `hl₂ : ∀ δ γ, ι δ = φ γ → ∀ x g, e (X.real x (γ * g)) = ρ δ (e (X.real x g))` using `fun δ γ h x g => by`.
+
+Use `hFm x δ (φ g) 1` as an intermediate fact. Rewrite using `[hread, hread, map_mul, ← h]`. Simplify using `using this`. Establish `hinv : ∀ γ ∈ Γ₂, ∀ x x' g g', pullForm X e (X.real x (γ * g)) (X.real x' (γ * g')) = pullForm X e (X.real x g) (X.real x' g')`. Introduce and unpack `γ ⟨δ, hδ⟩ x x' g g'`.
+
+Rewrite using `[pullForm_apply, pullForm_apply, hl₂ δ γ hδ, hl₂ δ γ hδ, hρ]`. Take `⟨β, c', hβ, hc', hβ₁, hsum⟩` from `exists_form (f := fun x => X.real x) (p := fun i => (x₀, g i)) hg (cj_relIndex hKle hKU) (fun κ hκ x g => by`. Take `⟨h1, h2⟩` from `hNJ κ hκ.1`. Use `congrFun ((hA x).2 ⟨κ, h1⟩) g` as an intermediate fact. Rewrite `this` using `[h2, Units.val_one, one_smul]`.
+
+Conclude with `this)`. Use the proof step `(le_acts fun γ hγ => ⟨X.wt.ρ ⟨γ, hγ⟩, fun x g => (hA x).1.1 ⟨γ, hγ⟩ g⟩)`. Use the proof step `(le_acts (Γ := Γ₂) fun γ ⟨δ, hδ⟩ => ⟨e.symm.toLinearMap ∘ₗ ρ δ ∘ₗ e.toLinearMap, fun x g => e.injective (by`. Rewrite using `[hl₂ δ γ hδ]`. Use the proof step `simp)⟩)`.
+
+Use `hc₁ hc₂ (finite_stabQ (bounded_of_le hKle)) (fun t => finite_stab_mono le_rfl hKle t (hfin t)) (b := pullForm X e)`. Use the proof step `⟨fun a b => by rw [pullForm_apply, pullForm_apply, inner_conj_symm], fun a ha => by`. Rewrite using `[pullForm_apply]`. Conclude with `(re_inner_self_pos (𝕜 := ℂ) (x := e a)).2 (fun h => ha (e.map_eq_zero_iff.1 h))⟩ hinv`. Establish `hβ' : IsInvForm X.wt β`.
+
+Use `⟨hβ.1, hβ.2, fun γ a b => ?_⟩` and prove the remaining obligations. Establish `: (β.comp (X.wt.ρ γ)).compl₂ (X.wt.ρ γ) = β` using `LinearMap.ext_on_range hg fun i => LinearMap.ext_on_range hg fun k => by show β (X.wt.ρ γ _) (X.wt.ρ γ _) = _`. Rewrite using `[← (hA x₀).1.1, ← (hA x₀).1.1]`. Conclude with `hβ₁ γ γ.2 x₀ x₀ _ _`. Conclude with `LinearMap.congr_fun₂ this a b`.
+
+Establish `hB : ∀ x, X.real x ∈ NG.TypeSp X.wt.ρ J₂ (χ.comp (φ.toMonoidHom.subgroupComap J))` using `fun x => ⟨(hA x).1, fun κ => funext fun g => e.injective (by`. Use `hFm x 1 (φ g) ⟨φ κ, κ.2⟩` as an intermediate fact. Use `show e (X.real x (g * κ)) = e (((χ ⟨φ κ, κ.2⟩ : ℂˣ) : ℂ) • X.real x g)`. Rewrite using `[map_smul, hread, hread, map_mul]`. Simplify using `using this)⟩`.
+
+Establish `p₁ : (0 : ℝ) < K.relIndex X.J` using `Nat.cast_pos.2 (Nat.pos_of_ne_zero hK₁)`. Establish `p₂ : (0 : ℝ) < K.relIndex J₂` using `Nat.cast_pos.2 (Nat.pos_of_ne_zero hK₂)`. Use `⟨β, T, c * (c' * K.relIndex X.J / K.relIndex J₂), hβ', hT, by positivity, fun x x' => ?_⟩` and prove the remaining obligations. Establish `r₁` using `form_inv β hX (hA x) (hA x')`. Establish `r₂` using `form_inv (pullForm X e) (bounded_of_le hJ) (hB x) (hB x')`.
+
+Establish `l₁ : ∀ (γ : ReciprocityTheory.Aut.GQ D.host.E D.R.nV) g, β (X.real x (γ * g)) (X.real x' (γ * g)) = β (X.real x g) (X.real x' g)` using `fun γ g => hβ₁ γ γ.2 x x' g g`. Establish `l₂ : ∀ (γ : Γ₂) g, pullForm X e (X.real x (γ * g)) (X.real x' (γ * g)) = pullForm X e (X.real x g) (X.real x' g)` using `fun γ g => hinv γ γ.2 x x' g g`. Establish `e₀` using `hsum x x'`. Rewrite `e₀` using `[dsum_index inf_le_right hK₂ hc₂ l₂ r₂, dsum_index hKJ hK₁ hc₁ l₁ r₁, dsum_eq hT' l₂ r₂, dsum_eq hT l₁ r₁]`. Simplify using `only [pullForm_apply, hread] at e₀`.
+
+Establish `n₂ : ((K.relIndex J₂ : ℕ) : ℂ) ≠ 0` using `Nat.cast_ne_zero.2 hK₂`. Rewrite using `[hip, ← htr, classSum_eq_wsum, eq_div_of_mul_eq n₂ ((mul_comm _ _).trans e₀)]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem classSum_of_frame {I : Type} [Fintype I] (y : I → G) (hy : Bridge.IsReps ι J y) (hι : Function.Injective ι)
     (hfin : ∀ t, Finite (stabQ (ι.range.comap φ.toMonoidHom) (ReciprocityTheory.Aut.Umax D.host.E D.R.nV) t))
     (hρ : ∀ δ (a b : W), inner ℂ (ρ δ a) (ρ δ b) = inner ℂ a b)
@@ -237,6 +331,11 @@ theorem classSum_of_frame {I : Type} [Fintype I] (y : I → G) (hy : Bridge.IsRe
   push_cast
   ring
 
+/- English proof (translation)
+Set `P₀` to `GlobalTheory.StdFrameModel.unitPsi hV.gram_eq`. Establish `h₀` using `(GlobalTheory.StdFrameModel.stdPsi_unitPsi hV).2`. Establish `hrat : RatFrame P₀` using `fun g => by simpa using GlobalTheory.NJoin.Inh.rat_unit hV.gram_eq g`. Set `θ` to `(frameEquiv P).trans (frameEquiv P₀).symm`. Establish `hθ : ∀ κ, frameEquiv P₀ (θ κ) = frameEquiv P κ` using `fun κ => (frameEquiv P₀).apply_symm_apply _`.
+
+Establish `hU : ∀ κ ∈ ReciprocityTheory.Aut.Umax D.host.E n, θ κ ∈ ReciprocityTheory.Aut.Umax D.host.E V.rank` using `fun κ hκ => by`. Rewrite using `[h₀, TopMult.lift_unique (P₀.into (θ κ)) (P.into κ) (hθ κ)]`. Conclude with `(hP.2 κ).1 hκ`. Use `haveI := finite_stabQ (bounded_of_le (le_refl (ReciprocityTheory.Aut.Umax D.host.E V.rank))) (θ t)`. Use `Finite.of_injective (β := stabQ (ReciprocityTheory.Aut.GQ D.host.E V.rank) (ReciprocityTheory.Aut.Umax D.host.E V.rank) (θ t)) (fun γ => ⟨⟨θ γ.1, (hrat.iff _).2 (by rw [hθ]; exact γ.1.2)⟩, mem_stabQ.2 (by simpa using hU _ (mem_stabQ.1 γ.2))⟩) fun a b h => Subtype.ext (Subtype.ext …` and prove the remaining obligations.
+-/
 theorem finite_stab_frame {V : HSp D} {n : ℕ} (hV : GlobalTheory.StdFrame.OrthFrame V) {hF : D.host.F = maximalRealSubfield D.host.E}
     {P : principalLevelFrame.RowPsi V n} (hP : GlobalTheory.Mem.R3.StdFrame hF P) (t) :
     Finite (stabQ ((Bridge.ratF V).range.comap (frameEquiv P).toMonoidHom) (ReciprocityTheory.Aut.Umax D.host.E n) t) := by

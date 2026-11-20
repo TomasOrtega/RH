@@ -9,6 +9,41 @@ namespace PositivityTheory.Rg.Sw.WR.G
 
 open PositivityTheory.Rg.Sw
 
+/- English proof (translation)
+Introduce `m n ε c t hc b hb M a i`. Establish `hdet` using `amat_det_ne ε hc t hb a`. Establish `: (volume : Measure (Fin m → Fin n → ℂ)).IsAddHaarMeasure` using `Measure.pi.isAddHaarMeasure _`. Use `set E : (Fin m → Fin n → ℂ) → ℂ := fun x => Complex.exp (evX (phiP ε c t b) x) with hEdef`. Establish `hsec : ∀ P, secN ε c t P b = ∫ x, evX P x * E x`.
+
+Introduce `P`. Unfold `secN`. Use `congr 1`. Use function extensionality and compare the values at `x`. Rewrite using `[mul_assoc, exp_phiP]`.
+
+Establish `hint : ∀ P, Integrable (fun x => evX P x * E x)`. Introduce `P`. Use `(hI m n c hc P).mono ?_ ?_` and prove the remaining obligations. Conclude with `((evX_continuous P).mul (evX_continuous (phiP ε c t b)).cexp).aestronglyMeasurable`. Use `Filter.Eventually.of_forall fun x => ?_` and prove the remaining obligations.
+
+Establish `hx : E x = gs c x * Complex.exp (Complex.I * t * (b * gramX ε x).trace)` using `(exp_phiP ε c t b x).symm`. Rewrite using `[hx, ← mul_assoc, norm_mul _ (Complex.exp _), norm_exp_tr ε t b hb x, mul_one]`. Establish `hE : ∀ x, HasFDerivAt E (E x • dEv (phiP ε c t b) x) x` using `fun x => (hasFDerivAt_evX (phiP ε c t b) x).cexp`. Establish `hfd : ∀ x v, fderiv ℝ E x v = E x * evX (∑ k, C (crd k v) * pderiv k (phiP ε c t b)) x`. Introduce `x v`.
+
+Rewrite using `[(hE x).fderiv, ContinuousLinearMap.smul_apply, smul_eq_mul, dEv_apply]`. Establish `hPd : ∀ (P : PX m n) x v, fderiv ℝ (evX P) x v = evX (∑ k, C (crd k v) * pderiv k P) x`. Introduce `P x v`. Rewrite using `[(hasFDerivAt_evX P x).fderiv, dEv_apply]`. Establish `hintD : ∀ (P : PX m n) v, Integrable (fun x => evX P x * fderiv ℝ E x v)`.
+
+Introduce `P v`. Use `(hint (P * ∑ k, C (crd k v) * pderiv k (phiP ε c t b))).congr (Filter.Eventually.of_forall fun x => ?_)` and prove the remaining obligations. Simplify using `only [hfd]`. Simplify using `only [evX, map_mul]`. Expand and normalize the polynomial expressions, which then agree.
+
+Establish `hintM : ∀ (P : PX m n) v, Integrable (fun x => fderiv ℝ (evX P) x v * E x)`. Introduce `P v`. Repeatedly rewrite using `[hPd]`. Conclude with `hint _`. Establish `ibp : ∀ (P : PX m n) (v : Fin m → Fin n → ℂ), ∫ x, evX P x * fderiv ℝ E x v = -∫ x, fderiv ℝ (evX P) x v * E x`.
+
+Introduce `P v`. Conclude with `integral_mul_fderiv_eq_neg_fderiv_mul_of_integrable (hintM P v) (hintD P v) (hint P) (fun x _ => (hasFDerivAt_evX P x).differentiableAt) (fun x _ => (hE x).differentiableAt)`. Establish `ibpW : ∀ j : Fin n, ∫ x, evX M x * (E x * evX (pderiv (a, j, false) (phiP ε c t b)) x) = -∫ x, evX (pderiv (a, j, false) M) x * E x`. Introduce `j`. Establish `hWE : ∀ x, fderiv ℝ E x (fun a' i' => if a' = a ∧ i' = j then (1 : ℂ) else 0) - Complex.I * fderiv ℝ E x (fun a' i' => if a' = a ∧ i' = j then Complex.I else 0) = 2 * (E x * evX (pderiv (a, j, false) (phiP ε c t b)) x)`.
+
+Introduce `x`. Rewrite using `[(hE x).fderiv, ContinuousLinearMap.smul_apply, ContinuousLinearMap.smul_apply, smul_eq_mul, smul_eq_mul]`. Use `dEv_wirt (phiP ε c t b) x a j` as an intermediate fact. Take the linear combination `(E x) * this`. Establish `hpt : ∀ x, evX M x * (E x * evX (pderiv (a, j, false) (phiP ε c t b)) x) = (evX M x * fderiv ℝ E x (fun a' i' => if a' = a ∧ i' = j then (1 : ℂ) else 0) - Complex.I * (evX M x * fderiv ℝ E x (fun a' i' => if a' = a ∧ i' = j then Complex.I else 0))) / 2`.
+
+Introduce `x`. Rewrite using `[eq_div_iff (two_ne_zero)]`. Take the linear combination `(-(evX M x)) * hWE x`. Establish `hptM : ∀ x, evX (pderiv (a, j, false) M) x * E x = (fderiv ℝ (evX M) x (fun a' i' => if a' = a ∧ i' = j then (1 : ℂ) else 0) * E x - Complex.I * (fderiv ℝ (evX M) x (fun a' i' => if a' = a ∧ i' = j then Complex.I else 0) * E x)) / 2`. Introduce `x`.
+
+Rewrite using `[eq_div_iff (two_ne_zero), (hasFDerivAt_evX M x).fderiv]`. Use `dEv_wirt M x a j` as an intermediate fact. Take the linear combination `(-(E x)) * this`. Repeatedly rewrite using `[hpt, hptM]`. Rewrite using `[integral_div, integral_div, integral_sub (hintD M _) ((hintD M _).const_mul _), integral_sub (hintM M _) ((hintM M _).const_mul _), integral_const_mul, integral_const_mul, ibp, ibp]`.
+
+Expand and normalize the polynomial expressions, which then agree. Establish `hAA : Amat ε c t b a * (Amat ε c t b a)⁻¹ = 1` using `Matrix.mul_nonsing_inv (Amat ε c t b a) (isUnit_iff_ne_zero.mpr hdet)`. Establish `key : ∀ x, evX (X (a, i, true) * M) x * E x = -∑ j, (Amat ε c t b a)⁻¹ j i * (evX M x * (E x * evX (pderiv (a, j, false) (phiP ε c t b)) x))`. Introduce `x`. Simplify using `only [evX_pderiv_phiP]`.
+
+Establish `h1 : ∀ k, ∑ j, Amat ε c t b a k j * (Amat ε c t b a)⁻¹ j i = if k = i then 1 else 0`. Introduce `k`. Rewrite using `[← Matrix.mul_apply, hAA, Matrix.one_apply]`. Establish `h2 : ∑ j, (Amat ε c t b a)⁻¹ j i * (evX M x * (E x * -∑ k, Amat ε c t b a k j * star (x a k))) = -(evX M x * E x * ∑ k, star (x a k) * ∑ j, Amat ε c t b a k j * (Amat ε c t b a)⁻¹ j i)`. Simplify using `only [Finset.mul_sum, mul_neg, Finset.sum_neg_distrib, neg_inj]`.
+
+Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun k _ => Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[h2]`. Simplify using `only [h1, mul_ite, mul_one, mul_zero, Finset.sum_ite_eq', Finset.mem_univ, if_true, neg_neg]`.
+
+Simplify using `only [evX, map_mul, eval_X, if_true]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hsec]`. Repeatedly rewrite using `[key]`. Rewrite using `[integral_neg, integral_finset_sum]`.
+
+Simplify using `only [integral_const_mul, ibpW, hsec]`. Simplify using `only [Finset.sum_neg_distrib, mul_neg, neg_neg]`. Introduce `j _`. Use `Integrable.const_mul ?_ _` and prove the remaining obligations. Use `(hint (M * pderiv (a, j, false) (phiP ε c t b))).congr (Filter.Eventually.of_forall fun x => ?_)` and prove the remaining obligations.
+
+Simplify using `only [evX, map_mul]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem wick_of (hI : IntegP) : Wick := by
   intro m n ε c t hc b hb M a i
   have hdet := amat_det_ne ε hc t hb a
@@ -93,6 +128,9 @@ theorem wick_of (hI : IntegP) : Wick := by
     refine (hint (M * pderiv (a, j, false) (phiP ε c t b))).congr (Filter.Eventually.of_forall fun x => ?_)
     simp only [evX, map_mul]; ring
 
+/- English proof (translation)
+The claim follows from `wick_of hI`.
+-/
 theorem wick (hI : IntegP) : Wick := wick_of hI
 
 end PositivityTheory.Rg.Sw.WR.G

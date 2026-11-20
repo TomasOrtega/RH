@@ -5,6 +5,19 @@ open scoped TensorProduct
 
 namespace GlobalTheory.CoordUnique
 
+/- English proof (translation)
+Take `⟨φ, hφ⟩ : ∃ φ : (K × K) →ₗ[K] E, ∀ p, φ p = p.1 • (1 : E) + p.2 • w` from `⟨{ toFun := fun p => p.1 • (1 : E) + p.2 • w, map_add' := fun p q => by simp only [Prod.fst_add, Prod.snd_add, add_smul]; abel, map_smul' := fun c p => by`. Simplify using `only [Prod.smul_fst, Prod.smul_snd, smul_eq_mul, mul_smul, smul_add, RingHom.id_apply] },`. Use `fun p => rfl⟩`. Establish `hinj : Function.Injective φ`. Rewrite using `[← LinearMap.ker_eq_bot, LinearMap.ker_eq_bot']`.
+
+Introduce and unpack `⟨s, t⟩ hst`. Rewrite `hst` using `[hφ]`. Distinguish the cases in `ht : t = 0`. Substitute `ht` using the available equality. Simplify using `only [zero_smul, add_zero, smul_eq_zero, one_ne_zero, or_false] at hst`.
+
+Simplify using `[hst]`. It suffices to derive a contradiction. Apply `hw (-s / t)` to reduce the goal to its premises. Establish `h1 : t • w = -(s • (1 : E))` using `eq_neg_of_add_eq_zero_right hst`. Establish `h2 : w = t⁻¹ • (-(s • (1 : E)))`.
+
+Rewrite using `[← h1, smul_smul, inv_mul_cancel₀ ht, one_smul]`. Rewrite using `[h2, Algebra.algebraMap_eq_smul_one, smul_neg, smul_smul, div_eq_mul_inv, neg_mul, neg_smul, mul_comm]`. Establish `hinj'` using `Module.Flat.lTensor_preserves_injective_linearMap (M := A) φ hinj`. Establish `hx : φ.lTensor A (a ⊗ₜ[K] ((1 : K), (0 : K)) + b ⊗ₜ[K] ((0 : K), (1 : K))) = 0`. Rewrite using `[map_add, LinearMap.lTensor_tmul, LinearMap.lTensor_tmul, hφ, hφ]`.
+
+Simplify using `using h`. Rewrite `hx` using `[← map_zero (φ.lTensor A)]`. Establish `hx0` using `hinj' hx`. Establish `ha : TensorProduct.rid K A ((LinearMap.fst K K K).lTensor A (a ⊗ₜ[K] ((1 : K), (0 : K)) + b ⊗ₜ[K] ((0 : K), (1 : K)))) = a`. Rewrite using `[map_add, LinearMap.lTensor_tmul, LinearMap.lTensor_tmul, LinearMap.fst_apply, LinearMap.fst_apply, map_add, TensorProduct.rid_tmul, TensorProduct.rid_tmul, one_smul, zero_smul, add_zero]`.
+
+Establish `hb : TensorProduct.rid K A ((LinearMap.snd K K K).lTensor A (a ⊗ₜ[K] ((1 : K), (0 : K)) + b ⊗ₜ[K] ((0 : K), (1 : K)))) = b`. Rewrite using `[map_add, LinearMap.lTensor_tmul, LinearMap.lTensor_tmul, LinearMap.snd_apply, LinearMap.snd_apply, map_add, TensorProduct.rid_tmul, TensorProduct.rid_tmul, one_smul, zero_smul, zero_add]`. Rewrite `ha`, `hb` using `[hx0, map_zero, map_zero]`. Conclude with `⟨ha.symm, hb.symm⟩`.
+-/
 theorem coords_unique_of_field {K E A : Type*} [Field K] [Ring E] [Nontrivial E] [Algebra K E] [AddCommGroup A]
     [Module K A] (w : E) (hw : ∀ f : K, algebraMap K E f ≠ w) (a b : A)
     (h : a ⊗ₜ[K] (1 : E) + b ⊗ₜ[K] w = 0) : a = 0 ∧ b = 0 := by
@@ -48,6 +61,9 @@ theorem coords_unique_of_field {K E A : Type*} [Field K] [Ring E] [Nontrivial E]
   rw [hx0, map_zero, map_zero] at ha hb
   exact ⟨ha.symm, hb.symm⟩
 
+/- English proof (translation)
+Introduce `_ _ w hw a b h` and use `coords_unique_of_field w hw a b h`.
+-/
 theorem coords_unique : ∀ (D : D7) (v : Pl D) (w : D.host.E), (∀ f : D.host.F, algebraMap D.host.F D.host.E f ≠ w) →
     ∀ a b : Fv D.host.F v, a ⊗ₜ[D.host.F] (1 : D.host.E) + b ⊗ₜ[D.host.F] w = 0 → a = 0 ∧ b = 0 :=
   fun _ _ w hw a b h => coords_unique_of_field w hw a b h

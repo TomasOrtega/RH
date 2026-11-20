@@ -5,6 +5,13 @@ attribute [local instance] Over.cartesianMonoidalCategory
 
 namespace GlobalTheory.CompanionTheory.FlatFibre
 
+/- English proof (translation)
+Introduce `hBC k _ A _ _ hfin R _ _ t X' s' φ h`. Set `u : Sp (IsLocalRing.ResidueField R) ⟶ Sp k` to `spMap (algebraMap R (IsLocalRing.ResidueField R)) ≫ t`. Set `σ : k →+* IsLocalRing.ResidueField R` to `(Spec.preimage u).hom`. Establish `hσ : spMap σ = u` using `Spec.map_preimage u`. Set `_ : Algebra k (IsLocalRing.ResidueField R)` to `σ.toAlgebra`.
+
+Establish `hsq : IsPullback (fst A (Over.mk t)).left (snd A (Over.mk t)).left A.hom t`. Simplify using `using IsPullback.of_hasPullback A.hom t`. Establish `hp : IsPullback (φ ≫ (fst A (Over.mk t)).left) s' A.hom (spMap (algebraMap k (IsLocalRing.ResidueField R)))`. Establish `h2` using `IsPullback.paste_horiz h hsq`. Establish `h3 : spMap (algebraMap k (IsLocalRing.ResidueField R)) = u` using `hσ`.
+
+Rewrite using `[h3]`. Conclude with `h2`. Take `⟨e, -⟩` from `hBC k (IsLocalRing.ResidueField R) A.left X' A.hom s' _ hp inferInstance inferInstance`. Use `⟨Module.Finite.equiv e, ?_⟩` and prove the remaining obligations. Rewrite using `[← e.finrank_eq, Module.finrank_baseChange]`.
+-/
 theorem closed_fibre_first_cohomology_finite : FlatBCSt → ∀ (k : Type) [Field k] (A : Over (Sp k)) [IsSeparated A.hom] [QuasiCompact A.hom],
     Module.Finite k (HO1 A.hom) → ∀ (R : Type) [CommRing R] [IsLocalRing R] (t : Sp R ⟶ Sp k)
     (X' : Scheme.{0}) (s' : X' ⟶ Sp (IsLocalRing.ResidueField R)) (φ : X' ⟶ (A ⊗ Over.mk t).left),

@@ -7,9 +7,19 @@ open CategoryTheory AlgebraicGeometry NumberField IsDedekindDomain Formalism.Con
 open GlobalTheory.WeilDeligne GlobalTheory.Pst GlobalTheory.GalOfCusp TensorProduct Module
 open UpperTheory.Gal.crystallineComparison
 
+/- English proof (translation)
+The claim follows from `e ▸ h`.
+-/
 private theorem nil_of_eq {W : Type} [AddCommGroup W] [Module ℂ W] (M : End ℂ W) {p p' : Polynomial ℂ} (e : p = p')
     (h : IsNilpotent (Polynomial.aeval M p)) : IsNilpotent (Polynomial.aeval M p') := e ▸ h
 
+/- English proof (translation)
+Introduce `hD hW hR hM`. Unfold `PhiKOfNil`. Introduce `l _ P AI hT ι E Ω _ _ _ _ _ A w h O _ _ _ Bw hj a r LL r' hm hcr Q hN s u hu hQ`. Take `⟨T⟩` from `hT`. Use `haveI := LL.2`.
+
+Establish `hSst : IsSst P (Bw.repE LL r')` using `GlobalTheory.CrysSst.isSst_of_isCrys P AI T _ hcr`. Establish `hV : IsPst P (Bw.repE LL r')` using `GlobalTheory.GalCut.IwaTwist.isPst_of_isSst P AI T _ hSst`. Use `haveI := hV.finite`. Establish `hd : deg (frob h)⁻¹ = -1` using `by rw [deg_inv, deg_frob]`. Establish `h1` using `hW l P E Ω A w h O Bw hj LL _ (Bw.repE LL r') hV hSst Q hN _ hd`.
+
+Establish `h2` using `nil_of_eq _ hQ (hR l P ι E Ω A w h O Bw hj LL _ (Bw.repE LL r') hV Q _ h1)`. Take `⟨h3, _⟩` from `hM l P ι E Ω A w h O Bw hj a r LL r' hm hV (frob h)⁻¹`. Take `⟨m, hm'⟩` from `hD ℂ _ _ s u hu h2`. Conclude with `⟨(frob h)⁻¹, hd, m, h3 ▸ hm'⟩`.
+-/
 theorem UpperTheory.Gal.crystallineComparison.phiKNil_of :
     DvdOfNil → NilWeil → NilRho → WdModel → PhiKOfNil := by
   intro hD hW hR hM

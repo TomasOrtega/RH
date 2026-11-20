@@ -10,6 +10,11 @@ noncomputable section
 
 namespace GlobalTheory.Mum
 
+/- English proof (translation)
+Use `first`. Consider the case `exact @_root_.GlobalTheory.FinitePowerAnnihilation.finFam_finite`. Consider the case `exact _root_.GlobalTheory.FinitePowerAnnihilation.finFam_finite`. Consider the case `(apply _root_.GlobalTheory.FinitePowerAnnihilation.finFam_finite <;> assumption)`. Consider the case `(intros; apply _root_.GlobalTheory.FinitePowerAnnihilation.finFam_finite <;> assumption)`.
+
+Consider the case `(intros; apply @_root_.GlobalTheory.FinitePowerAnnihilation.finFam_finite <;> first | assumption | infer_instance)`. Consider the case `(intros; exact _root_.GlobalTheory.FinitePowerAnnihilation.finFam_finite ..)`.
+-/
 theorem finFam_finite : ∀ {S : Scheme.{0}} {K : Type} [Field K] (gp : Sp K ⟶ S) [IsLocallyNoetherian S] {r : ℕ} (V : Fin r → S.Opens)
     (t : ∀ i, Finset Γ(Sp K, gp ⁻¹ᵁ V i)), (⨆ i, V i) = ⊤ →
     (∀ i, ∀ y ∈ t i, (gp.app (V i)).hom.IsIntegralElem y) → ∀ W : S.Opens, IsAffineOpen W →

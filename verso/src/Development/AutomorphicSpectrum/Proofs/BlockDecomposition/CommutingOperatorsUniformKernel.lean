@@ -13,6 +13,11 @@ namespace GlobalTheory.CompanionTheory.FormalAlg.Lift
 
 namespace TowerAx
 
+/- English proof (translation)
+Proceed by induction on `k with`. Consider the case `zero => exact fun e t a => ⟨t, a, by simp, by simp⟩`. Consider the case `succ k ih`. Introduce `e t a`. Take `⟨t', b, h1, h2⟩` from `ih e t a`.
+
+Use `⟨t' + 1, H.xK j e t' S b, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[pow_succ', mul_smul, h1]`. Conclude with `BiOps.X_smul_of (H.ops hc S) j e t' b`. Rewrite using `[pow_succ', mul_smul, h2]`. Conclude with `GrSum.X_smul_of (hc (e + 1) S) j t' _`.
+-/
 theorem exists_X_pow_smul_of {ι : Type} [LinearOrder ι] {R : Type} [CommRing R] {g : ℕ}
     {ρ : Fin g → R} {T : ℕ → ℤ → Finset ι → Type} [∀ e t S, AddCommGroup (T e t S)]
     [∀ e t S, Module R (T e t S)] {res : ∀ e t (S S' : Finset ι), S ⊆ S' → T e t S →ₗ[R] T e t S'}
@@ -37,6 +42,15 @@ theorem exists_X_pow_smul_of {ι : Type} [LinearOrder ι] {R : Type} [CommRing R
 
 end TowerAx
 
+/- English proof (translation)
+Introduce `ι _ R _ g ρ T _ _ res p mm hc H hyp S j a hS hres`. Take `⟨s, hs⟩` from `(H.ops hc S).exists_finset_sum a`. Establish `hq : ∀ q : ℕ × ℤ, ∃ k : ℕ, (MvPolynomial.X j : MvPolynomial ι (MvPolynomial (Fin g) R)) ^ k • (H.ops hc S).of q.1 q.2 ((H.ops hc S).comp q.1 q.2 a) = 0`. Introduce `q`. Establish `h0 : H.resK q.1 q.2 (Finset.subset_insert j S) ((H.ops hc S).comp q.1 q.2 a) = 0`.
+
+Rewrite using `[← TowerAx.comp_resTot, hres, map_zero]`. Establish `h1 : res (q.1 + 1) q.2 S (insert j S) (Finset.subset_insert j S) ((H.ops hc S).comp q.1 q.2 a : T (q.1 + 1) q.2 S) = 0` using `congrArg Subtype.val h0`. Take `⟨k, hk⟩` from `hyp (q.1 + 1) S j q.2 _ hS h1`. Take `⟨t', b, e1, e2⟩` from `TowerAx.exists_X_pow_smul_of hc H S j k q.1 q.2 ((H.ops hc S).comp q.1 q.2 a)`. Use `⟨k, ?_⟩` and prove the remaining obligations.
+
+Rewrite `hk` using `[e2]`. Establish `hb : b = 0` using `Subtype.ext (GrSum.of_injective (hc (q.1 + 1) S) t' (by rw [hk]; exact (map_zero _).symm))`. Rewrite using `[e1, hb, map_zero]`. Use `choose k hk using hq`. Use `⟨∑ q ∈ s, k q, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[hs, Finset.smul_sum]`. Use `Finset.sum_eq_zero fun q hqs => ?_` and prove the remaining obligations. Take `⟨c, hc'⟩` from `Nat.exists_eq_add_of_le' (Finset.single_le_sum (f := k) (fun _ _ => Nat.zero_le _) hqs)`. Rewrite using `[hc', pow_add, mul_smul, hk, smul_zero]`.
+-/
 theorem exists_X_pow_smul_eq_zero_of_resTot_eq_zero : ∀ (ι : Type) [LinearOrder ι] (R : Type) [CommRing R] (g : ℕ) (ρ : Fin g → R) (T : ℕ → ℤ → Finset ι → Type) [∀ e t S, AddCommGroup (T e t S)] [∀ e t S, Module R (T e t S)] (res : ∀ e t (S S' : Finset ι), S ⊆ S' → T e t S →ₗ[R] T e t S') (p : ∀ e t S, T (e + 1) t S →ₗ[R] T e t S) (mm : ι → ∀ e t S, T e t S →ₗ[R] T e (t + 1) S) (hc : ∀ e S, OperatorsCommute (ι := ι) (R := R) (A := fun t => T e t S) fun j t => mm j e t S) (H : TowerAx ρ res p mm), (∀ e S j t (a : T e t S), S.Nonempty → res e t S (insert j S) (Finset.subset_insert j S) a = 0 → ∃ k : ℕ, (MvPolynomial.X j : MvPolynomial ι R) ^ k • GrSum.of (hc e S) t a = 0) → ∀ (S : Finset ι) (j : ι) (a : H.Tot hc S), S.Nonempty → H.resTot hc S (insert j S) (Finset.subset_insert j S) a = 0 → ∃ k : ℕ, (MvPolynomial.X j : MvPolynomial ι (MvPolynomial (Fin g) R)) ^ k • a = 0 := by
   intro ι _ R _ g ρ T _ _ res p mm hc H hyp S j a hS hres
   classical

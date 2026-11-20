@@ -9,6 +9,9 @@ noncomputable section
 
 namespace GlobalTheory.CompanionTheory.CharOfLowK
 
+/- English proof (translation)
+Establish `hprod : (∏ a, (Polynomial.X - Polynomial.C (k a))) = ((Multiset.map k Finset.univ.val).map fun x => Polynomial.X - Polynomial.C x).prod`. Rewrite using `[Multiset.map_map]`. Both sides reduce to the same expression. Rewrite using `[hprod, Polynomial.roots_multiset_prod_X_sub_C]`.
+-/
 theorem roots_prod_X_sub_C {n : ℕ} (k : Fin n → ℂ) :
     (∏ a, (Polynomial.X - Polynomial.C (k a))).roots = Multiset.map k Finset.univ.val := by
   have hprod : (∏ a, (Polynomial.X - Polynomial.C (k a))) =
@@ -17,6 +20,15 @@ theorem roots_prod_X_sub_C {n : ℕ} (k : Fin n → ℂ) :
     rfl
   rw [hprod, Polynomial.roots_multiset_prod_X_sub_C]
 
+/- English proof (translation)
+Establish `hp : (∏ a, (Polynomial.X - Polynomial.C (-f a))) = ∏ a, (Polynomial.X - Polynomial.C (-g a))`. Apply `Polynomial.funext` to reduce the goal to its premises. Introduce `Y`. Simplify using `only [Polynomial.eval_prod, Polynomial.eval_sub, Polynomial.eval_X, Polynomial.eval_C, sub_neg_eq_add]`. Conclude with `h Y`.
+
+Establish `hmap : Multiset.map (fun a => -f a) Finset.univ.val = Multiset.map (fun a => -g a) Finset.univ.val`. Rewrite using `[← roots_prod_X_sub_C (fun a => -f a), ← roots_prod_X_sub_C (fun a => -g a)]`. Conclude with `congrArg Polynomial.roots hp`. Establish `hcard : ∀ c : ℂ, Fintype.card {a // -f a = c} = Fintype.card {a // -g a = c}`. Introduce `c`.
+
+Establish `hc` using `congrArg (Multiset.count c) hmap`. Rewrite `hc` using `[Multiset.count_map, Multiset.count_map]`. Rewrite using `[Fintype.card_subtype, Fintype.card_subtype, Finset.card, Finset.card, Finset.filter_val, Finset.filter_val]`. Apply the tactic sequence `convert hc using 3 <;> simp [eq_comm]`. Set `e : ∀ c, {a // -f a = c} ≃ {a // -g a = c}` to `fun c => Fintype.equivOfCardEq (hcard c)`.
+
+Set `τ : Equiv.Perm (Fin n)` to `((Equiv.sigmaFiberEquiv (fun a => -f a)).symm.trans (Equiv.sigmaCongrRight e)).trans (Equiv.sigmaFiberEquiv (fun a => -g a))`. Use `⟨τ, fun a => ?_⟩` and prove the remaining obligations. Establish `key : -g (τ a) = -f a` using `(e (-f a) ⟨a, rfl⟩).2`. Conclude with `neg_inj.mp key.symm`.
+-/
 theorem exists_perm_of_capelliPolynomial_eq {n : ℕ} (f g : Fin n → ℂ)
     (h : ∀ Y, Formalism.QuantumDeterminants.capP f Y = Formalism.QuantumDeterminants.capP g Y) :
     ∃ τ : Equiv.Perm (Fin n), ∀ a, f a = g (τ a) := by
@@ -44,6 +56,13 @@ theorem exists_perm_of_capelliPolynomial_eq {n : ℕ} (f g : Fin n → ℂ)
   have key : -g (τ a) = -f a := (e (-f a) ⟨a, rfl⟩).2
   exact neg_inj.mp key.symm
 
+/- English proof (translation)
+Introduce `n ε V _ _ E hE χ s mu hU hLF hSC hDS`. Take `⟨hHC, -, hMin, v, hv0, hKH⟩` from `hDS`. Take `⟨S, hSfin, hSK, hvS⟩` from `hLF v`. Establish `hU' : Formalism.REAL.IsUnitary (ε ∘ s) (fun a b => E (s a) (s b))` using `fun a b x y => hU (s a) (s b) x y`. Establish `hSK' : CompanionTheory.D.DSIC.KStab (ε ∘ s) (fun a b => E (s a) (s b)) S` using `fun a b hab w hw => hSK (s a) (s b) hab w hw`.
+
+Establish `hcap : ∀ Y, Formalism.QuantumDeterminants.capP (fun a => (mu a : ℂ)) Y = Formalism.QuantumDeterminants.capP χ Y`. Introduce `Y`. Establish `h1` using `CompanionTheory.D.DSIC.hAlgCore n (ε ∘ s) mu V (fun a b => E (s a) (s b)) v S hHC (GlobalTheory.CompanionTheory.HolCoef.CapLW.glRel_perm hE s) hU' hKH hSfin hSK' hvS hMin Y`. Rewrite `h1` using `[GlobalTheory.CompanionTheory.HolCoef.CapLW.qdet_perm hE s]`. Establish `h2 : Formalism.REAL.qdet E (Y + ((n : ℂ) - 1) / 2) = Formalism.QuantumDeterminants.capP χ Y • 1` using `hSC Y`.
+
+Establish `h3 : Formalism.QuantumDeterminants.capP χ Y • v = Formalism.QuantumDeterminants.capP (fun a => (mu a : ℂ)) Y • v`. Rewrite using `[← h1, h2]`. Simplify using the standard rewrite rules. Conclude with `(smul_left_injective ℂ hv0 h3).symm`. Conclude with `exists_perm_of_capelliPolynomial_eq (fun a => (mu a : ℂ)) χ hcap`.
+-/
 theorem charOfAlgDS : CompanionTheory.RgExh.Fin.CharOfAlgDS := by
   intro n ε V _ _ E hE χ s mu hU hLF hSC hDS
   obtain ⟨hHC, -, hMin, v, hv0, hKH⟩ := hDS

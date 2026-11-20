@@ -15,16 +15,27 @@ def powImage (l : ℕ) (LL O : Type) [Field LL] [CommRing O] [Algebra O LL] (n :
   (fun y => (l : LL) ^ n * y) '' Set.range (algebraMap O LL)
 
 omit [TopologicalSpace LL] in
+/- English proof (translation)
+Establish `hl : (l : ℚ_[l]) ≠ 0` using `Nat.cast_ne_zero.2 (Fact.out : l.Prime).ne_zero`. Rewrite using `[← map_natCast (algebraMap ℚ_[l] LL) l]`. Conclude with `(map_ne_zero (algebraMap ℚ_[l] LL)).2 hl`.
+-/
 lemma natCast_ne_zero' : (l : LL) ≠ 0 := by
   have hl : (l : ℚ_[l]) ≠ 0 := Nat.cast_ne_zero.2 (Fact.out : l.Prime).ne_zero
   rw [← map_natCast (algebraMap ℚ_[l] LL) l]
   exact (map_ne_zero (algebraMap ℚ_[l] LL)).2 hl
 
 omit [TopologicalSpace LL] in
+/- English proof (translation)
+Rewrite using `[Algebra.smul_def, map_pow, map_natCast]`.
+-/
 lemma pow_mul_eq_smul (n : ℕ) (y : LL) : (l : LL) ^ n * y = (l : ℚ_[l]) ^ n • y := by
   rw [Algebra.smul_def, map_pow, map_natCast]
 
 omit [Fact l.Prime] [Algebra ℚ_[l] LL] [TopologicalSpace LL] in
+/- English proof (translation)
+Simplify using `only [powImage, Set.mem_image, Set.mem_range, Ideal.mem_span_singleton]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨_, ⟨p, rfl⟩, hp⟩`. Use `⟨p, hinj ?_⟩` and prove the remaining obligations. Rewrite using `[map_mul, map_pow, map_natCast]`.
+
+Conclude with `hp.symm`. Introduce and unpack `⟨p, rfl⟩`. Conclude with `⟨algebraMap O LL p, ⟨p, rfl⟩, by rw [map_mul, map_pow, map_natCast]⟩`.
+-/
 lemma mem_powImage_iff (hinj : Function.Injective (algebraMap O LL)) (n : ℕ) (o : O) :
     algebraMap O LL o ∈ powImage l LL O n ↔ o ∈ Ideal.span {(l : O) ^ n} := by
   simp only [powImage, Set.mem_image, Set.mem_range, Ideal.mem_span_singleton]
@@ -36,25 +47,44 @@ lemma mem_powImage_iff (hinj : Function.Injective (algebraMap O LL)) (n : ℕ) (
   · rintro ⟨p, rfl⟩
     exact ⟨algebraMap O LL p, ⟨p, rfl⟩, by rw [map_mul, map_pow, map_natCast]⟩
 
+/- English proof (translation)
+Establish `hc : ((l : LL) ^ n) ≠ 0` using `pow_ne_zero _ (natCast_ne_zero' (l := l) (LL := LL))`. Conclude with `(Homeomorph.mulLeft₀ _ hc).isOpenMap _ ho`.
+-/
 lemma isOpen_powImage [IsTopologicalRing LL] (ho : IsOpen (Set.range (algebraMap O LL))) (n : ℕ) :
     IsOpen (powImage l LL O n) := by
   have hc : ((l : LL) ^ n) ≠ 0 := pow_ne_zero _ (natCast_ne_zero' (l := l) (LL := LL))
   exact (Homeomorph.mulLeft₀ _ hc).isOpenMap _ ho
 
 omit [Fact l.Prime] [Algebra ℚ_[l] LL] in
+/- English proof (translation)
+Establish `hopen : IsOpen ((algebraMap O LL).range.toAddSubgroup : Set LL)`. Simplify `ho` using `[RingHom.coe_range]`. Simplify `AddSubgroup.isClosed_of_isOpen _ hopen` using `[RingHom.coe_range]`.
+-/
 lemma isClosed_range [IsTopologicalRing LL] (ho : IsOpen (Set.range (algebraMap O LL))) :
     IsClosed (Set.range (algebraMap O LL)) := by
   have hopen : IsOpen ((algebraMap O LL).range.toAddSubgroup : Set LL) := by
     simpa [RingHom.coe_range] using ho
   simpa [RingHom.coe_range] using AddSubgroup.isClosed_of_isOpen _ hopen
 
+/- English proof (translation)
+Establish `hc : ((l : LL) ^ n) ≠ 0` using `pow_ne_zero _ (natCast_ne_zero' (l := l) (LL := LL))`. Conclude with `(Homeomorph.mulLeft₀ _ hc).isClosedMap _ (isClosed_range ho)`.
+-/
 lemma isClosed_powImage [IsTopologicalRing LL] (ho : IsOpen (Set.range (algebraMap O LL))) (n : ℕ) :
     IsClosed (powImage l LL O n) := by
   have hc : ((l : LL) ^ n) ≠ 0 := pow_ne_zero _ (natCast_ne_zero' (l := l) (LL := LL))
   exact (Homeomorph.mulLeft₀ _ hc).isClosedMap _ (isClosed_range ho)
 
+/- English proof (translation)
+The claim follows from `Padic.norm_p_lt_one`.
+-/
 lemma norm_l_lt_one : ‖(l : ℚ_[l])‖ < 1 := Padic.norm_p_lt_one
 
+/- English proof (translation)
+Establish `h1 : Continuous (algebraMap ℚ_[l] LL)`. Establish `h2 : Continuous fun x : ℚ_[l] => x • (1 : LL)` using `continuous_id.smul continuous_const`. Use `h2 using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `x`. Conclude with `Algebra.algebraMap_eq_smul_one x`.
+
+Establish `hf : Continuous fun z : ℤ_[l] => algebraMap ℚ_[l] LL (algebraMap ℤ_[l] ℚ_[l] z)` using `h1.comp (continuous_subtype_val : Continuous fun z : ℤ_[l] => (z : ℚ_[l]))`. Establish `hS : IsClosed {z : ℤ_[l] | algebraMap ℚ_[l] LL (algebraMap ℤ_[l] ℚ_[l] z) ∈ Set.range (algebraMap O LL)}` using `(isClosed_range ho).preimage hf`. Establish `hN : Set.range (Nat.cast : ℕ → ℤ_[l]) ⊆ {z : ℤ_[l] | algebraMap ℚ_[l] LL (algebraMap ℤ_[l] ℚ_[l] z) ∈ Set.range (algebraMap O LL)}`. Introduce and unpack `_ ⟨k, rfl⟩`. Conclude with `⟨(k : O), by simp⟩`.
+
+Conclude with `hS.closure_subset_iff.2 hN (PadicInt.denseRange_natCast z)`.
+-/
 lemma padicInt_mem_range [IsModuleTopology ℚ_[l] LL] [IsTopologicalRing LL]
     (ho : IsOpen (Set.range (algebraMap O LL))) (z : ℤ_[l]) :
     algebraMap ℚ_[l] LL (algebraMap ℤ_[l] ℚ_[l] z) ∈ Set.range (algebraMap O LL) := by
@@ -73,6 +103,15 @@ lemma padicInt_mem_range [IsModuleTopology ℚ_[l] LL] [IsTopologicalRing LL]
     exact ⟨(k : O), by simp⟩
   exact hS.closure_subset_iff.2 hN (PadicInt.denseRange_natCast z)
 
+/- English proof (translation)
+Introduce `hu`. Take `⟨ϖ, hϖ⟩` from `IsDiscreteValuationRing.exists_irreducible O`. Establish `hne : algebraMap O LL ϖ ≠ 0`. Introduce `h0`. Conclude with `hϖ.ne_zero (hinj (h0.trans (map_zero _).symm))`.
+
+Use `set y : LL := (algebraMap O LL ϖ)⁻¹ with hy`. Establish `hT : Tendsto (fun k : ℕ => (l : ℚ_[l]) ^ k • y) atTop (𝓝 0)`. Establish `h3` using `(tendsto_pow_atTop_nhds_zero_of_norm_lt_one (norm_l_lt_one (l := l))).smul_const y`. Simplify using `using h3`. Take `⟨k, q, hq⟩` from `(hT.eventually (ho.mem_nhds ⟨0, map_zero _⟩)).exists`.
+
+Take `⟨u, hu'⟩` from `hu`. Establish `hul : algebraMap O LL (↑u⁻¹ : O) * (l : LL) = 1`. Rewrite using `[← map_natCast (algebraMap O LL) l, ← hu', ← map_mul, Units.inv_mul, map_one]`. Establish `hyR : y = algebraMap O LL ((↑u⁻¹ : O) ^ k * q)`. Rewrite using `[map_mul, hq, map_pow, ← pow_mul_eq_smul, ← mul_assoc, ← mul_pow, hul, one_pow, one_mul]`.
+
+Apply `hϖ.not_isUnit` to reduce the goal to its premises. Use `IsUnit.of_mul_eq_one ((↑u⁻¹ : O) ^ k * q) (hinj ?_)` and prove the remaining obligations. Rewrite using `[map_mul, ← hyR, hy, mul_inv_cancel₀ hne, map_one]`.
+-/
 lemma not_isUnit_l [IsDomain O] [IsDiscreteValuationRing O] [IsModuleTopology ℚ_[l] LL]
     (hinj : Function.Injective (algebraMap O LL))
     (ho : IsOpen (Set.range (algebraMap O LL))) : ¬ IsUnit (l : O) := by
@@ -96,6 +135,11 @@ lemma not_isUnit_l [IsDomain O] [IsDiscreteValuationRing O] [IsModuleTopology �
   rw [map_mul, ← hyR, hy, mul_inv_cancel₀ hne, map_one]
 
 omit [TopologicalSpace LL] [Algebra ℚ_[l] LL] [Fact l.Prime] in
+/- English proof (translation)
+Establish `hI : Ideal.span {(l : O)} ≠ ⊤` using `fun h' => hl (Ideal.span_singleton_eq_top.1 h')`. Establish `hK` using `Ideal.iInf_pow_eq_bot_of_isLocalRing (Ideal.span {(l : O)}) hI`. Establish `hmem : o ∈ ⨅ i : ℕ, Ideal.span {(l : O)} ^ i` using `(Submodule.mem_iInf _).2 fun i => by`. Rewrite using `[Ideal.span_singleton_pow]`. Conclude with `h i`.
+
+Rewrite `hmem` using `[hK]`. Conclude with `(Submodule.mem_bot O).1 hmem`.
+-/
 lemma eq_zero_of_forall_mem [IsDomain O] [IsDiscreteValuationRing O] (hl : ¬ IsUnit (l : O))
     (o : O) (h : ∀ n, o ∈ Ideal.span {(l : O) ^ n}) : o = 0 := by
   have hI : Ideal.span {(l : O)} ≠ ⊤ := fun h' => hl (Ideal.span_singleton_eq_top.1 h')
@@ -107,6 +151,9 @@ lemma eq_zero_of_forall_mem [IsDomain O] [IsDiscreteValuationRing O] (hl : ¬ Is
   rw [hK] at hmem
   exact (Submodule.mem_bot O).1 hmem
 
+/- English proof (translation)
+Set `b` to `Module.finBasis ℚ_[l] LL`. Use `⟨Module.finrank ℚ_[l] LL, b.equivFun, ?_, ?_⟩` and prove the remaining obligations. Conclude with `IsModuleTopology.continuous_of_linearMap b.equivFun.toLinearMap`. Conclude with `IsModuleTopology.continuous_of_linearMap b.equivFun.symm.toLinearMap`.
+-/
 lemma exists_coords [FiniteDimensional ℚ_[l] LL] [IsModuleTopology ℚ_[l] LL] [IsTopologicalRing LL] :
     ∃ (d : ℕ) (e : LL ≃ₗ[ℚ_[l]] (Fin d → ℚ_[l])), Continuous e ∧ Continuous e.symm := by
   let b := Module.finBasis ℚ_[l] LL
@@ -114,6 +161,11 @@ lemma exists_coords [FiniteDimensional ℚ_[l] LL] [IsModuleTopology ℚ_[l] LL]
   · exact IsModuleTopology.continuous_of_linearMap b.equivFun.toLinearMap
   · exact IsModuleTopology.continuous_of_linearMap b.equivFun.symm.toLinearMap
 
+/- English proof (translation)
+Establish `hEq : {y : LL | ‖e y‖ ≤ r} = e.symm '' Metric.closedBall 0 r`. Use extensionality with `y`. Prove the components needed by the constructor for the conclusion. Introduce `hy`. Conclude with `⟨e y, by simpa using hy, by simp⟩`.
+
+Introduce and unpack `⟨z, hz, rfl⟩`. Simplify using `using hz`. Rewrite using `[hEq]`. Conclude with `(isCompact_closedBall 0 r).image he'`.
+-/
 lemma isCompact_ball {d : ℕ} (e : LL ≃ₗ[ℚ_[l]] (Fin d → ℚ_[l])) (he' : Continuous e.symm) (r : ℝ) :
     IsCompact {y : LL | ‖e y‖ ≤ r} := by
   have hEq : {y : LL | ‖e y‖ ≤ r} = e.symm '' Metric.closedBall 0 r := by
@@ -126,6 +178,35 @@ lemma isCompact_ball {d : ℕ} (e : LL ≃ₗ[ℚ_[l]] (Fin d → ℚ_[l])) (he'
   rw [hEq]
   exact (isCompact_closedBall 0 r).image he'
 
+/- English proof (translation)
+Use `set c : ℝ := ‖(l : ℚ_[l])‖ with hc`. Establish `hc0 : 0 < c` using `norm_pos_iff.2 (Nat.cast_ne_zero.2 (Fact.out : l.Prime).ne_zero)`. Establish `hc1 : c < 1` using `norm_l_lt_one`. Use `set K : Set LL := {y | ‖e y‖ ≤ 1} ∩ {y | c ≤ ‖e y‖} with hKdef`. Establish `hK : IsCompact K` using `(isCompact_ball e he' 1).inter_right (isClosed_le continuous_const (continuous_norm.comp he))`.
+
+Establish `hl : ¬ IsUnit (l : O)` using `not_isUnit_l hinj ho`. Establish `hempty : K ∩ ⋂ j, powImage l LL O j = ∅`. Use extensionality with `y`. Simplify using `only [Set.mem_inter_iff, Set.mem_iInter, Set.mem_empty_iff_false, iff_false, not_and]`. Introduce `hyK hy`.
+
+Take `⟨_, ⟨o, rfl⟩, hoy⟩` from `hy 0`. Establish `hyo : y = algebraMap O LL o` using `by simpa using hoy.symm`. Substitute `hyo` using the available equality. Establish `ho0 : o = 0` using `eq_zero_of_forall_mem hl o fun j => (mem_powImage_iff hinj j o).1 (hy j)`. Establish `hge : c ≤ ‖e (algebraMap O LL o)‖` using `hyK.2`.
+
+Rewrite `hge` using `[ho0, map_zero, map_zero, norm_zero]`. Conclude with `absurd hge (not_le.2 hc0)`. Establish `hanti : Antitone fun j : ℕ => powImage l LL O j`. Introduce `i j hij y hy`. Take `⟨_, ⟨p, rfl⟩, rfl⟩` from `hy`.
+
+Use `⟨algebraMap O LL ((l : O) ^ (j - i) * p), ⟨_, rfl⟩, ?_⟩` and prove the remaining obligations. Use `show (l : LL) ^ i * algebraMap O LL ((l : O) ^ (j - i) * p) = (l : LL) ^ j * algebraMap O LL p`. Rewrite using `[map_mul, map_pow, map_natCast, ← mul_assoc, ← pow_add, Nat.add_sub_cancel' hij]`. Take `⟨J, hJ⟩` from `hK.elim_directed_family_closed (fun j => powImage l LL O j) (fun j => isClosed_powImage ho j) hempty hanti.directed_ge`. Use `⟨J, ?_⟩` and prove the remaining obligations.
+
+Introduce and unpack `x ⟨p, rfl⟩`. Distinguish the cases in `hx1 : ‖e (algebraMap O LL p)‖ ≤ 1`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[not_le] at hx1 set N := ‖e (algebraMap O LL p)‖ with hN`. Establish `hex : ∃ j : ℕ, c ^ j * N ≤ 1`.
+
+Establish `ht : Tendsto (fun j : ℕ => c ^ j * N) atTop (𝓝 0)`. Simplify using `using (tendsto_pow_atTop_nhds_zero_of_lt_one hc0.le hc1).mul_const N`. Conclude with `(ht.eventually (ge_mem_nhds zero_lt_one)).exists`. Use `set j := Nat.find hex with hjdef`. Establish `hj : c ^ j * N ≤ 1` using `Nat.find_spec hex`.
+
+Establish `hj0 : j ≠ 0`. Introduce `h0`. Rewrite `hj` using `[h0, pow_zero, one_mul]`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hjm : ¬ c ^ (j - 1) * N ≤ 1` using `Nat.find_min hex (Nat.sub_lt (Nat.pos_of_ne_zero hj0) one_pos)`.
+
+Assume the negation of the conclusion as `hcon`. Rewrite `hcon` using `[not_le]`. Establish `hJj : J ≤ j`. Assume the negation of the conclusion as `hlt`. Rewrite `hlt` using `[not_le]`.
+
+Establish `h3 : c ^ J ≤ c ^ j` using `pow_le_pow_of_le_one hc0.le hc1.le hlt.le`. Establish `h4 : c ^ J * N ≤ c ^ j * N` using `mul_le_mul_of_nonneg_right h3 (norm_nonneg _)`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hnorm : ‖e ((l : LL) ^ j * algebraMap O LL p)‖ = c ^ j * N`. Rewrite using `[pow_mul_eq_smul, map_smul, norm_smul, norm_pow]`.
+
+Establish `hyK : (l : LL) ^ j * algebraMap O LL p ∈ K`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Use `show ‖e _‖ ≤ 1`. Rewrite using `[hnorm]`. Conclude with `hj`.
+
+Use `show c ≤ ‖e _‖`. Rewrite using `[hnorm]`. Establish `h1 : 1 < c ^ (j - 1) * N` using `not_le.1 hjm`. Establish `h2 : c ^ j * N = c * (c ^ (j - 1) * N)`. Rewrite using `[← mul_assoc, ← pow_succ', Nat.sub_add_cancel (Nat.pos_of_ne_zero hj0)]`.
+
+Rewrite using `[h2]`. Use the polynomial consequences of the given equalities and inequalities. Establish `hyJ : (l : LL) ^ j * algebraMap O LL p ∈ powImage l LL O J` using `hanti hJj (show _ ∈ powImage l LL O j from ⟨_, ⟨p, rfl⟩, rfl⟩)`. Establish `hmem : (l : LL) ^ j * algebraMap O LL p ∈ K ∩ powImage l LL O J` using `⟨hyK, hyJ⟩`. Rewrite `hmem` using `[hJ]`.
+
+Conclude with `hmem`.
+-/
 lemma bounded [IsDomain O] [IsDiscreteValuationRing O] [IsModuleTopology ℚ_[l] LL]
     [IsTopologicalRing LL] (hinj : Function.Injective (algebraMap O LL))
     (ho : IsOpen (Set.range (algebraMap O LL)))
@@ -205,6 +286,19 @@ lemma bounded [IsDomain O] [IsDiscreteValuationRing O] [IsModuleTopology ℚ_[l]
     rw [hJ] at hmem
     exact hmem
 
+/- English proof (translation)
+Set `_ : Algebra ℤ_[l] LL` to `((algebraMap ℚ_[l] LL).comp (algebraMap ℤ_[l] ℚ_[l])).toAlgebra`. Establish `hsmul : ∀ (z : ℤ_[l]) (w : LL), z • w = (z : ℚ_[l]) • w` using `fun z w => by`. Rewrite using `[Algebra.smul_def, Algebra.smul_def]`. Both sides reduce to the same expression. Establish `hl0 : (l : ℚ_[l]) ≠ 0` using `Nat.cast_ne_zero.2 (Fact.out : l.Prime).ne_zero`.
+
+Set `v : Fin d → LL` to `fun i => e.symm (((l : ℚ_[l]) ^ n)⁻¹ • Pi.single i 1)`. Set `M : Submodule ℤ_[l] LL` to `Submodule.span ℤ_[l] (Set.range v)`. Establish `hMfg : M.FG` using `Submodule.fg_span (Set.finite_range v)`. Establish `hRM : ∀ y ∈ Set.range (algebraMap O LL), y ∈ M`. Introduce `y hy`.
+
+Establish `hcoord : ∀ i, ‖(l : ℚ_[l]) ^ n * e y i‖ ≤ 1` using `fun i => by`. Rewrite using `[norm_mul, norm_pow]`. Conclude with `(mul_le_mul_of_nonneg_left (norm_le_pi_norm (e y) i) (pow_nonneg (norm_nonneg _) _)).trans (hb y hy)`. Set `z : Fin d → ℤ_[l]` to `fun i => ⟨(l : ℚ_[l]) ^ n * e y i, hcoord i⟩`. Establish `hy' : y = ∑ i, z i • v i`.
+
+Apply `e.injective` to reduce the goal to its premises. Simplify using `only [hsmul, v, map_sum, map_smul, LinearEquiv.apply_symm_apply]`. Use extensionality with `j`. Simplify using `[z, Finset.sum_apply, Pi.single_apply, smul_smul]`. Rewrite using `[mul_comm ((l : ℚ_[l]) ^ n) (e y j), mul_inv_cancel_right₀ (pow_ne_zero _ hl0)]`.
+
+Rewrite using `[hy']`. Conclude with `Submodule.sum_mem _ fun i _ => Submodule.smul_mem _ _ (Submodule.subset_span ⟨i, rfl⟩)`. Set `SR : Subalgebra ℤ_[l] LL` to `{ (algebraMap O LL).range with algebraMap_mem' := fun z => padicInt_mem_range ho z }`. Establish `hsub : Subalgebra.toSubmodule (Algebra.adjoin ℤ_[l] {x}) ≤ M` using `fun w hw => hRM w (Algebra.adjoin_le (show {x} ⊆ (SR : Set LL) from Set.singleton_subset_iff.2 hx) hw)`. Establish `: IsNoetherian ℤ_[l] M` using `isNoetherian_of_fg_of_noetherian M hMfg`.
+
+Establish `: IsNoetherian ℤ_[l] (Subalgebra.toSubmodule (Algebra.adjoin ℤ_[l] {x}))` using `isNoetherian_of_le hsub`. Conclude with `isIntegral_of_submodule_noetherian (Algebra.adjoin ℤ_[l] {x}) ‹_› x (Algebra.subset_adjoin (Set.mem_singleton x))`.
+-/
 lemma integral_of_bounded [IsModuleTopology ℚ_[l] LL] [IsTopologicalRing LL]
     (ho : IsOpen (Set.range (algebraMap O LL)))
     {d : ℕ} (e : LL ≃ₗ[ℚ_[l]] (Fin d → ℚ_[l])) (n : ℕ)
@@ -242,6 +336,13 @@ lemma integral_of_bounded [IsModuleTopology ℚ_[l] LL] [IsTopologicalRing LL]
   have : IsNoetherian ℤ_[l] (Subalgebra.toSubmodule (Algebra.adjoin ℤ_[l] {x})) := isNoetherian_of_le hsub
   exact isIntegral_of_submodule_noetherian (Algebra.adjoin ℤ_[l] {x}) ‹_› x (Algebra.subset_adjoin (Set.mem_singleton x))
 
+/- English proof (translation)
+Establish `hinj : Function.Injective (algebraMap O LL)` using `IsFractionRing.injective O LL`. Establish `hf : ∀ z : ℤ_[l], ((algebraMap ℚ_[l] LL).comp (algebraMap ℤ_[l] ℚ_[l])) z ∈ (algebraMap O LL).range` using `fun z => padicInt_mem_range ho z`. Set `e₁ : O ≃+* (algebraMap O LL).range` to `RingEquiv.ofBijective (algebraMap O LL).rangeRestrict ⟨fun a b hab => hinj (congrArg Subtype.val hab), (algebraMap O LL).rangeRestrict_surjective⟩`. Set `g : ℤ_[l] →+* O` to `e₁.symm.toRingHom.comp (((algebraMap ℚ_[l] LL).comp (algebraMap ℤ_[l] ℚ_[l])).codRestrict _ hf)`. Establish `hg : (algebraMap O LL).comp g = (algebraMap ℚ_[l] LL).comp (algebraMap ℤ_[l] ℚ_[l])`.
+
+Use extensionality with `z`. Conclude with `congrArg Subtype.val (e₁.apply_symm_apply (((algebraMap ℚ_[l] LL).comp (algebraMap ℤ_[l] ℚ_[l])).codRestrict _ hf z))`. Take `⟨p, hpm, hp⟩` from `hx`. Establish `hint : IsIntegral O x` using `⟨p.map g, hpm.map g, by rw [Polynomial.eval₂_map, hg]; exact hp⟩`. Take `⟨y, hy⟩` from `(IsIntegrallyClosed.isIntegral_iff (R := O) (K := LL)).1 hint`.
+
+Conclude with `⟨y, hy⟩`.
+-/
 lemma mem_of_integral [IsDomain O] [IsDiscreteValuationRing O] [IsFractionRing O LL]
     [IsModuleTopology ℚ_[l] LL] [IsTopologicalRing LL]
     (ho : IsOpen (Set.range (algebraMap O LL))) (x : LL)
@@ -263,6 +364,11 @@ lemma mem_of_integral [IsDomain O] [IsDiscreteValuationRing O] [IsFractionRing O
   obtain ⟨y, hy⟩ := (IsIntegrallyClosed.isIntegral_iff (R := O) (K := LL)).1 hint
   exact ⟨y, hy⟩
 
+/- English proof (translation)
+Set `tO : TopologicalSpace O` to `TopologicalSpace.induced (algebraMap O LL) ‹TopologicalSpace LL›`. Establish `hemb : Topology.IsEmbedding (algebraMap O LL)` using `⟨⟨rfl⟩, hinj⟩`. Establish `: IsTopologicalAddGroup O` using `topologicalAddGroup_induced (algebraMap O LL)`. Establish `: CompactSpace O` using `⟨hemb.isCompact_iff.2 (by simpa [Set.image_univ] using hc)⟩`. Establish `hopen : IsOpen ((Ideal.span {(l : O) ^ n} : Ideal O) : Set O)` using `isOpen_induced_iff.2 ⟨powImage l LL O n, isOpen_powImage ho n, by`.
+
+Use extensionality with `o`. Conclude with `mem_powImage_iff hinj n o⟩`. Conclude with `AddSubgroup.quotient_finite_of_isOpen (Ideal.span {(l : O) ^ n}).toAddSubgroup hopen`.
+-/
 lemma finite_quotient [IsTopologicalRing LL] (hinj : Function.Injective (algebraMap O LL))
     (ho : IsOpen (Set.range (algebraMap O LL))) (hc : IsCompact (Set.range (algebraMap O LL)))
     (n : ℕ) : Finite (O ⧸ Ideal.span {(l : O) ^ n}) := by
@@ -276,6 +382,21 @@ lemma finite_quotient [IsTopologicalRing LL] (hinj : Function.Injective (algebra
       exact mem_powImage_iff hinj n o⟩
   exact AddSubgroup.quotient_finite_of_isOpen (Ideal.span {(l : O) ^ n}).toAddSubgroup hopen
 
+/- English proof (translation)
+Establish `hsm : ∀ n : ℕ, (Ideal.span {(l : O)} ^ n • ⊤ : Submodule O O) = Ideal.span {(l : O) ^ n}` using `fun n => by`. Rewrite using `[smul_eq_mul, Ideal.mul_top, Ideal.span_singleton_pow]`. Establish `hl : ¬ IsUnit (l : O)` using `not_isUnit_l hinj ho`. Use `{ haus' := ?_, prec' := ?_ }` and prove the remaining obligations. Introduce `x hx`.
+
+Use `eq_zero_of_forall_mem hl x fun n => ?_` and prove the remaining obligations. Establish `h1` using `hx n`. Rewrite `h1` using `[hsm, SModEq.sub_mem, sub_zero]`. Conclude with `h1`. Introduce `f hf`.
+
+Take `⟨a, ⟨L, rfl⟩, hcl⟩` from `hc.exists_clusterPt (f := Filter.map (fun k => algebraMap O LL (f k)) atTop) (Filter.le_principal_iff.2 (Filter.mem_map.2 (Filter.univ_mem' fun k => ⟨f k, rfl⟩)))`. Use `⟨L, fun n => ?_⟩` and prove the remaining obligations. Rewrite using `[hsm, SModEq.sub_mem]`. Establish `hC : IsClosed {y : LL | y - algebraMap O LL (f n) ∈ powImage l LL O n}` using `(isClosed_powImage ho n).preimage (continuous_id.sub continuous_const)`. Establish `hev : {y : LL | y - algebraMap O LL (f n) ∈ powImage l LL O n} ∈ Filter.map (fun k => algebraMap O LL (f k)) atTop`.
+
+Rewrite using `[Filter.mem_map]`. Use `filter_upwards [eventually_ge_atTop n] with k hk`. Establish `h2` using `hf hk`. Rewrite `h2` using `[hsm, SModEq.sub_mem]`. Use `show algebraMap O LL (f k) - algebraMap O LL (f n) ∈ powImage l LL O n`.
+
+Rewrite using `[← map_sub]`. Establish `h3 : f k - f n ∈ Ideal.span {(l : O) ^ n}`. Establish `h4` using `(Ideal.neg_mem_iff (I := Ideal.span {(l : O) ^ n})).2 h2`. Rewrite `h4` using `[neg_sub]`. Then use the resulting hypothesis. Conclude with `(mem_powImage_iff hinj n _).2 h3`.
+
+Establish `hL` using `hC.closure_subset (hcl.mem_closure_of_mem _ hev)`. Establish `hL' : L - f n ∈ Ideal.span {(l : O) ^ n}`. Apply `(mem_powImage_iff hinj n _).1` to reduce the goal to its premises. Rewrite using `[map_sub]`. Conclude with `hL`.
+
+Establish `h5` using `(Ideal.neg_mem_iff (I := Ideal.span {(l : O) ^ n})).2 hL'`. Rewrite `h5` using `[neg_sub]`. Then use the resulting hypothesis.
+-/
 lemma adicComplete [IsDomain O] [IsDiscreteValuationRing O] [IsModuleTopology ℚ_[l] LL]
     [IsTopologicalRing LL] (hinj : Function.Injective (algebraMap O LL))
     (ho : IsOpen (Set.range (algebraMap O LL))) (hc : IsCompact (Set.range (algebraMap O LL))) :
@@ -316,6 +437,15 @@ lemma adicComplete [IsDomain O] [IsDiscreteValuationRing O] [IsModuleTopology �
     have h5 := (Ideal.neg_mem_iff (I := Ideal.span {(l : O) ^ n})).2 hL'
     rwa [neg_sub] at h5
 
+/- English proof (translation)
+Take `⟨⟨hD, hDVR, hFr⟩, hfd, hmt, htr, ho⟩` from `h`. Use `hD` as an intermediate fact. Use `hDVR` as an intermediate fact. Use `hFr` as an intermediate fact. Use `hfd` as an intermediate fact.
+
+Use `hmt` as an intermediate fact. Use `htr` as an intermediate fact. Establish `hinj : Function.Injective (algebraMap O LL)` using `IsFractionRing.injective O LL`. Take `⟨d, e, he, he'⟩` from `exists_coords (l := l) (LL := LL)`. Take `⟨n, hb⟩` from `bounded hinj ho e he he'`.
+
+Establish `hpos : 0 < ‖(l : ℚ_[l])‖ ^ n` using `pow_pos (norm_pos_iff.2 (Nat.cast_ne_zero.2 (Fact.out : l.Prime).ne_zero)) n`. Establish `hsub : Set.range (algebraMap O LL) ⊆ {y : LL | ‖e y‖ ≤ 1 / ‖(l : ℚ_[l])‖ ^ n}`. Introduce `y hy`. Use `show ‖e y‖ ≤ 1 / ‖(l : ℚ_[l])‖ ^ n`. Rewrite using `[le_div_iff₀ hpos, mul_comm]`.
+
+Conclude with `hb y hy`. Establish `hcpt : IsCompact (Set.range (algebraMap O LL))` using `(isCompact_ball e he' _).of_isClosed_subset (isClosed_range ho) hsub`. Conclude with `⟨fun x => ⟨fun hx => integral_of_bounded ho e n hb x hx, fun hx => mem_of_integral ho x hx⟩, hcpt, fun k => finite_quotient hinj ho hcpt k, adicComplete hinj ho hcpt⟩`.
+-/
 theorem main (l : ℕ) [Fact l.Prime] (LL : Type) [Field LL] [Algebra ℚ_[l] LL] [TopologicalSpace LL]
     (O : Type) [CommRing O] [Algebra O LL] (h : Formalism.MainNotions.N.GoodO (Qp := ℚ_[l]) LL O) :
     (∀ x : LL, x ∈ Set.range (algebraMap O LL) ↔

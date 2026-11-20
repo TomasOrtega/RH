@@ -33,14 +33,23 @@ def ConeTypes {p q : ℕ} (M : GKMod p q) (lam : Ix p q → ℚ) : Prop :=
       μ = fun c => blattner lam c +
         ∑ a, ∑ b, (m a b : ℚ) * ((if c = a then 1 else 0) - (if c = b then 1 else 0))
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem J_eq {p q r s : ℕ} {T0 : GrpData (p * r + q * s) (p * s + q * r)} {T1 : GrpData p q}
     {T2 : GrpData r s} (F : FockData T0 T1 T2) : F.J = jointHarm p q r s := rfl
 
+/- English proof (translation)
+Unfold both sides. The equivalence is reflexive.
+-/
 theorem isIntw_iff {p q r s : ℕ} {T0 : GrpData (p * r + q * s) (p * s + q * r)} {T1 : GrpData p q}
     {T2 : GrpData r s} (F : FockData T0 T1 T2) (M1 : GKMod p q) (M2 : GKMod r s)
     (f : Pol p q r s →ₗ[ℂ] TensorProduct ℂ M1.V M2.V) : IsIntw F M1 M2 f ↔ Intw M1 M2 f :=
   Iff.rfl
 
+/- English proof (translation)
+Introduce `α β`. Conclude with `F.fockIP α β`.
+-/
 theorem isFockIsometry_of_fockData {p q r s : ℕ} {T0 : GrpData (p * r + q * s) (p * s + q * r)}
     {T1 : GrpData p q} {T2 : GrpData r s} (F : FockData T0 T1 T2) : IsFockIP F.ι := by
   intro α β

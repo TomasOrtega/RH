@@ -6,6 +6,9 @@ import Development.AbelianVarietyTheory.Proofs.AdelicLatticeProofs.ExistsCongrIf
 
 namespace GlobalTheory.LocalQuad
 
+/- English proof (translation)
+Introduce `H` and use `GlobalTheory.Published.landherrSt_of_landherr (landherr_of_hasseNormSt H)`.
+-/
 theorem landherrSt_of_hasseNormSt : GlobalTheory.Published.HasseNormSt → GlobalTheory.Published.LandherrSt :=
   fun H => GlobalTheory.Published.landherrSt_of_landherr (landherr_of_hasseNormSt H)
 

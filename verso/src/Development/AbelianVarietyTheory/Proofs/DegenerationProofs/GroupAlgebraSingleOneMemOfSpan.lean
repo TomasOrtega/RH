@@ -2,6 +2,13 @@ import Mathlib
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Establish `key : ∀ a ∈ Ideal.span {a : A | AddMonoidAlgebra.single α a ∈ R}, AddMonoidAlgebra.single α a ∈ R`. Introduce `a ha`. Proceed by induction on `ha using Submodule.span_induction with`. Consider the case `mem x hx => exact hx`. Consider the case `zero => rw [AddMonoidAlgebra.single_zero]`.
+
+Conclude with `R.zero_mem`. Consider the case `add x y _ _ hx hy => rw [AddMonoidAlgebra.single_add]`. Conclude with `R.add_mem hx hy`. Consider the case `smul c x _ hx`. Use `R.mul_mem (h0 c) hx` as an intermediate fact.
+
+Rewrite `this` using `[AddMonoidAlgebra.single_mul_single, zero_add]`. Then use the resulting hypothesis. Conclude with `key 1 (h ▸ Submodule.mem_top)`.
+-/
 theorem groupAlgebra_single_one_mem_of_span {A X : Type} [CommRing A] [AddCommGroup X]
     (R : Subring (AddMonoidAlgebra A X)) (h0 : ∀ a : A, AddMonoidAlgebra.single 0 a ∈ R) (α : X)
     (h : Ideal.span {a : A | AddMonoidAlgebra.single α a ∈ R} = ⊤) :
@@ -18,6 +25,19 @@ theorem groupAlgebra_single_one_mem_of_span {A X : Type} [CommRing A] [AddCommGr
       rwa [AddMonoidAlgebra.single_mul_single, zero_add] at this
   exact key 1 (h ▸ Submodule.mem_top)
 
+/- English proof (translation)
+Introduce `A X _ _ I e R h0 h`. Establish `hadd : ∀ x y : X, AddMonoidAlgebra.single x (1 : A) ∈ R → AddMonoidAlgebra.single y (1 : A) ∈ R → AddMonoidAlgebra.single (x + y) (1 : A) ∈ R`. Introduce `x y hx hy`. Use `R.mul_mem hx hy` as an intermediate fact. Rewrite `this` using `[AddMonoidAlgebra.single_mul_single, one_mul]`. Then use the resulting hypothesis.
+
+Set `S : AddSubgroup X` to `{ carrier := {x | AddMonoidAlgebra.single x (1 : A) ∈ R ∧ AddMonoidAlgebra.single (-x) (1 : A) ∈ R} zero_mem' := ⟨h0 1, by rw [neg_zero]; exact h0 1⟩ add_mem' := fun {x y} hx hy => ⟨hadd _ _ hx.1 hy.1, by`. Rewrite using `[neg_add]`. Conclude with `hadd _ _ hx.2 hy.2⟩`. Use the proof step `neg_mem' := fun {x} hx => ⟨hx.2, by rw [neg_neg]; exact hx.1⟩ }`. Establish `hall : ∀ x : X, x ∈ S`.
+
+Introduce `x`. Establish `hx : x ∈ Submodule.span ℤ (Set.range e)` using `by rw [e.span_eq]; exact Submodule.mem_top`. Proceed by induction on `hx using Submodule.span_induction with`. Consider the case `mem y hy`. Take `⟨i, rfl⟩` from `hy`.
+
+Conclude with `⟨groupAlgebra_single_one_mem_of_span R h0 _ (h i).1, groupAlgebra_single_one_mem_of_span R h0 _ (h i).2⟩`. Consider the case `zero => exact S.zero_mem`. Consider the case `add x y _ _ hx hy => exact S.add_mem hx hy`. Consider the case `smul c x _ hx => exact S.zsmul_mem hx c`. Establish `hs : ∀ (x : X) (a : A), AddMonoidAlgebra.single x a ∈ R`.
+
+Introduce `x a`. Use `R.mul_mem (h0 a) (hall x).1` as an intermediate fact. Rewrite `this` using `[AddMonoidAlgebra.single_mul_single, zero_add, mul_one]`. Then use the resulting hypothesis. Rewrite using `[eq_top_iff]`. Introduce `f hf`.
+
+Use `clear hf`. Proceed by induction on `f using AddMonoidAlgebra.induction_linear with`. Consider the case `zero => exact R.zero_mem`. Consider the case `add f g hf hg => exact R.add_mem hf hg`. Consider the case `single x a => exact hs x a`.
+-/
 theorem groupAlgebra_subring_eq_top :
     (∀ (A X : Type) [CommRing A] [AddCommGroup X] (I : Type) (e : Module.Basis I ℤ X) (R : Subring (AddMonoidAlgebra A X)), (∀ a : A, AddMonoidAlgebra.single 0 a ∈ R) → (∀ i, Ideal.span {a : A | AddMonoidAlgebra.single (e i) a ∈ R} = ⊤ ∧ Ideal.span {a : A | AddMonoidAlgebra.single (-e i) a ∈ R} = ⊤) → R = ⊤) := by
   intro A X _ _ I e R h0 h

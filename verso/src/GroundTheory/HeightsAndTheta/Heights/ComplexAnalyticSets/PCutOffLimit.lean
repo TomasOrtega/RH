@@ -10,6 +10,15 @@ namespace GroundTheory.Heights₂.Heights
 open MvPolynomial MeasureTheory Filter Topology Matrix ComplexSets
 open scoped ContDiff
 
+/- English proof (translation)
+Introduce `n d J A P hJ hdim hA hP`. Take `⟨χ, hχs, hχI, hχU, hχ1, hχE, hχM⟩` from `hC n d J A P hJ hdim hA hP`. Use `⟨χ, hχs, hχU, fun F G φ hF hG hφ hc => ?_⟩` and prove the remaining obligations. Establish `hcont : ∀ f, SmoothNear (zeroSet J) f → ContinuousOn f (zeroSet J)`. Introduce and unpack `f ⟨U, -, hU, hf⟩`.
+
+Conclude with `hf.continuousOn.mono hU`. Establish `hcons : ∀ f, SmoothNear (zeroSet J) f → ∀ i, SmoothNear (zeroSet J) (vecCons f φ i)`. Introduce `f hf i`. Use `Fin.cases ?_ (fun i => ?_) i` and prove the remaining obligations. Simplify using `using hf`.
+
+Simplify using `using hφ i`. Establish `hmeas : ∀ k, Measurable (χ k)` using `fun k => (hχs k).continuous.measurable`. Use `⟨hD n (d + 1) J A P χ F (vecCons G φ) hJ hdim hA hP hmeas hχI hχ1 (hcont F hF) (hcons G hG) (hM n (d + 1) J A F (vecCons G φ) hJ hdim hA (hcont F hF) (hcons G hG) (Or.inl hc)), ?_⟩` and prove the remaining obligations. Establish `h1` using `hD n (d + 1) J A P χ G (vecCons F φ) hJ hdim hA hP hmeas hχI hχ1 (hcont G hG) (hcons F hF) (hM n (d + 1) J A G (vecCons F φ) hJ hdim hA (hcont G hG) (hcons F hF) (Or.inr ⟨0, by simpa using hc⟩))`. Take `⟨R, C, hRC⟩` from `hB n d J A F G φ hJ hdim hA hF hG hφ hc`.
+
+Establish `h0 : Tendsto (fun k => C * ((∫ y, chartAbsDens J A ((Metric.closedBall 0 R).indicator fun _ => 1) (vecCons (χ k) φ) y) + Real.sqrt (energyInt J A (Metric.closedBall 0 R) (χ k)))) atTop (𝓝 0)`. Simplify using `using ((hχM R φ hφ).add (hχE R).sqrt).const_mul C`. Use `h1.congr_dist (squeeze_zero (fun _ => dist_nonneg) (fun k => ?_) h0)` and prove the remaining obligations. Rewrite using `[Real.dist_eq, abs_sub_comm]`. Conclude with `hRC (χ k) (hχs k)`.
+-/
 theorem CutOffLimit.proof (hC : CutOff.Statement) (hM : ChartMassCompact.Statement)
     (hD : CutOffDominated.Statement) (hB : CutOffBoundaryBound.Statement) :
     CutOffLimit.Statement := by

@@ -18,6 +18,9 @@ open Classical in
 noncomputable def GlobalTheory.AutPart.jumpOf (a : ℕ) (z : ℂ) : ℤ :=
   if h : ∃ n : ℤ, z = (n : ℂ) + ((a : ℂ) - 1) / 2 then -h.choose else 0
 
+/- English proof (translation)
+Unfold `GlobalTheory.AutPart.jumpOf`. Rewrite using `[dif_pos h]`. Use `conv_rhs => rw [h.choose_spec]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem GlobalTheory.AutPart.jumpOf_spec (a : ℕ) (z : ℂ) (h : ∃ n : ℤ, z = (n : ℂ) + ((a : ℂ) - 1) / 2) :
     ((GlobalTheory.AutPart.jumpOf a z : ℤ) : ℂ) = -z + ((a : ℂ) - 1) / 2 := by
   unfold GlobalTheory.AutPart.jumpOf
@@ -28,6 +31,31 @@ theorem GlobalTheory.AutPart.jumpOf_spec (a : ℕ) (z : ℂ) (h : ∃ n : ℤ, z
 set_option maxHeartbeats 4000000 in
 set_option synthInstance.maxHeartbeats 400000 in
 
+/- English proof (translation)
+Introduce `hArt D cf jE A low Pq S hL eig θ Bs M C tp hCS hMI hstar hE hsp hCh hψ big X T Sp`. Use `choose ι hfin F hF using fun i : X.nd.Loc => GlobalTheory.T.algebraicModularForms_irreducible_decomposition D (X.nd.mu i) (X.nd.j i) (mlX M X i)`. Establish `irr : ∀ i P, NG.IsIrrRep (mlX M X i).wt.ρ (F i P)` using `fun i => (hF i).1`. Establish `hinj` using `fun i => (hF i).2.1`. Establish `hsurj` using `fun i => (hF i).2.2.1`.
+
+Establish `hne` using `fun i => (hF i).2.2.2.1`. Establish `hind` using `fun i => (hF i).2.2.2.2.1`. Establish `htop` using `fun i => (hF i).2.2.2.2.2`. Choose the witnesses or unpack the hypotheses as in `⟨ptV, hptV⟩ : ∃ ptV : ∀ i, ι i → Option (X.nd.X i), ∀ i P x, ptV i P = some x ↔ (∀ (w : PlE D.host) (k : ℕ) (s : SplitPlace D.host.E) (ϖ : s.v.adicCompletion (maximalRealSubfield D.host.E)), SplitOut X.nd i w → IsConjPl D.host w s.w → IsUnif D.host.E s.v ϖ → 1 ≤ k → k ≤ D.R.nV → …`. Use `⟨fun i P => if h : ∃ x, (∀ (w : PlE D.host) (k : ℕ) (s : SplitPlace D.host.E) (ϖ : s.v.adicCompletion (maximalRealSubfield D.host.E)), SplitOut X.nd i w → IsConjPl D.host w s.w → IsUnif D.host.E s.v ϖ → 1 ≤ k → k ≤ D.R.nV → ∀ y ∈ ((NG.isoTyp (mlX M X i).wt.ρ (F i P)).comap (mlX M …` and prove the remaining obligations.
+
+Simplify using `only`. Distinguish the cases in `h : ∃ x, (∀ (w : PlE D.host) (k : ℕ) (s : SplitPlace D.host.E) (ϖ : s.v.adicCompletion (maximalRealSubfield D.host.E)), SplitOut X.nd i w → IsConjPl D.host w s.w → IsUnif D.host.E s.v ϖ → 1 ≤ k → k ≤ D.R.nV → ∀ y ∈ ((NG.isoTyp (mlX M X i).wt.ρ (F i P)).comap (mlX M X i).real), NG …`. Rewrite using `[dif_pos h]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨⟩`.
+
+Conclude with `h.choose_spec`. Introduce `hx`. Rewrite using `[GlobalTheory.T.galois_family_local_condition D cf jE A low Pq S hL eig θ Bs M C tp hCS hMI hstar hE hsp hCh big X T Sp i _ (hne i P) _ _ h.choose_spec hx]`. Rewrite using `[dif_neg h]`. Conclude with `⟨fun h' => absurd h' (by simp), fun hx => (h ⟨x, hx⟩).elim⟩`.
+
+Establish `hpts` using `fun i => haveI := hfin i`. Use the proof step `GlobalTheory.T.galois_family_unramified_outside D cf jE A low Pq S hL eig θ Bs M C tp hCS hMI hstar hE hsp hCh big X T Sp i (ι i) (F i) (irr i) (hinj i) (hsurj i) (hne i) (hind i) (htop i) (ptV i) (hptV i)`. Use `choose μ hμc hμ using GlobalTheory.T.galois_family_crystalline_weights D cf jE A low Pq S hL eig θ Bs M C tp hCS hMI hstar hE hsp hCh big X T Sp`. Use `choose κ hκ using GlobalTheory.T.galois_family_determinant D cf jE A low Pq S hL eig θ Bs M C tp hCS hMI hstar hE hsp hCh big X T Sp`. Use `choose b hb using fun i : X.nd.Loc => GlobalTheory.algWt_contragredient D.host.E D.R.nV (mlX M X i).wt`.
+
+Establish `hralg : ∀ {a} (π : D.naut.CG a) τ, D.naut.ralg π → ∀ z ∈ D.naut.infG π τ, ∃ n : ℤ, z = (n : ℂ) + ((a : ℂ) - 1) / 2` using `fun π τ h => ((D.naut.ralg_def π).1 h τ).2`. Use `⟨{ iotaQ := Sp.iq iotaQC := fun i => (qCast (X.nd.w_l i) (A.pl.ι (X.nd.w i))) iota_LL := Sp.iq_LL iotaQ_alg := Sp.iq_alg muC := μ muC_csd := hμc AV := ι finAV := hfin ptV := ptV typeV := fun i P => ((NG.isoTyp (mlX M X i).wt.ρ (F i P)).comap (mlX M X i).real) typeV_ne := hne type …` and prove the remaining obligations. Rewrite using `[Multiset.map_map]`. Conclude with `Multiset.map_congr rfl fun z hz => GlobalTheory.AutPart.jumpOf_spec a z (hralg π _ h z hz)`. Use `locAut_hodgeTateWeightsLevelZero_def := fun i τ => by`.
+
+Rewrite using `[Multiset.map_map]`. Conclude with `Multiset.map_congr rfl fun z hz => GlobalTheory.AutPart.jumpOf_spec _ z ((D.nbc.infW_alg _ _ _).2 z hz)`. Use `chi_mu := fun i w hw => GlobalTheory.T.galois_family_hecke_compatible hArt D cf jE A low Pq S hL eig θ Bs M C tp hCS hMI hstar hE hsp hCh hψ big X T Sp i (μ i) (hμc i) (hμ i) w hw`. Use `kFbar := κ }, {`. Use `embAV := fun i P => (A.au.cls (X.nd.j i) (X.nd.j_range i).1 (X.nd.j_range i).2 { (mlX M X i).wt with S := F i P, irrS := irr i P })`.
+
+Use `embAV_inj := fun i P P' h => hinj i P P' ((A.au.iso _ _ _ _ _).1 h).2`. Use `embAV_loc := fun _ _ _ => rfl`. Use `embAV_sat := fun _ _ _ => rfl`. Use `embAV_sph := fun i P w hw => haveI := hfin i`. Use the proof step `GlobalTheory.T.galois_family_polarized D cf jE A low Pq S hL eig θ Bs M C tp hCS hMI hstar hE hsp hCh big X T Sp i (ι i) (F i) (irr i) (hinj i) (hsurj i) (hne i) (hind i) (htop i) P w hw`.
+
+Use `embAV_inf := fun i P => by`. Conclude with `(congrArg (D.nbc.infW (X.nd.j i)) (A.au.wt _ _ _ _ (b i) (hb i).1)).symm }, ⟨{`. Use `iotaQ := fun _ => rfl`. Use `iotaQC := fun _ => rfl`. Use `kFbar := hκ`.
+
+Use `locW := fun _ _ _ => rfl`. Use `satW := fun _ _ _ => rfl`. Use `wdOf := fun _ _ _ _ => ⟨rfl, Iff.rfl, Iff.rfl, Iff.rfl, fun _ => rfl⟩`. Use `muC := hμ`. Use `S := F`.
+
+Use `irr := irr`. Use `inj := hinj`. Use `surj := hsurj`. Use `typeV := fun _ _ => rfl`. Use `ptV := hptV`.
+
+Use `emb := fun _ _ => rfl }⟩⟩`.
+-/
 theorem GlobalTheory.AutPart.exists_autSpec : GlobalTheory.Published.GlobalArtinReciprocity → ∀ (D : D7) (cf : CharFrame D) (jE : D.host.E →+* Qb) (A : SideA D cf jE) (low : Finset ℕ) (Pq : HeightOneSpectrum (𝓞 (maximalRealSubfield D.host.E)) → PlE D.host) (S : RatDat D.ntw) (hL : ∀ j, ℕ → PlE D.host → Module.End D.what₂.LL (S.WL j)) (eig : ℕ → D.what₂.FT → ℕ → PlE D.host → ↥D.LL0) (θ : ∀ kk : Fin 2, Multiplicative (ZMod (D.host.g kk)) →* (↥D.LL0)ˣ) (Bs : SideB D cf A.row low Pq S hL eig θ) (M : MtFam D) (C : NChoice D) (tp : TupTied D cf C), ChoiceSide D cf M Bs.exp C tp → MtInput D M tp.tup C.Q → (∀ x : D.LL0, star (x : D.what₂.LL) ∈ D.LL0) → (∀ j g, ∃ z : ℤ, eExp D j g = z) → (∀ v, v ∈ placesOver D.host.E D.host.pde ∨ v ∈ placesOver D.host.E D.host.pde' → IsSplitPl D.host v) → GlobalTheory.RowTie.ChebSplit D.nd → (∀ w, D.what₂.muAt w ≠ D.what₂.mu0 → (tp.psi w).ValuesIn 0 D.what₂.embLL) → ∀ (big : D.what₂.places.Pl → Finset ℂ) (X : LocNd (lay0 D)) (T : LocTw X) (Sp : NdSpec A.pl M C big X T), ∃ (Y : LocAut X) (Cb : LocBC Y), Nonempty (AutSpec A M tp.tup Sp.iq Y Cb) := by
   intro hArt D cf jE A low Pq S hL eig θ Bs M C tp hCS hMI hstar hE hsp hCh hψ big X T Sp
   classical

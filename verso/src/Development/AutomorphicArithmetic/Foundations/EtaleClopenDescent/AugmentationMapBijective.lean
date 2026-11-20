@@ -4,6 +4,13 @@ import Development.AbelianVarietyTheory.Proofs.DivisorProofs.EtaleLocalPrimitive
 
 open CategoryTheory Limits AlgebraicGeometry Polynomial GlobalTheory.EtC GlobalTheory.EtC.PrimLoc
 
+/- English proof (translation)
+Introduce `q U hq`. Break down `subsingleton_or_nontrivial Γ(U, ⊤) with hA | hA` into its components or cases. Conclude with `⟨U, 𝟙 U, inferInstance, fun u => ⟨u, rfl⟩, ⟨⟨0, hq, Subsingleton.elim _ _⟩⟩⟩`. Establish `hq0 : NeZero q` using `⟨by rintro rfl; simp at hq⟩`. Set `B` to `AdjoinRoot (cyclotomic q Γ(U, ⊤))`.
+
+Set `φ : CommRingCat.of Γ(U, ⊤) ⟶ CommRingCat.of B` to `CommRingCat.ofHom (algebraMap _ B)`. Establish `he : Etale (Spec.map φ)` using `HasRingHomProperty.Spec_iff.mpr (RingHom.etale_algebraMap.mpr (cyc_etale q hq))`. Establish `hs : Surjective (Spec.map φ)` using `⟨adjoinRoot_surj _ (cyclotomic.monic q _) (by simp [natDegree_cyclotomic, Nat.totient_pos, Nat.pos_of_ne_zero hq0.out, hq0.out])⟩`. Use `⟨pullback U.toSpecΓ (Spec.map φ), pullback.fst _ _, inferInstance, ?_, ?_⟩` and prove the remaining obligations. Introduce `u`.
+
+Conclude with `(Surjective.surj (f := pullback.fst U.toSpecΓ (Spec.map φ))) u`. Conclude with `⟨Prim.map ((pullback.snd U.toSpecΓ (Spec.map φ)).appTop.hom.comp (Scheme.ΓSpecIso (CommRingCat.of B)).inv.hom) (cyc_root q hq)⟩`.
+-/
 theorem UpperTheory.Cb.augmentation_map_bijective :
     LateralTheory.E.AugBijPf.Root := by
   intro q U hq

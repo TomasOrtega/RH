@@ -47,6 +47,9 @@ instance charZero_fnField : CharZero FnField :=
     simp only [SubringClass.coe_natCast] at h'
     exact_mod_cast h'⟩
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨inferInstance, FibreNormPullback.hyps_inhabited⟩`.
+-/
 theorem FibreNormCharpoly.hyps_inhabited :
     CharZero FnField ∧
     (IsArithVar (mCoordIdeal (ι := GlobalTheory (Fin 2)) y) (1 + 1) ∧ Birational (ι := GlobalTheory (Fin 2)) y) ∧

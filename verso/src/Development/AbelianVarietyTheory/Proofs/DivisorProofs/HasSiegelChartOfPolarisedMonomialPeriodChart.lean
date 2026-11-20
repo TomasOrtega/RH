@@ -10,6 +10,17 @@ open scoped CategoryTheory.Obj
 attribute [local instance] Over.cartesianMonoidalCategory
 namespace GlobalTheory.PolDeg
 
+/- English proof (translation)
+Take `⟨R, _, _, _, b, ξ, m, t, Q, δ, a, ⟨hc, hz, hs, hx, he, hu⟩, ⟨ht, hI, hj⟩, ⟨hM, hX, hδ, hdef, hmon⟩, ha, hBD⟩` from `h`. Establish `hCN : IsCN R` using `⟨inferInstance, (GlobalTheory.isDomain_and_isIntegrallyClosed_of_isRegularLocalRing R).2, hc, hz⟩`. Establish `ht0 : ∀ i, t i ≠ 0`. Introduce `i h0`. Use `ht.2 (Pi.single i 1) (by` as an intermediate fact.
+
+Rewrite using `[Finset.sum_eq_single i (fun k _ hk => by simp [Pi.single_apply, hk]) (by simp)]`. Simplify using `[h0]) i`. Simplify using `at this`. Establish `hsym : ∀ i y z, ((n : ℤ) • δ i) y z = ((n : ℤ) • δ i) z y` using `fun i y z => by`. Simplify using `only [LinearMap.smul_apply, (mem_balForms_int.1 (hδ.mem i)) y z]`.
+
+Establish `hnn : ∀ i y, 0 ≤ ((n : ℤ) • δ i) y y` using `fun i y => by`. Simplify using `only [LinearMap.smul_apply, smul_eq_mul]; exact mul_nonneg (by positivity) (hδ.nonneg i y)`. Establish `hpos : ∀ y, y ≠ 0 → ∃ i, 0 < ((n : ℤ) • δ i) y y` using `fun y hy => by`. Take `⟨i, hi⟩` from `hdef y hy`. Conclude with `⟨i, by simp only [LinearMap.smul_apply, smul_eq_mul]; exact mul_pos (by exact_mod_cast Nat.pos_of_ne_zero hn) hi⟩`.
+
+Take `⟨R', _, _, _, ρ, r, D, ε, hCN', hinj, hfin, hloc, hr, href, hmon'⟩` from `GlobalTheory.T.refine_polarised_monomial_periods_monomial_data R Q m t (fun i => (n : ℤ) • δ i) hCN hmon ht.1 ht0 hsym hnn hpos`. Take `⟨G', _, _, π, A, U, hU⟩` from `hM.unif R' ρ hCN' hinj hfin D ε href`. Set `ϑ : Fin m → LinearMap.BilinForm ℤ D.toPre.X` to `fun i => pull ε.toIntLinearEquiv.toLinearMap (δ i)`. Establish `hϑ : ∀ (k : ℤ) i, pull ε.toIntLinearEquiv.toLinearMap (k • δ i) = k • ϑ i` using `fun k i => LinearMap.ext₂ fun y z => by simp [ϑ]`. Use `⟨R, inferInstance, inferInstance, b, ξ, m, t, R', inferInstance, inferInstance, inferInstance, ρ, r, G', inferInstance, inferInstance, π, D, A, U, ϑ, a, ⟨hc, hs, hx, he, hu⟩, ⟨ht, hI, hj⟩, ⟨⟨hCN'.1, inferInstance, hCN'.2.1, hCN'.2.2.1⟩, hCN'.2.2.2, hinj, hfin, hloc, hr⟩, ⟨hU, ?_, …` and prove the remaining obligations.
+
+Rewrite using `[LinearEquiv.finrank_eq ε.toIntLinearEquiv]`. Conclude with `hX`. Use `hmon' using 2 with i` and compare the differences between its conclusion and the goal. Rewrite using `[hϑ, ← mul_smul]`. Rewrite using `[ha i, ← hϑ, evalZ_pull φ ε.toIntLinearEquiv.surjective]`.
+-/
 theorem hasChart_of_hasPolChart {o : Type} [CommRing o] {ζ : o} {g n : ℕ} (F : SFam g n ζ) {S : Scheme.{0}} (s : S ⟶ Sp o)
     (j : F.X ⟶ S) [IsOpenImmersion j] {G : Over S} [GrpObj G] (e : F.univ.A.left ⟶ G.left) (φ : InvFun ℤ)
     (BD : GlobalTheory.EffCartierData S) (d : ℕ) (x : S) (hn : n ≠ 0) (h : HasPolChart F s j e φ BD d x) :

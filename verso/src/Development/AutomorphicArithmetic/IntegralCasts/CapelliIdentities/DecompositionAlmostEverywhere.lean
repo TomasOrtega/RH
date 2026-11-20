@@ -10,6 +10,13 @@ import Formalism.LocalToGlobal.BesselHermitianTheta.IsAutFunDef
 open scoped IntermediateField Algebra TensorProduct Matrix Pointwise NumberField Topology ContDiff NNReal ENNReal Polynomial DirectSum BigOperators InnerProductSpace Manifold
 attribute [local instance] Formalism.L2.Theta.IsVolMeasG._proof_2 Formalism.L2.Theta.IsVolMeasG._proof_1 Formalism.L2.Theta.IsDsig._proof_2 Formalism.L2.Theta.IsVolMeasG._proof_3
 
+/- English proof (translation)
+Introduce `D h z`. Establish `hz : z ∈ Algebra.adjoin (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.AF ↥D.host.F) {Formalism.L2.Theta.incA D D.host.sqrtMinusD}`. Use `Algebra.TensorProduct.adjoin_one_tmul_image_eq_top (A := Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.AF ↥D.host.F) _ h` as an intermediate fact. Conclude with `(Set.image_singleton ▸ this).ge Algebra.mem_top`. Establish `hs : Formalism.L2.Theta.incA D D.host.sqrtMinusD ^ 2 = -(D.host.d : Formalism.L2.Theta.AE D)`.
+
+Rewrite using `[← map_pow, Formalism.BasicNotions.Host.sqrtMinusD, D.host.sqd_sq, map_neg, map_natCast]`. Proceed by induction on `hz using Algebra.adjoin_induction with`. Consider the case `mem x hx => exact ⟨0, 1, by rw [map_zero, map_one, zero_add, one_mul]; exact hx⟩`. Consider the case `algebraMap r => exact ⟨r, 0, by simp⟩`. Consider the case `add x y _ _ hx hy => obtain ⟨⟨a, b, rfl⟩, c, e, rfl⟩ := And.intro hx hy; exact ⟨a + c, b + e, by rw [map_add, map_add]; ring⟩`.
+
+Consider the case `mul x y _ _ hx hy`. Take `⟨⟨a, b, rfl⟩, c, e, rfl⟩` from `And.intro hx hy`. Conclude with `⟨a * c - D.host.d * (b * e), a * e + b * c, by`. Simplify using `only [map_add, map_sub, map_mul, map_natCast]`. Take the linear combination `(algebraMap _ _ b * algebraMap _ _ e) * hs⟩`.
+-/
 theorem UpperTheory.Reformulated.B.DecompositionAlmostEverywhere.decomp_AE :
     ∀ {D : Formalism.BasicNotions.D7},
     (↥D.host.F)[D.host.sqrtMinusD] = ⊤ →

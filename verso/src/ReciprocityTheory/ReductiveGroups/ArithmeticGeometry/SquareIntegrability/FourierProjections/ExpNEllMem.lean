@@ -14,28 +14,45 @@ open Classical
 def Pf (q : ℕ) (a : EuclideanSpace ℂ ι) (F : EuclideanSpace ℂ ι → ℂ) (v : EuclideanSpace ℂ ι) : ℂ :=
   F (v - a) / cexp (q * Real.pi * Hf a a / 2)
 
+/- English proof (translation)
+Establish `h0 : expN 0 0 = 1` using `by simp [expN]`. Rewrite using `[h0, paU, Pf, ellL_apply, Complex.exp_sub]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem paU_eq (q : ℕ) (a : EuclideanSpace ℂ ι) (F : EuclideanSpace ℂ ι → ℂ) (v : EuclideanSpace ℂ ι) :
     paU q a F v = expN 0 0 * 0 + (expN 0 0 - 1) * 0 + cexp (ellL q a v) * Pf q a F v := by
   have h0 : expN 0 0 = 1 := by simp [expN]
   rw [h0, paU, Pf, ellL_apply, Complex.exp_sub]; ring
 
+/- English proof (translation)
+Rewrite using `[paU_eq]`. Unfold `gN`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem paU_split (q : ℕ) (a : EuclideanSpace ℂ ι) (F : EuclideanSpace ℂ ι → ℂ) (N : ℕ) (v : EuclideanSpace ℂ ι) :
     paU q a F v = expN N (ellL q a v) * Pf q a F v + gN N (ellL q a v) * Pf q a F v := by
   rw [paU_eq]
   unfold gN
   ring
 
+/- English proof (translation)
+Establish `: Pf q a F = (cexp (q * Real.pi * Hf a a / 2))⁻¹ • (fun v => F (v - a))`. Use function extensionality and compare the values at `v`. Simplify using `[Pf, div_eq_inv_mul]`. Rewrite using `[this]`. Conclude with `Submodule.smul_mem _ _ (paPoly_translate hF a)`.
+-/
 theorem Pf_mem {q c : ℕ} (a : EuclideanSpace ℂ ι) {F : EuclideanSpace ℂ ι → ℂ} (hF : F ∈ paPoly c) :
     Pf q a F ∈ paPoly c := by
   have : Pf q a F = (cexp (q * Real.pi * Hf a a / 2))⁻¹ • (fun v => F (v - a)) := by
     funext v; simp [Pf, div_eq_inv_mul]
   rw [this]; exact Submodule.smul_mem _ _ (paPoly_translate hF a)
 
+/- English proof (translation)
+Establish `: (fun v => ellL q a v) = ((q : ℂ) * (Real.pi : ℂ)) • (fun v : EuclideanSpace ℂ ι => Hf v a)`. Use function extensionality and compare the values at `v`. Simplify using `[ellL_apply, mul_assoc]`. Rewrite using `[this]`. Conclude with `Submodule.smul_mem _ _ (paPoly_Hf a)`.
+-/
 theorem ell_mem (q : ℕ) (a : EuclideanSpace ℂ ι) : (fun v => ellL q a v) ∈ paPoly 1 := by
   have : (fun v => ellL q a v) = ((q : ℂ) * (Real.pi : ℂ)) • (fun v : EuclideanSpace ℂ ι => Hf v a) := by
     funext v; simp [ellL_apply, mul_assoc]
   rw [this]; exact Submodule.smul_mem _ _ (paPoly_Hf a)
 
+/- English proof (translation)
+Establish `: (fun v => expN N (ellL q a v)) = ∑ n ∈ Finset.range (N + 1), ((n.factorial : ℂ))⁻¹ • (fun v => ellL q a v) ^ n`. Use function extensionality and compare the values at `v`. Simplify using `[expN, Finset.sum_apply, div_eq_inv_mul]`. Rewrite using `[this]`. Use `Submodule.sum_mem _ fun n hn => Submodule.smul_mem _ _ ?_` and prove the remaining obligations.
+
+Establish `h` using `paPoly_pow (ell_mem q a) n`. Rewrite `h` using `[mul_one]`. Conclude with `paPoly_mono (by have := Finset.mem_range.1 hn; omega) h`.
+-/
 theorem expN_ell_mem (q : ℕ) (a : EuclideanSpace ℂ ι) (N : ℕ) :
     (fun v => expN N (ellL q a v)) ∈ paPoly N := by
   have : (fun v => expN N (ellL q a v)) = ∑ n ∈ Finset.range (N + 1),
@@ -47,17 +64,31 @@ theorem expN_ell_mem (q : ℕ) (a : EuclideanSpace ℂ ι) (N : ℕ) :
   rw [mul_one] at h
   exact paPoly_mono (by have := Finset.mem_range.1 hn; omega) h
 
+/- English proof (translation)
+The claim follows from `paPoly_mul (expN_ell_mem q a N) (Pf_mem a hF)`.
+-/
 theorem S_mem {q c : ℕ} (a : EuclideanSpace ℂ ι) {F : EuclideanSpace ℂ ι → ℂ} (hF : F ∈ paPoly c) (N : ℕ) :
     (fun v => expN N (ellL q a v) * Pf q a F v) ∈ paPoly (N + c) :=
   paPoly_mul (expN_ell_mem q a N) (Pf_mem a hF)
 
+/- English proof (translation)
+The claim follows from `paPoly_contDiff (Pf_mem a hF)`.
+-/
 theorem Pf_contDiff {q c : ℕ} (a : EuclideanSpace ℂ ι) {F : EuclideanSpace ℂ ι → ℂ} (hF : F ∈ paPoly c) :
     ContDiff ℂ (⊤ : ℕ∞) (Pf q a F) := paPoly_contDiff (Pf_mem a hF)
 
+/- English proof (translation)
+The claim follows from `((contDiff_gN N).comp (ellL q a).contDiff).mul (Pf_contDiff a hF)`.
+-/
 theorem T_contDiff {q c : ℕ} (a : EuclideanSpace ℂ ι) {F : EuclideanSpace ℂ ι → ℂ} (hF : F ∈ paPoly c) (N : ℕ) :
     ContDiff ℂ (⊤ : ℕ∞) (fun v => gN N (ellL q a v) * Pf q a F v) :=
   ((contDiff_gN N).comp (ellL q a).contDiff).mul (Pf_contDiff a hF)
 
+/- English proof (translation)
+Establish `hs : paU q a F = (fun v => expN N (ellL q a v) * Pf q a F v) + (fun v => gN N (ellL q a v) * Pf q a F v)`. Use function extensionality and compare the values at `v`. Rewrite using `[paU_split q a F N v]`. Both sides reduce to the same expression. Rewrite using `[hs, paJet_add c (paPoly_contDiff (S_mem a hF N)) (T_contDiff a hF N)]`.
+
+Establish `hT : paJet c (fun v => gN N (ellL q a v) * Pf q a F v) = 0`. Unfold `paJet`. Use `Finset.sum_eq_zero fun α hα => ?_` and prove the remaining obligations. Rewrite using `[paD_tail_zero q a N (Pf_contDiff a hF) ((paS_deg hα).trans hN), zero_div, zero_smul]`. Rewrite using `[hT, add_zero]`.
+-/
 theorem jet_eq {q c : ℕ} (a : EuclideanSpace ℂ ι) {F : EuclideanSpace ℂ ι → ℂ} (hF : F ∈ paPoly c) {N : ℕ}
     (hN : c ≤ N) : paJet c (paU q a F) = paJet c (fun v => expN N (ellL q a v) * Pf q a F v) := by
   have hs : paU q a F = (fun v => expN N (ellL q a v) * Pf q a F v) +
@@ -70,6 +101,9 @@ theorem jet_eq {q c : ℕ} (a : EuclideanSpace ℂ ι) {F : EuclideanSpace ℂ �
     rw [paD_tail_zero q a N (Pf_contDiff a hF) ((paS_deg hα).trans hN), zero_div, zero_smul]
   rw [hT, add_zero]
 
+/- English proof (translation)
+Establish `h` using `Complex.norm_exp_sub_sum_le_exp_norm_sub_sum z (N + 1)`. Establish `h2 : 0 ≤ ∑ i ∈ Finset.range (N + 1), ‖z‖ ^ i / (i.factorial : ℝ)` using `Finset.sum_nonneg fun i _ => by positivity`. Unfold `gN expN`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem gN_norm_le (N : ℕ) (z : ℂ) : ‖gN N z‖ ≤ Real.exp ‖z‖ := by
   have h := Complex.norm_exp_sub_sum_le_exp_norm_sub_sum z (N + 1)
   have h2 : 0 ≤ ∑ i ∈ Finset.range (N + 1), ‖z‖ ^ i / (i.factorial : ℝ) :=
@@ -77,6 +111,11 @@ theorem gN_norm_le (N : ℕ) (z : ℂ) : ‖gN N z‖ ≤ Real.exp ‖z‖ := by
   unfold gN expN
   linarith
 
+/- English proof (translation)
+Unfold `gN`. Establish `h` using `(NormedSpace.expSeries_div_hasSum_exp z).tendsto_sum_nat`. Rewrite `h` using `[← Complex.exp_eq_exp_ℂ]`. Establish `h2 : Tendsto (fun N => expN N z) atTop (𝓝 (cexp z))`. Unfold `expN`.
+
+Conclude with `h.comp (tendsto_add_atTop_nat 1)`. Establish `h3` using `(tendsto_const_nhds (x := cexp z)).sub h2`. Rewrite `h3` using `[sub_self]`. Conclude with `h3`.
+-/
 theorem gN_tendsto (z : ℂ) : Tendsto (fun N => gN N z) atTop (𝓝 0) := by
   unfold gN
   have h := (NormedSpace.expSeries_div_hasSum_exp z).tendsto_sum_nat
@@ -88,6 +127,11 @@ theorem gN_tendsto (z : ℂ) : Tendsto (fun N => gN N z) atTop (𝓝 0) := by
   rw [sub_self] at h3
   exact h3
 
+/- English proof (translation)
+Unfold `ellL`. Rewrite using `[ContinuousLinearMap.smul_apply, norm_smul]`. Establish `h1 : ‖((innerSL ℂ) a) v‖ ≤ ‖a‖ * ‖v‖` using `norm_inner_le_norm (𝕜 := ℂ) a v`. Establish `h2 : ‖((q : ℂ) * (Real.pi : ℂ))‖ = q * Real.pi`. Rewrite using `[norm_mul, Complex.norm_natCast, Complex.norm_real, Real.norm_eq_abs, abs_of_pos Real.pi_pos]`.
+
+Rewrite using `[h2]`. Conclude with `mul_le_mul_of_nonneg_left h1 (by positivity)`.
+-/
 theorem ell_norm_le (q : ℕ) (a v : EuclideanSpace ℂ ι) : ‖ellL q a v‖ ≤ q * Real.pi * (‖a‖ * ‖v‖) := by
   unfold ellL
   rw [ContinuousLinearMap.smul_apply, norm_smul]
@@ -97,6 +141,27 @@ theorem ell_norm_le (q : ℕ) (a v : EuclideanSpace ℂ ι) : ‖ellL q a v‖ �
   rw [h2]
   exact mul_le_mul_of_nonneg_left h1 (by positivity)
 
+/- English proof (translation)
+Take `⟨C1, hC1, h1⟩` from `paPoly_growth hF`. Take `⟨C2, hC2, h2⟩` from `paPoly_growth hG`. Establish `hq1 : (1 : ℝ) ≤ q` using `by exact_mod_cast hq`. Establish `hb : 0 < (q : ℝ) * Real.pi / 2` using `by positivity`. Use `set κ : ℝ := ‖cexp (q * Real.pi * Hf a a / 2)‖⁻¹ with hκ`.
+
+Establish `hκ0 : 0 ≤ κ` using `by positivity`. Use `set K : ℝ := κ * C1 * C2 * (1 + ‖a‖) ^ c * Real.exp (q * Real.pi * ‖a‖ ^ 2 / 2) with hK`. Establish `hK0 : 0 ≤ K` using `by positivity`. Use `set B : EuclideanSpace ℂ ι → ℝ := fun v => K * ((1 + ‖v‖) ^ (2 * c) * Real.exp (-((q : ℝ) * Real.pi / 2) * ‖v‖ ^ 2)) with hB`. Establish `hBi : Integrable B`.
+
+Use `Integrable.const_mul (pa_integrable_of_le (by fun_prop) (2 * c) hb zero_le_one (fun v => ?_)) K` and prove the remaining obligations. Rewrite using `[one_mul, Real.norm_of_nonneg (by positivity)]`. Use `set Fn : ℕ → EuclideanSpace ℂ ι → ℂ := fun N v => gN N (ellL q a v) * Pf q a F v * (starRingEnd ℂ) (G v) * (paW q v : ℂ) with hFn`. Establish `hcont : ∀ N, Continuous (Fn N)`. Introduce `N`.
+
+Use `(T_contDiff (q := q) a hF N).continuous` as an intermediate fact. Use `paPoly_continuous hG` as an intermediate fact. Use `paW_continuous (ι := ι) q` as an intermediate fact. Simplify using `only [hFn]`. Use `fun_prop`.
+
+Establish `hbound : ∀ N v, ‖Fn N v‖ ≤ B v`. Introduce `N v`. Establish `hg` using `(gN_norm_le N (ellL q a v)).trans (Real.exp_le_exp.2 (ell_norm_le q a v))`. Establish `hP : ‖Pf q a F v‖ ≤ κ * (C1 * ((1 + ‖v‖) ^ c * (1 + ‖a‖) ^ c))`. Rewrite using `[Pf, norm_div, div_eq_mul_inv, mul_comm, hκ]`.
+
+Use `mul_le_mul_of_nonneg_left ((h1 _).trans (mul_le_mul_of_nonneg_left ?_ hC1)) hκ0` and prove the remaining obligations. Rewrite using `[← mul_pow]`. Conclude with `pow_le_pow_left₀ (by positivity) (by nlinarith [norm_sub_le v a, norm_nonneg v, norm_nonneg a, mul_nonneg (norm_nonneg v) (norm_nonneg a)]) c`. Establish `hGv` using `h2 v`. Establish `hw : Real.exp (q * Real.pi * (‖a‖ * ‖v‖)) * paW q v ≤ Real.exp (q * Real.pi * ‖a‖ ^ 2 / 2) * Real.exp (-((q : ℝ) * Real.pi / 2) * ‖v‖ ^ 2)`.
+
+Rewrite using `[paW, ← Real.exp_add, ← Real.exp_add]`. Apply `Real.exp_le_exp.2` to reduce the goal to its premises. Establish `: 0 ≤ (q : ℝ) * Real.pi * (‖v‖ - ‖a‖) ^ 2` using `by positivity`. Use the polynomial consequences of the given equalities and inequalities. Simplify using `only [hFn, hB, hK, norm_mul, RCLike.norm_conj, Complex.norm_real, Real.norm_of_nonneg (paW_pos q v).le]`.
+
+Establish `e0` using `norm_nonneg (gN N (ellL q a v))`. Establish `e1` using `norm_nonneg (Pf q a F v)`. Establish `e2` using `norm_nonneg (G v)`. Establish `e3` using `(paW_pos q v).le`. Establish `e4` using `Real.exp_pos (q * Real.pi * (‖a‖ * ‖v‖))`.
+
+Combine the equalities or inequalities in the displayed calculation. Establish `hint : ∀ N, Integrable (Fn N)` using `fun N => hBi.mono' (hcont N).aestronglyMeasurable (Filter.Eventually.of_forall (hbound N))`. Use `⟨hint, ?_⟩` and prove the remaining obligations. Establish `hlim : ∀ v, Tendsto (fun N => Fn N v) atTop (𝓝 0)`. Introduce `v`.
+
+Use `(((gN_tendsto (ellL q a v)).mul_const (Pf q a F v)).mul_const ((starRingEnd ℂ) (G v))).mul_const ((paW q v : ℝ) : ℂ)` as an intermediate fact. Simplify `this` using `only [zero_mul]`. Use `tendsto_integral_of_dominated_convergence B (fun N => (hcont N).aestronglyMeasurable) hBi (fun N => Filter.Eventually.of_forall (hbound N)) (Filter.Eventually.of_forall hlim)` as an intermediate fact. Rewrite `this` using `[integral_zero]`. Conclude with `this`.
+-/
 theorem tail_tendsto {q c : ℕ} (hq : 1 ≤ q) (a : EuclideanSpace ℂ ι) {F G : EuclideanSpace ℂ ι → ℂ}
     (hF : F ∈ paPoly c) (hG : G ∈ paPoly c) :
     (∀ N, Integrable (fun v => gN N (ellL q a v) * Pf q a F v * (starRingEnd ℂ) (G v) * (paW q v : ℂ))) ∧
@@ -169,6 +234,15 @@ theorem tail_tendsto {q c : ℕ} (hq : 1 ≤ q) (a : EuclideanSpace ℂ ι) {F G
   rw [integral_zero] at this
   exact this
 
+/- English proof (translation)
+Take `⟨hTi, hT⟩` from `tail_tendsto hq a hF hG`. Establish `hD : ∀ N, c ≤ N → paIP q (paU q a F) G - paIP q (paJet c (paU q a F)) G = paIP q (fun v => gN N (ellL q a v) * Pf q a F v) G`. Introduce `N hN`. Establish `hS` using `S_mem (q := q) a hF N`. Establish `hGS : G ∈ paPoly (N + c)` using `paPoly_mono (by omega) hG`.
+
+Establish `hSi` using `gaussianInner_integrable hq hS hGS`. Establish `e1 : paIP q (paU q a F) G = paIP q (fun v => expN N (ellL q a v) * Pf q a F v) G + paIP q (fun v => gN N (ellL q a v) * Pf q a F v) G`. Unfold `paIP`. Rewrite using `[← integral_add hSi (hTi N)]`. Use `congr 1`.
+
+Use function extensionality and compare the values at `v`. Rewrite using `[paU_split q a F N v]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e1, jet_eq a hF hN, ← gaussianInner_polynomial_jet hq hS hG]`. Expand and normalize the polynomial expressions, which then agree.
+
+Establish `hev : (fun N => paIP q (fun v => gN N (ellL q a v) * Pf q a F v) G) =ᶠ[atTop] (fun _ => paIP q (paU q a F) G - paIP q (paJet c (paU q a F)) G)` using `Filter.eventually_atTop.2 ⟨c, fun N hN => (hD N hN).symm⟩`. Establish `h0` using `tendsto_nhds_unique (hT.congr' hev) tendsto_const_nhds`. Conclude with `sub_eq_zero.1 h0.symm`.
+-/
 theorem gaussianInner_jet' {q c : ℕ} (hq : 1 ≤ q) (a : EuclideanSpace ℂ ι) {F G : EuclideanSpace ℂ ι → ℂ}
     (hF : F ∈ paPoly c) (hG : G ∈ paPoly c) :
     paIP q (paU q a F) G = paIP q (paJet c (paU q a F)) G := by

@@ -20,6 +20,25 @@ open GlobalTheory GlobalTheory.CM GlobalTheory.Frames GlobalTheory.LamT
 
 namespace GlobalTheory.LamT
 
+/- English proof (translation)
+Introduce `E _ _ _ H Dw l Xo T T' ψ i hψ x x' G G' t t' m1 m2 m1' m2' n n' hx h1 h2 s s' hb`. Introduce and unpack `⟨θ, hθ, w2, σ, θ2, r2, i2, p2, tie⟩`. Establish `hS : Out.SecBaseChangeSt` using `GlobalTheory.lawsFieldsSeparately.2.1`. Take `⟨wn, gn, rn, -⟩` from `n.lin`. Take `⟨wn', gn', rn', -⟩` from `n'.lin`.
+
+Take `⟨w2', g2', r2', -⟩` from `m2'.lin`. Establish `Rn : RigIso n wn` using `⟨gn, rn⟩`. Establish `Rn' : RigIso n' wn'` using `⟨gn', rn'⟩`. Establish `R2' : RigIso m2' w2'` using `⟨g2', r2'⟩`. Take `⟨θ', hθ'⟩` from `sec_pull_down ((isGen_iff wn).1 gn) G.t.PP.isLB G'.t.PP.isLB θ`.
+
+Take `⟨σ', hσ'⟩` from `sec_pull_down ((isGen_iff w2').1 g2') G'.t.PP.isLB t'.PP.isLB θ'`. Establish `nz : ∀ y : Sp T.V, ∃ z : G.t.G.left, G.t.G.hom z = y ∧ z ∈ Out.nonzeroLocus θ` using `fun y => by`. Take `⟨b, hb, -⟩` from `GlobalTheory.KeyOnPol.exists_generator hS G.pol`. Take `⟨z, hz, hm⟩` from `hb y`. Take `⟨a, ha, -⟩` from `hθ b`.
+
+Take `⟨k, hk⟩` from `TopologicalSpace.Opens.mem_iSup.1 hm`. Rewrite `hk` using `[ha k, Scheme.basicOpen_mul]`. Conclude with `⟨z, hz, TopologicalSpace.Opens.mem_iSup.2 ⟨k, hk.2⟩⟩`. Establish `nz'` using `SectionBaseChange.fibre_nonzero_of_pull G'.t.PP.isLB hθ' n.cart.1 nz`. Use `⟨θ', SectionBaseChange.generates hS G.pol n.cart.1 G'.t.PP.isLB ⟨wn, gn⟩ θ' nz', w2', σ', thfPull G'.t.PP.L m2'.φ θ', R2', ?_, fun _ _ => rfl, ?_⟩` and prove the remaining obligations.
+
+Use `(TieCalc.isoMaps_iff _ _ _).2 fun Z r z j k hj hk => ?_` and prove the remaining obligations. Conclude with `(gs_appLE m2'.φ _ _ _ r z (mem_pull.2 hj) _).trans (hσ' Z r z j k hj hk)`. Use `(TieCalc.secTie_baseChange m1 tie i m1' n' s' wn' (thfPull t.PP.L n'.φ σ) σ' hx h1 hb Rn' (fun _ _ => rfl)).2 ((TieCalc.isoMaps_iff _ _ _).2 fun Z r z j k hj hk => ?_)` and prove the remaining obligations. Establish `hbase : spMap (algebraMap T'.V T'.Fr) ≫ spMap ψ = spMap i ≫ spMap (algebraMap T.V T.Fr)`. Rewrite using `[← Spec.map_comp, ← Spec.map_comp, ← CommRingCat.ofHom_comp, ← CommRingCat.ofHom_comp, hψ]`.
+
+Take `⟨N, hN⟩` from `sabComp pullCubComp E H _ _ _ _ _ _ _ _ n m2'`. Establish `hN' : N.φ = m2'.φ ≫ n.φ` using `hN`. Take `⟨wa, ra, Ta⟩` from `GlobalTheory.LiftBaseChange.rigIso_comp n m2' N rfl hN' Rn R2'`. Take `⟨wb, rb, Tb⟩` from `GlobalTheory.LiftBaseChange.rigIso_comp m2 n' N hbase (hN'.trans h2) r2 Rn'`. Establish `hp : IsProper t'.G.hom` using `MorphismProperty.of_isPullback (P := @IsProper) m2'.cart.1 G'.ab.proper`.
+
+Establish `hab : IsAbelianScheme t'.G` using `⟨t'.semi.comm, t'.semi.smooth, hp, t'.semi.geomConnected⟩`. Take `rfl : wa = wb` from `iso_unique_of_rig GlobalTheory.globalFns_holds t'.G hab t'.PP.isLB G.t.PP.isLB ra.1 rb.1 ra.2 rb.2`. Take `⟨a, ha⟩` from `exists_chart G.t.PP.isLB (m2.φ (n'.φ (r z)))`. Take `⟨b, hb'⟩` from `exists_chart G'.t.PP.isLB (m2'.φ (r z))`. Establish `ha' : n.φ (m2'.φ (r z)) ∈ G.t.PP.L.U a` using `(congrArg (fun q => q (r z) ∈ G.t.PP.L.U a) h2).mpr ha`.
+
+Establish `e1` using `hθ' Z (r ≫ m2'.φ) z a b ha' hb'`. Establish `e2` using `hσ' Z r z b k hb' hk`. Establish `le : (G.t.PP.L.pull m2.φ).U (fun _ => a) ≤ m2.φ ⁻¹ᵁ G.t.PP.L.U a` using `fun q hq => mem_pull.1 hq`. Establish `e3` using `(TieCalc.isoMaps_iff _ _ _).1 i2 Z (r ≫ n'.φ) z a j ha hj`. Rewrite `e3` using `[p2 (fun _ => a) le, gs_appLE m2.φ _ _ le (r ≫ n'.φ) z (mem_pull.2 ha), Category.assoc, ← h2, ← Category.assoc, e1, e2, ← _root_.mul_assoc, ← Units.val_mul, ← Ta Z r z a b k ha' hb' hk, Tb Z r z a j k ha hj hk, Units.val_mul, _root_.mul_assoc]`.
+
+Conclude with `(gs_appLE n'.φ _ _ _ r z (mem_pull.2 hj) _).trans ((Units.mul_right_inj _).1 e3).symm`.
+-/
 theorem secInt_baseChange : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l), ∀ (T T' : CDVR) (ψ : T.V →+* T'.V) (i : T.Fr →+* T'.Fr), (algebraMap T'.V T'.Fr).comp ψ = i.comp (algebraMap T.V T.Fr) → ∀ (x : Sp T.Fr ⟶ Xo.X) (x' : Sp T'.Fr ⟶ Xo.X) (G : PAT H (Sp T.V)) (G' : PAT H (Sp T'.V)) (t : SAB H (Sp T.Fr)) (t' : SAB H (Sp T'.Fr)) (m1 : SABMap t Xo.univ.t x) (m2 : SABMap t G.t (spMap (algebraMap T.V T.Fr))) (m1' : SABMap t' Xo.univ.t x') (m2' : SABMap t' G'.t (spMap (algebraMap T'.V T'.Fr))) (n : SABMap G'.t G.t (spMap ψ)) (n' : SABMap t' t (spMap i)), x' = spMap i ≫ x → m1'.φ = n'.φ ≫ m1.φ → m2'.φ ≫ n.φ = n'.φ ≫ m2.φ → ∀ (s : LB.Sec (PPx x)) (s' : LB.Sec (PPx x')), SecBC i 1 x x' s s' → SecInt T m1 m2 s → SecInt T' m1' m2' s' := by
   intro E _ _ _ H Dw l Xo T T' ψ i hψ x x' G G' t t' m1 m2 m1' m2' n n' hx h1 h2 s s' hb
   rintro ⟨θ, hθ, w2, σ, θ2, r2, i2, p2, tie⟩

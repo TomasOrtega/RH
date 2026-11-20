@@ -5,6 +5,9 @@ import Development.AbelianVarietyTheory.Proofs.FoundationProofs.HeckeLetterPrese
 open scoped MatrixGroups Matrix Classical
 open GlobalTheory.KZ GlobalTheory.K4 UpperTheory.V.Z.Kato.Sym UpperTheory.Kd.K4 UpperTheory.V.Z.Kato.Nb
 
+/- English proof (translation)
+Take `⟨a, b, hab⟩ : IsCoprime (p : ℤ) ((l * N : ℕ) : ℤ)` from `Nat.isCoprime_iff_coprime.mpr h`. Use `Classical.epsilon_spec (p := IsDiam N l p) ⟨⟨!![a, -b; ((l * N : ℕ) : ℤ), (p : ℤ)], by rw [Matrix.det_fin_two_of]; linear_combination hab⟩, ?_, ?_⟩` and prove the remaining obligations. Apply the tactic sequence `refine Subgroup.mem_inf.mpr ⟨?_, ?_⟩ <;> refine CongruenceSubgroup.Gamma0_mem.mpr ?_ <;> show (Int.cast ((l * N : ℕ) : ℤ) : ZMod _) = 0 <;> simp`. Simplify using `[en]`.
+-/
 private theorem diam_ex (N l p : ℕ) (h : Nat.Coprime p (l * N)) : IsDiam N l p (sgD N l p) := by
   obtain ⟨a, b, hab⟩ : IsCoprime (p : ℤ) ((l * N : ℕ) : ℤ) := Nat.isCoprime_iff_coprime.mpr h
   refine Classical.epsilon_spec (p := IsDiam N l p)
@@ -13,6 +16,17 @@ private theorem diam_ex (N l p : ℕ) (h : Nat.Coprime p (l * N)) : IsDiam N l p
       show (Int.cast ((l * N : ℕ) : ℤ) : ZMod _) = 0 <;> simp
   · simp [en]
 
+/- English proof (translation)
+Take `⟨hN, hl⟩` from `Subgroup.mem_inf.mp hσ`. Rewrite `hN`, `hl` using `[CongruenceSubgroup.Gamma0_mem]`. Establish `h1 : (N : ℤ) ∣ σ 1 0` using `(ZMod.intCast_zmod_eq_zero_iff_dvd _ _).mp hN`. Establish `h2 : (l : ℤ) ∣ σ 1 0` using `(ZMod.intCast_zmod_eq_zero_iff_dvd _ _).mp hl`. Establish `h4 : σ 0 0 * σ 1 1 - σ 0 1 * σ 1 0 = 1`.
+
+Use `σ.2` as an intermediate fact. Rewrite `this` using `[Matrix.det_fin_two]`. Conclude with `this`. Establish `hP` using `StabHecke.congruenceCondition_of_mem hγ`. Establish `hg : ((σ * γ * σ⁻¹ : SL(2, ℤ)) : Matrix (Fin 2) (Fin 2) ℤ) * (σ : Matrix (Fin 2) (Fin 2) ℤ) = (σ : Matrix (Fin 2) (Fin 2) ℤ) * (γ : Matrix (Fin 2) (Fin 2) ℤ)`.
+
+Rewrite using `[← Matrix.SpecialLinearGroup.coe_mul, ← Matrix.SpecialLinearGroup.coe_mul, inv_mul_cancel_right]`. Establish `e00 : ((σ : Matrix (Fin 2) (Fin 2) ℤ) * (γ : Matrix (Fin 2) (Fin 2) ℤ)) 0 0 = σ 0 0 * γ 0 0 + σ 0 1 * γ 1 0`. Simplify using `[Matrix.mul_apply, Fin.sum_univ_two]`. Establish `e10 : ((σ : Matrix (Fin 2) (Fin 2) ℤ) * (γ : Matrix (Fin 2) (Fin 2) ℤ)) 1 0 = σ 1 0 * γ 0 0 + σ 1 1 * γ 1 0`. Simplify using `[Matrix.mul_apply, Fin.sum_univ_two]`.
+
+Use `StabHecke.mem_Gam_of_mul N l _ _ _ hg h1 h2 (StabHecke.isCoprime_of_det h4 h1) (StabHecke.isCoprime_of_det h4 h2) ?_ ?_ ?_` and prove the remaining obligations. Rewrite using `[e00, show σ 0 0 * γ 0 0 + σ 0 1 * γ 1 0 - σ 0 0 = σ 0 0 * (γ 0 0 - 1) + σ 0 1 * γ 1 0 by ring]`. Conclude with `dvd_add (dvd_mul_of_dvd_right hP.1 _) (dvd_mul_of_dvd_right hP.2.1 _)`. Rewrite using `[e10]`. Conclude with `dvd_add (dvd_mul_of_dvd_left h1 _) (dvd_mul_of_dvd_right hP.2.1 _)`.
+
+Rewrite using `[e10]`. Conclude with `dvd_add (dvd_mul_of_dvd_left h2 _) (dvd_mul_of_dvd_right hP.2.2.1 _)`.
+-/
 private theorem conj_mem (N l : ℕ) (σ γ : SL(2, ℤ))
     (hσ : σ ∈ CongruenceSubgroup.Gamma0 N ⊓ CongruenceSubgroup.Gamma0 l) (hγ : γ ∈ Gam N l) :
     σ * γ * σ⁻¹ ∈ Gam N l := by
@@ -37,6 +51,17 @@ private theorem conj_mem (N l : ℕ) (σ γ : SL(2, ℤ))
   · rw [e10]; exact dvd_add (dvd_mul_of_dvd_left h1 _) (dvd_mul_of_dvd_right hP.2.1 _)
   · rw [e10]; exact dvd_add (dvd_mul_of_dvd_left h2 _) (dvd_mul_of_dvd_right hP.2.2.1 _)
 
+/- English proof (translation)
+Introduce `Ω _ _ _ ε X l _ N w hN b hb`. Take `⟨hA, hG⟩` from `GlobalTheory.T.modular_function_tower_integrality ε X ε.injective (X.j_hol.imp fun _ h => h.symm) l`. Establish `key : ∀ f : X.Fn l →ₗ[ℤ_[l]] X.Fn l, (∀ c ∈ X.BSet N l w, f c ∈ X.BSet N l w) → f b ∈ X.B N l w`. Introduce `f hf`. Establish `hle : X.B N l w ≤ (X.B N l w).comap f` using `Submodule.span_le.mpr fun x hx => Submodule.subset_span (hf x hx)`.
+
+Conclude with `hle hb`. Establish `hdet : ∀ h : SL(2, ℤ), 0 < (h : Matrix (Fin 2) (Fin 2) ℤ).det` using `fun h => by`. Rewrite using `[Matrix.SpecialLinearGroup.det_coe]`. Conclude with `one_pos`. Use `⟨fun s => key _ fun c hc => ⟨StabGal.galB_mem_Pol X l w s (hG s) c hc.1, fun γ hγ => StabGal.inv_galB X N l w hN s c hc γ hγ⟩, fun σ hσ => key _ fun c hc => ?_, fun p hp hc' => key _ fun c hc => ?_⟩` and prove the remaining obligations.
+
+Use `⟨StabHecke.polAct X l w _ (hA _) c hc.1, fun γ hγ => ?_⟩` and prove the remaining obligations. Establish `hg : (σ : Matrix (Fin 2) (Fin 2) ℤ) * (γ : Matrix (Fin 2) (Fin 2) ℤ) = ((σ * γ * σ⁻¹ : SL(2, ℤ)) : Matrix (Fin 2) (Fin 2) ℤ) * (σ : Matrix (Fin 2) (Fin 2) ℤ)`. Rewrite using `[← Matrix.SpecialLinearGroup.coe_mul, ← Matrix.SpecialLinearGroup.coe_mul, inv_mul_cancel_right]`. Rewrite using `[StabHecke.act_act X l _ _ (hdet γ) (hdet σ), hg, ← StabHecke.act_act X l _ _ (hdet σ) (hdet _), hc.2 _ (conj_mem N l σ γ hσ hγ)]`. Establish `hσ` using `diam_ex N l p hc'`.
+
+Establish `hpl : IsCoprime (p : ℤ) (l : ℤ)` using `Nat.isCoprime_iff_coprime.mpr (Nat.Coprime.coprime_mul_right_right hc')`. Use `⟨?_, fun γ hγ => ?_⟩` and prove the remaining obligations. Rewrite using `[StabHecke.heckeT_eq]`. Conclude with `StabHecke.Pol_sum X l w _ _ fun o _ => StabHecke.polAct X l w _ (hA _) c hc.1`. Rewrite using `[StabHecke.heckeT_eq]`.
+
+Conclude with `StabHecke.sum_act_inv X l N (StabHecke.repT p (sgD N l p)) (fun o => by rw [StabHecke.det_repT]; exact_mod_cast hp.pos) γ (StabHecke.map_T hp hσ hpl γ hγ) (StabHecke.coset_representatives_hecke_disjoint hp _) c hc.2`.
+-/
 theorem UpperTheory.V.Z.Kato.Nb.sBStab :
     UpperTheory.V.Z.Kato.Nb.SBStab := by
   intro Ω _ _ _ ε X l _ N w hN b hb

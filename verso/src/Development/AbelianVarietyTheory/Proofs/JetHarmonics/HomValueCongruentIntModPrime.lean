@@ -2,6 +2,13 @@ import Mathlib
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Establish `hm : y ∈ IsLocalRing.maximalIdeal O` using `(IsLocalRing.mem_maximalIdeal y).mpr hn`. Establish `hpos : 1 ≤ g - 1` using `by have := hg.two_le; omega`. Establish `hz : y ^ (g - 1) ∈ IsLocalRing.maximalIdeal O`. Take `⟨k, hk⟩` from `Nat.exists_eq_add_of_le hpos`. Rewrite using `[hk, pow_add, pow_one]`.
+
+Conclude with `Ideal.mul_mem_right _ _ hm`. Take `⟨u, hu⟩` from `IsLocalRing.isUnit_one_sub_self_of_mem_nonunits _ ((IsLocalRing.mem_maximalIdeal _).mp hz)`. Establish `e : y ^ g = y * y ^ (g - 1)`. Rewrite using `[← pow_succ', Nat.sub_add_cancel hg.one_lt.le]`. Establish `hy' : y = -(y ^ g - y) * ↑u⁻¹`.
+
+Combine the equalities or inequalities in the displayed calculation. Rewrite using `[hy']`. Conclude with `Ideal.mul_mem_right _ _ (neg_mem hy)`.
+-/
 theorem mem_span_prime_of_not_isUnit_of_pow_sub_mem {O : Type} [CommRing O] [IsLocalRing O] (g : ℕ)
     (hg : g.Prime) (y : O) (hy : y ^ g - y ∈ Ideal.span {(g : O)}) (hn : ¬ IsUnit y) :
     y ∈ Ideal.span {(g : O)} := by
@@ -21,6 +28,31 @@ theorem mem_span_prime_of_not_isUnit_of_pow_sub_mem {O : Type} [CommRing O] [IsL
   rw [hy']
   exact Ideal.mul_mem_right _ _ (neg_mem hy)
 
+/- English proof (translation)
+Introduce `A O _ _ _ g hg hgu hA σ x`. Establish `hy : σ x ^ g - σ x ∈ Ideal.span {(g : O)}`. Establish `h` using `Ideal.mem_map_of_mem σ (hA x)`. Rewrite `h` using `[Ideal.map_span, Set.image_singleton, map_natCast, map_sub, map_pow]`. Conclude with `h`.
+
+Use `⟨?_, fun hn => mem_span_prime_of_not_isUnit_of_pow_sub_mem g hg (σ x) hy hn⟩` and prove the remaining obligations. Establish `: Fact g.Prime` using `⟨hg⟩`. Establish `: NeZero g` using `⟨hg.ne_zero⟩`. Establish `hgm : (g : O) ∈ IsLocalRing.maximalIdeal O` using `(IsLocalRing.mem_maximalIdeal _).mpr hgu`. Establish `hspan : Ideal.span {(g : O)} ≤ IsLocalRing.maximalIdeal O` using `(Ideal.span_singleton_le_iff_mem _).mpr hgm`.
+
+Establish `hgk : ((g : ℕ) : IsLocalRing.ResidueField O) = 0`. Rewrite using `[← map_natCast (IsLocalRing.residue O), IsLocalRing.residue_eq_zero_iff]`. Conclude with `hgm`. Establish `: CharP (IsLocalRing.ResidueField O) g` using `(CharP.charP_iff_prime_eq_zero hg).mpr hgk`. Establish `hfix : IsLocalRing.residue O (σ x) ^ g = IsLocalRing.residue O (σ x)`.
+
+Establish `h` using `(IsLocalRing.residue_eq_zero_iff _).mpr (hspan hy)`. Rewrite `h` using `[map_sub, map_pow, sub_eq_zero]`. Then use the resulting hypothesis. Choose the witnesses or unpack the hypotheses as in `⟨a, ha⟩ : ∃ a : ZMod g, IsLocalRing.residue O (σ x) = ZMod.castHom (dvd_refl g) (IsLocalRing.ResidueField O) a := by`. Assume the negation of the conclusion as `hno`. Simplify using `only [not_exists] at hno`.
+
+Establish `hpoly : (Polynomial.X ^ g - Polynomial.X : Polynomial (IsLocalRing.ResidueField O)) ≠ 0` using `FiniteField.X_pow_card_sub_X_ne_zero _ hg.one_lt`. Establish `hnot : IsLocalRing.residue O (σ x) ∉ Finset.univ.image (ZMod.castHom (dvd_refl g) (IsLocalRing.ResidueField O))`. Introduce `h`. Take `⟨b, -, hb⟩` from `Finset.mem_image.mp h`. Conclude with `hno b hb.symm`.
+
+Establish `hsub : (insert (IsLocalRing.residue O (σ x)) (Finset.univ.image (ZMod.castHom (dvd_refl g) (IsLocalRing.ResidueField O)))).val ⊆ (Polynomial.X ^ g - Polynomial.X : Polynomial (IsLocalRing.ResidueField O)).roots`. Introduce `z hz`. Establish `hz' : z ∈ insert (IsLocalRing.residue O (σ x)) (Finset.univ.image (ZMod.castHom (dvd_refl g) (IsLocalRing.ResidueField O)))` using `hz`. Rewrite using `[Polynomial.mem_roots hpoly, Polynomial.IsRoot, Polynomial.eval_sub, Polynomial.eval_pow, Polynomial.eval_X, sub_eq_zero]`. Break down `Finset.mem_insert.mp hz' with h | h` into its components or cases.
+
+Rewrite using `[h]`. Conclude with `hfix`. Take `⟨b, -, rfl⟩` from `Finset.mem_image.mp h`. Rewrite using `[← map_pow, ZMod.pow_card]`. Establish `hcard` using `Polynomial.card_le_degree_of_subset_roots hsub`.
+
+Rewrite `hcard` using `[FiniteField.X_pow_card_sub_X_natDegree_eq _ hg.one_lt, Finset.card_insert_of_notMem hnot, Finset.card_image_of_injective _ (RingHom.injective _), Finset.card_univ, ZMod.card]`. Use linear arithmetic over natural numbers and integers. Establish `ha' : IsLocalRing.residue O (σ x) = IsLocalRing.residue O ((a.val : ℕ) : O)`. Rewrite using `[ha, map_natCast, ← map_natCast (ZMod.castHom (dvd_refl g) (IsLocalRing.ResidueField O)), ZMod.natCast_zmod_val]`. Establish `hnu : ¬ IsUnit (σ x - ((a.val : ℕ) : O))`.
+
+Rewrite using `[← mem_nonunits_iff, ← IsLocalRing.mem_maximalIdeal, ← IsLocalRing.residue_eq_zero_iff, map_sub, ha', sub_self]`. Establish `hne : Ideal.span {(g : O)} ≠ ⊤`. Rewrite using `[Ne, Ideal.span_singleton_eq_top]`. Conclude with `hgu`. Establish `: Nontrivial (O ⧸ Ideal.span {(g : O)})` using `Ideal.Quotient.nontrivial_iff.mpr hne`.
+
+Establish `: CharP (O ⧸ Ideal.span {(g : O)}) g` using `(CharP.charP_iff_prime_eq_zero hg).mpr (by`. Rewrite using `[← map_natCast (Ideal.Quotient.mk _), Ideal.Quotient.eq_zero_iff_mem]`. Conclude with `Ideal.mem_span_singleton_self _)`. Establish `hyQ : Ideal.Quotient.mk (Ideal.span {(g : O)}) (σ x) ^ g - Ideal.Quotient.mk (Ideal.span {(g : O)}) (σ x) = 0`. Rewrite using `[← map_pow, ← map_sub, Ideal.Quotient.eq_zero_iff_mem]`.
+
+Conclude with `hy`. Establish `hnQ : ((a.val : ℕ) : O ⧸ Ideal.span {(g : O)}) ^ g = ((a.val : ℕ) : O ⧸ Ideal.span {(g : O)})`. Rewrite using `[← map_natCast (ZMod.castHom (dvd_refl g) (O ⧸ Ideal.span {(g : O)})), ← map_pow, ZMod.pow_card]`. Establish `hsh : (σ x - ((a.val : ℕ) : O)) ^ g - (σ x - ((a.val : ℕ) : O)) ∈ Ideal.span {(g : O)}`. Rewrite using `[← Ideal.Quotient.eq_zero_iff_mem, map_sub, map_pow, map_sub, map_natCast, sub_pow_char, hnQ]`.
+
+Take the linear combination `hyQ`. Use `⟨(a.val : ℤ), ?_⟩` and prove the remaining obligations. Rewrite using `[Int.cast_natCast]`. Conclude with `mem_span_prime_of_not_isUnit_of_pow_sub_mem g hg _ hsh hnu`.
+-/
 theorem hom_value_congruent_int_mod_prime :
     ∀ (A O : Type) [CommRing A] [CommRing O] [IsLocalRing O] (g : ℕ), g.Prime → ¬ IsUnit (g : O) → (∀ x : A, x ^ g - x ∈ Ideal.span {(g : A)}) → ∀ (σ : A →+* O) (x : A), (∃ i : ℤ, σ x - (i : O) ∈ Ideal.span {(g : O)}) ∧ (¬ IsUnit (σ x) → σ x ∈ Ideal.span {(g : O)}) := by
   intro A O _ _ _ g hg hgu hA σ x

@@ -19,6 +19,13 @@ noncomputable section
 
 namespace GlobalTheory.GoodMetric.PointChern
 
+/- English proof (translation)
+Substitute `hn` using the available equality. Establish `hc (x : ι × ℕ) : chernPoly (fun u => G u x.1) v x.2 = algebraMap ℝ (MvPolynomial (Fin 0 × Fin 0) ℂ) (if x.2 = 0 then 1 else 0)`. Establish `e : curvPoly (fun u => G u x.1) v = 0`. Use extensionality with `i j`. Simplify using `[curvPoly]`.
+
+Rewrite using `[chernPoly, e, neg_zero]`. Apply the tactic sequence `by_cases h : x.2 = 0 <;> simp [Matrix.charpolyRev, Polynomial.coeff_one, h]`. Establish `ha : (fun x : ι × ℕ => chernPoly (fun u => G u x.1) v x.2) = algebraMap ℝ (MvPolynomial (Fin 0 × Fin 0) ℂ) ∘ (fun x : ι × ℕ => if x.2 = 0 then (1 : ℝ) else 0)`. Use function extensionality and compare the values at `hc`. Rewrite using `[chernTop, ha, MvPolynomial.aeval_algebraMap_apply]`.
+
+Simplify using `[topCoeff]`.
+-/
 theorem chernTop_eq_eval {ι : Type} {m : ι → ℕ} {n : ℕ} (hn : n = 0) (R : MvPolynomial (ι × ℕ) ℝ)
     (G : V n → GlobalTheory.FlagBundle.Mat m ℂ) (v : V n) :
     chernTop R G v = MvPolynomial.eval (fun x : ι × ℕ => if x.2 = 0 then (1 : ℝ) else 0) R := by
@@ -35,6 +42,19 @@ theorem chernTop_eq_eval {ι : Type} {m : ι → ℕ} {n : ℕ} (hn : n = 0) (R 
   rw [chernTop, ha, MvPolynomial.aeval_algebraMap_apply]
   simp [topCoeff]
 
+/- English proof (translation)
+Introduce `ι _ m X E hX`. Take `⟨H, hH⟩` from `SmoothMetric.exists_isMetricOn_top ℚ (Rat.castHom ℂ) X ι m E`. Use `⟨Rat.castHom ℂ, H, hH, fun y hy => absurd mem_ptsIn_top hy, fun R t ht => ?_⟩` and prove the remaining obligations. Take `⟨⟨y⟩, hsub⟩` from `GlobalTheory.Published.ArDegreeModel.unique_pt X (Rat.castHom ℂ) hX`. Use `X.smooth_str` as an intermediate fact.
+
+Use `CxPts.secondCountableTopology_of_isProjOver (Rat.castHom ℂ) X.isProjOver` as an intermediate fact. Take `⟨c, hc⟩` from `AlgChart.exists_mem_source (p := X.str) (σ := Rat.castHom ℂ) (D := X.dim) y`. Establish `hV : Subsingleton (V X.dim)` using `by rw [hX]; infer_instance`. Establish `hvol : (volume : Measure (V X.dim)) Set.univ = 1`. Use `(stdOrthonormalBasis ℝ (V X.dim)).volume_parallelepiped` as an intermediate fact.
+
+Rewrite `this` using `[Set.eq_univ_of_forall (s := parallelepiped _) fun v => (mem_parallelepiped_iff _ _).2 ⟨0, ⟨le_rfl, zero_le_one⟩, Subsingleton.elim _ _⟩]`. Then use the resulting hypothesis. Establish `hdet (i j : AlgChart X.str (Rat.castHom ℂ) X.dim) (z : CxPts X.str (Rat.castHom ℂ)) : transDet i.e j.e z = 1`. Rewrite using `[transDet, ContinuousLinearMap.det]`. Conclude with `LinearMap.det_eq_one_of_finrank_eq_zero (Module.finrank_zero_of_subsingleton (R := ℂ) (M := V X.dim)) _`. Use `set r := MvPolynomial.eval (fun x : ι × ℕ => if x.2 = 0 then (1 : ℝ) else 0) R`.
+
+Establish `hA : MeasurableSet (ptsIn X.str (Rat.castHom ℂ) ⊤)` using `(isOpen_ptsIn _).measurableSet`. Establish `hAs : ptsIn X.str (Rat.castHom ℂ) ⊤ ⊆ c.e.source` using `fun z _ => Subsingleton.elim y z ▸ hc`. Establish `hm (ε : ℤˣ) : chernTopPart E H R ε (ptsIn X.str (Rat.castHom ℂ) ⊤) = ENNReal.ofReal ((ε : ℤ) * r)`. Rewrite using `[chernTopPart, glueMeas_apply _ _ (fun i j => i.holo_trans j) ?_ c hA hAs, chartMeas_apply_of_subset _ _ hA hAs]`. Simplify using `only [chernTop_eq_eval hX]`.
+
+Rewrite using `[show c.e '' ptsIn X.str (Rat.castHom ℂ) ⊤ = Set.univ from Set.eq_univ_of_forall fun v => ⟨y, mem_ptsIn_top, Subsingleton.elim _ _⟩]`. Simplify using `[hvol, r]`. Introduce `i j z _ _`. Simplify using `[hdet, chernTop_eq_eval hX]`. Take `⟨-, h2⟩` from `ht`.
+
+Rewrite using `[← h2, Measure.real, Measure.real, hm, hm, ENNReal.toReal_ofReal', ENNReal.toReal_ofReal']`. Use `push_cast`. Break down `le_total 0 r with h | h` into its components or cases. Rewrite using `[max_eq_left (by linarith), max_eq_right (by linarith)]; ring`. Rewrite using `[max_eq_right (by linarith), max_eq_left (by linarith)]; ring`.
+-/
 theorem chernIntegral_point : ∀ (ι : Type) [Fintype ι] (m : ι → ℕ) (X : GlobalTheory.ProjVar.Var ℚ)
     (E : GlobalTheory.FlagBundle.Fr (GlobalTheory.FlagBundle.ratOf X) m 0), X.dim = 0 →
     ∃ (σ : ℚ →+* ℂ) (H : GlobalTheory.FlagBundle.Mat m X.Fn → CxPts X.str σ → GlobalTheory.FlagBundle.Mat m ℂ),

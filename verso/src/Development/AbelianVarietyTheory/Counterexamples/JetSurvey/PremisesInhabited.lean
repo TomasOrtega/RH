@@ -5,6 +5,9 @@ noncomputable section
 namespace GlobalTheory.LatticeBoundTests
 open NumberField
 
+/- English proof (translation)
+Use `choose f hf using hβ`. Use `⟨∑ i, f (x i) (x' i), ?_⟩` and prove the remaining obligations. Rewrite using `[h]`. Use `push_cast`. Conclude with `Finset.sum_congr rfl fun i _ => hf _ _`.
+-/
 theorem integral_of_sum (Y : Type) [AddCommGroup Y] (S : Submodule ℝ (Y →ₗ[ℤ] Y →ₗ[ℤ] ℝ))
     (l : S →ₗ[ℝ] ℝ) (m : ℕ) (x x' : Fin m → Y)
     (h : ∀ β : S, l β = ∑ i, (β : Y →ₗ[ℤ] Y →ₗ[ℤ] ℝ) (x i) (x' i)) (β : S)
@@ -25,14 +28,25 @@ def trBil : 𝓞 E →ₗ[ℤ] 𝓞 E →ₗ[ℤ] ℝ :=
     (fun k x y => by simp [Finset.mul_sum, mul_add, mul_left_comm])
 
 omit [IsCMField E] in
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem trBil_apply (x y : 𝓞 E) :
     trBil E x y = ∑ σ : E →+* ℂ, (σ (x : E) * starRingEnd ℂ (σ (y : E))).re := rfl
 
 omit [IsCMField E] in
+/- English proof (translation)
+Rewrite using `[trBil_apply, trBil_apply]`. Conclude with `Finset.sum_congr rfl fun σ _ => by simp [mul_comm]`.
+-/
 theorem trBil_symm (x y : 𝓞 E) : trBil E x y = trBil E y x := by
   rw [trBil_apply, trBil_apply]
   exact Finset.sum_congr rfl fun σ _ => by simp [mul_comm]
 
+/- English proof (translation)
+Rewrite using `[trBil_apply, trBil_apply]`. Use `Finset.sum_congr rfl fun σ _ => ?_` and prove the remaining obligations. Establish `h : σ (c' : E) = starRingEnd ℂ (σ (c : E))`. Rewrite using `[hc]`. Conclude with `IsCMField.complexEmbedding_complexConj E σ _`.
+
+Rewrite using `[smul_eq_mul, smul_eq_mul]`. Use `push_cast`. Rewrite using `[map_mul, map_mul, h, map_mul, Complex.conj_conj]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem trBil_balanced (c c' : 𝓞 E) (hc : (c' : E) = IsCMField.complexConj E c) (x y : 𝓞 E) :
     trBil E (c • x) y = trBil E x (c' • y) := by
   rw [trBil_apply, trBil_apply]
@@ -45,6 +59,19 @@ theorem trBil_balanced (c c' : 𝓞 E) (hc : (c' : E) = IsCMField.complexConj E 
   congr 1; ring
 
 omit [IsCMField E] in
+/- English proof (translation)
+Use `Matrix.PosDef.of_dotProduct_mulVec_pos ?_ fun t ht => ?_` and prove the remaining obligations. Use extensionality with `i j`. Simplify using `only [Matrix.conjTranspose_apply, Matrix.of_apply, star_trivial, trBil_apply]`. Conclude with `Finset.sum_congr rfl fun σ _ => by simp [mul_comm]`. Use `set u : (E →+* ℂ) → ℂ := fun σ => ∑ i, (t i : ℂ) * σ (RingOfIntegers.basis E i : E) with hu`.
+
+Establish `key : star t ⬝ᵥ (Matrix.of fun i j => trBil E (RingOfIntegers.basis E i) (RingOfIntegers.basis E j)).mulVec t = ∑ σ, Complex.normSq (u σ)`. Establish `: ∀ σ, Complex.normSq (u σ) = ∑ i, ∑ j, t i * ((σ (RingOfIntegers.basis E i : E) * starRingEnd ℂ (σ (RingOfIntegers.basis E j : E))).re * t j)`. Introduce `σ`. Rewrite using `[← Complex.ofReal_re (Complex.normSq (u σ)), ← Complex.mul_conj, hu]`. Simplify using `only [map_sum, Finset.sum_mul_sum, Complex.re_sum]`.
+
+Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Simplify using `only [this, dotProduct, Matrix.mulVec, Matrix.of_apply, trBil_apply, star_trivial, Finset.mul_sum, Finset.sum_mul]`. Rewrite using `[Finset.sum_comm (γ := E →+* ℂ)]`.
+
+Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_comm (γ := E →+* ℂ)]`. Rewrite using `[key]`. Use `lt_of_le_of_ne (Finset.sum_nonneg fun _ _ => Complex.normSq_nonneg _) fun h0 => ht ?_` and prove the remaining obligations. Establish `hz : ∀ σ, u σ = 0` using `fun σ => Complex.normSq_eq_zero.1 ((Finset.sum_eq_zero_iff_of_nonneg fun _ _ => Complex.normSq_nonneg _).1 h0.symm σ (Finset.mem_univ _))`.
+
+Establish `li` using `Fintype.linearIndependent_iff.1 (canonicalEmbedding.latticeBasis E).linearIndependent (fun i => (t i : ℂ)) (by`. Use function extensionality and compare the values at `σ`. Use `hz σ` as an intermediate fact. Simplify `this)` using `[hu, canonicalEmbedding.latticeBasis_apply, integralBasis_apply]`. Use function extensionality and compare the values at `i`.
+
+Conclude with `li i` after adjusting the coercions.
+-/
 theorem trBil_posDef :
     (Matrix.of fun i j => trBil E (RingOfIntegers.basis E i) (RingOfIntegers.basis E j)).PosDef := by
   classical
@@ -88,6 +115,17 @@ instance isCyc_K₃ : IsCyclotomicExtension {3} ℚ K₃ := CyclotomicField.isCy
 
 instance isCMField_K₃ : IsCMField K₃ := IsCyclotomicExtension.Rat.isCMField K₃ (S := {3}) ⟨3, rfl, by norm_num⟩
 
+/- English proof (translation)
+Establish `hζ` using `IsCyclotomicExtension.zeta_spec 3 ℚ K₃`. Use `set ζ := IsCyclotomicExtension.zeta 3 ℚ K₃`. Use `⟨-hζ.toInteger, ?_⟩` and prove the remaining obligations. Establish `h3 : ζ ^ 3 = 1` using `hζ.pow_eq_one`. Establish `hs : 1 + ζ + ζ ^ 2 = 0`.
+
+Use `hζ.geom_sum_eq_zero (by norm_num)` as an intermediate fact. Simplify `this` using `[Finset.sum_range_succ]`. Take `⟨σ⟩ : Nonempty (K₃ →+* ℂ)` from `inferInstance`. Establish `hc : IsCMField.complexConj K₃ ζ = ζ ^ 2`. Apply `σ.injective` to reduce the goal to its premises.
+
+Rewrite using `[IsCMField.complexEmbedding_complexConj, map_pow]`. Establish `h1 : σ ζ ^ 3 = 1` using `by rw [← map_pow, h3, map_one]`. Establish `hn : ‖σ ζ‖ = 1` using `Complex.norm_eq_one_of_pow_eq_one h1 (by norm_num)`. Establish `hne : σ ζ ≠ 0` using `by intro h; simp [h] at hn`. Apply `mul_left_cancel₀ hne` to reduce the goal to its premises.
+
+Rewrite using `[Complex.mul_conj, Complex.normSq_eq_norm_sq, hn]`. Use `push_cast`. Take the linear combination `-h1`. Establish `e : ((-hζ.toInteger : 𝓞 K₃) : K₃) = -ζ` using `by push_cast; rfl`. Rewrite using `[e, map_neg, hc]`.
+
+Take the linear combination `-hs`.
+-/
 theorem exists_half : ∃ w : 𝓞 K₃, (w : K₃) + IsCMField.complexConj K₃ w = 1 := by
   have hζ := IsCyclotomicExtension.zeta_spec 3 ℚ K₃
   set ζ := IsCyclotomicExtension.zeta 3 ℚ K₃
@@ -111,6 +149,9 @@ theorem exists_half : ∃ w : 𝓞 K₃, (w : K₃) + IsCMField.complexConj K₃
   rw [e, map_neg, hc]
   linear_combination -hs
 
+/- English proof (translation)
+Take `⟨w, hw⟩` from `exists_half`. Use `⟨K₃, inferInstance, inferInstance, fun z => IsCMField.complexConj K₃ z, w, 𝓞 K₃, inferInstance, inferInstance, inferInstance, inferInstance, trBil K₃, fun φ z => IsCMField.complexEmbedding_complexConj K₃ φ z, ?_, fun c => ⟨IsCMField.ringOfIntegersComplexConj K₃ c, IsCMField.coe_r …` and prove the remaining obligations. Assume the negation of the conclusion as `h`. Use `push_neg at h`. Conclude with `IsCMField.complexConj_ne_one K₃ (AlgEquiv.ext h)`.
+-/
 theorem premises_inhabited :
     ∃ (E : Type) (_ : Field E) (_ : NumberField E) (cj : E → E) (w : 𝓞 E) (Y : Type)
       (_ : AddCommGroup Y) (_ : Module (𝓞 E) Y) (_ : Module.Free ℤ Y) (_ : Module.Finite ℤ Y)

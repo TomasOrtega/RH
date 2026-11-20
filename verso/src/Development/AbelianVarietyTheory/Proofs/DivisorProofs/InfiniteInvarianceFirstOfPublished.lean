@@ -17,6 +17,37 @@ open GlobalTheory.Doubling (absE)
 
 namespace GlobalTheory.ThK.LemF
 
+/- English proof (translation)
+Introduce `hP F E _ _ _ _ _ σ B b a' G G₁ H H' hC e he ei ev hle K hK X om om' om₁ om₁' hT hT₁ μK μ hμK hμ l hl₀`. Establish `t1` using `GlobalTheory.T.config_A_local_part_theta hP F E σ B b a' G G₁ H H' hC e he ei ev hle X om om' om₁ om₁' hT hT₁`. Establish `t2` using `GlobalTheory.T.config_A_local_part_integral hP F E σ B b a' G G₁ H H' hC e he ei ev hle X om om' om₁ om₁' hT hT₁`. Establish `t3` using `GlobalTheory.T.config_A_local_part_unfold hP F E σ B b a' G G₁ H H' hC e he ei ev hle X om om' om₁ om₁' hT hT₁`. Establish `t4` using `GlobalTheory.T.config_A_local_part_fold hP F E σ B b a' G G₁ H H' hC e he ei ev hle X om om' om₁ om₁' hT hT₁`.
+
+Establish `t5` using `GlobalTheory.T.config_A_local_part_compare hP F E σ B b a' G G₁ H H' hC e he ei ev hle X om om' om₁ om₁' hT hT₁`. Establish `t7` using `GlobalTheory.T.config_A_local_part_equal hP F E σ B b a' G G₁ H H' hC e he ei ev hle X om om' om₁ om₁' hT hT₁ K hK μK μ hμK hμ l`. Establish `t9` using `GlobalTheory.T.config_A_local_part_product hP F E σ B b a' G G₁ H H' hC e he ei ev hle X om om' om₁ om₁' hT hT₁`. Use `⟨fun u hu huI f => by rw [t1 u hu huI f], fun g₀ g hL hg hg₀ f => by rw [t2 g₀ g hL hg hg₀ f]; exact hl₀ g₀ hg₀ _, ?_⟩` and prove the remaining obligations. Introduce `g hg f`.
+
+Take `⟨m, hm⟩` from `GlobalTheory.T.levi_section_archimedean F E σ B b a' G G₁ H H' hC hT.base hT.geo hT₁.geo`. Establish `hfix : ∀ x : UA σ G.V.J, mat x *ᵥ incV F H.x = incV F H.x → actAB (cA σ) ((x, 1) : UA σ G.V.J × UA σ G.W.J) (shiftA H H' 1) = shiftA H H' 1`. Introduce `x hx`. Establish `h : mat x * Matrix.vecMulVec (incV F H.x) (incV F H'.y) = Matrix.vecMulVec (incV F H.x) (incV F H'.y)` using `(Matrix.mul_vecMulVec _ _ _).trans (by rw [hx])`. Simplify using `only [actAB, shiftA, Units.val_one, one_smul, Prod.snd_one, Prod.fst]`.
+
+Simplify `h` using `[mat]`. Establish `hunipfix : ∀ n ∈ unip σ G.V H, mat n *ᵥ incV F H.x = incV F H.x`. Introduce `n hn`. Proceed by induction on `hn using Subgroup.closure_induction with`. Consider the case `mem x hx => exact hx.1`.
+
+Consider the case `one => rw [GlobalTheory.StabHaar.mat_one, Matrix.one_mulVec]`. Consider the case `mul x y _ _ hx hy => rw [GlobalTheory.StabHaar.mat_mul, ← Matrix.mulVec_mulVec, hy, hx]`. Consider the case `inv x _ hx => conv_lhs => rw [← hx]`. Rewrite using `[Matrix.mulVec_mulVec, ← GlobalTheory.StabHaar.mat_mul, inv_mul_cancel, GlobalTheory.StabHaar.mat_one, Matrix.one_mulVec]`. Take `⟨j, hj⟩` from `hT.geo.even`.
+
+Establish `hlt` using `hT.geo.lt`. Establish `hzr : (((b + 2 - a') / 2 : ℕ) : ℝ) = ((b + 1 : ℕ) : ℝ) - ((b + a' : ℕ) : ℝ) / 2`. Establish `h2 : 2 * ((b + 2 - a') / 2) + a' = b + 2` using `by omega`. Establish `h2' : (2 : ℝ) * (((b + 2 - a') / 2 : ℕ) : ℝ) + (a' : ℝ) = (b : ℝ) + 2` using `by exact_mod_cast h2`. Use `push_cast`.
+
+Combine the linear equalities and inequalities to obtain the conclusion. Establish `key : ∀ (f' : SInf F (Fin (b + 2) × Fin (b + 2 + a'))) (k : UA σ G.V.J), k ∈ UAt σ G.V (evI F) → ∀ y : (AE F E)ˣ, y ∈ idelesAt E (evI F) → l (coneInfInt B G.M om ei (shiftA H H') X.ν ((b + 2 - a') / 2) f' k y) = l (ei (locOpInf (G.M.co.rho B.ψ (partInf F (shiftA H H' 1))) (locOpI …`. Introduce `f' k hk y hy`. Take `⟨hL, hmU⟩` from `hm y⁻¹ (inv_mem hy)`. Establish `h5` using `t5 y⁻¹ (m y⁻¹) (inv_mem hy) hL hmU (locOpInf (om (k, 1)) f')`.
+
+Rewrite `h5` using `[t3 (m y⁻¹) hmU k hk f', inv_inv]`. Rewrite using `[h5, coneInfInt]`. Simplify using `only [map_smul, smul_eq_mul]`. Establish `hν : ((X.ν y⁻¹ : Circle) : ℂ)⁻¹ = (X.ν y : ℂ)` using `by simp`. Establish `habs : absE F E y⁻¹ = (absE F E y)⁻¹` using `map_inv _ _`.
+
+Establish `hr : (0 : ℝ) < (absE F E y : ℝ)`. Establish `h1 : absE F E y * absE F E y⁻¹ = 1` using `by rw [← map_mul, mul_inv_cancel, map_one]`. Establish `h0 : absE F E y ≠ 0` using `fun h => by rw [h, zero_mul] at h1; exact zero_ne_one h1`. Conclude with `pos_iff_ne_zero.2 h0` after adjusting the coercions. Rewrite using `[hν, habs]`.
+
+Establish `hreal : ((absE F E y : ℝ)) ^ ((b + 2 - a') / 2) = ((absE F E y : ℝ))⁻¹ ^ (((b + a' : ℕ) : ℝ) / 2) * (absE F E y : ℝ) ^ ((b + 1 : ℕ) : ℝ)`. Rewrite using `[← Real.rpow_natCast, hzr, Real.inv_rpow hr.le, Real.rpow_sub hr]`. Clear the denominators using the available nonvanishing facts. Establish `hc : ((absE F E y : ℝ) : ℂ) ^ ((b + 2 - a') / 2) = ((((absE F E y : ℝ))⁻¹ ^ (((b + a' : ℕ) : ℝ) / 2) : ℝ) : ℂ) * (((absE F E y : ℝ) ^ ((b + 1 : ℕ) : ℝ) : ℝ) : ℂ)`. Rewrite using `[← Complex.ofReal_pow, hreal, Complex.ofReal_mul]`.
+
+Rewrite using `[hc]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Establish `e1 : ∀ g' ∈ UAt σ G.V (evI F), ∀ (k : KAt K (evI F)) (y : idelesAt E (evI F)), l (coneInfInt B G.M om ei (shiftA H H') X.ν ((b + 2 - a') / 2) (locOpInf (om (g', 1)) f) k.1 y.1) = (fun x : UA σ G.V.J => l (ei (locOpInf (G.M.co.rho B.ψ (partInf F (shiftA H H' 1))) (locOpInf (om (x, …`. Introduce `g' hg' k y`.
+
+Establish `hmk : m y.1⁻¹ * k.1 ∈ UAt σ G.V (evI F)` using `(UAtSub σ G.V (evI F)).mul_mem (hm _ (inv_mem y.2)).2 k.2.2`. Rewrite using `[key _ k.1 k.2.2 y.1 y.2, t3 (m y.1⁻¹ * k.1) hmk g' hg' f]`. Establish `e2 : ∀ (k : KAt K (evI F)) (y : idelesAt E (evI F)), l (coneInfInt B G.M om ei (shiftA H H') X.ν ((b + 2 - a') / 2) f k.1 y.1) = (fun x : UA σ G.V.J => l (ei (locOpInf (G.M.co.rho B.ψ (partInf F (shiftA H H' 1))) (locOpInf (om (x, 1)) f)))) (m y.1⁻¹ * k.1) * (((absE F E y.1 : ℝ) …` using `fun k y => key f k.1 k.2.2 y.1 y.2`. Simplify using `only [e1 g hg, e2]`. Use `GlobalTheory.T.config_A_haar_stabilizer F E σ B b a' G G₁ H H' hC hT.base hT.geo hT₁.geo K hK μK μ hμK hμ m hm (fun x : UA σ G.V.J => l (ei (locOpInf (G.M.co.rho B.ψ (partInf F (shiftA H H' 1))) (locOpInf (om (x, 1)) f)))) (l.continuous.comp_continuousOn (t9 f)) ?_ ?_ ?_ g hg` and prove the remaining obligations.
+
+Introduce `n hn hnI x hx beta_reduce`. Rewrite using `[← t3 n hnI x hx f]`. Establish `h4` using `t4 n hnI (shiftA H H' 1) (locOpInf (om (x, 1)) f)`. Rewrite `h4` using `[hfix n (hunipfix n hn)]`. Rewrite using `[← h4, t1 n hn hnI]`.
+
+Introduce `g₀ g' hL hg' hg₀ x hx beta_reduce`. Rewrite using `[← t3 g' hg' x hx f]`. Establish `h4` using `t4 g' hg' (shiftA H H' 1) (locOpInf (om (x, 1)) f)`. Rewrite `h4` using `[hfix g' (by simpa using hL.1)]`. Rewrite using `[← h4, t2 g₀ g' hL hg' hg₀, hl₀ g₀ hg₀]`.
+
+Introduce `g' hg'`. Conclude with `(t7 (locOpInf (om (g', 1)) f)).congr (Eventually.of_forall fun p => e1 g' hg' p.1 p.2)`.
+-/
 theorem infInvA_holds : GlobalTheory.FunPr.Hypotheses₂ → GlobalTheory.ThK.LemF.InfInvA := by
   intro hP F E _ _ _ _ _ σ B b a' G G₁ H H' hC e he ei ev hle K hK X om om' om₁ om₁' hT hT₁ μK μ hμK hμ l hl₀
   have t1 := GlobalTheory.T.config_A_local_part_theta hP F E σ B b a' G G₁ H H' hC e he ei ev hle X om om' om₁ om₁' hT hT₁

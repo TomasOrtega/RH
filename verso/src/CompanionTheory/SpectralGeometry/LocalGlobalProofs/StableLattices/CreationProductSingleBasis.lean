@@ -12,6 +12,13 @@ noncomputable section
 
 namespace GlobalTheory.CompanionTheory.Chains
 
+/- English proof (translation)
+Use function extensionality and compare the values at `A`. Use `show (if f ∈ A then CompanionTheory.D.LK.sg f A • (Pi.single S w : Cn n V) (A.erase f) else 0) = _`. Distinguish the cases in `hA : A = insert f S`. Substitute `hA` using the available equality. Rewrite using `[if_pos (Finset.mem_insert_self f S), Finset.erase_insert h]`.
+
+Simplify using `[Pi.single_apply]`. Establish `hr : (CompanionTheory.D.LK.sg f (insert f S) • (Pi.single (insert f S) w : Cn n V)) A = 0`. Simplify using `[Pi.single_apply, hA]`. Rewrite using `[hr]`. Use `split_ifs with hf`.
+
+Establish `hne : A.erase f ≠ S` using `fun he => hA (by rw [← he, Finset.insert_erase hf])`. Simplify using `[Pi.single_apply, hne]`. Both sides reduce to the same expression.
+-/
 theorem cre_single {n : ℕ} {V : Type} [AddCommGroup V] [Module ℂ V] (f : Pos n) (S : Finset (Pos n)) (w : V)
     (h : f ∉ S) :
     (cre f : Module.End ℂ (Cn n V)) (Pi.single S w : Cn n V) =
@@ -30,10 +37,22 @@ theorem cre_single {n : ℕ} {V : Type} [AddCommGroup V] [Module ℂ V] (f : Pos
       simp [Pi.single_apply, hne]
     · rfl
 
+/- English proof (translation)
+Use `delta CompanionTheory.D.LK.sg`. Conclude with `pow_ne_zero _ (neg_ne_zero.2 one_ne_zero)`.
+-/
 theorem sg_ne_zero {n : ℕ} (f : Pos n) (A : Finset (Pos n)) : CompanionTheory.D.LK.sg f A ≠ 0 := by
   delta CompanionTheory.D.LK.sg
   exact pow_ne_zero _ (neg_ne_zero.2 one_ne_zero)
 
+/- English proof (translation)
+Introduce `n V _ _ l S w`. Proceed by induction on `l with`. Consider the case `nil`. Introduce `_ _`. Use `⟨1, one_ne_zero, ?_⟩` and prove the remaining obligations.
+
+Simplify using the standard rewrite rules. Consider the case `cons a l ih`. Introduce `hnd hS`. Take `⟨c, hc, hcl⟩` from `ih hnd.of_cons (fun i hi => hS i (by simp [hi]))`. Establish `ha : a ∉ S ∪ l.toFinset`.
+
+Rewrite using `[Finset.mem_union, not_or, List.mem_toFinset]`. Conclude with `⟨hS a (by simp), (List.nodup_cons.1 hnd).1⟩`. Use `⟨c * CompanionTheory.D.LK.sg a (insert a (S ∪ l.toFinset)), mul_ne_zero hc (sg_ne_zero _ _), ?_⟩` and prove the remaining obligations. Rewrite using `[List.map_cons, List.prod_cons]`. Use `show cre a (((l.map cre).prod : Module.End ℂ (Cn n V)) (Pi.single S w : Cn n V)) = _`.
+
+Rewrite using `[hcl, map_smul, cre_single a _ w ha, smul_smul, List.toFinset_cons, Finset.union_insert]`.
+-/
 theorem prod_cre_single : ∀ (n : ℕ) (V : Type) [AddCommGroup V] [Module ℂ V] (l : List (Pos n)) (S : Finset (Pos n)) (w : V),
     l.Nodup → (∀ i ∈ l, i ∉ S) → ∃ c : ℂ, c ≠ 0 ∧
       ((l.map cre).prod : Module.End ℂ (Cn n V)) (Pi.single S w : Cn n V) = c • (Pi.single (S ∪ l.toFinset) w : Cn n V) := by

@@ -19,6 +19,15 @@ section Gen
 variable {D : D7} {G : Type} [Group G] [Fintype G] {Pl0 I0 T : Type} {A3 : FamIn3 D.what₂.LL G Pl0 I0 (List ℕ) T D.R.m} {Ks : Type}
   [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] {R : RealDat3 D A3 Ks} {F : Face3 D A3} {X0 : BaseLevelRowSide D}
 
+/- English proof (translation)
+Substitute `hc` using the available equality. Use `⟨⟨Y.hF, PV, fun j => (StandardFrameAgreement.stdFrame_iff _ _).1 (std j), fun j => (StandardFrameAgreement.stdFrame_iff _ _).1 (Y.stdPsi.2 j), fun _ => 1, ?_, fun μ hμ j => (eW μ hμ j).symm, ?_, ?_, hrep⟩⟩` and prove the remaining obligations. Introduce `j h`. Simplify using `only [inv_one, one_mul, mul_one]`. Conclude with `rat j h`.
+
+Introduce `μ hμ j h γ hγ he v`. Establish `he'` using `he`. Simplify using `only [inv_one, one_mul, mul_one] at he'`. Establish `key` using `wt μ hμ j h γ hγ he' ((eW μ hμ j).symm v)`. Use `(LinearEquiv.symm_apply_eq _).2 ?_` and prove the remaining obligations.
+
+Use `Eq.trans ?_ key.symm` and prove the remaining obligations. Conclude with `congrArg _ (LinearEquiv.apply_symm_apply _ v).symm`. Introduce `μ hμ j x h`. Use `(LinearEquiv.eq_symm_apply _).2 ?_` and prove the remaining obligations. Use `(read μ hμ j x h).trans ?_` and prove the remaining obligations.
+
+Simplify using `only [inv_one, one_mul]`. Conclude with `(congrFun (eq_of_heq (hj μ hμ j x)) _).symm`.
+-/
 theorem agree_of_data (Y : GlobalTheory.Mem.R3.Read (A3 := A3) R.toRealDat F.lv2 X0) {cf : CharFrame D} {nch : NChoice D}
     (tp : TupTied D cf nch) (hC : R.C = cf) (Xd : DivX D) (E : EigIdx D Xd) (labPi : E.Pi → A3.A.fam.base.Ix) (hb htup hg hf)
     (M : MtFam D) (rep : D.what₂.FT → NG.FinTyp D.host.E D.R.r) (hrep : ∀ σ, (rep σ).Iso (principalLevelFrame.rowRepR R.θ (Y.eFT σ)))
@@ -54,6 +63,9 @@ theorem agree_of_data (Y : GlobalTheory.Mem.R3.Read (A3 := A3) R.toRealDat F.lv2
     simp only [inv_one, one_mul]
     exact (congrFun (eq_of_heq (hj μ hμ j x)) _).symm
 
+/- English proof (translation)
+Substitute `h` using the available equality. Consider the cases of `hj`. Both sides reduce to the same expression.
+-/
 theorem heq_apply {Mt : D.what₂.Tup → ℕ → Hs} {c c' : ∀ i, CoefA (Vc D i)} (h : c = c')
     (j : ∀ μ (i : Fin D.R.m), (Mt μ ((i : ℕ) + 1)).T →ₗ[ℂ] (GA D (Vc D i) → (c i).W))
     (j' : ∀ μ (i : Fin D.R.m), (Mt μ ((i : ℕ) + 1)).T →ₗ[ℂ] (GA D (Vc D i) → (c' i).W)) (hj : HEq j j') (μ i x) :
@@ -75,6 +87,11 @@ def cpR (z : Dat a.st I hX T Wt) :
 
 def cpV (c : ∀ i, CoefA (Vc a.D i)) : ∀ i, CoefA (Vc b.D i) := fun i => (by with_unfolding_all exact ((coefA b (c ((by with_unfolding_all exact (i :))))) :))
 
+/- English proof (translation)
+Take `@⟨Xg, tr, core, al, alg_eq, R, cG, geo, pins, lev, idG, good, mu, l1, l2⟩` from `z`. Simplify using `only at h1 h2 h3 h4`. Substitute `h1 h2` using the available equality. Take `rfl : core = coreJ b z₀.core` from `eq_of_heq h3`. Establish `e : al = (by with_unfolding_all exact ((alg b z₀.alg) :))`.
+
+Use `Algebra.algebra_ext _ _ fun y => B.embLL.injective ?_` and prove the remaining obligations. Conclude with `(alg_eq y).trans ((by with_unfolding_all exact ((z₀.alg_eq ((by with_unfolding_all exact (y :)))).symm :)))`. Substitute `e` using the available equality. Take `rfl : R = cpR b z₀` from `eq_of_heq (h4.trans ((by with_unfolding_all exact ((HEq.refl (cpR b z₀)) :))))`. Conclude with `(by with_unfolding_all exact ((Eq.refl (cpV b z₀.R.cV)) :))`.
+-/
 theorem cV_copy (z₀ : Dat a.st I hX T Wt) (z : Dat b.st I hX T Wt) (h1 : z.Xg = z₀.Xg) (h2 : z.tr = z₀.tr)
     (h3 : HEq z.core (coreJ b z₀.core)) (h4 : HEq z.R (real3 b (iK := z₀.alg) z₀.R)) : z.R.cV = cpV b z₀.R.cV := by
   obtain @⟨Xg, tr, core, al, alg_eq, R, cG, geo, pins, lev, idG, good, mu, l1, l2⟩ := z
@@ -88,6 +105,9 @@ theorem cV_copy (z₀ : Dat a.st I hX T Wt) (z : Dat b.st I hX T Wt) (h1 : z.Xg 
   obtain rfl : R = cpR b z₀ := eq_of_heq (h4.trans ((by with_unfolding_all exact ((HEq.refl (cpR b z₀)) :))))
   exact (by with_unfolding_all exact ((Eq.refl (cpV b z₀.R.cV)) :))
 
+/- English proof (translation)
+Substitute `h h'` using the available equality. Conclude with `(by with_unfolding_all exact ((Eq.refl (cpV b' c₀)) :))`.
+-/
 theorem cV_two (b' : Late B C) {c₀ : ∀ i, CoefA (Vc a.D i)} {c : ∀ i, CoefA (Vc b.D i)} {c' : ∀ i, CoefA (Vc b'.D i)}
     (h : c = cpV b c₀) (h' : c' = cpV b' c₀) : c' = cpV b' c := by
   subst h h'
@@ -97,11 +117,25 @@ end Copy
 
 section Main
 
+/- English proof (translation)
+The claim follows from `h ▸ NG.IsoRep.refl _`.
+-/
 theorem iso_of_eq {Lf : Type} [Field Lf] [NumberField Lf] [IsCMField Lf] {n : ℕ} {π π' : NG.FinTyp Lf n} (h : π = π') : π.Iso π' :=
   h ▸ NG.IsoRep.refl _
 
 set_option maxHeartbeats 4000000 in
 
+/- English proof (translation)
+Introduce `hL _ _`. Use `StepW.of_all ?_` and prove the remaining obligations. Introduce `K B f T w _ _ _ P x l big L _ _ m hcp hco s r hpin hC Xd E labPi hb htup hg hf rep hrep`. Establish `c1` using `cV_copy (B := B) (C := w.C) (a := P.Z₀) (GlobalTheory.HeightCounting.Fin3.oL x L).Z P.z m.z m.Xg m.tr ((by with_unfolding_all exact (hcp.core :))) ((by with_unfolding_all exact (hcp.R :)))`. Establish `c0` using `cV_copy (B := B) (C := w.C) (a := P.Z₀) x.o.Z P.z x.m.z x.m.Xg x.m.tr ((by with_unfolding_all exact (x.copy.core :))) ((by with_unfolding_all exact (x.copy.R :)))`.
+
+Establish `ecV` using `cV_two (a := P.Z₀) x.o.Z (GlobalTheory.HeightCounting.Fin3.oL x L).Z c0 c1`. Establish `hJ : HEq m.t.lf.jMt x.m.t.lf.jMt` using `hco.jMt.trans x.coh.jMt.symm`. Establish `kJ : ∀ μ (i : Fin (w.st (GlobalTheory.HeightCounting.Fin3.oL x L).Z).toD7.R.m) y, HEq (m.t.lf.jMt μ i y) (x.m.t.lf.jMt ((by with_unfolding_all exact (μ :))) ((by with_unfolding_all exact (i :))) ((by with_unfolding_all exact (y :))))` using `fun μ i y => (by with_unfolding_all exact ((heq_apply (D := (w.st (GlobalTheory.HeightCounting.Fin3.oL x L).Z).toD7) (Mt := fun μ j => (P.q.p.sL μ j).A) ecV ((by with_unfolding_all exact (m.t.lf.jMt :))) ((by with_unfolding_all exact (x.m.t.lf.jMt :))) ((by with_unfolding_all exa …`. Establish `eR1 : m.t.rep = (by with_unfolding_all exact (P.q.t.rep :))` using `(by with_unfolding_all exact ((eq_of_heq hco.rep) :))`. Establish `eR0 : x.m.t.rep = (by with_unfolding_all exact (P.q.t.rep :))` using `(by with_unfolding_all exact ((eq_of_heq x.coh.rep) :))`.
+
+Establish `eRep : rep = (by with_unfolding_all exact ((repOf x.r.Y) :))` using `(by with_unfolding_all exact ((eq_of_heq hrep) :))`. Establish `hrep' : ∀ σ, (rep σ).Iso (principalLevelFrame.rowRepR m.z.R.θ (r.Y.eFT σ))`. Introduce `σ`. Establish `a1 : (rep σ).Iso ((by with_unfolding_all exact ((repOf x.r.Y σ) :)))` using `(by with_unfolding_all exact ((iso_of_eq (congrFun eRep σ)) :))`. Establish `a2` using `x.pin.rep ((by with_unfolding_all exact (σ :)))`.
+
+Establish `a3 : ((by with_unfolding_all exact ((x.m.t.rep σ) :)) : NG.FinTyp (withLoc L).host.E (withLoc L).R.r).Iso ((by with_unfolding_all exact ((m.t.rep σ) :)))` using `(by with_unfolding_all exact ((iso_of_eq ((congrFun eR0 σ).trans (congrFun eR1 σ).symm)) :))`. Establish `a4` using `NG.IsoRep.symm (principalLevelFrame.rowRepR m.z.R.θ (r.Y.eFT σ)).stable (hpin.rep σ)`. Conclude with `(by with_unfolding_all exact ((NG.IsoRep.trans a1 (NG.IsoRep.trans a2 (NG.IsoRep.trans a3 a4))) :))`. Set `DL` to `(w.st (GlobalTheory.HeightCounting.Fin3.oL x L).Z).toD7`. Set `jm : ∀ μ, Used0 DL μ → ∀ i : Fin DL.R.m, DL.what₂.Mt μ (i.1 + 1) → GA DL (Vc DL i) → (cpV (GlobalTheory.HeightCounting.Fin3.oL x L).Z x.m.z.R.cV i).W` to `fun μ h i y => (by with_unfolding_all exact ((x.r.Y.IL.jMt ((by with_unfolding_all exact (μ :))) ((by with_unfolding_all exact (h :))) ((by with_unfolding_all exact (i :))) ((by with_unfolding_all exact (y :)))).1 :))`.
+
+Establish `hj : ∀ μ h i y, HEq (r.Y.IL.jMt μ h i y).1 (jm μ h i y)` using `fun μ h i y => (by with_unfolding_all exact (((hpin.jMt μ h i y).trans ((kJ μ i y).trans (x.pin.jMt μ h i y).symm)) :))`. Conclude with `(by with_unfolding_all exact ((agree_of_data (D := DL) (R := m.z.R) (F := m.z.F) r.Y (cf := (by with_unfolding_all exact ((cfL L (cfOf x)) :))) (nch := (by with_unfolding_all exact ((chL L l.c.ch) :))) ((by with_unfolding_all exact ((tpL L l.c.tp) :))) ((by with_unfolding_all exa …`.
+-/
 theorem agree_third : ∀ hL : GlobalTheory.Published.LocalLanglandsGL, PrN → GlobalTheory.NRows.HypothesesX → AllSt fun _ _ _ T w P x => ∀ (l : LC hL x) (big : (Dof x).what₂.places.Pl → Finset ℂ) (L : LocAll (lay0 (Dof x))), GlobalTheory.CoefDuty.Built l.a.A l.mt.M l.c.ch l.c.tp.tup big L → SumRepresentations.hypO (withLoc L) → ∀ (m : Moved (GlobalTheory.HeightCounting.Fin3.oL x L)), m.Copy → m.Coh → ∀ (s : Side0 (GlobalTheory.HeightCounting.Fin3.oL x L)) (r : ReadPk m s), r.Pin → ∀ (hC : m.z.R.C = cfL L (cfOf x)) (Xd : DivX (withLoc L)) (E : EigIdx (withLoc L) Xd) (labPi : E.Pi → (famR (w.st (GlobalTheory.HeightCounting.Fin3.oL x L).Z) w.I P.hX (usedOf w.I T P.Wt) m.z.Xg m.z.tr).A.fam.base.Ix) hb htup hg hf (rep : (withLoc L).what₂.FT → NG.FinTyp (withLoc L).host.E (withLoc L).R.r), HEq rep (repOf x.r.Y) → Nonempty (GlobalTheory.NJoin.Agree (GlobalTheory.HeightCounting.Up.RealOfReading.realOfRead m.z.R.toRealDat m.z.F.lv2 r.Y (tpL L l.c.tp) hC Xd E labPi hb htup hg hf) (mtL L l.mt.M) rep) := by
   intro hL _ _
   refine StepW.of_all ?_

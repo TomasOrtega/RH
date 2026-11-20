@@ -12,6 +12,13 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 namespace GlobalTheory.QuadSignLocal
 
+/- English proof (translation)
+Use extensionality with `P`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨hP, hlo⟩`. Use `⟨⟨P, hP, Ideal.ne_bot_of_liesOver_of_ne_bot v.ne_bot P⟩, ?_, rfl⟩` and prove the remaining obligations. Use `ext1`.
+
+Simplify using `only [HeightOneSpectrum.under_asIdeal]`. Conclude with `(Ideal.LiesOver.over (P := P) (p := v.asIdeal)).symm`. Introduce and unpack `⟨u, hu, rfl⟩`. Use `⟨u.isPrime, ⟨?_⟩⟩` and prove the remaining obligations. Use `congrArg HeightOneSpectrum.asIdeal hu` as an intermediate fact.
+
+Simplify using `only [HeightOneSpectrum.under_asIdeal] at this`. Conclude with `this.symm`.
+-/
 theorem primesOver_eq_image (D : D7) (v : HeightOneSpectrum (𝓞 D.host.F)) :
     Ideal.primesOver v.asIdeal (𝓞 D.host.E) =
       HeightOneSpectrum.asIdeal '' {u : HeightOneSpectrum (𝓞 D.host.E) | u.under (𝓞 D.host.F) = v} := by
@@ -28,12 +35,24 @@ theorem primesOver_eq_image (D : D7) (v : HeightOneSpectrum (𝓞 D.host.F)) :
     simp only [HeightOneSpectrum.under_asIdeal] at this
     exact this.symm
 
+/- English proof (translation)
+Rewrite using `[primesOver_eq_image]`. Conclude with `Set.ncard_image_of_injective _ (fun a b h => HeightOneSpectrum.ext h)`.
+-/
 theorem ncard_primesOver (D : D7) (v : HeightOneSpectrum (𝓞 D.host.F)) :
     (Ideal.primesOver v.asIdeal (𝓞 D.host.E)).ncard =
       {u : HeightOneSpectrum (𝓞 D.host.E) | u.under (𝓞 D.host.F) = v}.ncard := by
   rw [primesOver_eq_image]
   exact Set.ncard_image_of_injective _ (fun a b h => HeightOneSpectrum.ext h)
 
+/- English proof (translation)
+Introduce `D v`. Prove the components needed by the constructor for the conclusion. Introduce `w w' hne h`. Establish `hs : {u : HeightOneSpectrum (𝓞 D.host.E) | u.under (𝓞 D.host.F) = v} = {w, w'}`. Use extensionality with `u`.
+
+Simplify using `only [Set.mem_setOf_eq, Set.mem_insert_iff, Set.mem_singleton_iff]`. Conclude with `h u`. Establish `h2 : (Ideal.primesOver v.asIdeal (𝓞 D.host.E)).ncard = 2`. Rewrite using `[ncard_primesOver, hs, Set.ncard_pair hne]`. Unfold `quadSign`.
+
+Rewrite using `[if_pos h2]`. Introduce `w h`. Establish `hs : {u : HeightOneSpectrum (𝓞 D.host.E) | u.under (𝓞 D.host.F) = v} = {w}`. Use extensionality with `u`. Simplify using `only [Set.mem_setOf_eq, Set.mem_singleton_iff]`.
+
+Conclude with `h u`. Establish `h1 : (Ideal.primesOver v.asIdeal (𝓞 D.host.E)).ncard = 1`. Rewrite using `[ncard_primesOver, hs, Set.ncard_singleton]`. Unfold `quadSign`. Rewrite using `[if_neg (by rw [h1]; decide)]`.
+-/
 theorem quadSign_split_inert : ∀ (D : D7) (v : HeightOneSpectrum (𝓞 D.host.F)), (∀ w w' : HeightOneSpectrum (𝓞 D.host.E), w ≠ w' → (∀ u : HeightOneSpectrum (𝓞 D.host.E), u.under (𝓞 D.host.F) = v ↔ u = w ∨ u = w') → quadSign D v = 1) ∧ (∀ w : HeightOneSpectrum (𝓞 D.host.E), (∀ u : HeightOneSpectrum (𝓞 D.host.E), u.under (𝓞 D.host.F) = v ↔ u = w) → quadSign D v = -1) := by
   intro D v
   constructor

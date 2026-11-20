@@ -7,6 +7,11 @@ open scoped TensorProduct ENNReal
 
 namespace GlobalTheory.LocalUnitaryTop
 
+/- English proof (translation)
+Use `⟨fun h => linearIndependent_smul b.linearIndependent h, fun h => ?_⟩` and prove the remaining obligations. Rewrite `h`, the goal using `[Fintype.linearIndependent_iff]`. Introduce `g hg i`. Establish `h0` using `h (fun p => b.repr (g p.2) p.1) (by`. Rewrite using `[← hg, Fintype.sum_prod_type_right]`.
+
+Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Use `conv_rhs => rw [← b.sum_repr (g j), Finset.sum_smul]`. Conclude with `Finset.sum_congr rfl fun k _ => (smul_assoc _ _ _).symm)`. Conclude with `b.ext_elem fun k => by simpa using h0 (k, i)`.
+-/
 theorem linearIndependent_iff_smul_basis {K S V ι α : Type} [Field K] [CommRing S] [Algebra K S]
     [AddCommGroup V] [Module K V] [Module S V] [IsScalarTower K S V] [Fintype ι] [Fintype α]
     (b : Module.Basis ι K S) (X : α → V) :
@@ -21,6 +26,13 @@ theorem linearIndependent_iff_smul_basis {K S V ι α : Type} [Field K] [CommRin
     exact Finset.sum_congr rfl fun k _ => (smul_assoc _ _ _).symm)
   exact b.ext_elem fun k => by simpa using h0 (k, i)
 
+/- English proof (translation)
+Set `e : (β → S) ≃ₗ[K] (β → ι → K)` to `LinearEquiv.piCongrRight fun _ => b.equivFun`. Establish `hb : Continuous b.equivFun` using `IsModuleTopology.continuous_of_linearMap b.equivFun.toLinearMap`. Establish `hc : Continuous fun (X : α → β → S) (p : ι × α) => e (b p.1 • X p.2)`. Use `continuous_pi fun p => continuous_pi fun j => ?_` and prove the remaining obligations. Establish `: Continuous fun X : α → β → S => b p.1 * X p.2 j` using `by fun_prop`.
+
+Conclude with `hb.comp this`. Establish `ho` using `(isOpen_setOfPred_linearIndependent (𝕜 := K) (E := β → ι → K) (ι := ι × α)).preimage hc`. Use `ho using 1` and compare the differences between its conclusion and the goal. Use extensionality with `X`. Rewrite using `[Set.mem_ofPred_eq, linearIndependent_iff_smul_basis b]`.
+
+Conclude with `(e.toLinearMap.linearIndependent_iff e.ker).symm`.
+-/
 theorem isOpen_linearIndependent {K S ι α β : Type} [NontriviallyNormedField K] [CompleteSpace K]
     [CommRing S] [Algebra K S] [TopologicalSpace S] [IsModuleTopology K S] [IsTopologicalRing S]
     [Fintype ι] [Fintype α] [Fintype β] (b : Module.Basis ι K S) :
@@ -38,6 +50,13 @@ theorem isOpen_linearIndependent {K S ι α β : Type} [NontriviallyNormedField 
   rw [Set.mem_ofPred_eq, linearIndependent_iff_smul_basis b]
   exact (e.toLinearMap.linearIndependent_iff e.ker).symm
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ _ n J _ v`. Use `GlobalTheory.AdelicUnitaryTop.properSpace_adicCompletion F v` as an intermediate fact. Establish `: IsModuleTopology (Fv F v) (Fv F v ⊗[F] E)` using `⟨rfl⟩`. Establish `hr : IsTopologicalRing (Fv F v ⊗[F] E)` using `IsModuleTopology.isTopologicalRing (Fv F v) _`. Take `⟨e⟩` from `GlobalTheory.AdelicUnitaryTop.nonempty_homeomorph (F := F) (E := E) (Fv F v)`.
+
+Take `⟨h1, h2, h3⟩` from `GlobalTheory.AdelicUnitaryTop.lcsc_HA (Fv F v) σ n J`. Use `⟨hr, e.isClosedEmbedding.locallyCompactSpace, e.isEmbedding.t2Space, e.secondCountableTopology, inferInstanceAs (IsTopologicalGroup (HR (Fv F v) σ J)), h1, h3, h2, fun a => ⟨?_, ?_⟩⟩` and prove the remaining obligations. Use `letI : NontriviallyNormedField (Fv F v) := Valued.toNontriviallyNormedField (Fv F v) (WithZero (Multiplicative ℤ))`. Conclude with `isOpen_linearIndependent (K := Fv F v) (Algebra.TensorProduct.basis (Fv F v) (Module.finBasis F E))`. Establish `hm : Continuous fun g : HA (Fv F v) σ J => HA.mat (Fv F v) σ J g` using `continuous_subtype_val`.
+
+Establish `hv : Continuous fun g : HA (Fv F v) σ J => ((HA.mat (Fv F v) σ J g : GL (Fin n) (Fv F v ⊗[F] E)) : Matrix (Fin n) (Fin n) (Fv F v ⊗[F] E))` using `Units.continuous_val.comp hm`. Use `continuous_pi fun b => ?_` and prove the remaining obligations. Conclude with `(hv.comp continuous_fst).matrix_mulVec ((continuous_apply b).comp continuous_snd)`.
+-/
 theorem top_facts : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E), IsCMExt F E σ → ∀ (n : ℕ) (J : Matrix (Fin n) (Fin n) E), IsHermND σ J → ∀ (v : HeightOneSpectrum (𝓞 F)), IsTopologicalRing (Fv F v ⊗[F] E) ∧ LocallyCompactSpace (Fv F v ⊗[F] E) ∧ T2Space (Fv F v ⊗[F] E) ∧ SecondCountableTopology (Fv F v ⊗[F] E) ∧ IsTopologicalGroup (HA (Fv F v) σ J) ∧ LocallyCompactSpace (HA (Fv F v) σ J) ∧ T2Space (HA (Fv F v) σ J) ∧ SecondCountableTopology (HA (Fv F v) σ J) ∧ ∀ a : ℕ, IsOpen {X : Fin a → Fin n → Fv F v ⊗[F] E | LinearIndependent (Fv F v ⊗[F] E) X} ∧ Continuous (fun p : HA (Fv F v) σ J × (Fin a → Fin n → Fv F v ⊗[F] E) => p.1 • p.2) := by
   intro F E _ _ _ _ _ σ _ n J _ v
   have := GlobalTheory.AdelicUnitaryTop.properSpace_adicCompletion F v

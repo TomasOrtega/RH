@@ -8,6 +8,9 @@ open scoped ComplexOrder
 open GlobalTheory.HodgeLocGeo
 
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.HodgeLocGeo.Pointwise.pointwise | exact GlobalTheory.HodgeLocGeo.Pointwise.pointwise | (intros; apply GlobalTheory.HodgeLocGeo.Pointwise.pointwise <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.weighted_sum_log_rootNorm_eq_neg_log_pairWeightNormSq : ∀ {T : Type} [Fintype T] {ι : Type} [Fintype ι] {N j : ℕ} (hpq : j + (N - j) = N)
     (Zm : T → (ι → ℂ) → Matrix (Fin j) (Fin (N - j)) ℂ) (GW : T → (ι → ℂ) → Matrix (Fin j) (Fin j) ℂ)
     (GΩ : T → (ι → ℂ) → Matrix (Fin (N - j)) (Fin (N - j)) ℂ) (cW cΩ : T → ℝ) (v : ι → ℂ),

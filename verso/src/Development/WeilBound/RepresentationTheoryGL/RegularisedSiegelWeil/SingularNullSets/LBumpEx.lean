@@ -19,6 +19,9 @@ namespace PositivityTheory.Rg.Rsw.L.LBumpEx
 
 variable {D : D7}
 
+/- English proof (translation)
+Establish `h` using `((GlobalTheory.StdUnn.RealComp.real_components D θ hθ).1 (e - 1)).1 (fun w => by rw [map_sub, map_one, he w, sub_self])`. Establish `h'` using `h τ`. Rewrite `h'` using `[map_sub, map_sub, map_one, map_one, sub_eq_zero]`. Conclude with `h'`.
+-/
 theorem theta_e (θ : InfFam D) (hθ : IsInfFam θ) {e : AE D} (he : ∀ w, compInf D.host.F D.host.E w e = 1)
     (τ : D.what₂.Tau) : θ τ (infPart D e) = 1 := by
   have h := ((GlobalTheory.StdUnn.RealComp.real_components D θ hθ).1 (e - 1)).1
@@ -30,6 +33,45 @@ theorem theta_e (θ : InfFam D) (hθ : IsInfFam θ) {e : AE D} (he : ∀ w, comp
 end PositivityTheory.Rg.Rsw.L.LBumpEx
 
 open PositivityTheory.Rg.Rsw.L.LBumpEx Classical in
+/- English proof (translation)
+Introduce `hI D θ hθ a b S e he C hC hCi`. Take `⟨hee, -⟩` from `(hI D S).2 e he`. Establish `: IsModuleTopology (Af D.host.F) (AfE D)` using `⟨rfl⟩`. Establish `: Module.Finite D.host.F D.host.E` using `Module.Finite.of_restrictScalars_finite ℚ _ _`. Establish `: IsTopologicalRing (AfE D)` using `IsModuleTopology.isTopologicalRing (Af D.host.F) _`.
+
+Establish `: T2Space (AF D.host.F)` using `GlobalTheory.AdelicUnitaryTop.t2Space_adeleRing_numberField D.host.F`. Take `⟨hom⟩` from `GlobalTheory.AdelicUnitaryTop.nonempty_homeomorph (F := D.host.F) (E := D.host.E) (AF D.host.F)`. Establish `: T2Space (AE D)` using `hom.isEmbedding.t2Space`. Use `set ef : AfE D := finPart D e with hef_def`. Establish `hef : ef * ef = ef` using `by rw [hef_def, ← map_mul, hee]`.
+
+Establish `hefI : ef ∈ intAE D` using `GlobalTheory.AdIdem.idempotent_mem_intAE D ef hef`. Establish `hS : ∀ v : Pl D, PositivityTheory.Rg.Rsw.L.LBumpEx.cf v ef = if v ∈ S then 1 else 0` using `fun v => by`. Rewrite using `[← cv_eq]`. Conclude with `he.2 v`. Establish `hθe` using `theta_e θ hθ he.1`.
+
+Take `⟨N, hN, hNC⟩` from `exists_nat_mul_mem (D := D) (Q := ⋃ i, ⋃ j, (fun x : Mx D a b => ef * finPart D (x i j)) '' C) (isCompact_iUnion fun i => isCompact_iUnion fun j => hC.image (continuous_const.mul ((GlobalTheory.Member.continuous_finPart D).comp (continuous_id.matrix_elem i j))))`. Set `W` to `U S ef N 1 b`. Establish `hWo : IsOpen (W : Set (Matrix (Fin 1) (Fin b) (AfE D)))` using `U_isOpen hefI N 1 b`. Establish `hWc : IsCompact (W : Set (Matrix (Fin 1) (Fin b) (AfE D)))` using `U_isCompact hefI hS hN 1 b`. Set `g : Matrix (Fin 1) (Fin b) (AfE D) → ℂ` to `fun w => if (QuotientAddGroup.mk w : _ ⧸ W) = 0 then 1 else 0`.
+
+Establish `hg : g ∈ GlobalTheory.WeilM.SB (Fin 1 → Fin b → AfE D)` using `GlobalTheory.SchwartzBruhatTensor.coset_mem_SB W hWo hWc 0`. Establish `hg1 : ∀ w, g w = if w ∈ W then 1 else 0` using `fun w => by`. Simplify using `only [g, QuotientAddGroup.eq_zero_iff]`. Set `rc : Mx D 1 b → (D.what₂.Tau → Fin 1 → Fin b → ℂ)` to `fun y τ i j => compAt θ τ y i j`. Establish `hrc : Continuous rc` using `continuous_pi fun τ => GlobalTheory.RealWeil.continuous_compAt hθ τ 1 b`.
+
+Establish `hK : IsCompact (⋃ i, (fun x : Mx D a b => rc (x.submatrix (fun _ : Fin 1 => i) id)) '' C)` using `isCompact_iUnion fun i => hC.image (hrc.comp (continuous_id.matrix_submatrix _ _))`. Take `⟨R, hR⟩` from `hK.isBounded.subset_closedBall 0`. Set `bump : ContDiffBump (0 : D.what₂.Tau → Fin 1 → Fin b → ℂ)` to `⟨max R 1, max R 1 + 1, lt_max_of_lt_right one_pos, by linarith⟩`. Establish `hc : HasCompactSupport fun y => ((bump y : ℝ) : ℂ)` using `bump.hasCompactSupport.comp_left (g := fun t : ℝ => (t : ℂ)) (by simp)`. Set `f : SchwartzMap (D.what₂.Tau → Fin 1 → Fin b → ℂ) ℂ` to `hc.toSchwartzMap (Complex.ofRealCLM.contDiff.comp bump.contDiff)`.
+
+Establish `hf : ∀ y, f y = ((bump y : ℝ) : ℂ)` using `fun y => rfl`. Set `η₀ : Mx D 1 b → ℂ` to `fun y => f (fun τ i j => compAt θ τ y i j) * g (fun i j => finPart D (y i j))`. Establish `hη : ∀ y, η₀ y = ((bump (rc y) : ℝ) : ℂ) * (if (Matrix.of fun i j => finPart D (y i j)) ∈ W then 1 else 0)` using `fun y => by show f _ * g _ = _`. Rewrite using `[hf]`. Use `congr 1`.
+
+Conclude with `hg1 _`. Use `⟨fun _ => η₀, fun i => ⟨Submodule.subset_span ⟨f, g, hg, rfl⟩, ?_, ?_, ?_, ?_⟩⟩` and prove the remaining obligations. Take `⟨Ka, hKa, hKaC⟩` from `GlobalTheory.StabCompact.exists_compact_adele D θ hθ (max R 1 + 1) (⋃ i, ⋃ j, (fun w : Matrix (Fin 1) (Fin b) (AfE D) => w i j) '' (W : Set _)) (isCompact_iUnion fun i => isCompact_iUnion fun j => (hWc.image ((continuous_apply j).comp (continuous_apply i)) : IsCompact ((fun w : M …`. Establish `hKc : IsCompact {y : Mx D 1 b | ∀ i j, y i j ∈ Ka}` using `isCompact_pi_infinite fun _ => isCompact_pi_infinite fun _ => hKa`. Use `HasCompactSupport.intro' hKc hKc.isClosed fun y hy => ?_` and prove the remaining obligations.
+
+Assume the negation of the conclusion as `hne`. Express the relevant statement in the definitionally equal form `¬ η₀ y = 0 at hne`. Apply `hy` to reduce the goal to its premises. Introduce `i j`. Rewrite `hne` using `[hη]`.
+
+Establish `h1` using `left_ne_zero_of_mul hne`. Establish `h2` using `right_ne_zero_of_mul hne`. Establish `hw : (Matrix.of fun i j => finPart D (y i j)) ∈ W`. Assume the negation of the conclusion as `h`. Conclude with `h2 (if_neg h)`.
+
+Use `hKaC _ (Set.mem_iUnion.2 ⟨i, Set.mem_iUnion.2 ⟨j, _, hw, rfl⟩⟩) fun ρ => ?_` and prove the remaining obligations. Establish `hb : bump (rc y) ≠ 0` using `fun h => h1 (by rw [h, Complex.ofReal_zero])`. Establish `hmem : rc y ∈ Metric.ball (0 : D.what₂.Tau → Fin 1 → Fin b → ℂ) (max R 1 + 1)`. Rewrite using `[← bump.support_eq]`. Conclude with `hb`.
+
+Rewrite `hmem` using `[mem_ball_zero_iff]`. Establish `h3 : ‖rc y ρ i j‖ ≤ ‖rc y‖` using `((norm_le_pi_norm (rc y ρ i) j).trans (norm_le_pi_norm (rc y ρ) i)).trans (norm_le_pi_norm (rc y) ρ)`. Conclude with `h3.trans hmem.le`. Introduce `y`. Use `show η₀ y = if IntOff S y then η₀ (e • y) else 0`.
+
+Distinguish the cases in `hy : IntOff S y`. Rewrite using `[if_pos hy, hη, hη]`. Establish `hr : rc (e • y) = rc y`. Use function extensionality and compare the values at `τ i j`. Use `show θ τ (infPart D ((e • y) i j)) = θ τ (infPart D (y i j))`.
+
+Rewrite using `[Matrix.smul_apply, smul_eq_mul, map_mul, map_mul, hθe τ, one_mul]`. Establish `hw : (Matrix.of fun i j => finPart D ((e • y) i j)) = Matrix.of fun i j => ef * finPart D (y i j)`. Use function extensionality and compare the values at `i j`. Rewrite using `[Matrix.of_apply, Matrix.of_apply, Matrix.smul_apply, smul_eq_mul, map_mul]`. Establish `hiff` using `mem_U_iff (N := N) hef hS (w := Matrix.of fun i j => finPart D (y i j)) (fun v hv i j => by rw [Matrix.of_apply, ← cv_eq]; exact hy v hv i j)`.
+
+Rewrite using `[hr, hw]`. Simplify using `only [Matrix.of_apply] at hiff`. Distinguish the cases in `hm : (Matrix.of fun i j => finPart D (y i j)) ∈ W`. Rewrite using `[if_pos hm, if_pos (hiff.1 hm)]`. Rewrite using `[if_neg hm, if_neg (fun h => hm (hiff.2 h))]`.
+
+Rewrite using `[if_neg hy, hη, if_neg, mul_zero]`. Introduce `hm`. Conclude with `hy fun v hv i j => by rw [cv_eq]; exact hm.1 v hv i j`. Introduce `y`. Use `show 0 ≤ (η₀ y).re ∧ (η₀ y).re ≤ 1 ∧ (η₀ y).im = 0`.
+
+Rewrite using `[hη]`. Use `split_ifs`. Rewrite using `[mul_one, Complex.ofReal_re, Complex.ofReal_im]`. Conclude with `⟨bump.nonneg, bump.le_one, rfl⟩`. Simplify using the standard rewrite rules.
+
+Introduce `x hx`. Use `show η₀ (x.submatrix (fun _ => i) id) = 1`. Rewrite using `[hη, if_pos, bump.one_of_mem_closedBall]`. Simplify using the standard rewrite rules. Conclude with `Metric.closedBall_subset_closedBall (le_max_left _ _) (hR (Set.mem_iUnion.2 ⟨i, x, hx, rfl⟩))`.
+
+Use `⟨fun v hv i' j => ?_, fun i' j => ?_⟩` and prove the remaining obligations. Rewrite using `[Matrix.of_apply, ← cv_eq]`. Conclude with `hCi x hx v hv i j`. Conclude with `hNC _ (Set.mem_iUnion.2 ⟨i, Set.mem_iUnion.2 ⟨j, x, hx, rfl⟩⟩)`.
+-/
 theorem PositivityTheory.Rg.Rsw.L.bumpEx : IdemEx → BumpEx := by
   intro hI D θ hθ a b S e he C hC hCi
   obtain ⟨hee, -⟩ := (hI D S).2 e he

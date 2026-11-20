@@ -8,6 +8,23 @@ import Development.AbelianVarietyTheory.Proofs.DivisorProofs.LevOpMemFixed
 open UpperTheory.V.Z.Tf.GlobalTraceComparison UpperTheory.V.Z.Tf.GlobalTraceComparison.Pi UpperTheory.Zero.ConvolutionTheory.EB PositivityTheory.Rg.BcB.Desc
 open GlobalTheory.BCT GlobalTheory.LFun GlobalTheory.PRep
 
+/- English proof (translation)
+Establish `hp : ∀ z : G × P, z = (z.1, 1)` using `fun z => Prod.ext rfl (Subsingleton.elim _ _)`. Use `set L : Subgroup (G × P) := N.comap (MonoidHom.fst G P) with hL`. Establish `hmap : (K.prod K').map (MonoidHom.fst G P) = K`. Use extensionality with `x`. Prove the components needed by the constructor for the conclusion.
+
+Introduce and unpack `⟨z, hz, rfl⟩`. Conclude with `hz.1`. Introduce `hx`. Conclude with `⟨(x, 1), ⟨hx, K'.one_mem⟩, rfl⟩`. Establish `hrel : L.relIndex (K.prod K') = N.relIndex K`.
+
+Rewrite using `[hL, Subgroup.relIndex_comap, hmap]`. Establish `hLK : L ≤ K.prod K'` using `fun z hz => by`. Rewrite using `[hp z]`. Conclude with `⟨hNK hz, K'.one_mem⟩`. Establish `hLu : L ≤ rStab u` using `fun k hk x => by`.
+
+Establish `h1 : x * k = (x.1 * k.1, 1)` using `Prod.ext rfl (Subsingleton.elim _ _)`. Rewrite using `[h1, hu k.1 hk x.1, ← hp x]`. Rewrite using `[GlobalTheory.T.haarIntegralNormalizedOpenCompact_eq_finite_level_sum _ _ L u hLK hLu (by rwa [hrel]), hrel]`. Use `congr 1`. Establish `hval : ∀ q : G ⧸ N, u (Quotient.out (QuotientGroup.mk (q.out, (1 : P)) : (G × P) ⧸ L)) = u (q.out, 1)`.
+
+Introduce `q`. Establish `hm : ((q.out, (1 : P)))⁻¹ * Quotient.out (QuotientGroup.mk (q.out, (1 : P)) : (G × P) ⧸ L) ∈ L` using `QuotientGroup.eq.mp (QuotientGroup.out_eq' _).symm`. Take `⟨k, hk⟩ : ∃ k : G × P, k ∈ L ∧ Quotient.out (QuotientGroup.mk (q.out, (1 : P)) : (G × P) ⧸ L) = (q.out, 1) * k` from `⟨_, hm, (mul_inv_cancel_left _ _).symm⟩`. Rewrite using `[hk.2]`. Conclude with `hLu hk.1 _`.
+
+Establish `hbij : Function.Bijective (fun q : G ⧸ N => (QuotientGroup.mk (q.out, (1 : P)) : (G × P) ⧸ L))`. Prove the components needed by the constructor for the conclusion. Introduce `a b hab`. Establish `h` using `QuotientGroup.eq.mp hab`. Establish `h2 : (a.out)⁻¹ * b.out ∈ N` using `by simpa [hL] using h`.
+
+Rewrite using `[← QuotientGroup.out_eq' a, ← QuotientGroup.out_eq' b]`. Conclude with `QuotientGroup.eq.mpr h2`. Introduce `c`. Proceed by induction on `c using QuotientGroup.induction_on with`. Consider the case `H z`.
+
+Use `⟨QuotientGroup.mk z.1, QuotientGroup.eq.mpr ?_⟩` and prove the remaining obligations. Establish `h3 : ((QuotientGroup.mk z.1 : G ⧸ N).out)⁻¹ * z.1 ∈ N` using `QuotientGroup.eq.mp (QuotientGroup.out_eq' _)`. Simplify `h3` using `[hL]`. Rewrite using `[← finsum_comp _ hbij]`. Conclude with `finsum_congr hval`.
+-/
 private theorem hint_fst {G P : Type} [Group G] [Group P] [Subsingleton P] (K N : Subgroup G) (K' : Subgroup P)
     (u : G × P → ℂ) (hNK : N ≤ K) (hu : ∀ k ∈ N, ∀ x, u (x * k, 1) = u (x, 1)) (hi : N.relIndex K ≠ 0) :
     hint (K.prod K') u = ((N.relIndex K : ℕ) : ℂ)⁻¹ * ∑ᶠ q : G ⧸ N, u (q.out, 1) := by
@@ -55,6 +72,27 @@ private theorem hint_fst {G P : Type} [Group G] [Group P] [Subsingleton P] (K N 
   rw [← finsum_comp _ hbij]
   exact finsum_congr hval
 
+/- English proof (translation)
+Use `set i : ℂ := ((N.relIndex K : ℕ) : ℂ) with hidef`. Establish `hcvH : IsHecke N (UpperTheory.V.Z.Tf.GlobalTraceComparison.Asm.cv N f₁ f₂)` using `UpperTheory.V.Z.Tf.GlobalTraceComparison.Asm.cvHecke _ N hNo hNc f₁ f₂ h₁ h₂`. Establish `hFH : IsHecke N F`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Rewrite using `[hFeq]`.
+
+Conclude with `hcvH.1.mul_left (f := fun _ => i⁻¹)`. Introduce `k hk x`. Rewrite using `[hFeq]`. Simplify using `only`. Rewrite using `[(hcvH.2 k hk x).1, (hcvH.2 k hk x).2]`.
+
+Conclude with `⟨rfl, rfl⟩`. Establish `hNK₁ : N ≤ K ⊓ rStab F ⊓ rStab fun y => F y⁻¹`. Use `le_inf (le_inf hNK ?_) ?_` and prove the remaining obligations. Conclude with `fun k hk x => (hFH.2 k hk x).2`. Introduce `k hk x`.
+
+Establish `e : (x * k)⁻¹ = k⁻¹ * x⁻¹` using `by group`. Use `show F (x * k)⁻¹ = F x⁻¹`. Rewrite using `[e]`. Conclude with `(hFH.2 k⁻¹ (N.inv_mem hk) _).1`. Establish `hK₁H : IsHecke (K ⊓ rStab F ⊓ rStab fun y => F y⁻¹) F`.
+
+Use `⟨hFH.1, fun k hk x => ⟨?_, hk.1.2 x⟩⟩` and prove the remaining obligations. Establish `hk' : k⁻¹ ∈ rStab fun y => F y⁻¹` using `(rStab _).inv_mem hk.2`. Use `hk' x⁻¹` as an intermediate fact. Simplify using `using this`. Establish `hlev` using `hTr G K hKo hKc V ρ F _ N hNo hNK₁ (inf_le_left.trans inf_le_left) hK₁H hfd`.
+
+Establish `hop : levOp ρ K N F LinearMap.id = i⁻¹ • i⁻¹ • levOp ρ N N (UpperTheory.V.Z.Tf.GlobalTraceComparison.Asm.cv N f₁ f₂) LinearMap.id`. Rewrite using `[hFeq]`. Unfold `levOp`. Rewrite using `[Subgroup.relIndex_self, Nat.cast_one, inv_one, one_smul]`. Use `congr 1`.
+
+Rewrite using `[smul_finsum]`. Conclude with `finsum_congr fun q => by rw [mul_smul]`. Establish `hmul : ∀ v ∈ fixed ρ N, levOp ρ N N (UpperTheory.V.Z.Tf.GlobalTraceComparison.Asm.cv N f₁ f₂) LinearMap.id v = (Lv ρ N f₁ * Lv ρ N f₂) v` using `fun v hv => (hCv G N hNo hNc V ρ f₁ f₂ h₁ h₂ v hv).1`. Establish `hpres : ∀ v ∈ fixed ρ N, (Lv ρ N f₁ * Lv ρ N f₂) v ∈ fixed ρ N` using `fun v hv => (hCv G N hNo hNc V ρ f₂ f₁ h₂ h₁ _ (hCv G N hNo hNc V ρ f₁ f₂ h₁ h₂ v hv).2.1).2.1`. Establish `hstab : ∀ v ∈ fixed ρ N, levOp ρ K N F LinearMap.id v ∈ fixed ρ N` using `fun v hv => by`.
+
+Rewrite using `[hop]`. Simplify using `only [LinearMap.smul_apply]`. Rewrite using `[hmul v hv]`. Conclude with `Submodule.smul_mem _ _ (Submodule.smul_mem _ _ (hpres v hv))`. Establish `hres : (levOp ρ K N F LinearMap.id).restrict hstab = (i⁻¹ * i⁻¹) • (Lv ρ N f₁ * Lv ρ N f₂).restrict hpres`.
+
+Use extensionality with `v`. Simplify using `only [LinearMap.restrict_coe_apply, LinearMap.smul_apply, Submodule.coe_smul]`. Rewrite using `[hop]`. Simplify using `only [LinearMap.smul_apply]`. Rewrite using `[hmul v v.2, mul_smul]`.
+
+Unfold `trc`. Rewrite using `[← hlev]`. Unfold `twTr trOn`. Rewrite using `[dif_pos hstab, dif_pos hpres, hres, map_smul, smul_eq_mul]`. Clear the denominators using the available nonvanishing facts.
+-/
 private theorem tr_core (hTr : UpperTheory.V.Z.Tf.GlobalTraceComparison.Asm.TrLevel) (hCv : UpperTheory.V.Z.Tf.GlobalTraceComparison.Asm.CvOp)
     {G V : Type} [Group G] [TopologicalSpace G] [IsTopologicalGroup G] [AddCommGroup V] [Module ℂ V]
     (ρ : Representation ℂ G V) (K N : Subgroup G) (hKo : IsOpen (K : Set G)) (hKc : IsCompact (K : Set G))
@@ -117,6 +155,21 @@ private theorem tr_core (hTr : UpperTheory.V.Z.Tf.GlobalTraceComparison.Asm.TrLe
   rw [dif_pos hstab, dif_pos hpres, hres, map_smul, smul_eq_mul]
   field_simp
 
+/- English proof (translation)
+Introduce `hTr hAdm hCv E _ _ _ n w hw τ N hNo hNK`. Take `⟨-, -, hKo, hKc, -⟩` from `UpperTheory.V.Z.Tf.GlobalTraceComparison.Asm.unitHecke E n 0 0 w`. Establish `hNc : IsCompact (N : Set (GLw n w))` using `hKc.of_isClosed_subset (Subgroup.isClosed_of_isOpen N hNo) hNK`. Use `haveI : Finite ((KGL w n : Subgroup (GLw n w)) ⧸ N.subgroupOf (KGL w n)) := GlobalTheory.TwTrLevel.finite_quot (KGL w n) (KGL w n) N hKc hKo hNo le_rfl`. Establish `hi : N.relIndex (KGL w n) ≠ 0` using `Subgroup.index_ne_zero_of_finite`.
+
+Establish `hiC : ((N.relIndex (KGL w n) : ℕ) : ℂ) ≠ 0` using `Nat.cast_ne_zero.mpr hi`. Introduce `φ₁ φ₂ hb`. Use `tr_core hTr hCv τ.ρ (KGL w n) N hKo hKc hNo hNc hNK hiC (hAdm E n w τ N hNo) _ _ _ (hb false) (hb true) ?_` and prove the remaining obligations. Use function extensionality and compare the values at `g`. Establish `h₁` using `hb false`.
+
+Establish `h₂` using `hb true`. Establish `hr : ∀ k ∈ N, ∀ x : GLw n w, two φ₁ φ₂ w false (x * k) * two φ₁ φ₂ w true ((x * k)⁻¹ * g) = two φ₁ φ₂ w false x * two φ₁ φ₂ w true (x⁻¹ * g)`. Introduce `k hk x`. Establish `e : (x * k)⁻¹ * g = k⁻¹ * (x⁻¹ * g)` using `by group`. Rewrite using `[e, (h₁.2 k hk x).2, (h₂.2 k⁻¹ (N.inv_mem hk) _).1]`.
+
+Establish `hcv : UpperTheory.V.Z.Tf.GlobalTraceComparison.Asm.cv N (two φ₁ φ₂ w false) (two φ₁ φ₂ w true) g = ∑ᶠ q : GLw n w ⧸ N, two φ₁ φ₂ w false q.out * two φ₁ φ₂ w true (q.out⁻¹ * g)`. Unfold `UpperTheory.V.Z.Tf.GlobalTraceComparison.Asm.cv`. Rewrite using `[GlobalTheory.T.haarIntegralNormalizedOpenCompact_eq_finite_level_sum _ N N _ le_rfl (fun k hk x => hr k hk x) (by simp)]`. Simplify using the standard rewrite rules. Establish `hpr : ∀ x : GLw n w, ((x, 1) : GLw n w × GLw 0 w)⁻¹ * (g, 1) = (x⁻¹ * g, 1)` using `fun x => Prod.ext rfl (Subsingleton.elim _ _)`.
+
+Rewrite using `[hcv]`. Unfold `PositivityTheory.Rg.BcB.G8.seen`. Rewrite using `[if_pos hw]`. Rewrite using `[hint_fst (KGL w n) N (KGL w 0) _ hNK ?_ hi]`. Use `congr 1`.
+
+Use `finsum_congr fun q => ?_` and prove the remaining obligations. Rewrite using `[hpr]`. Both sides reduce to the same expression. Introduce `k hk x`. Rewrite using `[hpr, hpr]`.
+
+Conclude with `hr k hk x`.
+-/
 theorem UpperTheory.V.Z.Mult.Pi.seenTrA :
     UpperTheory.V.Z.Tf.GlobalTraceComparison.Asm.TrLevel → UpperTheory.V.Z.Tf.GlobalTraceComparison.Asm.admitted → UpperTheory.V.Z.Tf.GlobalTraceComparison.Asm.CvOp → UpperTheory.V.Z.Mult.Pi.SeenTrA := by
   intro hTr hAdm hCv E _ _ _ n w hw τ N hNo hNK

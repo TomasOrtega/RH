@@ -16,6 +16,11 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 namespace GlobalTheory.Mem.R3.Rw.OmCoef
 
+/- English proof (translation)
+Substitute `hW` using the available equality. Consider the cases of `hn`. Consider the cases of `hi`. Consider the cases of `h1`. Rewrite using `[mul_smul]`.
+
+Conclude with `eq_of_heq h2`.
+-/
 theorem smul_eq_of_heq {W W' : Type} [nW : NormedAddCommGroup W] [iW : InnerProductSpace ℂ W] [nW' : NormedAddCommGroup W']
     [iW' : InnerProductSpace ℂ W'] (hW : W' = W) (hn : HEq nW' nW) (hi : HEq iW' iW) {x' : W'} {y : W} {μ a b : ℂ}
     (h1 : HEq x' (μ • y)) (h2 : HEq (a • x') (b • y)) : (a * μ) • y = b • y := by
@@ -26,6 +31,9 @@ theorem smul_eq_of_heq {W W' : Type} [nW : NormedAddCommGroup W] [iW : InnerProd
   rw [mul_smul]
   exact eq_of_heq h2
 
+/- English proof (translation)
+Substitute `hW` using the available equality. Consider the cases of `hn`. Consider the cases of `hi`. Consider the cases of `h1`. Rewrite using `[mul_smul]`.
+-/
 theorem heq_smul {W W' : Type} [nW : NormedAddCommGroup W] [iW : InnerProductSpace ℂ W] [nW' : NormedAddCommGroup W']
     [iW' : InnerProductSpace ℂ W'] (hW : W' = W) (hn : HEq nW' nW) (hi : HEq iW' iW) {x' : W'} {y : W} {μ : ℂ}
     (h1 : HEq x' (μ • y)) (a : ℂ) : HEq (a • x') ((a * μ) • y) := by
@@ -39,6 +47,21 @@ end GlobalTheory.Mem.R3.Rw.OmCoef
 
 set_option maxHeartbeats 4000000 in
 
+/- English proof (translation)
+Introduce `B B' f f' T T' w w' Z Z' hX hX' Wt Wt' z hE hf hpx hstd Ks _ _ _ Xg tr R' cG' hP hL hB hR i i' hii c0L hc`. Take `⟨g'', c0R'', c0L'', hT''⟩` from `hP.char.base.fam.tie`. Establish `hc'' : GlobalTheory.Mem.R3.Rw.OmExt.CoefFam R'.toRealDat c0L''` using `⟨g'', c0R'', hT''⟩`. Distinguish the cases in `h0 : ∀ x : (famR (w.st Z) w.I hX (usedOf w.I T Wt) z.Xg z.tr).A.fam.amb.FL i (famR (w.st Z) w.I hX (usedOf w.I T Wt) z.Xg z.tr).A.μ0, x = 0`. Conclude with `Or.inl h0`.
+
+Use `right`. Use `push_neg at h0`. Take `⟨x, hx⟩` from `h0`. Take `⟨μ, hμ⟩` from `GlobalTheory.T.coefficientMap_enlargedBase_eq_complexMultiple z hE hf hpx hstd R' cG' hP hL hB hR i i' hii c0L hc c0L'' hc''`. Take `⟨v, v', u, u', n, n', hn, hun, hn', hun', hvv, hv0, hrel⟩` from `GlobalTheory.T.exists_coefficientMaps_agree_rootOfUnity_enlarged z hE hf hpx hstd R' cG' hP hL hB hR i i' hii c0L hc c0L'' hc'' x hx`.
+
+Take `⟨-, -, -, -, -, -, -, -, -, -, -, -, hcv, -⟩` from `hR`. Take `⟨hW, -, hnW, hiW, -⟩` from `hcv i i' hii`. Establish `key` using `GlobalTheory.Mem.R3.Rw.OmCoef.smul_eq_of_heq (eq_of_heq hW) hnW hiW (hμ v v' hvv) hrel`. Establish `hμe : (w'.st Z').toD7.what₂.embLL u' * μ = (w.st Z).toD7.what₂.embLL u` using `smul_left_injective ℂ hv0 key`. Establish `hu0 : (w.st Z).toD7.what₂.embLL u ≠ 0` using `(map_ne_zero _).2 fun h => by`.
+
+Rewrite `hun` using `[h, zero_pow hn]`. Conclude with `zero_ne_one hun`. Take `⟨b, hb⟩ : (w.st Z).toD7.what₂.embLL u ∈ Set.range (w'.st Z').toD7.what₂.embLL` from `hE.2.2.2 ⟨u, rfl⟩`. Establish `hb1 : b ^ n = 1` using `(w'.st Z').toD7.what₂.embLL.injective (by rw [map_pow, hb, ← map_pow, hun, map_one, map_one])`. Establish `ha : (u' * b⁻¹) ^ (n * n') = 1`.
+
+Establish `e1 : u' ^ (n * n') = 1` using `by rw [mul_comm, pow_mul, hun', one_pow]`. Establish `e2 : b ^ (n * n') = 1` using `by rw [pow_mul, hb1, one_pow]`. Rewrite using `[mul_pow, inv_pow, e1, e2, inv_one, mul_one]`. Use `⟨Function.update c0L'' i' ((w'.st Z').toD7.what₂.embLL (u' * b⁻¹) • c0L'' i'), GlobalTheory.T.definiteFamilyCoefficientMaps_mul_rootOfUnity R'.toRealDat c0L'' hc'' i' (u' * b⁻¹) (n * n') (mul_ne_zero hn hn') ha, fun v1 v1' h => ?_⟩` and prove the remaining obligations. Establish `eu : Function.update c0L'' i' ((w'.st Z').toD7.what₂.embLL (u' * b⁻¹) • c0L'' i') i' = (w'.st Z').toD7.what₂.embLL (u' * b⁻¹) • c0L'' i'` using `Function.update_self _ _ _`.
+
+Use `(heq_of_eq ((congrArg (fun g => g v1') eu).trans (LinearMap.smul_apply _ _ _))).trans ?_` and prove the remaining obligations. Use `(GlobalTheory.Mem.R3.Rw.OmCoef.heq_smul (eq_of_heq hW) hnW hiW (hμ v1 v1' h) _).trans (heq_of_eq ?_)` and prove the remaining obligations. Establish `e1 : (w'.st Z').toD7.what₂.embLL (u' * b⁻¹) * μ = 1`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[map_mul, map_inv₀, hb]`.
+
+Expand and normalize the polynomial expressions, which then agree. Use `_ = 1 := by rw [hμe, mul_inv_cancel₀ hu0]`. Rewrite using `[e1, one_smul]`.
+-/
 theorem GlobalTheory.Mem.R3.Rw.OmCoef.exists_coefFam_ext : ∀ {B B' : Base} {f : Fr B.toPre} {f' : Fr B'.toPre} {T : TwDat B} {T' : TwDat B'} {w : ColW B f T} {w' : ColW B' f' T'}
   {Z : w.Lt} {Z' : w'.Lt} {hX : B.fields.Ok} {hX' : B'.fields.Ok} {Wt : Set B.places.Pl} {Wt' : Set B'.places.Pl}
   (z : Dat (w.st Z) w.I hX T Wt), Enl0 B B' → HEq f' f → HEq w'.px w.px → z.Std →

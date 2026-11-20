@@ -16,11 +16,19 @@ variable {X X' Y S : Scheme.{0}}
 def Agree (φ : X' ⟶ X) (f : X' ⟶ Y) {W : Scheme.{0}} (i : W ⟶ X) (g : W ⟶ Y) : Prop :=
   ∀ (T : Scheme.{0}) (u : T ⟶ W) (u' : T ⟶ X'), u ≫ i = u' ≫ φ → u ≫ g = u' ≫ f
 
+/- English proof (translation)
+Introduce `T u u' e` and use `by rw [← Category.assoc] exact h T _ _ (by rw [Category.assoc, e])`.
+-/
 theorem Agree.comp {φ : X' ⟶ X} {f : X' ⟶ Y} {W W' : Scheme.{0}} {i : W ⟶ X} {g : W ⟶ Y}
     (h : Agree φ f i g) (c : W' ⟶ W) : Agree φ f (c ≫ i) (c ≫ g) := fun T u u' e => by
   rw [← Category.assoc]
   exact h T _ _ (by rw [Category.assoc, e])
 
+/- English proof (translation)
+Establish `key : pullback.fst i φ ≫ g = pullback.snd i φ ≫ f`. Establish `: IsSchemeTheoreticallyDominant (pullback.snd c (pullback.fst i φ))` using `.of_isPullback (IsPullback.of_hasPullback c (pullback.fst i φ))`. Use `ExtUnique.hom_ext_of_dominant sY ?_ (pullback.snd c (pullback.fst i φ)) ?_` and prove the remaining obligations. Rewrite using `[Category.assoc, Category.assoc, hg, hf, pullback.condition_assoc]`. Rewrite using `[← pullback.condition_assoc, ← Category.assoc (pullback.snd _ _)]`.
+
+Use `h _ _ _ ?_` and prove the remaining obligations. Rewrite using `[pullback.condition_assoc, Category.assoc, pullback.condition]`. Introduce `T u u' e`. Rewrite using `[← pullback.lift_fst u u' e, Category.assoc, key, pullback.lift_snd_assoc]`.
+-/
 theorem Agree.of_dominant {φ : X' ⟶ X} [Flat φ] {f : X' ⟶ Y} (sX : X ⟶ S) (sY : Y ⟶ S) [IsSeparated sY]
     (hf : f ≫ sY = φ ≫ sX) {W W' : Scheme.{0}} {i : W ⟶ X} {g : W ⟶ Y} (hg : g ≫ sY = i ≫ sX)
     (c : W' ⟶ W) [QuasiCompact c] [IsSchemeTheoreticallyDominant c] (h : Agree φ f (c ≫ i) (c ≫ g)) :
@@ -36,6 +44,13 @@ theorem Agree.of_dominant {φ : X' ⟶ X} [Flat φ] {f : X' ⟶ Y} (sX : X ⟶ S
   intro T u u' e
   rw [← pullback.lift_fst u u' e, Category.assoc, key, pullback.lift_snd_assoc]
 
+/- English proof (translation)
+Take `⟨U, hxU, g₁, h₁, h₂⟩` from `spread_out_of_isGermInjective' sX sY g hg`. Take `⟨V, hxV, hV, hVU, hinj⟩` from `X.exists_le_and_germ_injective x U hxU`. Establish `hr : Set.range hV.fromSpec ⊆ Set.range U.ι`. Rewrite using `[hV.range_fromSpec, Scheme.Opens.range_ι]`. Conclude with `hVU`.
+
+Set `l` to `IsOpenImmersion.lift U.ι hV.fromSpec hr`. Establish `hl : l ≫ U.ι = hV.fromSpec` using `IsOpenImmersion.lift_fac _ _ _`. Establish `hc : Spec.map (X.presheaf.germ V x hxV) ≫ hV.fromSpec = X.fromSpecStalk x` using `hV.fromSpecStalk_eq_fromSpecStalk hxV`. Use `ExtUnique.isSchemeTheoreticallyDominant_spec_of_injective _ hinj` as an intermediate fact. Establish `hg' : (l ≫ g₁) ≫ sY = hV.fromSpec ≫ sX` using `by rw [Category.assoc, h₂, ← Category.assoc, hl]`.
+
+Use `⟨_, hV.fromSpec, inferInstance, l ≫ g₁, by rw [hV.range_fromSpec]; exact hxV, hg', Agree.of_dominant sX sY hf hg' (Spec.map (X.presheaf.germ V x hxV)) ?_⟩` and prove the remaining obligations. Establish `e : Spec.map (X.presheaf.germ V x hxV) ≫ l = U.fromSpecStalkOfMem x hxU`. Rewrite using `[← cancel_mono U.ι, Category.assoc, hl, hc, Scheme.Opens.fromSpecStalkOfMem_ι]`. Rewrite using `[hc, ← Category.assoc, e, ← h₁]`. Conclude with `h`.
+-/
 theorem exists_open_agree [IsLocallyNoetherian X] {φ : X' ⟶ X} [Flat φ] {f : X' ⟶ Y} (sX : X ⟶ S) (sY : Y ⟶ S)
     [IsSeparated sY] [LocallyOfFiniteType sY] (hf : f ≫ sY = φ ≫ sX) (x : X)
     (g : Spec (X.presheaf.stalk x) ⟶ Y) (hg : g ≫ sY = X.fromSpecStalk x ≫ sX)
@@ -59,6 +74,17 @@ theorem exists_open_agree [IsLocallyNoetherian X] {φ : X' ⟶ X} [Flat φ] {f :
   rw [hc, ← Category.assoc, e, ← h₁]
   exact h
 
+/- English proof (translation)
+Use `choose W i hι g hx hg ha using h`. Set `𝒰 : X.OpenCover` to `Scheme.Cover.mkOfCovers X W i (fun x => ⟨x, hx x⟩)`. Establish `: QuasiCompact φ` using `MorphismProperty.of_isPullback hp.flip ‹_›`. Establish `: IsSchemeTheoreticallyDominant φ` using `.of_isPullback hp.flip`. Establish `hc : ∀ x y, pullback.fst (i x) (i y) ≫ g x = pullback.snd (i x) (i y) ≫ g y`.
+
+Introduce `x y`. Set `q` to `pullback.fst (i x) (i y) ≫ i x`. Establish `: IsSchemeTheoreticallyDominant (pullback.fst q φ)` using `.of_isPullback (IsPullback.of_hasPullback q φ).flip`. Use `ExtUnique.hom_ext_of_dominant sY ?_ (pullback.fst q φ) ?_` and prove the remaining obligations. Rewrite using `[Category.assoc, Category.assoc, hg, hg, pullback.condition_assoc]`.
+
+Rewrite using `[← Category.assoc, ← Category.assoc]`. Use `(ha x _ _ (pullback.snd q φ) ?_).trans (ha y _ _ (pullback.snd q φ) ?_).symm` and prove the remaining obligations. Rewrite using `[Category.assoc]`. Conclude with `pullback.condition`. Rewrite using `[Category.assoc, ← pullback.condition]`.
+
+Conclude with `pullback.condition`. Establish `hF : ∀ x, i x ≫ 𝒰.glueMorphisms g hc = g x` using `fun x => 𝒰.ι_glueMorphisms g hc x`. Use `⟨𝒰.glueMorphisms g hc, 𝒰.hom_ext _ _ fun x : X => ?_, Scheme.Cover.hom_ext (𝒰.pullback₁ φ) _ _ fun x : X => ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `i x ≫ _ = i x ≫ _`. Rewrite using `[← Category.assoc, hF, hg]`.
+
+Express the relevant statement in the definitionally equal form `pullback.fst φ (i x) ≫ _ = pullback.fst φ (i x) ≫ _`. Rewrite using `[pullback.condition_assoc, hF]`. Conclude with `ha x _ _ _ pullback.condition.symm`.
+-/
 theorem exists_of_locally {U : Scheme.{0}} {j : U ⟶ S} [QuasiCompact j] [IsSchemeTheoreticallyDominant j]
     {φ : X' ⟶ X} {p : X' ⟶ U} {f : X' ⟶ Y} (sX : X ⟶ S) [Flat sX] (sY : Y ⟶ S) [IsSeparated sY]
     (hp : IsPullback φ p sX j)
@@ -89,6 +115,11 @@ theorem exists_of_locally {U : Scheme.{0}} {j : U ⟶ S} [QuasiCompact j] [IsSch
     rw [pullback.condition_assoc, hF]
     exact ha x _ _ _ pullback.condition.symm
 
+/- English proof (translation)
+Establish `: Flat φ` using `MorphismProperty.of_isPullback hp.flip ‹_›`. Use `exists_of_locally sX sY hp fun x => ?_` and prove the remaining obligations. Take `⟨T, t, a, g, ha, hg, hA⟩` from `h (sX x)`. Establish `e : X.fromSpecStalk x ≫ sX = (Spec.map (sX.stalkMap x) ≫ a) ≫ t`. Rewrite using `[Category.assoc, ha, Scheme.SpecMap_stalkMap_fromSpecStalk]`.
+
+Establish `h₁` using `hA.comp (pullback.lift _ _ e)`. Rewrite `h₁` using `[pullback.lift_fst]`. Conclude with `exists_open_agree sX sY hf x _ (by rw [Category.assoc, hg, pullback.lift_fst_assoc]) h₁`.
+-/
 theorem exists_of_stalks [IsLocallyNoetherian X] {U : Scheme.{0}} {j : U ⟶ S} [QuasiCompact j] [Flat j]
     [IsSchemeTheoreticallyDominant j]
     {φ : X' ⟶ X} {p : X' ⟶ U} {f : X' ⟶ Y} (sX : X ⟶ S) [Flat sX] (sY : Y ⟶ S) [IsSeparated sY]
@@ -105,6 +136,9 @@ theorem exists_of_stalks [IsLocallyNoetherian X] {U : Scheme.{0}} {j : U ⟶ S} 
   rw [pullback.lift_fst] at h₁
   exact exists_open_agree sX sY hf x _ (by rw [Category.assoc, hg, pullback.lift_fst_assoc]) h₁
 
+/- English proof (translation)
+Use `⟨Spec.map (CommRingCat.ofHom (IsLocalization.lift (S := T) hu)), ?_⟩` and prove the remaining obligations. Rewrite using `[← Spec.map_comp]`. Use `congr 1`. Use extensionality with `r`. Conclude with `IsLocalization.lift_eq hu r`.
+-/
 theorem exists_spec_factor (R T : Type) [CommRing R] [CommRing T] [Algebra R T] (M : Submonoid R)
     [IsLocalization M T] {A : CommRingCat.{0}} (ψ : CommRingCat.of R ⟶ A) (hu : ∀ y : M, IsUnit (ψ.hom y)) :
     ∃ a : Spec A ⟶ Sp T, a ≫ spMap (algebraMap R T) = Spec.map ψ := by
@@ -114,6 +148,9 @@ theorem exists_spec_factor (R T : Type) [CommRing R] [CommRing T] [Algebra R T] 
   ext r
   exact IsLocalization.lift_eq hu r
 
+/- English proof (translation)
+Establish `hu : ∀ y : M, IsUnit ((StructureSheaf.toStalk R s).hom y)` using `fun y => IsLocalization.map_units ((Spec.structureSheaf R).presheaf.stalk s) (⟨y.1, hM y.2⟩ : s.asIdeal.primeCompl)`. Take `⟨a, ha⟩` from `exists_spec_factor R T M (StructureSheaf.toStalk R s) hu`. Conclude with `⟨a, ha.trans (Spec.fromSpecStalk_eq' (CommRingCat.of R) s).symm⟩`.
+-/
 theorem exists_fromSpecStalk_factor (R T : Type) [CommRing R] [CommRing T] [Algebra R T] (M : Submonoid R)
     [IsLocalization M T] (s : PrimeSpectrum R) (hM : M ≤ s.asIdeal.primeCompl) :
     ∃ a : Spec ((Sp R).presheaf.stalk s) ⟶ Sp T, a ≫ spMap (algebraMap R T) = (Sp R).fromSpecStalk s := by
@@ -122,6 +159,17 @@ theorem exists_fromSpecStalk_factor (R T : Type) [CommRing R] [CommRing T] [Alge
   obtain ⟨a, ha⟩ := exists_spec_factor R T M (StructureSheaf.toStalk R s) hu
   exact ⟨a, ha.trans (Spec.fromSpecStalk_eq' (CommRingCat.of R) s).symm⟩
 
+/- English proof (translation)
+Take `⟨a, ha, ha'⟩` from `grpPullback_iso (isGrpPullback_pullback G j) (((isGrpPullback_pullback _ k).comp (isGrpPullback_pullback G t)).congr hj rfl)`. Take `⟨b, hb, hb'⟩` from `grpPullback_iso (isGrpPullback_pullback G' j) (((isGrpPullback_pullback _ k).comp (isGrpPullback_pullback G' t)).congr hj rfl)`. Take `⟨F, hF⟩` from `h (a.inv ≫ f ≫ b.hom) inferInstance`. Establish `hF' : (a.hom ≫ (Over.pullback k).map F).left = (f ≫ b.hom).left` using `by rw [hF, a.hom_inv_id_assoc]`. Establish `hw : F.left ≫ pullback.snd G'.hom t = pullback.snd G.hom t` using `Over.w F`.
+
+Establish `hw' : a.hom.left ≫ pullback.snd ((Over.pullback t).obj G).hom k = pullback.snd G.hom j` using `Over.w a.hom`. Use `⟨F.left ≫ pullback.fst G'.hom t, ?_, fun Z u u' e => ?_⟩` and prove the remaining obligations. Use `(Category.assoc _ _ _).trans ?_` and prove the remaining obligations. Rewrite using `[pullback.condition, pullback.condition, ← hw]`. Conclude with `(Category.assoc _ _ _).symm`.
+
+Establish `key : (a.hom.left ≫ pullback.fst ((Over.pullback t).obj G).hom k) ≫ F.left ≫ pullback.fst G'.hom t = f.left ≫ pullback.fst G'.hom j`. Establish `h₁` using `ExtUnique.pullback_map_left_fst k F`. Rewrite `hF'` using `[Over.comp_left, Over.comp_left]`. Rewrite using `[← hb', ← reassoc_of% hF', reassoc_of% h₁]`. Conclude with `Category.assoc _ _ _`.
+
+Establish `hfst : (a.hom.left ≫ pullback.fst ((Over.pullback t).obj G).hom k) ≫ pullback.fst G.hom t = pullback.fst G.hom j` using `(Category.assoc _ _ _).trans ha'`. Establish `hu : u = u' ≫ (a.hom.left ≫ pullback.fst ((Over.pullback t).obj G).hom k)`. Establish `: Mono (pullback.fst G.hom t)` using `inferInstance`. Rewrite using `[← cancel_mono (pullback.fst G.hom t), e]`. Conclude with `(congrArg (u' ≫ ·) hfst.symm).trans (Category.assoc _ _ _).symm`.
+
+Rewrite using `[hu]`. Conclude with `(Category.assoc _ _ _).trans (congrArg (u' ≫ ·) key)`.
+-/
 theorem exists_agree_of_extend {U T : Scheme.{0}} {k : U ⟶ T} {t : T ⟶ S} [Mono t] {j : U ⟶ S} (hj : k ≫ t = j)
     (G G' : Over S) [GrpObj G] [GrpObj G'] (f : (Over.pullback j).obj G ⟶ (Over.pullback j).obj G') [IsMonHom f]
     (h : ∀ f' : (Over.pullback k).obj ((Over.pullback t).obj G) ⟶ (Over.pullback k).obj ((Over.pullback t).obj G'),
@@ -161,6 +209,23 @@ namespace GlobalTheory
 
 open DedekindExt
 
+/- English proof (translation)
+Introduce `H R K _ _ _ _ _ G G' _ _ hG hG' f hf`. Take `⟨_, _⟩` from `ExtUnique.spec_fractionRing R K`. Use `hG.smooth` as an intermediate fact. Use `hG'.proper` as an intermediate fact. Establish `: IsPreimmersion (spMap (algebraMap R K))` using `.of_isLocalization (nonZeroDivisors R)`.
+
+Establish `: Flat (spMap (algebraMap R K))`. Rewrite using `[Flat.SpecMap_iff]`. Conclude with `RingHom.flat_algebraMap_iff.2 (IsLocalization.flat K (nonZeroDivisors R))`. Establish `: IsLocallyNoetherian G.left` using `LocallyOfFiniteType.isLocallyNoetherian G.hom`. Establish `hw : f.left ≫ pullback.snd G'.hom _ = pullback.snd G.hom _` using `Over.w f`.
+
+Establish `hf₀ : (f.left ≫ pullback.fst G'.hom _) ≫ G'.hom = pullback.fst G.hom _ ≫ G.hom`. Use `(Category.assoc _ _ _).trans ?_` and prove the remaining obligations. Rewrite using `[pullback.condition, pullback.condition, ← hw]`. Conclude with `(Category.assoc _ _ _).symm`. Take `⟨F, hF, hF'⟩` from `exists_of_stalks G.hom G'.hom (IsPullback.of_hasPullback G.hom (spMap (algebraMap R K))) hf₀ fun s : PrimeSpectrum R => by`.
+
+Distinguish the cases in `hs : s.asIdeal = ⊥`. Take `⟨a, ha⟩` from `exists_fromSpecStalk_factor R K (nonZeroDivisors R) s fun r hr hr' => nonZeroDivisors.ne_zero hr (by simpa [hs] using hr')`. Use `⟨_, _, a, _, ha, hf₀, fun Z u u' e => ?_⟩` and prove the remaining obligations. Rewrite using `[(cancel_mono _).1 e]`. Set `T` to `Localization.AtPrime s.asIdeal`.
+
+Use `IsLocalization.AtPrime.isDiscreteValuationRing_of_dedekind_domain R hs T` as an intermediate fact. Use `letI : Algebra T K := IsLocalization.localizationAlgebraOfSubmonoidLe T K s.asIdeal.primeCompl (nonZeroDivisors R) s.asIdeal.primeCompl_le_nonZeroDivisors`. Establish `: IsScalarTower R T K` using `IsLocalization.localization_isScalarTower_of_submonoid_le T K _ _ _`. Establish `: IsFractionRing T K` using `IsFractionRing.isFractionRing_of_isDomain_of_isLocalization s.asIdeal.primeCompl T K`. Establish `: IsPreimmersion (spMap (algebraMap R T))` using `.of_isLocalization s.asIdeal.primeCompl`.
+
+Take `⟨a, ha⟩` from `exists_fromSpecStalk_factor R T s.asIdeal.primeCompl s le_rfl`. Establish `hj : spMap (algebraMap T K) ≫ spMap (algebraMap R T) = spMap (algebraMap R K)`. Rewrite using `[← Spec.map_comp, IsScalarTower.algebraMap_eq R T K]`. Both sides reduce to the same expression. Take `⟨g, hg, hA⟩` from `exists_agree_of_extend hj G G' f fun f' hf' => by`.
+
+Take `⟨F, hF, -⟩` from `H T K _ _ (isSemiAbelian_of_isAbelianScheme _ (isAbelianScheme_pullback_obj _ G hG)) (isSemiAbelian_of_isAbelianScheme _ (isAbelianScheme_pullback_obj _ G' hG')) f' hf'`. Conclude with `⟨F, hF.2⟩`. Conclude with `⟨_, _, a, g, ha, hg, hA⟩`. Establish `e : (Over.pullback (spMap (algebraMap R K))).map (Over.homMk F hF : G ⟶ G') = f`. Apply `Over.OverMorphism.ext` to reduce the goal to its premises.
+
+Apply `pullback.hom_ext` to reduce the goal to its premises. Conclude with `(ExtUnique.pullback_map_left_fst _ _).trans hF'`. Conclude with `(Over.w _).trans (Over.w _).symm`. Use `⟨Over.homMk F hF, ⟨ExtUnique.isMonHom_of_pullback _ _ (e ▸ hf), e⟩, fun F' hF'' => ?_⟩` and prove the remaining obligations. Conclude with `ExtUnique.pullback_map_injective _ G G' (hF''.2.trans e.symm)`.
+-/
 theorem abelianScheme_hom_extends_dedekind :
     (∀ (T K : Type) [CommRing T] [IsDomain T] [IsDiscreteValuationRing T] [Field K] [Algebra T K] [IsFractionRing T K] (G G' : Over (Sp T)) [GrpObj G] [GrpObj G'], IsSemiAbelian G → IsSemiAbelian G' → ∀ f : (Over.pullback (spMap (algebraMap T K))).obj G ⟶ (Over.pullback (spMap (algebraMap T K))).obj G', IsMonHom f → ∃! F : G ⟶ G', IsMonHom F ∧ (Over.pullback (spMap (algebraMap T K))).map F = f) → ∀ (R K : Type) [CommRing R] [IsDedekindDomain R] [Field K] [Algebra R K] [IsFractionRing R K] (G G' : Over (Sp R)) [GrpObj G] [GrpObj G'], IsAbelianScheme G → IsAbelianScheme G' → ∀ f : (Over.pullback (spMap (algebraMap R K))).obj G ⟶ (Over.pullback (spMap (algebraMap R K))).obj G', IsMonHom f → ∃! F : G ⟶ G', IsMonHom F ∧ (Over.pullback (spMap (algebraMap R K))).map F = f := by
   intro H R K _ _ _ _ _ G G' _ _ hG hG' f hf

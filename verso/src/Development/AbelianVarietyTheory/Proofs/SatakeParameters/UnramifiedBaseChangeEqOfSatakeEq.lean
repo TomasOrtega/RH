@@ -21,6 +21,9 @@ def evJ (c : (Fin m → ℤ) →₀ ℂ) (γ : Fin m → ℂ) : ℂ := ∑ a ∈
 
 def symJ (a : Fin m → ℤ) (γ : Fin m → ℂ) : ℂ := ∑ w : Sgn m, monoJ a (actJ w γ)
 
+/- English proof (translation)
+Unfold `monoJ`. Rewrite using `[← Equiv.prod_comp w.1 fun i => γ i ^ coact w a i]`. Simplify using `[actJ, coact, zpow_mul]`.
+-/
 theorem monoJ_act (w : Sgn m) (a : Fin m → ℤ) (γ : Fin m → ℂ) : monoJ a (actJ w γ) = monoJ (coact w a) γ := by
   unfold monoJ
   rw [← Equiv.prod_comp w.1 fun i => γ i ^ coact w a i]
@@ -28,14 +31,25 @@ theorem monoJ_act (w : Sgn m) (a : Fin m → ℤ) (γ : Fin m → ℂ) : monoJ a
 
 def coinv (w : Sgn m) (b : Fin m → ℤ) : Fin m → ℤ := fun i => w.2 i * b (w.1 i)
 
+/- English proof (translation)
+The claim follows from `funext fun j => by simp only [coact, coinv, Equiv.apply_symm_apply, ← mul_assoc] rcases Int.units_eq_one_or (w.2 (w.1.symm j)) with h | h <;> simp [h]`.
+-/
 theorem coact_coinv (w : Sgn m) (b : Fin m → ℤ) : coact w (coinv w b) = b := funext fun j => by
   simp only [coact, coinv, Equiv.apply_symm_apply, ← mul_assoc]
   rcases Int.units_eq_one_or (w.2 (w.1.symm j)) with h | h <;> simp [h]
 
+/- English proof (translation)
+The claim follows from `funext fun j => by simp only [coact, coinv, Equiv.symm_apply_apply, ← mul_assoc] rcases Int.units_eq_one_or (w.2 j) with h | h <;> simp [h]`.
+-/
 theorem coinv_coact (w : Sgn m) (a : Fin m → ℤ) : coinv w (coact w a) = a := funext fun j => by
   simp only [coact, coinv, Equiv.symm_apply_apply, ← mul_assoc]
   rcases Int.units_eq_one_or (w.2 j) with h | h <;> simp [h]
 
+/- English proof (translation)
+Unfold `evJ`. Simplify using `only [monoJ_act]`. Use `Finset.sum_nbij' (coact w) (coinv w) (fun a ha => ?_) (fun b hb => ?_) (fun a _ => coinv_coact w a) (fun b _ => coact_coinv w b) (fun a _ => by rw [hc])` and prove the remaining obligations. Rewrite using `[Finsupp.mem_support_iff, hc]`. Conclude with `Finsupp.mem_support_iff.1 ha`.
+
+Rewrite using `[Finsupp.mem_support_iff, ← hc w, coact_coinv]`. Conclude with `Finsupp.mem_support_iff.1 hb`.
+-/
 theorem evJ_act {c : (Fin m → ℤ) →₀ ℂ} (hc : ∀ w a, c (coact w a) = c a) (w : Sgn m) (γ : Fin m → ℂ) :
     evJ c (actJ w γ) = evJ c γ := by
   unfold evJ
@@ -45,12 +59,20 @@ theorem evJ_act {c : (Fin m → ℤ) →₀ ℂ} (hc : ∀ w a, c (coact w a) = 
   · rw [Finsupp.mem_support_iff, hc]; exact Finsupp.mem_support_iff.1 ha
   · rw [Finsupp.mem_support_iff, ← hc w, coact_coinv]; exact Finsupp.mem_support_iff.1 hb
 
+/- English proof (translation)
+Simplify using `only [symJ, Finset.mul_sum]`. Establish `e : ∀ w : Sgn m, ∑ a ∈ c.support, c a * monoJ a (actJ w γ) = evJ c γ` using `fun w => evJ_act hc w γ`. Rewrite using `[Finset.sum_comm, Finset.sum_congr rfl fun w _ => e w, Finset.sum_const, Finset.card_univ, nsmul_eq_mul]`.
+-/
 theorem sum_symJ {c : (Fin m → ℤ) →₀ ℂ} (hc : ∀ w a, c (coact w a) = c a) (γ : Fin m → ℂ) :
     ∑ a ∈ c.support, c a * symJ a γ = Fintype.card (Sgn m) * evJ c γ := by
   simp only [symJ, Finset.mul_sum]
   have e : ∀ w : Sgn m, ∑ a ∈ c.support, c a * monoJ a (actJ w γ) = evJ c γ := fun w => evJ_act hc w γ
   rw [Finset.sum_comm, Finset.sum_congr rfl fun w _ => e w, Finset.sum_const, Finset.card_univ, nsmul_eq_mul]
 
+/- English proof (translation)
+Set `φ : Sgn m → Sgn m` to `fun u => (u.1 * w.1, fun i => u.2 (w.1 i) * w.2 i)`. Establish `hφ : Function.Injective φ` using `fun u u' h => Prod.ext (mul_right_cancel (congrArg Prod.fst h)) (funext fun i => by simpa [φ] using congrFun (congrArg Prod.snd h) (w.1.symm i))`. Use `Fintype.sum_bijective φ (Finite.injective_iff_bijective.1 hφ) _ _ fun u => ?_` and prove the remaining obligations. Rewrite using `[← monoJ_act]`. Use `congr 1`.
+
+Use function extensionality and compare the values at `i`. Simplify using `[actJ, φ, zpow_mul]`.
+-/
 theorem symJ_coact (w : Sgn m) (a : Fin m → ℤ) (γ : Fin m → ℂ) : symJ (coact w a) γ = symJ a γ := by
   let φ : Sgn m → Sgn m := fun u => (u.1 * w.1, fun i => u.2 (w.1 i) * w.2 i)
   have hφ : Function.Injective φ := fun u u' h => Prod.ext (mul_right_cancel (congrArg Prod.fst h))
@@ -61,6 +83,9 @@ theorem symJ_coact (w : Sgn m) (a : Fin m → ℤ) (γ : Fin m → ℂ) : symJ (
   funext i
   simp [actJ, φ, zpow_mul]
 
+/- English proof (translation)
+Introduce `d` and use `by classical induction hk : H d using Nat.strong_induction_on generalizing d with | _ k ih => intro hd have h3 := h d hd rw [← Finset.sum_filter_ne_zero, Finset.sum_congr rfl (g := fun _ => c d d * S d), Finset.sum_const, smul_eq_zero, Finset.card_eq_zero, Finset.filter_eq_empty_ …`.
+-/
 theorem eq_zero_of_triangular (H : (Fin m → ℤ) → ℕ) (c : (Fin m → ℤ) → (Fin m → ℤ) →₀ ℂ)
     (hcoef : ∀ d, Dom d → ∀ w a, c d (coact w a) = c d a) (hself : ∀ d, Dom d → c d d ≠ 0)
     (htri : ∀ d a, Dom d → Dom a → c d a ≠ 0 → a = d ∨ H a < H d) (S : (Fin m → ℤ) → ℂ)
@@ -83,11 +108,19 @@ theorem eq_zero_of_triangular (H : (Fin m → ℤ) → ℕ) (c : (Fin m → ℤ)
       · rw [e]
       · exact absurd (ih _ (hk ▸ e) _ rfl hw) (right_ne_zero_of_mul h5)
 
+/- English proof (translation)
+Unfold `monoJ`. Rewrite using `[Finset.prod_eq_single i₀ (fun j _ hj => by simp [Pi.single_apply, hj]) (by simp)]`. Simplify using the standard rewrite rules.
+-/
 theorem monoJ_single (i₀ : Fin m) (k : ℕ) (δ : Fin m → ℂ) : monoJ (Pi.single i₀ (k : ℤ)) δ = δ i₀ ^ k := by
   unfold monoJ
   rw [Finset.prod_eq_single i₀ (fun j _ hj => by simp [Pi.single_apply, hj]) (by simp)]
   simp
 
+/- English proof (translation)
+Use `⟨fun a b hab => ?_, fun a => ?_⟩` and prove the remaining obligations. Simplify using `only [Pi.single_apply]`. Establish `: a ≤ b` using `hab`. Rewrite `this` using `[Fin.le_def]`. Apply the tactic sequence `split_ifs with h1 h2 h2 <;> first | rfl | omega | (subst h2; exfalso; exact h1 (Fin.ext (by omega)))`.
+
+Apply the tactic sequence `simp only [Pi.single_apply]; split_ifs <;> omega`.
+-/
 theorem dom_single (i₀ : Fin m) (h0 : (i₀ : ℕ) = 0) (k : ℕ) : Dom (Pi.single i₀ (k : ℤ)) := by
   refine ⟨fun a b hab => ?_, fun a => ?_⟩
   · simp only [Pi.single_apply]
@@ -96,6 +129,13 @@ theorem dom_single (i₀ : Fin m) (h0 : (i₀ : ℕ) = 0) (k : ℕ) : Dom (Pi.si
     split_ifs with h1 h2 h2 <;> first | rfl | omega | (subst h2; exfalso; exact h1 (Fin.ext (by omega)))
   · simp only [Pi.single_apply]; split_ifs <;> omega
 
+/- English proof (translation)
+Introduce `hi`. Establish `hli` using `(linearIndependent_monoidHom (Multiplicative ℕ) ℂ).comp _ (powersHom ℂ).injective`. Establish `e : ∑ w : Sgn m, Finsupp.single (actJ w α₀ i₀) (1 : ℂ) = ∑ w : Sgn m, Finsupp.single (actJ w (fun j => (α j : ℂ)) i₀) (1 : ℂ)`. Use `hli (funext fun k => ?_)` and prove the remaining obligations. Use `h k.toAdd` as an intermediate fact.
+
+Simplify using `only [symJ, monoJ_single] at this`. Simplify `this` using `[map_sum, powersHom_apply]`. Establish `h1` using `DFunLike.congr_fun e 0`. Rewrite `h1` using `[Finsupp.finset_sum_apply, Finsupp.finset_sum_apply, Finset.sum_eq_zero (s := Finset.univ) (f := fun w : Sgn m => (Finsupp.single (actJ w (fun j => (α j : ℂ)) i₀) (1 : ℂ)) 0) fun w _ => Finsupp.single_eq_of_ne (zpow_ne_zero _ (Units.ne_zero _)).symm]`. Simplify using `only [Finsupp.single_apply, Finset.sum_boole, Nat.cast_eq_zero, Finset.card_eq_zero, Finset.filter_eq_empty_iff] at h1`.
+
+Conclude with `h1 (Finset.mem_univ (Equiv.swap i₀ i, 1)) (by simp [actJ, hi])`.
+-/
 theorem ne_zero_of_symJ (α : Fin m → ℂˣ) (α₀ : Fin m → ℂ) (i₀ : Fin m)
     (h : ∀ k : ℕ, symJ (Pi.single i₀ (k : ℤ)) α₀ = symJ (Pi.single i₀ (k : ℤ)) fun j => (α j : ℂ)) (i : Fin m) :
     α₀ i ≠ 0 := by
@@ -121,6 +161,27 @@ section Local
 variable {L : Type} [Field L] [Valued L (WithZero (Multiplicative ℤ))] {σ : L →+* L} {n q : ℕ} {ϖ : L}
   [CompleteSpace L]
 
+/- English proof (translation)
+Establish `hq : (q : ℂ) ≠ 0`. Use `hU.2.2.2.2.2.1` as an intermediate fact. Conclude with `(by omega : q ≠ 0)` after adjusting the coercions. Set `x : (Fin (n / 2) → ℤ) → ℂ` to `fun a => ∏ i, (q : ℂ) ^ (-(a i) * ((n : ℤ) - 1 - 2 * (i.val : ℤ)))`. Establish `hx : ∀ a, x a ≠ 0` using `fun a => Finset.prod_ne_zero_iff.2 fun i _ => zpow_ne_zero _ hq`.
+
+Establish `hex : ∀ d : Fin (n / 2) → ℤ, ∃ c : (Fin (n / 2) → ℤ) →₀ ℂ, Dom d → ∀ a, c a = x a * cnt σ n ϖ (lab n d) a` using `fun d => by`. Distinguish the cases in `hd : Dom d`. Conclude with `⟨Finsupp.ofSupportFinite (fun a => x a * cnt σ n ϖ (lab n d) a) ((finite_cnt hU (good_lab hd)).subset fun a ha h0 => ha (by simp [h0])), fun _ _ => rfl⟩`. Conclude with `⟨0, fun h => absurd h hd⟩`. Use `choose c hc using hex`.
+
+Establish `hevJ : ∀ d, Dom d → ∀ γ : Fin (n / 2) → ℂ, evJ (c d) γ = SatU ϖ q (labInd σ n ϖ (lab n d)) γ` using `fun d hd γ => by`. Rewrite using `[satU_labInd hU (good_lab hd), finsum_eq_sum_of_support_subset (s := (c d).support), evJ]`. Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Rewrite using `[hc d hd, Finset.prod_mul_distrib]`. Simplify using `only [monoJ, x]`.
+
+Expand and normalize the polynomial expressions, which then agree. Introduce `a ha`. Rewrite using `[Finset.mem_coe, Finsupp.mem_support_iff, hc d hd]`. Conclude with `mul_ne_zero (hx a) (right_ne_zero_of_mul ha)`. Establish `hcoef : ∀ d, Dom d → ∀ w a, c d (coact w a) = c d a` using `fun d hd w a => by`.
+
+Use `coeff_coact (fun γ => ?_) a` and prove the remaining obligations. Take `⟨t, ht⟩` from `exists_diag hU (good_lab hd)`. Express the relevant statement in the definitionally equal form `evJ (c d) (fun i => ((act w γ i : ℂˣ) : ℂ)) = evJ (c d) (fun i => (γ i : ℂ))`. Rewrite using `[hevJ d hd, hevJ d hd, labInd_eq_dosetInd ht]`. Conclude with `(GlobalTheory.LFun.satU_of_weylConj hU (Final.DosetIndMem _ _ _ _) (weylConj_act w γ)).symm`.
+
+Establish `hJ : ∀ d, Dom d → evJ (c d) α₀ = evJ (c d) (fun i => (α i : ℂ))` using `fun d hd => by`. Take `⟨t, ht⟩` from `exists_diag hU (good_lab hd)`. Rewrite using `[hevJ d hd, hevJ d hd, labInd_eq_dosetInd ht]`. Conclude with `(h _ t (anti_getD (good_lab hd).1 (good_lab hd).2.1) ht).symm`. Set `T : (Fin (n / 2) → ℤ) → Fin n → ℤ` to `fun d k => ∑ i ∈ Finset.Ici k, (lab n d).getD i.1 0`.
+
+Establish `h2` using `eq_zero_of_triangular (fun d => (-∑ k, T d k).toNat) c hcoef (fun d hd => ?_) (fun d a hd ha h0 => ?_) (fun a => symJ a α₀ - symJ a fun j => (α j : ℂ)) (fun w a => by simp only [symJ_coact]) (fun d hd => ?_)`. Establish `hi0 : 0 < n / 2` using `Nat.pos_of_ne_zero fun h0 => (h0 ▸ i).elim0`. Use `ne_zero_of_symJ α α₀ ⟨0, hi0⟩ (fun k => sub_eq_zero.1 (h2 _ (dom_single _ rfl k))) i` and prove the remaining obligations. Use `cnt_self hU (good_lab hd)` as an intermediate fact. Rewrite `this` using `[getD_lab]`.
+
+Rewrite using `[hc d hd]`. Conclude with `mul_ne_zero (hx d) (by exact_mod_cast this)`. Rewrite `h0` using `[hc d hd]`. Establish `h1 : ∀ k, T d k ≤ T a k` using `tail_of_cnt hU (good_lab ha) (good_lab hd) (by`. Rewrite using `[getD_lab]`.
+
+Conclude with `right_ne_zero_of_mul h0)` after adjusting the coercions. Establish `h2 : ∑ k, T a k ≤ 0` using `Finset.sum_nonpos fun k _ => tail_nonpos (good_lab ha) k`. Break down `(Finset.sum_le_sum (s := Finset.univ) fun k _ => h1 k).eq_or_lt with e | e` into its components or cases. Establish `h3` using `eq_of_tails fun k => (Finset.sum_eq_sum_iff_of_le fun k _ => h1 k).1 e k (Finset.mem_univ k)`. Rewrite using `[← getD_lab a, ← getD_lab d, eq_of_getD (good_lab hd).1 (good_lab ha).1 (congrFun h3)]`.
+
+Conclude with `Or.inl rfl`. Conclude with `Or.inr (by omega)`. Simplify using `only [mul_sub, Finset.sum_sub_distrib, sum_symJ (hcoef d hd), hJ d hd, sub_self]`.
+-/
 theorem ne_zero_of_dosetInd (hU : IsUnramInv ϖ σ q) (α : Fin (n / 2) → ℂˣ) (α₀ : Fin (n / 2) → ℂ)
     (h : ∀ (d : Fin n → ℤ) (t : GU σ n), Antitone d → t.1.1 = Matrix.diagonal (fun i => ϖ ^ d i) →
       SatU ϖ q (dosetInd ℂ (KU σ n) t) (fun i => (α i : ℂ)) = SatU ϖ q (dosetInd ℂ (KU σ n) t) α₀)
@@ -179,6 +240,13 @@ theorem ne_zero_of_dosetInd (hU : IsUnramInv ϖ σ q) (α : Fin (n / 2) → ℂ�
     · exact Or.inr (by omega)
   · simp only [mul_sub, Finset.sum_sub_distrib, sum_symJ (hcoef d hd), hJ d hd, sub_self]
 
+/- English proof (translation)
+Introduce `L _ _ _ ϖ σ q n hU α α₀ h`. Set `β : Fin (n / 2) → ℂˣ` to `fun i => Units.mk0 (α₀ i) (ne_zero_of_dosetInd hU α α₀ h i)`. Establish `hβ : (fun i => ((β i : ℂˣ) : ℂ)) = α₀` using `funext fun i => Units.val_mk0 _`. Establish `e : bcParam n α = bcParam n β` using `bcParam_of_weylConj (GlobalTheory.LFun.weylConj_of_dosetInd hU (by rw [hβ]; exact h))`. Rewrite using `[e, bcParam, ubc]`.
+
+Simplify using `only [Multiset.map_add, Multiset.map_map, Function.comp_def, Units.val_inv_eq_inv_val, Multiset.map_replicate, Units.val_one]`. Rewrite using `[← hβ]`. Use `congr 1`. Break down `Nat.mod_two_eq_zero_or_one n with h2 | h2` into its components or cases. Rewrite using `[h2, if_neg (Nat.not_odd_iff.2 h2)]`.
+
+Both sides reduce to the same expression. Rewrite using `[h2, if_pos (Nat.odd_iff.2 h2)]`. Both sides reduce to the same expression.
+-/
 theorem bcParam_eq_ubc_of_satU_eq : ∀ (L : Type) [Field L] [Valued L (WithZero (Multiplicative ℤ))] [CompleteSpace L]
     (ϖ : L) (σ : L →+* L) (q n : ℕ), Formalism.UG.IsUnramInv ϖ σ q → ∀ (α : Fin (n / 2) → ℂˣ) (α₀ : Fin (n / 2) → ℂ),
     (∀ (d : Fin n → ℤ) (t : Formalism.UG.GU σ n), Antitone d → t.1.1 = Matrix.diagonal (fun i => ϖ ^ d i) →

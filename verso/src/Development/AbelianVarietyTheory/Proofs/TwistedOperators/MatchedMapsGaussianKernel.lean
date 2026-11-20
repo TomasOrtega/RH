@@ -23,6 +23,15 @@ noncomputable section
 
 namespace GlobalTheory.HoweGlobalPair
 
+/- English proof (translation)
+Establish `join : ∀ t₁ t₂ : M₀ ⊗[ℂ] (⨂[ℂ] i, M i), (∃ (m : ℕ) (f : Fin m → M₀) (φ : Fin m → ∀ i, M i), t₁ = ∑ j, f j ⊗ₜ[ℂ] PiTensorProduct.tprod ℂ (φ j)) → (∃ (m : ℕ) (f : Fin m → M₀) (φ : Fin m → ∀ i, M i), t₂ = ∑ j, f j ⊗ₜ[ℂ] PiTensorProduct.tprod ℂ (φ j)) → ∃ (m : ℕ) (f : Fin m → M₀) (φ …`. Introduce and unpack `t₁ t₂ ⟨m₁, f₁, φ₁, rfl⟩ ⟨m₂, f₂, φ₂, rfl⟩`. Use `⟨m₁ + m₂, Fin.append f₁ f₂, Fin.append φ₁ φ₂, ?_⟩` and prove the remaining obligations. Rewrite using `[Fin.sum_univ_add]`. Simplify using `only [Fin.append_left, Fin.append_right]`.
+
+Proceed by induction on `t using TensorProduct.induction_on with`. Consider the case `zero => exact ⟨0, Fin.elim0, Fin.elim0, by simp⟩`. Consider the case `tmul x y`. Proceed by induction on `y using PiTensorProduct.induction_on with`. Consider the case `smul_tprod r g`.
+
+Use `⟨1, fun _ => r • x, fun _ => g, ?_⟩` and prove the remaining obligations. Rewrite using `[Fin.sum_univ_one, TensorProduct.tmul_smul, TensorProduct.smul_tmul']`. Consider the case `add y₁ y₂ h₁ h₂`. Rewrite using `[TensorProduct.tmul_add]`. Conclude with `join _ _ h₁ h₂`.
+
+Consider the case `add t₁ t₂ h₁ h₂ => exact join _ _ h₁ h₂`.
+-/
 theorem decomp {M₀ : Type} [AddCommGroup M₀] [Module ℂ M₀] {ι : Type} [Fintype ι] {M : ι → Type}
     [∀ i, AddCommGroup (M i)] [∀ i, Module ℂ (M i)] (t : M₀ ⊗[ℂ] (⨂[ℂ] i, M i)) :
     ∃ (m : ℕ) (f : Fin m → M₀) (φ : Fin m → ∀ i, M i), t = ∑ j, f j ⊗ₜ[ℂ] PiTensorProduct.tprod ℂ (φ j) := by
@@ -48,6 +57,13 @@ theorem decomp {M₀ : Type} [AddCommGroup M₀] [Module ℂ M₀] {ι : Type} [
       exact join _ _ h₁ h₂
   | add t₁ t₂ h₁ h₂ => exact join _ _ h₁ h₂
 
+/- English proof (translation)
+Take `⟨hrs, A, hA⟩` from `h`. Set `e : Fin r ⊕ Fin s ≃ Fin n` to `finSumFinEquiv.trans (finCongr hrs)`. Set `B : Matrix (Fin n) (Fin n) ℂ` to `A.submatrix id e.symm`. Establish `key : Bᵀ * M * B.map star = (Matrix.fromBlocks 1 0 0 (-1) : Matrix (Fin r ⊕ Fin s) (Fin r ⊕ Fin s) ℂ).submatrix e.symm e.symm`. Rewrite using `[← hA]`.
+
+Use extensionality with `i j`. Simplify using `[B, Matrix.mul_apply]`. Establish `hdet` using `congrArg Matrix.det key`. Rewrite `hdet` using `[Matrix.det_submatrix_equiv_self, Matrix.det_fromBlocks_zero₂₁, Matrix.det_mul, Matrix.det_mul]`. Introduce `h0`.
+
+Rewrite `hdet` using `[h0, mul_zero, zero_mul, Matrix.det_one, one_mul, Matrix.det_neg, Matrix.det_one, mul_one]`. Conclude with `pow_ne_zero _ (neg_ne_zero.mpr one_ne_zero) hdet.symm`.
+-/
 theorem det_ne_hasSig {n r s : ℕ} {M : Matrix (Fin n) (Fin n) ℂ} (h : HasSig M r s) : M.det ≠ 0 := by
   obtain ⟨hrs, A, hA⟩ := h
 
@@ -64,6 +80,9 @@ theorem det_ne_hasSig {n r s : ℕ} {M : Matrix (Fin n) (Fin n) ℂ} (h : HasSig
   rw [h0, mul_zero, zero_mul, Matrix.det_one, one_mul, Matrix.det_neg, Matrix.det_one, mul_one] at hdet
   exact pow_ne_zero _ (neg_ne_zero.mpr one_ne_zero) hdet.symm
 
+/- English proof (translation)
+Introduce `h0`. Apply `det_ne_hasSig h` to reduce the goal to its premises. Establish `hmap : (J.map τ).det = τ J.det` using `(RingHom.map_det τ J).symm`. Rewrite using `[Matrix.det_smul, hmap, h0, map_zero, mul_zero]`.
+-/
 theorem det_ne_sig_map {E : Type} [Field E] {n r s : ℕ} {J : Matrix (Fin n) (Fin n) E} (τ : E →+* ℂ) (c : ℂ)
     (h : HasSig (c • J.map τ) r s) : J.det ≠ 0 := by
   intro h0
@@ -71,6 +90,9 @@ theorem det_ne_sig_map {E : Type} [Field E] {n r s : ℕ} {J : Matrix (Fin n) (F
   have hmap : (J.map τ).det = τ J.det := (RingHom.map_det τ J).symm
   rw [Matrix.det_smul, hmap, h0, map_zero, mul_zero]
 
+/- English proof (translation)
+Use `⟨?_, fun x => ?_⟩` and prove the remaining obligations. Establish `hc : Continuous fun z => χ z / χ' z` using `h.1.div' h'.1`. Conclude with `hc`. Rewrite using `[MonoidHom.div_apply, h.2 x, h'.2 x, div_one]`.
+-/
 theorem hecke_div {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
     {χ χ' : Chr F E} (h : GlobalTheory.LFun.IsHecke F E χ) (h' : GlobalTheory.LFun.IsHecke F E χ') :
     GlobalTheory.LFun.IsHecke F E (χ / χ') := by
@@ -79,6 +101,11 @@ theorem hecke_div {F E : Type} [Field F] [NumberField F] [Field E] [NumberField 
     exact hc
   · rw [MonoidHom.div_apply, h.2 x, h'.2 x, div_one]
 
+/- English proof (translation)
+Substitute `hk` using the available equality. Introduce `x`. Rewrite using `[MonoidHom.div_apply, Circle.coe_div, h x, h' x]`. Use `split_ifs`. Conclude with `div_one 1`.
+
+Rewrite using `[pow_add, div_eq_mul_inv, ← inv_pow, inv_neg, inv_one]`.
+-/
 theorem resEta_div {R A : Type} [CommRing R] [CommRing A] [Algebra R A] {K : Subgroup Rˣ}
     {χ χ' : Aˣ →* Circle} {n m k : ℕ} (h : ResEtaPow K χ n) (h' : ResEtaPow K χ' m) (hk : k = n + m) :
     ResEtaPow K (χ / χ') k := by
@@ -89,6 +116,27 @@ theorem resEta_div {R A : Type} [CommRing R] [CommRing A] [Algebra R A] {K : Sub
   · exact div_one 1
   · rw [pow_add, div_eq_mul_inv, ← inv_pow, inv_neg, inv_one]
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ Bs a a' G Xc om om' R Rf hM hfin hR N hN T hT`. Establish `hb` using `hM.triple.base`. Establish `hg` using `hM.triple.geo`. Establish `hc` using `hM.triple.chars`. Take `⟨w⟩ : Nonempty (InfinitePlace F)` from `inferInstance`.
+
+Establish `hdetV : G.V'.J.det ≠ 0` using `det_ne_sig_map (Bs.emb w).1 1 (by rw [one_smul]; exact hg.hV'.sig w)`. Establish `hdetW : G.W.J.det ≠ 0` using `det_ne_sig_map (Bs.emb w).1 Complex.I (hg.hW.sig w)`. Establish `hres : ResEtaPow (Units.map (algebraMap F (AF F)).toMonoidHom).range (Xc.α / Xc.β) (a + a')` using `resEta_div hc.resα hc.resβ (Nat.add_comm a a')`. Establish `hhk : GlobalTheory.LFun.IsHecke F E (Xc.α / Xc.β)` using `hecke_div hc.heckeα hc.heckeβ`. Establish `hLie` using `GlobalTheory.T.firstMember_lieAlgebra_preserves_polynomialFock F E σ hb.cm a' (a + a') G.V' G.W G.M' Bs.ψ Xc.α (Xc.α / Xc.β) om' hb.std hg.hV'.herm hdetV hg.hW.skew hdetW hc.resα hres hc.heckeα hhk hM.triple.weil' Bs.emb hg.hV'.cartan hg.hW.cartan`.
+
+Establish `hCpt` using `GlobalTheory.T.firstMember_maximalCompact_preserves_polynomialFock F E σ hb.cm a' (a + a') G.V' G.W G.M' Bs.ψ Xc.α (Xc.α / Xc.β) om' hb.std hg.hV'.herm hdetV hg.hW.skew hdetW hc.resα hres hc.heckeα hhk hM.triple.weil' Bs.emb hg.hV'.cartan hg.hW.cartan`. Take `⟨r₀, c₀, k₀, rel₀, st₀⟩` from `GlobalTheory.T.howeDuality_realPlaces_polynomialVectors_smallPair F E σ Bs a a' G Xc om om' R Rf hM hR hLie hCpt`. Establish `hloc` using `fun v : T => GlobalTheory.T.matched_maps_orbit_kernel F E σ Bs a a' G Xc om om' R Rf hM hfin v.1`. Establish `hvac : ∀ v, G.M'.vac v ∈ SB (Fin a' × Fin (a + a') → Fv F v)` using `fun v => (hg.hM'.vac v).1`. Take `⟨L, hL, hrange⟩` from `GlobalTheory.T.exists_linear_tensor_polyVacuum_pureTensors G.M' Bs.ψ Bs.emb hg.hM'.std T`.
+
+Take `⟨h₁, h₂, h₃, h₄⟩` from `GlobalTheory.T.unitaryDualPair_global_to_local_tensor_transfer G.M' Bs.ψ Bs.emb om' hvac hg.hM'.std N hN T L hL`. Establish `hdich` using `GlobalTheory.T.tensor_eq_top_or_le_ker_finiteLength_modules (ι := T) (M₀ := ↥(G.M'.Pol Bs.ψ Bs.emb)) (P₀ := R.Pi) (M := fun v : T => ↥(SB (Fin a' × Fin (a + a') → Fv F v.1))) (P := fun v : T => Rf.Pi v.1) (GlobalTheory.HoweGlobalPair.opInf G.M' Bs.ψ Bs.emb om') (fun v => GlobalTh …`. Break down `hdich with htop | hker` into its components or cases. Use `left`. Introduce `Φ hΦ`.
+
+Take `⟨t, rfl⟩` from `hrange hΦ`. Establish `ht : t ∈ N.comap L` using `by rw [htop]; exact Submodule.mem_top`. Conclude with `ht`. Use `right`. Introduce `Φ hΦN hΦA`.
+
+Take `⟨t, rfl⟩` from `hrange hΦA`. Establish `hk : t ∈ LinearMap.ker _` using `hker (show t ∈ N.comap L from hΦN)`. Take `⟨m, f, φ, rfl⟩` from `decomp t`. Rewrite `hk` using `[LinearMap.mem_ker, map_sum]`. Set `φ' : Fin m → ∀ v : Pl F, (Fin a' × Fin (a + a') → Fv F v) → ℂ` to `fun j v => if h : v ∈ T then (φ j ⟨v, h⟩ : (Fin a' × Fin (a + a') → Fv F v) → ℂ) else G.M'.vac v`.
+
+Establish `hin : ∀ j v (h : v ∈ T), φ' j v = φ j ⟨v, h⟩` using `fun j v h => dif_pos h`. Establish `hout : ∀ j, ∀ v ∉ T, φ' j v = G.M'.vac v` using `fun j v h => dif_neg h`. Unfold `GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.PolMatch`. Use `⟨T, hT, 0, m, Fin.elim0, Fin.elim0, fun j => (f j : SInf F _), φ', fun i => i.elim0, fun j => ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Use `⟨(f j).2, fun v => ?_, hout j⟩` and prove the remaining obligations.
+
+Distinguish the cases in `h : v ∈ T`. Rewrite using `[hin j v h]`. Conclude with `(φ j ⟨v, h⟩).2`. Rewrite using `[hout j v h]`. Conclude with `hvac v`.
+
+Simplify using the standard rewrite rules. Rewrite using `[map_sum]`. Conclude with `Finset.sum_congr rfl fun j _ => hL (f j) (φ j) (φ' j) (hin j) (hout j)`. Rewrite using `[Finset.univ_eq_empty, Finset.sum_empty, ← hk]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[TensorProduct.map_tmul, PiTensorProduct.map_tprod, LinearMap.comp_apply, Submodule.subtype_apply]`. Use `congrArg (TensorProduct.tmul ℂ (R.p' (f j : SInf F _))) (congrArg (PiTensorProduct.tprod ℂ (s := fun v : T => Rf.Pi v.1)) (funext fun v => ?_))` and prove the remaining obligations. Rewrite using `[hin j v.1 v.2]`. Both sides reduce to the same expression.
+-/
 theorem stage : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E)
     (Bs : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Base F E) (a a' : ℕ) (G : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Geo σ a a') (Xc : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Chars F E)
     (om : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Rep σ G.V G.W) (om' : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Rep σ G.V' G.W)
@@ -177,6 +225,11 @@ theorem stage : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberFiel
       rw [hin j v.1 v.2]
       rfl
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ Bs a a' G Xc om om' R Rf hM hfin hR N hN hne Φ hΦ`. Take `⟨Ψ, hΨ, hΨN⟩` from `SetLike.exists_of_lt (lt_of_le_of_ne hN.le hne)`. Take `⟨T₁, hT₁, hΦ₁⟩` from `GlobalTheory.HoweGlobal.exists_algAt G.M' Bs.ψ Bs.emb (hN.le hΦ) Xc.T`. Take `⟨T, hT, hΨT⟩` from `GlobalTheory.HoweGlobal.exists_algAt G.M' Bs.ψ Bs.emb hΨ T₁`. Establish `hΦT` using `GlobalTheory.HoweGlobal.algAt_mono G.M' Bs.ψ Bs.emb hT hΦ₁`.
+
+Break down `stage F E σ Bs a a' G Xc om om' R Rf hM hfin hR N hN T (hT₁.trans hT) with hle | hmatch` into its components or cases. Conclude with `absurd (hle hΨT) hΨN`. Conclude with `hmatch Φ hΦ hΦT`.
+-/
 theorem allInKer : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E)
     (Bs : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Base F E) (a a' : ℕ) (G : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Geo σ a a') (Xc : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Chars F E)
     (om : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Rep σ G.V G.W) (om' : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Rep σ G.V' G.W)

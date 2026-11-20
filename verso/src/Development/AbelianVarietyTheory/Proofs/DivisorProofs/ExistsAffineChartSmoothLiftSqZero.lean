@@ -14,6 +14,33 @@ namespace GlobalTheory.LBLift
 
 open MvPolynomial in
 
+/- English proof (translation)
+Take `⟨κ, τ, _, _, P, hP⟩` from `hB₀.out`. Establish `: Fintype τ` using `Fintype.ofFinite τ`. Establish `hmap : Function.Surjective (MvPolynomial.map (σ` using `κ) π) := MvPolynomial.map_surjective π hπ`. Set `v : τ → MvPolynomial κ R` to `fun j => Function.surjInv hmap (P.relation j)`. Establish `hv : ∀ j, MvPolynomial.map π (v j) = P.relation j` using `fun j => Function.surjInv_eq hmap _`.
+
+Set `J : Ideal (MvPolynomial κ R)` to `Ideal.span (Set.range v)`. Set `φ : MvPolynomial κ R →+* B₀` to `(aeval P.val).toRingHom.comp (MvPolynomial.map π)`. Establish `hφ : ∀ f, φ f = aeval P.val (MvPolynomial.map π f)` using `fun _ => rfl`. Establish `hJ : J ≤ RingHom.ker φ`. Rewrite using `[Ideal.span_le]`.
+
+Introduce and unpack `_ ⟨j, rfl⟩`. Simplify using `[RingHom.mem_ker, hφ, hv, Algebra.Presentation.aeval_val_relation]`. Set `p : (MvPolynomial κ R ⧸ J) →+* B₀` to `Ideal.Quotient.lift J φ hJ`. Establish `hp : ∀ f, p (Ideal.Quotient.mk J f) = φ f` using `fun _ => rfl`. Establish `halg : ∀ r : R, p (algebraMap R _ r) = algebraMap R₀ B₀ (π r)`.
+
+Introduce `r`. Rewrite using `[IsScalarTower.algebraMap_apply R (MvPolynomial κ R) (MvPolynomial κ R ⧸ J)]`. Simplify using `[Ideal.Quotient.algebraMap_eq, hp, hφ]`. Establish `hsurj : Function.Surjective p`. Introduce `b`.
+
+Take `⟨g, rfl⟩` from `P.aeval_val_surjective b`. Take `⟨f, rfl⟩` from `hmap g`. Conclude with `⟨Ideal.Quotient.mk J f, rfl⟩`. Establish `hker : ∀ b, p b = 0 → b ∈ I.map (algebraMap R (MvPolynomial κ R ⧸ J))`. Introduce `b`.
+
+Take `⟨f, rfl⟩` from `Ideal.Quotient.mk_surjective b`. Introduce `h0`. Rewrite `h0` using `[hp, hφ]`. Establish `hmem : MvPolynomial.map π f ∈ Ideal.span (Set.range P.relation)`. Rewrite using `[P.span_range_relation_eq_ker]`.
+
+Use `first`. Consider the case `exact h0`. Consider the case `exact RingHom.mem_ker.mpr h0`. Consider the case `(rw [Algebra.Generators.ker_eq_ker_aeval_val]; exact h0)`. Take `⟨c, hc⟩` from `(Ideal.mem_span_range_iff_exists_fun).1 hmem`.
+
+Set `c' : τ → MvPolynomial κ R` to `fun j => Function.surjInv hmap (c j)`. Establish `hc' : ∀ j, MvPolynomial.map π (c' j) = c j` using `fun j => Function.surjInv_eq hmap _`. Establish `hg : f - ∑ j, c' j * v j ∈ RingHom.ker (MvPolynomial.map (σ` using `κ) π) := by`. Rewrite using `[RingHom.mem_ker, map_sub, map_sum, ← hc]`. Simplify using `[hc', hv]`.
+
+Rewrite `hg` using `[MvPolynomial.ker_map, hk]`. Establish `hs : ∑ j, c' j * v j ∈ J` using `Ideal.sum_mem _ fun j _ => Ideal.mul_mem_left _ _ (Ideal.subset_span ⟨j, rfl⟩)`. Establish `: Ideal.Quotient.mk J f = Ideal.Quotient.mk J (f - ∑ j, c' j * v j)`. Rewrite using `[map_sub, Ideal.Quotient.eq_zero_iff_mem.2 hs, sub_zero]`. Rewrite using `[this]`.
+
+Establish `hmm` using `Ideal.mem_map_of_mem (Ideal.Quotient.mk J) hg`. Rewrite `hmm` using `[Ideal.map_map]`. Then use the resulting hypothesis. Set `Q` to `Algebra.PreSubmersivePresentation.naive (v := v) P.map P.map_inj`. Establish `hjac : p Q.jacobian = P.jacobian`. Rewrite using `[Algebra.PreSubmersivePresentation.jacobian_eq_jacobiMatrix_det, Algebra.PreSubmersivePresentation.jacobian_eq_jacobiMatrix_det]`.
+
+Establish `h1 : ∀ f : MvPolynomial κ R, algebraMap Q.Ring (MvPolynomial κ R ⧸ Ideal.span (Set.range v)) f = Ideal.Quotient.mk J f` using `fun _ => rfl`. Rewrite using `[h1, hp, hφ, Algebra.Generators.algebraMap_apply]`. Use `congr 1`. Rewrite using `[RingHom.map_det]`. Use `congrArg Matrix.det (Matrix.ext fun i j => ?_)` and prove the remaining obligations.
+
+Simplify using `only [RingHom.mapMatrix_apply, Matrix.map_apply, Algebra.PreSubmersivePresentation.jacobiMatrix_apply]`. Use `show MvPolynomial.map π (pderiv (P.map i) (v j)) = pderiv (P.map i) (P.relation j)`. Rewrite using `[mvPolynomial_map_pderiv_lift, hv]`. Establish `hunit : IsUnit Q.jacobian`. Use `isUnit_of_isUnit_map_of_sqZero_ker p hsurj (I.map (algebraMap R _)) ?_ hker _ (by rw [hjac]; exact P.jacobian_isUnit)` and prove the remaining obligations.
+
+Rewrite using `[← Ideal.map_pow, hI]`. Simplify using the standard rewrite rules. Set `Q' : Algebra.SubmersivePresentation R (MvPolynomial κ R ⧸ J) κ τ` to `{ Q with jacobian_isUnit := hunit }`. Establish `hdim : Q'.dimension = g` using `hP`. Conclude with `⟨_, inferInstance, inferInstance, p, halg, hsurj, hker, Q'.isStandardSmoothOfRelativeDimension hdim⟩`.
+-/
 theorem standardSmoothRelDim_lift_of_sqZero {R R₀ : Type} [CommRing R] [CommRing R₀] (I : Ideal R) (hI : I ^ 2 = 0)
     (π : R →+* R₀) (hπ : Function.Surjective π) (hk : RingHom.ker π = I) (g : ℕ) (B₀ : Type) [CommRing B₀]
     [Algebra R₀ B₀] (hB₀ : Algebra.IsStandardSmoothOfRelativeDimension g R₀ B₀) :
@@ -90,6 +117,17 @@ theorem standardSmoothRelDim_lift_of_sqZero {R R₀ : Type} [CommRing R] [CommRi
   have hdim : Q'.dimension = g := hP
   exact ⟨_, inferInstance, inferInstance, p, halg, hsurj, hker, Q'.isStandardSmoothOfRelativeDimension hdim⟩
 
+/- English proof (translation)
+Establish `hinv : Function.RightInverse (Function.surjInv hp) p` using `Function.surjInv_eq hp`. Establish `hle : ∀ (T : CommRingCat.{0}) (u : C →+* T) (w : R ⧸ J →+* T), (∀ a, u (σ a) = w (Ideal.Quotient.mk J a)) → RingHom.ker p ≤ RingHom.ker u`. Introduce `T u w huw c hc`. Establish `h : J.map σ ≤ RingHom.ker u`. Rewrite using `[Ideal.map_le_iff_le_comap]`.
+
+Introduce `a ha`. Rewrite using `[Ideal.mem_comap, RingHom.mem_ker, huw, Ideal.Quotient.eq_zero_iff_mem.2 ha, map_zero]`. Conclude with `h (hker c hc)`. Establish `hcond : ∀ (s : PushoutCocone (CommRingCat.ofHom σ) (CommRingCat.ofHom (Ideal.Quotient.mk J))) (a : R), s.inl.hom (σ a) = s.inr.hom (Ideal.Quotient.mk J a)` using `fun s a => congr($(s.condition) a)`. Use `⟨⟨by ext a; exact hσ a⟩, ⟨PushoutCocone.IsColimit.mk _ (fun s => CommRingCat.ofHom (p.liftOfRightInverse _ hinv ⟨s.inl.hom, hle _ _ _ (hcond s)⟩)) ?_ ?_ ?_⟩⟩` and prove the remaining obligations.
+
+Introduce `s`. Use extensionality with `c`. Conclude with `p.liftOfRightInverse_comp_apply _ hinv _ c`. Introduce `s`. Use extensionality with `a show p.liftOfRightInverse _ hinv _ (algebraMap (R ⧸ J) C₀ (Ideal.Quotient.mk J a)) = _`.
+
+Rewrite using `[← hσ, p.liftOfRightInverse_comp_apply]`. Conclude with `hcond s a`. Introduce `s m h₁ _`. Use extensionality with `b`. Take `⟨c, rfl⟩` from `hp b`.
+
+Establish `e : m.hom (p c) = s.inl.hom c` using `congr($h₁ c)`. Rewrite using `[e]`. Conclude with `(p.liftOfRightInverse_comp_apply _ hinv ⟨s.inl.hom, hle _ _ _ (hcond s)⟩ c).symm`.
+-/
 theorem isPushout_of_surjective {R C C₀ : Type} [CommRing R] [CommRing C] [CommRing C₀] (J : Ideal R)
     [Algebra (R ⧸ J) C₀] (σ : R →+* C) (p : C →+* C₀) (hp : Function.Surjective p)
     (hσ : ∀ r, p (σ r) = algebraMap (R ⧸ J) C₀ (Ideal.Quotient.mk J r))
@@ -122,6 +160,25 @@ theorem isPushout_of_surjective {R C C₀ : Type} [CommRing R] [CommRing C] [Com
     rw [e]
     exact (p.liftOfRightInverse_comp_apply _ hinv ⟨s.inl.hom, hle _ _ _ (hcond s)⟩ c).symm
 
+/- English proof (translation)
+Introduce `R _ J hJ g B b hsm x`. Set `s₀ : B.left ⟶ Sp (R ⧸ J)` to `b.left`. Establish `hsm₀ : SmoothOfRelativeDimension g s₀` using `hsm`. Take `⟨U₂, hU₂, V₂, hV₂, hx₂, e₂, h₂⟩` from `hsm₀.exists_isStandardSmoothOfRelativeDimension x`. Take `⟨r, s, hxs, e, hf⟩` from `exists_basicOpen_le_appLE_of_appLE_of_isAffine (RingHom.isStandardSmoothOfRelativeDimension_stableUnderCompositionWithLocalizationAway g).2 (RingHom.isStandardSmoothOfRelativeDimension_localizationPreserves g).away x ⟨⊤, isAffineOpen_top _⟩ ⟨U₂, hU₂⟩ ⟨V₂, hV₂⟩ ⟨V₂, hV₂⟩ hx₂ hx₂ e …`.
+
+Set `V : B.left.affineOpens` to `⟨B.left.basicOpen s, hV₂.basicOpen s⟩`. Establish `hle : V.1 ≤ s₀ ⁻¹ᵁ ⊤` using `le_top`. Establish `htop : RingHom.IsStandardSmoothOfRelativeDimension g (s₀.appLE ⊤ V.1 hle).hom`. Establish `: IsLocalization.Away r Γ(Sp (R ⧸ J), (Sp (R ⧸ J)).basicOpen r)` using `(isAffineOpen_top _).isLocalization_basicOpen r`. Establish `heq : s₀.appLE ⊤ V.1 hle = CommRingCat.ofHom (algebraMap Γ(Sp (R ⧸ J), ⊤) Γ(Sp (R ⧸ J), (Sp (R ⧸ J)).basicOpen r)) ≫ s₀.appLE _ _ e`.
+
+Rewrite using `[RingHom.algebraMap_toAlgebra, CommRingCat.ofHom_hom, Scheme.Hom.map_appLE]`. Rewrite using `[heq]`. Conclude with `(RingHom.isStandardSmoothOfRelativeDimension_stableUnderCompositionWithLocalizationAway g).1 _ r _ hf`. Establish `hC₀ : Algebra.IsStandardSmoothOfRelativeDimension g (R ⧸ J) (Sec s₀ V.1)`. Rewrite using `[← RingHom.isStandardSmoothOfRelativeDimension_algebraMap]`.
+
+Conclude with `RingHom.isStandardSmoothOfRelativeDimension_respectsIso.2 _ (Scheme.ΓSpecIso (CommRingCat.of (R ⧸ J))).symm.commRingCatIsoToRingEquiv htop`. Take `⟨C, _, _, p, hpσ, hp, hker, hC⟩` from `standardSmoothRelDim_lift_of_sqZero J (by rw [hJ]; rfl) (Ideal.Quotient.mk J) Ideal.Quotient.mk_surjective (Ideal.mk_ker) g (Sec s₀ V.1) hC₀`. Set `σ : R →+* C` to `algebraMap R C`. Establish `hpo` using `isPushout_of_surjective J σ p hp hpσ hker`. Establish `H1` using `isPullback_SpecMap_of_isPushout _ _ _ _ hpo`.
+
+Set `A : Over (Sp R)` to `Over.mk (spMap σ)`. Set `A' : Over (Sp R)` to `Over.mk (spMap (Ideal.Quotient.mk J))`. Establish `H0 : IsPullback (fst A A').left (snd A A').left A.hom A'.hom` using `IsPullback.of_hasPullback _ _`. Set `k` to `H0.isoIsPullback _ _ H1`. Establish `hk₂ : k.hom ≫ spMap (algebraMap (R ⧸ J) (Sec s₀ V.1)) = (snd A A').left` using `H0.isoIsPullback_hom_snd _ _ H1`.
+
+Establish `hw : (k.hom ≫ affPt s₀ V) ≫ B.hom = (A ⊗ A').hom`. Rewrite using `[← Over.w b, ← Over.w (snd A A'), ← hk₂]`. Simplify using `only [Category.assoc]`. Rewrite using `[← Category.assoc (affPt s₀ V), affPt_w]`. Set `j : A ⊗ A' ⟶ B` to `Over.homMk (k.hom ≫ affPt s₀ V) hw`.
+
+Establish `hjl : j.left = k.hom ≫ affPt s₀ V` using `rfl`. Use `⟨C, inferInstance, σ, j, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Conclude with `HasRingHomProperty.Spec_iff.2 (RingHom.locally_of RingHom.isStandardSmoothOfRelativeDimension_respectsIso _ ((RingHom.isStandardSmoothOfRelativeDimension_algebraMap g).2 hC))`. Use `ext1`. Rewrite using `[Over.comp_left, hjl, Category.assoc]`.
+
+Conclude with `(congrArg (k.hom ≫ ·) (affPt_w s₀ V)).trans hk₂`. Rewrite using `[hjl]`. Use `infer_instance`. Establish `hxV : x ∈ Set.range (affPt s₀ V)` using `by rw [GlobalTheory.LiftSys.Coh.range_affPt]; exact hxs`. Take `⟨z, hz⟩` from `hxV`.
+
+Use `⟨k.inv z, ?_⟩` and prove the remaining obligations. Rewrite using `[hjl, ← Scheme.Hom.comp_apply, Iso.inv_hom_id_assoc, hz]`.
+-/
 theorem exists_chart_lift : ∀ (R : Type) [CommRing R] (J : Ideal R), J ^ 2 = ⊥ → ∀ (g : ℕ) (B : Over (Sp R))
     (b : B ⟶ Over.mk (spMap (Ideal.Quotient.mk J))), SmoothOfRelativeDimension g b.left → ∀ x : B.left,
     ∃ (C : Type) (_ : CommRing C) (σ : R →+* C)

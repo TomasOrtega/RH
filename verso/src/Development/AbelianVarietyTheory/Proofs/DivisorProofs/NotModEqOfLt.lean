@@ -6,6 +6,15 @@ open scoped Classical
 
 namespace GlobalTheory.Shin
 
+/- English proof (translation)
+Introduce `hmod`. Take `⟨d, rfl⟩ : ∃ d, v = u + d` from `⟨v - u, by omega⟩`. Establish `hd0 : 0 < d` using `by omega`. Establish `hdN : d < N` using `by omega`. Establish `hN : 0 < N` using `by omega`.
+
+Establish `hcop : Nat.Coprime (q ^ N - 1) (q ^ u)`. Take `⟨t, ht⟩ : ∃ t, q ^ N = t + 1` from `⟨q ^ N - 1, by have := Nat.one_le_pow N q (by omega); omega⟩`. Establish `h2 : Nat.Coprime (q ^ N - 1) (q ^ N)`. Rewrite using `[ht, Nat.add_sub_cancel]`. Conclude with `Nat.coprime_self_add_right.mpr (Nat.coprime_one_right t)`.
+
+Conclude with `(h2.coprime_dvd_right (dvd_pow_self q hN.ne')).pow_right u`. Establish `key : k * q ^ d ≡ k [MOD q ^ N - 1]`. Apply `Nat.ModEq.cancel_right_of_coprime (c := q ^ u) hcop` to reduce the goal to its premises. Establish `e : k * q ^ d * q ^ u = k * q ^ (u + d)` using `by ring`. Rewrite using `[e]`.
+
+Conclude with `hmod`. Conclude with `h d hd0 hdN key`.
+-/
 theorem Reg.not_modEq_of_lt {q N k u v : ℕ} (hq : 2 ≤ q) (h : Reg q N k) (huv : u < v) (hv : v < u + N) :
     ¬ k * q ^ v ≡ k * q ^ u [MOD q ^ N - 1] := by
   intro hmod
@@ -26,6 +35,21 @@ theorem Reg.not_modEq_of_lt {q N k u v : ℕ} (hq : 2 ≤ q) (h : Reg q N k) (hu
     exact hmod
   exact h d hd0 hdN key
 
+/- English proof (translation)
+Introduce `q l m k hq hl hm h`. Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `i j hj0 hjm hmod`. Simplify using `only [← pow_mul] at hmod`. Rewrite `hmod` using `[mul_assoc, ← pow_add]`.
+
+Establish `hlj : 0 < l * j` using `Nat.mul_pos hl hj0`. Establish `hljm : l * j < l * m` using `(Nat.mul_lt_mul_left hl).mpr hjm`. Conclude with `Reg.not_modEq_of_lt hq h (by omega : i < i + l * j) (by omega : i + l * j < i + l * m) hmod`. Introduce `hlm i hmod`. Establish `h1 : k * q ^ (i + 1) ≡ k * q ^ i [MOD q ^ (l * m) - 1]`.
+
+Establish `e : k * q ^ (i + 1) = k * q ^ i * q` using `by ring`. Rewrite using `[e]`. Establish `h0` using `hmod.mul_right q`. Rewrite `h0` using `[zero_mul]`. Conclude with `h0.trans hmod.symm`.
+
+Conclude with `Reg.not_modEq_of_lt hq h (by omega : i < i + 1) (by omega : i + 1 < i + l * m) h1`. Introduce `i j a hi hj ha`. Prove the components needed by the constructor for the conclusion. Introduce `hmod`. Simplify using `only [← pow_mul] at hmod`.
+
+Rewrite `hmod` using `[mul_assoc, ← pow_add]`. Establish `hla : l * a + l ≤ l * m`. Combine the equalities or inequalities in the displayed calculation. Break down `lt_trichotomy (i + l * a) j with hlt | heq | hgt` into its components or cases. Conclude with `absurd hmod.symm (Reg.not_modEq_of_lt hq h hlt (by omega))`.
+
+Break down `Nat.eq_zero_or_pos a with ha0 | ha0` into its components or cases. Substitute `ha0` using the available equality. Simplify using `at heq`. Conclude with `⟨heq, rfl⟩`. Use `Nat.le_mul_of_pos_right l ha0` as an intermediate fact.
+
+Use linear arithmetic over natural numbers and integers. Conclude with `absurd hmod (Reg.not_modEq_of_lt hq h hgt (by omega))`. Introduce and unpack `⟨rfl, rfl⟩`. Simplify using `[Nat.ModEq]`.
+-/
 theorem reg_step_of_dvd : ∀ q l m k : ℕ, 2 ≤ q → 0 < l → 0 < m → Reg q (l * m) k →
     (∀ i, Reg (q ^ l) m (k * q ^ i)) ∧ (2 ≤ l * m → ∀ i, ¬ k * q ^ i ≡ 0 [MOD q ^ (l * m) - 1]) ∧
     ∀ i j a, i < l → j < l → a < m →

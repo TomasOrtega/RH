@@ -13,6 +13,15 @@ open scoped GlobalTheory.VacAny
 
 open GlobalTheory.VanishLoc GlobalTheory.LatVac in
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ B a b G G₁ H H' hC e' hE X om om' om₁ om₁' hT hT₁ ei ev hei hvac hfac φ hφ`. Establish `hψ : Continuous B.ψ` using `hT.base.std.1`. Establish `hψv : Continuous (psiAt B.ψ B.v₁)` using `GlobalTheory.SchrSB.continuous_psiAt B.ψ hψ B.v₁`. Establish `hne : psiAt B.ψ B.v₁ ≠ 1` using `GlobalTheory.PsiNontriv.psiAt_ne_one B.ψ hT.base.std B.v₁`. Use `set U : Set (Fv F B.v₁ ⊗[F] E) := {t | schr (psiAt B.ψ B.v₁) (locCo G.M'.co B.v₁ (uAt H H' B.v₁ t)) φ = φ} with hUdef`.
+
+Establish `hU : U ∈ nhds 0` using `(GlobalTheory.T.local_coefficient_tendsto_zero G.M' H H' B.v₁).eventually (GlobalTheory.T.schrodinger_locally_constant B.v₁ (psiAt B.ψ B.v₁) hψv φ hφ)`. Use `⟨_, GlobalTheory.T.trace_character_annihilator_compact B.v₁ (psiAt B.ψ B.v₁) hψv hne U hU, fun l hl => ?_⟩` and prove the remaining obligations. Simplify using `only [Set.mem_setOf_eq, not_forall] at hl`. Take `⟨t, ht, hne1⟩` from `hl`. Establish `ht' : schr (psiAt B.ψ B.v₁) (locCo G.M'.co B.v₁ (uAt H H' B.v₁ t)) φ = φ` using `ht`.
+
+Rewrite using `[(locOp_rho G.M'.co hψ B.v₁ (shiftB σ H H' l) hφ).2]`. Establish `hS : schr (psiAt B.ψ B.v₁) (locCo G.M'.co B.v₁ (shiftB σ H H' l)) φ ∈ SB _` using `GlobalTheory.SchrSB.schr_mem_SB B.ψ hψ B.v₁ _ φ hφ`. Establish `h1` using `GlobalTheory.T.evaluation_iso_b_triple_pair B G G₁ H H' e' hE X om om' om₁ om₁' hT hT₁ ei ev hei hvac hfac B.v₁ (uAt H H' B.v₁ t) (uAt_mem_isoB H H' B.v₁ t) (at_uAt H H' B.v₁ t) _ hS`. Rewrite `h1` using `[schr_comm, ht', map_smul, GlobalTheory.T.local_coefficient_idele_scaling B G G₁ H H' hC X om om' hT B.v₁ t l]`. Establish `h2 : (psiAt B.ψ B.v₁ (Algebra.trace (Fv F B.v₁) (Fv F B.v₁ ⊗[F] E) (t * compFin F E B.v₁ l.1)) - 1) • ev B.v₁ (schr (psiAt B.ψ B.v₁) (locCo G.M'.co B.v₁ (shiftB σ H H' l)) φ) = 0`.
+
+Rewrite using `[sub_smul, h1, one_smul, sub_self]`. Conclude with `(smul_eq_zero.1 h2).resolve_left (sub_ne_zero.2 hne1)`.
+-/
 theorem GlobalTheory.VanishLoc.vanish_off_compact : ∀ {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E} (B : Base F E) {a b : ℕ}
     (G : Geo σ a (b + 2)) (G₁ : Geo σ a b) (H : Plane E (b + 2) b) (H' : Plane E (a + (b + 2)) (a + b)), CfgB B G G₁ H H' →
     ∀ (e' : Fn F (b + 2) (a + (b + 2)) →ₗ[ℂ] Fn F b (a + b)), IsEv B G.M' G₁.M' H.ι H'.ι (isoB H H') e' →

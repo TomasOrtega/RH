@@ -23,6 +23,11 @@ section
 open Formalism.BasicNotions Formalism.MainNotions GlobalTheory.EX GlobalTheory.EX.OB GlobalTheory.Mem GlobalTheory.Mem.Top GlobalTheory.Mem.Top.GroupRetwisting GlobalTheory.Mem.Top.Bl GlobalTheory.Fc GlobalTheory.RowEx GlobalTheory.Mem.LiteralAutomorphy
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 namespace GlobalTheory.Mem.LiteralAutomorphy
+/- English proof (translation)
+Introduce `hR hL CF N S Γ hN hD hT`. Establish `hA` using `_root_.GlobalTheory.T.class_sum_divisor_all_alt hR hL (_root_.GlobalTheory.Mem.LiteralAutomorphy.extensionWithAtProperty hL N (GridA CF)) S Γ (fun K B f T w Z Wt p0 t nch n xd c h => (hN K B f T w Z Wt p0 t nch n xd c h.1).map fun x => x.1) hD`. Establish `hG : _root_.GlobalTheory.Fc.RL.LinkedAt (_root_.GlobalTheory.Mem.Top.Bl.parametersOfExtension (_root_.GlobalTheory.Mem.LiteralAutomorphy.extensionWithAtProperty hL N (GridA CF)) S Γ) fun S L => Row S L (AtAll fun D O c (b : _root_.GlobalTheory.Fc.BundleCondition D O c) => ∀ t : b …` using `_root_.GlobalTheory.Fc.RL.LinkedAt.of_row (RowE.row (_root_.GlobalTheory.T.grid_field_has_lattices_alt hL CF N S Γ hN))`. Take `⟨R, r, h⟩` from `RowL.and (RowL.and hA hG) hT`. Use `⟨R, r, Row.imp h fun 𝒜 σ _ H => ?_⟩` and prove the remaining obligations.
+
+Introduce `eps Fm hc x hx i`. Take `⟨t⟩` from `H.2 Fm hc x hx i`. Take `⟨a, b, c, d, e⟩` from `H.1.1 Fm hc x hx i t`. Conclude with `⟨t, a, b, c, d, e, H.1.2 Fm hc x hx i t c⟩`.
+-/
 theorem rowGeo_at_gridA_alt : GlobalTheory.NT.RayField → ∀ (hL : _root_.UpperTheory.Zero.LLC.RecTExists) (CF : ℝ) (N : _root_.GlobalTheory.Mem.Top.Bl.NormChoiceExtension hL) (S : SExt) (Γ : GeoP),
     (∀ K B f T w Z Wt p0 t nch n xd c, N K B f T w Z Wt p0 t nch n xd c →
       Nonempty (_root_.GlobalTheory.HeightCounting.Up.extensionWithList hL CF K B f T w Z Wt p0 t nch n xd c)) →

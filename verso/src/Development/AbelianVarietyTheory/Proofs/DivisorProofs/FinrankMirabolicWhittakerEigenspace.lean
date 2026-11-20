@@ -11,10 +11,18 @@ section Abstract
 
 variable {G V F : Type} [Group G] [AddCommGroup V] [Module ℂ V] [Field F]
 
+/- English proof (translation)
+Simplify using `[eig, Submodule.mem_iInf, sub_eq_zero]`.
+-/
 theorem mem_eig (τ : Representation ℂ G V) (S : Set G) (χ : G → ℂ) (v : V) :
     v ∈ eig τ S χ ↔ ∀ g ∈ S, τ g v = χ g • v := by
   simp [eig, Submodule.mem_iInf, sub_eq_zero]
 
+/- English proof (translation)
+Use extensionality with `v`. Rewrite using `[mem_eig, mem_eig]`. Prove the components needed by the constructor for the conclusion. Introduce `hv g hg`. Rewrite using `[hv g ((hS g).2 hg), h g ((hS g).2 hg)]`.
+
+Introduce `hv g hg`. Rewrite using `[hv g ((hS g).1 hg), h g hg]`.
+-/
 theorem eig_congr (τ : Representation ℂ G V) {S S' : Set G} {χ χ' : G → ℂ} (hS : ∀ g, g ∈ S ↔ g ∈ S')
     (h : ∀ g ∈ S, χ g = χ' g) : eig τ S χ = eig τ S' χ' := by
   ext v
@@ -25,6 +33,13 @@ theorem eig_congr (τ : Representation ℂ G V) {S S' : Set G} {χ χ' : G → �
   · intro hv g hg
     rw [hv g ((hS g).1 hg), h g hg]
 
+/- English proof (translation)
+Establish `hinj : Function.Injective (τ g)`. Introduce `x y hxy`. Use `congrArg (τ g⁻¹) hxy` as an intermediate fact. Simplify using `using this`. Rewrite using `[(Submodule.equivMapOfInjective (τ g) hinj (eig τ S χ)).finrank_eq]`.
+
+Use `Submodule.finrank_mono ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨v, hv, rfl⟩`. Rewrite using `[mem_eig]`. Introduce `s hs`. Establish `h1` using `(mem_eig τ S χ v).1 hv _ (h s hs).1`.
+
+Establish `h2 : τ s (τ g v) = τ g (τ (g⁻¹ * s * g) v)`. Rewrite using `[← Module.End.mul_apply, ← Module.End.mul_apply, ← map_mul, ← map_mul]`. Use `congr 2`. Use `group`. Rewrite using `[h2, h1, (h s hs).2, map_smul]`.
+-/
 theorem finrank_eig_conj_le [FiniteDimensional ℂ V] (τ : Representation ℂ G V) {S S' : Set G} {χ χ' : G → ℂ} (g : G)
     (h : ∀ s ∈ S', g⁻¹ * s * g ∈ S ∧ χ (g⁻¹ * s * g) = χ' s) :
     finrank ℂ (eig τ S χ) ≤ finrank ℂ (eig τ S' χ') := by
@@ -44,6 +59,17 @@ theorem finrank_eig_conj_le [FiniteDimensional ℂ V] (τ : Representation ℂ G
     group
   rw [h2, h1, (h s hs).2, map_smul]
 
+/- English proof (translation)
+Establish `hc : (Fintype.card K : ℂ) ≠ 0` using `by exact_mod_cast Fintype.card_ne_zero`. Use `set e : V →ₗ[ℂ] V := (Fintype.card K : ℂ)⁻¹ • ∑ k : K, ψ (-f k) • τ k with he`. Establish `hp : LinearMap.IsProj (eig τ K fun g => ψ (f g)) e`. Prove the components needed by the constructor for the conclusion. Introduce `v`.
+
+Rewrite using `[mem_eig]`. Introduce `g hg`. Simplify using `only [he, LinearMap.smul_apply, LinearMap.sum_apply, map_smul, map_sum]`. Rewrite using `[smul_comm]`. Use `congr 1`.
+
+Rewrite using `[Finset.smul_sum]`. Use `Fintype.sum_equiv (Equiv.mulLeft (⟨g, hg⟩ : K)) _ _ fun k => ?_` and prove the remaining obligations. Simplify using `only [Equiv.coe_mulLeft, Subgroup.coe_mul]`. Rewrite using `[hf g hg k k.2, smul_smul, ← AddChar.map_add_eq_mul, map_mul, Module.End.mul_apply]`. Use `congr 2`.
+
+Expand and normalize the polynomial expressions, which then agree. Introduce `v hv`. Rewrite `hv` using `[mem_eig]`. Simplify using `only [he, LinearMap.smul_apply, LinearMap.sum_apply]`. Rewrite using `[Finset.sum_congr rfl (g := fun _ => v) fun k _ => by`.
+
+Rewrite using `[hv k k.2, smul_smul, ← AddChar.map_add_eq_mul, neg_add_cancel, AddChar.map_zero_eq_one, one_smul]]`. Rewrite using `[Finset.sum_const, Finset.card_univ, ← Nat.cast_smul_eq_nsmul ℂ, smul_smul, inv_mul_cancel₀ hc, one_smul]`. Rewrite using `[← hp.trace, he, map_smul, map_sum, smul_eq_mul, ← mul_assoc, mul_inv_cancel₀ hc, one_mul]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[map_smul, smul_eq_mul]`.
+-/
 theorem card_mul_finrank_eig [FiniteDimensional ℂ V] [Finite G] (τ : Representation ℂ G V) (ψ : AddChar F ℂ)
     (K : Subgroup G) [Fintype K] (f : G → F) (hf : ∀ x ∈ K, ∀ y ∈ K, f (x * y) = f x + f y) :
     (Fintype.card K : ℂ) * finrank ℂ (eig τ K fun g => ψ (f g)) =
@@ -74,6 +100,23 @@ theorem card_mul_finrank_eig [FiniteDimensional ℂ V] [Finite G] (τ : Represen
   refine Finset.sum_congr rfl fun k _ => ?_
   rw [map_smul, smul_eq_mul]
 
+/- English proof (translation)
+Use `haveI : Fintype K := Fintype.ofFinite K`. Use `haveI : Fintype C := Fintype.ofFinite C`. Establish `hK : (Fintype.card K : ℂ) ≠ 0` using `by exact_mod_cast Fintype.card_ne_zero`. Set `φ : K →* Multiplicative F` to `MonoidHom.mk' (fun k => Multiplicative.ofAdd (l k)) fun x y => by`. Rewrite using `[← ofAdd_add, Subgroup.coe_mul, hl _ x.2 _ y.2]`.
+
+Establish `hφ : φ.range = ⊤`. Rewrite using `[MonoidHom.range_eq_top]`. Introduce `t`. Take `⟨x, hx, e⟩` from `hs t.toAdd`. Conclude with `⟨⟨x, hx⟩, by show Multiplicative.ofAdd (l x) = t; rw [e]; rfl⟩`.
+
+Set `ε : C ≃ {k : K // l k = 0}` to `{ toFun := fun c => ⟨⟨c, ((hC c).1 c.2).1⟩, ((hC c).1 c.2).2⟩ invFun := fun k => ⟨k.1, (hC _).2 ⟨k.1.2, k.2⟩⟩ left_inv := fun _ => rfl right_inv := fun _ => rfl }`. Establish `hcard : Fintype.card K = Fintype.card C * Fintype.card F`. Establish `h1` using `φ.ker.card_mul_index`. Rewrite `h1` using `[Subgroup.index_ker, hφ, Subgroup.card_top, Nat.card_eq_fintype_card (α := K), Nat.card_eq_fintype_card (α := Multiplicative F), Fintype.card_multiplicative]`. Rewrite using `[← h1, ← Nat.card_eq_fintype_card (α := C)]`.
+
+Use `congr 1`. Conclude with `(Nat.card_congr ε).symm`. Establish `h0` using `card_mul_finrank_eig τ ψ C f fun x hx y hy => hf x ((hC x).1 hx).1 y ((hC y).1 hy).1`. Establish `h1 : ∀ c : F, _` using `fun c => card_mul_finrank_eig τ ψ K (fun g => f g + c * l g) fun x hx y hy => by`. Simplify using `only [hf x hx y hy, hl x hx y hy]`.
+
+Expand and normalize the polynomial expressions, which then agree. Establish `h2 : (Fintype.card K : ℂ) * finrank ℂ (eig τ C fun g => ψ (f g)) = (Fintype.card K : ℂ) * ∑ c : F, (finrank ℂ (eig τ K fun g => ψ (f g + c * l g)) : ℂ)`. Rewrite using `[Finset.mul_sum, Finset.sum_congr rfl fun c _ => h1 c, Finset.sum_comm, hcard, Nat.cast_mul, mul_right_comm, h0]`. Establish `h3 : ∀ k : K, ∑ c : F, ψ (-(f k + c * l k)) * LinearMap.trace ℂ V (τ k) = if l k = 0 then ψ (-f k) * LinearMap.trace ℂ V (τ k) * Fintype.card F else 0`. Introduce `k`.
+
+Establish `h4` using `AddChar.sum_mulShift (-l k) (AddChar.IsPrimitive.of_ne_one hψ)`. Establish `h5 : ∀ c : F, ψ (-(f k + c * l k)) * LinearMap.trace ℂ V (τ k) = ψ (-f k) * LinearMap.trace ℂ V (τ k) * ψ (c * -l k)`. Introduce `c`. Rewrite using `[mul_right_comm, ← AddChar.map_add_eq_mul]`. Use `congr 2`.
+
+Expand and normalize the polynomial expressions, which then agree. Rewrite using `[Finset.sum_congr rfl fun c _ => h5 c, ← Finset.mul_sum, h4]`. Apply the tactic sequence `by_cases h : l k = 0 <;> simp [h]`. Rewrite using `[Finset.sum_congr rfl fun k _ => h3 k, ← Finset.sum_filter, Finset.sum_subtype (p := fun k : K => l k = 0) _ (by simp), Finset.sum_mul]`. Conclude with `Fintype.sum_equiv ε _ _ fun c => rfl`.
+
+Conclude with `mul_left_cancel₀ hK h2` after adjusting the coercions.
+-/
 theorem finrank_eig_fourier [FiniteDimensional ℂ V] [Finite G] [Fintype F] (τ : Representation ℂ G V) {ψ : AddChar F ℂ}
     (hψ : ψ ≠ 1) (K C : Subgroup G) (f l : G → F) (hf : ∀ x ∈ K, ∀ y ∈ K, f (x * y) = f x + f y)
     (hl : ∀ x ∈ K, ∀ y ∈ K, l (x * y) = l x + l y) (hs : ∀ t, ∃ x ∈ K, l x = t) (hC : ∀ x, x ∈ C ↔ x ∈ K ∧ l x = 0) :
@@ -124,6 +167,11 @@ theorem finrank_eig_fourier [FiniteDimensional ℂ V] [Finite G] [Fintype F] (τ
     exact Fintype.sum_equiv ε _ _ fun c => rfl
   exact_mod_cast mul_left_cancel₀ hK h2
 
+/- English proof (translation)
+Establish `h1 : ∀ s s' : F, finrank ℂ (eig τ K fun g => ψ (f g + s * l g)) ≤ finrank ℂ (eig τ K fun g => ψ (f g + s' * l g))`. Introduce `s s'`. Take `⟨y, hy⟩` from `hy (s' - s)`. Use `finrank_eig_conj_le τ y fun u hu => ⟨(hy u hu).1, ?_⟩` and prove the remaining obligations. Rewrite using `[(hy u hu).2.1, (hy u hu).2.2]`.
+
+Use `congr 1`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[finrank_eig_fourier τ hψ K C f l hf hl hs hC, Finset.sum_congr rfl fun c _ => le_antisymm (h1 c 0) (h1 0 c), show (fun g => ψ (f g + 0 * l g)) = fun g => ψ (f g) by simp]`. Simplify using the standard rewrite rules.
+-/
 theorem finrank_eig_half [FiniteDimensional ℂ V] [Finite G] [Fintype F] (τ : Representation ℂ G V) {ψ : AddChar F ℂ}
     (hψ : ψ ≠ 1) (K C : Subgroup G) (f l : G → F) (hf : ∀ x ∈ K, ∀ y ∈ K, f (x * y) = f x + f y)
     (hl : ∀ x ∈ K, ∀ y ∈ K, l (x * y) = l x + l y) (hs : ∀ t, ∃ x ∈ K, l x = t) (hC : ∀ x, x ∈ C ↔ x ∈ K ∧ l x = 0)
@@ -142,6 +190,19 @@ theorem finrank_eig_half [FiniteDimensional ℂ V] [Finite G] [Fintype F] (τ : 
     show (fun g => ψ (f g + 0 * l g)) = fun g => ψ (f g) by simp]
   simp
 
+/- English proof (translation)
+Establish `hconj : ∀ φ : G → F, (∀ x ∈ D, ∀ y ∈ D, φ (x * y) = φ x + φ y) → ∀ y ∈ D, ∀ u ∈ D, φ (y⁻¹ * u * y) = φ u`. Introduce `φ h y hy u hu`. Establish `h1` using `h y hy _ (D.mul_mem (D.mul_mem (D.inv_mem hy) hu) hy)`. Rewrite `h1` using `[show y * (y⁻¹ * u * y) = u * y by group, h u hu y hy]`. Take the linear combination `-h1`.
+
+Establish `hfc : ∀ y ∈ D, ∀ u ∈ D, f (y⁻¹ * u * y) = f u + l u * m y - l y * m u`. Introduce `y hy u hu`. Establish `h1` using `hf y hy _ (D.mul_mem (D.mul_mem (D.inv_mem hy) hu) hy)`. Rewrite `h1` using `[show y * (y⁻¹ * u * y) = u * y by group, hf u hu y hy, hconj m hm y hy u hu]`. Take the linear combination `-h1`.
+
+Establish `e1` using `finrank_eig_half τ hψ K (K ⊓ K') f l (fun x hx y hy => by rw [hf x ((hK x).1 hx).1 y ((hK y).1 hy).1, ((hK y).1 hy).2, mul_zero, add_zero]) (fun x hx y hy => hl x ((hK x).1 hx).1 y ((hK y).1 hy).1) hs (fun x => by rw [Subgroup.mem_inf, hK, hK']; tauto) (fun t => by`. Take `⟨y, hy, e⟩` from `hs' t`. Take `⟨hy, hy0⟩` from `(hK' y).1 hy`. Use `⟨y, fun u hu => ?_⟩` and prove the remaining obligations. Take `⟨hu, hu0⟩` from `(hK u).1 hu`.
+
+Use `⟨(hK _).2 ⟨D.mul_mem (D.mul_mem (D.inv_mem hy) hu) hy, by rw [hconj m hm y hy u hu, hu0]⟩, hconj l hl y hy u hu, ?_⟩` and prove the remaining obligations. Rewrite using `[hfc y hy u hu, hu0, e]`. Use the proof step `ring)`. Establish `e2` using `finrank_eig_half τ hψ K' (K ⊓ K') f m (fun x hx y hy => by rw [hf x ((hK' x).1 hx).1 y ((hK' y).1 hy).1, ((hK' x).1 hx).2, zero_mul, add_zero]) (fun x hx y hy => hm x ((hK' x).1 hx).1 y ((hK' y).1 hy).1) hs' (fun x => by rw [Subgroup.mem_inf, hK, hK']; tauto) (fun t => by`. Take `⟨y, hy, e⟩` from `hs (-t)`.
+
+Take `⟨hy, hy0⟩` from `(hK y).1 hy`. Use `⟨y, fun u hu => ?_⟩` and prove the remaining obligations. Take `⟨hu, hu0⟩` from `(hK' u).1 hu`. Use `⟨(hK' _).2 ⟨D.mul_mem (D.mul_mem (D.inv_mem hy) hu) hy, by rw [hconj l hl y hy u hu, hu0]⟩, hconj m hm y hy u hu, ?_⟩` and prove the remaining obligations. Rewrite using `[hfc y hy u hu, hu0, e]`.
+
+Use the proof step `ring)`. Conclude with `Nat.eq_of_mul_eq_mul_left Fintype.card_pos (e1.symm.trans e2)`.
+-/
 theorem finrank_eig_exchange [FiniteDimensional ℂ V] [Finite G] [Fintype F] (τ : Representation ℂ G V) {ψ : AddChar F ℂ}
     (hψ : ψ ≠ 1) (D K K' : Subgroup G) (f l m : G → F) (hf : ∀ x ∈ D, ∀ y ∈ D, f (x * y) = f x + f y + l x * m y)
     (hl : ∀ x ∈ D, ∀ y ∈ D, l (x * y) = l x + l y) (hm : ∀ x ∈ D, ∀ y ∈ D, m (x * y) = m x + m y)
@@ -186,6 +247,17 @@ theorem finrank_eig_exchange [FiniteDimensional ℂ V] [Finite G] [Fintype F] (�
 
 end Abstract
 
+/- English proof (translation)
+Take `⟨p, rfl⟩ : ∃ p, q = p + 1` from `⟨q - 1, by omega⟩`. Establish `hg : ∀ l, gam (p + 1) (l + 1) = p * (p + 1) ^ l`. Introduce `l`. Simplify using `only [gam, Nat.add_one_ne_zero, if_false, Nat.add_sub_cancel, pow_succ, mul_add, mul_one]`. Expand and normalize the polynomial expressions, which then agree.
+
+Establish `key : ∀ m ≤ k + 1, ∑ a ∈ Finset.range m, W a = ∑ j ∈ Finset.range m, (p + 1) ^ (m - 1 - j) * D j`. Introduce `m`. Proceed by induction on `m with`. Consider the case `zero => simp`. Consider the case `succ m ih`.
+
+Introduce `hm`. Rewrite using `[Finset.sum_range_succ, Finset.sum_range_succ, h m (by omega), ih (by omega), Nat.add_sub_cancel, Nat.add_sub_cancel, Nat.sub_self, pow_zero, one_mul, add_comm (D m), ← add_assoc, Finset.mul_sum, ← Finset.sum_add_distrib]`. Use `congr 1`. Use `Finset.sum_congr rfl fun j hj => ?_` and prove the remaining obligations. Rewrite `hj` using `[Finset.mem_range]`.
+
+Rewrite using `[show m - j = m - 1 - j + 1 by omega, pow_succ]`. Expand and normalize the polynomial expressions, which then agree. Introduce `m hm`. Rewrite using `[h m hm, key m (by omega), Finset.sum_range_succ, Nat.sub_self, Nat.add_sub_cancel, Finset.mul_sum, add_comm]`. Use `congr 1`.
+
+Use `Finset.sum_congr rfl fun j hj => ?_` and prove the remaining obligations. Rewrite `hj` using `[Finset.mem_range]`. Rewrite using `[show m - j = m - 1 - j + 1 by omega, hg]`. Expand and normalize the polynomial expressions, which then agree. Simplify using `[gam]`.
+-/
 theorem solve_rec (q : ℕ) (hq : 1 ≤ q) (k : ℕ) (W D : ℕ → ℕ)
     (h : ∀ m ≤ k, W m = D m + (q - 1) * ∑ a ∈ Finset.range m, W a) :
     ∀ m ≤ k, W m = ∑ j ∈ Finset.range (m + 1), gam q (m - j) * D j := by
@@ -240,15 +312,26 @@ def pat (F : Type) [Field F] [Fintype F] (n a e e' m : ℕ) : Subgroup (GL (Fin 
       exact (Submonoid.powers_le.2 (show x ∈ M from hx))
         (mem_powers_iff_mem_zpowers.2 (Subgroup.inv_mem _ (Subgroup.mem_zpowers x))) }
 
+/- English proof (translation)
+Unfold both sides. The equivalence is reflexive.
+-/
 theorem mem_pat {a e e' m : ℕ} {u : GL (Fin n) F} : u ∈ pat F n a e e' m ↔ u ∈ unip F n ∧
     ∀ i j : Fin n, i < j → (i.val = a ∧ j.val < e) ∨ (e' ≤ i.val ∧ j.val = m) →
       (u : Matrix (Fin n) (Fin n) F) i j = 0 := Iff.rfl
 
 omit [Fintype F] in
+/- English proof (translation)
+Unfold both sides. The equivalence is reflexive.
+-/
 theorem mem_unip {u : GL (Fin n) F} : u ∈ unip F n ↔ (∀ i j : Fin n, j < i → (u : Matrix (Fin n) (Fin n) F) i j = 0) ∧
     ∀ i, (u : Matrix (Fin n) (Fin n) F) i i = 1 := Iff.rfl
 
 omit [Fintype F] in
+/- English proof (translation)
+Rewrite using `[Units.val_mul, Matrix.mul_apply, ← Finset.sum_subset (Finset.subset_univ {i, e, j}), Finset.sum_insert (by simp; omega), Finset.sum_pair (by omega), unip_diag hx, unip_diag hy]`. Expand and normalize the polynomial expressions, which then agree. Introduce `l _ hl`. Simplify using `only [Finset.mem_insert, Finset.mem_singleton, not_or] at hl`. Break down `lt_or_gt_of_ne hl.1 with h | h` into its components or cases.
+
+Rewrite using `[unip_lower hx h, zero_mul]`. Break down `lt_or_gt_of_ne hl.2.2 with h' | h'` into its components or cases. Conclude with `hmid l h h' hl.2.1`. Rewrite using `[unip_lower hy h', mul_zero]`.
+-/
 theorem unip_mul_entry_exc {x y : GL (Fin n) F} (hx : x ∈ unip F n) (hy : y ∈ unip F n) {i e j : Fin n} (hie : i < e)
     (hej : e < j) (hmid : ∀ l, i < l → l < j → l ≠ e →
       (x : Matrix (Fin n) (Fin n) F) i l * (y : Matrix (Fin n) (Fin n) F) l j = 0) :
@@ -267,6 +350,11 @@ theorem unip_mul_entry_exc {x y : GL (Fin n) F} (hx : x ∈ unip F n) (hy : y �
       · rw [unip_lower hy h', mul_zero]
 
 omit [Fintype F] in
+/- English proof (translation)
+Unfold `edgeSum`. Rewrite using `[← Finset.sum_add_distrib]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[← Finset.sum_add_distrib]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations.
+
+Use `split_ifs with h`. Use `hE i j h` as an intermediate fact. Apply the tactic sequence `exact unip_mul_entry hx hy (by omega) fun l h1 h2 => by omega`. Rewrite using `[add_zero]`.
+-/
 theorem edgeSum_mul (Ed : Fin n → Fin n → Prop) [DecidableRel Ed] (hE : ∀ i j, Ed i j → j.val = i.val + 1)
     {x y : GL (Fin n) F} (hx : x ∈ unip F n) (hy : y ∈ unip F n) :
     edgeSum Ed (x * y) = edgeSum Ed x + edgeSum Ed y := by
@@ -281,6 +369,11 @@ theorem edgeSum_mul (Ed : Fin n → Fin n → Prop) [DecidableRel Ed] (hE : ∀ 
   · rw [add_zero]
 
 omit [Fintype F] in
+/- English proof (translation)
+Unfold `edgeSum`. Use `Fintype.sum_equiv σ _ _ fun i => Fintype.sum_equiv σ _ _ fun j => ?_` and prove the remaining obligations. Break down `h i j with h | h | h` into its components or cases. Rewrite using `[if_pos h.1, if_pos h.2.1, h.2.2]`. Rewrite using `[if_neg h.1, if_neg h.2]`.
+
+Rewrite using `[h.1, h.2, ite_self, ite_self]`.
+-/
 theorem edgeSum_congr (Ed Ed' : Fin n → Fin n → Prop) [DecidableRel Ed] [DecidableRel Ed'] (σ : Equiv.Perm (Fin n))
     {x y : GL (Fin n) F}
     (h : ∀ i j, (Ed i j ∧ Ed' (σ i) (σ j) ∧
@@ -295,6 +388,13 @@ theorem edgeSum_congr (Ed Ed' : Fin n → Fin n → Prop) [DecidableRel Ed] [Dec
   · rw [h.1, h.2, ite_self, ite_self]
 
 omit [Fintype F] in
+/- English proof (translation)
+Establish `h1 : (x : Matrix (Fin n) (Fin n) F) a m = ∑ i, ∑ j, if i = a ∧ j = m then (x : Matrix (Fin n) (Fin n) F) i j else 0`. Simplify using `[ite_and]`. Unfold `edgeSum`. Rewrite using `[h1, ← Finset.sum_add_distrib]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[← Finset.sum_add_distrib]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Distinguish the cases in `h2 : i = a ∧ j = m`. Take `⟨rfl, rfl⟩` from `h2`. Simplify using `[h0, h]`.
+
+Simplify using `[h2, h]`.
+-/
 theorem edgeSum_add (Ed Ed' : Fin n → Fin n → Prop) [DecidableRel Ed] [DecidableRel Ed'] (a m : Fin n) (h0 : ¬ Ed a m)
     (h : ∀ i j, Ed' i j ↔ Ed i j ∨ (i = a ∧ j = m)) (x : GL (Fin n) F) :
     edgeSum Ed x + (x : Matrix (Fin n) (Fin n) F) a m = edgeSum Ed' x := by
@@ -311,6 +411,13 @@ theorem edgeSum_add (Ed Ed' : Fin n → Fin n → Prop) [DecidableRel Ed] [Decid
     simp [h0, h]
   · simp [h2, h]
 
+/- English proof (translation)
+Establish `hne : s ≠ t` using `ne_of_lt hst`. Use `⟨Matrix.GeneralLinearGroup.mkOfDetNeZero (Matrix.transvection s t c) (by rw [Matrix.det_transvection_of_ne _ _ hne]; exact one_ne_zero), ?_, ?_⟩` and prove the remaining obligations. Establish `h : ∀ i j : Fin n, ¬ (s = i ∧ t = j) → Matrix.transvection s t c i j = (1 : Matrix (Fin n) (Fin n) F) i j`. Introduce `i j hij`. Simplify using `[Matrix.transvection, Matrix.single, hij]`.
+
+Use `⟨⟨fun i j hij => ?_, fun i => ?_⟩, fun i j hij hz' => ?_⟩` and prove the remaining obligations. Establish `hij : j < i` using `hij show Matrix.transvection s t c i j = 0`. Rewrite using `[h i j (by omega), Matrix.one_apply_ne (by omega)]`. Use `show Matrix.transvection s t c i i = 1`. Rewrite using `[h i i (by omega), Matrix.one_apply_eq]`.
+
+Use `show Matrix.transvection s t c i j = 0`. Rewrite using `[h i j (by rintro ⟨rfl, rfl⟩; exact hz hz'), Matrix.one_apply_ne (by omega)]`. Use `show Matrix.transvection s t c s t = c`. Simplify using `[Matrix.transvection, hne]`.
+-/
 theorem exists_transv {a e e' m : ℕ} {s t : Fin n} (hst : s < t)
     (hz : ¬ ((s.val = a ∧ t.val < e) ∨ (e' ≤ s.val ∧ t.val = m))) (c : F) :
     ∃ u ∈ pat F n a e e' m, (u : Matrix (Fin n) (Fin n) F) s t = c := by
@@ -332,6 +439,13 @@ theorem exists_transv {a e e' m : ℕ} {s t : Fin n} (hst : s < t)
     simp [Matrix.transvection, hne]
 
 omit [Fintype F] in
+/- English proof (translation)
+Use `⟨⟨Matrix.of fun a j => if a = σ j then 1 else 0, Matrix.of fun i a => if a = σ i then 1 else 0, ?_, ?_⟩, fun _ _ => rfl, fun s i j => ?_⟩` and prove the remaining obligations. Use extensionality with `a b`. Rewrite using `[Matrix.mul_apply, Finset.sum_eq_single (σ.symm a)]`. Simplify using `[Matrix.one_apply, eq_comm]`. Introduce `l _ hl`.
+
+Establish `: a ≠ σ l` using `fun h => hl (by simp [h])`. Simplify using `[this]`. Simplify using the standard rewrite rules. Use extensionality with `a b`. Simplify using `[Matrix.mul_apply, Matrix.one_apply, eq_comm]`.
+
+Simplify using `[Matrix.mul_apply]`.
+-/
 theorem exists_perm (σ : Equiv.Perm (Fin n)) : ∃ g : GL (Fin n) F,
     (∀ a j, (g : Matrix (Fin n) (Fin n) F) a j = if a = σ j then 1 else 0) ∧
     ∀ (s : GL (Fin n) F) i j, ((g⁻¹ * s * g : GL (Fin n) F) : Matrix (Fin n) (Fin n) F) i j =
@@ -350,6 +464,9 @@ theorem exists_perm (σ : Equiv.Perm (Fin n)) : ∃ g : GL (Fin n) F,
   · simp [Matrix.mul_apply]
 
 omit [Fintype F] in
+/- English proof (translation)
+Use `⟨⟨Matrix.diagonal d, Matrix.diagonal fun i => (d i)⁻¹, ?_, ?_⟩, rfl, fun s i j => ?_⟩` and prove the remaining obligations. Simplify using `[hd]`. Simplify using `[hd]`. Simplify using the standard rewrite rules.
+-/
 theorem exists_diag (d : Fin n → F) (hd : ∀ i, d i ≠ 0) : ∃ g : GL (Fin n) F,
     (g : Matrix (Fin n) (Fin n) F) = Matrix.diagonal d ∧
     ∀ (s : GL (Fin n) F) i j, ((g⁻¹ * s * g : GL (Fin n) F) : Matrix (Fin n) (Fin n) F) i j =
@@ -371,6 +488,9 @@ def dm (π : Representation ℂ P V) (ψ : AddChar F ℂ) (H : Subgroup (GL (Fin
 variable (π : Representation ℂ P V) {ψ : AddChar F ℂ}
 
 omit [Fintype F] in
+/- English proof (translation)
+Unfold `dm`. Rewrite using `[eig_congr π (S := (H.subgroupOf P : Set P)) (S' := (H'.subgroupOf P : Set P)) (χ := fun p => ψ (f p)) (χ' := fun p => ψ (f' p)) (fun g => h g) (fun g hg => by rw [hf g hg])]`.
+-/
 theorem dm_congr {H H' : Subgroup (GL (Fin n) F)} {f f' : GL (Fin n) F → F} (h : ∀ u, u ∈ H ↔ u ∈ H')
     (hf : ∀ u ∈ H, f u = f' u) : dm π ψ H f = dm π ψ H' f' := by
   unfold dm
@@ -380,10 +500,30 @@ theorem dm_congr {H H' : Subgroup (GL (Fin n) F)} {f f' : GL (Fin n) F → F} (h
 variable [FiniteDimensional ℂ V]
 
 omit [Fintype F] in
+/- English proof (translation)
+The claim follows from `finrank_eig_conj_le π (⟨g, hg⟩ : P) fun s hs => ⟨(h s hs).1, congrArg ψ (h s hs).2⟩`.
+-/
 theorem dm_conj_le {H H' : Subgroup (GL (Fin n) F)} {f f' : GL (Fin n) F → F} {g : GL (Fin n) F} (hg : g ∈ P)
     (h : ∀ s ∈ H', g⁻¹ * s * g ∈ H ∧ f (g⁻¹ * s * g) = f' s) : dm π ψ H f ≤ dm π ψ H' f' :=
   finrank_eig_conj_le π (⟨g, hg⟩ : P) fun s hs => ⟨(h s hs).1, congrArg ψ (h s hs).2⟩
 
+/- English proof (translation)
+Use `finrank_eig_exchange π hψ ((pat F n a e (e + 1) m).subgroupOf P) _ _ (fun p => edgeSum Ed (p : GL (Fin n) F) + ((p : GL (Fin n) F) : Matrix (Fin n) (Fin n) F) a m) (fun p => ((p : GL (Fin n) F) : Matrix (Fin n) (Fin n) F) a e) (fun p => ((p : GL (Fin n) F) : Matrix (Fin n) (Fin n …` and prove the remaining obligations. Introduce `x hx y hy`. Rewrite `hx`, `hy` using `[Subgroup.mem_subgroupOf, mem_pat]`. Rewrite using `[Subgroup.coe_mul, edgeSum_mul Ed hE hx.1 hy.1, unip_mul_entry_exc hx.1 hy.1 hae hem]`. Expand and normalize the polynomial expressions, which then agree.
+
+Introduce `l h1 h2 h3`. Break down `lt_or_gt_of_ne h3 with h | h` into its components or cases. Rewrite using `[hx.2 a l h1 (Or.inl ⟨rfl, h⟩), zero_mul]`. Rewrite using `[hy.2 l m h2 (Or.inr ⟨by omega, rfl⟩), mul_zero]`. Introduce `x hx y hy`.
+
+Rewrite `hx`, `hy` using `[Subgroup.mem_subgroupOf, mem_pat]`. Apply the tactic sequence `exact unip_mul_entry hx.1 hy.1 hae fun l h1 h2 => by rw [hx.2 a l h1 (Or.inl ⟨rfl, h2⟩), zero_mul]`. Introduce `x hx y hy`. Rewrite `hx`, `hy` using `[Subgroup.mem_subgroupOf, mem_pat]`. Apply the tactic sequence `exact unip_mul_entry hx.1 hy.1 hem fun l h1 h2 => by rw [hy.2 l m h2 (Or.inr ⟨by omega, rfl⟩), mul_zero]`.
+
+Introduce `x`. Simplify using `only [Subgroup.mem_subgroupOf, mem_pat]`. Prove the components needed by the constructor for the conclusion. Conclude with `fun h => ⟨⟨h.1, fun i j hij hz => h.2 i j hij (by omega)⟩, h.2 e m hem (by omega)⟩`. Use `fun h => ⟨h.1.1, fun i j hij hz => ?_⟩` and prove the remaining obligations.
+
+Distinguish the cases in `h' : i = e ∧ j = m`. Rewrite using `[h'.1, h'.2]`. Conclude with `h.2`. Conclude with `h.1.2 i j hij (by omega)`. Introduce `x`.
+
+Simplify using `only [Subgroup.mem_subgroupOf, mem_pat]`. Prove the components needed by the constructor for the conclusion. Conclude with `fun h => ⟨⟨h.1, fun i j hij hz => h.2 i j hij (by omega)⟩, h.2 a e hae (by omega)⟩`. Use `fun h => ⟨h.1.1, fun i j hij hz => ?_⟩` and prove the remaining obligations. Distinguish the cases in `h' : i = a ∧ j = e`.
+
+Rewrite using `[h'.1, h'.2]`. Conclude with `h.2`. Conclude with `h.1.2 i j hij (by omega)`. Introduce `t`. Take `⟨u, hu, h⟩` from `exists_transv (F := F) (a := a) (e := e) (e' := e) (m := m) hae (by omega) t`.
+
+Conclude with `⟨⟨u, hU hu.1⟩, hu, h⟩`. Introduce `t`. Take `⟨u, hu, h⟩` from `exists_transv (F := F) (a := a) (e := e + 1) (e' := e + 1) (m := m) hem (by omega) t`. Conclude with `⟨⟨u, hU hu.1⟩, hu, h⟩`.
+-/
 theorem dm_step (hψ : ψ ≠ 1) (hU : unip F n ≤ P) (Ed : Fin n → Fin n → Prop) [DecidableRel Ed]
     (hE : ∀ i j, Ed i j → j.val = i.val + 1) {a e m : Fin n} (hae : a < e) (hem : e < m) :
     dm π ψ (pat F n a e e m) (fun u => edgeSum Ed u + (u : Matrix (Fin n) (Fin n) F) a m) =
@@ -429,6 +569,13 @@ theorem dm_step (hψ : ψ ≠ 1) (hU : unip F n ≤ P) (Ed : Fin n → Fin n →
     obtain ⟨u, hu, h⟩ := exists_transv (F := F) (a := a) (e := e + 1) (e' := e + 1) (m := m) hem (by omega) t
     exact ⟨⟨u, hU hu.1⟩, hu, h⟩
 
+/- English proof (translation)
+Establish `key : ∀ e : ℕ, a.val + 1 ≤ e → e ≤ m.val → dm π ψ (pat F n 0 0 (a + 1) m) (fun u => edgeSum Ed u + (u : Matrix (Fin n) (Fin n) F) a m) = dm π ψ (pat F n a e e m) (fun u => edgeSum Ed u + (u : Matrix (Fin n) (Fin n) F) a m)`. Introduce `e he`. Proceed by induction on `e, he using Nat.le_induction with`. Consider the case `base`. Introduce `_`.
+
+Use `dm_congr π (fun u => ?_) fun _ _ => rfl` and prove the remaining obligations. Simplify using `only [mem_pat]`. Conclude with `and_congr_right fun _ => ⟨fun h i j hij hz => h i j hij (by omega), fun h i j hij hz => h i j hij (by omega)⟩`. Consider the case `succ e he ih`. Introduce `h`.
+
+Rewrite using `[ih (by omega)]`. Conclude with `dm_step π hψ hU Ed hE (e := ⟨e, by omega⟩) (by show a.val < e; omega) (by show e < m.val; omega)`. Conclude with `key m (by omega) le_rfl`.
+-/
 theorem dm_chain (hψ : ψ ≠ 1) (hU : unip F n ≤ P) (Ed : Fin n → Fin n → Prop) [DecidableRel Ed]
     (hE : ∀ i j, Ed i j → j.val = i.val + 1) {a m : Fin n} (ham : a < m) :
     dm π ψ (pat F n 0 0 (a + 1) m) (fun u => edgeSum Ed u + (u : Matrix (Fin n) (Fin n) F) a m) =
@@ -449,6 +596,13 @@ theorem dm_chain (hψ : ψ ≠ 1) (hU : unip F n ≤ P) (Ed : Fin n → Fin n �
       exact dm_step π hψ hU Ed hE (e := ⟨e, by omega⟩) (by show a.val < e; omega) (by show e < m.val; omega)
   exact key m (by omega) le_rfl
 
+/- English proof (translation)
+Set `Ed : Fin n → Fin n → Prop` to `fun i j => j.val = i.val + 1 ∧ i.val ≠ a.val ∧ i.val + 1 ≠ m.val`. Establish `e1 : dm π ψ (pat F n 0 0 (a + 1) m) (edgeSum (symEdge (a.val + 1) c)) = dm π ψ (pat F n 0 0 (a + 1) m) (fun u => edgeSum Ed u + (u : Matrix (Fin n) (Fin n) F) a m)` using `dm_congr π (fun _ => Iff.rfl) fun u _ => (edgeSum_add Ed _ a m (by simp [Ed]) (fun i j => by simp only [symEdge, Ed]; omega) u).symm`. Rewrite using `[e1, dm_chain π hψ hU Ed (fun i j h => h.1) (by omega), dm_chain π hψ hU (cutEdge m) (fun i j h => h.1) (by omega)]`. Use `dm_congr π (fun _ => Iff.rfl) fun u hu => ?_` and prove the remaining obligations. Use `congr 1`.
+
+Use `edgeSum_congr _ _ 1 fun i j => ?_` and prove the remaining obligations. Simplify using `only [Equiv.Perm.coe_one, id, cutEdge, Ed, and_true, and_self]`. Distinguish the cases in `hz : i < j ∧ i = a ∧ j < m`. Conclude with `Or.inr (Or.inr (hu.2 i j hz.1 (by omega)))`. Distinguish the cases in `h1 : j.val = i.val + 1 ∧ i.val + 1 ≠ m.val`.
+
+Use `left`. Use linear arithmetic over natural numbers and integers. Use `right`. Use `left`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem dm_sym_succ (hψ : ψ ≠ 1) (hU : unip F n ≤ P) {a m : Fin n} {c : ℕ} (h : m.val = a.val + 1 + c) :
     dm π ψ (pat F n 0 0 (a + 1) m) (edgeSum (symEdge (a.val + 1) c)) =
       dm π ψ (pat F n 0 0 (a + 1) m) (fun u => edgeSum (cutEdge m) u + (u : Matrix (Fin n) (Fin n) F) a m) := by
@@ -483,12 +637,24 @@ def cyc (a b : Fin n) (h : a ≤ b) : Equiv.Perm (Fin n) where
     dsimp only
     split_ifs <;> omega
 
+/- English proof (translation)
+Simplify using `only [cyc, Equiv.coe_fn_mk]`. Apply the tactic sequence `split_ifs <;> omega`.
+-/
 theorem cyc_val (a b : Fin n) (h : a ≤ b) (i : Fin n) :
     (a.val ≤ i.val ∧ i.val < b.val ∧ (cyc a b h i).val = i.val + 1) ∨ (i.val = b.val ∧ (cyc a b h i).val = a.val) ∨
       ((i.val < a.val ∨ b.val < i.val) ∧ (cyc a b h i).val = i.val) := by
   simp only [cyc, Equiv.coe_fn_mk]
   split_ifs <;> omega
 
+/- English proof (translation)
+Take `⟨g, hg, hc⟩` from `exists_perm (F := F) σ`. Use `dm_conj_le π (hσ g hg) fun s hs => ?_` and prove the remaining obligations. Establish `hz : ∀ i j : Fin n, j < i ∨ (i < j ∧ ((i.val = a₁ ∧ j.val < e₁) ∨ (e₁' ≤ i.val ∧ j.val = m₁))) → (s : Matrix (Fin n) (Fin n) F) i j = 0`. Introduce and unpack `i j (h | h)`. Conclude with `unip_lower hs.1 h`.
+
+Conclude with `hs.2 i j h.1 h.2`. Use `⟨⟨mem_unip.2 ⟨fun i j h => ?_, fun i => ?_⟩, fun i j h h' => ?_⟩, edgeSum_congr _ _ σ fun i j => ?_⟩` and prove the remaining obligations. Rewrite using `[hc]`. Conclude with `hz _ _ (h1 i j (Or.inl h))`. Rewrite using `[hc]`.
+
+Conclude with `unip_diag hs.1 _`. Rewrite using `[hc]`. Conclude with `hz _ _ (h1 i j (Or.inr ⟨h, h'⟩))`. Rewrite using `[hc]`. Break down `h2 i j with h | h | h` into its components or cases.
+
+Conclude with `Or.inl ⟨h.1, h.2, rfl⟩`. Conclude with `Or.inr (Or.inl h)`. Conclude with `Or.inr (Or.inr ⟨hz _ _ h, hz _ _ h⟩)`.
+-/
 theorem dm_perm_le (σ : Equiv.Perm (Fin n))
     (hσ : ∀ g : GL (Fin n) F, (∀ a j, (g : Matrix (Fin n) (Fin n) F) a j = if a = σ j then 1 else 0) → g ∈ P)
     (Ed Ed' : Fin n → Fin n → Prop) [DecidableRel Ed] [DecidableRel Ed'] {a e e' m a₁ e₁ e₁' m₁ : ℕ}
@@ -515,6 +681,19 @@ theorem dm_perm_le (σ : Equiv.Perm (Fin n))
     · exact Or.inr (Or.inr ⟨hz _ _ h, hz _ _ h⟩)
 
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Set `Ed : Fin n → Fin n → Prop` to `fun i j => (j.val = i.val + 1 ∧ i.val + 1 ≠ m.val) ∨ (i.val = a.val ∧ j.val = m.val)`. Establish `e1 : dm π ψ (pat F n a m m m) (fun u => edgeSum (cutEdge m) u + (u : Matrix (Fin n) (Fin n) F) a m) = dm π ψ (pat F n a m m m) (edgeSum Ed)` using `dm_congr π (fun _ => Iff.rfl) fun u _ => edgeSum_add _ Ed a m (by simp only [cutEdge]; omega) (fun i j => by simp only [cutEdge, Ed]; omega) u`. Rewrite using `[dm_chain π hψ hU (cutEdge m) (fun i j h => h.1) (by omega), e1]`. Set `b : Fin n` to `⟨a + c, by omega⟩`. Establish `hb : b.val = a + c` using `rfl`.
+
+Establish `hab : a ≤ b` using `by show a.val ≤ a + c; omega`. Establish `hfix : ∀ i, m ≤ i → cyc a b hab i = i` using `fun i hi => by`. Use `cyc_val a b hab i` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish `hinv : ∀ i : Fin n, _` using `fun i => by`.
+
+Use `cyc_val a b hab ((cyc a b hab).symm i)` as an intermediate fact. Rewrite `this` using `[Equiv.apply_symm_apply]`. Conclude with `this`. Apply `le_antisymm` to reduce the goal to its premises. Use `dm_perm_le π (cyc a b hab).symm (hσ _ fun i hi => ?_) _ _ (fun i j => ?_) (fun i j => ?_)` and prove the remaining obligations.
+
+Rewrite using `[Equiv.symm_apply_eq, hfix i hi]`. Use `hinv i` as an intermediate fact. Use `hinv j` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Use `hinv i` as an intermediate fact.
+
+Use `hinv j` as an intermediate fact. Simplify using `only [Ed, symEdge]`. Use linear arithmetic over natural numbers and integers. Use `dm_perm_le π (cyc a b hab) (hσ _ hfix) _ _ (fun i j => ?_) (fun i j => ?_)` and prove the remaining obligations. Use `cyc_val a b hab i` as an intermediate fact.
+
+Use `cyc_val a b hab j` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Simplify using `only [Ed, symEdge]`. Apply the tactic sequence `rcases cyc_val a b hab i with h1 | h1 | h1 <;> rcases cyc_val a b hab j with h2 | h2 | h2 <;> omega`.
+-/
 theorem dm_perm (hψ : ψ ≠ 1) (hU : unip F n ≤ P) {a m : Fin n} {c : ℕ} (h : m.val = a.val + 1 + c)
     (hσ : ∀ σ : Equiv.Perm (Fin n), (∀ i, m ≤ i → σ i = i) →
       ∀ g : GL (Fin n) F, (∀ a j, (g : Matrix (Fin n) (Fin n) F) a j = if a = σ j then 1 else 0) → g ∈ P) :
@@ -553,6 +732,15 @@ theorem dm_perm (hψ : ψ ≠ 1) (hU : unip F n ≤ P) {a m : Fin n} {c : ℕ} (
     · simp only [Ed, symEdge]
       rcases cyc_val a b hab i with h1 | h1 | h1 <;> rcases cyc_val a b hab j with h2 | h2 | h2 <;> omega
 
+/- English proof (translation)
+Establish `hd : ∀ i : Fin n, (if i < m then s / t else 1) ≠ 0` using `fun i => by split_ifs`. Conclude with `div_ne_zero hs ht`. Conclude with `one_ne_zero`. Take `⟨g, hg, hc⟩` from `exists_diag (fun i : Fin n => if i < m then s / t else 1) hd`. Use `dm_conj_le π (hD _ g (fun i hi => if_neg (not_lt.2 hi)) hg) fun u hu => ?_` and prove the remaining obligations.
+
+Use `⟨⟨mem_unip.2 ⟨fun i j h => ?_, fun i => ?_⟩, fun i j h h' => ?_⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[hc, unip_lower hu.1 h, mul_zero, zero_mul]`. Rewrite using `[hc, unip_diag hu.1, mul_one, inv_mul_cancel₀ (hd i)]`. Rewrite using `[hc, hu.2 i j h h', mul_zero, zero_mul]`. Rewrite using `[hc, if_pos ham, if_neg (lt_irrefl m)]`.
+
+Use `congr 1`. Use `edgeSum_congr _ _ 1 fun i j => ?_` and prove the remaining obligations. Simplify using `only [Equiv.Perm.coe_one, id]`. Distinguish the cases in `h : cutEdge m i j`. Use `Or.inl ⟨h, h, ?_⟩` and prove the remaining obligations.
+
+Establish `h' : (if j < m then s / t else 1) = (if i < m then s / t else 1)` using `if_congr (by unfold cutEdge at h; omega) rfl rfl`. Rewrite using `[hc, h', mul_right_comm, inv_mul_cancel₀ (hd i), one_mul]`. Conclude with `Or.inr (Or.inl ⟨h, h⟩)`. Clear the denominators using the available nonvanishing facts.
+-/
 theorem dm_torus_le {a m : Fin n} (ham : a < m)
     (hD : ∀ (d : Fin n → F) (g : GL (Fin n) F), (∀ i, m ≤ i → d i = 1) →
       (g : Matrix (Fin n) (Fin n) F) = Matrix.diagonal d → g ∈ P) {s t : F} (hs : s ≠ 0) (ht : t ≠ 0) :
@@ -580,6 +768,17 @@ theorem dm_torus_le {a m : Fin n} (ham : a < m)
       · exact Or.inr (Or.inl ⟨h, h⟩)
     · field_simp
 
+/- English proof (translation)
+Establish `h1 : dm π ψ (pat F n 0 0 a m) (edgeSum (cutEdge m)) = ∑ c : F, dm π ψ (pat F n 0 0 (a + 1) m) (fun u => edgeSum (cutEdge m) u + c * (u : Matrix (Fin n) (Fin n) F) a m)`. Use `finrank_eig_fourier π hψ ((pat F n 0 0 (a + 1) m).subgroupOf P) _ (fun p => edgeSum (cutEdge m) (p : GL (Fin n) F)) (fun p => ((p : GL (Fin n) F) : Matrix (Fin n) (Fin n) F) a m) ?_ ?_ ?_ ?_` and prove the remaining obligations. Introduce `x hx y hy`. Conclude with `edgeSum_mul _ (fun i j h => h.1) hx.1 hy.1`. Introduce `x hx y hy`.
+
+Rewrite `hx`, `hy` using `[Subgroup.mem_subgroupOf, mem_pat]`. Apply the tactic sequence `exact unip_mul_entry hx.1 hy.1 ham fun l h1 h2 => by rw [hy.2 l m h2 (Or.inr ⟨by omega, rfl⟩), mul_zero]`. Introduce `t`. Take `⟨u, hu, h⟩` from `exists_transv (F := F) (a := 0) (e := 0) (e' := a + 1) (m := m) ham (by omega) t`. Conclude with `⟨⟨u, hU hu.1⟩, hu, h⟩`.
+
+Introduce `x`. Simplify using `only [Subgroup.mem_subgroupOf, mem_pat]`. Prove the components needed by the constructor for the conclusion. Conclude with `fun h => ⟨⟨h.1, fun i j hij hz => h.2 i j hij (by omega)⟩, h.2 a m ham (by omega)⟩`. Use `fun h => ⟨h.1.1, fun i j hij hz => ?_⟩` and prove the remaining obligations.
+
+Distinguish the cases in `h' : i = a ∧ j = m`. Rewrite using `[h'.1, h'.2]`. Conclude with `h.2`. Conclude with `h.1.2 i j hij (by omega)`. Rewrite using `[h1, ← Finset.add_sum_erase _ _ (Finset.mem_univ (0 : F)), Finset.sum_congr rfl fun c hc => le_antisymm (dm_torus_le π ham hD (Finset.ne_of_mem_erase hc) one_ne_zero) (dm_torus_le π ham hD one_ne_zero (Finset.ne_of_mem_erase hc)), Finset.sum_const, Finset.card_erase_of_mem (Finse …`.
+
+Simplify using `only [zero_mul, add_zero, one_mul]`.
+-/
 theorem dm_fourier (hψ : ψ ≠ 1) (hU : unip F n ≤ P) {a m : Fin n} (ham : a < m)
     (hD : ∀ (d : Fin n → F) (g : GL (Fin n) F), (∀ i, m ≤ i → d i = 1) →
       (g : Matrix (Fin n) (Fin n) F) = Matrix.diagonal d → g ∈ P) :
@@ -617,6 +816,29 @@ theorem dm_fourier (hψ : ψ ≠ 1) (hU : unip F n ≤ P) {a m : Fin n} (ham : a
 
 end Main
 
+/- English proof (translation)
+Establish `hU : unip F (k + 1) ≤ P` using `fun g hg => (hP g).2 fun j => by`. Break down `(Fin.le_last j).eq_or_lt with h | h` into its components or cases. Rewrite using `[h, unip_diag hg, Matrix.one_apply_eq]`. Rewrite using `[unip_lower hg h, Matrix.one_apply_ne h.ne']`. Establish `hσ : ∀ m : Fin (k + 1), ∀ σ : Equiv.Perm (Fin (k + 1)), (∀ i, m ≤ i → σ i = i) → ∀ g : GL (Fin (k + 1)) F, (∀ a j, (g : Matrix (Fin (k + 1)) (Fin (k + 1)) F) a j = if a = σ j then 1 else 0) → g ∈ P`.
+
+Introduce `m σ h g hg`. Use `(hP g).2 fun j => ?_` and prove the remaining obligations. Rewrite using `[hg, Matrix.one_apply]`. Use `if_congr ?_ rfl rfl` and prove the remaining obligations. Use `conv_lhs => rw [← h _ (Fin.le_last m)]`.
+
+Conclude with `σ.apply_eq_iff_eq`. Establish `hD : ∀ m : Fin (k + 1), ∀ (d : Fin (k + 1) → F) (g : GL (Fin (k + 1)) F), (∀ i, m ≤ i → d i = 1) → (g : Matrix (Fin (k + 1)) (Fin (k + 1)) F) = Matrix.diagonal d → g ∈ P`. Introduce `m d g h hg`. Use `(hP g).2 fun j => ?_` and prove the remaining obligations. Rewrite using `[hg, Matrix.diagonal_apply, h _ (Fin.le_last m), Matrix.one_apply]`.
+
+Set `S : ℕ → ℕ → ℕ` to `fun a c => dm π ψ (pat F (k + 1) 0 0 a (a + c)) (edgeSum (symEdge a c))`. Set `T : ℕ → ℕ → ℕ` to `fun a m => dm π ψ (pat F (k + 1) 0 0 a m) (edgeSum (cutEdge m))`. Set `D : ℕ → ℕ` to `fun m => dm π ψ (unip F (k + 1)) (edgeSum (cutEdge m))`. Establish `hS : ∀ c a, a + c ≤ k → S a c = T 0 c`. Introduce `c a`.
+
+Proceed by induction on `a with`. Consider the case `zero`. Introduce `_`. Use `dm_congr π (fun u => by rw [zero_add]) fun u _ => edgeSum_congr _ _ 1 fun i j => ?_` and prove the remaining obligations. Simplify using `only [Equiv.Perm.coe_one, id, cutEdge, symEdge, and_true, and_self]`.
+
+Distinguish the cases in `h1 : j.val = i.val + 1 ∧ i.val + 1 ≠ c`. Use `left`. Use linear arithmetic over natural numbers and integers. Use `right`. Use `left`.
+
+Use linear arithmetic over natural numbers and integers. Consider the case `succ a ih`. Introduce `h`. Rewrite using `[← ih (by omega)]`. Conclude with `(dm_sym_succ π hψ hU (a := ⟨a, by omega⟩) (m := ⟨a + 1 + c, by omega⟩) rfl).trans (dm_perm π hψ hU rfl (hσ _))`.
+
+Establish `hT : ∀ m ≤ k, ∀ c a, a + c = m → T a m = D m + (Fintype.card F - 1) * ∑ l ∈ Finset.range c, T 0 l`. Introduce `m hm c`. Proceed by induction on `c with`. Consider the case `zero`. Introduce `a ha`.
+
+Rewrite using `[Finset.sum_range_zero, mul_zero, add_zero]`. Conclude with `dm_congr π (fun u => ⟨fun h => h.1, fun h => ⟨h, fun i j h1 h2 => by omega⟩⟩) fun _ _ => rfl`. Consider the case `succ c ih`. Introduce `a ha`. Establish `h1` using `dm_fourier π hψ hU (a := ⟨a, by omega⟩) (m := ⟨m, by omega⟩) (by show a < m; omega) (hD _)`.
+
+Rewrite `h1` using `[dm_perm π hψ hU (c := c) (by show m = a + 1 + c; omega) (hσ _)]`. Establish `h2 : T a m = T (a + 1) m + (Fintype.card F - 1) * S a c` using `h1`. Rewrite using `[h2, ih (a + 1) (by omega), hS c a (by omega), Finset.sum_range_succ]`. Expand and normalize the polynomial expressions, which then agree. Establish `h` using `solve_rec (Fintype.card F) Fintype.card_pos k (T 0) D (fun m hm => hT m hm m 0 (zero_add m)) k le_rfl`.
+
+Rewrite `h` using `[← hS k 0 (by omega)]`. Use `Eq.trans ?_ h` and prove the remaining obligations. Use `dm_congr π (H := unipSym F (k + 1) 0 k) (f := edgeSum (symEdge 0 k)) (fun u => ?_) fun _ _ => rfl` and prove the remaining obligations. Conclude with `⟨fun h => ⟨h.1, fun i j h1 h2 => h.2 i j (by omega) (by omega) (by omega)⟩, fun h => ⟨h.1, fun i j h1 h2 h3 => h.2 i j (by omega) (by omega)⟩⟩`.
+-/
 theorem mirabolic_whittaker (F : Type) [Field F] [Fintype F] (ψ : AddChar F ℂ) (hψ : ψ ≠ 1) (k : ℕ)
     (P : Subgroup (GL (Fin (k + 1)) F))
     (hP : ∀ g, g ∈ P ↔ ∀ j, (g : Matrix (Fin (k + 1)) (Fin (k + 1)) F) (Fin.last k) j =

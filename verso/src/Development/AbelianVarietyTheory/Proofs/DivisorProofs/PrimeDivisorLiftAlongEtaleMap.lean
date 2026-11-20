@@ -14,6 +14,15 @@ noncomputable section
 
 namespace GlobalTheory.EtaleKlt
 
+/- English proof (translation)
+Introduce `M W _ _ _ _ p f _ n _ _ U hU y hy E hE`. Take `⟨hfl, hfe, hft⟩` from `GlobalTheory.T.stalkMap_flat_formallyEtale_essFiniteType_of_etale_open M W f U hU y hy`. Take `⟨V', h, hdvr, hS, hcomap, het, hess⟩` from `GlobalTheory.T.exists_dvr_extension_of_essentially_etale_local (K := W.functionField) (K' := M.functionField) (R := W.presheaf.stalk (f y)) (S := M.presheaf.stalk y) (functionFieldMap f) (f.stalkMap y).hom hfl hfe hft (RingHom.ext fun a => functionFieldMap_algebraMap f y a) E.rin …`. Establish `hc : ∀ a, Cartier.constFn (f ≫ p) a ∈ V'` using `fun a => by`. Rewrite using `[← functionFieldMap_comp_constFn p f]`.
+
+Conclude with `h _ (E.const_mem a)`. Establish `hess' : ((Cartier.constFn (f ≫ p)).codRestrict V' hc).EssFiniteType`. Establish `e : (Cartier.constFn (f ≫ p)).codRestrict V' hc = ((functionFieldMap f).restrict E.ring V' h).comp E.const`. Use extensionality with `a`. Simplify using `[DivOver.const, ← functionFieldMap_comp_constFn p f]`.
+
+Rewrite using `[e]`. Conclude with `E.essFiniteType.comp hess`. Set `E' : DivOver (f ≫ p)` to `⟨V', hc, hdvr, hess'⟩`. Use `haveI := SmoothOfRelativeDimension.smooth n p`. Establish `hdim` using `GlobalTheory.NadelApp.topologicalKrullDim_eq_of_smooth W p n`.
+
+Establish `hord` using `GlobalTheory.T.ordFrac_functionFieldMap_of_essentiallyEtale M W p f E E' h hcomap het hess`. Use `⟨E', fun g hg => ?_, hord, fun η hη => GlobalTheory.T.topFormOrder_rationalPullback_of_essentiallyEtale M W p f n hdim E E' h het hord η hη⟩` and prove the remaining obligations. Take `⟨a, rfl⟩` from `hg`. Conclude with `hS a`.
+-/
 theorem divOver_lift : ∀ (M W : Scheme.{0}) [IsIntegral M] [IsIntegral W] [IsLocallyNoetherian M] [IsLocallyNoetherian W] (p : W ⟶ Sp ℂ) (f : M ⟶ W) [IsDominant f] (n : ℕ) [SmoothOfRelativeDimension n p] [SmoothOfRelativeDimension n (f ≫ p)] (U : M.Opens), Etale (U.ι ≫ f) → ∀ y ∈ U, ∀ E : DivOver p, E.Through (f y) → ∃ E' : DivOver (f ≫ p), E'.Through y ∧ (∀ g : W.functionFieldˣ, E'.ord (Units.map (functionFieldMap f).toMonoidHom g) = E.ord g) ∧ ∀ η : RatForms p n, η ≠ 0 → E'.formOrd (GlobalTheory.EtaleKlt.ratPull p f n η) = E.formOrd η := by
   intro M W _ _ _ _ p f _ n _ _ U hU y hy E hE
   obtain ⟨hfl, hfe, hft⟩ := GlobalTheory.T.stalkMap_flat_formallyEtale_essFiniteType_of_etale_open M W f U hU y hy

@@ -19,6 +19,9 @@ variable {E : Type} [Field E] [NumberField E] [IsTotallyComplex E] {a : ℕ}
 
 omit [IsTotallyComplex E] in
 
+/- English proof (translation)
+Set `T : (Kinf E a → ℂ) →ₗ[ℂ] (Kinf E a → ℂ)` to `{ toFun := fun f k => f (k * k'), map_add' := fun _ _ => rfl, map_smul' := fun _ _ => rfl }`. Establish `: AutFin.coeffSpan ρ₀ ≤ (AutFin.coeffSpan ρ₀).comap T` using `Submodule.span_le.2 (by`. Introduce and unpack `_ ⟨ℓ, w, rfl⟩`. Conclude with `Submodule.subset_span ⟨ℓ, ρ₀ k' w, funext fun k => by simp [T, map_mul]⟩)`. Conclude with `this hf`.
+-/
 theorem coeffSpan_mul_right {W : Type} [AddCommGroup W] [Module ℂ W] (ρ₀ : Representation ℂ (Kinf E a) W)
     (k' : Kinf E a) {f : Kinf E a → ℂ} (hf : f ∈ AutFin.coeffSpan ρ₀) : (fun k => f (k * k')) ∈ AutFin.coeffSpan ρ₀ := by
   let T : (Kinf E a → ℂ) →ₗ[ℂ] (Kinf E a → ℂ) :=
@@ -50,6 +53,11 @@ def typeSub (π : CuspSub E a) {W : Type} [AddCommGroup W] [Module ℂ W] (ρ₀
       funext k; simp [map_mul, act]
     rw [e]; exact coeffSpan_mul_right ρ₀ k' (hψ g)
 
+/- English proof (translation)
+Establish `eφ` using `Submodule.projection_add_projection_eq_self h φ`. Establish `eψ` using `Submodule.projection_add_projection_eq_self h' ψ`. Establish `m1` using `h2 _ (Submodule.projection_apply_mem h φ) _ (Submodule.projection_apply_mem h'.symm ψ)`. Establish `m2` using `h1 _ (Submodule.projection_apply_mem h.symm φ) _ (Submodule.projection_apply_mem h' ψ)`. Combine the equalities or inequalities in the displayed calculation.
+
+Rewrite using `[eψ]`. Use `_ = B (X.projection Y h φ + Y.projection X h.symm φ) (X'.projection Y' h' ψ) := by`. Rewrite using `[map_add, map_add, LinearMap.add_apply, m1, m2]`. Use `_ = _ := by rw [eφ]`.
+-/
 theorem adj_of_isCompl {V V' : Type} [AddCommGroup V] [Module ℂ V] [AddCommGroup V'] [Module ℂ V']
     (B : V →ₗ[ℂ] V' →ₗ[ℂ] ℂ) {X Y : Submodule ℂ V} {X' Y' : Submodule ℂ V'} (h : IsCompl X Y) (h' : IsCompl X' Y')
     (h1 : ∀ y ∈ Y, ∀ x' ∈ X', B y x' = 0) (h2 : ∀ x ∈ X, ∀ y' ∈ Y', B x y' = 0) (φ : V) (ψ : V') :
@@ -64,6 +72,17 @@ theorem adj_of_isCompl {V V' : Type} [AddCommGroup V] [Module ℂ V] [AddCommGro
         rw [map_add, map_add, LinearMap.add_apply, m1, m2]
     _ = _ := by rw [eφ]
 
+/- English proof (translation)
+Use `adj_of_isCompl B (LocGL.isCompl_fixed_twKer hρ hH) (LocGL.isCompl_fixed_twKer hρ hH') ?_ ?_ φ ψ` and prove the remaining obligations. Introduce `y hy x' hx'`. Proceed by induction on `hy using Submodule.span_induction with`. Consider the case `mem z hz`. Take `⟨n, v, rfl⟩` from `hz`.
+
+Establish `hf : ρ (σ n) x' = x'` using `GlobalTheory.Parabolic.mem_fixed.1 hx' _ ⟨n, n.2, rfl⟩`. Simplify using `only [MonoidHom.one_apply, Units.val_one, one_smul, map_sub, LinearMap.sub_apply]`. Rewrite using `[← hB n v x', hf, sub_self]`. Consider the case `zero => simp`. Consider the case `add u v _ _ hu hv => simp [hu, hv]`.
+
+Consider the case `smul c u _ hu => simp [hu]`. Introduce `x hx y' hy'`. Proceed by induction on `hy' using Submodule.span_induction with`. Consider the case `mem z hz`. Take `⟨⟨m, hm⟩, w, rfl⟩` from `hz`.
+
+Take `⟨n, hn, rfl⟩` from `Subgroup.mem_map.1 hm`. Establish `hf : ρ n x = x` using `GlobalTheory.Parabolic.mem_fixed.1 hx _ hn`. Simplify using `only [MonoidHom.one_apply, Units.val_one, one_smul, map_sub]`. Rewrite using `[← hB n x w, hf, sub_self]`. Consider the case `zero => simp`.
+
+Consider the case `add u v _ _ hu hv => simp [hu, hv]`. Consider the case `smul c u _ hu => simp [hu]`.
+-/
 theorem idem_adj {G V : Type} [Group G] [TopologicalSpace G] [IsTopologicalGroup G] [AddCommGroup V] [Module ℂ V]
     {ρ : Representation ℂ G V} (hρ : IsSmooth ρ) (σ : G →* G) {H : Subgroup G} (hH : IsCompact (H : Set G))
     (hH' : IsCompact ((H.map σ : Subgroup G) : Set G)) (B : V →ₗ[ℂ] V →ₗ[ℂ] ℂ)
@@ -92,6 +111,11 @@ theorem idem_adj {G V : Type} [Group G] [TopologicalSpace G] [IsTopologicalGroup
     | add u v _ _ hu hv => simp [hu, hv]
     | smul c u _ hu => simp [hu]
 
+/- English proof (translation)
+Establish `hc : ∀ τ u, ∃ c : ℂ, ∀ φ ∈ π.V, cap τ u φ = c • φ` using `fun τ u => π.exists_scalar (z := cap τ u) (Algebra.subset_adjoin ⟨τ, u, rfl⟩) fun o => by`. Consider the cases of `o with`. Consider the case `fin k => exact commute_cap_finRep τ u k`. Consider the case `cpt k => exact GlobalTheory.CapAdInv.cap_commute_rt_infGL E a τ u _`. Consider the case `lie X => exact commute_cap_lie τ u X`.
+
+Use `choose c hc using hc`. Use `h E a K' hK W ρ₀ hρ₀ c` as an intermediate fact. Use `FiniteDimensional.of_injective ((π.V.subtype ∘ₗ ((typeSub π ρ₀).toSubmodule ⊓ fixed π.finPart K').subtype).codRestrict (Submodule.span ℂ (AutFinGL.forms K' ρ₀ c)) fun v => Submodule.subset_span ⟨(π.cusp _ v.1.2).1, fun k hk => congrArg Subtype.val (GlobalTheory.Parabolic.mem_fixe …` and prove the remaining obligations.
+-/
 theorem finiteDimensional_typeSub_fixed (h : AutomorphicFormsFiniteGL) (π : CuspSub E a) {W : Type} [AddCommGroup W]
     [Module ℂ W] [FiniteDimensional ℂ W] {ρ₀ : Representation ℂ (Kinf E a) W} (hρ₀ : AutFin.IsContRep ρ₀)
     {K' : Subgroup (GL (Fin a) (Af E))} (hK : IsOpen (K' : Set (GL (Fin a) (Af E)))) :
@@ -110,6 +134,63 @@ theorem finiteDimensional_typeSub_fixed (h : AutomorphicFormsFiniteGL) (π : Cus
       (GlobalTheory.Parabolic.mem_fixed.1 v.2.2 k hk), v.2.1, fun τ u => hc τ u _ v.1.2⟩)
     fun v v' e => Subtype.ext (Subtype.ext (by have e' := congrArg Subtype.val e; exact e'))
 
+/- English proof (translation)
+Introduce `h L _ _ _ a π`. Use `haveI := GlobalTheory.T.compactSpace_maximalCompact_unitary_infinite L a`. Take `⟨φ, hφ, h0⟩` from `(Submodule.ne_bot_iff _).1 π.ne_bot`. Use `set φ₀ : π.V := ⟨φ, hφ⟩ with hφ₀`. Establish `h0' : φ₀ ≠ 0` using `fun e => h0 (congrArg Subtype.val e)`.
+
+Take `⟨U, hUo, hUc⟩` from `GlobalTheory.GLIntegral.exists_isOpen_isCompact L a`. Use `set K' : Subgroup (GL (Fin a) (Af L)) := U ⊓ LocEx.stab π.finPart φ₀ with hK'`. Establish `hKo : IsOpen (K' : Set (GL (Fin a) (Af L)))` using `hUo.inter (π.isSmooth_finPart φ₀)`. Establish `hKc : IsCompact (K' : Set (GL (Fin a) (Af L)))` using `hUc.of_isClosed_subset (Subgroup.isClosed_of_isOpen _ hKo) inf_le_left`. Use `set O := LocEx.orbSpan φ with hO`.
+
+Use `haveI : FiniteDimensional ℂ O := (π.cusp φ hφ).1.kfin`. Use `set ρ₀ := sub (cptRep L a) O (LocEx.orbSpan_stable φ) with hρ₀`. Establish `hρc : AutFin.IsContRep ρ₀` using `LocEx.isContRep_sub _ _`. Establish `hloc : ∀ v : π.V, ∃ U : Submodule ℂ π.V, v ∈ U ∧ FiniteDimensional ℂ U ∧ (∀ k, ∀ u ∈ U, cptOn π k u ∈ U) ∧ ∀ (ℓ : Module.Dual ℂ π.V), ∀ u ∈ U, Continuous fun k => ℓ (cptOn π k u)`. Introduce `v`.
+
+Establish `hSV : LocEx.orbSpan v.1 ≤ π.V` using `Submodule.span_le.2 (by`. Introduce and unpack `_ ⟨k, rfl⟩`. Conclude with `(π.op (.cpt k) v).2)`. Use `haveI : FiniteDimensional ℂ (LocEx.orbSpan v.1) := (π.cusp v.1 v.2).1.kfin`. Use `set Uv : Submodule ℂ π.V := (LocEx.orbSpan v.1).comap π.V.subtype`.
+
+Use `⟨Uv, Submodule.subset_span ⟨1, by simp⟩, ?_, fun k u hu => ?_, fun ℓ u hu => ?_⟩` and prove the remaining obligations. Conclude with `FiniteDimensional.of_injective ((π.V.subtype ∘ₗ Uv.subtype).codRestrict (LocEx.orbSpan v.1) fun u => u.2) fun u u' e => Subtype.ext (Subtype.ext (by have e' := congrArg Subtype.val e; exact e'))`. Conclude with `LocEx.orbSpan_stable v.1 k u.1 hu`. Use `LocEx.isContRep_sub (LocEx.orbSpan v.1) (LocEx.orbSpan_stable v.1) (ℓ ∘ₗ Submodule.inclusion hSV) ⟨u.1, hu⟩` as an intermediate fact. Use `this using 2 with k` and compare the differences between its conclusion and the goal.
+
+Both sides reduce to the same expression. Take `⟨hss, hfin, hsum⟩` from `GlobalTheory.T.isSemisimple_of_locallyFinite_compactGroup (Kinf L a) π.V (cptOn π) hloc`. Use `set X := typeSub π ρ₀ with hX`. Establish `hφX : φ₀ ∈ X.toSubmodule` using `fun g => AutFinGL.type_of_map ρ₀ O.subtype (fun _ _ => rfl) ⟨φ, Submodule.subset_span ⟨1, by simp⟩⟩ g`. Establish `hclos : ∀ S₁ S₂ : Subrepresentation (cptOn π), IsAtom S₁ → S₂ ≤ X → Nonempty (S₁.toRepresentation.Equiv S₂.toRepresentation) → S₁ ≤ X`.
+
+Introduce and unpack `S₁ S₂ hS₁ hS₂ ⟨e⟩`. Use `haveI := hfin S₁ hS₁`. Use `haveI : FiniteDimensional ℂ S₂.toSubmodule := LinearEquiv.finiteDimensional e.toLinearEquiv`. Take `⟨F, hF⟩` from `LinearMap.exists_extend (S₁.toSubmodule.subtype ∘ₗ e.symm.toLinearEquiv.toLinearMap)`. Establish `hFv : ∀ u (hu : u ∈ S₂.toSubmodule), F u = (e.symm ⟨u, hu⟩ : π.V)` using `fun u hu => LinearMap.congr_fun hF ⟨u, hu⟩`.
+
+Introduce `x hx`. Establish `hx' : x = F (e ⟨x, hx⟩)`. Rewrite using `[hFv _ (e ⟨x, hx⟩).2]`. Simplify using the standard rewrite rules. Rewrite using `[hx']`.
+
+Use `GlobalTheory.T.cuspidal_typeClosure_preserved_by_archCompact_intertwiner L a π O ρ₀ S₂.toSubmodule inferInstance (fun k u hu => S₂.apply_mem_toSubmodule k hu) F (fun k u hu => ?_) _ (e ⟨x, hx⟩).2 (hS₂ (e ⟨x, hx⟩).2)` and prove the remaining obligations. Rewrite using `[hFv _ (S₂.apply_mem_toSubmodule k hu), hFv _ hu]`. Use `e.symm.toIntertwiningMap.isIntertwining' k` as an intermediate fact. Conclude with `congrArg Subtype.val (LinearMap.congr_fun this ⟨u, hu⟩)`. Take `⟨Y, hXY, hnoiso, hT⟩` from `GlobalTheory.T.exists_complement_without_common_irreducible_types (Kinf L a) π.V (cptOn π) hss hsum X hclos`.
+
+Use `set e := LocGL.idem π.isSmooth_finPart hKc with he`. Establish `hcomm : ∀ g k (v : π.V), π.finPart g (cptOn π k v) = cptOn π k (π.finPart g v)` using `fun g k v => by`. Use `Subtype.ext ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `(rt L a (finGL L a g) * rt L a (infGL L a (Unitary.toUnits k))) v.1 = (rt L a (infGL L a (Unitary.toUnits k)) * rt L a (finGL L a g)) v.1`. Rewrite using `[← map_mul, ← map_mul, infGL_comm]`.
+
+Establish `hfixS : ∀ k, ∀ v ∈ fixed π.finPart K', cptOn π k v ∈ fixed π.finPart K'` using `fun k v hv => GlobalTheory.Parabolic.mem_fixed.2 fun u hu => by rw [hcomm, GlobalTheory.Parabolic.mem_fixed.1 hv u hu]`. Establish `hkerS : ∀ k, ∀ v ∈ twKer π.finPart K' 1, cptOn π k v ∈ twKer π.finPart K' 1`. Introduce `k v hv`. Proceed by induction on `hv using Submodule.span_induction with`. Consider the case `mem z hz`.
+
+Take `⟨n, w, rfl⟩` from `hz`. Conclude with `Submodule.subset_span ⟨n, cptOn π k w, by rw [map_sub, map_smul, hcomm]⟩`. Consider the case `zero => simp`. Consider the case `add u v _ _ hu hv => rw [map_add]`. Conclude with `add_mem hu hv`.
+
+Consider the case `smul c u _ hu => rw [map_smul]`. Conclude with `Submodule.smul_mem _ c hu`. Establish `hee : ∀ v, e (e v) = e v` using `fun v => LocGL.idem_of_mem _ _ (LocGL.idem_mem _ _ v)`. Establish `heq : ∀ k v, e (cptOn π k v) = cptOn π k (e v)`. Introduce `k v`.
+
+Establish `hd : v - e v ∈ twKer π.finPart K' 1`. Rewrite using `[← LocGL.idem_eq_zero_iff π.isSmooth_finPart hKc, map_sub, hee, sub_self]`. Establish `hv : v = e v + (v - e v)` using `by abel`. Use `conv_lhs => rw [hv, map_add, map_add]`. Rewrite using `[LocGL.idem_of_mem _ _ (hfixS k _ (LocGL.idem_mem _ _ v)), (LocGL.idem_eq_zero_iff π.isSmooth_finPart hKc).2 (hkerS k _ hd), add_zero]`.
+
+Take `⟨heX, heY⟩` from `hT e heq`. Use `set PT := X.toSubmodule.projection Y.toSubmodule hXY with hPT`. Establish `hPTl : ∀ v ∈ X.toSubmodule, PT v = v` using `fun v hv => by`. Rewrite using `[hPT]`. Conclude with `Submodule.projection_apply_of_mem_left hXY hv`.
+
+Establish `hPTr : ∀ v ∈ Y.toSubmodule, PT v = 0` using `fun v hv => by`. Rewrite using `[hPT]`. Conclude with `Submodule.projection_apply_of_mem_right hXY hv`. Establish `hPTm : ∀ v, PT v ∈ X.toSubmodule` using `fun v => by`. Rewrite using `[hPT]`.
+
+Conclude with `Submodule.projection_apply_mem hXY v`. Establish `hPTs : ∀ v, PT v + Y.toSubmodule.projection X.toSubmodule hXY.symm v = v` using `fun v => by`. Rewrite using `[hPT]`. Conclude with `Submodule.projection_add_projection_eq_self hXY v`. Establish `hPTe : ∀ v, PT (e v) = e (PT v)`.
+
+Introduce `v`. Establish `hv` using `hPTs v`. Use `conv_lhs => rw [← hv, map_add, map_add]`. Rewrite using `[hPTl _ (heX _ (hPTm v)), hPTr _ (heY _ (Submodule.projection_apply_mem hXY.symm v)), add_zero]`. Establish `hPT2 : ∀ v, PT (PT v) = PT v` using `fun v => hPTl _ (hPTm v)`.
+
+Use `⟨e ∘ₗ PT, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `hP`. Establish `h1 : (e ∘ₗ PT) φ₀ = φ₀`. Express the relevant statement in the definitionally equal form `e (PT φ₀) = φ₀`. Rewrite using `[hPTl _ hφX]`.
+
+Conclude with `LocGL.idem_of_mem _ _ (GlobalTheory.Parabolic.mem_fixed.2 fun u hu => hu.2)`. Rewrite `h1` using `[hP]`. Conclude with `h0' h1.symm`. Use `LinearMap.ext fun v => ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `e (PT (e (PT v))) = e (PT v)`.
+
+Rewrite using `[hPTe, hee, hPT2]`. Establish `hle : LinearMap.range (e ∘ₗ PT) ≤ X.toSubmodule ⊓ fixed π.finPart K'`. Introduce and unpack `_ ⟨v, rfl⟩`. Conclude with `⟨heX _ (hPTm v), LocGL.idem_mem π.isSmooth_finPart hKc _⟩`. Use `haveI := finiteDimensional_typeSub_fixed h π hρc hKo (ρ₀ := ρ₀)`.
+
+Conclude with `Submodule.finiteDimensional_of_le hle`. Introduce `s hs B hl hr hfinB hcptB _`. Choose the witnesses or unpack the hypotheses as in `⟨σ, hσc, hσ⟩ : ∃ σ : GL (Fin a) (Af L) →* GL (Fin a) (Af L), Continuous σ ∧ ∀ k, s (.fin k) = .fin (σ k) := by`. Break down `hs with rfl | rfl` into its components or cases. Use `⟨invT a (Af L), ?_, fun k => rfl⟩` and prove the remaining obligations.
+
+Use `Units.continuous_iff.2 ⟨?_, ?_⟩` and prove the remaining obligations. Conclude with `(Units.continuous_val.comp continuous_inv).matrix_transpose`. Conclude with `Units.continuous_val.matrix_transpose`. Conclude with `⟨Matrix.GeneralLinearGroup.map (conjFin (IsCMField.complexConj L).toRingEquiv), Continuous.units_map _ (continuous_id.matrix_map (continuous_conjFin _)), fun k => rfl⟩`. Establish `hsK : ∀ k, s (.cpt k) = .cpt (barKHom L a k)`.
+
+Apply the tactic sequence `rcases hs with rfl | rfl <;> exact fun k => rfl`. Establish `hBf : ∀ k φ ψ, B (π.finPart k φ) (π.finPart (σ k) ψ) = B φ ψ` using `fun k φ ψ => by`. Use `hfinB k φ ψ` as an intermediate fact. Rewrite `this` using `[hσ]`. Conclude with `this`.
+
+Establish `hBc : ∀ k φ ψ, B (cptOn π k φ) (cptOn π (barKHom L a k) ψ) = B φ ψ` using `fun k φ ψ => by`. Use `hcptB k φ ψ` as an intermediate fact. Rewrite `this` using `[hsK]`. Conclude with `this`. Establish `hKc' : IsCompact ((K'.map σ : Subgroup _) : Set (GL (Fin a) (Af L)))`.
+
+Rewrite using `[Subgroup.coe_map]`. Conclude with `hKc.image hσc`. Establish `hC` using `GlobalTheory.T.isCompl_orthogonal_of_no_common_irreducible_types (Kinf L a) π.V (cptOn π) (barKHom L a) barKHom_surjective hfin hsum B hl hr hBc X Y hXY hnoiso`. Use `⟨(Submodule.projection _ _ hC) ∘ₗ LocGL.idem π.isSmooth_finPart hKc', fun φ ψ => ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `B (e (PT φ)) ψ = B φ (Submodule.projection _ _ hC (LocGL.idem π.isSmooth_finPart hKc' ψ))`.
+
+Rewrite using `[idem_adj π.isSmooth_finPart σ hKc hKc' B hBf]`. Rewrite using `[hPT]`. Use `adj_of_isCompl B hXY hC (fun y hy x' hx' => ?_) (fun x hx y' hy' => ?_) φ _` and prove the remaining obligations. Simplify using `only [Submodule.mem_iInf, LinearMap.mem_ker] at hx'`. Conclude with `hx' y hy`.
+
+Simplify using `only [Submodule.mem_iInf, LinearMap.mem_ker] at hy'`. Conclude with `hy' x hx`.
+-/
 theorem exists_idem_adj : AutomorphicFormsFiniteGL → ∀ (L : Type) [Field L] [NumberField L] [IsCMField L] (a : ℕ)
     (π : CuspSub L a), ∃ P : Module.End ℂ π.V, P ≠ 0 ∧ P ∘ₗ P = P ∧ FiniteDimensional ℂ (LinearMap.range P) ∧
       ∀ s : Op L a → Op L a, (s = invTOp ∨ s = conjOp) → ∀ B : π.V →ₗ[ℂ] π.V →ₗ[ℂ] ℂ,

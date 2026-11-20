@@ -2,6 +2,13 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.GaloisLibrary.Weyl
 
 open Matrix UpperTheory.V.Weyl
 
+/- English proof (translation)
+Apply `Finset.prod_bij (fun l _ => Fin.castLE k.isLt l)` to reduce the goal to its premises. Introduce `l _`. Simplify using `only [Finset.mem_filter, Finset.mem_univ, true_and, Fin.le_iff_val_le_val, Fin.coe_castLE]`. Use linear arithmetic over natural numbers and integers. Introduce `a _ b _ h`.
+
+Conclude with `Fin.castLE_injective _ h`. Introduce `i hi`. Simplify using `only [Finset.mem_filter, Finset.mem_univ, true_and, Fin.le_iff_val_le_val] at hi`. Conclude with `⟨⟨i.val, by omega⟩, Finset.mem_univ _, Fin.ext (by simp)⟩`. Introduce `_ _`.
+
+Both sides reduce to the same expression.
+-/
 private theorem prod_fin_castLE_eq_prod_le {M : Type*} [CommMonoid M] {n : ℕ} (k : Fin n) (f : Fin n → M) :
     ∏ l : Fin ((k : ℕ) + 1), f (Fin.castLE k.isLt l) = ∏ i : Fin n with i ≤ k, f i := by
   apply Finset.prod_bij (fun l _ => Fin.castLE k.isLt l)
@@ -16,6 +23,13 @@ private theorem prod_fin_castLE_eq_prod_le {M : Type*} [CommMonoid M] {n : ℕ} 
   · intro _ _
     rfl
 
+/- English proof (translation)
+Apply `Finset.sum_bij (fun l _ => Fin.castLE k.isLt l)` to reduce the goal to its premises. Introduce `l _`. Simplify using `only [Finset.mem_filter, Finset.mem_univ, true_and, Fin.le_iff_val_le_val, Fin.coe_castLE]`. Use linear arithmetic over natural numbers and integers. Introduce `a _ b _ h`.
+
+Conclude with `Fin.castLE_injective _ h`. Introduce `i hi`. Simplify using `only [Finset.mem_filter, Finset.mem_univ, true_and, Fin.le_iff_val_le_val] at hi`. Conclude with `⟨⟨i.val, by omega⟩, Finset.mem_univ _, Fin.ext (by simp)⟩`. Introduce `_ _`.
+
+Both sides reduce to the same expression.
+-/
 private theorem sum_fin_castLE_eq_sum_le {M : Type*} [AddCommMonoid M] {n : ℕ} (k : Fin n) (f : Fin n → M) :
     ∑ l : Fin ((k : ℕ) + 1), f (Fin.castLE k.isLt l) = ∑ i : Fin n with i ≤ k, f i := by
   apply Finset.sum_bij (fun l _ => Fin.castLE k.isLt l)
@@ -30,6 +44,19 @@ private theorem sum_fin_castLE_eq_sum_le {M : Type*} [AddCommMonoid M] {n : ℕ}
   · intro _ _
     rfl
 
+/- English proof (translation)
+Introduce `n k b hb`. Establish `hmat : (rtr b).mapMatrix (Matrix.of fun i j : Fin ((k : ℕ) + 1) => (MvPolynomial.X (Fin.castLE k.isLt i, Fin.castLE k.isLt j) : Pol n)) = (Matrix.of fun i j : Fin ((k : ℕ) + 1) => (MvPolynomial.X (Fin.castLE k.isLt i, Fin.castLE k.isLt j) : Pol n)) * (Matrix.of fun i j : Fin ((k …`. Use `Matrix.ext fun i j => ?_` and prove the remaining obligations. Simplify using `only [AlgHom.mapMatrix_apply, Matrix.map_apply, Matrix.of_apply, Matrix.mul_apply, rtr, MvPolynomial.aeval_X]`. Rewrite using `[sum_fin_castLE_eq_sum_le k (fun m => MvPolynomial.X (Fin.castLE k.isLt i, m) * MvPolynomial.C (b m (Fin.castLE k.isLt j)))]`.
+
+Use `symm`. Apply `Finset.sum_filter_of_ne` to reduce the goal to its premises. Introduce `m _ hm`. Assume the negation of the conclusion as `hmk`. Apply `hm` to reduce the goal to its premises.
+
+Rewrite using `[hb m (Fin.castLE k.isLt j) ?_, map_zero, mul_zero]`. Simplify using `only [not_le] at hmk`. Rewrite `hmk`, the goal using `[Fin.lt_iff_val_lt_val]`. Simplify using `only [Fin.coe_castLE]`. Use linear arithmetic over natural numbers and integers.
+
+Establish `hup : (Matrix.of fun i j : Fin ((k : ℕ) + 1) => b (Fin.castLE k.isLt i) (Fin.castLE k.isLt j)).det = ∏ i : Fin n with i ≤ k, b i i`. Rewrite using `[Matrix.det_of_upperTriangular, ← prod_fin_castLE_eq_prod_le k (fun i => b i i)]`. Both sides reduce to the same expression. Introduce `i j hij`. Simplify using `only [Matrix.of_apply]`.
+
+Apply `hb` to reduce the goal to its premises. Rewrite `hij`, the goal using `[Fin.lt_iff_val_lt_val]`. Simplify using `using hij`. Establish `hC : ((Matrix.of fun i j : Fin ((k : ℕ) + 1) => b (Fin.castLE k.isLt i) (Fin.castLE k.isLt j)).map (MvPolynomial.C : ℂ →+* Pol n)).det = MvPolynomial.C (∏ i : Fin n with i ≤ k, b i i)`. Rewrite using `[← hup, RingHom.map_det]`.
+
+Both sides reduce to the same expression. Unfold `minor`. Rewrite using `[AlgHom.map_det, hmat, Matrix.det_mul, hC, MvPolynomial.smul_eq_C_mul, mul_comm]`.
+-/
 theorem UpperTheory.V.Weyl.minorRtr :
     ∀ (n : ℕ) (k : Fin n) (b : Matrix (Fin n) (Fin n) ℂ), (∀ i j, j < i → b i j = 0) →
       rtr b (minor k) = (∏ i : Fin n with i ≤ k, b i i) • minor k := by

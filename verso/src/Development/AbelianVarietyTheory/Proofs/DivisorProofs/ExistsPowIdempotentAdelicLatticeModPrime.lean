@@ -10,6 +10,15 @@ open scoped TensorProduct Matrix
 noncomputable section
 namespace GlobalTheory.LatIdem
 
+/- English proof (translation)
+Choose the witnesses or unpack the hypotheses as in `⟨i, j, hij, h⟩ : ∃ i j : ℕ, i < j ∧ u^[i] = u^[j] := by`. Take `⟨i, j, hne, h⟩` from `Finite.exists_ne_map_eq_of_infinite (fun n : ℕ => u^[n])`. Break down `lt_or_gt_of_ne hne with h1 | h1` into its components or cases. Conclude with `⟨i, j, h1, h⟩`. Conclude with `⟨j, i, h1, h.symm⟩`.
+
+Take `⟨k, rfl⟩` from `Nat.exists_eq_add_of_lt hij`. Establish `key : ∀ m : ℕ, u^[i + m * (k + 1)] = u^[i]`. Introduce `m`. Proceed by induction on `m with`. Consider the case `zero => simp`.
+
+Consider the case `succ m ih`. Establish `: i + (m + 1) * (k + 1) = (i + m * (k + 1)) + (k + 1)` using `by ring`. Rewrite using `[this, Function.iterate_add, ih, ← Function.iterate_add, ← add_assoc, ← h]`. Use `⟨(i + 1) * (k + 1), by positivity, ?_⟩` and prove the remaining obligations. Establish `e1 : 2 * ((i + 1) * (k + 1)) = (i + (i + 1) * (k + 1)) + (i * k + k + 1)` using `by ring`.
+
+Establish `e2 : (i + 1) * (k + 1) = i + (i * k + k + 1)` using `by ring`. Rewrite using `[e1, Function.iterate_add, key, ← Function.iterate_add, ← e2]`.
+-/
 theorem exists_iterate_idem {X : Type*} [Finite X] (u : X → X) : ∃ N : ℕ, 0 < N ∧ u^[2 * N] = u^[N] := by
   obtain ⟨i, j, hij, h⟩ : ∃ i j : ℕ, i < j ∧ u^[i] = u^[j] := by
     obtain ⟨i, j, hne, h⟩ := Finite.exists_ne_map_eq_of_infinite (fun n : ℕ => u^[n])
@@ -29,6 +38,15 @@ theorem exists_iterate_idem {X : Type*} [Finite X] (u : X → X) : ∃ N : ℕ, 
   have e2 : (i + 1) * (k + 1) = i + (i * k + k + 1) := by ring
   rw [e1, Function.iterate_add, key, ← Function.iterate_add, ← e2]
 
+/- English proof (translation)
+Set `gb : M ⧸ P →+ M ⧸ P` to `QuotientAddGroup.map P P g hP`. Set `u : Λ.map (QuotientAddGroup.mk' P) → Λ.map (QuotientAddGroup.mk' P)` to `fun x => ⟨gb x, by`. Take `⟨_, z, hz, rfl⟩` from `x`. Conclude with `⟨g z, hΛ z hz, rfl⟩⟩`. Establish `hu : ∀ (n : ℕ) (z : M) (hz : z ∈ Λ), (u^[n] ⟨QuotientAddGroup.mk' P z, z, hz, rfl⟩ : M ⧸ P) = QuotientAddGroup.mk' P (g^[n] z)`.
+
+Introduce `n`. Proceed by induction on `n with`. Consider the case `zero => intro z hz`. Both sides reduce to the same expression. Consider the case `succ n ih`.
+
+Introduce `z hz`. Rewrite using `[Function.iterate_succ_apply', Function.iterate_succ_apply']`. Use `show gb _ = _`. Rewrite using `[ih z hz]`. Both sides reduce to the same expression.
+
+Take `⟨N, hN, h⟩` from `exists_iterate_idem u`. Use `⟨N, hN, fun z hz => ?_⟩` and prove the remaining obligations. Use `hu (2 * N) z hz` as an intermediate fact. Rewrite `this` using `[h, hu N z hz]`. Conclude with `QuotientAddGroup.eq_iff_sub_mem.1 this.symm`.
+-/
 theorem exists_idem_mod {M : Type*} [AddCommGroup M] (Λ P : AddSubgroup M) (g : M →+ M)
     (hΛ : ∀ z ∈ Λ, g z ∈ Λ) (hP : ∀ z ∈ P, g z ∈ P) [Finite (Λ.map (QuotientAddGroup.mk' P))] :
     ∃ N : ℕ, 0 < N ∧ ∀ z ∈ Λ, g^[2 * N] z - g^[N] z ∈ P := by
@@ -56,20 +74,58 @@ variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algeb
 
 open GlobalTheory.EmbChart GlobalTheory.InertSph
 
+/- English proof (translation)
+Introduce `u hu`. Rewrite using `[smul_eq_mul, mul_comm, atPlace_mul_right, hu, mul_zero, map_zero]`.
+-/
 theorem at_atPlace (v : Pl F) (a : Fv F v) : At (evFin F v) (atPlace v a) := by
   intro u hu
   rw [smul_eq_mul, mul_comm, atPlace_mul_right, hu, mul_zero, map_zero]
 
+/- English proof (translation)
+Establish `h` using `ha (1 - atPlace v 1) (by rw [map_sub, map_one, evFin_atPlace, sub_self])`. Rewrite `h` using `[smul_eq_mul, sub_mul, one_mul, atPlace_mul_right, one_mul, sub_eq_zero]`. Conclude with `h`.
+-/
 theorem eq_atPlace (v : Pl F) (a : AF F) (ha : At (evFin F v) a) : a = atPlace v (evFin F v a) := by
   have h := ha (1 - atPlace v 1) (by rw [map_sub, map_one, evFin_atPlace, sub_self])
   rw [smul_eq_mul, sub_mul, one_mul, atPlace_mul_right, one_mul, sub_eq_zero] at h
   exact h
 
 omit [NumberField E] in
+/- English proof (translation)
+The claim follows from `AddSubgroup.subset_closure ⟨_, at_atPlace v _, by rw [evFin_atPlace]; exact c.2, y, hy, rfl⟩`.
+-/
 theorem gen_mem {d : ℕ} (W : Spc F E d) (v : Pl F) (c : v.adicCompletionIntegers F) (y : Fin d → E) (hy : y ∈ W.L) :
     (atPlace v (c : Fv F v) • fun i => inclR (F := F) (AF F) (y i)) ∈ latAt W v :=
   AddSubgroup.subset_closure ⟨_, at_atPlace v _, by rw [evFin_atPlace]; exact c.2, y, hy, rfl⟩
 
+/- English proof (translation)
+Use `set P := (latAt W v).map (nsmulAddMonoidHom p) with hPdef`. Establish `hp0 : (p : v.adicCompletionIntegers F) ≠ 0`. Introduce `h`. Establish `h1 : ((p : v.adicCompletionIntegers F) : Fv F v) = 0` using `congrArg Subtype.val h`. Establish `h2 : (p : Fv F v) = 0` using `by simpa using h1`.
+
+Rewrite `h2` using `[← map_natCast (algebraMap F (Fv F v)), map_eq_zero]`. Conclude with `(Nat.cast_ne_zero.2 hp.ne') h2`. Establish `hfin : Finite (v.adicCompletionIntegers F ⧸ Ideal.span {(p : v.adicCompletionIntegers F)})` using `Formalism.UG.P.glint_finite_quotient_of_dvr (Formalism.UG.P.glint_finite_residueField v) _ (by rwa [Ne, Ideal.span_singleton_eq_bot])`. Choose the witnesses or unpack the hypotheses as in `⟨T, hT⟩ : (W.L.restrictScalars ℤ).FG := by`. Establish `: Module.Finite (𝓞 E) W.L` using `Module.Finite.iff_fg.2 hW`.
+
+Establish `: Module.Finite ℤ W.L` using `Module.Finite.trans (𝓞 E) W.L`. Conclude with `Module.Finite.iff_fg.1 this`. Establish `hTL : ∀ t ∈ T, t ∈ W.L` using `fun t ht => by`. Establish `: t ∈ W.L.restrictScalars ℤ` using `hT ▸ Submodule.subset_span ht`. Conclude with `this`.
+
+Set `s : (v.adicCompletionIntegers F ⧸ Ideal.span {(p : v.adicCompletionIntegers F)}) × T → (Fin d → AE F E) ⧸ P` to `fun x => QuotientAddGroup.mk' P (atPlace v ((x.1.out : v.adicCompletionIntegers F) : Fv F v) • fun i => inclR (F := F) (AF F) (x.2.1 i))`. Establish `heq : (latAt W v).map (QuotientAddGroup.mk' P) = AddSubgroup.closure (Set.range s)`. Apply `le_antisymm` to reduce the goal to its premises. Rewrite using `[AddSubgroup.map_le_iff_le_comap, InertSph.latAt, AddSubgroup.closure_le]`. Introduce and unpack `_ ⟨a, ha, hav, y, hy, rfl⟩`.
+
+Establish `hy' : y ∈ Submodule.span ℤ (T : Set (Fin d → E))` using `hT ▸ hy`. Use `clear hy`. Rewrite using `[SetLike.mem_coe]`. Proceed by induction on `hy' using Submodule.span_induction with`. Consider the case `mem t ht`.
+
+Set `x : v.adicCompletionIntegers F` to `⟨_, hav⟩`. Set `q` to `Ideal.Quotient.mk (Ideal.span {(p : v.adicCompletionIntegers F)}) x`. Take `⟨c, hc⟩` from `Ideal.mem_span_singleton'.1 (Ideal.Quotient.eq.1 (Ideal.Quotient.mk_out q).symm)`. Establish `hc' : evFin F v a - ((q.out : v.adicCompletionIntegers F) : Fv F v) = p • (c : Fv F v)`. Use `congrArg Subtype.val hc` as an intermediate fact.
+
+Simplify using `only [MulMemClass.coe_mul, SubringClass.coe_natCast, AddSubgroupClass.coe_sub] at this`. Rewrite using `[nsmul_eq_mul, mul_comm]`. Conclude with `this.symm`. Rewrite using `[AddSubgroup.mem_comap]`. Use `AddSubgroup.subset_closure ⟨(q, ⟨t, ht⟩), ?_⟩` and prove the remaining obligations.
+
+Use `(QuotientAddGroup.eq_iff_sub_mem.2 ?_).symm` and prove the remaining obligations. Use `⟨_, gen_mem W v c t (hTL t ht), ?_⟩` and prove the remaining obligations. Rewrite using `[← sub_smul, eq_atPlace v a ha, ← map_sub, hc', map_nsmul, smul_assoc]`. Both sides reduce to the same expression. Consider the case `zero`.
+
+Establish `: (a • fun i => inclR (F` using `F) (AF F) ((0 : Fin d → E) i)) = 0 := by`. Use function extensionality and compare the values at `i`. Simplify using the standard rewrite rules. Rewrite using `[this]`. Conclude with `zero_mem _`.
+
+Consider the case `add x y _ _ hx hy`. Establish `: (a • fun i => inclR (F` using `F) (AF F) ((x + y) i)) = (a • fun i => inclR (F := F) (AF F) (x i)) + (a • fun i => inclR (F := F) (AF F) (y i)) := by`. Use function extensionality and compare the values at `i`. Simplify using the standard rewrite rules. Rewrite using `[this]`.
+
+Conclude with `add_mem hx hy`. Consider the case `smul n x _ hx`. Establish `: (a • fun i => inclR (F` using `F) (AF F) ((n • x) i)) = n • (a • fun i => inclR (F := F) (AF F) (x i)) := by`. Use function extensionality and compare the values at `i`. Simplify using `only [Pi.smul_apply, map_zsmul]`.
+
+Rewrite using `[smul_comm]`. Rewrite using `[this]`. Conclude with `zsmul_mem hx n`. Rewrite using `[AddSubgroup.closure_le]`. Introduce and unpack `_ ⟨x, rfl⟩`.
+
+Conclude with `⟨_, gen_mem W v _ _ (hTL _ x.2.2), rfl⟩`. Establish `hfg : ((latAt W v).map (QuotientAddGroup.mk' P)).FG` using `(AddSubgroup.fg_iff _).2 ⟨_, heq.symm, Set.finite_range s⟩`. Establish `: AddGroup.FG ((latAt W v).map (QuotientAddGroup.mk' P))` using `(AddGroup.fg_iff_addSubgroup_fg _).2 hfg`. Use `AddCommGroup.finite_of_fg_isAddTorsion _ ?_` and prove the remaining obligations. Introduce and unpack `⟨_, z, hz, rfl⟩`.
+
+Use `isOfFinAddOrder_iff_nsmul_eq_zero.2 ⟨p, hp, Subtype.ext ?_⟩` and prove the remaining obligations. Use `show p • QuotientAddGroup.mk' P z = 0`. Rewrite using `[← map_nsmul]`. Conclude with `(QuotientAddGroup.eq_zero_iff _).2 ⟨z, hz, rfl⟩`.
+-/
 theorem finite_mod {d : ℕ} (W : Spc F E d) (hW : W.L.FG) (v : Pl F) (p : ℕ) (hp : 0 < p) :
     Finite ((latAt W v).map (QuotientAddGroup.mk' ((latAt W v).map (nsmulAddMonoidHom p)))) := by
   set P := (latAt W v).map (nsmulAddMonoidHom p) with hPdef
@@ -143,6 +199,15 @@ theorem finite_mod {d : ℕ} (W : Spc F E d) (hW : W.L.FG) (v : Pl F) (p : ℕ) 
   rw [← map_nsmul]
   exact (QuotientAddGroup.eq_zero_iff _).2 ⟨z, hz, rfl⟩
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ d W hW v p hp _ f hf`. Use `finite_mod W hW.fg v p hp` as an intermediate fact. Set `g : (Fin d → AE F E) →+ (Fin d → AE F E)` to `(Matrix.mulVecLin f).toAddMonoidHom`. Establish `hg : ∀ (n : ℕ) (z : Fin d → AE F E), g^[n] z = (f ^ n) *ᵥ z`. Introduce `n`.
+
+Proceed by induction on `n with`. Consider the case `zero => intro z`. Simplify using the standard rewrite rules. Consider the case `succ n ih`. Introduce `z`.
+
+Rewrite using `[Function.iterate_succ_apply', ih, pow_succ', ← Matrix.mulVec_mulVec]`. Both sides reduce to the same expression. Take `⟨N, hN, h⟩` from `exists_idem_mod (latAt W v) ((latAt W v).map (nsmulAddMonoidHom p)) g hf (by`. Introduce and unpack `_ ⟨z, hz, rfl⟩`. Conclude with `⟨g z, hf z hz, (map_nsmul g p z).symm⟩)`.
+
+Use `⟨N, hN, fun z hz => ?_⟩` and prove the remaining obligations. Take `⟨y, hy, e⟩` from `h z hz`. Rewrite `e` using `[hg, hg]`. Conclude with `⟨y, hy, e.symm⟩`.
+-/
 theorem exists_pow_idem : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (d : ℕ) (W : Spc F E d),
     W.L.IsLattice E → ∀ (v : Pl F) (p : ℕ), 0 < p → (p : 𝓞 F) ∈ v.asIdeal →
     ∀ f : Matrix (Fin d) (Fin d) (AE F E), (∀ z ∈ GlobalTheory.InertSph.latAt W v, f *ᵥ z ∈ GlobalTheory.InertSph.latAt W v) →

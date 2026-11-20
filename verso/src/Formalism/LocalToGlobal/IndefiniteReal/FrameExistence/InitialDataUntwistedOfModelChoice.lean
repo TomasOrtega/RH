@@ -91,12 +91,21 @@ def QDeAt (L : LevCh D T) : Prop :=
   ∀ p ∈ ({D.host.pde, D.host.pde'} : Set ℕ), ∃ 𝔭 : HeightOneSpectrum (𝓞 D.host.K),
     ∀ t, ∀ PP ∈ L.Q t, ((p : ℕ) : 𝓞 D.host.E) ∈ PP.asIdeal → PP.under (𝓞 D.host.K) = 𝔭
 
+/- English proof (translation)
+The claim follows from `h.roots`.
+-/
 theorem rootsAt_iff (L : LevCh D T) (eG : G ≃* G0 L.Pg D.R.r) (cX : CoefA D.sp.X') (cV : ∀ i, CoefA (Vc D i)) (pl : Pl0 → Pl D.host.E)
     (Sb : Finset (Pl D.host.E)) (B : BType A3 L cX cV pl) (plI : I0 → Pl D.host.E) (SF : Finset (HeightOneSpectrum (𝓞 D.host.F)))
     (h : BrgL A3 L eG cX cV pl Sb B plI SF) : RootsAt L := h.roots
 
+/- English proof (translation)
+The claim follows from `h.Q_off`.
+-/
 theorem qOff_of (L : LevCh D T) (h : L.Is A3.A.μ0) : QOffAt L := h.Q_off
 
+/- English proof (translation)
+The claim follows from `h.Q_de`.
+-/
 theorem qDe_of (L : LevCh D T) (h : L.Is A3.A.μ0) : QDeAt L := h.Q_de
 
 def BrgAtX (L : LevCh D T) (MX : DSModel D.sp.X' (parB (Ptw D) D.R.m))
@@ -115,12 +124,18 @@ def BrgAtP (L : LevCh D T)
       (plI : I0 → Pl D.host.E) (SF : Finset (HeightOneSpectrum (𝓞 D.host.F))) (prX : cX.W →ₗ[ℂ] SmT MX →ₗ[ℂ] ℂ),
       cX.Is ∧ (∀ i, (cV i).Is) ∧ IsDualPair θ MX cX prX ∧ Pr MX cX cV prX ∧ BrgL A3 L eG cX cV pl Sb B plI SF
 
+/- English proof (translation)
+Introduce `eG hrec θ hθ` and use `h eG hrec θ hθ MX`.
+-/
 theorem brgAtX_of_brgAtP {L : LevCh D T}
     {Pr : ∀ (M : DSModel D.sp.X' (parB (Ptw D) D.R.m)) (c : CoefA D.sp.X') (cv : ∀ i, CoefA (Vc D i)),
       (c.W →ₗ[ℂ] SmT M →ₗ[ℂ] ℂ) → Prop}
     (h : BrgAtP A3 L Pr) (MX : DSModel D.sp.X' (parB (Ptw D) D.R.m)) : BrgAtX A3 L MX Pr :=
   fun eG hrec θ hθ => h eG hrec θ hθ MX
 
+/- English proof (translation)
+Introduce `eG hrec θ hθ` and use `by obtain ⟨cX, cV, pl, Sb, B, plI, SF, prX, h1, h2, h3, h4⟩ := h eG hrec θ hθ MX exact ⟨cX, cV, pl, Sb, B, plI, SF, prX, h1, h2, h3, trivial, h4⟩`.
+-/
 theorem brgAtX_of_brgAt {L : LevCh D T} (h : BrgAt A3 L) (MX : DSModel D.sp.X' (parB (Ptw D) D.R.m)) :
     BrgAtX A3 L MX (fun _ _ _ _ => True) := fun eG hrec θ hθ => by
   obtain ⟨cX, cV, pl, Sb, B, plI, SF, prX, h1, h2, h3, h4⟩ := h eG hrec θ hθ MX
@@ -188,6 +203,9 @@ def Seed3AtNTM (F : Face3 D A3) (ψ : AddChar (AF D.host.F) ℂ) (L : LevCh D T)
     R.toRealDat.MX = MX ∧ Pr R.toRealDat.MX R.toRealDat.cX R.toRealDat.cV R.toRealDat.prX ∧
     R.toRealDat.Pre0 F.lv2 ∧ R.IsInert ∧ R.AllPlaces
 
+/- English proof (translation)
+Take `⟨R, h1, h2, -, -, -, -, h⟩` from `h`. Conclude with `⟨R, h1, h2, h⟩`.
+-/
 theorem initial_data_at_of_models {F : Face3 D A3} {ψ : AddChar (AF D.host.F) ℂ} {L : LevCh D T} {MW : ∀ i σ, DSModel (Wc D i) (parAt (Wc D i) σ)}
     {eG : G ≃* G0 L.Pg D.R.r} {MX : DSModel D.sp.X' (parB (Ptw D) D.R.m)}
     {Pr : ∀ (M : DSModel D.sp.X' (parB (Ptw D) D.R.m)) (c : CoefA D.sp.X') (cv : ∀ i, CoefA (Vc D i)),
@@ -196,6 +214,9 @@ theorem initial_data_at_of_models {F : Face3 D A3} {ψ : AddChar (AF D.host.F) �
   obtain ⟨R, h1, h2, -, -, -, -, h⟩ := h
   exact ⟨R, h1, h2, h⟩
 
+/- English proof (translation)
+Take `⟨R, h1, h2, -, -, -, -, h⟩` from `h`. Conclude with `⟨R, h1, h2, h⟩`.
+-/
 theorem seed3AtNT_of_M {F : Face3 D A3} {ψ : AddChar (AF D.host.F) ℂ} {L : LevCh D T} {MW : ∀ i σ, DSModel (Wc D i) (parAt (Wc D i) σ)}
     {eG : G ≃* G0 L.Pg D.R.r} {MX : DSModel D.sp.X' (parB (Ptw D) D.R.m)}
     {Pr : ∀ (M : DSModel D.sp.X' (parB (Ptw D) D.R.m)) (c : CoefA D.sp.X') (cv : ∀ i, CoefA (Vc D i)),
@@ -204,15 +225,28 @@ theorem seed3AtNT_of_M {F : Face3 D A3} {ψ : AddChar (AF D.host.F) ℂ} {L : Le
   obtain ⟨R, h1, h2, -, -, -, -, h⟩ := h
   exact ⟨R, h1, h2, h⟩
 
+/- English proof (translation)
+Take `⟨R, -, h⟩` from `h`. Conclude with `⟨R, h⟩`.
+-/
 theorem seed3Psi_of_at {F : Face3 D A3} {ψ : AddChar (AF D.host.F) ℂ} {L : LevCh D T} (h : Seed3At D A3 Ks F ψ L) :
     Seed3Psi D A3 Ks F ψ := by
   obtain ⟨R, -, h⟩ := h
   exact ⟨R, h⟩
 
+/- English proof (translation)
+Take `⟨R, -, h⟩` from `h`. Conclude with `⟨R, h⟩`.
+-/
 theorem seed3Exists_of_psi {F : Face3 D A3} {ψ : AddChar (AF D.host.F) ℂ} (h : Seed3Psi D A3 Ks F ψ) : ThreeFaceBaseDatumExists D A3 Ks F := by
   obtain ⟨R, -, h⟩ := h
   exact ⟨R, h⟩
 
+/- English proof (translation)
+Take `⟨mu, twPl, hmu⟩` from `hT`. Take `⟨θ, hθ⟩` from `hθ`. Take `⟨hMY, -⟩` from `hY`. Set `MY` to `fun j => (hMY j).some`. Take `⟨cX, cV, pl, Sb, B, plI, SF, prX, hcX, hcV, hpr, hPr, hb⟩` from `hB eG hrec θ hθ`.
+
+Take `⟨gramR, c0R, c0L, htie⟩` from `hb.tie`. Set `R : RealDat D A3.A Ks` to `{ toLevCh := L hv0 := htie.v0 eG := eG pl := pl Sb := Sb θ := θ ψ := ψ MY := MY MX := MX MW := MW cX := cX cV := cV B := B prX := prX HX := fun _ => hZ _ HV := fun _ _ => hZ _ HE := hZ _ HW := fun _ _ => hZ _ gE := 1 gW := fun _ _ => 1 jX := fun _ => 0 jV := fun _ _ => 0 νY := fu …`. Use `⟨{ toRealDat := R, plI := plI, SF := SF, lam3 := fun _ _ _ _ => 0, phs := fun _ => 1 }, rfl, rfl, rfl, HEq.rfl, rfl, hPr, ?_, ?_, ?_, hb.sb⟩` and prove the remaining obligations. Establish `hsub : L.Pg ⊆ Sb` using `by rw [hb.sb]`. Conclude with `⟨hL, hb.red_R, hb.red_L, hlev, hrec, ⟨⟨gramR, c0R, c0L, htie⟩, hsub, hb.roots, hb.pl_onto, hb.degR, hb.degL, hb.muVal, hb.etaVal⟩, hθ, hV, hcX, hcV, hpr, hMW, hψ⟩`.
+
+Conclude with `⟨hb.in_tie, hb.in_onto, hb.in_R, hb.in_L, hb.in_SF⟩`. Conclude with `⟨hmu.1, hmu.2.1, hmu.2.2.1, hmu.2.2.2.1, hmu.2.2.2.2⟩`.
+-/
 theorem initial_data_at_of_model_choice (L : LevCh D T) (F : Face3 D A3) (hL : L.Is A3.A.μ0) (hT : TupAt A3 L) (eG : G ≃* G0 L.Pg D.R.r) (hrec : RecL A3 L eG)
     (hlev : LevelsL A3 L eG F.lv2) (MX : DSModel D.sp.X' (parB (Ptw D) D.R.m))
     (Pr : ∀ (M : DSModel D.sp.X' (parB (Ptw D) D.R.m)) (c : CoefA D.sp.X') (cv : ∀ i, CoefA (Vc D i)),
@@ -302,6 +336,9 @@ theorem initial_data_at_of_model_choice (L : LevCh D T) (F : Face3 D A3) (hL : L
   · exact ⟨hb.in_tie, hb.in_onto, hb.in_R, hb.in_L, hb.in_SF⟩
   · exact ⟨hmu.1, hmu.2.1, hmu.2.2.1, hmu.2.2.2.1, hmu.2.2.2.2⟩
 
+/- English proof (translation)
+Take `⟨MW, hMW⟩` from `hW`. Take `⟨eG, hrec, hlev⟩` from `hG`. Take `⟨-, ⟨MX⟩⟩` from `id hY`. Conclude with `initial_data_at_of_models (initial_data_at_of_model_choice L F hL hT eG hrec hlev MX (fun _ _ _ _ => True) (brgAtX_of_brgAt A3 hB MX) hY MW hMW hθ ψ hψ hV)`.
+-/
 theorem initial_data_at (L : LevCh D T) (F : Face3 D A3) (hL : L.Is A3.A.μ0) (hT : TupAt A3 L) (hG : GrpAt A3 L F) (hB : BrgAt A3 L)
     (hY : ModY D) (hW : ModW (D := D) (sg0 D A3.A)) (hθ : Eqv.InfFamExists D) (ψ : AddChar (AF D.host.F) ℂ) (hψ : IsStdChar D ψ (-1))
     (hV : VPos D) : Seed3At D A3 Ks F ψ L := by
@@ -310,6 +347,11 @@ theorem initial_data_at (L : LevCh D T) (F : Face3 D A3) (hL : L.Is A3.A.μ0) (h
   obtain ⟨-, ⟨MX⟩⟩ := id hY
   exact initial_data_at_of_models (initial_data_at_of_model_choice L F hL hT eG hrec hlev MX (fun _ _ _ _ => True) (brgAtX_of_brgAt A3 hB MX) hY MW hMW hθ ψ hψ hV)
 
+/- English proof (translation)
+Take `⟨θ, hθ⟩` from `hθ`. Take `⟨hMY, -⟩` from `hY`. Set `MY` to `fun j => (hMY j).some`. Take `⟨cX, cV, pl, Sb, B, plI, SF, prX, hcX, hcV, hpr, hPr, hb⟩` from `hB eG hrec θ hθ`. Take `⟨gramR, c0R, c0L, htie⟩` from `hb.tie`.
+
+Set `R : RealDat D A3.A Ks` to `{ toLevCh := L hv0 := htie.v0 eG := eG pl := pl Sb := Sb θ := θ ψ := ψ MY := MY MX := MX MW := MW cX := cX cV := cV B := B prX := prX HX := fun _ => hZ _ HV := fun _ _ => hZ _ HE := hZ _ HW := fun _ _ => hZ _ gE := 1 gW := fun _ _ => 1 jX := fun _ => 0 jV := fun _ _ => 0 νY := fu …`. Use `⟨{ toRealDat := R, plI := plI, SF := SF, lam3 := fun _ _ _ _ => 0, phs := fun _ => 1 }, rfl, rfl, rfl, HEq.rfl, rfl, hPr, ?_, ?_, hb.sb⟩` and prove the remaining obligations. Establish `hsub : L.Pg ⊆ Sb` using `by rw [hb.sb]`. Conclude with `⟨hL, hb.red_R, hb.red_L, hlev, hrec, ⟨⟨gramR, c0R, c0L, htie⟩, hsub, hb.roots, hb.pl_onto, hb.degR, hb.degL, hb.muVal, hb.etaVal⟩, hθ, hV, hcX, hcV, hpr, hMW, hψ⟩`. Conclude with `⟨hb.in_tie, hb.in_onto, hb.in_R, hb.in_L, hb.in_SF⟩`.
+-/
 theorem initial_data_untwisted_of_model_choice (L : LevCh D T) (F : Face3 D A3) (hL : L.Is A3.A.μ0) (eG : G ≃* G0 L.Pg D.R.r) (hrec : RecL A3 L eG)
     (hlev : LevelsL A3 L eG F.lv2) (MX : DSModel D.sp.X' (parB (Ptw D) D.R.m))
     (Pr : ∀ (M : DSModel D.sp.X' (parB (Ptw D) D.R.m)) (c : CoefA D.sp.X') (cv : ∀ i, CoefA (Vc D i)),
@@ -397,6 +439,9 @@ theorem initial_data_untwisted_of_model_choice (L : LevCh D T) (F : Face3 D A3) 
       hb.etaVal⟩, hθ, hV, hcX, hcV, hpr, hMW, hψ⟩
   · exact ⟨hb.in_tie, hb.in_onto, hb.in_R, hb.in_L, hb.in_SF⟩
 
+/- English proof (translation)
+Take `⟨MW, hMW⟩` from `hW`. Take `⟨eG, hrec, hlev⟩` from `hG`. Take `⟨-, ⟨MX⟩⟩` from `id hY`. Conclude with `seed3AtNT_of_M (initial_data_untwisted_of_model_choice L F hL eG hrec hlev MX (fun _ _ _ _ => True) (brgAtX_of_brgAt A3 hB MX) hY MW hMW hθ ψ hψ hV)`.
+-/
 theorem initial_data_untwisted_of_models (L : LevCh D T) (F : Face3 D A3) (hL : L.Is A3.A.μ0) (hG : GrpAt A3 L F) (hB : BrgAt A3 L)
     (hY : ModY D) (hW : ModW (D := D) (sg0 D A3.A)) (hθ : Eqv.InfFamExists D) (ψ : AddChar (AF D.host.F) ℂ) (hψ : IsStdChar D ψ (-1))
     (hV : VPos D) : Seed3AtNT D A3 Ks F ψ L := by
@@ -405,17 +450,26 @@ theorem initial_data_untwisted_of_models (L : LevCh D T) (F : Face3 D A3) (hL : 
   obtain ⟨-, ⟨MX⟩⟩ := id hY
   exact seed3AtNT_of_M (initial_data_untwisted_of_model_choice L F hL eG hrec hlev MX (fun _ _ _ _ => True) (brgAtX_of_brgAt A3 hB MX) hY MW hMW hθ ψ hψ hV)
 
+/- English proof (translation)
+The claim follows from `seed3Psi_of_at (initial_data_at L F hL hT hG hB hY hW hθ ψ hψ hV)`.
+-/
 theorem initial_data_of_character (L : LevCh D T) (F : Face3 D A3) (hL : L.Is A3.A.μ0) (hT : TupAt A3 L) (hG : GrpAt A3 L F) (hB : BrgAt A3 L)
     (hY : ModY D) (hW : ModW (D := D) (sg0 D A3.A)) (hθ : Eqv.InfFamExists D) (ψ : AddChar (AF D.host.F) ℂ) (hψ : IsStdChar D ψ (-1))
     (hV : VPos D) : Seed3Psi D A3 Ks F ψ :=
   seed3Psi_of_at (initial_data_at L F hL hT hG hB hY hW hθ ψ hψ hV)
 
+/- English proof (translation)
+Take `⟨ψ, hψ⟩` from `hψ`. Conclude with `seed3Exists_of_psi (initial_data_of_character L F hL hT hG hB hY hW hθ ψ hψ hV)`.
+-/
 theorem initial_data_exists (L : LevCh D T) (F : Face3 D A3) (hL : L.Is A3.A.μ0) (hT : TupAt A3 L) (hG : GrpAt A3 L F) (hB : BrgAt A3 L)
     (hY : ModY D) (hW : ModW (D := D) (sg0 D A3.A)) (hθ : Eqv.InfFamExists D) (hψ : ∃ ψ : AddChar (AF D.host.F) ℂ, IsStdChar D ψ (-1))
     (hV : VPos D) : ThreeFaceBaseDatumExists D A3 Ks F := by
   obtain ⟨ψ, hψ⟩ := hψ
   exact seed3Exists_of_psi (initial_data_of_character L F hL hT hG hB hY hW hθ ψ hψ hV)
 
+/- English proof (translation)
+Take `⟨R, h1, h2, h3, h4, h5, h6, h7, h8, h9⟩` from `h`. Conclude with `⟨R, h7, h8, h9, h1, h2, h3, h4, h5, h6⟩`.
+-/
 theorem seedQ_of_NTM {F : Face3 D A3} {ψ : AddChar (AF D.host.F) ℂ} {L : LevCh D T} {MW : ∀ i σ, DSModel (Wc D i) (parAt (Wc D i) σ)}
     {eG : G ≃* G0 L.Pg D.R.r} {MX : DSModel D.sp.X' (parB (Ptw D) D.R.m)}
     {Pr : ∀ (M : DSModel D.sp.X' (parB (Ptw D) D.R.m)) (c : CoefA D.sp.X') (cv : ∀ i, CoefA (Vc D i)),

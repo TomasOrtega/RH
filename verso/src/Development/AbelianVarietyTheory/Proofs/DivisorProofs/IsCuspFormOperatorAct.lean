@@ -16,6 +16,9 @@ namespace GlobalTheory.CuspStabFin
 
 variable {E : Type} [Field E] [NumberField E] [IsTotallyComplex E] {a : ℕ}
 
+/- English proof (translation)
+Use `Submodule.finiteDimensional_of_le (S₂ := (Submodule.span ℂ ((fun z : Module.End ℂ (Sm E a) => z φ) '' Zalg E a)).map T) (Submodule.span_le.2 ?_)` and prove the remaining obligations. Introduce and unpack `_ ⟨z, hz, rfl⟩`. Conclude with `⟨z φ, Submodule.subset_span ⟨z, hz, rfl⟩, (LinearMap.congr_fun (hT z hz) φ).symm⟩`.
+-/
 theorem zfin_of_comm (T : Module.End ℂ (Sm E a)) (hT : ∀ z ∈ Zalg E a, z * T = T * z) {φ : Sm E a}
     (h : FiniteDimensional ℂ (Submodule.span ℂ ((fun z : Module.End ℂ (Sm E a) => z φ) '' Zalg E a))) :
     FiniteDimensional ℂ (Submodule.span ℂ ((fun z : Module.End ℂ (Sm E a) => z (T φ)) '' Zalg E a)) := by
@@ -24,6 +27,13 @@ theorem zfin_of_comm (T : Module.End ℂ (Sm E a)) (hT : ∀ z ∈ Zalg E a, z *
   rintro _ ⟨z, hz, rfl⟩
   exact ⟨z φ, Submodule.subset_span ⟨z, hz, rfl⟩, (LinearMap.congr_fun (hT z hz) φ).symm⟩
 
+/- English proof (translation)
+Set `S` to `Subalgebra.centralizer ℂ ({finRep E a k} : Set (Module.End ℂ (Sm E a)))`. Establish `hL : ∀ X, lie E a X ∈ S` using `fun X T hT => by`. Rewrite using `[Set.mem_singleton_iff.1 hT]`. Conclude with `(lie_rt_fin X k).symm`. Establish `hE : ∀ τ i j, Eop (a` using `a) τ i j ∈ S := fun τ i j => S.smul_mem (S.sub_mem (hL _) (S.smul_mem (hL _) _)) _`.
+
+Establish `hS : Zalg E a ≤ S`. Use `Algebra.adjoin_le ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨τ, u, rfl⟩`. Use `S.sum_mem fun σ _ => S.mul_mem (intCast_mem S _) (S.list_prod_mem fun x hx => ?_)` and prove the remaining obligations. Take `⟨m, rfl⟩` from `List.mem_ofFn.1 hx`.
+
+Use `S.add_mem ?_ (hE _ _ _)` and prove the remaining obligations. Use `split_ifs`. Conclude with `S.algebraMap_mem _`. Conclude with `S.zero_mem`. Conclude with `(hS hz (finRep E a k) rfl).symm`.
+-/
 theorem zalg_comm_fin (k : GL (Fin a) (Af E)) {z : Module.End ℂ (Sm E a)} (hz : z ∈ Zalg E a) :
     z * finRep E a k = finRep E a k * z := by
   let S := Subalgebra.centralizer ℂ ({finRep E a k} : Set (Module.End ℂ (Sm E a)))
@@ -42,16 +52,29 @@ theorem zalg_comm_fin (k : GL (Fin a) (Af E)) {z : Module.End ℂ (Sm E a)} (hz 
     · exact S.zero_mem
   exact (hS hz (finRep E a k) rfl).symm
 
+/- English proof (translation)
+The claim follows from `isOpen_stab_of_mem_nhds _ _ (Filter.mem_of_superset (h.mem_nhds (by simp)) fun k hk => hle k hk)`.
+-/
 theorem level_of_le {φ ψ : Sm E a} (h : IsOpen {k | finRep E a k φ = φ})
     (hle : ∀ k, finRep E a k φ = φ → finRep E a k ψ = ψ) : IsOpen {k | finRep E a k ψ = ψ} :=
   isOpen_stab_of_mem_nhds _ _ (Filter.mem_of_superset (h.mem_nhds (by simp)) fun k hk => hle k hk)
 
+/- English proof (translation)
+Express the relevant statement in the definitionally equal form `rt E a (finGL E a k) * rt E a (infGL E a (Unitary.toUnits c)) = rt E a (infGL E a (Unitary.toUnits c)) * rt E a (finGL E a k)`. Rewrite using `[← map_mul, ← map_mul, infGL_comm]`.
+-/
 theorem fin_cpt_comm (k : GL (Fin a) (Af E)) (c : Kinf E a) :
     finRep E a k * cptRep E a c = cptRep E a c * finRep E a k := by
   change rt E a (finGL E a k) * rt E a (infGL E a (Unitary.toUnits c)) =
     rt E a (infGL E a (Unitary.toUnits c)) * rt E a (finGL E a k)
   rw [← map_mul, ← map_mul, infGL_comm]
 
+/- English proof (translation)
+Use `⟨1 + ‖rmul (toL c.val)‖ + ‖lmul (toL (c⁻¹).val)‖, by linarith [norm_nonneg (rmul (toL c.val)), norm_nonneg (lmul (toL (c⁻¹).val))], fun y => ?_⟩` and prove the remaining obligations. Establish `h1 : toL (y * c).val = rmul (toL c.val) (toL y.val)` using `rfl`. Establish `h2 : toL ((y * c)⁻¹).val = lmul (toL (c⁻¹).val) (toL (y⁻¹).val)`. Rewrite using `[_root_.mul_inv_rev]`. Both sides reduce to the same expression.
+
+Establish `e1` using `(rmul (toL c.val)).le_opNorm (toL y.val)`. Establish `e2` using `(lmul (toL (c⁻¹).val)).le_opNorm (toL (y⁻¹).val)`. Establish `n1` using `norm_nonneg (toL y.val)`. Establish `n2` using `norm_nonneg (toL (y⁻¹).val)`. Establish `n3` using `norm_nonneg (rmul (toL c.val))`.
+
+Establish `n4` using `norm_nonneg (lmul (toL (c⁻¹).val))`. Unfold `height`. Rewrite using `[h1, h2]`. Use the polynomial consequences of the given equalities and inequalities.
+-/
 theorem height_mul_le_const (c : GL (Fin a) (Cinf E)) : ∃ B : ℝ, 1 ≤ B ∧ ∀ y, height (y * c) ≤ B * height y := by
   refine ⟨1 + ‖rmul (toL c.val)‖ + ‖lmul (toL (c⁻¹).val)‖, by linarith [norm_nonneg (rmul (toL c.val)), norm_nonneg (lmul (toL (c⁻¹).val))], fun y => ?_⟩
   have h1 : toL (y * c).val = rmul (toL c.val) (toL y.val) := rfl
@@ -67,6 +90,11 @@ theorem height_mul_le_const (c : GL (Fin a) (Cinf E)) : ∃ B : ℝ, 1 ≤ B ∧
   rw [h1, h2]
   nlinarith
 
+/- English proof (translation)
+Take `⟨C, N, hC⟩` from `h`. Take `⟨B, hB, hB'⟩` from `height_mul_le_const c`. Establish `C0 : 0 ≤ C`. Use `(norm_nonneg _).trans (hC 1)` as an intermediate fact. Establish `hp : 0 < height (1 : GL (Fin a) (Cinf E)) ^ N` using `pow_pos (by linarith [one_le_height (1 : GL (Fin a) (Cinf E))]) N`.
+
+Conclude with `nonneg_of_mul_nonneg_left this hp`. Use `⟨C * B ^ N, N, fun y => (hC _).trans ?_⟩` and prove the remaining obligations. Rewrite using `[mul_assoc, ← mul_pow]`. Conclude with `mul_le_mul_of_nonneg_left (pow_le_pow_left₀ (by linarith [one_le_height (y * c)]) (hB' y) N) C0`.
+-/
 theorem growth_mul_const {f : GL (Fin a) (Cinf E) → ℂ} (c : GL (Fin a) (Cinf E))
     (h : ∃ (C : ℝ) (N : ℕ), ∀ y, ‖f y‖ ≤ C * height y ^ N) :
     ∃ (C : ℝ) (N : ℕ), ∀ y, ‖f (y * c)‖ ≤ C * height y ^ N := by
@@ -80,6 +108,37 @@ theorem growth_mul_const {f : GL (Fin a) (Cinf E) → ℂ} (c : GL (Fin a) (Cinf
   rw [mul_assoc, ← mul_pow]
   exact mul_le_mul_of_nonneg_left (pow_le_pow_left₀ (by linarith [one_le_height (y * c)]) (hB' y) N) C0
 
+/- English proof (translation)
+Take `⟨hA, hC⟩` from `h`. Consider the cases of `o with`. Consider the case `fin k`. Use `⟨⟨fun γ g => ?_, ?_, ?_, ?_, fun g => ?_⟩, ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `φ.1 (ratGL E a γ * g * finGL E a k) = φ.1 (g * finGL E a k)`.
+
+Rewrite using `[mul_assoc, hA.left]`. Establish `e : {k' | finRep E a k' (finRep E a k φ) = finRep E a k φ} = (fun k' => k⁻¹ * k' * k) ⁻¹' {k' | finRep E a k' φ = φ}`. Use extensionality with `k'`. Simplify using `only [Set.mem_setOf_eq, Set.mem_preimage, map_mul]`. Prove the components needed by the constructor for the conclusion.
+
+Introduce `e`. Rewrite using `[Module.End.mul_apply, Module.End.mul_apply, e, ← Module.End.mul_apply, ← map_mul, inv_mul_cancel, map_one, Module.End.one_apply]`. Introduce `e`. Use `congrArg (finRep E a k) e` as an intermediate fact. Rewrite `this` using `[Module.End.mul_apply, Module.End.mul_apply, ← Module.End.mul_apply (finRep E a k), ← map_mul, mul_inv_cancel, map_one, Module.End.one_apply]`. Then use the resulting hypothesis.
+
+Express the relevant statement in the definitionally equal form `IsOpen {k' | finRep E a k' (finRep E a k φ) = finRep E a k φ}`. Rewrite using `[e]`. Conclude with `hA.level.preimage ((continuous_const.mul continuous_id).mul continuous_const)`. Use `hA.kfin` as an intermediate fact. Use `Submodule.finiteDimensional_of_le (S₂ := (Submodule.span ℂ (Set.range fun c => cptRep E a c φ)).map (finRep E a k)) (Submodule.span_le.2 ?_)` and prove the remaining obligations.
+
+Introduce and unpack `_ ⟨c, rfl⟩`. Conclude with `⟨_, Submodule.subset_span ⟨c, rfl⟩, (LinearMap.congr_fun (fin_cpt_comm k c) φ)⟩`. Conclude with `zfin_of_comm _ (fun z hz => zalg_comm_fin k hz) hA.zfin`. Take `⟨C, N, h1⟩` from `hA.growth (g * finGL E a k)`. Use `⟨C, N, fun y => ?_⟩` and prove the remaining obligations.
+
+Express the relevant statement in the definitionally equal form `‖φ.1 (g * infGL E a y * finGL E a k)‖ ≤ _`. Rewrite using `[mul_assoc, infGL_comm, ← mul_assoc]`. Conclude with `h1 y`. Introduce `r h0 h1 _ _ μ 𝓕 hμ hF g`. Express the relevant statement in the definitionally equal form `∫ x in 𝓕, φ.1 (unip x * g * finGL E a k) ∂μ = 0`.
+
+Repeatedly rewrite using `[mul_assoc]`. Conclude with `hC r h0 h1 μ 𝓕 hμ hF (g * finGL E a k)`. Consider the case `cpt c`. Use `⟨⟨fun γ g => ?_, ?_, ?_, ?_, fun g => ?_⟩, ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `φ.1 (ratGL E a γ * g * infGL E a (Unitary.toUnits c)) = φ.1 (g * infGL E a (Unitary.toUnits c))`.
+
+Rewrite using `[mul_assoc, hA.left]`. Conclude with `level_of_le hA.level fun k hk => by`. Express the relevant statement in the definitionally equal form `finRep E a k (cptRep E a c φ) = cptRep E a c φ`. Rewrite using `[← Module.End.mul_apply, fin_cpt_comm, Module.End.mul_apply, hk]`. Use `hA.kfin` as an intermediate fact.
+
+Use `Submodule.finiteDimensional_of_le (S₂ := Submodule.span ℂ (Set.range fun c => cptRep E a c φ)) (Submodule.span_le.2 ?_)` and prove the remaining obligations. Introduce and unpack `_ ⟨c', rfl⟩`. Use `Submodule.subset_span ⟨c' * c, ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `_ = (cptRep E a c' * cptRep E a c) φ`. Rewrite using `[← map_mul]`.
+
+Conclude with `zfin_of_comm _ (fun z hz => GlobalTheory.T.mem_zalg_commute_compactRep E a c z hz) hA.zfin`. Take `⟨C, N, h1⟩` from `growth_mul_const (Unitary.toUnits c) (hA.growth g)`. Use `⟨C, N, fun y => ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `‖φ.1 (g * infGL E a y * infGL E a (Unitary.toUnits c))‖ ≤ _`. Rewrite using `[mul_assoc, ← map_mul]`.
+
+Conclude with `h1 y`. Introduce `r h0 h1 _ _ μ 𝓕 hμ hF g`. Express the relevant statement in the definitionally equal form `∫ x in 𝓕, φ.1 (unip x * g * infGL E a (Unitary.toUnits c)) ∂μ = 0`. Repeatedly rewrite using `[mul_assoc]`. Conclude with `hC r h0 h1 μ 𝓕 hμ hF (g * infGL E a (Unitary.toUnits c))`.
+
+Consider the case `lie X`. Use `⟨⟨fun γ g => ?_, ?_, GlobalTheory.T.finiteDimensional_span_compact_orbit_lieDerivative E a X φ hA.kfin, zfin_of_comm _ (fun z hz => GlobalTheory.T.mem_zalg_commute_lie_action E a X z hz) hA.zfin, GlobalTheory.AutGrowth.lie_growth_of_finite hP E a X φ hA⟩, GlobalTheory.T.isCuspida …` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `lieD X φ.1 (ratGL E a γ * g) = lieD X φ.1 g`. Establish `e : chart φ.1 (ratGL E a γ * g) = chart φ.1 g`. Use function extensionality and compare the values at `x`.
+
+Unfold `chart`. Use `split_ifs`. Rewrite using `[mul_assoc, hA.left]`. Both sides reduce to the same expression. Unfold `lieD`.
+
+Rewrite using `[e]`. Conclude with `level_of_le hA.level fun k hk => by`. Express the relevant statement in the definitionally equal form `finRep E a k (lie E a X φ) = lie E a X φ`. Express the relevant statement in the definitionally equal form `(rt E a (finGL E a k) * lie E a X) φ = _`. Rewrite using `[← lie_rt_fin, Module.End.mul_apply]`.
+
+Conclude with `congrArg (lie E a X) hk`.
+-/
 theorem isCuspForm_act' (hP : GlobalTheory.Published.AutomorphicFormsFiniteGL) (o : Op E a) (φ : Sm E a) (h : IsCuspForm φ) : IsCuspForm (act o φ) := by
   obtain ⟨hA, hC⟩ := h
   cases o with
@@ -161,6 +220,9 @@ theorem isCuspForm_act' (hP : GlobalTheory.Published.AutomorphicFormsFiniteGL) (
 
 end GlobalTheory.CuspStabFin
 
+/- English proof (translation)
+Introduce `hP _ _ _ _ _ o φ h` and use `GlobalTheory.CuspStabFin.isCuspForm_act' hP o φ h`.
+-/
 theorem GlobalTheory.CuspStabFin.isCuspForm_act : GlobalTheory.Published.AutomorphicFormsFiniteGL → ∀ (E : Type) [Field E] [NumberField E]
     [IsTotallyComplex E] (a : ℕ) (o : GlobalTheory.CuspRep.Op E a) (φ : GlobalTheory.CuspRep.Sm E a),
     GlobalTheory.CuspRep.IsCuspForm φ → GlobalTheory.CuspRep.IsCuspForm (GlobalTheory.CuspRep.act o φ) :=

@@ -8,12 +8,22 @@ noncomputable section
 
 namespace GlobalTheory.CompanionTheory.GL2DualWhittakerPair.PfCont
 
+/- English proof (translation)
+Use extensionality with `i j`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;>`. Simplify using `[cat3, Matrix.mul_apply, Matrix.mulVec, dotProduct, Fin.sum_univ_two]`.
+-/
 theorem mul_concat_column {F : Type} [Field F] (u A : Matrix (Fin 2) (Fin 2) F) (y : Fin 2 → F) :
     u * cat3 A y = cat3 (u * A) (u *ᵥ y) := by
   ext i j
   fin_cases i <;> fin_cases j <;>
     simp [cat3, Matrix.mul_apply, Matrix.mulVec, dotProduct, Fin.sum_univ_two]
 
+/- English proof (translation)
+Introduce `F _ _ _ _ _ _ ψ _ Φ hΦ h`. Take `⟨U, hU⟩` from `GlobalTheory.CompanionTheory.LFHolP.exists_left_invariant hΦ.1 hΦ.2`. Establish `hP : ∀ g u : GL (Fin 2) F, u ∈ U → Pf Φ h (g * u) = Pf Φ h g`. Introduce `g u hu`. Use function extensionality and compare the values at `M`.
+
+Establish `hu' : u⁻¹ ∈ U` using `inv_mem hu`. Establish `h1` using `hU _ hu' (cat3 ((g⁻¹ : GL (Fin 2) F).val * M * (tinv h).val) ((g⁻¹ : GL (Fin 2) F).val *ᵥ e1))`. Rewrite `h1` using `[mul_concat_column]`. Simplify using `only [Pf, _root_.mul_inv_rev, Units.val_mul, Matrix.mul_assoc, ← Matrix.mulVec_mulVec] at h1 ⊢`. Conclude with `h1`.
+
+Establish `hl : IsLocallyConstant fun z : GL (Fin 2) F => Rpart ψ (Pf Φ h z)` using `GlobalTheory.CompanionTheory.RankinSelbergMellinContinuation.isLocallyConstant_of_invariant _ U.toSubgroup U.isOpen fun g u hu => by simp only [hP g u hu]`. Conclude with `hl.continuous`.
+-/
 theorem continuous_Rpart_Pf : ∀ (F : Type) [Field F] [ValuativeRel F] [TopologicalSpace F]
     [IsNonarchimedeanLocalField F] [MeasurableSpace F] [BorelSpace F] (ψ : AddChar F Circle),
     IsStd ψ → ∀ Φ ∈ LFS.SB F, ∀ h : GL (Fin 2) F,

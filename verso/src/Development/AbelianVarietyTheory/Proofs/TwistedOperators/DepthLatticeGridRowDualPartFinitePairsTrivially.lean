@@ -12,6 +12,9 @@ open GlobalTheory.AscFin
 
 namespace GlobalTheory.AscFin.BesIso
 
+/- English proof (translation)
+Establish `hinv : (-S.gram)⁻¹ = -S.gram⁻¹` using `Matrix.inv_eq_left_inv (by rw [neg_mul_neg, Matrix.nonsing_inv_mul _ (gram_isUnit_det S)])`. Establish `h : hO (negSp S) T x y = -hO S T x y`. Simplify using `only [hO, negSp_gram, hinv, Matrix.neg_apply, map_neg, neg_mul, Finset.sum_neg_distrib]`. Rewrite using `[symplO_eq, symplO_eq, h, mul_neg, map_neg]`.
+-/
 theorem symplO_negSp_eq {D : D7} (S T : HSp D) (x y : WO S T) : symplO (negSp S) T x y = -symplO S T x y := by
   have hinv : (-S.gram)⁻¹ = -S.gram⁻¹ :=
     Matrix.inv_eq_left_inv (by rw [neg_mul_neg, Matrix.nonsing_inv_mul _ (gram_isUnit_det S)])
@@ -19,6 +22,11 @@ theorem symplO_negSp_eq {D : D7} (S T : HSp D) (x y : WO S T) : symplO (negSp S)
     simp only [hO, negSp_gram, hinv, Matrix.neg_apply, map_neg, neg_mul, Finset.sum_neg_distrib]
   rw [symplO_eq, symplO_eq, h, mul_neg, map_neg]
 
+/- English proof (translation)
+Establish `hu : u = d.extX T (u ⬝ d.jX) + d.ext0 T (u ⬝ d.j0) + d.extY T (u ⬝ d.jY)` using `((d.coordS T).symm_apply_apply u).symm`. Establish `h1` using `d.hO_ext T a (u ⬝ d.jX) 0 (u ⬝ d.jY) 0 (u ⬝ d.j0)`. Establish `h2` using `d.hO_ext T a 0 0 (u ⬝ d.jY) 0 0`. Simplify using `only [map_zero, add_zero, zero_add] at h1 h2`. Rewrite `h1` using `[← hu]`.
+
+Rewrite using `[h1, h2]`. Simplify using `[pairS, hO]`.
+-/
 theorem hO_extX_eq {D : D7} {S S₀ : HSp D} {ρ : ℕ} (d : HypDec S S₀ ρ) (T : HSp D) (a : Mx D T.rank ρ) (u : WO S T) :
     hO S T (d.extX T a) u = hO S T (d.extX T a) (d.extY T (u ⬝ d.jY)) := by
   have hu : u = d.extX T (u ⬝ d.jX) + d.ext0 T (u ⬝ d.j0) + d.extY T (u ⬝ d.jY) := ((d.coordS T).symm_apply_apply u).symm
@@ -33,6 +41,13 @@ end GlobalTheory.AscFin.BesIso
 
 open GlobalTheory.AscFin.BesIso in
 
+/- English proof (translation)
+Introduce `D hq T L μ0 hL sc G W M hM F hF ρ h u hu`. Establish `sd : ∀ i, i ≤ D.R.m → 1 ≤ i → IsSelfDualC (G.V (.grid i 0)) (G.Λ (.grid i 0))` using `fun i hi h1 => (G.isV (X := .grid i 0) ⟨hi, Nat.zero_le _⟩ (fun j hj => by injection hj with e1 e2; omega)).sd`. Establish `sdV` using `isSelfDualC_neg (sd (2 * ρ + 2) h (by omega))`. Establish `sdW` using `sd (2 * ρ + 1) (by omega) (by omega)`. Establish `hmx : ∀ w, w ∈ latRow G (2 * ρ + 1) → MxAt (fun _ => True) w` using `fun w hw => ((GlobalTheory.FinPl.LatMem.mem_latO_iff D _ _ _ _ sdV sdW (fun _ => True) w).1 hw.1).1`.
+
+Use `⟨fun i j => ?_, fun a ha => ?_⟩` and prove the remaining obligations. Simplify using `only [Matrix.mul_apply]`. Conclude with `Ideal.sum_mem _ fun k _ => Ideal.mul_mem_right _ _ (hmx u hu i k)`. Establish `key` using `(GlobalTheory.SelfDualAt.latO_ann_at D W.ψ W.ψ_std _ _ _ _ sdV sdW (fun _ => True) _ (hmx _ ha)).1 ha.1 u hu.1`. Rewrite `key` using `[symplO_negSp_eq, AddChar.map_neg_eq_inv, inv_eq_one]`.
+
+Rewrite `key`, the goal using `[symplO_eq]`. Rewrite using `[← hO_extX_eq]`. Conclude with `key`.
+-/
 theorem GlobalTheory.AscFin.BesIso.splits_iso : OnStd fun {D} _ _ {sc} {G} W F => ∀ ρ (h : 2 * ρ + 2 ≤ D.R.m), ∀ u ∈ latRow G (2 * ρ + 1), MxAt (fun _ => True) (u ⬝ (F.dB ρ h).jY) ∧ ∀ a, (F.dB ρ h).extX (G.V (.grid (2 * ρ + 1) 0)) a ∈ latRow G (2 * ρ + 1) → W.ψ (symplO (G.V (.grid (2 * ρ + 2) 0)) (G.V (.grid (2 * ρ + 1) 0)) ((F.dB ρ h).extX (G.V (.grid (2 * ρ + 1) 0)) a) ((F.dB ρ h).extY (G.V (.grid (2 * ρ + 1) 0)) (u ⬝ (F.dB ρ h).jY))) = 1 := by
   intro D hq T L μ0 hL sc G W M hM F hF ρ h u hu
   have sd : ∀ i, i ≤ D.R.m → 1 ≤ i → IsSelfDualC (G.V (.grid i 0)) (G.Λ (.grid i 0)) := fun i hi h1 =>

@@ -22,6 +22,23 @@ namespace UnitaryFiniteCovolume
 
 variable {E : Type} [Field E] [NumberField E] [IsCMField E]
 
+/- English proof (translation)
+Take `⟨P, hP, hg⟩` from `X.signature τ`. Establish `hu : IsUnit P.det` using `isUnit_iff_ne_zero.mpr hP`. Choose the witnesses or unpack the hypotheses as in `⟨ε, hε, hg'⟩ : ∃ ε : ℂ, ε ≠ 0 ∧ gram τ.1 X.Gm P = ε • (1 : Matrix (Fin r) (Fin r) ℂ) := by`. Break down `hd with h | h` into its components or cases. Use `⟨-1, by simp, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[hg, h]`. Use extensionality with `a b`. Apply the tactic sequence `by_cases hab : a = b <;> simp [sgn, hab]`. Use `⟨1, by simp, ?_⟩` and prove the remaining obligations. Rewrite using `[hg, h]`.
+
+Use extensionality with `a b`. Apply the tactic sequence `by_cases hab : a = b <;> simp [sgn, hab]`. Use `⟨(fun V : Matrix (Fin r) (Fin r) ℂ => P * V.map (starRingEnd ℂ) * P⁻¹) '' (Matrix.unitaryGroup (Fin r) ℂ : Set (Matrix (Fin r) (Fin r) ℂ)), ?_, fun g h => ?_⟩` and prove the remaining obligations. Use `(GlobalTheory.isCompact_unitaryGroup (Fin r) ℂ).image ?_` and prove the remaining obligations. Conclude with `(continuous_const.matrix_mul (continuous_id.matrix_map Complex.continuous_conj)).matrix_mul continuous_const`.
+
+Use `set U : Matrix (Fin r) (Fin r) ℂ := P⁻¹ * g * P with hU`. Establish `hPU : P * U = g * P`. Rewrite using `[hU, ← Matrix.mul_assoc, ← Matrix.mul_assoc, Matrix.mul_nonsing_inv _ hu, Matrix.one_mul]`. Establish `h1 : gram τ.1 X.Gm (g * P) = gram τ.1 X.Gm P`. Use extensionality with `a b`.
+
+Simplify using `only [gram, Matrix.of_apply, GlobalTheory.UnitaryFrames.col_mul', h]`. Establish `h2 : gram τ.1 X.Gm (P * U) = Uᵀ * (gram τ.1 X.Gm P * U.map (starRingEnd ℂ))`. Simplify using `only [GlobalTheory.UnitaryFrames.gram_eq_mul, Matrix.transpose_mul, Matrix.map_mul, Matrix.mul_assoc]`. Rewrite `h2` using `[hPU, h1, hg', Matrix.smul_mul, Matrix.one_mul, Matrix.mul_smul]`. Establish `h3 : Uᵀ * U.map (starRingEnd ℂ) = 1` using `(smul_right_injective _ hε h2).symm`.
+
+Establish `hcc : (U.map (starRingEnd ℂ)).map (starRingEnd ℂ) = U`. Use extensionality with `a b`. Simplify using the standard rewrite rules. Use `⟨U.map (starRingEnd ℂ), ?_, ?_⟩` and prove the remaining obligations. Use `Matrix.mem_unitaryGroup_iff'.2 ?_` and prove the remaining obligations.
+
+Rewrite using `[← h3]`. Use `congr 1`. Use extensionality with `a b`. Simplify using `[Matrix.star_apply]`. Simplify using `only [hcc]`.
+
+Rewrite using `[hPU, Matrix.mul_assoc, Matrix.mul_nonsing_inv _ hu, Matrix.mul_one]`.
+-/
 theorem exists_compact_of_definite {r : ℕ} (X : Data E r) (hd : X.p0 = 0 ∨ X.p0 = r) (τ : X.Ψ) :
     ∃ K : Set (Matrix (Fin r) (Fin r) ℂ), IsCompact K ∧ ∀ g : Matrix (Fin r) (Fin r) ℂ,
       (∀ u w, hermC τ.1 X.Gm (g *ᵥ u) (g *ᵥ w) = hermC τ.1 X.Gm u w) → g ∈ K := by
@@ -65,6 +82,11 @@ theorem exists_compact_of_definite {r : ℕ} (X : Data E r) (hd : X.p0 = 0 ∨ X
     · simp only [hcc]
       rw [hPU, Matrix.mul_assoc, Matrix.mul_nonsing_inv _ hu, Matrix.mul_one]
 
+/- English proof (translation)
+Use `choose K hK hmem using exists_compact_of_definite X hd`. Establish `hcl : IsClosed (H : Set (X.Ψ → GL (Fin r) ℂ))`. Use `GlobalTheory.UnitaryFrames.isClosed_unitary X using 1` and compare the differences between its conclusion and the goal. Use extensionality with `g`. Conclude with `hH g`.
+
+Establish `hc : IsCompact (Set.pi Set.univ fun τ : X.Ψ => Units.embedProduct (Matrix (Fin r) (Fin r) ℂ) ⁻¹' (K τ ×ˢ (MulOpposite.op '' K τ)))` using `isCompact_univ_pi fun τ => Units.isClosedEmbedding_embedProduct.isCompact_preimage ((hK τ).prod ((hK τ).image MulOpposite.continuous_op))`. Use `isCompact_iff_compactSpace.mp (hc.of_isClosed_subset hcl fun g hg τ _ => ?_)` and prove the remaining obligations. Conclude with `⟨hmem τ _ ((hH g).1 hg τ), _, hmem τ _ ((hH g⁻¹).1 (H.inv_mem hg) τ), rfl⟩`.
+-/
 theorem compactSpace_of_definite {r : ℕ} (X : Data E r) (hd : X.p0 = 0 ∨ X.p0 = r)
     (H : Subgroup (X.Ψ → GL (Fin r) ℂ))
     (hH : ∀ g, g ∈ H ↔ X.IsUnitaryC fun τ => (g τ : Matrix (Fin r) (Fin r) ℂ)) :
@@ -81,6 +103,9 @@ theorem compactSpace_of_definite {r : ℕ} (X : Data E r) (hd : X.p0 = 0 ∨ X.p
   refine isCompact_iff_compactSpace.mp (hc.of_isClosed_subset hcl fun g hg τ _ => ?_)
   exact ⟨hmem τ _ ((hH g).1 hg τ), _, hmem τ _ ((hH g⁻¹).1 (H.inv_mem hg) τ), rfl⟩
 
+/- English proof (translation)
+Use `haveI := compactSpace_of_definite X hd H hH`. Use `⟨Set.univ, MeasurableSet.univ, isCompact_univ.measure_lt_top, fun g => ⟨1, ⟨fun x y => by simp, fun x => by simp⟩, g, Set.mem_univ _, fun τ => ?_⟩⟩` and prove the remaining obligations. Simplify using the standard rewrite rules.
+-/
 theorem of_definite {r : ℕ} (X : Data E r) (hd : X.p0 = 0 ∨ X.p0 = r)
     (H : Subgroup (X.Ψ → GL (Fin r) ℂ))
     (hH : ∀ g, g ∈ H ↔ X.IsUnitaryC fun τ => (g τ : Matrix (Fin r) (Fin r) ℂ))
@@ -95,6 +120,9 @@ theorem of_definite {r : ℕ} (X : Data E r) (hd : X.p0 = 0 ∨ X.p0 = r)
     ⟨1, ⟨fun x y => by simp, fun x => by simp⟩, g, Set.mem_univ _, fun τ => ?_⟩⟩
   simp
 
+/- English proof (translation)
+Take `⟨H, hH⟩` from `GlobalTheory.UnitaryFrames.unitary_group_frames.1 r X`. Use `haveI := (GlobalTheory.UnitaryFrames.unitary_group_frames.2 r X H hH).1`. Use `letI : MeasurableSpace H := borel H`. Use `haveI : BorelSpace H := ⟨rfl⟩`. Conclude with `⟨H, hH, inferInstance, inferInstance, Measure.haar, inferInstance⟩`.
+-/
 theorem exists_haar {r : ℕ} (X : Data E r) :
     ∃ H : Subgroup (X.Ψ → GL (Fin r) ℂ),
       (∀ g, g ∈ H ↔ X.IsUnitaryC fun τ => (g τ : Matrix (Fin r) (Fin r) ℂ)) ∧

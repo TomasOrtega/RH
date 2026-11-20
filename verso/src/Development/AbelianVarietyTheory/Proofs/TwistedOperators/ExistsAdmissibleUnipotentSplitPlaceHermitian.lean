@@ -24,11 +24,17 @@ def scaleSpc {d : ℕ} (V : Spc F E d) (δ : E) : Spc F E d where
   θ := V.θ
   bas := V.bas
 
+/- English proof (translation)
+Use extensionality with `i j`. Simplify using `[incM, Matrix.map_apply, Matrix.smul_apply, map_mul]`.
+-/
 theorem incM_smul {d : ℕ} (δ : E) (J : Matrix (Fin d) (Fin d) E) :
     incM F (δ • J) = inclR (F := F) (AF F) δ • incM F J := by
   ext i j
   simp [incM, Matrix.map_apply, Matrix.smul_apply, map_mul]
 
+/- English proof (translation)
+Simplify using `[dbl, Matrix.fromBlocks_smul, smul_neg]`.
+-/
 theorem dbl_smul {d : ℕ} (c : AE F E) (X : Matrix (Fin d) (Fin d) (AE F E)) : dbl (c • X) = c • dbl X := by
   simp [dbl, Matrix.fromBlocks_smul, smul_neg]
 
@@ -36,6 +42,25 @@ end GlobalTheory.SplitChooseHerm
 
 namespace GlobalTheory.SplitChooseHerm
 
+/- English proof (translation)
+Introduce `_ F E _ _ _ _ _ σ B d V r s hB hV v hv hψ h2 g hg`. Take `⟨π₁, π₂, b₁, b₂, hP, S, hS, hSe⟩` from `GlobalTheory.T.hermitian_selfDual_lattice_split_place_dictionary σ B V r s hB hV v hv hψ`. Take `⟨δ, hδ, u, hu⟩` from `GlobalTheory.T.exists_cmSkew_element_unit_at_finitePlace σ hB.cm v π₁ hP.2.2.1`. Establish `hδ0 : δ ≠ 0`. Introduce and unpack `rfl`.
+
+Establish `h0 : ((u : v.adicCompletionIntegers F) : Fv F v) = 0` using `by rw [hu, map_zero, map_zero]`. Conclude with `u.ne_zero (Subtype.ext h0)`. Establish `hcu : inclR (F` using `F) (AF F) δ⁻¹ * inclR (F := F) (AF F) δ = 1 := by`. Rewrite using `[← map_mul, inv_mul_cancel₀ hδ0, map_one]`. Establish `h2' : IsUnit (2 : v.adicCompletionIntegers F)`.
+
+Use `(GlobalTheory.SelfDualGenus.isUnit_algebraMap_iff v (2 : 𝓞 F)).2 h2` as an intermediate fact. Rewrite `this` using `[map_ofNat]`. Then use the resulting hypothesis. Set `W' : Spc F E d` to `scaleSpc V δ`. Establish `hskew : ∀ i j, σ (W'.J j i) = -W'.J i j`. Introduce `i j`.
+
+Use `show σ (δ * V.J j i) = -(δ * V.J i j)`. Rewrite using `[map_mul, hδ, hV.herm]`. Expand and normalize the polynomial expressions, which then agree. Establish `hS' : ∃ S' : Matrix (Fin d) (Fin d) (v.adicCompletionIntegers F), IsUnit S'.det ∧ S'.map (fun x => (x : Fv F v)) = (b₁ : Matrix (Fin d) (Fin d) (Fv F v))ᵀ * (incM F W'.J).map π₁ * (b₂ : Matrix (Fin d) (Fin d) (Fv F v))`. Use `⟨(u : v.adicCompletionIntegers F) • S, ?_, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[Matrix.det_smul]`. Conclude with `(u.isUnit.pow _).mul hS`. Establish `e1 : (incM F W'.J).map π₁ = π₁ (inclR (F` using `F) (AF F) δ) • (incM F V.J).map π₁ := by show (incM F (δ • V.J)).map π₁ = _`. Rewrite using `[incM_smul]`. Use extensionality with `i j`.
+
+Simplify using `[Matrix.map_apply, Matrix.smul_apply]`. Rewrite using `[e1, Matrix.mul_smul, Matrix.smul_mul, ← hSe, ← hu]`. Use extensionality with `i j`. Simplify using `[Matrix.map_apply, Matrix.smul_apply]`. Set `g' : GlobalTheory.DblVac.UD σ W'` to `⟨g.1, by`.
+
+Establish `h` using `g.2`. Express the relevant statement in the definitionally equal form `((g.1 : Matrix (Fin d ⊕ Fin d) (Fin d ⊕ Fin d) (AE F E)))ᵀ * dbl (incM F V.J) * (g.1 : Matrix (Fin d ⊕ Fin d) (Fin d ⊕ Fin d) (AE F E)).map (cA σ) = dbl (incM F V.J) at h`. Express the relevant statement in the definitionally equal form `((g.1 : Matrix (Fin d ⊕ Fin d) (Fin d ⊕ Fin d) (AE F E)))ᵀ * dbl (incM F (δ • V.J)) * (g.1 : Matrix (Fin d ⊕ Fin d) (Fin d ⊕ Fin d) (AE F E)).map (cA σ) = dbl (incM F (δ • V.J))`. Rewrite using `[incM_smul, dbl_smul, Matrix.mul_smul, Matrix.smul_mul, h]⟩`. Establish `hg' : g' ∈ GlobalTheory.DblVac.KD σ W' v` using `hg`.
+
+Take `⟨Y, hYat, hYlat, hYadm, M, hM, hMlat⟩` from `GlobalTheory.T.splitPlace_bigCell_exists_admissible_inverse_alt GlobalTheory.T.exists_dual_pair_isUnit_det_blocks' σ W' v hskew h2' π₁ π₂ b₁ b₂ hP hS' g' hg'`. Use `⟨Y, hYat, hYlat, ?_, M, hM, hMlat⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `Yᵀ * incM F (δ • V.J) + incM F (δ • V.J) * Y.map (cA σ) = 0 at hYadm`. Rewrite `hYadm` using `[incM_smul, Matrix.mul_smul, Matrix.smul_mul, ← smul_add]`. Establish `h3` using `congrArg (fun X => inclR (F := F) (AF F) δ⁻¹ • X) hYadm`.
+
+Simplify using `only [smul_smul, hcu, one_smul, smul_zero] at h3`. Conclude with `h3`.
+-/
 theorem exists_admissible_unipotent_split_place_hermitian : (∀ {O : Type} [CommRing O] [IsLocalRing O] {n : ℕ} (A B C D : Matrix (Fin n) (Fin n) O),
     IsUnit (Matrix.fromBlocks A B C D).det → ∃ X : Matrix (Fin n) (Fin n) O, IsUnit (A + X * C).det) →
   ∀ {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E)

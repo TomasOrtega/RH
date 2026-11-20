@@ -14,6 +14,13 @@ section SubalgebraOfDivisionRing
 
 variable {K : Type*} [Field K] {D : Type*} [DivisionRing D] [Algebra K D]
 
+/- English proof (translation)
+Distinguish the cases in `h0 : x = 0`. Rewrite using `[h0, inv_zero]`. Conclude with `S.zero_mem`. Set `f : S →ₗ[K] S` to `LinearMap.mulLeft K (⟨x, hx⟩ : S)`. Establish `hf : Function.Injective f`.
+
+Introduce `a b hab`. Establish `h : x * (a : D) = x * b` using `congrArg Subtype.val hab`. Conclude with `Subtype.ext (mul_left_cancel₀ h0 h)`. Take `⟨b, hb⟩` from `(LinearMap.injective_iff_surjective.mp hf) 1`. Establish `h1 : x * (b : D) = 1` using `congrArg Subtype.val hb`.
+
+Rewrite using `[← eq_inv_of_mul_eq_one_right h1]`. Conclude with `b.2`.
+-/
 theorem inv_mem_of_finiteDimensional (S : Subalgebra K D) [FiniteDimensional K S] {x : D}
     (hx : x ∈ S) : x⁻¹ ∈ S := by
   by_cases h0 : x = 0
@@ -42,11 +49,17 @@ noncomputable abbrev fieldOfIsMulCommutative (S : Subalgebra K D) [FiniteDimensi
   { divisionRingOfFiniteDimensional S with
     mul_comm := fun a b ↦ (isMulCommutative_iff.mp inferInstance) a b }
 
+/- English proof (translation)
+The claim follows from `letI := divisionRingOfFiniteDimensional S DivisionRing.isSimpleRing S`.
+-/
 theorem isSimpleRing_of_finiteDimensional (S : Subalgebra K D) [FiniteDimensional K S] :
     IsSimpleRing S :=
   letI := divisionRingOfFiniteDimensional S
   DivisionRing.isSimpleRing S
 
+/- English proof (translation)
+Unfold `IsSeparable`. Rewrite using `[← minpoly.algHom_eq S.val Subtype.val_injective x]`. Both sides reduce to the same expression.
+-/
 theorem isSeparable_coe_iff {A : Type*} [Ring A] [Algebra K A] {S : Subalgebra K A} (x : S) :
     IsSeparable K (x : A) ↔ IsSeparable K x := by
   unfold IsSeparable
@@ -81,14 +94,29 @@ def of (x : A) : RightMul ι := x
 
 def val {ι : L →ₐ[K] A} (x : RightMul ι) : A := x
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem val_of (x : A) : (of ι x).val = x := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem of_val (x : RightMul ι) : of ι x.val = x := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem val_smul (l : L) (x : RightMul ι) : (l • x).val = x.val * ι l := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem val_add (x y : RightMul ι) : (x + y).val = x.val + y.val := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem val_smul_K (k : K) (x : RightMul ι) : (k • x).val = k • x.val := rfl
 
 instance : IsScalarTower K L (RightMul ι) where
@@ -129,6 +157,15 @@ end RightMul
 
 open RightMul in
 
+/- English proof (translation)
+Establish `hA : 0 < finrank K A` using `Module.finrank_pos`. Establish `hL : 0 < finrank K L`. Break down `Nat.eq_zero_or_pos (finrank K L) with h0 | h0` into its components or cases. Rewrite `h` using `[h0]`. Use linear arithmetic over natural numbers and integers.
+
+Conclude with `h0`. Establish `: FiniteDimensional K L` using `Module.finite_of_finrank_pos hL`. Establish `: Module.Finite L (RightMul ι)` using `Module.Finite.of_restrictScalars_finite K L _`. Establish `hM : finrank L (RightMul ι) = finrank K L`. Establish `h2` using `Module.finrank_mul_finrank K L (RightMul ι)`.
+
+Express the relevant statement in the definitionally equal form `finrank K L * finrank L (RightMul ι) = finrank K A at h2`. Rewrite `h2` using `[← h, sq]`. Conclude with `Nat.eq_of_mul_eq_mul_left hL h2`. Establish `hinj : Function.Injective (actionHom ι)` using `RingHom.injective (actionHom ι).toRingHom`. Establish `hdim : finrank L (L ⊗[K] A) = finrank L (Module.End L (RightMul ι))`.
+
+Rewrite using `[Module.finrank_baseChange, Module.finrank_linearMap, hM, ← h, sq]`. Establish `hsurj` using `(LinearMap.injective_iff_surjective_of_finrank_eq_finrank (f := (actionHom ι).toLinearMap) hdim).mp hinj`. Conclude with `⟨(AlgEquiv.ofBijective (actionHom ι) ⟨hinj, hsurj⟩).trans (LinearMap.toMatrixAlgEquiv (Module.finBasisOfFinrankEq L (RightMul ι) hM))⟩`.
+-/
 theorem nonempty_algEquiv_matrix_of_algHom [Algebra.IsCentral K A] [IsSimpleRing A]
     [FiniteDimensional K A] (ι : L →ₐ[K] A) (h : finrank K L ^ 2 = finrank K A) :
     Nonempty (L ⊗[K] A ≃ₐ[L] Matrix (Fin (finrank K L)) (Fin (finrank K L)) L) := by
@@ -158,6 +195,9 @@ section MaximalSubfield
 
 variable {K : Type*} [Field K] {D : Type*} [DivisionRing D] [Algebra K D]
 
+/- English proof (translation)
+Introduce `x hx`. Rewrite using `[Subalgebra.mem_centralizer_iff]`. Introduce `y hy`. Conclude with `congrArg Subtype.val ((isMulCommutative_iff.mp inferInstance) (⟨y, hy⟩ : F) ⟨x, hx⟩)`.
+-/
 theorem le_centralizer_of_isMulCommutative (F : Subalgebra K D) [IsMulCommutative F] :
     F ≤ Subalgebra.centralizer K (F : Set D) := by
   intro x hx
@@ -165,6 +205,11 @@ theorem le_centralizer_of_isMulCommutative (F : Subalgebra K D) [IsMulCommutativ
   intro y hy
   exact congrArg Subtype.val ((isMulCommutative_iff.mp inferInstance) (⟨y, hy⟩ : F) ⟨x, hx⟩)
 
+/- English proof (translation)
+Use `Algebra.isMulCommutative_adjoin K fun a ha b hb ↦ ?_` and prove the remaining obligations. Rewrite `hy` using `[Subalgebra.mem_centralizer_iff]`. Apply the tactic sequence `rcases ha with rfl | ha <;> rcases hb with rfl | hb`. Both sides reduce to the same expression. Conclude with `(hy b hb).symm`.
+
+Conclude with `hy a ha`. Conclude with `congrArg Subtype.val ((isMulCommutative_iff.mp inferInstance) (⟨a, ha⟩ : F) ⟨b, hb⟩)`.
+-/
 theorem isMulCommutative_adjoin_insert (F : Subalgebra K D) [IsMulCommutative F] {y : D}
     (hy : y ∈ Subalgebra.centralizer K (F : Set D)) :
     IsMulCommutative (Algebra.adjoin K (insert y (F : Set D))) := by
@@ -176,6 +221,13 @@ theorem isMulCommutative_adjoin_insert (F : Subalgebra K D) [IsMulCommutative F]
   · exact hy a ha
   · exact congrArg Subtype.val ((isMulCommutative_iff.mp inferInstance) (⟨a, ha⟩ : F) ⟨b, hb⟩)
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce `hmax`. Use `le_antisymm (fun x hx ↦ ?_) (le_centralizer_of_isMulCommutative F)` and prove the remaining obligations. Establish `hG` using `isMulCommutative_adjoin_insert F hx`. Establish `hle : F ≤ Algebra.adjoin K (insert x (F : Set D))` using `fun z hz ↦ Algebra.subset_adjoin (Set.mem_insert_of_mem _ hz)`.
+
+Conclude with `hmax.2 hG hle (Algebra.subset_adjoin (Set.mem_insert x _))`. Introduce `hc`. Use `⟨inferInstance, fun G hG hle ↦ ?_⟩` and prove the remaining obligations. Establish `hG' : IsMulCommutative G` using `hG`. Rewrite using `[← hc]`.
+
+Introduce `y hy`. Rewrite using `[Subalgebra.mem_centralizer_iff]`. Introduce `z hz`. Conclude with `congrArg Subtype.val ((isMulCommutative_iff.mp hG') ⟨z, hle hz⟩ ⟨y, hy⟩)`.
+-/
 theorem maximal_isMulCommutative_iff_centralizer_eq (F : Subalgebra K D) [IsMulCommutative F] :
     Maximal (fun G : Subalgebra K D ↦ IsMulCommutative G) F ↔
       Subalgebra.centralizer K (F : Set D) = F := by
@@ -197,6 +249,13 @@ theorem maximal_isMulCommutative_iff_centralizer_eq (F : Subalgebra K D) [IsMulC
 
 variable [Algebra.IsCentral K D] [FiniteDimensional K D]
 
+/- English proof (translation)
+Use `isSimpleRing_of_finiteDimensional F` as an intermediate fact. Establish `h` using `finrank_mul_finrank_centralizer F`. Prove the components needed by the constructor for the conclusion. Introduce `hc`. Rewrite `h` using `[hc]`.
+
+Rewrite using `[sq]`. Conclude with `h`. Introduce `hsq`. Establish `hF : 0 < finrank K F` using `Module.finrank_pos`. Establish `hdim : finrank K F = finrank K (Subalgebra.centralizer K (F : Set D))`.
+
+Apply `Nat.eq_of_mul_eq_mul_left hF` to reduce the goal to its premises. Rewrite using `[h, ← sq, hsq]`. Conclude with `(Subalgebra.toSubmodule_injective (Submodule.eq_of_le_of_finrank_eq (Subalgebra.toSubmodule.monotone (le_centralizer_of_isMulCommutative F)) hdim)).symm`.
+-/
 theorem centralizer_eq_iff_finrank_sq (F : Subalgebra K D) [IsMulCommutative F] :
     Subalgebra.centralizer K (F : Set D) = F ↔ finrank K F ^ 2 = finrank K D := by
   have := isSimpleRing_of_finiteDimensional F
@@ -214,6 +273,9 @@ theorem centralizer_eq_iff_finrank_sq (F : Subalgebra K D) [IsMulCommutative F] 
     exact (Subalgebra.toSubmodule_injective (Submodule.eq_of_le_of_finrank_eq
       (Subalgebra.toSubmodule.monotone (le_centralizer_of_isMulCommutative F)) hdim)).symm
 
+/- English proof (translation)
+Use `tfae_have 1 ↔ 2 := maximal_isMulCommutative_iff_centralizer_eq F`. Use `tfae_have 2 ↔ 3 := centralizer_eq_iff_finrank_sq F`. Use `tfae_have 3 ↔ 4 := ⟨fun h ↦ ((degree_eq_iff K D _).mpr h.symm).symm, fun h ↦ ((degree_eq_iff K D _).mp h.symm).symm⟩`. Use `tfae_finish`.
+-/
 theorem tfae_maximal_subfield (F : Subalgebra K D) [IsMulCommutative F] :
     List.TFAE [Maximal (fun G : Subalgebra K D ↦ IsMulCommutative G) F,
       Subalgebra.centralizer K (F : Set D) = F, finrank K F ^ 2 = finrank K D,
@@ -225,11 +287,17 @@ theorem tfae_maximal_subfield (F : Subalgebra K D) [IsMulCommutative F] :
       fun h ↦ ((degree_eq_iff K D _).mp h.symm).symm⟩
   tfae_finish
 
+/- English proof (translation)
+The claim follows from `((tfae_maximal_subfield F).out 0 3).mp hF`.
+-/
 theorem finrank_eq_degree_of_maximal (F : Subalgebra K D) [IsMulCommutative F]
     (hF : Maximal (fun G : Subalgebra K D ↦ IsMulCommutative G) F) :
     finrank K F = degree K D :=
   ((tfae_maximal_subfield F).out 0 3).mp hF
 
+/- English proof (translation)
+Set `_` to `fieldOfIsMulCommutative F`. Establish `h2 : finrank K F ^ 2 = finrank K D` using `((tfae_maximal_subfield F).out 0 2).mp hF`. Rewrite using `[← finrank_eq_degree_of_maximal F hF]`. Conclude with `nonempty_algEquiv_matrix_of_algHom F.val h2`.
+-/
 theorem nonempty_algEquiv_matrix_of_maximal (F : Subalgebra K D) [IsMulCommutative F]
     (hF : Maximal (fun G : Subalgebra K D ↦ IsMulCommutative G) F) :
     letI := fieldOfIsMulCommutative F
@@ -239,6 +307,37 @@ theorem nonempty_algEquiv_matrix_of_maximal (F : Subalgebra K D) [IsMulCommutati
   rw [← finrank_eq_degree_of_maximal F hF]
   exact nonempty_algEquiv_matrix_of_algHom F.val h2
 
+/- English proof (translation)
+Set `P : ℕ → Prop` to `fun d ↦ ∃ F : Subalgebra K D, IsMulCommutative F ∧ (∀ x ∈ F, IsSeparable K x) ∧ finrank K F = d`. Establish `hbot : IsMulCommutative (⊥ : Subalgebra K D)` using `isMulCommutative_iff.mpr fun a b ↦ by`. Take `⟨k, hk⟩` from `Algebra.mem_bot.mp a.2`. Apply `Subtype.ext` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `(a : D) * b = b * a`.
+
+Rewrite using `[← hk]`. Conclude with `Algebra.commutes k (b : D)`. Establish `hP1 : P 1`. Use `⟨⊥, hbot, fun x hx ↦ ?_, Subalgebra.finrank_bot⟩` and prove the remaining obligations. Take `⟨k, rfl⟩` from `Algebra.mem_bot.mp hx`.
+
+Conclude with `isSeparable_algebraMap k`. Establish `hD : 1 ≤ finrank K D` using `Module.finrank_pos`. Take `⟨F, hFc, hFs, hFd⟩` from `Nat.findGreatest_spec hD hP1`. Use `⟨F, hFc, (maximal_isMulCommutative_iff_centralizer_eq F).mpr ?_, hFs⟩` and prove the remaining obligations. Use `le_antisymm (fun x hx ↦ ?_) (le_centralizer_of_isMulCommutative F)` and prove the remaining obligations.
+
+Assume the negation of the conclusion as `hxF`. Use `set C := Subalgebra.centralizer K (F : Set D)`. Set `_ : DivisionRing C` to `divisionRingOfFiniteDimensional C`. Set `_ : Field F` to `fieldOfIsMulCommutative F`. Establish `: IsSimpleRing F` using `isSimpleRing_of_finiteDimensional F`.
+
+Establish `hFC : F ≤ C` using `le_centralizer_of_isMulCommutative F`. Set `_ : Algebra F C` to `RingHom.toAlgebra' (Subalgebra.inclusion hFC).toRingHom fun c z ↦ Subtype.ext ((Subalgebra.mem_centralizer_iff K).mp z.2 c c.2)`. Establish `: IsScalarTower K F C` using `IsScalarTower.of_algebraMap_eq fun k ↦ rfl`. Establish `: Module.Finite F C` using `Module.Finite.of_restrictScalars_finite K F C`. Establish `: Algebra.IsAlgebraic F C` using `Algebra.IsAlgebraic.of_finite F C`.
+
+Establish `: Algebra.IsCentral F C` using `⟨fun z hz ↦ by`. Establish `hzC : (z : D) ∈ Subalgebra.centralizer K (C : Set D)`. Rewrite using `[Subalgebra.mem_centralizer_iff]`. Introduce `g hg`. Conclude with `congrArg Subtype.val ((Subalgebra.mem_center_iff.mp hz) ⟨g, hg⟩)`.
+
+Establish `hcc : Subalgebra.centralizer K (C : Set D) = F` using `centralizer_centralizer F`. Rewrite `hzC` using `[hcc]`. Conclude with `Algebra.mem_bot.mpr ⟨⟨z, hzC⟩, Subtype.ext rfl⟩⟩`. Establish `hne : (⊥ : Subalgebra F C) ≠ ⊤`. Introduce `h`.
+
+Establish `hmem : (⟨x, hx⟩ : C) ∈ (⊥ : Subalgebra F C)` using `h ▸ Algebra.mem_top`. Take `⟨f, hf⟩` from `Algebra.mem_bot.mp hmem`. Apply `hxF` to reduce the goal to its premises. Establish `hfx : (f : D) = x` using `congrArg Subtype.val hf`. Conclude with `hfx ▸ f.2`.
+
+Take `⟨y, hyF, hysep⟩` from `JacobsonNoether.exists_separable_and_not_isCentral' hne`. Establish `hyC : (y : D) ∈ C` using `y.2`. Establish `hyF' : (y : D) ∉ F` using `fun h ↦ hyF (Algebra.mem_bot.mpr ⟨⟨y, h⟩, Subtype.ext rfl⟩)`. Use `set G := Algebra.adjoin K (insert (y : D) (F : Set D))`. Establish `hGc : IsMulCommutative G` using `isMulCommutative_adjoin_insert F hyC`.
+
+Establish `hFG : F ≤ G` using `fun z hz ↦ Algebra.subset_adjoin (Set.mem_insert_of_mem _ hz)`. Establish `hyG : (y : D) ∈ G` using `Algebra.subset_adjoin (Set.mem_insert _ _)`. Establish `hGC : G ≤ C` using `Algebra.adjoin_le (Set.insert_subset hyC fun z hz ↦ hFC hz)`. Set `_ : Field G` to `fieldOfIsMulCommutative G`. Set `_ : Algebra F G` to `(Subalgebra.inclusion hFG).toRingHom.toAlgebra`.
+
+Establish `: IsScalarTower K F G` using `IsScalarTower.of_algebraMap_eq fun k ↦ rfl`. Establish `: Algebra.IsSeparable K F` using `⟨fun z ↦ (isSeparable_coe_iff z).mp (hFs z z.2)⟩`. Set `yG : G` to `⟨y, hyG⟩`. Set `ψ : G →ₐ[F] C` to `{ (Subalgebra.inclusion hGC).toRingHom with commutes' := fun f ↦ rfl }`. Establish `hψ : Function.Injective ψ` using `fun a b h ↦ Subtype.ext (congrArg Subtype.val h :)`.
+
+Establish `hyGsep : IsSeparable F yG`. Unfold `IsSeparable`. Rewrite using `[← minpoly.algHom_eq ψ hψ yG]`. Conclude with `hysep`. Establish `hyKsep : IsSeparable K yG` using `IsSeparable.of_algebra_isSeparable_of_isSeparable K hyGsep`.
+
+Establish `hGsep : ∀ z ∈ G, IsSeparable K z`. Establish `hle : G ≤ (separableClosure K G).toSubalgebra.map G.val`. Use `Algebra.adjoin_le (Set.insert_subset ?_ ?_)` and prove the remaining obligations. Conclude with `⟨yG, mem_separableClosure_iff.mpr hyKsep, rfl⟩`. Introduce `f hf`.
+
+Conclude with `⟨⟨f, hFG hf⟩, mem_separableClosure_iff.mpr ((isSeparable_coe_iff (⟨f, hFG hf⟩ : G)).mp (hFs f hf)), rfl⟩`. Introduce `z hz`. Take `⟨w, hw, rfl⟩` from `hle hz`. Conclude with `(isSeparable_coe_iff w).mpr (mem_separableClosure_iff.mp hw)`. Establish `hPG : P (finrank K G)` using `⟨G, hGc, hGsep, rfl⟩`.
+
+Establish `hGD : finrank K G ≤ finrank K D` using `Submodule.finrank_le (Subalgebra.toSubmodule G)`. Establish `hle` using `Nat.le_findGreatest hGD hPG`. Establish `hlt : Subalgebra.toSubmodule F < Subalgebra.toSubmodule G` using `SetLike.lt_iff_le_and_exists.mpr ⟨hFG, (y : D), hyG, hyF'⟩`. Establish `hlt' : finrank K F < finrank K G` using `Submodule.finrank_lt_finrank_of_lt hlt`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem exists_maximal_isSeparable :
     ∃ F : Subalgebra K D, IsMulCommutative F ∧
       Maximal (fun G : Subalgebra K D ↦ IsMulCommutative G) F ∧ ∀ x ∈ F, IsSeparable K x := by
@@ -334,6 +433,9 @@ section Splitting
 
 variable {K : Type*} [Field K] {A : Type*} [Ring A] [Algebra K A]
 
+/- English proof (translation)
+Set `_ : Algebra L E` to `σ.toRingHom.toAlgebra`. Establish `: IsScalarTower K L E` using `IsScalarTower.of_algebraMap_eq fun k ↦ (σ.commutes k).symm`. Conclude with `⟨(baseChangeTower K L E A).symm.trans <| (Algebra.TensorProduct.congr AlgEquiv.refl e).trans <| (baseChangeMatrix L E L (Fin n)).trans (Algebra.TensorProduct.rid L E E).mapMatrix⟩`.
+-/
 theorem nonempty_algEquiv_matrix_of_algHom_field {L : Type*} [Field L] [Algebra K L] {E : Type*}
     [Field E] [Algebra K E] (σ : L →ₐ[K] E) {n : ℕ}
     (e : L ⊗[K] A ≃ₐ[L] Matrix (Fin n) (Fin n) L) :
@@ -344,6 +446,9 @@ theorem nonempty_algEquiv_matrix_of_algHom_field {L : Type*} [Field L] [Algebra 
     (Algebra.TensorProduct.congr AlgEquiv.refl e).trans <|
     (baseChangeMatrix L E L (Fin n)).trans (Algebra.TensorProduct.rid L E E).mapMatrix⟩
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨(Algebra.TensorProduct.congr AlgEquiv.refl eA).trans <| (baseChangeMatrix K L D (Fin m)).trans <| eD.mapMatrix.trans <| (Matrix.compAlgEquiv (Fin m) (Fin k) L L).trans (Matrix.reindexAlgEquiv L L finProdFinEquiv)⟩`.
+-/
 theorem nonempty_algEquiv_matrix_of_matrix {L : Type*} [Field L] [Algebra K L] {D : Type*}
     [Ring D] [Algebra K D] {m k : ℕ} (eA : A ≃ₐ[K] Matrix (Fin m) (Fin m) D)
     (eD : L ⊗[K] D ≃ₐ[L] Matrix (Fin k) (Fin k) L) :
@@ -359,6 +464,13 @@ section SeparableSplitting
 
 variable {K : Type u} [Field K]
 
+/- English proof (translation)
+Establish `: IsArtinianRing A` using `IsArtinianRing.of_finite K A`. Take `⟨m, _, D, _, _, _, ⟨eA⟩⟩` from `IsSimpleRing.exists_algEquiv_matrix_divisionRing_finite K A`. Establish `: Algebra.IsCentral K (Matrix (Fin m) (Fin m) D)` using `Algebra.IsCentral.of_algEquiv K _ _ eA`. Establish `: Algebra.IsCentral K D` using `isCentral_of_isCentral_matrix (ι := Fin m)`. Take `⟨F, hFc, hFmax, hFs⟩` from `exists_maximal_isSeparable (K := K) (D := D)`.
+
+Set `_ : Field F` to `fieldOfIsMulCommutative F`. Take `⟨eD⟩` from `nonempty_algEquiv_matrix_of_maximal F hFmax`. Establish `: Algebra.IsSeparable K F` using `⟨fun z ↦ (isSeparable_coe_iff z).mp (hFs z z.2)⟩`. Set `σ : F →ₐ[K] SeparableClosure K` to `IsSepClosed.lift (K := K) (L := F) (M := SeparableClosure K)`. Set `_ : Algebra F (SeparableClosure K)` to `σ.toRingHom.toAlgebra`.
+
+Establish `: IsScalarTower K F (SeparableClosure K)` using `IsScalarTower.of_algebraMap_eq fun k ↦ (σ.commutes k).symm`. Take `⟨e⟩` from `nonempty_algEquiv_matrix_of_matrix eA eD`. Conclude with `⟨IntermediateField.normalClosure K F (SeparableClosure K), inferInstance, inferInstance, inferInstance, inferInstance, _, nonempty_algEquiv_matrix_of_algHom_field (IsScalarTower.toAlgHom K F (IntermediateField.normalClosure K F (SeparableClosure K))) e⟩`.
+-/
 theorem exists_isGalois_splits (A : Type v) [Ring A] [Algebra K A] [Algebra.IsCentral K A]
     [IsSimpleRing A] [FiniteDimensional K A] :
     ∃ (L : Type u) (_ : Field L) (_ : Algebra K L), FiniteDimensional K L ∧ IsGalois K L ∧
@@ -380,6 +492,9 @@ theorem exists_isGalois_splits (A : Type v) [Ring A] [Algebra K A] [Algebra.IsCe
     inferInstance, _, nonempty_algEquiv_matrix_of_algHom_field
       (IsScalarTower.toAlgHom K F (IntermediateField.normalClosure K F (SeparableClosure K))) e⟩
 
+/- English proof (translation)
+Take `⟨L, _, _, h1, h2, h3⟩` from `exists_isGalois_splits (K := K) A`. Conclude with `⟨L, _, _, h1, inferInstance, h3⟩`.
+-/
 theorem exists_isSeparable_splits (A : Type v) [Ring A] [Algebra K A] [Algebra.IsCentral K A]
     [IsSimpleRing A] [FiniteDimensional K A] :
     ∃ (L : Type u) (_ : Field L) (_ : Algebra K L), FiniteDimensional K L ∧
@@ -388,6 +503,9 @@ theorem exists_isSeparable_splits (A : Type v) [Ring A] [Algebra K A] [Algebra.I
   obtain ⟨L, _, _, h1, h2, h3⟩ := exists_isGalois_splits (K := K) A
   exact ⟨L, _, _, h1, inferInstance, h3⟩
 
+/- English proof (translation)
+Proceed by induction on `x using Quotient.inductionOn with`. Consider the case `h A`. Take `⟨L, _, _, h1, h2, n, ⟨e⟩⟩` from `exists_isGalois_splits (K := K) A`. Conclude with `⟨L, _, _, h1, h2, (BrauerGroup.mk_mem_relBrauer_iff A).mpr ⟨n, ⟨e⟩⟩⟩`.
+-/
 theorem BrauerGroup.exists_mem_relBrauer (x : BrauerGroup.{u, u} K) :
     ∃ (L : Type u) (_ : Field L) (_ : Algebra K L), FiniteDimensional K L ∧ IsGalois K L ∧
       x ∈ BrauerGroup.relBrauer K L := by

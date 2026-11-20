@@ -13,6 +13,9 @@ private noncomputable def UpperTheory.specMapOverOfAlgHom {S : Scheme.{0}} {R : 
     exact f.comp_algebraMap)
 
 open AlgebraicGeometry CategoryTheory in
+/- English proof (translation)
+Apply `Over.OverMorphism.ext` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `Spec.map _ ≫ Spec.map _ = Spec.map _`. Rewrite using `[← Spec.map_comp, ← CommRingCat.ofHom_comp]`. Both sides reduce to the same expression.
+-/
 private theorem UpperTheory.specMapAlg_comp {S : Scheme.{0}} {R : Type} [CommRing R]
     (x : Spec (CommRingCat.of R) ⟶ S) {A B C : Type} [CommRing A] [CommRing B] [CommRing C]
     [Algebra R A] [Algebra R B] [Algebra R C] (f : A →ₐ[R] B) (g : B →ₐ[R] C) :
@@ -23,6 +26,9 @@ private theorem UpperTheory.specMapAlg_comp {S : Scheme.{0}} {R : Type} [CommRin
   rfl
 
 open AlgebraicGeometry CategoryTheory in
+/- English proof (translation)
+Apply `Over.OverMorphism.ext` to reduce the goal to its premises. Conclude with `Spec.map_id _`.
+-/
 private theorem UpperTheory.specMap_id {S : Scheme.{0}} {R : Type} [CommRing R]
     (x : Spec (CommRingCat.of R) ⟶ S) {A : Type} [CommRing A] [Algebra R A] :
     UpperTheory.specMapOverOfAlgHom x (AlgHom.id R A) = 𝟙 _ := by
@@ -30,12 +36,28 @@ private theorem UpperTheory.specMap_id {S : Scheme.{0}} {R : Type} [CommRing R]
   exact Spec.map_id _
 
 open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalCategory MonObj in
+/- English proof (translation)
+Substitute `h` using the available equality. Both sides reduce to the same expression.
+-/
 private theorem UpperTheory.grpObj_one_left_congr {S : Scheme.{0}} (G : Over S) [GrpObj G]
     {X : Scheme.{0}} {x y : X ⟶ S} (h : x = y) :
     (1 : Over.mk x ⟶ G).left = (1 : Over.mk y ⟶ G).left := by
   subst h
   rfl
 
+/- English proof (translation)
+Apply the tactic sequence `open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalCategory MonObj in`. Introduce `S G _ R _ x v w hv hw`. Establish `hx : Spec.map (CommRingCat.ofHom (algebraMap R R)) ≫ x = x`. Establish `: Spec.map (CommRingCat.ofHom (algebraMap R R)) = 𝟙 _` using `Spec.map_id _`. Rewrite using `[this, Category.id_comp]`.
+
+Establish `h1` using `UpperTheory.grpObj_one_left_congr G hx`. Establish `hv' : UpperTheory.specMapOverOfAlgHom x (TrivSqZeroExt.fstHom R R R) ≫ v = 1` using `Over.OverMorphism.ext (hv.trans h1.symm)`. Establish `hw' : UpperTheory.specMapOverOfAlgHom x (TrivSqZeroExt.fstHom R R R) ≫ w = 1` using `Over.OverMorphism.ext (hw.trans h1.symm)`. Establish `e0 : (TrivSqZeroExt.map (0 : R →ₗ[R] R)) = (Algebra.ofId R (DualNumber R)).comp (TrivSqZeroExt.fstHom R R R)`. Apply `AlgHom.ext` to reduce the goal to its premises.
+
+Introduce `a`. Apply the tactic sequence `ext <;> simp [TrivSqZeroExt.algebraMap_eq_inl]`. Establish `hv0 : UpperTheory.specMapOverOfAlgHom x (TrivSqZeroExt.map (0 : R →ₗ[R] R)) ≫ v = 1`. Rewrite using `[e0, ← UpperTheory.specMapAlg_comp, Category.assoc, hv', MonObj.comp_one]`. Establish `hw0 : UpperTheory.specMapOverOfAlgHom x (TrivSqZeroExt.map (0 : R →ₗ[R] R)) ≫ w = 1`.
+
+Rewrite using `[e0, ← UpperTheory.specMapAlg_comp, Category.assoc, hw', MonObj.comp_one]`. Set `U : Over.mk (Spec.map (CommRingCat.ofHom (algebraMap R (TrivSqZeroExt R (R × R)))) ≫ x) ⟶ G` to `(UpperTheory.specMapOverOfAlgHom x (TrivSqZeroExt.map (LinearMap.inl R R R)) ≫ v) * (UpperTheory.specMapOverOfAlgHom x (TrivSqZeroExt.map (LinearMap.inr R R R)) ≫ w)`. Establish `key : ∀ f : (R × R) →ₗ[R] R, UpperTheory.specMapOverOfAlgHom x (TrivSqZeroExt.map f) ≫ U = (UpperTheory.specMapOverOfAlgHom x (TrivSqZeroExt.map (f ∘ₗ LinearMap.inl R R R)) ≫ v) * (UpperTheory.specMapOverOfAlgHom x (TrivSqZeroExt.map (f ∘ₗ LinearMap.inr R R R)) ≫ w)`. Introduce `f`. Simplify using `only [U, MonObj.comp_mul, ← Category.assoc, UpperTheory.specMapAlg_comp, TrivSqZeroExt.map_comp_map]`.
+
+Establish `k0 : UpperTheory.specMapOverOfAlgHom x (TrivSqZeroExt.fstHom R R (R × R)) ≫ U = 1`. Simplify using `only [U, MonObj.comp_mul, ← Category.assoc, UpperTheory.specMapAlg_comp, TrivSqZeroExt.fstHom_comp_map]`. Rewrite using `[hv', hw', _root_.mul_one]`. Establish `k1 : UpperTheory.specMapOverOfAlgHom x (TrivSqZeroExt.map (LinearMap.fst R R R)) ≫ U = v`. Rewrite using `[key, LinearMap.fst_comp_inl, LinearMap.fst_comp_inr, hw0, TrivSqZeroExt.map_id, UpperTheory.specMap_id, Category.id_comp, _root_.mul_one]`.
+
+Establish `k2 : UpperTheory.specMapOverOfAlgHom x (TrivSqZeroExt.map (LinearMap.snd R R R)) ≫ U = w`. Rewrite using `[key, LinearMap.snd_comp_inl, LinearMap.snd_comp_inr, hv0, TrivSqZeroExt.map_id, UpperTheory.specMap_id, Category.id_comp, _root_.one_mul]`. Establish `k3 : UpperTheory.specMapOverOfAlgHom x (TrivSqZeroExt.map (LinearMap.fst R R R + LinearMap.snd R R R)) ≫ U = v * w`. Rewrite using `[key, LinearMap.add_comp, LinearMap.add_comp, LinearMap.fst_comp_inl, LinearMap.fst_comp_inr, LinearMap.snd_comp_inl, LinearMap.snd_comp_inr, add_zero, zero_add, TrivSqZeroExt.map_id, UpperTheory.specMap_id, Category.id_comp, Category.id_comp]`. Conclude with `⟨U.left, (congrArg CommaMorphism.left k0).trans h1, congrArg CommaMorphism.left k1, congrArg CommaMorphism.left k2, congrArg CommaMorphism.left k3⟩`.
+-/
 theorem UpperTheory.tangent_left_one :
     open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalCategory MonObj in
         ∀ {S : Scheme.{0}} (G : Over S) [GrpObj G] {R : Type} [CommRing R] (x : Spec (CommRingCat.of R) ⟶ S)

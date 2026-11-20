@@ -15,11 +15,25 @@ variable {R A : Type*} [CommRing R] [CommRing A] [Algebra R A] (𝒜 : ℕ → S
 def quotGrading (I : Ideal A) : ℕ → Submodule R (A ⧸ I) :=
   fun d => (𝒜 d).map (Ideal.Quotient.mkₐ R I).toLinearMap
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨a, ha, rfl⟩`.
+-/
 theorem mk_mem_quotGrading (I : Ideal A) {d : ℕ} {a : A} (ha : a ∈ 𝒜 d) :
     Ideal.Quotient.mk I a ∈ quotGrading 𝒜 I d := ⟨a, ha, rfl⟩
 
 variable [GradedAlgebra 𝒜]
 
+/- English proof (translation)
+Rewrite using `[DirectSum.isInternal_submodule_iff_iSupIndep_and_iSup_eq_top]`. Prove the components needed by the constructor for the conclusion. Rewrite using `[iSupIndep_def]`. Introduce `i`. Rewrite using `[Submodule.disjoint_def]`.
+
+Introduce and unpack `y ⟨a, ha, rfl⟩ hy`. Establish `hmap : (⨆ (j) (_ : j ≠ i), quotGrading 𝒜 I j) = (⨆ (j) (_ : j ≠ i), 𝒜 j).map (Ideal.Quotient.mkₐ R I).toLinearMap`. Simplify using `only [quotGrading, Submodule.map_iSup]`. Rewrite `hy` using `[hmap]`. Take `⟨b, hb, hab⟩` from `hy`.
+
+Establish `hb0 : GradedRing.proj 𝒜 i b = 0`. Use `Submodule.iSup_induction _ (motive := fun x => GradedRing.proj 𝒜 i x = 0) hb ?_ (map_zero _) (fun x y hx hy => by simp only [map_add, hx, hy, add_zero])` and prove the remaining obligations. Introduce `j x hx`. Use `Submodule.iSup_induction _ (motive := fun x => GradedRing.proj 𝒜 i x = 0) hx ?_ (map_zero _) (fun x y hx hy => by simp only [map_add, hx, hy, add_zero])` and prove the remaining obligations. Introduce `hji z hz`.
+
+Rewrite using `[GradedRing.proj_apply, DirectSum.decompose_of_mem_ne 𝒜 hz hji]`. Establish `hab' : a - b ∈ I` using `Ideal.Quotient.eq.mp hab.symm`. Establish `h2 : GradedRing.proj 𝒜 i (a - b) ∈ I` using `hI i hab'`. Rewrite `h2` using `[map_sub, hb0, sub_zero, GradedRing.proj_apply, DirectSum.decompose_of_mem_same 𝒜 ha]`. Conclude with `Ideal.Quotient.eq_zero_iff_mem.mpr h2`.
+
+Establish `htop` using `(DirectSum.Decomposition.isInternal 𝒜).submodule_iSup_eq_top`. Express the relevant statement in the definitionally equal form `(⨆ d, (𝒜 d).map (Ideal.Quotient.mkₐ R I).toLinearMap) = ⊤`. Rewrite using `[← Submodule.map_iSup, htop, Submodule.map_top]`. Conclude with `LinearMap.range_eq_top.mpr (Ideal.Quotient.mkₐ_surjective R I)`.
+-/
 theorem isInternal_quotGrading {I : Ideal A} (hI : I.IsHomogeneous 𝒜) :
     DirectSum.IsInternal (quotGrading 𝒜 I) := by
   classical
@@ -74,6 +88,9 @@ def awayLift (φ : A →+* B) (f : A) (hf : IsUnit (φ f)) : Away 𝒜 f →+* B
   (IsLocalization.Away.lift (S := Localization.Away f) f hf).comp
     (algebraMap (Away 𝒜 f) (Localization.Away f))
 
+/- English proof (translation)
+Establish `h1 : φ f ^ n = IsLocalization.Away.lift (S` using `Localization.Away f) f hf (algebraMap A _ (f ^ n)) := by`. Rewrite using `[IsLocalization.Away.lift_eq, map_pow]`. Rewrite using `[h1, awayLift, RingHom.comp_apply, ← map_mul, HomogeneousLocalization.algebraMap_apply, Away.val_mk, Localization.mk_eq_mk']`. Rewrite using `[IsLocalization.mk'_spec (Localization.Away f) a ⟨f ^ n, _⟩, IsLocalization.Away.lift_eq]`.
+-/
 theorem awayLift_mk_mul (φ : A →+* B) {f : A} (hf : IsUnit (φ f)) {d : ℕ} (hd : f ∈ 𝒜 d) (n : ℕ)
     (a : A) (ha : a ∈ 𝒜 (n • d)) :
     awayLift 𝒜 φ f hf (Away.mk 𝒜 hd n a ha) * φ f ^ n = φ a := by
@@ -84,6 +101,9 @@ theorem awayLift_mk_mul (φ : A →+* B) {f : A} (hf : IsUnit (φ f)) {d : ℕ} 
     Away.val_mk, Localization.mk_eq_mk']
   rw [IsLocalization.mk'_spec (Localization.Away f) a ⟨f ^ n, _⟩, IsLocalization.Away.lift_eq]
 
+/- English proof (translation)
+Use extensionality with `x`. Take `⟨n, a, ha, rfl⟩` from `Away.mk_surjective 𝒜 hd x`. Apply `(hf.pow n).mul_right_cancel` to reduce the goal to its premises. Rewrite using `[hg, awayLift_mk_mul]`.
+-/
 theorem eq_awayLift (φ : A →+* B) {f : A} (hf : IsUnit (φ f)) {d : ℕ} (hd : f ∈ 𝒜 d)
     (g : Away 𝒜 f →+* B)
     (hg : ∀ n a ha, g (Away.mk 𝒜 hd n a ha) * φ f ^ n = φ a) : g = awayLift 𝒜 φ f hf := by
@@ -92,6 +112,9 @@ theorem eq_awayLift (φ : A →+* B) {f : A} (hf : IsUnit (φ f)) {d : ℕ} (hd 
   apply (hf.pow n).mul_right_cancel
   rw [hg, awayLift_mk_mul]
 
+/- English proof (translation)
+Use extensionality with `a`. Express the relevant statement in the definitionally equal form `IsLocalization.Away.lift (S := Localization.Away f) f hf (algebraMap (Away 𝒜 f) _ (algebraMap (𝒜 0) _ a)) = _`. Rewrite using `[← IsScalarTower.algebraMap_apply, IsScalarTower.algebraMap_apply (𝒜 0) A, IsLocalization.Away.lift_eq]`. Both sides reduce to the same expression.
+-/
 theorem awayLift_comp_fromZeroRingHom (φ : A →+* B) (f : A) (hf : IsUnit (φ f)) :
     (awayLift 𝒜 φ f hf).comp (fromZeroRingHom 𝒜 _) = φ.comp (algebraMap (𝒜 0) A) := by
   ext a
@@ -101,6 +124,9 @@ theorem awayLift_comp_fromZeroRingHom (φ : A →+* B) (f : A) (hf : IsUnit (φ 
     IsLocalization.Away.lift_eq]
   rfl
 
+/- English proof (translation)
+Rewrite using `[← Ideal.map_map, hφ, Ideal.map_top]`.
+-/
 theorem map_irrelevant_comp {φ : A →+* B} (hφ : (irrelevant 𝒜).toIdeal.map φ = ⊤) (ψ : B →+* C) :
     (irrelevant 𝒜).toIdeal.map (ψ.comp φ) = ⊤ := by
   rw [← Ideal.map_map, hφ, Ideal.map_top]
@@ -109,6 +135,9 @@ def ofHom (φ : A →+* B) (hφ : (irrelevant 𝒜).toIdeal.map φ = ⊤) : Spec
   Proj.fromOfGlobalSections 𝒜 ((Scheme.ΓSpecIso (.of B)).inv.hom.comp φ)
     (map_irrelevant_comp 𝒜 hφ _)
 
+/- English proof (translation)
+Rewrite using `[ofHom, Proj.fromOfGlobalSections_preimage_basicOpen _ _ _ hn hr]`. Conclude with `basicOpen_eq_of_affine (R := .of B) (φ r)`. Use the proof step `@[reassoc]`.
+-/
 theorem ofHom_preimage_basicOpen (φ : A →+* B) (hφ : (irrelevant 𝒜).toIdeal.map φ = ⊤)
     {r : A} {n : ℕ} (hn : 0 < n) (hr : r ∈ 𝒜 n) :
     ofHom 𝒜 φ hφ ⁻¹ᵁ Proj.basicOpen 𝒜 r = PrimeSpectrum.basicOpen (φ r) := by
@@ -116,6 +145,9 @@ theorem ofHom_preimage_basicOpen (φ : A →+* B) (hφ : (irrelevant 𝒜).toIde
   exact basicOpen_eq_of_affine (R := .of B) (φ r)
 
 @[reassoc]
+/- English proof (translation)
+Rewrite using `[ofHom, Proj.fromOfGlobalSections_toSpecZero, ← SpecMap_ΓSpecIso_hom, ← Spec.map_comp]`. Use `congr 1`. Use extensionality with `a`. Simplify using the standard rewrite rules.
+-/
 theorem ofHom_toSpecZero (φ : A →+* B) (hφ : (irrelevant 𝒜).toIdeal.map φ = ⊤) :
     ofHom 𝒜 φ hφ ≫ Proj.toSpecZero 𝒜 =
       Spec.map (CommRingCat.ofHom (φ.comp (algebraMap (𝒜 0) A))) := by
@@ -127,6 +159,21 @@ theorem ofHom_toSpecZero (φ : A →+* B) (hφ : (irrelevant 𝒜).toIdeal.map �
 set_option backward.isDefEq.respectTransparency false in
 
 @[reassoc]
+/- English proof (translation)
+Use `set φ' := (Scheme.ΓSpecIso (.of B)).inv.hom.comp φ with hφ'`. Establish `hφ''` using `map_irrelevant_comp 𝒜 hφ (Scheme.ΓSpecIso (.of B)).inv.hom`. Establish `hrange : Set.range (Spec.map (CommRingCat.ofHom ψ)) ⊆ Set.range ((Spec (.of B)).basicOpen (φ' f)).ι`. Introduce and unpack `_ ⟨x, rfl⟩`. Rewrite using `[Scheme.Opens.range_ι]`.
+
+Express the relevant statement in the definitionally equal form `_ ∈ (Spec (.of B)).basicOpen ((Scheme.ΓSpecIso (.of B)).inv (φ f))`. Rewrite using `[basicOpen_eq_of_affine]`. Conclude with `fun h => x.2.ne_top (Ideal.eq_top_of_isUnit_mem _ h hu)`. Set `l` to `IsOpenImmersion.lift _ _ hrange`. Establish `hl : l ≫ _ = _` using `IsOpenImmersion.lift_fac _ _ hrange`.
+
+Establish `h1 : ((Spec (.of B)).basicOpen (φ' f)).ι ≫ ofHom 𝒜 φ hφ = Proj.toBasicOpenOfGlobalSections 𝒜 φ' rfl hn hf ≫ (Proj.basicOpen 𝒜 f).ι`. Rewrite using `[← Proj.fromOfGlobalSections_resLE 𝒜 φ' hφ'' hn hf, Scheme.Hom.resLE_comp_ι]`. Both sides reduce to the same expression. Rewrite using `[← hl, Category.assoc, h1, Proj.awayι, Proj.toBasicOpenOfGlobalSections]`. Simplify using `only [← Category.assoc]`.
+
+Use `congr 2`. Set `ψ' : Γ(Spec (.of B), ⊤) →+* C` to `ψ.comp (Scheme.ΓSpecIso (.of B)).hom.hom`. Establish `hψ' : ∀ a, ψ' (φ' a) = ψ (φ a)`. Introduce `a`. Simplify using `[ψ', φ']`.
+
+Establish `hu' : IsUnit (ψ' (φ' f))` using `hψ' f ▸ hu`. Establish `h2 : ((l ≫ ((Spec (.of B)).isoOfEq ((Spec (.of B)).toSpecΓ_preimage_basicOpen (φ' f))).inv) ≫ (Spec (.of B)).toSpecΓ ∣_ (PrimeSpectrum.basicOpen (φ' f))) ≫ (basicOpenIsoSpecAway (φ' f)).hom = Spec.map (CommRingCat.ofHom (IsLocalization.Away.lift (S` using `Localization.Away (φ' f)) (φ' f) hu')) := by`. Rewrite using `[← cancel_mono (Spec.map (CommRingCat.ofHom (algebraMap Γ(Spec (.of B), ⊤) (Localization.Away (φ' f)))))]`. Simplify using `only [Category.assoc, basicOpenIsoSpecAway, IsOpenImmersion.isoOfRangeEq_hom_fac, morphismRestrict_ι, Scheme.isoOfEq_inv_ι_assoc]`. Rewrite using `[reassoc_of% hl, ← SpecMap_ΓSpecIso_hom, ← Spec.map_comp, ← Spec.map_comp]`.
+
+Use `congr 1`. Use extensionality with `a`. Simplify using `[ψ', IsLocalization.Away.lift_eq]`. Rewrite using `[h2, ← Spec.map_comp]`. Use `congr 2`.
+
+Rewrite using `[← CommRingCat.ofHom_comp, awayLift, ← RingHom.comp_assoc]`. Use `congr 2`. Apply `IsLocalization.ringHom_ext (M := .powers f)` to reduce the goal to its premises. Use extensionality with `a`. Simplify using `[IsLocalization.Away.lift_eq, hψ']`.
+-/
 theorem SpecMap_ofHom_eq_awayι (φ : A →+* B) (hφ : (irrelevant 𝒜).toIdeal.map φ = ⊤)
     (ψ : B →+* C) {f : A} {n : ℕ} (hn : 0 < n) (hf : f ∈ 𝒜 n) (hu : IsUnit (ψ (φ f))) :
     Spec.map (CommRingCat.ofHom ψ) ≫ ofHom 𝒜 φ hφ =
@@ -175,11 +222,19 @@ theorem SpecMap_ofHom_eq_awayι (φ : A →+* B) (hφ : (irrelevant 𝒜).toIdea
   ext a
   simp [IsLocalization.Away.lift_eq, hψ']
 
+/- English proof (translation)
+Simplify using `using SpecMap_ofHom_eq_awayι 𝒜 φ hφ (RingHom.id B) hn hf hu`.
+-/
 theorem ofHom_eq_awayι (φ : A →+* B) (hφ : (irrelevant 𝒜).toIdeal.map φ = ⊤)
     {f : A} {n : ℕ} (hn : 0 < n) (hf : f ∈ 𝒜 n) (hu : IsUnit (φ f)) :
     ofHom 𝒜 φ hφ = Spec.map (CommRingCat.ofHom (awayLift 𝒜 φ f hu)) ≫ Proj.awayι 𝒜 f hf hn := by
   simpa using SpecMap_ofHom_eq_awayι 𝒜 φ hφ (RingHom.id B) hn hf hu
 
+/- English proof (translation)
+Set `s : {f : A // ∃ n, 0 < n ∧ f ∈ 𝒜 n} → (CommRingCat.of B)` to `fun f => φ f.1`. Establish `hs : Ideal.span (Set.range s) = ⊤`. Rewrite using `[_root_.eq_top_iff, ← hφ, Ideal.map_le_iff_le_comap, toIdeal_irrelevant_le]`. Introduce `i hi x hx`. Conclude with `Ideal.subset_span ⟨⟨x, i, hi, hx⟩, rfl⟩`.
+
+Use `(Scheme.affineOpenCoverOfSpanRangeEqTop s hs).openCover.hom_ext _ _ fun i => ?_` and prove the remaining obligations. Take `⟨n, hn, hf⟩` from `i.2`. Conclude with `h (Localization.Away (φ i.1)) (algebraMap B _) i.1 n hn hf (IsLocalization.Away.algebraMap_isUnit _)`. Use the proof step `@[reassoc]`.
+-/
 theorem hom_ext (φ : A →+* B) (hφ : (irrelevant 𝒜).toIdeal.map φ = ⊤) {Y : Scheme.{u}}
     {g₁ g₂ : Spec (.of B) ⟶ Y}
     (h : ∀ (C : Type u) [CommRing C] (ψ : B →+* C) (f : A) (n : ℕ), 0 < n → f ∈ 𝒜 n →
@@ -196,6 +251,9 @@ theorem hom_ext (φ : A →+* B) (hφ : (irrelevant 𝒜).toIdeal.map φ = ⊤) 
     (IsLocalization.Away.algebraMap_isUnit _)
 
 @[reassoc]
+/- English proof (translation)
+Use `hom_ext 𝒜 _ (map_irrelevant_comp 𝒜 hφ ψ) fun D _ χ f n hn hf hu => ?_` and prove the remaining obligations. Rewrite using `[SpecMap_ofHom_eq_awayι 𝒜 _ _ χ hn hf hu, ← Spec.map_comp_assoc, ← CommRingCat.ofHom_comp, SpecMap_ofHom_eq_awayι 𝒜 φ hφ (χ.comp ψ) hn hf hu]`.
+-/
 theorem SpecMap_ofHom (φ : A →+* B) (hφ : (irrelevant 𝒜).toIdeal.map φ = ⊤) (ψ : B →+* C) :
     Spec.map (CommRingCat.ofHom ψ) ≫ ofHom 𝒜 φ hφ =
       ofHom 𝒜 (ψ.comp φ) (map_irrelevant_comp 𝒜 hφ ψ) := by
@@ -203,6 +261,13 @@ theorem SpecMap_ofHom (φ : A →+* B) (hφ : (irrelevant 𝒜).toIdeal.map φ =
   rw [SpecMap_ofHom_eq_awayι 𝒜 _ _ χ hn hf hu, ← Spec.map_comp_assoc, ← CommRingCat.ofHom_comp,
     SpecMap_ofHom_eq_awayι 𝒜 φ hφ (χ.comp ψ) hn hf hu]
 
+/- English proof (translation)
+Use `hom_ext 𝒜 _ hφ' fun D _ χ f n hn hf hu => ?_` and prove the remaining obligations. Establish `hu2` using `hu`. Rewrite `hu2` using `[hc n f hf, map_mul, IsUnit.mul_iff]`. Rewrite using `[SpecMap_ofHom_eq_awayι 𝒜 _ _ χ hn hf hu, SpecMap_ofHom_eq_awayι 𝒜 _ _ χ hn hf hu2.2]`. Use `congr 3`.
+
+Use `symm`. Use `eq_awayLift 𝒜 _ _ hf _ fun m a ha => ?_` and prove the remaining obligations. Use `awayLift_mk_mul 𝒜 (χ.comp φ) hu2.2 hf m a ha` as an intermediate fact. Simplify using `only [RingHom.comp_apply] at this ⊢`. Generalize the expression as in `awayLift 𝒜 (χ.comp φ) f hu2.2 (Away.mk 𝒜 hf m a ha) = t at this ⊢`.
+
+Rewrite using `[hc _ a ha, hc n f hf, map_mul, map_mul, ← this, mul_pow, smul_eq_mul, map_pow, map_pow]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem ofHom_eq_of_scale {φ φ' : A →+* B} (hφ : (irrelevant 𝒜).toIdeal.map φ = ⊤)
     (hφ' : (irrelevant 𝒜).toIdeal.map φ' = ⊤) (c : B)
     (hc : ∀ n, ∀ a ∈ 𝒜 n, φ' a = c ^ n * φ a) : ofHom 𝒜 φ' hφ' = ofHom 𝒜 φ hφ := by
@@ -225,6 +290,9 @@ variable {A' τ τ' : Type u} {A₀ : Type u} [CommRing A₀] [CommRing A'] [Set
   [AddSubgroupClass τ A₀] [SetLike τ' A'] [AddSubgroupClass τ' A']
   {𝒜₀ : ℕ → τ} {ℬ : ℕ → τ'} [GradedRing 𝒜₀] [GradedRing ℬ]
 
+/- English proof (translation)
+Rewrite using `[← Ideal.map_map, _root_.eq_top_iff, ← hφ]`. Conclude with `Ideal.map_mono hg`. Use the proof step `@[reassoc]`.
+-/
 theorem map_irrelevant_comp_graded (g : 𝒜₀ →+*ᵍ ℬ) (hg : irrelevant ℬ ≤ (irrelevant 𝒜₀).map g)
     {φ : A' →+* B} (hφ : (irrelevant ℬ).toIdeal.map φ = ⊤) :
     (irrelevant 𝒜₀).toIdeal.map (φ.comp g.toRingHom) = ⊤ := by
@@ -232,6 +300,11 @@ theorem map_irrelevant_comp_graded (g : 𝒜₀ →+*ᵍ ℬ) (hg : irrelevant �
   exact Ideal.map_mono hg
 
 @[reassoc]
+/- English proof (translation)
+Use `hom_ext 𝒜₀ _ (map_irrelevant_comp_graded g hg hφ) fun D _ χ f n hn hf hu => ?_` and prove the remaining obligations. Rewrite using `[SpecMap_ofHom_eq_awayι 𝒜₀ _ _ χ hn hf hu, SpecMap_ofHom_eq_awayι_assoc ℬ φ hφ χ hn (g.2 hf) hu]`. Use `erw [Proj.awayι_comp_map g hg hn f hf]`. Rewrite using `[← Spec.map_comp_assoc, ← CommRingCat.ofHom_comp]`. Use `congr 3`.
+
+Use `eq_awayLift 𝒜₀ _ _ hf _ fun m a ha => ?_` and prove the remaining obligations. Rewrite using `[RingHom.comp_apply]`. Use `erw [Away.map_mk]`. Conclude with `awayLift_mk_mul ℬ (χ.comp φ) hu (g.2 hf) m _ _`.
+-/
 theorem ofHom_map (g : 𝒜₀ →+*ᵍ ℬ) (hg : irrelevant ℬ ≤ (irrelevant 𝒜₀).map g)
     (φ : A' →+* B) (hφ : (irrelevant ℬ).toIdeal.map φ = ⊤) :
     ofHom ℬ φ hφ ≫ Proj.map g hg =

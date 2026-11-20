@@ -13,6 +13,13 @@ namespace GlobalTheory.ThetaInter
 
 open Formalism.L2.Th1.H
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨i, hi⟩ ⟨j, hj⟩ h`. Simplify using `only at h`. Rewrite `h` using `[QuotientAddGroup.eq, AddSubgroup.mem_addSubgroupOf]`. Establish `: z j - z i ∈ A₁` using `by simpa [neg_add_eq_sub] using h`.
+
+Conclude with `Subtype.ext (hinj j hj i hi this).symm`. Introduce `c`. Take `⟨⟨y, hy⟩, rfl⟩` from `QuotientAddGroup.mk_surjective c`. Take `⟨i, hi, hyi⟩` from `hsurj y hy`. Use `⟨⟨i, hi⟩, ?_⟩` and prove the remaining obligations.
+
+Simplify using `only`. Rewrite using `[QuotientAddGroup.eq, AddSubgroup.mem_addSubgroupOf]`. Simplify `hyi` using `[neg_add_eq_sub]`.
+-/
 theorem reps_bijective {V : Type} [AddCommGroup V] (A₁ A₂ : AddSubgroup V) {ι : Type} (s : Finset ι) (z : ι → V)
     (hz : ∀ i ∈ s, z i ∈ A₂) (hinj : ∀ i ∈ s, ∀ j ∈ s, z i - z j ∈ A₁ → i = j)
     (hsurj : ∀ y ∈ A₂, ∃ i ∈ s, y - z i ∈ A₁) :
@@ -31,6 +38,15 @@ theorem reps_bijective {V : Type} [AddCommGroup V] (A₁ A₂ : AddSubgroup V) {
     rw [QuotientAddGroup.eq, AddSubgroup.mem_addSubgroupOf]
     simpa [neg_add_eq_sub] using hyi
 
+/- English proof (translation)
+Introduce `V _ _ H α A₁ A₂ hH hd₂ hs₁ hs₂ ι s z hz hinj hsurj F hF w`. Establish `hφ` using `reps_bijective A₁ A₂ s z hz hinj hsurj`. Establish `: Finite (A₂ ⧸ A₁.addSubgroupOf A₂)` using `Finite.of_surjective _ hφ.2`. Use `Fintype.ofFinite (A₂ ⧸ A₁.addSubgroupOf A₂)` as an intermediate fact. Establish `hcard : Fintype.card (A₂ ⧸ A₁.addSubgroupOf A₂) = s.card`.
+
+Rewrite using `[← Fintype.card_of_bijective hφ, Fintype.card_coe]`. Establish `hinv : ∀ (a : A₂), ∀ t ∈ A₁.addSubgroupOf A₂, α ((a + t : A₂) : V) * opU H ((a + t : A₂) : V) F w = α (a : V) * opU H (a : V) F w`. Introduce `a t ht`. Rewrite using `[AddSubgroup.coe_add, alpha_opU_add hH hd₂ hs₂ a.2 t.2, opU_of_fixed hs₁ hF (AddSubgroup.mem_addSubgroupOf.1 ht), opU_mul, ← mul_assoc (α t), alpha_sq hs₂ t.2, one_mul]`. Rewrite using `[congrFun (inter_eq (H := H) (α := α) A₁ A₂ F) w, hcard]`.
+
+Use `congr 1`. Rewrite using `[← Finset.sum_coe_sort s]`. Use `(Fintype.sum_bijective _ hφ _ _ fun i => ?_).symm` and prove the remaining obligations. Establish `ht : -(⟨z i, hz i i.2⟩ : A₂) + Quotient.out (((⟨z i, hz i i.2⟩ : A₂) : A₂ ⧸ A₁.addSubgroupOf A₂)) ∈ A₁.addSubgroupOf A₂`. Rewrite using `[← QuotientAddGroup.eq]`.
+
+Conclude with `(QuotientAddGroup.out_eq' _).symm`. Use `hinv ⟨z i, hz i i.2⟩ _ ht` as an intermediate fact. Rewrite `this` using `[add_neg_cancel_left]`. Conclude with `this.symm`.
+-/
 theorem inter_eq_sum_reps : ∀ {V : Type} [AddCommGroup V] [Module ℂ V] (H : Formalism.L2.Th1.H.Sesq V) (α : V → ℂ)
     (A₁ A₂ : AddSubgroup V), Formalism.L2.Th1.H.IsHerm H → Formalism.L2.Th1.H.IsSelfDual H A₂ →
     Formalism.L2.Th1.H.IsSemiChar H A₁ α → Formalism.L2.Th1.H.IsSemiChar H A₂ α → ∀ {ι : Type} (s : Finset ι) (z : ι → V),

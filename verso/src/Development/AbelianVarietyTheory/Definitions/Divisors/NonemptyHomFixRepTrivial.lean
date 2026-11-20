@@ -33,6 +33,11 @@ structure HomFixRep (A B : Over S) [GrpObj A] [GrpObj B] (L : LB A.left) (M : LB
 
 attribute [instance] HomFixRep.grpA HomFixRep.grpB
 
+/- English proof (translation)
+Use `⟨IsPullback.of_horiz_isIso ⟨by simp⟩, ?_⟩` and prove the remaining obligations. Introduce `T x y x₀ y₀ hx hy`. Set `e : T ⟶ Over.mk (T.hom ≫ 𝟙 S)` to `Over.homMk (𝟙 _) (by simp)`. Establish `h1 : e ≫ x₀ = x` using `by ext; simp [e, hx]`. Establish `h2 : e ≫ y₀ = y` using `by ext; simp [e, hy]`.
+
+Establish `h3 : e ≫ (x₀ * y₀) = x * y` using `by rw [MonObj.comp_mul, h1, h2]`. Rewrite using `[← h3]`. Simplify using `[e]`.
+-/
 theorem isGrpPullback_id (A : Over S) [GrpObj A] : IsGrpPullback A A (𝟙 S) (𝟙 A.left) := by
   refine ⟨IsPullback.of_horiz_isIso ⟨by simp⟩, ?_⟩
   intro T x y x₀ y₀ hx hy
@@ -71,10 +76,18 @@ def trivLB (X : Scheme.{0}) : LB X where
   U := fun _ => ⊤
   g := fun _ _ => 1
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨by simp [trivLB], fun _ => map_one _, fun _ _ _ => (congrArg₂ (· * ·) (map_one _) (map_one _)).trans ((_root_.mul_one _).trans (map_one _).symm)⟩`.
+-/
 theorem trivLB_isLB (X : Scheme.{0}) : (trivLB X).IsLB :=
   ⟨by simp [trivLB], fun _ => map_one _, fun _ _ _ =>
     (congrArg₂ (· * ·) (map_one _) (map_one _)).trans ((_root_.mul_one _).trans (map_one _).symm)⟩
 
+/- English proof (translation)
+Simplify using `only [LB.pull, LB.LinComb]`. Use `erw [Finset.prod_eq_one]`. Both sides reduce to the same expression. Introduce `k _`. Rewrite using `[h, map_one]`.
+
+Use `erw [map_one]`. Conclude with `_root_.one_zpow _`.
+-/
 theorem pull_g_one {X Y : Scheme.{0}} (L : LB X) (h : ∀ i j, L.g i j = 1) (f : Y ⟶ X) (i j) :
     (L.pull f).g i j = 1 := by
   dsimp only [LB.pull, LB.LinComb]
@@ -83,6 +96,9 @@ theorem pull_g_one {X Y : Scheme.{0}} (L : LB X) (h : ∀ i j, L.g i j = 1) (f :
   intro k _
   rw [h, map_one]; erw [map_one]; exact _root_.one_zpow _
 
+/- English proof (translation)
+Use `⟨⟨fun _ => 1⟩, fun i j => ?_⟩` and prove the remaining obligations. Establish `: (LB.div M L).g i j = 1`. Simplify using `only [LB.div, hL, hM, map_one, inv_one, _root_.mul_one]`. Both sides reduce to the same expression. Rewrite using `[this, map_one, map_one, _root_.mul_one]`.
+-/
 theorem lbIso_of_g_one {X : Scheme.{0}} (L M : LB X) (hL : ∀ i j, L.g i j = 1) (hM : ∀ i j, M.g i j = 1) :
     LBIso L M := by
   refine ⟨⟨fun _ => 1⟩, fun i j => ?_⟩
@@ -90,6 +106,9 @@ theorem lbIso_of_g_one {X : Scheme.{0}} (L M : LB X) (hL : ∀ i j, L.g i j = 1)
     simp only [LB.div, hL, hM, map_one, inv_one, _root_.mul_one]; rfl
   rw [this, map_one, map_one, _root_.mul_one]
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨HomFixRep.toTrivial A _ _ (lbIso_of_g_one _ _ (pull_g_one _ (fun _ _ => rfl) _) (pull_g_one _ (pull_g_one _ (fun _ _ => rfl) _) _))⟩`.
+-/
 theorem nonempty_homFixRep_trivial (A : Over S) [GrpObj A] :
     Nonempty (HomFixRep A (𝟙_ (Over S)) (trivLB _) (trivLB _)) :=
   ⟨HomFixRep.toTrivial A _ _ (lbIso_of_g_one _ _ (pull_g_one _ (fun _ _ => rfl) _)
@@ -128,10 +147,16 @@ def HomFixRep.fromTrivial (B : Over S) [GrpObj B] (L : LB (𝟙_ (Over S)).left)
     simp only [x₀, Over.homMk_left] at this
     rw [this, h1]; simp [Hom.one_def]
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 example (A : Over S) [GrpObj A] (L : LB A.left) (M : LB (𝟙_ (Over S)).left)
     (h : LBIso (L.pull (𝟙 _)) ((M.pull (𝟙 _)).pull (toUnit A).left)) :
     (HomFixRep.toTrivial A L M h).H = S := rfl
 
+/- English proof (translation)
+The claim follows from `trivLB_isLB S`.
+-/
 example : (trivLB S).IsLB := trivLB_isLB S
 
 end GlobalTheory.EndLoc

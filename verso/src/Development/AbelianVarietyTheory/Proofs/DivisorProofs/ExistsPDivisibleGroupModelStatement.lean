@@ -13,5 +13,8 @@ open GlobalTheory.DeRham (spOver spOver_comp)
 attribute [local instance] Over.cartesianMonoidalCategory
 
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.GroupBplus.Aff.exists_pDivGroup_isModel | exact GlobalTheory.GroupBplus.Aff.exists_pDivGroup_isModel | (intros; apply GlobalTheory.GroupBplus.Aff.exists_pDivGroup_isModel <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.exists_p_divisible_group_model : ∀ (p : ℕ) [Fact p.Prime] (R K : Type) [CommRing R] [IsDomain R] [IsIntegrallyClosed R] [Field K] [IsAlgClosed K] [CharZero K] [Algebra R K] [IsFractionRing R K] (G : Over (Sp R)) [GrpObj G] [IsCommMonObj G], IsSemiAbelian G → ∀ h : ℕ, (∀ n, Nat.card (Tors G (p ^ n) K) = p ^ (n * h)) → ∃ (GG : PDivGroup p R) (θ : TorsionMap G GG), GG.height = h ∧ IsModel K θ := by
   first | exact @GlobalTheory.GroupBplus.Aff.exists_pDivGroup_isModel | exact GlobalTheory.GroupBplus.Aff.exists_pDivGroup_isModel | (intros; apply GlobalTheory.GroupBplus.Aff.exists_pDivGroup_isModel <;> assumption)

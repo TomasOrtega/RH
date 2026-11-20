@@ -5,6 +5,9 @@ namespace PositivityTheory.PfSWUS
 
 open PositivityTheory.Rg.Sw.Glob
 
+/- English proof (translation)
+The claim follows from `siegel_weil_schrodinger_of_generation hGA hId whitGenLt`.
+-/
 theorem siegel_weil_schrodinger_of_dilation (hGA : GenA) (hId : GIdil) : GlobalTheory.Published.SiegelWeilUnitarySchrodingerLit :=
   siegel_weil_schrodinger_of_generation hGA hId whitGenLt
 

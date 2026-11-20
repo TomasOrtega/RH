@@ -18,6 +18,11 @@ namespace UpperTheory.V.Sd.OrdinaryAbove
 section Loc
 variable {F : Type} [Field F] [NumberField F] (w : HeightOneSpectrum (𝓞 F))
 end Loc
+/- English proof (translation)
+Establish `: IsGalois F Ω` using `IsAlgClosure.isGalois F Ω`. Establish `: Finite (G F Ω ⧸ ξ.ker)` using `Subgroup.quotient_finite_of_isOpen _ hξ`. Establish `h0 : ξ.ker.index ≠ 0` using `Subgroup.index_ne_zero_of_finite`. Establish `h1 : ξ (g ^ ξ.ker.index) = 1` using `Subgroup.pow_index_mem ξ.ker g`. Establish `h2 : ‖(ξ g : Qbar l)‖ ^ ξ.ker.index = 1`.
+
+Rewrite using `[← norm_pow, ← Units.val_pow_eq_pow_val, ← map_pow, h1, Units.val_one, norm_one]`. Conclude with `(pow_eq_one_iff_of_nonneg (norm_nonneg _) h0).1 h2`.
+-/
 private theorem norm_fin {F Ω : Type} [Field F] [NumberField F] [Field Ω] [Algebra F Ω] [IsAlgClosure F Ω] {l : ℕ} [Fact l.Prime]
     (ξ : G F Ω →* (Qbar l)ˣ) (hξ : IsOpen (ξ.ker : Set (G F Ω))) (g : G F Ω) : ‖(ξ g : Qbar l)‖ = 1 := by
   have : IsGalois F Ω := IsAlgClosure.isGalois F Ω
@@ -27,14 +32,29 @@ private theorem norm_fin {F Ω : Type} [Field F] [NumberField F] [Field Ω] [Alg
   have h2 : ‖(ξ g : Qbar l)‖ ^ ξ.ker.index = 1 := by
     rw [← norm_pow, ← Units.val_pow_eq_pow_val, ← map_pow, h1, Units.val_one, norm_one]
   exact (pow_eq_one_iff_of_nonneg (norm_nonneg _) h0).1 h2
+/- English proof (translation)
+Use `⟨Matrix.GeneralLinearGroup.mkOfDetNeZero !![0, 1; -1, 0] (by simp), fun s => ?_⟩` and prove the remaining obligations. Use extensionality with `i j`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;> simp [Matrix.mul_apply, Fin.sum_univ_succ, Matrix.det_fin_two] <;> ring`.
+-/
 private theorem dualTw_det {Γ k : Type} [Group Γ] [Field k] (r : Γ →* GL (Fin 2) k) :
     DualTw r (Matrix.GeneralLinearGroup.det.comp r) := by
   refine ⟨Matrix.GeneralLinearGroup.mkOfDetNeZero !![0, 1; -1, 0] (by simp), fun s => ?_⟩
   ext i j
   fin_cases i <;> fin_cases j <;> simp [Matrix.mul_apply, Fin.sum_univ_succ, Matrix.det_fin_two] <;> ring
+/- English proof (translation)
+The claim follows from `_root_.UpperTheory.Reformulated.B.CyclotomicCharacterContinuous.cont_cyc F Ω l`.
+-/
 private theorem cont_cyc (F Ω : Type) [Field F] [NumberField F] [Field Ω] [Algebra F Ω] (l : ℕ) [Fact l.Prime] :
     Continuous (cycBar F Ω l) :=
   _root_.UpperTheory.Reformulated.B.CyclotomicCharacterContinuous.cont_cyc F Ω l
+/- English proof (translation)
+Establish `e : Matrix.GeneralLinearGroup.det.comp r * cycBar F Ω l ^ (((2 : ℕ) : ℤ) - 1) = cycBar F Ω l ^ (s + 1) * ξ`. Rewrite using `[H.det, _root_.zpow_add, mul_right_comm]`. Evaluate the numerical expressions. Establish `hc : Continuous (cycBar F Ω l ^ (s + 1) * ξ : G F Ω →* (Qbar l)ˣ)`. Rewrite using `[← e]`.
+
+Conclude with `(Matrix.GeneralLinearGroup.continuous_det.comp H.cont).mul ((cont_cyc F Ω l).zpow _)`. Take `⟨χ, hχ⟩` from `(_root_.UpperTheory.V.Af.algOfCyc_s hP F Ω l ι).1 _ hc fun v hv => by`. Establish `hA` using `isPlaceOver_placeOf Ω v`. Use `⟨_, hA, s + 1, 1, one_pos, fun g hg => ?_⟩` and prove the remaining obligations. Establish `h1 : ξ g = 1` using `(H.ram v _ hA).2 (Or.inr hv) hg`.
+
+Rewrite using `[pow_one, MonoidHom.mul_apply, h1, mul_one, MonoidHom.zpow_apply, ← _root_.zpow_add, add_neg_cancel, zpow_zero]`. Establish `hd` using `(_root_.UpperTheory.V.Af.self_dual_real_of_printed_hida hP F Ω l ι 2 one_le_two r π H.att _ χ (dualTw_det r) (e ▸ hχ)).1`. Establish `h1` using `UpperTheory.central_char_sq_eq_of_isSelfDualBy F π χ hd w σ hσ _ z hz`. Rewrite `h1` using `[_root_.UpperTheory.heckeChar_localArtin_eq_cyclotomic_twist' hP.litN F Ω l ι χ ξ (s + 1) H.ξ_open hχ w hw A h ar har t]`. Establish `h2` using `congrArg (fun x => ‖ι.symm x‖) h1`.
+
+Simplify using `only [map_pow, map_mul, map_zpow₀, map_natCast, RingEquiv.symm_apply_apply, norm_pow, norm_mul, norm_zpow, norm_fin ξ H.ξ_open, mul_one] at h2`. Conclude with `(pow_left_inj₀ (norm_nonneg _) (zpow_nonneg (norm_nonneg _) _) two_ne_zero).1 h2`.
+-/
 theorem central_weil_ordinary_above (hP : _root_.UpperTheory.V.Af.HypothesesH') {F Ω : Type} [Field F] [NumberField F] [IsTotallyReal F] [Field Ω] [Algebra F Ω]
     [IsAlgClosure F Ω] {l : ℕ} [Fact l.Prime] {ι : Qbar l ≃+* ℂ} {ξ : G F Ω →* (Qbar l)ˣ} {s c m a π r}
     (H : OrdForm ι ξ s c m a π r) {w : HeightOneSpectrum (𝓞 F)} (hw : ((l : ℕ) : 𝓞 F) ∈ w.asIdeal) {A : ValuationSubring Ω}

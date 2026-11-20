@@ -9,6 +9,15 @@ def LeafPLoc : Prop := ∀ (R : Type) [CommRing R] {U V E : Spc} (f : U ⟶ E) (
   ∀ n, Presheaf.IsLocallySurjective Scheme.etaleTopology.{0}
     (biprod.desc ((freeP R).map (f.app n)) ((freeP R).map (g.app n)))
 
+/- English proof (translation)
+Introduce `R _ U V E f g hf hg hL`. Use `⟨hf, hg, fun n => ?_⟩` and prove the remaining obligations. Set `S` to `presheafToSheaf Scheme.etaleTopology.{0} (ModuleCat.{1} (ULift.{1} R))`. Set `a` to `(freeP R).map (f.app n)`. Set `b` to `(freeP R).map (g.app n)`.
+
+Establish `h1 : Epi (S.map (biprod.desc a b))`. Establish `: Sheaf.IsLocallySurjective (S.map (biprod.desc a b))` using `(Presheaf.isLocallySurjective_presheafToSheaf_map_iff _ _).2 (hP R f g hL n)`. Use `infer_instance`. Express the relevant statement in the definitionally equal form `Epi (biprod.desc (S.map a) (S.map b))`. Set `P` to `(freeP R).obj (U.obj n) ⊞ (freeP R).obj (V.obj n)`.
+
+Set `k : S.obj P ⟶ S.obj ((freeP R).obj (U.obj n)) ⊞ S.obj ((freeP R).obj (V.obj n))` to `biprod.lift (S.map (biprod.fst : P ⟶ _)) (S.map (biprod.snd : P ⟶ _))`. Establish `h2 : k ≫ biprod.desc (S.map a) (S.map b) = S.map (biprod.desc a b)`. Simplify using `only [k]`. Rewrite using `[biprod.lift_desc, ← S.map_comp, ← S.map_comp, ← S.map_add, biprod.desc_eq]`. Rewrite `h1` using `[← h2]`.
+
+Conclude with `epi_of_epi k _`.
+-/
 theorem LeafCovLoc_of (hP : LeafPLoc) : LeafCovLoc := by
   intro R _ U V E f g hf hg hL
   refine ⟨hf, hg, fun n => ?_⟩
@@ -29,6 +38,9 @@ theorem LeafCovLoc_of (hP : LeafPLoc) : LeafCovLoc := by
   rw [← h2] at h1
   exact epi_of_epi k _
 
+/- English proof (translation)
+The claim follows from `LeafWCov_of hG (LeafCovLoc_of hP) hW`.
+-/
 theorem LeafWCov_of' (hG : LeafGeo) (hP : LeafPLoc) (hW : LeafWLoc) : LeafWCov :=
   LeafWCov_of hG (LeafCovLoc_of hP) hW
 

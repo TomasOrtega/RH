@@ -9,6 +9,9 @@ universe u
 
 variable {X : Scheme.{u}}
 
+/- English proof (translation)
+Take `⟨z, hz⟩` from `nonempty_preirreducible_inter V.isOpen W.isOpen ⟨y.1, y.2⟩ ⟨w.1, w.2⟩`. Conclude with `⟨⟨z, hz⟩⟩`.
+-/
 lemma nonempty_inf_of_mem [IsIntegral X] {V W : X.Opens} (y : V) (w : W) : Nonempty (V ⊓ W : X.Opens) := by
   obtain ⟨z, hz⟩ := nonempty_preirreducible_inter V.isOpen W.isOpen ⟨y.1, y.2⟩ ⟨w.1, w.2⟩
   exact ⟨⟨z, hz⟩⟩
@@ -22,6 +25,9 @@ variable {P : PMod X} {U₀ : X.Opens} {s₀ : P.obj (op U₀)} (hs₀ : IsBasis
 noncomputable def coeffOn {V : X.Opens} (l : P.obj (op V)) : ringOn X (V ⊓ U₀) :=
   (Equiv.ofBijective _ (hs₀ (V ⊓ U₀) inf_le_right)).symm (resM P inf_le_left l)
 
+/- English proof (translation)
+The claim follows from `(Equiv.ofBijective _ (hs₀ (V ⊓ U₀) inf_le_right)).apply_symm_apply _`.
+-/
 lemma coeffOn_spec {V : X.Opens} (l : P.obj (op V)) :
     coeffOn hs₀ l • resM P inf_le_right s₀ = resM P inf_le_left l :=
   (Equiv.ofBijective _ (hs₀ (V ⊓ U₀) inf_le_right)).apply_symm_apply _
@@ -32,6 +38,11 @@ noncomputable def ratVal {V : X.Opens} (l : P.obj (op V)) (y : V) : X.functionFi
   haveI := nonempty_inf_of_mem y (Classical.arbitrary U₀)
   X.germToFunctionField (V ⊓ U₀) (coeffOn hs₀ l)
 
+/- English proof (translation)
+Establish `hW' : W ≤ V ⊓ U₀` using `le_inf hWV hWU`. Establish `h1` using `congrArg (resM P hW') (coeffOn_spec hs₀ l)`. Rewrite `h1` using `[resM_smul_res, resM_resM]`. Establish `h2 : a = resR hW' (coeffOn hs₀ l)` using `(hs₀ W hWU).1 (ha.trans h1.symm)`. Use `nonempty_inf_of_mem y (Classical.arbitrary U₀)` as an intermediate fact.
+
+Rewrite using `[h2]`. Conclude with `(TopCat.Presheaf.germ_res_apply _ _ _ _ _).symm`.
+-/
 theorem ratVal_eq {V W : X.Opens} (hWV : W ≤ V) (hWU : W ≤ U₀) [Nonempty W]
     (l : P.obj (op V)) (a : ringOn X W) (ha : a • resM P hWU s₀ = resM P hWV l) (y : V) :
     ratVal hs₀ l y = X.germToFunctionField W a := by
@@ -43,12 +54,18 @@ theorem ratVal_eq {V W : X.Opens} (hWV : W ≤ V) (hWU : W ≤ U₀) [Nonempty W
   rw [h2]
   exact (TopCat.Presheaf.germ_res_apply _ _ _ _ _).symm
 
+/- English proof (translation)
+Use `nonempty_inf_of_mem y (Classical.arbitrary U₀)` as an intermediate fact. Rewrite using `[ratVal_eq hs₀ inf_le_left inf_le_right l _ (coeffOn_spec hs₀ l) y, ratVal_eq hs₀ inf_le_left inf_le_right l _ (coeffOn_spec hs₀ l) z]`.
+-/
 lemma ratVal_const {V : X.Opens} (l : P.obj (op V)) (y z : V) :
     ratVal hs₀ l y = ratVal hs₀ l z := by
   have := nonempty_inf_of_mem y (Classical.arbitrary U₀)
   rw [ratVal_eq hs₀ inf_le_left inf_le_right l _ (coeffOn_spec hs₀ l) y,
     ratVal_eq hs₀ inf_le_left inf_le_right l _ (coeffOn_spec hs₀ l) z]
 
+/- English proof (translation)
+Use `nonempty_inf_of_mem y (Classical.arbitrary U₀)` as an intermediate fact. Establish `e` using `coeffOn_spec hs₀ (resM P h l)`. Rewrite `e` using `[resM_resM]`. Rewrite using `[ratVal_eq hs₀ inf_le_left inf_le_right _ _ (coeffOn_spec hs₀ (resM P h l)) y, ratVal_eq hs₀ ((inf_le_left : W ⊓ U₀ ≤ W).trans h) inf_le_right l _ e]`.
+-/
 lemma ratVal_res {V W : X.Opens} (h : W ≤ V) (l : P.obj (op V)) (y : W) :
     ratVal hs₀ (resM P h l) y = ratVal hs₀ l ⟨y.1, h y.2⟩ := by
   have := nonempty_inf_of_mem y (Classical.arbitrary U₀)
@@ -57,6 +74,11 @@ lemma ratVal_res {V W : X.Opens} (h : W ≤ V) (l : P.obj (op V)) (y : W) :
   rw [ratVal_eq hs₀ inf_le_left inf_le_right _ _ (coeffOn_spec hs₀ (resM P h l)) y,
     ratVal_eq hs₀ ((inf_le_left : W ⊓ U₀ ≤ W).trans h) inf_le_right l _ e]
 
+/- English proof (translation)
+Use `nonempty_inf_of_mem y (Classical.arbitrary U₀)` as an intermediate fact. Establish `e : (resR inf_le_left a * coeffOn hs₀ l) • resM P (inf_le_right : V ⊓ U₀ ≤ U₀) s₀ = resM P inf_le_left (a • l)`. Rewrite using `[mul_smul, coeffOn_spec, resM_smul]`. Rewrite using `[ratVal_eq hs₀ inf_le_left inf_le_right _ _ e y, ratVal_eq hs₀ inf_le_left inf_le_right l _ (coeffOn_spec hs₀ l) y]`. Use `(map_mul (X.germToFunctionField (V ⊓ U₀)).hom (show Γ(X, V ⊓ U₀) from resR inf_le_left a) (show Γ(X, V ⊓ U₀) from coeffOn hs₀ l)).trans ?_` and prove the remaining obligations.
+
+Use `congr 1`. Use `Eq.trans ?_ (sectionValue_eq V y (show Γ(X, V) from a)).symm` and prove the remaining obligations. Conclude with `TopCat.Presheaf.germ_res_apply _ _ _ _ _`.
+-/
 lemma ratVal_smul {V : X.Opens} (a : ringOn X V) (l : P.obj (op V)) (y : V) :
     ratVal hs₀ (a • l) y = sectionValue V y a * ratVal hs₀ l y := by
   have := nonempty_inf_of_mem y (Classical.arbitrary U₀)
@@ -71,6 +93,9 @@ lemma ratVal_smul {V : X.Opens} (a : ringOn X V) (l : P.obj (op V)) (y : V) :
   refine Eq.trans ?_ (sectionValue_eq V y (show Γ(X, V) from a)).symm
   exact TopCat.Presheaf.germ_res_apply _ _ _ _ _
 
+/- English proof (translation)
+Use `nonempty_inf_of_mem y (Classical.arbitrary U₀)` as an intermediate fact. Establish `e : (coeffOn hs₀ l + coeffOn hs₀ m) • resM P (inf_le_right : V ⊓ U₀ ≤ U₀) s₀ = resM P inf_le_left (l + m)`. Rewrite using `[add_smul, coeffOn_spec, coeffOn_spec, resM_add]`. Rewrite using `[ratVal_eq hs₀ inf_le_left inf_le_right _ _ e y, ratVal_eq hs₀ inf_le_left inf_le_right l _ (coeffOn_spec hs₀ l) y, ratVal_eq hs₀ inf_le_left inf_le_right m _ (coeffOn_spec hs₀ m) y]`. Conclude with `map_add (X.germToFunctionField (V ⊓ U₀)).hom (show Γ(X, V ⊓ U₀) from coeffOn hs₀ l) (show Γ(X, V ⊓ U₀) from coeffOn hs₀ m)`.
+-/
 lemma ratVal_add {V : X.Opens} (l m : P.obj (op V)) (y : V) :
     ratVal hs₀ (l + m) y = ratVal hs₀ l y + ratVal hs₀ m y := by
   have := nonempty_inf_of_mem y (Classical.arbitrary U₀)
@@ -83,12 +108,18 @@ lemma ratVal_add {V : X.Opens} (l m : P.obj (op V)) (y : V) :
   exact map_add (X.germToFunctionField (V ⊓ U₀)).hom (show Γ(X, V ⊓ U₀) from coeffOn hs₀ l)
     (show Γ(X, V ⊓ U₀) from coeffOn hs₀ m)
 
+/- English proof (translation)
+Use `nonempty_inf_of_mem y (Classical.arbitrary U₀)` as an intermediate fact. Rewrite using `[ratVal_eq hs₀ inf_le_left inf_le_right (0 : P.obj (op V)) 0 (by rw [zero_smul, resM_zero]) y]`. Conclude with `map_zero _`.
+-/
 lemma ratVal_zero {V : X.Opens} (y : V) : ratVal hs₀ (0 : P.obj (op V)) y = 0 := by
   have := nonempty_inf_of_mem y (Classical.arbitrary U₀)
   rw [ratVal_eq hs₀ inf_le_left inf_le_right (0 : P.obj (op V)) 0
     (by rw [zero_smul, resM_zero]) y]
   exact map_zero _
 
+/- English proof (translation)
+Establish `h` using `ratVal_add hs₀ (l - m) m y`. Rewrite `h` using `[sub_add_cancel]`. Rewrite using `[h]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 lemma ratVal_sub {V : X.Opens} (l m : P.obj (op V)) (y : V) :
     ratVal hs₀ (l - m) y = ratVal hs₀ l y - ratVal hs₀ m y := by
   have h := ratVal_add hs₀ (l - m) m y
@@ -103,6 +134,11 @@ section Invertible
 variable [IsIntegral X]
   {P : PMod X} {U₀ : X.Opens} {s₀ : P.obj (op U₀)} (hs₀ : IsBasisOn P U₀ s₀) [Nonempty U₀]
 
+/- English proof (translation)
+Introduce `h`. Use `nonempty_inf_of_mem y (Classical.arbitrary U₀)` as an intermediate fact. Rewrite `h` using `[ratVal_eq hs₀ inf_le_left inf_le_right s _ (coeffOn_spec hs₀ s) y]`. Establish `hr : coeffOn hs₀ s = 0` using `Scheme.germToFunctionField_injective X (U ⊓ U₀) (h.trans (map_zero _).symm)`. Establish `hz : resM P (inf_le_left : U ⊓ U₀ ≤ U) s = 0`.
+
+Rewrite using `[← coeffOn_spec hs₀ s, hr, zero_smul]`. Establish `hb` using `(hs (U ⊓ U₀) inf_le_left).1`. Establish `h10 : (1 : ringOn X (U ⊓ U₀)) = 0` using `hb (by simp only [hz, smul_zero])`. Conclude with `one_ne_zero (α := Γ(X, U ⊓ U₀)) h10`.
+-/
 lemma ratVal_ne_zero_of_isBasisOn {U : X.Opens} {s : P.obj (op U)} (hs : IsBasisOn P U s)
     (y : U) : ratVal hs₀ s y ≠ 0 := by
   intro h
@@ -118,6 +154,13 @@ lemma ratVal_ne_zero_of_isBasisOn {U : X.Opens} {s : P.obj (op U)} (hs : IsBasis
 
 omit hs₀ in
 
+/- English proof (translation)
+Apply `sheaf_eq_of_locally ⟨L.presheaf, L.isSheaf⟩ (V := V) l 0` to reduce the goal to its premises. Introduce `x hxV`. Take `⟨U, hxU, s, hs⟩` from `hL x`. Use `⟨V ⊓ U, inf_le_left, ⟨hxV, hxU⟩, ?_⟩` and prove the remaining obligations. Take `⟨a, ha⟩` from `(hs (V ⊓ U) inf_le_right).2 (resM _ inf_le_left l)`.
+
+Establish `ha' : a • resM _ inf_le_right s = resM _ inf_le_left l` using `ha`. Establish `hW : Nonempty (V ⊓ U : X.Opens)` using `⟨⟨x, hxV, hxU⟩⟩`. Establish `h1` using `ratVal_smul hs₀ a (resM _ inf_le_right s) ⟨x, hxV, hxU⟩`. Rewrite `h1` using `[ha', ratVal_res, h, ratVal_res]`. Establish `hs0` using `ratVal_ne_zero_of_isBasisOn hs₀ hs ⟨x, hxU⟩`.
+
+Establish `ha0 : sectionValue (V ⊓ U) ⟨x, hxV, hxU⟩ a = 0` using `(mul_eq_zero.mp h1.symm).resolve_right hs0`. Establish `ha0' : a = 0` using `Scheme.germToFunctionField_injective X (V ⊓ U) ((sectionValue_eq _ _ _).symm.trans (ha0.trans (map_zero _).symm))`. Express the relevant statement in the definitionally equal form `resM _ inf_le_left l = resM _ inf_le_left (0 : ((preMod X).obj L).obj (op V))`. Rewrite using `[← ha', ha0', zero_smul, resM_zero]`.
+-/
 lemma eq_zero_of_ratVal_eq_zero {L : X.Modules} (hL : IsInvertibleSheaf L) {U₀ : X.Opens}
     {s₀ : ((preMod X).obj L).obj (op U₀)} (hs₀ : IsBasisOn ((preMod X).obj L) U₀ s₀)
     [Nonempty U₀] {V : X.Opens} (l : ((preMod X).obj L).obj (op V))
@@ -144,12 +187,18 @@ variable {L : X.Modules} (hL : IsInvertibleSheaf L)
 noncomputable def basisOpen (x : X) : X.Opens := (hL x).choose
 
 omit [IsIntegral X] in
+/- English proof (translation)
+The claim follows from `(hL x).choose_spec.choose`.
+-/
 lemma mem_basisOpen (x : X) : x ∈ basisOpen hL x := (hL x).choose_spec.choose
 
 noncomputable def basisSec (x : X) : ((preMod X).obj L).obj (op (basisOpen hL x)) :=
   (hL x).choose_spec.choose_spec.choose
 
 omit [IsIntegral X] in
+/- English proof (translation)
+The claim follows from `(hL x).choose_spec.choose_spec.choose_spec`.
+-/
 lemma isBasisOn_basisSec (x : X) :
     IsBasisOn ((preMod X).obj L) (basisOpen hL x) (basisSec hL x) :=
   (hL x).choose_spec.choose_spec.choose_spec
@@ -160,12 +209,24 @@ noncomputable def secVal {V : X.Opens} (l : ((preMod X).obj L).obj (op V)) (y : 
     X.functionField :=
   ratVal (isBasisOn_basisSec hL (Classical.arbitrary X)) l y
 
+/- English proof (translation)
+The claim follows from `ratVal_ne_zero_of_isBasisOn _ (isBasisOn_basisSec hL x) y`.
+-/
 lemma secVal_basisSec_ne_zero (x : X) (y : basisOpen hL x) :
     secVal hL (basisSec hL x) y ≠ 0 :=
   ratVal_ne_zero_of_isBasisOn _ (isBasisOn_basisSec hL x) y
 
 variable [IsNoetherian X] [IsLocallyFactorial X]
 
+/- English proof (translation)
+Use `set W := basisOpen hL x ⊓ basisOpen hL Z.point`. Establish `hZW : Z.point ∈ W` using `⟨hZ, mem_basisOpen hL Z.point⟩`. Establish `: Nonempty W` using `⟨⟨Z.point, hZW⟩⟩`. Take `⟨u, hu⟩` from `(isBasisOn_basisSec hL Z.point W inf_le_right).2 (resM _ inf_le_left (basisSec hL x))`. Take `⟨v, hv⟩` from `(isBasisOn_basisSec hL x W inf_le_left).2 (resM _ inf_le_right (basisSec hL Z.point))`.
+
+Establish `hu' : u • resM _ inf_le_right (basisSec hL Z.point) = resM _ inf_le_left (basisSec hL x)` using `hu`. Establish `hv' : v • resM _ inf_le_left (basisSec hL x) = resM _ inf_le_right (basisSec hL Z.point)` using `hv`. Establish `huv : u * v = 1` using `(isBasisOn_basisSec hL x W inf_le_left).1 (by`. Express the relevant statement in the definitionally equal form `(u * v) • resM _ inf_le_left (basisSec hL x) = (1 : ringOn X W) • _`. Rewrite using `[mul_smul, hv', hu', one_smul])`.
+
+Establish `hunit : IsUnit (M` using `Γ(X, W)) u := isUnit_iff_exists_inv.mpr ⟨v, huv⟩`. Establish `h1` using `ratVal_smul (isBasisOn_basisSec hL (Classical.arbitrary X)) u (resM _ inf_le_right (basisSec hL Z.point)) ⟨Z.point, hZW⟩`. Rewrite `h1` using `[hu', ratVal_res, ratVal_res]`. Express the relevant statement in the definitionally equal form `secVal hL (basisSec hL x) ⟨Z.point, hZ⟩ = sectionValue W ⟨Z.point, hZW⟩ u * secVal hL (basisSec hL Z.point) ⟨Z.point, mem_basisOpen hL Z.point⟩ at h1`. Establish `hsv : sectionValue W ⟨Z.point, hZW⟩ u ≠ 0`.
+
+Introduce `h0`. Apply `hunit.ne_zero` to reduce the goal to its premises. Conclude with `Scheme.germToFunctionField_injective X W ((sectionValue_eq _ _ _).symm.trans (h0.trans (map_zero _).symm))`. Establish `h0 : Z.ord (sectionValue W ⟨Z.point, hZW⟩ u) = 0` using `(congrArg Z.ord (sectionValue_eq _ _ _)).trans (Z.ord_germToFunctionField_of_isUnit hZW hunit)`. Rewrite using `[h1, Z.ord_mul hsv (secVal_basisSec_ne_zero hL _ _), h0, zero_add]`.
+-/
 lemma ord_secVal_basisSec (Z : PrimeDivisor X) (x : X) (hZ : Z.point ∈ basisOpen hL x) :
     Z.ord (secVal hL (basisSec hL x) ⟨Z.point, hZ⟩) =
       Z.ord (secVal hL (basisSec hL Z.point) ⟨Z.point, mem_basisOpen hL Z.point⟩) := by
@@ -216,12 +277,28 @@ noncomputable def divisorOfInvertible : WeilDivisor X :=
     change Z.ord (secVal hL (basisSec hL x) ⟨Z.point, hZx⟩) ≠ 0
     rwa [ord_secVal_basisSec hL Z x hZx])
 
+/- English proof (translation)
+Rewrite using `[ord_secVal_basisSec hL Z x hZ]`. Express the relevant statement in the definitionally equal form `_ = - - _`. Rewrite using `[neg_neg]`.
+-/
 lemma ord_secVal_basisSec_eq (Z : PrimeDivisor X) (x : X) (hZ : Z.point ∈ basisOpen hL x) :
     Z.ord (secVal hL (basisSec hL x) ⟨Z.point, hZ⟩) = - divisorOfInvertible hL Z := by
   rw [ord_secVal_basisSec hL Z x hZ]
   change _ = - - _
   rw [neg_neg]
 
+/- English proof (translation)
+Use `⟨fun y => ⟨⊤, trivial, fun z _ => ratVal_const _ l z y⟩, fun y hy => ?_⟩` and prove the remaining obligations. Use `set Z := PrimeDivisor.ofPoint y.1 hy`. Distinguish the cases in `h0 : secVal hL l y = 0`. Express the relevant statement in the definitionally equal form `Z.valuation (secVal hL l y) ≤ _`. Rewrite using `[h0, map_zero]`.
+
+Conclude with `zero_le`. Express the relevant statement in the definitionally equal form `Z.valuation (secVal hL l y) ≤ WithZero.exp (divisorOfInvertible hL Z)`. Rewrite using `[Z.valuation_le_exp_iff h0]`. Use `set W := V ⊓ basisOpen hL y.1`. Establish `hyW : y.1 ∈ W` using `⟨y.2, mem_basisOpen hL y.1⟩`.
+
+Establish `: Nonempty W` using `⟨⟨y.1, hyW⟩⟩`. Take `⟨a, ha⟩` from `(isBasisOn_basisSec hL y.1 W inf_le_right).2 (resM _ inf_le_left l)`. Establish `ha' : a • resM _ inf_le_right (basisSec hL y.1) = resM _ inf_le_left l` using `ha`. Establish `h1` using `ratVal_smul (isBasisOn_basisSec hL (Classical.arbitrary X)) a (resM _ inf_le_right (basisSec hL y.1)) ⟨y.1, hyW⟩`. Rewrite `h1` using `[ha', ratVal_res, ratVal_res]`.
+
+Express the relevant statement in the definitionally equal form `secVal hL l y = sectionValue W ⟨y.1, hyW⟩ a * secVal hL (basisSec hL y.1) ⟨y.1, mem_basisOpen hL y.1⟩ at h1`. Establish `hb0` using `secVal_basisSec_ne_zero hL y.1 ⟨y.1, mem_basisOpen hL y.1⟩`. Establish `ha0 : sectionValue W ⟨y.1, hyW⟩ a ≠ 0`. Introduce `h`. Rewrite `h1` using `[h, zero_mul]`.
+
+Conclude with `h0 h1`. Establish `hpos : 0 ≤ Z.ord (sectionValue W ⟨y.1, hyW⟩ a)` using `(Z.ord_nonneg_iff ha0).mpr ⟨X.presheaf.germ W y.1 hyW a, rfl⟩`. Rewrite using `[h1, Z.ord_mul ha0 hb0]`. Use `ord_secVal_basisSec_eq hL Z y.1 (mem_basisOpen hL y.1)` as an intermediate fact. Express the relevant statement in the definitionally equal form `Z.ord (secVal hL (basisSec hL y.1) ⟨y.1, mem_basisOpen hL y.1⟩) = _ at this`.
+
+Use linear arithmetic over natural numbers and integers.
+-/
 lemma secVal_mem {V : X.Opens} (l : ((preMod X).obj L).obj (op V)) :
     (fun y => secVal hL l y) ∈ divisorSections (divisorOfInvertible hL) V := by
   refine ⟨fun y => ⟨⊤, trivial, fun z _ => ratVal_const _ l z y⟩, fun y hy => ?_⟩
@@ -272,6 +349,31 @@ noncomputable def toDivisorPresheaf :
 noncomputable def toDivisorSheaf : L ⟶ divisorSheaf (divisorOfInvertible hL) :=
   ⟨toDivisorPresheaf hL⟩
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce `l m h`. Establish `hlm : l - m = 0` using `eq_zero_of_ratVal_eq_zero hL _ (l - m) (fun y => by`. Rewrite using `[ratVal_sub]`. Use `congrArg (fun t : divisorSections (divisorOfInvertible hL) V => t.1 y) h` as an intermediate fact.
+
+Conclude with `sub_eq_zero.mpr this)`. Conclude with `sub_eq_zero.mp hlm`. Introduce `t`. Distinguish the cases in `hne : Nonempty V`. Use `swap`.
+
+Conclude with `⟨0, Subtype.ext (funext fun y => (hne ⟨y⟩).elim)⟩`. Take `⟨y₀⟩` from `hne`. Use `set c := t.1 y₀`. Establish `hW : ∀ x : V, Nonempty (V ⊓ basisOpen hL x.1 : X.Opens)` using `fun x => ⟨⟨x.1, x.2, mem_basisOpen hL x.1⟩⟩`. Establish `hord : ∀ x : V, ∀ Z : PrimeDivisor X, Z.point ∈ V ⊓ basisOpen hL x.1 → 0 ≤ Z.ord (c * (secVal hL (basisSec hL x.1) ⟨x.1, mem_basisOpen hL x.1⟩)⁻¹)`.
+
+Introduce `x Z hZ`. Use `set β := secVal hL (basisSec hL x.1) ⟨x.1, mem_basisOpen hL x.1⟩`. Establish `hβ : β ≠ 0` using `secVal_basisSec_ne_zero hL _ _`. Distinguish the cases in `hc : c = 0`. Rewrite using `[hc, zero_mul, PrimeDivisor.ord_zero]`.
+
+Establish `hβinv : Z.ord β⁻¹ = - Z.ord β`. Establish `h` using `Z.ord_mul hβ (inv_ne_zero hβ)`. Rewrite `h` using `[mul_inv_cancel₀ hβ, PrimeDivisor.ord_one]`. Use linear arithmetic over natural numbers and integers. Establish `hβZ : Z.ord β = - divisorOfInvertible hL Z`.
+
+Use `ord_secVal_basisSec_eq hL Z x.1 hZ.2` as an intermediate fact. Rewrite using `[← this]`. Conclude with `congrArg Z.ord (ratVal_const _ _ _ _)`. Establish `hcZ : -divisorOfInvertible hL Z ≤ Z.ord c`. Establish `ht` using `t.2.2 ⟨Z.point, hZ.1⟩ Z.2`.
+
+Establish `hct : t.1 ⟨Z.point, hZ.1⟩ = c` using `divisorSections_apply_eq _ t _ y₀`. Rewrite `ht` using `[hct]`. Conclude with `(Z.valuation_le_exp_iff hc (divisorOfInvertible hL Z)).mp ht`. Rewrite using `[Z.ord_mul hc (inv_ne_zero hβ), hβinv, hβZ]`. Use linear arithmetic over natural numbers and integers.
+
+Use `choose a ha using fun x : V => exists_section_of_ord_nonneg (V ⊓ basisOpen hL x.1) _ (hord x)`. Set `lx : ∀ x : V, ((preMod X).obj L).obj (op (V ⊓ basisOpen hL x.1))` to `fun x => asRing _ (a x) • resM _ inf_le_right (basisSec hL x.1)`. Establish `hlx : ∀ (x : V) (z : (V ⊓ basisOpen hL x.1 : X.Opens)), secVal hL (lx x) z = c`. Introduce `x z`. Establish `h1` using `ratVal_smul (isBasisOn_basisSec hL (Classical.arbitrary X)) (asRing _ (a x)) (resM _ inf_le_right (basisSec hL x.1)) z`.
+
+Rewrite `h1` using `[ratVal_res]`. Use `h1.trans ((congrArg (· * ratVal _ (basisSec hL x.1) _) (sectionValue_eq _ z (a x))).trans ?_)` and prove the remaining obligations. Simplify using `only`. Rewrite using `[ha x, ratVal_const _ (basisSec hL x.1) _ ⟨x.1, mem_basisOpen hL x.1⟩]`. Conclude with `inv_mul_cancel_right₀ (secVal_basisSec_ne_zero hL _ _) c`.
+
+Take `⟨l, hl⟩` from `sheaf_exists_glue ⟨L.presheaf, L.isSheaf⟩ (V := V) (ι := V) (fun x => V ⊓ basisOpen hL x.1) (fun _ => inf_le_left) (fun x hx => ⟨⟨x, hx⟩, hx, mem_basisOpen hL x⟩) lx (by`. Introduce `p q`. Establish `hsub : resM _ (inf_le_left : (V ⊓ basisOpen hL p.1) ⊓ (V ⊓ basisOpen hL q.1) ≤ _) (lx p) - resM _ inf_le_right (lx q) = 0` using `eq_zero_of_ratVal_eq_zero hL _ _ (fun z => by`. Rewrite using `[ratVal_sub, ratVal_res, ratVal_res]`. Express the relevant statement in the definitionally equal form `secVal hL (lx p) _ - secVal hL (lx q) _ = 0`.
+
+Conclude with `(congrArg₂ (· - ·) (hlx p _) (hlx q _)).trans (sub_self c))`. Conclude with `sub_eq_zero.mp hsub)`. Use `⟨l, Subtype.ext (funext fun y => ?_)⟩` and prove the remaining obligations. Establish `e : resM ((preMod X).obj L) (inf_le_left : V ⊓ basisOpen hL y.1 ≤ V) l = lx y` using `hl y`. Establish `h2` using `ratVal_res (isBasisOn_basisSec hL (Classical.arbitrary X)) (inf_le_left : V ⊓ basisOpen hL y.1 ≤ V) l ⟨y.1, y.2, mem_basisOpen hL y.1⟩`.
+
+Rewrite `h2` using `[e]`. Express the relevant statement in the definitionally equal form `secVal hL (lx y) _ = secVal hL l y at h2`. Express the relevant statement in the definitionally equal form `secVal hL l y = t.1 y`. Rewrite using `[← h2, hlx, divisorSections_apply_eq _ t y y₀]`.
+-/
 theorem secVal_bijective (V : X.Opens) :
     Function.Bijective (fun l : ((preMod X).obj L).obj (op V) =>
       (⟨fun y => secVal hL l y, secVal_mem hL l⟩ :
@@ -349,6 +451,9 @@ theorem secVal_bijective (V : X.Opens) :
 instance : IsIso (toDivisorSheaf hL) :=
   isIso_of_locally_bijective _ (fun _ => ⟨⊤, trivial, fun V _ => secVal_bijective hL V⟩)
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨divisorOfInvertible hL, ⟨asIso (toDivisorSheaf hL)⟩⟩`.
+-/
 theorem exists_iso_divisorSheaf (hL : IsInvertibleSheaf L) :
     ∃ D : WeilDivisor X, Nonempty (L ≅ divisorSheaf D) :=
   ⟨divisorOfInvertible hL, ⟨asIso (toDivisorSheaf hL)⟩⟩

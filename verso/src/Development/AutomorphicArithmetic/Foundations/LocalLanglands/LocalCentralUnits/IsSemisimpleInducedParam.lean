@@ -12,6 +12,13 @@ private def per (n : ℕ) (b : ℂ) : Submodule ℂ (ℤ → ℂ) where
   zero_mem' := fun j => by simp
   smul_mem' := fun c f hf j => by simp only [Pi.smul_apply, hf j, smul_eq_mul]; ring
 
+/- English proof (translation)
+Proceed by induction on `m using Int.induction_on generalizing j with`. Consider the case `zero => simp`. Consider the case `succ m ih`. Use `hf (j + m * n)` as an intermediate fact. Rewrite `this` using `[ih]`.
+
+Rewrite using `[show j + ((m : ℤ) + 1) * n = j + m * n + n by ring, this, zpow_add_one₀ hb]`. Expand and normalize the polynomial expressions, which then agree. Consider the case `pred m ih`. Establish `h1` using `hf (j + (-(m : ℤ) - 1) * n)`. Rewrite `h1` using `[show j + (-(m : ℤ) - 1) * n + n = j + (-(m : ℤ)) * n by ring, ih]`.
+
+Rewrite using `[zpow_sub_one₀ hb]`. Clear the denominators using the available nonvanishing facts. Rewrite using `[h1]`. Clear the denominators using the available nonvanishing facts.
+-/
 private theorem per_add_mul {n : ℕ} {b : ℂ} (hb : b ≠ 0) {f : ℤ → ℂ} (hf : f ∈ per n b) (m j : ℤ) :
     f (j + m * n) = b ^ m * f j := by
   induction m using Int.induction_on generalizing j with
@@ -35,6 +42,9 @@ private def perExt (n : ℕ) (hn : 0 < n) (b : ℂ) (g : Fin n → ℂ) (j : ℤ
     have h2 : j % n < n := Int.emod_lt_of_pos _ (by omega)
     omega⟩
 
+/- English proof (translation)
+Introduce `j` and use `by have hn' : (n : ℤ) ≠ 0 := by omega have h1 : (j + n) / n = j / n + 1 := Int.add_ediv_of_dvd_right (dvd_refl _) |>.trans (by rw [Int.ediv_self hn']) have h2 : (j + n) % n = j % n := Int.add_emod_right _ _ simp only [perExt, h1, h2, zpow_add_one₀ hb] ring`.
+-/
 private theorem perExt_mem {n : ℕ} (hn : 0 < n) {b : ℂ} (hb : b ≠ 0) (g : Fin n → ℂ) :
     perExt n hn b g ∈ per n b := fun j => by
   have hn' : (n : ℤ) ≠ 0 := by omega
@@ -43,6 +53,9 @@ private theorem perExt_mem {n : ℕ} (hn : 0 < n) {b : ℂ} (hb : b ≠ 0) (g : 
   simp only [perExt, h1, h2, zpow_add_one₀ hb]
   ring
 
+/- English proof (translation)
+Establish `h1 : ((i : ℕ) : ℤ) / n = 0` using `Int.ediv_eq_zero_of_lt (by omega) (by omega)`. Establish `h2 : ((i : ℕ) : ℤ) % n = (i : ℕ)` using `Int.emod_eq_of_lt (by omega) (by omega)`. Simplify using `only [perExt, h1, h2, zpow_zero, one_mul, Int.toNat_natCast]`.
+-/
 private theorem perExt_coe {n : ℕ} (hn : 0 < n) (b : ℂ) (g : Fin n → ℂ) (i : Fin n) :
     perExt n hn b g (i : ℕ) = g i := by
   have h1 : ((i : ℕ) : ℤ) / n = 0 := Int.ediv_eq_zero_of_lt (by omega) (by omega)
@@ -67,18 +80,42 @@ private def perEquiv (n : ℕ) (hn : 0 < n) {b : ℂ} (hb : b ≠ 0) : per n b �
     rw [h2, h1])
   right_inv g := funext fun i => perExt_coe hn b g i
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] private theorem perEquiv_apply {n : ℕ} {hn : 0 < n} {b : ℂ} {hb : b ≠ 0} (f : per n b) (i : Fin n) :
     perEquiv n hn hb f i = f.1 (i : ℕ) := rfl
 
+/- English proof (translation)
+The claim follows from `perExt_coe hn b g i`.
+-/
 private theorem perEquiv_symm {n : ℕ} {hn : 0 < n} {b : ℂ} {hb : b ≠ 0} (g : Fin n → ℂ) (i : Fin n) :
     ((perEquiv n hn hb).symm g).1 (i : ℕ) = g i := perExt_coe hn b g i
 
+/- English proof (translation)
+Establish `hsep : (X ^ N - C s : ℂ[X]).Separable` using `separable_X_pow_sub_C s (by exact_mod_cast hN) hs`. Use `Module.End.isSemisimple_of_squarefree_aeval_eq_zero hsep.squarefree ?_` and prove the remaining obligations. Simplify using `[h, Algebra.algebraMap_eq_smul_one]`.
+-/
 private theorem isSemisimple_of_pow_eq {V : Type*} [AddCommGroup V] [Module ℂ V] (T : Module.End ℂ V) {N : ℕ}
     (hN : N ≠ 0) {s : ℂ} (hs : s ≠ 0) (h : T ^ N = s • 1) : T.IsSemisimple := by
   have hsep : (X ^ N - C s : ℂ[X]).Separable := separable_X_pow_sub_C s (by exact_mod_cast hN) hs
   refine Module.End.isSemisimple_of_squarefree_aeval_eq_zero hsep.squarefree ?_
   simp [h, Algebra.algebraMap_eq_smul_one]
 
+/- English proof (translation)
+Introduce `s`. Proceed by induction on `s using Nat.strong_induction_on with`. Consider the case `_ s ih`. Introduce `u hu hi hs`. Distinguish the cases in `hex : ∃ i', i' ≠ i ∧ u i' ≠ 0`.
+
+Take `⟨i', hne, hi'⟩` from `hex`. Take `⟨g, hg⟩` from `hχ i i' hne.symm`. Set `u' : ι → ℂ` to `(fun k => χ k g * u k) - χ i' g • u`. Establish `hu' : u' ∈ U` using `U.sub_mem (hU g u hu) (U.smul_mem _ hu)`. Establish `h1 : u' i ≠ 0`.
+
+Establish `: u' i = (χ i g - χ i' g) * u i` using `by simp [u']; ring`. Rewrite using `[this]`. Conclude with `mul_ne_zero (sub_ne_zero.2 hg) hi`. Establish `h2 : u' i' = 0` using `by simp [u']`. Establish `hlt : (Finset.univ.filter fun k => u' k ≠ 0).card < s`.
+
+Rewrite using `[← hs]`. Use `Finset.card_lt_card ⟨fun k hk => ?_, fun hsub => ?_⟩` and prove the remaining obligations. Simplify using `only [Finset.mem_filter, Finset.mem_univ, true_and] at hk ⊢`. Introduce `h0`. Conclude with `hk (by simp [u', h0])`.
+
+Use `hsub (Finset.mem_filter.2 ⟨Finset.mem_univ i', hi'⟩)` as an intermediate fact. Conclude with `(Finset.mem_filter.1 this).2 h2`. Conclude with `ih _ hlt u' hu' h1 rfl`. Establish `h4 : (u i)⁻¹ • u = Pi.single i 1`. Use function extensionality and compare the values at `k`.
+
+Distinguish the cases in `hk : k = i`. Substitute `hk` using the available equality. Simplify using `[hi]`. Establish `: u k = 0`. Assume the negation of the conclusion as `h0`.
+
+Conclude with `hex ⟨k, hk, h0⟩`. Simplify using `[hk, this]`. Conclude with `h4 ▸ U.smul_mem _ hu`.
+-/
 private theorem single_mem {ι G : Type*} [Fintype ι] [DecidableEq ι] (χ : ι → G → ℂ)
     (hχ : ∀ i i', i ≠ i' → ∃ g, χ i g ≠ χ i' g) (U : Submodule ℂ (ι → ℂ))
     (hU : ∀ g, ∀ u ∈ U, (fun i => χ i g * u i) ∈ U) (i : ι) :
@@ -117,6 +154,21 @@ private theorem single_mem {ι G : Type*} [Fintype ι] [DecidableEq ι] (χ : ι
           simp [hk, this]
       exact h4 ▸ U.smul_mem _ hu
 
+/- English proof (translation)
+Take `⟨m, rfl⟩ : ∃ m, n = m + 1` from `⟨n - 1, by omega⟩`. Set `e` to `perEquiv (m + 1) hn hb`. Set `wt : Fin (m + 1) → ℂ` to `fun k => if k = 0 then b else 1`. Set `M : Matrix (Fin (m + 1)) (Fin (m + 1)) ℂ` to `(Matrix.diagonal wt).submatrix (finRotate (m + 1)) id`. Establish `hM : e.conj S = Matrix.toLin' M`.
+
+Use `LinearMap.ext fun g => funext fun i => ?_` and prove the remaining obligations. Establish `h1 : (e.conj S) g i = (e.symm g).1 ((i : ℕ) + 1)`. Simplify using `only [LinearEquiv.conj_apply, LinearMap.comp_apply, LinearEquiv.coe_coe]`. Use `show (S (e.symm g)).1 ((i : ℕ) : ℤ) = _`. Rewrite using `[hS]`.
+
+Establish `h2 : (Matrix.toLin' M) g i = wt (finRotate (m + 1) i) * g (finRotate (m + 1) i)`. Simplify using `[Matrix.toLin'_apply, Matrix.mulVec, dotProduct, M, Matrix.diagonal_apply]`. Rewrite using `[h1, h2]`. Distinguish the cases in `hi : (i : ℕ) = m`. Establish `hl : i = Fin.last m` using `Fin.ext hi`.
+
+Establish `h3` using `(e.symm g).2 0`. Establish `h4 : (e.symm g).1 0 = g 0`. Simplify using `using perEquiv_symm (hn := hn) (hb := hb) g 0`. Rewrite using `[hl, finRotate_last]`. Simplify using `only [wt, if_true]`.
+
+Rewrite using `[← h4, ← h3]`. Use `congr 1`. Simplify using the standard rewrite rules. Establish `hlt : (i : ℕ) < m` using `by omega`. Establish `h5 : finRotate (m + 1) i = ⟨(i : ℕ) + 1, by omega⟩` using `finRotate_of_lt hlt`.
+
+Establish `h6 : ((i : ℕ) : ℤ) + 1 = (((⟨(i : ℕ) + 1, by omega⟩ : Fin (m + 1)) : ℕ) : ℤ)` using `by simp`. Establish `h7 : wt ⟨(i : ℕ) + 1, by omega⟩ = 1` using `if_neg fun h0 => by`. Use `congrArg Fin.val h0` as an intermediate fact. Simplify using `at this`. Rewrite using `[h5, h6, perEquiv_symm, h7, one_mul]`.
+
+Establish `hdet : LinearMap.det S = LinearMap.det (e.conj S)` using `(LinearMap.det_conj S e).symm`. Rewrite using `[hdet, hM, LinearMap.det_toLin', Matrix.det_permute, Matrix.det_diagonal, sign_finRotate]`. Simplify using `[wt, Finset.prod_ite_eq']`.
+-/
 private theorem det_shift {n : ℕ} (hn : 0 < n) {b : ℂ} (hb : b ≠ 0) (S : Module.End ℂ (per n b))
     (hS : ∀ f j, (S f).1 j = f.1 (j + 1)) : LinearMap.det S = (-1) ^ (n - 1) * b := by
   obtain ⟨m, rfl⟩ : ∃ m, n = m + 1 := ⟨n - 1, by omega⟩
@@ -161,14 +213,29 @@ variable {E Ω : Type} [Field E] [NumberField E] [Field Ω] [Algebra E Ω] [IsAl
 private def cj (φ : Weil h) (m : ℤ) (t : Ine (F := E) A) : Ine (F := E) A :=
   ⟨((φ ^ m * ineIncl h t * (φ ^ m)⁻¹ : Weil h) : G E Ω), deg_eq_zero_iff.mp (by simp)⟩
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 private theorem ineIncl_cj (φ : Weil h) (m : ℤ) (t : Ine (F := E) A) :
     ineIncl h (cj φ m t) = φ ^ m * ineIncl h t * (φ ^ m)⁻¹ := rfl
 
+/- English proof (translation)
+Use `Continuous.subtype_mk ?_ _` and prove the remaining obligations. Use `show Continuous fun t : Ine (F := E) A => ((φ ^ m : Weil h) : G E Ω) * (t : G E Ω) * (((φ ^ m : Weil h) : G E Ω))⁻¹`. Conclude with `(continuous_const.mul continuous_subtype_val).mul continuous_const`.
+-/
 private theorem continuous_cj (φ : Weil h) (m : ℤ) : Continuous (cj φ m) := by
   refine Continuous.subtype_mk ?_ _
   show Continuous fun t : Ine (F := E) A => ((φ ^ m : Weil h) : G E Ω) * (t : G E Ω) * (((φ ^ m : Weil h) : G E Ω))⁻¹
   exact (continuous_const.mul continuous_subtype_val).mul continuous_const
 
+/- English proof (translation)
+Proceed by induction on `m using Int.induction_on generalizing j t with`. Consider the case `zero`. Establish `: cj φ 0 t = t` using `Subtype.ext (by simp [cj])`. Simplify using `[this]`. Consider the case `succ m ih`.
+
+Establish `e1 : j + ((m : ℤ) + 1) = (j + 1) + m` using `by ring`. Rewrite using `[e1, ih (j + 1) t]`. Use `(h1 j (cj φ m t) (cj φ (m + 1) t) ?_).symm` and prove the remaining obligations. Rewrite using `[ineIncl_cj, ineIncl_cj]`. Use `group`.
+
+Consider the case `pred m ih`. Establish `e1 : j + (-(m : ℤ) - 1) = (j - 1) + (-(m : ℤ))` using `by ring`. Rewrite using `[e1, ih (j - 1) t]`. Use `h1 (j - 1) (cj φ (-(m : ℤ) - 1) t) (cj φ (-(m : ℤ)) t) (by` as an intermediate fact. Rewrite using `[ineIncl_cj, ineIncl_cj]`.
+
+Use the proof step `group)`. Rewrite using `[this, sub_add_cancel]`.
+-/
 private theorem eta_cj {φ : Weil h} {η : ℤ → (Ine (F := E) A →* ℂˣ)}
     (h1 : ∀ (j : ℤ) (t t' : Ine (F := E) A), ineIncl h t' = φ * ineIncl h t * φ⁻¹ → η j t' = η (j + 1) t)
     (m j : ℤ) (t : Ine (F := E) A) : η (j + m) t = η j (cj φ m t) := by
@@ -193,6 +260,9 @@ private theorem eta_cj {φ : Weil h} {η : ℤ → (Ine (F := E) A →* ℂˣ)}
 private def tau {φ : Weil h} (hφ : deg φ = 1) (σ : Weil h) : Ine (F := E) A :=
   ⟨(((φ ^ deg σ)⁻¹ * σ : Weil h) : G E Ω), deg_eq_zero_iff.mp (by simp [hφ])⟩
 
+/- English proof (translation)
+Establish `key : (φ ^ deg (σ * σ'))⁻¹ * (σ * σ') = (φ ^ (-deg σ') * ((φ ^ deg σ)⁻¹ * σ) * (φ ^ (-deg σ'))⁻¹) * ((φ ^ deg σ')⁻¹ * σ')`. Rewrite using `[deg_mul, zpow_add]`. Use `group`. Conclude with `Subtype.ext (congrArg (Subtype.val : Weil h → G E Ω) key)`.
+-/
 private theorem tau_mul {φ : Weil h} (hφ : deg φ = 1) (σ σ' : Weil h) :
     tau hφ (σ * σ') = cj φ (-deg σ') (tau hφ σ) * tau hφ σ' := by
   have key : (φ ^ deg (σ * σ'))⁻¹ * (σ * σ') =
@@ -201,9 +271,15 @@ private theorem tau_mul {φ : Weil h} (hφ : deg φ = 1) (σ σ' : Weil h) :
     group
   exact Subtype.ext (congrArg (Subtype.val : Weil h → G E Ω) key)
 
+/- English proof (translation)
+The claim follows from `Subtype.ext (by simp [tau])`.
+-/
 private theorem tau_ineIncl {φ : Weil h} (hφ : deg φ = 1) (t : Ine (F := E) A) : tau hφ (ineIncl h t) = t :=
   Subtype.ext (by simp [tau])
 
+/- English proof (translation)
+The claim follows from `Subtype.ext (by simp [tau, hφ])`.
+-/
 private theorem tau_zpow {φ : Weil h} (hφ : deg φ = 1) (m : ℤ) : tau hφ (φ ^ m) = 1 :=
   Subtype.ext (by simp [tau, hφ])
 
@@ -213,6 +289,9 @@ private def act {φ : Weil h} (hφ : deg φ = 1) (η : ℤ → (Ine (F := E) A �
   map_add' f g := funext fun j => by simp [mul_add]
   map_smul' c f := funext fun j => by simp; ring
 
+/- English proof (translation)
+Introduce `j` and use `by have e1 : η (j + n + deg σ) = η (j + deg σ) := (h2 _ _).2 ⟨1, by ring⟩ show ((η (j + n + deg σ) (tau hφ σ) : ℂˣ) : ℂ) * f (j + n + deg σ) = b * (((η (j + deg σ) (tau hφ σ) : ℂˣ) : ℂ) * f (j + deg σ)) rw [e1, show j + n + deg σ = j + deg σ + n by ring, hf] ring`.
+-/
 private theorem act_mem {φ : Weil h} (hφ : deg φ = 1) {η : ℤ → (Ine (F := E) A →* ℂˣ)} {n : ℕ} {b : ℂ}
     (h2 : ∀ j j' : ℤ, η j = η j' ↔ (n : ℤ) ∣ j - j') (σ : Weil h) {f : ℤ → ℂ} (hf : f ∈ per n b) :
     act hφ η σ f ∈ per n b := fun j => by
@@ -246,11 +325,17 @@ variable {φ : Weil h} (hφ : deg φ = 1) {η : ℤ → (Ine (F := E) A →* ℂ
   (h1 : ∀ (j : ℤ) (t t' : Ine (F := E) A), ineIncl h t' = φ * ineIncl h t * φ⁻¹ → η j t' = η (j + 1) t)
   (h2 : ∀ j j' : ℤ, η j = η j' ↔ (n : ℤ) ∣ j - j')
 
+/- English proof (translation)
+Use `show ((η (j + deg (ineIncl h t)) (tau hφ (ineIncl h t)) : ℂˣ) : ℂ) * f.1 (j + deg (ineIncl h t)) = _`. Rewrite using `[tau_ineIncl, deg_ineIncl, add_zero]`.
+-/
 private theorem rho_ine (t : Ine (F := E) A) (f : per n b) (j : ℤ) :
     (rho0 hφ b h1 h2 (ineIncl h t) f).1 j = ((η j t : ℂˣ) : ℂ) * f.1 j := by
   show ((η (j + deg (ineIncl h t)) (tau hφ (ineIncl h t)) : ℂˣ) : ℂ) * f.1 (j + deg (ineIncl h t)) = _
   rw [tau_ineIncl, deg_ineIncl, add_zero]
 
+/- English proof (translation)
+Use `show ((η (j + deg (φ ^ m)) (tau hφ (φ ^ m)) : ℂˣ) : ℂ) * f.1 (j + deg (φ ^ m)) = _`. Establish `: deg (φ ^ m) = m` using `by simp [hφ]`. Rewrite using `[tau_zpow, this]`. Simplify using the standard rewrite rules.
+-/
 private theorem rho_zpow (m : ℤ) (f : per n b) (j : ℤ) :
     (rho0 hφ b h1 h2 (φ ^ m) f).1 j = f.1 (j + m) := by
   show ((η (j + deg (φ ^ m)) (tau hφ (φ ^ m)) : ℂˣ) : ℂ) * f.1 (j + deg (φ ^ m)) = _
@@ -259,6 +344,17 @@ private theorem rho_zpow (m : ℤ) (f : per n b) (j : ℤ) :
   simp
 
 include h1 h2 in
+/- English proof (translation)
+Establish `hk : ∀ j : ℤ, IsOpen {t : Ine (F` using `E) A | η j t = 1} := fun j => by`. Establish `: {t : Ine (F` using `E) A | η j t = 1} = cj φ j ⁻¹' ((η 0).ker : Set (Ine (F := E) A)) := by`. Use extensionality with `t`. Establish `e1` using `eta_cj h1 j 0 t`. Rewrite `e1` using `[zero_add]`.
+
+Simplify using `[e1, MonoidHom.mem_ker]`. Rewrite using `[this]`. Conclude with `h0.preimage (continuous_cj φ j)`. Use `IsSmooth.of_open (U := ⋂ i : Fin n, {t : Ine (F := E) A | η ((i : ℕ) : ℤ) t = 1}) (isOpen_iInter_of_finite fun i => hk _) (by simp) fun t ht => ?_` and prove the remaining obligations. Use `LinearMap.ext fun f => Subtype.ext (funext fun j => ?_)` and prove the remaining obligations.
+
+Rewrite using `[rho_ine]`. Establish `hn' : (n : ℤ) ≠ 0` using `by omega`. Establish `e0 : 0 ≤ j % n` using `Int.emod_nonneg _ hn'`. Establish `e1 : j % n < n` using `Int.emod_lt_of_pos _ (by omega)`. Establish `e2 : (((j % n).toNat : ℕ) : ℤ) = j % n` using `Int.toNat_of_nonneg e0`.
+
+Set `i : Fin n` to `⟨(j % n).toNat, by omega⟩`. Establish `e3 : η j = η (((i : ℕ)) : ℤ)` using `(h2 _ _).2 (by show (n : ℤ) ∣ j - (((j % n).toNat : ℕ) : ℤ)`. Rewrite using `[e2]`. Conclude with `Int.dvd_self_sub_emod)`. Establish `e4 : η (((i : ℕ)) : ℤ) t = 1` using `Set.mem_iInter.1 ht i`.
+
+Rewrite using `[e3, e4]`. Simplify using the standard rewrite rules.
+-/
 private theorem isSmooth_inducedParam (hn : 0 < n) (h0 : IsOpen ((η 0).ker : Set (Ine (F := E) A))) :
     IsSmooth (rho0 hφ b h1 h2) := by
   have hk : ∀ j : ℤ, IsOpen {t : Ine (F := E) A | η j t = 1} := fun j => by
@@ -287,6 +383,13 @@ private theorem isSmooth_inducedParam (hn : 0 < n) (h0 : IsOpen ((η 0).ker : Se
   simp
 
 include h1 h2 in
+/- English proof (translation)
+Use `compactSpace_Ine (E := E) A` as an intermediate fact. Take `⟨τ, hτ⟩` from `exists_eq_zpow_mul hφ (σ ^ n)`. Establish `hfin : Finite (Ine (F` using `E) A ⧸ ((rho0 hφ b h1 h2).comp (ineIncl h)).ker) := Subgroup.quotient_finite_of_isOpen _ hs`. Take `⟨m, hm0, -, hm⟩` from `Subgroup.exists_pow_mem_of_index_ne_zero (H := ((rho0 hφ b h1 h2).comp (ineIncl h)).ker) Subgroup.index_ne_zero_of_finite τ`. Establish `e1 : rho0 hφ b h1 h2 (φ ^ deg (σ ^ n)) = (b ^ deg σ) • 1` using `LinearMap.ext fun f => Subtype.ext (funext fun j => by`.
+
+Rewrite using `[rho_zpow, deg_pow, mul_comm]`. Simplify using `using per_add_mul hb f.2 (deg σ) j)`. Establish `e2 : rho0 hφ b h1 h2 (ineIncl h τ) ^ m = 1`. Rewrite using `[← map_pow, ← map_pow]`. Conclude with `hm`.
+
+Establish `e3 : rho0 hφ b h1 h2 σ ^ (n * m) = ((b ^ deg σ) ^ m) • 1`. Rewrite using `[pow_mul, ← map_pow, hτ, map_mul, e1, smul_mul_assoc, one_mul, _root_.smul_pow, e2]`. Conclude with `isSemisimple_of_pow_eq _ (by positivity) (pow_ne_zero _ (zpow_ne_zero _ hb)) e3`.
+-/
 private theorem isSemisimple_inducedParam (hn : 0 < n) (hb : b ≠ 0) (hs : IsSmooth (rho0 hφ b h1 h2)) (σ : Weil h) :
     Module.End.IsSemisimple (rho0 hφ b h1 h2 σ) := by
   have := compactSpace_Ine (E := E) A
@@ -313,6 +416,37 @@ end Weil
 end UpperTheory.Zero.LLC.InducedExistence
 
 open UpperTheory.Zero.LLC.InducedExistence in
+/- English proof (translation)
+Introduce `E Ω _ _ _ _ _ A w h φ hφ n hn η h0 h1 h2 c hc`. Establish `hb : ((-1 : ℂ) ^ (n - 1) * c) ≠ 0` using `mul_ne_zero (pow_ne_zero _ (by norm_num)) hc`. Take `⟨b, hbdef⟩ : ∃ b, b = (-1 : ℂ) ^ (n - 1) * c` from `⟨_, rfl⟩`. Rewrite `hb` using `[← hbdef]`. Set `e` to `perEquiv n hn hb`.
+
+Use `haveI : FiniteDimensional ℂ (per n b) := Module.Finite.equiv e.symm`. Establish `hsm` using `isSmooth_inducedParam (b := b) hφ h1 h2 hn h0`. Set `a0 : WDRep h (per n b)` to `{ ρ := rho0 hφ b h1 h2 N := 0 smooth := hsm semisimple := isSemisimple_inducedParam hφ h1 h2 hn hb hsm nilpotent := IsNilpotent.zero comm := fun σ => by simp }`. Set `a` to `a0.transport e`. Establish `hV : WD.mk a = WD.mk a0` using `(WD.sound (a0.iso_transport e)).symm`.
+
+Establish `hρ : ∀ σ g, a.ρ σ g = e (a0.ρ σ (e.symm g))` using `fun σ g => rfl`. Establish `hact : ∀ (t : Ine (F` using `E) A) (g : Fin n → ℂ) (i : Fin n), a.ρ (ineIncl h t) g i = ((η ((i : ℕ) : ℤ) t : ℂˣ) : ℂ) * g i := fun t g i => by`. Rewrite using `[hρ]`. Use `show (rho0 hφ b h1 h2 (ineIncl h t) (e.symm g)).1 ((i : ℕ) : ℤ) = _`. Rewrite using `[rho_ine, perEquiv_symm]`.
+
+Establish `hsh : ∀ (m : ℤ) (g : Fin n → ℂ) (i : Fin n), a.ρ (φ ^ m) g i = (e.symm g).1 (((i : ℕ) : ℤ) + m)` using `fun m g i => by`. Rewrite using `[hρ]`. Use `show (rho0 hφ b h1 h2 (φ ^ m) (e.symm g)).1 ((i : ℕ) : ℤ) = _`. Rewrite using `[rho_zpow]`. Use `⟨WD.mk a, ⟨n, a, rfl, ?_⟩, by simp, ?_, fun t => ?_, fun hw => ⟨n, a, rfl, fun σ hσ => ?_⟩⟩` and prove the remaining obligations.
+
+Use `haveI : Nonempty (Fin n) := ⟨⟨0, hn⟩⟩`. Establish `: Nontrivial (Subrepresentation a.ρ)` using `⟨⊥, ⊤, fun h' => by`. Use `congrArg Subrepresentation.toSubmodule h'` as an intermediate fact. Conclude with `bot_ne_top (α := Submodule ℂ (Fin n → ℂ)) this⟩`. Use `⟨fun U => ?_⟩` and prove the remaining obligations.
+
+Distinguish the cases in `hU : U.toSubmodule = ⊥`. Conclude with `Or.inl (Subrepresentation.toSubmodule_injective hU)`. Use `Or.inr (Subrepresentation.toSubmodule_injective ?_)` and prove the remaining obligations. Take `⟨u, hu, hu0⟩` from `Submodule.exists_mem_ne_zero_of_ne_bot hU`. Take `⟨i, hi⟩ : ∃ i, u i ≠ 0` from `Function.ne_iff.1 hu0`.
+
+Set `χ : Fin n → Ine (F` to `E) A → ℂ := fun i t => ((η ((i : ℕ) : ℤ) t : ℂˣ) : ℂ)`. Establish `hχ : ∀ i i', i ≠ i' → ∃ t, χ i t ≠ χ i' t` using `fun i i' hne => by`. Assume the negation of the conclusion as `hall`. Use `push_neg at hall`. Establish `e1 : η ((i : ℕ) : ℤ) = η ((i' : ℕ) : ℤ)` using `MonoidHom.ext fun t => Units.ext (hall t)`.
+
+Establish `e2` using `(h2 _ _).1 e1`. Establish `e3` using `Int.eq_zero_of_abs_lt_dvd e2 (abs_lt.2 ⟨by omega, by omega⟩)`. Conclude with `hne (Fin.ext (by omega))`. Establish `hst : ∀ t, ∀ u ∈ U.toSubmodule, (fun i => χ i t * u i) ∈ U.toSubmodule` using `fun t u hu => by`. Establish `e1` using `U.apply_mem_toSubmodule (ineIncl h t) hu`.
+
+Establish `e2 : a.ρ (ineIncl h t) u = fun i => χ i t * u i` using `funext fun i => hact t u i`. Rewrite `e1` using `[e2]`. Then use the resulting hypothesis. Establish `hk : ∀ k : Fin n, (Pi.single k 1 : Fin n → ℂ) ∈ U.toSubmodule` using `fun k => by`. Establish `hv` using `U.apply_mem_toSubmodule (φ ^ (((i : ℕ) : ℤ) - ((k : ℕ) : ℤ))) hu`. Use `single_mem χ hχ U.toSubmodule hst k _ _ hv ?_ rfl` and prove the remaining obligations.
+
+Rewrite using `[hsh, add_sub_cancel, perEquiv_symm]`. Conclude with `hi`. Use `eq_top_iff.2 fun g _ => ?_` and prove the remaining obligations. Establish `e1 : g = ∑ k, g k • (Pi.single k 1 : Fin n → ℂ)`. Use function extensionality and compare the values at `i`.
+
+Simplify using `[Finset.sum_apply, Pi.single_apply]`. Rewrite using `[e1]`. Conclude with `Submodule.sum_mem _ fun k _ => Submodule.smul_mem _ _ (hk k)`. Establish `hS : ∀ (f : per n b) (j : ℤ), (a0.ρ φ f).1 j = f.1 (j + 1)` using `fun f j => by`. Use `rho_zpow hφ h1 h2 1 f j` as an intermediate fact.
+
+Rewrite `this` using `[zpow_one]`. Then use the resulting hypothesis. Rewrite using `[hV, WD.eig_mk, ← Module.End.det_eq_prod_roots_charpoly_of_splits (IsAlgClosed.splits _), det_shift hn hb _ hS, hbdef, ← mul_assoc, ← mul_pow]`. Simplify using the standard rewrite rules. Establish `e1 : e.conj (a0.ρ (ineIncl h t)) = diagEnd fun i : Fin n => ((η ((i : ℕ) : ℤ) t : ℂˣ) : ℂ)` using `LinearMap.ext fun g => funext fun i => hact t g i`. Rewrite using `[WD.inePol_of_mem_Ine _ t.2, hV, WD.charPol_mk]`.
+
+Use `show (a0.ρ (ineIncl h t)).charpoly = _`. Rewrite using `[← e.charpoly_conj, e1, charpoly_diagEnd]`. Conclude with `Fin.prod_univ_eq_prod_range (fun k : ℕ => X - C ((η (k : ℤ) t : ℂˣ) : ℂ)) n`. Set `t : Ine (F` to `E) A := ⟨σ, hσ.1⟩`. Establish `e0 : σ = ineIncl h t` using `Subtype.ext rfl`.
+
+Establish `e1 : a0.ρ σ = 1`. Rewrite using `[e0]`. Use `LinearMap.ext fun f => Subtype.ext (funext fun j => ?_)` and prove the remaining obligations. Use `show (rho0 hφ b h1 h2 (ineIncl h t) f).1 j = f.1 j`. Rewrite using `[rho_ine, hw j t hσ]`.
+
+Simplify using the standard rewrite rules. Conclude with `(a0.iso_transport e).ρ_eq_one e1`.
+-/
 theorem UpperTheory.Zero.LLC.indEx :
     UpperTheory.Zero.LLC.IndEx := by
   intro E Ω _ _ _ _ _ A w h φ hφ n hn η h0 h1 h2 c hc

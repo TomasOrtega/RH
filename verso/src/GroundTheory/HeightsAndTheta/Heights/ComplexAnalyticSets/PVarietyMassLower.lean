@@ -12,6 +12,23 @@ open scoped ENNReal
 
 noncomputable section
 
+/- English proof (translation)
+Introduce `n d J hJ hd R`. Use `set τ := μH[((2 * d : ℕ) : ℝ)] (Metric.ball (0 : EuclideanSpace ℂ (Fin d)) 1) with hτdef`. Establish `hτ : 0 < τ` using `TangentGraphLowerDensity.unitBall_pos d`. Use `set m : ℝ≥0∞ := min τ 1 with hmdef`. Establish `hm0 : 0 < m` using `lt_min hτ one_pos`.
+
+Establish `hmtop : m ≠ ⊤` using `ne_top_of_le_ne_top ENNReal.one_ne_top (min_le_right _ _)`. Establish `hmτ : m ≤ τ` using `min_le_left _ _`. Establish `hmr : 0 < m.toReal` using `ENNReal.toReal_pos hm0.ne' hmtop`. Use `⟨(1 / 2) * (1 / 2) ^ (2 * d) * m.toReal, by positivity, fun z hz _ ρ hρ => ?_⟩` and prove the remaining obligations. Take `⟨hρ0, -⟩` from `hρ`.
+
+Take `⟨b, I₀, Ω, V, g, w₀, hcard, hΩ, hV, hw₀, hg, hproj, hZV, htan, hdist⟩` from `hG n d J hJ hd z hz (ρ / 2) (by linarith)`. Establish `hz₀ : g w₀ ∈ zeroSetEuc J`. Establish `h : g w₀ ∈ g '' Ω` using `⟨w₀, hw₀, rfl⟩`. Rewrite `h` using `[← hZV]`. Conclude with `h.1`.
+
+Take `⟨r₀, hr₀, hlow⟩` from `hL n d b I₀ (zeroSetEuc J) Ω V g w₀ hcard hΩ hV hw₀ hg hproj hZV htan (1 / 2) ⟨by norm_num, by norm_num⟩`. Use `set t := min (r₀ / 2) (ρ / 2) with htdef`. Establish `ht0 : 0 < t` using `lt_min (by linarith) (by linarith)`. Establish `htr : t < r₀` using `lt_of_le_of_lt (min_le_left _ _) (by linarith)`. Establish `hts : t ≤ ρ / 2` using `min_le_right _ _`.
+
+Establish `h1` using `hlow t ⟨ht0, htr⟩`. Establish `h2` using `hM n d J hJ hd (g w₀) hz₀ t (ρ / 2) ht0 hts`. Establish `hsub : zeroSetEuc J ∩ Metric.ball (g w₀) (ρ / 2) ⊆ zeroSetEuc J ∩ Metric.ball z ρ` using `Set.inter_subset_inter_right _ (Metric.ball_subset_ball' (by linarith))`. Establish `h3` using `measure_mono (μ := μH[((2 * d : ℕ) : ℝ)]) hsub`. Establish `key : ENNReal.ofReal (t ^ (2 * d)) * (ENNReal.ofReal ((1 / 2) * (ρ / 2) ^ (2 * d)) * τ) ≤ ENNReal.ofReal (t ^ (2 * d)) * μH[((2 * d : ℕ) : ℝ)] (zeroSetEuc J ∩ Metric.ball (g w₀) (ρ / 2))`.
+
+Combine the equalities or inequalities in the displayed calculation. Rewrite using `[ENNReal.ofReal_mul (by norm_num), ENNReal.ofReal_mul (by norm_num)]`. Expand and normalize the polynomial expressions, which then agree. Use `_ ≤ ENNReal.ofReal ((ρ / 2) ^ (2 * d)) * μH[((2 * d : ℕ) : ℝ)] (zeroSetEuc J ∩ Metric.ball (g w₀) t) := by gcongr`. Use `_ ≤ _ := h2`.
+
+Establish `key'` using `(ENNReal.mul_le_mul_iff_right (ENNReal.ofReal_pos.2 (pow_pos ht0 _)).ne' ENNReal.ofReal_ne_top).1 key`. Establish `hc : (1 / 2) * (1 / 2) ^ (2 * d) * m.toReal * ρ ^ (2 * d) = ((1 / 2) * (ρ / 2) ^ (2 * d)) * m.toReal`. Rewrite using `[div_pow, div_pow, one_pow]`. Expand and normalize the polynomial expressions, which then agree. Combine the equalities or inequalities in the displayed calculation.
+
+Rewrite using `[hc, ENNReal.ofReal_mul (by positivity), ENNReal.ofReal_toReal hmtop]`. Use `_ ≤ ENNReal.ofReal ((1 / 2) * (ρ / 2) ^ (2 * d)) * τ := by gcongr`. Use `_ ≤ μH[((2 * d : ℕ) : ℝ)] (zeroSetEuc J ∩ Metric.ball (g w₀) (ρ / 2)) := key'`. Use `_ ≤ μH[((2 * d : ℕ) : ℝ)] (zeroSetEuc J ∩ Metric.ball z ρ) := h3`.
+-/
 theorem VarietyMassLower.proof (hG : VarietyTangentGraphDense.Statement)
     (hL : TangentGraphLowerDensity.Statement) (hM : VarietyLelongMono.Statement) :
     VarietyMassLower.Statement := by

@@ -17,20 +17,35 @@ open GlobalTheory.FrameGen GlobalTheory.ConstFam
 variable {S S' : Scheme.{0}} {G' : Over S'} {G : Over S} {f : S' ⟶ S} {φ : G'.left ⟶ G.left} {L' : LB G'.left}
   {L : LB G.left} {w : LB.Iso L' (L.pull φ)} {k : ℕ} {T' : Over S'} {T T₁ : Over S}
 
+/- English proof (translation)
+The claim follows from `pullback.hom_ext h₁ h₂`.
+-/
 theorem prod_ext' {Z : Scheme.{0}} {a b : Z ⟶ (T ⊗ G).left} (h₁ : a ≫ (fst T G).left = b ≫ (fst T G).left)
     (h₂ : a ≫ (snd T G).left = b ≫ (snd T G).left) : a = b := pullback.hom_ext h₁ h₂
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨pullback.lift a b e, pullback.lift_fst _ _ _, pullback.lift_snd _ _ _⟩`.
+-/
 theorem exists_lift {Z : Scheme.{0}} (a : Z ⟶ T.left) (b : Z ⟶ G.left) (e : a ≫ T.hom = b ≫ G.hom) :
     ∃ H : Z ⟶ (T ⊗ G).left, H ≫ (fst T G).left = a ∧ H ≫ (snd T G).left = b :=
   ⟨pullback.lift a b e, pullback.lift_fst _ _ _, pullback.lift_snd _ _ _⟩
 
+/- English proof (translation)
+The claim follows from `(Over.w _).trans (Over.w _).symm`.
+-/
 theorem prod_w : (fst T G).left ≫ T.hom = (snd T G).left ≫ G.hom := (Over.w _).trans (Over.w _).symm
 
+/- English proof (translation)
+The claim follows from `exists_lift _ _ (by rw [Category.assoc, Category.assoc, hh, hφ, ← Category.assoc, ← Category.assoc, prod_w])`.
+-/
 theorem exists_prod (hφ : φ ≫ G.hom = G'.hom ≫ f) {h : T'.left ⟶ T.left} (hh : h ≫ T.hom = T'.hom ≫ f) :
     ∃ H : (T' ⊗ G').left ⟶ (T ⊗ G).left, H ≫ (fst T G).left = (fst T' G').left ≫ h ∧
       H ≫ (snd T G).left = (snd T' G').left ≫ φ :=
   exists_lift _ _ (by rw [Category.assoc, Category.assoc, hh, hφ, ← Category.assoc, ← Category.assoc, prod_w])
 
+/- English proof (translation)
+Rewrite using `[Units.val_pow_eq_pow_val]`. Conclude with `H Z r' r h₁ h₂ z J J' hJ hJ'`.
+-/
 theorem thru_sv {h : T'.left ⟶ T.left} {s : LB.Sec (LPow G L (k : ℤ) T)} {s' : LB.Sec (LPow G' L' (k : ℤ) T')}
     (H : Thru w k h s s') {Z : Scheme.{0}} (r' : Z ⟶ (T' ⊗ G').left) (r : Z ⟶ (T ⊗ G).left)
     (h₁ : r ≫ (fst T G).left = r' ≫ (fst T' G').left ≫ h) (h₂ : r ≫ (snd T G).left = r' ≫ (snd T' G').left ≫ φ)
@@ -39,6 +54,13 @@ theorem thru_sv {h : T'.left ⟶ T.left} {s : LB.Sec (LPow G L (k : ℤ) T)} {s'
   rw [Units.val_pow_eq_pow_val]
   exact H Z r' r h₁ h₂ z J J' hJ hJ'
 
+/- English proof (translation)
+Take `⟨H, h₁, h₂⟩` from `exists_prod hφ hh`. Take `⟨t, ht⟩` from `exists_secThrough (φ' := fun _ : Fin 1 => (snd T' G').left) (φ := fun _ : Fin 1 => (snd T G).left) (ε := fun _ => (k : ℤ)) (h := H) hw hL hL' (fun _ => h₂.symm) s`. Establish `key : Thru w k h s t` using `fun Z r' r e₁ e₂ z J J' hJ hJ' => by`. Take `rfl : r = r' ≫ H` from `prod_ext' (by rw [Category.assoc, h₁, e₁]) (by rw [Category.assoc, h₂, e₂])`. Establish `a` using `ht.sval (fun _ => h₂.symm) r' hJ hJ'`.
+
+Rewrite `a` using `[Fin.prod_univ_one, zpow_natCast, Units.val_pow_eq_pow_val]`. Then use the resulting hypothesis. Use `⟨t, key, fun t' ht' => SecOps.sec_ext (sec_ext_val hL' fun y J' hJ' => ?_)⟩` and prove the remaining obligations. Take `⟨J, hJ⟩` from `exists_good' hL y`. Establish `e₁ : H ≫ (fst T G).left = 𝟙 _ ≫ (fst T' G').left ≫ h` using `by rw [Category.id_comp, h₁]`. Establish `e₂ : H ≫ (snd T G).left = 𝟙 _ ≫ (snd T' G').left ≫ φ` using `by rw [Category.id_comp, h₂]`.
+
+Conclude with `(Units.mul_right_inj _).1 ((thru_sv ht' _ H e₁ e₂ y hJ hJ').symm.trans (thru_sv key _ H e₁ e₂ y hJ hJ'))`.
+-/
 theorem existsUnique_thru (hφ : φ ≫ G.hom = G'.hom ≫ f) (hw : w.IsGen) (hL : L.IsLB) (hL' : L'.IsLB)
     {h : T'.left ⟶ T.left} (hh : h ≫ T.hom = T'.hom ≫ f) (s : LB.Sec (LPow G L (k : ℤ) T)) :
     ∃! t : LB.Sec (LPow G' L' (k : ℤ) T'), Thru w k h s t := by
@@ -55,6 +77,9 @@ theorem existsUnique_thru (hφ : φ ≫ G.hom = G'.hom ≫ f) (hw : w.IsGen) (hL
   have e₂ : H ≫ (snd T G).left = 𝟙 _ ≫ (snd T' G').left ≫ φ := by rw [Category.id_comp, h₂]
   exact (Units.mul_right_inj _).1 ((thru_sv ht' _ H e₁ e₂ y hJ hJ').symm.trans (thru_sv key _ H e₁ e₂ y hJ hJ'))
 
+/- English proof (translation)
+Establish `key : ∀ t : LB.Sec (LPow G L (k : ℤ) T), (∀ j, t.f j = ∑ i, liftFun G _ (a i) * (b i).f j) → ∀ (Z : Scheme.{0}) (r : Z ⟶ (T ⊗ G).left) (z : Z) (J), Good L z J → sv G L k t r z J = ∑ i, gT (r ≫ (fst T G).left) z (a i) * sv G L k (b i) r z J` using `fun t H Z r z J hJ => (SectionScalarValuation.sval_lin (φ := fun _ : Fin 1 => (snd T G).left) (ε := fun _ => (k : ℤ)) (s := t) (fun i => (fst T G).left.appTop.hom (a i)) b H r z hJ).trans (Finset.sum_congr rfl fun i _ => congrArg₂ (· * ·) ((gs_top _ _ _).trans (gT_comp _ _ _ _)) …`. Use `⟨key t, fun H j => ?_⟩` and prove the remaining obligations. Set `σ` to `SectionLimit.linSec (fun i => (fst T G).left.appTop.hom (a i)) b`. Conclude with `sec_ext_val (s := t) (s' := σ) hL (fun y J hJ => (H y J hJ).trans (key σ (fun _ => rfl) _ _ y J hJ).symm) j`.
+-/
 theorem cmb_iff (hL : L.IsLB) {n : ℕ} (b : Fin n → LB.Sec (LPow G L (k : ℤ) T)) (a : Fin n → Γ(T.left, ⊤))
     (t : LB.Sec (LPow G L (k : ℤ) T)) :
     ((∀ j, t.f j = ∑ i, liftFun G _ (a i) * (b i).f j) → ∀ (Z : Scheme.{0}) (r : Z ⟶ (T ⊗ G).left) (z : Z) (J), Good L z J →
@@ -72,6 +97,11 @@ theorem cmb_iff (hL : L.IsLB) {n : ℕ} (b : Fin n → LB.Sec (LPow G L (k : ℤ
   let σ := SectionLimit.linSec (fun i => (fst T G).left.appTop.hom (a i)) b
   exact sec_ext_val (s := t) (s' := σ) hL (fun y J hJ => (H y J hJ).trans (key σ (fun _ => rfl) _ _ y J hJ).symm) j
 
+/- English proof (translation)
+Substitute `hp` using the available equality. Use `(cmb_iff hL' b' _ t).2 fun z J' hJ' => ?_` and prove the remaining obligations. Take `⟨J, hJ⟩` from `exists_good' hL z`. Take `⟨H, h₁, h₂⟩` from `exists_prod hφ hg`. Establish `e` using `lin_all hL hl H z hJ`.
+
+Rewrite `e` using `[thru_sv ht (𝟙 _) H (by rw [Category.id_comp, h₁]) (by rw [Category.id_comp, h₂]) z hJ hJ']`. Use `(Units.mul_right_inj _).1 (e.trans ?_)` and prove the remaining obligations. Rewrite using `[Finset.mul_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[thru_sv (hb i) (𝟙 _) (H ≫ (h ▷ G).left) (by rw [Category.id_comp, Category.assoc, wh_fst, ← Category.assoc, h₁, Category.assoc]) (by rw [Category.id_comp, Category.assoc, wh_snd, h₂]) z hJ hJ', gT_comp, h₁, Category.id_comp, Category.id_comp, mul_left_comm]`.
+-/
 theorem cmb_of_lin (hφ : φ ≫ G.hom = G'.hom ≫ f) (hL : L.IsLB) (hL' : L'.IsLB) {g : T'.left ⟶ T₁.left}
     (hg : g ≫ T₁.hom = T'.hom ≫ f) {h : T₁ ⟶ T} {p : T'.left ⟶ T.left} (hp : p = g ≫ h.left) {n : ℕ}
     {b : Fin n → LB.Sec (LPow G L (k : ℤ) T)} {c : Fin n → Γ(T₁.left, ⊤)} {s : LB.Sec (LPow G L (k : ℤ) T₁)}
@@ -92,6 +122,15 @@ theorem cmb_of_lin (hφ : φ ≫ G.hom = G'.hom ≫ f) (hL : L.IsLB) (hL' : L'.I
     (by rw [Category.id_comp, Category.assoc, wh_snd, h₂]) z hJ hJ', gT_comp, h₁, Category.id_comp,
     Category.id_comp, mul_left_comm]
 
+/- English proof (translation)
+Establish `hp : (snd T₁ G).left ≫ G.hom = (((fst T₁ G).left ≫ p) ≫ T'.hom) ≫ f`. Rewrite using `[Category.assoc, ← hg, Category.assoc, ← Category.assoc p, pg, Category.id_comp, prod_w]`. Take `⟨H, h₁, h₂⟩` from `exists_lift (T := T') (G := G') ((fst T₁ G).left ≫ p) (hφ.lift _ _ hp) (hφ.lift_snd _ _ hp).symm`. Establish `h₃ : H ≫ (snd T' G').left ≫ φ = (snd T₁ G).left` using `by rw [← Category.assoc, h₂, hφ.lift_fst]`. Use `⟨H, by rw [← Category.assoc, h₁, Category.assoc, pg, Category.comp_id], h₃, fun t => ?_⟩` and prove the remaining obligations.
+
+Take `⟨t₁, ht₁⟩` from `exists_sec_up (φ' := fun _ : Fin 1 => (snd T' G').left) (ε := fun _ => (k : ℤ)) ((isGen_iff w).1 hw) hL hL' t`. Take `⟨s, -, hs⟩` from `SectionLimit.exists_pull t₁ H (fun _ : Fin 1 => (snd T₁ G).left) (fun _ => h₃)`. Use `⟨s, fun Z r' r e₁ e₂ z J J' hJ hJ' => ?_⟩` and prove the remaining obligations. Establish `e₁' : r ≫ H ≫ (fst T' G').left = r' ≫ (fst T' G').left`. Rewrite using `[h₁, ← Category.assoc, e₁, Category.assoc, Category.assoc, gp, Category.comp_id]`.
+
+Establish `e : r ≫ H = r'` using `prod_ext' (by rw [Category.assoc, e₁']) (hφ.hom_ext (by rw [Category.assoc, Category.assoc, h₃, e₂, Category.assoc]) (by rw [Category.assoc, Category.assoc, Category.assoc, ← prod_w, ← Category.assoc H, ← Category.assoc, e₁', Category.assoc]))`. Establish `ST : SecThrough w (fun _ : Fin 1 => (snd T' G').left) (fun _ => (snd T' G').left ≫ φ) (fun _ => (k : ℤ)) t t₁ (𝟙 _)` using `fun Z r z p q hp hq => by`. Rewrite using `[Category.comp_id]`. Conclude with `ht₁ Z r z p q (Set.mem_iInter.2 hp) (Set.mem_iInter.2 hq)`. Establish `a` using `ST.sval (fun _ => (Category.id_comp _).symm) r' hJ hJ'`.
+
+Rewrite `a` using `[Fin.prod_univ_one, zpow_natCast, Units.val_pow_eq_pow_val, Category.comp_id]`. Conclude with `(hs Z r z J hJ).trans ((congrArg (fun q => sval t₁ q z J) e).trans a)`.
+-/
 theorem exists_thru_up (hφ : IsPullback φ G'.hom G.hom f) (hw : w.IsGen) (hL : L.IsLB) (hL' : L'.IsLB)
     {g : T'.left ⟶ T₁.left} {p : T₁.left ⟶ T'.left} (hg : g ≫ T₁.hom = T'.hom ≫ f) (gp : g ≫ p = 𝟙 _) (pg : p ≫ g = 𝟙 _) :
     ∃ H : (T₁ ⊗ G).left ⟶ (T' ⊗ G').left, H ≫ (fst T' G').left ≫ g = (fst T₁ G).left ∧
@@ -120,6 +159,13 @@ theorem exists_thru_up (hφ : IsPullback φ G'.hom G.hom f) (hw : w.IsGen) (hL :
   rw [Fin.prod_univ_one, zpow_natCast, Units.val_pow_eq_pow_val, Category.comp_id] at a
   exact (hs Z r z J hJ).trans ((congrArg (fun q => sval t₁ q z J) e).trans a)
 
+/- English proof (translation)
+Take `⟨H, h₁, h₃, hs⟩` from `exists_thru_up (k := k) hφ hw hL hL' hg gp pg`. Take `⟨s, hst⟩` from `hs t`. Take `⟨c, hc, hu⟩` from `hB s`. Use `⟨c, cmb_of_lin hφ.w hL hL' hg hq hc hb hst, fun c' hc' => hu c' fun z J hJ => ?_⟩` and prove the remaining obligations. Substitute `hq` using the available equality.
+
+Take `⟨J', hJ'⟩` from `exists_good' hL' z`. Establish `a` using `thru_sv hst H (𝟙 _) ((Category.id_comp _).trans h₁.symm) ((Category.id_comp _).trans h₃.symm) z hJ hJ'`. Use `a.trans ?_` and prove the remaining obligations. Rewrite using `[(cmb_iff hL' b' _ t).1 hc' _ H z J' hJ', Finset.mul_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations.
+
+Establish `d` using `thru_sv (hb i) H (h ▷ G).left (by rw [wh_fst, ← h₁]; simp only [Category.assoc]) (by rw [wh_snd, h₃]) z hJ hJ'`. Rewrite using `[mul_left_comm, ← d, gT_comp, Category.assoc, h₁]`. Conclude with `congrArg₂ (· * ·) (gs_top _ _ _).symm rfl`.
+-/
 theorem basis_thru (hφ : IsPullback φ G'.hom G.hom f) (hw : w.IsGen) (hL : L.IsLB) (hL' : L'.IsLB)
     {g : T'.left ⟶ T₁.left} {p : T₁.left ⟶ T'.left} (hg : g ≫ T₁.hom = T'.hom ≫ f) (gp : g ≫ p = 𝟙 _) (pg : p ≫ g = 𝟙 _)
     {h : T₁ ⟶ T} {q : T'.left ⟶ T.left} (hq : q = g ≫ h.left) {n : ℕ}
@@ -140,10 +186,18 @@ theorem basis_thru (hφ : IsPullback φ G'.hom G.hom f) (hw : w.IsGen) (hL : L.I
   rw [mul_left_comm, ← d, gT_comp, Category.assoc, h₁]
   exact congrArg₂ (· * ·) (gs_top _ _ _).symm rfl
 
+/- English proof (translation)
+The claim follows from `(congrArg (fun q => q.hom c) (Scheme.ΓSpecIso_inv_naturality (CommRingCat.ofHom y))).symm`.
+-/
 theorem appTop_fnR {R F : Type} [CommRing R] [CommRing F] (y : R →+* F) (c : R) :
     (spMap y).appTop.hom (fnR c) = fnR (y c) :=
   (congrArg (fun q => q.hom c) (Scheme.ΓSpecIso_inv_naturality (CommRingCat.ofHom y))).symm
 
+/- English proof (translation)
+Introduce `Z G₀ _ L₀ hL R _ _ x A φ w gp hw F _ _ k`. Use `⟨fun T p hp s => existsUnique_thru (T' := TFK (R := R) F) gp.1.w hw hL A.isLB hp s, fun R' _ y T h ga e n b c s bF t hl hb ht j => ?_, fun K _ y ga e n τ τF hB hτ t => ?_⟩` and prove the remaining obligations. Use `cmb_of_lin (T' := TFK (R := R) F) (T₁ := Over.mk y) (g := spMap ga) gp.1.w hL A.isLB e rfl hl hb ht j` as an intermediate fact. Conclude with `this.trans (Finset.sum_congr rfl fun i _ => congrArg (fun q => liftFun A.A _ q * (bF i).f j) (appTop_fnR ga (c i)))`. Take `⟨c, hc, hu⟩` from `basis_thru (T' := TFK (R := R) F) (T₁ := Over.mk (jFK (R := R) F ≫ x)) (g := 𝟙 (Sp F)) (p := 𝟙 (Sp F)) gp.1 hw hL A.isLB (Category.id_comp _) (Category.id_comp _) (Category.id_comp _) (Category.id_comp _).symm (hB F ga _ e) hτ t`.
+
+Set `ε` to `(Scheme.ΓSpecIso (CommRingCat.of F)).commRingCatIsoToRingEquiv.symm`. Use `⟨fun i => ε.symm (c i), fun j => (hc j).trans (Finset.sum_congr rfl fun i _ => ?_), fun a ha => funext fun i => ?_⟩` and prove the remaining obligations. Conclude with `congrArg (fun q => liftFun A.A _ q * (τF i).f j) (ε.apply_symm_apply (c i)).symm`. Conclude with `ε.eq_symm_apply.2 (congrFun (hu (fun i => ε (a i)) ha) i)`.
+-/
 theorem main : ∀ (Z : Scheme.{0}) (G₀ : Over Z) [GrpObj G₀] (L₀ : LB G₀.left), L₀.IsLB → ∀ (R : Type) [CommRing R] [IsDomain R] (x : Sp (FractionRing R) ⟶ Z) (A : PolAV (Sp (FractionRing R))) (φ : A.A.left ⟶ G₀.left) (w : LB.Iso A.L (L₀.pull φ)), IsGrpPullback A.A G₀ x φ → w.IsGen → ∀ (F : Type) [Field F] [Algebra (FractionRing R) F] (k : ℕ), (∀ (T : Over Z) (p : Sp F ⟶ T.left), p ≫ T.hom = jFK (R := R) F ≫ x → ∀ s : LB.Sec (LPow G₀ L₀ (k : ℤ) T), ∃! t : SecA A F k, Thru w k (T' := TFK (R := R) F) p s t) ∧ (∀ (R' : Type) [CommRing R'] (y : Sp R' ⟶ Z) (T : Over Z) (h : Over.mk y ⟶ T) (ga : R' →+* F), spMap ga ≫ y = jFK (R := R) F ≫ x → ∀ (n : ℕ) (b : Fin n → LB.Sec (LPow G₀ L₀ (k : ℤ) T)) (c : Fin n → R') (s : LB.Sec (LPow G₀ L₀ (k : ℤ) (Over.mk y))) (bF : Fin n → SecA A F k) (t : SecA A F k), Lin G₀ L₀ k h b (fun i => fnR (c i)) s → (∀ i, Thru w k (T' := TFK (R := R) F) (spMap ga ≫ h.left) (b i) (bF i)) → Thru w k (T' := TFK (R := R) F) (T := Over.mk y) (spMap ga) s t → Cmb bF (fun i => ga (c i)) t) ∧ ∀ (K : Type) [Field K] (y : Sp K ⟶ Z) (ga : K →+* F), spMap ga ≫ y = jFK (R := R) F ≫ x → ∀ (n : ℕ) (τ : Fin n → LB.Sec (LPow G₀ L₀ (k : ℤ) (Over.mk y))) (τF : Fin n → SecA A F k), AllBasis G₀ L₀ k y τ → (∀ i, Thru w k (T' := TFK (R := R) F) (T := Over.mk y) (spMap ga) (τ i) (τF i)) → ∀ t : SecA A F k, ∃! a : Fin n → F, Cmb τF a t := by
   intro Z G₀ _ L₀ hL R _ _ x A φ w gp hw F _ _ k
   refine ⟨fun T p hp s => existsUnique_thru (T' := TFK (R := R) F) gp.1.w hw hL A.isLB hp s,

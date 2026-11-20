@@ -19,6 +19,15 @@ noncomputable section
 
 namespace GlobalTheory.SurfDeg
 
+/- English proof (translation)
+Introduce `k _ X S p i hS E r hE`. Establish `cS` using `GlobalTheory.T.rational_fibre_projective_curve k S (i ≫ p) hS`. Use `cS.isIntegral` as an intermediate fact. Establish `: IsFinite (spMap (Int.castRingHom k))`. Rewrite using `[IsFinite.SpecMap_iff]`.
+
+Conclude with `RingHom.finite_algebraMap.2 hS.finite`. Establish `: IsProper (i ≫ p)` using `((isProjOver_iff_isProper_and_exists_isAmpleLB _).1 hS.isProjOver).1`. Establish `hE'` using `hE.pullback i`. Establish `hA` using `Semi.LB.isLB_pull hE.isLB_det i`. Establish `c : CechPic.cls _ hA = CechPic.cls _ hE'.isLB_det` using `(CechPic.cls_eq_iff hA hE'.isLB_det).2 (hE.lbIso_det_pullback i)`.
+
+Establish `hA'` using `Semi.LB.isLB_pull hA (ratFibre.fst (i ≫ p))`. Establish `hB'` using `Semi.LB.isLB_pull hE'.isLB_det (ratFibre.fst (i ≫ p))`. Rewrite using `[ChernDegree.cxDeg_eq_ratDeg hS hE', DegRec.topSelf_cxFibre (i ≫ p) hA, ratDeg_eq_degLB hE'.isLB_det, cS.degLB_eq_interNum hB']`. Use `interNum_congr_cls _ _ (fun j => by fin_cases j; exact hB') (fun _ => hA') fun j => ?_` and prove the remaining obligations. Use `fin_cases j`.
+
+Use `(CechPic.cls_pull hE'.isLB_det _ _).trans (Eq.trans ?_ (CechPic.cls_pull hA _ _).symm)` and prove the remaining obligations. Rewrite using `[c]`.
+-/
 theorem cxDeg_pullback_eq_topSelf : ∀ (k : Type) [CommRing k] (X S : Scheme.{0}) (p : X ⟶ Sp k) (i : S ⟶ X), IsArithVar (i ≫ p) 1 → ∀ (E : X.Modules) (r : ℕ), VB.IsVB E r → cxDeg (i ≫ p) ((Scheme.Modules.pullback i).obj E) r = topSelfIntersection ℂ (((VB.det E r).pull i).pull (cxFibre.fst (i ≫ p))) 1 := by
   intro k _ X S p i hS E r hE
   have cS := GlobalTheory.T.rational_fibre_projective_curve k S (i ≫ p) hS

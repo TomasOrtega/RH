@@ -4,6 +4,11 @@ open MvPowerSeries ReciprocityTheory.ChartRestriction.G.Geo.Tor.Germ Reciprocity
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Use `letI : Field (B ⧸ m) := Ideal.Quotient.field m`. Establish `hb : Function.Bijective (algebraMap F (B ⧸ m))` using `IsAlgClosed.algebraMap_bijective_of_isIntegral`. Set `e : F ≃ₐ[F] (B ⧸ m)` to `AlgEquiv.ofBijective (Algebra.ofId F (B ⧸ m)) hb`. Use `⟨(e.symm : (B ⧸ m) →ₐ[F] F).comp (Ideal.Quotient.mkₐ F m), fun b h => ?_⟩` and prove the remaining obligations. Establish `h' : e.symm (Ideal.Quotient.mk m b) = 0` using `h`.
+
+Rewrite `h'` using `[map_eq_zero_iff _ e.symm.injective]`. Conclude with `Ideal.Quotient.eq_zero_iff_mem.mp h'`.
+-/
 theorem exists_algHom_ker_eq_of_isMaximal (F B : Type) [Field F] [IsAlgClosed F] [CommRing B]
     [Algebra F B] [Module.Finite F B] (m : Ideal B) [m.IsMaximal] :
     ∃ ψ : B →ₐ[F] F, ∀ b, ψ b = 0 → b ∈ m := by
@@ -16,6 +21,21 @@ theorem exists_algHom_ker_eq_of_isMaximal (F B : Type) [Field F] [IsAlgClosed F]
   rw [map_eq_zero_iff _ e.symm.injective] at h'
   exact Ideal.Quotient.eq_zero_iff_mem.mp h'
 
+/- English proof (translation)
+Introduce `O F _ _ _ _ hinj A _ _ _ _ _ M _ _ _ t ht`. Use `haveI : IsArtinianRing (TensorProduct O F A) := IsArtinianRing.of_finite F _`. Establish `hpt : ∀ m : MaximalSpectrum (TensorProduct O F A), ∃ ψ : TensorProduct O F A →ₐ[F] F, ∀ b, ψ b = 0 → b ∈ m.asIdeal` using `fun m => haveI := m.isMaximal exists_algHom_ker_eq_of_isMaximal F _ m.asIdeal`. Use `choose ψ hψ using hpt`. Set `φ : MaximalSpectrum (TensorProduct O F A) → (A →ₐ[O] F)` to `fun m => ((ψ m).restrictScalars O).comp Algebra.TensorProduct.includeRight`.
+
+Set `L : A →ₗ[O] (MaximalSpectrum (TensorProduct O F A) → F)` to `LinearMap.pi fun m => (φ m).toLinearMap`. Establish `hR : Function.Injective (Algebra.TensorProduct.includeRight : A →ₐ[O] TensorProduct O F A)` using `Algebra.TensorProduct.includeRight_injective hinj`. Establish `hL : Function.Injective L`. Rewrite using `[injective_iff_map_eq_zero]`. Introduce `a ha`.
+
+Apply `hR` to reduce the goal to its premises. Rewrite using `[map_zero]`. Establish `hmem : (Algebra.TensorProduct.includeRight a : TensorProduct O F A) ∈ Ideal.jacobson (⊥ : Ideal (TensorProduct O F A))`. Rewrite using `[Ideal.jacobson, Ideal.mem_sInf]`. Introduce and unpack `J ⟨-, hJ⟩`.
+
+Conclude with `hψ ⟨J, hJ⟩ _ (congrFun ha ⟨J, hJ⟩)`. Take `⟨n, hn⟩` from `IsArtinianRing.isNilpotent_jacobson_bot (R := TensorProduct O F A)`. Establish `h2` using `Ideal.pow_mem_pow hmem n`. Rewrite `h2` using `[hn]`. Conclude with `IsNilpotent.eq_zero ⟨n, by simpa using h2⟩`.
+
+Establish `hLM : Function.Injective (L.rTensor M)` using `Module.Flat.rTensor_preserves_injective_linearMap L hL`. Use `haveI : Fintype (MaximalSpectrum (TensorProduct O F A)) := Fintype.ofFinite _`. Apply `hLM` to reduce the goal to its premises. Rewrite using `[map_zero]`. Apply `(TensorProduct.piLeft O M (fun _ : MaximalSpectrum (TensorProduct O F A) => F)).injective` to reduce the goal to its premises.
+
+Rewrite using `[map_zero]`. Use function extensionality and compare the values at `m`. Establish `key : ∀ s : TensorProduct O A M, TensorProduct.piLeft O M (fun _ : MaximalSpectrum (TensorProduct O F A) => F) (L.rTensor M s) m = TensorProduct.map (φ m).toLinearMap (LinearMap.id : M →ₗ[O] M) s`. Introduce `s`. Proceed by induction on `s using TensorProduct.induction_on with`.
+
+Consider the case `zero => simp`. Consider the case `tmul a x => simp [L, TensorProduct.piLeft]`. Consider the case `add s s' h h' => rw [map_add, map_add, Pi.add_apply, h, h', map_add]`. Rewrite using `[key, ht]`. Both sides reduce to the same expression.
+-/
 theorem tensor_eq_zero_of_forall_geometric_point :
     ∀ (O F : Type) [CommRing O] [Field F] [IsAlgClosed F] [Algebra O F], Function.Injective (algebraMap O F) → ∀ (A : Type) [CommRing A] [Algebra O A] [Module.Finite O A] [Module.Flat O A] [IsReduced (TensorProduct O F A)] (M : Type) [AddCommGroup M] [Module O M] [Module.Flat O M] (t : TensorProduct O A M), (∀ φ : A →ₐ[O] F, TensorProduct.map φ.toLinearMap (LinearMap.id : M →ₗ[O] M) t = 0) → t = 0 := by
   intro O F _ _ _ _ hinj A _ _ _ _ _ M _ _ _ t ht

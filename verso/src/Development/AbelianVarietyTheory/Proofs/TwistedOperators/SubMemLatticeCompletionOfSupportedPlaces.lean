@@ -20,6 +20,17 @@ open ValuativeRel
 
 namespace GlobalTheory.LatBridge
 
+/- English proof (translation)
+Use `AddSubgroup.closure_induction (fun y hy => ?_) ?_ (fun y z _ _ hy hz => ?_) (fun y _ hy => ?_) hu` and prove the remaining obligations. Take `⟨a, ha, x, hx, rfl⟩` from `hy`. Use `AddSubgroup.subset_closure ⟨GlobalTheory.SelfDualAt.indP P * a, ?_, ?_, 1, rfl, x, hx, ?_⟩` and prove the remaining obligations. Introduce `v`. Rewrite using `[map_mul, GlobalTheory.SelfDualAt.evalV_indP]`.
+
+Use `split_ifs`. Rewrite using `[one_mul]`. Conclude with `ha v`. Rewrite using `[zero_mul]`. Conclude with `zero_mem _`.
+
+Introduce `v hv`. Rewrite using `[map_mul, GlobalTheory.SelfDualAt.evalV_indP, if_neg hv, zero_mul]`. Use function extensionality and compare the values at `i`. Rewrite using `[one_mul]`. Conclude with `GlobalTheory.HatLatV.cut_tmul P a (x i)`.
+
+Rewrite using `[map_zero]`. Conclude with `(latV S L P).zero_mem`. Rewrite using `[map_add]`. Conclude with `(latV S L P).add_mem hy hz`. Rewrite using `[map_neg]`.
+
+Conclude with `(latV S L P).neg_mem hy`.
+-/
 theorem cut_mem_latV {D : D7} (S : HSp D) (L : GlobalTheory.FinPl.Lat S) (P : GlobalTheory.FinPl.Pl D → Prop)
     (u : Fin S.rank → Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.Af D.host.F ⊗[D.host.F] D.host.E)
     (hu : u ∈ latHat D.host.F D.host.E (L : Set (Fin S.rank → D.host.E))) :
@@ -46,6 +57,9 @@ theorem cut_mem_latV {D : D7} (S : HSp D) (L : GlobalTheory.FinPl.Lat S) (P : Gl
   · rw [map_neg]
     exact (latV S L P).neg_mem hy
 
+/- English proof (translation)
+Establish `hfix` using `congrArg (finPart D) (GlobalTheory.HatLatV.cut_finPart P a ha)`. Simplify using `only [GlobalTheory.HatLatV.cut, Formalism.IndefR.Fin.LevelGroupLemmas.Lat.finPart_lift] at hfix`. Rewrite using `[map_mul]`. Simplify using `only [GlobalTheory.HatLatV.cut, Formalism.IndefR.Fin.LevelGroupLemmas.Lat.finPart_lift]`. Rewrite using `[← mul_assoc, mul_comm (finPart D a), hfix]`.
+-/
 theorem finPart_mul_cut {D : D7} (P : GlobalTheory.FinPl.Pl D → Prop) (a : AE D) (ha : a ∈ idAt D P)
     (u : Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.Af D.host.F ⊗[D.host.F] D.host.E) :
     finPart D (a * GlobalTheory.HatLatV.cut P u) = finPart D a * u := by
@@ -59,6 +73,19 @@ theorem finPart_mul_cut {D : D7} (P : GlobalTheory.FinPl.Pl D → Prop) (a : AE 
 set_option synthInstance.maxHeartbeats 400000 in
 set_option maxHeartbeats 1600000 in
 
+/- English proof (translation)
+Introduce `D S P L L' g hg hmove x hx`. Use `set u : Fin S.rank → Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.Af D.host.F ⊗[D.host.F] D.host.E := fun j => Algebra.TensorProduct.comm D.host.F D.host.E (Formalism.L2.Herm.Af D.host.F) (x j) with hu_def`. Establish `hswap : ∀ j, Formalism.IndefR.Lev.swapAE D (u j) = x j`. Introduce `j`. Simplify using `only [u, Formalism.IndefR.Lev.swapAE]`.
+
+Generalize the expression as in `x j = z`. Proceed by induction on `z using TensorProduct.induction_on with`. Consider the case `zero => simp only [map_zero]`. Consider the case `tmul a b => simp`. Consider the case `add a b ha hb => rw [map_add, map_add, ha, hb]`.
+
+Establish `hu : u ∈ latHat D.host.F D.host.E (L : Set (Fin S.rank → D.host.E))`. Rewrite using `[GlobalTheory.LevSplit.latHat_iff]`. Use `hx using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `j`. Conclude with `hswap j`.
+
+Establish `hI : ∀ i j, (Formalism.L2.Theta.mt S g - 1) i j ∈ idAt D P` using `(GlobalTheory.FrameAt.mem_congGrp S (idAt D P) g).1 hg`. Establish `hmem` using `GlobalTheory.LatVHat.latV_mem_hatL D S L' P _ (hmove _ (cut_mem_latV S L P u hu))`. Establish `hcut : ∀ z, GlobalTheory.HatLatV.cutHom P z = GlobalTheory.HatLatV.cut P z` using `fun _ => rfl`. Establish `hlhs : (Lev.finE S g).1 *ᵥ x - x = ((Formalism.L2.Theta.mt S g - 1).map (GlobalTheory.LevSplit.finSw D)) *ᵥ x`. Rewrite using `[GlobalTheory.LevSplit.finE_val, Matrix.map_sub _ (map_sub _), Matrix.map_one _ (map_zero _) (map_one _), Matrix.sub_mulVec, Matrix.one_mulVec]`.
+
+Rewrite using `[hlhs]`. Use `hmem using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `i`. Simplify using `only [Matrix.mulVec, dotProduct, Matrix.map_apply, GlobalTheory.LevSplit.finSw, RingHom.comp_apply, map_sum, AddMonoidHom.compLeft_apply, Function.comp_apply, hcut]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[finPart_mul_cut P _ (hI i j), map_mul, hswap]`.
+-/
 theorem sub_mem_hatL : ∀ (D : D7) (S : HSp D) (P : GlobalTheory.FinPl.Pl D → Prop) (L L' : GlobalTheory.FinPl.Lat S) (g : GA D S), g ∈ grpAt S P →
   (∀ y : Fin S.rank → AE D, y ∈ latV S L P → (mt S g - 1) *ᵥ y ∈ latV S L' P) →
   ∀ x ∈ Formalism.L2.Herm.hatL (F := D.host.F) L, (Lev.finE S g).1 *ᵥ x - x ∈ Formalism.L2.Herm.hatL (F := D.host.F) L' := by

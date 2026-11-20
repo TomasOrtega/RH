@@ -4,6 +4,11 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.BuildingsResidueCh
 
 open NumberField IsDedekindDomain Formalism.ConjugateSelfDual Formalism.HC ReciprocityTheory.Gal IsLocalRing Polynomial UpperTheory.V.Base UpperTheory.V.Alg UpperTheory.V.HV UpperTheory.V.GradeZeroInterpolatingElement UpperTheory.V.Ws
 
+/- English proof (translation)
+Take `⟨-, -, hloc, -⟩` from `dvrFacts l c.O`. Rewrite using `[IsLocalRing.mem_maximalIdeal, mem_nonunits_iff, ← map_natCast (algebraMap ℤ_[l] c.O)]`. Introduce `hu`. Establish `h0` using `IsUnit.of_map (algebraMap ℤ_[l] c.O) _ hu`. Rewrite `h0` using `[PadicInt.isUnit_iff, PadicInt.norm_p, inv_eq_one]`.
+
+Establish `h1 : (1 : ℝ) < l` using `by exact_mod_cast (Fact.out : l.Prime).one_lt`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 private theorem l_mem {l : ℕ} [Fact l.Prime] (c : Coef l) : (l : c.O) ∈ maximalIdeal c.O := by
   obtain ⟨-, -, hloc, -⟩ := dvrFacts l c.O
   rw [IsLocalRing.mem_maximalIdeal, mem_nonunits_iff, ← map_natCast (algebraMap ℤ_[l] c.O)]
@@ -13,6 +18,13 @@ private theorem l_mem {l : ℕ} [Fact l.Prime] (c : Coef l) : (l : c.O) ∈ maxi
   have h1 : (1 : ℝ) < l := by exact_mod_cast (Fact.out : l.Prime).one_lt
   linarith
 
+/- English proof (translation)
+Take `⟨hinj, -⟩` from `dvrFacts l c.O`. Take `⟨π, hπ⟩` from `IsDiscreteValuationRing.exists_irreducible c.O`. Establish `hx' : π ∣ x`. Rewrite `hx` using `[hπ.maximalIdeal_eq, Ideal.mem_span_singleton]`. Conclude with `hx`.
+
+Establish `hl0 : (l : c.O) ≠ 0`. Rewrite using `[← map_natCast (algebraMap ℤ_[l] c.O)]`. Conclude with `(map_ne_zero_iff _ hinj).2 (by exact_mod_cast (Fact.out : l.Prime).ne_zero)`. Take `⟨n, hn⟩` from `IsDiscreteValuationRing.associated_pow_irreducible hl0 hπ`. Take `⟨w, hw⟩ : (l : c.O) ∣ x ^ n` from `hn.dvd_iff_dvd_left.2 (pow_dvd_pow_of_dvd hx' n)`.
+
+Rewrite using `[IsLocalRing.mem_maximalIdeal, mem_nonunits_iff]`. Introduce `hu`. Establish `hu'` using `hu.pow n`. Rewrite `hu'` using `[← map_pow, hw, map_mul, map_natCast]`. Conclude with `(IsLocalRing.mem_maximalIdeal _).1 (l_mem c') (isUnit_of_mul_isUnit_left hu')`.
+-/
 private theorem inc_mem {l : ℕ} [Fact l.Prime] {c c' : Coef l} (h : c.O ≤ c'.O) {x : c.O}
     (hx : x ∈ maximalIdeal c.O) : inc h x ∈ maximalIdeal c'.O := by
   obtain ⟨hinj, -⟩ := dvrFacts l c.O
@@ -31,6 +43,33 @@ private theorem inc_mem {l : ℕ} [Fact l.Prime] {c c' : Coef l} (h : c.O ≤ c'
   rw [← map_pow, hw, map_mul, map_natCast] at hu'
   exact (IsLocalRing.mem_maximalIdeal _).1 (l_mem c') (isUnit_of_mul_isUnit_left hu')
 
+/- English proof (translation)
+Introduce `Ω _ _ _ l _ c D T hT c' h X R _ _ f hf hf0`. Establish `hl' : f (algebraMap c'.O X.B (l : c'.O)) = 0` using `hf0 _ (l_mem c')`. Rewrite `hl'` using `[map_natCast, map_natCast]`. Establish `hP` using `UpperTheory.pseudoDeformation_diag_characters_mul_rev_eq_similitude (T.fr ∅) ((algebraMap c'.O X.A).comp (inc h)) X.P X.pair`. Establish `one : ∀ v i, X.ψ v i 1 = 1`.
+
+Introduce `v i`. Apply `X.inj` to reduce the goal to its premises. Rewrite using `[X.ψ_map v i 1 (Subgroup.one_mem _), map_one]`. Conclude with `(hP v i).1`. Establish `mul : ∀ v i, ∀ s ∈ (T.fr ∅).Gv v, ∀ t ∈ (T.fr ∅).Gv v, X.ψ v i (s * t) = X.ψ v i s * X.ψ v i t`.
+
+Introduce `v i s hs t ht`. Apply `X.inj` to reduce the goal to its premises. Rewrite using `[map_mul, X.ψ_map v i _ (Subgroup.mul_mem _ hs ht), X.ψ_map v i s hs, X.ψ_map v i t ht]`. Conclude with `(hP v i).2.1 s hs t ht`. Establish `nu : ∀ v i, ∀ s ∈ (T.fr ∅).Gv v, X.ψ v i s * X.ψ v i.rev s = algebraMap c'.O X.B (inc h ↑((T.fr ∅).ν s))`.
+
+Introduce `v i s hs`. Apply `X.inj` to reduce the goal to its premises. Rewrite using `[map_mul, X.ψ_map v i s hs, X.ψ_map v i.rev s hs, (hP v i).2.2 s hs, RingHom.comp_apply, IsScalarTower.algebraMap_apply c'.O X.B X.A]`. Establish `hunit : ∀ (v : T.ι) (i : Fin 4) (s : Dec (F` using `T.F) (T.pl v)), IsUnit (f (X.ψ v i s)) := by`. Introduce `v i s`.
+
+Establish `hu : IsUnit (X.ψ v i s * X.ψ v i.rev s)`. Rewrite using `[nu v i s s.2]`. Conclude with `((Units.isUnit _).map (inc h)).map (algebraMap c'.O X.B)`. Conclude with `(isUnit_of_mul_isUnit_left hu).map f`. Establish `key : ∀ u : (c.O)ˣ, residue c.O ↑u = 1 → f (algebraMap c'.O X.B (inc h ↑u)) = 1`.
+
+Introduce `u hu`. Establish `h1 : (↑u : c.O) - 1 ∈ maximalIdeal c.O` using `(residue_eq_zero_iff _).1 (by rw [map_sub, hu, map_one, sub_self])`. Establish `h2` using `hf0 _ (inc_mem h h1)`. Rewrite `h2` using `[map_sub, map_one, map_sub, map_one, map_sub, map_one, sub_eq_zero]`. Then use the resulting hypothesis. Use `⟨hl', fun v i => IsUnit.liftRight { toFun := fun s => f (X.ψ v i s) map_one' := by` and prove the remaining obligations.
+
+Simplify using `only [OneMemClass.coe_one]`. Conclude with `(congrArg f (one v i)).trans (map_one f)`. Use the proof step `map_mul' := by`. Introduce `s t`. Simplify using `only [Subgroup.coe_mul]`.
+
+Rewrite using `[mul v i s s.2 t t.2, map_mul] } (fun s => hunit v i s), ?_⟩`. Introduce `v i`. Use `⟨fun s => rfl, ?_, ?_⟩` and prove the remaining obligations. Introduce `N`. Establish `hle : maximalIdeal X.B ^ N ≤ (maximalIdeal R ^ N).comap f`.
+
+Rewrite using `[← Ideal.map_le_iff_le_comap, Ideal.map_pow]`. Conclude with `Ideal.pow_right_mono (Ideal.map_le_iff_le_comap.2 (fun b hb => Ideal.mem_comap.2 (hf b hb))) N`. Conclude with `(X.ψ_cont v i N).comp (Ideal.quotientMap (maximalIdeal R ^ N) f hle)`. Introduce `s hs`. Establish `hr` using `hT.ineL (T.pl v) (T.ovl v) s hs`.
+
+Establish `hps : ∀ j, residue c.O ↑(D.ps j (resQ T.F s)) = 1` using `fun j => by`. Establish `e` using `congrArg (fun M => M j j) hr`. Simplify `e` using `[Raw.rbar, Raw.r0, mapRep_apply, diagRep]`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Use `show f (X.ψ v i s) - 1 ∈ maximalIdeal R`.
+
+Establish `hres : residue c'.O (inc h ↑(D.ps (lab T.pr i) (resQ T.F s))) = 1`. Establish `h1 : (↑(D.ps (lab T.pr i) (resQ T.F s)) : c.O) - 1 ∈ maximalIdeal c.O` using `(residue_eq_zero_iff _).1 (by rw [map_sub, hps, map_one, sub_self])`. Establish `h2` using `inc_mem h h1`. Rewrite `h2` using `[map_sub, map_one, ← residue_eq_zero_iff, map_sub, map_one, sub_eq_zero]`. Conclude with `h2`.
+
+Establish `hB : X.ψ v i s - 1 ∈ maximalIdeal X.B`. Rewrite using `[← res_eq_zero_iff c'.O X.B, map_sub, map_one, X.ψ_red v i s s.2]`. Use `show residue c'.O (inc h ↑(D.ps (lab T.pr i) (resQ T.F s))) - 1 = 0`. Rewrite using `[hres, sub_self]`. Use `hf _ hB` as an intermediate fact.
+
+Rewrite `this` using `[map_sub, map_one]`. Then use the resulting hypothesis. Apply `Units.ext show f (X.ψ v i s) * f (X.ψ v i.rev s) = 1` to reduce the goal to its premises. Rewrite using `[← map_mul, nu v i s s.2]`. Conclude with `key _ (hps 0)`.
+-/
 theorem UpperTheory.deformationSpace_local_characters_continuous :
     ∀ {Ω : Type} [Field Ω] [CharZero Ω] [IsAlgClosure ℚ Ω] {l : ℕ} [Fact l.Prime] {c : Coef l} (D : Raw Ω c) (T : Tower D), T.Ok → ∀ (c' : Coef l) (h : c.O ≤ c'.O) (X : Space (T.fr ∅) (inc h)) (R : Type) [CommRing R] [IsLocalRing R] (f : X.B →+* R), (∀ b ∈ maximalIdeal X.B, f b ∈ maximalIdeal R) → (∀ a ∈ maximalIdeal c'.O, f (algebraMap c'.O X.B a) = 0) → (l : R) = 0 ∧ ∃ κ : ∀ v : T.ι, Fin 4 → Dec (F := T.F) (T.pl v) →* Rˣ, ∀ v i, (∀ s, ((κ v i s : Rˣ) : R) = f (X.ψ v i s)) ∧ AdicCont (maximalIdeal R) (fun s => ((κ v i s : Rˣ) : R)) ∧ ∀ s : Dec (F := T.F) (T.pl v), (s : G T.F Ω) ∈ Ine (F := T.F) (T.pl v) → ((κ v i s : Rˣ) : R) - 1 ∈ maximalIdeal R ∧ κ v i s * κ v i.rev s = 1 := by
   intro Ω _ _ _ l _ c D T hT c' h X R _ _ f hf hf0

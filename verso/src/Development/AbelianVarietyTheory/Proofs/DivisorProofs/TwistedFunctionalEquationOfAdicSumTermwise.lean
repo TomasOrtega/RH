@@ -17,12 +17,20 @@ namespace GlobalTheory.TwFam.SumFE
 
 open GlobalTheory.IndivisibleSection (smulSec)
 
+/- English proof (translation)
+Establish `hm` using `hJ.mem φ r`. Conclude with `(gs_mul r z _ hm _ _).trans (congrArg (· * _) (gs_res r z le_top hm a))`.
+-/
 theorem sval_smulSec {X Y Z : Scheme.{0}} {L : LB X} {K : Type} [Fintype K] {φ : K → (Y ⟶ X)} {ε : K → ℤ}
     (a : Γ(Y, ⊤)) (s : LB.Sec (LB.LinComb L φ ε)) (r : Z ⟶ Y) (z : Z) {J : (Z ⟶ X) → L.ι} (hJ : Good L z J) :
     sval (smulSec a s) r z J = gs r z ⊤ a * sval s r z J := by
   have hm := hJ.mem φ r
   exact (gs_mul r z _ hm _ _).trans (congrArg (· * _) (gs_res r z le_top hm a))
 
+/- English proof (translation)
+Use `fn_ext fun y hy => ?_` and prove the remaining obligations. Use `choose J hJ using fun ψ : Y' ⟶ X => exists_chart hL (ψ y)`. Establish `hJ' : Good L y J` using `hJ`. Establish `hy' : (𝟙 Y' ≫ h) y ∈ LB.wchart L φ j` using `hy`. Establish `m` using `hJ'.mem φ (𝟙 Y' ≫ h)`.
+
+Use `(gs_pull (𝟙 Y') h y _ hy _).trans (Eq.trans ?_ (gs_pull (𝟙 Y') h y _ hy _).symm)` and prove the remaining obligations. Conclude with `(sec_trans s _ y hy' m).trans ((congrArg _ (H y J hJ')).trans (sec_trans s' _ y hy' m).symm)`.
+-/
 theorem app_eq_of_sval {X Y Y' : Scheme.{0}} {L : LB X} (hL : L.IsLB) {K : Type} [Fintype K] {φ : K → (Y ⟶ X)}
     {ε : K → ℤ} {s s' : LB.Sec (LB.LinComb L φ ε)} {h : Y' ⟶ Y}
     (H : ∀ y J, Good L y J → sval s (𝟙 Y' ≫ h) y J = sval s' (𝟙 Y' ≫ h) y J) (j) :
@@ -35,6 +43,11 @@ theorem app_eq_of_sval {X Y Y' : Scheme.{0}} {L : LB X} (hL : L.IsLB) {K : Type}
   refine (gs_pull (𝟙 Y') h y _ hy _).trans (Eq.trans ?_ (gs_pull (𝟙 Y') h y _ hy _).symm)
   exact (sec_trans s _ y hy' m).trans ((congrArg _ (H y J hJ')).trans (sec_trans s' _ y hy' m).symm)
 
+/- English proof (translation)
+Introduce `R _ _ _ hB D K _ φ ε s s' H`. Use `hB.1` as an intermediate fact. Use `hB.2.2.2` as an intermediate fact. Use `D.toPre.P.isAb.smooth` as an intermediate fact. Establish `: GeometricallyConnected D.toPre.P.A.hom` using `D.toPre.P.isAb.geomConnected`.
+
+Use `DVR.SecOps.sec_ext fun j => sub_eq_zero.1 ?_` and prove the remaining obligations. Use `(GlobalTheory.sec_eq_zero_and_hom_eq_of_thickenings R _ (IsAdicComplete.le_jacobson_bot (maximalIdeal R)) D.toPre.P.A).1 _ (DVR.linComb_isLB _ D.toPre.P.isLB φ ε) ⟨fun i => s.f i - s'.f i, fun i j => by` and prove the remaining obligations. Simplify using `only [map_sub, s.compat, s'.compat, mul_sub]⟩ (fun e i => ?_) j`. Conclude with `(map_sub _ _ _).trans (sub_eq_zero.2 (app_eq_of_sval D.toPre.P.isLB (fun y J hJ => H e _ (𝟙 _) y J hJ) i))`.
+-/
 theorem sec_eq_of_thick : ∀ (R : Type) [CommRing R] [IsDomain R] [IsLocalRing R], AdmBase R (maximalIdeal R) → ∀ (D : DegData R (maximalIdeal R)) (K : Type) [Fintype K] (φ : K → (D.toPre.P.A.left ⟶ D.toPre.P.A.left)) (ε : K → ℤ) (s s' : LB.Sec (LB.LinComb D.toPre.P.L φ ε)), (∀ (e : ℕ) (Z : Scheme.{0}) (x : Z ⟶ (thickObj R (maximalIdeal R) e D.toPre.P.A).left) (z : Z) (J), Good D.toPre.P.L z J → sval s (x ≫ pullback.fst D.toPre.P.A.hom (thick R (maximalIdeal R) e)) z J = sval s' (x ≫ pullback.fst D.toPre.P.A.hom (thick R (maximalIdeal R) e)) z J) → s = s' := by
   intro R _ _ _ hB D K _ φ ε s s' H
   have := hB.1
@@ -47,6 +60,15 @@ theorem sec_eq_of_thick : ∀ (R : Type) [CommRing R] [IsDomain R] [IsLocalRing 
       simp only [map_sub, s.compat, s'.compat, mul_sub]⟩ (fun e i => ?_) j
   exact (map_sub _ _ _).trans (sub_eq_zero.2 (app_eq_of_sval D.toPre.P.isLB (fun y J hJ => H e _ (𝟙 _) y J hJ) i))
 
+/- English proof (translation)
+Introduce `R _ _ D K _ φ ε s s' H`. Use `D.P.isAb.smooth` as an intermediate fact. Establish `: IsDominant (TF (R` using `R) (FractionRing R)).hom := by`. Use `⟨?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `DenseRange (PrimeSpectrum.comap (algebraMap R (FractionRing R)) ∘ PrimeSpectrum.comap (algebraMap (FractionRing R) (FractionRing R)))`.
+
+Rewrite using `[Algebra.algebraMap_self, PrimeSpectrum.comap_id]`. Express the relevant statement in the definitionally equal form `DenseRange (PrimeSpectrum.comap (algebraMap R (FractionRing R)))`. Rewrite using `[PrimeSpectrum.denseRange_comap_iff_ker_le_nilRadical, (RingHom.injective_iff_ker_eq_bot _).1 (IsFractionRing.injective R (FractionRing R))]`. Conclude with `bot_le`. Establish `: QuasiCompact (TF (R` using `R) (FractionRing R)).hom :=`.
+
+Establish `: IsAffine (TF (R` using `R) (FractionRing R)).left := inferInstanceAs (IsAffine (Spec _))`. Use `quasiCompact_of_compactSpace _`. Use `IsSchemeTheoreticallyDominant.of_isDominant (X := Spec (CommRingCat.of (FractionRing R))) (TF (R := R) (FractionRing R)).hom` as an intermediate fact. Establish `: IsSchemeTheoreticallyDominant (pullback.snd (TF (R` using `R) (FractionRing R)).hom D.P.A.hom) := IsSchemeTheoreticallyDominant.of_isPullback (IsPullback.of_hasPullback _ D.P.A.hom)`. Establish `: QuasiCompact (pullback.snd (TF (R` using `R) (FractionRing R)).hom D.P.A.hom) := inferInstance`.
+
+Conclude with `DVR.SecOps.sec_ext fun j => (pullback.snd (TF (R := R) (FractionRing R)).hom D.P.A.hom).app_injective _ (app_eq_of_sval D.P.isLB (fun y J hJ => H _ (𝟙 _) y J hJ) j)`.
+-/
 theorem sec_eq_of_generic : ∀ (R : Type) [CommRing R] [IsDomain R] (D : DegPre R) (K : Type) [Fintype K] (φ : K → (D.P.A.left ⟶ D.P.A.left)) (ε : K → ℤ) (s s' : LB.Sec (LB.LinComb D.P.L φ ε)), (∀ (Z : Scheme.{0}) (x : Z ⟶ (DegPre.BF D (FractionRing R)).left) (z : Z) (J), Good D.P.L z J → sval s (x ≫ (DegPre.prB D (FractionRing R)).left) z J = sval s' (x ≫ (DegPre.prB D (FractionRing R)).left) z J) → s = s' := by
   intro R _ _ D K _ φ ε s s' H
   have := D.P.isAb.smooth
@@ -70,11 +92,21 @@ theorem sec_eq_of_generic : ∀ (R : Type) [CommRing R] [IsDomain R] (D : DegPre
   exact DVR.SecOps.sec_ext fun j => (pullback.snd (TF (R := R) (FractionRing R)).hom D.P.A.hom).app_injective _
     (app_eq_of_sval D.P.isLB (fun y J hJ => H _ (𝟙 _) y J hJ) j)
 
+/- English proof (translation)
+Introduce `R _ _ D mu`. Rewrite using `[← Over.comp_left, ← Over.comp_left, DegPre.trF, lift_snd, padd, padd, comp_lift_assoc, Category.comp_id, comp_toUnit_assoc]`.
+-/
 theorem trF_prB : ∀ (R : Type) [CommRing R] [IsDomain R] (D : DegPre R) (mu : D.X), (DegPre.trF D (FractionRing R) mu).left ≫ (DegPre.prB D (FractionRing R)).left = (DegPre.prB D (FractionRing R)).left ≫ (padd D.P.A (𝟙 D.P.A) (toUnit _ ≫ D.c mu)).left := by
   intro R _ _ D mu
   rw [← Over.comp_left, ← Over.comp_left, DegPre.trF, lift_snd, padd, padd, comp_lift_assoc, Category.comp_id,
     comp_toUnit_assoc]
 
+/- English proof (translation)
+Establish `e` using `congrArg (fun h => h.hom r) (Scheme.ΓSpecIso_inv_naturality (CommRingCat.ofHom (algebraMap R (FractionRing R))))`. Simplify using `only [CommRingCat.hom_comp, RingHom.comp_apply, CommRingCat.hom_ofHom] at e`. Establish `w : (DegPre.prB D (FractionRing R)).left ≫ D.P.A.hom = ((fst _ _ : DegPre.BF D (FractionRing R) ⟶ TF (R` using `R) (FractionRing R)).left : (DegPre.BF D (FractionRing R)).left ⟶ Sp (FractionRing R)) ≫ jK R := by`. Use `(Over.w _).trans ((Over.w (fst _ _ : DegPre.BF D (FractionRing R) ⟶ TF (R := R) (FractionRing R))).symm.trans ?_)` and prove the remaining obligations. Use `congr 1`.
+
+Express the relevant statement in the definitionally equal form `Spec.map (CommRingCat.ofHom (algebraMap (FractionRing R) (FractionRing R))) ≫ jK R = jK R`. Rewrite using `[Algebra.algebraMap_self, CommRingCat.ofHom_id, Spec.map_id, Category.id_comp]`. Use `(gs_pull x _ z ⊤ trivial _).symm.trans (congrArg (gs x z ⊤) ?_)` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `scal ((DegPre.prB D (FractionRing R)).left ≫ D.P.A.hom) r = _`. Rewrite using `[w, scal, scal, e]`.
+
+Both sides reduce to the same expression.
+-/
 theorem gs_scal_generic {R : Type} [CommRing R] [IsDomain R] (D : DegPre R) {Z : Scheme.{0}}
     (x : Z ⟶ (DegPre.BF D (FractionRing R)).left) (z : Z) (r : R) :
     gs (x ≫ (DegPre.prB D (FractionRing R)).left) z ⊤ (scal D.P.A.hom r) =
@@ -95,6 +127,11 @@ theorem gs_scal_generic {R : Type} [CommRing R] [IsDomain R] (D : DegPre R) {Z :
   rw [w, scal, scal, e]
   rfl
 
+/- English proof (translation)
+Introduce `R _ _ D Z x z r`. Use `⟨fun hr => ?_, fun c r' hc => ?_⟩` and prove the remaining obligations. Establish `hu : IsUnit (algebraMap R (FractionRing R) r)` using `IsUnit.mk0 _ ((map_ne_zero_iff _ (IsFractionRing.injective R (FractionRing R))).2 hr)`. Rewrite using `[gs_scal_generic, gs_eq _ z ⊤ trivial]`. Conclude with `((((hu.map _).map _).map _).map _)`.
+
+Rewrite using `[gs_scal_generic, gs_scal_generic, ← hc, ← gs_mul x z ⊤ trivial, mul_comm c]`. Simplify using `only [scal, map_mul]`.
+-/
 theorem scal_generic : ∀ (R : Type) [CommRing R] [IsDomain R] (D : DegPre R) (Z : Scheme.{0}) (x : Z ⟶ (DegPre.BF D (FractionRing R)).left) (z : Z) (r : R), (r ≠ 0 → IsUnit (gs (x ≫ (DegPre.prB D (FractionRing R)).left) z ⊤ (scal D.P.A.hom r))) ∧ ∀ (c : FractionRing R) (r' : R), c * algebraMap R (FractionRing R) r = algebraMap R (FractionRing R) r' → gs (x ≫ (DegPre.prB D (FractionRing R)).left) z ⊤ (scal D.P.A.hom r) * gs x z ⊤ (scal (fst _ _ : DegPre.BF D (FractionRing R) ⟶ TF (R := R) (FractionRing R)).left c) = gs (x ≫ (DegPre.prB D (FractionRing R)).left) z ⊤ (scal D.P.A.hom r') := by
   intro R _ _ D Z x z r
   refine ⟨fun hr => ?_, fun c r' hc => ?_⟩
@@ -105,6 +142,29 @@ theorem scal_generic : ∀ (R : Type) [CommRing R] [IsDomain R] (D : DegPre R) (
   · rw [gs_scal_generic, gs_scal_generic, ← hc, ← gs_mul x z ⊤ trivial, mul_comm c]
     simp only [scal, map_mul]
 
+/- English proof (translation)
+Introduce `R _ _ _ hB D a a' h h' hE n j Ix w s F σ hs hF hw hrel mu β`. Generalize the expression as in `hβ' : β + shift h h' n j mu = β'`. Introduce `u hu`. Establish `hL : D.toPre.P.L.IsLB` using `D.toPre.P.isLB`. Take `⟨u₀, hu₀⟩` from `GlobalTheory.T.twistedFunctionalEquation_bundle_trivial_abelianPart R hB D a a' h h' hE n j mu β β' hβ'.symm`.
+
+Take `⟨c, hc⟩` from `(GlobalTheory.T.twistedFactor_exists_unique_const_mul_integralGenerator R hB D a h hE.1 hE.2.2.2.1 n j mu β β' u₀ hu₀).2.2 u hu.1`. Take `⟨⟨r', r⟩, hrc⟩` from `IsLocalization.surj (nonZeroDivisors R) c`. Establish `hTw : (padd D.toPre.P.A (𝟙 _) (toUnit _ ≫ D.toPre.c mu)).left ≫ D.toPre.P.A.hom = D.toPre.P.A.hom` using `Over.w _`. Establish `hT` using `trF_prB R D.toPre mu`. Generalize the expression as in `hTe : (padd D.toPre.P.A (𝟙 _) (toUnit _ ≫ D.toPre.c mu)).left = T at hTw hT`.
+
+Establish `mkG : ∀ t : SecT D.toPre a n j β, ∃ G : SecT D.toPre a n j β', ∀ (Z : Scheme.{0}) (y : Z ⟶ D.toPre.P.A.left) (z : Z) (J), Good D.toPre.P.L z J → sval G y z J = sval t (y ≫ T) z J * (val u₀ y z J).val`. Introduce `t`. Take `⟨G, hG⟩` from `exists_sec hL (φ' := tφ D.toPre a β') (ε' := tε n j) (fun U _ g => by`. Simplify using `only [Fintype.prod_sum_type, Sum.elim_inl, Sum.elim_inr, dε, zpow_neg, Finset.prod_inv_distrib, hTe]`. Rewrite using `[mul_left_comm, mul_inv_cancel, _root_.mul_one]) (pullMulSec t T u₀ hu₀)`.
+
+Conclude with `⟨G, fun Z y z J hJ => (hG Z y z J hJ).trans (sval_pullMulSec t T u₀ hu₀ y z hJ)⟩`. Establish `key : ∀ (b b' : D.toPre.X) (t : SecT D.toPre a n j b) (t' : SecT D.toPre a n j b'), b = β → b' = β' → TRel h mu t t' → ∀ (Z : Scheme.{0}) (y : Z ⟶ D.toPre.P.A.left) (z : Z) (J), Good D.toPre.P.L z J → gs y z ⊤ (scal D.toPre.P.A.hom r.1) * sval t' y z J = gs y z ⊤ (scal D.toPre.P. …`. Introduce `b b' t t' h1 h2 hR Z y z J hJ`. Substitute `h1 h2` using the available equality. Take `⟨G, hG⟩` from `mkG t`.
+
+Establish `e : smulSec (scal D.toPre.P.A.hom r.1) t' = smulSec (scal D.toPre.P.A.hom r') G` using `sec_eq_of_generic R D.toPre (Fin 5) _ _ _ _ fun Z x z J hJ => by`. Rewrite using `[sval_smulSec _ _ _ _ hJ, sval_smulSec _ _ _ _ hJ, hR u hu Z x z J hJ, hG _ _ _ _ hJ, hc Z x z J hJ, hT, ← (scal_generic R D.toPre Z x z r.1).2 c r' hrc, Category.assoc]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[← hG _ _ _ _ hJ, ← sval_smulSec _ _ _ _ hJ, ← sval_smulSec _ _ _ _ hJ, e]`. Take `⟨G, hG⟩` from `mkG (F β)`.
+
+Establish `eB : smulSec (scal D.toPre.P.A.hom r.1) (F β') = smulSec (scal D.toPre.P.A.hom r') G`. Use `sec_eq_of_thick R hB D (Fin 5) _ _ _ _ fun e Z x z J hJ => ?_` and prove the remaining obligations. Rewrite using `[sval_smulSec _ _ _ _ hJ, sval_smulSec _ _ _ _ hJ, hG _ _ _ _ hJ]`. Take `⟨x', hx'⟩ : ∃ x' : Z ⟶ (thickObj R (maximalIdeal R) e D.toPre.P.A).left, x' ≫ pullback.fst D.toPre.P.A.hom (thick R (maximalIdeal R) e) = (x ≫ pullback.fst D.toPre.P.A.hom (thick R (maximalIdeal R) e)) ≫ T` from `⟨pullback.lift _ (x ≫ pullback.snd _ _) (by`. Rewrite using `[Category.assoc, hTw]`.
+
+Conclude with `(Category.assoc _ _ _).trans ((congrArg (x ≫ ·) pullback.condition).trans (Category.assoc _ _ _).symm)),`. Use the proof step `pullback.lift_fst _ _ _⟩`. Establish `hS : ∀ i ∉ (hs e).toFinset, Van (maximalIdeal R) (s i) e` using `fun i hi =>`. Assume the negation of the conclusion as `fun hc => hi ((hs e).mem_toFinset.2 hc)`. Generalize the expression as in `(hs e).toFinset = S at hS`.
+
+Establish `e₁` using `hF e ((S ∪ S.image (σ mu).symm).image (σ mu)) (fun i hi => hS i fun m => hi (Finset.mem_image.2 ⟨(σ mu).symm i, Finset.mem_union_right _ (Finset.mem_image_of_mem _ m), (σ mu).apply_symm_apply i⟩)) β' Z x z J hJ`. Establish `e₂` using `hF e (S ∪ S.image (σ mu).symm) (fun i hi => hS i fun m => hi (Finset.mem_union_left _ m)) β Z x' z J hJ`. Rewrite `e₂` using `[hx']`. Rewrite using `[e₁, e₂, Finset.sum_filter, Finset.sum_filter, Finset.sum_image (σ mu).injective.injOn, Finset.sum_mul, Finset.mul_sum, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations.
+
+Distinguish the cases in `hi : w i = β`. Establish `hi' : w (σ mu i) = β'` using `by rw [hw, hi, hβ']`. Rewrite using `[if_pos hi, if_pos hi']`. Conclude with `key _ _ _ _ hi hi' (hrel mu i) _ _ z J hJ`. Establish `hi' : ¬ w (σ mu i) = β'` using `fun h2 => hi (add_right_cancel ((hw mu i).symm.trans (h2.trans hβ'.symm)))`.
+
+Rewrite using `[if_neg hi, if_neg hi', zero_mul, mul_zero, mul_zero]`. Introduce `Z x z J hJ`. Take `⟨hunit, hmul⟩` from `scal_generic R D.toPre Z x z r.1`. Use `(hunit (nonZeroDivisors.ne_zero r.2)).mul_left_cancel ?_` and prove the remaining obligations. Rewrite using `[← sval_smulSec _ _ _ _ hJ, eB, sval_smulSec _ _ _ _ hJ, hG _ _ _ _ hJ, hc Z x z J hJ, hT, ← hmul c r' hrc, Category.assoc]`.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem tfe_of_isSum : ∀ (R : Type) [CommRing R] [IsDomain R] [IsLocalRing R], AdmBase R (maximalIdeal R) → ∀ (D : DegData R (maximalIdeal R)), ∀ (a a' : D.toPre.P.A ⟶ D.toPre.P.A) (h h' : D.toPre.X →+ D.toPre.X), EndData D.toPre a a' h h' → ∀ (n j : ℤ) (Ix : Type) (w : Ix → D.toPre.X) (s : ∀ i, SecT D.toPre a n j (w i)) (F : ∀ β, SecT D.toPre a n j β) (σ : D.toPre.X → Ix ≃ Ix), Small (maximalIdeal R) s → IsSum (maximalIdeal R) s F → (∀ mu i, w (σ mu i) = w i + shift h h' n j mu) → (∀ mu i, TRel h mu (s i) (s (σ mu i))) → TFE h h' F := by
   intro R _ _ _ hB D a a' h h' hE n j Ix w s F σ hs hF hw hrel mu β
   generalize hβ' : β + shift h h' n j mu = β'

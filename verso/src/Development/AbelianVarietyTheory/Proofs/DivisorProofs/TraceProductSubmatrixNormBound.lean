@@ -5,6 +5,19 @@ open scoped Topology
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Use `set c := Fin.castLE (Nat.le_of_lt_succ k.isLt) with hc`. Use `set Y := X.submatrix c c with hY`. Establish `hcol : ∀ j : Fin k, ‖Y *ᵥ Pi.single j 1‖ ≤ g`. Introduce `j`. Establish `h1 : ‖X *ᵥ Pi.single (c j) (1 : ℂ)‖ ≤ g`.
+
+Use `(hX _).trans ?_` and prove the remaining obligations. Establish `: ‖(Pi.single (c j) (1 : ℂ) : Fin m → ℂ)‖ ≤ 1`. Use `(pi_norm_le_iff_of_nonneg zero_le_one).2 fun i => ?_` and prove the remaining obligations. Distinguish the cases in `h : i = c j`. Substitute `h` using the available equality.
+
+Simplify using the standard rewrite rules. Simplify using `[Pi.single_apply, h]`. Use the polynomial consequences of the given equalities and inequalities. Use `(pi_norm_le_iff_of_nonneg hg).2 fun i => ?_` and prove the remaining obligations. Establish `: (Y *ᵥ Pi.single j 1) i = (X *ᵥ Pi.single (c j) (1 : ℂ)) (c i)`.
+
+Simplify using `[hY, mulVec_single]`. Rewrite using `[this]`. Conclude with `(norm_le_pi_norm _ _).trans h1`. Establish `hdiag : ∀ j : Fin k, ‖(P * Y) j j‖ ≤ b * g`. Introduce `j`.
+
+Establish `: (P * Y) j j = (P *ᵥ (Y *ᵥ Pi.single j 1)) j`. Rewrite using `[mulVec_single_one]`. Simplify using `[Matrix.mul_apply, Matrix.mulVec, dotProduct]`. Rewrite using `[this]`. Conclude with `(norm_le_pi_norm _ _).trans ((hP _).trans (mul_le_mul_of_nonneg_left (hcol j) hb))`.
+
+Establish `hk : (k : ℕ) ≤ m` using `Nat.le_of_lt_succ k.isLt`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem trace_mul_submatrix_norm_le {m : ℕ} (k : Fin (m + 1)) (P : Matrix (Fin k) (Fin k) ℂ)
     (X : Matrix (Fin m) (Fin m) ℂ) (b g : ℝ) (hb : 0 ≤ b) (hg : 0 ≤ g)
     (hP : ∀ y, ‖P *ᵥ y‖ ≤ b * ‖y‖) (hX : ∀ x, ‖X *ᵥ x‖ ≤ g * ‖x‖) :

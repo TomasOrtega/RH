@@ -16,21 +16,38 @@ section QLat
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [StarRing E] [Algebra F E]
 variable {hc : Formalism.BasicNotions.CMData F E} {n : ℕ} [NeZero n] {ST SG Q : Finset (Pl E)} {K : Type} [Field K] {Θ : LevQFam E K n Q}
 
+/- English proof (translation)
+Introduce `d P` and use `DetChrL.frame_exists P.1 d.2.lat`.
+-/
 theorem qdf_frExists : FrExists (n := n) ST SG Q := fun d P => DetChrL.frame_exists P.1 d.2.lat
 
 abbrev qPi (q : QLoc hc n Q Θ) (P : Q) : E ⊗[F] Formalism.L2.Herm.Af F →+* (qv F P.1).adicCompletion F :=
   ((RingHom.fst _ _).comp (q.sp P).toRingHom).comp (prV (E := E) (qv F P.1))
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem qdf_at_val (q : QLoc hc n Q Θ) (P : Q) (x : GL (Fin n) (E ⊗[F] Formalism.L2.Herm.Af F)) :
     ((q.at P x : GL (Fin n) _) : Matrix (Fin n) (Fin n) _) = (x : Matrix (Fin n) (Fin n) _).map (qPi q P) := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem qdf_pi_iA (q : QLoc hc n Q Θ) (P : Q) (e : E) : qPi q P (iA F E e) = q.phi P e := rfl
 
+/- English proof (translation)
+Establish `h : Formalism.UG.inclE (F` using `F) ((qv F P.1).adicCompletion F) (r : E) ∈ Formalism.BasicNotions.intV E (qv F P.1) := Subring.subset_closure (Or.inl ⟨⟨(r : E), r, rfl⟩, rfl⟩)`. Conclude with `((q.sp_int P _).1 h).1`.
+-/
 theorem qdf_phi_int (q : QLoc hc n Q Θ) (P : Q) (r : 𝓞 E) : q.phi P (r : E) ∈ (qv F P.1).adicCompletionIntegers F := by
   have h : Formalism.UG.inclE (F := F) ((qv F P.1).adicCompletion F) (r : E) ∈ Formalism.BasicNotions.intV E (qv F P.1) :=
     Subring.subset_closure (Or.inl ⟨⟨(r : E), r, rfl⟩, rfl⟩)
   exact ((q.sp_int P _).1 h).1
 
+/- English proof (translation)
+Establish `hle : Formalism.L2.Herm.intAf F E ≤ (Formalism.BasicNotions.intV E (qv F P.1)).comap (Formalism.UG.prV (E` using `E) (qv F P.1)) := by`. Use `Subring.closure_le.2 ?_` and prove the remaining obligations. Introduce and unpack `_ (⟨x, rfl⟩ | ⟨y, rfl⟩)`. Use `Subring.mem_comap.2 (Subring.subset_closure (Or.inl ⟨x, ?_⟩))` and prove the remaining obligations. Simplify using `[Formalism.UG.prV]`.
+
+Establish `hy : ∀ v, (y : Formalism.L2.Herm.Af F) v ∈ v.adicCompletionIntegers F` using `y.2`. Use `Subring.mem_comap.2 (Subring.subset_closure (Or.inr ⟨⟨(y : Formalism.L2.Herm.Af F) (qv F P.1), hy _⟩, ?_⟩))` and prove the remaining obligations. Apply the tactic sequence `simp [Formalism.UG.prV] <;> rfl`. Conclude with `((q.sp_int P _).1 (hle ha)).1`.
+-/
 theorem qdf_pi_int (q : QLoc hc n Q Θ) (P : Q) {a : E ⊗[F] Formalism.L2.Herm.Af F} (ha : a ∈ Formalism.L2.Herm.intAf F E) :
     qPi q P a ∈ (qv F P.1).adicCompletionIntegers F := by
   have hle : Formalism.L2.Herm.intAf F E ≤
@@ -44,6 +61,11 @@ theorem qdf_pi_int (q : QLoc hc n Q Θ) (P : Q) {a : E ⊗[F] Formalism.L2.Herm.
       simp [Formalism.UG.prV] <;> rfl
   exact ((q.sp_int P _).1 (hle ha)).1
 
+/- English proof (translation)
+Establish `h1 : Valued.v (q.phi P (s : E)) ≤ 1` using `qdf_phi_int q P s`. Establish `h2 : ¬ Valued.v (q.phi P (s : E)) < 1` using `fun h => hs ((q.sp_P P s).1 h)`. Establish `hv : Valued.v (q.phi P (s : E)) = 1` using `le_antisymm h1 (not_lt.1 h2)`. Use `⟨fun h0 => ?_, ?_⟩` and prove the remaining obligations. Rewrite `hv` using `[h0, map_zero]`.
+
+Conclude with `zero_ne_one hv`. Use `show Valued.v (q.phi P (s : E))⁻¹ ≤ 1`. Rewrite using `[map_inv₀, hv, inv_one]`.
+-/
 theorem qdf_phi_unit (q : QLoc hc n Q Θ) (P : Q) {s : 𝓞 E} (hs : s ∉ P.1.asIdeal) :
     q.phi P (s : E) ≠ 0 ∧ (q.phi P (s : E))⁻¹ ∈ (qv F P.1).adicCompletionIntegers F := by
   have h1 : Valued.v (q.phi P (s : E)) ≤ 1 := qdf_phi_int q P s
@@ -55,6 +77,11 @@ theorem qdf_phi_unit (q : QLoc hc n Q Θ) (P : Q) {s : 𝓞 E} (hs : s ∉ P.1.a
   · show Valued.v (q.phi P (s : E))⁻¹ ≤ 1
     rw [map_inv₀, hv, inv_one]
 
+/- English proof (translation)
+Take `⟨r, s, hs, h⟩` from `h`. Establish `hu` using `qdf_phi_unit q P hs`. Establish `hm : q.phi P (s : E) * q.phi P a = q.phi P (r : E)`. Rewrite using `[← map_mul]`. Conclude with `congrArg (q.phi P) h`.
+
+Establish `ha : q.phi P a = q.phi P (r : E) * (q.phi P (s : E))⁻¹`. Rewrite using `[eq_mul_inv_iff_mul_eq₀ hu.1, mul_comm]`. Conclude with `hm`. Rewrite using `[ha]`. Conclude with `mul_mem (qdf_phi_int q P r) hu.2`.
+-/
 theorem qdf_phi_intAt (q : QLoc hc n Q Θ) (P : Q) {a : E} (h : IntAt P.1 a) : q.phi P a ∈ (qv F P.1).adicCompletionIntegers F := by
   obtain ⟨r, s, hs, h⟩ := h
   have hu := qdf_phi_unit q P hs
@@ -67,11 +94,55 @@ theorem qdf_phi_intAt (q : QLoc hc n Q Θ) (P : Q) {a : E} (h : IntAt P.1 a) : q
   rw [ha]
   exact mul_mem (qdf_phi_int q P r) hu.2
 
+/- English proof (translation)
+Rewrite using `[← map_inv]`. Both sides reduce to the same expression.
+-/
 theorem qdf_gl_inv_val {R S : Type} [CommRing R] [CommRing S] (f : R →+* S) (A : GL (Fin n) R) :
     (((bc f A)⁻¹ : GL (Fin n) S) : Matrix (Fin n) (Fin n) S) = ((A⁻¹ : GL (Fin n) R) : Matrix (Fin n) (Fin n) R).map f := by
   rw [← map_inv]
   rfl
 
+/- English proof (translation)
+Introduce `x p hx P`. Establish `hN : p.deco.1.N = Formalism.UG.CS.globLat (x : GL (Fin n) (E ⊗[F] Formalism.L2.Herm.Af F)) (stdLat E n)`. Rewrite using `[← hx, rlc_decoOf_val hc n ST SG x.2]`. Both sides reduce to the same expression. Use `set fr := p.fr P with hfr`.
+
+Establish `hfrN : ∀ w ∈ p.deco.1.N, ∀ i, q.phi P ((fr.symm w) i) ∈ (qv F P.1).adicCompletionIntegers F`. Introduce `w hw i`. Establish `h1 : fr (fr.symm w) ∈ p.deco.1.at P.1`. Rewrite using `[LinearEquiv.apply_symm_apply]`. Conclude with `(mem_locP P.1 _ w).2 ⟨1, P.1.isPrime.one_notMem, by rw [one_smul]; exact hw⟩`.
+
+Establish `h2 : fr.symm w ∈ stdAt E n P.1` using `(p.2 P (fr.symm w)).1 h1`. Conclude with `qdf_phi_intAt q P ((mem_localization_standardLattice P.1 _).1 h2 i)`. Establish `hFinv : ((bc (q.phi P) (qGL n fr))⁻¹ : GL (Fin n) _) = bc (q.phi P) (qGL n fr.symm)`. Rewrite using `[← map_inv]`. Use `congr 1`.
+
+Prove the components needed by the constructor for the conclusion. Use `set xm : GL (Fin n) (E ⊗[F] Formalism.L2.Herm.Af F) := x.1 with hxm`. Establish `key : ∀ z ∈ Formalism.L2.Herm.hatL (F` using `F) (Formalism.UG.CS.globLat (x : GL (Fin n) (E ⊗[F] Formalism.L2.Herm.Af F)) (stdLat E n)), ∀ i, ((((bc (q.phi P) (qGL n fr))⁻¹ : GL (Fin n) _) : Matrix (Fin n) (Fin n) _) *ᵥ (fun k => qPi q P (z k))) i ∈ (qv F P.1).adicCompletionIntegers F := by`. Introduce `z hz`. Proceed by induction on `hz using Submodule.span_induction with`.
+
+Consider the case `mem z hz`. Take `⟨w, hw, rfl⟩` from `hz`. Introduce `i`. Rewrite using `[hFinv]`. Establish `e1 : ((bc (q.phi P) (qGL n fr.symm) : GL (Fin n) _) : Matrix (Fin n) (Fin n) _) *ᵥ (fun k => qPi q P (iA F E (w k))) = fun k => q.phi P ((fr.symm w) k)`.
+
+Use function extensionality and compare the values at `k`. Rewrite using `[← toGLm_mulVec fr.symm w]`. Conclude with `(RingHom.map_mulVec (q.phi P) _ w k).symm`. Rewrite using `[e1]`. Conclude with `hfrN w (by rw [hN]; exact hw) i`.
+
+Consider the case `zero`. Introduce `i`. Establish `e0 : (fun k => qPi q P ((0 : Fin n → E ⊗[F] Formalism.L2.Herm.Af F) k)) = 0` using `by funext k; simp`. Rewrite using `[e0, Matrix.mulVec_zero]`. Conclude with `zero_mem _`.
+
+Consider the case `add z1 z2 _ _ h1 h2`. Introduce `i`. Establish `e2 : (fun k => qPi q P ((z1 + z2) k)) = (fun k => qPi q P (z1 k)) + (fun k => qPi q P (z2 k))`. Use function extensionality and compare the values at `k`. Simplify using the standard rewrite rules.
+
+Rewrite using `[e2, Matrix.mulVec_add]`. Conclude with `add_mem (h1 i) (h2 i)`. Consider the case `smul a z1 _ h1`. Introduce `i`. Establish `e2 : (fun k => qPi q P ((a • z1) k)) = qPi q P (a : E ⊗[F] Formalism.L2.Herm.Af F) • (fun k => qPi q P (z1 k))`.
+
+Use function extensionality and compare the values at `k`. Use `show qPi q P ((a : E ⊗[F] Formalism.L2.Herm.Af F) * z1 k) = _`. Rewrite using `[map_mul]`. Both sides reduce to the same expression. Rewrite using `[e2, Matrix.mulVec_smul]`.
+
+Conclude with `mul_mem (qdf_pi_int q P a.2) (h1 i)`. Introduce `i j`. Establish `hz : (fun k => (xm : Matrix (Fin n) (Fin n) _) k j) ∈ Formalism.L2.Herm.hatL (F` using `F) (Formalism.UG.CS.globLat (x : GL (Fin n) (E ⊗[F] Formalism.L2.Herm.Af F)) (stdLat E n)) := by`. Use `(Formalism.UG.P.span_recovery_of_integral_adelic_approx Formalism.UG.P.integral_adele_approximation_holds F E (Fin n) (stdLat E n) (Module.Finite.iff_fg.2 (stdLat_lattice (E := E) (n := n)).fg) (stdLat_lattice (E := E) (n := n)).span_eq_top xm _).2 ?_` and prove the remaining obligations. Establish `e3 : (((xm⁻¹ : GL (Fin n) _) : Matrix (Fin n) (Fin n) _) *ᵥ fun k => (xm : Matrix (Fin n) (Fin n) _) k j) = fun k => iA F E ((Pi.single j (1 : E) : Sp E n) k)`.
+
+Establish `: (fun k => (xm : Matrix (Fin n) (Fin n) _) k j) = (xm : Matrix (Fin n) (Fin n) (E ⊗[F] Formalism.L2.Herm.Af F)) *ᵥ Pi.single j (1 : E ⊗[F] Formalism.L2.Herm.Af F)`. Use function extensionality and compare the values at `k`. Rewrite using `[Matrix.mulVec_single_one]`. Both sides reduce to the same expression. Rewrite using `[this, Matrix.mulVec_mulVec, Units.inv_mul, Matrix.one_mulVec]`.
+
+Use function extensionality and compare the values at `k`. Distinguish the cases in `hk : k = j`. Substitute `hk` using the available equality. Simplify using the standard rewrite rules. Simplify using `[Pi.single_apply, hk]`.
+
+Rewrite using `[e3]`. Conclude with `Submodule.subset_span ⟨Pi.single j 1, by`. Use `single_mem_stdLat (E := E) (n := n) j 1` as an intermediate fact. Simplify using `using this, rfl⟩`. Use `key _ hz i` as an intermediate fact.
+
+Establish `e7 : ((((bc (q.phi P) (qGL n fr))⁻¹ * q.at P xm : GL (Fin n) _) : Matrix (Fin n) (Fin n) _) i j) = ((((bc (q.phi P) (qGL n fr))⁻¹ : GL (Fin n) _) : Matrix (Fin n) (Fin n) _) *ᵥ fun k => qPi q P ((xm : Matrix (Fin n) (Fin n) _) k j)) i`. Rewrite using `[Units.val_mul, qdf_at_val]`. Both sides reduce to the same expression. Rewrite using `[e7]`. Conclude with `this`.
+
+Introduce `i j`. Establish `e0 : (((bc (q.phi P) (qGL n fr))⁻¹ * q.at P x)⁻¹ : GL (Fin n) _) = (q.at P x)⁻¹ * bc (q.phi P) (qGL n fr)`. Rewrite using `[_root_.mul_inv_rev, inv_inv]`. Rewrite using `[e0]`. Establish `hcol : fr (Pi.single j 1) ∈ p.deco.1.at P.1` using `(p.2 P (Pi.single j 1)).2 ((mem_localization_standardLattice P.1 _).2 fun k => ⟨if k = j then 1 else 0, 1, P.1.isPrime.one_notMem, by`.
+
+Apply the tactic sequence `by_cases hk : k = j <;> simp [Pi.single_apply, hk]⟩)`. Take `⟨s, hs, hsN⟩` from `(mem_locP P.1 _ _).1 hcol`. Rewrite `hsN` using `[hN]`. Establish `hpull` using `(mem_globLat x.1 (s • fr (Pi.single j 1))).1 hsN`. Take `⟨hne, hinv⟩` from `qdf_phi_unit q P hs`.
+
+Establish `e4 : ((((q.at P x)⁻¹ * bc (q.phi P) (qGL n fr) : GL (Fin n) _)) : Matrix (Fin n) (Fin n) _) i j = (q.phi P (s : E))⁻¹ * qPi q P (pullV x.1 (s • fr (Pi.single j 1)) i)`. Establish `e5 : qPi q P (pullV x.1 (s • fr (Pi.single j 1)) i) = ((((q.at P x)⁻¹ : GL (Fin n) _) : Matrix (Fin n) (Fin n) _) *ᵥ fun k => q.phi P ((s • fr (Pi.single j 1)) k)) i`. Unfold `pullV`. Rewrite using `[RingHom.map_mulVec, ← qdf_at_inv, qdf_at_val]`. Both sides reduce to the same expression.
+
+Rewrite using `[e5]`. Establish `e6 : (fun k => q.phi P ((s • fr (Pi.single j 1)) k)) = q.phi P (s : E) • fun k => q.phi P ((fr (Pi.single j 1)) k)`. Use function extensionality and compare the values at `k`. Simplify using `[Submodule.smul_def, Algebra.smul_def]`. Rewrite using `[e6, Matrix.mulVec_smul, Pi.smul_apply, smul_eq_mul, ← mul_assoc, inv_mul_cancel₀ hne, one_mul, Units.val_mul, Matrix.mul_apply]`.
+
+Rewrite using `[Matrix.mulVec, dotProduct]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Use `congr 1`. Rewrite using `[e4]`. Conclude with `mul_mem hinv (qdf_pi_int q P (hpull i))`.
+-/
 theorem qdf_frLat (q : QLoc hc n Q Θ) : FrLat ST SG q := by
   intro x p hx P
   have hN : p.deco.1.N = Formalism.UG.CS.globLat (x : GL (Fin n) (E ⊗[F] Formalism.L2.Herm.Af F)) (stdLat E n) := by

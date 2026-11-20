@@ -10,6 +10,15 @@ noncomputable section
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Establish `: CompleteSpace V₁` using `FiniteDimensional.complete ℂ V₁`. Establish `: CompleteSpace V₂` using `FiniteDimensional.complete ℂ V₂`. Establish `hp : ∀ n : ℕ, ∀ v, T ((A₁ ^ n) v) = (A₂ ^ n) (T v)`. Introduce `n`. Proceed by induction on `n with`.
+
+Consider the case `zero => intro v`. Simplify using the standard rewrite rules. Consider the case `succ n ih`. Introduce `v`. Rewrite using `[pow_succ, pow_succ, mul_apply_eq_comp, mul_apply_eq_comp, ih, h]`.
+
+Establish `h1` using `((LinearMap.toContinuousLinearMap T).comp (ContinuousLinearMap.apply ℂ V₁ v)).hasSum (NormedSpace.exp_series_hasSum_exp' (𝕂 := ℂ) A₁)`. Establish `h2` using `(ContinuousLinearMap.apply ℂ V₂ (T v)).hasSum (NormedSpace.exp_series_hasSum_exp' (𝕂 := ℂ) A₂)`. Use `h1.unique (h2.congr_fun ?_)` and prove the remaining obligations. Introduce `n`. Use `show T (((n.factorial : ℂ)⁻¹) • (A₁ ^ n) v) = ((n.factorial : ℂ)⁻¹) • (A₂ ^ n) (T v)`.
+
+Rewrite using `[map_smul, hp]`.
+-/
 theorem intertwiner_exp_of_intertwiner {V₁ : Type} [NormedAddCommGroup V₁] [NormedSpace ℂ V₁] [FiniteDimensional ℂ V₁]
     {V₂ : Type} [NormedAddCommGroup V₂] [NormedSpace ℂ V₂] [FiniteDimensional ℂ V₂]
     (T : V₁ →ₗ[ℂ] V₂) {A₁ : V₁ →L[ℂ] V₁} {A₂ : V₂ →L[ℂ] V₂} (h : ∀ v, T (A₁ v) = A₂ (T v)) (v : V₁) :
@@ -31,6 +40,21 @@ theorem intertwiner_exp_of_intertwiner {V₁ : Type} [NormedAddCommGroup V₁] [
   show T (((n.factorial : ℂ)⁻¹) • (A₁ ^ n) v) = ((n.factorial : ℂ)⁻¹) • (A₂ ^ n) (T v)
   rw [map_smul, hp]
 
+/- English proof (translation)
+Establish `hE` using `elementary_lie_elements`. Set `Gd : Mx k r → Prop` to `fun Z => InGlW k r z Z ∧ ∀ v, T (ecOp π₁ Z v) = ecOp π₂ Z (T v)`. Establish `gadd : ∀ Z Z', Gd Z → Gd Z' → Gd (Z + Z')`. Introduce `Z Z' h h'`. Establish `e₁` using `(hE V₁ k r z π₁ h₁ Z Z' h.1 h'.1).1`.
+
+Establish `e₂` using `(hE V₂ k r z π₂ h₂ Z Z' h.1 h'.1).1`. Use `⟨e₁.1, fun v => ?_⟩` and prove the remaining obligations. Rewrite using `[e₁.2, e₂.2, _root_.add_apply, _root_.add_apply, map_add, h.2, h'.2]`. Establish `gsmul : ∀ (c : ℂ) Z, Gd Z → Gd (c • Z)`. Introduce `c Z h`.
+
+Establish `e₁` using `(hE V₁ k r z π₁ h₁ Z Z h.1 h.1).2.1 c`. Establish `e₂` using `(hE V₂ k r z π₂ h₂ Z Z h.1 h.1).2.1 c`. Use `⟨e₁.1, fun v => ?_⟩` and prove the remaining obligations. Rewrite using `[e₁.2, e₂.2, _root_.smul_apply, _root_.smul_apply, map_smul, h.2]`. Establish `g0 : Gd 0`.
+
+Use `⟨SkewHermitianParts.inGl_zero z, fun v => ?_⟩` and prove the remaining obligations. Establish `e₁` using `((hE V₁ k r z π₁ h₁ 0 0 (SkewHermitianParts.inGl_zero z) (SkewHermitianParts.inGl_zero z)).2.1 0).2`. Establish `e₂` using `((hE V₂ k r z π₂ h₂ 0 0 (SkewHermitianParts.inGl_zero z) (SkewHermitianParts.inGl_zero z)).2.1 0).2`. Rewrite `e₁`, `e₂` using `[zero_smul, zero_smul]`. Rewrite using `[e₁, e₂]`.
+
+Simplify using the standard rewrite rules. Establish `gu : ∀ a b, Gd (unitB (Hpk k r) B a b)` using `fun a b => ⟨frame_lie hB a b, fun v => hT a b v⟩`. Establish `hsum : Gd (∑ a, ∑ b, herm (Hpk k r) (X *ᵥ B b) (B a) • unitB (Hpk k r) B a b)` using `Finset.sum_induction _ Gd gadd g0 fun a _ => Finset.sum_induction _ Gd gadd g0 fun b _ => gsmul _ _ (gu a b)`. Rewrite `hsum` using `[← SkewHermitianParts.lie_expand hz hzz hB hX]`. Establish `e₁ : ecOp π₁ X = dOp π₁ X`.
+
+Unfold `ecOp`. Rewrite using `[SkewHermitianParts.hpart1_skew hX.1.1, SkewHermitianParts.hpart2_skew hX.1.1, SkewHermitianParts.dOp_zero, smul_zero, add_zero]`. Establish `e₂ : ecOp π₂ X = dOp π₂ X`. Unfold `ecOp`. Rewrite using `[SkewHermitianParts.hpart1_skew hX.1.1, SkewHermitianParts.hpart2_skew hX.1.1, SkewHermitianParts.dOp_zero, smul_zero, add_zero]`.
+
+Rewrite using `[← e₁, ← e₂]`. Conclude with `hsum.2`.
+-/
 theorem intertwiner_dOp_of_EB {V₁ : Type} [NormedAddCommGroup V₁] [NormedSpace ℂ V₁] [FiniteDimensional ℂ V₁]
     {V₂ : Type} [NormedAddCommGroup V₂] [NormedSpace ℂ V₂] [FiniteDimensional ℂ V₂] {k r : ℕ}
     {z : Fin (2 * r + k + 1) → ℂ} {π₁ : Mx k r → (V₁ →L[ℂ] V₁)} {π₂ : Mx k r → (V₂ →L[ℂ] V₂)} (T : V₁ →ₗ[ℂ] V₂)
@@ -73,6 +97,17 @@ theorem intertwiner_dOp_of_EB {V₁ : Type} [NormedAddCommGroup V₁] [NormedSpa
   rw [← e₁, ← e₂]
   exact hsum.2
 
+/- English proof (translation)
+Introduce `V₁ _ _ _ V₂ _ _ _ k r z π₁ π₂ T B hz hTz h₁ h₂ hB hT h hh`. Establish `hzz : herm (Hpk k r) z z ≠ 0`. Rewrite using `[Qx8.herm_self']`. Introduce `h0`. Rewrite `h0` using `[neg_eq_zero, Complex.ofReal_eq_zero]`.
+
+Conclude with `hTz.ne' h0`. Use `(exp_generates k r z hz hTz (fun h => h ∈ UWset k r z ∧ ∀ v, T (π₁ h v) = π₂ h (T v)) ⟨Qx8.uw_one z, fun v => ?_⟩ ?_ h hh).2` and prove the remaining obligations. Rewrite using `[h₁.1.1, h₂.1.1]`. Both sides reduce to the same expression. Introduce `X g hX hg`.
+
+Establish `e0 : NormedSpace.exp X ∈ UWset k r z`. Use `exp_uw hX 1` as an intermediate fact. Simplify using `using this`. Establish `e₁ : π₁ (NormedSpace.exp X) = NormedSpace.exp (dOp π₁ X)`. Use `representation_exp V₁ k r z π₁ h₁ X hX 1` as an intermediate fact.
+
+Simplify using `using this`. Establish `e₂ : π₂ (NormedSpace.exp X) = NormedSpace.exp (dOp π₂ X)`. Use `representation_exp V₂ k r z π₂ h₂ X hX 1` as an intermediate fact. Simplify using `using this`. Use `⟨SkewHermitianParts.uw_mul e0 hg.1, fun v => ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[h₁.1.2 _ e0 _ hg.1, h₂.1.2 _ e0 _ hg.1, e₁, e₂]`. Use `show T (NormedSpace.exp (dOp π₁ X) (π₁ g v)) = NormedSpace.exp (dOp π₂ X) (π₂ g (T v))`. Rewrite using `[intertwiner_exp_of_intertwiner T (intertwiner_dOp_of_EB T hz hzz h₁ h₂ hB hT hX), hg.2]`.
+-/
 theorem intertwiner_group_of_EB : ∀ (V₁ : Type) [NormedAddCommGroup V₁] [NormedSpace ℂ V₁] [FiniteDimensional ℂ V₁] (V₂ : Type) [NormedAddCommGroup V₂] [NormedSpace ℂ V₂] [FiniteDimensional ℂ V₂] (k r : ℕ) (z : (Fin (2 * r + k + 1) → ℂ)) (π₁ : Mx k r → (V₁ →L[ℂ] V₁)) (π₂ : Mx k r → (V₂ →L[ℂ] V₂)) (T : V₁ →ₗ[ℂ] V₂) (B : Fin k → (Fin (2 * r + k + 1) → ℂ)), inWb k r z → 0 < Tz k r z → IsRepW k r z π₁ → IsRepW k r z π₂ → IsFrameOf k r [z] B → (∀ a b v, T (EB π₁ B a b v) = EB π₂ B a b (T v)) → ∀ h ∈ UWset k r z, ∀ v, T (π₁ h v) = π₂ h (T v) := by
   intro V₁ _ _ _ V₂ _ _ _ k r z π₁ π₂ T B hz hTz h₁ h₂ hB hT h hh
   have hzz : herm (Hpk k r) z z ≠ 0 := by

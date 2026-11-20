@@ -12,6 +12,11 @@ open Formalism.MainNotions.PairedCharacterCondition Polynomial
 noncomputable section
 namespace GlobalTheory.InertiaChars
 
+/- English proof (translation)
+Introduce `l _ P K K' h hN hF hS g hg c`. Establish `hfix` using `GlobalTheory.BKGal.UnitModel.fix_Kur hg`. Establish `hc : (c : Om l) ∈ MaximalUnramifiedExtension l` using `(IntermediateField.mem_inf.1 c.2).2`. Use `show (P.PD K).actB g (algebraMap ↥(K0 K') P.R.B c) = algebraMap ↥(K0 K') P.R.B c`. Rewrite using `[P.PD_actB]`.
+
+Conclude with `P.actQ_Kur (g : GQ l) ⟨c, hc⟩ ⟨c, hc⟩ ((IntermediateField.mem_fixingSubgroup_iff _ _).1 hfix c hc)`.
+-/
 theorem IK_le_iner : ∀ (l : ℕ) [Fact l.Prime] (P : LocPrime l) (K K' : FinExt l) (h : K.1 ≤ K'.1) (hN : (GKin h).Normal) (hF : (GKin h).FiniteIndex) (hS : ∀ (g : ↥(GK K)) (c : ↥(K0 K')), ∃ c' : ↥(K0 K'), (P.PD K).actB g (algebraMap ↥(K0 K') P.R.B c) = algebraMap ↥(K0 K') P.R.B c'), IK K ≤ (pc P h hN hF hS).Iner := by
   intro l _ P K K' h hN hF hS g hg c
   have hfix := GlobalTheory.BKGal.UnitModel.fix_Kur hg
@@ -20,6 +25,13 @@ theorem IK_le_iner : ∀ (l : ℕ) [Fact l.Prime] (P : LocPrime l) (K K' : FinEx
   rw [P.PD_actB]
   exact P.actQ_Kur (g : GQ l) ⟨c, hc⟩ ⟨c, hc⟩ ((IntermediateField.mem_fixingSubgroup_iff _ _).1 hfix c hc)
 
+/- English proof (translation)
+Introduce `l hl F _ _ y n hn hy`. Rewrite using `[Nat.coprime_comm, Nat.Prime.coprime_iff_not_dvd hl.out]`. Introduce and unpack `⟨M, hM⟩`. Establish `hpos : 0 < orderOf y` using `orderOf_pos_iff.2 (isOfFinOrder_iff_pow_eq_one.2 ⟨n, hn, hy⟩)`. Establish `hz : (y ^ M) ^ l = 1` using `by rw [← pow_mul, mul_comm, ← hM, pow_orderOf_eq_one]`.
+
+Establish `h1 : ((y ^ M : Fˣ) : F) ^ l = 1` using `by rw [← Units.val_pow_eq_pow_val, hz, Units.val_one]`. Establish `h2 : (((y ^ M : Fˣ) : F) - 1) ^ l = 0` using `by rw [sub_pow_char, h1, one_pow, sub_self]`. Establish `h3 : ((y ^ M : Fˣ) : F) = 1` using `sub_eq_zero.1 (pow_eq_zero_iff hl.out.ne_zero |>.1 h2)`. Establish `hz1 : y ^ M = 1` using `Units.ext h3`. Establish `hMpos : 0 < M` using `Nat.pos_of_mul_pos_left (hM ▸ hpos)`.
+
+Establish `hdvd` using `Nat.le_of_dvd hMpos (orderOf_dvd_of_pow_eq_one hz1)`. Establish `hl2` using `hl.out.two_le`. Rewrite `hdvd` using `[hM]`. Use the polynomial consequences of the given equalities and inequalities.
+-/
 theorem coprime_orderOf : ∀ (l : ℕ) [Fact l.Prime] {F : Type} [Field F] [CharP F l] (y : Fˣ) (n : ℕ), 0 < n → y ^ n = 1 → Nat.Coprime (orderOf y) l := by
   intro l hl F _ _ y n hn hy
   rw [Nat.coprime_comm, Nat.Prime.coprime_iff_not_dvd hl.out]
@@ -36,6 +48,19 @@ theorem coprime_orderOf : ∀ (l : ℕ) [Fact l.Prime] {F : Type} [Field F] [Cha
   rw [hM] at hdvd
   nlinarith
 
+/- English proof (translation)
+Introduce `G F _ _ I c n hn hc Sig hSig`. Use `haveI : NeZero n := ⟨hn.ne'⟩`. Establish `hle : c.range ≤ rootsOfUnity n F`. Introduce and unpack `_ ⟨g, rfl⟩`. Rewrite using `[mem_rootsOfUnity]`.
+
+Conclude with `hc g`. Use `haveI : Finite c.range := Finite.of_injective (Subgroup.inclusion hle) (Subgroup.inclusion_injective hle)`. Use `haveI : IsCyclic c.range := isCyclic_of_subgroup_isDomain ((Units.coeHom F).comp c.range.subtype) (fun x y hxy => Subtype.ext (Units.ext hxy))`. Take `⟨x, hx⟩` from `IsCyclic.exists_monoid_generator (α := c.range)`. Take `⟨γ, hγ⟩` from `x.2`.
+
+Establish `hgen : ∀ g, ∃ m : ℕ, c g = c γ ^ m`. Introduce `g`. Take `⟨m, hm⟩` from `Submonoid.mem_powers_iff _ _ |>.1 (hx ⟨c g, g, rfl⟩)`. Use `⟨m, ?_⟩` and prove the remaining obligations. Use `congrArg Subtype.val hm` as an intermediate fact.
+
+Rewrite `this` using `[SubmonoidClass.coe_pow, ← hγ]`. Conclude with `this.symm`. Use `⟨γ, fun a ha b hb hab => ?_, fun g => ?_⟩` and prove the remaining obligations. Take `⟨ka, hka⟩` from `hSig a ha`. Take `⟨kb, hkb⟩` from `hSig b hb`.
+
+Use `ext1 g`. Take `⟨m, hm⟩` from `hgen g`. Rewrite using `[hka g, hkb g, hm, ← pow_mul, ← pow_mul, mul_comm m ka, mul_comm m kb, pow_mul, pow_mul, ← hka γ, ← hkb γ, hab]`. Take `⟨m, hm⟩` from `hgen g`. Use `⟨m, (γ ^ m)⁻¹ * g, fun a ha => ?_, by rw [mul_inv_cancel_left]⟩` and prove the remaining obligations.
+
+Take `⟨k, hk⟩` from `hSig a ha`. Rewrite using `[hk, map_mul, map_inv, map_pow, hm, inv_mul_cancel, one_pow]`.
+-/
 theorem exists_gen : ∀ {G F : Type} [Group G] [Field F] (I : Subgroup G) (c : ↥I →* Fˣ) (n : ℕ), 0 < n → (∀ g, c g ^ n = 1) → ∀ (Sig : Finset (↥I →* Fˣ)), (∀ a ∈ Sig, ∃ k : ℕ, ∀ g, a g = c g ^ k) → ∃ γ : ↥I, (∀ a ∈ Sig, ∀ b ∈ Sig, a γ = b γ → a = b) ∧ ∀ g : ↥I, ∃ (m : ℕ) (u : ↥I), (∀ a ∈ Sig, a u = 1) ∧ g = γ ^ m * u := by
   intro G F _ _ I c n hn hc Sig hSig
   haveI : NeZero n := ⟨hn.ne'⟩
@@ -80,6 +105,9 @@ variable {G : Type} [Group G] {Qp K₀ K : Type} [Field Qp] [Field K₀] [Field 
     {V : Type} [AddCommGroup V] [Module LL V] [Module Qp V] [IsScalarTower Qp LL V]
     (ρ : Representation LL G V)
 
+/- English proof (translation)
+Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul v b => simp [actVB]`. Consider the case `add x y hx hy => simp only [map_add, hx, hy]`.
+-/
 theorem actVB_mul (g g' : G) (x : V ⊗[Qp] B) :
     actVB PD ρ (g * g') x = actVB PD ρ g (actVB PD ρ g' x) := by
   induction x using TensorProduct.induction_on with
@@ -87,18 +115,27 @@ theorem actVB_mul (g g' : G) (x : V ⊗[Qp] B) :
   | tmul v b => simp [actVB]
   | add x y hx hy => simp only [map_add, hx, hy]
 
+/- English proof (translation)
+Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul v b => simp [actVB]`. Consider the case `add x y hx hy => simp only [map_add, hx, hy]`.
+-/
 theorem actVB_one (x : V ⊗[Qp] B) : actVB PD ρ 1 x = x := by
   induction x using TensorProduct.induction_on with
   | zero => simp
   | tmul v b => simp [actVB]
   | add x y hx hy => simp only [map_add, hx, hy]
 
+/- English proof (translation)
+Proceed by induction on `n with`. Consider the case `zero => simp [actVB_one]`. Consider the case `succ n ih => rw [pow_succ', actVB_mul, ih, pow_succ', Module.End.mul_apply]`.
+-/
 theorem actVB_pow (g : G) (n : ℕ) (x : V ⊗[Qp] B) :
     actVB PD ρ (g ^ n) x = (actVB PD ρ g ^ n) x := by
   induction n with
   | zero => simp [actVB_one]
   | succ n ih => rw [pow_succ', actVB_mul, ih, pow_succ', Module.End.mul_apply]
 
+/- English proof (translation)
+Rewrite using `[aeval_eq_sum_range' hN, LinearMap.sum_apply]`. Use `Finset.sum_congr rfl fun n _ => ?_` and prove the remaining obligations. Rewrite using `[LinearMap.smul_apply, actVB_pow]`.
+-/
 theorem aeval_actVB (g : G) (q : LL[X]) {N : ℕ} (hN : q.natDegree < N) (x : V ⊗[Qp] B) :
     (aeval (actVB PD ρ g) q) x = ∑ n ∈ Finset.range N, q.coeff n • actVB PD ρ (g ^ n) x := by
   rw [aeval_eq_sum_range' hN, LinearMap.sum_apply]
@@ -107,6 +144,13 @@ theorem aeval_actVB (g : G) (q : LL[X]) {N : ℕ} (hN : q.natDegree < N) (x : V 
 
 end Helpers
 
+/- English proof (translation)
+Establish `hpow : ∀ n : ℕ, actVB PC.PD ρ (g ^ n) x = actVB PC.PD ρ (s ^ n) x ∧ actVB PC.PD ρ (s ^ n) x ∈ PC.Dpcris ρ`. Introduce `n`. Proceed by induction on `n with`. Consider the case `zero => exact ⟨by rw [pow_zero, pow_zero], by rw [pow_zero, actVB_one]; exact hx⟩`. Consider the case `succ n ih`.
+
+Establish `hy` using `ih.2`. Establish `e1 : actVB PC.PD ρ g (actVB PC.PD ρ (s ^ n) x) = actVB PC.PD ρ s (actVB PC.PD ρ (s ^ n) x)`. Rewrite using `[show g = s * (s⁻¹ * g) by group, actVB_mul, (GlobalTheory.PassPoly.mem_Dpcris_iff PC ρ _).1 hy _ hgs]`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Rewrite using `[pow_succ', actVB_mul, ih.1, e1, ← actVB_mul, ← pow_succ']`.
+
+Rewrite using `[pow_succ', actVB_mul]`. Conclude with `GlobalTheory.PassPoly.Dpcris_stable PC ρ s _ hy`. Rewrite using `[aeval_actVB PC.PD ρ g q (Nat.lt_succ_self _), aeval_actVB PC.PD ρ s q (Nat.lt_succ_self _)]`. Conclude with `Finset.sum_congr rfl fun n _ => by rw [(hpow n).1]`.
+-/
 theorem aeval_eq_of_mem_Dpcris {G : Type} [Group G] {Qp K₀ K K₀' K' : Type} [Field Qp] [Field K₀] [Field K]
     [Field K₀'] [Field K']
     [Algebra Qp K₀] [Algebra Qp K] [Algebra K₀ K] [IsScalarTower Qp K₀ K]
@@ -140,6 +184,11 @@ theorem aeval_eq_of_mem_Dpcris {G : Type} [Group G] {Qp K₀ K K₀' K' : Type} 
   rw [aeval_actVB PC.PD ρ g q (Nat.lt_succ_self _), aeval_actVB PC.PD ρ s q (Nat.lt_succ_self _)]
   exact Finset.sum_congr rfl fun n _ => by rw [(hpow n).1]
 
+/- English proof (translation)
+Proceed by induction on `M using Multiset.induction_on with`. Consider the case `empty => simp`. Consider the case `cons y M ih`. Rewrite using `[Multiset.map_cons, Multiset.prod_cons, Multiset.card_cons, pow_succ']`. Take `⟨a, ha, hya⟩` from `h y (Multiset.mem_cons_self y M)`.
+
+Use `mul_dvd_mul ?_ (ih fun z hz => h z (Multiset.mem_cons_of_mem hz))` and prove the remaining obligations. Rewrite using `[hya]`. Conclude with `Finset.dvd_prod_of_mem (fun a => X - C (v a)) ha`.
+-/
 theorem prod_dvd_pow {R α β : Type} [CommRing R] [DecidableEq β] (M : Multiset α) (Sig : Finset β)
     (f : α → R) (v : β → R) (h : ∀ y ∈ M, ∃ a ∈ Sig, f y = v a) :
     (M.map fun y => X - C (f y)).prod ∣ (∏ a ∈ Sig, (X - C (v a))) ^ Multiset.card M := by
@@ -155,6 +204,43 @@ theorem prod_dvd_pow {R α β : Type} [CommRing R] [DecidableEq β] (M : Multise
 set_option maxHeartbeats 4000000 in
 open Classical in
 
+/- English proof (translation)
+Introduce `D P hTie hIE i k hik w hw Y hY K' h hN hF hS hH`. Establish `hn : 0 < D.what₂.restRowsFiniteGroupCard` using `D.what₂.restRowsFiniteGroupCard_pos`. Use `haveI : NeZero D.what₂.restRowsFiniteGroupCard := ⟨hn.ne'⟩`. Establish `hιinj : Function.Injective (iotaO D.nd D.naut i)` using `(((D.naut.iotaQC i).toRingHom.comp (D.naut.iotaQ i)).injective).comp (IsFractionRing.injective (D.nd.O i) (FractionRing (D.nd.O i)))`. Take `⟨ζ, hζ⟩` from `P.zetaPrimitiveRoot i`.
+
+Set `ιg : ↥(GK (D.nbr i w hw).Kw) →* GE D.nd` to `(decS D.nd w).comp (D.nbr i w hw).e.symm.toMonoidHom`. Establish `hιg : ∀ s, ιg s = (((D.nbr i w hw).e.symm s : Gw D.nd w) : GE D.nd)` using `fun s => rfl`. Establish `hIne : ∀ s ∈ IK (D.nbr i w hw).Kw, ιg s ∈ Ine (F` using `D.host.E) (D.nd.plOm.1 w) := by`. Introduce `s hs`. Rewrite `hs` using `[← hIE i w hw]`.
+
+Conclude with `hs`. Take `⟨Ψ, hΨ⟩` from `GlobalTheory.exists_rootsOfUnity_character_hom (Γ := ↥(IK (D.nbr i w hw).Kw)) (F := Fb (D.host.g k) (D.host.g_prime k)) (LL := ↥(D.nbr i w hw).LL.1) D.what₂.restRowsFiniteGroupCard hn (fun x s => P.om k w x (ιg s)) (fun x hx => by simpa using P.om_one k w x hx) (fun x hx s s' => …`. Simplify using `using P.om_mul k w x hx _ (hIne s s.2) _ (hIne s' s'.2))`. Use the proof step `(fun x y hx hy s => P.tameInertiaChar_mul_root k w x y hx hy _ (hIne s s.2))`. Use the proof step `(iotaO D.nd D.naut i) hιinj ζ hζ (D.nbr i w hw).toLL`.
+
+Establish `hdec : ∀ g ∈ (pc (D.loc (D.nd.l i)) h hN hF hS).Iner, ∃ s ∈ IK (D.nbr i w hw).Kw, s⁻¹ * g ∈ GKin h` using `fun g hg => GlobalTheory.InertiaDecomp.iner_decomp _ (D.loc (D.nd.l i)) _ K' h hN hF hS g hg`. Establish `hYu : ∀ y ∈ (Y : Set (Fb (D.host.g k) (D.host.g_prime k))), ∃ u : ↥(rootsOfUnity D.what₂.restRowsFiniteGroupCard (Fb (D.host.g k) (D.host.g_prime k))), ((u : (Fb (D.host.g k) (D.host.g_prime k))ˣ) : Fb (D.host.g k) (D.host.g_prime k)) = y`. Introduce `y hy`. Take `⟨hy0, hyn⟩` from `hY y hy`. Use `⟨⟨Units.mk0 y hy0, ?_⟩, rfl⟩` and prove the remaining obligations.
+
+Rewrite using `[mem_rootsOfUnity]; exact Units.ext (by simpa using hyn)`. Establish `hYH : ∀ u : ↥(rootsOfUnity D.what₂.restRowsFiniteGroupCard (Fb (D.host.g k) (D.host.g_prime k))), ((u : (Fb (D.host.g k) (D.host.g_prime k))ˣ) : Fb (D.host.g k) (D.host.g_prime k)) ∈ (Y : Set (Fb (D.host.g k) (D.host.g_prime k))) → ∀ s : ↥(IK (D.nbr i w hw).Kw), (s : ↥(GK (D.nbr …`. Introduce `u hu s hs`. Take `⟨o, ho, ho'⟩` from `hΨ u s`. Establish `h1 : P.om k w ((u : (Fb (D.host.g k) (D.host.g_prime k))ˣ) : Fb (D.host.g k) (D.host.g_prime k)) (ιg s) = 1` using `hH _ hu s hs (hIne s s.2)`.
+
+Establish `h2 : o = 1` using `hιinj (by rw [ho, map_one]; exact h1)`. Conclude with `Units.ext (by rw [ho', h2, map_one]; rfl)`. Establish `X8` using `GlobalTheory.extend_characters_and_generator (G := ↥(GK (D.nbr i w hw).Kw)) (F := Fb (D.host.g k) (D.host.g_prime k)) (LL := ↥(D.nbr i w hw).LL.1) (pc (D.loc (D.nd.l i)) h hN hF hS).Iner (IK (D.nbr i w hw).Kw) (GKin h) hN (IK_le_iner _ (D.loc (D.nd.l i)) _ K' h hN hF hS) hdec D.w …`. Take `⟨ch, hch, c, hc, hck⟩` from `X8`. Use `⟨ch, fun S hSY m R hcont hpot M hMS hPol => ?_⟩` and prove the remaining obligations.
+
+Establish `hSu : ∀ y ∈ S, ∃ u : ↥(rootsOfUnity D.what₂.restRowsFiniteGroupCard (Fb (D.host.g k) (D.host.g_prime k))), ((u : (Fb (D.host.g k) (D.host.g_prime k))ˣ) : Fb (D.host.g k) (D.host.g_prime k)) = y ∧ ((u : (Fb (D.host.g k) (D.host.g_prime k))ˣ) : Fb (D.host.g k) (D.host.g_prime k)) ∈ …`. Introduce `y hy`. Take `⟨u, hu⟩` from `hYu y (hSY hy)`. Conclude with `⟨u, hu, hu ▸ hSY hy⟩`. Establish `G1 : ∀ a ∈ S.image ch, ∀ g : (pc (D.loc (D.nd.l i)) h hN hF hS).Iner, (g : ↥(GK (D.nbr i w hw).Kw)) ∈ (pc (D.loc (D.nd.l i)) h hN hF hS).H → a g = 1`.
+
+Introduce `a ha g hg`. Use `Exists.elim (Finset.mem_image.1 ha) fun y hy => ?_` and prove the remaining obligations. Use `Exists.elim (hSu y hy.1) fun u hu => ?_` and prove the remaining obligations. Rewrite using `[← hy.2, ← hu.1, hch u hu.2 g 1 (IK (D.nbr i w hw).Kw).one_mem (by rw [inv_one, one_mul]; exact hg)]`. Conclude with `map_one (Ψ u)`.
+
+Establish `G2 : ∀ a ∈ S.image ch, Nat.Coprime (orderOf a) (D.nd.l i)`. Introduce `a ha`. Use `Exists.elim (Finset.mem_image.1 ha) fun y hy => ?_` and prove the remaining obligations. Use `Exists.elim (hSu y hy.1) fun u hu => ?_` and prove the remaining obligations. Establish `hu1 : u ^ orderOf (u : (Fb (D.host.g k) (D.host.g_prime k))ˣ) = 1` using `Subtype.ext (by rw [SubmonoidClass.coe_pow, pow_orderOf_eq_one]; rfl)`.
+
+Establish `hpow : a ^ orderOf (u : (Fb (D.host.g k) (D.host.g_prime k))ˣ) = 1`. Use extensionality with `g`. Use `Exists.elim (hdec g g.2) fun s hs => ?_` and prove the remaining obligations. Rewrite using `[MonoidHom.pow_apply, ← hy.2, ← hu.1, hch u hu.2 g s hs.1 hs.2, ← MonoidHom.pow_apply, ← map_pow, hu1, map_one]`. Both sides reduce to the same expression.
+
+Establish `hchar : CharP (Fb (D.host.g k) (D.host.g_prime k)) (D.host.g k)` using `by haveI : Fact (D.host.g k).Prime := ⟨D.host.g_prime k⟩ infer_instance`. Establish `hcop` using `@coprime_orderOf (D.host.g k) ⟨D.host.g_prime k⟩ _ _ hchar (u : (Fb (D.host.g k) (D.host.g_prime k))ˣ) D.what₂.restRowsFiniteGroupCard hn ((mem_rootsOfUnity _ _).1 u.2)`. Establish `hc2` using `Nat.Coprime.coprime_dvd_left (orderOf_dvd_of_pow_eq_one hpow) hcop`. Rewrite `hc2` using `[← hik]`. Then use the resulting hypothesis. Establish `G4` using `exists_gen (G := ↥(GK (D.nbr i w hw).Kw)) (F := ↥(D.nbr i w hw).LL.1) (pc (D.loc (D.nd.l i)) h hN hF hS).Iner c D.what₂.restRowsFiniteGroupCard hn hc (S.image ch) (fun a ha => by`.
+
+Use `Exists.elim (Finset.mem_image.1 ha) fun y hy => ?_` and prove the remaining obligations. Rewrite using `[← hy.2]`. Conclude with `hck y (hSY hy.1))`. Establish `G3 : ∀ g : (pc (D.loc (D.nd.l i)) h hN hF hS).Iner, ∃ m' : ℕ, ∀ d ∈ (pc (D.loc (D.nd.l i)) h hN hF hS).Dpcris ((D.nbr i w hw).rep (R.comp (decS D.nd w))), (aeval (actVB ((D.loc (D.nd.l i)).PD (D.nbr i w hw).Kw) ((D.nbr i w hw).rep (R.comp (decS D.nd w))) (g : ↥(GK (D.nbr i w hw). …`. Introduce `g`.
+
+Use `⟨Multiset.card M, fun d hd => ?_⟩` and prove the remaining obligations. Use `Exists.elim (hdec g g.2) fun s hs => ?_` and prove the remaining obligations. Establish `hσ` using `hIne s hs.1`. Establish `hO : ∀ y ∈ M, ∃ o : D.nd.O i, iotaO D.nd D.naut i o = P.om k w y (ιg s) ∧ ((ch y g : (↥(D.nbr i w hw).LL.1)ˣ) : ↥(D.nbr i w hw).LL.1) = (D.nbr i w hw).toLL o`. Introduce `y hy`.
+
+Use `Exists.elim (hSu y (hMS y hy)) fun u hu => ?_` and prove the remaining obligations. Use `Exists.elim (hΨ u ⟨s, hs.1⟩) fun o ho => ?_` and prove the remaining obligations. Use `⟨o, by rw [ho.1, hu.1], ?_⟩` and prove the remaining obligations. Rewrite using `[← hu.1, hch u hu.2 g s hs.1 hs.2, ho.2]`. Use `choose! o ho using hO`.
+
+Establish `hpmap : ((M.map fun y => X - C (o y)).prod).map (iotaO D.nd D.naut i) = D.naut.inePol (D.naut.wdOf i (mapRep (iotaOQ D.nd D.naut i) R) w) (ιg s)`. Rewrite using `[hPol _ hσ, Polynomial.map_multiset_prod, Multiset.map_map]`. Use `congr 1`. Use `Multiset.map_congr rfl fun y hy => ?_` and prove the remaining obligations. Simplify using `only [Function.comp_apply, Polynomial.map_sub, Polynomial.map_X, Polynomial.map_C, (ho y hy).1]`.
+
+Establish `hT` using `hTie i w hw K' h hN hF hS m R hcont hpot ((D.nbr i w hw).e.symm s) hσ _ hpmap d hd`. Establish `hq : ((M.map fun y => X - C (o y)).prod).map (D.nbr i w hw).toLL = (M.map fun y => X - C ((ch y g : (↥(D.nbr i w hw).LL.1)ˣ) : ↥(D.nbr i w hw).LL.1)).prod`. Rewrite using `[Polynomial.map_multiset_prod, Multiset.map_map]`. Use `congr 1`. Use `Multiset.map_congr rfl fun y hy => ?_` and prove the remaining obligations.
+
+Simplify using `only [Function.comp_apply, Polynomial.map_sub, Polynomial.map_X, Polynomial.map_C, (ho y hy).2]`. Establish `hkill : (aeval (actVB (pc (D.loc (D.nd.l i)) h hN hF hS).PD ((D.nbr i w hw).rep (R.comp (decS D.nd w))) s) (((M.map fun y => X - C (o y)).prod).map (D.nbr i w hw).toLL)) d = 0`. Rewrite using `[aeval_actVB _ _ s _ (lt_of_le_of_lt Polynomial.natDegree_map_le (Nat.lt_succ_self _))]`. Use `Eq.trans (Finset.sum_congr rfl fun n _ => ?_) hT` and prove the remaining obligations. Rewrite using `[Polynomial.coeff_map, map_pow, MulEquiv.apply_symm_apply]`.
+
+Apply the tactic sequence `try rfl`. Take `⟨r, hr⟩` from `prod_dvd_pow M (S.image ch) (fun y => ((ch y g : (↥(D.nbr i w hw).LL.1)ˣ) : ↥(D.nbr i w hw).LL.1)) (fun a => ((a g : (↥(D.nbr i w hw).LL.1)ˣ) : ↥(D.nbr i w hw).LL.1)) (fun y hy => ⟨ch y, Finset.mem_image_of_mem ch (hMS y hy), rfl⟩)`. Use `(aeval_eq_of_mem_Dpcris (pc (D.loc (D.nd.l i)) h hN hF hS) _ _ s hs.2 _ d hd).trans ?_` and prove the remaining obligations. Rewrite using `[hr, mul_comm, map_mul, Module.End.mul_apply, ← hq, hkill, map_zero]`. Conclude with `GlobalTheory.PassPolyPow.main (D.nd.l i) (D.loc (D.nd.l i)) (D.nbr i w hw).Kw K' (D.nbr i w hw).LL h hN hF hS _ _ (S.image ch) G1 G2 G3 G4`.
+-/
 theorem main : ∀ (D : D7) (P : Pend D), TieInePoly D → InertEq D → ∀ (i : D.nd.Loc) (k : Fin 2), D.nd.l i = D.host.g k →
   ∀ (w : HeightOneSpectrum (𝓞 D.host.E)) (hw : w ∈ placesOver D.host.E (D.nd.l i))
     (Y : Finset (Fb (D.host.g k) (D.host.g_prime k))), (∀ y ∈ Y, y ≠ 0 ∧ y ^ D.what₂.restRowsFiniteGroupCard = 1) →

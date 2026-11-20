@@ -10,6 +10,11 @@ open PositivityTheory.Rg.Sw PositivityTheory.Rg.Sw.LVs
 
 variable {m n : ℕ}
 
+/- English proof (translation)
+Take `⟨R, H0, κ, hR, hH0, hκ, hf⟩` from `factor y b hy hb hc`. Establish `key : ∀ s, fz m e 0 (y * nU (herm s) * b) * ψ s = ((y.det * b.det) ^ e * κ ^ (-(m : ℤ))) * (ψ s * (R * Rᴴ - Complex.I • (H0 + herm s)).det⁻¹ ^ m)`. Introduce `s`. Rewrite using `[fz_zero, hf, Matrix.det_mul, Matrix.det_mul, det_nU, mul_one]`. Simplify using `only [mul_zpow, _root_.zpow_neg, zpow_natCast, inv_pow]`.
+
+Expand and normalize the polynomial expressions, which then agree. Repeatedly rewrite using `[key]`. Rewrite using `[MeasureTheory.integral_const_mul, core2 hmn R hR H0 hH0 ψ hψ, mul_zero]`.
+-/
 theorem vanish_inv (hmn : m < n) (e : ℤ) (y b : M2 n) (hy : InG y) (hb : InG b) (hc : IsUnit y.toBlocks₂₁.det)
     (ψ : (Fin n → Fin n → ℝ) → ℂ) (hψ : IsSingTest ψ) :
     ∫ s, fz m e 0 (y * nU (herm s) * b) * ψ s = 0 := by

@@ -20,6 +20,9 @@ section Source
 
 variable {Ks : Type} [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] {R : RealDat D A Ks} {i : Fin D.R.m}
 
+/- English proof (translation)
+Establish `h0 : (R.HV i A.μ0).e '' Set.range (jVx R i A.μ0) = Set.range (R.B.jL i A.μ0)` using `(Set.range_comp _ _).symm.trans (congrArg Set.range (funext (hj i A.μ0)))`. Establish `h1 : (Submodule.span ℂ (Set.range (jVx R i A.μ0))).map (R.HV i A.μ0).e = (⊤ : Submodule ℂ _).map (R.HV i A.μ0).e` using `((Submodule.map_span _ _).trans (congrArg (Submodule.span ℂ) h0)).trans ((GlobalTheory.PresBasic.ext_span (R.B.L i A.μ0).pres).trans ((hV i A.μ0).2.1.symm.trans (LinearMap.range_eq_map _)))`. Conclude with `Submodule.map_injective_of_injective (hV i A.μ0).1 h1`.
+-/
 theorem span_jVx (hV : R.models_HV) (hj : R.models_jV) : Submodule.span ℂ (Set.range (jVx R i A.μ0)) = ⊤ := by
   have h0 : (R.HV i A.μ0).e '' Set.range (jVx R i A.μ0) = Set.range (R.B.jL i A.μ0) :=
     (Set.range_comp _ _).symm.trans (congrArg Set.range (funext (hj i A.μ0)))
@@ -34,6 +37,11 @@ section Target
 
 variable {Ks : Type} [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] {R : RealDat D A Ks} {i : Fin D.R.m}
 
+/- English proof (translation)
+Establish `h0 : (R.HW i (sg0 D A)).e (x - y) v₀ = 0`. Rewrite using `[LinearMap.map_sub]`. Conclude with `sub_eq_zero.2 h`. Establish `h1` using `(hW i (sg0 D A)).2.2 (x - y) (x - y)`. Rewrite `h1` using `[ipAt, GlobalTheory.EvalAtUnitVector.ipM_self_eq_zero _ _ _ _ v₀ (IsChosenExtremalVector.norm R hv) h0, mul_zero]`.
+
+Conclude with `sub_eq_zero.1 (inner_self_eq_zero.1 h1)`.
+-/
 theorem eval_inj (hW : R.models_HW) {v₀ : (R.MW i (sg0 D A)).Vec} (hv : IsChosenExtremalVector R i (sg0 D A) v₀) {x y : (R.HW i (sg0 D A)).H}
     (h : (R.HW i (sg0 D A)).e x v₀ = (R.HW i (sg0 D A)).e y v₀) : x = y := by
   have h0 : (R.HW i (sg0 D A)).e (x - y) v₀ = 0 := by
@@ -43,6 +51,13 @@ theorem eval_inj (hW : R.models_HW) {v₀ : (R.MW i (sg0 D A)).Vec} (hv : IsChos
   rw [ipAt, GlobalTheory.EvalAtUnitVector.ipM_self_eq_zero _ _ _ _ v₀ (IsChosenExtremalVector.norm R hv) h0, mul_zero] at h1
   exact sub_eq_zero.1 (inner_self_eq_zero.1 h1)
 
+/- English proof (translation)
+Take `⟨eR, _, _, h, _⟩` from `hr`. Establish `h0 : sg0 D A = D.what₂.embLL` using `sgAt_mk _ R.hv0`. Establish `h1 : ∀ g, RealDat.eC (A` using `A) (sg0 D A) g = D.ntypes.e0.coeff (eR g) := fun g => by rw [h0]; exact h g`. Take `⟨h2, h3⟩` from `GlobalTheory.GoodLatCompare.isCentralIdempotent_of_goodSeriesIdempotent (D := D) (RingHom.id ℂ) (eC := fun g => D.ntypes.e0.coeff g) fun _ => rfl`. Use `⟨fun g k => ?_, fun g => ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[h1, h1, map_mul eR, map_mul eR, map_inv eR]`. Conclude with `h2 _ _`. Rewrite using `[h1]`. Use `Eq.trans (Fintype.sum_equiv eR.toEquiv _ _ fun k => ?_) (h3 (eR g))` and prove the remaining obligations. Rewrite using `[h1, h1, map_mul eR, map_inv eR]`.
+
+Both sides reduce to the same expression.
+-/
 theorem eC_idem (hr : R.grp_record) : GoodBasisCentralIdempotents.IsCentralIdem (RealDat.eC (A := A) (sg0 D A)) := by
   obtain ⟨eR, _, _, h, _⟩ := hr
   have h0 : sg0 D A = D.what₂.embLL := sgAt_mk _ R.hv0
@@ -59,6 +74,9 @@ theorem eC_idem (hr : R.grp_record) : GoodBasisCentralIdempotents.IsCentralIdem 
 def projW (R : RealDat D A Ks) (i : Fin D.R.m) : (R.HW i (sg0 D A)).H →ₗ[ℂ] (R.HW i (sg0 D A)).H :=
   ∑ g, RealDat.eC (A := A) (sg0 D A) g • R.gW i (sg0 D A) g
 
+/- English proof (translation)
+The claim follows from `sub_eq_zero.1 (LinearMap.mem_ker.1 (Submodule.mem_inf.1 hU).2)`.
+-/
 theorem postOn_of_good {P : LevelP R.Pg D.R.r ℂ} {U : MMap (R.MW i (sg0 D A))} (hU : U ∈ R.Wat i (sg0 D A) P) :
     postOn (R.MW i (sg0 D A)) (R.eWf i (sg0 D A)) U = U :=
   sub_eq_zero.1 (LinearMap.mem_ker.1 (Submodule.mem_inf.1 hU).2)

@@ -18,6 +18,9 @@ noncomputable section
 namespace GlobalTheory.Mum.LamTransl
 variable {S : Scheme.{0}} (G : Over S) [GrpObj G] [IsCommMonObj G]
 
+/- English proof (translation)
+Proceed by induction on `l with`. Consider the case `nil => simp [pzero, Hom.one_def]`. Consider the case `cons k l ih => rw [List.foldr_cons, ih, List.map_cons, List.prod_cons, padd, Hom.mul_def]`.
+-/
 theorem foldr_eq {T : Over S} {n : ℕ} (x : Fin n → (T ⟶ G)) (l : List (Fin n)) :
     l.foldr (fun k acc => padd G (x k) acc) (pzero G T) = (l.map x).prod := by
   induction l with
@@ -28,11 +31,17 @@ def split3 (I : Finset (Fin 3)) : Finset (Fin 2) ⊕ Finset (Fin 2) :=
   if (2 : Fin 3) ∈ I then Sum.inl (Finset.univ.filter fun i : Fin 2 => Fin.castSucc i ∈ I)
   else Sum.inr (Finset.univ.filter fun i : Fin 2 => Fin.castSucc i ∈ I)
 
+/- English proof (translation)
+Evaluate the decidable proposition.
+-/
 theorem split3_bij : Function.Bijective split3 := by decide
 
 def splitEquiv : thK ≃ ULift.{0} (Finset (Fin 2)) ⊕ ULift.{0} (Finset (Fin 2)) :=
   Equiv.ulift.trans ((Equiv.ofBijective _ split3_bij).trans (Equiv.sumCongr Equiv.ulift.symm Equiv.ulift.symm))
 
+/- English proof (translation)
+Evaluate the decidable proposition.
+-/
 theorem mem8 : ∀ I : Finset (Fin 3),
     I ∈ ({∅, {0}, {1}, {2}, {0,1}, {0,2}, {1,2}, {0,1,2}} : Finset (Finset (Fin 3))) := by decide
 
@@ -45,9 +54,19 @@ def φA : ULift.{0} (Finset (Fin 2)) → ((G2 G).left ⟶ G.left) := fun I => (p
 def φB : ULift.{0} (Finset (Fin 2)) → ((G2 G).left ⟶ G.left) := fun I => (psum G (x2 G) I.down).left
 def ε2 : ULift.{0} (Finset (Fin 2)) → ℤ := fun I => (-1) ^ (2 - I.down.card)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem splitEquiv_apply (I : Finset (Fin 3)) : splitEquiv ⟨I⟩ = Sum.map ULift.up ULift.up (split3 I) := by
   rfl
 
+/- English proof (translation)
+Break down `k with ⟨I⟩` into its components or cases. Rewrite using `[splitEquiv_apply]`. Establish `h` using `mem8 I`. Simplify using `only [Finset.mem_insert, Finset.mem_singleton] at h`. Break down `h with rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl` into its components or cases.
+
+Use `all_goals`. Simplify using `(config := {decide := true}) only [split3, if_true, if_false, Finset.mem_insert, Finset.mem_singleton, Sum.map_inl, Sum.map_inr, Sum.elim_inl, Sum.elim_inr]`. Use `all_goals`. Use `⟨?_, trivial⟩` and prove the remaining obligations. Simplify using `only [φA, φB, thφ]`.
+
+Rewrite using `[← Over.comp_left]`. Use `congr 1`. Rewrite using `[psum, foldr_eq, psum, foldr_eq]`. Simplify using `[List.finRange_succ, x2, x3, pt3, tr, MonObj.comp_mul]`. Apply the tactic sequence `all_goals ac_rfl`.
+-/
 theorem split_eq (k : thK) : Sum.elim (φA G a) (φB G) (splitEquiv k) = (pt3 G a).left ≫ thφ G (x3 G) k ∧
     Sum.elim ε2 (fun k => -ε2 k) (splitEquiv k) = thε k := by
   rcases k with ⟨I⟩
@@ -67,6 +86,9 @@ theorem split_eq (k : thK) : Sum.elim (φA G a) (φB G) (splitEquiv k) = (pt3 G 
     simp [List.finRange_succ, x2, x3, pt3, tr, MonObj.comp_mul]
   all_goals ac_rfl
 
+/- English proof (translation)
+Introduce `ψ`. Rewrite using `[← Equiv.sum_comp splitEquiv]`. Conclude with `Finset.sum_congr rfl fun k _ => by rw [(split_eq G a k).1, (split_eq G a k).2]`.
+-/
 theorem sameSum : LB.SameSum (fun k => (pt3 G a).left ≫ thφ G (x3 G) k) thε (Sum.elim (φA G a) (φB G))
     (Sum.elim ε2 fun k => -ε2 k) := by
   classical
@@ -80,6 +102,13 @@ namespace GlobalTheory.Mum
 
 open LamTransl in
 
+/- English proof (translation)
+Introduce `S G _ _ L c a N hN hNL`. Establish `hT : (L.L.pull (tr G a).left).IsLB` using `pull_isLB L.isLB _`. Establish `hA : (LB.LinComb L.L (φA G a) ε2).IsLB` using `DVR.linComb_isLB _ L.isLB _ _`. Establish `hLam` using `GlobalTheory.SabBaseChange.cube_isLB (x2 G) L.isLB`. Establish `h1 : LBIso (abelian₂ G N) (abelian₂ G (L.L.pull (tr G a).left))` using `GlobalTheory.SabBaseChange.lbIso_cube (x2 G) hNL`.
+
+Establish `h2 : LBIso (abelian₂ G (L.L.pull (tr G a).left)) (LB.LinComb L.L (φA G a) ε2)` using `LBIso.chartPull (chartPullLinComb L.L (tr G a).left _ (φA G a) ε2 (𝟙 _) fun k => (Category.id_comp _).symm) (chartPullSame L.L (φA G a) (φA G a) ε2 (𝟙 _) fun k => (Category.id_comp _).symm) (GlobalTheory.PolBaseChange.lbIso_refl hA)`. Establish `h3 : LBIso (abelian₂ G L.L) (LB.LinComb L.L (φA G a) ε2)`. Use `(GlobalTheory.TripleCompare.lbIso_iff_gen (L := L.L) (φB G) ε2 (φA G a) ε2).2 ?_` and prove the remaining obligations. Take `⟨t', ht', -⟩` from `DVR.gen_transport L.isLB (sameSum G a) _ (DVR.pullGen_isGen L.L _ _ c.t c.isGen (pt3 G a).left)`. Conclude with `⟨t', ht'⟩`.
+
+Conclude with `LBIso.trans (GlobalTheory.SabBaseChange.cube_isLB _ hN) (GlobalTheory.SabBaseChange.cube_isLB _ hT) hLam h1 (LBIso.trans (GlobalTheory.SabBaseChange.cube_isLB _ hT) hA hLam h2 (LBIso.symm h3))`.
+-/
 theorem lam_transl_iso : ∀ (S : Scheme.{0}) (G : Over S) [GrpObj G] [IsCommMonObj G] (L : RigLB G), CubicalStr G L →
     ∀ (a : 𝟙_ (Over S) ⟶ G) (N : LB G.left), N.IsLB → LBIso N (L.L.pull ((toUnit G ≫ a) * 𝟙 G).left) →
       LBIso (abelian₂ G N) (abelian₂ G L.L) := by

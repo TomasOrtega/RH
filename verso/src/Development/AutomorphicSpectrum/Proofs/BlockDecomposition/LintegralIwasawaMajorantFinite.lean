@@ -26,6 +26,13 @@ def Ck (R ε : ℝ) (g k : GL (Fin 2) F) : ENNReal :=
     (((modulus (g.val).det : ℝ) / mx (e2r (k * g)) ^ 2) ^ (1 / 2 - ε))) g
 
 omit [MeasurableSpace F] [BorelSpace F] in
+/- English proof (translation)
+Assume the negation of the conclusion as `h`. Establish `h' : mx (e2r g) ≤ 0` using `not_lt.1 h`. Establish `h0 : (modulus (g.val 1 0) : ℝ) ≤ 0` using `(le_max_left _ _).trans h'`. Establish `h1 : (modulus (g.val 1 1) : ℝ) ≤ 0` using `(le_max_right _ _).trans h'`. Establish `e0 : g.val 1 0 = 0`.
+
+Assume the negation of the conclusion as `hne`. Establish `: (0 : ℝ) < (modulus (g.val 1 0) : ℝ)` using `by exact_mod_cast modulus_pos hne`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `e1 : g.val 1 1 = 0`. Assume the negation of the conclusion as `hne`.
+
+Establish `: (0 : ℝ) < (modulus (g.val 1 1) : ℝ)` using `by exact_mod_cast modulus_pos hne`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hd : (g.val).det = 0` using `by rw [Matrix.det_fin_two, e0, e1]; ring`. Establish `hu : IsUnit (g.val).det` using `(Matrix.isUnit_iff_isUnit_det _).1 g.isUnit`. Conclude with `hu.ne_zero hd`.
+-/
 theorem mx_pos (g : GL (Fin 2) F) : 0 < mx (e2r g) := by
   by_contra h
   have h' : mx (e2r g) ≤ 0 := not_lt.1 h
@@ -44,16 +51,25 @@ theorem mx_pos (g : GL (Fin 2) F) : 0 < mx (e2r g) := by
   exact hu.ne_zero hd
 
 omit [MeasurableSpace F] [BorelSpace F] in
+/- English proof (translation)
+Establish `hu : IsUnit (g.val).det` using `(Matrix.isUnit_iff_isUnit_det _).1 g.isUnit`. Conclude with `modulus_pos hu.ne_zero` after adjusting the coercions.
+-/
 theorem det_pos (g : GL (Fin 2) F) : 0 < (modulus (g.val).det : ℝ) := by
   have hu : IsUnit (g.val).det := (Matrix.isUnit_iff_isUnit_det _).1 g.isUnit
   exact_mod_cast modulus_pos hu.ne_zero
 
 omit [MeasurableSpace F] [BorelSpace F] in
+/- English proof (translation)
+The claim follows from `NNReal.continuous_coe.comp (continuous_modulus.comp (Continuous.matrix_elem Units.continuous_val i j))`.
+-/
 theorem cont_entry (i j : Fin 2) : Continuous fun g : GL (Fin 2) F => (modulus (g.val i j) : ℝ) :=
   NNReal.continuous_coe.comp (continuous_modulus.comp
     (Continuous.matrix_elem Units.continuous_val i j))
 
 omit [MeasurableSpace F] [BorelSpace F] in
+/- English proof (translation)
+Establish `: (fun g : GL (Fin 2) F => mx (e2r g)) = fun g => max (modulus (g.val 1 0) : ℝ) (modulus (g.val 1 1) : ℝ)`. Use function extensionality and compare the values at `g`. Simplify using `[mx, e2r]`. Rewrite using `[this]`. Apply the tactic sequence `exact (cont_entry 1 0).max (cont_entry 1 1)`.
+-/
 theorem cont_mx : Continuous fun g : GL (Fin 2) F => mx (e2r g) := by
   have : (fun g : GL (Fin 2) F => mx (e2r g)) =
       fun g => max (modulus (g.val 1 0) : ℝ) (modulus (g.val 1 1) : ℝ) := by
@@ -62,10 +78,20 @@ theorem cont_mx : Continuous fun g : GL (Fin 2) F => mx (e2r g) := by
   exact (cont_entry 1 0).max (cont_entry 1 1)
 
 omit [MeasurableSpace F] [BorelSpace F] in
+/- English proof (translation)
+The claim follows from `NNReal.continuous_coe.comp (continuous_modulus.comp (Continuous.matrix_det Units.continuous_val))`.
+-/
 theorem cont_det : Continuous fun g : GL (Fin 2) F => (modulus (g.val).det : ℝ) :=
   NNReal.continuous_coe.comp (continuous_modulus.comp
     (Continuous.matrix_det Units.continuous_val))
 
+/- English proof (translation)
+Establish `e1 : (m ^ 2) ^ (1 / 2 - ε) = m ^ (1 - 2 * ε)`. Rewrite using `[← Real.rpow_natCast, ← Real.rpow_mul hm.le]`. Use `congr 1`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+
+Establish `e2 : d ^ (σ + 1 - ε) = d ^ (σ + 1 / 2) * d ^ (1 / 2 - ε)`. Rewrite using `[← Real.rpow_add hd]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[Real.div_rpow hd.le (by positivity), e1, e2, Real.rpow_neg hm.le, div_eq_mul_inv]`.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem rpow_alg {d m σ ε : ℝ} (hd : 0 < d) (hm : 0 < m) :
     d ^ (σ + 1 / 2) * (d / m ^ 2) ^ (1 / 2 - ε) = d ^ (σ + 1 - ε) * m ^ (-(1 - 2 * ε)) := by
   have e1 : (m ^ 2) ^ (1 / 2 - ε) = m ^ (1 - 2 * ε) := by
@@ -80,6 +106,9 @@ theorem rpow_alg {d m σ ε : ℝ} (hd : 0 < d) (hm : 0 < m) :
   rw [Real.div_rpow hd.le (by positivity), e1, e2, Real.rpow_neg hm.le, div_eq_mul_inv]
   ring
 
+/- English proof (translation)
+Establish `hm : Continuous fun a : Fˣ => (modulus (a : F) : ℝ)` using `NNReal.continuous_coe.comp (continuous_modulus.comp Units.continuous_val)`. Conclude with `Measurable.indicator (ENNReal.measurable_ofReal.comp (hm.measurable.pow_const e)) (measurableSet_le hm.measurable measurable_const)`.
+-/
 theorem measurable_Af (B e : ℝ) : Measurable (Af (F := F) B e) := by
   have hm : Continuous fun a : Fˣ => (modulus (a : F) : ℝ) :=
     NNReal.continuous_coe.comp (continuous_modulus.comp Units.continuous_val)
@@ -87,10 +116,18 @@ theorem measurable_Af (B e : ℝ) : Measurable (Af (F := F) B e) := by
     (measurableSet_le hm.measurable measurable_const)
 
 omit [MeasurableSpace F] [BorelSpace F] in
+/- English proof (translation)
+Simplify using `only [ball2, Set.setOf_forall]`. Apply the tactic sequence `exact isClosed_iInter fun i => isClosed_iInter fun j => isClosed_le (cont_entry i j) continuous_const`.
+-/
 theorem isClosed_ball2 (R : ℝ) : IsClosed (ball2 (F := F) R) := by
   simp only [ball2, Set.setOf_forall]
   exact isClosed_iInter fun i => isClosed_iInter fun j => isClosed_le (cont_entry i j) continuous_const
 
+/- English proof (translation)
+Use `haveI : SecondCountableTopology (GL (Fin 2) F) := GlobalTheory.CompanionTheory.LocalTestVectors.secondCountable_GL2`. Establish `e : (fun q : GL (Fin 2) F × GL (Fin 2) F => Ck R ε q.1 q.2) = Set.indicator (Prod.fst ⁻¹' ball2 R) (fun q => ENNReal.ofReal (((modulus (q.1.val).det : ℝ) / mx (e2r (q.2 * q.1)) ^ 2) ^ (1 / 2 - ε)))`. Use function extensionality and compare the values at `q`. Both sides reduce to the same expression. Rewrite using `[e]`.
+
+Establish `h1 : Continuous fun q : GL (Fin 2) F × GL (Fin 2) F => (modulus (q.1.val).det : ℝ)` using `cont_det.comp continuous_fst`. Establish `h2 : Continuous fun q : GL (Fin 2) F × GL (Fin 2) F => mx (e2r (q.2 * q.1))` using `cont_mx.comp (continuous_snd.mul continuous_fst)`. Conclude with `Measurable.indicator (ENNReal.measurable_ofReal.comp ((h1.measurable.div (h2.measurable.pow_const 2)).pow_const _)) (measurable_fst (isClosed_ball2 R).measurableSet)`.
+-/
 theorem measurable_Ck (R ε : ℝ) :
     Measurable fun q : GL (Fin 2) F × GL (Fin 2) F => Ck R ε q.1 q.2 := by
   haveI : SecondCountableTopology (GL (Fin 2) F) := GlobalTheory.CompanionTheory.LocalTestVectors.secondCountable_GL2
@@ -108,10 +145,26 @@ theorem measurable_Ck (R ε : ℝ) :
     ((h1.measurable.div (h2.measurable.pow_const 2)).pow_const _))
     (measurable_fst (isClosed_ball2 R).measurableSet)
 
+/- English proof (translation)
+The claim follows from `Measurable.comp (g := fun q : GL (Fin 2) F × GL (Fin 2) F => Ck R ε q.1 q.2) (f := fun k : GL (Fin 2) F => (g, k)) (measurable_Ck R ε) measurable_prodMk_left`.
+-/
 theorem measurable_Ck_right (R ε : ℝ) (g : GL (Fin 2) F) : Measurable (Ck (F := F) R ε g) :=
   Measurable.comp (g := fun q : GL (Fin 2) F × GL (Fin 2) F => Ck R ε q.1 q.2)
     (f := fun k : GL (Fin 2) F => (g, k)) (measurable_Ck R ε) measurable_prodMk_left
 
+/- English proof (translation)
+Take `⟨a, b, k⟩` from `p`. Establish `ha : (0 : ℝ) < (modulus (a : F) : ℝ)` using `by exact_mod_cast modulus_pos a.ne_zero`. Establish `hb : (0 : ℝ) < (modulus (b : F) : ℝ)` using `by exact_mod_cast modulus_pos b.ne_zero`. Establish `hE : 0 ≤ ((modulus (g.val).det : ℝ) / mx (e2r (k * g)) ^ 2) ^ (1 / 2 - ε)` using `Real.rpow_nonneg (div_nonneg (det_pos g).le (by positivity)) _`. Simplify using `only [Mj, wR]`.
+
+Distinguish the cases in `h : (∀ i j, (modulus (g.val i j) : ℝ) ≤ R) ∧ (modulus (b : F) : ℝ) ≤ R ∧ (modulus (a : F) : ℝ) ≤ B`. Rewrite using `[if_pos h]`. Take `⟨h1, h2, h3⟩` from `h`. Establish `m1 : g ∈ ball2 R` using `h1`. Establish `m2 : b ∈ {a : Fˣ | (modulus (a : F) : ℝ) ≤ R}` using `h2`.
+
+Establish `m3 : a ∈ {a : Fˣ | (modulus (a : F) : ℝ) ≤ B}` using `h3`. Rewrite using `[Af, Af, Ck, Set.indicator_of_mem m1, Set.indicator_of_mem m2, Set.indicator_of_mem m3, ← ENNReal.ofReal_mul (by positivity), ← ENNReal.ofReal_mul (by positivity), ← ENNReal.ofReal_mul (by positivity)]`. Use `congr 1`. Establish `e : (modulus (a : F) : ℝ) ^ (σ + 1 - 2 * ε) = (modulus (a : F) : ℝ) ^ (σ - 2 * ε) * (modulus (a : F) : ℝ)`. Rewrite using `[show σ + 1 - 2 * ε = (σ - 2 * ε) + 1 by ring, Real.rpow_add ha, Real.rpow_one]`.
+
+Rewrite using `[e]`. Clear the denominators using the available nonvanishing facts. Rewrite using `[if_neg h, ENNReal.ofReal_zero, mul_zero]`. Distinguish the cases in `h1 : g ∈ ball2 R`. Distinguish the cases in `h2 : (modulus (b : F) : ℝ) ≤ R`.
+
+Establish `h3 : ¬ (modulus (a : F) : ℝ) ≤ B` using `fun h3 => h ⟨h1, h2, h3⟩`. Establish `m3 : a ∉ {a : Fˣ | (modulus (a : F) : ℝ) ≤ B}` using `h3`. Simplify using `only [Af]`. Rewrite using `[Set.indicator_of_notMem m3, zero_mul]`. Establish `m2 : b ∉ {a : Fˣ | (modulus (a : F) : ℝ) ≤ R}` using `h2`.
+
+Simplify using `only [Af]`. Rewrite using `[Set.indicator_of_notMem m2, zero_mul, mul_zero]`. Simplify using `only [Ck]`. Rewrite using `[Set.indicator_of_notMem h1, mul_zero, mul_zero]`.
+-/
 theorem integrand_eq (R B σ ε : ℝ) (g : GL (Fin 2) F) (p : Fˣ × Fˣ × GL (Fin 2) F) :
     ENNReal.ofReal (wR p) * ENNReal.ofReal (Mj R B σ ε g p) =
       Af B (σ - 2 * ε) p.1 * (Af R (2 * σ) p.2.1 * Ck R ε g p.2.2) := by
@@ -149,6 +202,9 @@ theorem integrand_eq (R B σ ε : ℝ) (g : GL (Fin 2) F) (p : Fˣ × Fˣ × GL 
     · simp only [Ck]
       rw [Set.indicator_of_notMem h1, mul_zero, mul_zero]
 
+/- English proof (translation)
+Establish `hC : Measurable (Ck (F` using `F) R ε g) := measurable_Ck_right R ε g`. Repeatedly rewrite using `[integrand_eq]`. Unfold `mIw`. Rewrite using `[lintegral_prod_mul (f := Af B (σ - 2 * ε)) (g := fun q : Fˣ × GL (Fin 2) F => Af R (2 * σ) q.1 * Ck R ε g q.2) (measurable_Af _ _).aemeasurable (((measurable_Af _ _).comp measurable_fst).mul (hC.comp measurable_snd)).aemeasurable, lintegral_prod_mul (f := Af R (2 * σ)) (g := Ck …`.
+-/
 theorem inner_eq (ψ : AddChar F Circle) [SFinite (LFS.hG ψ)] (R B σ ε : ℝ) (g : GL (Fin 2) F) :
     ∫⁻ p, ENNReal.ofReal (wR p) * ENNReal.ofReal (Mj R B σ ε g p) ∂mIw ψ =
       (∫⁻ a, Af B (σ - 2 * ε) a ∂multHaar F) * ((∫⁻ b, Af R (2 * σ) b ∂multHaar F) *
@@ -163,6 +219,11 @@ theorem inner_eq (ψ : AddChar F Circle) [SFinite (LFS.hG ψ)] (R B σ ε : ℝ)
     lintegral_prod_mul (f := Af R (2 * σ)) (g := Ck R ε g)
       (measurable_Af _ _).aemeasurable hC.aemeasurable]
 
+/- English proof (translation)
+Distinguish the cases in `hg : g ∈ ball2 R`. Establish `hkg : k * g ∈ ball2 R` using `fun i j => by`. Use `GlobalTheory.CompanionTheory.LFCoords.modulus_mul_entry_le (κ := k.val) (k := g.val) ((GLnLocal.mem_integralGL_iff F 2).1 hk).1 hg i j` as an intermediate fact. Simplify `this` using `[Units.val_mul]`. Establish `hd : modulus ((k * g).val).det = modulus (g.val).det`.
+
+Rewrite using `[Units.val_mul, Matrix.det_mul, modulus_mul, GlobalTheory.CompanionTheory.KHBound.modulus_det_integralGL hk, one_mul]`. Rewrite using `[Ck, Set.indicator_of_mem hg, Set.indicator_of_mem hkg, ← ENNReal.ofReal_mul (Real.rpow_nonneg (det_pos g).le _), hd, rpow_alg (det_pos g) (mx_pos (k * g))]`. Rewrite using `[Ck, Set.indicator_of_notMem hg, mul_zero]`. Conclude with `zero_le`.
+-/
 theorem factor_le {R σ ε : ℝ} {k : GL (Fin 2) F} (hk : k ∈ K2 F) (g : GL (Fin 2) F) :
     ENNReal.ofReal ((modulus (g.val).det : ℝ) ^ (σ + 1 / 2)) * Ck R ε g k ≤
       Set.indicator (ball2 R) (fun g : GL (Fin 2) F => ENNReal.ofReal
@@ -180,6 +241,21 @@ theorem factor_le {R σ ε : ℝ} {k : GL (Fin 2) F} (hk : k ∈ K2 F) (g : GL (
   · rw [Ck, Set.indicator_of_notMem hg, mul_zero]
     exact zero_le
 
+/- English proof (translation)
+Introduce `F _ _ _ _ _ _ ψ hψ R B σ ε h0 h1 h2`. Use `haveI : (LFS.hG ψ).IsHaarMeasure := by unfold LFS.hG; infer_instance`. Use `haveI : SFinite (LFS.hG ψ) := by unfold LFS.hG; infer_instance`. Establish `hKc : IsCompact (K2 F)` using `GLnLocal.isCompact_integralGL F 2`. Establish `hKm : MeasurableSet (K2 F)` using `hKc.isClosed.measurableSet`.
+
+Establish `hA₁ : (∫⁻ a, Af B (σ - 2 * ε) a ∂multHaar F) < ⊤` using `GlobalTheory.T.lintegral_bounded_modulus_power_finite F ψ hψ B (σ - 2 * ε) (by linarith)`. Establish `hA₂ : (∫⁻ b, Af R (2 * σ) b ∂multHaar F) < ⊤` using `GlobalTheory.T.lintegral_bounded_modulus_power_finite F ψ hψ R (2 * σ) (by linarith)`. Establish `hT : (∫⁻ g, Set.indicator (ball2 R) (fun g : GL (Fin 2) F => ENNReal.ofReal ((modulus (g.val).det : ℝ) ^ (σ + 1 - ε) * mx (e2r g) ^ (-(1 - 2 * ε)))) g ∂LFS.hG ψ) < ⊤` using `GlobalTheory.T.lintegral_det_second_vector_finite F ψ hψ R (σ + 1 - ε) (1 - 2 * ε) (by linarith) (by linarith) (by linarith)`. Use `set A₁ := ∫⁻ a, Af B (σ - 2 * ε) a ∂multHaar F`. Use `set A₂ := ∫⁻ b, Af R (2 * σ) b ∂multHaar F`.
+
+Use `set H := Set.indicator (ball2 R) (fun g : GL (Fin 2) F => ENNReal.ofReal ((modulus (g.val).det : ℝ) ^ (σ + 1 - ε) * mx (e2r g) ^ (-(1 - 2 * ε))))`. Use `set T := ∫⁻ g, H g ∂LFS.hG ψ`. Use `set D := fun g : GL (Fin 2) F => ENNReal.ofReal ((modulus (g.val).det : ℝ) ^ (σ + 1 / 2))`. Establish `hD : Measurable D` using `ENNReal.measurable_ofReal.comp (cont_det.measurable.pow_const _)`. Establish `hJ : Measurable (Function.uncurry fun (g k : GL (Fin 2) F) => D g * Ck R ε g k)` using `(hD.comp measurable_fst).mul (measurable_Ck R ε)`.
+
+Establish `hAA : A₁ * A₂ ≠ ⊤` using `(ENNReal.mul_lt_top hA₁ hA₂).ne`. Establish `step : ∀ g : GL (Fin 2) F, D g * ∫⁻ p, ENNReal.ofReal (wR p) * ENNReal.ofReal (Mj R B σ ε g p) ∂mIw ψ = (A₁ * A₂) * ∫⁻ k, D g * Ck R ε g k ∂(LFS.hG ψ).restrict (K2 F)`. Introduce `g`. Establish `hC : Measurable (Ck (F` using `F) R ε g) := measurable_Ck_right R ε g`. Rewrite using `[inner_eq, lintegral_const_mul _ hC]`.
+
+Expand and normalize the polynomial expressions, which then agree. Establish `hin : ∀ k ∈ K2 F, ∫⁻ g, D g * Ck R ε g k ∂LFS.hG ψ ≤ T`. Introduce `k hk`. Combine the equalities or inequalities in the displayed calculation. Establish `hfin : (LFS.hG ψ).restrict (K2 F) Set.univ < ⊤`.
+
+Rewrite using `[Measure.restrict_apply_univ]`. Conclude with `hKc.measure_lt_top`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[lintegral_lintegral_swap hJ.aemeasurable]`. Use `_ ≤ (A₁ * A₂) * ∫⁻ _k, T ∂(LFS.hG ψ).restrict (K2 F) := by`.
+
+Conclude with `mul_le_mul' le_rfl (setLIntegral_mono' hKm hin)`. Use `_ = (A₁ * A₂) * (T * (LFS.hG ψ).restrict (K2 F) Set.univ) := by rw [lintegral_const]`. Use `_ < ⊤ := ENNReal.mul_lt_top (ENNReal.mul_lt_top hA₁ hA₂) (ENNReal.mul_lt_top hT hfin)`.
+-/
 theorem outer_finite : ForS fun F _ _ _ _ _ _ ψ => ∀ R B σ ε : ℝ, 0 < ε → 2 * ε < σ → ε < 1 / 2 →
   ∫⁻ g, ENNReal.ofReal ((modulus (g.val).det : ℝ) ^ (σ + 1 / 2)) *
     ∫⁻ p, ENNReal.ofReal (wR p) * ENNReal.ofReal (Mj R B σ ε g p) ∂mIw ψ ∂LFS.hG ψ < ⊤ := by

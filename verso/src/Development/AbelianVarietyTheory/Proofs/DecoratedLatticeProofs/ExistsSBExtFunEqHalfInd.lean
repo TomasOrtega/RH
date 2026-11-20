@@ -19,15 +19,27 @@ def wr (α : Frame p S n') (β : Frame p T n) : Matrix n n' k →+ WO S T where
   map_zero' := by rw [Matrix.mul_zero, Matrix.zero_mul, Matrix.map_zero _ (map_zero _)]
   map_add' x y := by rw [Matrix.mul_add, Matrix.add_mul, Matrix.map_add _ (map_add _)]
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem wr_apply (α : Frame p S n') (β : Frame p T n) (x : Matrix n n' k) (i : Fin T.rank) (j : Fin S.rank) :
     wr α β x i j = p.sec ((β.b * x * α.b') i j) := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem rd_eq (α : Frame p S n') (β : Frame p T n) (t : WO S T) :
     rd α β t = β.b' * (Matrix.map t p.pr : Matrix (Fin T.rank) (Fin S.rank) k) * α.b := rfl
 
+/- English proof (translation)
+Introduce `i j` and use `by rw [wr_apply, ← p.sec_pr, p.pr_sec]`.
+-/
 theorem isHalf_wr (α : Frame p S n') (β : Frame p T n) (x : Matrix n n' k) : IsHalf p.e (wr α β x) := fun i j => by
   rw [wr_apply, ← p.sec_pr, p.pr_sec]
 
+/- English proof (translation)
+Use extensionality with `i j`. Rewrite using `[wr_apply, rd_eq, Matrix.mul_assoc β.b', ← Matrix.mul_assoc β.b, β.bb', Matrix.one_mul, Matrix.mul_assoc, α.bb', Matrix.mul_one, Matrix.map_apply, p.sec_pr, ht i j]`.
+-/
 theorem wr_rd (α : Frame p S n') (β : Frame p T n) {t : WO S T} (ht : IsHalf p.e t) : wr α β (rd α β t) = t := by
   ext i j
   rw [wr_apply, rd_eq, Matrix.mul_assoc β.b', ← Matrix.mul_assoc β.b, β.bb', Matrix.one_mul, Matrix.mul_assoc, α.bb',
@@ -35,6 +47,15 @@ theorem wr_rd (α : Frame p S n') (β : Frame p T n) {t : WO S T} (ht : IsHalf p
 
 set_option maxHeartbeats 800000 in
 
+/- English proof (translation)
+Establish `: CharZero k` using `charZero_of_injective_ringHom (f := p.pr.comp (incA D)) (RingHom.injective _)`. Take `⟨M, hM, hden⟩` from `GlobalTheory.PlaceDatum.exists_den_latO (S := S) (T := T) hS.fg hT.fg`. Take `⟨N, hN, hmul⟩` from `GlobalTheory.PlaceDatum.exists_nsmul_mem_latO (S := S) (T := T) hS hT`. Set `A : AddSubgroup (Matrix (Fin T.rank) (Fin S.rank) k)` to `(latO S T (LS : Set _) (LT : Set _) fun _ => True).comap p.sec.mapMatrix`. Establish `hA : ∀ y, y ∈ A ↔ y.map p.sec ∈ latO S T (LS : Set _) (LT : Set _) fun _ => True` using `fun _ => Iff.rfl`.
+
+Establish `hO : ∀ a : k, a ∈ (𝒪[k]).toAddSubgroup ↔ finPart D (p.sec a) ∈ intAE D` using `p.int_iff`. Establish `key` using `GlobalTheory.PlaceCoord.isOpen_isCompact_of_comm (𝒪[k]).toAddSubgroup (Valuation.isOpen_integer (v := valuation k)) (IsNonarchimedeanLocalField.isCompact_closedBall k 1) A hN hM (fun y hy => by`. Establish `ht : IsHalf p.e (y.map p.sec : WO S T)` using `fun i j => by`. Rewrite using `[Matrix.map_apply, ← p.sec_pr, p.pr_sec]`. Establish `h1 : (N • y).map p.sec = N • y.map p.sec` using `Matrix.ext fun i j => map_nsmul p.sec N (y i j)`.
+
+Rewrite using `[hA, h1]`. Conclude with `hmul _ (GlobalTheory.PlaceDatum.infPart_of_half (GlobalTheory.PlaceCoord.infPart_split p.split) ht) fun i j => GlobalTheory.PlaceCoord.toEAf_mem ((hO _).1 (hy i j)))`. Use the proof step `(fun y hy i j => by`. Establish `h1 : p.sec ((M : k) * y i j) = (M : AE D) * p.sec (y i j)`. Rewrite using `[← nsmul_eq_mul, map_nsmul, nsmul_eq_mul]`.
+
+Rewrite using `[hO, h1]`. Use `GlobalTheory.PlaceDatum.finPart_mem_of_toEAf ?_` and prove the remaining obligations. Rewrite using `[RingHom.map_mul, map_natCast]`. Conclude with `hden _ ((hA y).1 hy) i j)`. Conclude with `key`.
+-/
 theorem open_compact_sec (p : SplitPt D k) {LS : Lat S} {LT : Lat T} (hS : Submodule.IsLattice D.host.E LS)
     (hT : Submodule.IsLattice D.host.E LT) :
     IsOpen {y : Matrix (Fin T.rank) (Fin S.rank) k | y.map p.sec ∈ latO S T (LS : Set _) (LT : Set _) fun _ => True} ∧
@@ -65,10 +86,22 @@ theorem open_compact_sec (p : SplitPt D k) {LS : Lat S} {LT : Lat T} (hS : Submo
       exact hden _ ((hA y).1 hy) i j)
   exact key
 
+/- English proof (translation)
+Take `⟨ε, hε, h⟩` from `p.above`. Conclude with `⟨ε, hε, by rw [← h, add_mul, p.split.1, mul_comm, p.split.2.1, add_zero]⟩`.
+-/
 theorem exists_idem (p : SplitPt D k) : ∃ ε, IsPlaceIdem D p.v ε ∧ algebraMap (AF D.host.F) (AE D) ε * p.e = p.e := by
   obtain ⟨ε, hε, h⟩ := p.above
   exact ⟨ε, hε, by rw [← h, add_mul, p.split.1, mul_comm, p.split.2.1, add_zero]⟩
 
+/- English proof (translation)
+Take `⟨ε, hε, heε⟩` from `exists_idem p`. Establish `hh : ∀ x, wr α β x ∈ GlobalTheory.PlaceModel.half S T p.e` using `fun x => (GlobalTheory.PlaceModel.isHalf_iff S T).1 (isHalf_wr α β x)`. Take `⟨ho, hc⟩` from `open_compact_sec p hS.1 hT.1`. Establish `h1 : {x | wr α β x ∈ latO S T (LS : Set _) (LT : Set _) (· = p.v) ∧ IsHalf p.e (wr α β x)} = {x | wr α β x ∈ latO S T (LS : Set _) (LT : Set _) fun _ => True}`. Use extensionality with `x`.
+
+Use `⟨fun h => GlobalTheory.PlaceModel.latO_le_top _ h.1, fun h => ⟨?_, isHalf_wr α β x⟩⟩` and prove the remaining obligations. Establish `h2` using `(GlobalTheory.PlaceModel.idem_smul_mem hε p.split.1 heε h).1`. Rewrite `h2` using `[(GlobalTheory.PlaceModel.mem_half S T).1 (hh x)]`. Then use the resulting hypothesis. Rewrite using `[h1]`. Use `⟨?_, ho.preimage (f := fun x : Matrix n n' k => β.b * x * α.b') ((continuous_const.matrix_mul continuous_id).matrix_mul continuous_const)⟩` and prove the remaining obligations.
+
+Use `hc.image (f := fun y => β.b' * y * α.b) ((continuous_const.matrix_mul continuous_id).matrix_mul continuous_const) using 1` and compare the differences between its conclusion and the goal. Use extensionality with `x`. Use `⟨fun h => ⟨β.b * x * α.b', h, ?_⟩, ?_⟩` and prove the remaining obligations. Use `beta_reduce`. Rewrite using `[Matrix.mul_assoc β.b, ← Matrix.mul_assoc β.b', β.b'b, Matrix.one_mul, Matrix.mul_assoc, α.b'b, Matrix.mul_one]`.
+
+Introduce and unpack `⟨y, hy, rfl⟩`. Express the relevant statement in the definitionally equal form `(β.b * (β.b' * y * α.b) * α.b').map p.sec ∈ latO S T (LS : Set _) (LT : Set _) fun _ => True`. Rewrite using `[Matrix.mul_assoc β.b', ← Matrix.mul_assoc β.b, β.bb', Matrix.one_mul, Matrix.mul_assoc, α.bb', Matrix.mul_one]` and apply the resulting hypothesis.
+-/
 theorem compact_open (α : Frame p S n') (β : Frame p T n) {LS : Lat S} {LT : Lat T} (hS : IsSelfDualC S LS)
     (hT : IsSelfDualC T LT) :
     IsCompact {x | wr α β x ∈ latO S T (LS : Set _) (LT : Set _) (· = p.v) ∧ IsHalf p.e (wr α β x)} ∧
@@ -95,6 +128,13 @@ theorem compact_open (α : Frame p S n') (β : Frame p T n) {LS : Lat S} {LT : L
     change (β.b * (β.b' * y * α.b) * α.b').map p.sec ∈ latO S T (LS : Set _) (LT : Set _) fun _ => True
     rwa [Matrix.mul_assoc β.b', ← Matrix.mul_assoc β.b, β.bb', Matrix.one_mul, Matrix.mul_assoc, α.bb', Matrix.mul_one]
 
+/- English proof (translation)
+Introduce `D k _ _ _ _ p S T n n' _ _ _ _ α β LS LT hS hT`. Use `GlobalTheory.FinPl.Comm.t2Space_matrix_of_isNonarchimedeanLocalField (k := k) (n := n) (n' := n')` as an intermediate fact. Take `⟨hc, ho⟩` from `compact_open α β hS hT`. Use `⟨fun x => halfInd p.e (latO S T (LS : Set _) (LT : Set _) (· = p.v)) (wr α β x), ?_, ?_⟩` and prove the remaining obligations. Unfold `halfInd`.
+
+Use `GlobalTheory.FinPl.Comm.ite_mem_SB hc ho` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `t`. Unfold `extFun`. Distinguish the cases in `ht : IsHalf p.e t`. Rewrite using `[if_pos ht] beta_reduce`.
+
+Rewrite using `[wr_rd α β ht]`. Rewrite using `[if_neg ht, halfInd, if_neg fun h => ht h.2]`.
+-/
 theorem exists_SB_extFun_eq_halfInd : ∀ (D : D7) (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] (p : SplitPt D k) (S T : HSp D) (n n' : Type) [Fintype n] [DecidableEq n] [Fintype n'] [DecidableEq n'] (α : Frame p S n') (β : Frame p T n) (LS : Lat S) (LT : Lat T), IsSelfDualC S LS → IsSelfDualC T LT → ∃ Ψ : Matrix n n' k → ℂ, Ψ ∈ GlobalTheory.SplitWeil.SB (Matrix n n' k) ∧ extFun α β Ψ = halfInd p.e (latO S T (LS : Set _) (LT : Set _) (· = p.v)) := by
   intro D k _ _ _ _ p S T n n' _ _ _ _ α β LS LT hS hT
   have := GlobalTheory.FinPl.Comm.t2Space_matrix_of_isNonarchimedeanLocalField (k := k) (n := n) (n' := n')

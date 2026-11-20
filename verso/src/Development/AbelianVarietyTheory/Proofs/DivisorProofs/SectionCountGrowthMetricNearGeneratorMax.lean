@@ -14,6 +14,19 @@ open GlobalTheory GlobalTheory.ArInt GlobalTheory.CxPts GlobalTheory.Cartier Glo
 
 namespace GlobalTheory.HSAmp
 
+/- English proof (translation)
+Introduce `hA k _ X _ p D hp P hL e x hx κ t hκ hκ1 ht h1 h2 ε hε`. Establish `hdeg` using `GlobalTheory.T.finrank_functionField_quotientSubfield_eq_degree hA k X p D hp P hL e x hx`. Establish `hup` using `GlobalTheory.T.arithHilbertSamuel_upperBound_count_rank_ample k X p D hp P hL e x hx`. Establish `hlo` using `GlobalTheory.T.arithHilbertSamuel_lowerBound_count_rank_ample k X p D hp P hL e x hx`. Establish `he : (0 : ℝ) < e` using `by exact_mod_cast hx.pos`.
+
+Establish `hfin : ∀ (m : ℕ) (R : ℝ), 0 ≤ R → (P.Bl m 1 R).Finite`. Introduce `m R hR`. Take `⟨c, C, _, h⟩` from `hup m 1`. Use `((h 0).2.2 R κ hR hκ h2).1` as an intermediate fact. Simplify using `using this`.
+
+Establish `key` using `GlobalTheory.T.count_growth_exponential_radii D e (Module.finrank (ratF x) X.functionField) (fun m R => (P.Bl m 1 R).ncard) κ t hx.pos hκ hκ1 ht (fun m R R' hR hRR' => Set.ncard_le_ncard (fun f hf => ⟨hf.1, fun σ y => (hf.2 σ y).trans hRR'⟩) (hfin m R' (hR.trans hRR'))) (fun s _ …`. Take `⟨c, C, hC, h⟩` from `hlo s 1`. Take `⟨c', C', hC', h'⟩` from `hup s 1`. Use `⟨c, c', C, C', hC, hC', fun q R hR => ⟨?_, ?_⟩⟩` and prove the remaining obligations. Establish `h3` using `(h q).2 R hR h1`.
+
+Establish `hf` using `hfin (e * (q + c) + s) (C * (q + D).choose D * R) (by positivity)`. Establish `e1 : ((e * (q + c) + s : ℕ) : ℤ) = e * (q + c : ℕ) + s` using `by push_cast; ring`. Rewrite `h3` using `[← e1, ← hf.cast_ncard_eq]`. Conclude with `h3` after adjusting the coercions. Establish `h3` using `((h' q).2.2 R κ hR hκ h2).2`.
+
+Establish `e1 : ((e * q + s : ℕ) : ℤ) = e * q + s` using `by push_cast; ring`. Rewrite `h3` using `[← e1]`. Conclude with `h3) ε hε`. Establish `e2 : (Module.finrank (ratF x) X.functionField : ℝ) / ((e : ℝ) ^ D * D.factorial) = gdeg P.L D / D.factorial`. Rewrite using `[hdeg, mul_div_mul_left _ _ (pow_pos he D).ne']`.
+
+Rewrite `key` using `[e2]`. Conclude with `key`.
+-/
 theorem lc_exp_bounds : GlobalTheory.Published.ArCalc → ∀ (k : Type) [CommRing k] (X : Scheme.{0}) [IsIntegral X] (p : X ⟶ Sp k) (D : ℕ), IsArithVar p D → ∀ (P : Pair p), IsAmpleLB P.L.B → ∀ (e : ℕ) (x : Fin (D + 1) → X.functionField), Gens P D e x → ∀ κ t : ℝ, 0 < κ → κ ≤ 1 → 0 < t → (∀ l (σ : k →+* ℂ) (y : CxPts p σ), P.nu e 0 σ y (x l) ≤ 1) → (∀ (σ : k →+* ℂ) (y : CxPts p σ), ∃ l, κ ≤ P.nu e 0 σ y (x l)) → ∀ ε : ℝ, 0 < ε → ∀ᶠ m : ℕ in atTop, gdeg P.L D / D.factorial * t - ε ≤ P.lc m 1 (Real.exp (t * m)) / (m : ℝ) ^ (D + 1) ∧ P.lc m 1 (Real.exp (t * m)) / (m : ℝ) ^ (D + 1) ≤ gdeg P.L D / D.factorial * (t - Real.log κ / e) + ε := by
   intro hA k _ X _ p D hp P hL e x hx κ t hκ hκ1 ht h1 h2 ε hε
   have hdeg := GlobalTheory.T.finrank_functionField_quotientSubfield_eq_degree hA k X p D hp P hL e x hx

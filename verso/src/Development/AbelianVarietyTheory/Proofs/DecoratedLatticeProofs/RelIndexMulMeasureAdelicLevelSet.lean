@@ -29,6 +29,25 @@ open scoped Pointwise
 
 namespace GlobalTheory.LevelIndexMeasure
 
+/- English proof (translation)
+Use `haveI : (H₁.subgroupOf H₀).FiniteIndex := ⟨hfi⟩`. Take `⟨s, hs, -⟩` from `(H₁.subgroupOf H₀).exists_isComplement_left 1`. Establish `hs' : Finite s` using `hs.finite_left_iff.mpr inferInstance`. Establish `hl : ∀ a : s, ∃ n ∈ N, φ n = ((a.val : H₀) : Q)` using `fun a => hsurj a.val.2`. Use `choose lift hlN hlφ using hl`.
+
+Use `set S₁ := φ ⁻¹' (H₁ : Set Q) ∩ ψ ⁻¹' E`. Establish `hU : (⋃ a : s, lift a • S₁) = φ ⁻¹' (H₀ : Set Q) ∩ ψ ⁻¹' E`. Use extensionality with `x`. Simplify using `only [Set.mem_iUnion, Set.mem_smul_set, Set.mem_inter_iff, Set.mem_preimage, SetLike.mem_coe, S₁, smul_eq_mul]`. Prove the components needed by the constructor for the conclusion.
+
+Introduce and unpack `⟨a, y, ⟨hy1, hy2⟩, rfl⟩`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Rewrite using `[map_mul, hlφ]`. Conclude with `H₀.mul_mem a.val.2 (h10 hy1)`. Rewrite using `[map_mul, hN _ (hlN a), one_mul]`.
+
+Conclude with `hy2`. Introduce and unpack `⟨hx1, hx2⟩`. Take `⟨⟨b, h⟩, hbh, -⟩` from `hs.existsUnique ⟨φ x, hx1⟩`. Use `⟨b, (lift b)⁻¹ * x, ⟨?_, ?_⟩, by group⟩` and prove the remaining obligations. Establish `e : ((b : H₀) : Q) * ((h : H₀) : Q) = φ x` using `congrArg Subtype.val hbh`.
+
+Rewrite using `[map_mul, map_inv, hlφ, ← e, inv_mul_cancel_left]`. Conclude with `Subgroup.mem_subgroupOf.mp h.2`. Rewrite using `[map_mul, map_inv, hN _ (hlN b), inv_one, one_mul]`. Conclude with `hx2`. Establish `hdisj : Pairwise (Function.onFun Disjoint fun a : s => lift a • S₁)`.
+
+Introduce `a b hab`. Rewrite using `[Function.onFun, Set.disjoint_left]`. Introduce and unpack `x ⟨y1, ⟨hy1, -⟩, rfl⟩ ⟨y2, ⟨hy2, -⟩, he⟩`. Apply `hab` to reduce the goal to its premises. Simplify using `only [smul_eq_mul] at he`.
+
+Establish `he'` using `congrArg φ he`. Rewrite `he'` using `[map_mul, map_mul, hlφ, hlφ]`. Establish `hh1' : (⟨φ y1, h10 hy1⟩ : H₀) ∈ H₁.subgroupOf H₀` using `Subgroup.mem_subgroupOf.mpr hy1`. Establish `hh2' : (⟨φ y2, h10 hy2⟩ : H₀) ∈ H₁.subgroupOf H₀` using `Subgroup.mem_subgroupOf.mpr hy2`. Establish `e : (a.val : H₀) * ⟨φ y1, h10 hy1⟩ = (b.val : H₀) * ⟨φ y2, h10 hy2⟩` using `Subtype.ext he'.symm`.
+
+Use `(hs.existsUnique ((a.val : H₀) * ⟨φ y1, h10 hy1⟩)).unique (y₁ := (a, ⟨_, hh1'⟩)) (y₂ := (b, ⟨_, hh2'⟩)) rfl e.symm` as an intermediate fact. Conclude with `congrArg Prod.fst this`. Combine the equalities or inequalities in the displayed calculation. Simplify using `[measure_smul, hs.encard_left, Subgroup.relIndex]`. Use `_ = μ (⋃ a : s, lift a • S₁) := (measure_iUnion hdisj fun a => hS.const_smul _).symm`.
+
+Use `_ = _ := by rw [hU]`.
+-/
 theorem relIndex_mul_measure_preimage {G Q R : Type*} [Group G] [Group Q] [Group R] [MeasurableSpace G] [MeasurableMul G]
     (μ : Measure G) [μ.IsMulLeftInvariant] (φ : G →* Q) (ψ : G →* R) (N : Subgroup G) (hN : ∀ n ∈ N, ψ n = 1)
     (H₁ H₀ : Subgroup Q) (h10 : H₁ ≤ H₀) (hsurj : H₀ ≤ N.map φ) (hfi : H₁.relIndex H₀ ≠ 0) (E : Set R)
@@ -80,6 +99,11 @@ namespace GlobalTheory.LevelIndexMeasure
 
 variable {D : D7}
 
+/- English proof (translation)
+Introduce `D V ν _ K₁ K₀ E h10 h0U hfi hK₁ hE`. Take `⟨i1, -, -, -, i5, -, -, i8⟩` from `GlobalTheory.RealMeasOne.ginfC_facts V`. Establish `hmeas : Measurable (GlobalTheory.AutMult.toInf V)` using `(GlobalTheory.AutMult.continuous_toInf V).measurable`. Establish `hsurj : K₀ ≤ (GfC V).map (Lev.finE V)`. Rewrite using `[← GlobalTheory.FunObj.map_levA V h0U]`.
+
+Conclude with `Subgroup.map_mono inf_le_left`. Conclude with `relIndex_mul_measure_preimage ν (Lev.finE V) (GlobalTheory.AutMult.toInf V) (GfC V) (fun n hn => (GlobalTheory.ChainOnto.HaarInf.toInf_eq_one_iff V n).2 hn) K₁ K₀ h10 hsurj hfi E (hK₁.inter (hmeas hE))`.
+-/
 theorem relIndex_mul_measure_levelSet : ∀ (D : D7) (V : HSp D) (ν : Measure (GA D V)) [ν.IsMulLeftInvariant] (K₁ K₀ : Subgroup (GL (Fin V.rank) (Lev.EAf D))) (E : Set (GinfC V)), K₁ ≤ K₀ → K₀ ≤ UA D.sp.cm V.gram → K₁.relIndex K₀ ≠ 0 → MeasurableSet {g : GA D V | Lev.finE V g ∈ K₁} → MeasurableSet E → (K₁.relIndex K₀ : ℝ≥0∞) * ν ({g : GA D V | Lev.finE V g ∈ K₁} ∩ GlobalTheory.AutMult.toInf V ⁻¹' E) = ν ({g : GA D V | Lev.finE V g ∈ K₀} ∩ GlobalTheory.AutMult.toInf V ⁻¹' E) := by
   intro D V ν _ K₁ K₀ E h10 h0U hfi hK₁ hE
   obtain ⟨i1, -, -, -, i5, -, -, i8⟩ := GlobalTheory.RealMeasOne.ginfC_facts V

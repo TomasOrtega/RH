@@ -9,6 +9,15 @@ open NumberField ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRes
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Introduce `E _ _ _ r X la N k m w cf g hw hcf hg heq`. Use `⟨hg, ?_⟩` and prove the remaining obligations. Use `choose B hB using fun i => (hw i).2`. Take `⟨C, hC0, hC⟩` from `IntegralCusp.exists_root_bound N k m cf hcf`. Use `⟨C * (∑ i, |B i|) ^ k, fun x hx => ?_⟩` and prove the remaining obligations.
+
+Establish `h2` using `hC _ _ (heq x hx)`. Use `set ν := X.nfac la x with hν`. Establish `hν0 : 0 ≤ ν` using `Formalism.L2.PjFree.pnorm_fac_nonneg _ _ _`. Establish `h3 : ‖fun i => w i x‖ * ν ≤ ∑ i, |B i|`. Rewrite using `[mul_comm, ← Real.norm_of_nonneg hν0, ← norm_smul, pi_norm_le_iff_of_nonneg (Finset.sum_nonneg fun _ _ => abs_nonneg _)]`.
+
+Introduce `i`. Rewrite using `[Pi.smul_apply, norm_smul, Real.norm_of_nonneg hν0, mul_comm]`. Conclude with `((hB i x hx).trans (le_abs_self _)).trans (Finset.single_le_sum (f := fun i => |B i|) (fun _ _ => abs_nonneg _) (Finset.mem_univ i))`. Use `show ‖g x‖ * X.nfac _ x ≤ _`. Rewrite using `[IntegralCusp.nfac_nsmul X la (k • la) k (fun τ i => by simp), ← hν]`.
+
+Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem isBddSec_of_integral : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (r : ℕ) (X : Data E r), ∀ (la : Wt X.Ψ r) (N k m : ℕ) (w : Fin N → Frame X.Ψ r → ℂ) (cf : ℕ → MvPolynomial (Fin N) ℂ) (g : Frame X.Ψ r → ℂ), (∀ i, X.IsBddSec la (w i)) → (∀ i < m, (cf i).IsHomogeneous ((m - i) * k)) → X.IsSec (k • la) g → (∀ x ∈ X.dom, g x * g x ^ m + ∑ i ∈ Finset.range m, (g x * MvPolynomial.eval (fun s => w s x) (cf i)) * g x ^ i = 0) → X.IsBddSec (k • la) g := by
   intro E _ _ _ r X la N k m w cf g hw hcf hg heq
   refine ⟨hg, ?_⟩

@@ -10,6 +10,19 @@ namespace GlobalTheory.HTBasis
 
 open GlobalTheory.DeRhamSymbol GlobalTheory.DeRhamSymbolBasis
 
+/- English proof (translation)
+Introduce `l _ P AI J K LL m r' u k hu g hg`. Use extensionality with `j i`. Rewrite using `[Matrix.mul_diagonal, Matrix.mul_apply]`. Simplify using `only [Matrix.map_apply, colHT, Matrix.of_apply]`. Use `set M := (r' g : Matrix (Fin m) (Fin m) ↥LL.1) with hM`.
+
+Use `set t : P.R.BdR := ((tU P ^ (-k i) : P.R.BdRˣ) : P.R.BdR) with ht`. Use `set q : ℚ_[l] := ((P.χQ (g : GQ l) ^ k i : ℚ_[l]ˣ) : ℚ_[l]) with hq`. Establish `key : ∀ x, t * u i x ∈ (P.PD (Formalism.MainNotions.LocalSituation.botExt l)).Fil 0` using `fun x => (shift_iff J (k i) 0 _).2 (by rw [add_zero]; exact (mem_iff K _ _).1 (hu i x))`. Establish `hmem : ∀ x, algebraMap ℚ_[l] P.R.BdR q * P.actQdR (g : GQ l) (t * u i x) ∈ (P.PD (Formalism.MainNotions.LocalSituation.botExt l)).Fil 0` using `fun x => by`. Rewrite using `[IsScalarTower.algebraMap_apply ℚ_[l] (Om l) P.R.BdR]`.
+
+Conclude with `om_mul_mem _ (act_mem _ (key x))`. Establish `h1` using `congrFun (hg i) j`. Simplify using `only [Matrix.mulVec, dotProduct, Matrix.map_apply, embF_apply] at h1`. Establish `h2 : t * u i j = ∑ x, algebraMap (Om l) P.R.BdR ((M j x : ↥LL.1) : Om l) * (algebraMap ℚ_[l] P.R.BdR q * P.actQdR (g : GQ l) (t * u i x))` using `by conv_lhs => rw [← h1]`. Rewrite using `[Finset.mul_sum]`.
+
+Use `Finset.sum_congr rfl fun x _ => ?_` and prove the remaining obligations. Rewrite using `[mul_left_comm, shift_act]`. Establish `h3 : ∀ x, J.θ (algebraMap ℚ_[l] P.R.BdR q * P.actQdR (g : GQ l) (t * u i x)) = (q : ℂ_[l]) * Per.σC (g : GQ l) (J.θ (t * u i x))` using `fun x => by`. Rewrite using `[IsScalarTower.algebraMap_apply ℚ_[l] (Om l) P.R.BdR, J.θ_mul _ (om_mem _) _ (act_mem _ (key x)), J.θ_Om, J.θ_act _ _ (key x), GlobalTheory.MemLoc.TiedTheta.actC_eq]`. Establish `hunit : (q : ℂ_[l]) * ((((P.χQ (g : GQ l)) ^ (-k i) : ℚ_[l]ˣ) : ℚ_[l]) : ℂ_[l]) = 1`.
+
+Establish `e : q * (((P.χQ (g : GQ l)) ^ (-k i) : ℚ_[l]ˣ) : ℚ_[l]) = 1`. Rewrite using `[hq, ← Units.val_mul, ← zpow_add, add_neg_cancel, zpow_zero, Units.val_one]`. Establish `e2` using `congrArg (fun z : ℚ_[l] => (z : ℂ_[l])) e`. Rewrite `e2` using `[map_mul, UniformSpace.Completion.coe_mul, map_one, UniformSpace.Completion.coe_one]`. Conclude with `e2`.
+
+Rewrite using `[h2, theta_comb J _ _ hmem, Finset.sum_mul]`. Use `Finset.sum_congr rfl fun x _ => ?_` and prove the remaining obligations. Rewrite using `[h3]`. Take the linear combination `(-((((M j x : ↥LL.1) : Om l) : ℂ_[l]) * Per.σC (g : GQ l) (J.θ (t * u i x)))) * hunit`.
+-/
 theorem colHT_equivariant : ∀ {l : ℕ} [Fact l.Prime] {P : LocPrime l} {AI : LocAinf l P} (J : Formalism.MainNotions.LocalSituation.ThetaL P AI) {K LL : FinExt l} {m : ℕ} (r' : ↥(GK K) →* Matrix.GeneralLinearGroup (Fin m) ↥LL.1) (u : Fin m → Fin m → P.R.BdR) (k : Fin m → ℤ), (∀ i j, u i j ∈ (P.PD K).Fil (k i)) → ∀ g : ↥(GK K), (∀ i, ((r' g : Matrix (Fin m) (Fin m) ↥LL.1).map (embF P LL)).mulVec (fun j => P.actQdR (g : GQ l) (u i j)) = u i) → (r' g : Matrix (Fin m) (Fin m) ↥LL.1).map (fun x => (((x : ↥LL.1) : Om l) : ℂ_[l])) * (colHT J u k).map (Per.σC (g : GQ l)) = colHT J u k * Matrix.diagonal (fun i => ((((P.χQ (g : GQ l)) ^ (-k i) : ℚ_[l]ˣ) : ℚ_[l]) : ℂ_[l])) := by
   intro l _ P AI J K LL m r' u k hu g hg
   ext j i

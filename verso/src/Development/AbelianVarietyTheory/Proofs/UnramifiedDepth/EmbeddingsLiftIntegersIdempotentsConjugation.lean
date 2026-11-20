@@ -18,6 +18,13 @@ attribute [local instance] Over.cartesianMonoidalCategory
 
 namespace GlobalTheory.ChF
 
+/- English proof (translation)
+Establish `h : ∀ x : OE, ∃ y : O, algebraMap O C y = τ x` using `fun x => by`. Establish `h1 : IsIntegral ℤ x` using `Algebra.IsIntegral.isIntegral x`. Establish `h2 : IsIntegral ℤ (τ x)` using `h1.map τ.toIntAlgHom`. Establish `h3 : IsIntegral O (τ x)` using `h2.tower_top`. Conclude with `hv.exists_of_le_one (hv.mem_of_integral h3)`.
+
+Use `choose f hf using h`. Use `⟨{ toFun := f map_one' := hv.hom_inj (by rw [hf, map_one, map_one]) map_mul' := fun a b => hv.hom_inj (by rw [hf, map_mul, map_mul, hf, hf]) map_zero' := hv.hom_inj (by rw [hf, map_zero, map_zero]) map_add' := fun a b => hv.hom_inj (by rw [hf, map_add, map_add, hf, hf]) }, ?_, ?_ …` and prove the remaining obligations. Conclude with `RingHom.ext hf`. Introduce `g hg`. Use `RingHom.ext fun x => hv.hom_inj ?_` and prove the remaining obligations.
+
+Express the relevant statement in the definitionally equal form `algebraMap O C (g x) = algebraMap O C (f x)`. Rewrite using `[hf, ← hg]`. Both sides reduce to the same expression.
+-/
 private theorem existsUnique_lift_integers {C : Type} [Field C] {v : Valuation C NNReal} {O : Type}
     [CommRing O] [Algebra O C] (hv : v.Integers O) {OE : Type} [CommRing OE] [Module.Finite ℤ OE]
     (τ : OE →+* C) : ∃! τ' : OE →+* O, ((algebraMap O C).comp τ') = τ := by
@@ -39,6 +46,15 @@ private theorem existsUnique_lift_integers {C : Type} [Field C] {v : Valuation C
     rw [hf, ← hg]
     rfl
 
+/- English proof (translation)
+Introduce `p _ C _ _ _ v O _ _ hv _ _ _ OE _ _`. Establish `: IsDomain O` using `Function.Injective.isDomain (algebraMap O C) hv.hom_inj`. Use `⟨existsUnique_lift_integers hv, fun e τ he => ?_, ?_⟩` and prove the remaining obligations. Establish `h : IsIdempotentElem (tauExt τ e)`. Unfold `IsIdempotentElem`.
+
+Rewrite using `[← map_mul, he]`. Conclude with `IsIdempotentElem.iff_eq_zero_or_one.1 h`. Introduce `_ τ x`. Establish `h2 : sig p OE x = sigE p OE x` using `rfl`. Use `⟨?_, h2⟩` and prove the remaining obligations.
+
+Rewrite using `[← h2]`. Use `clear h2`. Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul a b => simp [tauExt, sig]`.
+
+Consider the case `add a b ha hb => rw [map_add, map_add, map_add, ha, hb]`.
+-/
 theorem embeddings_idempotents_conjugation : ∀ (p : ℕ) [Fact p.Prime] (C : Type) [Field C] [IsAlgClosed C] [CharZero C] (v : Valuation C NNReal) (O : Type) [CommRing O] [Algebra O C], v.Integers O → ∀ [Fact ¬IsUnit (p : O)] [IsAdicComplete (Ideal.span {(p : O)}) O] [Algebra ℤ_[p] O] (OE : Type) [CommRing OE] [Module.Finite ℤ OE], (∀ τ : OE →+* C, ∃! τ' : OE →+* O, ((algebraMap O C).comp τ') = τ) ∧ (∀ (e : ℤ_[p] ⊗[ℤ] OE) (τ : OE →+* O), e * e = e → tauExt τ e = 0 ∨ tauExt τ e = 1) ∧ ∀ [StarRing OE] (τ : OE →+* O) (x : ℤ_[p] ⊗[ℤ] OE), tauExt (τ.comp ((starRingAut : RingAut OE) : OE ≃+* OE).toRingHom) x = tauExt τ (sigE p OE x) ∧ sig p OE x = sigE p OE x := by
   intro p _ C _ _ _ v O _ _ hv _ _ _ OE _ _
   have : IsDomain O := Function.Injective.isDomain (algebraMap O C) hv.hom_inj

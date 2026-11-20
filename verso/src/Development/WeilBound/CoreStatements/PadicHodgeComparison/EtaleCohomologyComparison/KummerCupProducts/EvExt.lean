@@ -12,16 +12,28 @@ open CategoryTheory GlobalTheory.EtC
 
 namespace CrystallineSemistableComparison.E
 
+/- English proof (translation)
+Introduce `R _ E I n α β` and use `⟨(GlobalTheory.EtC.ev_basic R).2.2.1 α β, fun p s h U x => let t := (GlobalTheory.EtC.ev_basic R).1 α β p s h U x; ⟨t.1, t.2.1, t.2.2.1⟩⟩`.
+-/
 theorem evExt : EvExt := fun R _ E I n α β =>
   ⟨(GlobalTheory.EtC.ev_basic R).2.2.1 α β, fun p s h U x =>
     let t := (GlobalTheory.EtC.ev_basic R).1 α β p s h U x; ⟨t.1, t.2.1, t.2.2.1⟩⟩
 
+/- English proof (translation)
+Introduce `R _ E I n α p s h U` and use `⟨fun V g x => ((GlobalTheory.EtC.ev_basic R).2.1 α p s h V U g x).symm, fun E' f x => (GlobalTheory.EtC.ev_basic R).2.2.2.1 f α p s h U x⟩`.
+-/
 theorem evNat : EvNat := fun R _ E I n α p s h U =>
   ⟨fun V g x => ((GlobalTheory.EtC.ev_basic R).2.1 α p s h V U g x).symm, fun E' f x => (GlobalTheory.EtC.ev_basic R).2.2.2.1 f α p s h U x⟩
 
+/- English proof (translation)
+Introduce `R _ E I n m hm β U` and use `⟨(GlobalTheory.ev_delta_values R hm β U).1, fun p s t hs ht x => (GlobalTheory.ev_delta_values R hm β U).2 p s t hs _ x⟩`.
+-/
 theorem evDel : EvDel := fun R _ E I n m hm β U =>
   ⟨(GlobalTheory.ev_delta_values R hm β U).1, fun p s t hs ht x => (GlobalTheory.ev_delta_values R hm β U).2 p s t hs _ x⟩
 
+/- English proof (translation)
+Introduce `S R _ _ I J ρ E n α β h` and use `GlobalTheory.EtC.SemiMap.op_spec ρ E n α β h`.
+-/
 theorem inOp : InOp := fun S R _ _ I J ρ E n α β h => GlobalTheory.EtC.SemiMap.op_spec ρ E n α β h
 
 end CrystallineSemistableComparison.E

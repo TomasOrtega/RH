@@ -14,6 +14,9 @@ noncomputable def injectiveSequence (F : Sheaf (Opens.grothendieckTopology X) Ad
     ShortComplex (Sheaf (Opens.grothendieckTopology X) AddCommGrpCat.{u}) :=
   ShortComplex.mk (Injective.ι F) (cokernel.π (Injective.ι F)) (cokernel.condition _)
 
+/- English proof (translation)
+The claim follows from `ShortComplex.ShortExact.mk' (ShortComplex.exact_of_g_is_cokernel _ (cokernelIsCokernel (Injective.ι F))) (inferInstanceAs (Mono (Injective.ι F))) coequalizer.π_epi`.
+-/
 lemma injectiveSequence_shortExact (F : Sheaf (Opens.grothendieckTopology X) AddCommGrpCat.{u}) :
     (injectiveSequence F).ShortExact :=
   ShortComplex.ShortExact.mk'

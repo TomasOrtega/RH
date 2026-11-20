@@ -46,31 +46,55 @@ def comp (F G : T.TeichFrob) : T.TeichFrob where
 
 variable (F G : T.TeichFrob)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem comp_φ_apply (x : Γ) : (F.comp G).φ x = F.φ (G.φ x) := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem comp_a : (F.comp G).a = F.a + G.a := rfl
 
 def pow : ℕ → T.TeichFrob
   | 0 => id T
   | d + 1 => F.comp (pow d)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem pow_zero : F.pow 0 = id T := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem pow_succ (d : ℕ) : F.pow (d + 1) = F.comp (F.pow d) := rfl
 
+/- English proof (translation)
+Proceed by induction on `d with`. Consider the case `zero => rfl`. Consider the case `succ d ih => rw [pow_succ, comp_φ_apply, ih, Function.iterate_succ_apply']`.
+-/
 theorem pow_φ_apply (d : ℕ) (x : Γ) : (F.pow d).φ x = F.φ^[d] x := by
   induction d with
   | zero => rfl
   | succ d ih => rw [pow_succ, comp_φ_apply, ih, Function.iterate_succ_apply']
 
+/- English proof (translation)
+Proceed by induction on `d with`. Consider the case `zero => rfl`. Consider the case `succ d ih => rw [pow_succ, comp_a, ih]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem pow_a (d : ℕ) : (F.pow d).a = F.a * d := by
   induction d with
   | zero => rfl
   | succ d ih => rw [pow_succ, comp_a, ih]; ring
 
+/- English proof (translation)
+Rewrite using `[pow_a]`. Conclude with `Nat.mul_pos ha hd`.
+-/
 theorem pow_a_pos {d : ℕ} (ha : 0 < F.a) (hd : 0 < d) : 0 < (F.pow d).a := by
   rw [pow_a]; exact Nat.mul_pos ha hd
 
+/- English proof (translation)
+Take `⟨y, hy, hy0, hyw⟩` from `(F.pow d).exists_φ_eq_mul_of_mem_Gcon (F.pow_a_pos ha hd) hw hw0`. Conclude with `⟨y, hy, hy0, by rw [← pow_φ_apply]; exact hyw⟩`.
+-/
 theorem exists_iterate_φ_eq_mul_of_mem_Gcon [IsAlgClosed L] (ha : 0 < F.a) {d : ℕ} (hd : 0 < d)
     {w : Γ} (hw : w ∈ T.Gcon) (hw0 : T.red w ≠ 0) :
     ∃ y ∈ T.Gcon, T.red y ≠ 0 ∧ F.φ^[d] y = w * y := by

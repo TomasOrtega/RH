@@ -17,6 +17,9 @@ open scoped TensorProduct
 
 namespace GlobalTheory.ChartDesc
 
+/- English proof (translation)
+Use `HasRingHomProperty.appLE (P := @Etale) (𝟙 X) (inferInstanceAs (Etale (𝟙 X))) ⟨U, hU⟩ ⟨W, hW⟩ (by simpa using h)` as an intermediate fact. Simplify using `only [Scheme.Hom.appLE, Scheme.Hom.id_app, Category.id_comp] at this`. Conclude with `this`.
+-/
 theorem resG_etale (X : Scheme.{0}) (U W : X.Opens) (h : W ≤ U) (hU : IsAffineOpen U)
     (hW : IsAffineOpen W) : (resG X h).Etale := by
   have := HasRingHomProperty.appLE (P := @Etale) (𝟙 X) (inferInstanceAs (Etale (𝟙 X))) ⟨U, hU⟩
@@ -24,6 +27,43 @@ theorem resG_etale (X : Scheme.{0}) (U W : X.Opens) (h : W ≤ U) (hU : IsAffine
   simp only [Scheme.Hom.appLE, Scheme.Hom.id_app, Category.id_comp] at this
   exact this
 
+/- English proof (translation)
+Introduce `R R' _ _ φ X X' f f' π _ d s L σ C' y H hy`. Set `c : ∀ i, (L i).ι` to `fun i => C'.c i ⟨⟩`. Establish `hyc : ∀ i, π y ∈ (L i).U (c i)` using `fun i => by`. Conclude with `(Cartier.pull_U (L i) π (C'.c i)).le (C'.le i hy)`. Take `⟨_, ⟨U, hU, rfl⟩, hxU, hUle⟩` from `X.isBasis_affineOpens.exists_subset_of_mem_open (Set.mem_iInter.2 hyc) (isOpen_iInter_of_finite fun i => ((L i).U (c i)).isOpen)`.
+
+Establish `hc : ∀ i, (U : X.Opens) ≤ (L i).U (c i)` using `fun i _ hz => Set.mem_iInter.1 (hUle hz) i`. Take `⟨_, ⟨W, hW, rfl⟩, hyW, hWle⟩` from `X'.isBasis_affineOpens.exists_subset_of_mem_open (show y ∈ ((C'.U ⊓ π ⁻¹ᵁ U : X'.Opens) : Set X') from ⟨hy, hxU⟩) (C'.U ⊓ π ⁻¹ᵁ U).isOpen`. Establish `hWC : (W : X'.Opens) ≤ C'.U` using `fun _ hz => (hWle hz).1`. Establish `hWU : (W : X'.Opens) ≤ π ⁻¹ᵁ U` using `fun _ hz => (hWle hz).2`. Establish `hA : IsAffineHom π` using `MorphismProperty.of_isPullback (P := @IsAffineHom) H.flip inferInstance`.
+
+Establish `hU' : IsAffineOpen (π ⁻¹ᵁ U)` using `hU.preimage π`. Establish `po` using `(isIso_pushoutSection_iff H (US := ⊤) (UT := ⊤) (UX := U) (UY := π ⁻¹ᵁ U) le_top le_top (by simp)).mp (isIso_pushoutSection_of_isAffineOpen H _ _ _ (isAffineOpen_top _) (isAffineOpen_top _) hU)`. Establish `po' : IsPushout (Qcqs.baseRingHom f U) (CommRingCat.ofHom φ) (π.app U) (Qcqs.baseRingHom f' (π ⁻¹ᵁ U))`. Use `po.of_iso (Scheme.ΓSpecIso _) (Iso.refl _) (Scheme.ΓSpecIso _) (Iso.refl _) ?_ ?_ ?_ ?_` and prove the remaining obligations. Simplify using `[Qcqs.baseRingHom]`.
+
+Rewrite using `[← Scheme.ΓSpecIso_naturality, Scheme.Hom.appTop, Scheme.Hom.app_eq_appLE]`. Both sides reduce to the same expression. Simplify using `[Scheme.Hom.app_eq_appLE]`. Simplify using `[Qcqs.baseRingHom]`. Set `K` to `X'.residueField y`.
+
+Use `letI : Algebra R R' := φ.toAlgebra`. Use `letI : Algebra R Γ(X, U) := (cstOn f U).toAlgebra`. Use `letI : Algebra R' Γ(X', π ⁻¹ᵁ U) := (cstOn f' (π ⁻¹ᵁ U)).toAlgebra`. Use `letI : Algebra Γ(X, U) Γ(X', π ⁻¹ᵁ U) := (π.app U).hom.toAlgebra`. Use `letI : Algebra R Γ(X', π ⁻¹ᵁ U) := ((cstOn f' (π ⁻¹ᵁ U)).comp φ).toAlgebra`.
+
+Use `letI : Algebra Γ(X', π ⁻¹ᵁ U) Γ(X', W) := (resG X' hWU).toAlgebra`. Use `letI : Algebra R' Γ(X', W) := (cstOn f' W).toAlgebra`. Use `letI : Algebra Γ(X', W) K := (X'.evaluation W y hyW).hom.toAlgebra`. Use `letI : Algebra Γ(X, U) K := ((X'.evaluation W y hyW).hom.comp ((resG X' hWU).comp (π.app U).hom)).toAlgebra`. Use `haveI : IsScalarTower R R' Γ(X', π ⁻¹ᵁ U) := .of_algebraMap_eq fun r ↦ rfl`.
+
+Establish `e2 : ∀ r : R, (π.app U).hom (cstOn f U r) = cstOn f' (π ⁻¹ᵁ U) (φ r)` using `fun r => by`. Establish `h1` using `Qcqs.app_baseRingHom π f U r`. Establish `h2 : Qcqs.baseRingHom (π ≫ f) (π ⁻¹ᵁ U) r = Qcqs.baseRingHom f' (π ⁻¹ᵁ U) (φ r)`. Rewrite using `[H.w, Qcqs.baseRingHom_comp_SpecMap]`. Both sides reduce to the same expression.
+
+Conclude with `h1.trans h2`. Use `haveI : IsScalarTower R Γ(X, U) Γ(X', π ⁻¹ᵁ U) := .of_algebraMap_eq fun r ↦ (e2 r).symm`. Use `haveI : Algebra.IsPushout R R' Γ(X, U) Γ(X', π ⁻¹ᵁ U) := by`. Establish `po'' : IsPushout (CommRingCat.ofHom (algebraMap R Γ(X, U))) (CommRingCat.ofHom (algebraMap R R')) (CommRingCat.ofHom (algebraMap Γ(X, U) Γ(X', π ⁻¹ᵁ U))) (CommRingCat.ofHom (algebraMap R' Γ(X', π ⁻¹ᵁ U)))` using `po'`. Conclude with `(CommRingCat.isPushout_iff_isPushout.mp po'').symm`.
+
+Use `haveI : IsScalarTower R' Γ(X', π ⁻¹ᵁ U) Γ(X', W) := .of_algebraMap_eq fun r ↦ (Qcqs.baseRingHom_res f' hWU r).symm`. Use `haveI : Algebra.FormallyEtale Γ(X', π ⁻¹ᵁ U) Γ(X', W) := by haveI : Algebra.Etale Γ(X', π ⁻¹ᵁ U) Γ(X', W) := resG_etale X' _ _ hWU hU' hW infer_instance`. Set `t : Fin d → Γ(X', W)` to `fun a => resG X' hWC (C'.t a)`. Establish `ht : IsEtCoord f' W t` using `GlobalTheory.T.isEtaleCoordinatesOnOpen_restrict_affineOpen R' X' f' C'.U W hWC d C'.t C'.affine hW C'.etale`. Establish `hbasis` using `GlobalTheory.T.etale_coordinates_differentials R' Γ(X', W) K d t ht`.
+
+Take `⟨ebc, hebc⟩` from `GlobalTheory.T.exists_kaehler_fibre_equiv_D_compat R R' Γ(X, U) Γ(X', π ⁻¹ᵁ U) Γ(X', W) K (fun _ => rfl)`. Establish `key : ∀ i, algebraMap Γ(X', π ⁻¹ᵁ U) Γ(X', W) (algebraMap Γ(X, U) Γ(X', π ⁻¹ᵁ U) (resG X (hc i) ((σ i).f (c i)))) = ((Units.map (resG X' hWC).toMonoidHom (C'.u i) : Γ(X', W)ˣ) : Γ(X', W)) * resG X' hWC ((C'.e i).elim 1 C'.t)`. Introduce `i`. Establish `e` using `congrArg (resG X' hWC) (C'.eq i)`. Rewrite `e` using `[map_mul]`.
+
+Use `Eq.trans ?_ e` and prove the remaining obligations. Use `show resG X' hWU ((π.app U).hom (resG X (hc i) ((σ i).f (c i)))) = resG X' hWC (resG X' (C'.le i) (resG X' _ ((π.app _).hom ((σ i).f (C'.c i ⟨⟩)))))`. Rewrite using `[Cartier.app_resG, Cartier.resG_resG, Cartier.resG_resG, Cartier.resG_resG]`. Establish `hunit : ∀ v : Γ(X', W)ˣ, algebraMap Γ(X', W) K v ≠ 0` using `fun v => (v.isUnit.map (algebraMap Γ(X', W) K)).ne_zero`. Establish `hres : ∀ a : Γ(X, U), algebraMap Γ(X, U) K a ≠ 0 ↔ π y ∈ X.basicOpen a`.
+
+Introduce `a`. Express the relevant statement in the definitionally equal form `(X'.evaluation W y hyW).hom (resG X' hWU ((π.app U).hom a)) ≠ 0 ↔ _`. Rewrite using `[Ne, Scheme.evaluation_eq_zero_iff_notMem_basicOpen, not_not]`. Express the relevant statement in the definitionally equal form `y ∈ X'.basicOpen ((X'.presheaf.map (homOfLE hWU).op).hom _) ↔ _`. Rewrite using `[Scheme.basicOpen_res, ← Scheme.preimage_basicOpen]`.
+
+Conclude with `⟨fun h => h.2, fun h => ⟨hyW, h⟩⟩`. Establish `hrank : Module.finrank K (K ⊗[Γ(X, U)] Ω[Γ(X, U)⁄R]) = d` using `ebc.finrank_eq.trans hbasis.1`. Establish `hvan : ∀ i : {i : Fin s // algebraMap Γ(X, U) K (resG X (hc i) ((σ i).f (c i))) = 0}, ∃ a, C'.e i.1 = some a ∧ algebraMap Γ(X', W) K (t a) = 0`. Introduce and unpack `⟨i, hi⟩`. Establish `h0 : algebraMap Γ(X', W) K (algebraMap Γ(X', π ⁻¹ᵁ U) Γ(X', W) (algebraMap Γ(X, U) Γ(X', π ⁻¹ᵁ U) (resG X (hc i) ((σ i).f (c i))))) = 0` using `hi`.
+
+Rewrite `h0` using `[key i, map_mul]`. Break down `hE : C'.e i with _ | a` into its components or cases. Rewrite `h0` using `[hE]`. Simplify using `only [Option.elim, map_one, mul_one] at h0`. Conclude with `absurd h0 (hunit _)`.
+
+Use `⟨a, rfl, ?_⟩` and prove the remaining obligations. Rewrite `h0` using `[hE]`. Conclude with `(mul_eq_zero.1 h0).resolve_left (hunit _)`. Use `choose g hg hg0 using hvan`. Set `emb : {i : Fin s // algebraMap Γ(X, U) K (resG X (hc i) ((σ i).f (c i))) = 0} ↪ Fin d` to `⟨g, fun i j hij => Subtype.ext (C'.inj i.1 j.1 (g i) (hg i) (by rw [hij]; exact hg j))⟩`.
+
+Set `u : {i : Fin s // algebraMap Γ(X, U) K (resG X (hc i) ((σ i).f (c i))) = 0} → Γ(X', W)ˣ` to `fun i => Units.map (resG X' hWC).toMonoidHom (C'.u i.1)`. Establish `hli` using `hbasis.2 _ emb u hg0`. Establish `hfam : ∀ i : {i : Fin s // algebraMap Γ(X, U) K (resG X (hc i) ((σ i).f (c i))) = 0}, ebc ((1 : K) ⊗ₜ[Γ(X, U)] KaehlerDifferential.D R Γ(X, U) (resG X (hc i.1) ((σ i.1).f (c i.1)))) = (1 : K) ⊗ₜ[Γ(X', W)] KaehlerDifferential.D R' Γ(X', W) ((u i : Γ(X', W)) * t (emb i))`. Introduce `i`. Rewrite using `[hebc, key i.1, hg i]`.
+
+Both sides reduce to the same expression. Establish `hlin : LinearIndependent K (fun i : {i : Fin s // algebraMap Γ(X, U) K (resG X (hc i) ((σ i).f (c i))) = 0} => (1 : K) ⊗ₜ[Γ(X, U)] KaehlerDifferential.D R Γ(X, U) (resG X (hc i.1) ((σ i.1).f (c i.1))))`. Use `LinearIndependent.of_comp ebc.toLinearMap ?_` and prove the remaining obligations. Use `hli using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `i`.
+
+Conclude with `hfam i`. Conclude with `GlobalTheory.T.finrank_kaehler_affine_chart R X f d s L σ U c hc (π y) K hU hxU hres ⟨hrank, hlin⟩`.
+-/
 theorem chart_desc : ∀ (R R' : Type) [CommRing R] [CommRing R'] (φ : R →+* R') (X X' : Scheme.{0}) (f : X ⟶ Sp R) (f' : X' ⟶ Sp R') (π : X' ⟶ X) [Smooth f] (d : ℕ) (s : ℕ) (L : Fin s → LB X) (σ : ∀ i, (L i).Sec) (C' : SncChart f' d (fun i => (L i).pull π) (fun i => Cartier.secPull (σ i) π)) (y : X'), IsPullback π f' f (spMap φ) → y ∈ C'.U → ∃ C : SncChart f d L σ, π y ∈ C.U := by
   intro R R' _ _ φ X X' f f' π _ d s L σ C' y H hy
   let c : ∀ i, (L i).ι := fun i => C'.c i ⟨⟩

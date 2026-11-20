@@ -14,20 +14,42 @@ namespace PositivityTheory.SiegelWeilFormula.Ald
 
 variable {F : Type} [Field F] [NumberField F]
 
+/- English proof (translation)
+Establish `e : ev0 (F` using `F) κ = GlobalTheory.MixUniq.ev0 κ := LinearMap.ext fun _ => rfl`. Rewrite using `[e]`. Conclude with `GlobalTheory.MixUniq.adelicCoordinatesEvalZeroForm_mem_admissible κ`.
+-/
 theorem evalZero_mem_adelicSchwartzAdmittedForms (κ : Type) [Fintype κ] : ev0 (F := F) κ ∈ (adeleClass F).adm κ := by
   have e : ev0 (F := F) κ = GlobalTheory.MixUniq.ev0 κ := LinearMap.ext fun _ => rfl
   rw [e]
   exact GlobalTheory.MixUniq.adelicCoordinatesEvalZeroForm_mem_admissible κ
 
+/- English proof (translation)
+Simplify using `[ev0, schr]`.
+-/
 theorem eval_zero_schrodinger_zero {κ : Type} [Fintype κ] (ψ : AddChar (AF F) ℂ) (v : κ → AF F) (Ψ : (κ → AF F) → ℂ) :
     ev0 κ (schr ψ (0, v) Ψ) = ev0 κ Ψ := by
   simp [ev0, schr]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `x`. Simplify using `[schr]`.
+-/
 theorem schr_zero_fst {κ : Type} [Fintype κ] (ψ : AddChar (AF F) ℂ) (v : κ → AF F) (Ψ : (κ → AF F) → ℂ) :
     schr ψ (0, v) Ψ = fun x => ψ (x ⬝ᵥ v) * Ψ x := by
   funext x
   simp [schr]
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ d n h Y b j ε hn hs hb e1 e2 hj dd0 dd' had0 had' om1 hsp1 hsr1 φ₀ hφ₀ h0 om' hbox`. Introduce `l hl hinv p t hpt φ hφ`. Establish `hψ : IsStd d.B.ψ` using `d.ok.good.std`. Establish `hchar : ∀ (y : Fin d.m × Fin n × Fin 2 → AF F), ∀ φ ∈ schA F (Fin d.m × Fin n × Fin 2), l (fun x => d.B.ψ (x ⬝ᵥ y) * φ x) = l φ`. Introduce `y φ hφ`.
+
+Take `⟨z, hz⟩` from `(hAC F E σ d.m n d.bs d.A Y b dd' had' hb).2 y`. Use `hinv z φ hφ` as an intermediate fact. Rewrite `this` using `[Darboux.rho, hz, schr_zero_fst]`. Conclude with `this`. Take `⟨c, hc⟩` from `GlobalTheory.T.character_invariant_adelic_form_eq_mul_eval_zero F d.B.ψ hψ (Fin d.m × Fin n × Fin 2) l hl hchar`.
+
+Establish `hbm : boxFun φ φ₀ ∈ schA F (K1 d.m n)` using `GlobalTheory.SchwartzBox.boxFun_mem_schA F _ _ φ hφ φ₀ hφ₀`. Establish `hb1` using `hbox p φ hφ`. Establish `hm1 : boxFun (om' p φ) φ₀ ∈ schA F (K1 d.m n)` using `hb1 ▸ hsp1.pres (j p) _ hbm`. Establish `hmem : om' p φ ∈ schA F (Fin d.m × Fin n × Fin 2)`. Use `(hF F _ _).1 _ hm1` as an intermediate fact.
+
+Rewrite `this` using `[slice0_box_one _ h0]`. Then use the resulting hypothesis. Rewrite using `[hc _ hmem, hc _ hφ]`. Establish `hv : om' p φ 0 = ev0 (K1 d.m n) (om1 (j p) (boxFun φ φ₀))`. Rewrite using `[hb1]`. Simplify using `[ev0, boxFun, h0]`.
+
+Take `⟨t', ht', hdet⟩` from `jPar d h hb hj p t hpt`. Establish `hkill : ∀ (z : Matrix (Fin d.m) (Fin d.n) (AE F E)), ∀ Ψ ∈ schA F (K1 d.m n), ev0 (K1 d.m n) ((GlobalTheory.TowU.reindexD dd0 (eK d.m h).symm).rho d.B.ψ (z * (diagCols (Fin d.n) : Matrix (Fin d.n ⊕ Fin d.n) (Fin d.n) (AE F E))ᵀ) Ψ) = ev0 (K1 d.m n) Ψ`. Introduce `z Ψ _`. Establish `h1` using `(hAC F E σ d.m d.n d.bs d.A d.Y d.b dd0 had0 d.ok.frame).1 z`. Rewrite using `[Darboux.rho, GlobalTheory.TowU.reindexD_e, h1]`.
+
+Simplify using `[ev0, schr]`. Establish `key` using `hsr1 (ev0 (K1 d.m n)) (evalZero_mem_adelicSchwartzAdmittedForms _) hkill (j p) t' ht' (boxFun φ φ₀) hbm`. Rewrite using `[hv, key, hdet]`. Simplify using `[ev0, boxFun, h0]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem siegelSmall_of (hF : SliceFacts) (hAC : AdaptedChar) : SiegelSmall := by
   intro F E _ _ _ _ _ σ d n h Y b j ε hn hs hb e1 e2 hj dd0 dd' had0 had' om1 hsp1 hsr1 φ₀ hφ₀ h0 om' hbox
   intro l hl hinv p t hpt φ hφ

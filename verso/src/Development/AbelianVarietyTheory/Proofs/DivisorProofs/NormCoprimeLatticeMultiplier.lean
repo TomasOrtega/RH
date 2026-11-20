@@ -23,6 +23,15 @@ namespace GlobalTheory.ConjApprox
 
 open GlobalTheory.IndefiniteRowSideFullHecke.UnitaryHeckeCharacterIdele (finiteAdeleMap finiteCompletionMap finiteCompletionMap_mapsTo)
 
+/- English proof (translation)
+Use `set a : Af K := algebraMap K (Af K) (n : K)⁻¹`. Use `set ti : Af K := ((t⁻¹ : (Af K)ˣ) : Af K)`. Use `set U : Set (Af K) := {x | ∀ v : HeightOneSpectrum (𝓞 K), (a * (ti * x - 1)) v ∈ v.adicCompletionIntegers K}`. Establish `hO : IsOpen {z : Af K | ∀ v : HeightOneSpectrum (𝓞 K), z v ∈ v.adicCompletionIntegers K}` using `RestrictedProduct.isOpen_forall_mem (A := fun v : HeightOneSpectrum (𝓞 K) => (v.adicCompletionIntegers K : Set (v.adicCompletion K))) fun _ => Valued.isOpen_valuationSubring _`. Establish `hU : IsOpen U` using `hO.preimage (continuous_const.mul ((continuous_const.mul continuous_id).sub continuous_const))`.
+
+Establish `hV : IsOpen (U ∩ {0}ᶜ)` using `hU.inter isClosed_singleton.isOpen_compl`. Take `⟨m0, hm0⟩` from `Ideal.exists_maximal (𝓞 K)`. Set `v0 : HeightOneSpectrum (𝓞 K)` to `⟨m0, hm0.isPrime, Ring.ne_bot_of_isMaximal_of_not_isField hm0 (RingOfIntegers.not_isField K)⟩`. Use `haveI : Nontrivial (Af K) := ⟨⟨0, 1, fun h => by`. Establish `h'` using `congrArg (fun x : Af K => x v0) h`.
+
+Conclude with `zero_ne_one h'⟩⟩`. Establish `ht : (t : Af K) ∈ U ∩ {0}ᶜ`. Use `⟨fun v => ?_, t.ne_zero⟩` and prove the remaining obligations. Establish `: ti * (t : Af K) - 1 = 0` using `by simp [ti]`. Rewrite using `[this, mul_zero]`.
+
+Conclude with `zero_mem _`. Take `⟨m, hm1, hm2⟩` from `GlobalTheory.AdeleCharTwist.denseRange_fin.exists_mem_open hV ⟨_, ht⟩`. Use `⟨m, fun h => hm2 (by simp [h]), hm1⟩` and prove the remaining obligations.
+-/
 theorem exists_approx {K : Type} [Field K] [NumberField K] (t : (Af K)ˣ) (n : ℕ) :
     ∃ m : K, m ≠ 0 ∧ ∀ v : HeightOneSpectrum (𝓞 K),
       (algebraMap K (Af K) (n : K)⁻¹ * (((t⁻¹ : (Af K)ˣ) : Af K) * algebraMap K (Af K) m - 1)) v ∈
@@ -51,10 +60,34 @@ theorem exists_approx {K : Type} [Field K] [NumberField K] (t : (Af K)ˣ) (n : �
   obtain ⟨m, hm1, hm2⟩ := GlobalTheory.AdeleCharTwist.denseRange_fin.exists_mem_open hV ⟨_, ht⟩
   refine ⟨m, fun h => hm2 (by simp [h]), hm1⟩
 
+/- English proof (translation)
+The claim follows from `FiniteAdeleRing.ext _ fun w => GlobalTheory.IndefiniteRowSideFullHecke.UnitaryHeckeCharacterIdele.finiteCompletionMap_coe K E w x`.
+-/
 theorem finiteAdeleMap_algebraMap {K E : Type} [Field K] [NumberField K] [Field E] [NumberField E] [Algebra K E]
     (x : K) : finiteAdeleMap K E (algebraMap K (Af K) x) = algebraMap E (Af E) (algebraMap K E x) :=
   FiniteAdeleRing.ext _ fun w => GlobalTheory.IndefiniteRowSideFullHecke.UnitaryHeckeCharacterIdele.finiteCompletionMap_coe K E w x
 
+/- English proof (translation)
+Introduce `u hu`. Use `set zK : Af K := algebraMap K (Af K) ((k * j : ℕ) : K)⁻¹ * (((t⁻¹ : (Af K)ˣ) : Af K) * algebraMap K (Af K) m - 1) with hzK`. Use `set Z : Af E := finiteAdeleMap K E zK with hZ`. Establish `hZi : ∀ w : HeightOneSpectrum (𝓞 E), Z w ∈ w.adicCompletionIntegers E` using `fun w => finiteCompletionMap_mapsTo K E w (hm (w.under (𝓞 K)))`. Establish `hjZ : (j : Af E) * Z ∈ hatO c`.
+
+Use `GlobalTheory.CMVal.PicFin.mul_mem_hatO hjc hZi` as an intermediate fact. Simplify `this` using `only [map_natCast]`. Use `set U' : Af E := ((upIdele K E t : (Af E)ˣ) : Af E) with hU'`. Use `set Ui : Af E := (((upIdele K E t)⁻¹ : (Af E)ˣ) : Af E) with hUi`. Use `set Yi : Af E := ((y⁻¹ : (Af E)ˣ) : Af E) with hYi`.
+
+Use `set M : Af E := algebraMap E (Af E) (algebraMap K E m) with hM`. Use `set Uu : Af E := algebraMap E (Af E) u with hUu`. Use `set Kinv : Af E := algebraMap E (Af E) (k : E)⁻¹ with hKinv`. Establish `e1 : U' * Ui = 1` using `Units.mul_inv _`. Establish `e3 : (k : Af E) * Kinv = 1`.
+
+Rewrite using `[hKinv, ← map_natCast (algebraMap E (Af E)), ← map_mul, mul_inv_cancel₀ (by exact_mod_cast hk.ne'), map_one]`. Establish `eK : ((k * j : ℕ) : Af K) * algebraMap K (Af K) ((k * j : ℕ) : K)⁻¹ = 1`. Rewrite using `[← map_natCast (algebraMap K (Af K)), ← map_mul, mul_inv_cancel₀ (by exact_mod_cast (Nat.mul_pos hk hj).ne'), map_one]`. Establish `e2K : ((t⁻¹ : (Af K)ˣ) : Af K) * algebraMap K (Af K) m = 1 + ((k * j : ℕ) : Af K) * zK`. Rewrite using `[hzK]`.
+
+Take the linear combination `(-(((t⁻¹ : (Af K)ˣ) : Af K) * algebraMap K (Af K) m - 1)) * eK`. Establish `e2 : Ui * M = 1 + (k : Af E) * ((j : Af E) * Z)`. Use `congrArg (finiteAdeleMap K E) e2K` as an intermediate fact. Rewrite `this` using `[map_mul, map_add, map_one, map_mul, map_natCast, finiteAdeleMap_algebraMap]`. Establish `hUi' : Ui = finiteAdeleMap K E ((t⁻¹ : (Af K)ˣ) : Af K)` using `by rw [hUi, ← map_inv]; rfl`.
+
+Rewrite using `[hUi', hM, this, hZ]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Establish `hA : Ui * M ∈ hatO c`. Rewrite using `[e2]`.
+
+Use `add_mem (one_mem _) (mul_mem ?_ hjZ)` and prove the remaining obligations. Conclude with `natCast_mem (hatO c) k` after adjusting the coercions. Establish `hu' : Uu * U' * Yi ∈ hatO c`. Establish `h` using `hu`. Simplify using `only [lattice, Set.mem_setOf_eq, mul_inv_rev, inv_inv, Units.val_mul] at h`.
+
+Rewrite using `[hUu, hU', hYi, _root_.mul_assoc]`. Conclude with `h`. Prove the components needed by the constructor for the conclusion. Use `show algebraMap E (Af E) (algebraMap K E m * u) * Yi ∈ hatO c`. Establish `: algebraMap E (Af E) (algebraMap K E m * u) * Yi = (Ui * M) * (Uu * U' * Yi)`.
+
+Rewrite using `[map_mul]`. Take the linear combination `(-(M * Uu * Yi)) * e1`. Rewrite using `[this]`. Conclude with `mul_mem hA hu'`. Establish `: (U' * algebraMap E (Af E) (u / k) - algebraMap E (Af E) (algebraMap K E m * u / k)) * Yi = -((j : Af E) * Z) * (Uu * U' * Yi)`.
+
+Simplify using `only [div_eq_mul_inv, map_mul]`. Rewrite using `[← hKinv, ← hM, ← hUu]`. Take the linear combination `(Kinv * Uu * Yi * M) * e1 - (Kinv * Uu * Yi * U') * e2 - ((j : Af E) * Z * Uu * U' * Yi) * e3`. Rewrite using `[this]`. Conclude with `mul_mem (neg_mem hjZ) hu'`.
+-/
 theorem mem_of_approx {K E : Type} [Field K] [NumberField K] [Field E] [NumberField E] [Algebra K E]
     (t : (Af K)ˣ) (c : Ideal (OF E)) (y : (Af E)ˣ) (k j : ℕ) (hk : 0 < k) (hj : 0 < j) (hjc : ((j : ℕ) : OF E) ∈ c) (m : K)
     (hm : ∀ v : HeightOneSpectrum (𝓞 K),
@@ -113,6 +146,11 @@ theorem mem_of_approx {K E : Type} [Field K] [NumberField K] [Field E] [NumberFi
       linear_combination (Kinv * Uu * Yi * M) * e1 - (Kinv * Uu * Yi * U') * e2 - ((j : Af E) * Z * Uu * U' * Yi) * e3
     rw [this]; exact mul_mem (neg_mem hjZ) hu'
 
+/- English proof (translation)
+Introduce `K _ _ d δ io hK hd hδ E _ _ _ _ t c y hc k hk`. Use `set N : ℕ := Ideal.absNorm c with hNdef`. Establish `hN : 0 < N` using `Nat.pos_of_ne_zero (by rwa [hNdef, Ne, Ideal.absNorm_eq_zero_iff])`. Establish `hNc : ((N : ℕ) : OF E) ∈ c` using `Ideal.absNorm_mem c`. Take `⟨m, hm0, hm⟩` from `exists_approx t (k * N)`.
+
+Take `⟨b, hb0, hbk, hb⟩` from `GlobalTheory.T.norm_coprime_idele_approximation t k (k * N) (Nat.mul_pos hk hN) (dvd_mul_right k N) m hm0 hm`. Conclude with `⟨m, b, hb0, hbk, by rw [GlobalTheory.T.norm_sq_embedding_imag_quadratic d δ io hK hd hδ, hb], mem_of_approx t c y k N hk hN hNc m hm⟩`.
+-/
 theorem approx_idele : ∀ (K : Type) [Field K] [NumberField K] (d : ℕ) (δ : K) (io : K →+* ℂ), Module.finrank ℚ K = 2 → 0 < d → δ ^ 2 = -(d : K) →
     ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] [Algebra K E] (t : (Af K)ˣ) (c : Ideal (OF E)) (y : (Af E)ˣ), c ≠ ⊥ →
     ∀ k : ℕ, 0 < k → ∃ (m : K) (b : ℕ), 0 < b ∧ Nat.Coprime b k ∧ Complex.normSq (io m) = b / modF t ∧

@@ -10,11 +10,17 @@ namespace MassDataLevelSSteps
 open Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes Formalism.L2.SG.Sub Formalism.L2.SG.Measures Formalism.L2.SG.TypedSets MeasureTheory NumberField
   IsDedekindDomain Formalism.BasicNotions Formalism.L2.SG.HidaSetting Formalism.L2.SG.AdBridge
 
+/- English proof (translation)
+The claim follows from `(PI.MassDataKppVolLemmas.Bridge_mem_Kf_iff X.B.I hb x).2 hx`.
+-/
 theorem finHA_mem_Kf {D : D7} (X : HidaSetting D) (hb : AdBridgeIso X.B.I) (x : X.B.I.Gf)
     (hx : x ∈ X.B.I.Kset) :
     finHA X hb x ∈ Kf X.B.I.cm.sig X.B.I.J (X.B.I.L : Set (Fin X.B.I.n → X.B.I.E)) :=
   (PI.MassDataKppVolLemmas.Bridge_mem_Kf_iff X.B.I hb x).2 hx
 
+/- English proof (translation)
+Introduce `D X hb _ hL w`. Introduce and unpack `_ ⟨_, ⟨k, hk, rfl⟩, rfl⟩`. Establish `h1` using `finHA_mem_Kf X hb (X.xu w) (X.xu_K w)`. Establish `h2` using `finHA_mem_Kf X hb k (hL.2.1 k hk)`. Conclude with `Subgroup.mul_mem _ (Subgroup.mul_mem _ h1 h2) (Subgroup.inv_mem _ h1)`.
+-/
 theorem k2uLeKf_holds : ConjugateLevelLeMaximalCompact := by
   intro D X hb _ hL w
   rintro _ ⟨_, ⟨k, hk, rfl⟩, rfl⟩

@@ -6,5 +6,8 @@ import Development.AutomorphicArithmetic.Foundations.GaloisRepresentations.PAdic
 import Development.AutomorphicArithmetic.Foundations.GaloisRepresentations.PAdicWittLattices.POrdEx
 import Development.AutomorphicArithmetic.Foundations.GaloisRepresentations.PAdicWittLattices.POrdStep
 
+/- English proof (translation)
+The claim follows from `UpperTheory.Gal.G3.pGalClosD (UpperTheory.Gal.G3.pSplitsPts UpperTheory.Gal.G3.pIsoPts) (UpperTheory.Gal.G3.pOrdEx UpperTheory.Gal.G3.pOrdStep)`.
+-/
 theorem UpperTheory.Gal.Mod.galEx : UpperTheory.Gal.Mod.GalEx := UpperTheory.Gal.G3.pGalClosD (UpperTheory.Gal.G3.pSplitsPts UpperTheory.Gal.G3.pIsoPts)
   (UpperTheory.Gal.G3.pOrdEx UpperTheory.Gal.G3.pOrdStep)

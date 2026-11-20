@@ -24,6 +24,19 @@ set_option maxHeartbeats 800000
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 namespace GlobalTheory.BigOn.Exp.SerBase
 open GlobalTheory.RealGeo GlobalTheory.Unframe GlobalTheory.UnframePt in
+/- English proof (translation)
+Introduce `hP hA hR hS`. Use `(_root_.GlobalTheory.BigOn.Exp.lowAt_holds_alt.and _root_.GlobalTheory.BigOn.Exp.twAdm_alt).imp fun Fm x hx i p hp hM w hw j hLT => ?_` and prove the remaining obligations. Take `⟨l1, l2⟩` from `hLT`. Establish `h0` using `_root_.GlobalTheory.T.ratHyp0_of_bad_prime_mem_S0 Fm x hx i p hp hM _ l2.2.2 l1 j`. Take `⟨c', w', hw', hfr, B', hv⟩` from `exists_framed_half hP h0.size (GlobalTheory.Core5.of_core h0.core) (geoHalf p) h0.unif (_root_.GlobalTheory.T.inGeo_half_of_ratHyp0 hP Fm x hx i p hp hM _ j h0)`.
+
+Take `⟨S', YS', -⟩` from `GlobalTheory.T.seriesRationality_back_from_movedReadings p.R p.cG p.Sx p.nexp w' hw'`. Use `letI iA : Algebra (setCE p.T c').Q.c.F (Fm.D x i).what₂.LL := p.alg`. Establish `hV' : (setCE p.T c').V ((j : ℕ) + 1) (setCE p.T c').σ₀ = Wc (Fm.D x i) j` using `B'.fw.laws.spaceW _ ⟨Nat.le_add_left _ _, j.2⟩ _ (setCE p.T c').toCore.good_σ₀`. Establish `hU' : (fullHeckeRealDatMovedReadings p.R w').toRealDat.LUnif` using `GlobalTheory.T.uniformisationLaws_centralMovedReadings p.R.toRealDat w' hw' h0.unif`. Establish `hG : (fullHeckeRealDatMovedReadings p.R w').toRealDat.IsGrp (F2 p)` using `⟨h0.core.grp.red_R, h0.core.grp.red_L, h0.core.grp.levels, h0.core.grp.record, h0.core.grp.chiW⟩`.
+
+Establish `c` using `h0.core`. Establish `hF : (fullHeckeRealDatMovedReadings p.R w').toRealDat.IsFam` using `{ c.fam with }`. Establish `hMo : (fullHeckeRealDatMovedReadings p.R w').toRealDat.IsModels` using `{ c.models with }`. Establish `hCh : (fullHeckeRealDatMovedReadings p.R w').toRealDat.IsChain` using `{ c.chain with }`. Establish `hTh : (fullHeckeRealDatMovedReadings p.R w').toRealDat.IsThP` using `{ c.thP with }`.
+
+Establish `hC : GlobalTheory.Hk3.Core (fullHeckeRealDatMovedReadings p.R w').toRealDat (F2 p)` using `⟨c.lev, hG, hF, hMo, hCh, hTh⟩`. Establish `hph : (fun k => cj (twAt (Fm.D x i).what₂.embLL p.P.A3.A.v0) ((fullHeckeRealDatMovedReadings p.R w').phs k)) = fun _ => (1 : ℂ)`. Use function extensionality and compare the values at `fun k => by show cj (twAt (Fm.D x i).what₂.embLL p.P.A3.A.v0) (p.R.phs k) = 1`. Rewrite using `[p.phsOne k, map_one]`. Establish `hRat : RatHyp (setCE p.T c') (fullHeckeRealDatMovedReadings p.R w') (F2 p) B'.κ B'.v₀ B'.O ((Fm.ex x hx i).nch.twI w) j hV'`.
+
+Use `⟨h0.size, h0.host, h0.std, B'.fw.laws, hC, hU', ⟨B'.fw⟩, ⟨B'.fw.laws, B'.fw.alg_eq, B'.fw.kap, B'.fw.hv₀, B'.fw.chiR, B'.fw.x0⟩, h0.io, h0.guard, h0.fin, B'.pins j, ?_, hfr j hV', h0.galois, h0.small, h0.inUse, h0.low⟩` and prove the remaining obligations. Rewrite using `[hph]`. Conclude with `B'.phase j hU'`. Introduce `χ ξR ω φ hK h hh y hy u hu`. Establish `hK' : KerDat (fullHeckeRealDatMovedReadings p.R w').toRealDat j ((fullHeckeRealDatMovedReadings p.R w').C.delAt (Formalism.EigenvalueLevelCeiling.plc ((Fm.D x i).plEq w))) χ ξR (placesOver (fullHeckeRealDatMovedReadings p.R w').toRealDat ((fullHeckeRealDatMovedReadings p.R w').mu …` using `⟨hK.chr, hK.fin, hK.triv, hK.tame, hK.pl, hK.off, hK.ram, hK.res, hK.weil, hK.vec⟩`.
+
+Establish `hy' : InCoefLat (fullHeckeRealDatMovedReadings p.R w').toRealDat j h y` using `hy`. Take `⟨x', hx'⟩` from `kerRat_framed (T := setCE p.T c') hP hA hR hS YS' hRat (fun k => p.phsOne k) ((Fm.D x i).plEq w) hK' hh hy' u (by rw [hv]; exact hu)`. Conclude with `⟨(p.R.FW j).ρ (w' j (sg0 _ p.P.A3.A)) x', hx'⟩`.
+-/
 theorem kerRatAt_alt : GlobalTheory.Published.CuspRapidDecay → GlobalTheory.Published.GlobalArtinReciprocity → GlobalTheory.Published.RayClassFieldSt →
     GlobalTheory.SerStd.SeriesRatS → _root_.GlobalTheory.BigOn.Exp.SerBase.KernelRationalAt := by
   intro hP hA hR hS

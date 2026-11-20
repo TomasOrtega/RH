@@ -22,9 +22,15 @@ open ValuativeRel Matrix GlobalTheory.SplitFlip GlobalTheory.FullRankCoinv Globa
 
 variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
 
+/- English proof (translation)
+Introduce `i j`. Simplify using the standard rewrite rules.
+-/
 theorem self_mem_ebox {A D : Type} (ϖ : kˣ) (C : Matrix A D k) (r : A → D → ℕ) : C ∈ ebox ϖ C r := by
   intro i j; simp
 
+/- English proof (translation)
+Assume the negation of the conclusion as `hn`. Conclude with `h (by rw [pv, dif_neg hn])`.
+-/
 theorem mem_of_pv_ne_zero {n d : ℕ} {Bf : fullRk k n d →ₗ[ℂ] fullRk k n d →ₗ⋆[ℂ] ℂ}
     {B₁ B₂ : Set (Matrix (Fin n) (Fin d) k)} (h : pv Bf B₁ B₂ ≠ 0) :
     B₁.indicator (1 : Matrix (Fin n) (Fin d) k → ℂ) ∈ fullRk k n d ∧
@@ -32,12 +38,20 @@ theorem mem_of_pv_ne_zero {n d : ℕ} {Bf : fullRk k n d →ₗ[ℂ] fullRk k n 
   by_contra hn
   exact h (by rw [pv, dif_neg hn])
 
+/- English proof (translation)
+Use `choose! r hr using hf`. Use `⟨∑ i ∈ s, r i, Finset.sum_pos (fun i hi => (hr i hi).1) hs, ?_⟩` and prove the remaining obligations. Rewrite using `[Finset.sum_congr rfl fun i hi => (hr i hi).2, Complex.ofReal_sum, Finset.sum_mul]`.
+-/
 theorem exists_pos_sum {ι : Type} (s : Finset ι) (hs : s.Nonempty) (f : ι → ℂ) (c : ℂ)
     (hf : ∀ i ∈ s, ∃ r : ℝ, 0 < r ∧ f i = r * c) : ∃ P : ℝ, 0 < P ∧ ∑ i ∈ s, f i = P * c := by
   choose! r hr using hf
   refine ⟨∑ i ∈ s, r i, Finset.sum_pos (fun i hi => (hr i hi).1) hs, ?_⟩
   rw [Finset.sum_congr rfl fun i hi => (hr i hi).2, Complex.ofReal_sum, Finset.sum_mul]
 
+/- English proof (translation)
+Take `⟨S, hS⟩` from `GlobalTheory.T.refined_box_disjoint_cover k (Fin n) (Fin d) ϖ hϖ r r' hr`. Take `⟨hU, hD⟩` from `hS p`. Rewrite using `[GlobalTheory.T.principal_value_first_clopen_partition k n d Bf _ S (fun x => ebox ϖ (p + x) r') _ B₂ hm (fun x _ => GlobalTheory.T.ebox_isClopen k _ _ ϖ _ _) hD hU]`. Use `exists_pos_sum S ?_ _ c fun x hx => hc _ ?_` and prove the remaining obligations. Use `self_mem_ebox ϖ p r` as an intermediate fact.
+
+Rewrite `this` using `[hU]`. Take `⟨x, hx, -⟩` from `Set.mem_iUnion₂.1 this`. Conclude with `⟨x, hx⟩`. Rewrite using `[hU]`. Conclude with `Set.mem_iUnion₂.2 ⟨x, hx, self_mem_ebox _ _ _⟩`.
+-/
 theorem cells_left {n d : ℕ} {ϖ : kˣ} (hϖ : IsUnif ϖ) (Bf : fullRk k n d →ₗ[ℂ] fullRk k n d →ₗ⋆[ℂ] ℂ)
     (p : Matrix (Fin n) (Fin d) k) (r r' : Fin n → Fin d → ℕ) (hr : ∀ i j, r i j ≤ r' i j)
     (B₂ : Set (Matrix (Fin n) (Fin d) k)) (c : ℂ)
@@ -55,6 +69,11 @@ theorem cells_left {n d : ℕ} {ϖ : kˣ} (hϖ : IsUnif ϖ) (Bf : fullRk k n d �
   · rw [hU]
     exact Set.mem_iUnion₂.2 ⟨x, hx, self_mem_ebox _ _ _⟩
 
+/- English proof (translation)
+Take `⟨S, hS⟩` from `GlobalTheory.T.refined_box_disjoint_cover k (Fin n) (Fin d) ϖ hϖ r r' hr`. Take `⟨hU, hD⟩` from `hS p`. Rewrite using `[GlobalTheory.T.principal_value_second_clopen_partition k n d Bf _ S (fun x => ebox ϖ (p + x) r') B₁ _ hm (fun x _ => GlobalTheory.T.ebox_isClopen k _ _ ϖ _ _) hD hU]`. Use `exists_pos_sum S ?_ _ c fun x hx => hc _ ?_` and prove the remaining obligations. Use `self_mem_ebox ϖ p r` as an intermediate fact.
+
+Rewrite `this` using `[hU]`. Take `⟨x, hx, -⟩` from `Set.mem_iUnion₂.1 this`. Conclude with `⟨x, hx⟩`. Rewrite using `[hU]`. Conclude with `Set.mem_iUnion₂.2 ⟨x, hx, self_mem_ebox _ _ _⟩`.
+-/
 theorem cells_right {n d : ℕ} {ϖ : kˣ} (hϖ : IsUnif ϖ) (Bf : fullRk k n d →ₗ[ℂ] fullRk k n d →ₗ⋆[ℂ] ℂ)
     (p : Matrix (Fin n) (Fin d) k) (r r' : Fin n → Fin d → ℕ) (hr : ∀ i j, r i j ≤ r' i j)
     (B₁ : Set (Matrix (Fin n) (Fin d) k)) (c : ℂ)
@@ -72,11 +91,19 @@ theorem cells_right {n d : ℕ} {ϖ : kˣ} (hϖ : IsUnif ϖ) (Bf : fullRk k n d 
   · rw [hU]
     exact Set.mem_iUnion₂.2 ⟨x, hx, self_mem_ebox _ _ _⟩
 
+/- English proof (translation)
+Use `⟨(GlobalTheory.SplitWeil.nabs k x) ^ ((d : ℝ) / 2), Real.rpow_pos_of_pos (GlobalTheory.SplitWeil.Model.nabs_pos x) _, ?_⟩` and prove the remaining obligations. Rewrite using `[apow, Complex.ofReal_cpow (GlobalTheory.SplitWeil.Model.nabs_pos x).le]`. Use `push_cast`. Both sides reduce to the same expression.
+-/
 theorem apow_half_pos (x : kˣ) (d : ℕ) : ∃ a : ℝ, 0 < a ∧ apow x ((d : ℂ) / 2) = a := by
   refine ⟨(GlobalTheory.SplitWeil.nabs k x) ^ ((d : ℝ) / 2), Real.rpow_pos_of_pos (GlobalTheory.SplitWeil.Model.nabs_pos x) _, ?_⟩
   rw [apow, Complex.ofReal_cpow (GlobalTheory.SplitWeil.Model.nabs_pos x).le]
   push_cast; rfl
 
+/- English proof (translation)
+Establish `h1 : P = Q`. Use `congrArg norm h` as an intermediate fact. Rewrite `this` using `[norm_mul, hz, mul_one, Complex.norm_real, Complex.norm_real, Real.norm_of_nonneg hP.le, Real.norm_of_nonneg hQ.le]`. Then use the resulting hypothesis. Substitute `h1` using the available equality. Establish `h0 : (P : ℂ) ≠ 0` using `by exact_mod_cast hP.ne'`.
+
+Conclude with `mul_left_cancel₀ h0 (by rw [h, mul_one])`.
+-/
 theorem eq_one_of_norm_one {z : ℂ} (hz : ‖z‖ = 1) {P Q : ℝ} (hP : 0 < P) (hQ : 0 < Q) (h : (P : ℂ) * z = Q) :
     z = 1 := by
   have h1 : P = Q := by
@@ -87,6 +114,29 @@ theorem eq_one_of_norm_one {z : ℂ} (hz : ‖z‖ = 1) {P Q : ℝ} (hP : 0 < P)
   have h0 : (P : ℂ) ≠ 0 := by exact_mod_cast hP.ne'
   exact mul_left_cancel₀ h0 (by rw [h, mul_one])
 
+/- English proof (translation)
+Assume the negation of the conclusion as `hne`. Break down `GlobalTheory.T.nontrivial_character_uniformizer_or_unit k ν ϖ hϖ hν with ht | ⟨u, hu1, ht⟩` into its components or cases. Take `⟨r, hr, hT⟩` from `GlobalTheory.T.full_rank_bilinear_invariant_scaling k n d ν Bf hG hH (dgl i₀ ϖ) (dgl j₀ ϖ⁻¹) (box ϖ p₁ fun _ => N) (box ϖ p₂ fun _ => N)`. Take `⟨e₁, e₂⟩` from `GlobalTheory.T.diagonal_uniformizer_box_transform k n d i₀ j₀ ϖ p₁ p₂ N hN h₁ h₂ h₃`. Rewrite `hT` using `[e₁, e₂, gdet_dgl]`.
+
+Take `⟨a, ha, hae⟩` from `apow_half_pos ϖ d`. Rewrite `hT` using `[hae]`. Establish `hν0 : (ν ϖ : ℂ) ≠ 0` using `Units.ne_zero _`. Establish `ha0 : (a : ℂ) ≠ 0` using `by exact_mod_cast ha.ne'`. Establish `hr0 : (r : ℂ) ≠ 0` using `by exact_mod_cast hr.ne'`.
+
+Apply the tactic sequence `have hne' : pv Bf (ebox ϖ p₁ (scaledBoxRadiiAtEntry i₀ j₀ N)) (ebox ϖ p₂ (baseCellRadiiAtColumn j₀ N)) ≠ 0 := by`. Rewrite using `[hT]`. Conclude with `mul_ne_zero (mul_ne_zero hr0 (inv_ne_zero (mul_ne_zero hν0 ha0))) hne`. Apply the tactic sequence `set c := pv Bf (ebox ϖ p₁ (baseCellRadiiAtEntry i₀ j₀ N)) (ebox ϖ p₂ (baseCellRadiiAtColumn j₀ N)) with hc`. Take `⟨m₁, m₂⟩` from `mem_of_pv_ne_zero hne`.
+
+Choose the witnesses or unpack the hypotheses as in `⟨P, hP, hPe⟩ : ∃ P : ℝ, 0 < P ∧ pv Bf (box ϖ p₁ fun _ => N) (box ϖ p₂ fun _ => N) = P * c := by`. Apply the tactic sequence `refine cells_left hϖ Bf p₁ (fun _ _ => N) (baseCellRadiiAtEntry i₀ j₀ N) (fun i j => ?_) _ c m₁ fun x₁ hx₁ => ?_`. Apply the tactic sequence `simp only [baseCellRadiiAtEntry]; split_ifs <;> omega`. Use `cells_right hϖ Bf p₂ (fun _ _ => N) (baseCellRadiiAtColumn j₀ N) (fun i j => ?_) _ c m₂ fun x₂ hx₂ => ?_` and prove the remaining obligations. Apply the tactic sequence `simp only [baseCellRadiiAtColumn]; split_ifs <;> omega`.
+
+Take `⟨g, h, hg, f₁, f₂⟩` from `GlobalTheory.T.integral_row_section_exists k n d i₀ j₀ ϖ hϖ p₁ p₂ N hN h₀ h₁ h₂ h₃ hS x₁ hx₁ x₂ hx₂`. Apply the tactic sequence `obtain ⟨t, ht0, hte⟩ := GlobalTheory.T.full_rank_bilinear_invariant_scaling k n d ν Bf hG hH g h (ebox ϖ p₁ (baseCellRadiiAtEntry i₀ j₀ N)) (ebox ϖ p₂ (baseCellRadiiAtColumn j₀ N))`. Rewrite `hte` using `[f₁, f₂, hg]`. Conclude with `⟨t, ht0, by simpa using hte⟩`. Apply the tactic sequence `obtain ⟨Q, hQ, hQe⟩ : ∃ Q : ℝ, 0 < Q ∧ pv Bf (ebox ϖ p₁ (scaledBoxRadiiAtEntry i₀ j₀ N)) (ebox ϖ p₂ (baseCellRadiiAtColumn j₀ N)) = Q * c := by`.
+
+Apply the tactic sequence `refine cells_left hϖ Bf p₁ _ (baseCellRadiiAtEntry i₀ j₀ N) (fun i j => ?_) _ c (mem_of_pv_ne_zero hne').1 fun x₁ hx₁ => ?_`. Apply the tactic sequence `simp only [baseCellRadiiAtEntry, scaledBoxRadiiAtEntry]; split_ifs <;> omega`. Take `⟨h, f₁, f₂⟩` from `GlobalTheory.T.unipotent_box_moved_by_gl k n d i₀ j₀ ϖ hϖ p₁ p₂ N hN h₁ h₂ h₃ x₁ hx₁`. Apply the tactic sequence `obtain ⟨t, ht0, hte⟩ := GlobalTheory.T.full_rank_bilinear_invariant_scaling k n d ν Bf hG hH 1 h (ebox ϖ p₁ (baseCellRadiiAtEntry i₀ j₀ N)) (ebox ϖ p₂ (baseCellRadiiAtColumn j₀ N))`. Establish `hg : gdet (1 : GL (Fin n) k) = 1` using `by ext; simp [gdet]`.
+
+Simplify using `only [Units.val_one, transpose_one, Matrix.one_mul] at hte`. Rewrite `hte` using `[f₁, f₂, hg]`. Conclude with `⟨t, ht0, by simpa using hte⟩`. Establish `hc0 : c ≠ 0`. Introduce and unpack `h0`.
+
+Conclude with `hne (by rw [hPe, h0, mul_zero])`. Rewrite `hT` using `[hQe, hPe]`. Establish `key : ((Q * a : ℝ) : ℂ) * (ν ϖ : ℂ) = ((r * P : ℝ) : ℂ)`. Establish `h5 : (Q : ℂ) = r * ((ν ϖ : ℂ) * a)⁻¹ * P` using `mul_right_cancel₀ hc0 (by rw [hT]; ring)`. Use `push_cast`.
+
+Rewrite using `[h5]`. Clear the denominators using the available nonvanishing facts. Conclude with `ht (Units.ext (eq_one_of_norm_one (hu ϖ) (mul_pos hQ ha) (mul_pos hr hP) key))`. Take `⟨r, hr, hT⟩` from `GlobalTheory.T.full_rank_bilinear_invariant_scaling k n d ν Bf hG hH (dgl i₀ u) (dgl j₀ u⁻¹) (box ϖ p₁ fun _ => N) (box ϖ p₂ fun _ => N)`. Take `⟨e₁, e₂⟩` from `GlobalTheory.T.diagonal_unit_box_invariant k n d i₀ j₀ ϖ u p₁ p₂ N hu1 h₁ h₂ h₃`.
+
+Rewrite `hT` using `[e₁, e₂, gdet_dgl, apow_of_valuation_eq_one hu1, mul_one]`. Establish `hν0 : (ν u : ℂ) ≠ 0` using `Units.ne_zero _`. Establish `key : ((1 : ℝ) : ℂ) * (ν u : ℂ) = r`. Establish `h5 : (1 : ℂ) = r * (ν u : ℂ)⁻¹` using `mul_right_cancel₀ hne (by rw [← hT]; ring)`. Use `push_cast`.
+
+Rewrite using `[one_mul]`. Clear denominators, using `at h5` for the nonvanishing conditions. Conclude with `h5`. Conclude with `ht (Units.ext (eq_one_of_norm_one (hu u) one_pos hr key))`.
+-/
 theorem pv_box_eq_zero {n d : ℕ} {ν : kˣ →* ℂˣ} {ϖ : kˣ} (hϖ : IsUnif ϖ) (hu : ∀ x, ‖(ν x : ℂ)‖ = 1) (hν : ν ≠ 1)
     (Bf : fullRk k n d →ₗ[ℂ] fullRk k n d →ₗ⋆[ℂ] ℂ)
     (hG : (∀ (g : GL (Fin n) k) (Ψ₁ Ψ₁' Ψ₂ : fullRk k n d), Ψ₁'.1 = lact ν g Ψ₁.1 → Bf Ψ₁' Ψ₂ = Bf Ψ₁ Ψ₂))
@@ -156,6 +206,13 @@ open NumberField IsDedekindDomain MeasureTheory Filter Topology Formalism.MainNo
 open GlobalTheory.WeilM GlobalTheory.AdelicU GlobalTheory.LFun GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels GlobalTheory.ThK GlobalTheory.ThK.DescB
 attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField
 
+/- English proof (translation)
+Use `open GlobalTheory.FullRankCoinv GlobalTheory.RankCoinv GlobalTheory.SplitFlip GlobalTheory.NormalCore in`. Introduce `k _ _ _ _ n d ν ϖ hϖ hu hν Bf hG hH i₀ j₀ Y₁ Y₂ h₀ h₁ h₂ h₃ hS Z₁ hZ₁ Z₂ hZ₂ N hN Ψ₁ Ψ₂ e₁ e₂`. Take `⟨g, h, g₁, g₂, g₃, g₄, q₀, q₁, q₂, q₃, qS⟩` from `GlobalTheory.T.integral_right_inverse_exists k n d i₀ j₀ ϖ hϖ Y₁ Y₂ h₀ h₁ h₂ h₃ hS Z₁ hZ₁ Z₂ hZ₂`. Establish `hz` using `GlobalTheory.NormalCore.pv_box_eq_zero hϖ hu hν Bf hG hH i₀ j₀ _ _ q₀ q₁ q₂ q₃ qS N hN`. Take `⟨r, -, hT⟩` from `GlobalTheory.T.full_rank_bilinear_invariant_scaling k n d ν Bf hG hH g h (GlobalTheory.RankCoinv.box ϖ ((g.1)ᵀ * Z₁ * h.1) fun _ => N) (GlobalTheory.RankCoinv.box ϖ (Z₂ * h.1) fun _ => N)`.
+
+Establish `hone : ∀ i j, ValuativeRel.valuation k ((1 : Matrix (Fin n) (Fin n) k) i j) ≤ 1`. Apply the tactic sequence `intro i j; rw [Matrix.one_apply]; split_ifs <;> simp`. Establish `f₂` using `GlobalTheory.T.integral_gl_box_transform k n d ϖ 1 h hone (by simpa using hone) g₃ g₄ Z₂ N`. Simplify using `only [Units.val_one, Matrix.transpose_one, Matrix.one_mul] at f₂`. Rewrite `hT` using `[GlobalTheory.T.integral_gl_box_transform k n d ϖ g h g₁ g₂ g₃ g₄ Z₁ N, f₂, hz, mul_zero]`.
+
+Rewrite using `[← GlobalTheory.NormalCore.pv_eq Bf Ψ₁ Ψ₂ e₁ e₂, hT]`.
+-/
 theorem GlobalTheory.NormalCore.normal_core : ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] (n d : ℕ) (ν : kˣ →* ℂˣ) (ϖ : kˣ), GlobalTheory.SplitFlip.IsUnif ϖ → GlobalTheory.SmGL.IsUnitaryChar ν → ν ≠ 1 →
     ∀ (Bf : GlobalTheory.FullRankCoinv.fullRk k n d →ₗ[ℂ] GlobalTheory.FullRankCoinv.fullRk k n d →ₗ⋆[ℂ] ℂ) (hG : ∀ (g : GL (Fin n) k) (Ψ₁ Ψ₁' Ψ₂ : GlobalTheory.FullRankCoinv.fullRk k n d), Ψ₁'.1 = GlobalTheory.FullRankCoinv.lact ν g Ψ₁.1 →
         Bf Ψ₁' Ψ₂ = Bf Ψ₁ Ψ₂)

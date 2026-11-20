@@ -7,6 +7,15 @@ namespace GlobalTheory
 
 open NumberField in
 
+/- English proof (translation)
+Introduce `E _ _ _ f hf`. Establish `hdeg : 0 < Module.finrank ℚ E` using `Module.finrank_pos`. Establish `hf0 : (f : ℝ) ≠ 0`. Establish `: f ≠ 0`. Introduce and unpack `rfl`.
+
+Use linear arithmetic over natural numbers and integers. Conclude with `this` after adjusting the coercions. Establish `key : (f : ℝ) * (Real.log |(discr E : ℝ)| / (2 * f)) = Real.log √|(discr E : ℝ)|`. Rewrite using `[Real.log_sqrt (abs_nonneg _)]`. Clear the denominators using the available nonvanishing facts.
+
+Rewrite using `[key]`. Establish `hb` using `_root_.GlobalTheory.classNumber_le_of_finrank_eq_two_mul E hf`. Establish `hpos : (0 : ℝ) < classNumber E` using `by exact_mod_cast classNumber_pos E`. Establish `hs : 1 ≤ √|(discr E : ℝ)|` using `_root_.GlobalTheory.one_le_sqrt_abs_discr E`. Establish `hL : 0 ≤ Real.log √|(discr E : ℝ)|` using `Real.log_nonneg hs`.
+
+Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Real.log_mul (by linarith) (pow_ne_zero _ (by linarith)), Real.log_pow]`. Use `_ = Real.log √|(discr E : ℝ)| + 2 * f * Real.log (1 + Real.log √|(discr E : ℝ)|) := by`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem _root_.GlobalTheory.log_classNumber_le_log_abs_discr_div :
     ∀ (E : Type) [Field E] [NumberField E] [IsTotallyComplex E] (f : ℕ),
       Module.finrank ℚ E = 2*f →

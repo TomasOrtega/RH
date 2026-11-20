@@ -10,6 +10,35 @@ set_option synthInstance.maxHeartbeats 200000
 section
 open private norm_le_one_of_integral_padic continuous_padic_embedding_rep continuous_units_of_continuous_coe orthogonal_pairing_from_intertwiner irreducible_of_scalar_multiples from Development.AutomorphicArithmetic.AutomorphicVarieties.CurveDVRSpecialization.OrthogonalPairingFromIntertwiner
 open NumberField IsLocalRing Formalism.ConjugateSelfDual ReciprocityTheory.Gal GlobalTheory.GalOfCusp UpperTheory.V.HV UpperTheory.V.U3 UpperTheory.V.Aut UpperTheory.V.Pr UpperTheory.V UpperTheory.V.Z.Win
+/- English proof (translation)
+Introduce `hD Ω _ _ _ l _ c η Ψ σ g₁ B M L _ _ _ _ Φ k _ C₀ hok hl hcc ι K _ _ _ hK hS hA A _ _ r hr hirr _ ρ hρ`. Use `haveI : Module.IsTorsionFree L Ω := DivisionSemiring.to_moduleIsTorsionFree`. Use `haveI : IsAlgClosure L Ω := ⟨IsAlgClosure.isAlgClosed ℚ, Algebra.IsAlgebraic.tower_top (K := ℚ) L⟩`. Use `haveI : Module.IsTorsionFree K Ω := DivisionSemiring.to_moduleIsTorsionFree`. Use `haveI : IsAlgClosure K Ω := ⟨IsAlgClosure.isAlgClosed ℚ, Algebra.IsAlgebraic.tower_top (K := ℚ) K⟩`.
+
+Use `haveI : IsGalois L Ω := {}`. Establish `hσ : σ * σ = 1`. Take `⟨j, hj⟩` from `hcc`. Conclude with `AlgEquiv.ext fun x => j.injective (by simp [AlgEquiv.mul_apply, hj])`. Establish `hησ : η σ = -1`.
+
+Take `⟨hc, ec⟩` from `k.c`. Establish `h` using `k.del ⟨σ, hc⟩`. Rewrite `h` using `[ec, hok.del_c]`. Conclude with `h.symm`. Establish `hLη : Base.galOf ℚ L Ω ≤ η.ker` using `k.gal ▸ inf_le_right`.
+
+Establish `hKL : ∀ x : K, ∃ y : L, algebraMap L Ω y = algebraMap K Ω x` using `fun x => (InfiniteGalois.mem_range_algebraMap_iff_fixed _).2 fun f => (hK.ge (hLη (Base.galEmb_mem ℚ L Ω f))) x`. Use `choose f hf using hKL`. Establish `hinj` using `(algebraMap L Ω).injective`. Set `φ : K →+* L` to `{ toFun := f map_one' := hinj (by rw [hf, map_one, map_one]) map_mul' := fun x y => hinj (by rw [hf, map_mul, map_mul, hf, hf]) map_zero' := hinj (by rw [hf, map_zero, map_zero]) map_add' := fun x y => hinj (by rw [hf, map_add, map_add, hf, hf]) }`. Use `letI : Algebra K L := φ.toAlgebra`.
+
+Use `haveI : IsScalarTower K L Ω := IsScalarTower.of_algebraMap_eq fun x => (hf x).symm`. Use `haveI := k.ab`. Use `haveI : IsAbelianGalois K L := IsAbelianGalois.tower_top ℚ K L`. Use `haveI : Group.IsSolvable (L ≃ₐ[K] L) := Group.isSolvable_of_comm fun a b => mul_comm' a b`. Use `haveI : FaithfulSMul c.O A := (faithfulSMul_iff_algebraMap_injective _ _).2 fun a b h => Subtype.ext (congrArg A.val h)`.
+
+Use `haveI : IsLocalHom (algebraMap c.O A) := Algebra.IsIntegral.isLocalHom _ _`. Use `haveI : IsNoetherianRing A := PrincipalIdealRing.isNoetherianRing`. Take `⟨ρ', h1, h2, h3⟩` from `exists_nrep3 k hok hl hσ r hr`. Establish `hU` using `hirr (Base.galOf ℚ L Ω) (Base.galEmbTop ℚ L Ω).2.1 hLη`. Establish `hcomp : ∀ s : G L Ω, Base.galEmb ℚ K Ω (Base.galEmb K L Ω s) = Base.galEmb ℚ L Ω s` using `fun s => rfl`.
+
+Establish `haut` using `hA A ρ' h1 (by`. Introduce `v i g hg`. Rewrite using `[h3 v i g hg, UnitaryThreeInertia.psi]`. Apply the tactic sequence `have h6 : Fr.w 3 i = wt1 i := by fin_cases i <;> rfl`. Rewrite using `[h6]) (ρ.comp (Base.galEmb K L Ω)) (by`.
+
+Introduce `s`. Rewrite using `[h2, MonoidHom.comp_apply, hρ, hcomp]`. Use the proof step `rfl) (irreducible_of_scalar_multiples _ _ hU _ (by`. Introduce `g hg`. Take `⟨s, rfl⟩ : ∃ s, Base.galEmb ℚ L Ω s = g` from `(Base.range_galEmb ℚ L Ω).ge hg`.
+
+Conclude with `⟨s, 1, by rw [one_smul, MonoidHom.comp_apply, hρ, hcomp]; rfl⟩))`. Establish `hle : ∀ x : A, ‖(x : PadicAlgCl l)‖ ≤ 1` using `fun x => norm_le_one_of_integral_padic l _ (isIntegral_trans (A := c.O) _ ((Algebra.IsIntegral.isIntegral (R := c.O) x).map A.val))`. Establish `hz : Continuous fun s : G K Ω => ((cycZ K Ω l s : ℤ_[l]ˣ) : ℤ_[l])` using `Units.continuous_val.comp (continuous_cycZ K Ω l)`. Establish `hcyc : Continuous fun s : G K Ω => (cycBar K Ω l s : Qbar l)` using `(continuous_algebraMap ℚ_[l] (PadicAlgCl l)).comp (continuous_subtype_val.comp hz)`. Establish `hχ : Continuous fun s : G K Ω => (cycBar K Ω l s)⁻¹` using `(continuous_units_of_continuous_coe _ hcyc).inv`.
+
+Take `⟨s1, s2, s3⟩` from `hS A r hr hirr ρ hρ`. Establish `f1` using `(flagLaws K Ω l 3 ρ).2.1 (cycBar K Ω l)⁻¹`. Establish `f2` using `(flagLaws L Ω l 3 (ρ.comp (Base.galEmb K L Ω))).2.1 (cycBar L Ω l)⁻¹`. Use `hD K L Ω l ι 3 (by norm_num) _ σ hcc ?_ ⟨Jgl _ 3, fun s s' hs => ?_⟩ ?_ (f1.1 hχ s1) (f1.2.1 s2) (fun w hw hu => (f2.2.2 w).1.1 (s3 w hw ((f1.2.2 _).1.2 hu))) haut` and prove the remaining obligations. Use `continuous_units_of_continuous_coe _ ?_` and prove the remaining obligations.
+
+Simplify using `only [Af.tw_val, hρ]`. Conclude with `(Units.continuous_val.comp hχ).smul ((continuous_padic_embedding_rep (A.val : A →+* PadicAlgCl l) hle r hr.cont).comp (Base.galEmbTop ℚ K Ω).1.continuous)`. Establish `hp` using `orthogonal_pairing_from_intertwiner (x := UnitaryThreeInertia.push A.val r (Base.galEmb ℚ K Ω s)) (y := UnitaryThreeInertia.push A.val r (Base.galEmb ℚ K Ω s')) (j := UnitaryThreeInertia.push A.val r σ) (by show (r σ).mat.map _ = 1`. Rewrite using `[hr.norm.atc]`. Use the proof step `simp)`.
+
+Use the proof step `((hr.red.mult σ).trans hησ)`. Use the proof step `((hr.red.mult _).trans (hK.le (Base.galEmb_mem ℚ K Ω s')))`. Use the proof step `(by rw [← map_mul, ← map_mul, hs, inv_mul_cancel_right])`. Establish `he : cycBar K Ω l s' = cycBar K Ω l s` using `by show cycBar ℚ Ω l (Base.galEmb ℚ K Ω s') = cycBar ℚ Ω l (Base.galEmb ℚ K Ω s)`. Rewrite using `[hs, map_mul, map_mul, map_inv, mul_inv_cancel_comm]`.
+
+Rewrite using `[Af.tw_val, Af.tw_val, hρ, hρ, Matrix.transpose_smul, Matrix.smul_mul, Matrix.smul_mul, Matrix.mul_smul, smul_smul]`. Use `show _ • (_ * Jmat _ 3 * _) = _ • Jmat _ 3`. Rewrite using `[hp, MonoidHom.inv_apply, MonoidHom.inv_apply, he, MonoidHom.zpow_apply, ← Units.val_mul]`. Use `congr 2`. Rewrite using `[show (1 - ((3 : ℕ) : ℤ)) = -1 + -1 by norm_num, zpow_add, zpow_neg_one]`.
+
+Use `irreducible_of_scalar_multiples _ _ hU _ fun g hg => ?_` and prove the remaining obligations. Take `⟨s, rfl⟩ : ∃ s, Base.galEmb ℚ L Ω s = g` from `(Base.range_galEmb ℚ L Ω).ge hg`. Use `⟨s, (cycBar K Ω l (Base.galEmb K L Ω s) : Qbar l), ?_⟩` and prove the remaining obligations. Rewrite using `[MonoidHom.comp_apply, Af.tw_val, smul_smul, MonoidHom.inv_apply, Units.mul_inv, one_smul, hρ, hcomp]`. Both sides reduce to the same expression.
+-/
 theorem UpperTheory.V.Z.Win.Dn.autEnd3_alt :
     _root_.UpperTheory.V.Z.Win.Dn.DownCsdKAlt → ∀ {Ω : Type} [Field Ω] [CharZero Ω] [IsAlgClosure ℚ Ω] {l : ℕ} [Fact l.Prime] {c : Coef l} {η : G ℚ Ω →* ℤˣ} {Ψ : G ℚ Ω →* c.Oˣ} {σ g₁ : G ℚ Ω} {B : ValuationSubring Ω} {M : ℕ}
       {L : Type} [Field L] [NumberField L] [IsCMField L] [Algebra L Ω] {Φ : Fr.Frame l (ResidueField c.O)} (k : GalLink η Ψ σ g₁ B M L Φ) [CharP (ResidueField c.O) l] {C₀ : ℕ}, Φ.Ok C₀ → l ∣ M → Sd.IsCC σ → ∀ (ι : Qbar l ≃+* ℂ),

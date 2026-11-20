@@ -12,14 +12,23 @@ open Formalism.REAL
 
 def cyc0 (m : ℕ) (j : Fin (m + 1)) : Equiv.Perm (Fin (m + 1)) := (Fin.cycleRange j).symm
 
+/- English proof (translation)
+Apply `(Fin.cycleRange j).injective` to reduce the goal to its premises. Simplify using `[cyc0, Fin.cycleRange_self]`.
+-/
 theorem cycle_perm_zero (m : ℕ) (j : Fin (m + 1)) : cyc0 m j 0 = j := by
   apply (Fin.cycleRange j).injective
   simp [cyc0, Fin.cycleRange_self]
 
+/- English proof (translation)
+Apply `(Fin.cycleRange j).injective` to reduce the goal to its premises. Simplify using `[cyc0, Fin.cycleRange_succAbove]`.
+-/
 theorem cycle_perm_succ (m : ℕ) (j : Fin (m + 1)) (k : Fin m) : cyc0 m j k.succ = j.succAbove k := by
   apply (Fin.cycleRange j).injective
   simp [cyc0, Fin.cycleRange_succAbove]
 
+/- English proof (translation)
+Rewrite using `[cyc0, Equiv.Perm.sign_symm, Fin.sign_cycleRange]`.
+-/
 theorem sign_cycle_perm (m : ℕ) (j : Fin (m + 1)) :
     Equiv.Perm.sign (cyc0 m j) = (-1) ^ (j : ℕ) := by
   rw [cyc0, Equiv.Perm.sign_symm, Fin.sign_cycleRange]
@@ -27,12 +36,21 @@ theorem sign_cycle_perm (m : ℕ) (j : Fin (m + 1)) :
 def ext0 {m : ℕ} (τ : Equiv.Perm (Fin m)) : Equiv.Perm (Fin (m + 1)) :=
   ((finSuccEquiv m).trans (Equiv.optionCongr τ)).trans (finSuccEquiv m).symm
 
+/- English proof (translation)
+Simplify using `[ext0]`.
+-/
 theorem matrixExtendByZero_zero {m : ℕ} (τ : Equiv.Perm (Fin m)) : ext0 τ 0 = 0 := by
   simp [ext0]
 
+/- English proof (translation)
+Simplify using `[ext0]`.
+-/
 theorem extByZero_succ {m : ℕ} (τ : Equiv.Perm (Fin m)) (k : Fin m) : ext0 τ k.succ = (τ k).succ := by
   simp [ext0]
 
+/- English proof (translation)
+Rewrite using `[ext0, Equiv.Perm.sign_trans_trans_symm, Equiv.optionCongr_sign]`.
+-/
 theorem sign_extend_perm {m : ℕ} (τ : Equiv.Perm (Fin m)) :
     Equiv.Perm.sign (ext0 τ) = Equiv.Perm.sign τ := by
   rw [ext0, Equiv.Perm.sign_trans_trans_symm, Equiv.optionCongr_sign]
@@ -40,6 +58,15 @@ theorem sign_extend_perm {m : ℕ} (τ : Equiv.Perm (Fin m)) :
 def phi0 (m : ℕ) (p : Fin (m + 1) × Equiv.Perm (Fin m)) : Equiv.Perm (Fin (m + 1)) :=
   cyc0 m p.1 * ext0 p.2
 
+/- English proof (translation)
+Establish `hinj : Function.Injective (phi0 m)`. Introduce and unpack `⟨j, τ⟩ ⟨j', τ'⟩ h`. Simplify using `only [phi0] at h`. Establish `hj : j = j'`. Use `congrArg (fun σ : Equiv.Perm (Fin (m + 1)) => σ 0) h` as an intermediate fact.
+
+Simplify `this` using `[Equiv.Perm.mul_apply, matrixExtendByZero_zero, cycle_perm_zero]`. Substitute `hj` using the available equality. Establish `h2 : ext0 τ = ext0 τ'` using `mul_left_cancel h`. Establish `hτ : τ = τ'`. Use extensionality with `k`.
+
+Use `congrArg (fun σ : Equiv.Perm (Fin (m + 1)) => σ k.succ) h2` as an intermediate fact. Simplify using `only [extByZero_succ, Fin.succ_inj] at this`. Rewrite using `[this]`. Rewrite using `[hτ]`. Use `(Fintype.bijective_iff_injective_and_card _).mpr ⟨hinj, ?_⟩` and prove the remaining obligations.
+
+Simplify using `[Fintype.card_perm, Nat.factorial_succ]`.
+-/
 theorem firstColumnSplit_bijective (m : ℕ) : Function.Bijective (phi0 m) := by
   have hinj : Function.Injective (phi0 m) := by
     rintro ⟨j, τ⟩ ⟨j', τ'⟩ h
@@ -58,6 +85,9 @@ theorem firstColumnSplit_bijective (m : ℕ) : Function.Bijective (phi0 m) := by
   refine (Fintype.bijective_iff_injective_and_card _).mpr ⟨hinj, ?_⟩
   simp [Fintype.card_perm, Nat.factorial_succ]
 
+/- English proof (translation)
+Establish `e : ∀ k : ℕ, u - ((m + 1 : ℕ) : ℂ) + 1 + (k : ℂ) = u - (m : ℂ) + (k : ℂ)`. Introduce `k`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Simplify using `only [qminorRow, e]`.
+-/
 theorem qminorRow_succ {A : Type*} [Ring A] [Algebra ℂ A] {n m : ℕ} (E : Fin n → Fin n → A)
     (a b : Fin (m + 1) → Fin n) (u : ℂ) :
     qminorRow E a b u = ∑ σ : Equiv.Perm (Fin (m + 1)), ((Equiv.Perm.sign σ : ℤ) : A) *
@@ -68,6 +98,13 @@ theorem qminorRow_succ {A : Type*} [Ring A] [Algebra ℂ A] {n m : ℕ} (E : Fin
     ring
   simp only [qminorRow, e]
 
+/- English proof (translation)
+Rewrite using `[qminorRow_succ, ← (firstColumnSplit_bijective m).sum_comp, Fintype.sum_prod_type]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[qminorRow, Finset.mul_sum, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun τ _ => ?_` and prove the remaining obligations. Establish `e : ∀ k : ℕ, u - (m : ℂ) + ((k + 1 : ℕ) : ℂ) = u - (m : ℂ) + 1 + (k : ℂ)`.
+
+Introduce `k`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Simplify using `only [phi0, Equiv.Perm.sign_mul, sign_cycle_perm, sign_extend_perm, Units.val_mul, Int.cast_mul, List.ofFn_succ, List.prod_cons, Equiv.Perm.mul_apply, matrixExtendByZero_zero, cycle_perm_zero, extByZero_succ, cycle_perm_succ, Fin.val_zero, Nat.cast_zero, add_zero, Fin.val_succ, e …`. Rewrite using `[mul_assoc]`.
+
+Use `congr 1`. Rewrite using `[← mul_assoc, ← mul_assoc, Int.cast_comm]`.
+-/
 theorem rowFirst {A : Type*} [Ring A] [Algebra ℂ A] {n m : ℕ} (E : Fin n → Fin n → A)
     (a b : Fin (m + 1) → Fin n) (u : ℂ) :
     qminorRow E a b u = ∑ j : Fin (m + 1), (((-1 : ℤ) ^ (j : ℕ) : ℤ) : A) *
@@ -87,6 +124,13 @@ theorem rowFirst {A : Type*} [Ring A] [Algebra ℂ A] {n m : ℕ} (E : Fin n →
   congr 1
   rw [← mul_assoc, ← mul_assoc, Int.cast_comm]
 
+/- English proof (translation)
+Rewrite using `[qminorRow_succ, ← (lastColumnSplit_bijective m).sum_comp, Fintype.sum_prod_type]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[qminorRow, Finset.sum_mul, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun τ _ => ?_` and prove the remaining obligations. Establish `e : ∀ k : ℕ, u - 1 - (m : ℂ) + 1 + (k : ℂ) = u - (m : ℂ) + (k : ℂ)`.
+
+Introduce `k`. Expand and normalize the polynomial expressions, which then agree. Establish `hs : ((-1 : ℤ) ^ (m + (j : ℕ))) = (-1) ^ (m - (j : ℕ))`. Establish `hj : (j : ℕ) ≤ m` using `Nat.lt_succ_iff.mp j.isLt`. Establish `: m + (j : ℕ) = (m - (j : ℕ)) + 2 * (j : ℕ)` using `by omega`.
+
+Rewrite using `[this, pow_add, pow_mul]`. Simplify using the standard rewrite rules. Simplify using `only [lastColumnSplit, Equiv.Perm.sign_mul, sign_cycleToLast, sign_extendLast, Units.val_mul, Int.cast_mul, List.ofFn_succ', List.prod_concat, Equiv.Perm.mul_apply, extendLast_last, cycleToLast_last, extendLast_castSucc, cycleToLast_castSucc, Fin.val_last, Fin.val_castSucc, e, Fu …`. Rewrite using `[mul_assoc, mul_assoc]`.
+-/
 theorem rowLast {A : Type*} [Ring A] [Algebra ℂ A] {n m : ℕ} (E : Fin n → Fin n → A)
     (a b : Fin (m + 1) → Fin n) (u : ℂ) :
     qminorRow E a b u = ∑ j : Fin (m + 1), (((-1 : ℤ) ^ (m + (j : ℕ)) : ℤ) : A) *
@@ -109,12 +153,18 @@ theorem rowLast {A : Type*} [Ring A] [Algebra ℂ A] {n m : ℕ} (E : Fin n → 
     sub_add_cancel, hs, Units.val_pow_eq_pow_val, Units.val_neg, Units.val_one]
   rw [mul_assoc, mul_assoc]
 
+/- English proof (translation)
+Introduce `A _ _ n t E hE a b u`. Rewrite using `[h A n (t + 1) E hE a b u, rowFirst]`. Use `Finset.sum_congr rfl fun l _ => ?_` and prove the remaining obligations. Rewrite using `[h A n t E hE]`.
+-/
 theorem expFirstRow_of (h : PI.RowForm) : PI.ExpFirstRow := by
   intro A _ _ n t E hE a b u
   rw [h A n (t + 1) E hE a b u, rowFirst]
   refine Finset.sum_congr rfl fun l _ => ?_
   rw [h A n t E hE]
 
+/- English proof (translation)
+Introduce `A _ _ n t E hE a b u`. Rewrite using `[h A n (t + 1) E hE a b u, rowLast]`. Use `Finset.sum_congr rfl fun l _ => ?_` and prove the remaining obligations. Rewrite using `[h A n t E hE]`.
+-/
 theorem expLastRow_of (h : PI.RowForm) : PI.ExpLastRow := by
   intro A _ _ n t E hE a b u
   rw [h A n (t + 1) E hE a b u, rowLast]
@@ -125,6 +175,9 @@ end PI.QmRowExpWork
 
 namespace PI
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨QmRowExpWork.expFirstRow_of h, QmRowExpWork.expLastRow_of h⟩`.
+-/
 theorem qmRowExp_of_rowForm (h : PI.QmRowForm) : PI.QmRowExp :=
   ⟨QmRowExpWork.expFirstRow_of h, QmRowExpWork.expLastRow_of h⟩
 

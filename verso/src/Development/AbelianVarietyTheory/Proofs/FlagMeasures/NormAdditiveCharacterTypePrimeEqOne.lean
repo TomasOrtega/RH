@@ -17,6 +17,13 @@ def pairL (L : LocE F E) {n : ℕ} (Hm : Matrix (Fin n) (Fin n) E) (y : Fin n �
   map_add' a b := by simp [hf, add_mul, Finset.sum_add_distrib]
   map_smul' c a := by simp [hf, Finset.mul_sum, mul_assoc]
 
+/- English proof (translation)
+Introduce `y hy`. Proceed by induction on `hy using Submodule.span_induction with`. Consider the case `mem y h => exact hs y h`. Consider the case `zero => simp [hf]`. Consider the case `add a b _ _ ha hb`.
+
+Establish `: hf L Hm x (a + b) = hf L Hm x a + hf L Hm x b`. Simplify using `[hf, mul_add, Finset.sum_add_distrib]`. Rewrite using `[this, ha, hb, add_zero]`. Consider the case `smul c a _ ha`. Establish `: hf L Hm x (c • a) = L.cj c * hf L Hm x a`.
+
+Simplify using `only [hf, Finset.mul_sum, Pi.smul_apply, smul_eq_mul, map_mul]`. Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => by ring` and prove the remaining obligations. Rewrite using `[this, ha, mul_zero]`.
+-/
 theorem hf_span_right (L : LocE F E) {n : ℕ} (Hm : Matrix (Fin n) (Fin n) E) (x : Fin n → E)
     (s : Set (Fin n → E)) (hs : ∀ y ∈ s, hf L Hm x y = 0) :
     ∀ y ∈ Submodule.span E s, hf L Hm x y = 0 := by
@@ -34,6 +41,21 @@ theorem hf_span_right (L : LocE F E) {n : ℕ} (Hm : Matrix (Fin n) (Fin n) E) (
       refine Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => by ring
     rw [this, ha, mul_zero]
 
+/- English proof (translation)
+Simplify using `only [Frames.Nof, Subgroup.mem_inf, Subgroup.mem_iInf] at ha hb`. Take `⟨⟨-, ha1⟩, -⟩` from `ha`. Take `⟨⟨-, hb1⟩, hb2⟩` from `hb`. Establish `hA : b (g j.succ) - g j.succ ∈ S.spanTo g (j + 1)`. Distinguish the cases in `hj : (j : ℕ) + 1 < r`.
+
+Use `(hb1 ⟨j + 1, hj⟩).2 _ (Submodule.subset_span ⟨j.succ, ?_, rfl⟩)` and prove the remaining obligations. Simplify using the standard rewrite rules. Establish `hr : (j : ℕ) + 1 = r` using `by have := j.2; omega`. Rewrite using `[hr]`. Use `hb2.2 _ ?_` and prove the remaining obligations.
+
+Use `hf_span_right L S.Hm _ _ ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨i, hi, rfl⟩`. Rewrite using `[hg, if_neg]`. Introduce and unpack `⟨-, rfl⟩`. Simplify using `at hi`.
+
+Establish `hB` using `(ha1 j).2 _ hA`. Establish `hK : S.spanTo g j ≤ LinearMap.ker (pairL L S.Hm (gs j))`. Use `Submodule.span_le.2 ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨i, hi, rfl⟩`. Express the relevant statement in the definitionally equal form `hf L S.Hm (g i) (gs j) = 0`.
+
+Rewrite using `[hd, if_neg]`. Introduce and unpack `rfl`. Simplify using `at hi`. Establish `h0 : pairL L S.Hm (gs j) (g j.succ) = 0`. Express the relevant statement in the definitionally equal form `hf L S.Hm (g j.succ) (gs j) = 0`.
+
+Rewrite using `[hd, if_neg]`. Introduce `h`. Use `congrArg Fin.val h` as an intermediate fact. Simplify using `at this`. Establish `h1` using `LinearMap.mem_ker.1 (hK hB)`.
+
+Express the relevant statement in the definitionally equal form `pairL L S.Hm (gs j) (a (b (g j.succ))) = pairL L S.Hm (gs j) (a (g j.succ)) + pairL L S.Hm (gs j) (b (g j.succ))`. Simplify using `only [map_sub] at h1`. Take the linear combination `h1 - h0`.
+-/
 theorem coef_mul {L : LocE F E} {r k : ℕ} (S : Frames L r k) (g : Fin (r + 1) → S.V)
     (gs : Fin r → S.V) (t : E)
     (hg : ∀ a b, hf L S.Hm (g a) (g b) = if a = Fin.last r ∧ b = Fin.last r then t else 0)
@@ -75,6 +97,17 @@ theorem coef_mul {L : LocE F E} {r k : ℕ} (S : Frames L r k) (g : Fin (r + 1) 
   simp only [map_sub] at h1
   linear_combination h1 - h0
 
+/- English proof (translation)
+Use `haveI : Module.Finite F E := Module.finite_of_finrank_pos (by rw [L.rank]; norm_num)`. Establish `hyF : IsAlgebraic F y` using `Algebra.IsAlgebraic.isAlgebraic y`. Establish `hy : IsAlgebraic 𝒪[F] y` using `(IsFractionRing.isAlgebraic_iff 𝒪[F] F E).2 hyF`. Take `⟨c, hc, hcy⟩` from `hy.exists_integral_multiple`. Take `⟨ϖ, hϖ⟩` from `IsDiscreteValuationRing.exists_irreducible 𝒪[F]`.
+
+Take `⟨m, u, hu⟩` from `IsDiscreteValuationRing.eq_unit_mul_pow_irreducible hc hϖ`. Establish `hp : ((Nat.card 𝓀[F] : ℕ) : 𝒪[F]) ∈ IsLocalRing.maximalIdeal 𝒪[F]`. Rewrite using `[← IsLocalRing.residue_eq_zero_iff, map_natCast]`. Use `Fintype.ofFinite 𝓀[F]` as an intermediate fact. Rewrite using `[Nat.card_eq_fintype_card]`.
+
+Conclude with `FiniteField.cast_card_eq_zero _`. Rewrite `hp` using `[hϖ.maximalIdeal_eq, Ideal.mem_span_singleton]`. Establish `hdv : c ∣ ((Nat.card 𝓀[F] ^ m : ℕ) : 𝒪[F])`. Rewrite using `[hu, Nat.cast_pow, Units.mul_left_dvd]`. Conclude with `pow_dvd_pow_of_dvd hp m`.
+
+Take `⟨d, hd⟩` from `hdv`. Use `⟨Nat.card 𝓀[F] ^ m, pow_ne_zero _ Nat.card_pos.ne', (L.O_def _).2 ?_⟩` and prove the remaining obligations. Establish `: ((Nat.card 𝓀[F] ^ m : ℕ) : E) * y = d • (c • y)`. Rewrite using `[smul_smul, mul_comm d c, ← hd, Nat.cast_smul_eq_nsmul, nsmul_eq_mul]`. Rewrite using `[this]`.
+
+Conclude with `hcy.smul d`.
+-/
 theorem exists_nsmul_mem [IsNonarchimedeanLocalField F] (L : LocE F E) (y : E) :
     ∃ n : ℕ, n ≠ 0 ∧ (n : E) * y ∈ L.O := by
   haveI : Module.Finite F E := Module.finite_of_finrank_pos (by rw [L.rank]; norm_num)
@@ -99,6 +132,11 @@ theorem exists_nsmul_mem [IsNonarchimedeanLocalField F] (L : LocE F E) (y : E) :
   rw [this]
   exact hcy.smul d
 
+/- English proof (translation)
+Take `⟨n, hn, hy⟩` from `exists_nsmul_mem L y`. Establish `h1 : L.psi0 ((n : E) * y) = 1`. Simplify using `using (L.additive_character_dual_ring _).2 hy 1 L.O.one_mem`. Rewrite `h1` using `[← nsmul_eq_mul, AddChar.map_nsmul_eq_pow]`. Establish `h2` using `congrArg norm h1`.
+
+Rewrite `h2` using `[norm_pow, norm_one]`. Conclude with `(pow_eq_one_iff_of_nonneg (norm_nonneg _) hn).1 h2`.
+-/
 theorem norm_additiveCharacter_typePrime_eq_one [IsNonarchimedeanLocalField F] (L : LocE F E) (y : E) : ‖L.psi0 y‖ = 1 := by
   obtain ⟨n, hn, hy⟩ := exists_nsmul_mem L y
   have h1 : L.psi0 ((n : E) * y) = 1 := by
@@ -108,6 +146,11 @@ theorem norm_additiveCharacter_typePrime_eq_one [IsNonarchimedeanLocalField F] (
   rw [norm_pow, norm_one] at h2
   exact (pow_eq_one_iff_of_nonneg (norm_nonneg _) hn).1 h2
 
+/- English proof (translation)
+Introduce `F _ _ _ _ _ E _ _ _ L r k S`. Use `⟨fun a ha b hb => ?_, fun a ha b hb => ?_, fun a => ⟨norm_additiveCharacter_typePrime_eq_one L _, norm_additiveCharacter_typePrime_eq_one L _⟩, norm_additiveCharacter_typePrime_eq_one L⟩` and prove the remaining obligations. Simplify using `only [Frames.psi, Frames.psiOf]`. Rewrite using `[← AddChar.map_add_eq_mul, ← mul_add, ← Finset.sum_add_distrib]`. Simplify using `only [coef_mul S S.f S.es _ S.gram S.dual a ha b hb]`.
+
+Simplify using `only [Frames.psi', Frames.psiOf]`. Rewrite using `[← AddChar.map_add_eq_mul, ← mul_add, ← Finset.sum_add_distrib]`. Simplify using `only [coef_mul S S.f' S.es' _ S.gram' S.dual' a ha b hb]`.
+-/
 theorem psi_unitary_character : ∀ {F : Type} [Field F] [ValuativeRel F] [TopologicalSpace F] [IsNonarchimedeanLocalField F] [CharZero F] {E : Type} [CommRing E] [Algebra F E] [TopologicalSpace E] (L : LocE F E), ∀ (r k : ℕ) (S : Frames L r k), (∀ a ∈ S.N, ∀ b ∈ S.N, S.psi (a * b) = S.psi a * S.psi b) ∧ (∀ a ∈ S.N', ∀ b ∈ S.N', S.psi' (a * b) = S.psi' a * S.psi' b) ∧ (∀ a, ‖S.psi a‖ = 1 ∧ ‖S.psi' a‖ = 1) ∧ ∀ y : E, ‖L.psi0 y‖ = 1 := by
   intro F _ _ _ _ _ E _ _ _ L r k S
   refine ⟨fun a ha b hb => ?_, fun a ha b hb => ?_,

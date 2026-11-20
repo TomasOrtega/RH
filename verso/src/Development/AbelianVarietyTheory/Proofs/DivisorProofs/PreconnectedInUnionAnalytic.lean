@@ -7,6 +7,31 @@ open scoped TensorProduct NNReal Matrix
 open NumberField IsDedekindDomain MeasureTheory Filter Topology Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes
 open GlobalTheory.WeilM GlobalTheory.AdelicU GlobalTheory.LFun GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels GlobalTheory.ThK GlobalTheory.Doubling GlobalTheory.ThK.Bot GlobalTheory.DblBox
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ ψ hψ n d J J' J₂ co cb hcb inst _ m hm l hl hne hinv`. Use `set l' := l ∘ₗ (reix (rIdx n d)).toLinearMap with hl'`. Establish `hl'a : l' ∈ (adeleClass F).adm ((Fin n × Fin d) ⊕ (Fin n × Fin d))` using `comp_reix_mem_adm _ hl`. Establish `hinv' : ∀ x y : Fin n × Fin d → AF F, ∀ Φ ∈ schA F ((Fin n × Fin d) ⊕ (Fin n × Fin d)), l' (schr ψ (Sum.elim x x, Sum.elim y (-y)) Φ) = l' Φ`. Introduce `x y Φ hΦ`.
+
+Take `⟨z, hz⟩ : ∃ z, co.e z = (x, y)` from `⟨co.e.symm (x, y), co.e.apply_symm_apply _⟩`. Take `⟨u, hudef⟩ : ∃ u : Matrix (Fin (n + n)) (Fin d) (AE F E), u = fun k => Sum.elim z z (finSumFinEquiv.symm k)` from `⟨_, rfl⟩`. Establish `hu1 : upB u = z`. Use function extensionality and compare the values at `i`. Simplify using `only [upB, hudef, Equiv.symm_apply_apply]`.
+
+Both sides reduce to the same expression. Establish `hu2 : loB u = z`. Use function extensionality and compare the values at `i`. Simplify using `only [loB, hudef, Equiv.symm_apply_apply]`. Both sides reduce to the same expression.
+
+Establish `hdiag : ∀ j, uᵀ j ∈ diagSub (AE F E) finSumFinEquiv`. Introduce `j`. Use `show (LinearMap.funLeft _ _ _) _ = (LinearMap.funLeft _ _ _) _`. Use function extensionality and compare the values at `i`. Use `show u (finSumFinEquiv (Sum.inl i)) j = u (finSumFinEquiv (Sum.inr i)) j`.
+
+Simplify using `only [hudef, Equiv.symm_apply_apply]`. Both sides reduce to the same expression. Establish `h` using `hinv u hdiag (reix (rIdx n d) Φ) (reix_mem_schA (rIdx n d) hΦ)`. Rewrite `h` using `[hcb.rho_reix, hu1, hu2, hz]`. Simplify `h` using `[hl']`.
+
+Take `⟨c₁, hc₁⟩` from `GlobalTheory.DiagUniq.eq_smul_lDiag F ψ hψ (Fin n × Fin d) l' hl'a hinv'`. Establish `hc₁0 : c₁ ≠ 0`. Introduce and unpack `rfl`. Take `⟨φ, hφ, hlφ⟩` from `hne`. Establish `hφ' : (reix (rIdx n d)).symm φ ∈ schA F _`.
+
+Rewrite using `[reix_symm]`. Conclude with `reix_mem_schA _ hφ`. Use `hc₁ _ hφ'` as an intermediate fact. Rewrite `this` using `[hl', LinearMap.comp_apply, LinearEquiv.coe_coe, LinearEquiv.apply_symm_apply, zero_mul]`. Conclude with `hlφ this`.
+
+Take `⟨c₀, hc₀, hglue⟩` from `GlobalTheory.diagForm_glue_integral F (Fin n × Fin d)`. Use `haveI := GlobalTheory.AdelicUnitaryTop.locallyCompact_adele F`. Use `haveI := GlobalTheory.AdelicUnitaryTop.secondCountable_adele F`. Use `letI : MeasurableSpace (AdeleRing (𝓞 F) F) := GroundTheory.Global.measurableSpace_adeleRing F`. Use `haveI : BorelSpace (AdeleRing (𝓞 F) F) := GroundTheory.Global.borelSpace_adeleRing F`.
+
+Establish `hms : (MeasurableSpace.pi : MeasurableSpace (Fin n × Fin d → AF F)) = inst`. Rewrite using `[‹BorelSpace (Fin n × Fin d → AF F)›.measurable_eq]`. Conclude with `(Pi.borelSpace (X := fun _ : Fin n × Fin d => AdeleRing (𝓞 F) F)).measurable_eq`. Substitute `hms` using the available equality. Use `haveI := hm`.
+
+Establish `h2` using `Measure.isAddLeftInvariant_eq_smul (GroundTheory.Automorphic.GJMatrix.adeleMeasurePi F (ι := Fin n × Fin d)) m`. Establish `hc₂ : 0 < (GroundTheory.Automorphic.GJMatrix.adeleMeasurePi F (ι` using `Fin n × Fin d)).addHaarScalarFactor m := Measure.addHaarScalarFactor_pos_of_isAddHaarMeasure _ _`. Use `⟨c₁ * (c₀ * ((GroundTheory.Automorphic.GJMatrix.adeleMeasurePi F (ι := Fin n × Fin d)).addHaarScalarFactor m : ℝ)), mul_ne_zero hc₁0 (mul_ne_zero (by exact_mod_cast hc₀.ne') (by exact_mod_cast hc₂.ne')), fun φ₁ h₁ φ₂ h₂ => ?_⟩` and prove the remaining obligations. Establish `hb` using `GlobalTheory.SchwartzBox.boxFun_mem_schA F _ _ φ₁ h₁ φ₂ h₂`. Establish `e1 : l (bx φ₁ φ₂) = l' (boxFun φ₁ φ₂)` using `rfl`.
+
+Rewrite using `[e1, hc₁ _ hb, GlobalTheory.DiagForm.lDiag, LinearMap.comp_apply, GlobalTheory.DiagForm.Lext_apply _ (GlobalTheory.DiagForm.integrable_resD hb)]`. Establish `e2 : GlobalTheory.DiagForm.resD F (Fin n × Fin d) (boxFun φ₁ φ₂) = fun p => (fun t => φ₁ t * φ₂ t) (GlobalTheory.DiagForm.glue p)` using `rfl`. Rewrite using `[e2, (hglue _).2]`. Use `conv_lhs => rw [h2]`. Rewrite using `[integral_smul_nnreal_measure, NNReal.smul_def, Complex.real_smul]`.
+
+Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem GlobalTheory.DblBox.eq_smul_integral_bx : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (ψ : AddChar (AF F) ℂ), IsStd ψ →
     ∀ (n d : ℕ) (J : Matrix (Fin n) (Fin n) E) (J' : Matrix (Fin d) (Fin d) E) (J₂ : Matrix (Fin (n + n)) (Fin (n + n)) E)
       (co : Darboux (symp (R := AF F) (cA σ) (-1) (incM F J) (incM F J')) (Fin n × Fin d))

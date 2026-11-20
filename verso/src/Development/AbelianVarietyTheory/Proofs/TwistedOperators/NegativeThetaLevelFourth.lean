@@ -17,11 +17,23 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar GlobalTheory.Local
 noncomputable section
 namespace GlobalTheory.ThetaLiftTypeX
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨N.M.lam τ, N.M.ε τ, N.M.enum τ, GlobalTheory.Published.HermitianUnique.isHCParam_of_isDS (N.M.enum τ).1 (N.M.ds τ), GlobalTheory.TypeAtCompare.card_eq_of_congr (N.M.fr_unit τ) (N.M.fr_gram τ) (hV (tauE D τ))⟩`.
+-/
 theorem goodAt_of_node {D : D7} (N : GlobalTheory.Grid.Node D) (hV : N.V.SigOK) (τ : D.what₂.Tau) :
     GoodPar N.V.rank (N.V.sig (tauE D τ)).1 (N.V.sig (tauE D τ)).2 (N.S τ) :=
   ⟨N.M.lam τ, N.M.ε τ, N.M.enum τ, GlobalTheory.Published.HermitianUnique.isHCParam_of_isDS (N.M.enum τ).1 (N.M.ds τ),
     GlobalTheory.TypeAtCompare.card_eq_of_congr (N.M.fr_unit τ) (N.M.fr_gram τ) (hV (tauE D τ))⟩
 
+/- English proof (translation)
+Introduce `hL hP D hSz G₀ _ _ Pl0 T A Ks _ _ _ R G hR hG t i j hi hj Φ hΦ φ hφ hint τ`. Establish `hV : (G.V (i + 1) j).V.SigOK` using `(hG.spaces.vert i j (by omega) hj).sigOK`. Establish `hAut` using `GlobalTheory.T.negative_theta_level_fifth hL hP D hSz G₀ Pl0 T A Ks R G hR hG t i j hi hj Φ hΦ φ hφ hint`. Use `GlobalTheory.T.automorphicForm_uniformLimit_discreteSeries_series R.θ _ τ _ _ hP.discreteSeriesUpqExists (GlobalTheory.Published.discreteSeriesHermitianUnique_iff.1 hP.discreteSeriesHermitianUnique) hP.harishChandraModules hP.casselmanWallach hR.inf hV (goodAt_of_node _ hV τ) hAu …` and prove the remaining obligations. Introduce `C hC δ hδ`.
+
+Take `⟨n, f, p, F, v, hf, hF, happ⟩` from `GlobalTheory.T.negative_theta_level_sixth hL hP D hSz G₀ Pl0 T A Ks R G hR hG t i j hi hj Φ hΦ φ hφ hint C hC (δ / 2) (by linarith)`. Establish `hCA` using `hL D hSz G₀ Pl0 T A Ks R G hR hG`. Use `choose F' hF' hE using fun l => hCA.X t i j hi hj (f l) (hf l) (F l) (hF l)`. Establish `hψ0 : GlobalTheory.IndefiniteRowSideFullHecke.FinitePartTypes.HasTypeAt R.θ (G.V (i + 1) j).V τ ((G.V (i + 1) j).S τ) (∑ l, F' l ((G.X i j).It (p l) (v l)))` using `(GlobalTheory.IndefiniteRowSideFullHecke.FinitePartTypes.typeSub R.θ _ τ _).sum_mem fun l _ => GlobalTheory.T.cuspidal_grid_node_type hP R.θ hR.inf _ hV _ (hF' l) _ τ`. Take `⟨ψ, hψ, hψC⟩` from `hψ0 C hC (δ / 2) (by linarith)`.
+
+Use `⟨ψ, hψ, fun x hx => ?_⟩` and prove the remaining obligations. Establish `h1` using `happ x hx`. Establish `h2` using `hψC x hx`. Establish `e : (∑ l, ∫ g in (G.meas t i j).fd, thetaKO (G.X i j).ω x g (GlobalTheory.Grid.fock R.ψ R.θ true (G.V (i + 1) j) (G.V i j) (f l) (p l)) * F l (v l) g ∂(G.meas t i j).ν) = (∑ l, F' l ((G.X i j).It (p l) (v l))) x`. Rewrite using `[Finset.sum_apply]`.
+
+Conclude with `Finset.sum_congr rfl fun l _ => (hE l (p l) (v l) x).2`. Rewrite `h1` using `[e]`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem lift_isTypeAt : GlobalTheory.IndefiniteRowSideFullHecke.CuspAlongSmoothLifts.LiftsCuspidal → GlobalTheory.FunPr.Hypotheses₂ → ∀ (D : D7), GlobalTheory.IndefiniteRowSideFullHecke.CuspAlongSmoothLifts.Sizes D → ∀ (G₀ : Type) [Group G₀] [Fintype G₀] (Pl0 T : Type) (A : FamIn D.what₂.LL G₀ Pl0 T D.R.m) (Ks : Type) [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] (R : RealDat D A Ks) (G : GlobalTheory.Grid.GridPre R), GlobalTheory.IndefiniteRowSideFullHecke.CuspAlongSmoothLifts.RowBase R → G.Is → ∀ t i j, i < D.R.m → j ≤ D.R.m → ∀ Φ, IsThetaFunO R.ψ (GlobalTheory.Grid.neg (G.V (i + 1) j).V) (G.V i j).V Φ → ∀ φ, GlobalTheory.IndefiniteRowSideFullHecke.CuspAlongSmoothLifts.IsCuspOfType R.θ (G.V i j) φ → (∀ h, IntegrableOn (fun g => thetaKO (G.X i j).ω h g Φ * φ g) (G.meas t i j).fd (G.meas t i j).ν) → ∀ τ, IsTypeAt R.θ (G.V (i + 1) j).V τ ((G.V (i + 1) j).S τ) (fun h => ∫ g in (G.meas t i j).fd, thetaKO (G.X i j).ω h g Φ * φ g ∂(G.meas t i j).ν) := by
   intro hL hP D hSz G₀ _ _ Pl0 T A Ks _ _ _ R G hR hG t i j hi hj Φ hΦ φ hφ hint τ
   have hV : (G.V (i + 1) j).V.SigOK := (hG.spaces.vert i j (by omega) hj).sigOK

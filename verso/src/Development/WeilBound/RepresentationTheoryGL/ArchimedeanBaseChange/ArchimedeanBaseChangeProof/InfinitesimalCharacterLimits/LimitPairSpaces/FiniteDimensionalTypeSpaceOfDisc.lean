@@ -12,6 +12,17 @@ open PositivityTheory.Rg.BcB.SpectralAccumulation PositivityTheory.Rg.BcB.E Posi
 
 variable {E : Type} [Field E] [NumberField E] [IsCMField E]
 
+/- English proof (translation)
+Set `Ker : Finset α → Submodule ℂ (α → ℂ)` to `fun S => X ⊓ ⨅ a ∈ S, LinearMap.ker (LinearMap.proj a : (α → ℂ) →ₗ[ℂ] ℂ)`. Establish `hmem : ∀ S w, w ∈ Ker S ↔ w ∈ X ∧ ∀ a ∈ S, w a = 0`. Introduce `S w`. Simplify using `only [Ker, Submodule.mem_inf, Submodule.mem_iInf, LinearMap.mem_ker, LinearMap.proj_apply]`. Establish `hfd : ∀ S, FiniteDimensional ℂ (Ker S)` using `fun S => Submodule.finiteDimensional_of_le inf_le_left`.
+
+Establish `hex : ∃ d, ∃ S, Module.finrank ℂ (Ker S) = d` using `⟨_, ∅, rfl⟩`. Take `⟨S, hS0⟩` from `Nat.find_spec hex`. Establish `hS : ∀ S', Module.finrank ℂ (Ker S) ≤ Module.finrank ℂ (Ker S')` using `fun S' => by`. Rewrite using `[hS0]`. Conclude with `Nat.find_min' hex ⟨S', rfl⟩`.
+
+Use `⟨S, fun w hw h0 => ?_⟩` and prove the remaining obligations. Assume the negation of the conclusion as `hne`. Take `⟨a, ha⟩` from `Function.ne_iff.1 hne`. Establish `hlt : Ker (insert a S) < Ker S`. Use `lt_of_le_of_ne (fun v hv => ?_) (fun he => ?_)` and prove the remaining obligations.
+
+Rewrite `hv`, the goal using `[hmem]`. Conclude with `⟨hv.1, fun b hb => hv.2 b (Finset.mem_insert_of_mem hb)⟩`. Establish `hwS : w ∈ Ker S` using `(hmem S w).2 ⟨hw, h0⟩`. Rewrite `hwS` using `[← he, hmem]`. Conclude with `ha (hwS.2 a (Finset.mem_insert_self a S))`.
+
+Use `hfd S` as an intermediate fact. Conclude with `absurd (hS (insert a S)) (not_le.2 (Submodule.finrank_lt_finrank_of_lt hlt))`.
+-/
 theorem exists_sep {α : Type} (X : Submodule ℂ (α → ℂ)) [FiniteDimensional ℂ X] :
     ∃ S : Finset α, ∀ w ∈ X, (∀ a ∈ S, w a = 0) → w = 0 := by
   classical
@@ -39,6 +50,11 @@ theorem exists_sep {α : Type} (X : Submodule ℂ (α → ℂ)) [FiniteDimension
   have := hfd S
   exact absurd (hS (insert a S)) (not_le.2 (Submodule.finrank_lt_finrank_of_lt hlt))
 
+/- English proof (translation)
+Use `Submodule.span_le.2 ?_` and prove the remaining obligations. Introduce and unpack `φ ⟨hφ, hT⟩`. Take `⟨χ, hχ, rfl⟩` from `hφ`. Use `⟨χ, Submodule.subset_span ⟨hχ, ?_⟩, rfl⟩` and prove the remaining obligations. Establish `e : χ = mulChi n (Model.absC E (-z)) (mulChi n (Model.absC E z) χ)` using `(ParabolicProjection.mulChi_absC_neg n z χ).symm`.
+
+Rewrite using `[e]`. Conclude with `t_typeB_mulChi hT hK (-z)`.
+-/
 theorem typSp_tw_le {n : ℕ} {K' : Subgroup (GL (Fin n) (Af E))} (hK : K' ≤ detKer n)
     (W' : Submodule ℂ (Kinf E n → ℂ)) (U : Submodule ℂ (Sm E n)) (z : ℂ) :
     TypSp K' W' (tw U z) ≤ (TypSp K' W' U).map (mulChi n (Model.absC E z)).toLinearMap := by
@@ -51,6 +67,45 @@ theorem typSp_tw_le {n : ℕ} {K' : Subgroup (GL (Fin n) (Af E))} (hK : K' ≤ d
   rw [e]
   exact t_typeB_mulChi hT hK (-z)
 
+/- English proof (translation)
+Introduce `n t`. Proceed by induction on `t with`. Consider the case `leaf V z`. Introduce `_ ht`. Use `show FiniteDimensional ℂ (TypSp (Kf N K _) (Wf N W _) (tw V z))`.
+
+Break down `ht with ⟨rfl, -, -⟩ | ⟨-, hV⟩` into its components or cases. Establish `: Subsingleton (GA E 0)` using `⟨fun a b => Units.ext (Matrix.ext fun i => Fin.elim0 i)⟩ infer_instance`. Establish `: FiniteDimensional ℂ (TypSp (Kf N K _) (Wf N W _) V)` using `hA E _ _ _ (isOpen_Kf hK _) (fd_Wf hW _) V hV`. Conclude with `Submodule.finiteDimensional_of_le (typSp_tw_le (Kf_le_det _) (Wf N W _) V z)`. Consider the case `@node r s t₁ t₂ ih₁ ih₂`.
+
+Introduce `hN ht`. Take `⟨ht₁, ht₂⟩` from `ht`. Establish `: FiniteDimensional ℂ (TypSp (Kf N K r) (Wf N W r) (tw t₁.space ((s : ℂ) / 2)))`. Use `ih₁ (by omega) ht₁` as an intermediate fact. Conclude with `Submodule.finiteDimensional_of_le (typSp_tw_le (Kf_le_det _) _ _ _)`.
+
+Establish `: FiniteDimensional ℂ (TypSp (Kf N K s) (Wf N W s) (tw t₂.space (-(r : ℂ) / 2)))`. Use `ih₂ (by omega) ht₂` as an intermediate fact. Conclude with `Submodule.finiteDimensional_of_le (typSp_tw_le (Kf_le_det _) _ _ _)`. Use `set Y := tens2 (TypSp (Kf N K r) (Wf N W r) (tw t₁.space ((s : ℂ) / 2))) (TypSp (Kf N K s) (Wf N W s) (tw t₂.space (-(r : ℂ) / 2))) with hY`. Establish `: FiniteDimensional ℂ Y` using `fd_tens2 _ _`.
+
+Use `set X := TypSp (Kf N K (r + s)) (Wf N W (r + s)) (Tr.node t₁ t₂).space with hX`. Establish `: FiniteDimensional ℂ (Wf N W (r + s))` using `fd_Wf hW _`. Take `⟨S, hS⟩` from `exists_sep (Wf N W (r + s))`. Use `set T := Tset r s (Kf N K (r + s)) with hTdef`. Establish `hI : ∀ φ ∈ X, MemInd2 (tw t₁.space ((s : ℂ) / 2)) (tw t₂.space (-(r : ℂ) / 2)) φ`.
+
+Introduce `φ hφ`. Establish `hf : φ ∈ (Tr.node t₁ t₂).space` using `typSp_le _ _ _ hφ`. Rewrite `hf` using `[Tr.space]`. Conclude with `memInd2_of_span (Submodule.span_mono (fun φ h => h.1) hf)`. Establish `key : ∀ φ ∈ X, ∀ t ∈ T, ∀ k : Kinf E (r + s), (fun m : GA E r × GA E s => φ.1 (lev (Ad E) r s m * (infGL E (r + s) (Unitary.toUnits k) * finGL E (r + s) t))) ∈ Y`.
+
+Introduce `φ hφ t ht k`. Establish `hT` using `typeB_of_mem_typSp hφ`. Use `tens_typ ((hI φ hφ).2 k t) (fun y => ⟨fun u hu x₁ => ?_, fun x₁ => ?_⟩) (fun x => ⟨fun u hu x₂ => ?_, fun x₂ => ?_⟩)` and prove the remaining obligations. Establish `h1 : lev (Ad E) r s (x₁ * finGL E r u, y) = lev (Ad E) r s (x₁, y) * finGL E (r + s) (lev (Af E) r s (u, 1))`. Rewrite using `[← Slice1.lev_finGL, map_one, ← map_mul, Prod.mk_mul_mk, mul_one]`.
+
+Establish `hc` using `infGL_comm (Unitary.toUnits k) (lev (Af E) r s (u, 1))`. Establish `e : lev (Ad E) r s (x₁ * finGL E r u, y) * (infGL E (r + s) (Unitary.toUnits k) * finGL E (r + s) t) = lev (Ad E) r s (x₁, y) * (infGL E (r + s) (Unitary.toUnits k) * finGL E (r + s) t) * finGL E (r + s) (t⁻¹ * lev (Af E) r s (u, 1) * t)`. Rewrite using `[h1, map_mul, map_mul, map_inv]`. Simplify using `only [mul_assoc]`. Rewrite using `[← mul_assoc (finGL E (r + s) (lev (Af E) r s (u, 1))), ← hc]`.
+
+Use `group`. Use `show φ.1 _ = φ.1 _`. Rewrite using `[e, hT.1 _ (Kf_left hN ht hu)]`. Establish `hw` using `typeB_lt hT (lev (Ad E) r s (x₁, y) * finGL E (r + s) t)`. Establish `hW₁` using `Wf_left (W := W) hN hw k`.
+
+Use `hW₁ using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `k₁`. Use `show φ.1 _ = _`. Rewrite using `[infGL_comm, ← mul_assoc, Slice1.lev_infGL_right]`. Simplify using `only [map_mul, Slice1.toUnits_levK]`.
+
+Establish `h1 : lev (Ad E) r s (x, x₂ * finGL E s u) = lev (Ad E) r s (x, x₂) * finGL E (r + s) (lev (Af E) r s (1, u))`. Rewrite using `[← Slice2.lev_finGL_one, ← map_mul, Prod.mk_mul_mk, mul_one]`. Establish `hc` using `infGL_comm (Unitary.toUnits k) (lev (Af E) r s (1, u))`. Establish `e : lev (Ad E) r s (x, x₂ * finGL E s u) * (infGL E (r + s) (Unitary.toUnits k) * finGL E (r + s) t) = lev (Ad E) r s (x, x₂) * (infGL E (r + s) (Unitary.toUnits k) * finGL E (r + s) t) * finGL E (r + s) (t⁻¹ * lev (Af E) r s (1, u) * t)`. Rewrite using `[h1, map_mul, map_mul, map_inv]`.
+
+Simplify using `only [mul_assoc]`. Rewrite using `[← mul_assoc (finGL E (r + s) (lev (Af E) r s (1, u))), ← hc]`. Use `group`. Use `show φ.1 _ = φ.1 _`. Rewrite using `[e, hT.1 _ (Kf_right hN ht hu)]`.
+
+Establish `hw` using `typeB_lt hT (lev (Ad E) r s (x, x₂) * finGL E (r + s) t)`. Establish `hW₂` using `Wf_right (W := W) hN hw k`. Use `hW₂ using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `k₂`. Use `show φ.1 _ = _`.
+
+Establish `h1 : lev (Ad E) r s (x, x₂ * infGL E s (Unitary.toUnits k₂)) = lev (Ad E) r s (x, x₂) * infGL E (r + s) (lev (Cinf E) r s (1, Unitary.toUnits k₂))`. Rewrite using `[← Slice2.lev_infGL_one, ← map_mul, Prod.mk_mul_mk, mul_one]`. Rewrite using `[h1]`. Simplify using `only [map_mul, Slice2.toUnits_levK]`. Rewrite using `[infGL_comm (Unitary.toUnits k) t]`.
+
+Simplify using `only [← mul_assoc]`. Rewrite using `[mul_assoc (lev (Ad E) r s (x, x₂)) (infGL E (r + s) (lev (Cinf E) r s (1, Unitary.toUnits k₂))), infGL_comm (lev (Cinf E) r s (1, Unitary.toUnits k₂)) t, ← mul_assoc]`. Establish `inj : ∀ φ ∈ X, (∀ t ∈ T, ∀ k ∈ S, ∀ m : GA E r × GA E s, φ.1 (lev (Ad E) r s m * (infGL E (r + s) (Unitary.toUnits k) * finGL E (r + s) t)) = 0) → φ = 0`. Introduce `φ hφ h0`. Establish `hT` using `typeB_of_mem_typSp hφ`.
+
+Use `Subtype.ext (funext fun g => ?_)` and prove the remaining obligations. Take `⟨x, m, t, k, l, ht, hl, hg⟩` from `Tset_spec (isOpen_Kf hK (r + s)) g`. Establish `hw` using `hT.2 (lev (Ad E) r s m * finGL E (r + s) t)`. Establish `hz` using `hS _ hw (fun κ hκ => by show φ.1 (lev (Ad E) r s m * finGL E (r + s) t * infGL E (r + s) (Unitary.toUnits κ)) = 0`. Rewrite using `[mul_assoc, ← infGL_comm]`.
+
+Conclude with `h0 t ht κ hκ m)`. Establish `e : g = unip x * (lev (Ad E) r s m * finGL E (r + s) t * infGL E (r + s) (Unitary.toUnits k)) * finGL E (r + s) l`. Rewrite using `[hg]`. Simplify using `only [mul_assoc]`. Use `show φ.1 g = 0`.
+
+Rewrite using `[e, hT.1 l hl, (hI φ hφ).1]`. Conclude with `congrFun hz k`. Set `f : X →ₗ[ℂ] (↥T × ↥S → Y)` to `{ toFun := fun φ p => ⟨fun m => φ.1.1 (lev (Ad E) r s m * (infGL E (r + s) (Unitary.toUnits p.2.1) * finGL E (r + s) p.1.1)), key φ.1 φ.2 p.1.1 p.1.2 p.2.1⟩ map_add' := fun φ ψ => funext fun p => Subtype.ext (funext fun m => rfl) map_smul' := fun c φ => funext fun p => Subtype.ex …`. Use `FiniteDimensional.of_injective f ?_` and prove the remaining obligations. Rewrite using `[← LinearMap.ker_eq_bot, LinearMap.ker_eq_bot']`.
+
+Introduce `φ hφ`. Establish `h0` using `inj φ.1 φ.2 fun t ht k hk m => by`. Use `congrArg (fun F => (F (⟨t, ht⟩, ⟨k, hk⟩)).1 m) hφ` as an intermediate fact. Conclude with `this`. Conclude with `Subtype.ext h0`.
+-/
 theorem finiteDimensional_type_space_of_disc (hA : AdmDisc) {N : ℕ} (K : Subgroup (GL (Fin N) (Af E)))
     (hK : IsOpen (K : Set (GL (Fin N) (Af E)))) (W : Submodule ℂ (Kinf E N → ℂ)) [hW : FiniteDimensional ℂ W] :
     ∀ {n : ℕ} (t : Tr E n), n ≤ N → t.Disc → FiniteDimensional ℂ (TypSp (Kf N K n) (Wf N W n) t.space) := by
@@ -172,6 +227,9 @@ theorem finiteDimensional_type_space_of_disc (hA : AdmDisc) {N : ℕ} (K : Subgr
       exact this
     exact Subtype.ext h0
 
+/- English proof (translation)
+Use `finiteDimensional_type_space_of_disc hA K hK W t le_rfl ht` as an intermediate fact. Use `Submodule.finiteDimensional_of_le (S₂ := TypSp (Kf N K N) (Wf N W N) t.space) (Submodule.span_le.2 ?_)` and prove the remaining obligations. Introduce and unpack `φ ⟨hφ, hT⟩`. Conclude with `Submodule.subset_span ⟨hφ, fun u hu g => hT.1 u (Kf_top hu) g, fun g => lt_le_Wf (typeB_lt hT g)⟩`.
+-/
 theorem fd_typSp (hA : AdmDisc) {N : ℕ} (t : Tr E N) (ht : t.Disc) (K : Subgroup (GL (Fin N) (Af E)))
     (hK : IsOpen (K : Set (GL (Fin N) (Af E)))) (W : Submodule ℂ (Kinf E N → ℂ)) [FiniteDimensional ℂ W] :
     FiniteDimensional ℂ (TypSp K W t.space) := by

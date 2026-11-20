@@ -30,18 +30,32 @@ def PreSys.od (P : PreSys C0 CE1 CE2 X O w mu β L G Std) : P.κ → ℕ :=
 def PreSys.dg (P : PreSys C0 CE1 CE2 X O w mu β L G Std) : P.κ → X.TT × Bool → ℕ :=
   Sum.elim (fun x => P.dgC x.1 x.2) (Sum.elim (fun x => P.dgH x.1 x.2) P.dgM)
 
+/- English proof (translation)
+Simplify using `only [Fintype.prod_sum_type, Fintype.prod_sigma]`.
+-/
 theorem PreSys.prod_κ (P : PreSys C0 CE1 CE2 X O w mu β L G Std) (F : P.κ → RHH O X) :
     ∏ a, F a = (∏ j, ∏ a, F (Sum.inl ⟨j, a⟩)) * ((∏ j, ∏ i, F (Sum.inr (Sum.inl ⟨j, i⟩))) * ∏ a, F (Sum.inr (Sum.inr a))) := by
   simp only [Fintype.prod_sum_type, Fintype.prod_sigma]
 
+/- English proof (translation)
+Simplify using `only [Fintype.sum_sum_type, Fintype.sum_sigma]`.
+-/
 theorem PreSys.sum_κ (P : PreSys C0 CE1 CE2 X O w mu β L G Std) (F : P.κ → ℕ) :
     ∑ a, F a = (∑ j, ∑ a, F (Sum.inl ⟨j, a⟩)) + ((∑ j, ∑ i, F (Sum.inr (Sum.inl ⟨j, i⟩))) + ∑ a, F (Sum.inr (Sum.inr a))) := by
   simp only [Fintype.sum_sum_type, Fintype.sum_sigma]
 
+/- English proof (translation)
+Rewrite using `[Finset.sum_mul]`. Conclude with `Finset.sum_le_sum fun a _ => Nat.mul_le_mul_left _ (h a)`.
+-/
 theorem sum_mul_le {κ : Type} [Fintype κ] (u d : κ → ℕ) (Q : ℕ) (h : ∀ a, d a ≤ Q) : ∑ a, u a * d a ≤ (∑ a, u a) * Q := by
   rw [Finset.sum_mul]
   exact Finset.sum_le_sum fun a _ => Nat.mul_le_mul_left _ (h a)
 
+/- English proof (translation)
+Break down `a with ⟨j, i⟩ | ⟨j, i⟩ | a` into its components or cases. Conclude with `P.homC j i`. Conclude with `P.homH j i`. Use `show HomW (ndHom X) (P.oM a) (monomial (P.aM a) (1 : KK O))`. Introduce `m hm`.
+
+Establish `hm'` using `Finset.mem_singleton.mp (MvPolynomial.support_monomial_subset hm)`. Substitute `hm'` using the available equality. Conclude with `P.homM a`.
+-/
 theorem PreSys.sgNd (P : PreSys C0 CE1 CE2 X O w mu β L G Std) (a : P.κ) : HomW (ndHom X) (P.od a) (P.sg a) := by
   rcases a with ⟨j, i⟩ | ⟨j, i⟩ | a
   · exact P.homC j i
@@ -52,6 +66,11 @@ theorem PreSys.sgNd (P : PreSys C0 CE1 CE2 X O w mu β L G Std) (a : P.κ) : Hom
     subst hm'
     exact P.homM a
 
+/- English proof (translation)
+Break down `a with ⟨j, i⟩ | ⟨j, i⟩ | a` into its components or cases. Conclude with `P.polC j i`. Conclude with `P.polH j i`. Use `show monomial (P.aM a) (1 : KK O) ∈ Pol (KK O) (ι := X.TT × Bool) (X.m + 1) (P.dgM a)`. Rewrite using `[Pol, MvPolynomial.mem_restrictSupport_iff]`.
+
+Introduce `m hm`. Establish `hm'` using `Finset.mem_singleton.mp (MvPolynomial.support_monomial_subset (Finset.mem_coe.mp hm))`. Substitute `hm'` using the available equality. Conclude with `P.polM a`.
+-/
 theorem PreSys.sgMd (P : PreSys C0 CE1 CE2 X O w mu β L G Std) (a : P.κ) :
     P.sg a ∈ Pol (KK O) (ι := X.TT × Bool) (X.m + 1) (P.dg a) := by
   rcases a with ⟨j, i⟩ | ⟨j, i⟩ | a
@@ -64,12 +83,18 @@ theorem PreSys.sgMd (P : PreSys C0 CE1 CE2 X O w mu β L G Std) (a : P.κ) :
     subst hm'
     exact P.polM a
 
+/- English proof (translation)
+Break down `a with ⟨j, i⟩ | ⟨j, i⟩ | a` into its components or cases. Conclude with `P.dgCQ j i l`. Conclude with `P.dgHQ j i l`. Conclude with `P.dgMQ a l`.
+-/
 theorem PreSys.dgQ (P : PreSys C0 CE1 CE2 X O w mu β L G Std) (a : P.κ) (l : X.TT × Bool) : P.dg a l ≤ X.p ^ X.G' := by
   rcases a with ⟨j, i⟩ | ⟨j, i⟩ | a
   · exact P.dgCQ j i l
   · exact P.dgHQ j i l
   · exact P.dgMQ a l
 
+/- English proof (translation)
+Break down `a with ⟨j, i⟩ | ⟨j, i⟩ | a` into its components or cases. Conclude with `P.dgCY j i j'`. Conclude with `P.dgHY j i j'`. Conclude with `P.dgMY a j'`.
+-/
 theorem PreSys.dgY (P : PreSys C0 CE1 CE2 X O w mu β L G Std) (a : P.κ) (j' : Fin (numSeg X.TT)) :
     P.dg a (topEnd X j', false) = 0 := by
   rcases a with ⟨j, i⟩ | ⟨j, i⟩ | a
@@ -77,23 +102,39 @@ theorem PreSys.dgY (P : PreSys C0 CE1 CE2 X O w mu β L G Std) (a : P.κ) (j' : 
   · exact P.dgHY j i j'
   · exact P.dgMY a j'
 
+/- English proof (translation)
+Rewrite using `[P.sum_κ]`. Simplify using `only [PreSys.mult, PreSys.od, Sum.elim_inl, Sum.elim_inr, one_mul]`. Conclude with `P.ordEq`.
+-/
 theorem PreSys.ordκ (P : PreSys C0 CE1 CE2 X O w mu β L G Std) :
     P.oR + ∑ a, P.mult a * P.od a = ordFam C0 CE1 CE2 X β := by
   rw [P.sum_κ]
   simp only [PreSys.mult, PreSys.od, Sum.elim_inl, Sum.elim_inr, one_mul]
   exact P.ordEq
 
+/- English proof (translation)
+Rewrite using `[P.sum_κ]`. Simplify using `only [PreSys.mult, PreSys.dg, Sum.elim_inl, Sum.elim_inr, one_mul]`. Conclude with `P.degEq l`.
+-/
 theorem PreSys.degκ (P : PreSys C0 CE1 CE2 X O w mu β L G Std) (l : X.TT × Bool) :
     P.dR l + ∑ a, P.mult a * P.dg a l = hhDegs X.TT X.aT X.bT l := by
   rw [P.sum_κ]
   simp only [PreSys.mult, PreSys.dg, Sum.elim_inl, Sum.elim_inr, one_mul]
   exact P.degEq l
 
+/- English proof (translation)
+Rewrite using `[P.prod_κ]`. Simplify using `only [PreSys.f, PreSys.mult, Sum.elim_inl, Sum.elim_inr, pow_one]`.
+-/
 theorem PreSys.fprod (P : PreSys C0 CE1 CE2 X O w mu β L G Std) :
     ∏ a, P.f a ^ P.mult a = (∏ j, ∏ a, P.fC j a) * ((∏ j, ∏ i, P.fH j i ^ L.lv j i) * ∏ a, P.fM a ^ P.multM a) := by
   rw [P.prod_κ]
   simp only [PreSys.f, PreSys.mult, Sum.elim_inl, Sum.elim_inr, pow_one]
 
+/- English proof (translation)
+Establish `hsym : symFam (KK O) X.p C0 CE1 CE2 X β (fun j => L.word O j (G j)) = (∏ j, L.head O j (L.lv j) (G j)) * monomial Std 1`. Rewrite using `[hStd, ← Finset.prod_mul_distrib]`. Conclude with `Finset.prod_congr rfl (fun j _ => L.ioBlock_word O j (G j))`. Establish `h1` using `P.ident (fun _ _ => 1) L.lv P.multM 0`. Establish `h2 : P.R + ((∑ j, ∑ a, (1 : ℕ) • P.pl j a) + ∑ a, P.multM a • P.aM a) + 0 = Std`.
+
+Use `Eq.trans ?_ P.stdEq.symm` and prove the remaining obligations. Simplify using the standard rewrite rules. Establish `h3 : ∀ j, ∏ a, P.Kc j a ^ (1 : ℕ) = G j` using `fun j => by simp [P.Kprod j]`. Rewrite `h1` using `[h2]`. Simplify using `only [h3] at h1`.
+
+Rewrite using `[hsym, ← h1, P.prod_κ]`. Simplify using `[PreSys.mult, PreSys.sg]`.
+-/
 theorem PreSys.symκ (P : PreSys C0 CE1 CE2 X O w mu β L G Std)
     (hStd : (monomial Std (1 : KK O) : RHH O X) = ∏ j, L.stdPoly O j) :
     P.sgR * ∏ a, P.sg a ^ P.mult a = symFam (KK O) X.p C0 CE1 CE2 X β (fun j => L.word O j (G j)) := by

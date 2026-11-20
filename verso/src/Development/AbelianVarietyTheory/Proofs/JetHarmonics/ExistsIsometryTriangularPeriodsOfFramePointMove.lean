@@ -13,6 +13,13 @@ open scoped Matrix
 
 namespace GlobalTheory.LevelCusp
 
+/- English proof (translation)
+Use `Pi.single_induction (p := fun z => h z (e.symm ⟨τ, i⟩) = ∑ j, cf τ j i * z (e.symm ⟨τ, j⟩)) z (by simp) (fun z w hz hw => by simp only [map_add, Pi.add_apply, hz, hw, mul_add, Finset.sum_add_distrib]) fun n a => ?_` and prove the remaining obligations. Use `beta_reduce`. Take `⟨⟨τ', i'⟩, rfl⟩` from `e.symm.surjective n`. Establish `h1 : (Pi.single (e.symm ⟨τ', i'⟩) a : Fin g → ℂ) = a • (Pi.single (e.symm ⟨τ', i'⟩) 1 : Fin g → ℂ)`. Rewrite using `[← Pi.single_smul, smul_eq_mul, mul_one]`.
+
+Rewrite using `[h1, map_smul, hcol]`. Simplify using `only [Pi.smul_apply, Finset.sum_apply, smul_eq_mul, Pi.single_apply, EmbeddingLike.apply_eq_iff_eq]`. Distinguish the cases in `hτ : τ = τ'`. Substitute `hτ` using the available equality. Simplify using `[mul_comm]`.
+
+Simplify using `[hτ]`.
+-/
 theorem apply_of_cols {α : Type} {m : α → ℕ} {g : ℕ} (e : Fin g ≃ Σ τ : α, Fin (m τ))
     (h : (Fin g → ℂ) →ₗ[ℂ] (Fin g → ℂ)) (cf : ∀ τ, Fin (m τ) → Fin (m τ) → ℂ)
     (hcol : ∀ τ i, h (Pi.single (e.symm ⟨τ, i⟩) 1) =
@@ -34,6 +41,21 @@ theorem apply_of_cols {α : Type} {m : α → ℕ} {g : ℕ} (e : Fin g ≃ Σ �
 
 set_option maxHeartbeats 1000000 in
 
+/- English proof (translation)
+Introduce `E _ _ _ H Dw l Xo c σ r U _ hU ρ ν k k' x x' y' t hM hB`. Take `⟨-, -, -, -, -, g, e, F, ik, φ, hEF, hpt⟩` from `hU`. Take `⟨P, hP, p, hPx, hv, -⟩` from `hpt k x`. Take `⟨P', hP', p', hPx', hv', -⟩` from `hpt k' x'`. Take `⟨gam, h, hiso, hh, hex⟩` from `exists_isometry_of_sabMap F ν p p' (by rw [← hPx, ← hPx', ← hB.1]; exact hM.1.symm)`.
+
+Use `choose cf hcf1 hcf2 hcf3 using hB.2.1`. Establish `hcol : ∀ τ i, h.toLinearMap (Pi.single (e.symm ⟨τ, i⟩) 1) = (∑ j, (show ℂ from cf τ i j) • (Pi.single (e.symm ⟨τ, j⟩) 1 : Fin g → ℂ))`. Introduce `τ i`. Establish `d1` using `(DerLin.isCombAt_iff_isDerivAt0 E H Dw l Xo _ g _ F _ P' p' _ ((U.un k' x').u τ) _ (hv' τ) (cf τ i) (y'.u τ i)).1 (hPx' ▸ hcf3 τ i)`. Establish `d0` using `FibreDeriv.isDerivAt0_comp (hv τ i) ν.φ`.
+
+Simplify using `only [← hex] at d0`. Establish `d2` using `(ExpChain.isDerivAt0_comp_linear _ (ExpChain.isHolTo_ex F _ P' p') h.toLinearMap _ _).1 d0`. Establish `tn` using `isDerivAt0_ex_isTanAt E H Dw l Xo _ g _ F _ P' p'`. Rewrite `d1` using `[hM.2.1]`. Conclude with `(tn.2.2 _ (tn.1 _ _ d2)).unique d2 d1`.
+
+Use `⟨(φ k).symm ≪≫ₗ gam ≪≫ₗ φ k', fun τ i j => if hij : i < Dw.mult τ ∧ j < Dw.mult τ then Formalism.L2.PjFree.toC (cf τ ⟨j, hij.2⟩ ⟨i, hij.1⟩) else 0, fun u v => ?_, fun τ i j hji => ?_, fun τ i hi v => ?_, fun τ i => ?_⟩` and prove the remaining obligations. Take `⟨u, rfl⟩` from `(φ k).surjective u`. Take `⟨v, rfl⟩` from `(φ k).surjective v`. Simplify using `only [LinearEquiv.trans_apply, LinearEquiv.symm_apply_apply]`. Rewrite using `[← hEF, ← hEF, hiso]`.
+
+Use `beta_reduce split_ifs with hij`. Conclude with `hcf2 τ _ _ hji`. Both sides reduce to the same expression. Take `⟨v, rfl⟩` from `(φ k).surjective v`. Simplify using `only [LinearEquiv.trans_apply, LinearEquiv.symm_apply_apply]`.
+
+Establish `a1` using `hP' (gam v) (e.symm ⟨τ, ⟨i, hi⟩⟩)`. Rewrite `a1` using `[Equiv.apply_symm_apply]`. Rewrite using `[← a1, hh, Finset.sum_range]`. Use `(apply_of_cols e h.toLinearMap (fun τ i j => cf τ i j) hcol (P v) τ ⟨i, hi⟩).trans (Finset.sum_congr rfl fun j _ => ?_)` and prove the remaining obligations. Rewrite using `[hP, Equiv.apply_symm_apply, dif_pos ⟨hi, j.2⟩]`.
+
+Both sides reduce to the same expression. Use `beta_reduce`. Rewrite using `[dif_pos ⟨i.2, i.2⟩]`. Conclude with `congrArg _ (hcf1 τ i)`.
+-/
 theorem exists_isometry_tri_of_frMove : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (Dw : Datum H) (l : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Level H) (Xo : Moduli Dw l) (c : Coeff l) (σ : c.F →+* ℂ) (r : ℕ) (U : Formalism.L2.PjFree.Unf Xo c σ r), Formalism.L2.PjFree.GoodEmb c σ → Formalism.L2.PjFree.IsUnf U → ∀ (ρ : Xo.X ⟶ Xo.X) (ν : SABMap Xo.univ.t Xo.univ.t ρ) (k k' : U.Comp) (x : (U.X k).dom) (x' : (U.X k').dom) (y' : FrPt Xo c (CAt σ)) (t : Ix Dw → (CAt σ)ˣ), FrMove ρ ν (U.un k x) y' → FrBor t (U.un k' x') y' → ∃ (gam : (U.X k).Λ ≃ₗ[𝓞 E] (U.X k').Λ) (A : (E →+* ℂ) → ℕ → ℕ → ℂ), (∀ u v : (U.X k).Λ, Algebra.trace ℚ E (-(U.X k').ξ0 * herm (U.X k').Gm (gam u : Fin r → E) (gam v : Fin r → E)) = Algebra.trace ℚ E (-(U.X k).ξ0 * herm (U.X k).Gm (u : Fin r → E) (v : Fin r → E))) ∧ (∀ τ i j, j < i → A τ i j = 0) ∧ (∀ τ, ∀ i < Dw.mult τ, ∀ v : (U.X k).Λ, Formalism.L2.PjFree.perFr (U.X k') x'.1 (gam v : Fin r → E) (Formalism.L2.PjFree.relab c σ τ) i = ∑ j ∈ Finset.range (Dw.mult τ), A τ i j * Formalism.L2.PjFree.perFr (U.X k) x.1 (v : Fin r → E) (Formalism.L2.PjFree.relab c σ τ) j) ∧ ∀ τ (i : Fin (Dw.mult τ)), A τ i i = Formalism.L2.PjFree.toC (t (some ⟨τ, i⟩) : CAt σ) := by
   classical
   intro E _ _ _ H Dw l Xo c σ r U _ hU ρ ν k k' x x' y' t hM hB

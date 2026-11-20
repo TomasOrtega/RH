@@ -14,26 +14,44 @@ namespace PositivityTheory.SiegelWeilFormula.KFock
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E}
 section Cmb
 variable (d : _root_.PositivityTheory.SiegelWeilFormula.SD_k σ)
+/- English proof (translation)
+Use extensionality with `i j`. Simplify using `only [_root_.PositivityTheory.SiegelWeilFormula.SD_k.cmb, Pi.add_apply, Matrix.add_apply, TensorProduct.add_tmul, Finset.sum_add_distrib]`.
+-/
 theorem cmb_add_k (c c' : Fin d.m × Fin d.n × Fin 2 → AF F) : d.cmb (c + c') = d.cmb c + d.cmb c' := by
   ext i j
   simp only [_root_.PositivityTheory.SiegelWeilFormula.SD_k.cmb, Pi.add_apply, Matrix.add_apply, TensorProduct.add_tmul, Finset.sum_add_distrib]
+/- English proof (translation)
+Simplify using `only [_root_.PositivityTheory.SiegelWeilFormula.SD_k.cmb, Algebra.TensorProduct.basis_apply, TensorProduct.smul_tmul', smul_eq_mul, mul_one]`.
+-/
 theorem cmb_eq_k (c : Fin d.m × Fin d.n × Fin 2 → AF F) (i : Fin d.m) (j : Fin d.n) :
     d.cmb c i j = ∑ k, c (i, j, k) • Algebra.TensorProduct.basis (AF F) d.bs k := by
   simp only [_root_.PositivityTheory.SiegelWeilFormula.SD_k.cmb, Algebra.TensorProduct.basis_apply, TensorProduct.smul_tmul', smul_eq_mul, mul_one]
+/- English proof (translation)
+Use function extensionality and compare the values at `k`. Take `⟨i, j, l⟩` from `k`. Simplify using `only [_root_.PositivityTheory.SiegelWeilFormula.SD_k.crd, _root_.PositivityTheory.SiegelWeilFormula.KFock.cmb_eq_k]`. Conclude with `congrFun ((Algebra.TensorProduct.basis (AF F) d.bs).repr_sum_self fun k => c (i, j, k)) l`.
+-/
 theorem crd_cmb'_k (c : Fin d.m × Fin d.n × Fin 2 → AF F) : d.crd (d.cmb c) = c := by
   funext k
   obtain ⟨i, j, l⟩ := k
   simp only [_root_.PositivityTheory.SiegelWeilFormula.SD_k.crd, _root_.PositivityTheory.SiegelWeilFormula.KFock.cmb_eq_k]
   exact congrFun ((Algebra.TensorProduct.basis (AF F) d.bs).repr_sum_self fun k => c (i, j, k)) l
+/- English proof (translation)
+Use extensionality with `i j`. Rewrite using `[_root_.PositivityTheory.SiegelWeilFormula.KFock.cmb_eq_k]`. Conclude with `(Algebra.TensorProduct.basis (AF F) d.bs).sum_repr (X i j)`.
+-/
 theorem cmb_crd_k (X : Mx F E d.m d.n) : d.cmb (d.crd X) = X := by
   ext i j
   rw [_root_.PositivityTheory.SiegelWeilFormula.KFock.cmb_eq_k]
   exact (Algebra.TensorProduct.basis (AF F) d.bs).sum_repr (X i j)
+/- English proof (translation)
+Take `⟨i1, -, -, -⟩` from `(PositivityTheory.ThKCT.ideleTop F E).1`. Use `continuous_pi fun i => continuous_pi fun j => ?_` and prove the remaining obligations. Simplify using `only [_root_.PositivityTheory.SiegelWeilFormula.KFock.cmb_eq_k]`. Conclude with `continuous_finset_sum _ fun k _ => ((continuous_apply (i, j, k)).smul continuous_const)`.
+-/
 theorem continuous_cmb_k : Continuous d.cmb := by
   obtain ⟨i1, -, -, -⟩ := (PositivityTheory.ThKCT.ideleTop F E).1
   refine continuous_pi fun i => continuous_pi fun j => ?_
   simp only [_root_.PositivityTheory.SiegelWeilFormula.KFock.cmb_eq_k]
   exact continuous_finset_sum _ fun k _ => ((continuous_apply (i, j, k)).smul continuous_const)
+/- English proof (translation)
+Take `⟨i1, -, -, -⟩` from `(PositivityTheory.ThKCT.ideleTop F E).1`. Use `continuous_pi fun k => ?_` and prove the remaining obligations. Establish `hl : Continuous (((Finsupp.lapply k.2.2).comp (Algebra.TensorProduct.basis (AF F) d.bs).repr.toLinearMap : AE F E →ₗ[AF F] AF F))` using `IsModuleTopology.continuous_of_linearMap _`. Conclude with `hl.comp ((continuous_apply k.2.1).comp (continuous_apply k.1))`.
+-/
 theorem continuous_crd_k : Continuous d.crd := by
   obtain ⟨i1, -, -, -⟩ := (PositivityTheory.ThKCT.ideleTop F E).1
   refine continuous_pi fun k => ?_
@@ -49,6 +67,15 @@ def cmbE_k : (Fin d.m × Fin d.n × Fin 2 → AF F) ≃ₜ+ Mx F E d.m d.n where
   continuous_toFun := _root_.PositivityTheory.SiegelWeilFormula.KFock.continuous_cmb_k d
   continuous_invFun := _root_.PositivityTheory.SiegelWeilFormula.KFock.continuous_crd_k d
 end Cmb
+/- English proof (translation)
+Take `⟨i1, i2, i3, i4⟩` from `(PositivityTheory.ThKCT.ideleTop F E).1`. Use `haveI : BorelSpace (AE F E) := ⟨rfl⟩`. Use `haveI : BorelSpace (Mx F E d.m d.n) := inferInstanceAs (BorelSpace (Fin d.m → Fin d.n → AE F E))`. Use `haveI : IsTopologicalAddGroup (Mx F E d.m d.n) := inferInstanceAs (IsTopologicalAddGroup (Fin d.m → Fin d.n → AE F E))`. Use `haveI := GlobalTheory.AdelicUnitaryTop.locallyCompact_adele F`.
+
+Use `haveI := GlobalTheory.AdelicUnitaryTop.secondCountable_adele F`. Use `haveI : BorelSpace (AF F) := ⟨rfl⟩`. Use `haveI : BorelSpace (Fin d.m × Fin d.n × Fin 2 → AF F) := Pi.borelSpace`. Set `e : (Fin d.m × Fin d.n × Fin 2 → AF F) ≃ᵐ Mx F E d.m d.n` to `(_root_.PositivityTheory.SiegelWeilFormula.KFock.cmbE_k d).toHomeomorph.toMeasurableEquiv`. Use `haveI : (Measure.map e.symm ν).IsAddHaarMeasure := ContinuousAddEquiv.isAddHaarMeasure_map ν (_root_.PositivityTheory.SiegelWeilFormula.KFock.cmbE_k d).symm`.
+
+Establish `h1 : Integrable (f ∘ e) (Measure.map e.symm ν)`. Establish `hf' : f ∘ d.cmb ∈ schA F (Fin d.m × Fin d.n × Fin 2)` using `Submodule.mem_comap.mp hf`. Use `intSchA _ ?_ _ inferInstance hf'` and prove the remaining obligations. Conclude with `congrArg (fun m => @MeasurableSpace.pi (Fin d.m × Fin d.n × Fin 2) (fun _ => AF F) fun _ => m) measAF_eq`. Establish `h2` using `(integrable_map_equiv e f).2 h1`.
+
+Rewrite `h2` using `[MeasurableEquiv.map_map_symm]`. Then use the resulting hypothesis.
+-/
 theorem int_schM_k (d : _root_.PositivityTheory.SiegelWeilFormula.SD_k σ) (ν : Measure (Mx F E d.m d.n)) (hν : ν.IsAddHaarMeasure) {f : Mx F E d.m d.n → ℂ}
     (hf : f ∈ d.schM) : Integrable f ν := by
   obtain ⟨i1, i2, i3, i4⟩ := (PositivityTheory.ThKCT.ideleTop F E).1

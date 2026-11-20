@@ -26,6 +26,9 @@ section Pull
 variable {S S' : Scheme.{0}} {A : Over S} {A' : Over S'} [GrpObj A] [GrpObj A'] {f : S' ⟶ S}
   {φ : A'.left ⟶ A.left} {φ₂ : (A' ⊗ A').left ⟶ (A ⊗ A).left}
 
+/- English proof (translation)
+Establish `e : (1 : A' ⟶ A').left ≫ φ = (1 : Over.mk (A'.hom ≫ f) ⟶ A).left` using `congrArg (fun q => q.left) (map_one (pushHom h A'))`. Rewrite using `[e, Hom.one_def, Hom.one_def, Over.comp_left, Over.comp_left, Over.toUnit_left, Over.toUnit_left, ← Category.assoc, h.1.w]`. Both sides reduce to the same expression.
+-/
 theorem one_left (h : IsGrpPullback A' A f φ) : (1 : A' ⟶ A').left ≫ φ = φ ≫ (1 : A ⟶ A).left := by
   have e : (1 : A' ⟶ A').left ≫ φ = (1 : Over.mk (A'.hom ≫ f) ⟶ A).left :=
     congrArg (fun q => q.left) (map_one (pushHom h A'))
@@ -33,18 +36,27 @@ theorem one_left (h : IsGrpPullback A' A f φ) : (1 : A' ⟶ A').left ≫ φ = �
     ← Category.assoc, h.1.w]
   rfl
 
+/- English proof (translation)
+Use `GlobalTheory.SiegelPull.lift_sq sq (T := Over.mk (φ ≫ A.hom)) (T' := A') (𝟙 A'.left) (1 : A' ⟶ A') (𝟙 A') (Z := A) φ (1 : A ⟶ A) (𝟙 A) (by exact (Category.id_comp _).trans (one_left h)) (by simp)` as an intermediate fact. Conclude with `(Category.id_comp _).symm.trans this`.
+-/
 theorem lift_one_id (h : IsGrpPullback A' A f φ) (sq : IsSquare φ φ₂) :
     (lift (1 : A' ⟶ A') (𝟙 A')).left ≫ φ₂ = φ ≫ (lift (1 : A ⟶ A) (𝟙 A)).left := by
   have := GlobalTheory.SiegelPull.lift_sq sq (T := Over.mk (φ ≫ A.hom)) (T' := A') (𝟙 A'.left) (1 : A' ⟶ A') (𝟙 A')
     (Z := A) φ (1 : A ⟶ A) (𝟙 A) (by exact (Category.id_comp _).trans (one_left h)) (by simp)
   exact (Category.id_comp _).symm.trans this
 
+/- English proof (translation)
+Use `GlobalTheory.SiegelPull.lift_sq sq (T := Over.mk (φ ≫ A.hom)) (T' := A') (𝟙 A'.left) (𝟙 A') (1 : A' ⟶ A') (Z := A) φ (𝟙 A) (1 : A ⟶ A) (by simp) (by exact (Category.id_comp _).trans (one_left h))` as an intermediate fact. Conclude with `(Category.id_comp _).symm.trans this`.
+-/
 theorem lift_id_one (h : IsGrpPullback A' A f φ) (sq : IsSquare φ φ₂) :
     (lift (𝟙 A') (1 : A' ⟶ A')).left ≫ φ₂ = φ ≫ (lift (𝟙 A) (1 : A ⟶ A)).left := by
   have := GlobalTheory.SiegelPull.lift_sq sq (T := Over.mk (φ ≫ A.hom)) (T' := A') (𝟙 A'.left) (𝟙 A') (1 : A' ⟶ A')
     (Z := A) φ (𝟙 A) (1 : A ⟶ A) (by simp) (by exact (Category.id_comp _).trans (one_left h))
   exact (Category.id_comp _).symm.trans this
 
+/- English proof (translation)
+Use `GlobalTheory.SiegelPull.lift_sq sq (T := Over.mk (φ₂ ≫ (A ⊗ A).hom)) (T' := A' ⊗ A') (𝟙 _) (snd A' A') (fst A' A') (Z := A ⊗ A) φ₂ (snd A A) (fst A A) (by exact (Category.id_comp _).trans sq.2.symm) (by exact (Category.id_comp _).trans sq.1.symm)` as an intermediate fact. Conclude with `(Category.id_comp _).symm.trans this`.
+-/
 theorem lift_swap (sq : IsSquare φ φ₂) :
     (lift (snd A' A') (fst A' A')).left ≫ φ₂ = φ₂ ≫ (lift (snd A A) (fst A A)).left := by
   have := GlobalTheory.SiegelPull.lift_sq sq (T := Over.mk (φ₂ ≫ (A ⊗ A).hom)) (T' := A' ⊗ A') (𝟙 _) (snd A' A') (fst A' A')
@@ -94,11 +106,17 @@ def onPull (c : SiegPre h M ζ s) (A' : Over S') [GrpObj A'] (φ : A'.left ⟶ c
           (congrArg (fun q => q.left) (GlobalTheory.SiegelPull.push_secPull pb (c.lev a) (Over.mk x)).symm)
           (congrArg (fun q => q.left) (GlobalTheory.SiegelPull.push_secPull pb (c.lev b) (Over.mk x)).symm)).2 (g₃ a b) }
 
+/- English proof (translation)
+The claim follows from `GlobalTheory.SiegelPull.secPull_left pb _`.
+-/
 theorem onPull_lev (c : SiegPre h M ζ s) (A' : Over S') [GrpObj A'] (φ : A'.left ⟶ c.A.left)
     (φ₂ : (A' ⊗ A').left ⟶ (c.A ⊗ c.A).left) (pb : IsGrpPullback A' c.A f φ) (sq : IsSquare φ φ₂)
     (a : Fin h ⊕ Fin h → ℤ) : ((onPull c A' φ φ₂ pb sq).lev a).left ≫ φ = f ≫ (c.lev a).left :=
   GlobalTheory.SiegelPull.secPull_left pb _
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨φ, φ₂, pb, sq, ReciprocityTheory.ChartRestriction.G.Pdiv.PullbackComparison.gen_refl _ (pull_isLB c.isLB φ₂), onPull_lev c A' φ φ₂ pb sq⟩`.
+-/
 theorem onPull_siegPB (c : SiegPre h M ζ s) (A' : Over S') [GrpObj A'] (φ : A'.left ⟶ c.A.left)
     (φ₂ : (A' ⊗ A').left ⟶ (c.A ⊗ c.A).left) (pb : IsGrpPullback A' c.A f φ) (sq : IsSquare φ φ₂) :
     SiegPB (onPull c A' φ φ₂ pb sq) c f :=
@@ -106,6 +124,11 @@ theorem onPull_siegPB (c : SiegPre h M ζ s) (A' : Over S') [GrpObj A'] (φ : A'
 
 end Obj
 
+/- English proof (translation)
+Introduce `a`. Establish `ha` using `(GlobalTheory.CechPic.cls_eq_iff (pull_isLB hP _) (pull_isLB hP _)).2 (h a)`. Establish `he` using `(GlobalTheory.CechPic.cls_eq_iff hP hQ).2 e`. Use `(GlobalTheory.CechPic.cls_eq_iff (pull_isLB hQ _) (pull_isLB hQ _)).1 ?_` and prove the remaining obligations. Rewrite using `[GlobalTheory.CechPic.cls_pull hQ, GlobalTheory.CechPic.cls_pull hQ, ← he]`.
+
+Conclude with `ha`.
+-/
 theorem adj_of_lbIso {S : Scheme.{0}} {A : Over S} [GrpObj A] {O : Type} [Ring O] {P Q : LB (A ⊗ A).left}
     (hP : P.IsLB) (hQ : Q.IsLB) (e : LBIso P Q) {bar : O → O} {act : O → (A ⟶ A)} (h : Adj A P bar act) :
     Adj A Q bar act := by
@@ -116,6 +139,21 @@ theorem adj_of_lbIso {S : Scheme.{0}} {A : Over S} [GrpObj A] {O : Type} [Ring O
   rw [GlobalTheory.CechPic.cls_pull hQ, GlobalTheory.CechPic.cls_pull hQ, ← he]
   exact ha
 
+/- English proof (translation)
+Introduce `h' M hh hM hodd O _ bar r eO W d₀ hbar hspan hW hd hsum`. Establish `hM0 : M ≠ 0` using `by omega`. Take `⟨F⟩` from `exists_sFam_cycAway h' M hh hM hodd`. Use `haveI : IsDedekindDomain (cycAway M) := GlobalTheory.CycAwayReg.isDedekindDomain_cycAway M`. Use `haveI : IsLocallyNoetherian F.X := GlobalTheory.isLocallyNoetherian_of_isQProjOver_noeth (cycAway M) F.X F.s F.qproj`.
+
+Take `⟨R, hRf, -⟩` from `GlobalTheory.T.adjointActions_order_finite_unramified_scheme F.X F.univ.A F.univ.P F.univ.ab F.univ.isLB F.univ.rig₁ F.univ.rig₂ F.univ.symm F.princ.1 O bar r eO W d₀ hbar hspan hW hd hsum`. Establish `hq : IsQProjOver (R.π ≫ F.s)` using `GlobalTheory.isQProjOver_comp_of_isFinite_noetherian (cycAway M) R.H F.X R.π F.s hRf F.qproj`. Establish `hzH : SiegPB (onPull F.univ R.AH R.φ R.φ₂ R.pb R.sq) F.univ R.π` using `onPull_siegPB F.univ R.AH R.φ R.φ₂ R.pb R.sq`. Use `⟨R.H, R.π ≫ F.s, onPull F.univ R.AH R.φ R.φ₂ R.pb R.sq, R.act, (GlobalTheory.siegPre_pullback h' M (cycAway M) (zetaAway M) F.X R.H F.s (R.π ≫ F.s) R.π F.univ rfl).2 _ hzH F.princ, R.isAct, R.adj, hq, GlobalTheory.isLocallyNoetherian_of_isQProjOver_noeth (cycAway M) R.H _ hq, ?_⟩` and prove the remaining obligations. Introduce `S t z act hz hact hadj`.
+
+Take `⟨f, ⟨hfs, ⟨φz, φ₂z, pbz, sqz, isoz, levz⟩⟩, hfu⟩` from `GlobalTheory.T.siegelFamily_existsUnique_classify_scheme h' M hh hM hodd F S t z hz`. Establish `hadj' : Adj z.A (F.univ.P.pull φ₂z) bar act` using `adj_of_lbIso z.isLB (pull_isLB F.univ.isLB _) isoz hadj`. Take `⟨g, ⟨hgπ, ψ, hψ, hψφ, hψa⟩, hgu⟩` from `R.rep S f z.A φz φ₂z act pbz sqz hact hadj'`. Establish `sqψ` using `GlobalTheory.LamPull.exists_isSquare hψ.1.w`. Establish `e₂` using `GlobalTheory.LamPull.isSquare_unique (GlobalTheory.TChart.AbPol.isSquare_comp sqψ R.sq) (by rw [hψφ]; exact sqz)`.
+
+Establish `iso : LBIso z.P ((F.univ.P.pull R.φ₂).pull (lift (pushPt hψ.1.w (fst z.A z.A)) (pushPt hψ.1.w (snd z.A z.A))).left)`. Use `(GlobalTheory.CechPic.cls_eq_iff z.isLB (pull_isLB (pull_isLB F.univ.isLB _) _)).1 ?_` and prove the remaining obligations. Rewrite using `[(GlobalTheory.CechPic.cls_eq_iff z.isLB (pull_isLB F.univ.isLB _)).2 isoz, ← e₂, GlobalTheory.CechPic.cls_pull F.univ.isLB, GlobalTheory.CechPic.cls_pull (pull_isLB F.univ.isLB _), GlobalTheory.CechPic.cls_pull F.univ.isLB, GlobalTheory.CechPic.pull_comp]`. Establish `hlev : ∀ a, (z.lev a).left ≫ ψ = g ≫ ((onPull F.univ R.AH R.φ R.φ₂ R.pb R.sq).lev a).left` using `fun a => by`. Apply `R.pb.1.hom_ext` to reduce the goal to its premises.
+
+Conclude with `(Category.assoc _ _ _).trans ((congrArg ((z.lev a).left ≫ ·) hψφ).trans ((levz a).trans ((congrArg (· ≫ (F.univ.lev a).left) hgπ.symm).trans ((Category.assoc _ _ _).trans ((congrArg (g ≫ ·) (onPull_lev F.univ R.AH R.φ R.φ₂ R.pb R.sq a).symm).trans (Category.assoc _ _ _).symm)))))`. Conclude with `((Category.assoc _ _ _).trans ((congrArg _ hψ.1.w).trans ((Category.assoc _ _ _).symm.trans (congrArg (· ≫ g) (Over.w (z.lev a)))))).trans ((Category.id_comp g).trans ((Category.comp_id g).symm.trans ((congrArg (g ≫ ·) (Over.w ((onPull F.univ R.AH R.φ R.φ₂ R.pb R.sq).lev a)).symm …`. Use `⟨g, ⟨by rw [← Category.assoc, hgπ, hfs], ψ, _, hψ, sqψ, iso, hlev, hψa⟩, ?_⟩` and prove the remaining obligations. Introduce and unpack `g' ⟨hg's, ψ', ψ₂', hψ', sqψ', iso', hlev', hact'⟩`. Establish `hlev'' : ∀ a, (z.lev a).left ≫ ψ' ≫ R.φ = (g' ≫ R.π) ≫ (F.univ.lev a).left` using `fun a => by`.
+
+Conclude with `(Category.assoc _ _ _).symm.trans ((congrArg (· ≫ R.φ) (hlev' a)).trans ((Category.assoc _ _ _).trans ((congrArg (g' ≫ ·) (onPull_lev F.univ R.AH R.φ R.φ₂ R.pb R.sq a)).trans (Category.assoc _ _ _).symm)))`. Establish `iso'' : LBIso z.P (F.univ.P.pull (ψ₂' ≫ R.φ₂))` using `GlobalTheory.TChart.AbLevel.lbIso_comp F.univ.isLB (pull_isLB F.univ.isLB _) z.isLB (ReciprocityTheory.ChartRestriction.G.Pdiv.PullbackComparison.gen_refl _ (pull_isLB F.univ.isLB R.φ₂)) iso'`. Establish `hf' : g' ≫ R.π = f` using `hfu _ ⟨by rw [Category.assoc]; exact hg's, ψ' ≫ R.φ, ψ₂' ≫ R.φ₂, hψ'.comp R.pb, GlobalTheory.TChart.AbPol.isSquare_comp sqψ' R.sq, iso'', hlev''⟩`. Establish `s' : GlobalTheory.SiegLev.SRelBy z F.univ 1 1 f (ψ' ≫ R.φ)` using `⟨(hψ'.comp R.pb).congr hf' rfl, ⟨ψ₂' ≫ R.φ₂, GlobalTheory.TChart.AbPol.isSquare_comp sqψ' R.sq, iso''⟩, fun a => by simpa only [pow_one, hf'] using hlev'' a⟩`. Establish `s : GlobalTheory.SiegLev.SRelBy z F.univ 1 1 f φz` using `⟨pbz, ⟨φ₂z, sqz, isoz⟩, fun a => by simpa only [pow_one] using levz a⟩`.
+
+Establish `hφeq : ψ' ≫ R.φ = φz` using `GlobalTheory.SiegRigid.eq_of_sRelBy h' M M 1 (cycAway M) (cycAway M) (cycBase hM0) (zetaAway M) F.X S F.s t F.univ z f _ _ hM hodd F.princ s' s`. Conclude with `hgu g' ⟨hf', ψ', hψ', hφeq, hact'⟩`.
+-/
 theorem exists_rep : ∀ (h' M : ℕ), 1 ≤ h' → 3 ≤ M → Odd M → ∀ (O : Type) [Ring O] (bar : O → O) (r : ℕ) (eO : Fin r → O) (W : Matrix (Fin r) (Fin r) ℤ) (d₀ : ℕ), (∀ a b, bar (a + b) = bar a + bar b) → Submodule.span ℤ (Set.range eO) = ⊤ → ((W + W.transpose).map (Int.cast : ℤ → ℝ)).PosDef → 0 < d₀ → ∑ i, ∑ j, W i j • (eO j * bar (eO i)) = (d₀ : O) → ∃ (H : Scheme.{0}) (sH : H ⟶ Sp (cycAway M)) (zH : SiegPre h' M (zetaAway M) sH) (actH : O → (zH.A ⟶ zH.A)), zH.Principal ∧ IsRAct zH.A actH ∧ Adj zH.A zH.P bar actH ∧ IsQProjOver sH ∧ IsLocallyNoetherian H ∧ ∀ (S : Scheme.{0}) (t : S ⟶ Sp (cycAway M)) (z : SiegPre h' M (zetaAway M) t) (act : O → (z.A ⟶ z.A)), z.Principal → IsRAct z.A act → Adj z.A z.P bar act → ∃! g : S ⟶ H, g ≫ sH = t ∧ ActPB z act zH actH g := by
   intro h' M hh hM hodd O _ bar r eO W d₀ hbar hspan hW hd hsum
   have hM0 : M ≠ 0 := by omega

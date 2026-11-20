@@ -16,6 +16,11 @@ open Matrix
 
 variable {l : ℕ} [hl : Fact l.Prime]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `i`. Simplify using `only [Module.Basis.equivFun_apply]`. Proceed by induction on `y with`. Consider the case `zero => rw [map_zero, map_zero, Finsupp.zero_apply, map_zero]`. Consider the case `tmul a t`.
+
+Rewrite using `[TensorProduct.map_tmul, Module.Basis.baseChange_repr_tmul, Module.Basis.baseChange_repr_tmul, map_smul, AlgHom.toLinearMap_apply, LinearMap.id_apply]`. Consider the case `add y z hy hz => rw [map_add, map_add, map_add, Finsupp.add_apply, Finsupp.add_apply, map_add, hy, hz]`.
+-/
 theorem equivFun_frob {T : Type} [AddCommGroup T] [Module ℤ_[l] T] {ι : Type} [Fintype ι] [DecidableEq ι]
     (b : Module.Basis ι ℤ_[l] T) (y : WCb l ⊗[ℤ_[l]] T) :
     (b.baseChange (WCb l)).equivFun (TensorProduct.map (frobW l).toLinearMap LinearMap.id y) =
@@ -29,6 +34,11 @@ theorem equivFun_frob {T : Type} [AddCommGroup T] [Module ℤ_[l] T] {ι : Type}
       map_smul, AlgHom.toLinearMap_apply, LinearMap.id_apply]
   | add y z hy hz => rw [map_add, map_add, map_add, Finsupp.add_apply, Finsupp.add_apply, map_add, hy, hz]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `i`. Simplify using `only [Module.Basis.equivFun_apply, Matrix.mulVec, dotProduct, Matrix.map_apply]`. Proceed by induction on `y with`. Consider the case `zero => simp`. Consider the case `tmul a t`.
+
+Rewrite using `[TensorProduct.map_tmul, Module.Basis.baseChange_repr_tmul, AlgEquiv.toLinearMap_apply, ← LinearMap.toMatrix_mulVec_repr b b r t]`. Simplify using `only [Module.Basis.baseChange_repr_tmul, Matrix.mulVec, dotProduct, map_smul, Algebra.smul_def, Finset.sum_mul, map_mul, mul_assoc, map_sum, AlgEquiv.commutes]`. Consider the case `add y z hy hz`. Simplify using `only [map_add, Finsupp.add_apply, hy, hz, mul_add, Finset.sum_add_distrib]`.
+-/
 theorem equivFun_map {T : Type} [AddCommGroup T] [Module ℤ_[l] T] {ι : Type} [Fintype ι] [DecidableEq ι]
     (b : Module.Basis ι ℤ_[l] T) (s : WCb l ≃ₐ[ℤ_[l]] WCb l) (r : T →ₗ[ℤ_[l]] T) (y : WCb l ⊗[ℤ_[l]] T) :
     (b.baseChange (WCb l)).equivFun (TensorProduct.map s.toLinearMap r y) =
@@ -46,11 +56,47 @@ theorem equivFun_map {T : Type} [AddCommGroup T] [Module ℤ_[l] T] {ι : Type} 
   | add y z hy hz =>
     simp only [map_add, Finsupp.add_apply, hy, hz, mul_add, Finset.sum_add_distrib]
 
+/- English proof (translation)
+The claim follows from `RingHom.map_mulVec s.toRingEquiv.toRingHom U v i`.
+-/
 theorem algEquiv_mulVec {R A : Type} [CommSemiring R] [CommRing A] [Algebra R A] {n : Type} [Fintype n]
     (s : A ≃ₐ[R] A) (U : Matrix n n A) (v : n → A) (i : n) :
     s ((U *ᵥ v) i) = (U.map s *ᵥ fun k => s (v k)) i :=
   RingHom.map_mulVec s.toRingEquiv.toRingHom U v i
 
+/- English proof (translation)
+Introduce `l _ K bk d S M e hF T _ _ ρ b U hU`. Take `⟨b₀, hb₀⟩` from `GlobalTheory.T.isSemilinearBaseChange_exists_basis_eq_image_of_basis _ _ _ _ _ (M.tr bk.ι) (M.tr_bc bk.ι) _ e`. Set `σ : (ainfObj K).A →+* WCb l` to `(inclW l).comp (ainfId K).toRingHom`. Set `cv : (Fin d → (ainfObj K).A) →ₛₗ[σ] (Fin d → WCb l)` to `{ toFun := fun v k => σ (v k) map_add' := fun v w => funext fun k => map_add σ (v k) (w k) map_smul' := fun a v => funext fun k => map_mul σ a (v k) }`. Set `j : M.M (ainfObj K) →ₛₗ[σ] (WCb l ⊗[ℤ_[l]] T)` to `((b.baseChange (WCb l)).equivFun.symm.toLinearMap ∘ₗ Matrix.toLin' U) ∘ₛₗ (cv ∘ₛₗ b₀.equivFun.toLinearMap)`.
+
+Establish `hj : ∀ x, (b.baseChange (WCb l)).equivFun (j x) = U *ᵥ fun k => σ (b₀.equivFun x k)` using `fun x => (b.baseChange (WCb l)).equivFun.apply_symm_apply _`. Establish `hjs : ∀ c : Fin d → (ainfObj K).A, (b.baseChange (WCb l)).equivFun (j (b₀.equivFun.symm c)) = U *ᵥ fun k => σ (c k)` using `fun c => by`. Rewrite using `[hj, LinearEquiv.apply_symm_apply]`. Establish `hbc : SemiBC j`. Use `letI := hU.unit.invertible`.
+
+Set `c` to `(Pi.basisFun (WCb l) (Fin d)).map ((Matrix.toLinearEquiv' U this).trans (b.baseChange (WCb l)).equivFun.symm)`. Use `GlobalTheory.T.isSemilinearBaseChange_of_basis_maps_to_basis _ _ _ _ _ j (Fin d) b₀ c fun i => ?_` and prove the remaining obligations. Apply `(b.baseChange (WCb l)).equivFun.injective` to reduce the goal to its premises. Rewrite using `[hj]`. Simplify using `only [c, Module.Basis.map_apply, Pi.basisFun_apply, LinearEquiv.trans_apply, LinearEquiv.apply_symm_apply, Matrix.toLinearEquiv'_apply, Matrix.toLin'_apply]`.
+
+Use `congrArg _ (funext fun k => ?_)` and prove the remaining obligations. Rewrite using `[Module.Basis.equivFun_self]`. Distinguish the cases in `h : i = k`. Substitute `h` using the available equality. Simplify using the standard rewrite rules.
+
+Simplify using `[h, Pi.single_apply, Ne.symm h]`. Establish `hu : IsUnit (inclW l (bk.ev bk.E))` using `isUnit_inclW_of_span bk.span_ev`. Take `⟨d₀, hd₀⟩ : ∃ d₀ : ↥(ainfObj K).I, ((d₀ : (ainfObj K).A) : Ainf l) = bk.ev bk.E` from `⟨⟨bk.ι.f bk.E, bk.ι.f_I _ (Ideal.mem_span_singleton_self _)⟩, rfl⟩`. Establish `hne : (d₀ : (ainfObj K).A) ≠ 0` using `fun h => hu.ne_zero (by rw [← hd₀, h]; exact map_zero (inclW l))`. Use `⟨j, Realises.of_generator (isAinf_ainfObj K) hbc d₀ (by rw [hd₀]; exact bk.span_ev) ?_ ?_⟩` and prove the remaining obligations.
+
+Introduce `x m k hfr`. Establish `hx : x = ∑ i, b₀.equivFun x i • M.tr bk.ι (e i)`. Repeatedly rewrite using `[← hb₀]`. Conclude with `(b₀.sum_equivFun x).symm`. Rewrite `hfr` using `[hx]`.
+
+Take `⟨r, hr⟩` from `GlobalTheory.T.prismaticFCrystal_frobenius_pullback_basis l K bk d M e S.a S.A hF.Φ (ainfObj K) bk.ι d₀ (b₀.equivFun x) m k hfr`. Use `haveI : IsDomain (ainfObj K).A := (ainfId K).toMulEquiv.isDomain`. Use `haveI := Module.Free.of_basis b₀`. Establish `h1` using `sub_eq_zero.1 ((smul_eq_zero.1 hr).resolve_left (pow_ne_zero _ hne))`. Rewrite `h1` using `[← hb₀]`.
+
+Rewrite `h1` using `[← b₀.equivFun_symm_apply]`. Establish `h2 : σ (BK.hf bk.ι bk.E) ^ S.a • j m = σ (d₀ : (ainfObj K).A) ^ k • j (b₀.equivFun.symm ((S.A.map (BK.hf bk.ι)) *ᵥ fun i => (ainfObj K).D.φ (b₀.equivFun x i)))`. Combine the equalities or inequalities in the displayed calculation. It suffices to establish `hs : σ (BK.hf bk.ι bk.E) ^ S.a • (σ (d₀ : (ainfObj K).A) ^ k • TensorProduct.map (frobW l).toLinearMap LinearMap.id (j x)) = σ (BK.hf bk.ι bk.E) ^ S.a • j m from (hu.pow S.a).smul_left_cancel.1 hs`. Rewrite using `[h2]`.
+
+Use `(smul_comm (σ (BK.hf bk.ι bk.E) ^ S.a) (σ (d₀ : (ainfObj K).A) ^ k) _).trans (congrArg (σ (d₀ : (ainfObj K).A) ^ k • ·) ?_)` and prove the remaining obligations. Apply `(b.baseChange (WCb l)).equivFun.injective` to reduce the goal to its premises. Establish `hz : (fun i => frobW l ((b.baseChange (WCb l)).equivFun (j x) i)) = U.map (frobW l) *ᵥ fun k => σ ((ainfObj K).D.φ (b₀.equivFun x k))`. Rewrite using `[hj]`. Use function extensionality and compare the values at `i`.
+
+Use `(RingHom.map_mulVec (frobW l).toRingHom U _ i).trans ?_` and prove the remaining obligations. Conclude with `congrArg (fun v => (U.map (frobW l) *ᵥ v) i) (funext fun k => frobW_inclW (b₀.equivFun x k))`. Establish `hc : (fun k => σ (((S.A.map (BK.hf bk.ι)) *ᵥ fun i => (ainfObj K).D.φ (b₀.equivFun x i)) k)) = S.A.map bk.evW *ᵥ fun k => σ ((ainfObj K).D.φ (b₀.equivFun x k))`. Use function extensionality and compare the values at `k`. Establish `hA : (S.A.map (BK.hf bk.ι)).map σ = S.A.map bk.evW` using `Matrix.ext fun _ _ => rfl`.
+
+Conclude with `(RingHom.map_mulVec σ _ _ k).trans (congrArg (fun A => (A *ᵥ fun k => σ ((ainfObj K).D.φ (b₀.equivFun x k))) k) hA)`. Establish `hσE : σ (BK.hf bk.ι bk.E) = bk.evW bk.E` using `rfl`. Use `((b.baseChange (WCb l)).equivFun.map_smul _ _).trans ?_` and prove the remaining obligations. Use `Eq.trans ?_ (hjs _).symm` and prove the remaining obligations. Use `(congrArg (σ (BK.hf bk.ι bk.E) ^ S.a • ·) ((equivFun_frob b (j x)).trans hz)).trans ?_` and prove the remaining obligations.
+
+Use `Eq.trans ?_ (congrArg (U *ᵥ ·) hc).symm` and prove the remaining obligations. Conclude with `(congrArg (fun t => t ^ S.a • (U.map (frobW l) *ᵥ _)) hσE).trans ((Matrix.smul_mulVec _ _ _).symm.trans ((congrArg (· *ᵥ _) hU.φ).trans (Matrix.mulVec_mulVec _ _ _).symm))`. Introduce `g x`. Set `h` to `(isAinf_ainfObj K).galHom g`. Establish `hk : ∀ k, M.tr h (b₀ k) = ∑ i, S.ε bk.ι (h.comp bk.ι) i k • b₀ i` using `fun k => (congrArg (M.tr h) (hb₀ k)).trans ((M.tr_comp h bk.ι (e k)).symm.trans ((hF.tr bk.ι (h.comp bk.ι) k).trans (Finset.sum_congr rfl fun i _ => congrArg _ (hb₀ i).symm)))`.
+
+Establish `htr : M.tr h x = b₀.equivFun.symm ((S.ε bk.ι (h.comp bk.ι)) *ᵥ fun k => h.f (b₀.equivFun x k))`. Combine the equalities or inequalities in the displayed calculation. Apply `(b.baseChange (WCb l)).equivFun.injective` to reduce the goal to its premises. Establish `hσ : ∀ a : (ainfObj K).A, σ a = inclW l a` using `fun a => rfl`. Establish `hh : ∀ a : (ainfObj K).A, h.f a = Per.σA (g : GQ l) a` using `fun a => rfl`.
+
+Establish `hL : (fun k => σ (((S.ε bk.ι (h.comp bk.ι)) *ᵥ fun k => h.f (b₀.equivFun x k)) k)) = (S.ε bk.ι (h.comp bk.ι)).map σ *ᵥ fun k => σ (h.f (b₀.equivFun x k))`. Use function extensionality and compare the values at `fun k => RingHom.map_mulVec σ _ _ k`. Establish `hR : (fun k => galW l (g : GQ l) ((b.baseChange (WCb l)).equivFun (j x) k)) = U.map (galW l (g : GQ l)) *ᵥ fun k => σ (h.f (b₀.equivFun x k))`. Use function extensionality and compare the values at `fun i => by`. Establish `h1` using `congrArg (fun v : Fin d → WCb l => galW l (g : GQ l) (v i)) (hj x)`.
+
+Establish `h2` using `algEquiv_mulVec (galW l (g : GQ l)) U (fun k => σ (b₀.equivFun x k)) i`. Establish `h3 : (fun k => galW l (g : GQ l) (σ (b₀.equivFun x k))) = fun k => σ (h.f (b₀.equivFun x k))`. Use function extensionality and compare the values at `fun k => (congrArg (galW l (g : GQ l)) (hσ _)).trans ((galW_inclW (g : GQ l) (b₀.equivFun x k)).trans ((hσ _).symm.trans (congrArg σ (hh _).symm)))`. Use `beta_reduce at h1 ⊢`. Conclude with `h1.trans (h2.trans (congrArg (fun v => (U.map (galW l (g : GQ l)) *ᵥ v) i) h3))`.
+
+Establish `hg` using `hU.gal g`. Use `((congrArg (fun z => (b.baseChange (WCb l)).equivFun (j z)) htr).trans (hjs _)).trans ?_` and prove the remaining obligations. Use `Eq.trans ?_ (equivFun_map b _ _ _).symm` and prove the remaining obligations. Use `(congrArg (U *ᵥ ·) hL).trans (Eq.trans ?_ (congrArg (_ *ᵥ ·) hR).symm)` and prove the remaining obligations. Conclude with `(Matrix.mulVec_mulVec _ _ _).trans ((congrArg (· *ᵥ _) hg.symm).trans (Matrix.mulVec_mulVec _ _ _).symm)`.
+-/
 theorem realises_of_mreal : ∀ (l : ℕ) [Fact l.Prime] (K : FinExt l) (bk : BK K) (d : ℕ) (S : Strat bk d) (M : FCrys l ↥(OL K)) (e : Module.Basis (Fin d) bk.prism.A (M.M bk.prism)), Framed S M e → ∀ (T : Type) [AddCommGroup T] [Module ℤ_[l] T] (ρ : ↥(GK K) → (T →ₗ[ℤ_[l]] T)) (b : Module.Basis (Fin d) ℤ_[l] T) (U : Matrix (Fin d) (Fin d) (WCb l)), MReal S (fun g => LinearMap.toMatrix b b (ρ g)) U → ∃ j : M.M (ainfObj K) →ₛₗ[(inclW l).comp (ainfId K).toRingHom] (WCb l ⊗[ℤ_[l]] T), Realises K M (ainfObj K) (ainfId K) T ρ j := by
   intro l _ K bk d S M e hF T _ _ ρ b U hU
   obtain ⟨b₀, hb₀⟩ := GlobalTheory.T.isSemilinearBaseChange_exists_basis_eq_image_of_basis _ _ _ _ _ (M.tr bk.ι) (M.tr_bc bk.ι) _ e

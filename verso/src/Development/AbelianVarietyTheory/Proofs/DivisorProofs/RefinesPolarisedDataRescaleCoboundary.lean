@@ -9,6 +9,11 @@ attribute [local instance] Over.cartesianMonoidalCategory
 
 namespace GlobalTheory.PolDeg
 
+/- English proof (translation)
+Establish `hJ' : Good (rescale D g).P.L z J` using `hJ`. Unfold `DegPre.tau`. Simplify using `only [val_mul hJ', val_mul hJ, val_inv]`. Use `erw [val_inv, val_inv, val_inv]`. Establish `e1 : ∀ χ, val ((rescale D g).psi χ) (𝟙 _) z J = gm (𝟙 (TK R').left) z ⊤ (unitOn (g χ)) * val (D.psi χ) (𝟙 _) z J` using `fun χ => GlobalTheory.UU.val_scaleGen _ _ _ hJ`.
+
+Establish `e2 : val (rescale D g).rigK (𝟙 _) z J = val D.rigK (𝟙 _) z J` using `rfl`. Use `erw [e1 (a + b), e1 a, e1 b, e2]`. Simplify using `only [mul_inv]`. The two sides agree by associativity and commutativity.
+-/
 theorem rescale_tau_val {R' : Type} [CommRing R'] [IsDomain R'] (D : DegPre R') (g : D.X → (FractionRing R')ˣ)
     (a b : D.X) {z : (TK R').left} {J : ((TK R').left ⟶ D.P.A.left) → D.P.L.ι} (hJ : Good D.P.L z J) :
     val ((rescale D g).tau a b) (𝟙 _) z J =
@@ -25,6 +30,13 @@ theorem rescale_tau_val {R' : Type} [CommRing R'] [IsDomain R'] (D : DegPre R') 
   simp only [mul_inv]
   ac_rfl
 
+/- English proof (translation)
+Introduce `R _ _ R' _ _ Q ρ D e f f' g h hf`. Take `⟨β, β₂, w, h₁, h₂, h₃, h₄, h₅, h₆⟩` from `h`. Use `⟨β, β₂, w, h₁, h₂, h₃, h₄, h₅, fun κ hκ a b z J J' hJ hJ' => ?_⟩` and prove the remaining obligations. Establish `H` using `h₆ κ hκ a b z J J' hJ hJ'`. Establish `E` using `rescale_tau_val D g a b hJ'`.
+
+Establish `key : ∀ x y : D.X, gm (𝟙 (TK R').left) z ⊤ (unitOn (f x y)) = gm (𝟙 (TK R').left) z ⊤ (unitOn (g (x + y))) * (gm (𝟙 (TK R').left) z ⊤ (unitOn (g x)))⁻¹ * (gm (𝟙 (TK R').left) z ⊤ (unitOn (g y)))⁻¹ * gm (𝟙 (TK R').left) z ⊤ (unitOn (f' x y))` using `fun x y => by`. Rewrite using `[hf x y]`. Simplify using `only [unitOn, map_mul, map_inv]`. Use `erw [E]`. Use `Eq.trans ?_ H` and prove the remaining obligations.
+
+Use `erw [key a b]`. The two sides agree by associativity and commutativity.
+-/
 theorem half_rescale : ∀ (R : Type) [CommRing R] [IsDomain R] (R' : Type) [CommRing R'] [IsDomain R'] (Q : Data R) (ρ : R →+* R') (D : DegPre R') (e : D.X ≃+ Q.X) (f f' : D.X → D.X → (FractionRing R')ˣ) (g : D.X → (FractionRing R')ˣ), Half Q ρ D e f → (∀ a b, f a b = g (a + b) * (g a)⁻¹ * (g b)⁻¹ * f' a b) → Half Q ρ (rescale D g) e f' := by
   intro R _ _ R' _ _ Q ρ D e f f' g h hf
   obtain ⟨β, β₂, w, h₁, h₂, h₃, h₄, h₅, h₆⟩ := h

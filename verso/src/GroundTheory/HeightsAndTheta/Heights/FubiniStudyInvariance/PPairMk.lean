@@ -13,6 +13,13 @@ namespace FSInv
 
 open CP
 
+/- English proof (translation)
+Introduce `N n P Q hP hQ v hv`. Take `⟨a, ha⟩` from `Projectivization.exists_smul_eq_mk_rep ℂ v hv`. Establish `hPe : eval ((a : ℂ) • v) P = (a : ℂ) ^ n * eval v P` using `evalAt_smul (RingHom.id ℂ) ((mem_homogeneousSubmodule _ _).mp hP) (a : ℂ) v`. Establish `hQe : eval ((a : ℂ) • v) Q = (a : ℂ) ^ n * eval v Q` using `evalAt_smul (RingHom.id ℂ) ((mem_homogeneousSubmodule _ _).mp hQ) (a : ℂ) v`. Rewrite using `[fsPair, ← ha, Units.smul_def, hPe, hQe, euclideanNorm_smul]`.
+
+Establish `ha0 : (a : ℂ) ≠ 0` using `a.ne_zero`. Establish `hA : ((‖(a : ℂ)‖ : ℝ) : ℂ) ≠ 0` using `by exact_mod_cast (norm_pos_iff.mpr ha0).ne'`. Establish `hN : ((norm2 v : ℝ) : ℂ) ≠ 0` using `by exact_mod_cast (euclideanNorm_pos hv).ne'`. Establish `hc : conj (a : ℂ) ^ n * (a : ℂ) ^ n = ((‖(a : ℂ)‖ : ℝ) : ℂ) ^ (2 * n)`. Rewrite using `[← mul_pow, Complex.conj_mul', ← pow_mul]`.
+
+Use `push_cast`. Rewrite using `[div_eq_div_iff (pow_ne_zero _ (mul_ne_zero hA hN)) (pow_ne_zero _ hN), map_mul, map_pow, mul_pow, ← hc]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem PairMk.proof : PairMk.Statement := by
   intro N n P Q hP hQ v hv
   obtain ⟨a, ha⟩ := Projectivization.exists_smul_eq_mk_rep ℂ v hv

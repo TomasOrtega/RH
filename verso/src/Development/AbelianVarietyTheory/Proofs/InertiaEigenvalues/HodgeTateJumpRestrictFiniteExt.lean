@@ -11,6 +11,23 @@ namespace GlobalTheory.Per.JumpRestrict
 
 open GlobalTheory.DRFil
 
+/- English proof (translation)
+Introduce `l _ P AI T K K' LL hle V _ _ _ _ _ ρ hc τ' a hj`. Use `K.2` as an intermediate fact. Use `K'.2` as an intermediate fact. Use `LL.2` as an intermediate fact. Use `set τ := τ'.comp (IntermediateField.inclusion hle) with hτ`.
+
+Establish `hF` using `isField_dR T`. Use `haveI := (GlobalTheory.T.concretePeriod_deRham_module_finrank_le l P AI T K LL V ρ).1`. Take `⟨m, d, k, hA⟩` from `exists_adapted (P.PD K) hF ρ (filSpans T K LL ρ (crys T K LL ρ hc).1) τ`. Use `set e' := idem (K := ↥K'.1) P.R.BdR (LL := ↥LL.1) τ' with he'`. Use `set e := idem (K := ↥K.1) P.R.BdR (LL := ↥LL.1) τ with he`.
+
+Establish `hee : e' * e = e'`. Take `⟨n, x, c, hc1, hc2⟩` from `idem_repr (K := ↥K.1) P.R.BdR τ`. Rewrite using `[he, hc1]`. Use `exists_smul_idem (K := ↥K'.1) (F := P.R.BdR) τ' n x (fun i => IntermediateField.inclusion hle (c i))` as an intermediate fact. Conclude with `(this.trans (by rw [← hc2]; rfl)).trans (one_smul _ _)`.
+
+Establish `hA' : Adapted (P.PD K') (ρ.comp (Subgroup.inclusion (GK_le hle))) τ' (fun i => sm ℚ_[l] P.R.BdR ↥LL.1 V e' (d i)) k`. Use `⟨fun i => ⟨?_, ?_⟩, fun r hr i => ?_, fun n y hy => ?_⟩` and prove the remaining obligations. Conclude with `sm_idem_mem_DdRE (P.PD K') _ τ' (GlobalTheory.Per.TiedRestrict.ddR_le hle ρ (hA.mem i).1.1)`. Use `sm_idem_mem_FilV (P.PD K') τ' ?_` and prove the remaining obligations. Rewrite using `[GlobalTheory.JumpDescent.FilV_eq P K K']`.
+
+Conclude with `(hA.mem i).2`. Establish `h1` using `hA.indep (fun i => r i * e') (by`. Rewrite using `[← hr]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[sm_mul])`.
+
+Combine the equalities or inequalities in the displayed calculation. Rewrite `hy` using `[GlobalTheory.JumpDescent.FilV_eq P K K']`. Take `⟨r, hr, hy'⟩` from `hA.span n y hy`. Use `⟨r, fun i => ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[GlobalTheory.JumpDescent.FilV_eq P K K']`.
+
+Conclude with `hr i`. Establish `h2 : sm ℚ_[l] P.R.BdR ↥LL.1 V e' y = sm ℚ_[l] P.R.BdR ↥LL.1 V e' (sm ℚ_[l] P.R.BdR ↥LL.1 V e y)`. Rewrite using `[← sm_mul, hee]`. Rewrite using `[h2, hy', map_sum]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[sm_comm]`. Rewrite `hj` using `[hA'.isJumpV_iff]`. Conclude with `hA.isJumpV_iff a |>.2 hj`.
+-/
 theorem jump_restrict : ∀ (l : ℕ) [Fact l.Prime] (P : LocPrime l) (AI : LocAinf l P), LocTied l P AI → ∀ (K K' LL : FinExt l) (hle : K.1 ≤ K'.1) (V : Type) [AddCommGroup V] [Module ↥LL.1 V] [Module ℚ_[l] V] [IsScalarTower ℚ_[l] ↥LL.1 V] [FiniteDimensional ↥LL.1 V] (ρ : Representation ↥LL.1 ↥(GK K) V), IsCrys (P.PD K) ρ → ∀ (τ' : ↥K'.1 →ₐ[ℚ_[l]] ↥LL.1) (a : ℤ), IsJumpV (P.PD K') (ρ.comp (Subgroup.inclusion (GK_le hle))) τ' a → IsJumpV (P.PD K) ρ (τ'.comp (IntermediateField.inclusion hle)) a := by
   intro l _ P AI T K K' LL hle V _ _ _ _ _ ρ hc τ' a hj
   have := K.2

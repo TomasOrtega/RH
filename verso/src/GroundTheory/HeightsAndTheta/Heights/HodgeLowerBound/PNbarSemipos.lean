@@ -8,6 +8,11 @@ namespace GroundTheory.Heights₂.Heights.LowerBoundFree
 
 open MvPolynomial ReciprocityTheory.ChartRestriction.G.Geo Filter Topology
 
+/- English proof (translation)
+Introduce `II Ψ _ _ K _ ι _ Ω _ _ E _ _ D O Lt _ _ _ X B p q hp _`. Take `⟨c, hc, hX⟩` from `h II Ψ K ι Ω E D O Lt X`. Establish `hpc : 0 < (p : ℝ) * c` using `mul_pos (by exact_mod_cast hp) hc`. Establish `hlim : Tendsto (fun t => (q : ℝ) * (4 * X.S.Cη * X.S.e1 t)) (𝓝[>] 0) (𝓝 0)`. Simplify using `using (X.S_tied.e1_tendsto_zero.const_mul (4 * X.S.Cη)).const_mul (q : ℝ)`.
+
+Establish `hall : ∀ᶠ t in 𝓝[>] (0 : ℝ), IsSemipositiveH (mCoordIdeal D.y) (X.NbarQ B p q t)` using `by filter_upwards [X.S.eventually_chartLevi X.S_tied, hlim.eventually (eventually_le_nhds hpc)] with t ht hq`. Conclude with `hX B p q t _ ht.1 ht.2 hq`. Take `⟨u, hu, hsub⟩` from `mem_nhdsGT_iff_exists_Ioc_subset.1 hall`. Conclude with `⟨u, hu, fun t ht0 ht1 => hsub ⟨ht0, ht1⟩⟩`.
+-/
 theorem NbarSemipos.proof (h : NbarChartSemipos.Statement) : NbarSemipos.Statement := by
   intro II Ψ _ _ K _ ι _ Ω _ _ E _ _ D O Lt _ _ _ X B p q hp _
   obtain ⟨c, hc, hX⟩ := h II Ψ K ι Ω E D O Lt X

@@ -12,6 +12,21 @@ open GlobalTheory.TopVol GlobalTheory.FinPl
 noncomputable section
 namespace GlobalTheory.TopVol
 
+/- English proof (translation)
+Introduce `B X I l Z L hT Gi Gl Kc Yd cX ex W _ u a ha _`. Establish `hx : a.g.bT ∈ GfC (I.rec7 l Z).sp.X'` using `ha.top.2.1`. Use `Formalism.L2.GlobalTheoryTheory.GenusMassVolumes.Unfold.topGroupHA (I.rec7 l Z).sp.cm.sig (I.rec7 l Z).sp.X'.gram` as an intermediate fact. Establish `hmem : ∀ h, h ∈ levSph W a.g.bT ↔ a.g.bT⁻¹ * h * a.g.bT ∈ Formalism.IndefR.Lev.levG _ (pk W).βX (datSph W)` using `fun h => mem_levSph h`. Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations.
+
+Introduce `h hh`. Establish `h1 : a.g.bT⁻¹ * h * a.g.bT ∈ GfC (I.rec7 l Z).sp.X'` using `((hmem h).1 hh).1`. Establish `h2 : h = a.g.bT * (a.g.bT⁻¹ * h * a.g.bT) * a.g.bT⁻¹` using `by group`. Rewrite using `[h2]`. Conclude with `mul_mem (mul_mem hx h1) (inv_mem hx)`.
+
+Establish `he : (levSph W a.g.bT : Set (GA (I.rec7 l Z) (I.rec7 l Z).sp.X')) = (fun k => a.g.bT * k * a.g.bT⁻¹) '' (Formalism.IndefR.Lev.levG _ (pk W).βX (datSph W) : Set _)`. Use extensionality with `h`. Prove the components needed by the constructor for the conclusion. Introduce `hh`. Conclude with `⟨_, (hmem h).1 hh, by group⟩`.
+
+Introduce and unpack `⟨k, hk, rfl⟩`. Use `(hmem _).2 ?_` and prove the remaining obligations. Establish `: a.g.bT⁻¹ * (a.g.bT * k * a.g.bT⁻¹) * a.g.bT = k` using `by group`. Rewrite using `[this]`. Conclude with `hk`.
+
+Rewrite using `[he]`. Conclude with `(GlobalTheory.ParahoricCompact.isCompact_levG _ _ _).image (by fun_prop)`. Establish `ho` using `GlobalTheory.ParahoricCompact.isOpen_comap_lev _ (pk W).βX (datSph W)`. Establish `hc : Continuous fun k : GfC (I.rec7 l Z).sp.X' => a.g.bT⁻¹ * (k : GA (I.rec7 l Z) (I.rec7 l Z).sp.X') * a.g.bT` using `by fun_prop`. Use `ho.preimage hc using 1` and compare the differences between its conclusion and the goal.
+
+Use extensionality with `k`. Simplify using `only [SetLike.mem_coe, Subgroup.mem_subgroupOf, Set.mem_preimage]`. Rewrite using `[hmem]`. Prove the components needed by the constructor for the conclusion. Introduce `hk`.
+
+Conclude with `hk.2`. Introduce `hk`. Conclude with `⟨(GfC (I.rec7 l Z).sp.X').mul_mem ((GfC (I.rec7 l Z).sp.X').mul_mem ((GfC (I.rec7 l Z).sp.X').inv_mem hx) k.2) hx, hk⟩`.
+-/
 theorem levSph_bT_compact_open : ∀ {B : GlobalTheory.Mem.Base} {X : PreX B.toPre} {I : TC B X} {l : I.Laws} {Z : TC.Later B (I.cols l)} {L : SizeData₂ (I.rec7 l Z)} {hT : GatTies (I.rec7 l Z)} {Gi : Formalism.MainNotions.G.Inst (I.rec7 l Z) L} {Gl : Formalism.MainNotions.G.LatInst (I.rec7 l Z)} {Kc : Formalism.MainNotions.G.Consts} {Yd : DivX (I.rec7 l Z)} {cX : ExtraC} {ex : Extra (I.rec7 l Z) L hT Gi Gl Kc Yd cX} (W : RealPack ex), AllTrue W → ∀ (u : B.Word) (a : GeoAll W u), a.Is → a.True → levSph W a.g.bT ≤ GfC _ ∧ IsCompact (levSph W a.g.bT : Set (GA (I.rec7 l Z) (I.rec7 l Z).sp.X')) ∧ IsOpen (((levSph W a.g.bT).subgroupOf (GfC _) : Subgroup (GfC (I.rec7 l Z).sp.X')) : Set (GfC (I.rec7 l Z).sp.X')) := by
   intro B X I l Z L hT Gi Gl Kc Yd cX ex W _ u a ha _
   have hx : a.g.bT ∈ GfC (I.rec7 l Z).sp.X' := ha.top.2.1

@@ -21,6 +21,9 @@ def Om (k r j : ℕ) (hj : j + 1 ≤ r) (Dm : Set (Q.Mx k r)) (γ : B.Mat k (r -
     Set (ℂ × (Fin j → Fin j → ℂ)) :=
   {q | q.1 ≠ 0 ∧ (Matrix.of q.2).det ≠ 0} ∩ (fun q => x0 k r j hj (Matrix.of q.2) q.1 γ) ⁻¹' Dm
 
+/- English proof (translation)
+Establish `h1 : IsOpen {q : ℂ × (Fin j → Fin j → ℂ) | q.1 ≠ 0}` using `isOpen_ne.preimage continuous_fst`. Establish `hd : Continuous fun q : ℂ × (Fin j → Fin j → ℂ) => (Matrix.of q.2).det` using `Continuous.matrix_det continuous_snd`. Establish `h2 : IsOpen {q : ℂ × (Fin j → Fin j → ℂ) | (Matrix.of q.2).det ≠ 0}` using `isOpen_ne.preimage hd`. Conclude with `h1.inter h2`.
+-/
 theorem isOpen_O (j : ℕ) : IsOpen {q : ℂ × (Fin j → Fin j → ℂ) | q.1 ≠ 0 ∧ (Matrix.of q.2).det ≠ 0} := by
   have h1 : IsOpen {q : ℂ × (Fin j → Fin j → ℂ) | q.1 ≠ 0} := isOpen_ne.preimage continuous_fst
   have hd : Continuous fun q : ℂ × (Fin j → Fin j → ℂ) => (Matrix.of q.2).det := Continuous.matrix_det continuous_snd
@@ -31,15 +34,26 @@ section geom
 
 variable {k r j : ℕ} {hj : j + 1 ≤ r} {Dm : Set (Q.Mx k r)} {γ : B.Mat k (r - (j + 1))}
 
+/- English proof (translation)
+The claim follows from `(hX k r j hj γ hγ).1.continuousOn.isOpen_inter_preimage (isOpen_O j) hDm`.
+-/
 theorem isOpen_Om (hX : BasePointSmoothAndMem) (hγ : γ ∈ B.GV k (r - (j + 1))) (hDm : IsOpen Dm) : IsOpen (Om k r j hj Dm γ) :=
   (hX k r j hj γ hγ).1.continuousOn.isOpen_inter_preimage (isOpen_O j) hDm
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨hq.1.1, hq.1.2, hq.2⟩`.
+-/
 theorem Om_sub {q : ℂ × (Fin j → Fin j → ℂ)} (hq : q ∈ Om k r j hj Dm γ) :
     q.1 ≠ 0 ∧ (Matrix.of q.2).det ≠ 0 ∧ x0 k r j hj (Matrix.of q.2) q.1 γ ∈ Dm :=
   ⟨hq.1.1, hq.1.2, hq.2⟩
 
 variable {E : Type} [NormedAddCommGroup E] [NormedSpace ℂ E]
 
+/- English proof (translation)
+Introduce `q hq`. Take `⟨hsm, hG⟩` from `hX k r j hj γ hγ`. Take `⟨U', F', hU', hg0, hF', hag⟩` from `hF _ ⟨hG q hq.1.1 hq.1.2, hq.2⟩`. Establish `hx : ContDiffWithinAt ℝ ∞ (fun q : ℂ × (Fin j → Fin j → ℂ) => x0 k r j hj (Matrix.of q.2) q.1 γ) (Om k r j hj Dm γ) q` using `(hsm q hq.1).mono Set.inter_subset_left`. Establish `hc` using `(hF'.contDiffAt (hU'.mem_nhds hg0)).comp_contDiffWithinAt q hx`.
+
+Use `hc.congr_of_eventuallyEq ?_ (hag _ hg0 (hG q hq.1.1 hq.1.2))` and prove the remaining obligations. Establish `hca : ContinuousAt (fun q : ℂ × (Fin j → Fin j → ℂ) => x0 k r j hj (Matrix.of q.2) q.1 γ) q` using `hsm.continuousOn.continuousAt ((isOpen_O j).mem_nhds hq.1)`. Establish `h1 : (fun q : ℂ × (Fin j → Fin j → ℂ) => x0 k r j hj (Matrix.of q.2) q.1 γ) ⁻¹' U' ∈ nhds q` using `hca.preimage_mem_nhds (hU'.mem_nhds hg0)`. Use `filter_upwards [nhdsWithin_le_nhds h1, self_mem_nhdsWithin] with q' h1' h2'`. Conclude with `hag _ h1' (hG q' h2'.1.1 h2'.1.2)`.
+-/
 theorem family_smooth (hX : BasePointSmoothAndMem) (hγ : γ ∈ B.GV k (r - (j + 1))) {F : Q.Mx k r → E}
     (hF : Q.SmoothLev k r 0 Dm F) :
     ContDiffOn ℝ ∞ (fun q : ℂ × (Fin j → Fin j → ℂ) => F (x0 k r j hj (Matrix.of q.2) q.1 γ)) (Om k r j hj Dm γ) := by
@@ -63,6 +77,11 @@ section main
 
 variable {E : Type} [NormedAddCommGroup E] [NormedSpace ℂ E]
 
+/- English proof (translation)
+Introduce `w`. Proceed by induction on `w with`. Consider the case `nil => intro e`. Conclude with `hΦ`. Consider the case `cons l w ih`.
+
+Introduce `e`. Conclude with `hR k r j hj z z' E Dm _ hz hz' hDm hDs (ih _) i (by omega) hor l (e 0)`.
+-/
 theorem rules_uw (hR : RulesClosed) {k r j : ℕ} (hj : j + 1 ≤ r) {z z' : Fin (2 * r + k + 1) → ℂ}
     {Dm : Set (Q.Mx k r)} {Φ : Q.Mx k r → E} (hz : inWb k r z) (hz' : inWb k r z') (hDm : IsOpen Dm)
     (hDs : Dm ⊆ domJ k r j hj z z') (hΦ : RulesOn k r j hj z z' Dm Φ) (i : ℕ) (hi : i ≤ r) (hor : i = j ∨ i = j + 1) :
@@ -74,6 +93,25 @@ theorem rules_uw (hR : RulesClosed) {k r j : ℕ} (hj : j + 1 ≤ r) {z z' : Fin
     intro e
     exact hR k r j hj z z' E Dm _ hz hz' hDm hDs (ih _) i (by omega) hor l (e 0)
 
+/- English proof (translation)
+Establish `hO` using `isOpen_Om (hj := hj) hX hγ hDm`. Establish `hOd : Om k r j hj Dm γ ⊆ {q | (Matrix.of q.2).det ≠ 0}` using `fun q hq => hq.1.2`. Establish `hO0 : Om k r j hj Dm γ ⊆ {q | q.1 ≠ 0}` using `fun q hq => hq.1.1`. Introduce `w`. Proceed by induction on `w with`.
+
+Consider the case `nil => intro q _ e`. Both sides reduce to the same expression. Consider the case `cons l w ih`. Introduce `q hq e`. Take `⟨pl, Y⟩` from `l`.
+
+Use `set κ := levelZeroKernel k r j with hκ`. Use `set Ψ := D.uwG k r z z' Φ (j + 1) hj w (Fin.tail e) with hΨ`. Establish `hRΨ : RulesOn k r j hj z z' Dm Ψ` using `rules_uw hR hj hz hz' hDm hDs hΦ (j + 1) hj (Or.inr rfl) w _`. Establish `hV : IsOpen {τ : ℂ | (τ, q.2) ∈ Om k r j hj Dm γ}` using `hO.preimage (continuous_id.prodMk continuous_const)`. Establish `key : ∀ s : Fin 2, ∀ τ ∈ {τ : ℂ | (τ, q.2) ∈ Om k r j hj Dm γ}, D.vLet k r z z' j (by omega) (pl, Y) s Ψ (x0 k r j hj (Matrix.of q.2) τ γ) = rawBT κ (D.positionted w) (fun b τ' => D.vLet k r z z' j (by omega) (pl, Y) s (D.uwG k r z z' Φ j (by omega) w b) (x0 k r j hj (Matrix.of q …`.
+
+Introduce `s τ hτ`. Take `⟨Aop, hPC, hAz⟩` from `hZ k r j hj z z' E (pl, Y) s hz hz'`. Take `⟨hτ0, hτd, hτx⟩` from `Om_sub hτ`. Rewrite using `[hAz Dm Ψ hDm hDs hRΨ.1 (Matrix.of q.2) τ γ hτd hτ0 hγ hτx]`. Establish `hW : IsOpen {Z' : Fin j → Fin j → ℂ | (τ, Z') ∈ Om k r j hj Dm γ}` using `hO.preimage (continuous_const.prodMk continuous_id)`.
+
+Rewrite using `[paramComm_local hPC hW (fun Z' hZ' => hZ'.1.2) (g := fun Z' => rawBT κ (D.positionted w) (fun b τ' => D.uwG k r z z' Φ j (by omega) w b (x0 k r j hj Z' τ' γ)) (Fin.tail e) τ) (fun Z' hZ' => ih (τ, Z') hZ' (Fin.tail e)) q.2 hτ]`. Establish `hsm : ∀ b, ContDiffOn ℝ ∞ (fun q : ℂ × (Fin j → Fin j → ℂ) => D.uwG k r z z' Φ j (by omega) w b (x0 k r j hj (Matrix.of q.2) q.1 γ)) (Om k r j hj Dm γ)` using `fun b => family_smooth hX hγ (rules_uw hR hj hz hz' hDm hDs hΦ j (by omega) (Or.inl rfl) w b).1`. Rewrite using `[(comm_rawBT hPC hO hOd hO0 κ (D.positionted w) (fun b τ' Z' => D.uwG k r z z' Φ j (by omega) w b (x0 k r j hj Z' τ' γ)) hsm).2 (Fin.tail e) (τ, q.2) hτ]`. Use `rawBT_congr κ (D.positionted w) hV (fun b τ' hτ' => ?_) (Fin.tail e) τ hτ` and prove the remaining obligations. Take `⟨h0', hd', hx'⟩` from `Om_sub hτ'`.
+
+Conclude with `(hAz Dm _ hDm hDs (rules_uw hR hj hz hz' hDm hDs hΦ j (by omega) (Or.inl rfl) w b).1 (Matrix.of q.2) τ' γ hd' h0' hγ hx').symm`. Take `⟨hq0, hqd, hqx⟩` from `Om_sub hq`. Establish `hHL` using `hH k r j hj z z' E Dm Ψ hz hz' hDm hDs hRΨ (Matrix.of q.2) γ q.1 hqd hq0 hγ hqx Y`. Use `show D.vLet k r z z' (j + 1) hj (pl, Y) (e 0) Ψ (x0 k r j hj (Matrix.of q.2) q.1 γ) = _`. Rewrite using `[rawBT_indexed_cons]`.
+
+Establish `hcons : ∀ s : Fin 2, (fun b : Wd.Ix (Fin w.length) => fun τ => D.uwG k r z z' Φ j (by omega) ((pl, Y) :: w) (Fin.cons s b : Wd.Ix (Fin (w.length + 1))) (x0 k r j hj (Matrix.of q.2) τ γ)) = fun b τ => D.vLet k r z z' j (by omega) (pl, Y) s (D.uwG k r z z' Φ j (by omega) w b) (x0 k …`. Introduce `s`. Use function extensionality and compare the values at `b τ`. Simplify using `only [D.uwG, Fin.cons_zero, Fin.cons_succ]`. Simplify using `only [hcons]`.
+
+Establish `hq' : q.1 ∈ {τ : ℂ | (τ, q.2) ∈ Om k r j hj Dm γ}` using `hq`. Rewrite using `[← row_congr κ pl (Y : ℂ) hV (key 0) (key 1) (e 0) hq']`. Unfold `row`. Apply the tactic sequence `rcases two_cases (e 0) with h | h <;> cases pl <;>`. Apply the tactic sequence `simp only [h, if_true, Bool.false_eq_true, if_false, one_ne_zero, Complex.conj_ofReal] <;>`.
+
+Apply the tactic sequence `(try simp only [hκ]) <;> first | exact hHL.2.2.1 | exact hHL.1 | exact hHL.2.2.2 | exact hHL.2.1`.
+-/
 theorem core (hH : HeadLetter) (hZ : ZOnly) (hR : RulesClosed) (hX : BasePointSmoothAndMem) {k r j : ℕ} (hj : j + 1 ≤ r)
     {z z' : Fin (2 * r + k + 1) → ℂ} {Dm : Set (Q.Mx k r)} {Φ : Q.Mx k r → E} (hz : inWb k r z)
     (hz' : inWb k r z') (hDm : IsOpen Dm) (hDs : Dm ⊆ domJ k r j hj z z') (hΦ : RulesOn k r j hj z z' Dm Φ)
@@ -139,6 +177,11 @@ theorem core (hH : HeadLetter) (hZ : ZOnly) (hR : RulesClosed) (hX : BasePointSm
       simp only [h, if_true, Bool.false_eq_true, if_false, one_ne_zero, Complex.conj_ofReal] <;>
       (try simp only [hκ]) <;> first | exact hHL.2.2.1 | exact hHL.1 | exact hHL.2.2.2 | exact hHL.2.1
 
+/- English proof (translation)
+Introduce `hH hZ hR k r j hj z z' E _ _ Dm Φ hz hz' hDm hDs hΦ Z γ hZd hγ hline w φ hφ t ht e`. Establish `hq : ((t, Matrix.of.symm Z) : ℂ × (Fin j → Fin j → ℂ)) ∈ Om k r j hj Dm γ` using `⟨⟨ht, by simpa using hZd⟩, by simpa using hline t ht⟩`. Establish `h1` using `core hH hZ hR hX hj hz hz' hDm hDs hΦ hγ w _ hq e`. Simplify using `only [Equiv.apply_symm_apply] at h1`. Unfold `oneBT`.
+
+Rewrite using `[h1, oneBT_eq_raw (levelZeroKernel k r j) (D.positionted w) φ e t ht]`. Conclude with `rawBT_congr _ _ (isOpen_ne (x := (0 : ℂ))) (fun b τ hτ => (hφ b τ hτ).symm) e t ht`.
+-/
 theorem wordIndOfParts_of (hX : BasePointSmoothAndMem) : WordIndOfParts := by
   intro hH hZ hR k r j hj z z' E _ _ Dm Φ hz hz' hDm hDs hΦ Z γ hZd hγ hline w φ hφ t ht e
   have hq : ((t, Matrix.of.symm Z) : ℂ × (Fin j → Fin j → ℂ)) ∈ Om k r j hj Dm γ :=

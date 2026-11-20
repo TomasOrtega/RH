@@ -9,6 +9,91 @@ noncomputable section
 
 open Classical
 
+/- English proof (translation)
+Introduce `Cb Cc E _ _ _ Wp Wq _ _ _ _ _ _ S p f χ A₀ hB hC v w y hcut hgr hlen hfar e ρ`. Establish `hB'` using `hB`. Take `⟨hg1, hg2, -, -, hOkp, hw, hw', hl1, hlk, hne, hGo, -, hLC, hCA, -, hv⟩` from `hB'`. Establish `hOK : (D.parOf S v).OK` using `(p v).hP.1`. Establish `hN20 : (20 : ℝ) ≤ S.Ntop` using `PBD.ntop_ge S`.
+
+Use `set N : ℝ := (S.Ntop : ℝ) with hNdef`. Use `set α := S.cutLo v with hα`. Use `set β := S.cutHi v with hβ`. Establish `hycut : I.OnCut (D.parOf S v).u (D.parOf S v).u' (S.l + 1) y` using `PBF.cutWord_mem (D.parOf S v) hcut (List.mem_cons_self)`. Take `⟨m, hm⟩` from `hgr`.
+
+Take `⟨hlenI, hpos, -, -, -, hlast⟩` from `hGo v`. Take `⟨hm1, hmN, hgl, hgu⟩` from `hpos m y hm`. Take `⟨hyI, hy1I, hPy, hPy1⟩` from `hlast y (Or.inl ⟨m, hm⟩)`. Establish `hI0 : 0 < β - α`. Establish `: (0 : ℝ) < 6 * N ^ 3 + 6 * N` using `by positivity`.
+
+Combine the linear equalities and inequalities to obtain the conclusion. Establish `hmid1 : α + (β - α) / 3 ≤ y`. Unfold `C.gridL at hgl`. Establish `: 0 ≤ (2 * (m : ℝ) - 2) * ((β - α) / (6 * S.Ntop))`. Establish `hm1' : (1 : ℝ) ≤ m` using `by exact_mod_cast hm1`.
+
+Conclude with `mul_nonneg (by linarith) (by positivity)`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hmid2 : y + 1 ≤ β - (β - α) / 3`. Unfold `C.gridL at hgu`. Establish `hmN' : (m : ℝ) ≤ S.Ntop` using `by exact_mod_cast hmN`.
+
+Establish `hN0 : (0 : ℝ) < S.Ntop` using `by linarith`. Establish `h6 : (2 * (m : ℝ) - 2) * ((β - α) / (6 * S.Ntop)) + (β - α) / (6 * S.Ntop) ≤ (β - α) / 3`. Establish `hX : 0 ≤ (β - α) / (6 * S.Ntop)` using `by positivity`. Establish `e2 : (2 * (S.Ntop : ℝ)) * ((β - α) / (6 * S.Ntop)) = (β - α) / 3` using `by field_simp; ring`. Use `mul_le_mul_of_nonneg_right (show 2 * (m : ℝ) - 1 ≤ 2 * S.Ntop by linarith) hX` as an intermediate fact.
+
+Use the polynomial consequences of the given equalities and inequalities. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hyIcc : y ∈ Set.Icc α β` using `by rw [hα, hβ, ← cutI_eq]; exact hyI`. Establish `hqy : 0 < (M.qC (D.parOf S v) (y : ℂ)).re` using `q_pos_cut hB v y hyIcc`. Use `set q' : ℝ → ℝ := fun t => (M.qC (D.parOf S v) (t : ℂ)).re with hq'`.
+
+Use `set wr : List (Wd.Letter ℝ (Fin w.length)) := (D.positionted w).map fun l => (⟨l.plus, l.intersection_update_fsHerm_neg_one, l.pt.re⟩ : Wd.Letter ℝ (Fin w.length)) with hwr`. Establish `hQ : Wd.qw (M.qC (D.parOf S v)) (D.positionted w) (y : ℂ) = ((Wd.qw q' wr y : ℝ) : ℂ)` using `weighted_quadratic_of_real (Fin w.length) (M.qC (D.parOf S v)) (D.positionted w) y (by rw [PBF.qC_ofReal, Complex.ofReal_im]) (by intro l hl; unfold D.positionted at hl; obtain ⟨j, rfl⟩ := List.mem_ofFn.1 hl; simp)`. Establish `hLQ : Real.exp (-(1 / 2)) ≤ Wd.qw q' wr y / q' y`. Establish `h4 : 4 ≤ S.Ntop` using `by exact_mod_cast (by linarith : (4 : ℝ) ≤ S.Ntop)`. Establish `hlen' : wr.length ≤ S.Ntop` using `by simp [hwr, D.positionted]; omega`.
+
+Use `(lemma_Q_estimate (Fin w.length) q' wr S.Ntop ((S.Ntop : ℝ) ^ 2 + 1) y h4 hlen' le_rfl ?_ hqy.ne').1` and prove the remaining obligations. Introduce `l hl`. Take `⟨l0, hl0, rfl⟩` from `List.mem_map.1 hl`. Unfold `D.positionted at hl0`. Take `⟨j, rfl⟩` from `List.mem_ofFn.1 hl0`.
+
+Establish `hz` using `hfar (w.get j) (List.get_mem _ _)`. Simplify using `only [Complex.ofReal_re]`. Distinguish the cases in `h1 : (w.get j).1 = true`. Rewrite using `[if_pos h1]`. Conclude with `hz.1`.
+
+Rewrite using `[if_neg h1]; exact ⟨hz.1, hz.2 (by simpa using h1)⟩`. Establish `hqw : 0 < Wd.qw q' wr y`. Use `(le_div_iff₀ hqy).1 hLQ` as an intermediate fact. Establish `: 0 < Real.exp (-(1 / 2)) * q' y` using `mul_pos (Real.exp_pos _) hqy`. Combine the linear equalities and inequalities to obtain the conclusion.
+
+Use `set rf : Fin w.length → ℝ := fun j => if e j = 0 then (if (w.get j).1 then (y + 1 - (w.get j).2) / (y - (w.get j).2) else ((w.get j).2 - y - 1) / ((w.get j).2 - y - 2)) else 1 with hrf`. Establish `hxs : Fr.xs (fun Y => M.sgn (D.parOf S v) (S.l + 1) * M.xC (D.parOf S v) ρ Y) (D.positionted w) e ((y : ℂ) + 1) = (M.sgn (D.parOf S v) (S.l + 1) * M.xC (D.parOf S v) ρ ((y : ℂ) + 1)) * ((∏ j, rf j : ℝ) : ℂ)`. Rewrite using `[xs_eq_prod]`. Use `congr 1`. Unfold `D.positionted`.
+
+Rewrite using `[List.map_ofFn, List.prod_ofFn]`. Use `push_cast`. Use `Finset.prod_congr rfl fun j _ => ?_` and prove the remaining obligations. Simplify using `only [Function.comp_apply, hrf]`. Distinguish the cases in `he : e j = 0`.
+
+Simplify using `only [he, if_true]`. Unfold `Fr.phiL`. Distinguish the cases in `hb : (w.get j).1 = true`. Simplify using `only [hb, if_true]`. Use `push_cast`.
+
+Expand and normalize the polynomial expressions, which then agree. Simplify using `only [hb, Bool.false_eq_true, if_false]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Simplify using `only [he, if_false, Complex.ofReal_one]`.
+
+Use `set x0r : ℝ := (-1 : ℝ) ^ (S.G.k - (S.l + 1)) * I.xpoly S.G.k (M.rho (D.parOf S v) ρ) (y + 1) with hx0r`. Establish `hx0 : M.sgn (D.parOf S v) (S.l + 1) * M.xC (D.parOf S v) ρ ((y : ℂ) + 1) = ((x0r : ℝ) : ℂ)`. Simplify using `only [hx0r, M.sgn, M.xC, I.xpoly, D.parOf]`. Use `push_cast`. Both sides reduce to the same expression.
+
+Establish `hinter` using `Formalism.FourierDecayAlt.P.types_interlace (D.parOf S v) hOK ρ`. Establish `hx0pos : 0 < x0r` using `Formalism.FourierDecayAlt.P.interlacing_sign S.G.k (D.parOf S v).u (D.parOf S v).u' (M.rho (D.parOf S v) ρ) (S.l + 1) y (by omega) (by omega) hinter hycut 1 (by simp)`. Establish `hD2 : (2 : ℝ) ≤ (S.Ntop : ℝ) ^ 2 - 1` using `by nlinarith`. Establish `hrf : ∀ j, 0 < rf j ∧ rf j ≤ 1 + 1 / ((S.Ntop : ℝ) ^ 2 - 1)`. Introduce `j`.
+
+Simplify using `only [hrf]`. Distinguish the cases in `he : e j = 0`. Simplify using `only [he, if_true]`. Conclude with `phiL_bound (w.get j).1 (w.get j).2 y _ hD2 (by linarith [(hfar (w.get j) (List.get_mem _ _)).1])`. Simplify using `only [he, if_false]`.
+
+Conclude with `⟨one_pos, by have : (0 : ℝ) ≤ 1 / ((S.Ntop : ℝ) ^ 2 - 1) := by positivity linarith⟩`. Establish `hF0 : 0 < ∏ j, rf j` using `Finset.prod_pos fun j _ => (hrf j).1`. Establish `hF1 : ∏ j, rf j ≤ Real.exp ((S.Ntop : ℝ) / ((S.Ntop : ℝ) ^ 2 - 1))`. Combine the equalities or inequalities in the displayed calculation. Apply `Real.exp_le_exp.2` to reduce the goal to its premises.
+
+Rewrite using `[mul_one_div]`. Apply `div_le_div_of_nonneg_right _ (by linarith)` to reduce the goal to its premises. Conclude with `hlen.le` after adjusting the coercions. Establish `hR : topR (S.l + 1) w e ρ y = ((Wd.qw q' wr y / (x0r * ∏ j, rf j) : ℝ) : ℂ)`. Unfold `topR`.
+
+Rewrite using `[hQ, hxs, hx0]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hR, Complex.ofReal_re, Complex.ofReal_im]`. Use `⟨div_pos hqw (mul_pos hx0pos hF0), rfl, ?_⟩` and prove the remaining obligations.
+
+Use `set C0 := Real.exp 1 * J.supA S.G S.de S.de' S.T S.T' S.l false (S.pl v) * (√(S.T * S.T'))⁻¹ with hC0`. Use `set F := ∏ j, rf j with hFdef`. Use `set Cf := S.G.place (S.pl v) with hCf`. Establish `hT : 0 < S.T` using `hOK.T_pos`. Establish `hT' : 0 < S.T'` using `hOK.T'_pos`.
+
+Establish `hTT : 0 < S.T * S.T'` using `mul_pos hT hT'`. Take `⟨hg, hk⟩` from `glob_posT hB`. Establish `hsA` using `supA_nonneg S hg hk v false`. Establish `hIR` using `Formalism.FourierDecayAlt.P.interlacing_ratio S.G.k (D.parOf S v).u (D.parOf S v).u' (M.rho (D.parOf S v) ρ) (S.l + 1) y (by omega) (by omega) hinter hycut`. Establish `hul : 1 ≤ |y + 1 / 2 + (D.parOf S v).u (S.l + 1)| * |y + 1 / 2 + (D.parOf S v).u' (S.l + 1)|`.
+
+Break down `hycut with ⟨h1, h2⟩ | ⟨h1, h2⟩` into its components or cases. Rewrite using `[abs_of_neg (by linarith), abs_of_pos (by linarith)]; nlinarith`. Rewrite using `[abs_of_pos (by linarith), abs_of_neg (by linarith)]; nlinarith`. Establish `hqprod : q' y = -(S.T * S.T') * ((∏ i ∈ Icc 1 S.G.k, (y + 1 / 2 + (D.parOf S v).u i)) * ∏ i ∈ Icc 1 S.G.k, (y + 1 / 2 + (D.parOf S v).u' i))`. Simplify using `only [hq']`.
+
+Rewrite using `[PBF.qC_ofReal, Complex.ofReal_re, ← Finset.prod_mul_distrib]`. Establish `hx0sq : x0r ^ 2 ≤ q' y / (S.T * S.T')`. Establish `e1 : x0r ^ 2 = I.xpoly S.G.k (M.rho (D.parOf S v) ρ) (y + 1) ^ 2`. Rewrite using `[hx0r, mul_pow, ← pow_mul, mul_comm (S.G.k - (S.l + 1)) 2, pow_mul, neg_one_sq, one_pow, one_mul]`. Establish `hq` using `hqy`.
+
+Express the relevant statement in the definitionally equal form `0 < q' y at hq`. Rewrite `hq` using `[hqprod]`. Rewrite using `[e1, le_div_iff₀ hTT, hqprod]`. Generalize the expression as in `(∏ i ∈ Icc 1 S.G.k, (y + 1 / 2 + (D.parOf S v).u i)) = A at hq hIR ⊢`. Generalize the expression as in `(∏ i ∈ Icc 1 S.G.k, (y + 1 / 2 + (D.parOf S v).u' i)) = B at hq hIR ⊢`.
+
+Generalize the expression as in `I.xpoly S.G.k (M.rho (D.parOf S v) ρ) (y + 1) = X at hIR ⊢`. Generalize the expression as in `|y + 1 / 2 + (D.parOf S v).u (S.l + 1)| * |y + 1 / 2 + (D.parOf S v).u' (S.l + 1)| = U at hIR hul`. Establish `hAB : A * B < 0`. Assume the negation of the conclusion as `h`. Use `push_neg at h`.
+
+Establish `h3` using `mul_nonneg hTT.le h`. Establish `h4 : -(S.T * S.T') * (A * B) = -(S.T * S.T' * (A * B))` using `by ring`. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite `hIR` using `[abs_of_neg hAB]`. Establish `hX2 : 0 ≤ X ^ 2` using `sq_nonneg X`.
+
+Establish `h1 : X ^ 2 ≤ -(A * B)`. Combine the equalities or inequalities in the displayed calculation. Establish `h5` using `mul_le_mul_of_nonneg_left h1 hTT.le`. Establish `h6 : -(S.T * S.T') * (A * B) = S.T * S.T' * -(A * B)` using `by ring`. Rewrite using `[h6, mul_comm (X ^ 2)]`.
+
+Conclude with `h5`. Establish `hroot : ∀ t ∈ Icc 1 (Cf.k + Cf.m - 1), -Cf.lam t < α ∨ β < -Cf.lam t`. Introduce `t ht`. Assume the negation of the conclusion as `hcon`. Use `push_neg at hcon`.
+
+Establish `hmem : -Cf.lam t ∈ Cf.cutI S.l` using `by rw [hCf, cutI_eq]; exact ⟨hcon.1, hcon.2⟩`. Establish `hfac` using `(Formalism.FourierDecayAlt.P.betaFactorisation Cf S.de S.de' S.G.ka S.T S.T' (-Cf.lam t) S.l (hOkp v) hw hw' hT hT' hl1 hlk hne hmem).2.1`. Apply `hfac` to reduce the goal to its premises. Unfold `Sz.Cfg.P`. Conclude with `Finset.prod_eq_zero ht (by ring)`.
+
+Establish `hI3 : 3 ≤ β - α` using `three_le_len _ _ hN20 hlenI`. Establish `hPr` using `pratio (Icc 1 (Cf.k + Cf.m - 1)) Cf.lam α β y hI3 hroot hmid1 hmid2`. Establish `hPy : S.P v y = ∏ t ∈ Icc 1 (Cf.k + Cf.m - 1), (y + Cf.lam t)` using `rfl`. Establish `hPy1 : S.P v (y + 1) = ∏ t ∈ Icc 1 (Cf.k + Cf.m - 1), (y + 1 + Cf.lam t)` using `rfl`. Rewrite `hPr` using `[← hPy, ← hPy1, Nat.card_Icc]`.
+
+Establish `hn6 : 6 * ((Cf.k + Cf.m - 1 + 1 - 1 : ℕ) : ℝ) ≤ β - α`. Establish `hLv` using `hLC v`. Establish `hCc1 : 1 ≤ Cc` using `by linarith [Real.add_one_le_exp 1]`. Establish `hm : Cf.m = 2 * S.G.r + 2` using `rfl`. Establish `hkk : Cf.k = S.G.k` using `rfl`.
+
+Rewrite using `[hm, hkk]`. Establish `hk1 : 1 ≤ S.G.k` using `by omega`. Move the coercions through the operations in `[show S.G.k + (2 * S.G.r + 2) - 1 + 1 - 1 = S.G.k + 2 * S.G.r + 1 by omega]`. Establish `hr0 : (0 : ℝ) ≤ S.G.r` using `Nat.cast_nonneg _`. Establish `hkR : (1 : ℝ) ≤ S.G.k` using `by exact_mod_cast hk1`.
+
+Use `long_bound (S.G.k : ℝ) (S.G.r : ℝ) (S.Ntop : ℝ) Cc (β - α) hkR hr0 hN20 hCc1 hLv` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Use `set n := Cf.k + Cf.m - 1 + 1 - 1 with hn`. Use `set E1 := Real.exp (1 / 2) with hE1`. Establish `hE1pos : 0 < E1` using `Real.exp_pos _`.
+
+Establish `hE1sq : E1 ^ 2 = Real.exp 1` using `by rw [hE1, ← Real.exp_nat_mul]; norm_num`. Establish `hEinv : Real.exp (-(1 / 2)) = E1⁻¹` using `by rw [hE1, Real.exp_neg]`. Establish `hρP : (1 + 3 / (β - α)) ^ n ≤ E1`. Use `(one_add_pow_le_exp _ (by positivity) n).trans (Real.exp_le_exp.2 ?_)` and prove the remaining obligations. Rewrite using `[mul_div_assoc', div_le_iff₀ (by linarith)]`.
+
+Combine the linear equalities and inequalities to obtain the conclusion. Establish `hF2 : F ^ 2 ≤ E1`. Establish `hN20' : (20 : ℝ) ≤ S.Ntop` using `hN20`. Establish `h1 : F ^ 2 ≤ Real.exp ((S.Ntop : ℝ) / ((S.Ntop : ℝ) ^ 2 - 1)) ^ 2` using `pow_le_pow_left₀ hF0.le hF1 2`. Use `h1.trans ?_` and prove the remaining obligations.
+
+Rewrite using `[← Real.exp_nat_mul, hE1]`. Conclude with `Real.exp_le_exp.2 (two_N_bound _ hN20').2`. Establish `hyI' : y ∈ Cf.cutI S.l` using `hyI`. Establish `hcore` using `core_le_supA hB v false y (by simpa using hyI')`. Establish `hqeq : Cf.q S.de S.de' S.T S.T' y = q' y` using `(qC_re S v y).symm`.
+
+Establish `hcore2 : |S.P v y * S.P v (y + 1)| = Cf.core S.de S.de' S.T S.T' y ^ 2 * q' y`. Unfold `Sz.Cfg.core`. Rewrite using `[Real.sq_sqrt (abs_nonneg _), hqeq, abs_div, abs_of_pos hqy]`. Establish `hPP : S.P v y * S.P v (y + 1) = Cf.P y * Cf.P (y + 1)` using `rfl`. Rewrite using `[hPP, div_mul_cancel₀ _ hqy.ne']`.
+
+Establish `hcore0 : 0 ≤ Cf.core S.de S.de' S.T S.T' y` using `Real.sqrt_nonneg _`. Establish `hP2 : S.P v y ^ 2 ≤ E1 * (J.supA S.G S.de S.de' S.T S.T' S.l false (S.pl v) ^ 2 * q' y)`. Establish `h1 : S.P v y ^ 2 = |S.P v y| * |S.P v y|` using `by rw [sq, abs_mul_abs_self]`. Establish `h2 : |S.P v y| * |S.P v y| ≤ |S.P v y| * ((1 + 3 / (β - α)) ^ n * |S.P v (y + 1)|)` using `mul_le_mul_of_nonneg_left hPr (abs_nonneg _)`. Establish `h3 : |S.P v y| * ((1 + 3 / (β - α)) ^ n * |S.P v (y + 1)|) = (1 + 3 / (β - α)) ^ n * (Cf.core S.de S.de' S.T S.T' y ^ 2 * q' y)`.
+
+Rewrite using `[← hcore2, abs_mul]`. Expand and normalize the polynomial expressions, which then agree. Establish `h4 : Cf.core S.de S.de' S.T S.T' y ^ 2 ≤ J.supA S.G S.de S.de' S.T S.T' S.l false (S.pl v) ^ 2` using `pow_le_pow_left₀ hcore0 hcore 2`. Establish `h5 : (1 + 3 / (β - α)) ^ n * (Cf.core S.de S.de' S.T S.T' y ^ 2 * q' y) ≤ E1 * (J.supA S.G S.de S.de' S.T S.T' S.l false (S.pl v) ^ 2 * q' y)`. Conclude with `mul_le_mul hρP (mul_le_mul_of_nonneg_right h4 hqy.le) (mul_nonneg (pow_nonneg hcore0 2) hqy.le) hE1pos.le`.
+
+Combine the equalities or inequalities in the displayed calculation. Establish `hqw2 : E1⁻¹ * q' y ≤ Wd.qw q' wr y` using `by rw [← hEinv]; exact (le_div_iff₀ hqy).1 hLQ`. Conclude with `final_cmp |S.P v y| x0r F (q' y) (S.T * S.T') _ E1 (Wd.qw q' wr y) (abs_nonneg _) hx0pos hF0 hqy hTT hsA hE1pos hE1sq (by rw [sq_abs]; exact hP2) hx0sq hF2 hqw2`.
+-/
 theorem topRatio : TopRatio := by
   intro Cb Cc E _ _ _ Wp Wq _ _ _ _ _ _ S p f χ A₀ hB hC v w y hcut hgr hlen hfar e ρ
   have hB' := hB
@@ -251,4 +336,7 @@ end
 
 end Formalism.FourierDecayAlt.P.PBL
 
+/- English proof (translation)
+The claim follows from `Formalism.FourierDecayAlt.P.PBL.topRatio`.
+-/
 theorem Formalism.FourierDecayAlt.P.top_ratio : Formalism.FourierDecayAlt.P.PBL.TopRatio := Formalism.FourierDecayAlt.P.PBL.topRatio

@@ -5,6 +5,15 @@ open PositivityTheory.RgBcC PositivityTheory.RgBcC.Real PositivityTheory.RgBcC.R
 
 namespace GlobalTheory.CompanionTheory.HomTrace
 
+/- English proof (translation)
+Take `⟨w, hw⟩` from `exists_ne (0 : W)`. Establish `hex : ∃ φ : Module.Dual ℂ W, φ w ≠ 0`. Assume the negation of the conclusion as `hcon`. Use `push_neg at hcon`. Conclude with `hw ((Module.forall_dual_apply_eq_zero_iff ℂ w).1 hcon)`.
+
+Take `⟨φ, hφ⟩` from `hex`. Set `j : H →ₗ[ℂ] (W →ₗ[ℂ] H)` to `{ toFun := fun h => φ.smulRight h map_add' := fun x y => by ext v; simp map_smul' := fun c x => by`. Use extensionality with `v`. Simplify using `only [LinearMap.smulRight_apply, LinearMap.smul_apply, RingHom.id_apply]`. Conclude with `smul_comm _ _ _ }`.
+
+Establish `hj : Function.Injective j`. Introduce `x y hxy`. Establish `h1 : φ w • x = φ w • y`. Simplify `LinearMap.congr_fun hxy w` using `[j]`. Conclude with `smul_right_injective H hφ h1`.
+
+Conclude with `FiniteDimensional.of_injective j hj`.
+-/
 theorem finiteDimensional_of_hom (W H : Type) [AddCommGroup W] [Module ℂ W]
     [AddCommGroup H] [Module ℂ H] [Nontrivial W] [FiniteDimensional ℂ (W →ₗ[ℂ] H)] :
     FiniteDimensional ℂ H := by
@@ -35,10 +44,20 @@ noncomputable def sandwich {W H : Type} [AddCommGroup W] [Module ℂ W]
   map_add' f g := by ext v; simp
   map_smul' c f := by ext v; simp
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem sandwich_apply {W H : Type} [AddCommGroup W] [Module ℂ W]
     [AddCommGroup H] [Module ℂ H] (a : H →ₗ[ℂ] H) (b : W →ₗ[ℂ] W) (f : W →ₗ[ℂ] H) :
     sandwich a b f = a ∘ₗ f ∘ₗ b := rfl
 
+/- English proof (translation)
+Set `e` to `dualTensorHomEquiv ℂ W H`. Set `M : (TensorProduct ℂ (Module.Dual ℂ W) H) →ₗ[ℂ] (TensorProduct ℂ (Module.Dual ℂ W) H)` to `TensorProduct.map (Module.Dual.transpose (R := ℂ) b) a`. Establish `hcomp : (e : _ →ₗ[ℂ] _) ∘ₗ M = sandwich a b ∘ₗ (e : _ →ₗ[ℂ] _)`. Apply `TensorProduct.ext'` to reduce the goal to its premises. Introduce `φ h`.
+
+Use extensionality with `v`. Simplify using `[e, M, dualTensorHomEquiv, dualTensorHomEquivOfBasis_apply, dualTensorHom_apply, Module.Dual.transpose_apply]`. Establish `hconj : e.conj M = sandwich a b`. Rewrite using `[LinearEquiv.conj_apply]`. Use `ext1 f`.
+
+Use `LinearMap.congr_fun hcomp (e.symm f)` as an intermediate fact. Simplify using `using this`. Rewrite using `[← hconj, LinearMap.trace_conj', LinearMap.trace_tensorProduct', LinearMap.trace_transpose']`.
+-/
 theorem trace_sandwich {W H : Type} [AddCommGroup W] [Module ℂ W]
     [AddCommGroup H] [Module ℂ H] [FiniteDimensional ℂ W] [FiniteDimensional ℂ H]
     (a : H →ₗ[ℂ] H) (b : W →ₗ[ℂ] W) :

@@ -29,6 +29,13 @@ open GlobalTheory.HeckeSup
 
 set_option maxHeartbeats 1600000 in
 
+/- English proof (translation)
+Introduce `hDec hRT D X i hV`. Establish `hC` using `X.char`. Establish `ht : TieIn X.core X.R.toRealDat X.geo.κ X.geo.v₀` using `⟨X.geo.fw.laws, X.geo.fw.alg_eq, X.geo.fw.kap, X.geo.fw.hv₀, X.geo.fw.chiR, X.geo.fw.x0⟩`. Establish `h5 : GlobalTheory.Core5 X.R.toRealDat X.F.lv2` using `⟨hC.lev, hC.grp, hC.fam, hC.models, hC.thP⟩`. Establish `hio` using `GlobalTheory.IoExtremal.ioExt D _ _ _ _ _ X.R.toRealDat hC.lev hC.fam hC.models hC.thP`.
+
+Establish `hr` using `GlobalTheory.OneMapTies.oneMapRow0_of_ties_ofFive GlobalTheory.ChartFree.chartIndep D _ _ _ _ X.core X.R.toRealDat X.F.lv2 X.geo.κ X.geo.v₀ h5 ht hio X.geo.O i (X.geo.pins i)`. Establish `hc` using `GlobalTheory.IndefiniteRowSideFullHecke.LatticesOverBalls.constPinned_of X.core X.R.toRealDat X.geo.κ X.geo.v₀ X.geo.O i (X.geo.pins i) hr (X.geo.cTie i)`. Establish `h0` using `GlobalTheory.IndefiniteRowSideFullHecke.LatticesOverBalls.readAt0_of X.core X.R.toRealDat X.geo.κ X.geo.v₀ X.inGeo.jEvExists X.geo.fw X.unif i hc`. Establish `hsp` using `GlobalTheory.AdSpan.spanAt X.R.toRealDat hDec X.size hC.lev hC.fam hC.models hC.thP i X.A3.A.μ0`. Use `readsCusp_of_clauses (hC.lev.βW i) hC.fam.Sb hC.models.inf hC.models.HW hC.models.gW hC.models.HV hC.models.jV hC.thP.thF_mem X.geo.fw hV (h0.ex hV) h0.const hsp (fun O hO => ?_) fun c' hL hV' => ?_` and prove the remaining obligations.
+
+Take `⟨cc, h1, u, h2, h3, h4, -⟩` from `GlobalTheory.AdTh.ioExt_oneMap_ofFive.2.1 GlobalTheory.ChartFree.chartIndep D _ _ _ _ X.core X.R.toRealDat X.F.lv2 X.geo.κ X.geo.v₀ h5 ht hio i _ _ O hO`. Conclude with `⟨cc, h1, u, h2, h3, h4⟩`. Conclude with `@hRT D X.Γ _ _ X.Pl0 _ X.A3.A (withConst X.core c') X.alg X.R.toRealDat X.F.lv2 X.geo.κ X.geo.v₀ hC.lev hC.grp hC.fam hC.models hC.thP (@TieIn.mk D X.Γ _ _ X.Pl0 _ X.A3.A (withConst X.core c') X.alg X.R.toRealDat X.geo.κ X.geo.v₀ hL X.geo.fw.alg_eq X.geo.fw.kap X.geo.fw.hv₀ X.geo …`.
+-/
 theorem readsCusp_realSide : GlobalTheory.Published.CuspRapidDecay → GlobalTheory.HeckeSupSt.HeckeReadTie → ∀ (D : D7) (X : GlobalTheory.TwInputs.RealSide D)
     (i : Fin D.R.m) (hV : X.core.V ((i : ℕ) + 1) (Formalism.IndefR.FWT.res X.core (sg0 D X.A3.A)) = Wc D i),
     GlobalTheory.HeckeSup.ReadsCusp X.core X.R.toRealDat X.geo.κ i (Formalism.IndefR.FWT.res X.core (sg0 D X.A3.A)) hV := by

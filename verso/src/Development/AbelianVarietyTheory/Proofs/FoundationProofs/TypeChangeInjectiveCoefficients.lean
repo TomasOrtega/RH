@@ -22,6 +22,35 @@ def Ind (O : Type) [CommRing O] [Algebra O O'] (b : ι → O') : Prop :=
   ∀ d : O, d ≠ 0 → ∀ (s : Finset ι) (r : ι → O),
     algebraMap O O' d ∣ ∑ a ∈ s, algebraMap O O' (r a) * b a → ∀ a ∈ s, d ∣ r a
 
+/- English proof (translation)
+Take `⟨ϖ, hϖ⟩` from `IsDiscreteValuationRing.exists_irreducible O`. Set `I : Ideal O` to `Ideal.span {ϖ}`. Establish `hI : I.IsMaximal`. Rewrite using `[show I = IsLocalRing.maximalIdeal O from hϖ.maximalIdeal_eq.symm]`. Use `infer_instance`.
+
+Use `letI := Ideal.Quotient.field I`. Set `J : Ideal O'` to `I.map (algebraMap O O')`. Establish `hJ : ∀ x, x ∈ J ↔ algebraMap O O' ϖ ∣ x` using `fun x => by`. Simplify using `only [J, I, Ideal.map_span, Set.image_singleton, Ideal.mem_span_singleton]`. Set `B` to `Module.Basis.ofVectorSpace (O ⧸ I) (O' ⧸ J)`.
+
+Use `choose b hb using fun a => Ideal.Quotient.mk_surjective (B a)`. Establish `hs : ∀ (s : Finset _) (r : _ → O), Ideal.Quotient.mk J (∑ a ∈ s, algebraMap O O' (r a) * b a) = ∑ a ∈ s, Ideal.Quotient.mk I (r a) • B a` using `fun s r => by`. Rewrite using `[map_sum]`. Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Rewrite using `[map_mul, hb, Algebra.smul_def]`.
+
+Both sides reduce to the same expression. Establish `h1 : ∀ c : O', ∃ n ∈ Submodule.span O (Set.range b), ∃ c', c = n + algebraMap O O' ϖ * c'`. Introduce `c`. Use `choose r hr using fun a => Ideal.Quotient.mk_surjective (B.repr (Ideal.Quotient.mk J c) a)`. Establish `h` using `hs (B.repr (Ideal.Quotient.mk J c)).support r`.
+
+Simplify using `only [hr] at h`. Establish `h'` using `B.linearCombination_repr (Ideal.Quotient.mk J c)`. Rewrite `h'` using `[Finsupp.linearCombination_apply, Finsupp.sum, ← h, eq_comm, Ideal.Quotient.eq, hJ]`. Take `⟨c', hc'⟩` from `h'`. Use `⟨_, Submodule.sum_mem _ fun a _ => ?_, c', (sub_eq_iff_eq_add'.1 hc')⟩` and prove the remaining obligations.
+
+Rewrite using `[← Algebra.smul_def]`. Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span ⟨a, rfl⟩)`. Establish `h2 : ∀ (k : ℕ) (c : O'), ∃ n ∈ Submodule.span O (Set.range b), ∃ c', c = n + algebraMap O O' ϖ ^ k * c'`. Introduce `k c`. Proceed by induction on `k with`.
+
+Consider the case `zero => exact ⟨0, zero_mem _, c, by simp⟩`. Consider the case `succ k ih`. Take `⟨n, hn, c', rfl⟩` from `ih`. Take `⟨n', hn', c'', rfl⟩` from `h1 c'`. Use `⟨n + ϖ ^ k • n', add_mem hn (Submodule.smul_mem _ _ hn'), c'', ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[Algebra.smul_def, map_pow]`. Expand and normalize the polynomial expressions, which then agree. Establish `h3 : ∀ (s : Finset _) (r : _ → O), algebraMap O O' ϖ ∣ ∑ a ∈ s, algebraMap O O' (r a) * b a → ∀ a ∈ s, ϖ ∣ r a`. Introduce `s r h a ha`. Rewrite `h` using `[← hJ, ← Ideal.Quotient.eq_zero_iff_mem, hs]`.
+
+Use `linearIndependent_iff'.1 B.linearIndependent s _ h a ha` as an intermediate fact. Rewrite `this` using `[Ideal.Quotient.eq_zero_iff_mem, Ideal.mem_span_singleton]`. Then use the resulting hypothesis. Establish `h0 : algebraMap O O' ϖ ≠ 0` using `by simpa using hϖ.ne_zero`. Establish `h4 : ∀ (k : ℕ) (s : Finset _) (r : _ → O), algebraMap O O' ϖ ^ k ∣ ∑ a ∈ s, algebraMap O O' (r a) * b a → ∀ a ∈ s, ϖ ^ k ∣ r a`. Introduce `k s`.
+
+Proceed by induction on `k with`. Consider the case `zero => simp`. Consider the case `succ k ih`. Introduce `r h a ha`. Establish `h'` using `h3 s r ((dvd_pow_self _ k.succ_ne_zero).trans h)`.
+
+Use `choose! r' hr' using h'`. Establish `: ∑ a ∈ s, algebraMap O O' (r a) * b a = algebraMap O O' ϖ * ∑ a ∈ s, algebraMap O O' (r' a) * b a`. Rewrite using `[Finset.mul_sum]`. Use `Finset.sum_congr rfl fun a ha => ?_` and prove the remaining obligations. Rewrite using `[hr' a ha, map_mul, mul_assoc]`.
+
+Rewrite `h` using `[this, pow_succ', mul_dvd_mul_iff_left h0]`. Rewrite using `[hr' a ha, pow_succ']`. Conclude with `mul_dvd_mul_left _ (ih r' h a ha)`. Use `⟨_, b, fun d hd c => ?_, fun d hd s r h a ha => ?_⟩` and prove the remaining obligations. Take `⟨k, u, rfl⟩` from `IsDiscreteValuationRing.eq_unit_mul_pow_irreducible hd hϖ`.
+
+Take `⟨n, hn, c', rfl⟩` from `h2 k c`. Take `⟨r, rfl⟩` from `Finsupp.mem_span_range_iff_exists_finsupp.1 hn`. Use `⟨r.support, r, algebraMap O O' (↑u⁻¹) * c', ?_⟩` and prove the remaining obligations. Rewrite using `[← mul_assoc, ← map_mul, mul_comm (u : O), mul_assoc, Units.mul_inv, mul_one, map_pow]`. Simplify using `only [Finsupp.sum, Algebra.smul_def]`.
+
+Take `⟨k, u, rfl⟩` from `IsDiscreteValuationRing.eq_unit_mul_pow_irreducible hd hϖ`. Rewrite using `[Units.mul_left_dvd]`. Use `h4 k s r (dvd_trans ?_ h) a ha` and prove the remaining obligations. Rewrite using `[map_mul, map_pow]`. Conclude with `dvd_mul_left _ _`.
+-/
 theorem exists_gen_ind (O O' : Type) [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] [CommRing O']
     [IsDomain O'] [Algebra O O'] [FaithfulSMul O O'] :
     ∃ (ι : Type) (b : ι → O'), Gen O b ∧ Ind O b := by
@@ -117,6 +146,17 @@ structure Comp (A A' : Type) [AddCommGroup A] [Module O A] [AddCommGroup A'] [Mo
 
 variable {O b} {A A' : Type} [AddCommGroup A] [Module O A] [AddCommGroup A'] [Module O' A']
 
+/- English proof (translation)
+Set `Φ : (ι →₀ A) →+ A'` to `Finsupp.liftAddHom fun a => (DistribSMul.toAddMonoidHom A' (b a)).comp inc`. Establish `hΦ : ∀ a x, Φ (Finsupp.single a x) = b a • inc x` using `fun a x => by simp [Φ]`. Establish `hΦ' : ∀ m, Φ m = ∑ a ∈ m.support, b a • inc (m a)` using `fun m => by simp [Φ, Finsupp.sum]`. Establish `hb : Function.Bijective Φ`. Use `⟨(injective_iff_map_eq_zero _).2 fun m hm => ?_, ?_⟩` and prove the remaining obligations.
+
+Use extensionality with `a`. Assume the negation of the conclusion as `h`. Conclude with `h (hinj _ m (hΦ' m ▸ hm) a (Finsupp.mem_support_iff.2 h))`. Rewrite using `[← AddMonoidHom.range_eq_top, eq_top_iff, ← hT, AddSubgroup.closure_le]`. Introduce `x hx`.
+
+Take `⟨s, m, rfl⟩` from `hsurj x hx`. Conclude with `⟨∑ a ∈ s, Finsupp.single a (m a), by simp only [map_sum, hΦ]⟩`. Set `e` to `AddEquiv.ofBijective Φ hb`. Establish `he : ∀ a x, e.symm (b a • inc x) = Finsupp.single a x` using `fun a x => by`. Rewrite using `[AddEquiv.symm_apply_eq]`.
+
+Conclude with `(hΦ a x).symm`. Use `⟨⟨inc, fun a => (Finsupp.applyAddHom a).comp e.symm.toAddMonoidHom, hs, fun x => ?_, fun a x => ?_, fun a a' x h => ?_, ht⟩, rfl⟩` and prove the remaining obligations. Use `⟨(e.symm x).support, fun a ha => Finsupp.notMem_support_iff.1 ha, ?_⟩` and prove the remaining obligations. Conclude with `(hΦ' _).symm.trans (e.apply_symm_apply x)`. Express the relevant statement in the definitionally equal form `e.symm _ a = _`.
+
+Rewrite using `[he, Finsupp.single_eq_same]`. Express the relevant statement in the definitionally equal form `e.symm _ a = _`. Rewrite using `[he, Finsupp.single_eq_of_ne h]`.
+-/
 theorem nonempty_comp (inc : A →+ A') (hs : ∀ (o : O) x, inc (o • x) = algebraMap O O' o • inc x)
     (ht : ∀ x : A, ∃ d : O, d ≠ 0 ∧ d • x = 0) (T : Set A') (hT : AddSubgroup.closure T = ⊤)
     (hsurj : ∀ x ∈ T, ∃ (s : Finset ι) (m : ι → A), x = ∑ a ∈ s, b a • inc (m a))
@@ -151,6 +191,9 @@ namespace Comp
 
 variable (S : Comp O b A A')
 
+/- English proof (translation)
+Take `⟨s, hs, h⟩` from `S.sum_p x`. Use `Eq.trans ?_ h` and prove the remaining obligations. Conclude with `(Finset.sum_subset (Finset.subset_union_left (s₂ := s)) fun a _ ha => by simp [ht a ha]).trans (Finset.sum_subset (Finset.subset_union_right (s₁ := t)) fun a _ ha => by simp [hs a ha]).symm`.
+-/
 theorem sum_p' {x : A'} {t : Finset ι} (ht : ∀ a ∉ t, S.p a x = 0) :
     ∑ a ∈ t, b a • S.inc (S.p a x) = x := by
   classical
@@ -159,15 +202,26 @@ theorem sum_p' {x : A'} {t : Finset ι} (ht : ∀ a ∉ t, S.p a x = 0) :
   exact (Finset.sum_subset (Finset.subset_union_left (s₂ := s)) fun a _ ha => by simp [ht a ha]).trans
     (Finset.sum_subset (Finset.subset_union_right (s₁ := t)) fun a _ ha => by simp [hs a ha]).symm
 
+/- English proof (translation)
+Rewrite using `[map_sum, Finset.sum_eq_single_of_mem a ha fun a' _ h => S.p_ne _ _ _ h.symm, S.p_same]`.
+-/
 theorem p_sum (s : Finset ι) (m : ι → A) {a : ι} (ha : a ∈ s) :
     S.p a (∑ a' ∈ s, b a' • S.inc (m a')) = m a := by
   rw [map_sum, Finset.sum_eq_single_of_mem a ha fun a' _ h => S.p_ne _ _ _ h.symm, S.p_same]
 
+/- English proof (translation)
+Rewrite using `[map_sum]`. Conclude with `Finset.sum_eq_zero fun a' h => S.p_ne _ _ _ fun e => ha (e ▸ h)`.
+-/
 theorem p_sum_not (s : Finset ι) (m : ι → A) {a : ι} (ha : a ∉ s) :
     S.p a (∑ a' ∈ s, b a' • S.inc (m a')) = 0 := by
   rw [map_sum]
   exact Finset.sum_eq_zero fun a' h => S.p_ne _ _ _ fun e => ha (e ▸ h)
 
+/- English proof (translation)
+Take `⟨s, hs, hx⟩` from `S.sum_p x`. Use `conv_lhs => rw [← hx]`. Simplify using `only [map_sum u', map_smul, ← h]`. Distinguish the cases in `ha : a ∈ s`. Conclude with `S.p_sum s (fun a => u (S.p a x)) ha`.
+
+Rewrite using `[S.p_sum_not s (fun a => u (S.p a x)) ha, hs a ha, map_zero]`.
+-/
 theorem p_comm (u : A →+ A) (u' : A' →ₗ[O'] A') (h : ∀ x, S.inc (u x) = u' (S.inc x)) (a : ι) (x : A') :
     S.p a (u' x) = u (S.p a x) := by
   obtain ⟨s, hs, hx⟩ := S.sum_p x
@@ -177,12 +231,18 @@ theorem p_comm (u : A →+ A) (u' : A' →ₗ[O'] A') (h : ∀ x, S.inc (u x) = 
   · exact S.p_sum s (fun a => u (S.p a x)) ha
   · rw [S.p_sum_not s (fun a => u (S.p a x)) ha, hs a ha, map_zero]
 
+/- English proof (translation)
+Rewrite using `[hc, add_smul, mul_comm, mul_smul, ← S.inc_smul, hx, map_zero, smul_zero, add_zero, Finset.sum_smul]`. Simplify using `only [S.inc_smul, smul_smul, mul_comm]`.
+-/
 theorem smul_inc {d : O} {c c' : O'} {s : Finset ι} {r : ι → O}
     (hc : c = ∑ a ∈ s, algebraMap O O' (r a) * b a + algebraMap O O' d * c') {x : A} (hx : d • x = 0) :
     c • S.inc x = ∑ a ∈ s, b a • S.inc (r a • x) := by
   rw [hc, add_smul, mul_comm, mul_smul, ← S.inc_smul, hx, map_zero, smul_zero, add_zero, Finset.sum_smul]
   simp only [S.inc_smul, smul_smul, mul_comm]
 
+/- English proof (translation)
+Take `⟨s, r, c', hc⟩` from `hb d hd c`. Distinguish the cases in `ha : a ∈ s`. Conclude with `⟨r a, fun x hx => by rw [S.smul_inc hc hx]; exact S.p_sum s (fun a => r a • x) ha⟩`. Conclude with `⟨0, fun x hx => by rw [S.smul_inc hc hx, zero_smul]; exact S.p_sum_not s (fun a => r a • x) ha⟩`.
+-/
 theorem p_inc (hb : Gen O b) (a : ι) (c : O') {d : O} (hd : d ≠ 0) :
     ∃ o : O, ∀ x, d • x = 0 → S.p a (c • S.inc x) = o • x := by
   obtain ⟨s, r, c', hc⟩ := hb d hd c
@@ -191,6 +251,19 @@ theorem p_inc (hb : Gen O b) (a : ι) (c : O') {d : O} (hd : d ≠ 0) :
   · exact ⟨0, fun x hx => by rw [S.smul_inc hc hx, zero_smul]; exact S.p_sum_not s (fun a => r a • x) ha⟩
 
 include S in
+/- English proof (translation)
+Use `letI : Module O A' := Module.compHom A' (algebraMap O O')`. Use `haveI : IsScalarTower O O' A' := ⟨fun o c x => by`. Express the relevant statement in the definitionally equal form `(o • c) • x = algebraMap O O' o • c • x`. Rewrite using `[Algebra.smul_def, mul_smul]⟩`. Set `f : A →ₗ[O] A'` to `{ S.inc with map_smul' := S.inc_smul }`.
+
+Set `F : O' ⊗[O] A →ₗ[O'] A'` to `f.liftBaseChange O'`. Establish `hF : ∀ c x, F (c ⊗ₜ x) = c • S.inc x` using `fun c x => LinearMap.liftBaseChange_tmul _ _ _ _`. Establish `hl : ∀ t : O' ⊗[O] A, ∃ m : ι →₀ A, t = m.sum fun a x => b a ⊗ₜ[O] x`. Introduce `t`. Proceed by induction on `t using TensorProduct.induction_on with`.
+
+Consider the case `zero => exact ⟨0, by simp⟩`. Consider the case `tmul c x`. Take `⟨d, hd, hx⟩` from `S.tors x`. Take `⟨s, r, c', rfl⟩` from `hb d hd c`. Use `⟨∑ a ∈ s, Finsupp.single a (r a • x), ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[← Finsupp.sum_finset_sum_index (by simp) (by simp [TensorProduct.tmul_add])]`. Simplify using `[TensorProduct.add_tmul, TensorProduct.sum_tmul, ← Algebra.smul_def, TensorProduct.smul_tmul, hx]`. Consider the case `add x y hx hy`. Take `⟨m, rfl⟩` from `hx`. Take `⟨m', rfl⟩` from `hy`.
+
+Conclude with `⟨m + m', by rw [Finsupp.sum_add_index' (by simp) (by simp [TensorProduct.tmul_add])]⟩`. Use `(LinearEquiv.ofBijective F ⟨(injective_iff_map_eq_zero _).2 fun t h => ?_, fun x => ?_⟩).length_eq.symm` and prove the remaining obligations. Take `⟨m, rfl⟩` from `hl t`. Simplify using `only [Finsupp.sum, map_sum, hF] at h`. Use `Finset.sum_eq_zero fun a ha => ?_` and prove the remaining obligations.
+
+Rewrite using `[← S.p_sum m.support m ha, h, map_zero]`. Conclude with `TensorProduct.tmul_zero _ _`. Take `⟨s, -, h⟩` from `S.sum_p x`. Conclude with `⟨∑ a ∈ s, b a ⊗ₜ[O] S.p a x, by simp only [map_sum, hF, h]⟩`.
+-/
 theorem length_eq (hb : Gen O b) : Module.length O' A' = Module.length O' (O' ⊗[O] A) := by
   classical
   letI : Module O A' := Module.compHom A' (algebraMap O O')
@@ -241,6 +314,13 @@ def sub (N : Submodule O A) (N' : Submodule O' A') (hi : ∀ x ∈ N, S.inc x �
     obtain ⟨d, hd, h⟩ := S.tors x.1
     exact ⟨d, hd, Subtype.ext h⟩
 
+/- English proof (translation)
+Proceed by induction on `hz using Submodule.span_induction with`. Consider the case `mem x hx => exact Submodule.subset_span (h x hx)`. Consider the case `zero => convert Submodule.zero_mem _ using 1`. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
+
+Consider the case `add x y _ _ hx hy => convert add_mem hx hy using 1`. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Consider the case `smul d x _ hx`. Use `Submodule.smul_mem _ (algebraMap O O' d) hx using 1` and compare the differences between its conclusion and the goal.
+
+Apply function extensionality and compare values at an arbitrary argument. Simplify using `[S.inc_smul]`.
+-/
 theorem span_inc {X : Type} {T : Set (X → A)} {T' : Set (X → A')} (h : ∀ t ∈ T, S.inc ∘ t ∈ T')
     {z : X → A} (hz : z ∈ Submodule.span O T) : S.inc ∘ z ∈ Submodule.span O' T' := by
   induction hz using Submodule.span_induction with
@@ -250,6 +330,17 @@ theorem span_inc {X : Type} {T : Set (X → A)} {T' : Set (X → A')} (h : ∀ t
   | smul d x _ hx =>
     convert Submodule.smul_mem _ (algebraMap O O' d) hx using 1; funext; simp [S.inc_smul]
 
+/- English proof (translation)
+Establish `: ∀ c : O', S.p a ∘ (c • z) ∈ Submodule.span O T`. Proceed by induction on `hz using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨t, ht, rfl, d, hd, hdt⟩` from `h x hx`. Introduce `c`.
+
+Take `⟨o, ho⟩` from `S.p_inc hb a c hd`. Use `Submodule.smul_mem _ o (Submodule.subset_span ht) using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `y`. Conclude with `ho _ (hdt y)`. Consider the case `zero => intro c`.
+
+Use `Submodule.zero_mem _ using 1` and compare the differences between its conclusion and the goal. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Consider the case `add x y _ _ hx hy => intro c`. Use `add_mem (hx c) (hy c) using 1` and compare the differences between its conclusion and the goal.
+
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Consider the case `smul d x _ hx => intro c`. Rewrite using `[smul_smul]`. Conclude with `hx _`.
+
+Simplify using `using this 1`.
+-/
 theorem span_p (hb : Gen O b) {X : Type} {T : Set (X → A)} {T' : Set (X → A')}
     (h : ∀ t' ∈ T', ∃ t ∈ T, t' = S.inc ∘ t ∧ ∃ d : O, d ≠ 0 ∧ ∀ x, d • t x = 0)
     {z : X → A'} (hz : z ∈ Submodule.span O' T') (a : ι) : S.p a ∘ z ∈ Submodule.span O T := by
@@ -298,15 +389,24 @@ def mapH : H1 ρ →+ H1 ρ' :=
       rw [← hφ, ← map_sub]
       exact congrArg φ (hm g)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem mapH_mk (z : Z1 ρ) :
     mapH φ hφ (Submodule.Quotient.mk z) = Submodule.Quotient.mk (mapZ φ hφ z) := rfl
 
+/- English proof (translation)
+Take `⟨x, rfl⟩` from `Submodule.mkQ_surjective _ x`. Both sides reduce to the same expression.
+-/
 theorem mapH_res {Δ : Type} [Group Δ] [TopologicalSpace Δ] (θ : Δ →* Γ) (hθ : Continuous θ) (x : H1 ρ) :
     resH1 ρ' θ hθ (mapH φ hφ x) =
       mapH (ρ := ρ.comp θ) (ρ' := ρ'.comp θ) φ (fun g m => hφ (θ g) m) (resH1 ρ θ hθ x) := by
   obtain ⟨x, rfl⟩ := Submodule.mkQ_surjective _ x
   rfl
 
+/- English proof (translation)
+Establish `hx' : resH1 ρ J.subtype continuous_subtype_val x = 0` using `hx`. Use `mapH_res φ hφ J.subtype continuous_subtype_val x` as an intermediate fact. Rewrite `this` using `[hx', map_zero]`. Conclude with `this`.
+-/
 theorem mapH_ur (J : Subgroup Γ) {x : H1 ρ} (hx : x ∈ H1ur ρ J) : mapH φ hφ x ∈ H1ur ρ' J := by
   have hx' : resH1 ρ J.subtype continuous_subtype_val x = 0 := hx
   have := mapH_res φ hφ J.subtype continuous_subtype_val x
@@ -316,6 +416,11 @@ theorem mapH_ur (J : Subgroup Γ) {x : H1 ρ} (hx : x ∈ H1ur ρ J) : mapH φ h
 end Map
 
 open Formalism.GaloisCohomology in
+/- English proof (translation)
+Use `(mem_Sel _ _ _ _ _).2 fun v => ?_` and prove the remaining obligations. Use `(mem_Sel ρ (fun v => (Dec (F := F) (P.1 v)).subtype) (fun _ => continuous_subtype_val) _ x).1 hx v` as an intermediate fact. Establish `e` using `mapH_res φ hφ (Dec (F := F) (P.1 v)).subtype continuous_subtype_val x`. Use `e.symm ▸ ?_` and prove the remaining obligations. Unfold `bkCond at this ⊢`.
+
+Use `split_ifs at this ⊢ with h1 h2`. Conclude with `hL v _ this`. Discharge the goal by the elementary cases of `trivial`. Conclude with `mapH_ur _ _ _ this`.
+-/
 theorem mapH_selAll {F Ω : Type} [Field F] [NumberField F]
     [Field Ω] [Algebra F Ω] {ρ : Representation O (G F Ω) A} {ρ' : Representation O' (G F Ω) A'}
     (φ : A →+ A') (hφ : ∀ g m, φ (ρ g m) = ρ' g (φ m)) (P : Places F Ω) (l : ℕ)
@@ -336,10 +441,16 @@ theorem mapH_selAll {F Ω : Type} [Field F] [NumberField F]
   · trivial
   · exact mapH_ur _ _ _ this
 
+/- English proof (translation)
+The claim follows from `(isCompact_range hz).finite_of_discrete`.
+-/
 theorem finite_range {X B : Type} [TopologicalSpace X] [CompactSpace X] [TopologicalSpace B]
     [DiscreteTopology B] {z : X → B} (hz : Continuous z) : (Set.range z).Finite :=
   (isCompact_range hz).finite_of_discrete
 
+/- English proof (translation)
+Use `choose d hd h using ht`. Use `⟨∏ y ∈ hz.toFinset, d y, Finset.prod_ne_zero_iff.2 fun y _ => hd y, fun x => ?_⟩` and prove the remaining obligations. Take `⟨c, hc⟩` from `Finset.dvd_prod_of_mem d (hz.mem_toFinset.2 ⟨x, rfl⟩)`. Rewrite using `[hc, mul_comm, mul_smul, h, smul_zero]`.
+-/
 theorem tors_of_finite [IsDomain O] {X B : Type} [AddCommGroup B] [Module O B]
     (ht : ∀ x : B, ∃ d : O, d ≠ 0 ∧ d • x = 0) {z : X → B} (hz : (Set.range z).Finite) :
     ∃ d : O, d ≠ 0 ∧ ∀ x, d • z x = 0 := by
@@ -357,6 +468,9 @@ omit [TopologicalSpace A] [DiscreteTopology A] [IsTopologicalAddGroup A] [Contin
   [TopologicalSpace A'] [DiscreteTopology A'] [IsTopologicalAddGroup A'] [ContinuousConstSMul O' A']
   [IsDomain O] [TopologicalSpace Γ] [CompactSpace Γ] in
 include hi in
+/- English proof (translation)
+The claim follows from `S.p_comm (ρ g).toAddMonoidHom (ρ' g) (hi g) a m`.
+-/
 theorem Comp.p_rep (a : ι) (g : Γ) (m : A') : S.p a (ρ' g m) = ρ g (S.p a m) :=
   S.p_comm (ρ g).toAddMonoidHom (ρ' g) (hi g) a m
 
@@ -405,6 +519,11 @@ variable {O O' : Type} [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] [Co
   [IsDiscreteValuationRing O'] [Algebra O O'] [FaithfulSMul O O'] [IsLocalHom (algebraMap O O')]
   {ι : Type} {b : ι → O'}
 
+/- English proof (translation)
+Establish `he` using `GlobalTheory.ramificationIdx_maximalIdeal_pos O O'`. Unfold `nlen lenUnit`. Rewrite using `[S.length_eq hb, GlobalTheory.length_baseChange_dvr, GlobalTheory.length_quotient_span_singleton_eq_addVal, GlobalTheory.length_quotient_span_singleton_eq_addVal, ← map_natCast (algebraMap O O'), GlobalTheory.addVal_algebraMap, ENat.toNat_mul, ENat.toNat_mul, ENat.toNat_coe, Nat. …`. Use `congr 1`. Use `propext ⟨fun h => ?_, fun h => ?_⟩` and prove the remaining obligations.
+
+Assume the negation of the conclusion as `h'`. Conclude with `WithTop.mul_ne_top h' (ENat.coe_ne_top _) h`. Rewrite using `[h, ENat.top_mul (by exact_mod_cast he.ne')]`.
+-/
 theorem nlen_eq {A A' : Type} [AddCommGroup A] [Module O A] [AddCommGroup A'] [Module O' A']
     (S : Comp O b A A') (hb : Gen O b) (l : ℕ) : nlen (O := O') l A' = nlen (O := O) l A := by
   have he := GlobalTheory.ramificationIdx_maximalIdeal_pos O O'
@@ -425,6 +544,11 @@ section Div
 
 variable {O O' : Type} [CommRing O] [IsDomain O] [CommRing O'] [IsDomain O']
 
+/- English proof (translation)
+Take `⟨v, rfl⟩` from `Submodule.Quotient.mk_surjective _ x`. Take `⟨d, hd⟩` from `IsLocalization.exist_integer_multiples_of_finite (nonZeroDivisors O) v`. Use `choose u hu using hd`. Use `⟨d, nonZeroDivisors.coe_ne_zero d, ?_⟩` and prove the remaining obligations. Rewrite using `[← Submodule.Quotient.mk_smul, Submodule.Quotient.mk_eq_zero]`.
+
+Conclude with `⟨u, funext hu⟩`.
+-/
 theorem kog_tors {k : ℕ} (x : KOG O k) : ∃ d : O, d ≠ 0 ∧ d • x = 0 := by
   obtain ⟨v, rfl⟩ := Submodule.Quotient.mk_surjective _ x
   obtain ⟨d, hd⟩ := IsLocalization.exist_integer_multiples_of_finite (nonZeroDivisors O) v
@@ -433,9 +557,15 @@ theorem kog_tors {k : ℕ} (x : KOG O k) : ∃ d : O, d ≠ 0 ∧ d • x = 0 :=
   rw [← Submodule.Quotient.mk_smul, Submodule.Quotient.mk_eq_zero]
   exact ⟨u, funext hu⟩
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem pushKO_mk (g : O →+* O') (hg : Function.Injective g) {k : ℕ} (v : Fin k → FractionRing O) :
     pushKO g hg k (Submodule.Quotient.mk v) = Submodule.Quotient.mk fun j => fracMap g hg (v j) := rfl
 
+/- English proof (translation)
+Take `⟨v, rfl⟩` from `Submodule.Quotient.mk_surjective _ x`. Establish `: fracMap (g.comp f) (hg.comp hf) = (fracMap g hg).comp (fracMap f hf)` using `IsFractionRing.ringHom_ext (A := O₀) fun z => by simp [fracMap_alg]`. Simplify using `only [pushKO_mk, this, RingHom.comp_apply]`.
+-/
 theorem pushKO_comp' {O₀ : Type} [CommRing O₀] [IsDomain O₀] (f : O₀ →+* O) (hf : Function.Injective f)
     (g : O →+* O') (hg : Function.Injective g) {k : ℕ} (x : KOG O₀ k) :
     pushKO (g.comp f) (hg.comp hf) k x = pushKO g hg k (pushKO f hf k x) := by
@@ -444,6 +574,9 @@ theorem pushKO_comp' {O₀ : Type} [CommRing O₀] [IsDomain O₀] (f : O₀ →
     IsFractionRing.ringHom_ext (A := O₀) fun z => by simp [fracMap_alg]
   simp only [pushKO_mk, this, RingHom.comp_apply]
 
+/- English proof (translation)
+Take `⟨v, rfl⟩` from `Submodule.Quotient.mk_surjective _ x`. Express the relevant statement in the definitionally equal form `Submodule.Quotient.mk (fun j => fracMap g hg (((M γ).map (algebraMap O (FractionRing O))).mulVec v j)) = Submodule.Quotient.mk (((M' γ).map (algebraMap O' (FractionRing O'))).mulVec fun j => fracMap g hg (v j))`. Use `congr 1`. Use function extensionality and compare the values at `j`. Simplify using `[h, Matrix.mulVec, dotProduct, fracMap_alg]`.
+-/
 theorem pushKO_WKG (g : O →+* O') (hg : Function.Injective g) {Γ : Type} [Group Γ] {k : ℕ}
     (M : Γ →* Matrix (Fin k) (Fin k) O) (M' : Γ →* Matrix (Fin k) (Fin k) O')
     (h : ∀ γ, M' γ = (M γ).map g) (γ : Γ) (x : KOG O k) :
@@ -459,6 +592,15 @@ theorem pushKO_WKG (g : O →+* O') (hg : Function.Injective g) {Γ : Type} [Gro
 variable [IsDiscreteValuationRing O] [IsDiscreteValuationRing O'] [Algebra O O']
   [IsLocalHom (algebraMap O O')] (hg : Function.Injective (algebraMap O O'))
 
+/- English proof (translation)
+Take `⟨n, e, he, rfl⟩` from `IsFractionRing.div_surjective (A := O') y`. Establish `he0` using `nonZeroDivisors.ne_zero he`. Take `⟨ϖ, hϖ⟩` from `IsDiscreteValuationRing.exists_irreducible O`. Take `⟨π, hπ⟩` from `IsDiscreteValuationRing.exists_irreducible O'`. Establish `h1 : π ∣ algebraMap O O' ϖ`.
+
+Rewrite using `[← Ideal.mem_span_singleton, ← hπ.maximalIdeal_eq]`. Conclude with `fun hu => hϖ.not_isUnit (isUnit_of_map_unit _ _ hu)`. Take `⟨m, u, hu⟩` from `IsDiscreteValuationRing.eq_unit_mul_pow_irreducible he0 hπ`. Establish `h2 : e ∣ algebraMap O O' (ϖ ^ m)`. Rewrite using `[hu, Units.mul_left_dvd, map_pow]`.
+
+Conclude with `pow_dvd_pow_of_dvd h1 m`. Take `⟨e', he'⟩` from `h2`. Use `⟨ϖ ^ m, pow_ne_zero _ hϖ.ne_zero, e' * n, ?_⟩` and prove the remaining obligations. Establish `: algebraMap O' (FractionRing O') e ≠ 0` using `by simpa using he0`. Rewrite using `[he', map_mul, map_mul]`.
+
+Clear the denominators using the available nonvanishing facts.
+-/
 theorem exists_denom (y : FractionRing O') : ∃ d : O, d ≠ 0 ∧ ∃ c : O',
     algebraMap O' (FractionRing O') (algebraMap O O' d) * y = algebraMap O' (FractionRing O') c := by
   obtain ⟨n, e, he, rfl⟩ := IsFractionRing.div_surjective (A := O') y
@@ -478,6 +620,29 @@ theorem exists_denom (y : FractionRing O') : ∃ d : O, d ≠ 0 ∧ ∃ c : O',
   rw [he', map_mul, map_mul]
   field_simp
 
+/- English proof (translation)
+Use `nonempty_comp _ (fun o x => map_smulₛₗ (pushKO (algebraMap O O') hg k) o x) kog_tors {x | ∃ j y, x = Submodule.Quotient.mk (Pi.single j y)} ?_ ?_ ?_` and prove the remaining obligations. Rewrite using `[eq_top_iff]`. Introduce `x _`. Take `⟨v, rfl⟩` from `Submodule.mkQ_surjective _ x`. Rewrite using `[← Finset.univ_sum_single v, map_sum]`.
+
+Conclude with `sum_mem fun j _ => AddSubgroup.subset_closure ⟨j, _, rfl⟩`. Introduce and unpack `_ ⟨j, y, rfl⟩`. Take `⟨d, hd, c, hc⟩` from `exists_denom (O := O) y`. Take `⟨s, r, c', rfl⟩` from `hb d hd c`. Use `⟨s, fun a => Submodule.Quotient.mk (Pi.single j (algebraMap O (FractionRing O) (r a) / algebraMap O (FractionRing O) d)), ?_⟩` and prove the remaining obligations.
+
+Simplify using `only [LinearMap.toAddMonoidHom_coe, pushKO_mk, ← Submodule.Quotient.mk_smul]`. Simplify using `only [← Submodule.mkQ_apply, ← map_sum]`. Use `(Submodule.Quotient.eq _).2 ⟨Pi.single j c', funext fun i => ?_⟩` and prove the remaining obligations. Establish `h0 : algebraMap O' (FractionRing O') (algebraMap O O' d) ≠ 0`. Simplify `hd` using `[map_eq_zero_iff _ hg]`.
+
+Distinguish the cases in `h : i = j`. Substitute `h` using the available equality. Simplify using `only [LinearMap.compLeft_apply, Function.comp_apply, Pi.single_eq_same, Algebra.linearMap_apply, Pi.sub_apply, Finset.sum_apply, Pi.smul_apply, map_div₀, fracMap_alg]`. Simplify using `only [Algebra.smul_def]`. Use `mul_left_cancel₀ h0 ?_` and prove the remaining obligations.
+
+Rewrite using `[mul_sub, hc, map_add, map_mul, map_sum, Finset.mul_sum, eq_sub_iff_add_eq, add_comm]`. Use `congr 1`. Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Rewrite using `[map_mul]`. Clear the denominators using the available nonvanishing facts.
+
+Simplify using `[h]`. Introduce `s m hm a ha`. Take `⟨d, hd, hdm⟩` from `tors_of_finite (O := O) kog_tors (Set.finite_range fun a : s => m a)`. Use `choose v hv using fun a => Submodule.Quotient.mk_surjective _ (m a)`. Establish `: ∀ a ∈ s, ∃ r : Fin k → O, ∀ j, algebraMap O (FractionRing O) (r j) = algebraMap O (FractionRing O) d * v a j` using `fun a ha => by`.
+
+Establish `h` using `hdm ⟨a, ha⟩`. Simplify using `only [← hv, ← Submodule.Quotient.mk_smul, Submodule.Quotient.mk_eq_zero] at h`. Take `⟨r, hr⟩` from `h`. Conclude with `⟨r, fun j => (congrFun hr j).trans (Algebra.smul_def d (v a j))⟩`. Use `choose! r hr using this`.
+
+Simplify using `only [← hv, LinearMap.toAddMonoidHom_coe, pushKO_mk, ← Submodule.Quotient.mk_smul] at hm`. Simplify using `only [← Submodule.mkQ_apply, ← map_sum] at hm`. Take `⟨u, hu⟩` from `(Submodule.Quotient.mk_eq_zero _).1 hm`. Establish `h1 : ∀ j, d ∣ r a j` using `fun j => by`. Use `hb' d hd s (fun a => r a j) ⟨u j, IsFractionRing.injective O' (FractionRing O') ?_⟩ a ha` and prove the remaining obligations.
+
+Establish `h2` using `congrFun hu j`. Simplify using `only [LinearMap.compLeft_apply, Function.comp_apply, Algebra.linearMap_apply, Finset.sum_apply, Pi.smul_apply] at h2`. Simplify using `only [Algebra.smul_def] at h2`. Rewrite using `[map_mul, h2, map_sum, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun a ha => ?_` and prove the remaining obligations.
+
+Rewrite using `[map_mul, ← fracMap_alg _ hg, hr a ha, map_mul, fracMap_alg]`. Expand and normalize the polynomial expressions, which then agree. Use `choose w hw using h1`. Rewrite using `[← hv, Submodule.Quotient.mk_eq_zero]`. Use `⟨w, funext fun j => ?_⟩` and prove the remaining obligations.
+
+Establish `h0 : algebraMap O (FractionRing O) d ≠ 0` using `by simpa using hd`. Use `mul_left_cancel₀ h0 ?_` and prove the remaining obligations. Rewrite using `[← hr a ha, hw, map_mul]`. Both sides reduce to the same expression.
+-/
 theorem exists_comp_kog {ι : Type} {b : ι → O'} (hb : Gen O b) (hb' : Ind O b) (k : ℕ) :
     ∃ S : Comp O b (KOG O k) (KOG O' k), S.inc = (pushKO (algebraMap O O') hg k).toAddMonoidHom := by
   classical
@@ -554,6 +719,11 @@ variable {O₀ O O' : Type} [CommRing O₀] [IsDomain O₀] [CommRing O] [IsDoma
   {ρ : Representation O Γ (KOG O k)} {ρ' : Representation O' Γ (KOG O' k)}
 include hS
 
+/- English proof (translation)
+Take `⟨z, hz, rfl⟩` from `hx`. Use `⟨mapZ S.inc hi z, S.span_inc ?_ hz, rfl⟩` and prove the remaining obligations. Introduce and unpack `_ ⟨c, hc, rfl⟩`. Use `⟨c, hc, funext fun g => ?_⟩` and prove the remaining obligations. Rewrite using `[pushKO_comp' f hf _ hg, hS]`.
+
+Both sides reduce to the same expression.
+-/
 theorem extCond_inc (hi : ∀ g m, S.inc (ρ g m) = ρ' g (S.inc m)) (x : H1 ρ)
     (hx : x ∈ extCond f hf ρ₀ L₀ ρ) :
     mapH S.inc hi x ∈ extCond ((algebraMap O O').comp f) (hg.comp hf) ρ₀ L₀ ρ' := by
@@ -564,6 +734,11 @@ theorem extCond_inc (hi : ∀ g m, S.inc (ρ g m) = ρ' g (S.inc m)) (x : H1 ρ)
   rw [pushKO_comp' f hf _ hg, hS]
   rfl
 
+/- English proof (translation)
+Take `⟨z, hz, rfl⟩` from `hx`. Use `⟨mapZ (S.p a) hp z, S.span_p hb ?_ hz a, rfl⟩` and prove the remaining obligations. Introduce and unpack `_ ⟨c, hc, rfl⟩`. Use `⟨_, ⟨c, hc, rfl⟩, funext fun g => ?_, tors_of_finite kog_tors (finite_range ?_)⟩` and prove the remaining obligations. Rewrite using `[pushKO_comp' f hf _ hg, hS]`.
+
+Both sides reduce to the same expression. Conclude with `(continuous_of_discreteTopology (f := pushKO f hf k)).comp c.2.1`.
+-/
 theorem extCond_p [CompactSpace Γ] (hb : Gen O b) (a : ι)
     (hp : ∀ g m, S.p a (ρ' g m) = ρ g (S.p a m)) (x : H1 ρ')
     (hx : x ∈ extCond ((algebraMap O O').comp f) (hg.comp hf) ρ₀ L₀ ρ') :
@@ -578,6 +753,17 @@ theorem extCond_p [CompactSpace Γ] (hb : Gen O b) (a : ι)
 
 end Ext
 
+/- English proof (translation)
+Introduce `D i s Q O₁ O₂ _ _ _ _ _ _ f hf g hg hl ψ`. Use `letI := g.toAlgebra`. Use `haveI : IsLocalHom (algebraMap O₁ O₂) := hl`. Use `haveI : FaithfulSMul O₁ O₂ := (faithfulSMul_iff_algebraMap_injective _ _).2 hg`. Take `⟨ι, b, hb, hb'⟩` from `exists_gen_ind O₁ O₂`.
+
+Take `⟨S, hS⟩` from `exists_comp_kog hg hb hb' D.R.r`. Establish `hi : ∀ γ m, S.inc (WKG (latTpsi D.ntw i s f ψ) γ m) = WKG (latTpsi D.ntw i s (g.comp f) ((Units.map g.toMonoidHom).comp ψ)) γ (S.inc m)`. Introduce `γ m`. Rewrite using `[hS]`. Use `pushKO_WKG g hg _ _ (fun γ => ?_) γ m` and prove the remaining obligations.
+
+Use extensionality with `j j'`. Simplify using `[latTpsi, twistM, mapM, ← map_inv]`. Use `nlen_eq ((S.h1 hi).sub _ _ ?_ fun a => ?_) hb _` and prove the remaining obligations. Use `mapH_selAll S.inc hi _ _ _ _ _ fun v x hx => ?_` and prove the remaining obligations. Unfold `condL at hx ⊢`.
+
+Use `split_ifs at hx ⊢`. Conclude with `extCond_inc f hf hg S hS _ _ _ x hx`. Discharge the goal by the elementary cases of `trivial`. Use `mapH_selAll (S.p a) (S.p_rep hi a) _ _ _ _ _ fun v x hx => ?_ haveI : CompactSpace (Dec (F := D.host.E) (D.nd.plOm.1 v)) := isCompact_iff_compactSpace.1 (isClosed_Dec _).isCompact` and prove the remaining obligations. Unfold `condL at hx ⊢`.
+
+Use `split_ifs at hx ⊢`. Conclude with `extCond_p f hf hg S hS _ _ hb a _ x hx`. Discharge the goal by the elementary cases of `trivial`.
+-/
 theorem sT_map_eq : ∀ (D : D7) (i : D.ntw.Tw) (s : D.ntw.Sig i) (Q : Finset (PlE D.host)) (O₁ O₂ : Type)
     [CommRing O₁] [IsDomain O₁] [IsDiscreteValuationRing O₁] [CommRing O₂] [IsDomain O₂]
     [IsDiscreteValuationRing O₂] (f : D.ntw.O0 i →+* O₁) (hf : Function.Injective f) (g : O₁ →+* O₂)

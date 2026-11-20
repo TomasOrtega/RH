@@ -22,12 +22,26 @@ open GlobalTheory.KeyIntegralVal GlobalTheory.ShFam
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E} {Dw : Datum H}
   {l : Level H} {Xo : Moduli Dw l} {c : Coeff l}
 
+/- English proof (translation)
+Establish `inj` using `IsFractionRing.injective T.V T.Fr`. Use `choose b hb using hf`. Apply the tactic sequence `refine ⟨⟨⟨⟨b, inj ?_⟩, fun x y => inj ?_⟩, inj ?_, fun x y => inj ?_⟩, RingHom.ext hb⟩ <;> simp [hb]`.
+-/
 theorem exists_lift_ringHom {O : Type} [CommRing O] (T : CDVR) (f : O →+* T.Fr)
     (hf : ∀ a, f a ∈ (algebraMap T.V T.Fr).range) : ∃ b : O →+* T.V, (algebraMap T.V T.Fr).comp b = f := by
   have inj := IsFractionRing.injective T.V T.Fr
   choose b hb using hf
   refine ⟨⟨⟨⟨b, inj ?_⟩, fun x y => inj ?_⟩, inj ?_, fun x y => inj ?_⟩, RingHom.ext hb⟩ <;> simp [hb]
 
+/- English proof (translation)
+Take `⟨m, hm⟩` from `Ideal.exists_maximal (𝓞 c.F)`. Set `la : HeightOneSpectrum (𝓞 c.F)` to `⟨m, hm.isPrime, Ring.ne_bot_of_isMaximal_of_not_isField hm (RingOfIntegers.not_isField _)⟩`. Take `⟨W, p, Y, -, hp, h2, h3, h4, h5⟩` from `exists_model Xo c hpq hg la`. Take `⟨b, hb⟩` from `exists_lift_ringHom T (io.comp (c.V W).subtype) fun a => ho _`. Establish `hcond : x ≫ Xo.s = spMap io ≫ spMap (IntermediateField.inclusion c.le).toRingHom`.
+
+Rewrite using `[hxs, GlobalTheory.EtaVal.spMap_comp_spMap]`. Set `z : Sp T.Fr ⟶ Xo.XF c` to `pullback.lift x (spMap io) hcond`. Establish `hzs : z ≫ pullback.snd _ _ = spMap io` using `pullback.lift_snd _ _ _`. Establish `hzf : z ≫ pullback.fst _ _ = x` using `pullback.lift_fst _ _ _`. Establish `hx : z ≫ Y.j ≫ Y.s = Out.jK T.V ≫ spMap b` using `by show z ≫ (Y.jQ ≫ pullback.fst _ _) ≫ Y.s = _`.
+
+Rewrite using `[Category.assoc, pullback.condition, ← Category.assoc Y.jQ, Y.jQ_over, ← Category.assoc, hzs]`. Use `show Spec.map _ ≫ Spec.map _ = Spec.map _ ≫ Spec.map _`. Rewrite using `[← Spec.map_comp, ← Spec.map_comp, ← CommRingCat.ofHom_comp, ← CommRingCat.ofHom_comp, hb]`. Take `⟨yt, h1, -⟩` from `extPt Y T b z hx`. Choose the witnesses or unpack the hypotheses as in `⟨tP, ⟨mP'⟩⟩ : ∃ t : SAB H (Sp T.V), Nonempty (SABMap t Y.t yt) := by`.
+
+Take `⟨_, _, _, _, _, m, -⟩` from `sabPull Out.CubePf.cubePull yt Y.t`. Conclude with `⟨_, ⟨m⟩⟩`. Take `⟨mF, -⟩` from `sabCancel pullCubCancel E H _ _ _ Xo.univ.t Y.oF.t t' (pullback.fst _ _) z Y.m0.toSABMap (PullbackSections.sabMapCast m1 hzf.symm)`. Take `⟨mJ, -⟩` from `sabComp pullCubComp E H _ _ _ Y.t Y.oF.t t' (Y.jQ ≫ pullback.fst _ _) z Y.m mF`. Establish `hj : z ≫ Y.jQ ≫ pullback.fst _ _ = Out.jK T.V ≫ yt` using `h1.symm`.
+
+Take `⟨mK, -⟩` from `sabCancel pullCubCancel E H _ _ _ Y.t tP t' yt (Out.jK T.V) mP' (PullbackSections.sabMapCast mJ hj)`. Establish `hprop : IsProper t'.G.hom` using `MorphismProperty.of_isPullback (P := @IsProper) m1.cart.1 Xo.univ.proper`. Take `⟨ψ, -⟩` from `GlobalTheory.semiAbelian_model_determined_by_generic_fibre E H T.V inferInstance G tP t' hprop m2 mK`. Take `⟨n', -⟩` from `sabComp pullCubComp E H _ _ _ Y.t tP G yt (𝟙 _) mP' ψ`. Conclude with `(((GlobalTheory.T.thetaKeyScalar_isUnit_on_integralModels κ hκ E H Dw l Xo c _ _ Y p hpq (isBaseRing_local c W) hp h2 h3 h4 h5).1 T.V T.Fr z yt h1 G (PullbackSections.sabMapCast n' (Category.id_comp yt)) n w hw θ k hk).1 hθ).1`.
+-/
 theorem key_unit_eqChar {κ : KeyRule} (hκ : IsKeyRule κ) (hpq : 1 ≤ Dw.p + Dw.q) (hg : ∀ p : ℕ, p.Prime → l.GoodAt p)
     {T : CDVR} {io : c.F →+* T.Fr} (ho : ∀ a, io a ∈ (algebraMap T.V T.Fr).range)
     {x : Sp T.Fr ⟶ Xo.X} (hxs : x ≫ Xo.s = spMap (io.comp (IntermediateField.inclusion c.le).toRingHom))
@@ -66,6 +80,11 @@ theorem key_unit_eqChar {κ : KeyRule} (hκ : IsKeyRule κ) (hpq : 1 ≤ Dw.p + 
   exact (((GlobalTheory.T.thetaKeyScalar_isUnit_on_integralModels κ hκ E H Dw l Xo c _ _ Y p hpq (isBaseRing_local c W) hp h2 h3 h4 h5).1 T.V T.Fr z yt h1 G
     (PullbackSections.sabMapCast n' (Category.id_comp yt)) n w hw θ k hk).1 hθ).1
 
+/- English proof (translation)
+Establish `h1 : valV T.V (algebraMap T.V T.Fr (u : T.V)) = 1`. Unfold `valV`. Rewrite using `[IsDedekindDomain.HeightOneSpectrum.valuation_of_algebraMap]`. Use `(IsDedekindDomain.HeightOneSpectrum.intValuation_eq_one_iff).2 ?_` and prove the remaining obligations. Use `show (u : T.V) ∉ IsLocalRing.maximalIdeal T.V`.
+
+Conclude with `fun h => h u.isUnit`. Simplify using `[vV, h1]`.
+-/
 theorem vV_unit (T : CDVR) (u : T.Vˣ) : vV T.V (algebraMap T.V T.Fr (u : T.V)) = 0 := by
   have h1 : valV T.V (algebraMap T.V T.Fr (u : T.V)) = 1 := by
     unfold valV
@@ -75,6 +94,11 @@ theorem vV_unit (T : CDVR) (u : T.Vˣ) : vV T.V (algebraMap T.V T.Fr (u : T.V)) 
     exact fun h => h u.isUnit
   simp [vV, h1]
 
+/- English proof (translation)
+Distinguish the cases in `h : x = 0`. Substitute `h` using the available equality. Simplify using `[vV]`. Establish `e : 0 ≤ vV T.V x ↔ valV T.V x ≤ 1`. Rewrite using `[← WithZero.log_le_log (valV_ne_zero (V := T.V) h) one_ne_zero, WithZero.log_one, vV]`.
+
+Use linear arithmetic over natural numbers and integers. Rewrite using `[e]`. Conclude with `⟨fun ⟨a, ha⟩ => ha ▸ IsDedekindDomain.HeightOneSpectrum.valuation_le_one _ a, fun h => IsDiscreteValuationRing.exists_lift_of_le_one h⟩`.
+-/
 theorem mem_range_iff (T : CDVR) (x : T.Fr) : x ∈ (algebraMap T.V T.Fr).range ↔ 0 ≤ vV T.V x := by
   by_cases h : x = 0
   · subst h; simp [vV]
@@ -85,6 +109,27 @@ theorem mem_range_iff (T : CDVR) (x : T.Fr) : x ∈ (algebraMap T.V T.Fr).range 
   exact ⟨fun ⟨a, ha⟩ => ha ▸ IsDedekindDomain.HeightOneSpectrum.valuation_le_one _ a,
     fun h => IsDiscreteValuationRing.exists_lift_of_le_one h⟩
 
+/- English proof (translation)
+Use `letI := io.toAlgebra`. Use `choose τ' hτ using fun τ : E →+* ℂ => exists_lift_ringHom T (io.comp (embK c τ)) fun a => ho _`. Use `replace hτ : ∀ τ a, algebraMap T.V T.Fr (τ' τ a) = io (embK c τ a) := fun τ a => DFunLike.congr_fun (hτ τ) a`. Take `⟨G, t', m1, m2, ⟨ub, u1, u2, u3, u4⟩, θ, hθ, w1, w2, σ, s1, θ2, r1, r2, i1, i2, hp, hs⟩` from `hy`. Take `⟨U₀, hU₀, hg₀⟩` from `GlobalTheory.CM.exists_pat_of_obj E H Dw l _ _ _ _ Xo.univ`.
+
+Take `⟨⟨P, rfl, hPg⟩, -⟩` from `GlobalTheory.CM.PAT.exists_of_sabMap E H _ _ y.x U₀ t' (hU₀ ▸ m1)`. Take `⟨Ψ, -, hΨ, -⟩` from `exists_tied E H Dw l Xo c g e T.Fr y hpq`. Establish `hgp : 1 ≤ g` using `hΨ ▸ Ψ.g_pos`. Take `rfl : P.g = g` from `hPg.trans (hg₀.trans (card_frame_index Dw e))`. Establish `ht : SecTie m1 σ y.s` using `⟨w1, s1, r1, i1, hs⟩`.
+
+Establish `hne` using `((SecTieEx.secTie_exists_unique E H Dw l Xo T.Fr y.x P.t m1).2.2 σ _ ht).2.1 (GlobalTheory.Frames.secNZ_of_secGen GlobalTheory.lawsFieldsSeparately.2.1 E H Dw l Xo T.Fr _ _ y.gen)`. Establish `hB` using `(GlobalTheory.Frames.eigBasis_iff_tanBasis E H Dw l Xo c T.Fr y.x y.u P.g e y.tan y.eig).1 y.basis`. Take `⟨-, hb⟩` from `GlobalTheory.Frames.lieBasis_iff_tanBasis E H Dw l Xo T.Fr y.x P.t.G m1.φ m1.cart`. Use `choose u' hu₁ hu₂ using u4`. Establish `hov : ∀ τ i, u' τ i ≫ P.t.G.hom = (epsR T.Fr).hom` using `fun τ i => by`.
+
+Establish `: IsPreimmersion (spMap (algebraMap T.V T.Fr))` using `IsPreimmersion.of_isLocalization (nonZeroDivisors T.V)`. Rewrite using `[← cancel_mono (spMap (algebraMap T.V T.Fr)), Category.assoc, ← m2.cart.1.w, ← Category.assoc, hu₂, Category.assoc, Over.w]`. Conclude with `(GlobalTheory.EtaVal.spMap_comp_spMap _ _).trans ((congrArg spMap (RingHom.ext fun a => by`. Apply the tactic sequence `ext <;> simp [dualMap, TrivSqZeroExt.algebraMap_eq_inl])).trans (GlobalTheory.EtaVal.spMap_comp_spMap _ _).symm)`. Set `v : Fin P.g → (epsR T.Fr ⟶ P.t.G)` to `fun j => Over.homMk (u' (e j).1 (e j).2) (hov _ _)`.
+
+Establish `hv : IsLieBasis v` using `(hb _ v).2 (by`. Rewrite using `[show (fun j => (v j).left ≫ m1.φ) = fun j => y.u (e j).1 (e j).2 from funext fun j => hu₁ _ _]`. Conclude with `hB)`. Take `⟨n, w, hw⟩` from `Chart.exists_isLieBasis G.G G.semi.smooth`. Take `⟨w', hw', hww⟩` from `GlobalTheory.exists_isLieBasis_baseChange _ _ _ G.G P.t.G m2.φ m2.cart G.semi.smooth n w hw`.
+
+Choose the witnesses or unpack the hypotheses as in `rfl : P.g = n := by`. Simplify using `using Fintype.card_congr ((GlobalTheory.Serre.Lie.basis P.t.act hv).indexEquiv (GlobalTheory.Serre.Lie.basis P.t.act hw'))`. Establish `inj` using `IsFractionRing.injective T.V T.Fr`. Take `⟨A, U, a1, a2, a3⟩` from `exists_lie_matrices G.act hw τ' (m := Dw.mult) ub (fun τ k => (isTan_iff_isTangent _).1 (u1 τ k)) (fun τ k a => u2 τ k a _ (hτ τ a)) (fun τ x hx he => (u3 τ x ((isTan_iff_isTangent _).2 hx) fun a z hz => by`. Rewrite using `[inj (hz.trans (hτ τ a).symm)]`.
+
+Conclude with `he a).exists)`. Take `⟨u, hu⟩` from `key_unit_eqChar hκ hpq hg ho y.x_over m1 m2 hw hθ _ (isFibreOf_of_sabMap _ P m2 hgp hne r2 i2 hp hw' hww)`. Use `⟨⟨P, m1, hgp, σ, hne, v, hv⟩, ⟨ht, rfl, fun j => hu₁ _ _⟩, ?_⟩` and prove the remaining obligations. Establish `hinj : Function.Injective τ'` using `fun τ₁ τ₂ h => IsLocalization.ringHom_ext (nonZeroDivisors (𝓞 E)) (RingHom.ext fun a => congrArg Subtype.val (io.injective ((hτ τ₁ a).symm.trans ((h ▸ rfl : _ = _).trans (hτ τ₂ a)))))`. Take `⟨δ, hδ, hδ0⟩` from `Submodule.exists_mem_ne_zero_of_ne_bot (differentIdeal_ne_bot (A := ℤ) (B := 𝓞 E))`.
+
+Establish `hD` using `GlobalTheory.ColengthDifferent.colength_dvd E T.Fr T.V (E →+* ℂ) τ' Dw.mult _ e A U hinj (Embeddings.card E ℂ) inferInstance a1 a2 (fun _ => δ) (fun _ => hδ)`. Establish `hδu : ∀ τ, IsUnit (τ' τ δ)` using `fun τ => by`. Establish `h0 : embK c τ δ ≠ 0` using `(map_ne_zero (embF c τ)).2 (RingOfIntegers.coe_ne_zero_iff.2 hδ0)`. Take `⟨b, hb⟩` from `ho (embK c τ δ)⁻¹`. Conclude with `IsUnit.of_mul_eq_one b (inj (by rw [map_mul, hτ, hb, ← map_mul, mul_inv_cancel₀ h0, map_one, map_one]))`.
+
+Take `⟨d, hd⟩ : IsUnit (Matrix.of fun j k => U (e j).1 (e j).2 k).det` from `isUnit_of_dvd_unit hD (IsUnit.prod_iff.2 fun τ _ => (hδu τ).pow _)`. It suffices to establish `h : (κ T.Fr (FibKey.key ⟨P, m1, hgp, σ, hne, v, hv⟩) : T.Fr) = algebraMap T.V T.Fr ((Matrix.of fun j k => U (e j).1 (e j).2 k).det ^ 4 * (u : T.V)) by`. Rewrite using `[h, ← hd, ← Units.val_pow_eq_pow_val, ← Units.val_mul]`. Conclude with `vV_unit T _`. Establish `h` using `hκ.1 T.Fr P.pol hgp P.t.PP.rig P.t.PP.rigGen σ hne w' hw' σ hne v hv 1 ((Matrix.of fun j k => U (e j).1 (e j).2 k).map (algebraMap T.V T.Fr)) (fun i => by simp [constFn]) (fun j => Chart.comb_baseChange _ m2.cart (a3 (e j).1 (e j).2) hww (hu₂ _ _))`.
+
+Rewrite `h` using `[one_pow, one_mul, hu]`. Rewrite using `[map_mul, map_pow, RingHom.map_det]`. Conclude with `h`.
+-/
 theorem exists_tied_unit {κ : KeyRule} (hκ : IsKeyRule κ) (hpq : 1 ≤ Dw.p + Dw.q) (hg : ∀ p : ℕ, p.Prime → l.GoodAt p)
     {g : ℕ} (e : Fin g ≃ Σ τ : E →+* ℂ, Fin (Dw.mult τ))
     {T : CDVR} {io : c.F →+* T.Fr} (ho : ∀ a, io a ∈ (algebraMap T.V T.Fr).range)
@@ -154,6 +199,17 @@ theorem exists_tied_unit {κ : KeyRule} (hκ : IsKeyRule κ) (hpq : 1 ≤ Dw.p +
   rw [map_mul, map_pow, RingHom.map_det]
   exact h
 
+/- English proof (translation)
+Establish `hid : evI y ε = 1` using `mul_left_cancel₀ hZ (by rw [← evI_mul, hε, mul_one])`. Set `ev : Rul Xo c →* T.Fr` to `⟨⟨evI y, by rw [← mul_one (evI y 1), ← hid, ← evI_mul, one_mul]⟩, evI_mul y⟩`. Establish `hu : ∀ u : (Rul Xo c)ˣ, ev u ≠ 0` using `fun u => (u.isUnit.map ev).ne_zero`. Establish `ha' : io a ≠ 0` using `(map_ne_zero io).2 ha`. Establish `hio : vV T.V (io a) = 0`.
+
+Establish `h1` using `(mem_range_iff T _).1 (ho a)`. Establish `h2` using `(mem_range_iff T _).1 (ho a⁻¹)`. Establish `h3` using `vV_mul (V := T.V) ha' ((map_ne_zero io).2 (inv_ne_zero ha))`. Rewrite `h3` using `[← map_mul, mul_inv_cancel₀ ha, map_one, show vV T.V (1 : T.Fr) = 0 by simp [vV]]`. Use linear arithmetic over natural numbers and integers.
+
+Establish `h1 : ev ρ ^ 4 = io a * ev K`. Establish `h` using `congrArg (evI y) haK`. Rewrite `h` using `[evI_smul, evI_mul, evI_mul, hid, one_mul, one_mul]`. Conclude with `(map_pow ev _ 4).symm.trans h`. Establish `h2` using `congrArg (vV T.V) h1`.
+
+Rewrite `h2` using `[vV_mul ha' (hu K), hio, show vV T.V (ev K) = 0 from hK, show vV T.V (ev ρ ^ 4) = 4 * vV T.V (ev ρ) by simp [vV]]`. Establish `h3` using `vV_mul (V := T.V) (hu ρ) (hu ρ⁻¹)`. Rewrite `h3` using `[← map_mul, Units.mul_inv, map_one, show vV T.V (1 : T.Fr) = 0 by simp [vV]]`. Rewrite using `[evI_mul, hid, one_mul]`. Express the relevant statement in the definitionally equal form `vV T.V (ev _) = 0`.
+
+Use linear arithmetic over natural numbers and integers.
+-/
 theorem val_inv_root {T : CDVR} {io : c.F →+* T.Fr} (y : IntFr Xo c T io)
     (ho : ∀ a, io a ∈ (algebraMap T.V T.Fr).range) {ε : Rul Xo c} (hε : ε * ε = ε) (hZ : evI y ε ≠ 0)
     (ρ K : (Rul Xo c)ˣ) {a : c.F} (ha : a ≠ 0) (haK : ε * (ρ : Rul Xo c) ^ 4 = a • (ε * (K : Rul Xo c)))
@@ -187,6 +243,47 @@ end Key
 open NumberField IsDedekindDomain ReciprocityTheory.ChartRestriction.G.Geo.Tor ReciprocityTheory.ChartRestriction.G.FD Formalism.L2.Pj Formalism.BasicNotions Formalism.BasicNotions.TH Formalism.L2.Theta
   GlobalTheory.AllWt GlobalTheory.FlatLine GlobalTheory.FlatTw GlobalTheory.IndefiniteRowSideFullHecke.ComponentMassSum GlobalTheory.ShFam GlobalTheory.LamT GlobalTheory.KeyFourth GlobalTheory.IndefiniteRowSideFullHecke.DifferentConjugateDefects GlobalTheory.KeyRootTw in
 
+/- English proof (translation)
+Introduce `E _ _ _ H Dw l Xo c r U x hU hx hF hpq hg`. Take `⟨κ, k₁, k₂, k₃, k₄, k₅, k₆, -, -⟩` from `GlobalTheory.KeyFamClosing.keyFam_one`. Set `e : Fin (Fintype.card (Σ τ : E →+* ℂ, Fin (Dw.mult τ))) ≃ Σ τ : E →+* ℂ, Fin (Dw.mult τ)` to `(Fintype.equivFin _).symm`. Take `⟨K, hKmem, hKval⟩` from `GlobalTheory.T.exists_unit_section_thetaKeyRule_weightFour κ k₁ k₂ k₆ E H Dw l Xo c _ e hpq`. Establish `hσ0` using `goodEmb_goodOf c c.F.val.toRingHom`.
+
+Take `⟨⟨ρ, hρmem⟩, hρ⟩` from `GlobalTheory.T.exists_keySection_fourthRoot_perComponent κ k₁ k₂ k₆ k₄ E H Dw l Xo c _ e _ r (U _) K hσ0 (hU _ hσ0) hF hpq hKmem hKval`. Establish `hkr : GlobalTheory.IndefiniteRowSideFullHecke.FibreFramesOnModels.IsKeyRule κ`. Use `⟨?_, k₂, k₃, k₄, ?_⟩` and prove the remaining obligations. Simplify `k₁` using `only [GlobalTheory.KeyCl.Homog, mul_one]`. Simplify `k₅` using `only [GlobalTheory.KeyCl.ArchNorm, mul_one]`.
+
+Establish `hval` using `GlobalTheory.T.theta_key_section_valuation_bounds_different κ hkr E H Dw l Xo c _ e K hpq hg hKmem hKval`. Establish `hC` using `fun σ : c.F →+* ℂ => GlobalTheory.T.thetaKeySection_norm_complexPoints_eq_two_pi_pow κ k₁ k₂ k₅ E H Dw l Xo c _ e (goodOf c σ) r (U (goodOf c σ)) x K (goodEmb_goodOf c σ) (hU _ (goodEmb_goodOf c σ)) (hx _ (goodEmb_goodOf c σ)) ⟨⟨ρ, hρmem⟩⟩ hpq hKmem hKval`. Use `choose C hCpos hClog hCeq using hC`. Establish `hgE` using `card_frame_index Dw e`. Establish `hsum : ∑ τ : E →+* ℂ, Dw.mult τ = Fintype.card (Σ τ : E →+* ℂ, Fin (Dw.mult τ))`.
+
+Simplify using `[Fintype.card_sigma]`. Establish `hwt : ∀ (m : ℤ) (τ : E →+* ℂ) (i : ℕ), i < Dw.mult τ → (wtOf Dw 0 m).1 (τ, i) = -m` using `wtOf_zero_fst E H Dw`. Establish `hex : exZ Dw (wtOf Dw 0 1) = -keyEx Dw`. Use function extensionality and compare the values at `i`. Break down `i with _ | ⟨τ, i⟩` into its components or cases.
+
+Both sides reduce to the same expression. Simplify using `only [exZ, keyEx, Pi.neg_apply]`. Conclude with `hwt 1 τ i i.2`. Establish `hadd : wtOf Dw 0 1 + wtOf Dw 0 (-1) = 0`. Rewrite using `[← wtOf_add, add_zero, add_neg_cancel, wtOf_zero]`.
+
+Introduce `Z`. Take `⟨a, ha, haK⟩` from `hρ Z`. Establish `hP : HasPts U Z` using `hasPts U hpq hg hU Z`. Use `set s : Rul Xo c := idem Z * ((ρ⁻¹ : (Rul Xo c)ˣ) : Rul Xo c) with hs`. Use `set s' : Rul Xo c := idem Z * (ρ : Rul Xo c) with hs'`.
+
+Establish `hsm : s ∈ secZ Xo c (exZ Dw (wtOf Dw 0 1))`. Use `mul_mem_secZ (idem_mem_secZ Z) (inv_mem_secZ hρmem)` as an intermediate fact. Rewrite `this` using `[zero_add, ← hex]`. Then use the resulting hypothesis. Establish `hsm' : s' ∈ secZ Xo c (exZ Dw (wtOf Dw 0 (-1)))`. Use `mul_mem_secZ (idem_mem_secZ Z) hρmem` as an intermediate fact.
+
+Establish `h2 : exZ Dw (wtOf Dw 0 (-1)) = keyEx Dw`. Establish `h3` using `exZ_add_eq (Dw := Dw) (wtOf Dw 0 1) (wtOf Dw 0 (-1))`. Rewrite `h3` using `[hadd, hex]`. Apply the tactic sequence `have h4 : exZ Dw (0 : WTZ E) = 0 := by funext i; cases i <;> rfl`. Rewrite `h3` using `[h4]`.
+
+Conclude with `(neg_add_eq_zero.1 h3.symm).symm`. Rewrite `this` using `[zero_add, ← h2]`. Then use the resulting hypothesis. Establish `hsupp : s ∈ suppOn Z` using `by rw [hs, mul_comm]; exact mul_mem_suppOn _ (idem_mem_suppOn Z)`. Establish `hsupp' : s' ∈ suppOn Z` using `by rw [hs', mul_comm]; exact mul_mem_suppOn _ (idem_mem_suppOn Z)`. Establish `hnorm` using `fun σ : c.F →+* ℂ => fun z (hz : z ∈ framesOn (U (goodOf c σ)) Z) => homN_root E H Dw l Xo c (goodOf c σ) r (U (goodOf c σ)) x Z ρ K a (C σ) ha (hCpos σ) haK (hCeq σ) z hz ((hP.1 σ).2 z hz)`.
+
+Establish `hgood : ∀ σ, GoodEmb c σ → goodOf c σ = σ` using `fun σ h => if_pos h`. Establish `hmono : ∀ (m : ℤ) (τ : E →+* ℂ) (i j : ℕ), i ≤ j → j < Dw.mult τ → (wtOf Dw 0 m).1 (τ, j) ≤ (wtOf Dw 0 m).1 (τ, i)` using `fun m τ i j hij hj => by`. Rewrite using `[hwt m τ i (lt_of_le_of_lt hij hj), hwt m τ j hj]`. Establish `hbd : ∀ σ, GoodEmb c σ → ∃ D : ℝ, ∀ z ∈ framesOn (U σ) Z, homN (U σ) x (wtOf Dw 0 1) s z ≤ D`. Introduce `σ hσ`.
+
+Use `⟨(‖σ a‖ * C σ) ^ (-(1 / 4) : ℝ), fun z hz => ?_⟩` and prove the remaining obligations. Establish `h1` using `hnorm σ`. Rewrite `h1` using `[hgood σ hσ]`. Conclude with `(h1 z hz).1.le`. Establish `hbd' : ∀ σ, GoodEmb c σ → ∃ D : ℝ, ∀ z ∈ framesOn (U σ) Z, homN (U σ) x (wtOf Dw 0 (-1)) s' z ≤ D`.
+
+Introduce `σ hσ`. Use `⟨(‖σ a‖ * C σ) ^ ((1 / 4) : ℝ), fun z hz => ?_⟩` and prove the remaining obligations. Establish `h1` using `hnorm σ`. Rewrite `h1` using `[hgood σ hσ]`. Conclude with `(h1 z hz).2.le`.
+
+Set `B : HeightOneSpectrum (𝓞 c.F) → ℝ` to `fun w => ∑ τ : E →+* ℂ, (Dw.mult τ : ℝ) * (ord_vw w (conjDifferent (embF c τ)) : ℝ)`. Establish `hbnd` using `fun w (v : Rul Xo c → EReal) (hv : v ∈ valOn Z w) => val_root E H Dw l Xo c Z w v hv ρ K a (B w) ha haK (hval w v (valOn_subset Z w hv)).1 (hval w v (valOn_subset Z w hv)).2`. Set `t : TwSec U x Z (wtOf Dw 0 1)` to `{ even := even_wtOf _ _ sig := s inv := s' sig_mem := hsm inv_mem := by`. Establish `h5` using `exZ_neg_eq (Dw := Dw) (wtOf Dw 0 1)`. Establish `h6 : -wtOf Dw 0 1 = wtOf Dw 0 (-1)` using `neg_eq_of_add_eq_zero_right hadd`.
+
+Rewrite using `[← h5, h6]`. Conclude with `hsm'`. Use `idem_sig := by rw [hs, ← mul_assoc, idem_mul_idem]`. Use `idem_inv := by rw [hs', ← mul_assoc, idem_mul_idem]`. Use `mul_inv := by rw [hs, hs', mul_mul_mul_comm, idem_mul_idem, Units.inv_mul, mul_one]`.
+
+Use `cInf := fun σ => (‖σ a‖ * C σ) ^ (-(1 / 4) : ℝ)`. Use `cInf_pos := fun σ => Real.rpow_pos_of_pos (mul_pos (norm_pos_iff.2 ((map_ne_zero σ).2 ha)) (hCpos σ)) _`. Use `norm_inf := fun σ z hz => by`. Rewrite using `[(hnorm σ z hz).1, norm_goodOf]`. Use `cusp_sig := fun G hG f hf => GlobalTheory.T.mul_mem_cuspForms_of_boundedSection_component E H Dw l Xo c r U x Z (wtOf Dw 0 1) s ⟨⟨ρ, hρmem⟩⟩ hU hpq (even_wtOf _ _) (hmono 1) hsm hsupp hbd G hG f hf`.
+
+Use `cusp_inv := fun G hG f hf => by`. Establish `h7` using `GlobalTheory.T.mul_mem_cuspForms_of_boundedSection_component E H Dw l Xo c r U x Z (wtOf Dw 0 (-1)) s' ⟨⟨ρ, hρmem⟩⟩ hU hpq (even_wtOf _ _) (hmono (-1)) hsm' hsupp' hbd' (G + wtOf Dw 0 1) (hG.add (even_wtOf _ _)) f hf`. Rewrite `h7` using `[add_assoc, hadd, add_zero]`. Then use the resulting hypothesis. Use `lo := fun w => -(vAdd w a : ℝ) / 4 - B w`. Use `hi := fun w => -(vAdd w a : ℝ) / 4`.
+
+Use `lo_le := fun w v hv => (hbnd w v hv).1`. Use `le_hi := fun w v hv => (hbnd w v hv).2`. Use `finite_lo := by`. Use `((finite_vAdd ha).union (Set.finite_iUnion fun τ => finite_ord (embF c τ))).subset fun w hw => ?_` and prove the remaining obligations. Assume the negation of the conclusion as `hn`.
+
+Simplify using `only [Set.mem_union, Function.mem_support, Set.mem_iUnion, not_or, not_exists, not_not] at hn`. Apply `hw` to reduce the goal to its premises. Simplify using `[B, hn.1, hn.2]`. Use `finite_hi := by`. Use `(finite_vAdd ha).subset fun w hw => ?_` and prove the remaining obligations.
+
+Assume the negation of the conclusion as `hn`. Simplify using `only [Function.mem_support, not_not] at hn`. Apply `hw` to reduce the goal to its premises. Simplify using `[hn]`. Use `pts := hP }`.
+
+Use `⟨t, fun T io y ho hZ => ?_⟩` and prove the remaining obligations. Use `letI := io.toAlgebra`. Take `⟨Φ, hΦ, hK0⟩` from `exists_tied_unit hkr hpq hg e ho y.1 y.2.2`. Rewrite `hK0` using `[← hKval T.Fr y.1 Φ hΦ]`. Conclude with `val_inv_root y ho (idem_mul_idem Z) hZ ρ K ha haK hK0`.
+-/
 theorem twSec_keyRoot_val : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E)
     (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l) (r : ℕ) (U : ∀ σ : c.F →+* ℂ, Unf Xo c σ r) (x : ℝ),
     (∀ σ, GoodEmb c σ → IsUnf (U σ)) → (∀ σ, GoodEmb c σ → ∀ k (τ : E →+* ℂ), ‖τ ((U σ).X k).ξ0‖ = x) →
@@ -319,6 +416,13 @@ open GlobalTheory.HSApp
 
 set_option maxHeartbeats 1000000 in
 
+/- English proof (translation)
+Introduce `_ h2 _ _`. Use `h2.imp fun Fm CH _ h => ?_` and prove the remaining obligations. Take `⟨C, hC, x0, -⟩` from `h`. Use `⟨C, hC, x0, fun x hx hle ι p hp i hi Y hY Z TF y T io y' g _ hpt hZ => ?_⟩` and prove the remaining obligations. Establish `hL` using `GlobalTheory.LawsDeep.laws_deep _ p.T _ Y _ _ p.fw.laws ⟨Nat.le_add_left _ _, i.2⟩ hY.1`.
+
+Take `⟨t, ht⟩` from `twSec_keyRoot_val _ _ _ _ _ _ _ Y.U (xiR (Fm.D x ι)) hY.1.unf hY.1.xiAbs hY.1.geo hL.pos hL.good Z`. Use `⟨t, ht T io y' (fun a => ?_) hZ⟩` and prove the remaining obligations. Use `letI := io.toAlgebra`. Establish `h1` using `ptY_str TF.X y'.1`. Rewrite `h1` using `[hpt, CommRingCat.ofHom_comp, Spec.map_comp, Category.assoc, Category.assoc]`.
+
+Take `⟨b, hb⟩` from `Spec.map_surjective (Spec.map (CommRingCat.ofHom g) ≫ ((Y₀ TF.X Z).fromSpecStalk y ≫ inc₀ TF.X Z) ≫ flagStr TF.X)`. Rewrite `h1` using `[← hb, ← Spec.map_comp]`. Conclude with `⟨b.hom a, congrArg (fun q => CommRingCat.Hom.hom q a) (Spec.map_injective h1)⟩`.
+-/
 theorem key_val_zero : Hypotheses2 → DeepGood → Size → FlatDeg → Covers fun Fm x _ ι p i Y _ _ => ∀ (Z : Comp Y.d.Xo₂ Y.d.c₂) (TF : TorFlag Y.d.Xo₂ Y.d.c₂) (y : Y₀ TF.X Z) (T : CDVR) (io : Y.d.c₂.F →+* T.Fr) (y' : IntFr Y.d.Xo₂ Y.d.c₂ T io) (g : (Y₀ TF.X Z).presheaf.stalk y →+* T.V), IsLocalHom g → (letI := io.toAlgebra; TF.X.ptY y'.1 = Spec.map (CommRingCat.ofHom ((algebraMap T.V T.Fr).comp g)) ≫ (Y₀ TF.X Z).fromSpecStalk y ≫ inc₀ TF.X Z) → evI y' (GlobalTheory.FlatLine.idem Z) ≠ 0 → ∃ t : GlobalTheory.FlatTw.TwSec Y.U (xiR (Fm.D x ι)) Z (AllWt.wtOf (dat p i) 0 1), vV T.V (evI y' t.sig) = 0 := by
   intro _ h2 _ _
   refine h2.imp fun Fm CH _ h => ?_

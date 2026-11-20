@@ -188,6 +188,13 @@ noncomputable def UpperTheory.Reformulated.B.Qk36.capelliMatrix :
     {n : Nat} → Matrix (Fin n) (Fin n) (UpperTheory.Reformulated.B.Qk36.U n) :=
     fun {n : Nat} (i j : Fin n) ↦ @UpperTheory.Reformulated.B.Qk36.e n (@Prod.mk (Fin n) (Fin n) i j)
 
+/- English proof (translation)
+Proceed by induction on `k generalizing d with`. Consider the case `zero`. Simplify using `only [pow_zero, Matrix.one_apply, mul_ite, ite_mul, mul_one, one_mul, mul_zero, zero_mul, sub_self]`. Apply the tactic sequence `by_cases h1 : b = c <;> by_cases h2 : d = a <;> simp [h1, h2, eq_comm (a := a), eq_comm (a := c)]`. Consider the case `succ k ih`.
+
+Establish `key : ∀ j, x * ((M ^ k) c j * M j d) - (M ^ k) c j * M j d * x = ((if b = c then (M ^ k) a j else 0) - (if j = a then (M ^ k) c b else 0)) * M j d + (M ^ k) c j * ((if b = j then M a d else 0) - (if d = a then M j b else 0))`. Introduce `j`. Rewrite using `[← ih j, ← h j d]`. Use `noncomm_ring`. Simplify using `only [pow_succ, Matrix.mul_apply]`.
+
+Rewrite using `[Finset.mul_sum, Finset.sum_mul, ← Finset.sum_sub_distrib, Finset.sum_congr rfl (fun j _ => key j)]`. Simplify using `only [sub_mul, mul_sub, Finset.sum_add_distrib, Finset.sum_sub_distrib, ite_mul, mul_ite, zero_mul, mul_zero, Finset.sum_ite_eq, Finset.sum_ite_eq', Finset.mem_univ, if_true]`. Apply the tactic sequence `by_cases h1 : b = c <;> by_cases h2 : d = a <;>`. Apply the tactic sequence `simp only [h1, h2, if_true, if_false, Finset.sum_const_zero] <;> abel`.
+-/
 private theorem UpperTheory.Reformulated.B.Qk36.commutator_matrix_pow {R : Type*} [Ring R] {n : Nat}
     (M : Matrix (Fin n) (Fin n) R) (x : R) (a b : Fin n)
     (h : ∀ c d, x * M c d - M c d * x
@@ -215,6 +222,11 @@ private theorem UpperTheory.Reformulated.B.Qk36.commutator_matrix_pow {R : Type*
     by_cases h1 : b = c <;> by_cases h2 : d = a <;>
       simp only [h1, h2, if_true, if_false, Finset.sum_const_zero] <;> abel
 
+/- English proof (translation)
+Establish `h : ∀ p q r s : Fin n, UpperTheory.Reformulated.B.Qk36.E (p, q) * UpperTheory.Reformulated.B.Qk36.E (r, s) = if q = r then UpperTheory.Reformulated.B.Qk36.E (p, s) else 0`. Introduce `p q r s`. Unfold `UpperTheory.Reformulated.B.Qk36.E`. Use `split_ifs with hqr`. Substitute `hqr` using the available equality.
+
+Simplify using the standard rewrite rules. Conclude with `Matrix.single_mul_single_of_ne _ _ _ _ hqr _`. Rewrite using `[h, h]`.
+-/
 private theorem UpperTheory.Reformulated.B.Qk36.E_comm {n : Nat} (a b c d : Fin n) :
     UpperTheory.Reformulated.B.Qk36.E (a, b) * UpperTheory.Reformulated.B.Qk36.E (c, d)
         - UpperTheory.Reformulated.B.Qk36.E (c, d) * UpperTheory.Reformulated.B.Qk36.E (a, b)
@@ -230,6 +242,9 @@ private theorem UpperTheory.Reformulated.B.Qk36.E_comm {n : Nat} (a b c d : Fin 
     · exact Matrix.single_mul_single_of_ne _ _ _ _ hqr _
   rw [h, h]
 
+/- English proof (translation)
+Use `letI : LieRing (UpperTheory.Reformulated.B.Qk36.gl n) := LieRing.ofAssociativeRing`. Use `letI : LieRing (UpperTheory.Reformulated.B.Qk36.U n) := LieRing.ofAssociativeRing`. Unfold `UpperTheory.Reformulated.B.Qk36.e`. Rewrite using `[← LieRing.of_associative_ring_bracket, ← LieHom.map_lie, LieRing.of_associative_ring_bracket, UpperTheory.Reformulated.B.Qk36.E_comm, map_sub]`. Apply the tactic sequence `congr 1 <;> split_ifs <;> first | rfl | exact map_zero _`.
+-/
 private theorem UpperTheory.Reformulated.B.Qk36.e_comm {n : Nat} (a b c d : Fin n) :
     UpperTheory.Reformulated.B.Qk36.e (a, b) * UpperTheory.Reformulated.B.Qk36.e (c, d)
         - UpperTheory.Reformulated.B.Qk36.e (c, d) * UpperTheory.Reformulated.B.Qk36.e (a, b)
@@ -242,6 +257,9 @@ private theorem UpperTheory.Reformulated.B.Qk36.e_comm {n : Nat} (a b c d : Fin 
     LieRing.of_associative_ring_bracket, UpperTheory.Reformulated.B.Qk36.E_comm, map_sub]
   congr 1 <;> split_ifs <;> first | rfl | exact map_zero _
 
+/- English proof (translation)
+Introduce `n a b k c d`. Conclude with `UpperTheory.Reformulated.B.Qk36.commutator_matrix_pow UpperTheory.Reformulated.B.Qk36.capelliMatrix _ a b (fun c d => UpperTheory.Reformulated.B.Qk36.e_comm a b c d) k c d`.
+-/
 theorem UpperTheory.Reformulated.B.Qk36.e_mul_sub_mul_capelliMatrix_pow :
     ∀ {n : Nat} (a b : Fin n) (k : Nat) (c d : Fin n),
       @Eq (UpperTheory.Reformulated.B.Qk36.U n)

@@ -8,14 +8,25 @@ open Formalism.MainNotions.PlaceDegreeData
 
 def thrDS {n : ℕ} (ε : Fin n → Bool) : ℝ := (n : ℝ) * (pOf ε : ℝ) * (qOf ε : ℝ) + 1
 
+/- English proof (translation)
+Unfold `pOf`. Conclude with `(Finset.card_filter_le _ _).trans (by simp)`.
+-/
 theorem pOf_le {n : ℕ} (ε : Fin n → Bool) : pOf ε ≤ n := by
   unfold pOf
   exact (Finset.card_filter_le _ _).trans (by simp)
 
+/- English proof (translation)
+Unfold `qOf`. Conclude with `(Finset.card_filter_le _ _).trans (by simp)`.
+-/
 theorem qOf_le {n : ℕ} (ε : Fin n → Bool) : qOf ε ≤ n := by
   unfold qOf
   exact (Finset.card_filter_le _ _).trans (by simp)
 
+/- English proof (translation)
+Unfold `thrDS`. Establish `hp : (pOf ε : ℝ) ≤ n` using `by exact_mod_cast pOf_le ε`. Establish `hq : (qOf ε : ℝ) ≤ n` using `by exact_mod_cast qOf_le ε`. Establish `h0 : (0 : ℝ) ≤ n` using `Nat.cast_nonneg _`. Establish `h1 : (0 : ℝ) ≤ pOf ε` using `Nat.cast_nonneg _`.
+
+Establish `h2 : (0 : ℝ) ≤ qOf ε` using `Nat.cast_nonneg _`. Establish `: (n : ℝ) * (pOf ε : ℝ) * (qOf ε : ℝ) ≤ (n : ℝ) * n * n` using `mul_le_mul (mul_le_mul_of_nonneg_left hp h0) hq h2 (mul_nonneg h0 h0)`. Use the polynomial consequences of the given equalities and inequalities.
+-/
 theorem thrDS_le {n : ℕ} (ε : Fin n → Bool) : thrDS ε ≤ (n : ℝ) ^ 3 + 1 := by
   unfold thrDS
   have hp : (pOf ε : ℝ) ≤ n := by exact_mod_cast pOf_le ε

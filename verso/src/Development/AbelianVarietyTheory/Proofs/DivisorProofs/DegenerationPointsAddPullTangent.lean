@@ -25,6 +25,15 @@ section Local
 
 variable {S : Type} [CommRing S] [IsLocalRing S] {X : Scheme.{0}} {M : LB X} {K K' : Type} [Fintype K] [Fintype K']
 
+/- English proof (translation)
+Take `⟨u, hu, vu⟩` from `exists_gen hM hF t' ht'`. Take `⟨ρ, hρ⟩` from `Geo.Tor.exists_ratio hM rfl t u ht hu`. Establish `h1 : Geo.Tor.gm (𝟙 (Sp S)) (cpt S) ⊤ ρ = 1` using `mul_eq_right.1 ((hρ _ _ _ J hJ).symm.trans (e.trans (vu _ _ _ J hJ).symm))`. Establish `h2 : ρ = 1`. Apply `Units.ext` to reduce the goal to its premises.
+
+Take `⟨a, ha⟩` from `(Scheme.ΓSpecIso (CommRingCat.of S)).commRingCatIsoToRingEquiv.symm.surjective ρ.val`. Establish `h3 : toStkA (cpt S) a = toStkA (cpt S) 1`. Rewrite using `[map_one]`. Use `Eq.trans ?_ (congrArg Units.val h1)` and prove the remaining obligations. Rewrite using `[gm_val (𝟙 (Sp S)) (cpt S) ⊤ trivial, ← ha]`.
+
+Both sides reduce to the same expression. Rewrite using `[← ha, toStkA_injective h3, map_one]`. Both sides reduce to the same expression. Use `corr_of_val hM fun y I hI => (hρ _ _ y I hI).trans ?_` and prove the remaining obligations. Rewrite using `[h2, map_one, _root_.one_mul]`.
+
+Conclude with `vu _ _ y I hI`.
+-/
 theorem corr_cpt (hM : M.IsLB) {φ : K → (Sp S ⟶ X)} {ε : K → ℤ} {φ' : K' → (Sp S ⟶ X)} {ε' : K' → ℤ}
     (hF : FormEq φ' ε' φ ε) {t : LB.Gen (LB.LinComb M φ ε)} {t' : LB.Gen (LB.LinComb M φ' ε')} (ht : t.IsGen)
     (ht' : t'.IsGen) {J} (hJ : Good M (cpt S) J) (e : val t (𝟙 _) (cpt S) J = val t' (𝟙 _) (cpt S) J) :
@@ -46,6 +55,13 @@ theorem corr_cpt (hM : M.IsLB) {φ : K → (Sp S ⟶ X)} {ε : K → ℤ} {φ' :
   rw [h2, map_one, _root_.one_mul]
   exact vu _ _ y I hI
 
+/- English proof (translation)
+Establish `all : ∀ w : Sp S, w ∈ LB.wchart M φ fun k => J (𝟙 _ ≫ φ k)` using `fun w => (top_le_iff_cpt (𝟙 (Sp S)) _).2 (hJ.mem φ (𝟙 _)) trivial`. Establish `le : ∀ j, LB.wchart M φ j ≤ LB.wchart M φ j ⊓ LB.wchart M φ fun k => J (𝟙 _ ≫ φ k)` using `fun j w hw => ⟨hw, all w⟩`. Choose the witnesses or unpack the hypotheses as in `⟨c, hc⟩ : ∃ c : Γ(Sp S, ⊤)ˣ, Geo.Tor.gm (𝟙 (Sp S)) (cpt S) ⊤ c = u := by`. Take `⟨U, hU, a, ha⟩` from `(Sp S).presheaf.exists_germ_eq u.val`. Take `rfl : U = ⊤` from `top_le_iff.1 ((top_le_iff_cpt (𝟙 (Sp S)) U).2 hU)`.
+
+Establish `hb : (Sp S).basicOpen a = ⊤` using `top_le_iff.1 ((top_le_iff_cpt (𝟙 (Sp S)) _).2 (((Sp S).mem_basicOpen a _ hU).2 (ha ▸ u.isUnit)))`. Establish `ha' : IsUnit a` using `(Sp S).toRingedSpace.isUnit_of_isUnit_germ _ _ fun y hy => ((Sp S).mem_basicOpen a y hy).1 (hb.ge trivial)`. Conclude with `⟨ha'.unit, Units.ext ((gm_val (𝟙 _) _ ⊤ trivial _).trans ha)⟩`. Set `t : LB.Gen (LB.LinComb M φ ε)` to `⟨fun j => res (le j) ((LB.LinComb M φ ε).g j fun k => J (𝟙 _ ≫ φ k)) * res le_top c⟩`. Establish `v : ∀ (w : Sp S) j, w ∈ LB.wchart M φ j → Geo.Tor.gm (𝟙 (Sp S)) w (LB.wchart M φ j) (t.s j) = trF φ ε (𝟙 _) w j (fun k => J (𝟙 _ ≫ φ k)) * Geo.Tor.gm (𝟙 (Sp S)) w ⊤ c` using `fun w j h => (map_mul _ _ _).trans (congrArg₂ (· * ·) ((gm_res _ w (le j) h _).trans (gm_linComb M _ ε (𝟙 _) w j _ h (all w))) (gm_res _ w le_top h c))`.
+
+Use `⟨t, isGen_of_gm _ fun w j j' h h' => ?_, (v _ _ (all _)).trans ?_⟩` and prove the remaining obligations. Use `(v w j h).trans (Eq.trans ?_ (congrArg _ (v w j' h')).symm)` and prove the remaining obligations. Rewrite using `[← trF_trans hM _ ε (𝟙 _) w h h' (all w), _root_.mul_assoc]`. Rewrite using `[mul_eq_left.1 (trF_trans hM φ ε (𝟙 _) _ (all _) (all _) (all _)), _root_.one_mul, hc]`.
+-/
 theorem exists_gen_cpt (hM : M.IsLB) (φ : K → (Sp S ⟶ X)) (ε : K → ℤ) {J} (hJ : Good M (cpt S) J)
     (u : ((Sp S).presheaf.stalk (cpt S))ˣ) :
     ∃ t : LB.Gen (LB.LinComb M φ ε), t.IsGen ∧ val t (𝟙 _) (cpt S) J = u := by
@@ -78,6 +94,13 @@ variable {R : Type} [CommRing R] [IsDomain R] {D : DegPre R}
 
 open GlobalTheory.TorusModel
 
+/- English proof (translation)
+Take `⟨J, hJ⟩` from `TorusCoord.exists_good' D.P.isLB (cpt S)`. Establish `C : IsCub (th D (T` using `Over.mk f) (cpt S) J) := isCub_cubV D.cub hJ`. Take `⟨v, m₀, m⟩` from `exists_mult C (c := cP D (Over.mk f)) (cPoint_add D _) b`. Use `choose s hs hv using fun χ => exists_gen_cpt D.P.isLB (DegPre.gtφT D (Over.mk f) b χ) DegPre.gtε hJ (v χ)`. Use `⟨⟨b, s, hs, corr_cpt D.P.isLB (fun U _ h => Eq.symm ?_) (hs 0) (fun i j => (map_one _).trans ((congrArg₂ (· * ·) (Fintype.prod_empty _) (map_one _)).trans (_root_.mul_one _)).symm) hJ ((hv 0).trans (m₀.trans (val_one _).symm)), fun χ χ' => corr_cpt D.P.isLB (fun U _ h => Eq.symm …` and prove the remaining obligations.
+
+Use `(prod_pt b 0 h).trans ?_` and prove the remaining obligations. Rewrite using `[cPoint_zero, _root_.one_mul]`. Simplify using the standard rewrite rules. Use `(prod_sum₂ (K := Fin 4) (K' := thK.{0}) (U := U) _ (prod_pt b _ h) (prod_cub (cP D _ χ) (cP D _ χ') b h)).trans (Eq.trans ?_ (prod_sum₂ (K := Fin 4) (K' := Fin 4) (U := U) _ (prod_pt b χ h) (prod_pt b χ' h)).symm)` and prove the remaining obligations. Rewrite using `[cPoint_add]`.
+
+Apply `Additive.ofMul.injective` to reduce the goal to its premises. Simplify using `only [ofMul_mul, ofMul_inv]`. Normalize the expressions using the abelian group laws.
+-/
 theorem exists_over {S : Type} [CommRing S] [IsLocalRing S] (f : Sp S ⟶ Sp R) (b : Over.mk f ⟶ D.P.A) :
     ∃ g : GtPt D (Over.mk f), g.b = b := by
   obtain ⟨J, hJ⟩ := TorusCoord.exists_good' D.P.isLB (cpt S)
@@ -102,6 +125,11 @@ theorem exists_over {S : Type} [CommRing S] [IsLocalRing S] (f : Sp S ⟶ Sp R) 
     simp only [ofMul_mul, ofMul_inv]
     abel
 
+/- English proof (translation)
+Take `⟨hb, hv⟩` from `(TorusModel.isAdd_iff _ _ _).1 h`. Establish `hb1 : g.b = 1` using `mul_eq_left.1 hb.symm`. Use `⟨hb1, fun χ => corr_of_val D.P.isLB fun y J hJ => ?_⟩` and prove the remaining obligations. Establish `e` using `hv χ y J hJ`. Establish `C : IsCub (th D (T` using `T) y J) := isCub_cubV D.cub hJ`.
+
+Rewrite `e` using `[hb1, C.face₃, _root_.mul_one]`. Conclude with `(mul_eq_left.1 e.symm).trans (val_one _).symm`.
+-/
 theorem isZero_of_isAdd {T : Over (Sp R)} {g : GtPt D T} (h : g.IsAdd g g) : g.IsZero := by
   obtain ⟨hb, hv⟩ := (TorusModel.isAdd_iff _ _ _).1 h
   have hb1 : g.b = 1 := mul_eq_left.1 hb.symm
@@ -111,14 +139,33 @@ theorem isZero_of_isAdd {T : Over (Sp R)} {g : GtPt D T} (h : g.IsAdd g g) : g.I
   rw [hb1, C.face₃, _root_.mul_one] at e
   exact (mul_eq_left.1 e.symm).trans (val_one _).symm
 
+/- English proof (translation)
+The claim follows from `pt_ext (h.1.trans h'.1.symm) fun χ _ _ hJ => (val_corr hJ (h.2 χ) _).trans (val_corr hJ (h'.2 χ) _).symm`.
+-/
 theorem isZero_unique {T : Over (Sp R)} {g g' : GtPt D T} (h : g.IsZero) (h' : g'.IsZero) : g = g' :=
   pt_ext (h.1.trans h'.1.symm) fun χ _ _ hJ => (val_corr hJ (h.2 χ) _).trans (val_corr hJ (h'.2 χ) _).symm
 
 omit [IsDomain R] in
+/- English proof (translation)
+Rewrite using `[← Spec.map_comp, ← Spec.map_id]`. Use `congr 1`.
+-/
 theorem red_comp : redE R ≫ spMap (algebraMap R (DualNumber R)) = 𝟙 _ := by
   rw [← Spec.map_comp, ← Spec.map_id]
   congr 1
 
+/- English proof (translation)
+Introduce `R _ _ _ D`. Establish `hG : GlobalFnsSt` using `GlobalTheory.SemiRigid.globalFns`. Take `⟨G, _, _, hH⟩` from `exists_isGt hG (splitExt D)`. Take `⟨Φ, hp, ha⟩` from `exists_points hG hH`. Establish `hz : ∀ T, (Φ T 1).IsZero` using `fun T => isZero_of_isAdd (by simpa using ha T 1 1)`.
+
+Set `r : baseOver (Sp R) ⟶ epsR R` to `Over.homMk (redE R) red_comp`. Set `a : epsR R ⟶ baseOver (Sp R)` to `Over.homMk (spMap (algebraMap R (DualNumber R))) (Category.comp_id _)`. Establish `hra : r ≫ a = 𝟙 _` using `Over.OverMorphism.ext red_comp`. Establish `tan : ∀ x : epsR R ⟶ G, GtTan (Φ _ x) ↔ r ≫ x = 1` using `fun x => ⟨fun ⟨o, ho, h⟩ => (Φ _).injective ((isPull_unique (hp _ _ r x) h).trans (isZero_unique ho (hz _))), fun h => ⟨Φ _ 1, hz _, h ▸ hp _ _ r x⟩⟩`. Use `⟨fun b hb => ?_, fun g g' => ?_, fun T T' h g => ?_, fun g g' hb hs => pt_ext hb fun χ _ _ hJ => val_corr hJ (hs χ) _⟩` and prove the remaining obligations.
+
+Establish `: IsLocalRing (DualNumber R)` using `IsLocalRing.of_isUnit_or_isUnit_one_sub_self fun x => by`. Simplify `IsLocalRing.isUnit_or_isUnit_one_sub_self x.fst` using `only [TrivSqZeroExt.isUnit_iff_isUnit_fst, TrivSqZeroExt.fst_sub, TrivSqZeroExt.fst_one]`. Take `⟨g, hg⟩` from `exists_over (D := D) _ b`. Take `⟨x, rfl⟩` from `(Φ (epsR R)).surjective g`. Use `⟨Φ _ (((a ≫ r) ≫ x)⁻¹ * x), (tan _).2 ?_, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[MonObj.comp_mul, GrpObj.comp_inv, ← Category.assoc, ← Category.assoc, hra, Category.id_comp, inv_mul_cancel]`. Establish `h₁` using `((TorusModel.isAdd_iff _ _ _).1 (ha _ ((a ≫ r) ≫ x) (((a ≫ r) ≫ x)⁻¹ * x))).1`. Establish `h₂` using `((TorusModel.isPull_iff _ _ _).1 (hp _ _ (a ≫ r) x)).1`. Establish `h₃ : r ≫ b = 1` using `Over.OverMorphism.ext (hb.trans (Category.id_comp _).symm)`. Rewrite `h₁` using `[mul_inv_cancel_left, h₂, hg, Category.assoc, h₃, MonObj.comp_one, _root_.one_mul]`.
+
+Conclude with `h₁.symm`. Take `⟨x, rfl⟩` from `(Φ (epsR R)).surjective g`. Take `⟨x', rfl⟩` from `(Φ (epsR R)).surjective g'`. Use `⟨_, ha _ x x', fun h h' => (tan _).2 ?_⟩` and prove the remaining obligations. Rewrite using `[MonObj.comp_mul, (tan _).1 h, (tan _).1 h', _root_.mul_one]`.
+
+Take `⟨x, rfl⟩` from `(Φ T).surjective g`. Conclude with `⟨_, hp _ _ h x⟩`.
+-/
 theorem main : ∀ (R : Type) [CommRing R] [IsDomain R] [IsLocalRing R] (D : DegPre R), (∀ b : epsR R ⟶ D.P.A, IsTangent b → ∃ gm : GtPt D (epsR R), GtTan gm ∧ gm.b = b) ∧ (∀ gm gm' : GtPt D (epsR R), ∃ gm'', GtPt.IsAdd gm gm' gm'' ∧ (GtTan gm → GtTan gm' → GtTan gm'')) ∧ (∀ (T T' : Over (Sp R)) (h : T' ⟶ T) (gm : GtPt D T), ∃ gm' : GtPt D T', GtPt.IsPull h.left gm gm') ∧ ∀ gm gm' : GtPt D (epsR R), gm.b = gm'.b → (∀ χ, LB.Gen.Corr D.P.L _ _ _ _ (gm.s χ) (gm'.s χ)) → gm = gm' := by
   intro R _ _ _ D
   have hG : GlobalFnsSt := GlobalTheory.SemiRigid.globalFns

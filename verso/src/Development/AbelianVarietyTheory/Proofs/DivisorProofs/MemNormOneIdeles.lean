@@ -33,8 +33,14 @@ def N1 (σ : E →ₐ[F] E) : Subgroup (AE F E)ˣ where
       _ = (((a⁻¹ : (AE F E)ˣ) : AE F E) * a) * (cA σ ((a⁻¹ : (AE F E)ˣ) : AE F E) * cA σ (a : AE F E)) := by ring
       _ = 1 := by rw [h1, Units.inv_mul, one_mul]
 
+/- English proof (translation)
+Unfold both sides. The equivalence is reflexive.
+-/
 theorem mem_normOneIdeles {σ : E →ₐ[F] E} {z : (AE F E)ˣ} : z ∈ N1 F E σ ↔ (z : AE F E) * cA σ (z : AE F E) = 1 := Iff.rfl
 
+/- English proof (translation)
+The claim follows from `(N1 F E σ).one_mem`.
+-/
 example (σ : E →ₐ[F] E) : (1 : (AE F E)ˣ) ∈ N1 F E σ := (N1 F E σ).one_mem
 
 end GlobalTheory.NormOneIdele

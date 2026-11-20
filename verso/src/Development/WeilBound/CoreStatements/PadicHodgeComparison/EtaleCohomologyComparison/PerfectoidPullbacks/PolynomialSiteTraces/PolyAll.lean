@@ -15,6 +15,11 @@ open CategoryTheory AlgebraicGeometry GlobalTheory.LogCris DividedPowers GlobalT
 
 namespace CrystallineSemistableComparison.Pb.Site
 
+/- English proof (translation)
+Use `⟨?_, ?_⟩` and prove the remaining obligations. Break down `h with rfl | rfl` into its components or cases. Discharge the goal by the elementary cases of `trivial`. Conclude with `GlobalTheory.T.flat_comp_envelope_algebraMap T.obj.i T.property.1`. Take `⟨V, hV, hT⟩` from `T.property.2`.
+
+Conclude with `⟨V, hV, inU_hom (polyJ T.obj hp) hT⟩`.
+-/
 theorem polyT_mem {O R : Type} [CommRing O] [CommRing R] {I : Ideal R} {γ : DividedPowers I} {p : ℕ} (hp : p ≠ 0)
     {X : Scheme.{0}} {q : X ⟶ Spec (CommRingCat.of O)} {κ : O →+* R ⧸ I}
     (Q₀ : ObjectProperty (Thick (nlFun γ p X q κ))) (h : Q₀ = ⊤ ∨ Q₀ = FlatT) (𝒱 : Set X.Opens)
@@ -56,6 +61,19 @@ def polyAll {O R : Type} [CommRing O] [CommRing R] {I : Ideal R} {γ : DividedPo
       exact congrArg (fun f => f.hom.φ) h1
   span T z := GlobalTheory.T.divided_power_envelope_expansion T.obj.δ z
 
+/- English proof (translation)
+Introduce `O R _ _ I γ p hp X q κ Q₀ h 𝒱`. Use `⟨polyAll hp Q₀ h 𝒱, fun r => ⟨?_, ?_, fun c => ⟨?_, ?_, ?_⟩⟩⟩` and prove the remaining obligations. Introduce `T b`. Use `Iff.trans (GlobalTheory.T.divided_power_envelope_filtration T.obj.δ b r.toNat 0).1 (forall_congr' fun k => ?_)` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `_ ↔ b k ∈ fil T.obj.δ (r - k).toNat`.
+
+Rewrite using `[show (r - k).toNat = r.toNat - k by omega]`. Conclude with `Iff.rfl`. Introduce `T b`. Use `Iff.trans (GlobalTheory.T.divided_power_envelope_filtration T.obj.δ b 0 0).2.2.2 (forall_congr' fun k => ?_)` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `_ ↔ b k ∈ (⊥ : Ideal T.obj.B)`.
+
+Rewrite using `[Ideal.mem_bot]`. Conclude with `Iff.rfl`. Introduce `T b`. Use `Iff.trans (GlobalTheory.T.divided_power_envelope_filtration T.obj.δ b r.toNat (T.obj.i c)).2.1 (forall_congr' fun k => ?_)` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `_ ↔ b k ∈ fil T.obj.δ (r - k).toNat ⊔ Ideal.span {T.obj.i c}`.
+
+Rewrite using `[show (r - k).toNat = r.toNat - k by omega]`. Conclude with `Iff.rfl`. Introduce `T b`. Establish `e : ∀ (B : Type) [CommRing B] (a : B), (⊥ : Ideal B) ⊔ Ideal.span {a} = Ideal.span {a}` using `fun _ _ _ => bot_sup_eq _`. Use `Iff.trans ?_ (Iff.trans (GlobalTheory.T.divided_power_envelope_filtration T.obj.δ b 0 (T.obj.i c)).2.2.1 (forall_congr' fun k => ?_))` and prove the remaining obligations.
+
+Express the relevant statement in the definitionally equal form `_ ∈ (⊥ : Ideal (pq T.obj.B).P) ⊔ Ideal.span {algebraMap T.obj.B (pq T.obj.B).P (T.obj.i c)} ↔ _`. Rewrite using `[e]`. Both sides reduce to the same expression. Express the relevant statement in the definitionally equal form `_ ↔ b k ∈ (⊥ : Ideal T.obj.B) ⊔ Ideal.span {T.obj.i c}`. Rewrite using `[e]`.
+
+Conclude with `Iff.rfl`. Introduce `T b`. Conclude with `(GlobalTheory.T.divided_power_envelope_filtration T.obj.δ b 0 (T.obj.i c)).2.2.1`.
+-/
 theorem poly_all' : ∀ {O R : Type} [CommRing O] [CommRing R] {I : Ideal R} (γ : DividedPowers I) (p : ℕ) (hp : p ≠ 0) {X : Scheme.{0}}
     (q : X ⟶ Spec (CommRingCat.of O)) (κ : O →+* R ⧸ I) (Q₀ : ObjectProperty (Thick (nlFun γ p X q κ))) (h : Q₀ = ⊤ ∨ Q₀ = FlatT)
     (𝒱 : Set X.Opens), ∃ Q : Poly (sP (St Q₀ 𝒱)), ∀ r : ℤ, Q.Crit (sFil _) r ∧ Q.Crit (fun _ => IdF.bot _) r ∧

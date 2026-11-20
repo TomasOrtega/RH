@@ -11,10 +11,22 @@ namespace PositivityTheory.SiegelWeilFormula.Ldexb.UnitA
 
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E}
 
+/- English proof (translation)
+Take `⟨τ⟩ : Nonempty (E →+* ℂ)` from `inferInstance`. Conclude with `τ.injective (by rw [h.2.2.2, h.2.2.2, star_star])`.
+-/
 theorem sig_sig (h : IsCMExt F E σ) (x : E) : σ (σ x) = x := by
   obtain ⟨τ⟩ : Nonempty (E →+* ℂ) := inferInstance
   exact τ.injective (by rw [h.2.2.2, h.2.2.2, star_star])
 
+/- English proof (translation)
+Distinguish the cases in `hx : ∃ x : E, σ x ≠ x`. Take `⟨x, hx⟩` from `hx`. Use `⟨x - σ x, sub_ne_zero.2 (Ne.symm hx), ?_⟩` and prove the remaining obligations. Rewrite using `[map_sub, sig_sig h]`. Expand and normalize the polynomial expressions, which then agree.
+
+Use `push Not at hx`. It suffices to derive a contradiction. Take `⟨τ⟩ : Nonempty (E →+* ℂ)` from `inferInstance`. Establish `hr : ComplexEmbedding.IsReal τ`. Rewrite using `[ComplexEmbedding.isReal_iff]`.
+
+Use extensionality with `x`. Rewrite using `[ComplexEmbedding.conjugate_coe_eq]`. Use `h.2.2.2 τ x` as an intermediate fact. Rewrite `this` using `[hx]`. Conclude with `this.symm`.
+
+Use `h.2.1` as an intermediate fact. Conclude with `(InfinitePlace.not_isReal_iff_isComplex.2 (IsTotallyComplex.isComplex _)) (InfinitePlace.isReal_mk_iff.2 hr)`.
+-/
 theorem exists_xi (h : IsCMExt F E σ) : ∃ ξ : E, ξ ≠ 0 ∧ σ ξ = -ξ := by
   by_cases hx : ∃ x : E, σ x ≠ x
   · obtain ⟨x, hx⟩ := hx
@@ -34,6 +46,9 @@ theorem exists_xi (h : IsCMExt F E σ) : ∃ ξ : E, ξ ≠ 0 ∧ σ ξ = -ξ :=
     exact (InfinitePlace.not_isReal_iff_isComplex.2 (IsTotallyComplex.isComplex _)) (InfinitePlace.isReal_mk_iff.2 hr)
 
 omit [NumberField E] in
+/- English proof (translation)
+Proceed by induction on `z using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `add x y hx hy => simp only [map_add, hx, hy]`. Consider the case `tmul a x => rfl`.
+-/
 theorem compFin_cA (v : Pl F) (z : AE F E) : compFin F E v (cA σ z) = sigR (Fv F v) σ (compFin F E v z) := by
   induction z using TensorProduct.induction_on with
   | zero => simp
@@ -41,6 +56,9 @@ theorem compFin_cA (v : Pl F) (z : AE F E) : compFin F E v (cA σ z) = sigR (Fv 
   | tmul a x => rfl
 
 omit [NumberField E] in
+/- English proof (translation)
+Proceed by induction on `z using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `add x y hx hy => simp only [map_add, hx, hy]`. Consider the case `tmul a x => rfl`.
+-/
 theorem compInf_cA (w : InfinitePlace F) (z : AE F E) :
     compInf F E w (cA σ z) = sigR w.Completion σ (compInf F E w z) := by
   induction z using TensorProduct.induction_on with
@@ -49,18 +67,30 @@ theorem compInf_cA (w : InfinitePlace F) (z : AE F E) :
   | tmul a x => rfl
 
 omit [NumberField E] in
+/- English proof (translation)
+Express the relevant statement in the definitionally equal form `Algebra.TensorProduct.map _ _ ((1 : AF F) ⊗ₜ[F] x) = (1 : Fv F v) ⊗ₜ[F] x`. Simplify using the standard rewrite rules.
+-/
 theorem compFin_inclR (v : Pl F) (x : E) : compFin F E v (inclR (AF F) x) = inclR (Fv F v) x := by
   change Algebra.TensorProduct.map _ _ ((1 : AF F) ⊗ₜ[F] x) = (1 : Fv F v) ⊗ₜ[F] x
   simp
 
 omit [NumberField E] in
+/- English proof (translation)
+Express the relevant statement in the definitionally equal form `Algebra.TensorProduct.map _ _ ((1 : AF F) ⊗ₜ[F] x) = (1 : w.Completion) ⊗ₜ[F] x`. Simplify using the standard rewrite rules.
+-/
 theorem compInf_inclR (w : InfinitePlace F) (x : E) : compInf F E w (inclR (AF F) x) = inclR w.Completion x := by
   change Algebra.TensorProduct.map _ _ ((1 : AF F) ⊗ₜ[F] x) = (1 : w.Completion) ⊗ₜ[F] x
   simp
 
 omit [NumberField F] [NumberField E] in
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem sigR_inclR (R : Type) [CommRing R] [Algebra F R] (x : E) : sigR R σ (inclR R x) = inclR R (σ x) := rfl
 
+/- English proof (translation)
+Establish `h` using `(GlobalTheory.ThK.Dbl.Frame.ae_locInt (F := F) ξ).and (GlobalTheory.ThK.Dbl.Frame.ae_locInt (F := F) ξ⁻¹)`. Use `⟨(Filter.eventually_cofinite.1 h).toFinset, fun v hv => ?_⟩` and prove the remaining obligations. Rewrite `hv` using `[Set.Finite.mem_toFinset, Set.mem_ofPred_eq, not_not]`. Conclude with `⟨hv.1.mem, hv.2.mem⟩`.
+-/
 theorem exists_S (ξ : E) : ∃ S : Finset (Pl F), ∀ v ∉ S,
     inclR (Fv F v) ξ ∈ intLoc F E v ∧ inclR (Fv F v) ξ⁻¹ ∈ intLoc F E v := by
   have h := (GlobalTheory.ThK.Dbl.Frame.ae_locInt (F := F) ξ).and (GlobalTheory.ThK.Dbl.Frame.ae_locInt (F := F) ξ⁻¹)
@@ -68,6 +98,23 @@ theorem exists_S (ξ : E) : ∃ S : Finset (Pl F), ∀ v ∉ S,
   rw [Set.Finite.mem_toFinset, Set.mem_ofPred_eq, not_not] at hv
   exact ⟨hv.1.mem, hv.2.mem⟩
 
+/- English proof (translation)
+Establish `hc` using `hB.cm`. Break down `GlobalTheory.KFinLoc.split_or_inert F E σ B hB v with ⟨⟨τ⟩⟩ | ⟨w, hw⟩` into its components or cases. Use `set e := splitAlgEquiv hc τ`. Establish `hu : e.symm (1, -1) * e.symm (1, -1) = 1`. Rewrite using `[← map_mul, Prod.mk_mul_mk, one_mul, neg_mul_neg, mul_one]`.
+
+Conclude with `map_one _`. Set `u : (Fv F v ⊗[F] E)ˣ` to `⟨e.symm (1, -1), e.symm (1, -1), hu, hu⟩`. Establish `hm : e.symm (1, -1) ∈ intLoc F E v` using `(mem_intLoc_iff_split hc τ).2 ⟨by rw [splitProj_symm]; exact one_mem _, by rw [splitProj_comp_symm]; exact neg_mem (one_mem _)⟩`. Use `⟨u, hm, hm, ?_⟩` and prove the remaining obligations. Apply `e.injective` to reduce the goal to its premises.
+
+Express the relevant statement in the definitionally equal form `e (sigR (Fv F v) σ (e.symm (1, -1))) = e (-(e.symm (1, -1)))`. Rewrite using `[splitAlgEquiv_sigR, map_neg, AlgEquiv.apply_symm_apply]`. Simplify using the standard rewrite rules. Establish `h : w.under (𝓞 F) = v` using `(GlobalTheory.LFun.InertChart.under_eq_iff hw w).2 rfl`. Take `⟨π, hπ⟩` from `HeightOneSpectrum.valuation_exists_uniformizer F v`.
+
+Establish `hv0 : w.valuation E ξ ≠ 0` using `(Valuation.ne_zero_iff _).2 hξ`. Use `set m := WithZero.log (w.valuation E ξ)`. Use `set z : E := algebraMap F E (π ^ m) * ξ with hzdef`. Establish `hz : w.valuation E z = 1`. Rewrite using `[hzdef, map_mul, GlobalTheory.InertValRestr.valuation_algebraMap_of_isInertAt F E v w hw, map_zpow₀, hπ, ← WithZero.exp_log hv0, ← WithZero.exp_zsmul, ← WithZero.exp_add]`.
+
+Simplify using `[m]`. Establish `hz0 : z ≠ 0`. Introduce `h0`. Rewrite `hz` using `[h0, map_zero]`. Conclude with `zero_ne_one hz`.
+
+Establish `hint : ∀ y : E, w.valuation E y = 1 → inclR (Fv F v) y ∈ intLoc F E v`. Introduce `y hy`. Rewrite using `[GlobalTheory.LFun.InertChart.mem_intLoc_iff hw h]`. Express the relevant statement in the definitionally equal form `GlobalTheory.LFun.toCompl h ((1 : Fv F v) ⊗ₜ[F] y) ∈ _`. Rewrite using `[GlobalTheory.LFun.toCompl_tmul, map_one, one_mul]`.
+
+Express the relevant statement in the definitionally equal form `_ ∈ HeightOneSpectrum.adicCompletionIntegers E w`. Rewrite using `[HeightOneSpectrum.mem_adicCompletionIntegers]`. Use `HeightOneSpectrum.valuedAdicCompletion_eq_valuation' w y` as an intermediate fact. Conclude with `(this.trans hy).le`. Establish `h1 : inclR (F` using `F) (Fv F v) z * inclR (F := F) (Fv F v) z⁻¹ = 1 := by rw [← map_mul, mul_inv_cancel₀ hz0, map_one]`.
+
+Establish `h2 : inclR (F` using `F) (Fv F v) z⁻¹ * inclR (F := F) (Fv F v) z = 1 := by rw [← map_mul, inv_mul_cancel₀ hz0, map_one]`. Use `⟨⟨inclR (Fv F v) z, inclR (Fv F v) z⁻¹, h1, h2⟩, hint z hz, hint z⁻¹ (by rw [map_inv₀, hz, inv_one]), ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `sigR (Fv F v) σ (inclR (Fv F v) z) = -inclR (Fv F v) z`. Rewrite using `[sigR_inclR, hzdef, map_mul, AlgHom.commutes, hσξ, mul_neg, map_neg]`.
+-/
 theorem exists_locUnit {B : Base F E} (hB : B.IsGood σ) {ξ : E} (hξ : ξ ≠ 0) (hσξ : σ ξ = -ξ) (v : Pl F) :
     ∃ u : (Fv F v ⊗[F] E)ˣ, (u : Fv F v ⊗[F] E) ∈ intLoc F E v ∧
       ((u⁻¹ : (Fv F v ⊗[F] E)ˣ) : Fv F v ⊗[F] E) ∈ intLoc F E v ∧ sigR (Fv F v) σ u = -(u : Fv F v ⊗[F] E) := by

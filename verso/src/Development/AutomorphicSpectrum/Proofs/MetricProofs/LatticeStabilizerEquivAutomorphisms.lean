@@ -17,6 +17,9 @@ section Ext
 variable {E : Type} [Field E] [NumberField E] {V : Type} [AddCommGroup V] [Module E V] {Λ : Type}
   [AddCommGroup Λ] [Module (𝓞 E) Λ]
 
+/- English proof (translation)
+Take `⟨B, hB, hsp, hli⟩` from `exists_linearIndependent E (e.range : Set V)`. Establish `hx : ∀ i : B, ∃ x, e x = i.1` using `fun i => AddMonoidHom.mem_range.1 (hB i.2)`. Use `choose xs hxs using hx`. Use `⟨B, Module.Basis.mk hli (by rw [Subtype.range_coe, hsp, hspan]), xs, fun i => ?_⟩` and prove the remaining obligations. Rewrite using `[Module.Basis.mk_apply, hxs]`.
+-/
 theorem exists_basis (e : Λ →+ V) (hspan : Submodule.span E (e.range : Set V) = ⊤) :
     ∃ (I : Type) (b : Module.Basis I E V) (xs : I → Λ), ∀ i, b i = e (xs i) := by
   obtain ⟨B, hB, hsp, hli⟩ := exists_linearIndependent E (e.range : Set V)
@@ -25,6 +28,13 @@ theorem exists_basis (e : Λ →+ V) (hspan : Submodule.span E (e.range : Set V)
   refine ⟨B, Module.Basis.mk hli (by rw [Subtype.range_coe, hsp, hspan]), xs, fun i => ?_⟩
   rw [Module.Basis.mk_apply, hxs]
 
+/- English proof (translation)
+Take `⟨⟨d, hd⟩, hint⟩` from `IsLocalization.exist_integer_multiples (nonZeroDivisors (𝓞 E)) (b.repr (e x)).support (fun i => b.repr (e x) i)`. Establish `h2 : ∀ i ∈ (b.repr (e x)).support, ∃ a : 𝓞 E, (a : E) = (d : E) * b.repr (e x) i`. Introduce `i hi`. Take `⟨a, ha⟩` from `hint i hi`. Use `⟨a, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[show (a : E) = algebraMap (𝓞 E) E a from rfl, ha, Algebra.smul_def]`. Use `choose! a ha using h2`. Use `⟨d, (b.repr (e x)).support, a, nonZeroDivisors.ne_zero hd, he ?_⟩` and prove the remaining obligations. Rewrite using `[hs, map_sum]`. Use `conv_lhs => rw [← b.linearCombination_repr (e x), Finsupp.linearCombination_apply, Finsupp.sum, Finset.smul_sum]`.
+
+Use `Finset.sum_congr rfl fun i hi => ?_` and prove the remaining obligations. Rewrite using `[hs, ← hb, ha i hi, smul_smul]`.
+-/
 theorem exists_clear {I : Type} (e : Λ →+ V) (he : Function.Injective e)
     (hs : ∀ (a : 𝓞 E) x, e (a • x) = (a : E) • e x) (b : Module.Basis I E V) (xs : I → Λ)
     (hb : ∀ i, b i = e (xs i)) (x : Λ) :
@@ -45,6 +55,11 @@ theorem exists_clear {I : Type} (e : Λ →+ V) (he : Function.Injective e)
   refine Finset.sum_congr rfl fun i hi => ?_
   rw [hs, ← hb, ha i hi, smul_smul]
 
+/- English proof (translation)
+Take `⟨I, b, xs, hb⟩` from `exists_basis e hspan`. Use `⟨b.constr E fun i => e (f (xs i)), fun x => ?_⟩` and prove the remaining obligations. Take `⟨d, s, a, hd, hx⟩` from `exists_clear e he hs b xs hb x`. Establish `hdE : (d : E) ≠ 0` using `by simpa using hd`. Establish `h1 : (d : E) • (b.constr E fun i => e (f (xs i))) (e x) = (d : E) • e (f x)`.
+
+Rewrite using `[← map_smul, ← hs, ← hs, ← map_smul, hx]`. Simplify using `only [map_sum, hs, map_smul, ← hb, Module.Basis.constr_basis]`. Conclude with `smul_right_injective _ hdE h1`.
+-/
 theorem exists_ext (e : Λ →+ V) (he : Function.Injective e)
     (hs : ∀ (a : 𝓞 E) x, e (a • x) = (a : E) • e x)
     (hspan : Submodule.span E (e.range : Set V) = ⊤) (f : Λ →ₗ[𝓞 E] Λ) :
@@ -58,6 +73,11 @@ theorem exists_ext (e : Λ →+ V) (he : Function.Injective e)
     simp only [map_sum, hs, map_smul, ← hb, Module.Basis.constr_basis]
   exact smul_right_injective _ hdE h1
 
+/- English proof (translation)
+Take `⟨Φ₁, h₁⟩` from `exists_ext e he hs hspan (φ : Λ →ₗ[𝓞 E] Λ)`. Take `⟨Φ₂, h₂⟩` from `exists_ext e he hs hspan (φ.symm : Λ →ₗ[𝓞 E] Λ)`. Use `⟨LinearEquiv.ofLinear Φ₁ Φ₂ ?_ ?_, fun x => h₁ x⟩` and prove the remaining obligations. Use `LinearMap.ext_on hspan ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨x, rfl⟩`.
+
+Simplify using `[h₁, h₂]`. Use `LinearMap.ext_on hspan ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨x, rfl⟩`. Simplify using `[h₁, h₂]`.
+-/
 theorem exists_extEquiv (e : Λ →+ V) (he : Function.Injective e)
     (hs : ∀ (a : 𝓞 E) x, e (a • x) = (a : E) • e x)
     (hspan : Submodule.span E (e.range : Set V) = ⊤) (φ : Λ ≃ₗ[𝓞 E] Λ) :
@@ -72,6 +92,11 @@ theorem exists_extEquiv (e : Λ →+ V) (he : Function.Injective e)
     rintro _ ⟨x, rfl⟩
     simp [h₁, h₂]
 
+/- English proof (translation)
+Use `choose f hf using h₁`. Use `choose k hk using h₂`. Use `⟨{ toFun := f, invFun := k, map_add' := fun x y => he ?_, map_smul' := fun a x => he ?_, left_inv := fun x => he ?_, right_inv := fun x => he ?_ }, hf⟩` and prove the remaining obligations. Simplify using `[hf]`. Simplify using `[hf, hs]`.
+
+Simplify using `[hf, hk]`. Simplify using `[hf, hk]`.
+-/
 theorem exists_lat (e : Λ →+ V) (he : Function.Injective e)
     (hs : ∀ (a : 𝓞 E) x, e (a • x) = (a : E) • e x) (γ : V ≃ₗ[E] V)
     (h₁ : ∀ x, ∃ y, e y = γ (e x)) (h₂ : ∀ x, ∃ y, e y = γ.symm (e x)) :
@@ -85,6 +110,13 @@ theorem exists_lat (e : Λ →+ V) (he : Function.Injective e)
   · simp [hf, hk]
   · simp [hf, hk]
 
+/- English proof (translation)
+Assume the negation of the conclusion as `hu`. Take `⟨z, hz⟩` from `Algebra.trace_surjective ℚ E 1`. Establish `halg : IsAlgebraic ℤ (z / (xi * u))` using `(IsFractionRing.isAlgebraic_iff ℤ ℚ E).2 (Algebra.IsAlgebraic.isAlgebraic _)`. Take `⟨m, hm, hint⟩` from `halg.exists_integral_multiple`. Establish `h1` using `h (IsIntegralClosure.mk' (𝓞 E) _ hint)`.
+
+Rewrite `h1` using `[show ((IsIntegralClosure.mk' (𝓞 E) _ hint : 𝓞 E) : E) = _ from IsIntegralClosure.algebraMap_mk' (𝓞 E) _ hint]`. Establish `h2 : xi * (m • (z / (xi * u)) * u) = (m : ℚ) • z`. Rewrite using `[zsmul_eq_mul, Algebra.smul_def]`. Simplify using `only [eq_intCast, map_intCast]`. Clear the denominators using the available nonvanishing facts.
+
+Rewrite `h1` using `[h2, map_smul, hz]`. Simplify using `at h1`. Conclude with `hm h1`.
+-/
 theorem eq_zero_of_trace {xi u : E} (hxi : xi ≠ 0)
     (h : ∀ a : 𝓞 E, Algebra.trace ℚ E (xi * ((a : E) * u)) = 0) : u = 0 := by
   by_contra hu
@@ -110,6 +142,15 @@ section Main
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {Ψ : Type} [Fintype Ψ] {j j' n g : ℕ}
   {Λ : Type} [AddCommGroup Λ] [Module (𝓞 E) Λ] {F : UnivFam E Ψ j j' n g Λ}
 
+/- English proof (translation)
+Establish `hΨ : ∃ τ : Ψ, True`. Assume the negation of the conclusion as `hn`. Establish `hn' : ∀ τ : Ψ, False` using `fun τ => hn ⟨τ, trivial⟩`. Set `s : 𝓞 E →+* ℂ` to `(Classical.arbitrary (InfinitePlace E)).embedding.comp (algebraMap (𝓞 E) E)`. Establish `h` using `(F.cm.2 s).2 (fun ⟨τ, _⟩ => hn' τ)`.
+
+Conclude with `hn' h.choose`. Take `⟨τ, -⟩` from `hΨ`. Introduce `h0`. Establish `h1` using `C.xi_eq τ`. Rewrite `h1` using `[h0, map_zero]`.
+
+Establish `he : C.eps τ ≠ 0`. Introduce `h`. Use `C.eps_sq τ` as an intermediate fact. Rewrite `this` using `[h]`. Evaluate the numerical expressions using `at this`.
+
+Establish `hc : C.c * C.eps τ ≠ 0` using `mul_ne_zero C.c_pos.ne' he`. Establish `: ((C.c * C.eps τ : ℝ) : ℂ) ≠ 0` using `by exact_mod_cast hc`. Conclude with `(mul_ne_zero Complex.I_ne_zero this) h1.symm`.
+-/
 theorem xi_ne_zero (C : LatEmb F) : C.xi ≠ 0 := by
   have hΨ : ∃ τ : Ψ, True := by
     by_contra hn
@@ -130,6 +171,11 @@ theorem xi_ne_zero (C : LatEmb F) : C.xi ≠ 0 := by
   have : ((C.c * C.eps τ : ℝ) : ℂ) ≠ 0 := by exact_mod_cast hc
   exact (mul_ne_zero Complex.I_ne_zero this) h1.symm
 
+/- English proof (translation)
+Rewrite using `[← sub_eq_zero]`. Use `eq_zero_of_trace (xi_ne_zero C) fun a => ?_` and prove the remaining obligations. Establish `h1` using `C.form_eq (a • φ.1 x) (φ.1 y)`. Establish `h2` using `C.form_eq (a • x) y`. Establish `h3 : F.form (a • φ.1 x) (φ.1 y) = F.form (a • x) y`.
+
+Rewrite using `[← map_smul]`. Conclude with `φ.2 _ _`. Rewrite `h1` using `[h3, h2, C.e_smul, C.e_smul, map_smul, map_smul, smul_eq_mul, smul_eq_mul]`. Rewrite using `[mul_sub, mul_sub, map_sub, sub_eq_zero]`. Conclude with `h1.symm`.
+-/
 theorem sesq_eq (C : LatEmb F) (φ : autGrp (E := E) F.form) (x y : Λ) :
     C.h.toSesq (C.e (φ.1 y)) (C.e (φ.1 x)) = C.h.toSesq (C.e y) (C.e x) := by
   rw [← sub_eq_zero]
@@ -143,6 +189,11 @@ theorem sesq_eq (C : LatEmb F) (φ : autGrp (E := E) F.form) (x y : Λ) :
   rw [mul_sub, mul_sub, map_sub, sub_eq_zero]
   exact h1.symm
 
+/- English proof (translation)
+Take `⟨I, b, xs, hb⟩` from `exists_basis C.e C.integral.isLattice.span_eq_top`. Introduce `v w`. Establish `key : (C.h.toSesq.comp (Φ : (Fin (j + j') → E) →ₗ[E] (Fin (j + j') → E))).compl₂ (Φ : (Fin (j + j') → E) →ₗ[E] (Fin (j + j') → E)) = C.h.toSesq`. Use `LinearMap.ext_basis b b fun p q => ?_` and prove the remaining obligations. Simplify using `only [LinearMap.compl₂_apply, LinearMap.comp_apply, LinearEquiv.coe_coe, hb, hΦ]`.
+
+Conclude with `sesq_eq C φ _ _`. Conclude with `LinearMap.congr_fun₂ key v w`.
+-/
 theorem ext_unitary (C : LatEmb F) (φ : autGrp (E := E) F.form)
     (Φ : (Fin (j + j') → E) ≃ₗ[E] (Fin (j + j') → E)) (hΦ : ∀ x, Φ (C.e x) = C.e (φ.1 x)) :
     Φ ∈ C.h.unitaryGroup := by
@@ -156,6 +207,9 @@ theorem ext_unitary (C : LatEmb F) (φ : autGrp (E := E) F.form)
   exact LinearMap.congr_fun₂ key v w
 
 open scoped Pointwise in
+/- English proof (translation)
+Establish `hs : (γ : C.h.unitaryGroup) • C.e.range = C.e.range` using `MulAction.mem_stabilizer_iff.1 γ.2`. Establish `h1 : (γ : C.h.unitaryGroup) • C.e x ∈ (γ : C.h.unitaryGroup) • C.e.range` using `AddSubgroup.smul_mem_pointwise_smul _ _ _ ⟨x, rfl⟩`. Rewrite `h1` using `[hs]`. Conclude with `h1`.
+-/
 theorem stab_apply_mem (C : LatEmb F) (γ : latticeStab C.h C.e.range) (x : Λ) :
     ∃ y, C.e y = ((γ : C.h.unitaryGroup) : (Fin (j + j') → E) ≃ₗ[E] (Fin (j + j') → E)) (C.e x) := by
   have hs : (γ : C.h.unitaryGroup) • C.e.range = C.e.range := MulAction.mem_stabilizer_iff.1 γ.2
@@ -164,6 +218,11 @@ theorem stab_apply_mem (C : LatEmb F) (γ : latticeStab C.h C.e.range) (x : Λ) 
   rw [hs] at h1
   exact h1
 
+/- English proof (translation)
+Take `⟨φ, hφ⟩` from `exists_lat C.e C.e_inj C.e_smul ((γ : C.h.unitaryGroup) : (Fin (j + j') → E) ≃ₗ[E] (Fin (j + j') → E)) (stab_apply_mem C γ) (stab_apply_mem C γ⁻¹)`. Use `⟨⟨φ, fun x y => ?_⟩, hφ⟩` and prove the remaining obligations. Establish `hu` using `(γ : C.h.unitaryGroup).2 (C.e y) (C.e x)`. Apply `Int.cast_injective (α := ℚ)` to reduce the goal to its premises. Rewrite using `[C.form_eq, C.form_eq, hφ, hφ]`.
+
+Conclude with `congrArg (fun t => Algebra.trace ℚ E (C.xi * t)) hu`.
+-/
 theorem exists_of_stab (C : LatEmb F) (γ : latticeStab C.h C.e.range) :
     ∃ φ : autGrp (E := E) F.form, ∀ x, C.e (φ.1 x) =
       ((γ : C.h.unitaryGroup) : (Fin (j + j') → E) ≃ₗ[E] (Fin (j + j') → E)) (C.e x) := by
@@ -178,6 +237,13 @@ theorem exists_of_stab (C : LatEmb F) (γ : latticeStab C.h C.e.range) :
 
 open scoped Pointwise in
 
+/- English proof (translation)
+Take `⟨Φ, hΦ⟩` from `exists_extEquiv C.e C.e_inj C.e_smul C.integral.isLattice.span_eq_top φ.1`. Establish `hU` using `ext_unitary C φ Φ hΦ`. Use `⟨⟨⟨Φ, hU⟩, ?_⟩, hΦ⟩` and prove the remaining obligations. Use `MulAction.mem_stabilizer_iff.2 ?_` and prove the remaining obligations. Use extensionality with `v`.
+
+Express the relevant statement in the definitionally equal form `v ∈ Φ • C.e.range ↔ _`. Rewrite using `[AddSubgroup.mem_smul_pointwise_iff_exists]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨_, ⟨x, rfl⟩, rfl⟩`. Conclude with `⟨φ.1 x, (hΦ x).symm⟩`.
+
+Introduce and unpack `⟨y, rfl⟩`. Use `⟨C.e (φ.1.symm y), ⟨_, rfl⟩, ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `Φ (C.e (φ.1.symm y)) = _`. Rewrite using `[hΦ, LinearEquiv.apply_symm_apply]`.
+-/
 theorem exists_of_aut (C : LatEmb F) (φ : autGrp (E := E) F.form) :
     ∃ γ : latticeStab C.h C.e.range, ∀ x,
       ((γ : C.h.unitaryGroup) : (Fin (j + j') → E) ≃ₗ[E] (Fin (j + j') → E)) (C.e x) = C.e (φ.1 x) := by
@@ -196,6 +262,13 @@ theorem exists_of_aut (C : LatEmb F) (φ : autGrp (E := E) F.form) :
     change Φ (C.e (φ.1.symm y)) = _
     rw [hΦ, LinearEquiv.apply_symm_apply]
 
+/- English proof (translation)
+Introduce `E _ _ _ Ψ _ j j' n g Λ _ _ F C`. Use `choose A hA using exists_of_stab C`. Use `choose B hB using exists_of_aut C`. Establish `hspan` using `C.integral.isLattice.span_eq_top`. Use `⟨{ toFun := A, invFun := B, left_inv := fun γ => ?_, right_inv := fun φ => ?_, map_mul' := fun a b => ?_ }, hA⟩` and prove the remaining obligations.
+
+Use `Subtype.ext (Subtype.ext (LinearEquiv.toLinearMap_injective (LinearMap.ext_on hspan ?_)))` and prove the remaining obligations. Introduce and unpack `_ ⟨x, rfl⟩`. Simplify using `only [LinearEquiv.coe_coe]`. Rewrite using `[hB, hA]`. Conclude with `Subtype.ext (LinearEquiv.ext fun x => C.e_inj (by rw [hA, hB]))`.
+
+Use `Subtype.ext (LinearEquiv.ext fun x => C.e_inj ?_)` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `C.e ((A (a * b)).1 x) = C.e ((A a).1 ((A b).1 x))`. Rewrite using `[hA, hA, hA]`. Both sides reduce to the same expression.
+-/
 theorem exists_alpha : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (Ψ : Type) [Fintype Ψ] (j j' n g : ℕ) (Λ : Type) [AddCommGroup Λ] [Module (𝓞 E) Λ] (F : UnivFam E Ψ j j' n g Λ) (C : LatEmb F), ∃ α : latticeStab C.h C.e.range ≃* autGrp (E := E) F.form, ∀ γ x, C.e ((α γ).1 x) = ((γ : C.h.unitaryGroup) : (Fin (j + j') → E) ≃ₗ[E] (Fin (j + j') → E)) (C.e x) := by
   intro E _ _ _ Ψ _ j j' n g Λ _ _ F C
   choose A hA using exists_of_stab C

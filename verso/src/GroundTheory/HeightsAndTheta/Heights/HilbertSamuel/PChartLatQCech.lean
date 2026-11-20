@@ -21,17 +21,33 @@ variable {K : Type} [Fintype K] {ι : K → Type} [∀ k, Fintype (ι k)]
 def cmq (c : ∀ k, ι k) (e : K → ℕ) : MRingOver ℚ ι :=
   MvPolynomial.map (Int.castRingHom ℚ) (cmon c e)
 
+/- English proof (translation)
+The claim follows from `homog_map _ (homog_cmon c e)`.
+-/
 theorem homog_cmq (c : ∀ k, ι k) (e : K → ℕ) : IsMultiHomog (cmq c e) e :=
   homog_map _ (homog_cmon c e)
 
+/- English proof (translation)
+Rewrite using `[cmq, cmon_add, map_mul]`. Both sides reduce to the same expression.
+-/
 theorem cmq_add (c : ∀ k, ι k) (e f : K → ℕ) : cmq c (e + f) = cmq c e * cmq c f := by
   rw [cmq, cmon_add, map_mul]; rfl
 
+/- English proof (translation)
+Rewrite using `[cmq, cmon, map_prod]`. Conclude with `Finset.prod_ne_zero_iff.mpr fun k _ => by`. Rewrite using `[map_pow, map_X]`. Conclude with `pow_ne_zero _ (X_ne_zero _)`.
+-/
 theorem cmq_ne_zero (c : ∀ k, ι k) (e : K → ℕ) : cmq c e ≠ 0 := by
   rw [cmq, cmon, map_prod]
   exact Finset.prod_ne_zero_iff.mpr fun k _ => by
     rw [map_pow, map_X]; exact pow_ne_zero _ (X_ne_zero _)
 
+/- English proof (translation)
+Proceed by induction on `ht using Submonoid.closure_induction with`. Consider the case `mem x hx`. Take `⟨k, i, hi, rfl⟩` from `hx`. Establish `hi' : i = c k` using `Finset.mem_singleton.mp hi`. Substitute `hi'` using the available equality.
+
+Use `⟨Pi.single k 1, ?_⟩` and prove the remaining obligations. Rewrite using `[cmq, cmon, map_prod]`. Rewrite using `[Finset.prod_eq_single k (fun k' _ hk' => by simp [hk']) (fun h => absurd (Finset.mem_univ k) h)]`. Simplify using the standard rewrite rules. Consider the case `one => exact ⟨0, by simp [cmq, cmon]⟩`.
+
+Consider the case `mul x x' _ _ hx hx'`. Take `⟨f, rfl⟩` from `hx`. Take `⟨f', rfl⟩` from `hx'`. Conclude with `⟨f + f', (cmq_add c f f').symm⟩`.
+-/
 theorem mem_cellMon_chartQ {c : ∀ k, ι k} {t : MRingOver ℚ ι} (ht : t ∈ KH.cellMon ℚ (chartCell c).1) :
     ∃ e : K → ℕ, t = cmq c e := by
   classical
@@ -54,9 +70,15 @@ section Eval
 
 variable {Ω : Type} [Field Ω] [CharZero Ω] {y : (Σ k, ι k) → Ω}
 
+/- English proof (translation)
+Rewrite using `[cmq, ← algebraMap_int_eq, MvPolynomial.aeval_map_algebraMap, aeval_cmon]`.
+-/
 theorem aeval_cmq (c : ∀ k, ι k) (e : K → ℕ) : aeval y (cmq c e) = ∏ k, y ⟨k, c k⟩ ^ e k := by
   rw [cmq, ← algebraMap_int_eq, MvPolynomial.aeval_map_algebraMap, aeval_cmon]
 
+/- English proof (translation)
+Establish `h : idealOver y ℚ ≤ RingHom.ker (aeval y : MRingOver ℚ ι →ₐ[ℚ] Ω)`. Use `Ideal.map_le_iff_le_comap.mpr fun g hg => ?_` and prove the remaining obligations. Rewrite using `[Ideal.mem_comap, RingHom.mem_ker, ← algebraMap_int_eq, MvPolynomial.aeval_map_algebraMap, aeval_eq_eval_mConeMap y g, RingHom.mem_ker.mp hg, map_zero]`. Conclude with `RingHom.mem_ker.mp (h hf)`.
+-/
 theorem aeval_eq_zero_of_memQ {f : MRingOver ℚ ι} (hf : f ∈ idealOver y ℚ) : aeval y f = 0 := by
   have h : idealOver y ℚ ≤ RingHom.ker (aeval y : MRingOver ℚ ι →ₐ[ℚ] Ω) := by
     refine Ideal.map_le_iff_le_comap.mpr fun g hg => ?_
@@ -66,6 +88,17 @@ theorem aeval_eq_zero_of_memQ {f : MRingOver ℚ ι} (hf : f ∈ idealOver y ℚ
 
 attribute [local instance] MvPolynomial.algebraMvPolynomial in
 
+/- English proof (translation)
+Take `⟨⟨G, ⟨_, n, hn, rfl⟩⟩, hG⟩` from `IsLocalization.surj (S := MRingOver ℚ ι) (Submonoid.map (C : ℤ →+* MRing ι) (nonZeroDivisors ℤ)) p`. Express the relevant statement in the definitionally equal form `p * MvPolynomial.map (algebraMap ℤ ℚ) (C n) = MvPolynomial.map (algebraMap ℤ ℚ) G at hG`. Rewrite `hG` using `[map_C, algebraMap_int_eq, eq_intCast]`. Establish `hG' : (n : ℚ) • p = MvPolynomial.map (Int.castRingHom ℚ) G`. Rewrite using `[← hG, mul_comm, C_mul']`.
+
+Establish `hn0 : (n : ℚ) ≠ 0` using `by exact_mod_cast nonZeroDivisors.ne_zero hn`. Establish `hGh : IsMultiHomog G d`. Introduce `m hm`. Apply `hp m` to reduce the goal to its premises. Rewrite `hm`, the goal using `[MvPolynomial.mem_support_iff]`.
+
+Establish `h1` using `congrArg (MvPolynomial.coeff m) hG'`. Rewrite `h1` using `[MvPolynomial.coeff_map, MvPolynomial.coeff_smul]`. Introduce `h2`. Rewrite `h1` using `[h2, smul_zero]`. Conclude with `hm (by simpa using h1.symm)`.
+
+Establish `hG0 : aeval y G = 0`. Establish `h1` using `congrArg (aeval y) hG'`. Rewrite `h1` using `[← algebraMap_int_eq, MvPolynomial.aeval_map_algebraMap, map_smul, h0, smul_zero]`. Conclude with `h1.symm`. Establish `hmem` using `mem_idealOver (S := ℚ) hGh hG0`.
+
+Rewrite `hmem` using `[← hG]`. Establish `e : p = p * C (n : ℚ) * C ((n : ℚ)⁻¹)`. Rewrite using `[mul_assoc, ← C_mul, mul_inv_cancel₀ hn0, C_1, mul_one]`. Rewrite using `[e]`. Conclude with `Ideal.mul_mem_right _ _ hmem`.
+-/
 theorem mem_idealOverQ {p : MRingOver ℚ ι} {d : K → ℕ} (hp : IsMultiHomog p d) (h0 : aeval y p = 0) :
     p ∈ idealOver y ℚ := by
   obtain ⟨⟨G, ⟨_, n, hn, rfl⟩⟩, hG⟩ :=
@@ -100,12 +133,23 @@ variable (y) in
 def evQ : (MRingOver ℚ ι ⧸ idealOver y ℚ) →ₐ[ℚ] Ω :=
   Ideal.Quotient.liftₐ (idealOver y ℚ) (aeval y) fun _ ha => aeval_eq_zero_of_memQ ha
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem evQ_mk (p : MRingOver ℚ ι) : evQ y (Ideal.Quotient.mk _ p) = aeval y p := rfl
 
+/- English proof (translation)
+Rewrite using `[smul_quot, map_mul, evQ_mk]`.
+-/
 theorem evQ_smul (r : MRingOver ℚ ι) (m : MRingOver ℚ ι ⧸ idealOver y ℚ) :
     evQ y (r • m) = aeval y r * evQ y m := by
   rw [smul_quot, map_mul, evQ_mk]
 
+/- English proof (translation)
+Introduce `t ht`. Proceed by induction on `ht using Submonoid.closure_induction with`. Consider the case `mem x hx`. Take `⟨k, i, hi, rfl⟩` from `hx`. Rewrite using `[aeval_X]`.
+
+Conclude with `hI k i hi`. Consider the case `one => simp`. Consider the case `mul x x' _ _ hx hx' => rw [map_mul]`. Conclude with `mul_ne_zero hx hx'`.
+-/
 theorem cellMon_aevalQ_ne {I : ∀ k, Finset (ι k)} (hI : ∀ k, ∀ i ∈ I k, y ⟨k, i⟩ ≠ 0) :
     ∀ t ∈ KH.cellMon ℚ I, aeval y t ≠ 0 := by
   intro t ht
@@ -135,11 +179,21 @@ def val (T : Submonoid (MRingOver ℚ ι)) (x : LocalizedModule T (MRingOver ℚ
       linear_combination h')
   else 0
 
+/- English proof (translation)
+Rewrite using `[val, dif_pos hT]`. Both sides reduce to the same expression.
+-/
 theorem val_mk {T : Submonoid (MRingOver ℚ ι)} (hT : ∀ t ∈ T, aeval y t ≠ 0) (m : MRingOver ℚ ι ⧸ idealOver y ℚ)
     (t : T) : val y T (LocalizedModule.mk m t) = evQ y m / aeval y (t : MRingOver ℚ ι) := by
   rw [val, dif_pos hT]
   rfl
 
+/- English proof (translation)
+Distinguish the cases in `hT : ∀ t ∈ T, aeval y t ≠ 0`. Proceed by induction on `x using LocalizedModule.induction_on with`. Consider the case `h m s`. Proceed by induction on `x' using LocalizedModule.induction_on with`. Consider the case `h m' s'`.
+
+Rewrite using `[LocalizedModule.mk_add_mk, val_mk hT, val_mk hT, val_mk hT]`. Simplify using `only [Submonoid.coe_mul, map_add, Submonoid.smul_def, evQ_smul, map_mul]`. Establish `hs` using `hT _ s.2`. Establish `hs'` using `hT _ s'.2`. Clear the denominators using the available nonvanishing facts.
+
+Simplify using `only [val, dif_neg hT, add_zero]`.
+-/
 theorem val_add (T : Submonoid (MRingOver ℚ ι)) (x x' : LocalizedModule T (MRingOver ℚ ι ⧸ idealOver y ℚ)) :
     val y T (x + x') = val y T x + val y T x' := by
   by_cases hT : ∀ t ∈ T, aeval y t ≠ 0
@@ -154,6 +208,9 @@ theorem val_add (T : Submonoid (MRingOver ℚ ι)) (x x' : LocalizedModule T (MR
         field_simp
   · simp only [val, dif_neg hT, add_zero]
 
+/- English proof (translation)
+Distinguish the cases in `hT : ∀ t ∈ T, aeval y t ≠ 0`. Proceed by induction on `x using LocalizedModule.induction_on with`. Consider the case `h m s`. Rewrite using `[LocalizedModule.smul'_mk, val_mk hT, val_mk hT, map_smul, smul_div_assoc]`. Simplify using `only [val, dif_neg hT, smul_zero]`.
+-/
 theorem val_smul (T : Submonoid (MRingOver ℚ ι)) (r : ℚ)
     (x : LocalizedModule T (MRingOver ℚ ι ⧸ idealOver y ℚ)) : val y T (r • x) = r • val y T x := by
   by_cases hT : ∀ t ∈ T, aeval y t ≠ 0
@@ -169,11 +226,17 @@ def valL (T : Submonoid (MRingOver ℚ ι)) : LocalizedModule T (MRingOver ℚ �
   map_add' := val_add T
   map_smul' := fun r x => val_smul T r x
 
+/- English proof (translation)
+Rewrite using `[IsLocalizedModule.mk_eq_mk', IsLocalizedModule.liftOfLE_mk', ← IsLocalizedModule.mk_eq_mk']`.
+-/
 theorem liftOfLE_mk {T T' : Submonoid (MRingOver ℚ ι)} (h : T ≤ T')
     (m : MRingOver ℚ ι ⧸ idealOver y ℚ) (s : T) :
     LocalizedModule.liftOfLE T T' h (LocalizedModule.mk m s) = LocalizedModule.mk m (⟨s.1, h s.2⟩ : T') := by
   rw [IsLocalizedModule.mk_eq_mk', IsLocalizedModule.liftOfLE_mk', ← IsLocalizedModule.mk_eq_mk']
 
+/- English proof (translation)
+Establish `hT : ∀ t ∈ T, aeval y t ≠ 0` using `fun t ht => hT' t (h ht)`. Proceed by induction on `x using LocalizedModule.induction_on with`. Consider the case `h m s`. Rewrite using `[liftOfLE_mk, val_mk hT', val_mk hT]`.
+-/
 theorem val_liftOfLE {T T' : Submonoid (MRingOver ℚ ι)} (h : T ≤ T') (hT' : ∀ t ∈ T', aeval y t ≠ 0)
     (x : LocalizedModule T (MRingOver ℚ ι ⧸ idealOver y ℚ)) :
     val y T' (LocalizedModule.liftOfLE T T' h x) = val y T x := by
@@ -182,6 +245,9 @@ theorem val_liftOfLE {T T' : Submonoid (MRingOver ℚ ι)} (h : T ≤ T') (hT' :
   | h m s =>
     rw [liftOfLE_mk, val_mk hT', val_mk hT]
 
+/- English proof (translation)
+Take `⟨m, t, β, ht, hm, rfl⟩` from `locPart_eq_mk hx`. Rewrite using `[liftOfLE_mk]`. Conclude with `Submodule.subset_span ⟨m, ⟨t, h t.2⟩, β, ht, hm, rfl⟩`.
+-/
 theorem locPart_liftOfLE {T T' : Submonoid (MRingOver ℚ ι)} (h : T ≤ T') {b : K → ℤ}
     {x : LocalizedModule T (MRingOver ℚ ι ⧸ idealOver y ℚ)}
     (hx : x ∈ KH.locPart ι (KH.quotPart ℚ (idealOver y ℚ)) T b) :
@@ -190,6 +256,11 @@ theorem locPart_liftOfLE {T T' : Submonoid (MRingOver ℚ ι)} (h : T ≤ T') {b
   rw [liftOfLE_mk]
   exact Submodule.subset_span ⟨m, ⟨t, h t.2⟩, β, ht, hm, rfl⟩
 
+/- English proof (translation)
+Take `⟨m, t, β, -, hm, rfl⟩` from `locPart_eq_mk hx`. Distinguish the cases in `hm0 : m = 0`. Rewrite using `[hm0, LocalizedModule.zero_mk]`. It suffices to derive a contradiction. Take `⟨-, p, hp, rfl⟩` from `quotPart_eq_mk hm hm0`.
+
+Rewrite `h0` using `[val_mk hT, evQ_mk, div_eq_zero_iff]`. Break down `h0 with h0 | h0` into its components or cases. Conclude with `hm0 (Ideal.Quotient.eq_zero_iff_mem.mpr (mem_idealOverQ hp h0))`. Conclude with `hT _ t.2 h0`.
+-/
 theorem eq_zero_of_val {T : Submonoid (MRingOver ℚ ι)} (hT : ∀ t ∈ T, aeval y t ≠ 0) {b : K → ℤ}
     {x : LocalizedModule T (MRingOver ℚ ι ⧸ idealOver y ℚ)}
     (hx : x ∈ KH.locPart ι (KH.quotPart ℚ (idealOver y ℚ)) T b) (h0 : val y T x = 0) : x = 0 := by
@@ -203,6 +274,9 @@ theorem eq_zero_of_val {T : Submonoid (MRingOver ℚ ι)} (hT : ∀ t ∈ T, aev
     · exact hm0 (Ideal.Quotient.eq_zero_iff_mem.mpr (mem_idealOverQ hp h0))
     · exact hT _ t.2 h0
 
+/- English proof (translation)
+Use `sub_eq_zero.mp (eq_zero_of_val hT (sub_mem hx hx') ?_)` and prove the remaining obligations. Use `show valL y T (x - x') = 0`. Rewrite using `[map_sub]`. Conclude with `sub_eq_zero.mpr h`.
+-/
 theorem eq_of_val_eq {T : Submonoid (MRingOver ℚ ι)} (hT : ∀ t ∈ T, aeval y t ≠ 0) {b : K → ℤ}
     {x x' : LocalizedModule T (MRingOver ℚ ι ⧸ idealOver y ℚ)}
     (hx : x ∈ KH.locPart ι (KH.quotPart ℚ (idealOver y ℚ)) T b)
@@ -218,6 +292,13 @@ section Chart
 
 variable {Ω : Type} [Field Ω] [CharZero Ω] {y : (Σ k, ι k) → Ω}
 
+/- English proof (translation)
+Rewrite using `[g.as_sum, map_sum, Finset.sum_div]`. Use `Subalgebra.sum_mem _ fun m hm => ?_` and prove the remaining obligations. Rewrite using `[aeval_monomial, mul_div_assoc]`. Use `Subalgebra.mul_mem _ (Subalgebra.algebraMap_mem _ _) ?_` and prove the remaining obligations. Establish `key : m.prod (fun p e => y p ^ e) / ∏ k, y ⟨k, c k⟩ ^ d k = ∏ p, (y p / y ⟨p.1, c p.1⟩) ^ m p`.
+
+Rewrite using `[Finsupp.prod_fintype _ _ (by simp)]`. Simplify using `only [div_pow]`. Rewrite using `[Finset.prod_div_distrib]`. Use `congr 1`. Rewrite using `[Fintype.prod_sigma]`.
+
+Use `Finset.prod_congr rfl fun k _ => ?_` and prove the remaining obligations. Simplify using `only`. Rewrite using `[Finset.prod_pow_eq_pow_sum, hg m hm k]`. Rewrite using `[key]`. Conclude with `Subalgebra.prod_mem _ fun p _ => Subalgebra.pow_mem _ (Algebra.subset_adjoin (Set.mem_range_self (f := fun p : Σ k, ι k => y p / y ⟨p.1, c p.1⟩) p)) _`.
+-/
 theorem aeval_div_memQ (c : ∀ k, ι k) {g : MRingOver ℚ ι} {d : K → ℕ} (hg : IsMultiHomog g d) :
     aeval y g / ∏ k, y ⟨k, c k⟩ ^ d k ∈ chartRingQ y c := by
   classical
@@ -238,6 +319,19 @@ theorem aeval_div_memQ (c : ∀ k, ι k) {g : MRingOver ℚ ι} {d : K → ℕ} 
   exact Subalgebra.prod_mem _ fun p _ => Subalgebra.pow_mem _
     (Algebra.subset_adjoin (Set.mem_range_self (f := fun p : Σ k, ι k => y p / y ⟨p.1, c p.1⟩) p)) _
 
+/- English proof (translation)
+Proceed by induction on `hr using Algebra.adjoin_induction with`. Consider the case `mem x hx`. Take `⟨⟨k, i⟩, rfl⟩` from `hx`. Use `⟨Pi.single k 1, X ⟨k, i⟩, homog_X k i, ?_⟩` and prove the remaining obligations. Establish `hprod : ∏ k', y ⟨k', c k'⟩ ^ (Pi.single k 1 : K → ℕ) k' = y ⟨k, c k⟩`.
+
+Rewrite using `[Finset.prod_eq_single k (fun k' _ hk' => by simp [hk']) (fun h => absurd (Finset.mem_univ k) h)]`. Simplify using the standard rewrite rules. Rewrite using `[hprod, aeval_X]`. Clear denominators, using `[hc k]` for the nonvanishing conditions. Consider the case `algebraMap q`.
+
+Conclude with `⟨0, C q, homog_C q, by simp⟩`. Consider the case `add x z _ _ hx hz`. Take `⟨e1, F1, hF1, hv1⟩` from `hx`. Take `⟨e2, F2, hF2, hv2⟩` from `hz`. Use `⟨e1 + e2, F1 * cmq c e2 + F2 * cmq c e1, ?_, ?_⟩` and prove the remaining obligations.
+
+Use `homog_add (homog_mul hF1 (homog_cmq c e2)) ?_` and prove the remaining obligations. Rewrite using `[add_comm e1 e2]`. Conclude with `homog_mul hF2 (homog_cmq c e1)`. Rewrite using `[map_add, map_mul, map_mul, hv1, hv2, aeval_cmq, aeval_cmq, prod_pow_add]`. Expand and normalize the polynomial expressions, which then agree.
+
+Consider the case `mul x z _ _ hx hz`. Take `⟨e1, F1, hF1, hv1⟩` from `hx`. Take `⟨e2, F2, hF2, hv2⟩` from `hz`. Use `⟨e1 + e2, F1 * F2, homog_mul hF1 hF2, ?_⟩` and prove the remaining obligations. Rewrite using `[map_mul, hv1, hv2, prod_pow_add]`.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem exists_formQ (c : ∀ k, ι k) (hc : ∀ k, y ⟨k, c k⟩ ≠ 0) {r : Ω} (hr : r ∈ chartRingQ y c) :
     ∃ (e : K → ℕ) (F : MRingOver ℚ ι), IsMultiHomog F e ∧ aeval y F = r * ∏ k, y ⟨k, c k⟩ ^ e k := by
   classical
@@ -269,6 +363,13 @@ theorem exists_formQ (c : ∀ k, ι k) (hc : ∀ k, y ⟨k, c k⟩ ≠ 0) {r : �
     rw [map_mul, hv1, hv2, prod_pow_add]
     ring
 
+/- English proof (translation)
+Take `⟨e, F, hF, hv⟩` from `exists_formQ c hc hs`. Use `⟨e + fun k => (-b k).toNat, e + fun k => (b k).toNat, F * cmq c (fun k => (b k).toNat), homog_mul hF (homog_cmq c _), fun k => ?_, ?_⟩` and prove the remaining obligations. Simplify using `only [Pi.add_apply, Nat.cast_add]`. Use linear arithmetic over natural numbers and integers. Rewrite using `[map_mul, hv, aeval_cmq, prod_pow_add]`.
+
+Establish `hk : ∀ k, y ⟨k, c k⟩ ^ (-b k) * y ⟨k, c k⟩ ^ (b k).toNat = y ⟨k, c k⟩ ^ (-b k).toNat`. Introduce `k`. Rewrite using `[← zpow_natCast, ← zpow_natCast, ← zpow_add₀ (hc k)]`. Use `congr 1`. Use linear arithmetic over natural numbers and integers.
+
+Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Finset.prod_mul_distrib]`. Expand and normalize the polynomial expressions, which then agree. Use `_ = _ := by simp only [hk]; ring`.
+-/
 theorem exists_fracQ (c : ∀ k, ι k) (hc : ∀ k, y ⟨k, c k⟩ ≠ 0) {s : Ω} (b : K → ℤ)
     (hs : s * ∏ k, y ⟨k, c k⟩ ^ (-b k) ∈ chartRingQ y c) :
     ∃ (e d : K → ℕ) (F : MRingOver ℚ ι), IsMultiHomog F d ∧ (∀ k, (d k : ℤ) = e k + b k) ∧
@@ -289,6 +390,15 @@ theorem exists_fracQ (c : ∀ k, ι k) (hc : ∀ k, y ⟨k, c k⟩ ≠ 0) {s : �
           rw [Finset.prod_mul_distrib]; ring
       _ = _ := by simp only [hk]; ring
 
+/- English proof (translation)
+Take `⟨e, d, F, hF, hd, hv⟩` from `exists_fracQ c hc b hs`. Use `⟨LocalizedModule.mk (Ideal.Quotient.mk _ F) ⟨_, hcT e⟩, ?_, ?_⟩` and prove the remaining obligations. Use `Submodule.subset_span ⟨_, ⟨_, hcT e⟩, e, homog_cmq c e, ?_, rfl⟩` and prove the remaining obligations. Use `Submodule.subset_span ⟨F, ⟨fun k => ?_, ?_⟩, rfl⟩` and prove the remaining obligations. Use `hd k` as an intermediate fact.
+
+Simplify using `only [Pi.add_apply]`. Use linear arithmetic over natural numbers and integers. Establish `hd' : (fun k => ((b + fun k => (e k : ℤ)) k).toNat) = d` using `funext fun k => by`. Use `hd k` as an intermediate fact. Simplify using `only [Pi.add_apply]`.
+
+Use linear arithmetic over natural numbers and integers. Rewrite using `[hd']`. Conclude with `hF`. Rewrite using `[val_mk hT, evQ_mk, hv] show s * _ / aeval y (cmq c e) = s`. Rewrite using `[aeval_cmq]`.
+
+Establish `: ∏ k, y ⟨k, c k⟩ ^ e k ≠ 0` using `Finset.prod_ne_zero_iff.mpr fun k _ => pow_ne_zero _ (hc k)`. Clear the denominators using the available nonvanishing facts.
+-/
 theorem exists_rep {T : Submonoid (MRingOver ℚ ι)} (hT : ∀ t ∈ T, aeval y t ≠ 0) (c : ∀ k, ι k)
     (hc : ∀ k, y ⟨k, c k⟩ ≠ 0) (hcT : ∀ e, cmq c e ∈ T) {s : Ω} {b : K → ℤ}
     (hs : s * ∏ k, y ⟨k, c k⟩ ^ (-b k) ∈ chartRingQ y c) :
@@ -312,6 +422,19 @@ theorem exists_rep {T : Submonoid (MRingOver ℚ ι)} (hT : ∀ t ∈ T, aeval y
     have : ∏ k, y ⟨k, c k⟩ ^ e k ≠ 0 := Finset.prod_ne_zero_iff.mpr fun k _ => pow_ne_zero _ (hc k)
     field_simp
 
+/- English proof (translation)
+Establish `hT` using `cellMon_aevalQ_ne (y := y) (chartCell_good hc)`. Take `⟨m, t, β, ht, hm, rfl⟩` from `locPart_eq_mk hx`. Distinguish the cases in `hm0 : m = 0`. Rewrite using `[hm0, val_mk hT, map_zero, zero_div, zero_mul]`. Conclude with `zero_mem _`.
+
+Take `⟨hnn, p, hp, rfl⟩` from `quotPart_eq_mk hm hm0`. Take `⟨e, he⟩` from `mem_cellMon_chartQ t.2`. Establish `hβ : β = e`. Take `⟨μ, hμ⟩ : (cmq c e).support.Nonempty` from `Finset.nonempty_iff_ne_empty.mpr (mt MvPolynomial.support_eq_empty.mp (cmq_ne_zero c e))`. Rewrite `ht` using `[he]`.
+
+Conclude with `funext fun k => (ht μ hμ k).symm.trans (homog_cmq c e μ hμ k)`. Substitute `hβ` using the available equality. Rewrite using `[val_mk hT, evQ_mk, he, aeval_cmq]`. Establish `hprod : ∏ k, y ⟨k, c k⟩ ^ ((b + fun k => (β k : ℤ)) k).toNat = (∏ k, y ⟨k, c k⟩ ^ β k) * ∏ k, y ⟨k, c k⟩ ^ b k`. Rewrite using `[← Finset.prod_mul_distrib]`.
+
+Use `Finset.prod_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[← zpow_natCast, ← zpow_natCast, ← zpow_add₀ (hc k)]`. Use `congr 1`. Use `hnn k` as an intermediate fact. Simplify using `only [Pi.add_apply] at this ⊢`.
+
+Use linear arithmetic over natural numbers and integers. Establish `h1 : ∏ k, y ⟨k, c k⟩ ^ β k ≠ 0` using `Finset.prod_ne_zero_iff.mpr fun k _ => pow_ne_zero _ (hc k)`. Establish `h2 : ∏ k, y ⟨k, c k⟩ ^ b k ≠ 0` using `Finset.prod_ne_zero_iff.mpr fun k _ => zpow_ne_zero _ (hc k)`. Establish `key : aeval y p / (∏ k, y ⟨k, c k⟩ ^ β k) * ∏ k, y ⟨k, c k⟩ ^ (-b k) = aeval y p / ∏ k, y ⟨k, c k⟩ ^ ((b + fun k => (β k : ℤ)) k).toNat`. Rewrite using `[hprod]`.
+
+Simplify using `only [zpow_neg, Finset.prod_inv_distrib]`. Clear the denominators using the available nonvanishing facts. Rewrite using `[key]`. Conclude with `aeval_div_memQ c hp`.
+-/
 theorem val_mul_mem_chartRingQ {c : ∀ k, ι k} (hc : ∀ k, y ⟨k, c k⟩ ≠ 0) {b : K → ℤ}
     {x : LocalizedModule (KH.cellMon ℚ (chartCell c).1) (MRingOver ℚ ι ⧸ idealOver y ℚ)}
     (hx : x ∈ KH.locPart ι (KH.quotPart ℚ (idealOver y ℚ)) (KH.cellMon ℚ (chartCell c).1) b) :
@@ -355,6 +478,35 @@ section Cocycle
 
 variable [LinearOrder K] [∀ k, LinearOrder (ι k)]
 
+/- English proof (translation)
+Establish `hne : ∀ k, (I.1 k).Nonempty` using `I.2.1`. Establish `h2 : (I.1 k0).card = 2` using `by rw [hI]; exact Finset.card_pair (ne_of_lt hlt)`. Establish `hface : ∀ i ∈ I.1 k0, (∀ l, (Function.update I.1 k0 ((I.1 k0).erase i) l).Nonempty) ∧ ∑ l, ((Function.update I.1 k0 ((I.1 k0).erase i) l).card - 1) = 0`. Introduce `i hi`. Establish `hc : ((I.1 k0).erase i).card = 1` using `by rw [Finset.card_erase_of_mem hi, h2]`.
+
+Use `⟨fun l => ?_, Finset.sum_eq_zero fun l _ => ?_⟩` and prove the remaining obligations. Distinguish the cases in `hl : l = k0`. Substitute `hl` using the available equality. Rewrite using `[Function.update_self]`. Conclude with `Finset.card_pos.mp (by omega)`.
+
+Rewrite using `[Function.update_of_ne hl]`. Conclude with `hne l`. Distinguish the cases in `hl : l = k0`. Substitute `hl` using the available equality. Rewrite using `[Function.update_self, hc]`.
+
+Both sides reduce to the same expression. Rewrite using `[Function.update_of_ne hl, hrest l hl]`. Both sides reduce to the same expression. Establish `hsumsign : ∑ l ∈ Finset.univ.filter (· < k0), ((I.1 l).card - 1) = 0` using `Finset.sum_eq_zero fun l hl => by rw [hrest l (ne_of_lt (Finset.mem_filter.mp hl).2)]; rfl`. Establish `hs1 : KH.faceSign I.1 k0 i1 = 1`.
+
+Establish `f1 : (({i1, i2} : Finset (ι k0)).filter (· < i1)).card = 0`. Simplify using `[Finset.filter_insert, Finset.filter_singleton, not_lt.mpr hlt.le]`. Simplify using `only [KH.faceSign, hsumsign, hI, add_zero, f1]`. Evaluate the numerical expressions. Establish `hs2 : KH.faceSign I.1 k0 i2 = -1`.
+
+Establish `f2 : (({i1, i2} : Finset (ι k0)).filter (· < i2)).card = 1`. Simplify using `[Finset.filter_insert, Finset.filter_singleton, hlt]`. Simplify using `only [KH.faceSign, hsumsign, hI, add_zero, f2]`. Evaluate the numerical expressions. Establish `hi1 : i1 ∈ I.1 k0` using `by rw [hI]; simp`.
+
+Establish `hi2 : i2 ∈ I.1 k0` using `by rw [hI]; simp`. Establish `key : KH.cechD S ι M 0 z I = KH.faceSign I.1 k0 i1 • KH.cellRes S M (Function.update I.1 k0 ((I.1 k0).erase i1)) I.1 (z ⟨_, hface i1 hi1⟩) + KH.faceSign I.1 k0 i2 • KH.cellRes S M (Function.update I.1 k0 ((I.1 k0).erase i2)) I.1 (z ⟨_, hface i2 hi2⟩)`. Rewrite using `[KH.cechD]`. Use `erw [LinearMap.pi_apply]`. Simplify using `only [LinearMap.sum_apply]`.
+
+Rewrite using `[Finset.sum_eq_single k0]`. Rewrite using `[Finset.sum_eq_add_of_mem i1 i2 hi1 hi2 (ne_of_lt hlt)]`. Rewrite using `[dif_pos (hface i1 hi1), dif_pos (hface i2 hi2)]`. Both sides reduce to the same expression. Introduce `i hi hne'`.
+
+Rewrite `hi` using `[hI]`. Simplify using `only [Finset.mem_insert, Finset.mem_singleton] at hi`. Break down `hi with rfl | rfl` into its components or cases. Conclude with `absurd rfl hne'.1`. Conclude with `absurd rfl hne'.2`.
+
+Introduce `k _ hk`. Use `Finset.sum_eq_zero fun i hi => ?_` and prove the remaining obligations. Use `split_ifs with hc`. It suffices to derive a contradiction. Take `⟨hn, -⟩` from `hc`.
+
+Establish `h3` using `hn k`. Rewrite `h3` using `[Function.update_self]`. Establish `h4` using `Finset.card_erase_of_mem hi`. Rewrite `h4` using `[hrest k hk]`. Establish `h5` using `Finset.card_pos.mpr h3`.
+
+Use linear arithmetic over natural numbers and integers. Both sides reduce to the same expression. Introduce `h`. Conclude with `absurd (Finset.mem_univ k0) h`. Establish `e0 : KH.cechD S ι M 0 z I = 0` using `by rw [hz]; rfl`.
+
+Rewrite `e0` using `[key, hs1, hs2, one_smul, neg_one_smul, ← sub_eq_add_neg, sub_eq_zero]`. Take `⟨A1, hA1⟩` from `J1`. Take `⟨A2, hA2⟩` from `J2`. Simplify using `only at hJ1 hJ2`. Substitute `hJ1 hJ2` using the available equality.
+
+Conclude with `e0`.
+-/
 theorem resFacesS {S : Type} [CommRing S] {M : Type} [AddCommGroup M] [Module (MRingOver S ι) M] (z : KH.CechC S ι M 0)
     (hz : KH.cechD S ι M 0 z = 0) (I : KH.Cell K ι 1) (k0 : K) (i1 i2 : ι k0) (hlt : i1 < i2)
     (hI : I.1 k0 = {i1, i2}) (hrest : ∀ k ≠ k0, (I.1 k).card = 1) (J1 J2 : KH.Cell K ι 0)
@@ -436,6 +588,31 @@ theorem resFacesS {S : Type} [CommRing S] {M : Type} [AddCommGroup M] [Module (M
 variable {Ω : Type} [Field Ω] [CharZero Ω] {y : (Σ k, ι k) → Ω}
 variable {v : KH.CechC ℚ ι (MRingOver ℚ ι ⧸ idealOver y ℚ) 0}
 
+/- English proof (translation)
+Establish `hne : c k0 ≠ d k0` using `ne_of_lt hlt`. Use `set A : ∀ k, Finset (ι k) := Function.update (fun k => ({c k} : Finset (ι k))) k0 {c k0, d k0} with hAdef`. Establish `hA0 : A k0 = {c k0, d k0}` using `Function.update_self _ _ _`. Establish `hAk : ∀ k ≠ k0, A k = {c k}` using `fun k hk => Function.update_of_ne hk _ _`. Establish `hAne : ∀ k, (A k).Nonempty`.
+
+Introduce `k`. Distinguish the cases in `hk : k = k0`. Substitute `hk` using the available equality. Rewrite using `[hA0]`. Conclude with `Finset.insert_nonempty _ _`.
+
+Rewrite using `[hAk k hk]`. Conclude with `Finset.singleton_nonempty _`. Establish `hAsum : ∑ k, ((A k).card - 1) = 1`. Rewrite using `[Finset.sum_eq_single k0 (fun k _ hk => by rw [hAk k hk]; rfl) (fun h => absurd (Finset.mem_univ k0) h), hA0, Finset.card_pair hne]`. Establish `hIy : ∀ k, ∀ i ∈ A k, y ⟨k, i⟩ ≠ 0`.
+
+Introduce `k i hi`. Distinguish the cases in `hk : k = k0`. Substitute `hk` using the available equality. Rewrite `hi` using `[hA0]`. Break down `Finset.mem_insert.mp hi with h | h` into its components or cases.
+
+Rewrite using `[h]`. Conclude with `hc _`. Rewrite using `[Finset.mem_singleton.mp h]`. Conclude with `hd _`. Rewrite `hi` using `[hAk k hk, Finset.mem_singleton]`.
+
+Rewrite using `[hi]`. Conclude with `hc k`. Establish `hrest : ∀ k ≠ k0, (A k).card = 1` using `fun k hk => by rw [hAk k hk]; rfl`. Establish `hsc : ∀ k, (chartCell c).1 k ⊆ A k`. Introduce `k`.
+
+Use `show {c k} ⊆ A k`. Distinguish the cases in `hk : k = k0`. Substitute `hk` using the available equality. Rewrite using `[hA0]`. Simplify using the standard rewrite rules.
+
+Rewrite using `[hAk k hk]`. Establish `hsd : ∀ k, (chartCell d).1 k ⊆ A k`. Introduce `k`. Use `show {d k} ⊆ A k`. Distinguish the cases in `hk : k = k0`.
+
+Substitute `hk` using the available equality. Rewrite using `[hA0]`. Simplify using the standard rewrite rules. Rewrite using `[hAk k hk, hcd k hk]`. Establish `e` using `resFacesS v hz ⟨A, hAne, hAsum⟩ k0 (c k0) (d k0) hlt hA0 hrest (chartCell d) (chartCell c) ?_ ?_`.
+
+Rewrite `e` using `[cellRes_of_le (cellMon_mono hsd), cellRes_of_le (cellMon_mono hsc)]`. Establish `hA` using `cellMon_aevalQ_ne (y := y) hIy`. Rewrite using `[← val_liftOfLE (cellMon_mono hsc) hA, ← val_liftOfLE (cellMon_mono hsd) hA, e]`. Use function extensionality and compare the values at `k`. Distinguish the cases in `hk : k = k0`.
+
+Substitute `hk show ({d k} : Finset (ι k)) = Function.update A k ((A k).erase (c k)) k` using the available equality. Rewrite using `[Function.update_self, hA0, Finset.erase_insert (by simpa using hne)]`. Use `show ({d k} : Finset (ι k)) = Function.update A k0 ((A k0).erase (c k0)) k`. Rewrite using `[Function.update_of_ne hk, hAk k hk, hcd k hk]`. Use function extensionality and compare the values at `k`.
+
+Distinguish the cases in `hk : k = k0`. Substitute `hk show ({c k} : Finset (ι k)) = Function.update A k ((A k).erase (d k)) k` using the available equality. Rewrite using `[Function.update_self, hA0, Finset.pair_comm, Finset.erase_insert (by simpa using hne.symm)]`. Use `show ({c k} : Finset (ι k)) = Function.update A k0 ((A k0).erase (d k0)) k`. Rewrite using `[Function.update_of_ne hk, hAk k hk]`.
+-/
 theorem val_step_lt (hz : KH.cechD ℚ ι _ 0 v = 0) {c d : ∀ k, ι k}
     (hc : ∀ k, y ⟨k, c k⟩ ≠ 0) (hd : ∀ k, y ⟨k, d k⟩ ≠ 0) (k0 : K) (hcd : ∀ k ≠ k0, c k = d k)
     (hlt : c k0 < d k0) :
@@ -503,6 +680,11 @@ theorem val_step_lt (hz : KH.cechD ℚ ι _ 0 v = 0) {c d : ∀ k, ι k}
     · show ({c k} : Finset (ι k)) = Function.update A k0 ((A k0).erase (d k0)) k
       rw [Function.update_of_ne hk, hAk k hk]
 
+/- English proof (translation)
+Break down `lt_trichotomy (c k0) (d k0) with h | h | h` into its components or cases. Conclude with `val_step_lt hz hc hd k0 hcd h`. Establish `e : c = d` using `funext fun k => by`. Distinguish the cases in `hk : k = k0`. Substitute `hk` using the available equality.
+
+Conclude with `h`. Conclude with `hcd k hk`. Substitute `e` using the available equality. Both sides reduce to the same expression. Conclude with `(val_step_lt hz hd hc k0 (fun k hk => (hcd k hk).symm) h).symm`.
+-/
 theorem val_step (hz : KH.cechD ℚ ι _ 0 v = 0) {c d : ∀ k, ι k}
     (hc : ∀ k, y ⟨k, c k⟩ ≠ 0) (hd : ∀ k, y ⟨k, d k⟩ ≠ 0) (k0 : K) (hcd : ∀ k ≠ k0, c k = d k) :
     val y _ (v (chartCell c)) = val y _ (v (chartCell d)) := by
@@ -516,6 +698,15 @@ theorem val_step (hz : KH.cechD ℚ ι _ 0 v = 0) {c d : ∀ k, ι k}
     rfl
   · exact (val_step_lt hz hd hc k0 (fun k hk => (hcd k hk).symm) h).symm
 
+/- English proof (translation)
+Establish `hmix : ∀ (U : Finset K) k, y ⟨k, (fun k => if k ∈ U then d k else c k) k⟩ ≠ 0`. Introduce `U k`. Simplify using `only`. Use `split_ifs`. Use `exacts [hd k, hc k]`.
+
+Establish `key : ∀ U : Finset K, val y _ (v (chartCell c)) = val y _ (v (chartCell fun k => if k ∈ U then d k else c k))`. Introduce `U`. Proceed by induction on `U using Finset.induction_on with`. Consider the case `empty`. Establish `e0 : (fun k => if k ∈ (∅ : Finset K) then d k else c k) = c` using `funext fun k => by simp`.
+
+Rewrite using `[e0]`. Consider the case `insert k0 U hk0 ih`. Rewrite using `[ih]`. Conclude with `val_step hz (hmix U) (hmix (insert k0 U)) k0 (fun k hk => by simp [Finset.mem_insert, hk])`. Establish `e1 : (fun k => if k ∈ (Finset.univ : Finset K) then d k else c k) = d` using `funext fun k => by simp`.
+
+Establish `h` using `key Finset.univ`. Rewrite `h` using `[e1]`. Conclude with `h`.
+-/
 theorem val_chart_eq (hz : KH.cechD ℚ ι _ 0 v = 0) {c d : ∀ k, ι k}
     (hc : ∀ k, y ⟨k, c k⟩ ≠ 0) (hd : ∀ k, y ⟨k, d k⟩ ≠ 0) :
     val y _ (v (chartCell c)) = val y _ (v (chartCell d)) := by
@@ -542,6 +733,9 @@ theorem val_chart_eq (hz : KH.cechD ℚ ι _ 0 v = 0) {c d : ∀ k, ι k}
 
 end Cocycle
 
+/- English proof (translation)
+Introduce `k i hi`. Establish `eJ` using `eq_chartCell (cellChart_mem J)`. Rewrite `hi` using `[eJ]`. Rewrite using `[Finset.mem_singleton.mp hi]`. Conclude with `hJ k`.
+-/
 theorem cell_good {Ω : Type} [Field Ω] {y : (Σ k, ι k) → Ω} (J : KH.Cell K ι 0)
     (hJ : ∀ k, y ⟨k, cellChart J k⟩ ≠ 0) : ∀ k, ∀ i ∈ J.1 k, y ⟨k, i⟩ ≠ 0 := by
   intro k i hi
@@ -554,6 +748,39 @@ end ChartLatQCech
 
 open ChartLatQCech GenOnFibres ZeroCocycleSection in
 
+/- English proof (translation)
+Introduce `K _ _ ι _ _ Ω _ _ y d b hA`. Take `⟨c0, hc0⟩ : ∃ c0 : ∀ k, ι k, ∀ k, y ⟨k, c0 k⟩ ≠ 0` from `by choose c0 hc0 using hA.2.1.2.2`. Use `⟨c0, fun k h => hc0 k ?_⟩` and prove the remaining obligations. Use `show mConeMap y (X ⟨k, c0 k⟩) = 0`. Simplify using `[mConeMap, h]`.
+
+Establish `hZ : ∀ v ∈ KH.cechZc ι (KH.quotPart ℚ (idealOver y ℚ)) b 0, (∀ J : KH.Cell K ι 0, v J ∈ KH.locPart ι (KH.quotPart ℚ (idealOver y ℚ)) (KH.cellMon ℚ J.1) b) ∧ KH.cechD ℚ ι _ 0 v = 0` using `fun v hv => ⟨fun J => (Submodule.mem_inf.mp hv).1 J (Set.mem_univ _), (Submodule.mem_inf.mp hv).2⟩`. Set `Ψ : ↥(KH.cechZc ι (KH.quotPart ℚ (idealOver y ℚ)) b 0) →ₗ[ℚ] Ω` to `{ toFun := fun v => val y _ (v.1 (chartCell c0)) map_add' := fun v w => val_add _ _ _ map_smul' := fun r v => val_smul _ r _ }`. Establish `hinj : Function.Injective Ψ`. Rewrite using `[← LinearMap.ker_eq_bot, Submodule.eq_bot_iff]`. Introduce `v hv`.
+
+Rewrite `hv` using `[LinearMap.mem_ker]`. Take `⟨hloc, hz⟩` from `hZ v.1 v.2`. Use `Subtype.ext (funext fun J => ?_)` and prove the remaining obligations. Distinguish the cases in `hJ : ∀ k, y ⟨k, cellChart J k⟩ ≠ 0`. Establish `eJ` using `eq_chartCell (cellChart_mem J)`.
+
+Establish `h1 : val y _ (v.1 (chartCell (cellChart J))) = 0`. Rewrite using `[← val_chart_eq hz hc0 hJ]`. Conclude with `hv`. Establish `h2` using `eq_zero_of_val (cellMon_aevalQ_ne (chartCell_good hJ)) (hloc _) h1`. Rewrite `h2` using `[← eJ]`.
+
+Conclude with `h2`. Use `push Not at hJ`. Take `⟨k, h0⟩` from `hJ`. Use `subsingleton_loc (S := ℚ) (y := y) (cellChart_mem J k) h0` as an intermediate fact. Conclude with `Subsingleton.elim _ _`.
+
+Establish `hrange : LinearMap.range Ψ = chartLatQ y b 1`. Use extensionality with `s`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨v, rfl⟩`. Take `⟨hloc, hz⟩` from `hZ v.1 v.2`.
+
+Introduce `c hc`. Establish `h` using `val_mul_mem_chartRingQ hc (hloc (chartCell c))`. Use `show val y _ (v.1 (chartCell c0)) * _ ∈ chartRingQ y c`. Rewrite using `[val_chart_eq hz hc0 hc]`. Simplify using `only [Nat.cast_one, one_mul]`.
+
+Conclude with `h`. Introduce `hs`. Establish `hex : ∀ J : KH.Cell K ι 0, (∀ k, y ⟨k, cellChart J k⟩ ≠ 0) → ∃ x ∈ KH.locPart ι (KH.quotPart ℚ (idealOver y ℚ)) (KH.cellMon ℚ J.1) b, val y _ x = s`. Introduce `J hJ`. Establish `h` using `hs (cellChart J) hJ`.
+
+Simplify using `only [Nat.cast_one, one_mul] at h`. Conclude with `exists_rep (cellMon_aevalQ_ne (cell_good J hJ)) (cellChart J) hJ (fun e => cmon_mem ℚ (cellChart_mem J) e) h`. Set `w : KH.CechC ℚ ι (MRingOver ℚ ι ⧸ idealOver y ℚ) 0` to `fun J => if h : ∃ x ∈ KH.locPart ι (KH.quotPart ℚ (idealOver y ℚ)) (KH.cellMon ℚ J.1) b, val y _ x = s then h.choose else 0`. Establish `hw : ∀ J, w J ∈ KH.locPart ι (KH.quotPart ℚ (idealOver y ℚ)) (KH.cellMon ℚ J.1) b`. Introduce `J`.
+
+Simplify using `only [w]`. Use `split_ifs with h`. Use `exacts [h.choose_spec.1, zero_mem _]`. Establish `hwv : ∀ J : KH.Cell K ι 0, (∀ k, y ⟨k, cellChart J k⟩ ≠ 0) → val y _ (w J) = s`. Introduce `J hJ`.
+
+Simplify using `only [w]`. Rewrite using `[dif_pos (hex J hJ)]`. Conclude with `(hex J hJ).choose_spec.2`. Establish `hwZ : w ∈ KH.cechZc ι (KH.quotPart ℚ (idealOver y ℚ)) b 0`. Use `Submodule.mem_inf.mpr ⟨fun J _ => hw J, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[Submodule.restrictScalars_mem, LinearMap.mem_ker]`. Use function extensionality and compare the values at `I`. Use `cechD_zero_eq_zero _ I fun J J' hJ hJ' => ?_` and prove the remaining obligations. Distinguish the cases in `hbad : ∃ k, ∃ i ∈ I.1 k, y ⟨k, i⟩ = 0`. Take `⟨k, i, hi, h0⟩` from `hbad`.
+
+Use `subsingleton_loc (S := ℚ) (y := y) hi h0` as an intermediate fact. Conclude with `Subsingleton.elim _ _`. Use `push Not at hbad`. Establish `hI` using `cellMon_aevalQ_ne hbad`. Establish `hJc : ∀ k, y ⟨k, cellChart J k⟩ ≠ 0` using `fun k => hbad k _ (hJ k (cellChart_mem J k))`.
+
+Establish `hJc' : ∀ k, y ⟨k, cellChart J' k⟩ ≠ 0` using `fun k => hbad k _ (hJ' k (cellChart_mem J' k))`. Rewrite using `[cellRes_of_le (cellMon_mono hJ), cellRes_of_le (cellMon_mono hJ')]`. Use `eq_of_val_eq hI (locPart_liftOfLE _ (hw J)) (locPart_liftOfLE _ (hw J')) ?_` and prove the remaining obligations. Rewrite using `[val_liftOfLE _ hI, val_liftOfLE _ hI, hwv J hJc, hwv J' hJc']`. Use `⟨⟨w, hwZ⟩, ?_⟩` and prove the remaining obligations.
+
+Use `show val y _ (w (chartCell c0)) = s`. Use `hwv _ fun k => ?_` and prove the remaining obligations. Rewrite using `[Finset.mem_singleton.mp (cellChart_mem (chartCell c0) k)]`. Conclude with `hc0 k`. Establish `e0 : KH.cechHc ι (KH.quotPart ℚ (idealOver y ℚ)) b 0 ≃ₗ[ℚ] ↥(KH.cechZc ι (KH.quotPart ℚ (idealOver y ℚ)) b 0)` using `Submodule.quotEquivOfEqBot _ (by`.
+
+Rewrite using `[show KH.cechBc ι (KH.quotPart ℚ (idealOver y ℚ)) b 0 = ⊥ from rfl, Submodule.comap_bot, Submodule.ker_subtype])`. Conclude with `⟨(LinearEquiv.ofEq _ _ hrange).symm.trans ((LinearEquiv.ofInjective Ψ hinj).symm.trans e0.symm)⟩`.
+-/
 theorem ChartLatQCech.proof : ChartLatQCech.Statement := by
   intro K _ _ ι _ _ Ω _ _ y d b hA
   classical

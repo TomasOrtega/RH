@@ -10,6 +10,9 @@ open scoped NumberField.AdeleRing
 
 variable (K : Type*) [Field K] [NumberField K]
 
+/- English proof (translation)
+Establish `: ∀ v : HeightOneSpectrum (𝓞 K), CompactSpace ((v.adicCompletionIntegers K : Set (v.adicCompletion K)))` using `fun v => isCompact_iff_compactSpace.1 (isCompact_adicCompletionIntegers v)`. Establish `hcont` using `(RestrictedProduct.isEmbedding_structureMap (R := fun v : HeightOneSpectrum (𝓞 K) => v.adicCompletion K) (A := fun v => (v.adicCompletionIntegers K : Set (v.adicCompletion K))) (𝓕 := Filter.cofinite)).continuous`. Establish `h` using `isCompact_range hcont`. Rewrite `h` using `[RestrictedProduct.range_structureMap]`. Conclude with `h`.
+-/
 theorem isCompact_integralFiniteAdeles :
     IsCompact (integralFiniteAdeles (𝓞 K) K : Set (FiniteAdeleRing (𝓞 K) K)) := by
   have : ∀ v : HeightOneSpectrum (𝓞 K),
@@ -44,6 +47,9 @@ instance compactSpace_adeleQuotient : CompactSpace (AdeleQuotient K) := by
 
 instance t2Space_adeleQuotient : T2Space (AdeleQuotient K) := inferInstance
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨compactSpace_adeleQuotient K, t2Space_adeleQuotient K⟩`.
+-/
 theorem compactSpace_and_t2Space_adeleQuotient :
     CompactSpace (𝔸[K] ⧸ AdeleRing.principalSubgroup (𝓞 K) K) ∧
       T2Space (𝔸[K] ⧸ AdeleRing.principalSubgroup (𝓞 K) K) :=

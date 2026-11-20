@@ -15,6 +15,11 @@ namespace GlobalTheory.SchrPairing
 open MeasureTheory
 open scoped FourierTransform
 
+/- English proof (translation)
+Break down `le_total x 1 with h | h` into its components or cases. Combine the equalities or inequalities in the displayed calculation. Establish `: 0 ≤ x ^ N` using `pow_nonneg hx N`. Use polynomial arithmetic with `[pow_pos (show (0:ℝ) < 2 by norm_num) N]`. Combine the equalities or inequalities in the displayed calculation.
+
+Use polynomial arithmetic with `[pow_pos (show (0:ℝ) < 2 by norm_num) N]`.
+-/
 theorem one_add_pow_le (x : ℝ) (hx : 0 ≤ x) (N : ℕ) : (1 + x) ^ N ≤ 2 ^ N * (1 + x ^ N) := by
   rcases le_total x 1 with h | h
   · calc (1 + x) ^ N ≤ 2 ^ N := pow_le_pow_left₀ (by linarith) (by linarith) N
@@ -26,6 +31,33 @@ theorem one_add_pow_le (x : ℝ) (hx : 0 ≤ x) (N : ℕ) : (1 + x) ^ N ≤ 2 ^ 
       _ ≤ 2 ^ N * (1 + x ^ N) := by
         nlinarith [pow_pos (show (0:ℝ) < 2 by norm_num) N]
 
+/- English proof (translation)
+Introduce `V U _ _ _ _ _ _ _ _ P hP Λ₁ Λ₂ φ f₀`. Use `set ψ : 𝓢(U, ℂ) := 𝓕 φ with hψ`. Use `set G : U → 𝓢(V, ℂ) := fun s => schrSch hP (Λ₁ s, Λ₂ s) f₀ with hGdef`. Use `set H : U → 𝓢(V, ℂ) := fun s => ψ s • G s with hHdef`. Establish `hGc : Continuous G` using `(GlobalTheory.T.schrodinger_action_continuous hP f₀).comp (Λ₁.continuous.prodMk Λ₂.continuous)`.
+
+Establish `hHc : Continuous H` using `ψ.continuous.smul hGc`. Establish `hdom : ∀ k m : ℕ, ∃ c : U → ℝ, Integrable c volume ∧ ∀ s, SchwartzMap.seminorm ℂ k m (H s) ≤ c s`. Introduce `k m`. Take `⟨C, N, hC⟩` from `GlobalTheory.T.schrodinger_seminorm_polynomial_growth hP f₀ k m`. Use `set c0 : ℝ := 1 + ‖Λ₁‖ + ‖Λ₂‖ with hc0`.
+
+Use `⟨fun s => (|C| * c0 ^ N * 2 ^ N) * (‖ψ s‖ + ‖s‖ ^ N * ‖ψ s‖), ?_, fun s => ?_⟩` and prove the remaining obligations. Conclude with `((ψ.integrable.norm).add (SchwartzMap.integrable_pow_mul volume ψ N)).const_mul _`. Establish `h1 : SchwartzMap.seminorm ℂ k m (H s) = ‖ψ s‖ * SchwartzMap.seminorm ℂ k m (G s)`. Simplify using `only [hHdef, map_smul_eq_mul]`. Establish `hw : ‖((Λ₁ s, Λ₂ s) : V × V)‖ ≤ (‖Λ₁‖ + ‖Λ₂‖) * ‖s‖`.
+
+Rewrite using `[Prod.norm_def]`. Use `max_le ?_ ?_` and prove the remaining obligations. Use polynomial arithmetic with `[Λ₁.le_opNorm s, norm_nonneg Λ₂, norm_nonneg s]`. Use polynomial arithmetic with `[Λ₂.le_opNorm s, norm_nonneg Λ₁, norm_nonneg s]`. Establish `hs0` using `norm_nonneg s`.
+
+Establish `h2 : (1 + ‖((Λ₁ s, Λ₂ s) : V × V)‖) ^ N ≤ c0 ^ N * (2 ^ N * (1 + ‖s‖ ^ N))`. Combine the equalities or inequalities in the displayed calculation. Use `pow_le_pow_left₀ (by positivity) ?_ N` and prove the remaining obligations. Rewrite using `[hc0]`. Use polynomial arithmetic with `[norm_nonneg Λ₁, norm_nonneg Λ₂]`.
+
+Use `_ = c0 ^ N * (1 + ‖s‖) ^ N := mul_pow _ _ _`. Use `_ ≤ c0 ^ N * (2 ^ N * (1 + ‖s‖ ^ N)) := by gcongr`. Conclude with `one_add_pow_le _ hs0 N`. Establish `h3 : SchwartzMap.seminorm ℂ k m (G s) ≤ |C| * (c0 ^ N * (2 ^ N * (1 + ‖s‖ ^ N)))`. Use `(hC _).trans ?_` and prove the remaining obligations.
+
+Establish `: 0 ≤ (1 + ‖((Λ₁ s, Λ₂ s) : V × V)‖) ^ N` using `by positivity`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[h1]`. Combine the equalities or inequalities in the displayed calculation. Establish `hmeas : ∀ (n : ℕ) (x : V), AEStronglyMeasurable (fun s => iteratedFDeriv ℝ n (H s) x) volume` using `fun n x => (GlobalTheory.SchwartzIntegral.continuous_iteratedFDeriv_param hHc n x).aestronglyMeasurable`.
+
+Take `⟨f, hf, -, -⟩` from `GlobalTheory.ConeSch.exists_schwartz_integral volume H hmeas hdom`. Use `⟨f, fun ℓ ξ hℓ => ?_⟩` and prove the remaining obligations. Establish `hint : ∀ k m : ℕ, Integrable (fun s => SchwartzMap.seminorm ℂ k m (H s)) volume`. Introduce `k m`. Take `⟨c, hc, hcb⟩` from `hdom k m`.
+
+Use `hc.mono' ?_ (.of_forall fun s => ?_)` and prove the remaining obligations. Conclude with `(((schwartz_withSeminorms ℂ V ℂ).continuous_seminorm (k, m)).comp hHc).aestronglyMeasurable`. Rewrite using `[Real.norm_eq_abs, abs_of_nonneg (apply_nonneg _ _)]`. Conclude with `hcb s`. Rewrite using `[GlobalTheory.SchwartzIntegral.clm_apply_eq_integral ℓ hHc hint hf]`.
+
+Establish `hterm : ∀ s, ℓ (H s) = ψ s * Complex.exp (2 * Real.pi * Complex.I * ((inner ℝ s ξ : ℝ) : ℂ)) * ℓ f₀`. Introduce `s`. Rewrite using `[hHdef, map_smul, smul_eq_mul, hℓ s (G s) (coe_schrSch hP _ f₀)]`. Expand and normalize the polynomial expressions, which then agree. Repeatedly rewrite using `[hterm]`.
+
+Rewrite using `[integral_mul_const]`. Use `congr 1`. Establish `hinv : φ ξ = (𝓕⁻ ψ) ξ`. Rewrite using `[hψ, FourierPair.fourierInv_fourier_eq]`. Rewrite using `[hinv, SchwartzMap.fourierInv_coe, Real.fourierInv_eq']`.
+
+Use `integral_congr_ae (.of_forall fun s => ?_)` and prove the remaining obligations. Simplify using `only [smul_eq_mul]`. Rewrite using `[mul_comm]`. Use `congr 2`. Use `push_cast`.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem exists_multiplier : ∀ {V U : Type} [NormedAddCommGroup V] [NormedSpace ℝ V] [FiniteDimensional ℝ V]
     [NormedAddCommGroup U] [InnerProductSpace ℝ U] [FiniteDimensional ℝ U] [MeasurableSpace U] [BorelSpace U]
     (P : V → V → ℝ), GlobalTheory.ArchUniq.IsPairing P → ∀ (Λ₁ Λ₂ : U →L[ℝ] V) (φ : SchwartzMap U ℂ) (f₀ : SchwartzMap V ℂ),

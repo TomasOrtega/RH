@@ -22,6 +22,29 @@ noncomputable section
 
 namespace GlobalTheory.UChartDesc
 
+/- English proof (translation)
+Introduce `E _ _ _ H Dw l Xo c φ hpq hfan hnsi Z zs i OZ N d J S π j _ BD hP hpre tF mF`. Establish `hNoeth : AlgebraicGeometry.IsNoetherian S` using `GlobalTheory.isNoetherian_of_isProjOver hP.2.2.2.2.1.2.1`. Establish `hNorm : ReciprocityTheory.ChartRestriction.G.Geo.Tor.IsNormalScheme S` using `(GlobalTheory.isNormalScheme_iff_pred S).1 hP.2.2.2.2.1.1.1`. Establish `hdom : IsDominant j` using `⟨hP.2.2.2.2.1.2.2.2.1⟩`. Establish `hAab : IsAbelianScheme tF.G` using `⟨tF.comm, tF.semi.smooth, MorphismProperty.of_isPullback (P := @IsProper) mF.cart.1 Xo.univ.proper, tF.semi.geomConnected⟩`.
+
+Establish `hLB : tF.PP.L.IsLB` using `tF.PP.isLB`. Establish `hAmp : RelAmple tF.G tF.PP.L` using `GlobalTheory.T.relAmple_rigidifiedBundle_pullback_universalTriple Xo c tF mF`. Establish `hkc : ∀ (k : Type) [Field k], IsAdicComplete (maximalIdeal k) k` using `fun k _ => by`. Rewrite using `[maximalIdeal_eq_bot]`. Use `infer_instance`.
+
+Establish `bdChart : ∀ (x : S) (k : Type) [Field k] (m e : ℕ) (C : MonoFam Xo c φ (ChartRing k m e)) (ξ : Sp (ChartRing k m e) ⟶ S), C.y ≫ j = jK _ ≫ ξ → ξ (closedPoint _) = x → IsEtaleCompletion (Scheme.stalkClosedPointTo ξ).hom → ∃ Ch : GlobalTheory.Desc.Chart j tF.G x, ∀ (G : Over S) [Gr …`. Introduce `x k _ m e C ξ hy hcl het`. Use `haveI : CharZero (ChartRing k m e) := charZero_of_injective_ringHom C.b.injective`. Use `haveI := GlobalTheory.FormalIsogeny.isRegularLocalRing_mvPowerSeries k (Fin m ⊕ Fin e)`. Use `haveI := hkc k`.
+
+Take `⟨α, hα⟩` from `GlobalTheory.T.genericFibre_isGrpPullback_of_universalTriple Xo c (ChartRing k m e) C.y C.t tF C.gen mF`. Use `⟨{ R := ChartRing k m e complete := GlobalTheory.PlaceInt.isAdicComplete_mvPowerSeries_finite (V := k) _ charZero := inferInstance ξ := ξ centre := hcl etc := het unr := GlobalTheory.GenFan.formallyUnramified_residue_comp_of_isEtaleCompletion k m e _ het G := C.t.G semi := C.t.se …` and prove the remaining obligations. Introduce `G _ hG π hπ`. Rewrite using `[← hcl]`. Conclude with `abLocus_pullback abLocusOne hG hπ.1 (closedPoint _)`.
+
+Establish `hch : ∀ x : S, Nonempty (GlobalTheory.Desc.Chart j tF.G x)`. Introduce `x`. Distinguish the cases in `hx : x ∈ Set.range j`. Conclude with `GlobalTheory.T.nonempty_semiAbelianCompletionChart_of_openPart Xo c j tF.G tF.semi x hx`. Take `⟨k, _, m, e, C, ξ, a, htaut, hy, hcl, het, -⟩` from `hpre x hx`.
+
+Take `⟨Ch, -⟩` from `bdChart x k m e C ξ hy hcl het`. Conclude with `⟨Ch⟩`. Take `⟨G, _, e, hG, hpb, hmap⟩` from `GlobalTheory.T.semiAbelian_descent_from_complete_regular_charts (Xo.XF c) S hNorm j hdom tF.G hAab tF.PP.L hLB hAmp hch`. Use `haveI : IsCommMonObj G := hG.comm`. Use `⟨G, inferInstance, hG.comm, e, hG, hpb, ?_, ?_⟩` and prove the remaining obligations.
+
+Use extensionality with `x`. Prove the components needed by the constructor for the conclusion. Introduce `hx`. Assume the negation of the conclusion as `hxj`. Take `⟨k, _, m, e', C, ξ, a, htaut, hy, hcl, het, -, hset, -⟩` from `hpre x hxj`.
+
+Take `⟨Ch, hCh⟩` from `bdChart x k m e' C ξ hy hcl het`. Take `⟨π', hπ', -⟩` from `hmap x Ch`. Establish `hcp` using `(hCh G hG π' hπ').1 hx`. Establish `hprod : ∏ i, C.s i ∈ (closedPoint (ChartRing k m e')).asIdeal`. Assume the negation of the conclusion as `hn`.
+
+Conclude with `hxj (hcl ▸ (hset _).2 hn)`. Establish `hm : 1 ≤ C.m`. Break down `Nat.eq_zero_or_pos C.m with h0 | h0` into its components or cases. Use `exfalso haveI : IsEmpty (Fin C.m) := by rw [h0]; infer_instance`. Rewrite `hprod` using `[Finset.univ_eq_empty, Finset.prod_empty]`.
+
+Conclude with `(maximalIdeal (ChartRing k m e')).ne_top_iff_one.1 (maximalIdeal.isMaximal _).ne_top hprod`. Conclude with `h0`. Conclude with `GlobalTheory.T.closedPoint_notMem_abelianLocus_tautologicalBoundaryChart Xo c φ k m e' C htaut hm hcp`. Introduce and unpack `⟨x', rfl⟩`. Rewrite using `[abLocus_pullback abLocusOne hG hpb.1 x']`.
+
+Introduce `K _ _ t _`. Use `haveI := hAab.proper`. Use `infer_instance`. Introduce `k _ m n C hC ξ hξ tK a b haveI := GlobalTheory.FormalIsogeny.isRegularLocalRing_mvPowerSeries k (Fin m ⊕ Fin n) haveI := (GlobalTheory.isDomain_and_isIntegrallyClosed_of_isRegularLocalRing (ChartRing k m n)).2`. Conclude with `GlobalTheory.T.exists_grpPullback_map_semiAbelian_normalDomain (ChartRing k m n) j tF.G G e hG hpb C.t.G C.t.semi ξ C.y hξ tK.G a.φ b.φ a.cart b.cart`.
+-/
 theorem exists_semiAbelian_of_charts : ∀ {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {Dw : Datum H} {l : Geo.Tor.Level H} (Xo : Moduli Dw l) (c : Coeff l) (φ : InvFun (𝓞 E)), 1 ≤ Dw.p + Dw.q → IsPolFan H.bar (min Dw.p Dw.q) φ → NoSelfInt H.bar (min Dw.p Dw.q) φ → ∀ {Z : Scheme.{0}} (zs : Z ⟶ Sp c.F) (i : Xo.XF c ⟶ Z) (OZ : LB Z) (N d : ℕ) (J : Z.IdealSheafData) {S : Scheme.{0}} (π : S ⟶ Z) (j : Xo.XF c ⟶ S) [IsOpenImmersion j] (BD : EffCartierData S), GlobalTheory.UPoinc.UPoinOnX Xo c φ zs i OZ N d J π j BD → (∀ x : S, x ∉ Set.range j → UPre Xo c φ j BD d x) → ∀ (tF : SAB H (Xo.XF c)), SABMap tF Xo.univ.t (pullback.fst _ _) → ∃ (G : Over S) (_ : GrpObj G) (_ : IsCommMonObj G) (e : tF.G.left ⟶ G.left), IsSemiAbelian G ∧ IsGrpPullback tF.G G j e ∧ abLocus G = Set.range j ∧ ∀ {k : Type} [Field k] {m n : ℕ} (C : MonoFam Xo c φ (ChartRing k m n)), IsTaut C → ∀ ξ : Sp (ChartRing k m n) ⟶ S, C.y ≫ j = jK _ ≫ ξ → ∀ (tK : SAB H (Sp (FractionRing (ChartRing k m n)))) (a : SABMap tK C.t (jK _)) (b : SABMap tK tF C.y), ∃ πC : C.t.G.left ⟶ G.left, IsGrpPullback C.t.G G ξ πC ∧ a.φ ≫ πC = b.φ ≫ e := by
   intro E _ _ _ H Dw l Xo c φ hpq hfan hnsi Z zs i OZ N d J S π j _ BD hP hpre tF mF
   have hNoeth : AlgebraicGeometry.IsNoetherian S := GlobalTheory.isNoetherian_of_isProjOver hP.2.2.2.2.1.2.1
@@ -99,6 +122,9 @@ theorem exists_semiAbelian_of_charts : ∀ {E : Type} [Field E] [NumberField E] 
     haveI := (GlobalTheory.isDomain_and_isIntegrallyClosed_of_isRegularLocalRing (ChartRing k m n)).2
     exact GlobalTheory.T.exists_grpPullback_map_semiAbelian_normalDomain (ChartRing k m n) j tF.G G e hG hpb C.t.G C.t.semi ξ C.y hξ tK.G a.φ b.φ a.cart b.cart
 
+/- English proof (translation)
+Introduce `E _ _ _ H Dw l Xo c φ hpq hfan hnsi Z zs i OZ N d J S π j _ BD hP _ hpre tF mF`. Conclude with `exists_semiAbelian_of_charts Xo c φ hpq hfan hnsi zs i OZ N d J π j BD hP hpre tF mF`.
+-/
 theorem exists_semiAbelian_of_charts_sepB : ∀ {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {Dw : Datum H} {l : Geo.Tor.Level H} (Xo : Moduli Dw l) (c : Coeff l) (φ : InvFun (𝓞 E)), 1 ≤ Dw.p + Dw.q → IsPolFan H.bar (min Dw.p Dw.q) φ → NoSelfInt H.bar (min Dw.p Dw.q) φ → ∀ {Z : Scheme.{0}} (zs : Z ⟶ Sp c.F) (i : Xo.XF c ⟶ Z) (OZ : LB Z) (N d : ℕ) (J : Z.IdealSheafData) {S : Scheme.{0}} (π : S ⟶ Z) (j : Xo.XF c ⟶ S) [IsOpenImmersion j] (BD : EffCartierData S), GlobalTheory.UPoinc.UPoinOnX Xo c φ zs i OZ N d J π j BD → SepB Xo c φ j → (∀ x : S, x ∉ Set.range j → UPre Xo c φ j BD d x) → ∀ (tF : SAB H (Xo.XF c)), SABMap tF Xo.univ.t (pullback.fst _ _) → ∃ (G : Over S) (_ : GrpObj G) (_ : IsCommMonObj G) (e : tF.G.left ⟶ G.left), IsSemiAbelian G ∧ IsGrpPullback tF.G G j e ∧ abLocus G = Set.range j ∧ ∀ {k : Type} [Field k] {m n : ℕ} (C : MonoFam Xo c φ (ChartRing k m n)), IsTaut C → ∀ ξ : Sp (ChartRing k m n) ⟶ S, C.y ≫ j = jK _ ≫ ξ → ∀ (tK : SAB H (Sp (FractionRing (ChartRing k m n)))) (a : SABMap tK C.t (jK _)) (b : SABMap tK tF C.y), ∃ πC : C.t.G.left ⟶ G.left, IsGrpPullback C.t.G G ξ πC ∧ a.φ ≫ πC = b.φ ≫ e := by
   intro E _ _ _ H Dw l Xo c φ hpq hfan hnsi Z zs i OZ N d J S π j _ BD hP _ hpre tF mF
   exact exists_semiAbelian_of_charts Xo c φ hpq hfan hnsi zs i OZ N d J π j BD hP hpre tF mF

@@ -68,14 +68,23 @@ def HermLattice.scaledExample : HermLattice ℚ 1 where
     ext a c
     by_cases h : a = c <;> simp [h, map_ofNat]
 
+/- English proof (translation)
+The claim follows from `dualEmbMatrix_standard_bijective`.
+-/
 example : Function.Bijective (Matrix.mulVecLin
     (dualEmbMatrix (F := HermLattice.scaledExample) dualBasisStandard)) :=
   dualEmbMatrix_standard_bijective
 
+/- English proof (translation)
+The claim follows from `dualEmbMatrix_standard_bijective`.
+-/
 example : Function.Bijective (Matrix.mulVecLin
     (dualEmbMatrix (F := HermLattice.scaledExample.withStdMetric) dualBasisStandard)) :=
   dualEmbMatrix_standard_bijective
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨dualLine HermLattice.scaledExample dualBasisStandard dualEmbMatrix_standard_bijective, dualLine HermLattice.scaledExample.withStdMetric dualBasisStandard dualEmbMatrix_standard_bijective, dualLine (HermLattice.standard ℚ 1) dualBasisStandard dualEmbMatrix_standard_bijective, ⟨le …`.
+-/
 example : HermLine (dualBlocks Unit) × HermLine (dualBlocks Unit) × HermLine (dualBlocks Unit) ×
     PLift (1 ≤ 1) :=
   ⟨dualLine HermLattice.scaledExample dualBasisStandard dualEmbMatrix_standard_bijective,

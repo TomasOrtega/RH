@@ -13,6 +13,17 @@ section Abs2
 variable {G Y : Type*} [Group G] [MeasurableSpace G] [MeasurableMul G] [MeasurableInv G]
   [MulAction G Y]
 
+/- English proof (translation)
+Use `haveI : Countable ((Γ ⊓ H).subgroupOf H) := countable_subgroupOf`. Establish `memΓ : ∀ δ : (Γ ⊓ H).subgroupOf H, ((δ : H) : G) ∈ Γ` using `fun δ => (Subgroup.mem_inf.1 (Subgroup.mem_subgroupOf.1 δ.2)).1`. Establish `h1 : ∀ (δ : (Γ ⊓ H).subgroupOf H) (k : H), cfun Γ A y0 (s * (((δ • k)⁻¹ : H) : G)) * ρ ((s * (((δ • k)⁻¹ : H) : G))⁻¹) = (∑' x : orbS Γ y0, A.indicator (fun _ => (1 : ℝ≥0∞)) (repO Γ y0 x * ((δ : H) : G) * ((k : G) * s⁻¹))) * ρ ((k : G) * s⁻¹)`. Introduce `δ k`. Establish `e : (((δ • k)⁻¹ : H) : G) = (k : G)⁻¹ * ((δ : H) : G)⁻¹` using `by show ((((δ : H) * k)⁻¹ : H) : G) = _`.
+
+Rewrite using `[Subgroup.coe_inv, Subgroup.coe_mul, mul_inv_rev]`. Rewrite using `[e]`. Establish `eρ : ρ ((s * ((k : G)⁻¹ * ((δ : H) : G)⁻¹))⁻¹) = ρ ((k : G) * s⁻¹)`. Rewrite using `[show (s * ((k : G)⁻¹ * ((δ : H) : G)⁻¹))⁻¹ = ((δ : H) : G) * ((k : G) * s⁻¹) by group]`. Conclude with `hρi _ (memΓ δ) _`.
+
+Rewrite using `[eρ]`. Use `congr 1`. Unfold `cfun`. Use `tsum_congr fun x => ?_` and prove the remaining obligations. Use `congr 1`.
+
+Use `group`. Establish `hm : ∀ δ : (Γ ⊓ H).subgroupOf H, Measurable fun k : H => (∑' x : orbS Γ y0, A.indicator (fun _ => (1 : ℝ≥0∞)) (repO Γ y0 x * ((δ : H) : G) * ((k : G) * s⁻¹))) * ρ ((k : G) * s⁻¹)` using `fun δ => (Measurable.ennreal_tsum fun _ => (measurable_const.indicator hA).comp ((measurable_const_mul _).comp ((measurable_mul_const _).comp measurable_subtype_coe))).mul (hρ.comp ((measurable_mul_const _).comp measurable_subtype_coe))`. Combine the equalities or inequalities in the displayed calculation. Use `lintegral_congr fun k => ?_` and prove the remaining obligations. Rewrite using `[ENNReal.tsum_mul_right, ENNReal.tsum_comm]`.
+
+Use `congr 1`. Conclude with `sum_rep_eq y0 hH (fun g => A.indicator (fun _ => (1 : ℝ≥0∞)) (g * ((k : G) * s⁻¹)))`.
+-/
 theorem lint_fibre {Γ H : Subgroup G} [Countable Γ] (μ' : Measure H) [μ'.IsMulLeftInvariant]
     [μ'.IsInvInvariant] (y0 : Y) (hH : ∀ k : G, k ∈ H ↔ k • y0 = y0) [Countable (orbS Γ y0)]
     {A : Set G} (hA : MeasurableSet A)

@@ -6,17 +6,34 @@ open scoped TensorProduct
 
 namespace GlobalTheory.UnitDet
 
+/- English proof (translation)
+Take `⟨t, ht⟩` from `DFunLike.ne_iff.mp (IsCMField.complexConj_ne_one E)`. Use `⟨t - IsCMField.complexConj E t, sub_ne_zero.2 (fun h => ht h.symm), ?_⟩` and prove the remaining obligations. Simplify using `[IsCMField.complexConj_apply_apply]`.
+-/
 theorem exists_imag (E : Type) [Field E] [NumberField E] [IsCMField E] :
     ∃ ξ : E, ξ ≠ 0 ∧ IsCMField.complexConj E ξ = -ξ := by
   obtain ⟨t, ht⟩ := DFunLike.ne_iff.mp (IsCMField.complexConj_ne_one E)
   refine ⟨t - IsCMField.complexConj E t, sub_ne_zero.2 (fun h => ht h.symm), ?_⟩
   simp [IsCMField.complexConj_apply_apply]
 
+/- English proof (translation)
+Simplify using `[ReciprocityTheory.ChartRestriction.G.FD.herm, ReciprocityTheory.ChartRestriction.G.FD.cc, Pi.single_apply, apply_ite, ite_mul]`.
+-/
 theorem herm_single {E : Type} [Field E] [NumberField E] [IsCMField E] {r : ℕ}
     (G : Matrix (Fin r) (Fin r) E) (a b : Fin r) :
     ReciprocityTheory.ChartRestriction.G.FD.herm G (Pi.single a 1) (Pi.single b 1) = G a b := by
   simp [ReciprocityTheory.ChartRestriction.G.FD.herm, ReciprocityTheory.ChartRestriction.G.FD.cc, Pi.single_apply, apply_ite, ite_mul]
 
+/- English proof (translation)
+Assume the negation of the conclusion as `hne`. Use `push_neg at hne`. Take `⟨ξ, hξ0, hξ⟩` from `exists_imag E`. Establish `h0 : ∀ x y, ReciprocityTheory.ChartRestriction.G.FD.herm G x y = 0`. Introduce `x y`.
+
+Establish `h1` using `hne (x + (1:E) • y)`. Establish `h2` using `hne (x + ξ • y)`. Rewrite `h1`, `h2` using `[GlobalTheory.FlagData.herm_add_smul_left, GlobalTheory.FlagData.herm_add_smul_right, GlobalTheory.FlagData.herm_add_smul_right, hne x, hne y]`. Simplify using `only [ReciprocityTheory.ChartRestriction.G.FD.cc, map_one, hξ] at h1 h2`. Establish `h3 : (-2 * ξ) * ReciprocityTheory.ChartRestriction.G.FD.herm G x y = 0` using `by linear_combination h2 - ξ * h1`.
+
+Break down `mul_eq_zero.1 h3 with h | h` into its components or cases. Conclude with `absurd h (by simpa using hξ0)`. Conclude with `h`. Apply `hdet` to reduce the goal to its premises. Establish `hG0 : G = 0`.
+
+Use extensionality with `a b`. Rewrite using `[← herm_single G a b, h0]`. Both sides reduce to the same expression. Rewrite using `[hG0]`. Use `haveI : Nonempty (Fin r) := ⟨⟨0, hr⟩⟩`.
+
+Simplify using the standard rewrite rules.
+-/
 theorem exists_aniso {E : Type} [Field E] [NumberField E] [IsCMField E] {r : ℕ}
     {G : Matrix (Fin r) (Fin r) E} (hdet : G.det ≠ 0) (hr : 0 < r) :
     ∃ e : Fin r → E, ReciprocityTheory.ChartRestriction.G.FD.herm G e e ≠ 0 := by
@@ -43,6 +60,23 @@ theorem exists_aniso {E : Type} [Field E] [NumberField E] [IsCMField E] {r : ℕ
   haveI : Nonempty (Fin r) := ⟨⟨0, hr⟩⟩
   simp
 
+/- English proof (translation)
+Introduce `E _ _ _ r G u hr hG hdet hu`. Take `⟨e, he⟩` from `exists_aniso hdet hr`. Establish `hG' : ∀ a b, ReciprocityTheory.ChartRestriction.G.FD.cc (G a b) = G b a` using `hG`. Establish `hch : IsCMField.complexConj E (ReciprocityTheory.ChartRestriction.G.FD.herm G e e) = ReciprocityTheory.ChartRestriction.G.FD.herm G e e` using `GlobalTheory.FlagData.cc_herm hG' e e`. Use `set h := ReciprocityTheory.ChartRestriction.G.FD.herm G e e with hh`.
+
+Use `set α : E := (u - 1) / h with hα`. Establish `hdetT : (ReciprocityTheory.ChartRestriction.G.FD.transvMat G e α).det = u` using `by set v : Fin r → E := fun b => α * ∑ k, G b k * ReciprocityTheory.ChartRestriction.G.FD.cc (e k) with hv`. Establish `hT : ReciprocityTheory.ChartRestriction.G.FD.transvMat G e α = 1 + replicateCol (Fin 1) e * replicateRow (Fin 1) v`. Use extensionality with `a b`. Simplify using `[ReciprocityTheory.ChartRestriction.G.FD.transvMat, replicateCol, replicateRow, Matrix.mul_apply, Matrix.one_apply]`.
+
+Expand and normalize the polynomial expressions, which then agree. Establish `hd` using `Matrix.det_one_add_replicateCol_mul_replicateRow (ι := Fin 1) e v`. Rewrite using `[hT]`. Use `hd.trans ?_` and prove the remaining obligations. Establish `: v ⬝ᵥ e = α * h`.
+
+Rewrite using `[hh, hv]`. Simplify using `only [dotProduct, ReciprocityTheory.ChartRestriction.G.FD.herm, Finset.mul_sum, Finset.sum_mul]`. Use `Finset.sum_congr rfl fun a _ => Finset.sum_congr rfl fun b _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[this, hα]`.
+
+Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Establish `hu0 : u ≠ 0` using `by rintro rfl; simp at hu`. Establish `key : IsCMField.complexConj E α + α + α * IsCMField.complexConj E α * h = 0`. Establish `hca : IsCMField.complexConj E α = (IsCMField.complexConj E u - 1) / h`.
+
+Rewrite using `[hα, map_div₀, map_sub, map_one, hch]`. Rewrite using `[hca, hα]`. Clear the denominators using the available nonvanishing facts. Take the linear combination `hu`. Use `⟨Matrix.GeneralLinearGroup.mkOfDetNeZero _ (hdetT ▸ hu0), ?_, ?_⟩` and prove the remaining obligations.
+
+Introduce `x y show ReciprocityTheory.ChartRestriction.G.FD.herm G (ReciprocityTheory.ChartRestriction.G.FD.transvMat G e α *ᵥ x) (ReciprocityTheory.ChartRestriction.G.FD.transvMat G e α *ᵥ y) = ReciprocityTheory.ChartRestriction.G.FD.herm G x y`. Rewrite using `[GlobalTheory.FlagData.transvMat_mulVec, GlobalTheory.FlagData.transvMat_mulVec, GlobalTheory.FlagData.herm_add_smul_left, GlobalTheory.FlagData.herm_add_smul_right, GlobalTheory.FlagData.herm_add_smul_right]`. Establish `e1 : ReciprocityTheory.ChartRestriction.G.FD.cc (α * ReciprocityTheory.ChartRestriction.G.FD.herm G y e) = IsCMField.complexConj E α * ReciprocityTheory.ChartRestriction.G.FD.herm G e y`. Rewrite using `[← GlobalTheory.FlagData.cc_herm hG' y e]`. Conclude with `map_mul (IsCMField.complexConj E) _ _`.
+
+Rewrite using `[e1, ← hh]`. Take the linear combination `(ReciprocityTheory.ChartRestriction.G.FD.herm G x e * ReciprocityTheory.ChartRestriction.G.FD.herm G e y) * key`. Conclude with `hdetT`.
+-/
 theorem main : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (r : ℕ) (G : Matrix (Fin r) (Fin r) E) (u : E), 0 < r → (∀ a b, IsCMField.complexConj E (G a b) = G b a) → G.det ≠ 0 → u * IsCMField.complexConj E u = 1 → ∃ γ : GL (Fin r) E, (∀ x y, herm G ((γ : Matrix (Fin r) (Fin r) E) *ᵥ x) ((γ : Matrix (Fin r) (Fin r) E) *ᵥ y) = herm G x y) ∧ (γ : Matrix (Fin r) (Fin r) E).det = u := by
   intro E _ _ _ r G u hr hG hdet hu
   obtain ⟨e, he⟩ := exists_aniso hdet hr

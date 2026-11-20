@@ -7,6 +7,11 @@ open GroundTheory.Automorphic GroundTheory.Automorphic.Reduction GroundTheory.Au
 
 namespace UpperTheory.Esk.HyperbolicKernelContinuity
 
+/- English proof (translation)
+Take `⟨n, hn, e⟩` from `isOfFinOrder_iff_pow_eq_one.1 h`. Establish `e2 : ω.1 ^ n = 1` using `congrArg Subtype.val e`. Establish `e3 : ω.1 z ^ n = 1`. Use `DFunLike.congr_fun e2 z` as an intermediate fact. Simplify using `using this`.
+
+Establish `e4 : ((ω.1 z : ℂˣ) : ℂ) ^ n = 1` using `by rw [← Units.val_pow_eq_pow_val, e3, Units.val_one]`. Conclude with `Complex.norm_eq_one_of_pow_eq_one e4 hn.ne'`.
+-/
 theorem norm_omega {F : Type} [Field F] [NumberField F] [IsTotallyReal F] {ω : HChar F} (h : IsOfFinOrder ω)
     (z : Ideles F) : ‖((ω.1 z : ℂˣ) : ℂ)‖ = 1 := by
   obtain ⟨n, hn, e⟩ := isOfFinOrder_iff_pow_eq_one.1 h
@@ -19,6 +24,11 @@ theorem norm_omega {F : Type} [Field F] [NumberField F] [IsTotallyReal F] {ω : 
 
 end UpperTheory.Esk.HyperbolicKernelContinuity
 
+/- English proof (translation)
+Introduce `F _ _ _ k c ω φ hω hφ hcusp`. Take `⟨C, hC⟩` from `exists_norm_le_of_mem_cuspForms ((UpperTheory.V.Fb.isCuspForm_iff φ).1 hcusp)`. Use `⟨C, fun g => ?_⟩` and prove the remaining obligations. Take `⟨s, y, hy, rfl⟩` from `exists_centralSection_mul_mem_normOneGL g`. Establish `hz : centralSection F 2 s = Matrix.GeneralLinearGroup.scalar (Fin 2) (posIdeleHom F (rpowHom ((2 * Module.finrank ℚ F : ℝ))⁻¹ s))`.
+
+Use `Units.ext ?_` and prove the remaining obligations. Use extensionality with `i j`. Simplify using `[centralSection, scalarUnits_apply, coe_diagUnits, Matrix.diagonal_apply, Matrix.scalar_apply]`. Rewrite using `[hz, hφ.cent, norm_mul, UpperTheory.Esk.HyperbolicKernelContinuity.norm_omega hω, one_mul]`. Conclude with `hC y hy`.
+-/
 theorem UpperTheory.Esk.hyperbolic_kernel_continuity : UpperTheory.Esk.H1c := by
   intro F _ _ _ k c ω φ hω hφ hcusp
   obtain ⟨C, hC⟩ := exists_norm_le_of_mem_cuspForms ((UpperTheory.V.Fb.isCuspForm_iff φ).1 hcusp)

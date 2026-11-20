@@ -16,6 +16,9 @@ section Unitary
 
 variable {n : ℕ}
 
+/- English proof (translation)
+Simplify using `only [star_add, Pi.star_single, mulVec_add, dotProduct_add, add_dotProduct, single_dotProduct]`. Simplify using `only [mulVec, dotProduct_single]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem dotProduct_mulVec_single_add {R : Type*} [CommRing R] [StarRing R] (A : Matrix (Fin n) (Fin n) R)
     (i j : Fin n) (x y : R) :
     (Pi.single i x + Pi.single j y) ⬝ᵥ (A *ᵥ star (Pi.single i x + Pi.single j y)) =
@@ -25,6 +28,13 @@ theorem dotProduct_mulVec_single_add {R : Type*} [CommRing R] [StarRing R] (A : 
   simp only [mulVec, dotProduct_single]
   ring
 
+/- English proof (translation)
+Establish `hdiag : ∀ i, A i i = 0` using `fun i => by`. Use `h (Pi.single i 1 + Pi.single i 0)` as an intermediate fact. Rewrite `this` using `[dotProduct_mulVec_single_add]`. Simplify using `using this`. Establish `hsymm : ∀ i j, A j i = A i j` using `fun i j => by`.
+
+Use `congrFun (congrFun hA i) j` as an intermediate fact. Simplify `this` using `[conjTranspose_apply]`. Use extensionality with `i j`. Establish `h1` using `h (Pi.single i 1 + Pi.single j 1)`. Rewrite `h1` using `[dotProduct_mulVec_single_add, hdiag, hdiag, hsymm i j]`.
+
+Simplify using `only [star_one, mul_one, one_mul, mul_zero, zero_add, add_zero] at h1`. Use `show A i j = 0`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem eq_zero_of_forall_dotProduct_real {A : Matrix (Fin n) (Fin n) ℝ} (hA : Aᴴ = A)
     (h : ∀ z : Fin n → ℝ, z ⬝ᵥ (A *ᵥ star z) = 0) : A = 0 := by
   have hdiag : ∀ i, A i i = 0 := fun i => by
@@ -41,6 +51,19 @@ theorem eq_zero_of_forall_dotProduct_real {A : Matrix (Fin n) (Fin n) ℝ} (hA :
   show A i j = 0
   linarith
 
+/- English proof (translation)
+Establish `hdiag : ∀ i, A i i = 0` using `fun i => by`. Use `h (Pi.single i 1 + Pi.single i 0)` as an intermediate fact. Rewrite `this` using `[dotProduct_mulVec_single_add]`. Simplify using `using this`. Establish `hherm : ∀ i j, A j i = starRingEnd ℂ (A i j)` using `fun i j => by`.
+
+Use `congrFun (congrFun hA j) i` as an intermediate fact. Simplify `this.symm` using `[conjTranspose_apply, Complex.star_def]`. Establish `key : ∀ i j, ∀ c : ℂ, A i j * starRingEnd ℂ c + c * A j i = 0`. Introduce `i j c`. Establish `h1` using `h (Pi.single i 1 + Pi.single j c)`.
+
+Rewrite `h1` using `[dotProduct_mulVec_single_add, hdiag, hdiag]`. Simplify using `only [star_one, mul_one, mul_zero, one_mul, zero_add, Complex.star_def] at h1`. Take the linear combination `h1`. Use extensionality with `i j`. Establish `h1` using `key i j 1`.
+
+Establish `h2` using `key i j Complex.I`. Rewrite `h1` using `[hherm i j, map_one, mul_one, one_mul]`. Rewrite `h2` using `[hherm i j, Complex.conj_I]`. Establish `h3 : starRingEnd ℂ (A i j) = A i j`. Establish `: Complex.I * (starRingEnd ℂ (A i j) - A i j) = 0` using `by linear_combination h2`.
+
+Break down `mul_eq_zero.1 this with h | h` into its components or cases. Conclude with `absurd h Complex.I_ne_zero`. Conclude with `sub_eq_zero.1 h`. Rewrite `h1` using `[h3]`. Use `show A i j = 0`.
+
+Take the linear combination `h1 / 2`.
+-/
 theorem eq_zero_of_forall_dotProduct_complex {A : Matrix (Fin n) (Fin n) ℂ} (hA : Aᴴ = A)
     (h : ∀ z : Fin n → ℂ, z ⬝ᵥ (A *ᵥ star z) = 0) : A = 0 := by
   have hdiag : ∀ i, A i i = 0 := fun i => by
@@ -70,12 +93,22 @@ theorem eq_zero_of_forall_dotProduct_complex {A : Matrix (Fin n) (Fin n) ℂ} (h
   show A i j = 0
   linear_combination h1 / 2
 
+/- English proof (translation)
+Simplify using `only [dotProduct, Pi.star_apply, RCLike.star_def, RCLike.mul_conj]`. Use `push_cast`. Both sides reduce to the same expression.
+-/
 theorem sum_norm_sq_eq_dotProduct {𝕜 : Type*} [RCLike 𝕜] (y : Fin n → 𝕜) :
     ((∑ i, ‖y i‖ ^ 2 : ℝ) : 𝕜) = y ⬝ᵥ star y := by
   simp only [dotProduct, Pi.star_apply, RCLike.star_def, RCLike.mul_conj]
   push_cast
   rfl
 
+/- English proof (translation)
+Rewrite using `[mem_unitaryGroup_iff]`. Establish `hsq : ∀ z : Fin n → ℝ, ∑ j, ‖(z ᵥ* U) j‖ ^ 2 = ∑ i, ‖z i‖ ^ 2` using `fun z => by`. Use `congrArg (· ^ 2) (hU z)` as an intermediate fact. Simplify using `only [Reduction.euclidNorm] at this`. Rewrite `this` using `[Real.sq_sqrt (Finset.sum_nonneg fun _ _ => sq_nonneg _), Real.sq_sqrt (Finset.sum_nonneg fun _ _ => sq_nonneg _)]`. Then use the resulting hypothesis.
+
+Establish `h0` using `eq_zero_of_forall_dotProduct_real (A := U * star U - 1) (by rw [conjTranspose_sub, conjTranspose_mul, star_eq_conjTranspose, conjTranspose_conjTranspose, conjTranspose_one]) (fun z => by`. Establish `e1` using `sum_norm_sq_eq_dotProduct (𝕜 := ℝ) (z ᵥ* U)`. Establish `e2` using `sum_norm_sq_eq_dotProduct (𝕜 := ℝ) z`. Rewrite `e1` using `[hsq z, e2, star_vecMul, dotProduct_mulVec, vecMul_vecMul]`. Rewrite using `[sub_mulVec, dotProduct_sub, one_mulVec, dotProduct_mulVec, star_eq_conjTranspose, ← e1]`.
+
+Use the proof step `simp)`. Conclude with `sub_eq_zero.1 h0`.
+-/
 theorem mem_unitaryGroup_of_euclidNorm_real {U : Matrix (Fin n) (Fin n) ℝ}
     (hU : ∀ z : Fin n → ℝ, Reduction.euclidNorm (z ᵥ* U) = Reduction.euclidNorm z) :
     U ∈ unitaryGroup (Fin n) ℝ := by
@@ -95,6 +128,13 @@ theorem mem_unitaryGroup_of_euclidNorm_real {U : Matrix (Fin n) (Fin n) ℝ}
       simp)
   exact sub_eq_zero.1 h0
 
+/- English proof (translation)
+Rewrite using `[mem_unitaryGroup_iff]`. Establish `hsq : ∀ z : Fin n → ℂ, ∑ j, ‖(z ᵥ* U) j‖ ^ 2 = ∑ i, ‖z i‖ ^ 2` using `fun z => by`. Use `congrArg (· ^ 2) (hU z)` as an intermediate fact. Simplify using `only [Reduction.euclidNorm] at this`. Rewrite `this` using `[Real.sq_sqrt (Finset.sum_nonneg fun _ _ => sq_nonneg _), Real.sq_sqrt (Finset.sum_nonneg fun _ _ => sq_nonneg _)]`. Then use the resulting hypothesis.
+
+Establish `h0` using `eq_zero_of_forall_dotProduct_complex (A := U * star U - 1) (by rw [conjTranspose_sub, conjTranspose_mul, star_eq_conjTranspose, conjTranspose_conjTranspose, conjTranspose_one]) (fun z => by`. Establish `e1` using `sum_norm_sq_eq_dotProduct (𝕜 := ℂ) (z ᵥ* U)`. Establish `e2` using `sum_norm_sq_eq_dotProduct (𝕜 := ℂ) z`. Rewrite `e1` using `[hsq z, e2, star_vecMul, dotProduct_mulVec, vecMul_vecMul]`. Rewrite using `[sub_mulVec, dotProduct_sub, one_mulVec, dotProduct_mulVec, star_eq_conjTranspose, ← e1]`.
+
+Use the proof step `simp)`. Conclude with `sub_eq_zero.1 h0`.
+-/
 theorem mem_unitaryGroup_of_euclidNorm_complex {U : Matrix (Fin n) (Fin n) ℂ}
     (hU : ∀ z : Fin n → ℂ, Reduction.euclidNorm (z ᵥ* U) = Reduction.euclidNorm z) :
     U ∈ unitaryGroup (Fin n) ℂ := by
@@ -122,6 +162,9 @@ variable {𝕜 : Type*} [RCLike 𝕜] {n : ℕ}
 
 def frobSq (M : Matrix (Fin n) (Fin n) 𝕜) : ℝ := ∑ i, ∑ j, ‖M i j‖ ^ 2
 
+/- English proof (translation)
+Simplify using `only [frobSq, Matrix.trace, diag, mul_apply, conjTranspose_apply, RCLike.star_def]`. Rewrite using `[Finset.sum_comm]`. Use `push_cast`. Use `Finset.sum_congr rfl fun j _ => Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[mul_comm, RCLike.mul_conj]`.
+-/
 theorem frobSq_eq_trace (M : Matrix (Fin n) (Fin n) 𝕜) : (frobSq M : 𝕜) = Matrix.trace (Mᴴ * M) := by
   simp only [frobSq, Matrix.trace, diag, mul_apply, conjTranspose_apply, RCLike.star_def]
   rw [Finset.sum_comm]
@@ -129,6 +172,11 @@ theorem frobSq_eq_trace (M : Matrix (Fin n) (Fin n) 𝕜) : (frobSq M : 𝕜) = 
   refine Finset.sum_congr rfl fun j _ => Finset.sum_congr rfl fun i _ => ?_
   rw [mul_comm, RCLike.mul_conj]
 
+/- English proof (translation)
+Apply `RCLike.ofReal_injective (K := 𝕜)` to reduce the goal to its premises. Rewrite using `[frobSq_eq_trace, frobSq_eq_trace]`. Establish `h1 : star U * U = 1` using `mem_unitaryGroup_iff'.1 hU`. Rewrite `h1`, the goal using `[star_eq_conjTranspose]`. Rewrite using `[conjTranspose_mul, conjTranspose_mul, conjTranspose_conjTranspose]`.
+
+Combine the equalities or inequalities in the displayed calculation. Simplify using `only [Matrix.mul_assoc]`. Use `_ = Matrix.trace (Mᴴ * M * (Uᴴ * U)) := by`. Rewrite using `[h1, Matrix.mul_one, Matrix.trace_mul_comm, ← Matrix.mul_assoc, h1, Matrix.one_mul, Matrix.mul_one]`. Use `_ = Matrix.trace (Mᴴ * M) := by rw [h1, Matrix.mul_one]`.
+-/
 theorem frobSq_conj {U : Matrix (Fin n) (Fin n) 𝕜} (hU : U ∈ unitaryGroup (Fin n) 𝕜)
     (M : Matrix (Fin n) (Fin n) 𝕜) : frobSq (U * M * star U) = frobSq M := by
   apply RCLike.ofReal_injective (K := 𝕜)
@@ -154,6 +202,15 @@ variable {K : Type*} [Field K] [NumberField K] {n : ℕ}
 
 open Reduction in
 
+/- English proof (translation)
+Apply `mem_unitaryGroup_of_euclidNorm_real` to reduce the goal to its premises. Introduce `z`. Take `⟨w, hw⟩` from `v`. Establish `hk' : infEmb K n k ∈ Reduction.maxCompact` using `hk`. Use `set ψ := InfinitePlace.Completion.ringEquivRealOfIsReal hw`.
+
+Establish `hψ : ∀ x, ‖ψ x‖ = ‖x‖` using `fun x => (InfinitePlace.Completion.isometry_extensionEmbeddingOfIsReal hw).norm_map_of_map_zero (map_zero _) x`. Use `set y : Fin n → w.Completion := fun i => ψ.symm (z i)`. Establish `hy : (fun i => ψ (y i)) = z` using `funext fun i => ψ.apply_symm_apply (z i)`. Establish `e : (fun i => ψ ((y ᵥ* (infAt w (infEmb K n k) : Matrix (Fin n) (Fin n) w.Completion)) i)) = z ᵥ* realCompM ⟨w, hw⟩ ((k : (ArchMatrix K n)ˣ) : ArchMatrix K n)`. Rewrite using `[← hy]`.
+
+Use extensionality with `j`. Simplify using `only [vecMul, dotProduct, map_sum, map_mul, realCompM_apply, Matrix.map_apply, realComp_apply]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[infAt_infEmb_apply]`. Use `congr 1`.
+
+Conclude with `extensionEmbeddingOfIsReal_symm _ hw`. Rewrite using `[← e]`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem realCompM_mem_unitaryGroup {k : archGroup K n} (hk : k ∈ archCompact K n)
     (v : {w : InfinitePlace K // IsReal w}) :
     realCompM v ((k : (ArchMatrix K n)ˣ) : ArchMatrix K n) ∈ unitaryGroup (Fin n) ℝ := by
@@ -185,6 +242,15 @@ theorem realCompM_mem_unitaryGroup {k : archGroup K n} (hk : k ∈ archCompact K
 
 open Reduction in
 
+/- English proof (translation)
+Apply `mem_unitaryGroup_of_euclidNorm_complex` to reduce the goal to its premises. Introduce `z`. Take `⟨w, hw⟩` from `v`. Establish `hk' : infEmb K n k ∈ Reduction.maxCompact` using `hk`. Use `set ψ := InfinitePlace.Completion.ringEquivComplexOfIsComplex hw`.
+
+Establish `hψ : ∀ x, ‖ψ x‖ = ‖x‖` using `fun x => (InfinitePlace.Completion.isometry_extensionEmbedding w).norm_map_of_map_zero (map_zero _) x`. Use `set y : Fin n → w.Completion := fun i => ψ.symm (z i)`. Establish `hy : (fun i => ψ (y i)) = z` using `funext fun i => ψ.apply_symm_apply (z i)`. Establish `e : (fun i => ψ ((y ᵥ* (infAt w (infEmb K n k) : Matrix (Fin n) (Fin n) w.Completion)) i)) = z ᵥ* complexCompM ⟨w, hw⟩ ((k : (ArchMatrix K n)ˣ) : ArchMatrix K n)`. Rewrite using `[← hy]`.
+
+Use extensionality with `j`. Simplify using `only [vecMul, dotProduct, map_sum, map_mul, complexCompM_apply, Matrix.map_apply, complexComp_apply]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[infAt_infEmb_apply]`. Use `congr 1`.
+
+Conclude with `extensionEmbedding_symm _ hw`. Rewrite using `[← e]`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem complexCompM_mem_unitaryGroup {k : archGroup K n} (hk : k ∈ archCompact K n)
     (v : {w : InfinitePlace K // IsComplex w}) :
     complexCompM v ((k : (ArchMatrix K n)ˣ) : ArchMatrix K n) ∈ unitaryGroup (Fin n) ℂ := by
@@ -214,6 +280,11 @@ theorem complexCompM_mem_unitaryGroup {k : archGroup K n} (hk : k ∈ archCompac
     _ = euclidNorm y := hk'.1 w y
     _ = euclidNorm z := by rw [← hy]; exact (euclidNorm_map ψ.toRingHom hψ y).symm
 
+/- English proof (translation)
+Use `set U := realCompM v ((k : (ArchMatrix K n)ˣ) : ArchMatrix K n)`. Use `set U' := realCompM v (((k⁻¹ : archGroup K n) : (ArchMatrix K n)ˣ) : ArchMatrix K n)`. Establish `h1 : U * U' = 1`. Rewrite using `[← map_mul, ← Units.val_mul, ← Subgroup.coe_mul, mul_inv_cancel, Subgroup.coe_one, Units.val_one, map_one]`. Establish `h2 : star U * U = 1` using `mem_unitaryGroup_iff'.1 (realCompM_mem_unitaryGroup hk v)`.
+
+Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem realCompM_inv {k : archGroup K n} (hk : k ∈ archCompact K n)
     (v : {w : InfinitePlace K // IsReal w}) :
     realCompM v (((k⁻¹ : archGroup K n) : (ArchMatrix K n)ˣ) : ArchMatrix K n) =
@@ -227,6 +298,11 @@ theorem realCompM_inv {k : archGroup K n} (hk : k ∈ archCompact K n)
   calc U' = star U * U * U' := by rw [h2, Matrix.one_mul]
     _ = star U := by rw [Matrix.mul_assoc, h1, Matrix.mul_one]
 
+/- English proof (translation)
+Use `set U := complexCompM v ((k : (ArchMatrix K n)ˣ) : ArchMatrix K n)`. Use `set U' := complexCompM v (((k⁻¹ : archGroup K n) : (ArchMatrix K n)ˣ) : ArchMatrix K n)`. Establish `h1 : U * U' = 1`. Rewrite using `[← map_mul, ← Units.val_mul, ← Subgroup.coe_mul, mul_inv_cancel, Subgroup.coe_one, Units.val_one, map_one]`. Establish `h2 : star U * U = 1` using `mem_unitaryGroup_iff'.1 (complexCompM_mem_unitaryGroup hk v)`.
+
+Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem complexCompM_inv {k : archGroup K n} (hk : k ∈ archCompact K n)
     (v : {w : InfinitePlace K // IsComplex w}) :
     complexCompM v (((k⁻¹ : archGroup K n) : (ArchMatrix K n)ˣ) : ArchMatrix K n) =
@@ -244,20 +320,38 @@ def archQuad (X : ArchMatrix K n) : ℝ :=
   ∑ v : {w : InfinitePlace K // IsReal w}, frobSq (realCompM v X) +
     ∑ v : {w : InfinitePlace K // IsComplex w}, frobSq (complexCompM v X)
 
+/- English proof (translation)
+The claim follows from `add_nonneg (Finset.sum_nonneg fun _ _ => Finset.sum_nonneg fun _ _ => Finset.sum_nonneg fun _ _ => sq_nonneg _) (Finset.sum_nonneg fun _ _ => Finset.sum_nonneg fun _ _ => Finset.sum_nonneg fun _ _ => sq_nonneg _)`.
+-/
 theorem archQuad_nonneg (X : ArchMatrix K n) : 0 ≤ archQuad X :=
   add_nonneg (Finset.sum_nonneg fun _ _ => Finset.sum_nonneg fun _ _ => Finset.sum_nonneg fun _ _ =>
     sq_nonneg _) (Finset.sum_nonneg fun _ _ => Finset.sum_nonneg fun _ _ => Finset.sum_nonneg fun _ _ =>
     sq_nonneg _)
 
+/- English proof (translation)
+Simplify using `[archQuad, frobSq]`.
+-/
 @[simp] theorem archQuad_zero : archQuad (0 : ArchMatrix K n) = 0 := by
   simp [archQuad, frobSq]
 
+/- English proof (translation)
+Simplify using `only [archQuad, map_mul, realCompM_inv hk, complexCompM_inv hk, frobSq_conj (realCompM_mem_unitaryGroup hk _), frobSq_conj (complexCompM_mem_unitaryGroup hk _)]`.
+-/
 theorem archQuad_conj {k : archGroup K n} (hk : k ∈ archCompact K n) (X : ArchMatrix K n) :
     archQuad (((k : (ArchMatrix K n)ˣ) : ArchMatrix K n) * X *
       (((k⁻¹ : archGroup K n) : (ArchMatrix K n)ˣ) : ArchMatrix K n)) = archQuad X := by
   simp only [archQuad, map_mul, realCompM_inv hk, complexCompM_inv hk,
     frobSq_conj (realCompM_mem_unitaryGroup hk _), frobSq_conj (complexCompM_mem_unitaryGroup hk _)]
 
+/- English proof (translation)
+Establish `h1` using `(add_eq_zero_iff_of_nonneg (Finset.sum_nonneg fun v _ => Finset.sum_nonneg fun _ _ => Finset.sum_nonneg fun _ _ => sq_nonneg _) (Finset.sum_nonneg fun v _ => Finset.sum_nonneg fun _ _ => Finset.sum_nonneg fun _ _ => sq_nonneg _)).1 h`. Establish `hr : ∀ v i j, (mat X i j).1 v = 0`. Introduce `v i j`. Establish `h2` using `(Finset.sum_eq_zero_iff_of_nonneg (fun v _ => Finset.sum_nonneg fun _ _ => Finset.sum_nonneg fun _ _ => sq_nonneg _)).1 h1.1 v (Finset.mem_univ _)`. Establish `h3` using `(Finset.sum_eq_zero_iff_of_nonneg (fun _ _ => Finset.sum_nonneg fun _ _ => sq_nonneg _)).1 h2 i (Finset.mem_univ _)`.
+
+Establish `h4` using `(Finset.sum_eq_zero_iff_of_nonneg (fun _ _ => sq_nonneg _)).1 h3 j (Finset.mem_univ _)`. Establish `: ‖(realCompM v X) i j‖ = 0` using `pow_eq_zero_iff (n := 2) (by norm_num) |>.1 h4`. Simplify using `using this`. Establish `hc : ∀ v i j, (mat X i j).2 v = 0`. Introduce `v i j`.
+
+Establish `h2` using `(Finset.sum_eq_zero_iff_of_nonneg (fun v _ => Finset.sum_nonneg fun _ _ => Finset.sum_nonneg fun _ _ => sq_nonneg _)).1 h1.2 v (Finset.mem_univ _)`. Establish `h3` using `(Finset.sum_eq_zero_iff_of_nonneg (fun _ _ => Finset.sum_nonneg fun _ _ => sq_nonneg _)).1 h2 i (Finset.mem_univ _)`. Establish `h4` using `(Finset.sum_eq_zero_iff_of_nonneg (fun _ _ => sq_nonneg _)).1 h3 j (Finset.mem_univ _)`. Establish `: ‖(complexCompM v X) i j‖ = 0` using `pow_eq_zero_iff (n := 2) (by norm_num) |>.1 h4`. Simplify using `using this`.
+
+Establish `he : ∀ i j, mat X i j = 0` using `fun i j => Prod.ext (funext fun v => by simpa using hr v i j) (funext fun v => by simpa using hc v i j)`. Conclude with `mat_injective (Matrix.ext fun i j => by rw [he]; rfl)`.
+-/
 theorem archQuad_eq_zero {X : ArchMatrix K n} (h : archQuad X = 0) : X = 0 := by
   have h1 := (add_eq_zero_iff_of_nonneg (Finset.sum_nonneg fun v _ => Finset.sum_nonneg fun _ _ =>
     Finset.sum_nonneg fun _ _ => sq_nonneg _) (Finset.sum_nonneg fun v _ => Finset.sum_nonneg fun _ _ =>
@@ -297,10 +391,18 @@ def entryComplex (i j : Fin n) (v : {w : InfinitePlace K // IsComplex w}) :
       map_add' := fun _ _ => rfl
       map_smul' := fun _ _ => rfl }
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem archQuad_eq (X : ArchMatrix K n) :
     archQuad X = ∑ v : {w : InfinitePlace K // IsReal w}, ∑ i, ∑ j, ‖entryReal i j v X‖ ^ 2 +
       ∑ v : {w : InfinitePlace K // IsComplex w}, ∑ i, ∑ j, ‖entryComplex i j v X‖ ^ 2 := rfl
 
+/- English proof (translation)
+Establish `e : (archQuad : ArchMatrix K n → ℝ) = fun X => ∑ v : {w : InfinitePlace K // IsReal w}, ∑ i, ∑ j, ‖entryReal i j v X‖ ^ 2 + ∑ v : {w : InfinitePlace K // IsComplex w}, ∑ i, ∑ j, ‖entryComplex i j v X‖ ^ 2`. Use function extensionality and compare the values at `archQuad_eq`. Rewrite using `[e]`. Use `ContDiff.add ?_ ?_` and prove the remaining obligations. Conclude with `ContDiff.sum fun v _ => ContDiff.sum fun i _ => ContDiff.sum fun j _ => (contDiff_norm_sq ℝ).comp (entryReal i j v).contDiff`.
+
+Conclude with `ContDiff.sum fun v _ => ContDiff.sum fun i _ => ContDiff.sum fun j _ => (contDiff_norm_sq ℝ).comp (entryComplex i j v).contDiff`.
+-/
 theorem contDiff_archQuad : ContDiff ℝ ⊤ (archQuad : ArchMatrix K n → ℝ) := by
   have e : (archQuad : ArchMatrix K n → ℝ) = fun X =>
       ∑ v : {w : InfinitePlace K // IsReal w}, ∑ i, ∑ j, ‖entryReal i j v X‖ ^ 2 +
@@ -313,6 +415,13 @@ theorem contDiff_archQuad : ContDiff ℝ ⊤ (archQuad : ArchMatrix K n → ℝ)
   · exact ContDiff.sum fun v _ => ContDiff.sum fun i _ => ContDiff.sum fun j _ =>
       (contDiff_norm_sq ℝ).comp (entryComplex i j v).contDiff
 
+/- English proof (translation)
+Rewrite using `[archQuad_eq, archQuad_eq, mul_add, Finset.mul_sum, Finset.mul_sum]`. Use `congr 1`. Use `Finset.sum_congr rfl fun v _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.mul_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[Finset.mul_sum]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[map_smul, _root_.norm_smul, mul_pow, Real.norm_eq_abs, sq_abs]`. Use `Finset.sum_congr rfl fun v _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.mul_sum]`.
+
+Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.mul_sum]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[map_smul, _root_.norm_smul, mul_pow, Real.norm_eq_abs, sq_abs]`.
+-/
 theorem archQuad_smul (t : ℝ) (X : ArchMatrix K n) : archQuad (t • X) = t ^ 2 * archQuad X := by
   rw [archQuad_eq, archQuad_eq, mul_add, Finset.mul_sum, Finset.mul_sum]
   congr 1
@@ -329,6 +438,21 @@ theorem archQuad_smul (t : ℝ) (X : ArchMatrix K n) : archQuad (t • X) = t ^ 
     refine Finset.sum_congr rfl fun j _ => ?_
     rw [map_smul, _root_.norm_smul, mul_pow, Real.norm_eq_abs, sq_abs]
 
+/- English proof (translation)
+Distinguish the cases in `hX : ∃ X : ArchMatrix K n, X ≠ 0`. Establish `hS : IsCompact (Metric.sphere (0 : ArchMatrix K n) δ)` using `isCompact_sphere 0 δ`. Take `⟨X₀, hX₀⟩` from `hX`. Establish `hne : (Metric.sphere (0 : ArchMatrix K n) δ).Nonempty` using `⟨(δ / ‖X₀‖) • X₀, by`. Rewrite using `[mem_sphere_zero_iff_norm, _root_.norm_smul, Real.norm_eq_abs, abs_div, abs_of_pos hδ, abs_norm, div_mul_cancel₀ _ (norm_ne_zero_iff.2 hX₀)]⟩`.
+
+Take `⟨Y, hY, hmin⟩` from `hS.exists_isMinOn (f := archQuad) hne (contDiff_archQuad (K := K) (n := n)).continuous.continuousOn`. Establish `hY0 : Y ≠ 0`. Introduce `h`. Rewrite `hY` using `[h, mem_sphere_zero_iff_norm, norm_zero]`. Conclude with `hδ.ne hY`.
+
+Use `⟨archQuad Y, lt_of_le_of_ne (archQuad_nonneg Y) (fun h => hY0 (archQuad_eq_zero h.symm)), fun X hXq => ?_⟩` and prove the remaining obligations. Assume the negation of the conclusion as `hXn`. Use `push Not at hXn`. Establish `hX0 : X ≠ 0`. Introduce `h`.
+
+Rewrite `hXn` using `[h, norm_zero]`. Conclude with `absurd hδ (not_lt.2 hXn)`. Use `set t : ℝ := δ / ‖X‖`. Establish `ht : 0 < t` using `div_pos hδ (norm_pos_iff.2 hX0)`. Establish `ht1 : t ≤ 1` using `(div_le_one (norm_pos_iff.2 hX0)).2 hXn`.
+
+Establish `hmem : t • X ∈ Metric.sphere (0 : ArchMatrix K n) δ`. Rewrite using `[mem_sphere_zero_iff_norm, _root_.norm_smul, Real.norm_eq_abs, abs_of_pos ht, div_mul_cancel₀ _ (norm_ne_zero_iff.2 hX0)]`. Establish `h1 : archQuad Y ≤ archQuad (t • X)` using `hmin hmem`. Rewrite `h1` using `[archQuad_smul]`. Establish `h2 : t ^ 2 * archQuad X ≤ archQuad X`.
+
+Use `archQuad_nonneg X` as an intermediate fact. Establish `: t ^ 2 ≤ 1` using `by nlinarith`. Use the polynomial consequences of the given equalities and inequalities. Combine the linear equalities and inequalities to obtain the conclusion. Use `push Not at hX`.
+
+Conclude with `⟨1, one_pos, fun X _ => by rw [hX X, norm_zero]; exact hδ⟩`.
+-/
 theorem exists_archQuad_lt {δ : ℝ} (hδ : 0 < δ) :
     ∃ m : ℝ, 0 < m ∧ ∀ X : ArchMatrix K n, archQuad X < m → ‖X‖ < δ := by
   by_cases hX : ∃ X : ArchMatrix K n, X ≠ 0
@@ -368,12 +492,21 @@ theorem exists_archQuad_lt {δ : ℝ} (hδ : 0 < δ) :
 
 abbrev archVal (a : archGroup K n) : ArchMatrix K n := ((a : (ArchMatrix K n)ˣ) : ArchMatrix K n)
 
+/- English proof (translation)
+The claim follows from `Units.continuous_val.comp continuous_subtype_val`.
+-/
 theorem continuous_archVal : Continuous (archVal : archGroup K n → ArchMatrix K n) :=
   Units.continuous_val.comp continuous_subtype_val
 
+/- English proof (translation)
+The claim follows from `continuous_archVal.comp continuous_inv`.
+-/
 theorem continuous_archVal_inv : Continuous (fun a : archGroup K n => archVal a⁻¹) :=
   continuous_archVal.comp continuous_inv
 
+/- English proof (translation)
+Establish `hcl : IsClosed ((archGroup K n : Subgroup (ArchMatrix K n)ˣ) : Set (ArchMatrix K n)ˣ)`. Rewrite using `[show ((archGroup K n : Subgroup (ArchMatrix K n)ˣ) : Set (ArchMatrix K n)ˣ) = Set.univ from Subgroup.coe_top]`. Conclude with `isClosed_univ`. Conclude with `Units.isClosedEmbedding_embedProduct.comp hcl.isClosedEmbedding_subtypeVal`.
+-/
 theorem isClosedEmbedding_archPair :
     Topology.IsClosedEmbedding (fun a : archGroup K n =>
       Units.embedProduct (ArchMatrix K n) (a : (ArchMatrix K n)ˣ)) := by
@@ -383,6 +516,11 @@ theorem isClosedEmbedding_archPair :
     exact isClosed_univ
   exact Units.isClosedEmbedding_embedProduct.comp hcl.isClosedEmbedding_subtypeVal
 
+/- English proof (translation)
+Rewrite using `[← archQuad_conj hk (archVal a - 1)]`. Use `congr 1`. Establish `h1 : archVal k * archVal k⁻¹ = 1`. Rewrite using `[archVal, archVal, ← Units.val_mul, ← Subgroup.coe_mul, mul_inv_cancel, Subgroup.coe_one, Units.val_one]`. Simplify using `only [archVal, Subgroup.coe_mul, Units.val_mul] at h1 ⊢`.
+
+Rewrite using `[mul_sub, sub_mul, mul_one, h1]`.
+-/
 theorem archQuad_conj_sub {k : archGroup K n} (hk : k ∈ archCompact K n) (a : archGroup K n) :
     archQuad (archVal (k * a * k⁻¹) - 1) = archQuad (archVal a - 1) := by
   rw [← archQuad_conj hk (archVal a - 1)]
@@ -393,6 +531,47 @@ theorem archQuad_conj_sub {k : archGroup K n} (hk : k ∈ archCompact K n) (a : 
   simp only [archVal, Subgroup.coe_mul, Units.val_mul] at h1 ⊢
   rw [mul_sub, sub_mul, mul_one, h1]
 
+/- English proof (translation)
+Use `set E := fun a : archGroup K n => Units.embedProduct (ArchMatrix K n) (a : (ArchMatrix K n)ˣ) with hEdef`. Establish `hE` using `isClosedEmbedding_archPair (K := K) (n := n)`. Choose the witnesses or unpack the hypotheses as in `⟨W, hW, hWN⟩ : ∃ W ∈ 𝓝 (E 1), E ⁻¹' W ⊆ N := by`. Use `hE.isInducing.nhds_eq_comap (1 : archGroup K n)` as an intermediate fact. Rewrite `hN` using `[this]`.
+
+Conclude with `(Filter.mem_comap).1 hN`. Take `⟨δ₁, hδ₁, hδ₁W⟩` from `Metric.mem_nhds_iff.1 hW`. Use `set T := (expPartialHomeomorph ℝ (ArchMatrix K n)).target`. Establish `hT1 : (1 : ArchMatrix K n) ∈ T`. Use `(expPartialHomeomorph ℝ (ArchMatrix K n)).map_source (zero_mem_expPartialHomeomorph_source ℝ (ArchMatrix K n))` as an intermediate fact.
+
+Rewrite `this` using `[coe_expPartialHomeomorph, NormedSpace.exp_zero]`. Then use the resulting hypothesis. Take `⟨δ₀, hδ₀, hδ₀T⟩` from `Metric.isOpen_iff.1 (expPartialHomeomorph ℝ (ArchMatrix K n)).open_target 1 hT1`. Use `set δ := min δ₁ δ₀ with hδdef`. Establish `hδ : 0 < δ` using `lt_min hδ₁ hδ₀`. Take `⟨m, hm, hmδ⟩` from `exists_archQuad_lt (K := K) (n := n) hδ`.
+
+Use `set β : ContDiffBump (0 : ℝ) := ⟨m / 2, m, half_pos hm, half_lt_self hm⟩`. Establish `hβ0 : ∀ x : ℝ, β x ≠ 0 → x < m`. Introduce `x hx`. Establish `: x ∈ Function.support β` using `hx`. Rewrite `this` using `[β.support_eq, Metric.mem_ball, dist_zero_right, Real.norm_eq_abs]`.
+
+Conclude with `lt_of_le_of_lt (le_abs_self x) this`. Use `set ρ₀ : archGroup K n → ℝ := fun a => β (archQuad (archVal a - 1)) * β (archQuad (archVal a⁻¹ - 1)) with hρ₀def`. Establish `hρ₀nn : ∀ a, 0 ≤ ρ₀ a` using `fun a => mul_nonneg β.nonneg β.nonneg`. Establish `hρ₀1 : ρ₀ 1 = 1`. Establish `h0 : β 0 = 1` using `β.one_of_mem_closedBall (Metric.mem_closedBall_self (half_pos hm).le)`.
+
+Simplify using `only [hρ₀def, inv_one, archVal, OneMemClass.coe_one, Units.val_one, sub_self, archQuad_zero, h0, mul_one]`. Establish `hsmall : ∀ a, ρ₀ a ≠ 0 → ‖archVal a - 1‖ < δ ∧ ‖archVal a⁻¹ - 1‖ < δ`. Introduce `a ha`. Establish `h1 : β (archQuad (archVal a - 1)) ≠ 0` using `left_ne_zero_of_mul ha`. Establish `h2 : β (archQuad (archVal a⁻¹ - 1)) ≠ 0` using `right_ne_zero_of_mul ha`.
+
+Conclude with `⟨hmδ _ (hβ0 _ h1), hmδ _ (hβ0 _ h2)⟩`. Set `_` to `(isExpLieAlgebra K n).chartedSpace`. Establish `hsm : ContMDiff 𝓘(ℝ, archLie K n) 𝓘(ℝ, ℝ) ((⊤ : ℕ∞) : WithTop ℕ∞) ρ₀`. Rewrite using `[(isExpLieAlgebra K n).contMDiff_iff_expG]`. Introduce `g`.
+
+Establish `e : (fun Y : archLie K n => ρ₀ (g * (isExpLieAlgebra K n).expG Y)) = fun Y : archLie K n => β (archQuad (archVal g * NormedSpace.exp (Y : ArchMatrix K n) - 1)) * β (archQuad (NormedSpace.exp (-(Y : ArchMatrix K n)) * archVal g⁻¹ - 1))`. Use function extensionality and compare the values at `Y`. Simplify using `only [hρ₀def, archVal, _root_.mul_inv_rev, Subgroup.coe_mul, Units.val_mul, ← IsExpLieAlgebra.expG_neg, IsExpLieAlgebra.coe_expG]`. Both sides reduce to the same expression. Rewrite using `[e]`.
+
+Establish `hY : ContDiff ℝ (⊤ : ℕ∞) (fun Y : archLie K n => (Y : ArchMatrix K n))` using `(Submodule.subtypeL (archLie K n)).contDiff`. Establish `hexp : ContDiff ℝ (⊤ : ℕ∞) (NormedSpace.exp : ArchMatrix K n → ArchMatrix K n)` using `contDiff_exp ℝ _`. Establish `hq : ContDiff ℝ (⊤ : ℕ∞) (archQuad : ArchMatrix K n → ℝ)` using `contDiff_archQuad.of_le le_top`. Use `ContDiff.mul ?_ ?_` and prove the remaining obligations. Conclude with `β.contDiff.comp (hq.comp ((contDiff_const.mul (hexp.comp hY)).sub contDiff_const))`.
+
+Conclude with `β.contDiff.comp (hq.comp (((hexp.comp hY.neg).mul contDiff_const).sub contDiff_const))`. Establish `hcont : Continuous ρ₀` using `hsm.continuous`. Use `set C : Set (ArchMatrix K n × (ArchMatrix K n)ᵐᵒᵖ) := Metric.closedBall 1 δ ×ˢ (MulOpposite.op '' Metric.closedBall 1 δ)`. Establish `hC : IsCompact C` using `(isCompact_closedBall _ _).prod ((isCompact_closedBall _ _).image MulOpposite.continuous_op)`. Establish `hcs : HasCompactSupport ρ₀`.
+
+Use `HasCompactSupport.intro (hE.isCompact_preimage hC) fun a ha => ?_` and prove the remaining obligations. Assume the negation of the conclusion as `h0`. Take `⟨h1, h2⟩` from `hsmall a h0`. Use `ha ⟨Metric.mem_closedBall.2 ?_, ⟨archVal a⁻¹, Metric.mem_closedBall.2 ?_, rfl⟩⟩` and prove the remaining obligations. Rewrite using `[dist_eq_norm]`.
+
+Conclude with `h1.le`. Rewrite using `[dist_eq_norm]`. Conclude with `h2.le`. Use `set I := ∫ a, ρ₀ a ∂ν`. Establish `hI : 0 < I` using `hcont.integral_pos_of_hasCompactSupport_nonneg_nonzero hcs hρ₀nn (x := 1) (by rw [hρ₀1]; exact one_ne_zero)`.
+
+Use `⟨fun a => ρ₀ a / I, fun a => div_nonneg (hρ₀nn a) hI.le, ⟨?_, ?_⟩, ?_, fun a => ?_, fun k hk a => ?_, fun a ha => ?_, fun a ha => ?_⟩` and prove the remaining obligations. Conclude with `Complex.ofRealCLM.contDiff.comp_contMDiff (hsm.div_const I)`. Establish `hcs' : HasCompactSupport (fun a => ρ₀ a / I)` using `hcs.mono fun a ha => by`. Simplify using `only [Function.mem_support] at ha ⊢`. Introduce `h`.
+
+Conclude with `ha (by rw [h, zero_div])`. Conclude with `hcs'.comp_left Complex.ofReal_zero`. Rewrite using `[integral_div, div_self hI.ne']`. Simplify using `only [hρ₀def, inv_inv]`. Rewrite using `[mul_comm]`.
+
+Establish `e1` using `archQuad_conj_sub hk a`. Establish `e2` using `archQuad_conj_sub hk a⁻¹`. Establish `e3 : (k * a * k⁻¹)⁻¹ = k * a⁻¹ * k⁻¹` using `by group`. Simplify using `only [hρ₀def]`. Rewrite using `[e3, e1, e2]`.
+
+Establish `ha' : ρ₀ a ≠ 0` using `fun h => ha (by simp [h])`. Take `⟨h1, h2⟩` from `hsmall a ha'`. Use `hWN (hδ₁W ?_)` and prove the remaining obligations. Rewrite using `[Metric.mem_ball, Prod.dist_eq, max_lt_iff]`. Use `⟨?_, ?_⟩` and prove the remaining obligations.
+
+Use `show dist (archVal a) 1 < δ₁`. Rewrite using `[dist_eq_norm]`. Conclude with `lt_of_lt_of_le h1 (min_le_left _ _)`. Use `show dist (MulOpposite.op (archVal a⁻¹)) (MulOpposite.op 1) < δ₁`. Rewrite using `[MulOpposite.dist_op, dist_eq_norm]`.
+
+Conclude with `lt_of_lt_of_le h2 (min_le_left _ _)`. Establish `ha' : ρ₀ a ≠ 0` using `fun h => ha (by simp [h])`. Take `⟨h1, -⟩` from `hsmall a ha'`. Establish `hmem : archVal a ∈ T` using `hδ₀T (by`. Rewrite using `[Metric.mem_ball, dist_eq_norm]`.
+
+Conclude with `lt_of_lt_of_le h1 (min_le_right _ _))`. Use `⟨⟨(expPartialHomeomorph ℝ (ArchMatrix K n)).symm (archVal a), Submodule.mem_top⟩, ?_⟩` and prove the remaining obligations. Apply `Subtype.ext` to reduce the goal to its premises. Apply `Units.ext` to reduce the goal to its premises. Rewrite using `[IsExpLieAlgebra.coe_expG]`.
+
+Use `show archVal a = NormedSpace.exp ((expPartialHomeomorph ℝ (ArchMatrix K n)).symm (archVal a))`. Rewrite using `[← coe_expPartialHomeomorph ℝ (ArchMatrix K n), (expPartialHomeomorph ℝ (ArchMatrix K n)).right_inv hmem]`.
+-/
 theorem exists_archBump (ν : Measure (archGroup K n)) [ν.IsHaarMeasure] {N : Set (archGroup K n)}
     (hN : N ∈ 𝓝 (1 : archGroup K n)) :
     ∃ ρ : archGroup K n → ℝ, (∀ a, 0 ≤ ρ a) ∧

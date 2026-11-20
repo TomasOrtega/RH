@@ -10,6 +10,11 @@ noncomputable section
 
 namespace GlobalTheory.Mum.GlueNear
 
+/- English proof (translation)
+Set `m : pullback (j ≫ f) (j ≫ f) ⟶ pullback f f` to `pullback.map (j ≫ f) (j ≫ f) f f j j (𝟙 S) (by simp) (by simp)`. Establish `hm : UniversallyClosed m` using `MorphismProperty.pullbackMap (P := @UniversallyClosed) ‹_› ‹_› rfl rfl`. Establish `e : j ≫ pullback.diagonal f = pullback.diagonal (j ≫ f) ≫ m`. Apply the tactic sequence `apply pullback.hom_ext <;> simp [m, pullback.map, pullback.lift_fst, pullback.lift_snd]`. Establish `: UniversallyClosed (j ≫ pullback.diagonal f)` using `by rw [e]; infer_instance`.
+
+Establish `: UniversallyClosed (pullback.diagonal f)` using `UniversallyClosed.of_comp_surjective j _`. Conclude with `⟨IsClosedImmersion.of_isPreimmersion _ (pullback.diagonal f).isClosedMap.isClosed_range⟩`.
+-/
 theorem isSeparated_of_surjective {X Y S : Scheme.{0}} (j : X ⟶ Y) (f : Y ⟶ S)
     [Surjective j] [UniversallyClosed j] [IsSeparated (j ≫ f)] : IsSeparated f := by
   let m : pullback (j ≫ f) (j ≫ f) ⟶ pullback f f :=
@@ -22,6 +27,15 @@ theorem isSeparated_of_surjective {X Y S : Scheme.{0}} (j : X ⟶ Y) (f : Y ⟶ 
   have : UniversallyClosed (pullback.diagonal f) := UniversallyClosed.of_comp_surjective j _
   exact ⟨IsClosedImmersion.of_isPreimmersion _ (pullback.diagonal f).isClosedMap.isClosed_range⟩
 
+/- English proof (translation)
+Use `Scheme.isPullback_of_openCover _ _ _ _ (Scheme.Opens.iSupOpenCover V) fun (i : I) => ?_` and prove the remaining obligations. Establish `e : V i ≤ ⨆ i, V i` using `le_iSup V i`. Establish `sq : IsPullback (Y.homOfLE (π.preimage_mono e)) (π ∣_ V i) (π ∣_ (⨆ i, V i)) (X.homOfLE e)`. Use `IsPullback.of_right (h₁₂ := (π ⁻¹ᵁ (⨆ i, V i)).ι) (h₂₂ := (⨆ i, V i).ι) (v₁₃ := π) ?_ ?_ (isPullback_morphismRestrict π _).flip` and prove the remaining obligations. Simplify using `using (isPullback_morphismRestrict π (V i)).flip`.
+
+Rewrite using `[← cancel_mono (⨆ i, V i).ι]`. Simplify using the standard rewrite rules. Use `(h i).of_iso sq.isoPullback (Iso.refl _) (Iso.refl _) (Iso.refl _) ?_ ?_ ?_ ?_` and prove the remaining obligations. Conclude with `(Category.comp_id _).trans sq.isoPullback_hom_snd.symm`. Use `(Category.comp_id _).trans ?_` and prove the remaining obligations.
+
+Use `Eq.trans ?_ (Category.assoc _ _ _)` and prove the remaining obligations. Use `erw [sq.isoPullback_hom_fst]`. Simplify using the standard rewrite rules. Express the relevant statement in the definitionally equal form `_ = 𝟙 _ ≫ X.homOfLE e ≫ _`. Simplify using the standard rewrite rules.
+
+Simplify using the standard rewrite rules.
+-/
 theorem isPullback_iSup {Y X S S' : Scheme.{0}} (π : Y ⟶ X) (q : X ⟶ S) (t : Y ⟶ S') (f : S' ⟶ S)
     {I : Type} (V : I → X.Opens)
     (h : ∀ i, IsPullback (π ∣_ V i) ((π ⁻¹ᵁ V i).ι ≫ t) ((V i).ι ≫ q) f) :
@@ -43,6 +57,9 @@ theorem isPullback_iSup {Y X S S' : Scheme.{0}} (π : Y ⟶ X) (q : X ⟶ S) (t 
     simp
   · simp
 
+/- English proof (translation)
+Establish `: IsZariskiLocalAtSource @Smooth` using `HasRingHomProperty.instIsZariskiLocalAtSource`. Use `IsZariskiLocalAtSource.of_openCover (P := @Smooth) (Scheme.Opens.iSupOpenCover V) fun (i : I) => ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `Smooth (X.homOfLE (le_iSup V i) ≫ _)`. Simplify using `using h i`.
+-/
 theorem smooth_iSup {X S : Scheme.{0}} (q : X ⟶ S) {I : Type} (V : I → X.Opens)
     (h : ∀ i, Smooth ((V i).ι ≫ q)) : Smooth ((⨆ i, V i).ι ≫ q) := by
   have : IsZariskiLocalAtSource @Smooth := HasRingHomProperty.instIsZariskiLocalAtSource
@@ -50,6 +67,31 @@ theorem smooth_iSup {X S : Scheme.{0}} (q : X ⟶ S) {I : Type} (V : I → X.Ope
   change Smooth (X.homOfLE (le_iSup V i) ≫ _)
   simpa using h i
 
+/- English proof (translation)
+Establish `: CompactSpace H.toScheme` using `isCompact_iff_compactSpace.mp hc`. Set `Z : Set H.toScheme` to `{x | f (G.hom (H.ι x)) = closedPoint R}`. Establish `hZ : IsCompact Z`. Use `IsClosed.isCompact ?_` and prove the remaining obligations. Conclude with `(isClosed_singleton_closedPoint R).preimage (f.continuous.comp (G.hom.continuous.comp H.ι.continuous))`.
+
+Use `choose V hV hVa hVs hVp using fun x : Z => hloc x.1 x.2`. Take `⟨t, ht⟩` from `hZ.elim_finite_subcover (fun x : Z => ((π ⁻¹ᵁ V x : H.toScheme.Opens) : Set H.toScheme)) (fun x => (π ⁻¹ᵁ V x).isOpen) (fun x hx => Set.mem_iUnion.2 ⟨⟨x, hx⟩, hV ⟨x, hx⟩⟩)`. Set `W : t → X.left.Opens` to `fun i => V i.1`. Establish `P` using `isPullback_iSup π X.hom (H.ι ≫ G.hom) f W fun i => hVp i.1`. Establish `hS` using `smooth_iSup X.hom W fun i => hVs i.1`.
+
+Establish `hC : IsCompact ((⨆ i, W i : X.left.Opens) : Set X.left)`. Rewrite using `[TopologicalSpace.Opens.coe_iSup]`. Conclude with `isCompact_iUnion fun i => (hVa i.1).isCompact`. Establish `hA : ∀ x ∈ Z, π x ∈ ⨆ i, W i`. Introduce `x hx`.
+
+Take `⟨i, hi, hx⟩` from `Set.mem_iUnion₂.1 (ht hx)`. Conclude with `TopologicalSpace.Opens.mem_iSup.2 ⟨⟨i, hi⟩, hx⟩`. Generalize the expression as in `(⨆ i, W i) = U at P hS hC hA`. Establish `: CompactSpace U.toScheme` using `isCompact_iff_compactSpace.mp hC`. Establish `hq : QuasiCompact (U.ι ≫ X.hom)` using `(quasiCompact_iff_compactSpace _).2 inferInstance`.
+
+Establish `hsep : IsSeparated (U.ι ≫ X.hom)`. Establish `h₁ : IsFinite (π ∣_ U)` using `MorphismProperty.of_isPullback (P := @IsFinite) P.flip inferInstance`. Establish `h₂ : Surjective (π ∣_ U)` using `MorphismProperty.of_isPullback (P := @Surjective) P.flip inferInstance`. Establish `h₃ : IsSeparated (π ∣_ U ≫ U.ι ≫ X.hom)` using `by rw [P.w]; infer_instance`. Conclude with `isSeparated_of_surjective (π ∣_ U) _`.
+
+Set `N : Near f G` to `{ U := Over.mk (U.ι ≫ X.hom) smooth := hS separated := hsep quasiCompact := hq u := P.isoPullback.inv ≫ (π ⁻¹ᵁ U).ι ≫ H.ι isOpen := inferInstanceAs (IsOpenImmersion (P.isoPullback.inv ≫ (π ⁻¹ᵁ U).ι ≫ H.ι)) u_over := (Category.assoc _ _ _).trans ((congrArg (P.isoPullback.inv ≫ ·) …`. Introduce `g hg`. Use `⟨P.isoPullback.hom ⟨⟨g, hcl g hg⟩, hA ⟨g, hcl g hg⟩ hg⟩, ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `(P.isoPullback.hom ≫ P.isoPullback.inv ≫ (π ⁻¹ᵁ U).ι ≫ H.ι) _ = g`. Rewrite using `[Iso.hom_inv_id_assoc]`.
+
+Use `rfl }`. Establish `pt : ∀ {T : Scheme.{0}} (s : T ⟶ S) (u : T ⟶ U.toScheme) (x : T ⟶ G.left), N.Pt s u x ↔ ∃ y : T ⟶ (π ⁻¹ᵁ U).toScheme, y ≫ π ∣_ U = u ∧ y ≫ (π ⁻¹ᵁ U).ι ≫ H.ι ≫ G.hom = s ∧ y ≫ (π ⁻¹ᵁ U).ι ≫ H.ι = x`. Introduce `T s u x`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨x₀, h₁, h₂, h₃⟩`.
+
+Use `⟨x₀ ≫ P.isoPullback.inv, ?_, ?_, ?_⟩` and prove the remaining obligations. Conclude with `(Category.assoc _ _ _).trans ((congrArg (x₀ ≫ ·) P.isoPullback_inv_fst).trans h₁)`. Conclude with `(Category.assoc _ _ _).trans ((congrArg (x₀ ≫ ·) P.isoPullback_inv_snd).trans h₂)`. Conclude with `(Category.assoc _ _ _).trans h₃`. Introduce and unpack `⟨y, h₁, h₂, h₃⟩`.
+
+Use `⟨y ≫ P.isoPullback.hom, ?_, ?_, ?_⟩` and prove the remaining obligations. Conclude with `(Category.assoc _ _ _).trans ((congrArg (y ≫ ·) P.isoPullback_hom_fst).trans h₁)`. Conclude with `(Category.assoc _ _ _).trans ((congrArg (y ≫ ·) P.isoPullback_hom_snd).trans h₂)`. Conclude with `(Category.assoc _ _ _).trans ((congrArg (y ≫ ·) (P.isoPullback.hom_inv_id_assoc _)).trans h₃)`. Use `⟨N, fun α β hα hαβ hπ T s u x hx => ?_⟩` and prove the remaining obligations.
+
+Take `⟨y, rfl, rfl, rfl⟩` from `(pt s u x).1 hx`. Establish `Q` using `isPullback_morphismRestrict π U`. Set `δ : (π ⁻¹ᵁ U).toScheme ⟶ (π ⁻¹ᵁ U).toScheme` to `Q.lift (π ∣_ U) ((π ⁻¹ᵁ U).ι ≫ α.resLE H H hα) (by rw [Category.assoc, hπ, Q.w])`. Establish `hδ : δ ≫ (π ⁻¹ᵁ U).ι ≫ H.ι = (π ⁻¹ᵁ U).ι ≫ H.ι ≫ α`. Rewrite using `[Q.lift_snd_assoc, Category.assoc, Scheme.Hom.resLE_comp_ι]`.
+
+Use `(pt _ _ _).2 ⟨y ≫ δ, ?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[Category.assoc, Q.lift_fst]`. Simplify using `only [Category.assoc]`. Rewrite using `[reassoc_of% hδ, hαβ]`. Simplify using `only [Category.assoc]`.
+
+Rewrite using `[hδ]`.
+-/
 theorem exists_near {R : Type} [CommRing R] [IsLocalRing R] {S : Scheme.{0}} (f : S ⟶ Sp R) [IsFinite f] [Surjective f]
     (G : Over S) [IsSeparated G.hom] (H : G.left.Opens)
     (hcl : ∀ g : G.left, f (G.hom g) = closedPoint R → g ∈ H) (hc : IsCompact (H : Set G.left))
@@ -131,6 +173,13 @@ theorem exists_near {R : Type} [CommRing R] [IsLocalRing R] {S : Scheme.{0}} (f 
   · simp only [Category.assoc]
     rw [hδ]
 
+/- English proof (translation)
+Introduce `R _ _ _ _ R' _ _ _ ρ hρ _ D D' hD A' G' _ _ hG U' a H hH hcl hc X π hX _ _ hπ _ _ hloc`. Use `hG.separated` as an intermediate fact. Establish `: IsFinite (spMap ρ)` using `(IsFinite.SpecMap_iff _).2 hρ.2.2`. Establish `: Surjective (spMap ρ)` using `⟨RingHom.IsIntegral.comap_surjective hρ.2.2.to_isIntegral hρ.2.1⟩`. Take `⟨N, hN⟩` from `exists_near (spMap ρ) G' H hcl hc X π fun x hx => by`.
+
+Take `⟨V, h₁, h₂, h₃, h₄⟩` from `hloc x hx`. Use `⟨V, h₁, h₂, h₃, ?_⟩` and prove the remaining obligations. Rewrite using `[← Scheme.Hom.resLE_eq_morphismRestrict]`. Use `IsPullback.of_iso_pullback ⟨?_⟩ (@asIso _ _ _ _ _ h₄) (pullback.lift_fst _ _ _) (pullback.lift_snd _ _ _)` and prove the remaining obligations. Rewrite using `[Scheme.Hom.resLE_comp_ι_assoc, hX]`.
+
+Simplify using `only [Category.assoc]`. Conclude with `⟨N, fun σ => hN (a.act σ) _ (hH σ).ge (a.cart σ).1.w (hπ σ)⟩`.
+-/
 theorem glue_near : ∀ (R : Type) [CommRing R] [IsDomain R] [IsLocalRing R], Base R → ∀ (R' : Type) [CommRing R'] [IsDomain R'] [IsLocalRing R'] (ρ : R →+* R'), FinExt ρ → IsGal ρ → ∀ (D : DegData R (maximalIdeal R)) (D' : DegData R' (maximalIdeal R')) (hD : IsPullDeg ρ D.toPre D'.toPre) (A' : PolAV (Sp (FractionRing R'))) (G' : Over (Sp R')) [GrpObj G'] [IsCommMonObj G'], IsSemiAbelian G' → ∀ (U' : Unif (maximalIdeal R') D' A' G') (a : GalAct ρ hD U'), ∀ (H : G'.left.Opens) (hH : ∀ σ, a.act σ ⁻¹ᵁ H = H), (∀ g : G'.left, spMap ρ (G'.hom g) = closedPoint R → g ∈ H) → IsCompact (H : Set G'.left) → ∀ (X : Over (Sp R)) (π : H.toScheme ⟶ X.left) (hX : π ≫ X.hom = H.ι ≫ G'.hom ≫ spMap ρ), IsAffineHom π → Surjective π → (∀ σ, (a.act σ).resLE H H (hH σ).ge ≫ π = π) → (∀ x y : H.toScheme, π x = π y → ∃ σ, a.act σ (H.ι x) = H.ι y) → (∀ V : X.left.Opens, Function.Injective (π.app V).hom ∧ ∀ f : Γ(H.toScheme, π ⁻¹ᵁ V), (∀ σ (h : π ⁻¹ᵁ V ≤ ((a.act σ).resLE H H (hH σ).ge) ⁻¹ᵁ (π ⁻¹ᵁ V)), (((a.act σ).resLE H H (hH σ).ge).appLE _ _ h).hom f = f) → f ∈ Set.range (π.app V).hom) → (∀ x : H.toScheme, spMap ρ (G'.hom (H.ι x)) = closedPoint R → ∃ V : X.left.Opens, π x ∈ V ∧ IsAffineOpen V ∧ Smooth (V.ι ≫ X.hom) ∧ IsIso (pullback.lift (π.resLE V (π ⁻¹ᵁ V) le_rfl) ((π ⁻¹ᵁ V).ι ≫ H.ι ≫ G'.hom) (by rw [Scheme.Hom.resLE_comp_ι_assoc, hX]; simp only [Category.assoc]) : (π ⁻¹ᵁ V).toScheme ⟶ pullback (V.ι ≫ X.hom) (spMap ρ))) → ∃ N : Near (spMap ρ) G', (∀ σ (T : Scheme.{0}) (s : T ⟶ Sp R') (u : T ⟶ N.U.left) (x : T ⟶ G'.left), N.Pt s u x → N.Pt (s ≫ spMap (Gal.hom σ)) u (x ≫ a.act σ)) := by
   intro R _ _ _ _ R' _ _ _ ρ hρ _ D D' hD A' G' _ _ hG U' a H hH hcl hc X π hX _ _ hπ _ _ hloc
   have := hG.separated

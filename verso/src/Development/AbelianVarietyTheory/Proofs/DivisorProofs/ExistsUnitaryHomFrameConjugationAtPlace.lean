@@ -15,34 +15,61 @@ section Idem
 variable {R L : Type} [CommRing R] [Field L] {n : ℕ} (ι : L →+ R) (hm : ∀ x y, ι (x * y) = ι x * ι y)
 include hm
 
+/- English proof (translation)
+Use extensionality with `i j`. Simplify using `only [Matrix.mul_apply, Matrix.map_apply, map_sum, hm]`.
+-/
 theorem map_mul_map (X Y : Matrix (Fin n) (Fin n) L) : X.map ι * Y.map ι = (X * Y).map ι := by
   ext i j
   simp only [Matrix.mul_apply, Matrix.map_apply, map_sum, hm]
 
+/- English proof (translation)
+Rewrite using `[← hm, one_mul]`.
+-/
 theorem e_mul (t : L) : ι 1 * ι t = ι t := by rw [← hm, one_mul]
 
+/- English proof (translation)
+Rewrite using `[sub_mul, one_mul, e_mul ι hm, sub_self]`.
+-/
 theorem f_mul (t : L) : (1 - ι 1) * ι t = 0 := by rw [sub_mul, one_mul, e_mul ι hm, sub_self]
 
+/- English proof (translation)
+Use `e_mul ι hm 1` as an intermediate fact. Take the linear combination `this`.
+-/
 theorem ff : (1 - ι 1) * (1 - ι 1) = 1 - ι 1 := by
   have := e_mul ι hm 1
   linear_combination this
 
+/- English proof (translation)
+Use `e_mul ι hm 1` as an intermediate fact. Take the linear combination `-this`.
+-/
 theorem ef : ι 1 * (1 - ι 1) = 0 := by
   have := e_mul ι hm 1
   linear_combination -this
 
+/- English proof (translation)
+Use extensionality with `i j`. Simplify using `[Matrix.smul_apply, f_mul ι hm]`.
+-/
 theorem f_smul_map (X : Matrix (Fin n) (Fin n) L) : (1 - ι 1) • X.map ι = 0 := by
   ext i j
   simp [Matrix.smul_apply, f_mul ι hm]
 
+/- English proof (translation)
+Rewrite using `[← Matrix.mul_smul, f_smul_map ι hm, Matrix.mul_zero]`.
+-/
 theorem f_smul_mul_map (Y : Matrix (Fin n) (Fin n) R) (X : Matrix (Fin n) (Fin n) L) :
     (1 - ι 1) • (Y * X.map ι) = 0 := by
   rw [← Matrix.mul_smul, f_smul_map ι hm, Matrix.mul_zero]
 
+/- English proof (translation)
+Rewrite using `[← Matrix.smul_mul, f_smul_map ι hm, Matrix.zero_mul]`.
+-/
 theorem f_smul_map_mul (Y : Matrix (Fin n) (Fin n) R) (X : Matrix (Fin n) (Fin n) L) :
     (1 - ι 1) • (X.map ι * Y) = 0 := by
   rw [← Matrix.smul_mul, f_smul_map ι hm, Matrix.zero_mul]
 
+/- English proof (translation)
+Use extensionality with `i j`. Distinguish the cases in `h : i = j`. Substitute `h` using the available equality. Simplify using the standard rewrite rules. Simplify using `[Matrix.one_apply_ne h]`.
+-/
 theorem map_one' : (1 : Matrix (Fin n) (Fin n) L).map ι = ι 1 • (1 : Matrix (Fin n) (Fin n) R) := by
   ext i j
   by_cases h : i = j
@@ -52,15 +79,27 @@ theorem map_one' : (1 : Matrix (Fin n) (Fin n) L).map ι = ι 1 • (1 : Matrix 
 def Mm (K : Matrix (Fin n) (Fin n) L) : Matrix (Fin n) (Fin n) R := (1 - ι 1) • (1 : Matrix (Fin n) (Fin n) R) + K.map ι
 
 omit hm in
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem Mm_def (K : Matrix (Fin n) (Fin n) L) : Mm ι K = (1 - ι 1) • (1 : Matrix (Fin n) (Fin n) R) + K.map ι := rfl
 
+/- English proof (translation)
+Simplify using `only [Mm_def, Matrix.add_mul, Matrix.mul_add, Matrix.smul_mul, Matrix.mul_smul, smul_smul, smul_add, ff ι hm, Matrix.one_mul, Matrix.mul_one, f_smul_map ι hm, map_mul_map ι hm, add_zero, zero_add]`.
+-/
 theorem Mm_mul (K K' : Matrix (Fin n) (Fin n) L) : Mm ι K * Mm ι K' = Mm ι (K * K') := by
   simp only [Mm_def, Matrix.add_mul, Matrix.mul_add, Matrix.smul_mul, Matrix.mul_smul, smul_smul, smul_add, ff ι hm,
     Matrix.one_mul, Matrix.mul_one, f_smul_map ι hm, map_mul_map ι hm, add_zero, zero_add]
 
+/- English proof (translation)
+Rewrite using `[Mm_def, map_one' ι hm, ← add_smul, sub_add_cancel, one_smul]`.
+-/
 theorem Mm_one : Mm ι (1 : Matrix (Fin n) (Fin n) L) = 1 := by
   rw [Mm_def, map_one' ι hm, ← add_smul, sub_add_cancel, one_smul]
 
+/- English proof (translation)
+Simplify using `only [Mm_def, Matrix.add_mul, Matrix.mul_add, Matrix.smul_mul, Matrix.mul_smul, smul_smul, smul_add, ff ι hm, Matrix.one_mul, Matrix.mul_one, f_smul_map ι hm, map_mul_map ι hm, f_smul_mul_map ι hm, f_smul_map_mul ι hm, add_zero, zero_add]`.
+-/
 theorem sandwich (Y : Matrix (Fin n) (Fin n) R) (K1 K2 K3 : Matrix (Fin n) (Fin n) L) :
     Mm ι K1 * ((1 - ι 1) • Y + K2.map ι) * Mm ι K3 = (1 - ι 1) • Y + (K1 * K2 * K3).map ι := by
   simp only [Mm_def, Matrix.add_mul, Matrix.mul_add, Matrix.smul_mul, Matrix.mul_smul, smul_smul, smul_add, ff ι hm,
@@ -76,6 +115,9 @@ def toGL : GL (Fin n) L →* GL (Fin n) R where
     rw [Units.val_mul, Mm_mul ι hm])
 
 omit hm in
+/- English proof (translation)
+Simplify using `only [Mm_def, Matrix.transpose_add, Matrix.transpose_smul, Matrix.transpose_one, Matrix.transpose_map]`.
+-/
 theorem Mm_transpose (K : Matrix (Fin n) (Fin n) L) : (Mm ι K)ᵀ = Mm ι Kᵀ := by
   simp only [Mm_def, Matrix.transpose_add, Matrix.transpose_smul, Matrix.transpose_one, Matrix.transpose_map]
 
@@ -85,6 +127,15 @@ section Core
 
 variable {L : Type} [Field L] {n : ℕ}
 
+/- English proof (translation)
+Use `set Pm : Matrix (Fin n) (Fin n) L := (P : Matrix (Fin n) (Fin n) L)`. Use `set Pi : Matrix (Fin n) (Fin n) L := ((P⁻¹ : GL (Fin n) L) : Matrix (Fin n) (Fin n) L)`. Use `set G := Pmᵀ * T * Pm.map σL with hGdef`. Establish `hPP : Pm * Pi = 1` using `Units.mul_inv P`. Establish `h1 : Piᵀ * Pmᵀ = 1` using `by rw [← Matrix.transpose_mul, hPP, Matrix.transpose_one]`.
+
+Establish `h2 : Pm.map σL * Pi.map σL = 1` using `by rw [← Matrix.map_mul, hPP, Matrix.map_one _ (map_zero σL) (map_one σL)]`. Establish `hGt : (h.map σL)ᵀ * Gᵀ * h = Gᵀ`. Rewrite `hh` using `[hJT, Matrix.mul_smul, Matrix.smul_mul]`. Use `congrArg (fun M : Matrix (Fin n) (Fin n) L => (-δ) • M) hh` as an intermediate fact. Simplify `this` using `only [smul_smul, neg_mul_neg, mul_inv_cancel₀ hδ, one_smul]`.
+
+Establish `hG : hᵀ * G * h.map σL = G`. Use `congrArg Matrix.transpose hGt` as an intermediate fact. Rewrite `this` using `[Matrix.transpose_mul, Matrix.transpose_mul, Matrix.transpose_transpose, Matrix.transpose_transpose, ← Matrix.mul_assoc]`. Conclude with `this`. Combine the equalities or inequalities in the displayed calculation.
+
+Simplify using `only [Matrix.transpose_mul, Matrix.map_mul, Matrix.mul_assoc]`. Use `_ = Piᵀ * (Pmᵀ * T * Pm.map σL) * Pi.map σL := by rw [← hGdef, hG]`. Use `_ = (Piᵀ * Pmᵀ) * T * (Pm.map σL * Pi.map σL) := by simp only [Matrix.mul_assoc]`. Use `_ = T := by rw [h1, h2, Matrix.one_mul, Matrix.mul_one]`.
+-/
 theorem unit_core (σL : L →+* L) (δ : L) (hδ : δ ≠ 0) (T : Matrix (Fin n) (Fin n) L) (P : GL (Fin n) L)
     (JT h : Matrix (Fin n) (Fin n) L)
     (hJT : JT = -δ⁻¹ • ((P : Matrix (Fin n) (Fin n) L)ᵀ * T * (P : Matrix (Fin n) (Fin n) L).map σL)ᵀ)
@@ -119,6 +170,11 @@ section Adelic
 
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {L : Type} [Field L] {n : ℕ}
 
+/- English proof (translation)
+Use extensionality with `i j`. Simplify using `only [Matrix.smul_apply, Matrix.map_apply, incM, tJ, smul_eq_mul]`. Rewrite using `[pre_spec]`. Apply `(hAt _).1` to reduce the goal to its premises. Introduce `u hu`.
+
+Establish `h1 : u • ι 1 = 0` using `(hAt (ι 1)).2 ⟨1, rfl⟩ u hu`. Rewrite using `[← smul_mul_assoc, h1, zero_mul]`.
+-/
 theorem e_smul_incM (v : Pl F) (ι : L →+ AE F E) (hAt : ∀ z : AE F E, At (evFin F v) z ↔ ∃ x, ι x = z)
     (J : Matrix (Fin n) (Fin n) E) : ι 1 • incM F J = (tJ ι J).map ι := by
   ext i j
@@ -129,10 +185,18 @@ theorem e_smul_incM (v : Pl F) (ι : L →+ AE F E) (hAt : ∀ z : AE F E, At (e
   have h1 : u • ι 1 = 0 := (hAt (ι 1)).2 ⟨1, rfl⟩ u hu
   rw [← smul_mul_assoc, h1, zero_mul]
 
+/- English proof (translation)
+Rewrite using `[← e_smul_incM v ι hAt, ← add_smul, sub_add_cancel, one_smul]`.
+-/
 theorem incM_split (v : Pl F) (ι : L →+ AE F E) (hAt : ∀ z : AE F E, At (evFin F v) z ↔ ∃ x, ι x = z)
     (J : Matrix (Fin n) (Fin n) E) : incM F J = (1 - ι 1) • incM F J + (tJ ι J).map ι := by
   rw [← e_smul_incM v ι hAt, ← add_smul, sub_add_cancel, one_smul]
 
+/- English proof (translation)
+Establish `he : cA σ (ι 1) = ι 1` using `by rw [← hσ, map_one]`. Use extensionality with `i j`. Distinguish the cases in `hij : i = j`. Substitute `hij` using the available equality. Simplify using `[Mm_def, Matrix.map_apply, Matrix.add_apply, Matrix.smul_apply, map_sub, he, hσ]`.
+
+Simplify using `[Mm_def, Matrix.map_apply, Matrix.add_apply, Matrix.smul_apply, Matrix.one_apply_ne hij, hσ]`.
+-/
 theorem Mm_cA (σ : E →ₐ[F] E) (σL : L →+* L) (ι : L →+ AE F E) (hσ : ∀ x, ι (σL x) = cA σ (ι x))
     (K : Matrix (Fin n) (Fin n) L) : (Mm ι K).map (cA σ) = Mm ι (K.map σL) := by
   have he : cA σ (ι 1) = ι 1 := by rw [← hσ, map_one]
@@ -144,6 +208,13 @@ theorem Mm_cA (σ : E →ₐ[F] E) (σL : L →+* L) (ι : L →+ AE F E) (hσ :
 
 end Adelic
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ v n X L _ σL δ ι hδ hAt hm hσ P JT hJT`. Set `φ : Formalism.UG.UJ σL (JT : Matrix (Fin n) (Fin n) L) →* GL (Fin n) L` to `(MulAut.conj P).toMonoidHom.comp (Subgroup.subtype _)`. Establish `hφ : ∀ h, ((φ h : GL (Fin n) L) : Matrix (Fin n) (Fin n) L) = (P : Matrix (Fin n) (Fin n) L) * ((h : GL (Fin n) L) : Matrix (Fin n) (Fin n) L) * ((P⁻¹ : GL (Fin n) L) : Matrix (Fin n) (Fin n) L)`. Introduce `h`. Simplify using `[φ, MulAut.conj_apply, Units.val_mul]`.
+
+Establish `hmem : ∀ h, (toGL ι hm).comp φ h ∈ UG (cA σ) (incM F X.J)`. Introduce `h`. Establish `hh : (((h : GL (Fin n) L) : Matrix (Fin n) (Fin n) L).map σL)ᵀ * (JT : Matrix (Fin n) (Fin n) L) * ((h : GL (Fin n) L) : Matrix (Fin n) (Fin n) L) = (JT : Matrix (Fin n) (Fin n) L)` using `h.2`. Use `show (Mm ι ((φ h : GL (Fin n) L) : Matrix (Fin n) (Fin n) L))ᵀ * incM F X.J * (Mm ι ((φ h : GL (Fin n) L) : Matrix (Fin n) (Fin n) L)).map (cA σ) = incM F X.J`. Rewrite using `[Mm_transpose, Mm_cA σ σL ι hσ]`.
+
+Use `conv_lhs => rw [incM_split v ι hAt X.J]`. Rewrite using `[sandwich ι hm, hφ, unit_core σL δ hδ (tJ ι X.J) P JT _ hJT hh, ← incM_split v ι hAt X.J]`. Use `⟨((toGL ι hm).comp φ).codRestrict _ hmem, fun h => ?_⟩` and prove the remaining obligations. Use `show Mm ι ((φ h : GL (Fin n) L) : Matrix (Fin n) (Fin n) L) = _`. Rewrite using `[hφ, Mm_def]`.
+-/
 theorem homW : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (v : Pl F) (n : ℕ) (X : Spc F E n) (L : Type) [Field L] (σL : L →+* L) (δ : L)
     (ι : L →+ AE F E), δ ≠ 0 → (∀ z : AE F E, At (evFin F v) z ↔ ∃ x, ι x = z) → (∀ x y, ι (x * y) = ι x * ι y) → (∀ x, ι (σL x) = cA σ (ι x)) →
       ∀ (P JT : GL (Fin n) L), (JT : Matrix (Fin n) (Fin n) L) = -δ⁻¹ • (GlobalTheory.InertLocFrame.gram σL ι P X.J)ᵀ →

@@ -18,6 +18,11 @@ attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalDat
 
 namespace GlobalTheory.WeilDeligne.SpCharpoly
 
+/- English proof (translation)
+Establish `e : Matrix.charmatrix (Matrix.blockDiagonal B) = Matrix.blockDiagonal (fun k => Matrix.charmatrix (B k))`. Use extensionality with `⟨i, k⟩ ⟨j, k'⟩`. Simplify using `only [Matrix.charmatrix_apply, Matrix.blockDiagonal_apply, Matrix.diagonal_apply, Prod.mk.injEq]`. Apply the tactic sequence `split_ifs <;> simp_all`. Rewrite using `[Matrix.charpoly, e, Matrix.det_blockDiagonal]`.
+
+Both sides reduce to the same expression.
+-/
 theorem charpoly_blockDiag {m o R : Type*} [Fintype m] [DecidableEq m] [Fintype o]
     [DecidableEq o] [CommRing R] (B : o → Matrix m m R) :
     (Matrix.blockDiagonal B).charpoly = ∏ k, (B k).charpoly := by
@@ -30,6 +35,13 @@ theorem charpoly_blockDiag {m o R : Type*} [Fintype m] [DecidableEq m] [Fintype 
   rw [Matrix.charpoly, e, Matrix.det_blockDiagonal]
   rfl
 
+/- English proof (translation)
+Use `set b := Pi.basisFun ℂ (Fin n)`. Establish `e : LinearMap.toMatrix (Pi.basisFun ℂ (Fin m)) (Pi.basisFun ℂ (Fin m)) (diagEnd c) = Matrix.diagonal c`. Use extensionality with `i j`. Simplify using `[LinearMap.toMatrix_apply, Matrix.diagonal_apply, Pi.single_apply]`. Rewrite using `[← LinearMap.charpoly_toMatrix _ (b.tensorProduct (Pi.basisFun ℂ (Fin m))), TensorProduct.toMatrix_map, e]`.
+
+Establish `e2 : Matrix.kroneckerMap (· * ·) (LinearMap.toMatrix b b f) (Matrix.diagonal c) = Matrix.blockDiagonal fun i => LinearMap.toMatrix b b (c i • f)`. Use extensionality with `⟨i, k⟩ ⟨j, k'⟩`. Simplify using `only [Matrix.kroneckerMap_apply, Matrix.blockDiagonal_apply, Matrix.diagonal_apply, map_smul, Matrix.smul_apply, smul_eq_mul]`. Apply the tactic sequence `split_ifs <;> simp [mul_comm]`. Rewrite using `[e2, charpoly_blockDiag]`.
+
+Conclude with `Finset.prod_congr rfl fun i _ => LinearMap.charpoly_toMatrix _ _`.
+-/
 theorem charpoly_map_diagEnd {n m : ℕ} (f : Module.End ℂ (Fin n → ℂ)) (c : Fin m → ℂ) :
     LinearMap.charpoly (TensorProduct.map f (diagEnd c)) = ∏ i, LinearMap.charpoly (c i • f) := by
   classical
@@ -53,6 +65,17 @@ end GlobalTheory.WeilDeligne.SpCharpoly
 
 namespace GlobalTheory.WeilDeligne
 
+/- English proof (translation)
+Introduce `E Ω _ _ _ _ _ A w h x`. Use `⟨?_, fun l σ => ?_⟩` and prove the remaining obligations. Rewrite using `[WD.lpTw_zero]`. Proceed by induction on `x using WD.ind with`. Consider the case `hP n a`.
+
+Rewrite using `[WD.lpSp, WD.lpChar_mk]`. Use `WD.sound (WDRep.Iso.symm ⟨(TensorProduct.rid ℂ (Fin n → ℂ)).symm ≪≫ₗ TensorProduct.congr (LinearEquiv.refl ℂ _) (LinearEquiv.funUnique (Fin 1) ℂ ℂ).symm, fun σ v => ?_, fun v => ?_⟩)` and prove the remaining obligations. Establish `: (WDRep.sp h 1).ρ σ = 1`. Use `LinearMap.ext fun v => funext fun i => ?_` and prove the remaining obligations. Simplify using `[WDRep.spEig]`.
+
+Rewrite using `[WDRep.tensor_ρ, this]`. Simplify using the standard rewrite rules. Establish `: (WDRep.sp h 1).N = 0`. Use `LinearMap.ext fun v => funext fun i => ?_` and prove the remaining obligations. Simplify using `[shiftEnd_apply]`.
+
+Rewrite using `[WDRep.tensor_N, this]`. Simplify using the standard rewrite rules. Proceed by induction on `x using WD.ind with`. Consider the case `hP n a`. Establish `hq : ((normV w : ℕ) : ℂ) ≠ 0` using `Nat.cast_ne_zero.mpr (one_lt_normV w).ne_bot`.
+
+Rewrite using `[WD.lpSp, WD.lpTw_mk, WD.lpChar_mk, WD.charPol_mk, WDRep.tensor_ρ, WDRep.sp_ρ, SpCharpoly.charpoly_map_diagEnd]`. Express the relevant statement in the definitionally equal form `_ = ∏ j ∈ Finset.range l, ((WD.mk a).lpTw (j : ℕ)).charPol σ`. Rewrite using `[← Fin.prod_univ_eq_prod_range (fun j : ℕ => ((WD.mk a).lpTw (j : ℕ)).charPol σ)]`. Use `Finset.prod_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[WD.lpTw_mk, WD.charPol_mk, WDRep.tw_ρ, WDRep.tw_ρ, smul_smul, ← mul_zpow, WDRep.spEig, coe_qPow, ← Complex.cpow_add _ _ hq, ← Complex.ofReal_add, sub_add_cancel]`.
+-/
 theorem charPol_lpTw_lpChar_lpSp : ∀ (E Ω : Type) [Field E] [NumberField E] [Field Ω] [Algebra E Ω] [IsAlgClosure E Ω] (A : ValuationSubring Ω) (w : HeightOneSpectrum (𝓞 E)) (h : IsPlaceOver A w) (x : WD h), (x.lpTw 0).lpChar (WD.lpSp h 1) = x ∧ ∀ (l : ℕ) (σ : Weil h), ((x.lpTw (((l : ℝ) - 1) / 2)).lpChar (WD.lpSp h l)).charPol σ = ((Multiset.range l).map fun j : ℕ => (x.lpTw j).charPol σ).prod := by
   intro E Ω _ _ _ _ _ A w h x
   refine ⟨?_, fun l σ => ?_⟩

@@ -21,6 +21,11 @@ variable {D : D7} {Γ : Type} [Group Γ] [Fintype Γ] {Pl0 I0 T : Type} {A3 : Fa
   {cG : G0 Rl.Pg D.R.r ≃* G0g D.nd} {S : NX.RatDat D.ntw} (YS : NX.NExpRealS Rl cG S)
   (v₀ : ∀ (j : Fin D.R.m) (σ : D.what₂.LL →+* ℂ), (Rl.MW j σ).Vec)
 
+/- English proof (translation)
+Proceed by induction on `y using TensorProduct.induction_on with`. Consider the case `zero => erw [LinearMap.map_zero, map_zero, map_zero, smul_zero]`. Consider the case `add y z hy hz => erw [LinearMap.map_add, map_add, hy, hz, map_add, map_add, smul_add]`. Consider the case `tmul a f0`. Establish `e1 : NX.hkFR S i ((j : ℕ) + 1) b hL hs k P (a ⊗ₜ f0) = a ⊗ₜ (((hL k P).restrictScalars S.Ks).restrict (p` using `(S.A ((j : ℕ) + 1)).WK) (q := (S.A ((j : ℕ) + 1)).WK) fun x hx => hs k P x hx) f0 := rfl`.
+
+Use `erw [e1, evK_tmul, evK_tmul]`. Express the relevant statement in the definitionally equal form `ρ.e i b a • evW YS v₀ j (hL k P f0.1) = _`. Rewrite using `[hR, map_smul, smul_comm]`.
+-/
 theorem evK_hkFR {ρ : Setup D.ntw} (hρ : ρ.Good) (i : D.ntw.Tw) (j : Fin D.R.m) (b : Bool)
     (hL : ℕ → PlE D.host → Module.End D.what₂.LL (S.WL ((j : ℕ) + 1)))
     (hs : NX.HeckeStabR S ((j : ℕ) + 1) hL) (k : ℕ) (P : PlE D.host) (R : Finset (GA D (Wc D j))) (s : ℂ)
@@ -47,6 +52,9 @@ variable {D : D7} {Γ : Type} [Group Γ] [Fintype Γ] {Pl0 I0 T : Type} {A3 : Fa
   {cG : G0 Rl.Pg D.R.r ≃* G0g D.nd} {S : NX.RatDat D.ntw} (YS : NX.NExpRealS Rl cG S)
   (v₀ : ∀ (j : Fin D.R.m) (σ : D.what₂.LL →+* ℂ), (Rl.MW j σ).Vec)
 
+/- English proof (translation)
+Establish `h` using `congrArg (fun F => F (v₀ j (sg0 D A3.A))) (hR j k P hPs hso hk α R hα hdc x)`. Conclude with `h`.
+-/
 theorem evW_reads (hL : ∀ j, ℕ → PlE D.host → Module.End D.what₂.LL (S.WL j)) (hR : GlobalTheory.ExportPin.Reads Rl cG S YS hL)
     (j : Fin D.R.m) (k : ℕ) (P : PlE D.host) (hPs : IsSplitPl D.host P)
     (hso : Bridge.SplitOff P (Rl.Sb : Set (Pl D.host.E))) (hk : k ≤ D.R.r) (α : GA D (Wc D j)) (R : Finset (GA D (Wc D j)))
@@ -63,6 +71,23 @@ end GlobalTheory.SeriesTie.HkRat
 namespace GlobalTheory.SeriesTie.HkRat
 open GlobalTheory.SeriesTie.Setup
 
+/- English proof (translation)
+Introduce `D Γ _ _ Pl0 I0 T A3 Ks _ _ _ Rl cG S YS v₀ ρ hρ i j b ν hp hchr hsplit hL hs hR k P hk f`. Take `⟨hk1, hkr, hPs, hPS0⟩` from `hk`. Establish `hso` using `hsplit P hPs hPS0`. Establish `hPg : Bridge.SplitOff P (((ρ.B i j b).G.Pg : Finset _) : Set (Pl D.host.E))` using `GlobalTheory.T.split_off_outside_S0 hρ i _ (fun P' hP' => by`. Take `⟨k', hk'⟩` from `hρ.Pg i j b P' hP'`.
+
+Conclude with `D.ntw.placesOver_subset_exceptional i k' hk') P hPs hPS0`. Establish `hdQ : Bridge.SplitOff P (((ρ.B i j b).de.Q : Finset _) : Set (Pl D.host.E))` using `GlobalTheory.T.split_off_outside_S0 hρ i _ (fun P' hP' => by`. Rewrite `hP'` using `[hρ.delta i j b]`. Conclude with `D.ntw.primes_subset_exceptional i (mem_half.1 hP').1) P hPs hPS0`. Distinguish the cases in `hd : ∃ α R z, ρ.IsHeckeDatum i j b k P α R z`.
+
+Use `swap`. Conclude with `⟨0, fun α R z d => absurd ⟨α, R, z, d⟩ hd⟩`. Take `⟨α₀, R₀, z₀, d₀⟩` from `hd`. Take `⟨a, ha⟩` from `GlobalTheory.T.twisting_char_values_mem_coeff_field_range hρ i j b z₀`. Establish `hde : ∀ α R z, ρ.IsHeckeDatum i j b k P α R z → (((ρ.B i j b).de.chi z : Circle) : ℂ) = ρ.e i b a` using `fun α R z d => by`.
+
+Rewrite using `[ha, GlobalTheory.T.heckeCharacter_value_at_splitPlace_determinant _ _ _ _ P k α z (hp.delta i j b) (hρ.base i j b).de.unram (hρ.base i j b).de.split hdQ d.elt d.det, GlobalTheory.T.heckeCharacter_value_at_splitPlace_determinant _ _ _ _ P k α₀ z₀ (hp.delta i j b) (hρ.base i j b). …`. Establish `hchr' : ChrEq (ρ.B i j b).mu0 (Rl.C.mu0 j)` using `by rw [hp.mu0 i j b]; exact hchr`. Establish `hmu0 : ∀ α R z, ρ.IsHeckeDatum i j b k P α R z → (((ρ.B i j b).mu0 z : Circle) : ℂ) = (((Rl.C.mu0 j).val P : ℂˣ) : ℂ) ^ k` using `fun α R z d => GlobalTheory.T.heckeCharacter_value_at_splitPlace_determinant _ _ _ _ P k α z hchr' (hρ.base i j b).unram ((hρ.base i j b).places.split.elim fun _ h => h.2.2.mono h.1) hPg d.elt d.det`. Use `⟨a⁻¹ • (YS.eF i _ b (Nat.le_add_left _ _) j.2).symm (NX.hkFR S i ((j : ℕ) + 1) b (hL _) hs k P (YS.eF i _ b (Nat.le_add_left _ _) j.2 f)), ?_⟩` and prove the remaining obligations. Break down `eq_or_ne ν 0 with rfl | hν` into its components or cases.
+
+Introduce `α R z d`. Rewrite using `[realRd_apply, realRd_apply YS v₀ hρ i j b 0 f, inv_zero, zero_smul, zero_smul, map_zero]`. Rewrite using `[heckeAt_realRd YS v₀ hρ i j b hν]`. Introduce `α R z d`. Establish `hdc` using `d.reps`.
+
+Rewrite `hdc` using `[GlobalTheory.T.complex_principal_level_eq_realisation_principal_level Rl hp i j b]`. Establish `key` using `evK_hkFR YS v₀ hρ i j b (hL _) hs k P R _ (evW_reads YS v₀ hL hR j k P hPs hso hkr α R d.elt hdc) (YS.eF i _ b (Nat.le_add_left _ _) j.2 f)`. Use function extensionality and compare the values at `x`. Rewrite using `[Setup.hecke_apply, map_smulₛₗ]`. Express the relevant statement in the definitionally equal form `ρ.e i b a⁻¹ * ((1 : ℂ)⁻¹ • evK YS v₀ hρ i j b (YS.eF i _ b (Nat.le_add_left _ _) j.2 ((YS.eF i _ b (Nat.le_add_left _ _) j.2).symm _))) x = _ * _ * ∑ γ ∈ R, ((1 : ℂ)⁻¹ • evK YS v₀ hρ i j b (YS.eF i _ b (Nat.le_add_left _ _) j.2 f)) (x * γ)`.
+
+Rewrite using `[LinearEquiv.apply_symm_apply, key]`. Simplify using `only [inv_one, one_smul, Pi.smul_apply, smul_eq_mul, heckeLin, LinearMap.coe_mk, AddHom.coe_mk]`. Rewrite using `[Base.mu, MonoidHom.mul_apply, Circle.coe_mul, hmu0 α R z d, hde α R z d, map_inv₀]`. Rewrite using `[show normV P = Nat.card (kP P) from rfl, D.sp.V_rank _ (Nat.le_add_left _ _) j.2]`. Simplify using `only [one_mul]`.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem ratHecke_realRd : ∀ (D : D7) (Γ : Type) [Group Γ] [Fintype Γ] (Pl0 I0 T : Type) (A3 : FamIn3 D.what₂.LL Γ Pl0 I0 (List ℕ) T D.R.m) (Ks : Type) [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] (Rl : RealDat3 D A3 Ks) (cG : G0 Rl.Pg D.R.r ≃* G0g D.nd) (S : NX.RatDat D.ntw) (YS : NX.NExpRealS Rl cG S) (v₀ : ∀ (j : Fin D.R.m) (σ : D.what₂.LL →+* ℂ), (Rl.MW j σ).Vec) (ρ : Setup D.ntw) (hρ : ρ.Good) (i : D.ntw.Tw) (j : Fin D.R.m) (b : Bool) (ν : ℂ), RealPin Rl cG ρ → ChrEq (Rl.mu0 ((j : ℕ) + 1)) (Rl.C.mu0 j) → (∀ P, IsSplitPl D.host P → P ∉ D.ntw.S0 i → Bridge.SplitOff P (Rl.Sb : Set (Pl D.host.E))) → ∀ hL : ∀ n, ℕ → PlE D.host → Module.End D.what₂.LL (S.WL n), NX.HeckeStabR S ((j : ℕ) + 1) (hL ((j : ℕ) + 1)) → GlobalTheory.ExportPin.Reads Rl cG S YS hL → RatHecke (realRd YS v₀ hρ i j b ν) := by
   intro D Γ _ _ Pl0 I0 T A3 Ks _ _ _ Rl cG S YS v₀ ρ hρ i j b ν hp hchr hsplit hL hs hR k P hk f
   obtain ⟨hk1, hkr, hPs, hPS0⟩ := hk

@@ -21,6 +21,17 @@ noncomputable section
 
 namespace GlobalTheory.ThetaSmooth
 
+/- English proof (translation)
+Use `choose C1 hC1 using fun j => GlobalTheory.T.norm_iteratedFDeriv_cexp_phase_le' B h hh hre j R`. Use `choose C2 hC2 using fun j => GlobalTheory.T.schwartz_iteratedFDeriv_shift_le_inv_pow_of_norm_le f a p j (M + n) R`. Use `⟨∑ j ∈ Finset.range (n + 1), (n.choose j : ℝ) * |C1 j| * |C2 (n - j)|, fun y t ht => ?_⟩` and prove the remaining obligations. Establish `hy : 0 < 1 + ‖y‖` using `by positivity`. Establish `hy1 : 1 ≤ 1 + ‖y‖` using `by linarith [norm_nonneg y]`.
+
+Establish `s1 : ContDiff ℝ ((⊤ : ℕ∞) : WithTop ℕ∞) fun t => Complex.exp (B y t + h t)` using `Complex.contDiff_exp.comp ((B y).contDiff.add hh)`. Establish `s2 : ContDiff ℝ ((⊤ : ℕ∞) : WithTop ℕ∞) fun t => f (y + a + p t)` using `(f.smooth ⊤).comp (contDiff_const.add p.contDiff)`. Use `(norm_iteratedFDeriv_mul_le s1 s2 t (by exact_mod_cast le_top)).trans ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_mul]`. Use `Finset.sum_le_sum fun j hj => ?_` and prove the remaining obligations.
+
+Establish `hjn : j ≤ n` using `Nat.lt_succ_iff.mp (Finset.mem_range.mp hj)`. Establish `e1` using `hC1 j y t ht`. Establish `e2` using `hC2 (n - j) y t ht`. Establish `hpow : (1 + ‖y‖) ^ j * ((1 + ‖y‖) ^ (M + n))⁻¹ ≤ ((1 + ‖y‖) ^ M)⁻¹`. Rewrite using `[← div_eq_mul_inv, div_le_iff₀ (by positivity), pow_add, ← mul_assoc, inv_mul_cancel₀ (by positivity), one_mul]`.
+
+Conclude with `pow_le_pow_right₀ hy1 hjn`. Combine the equalities or inequalities in the displayed calculation. Conclude with `e1.trans (mul_le_mul_of_nonneg_right (le_abs_self _) (by positivity))`. Conclude with `e2.trans (mul_le_mul_of_nonneg_right (le_abs_self _) (by positivity))`. Use `_ = (n.choose j : ℝ) * |C1 j| * |C2 (n - j)| * ((1 + ‖y‖) ^ j * ((1 + ‖y‖) ^ (M + n))⁻¹) := by ring`.
+
+Use `_ ≤ (n.choose j : ℝ) * |C1 j| * |C2 (n - j)| * ((1 + ‖y‖) ^ M)⁻¹ := by gcongr`.
+-/
 theorem norm_iteratedFDeriv_exp_mul_schwartz_le {V E : Type} [NormedAddCommGroup V] [NormedSpace ℝ V] [FiniteDimensional ℝ V]
     [NormedAddCommGroup E] [NormedSpace ℝ E] [FiniteDimensional ℝ E]
     (f : SchwartzMap V ℂ) (B : V →L[ℝ] E →L[ℝ] ℂ) (h : E → ℂ) (hh : ContDiff ℝ ((⊤ : ℕ∞) : WithTop ℕ∞) h)
@@ -56,6 +67,69 @@ theorem norm_iteratedFDeriv_exp_mul_schwartz_le {V E : Type} [NormedAddCommGroup
 
 set_option maxHeartbeats 2000000 in
 
+/- English proof (translation)
+Introduce `D ψ hψ S T JA JB ξ0 hJA hJB κ _ co hrat Φ hΦ k L hLc hLf w0`. Take `⟨P, Q, hPQ⟩` from `GlobalTheory.T.darbouxCoords_real_family_archimedean_linear D S T κ co.e k L hLc hLf`. Take `⟨Λ, hΛ⟩` from `GlobalTheory.T.archimedeanStandardChar_eq_exp_realLinear D ψ hψ`. Establish `hψ1 : ∀ x, ‖ψ x‖ = 1` using `hψ.1.2.1`. Establish `hΛre : ∀ m, (Λ m).re = 0`.
+
+Introduce `m`. Establish `h1` using `hψ1 (pairA _ ((InfiniteAdeleRing.ringEquiv_mixedSpace D.host.F).symm m) 0)`. Establish `h2` using `hΛ ((InfiniteAdeleRing.ringEquiv_mixedSpace D.host.F).symm m)`. Unfold `psiInf at h2`. Rewrite `h1` using `[h2, RingEquiv.apply_symm_apply, Complex.norm_exp]`.
+
+Conclude with `Real.exp_eq_one_iff _ |>.mp h1`. It suffices to establish `key : ∀ Φ ∈ GlobalTheory.WeilM.schA D.host.F κ, ∀ w, Summable (fun x : κ → D.host.F => co.rho ψ w Φ (fun i => algebraMap D.host.F (AF D.host.F) (x i))) ∧ ContDiff ℝ ((⊤ : ℕ∞) : WithTop ℕ∞) fun t => GlobalTheory.WeilSchrodinger.thetaTr D.host.F co ψ Φ (w + L t) from (key Φ hΦ w0). …`. Establish `rho_add : ∀ w (Φ₁ Φ₂ : (κ → AF D.host.F) → ℂ), co.rho ψ w (Φ₁ + Φ₂) = co.rho ψ w Φ₁ + co.rho ψ w Φ₂`. Introduce `w Φ₁ Φ₂`. Use function extensionality and compare the values at `x`.
+
+Simplify using `[GlobalTheory.WeilM.Darboux.rho, GlobalTheory.WeilM.schr, mul_add]`. Establish `rho_smul : ∀ w (c : ℂ) (Φ₁ : (κ → AF D.host.F) → ℂ), co.rho ψ w (c • Φ₁) = c • co.rho ψ w Φ₁`. Introduce `w c Φ₁`. Use function extensionality and compare the values at `x`. Simplify using `[GlobalTheory.WeilM.Darboux.rho, GlobalTheory.WeilM.schr]`.
+
+Expand and normalize the polynomial expressions, which then agree. Establish `rho_zero : ∀ w, co.rho ψ w (0 : (κ → AF D.host.F) → ℂ) = 0`. Introduce `w`. Use function extensionality and compare the values at `x`. Simplify using `[GlobalTheory.WeilM.Darboux.rho, GlobalTheory.WeilM.schr]`.
+
+Introduce `Φ hΦ`. Proceed by induction on `hΦ using Submodule.span_induction with`. Consider the case `mem Φ h`. Take `⟨f, g, hg, rfl⟩` from `h`. Introduce `w`.
+
+Take `⟨M, hM⟩` from `GlobalTheory.T.summable_rational_schwartzBruhat_mul_polynomial_decay D.host.F κ g hg (fun i => ((co.e w).1 i).2)`. Set `eM` to `InfiniteAdeleRing.ringEquiv_mixedSpace D.host.F`. Set `yv : (κ → D.host.F) → (κ → mixedEmbedding.mixedSpace D.host.F)` to `fun x i => mixedEmbedding D.host.F (x i)`. Set `ah : κ → mixedEmbedding.mixedSpace D.host.F` to `fun i => eM ((co.e w).1 i).1`. Set `bh : κ → mixedEmbedding.mixedSpace D.host.F` to `fun i => eM ((co.e w).2 i).1`.
+
+Set `c2 : mixedEmbedding.mixedSpace D.host.F` to `eM (⅟(2 : AF D.host.F)).1`. Set `B0 : (κ → mixedEmbedding.mixedSpace D.host.F) →ₗ[ℝ] (Fin k → ℝ) →ₗ[ℝ] ℂ` to `LinearMap.mk₂ ℝ (fun y t => Λ (∑ i, y i * Q t i)) (fun y₁ y₂ t => by simp only [Pi.add_apply, add_mul, Finset.sum_add_distrib, map_add]) (fun r y t => by simp only [Pi.smul_apply, smul_mul_assoc, ← Finset.smul_sum, map_smul]) (fun y t₁ t₂ => by simp only [map_add, Pi.add_apply, m …`. Set `B : (κ → mixedEmbedding.mixedSpace D.host.F) →L[ℝ] (Fin k → ℝ) →L[ℝ] ℂ` to `LinearMap.toContinuousLinearMap ((LinearMap.toContinuousLinearMap : ((Fin k → ℝ) →ₗ[ℝ] ℂ) ≃ₗ[ℝ] _).toLinearMap ∘ₗ B0)`. Establish `hB : ∀ y t, B y t = Λ (∑ i, y i * Q t i)` using `fun y t => rfl`. Set `hfun : (Fin k → ℝ) → ℂ` to `fun t => Λ (c2 * ∑ i, (ah i * Q t i + P t i * bh i + P t i * Q t i))`.
+
+Establish `hPi : ∀ i, ContDiff ℝ ((⊤ : ℕ∞) : WithTop ℕ∞) fun t : Fin k → ℝ => P t i` using `fun i => ((ContinuousLinearMap.proj i).comp P).contDiff`. Establish `hQi : ∀ i, ContDiff ℝ ((⊤ : ℕ∞) : WithTop ℕ∞) fun t : Fin k → ℝ => Q t i` using `fun i => ((ContinuousLinearMap.proj i).comp Q).contDiff`. Establish `hsm : ContDiff ℝ ((⊤ : ℕ∞) : WithTop ℕ∞) hfun` using `Λ.contDiff.comp (contDiff_const.mul (ContDiff.sum fun i _ => ((contDiff_const.mul (hQi i)).add ((hPi i).mul contDiff_const)).add ((hPi i).mul (hQi i))))`. Establish `hre : ∀ y t, (B y t + hfun t).re = 0`. Introduce `y t`.
+
+Rewrite using `[hB, ← map_add]`. Conclude with `hΛre _`. Set `K : (κ → D.host.F) → ℂ` to `fun x => ψ ((fun i => algebraMap D.host.F (AF D.host.F) (x i)) ⬝ᵥ (co.e w).2 + ⅟2 * ((co.e w).1 ⬝ᵥ (co.e w).2)) * g (fun i => algebraMap D.host.F (FiniteAdeleRing (𝓞 D.host.F) D.host.F) (x i) + ((co.e w).1 i).2)`. Set `G : (κ → D.host.F) → (Fin k → ℝ) → ℂ` to `fun x t => Complex.exp (B (yv x) t + hfun t) * f (yv x + ah + P t)`. Set `term : (κ → D.host.F) → (Fin k → ℝ) → ℂ` to `fun x t => K x * G x t`.
+
+Establish `hid : ∀ x t, co.rho ψ (w + L t) (GlobalTheory.WeilM.pureA D.host.F f g) (fun i => algebraMap D.host.F (AF D.host.F) (x i)) = term x t`. Introduce `x t`. Establish `he : co.e (w + L t) = ((co.e w).1 + fun i => pairA D.host.F (eM.symm (P t i)) 0, (co.e w).2 + fun i => pairA D.host.F (eM.symm (Q t i)) 0)`. Rewrite using `[map_add, hPQ t]`. Both sides reduce to the same expression.
+
+Establish `hy : ∀ i, eM (algebraMap D.host.F (AF D.host.F) (x i)).1 = yv x i`. Introduce `i`. Simplify using `only [yv, eM]`. Rewrite using `[InfiniteAdeleRing.mixedEmbedding_eq_algebraMap_comp]`. Both sides reduce to the same expression.
+
+Establish `h1 : (fun i => InfiniteAdeleRing.ringEquiv_mixedSpace D.host.F (((fun i => algebraMap D.host.F (AF D.host.F) (x i)) + ((co.e w).1 + fun i => pairA D.host.F (eM.symm (P t i)) 0)) i).1) = yv x + ah + P t`. Use function extensionality and compare the values at `i`. Express the relevant statement in the definitionally equal form `eM ((algebraMap D.host.F (AF D.host.F) (x i)).1 + (((co.e w).1 i).1 + eM.symm (P t i))) = _`. Rewrite using `[map_add, map_add, RingEquiv.apply_symm_apply, hy i, ← add_assoc]`. Both sides reduce to the same expression.
+
+Establish `h2 : (fun i => (((fun i => algebraMap D.host.F (AF D.host.F) (x i)) + ((co.e w).1 + fun i => pairA D.host.F (eM.symm (P t i)) 0)) i).2) = fun i => algebraMap D.host.F (FiniteAdeleRing (𝓞 D.host.F) D.host.F) (x i) + ((co.e w).1 i).2`. Use function extensionality and compare the values at `i`. Express the relevant statement in the definitionally equal form `(algebraMap D.host.F (AF D.host.F) (x i)).2 + (((co.e w).1 i).2 + 0) = _`. Rewrite using `[add_zero]`. Both sides reduce to the same expression.
+
+Establish `hL : co.rho ψ (w + L t) (GlobalTheory.WeilM.pureA D.host.F f g) (fun i => algebraMap D.host.F (AF D.host.F) (x i)) = ψ ((fun i => algebraMap D.host.F (AF D.host.F) (x i)) ⬝ᵥ ((co.e w).2 + fun i => pairA D.host.F (eM.symm (Q t i)) 0) + ⅟2 * (((co.e w).1 + fun i => pairA D.host.F ( …`. Rewrite using `[← h1, ← h2]`. Use `show GlobalTheory.WeilM.schr ψ (co.e (w + L t)) _ _ = _`. Rewrite using `[he]`. Both sides reduce to the same expression.
+
+Rewrite using `[hL]`. Set `φ : AF D.host.F →+* mixedEmbedding.mixedSpace D.host.F` to `eM.toRingHom.comp (fstA D.host.F).toRingHom`. Set `φf : AF D.host.F →+* FiniteAdeleRing (𝓞 D.host.F) D.host.F` to `(sndA D.host.F).toRingHom`. Establish `hφx : ∀ i, φ (algebraMap D.host.F (AF D.host.F) (x i)) = yv x i` using `hy`. Establish `hφP : ∀ i, φ (pairA D.host.F (eM.symm (P t i)) 0) = P t i` using `fun i => eM.apply_symm_apply _`.
+
+Establish `hφQ : ∀ i, φ (pairA D.host.F (eM.symm (Q t i)) 0) = Q t i` using `fun i => eM.apply_symm_apply _`. Establish `hφa : ∀ i, φ ((co.e w).1 i) = ah i` using `fun i => rfl`. Establish `hφb : ∀ i, φ ((co.e w).2 i) = bh i` using `fun i => rfl`. Establish `hφ2 : φ ⅟2 = c2` using `rfl`. Establish `hφdef : ∀ z : AF D.host.F, eM z.1 = φ z` using `fun _ => rfl`.
+
+Establish `hφfdef : ∀ z : AF D.host.F, z.2 = φf z` using `fun _ => rfl`. Establish `hφpair : ∀ n, φ (pairA D.host.F (eM.symm n) 0) = n` using `fun n => eM.apply_symm_apply _`. Establish `hφfpair : ∀ n, φf (pairA D.host.F (eM.symm n) 0) = 0` using `fun n => rfl`. Establish `hφfP : ∀ i, φf (pairA D.host.F (eM.symm (P t i)) 0) = 0` using `fun i => rfl`. Establish `hφfQ : ∀ i, φf (pairA D.host.F (eM.symm (Q t i)) 0) = 0` using `fun i => rfl`.
+
+Use `set X := (fun i => algebraMap D.host.F (AF D.host.F) (x i)) ⬝ᵥ (co.e w).2 + ⅟2 * ((co.e w).1 ⬝ᵥ (co.e w).2) with hX`. Use `set m := ∑ i, yv x i * Q t i + c2 * ∑ i, (ah i * Q t i + P t i * bh i + P t i * Q t i) with hm`. Establish `hsplit : (fun i => algebraMap D.host.F (AF D.host.F) (x i)) ⬝ᵥ ((co.e w).2 + fun i => pairA D.host.F (eM.symm (Q t i)) 0) + ⅟2 * (((co.e w).1 + fun i => pairA D.host.F (eM.symm (P t i)) 0) ⬝ᵥ ((co.e w).2 + fun i => pairA D.host.F (eM.symm (Q t i)) 0)) = X + pairA D.host.F (eM.sym …`. Establish `hY : (fun i => algebraMap D.host.F (AF D.host.F) (x i)) ⬝ᵥ (fun i => pairA D.host.F (eM.symm (Q t i)) 0) + ⅟2 * ((co.e w).1 ⬝ᵥ (fun i => pairA D.host.F (eM.symm (Q t i)) 0) + (fun i => pairA D.host.F (eM.symm (P t i)) 0) ⬝ᵥ (co.e w).2 + (fun i => pairA D.host.F (eM.symm (P t i)) …`. Use `Prod.ext ?_ ?_` and prove the remaining obligations.
+
+Apply `eM.injective` to reduce the goal to its premises. Rewrite using `[hφdef, hφdef, hφpair, hm]`. Simplify using `only [dotProduct, map_add, map_mul, map_sum, hφx, hφP, hφQ, hφa, hφb, hφ2, Finset.sum_add_distrib]`. Rewrite using `[hφfdef, hφfdef, hφfpair]`. Simplify using `only [dotProduct, map_add, map_mul, map_sum, hφfP, hφfQ, mul_zero, zero_mul, Finset.sum_const_zero, add_zero]`.
+
+Rewrite using `[← hY, hX]`. Simplify using `only [dotProduct_add, add_dotProduct]`. Expand and normalize the polynomial expressions, which then agree. Establish `hψY : ψ (pairA D.host.F (eM.symm m) 0) = Complex.exp (B (yv x) t + hfun t)`. Express the relevant statement in the definitionally equal form `psiInf D.host.F ψ (eM.symm m) = _`.
+
+Rewrite using `[hΛ, show InfiniteAdeleRing.ringEquiv_mixedSpace D.host.F = eM from rfl, RingEquiv.apply_symm_apply, hm, map_add]`. Both sides reduce to the same expression. Rewrite using `[hsplit, AddChar.map_add_eq_mul, hψY]`. Simplify using `only [term, K, G]`. Expand and normalize the polynomial expressions, which then agree.
+
+Establish `hK : ∀ x, ‖K x‖ = ‖g (fun i => algebraMap D.host.F (FiniteAdeleRing (𝓞 D.host.F) D.host.F) (x i) + ((co.e w).1 i).2)‖`. Introduce `x`. Simplify using `only [K, norm_mul, hψ1, one_mul]`. Establish `hG : ∀ x, ContDiff ℝ ((⊤ : ℕ∞) : WithTop ℕ∞) (G x)` using `fun x => (Complex.contDiff_exp.comp ((B (yv x)).contDiff.add hsm)).mul ((f.smooth ⊤).comp (contDiff_const.add P.contDiff))`. Establish `hsmooth : ∀ x, ContDiff ℝ ((⊤ : ℕ∞) : WithTop ℕ∞) (term x)` using `fun x => contDiff_const.mul (hG x)`.
+
+Establish `hbd : ∀ (n : ℕ) (R : ℝ), ∃ u : (κ → D.host.F) → ℝ, Summable u ∧ ∀ x t, ‖t‖ ≤ R → ‖iteratedFDeriv ℝ n (term x) t‖ ≤ u x`. Introduce `n R`. Take `⟨C, hC⟩` from `norm_iteratedFDeriv_exp_mul_schwartz_le f B hfun hsm hre ah P n M R`. Use `⟨fun x => C * (‖g (fun i => algebraMap D.host.F (FiniteAdeleRing (𝓞 D.host.F) D.host.F) (x i) + ((co.e w).1 i).2)‖ * ((1 + ‖yv x + 0‖) ^ M)⁻¹), (hM 0).mul_left C, fun x t ht => ?_⟩` and prove the remaining obligations. Establish `e : term x = K x • G x` using `rfl`.
+
+Rewrite using `[e, iteratedFDeriv_const_smul_apply ((hG x).contDiffAt.of_le (by exact_mod_cast le_top)), norm_smul, hK]`. Establish `h1` using `hC (yv x) t ht`. Combine the equalities or inequalities in the displayed calculation. Use `⟨?_, ?_⟩` and prove the remaining obligations. Take `⟨u, hu, hu'⟩` from `hbd 0 0`.
+
+Use `Summable.of_norm_bounded hu fun x => ?_` and prove the remaining obligations. Establish `h1` using `hu' x 0 (by simp)`. Rewrite `h1` using `[norm_iteratedFDeriv_zero, ← hid x 0]`. Simplify using `using h1`. Establish `e : (fun t => GlobalTheory.WeilSchrodinger.thetaTr D.host.F co ψ (GlobalTheory.WeilM.pureA D.host.F f g) (w + L t)) = fun t => ∑' x, term x t` using `funext fun t => tsum_congr fun x => hid x t`.
+
+Rewrite using `[e]`. Conclude with `GlobalTheory.T.contDiff_tsum_of_summable_iteratedFDeriv_bounds term hsmooth hbd`. Consider the case `zero`. Introduce `w`. Simplify using `only [GlobalTheory.WeilSchrodinger.thetaTr, rho_zero, Pi.zero_apply]`.
+
+Conclude with `⟨summable_zero, by simpa [GlobalTheory.WeilM.thetaSum] using contDiff_const⟩`. Consider the case `add Φ₁ Φ₂ _ _ h1 h2`. Introduce `w`. Use `⟨by rw [rho_add]; exact (h1 w).1.add (h2 w).1, ?_⟩` and prove the remaining obligations. Establish `e : (fun t => GlobalTheory.WeilSchrodinger.thetaTr D.host.F co ψ (Φ₁ + Φ₂) (w + L t)) = fun t => GlobalTheory.WeilSchrodinger.thetaTr D.host.F co ψ Φ₁ (w + L t) + GlobalTheory.WeilSchrodinger.thetaTr D.host.F co ψ Φ₂ (w + L t)`.
+
+Use function extensionality and compare the values at `t`. Simplify using `only [GlobalTheory.WeilSchrodinger.thetaTr, GlobalTheory.WeilM.thetaSum, rho_add, Pi.add_apply]`. Conclude with `(h1 (w + L t)).1.tsum_add (h2 (w + L t)).1`. Rewrite using `[e]`. Conclude with `(h1 w).2.add (h2 w).2`.
+
+Consider the case `smul c Φ₁ _ h1`. Introduce `w`. Use `⟨by rw [rho_smul]; exact (h1 w).1.const_smul c, ?_⟩` and prove the remaining obligations. Establish `e : (fun t => GlobalTheory.WeilSchrodinger.thetaTr D.host.F co ψ (c • Φ₁) (w + L t)) = fun t => c * GlobalTheory.WeilSchrodinger.thetaTr D.host.F co ψ Φ₁ (w + L t)`. Use function extensionality and compare the values at `t`.
+
+Simplify using `only [GlobalTheory.WeilSchrodinger.thetaTr, GlobalTheory.WeilM.thetaSum, rho_smul, Pi.smul_apply, smul_eq_mul]`. Conclude with `tsum_mul_left`. Rewrite using `[e]`. Conclude with `contDiff_const.mul (h1 w).2`.
+-/
 theorem contDiff_thetaTr_real : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ), IsStdChar D ψ (-1) →
     ∀ (S T : HSp D) (JA : Matrix (Fin T.rank) (Fin T.rank) D.host.E) (JB : Matrix (Fin S.rank) (Fin S.rank) D.host.E)
       (ξ : AF D.host.F ⊗[D.host.F] D.host.E), JA = T.gramᵀ →

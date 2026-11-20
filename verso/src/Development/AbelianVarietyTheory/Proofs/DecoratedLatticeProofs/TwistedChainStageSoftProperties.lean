@@ -27,12 +27,18 @@ noncomputable section
 namespace GlobalTheory.ChainTw
 variable {D : D7}
 
+/- English proof (translation)
+Set `ι : s.CC c →ₗ[ℂ] (flat c w j s hr).CC c` to `Submodule.inclusion hle`. Conclude with `@FiniteDimensional.of_injective ℂ _ _ _ _ _ _ _ ι (Submodule.inclusion_injective hle) hFD`.
+-/
 theorem t_fd {c : Com D} {w : Twist D} {j : ℕ} {s : PiLocalization₂ D} {hr : D.R.r ≤ s.V.rank}
     (hle : s.CC c ≤ (flat c w j s hr).CC c) (hFD : FiniteDimensional ℂ ((flat c w j s hr).CC c)) :
     FiniteDimensional ℂ (s.CC c) := by
   let ι : s.CC c →ₗ[ℂ] (flat c w j s hr).CC c := Submodule.inclusion hle
   exact @FiniteDimensional.of_injective ℂ _ _ _ _ _ _ _ ι (Submodule.inclusion_injective hle) hFD
 
+/- English proof (translation)
+Take `⟨ipD, ipF, hm⟩` from `h`. Set `ι : s.CC c →ₗ[ℂ] (flat c w j s hr).CC c` to `Submodule.inclusion hle`. Set `ip : s.CC c →ₗ[ℂ] s.CC c →ₗ⋆[ℂ] ℂ` to `(ipF.comp ι).compl₂ ι`. Establish `hι : ∀ x : s.CC c, ι x ≠ 0 ↔ x ≠ 0` using `fun x => (Submodule.inclusion_injective hle).ne_iff' (map_zero ι)`. Conclude with `⟨ipD, ip, hm.pure, hm.hermD, hm.posD, fun x y => hm.herm (ι x) (ι y), fun x hx => hm.pos (ι x) ((hι x).2 hx), fun x y v v' => hm.integ (ι x) (ι y) v v', fun x y v v' => hm.schur (ι x) (ι y) v v'⟩`.
+-/
 theorem t_met {c : Com D} {w : Twist D} {j : ℕ} {s : PiLocalization₂ D} {hr : D.R.r ≤ s.V.rank}
     (hle : s.CC c ≤ (flat c w j s hr).CC c) (h : ∃ ipD ip, IsMet c (flat c w j s hr) ipD ip) :
     ∃ ipD ip, IsMet c s ipD ip := by
@@ -44,6 +50,9 @@ theorem t_met {c : Com D} {w : Twist D} {j : ℕ} {s : PiLocalization₂ D} {hr 
       fun x hx => hm.pos (ι x) ((hι x).2 hx), fun x y v v' => hm.integ (ι x) (ι y) v v',
       fun x y v v' => hm.schur (ι x) (ι y) v v'⟩
 
+/- English proof (translation)
+Introduce `x v hv h0`. Set `ι : s.CC c →ₗ[ℂ] (flat c w j s hr).CC c` to `Submodule.inclusion hle`. Assume the negation of the conclusion as `hx`. Conclude with `(Submodule.inclusion_injective hle).ne_iff' (map_zero ι) |>.2 hx (h (ι x) v hv h0)`.
+-/
 theorem t_van {c : Com D} {w : Twist D} {j : ℕ} {s : PiLocalization₂ D} {hr : D.R.r ≤ s.V.rank}
     (hle : s.CC c ≤ (flat c w j s hr).CC c)
     (h : ∀ (x : (flat c w j s hr).CC c) v, v ≠ 0 → PiLocalization₂.val x v = 0 → x = 0) :
@@ -53,6 +62,9 @@ theorem t_van {c : Com D} {w : Twist D} {j : ℕ} {s : PiLocalization₂ D} {hr 
   by_contra hx
   exact (Submodule.inclusion_injective hle).ne_iff' (map_zero ι) |>.2 hx (h (ι x) v hv h0)
 
+/- English proof (translation)
+Introduce `x v B hv hP` and use `by let ι : s.CC c →ₗ[ℂ] (flat c w j s hr).CC c := Submodule.inclusion hle have h' := h (ι x) v B hv hP exact ⟨fun h0 => h'.1 (by rw [h0]; exact map_zero ι), fun v' hv' => h'.2 v' hv'⟩`.
+-/
 theorem t_par {c : Com D} {w : Twist D} {j : ℕ} {s : PiLocalization₂ D} {hr : D.R.r ≤ s.V.rank}
     (hle : s.CC c ≤ (flat c w j s hr).CC c)
     (h : ∀ (x : (flat c w j s hr).CC c) v B, PiLocalization₂.val x v ≠ 0 → ParFun c (flat c w j s hr) (PiLocalization₂.val x v) B → IsPar x B) :
@@ -61,6 +73,11 @@ theorem t_par {c : Com D} {w : Twist D} {j : ℕ} {s : PiLocalization₂ D} {hr 
   have h' := h (ι x) v B hv hP
   exact ⟨fun h0 => h'.1 (by rw [h0]; exact map_zero ι), fun v' hv' => h'.2 v' hv'⟩
 
+/- English proof (translation)
+Introduce `hHC hCR D c w hw j hj s hs`. Take `⟨hr, hL, hf⟩` from `hs`. Establish `hle : s.CC c ≤ (flat c w j s hr).CC c` using `GlobalTheory.T.chain_stage_forms_twisted_level_le_finer_level D c w hw j hj s ⟨hr, hL, hf⟩ hr`. Establish `hMet : MetEx D` using `GlobalTheory.ChainMetric.metEx hCR D`. Establish `hLev : LevFacts D` using `LevelFacts.levFacts D`.
+
+Conclude with `⟨t_fd hle (finDim_of_levFacts hHC D hLev c hw.com j hj _ hf), t_met hle (hMet c hw.com j hj _ hf), t_van hle (val_eq_zero_imp D hMet c hw.com j hj _ hf), t_par hle (GlobalTheory.T.hecke_parameters_of_element_from_one_nonzero_value hCR D hMet hLev c hw.com j hj _ hf)⟩`.
+-/
 theorem softQ_all : GlobalTheory.Published.HarishChandraFinite → GlobalTheory.Published.CuspRapidDecay → ∀ D : D7, SoftQ D := by
   intro hHC hCR D c w hw j hj s hs
   obtain ⟨hr, hL, hf⟩ := hs
@@ -70,6 +87,9 @@ theorem softQ_all : GlobalTheory.Published.HarishChandraFinite → GlobalTheory.
   exact ⟨t_fd hle (finDim_of_levFacts hHC D hLev c hw.com j hj _ hf), t_met hle (hMet c hw.com j hj _ hf),
     t_van hle (val_eq_zero_imp D hMet c hw.com j hj _ hf), t_par hle (GlobalTheory.T.hecke_parameters_of_element_from_one_nonzero_value hCR D hMet hLev c hw.com j hj _ hf)⟩
 
+/- English proof (translation)
+The claim follows from `softQ_all`.
+-/
 example : GlobalTheory.Published.HarishChandraFinite → GlobalTheory.Published.CuspRapidDecay → ∀ D : D7, SoftQ D := softQ_all
 
 end GlobalTheory.ChainTw

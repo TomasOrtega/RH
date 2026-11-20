@@ -14,6 +14,9 @@ open NumberField IsDedekindDomain Formalism.L2.Host Formalism.ConjugateSelfDual 
 
 namespace GlobalTheory.QuadNormChar
 
+/- English proof (translation)
+Establish `: w.asIdeal.LiesOver (w.under (𝓞 K)).asIdeal` using `⟨rfl⟩`. Use `w.isMaximal` as an intermediate fact. Use `(w.under (𝓞 K)).isMaximal` as an intermediate fact. Use `show Ideal.absNorm w.asIdeal = Ideal.absNorm (w.under (𝓞 K)).asIdeal ^ w.asIdeal.inertiaDeg (𝓞 K)`. Rewrite using `[← Ideal.absNorm_relNorm (𝓞 K) (𝓞 K') w.asIdeal, Ideal.relNorm_eq_pow_of_isMaximal w.asIdeal (w.under (𝓞 K)).asIdeal, map_pow]`.
+-/
 theorem normV_under {K K' : Type} [Field K] [NumberField K] [Field K'] [NumberField K'] [Algebra K K']
     (w : HeightOneSpectrum (𝓞 K')) : normV w = normV (w.under (𝓞 K)) ^ w.asIdeal.inertiaDeg (𝓞 K) := by
   have : w.asIdeal.LiesOver (w.under (𝓞 K)).asIdeal := ⟨rfl⟩
@@ -23,6 +26,11 @@ theorem normV_under {K K' : Type} [Field K] [NumberField K] [Field K'] [NumberFi
   rw [← Ideal.absNorm_relNorm (𝓞 K) (𝓞 K') w.asIdeal,
     Ideal.relNorm_eq_pow_of_isMaximal w.asIdeal (w.under (𝓞 K)).asIdeal, map_pow]
 
+/- English proof (translation)
+Use `Filter.Tendsto.cofinite_of_finite_preimage_singleton fun v => ?_` and prove the remaining obligations. Establish `h0 : Ideal.map (algebraMap (𝓞 K) (𝓞 K')) v.asIdeal ≠ 0` using `fun h => v.ne_bot ((Ideal.map_eq_bot_iff_of_injective (FaithfulSMul.algebraMap_injective _ _)).1 h)`. Use `(Ideal.finite_factors h0).subset fun w hw => ?_` and prove the remaining obligations. Establish `e : w.under (𝓞 K) = v` using `hw`. Use `show w.asIdeal ∣ _`.
+
+Rewrite using `[Ideal.dvd_iff_le, Ideal.map_le_iff_le_comap, ← e]`. Conclude with `le_rfl`.
+-/
 theorem tendsto_under {K K' : Type} [Field K] [NumberField K] [Field K'] [NumberField K'] [Algebra K K'] :
     Filter.Tendsto (fun w : HeightOneSpectrum (𝓞 K') => w.under (𝓞 K)) Filter.cofinite Filter.cofinite := by
   refine Filter.Tendsto.cofinite_of_finite_preimage_singleton fun v => ?_
@@ -34,6 +42,15 @@ theorem tendsto_under {K K' : Type} [Field K] [NumberField K] [Field K'] [Number
   rw [Ideal.dvd_iff_le, Ideal.map_le_iff_le_comap, ← e]
   exact le_rfl
 
+/- English proof (translation)
+Use `haveI : Module.Finite F E := Module.finite_of_finrank_pos (by omega)`. Establish `hfix : ∀ ρ : G F Ω, (∀ e : E, ρ (algebraMap E Ω e) = algebraMap E Ω e) → ρ ∈ (res F Ω E).range` using `fun ρ hρ => ⟨AlgEquiv.ofRingEquiv (f := ρ.toRingEquiv) hρ, AlgEquiv.ext fun _ => rfl⟩`. Set `f : G F Ω → (E →ₐ[F] Ω)` to `fun ρ => (ρ : Ω →ₐ[F] Ω).comp (IsScalarTower.toAlgHom F E Ω)`. Establish `hf : ∀ ρ e, f ρ e = ρ (algebraMap E Ω e)` using `fun _ _ => rfl`. Establish `hcard : Fintype.card (E →ₐ[F] Ω) = 2` using `by rw [AlgHom.card, h2]`.
+
+Take `⟨e₀, he₀⟩` from `hσ`. Establish `h01 : f 1 ≠ f σ` using `fun h => he₀ (by have := DFunLike.congr_fun h e₀; rw [hf, hf] at this; exact this.symm)`. Distinguish the cases in `h1 : f τ = f 1`. Use `left`. Conclude with `hfix τ fun e => by have := DFunLike.congr_fun h1 e; rw [hf, hf] at this; exact this`.
+
+Distinguish the cases in `h2' : f τ = f σ`. Use `right`. Use `hfix _ fun e => ?_` and prove the remaining obligations. Use `DFunLike.congr_fun h2' e` as an intermediate fact. Rewrite `this` using `[hf, hf]`.
+
+Rewrite using `[AlgEquiv.mul_apply, this]`. Conclude with `σ.symm_apply_apply _`. It suffices to derive a contradiction. Establish `: 2 < Fintype.card (E →ₐ[F] Ω)` using `Fintype.two_lt_card_iff.2 ⟨f 1, f σ, f τ, h01, Ne.symm h1, Ne.symm h2'⟩`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem fixes_or {F E Ω : Type} [Field F] [Field E] [Field Ω] [Algebra F E] [Algebra F Ω] [Algebra E Ω]
     [IsScalarTower F E Ω] [IsAlgClosed Ω] [CharZero F] (h2 : Module.finrank F E = 2) (σ : G F Ω)
     (hσ : ∃ e : E, σ (algebraMap E Ω e) ≠ algebraMap E Ω e) (τ : G F Ω) :

@@ -11,6 +11,17 @@ section Lag
 
 variable {R : Type} [CommRing R] [StarRing R]
 
+/- English proof (translation)
+Establish `h1 : P⁻¹ * P = 1` using `nonsing_inv_mul P hP`. Establish `h2 : P * P⁻¹ = 1` using `mul_nonsing_inv P hP`. Establish `hPX : ∀ X : Matrix ι ι R, P⁻¹ * (P * X) = X` using `fun X => by`. Rewrite using `[← Matrix.mul_assoc, h1, Matrix.one_mul]`. Establish `h3 : (P⁻¹)ᴴ * Pᴴ = 1` using `by rw [← conjTranspose_mul, h2, conjTranspose_one]`.
+
+Establish `h4 : Pᴴ * (P⁻¹)ᴴ = 1` using `by rw [← conjTranspose_mul, h1, conjTranspose_one]`. Establish `hQX : ∀ X : Matrix ι ι R, Pᴴ * ((P⁻¹)ᴴ * X) = X` using `fun X => by`. Rewrite using `[← Matrix.mul_assoc, h4, Matrix.one_mul]`. Establish `hA : A = (P⁻¹)ᴴ * B * P⁻¹`. Rewrite using `[← hPAB]`.
+
+Simplify using `only [Matrix.mul_assoc]`. Rewrite using `[h2, Matrix.mul_one, ← Matrix.mul_assoc, h3, Matrix.one_mul]`. Prove the components needed by the constructor for the conclusion. Simplify using `only [Matrix.mul_assoc, hPX]`. Rewrite using `[← Matrix.mul_assoc e e, he]`.
+
+Combine the equalities or inequalities in the displayed calculation. Rewrite using `[hA]`. Simplify using `only [conjTranspose_mul, Matrix.mul_assoc, hQX]`. Use `_ = (P⁻¹)ᴴ * (B * (1 - e)) * P⁻¹ := by rw [heB]`. Use `_ = A * (1 - P * e * P⁻¹) := by`.
+
+Rewrite using `[hA]`. Simplify using `only [Matrix.mul_sub, Matrix.sub_mul, Matrix.mul_one, Matrix.mul_assoc, hPX]`.
+-/
 theorem lag_congr {ι : Type} [Fintype ι] [DecidableEq ι] (A B P e : Matrix ι ι R)
     (hP : IsUnit P.det) (hPAB : Pᴴ * A * P = B) (he : e * e = e)
     (heB : eᴴ * B = B * (1 - e)) :
@@ -39,6 +50,11 @@ theorem lag_congr {ι : Type} [Fintype ι] [DecidableEq ι] (A B P e : Matrix ι
           rw [hA]
           simp only [Matrix.mul_sub, Matrix.sub_mul, Matrix.mul_one, Matrix.mul_assoc, hPX]
 
+/- English proof (translation)
+Establish `hA : A = (A.submatrix s s).submatrix s.symm s.symm` using `by simp`. Prove the components needed by the constructor for the conclusion. Rewrite using `[submatrix_mul_equiv, hE]`. Establish `h1 : (1 : Matrix ι ι R) - E.submatrix s.symm s.symm = (1 - E).submatrix s.symm s.symm`. Use extensionality with `i j`.
+
+Simplify using `[Matrix.one_apply]`. Rewrite using `[h1, conjTranspose_submatrix]`. Use `conv_lhs => rw [hA]`. Use `conv_rhs => rw [hA]`. Rewrite using `[submatrix_mul_equiv, submatrix_mul_equiv, hEA]`.
+-/
 theorem lag_reindex {ι β : Type} [Fintype ι] [DecidableEq ι] [Fintype β] [DecidableEq β]
     (s : β ≃ ι) (A : Matrix ι ι R) (E : Matrix β β R) (hE : E * E = E)
     (hEA : Eᴴ * A.submatrix s s = A.submatrix s s * (1 - E)) :
@@ -61,19 +77,34 @@ def hypJ : Matrix (κ ⊕ κ) (κ ⊕ κ) R := fromBlocks 0 1 1 0
 
 def hypE : Matrix (κ ⊕ κ) (κ ⊕ κ) R := fromBlocks 1 0 0 0
 
+/- English proof (translation)
+Simplify using `[hypJ, fromBlocks_conjTranspose]`.
+-/
 theorem hypJ_herm : (hypJ κ : Matrix (κ ⊕ κ) (κ ⊕ κ) R)ᴴ = hypJ κ := by
   simp [hypJ, fromBlocks_conjTranspose]
 
+/- English proof (translation)
+Simplify using `[hypJ, fromBlocks_multiply]`.
+-/
 theorem hypJ_sq : (hypJ κ : Matrix (κ ⊕ κ) (κ ⊕ κ) R) * hypJ κ = 1 := by
   simp [hypJ, fromBlocks_multiply]
 
+/- English proof (translation)
+Use `IsUnit.of_mul_eq_one (hypJ κ : Matrix (κ ⊕ κ) (κ ⊕ κ) R).det ?_` and prove the remaining obligations. Rewrite using `[← det_mul, hypJ_sq, det_one]`.
+-/
 theorem hypJ_det : IsUnit (hypJ κ : Matrix (κ ⊕ κ) (κ ⊕ κ) R).det := by
   refine IsUnit.of_mul_eq_one (hypJ κ : Matrix (κ ⊕ κ) (κ ⊕ κ) R).det ?_
   rw [← det_mul, hypJ_sq, det_one]
 
+/- English proof (translation)
+Simplify using `[hypE, fromBlocks_multiply]`.
+-/
 theorem hypE_idem : (hypE κ : Matrix (κ ⊕ κ) (κ ⊕ κ) R) * hypE κ = hypE κ := by
   simp [hypE, fromBlocks_multiply]
 
+/- English proof (translation)
+Establish `h1 : (1 : Matrix (κ ⊕ κ) (κ ⊕ κ) R) - hypE κ = fromBlocks 0 0 0 1`. Rewrite using `[← fromBlocks_one, hypE, sub_eq_add_neg, fromBlocks_neg, fromBlocks_add]`. Simplify using the standard rewrite rules. Rewrite using `[h1]`. Simplify using `[hypE, hypJ, fromBlocks_conjTranspose, fromBlocks_multiply]`.
+-/
 theorem hypE_lag : (hypE κ : Matrix (κ ⊕ κ) (κ ⊕ κ) R)ᴴ * hypJ κ = hypJ κ * (1 - hypE κ) := by
   have h1 : (1 : Matrix (κ ⊕ κ) (κ ⊕ κ) R) - hypE κ = fromBlocks 0 0 0 1 := by
     rw [← fromBlocks_one, hypE, sub_eq_add_neg, fromBlocks_neg, fromBlocks_add]
@@ -88,6 +119,13 @@ section Main
 variable {R : Type} [CommRing R] [StarRing R] {R₀ : Subring R}
   [HenselianLocalRing R₀] [Finite (ResidueField R₀)]
 
+/- English proof (translation)
+Take `⟨g, hg, hgA⟩` from `Formalism.HermitianLatticesTheory.unimodUnramUnique_main hR₀ hθ _ (κ ⊕ κ) rfl A hA hdet`. Take `⟨c, hc, hcJ⟩` from `Formalism.HermitianLatticesTheory.unimodUnramUnique_main hR₀ hθ _ (κ ⊕ κ) rfl (hypJ κ) (hypJ_herm κ) (hypJ_det κ)`. Establish `hc1 : c * c⁻¹ = 1` using `mul_nonsing_inv c hc`. Establish `hc2 : (c⁻¹)ᴴ * cᴴ = 1` using `by rw [← conjTranspose_mul, hc1, conjTranspose_one]`. Establish `hcX : ∀ X : Matrix (κ ⊕ κ) (κ ⊕ κ) R, (c⁻¹)ᴴ * (cᴴ * X) = X` using `fun X => by`.
+
+Rewrite using `[← Matrix.mul_assoc, hc2, Matrix.one_mul]`. Establish `hP : IsUnit (g * c⁻¹).det`. Rewrite using `[det_mul]`. Conclude with `hg.mul (isUnit_nonsing_inv_det c hc)`. Establish `hPA : (g * c⁻¹)ᴴ * A * (g * c⁻¹) = hypJ κ`.
+
+Combine the equalities or inequalities in the displayed calculation. Simplify using `only [conjTranspose_mul, Matrix.mul_assoc]`. Use `_ = (c⁻¹)ᴴ * (cᴴ * hypJ κ * c) * c⁻¹ := by rw [hgA, hcJ]`. Use `_ = hypJ κ := by simp only [Matrix.mul_assoc, hc1, Matrix.mul_one, hcX]`. Conclude with `⟨_, lag_congr A (hypJ κ) (g * c⁻¹) (hypE κ) hP hPA (hypE_idem κ) (hypE_lag κ)⟩`.
+-/
 theorem lag_exists_sum (hR₀ : ∀ x, x ∈ R₀ ↔ star x = x) {θ : R} (hθ : IsUnit (θ - star θ))
     (κ : Type) [Fintype κ] [DecidableEq κ] (A : Matrix (κ ⊕ κ) (κ ⊕ κ) R) (hA : Aᴴ = A)
     (hdet : IsUnit A.det) :
@@ -108,6 +146,11 @@ theorem lag_exists_sum (hR₀ : ∀ x, x ∈ R₀ ↔ star x = x) {θ : R} (hθ 
       _ = hypJ κ := by simp only [Matrix.mul_assoc, hc1, Matrix.mul_one, hcX]
   exact ⟨_, lag_congr A (hypJ κ) (g * c⁻¹) (hypE κ) hP hPA (hypE_idem κ) (hypE_lag κ)⟩
 
+/- English proof (translation)
+Take `⟨m, hm⟩` from `hι`. Set `s : Fin m ⊕ Fin m ≃ ι` to `Fintype.equivOfCardEq (by simp [hm])`. Establish `hB : (A.submatrix s s)ᴴ = A.submatrix s s` using `by rw [conjTranspose_submatrix, hA]`. Establish `hBdet : IsUnit (A.submatrix s s).det` using `by rw [det_submatrix_equiv_self]; exact hdet`. Take `⟨E, hE, hEA⟩` from `lag_exists_sum hR₀ hθ (Fin m) _ hB hBdet`.
+
+Conclude with `⟨_, lag_reindex s A E hE hEA⟩`.
+-/
 theorem lag_exists (hR₀ : ∀ x, x ∈ R₀ ↔ star x = x) {θ : R} (hθ : IsUnit (θ - star θ))
     {ι : Type} [Fintype ι] [DecidableEq ι] (hι : Even (Fintype.card ι)) (A : Matrix ι ι R)
     (hA : Aᴴ = A) (hdet : IsUnit A.det) :
@@ -119,6 +162,9 @@ theorem lag_exists (hR₀ : ∀ x, x ∈ R₀ ↔ star x = x) {θ : R} (hθ : Is
   obtain ⟨E, hE, hEA⟩ := lag_exists_sum hR₀ hθ (Fin m) _ hB hBdet
   exact ⟨_, lag_reindex s A E hE hEA⟩
 
+/- English proof (translation)
+Use `⟨e, h₁⁻¹ * e * h₁, he, heA, ?_⟩` and prove the remaining obligations. Rewrite using `[hh, Matrix.mul_smul, Matrix.smul_mul, ← Matrix.mul_assoc, ← Matrix.mul_assoc, mul_nonsing_inv h₁ hh₁, Matrix.one_mul]`.
+-/
 theorem pair_base_of_lag {ι : Type} [Fintype ι] [DecidableEq ι] (A e h h₁ : Matrix ι ι R) (c : R)
     (hh : h = c • h₁) (hh₁ : IsUnit h₁.det) (he : e * e = e) (heA : eᴴ * A = A * (1 - e)) :
     ∃ e f : Matrix ι ι R, e * e = e ∧ eᴴ * A = A * (1 - e) ∧ e * h = h * f := by
@@ -126,6 +172,9 @@ theorem pair_base_of_lag {ι : Type} [Fintype ι] [DecidableEq ι] (A e h h₁ :
   rw [hh, Matrix.mul_smul, Matrix.smul_mul, ← Matrix.mul_assoc, ← Matrix.mul_assoc,
     mul_nonsing_inv h₁ hh₁, Matrix.one_mul]
 
+/- English proof (translation)
+Take `⟨e, he, heA⟩` from `lag_exists hR₀ hθ hι A hA hdet`. Conclude with `pair_base_of_lag A e h h₁ c hh hh₁ he heA`.
+-/
 theorem pair_base (hR₀ : ∀ x, x ∈ R₀ ↔ star x = x) {θ : R} (hθ : IsUnit (θ - star θ))
     {ι : Type} [Fintype ι] [DecidableEq ι] (hι : Even (Fintype.card ι)) (A : Matrix ι ι R)
     (hA : Aᴴ = A) (hdet : IsUnit A.det) (h h₁ : Matrix ι ι R) (c : R)

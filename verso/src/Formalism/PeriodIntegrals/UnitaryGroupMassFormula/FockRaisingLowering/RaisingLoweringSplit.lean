@@ -10,18 +10,29 @@ open MvPolynomial FockH1Action
 
 variable {σ : Type*}
 
+/- English proof (translation)
+Rewrite using `[homogeneousComponent_of_mem (homogeneousComponent_mem n P)]`.
+-/
 theorem hc_hc (m n : ℕ) (P : MvPolynomial σ ℂ) :
     homogeneousComponent m (homogeneousComponent n P) =
       if m = n then homogeneousComponent n P else 0 := by
   classical
   rw [homogeneousComponent_of_mem (homogeneousComponent_mem n P)]
 
+/- English proof (translation)
+Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem eq_zero_of_hc (x : MvPolynomial σ ℂ) (h : ∀ e, homogeneousComponent e x = 0) :
     x = 0 := by
   calc x = ∑ i ∈ Finset.range (x.totalDegree + 1), homogeneousComponent i x :=
         (sum_homogeneousComponent x).symm
     _ = 0 := Finset.sum_eq_zero (fun i _ => h i)
 
+/- English proof (translation)
+Establish `hsub : Finset.range (P.totalDegree + 1) ⊆ Finset.range n`. Introduce `i hi`. Simplify using `only [Finset.mem_range] at hi ⊢`. Use linear arithmetic over natural numbers and integers. Rewrite using `[← Finset.sum_subset hsub ?_]`.
+
+Conclude with `sum_homogeneousComponent P`. Introduce `i _ hi`. Simplify using `only [Finset.mem_range, not_lt] at hi`. Apply `homogeneousComponent_eq_zero` to reduce the goal to its premises. Use linear arithmetic over natural numbers and integers.
+-/
 theorem sum_hc_of_le (P : MvPolynomial σ ℂ) (n : ℕ) (hn : P.totalDegree < n) :
     ∑ i ∈ Finset.range n, homogeneousComponent i P = P := by
   have hsub : Finset.range (P.totalDegree + 1) ⊆ Finset.range n := by
@@ -35,6 +46,13 @@ theorem sum_hc_of_le (P : MvPolynomial σ ℂ) (n : ℕ) (hn : P.totalDegree < n
     apply homogeneousComponent_eq_zero
     omega
 
+/- English proof (translation)
+Establish `hterm : ∀ d, homogeneousComponent (d + 2) ((R + L) (homogeneousComponent d P)) = R (homogeneousComponent d P)`. Introduce `d`. Establish `hmem` using `hR d _ (homogeneousComponent_mem d P)`. Rewrite using `[LinearMap.add_apply, map_add, hL, hc_hc, if_neg (show ¬ (d + 2 + 2 = d) by omega), map_zero, add_zero, homogeneousComponent_of_mem hmem, if_pos rfl]`. Establish `hsupp : (Function.support fun d => R (homogeneousComponent d P)) ⊆ ↑(Finset.range (P.totalDegree + 1))`.
+
+Introduce `d hd`. Rewrite `hd` using `[Function.mem_support]`. Rewrite using `[Finset.coe_range, Set.mem_Iio]`. Assume the negation of the conclusion as `hlt`. Apply `hd` to reduce the goal to its premises.
+
+Establish `h0 : homogeneousComponent d P = 0`. Apply `homogeneousComponent_eq_zero` to reduce the goal to its premises. Use linear arithmetic over natural numbers and integers. Rewrite using `[h0, map_zero]`. Rewrite using `[FockH1Action.plusPart, finsum_congr hterm, finsum_eq_sum_of_support_subset _ hsupp, ← map_sum R, sum_homogeneousComponent]`.
+-/
 theorem plus_eq (R L : Module.End ℂ (MvPolynomial σ ℂ))
     (hR : ∀ (d : ℕ) (P : MvPolynomial σ ℂ), P ∈ homog σ d → R P ∈ homog σ (d + 2))
     (hL : ∀ (e : ℕ) (P : MvPolynomial σ ℂ),
@@ -62,6 +80,9 @@ theorem plus_eq (R L : Module.End ℂ (MvPolynomial σ ℂ))
   rw [FockH1Action.plusPart, finsum_congr hterm, finsum_eq_sum_of_support_subset _ hsupp,
     ← map_sum R, sum_homogeneousComponent]
 
+/- English proof (translation)
+Apply `eq_zero_of_hc` to reduce the goal to its premises. Introduce `e`. Rewrite using `[hL, hc_hc, if_neg (show ¬ (e + 2 = k) by omega), map_zero]`.
+-/
 private theorem apply_homogeneousComponent_eq_zero_of_lt_two (L : Module.End ℂ (MvPolynomial σ ℂ))
     (hL : ∀ (e : ℕ) (P : MvPolynomial σ ℂ),
       homogeneousComponent e (L P) = L (homogeneousComponent (e + 2) P))
@@ -70,6 +91,17 @@ private theorem apply_homogeneousComponent_eq_zero_of_lt_two (L : Module.End ℂ
   intro e
   rw [hL, hc_hc, if_neg (show ¬ (e + 2 = k) by omega), map_zero]
 
+/- English proof (translation)
+Establish `hterm : ∀ d, homogeneousComponent d ((R + L) (homogeneousComponent (d + 2) P)) = L (homogeneousComponent (d + 2) P)`. Introduce `d`. Establish `hmem` using `hR (d + 2) _ (homogeneousComponent_mem (d + 2) P)`. Rewrite using `[LinearMap.add_apply, map_add, hL, hc_hc, if_pos rfl, homogeneousComponent_of_mem hmem]`. Use `split_ifs with hc`.
+
+Conclude with `absurd hc (by omega)`. Rewrite using `[zero_add]`. Establish `hsupp : (Function.support fun d => L (homogeneousComponent (d + 2) P)) ⊆ ↑(Finset.range (P.totalDegree + 1))`. Introduce `d hd`. Rewrite `hd` using `[Function.mem_support]`.
+
+Rewrite using `[Finset.coe_range, Set.mem_Iio]`. Assume the negation of the conclusion as `hlt`. Apply `hd` to reduce the goal to its premises. Establish `h0 : homogeneousComponent (d + 2) P = 0`. Apply `homogeneousComponent_eq_zero` to reduce the goal to its premises.
+
+Use linear arithmetic over natural numbers and integers. Rewrite using `[h0, map_zero]`. Rewrite using `[FockH1Action.minusPart, finsum_congr hterm, finsum_eq_sum_of_support_subset _ hsupp]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Finset.sum_range_succ' _ (P.totalDegree + 1 + 1), Finset.sum_range_succ' _ (P.totalDegree + 1), apply_homogeneousComponent_eq_zero_of_lt_two L hL P 0 (by norm_num)]`.
+
+Simplify using `only [zero_add, apply_homogeneousComponent_eq_zero_of_lt_two L hL P 1 (by norm_num), add_zero]`. Apply the tactic sequence `try rfl`. Use `_ = L P := by`. Rewrite using `[← map_sum L, sum_hc_of_le P (P.totalDegree + 1 + 1 + 1) (by omega)]`.
+-/
 theorem minus_eq (R L : Module.End ℂ (MvPolynomial σ ℂ))
     (hR : ∀ (d : ℕ) (P : MvPolynomial σ ℂ), P ∈ homog σ d → R P ∈ homog σ (d + 2))
     (hL : ∀ (e : ℕ) (P : MvPolynomial σ ℂ),
@@ -107,6 +139,9 @@ theorem minus_eq (R L : Module.End ℂ (MvPolynomial σ ℂ))
     _ = L P := by
         rw [← map_sum L, sum_hc_of_le P (P.totalDegree + 1 + 1 + 1) (by omega)]
 
+/- English proof (translation)
+Introduce `σ R L hR hL P`. Conclude with `⟨plus_eq R L hR hL P, minus_eq R L hR hL P⟩`.
+-/
 theorem raisingLoweringSplit : FockRL.PMSplit := by
   intro σ R L hR hL P
   exact ⟨plus_eq R L hR hL P, minus_eq R L hR hL P⟩

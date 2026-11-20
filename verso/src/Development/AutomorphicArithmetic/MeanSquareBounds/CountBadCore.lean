@@ -5,6 +5,9 @@ open Finset Formalism.HermitianLattices.ZeroFreeRegionGL2 Formalism.HermitianLat
 
 namespace QH
 
+/- English proof (translation)
+Take `⟨k, rfl⟩ : ∃ k, M = k + 1` from `Nat.exists_eq_succ_of_ne_zero (NeZero.ne M)`. Use `⟨⟨k, ψ⟩, rfl, hp, hM, ?_⟩` and prove the remaining obligations. Unfold `ZeroFreeBox at hz`. Use `push Not at hz`. Conclude with `hz`.
+-/
 private theorem aux (Q : ℝ) (M : ℕ) [NeZero M] (ψ : DirichletCharacter ℂ M) (hp : ψ.IsPrimitive) (hM : (M : ℝ) ≤ Q)
     (hz : ¬ ZeroFreeBox Q ψ) :
     ∃ p : (Σ N : ℕ, DirichletCharacter ℂ (N + 1)), p.1 + 1 = M ∧ p.2.IsPrimitive ∧ ((p.1 + 1 : ℕ) : ℝ) ≤ Q ∧
@@ -15,6 +18,21 @@ private theorem aux (Q : ℝ) (M : ℕ) [NeZero M] (ψ : DirichletCharacter ℂ 
   push Not at hz
   exact hz
 
+/- English proof (translation)
+Take `⟨C, hC⟩` from `Formalism.HermitianLattices.Ext.PrimitiveCharacterCasts.ZD.zero_density_box`. Use `⟨max C 0, le_max_right _ _, fun Q F S hQ hS => ?_⟩` and prove the remaining obligations. Establish `key : ∀ q : ℕ, ∃ p : (Σ N : ℕ, DirichletCharacter ℂ (N + 1)), q ∈ S → (∃ f : ℕ, p.1 + 1 = f * q ∧ (f : ℝ) ≤ F) ∧ p.2.IsPrimitive ∧ ((p.1 + 1 : ℕ) : ℝ) ≤ Q ∧ ∃ s : ℂ, 1 - 1 / 400 < s.re ∧ |s.im| ≤ Q ∧ DirichletCharacter.LFunction p.2 s = 0`. Introduce `q`. Distinguish the cases in `hq : q ∈ S`.
+
+Take `⟨-, -, N, f, _, ψ, hN, hf, hp, hNQ, hz⟩` from `hS q hq`. Take `⟨p, h1, h2⟩` from `aux Q N ψ hp hNQ hz`. Conclude with `⟨p, fun _ => ⟨⟨f, h1.trans hN, hf⟩, h2⟩⟩`. Conclude with `⟨⟨0, 1⟩, fun h => absurd h hq⟩`. Use `choose g hg using key`.
+
+Establish `hinj : Set.InjOn g S`. Introduce `q hq q' hq' h`. Take `⟨⟨f, hf, -⟩, -⟩` from `hg q hq`. Take `⟨⟨f', hf', hF'⟩, -⟩` from `hg q' hq'`. Establish `hpq` using `(hS q hq).1`.
+
+Establish `hpq'` using `(hS q' hq').1`. Establish `hlt` using `(hS q hq).2.1`. Establish `he : f * q = f' * q'` using `by rw [← hf, ← hf', h]`. Establish `hd : q ∣ f' * q'` using `⟨f, by rw [← he, mul_comm]⟩`. Break down `(Nat.Prime.dvd_mul hpq).1 hd with h1 | h1` into its components or cases.
+
+Establish `hpos : 0 < f'`. Break down `Nat.eq_zero_or_pos f' with h0 | h0` into its components or cases. Rewrite `hf'` using `[h0]`. Simplify using `at hf'`. Conclude with `h0`.
+
+Establish `: (q : ℝ) ≤ f'` using `by exact_mod_cast Nat.le_of_dvd hpos h1`. Combine the linear equalities and inequalities to obtain the conclusion. Conclude with `(Nat.prime_dvd_prime_iff_eq hpq hpq').1 h1`. Establish `h1` using `hC Q (S.image g) hQ (by`. Introduce `p hp`.
+
+Take `⟨q, hq, rfl⟩` from `Finset.mem_image.1 hp`. Conclude with `(hg q hq).2)`. Rewrite `h1` using `[Finset.card_image_of_injOn hinj]`. Use `h1.trans (mul_le_mul_of_nonneg_right (le_max_left _ _) ?_)` and prove the remaining obligations. Conclude with `Real.rpow_nonneg (by linarith) _`.
+-/
 theorem count_bad_core :
     ∃ C : ℝ, 0 ≤ C ∧ ∀ (Q F : ℝ) (S : Finset ℕ), 3 ≤ Q →
       (∀ q ∈ S, q.Prime ∧ F < q ∧ ∃ (N f : ℕ) (_ : NeZero N) (ψ : DirichletCharacter ℂ N),

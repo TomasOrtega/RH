@@ -18,6 +18,23 @@ namespace GlobalTheory.USepBC
 
 set_option maxHeartbeats 1600000 in
 
+/- English proof (translation)
+Introduce `E _ _ _ H Dw l Xo c V _ _ _ hV t y P hG V₁ _ _ _ ρ fK hV₁ hρ hl hfK`. Establish `hR : GlobalTheory.Mum.Base V` using `⟨⟨hV.1, inferInstance, hV.2.1, hV.2.2.1⟩, hV.2.2.2⟩`. Establish `hR₁ : GlobalTheory.Mum.Base V₁` using `⟨⟨hV₁.1, inferInstance, hV₁.2.1, hV₁.2.2.1⟩, hV₁.2.2.2⟩`. Take `⟨-, -, -, -, h5⟩` from `GlobalTheory.firstFiveLaws`. Take `⟨Wo, hWo, ⟨hψ⟩⟩` from `h5.psiOnExists V (maximalIdeal V) hR.1 P.D`.
+
+Set `WS : Set (PrimeSpectrum V)` to `(Wo : Set (Sp V))`. Establish `hWS : IsOpen WS` using `Wo.isOpen`. Establish `hbot : (⊥ : PrimeSpectrum V) ∈ WS`. Use `hWo` as an intermediate fact. Rewrite `this` using `[genericPoint_eq_bot_of_affine]`.
+
+Conclude with `this`. Take `⟨_, ⟨f, rfl⟩, hf, hfW⟩` from `PrimeSpectrum.isTopologicalBasis_basic_opens.exists_subset_of_mem_open hbot hWS`. Establish `hf0 : f ≠ 0`. Introduce `e`. Apply `hf` to reduce the goal to its premises.
+
+Rewrite using `[e]`. Use `show (0 : V) ∈ (⊥ : PrimeSpectrum V).asIdeal`. Conclude with `Ideal.zero_mem _`. Establish `hψW : ∀ x, PsiUnitOn P.D.toPre x (PrimeSpectrum.basicOpen f : Set (PrimeSpectrum V))`. Introduce `x j U hU hUW`.
+
+Conclude with `GlobalTheory.PsiUnitOfPsiOn.psiUnitOn_of_psiOn V P.D.toPre Wo hψ x j U hU (hUW.trans hfW)`. Establish `hρf : ρ f ≠ 0` using `fun e => hf0 (hρ (e.trans (map_zero ρ).symm))`. Take `⟨t₁, P₁, p, ⟨m₀⟩, hlin, -⟩` from `GlobalTheory.LocalPull.exists_pelUnif_pull V V₁ hR hR₁ t P ρ hl f hρf hψW`. Use `⟨t₁, P₁, p, ?_, hlin, fun x r hr => GlobalTheory.PelCoordPull.psiCoord_pull p x r hr⟩` and prove the remaining obligations. Take `⟨tK, ⟨m₁⟩, ⟨m₂⟩⟩` from `hG`.
+
+Take `⟨PP, cub, sym, adj, prim, n, -⟩` from `sabPull CubePf.cubePull (jK V₁) t₁`. Set `tK₁ : SAB H (Sp (FractionRing V₁))` to `⟨(Over.pullback (jK V₁)).obj t₁.G, IsSemiAbelian.pullback _ t₁.G t₁.semi, OAct.pullback _ t₁.G t₁.act, PP, cub, sym, adj, prim⟩`. Establish `n' : SABMap tK₁ t₁ (jK V₁)` using `n`. Take `⟨b, -⟩` from `sabComp pullCubComp E H _ _ _ t t₁ tK₁ _ _ m₀ n'`. Establish `sq : jK V₁ ≫ spMap ρ = spMap fK ≫ jK V` using `by show Spec.map _ ≫ Spec.map _ = Spec.map _ ≫ Spec.map _`.
+
+Rewrite using `[← Spec.map_comp, ← Spec.map_comp]`. Use `congr 1`. Use extensionality with `a`. Conclude with `(hfK a).symm`. Rewrite `b` using `[sq]`.
+
+Take `⟨c', -⟩` from `sabCancel pullCubCancel E H _ _ _ t tK tK₁ _ _ m₁ b`. Take `⟨d, -⟩` from `sabComp pullCubComp E H _ _ _ Xo.univ.t tK tK₁ _ _ m₂ c'`. Use `⟨tK₁, ⟨n'⟩, ⟨?_⟩⟩` and prove the remaining obligations. Rewrite using `[Category.assoc]`. Conclude with `d`.
+-/
 theorem exists_pelUnif_baseChange_of_injective : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (Dw : Datum H) (l : Geo.Tor.Level H) (Xo : Moduli Dw l) (c : Coeff l) (V : Type) [CommRing V] [IsDomain V] [IsLocalRing V], IsCN V → ∀ (t : SAB H (Sp V)) (y : Sp (FractionRing V) ⟶ Xo.XF c) (P : PELUnif (maximalIdeal V) t), GenOf Xo c y t → ∀ (V₁ : Type) [CommRing V₁] [IsDomain V₁] [IsLocalRing V₁] (ρ : V →+* V₁) (fK : FractionRing V →+* FractionRing V₁), IsCN V₁ → Function.Injective ρ → IsLocalHom ρ → (∀ a, fK (algebraMap V _ a) = algebraMap V₁ _ (ρ a)) → ∃ (t₁ : SAB H (Sp V₁)) (P₁ : PELUnif (maximalIdeal V₁) t₁) (p : IsPullDeg ρ P.D.toPre P₁.D.toPre), GenOf Xo c (spMap fK ≫ y) t₁ ∧ (∀ (a : 𝓞 E) x, p.xe (a • x) = a • p.xe x) ∧ ∀ x r, Formalism.L2.Pj.PsiCoord P.D.toPre (p.xe x) r → ∃ w : V₁ˣ, Formalism.L2.Pj.PsiCoord P₁.D.toPre x (w * ρ r) := by
   intro E _ _ _ H Dw l Xo c V _ _ _ hV t y P hG V₁ _ _ _ ρ fK hV₁ hρ hl hfK
   have hR : GlobalTheory.Mum.Base V := ⟨⟨hV.1, inferInstance, hV.2.1, hV.2.2.1⟩, hV.2.2.2⟩

@@ -18,23 +18,43 @@ def Psd : Set (HS L N) := {h | open ComplexOrder in ∀ w, (mat h w).PosSemidef}
 
 variable {L N}
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem qc_apply (y : NZ L N) (h : HS L N) : qc L N y h = q h y.1 := rfl
 
+/- English proof (translation)
+Use extensionality with `h`. Conclude with `⟨fun H y hy => H ⟨y, hy⟩, fun H y => H y.1 y.2⟩`.
+-/
 theorem poly_qc : ConeExtensionAcyclic.poly (qc L N) = Ry L N := by
   ext h; exact ⟨fun H y hy => H ⟨y, hy⟩, fun H y => H y.1 y.2⟩
 
 open ComplexOrder in
+/- English proof (translation)
+Introduce `w` and use `(hh w).conjTranspose_mul_mul_same _`.
+-/
 theorem smul_mem_Psd (g : Gm L N) {h : HS L N} (hh : h ∈ Psd L N) : g • h ∈ Psd L N :=
   fun w => (hh w).conjTranspose_mul_mul_same _
 
+/- English proof (translation)
+Introduce `e` and use `hy (by rw [← inv_smul_smul g y, e, smul_zero])`.
+-/
 theorem smul_ne_zero_lat (g : Gm L N) {y : Lat L N} (hy : y ≠ 0) : g • y ≠ 0 :=
   fun e => hy (by rw [← inv_smul_smul g y, e, smul_zero])
 
 def actL (g : Gm L N) : HS L N →L[ℝ] HS L N :=
   LinearMap.toContinuousLinearMap (pull ((g⁻¹ : Gm L N) : Matrix (Fin N) (Fin N) (𝓞 L)))
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem actL_apply (g : Gm L N) (h : HS L N) : actL g h = g • h := rfl
 
+/- English proof (translation)
+Use `⟨?_, fun k hk => ?_⟩` and prove the remaining obligations. Use `hh.1` as an intermediate fact. Rewrite `this`, the goal using `[poly_qc]`. Conclude with `smul_mem_Ry g this`. Establish `: g⁻¹ • k = 0` using `hh.2 _ fun y hy => by`.
+
+Use `hk ⟨g • y.1, smul_ne_zero_lat g y.2⟩ (by simpa [q_smul] using hy)` as an intermediate fact. Simplify `this` using `[q_smul]`. Rewrite using `[← smul_inv_smul g k, this, smul_zero]`.
+-/
 theorem isVert_smul (g : Gm L N) {h : HS L N} (hh : ConeExtensionAcyclic.IsVert (qc L N) h) :
     ConeExtensionAcyclic.IsVert (qc L N) (g • h) := by
   refine ⟨?_, fun k hk => ?_⟩
@@ -57,8 +77,16 @@ instance : MulAction (Gm L N) (Vx L N) where
 
 variable {L N}
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem Vx.smul_val (g : Gm L N) (v : Vx L N) : (g • v).1 = g • v.1 := rfl
 
+/- English proof (translation)
+Take `⟨x, hx, hj⟩` from `ht`. Use `⟨x.comp (actL g⁻¹), fun k hk h0 => ?_, fun j h' hh' => ?_⟩` and prove the remaining obligations. Conclude with `hx _ (smul_mem_Psd _ hk) (fun e => h0 (by`. Establish `e' : g⁻¹ • k = 0` using `e`. Rewrite using `[← smul_inv_smul g k, e', smul_zero]))`.
+
+Rewrite `hh'` using `[poly_qc]`. Use `hj j (g⁻¹ • h') (by rw [poly_qc]; exact smul_mem_Ry _ hh')` as an intermediate fact. Simplify `this` using `[Vx.smul_val]`.
+-/
 theorem smul_mem_simp (g : Gm L N) {n : ℕ} {t : Fin n → Vx L N}
     (ht : t ∈ ConeExtensionAcyclic.simp (qc L N) (Psd L N) n) :
     (fun j => g • t j) ∈ ConeExtensionAcyclic.simp (qc L N) (Psd L N) n := by
@@ -85,9 +113,15 @@ def Sx.face (p : ℕ) (i : Fin (p + 2)) (t : Sx L N (p + 1)) : Sx L N p :=
 
 variable {L N}
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem Sx.smul_val {p : ℕ} (g : Gm L N) (t : Sx L N p) (j : Fin (p + 1)) :
     (g • t).1 j = g • t.1 j := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem Sx.face_smul (p : ℕ) (i : Fin (p + 2)) (g : Gm L N) (t : Sx L N (p + 1)) :
     Sx.face L N p i (g • t) = g • Sx.face L N p i t := rfl
 

@@ -22,6 +22,11 @@ def ptQ {S : Scheme.{0}} (P : ∀ (R' : Type) [CommRing R'], (Sp R' ⟶ S) → P
     (hV : IsAffineOpen V) : ∀ (R' : Type) [CommRing R'], (Γ(S, V) →+* R') → Prop :=
   fun R' _ f ↦ P R' (spMap f ≫ hV.fromSpec)
 
+/- English proof (translation)
+Apply `le_antisymm` to reduce the goal to its premises. Introduce `a ha`. Use `ha (A ⧸ J) (Ideal.Quotient.mk J) ((h _ _).2 (by simp [Ideal.mk_ker]))` as an intermediate fact. Simplify `this` using `[Ideal.Quotient.eq_zero_iff_mem]`. Introduce `a ha R' _ f hf`.
+
+Conclude with `(h R' f).1 hf ha`.
+-/
 theorem killIdeal_eq {A : Type} [CommRing A]
     {Q : ∀ (R' : Type) [CommRing R'], (A →+* R') → Prop} {J : Ideal A} (h : Represents Q J) :
     killIdeal Q = J := by
@@ -32,11 +37,19 @@ theorem killIdeal_eq {A : Type} [CommRing A]
   · intro a ha R' _ f hf
     exact (h R' f).1 hf ha
 
+/- English proof (translation)
+Rewrite using `[killIdeal_eq h]`. Conclude with `h`.
+-/
 theorem represents_killIdeal {A : Type} [CommRing A]
     {Q : ∀ (R' : Type) [CommRing R'], (A →+* R') → Prop} {J : Ideal A} (h : Represents Q J) :
     Represents Q (killIdeal Q) := by
   rw [killIdeal_eq h]; exact h
 
+/- English proof (translation)
+Introduce `S P U W hU hW h J hJ R' _ f`. Establish `e : spMap f ≫ hW.fromSpec = spMap (f.comp (S.presheaf.map (homOfLE h).op).hom) ≫ hU.fromSpec`. Rewrite using `[← hU.map_fromSpec hW (homOfLE h).op]`. Simplify using `only [spMap, CommRingCat.ofHom_comp, Spec.map_comp, Category.assoc, CommRingCat.ofHom_hom]`. Use `show P R' (spMap f ≫ hW.fromSpec) ↔ _`.
+
+Rewrite using `[e, Ideal.map_le_iff_le_comap, RingHom.comap_ker]`. Conclude with `hJ R' _`.
+-/
 theorem represents_restrict : ∀ (S : Scheme.{0}) (P : ∀ (R' : Type) [CommRing R'], (Sp R' ⟶ S) → Prop)
   (U W : S.Opens) (hU : IsAffineOpen U) (hW : IsAffineOpen W) (h : W ≤ U) (J : Ideal Γ(S, U)),
   Represents (ptQ P U hU) J → Represents (ptQ P W hW) (J.map (S.presheaf.map (homOfLE h).op).hom) := by

@@ -21,12 +21,18 @@ open FiniteSubfield _root_.GroundTheory.Global.Cyclotomic ProfiniteInteger
 def degreeLevel (m : ℕ+) : Subgroup Gal(ℚ̄/ℚ) :=
   ((AddMonoidHom.toMultiplicative ((proj m : ℤ̂ →+* ZMod m) : ℤ̂ →+ ZMod m)).comp degree).ker
 
+/- English proof (translation)
+Unfold both sides. The equivalence is reflexive.
+-/
 theorem mem_degreeLevel {m : ℕ+} {τ : Gal(ℚ̄/ℚ)} :
     τ ∈ degreeLevel m ↔ proj m (Multiplicative.toAdd (degree τ)) = 0 :=
   Iff.rfl
 
 instance (m : ℕ+) : (degreeLevel m).Normal := MonoidHom.normal_ker _
 
+/- English proof (translation)
+Establish `h : (degreeLevel m : Set Gal(ℚ̄/ℚ)) = (fun τ ↦ proj m (Multiplicative.toAdd (degree τ))) ⁻¹' {0}`. Use extensionality with `τ`. Conclude with `mem_degreeLevel`. Rewrite using `[h]`. Conclude with `(isOpen_discrete _).preimage ((continuous_proj m).comp (continuous_toAdd.comp continuous_degree))`.
+-/
 theorem isOpen_degreeLevel (m : ℕ+) : IsOpen (degreeLevel m : Set Gal(ℚ̄/ℚ)) := by
   have h : (degreeLevel m : Set Gal(ℚ̄/ℚ)) =
       (fun τ ↦ proj m (Multiplicative.toAdd (degree τ))) ⁻¹' {0} := by
@@ -39,6 +45,9 @@ theorem isOpen_degreeLevel (m : ℕ+) : IsOpen (degreeLevel m : Set Gal(ℚ̄/�
 def layerGroup (L : FiniteSubfield) (m : ℕ+) : OpenSubgroup Gal(ℚ̄/ℚ) :=
   ⟨L.1.fixingSubgroup ⊓ degreeLevel m, L.1.fixingSubgroup_isOpen.inter (isOpen_degreeLevel m)⟩
 
+/- English proof (translation)
+Unfold both sides. The equivalence is reflexive.
+-/
 theorem mem_layerGroup {L : FiniteSubfield} {m : ℕ+} {τ : Gal(ℚ̄/ℚ)} :
     τ ∈ (layerGroup L m : Subgroup Gal(ℚ̄/ℚ)) ↔ τ ∈ L.1.fixingSubgroup ∧ τ ∈ degreeLevel m :=
   Iff.rfl
@@ -46,10 +55,16 @@ theorem mem_layerGroup {L : FiniteSubfield} {m : ℕ+} {τ : Gal(ℚ̄/ℚ)} :
 def layerField (L : FiniteSubfield) (m : ℕ+) : FiniteSubfield :=
   ofOpenSubgroup (layerGroup L m)
 
+/- English proof (translation)
+The claim follows from `fixingSubgroup_ofOpenSubgroup _`.
+-/
 theorem fixingSubgroup_layerField (L : FiniteSubfield) (m : ℕ+) :
     (layerField L m).1.fixingSubgroup = layerGroup L m :=
   fixingSubgroup_ofOpenSubgroup _
 
+/- English proof (translation)
+Use `⟨?_, (inferInstance : (degreeLevel m).Normal).conj_mem x hx.2 (s ^ k)⟩` and prove the remaining obligations. Establish `h1` using `hN.conj_mem ⟨x, IntermediateField.fixingSubgroup_le (show K.1 ≤ L.1 from hKL) hx.1⟩ (Subgroup.mem_subgroupOf.2 hx.1) ⟨s ^ k, zpow_mem hs k⟩`. Conclude with `Subgroup.mem_subgroupOf.1 h1`.
+-/
 theorem zpow_conj_mem_layerGroup {K L : FiniteSubfield} (hKL : K ≤ L)
     [hN : (L.1.fixingSubgroup.subgroupOf K.1.fixingSubgroup).Normal] (m : ℕ+) {s : Gal(ℚ̄/ℚ)}
     (hs : s ∈ K.1.fixingSubgroup) (k : ℤ) {x : Gal(ℚ̄/ℚ)}
@@ -67,6 +82,9 @@ def powerSubgroup (U : Subgroup Gal(ℚ̄/ℚ)) (s : Gal(ℚ̄/ℚ))
   | exact GroundTheory.Variant₂.N1.mulZPowers ..
   | (intros; apply GroundTheory.Variant₂.N1.mulZPowers <;> assumption)
 
+/- English proof (translation)
+Use `first`. Consider the case `exact @GroundTheory.Variant₂.N1.le_powerSubgroup₂ U s hU`. Consider the case `exact GroundTheory.Variant₂.N1.le_powerSubgroup₂ ..`. Consider the case `(intros; apply GroundTheory.Variant₂.N1.le_powerSubgroup₂ <;> assumption)`.
+-/
 theorem le_powerSubgroup (U : Subgroup Gal(ℚ̄/ℚ)) (s : Gal(ℚ̄/ℚ))
     (hU : ∀ (k : ℤ), ∀ x ∈ U, s ^ k * x * (s ^ k)⁻¹ ∈ U) : U ≤ powerSubgroup U s hU := by
   first
@@ -74,6 +92,9 @@ theorem le_powerSubgroup (U : Subgroup Gal(ℚ̄/ℚ)) (s : Gal(ℚ̄/ℚ))
   | exact GroundTheory.Variant₂.N1.le_powerSubgroup₂ ..
   | (intros; apply GroundTheory.Variant₂.N1.le_powerSubgroup₂ <;> assumption)
 
+/- English proof (translation)
+Use `first`. Consider the case `exact @GroundTheory.Variant₂.N1.mem_mulZPowers_self U s hU`. Consider the case `exact GroundTheory.Variant₂.N1.mem_mulZPowers_self ..`. Consider the case `(intros; apply GroundTheory.Variant₂.N1.mem_mulZPowers_self <;> assumption)`.
+-/
 theorem mem_powerSubgroup_self (U : Subgroup Gal(ℚ̄/ℚ)) (s : Gal(ℚ̄/ℚ))
     (hU : ∀ (k : ℤ), ∀ x ∈ U, s ^ k * x * (s ^ k)⁻¹ ∈ U) : s ∈ powerSubgroup U s hU := by
   first
@@ -94,26 +115,44 @@ def powerGroup : OpenSubgroup Gal(ℚ̄/ℚ) :=
 def powerField : FiniteSubfield :=
   ofOpenSubgroup (powerGroup K L m s hs)
 
+/- English proof (translation)
+The claim follows from `fixingSubgroup_ofOpenSubgroup _`.
+-/
 theorem fixingSubgroup_powerField :
     (powerField K L m s hs).1.fixingSubgroup = powerGroup K L m s hs :=
   fixingSubgroup_ofOpenSubgroup _
 
+/- English proof (translation)
+The claim follows from `fun _ hx ↦ (IntermediateField.mem_fixedField_iff _ _).2 fun τ hτ ↦ (IntermediateField.mem_fixedField_iff _ _).1 hx τ (h hτ)`.
+-/
 theorem ofOpenSubgroup_le {U U' : OpenSubgroup Gal(ℚ̄/ℚ)} (h : U' ≤ U) :
     ofOpenSubgroup U ≤ ofOpenSubgroup U' := fun _ hx ↦
   (IntermediateField.mem_fixedField_iff _ _).2 fun τ hτ ↦
     (IntermediateField.mem_fixedField_iff _ _).1 hx τ (h hτ)
 
+/- English proof (translation)
+The claim follows from `fun x hx ↦ (IntermediateField.mem_fixedField_iff _ _).2 fun _ hτ ↦ (IntermediateField.mem_fixingSubgroup_iff _ _).1 (h hτ) x hx`.
+-/
 theorem le_ofOpenSubgroup {F : FiniteSubfield} {U : OpenSubgroup Gal(ℚ̄/ℚ)}
     (h : (U : Subgroup Gal(ℚ̄/ℚ)) ≤ F.1.fixingSubgroup) : F ≤ ofOpenSubgroup U := fun x hx ↦
   (IntermediateField.mem_fixedField_iff _ _).2 fun _ hτ ↦
     (IntermediateField.mem_fixingSubgroup_iff _ _).1 (h hτ) x hx
 
+/- English proof (translation)
+The claim follows from `le_ofOpenSubgroup fun _ hτ ↦ hτ.1`.
+-/
 theorem le_layerField : L ≤ layerField L m :=
   le_ofOpenSubgroup fun _ hτ ↦ hτ.1
 
+/- English proof (translation)
+The claim follows from `ofOpenSubgroup_le fun x hx ↦ ⟨0, by simpa using hx⟩`.
+-/
 theorem powerField_le_layerField : powerField K L m s hs ≤ layerField L m :=
   ofOpenSubgroup_le fun x hx ↦ ⟨0, by simpa using hx⟩
 
+/- English proof (translation)
+Use `le_ofOpenSubgroup fun τ ⟨k, u, hu, hτu⟩ ↦ ?_` and prove the remaining obligations. Establish `h1 : u ∈ K.1.fixingSubgroup` using `IntermediateField.fixingSubgroup_le (show K.1 ≤ L.1 from hKL.out) hu.1`. Rewrite using `[hτu]`. Conclude with `mul_mem (zpow_mem hs k) h1`.
+-/
 theorem le_powerField : K ≤ powerField K L m s hs := by
   refine le_ofOpenSubgroup fun τ ⟨k, u, hu, hτu⟩ ↦ ?_
   have h1 : u ∈ K.1.fixingSubgroup :=
@@ -121,9 +160,23 @@ theorem le_powerField : K ≤ powerField K L m s hs := by
   rw [hτu]
   exact mul_mem (zpow_mem hs k) h1
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨1, 1, one_mem _, by simp⟩`.
+-/
 theorem mem_powerGroup_self : s ∈ (powerGroup K L m s hs : Subgroup Gal(ℚ̄/ℚ)) :=
   ⟨1, 1, one_mem _, by simp⟩
 
+/- English proof (translation)
+Establish `hle : (powerField K L m s hs).1.fixingSubgroup ⊓ degree.ker ≤ (layerField L m).1.fixingSubgroup`. Introduce and unpack `τ ⟨hτS, hτ⟩`. Rewrite `hτS` using `[SetLike.mem_coe, fixingSubgroup_powerField]`. Choose the witnesses or unpack the hypotheses as in `⟨k, hk⟩ : ∃ k : ℤ, s ^ k * τ ∈ (layerGroup L m : Subgroup Gal(ℚ̄/ℚ)) := by`. Take `⟨k, u, hu, hτu⟩` from `hτS`.
+
+Use `⟨-k, ?_⟩` and prove the remaining obligations. Rewrite using `[hτu, zpow_neg, inv_mul_cancel_left]`. Conclude with `hu`. Rewrite using `[fixingSubgroup_layerField]`. Establish `hd : degree (s ^ k * τ) = degree s ^ k`.
+
+Rewrite using `[map_mul, MonoidHom.mem_ker.1 hτ, mul_one, map_zpow]`. Establish `hk0 : proj m ((k : ℤ̂) * Multiplicative.toAdd (degree s)) = 0`. Use `mem_degreeLevel.1 hk.2` as an intermediate fact. Rewrite `this` using `[hd, toAdd_zpow, zsmul_eq_mul]`. Then use the resulting hypothesis. Establish `hsk : s ^ k ∈ (layerGroup L m : Subgroup Gal(ℚ̄/ℚ))`.
+
+Use `⟨hg k (hm k hk0), mem_degreeLevel.2 ?_⟩` and prove the remaining obligations. Rewrite using `[map_zpow, toAdd_zpow, zsmul_eq_mul]` and apply the resulting hypothesis. Use `mul_mem (inv_mem hsk) hk` as an intermediate fact. Rewrite `this` using `[inv_mul_cancel_left]`. Then use the resulting hypothesis. Rewrite `hle` using `[← fixingSubgroup_zhatField, ← IntermediateField.fixingSubgroup_sup]`.
+
+Rewrite using `[← InfiniteGalois.fixedField_fixingSubgroup ((powerField K L m s hs).1 ⊔ zhatField)]`. Introduce `x hx`. Rewrite using `[IntermediateField.mem_fixedField_iff]`. Introduce `τ hτ`. Conclude with `(IntermediateField.mem_fixingSubgroup_iff _ _).1 (hle hτ) x hx`.
+-/
 theorem layerField_le_sup_zhatField {g : ℕ}
     (hm : ∀ k : ℤ, proj m ((k : ℤ̂) * Multiplicative.toAdd (degree s)) = 0 → (g : ℤ) ∣ k)
     (hg : ∀ k : ℤ, (g : ℤ) ∣ k → s ^ k ∈ L.1.fixingSubgroup) :
@@ -157,6 +210,9 @@ theorem layerField_le_sup_zhatField {g : ℕ}
 
 end Fields
 
+/- English proof (translation)
+Use `AlgEquiv.ext fun x ↦ Subtype.ext ?_` and prove the remaining obligations. Conclude with `congrArg (fun z : E'.1 ↦ (z : ℚ̄)) (AlgEquiv.restrictNormal_commutes ((restrictHom (E := E') g).restrictScalars F.1) E.1 x)`.
+-/
 theorem restrictNormal_restrictScalars_restrictHom {F E F' E' : FiniteSubfield} [Fact (F ≤ E)]
     [Fact (F' ≤ E')] [hFF' : Fact (F ≤ F')] [Fact (E ≤ E')] [Fact (F ≤ E')]
     [(E.1.fixingSubgroup.subgroupOf F.1.fixingSubgroup).Normal]
@@ -174,6 +230,21 @@ variable (K L : FiniteSubfield) [hKL : Fact (K ≤ L)]
   [hN : (L.1.fixingSubgroup.subgroupOf K.1.fixingSubgroup).Normal]
   [IsMulCommutative (L.1 ≃ₐ[K.1] L.1)]
 
+/- English proof (translation)
+Use `set g := Nat.card (L.1 ≃ₐ[K.1] L.1) with hgdef`. Establish `hg0 : 0 < g` using `Nat.card_pos`. Take `⟨m, hm⟩` from `exists_pnat_forall_dvd _ hh hg0`. Establish `hgs : ∀ k : ℤ, (g : ℤ) ∣ k → s ^ k ∈ L.1.fixingSubgroup`. Introduce and unpack `k ⟨j, rfl⟩`.
+
+Establish `h1 : restrictHom (E` using `L) ((⟨s, hsK⟩ : K.1.fixingSubgroup) ^ ((g : ℤ) * j)) = 1 := by`. Rewrite using `[map_zpow, zpow_mul, zpow_natCast, hgdef, pow_card_eq_one', one_zpow]`. Rewrite `h1` using `[← MonoidHom.mem_ker, ker_restrictHom, Subgroup.mem_subgroupOf]`. Simplify using `using h1`. Use `set M := layerField L m with hMdef`.
+
+Use `set S := powerField K L m s hsK with hSdef`. Establish `: Fact (L ≤ M)` using `⟨le_layerField L m⟩`. Establish `: Fact (S ≤ M)` using `⟨powerField_le_layerField K L m s hsK⟩`. Establish `hKS : Fact (K ≤ S)` using `⟨le_powerField K L m s hsK⟩`. Establish `: Fact (K ≤ M)` using `⟨hKL.out.trans (le_layerField L m)⟩`.
+
+Establish `hMsup : M.1 ≤ S.1 ⊔ zhatField` using `layerField_le_sup_zhatField K L m s hsK hm hgs`. Establish `: (M.1.fixingSubgroup.subgroupOf S.1.fixingSubgroup).Normal` using `normal_of_le_sup_zhatField S M (Fact.out) hMsup`. Establish `: IsMulCommutative (M.1 ≃ₐ[S.1] M.1)` using `isMulCommutative_of_le_sup_zhatField S M hMsup`. Establish `hsS : s ∈ S.1.fixingSubgroup`. Rewrite using `[hSdef, fixingSubgroup_powerField]`.
+
+Conclude with `mem_powerGroup_self K L m s hsK`. Establish `hsbar : restrictHom (E` using `M) (⟨s, hsS⟩ : S.1.fixingSubgroup) ∈ MulAction.stabilizer (M.1 ≃ₐ[S.1] M.1) (FiniteSubfield.placeBelow P hP M).asIdeal := restrictHom_mem_stabilizer hP _ hsP`. Set `wM : PlacesOver M.1 (FiniteSubfield.placeBelow P hP S)` to `⟨FiniteSubfield.placeBelow P hP M, inferInstance⟩`. Take `⟨y, hy⟩` from `exists_localSymbol_eq (FiniteSubfield.placeBelow P hP S) wM hsbar`. Establish `ha : abstractSymbol S M (IdeleClassGroup.mk S.1 (finiteEmbedding (FiniteSubfield.placeBelow P hP S) y)) = Abelianization.of (restrictHom (E` using `M) (⟨s, hsS⟩ : S.1.fixingSubgroup)) := by`.
+
+Rewrite using `[abstractSymbol_mk_of_le_sup_zhatField S M hMsup, ideleSymbol_finiteEmbedding, hy]`. Establish `hb` using `abstractSymbol_ideleClassNorm (K := K) (L := L) (K' := S) (L' := M) hKS.out (le_layerField L m) _ _ ha`. Establish `hc` using `mk_finiteEmbedding_normUnits (K := K.1) (L := S.1) (FiniteSubfield.placeBelow P hP K) ⟨FiniteSubfield.placeBelow P hP S, inferInstance⟩ y`. Establish `hd` using `restrictNormal_localSymbol_norm (K := K.1) (K' := S.1) (L := L.1) (L' := M.1) (FiniteSubfield.placeBelow P hP K) (FiniteSubfield.placeBelow P hP S) y`. Rewrite `hd` using `[hy, restrictNormal_restrictScalars_restrictHom]`.
+
+Use `⟨_, ?_, hd.symm⟩` and prove the remaining obligations. Rewrite using `[hc]`. Conclude with `hb`.
+-/
 theorem exists_abstractSymbol_eq_localSymbol (P : Ideal (𝓞 ℚ̄)) [P.IsPrime] (hP : P ≠ ⊥)
     (s : Gal(ℚ̄/ℚ)) (hsK : s ∈ K.1.fixingSubgroup) (hsP : s ∈ MulAction.stabilizer Gal(ℚ̄/ℚ) P)
     (hh : ∀ q : Nat.Primes, toPadicInt q (Multiplicative.toAdd (degree s)) ≠ 0) :
@@ -231,6 +302,19 @@ theorem exists_abstractSymbol_eq_localSymbol (P : Ideal (𝓞 ℚ̄)) [P.IsPrime
   rw [hc]
   exact hb
 
+/- English proof (translation)
+Take `⟨P, hPp, hP, rfl⟩` from `exists_placeBelow_eq K v`. Use `set σ := localSymbol L.1 (FiniteSubfield.placeBelow P hP K) x with hσdef`. Set `wL : PlacesOver L.1 (FiniteSubfield.placeBelow P hP K)` to `⟨FiniteSubfield.placeBelow P hP L, inferInstance⟩`. Establish `hσw : σ ∈ MulAction.stabilizer (L.1 ≃ₐ[K.1] L.1) (FiniteSubfield.placeBelow P hP L).asIdeal` using `localSymbol_mem_stabilizer L.1 _ wL x`. Take `⟨τ, hτ⟩` from `restrictHom_surjective (F := K) (E := L) σ`.
+
+Take `⟨σ₀, hσ₀P, hσ₀⟩` from `exists_mem_stabilizer_restrictHom_eq hP τ (by rw [hτ]; exact hσw)`. Take `⟨p, hp, hpP⟩` from `exists_liesOver_prime P hP`. Establish `: Fact p.Prime` using `⟨hp⟩`. Take `⟨h, hhP, hhL, hh⟩` from `exists_mem_stabilizer_toPadicInt_ne_zero P p L (σ₀ : Gal(ℚ̄/ℚ))`. Establish `hhK : h ∈ K.1.fixingSubgroup` using `IntermediateField.fixingSubgroup_le (show K.1 ≤ L.1 from hKL.out) hhL`.
+
+Establish `hsK : (σ₀ : Gal(ℚ̄/ℚ)) * h ∈ K.1.fixingSubgroup` using `mul_mem σ₀.2 hhK`. Establish `hsσ : restrictHom (E` using `L) (⟨(σ₀ : Gal(ℚ̄/ℚ)) * h, hsK⟩ : K.1.fixingSubgroup) = σ := by`. Establish `h1 : restrictHom (E` using `L) (⟨h, hhK⟩ : K.1.fixingSubgroup) = 1 := by`. Rewrite using `[← MonoidHom.mem_ker, ker_restrictHom]`. Conclude with `Subgroup.mem_subgroupOf.2 hhL`.
+
+Rewrite using `[show (⟨(σ₀ : Gal(ℚ̄/ℚ)) * h, hsK⟩ : K.1.fixingSubgroup) = σ₀ * ⟨h, hhK⟩ from rfl, map_mul, h1, mul_one, hσ₀, hτ]`. Take `⟨y, hy1, hy2⟩` from `exists_abstractSymbol_eq_localSymbol K L P hP _ hsK (mul_mem hσ₀P hhP) hh`. Rewrite `hy1`, `hy2` using `[hsσ]`. Establish `he : x * y⁻¹ ∈ (localSymbol L.1 (FiniteSubfield.placeBelow P hP K)).ker`. Rewrite using `[MonoidHom.mem_ker, map_mul, map_inv, hy2, hσdef, mul_inv_cancel]`.
+
+Rewrite `he` using `[ker_localSymbol L.1 _ wL]`. Take `⟨z, hz⟩` from `he`. Establish `hx : x = y * LocalField.normUnits ((FiniteSubfield.placeBelow P hP K).adicCompletion K.1) (wL.1.adicCompletion L.1) z`. Rewrite using `[hz, mul_left_comm, mul_inv_cancel, mul_one]`. Establish `h2 : abstractSymbol K L (IdeleClassGroup.mk K.1 (finiteEmbedding (FiniteSubfield.placeBelow P hP K) (LocalField.normUnits ((FiniteSubfield.placeBelow P hP K).adicCompletion K.1) (wL.1.adicCompletion L.1) z))) = 1`.
+
+Rewrite using `[mk_finiteEmbedding_normUnits (K := K.1) (L := L.1) (FiniteSubfield.placeBelow P hP K) wL z]`. Conclude with `abstractSymbol_ideleClassNorm_eq_one K L _`. Rewrite using `[hx, map_mul, map_mul, map_mul, hy1, h2, mul_one]`.
+-/
 theorem abstractSymbol_mk_finiteEmbedding (v : HeightOneSpectrum (𝓞 K.1))
     (x : (v.adicCompletion K.1)ˣ) :
     abstractSymbol K L (IdeleClassGroup.mk K.1 (finiteEmbedding v x)) =
@@ -274,6 +358,9 @@ theorem abstractSymbol_mk_finiteEmbedding (v : HeightOneSpectrum (𝓞 K.1))
     exact abstractSymbol_ideleClassNorm_eq_one K L _
   rw [hx, map_mul, map_mul, map_mul, hy1, h2, mul_one]
 
+/- English proof (translation)
+The claim follows from `MonoidHom.ext fun x ↦ abstractSymbol_mk_finiteEmbedding K L v x`.
+-/
 theorem abstractSymbol_comp_finiteEmbedding (v : HeightOneSpectrum (𝓞 K.1)) :
     ((abstractSymbol K L).comp (IdeleClassGroup.mk K.1)).comp (finiteEmbedding v) =
       Abelianization.of.comp (localSymbol L.1 v) :=

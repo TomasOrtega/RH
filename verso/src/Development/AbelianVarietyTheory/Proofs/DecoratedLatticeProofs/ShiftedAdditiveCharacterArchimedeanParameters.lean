@@ -12,6 +12,31 @@ namespace GlobalTheory.StdUnn
 
 set_option synthInstance.maxHeartbeats 400000 in
 
+/- English proof (translation)
+Introduce `D ψ hψ θ hθ μ hμ`. Establish `hstar : ∀ x : D.host.E, star x = IsCMField.complexConj D.host.E x` using `fun _ => rfl`. Use `set y : D.host.E := -D.host.xi0 / μ with hy_def`. Establish `hyc : IsCMField.complexConj D.host.E y = y`. Rewrite using `[hy_def, map_div₀, map_neg, conj_xi0_alt, ← hstar μ, hμ.2, neg_neg, div_neg, neg_div]`.
+
+Establish `hyF : y ∈ D.host.F` using `(IsCMField.complexConj_eq_self_iff D.host.E y).1 hyc`. Establish `hy0 : y ≠ 0` using `div_ne_zero (neg_ne_zero.2 (GlobalTheory.DualPairCompare.embedding_xi_zero_ne_zero D)) hμ.1`. Set `lam : D.host.F` to `⟨y, hyF⟩`. Establish `hlam : algebraMap D.host.F D.host.E lam = y` using `rfl`. Establish `hlam0 : lam ≠ 0` using `fun h => hy0 (by rw [← hlam, h, map_zero])`.
+
+Use `⟨lam, hlam, ?_, ?_⟩` and prove the remaining obligations. Use `⟨?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Conclude with `hψ.1.1.comp (continuous_const.mul continuous_id)`. Introduce `x`. Conclude with `hψ.1.2.1 _`.
+
+Introduce `a`. Rewrite using `[shift, AddChar.mulShift_apply, ← map_mul]`. Conclude with `hψ.1.2.2.1 _`. Take `⟨x, hx⟩` from `hψ.1.2.2.2`. Use `⟨algebraMap D.host.F (AF D.host.F) lam⁻¹ * x, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[shift, AddChar.mulShift_apply, ← mul_assoc, ← map_mul, mul_inv_cancel₀ hlam0, map_one, one_mul]`. Conclude with `hx`. Establish `hreal : ∀ τ, (tauE D τ y).im = 0`. Introduce `τ`. Establish `h` using `IsCMField.complexEmbedding_complexConj D.host.E (tauE D τ) y`.
+
+Rewrite `h` using `[hyc]`. Use `congrArg Complex.im h` as an intermediate fact. Rewrite `this` using `[Complex.conj_im]`. Combine the linear equalities and inequalities to obtain the conclusion. Use `⟨fun τ => -(tauE D τ y).re, ?_, ?_⟩` and prove the remaining obligations.
+
+Introduce `x`. Establish `e1 : psiInf D.host.F (shift ψ lam) x = psiInf D.host.F ψ (algebraMap D.host.F (Ainf D.host.F) lam * x)`. Simplify using `only [psiInf, shift, AddChar.mulShift_apply]`. Use `congr 1`. Use `show (algebraMap D.host.F (Ainf D.host.F) lam * x, algebraMap D.host.F (Af D.host.F) lam * 0) = _`.
+
+Rewrite using `[mul_zero]`. Both sides reduce to the same expression. Rewrite using `[e1, hψ.2.2 θ hθ]`. Use `congr 1`. Establish `e2 : ∀ ρ, θ ρ ((algebraMap D.host.F (Ainf D.host.F) lam * x) ⊗ₜ[D.host.F] (1 : D.host.E)) = θ ρ (x ⊗ₜ[D.host.F] (1 : D.host.E)) * tauE D ρ y`.
+
+Introduce `ρ`. Establish `e3 : (algebraMap D.host.F (Ainf D.host.F) lam * x) ⊗ₜ[D.host.F] (1 : D.host.E) = (x ⊗ₜ[D.host.F] (1 : D.host.E)) * ((1 : Ainf D.host.F) ⊗ₜ[D.host.F] y)`. Rewrite using `[Algebra.TensorProduct.tmul_mul_tmul, mul_one, one_mul, ← Algebra.smul_def, ← TensorProduct.smul_tmul', ← TensorProduct.tmul_smul, Algebra.smul_def, mul_one, hlam]`. Rewrite using `[e3, map_mul, (hθ ρ).1]`. Simplify using `only [e2]`.
+
+Establish `e4 : ∀ ρ, (((-(tauE D ρ y).re : ℝ)) : ℂ) = -tauE D ρ y`. Introduce `ρ`. Apply the tactic sequence `apply Complex.ext <;> simp [hreal ρ]`. Simplify using `only [e4, Finset.mul_sum]`. Use `push_cast`.
+
+Use `Finset.sum_congr rfl fun ρ _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree. Introduce `τ`. Establish `h1 : |(tauE D τ y).re| = ‖tauE D τ y‖`. Rewrite using `[← Complex.abs_re_eq_norm.2 (hreal τ)]`.
+
+Rewrite using `[abs_neg, h1, hy_def, map_div₀, map_neg, norm_div, norm_neg]`.
+-/
 theorem shift_char_realPar : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ), IsStdChar D ψ (-1) → ∀ θ : InfFam D, IsInfFam θ → ∀ μ : D.host.E, IsSkew μ → ∃ lam : D.host.F, algebraMap D.host.F D.host.E lam = -D.host.xi0 / μ ∧ IsCharAF D.host.F (shift ψ lam) ∧ ∃ l : D.what₂.Tau → ℝ, HasRealPar (shift ψ lam) θ l ∧ ∀ τ, |l τ| = ‖tauE D τ D.host.xi0‖ / ‖tauE D τ μ‖ := by
   intro D ψ hψ θ hθ μ hμ
   have hstar : ∀ x : D.host.E, star x = IsCMField.complexConj D.host.E x := fun _ => rfl

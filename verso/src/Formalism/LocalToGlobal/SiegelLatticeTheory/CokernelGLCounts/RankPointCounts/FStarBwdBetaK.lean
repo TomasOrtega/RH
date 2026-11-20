@@ -75,23 +75,35 @@ namespace BwdBetaCut
 
 variable {T T' : D.host.E}
 
+/- English proof (translation)
+Use `first`. Consider the case `exact PI.UnitaryGroupMassFormula.BetaLUniq.GN.fvec_castSucc F.fl i`. Consider the case `simp [frame]`. Consider the case `rfl`.
+-/
 theorem fvec_cs' (F : LFlag (VS D) D.R.rS T) (i : Fin D.R.rS) : frame F i.castSucc = F.fl.e i := by
   first
   | exact PI.UnitaryGroupMassFormula.BetaLUniq.GN.fvec_castSucc F.fl i
   | simp [frame]
   | rfl
 
+/- English proof (translation)
+Use `first`. Consider the case `exact PI.UnitaryGroupMassFormula.BetaLUniq.GN.fvec_last F.fl`. Consider the case `simp [frame]`. Consider the case `rfl`.
+-/
 theorem fvec_last' (F : LFlag (VS D) D.R.rS T) : frame F (Fin.last _) = F.fl.z := by
   first
   | exact PI.UnitaryGroupMassFormula.BetaLUniq.GN.fvec_last F.fl
   | simp [frame]
   | rfl
 
+/- English proof (translation)
+Establish `hi` using `h i.castSucc`. Rewrite `hi` using `[fvec_cs', fvec_cs']`. Then use the resulting hypothesis.
+-/
 theorem e_of_frame (β : (VS D).V ≃ₗ[D.host.E] (VS D).V) (F F₂ : LFlag (VS D) D.R.rS T')
     (h : ∀ b, β (frame F b) = frame F₂ b) (i : Fin D.R.rS) : β (F.fl.e i) = F₂.fl.e i := by
   have hi := h i.castSucc
   rwa [fvec_cs', fvec_cs'] at hi
 
+/- English proof (translation)
+Use extensionality with `x`. Rewrite using `[Submodule.mem_map_equiv]`. Conclude with `(Formalism.L2.SG.Pf.mem_xflag_of_frame (fun a => (h a).symm) j x).symm`.
+-/
 theorem Xflag_of_frame (β : (VS D).V ≃ₗ[D.host.E] (VS D).V) (F F₂ : LFlag (VS D) D.R.rS T')
     (h : ∀ b, β (frame F b) = frame F₂ b) (j : ℕ) :
     (Xflag F j).map (β : (VS D).V →ₗ[D.host.E] (VS D).V) = Xflag F₂ j := by
@@ -99,12 +111,22 @@ theorem Xflag_of_frame (β : (VS D).V ≃ₗ[D.host.E] (VS D).V) (F F₂ : LFlag
   rw [Submodule.mem_map_equiv]
   exact (Formalism.L2.SG.Pf.mem_xflag_of_frame (fun a => (h a).symm) j x).symm
 
+/- English proof (translation)
+Rewrite using `[← Formalism.L2.SG.FourParts.Xflag_r, ← Formalism.L2.SG.FourParts.Xflag_r]`. Conclude with `Xflag_of_frame β F F₂ h D.R.rS`.
+-/
 theorem Xsp_of_frame (β : (VS D).V ≃ₗ[D.host.E] (VS D).V) (F F₂ : LFlag (VS D) D.R.rS T')
     (h : ∀ b, β (frame F b) = frame F₂ b) :
     (Xsp F).map (β : (VS D).V →ₗ[D.host.E] (VS D).V) = Xsp F₂ := by
   rw [← Formalism.L2.SG.FourParts.Xflag_r, ← Formalism.L2.SG.FourParts.Xflag_r]
   exact Xflag_of_frame β F F₂ h D.R.rS
 
+/- English proof (translation)
+Unfold `orth Xsp`. Simplify using `only [Submodule.mem_iInf, LinearMap.mem_ker]`. Introduce `x hx`. Unfold `Formalism.MainNotions.S.FlagG.X at hx`. Proceed by induction on `hx using Submodule.span_induction with`.
+
+Consider the case `mem y hy`. Take `⟨i, rfl⟩` from `hy`. Rewrite using `[← fvec_cs' F' i, PI.NRL.herm_eq, Formalism.L2.SG.Pf.ScalarFramePf.om_pair, if_neg (Fin.castSucc_lt_last i).ne, star_zero]`. Consider the case `zero => simp`. Consider the case `add y z _ _ hy hz => simp [map_add, hy, hz]`.
+
+Consider the case `smul a y _ hy => simp [hy]`.
+-/
 theorem Gom_orth (F : LFlag (VS D) D.R.rS T) (F' : LFlag (VS D) D.R.rS T') :
     Gom (frame F) (frame F') ∈ orth (VS D) (Xsp F') := by
   unfold orth Xsp
@@ -124,6 +146,11 @@ end BwdBetaCut
 
 namespace BwdBetaCut
 
+/- English proof (translation)
+Establish `h1` using `hvX _ h`. Rewrite `h1` using `[map_sub, map_smul, map_smul]`. Establish `h2` using `X.add_mem h1 (X.smul_mem c hq)`. Use `h2 using 1` and compare the differences between its conclusion and the goal. Rewrite using `[smul_sub]`.
+
+Normalize the expressions using the abelian group laws.
+-/
 theorem comb_mem {V : Type*} [AddCommGroup V] [Module D.host.E V] {X : Submodule D.host.E V}
     (v : V ≃ₗ[D.host.E] V) (a c : D.host.E) (p q : V) (h : a • p - c • q ∈ X) (hvX : ∀ y ∈ X, v y ∈ X)
     (hq : v q - q ∈ X) : a • v p - c • q ∈ X := by
@@ -134,6 +161,19 @@ theorem comb_mem {V : Type*} [AddCommGroup V] [Module D.host.E V] {X : Submodule
   rw [smul_sub]
   abel
 
+/- English proof (translation)
+Establish `hle : XLam Λ F' ≤ UU Λ F F'`. Unfold `UU`. Conclude with `le_sup_right.trans le_sup_left`. Establish `hX : Xsp F' ≤ spanE (VS D) (UU Λ F F')`. Use `le_trans ?_ (Submodule.span_mono (SetLike.coe_subset_coe.mpr hle))` and prove the remaining obligations.
+
+Introduce `x hx`. Establish `hxs : x ∈ Submodule.span D.host.E (Λ : Set (VS D).V)`. Rewrite using `[hΛ.span_eq_top]`. Conclude with `Submodule.mem_top`. Take `⟨d, hd0, hd⟩` from `Formalism.MainNotions.LatticeGluingRadicals.m_exists_smul_mem Λ hxs`.
+
+Establish `hdx : (algebraMap (𝓞 D.host.E) D.host.E d) • x ∈ Xsp F'` using `(Xsp F').smul_mem _ hx`. Rewrite `hdx` using `[algebraMap_smul]`. Establish `hdX : d • x ∈ XLam Λ F'`. Unfold `XLam`. Apply the tactic sequence `exact Submodule.mem_inf.mpr ⟨hd, by unfold toO; first | exact hdx | simpa using hdx⟩`.
+
+Establish `hd' : algebraMap (𝓞 D.host.E) D.host.E d ≠ 0` using `by first`. Consider the case `exact (map_ne_zero_iff _ (IsFractionRing.injective (𝓞 D.host.E) D.host.E)).mpr hd0`. Consider the case `simpa using hd0`. Establish `hx' : x = (algebraMap (𝓞 D.host.E) D.host.E d)⁻¹ • (d • x)`. Rewrite using `[← algebraMap_smul D.host.E d x, smul_smul, inv_mul_cancel₀ hd', one_smul]`.
+
+Rewrite using `[hx']`. Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span hdX)`. Unfold `Hp UUE`. Introduce `y hy`. Simplify using `only [orth, Submodule.mem_iInf, LinearMap.mem_ker] at hy ⊢`.
+
+Introduce `x hx`. Conclude with `hy x (hX hx)`.
+-/
 private theorem Hp_le_orth_Xsp (Λ : Submodule (𝓞 D.host.E) (VS D).V) (hΛ : Submodule.IsLattice D.host.E Λ)
     {T₁ T₂ : D.host.E} (F : LFlag (VS D) D.R.rS T₁) (F' : LFlag (VS D) D.R.rS T₂) :
     Hp Λ F F' ≤ orth (VS D) (Xsp F') := by
@@ -166,6 +206,9 @@ private theorem Hp_le_orth_Xsp (Λ : Submodule (𝓞 D.host.E) (VS D).V) (hΛ : 
   intro x hx
   exact hy x (hX hx)
 
+/- English proof (translation)
+Conclude with `Hp_le_orth_Xsp Λ hΛ _ F'`.
+-/
 theorem h_le_orth_second_frame (Λ : Submodule (𝓞 D.host.E) (VS D).V) (hΛ : Submodule.IsLattice D.host.E Λ) {T' : D.host.E}
     (F' : LFlag (VS D) D.R.rS T') (hL : IsLift Λ (lf D F0)) (hL' : IsLift Λ F') :
     Hp Λ (lf D F0) F' ≤ orth (VS D) (Xsp F') := by
@@ -173,6 +216,23 @@ theorem h_le_orth_second_frame (Λ : Submodule (𝓞 D.host.E) (VS D).V) (hΛ : 
 
 end BwdBetaCut
 
+/- English proof (translation)
+Unfold `BetaRat at h1`. Unfold `ScalarOf at h2`. Unfold `BetaInt at h3`. Unfold `BetaCore₂`. Introduce `hP γ Z hC F'₂ φ φ' hS Λ₂ hG hn hT hPD hv0`.
+
+Establish `hB : BwdBetaCut.BHyp Zd u u' F0 what₂ γ Z F'₂ φ φ' Λ₂`. Unfold `BwdBetaCut.BHyp`. Conclude with `⟨hP, hC, hS, hG, hn, hT, hPD, hv0⟩`. Take `⟨β₀, hi₀, hf₀, hW₀, hO₀⟩` from `h1 γ Z F'₂ φ φ' Λ₂ hB`. Take `⟨v, hiv, hfv, hov, hgm, hio⟩` from `h3 γ Z F'₂ φ φ' Λ₂ hB β₀ hi₀ hf₀ hW₀ hO₀`.
+
+Establish `hfr : ∀ b, (v * β₀) (frame (repF γ) b) = frame (liftF F'₂) b`. Introduce `b`. Rewrite using `[LinearEquiv.mul_apply, hf₀, hfv]`. Establish `hXv : ∀ y ∈ Xsp (liftF F'₂), v y ∈ Xsp (liftF F'₂)`. Introduce `y hy`.
+
+Rewrite using `[← BwdBetaCut.Xsp_of_frame v (liftF F'₂) (liftF F'₂) hfv]`. Conclude with `Submodule.mem_map_of_mem hy`. Establish `hO : BwdBetaCut.OmB (lf D F0) (repF γ) (liftF F'₂) (v * β₀)`. Unfold `BwdBetaCut.OmB at hO₀ ⊢`. Rewrite using `[LinearEquiv.mul_apply]`.
+
+Conclude with `BwdBetaCut.comb_mem v _ _ _ _ hO₀ hXv (hov _ (BwdBetaCut.Gom_orth _ _))`. Establish `hi : v * β₀ ∈ Formalism.HermitianLatticesTheory.isom (VS D).hT` using `Subgroup.mul_mem _ hiv hi₀`. Establish `hW : BwdBetaCut.W0₂ γ.lam Λ₂ (lf D F0) (repF γ) (liftF F'₂) (v * β₀)`. Unfold `BwdBetaCut.W0₂ at hW₀ ⊢`. Introduce `w hw`.
+
+Take `⟨w₂, hw₂, hd1, hd2⟩` from `hW₀ w hw`. Use `⟨w₂, hw₂, hd1, ?_⟩` and prove the remaining obligations. Establish `hw₂o` using `BwdBetaCut.Hp_le_orth_Xsp Λ₂ hG.1 _ _ hw₂`. Establish `hs` using `(Xsp (liftF F'₂)).add_mem (hXv _ hd2) (hov _ hw₂o)`. Rewrite using `[LinearEquiv.mul_apply]`.
+
+Use `hs using 1` and compare the differences between its conclusion and the goal. Rewrite using `[map_sub]`. Normalize the expressions using the abelian group laws. Use `⟨v * β₀, ?_⟩` and prove the remaining obligations. Unfold `BwdBetaCut.IsPair₂`.
+
+Use `⟨hi, hgm, fun j => BwdBetaCut.Xflag_of_frame _ _ _ hfr j, ?_, hio, hW, h2 γ Z F'₂ φ φ' Λ₂ hB _ hi hfr hO⟩` and prove the remaining obligations. Rewrite using `[← BwdBetaCut.fvec_last' (repF γ), ← BwdBetaCut.fvec_last' (liftF F'₂)]`. Conclude with `hfr _`.
+-/
 theorem betaCore₂_of (h1 : BetaRat Zd u u' F0 what₂) (h2 : ScalarOf Zd u u' F0 what₂) (h3 : BetaInt Zd u u' F0 what₂) :
     BetaCore₂ Zd u u' F0 what₂ := by
   unfold BetaRat at h1

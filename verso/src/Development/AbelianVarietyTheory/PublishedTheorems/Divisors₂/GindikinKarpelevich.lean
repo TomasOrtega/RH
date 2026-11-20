@@ -26,6 +26,9 @@ def IsWeylRep (w : Equiv.Perm (Fin n)) (x : GL (Fin n) R) : Prop :=
 def cell (x : GL (Fin n) R) : Subgroup (GL (Fin n) R) :=
   unipB R (Fin n) ⊓ (unipBLower R (Fin n)).comap (MulAut.conj x⁻¹).toMonoidHom
 
+/- English proof (translation)
+Use `(mem_unipRad (e := opp (points (Fin n)))).trans (and_congr Iff.rfl ⟨fun h i => ?_, fun h i _ _ => ?_⟩)` and prove the remaining obligations. Conclude with `(h i () ()).trans (by simp)`. Conclude with `(h i).trans (by simp)`.
+-/
 theorem mem_unipBLower {g : GL (Fin n) R} :
     g ∈ unipBLower R (Fin n) ↔ (∀ i j, i < j → (g : Matrix (Fin n) (Fin n) R) i j = 0) ∧
       ∀ i, (g : Matrix (Fin n) (Fin n) R) i i = 1 := by
@@ -33,10 +36,18 @@ theorem mem_unipBLower {g : GL (Fin n) R} :
   · exact (h i () ()).trans (by simp)
   · exact (h i).trans (by simp)
 
+/- English proof (translation)
+Simplify using `[cell, Subgroup.mem_inf, Subgroup.mem_comap]`.
+-/
 theorem mem_cell {x u : GL (Fin n) R} :
     u ∈ cell x ↔ u ∈ unipB R (Fin n) ∧ x⁻¹ * u * x ∈ unipBLower R (Fin n) := by
   simp [cell, Subgroup.mem_inf, Subgroup.mem_comap]
 
+/- English proof (translation)
+Establish `key : ∀ (f : GL (Fin n) R → GL (Fin n) R), Continuous f → ∀ i j (c : R), IsClosed {u | (f u : Matrix (Fin n) (Fin n) R) i j = c}` using `fun f hf i j c => isClosed_eq ((Units.continuous_val.comp hf).matrix_elem i j) continuous_const`. Establish `hc : Continuous fun u : GL (Fin n) R => x⁻¹ * u * x` using `by fun_prop`. Establish `e : (cell x : Set (GL (Fin n) R)) = ((⋂ i, ⋂ j, ⋂ _ : j < i, {u : GL (Fin n) R | (u : Matrix (Fin n) (Fin n) R) i j = 0}) ∩ ⋂ i, {u : GL (Fin n) R | (u : Matrix (Fin n) (Fin n) R) i i = 1}) ∩ ((⋂ i, ⋂ j, ⋂ _ : i < j, {u : GL (Fin n) R | ((x⁻¹ * u * x : GL (Fin n) R) : Matrix (Fin …`. Use extensionality with `u`. Simplify using `only [SetLike.mem_coe, mem_cell, mem_unipB, mem_unipBLower, Set.mem_inter_iff, Set.mem_iInter, Set.mem_setOf_eq]`.
+
+Rewrite using `[e]`. Use `((isClosed_iInter fun i => isClosed_iInter fun j => isClosed_iInter fun _ => key _ continuous_id i j 0).inter (isClosed_iInter fun i => key _ continuous_id i i 1)).inter ((isClosed_iInter fun i => isClosed_iInter fun j => isClosed_iInter fun _ => key _ hc i j 0).inter (isClosed_i …` and prove the remaining obligations.
+-/
 theorem isClosed_cell [TopologicalSpace R] [IsTopologicalRing R] [T2Space R] (x : GL (Fin n) R) :
     IsClosed (cell x : Set (GL (Fin n) R)) := by
   have key : ∀ (f : GL (Fin n) R → GL (Fin n) R), Continuous f → ∀ i j (c : R),
@@ -61,10 +72,16 @@ variable (R) in
 
 abbrev permRep (w : Equiv.Perm (Fin n)) : GL (Fin n) R := (Matrix.permMatrixHom (R := R)).toHomUnits w
 
+/- English proof (translation)
+Simplify using `[Matrix.permMatrixHom, Equiv.Perm.permMatrix, PEquiv.toMatrix_apply, Equiv.Perm.inv_def, Equiv.symm_apply_eq]`.
+-/
 theorem permRep_apply (w : Equiv.Perm (Fin n)) (i j : Fin n) :
     (permRep R w : Matrix (Fin n) (Fin n) R) i j = if i = w j then 1 else 0 := by
   simp [Matrix.permMatrixHom, Equiv.Perm.permMatrix, PEquiv.toMatrix_apply, Equiv.Perm.inv_def, Equiv.symm_apply_eq]
 
+/- English proof (translation)
+Introduce `_ _ h` and use `by rw [permRep_apply, if_neg h]`.
+-/
 theorem isWeylRep_permRep (w : Equiv.Perm (Fin n)) : IsWeylRep w (permRep R w) := fun _ _ h => by
   rw [permRep_apply, if_neg h]
 
@@ -126,6 +143,11 @@ end Published
 
 namespace WeylCell
 
+/- English proof (translation)
+Establish `h1 : IsOpen (K.subgroupOf N : Set N)` using `ho.preimage continuous_subtype_val`. Establish `h2 : IsCompact (K.subgroupOf N : Set N)` using `hN.isClosedEmbedding_subtypeVal.isCompact_preimage hc`. Set `P : TopologicalSpace.PositiveCompacts N` to `⟨⟨_, h2⟩, by`. Rewrite using `[show interior ((⟨_, h2⟩ : TopologicalSpace.Compacts N).carrier) = (K.subgroupOf N : Set N) from h1.interior_eq]`. Conclude with `⟨1, one_mem _⟩⟩`.
+
+Use `haveI : LocallyCompactSpace N := h2.locallyCompactSpace_of_mem_nhds_of_group (h1.mem_nhds (one_mem _))`. Conclude with `⟨Measure.haarMeasure P, inferInstance, Measure.haarMeasure_self⟩`.
+-/
 theorem exists_haar {G : Type} [Group G] [TopologicalSpace G] [IsTopologicalGroup G] {K N : Subgroup G}
     (ho : IsOpen (K : Set G)) (hc : IsCompact (K : Set G)) (hN : IsClosed (N : Set G))
     [MeasurableSpace N] [BorelSpace N] : ∃ μ : Measure N, μ.IsHaarMeasure ∧ μ (K.subgroupOf N) = 1 := by
@@ -137,6 +159,13 @@ theorem exists_haar {G : Type} [Group G] [TopologicalSpace G] [IsTopologicalGrou
   haveI : LocallyCompactSpace N := h2.locallyCompactSpace_of_mem_nhds_of_group (h1.mem_nhds (one_mem _))
   exact ⟨Measure.haarMeasure P, inferInstance, Measure.haarMeasure_self⟩
 
+/- English proof (translation)
+Take `⟨ho, hc⟩` from `LFun.IntPtsUnitary.isOpen_isCompact_KU L ϖ σ q n h`. Take `⟨φ, hφ, h1, -⟩` from `Final.SphericalExistsU L ϖ σ q n (n / 2) h (by omega) (by omega) (fun i => (α i : ℂ)) fun i => (α i).ne_zero`. Establish `hx : permRep L w ∈ GU σ n`. Rewrite using `[LGrp.mem_GU_iff]`. Introduce `i j`.
+
+Rewrite using `[← map_inv, permRep_apply, permRep_apply, hw, apply_ite σ, map_one, map_zero]`. Simplify using `only [Fin.rev_inj, Equiv.Perm.eq_inv_iff_eq, eq_comm (a := j)]`. Use `⟨⟨φ, hφ, h1⟩, ⟨⟨_, hx⟩, ⟨hx, permRep _ w, ?_⟩, isWeylRep_permRep w⟩, fun x _ _ => exists_haar ho hc ((isClosed_cell _).preimage continuous_subtype_val)⟩` and prove the remaining obligations. Use extensionality with `i j`. Use `show (intL L).subtype ((permRep _ w).val i j) = (permRep L w).val i j`.
+
+Simplify using `only [permRep_apply, apply_ite (intL L).subtype, map_one, map_zero]`.
+-/
 theorem exists_data_U {L : Type} [Field L] [Valued L (WithZero (Multiplicative ℤ))] [CompleteSpace L] {ϖ : L}
     {σ : L →+* L} {q : ℕ} (h : IsUnramInv ϖ σ q) (n : ℕ) (α : Fin (n / 2) → ℂˣ) (w : Equiv.Perm (Fin n))
     (hw : ∀ i, w i.rev = (w i).rev) :

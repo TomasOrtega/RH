@@ -16,9 +16,17 @@ def ellS (h : HermFam K V) {r : ℕ} (v : Fin r → V) (R : ℝ) :
   {y | (∀ w, qR (gramR h v w) (fun i => (y i).1 w) ≤ R ^ 2) ∧
     ∀ w : {w : InfinitePlace K // w.IsComplex}, qC (h.gram w.1.embedding v) (fun i => (y i).2 w) ≤ R ^ 2}
 
+/- English proof (translation)
+The claim follows from `h.posDef σ r v hli`.
+-/
 theorem gram_posDef (h : HermFam K V) (σ : K →+* ℂ) {r : ℕ} {v : Fin r → V}
     (hli : LinearIndependent K v) : (h.gram σ v).PosDef := h.posDef σ r v hli
 
+/- English proof (translation)
+Unfold `qR`. Rewrite using `[Finsupp.sum_fintype]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[Finsupp.sum_fintype]`. Simplify using `only [star_trivial]`.
+
+Introduce `j`. Simplify using the standard rewrite rules. Introduce `i`. Simplify using the standard rewrite rules.
+-/
 private lemma finsupp_sum_sum_star_mul_eq_qR {r : ℕ} (M : Matrix (Fin r) (Fin r) ℝ) (y : Fin r →₀ ℝ) :
     (y.sum fun i xi => y.sum fun j xj => star xi * M i j * xj) = qR M y := by
   unfold qR
@@ -31,6 +39,11 @@ private lemma finsupp_sum_sum_star_mul_eq_qR {r : ℕ} (M : Matrix (Fin r) (Fin 
   · intro i
     simp
 
+/- English proof (translation)
+Unfold `qC`. Rewrite using `[Finsupp.sum_fintype]`. Use `congr 1`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[Finsupp.sum_fintype]`.
+
+Simplify using `only [Complex.star_def]`. Introduce `j`. Simplify using the standard rewrite rules. Introduce `i`. Simplify using the standard rewrite rules.
+-/
 private lemma finsupp_sum_sum_star_mul_re_eq_qC {r : ℕ} (G : Matrix (Fin r) (Fin r) ℂ) (z : Fin r →₀ ℂ) :
     (z.sum fun i xi => z.sum fun j xj => star xi * G i j * xj).re = qC G z := by
   unfold qC
@@ -44,6 +57,11 @@ private lemma finsupp_sum_sum_star_mul_re_eq_qC {r : ℕ} (G : Matrix (Fin r) (F
   · intro i
     simp
 
+/- English proof (translation)
+Unfold `qR qC`. Rewrite using `[Complex.re_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[Complex.re_sum]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations.
+
+Apply the tactic sequence `simp [Complex.re_ofReal_mul, Complex.re_mul_ofReal, Matrix.map_apply] <;> ring`.
+-/
 private lemma qR_map_re_eq_qC_ofReal {r : ℕ} (G : Matrix (Fin r) (Fin r) ℂ) (y : Fin r → ℝ) :
     qR (G.map Complex.re) y = qC G (fun i => (y i : ℂ)) := by
   unfold qR qC
@@ -53,6 +71,15 @@ private lemma qR_map_re_eq_qC_ofReal {r : ℕ} (G : Matrix (Fin r) (Fin r) ℂ) 
   refine Finset.sum_congr rfl fun j _ => ?_
   simp [Complex.re_ofReal_mul, Complex.re_mul_ofReal, Matrix.map_apply] <;> ring
 
+/- English proof (translation)
+Establish `hG` using `gram_posDef h w.1.embedding hli`. Use `⟨Matrix.IsHermitian.ext fun i j => ?_, fun y hy => ?_⟩` and prove the remaining obligations. Simplify using `only [gramR, Matrix.map_apply, star_trivial]`. Rewrite using `[← hG.1.apply i j]`. Simplify using `[Complex.star_def]`.
+
+Establish `hz : Finsupp.mapRange (fun a : ℝ => (a : ℂ)) Complex.ofReal_zero y ≠ 0`. Introduce `h0`. Apply `hy` to reduce the goal to its premises. Use extensionality with `i`. Simplify using `using DFunLike.congr_fun h0 i`.
+
+Establish `h1` using `(Complex.lt_def.mp (hG.2 hz)).1`. Rewrite `h1` using `[finsupp_sum_sum_star_mul_re_eq_qC]`. Establish `h2 : (⇑(Finsupp.mapRange (fun a : ℝ => (a : ℂ)) Complex.ofReal_zero y)) = fun i => (y i : ℂ)`. Use function extensionality and compare the values at `i`. Simplify using the standard rewrite rules.
+
+Rewrite `h1` using `[h2, ← qR_map_re_eq_qC_ofReal]`. Rewrite using `[finsupp_sum_sum_star_mul_eq_qR]`. Simplify `h1` using `[gramR]`.
+-/
 theorem gramR_posDef (h : HermFam K V) {r : ℕ} {v : Fin r → V} (hli : LinearIndependent K v)
     (w : {w : InfinitePlace K // w.IsReal}) : (gramR h v w).PosDef := by
   have hG := gram_posDef h w.1.embedding hli
@@ -75,6 +102,9 @@ theorem gramR_posDef (h : HermFam K V) {r : ℕ} {v : Fin r → V} (hli : Linear
     rw [finsupp_sum_sum_star_mul_eq_qR]
     simpa [gramR] using h1
 
+/- English proof (translation)
+Use `Finset.induction_on s ?_ ?_` and prove the remaining obligations. Simplify using `using h.smul_right σ 0 x 0`. Introduce `j t hj ih`. Rewrite using `[Finset.sum_insert hj, Finset.sum_insert hj, h.add_right, h.smul_right, ih]`.
+-/
 private lemma form_sum_smul_right (h : HermFam K V) (σ : K →+* ℂ) (x : V) {ι : Type*}
     (s : Finset ι) (a : ι → K) (u : ι → V) :
     h.form σ x (∑ i ∈ s, a i • u i) = ∑ i ∈ s, σ (a i) * h.form σ x (u i) := by
@@ -84,6 +114,9 @@ private lemma form_sum_smul_right (h : HermFam K V) (σ : K →+* ℂ) (x : V) {
   · intro j t hj ih
     rw [Finset.sum_insert hj, Finset.sum_insert hj, h.add_right, h.smul_right, ih]
 
+/- English proof (translation)
+Rewrite using `[← h.conj_symm σ y, form_sum_smul_right h σ y s a u, map_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[map_mul, h.conj_symm]`.
+-/
 private lemma form_sum_smul_left (h : HermFam K V) (σ : K →+* ℂ) (y : V) {ι : Type*}
     (s : Finset ι) (a : ι → K) (u : ι → V) :
     h.form σ (∑ i ∈ s, a i • u i) y = ∑ i ∈ s, starRingEnd ℂ (σ (a i)) * h.form σ (u i) y := by
@@ -91,6 +124,11 @@ private lemma form_sum_smul_left (h : HermFam K V) (σ : K →+* ℂ) (y : V) {�
   refine Finset.sum_congr rfl fun i _ => ?_
   rw [map_mul, h.conj_symm]
 
+/- English proof (translation)
+Unfold `qC HermFam.gram`. Use `conv_lhs => rw [← sum_crd hli hx]`. Rewrite using `[form_sum_smul_left]`. Use `congr 1`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[form_sum_smul_right, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Simplify using `only [Matrix.of_apply]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem form_eq_qC (h : HermFam K V) (σ : K →+* ℂ) {r : ℕ} {v : Fin r → V}
     (hli : LinearIndependent K v) {x : V} (hx : x ∈ Submodule.span K (Set.range v)) :
     (h.form σ x x).re = qC (h.gram σ v) (fun i => σ (crd hli x i)) := by
@@ -104,6 +142,9 @@ theorem form_eq_qC (h : HermFam K V) (σ : K →+* ℂ) {r : ℕ} {v : Fin r →
   simp only [Matrix.of_apply]
   ring
 
+/- English proof (translation)
+Rewrite using `[form_eq_qC h w.1.embedding hli hx, gramR, qR_map_re_eq_qC_ofReal]`. Use `congr 1`. Use function extensionality and compare the values at `i`. Use `show ((InfinitePlace.embedding_of_isReal w.2 (crd hli x i) : ℝ) : ℂ) = _`. Conclude with `InfinitePlace.embedding_of_isReal_apply w.2 _`.
+-/
 theorem qR_crdEmb (h : HermFam K V) {r : ℕ} {v : Fin r → V}
     (hli : LinearIndependent K v) {x : V} (hx : x ∈ Submodule.span K (Set.range v))
     (w : {w : InfinitePlace K // w.IsReal}) :
@@ -114,6 +155,9 @@ theorem qR_crdEmb (h : HermFam K V) {r : ℕ} {v : Fin r → V}
   show ((InfinitePlace.embedding_of_isReal w.2 (crd hli x i) : ℝ) : ℂ) = _
   exact InfinitePlace.embedding_of_isReal_apply w.2 _
 
+/- English proof (translation)
+Conclude with `(form_eq_qC h w.1.embedding hli hx).symm`.
+-/
 theorem qC_crdEmb (h : HermFam K V) {r : ℕ} {v : Fin r → V}
     (hli : LinearIndependent K v) {x : V} (hx : x ∈ Submodule.span K (Set.range v))
     (w : {w : InfinitePlace K // w.IsComplex}) :
@@ -124,6 +168,17 @@ def psi (K : Type*) [Field K] [NumberField K] (r : ℕ) (y : Fin r → mixedEmbe
     ({w : InfinitePlace K // w.IsReal} → Fin r → ℝ) × ({w : InfinitePlace K // w.IsComplex} → Fin r → ℂ) :=
   (fun w i => (y i).1 w, fun w i => (y i).2 w)
 
+/- English proof (translation)
+Establish `h1 : MeasurePreserving (fun (f : ι → κ → X) (p : ι × κ) => f p.1 p.2) (Measure.pi fun _ => Measure.pi fun _ => μ) (Measure.pi fun _ => μ)`. Establish `hm : Measurable (fun (f : ι → κ → X) (p : ι × κ) => f p.1 p.2)` using `measurable_pi_lambda _ fun p => (measurable_pi_apply p.2).comp (measurable_pi_apply p.1)`. Use `⟨hm, (Measure.pi_eq fun s hs => ?_).symm⟩` and prove the remaining obligations. Rewrite using `[Measure.map_apply hm (MeasurableSet.univ_pi hs)]`. Establish `he : (fun (f : ι → κ → X) (p : ι × κ) => f p.1 p.2) ⁻¹' Set.univ.pi s = Set.univ.pi fun i => Set.univ.pi fun j => s (i, j)`.
+
+Use extensionality with `f`. Simplify using `only [Set.mem_preimage, Set.mem_univ_pi]`. Conclude with `⟨fun H i j => H (i, j), fun H p => H p.1 p.2⟩`. Rewrite using `[he, Measure.pi_pi, Fintype.prod_prod_type]`. Conclude with `Finset.prod_congr rfl fun i _ => by rw [Measure.pi_pi]`.
+
+Set `e : (κ → ι → X) ≃ᵐ (ι × κ → X)` to `{ toFun := fun g p => g p.2 p.1 invFun := fun g j i => g (i, j) left_inv := fun g => rfl right_inv := fun g => rfl measurable_toFun := measurable_pi_lambda _ fun p => (measurable_pi_apply p.1).comp (measurable_pi_apply p.2) measurable_invFun := measurable_pi_lambda _ fun j => mea …`. Establish `h2 : MeasurePreserving e (Measure.pi fun _ => Measure.pi fun _ => μ) (Measure.pi fun _ => μ)`. Use `⟨e.measurable, (Measure.pi_eq fun s hs => ?_).symm⟩` and prove the remaining obligations. Rewrite using `[e.map_apply]`. Establish `he : e ⁻¹' Set.univ.pi s = Set.univ.pi fun j => Set.univ.pi fun i => s (i, j)`.
+
+Use extensionality with `g`. Simplify using `only [Set.mem_preimage, Set.mem_univ_pi]`. Conclude with `⟨fun H j i => H (i, j), fun H p => H p.2 p.1⟩`. Rewrite using `[he, Measure.pi_pi, Fintype.prod_prod_type, Finset.prod_comm]`. Conclude with `Finset.prod_congr rfl fun j _ => by rw [Measure.pi_pi]`.
+
+Conclude with `(h2.symm e).comp h1`.
+-/
 private lemma measurePreserving_pi_pi_swap {ι κ X : Type*} [Fintype ι] [Fintype κ] [MeasurableSpace X]
     (μ : Measure X) [SigmaFinite μ] :
     MeasurePreserving (fun (f : ι → κ → X) (j : κ) (i : ι) => f i j)
@@ -163,6 +218,9 @@ private lemma measurePreserving_pi_pi_swap {ι κ X : Type*} [Fintype ι] [Finty
     exact Finset.prod_congr rfl fun j _ => by rw [Measure.pi_pi]
   exact (h2.symm e).comp h1
 
+/- English proof (translation)
+Establish `hA` using `measurePreserving_arrowProdEquivProdArrow ({w : InfinitePlace K // w.IsReal} → ℝ) ({w : InfinitePlace K // w.IsComplex} → ℂ) (Fin r) (fun _ => volume) (fun _ => volume)`. Conclude with `((measurePreserving_pi_pi_swap (ι := Fin r) (κ := {w : InfinitePlace K // w.IsReal}) (volume : Measure ℝ)).prod (measurePreserving_pi_pi_swap (ι := Fin r) (κ := {w : InfinitePlace K // w.IsComplex}) (volume : Measure ℂ))).comp hA`.
+-/
 theorem measurePreserving_psi (r : ℕ) :
     MeasurePreserving (psi K r) volume
       ((Measure.pi fun _ => Measure.pi fun _ => volume).prod
@@ -173,6 +231,9 @@ theorem measurePreserving_psi (r : ℕ) :
     (volume : Measure ℝ)).prod (measurePreserving_pi_pi_swap (ι := Fin r) (κ := {w : InfinitePlace K // w.IsComplex})
     (volume : Measure ℂ))).comp hA
 
+/- English proof (translation)
+Use extensionality with `y`. Simplify using `[ellS, psi, Set.mem_pi]`.
+-/
 theorem ellS_eq (h : HermFam K V) {r : ℕ} (v : Fin r → V) (R : ℝ) :
     ellS h v R = psi K r ⁻¹' ((Set.pi univ fun w => {u | qR (gramR h v w) u ≤ R ^ 2}) ×ˢ
       (Set.pi univ fun w : {w : InfinitePlace K // w.IsComplex} =>
@@ -196,6 +257,11 @@ def ellT (h : HermFam K V) {r : ℕ} (v : Fin r → V) (R : ℝ) :
     (Set.pi univ fun w : {w : InfinitePlace K // w.IsComplex} =>
       {u | qC (h.gram w.1.embedding v) u ≤ R ^ 2})
 
+/- English proof (translation)
+Establish `hR` using `fun w => ellipsoidR_props (gramR_posDef h hli w) R`. Establish `hC` using `fun w : {w : InfinitePlace K // w.IsComplex} => ellipsoidC_props (gram_posDef h w.1.embedding hli) R`. Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Conclude with `(convex_pi fun w _ => (hR w).1).prod (convex_pi fun w _ => (hC w).1)`. Conclude with `(Bornology.IsBounded.pi fun w => (hR w).2.2.1).prod (Bornology.IsBounded.pi fun w => (hC w).2.2.1)`.
+
+Conclude with `(MeasurableSet.univ_pi fun w => (hR w).2.2.2).prod (MeasurableSet.univ_pi fun w => (hC w).2.2.2)`.
+-/
 theorem ellT_props (h : HermFam K V) {r : ℕ} {v : Fin r → V} (hli : LinearIndependent K v)
     (R : ℝ) : Convex ℝ (ellT h v R) ∧ Bornology.IsBounded (ellT h v R) ∧
       MeasurableSet (ellT h v R) := by
@@ -217,6 +283,11 @@ def psiL (K : Type*) [Field K] [NumberField K] (r : ℕ) :
   map_add' _ _ := rfl
   map_smul' _ _ := rfl
 
+/- English proof (translation)
+Use `(pi_norm_le_iff_of_nonneg (norm_nonneg _)).2 fun i => ?_` and prove the remaining obligations. Use `norm_prod_le_iff.2 ⟨?_, ?_⟩` and prove the remaining obligations. Use `(pi_norm_le_iff_of_nonneg (norm_nonneg _)).2 fun w => ?_` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation. Use `(pi_norm_le_iff_of_nonneg (norm_nonneg _)).2 fun w => ?_` and prove the remaining obligations.
+
+Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem norm_le_norm_psi {r : ℕ} (y : Fin r → mixedEmbedding.mixedSpace K) :
     ‖y‖ ≤ ‖psi K r y‖ := by
   refine (pi_norm_le_iff_of_nonneg (norm_nonneg _)).2 fun i => ?_
@@ -232,6 +303,13 @@ theorem norm_le_norm_psi {r : ℕ} (y : Fin r → mixedEmbedding.mixedSpace K) :
       _ ≤ ‖(psi K r y).2‖ := norm_le_pi_norm _ w
       _ ≤ ‖psi K r y‖ := norm_snd_le _
 
+/- English proof (translation)
+Take `⟨hcv, hbd, hms⟩` from `ellT_props h hli R`. Establish `he : ellS h v R = psi K r ⁻¹' ellT h v R` using `ellS_eq h v R`. Use `⟨?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[he]`. Conclude with `hcv.linear_preimage (psiL K r)`.
+
+Introduce `y hy`. Use `⟨fun w => ?_, fun w => ?_⟩` and prove the remaining obligations. Conclude with `(ellipsoidR_props (gramR_posDef h hli w) R).2.1 _ (hy.1 w)`. Conclude with `(ellipsoidC_props (gram_posDef h w.1.embedding hli) R).2.1 _ (hy.2 w)`. Take `⟨C, hC⟩` from `isBounded_iff_forall_norm_le.1 hbd`.
+
+Use `isBounded_iff_forall_norm_le.2 ⟨C, fun y hy => ?_⟩` and prove the remaining obligations. Rewrite `hy` using `[he]`. Conclude with `(norm_le_norm_psi y).trans (hC _ hy)`. Rewrite using `[he]`. Conclude with `hms.preimage (measurePreserving_psi (K := K) r).measurable`.
+-/
 theorem ellS_props (h : HermFam K V) {r : ℕ} {v : Fin r → V} (hli : LinearIndependent K v)
     (R : ℝ) : Convex ℝ (ellS h v R) ∧ (∀ y ∈ ellS h v R, -y ∈ ellS h v R) ∧
       Bornology.IsBounded (ellS h v R) ∧ MeasurableSet (ellS h v R) := by
@@ -251,6 +329,9 @@ theorem ellS_props (h : HermFam K V) {r : ℕ} {v : Fin r → V} (hli : LinearIn
   · rw [he]
     exact hms.preimage (measurePreserving_psi (K := K) r).measurable
 
+/- English proof (translation)
+Rewrite using `[show ellS h v R = psi K r ⁻¹' ellT h v R from ellS_eq h v R, (measurePreserving_psi r).measure_preimage (ellT_props h hli R).2.2.nullMeasurableSet, ellT, Measure.prod_prod, Measure.pi_pi, Measure.pi_pi, ENNReal.toReal_mul, ENNReal.toReal_prod, ENNReal.toReal_prod]`. Apply the tactic sequence `all_goals rfl`.
+-/
 theorem volume_ellS (h : HermFam K V) {r : ℕ} {v : Fin r → V} (hli : LinearIndependent K v)
     (R : ℝ) : (volume (ellS h v R)).toReal =
       (∏ w, (volume {u : Fin r → ℝ | qR (gramR h v w) u ≤ R ^ 2}).toReal) *
@@ -262,6 +343,13 @@ theorem volume_ellS (h : HermFam K V) {r : ℕ} {v : Fin r → V} (hli : LinearI
     Measure.pi_pi, ENNReal.toReal_mul, ENNReal.toReal_prod, ENNReal.toReal_prod]
   all_goals rfl
 
+/- English proof (translation)
+Rewrite using `[volume_ellS h hli R]`. Establish `ha : ∀ w : {w : InfinitePlace K // w.IsReal}, 0 ≤ (2 * R / Real.sqrt r) ^ r / Real.sqrt (gramR h v w).det` using `fun w => by positivity`. Establish `hb : ∀ w : {w : InfinitePlace K // w.IsComplex}, 0 ≤ (2 * R ^ 2 / r) ^ r / (h.gram w.1.embedding v).det.re` using `fun w => by`. Establish `hd : 0 < (h.gram w.1.embedding v).det.re`. Simplify using `using (Complex.lt_def.mp (gram_posDef h w.1.embedding hli).det_pos).1`.
+
+Conclude with `div_nonneg (by positivity) hd.le`. Apply `mul_le_mul` to reduce the goal to its premises. Conclude with `Finset.prod_le_prod (fun w _ => ha w) (fun w _ => le_volume_ellipsoidR (gramR_posDef h hli w) hR)`. Conclude with `Finset.prod_le_prod (fun w _ => hb w) (fun w _ => le_volume_ellipsoidC (gram_posDef h w.1.embedding hli) hR)`. Conclude with `Finset.prod_nonneg fun w _ => hb w`.
+
+Conclude with `Finset.prod_nonneg fun w _ => ENNReal.toReal_nonneg`.
+-/
 theorem le_volume_ellS (h : HermFam K V) {r : ℕ} (hr : 0 < r) {v : Fin r → V}
     (hli : LinearIndependent K v) {R : ℝ} (hR : 0 < R) :
     (∏ w, (2 * R / Real.sqrt r) ^ r / Real.sqrt (gramR h v w).det) *

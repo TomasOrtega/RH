@@ -17,6 +17,19 @@ open scoped GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels
 
 namespace GlobalTheory.TripleInv
 
+/- English proof (translation)
+Introduce `hHowe hPr D ψ θ hψ hθ W W₁ X A A₁ B α β hT ωA ωB hA hB e Bs Γ Xc om om' h hTr hTr' R Rf hM`. Establish `hstd : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.IsStd ψ` using `h.ψ ▸ hM.triple.base.std`. Establish `hG : Γ.M.IsGood ψ` using `h.ψ ▸ hM.triple.geo.hM`. Establish `hG' : Γ.M'.IsGood ψ` using `h.ψ ▸ hM.triple.geo.hM'`. Establish `hX : Γ.W.J.det ≠ 0`.
+
+Rewrite using `[h.JX, Matrix.det_smul, Matrix.det_submatrix_equiv_self, Matrix.det_transpose]`. Conclude with `mul_ne_zero (pow_ne_zero _ (GlobalTheory.DualPairCompare.embedding_xi_zero_ne_zero D)) (gram_det_ne X)`. Establish `hV : Γ.V.J.det ≠ 0`. Rewrite using `[h.JW, one_smul]`. Conclude with `gram_det_ne W`.
+
+Establish `hV' : Γ.V'.J.det ≠ 0`. Rewrite using `[h.JW₁, Matrix.det_smul]`. Conclude with `mul_ne_zero (pow_ne_zero _ (neg_ne_zero.2 one_ne_zero)) (gram_det_ne W₁)`. Take `⟨hmain, hmain'⟩` from `GlobalTheory.T.seesaw_weil_factorization hHowe hPr D ψ θ hψ hθ W W₁ X A A₁ B α β hT ωA ωB hA hB e Bs Γ Xc om om' h hTr hTr' R Rf hM`. Use `⟨?_, ?_⟩` and prove the remaining obligations.
+
+Take `⟨T, hT1, -⟩` from `GlobalTheory.T.thetaTransform_darbouxModel_linear_injective D Γ.M ψ (sgn true W).gram e hG hstd hV hX (gram_det_ne _)`. Introduce `Φ hΦ`. Rewrite `hΦ` using `[← hmain T hT1]`. Take `⟨Ψ, hΨ, rfl⟩` from `Submodule.mem_map.1 hΦ`. Use `⟨Ψ, hΨ, (hT1 Ψ ?_).symm⟩` and prove the remaining obligations.
+
+Conclude with `GlobalTheory.T.darbouxModelAlgebraicVectors_le_adelicSchwartz D.sp.cm.sig Γ.V Γ.W Γ.M Bs.ψ Bs.emb hM.triple.geo.hM hΨ`. Take `⟨T, hT1, -⟩` from `GlobalTheory.T.thetaTransform_darbouxModel_linear_injective D Γ.M' ψ (sgn false W₁).gram e hG' hstd hV' hX (gram_det_ne _)`. Introduce `Φ hΦ`. Rewrite `hΦ` using `[← hmain' T hT1]`. Take `⟨Ψ, hΨ, rfl⟩` from `Submodule.mem_map.1 hΦ`.
+
+Use `⟨Ψ, hΨ, (hT1 Ψ ?_).symm⟩` and prove the remaining obligations. Conclude with `GlobalTheory.T.darbouxModelAlgebraicVectors_le_adelicSchwartz D.sp.cm.sig Γ.V' Γ.W Γ.M' Bs.ψ Bs.emb hM.triple.geo.hM' hΨ`.
+-/
 theorem theta_surj : GlobalTheory.Published.HoweDualityReal → GlobalTheory.FunPr.Hypotheses₂ →
     ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ) (θ : InfFam D), IsStdChar D ψ (-1) → IsInfFam θ →
     ∀ (W W₁ X : HSp D) (A : Fr W) (A₁ : Fr W₁) (B : Fr X) (α β : (AE D)ˣ →* Circle), IsTriple W W₁ X α β →

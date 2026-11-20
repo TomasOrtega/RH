@@ -13,6 +13,51 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 end GlobalTheory.BigTop.Fun
 namespace GlobalTheory.BigTop.Fun
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
+/- English proof (translation)
+Use `⟨0, fun CF _ => ⟨1, one_pos, fun eps heps heps1 => ⟨⟨0, fun _ => 0, fun _ => 0, fun _ => 0⟩, fun Fm CH hF _ => ?_⟩⟩⟩` and prove the remaining obligations. Introduce `_`. Use `⟨1, fun C hC => ?_⟩` and prove the remaining obligations. Take `⟨-, heP, hcTO, -, -, -, -, -, hfix⟩` from `hF.1`. Establish `hW : PageWin Fm` using `hF.2.1`.
+
+Take `⟨x2, hx21, hx2⟩` from `mul_pow_le_exp_rpow heps (6 * (⌈|Fm.Ct|⌉₊ + 1)) 25`. Use `⟨max (max (Fm.x1 + 1) ((8 : ℝ) ^ (1 / eps))) (max (max x2 20480) ((2 * C) ^ 2)), fun x hx hx0 i p _ d _ => ?_⟩` and prove the remaining obligations. Establish `hxa : Fm.x1 + 1 ≤ x` using `le_trans (le_trans (le_max_left _ _) (le_max_left _ _)) hx0`. Establish `hx8 : (8 : ℝ) ^ (1 / eps) ≤ x` using `le_trans (le_trans (le_max_right _ _) (le_max_left _ _)) hx0`. Establish `hxb : x2 ≤ x` using `le_trans (le_trans (le_max_left _ _) (le_trans (le_max_left _ _) (le_max_right _ _))) hx0`.
+
+Establish `hxc : 20480 ≤ x` using `le_trans (le_trans (le_max_right _ _) (le_trans (le_max_left _ _) (le_max_right _ _))) hx0`. Establish `hxC : (2 * C) ^ 2 ≤ x` using `le_trans (le_trans (le_max_right _ _) (le_max_right _ _)) hx0`. Establish `hx1 : 1 < x` using `by linarith`. Establish `hx0' : (0 : ℝ) < x` using `by linarith`. Establish `h8 : (8 : ℝ) ≤ x ^ (8 * eps)`.
+
+Establish `e1 : (8 : ℝ) = ((8 : ℝ) ^ (1 / eps)) ^ eps`. Rewrite using `[← Real.rpow_mul (by norm_num), one_div, inv_mul_cancel₀ heps.ne', Real.rpow_one]`. Establish `e2 : ((8 : ℝ) ^ (1 / eps)) ^ eps ≤ x ^ eps` using `Real.rpow_le_rpow (by positivity) hx8 heps.le`. Establish `e3 : x ^ eps ≤ x ^ (8 * eps)` using `Real.rpow_le_rpow_of_exponent_le hx1.le (by linarith)`. Combine the linear equalities and inequalities to obtain the conclusion.
+
+Take `⟨⟨hn, -⟩, ⟨-, hm⟩, ⟨-, hk⟩⟩` from `hW x hx i`. Establish `hδ : (Fm.L x i).sc.delta1 ≤ 1`. Unfold `Scale.delta1`. Conclude with `Real.rpow_le_one_of_one_le_of_nonpos (Fm.L x i).sc.one_lt_alt.le (by linarith [(Fm.L x i).sc.eps_pos])`. Establish `hδ0 : 0 ≤ (Fm.L x i).sc.delta1`.
+
+Unfold `Scale.delta1`. Conclude with `Real.rpow_nonneg (by linarith [(Fm.L x i).sc.one_lt_alt]) _`. Establish `hm4 : (((Fm.D x i).R.m : ℕ) : ℝ) ^ 4 ≤ (((Fm.D x i).R.f : ℕ) : ℝ)`. Establish `hs` using `Real.sq_sqrt (mul_nonneg hx0'.le hδ0)`. Establish `hs0` using `Real.sqrt_nonneg (x * (Fm.L x i).sc.delta1)`.
+
+Establish `hm0 : (0 : ℝ) ≤ ((Fm.D x i).R.m : ℝ)` using `by positivity`. Establish `hm2 : (((Fm.D x i).R.m : ℕ) : ℝ) ^ 2 ≤ 4 * x` using `by nlinarith`. Establish `hm4' : (((Fm.D x i).R.m : ℕ) : ℝ) ^ 4 ≤ 16 * x ^ 2` using `by nlinarith`. Establish `hpow : x ^ ((2 : ℝ) + 8 * eps) = x ^ 2 * x ^ (8 * eps)`. Rewrite using `[Real.rpow_add hx0', Real.rpow_two]`.
+
+Establish `hf : (((Fm.D x i).R.f : ℕ) : ℝ) = 2 * ((Fm.D x i).R.n : ℝ)`. Unfold `Ranks.f`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hf]`.
+
+Establish `hx2' : 0 ≤ x ^ 2` using `by positivity`. Use the polynomial consequences of the given equalities and inequalities. Establish `hH1 : leafHypothesesConst d.O` using `⟨(Fm.D x i).R.two_le_m, (Fm.D x i).R.m_add_three_le_k, by exact_mod_cast hm4, (Fm.D x i).R.f_le_k⟩`. Establish `hH7 : LatticeConstantBound d.O p.Z.b` using `by show (FunData.Lc d.O : ℝ) ≤ (Fm.L x i).sc.b`. Conclude with `(Lc_le_of_cloud_le d.O (Fm.L x i).Sc (Fm.L x i).Sc_pos.le (fun τ j => cloud_mem_Icc_Sc (Fm.L x i) τ j)).trans (Sc_le_scale_b (Fm.params x hx i))`.
+
+Establish `hb : p.Z.b = Real.exp (x ^ eps)` using `by show Real.exp ((Fm.L x i).sc.x ^ (Fm.L x i).sc.eps) = _`. Rewrite using `[Fm.L_x x i hx, Fm.L_eps x i]`. Establish `hT : (Fm.parT x hx i).TO ≤ (Fm.D x i).R.t`. Establish `a1` using `(Fm.parT x hx i).split`. Establish `a2` using `(Fm.parT x hx i).nP_eq`.
+
+Establish `a3` using `(Fm.parT x hx i).nW_lo.1`. Establish `hf : 1 ≤ (Fm.D x i).R.f`. Establish `: 0 < (Fm.D x i).R.ord` using `(Fm.D x i).R.ord_pos`. Unfold `Ranks.f Ranks.n`. Use linear arithmetic over natural numbers and integers.
+
+Establish `hr : 1 ≤ (Fm.D x i).R.r`. Use `(Fm.D x i).R.m_add_three_le_k` as an intermediate fact. Unfold `Ranks.r`. Use linear arithmetic over natural numbers and integers. Establish `a4 : 1 ≤ (Fm.parT x hx i).nWn` using `le_trans (Nat.mul_pos (Nat.mul_pos hf hr) (Nat.succ_pos _)) a3`.
+
+Establish `a5 : (Fm.parT x hx i).TO * 1 ≤ (Fm.parT x hx i).TO * (Fm.parT x hx i).nWn` using `Nat.mul_le_mul_left _ a4`. Establish `a6 : 1 * (Fm.D x i).R.r ≤ 8 * (Fm.D x i).R.f * (Fm.D x i).R.r` using `Nat.mul_le_mul_right _ (by omega)`. Use linear arithmetic over natural numbers and integers. Establish `hto : x ^ 377 ≤ ((Fm.D x i).R.t : ℝ)`. Establish `e1 : Fm.cTO = ((377 : ℕ) : ℝ)` using `by rw [hcTO, heP]; norm_num`.
+
+Establish `e2` using `(hfix x hx i).2.2.2.2.2.2.2`. Establish `e3 : x ^ Fm.cTO ≤ ((Fm.parT x hx i).TO : ℝ)` using `by rw [e2]; exact Nat.le_ceil _`. Rewrite `e3` using `[e1, Real.rpow_natCast]`. Conclude with `e3.trans (by exact_mod_cast hT)`. Establish `htc : ((Fm.D x i).R.t : ℝ) ≤ x ^ (⌈|Fm.Ct|⌉₊ + 1)`.
+
+Establish `e1` using `(Fm.L x i).t_win.2`. Rewrite `e1` using `[Fm.Ct_eq x i, Fm.L_x x i hx]`. Use `e1.trans ?_` and prove the remaining obligations. Establish `e2 : x ^ Fm.Ct ≤ x ^ (((⌈|Fm.Ct|⌉₊ + 1 : ℕ)) : ℝ)`. Use `Real.rpow_le_rpow_of_exponent_le hx1.le ?_` and prove the remaining obligations.
+
+Use `push_cast`. Combine the linear relations using `[le_abs_self Fm.Ct, Nat.le_ceil |Fm.Ct|]`. Rewrite `e2` using `[Real.rpow_natCast]`. Then use the resulting hypothesis. Establish `hmf : (Fm.D x i).R.m ≤ (Fm.D x i).R.f`. Use `(Fm.D x i).R.m_le_f` as an intermediate fact.
+
+Unfold `Ranks.f Ranks.n`. Use linear arithmetic over natural numbers and integers. Establish `hkt : (Fm.D x i).R.k + (Fm.D x i).R.m + 4 ≤ (Fm.D x i).R.t`. Use `(Fm.D x i).R.rank_add_five_le` as an intermediate fact. Use `(Fm.D x i).R.m_add_three_le_k` as an intermediate fact.
+
+Use linear arithmetic over natural numbers and integers. Establish `hB` using `hx2 x hxb`. Take `⟨l1, l2⟩` from `design_lines_of_ranks x eps (Real.exp (x ^ eps)) (⌈|Fm.Ct|⌉₊ + 1) (Fm.D x i).R.k (Fm.D x i).R.m (Fm.D x i).R.f (Fm.D x i).R.t hxc heps1 (Fm.D x i).R.two_le_m hmf (Fm.D x i).R.f_le_k hkt htc hto hk hB`. Establish `hL : 2 * Real.log (2 * C) ≤ Real.log p.Z.b`. Rewrite using `[hb, Real.log_exp]`.
+
+Establish `e1 : x ≤ x ^ (6 * (⌈|Fm.Ct|⌉₊ + 1))` using `le_self_pow₀ hx1.le (by omega)`. Establish `e2 : x ≤ Real.exp (x ^ eps)`. Establish `: 0 ≤ x ^ (6 * (⌈|Fm.Ct|⌉₊ + 1))` using `by positivity`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `e3 : Real.log x ≤ x ^ eps`.
+
+Rewrite using `[Real.log_le_iff_le_exp hx0']`. Conclude with `e2`. Establish `e4 : 2 * Real.log (2 * C) = Real.log ((2 * C) ^ 2)`. Rewrite using `[Real.log_pow]`. Use `push_cast`.
+
+Expand and normalize the polynomial expressions, which then agree. Establish `e5 : Real.log ((2 * C) ^ 2) ≤ Real.log x` using `Real.log_le_log (by positivity) hxC`. Combine the linear equalities and inequalities to obtain the conclusion. Use `GlobalTheory.SizeLeafCheck.tree_leaf_parameter_arithmetic_of_bounds d.O C p.Z.b hC hH1 hH7 ?_ ?_ hL` and prove the remaining obligations. Rewrite using `[hb]`.
+
+Conclude with `l1`. Conclude with `l2`.
+-/
 theorem rankGapBound_alt : _root_.GlobalTheory.BigTop.Fun.RankGapBound' := by
   refine ⟨0, fun CF _ => ⟨1, one_pos, fun eps heps heps1 => ⟨⟨0, fun _ => 0, fun _ => 0, fun _ => 0⟩,
     fun Fm CH hF _ => ?_⟩⟩⟩

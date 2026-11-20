@@ -7,6 +7,11 @@ open NumberField NumberField.mixedEmbedding Matrix MeasureTheory GroundTheory.Au
 open scoped TensorProduct
 attribute [local instance 100] LieRing.ofAssociativeRing
 
+/- English proof (translation)
+Introduce `K _ _ n S hS φ hφ`. Take `⟨V, hV, hVφ⟩` from `UpperTheory.exists_finiteDimensional_compact_translates_of_level_types K n S hS.level hS.types`. Use `⟨hS.left φ hφ, ⟨φ.2, ?_⟩, ?_, ?_, hS.growth φ hφ⟩` and prove the remaining obligations. Introduce `g`. Take `⟨L, hL, hLφ⟩` from `hS.level`.
+
+Use `filter_upwards [hL.mem_nhds L.one_mem] with y hy`. Conclude with `hLφ φ hφ y hy g`. Conclude with `UpperTheory.finiteDimensional_span_range_of_columns_mem (Reduction.maxCompact (K := K) (n := n)) _ (fun k g => (φ : AdelicGLn.AdelicGL K n → ℂ) (g * k)) V hV (fun g => hVφ φ hφ g)`. Conclude with `UpperTheory.isZFinite_of_centre_span K n φ (hS.mono ((Submodule.span_singleton_le_iff_mem _ _).mpr hφ)).centre`.
+-/
 theorem UpperTheory.isAutomorphicForm_of_bdd_submodule :
     ∀ (K : Type) [Field K] [NumberField K] (n : ℕ) (S : Submodule ℂ (archSmooth K n)), Bdd S → ∀ φ ∈ S, IsAutomorphicForm φ.1 := by
   intro K _ _ n S hS φ hφ

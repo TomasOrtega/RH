@@ -10,6 +10,19 @@ open scoped ENNReal
 
 noncomputable section
 
+/- English proof (translation)
+Establish `hMass : ConeLocalMass.Statement` using `ConeLocalMass.of_open ConeFiniteFibreDim.proof`. Establish `hMeas : ConeJacMeasurable.Statement` using `ConeJacMeasurable.proof TangentJacCompress.proof KernelProjMeasurable.proof`. Establish `hDim : ConeTangentDim.Statement` using `ConeTangentDim.proof (ConeKrullDimLe.proof ConeFiniteFibreDim.proof) NullSmaller.full (FrameJacobianGeneric.proof JacobianRankGeneric.proof ConormalGenerationGeneric.proof)`. Establish `hInv : TangentGaussInvariant.Statement` using `TangentGaussInvariant.proof`. Establish `hres : (Measure.hausdorffMeasure ((2 * m : ℕ) : ℝ) : Measure (EuclideanSpace ℂ (Fin n))).restrict (coneSet h J ∩ A) = ((Measure.hausdorffMeasure ((2 * m : ℕ) : ℝ) : Measure (EuclideanSpace ℂ (Fin n))).restrict (coneSet h J)).restrict A`.
+
+Rewrite using `[Measure.restrict_restrict hA, Set.inter_comm]`. Rewrite using `[hres]`. Establish `hS : SFinite ((Measure.hausdorffMeasure ((2 * m : ℕ) : ℝ) : Measure (EuclideanSpace ℂ (Fin n))).restrict (coneSet h J))` using `sFinite_restrict_of_ball _ _ (hMass n m h J hJ hm hmn hfib)`. Establish `hG : Measurable fun π : Fin m → Fin n → ℂ => matGauss π`. Unfold `matGauss`.
+
+Conclude with `(by fun_prop : Continuous fun π : Fin m → Fin n → ℂ => Real.exp (-∑ i, ∑ j, ‖π i j‖ ^ 2)).measurable.ennreal_ofReal`. Establish `hP : Continuous fun p : (Fin m → Fin n → ℂ) × EuclideanSpace ℂ (Fin n) => linProj p.1 p.2`. Unfold `linProj`. Use `fun_prop`. Establish `hF : AEMeasurable (Function.uncurry fun (π : Fin m → Fin n → ℂ) (y : EuclideanSpace ℂ (Fin n)) => matGauss π * ((Metric.ball (0 : EuclideanSpace ℂ (Fin m)) 1).indicator 1 (linProj π y) * ENNReal.ofReal (coneJac h J π y))) ((volume : Measure (Fin m → Fin n → ℂ)).prod ((Measure.hau …` using `(hG.comp measurable_fst).aemeasurable.mul (((measurable_one.indicator Metric.isOpen_ball.measurableSet).comp hP.measurable).aemeasurable.mul (hMeas n m h J hJ hm hmn hfib).ennreal_ofReal)`.
+
+Establish `hFA : AEMeasurable (Function.uncurry fun (π : Fin m → Fin n → ℂ) (y : EuclideanSpace ℂ (Fin n)) => matGauss π * ((Metric.ball (0 : EuclideanSpace ℂ (Fin m)) 1).indicator 1 (linProj π y) * ENNReal.ofReal (coneJac h J π y))) ((volume : Measure (Fin m → Fin n → ℂ)).prod (((Measure.h …`. Establish `hpr` using `Measure.prod_restrict (μ := (volume : Measure (Fin m → Fin n → ℂ))) (ν := (Measure.hausdorffMeasure ((2 * m : ℕ) : ℝ) : Measure (EuclideanSpace ℂ (Fin n))).restrict (coneSet h J)) Set.univ A`. Rewrite `hpr` using `[Measure.restrict_univ]`. Rewrite using `[hpr]`. Conclude with `hF.restrict`.
+
+Rewrite using `[show (fun π : Fin m → Fin n → ℂ => matGauss π * ∫⁻ y in A, (Metric.ball (0 : EuclideanSpace ℂ (Fin m)) 1).indicator 1 (linProj π y) * ENNReal.ofReal (coneJac h J π y) ∂((Measure.hausdorffMeasure ((2 * m : ℕ) : ℝ)).restrict (coneSet h J))) = fun π => ∫⁻ y in A, matGauss π * ((Met …`. Use function extensionality and compare the values at `fun π => (lintegral_const_mul' _ _ ENNReal.ofReal_ne_top).symm,`. Use `lintegral_lintegral_swap hFA]`. Use `lintegral_congr_ae (ae_restrict_of_ae ?_)` and prove the remaining obligations. Use `filter_upwards [hDim n m h J hJ hm hmn hfib, ae_restrict_mem (isClosed_coneSet h J).measurableSet] with y hy hyC`.
+
+Simplify using `only [← mul_assoc]`. Conclude with `hInv n m hm hmn _ hy y (mem_coneTangent_self h hJ hyC)`.
+-/
 theorem coneTangentAverage_inter (n m : ℕ) (h : HermNorm n) (J : Ideal (MvPolynomial (Fin n) ℂ))
     (hJ : IsProjPrime J) (hm : 0 < m) (hmn : m ≤ n)
     (hfib : ∀ᵐ π : Fin m → Fin n → ℂ, ∀ᵐ w : EuclideanSpace ℂ (Fin m), fibreCount h J π w ≠ ⊤)

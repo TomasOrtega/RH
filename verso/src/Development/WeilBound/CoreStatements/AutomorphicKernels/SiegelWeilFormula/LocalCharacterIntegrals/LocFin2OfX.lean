@@ -8,6 +8,9 @@ namespace PositivityTheory.SiegelWeilFormula.SwLocFin
 open HeckeCharacterZeroLocus.SiegelWeilU NumberField IsDedekindDomain MeasureTheory GlobalTheory.Cont PositivityTheory.PfSWUS.Loc PositivityTheory.SiegelWeilFormula.Gen Filter Topology
 open scoped TensorProduct Matrix
 
+/- English proof (translation)
+Simplify using `only [whI, fz, uu, mul_assoc]`.
+-/
 theorem whI_eq {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) {M n : ℕ}
     (J : Matrix (Fin M) (Fin M) E) (ψ : AddChar (AF F) ℂ) (v : HeightOneSpectrum (𝓞 F))
     (μv : Measure (Fin n → Fin M → Fv F v ⊗[F] E)) (lam : Measure (Fin n → Fv F v ⊗[F] E))
@@ -17,6 +20,25 @@ theorem whI_eq {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] 
       fz (fun b : HermR (Fv F v) σ n => nu2 lam L₁ L₂ b.1) (uu σ J ψ v μv Φv T) (((M : ℂ) - n) / 2) z b := by
   simp only [whI, fz, uu, mul_assoc]
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ hcm M J hJ n ψ hψ v μv νv lam L₁ L₂ hμ hν hlam h₁ h₂ Φv hΦ g hg T hT`. Establish `h : Hyp σ M J n ψ v μv νv lam L₁ L₂ Φv g T` using `⟨hcm, hJ, hψ, hμ, hν, hlam, h₁, h₂, hΦ, hg, hT⟩`. Use `haveI : νv.IsAddHaarMeasure := hν.1`. Take `⟨R₀, hR₀⟩` from `hS F E σ M J n ψ v μv νv lam L₁ L₂ Φv g T h 2 one_lt_two`. Use `set R₁ : ℝ := max R₀ 1 with hR₁`.
+
+Establish `hR₁pos : 0 < R₁` using `lt_of_lt_of_le zero_lt_one (le_max_right _ _)`. Use `set B : ℕ → Set (HermR (Fv F v) σ n) := fun j => {b | nM v b.1 ≤ R₁ * 2 ^ j} with hB`. Establish `hWeq : ∀ z, whI (Fv F v) σ J (psiV F ψ v) μv Φv (nu2 lam L₁ L₂) T.1 z = fz (fun b : HermR (Fv F v) σ n => nu2 lam L₁ L₂ b.1) (uu σ J ψ v μv Φv T) (((M : ℂ) - n) / 2) z` using `fun z => funext fun b => whI_eq σ J ψ v μv lam L₁ L₂ Φv T z b`. Take `⟨W, hWd, hW0, t, hWt⟩` from `core νv (fun b : HermR (Fv F v) σ n => nu2 lam L₁ L₂ b.1) (uu σ J ψ v μv Φv T) (((M : ℂ) - n) / 2) (g T) B (fun j => measurableSet_ballH _) (fun i j hij => by`. Introduce `b hb`.
+
+Simplify using `only [hB, Set.mem_setOf_eq] at hb ⊢`. Conclude with `hb.trans (mul_le_mul_of_nonneg_left (pow_le_pow_right₀ one_le_two hij) hR₁pos.le))`. Use the proof step `(by`. Use `Set.eq_univ_of_forall fun b => ?_` and prove the remaining obligations. Take `⟨j, hj⟩` from `pow_unbounded_of_one_lt (nM v b.1 / R₁) one_lt_two`.
+
+Use `Set.mem_iUnion.2 ⟨j, ?_⟩` and prove the remaining obligations. Simplify using `only [hB, Set.mem_setOf_eq]`. Rewrite `hj` using `[div_lt_iff₀ hR₁pos]`. Use the proof step `linarith)`. Use the proof step `(fun j => (isCompact_ballH _).measure_lt_top)`.
+
+Use the proof step `(lattice_norm_ge_one h)`. Use the proof step `(continuous_lattice_norm h).measurable`. Use the proof step `(fun j => by`. Take `⟨C, hC⟩` from `(isCompact_ballH (σ := σ) (n := n) (v := v) (R₁ * 2 ^ j)).exists_bound_of_continuousOn (continuous_lattice_norm h).continuousOn`. Conclude with `⟨C, fun b hb => (le_abs_self _).trans (by simpa [Real.norm_eq_abs] using hC b hb)⟩)`.
+
+Use the proof step `(continuous_uu h).aestronglyMeasurable`. Use the proof step `(uu_bound h)`. Use the proof step `(fun z j => by`. Establish `hset : B (j + 1) \ B j = {b : HermR (Fv F v) σ n | R₁ * 2 ^ j < nM v b.1 ∧ nM v b.1 ≤ 2 * (R₁ * 2 ^ j)}`. Use extensionality with `b`.
+
+Simplify using `only [hB, Set.mem_diff, Set.mem_setOf_eq, not_le, pow_succ]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨h1, h2⟩; exact ⟨h2, by linarith⟩`. Introduce and unpack `⟨h1, h2⟩; exact ⟨by linarith, h1⟩`. Rewrite using `[hset, ← hWeq z]`.
+
+Conclude with `hR₀ _ ((le_max_left _ _).trans (le_mul_of_one_le_right hR₁pos.le (one_le_pow₀ one_le_two))) z)`. Use the proof step `(by`. Take `⟨t, ht⟩` from `hC F E σ M J n ψ v μv νv lam L₁ L₂ Φv g T h`. Conclude with `⟨t, fun z hz => by rw [← hWeq z]; exact ht z hz⟩)`. Use the proof step `((hD F E σ M J n ψ v μv νv lam L₁ L₂ Φv g T h).comp (Tendsto.const_mul_atTop hR₁pos (tendsto_pow_atTop_atTop_of_one_lt one_lt_two)))`.
+
+Use `⟨W, hWd, hW0, t, fun z hz => ?_⟩` and prove the remaining obligations. Rewrite using `[hWeq z]`. Conclude with `hWt z hz`.
+-/
 theorem locFinX_of (hS : ShellP) (hC : ConvP) (hD : DualP) : LocFinX := by
   intro F E _ _ _ _ _ σ hcm M J hJ n ψ hψ v μv νv lam L₁ L₂ hμ hν hlam h₁ h₂ Φv hΦ g hg T hT
   have h : Hyp σ M J n ψ v μv νv lam L₁ L₂ Φv g T := ⟨hcm, hJ, hψ, hμ, hν, hlam, h₁, h₂, hΦ, hg, hT⟩
@@ -69,6 +91,9 @@ theorem locFinX_of (hS : ShellP) (hC : ConvP) (hD : DualP) : LocFinX := by
   rw [hWeq z]
   exact hWt z hz
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ hcm M J hJ n _ ψ hψ v μv νv lam L₁ L₂ hμ hν hlam h₁ h₂ Φv hΦ g hg T hT`. Conclude with `h F E σ hcm M J hJ n ψ hψ v μv νv lam L₁ L₂ hμ hν hlam h₁ h₂ Φv hΦ g hg T hT`.
+-/
 theorem locFin2_of_X (h : LocFinX) : LocFin2 := by
   intro F E _ _ _ _ _ σ hcm M J hJ n _ ψ hψ v μv νv lam L₁ L₂ hμ hν hlam h₁ h₂ Φv hΦ g hg T hT
   exact h F E σ hcm M J hJ n ψ hψ v μv νv lam L₁ L₂ hμ hν hlam h₁ h₂ Φv hΦ g hg T hT

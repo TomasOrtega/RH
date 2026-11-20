@@ -24,9 +24,15 @@ structure Step0Hyp : Prop where
   levG : ∀ b, L.levG 0 b = Λ 0
   levQ : ∀ b, L.levQ 0 b = LevQFam.top X.E X.K (R.N 0) (QE sel (mu : Chr X.F X.E X.K))
 
+/- English proof (translation)
+The claim follows from `h ▸ hg`.
+-/
 theorem mem_grp_of_eq {E K : Type} [Field E] [NumberField E] [Field K] {n : ℕ} {SG : Finset (HeightOneSpectrum (𝓞 E))} {Λ₁ Λ₂ : LevFam E K n SG}
     (h : Λ₁ = Λ₂) {g : GLG E n SG} (hg : g ∈ Λ₁.grp) : g ∈ Λ₂.grp := h ▸ hg
 
+/- English proof (translation)
+Introduce `x`. Use `show f.symm (γ (f' x)) ∈ stdAt E n P ↔ x ∈ stdAt E n P`. Rewrite using `[← hf, LinearEquiv.apply_symm_apply, hN, mem_localization_gmap, LinearEquiv.symm_apply_apply, hf']`.
+-/
 theorem frame_move {E : Type} [Field E] [NumberField E] [StarRing E] {n : ℕ} {P : HeightOneSpectrum (𝓞 E)} {N N' : Submodule (𝓞 E) (Sp E n)}
     {f f' γ : Sp E n ≃ₗ[E] Sp E n} (hf : ∀ x, f x ∈ localization₂ P.asIdeal N ↔ x ∈ stdAt E n P) (hf' : ∀ x, f' x ∈ localization₂ P.asIdeal N' ↔ x ∈ stdAt E n P)
     (hN : localization₂ P.asIdeal N = localization₂ P.asIdeal (gmap γ N')) : f⁻¹ * γ * f' ∈ GLint E n P := by

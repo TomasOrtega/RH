@@ -12,6 +12,11 @@ attribute [local instance] Over.cartesianMonoidalCategory
 
 namespace GlobalTheory.AbHomExtDvr
 
+/- English proof (translation)
+Introduce `W L _ _ _ _ _ _ G G' _ _ hG hG' f hf`. Establish `hsm : GlobalTheory.SS.SmConn G` using `⟨hG.comm, hG.smooth, by have := hG.proper; infer_instance, by have := hG.proper; infer_instance, hG.geomConnected⟩`. Take `⟨F, ⟨-, hF⟩, -⟩` from `GlobalTheory.existsUnique_hom_extension_smConn_semiAbelian_dvr W L G G' hsm (GlobalTheory.isSemiAbelian_of_isAbelianScheme G' hG') f hf`. Use `hG.smooth` as an intermediate fact. Use `hG'.proper` as an intermediate fact.
+
+Establish `: Flat G.hom` using `inferInstance`. Use `⟨F, hF, fun F' hF' => ?_⟩` and prove the remaining obligations. Conclude with `GlobalTheory.KernelNoTorsion.eq_of_generic W L (hF'.trans hF.symm)`.
+-/
 theorem existsUnique_hom_extension_abelian_dvr :
     ∀ (W L : Type) [CommRing W] [IsDomain W] [IsDiscreteValuationRing W] [Field L] [Algebra W L] [IsFractionRing W L] (G G' : Over (Sp W)) [GrpObj G] [GrpObj G'], IsAbelianScheme G → IsAbelianScheme G' → ∀ f : (Over.pullback (spMap (algebraMap W L))).obj G ⟶ (Over.pullback (spMap (algebraMap W L))).obj G', IsMonHom f → ∃! F : G ⟶ G', (Over.pullback (spMap (algebraMap W L))).map F = f := by
   intro W L _ _ _ _ _ _ G G' _ _ hG hG' f hf

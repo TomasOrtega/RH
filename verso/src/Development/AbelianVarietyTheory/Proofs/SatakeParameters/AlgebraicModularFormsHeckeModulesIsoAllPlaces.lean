@@ -30,6 +30,11 @@ section Abstract
 variable {G V ι : Type} [Group G] [AddCommGroup V] [Module ℂ V] {ρ : G →* Module.End ℂ V} {Gv Gc : ι → Subgroup G}
   {J : Subgroup G}
 
+/- English proof (translation)
+Take `⟨X, hX0, hXm, hX, i₁, i₂⟩` from `GlobalTheory.T.exists_stable_graph_of_equal_annihilators V ι (fun v => locAlg ρ (Gv v) (Gc v) ⊓ fixAlg ρ J) (fixIn ρ J S₁) (fixIn ρ J S₂) hfd n₁ n₂ (fun v c hc x hx => ⟨locAlg_mem hc.1 h₁.stab hx.1, hc.2 x hx.2⟩) (fun v c hc x hx => ⟨locAlg_mem hc.1 h₂.stab hx.1, hc.2 x hx.2⟩) (f …`. Take `⟨P, hP⟩` from `exists_avg ρ (Gv v ⊓ J) fun x => (horb x).subset (Set.image_mono fun k hk => hk.2)`. Take `⟨Q, hQ⟩` from `exists_avg ρ (Gc v ⊓ J) fun x => (horb x).subset (Set.image_mono fun k hk => hk.2)`. Take `⟨X, hX⟩` from `hloc v`. Conclude with `⟨ann_transfer (H.comm v) (H.dec v) (H.decJ v) hP hQ h₁ h₂ n₁ hX hc.1, ann_transfer (H.comm v) (H.dec v) (H.decJ v) hP hQ h₂ h₁ n₂ hX.swap hc.1⟩)`.
+
+Use the proof step `(fun Y hY hst => fixIn_simple H horb h₁ Y hY hst) (fun Y hY hst => fixIn_simple H horb h₂ Y hY hst)`. Conclude with `graph_of_fixed_graph H horb h₁ h₂ n₁ n₂ X hX0 hXm hX i₁ i₂`.
+-/
 theorem graph_of_local' (H : PlaceSys Gv Gc J) (horb : ∀ x, ((fun k => ρ k x) '' (J : Set G)).Finite)
     {S₁ S₂ : Submodule ℂ V} (h₁ : Irr ρ S₁) (h₂ : Irr ρ S₂) (n₁ : fixIn ρ J S₁ ≠ ⊥) (n₂ : fixIn ρ J S₂ ≠ ⊥)
     (hfd : FiniteDimensional ℂ (fixIn ρ J S₁)) (hloc : ∀ v, ∃ X, IsGraph ρ (Gv v) S₁ S₂ X) :
@@ -49,6 +54,13 @@ theorem graph_of_local' (H : PlaceSys Gv Gc J) (horb : ∀ x, ((fun k => ρ k x)
     (fun Y hY hst => fixIn_simple H horb h₁ Y hY hst) (fun Y hY hst => fixIn_simple H horb h₂ Y hY hst)
   exact graph_of_fixed_graph H horb h₁ h₂ n₁ n₂ X hX0 hXm hX i₁ i₂
 
+/- English proof (translation)
+Establish `hne : ∀ S ≤ S₁ ⊔ S₂, fixIn ρ J S ≠ ⊥ → fixIn (res ρ _ (sup_stab h₁ h₂)) J (S.comap (S₁ ⊔ S₂).subtype) ≠ ⊥`. Introduce `S hS h`. Take `⟨f, hf, hf0⟩` from `Submodule.exists_mem_ne_zero_of_ne_bot h`. Conclude with `(Submodule.ne_bot_iff _).2 ⟨⟨f, hS hf.1⟩, ⟨hf.1, fun k hk => Subtype.ext (hf.2 k hk)⟩, fun e => hf0 (congrArg Subtype.val e)⟩`. Take `⟨W, hW⟩` from `graph_of_local' (ρ := res ρ _ (sup_stab h₁ h₂)) H (orbit_res horb) (h₁.res le_sup_left) (h₂.res le_sup_right) (hne _ le_sup_left n₁) (hne _ le_sup_right n₂) (FiniteDimensional.of_injective (((S₁ ⊔ S₂).subtype.comp (fixIn (res ρ _ (sup_stab h₁ h₂)) J (S₁.comap (S₁ ⊔ S₂).subtype)). …`.
+
+Establish `e'` using `congrArg Subtype.val e`. Conclude with `Subtype.ext (Subtype.ext e')))`. Use the proof step `(fun v => by`. Take `⟨X, hX⟩` from `hloc v`. Conclude with `⟨_, hX.res le_sup_left le_sup_right⟩)`.
+
+Conclude with `⟨_, hW.of_res⟩`.
+-/
 theorem graph_of_local (H : PlaceSys Gv Gc J) {S₁ S₂ : Submodule ℂ V} (h₁ : Irr ρ S₁) (h₂ : Irr ρ S₂)
     (horb : ∀ x ∈ S₁ ⊔ S₂, ((fun k => ρ k x) '' (J : Set G)).Finite)
     (n₁ : fixIn ρ J S₁ ≠ ⊥) (n₂ : fixIn ρ J S₂ ≠ ⊥)
@@ -92,6 +104,9 @@ def Gaway (v : HeightOneSpectrum (𝓞 (maximalRealSubfield L))) : Subgroup (GAf
   one_mem' := GlobalTheory.InertSph.trivOutside_one _
   inv_mem' := fun hx => GlobalTheory.SatInd.CosetFin.trivOutside_inv hx
 
+/- English proof (translation)
+Introduce `v x hx y hy` and use `(GlobalTheory.InertSph.commute_of_trivOutside v x y hx hy).eq le := fun v w hvw x hx u hu => hx u (by have : u = v := by simpa using hu subst this simpa using hvw) dec := fun v g => by obtain ⟨x, y, hx, hy, e⟩ := GlobalTheory.T.finiteAdelicUnitary_eq_mul_trivOutside_place_and_at_ …`.
+-/
 theorem placeSys {N : ℕ} (hN : 0 < N) :
     PlaceSys (GlobalTheory.InertSph.Gv L n) (Gaway L n) (GlobalTheory.IsotOrth.congSub L n N) where
   comm := fun v x hx y hy => (GlobalTheory.InertSph.commute_of_trivOutside v x y hx hy).eq
@@ -109,10 +124,16 @@ theorem placeSys {N : ℕ} (hN : 0 < N) :
 
 variable {L n}
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨h.1.stable, fun T hT hst => h.2.2 T ⟨hT.trans h.1.le, hst⟩ hT⟩`.
+-/
 theorem irr_of {a : NG.AlgWt L n} {S : Submodule ℂ (GAf L n → a.W)} (h : NG.IsIrrRep a.ρ S) :
     Irr (rtRep L n a.W) S :=
   ⟨h.1.stable, fun T hT hst => h.2.2 T ⟨hT.trans h.1.le, hst⟩ hT⟩
 
+/- English proof (translation)
+Introduce `x hx`. Take `⟨N, hN, hx⟩` from `(sup_le h₁.1.le h₂.1.le hx).2`. Conclude with `(GlobalTheory.IsotOrth.orbit_finite (rtRep L n a.W) hN x fun κ hκ => funext fun g => hx κ hκ g).subset (Set.image_mono hK)`.
+-/
 theorem orbit_fin {a : NG.AlgWt L n} {S₁ S₂ : Submodule ℂ (GAf L n → a.W)} (h₁ : NG.IsIrrRep a.ρ S₁)
     (h₂ : NG.IsIrrRep a.ρ S₂) {K : Subgroup (GAf L n)} (hK : K ≤ Umax L n) :
     ∀ x ∈ S₁ ⊔ S₂, ((fun k => rtRep L n a.W k x) '' (K : Set (GAf L n))).Finite := by
@@ -121,6 +142,21 @@ theorem orbit_fin {a : NG.AlgWt L n} {S₁ S₂ : Submodule ℂ (GAf L n → a.W
   exact (GlobalTheory.IsotOrth.orbit_finite (rtRep L n a.W) hN x fun κ hκ => funext fun g => hx κ hκ g).subset
     (Set.image_mono hK)
 
+/- English proof (translation)
+Introduce `L _ _ _ n a S₁ S₂ h₁ h₂ hsplit hinert N hN hf`. Use `GlobalTheory.T.exists_doubleCosetCommuting_map_principalCongruence L n a S₁ S₂ h₁ ?_ N hN hf` and prove the remaining obligations. Take `⟨g₁, hg₁, hg₁0⟩` from `Submodule.exists_mem_ne_zero_of_ne_bot h₁.2.1`. Take `⟨g₂, hg₂, hg₂0⟩` from `Submodule.exists_mem_ne_zero_of_ne_bot h₂.2.1`. Take `⟨M₁, hM₁, e₁⟩` from `(h₁.1.le hg₁).2`.
+
+Take `⟨M₂, hM₂, e₂⟩` from `(h₂.1.le hg₂).2`. Establish `hM : 0 < M₁ * M₂` using `Nat.mul_pos hM₁ hM₂`. Establish `H` using `placeSys L n hM`. Use `haveI : FiniteDimensional ℂ a.W := a.alg.1`. Take `⟨W, hW⟩` from `graph_of_local H (irr_of h₁) (irr_of h₂) (orbit_fin h₁ h₂ fun k hk => hk.1) ((Submodule.ne_bot_iff _).2 ⟨g₁, ⟨hg₁, fun k hk => funext fun g => e₁ k (NG.Cong.of_mul_left L n hk) g⟩, hg₁0⟩) ((Submodule.ne_bot_iff _).2 ⟨g₂, ⟨hg₂, fun k hk => funext fun g => e₂ k (NG.Cong.of_mul_righ …`.
+
+Use `GlobalTheory.AlgFormsFin.fixedForms_finite L n a.ρ (GlobalTheory.T.finite_doubleCosets_definiteUnitary_maximalLevel L n) hM` as an intermediate fact. Use `Submodule.finiteDimensional_of_le (S₂ := GlobalTheory.AlgFormsFin.fixedForms L n a.ρ (M₁ * M₂)) ?_` and prove the remaining obligations. Introduce and unpack `f ⟨hfS, hfU⟩`. Conclude with `⟨(h₁.1.le hfS).1, fun κ hκ g => congrFun (hfU κ hκ) g⟩)`. Use the proof step `(fun v => by`.
+
+Distinguish the cases in `hv : ∃ s : SplitPlace L, s.v = v`. Take `⟨s, rfl⟩` from `hv`. Take `⟨σ₁, σ₂, l₁, l₂, he⟩` from `hsplit s`. Take `⟨X, x1, x2, x3, x4, x5⟩` from `GlobalTheory.T.exists_stable_graph_of_iso_splitPlace_components L n a S₁ S₂ s σ₁ σ₂ l₁ l₂ he`. Conclude with `⟨X, x1, x2, x3, x4, x5⟩`.
+
+Take `⟨w, Dv, α, -, ⟨f₁, hf₁, n₁, k₁⟩, ⟨f₂, hf₂, n₂, k₂⟩, hH⟩` from `hinert v fun s hs => hv ⟨s, hs⟩`. Use `graph_of_hecke (K := GlobalTheory.InertSph.Kv L n v) (H.comm v) (H.dec v) inf_le_right (irr_of h₁) (irr_of h₂) (orbit_fin h₁ h₂ inf_le_left) hf₁ hf₂ n₁ n₂ (fun k hk => k₁ k hk.1 hk.2) (fun k hk => k₂ k hk.1 hk.2) fun x hx => ?_` and prove the remaining obligations. Take `⟨R, h, hR, hh, hA⟩` from `GlobalTheory.T.inertDoubleCosetOperator_eq_inertHeckeOperator L n v w Dv (GlobalTheory.T.inertDatum_local_mem_unitaryGroup_antidiagonal L n v w Dv) (GlobalTheory.T.inertDatum_local_stdLatticeStabilizer_mem_maxCompact L n v w Dv) (GlobalTheory.T.exists_trivOutside_inertDatum_local …`. Establish `hK : ∀ κ : GAf L n, κ ∈ Umax L n → TrivOutside {v} κ → ∃ hκ : Dv.loc κ ∈ Formalism.UG.GU Dv.σw n, (⟨Dv.loc κ, hκ⟩ : Formalism.UG.GU Dv.σw n) ∈ Formalism.UG.KU Dv.σw n` using `fun κ hκ _ => ⟨GlobalTheory.T.inertDatum_local_mem_unitaryGroup_antidiagonal L n v w Dv κ, GlobalTheory.T.inertDatum_local_stdLatticeStabilizer_mem_maxCompact L n v w Dv κ hκ _⟩`. Establish `hKv : ∀ κ : GAf L n, TrivOutside {v} κ → (κ ∈ GlobalTheory.InertSph.Kv L n v ↔ κ ∈ Umax L n)` using `fun κ hκ => ⟨fun h => h.1, fun h => ⟨h, hκ⟩⟩`.
+
+Take `⟨γ, ⟨hγ, -⟩, -⟩` from `hR.2 x ⟨1, one_mem _, 1, one_mem _, by simp⟩`. Use `⟨R, Formalism.UG.SatU Dv.ϖ (Formalism.UG.qV (maximalRealSubfield L) v) h α, ⟨γ, hγ⟩, hR.1, ?_, ?_⟩` and prove the remaining obligations. Use `(hA a.W f₁ k₁).trans ?_` and prove the remaining obligations. Rewrite using `[GlobalTheory.T.inertHeckeOperator_level_independent L n v w Dv hK (Umax L n) _ (fun _ _ => Iff.rfl) hKv a.W h hh.1 f₁ k₁]`. Conclude with `(hH _ hKv h hh).1 f₁ hf₁ fun k hk => k₁ k hk.1 hk.2`.
+
+Use `(hA a.W f₂ k₂).trans ?_` and prove the remaining obligations. Rewrite using `[GlobalTheory.T.inertHeckeOperator_level_independent L n v w Dv hK (Umax L n) _ (fun _ _ => Iff.rfl) hKv a.W h hh.1 f₂ k₂]`. Conclude with `(hH _ hKv h hh).2 f₂ hf₂ fun k hk => k₂ k hk.1 hk.2)`. Conclude with `GlobalTheory.T.equivariant_iso_of_translationStable_graph L n a.ρ a.ρ S₁ S₂ W h₁ h₂ hW.mem (fun h w hw => hW.stab h trivial w hw) hW.inj₁ hW.inj₂ hW.ne`.
+-/
 theorem main : ∀ (L : Type) [Field L] [NumberField L] [IsCMField L] (n : ℕ) (a : NG.AlgWt L n) (S₁ S₂ : Submodule ℂ (GAf L n → a.W)), NG.IsIrrRep a.ρ S₁ → NG.IsIrrRep a.ρ S₂ → (∀ s : SplitPlace L, ∃ σ₁ σ₂ : GlobalTheory.SmGL.IrrRep (GL (Fin n) (s.w.adicCompletion L)), IsLocS S₁ s σ₁ ∧ IsLocS S₂ s σ₂ ∧ Nonempty (σ₁.ρ.Equiv σ₂.ρ)) → (∀ v : HeightOneSpectrum (𝓞 (maximalRealSubfield L)), (∀ s : SplitPlace L, s.v ≠ v) → ∃ (w : HeightOneSpectrum (𝓞 L)) (Dv : InertDatum L n v w) (α : Fin (n / 2) → ℂ), NG.OverPl w v ∧ (∃ f ∈ S₁, f ≠ 0 ∧ ∀ κ ∈ Umax L n, TrivOutside {v} κ → NG.rt L n κ f = f) ∧ (∃ f ∈ S₂, f ≠ 0 ∧ ∀ κ ∈ Umax L n, TrivOutside {v} κ → NG.rt L n κ f = f) ∧ ∀ U : Subgroup (GAf L n), (∀ κ, TrivOutside {v} κ → (κ ∈ U ↔ κ ∈ Umax L n)) → ∀ h ∈ Formalism.UG.Hecke ℂ (Formalism.UG.KU Dv.σw n), (∀ f ∈ S₁, (∀ κ ∈ U, NG.rt L n κ f = f) → heckeFunI L n U Dv h f = Formalism.UG.SatU Dv.ϖ (Formalism.UG.qV (maximalRealSubfield L) v) h α • f) ∧ (∀ f ∈ S₂, (∀ κ ∈ U, NG.rt L n κ f = f) → heckeFunI L n U Dv h f = Formalism.UG.SatU Dv.ϖ (Formalism.UG.qV (maximalRealSubfield L) v) h α • f)) → ∀ N : ℕ, 0 < N → (∃ f ∈ S₁, (∀ κ, NG.Cong L n N κ → NG.rt L n κ f = f) ∧ f ≠ 0) → ∃ φ : (GAf L n → a.W) →ₗ[ℂ] (GAf L n → a.W), (∀ f ∈ S₁, (∀ κ, NG.Cong L n N κ → NG.rt L n κ f = f) → φ f ∈ S₂ ∧ ∀ κ, NG.Cong L n N κ → NG.rt L n κ (φ f) = φ f) ∧ (∃ f ∈ S₁, (∀ κ, NG.Cong L n N κ → NG.rt L n κ f = f) ∧ φ f ≠ 0) ∧ (∀ (g : GAf L n) (f : GAf L n → a.W), f ∈ S₁ → (∀ κ, NG.Cong L n N κ → NG.rt L n κ f = f) → φ (NG.heckeD (GlobalTheory.IsotOrth.congSub L n N) {x | ∃ u ∈ GlobalTheory.IsotOrth.congSub L n N, ∃ u' ∈ GlobalTheory.IsotOrth.congSub L n N, x = u * g * u'} f) = NG.heckeD (GlobalTheory.IsotOrth.congSub L n N) {x | ∃ u ∈ GlobalTheory.IsotOrth.congSub L n N, ∃ u' ∈ GlobalTheory.IsotOrth.congSub L n N, x = u * g * u'} (φ f)) := by
   intro L _ _ _ n a S₁ S₂ h₁ h₂ hsplit hinert N hN hf
   refine GlobalTheory.T.exists_doubleCosetCommuting_map_principalCongruence L n a S₁ S₂ h₁ ?_ N hN hf

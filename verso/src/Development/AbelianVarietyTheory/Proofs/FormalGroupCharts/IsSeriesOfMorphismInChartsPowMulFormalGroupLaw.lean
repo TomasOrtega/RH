@@ -13,6 +13,15 @@ namespace GlobalTheory.JetSer
 
 open ReciprocityTheory.ChartRestriction.G.TB.WickVanishing
 
+/- English proof (translation)
+Introduce `R _ G _ d x hx F hF N`. Proceed by induction on `N with`. Consider the case `zero`. Use `⟨gp_zero₂, fun n a y h => ?_⟩` and prove the remaining obligations. Establish `h0` using `(repSt_of_jetAlgSt jetAlg R G d x hx (Fin n × Fin d)).2.2.2.1`.
+
+Establish `e : comp1 (mulF F 0) a = 0` using `evP_zero ![a] (single_point_zero_constant h.1)`. Rewrite using `[e, pow_zero]`. Simplify `h0` using `only [MonObj.comp_one]`. Consider the case `succ N ih`. Use `⟨gp_addOf F hF.1 _ _ ih.1 (gp_pt 0), fun n a y h => ?_⟩` and prove the remaining obligations.
+
+Establish `e : comp1 (mulF F (N + 1)) a = addOf F (comp1 (mulF F N) a) a`. Establish `e1` using `evP_addOf ![a] (single_point_zero_constant h.1) F (mulF F N) (pt R d 0) ih.1 (gp_pt 0)`. Rewrite `e1` using `[evP_pt _ (single_point_zero_constant h.1)]`. Conclude with `e1`. Rewrite using `[e, pow_succ]`.
+
+Simplify `hF.2 n _ _ _ _ (ih.2 n a y h) h` using `only [MonObj.comp_mul, Category.comp_id]`.
+-/
 theorem isMapOf_pow_mulF : ∀ (R : Type) [CommRing R] (G : Over (Spec (CommRingCat.of R))) [GrpObj G] (d : ℕ) (x : GlobalTheory.JetSer.Fam G (Fin d)), Chart.IsUnivChart G d x → ∀ F : Fin d → PS R 2 d, GlobalTheory.JetSer.IsLawOf x F → ∀ N : ℕ, GlobalTheory.JetSer.IsMapOf x x ((𝟙 G) ^ N : G ⟶ G) (mulF F N) := by
   intro R _ G _ d x hx F hF N
   induction N with

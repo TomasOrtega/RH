@@ -9,6 +9,31 @@ open GlobalTheory.CompanionTheory.SW.GoodRing
 
 variable {F E : Type} [Field F] [NumberField F] [Field E] [Algebra F E]
 
+/- English proof (translation)
+Use `set K := Fv F v with hK`. Use `set B := Algebra.TensorProduct.basis K b₂ with hB`. Use `set C := Algebra.TensorProduct.basis K b with hC`. Set `Rs : Subring K` to `(v.adicCompletionIntegers F).toSubring`. Establish `hB0 : B 0 = 1`.
+
+Rewrite using `[hB, Algebra.TensorProduct.basis_apply, hb0]`. Both sides reduce to the same expression. Establish `hB1 : B 1 = inclR K (b₂ 1)`. Rewrite using `[hB, Algebra.TensorProduct.basis_apply]`. Both sides reduce to the same expression.
+
+Establish `hBD : B 1 * B 1 = algebraMap K (K ⊗[F] E) (algebraMap F K D)`. Rewrite using `[hB1, ← map_mul, hD]`. Use `show (1 : Fv F v) ⊗ₜ[F] algebraMap F E D = (algebraMap F (Fv F v) D) ⊗ₜ[F] (1 : E)`. Rewrite using `[Algebra.algebraMap_eq_smul_one, Algebra.algebraMap_eq_smul_one, TensorProduct.tmul_smul, TensorProduct.smul_tmul']`. Establish `hDR : algebraMap F K D ∈ Rs` using `hD1.le`.
+
+Establish `hBC' : ∀ k j, B.repr (C k) j ∈ Rs` using `fun k j => by`. Use `hBC k j` as an intermediate fact. Rewrite `this` using `[show inclR K (b k) = C k by rw [hC, Algebra.TensorProduct.basis_apply]; rfl]`. Then use the resulting hypothesis. Establish `hCB' : ∀ j k, C.repr (B j) k ∈ Rs` using `fun j k => by`. Use `hCB j k` as an intermediate fact.
+
+Rewrite `this` using `[show inclR K (b₂ j) = B j by rw [hB, Algebra.TensorProduct.basis_apply]; rfl]`. Then use the resulting hypothesis. Establish `hOB : ∀ y, y ∈ O ↔ ∀ j, B.repr y j ∈ Rs` using `fun y => ⟨fun hy j => coord_mem Rs C B hBC' y ((hO y).1 hy) j, fun hy => (hO y).2 fun k => coord_mem Rs B C hCB' y hy k⟩`. Establish `hpq : ∀ p q : K, p ∈ Rs → q ∈ Rs → algebraMap K (K ⊗[F] E) p + algebraMap K (K ⊗[F] E) q * B 1 ∈ O`. Introduce `p q hp hq`. Establish `h` using `coord_two B hB0 p q`.
+
+Use `(hOB _).2 (Fin.forall_fin_two.2 ⟨?_, ?_⟩)` and prove the remaining obligations. Rewrite using `[h.1]`. Conclude with `hp`. Rewrite using `[h.2]`. Conclude with `hq`.
+
+Establish `hRmem : ∀ c ∈ Rs, algebraMap K (K ⊗[F] E) c ∈ O`. Introduce `c hc`. Simplify using `using hpq c 0 hc Rs.zero_mem`. Establish `hδO : B 1 ∈ O`. Use `hpq 0 1 Rs.zero_mem Rs.one_mem` as an intermediate fact.
+
+Rewrite `this` using `[map_zero, map_one, zero_add, one_mul]`. Then use the resulting hypothesis. Set `ι : (v.adicCompletionIntegers F) →+* O` to `((algebraMap K (K ⊗[F] E)).comp (v.adicCompletionIntegers F).subtype).codRestrict O (fun x => hRmem x x.2)`. Set `δ : O` to `⟨B 1, hδO⟩`. Set `D' : v.adicCompletionIntegers F` to `⟨algebraMap F K D, hDR⟩`. Establish `hδ : δ * δ = ι D'` using `Subtype.ext hBD`.
+
+Establish `hsp : ∀ y : O, ∃ p q : v.adicCompletionIntegers F, y = ι p + ι q * δ` using `fun y => by`. Establish `hy` using `(hOB y).1 y.2`. Conclude with `⟨⟨_, hy 0⟩, ⟨_, hy 1⟩, Subtype.ext (eq_coord B hB0 y)⟩`. Establish `hinj : ∀ p q : v.adicCompletionIntegers F, ι p + ι q * δ = 0 → p = 0 ∧ q = 0`. Introduce `p q h`.
+
+Establish `h' : algebraMap K (K ⊗[F] E) (p : K) + algebraMap K (K ⊗[F] E) (q : K) * B 1 = 0` using `congrArg Subtype.val h`. Establish `hc` using `coord_two B hB0 (p : K) (q : K)`. Rewrite `hc` using `[h']`. Simplify using `only [map_zero, Finsupp.coe_zero, Pi.zero_apply] at hc`. Conclude with `⟨Subtype.ext hc.1.symm, Subtype.ext hc.2.symm⟩`.
+
+Establish `hunit : ∀ r : v.adicCompletionIntegers F, IsUnit r ↔ Valued.v (r : K) = 1` using `fun r => HeightOneSpectrum.adicCompletionIntegers.isUnit_iff_valued_eq_one`. Establish `hv2 : Valued.v (2 : K) = 1` using `by simpa [map_ofNat] using h21`. Establish `hDu : IsUnit D'` using `(hunit D').2 hD1`. Establish `h2u : IsUnit (2 : v.adicCompletionIntegers F)` using `(hunit 2).2 (by`. Rewrite using `[show ((2 : v.adicCompletionIntegers F) : K) = 2 from map_ofNat (v.adicCompletionIntegers F).subtype 2]`.
+
+Conclude with `hv2)`. Conclude with `⟨ι, δ, D', hδ, hsp, hinj, hDu, h2u⟩`.
+-/
 theorem quad_at {d : ℕ} (b : Module.Basis (Fin d) F E)
     (b₂ : Module.Basis (Fin 2) F E) (D : F) (hb0 : b₂ 0 = 1)
     (hD : b₂ 1 * b₂ 1 = algebraMap F E D) (v : HeightOneSpectrum (𝓞 F))
@@ -88,6 +113,17 @@ theorem quad_at {d : ℕ} (b : Module.Basis (Fin d) F E)
     exact hv2)
   exact ⟨ι, δ, D', hδ, hsp, hinj, hDu, h2u⟩
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ h d b`. Establish `hinv : ∀ x, σ (σ x) = x` using `fun x => by`. Take `⟨τ⟩ : Nonempty (E →+* ℂ)` from `inferInstance`. Apply `τ.injective` to reduce the goal to its premises. Rewrite using `[h.2.2.2, h.2.2.2, star_star]`.
+
+Establish `hne : ∃ x, σ x ≠ x`. Assume the negation of the conclusion as `hc`. Use `push_neg at hc`. Take `⟨w⟩` from `(inferInstance : Nonempty (NumberField.InfinitePlace E))`. Establish `hreal : w.IsReal`.
+
+Rewrite using `[← NumberField.InfinitePlace.mk_embedding w, NumberField.InfinitePlace.isReal_mk_iff, NumberField.ComplexEmbedding.isReal_iff]`. Use `RingHom.ext fun x ↦ ?_` and prove the remaining obligations. Rewrite using `[NumberField.ComplexEmbedding.conjugate_coe_eq]`. Express the relevant statement in the definitionally equal form `star (w.embedding x) = w.embedding x`. Rewrite using `[← h.2.2.2, hc]`.
+
+Conclude with `NumberField.InfinitePlace.not_isReal_iff_isComplex.2 (h.2.1.isComplex w) hreal`. Take `⟨D, b₂, hsq, hb0, hσ1, hD⟩` from `GlobalTheory.QuadNormBase.exists_basis F E σ h.2.2.1 hinv hne`. Establish `hD0 : D ≠ 0` using `fun h0 => hsq (h0 ▸ IsSquare.zero)`. Establish `I` using `GlobalTheory.CompanionTheory.SW.GoodInt.rational_integral_units F E σ h`. Use `filter_upwards [(I d b).2 D hD0, (I d b).2 2 two_ne_zero, Filter.eventually_all.2 fun k => (I 2 b₂).1 (b k), Filter.eventually_all.2 fun j => (I d b).1 (b₂ j)] with v hD1 h21 hBC hCB O hO`.
+
+Conclude with `quad_at b b₂ D hb0 hD v hD1 h21 hBC hCB O hO`.
+-/
 theorem quad_ring : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E), IsCMExt F E σ → ∀ (d : ℕ) (b : Module.Basis (Fin d) F E), ∀ᶠ v : HeightOneSpectrum (𝓞 F) in Filter.cofinite, ∀ O : Subring (Fv F v ⊗[F] E), (∀ y, y ∈ O ↔ ∀ k, (Algebra.TensorProduct.basis (Fv F v) b).repr y k ∈ v.adicCompletionIntegers F) → ∃ (ι : v.adicCompletionIntegers F →+* O) (δ : O) (D : v.adicCompletionIntegers F), (δ * δ = ι D) ∧ (∀ y : O, ∃ p q : v.adicCompletionIntegers F, y = ι p + ι q * δ) ∧ (∀ p q : v.adicCompletionIntegers F, ι p + ι q * δ = 0 → p = 0 ∧ q = 0) ∧ IsUnit D ∧ IsUnit (2 : v.adicCompletionIntegers F) := by
   intro F E _ _ _ _ _ σ h d b
   have hinv : ∀ x, σ (σ x) = x := fun x => by

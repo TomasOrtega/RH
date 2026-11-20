@@ -2,11 +2,19 @@ import Mathlib
 
 namespace GlobalTheory.ModularLimit
 
+/- English proof (translation)
+Rewrite using `[SModEq.sub_mem, smul_eq_mul, Ideal.mul_top, Ideal.span_singleton_pow, Ideal.mem_span_singleton]`.
+-/
 theorem smodEq_iff_dvd {W : Type} [CommRing W] (x a b : W) (k : ℕ) :
     a ≡ b [SMOD ((Ideal.span {x}) ^ k • ⊤ : Submodule W W)] ↔ x ^ k ∣ a - b := by
   rw [SModEq.sub_mem, smul_eq_mul, Ideal.mul_top, Ideal.span_singleton_pow,
     Ideal.mem_span_singleton]
 
+/- English proof (translation)
+Proceed by induction on `n, hmn using Nat.le_induction with`. Consider the case `base => simp`. Consider the case `succ n hmn ih`. Establish `hstep : x ^ m ∣ f (n + 1) - f n` using `(pow_dvd_pow x hmn).trans (hf n)`. Establish `hsplit : f (n + 1) - f m = (f (n + 1) - f n) + (f n - f m)` using `by ring`.
+
+Rewrite using `[hsplit]`. Conclude with `dvd_add hstep ih`.
+-/
 theorem dvd_sub_of_le {W : Type} [CommRing W] (x : W) (f : ℕ → W)
     (hf : ∀ k : ℕ, x ^ k ∣ f (k + 1) - f k) {m n : ℕ} (hmn : m ≤ n) :
     x ^ m ∣ f n - f m := by
@@ -18,6 +26,11 @@ theorem dvd_sub_of_le {W : Type} [CommRing W] (x : W) (f : ℕ → W)
     rw [hsplit]
     exact dvd_add hstep ih
 
+/- English proof (translation)
+Take `⟨z, hz⟩` from `h.prec (f := f) (fun {m n} hmn => by`. Rewrite using `[smodEq_iff_dvd, dvd_sub_comm]`. Conclude with `dvd_sub_of_le x f hf hmn)`. Use `⟨z, fun k => ?_⟩` and prove the remaining obligations. Establish `hk` using `hz k`.
+
+Rewrite `hk` using `[smodEq_iff_dvd]`. Rewrite using `[dvd_sub_comm]` and apply the resulting hypothesis.
+-/
 theorem exists_limit {W : Type} [inst : CommRing W] (x : W)
     [h : IsPrecomplete (Ideal.span {x}) W] (f : ℕ → W)
     (hf : ∀ (k : ℕ), x ^ k ∣ f (k + (1 : ℕ)) - f k) :

@@ -7,6 +7,9 @@ namespace Formalism.HC
 def HasWindows (S : Set ℝ) (la : ℝ) : Prop :=
   ∀ y : ℝ, ∃ Y : ℝ, y ≤ Y ∧ ∀ x : ℝ, Y ≤ x → x ≤ Y ^ la → x ∈ S
 
+/- English proof (translation)
+Introduce `y`. Take `⟨Y, hyY, hY⟩` from `h (max y x0)`. Conclude with `⟨Y, (le_max_left _ _).trans hyY, fun x h1 h2 => hS x ((le_max_right _ _).trans (hyY.trans h1)) (hY x h1 h2)⟩`.
+-/
 theorem HasWindows.mono {S S' : Set ℝ} {la x0 : ℝ} (h : HasWindows S la) (hS : ∀ x ≥ x0, x ∈ S → x ∈ S') :
     HasWindows S' la := by
   intro y
@@ -14,6 +17,9 @@ theorem HasWindows.mono {S S' : Set ℝ} {la x0 : ℝ} (h : HasWindows S la) (hS
   exact ⟨Y, (le_max_left _ _).trans hyY,
     fun x h1 h2 => hS x ((le_max_right _ _).trans (hyY.trans h1)) (hY x h1 h2)⟩
 
+/- English proof (translation)
+Introduce `y` and use `⟨max y x0, le_max_left _ _, fun x h1 _ => h x ((le_max_right _ _).trans h1)⟩`.
+-/
 theorem hasWindows_of_large {S : Set ℝ} {x0 : ℝ} (h : ∀ x ≥ x0, x ∈ S) (la : ℝ) : HasWindows S la :=
   fun y => ⟨max y x0, le_max_left _ _, fun x h1 _ => h x ((le_max_right _ _).trans h1)⟩
 
@@ -34,6 +40,11 @@ def FormB : Prop := ∀ la : ℝ, 1 < la → Λ.FormBAt la
 
 variable {Λ}
 
+/- English proof (translation)
+Unfold `FormBAt at h ⊢`. Introduce `θ h0 h1 hw`. Apply `h θ h0 h1` to reduce the goal to its premises. Introduce `y`. Take `⟨Y, hyY, hY⟩` from `hw (max y 1)`.
+
+Use `⟨Y, (le_max_left _ _).trans hyY, fun x hx1 hx2 => hY x hx1 (hx2.trans ?_)⟩` and prove the remaining obligations. Conclude with `Real.rpow_le_rpow_of_exponent_le ((le_max_right _ _).trans hyY) hl`.
+-/
 theorem FormBAt.mono {la la' : ℝ} (h : Λ.FormBAt la) (hl : la ≤ la') : Λ.FormBAt la' := by
   unfold FormBAt at h ⊢
   intro θ h0 h1 hw

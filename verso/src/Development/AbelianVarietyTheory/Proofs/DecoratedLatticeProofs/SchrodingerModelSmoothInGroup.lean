@@ -43,12 +43,18 @@ def Induced (R : (GA D S → ℂ) → (GA D S → ℂ)) : Prop :=
 
 variable {ψ om θ} {χS χT : (AE D)ˣ →* Circle}
 
+/- English proof (translation)
+Introduce `f hf` and use `by obtain ⟨f₁, h₁, e₁⟩ := h' f hf obtain ⟨f₂, h₂, e₂⟩ := h f₁ h₁ exact ⟨f₂, h₂, fun L hL => by beta_reduce; rw [e₁ L hL, e₂ L hL]⟩`.
+-/
 theorem Induced.comp {R R' : (GA D S → ℂ) → (GA D S → ℂ)} (h : Induced ψ om θ R) (h' : Induced ψ om θ R') :
     Induced ψ om θ fun F => R (R' F) := fun f hf => by
   obtain ⟨f₁, h₁, e₁⟩ := h' f hf
   obtain ⟨f₂, h₂, e₂⟩ := h f₁ h₁
   exact ⟨f₂, h₂, fun L hL => by beta_reduce; rw [e₁ L hL, e₂ L hL]⟩
 
+/- English proof (translation)
+Introduce `f hf` and use `by obtain ⟨f₁, h₁, e₁⟩ := h f hf refine ⟨c • f₁, GlobalTheory.OrientedHeis.theta_smul c h₁, fun L hL => ?_⟩ beta_reduce rw [e₁ L hL] funext g rw [map_smul, hL.2.1 c _ (hω.om_pres _ _ h₁)] rfl`.
+-/
 theorem Induced.smul (hω : IsWeilDatumO ψ S T χS χT om) (c : ℂ) {R : (GA D S → ℂ) → (GA D S → ℂ)}
     (h : Induced ψ om θ R) : Induced ψ om θ fun F => c • R F := fun f hf => by
   obtain ⟨f₁, h₁, e₁⟩ := h f hf
@@ -59,6 +65,9 @@ theorem Induced.smul (hω : IsWeilDatumO ψ S T χS χT om) (c : ℂ) {R : (GA D
   rw [map_smul, hL.2.1 c _ (hω.om_pres _ _ h₁)]
   rfl
 
+/- English proof (translation)
+Introduce `f hf` and use `by obtain ⟨f₁, h₁, e₁⟩ := h f hf obtain ⟨f₂, h₂, e₂⟩ := h' f hf refine ⟨f₁ + f₂, GlobalTheory.OrientedHeis.theta_add h₁ h₂, fun L hL => ?_⟩ beta_reduce rw [e₁ L hL, e₂ L hL] funext g rw [map_add, hL.1 _ _ (hω.om_pres _ _ h₁) (hω.om_pres _ _ h₂)] rfl`.
+-/
 theorem Induced.add (hω : IsWeilDatumO ψ S T χS χT om) {R R' : (GA D S → ℂ) → (GA D S → ℂ)}
     (h : Induced ψ om θ R) (h' : Induced ψ om θ R') : Induced ψ om θ fun F => R F + R' F := fun f hf => by
   obtain ⟨f₁, h₁, e₁⟩ := h f hf

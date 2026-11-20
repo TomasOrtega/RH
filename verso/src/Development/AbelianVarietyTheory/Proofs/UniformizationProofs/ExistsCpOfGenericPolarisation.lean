@@ -22,6 +22,13 @@ open GlobalTheory.UU
 
 namespace GlobalTheory.SymExtend
 
+/- English proof (translation)
+Take `⟨t', ht', hv⟩` from `exists_gen hL (φ' := φ) (ε' := ε) (fun V _ k => by`. Establish `q` using `h0 V (fun χ => k (p ≫ χ))`. Use `Eq.trans (DVR.prod_sum₂ (K := K) (K' := K) (U := V) _ (c := ∏ i, k (φ i) ^ ε i) rfl (DVR.prod_neg _ _ ((Finset.prod_congr rfl fun i _ => by show k ((p ≫ e) ≫ _) ^ _ = _` and prove the remaining obligations. Rewrite using `[Category.assoc]).trans q))) ?_`. Use the proof step `simp)`.
+
+Use the proof step `(LB.mulGen L _ _ _ _ t (LB.invGen L _ _ (LB.pullGen L _ _ t (p ≫ e))))`. Use the proof step `(DVR.mulGen_isGen _ _ _ _ _ _ _ ht (DVR.invGen_isGen _ _ _ _ (DVR.pullGen_isGen _ _ _ _ ht _)))`. Use `⟨t', ht', fun Z b z J hJ => ?_⟩` and prove the remaining obligations. Establish `: (b ≫ e) ≫ p ≫ e = b ≫ e`. Rewrite using `[Category.assoc, ← Category.assoc e, he, Category.id_comp]`.
+
+Rewrite using `[hv Z _ z J hJ, val_mul hJ, val_inv, val_pull hJ, this, mul_inv_cancel]`.
+-/
 theorem exists_normalised {X Y S : Scheme.{0}} {L : LB X} (hL : L.IsLB) {K : Type} [Fintype K]
     {φ : K → (Y ⟶ X)} {ε : K → ℤ} (p : Y ⟶ S) (e : S ⟶ Y) (he : e ≫ p = 𝟙 S)
     (h0 : ∀ (U : Type) [CommGroup U] (h : (S ⟶ X) → U), ∏ k, h (e ≫ φ k) ^ ε k = 1)
@@ -44,6 +51,9 @@ theorem exists_normalised {X Y S : Scheme.{0}} {L : LB X} (hL : L.IsLB) {K : Typ
     rw [Category.assoc, ← Category.assoc e, he, Category.id_comp]
   rw [hv Z _ z J hJ, val_mul hJ, val_inv, val_pull hJ, this, mul_inv_cancel]
 
+/- English proof (translation)
+The claim follows from `(prod_sym (η[G]) h).trans (by have e : (η[G])⁻¹ = η[G] := (GrpObj.one_inv : η[G] ≫ ι[G] = η[G]) rw [e, mul_inv_cancel])`.
+-/
 theorem prod_sym_unit {S : Scheme.{0}} (G : Over S) [GrpObj G] [IsCommMonObj G] (U : Type) [CommGroup U]
     (h : (S ⟶ G.left) → U) :
     ∏ k : Fin 2, h (eSec G ≫ ![(ι[G]).left, 𝟙 G.left] k) ^ (![1, -1] : Fin 2 → ℤ) k = 1 :=
@@ -51,6 +61,9 @@ theorem prod_sym_unit {S : Scheme.{0}} (G : Over S) [GrpObj G] [IsCommMonObj G] 
     have e : (η[G])⁻¹ = η[G] := (GrpObj.one_inv : η[G] ≫ ι[G] = η[G])
     rw [e, mul_inv_cancel])
 
+/- English proof (translation)
+Use `fin_cases k`. Use `inv_left_comp mul (𝟙 G')` as an intermediate fact. Rewrite `this` using `[Hom.inv_def, Category.id_comp]`. Conclude with `this.trans (congrArg (· ≫ _) (Category.id_comp F))`. Conclude with `(Category.id_comp _).trans (Category.comp_id _).symm`.
+-/
 theorem sym_comp {S S' : Scheme.{0}} {G : Over S} {G' : Over S'} [GrpObj G] [IsCommMonObj G] [GrpObj G']
     [IsCommMonObj G'] {f : S' ⟶ S} {F : G'.left ⟶ G.left} {hw : F ≫ G.hom = G'.hom ≫ f}
     (mul : ∀ (T : Over S') (x y : T ⟶ G'), toBase hw (x * y) = toBase hw x * toBase hw y) (k : Fin 2) :
@@ -61,6 +74,11 @@ theorem sym_comp {S S' : Scheme.{0}} {G : Over S} {G' : Over S'} [GrpObj G] [IsC
     exact this.trans (congrArg (· ≫ _) (Category.id_comp F))
   · exact (Category.id_comp _).trans (Category.comp_id _).symm
 
+/- English proof (translation)
+Establish `: IsDominant (jK R)` using `⟨(PrimeSpectrum.denseRange_comap_iff_ker_le_nilRadical _).2 (((RingHom.injective_iff_ker_eq_bot _).1 (IsFractionRing.injective R (FractionRing R))).le.trans bot_le)⟩`. Use `IsSchemeTheoreticallyDominant.of_isDominant (jK R)` as an intermediate fact. Establish `hg : IsPullback (gen.inv.left ≫ pullback.fst G.hom (jK R)) A.hom G.hom (jK R)`. Establish `: IsIso gen.inv.left` using `inferInstanceAs (IsIso ((Over.forget _).map gen.inv))`. Establish `s : IsPullback gen.inv.left A.hom (pullback.snd G.hom (jK R)) (𝟙 _)` using `IsPullback.of_horiz_isIso ⟨(Over.w gen.inv).trans (Category.comp_id _).symm⟩`.
+
+Simplify using `using s.paste_horiz (IsPullback.of_hasPullback G.hom (jK R))`. Establish `s₁ : Function.Surjective G.hom.appTop.hom` using `RigidIsoCube.surjective_appTop_of_baseChange hg (eSec G) (Over.w η[G]) (hG _ _ hA).2`. Establish `: Flat (G ⊗ G).hom` using `by rw [Over.tensorObj_hom]; infer_instance`. Establish `sj : Function.Surjective ((snd G (G ⊗ G)).left ≫ (snd G G).left ≫ G.hom).appTop.hom` using `surj_comp (RigidIsoCube.surjective_snd_of_generic hG (jK R) G hA hg _) (surj_comp (RigidIsoCube.surjective_snd_of_generic hG (jK R) G hA hg _) s₁)`. Rewrite `sj` using `[Over.w, Over.w]`. Then use the resulting hypothesis.
+-/
 theorem surjective_cube_of_generic (hG : GlobalFnsSt) {R : Type} [CommRing R] [IsDomain R]
     (G : Over (Spec (CommRingCat.of R))) [GrpObj G] [IsCommMonObj G] [Flat G.hom]
     {A : Over (Spec (CommRingCat.of (FractionRing R)))} [GrpObj A] (hA : IsAbelianScheme A)
@@ -81,6 +99,13 @@ theorem surjective_cube_of_generic (hG : GlobalFnsSt) {R : Type} [CommRing R] [I
       (surj_comp (RigidIsoCube.surjective_snd_of_generic hG (jK R) G hA hg _) s₁)
   rwa [Over.w, Over.w] at sj
 
+/- English proof (translation)
+Use `A.isAb.comm` as an intermediate fact. Set `G' : Over (Spec (CommRingCat.of (FractionRing V)))` to `(Over.pullback (jK V)).obj G`. Set `j : pullback G.hom (jK V) ⟶ G.left` to `pullback.fst G.hom (jK V)`. Take `⟨u, hu⟩` from `exists_gen_neg_of_sym hG A.isAb A.isLB A.sym`. Take `⟨a, ha, -⟩` from `CubTransport.exists_pmaps ((isGen_iff _).1 (pullIso_isGen A.isLB gen.hom.left)) A.isLB (pull_isLB A.isLB _) gen.hom.left (sym_comp (f := 𝟙 _) (hw := by simp) (toBase_mul_of_isMonHom gen.hom _)) u hu`.
+
+Take `⟨t₀, ht₀, -⟩` from `exists_up ((isGen_iff _).1 hw) hL (pull_isLB A.isLB _) a ha`. Take `⟨t₁, ht₁, -⟩` from `exists_gen hL (φ' := fun k => j ≫ (![(ι[G]).left, 𝟙 G.left] : Fin 2 → _) k) (ε' := ![1, -1]) (fun U _ h => Finset.prod_congr rfl fun k _ => congrArg (fun q => h q ^ _) (sym_comp (toBase_mul_pullback G (jK V)) k)) t₀ ht₀`. Establish `e₂ : eSec G' ≫ j = jK V ≫ eSec G` using `(cubeMapOf (isGrpPullback_pullback G (jK V))).e_comm`. Take `⟨t, ht, hv⟩` from `exists_normalised hL G'.hom (eSec G') (Over.w η[G']) (fun U _ h => by`. Use `Eq.trans (Finset.prod_congr rfl fun k _ => ?_) (prod_sym_unit G U fun q => h (jK V ≫ q))` and prove the remaining obligations.
+
+Conclude with `congrArg (fun q => h q ^ _) ((Category.assoc _ _ _).symm.trans ((congrArg (· ≫ _) e₂).trans (Category.assoc _ _ _)))) t₁ ht₁`. Take `⟨ρ, hρ, hρv⟩` from `exists_gen hL (φ' := fun k => eSec G ≫ (![(ι[G]).left, 𝟙 G.left] : Fin 2 → _) k) (ε' := ![1, -1]) (fun U _ h => (Fintype.prod_empty _).trans (prod_sym_unit G U h).symm) (LB.oneGen L) (LB.isGen_oneGen L)`. Take `⟨s₀, ⟨hs₀, -⟩, -⟩` from `GenExtend.existsUnique_gen_extend V (FractionRing V) G.left G.left G.hom (eSec G) inferInstance (forall_geometricallyIntegral_of_smooth_of_geometricallyConnected _ _ _ inferInstance inferInstance) (Over.w η[G]) (eSec G') e₂ L hL (Fin 2) _ _ t ρ ht hρ (corr_of_val hL fun y J hJ => …`. Take `⟨s, hs, hsv⟩` from `exists_normalised hL G.hom (eSec G) (Over.w η[G]) (prod_sym_unit G) s₀ hs₀`. Conclude with `⟨s, hs, corr_of_val hL fun y J hJ => ((val_pull hJ s _ _).trans (hsv _ _ y J hJ)).trans (val_one _).symm⟩`.
+-/
 theorem exists_sym (hG : GlobalFnsSt) (V : Type) [CommRing V] [IsDomain V] [IsDiscreteValuationRing V]
     (A : PolAV (Spec (CommRingCat.of (FractionRing V)))) (G : Over (Spec (CommRingCat.of V))) [GrpObj G]
     [IsCommMonObj G] [Smooth G.hom] [GeometricallyConnected G.hom] (gen : (Over.pullback (jK V)).obj G ≅ A.A)
@@ -120,6 +145,11 @@ end GlobalTheory.SymExtend
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Introduce `hL V _ _ _ hV A G _ _ hG gen hgen LG c w hw`. Use `hV.1` as an intermediate fact. Use `hG.smooth` as an intermediate fact. Use `hG.geomConnected` as an intermediate fact. Take `⟨s, hs, hr⟩` from `SymExtend.exists_sym hL.globalFns V A G gen LG.L LG.isLB w hw`.
+
+Conclude with `⟨CP.ofSurjective (SymExtend.surjective_cube_of_generic hL.globalFns G A.isAb gen) LG c s hs hr, rfl, HEq.rfl⟩`.
+-/
 theorem exists_cp_of_generic_polarisation : Laws → ∀ (V : Type) [CommRing V] [IsDomain V] [IsLocalRing V], CDVR V → ∀ (A : PolAV (Spec (CommRingCat.of (FractionRing V)))) (G : Over (Spec (CommRingCat.of V))) [GrpObj G] [IsCommMonObj G], IsSemiAbelian G → ∀ (gen : (Over.pullback (jK V)).obj G ≅ A.A), IsMonHom gen.hom → ∀ (LG : RigLB G) (c : CubicalStr G LG) (w : LB.Iso (A.L.pull gen.hom.left) (LG.L.pull (pullback.fst G.hom (jK V)))), w.IsGen → ∃ P : CP G, P.L = LG ∧ HEq P.c c := by
   intro hL V _ _ _ hV A G _ _ hG gen hgen LG c w hw
   have := hV.1

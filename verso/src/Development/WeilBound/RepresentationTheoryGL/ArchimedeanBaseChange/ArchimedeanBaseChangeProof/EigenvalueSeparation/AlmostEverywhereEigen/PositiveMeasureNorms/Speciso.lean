@@ -19,6 +19,11 @@ def Lmap (π : C(S, ℂ) →⋆ₐ[ℂ] (K →L[ℂ] K)) (v : K) : C(S, ℂ) →
   map_add' f g := by simp
   map_smul' c f := by simp
 
+/- English proof (translation)
+Rewrite using `[MeasureTheory.L2.inner_def]`. Establish `h1 : inner ℂ (π f v) (π f v) = ∫ s, (star f * f) s ∂ν`. Rewrite using `[hν, map_mul, map_star, ContinuousLinearMap.mul_apply, ContinuousLinearMap.star_eq_adjoint, ContinuousLinearMap.adjoint_inner_right]`. Rewrite using `[h1]`. Apply `integral_congr_ae` to reduce the goal to its premises.
+
+Use `filter_upwards [ContinuousMap.coeFn_toLp (p := 2) (𝕜 := ℂ) (μ := ν) f] with s hs`. Rewrite using `[hs]`. Simplify using `[Complex.conj_mul']`.
+-/
 lemma inner_L (π : C(S, ℂ) →⋆ₐ[ℂ] (K →L[ℂ] K)) (v : K) (ν : Measure S) [IsFiniteMeasure ν]
     (hν : ∀ f : C(S, ℂ), ∫ s, f s ∂ν = inner ℂ v (π f v)) (f : C(S, ℂ)) :
     inner ℂ (π f v) (π f v) =
@@ -33,6 +38,9 @@ lemma inner_L (π : C(S, ℂ) →⋆ₐ[ℂ] (K →L[ℂ] K)) (v : K) (ν : Meas
   rw [hs]
   simp [Complex.conj_mul']
 
+/- English proof (translation)
+Establish `h` using `congrArg RCLike.re (inner_L π v ν hν f)`. Rewrite `h` using `[inner_self_eq_norm_sq, inner_self_eq_norm_sq]`. Conclude with `(pow_left_inj₀ (norm_nonneg _) (norm_nonneg _) two_ne_zero).1 h`.
+-/
 lemma norm_L (π : C(S, ℂ) →⋆ₐ[ℂ] (K →L[ℂ] K)) (v : K) (ν : Measure S) [IsFiniteMeasure ν]
     (hν : ∀ f : C(S, ℂ), ∫ s, f s ∂ν = inner ℂ v (π f v)) (f : C(S, ℂ)) :
     ‖Lmap π v f‖ = ‖ContinuousMap.toLp (E := ℂ) 2 ν ℂ f‖ := by
@@ -43,6 +51,23 @@ lemma norm_L (π : C(S, ℂ) →⋆ₐ[ℂ] (K →L[ℂ] K)) (v : K) (ν : Measu
 end Speciso
 
 open Speciso in
+/- English proof (translation)
+Introduce `K _ _ _ S _ _ _ _ _ π v ν _ _ hν`. Use `set e : C(S, ℂ) →L[ℂ] Lp ℂ 2 ν := ContinuousMap.toLp (E := ℂ) 2 ν ℂ with he`. Establish `hd : DenseRange e` using `ContinuousMap.toLp_denseRange ℂ ν ℂ (p := 2) (by simp)`. Establish `hcoe : ∀ g, (e g : S → ℂ) =ᵐ[ν] g` using `fun g => ContinuousMap.coeFn_toLp (p := 2) (𝕜 := ℂ) (μ := ν) g`. Establish `hn : ∀ f, ‖Lmap π v f‖ = ‖e.toLinearMap f‖` using `fun f => norm_L π v ν hν f`.
+
+Establish `hb : ∃ C, ∀ f, ‖Lmap π v f‖ ≤ C * ‖e.toLinearMap f‖` using `⟨1, fun f => by rw [hn, one_mul]⟩`. Establish `hdl : DenseRange e.toLinearMap` using `hd`. Set `V : Lp ℂ 2 ν →L[ℂ] K` to `(Lmap π v).extendOfNorm e.toLinearMap`. Establish `hVe : ∀ f, V (e f) = π f v` using `fun f => LinearMap.extendOfNorm_eq hdl hb f`. Use `⟨V, fun h => ?_, fun f h h' hh' => ?_⟩` and prove the remaining obligations.
+
+Use `hd.induction_on (p := fun h => ‖V h‖ = ‖h‖) h (isClosed_eq (continuous_norm.comp V.continuous) continuous_norm) ?_` and prove the remaining obligations. Introduce `g`. Use `show ‖V (e g)‖ = ‖e g‖`. Rewrite using `[hVe]`. Conclude with `hn g`.
+
+Set `F : Lp ℂ ∞ ν` to `ContinuousMap.toLp (E := ℂ) ∞ ν ℂ f`. Establish `hF : (F : S → ℂ) =ᵐ[ν] f` using `ContinuousMap.coeFn_toLp (p := ∞) (𝕜 := ℂ) (μ := ν) f`. Set `M : Lp ℂ 2 ν →L[ℂ] Lp ℂ 2 ν` to `(ContinuousLinearMap.mul ℂ ℂ).holderL ν ∞ 2 2 F`. Establish `hM : ∀ g, (M g : S → ℂ) =ᵐ[ν] fun s => f s * g s`. Introduce `g`.
+
+Establish `h1 : (M g : S → ℂ) =ᵐ[ν] fun s => (ContinuousLinearMap.mul ℂ ℂ) (F s) (g s)` using `(ContinuousLinearMap.mul ℂ ℂ).coeFn_holder (r := 2) F g`. Use `filter_upwards [h1, hF] with s hs hFs`. Rewrite using `[hs, ContinuousLinearMap.mul_apply', hFs]`. Establish `key : ∀ g, V (M g) = π f (V g)`. Introduce `g`.
+
+Use `hd.induction_on (p := fun g => V (M g) = π f (V g)) g (isClosed_eq (V.continuous.comp M.continuous) ((π f).continuous.comp V.continuous)) ?_` and prove the remaining obligations. Introduce `g`. Establish `: M (e g) = e (f * g)`. Apply `Lp.ext` to reduce the goal to its premises. Use `filter_upwards [hM (e g), hcoe g, hcoe (f * g)] with s h1 h2 h3`.
+
+Rewrite using `[h1, h2, h3]`. Both sides reduce to the same expression. Use `show V (M (e g)) = π f (V (e g))`. Rewrite using `[this, hVe, hVe, map_mul, ContinuousLinearMap.mul_apply]`. Establish `: h' = M h`.
+
+Apply `Lp.ext` to reduce the goal to its premises. Use `filter_upwards [hh', hM h] with s h1 h2`. Rewrite using `[h1, h2]`. Rewrite using `[this, key]`.
+-/
 theorem speciso : SpecIso := by
   intro K _ _ _ S _ _ _ _ _ π v ν _ _ hν
   set e : C(S, ℂ) →L[ℂ] Lp ℂ 2 ν := ContinuousMap.toLp (E := ℂ) 2 ν ℂ with he

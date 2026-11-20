@@ -102,6 +102,9 @@ def harmonicProductFamily : Set (∀ o, MvPolynomial (Fin n × WV (IIof r tau o)
 
 variable {J : Orb → Fin 2 → Type} [∀ o g, Fintype (J o g)]
 
+/- English proof (translation)
+Introduce `L off wt pl plinj`. Establish `H : ConjugatePairPlaceSetting r cc a tau X F Z ga n L pl` using `⟨inj, conj, conj', hty, std, dich, hj, supp, off, wt, tie, plinj⟩`. Conclude with `⟨⟨h1 C V d T r cc a Orb tau J X F Z ga n L pl H isX, h2 C V d T r cc a Orb tau J X F Z ga n L pl H, h3 C V d T r cc a Orb tau J X F Z ga n L pl H⟩, h4 C V d T r cc a Orb tau J X F Z ga n L pl H O⟩`.
+-/
 theorem block_membership_norm_one (h1 : NormOneHarmonic) (h2 : NormOneLineInvariant) (h3 : NormOneLineDegrees) (h4 : NormOneIntegral)
     (X : ∀ o, RowData C V d (IIof r tau o) (J o)) (F : ∀ o, Flag (X o)) (Z : Finset Orb)
     (ga : Orb → Fin 2 → ZMod d → ℕ → ℕ)

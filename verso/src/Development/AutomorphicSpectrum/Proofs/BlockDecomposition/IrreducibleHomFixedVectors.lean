@@ -11,11 +11,19 @@ section Generic
 
 variable {G : Type} [Group G]
 
+/- English proof (translation)
+Use `hv ⟨c, hc⟩` as an intermediate fact. Simplify using `using this`.
+-/
 theorem fix_of_mem {V : Type} [AddCommGroup V] [Module ℂ V] {ρ : Representation ℂ G V} {K : Subgroup G}
     {v : V} (hv : v ∈ fixed ρ K) {c : G} (hc : c ∈ K) : ρ c v = v := by
   have := hv ⟨c, hc⟩
   simpa using this
 
+/- English proof (translation)
+Set `S : Subrepresentation ρ` to `{ toSubmodule := N, apply_mem_toSubmodule := fun g v hv => hN g v hv }`. Break down `hρ.eq_bot_or_eq_top S with h | h` into its components or cases. It suffices to derive a contradiction. Establish `h1 : w ∈ S.toSubmodule` using `hw`. Rewrite `h1` using `[h]`.
+
+Conclude with `h0 h1`. Conclude with `congrArg Subrepresentation.toSubmodule h`.
+-/
 theorem eq_top_of_inv {V : Type} [AddCommGroup V] [Module ℂ V] {ρ : Representation ℂ G V}
     (hρ : ρ.IsIrreducible) (N : Submodule ℂ V) (hN : ∀ g, ∀ v ∈ N, ρ g v ∈ N) {w : V} (hw : w ∈ N)
     (h0 : w ≠ 0) : N = ⊤ := by
@@ -31,11 +39,17 @@ def act {V M : Type} [AddCommGroup V] [Module ℂ V] [AddCommGroup M] [Module �
     (ρ : Representation ℂ G V) (A : M →ₗ[ℂ] V) : (G →₀ M) →ₗ[ℂ] V :=
   Finsupp.lsum ℂ fun g => ρ g ∘ₗ A
 
+/- English proof (translation)
+Simplify using `[act]`.
+-/
 theorem act_single {V M : Type} [AddCommGroup V] [Module ℂ V] [AddCommGroup M] [Module ℂ M]
     (ρ : Representation ℂ G V) (A : M →ₗ[ℂ] V) (g : G) (m : M) :
     act ρ A (Finsupp.single g m) = ρ g (A m) := by
   simp [act]
 
+/- English proof (translation)
+Establish `: act ρ A ∘ₗ Finsupp.lmapDomain M ℂ (fun g => h * g) = ρ h ∘ₗ act ρ A`. Use `Finsupp.lhom_ext fun a b => ?_` and prove the remaining obligations. Simplify using `[act_single, Finsupp.mapDomain_single]`. Conclude with `LinearMap.congr_fun this x`.
+-/
 theorem act_translate {V M : Type} [AddCommGroup V] [Module ℂ V] [AddCommGroup M] [Module ℂ M]
     (ρ : Representation ℂ G V) (A : M →ₗ[ℂ] V) (h : G) (x : G →₀ M) :
     act ρ A (Finsupp.lmapDomain M ℂ (fun g => h * g) x) = ρ h (act ρ A x) := by
@@ -48,6 +62,9 @@ def avg {V : Type} [AddCommGroup V] [Module ℂ V] (ρ : Representation ℂ G V)
     [Fintype (K ⧸ L.subgroupOf K)] : V →ₗ[ℂ] V :=
   ∑ q : K ⧸ L.subgroupOf K, ρ ((q.out : K) : G)
 
+/- English proof (translation)
+Simplify using `only [avg, LinearMap.sum_apply]`. Rewrite using `[Finset.sum_congr rfl fun q _ => fix_of_mem hv (q.out : K).2]`. Simplify using `[Nat.cast_smul_eq_nsmul]`.
+-/
 theorem avg_of_fixed {V : Type} [AddCommGroup V] [Module ℂ V] (ρ : Representation ℂ G V) (K L : Subgroup G)
     [Fintype (K ⧸ L.subgroupOf K)] {v : V} (hv : v ∈ fixed ρ K) :
     avg ρ K L v = (Fintype.card (K ⧸ L.subgroupOf K) : ℂ) • v := by
@@ -60,11 +77,23 @@ def cosetFn (K L : Subgroup G) [Fintype (K ⧸ L.subgroupOf K)] (g x : G) : ℂ 
   ∑ q : K ⧸ L.subgroupOf K,
     if (QuotientGroup.mk x : G ⧸ K) = QuotientGroup.mk (((q.out : K) : G) * g) then 1 else 0
 
+/- English proof (translation)
+Unfold `cosetFn`. Rewrite using `[QuotientGroup.mk_mul_of_mem x hk]`.
+-/
 theorem cosetFn_right (K L : Subgroup G) [Fintype (K ⧸ L.subgroupOf K)] (g x : G) {k : G} (hk : k ∈ K) :
     cosetFn K L g (x * k) = cosetFn K L g x := by
   unfold cosetFn
   rw [QuotientGroup.mk_mul_of_mem x hk]
 
+/- English proof (translation)
+Unfold `cosetFn`. Set `kk : K` to `⟨k, hk⟩`. Use `Fintype.sum_equiv (MulAction.toPerm kk⁻¹ : Equiv.Perm (K ⧸ L.subgroupOf K)) _ _ fun q => ?_` and prove the remaining obligations. Establish `hq : (MulAction.toPerm kk⁻¹ : Equiv.Perm (K ⧸ L.subgroupOf K)) q = (QuotientGroup.mk (kk⁻¹ * q.out) : K ⧸ L.subgroupOf K)` using `by conv_lhs => rw [← QuotientGroup.out_eq' q]`. Both sides reduce to the same expression.
+
+Take `⟨c, hc⟩` from `QuotientGroup.mk_out_eq_mul (L.subgroupOf K) (kk⁻¹ * q.out)`. Establish `hcL : ((c : K) : G) ∈ L` using `Subgroup.mem_subgroupOf.1 c.2`. Establish `hmk : (QuotientGroup.mk (((((MulAction.toPerm kk⁻¹ : Equiv.Perm (K ⧸ L.subgroupOf K)) q).out : K) : G) * g) : G ⧸ K) = QuotientGroup.mk (k⁻¹ * (((q.out : K) : G) * g))`. Rewrite using `[hq, hc, QuotientGroup.eq]`. Use `hL _ (L.inv_mem hcL)` as an intermediate fact.
+
+Simplify `this` using `[kk, mul_assoc]`. Establish `hiff : ((QuotientGroup.mk (k * x) : G ⧸ K) = QuotientGroup.mk (((q.out : K) : G) * g)) ↔ ((QuotientGroup.mk x : G ⧸ K) = QuotientGroup.mk (k⁻¹ * (((q.out : K) : G) * g)))`. Rewrite using `[QuotientGroup.eq, QuotientGroup.eq]`. Simplify using `[mul_assoc]`. Rewrite using `[hmk]`.
+
+Simplify using `only [hiff]`.
+-/
 theorem cosetFn_left (K L : Subgroup G) [Fintype (K ⧸ L.subgroupOf K)] (g : G)
     (hL : ∀ l ∈ L, g⁻¹ * l * g ∈ K) (x : G) {k : G} (hk : k ∈ K) :
     cosetFn K L g (k * x) = cosetFn K L g x := by
@@ -97,6 +126,13 @@ section Hecke
 variable {F : Type} [Field F] [ValuativeRel F] [TopologicalSpace F] [IsNonarchimedeanLocalField F]
   {ι : Type} [Fintype ι] [DecidableEq ι]
 
+/- English proof (translation)
+Use `⟨hKo, hKc, ?_, fun k₁ h₁ k₂ h₂ x => ?_⟩` and prove the remaining obligations. Set `C : Set (GL ι F)` to `⋃ q : K ⧸ L.subgroupOf K, (fun y => (((q.out : K) : GL ι F) * g) * y) '' (K : Set (GL ι F))`. Establish `hC : IsCompact C` using `isCompact_iUnion fun q => hKc.image (continuous_const.mul continuous_id)`. Use `HasCompactSupport.of_support_subset_isCompact hC fun x hx => ?_` and prove the remaining obligations. Choose the witnesses or unpack the hypotheses as in `⟨q, hq⟩ : ∃ q : K ⧸ L.subgroupOf K, (QuotientGroup.mk x : GL ι F ⧸ K) = QuotientGroup.mk (((q.out : K) : GL ι F) * g) := by`.
+
+Assume the negation of the conclusion as `h`. Use `push_neg at h`. Use `(Function.mem_support.1 hx) ?_` and prove the remaining obligations. Unfold `cosetFn`. Conclude with `Finset.sum_eq_zero fun q _ => if_neg (h q)`.
+
+Use `Set.mem_iUnion.2 ⟨q, _, QuotientGroup.eq.1 hq.symm, ?_⟩` and prove the remaining obligations. Use `group`. Rewrite using `[cosetFn_right K L g _ h₂, cosetFn_left K L g hL _ h₁]`.
+-/
 theorem isHk_cosetFn {K L : Subgroup (GL ι F)} [Fintype (K ⧸ L.subgroupOf K)]
     (hKo : IsOpen (K : Set (GL ι F))) (hKc : IsCompact (K : Set (GL ι F))) (g : GL ι F)
     (hL : ∀ l ∈ L, g⁻¹ * l * g ∈ K) : IsHk K (cosetFn K L g) := by
@@ -116,6 +152,17 @@ theorem isHk_cosetFn {K L : Subgroup (GL ι F)} [Fintype (K ⧸ L.subgroupOf K)]
     group
   · rw [cosetFn_right K L g _ h₂, cosetFn_left K L g hL _ h₁]
 
+/- English proof (translation)
+Establish `step : ∀ p : GL ι F ⧸ K, cosetFn K L g p.out • ρ p.out v = ∑ q : K ⧸ L.subgroupOf K, if p = QuotientGroup.mk (((q.out : K) : GL ι F) * g) then ρ (((q.out : K) : GL ι F) * g) v else 0`. Introduce `p`. Unfold `cosetFn`. Rewrite using `[Finset.sum_smul]`. Use `Finset.sum_congr rfl fun q _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[QuotientGroup.out_eq']`. Use `split_ifs with h`. Take `⟨c, hc⟩` from `QuotientGroup.mk_out_eq_mul K (((q.out : K) : GL ι F) * g)`. Rewrite using `[one_smul, h, hc, map_mul, Module.End.mul_apply, fix_of_mem hv c.2]`. Rewrite using `[zero_smul]`.
+
+Unfold `hk`. Rewrite using `[finsum_congr step, finsum_sum_comm]`. Simplify using `only [avg, LinearMap.sum_apply]`. Use `Finset.sum_congr rfl fun q _ => ?_` and prove the remaining obligations. Rewrite using `[finsum_eq_single _ (QuotientGroup.mk (((q.out : K) : GL ι F) * g))]`.
+
+Simplify using `[map_mul, Module.End.mul_apply]`. Introduce `p hp`. Conclude with `if_neg hp`. Introduce `q _`. Use `(Set.finite_singleton (QuotientGroup.mk (((q.out : K) : GL ι F) * g) : GL ι F ⧸ K)).subset ?_` and prove the remaining obligations.
+
+Introduce `p hp`. Assume the negation of the conclusion as `h`. Conclude with `(Function.mem_support.1 hp) (if_neg h)`.
+-/
 theorem hk_cosetFn {K L : Subgroup (GL ι F)} [Fintype (K ⧸ L.subgroupOf K)] (g : GL ι F)
     {V : Type} [AddCommGroup V] [Module ℂ V] (ρ : Representation ℂ (GL ι F) V) {v : V} (hv : v ∈ fixed ρ K) :
     hk ρ K (cosetFn K L g) v = avg ρ K L (ρ g v) := by
@@ -146,6 +193,13 @@ theorem hk_cosetFn {K L : Subgroup (GL ι F)} [Fintype (K ⧸ L.subgroupOf K)] (
     by_contra h
     exact (Function.mem_support.1 hp) (if_neg h)
 
+/- English proof (translation)
+Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => exact ⟨K, hKo, le_rfl, by simp⟩`. Consider the case `insert a s _ ih`. Take `⟨L, hLo, hLK, hL⟩` from `ih`. Set `C : Subgroup (GL ι F)` to `K.comap (MulAut.conj a⁻¹).toMonoidHom`.
+
+Establish `hC : IsOpen (C : Set (GL ι F))`. Establish `hcont : Continuous fun l : GL ι F => a⁻¹ * l * a⁻¹⁻¹` using `(continuous_const.mul continuous_id).mul continuous_const`. Conclude with `hKo.preimage hcont`. Use `⟨L ⊓ C, hLo.inter hC, inf_le_left.trans hLK, fun g hg l hl => ?_⟩` and prove the remaining obligations. Break down `Finset.mem_insert.1 hg with rfl | hg` into its components or cases.
+
+Use `hl.2` as an intermediate fact. Simplify `this` using `[C, Subgroup.mem_comap]`. Conclude with `hL g hg l hl.1`.
+-/
 theorem exists_open_sub {K : Subgroup (GL ι F)} (hKo : IsOpen (K : Set (GL ι F))) (s : Finset (GL ι F)) :
     ∃ L : Subgroup (GL ι F), IsOpen (L : Set (GL ι F)) ∧ L ≤ K ∧ ∀ g ∈ s, ∀ l ∈ L, g⁻¹ * l * g ∈ K := by
   classical
@@ -164,11 +218,21 @@ theorem exists_open_sub {K : Subgroup (GL ι F)} (hKo : IsOpen (K : Set (GL ι F
       simpa [C, Subgroup.mem_comap] using this
     · exact hL g hg l hl.1
 
+/- English proof (translation)
+Use `haveI : CompactSpace K := isCompact_iff_compactSpace.1 hKc`. Conclude with `Subgroup.quotient_finite_of_isOpen _ (hLo.preimage continuous_subtype_val)`.
+-/
 theorem finite_quot {K L : Subgroup (GL ι F)} (hKc : IsCompact (K : Set (GL ι F)))
     (hLo : IsOpen (L : Set (GL ι F))) : Finite (K ⧸ L.subgroupOf K) := by
   haveI : CompactSpace K := isCompact_iff_compactSpace.1 hKc
   exact Subgroup.quotient_finite_of_isOpen _ (hLo.preimage continuous_subtype_val)
 
+/- English proof (translation)
+Take `⟨L, hLo, -, hL⟩` from `exists_open_sub hKo x.support`. Use `haveI := finite_quot hKc hLo`. Use `letI : Fintype (K ⧸ L.subgroupOf K) := Fintype.ofFinite _`. Establish `hcard : (Fintype.card (K ⧸ L.subgroupOf K) : ℂ) ≠ 0` using `Nat.cast_ne_zero.2 Fintype.card_ne_zero`. Establish `key : avg τ K L (act τ (T ∘ₗ (fixed π K).subtype) x) = T (avg π K L (act π (fixed π K).subtype x))`.
+
+Simplify using `only [act, Finsupp.coe_lsum, Finsupp.sum, map_sum]`. Use `Finset.sum_congr rfl fun g hg => ?_` and prove the remaining obligations. Establish `h1` using `hT _ (isHk_cosetFn hKo hKc g (hL g hg)) _ (x g).2`. Rewrite `h1` using `[hk_cosetFn g π (x g).2, hk_cosetFn g τ (hfix _ (x g).2)]`. Simplify using `using h1.symm`.
+
+Rewrite `key` using `[ha, map_zero, map_zero, avg_of_fixed τ K L hb]`. Conclude with `(smul_eq_zero.1 key).resolve_left hcard`.
+-/
 theorem eq_zero_of_rel {K : Subgroup (GL ι F)} (hKo : IsOpen (K : Set (GL ι F))) (hKc : IsCompact (K : Set (GL ι F)))
     {V W : Type} [AddCommGroup V] [Module ℂ V] [AddCommGroup W] [Module ℂ W]
     (π : Representation ℂ (GL ι F) V) (τ : Representation ℂ (GL ι F) W) (T : V →ₗ[ℂ] W)
@@ -192,6 +256,29 @@ theorem eq_zero_of_rel {K : Subgroup (GL ι F)} (hKo : IsOpen (K : Set (GL ι F)
   rw [ha, map_zero, map_zero, avg_of_fixed τ K L hb] at key
   exact (smul_eq_zero.1 key).resolve_left hcard
 
+/- English proof (translation)
+Introduce `F _ _ _ _ ι _ _ K hKo hKc V W _ _ _ _ π τ _ hπ _ hτ ⟨v₀, hv₀, hv₀0⟩ T hfix _ hinj hT`. Use `set a := act π (fixed π K).subtype with ha_def`. Use `set b := act τ (T ∘ₗ (fixed π K).subtype) with hb_def`. Set `tr : GL ι F → (GL ι F →₀ fixed π K) →ₗ[ℂ] (GL ι F →₀ fixed π K)` to `fun h => Finsupp.lmapDomain (fixed π K) ℂ (fun g => h * g)`. Establish `hatr : ∀ h x, a (tr h x) = π h (a x)` using `fun h x => act_translate π _ h x`.
+
+Establish `hbtr : ∀ h x, b (tr h x) = τ h (b x)` using `fun h x => act_translate τ _ h x`. Set `x₀ : GL ι F →₀ fixed π K` to `Finsupp.single 1 ⟨v₀, hv₀⟩`. Establish `hax₀ : a x₀ = v₀` using `by simp [a, x₀, act_single]`. Establish `hbx₀ : b x₀ = T v₀` using `by simp [b, x₀, act_single]`. Establish `hw₀ : T v₀ ≠ 0` using `fun h => hv₀0 (hinj v₀ hv₀ h)`.
+
+Establish `hsurj : Function.Surjective a`. Use `LinearMap.range_eq_top.1 (eq_top_of_inv hπ (LinearMap.range a) ?_ ⟨x₀, hax₀⟩ hv₀0)` and prove the remaining obligations. Introduce and unpack `g _ ⟨x, rfl⟩`. Conclude with `⟨tr g x, hatr g x⟩`. Establish `hker : ∀ x, a x = 0 → b x = 0`.
+
+Introduce `y hy`. Assume the negation of the conclusion as `hne`. Establish `htop : (LinearMap.ker a).map b = ⊤`. Use `eq_top_of_inv hτ _ ?_ (Submodule.mem_map_of_mem (LinearMap.mem_ker.2 hy)) hne` and prove the remaining obligations. Introduce and unpack `g _ ⟨x, hx, rfl⟩`.
+
+Use `⟨tr g x, ?_, hbtr g x⟩` and prove the remaining obligations. Establish `hx' : a x = 0` using `hx`. Use `show a (tr g x) = 0`. Rewrite using `[hatr, hx', map_zero]`. Establish `hmem : T v₀ ∈ (LinearMap.ker a).map b` using `htop ▸ Submodule.mem_top`.
+
+Take `⟨x, hx, hxe⟩` from `hmem`. Establish `hxe' : b x = T v₀` using `hxe`. Use `eq_zero_of_rel hKo hKc π τ T hfix hT x hx (by show b x ∈ fixed τ K` as an intermediate fact. Rewrite using `[hxe']`. Conclude with `hfix v₀ hv₀)`.
+
+Conclude with `hw₀ (hxe'.symm.trans this)`. Take `⟨s, hs⟩` from `LinearMap.exists_rightInverse_of_surjective a (LinearMap.range_eq_top.2 hsurj)`. Establish `has : ∀ u, a (s u) = u` using `fun u => LinearMap.congr_fun hs u`. Set `S : V →ₗ[ℂ] W` to `b ∘ₗ s`. Establish `hS : ∀ x, S (a x) = b x`.
+
+Introduce `x`. Establish `h0 : b (s (a x) - x) = 0` using `hker _ (by rw [map_sub, has, sub_self])`. Rewrite `h0` using `[map_sub, sub_eq_zero]`. Conclude with `h0`. Establish `hint : ∀ g u, S (π g u) = τ g (S u)`.
+
+Introduce `g u`. Take `⟨x, rfl⟩` from `hsurj u`. Rewrite using `[← hatr, hS, hS, hbtr]`. Set `Φ : Representation.IntertwiningMap π τ` to `{ S with isIntertwining' := fun g => by ext u; exact hint g u }`. Use `haveI := hπ`.
+
+Use `haveI := hτ`. Establish `hΦ : Φ ≠ 0`. Introduce `h0`. Establish `h1 : Φ v₀ = 0` using `by rw [h0]; rfl`. Establish `h2 : Φ v₀ = T v₀` using `by show S v₀ = T v₀`.
+
+Rewrite using `[← hax₀, hS, hbx₀, hax₀]`. Conclude with `hw₀ (h2.symm.trans h1)`. Conclude with `⟨Φ.ofBijective ((Representation.IsIrreducible.bijective_or_eq_zero Φ).resolve_right hΦ)⟩`.
+-/
 theorem hecke_determines : ∀ (F : Type) [Field F] [ValuativeRel F] [TopologicalSpace F] [IsNonarchimedeanLocalField F] (ι : Type) [Fintype ι] [DecidableEq ι] (K : Subgroup (GL ι F)), IsOpen (K : Set (GL ι F)) → IsCompact (K : Set (GL ι F)) → ∀ (V W : Type) [AddCommGroup V] [Module ℂ V] [AddCommGroup W] [Module ℂ W] (π : Representation ℂ (GL ι F) V) (τ : Representation ℂ (GL ι F) W), GlobalTheory.PRep.IsSmooth π → π.IsIrreducible → GlobalTheory.PRep.IsSmooth τ → τ.IsIrreducible → (∃ v ∈ fixed π K, v ≠ 0) → ∀ T : V →ₗ[ℂ] W, (∀ v ∈ fixed π K, T v ∈ fixed τ K) → (∀ w ∈ fixed τ K, ∃ v ∈ fixed π K, T v = w) → (∀ v ∈ fixed π K, T v = 0 → v = 0) → (∀ e, IsHk K e → ∀ v ∈ fixed π K, T (hk π K e v) = hk τ K e (T v)) → Nonempty (π.Equiv τ) := by
   intro F _ _ _ _ ι _ _ K hKo hKc V W _ _ _ _ π τ _ hπ _ hτ ⟨v₀, hv₀, hv₀0⟩ T hfix _ hinj hT
   classical

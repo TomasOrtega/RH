@@ -13,6 +13,9 @@ namespace GlobalTheory.TwTop
 
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
+/- English proof (translation)
+Introduce `D L hT Gi Gl Kc Y cX ex t u μ St A dtU a hPin hTie hi β β' x x₁ x' x₁' κ κ' hx hx' p p' p₁ p₁' hp hp' hp₁ hp₁' P`. Distinguish the cases in `hP : P.1 ∈ t.Pr.vGs`. Conclude with `GlobalTheory.T.lastStep_localFactor_levelValues_typePrime A dtU a hPin hTie hi β β' x x₁ x' x₁' κ κ' hx hx' p p' p₁ p₁' hp hp' hp₁ hp₁' P hP`. Conclude with `GlobalTheory.T.columnLastStep_localFactor_twist_prime_law A dtU a hPin hTie hi β β' x x₁ x' x₁' κ κ' hx hx' p p' p₁ p₁' hp hp' hp₁ hp₁' P hP`.
+-/
 theorem locAt : UnderTie (fun {D L hT Gi Gl Kc Y cX ex t u μ St} A dtU a =>
   ∀ (hi : t.m2 + 1 + 1 ≤ D.R.m) (β : (St (t.m2 + 1) (Nat.le_of_succ_le hi)).Ch) (β' : (St (t.m2 + 1 + 1) hi).Ch)
     (x x₁ : UA D (t.m2 + 1) (Nat.le_of_succ_le hi)) (x' x₁' : UA D (t.m2 + 1 + 1) hi)
@@ -39,6 +42,27 @@ namespace GlobalTheory.TwTop
 
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
+/- English proof (translation)
+Introduce `D L hT Gi Gl Kc Y cX ex t u μ St A dtU a hPin hTie hEx hMu i hi hieq _hAway`. Substitute `hieq` using the available equality. Introduce `β β' x x' x₁ x₁' κ κ' hx hx' z`. Establish `key : ∀ p p' p₁ p₁', IsPtAd A a (t.m2 + 1) (Nat.le_of_succ_le hi) β x p → IsPtAd A a (t.m2 + 1 + 1) hi β' x' p' → IsPtAd A a (t.m2 + 1) (Nat.le_of_succ_le hi) β x₁ p₁ → IsPtAd A a (t.m2 + 1 + 1) hi β' x₁' p₁' → ∀ Z, muOf t u μ dtU (t.m2 + 1 + 1) (Matrix.GeneralLinearGroup.det κ'. …`. Introduce `p p' p₁ p₁' hp hp' hp₁ hp₁' Z`.
+
+Establish `hxi : ∀ q q', xiPt A (t.m2 + 1) hi β β' q q' Z = _root_.Formalism.L2.Col.XiTop t.Ch t.sel (t.tup μ) (t.cst μ) (t.m2 + 1) q (cosetOf A (t.m2 + 1) (Nat.le_of_succ_le hi) β q) q' Z`. Introduce `q q'`. Unfold `xiPt`. Rewrite using `[dif_neg (by omega), if_neg (by omega)]`. Establish `e1` using `hxi p₁ p₁'`.
+
+Establish `e2` using `hxi p p'`. Establish `e3` using `GlobalTheory.T.chartDatum_levelPrime_invariant_mul_level A dtU a hPin hTie (t.m2 + 1) hi β β' x x₁ x' x₁' κ κ' hx hx' p p' p₁ p₁' hp hp' hp₁ hp₁' Z`. Simplify using `only [e1, e2, xiTop_eq_prod, e3]`. Establish `hC` using `hTie.levCpl β`. Establish `hT2` using `hTie.levTop β'`.
+
+Establish `hLe` using `hC.1`. Establish `hChi` using `hC.2.2`. Establish `hLe'` using `hT2.1`. Establish `hChi'` using `hT2.2`. Establish `hU` using `(((St (t.m2 + 1) (Nat.le_of_succ_le hi)).K β).lev.U_eq κ.1).1 κ.2`.
+
+Establish `hU'` using `(((St (t.m2 + 1 + 1) hi).K β').lev.U_eq κ'.1).1 κ'.2`. Establish `hov : ∀ P : SB t μ, IsOver (HeightOneSpectrum.under (𝓞 D.host.F) (seamP t.seam P.1)) (seamP t.seam P.1)`. Introduce `P`. Unfold `IsOver`. Rewrite using `[HeightOneSpectrum.under_asIdeal]`.
+
+Use `choose g zz hg using fun P : SB t μ => hLe P _ (hov P) κ.1 hU.1 (hU.2 _)`. Use `choose g' zz' hg' using fun P : SB t μ => hLe' P _ (hov P) κ'.1 hU'.1 (hU'.2 _)`. Establish `c1` using `hChi κ g zz hg`. Establish `c2` using `hChi' κ' g' zz' hg'`. Establish `hm` using `GlobalTheory.T.lastStepCharacter_at_levelDet_mul_localCharacters A dtU a hPin hTie hMu hi β β' κ κ' g zz g' zz' hg hg'`.
+
+Establish `hprod : (∏ P, zz' P) * (∏ P, topF t.Ch t.sel (t.tup μ) (t.cst μ) (t.m2 + 1) P p₁ (cosetOf A (t.m2 + 1) (Nat.le_of_succ_le hi) β p₁) p₁' Z) * (∏ P, rhoS t.Ch t.sel (t.tup μ) (t.m2 + 1) P ((LinearEquiv.det (g P) : t.X.Eˣ) : t.X.E) * rhoT t.Ch t.sel (t.tup μ) (t.m2 + 1) P ((LinearEq …`. Rewrite using `[← Finset.prod_mul_distrib, ← Finset.prod_mul_distrib, ← Finset.prod_mul_distrib]`. Use `Finset.prod_congr rfl fun P _ => ?_` and prove the remaining obligations. Rewrite using `[← locAt A dtU a hPin hTie hi β β' x x₁ x' x₁' κ κ' hx hx' p p' p₁ p₁' hp hp' hp₁ hp₁' P (g P) (zz P) (g' P) (zz' P) (hg P).1 (hg P).2 (hg' P).1 (hg' P).2 Z]`. Expand and normalize the polynomial expressions, which then agree.
+
+Establish `e` using `congrArg t.seam.σ₀ hprod`. Simplify using `only [map_mul] at e ⊢`. Establish `hA : t.seam.σ₀ (∏ P, zz P) ≠ 0` using `right_ne_zero_of_mul_eq_one c1`. Establish `hB : t.seam.σ₀ (∏ P, zz' P) ≠ 0` using `right_ne_zero_of_mul_eq_one c2`. Apply `mul_right_cancel₀ (mul_ne_zero hA hB)` to reduce the goal to its premises.
+
+Take the linear combination `(-(((((St (t.m2 + 1) _).K β).lev.chi κ : ℂˣ) : ℂ) * t.seam.σ₀ (phiT t.X.K p.deco.1 p'.deco.1 Z) * t.seam.σ₀ (∏ P, topF t.Ch t.sel (t.tup μ) (t.cst μ) (t.m2 + 1) P p₁ (cosetOf A (t.m2 + 1) (Nat.le_of_succ_le hi) β p₁) p₁' Z) * t.seam.σ₀ (∏ P, zz P) * t.seam.σ₀ (∏ P, zz' P))) * hm …`. Establish `h₁ : (∃ p, IsPtAd A a (t.m2 + 1) (Nat.le_of_succ_le hi) β x₁ p) ∧ ∃ p', IsPtAd A a (t.m2 + 1 + 1) hi β' x₁' p'` using `⟨hEx _ _ β x₁, hEx _ _ β' x₁'⟩`. Establish `h₀ : (∃ p, IsPtAd A a (t.m2 + 1) (Nat.le_of_succ_le hi) β x p) ∧ ∃ p', IsPtAd A a (t.m2 + 1 + 1) hi β' x' p'` using `⟨hEx _ _ β x, hEx _ _ β' x'⟩`. Unfold `xiAd`. Rewrite using `[dif_pos h₁, dif_pos h₀]`.
+
+Conclude with `key _ _ _ _ h₀.1.choose_spec h₀.2.choose_spec h₁.1.choose_spec h₁.2.choose_spec _`.
+-/
 theorem levAt_top : UnderTie (fun {D L hT Gi Gl Kc Y cX ex t u μ St} A dtU a => PtEx A a → MuLaw t u μ dtU →
     ∀ i hi, i = t.m2 + 1 → PtAway A a i hi → LevAt A dtU a i hi) := by
   intro D L hT Gi Gl Kc Y cX ex t u μ St A dtU a hPin hTie hEx hMu i hi hieq _hAway

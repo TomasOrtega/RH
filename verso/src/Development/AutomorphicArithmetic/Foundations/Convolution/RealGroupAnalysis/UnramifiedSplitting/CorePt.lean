@@ -14,14 +14,25 @@ open UpperTheory.V.Af.Smo (Eig EigAt)
 open UpperTheory.ConvolutionTheory.R2 UpperTheory.ConvolutionTheory.R2.H
 open scoped Classical
 
+/- English proof (translation)
+The claim follows from `map_mul _ x y`.
+-/
 private theorem gl_mul {K : Type} [Field K] [NumberField K] (x y : G1 K) : gl (x * y) = gl x * gl y := map_mul _ x y
 
+/- English proof (translation)
+Use `Subtype.ext ?_` and prove the remaining obligations. Rewrite using `[Matrix.SpecialLinearGroup.coe_mul]`. Use extensionality with `i j : 1`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;> simp [mD, Matrix.mul_apply, Fin.sum_univ_two, mul_comm]`.
+-/
 private theorem md_mul {K : Type} [Field K] [NumberField K] (x y : (A K)ˣ) : mD (x * y) = mD x * mD y := by
   refine Subtype.ext ?_
   rw [Matrix.SpecialLinearGroup.coe_mul]
   ext i j : 1
   fin_cases i <;> fin_cases j <;> simp [mD, Matrix.mul_apply, Fin.sum_univ_two, mul_comm]
 
+/- English proof (translation)
+Use `Units.ext ?_` and prove the remaining obligations. Establish `e : ((p ^ 2 : (A K)ˣ) : A K) * (((a * p)⁻¹ : (A K)ˣ) : A K) = p * ((a⁻¹ : (A K)ˣ) : A K)`. Rewrite using `[← Units.val_mul, ← Units.val_mul]`. Use `congr 1`. Rewrite using `[mul_inv, pow_two, mul_comm a⁻¹]`.
+
+Use `group`. Express the relevant statement in the definitionally equal form `!![1, 0; 0, ((p ^ 2 : (A K)ˣ) : A K)] * !![((a * p : (A K)ˣ) : A K), 0; 0, (((a * p)⁻¹ : (A K)ˣ) : A K)] = Matrix.scalar (Fin 2) (p : A K) * !![(a : A K), 0; 0, ((a⁻¹ : (A K)ˣ) : A K)]`. Rewrite using `[Matrix.mul_fin_two, e, Matrix.scalar_apply, ← Matrix.smul_eq_diagonal_mul]`. Use extensionality with `i j : 1`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;> simp [mul_comm]`.
+-/
 private theorem dm_md {K : Type} [Field K] [NumberField K] (a p : (A K)ˣ) :
     dM (p ^ 2) * gl (mD (a * p)) = Matrix.GeneralLinearGroup.scalar (Fin 2) p * gl (mD a) := by
   refine Units.ext ?_
@@ -33,6 +44,9 @@ private theorem dm_md {K : Type} [Field K] [NumberField K] (a p : (A K)ˣ) :
   ext i j : 1
   fin_cases i <;> fin_cases j <;> simp [mul_comm]
 
+/- English proof (translation)
+Clear the denominators using the available nonvanishing facts. Take the linear combination `(-η) * key`.
+-/
 private theorem fin_alg (A η q c s Y Y' H1 H0 H2 : ℂ) (hA : A ≠ 0) (hq : q ≠ 0)
     (key : c * q * Y * H1 = c * q * Y * H0 + s * Y' * H2) :
     q⁻¹ * q⁻¹ * ((A * q⁻¹)⁻¹ ^ 2 * (c * Y * (η * -1 * (A * q⁻¹) * H1))) =
@@ -40,10 +54,18 @@ private theorem fin_alg (A η q c s Y Y' H1 H0 H2 : ℂ) (hA : A ≠ 0) (hq : q 
   field_simp
   linear_combination (-η) * key
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fun x y => by simp only [neg_add, h.1], fun x hx => h.2.1 _ (by simpa [IsInt] using hx), fun x hx => h.2.2 x fun c hc => by simpa using hx (-c) (by simpa [IsInt] using hc)⟩`.
+-/
 private theorem good_neg {K : Type} [Field K] [NumberField K] {v : P K} {χ : Kv v → ℂ} (h : Good χ) : Good fun x => χ (-x) :=
   ⟨fun x y => by simp only [neg_add, h.1], fun x hx => h.2.1 _ (by simpa [IsInt] using hx),
     fun x hx => h.2.2 x fun c hc => by simpa using hx (-c) (by simpa [IsInt] using hc)⟩
 
+/- English proof (translation)
+Use `GlobalTheory.AdelicU.mem_GLint_iff.2 ⟨fun i j => h i j, fun i j => ?_⟩` and prove the remaining obligations. Rewrite using `[← map_inv, ← map_inv, Matrix.SpecialLinearGroup.SL2_inv_expl]`. Establish `hn : ∀ i j, cp v (-g i j) ∈ Formalism.UG.Ov K v` using `fun i j => by`. Rewrite using `[map_neg]`. Conclude with `neg_mem (h i j)`.
+
+Apply the tactic sequence `fin_cases i <;> fin_cases j`. Use `exacts [h 1 1, hn 0 1, hn 1 0, h 0 0]`.
+-/
 private theorem kat_of_int {K : Type} [Field K] [NumberField K] {v : P K} {g : G1 K} (h : IntAt v g) :
     Matrix.GeneralLinearGroup.map (cp v) (gl g) ∈ GlobalTheory.LFun.KGL v 2 := by
   refine GlobalTheory.AdelicU.mem_GLint_iff.2 ⟨fun i j => h i j, fun i j => ?_⟩
@@ -54,6 +76,63 @@ private theorem kat_of_int {K : Type} [Field K] [NumberField K] {v : P K} {g : G
   fin_cases i <;> fin_cases j
   exacts [h 1 1, hn 0 1, hn 1 0, h 0 0]
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ _ _ D W v ϖ hϖ hg hu hv Wt α β hB hN φ hφ a k hk`. Take `⟨-, s2, s3, s4, -, s6, -, -⟩` from `sgLaws F v`. Take `⟨l1, l2, -, -, l5, -, -⟩` from `lcLaws F v`. Establish `hH : Std v (UpperTheory.ConvolutionTheory.R2.hat (W.Om k φ).1)` using `stdHat F D.δ v hg _ (stdOm F E D W v hg k (hk.2 v) φ hφ)`. Use `set H := UpperTheory.ConvolutionTheory.R2.hat (W.Om k φ).1 with hHd`.
+
+Use `set p := idl v ϖ with hp`. Establish `hm : ∀ (b : (A F)ˣ) (x y : A F), UpperTheory.ConvolutionTheory.R2.hat (W.Om (mD b * k) φ).1 ![0, x, y, 0] = ((W.η.1 b : ℂˣ) : ℂ) * ((ab b : ℝ) : ℂ) * H ![0, ((b⁻¹ : (A F)ˣ) : A F) * x, b * y, 0]` using `fun b x y => by`. Rewrite using `[map_mul, Module.End.mul_apply, (UpperTheory.ConvolutionTheory.R2.hatSt F E D W).m]`. Simplify using `[hHd]`. Establish `hϖv : Valued.v (ϖ : Kv v) = WithZero.exp (-1 : ℤ)` using `hϖ`.
+
+Establish `hηp : ((W.η.1 p : ℂˣ) : ℂ) = -1`. Establish `h1 : W.η.loc v (ϖ * (atFin v (unif v))⁻¹) = 1` using `hu _ (by`. Use `unif_spec v` as an intermediate fact. Unfold `IsUnitAt`. Unfold `IsUnifAt at this`.
+
+Rewrite using `[Units.val_mul, map_mul, Units.val_inv_eq_inv_val, map_inv₀, this, hϖv, mul_inv_cancel₀ WithZero.exp_ne_zero])`. Rewrite `h1` using `[map_mul, map_inv, mul_inv_eq_one]`. Establish `h2 : W.η.1 p = W.η.val v` using `h1`. Rewrite using `[h2, hv]`. Simplify using the standard rewrite rules.
+
+Establish `hq0 : q v ≠ 0` using `Nat.cast_ne_zero.2 (GlobalTheory.LFun.one_lt_absNorm v).ne_bot`. Establish `habm : ∀ x y : (A F)ˣ, ((ab (x * y) : ℝ) : ℂ) = ab x * ab y` using `fun x y => by`. Simplify using `only [ab, map_mul, Positive.val_mul, Complex.ofReal_mul]`. Establish `hab0 : ∀ x : (A F)ˣ, ((ab x : ℝ) : ℂ) ≠ 0` using `fun x => Complex.ofReal_ne_zero.2 (IdeleGroup.ideleModule F x).2.ne'`. Establish `habp : ((ab p : ℝ) : ℂ) = (q v)⁻¹` using `by rw [s6 ϖ hϖ]; simp [q]`.
+
+Establish `habp' : ((ab (a * p⁻¹) : ℝ) : ℂ) = ab a * q v`. Use `habm (a * p⁻¹) p` as an intermediate fact. Rewrite `this` using `[inv_mul_cancel_right, habp]`. Rewrite using `[this]`. Clear the denominators using the available nonvanishing facts.
+
+Establish `hηp' : ((W.η.1 (a * p⁻¹) : ℂˣ) : ℂ) = -W.η.1 a`. Rewrite using `[map_mul, map_inv, Units.val_mul, Units.val_inv_eq_inv_val, hηp]`. Simplify using the standard rewrite rules. Establish `hcp : cp v (p : A F) = ϖ` using `by rw [s4, map_add, map_one, s3]; ring`. Establish `hsc : dM (p ^ 2) * gl (mD (a * p) * k) = gl (mD a * k) * Matrix.GeneralLinearGroup.scalar (Fin 2) p`.
+
+Establish `h2 : gl (mD a * k) * Matrix.GeneralLinearGroup.scalar (Fin 2) p = Matrix.GeneralLinearGroup.scalar (Fin 2) p * gl (mD a * k)` using `Units.ext ((Matrix.scalar_commute _ (fun _ => Commute.all _ _) (gl (mD a * k)).val).eq.symm)`. Rewrite using `[h2, gl_mul, gl_mul, ← mul_assoc, ← mul_assoc, dm_md]`. Take `⟨R, -, -, hR⟩` from `heckeExpl F v ϖ hϖ`. Establish `hcen : ∀ g, Wt (g * Matrix.GeneralLinearGroup.scalar (Fin 2) p) = (α : ℂ) * β * Wt g` using `fun g => by`. Establish `h1 : Wt (g * lc v (1 * dL ϖ ϖ)) = (α : ℂ) * β * Wt (g * lc v 1)` using `(hR α β _ (hB g) 1).2`.
+
+Rewrite `h1` using `[one_mul, map_one, mul_one, l5]`. Then use the resulting hypothesis. Establish `key : (α : ℂ) * β * q v * Wt (gl (mD a * k)) * H ![0, ((a⁻¹ : (A F)ˣ) : A F) * p, a, 0] = (α : ℂ) * β * q v * Wt (gl (mD a * k)) * H ![0, ((a⁻¹ : (A F)ˣ) : A F), a, 0] + ((α : ℂ) ^ 2 + α * β + (β : ℂ) ^ 2) * Wt (gl (mD (a * p⁻¹) * k)) * H ![0, ((a⁻¹ : (A F)ˣ) : A F) * p, ((a * p⁻ …`. Establish `hx : cp v (a : A F) * cp v ((a⁻¹ : (A F)ˣ) : A F) = 1` using `by rw [← map_mul, Units.mul_inv, map_one]`. Establish `hx0 : Valued.v (cp v (a : A F)) ≠ 0`. Rewrite using `[Ne, map_eq_zero]`.
+
+Conclude with `left_ne_zero_of_mul_eq_one hx`. Take `⟨n, hn⟩ : ∃ n : ℤ, Valued.v (cp v (a : A F)) = WithZero.exp n` from `⟨_, (WithZero.exp_log hx0).symm⟩`. Establish `v1 : Valued.v (cp v ((a⁻¹ : (A F)ˣ) : A F)) = WithZero.exp (-n)`. Rewrite using `[eq_inv_of_mul_eq_one_right hx, map_inv₀, hn, WithZero.exp_neg]`. Establish `v2 : Valued.v (cp v (((a⁻¹ : (A F)ˣ) : A F) * p)) = WithZero.exp (-n - 1)`.
+
+Rewrite using `[map_mul, map_mul, v1, hcp, hϖv, ← WithZero.exp_add]`. Both sides reduce to the same expression. Establish `hap : ((a * p⁻¹ : (A F)ˣ) : A F) * p = a` using `by rw [← Units.val_mul, inv_mul_cancel_right]`. Establish `v3 : Valued.v (cp v ((a * p⁻¹ : (A F)ˣ) : A F)) = WithZero.exp (n + 1)`. Use `congrArg (fun x => Valued.v (cp v x)) hap` as an intermediate fact.
+
+Simplify using `only [map_mul, hcp, hϖv, hn] at this`. Rewrite using `[(eq_mul_inv_iff_mul_eq₀ WithZero.exp_ne_zero).2 this, ← WithZero.exp_neg, ← WithZero.exp_add]`. Simplify using the standard rewrite rules. Establish `v4 : IsInt ((ϖ : Kv v) - 1)` using `(Valuation.map_sub _ _ _).trans (max_le (by`. Rewrite using `[hϖv, ← WithZero.exp_zero, WithZero.exp_le_exp]; omega) (by rw [map_one]))`.
+
+Establish `z : ∀ (x y : A F) (i j : ℤ), Valued.v (cp v x) = WithZero.exp i → Valued.v (cp v y) = WithZero.exp j → (0 < i ∨ 0 < j) → H ![0, x, y, 0] = 0` using `fun x y i j hi hj h => by`. Assume the negation of the conclusion as `h0`. Establish `h1 : Valued.v (cp v x) ≤ 1` using `hH.1 _ h0 1`. Establish `h2 : Valued.v (cp v y) ≤ 1` using `hH.1 _ h0 2`. Rewrite `h1` using `[hi, ← WithZero.exp_zero, WithZero.exp_le_exp]`.
+
+Rewrite `h2` using `[hj, ← WithZero.exp_zero, WithZero.exp_le_exp]`. Use linear arithmetic over natural numbers and integers. Establish `tr : ∀ (x : V4 F) (i : Fin 4), IsInt (cp v (x i)) → H (Function.update x i (x i * p)) = H x` using `fun x i hi => by`. Rewrite using `[← hH.2 x (Pi.single i (cp v (x i) * ((ϖ : Kv v) - 1))) fun j => by`. Distinguish the cases in `e : j = i`.
+
+Substitute `e` using the available equality. Rewrite using `[Pi.single_eq_same]`. Unfold `IsInt`. Rewrite using `[map_mul]`. Conclude with `mul_le_one' hi v4`.
+
+Rewrite using `[Pi.single_eq_of_ne e]`. Unfold `IsInt`. Use the proof step `simp]`. Use `congr 1`. Use function extensionality and compare the values at `j`.
+
+Distinguish the cases in `e : j = i`. Substitute `e` using the available equality. Rewrite using `[Function.update_self, Pi.single_eq_same, s4, mul_add, mul_one, s2]`. Use `s2 0 0` as an intermediate fact. Rewrite `this` using `[zero_mul, mul_zero]`.
+
+Rewrite using `[Function.update_of_ne e, Pi.single_eq_of_ne e, ← this, add_zero]`. Distinguish the cases in `n0 : n = 0`. Establish `h1` using `tr ![0, ((a⁻¹ : (A F)ˣ) : A F), a, 0] 1 (show Valued.v (cp v ((a⁻¹ : (A F)ˣ) : A F)) ≤ 1 from by rw [v1, n0]; simp)`. Establish `e : Function.update (![0, ((a⁻¹ : (A F)ˣ) : A F), a, 0] : V4 F) 1 ((![0, ((a⁻¹ : (A F)ˣ) : A F), a, 0] : V4 F) 1 * p) = ![0, ((a⁻¹ : (A F)ˣ) : A F) * p, a, 0]`. Apply the tactic sequence `funext j; fin_cases j <;> simp`.
+
+Rewrite using `[← e, h1, z _ _ _ _ v2 v3 (by omega), mul_zero, add_zero]`. Distinguish the cases in `n1 : n = -1`. Establish `h1` using `tr ![0, ((a⁻¹ : (A F)ˣ) : A F) * p, ((a * p⁻¹ : (A F)ˣ) : A F), 0] 2 (show Valued.v (cp v ((a * p⁻¹ : (A F)ˣ) : A F)) ≤ 1 from by`. Rewrite using `[v3, n1]`. Use the proof step `simp)`.
+
+Establish `e : Function.update (![0, ((a⁻¹ : (A F)ˣ) : A F) * p, ((a * p⁻¹ : (A F)ˣ) : A F), 0] : V4 F) 2 (((a * p⁻¹ : (A F)ˣ) : A F) * p) = ![0, ((a⁻¹ : (A F)ˣ) : A F) * p, a, 0]`. Rewrite using `[hap]`. Apply the tactic sequence `funext j; fin_cases j <;> simp`. Establish `h1' : H ![0, ((a⁻¹ : (A F)ˣ) : A F) * p, a, 0] = _` using `e ▸ h1`. Establish `hI : IntAt v (mD (a * p⁻¹))` using `fun i j => by`.
+
+Establish `w1 : Valued.v (cp v ((a * p⁻¹ : (A F)ˣ) : A F)) = 1` using `by rw [v3, n1]; simp`. Establish `w2 : Valued.v (cp v (((a * p⁻¹)⁻¹ : (A F)ˣ) : A F)) = 1`. Rewrite using `[_root_.mul_inv_rev, inv_inv, mul_comm, Units.val_mul, v2, n1]`. Simplify using the standard rewrite rules. Apply the tactic sequence `fin_cases i <;> fin_cases j`.
+
+Use `exacts [w1.le, zero_mem _, zero_mem _, w2.le]`. Establish `hK : KAt v (gl (mD (a * p⁻¹) * k))`. Unfold `KAt`. Rewrite using `[gl_mul, map_mul]`. Conclude with `mul_mem (kat_of_int hI) (kat_of_int (hk.2 v))`.
+
+Establish `t` using `(whTorus F v ϖ hϖ _ (good_neg hg.psi) α β _ ((fixTr F v Wt _ hK).2 _ hB 1) fun b y => by show Wt (1 * lc v _ * _) = ψ (sg v (-b)) * Wt (1 * lc v _ * _)`. Establish `: sg v (-b) = -sg v b`. Use `s2 (-1) b` as an intermediate fact. Rewrite `this` using `[map_neg, map_one, neg_one_mul, neg_one_mul]`. Conclude with `this.symm`.
+
+Rewrite using `[one_mul, one_mul, map_mul, l1, mul_assoc, hN, this]).2`. Express the relevant statement in the definitionally equal form `_ * Wt (1 * lc v _ * _) = _ * Wt (1 * lc v _ * _) at t`. Establish `e2 : mD p * (mD (a * p⁻¹) * k) = mD a * k`. Rewrite using `[← mul_assoc]`. Use `congr 1`.
+
+Rewrite using `[← md_mul, mul_comm a, mul_inv_cancel_left]`. Rewrite `t` using `[one_mul, one_mul, map_one, one_mul, l2, ← gl_mul, e2]`. Rewrite using `[h1', z _ _ _ _ v1 hn (by omega), mul_zero, zero_add, t]`. Rewrite using `[z _ _ _ _ v2 hn (by omega), z _ _ _ _ v1 hn (by omega), z _ _ _ _ v2 v3 (by omega)]`. Simplify using the standard rewrite rules.
+
+Establish `e1 : (((a * p)⁻¹ : (A F)ˣ) : A F) * ((p ^ 2 : (A F)ˣ) : A F) = ((a⁻¹ : (A F)ˣ) : A F) * p`. Rewrite using `[← Units.val_mul, ← Units.val_mul]`. Use `congr 1`. Rewrite using `[mul_inv, pow_two]`. Use `group`.
+
+Establish `e2 : ((a * p : (A F)ˣ) : A F) * ((p⁻¹ : (A F)ˣ) : A F) = a` using `by rw [← Units.val_mul, mul_inv_cancel_right]`. Establish `e3 : (((a * p⁻¹)⁻¹ : (A F)ˣ) : A F) = ((a⁻¹ : (A F)ˣ) : A F) * p` using `by rw [mul_inv, inv_inv, Units.val_mul]`. Simplify using `only [iw, hm, hsc, hcen, e1, e2, e3, mul_one]`. Simplify using `only [Complex.ofReal_pow, Complex.ofReal_inv]`. Rewrite using `[pow_two p, habm, habm, habp, habp', hηp', map_mul, Units.val_mul, hηp]`.
+
+Take the linear combination `fin_alg (ab a) (W.η.1 a) _ _ _ _ _ _ _ _ (hab0 a) hq0 key`.
+-/
 theorem UpperTheory.ConvolutionTheory.R2.H.corePt :
     ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] [IsTotallyReal F] [IsTotallyComplex E] (D : Dat F E) (W : Weil D) (v : P F) (ϖ : (Kv v)ˣ), IsU ϖ → Gd D.δ v → W.η.UnrAt v → W.η.val v = -1 →
       ∀ (Wt : GL (Fin 2) (A F) → ℂ) (α β : ℂˣ), EigAt v {α, β} Wt → (∀ b g, Wt (gl (nU b) * g) = ψ (-b) * Wt g) → ∀ φ : S4 F, Std v φ.1 →

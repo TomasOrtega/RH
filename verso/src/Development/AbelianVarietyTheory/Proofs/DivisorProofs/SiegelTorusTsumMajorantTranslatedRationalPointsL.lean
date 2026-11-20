@@ -10,6 +10,17 @@ open Formalism.BasicNotions Formalism.BasicNotions.TH Formalism.MainNotions.Glob
 open GlobalTheory.IndefiniteRowSideFullHecke.ModerateGrowthSchwartz (schwartzA)
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
+/- English proof (translation)
+Introduce `D θ hθ V n r X Y hXY c hc K hK`. Take `⟨L, hL, hden⟩` from `GlobalTheory.T.exists_bounded_denominator_rational_matrices_in_box D V.rank n K hK`. Take `⟨N, C, hC, hst⟩` from `GlobalTheory.T.torusInverse_latticeCount_stacked_eigenprojections D V.rank n r X Y (Formalism.UG.cT (D.sp.cm.sig : D.host.E →+* D.host.E) X * V.gram) (Formalism.UG.cT (D.sp.cm.sig : D.host.E →+* D.host.E) Y * V.gram) c hc L hL`. Use `⟨N, C, hC, fun t ht a ha => ?_⟩` and prove the remaining obligations. Take `⟨hfin, hrel⟩` from `GlobalTheory.T.siegelTorusElement_inv_finitePart_one_dualFrame_eigen D θ hθ V r X Y hXY t ht.1 a ha`.
+
+Use `le_trans (ENNReal.tsum_le_tsum fun ξ => ?_) (hst t ht (fun τ => compAt θ τ (Formalism.L2.Theta.mt V a⁻¹)) hrel)` and prove the remaining obligations. Establish `e : (GlobalTheory.SiegelFormula.invPt V a ξ : Matrix (Fin V.rank) (Fin n) (AE D)) = HMul.hMul (Formalism.L2.Theta.mt V a⁻¹) (ξ.map (incA D) : Matrix (Fin V.rank) (Fin n) (AE D))` using `rfl`. Establish `hcomp : ∀ τ, compAt θ τ (GlobalTheory.SiegelFormula.invPt V a ξ) = compAt θ τ (Formalism.L2.Theta.mt V a⁻¹) * ξ.map (tauE D τ)`. Introduce `τ`. Establish `h1 : compAt θ τ (ξ.map (incA D) : Mx D V.rank n) = ξ.map (tauE D τ)`.
+
+Use extensionality with `i j`. Conclude with `(hθ τ).1 (ξ i j)`. Rewrite using `[e, ← h1]`. Conclude with `Matrix.map_mul (f := (θ τ).comp (infPart D))`. Unfold `GlobalTheory.Unf.maj`.
+
+Use `split_ifs with hb`. Establish `hmem : ξ ∈ {ξ : Matrix (Fin V.rank) (Fin n) D.host.E | ∀ i j, IsIntegral ℤ ((L : D.host.E) * ξ i j)}`. Use `hden _ ξ ?_ hb` and prove the remaining obligations. Rewrite using `[e, Matrix.map_mul, hfin, Matrix.one_mul]`. Rewrite using `[Set.indicator_of_mem hmem]`.
+
+Simplify using `only [GlobalTheory.Unf.realSize, hcomp, le_refl]`. Simplify using the standard rewrite rules.
+-/
 theorem GlobalTheory.SiegelSet.tsum_maj_invPt_torus_le : ∀ (D : D7) (θ : InfFam D), IsInfFam θ → ∀ (V : HSp D) (n : ℕ) (r : ℕ) (X Y : Matrix (Fin V.rank) (Fin r) D.host.E), GlobalTheory.SiegelSet.IsWittFrame D.sp.cm.sig V.gram X Y → ∀ c : ℝ, 0 < c → ∀ K : Set (Mx D V.rank n), IsCompact K → ∃ (N : ℕ) (C : ℝ), 0 ≤ C ∧ ∀ t ∈ GlobalTheory.SiegelSet.cone r c, ∀ a : GA D V, GlobalTheory.SiegelSet.IsTorusElt D.sp.cm.sig V.gram X Y t a → ∑' ξ : Matrix (Fin V.rank) (Fin n) D.host.E, ENNReal.ofReal (GlobalTheory.Unf.maj θ K N (GlobalTheory.SiegelFormula.invPt V a ξ)) ≤ ENNReal.ofReal (C * ∏ i, t i ^ (Module.finrank ℚ D.host.F * (2 * n))) := by
   intro D θ hθ V n r X Y hXY c hc K hK
   obtain ⟨L, hL, hden⟩ := GlobalTheory.T.exists_bounded_denominator_rational_matrices_in_box D V.rank n K hK

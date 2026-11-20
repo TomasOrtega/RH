@@ -20,15 +20,26 @@ def SerParamLe (b : ℕ) (e : ∀ n : ℕ, (ZMod g)[X] → MonoidAlgebra ℂ (Gn
 def LabParamLe (b : ℕ) (D : D7) (L : ∀ k, LabelDatum (D.host.g k)) (rc : Corr D) : Prop :=
   ∀ k v, SerParamLe b (eSerC (L k)) (L k).teich fun n π => D.naut.inePol (rc k v n π) (D.ntypes.tg k v)
 
+/- English proof (translation)
+Establish `ht : 0 < D.R.t` using `D.R.t_odd.pos`. Unfold `Formalism.BasicNotions.Ranks.nV`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem one_le_nV (D : D7) : 1 ≤ D.R.nV := by
   have ht : 0 < D.R.t := D.R.t_odd.pos
   unfold Formalism.BasicNotions.Ranks.nV
   omega
 
+/- English proof (translation)
+Unfold `Formalism.BasicNotions.Ranks.nV`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem r_le_nV (D : D7) : D.R.r ≤ D.R.nV := by
   unfold Formalism.BasicNotions.Ranks.nV
   omega
 
+/- English proof (translation)
+Introduce `i P k v`. Take `⟨μ, χ, hμ, h1, h2⟩` from `hC.2 i k v`. Take `⟨π, hπ, h3, h4⟩` from `h2 P`. Take `⟨f, hf, hm, hd, -⟩` from `Loc.exists_charIn (S k) χ 1`. Take `⟨c, rfl⟩ : ∃ c, f = X - C c` from `⟨-f.coeff 0, by rw [C_neg, sub_neg_eq_add]; exact hm.eq_X_add_C hd⟩`.
+
+Use `⟨π, χ, c, fun F hF a ha h0 => h4.exists_parVec hF ha h0, Loc.charIn_pow _ χ hf _, ?_, fun f' hf' => h3 ▸ hP k v _ le_rfl π hπ f' hf'⟩` and prove the remaining obligations. Rewrite using `[h1, ← Loc.prod_linear]`. Conclude with `hP k v 1 (one_le_nV D) _ (Loc.irrSm_det hμ) _ ((Loc.has_det hμ (S k) _).2 hf)`.
+-/
 theorem locType_of_serParamLe {D : D7} {S : ∀ k, Sys (D.host.g k)} {rc : Corr D} (hC : LocComp D rc)
     (hP : ∀ k v, SerParamLe D.R.nV (S k).e (D.ntypes.teichC k) fun n π => D.naut.inePol (rc k v n π) (D.ntypes.tg k v)) :
     LocType D S := by
@@ -42,6 +53,9 @@ theorem locType_of_serParamLe {D : D7} {S : ∀ k, Sys (D.host.g k)} {rc : Corr 
   rw [h1, ← Loc.prod_linear]
   exact hP k v 1 (one_le_nV D) _ (Loc.irrSm_det hμ) _ ((Loc.has_det hμ (S k) _).2 hf)
 
+/- English proof (translation)
+The claim follows from `locType_of_serParamLe hC fun k v => by rw [← (hL k).1, show (S k).e = eSerC (L k) from funext fun n => funext (hS k n)] exact hP k v`.
+-/
 theorem locType_of_tiesLe {D : D7} {L : ∀ k, LabelDatum (D.host.g k)} {S : ∀ k, Sys (D.host.g k)} {rc : Corr D}
     (hL : LabTie D L) (hS : ∀ k, (S k).IsOf (L k)) (hC : LocComp D rc) (hP : LabParamLe D.R.nV D L rc) :
     LocType D S :=

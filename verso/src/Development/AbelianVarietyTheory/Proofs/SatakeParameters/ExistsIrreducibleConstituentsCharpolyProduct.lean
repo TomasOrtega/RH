@@ -39,23 +39,45 @@ def matRep {V : Type} [AddCommGroup V] [Module K V] {m : ℕ} (ρ : Γ →* Modu
     (((LinearMap.toMatrixAlgEquiv b : Module.End K V ≃ₐ[K] Matrix (Fin m) (Fin m) K) :
       Module.End K V →* Matrix (Fin m) (Fin m) K).comp ρ)
 
+/- English proof (translation)
+Simplify using `only [matRep, MonoidHom.coe_toHomUnits, MonoidHom.comp_apply, MonoidHom.coe_coe]`. Both sides reduce to the same expression.
+-/
 theorem matRep_val {V : Type} [AddCommGroup V] [Module K V] {m : ℕ} (ρ : Γ →* Module.End K V)
     (b : Module.Basis (Fin m) K V) (g : Γ) :
     ((matRep ρ b g : GL _ _) : Matrix (Fin m) (Fin m) K) = LinearMap.toMatrix b b (ρ g) := by
   simp only [matRep, MonoidHom.coe_toHomUnits, MonoidHom.comp_apply, MonoidHom.coe_coe]
   rfl
 
+/- English proof (translation)
+Rewrite using `[matRep_val, Module.Basis.equivFun_apply, Module.Basis.equivFun_apply]`. Conclude with `LinearMap.toMatrix_mulVec_repr b b (ρ g) y`.
+-/
 theorem matRep_mulVec {V : Type} [AddCommGroup V] [Module K V] {m : ℕ} (ρ : Γ →* Module.End K V)
     (b : Module.Basis (Fin m) K V) (g : Γ) (y : V) :
     ((matRep ρ b g : GL _ _) : Matrix (Fin m) (Fin m) K) *ᵥ b.equivFun y = b.equivFun (ρ g y) := by
   rw [matRep_val, Module.Basis.equivFun_apply, Module.Basis.equivFun_apply]
   exact LinearMap.toMatrix_mulVec_repr b b (ρ g) y
 
+/- English proof (translation)
+Rewrite using `[matRep_val, LinearMap.charpoly_toMatrix]`.
+-/
 theorem charpoly_matRep {V : Type} [AddCommGroup V] [Module K V] [FiniteDimensional K V] {m : ℕ}
     (ρ : Γ →* Module.End K V) (b : Module.Basis (Fin m) K V) (g : Γ) :
     ((matRep ρ b g : GL _ _) : Matrix (Fin m) (Fin m) K).charpoly = (ρ g).charpoly := by
   rw [matRep_val, LinearMap.charpoly_toMatrix]
 
+/- English proof (translation)
+Set `bW` to `Module.finBasis K W`. Set `bQ` to `Module.finBasis K (V ⧸ W)`. Set `b` to `Module.Basis.sumQuot bW bQ`. Set `A` to `LinearMap.toMatrix bW bW (e.restrict he)`. Set `B : Matrix (Fin (Module.finrank K W)) (Fin (Module.finrank K (V ⧸ W))) K` to `Matrix.of fun i l ↦ (b.repr (e (b (Sum.inr l)))) (Sum.inl i)`.
+
+Set `D` to `LinearMap.toMatrix bQ bQ (W.mapQ W e he)`. It suffices to establish `h : LinearMap.toMatrix b b e = Matrix.fromBlocks A B 0 D by`. Rewrite using `[← LinearMap.charpoly_toMatrix e b, h, Matrix.charpoly_fromBlocks_zero₂₁, LinearMap.charpoly_toMatrix, LinearMap.charpoly_toMatrix]`. Use extensionality with `u v`. Consider the cases of `u with`.
+
+Consider the case `inl i`. Consider the cases of `v with`. Consider the case `inl k0`. Simplify using `only [b, Module.Basis.sumQuot_inl, Matrix.fromBlocks_apply₁₁, A, LinearMap.toMatrix_apply]`. Apply `Module.Basis.sumQuot_repr_inl_of_mem` to reduce the goal to its premises.
+
+Consider the case `inr l => simp [b, LinearMap.toMatrix_apply, Matrix.fromBlocks_apply₁₂, B]`. Consider the case `inr j`. Consider the cases of `v with`. Consider the case `inl k0`. It suffices to establish `W.mkQ (e (bW k0)) = 0 by simp [LinearMap.toMatrix_apply, b, this]`.
+
+Rewrite using `[← LinearMap.mem_ker, Submodule.ker_mkQ]`. Conclude with `he _ (Submodule.coe_mem (bW k0))`. Consider the case `inr l`. Simplify using `only [LinearMap.toMatrix_apply, Module.Basis.sumQuot_repr_inr, Matrix.fromBlocks_apply₂₂, b, D]`. Rewrite using `[← Module.Basis.sumQuot_inr bW bQ l, W.mapQ_apply]`.
+
+Simplify using the standard rewrite rules.
+-/
 theorem charpoly_res_quot {V : Type} [AddCommGroup V] [Module K V] [FiniteDimensional K V]
     (e : Module.End K V) (W : Submodule K V) (he : ∀ x ∈ W, e x ∈ W) :
     e.charpoly = (e.restrict he).charpoly * (W.mapQ W e he).charpoly := by
@@ -93,6 +115,9 @@ def Split {V : Type} [AddCommGroup V] [Module K V] [FiniteDimensional K V] (ρ :
   ∃ L : List (Σ m : ℕ, Γ →* GL (Fin m) K), (∀ p ∈ L, 1 ≤ p.1 ∧ IsIrrSub p.2 ⊤) ∧
     ∀ g, (ρ g).charpoly = (L.map fun p => ((p.2 g : GL _ _) : Matrix (Fin p.1) (Fin p.1) K).charpoly).prod
 
+/- English proof (translation)
+Use `⟨[], fun p hp => absurd hp List.not_mem_nil, fun g => ?_⟩` and prove the remaining obligations. Rewrite using `[List.map_nil, List.prod_nil]`. Conclude with `Polynomial.eq_one_of_monic_natDegree_zero (LinearMap.charpoly_monic _) (by rw [LinearMap.charpoly_natDegree, hV])`.
+-/
 theorem split_zero {V : Type} [AddCommGroup V] [Module K V] [FiniteDimensional K V]
     (ρ : Γ →* Module.End K V) (hV : Module.finrank K V = 0) : Split ρ := by
   refine ⟨[], fun p hp => absurd hp List.not_mem_nil, fun g => ?_⟩
@@ -100,6 +125,17 @@ theorem split_zero {V : Type} [AddCommGroup V] [Module K V] [FiniteDimensional K
   exact Polynomial.eq_one_of_monic_natDegree_zero (LinearMap.charpoly_monic _)
     (by rw [LinearMap.charpoly_natDegree, hV])
 
+/- English proof (translation)
+Set `b` to `Module.finBasis K V`. Use `⟨[⟨Module.finrank K V, matRep ρ b⟩], fun p hp => ?_, fun g => ?_⟩` and prove the remaining obligations. Rewrite `hp` using `[List.mem_singleton]`. Substitute `hp` using the available equality. Use `⟨hV, ?_, fun _ _ _ => Submodule.mem_top, fun W' _ hW' => ?_⟩` and prove the remaining obligations.
+
+Introduce `h0`. Establish `h1 : (fun _ => (1 : K)) ∈ (⊤ : Submodule K (Fin (Module.finrank K V) → K))` using `Submodule.mem_top`. Rewrite `h1` using `[h0, Submodule.mem_bot]`. Establish `h2` using `congrFun h1 ⟨0, hV⟩`. Simplify using `at h2`.
+
+Establish `h1 : AInv ρ (W'.comap (b.equivFun : V →ₗ[K] (Fin (Module.finrank K V) → K)))`. Introduce `g y hy`. Use `show b.equivFun (ρ g y) ∈ W'`. Rewrite using `[← matRep_mulVec]`. Conclude with `hW' g _ hy`.
+
+Establish `h2 : (W'.comap (b.equivFun : V →ₗ[K] (Fin (Module.finrank K V) → K))).map (b.equivFun : V →ₗ[K] (Fin (Module.finrank K V) → K)) = W'` using `Submodule.map_comap_eq_of_surjective b.equivFun.surjective W'`. Break down `hirr _ h1 with h3 | h3` into its components or cases. Use `left`. Rewrite using `[← h2, h3, Submodule.map_bot]`. Use `right`.
+
+Rewrite using `[← h2, h3, Submodule.map_top, LinearMap.range_eq_top.mpr b.equivFun.surjective]`. Rewrite using `[List.map_cons, List.map_nil, List.prod_cons, List.prod_nil, mul_one]`. Conclude with `(charpoly_matRep ρ b g).symm`.
+-/
 theorem split_irr {V : Type} [AddCommGroup V] [Module K V] [FiniteDimensional K V]
     (ρ : Γ →* Module.End K V) (hV : 0 < Module.finrank K V)
     (hirr : ∀ W : Submodule K V, AInv ρ W → W = ⊥ ∨ W = ⊤) : Split ρ := by
@@ -129,6 +165,11 @@ theorem split_irr {V : Type} [AddCommGroup V] [Module K V] [FiniteDimensional K 
   · rw [List.map_cons, List.map_nil, List.prod_cons, List.prod_nil, mul_one]
     exact (charpoly_matRep ρ b g).symm
 
+/- English proof (translation)
+Use `⟨h1.choose ++ h2.choose, fun p hp => ?_, fun g => ?_⟩` and prove the remaining obligations. Break down `List.mem_append.mp hp with h | h` into its components or cases. Conclude with `h1.choose_spec.1 p h`. Conclude with `h2.choose_spec.1 p h`. Rewrite using `[List.map_append, List.prod_append, ← h1.choose_spec.2 g, ← h2.choose_spec.2 g]`.
+
+Conclude with `charpoly_res_quot (ρ g) W (hW g)`.
+-/
 theorem split_step {V : Type} [AddCommGroup V] [Module K V] [FiniteDimensional K V]
     (ρ : Γ →* Module.End K V) (W : Submodule K V) (hW : AInv ρ W)
     (h1 : Split (resEnd ρ W hW)) (h2 : Split (quoEnd ρ W hW)) : Split ρ := by
@@ -139,6 +180,17 @@ theorem split_step {V : Type} [AddCommGroup V] [Module K V] [FiniteDimensional K
   · rw [List.map_append, List.prod_append, ← h1.choose_spec.2 g, ← h2.choose_spec.2 g]
     exact charpoly_res_quot (ρ g) W (hW g)
 
+/- English proof (translation)
+Proceed by induction on `d using Nat.strong_induction_on with`. Consider the case `_ d ih`. Introduce `V _ _ _ hV ρ`. Distinguish the cases in `hex : ∃ W : Submodule K V, AInv ρ W ∧ W ≠ ⊥ ∧ W ≠ ⊤`. Establish `hW : AInv ρ hex.choose` using `hex.choose_spec.1`.
+
+Establish `hb : hex.choose ≠ ⊥` using `hex.choose_spec.2.1`. Establish `ht : hex.choose ≠ ⊤` using `hex.choose_spec.2.2`. Establish `hlt : Module.finrank K hex.choose < d`. Rewrite using `[← hV]`. Conclude with `Submodule.finrank_lt ht`.
+
+Establish `hpos : 0 < Module.finrank K hex.choose` using `Nat.pos_of_ne_zero fun h => hb (Submodule.finrank_eq_zero.mp h)`. Establish `hq : Module.finrank K (V ⧸ hex.choose) + Module.finrank K hex.choose = d`. Rewrite using `[← hV]`. Conclude with `Submodule.finrank_quotient_add_finrank _`. Conclude with `split_step ρ hex.choose hW (ih _ hlt hex.choose rfl (resEnd ρ hex.choose hW)) (ih _ (by omega) (V ⧸ hex.choose) rfl (quoEnd ρ hex.choose hW))`.
+
+Use `push_neg at hex`. Break down `Nat.eq_zero_or_pos d with h0 | h0` into its components or cases. Conclude with `split_zero ρ (hV.trans h0)`. Use `split_irr ρ (hV ▸ h0) fun W hW => ?_` and prove the remaining obligations. Distinguish the cases in `hb : W = ⊥`.
+
+Conclude with `Or.inl hb`. Conclude with `Or.inr (hex W hW hb)`.
+-/
 theorem split_all (d : ℕ) : ∀ (V : Type) [AddCommGroup V] [Module K V] [FiniteDimensional K V],
     Module.finrank K V = d → ∀ ρ : Γ →* Module.End K V, Split ρ := by
   induction d using Nat.strong_induction_on with
@@ -168,6 +220,11 @@ end SSListPf
 
 open Formalism.MainNotions.N Polynomial GlobalTheory.StringRepresentationDecomposition
 
+/- English proof (translation)
+Introduce `k _ Γ _ n ρ`. Set `ρE : Γ →* Module.End k (Fin n → k)` to `((Matrix.toLinAlgEquiv' : Matrix (Fin n) (Fin n) k ≃ₐ[k] Module.End k (Fin n → k)) : Matrix (Fin n) (Fin n) k →* Module.End k (Fin n → k)).comp ((Units.coeHom _).comp ρ)`. Establish `hρg : ∀ g, ρE g = Matrix.toLin' ((ρ g : GL _ _) : Matrix (Fin n) (Fin n) k)` using `fun g => rfl`. Establish `h` using `SSListPf.split_all n (Fin n → k) (by simp) ρE`. Use `⟨h.choose, h.choose_spec.1, fun g => ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[← h.choose_spec.2 g, hρg, Matrix.charpoly_toLin']`.
+-/
 theorem ssList_holds : SSList := by
   intro k _ Γ _ n ρ
   let ρE : Γ →* Module.End k (Fin n → k) :=

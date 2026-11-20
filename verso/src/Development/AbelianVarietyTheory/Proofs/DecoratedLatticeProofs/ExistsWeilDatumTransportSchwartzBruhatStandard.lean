@@ -19,6 +19,17 @@ section Model
 
 variable {X Y G H : Type*} [AddCommGroup X] [Module ℂ X] [AddCommGroup Y] [Module ℂ Y] [Monoid G] [Monoid H]
 
+/- English proof (translation)
+Use `choose lift hlP hls using fun Φ : S => honto Φ.1 Φ.2`. Establish `hlift : ∀ (Φ : S) f, P f → Φ.1 = s f → lift Φ = f` using `fun Φ f hf h => hinj _ _ (hlP Φ) hf ((hls Φ).trans h)`. Set `act : H → Module.End ℂ S` to `fun h => { toFun := fun Φ => ⟨s (om (κ.symm h) (lift Φ)), hin _ (hpres _ _ (hlP Φ))⟩ map_add' := fun Φ Ψ => by`. Establish `e : lift (Φ + Ψ) = lift Φ + lift Ψ` using `hlift _ _ (hadd _ _ (hlP Φ) (hlP Ψ)).1 (by rw [(hadd _ _ (hlP Φ) (hlP Ψ)).2, hls, hls]; rfl)`. Apply `Subtype.ext` to reduce the goal to its premises.
+
+Simplify using `only [Submodule.coe_add]`. Rewrite using `[e, map_add]`. Conclude with `(hadd _ _ (hpres _ _ (hlP Φ)) (hpres _ _ (hlP Ψ))).2`. Use the proof step `map_smul' := fun c Φ => by`. Establish `e : lift (c • Φ) = c • lift Φ` using `hlift _ _ (hsmul c _ (hlP Φ)).1 (by rw [(hsmul c _ (hlP Φ)).2, hls]; rfl)`.
+
+Apply `Subtype.ext` to reduce the goal to its premises. Simplify using `only [Submodule.coe_smul, RingHom.id_apply]`. Rewrite using `[e, map_smul]`. Conclude with `(hsmul c _ (hpres _ _ (hlP Φ))).2 }`. Establish `hact : ∀ h (Φ : S), ((act h Φ : S) : Y) = s (om (κ.symm h) (lift Φ))` using `fun _ _ => rfl`.
+
+Use `⟨{ toFun := act, map_one' := ?_, map_mul' := ?_ }, ?_⟩` and prove the remaining obligations. Use `LinearMap.ext fun Φ => Subtype.ext ?_` and prove the remaining obligations. Rewrite using `[hact, map_one, map_one]`. Conclude with `hls Φ`. Introduce `h₁ h₂`.
+
+Use `LinearMap.ext fun Φ => Subtype.ext ?_` and prove the remaining obligations. Rewrite using `[Module.End.mul_apply, hact, hact, map_mul, map_mul, Module.End.mul_apply, hlift (act h₂ Φ) _ (hpres _ _ (hlP Φ)) (hact h₂ Φ)]`. Introduce `g f hf Φ hΦ show s (om (κ.symm (κ g)) (lift Φ)) = s (om g f)`. Rewrite using `[κ.symm_apply_apply, hlift Φ f hf hΦ]`.
+-/
 theorem exists_hom_of_model (P : X → Prop) (s : X → Y) (S : Submodule ℂ Y)
     (hadd : ∀ f f', P f → P f' → P (f + f') ∧ s (f + f') = s f + s f')
     (hsmul : ∀ (c : ℂ) f, P f → P (c • f) ∧ s (c • f) = c • s f)
@@ -61,6 +72,9 @@ theorem exists_hom_of_model (P : X → Prop) (s : X → Y) (S : Submodule ℂ Y)
 
 end Model
 
+/- English proof (translation)
+Introduce `D ψ A B χB omh hW ν 𝓨 hν θ hθ κ`. Establish `hS` using `GlobalTheory.T.schrodingerTheta_eq_schwartzBruhat D ψ hW.std θ hθ A B ν 𝓨 hν`. Establish `hL` using `GlobalTheory.T.schrodingerFunction_linear_thetaFunctions D ψ hW.std A B ν 𝓨 hν`. Take `⟨ρ, hρ⟩` from `exists_hom_of_model (IsThetaFunO ψ (dblSp A) B) (sch ψ A B ν 𝓨) (schwartzA θ B.rank A.rank) (fun f f' hf hf' => ⟨(hL f f' hf hf' 0).1, (hL f f' hf hf' 0).2.2.1⟩) (fun c f hf => ⟨(hL f f hf hf c).2.1, (hL f f hf hf c).2.2.2⟩) hS.1 hS.2.1 hS.2.2 (omh.comp (MonoidHom.inl _ _)) (fun …`. Conclude with `⟨ρ, fun g f hf Φ hΦ => hρ g f hf Φ hΦ⟩`.
+-/
 theorem exists_transport_std : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ) (A B : HSp D) (χB : (AE D)ˣ →* Circle) (omh : GA D (dblSp A) × GA D B →* Module.End ℂ (WO (dblSp A) B → ℂ)), IsWeilDatumO ψ (dblSp A) B 1 χB omh → ∀ (ν : Measure (WO A B)) (𝓨 : Set (WO A B)), IsCovolOne (ratL B A) ν 𝓨 → ∀ θ : InfFam D, IsInfFam θ → ∀ κ : GA D (dblSp A) ≃* G D A.rank, ∃ omS : G D A.rank →* Module.End ℂ (schwartzA θ B.rank A.rank), IsTransport ψ θ A B ν 𝓨 omh κ omS := by
   intro D ψ A B χB omh hW ν 𝓨 hν θ hθ κ
   have hS := GlobalTheory.T.schrodingerTheta_eq_schwartzBruhat D ψ hW.std θ hθ A B ν 𝓨 hν

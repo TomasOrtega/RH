@@ -4,6 +4,11 @@ open AlgebraicGeometry CategoryTheory Limits ReciprocityTheory.ChartRestriction.
 
 namespace GlobalTheory.UPoinc
 
+/- English proof (translation)
+Use `haveI : ∀ x : X, _root_.IsReduced (X.presheaf.stalk x) := fun x => by`. Establish `hfl` using `Flat.stalkMap f x`. Establish `hs` using `f.stalkMap_surjective x`. Use `letI := (f.stalkMap x).hom.toAlgebra`. Use `haveI : Module.Flat (Y.presheaf.stalk (f x)) (X.presheaf.stalk x) := hfl`.
+
+Use `haveI : IsLocalHom (algebraMap (Y.presheaf.stalk (f x)) (X.presheaf.stalk x)) := inferInstanceAs (IsLocalHom (f.stalkMap x).hom)`. Use `haveI := Module.FaithfullyFlat.of_flat_of_isLocalHom (A := Y.presheaf.stalk (f x)) (B := X.presheaf.stalk x)`. Establish `hi : Function.Injective (f.stalkMap x).hom` using `FaithfulSMul.algebraMap_injective (Y.presheaf.stalk (f x)) (X.presheaf.stalk x)`. Conclude with `isReduced_of_injective (RingEquiv.ofBijective _ ⟨hi, hs⟩).symm (RingEquiv.injective _)`. Conclude with `isReduced_of_isReduced_stalk X`.
+-/
 theorem isReduced_of_flat_isPreimmersion {X Y : Scheme.{0}} (f : X ⟶ Y) [Flat f] [IsPreimmersion f] [IsReduced Y] :
     IsReduced X := by
   haveI : ∀ x : X, _root_.IsReduced (X.presheaf.stalk x) := fun x => by
@@ -19,6 +24,19 @@ theorem isReduced_of_flat_isPreimmersion {X Y : Scheme.{0}} (f : X ⟶ Y) [Flat 
     exact isReduced_of_injective (RingEquiv.ofBijective _ ⟨hi, hs⟩).symm (RingEquiv.injective _)
   exact isReduced_of_isReduced_stalk X
 
+/- English proof (translation)
+Introduce `o Ω _ _ _ _ M U₀ R u₀ hne hgen`. Use `haveI := M.integral`. Use `letI := (toRat R).toAlgebra`. Use `haveI := isLocalization_ratHull R`. Use `haveI : IsPreimmersion (spMap (toRat R)) := IsPreimmersion.of_isLocalization (Algebra.algebraMapSubmonoid R (nonZeroDivisors ℤ))`.
+
+Use `haveI : Flat (spMap (toRat R)) := (HasRingHomProperty.Spec_iff (P := @Flat)).2 (IsLocalization.flat (ratHull R) (Algebra.algebraMapSubmonoid R (nonZeroDivisors ℤ)))`. Establish `hr : Set.range M.pt ⊆ Set.range U₀.ι`. Introduce and unpack `_ ⟨w, rfl⟩`. Rewrite using `[Scheme.Opens.range_ι]`. Conclude with `M.top_le_preimage_pt hne (show w ∈ (⊤ : (Sp Ω).Opens) from trivial)`.
+
+Establish `hx` using `IsOpenImmersion.lift_fac U₀.ι M.pt hr`. Establish `w : IsOpenImmersion.lift U₀.ι M.pt hr ≫ u₀ = spMap (ratHull R).val.toRingHom ≫ spMap (toRat R)` using `(hgen _ hx).trans (spMap_val_toRat R).symm`. Set `pt` to `pullback.lift _ _ w`. Set `j : pullback u₀ (spMap (toRat R)) ⟶ M.Z` to `pullback.fst _ _ ≫ U₀.ι`. Establish `hpt : pt ≫ j = M.pt` using `by rw [← Category.assoc, pullback.lift_fst, hx]`.
+
+Use `haveI : IsPreimmersion j := inferInstance`. Use `haveI : Flat j := inferInstance`. Use `haveI := isReduced_of_flat_isPreimmersion j`. Establish `hj : ∀ y, j (pt y) = genericPoint M.Z` using `fun y => by`. Rewrite using `[← Scheme.Hom.comp_apply, hpt]`.
+
+Conclude with `M.gen.le ⟨y, rfl⟩`. Establish `hg : IsGenericPoint (pt default) Set.univ`. Use `isGenericPoint_iff_specializes.2 fun z => ⟨fun _ => trivial, fun _ => ?_⟩` and prove the remaining obligations. Rewrite using `[← j.isEmbedding.isInducing.specializes_iff, hj]`. Conclude with `genericPoint_specializes _`.
+
+Use `haveI : IrreducibleSpace (pullback u₀ (spMap (toRat R)) :) := (irreducibleSpace_def _).2 hg.isIrreducible`. Use `⟨isIntegral_of_irreducibleSpace_of_isReduced _, pt, hpt, ?_⟩` and prove the remaining obligations. Conclude with `Dense.mono (Set.singleton_subset_iff.2 ⟨default, rfl⟩) (dense_iff_closure_eq.2 hg)`.
+-/
 theorem isIntegral_pullback_toRat : ∀ (o Ω : Type) [CommRing o] [Field Ω] [Algebra o Ω] [CharZero Ω] (M : RatModel o Ω) (U₀ : M.Z.Opens) (R : Subalgebra o Ω) (u₀ : U₀.toScheme ⟶ Sp R), (U₀ : Set M.Z).Nonempty → (∀ x : Sp Ω ⟶ U₀.toScheme, x ≫ U₀.ι = M.pt → x ≫ u₀ = spMap R.val.toRingHom) → IsIntegral (pullback u₀ (spMap (toRat R))) ∧ ∃ pt : Sp Ω ⟶ pullback u₀ (spMap (toRat R)), pt ≫ pullback.fst _ _ ≫ U₀.ι = M.pt ∧ Dense (Set.range pt) := by
   intro o Ω _ _ _ _ M U₀ R u₀ hne hgen
   haveI := M.integral

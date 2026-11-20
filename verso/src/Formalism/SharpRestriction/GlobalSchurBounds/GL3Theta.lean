@@ -48,6 +48,9 @@ def IsModelU {p : ℕ} [Fact p.Prime] (lam : Qbar →+* ℂ_[p]) (Λ : AddSubgro
   let W := C • wModel lam Λ
   IsIntP W.a₁ ∧ IsIntP W.a₂ ∧ IsIntP W.a₃ ∧ IsIntP W.a₄ ∧ IsIntP W.a₆ ∧ ‖W.Δ‖ = 1
 
+/- English proof (translation)
+Take `⟨h1, h2, h3, h4, h6, hd⟩` from `h`. Use `show IsIntP _ ∧ IsIntP _ ∧ IsIntP _ ∧ IsIntP _ ∧ IsIntP _ ∧ ‖_‖ = 1`. Apply the tactic sequence `exact ⟨h1, h2, h3, h4, h6, by first | rw [hd, norm_one] | simp [hd]⟩`.
+-/
 theorem IsModel.toU {p : ℕ} [Fact p.Prime] {lam : Qbar →+* ℂ_[p]} {Λ : AddSubgroup ℂ}
     {C : WeierstrassCurve.VariableChange ℂ_[p]} (h : IsModel lam Λ C) : IsModelU lam Λ C := by
   obtain ⟨h1, h2, h3, h4, h6, hd⟩ := h
@@ -281,6 +284,9 @@ def G1.ePhI {p : ℕ} [Fact p.Prime] (g : G1 p) (ι : Type) [Fintype ι] : MvPow
   if p = 2 then 1 else
     ∏ i : ι, (PowerSeries.subst (MvPowerSeries.X i : MvPowerSeries ι ℂ_[p]) (ePhi1 g.lam g.abelian₂ g.C g.wq))⁻¹
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem G1.ePhI_fin {p : ℕ} [Fact p.Prime] (g : G1 p) (r : ℕ) :
     g.ePhI (Fin r) = ePh g.lam g.abelian₂ g.C g.wq r := rfl
 
@@ -453,11 +459,19 @@ def NormOnePowerPrincipal (D : D7) : Prop :=
   ∀ 𝔞 : IdE D, N1 D 𝔞 → ∃ (h : ℕ) (z : unitary D.host.E), 0 < h ∧
     𝔞 ^ h = Submodule.span (𝓞 D.host.E) {(z : D.host.E)}
 
+/- English proof (translation)
+The claim follows from `| 0 => by simp | n + 1 => by rw [pow_succ, hm, idl_pow hm x n, ← pow_succ]`.
+-/
 theorem idl_pow {D : D7} {idl : D.Dt ⧸ D.UO → IdE D} (hm : ∀ x y, idl (x * y) = idl x * idl y)
     (x : D.Dt ⧸ D.UO) : ∀ n : ℕ, idl (x ^ (n + 1)) = idl x ^ (n + 1)
   | 0 => by simp
   | n + 1 => by rw [pow_succ, hm, idl_pow hm x n, ← pow_succ]
 
+/- English proof (translation)
+Take `⟨hinj, hN1, hm, hz, -⟩` from `h`. Introduce `t`. Take `⟨n, z, hn, hnz⟩` from `hn (idl (QuotientGroup.mk t)) ((hN1 _).2 ⟨_, rfl⟩)`. Take `⟨m, rfl⟩ : ∃ m, n = m + 1` from `⟨n - 1, by omega⟩`. Establish `hq : (QuotientGroup.mk (D.e1Dt z) : D.Dt ⧸ D.UO) = QuotientGroup.mk (t ^ (m + 1))`.
+
+Apply `hinj` to reduce the goal to its premises. Rewrite using `[hz, ← hnz, QuotientGroup.mk_pow, idl_pow hm]`. Use `⟨m + 1, z, ?_⟩` and prove the remaining obligations. Unfold `PowRat`. Conclude with `⟨hn, (D.e1Dt z)⁻¹ * t ^ (m + 1), QuotientGroup.eq.mp hq, (mul_inv_cancel_left _ _).symm⟩`.
+-/
 theorem powRatAll_of (D : D7) (idl : D.Dt ⧸ D.UO → IdE D) (h : RelDetPinned D idl) (hn : NormOnePowerPrincipal D) :
     PowRatAll D := by
   obtain ⟨hinj, hN1, hm, hz, -⟩ := h
@@ -486,14 +500,23 @@ def CarriesTupleCharacters (D : D7) {u : D.what₂.Word} (C : ColumnChain D.R D.
   ∀ i < D.R.m, (∀ c, C.rhoDet i c = ((rhoOf D mt i (dt i c) : ℂˣ) : ℂ)) ∧
     ∀ c, C.rhoDet' i c = ((rhoOf' D mt i (dt (i + 1) c) : ℂˣ) : ℂ)
 
+/- English proof (translation)
+Conclude with `D.rhoDet_eq_inv_muTilde_chiD_pow u i c`.
+-/
 theorem rhoDet_eq (D : D7) (u : D.what₂.Word) (i : ℕ) (c : (D.mem u).C.cls i) :
     (D.mem u).C.rhoDet i c = ((rhoCh D i (D.detCls u i c) : ℂˣ) : ℂ) := by
   exact D.rhoDet_eq_inv_muTilde_chiD_pow u i c
 
+/- English proof (translation)
+Conclude with `D.rhoDetPrime_eq_muTilde_mul_chi_pow u i c`.
+-/
 theorem rhoDet'_eq (D : D7) (u : D.what₂.Word) (i : ℕ) (c : (D.mem u).C.cls (i + 1)) :
     (D.mem u).C.rhoDet' i c = ((rhoCh' D i (D.detCls u (i + 1) c) : ℂˣ) : ℂ) := by
   exact D.rhoDetPrime_eq_muTilde_mul_chi_pow u i c
 
+/- English proof (translation)
+Introduce `i _`. Conclude with `⟨fun c => rhoDet_eq D u i c, fun c => rhoDet'_eq D u i c⟩`.
+-/
 theorem member_chain_has_characters (D : D7) (u : D.what₂.Word) : CarriesTupleCharacters D (D.mem u).C D.muTil (D.detCls u) := by
   intro i _
   exact ⟨fun c => rhoDet_eq D u i c, fun c => rhoDet'_eq D u i c⟩
@@ -512,6 +535,9 @@ def rhoThreeOf (D : D7) {u : D.what₂.Word} (C : ColumnChain D.R D.what₂.Tau 
 
 def rhoThree (D : D7) : Prop := ∀ u : D.what₂.Word, rhoThreeOf D (D.mem u).C D.muTil
 
+/- English proof (translation)
+Take `⟨h1, h2⟩` from `h i hi`. Simplify using `only [Formalism.BasicNotions.ColumnChain.K, Formalism.ThetaLiftIndependence.kerOpM, Formalism.BasicNotions.ColumnChain.Kmap, Formalism.BasicNotions.ColumnChain.wt, LinearMap.smul_apply, LinearMap.comp_apply, h1, h2]`.
+-/
 theorem lift_eqC (D : D7) {u : D.what₂.Word} (C : ColumnChain D.R D.what₂.Tau (D.hcW u)) (mt : ℕ → D.Dt →* ℂˣ)
     (dt : ∀ i, C.cls i → D.Dt) (h : CarriesTupleCharacters D C mt dt) (i : ℕ) (hi : i < D.R.m) (φ : C.cls i → C.Y i → ℂ)
     (c' : C.cls (i + 1)) :
@@ -522,6 +548,9 @@ theorem lift_eqC (D : D7) {u : D.what₂.Word} (C : ColumnChain D.R D.what₂.Ta
   simp only [Formalism.BasicNotions.ColumnChain.K, Formalism.ThetaLiftIndependence.kerOpM, Formalism.BasicNotions.ColumnChain.Kmap, Formalism.BasicNotions.ColumnChain.wt,
     LinearMap.smul_apply, LinearMap.comp_apply, h1, h2]
 
+/- English proof (translation)
+Simplify using `only [Formalism.BasicNotions.ColumnChain.K, Formalism.ThetaLiftIndependence.kerOpM, Formalism.BasicNotions.ColumnChain.Kmap, Formalism.BasicNotions.ColumnChain.wt, LinearMap.smul_apply, LinearMap.comp_apply, rhoDet_eq, rhoDet'_eq]`.
+-/
 theorem lift_eq (D : D7) (u : D.what₂.Word) (i : ℕ) (φ : (D.mem u).C.cls i → (D.mem u).C.Y i → ℂ)
     (c' : (D.mem u).C.cls (i + 1)) :
     (D.mem u).C.K i φ c' = ∑ c, (((Nat.card ((D.mem u).C.stab i c) : ℕ) : ℂ)⁻¹) •
@@ -579,6 +608,11 @@ def liftTie (D : D7) (T : Tor D) (e : FamE D) {u : D.what₂.Word} {C : ColumnCh
     C.unf i c c' (fun y => evFr D Q (O.frm i y)) y' =
       applyAt0 D (polD D O.dgen Q (O.frm (i + 1) y')) (O.Th i c c')
 
+/- English proof (translation)
+Take `⟨-, h2⟩` from `h`. Rewrite using `[lift_eqC D C O.mt O.dt O.c13 i hi φ c', Finset.sum_apply]`. Use `Finset.sum_congr rfl fun c _ => ?_` and prove the remaining obligations. Establish `key` using `h2 c c' (Q c) y'`. Rewrite using `[hQ c]`.
+
+Simplify using `only [Pi.smul_apply, smul_eq_mul, Formalism.BasicNotions.ColumnChain.divDe, Formalism.BasicNotions.mulFun, LinearMap.coe_mk, AddHom.coe_mk, key]`.
+-/
 theorem lift_formula (D : D7) (T : Tor D) (e : FamE D) {u : D.what₂.Word}
     {C : ColumnChain D.R D.what₂.Tau (D.hcW u)} (O : LiftObj D C) (i : ℕ) (hi : i < D.R.m) (h : liftTie D T e O i)
     (φ : C.cls i → C.Y i → ℂ) (Q : C.cls i → MvPolynomial (FrV D (D.R.N i)) ℂ)
@@ -634,6 +668,11 @@ def relDetP (D : D7) : Prop :=
     ∃ (h : ℕ) (z : unitary D.host.E), 0 < h ∧ PUnit D lam (z : D.host.E) ∧
       D.relDet N L₀ L ^ h = QuotientGroup.mk (D.e1Dt z)
 
+/- English proof (translation)
+Take `⟨hinj, -, hm, hz, hdet⟩` from `h`. Introduce `p _ lam N L L₀ hL`. Take `⟨n, z, hn, hp, hnz⟩` from `hd p lam N L L₀ hL`. Take `⟨m, rfl⟩ : ∃ m, n = m + 1` from `⟨n - 1, by omega⟩`. Use `⟨m + 1, z, hn, hp, hinj ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[idl_pow hm, hdet, hnz, hz]`.
+-/
 theorem relDetP_of_relDetPinned (D : D7) (idl : D.Dt ⧸ D.UO → IdE D) (h : RelDetPinned D idl) (hd : detIdP D) :
     relDetP D := by
   obtain ⟨hinj, -, hm, hz, hdet⟩ := h
@@ -674,12 +713,18 @@ def rhoUse (D : D7) : Prop :=
   ∀ (u : D.what₂.Word) (C : ColumnChain D.R D.what₂.Tau (D.hcW u)) (mt : ℕ → D.Dt →* ℂˣ), rhoThreeOf D C mt →
     repUnitsOf D mt ∧ rhoValOf D C mt ∧ brRhoOf D C mt
 
+/- English proof (translation)
+Take `⟨n, z, hz⟩` from `ha t`. Conclude with `h p lam h2 hp t n z hz`.
+-/
 theorem chiUnitAll (D : D7) (h : chiUnitInert D) (ha : PowRatAll D) (p : ℕ) [Fact p.Prime]
     (lam : Qbar →+* ℂ_[p]) (h2 : p ≠ 2) (hp : InertK D p) (t : D.Dt) :
     ‖lamC lam ((D.chiD t : ℂˣ) : ℂ)‖ = 1 := by
   obtain ⟨n, z, hz⟩ := ha t
   exact h p lam h2 hp t n z hz
 
+/- English proof (translation)
+Take `⟨hinj, -, hm, -, hdet⟩` from `h`. Establish `hx : D.relDet N L L'' = x ^ (i + 1)` using `hinj (by rw [hdet, hi, idl_pow hm])`. Rewrite using `[hx, map_pow]`.
+-/
 theorem chiQ_move (D : D7) (idl : D.Dt ⧸ D.UO → IdE D) (h : RelDetPinned D idl) (N : ℕ)
     (L L'' : (letI := D.host.cmStar; SDLat D.host.E N)) (x : D.Dt ⧸ D.UO) (i : ℕ)
     (hi : detId D L.1 L''.1 = idl x ^ (i + 1)) : chiQ D (D.relDet N L L'') = chiQ D x ^ (i + 1) := by
@@ -782,6 +827,9 @@ def PhiHat (D : D7) (T : Tor D) (δ : ℂ) {N N' r : ℕ} (p n : ℕ) [Fact p.Pr
   ((p : ℂ) ^ (n * r))⁻¹ * ∑ a : Fin r → Fin (p ^ n), Φ (fun i => (((a i : ℕ) : ℤ_[p]))) *
     (kap D T (vecN D T δ p n b a) (liftY D T δ p n ε b y))⁻¹
 
+/- English proof (translation)
+Simplify using `only [XiF, PhiHat, Finset.mul_sum, Finset.sum_mul]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun _ _ => Finset.sum_congr rfl fun _ _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem xi_formula (D : D7) (T : Tor D) (δ : ℂ) {N N' r : ℕ} (p n : ℕ) [Fact p.Prime] (ε : 𝓞 D.host.K)
     (b : Fin r → Matrix (Fin N') (Fin N) D.host.E) (Φ : LocallyConstant (Fin r → ℤ_[p]) ℂ)
     (G : VC D N N' → ℂ) (z : VC D N N') :
@@ -931,11 +979,17 @@ def Adm3s (D : D7) : Prop := admJ D ∧ InducedCMType D ∧ HostFieldConditions 
 
 def Stmt (D : D7) : Prop := Adm3s D → aux₃ D
 
+/- English proof (translation)
+Take `⟨-, -, -, -, -, hn, -, hd, -⟩` from `h`. Introduce and unpack `⟨idl, hi⟩`. Conclude with `⟨relDetP_of_relDetPinned D idl hi hd, powRatAll_of D idl hi hn⟩`.
+-/
 theorem relative_determinant_of_split_model (D : D7) (h : SplitModelProperties D) : Pinned D → relDetP D ∧ PowRatAll D := by
   obtain ⟨-, -, -, -, -, hn, -, hd, -⟩ := h
   rintro ⟨idl, hi⟩
   exact ⟨relDetP_of_relDetPinned D idl hi hd, powRatAll_of D idl hi hn⟩
 
+/- English proof (translation)
+Take `⟨-, -, ⟨hu, -⟩, -⟩` from `h`. Conclude with `(hu u (D.mem u).C D.muTil (h3 u)).1`.
+-/
 theorem repUnits_of (D : D7) (h : aux₃ D) (u : D.what₂.Word) (h3 : rhoThree D) : repUnits D := by
   obtain ⟨-, -, ⟨hu, -⟩, -⟩ := h
   exact (hu u (D.mem u).C D.muTil (h3 u)).1
@@ -950,6 +1004,9 @@ def TwistedThetaTheorem (D : D7) (C : ℝ) (X : Ideal (𝓞 D.host.K) → ℂ �
 
 def ConclusionE (D : D7) (C : ℝ) : Prop := TwistedThetaTheorem D C fun _ _ _ => True
 
+/- English proof (translation)
+Introduce `cc hcc δ hδ`. Take `⟨h1, h2, h3⟩` from `h cc hcc δ hδ`. Use `⟨h1, h2, fun χ hχ => ?_⟩` and prove the remaining obligations. Take `⟨e, he, hf, hx⟩` from `h3 χ hχ`. Conclude with `⟨e, he, hf, hX _ _ _ hx⟩`.
+-/
 theorem TwistedThetaTheorem.mono {D : D7} {C : ℝ} {X X' : Ideal (𝓞 D.host.K) → ℂ → FamE D → Prop}
     (hX : ∀ cc δ e, X cc δ e → X' cc δ e) (h : TwistedThetaTheorem D C X) : TwistedThetaTheorem D C X' := by
   intro cc hcc δ hδ
@@ -958,6 +1015,9 @@ theorem TwistedThetaTheorem.mono {D : D7} {C : ℝ} {X X' : Ideal (𝓞 D.host.K
   obtain ⟨e, he, hf, hx⟩ := h3 χ hχ
   exact ⟨e, he, hf, hX _ _ _ hx⟩
 
+/- English proof (translation)
+Introduce `cc hcc δ hδ`. Take `⟨h1, h2, h3⟩` from `h cc hcc δ hδ`. Use `⟨h1, h2, fun χ hχ => ?_⟩` and prove the remaining obligations. Take `⟨e, he, -⟩` from `h3 χ hχ`. Conclude with `⟨e, he⟩`.
+-/
 theorem TwistedThetaTheorem.toTaylorLogMetric {D : D7} {C : ℝ} {X : Ideal (𝓞 D.host.K) → ℂ → FamE D → Prop} (h : TwistedThetaTheorem D C X) :
     TaylorLogMetric.aux₃ D C := by
   intro cc hcc δ hδ
@@ -966,6 +1026,17 @@ theorem TwistedThetaTheorem.toTaylorLogMetric {D : D7} {C : ℝ} {X : Ideal (�
   obtain ⟨e, he, -⟩ := h3 χ hχ
   exact ⟨e, he⟩
 
+/- English proof (translation)
+Take `⟨hinj, hN1, hm, hz, hdet⟩` from `hi`. Take `⟨χ, hχ⟩ : ∃ χ : IdE D → ℂ, ∀ x, χ (idl x) = ((chiQ D x : ℂˣ) : ℂ)` from `⟨fun 𝔞 => if h𝔞 : ∃ x, idl x = 𝔞 then ((chiQ D h𝔞.choose : ℂˣ) : ℂ) else 0, fun x => by`. Establish `hex : ∃ y, idl y = idl x` using `⟨x, rfl⟩`. Simplify using `only`. Rewrite using `[dif_pos hex, hinj hex.choose_spec]⟩`.
+
+Establish `hC : IsChi D χ`. Simplify using `only [IsChi]`. Use `⟨fun 𝔞 𝔟 ha hb => ?_, fun z => ?_⟩` and prove the remaining obligations. Take `⟨x, rfl⟩` from `(hN1 𝔞).1 ha`. Take `⟨y, rfl⟩` from `(hN1 𝔟).1 hb`.
+
+Rewrite using `[← hm]`. Simplify using `only [hχ, map_mul, Units.val_mul]`. Rewrite using `[← hz, hχ]`. Simplify using `only [chiQ, QuotientGroup.lift_mk]`. Conclude with `D.rest_detCharacter_on_unitary_eq z`.
+
+Take `⟨-, -, h3⟩` from `h cc hcc δ hδ`. Take `⟨e, ⟨hv, ht, heq, hin, hmo, hmc, hs⟩, hf, hx⟩` from `h3 χ hC`. Take `⟨q1, q2, q3⟩` from `heq`. Establish `hR : RelativeDeterminantEquation D (tor0 D cc δ) e`. Simplify using `only [RelativeDeterminantEquation]`.
+
+Use `⟨q1, fun N N' L L' L'' hN hN' => ?_, fun N N' L L₁ L' hN hN' => ?_⟩` and prove the remaining obligations. Rewrite using `[q2 N N' L L' L'' hN hN', ← hdet, hχ, Units.val_zpow_eq_zpow_val]`. Rewrite using `[q3 N N' L L₁ L' hN hN', ← hdet, hχ, Units.val_zpow_eq_zpow_val]`. Conclude with `⟨e, hv, ht, hR, hin, hmo, hmc, hs, hf, hx⟩`.
+-/
 theorem TwistedThetaTheorem.rec {D : D7} {C : ℝ} {X : Ideal (𝓞 D.host.K) → ℂ → FamE D → Prop} (h : TwistedThetaTheorem D C X)
     (idl : D.Dt ⧸ D.UO → IdE D) (hi : RelDetPinned D idl) (cc : Ideal (𝓞 D.host.K)) (hcc : IsCurveIdeal D cc) (δ : ℂ)
     (hδ : IsDiscriminantTwelfthRootOfIdealLattice D cc δ) :

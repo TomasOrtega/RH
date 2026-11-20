@@ -8,6 +8,17 @@ open MvPolynomial
 
 noncomputable section
 
+/- English proof (translation)
+Introduce `n δ h Z f u u' data hu hu'`. Take `⟨c, hc, g, hg, hf⟩` from `data.chow`. Establish `hK : ∀ W ∈ Z.support, ∃ K : ℝ, ∀ v : Fin n → ℂ, linForm v ∉ W → eval (fun ij => v ij.2) (g W) ≠ 0 ∧ Real.log ‖eval (fun ij => v ij.2) (g W)‖ - coneIntegral h W 0 (fsLog h v) = K` using `fun W hW => h1 n h W (g W) (data.prime W hW) (hg W hW)`. Use `choose! K hK using hK`. Establish `key : ∀ v : Fin n → ℂ, IsAdmissible Z v → mahlerDefect h 0 Z f v = Real.log ‖c‖ + ∑ W ∈ Z.support, (Z W : ℝ) * K W`.
+
+Introduce `v hv`. Establish `hne : ∀ W ∈ Z.support, eval (fun ij => v ij.2) (g W) ≠ 0` using `fun W hW => (hK W hW v (hv W hW)).1`. Establish `hm : mahler h 0 (specFirst f v) = Real.log ‖eval (fun ij => v ij.2) f‖` using `h2 n h f v`. Unfold `mahlerDefect cycleIntegral`. Rewrite using `[hm, hf, map_mul, eval_C, map_prod, norm_mul, norm_prod]`.
+
+Establish `hc' : ‖c‖ ≠ 0` using `norm_ne_zero_iff.mpr hc`. Establish `hp : ∀ W ∈ Z.support, ‖eval (fun ij => v ij.2) (g W ^ Z W)‖ ≠ 0`. Introduce `W hW`. Rewrite using `[map_pow, norm_pow]`. Conclude with `pow_ne_zero _ (norm_ne_zero_iff.mpr (hne W hW))`.
+
+Rewrite using `[Real.log_mul hc' (Finset.prod_ne_zero_iff.mpr hp), Real.log_prod hp, add_sub_assoc, ← Finset.sum_sub_distrib]`. Use `congr 1`. Use `Finset.sum_congr rfl fun W hW => ?_` and prove the remaining obligations. Rewrite using `[map_pow, norm_pow, Real.log_pow, ← (hK W hW v (hv W hW)).2]`. Expand and normalize the polynomial expressions, which then agree.
+
+Rewrite using `[key u hu, key u' hu']`.
+-/
 theorem DefectConstZero.proof (h1 : DefectPoint.Statement) (h2 : MahlerZeroSpec.Statement) :
     DefectConstZero.Statement := by
   intro n δ h Z f u u' data hu hu'

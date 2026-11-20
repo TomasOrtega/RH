@@ -18,6 +18,11 @@ section Forms
 
 variable {Ω : Type} [Field Ω] [CharZero Ω] {J : Type} [Fintype J]
 
+/- English proof (translation)
+Use `MvPolynomial.induction_on' f (fun u a => ?_) (fun p q hp hq => ?_)` and prove the remaining obligations. Use `⟨a.den, monomial u a.num, a.den_nz, ?_⟩` and prove the remaining obligations. Rewrite using `[map_monomial, C_mul_monomial, Rat.den_mul_eq_num]`. Simplify using the standard rewrite rules. Take `⟨N₁, g₁, h₁, e₁⟩` from `hp`.
+
+Take `⟨N₂, g₂, h₂, e₂⟩` from `hq`. Use `⟨N₁ * N₂, C (N₂ : ℤ) * g₁ + C (N₁ : ℤ) * g₂, mul_ne_zero h₁ h₂, ?_⟩` and prove the remaining obligations. Rewrite using `[map_add, map_mul, map_mul, map_C, map_C, e₁, e₂]`. Simplify using `only [eq_intCast, Int.cast_natCast, Nat.cast_mul, C_mul]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem exists_int_mul (f : MvPolynomial J ℚ) :
     ∃ (N : ℕ) (g : MvPolynomial J ℤ), N ≠ 0 ∧ map (Int.castRingHom ℚ) g = C (N : ℚ) * f := by
   refine MvPolynomial.induction_on' f (fun u a => ?_) (fun p q hp hq => ?_)
@@ -31,6 +36,11 @@ theorem exists_int_mul (f : MvPolynomial J ℚ) :
     simp only [eq_intCast, Int.cast_natCast, Nat.cast_mul, C_mul]
     ring
 
+/- English proof (translation)
+Introduce `s hs`. Apply `hf` to reduce the goal to its premises. Introduce `h0`. Apply `hs` to reduce the goal to its premises. Establish `h` using `congrArg (coeff s) hg`.
+
+Rewrite `h` using `[coeff_map, coeff_C_mul, h0, mul_zero]`. Simplify using `using h`.
+-/
 theorem isHomogeneous_of_map {f : MvPolynomial J ℚ} {n : ℕ} (hf : f.IsHomogeneous n) {N : ℕ}
     {g : MvPolynomial J ℤ} (hg : map (Int.castRingHom ℚ) g = C (N : ℚ) * f) : g.IsHomogeneous n := by
   intro s hs
@@ -41,6 +51,11 @@ theorem isHomogeneous_of_map {f : MvPolynomial J ℚ} {n : ℕ} (hf : f.IsHomoge
   rw [coeff_map, coeff_C_mul, h0, mul_zero] at h
   simpa using h
 
+/- English proof (translation)
+Take `⟨N, g, hN, hg⟩` from `exists_int_mul f`. Establish `hgx : aeval x g = 0`. Rewrite using `[← aeval_map_int, hg, map_mul, hx, mul_zero]`. Establish `h0` using `hz.2 g (mem_coordIdeal_of_isHomogeneous ℤ x (isHomogeneous_of_map hf hg) hgx)`. Establish `e : eval z (map (Int.castRingHom ℂ) g) = (N : ℂ) * secFun f z`.
+
+Rewrite using `[show Int.castRingHom ℂ = (algebraMap ℚ ℂ).comp (Int.castRingHom ℚ) from RingHom.ext_int _ _, ← MvPolynomial.map_map, hg, secFun]`. Simplify using the standard rewrite rules. Rewrite `h0` using `[e]`. Conclude with `(mul_eq_zero.mp h0).resolve_left (by exact_mod_cast hN)`.
+-/
 theorem secFun_eq_zero {x : J → Ω} {f : MvPolynomial J ℚ} {n : ℕ} (hf : f.IsHomogeneous n)
     (hx : aeval x f = 0) {z : J → ℂ} (hz : z ∈ pts (coordIdeal ℤ x)) : secFun f z = 0 := by
   obtain ⟨N, g, hN, hg⟩ := exists_int_mul f
@@ -54,18 +69,35 @@ theorem secFun_eq_zero {x : J → Ω} {f : MvPolynomial J ℚ} {n : ℕ} (hf : f
   rw [e] at h0
   exact (mul_eq_zero.mp h0).resolve_left (by exact_mod_cast hN)
 
+/- English proof (translation)
+Rewrite using `[matSubst, ← AlgHom.comp_apply, comp_aeval]`. Use `congrArg (fun y => aeval y b) (funext fun i => ?_)` and prove the remaining obligations. Simplify using `[matAct]`.
+-/
 theorem aeval_matSubst (B : Matrix J J ℚ) (x : J → Ω) (b : MvPolynomial J ℚ) :
     aeval x (matSubst B b) = aeval (matAct B x) b := by
   rw [matSubst, ← AlgHom.comp_apply, comp_aeval]
   refine congrArg (fun y => aeval y b) (funext fun i => ?_)
   simp [matAct]
 
+/- English proof (translation)
+Establish `hg : ∀ i, (∑ j, C (B i j) * X j : MvPolynomial J ℚ).IsHomogeneous 1` using `fun i => IsHomogeneous.sum _ _ _ fun j _ => (isHomogeneous_X ℚ j).C_mul _`. Simplify `hb.aeval _ hg` using `[matSubst]`.
+-/
 theorem isHomogeneous_matSubst (B : Matrix J J ℚ) {b : MvPolynomial J ℚ} {n : ℕ} (hb : b.IsHomogeneous n) :
     (matSubst B b).IsHomogeneous n := by
   have hg : ∀ i, (∑ j, C (B i j) * X j : MvPolynomial J ℚ).IsHomogeneous 1 := fun i =>
     IsHomogeneous.sum _ _ _ fun j _ => (isHomogeneous_X ℚ j).C_mul _
   simpa [matSubst] using hb.aeval _ hg
 
+/- English proof (translation)
+Introduce `s hs`. Take `⟨c, hc0, hc⟩` from `ChangeOfLattice.exists_clear_den A`. Establish `hi : ∀ i, (c : ℤ) • matAct A x i ∈ Submodule.span ℤ (Set.range x)`. Introduce `i`. Establish `e : (c : ℤ) • matAct A x i = matAct ((c : ℚ) • A) x i`.
+
+Simplify using `[matAct, Finset.mul_sum, zsmul_eq_mul, mul_assoc]`. Rewrite using `[e]`. Use `ChangeOfLattice.matAct_mem_span (fun i j => ?_) x i` and prove the remaining obligations. Take `⟨k, hk⟩` from `hc i j`. Conclude with `⟨k, by rw [Matrix.smul_apply, smul_eq_mul, hk]⟩`.
+
+Establish `hy : ∀ l ∈ Submodule.span ℤ (Set.range (matAct A x)), (c : ℤ) • l ∈ Submodule.span ℤ (Set.range x)`. Introduce `l hl`. Establish `hle : Submodule.span ℤ (Set.range (matAct A x)) ≤ (Submodule.span ℤ (Set.range x)).comap ((c : ℤ) • LinearMap.id)` using `Submodule.span_le.2 (Set.range_subset_iff.2 fun i => by simpa using hi i)`. Simplify using `using hle hl`. Rewrite `hs` using `[ChangeOfLattice.sec_eq_pow]`.
+
+Establish `hcs` using `ChangeOfLattice.smul_pow_mem hy n s hs`. Rewrite `hcs` using `[← ChangeOfLattice.sec_eq_pow]`. Establish `hc' : ((c : ℚ) ^ n : Ω) ≠ 0` using `by exact_mod_cast pow_ne_zero n hc0`. Establish `e2 : s = (((c : ℚ) ^ n)⁻¹ : ℚ) • ((c : ℤ) ^ n • s)`. Rewrite using `[Rat.smul_def, zsmul_eq_mul]`.
+
+Use `push_cast`. Clear the denominators using the available nonvanishing facts. Rewrite using `[e2]`. Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span hcs)`.
+-/
 theorem mem_span_rat_sec (A : Matrix J J ℚ) (x : J → Ω) (n : ℕ) :
     ∀ s ∈ sec ℤ (matAct A x) n, s ∈ Submodule.span ℚ (sec ℤ x n : Set Ω) := by
   intro s hs
@@ -101,6 +133,21 @@ section Gram
 
 variable {D : ℕ} {Ω : Type} [Field Ω] [CharZero Ω] {κ : Type} [Fintype κ]
 
+/- English proof (translation)
+Establish `hpt : ∀ z ∈ pts (coordIdeal ℤ d.x), ∀ k l, pairVal d.m n (c k) (c l) z = ∑ i, ∑ j, ((T k i * T l j : ℚ) : ℂ) * pairVal d.m n (b i) (b j) z`. Introduce `z hz k l`. Establish `e1 : ∀ p q : MvPolynomial (Ix κ) ℚ, pairVal d.m n p q z = secFun p z * starRingEnd ℂ (secFun q z) / ((d.m.ρ z ^ (2 * n) : ℝ) : ℂ)` using `fun p q => rfl`. Simplify using `only [e1, hc k z hz, hc l z hz, map_sum, map_mul, map_ratCast, Finset.sum_mul, Finset.mul_sum, Finset.sum_div]`. Use `conv_lhs => rw [Finset.sum_comm]`.
+
+Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Establish `hprob` using `d.vol.1`. Establish `hpv : ∀ i j, pairVal d.m n (b i) (b j) = fun z => starRingEnd ℂ (starRingEnd ℂ (secFun (b i) z) * secFun (b j) z * (wgt d.m n z : ℂ))` using `fun i j => funext (ResSym.pairVal_eq_conj d.m n (b i) (b j))`.
+
+Establish `hcont : ∀ i j, ContinuousOn (pairVal d.m n (b i) (b j)) {0}ᶜ` using `fun i j => by`. Rewrite using `[hpv]`. Conclude with `Complex.continuous_conj.comp_continuousOn (ResSym.continuousOn_gramFun d.smooth n (b i) (b j))`. Establish `hdeg : ∀ i j, ∀ (a : ℂ) z, a ≠ 0 → pairVal d.m n (b i) (b j) (a • z) = pairVal d.m n (b i) (b j) z` using `fun i j a z ha => by`. Rewrite using `[hpv]`.
+
+Simplify using `only`. Rewrite using `[ResSym.gramFun_smul (hb i) (hb j) a z ha]`. Establish `hint1 : ∀ i j, Integrable (fun y => pairVal d.m n (b i) (b j) (resPt d y)) d.dV` using `fun i j => integrableOn_univ.1 ((ResSym.continuous_degZero_resPt d (hcont i j) (hdeg i j)).continuousOn.integrableOn_compact isCompact_univ)`. Establish `hint2 : ∀ i j, Integrable (fun y => pairVal d.m n (b i) (b j) (conjPt (resPt d y))) d.dV` using `fun i j => integrableOn_univ.1 ((ResSym.continuous_degZero_conj_resPt d (hcont i j) (hdeg i j)).continuousOn.integrableOn_compact isCompact_univ)`. Establish `hsum : ∀ (g : d.R.X → Ix κ → ℂ), (∀ y, g y ∈ pts (coordIdeal ℤ d.x)) → (∀ i j, Integrable (fun y => pairVal d.m n (b i) (b j) (g y)) d.dV) → ∀ k l, ∫ y, pairVal d.m n (c k) (c l) (g y) ∂d.dV = ∑ i, ∑ j, ((T k i * T l j : ℚ) : ℂ) * ∫ y, pairVal d.m n (b i) (b j) (g y) ∂d.dV`.
+
+Introduce `g hg hgi k l`. Rewrite using `[integral_congr_ae (Filter.Eventually.of_forall fun y => hpt _ (hg y) k l), integral_finsetSum _ fun i _ => integrable_finsetSum _ fun j _ => (hgi i j).const_mul _]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[integral_finsetSum _ fun j _ => (hgi i j).const_mul _]`. Conclude with `Finset.sum_congr rfl fun j _ => integral_const_mul _ _`.
+
+Use extensionality with `k l`. Rewrite using `[show resGram d n c k l = (1 / 2) * ((∫ y, pairVal d.m n (c k) (c l) (resPt d y) ∂d.dV).re + (∫ y, pairVal d.m n (c k) (c l) (conjPt (resPt d y)) ∂d.dV).re) from rfl, hsum (resPt d) (ResSym.resPt_mem_pts d) hint1, hsum (fun y => conjPt (resPt d y)) (fun y => ResSym.conjPt_mem_pts …`. Simplify using `only [Matrix.mul_apply, Matrix.transpose_apply, Matrix.map_apply, Finset.sum_mul]`. Use `conv_rhs => rw [Finset.sum_comm]`. Simplify using `only [resGram, Complex.re_sum, Complex.mul_re, Complex.ratCast_re, Complex.ratCast_im, zero_mul, sub_zero, Finset.mul_sum, mul_add, ← Finset.sum_add_distrib]`.
+
+Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem resGram_change (d : HSMDatum D Ω κ) {n r : ℕ} {b : Fin r → MvPolynomial (Ix κ) ℚ}
     (hb : ∀ k, ∃ f : MvPolynomial (Ix κ) ℤ, f.IsHomogeneous n ∧ b k = map (Int.castRingHom ℚ) f)
     (c : Fin r → MvPolynomial (Ix κ) ℚ) (T : Matrix (Fin r) (Fin r) ℚ)
@@ -161,6 +208,35 @@ theorem resGram_change (d : HSMDatum D Ω κ) {n r : ℕ} {b : Fin r → MvPolyn
   push_cast
   ring
 
+/- English proof (translation)
+Establish `hli` using `linIndep_rat_of_isSecBasis hb`. Establish `hli'` using `linIndep_rat_of_isSecBasis hb'`. Take `⟨B', hB'B, -⟩` from `ChangeOfLattice.exists_inv_of_isInvMat hB`. Establish `hx' : d.x = matAct B' d'.x` using `by rw [hx, ChangeOfLattice.matAct_mul, hB'B, matAct_one]`. Establish `hspan : ∀ {y : Ix κ → Ω} {s : ℕ} {c : Fin s → MvPolynomial (Ix κ) ℚ}, IsSecBasis y n c → Submodule.span ℚ (sec ℤ y n : Set Ω) = Submodule.span ℚ (Set.range fun i => aeval y (c i))`.
+
+Introduce `y s c hc`. Rewrite using `[← hc.2.2, Submodule.span_span_of_tower]`. Establish `hV : Submodule.span ℚ (Set.range fun k => aeval d'.x (b' k)) = Submodule.span ℚ (Set.range fun i => aeval d.x (b i))`. Apply `le_antisymm` to reduce the goal to its premises. Rewrite using `[← hspan hb, Submodule.span_le]`.
+
+Introduce and unpack `_ ⟨k, rfl⟩`. Use `mem_span_rat_sec B d.x n _ ?_` and prove the remaining obligations. Rewrite using `[← hx, ← hb'.2.2]`. Conclude with `Submodule.subset_span ⟨k, rfl⟩`. Rewrite using `[← hspan hb', Submodule.span_le]`.
+
+Introduce and unpack `_ ⟨k, rfl⟩`. Use `mem_span_rat_sec B' d'.x n _ ?_` and prove the remaining obligations. Rewrite using `[← hx', ← hb.2.2]`. Conclude with `Submodule.subset_span ⟨k, rfl⟩`. Establish `hrr : r' = r`.
+
+Establish `h1` using `finrank_span_eq_card hli`. Establish `h2` using `finrank_span_eq_card hli'`. Rewrite `h2` using `[hV, h1]`. Simplify using `using h2.symm`. Substitute `hrr` using the available equality.
+
+Establish `hmem : ∀ k, aeval d'.x (b' k) ∈ Submodule.span ℚ (Set.range fun i => aeval d.x (b i))` using `fun k => hV ▸ Submodule.subset_span ⟨k, rfl⟩`. Use `choose T hT using fun k => (Submodule.mem_span_range_iff_exists_fun ℚ).1 (hmem k)`. Establish `hTΩ : ∀ k, aeval d'.x (b' k) = ∑ l, ((Matrix.of T) k l : Ω) * aeval d.x (b l)` using `fun k => by`. Rewrite using `[← hT k]`. Simplify using `only [Rat.smul_def, Matrix.of_apply]`.
+
+Establish `hdet : (Matrix.of T).det ≠ 0`. Introduce `h0`. Take `⟨v, hv0, hv⟩` from `Matrix.exists_vecMul_eq_zero_iff.2 h0`. Apply `hv0` to reduce the goal to its premises. Establish `hrel : ∑ k, v k • aeval d'.x (b' k) = 0`.
+
+Combine the equalities or inequalities in the displayed calculation. Simplify using `only [← hT, Finset.smul_sum, smul_smul, Matrix.vecMul, dotProduct, Finset.sum_smul, Matrix.of_apply]`. Conclude with `Finset.sum_comm`. Use `_ = 0 := by rw [hv]; simp`. Use function extensionality and compare the values at `k`.
+
+Conclude with `linearIndependent_iff'.1 hli' Finset.univ v hrel k (Finset.mem_univ k)`. Establish `hidx : latLogIndex d.x d'.x n = -Real.log |((Matrix.of T).det : ℝ)|`. Unfold `latLogIndex`. Rewrite using `[← hb.2.2, ← hb'.2.2]`. Conclude with `log_relIndex_sub hb.2.1 hb'.2.1 (Matrix.of T) hTΩ hdet`.
+
+Establish `hpt : ∀ k, ∀ z ∈ pts (coordIdeal ℤ d.x), secFun (matSubst B (b' k)) z = ∑ l, ((Matrix.of T) k l : ℂ) * secFun (b l) z`. Introduce `k z hz`. Take `⟨f, hf, hfb⟩` from `hb'.1 k`. Establish `hh : (matSubst B (b' k) - ∑ l, C ((Matrix.of T) k l) * b l).IsHomogeneous n`. Use `(isHomogeneous_matSubst B (hfb ▸ hf.map _)).sub (IsHomogeneous.sum _ _ _ fun l _ => ?_)` and prove the remaining obligations.
+
+Take `⟨g, hg, hgb⟩` from `hb.1 l`. Rewrite using `[hgb]`. Conclude with `(hg.map _).C_mul _`. Establish `hx0 : aeval d.x (matSubst B (b' k) - ∑ l, C ((Matrix.of T) k l) * b l) = 0`. Rewrite using `[map_sub, aeval_matSubst, ← hx, hTΩ k]`.
+
+Simplify using the standard rewrite rules. Establish `h0` using `secFun_eq_zero hh hx0 hz`. Simplify using `only [secFun, map_sub, map_sum, map_mul, map_C, eval_C, eq_ratCast] at h0 ⊢`. Conclude with `sub_eq_zero.1 h0`. Establish `hchange : resGram d' n b' = (Matrix.of T).map (Rat.cast : ℚ → ℝ) * resGram d n b * ((Matrix.of T).map (Rat.cast : ℚ → ℝ)).transpose`.
+
+Rewrite using `[hG n _ b']`. Conclude with `resGram_change d hb.1 _ (Matrix.of T) hpt`. Establish `hGpos : 0 < (resGram d n b).det`. Rewrite using `[ResSym.det_resGram d hb.1]`. Conclude with `(Complex.pos_iff.1 (ResSym.posDef_gram d hb).det_pos).1`.
+
+Establish `hTd : ((Matrix.of T).map (Rat.cast : ℚ → ℝ)).det = ((Matrix.of T).det : ℝ)` using `(RingHom.map_det (Rat.castHom ℝ) (Matrix.of T)).symm`. Establish `hTr : ((Matrix.of T).det : ℝ) ≠ 0` using `by exact_mod_cast hdet`. Rewrite using `[hidx, hchange, Matrix.det_mul, Matrix.det_mul, Matrix.det_transpose, hTd, show ((Matrix.of T).det : ℝ) * (resGram d n b).det * ((Matrix.of T).det : ℝ) = ((Matrix.of T).det : ℝ) ^ 2 * (resGram d n b).det by ring, Real.log_mul (pow_ne_zero 2 hTr) hGpos.ne', Real.log_pow, ← Real.lo …`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem resChi_sub_of_bases (d d' : HSMDatum D Ω κ) (B : Matrix (Ix κ) (Ix κ) ℚ) (hB : IsInvMat B)
     (hx : d'.x = matAct B d.x)
     (hG : ∀ (n r : ℕ) (b : Fin r → MvPolynomial (Ix κ) ℚ), resGram d' n b = resGram d n fun k => matSubst B (b k))
@@ -260,6 +336,11 @@ theorem resChi_sub_of_bases (d d' : HSMDatum D Ω κ) (B : Matrix (Ix κ) (Ix κ
 
 end Gram
 
+/- English proof (translation)
+Introduce `D Ω _ _ κ _ d d' B hB hx hG n`. Establish `h : ∃ p : (Σ r : ℕ, Fin r → MvPolynomial (Ix κ) ℚ), IsSecBasis d.x n p.2` using `⟨⟨_, _⟩, (exists_isSecBasis d.x n).choose_spec⟩`. Establish `h' : ∃ p : (Σ r : ℕ, Fin r → MvPolynomial (Ix κ) ℚ), IsSecBasis d'.x n p.2` using `⟨⟨_, _⟩, (exists_isSecBasis d'.x n).choose_spec⟩`. Unfold `resChi`. Rewrite using `[dif_pos h, dif_pos h']`.
+
+Conclude with `resChi_sub_of_bases d d' B hB hx hG n h.choose_spec h'.choose_spec`.
+-/
 theorem proof : ResChiIndex.Statement := by
   intro D Ω _ _ κ _ d d' B hB hx hG n
   have h : ∃ p : (Σ r : ℕ, Fin r → MvPolynomial (Ix κ) ℚ), IsSecBasis d.x n p.2 :=

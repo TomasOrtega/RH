@@ -16,6 +16,15 @@ section Group
 
 variable {G : Type} [Group G] [MeasurableSpace G]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `x`. Distinguish the cases in `hx : x ∈ K`. Establish `e : (fun y => (K : Set G).indicator (1 : G → ℂ) y * (K : Set G).indicator (1 : G → ℂ) (y⁻¹ * x)) = (K : Set G).indicator (fun _ => (1 : ℂ))`. Use function extensionality and compare the values at `y`. Distinguish the cases in `hy : y ∈ K`.
+
+Establish `hyx : y⁻¹ * x ∈ K` using `K.mul_mem (K.inv_mem hy) hx`. Simplify using `[Set.indicator_of_mem, SetLike.mem_coe, hy, hyx]`. Simplify using `[Set.indicator_of_notMem, SetLike.mem_coe, hy]`. Simplify using `only [cv]`. Rewrite using `[e, integral_indicator hK]`.
+
+Simplify using `[Measure.real, h1, SetLike.mem_coe, hx]`. Establish `e : (fun y => (K : Set G).indicator (1 : G → ℂ) y * (K : Set G).indicator (1 : G → ℂ) (y⁻¹ * x)) = fun _ => 0`. Use function extensionality and compare the values at `y`. Distinguish the cases in `hy : y ∈ K`. Establish `hyx : y⁻¹ * x ∉ K` using `fun h => hx (by simpa using K.mul_mem hy h)`.
+
+Simplify using `[SetLike.mem_coe, hyx]`. Simplify using `[SetLike.mem_coe, hy]`. Simplify using `only [cv]`. Rewrite using `[e]`. Simplify using `[SetLike.mem_coe, hx]`.
+-/
 private theorem cv_unit (μ : Measure G) (K : Subgroup G) (hK : MeasurableSet (K : Set G))
     (h1 : μ (K : Set G) = 1) :
     cv μ ((K : Set G).indicator 1) ((K : Set G).indicator 1) = (K : Set G).indicator (1 : G → ℂ) := by
@@ -42,6 +51,11 @@ private theorem cv_unit (μ : Measure G) (K : Subgroup G) (hK : MeasurableSet (K
     rw [e]
     simp [SetLike.mem_coe, hx]
 
+/- English proof (translation)
+Proceed by induction on `m with`. Consider the case `zero => exact hφ 0`. Consider the case `succ m ih`. Simplify using `only [cvAll]`. Rewrite using `[ih (Fin.tail φ) (fun i => hφ _), hφ 0]`.
+
+Conclude with `cv_unit μ K hK h1`.
+-/
 private theorem cvAll_unit (μ : Measure G) (K : Subgroup G) (hK : MeasurableSet (K : Set G))
     (h1 : μ (K : Set G) = 1) (m : ℕ) (φ : Fin (m + 1) → G → ℂ)
     (hφ : ∀ i, φ i = (K : Set G).indicator 1) : cvAll μ m φ = (K : Set G).indicator 1 := by
@@ -54,6 +68,11 @@ private theorem cvAll_unit (μ : Measure G) (K : Subgroup G) (hK : MeasurableSet
 
 end Group
 
+/- English proof (translation)
+Establish `hcl : IsClosed (K : Set G)` using `K.isClosed_of_isOpen ho`. Use `⟨(IsClopen.continuous_indicator ⟨hcl, ho⟩ continuous_const), ?_⟩` and prove the remaining obligations. Use `hc.of_isClosed_subset (isClosed_closure) ?_` and prove the remaining obligations. Use `closure_minimal (fun x hx => ?_) hcl` and prove the remaining obligations. Assume the negation of the conclusion as `h`.
+
+Conclude with `hx (Set.indicator_of_notMem h _)`.
+-/
 private theorem ind_props {G : Type} [Group G] [TopologicalSpace G] [IsTopologicalGroup G] (K : Subgroup G)
     (ho : IsOpen (K : Set G)) (hc : IsCompact (K : Set G)) :
     Continuous ((K : Set G).indicator (1 : G → ℂ)) ∧ HasCompactSupport ((K : Set G).indicator (1 : G → ℂ)) := by
@@ -67,6 +86,19 @@ private theorem ind_props {G : Type} [Group G] [TopologicalSpace G] [IsTopologic
 end UpperTheory.ConvolutionTheory.L1
 
 open UpperTheory.ConvolutionTheory.L1 in
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ _ σ hσ n v hs`. Take `⟨m, hm⟩ : ∃ m, Module.finrank F E = m + 1` from `⟨Module.finrank F E - 1, (Nat.succ_pred_eq_of_pos Module.finrank_pos).symm⟩`. Take `⟨w₀⟩` from `nonempty_placesOver E (v := v)`. Take `⟨w, -, hw⟩` from `UpperTheory.ConvolutionTheory.L1.matchProd F E σ hσ m hm n v w₀ hs`. Introduce `_ _ _ _ mE mF hE hF h1E h1F`.
+
+Establish `hh : ∀ u : PlacesOver E v, Continuous ((GLnLocal.integralGL (u.1.adicCompletion E) n : Set (GL (Fin n) (u.1.adicCompletion E))).indicator (1 : GL (Fin n) (u.1.adicCompletion E) → ℂ)) ∧ HasCompactSupport ((GLnLocal.integralGL (u.1.adicCompletion E) n : Set (GL (Fin n) (u.1.adicCom …` using `fun u => ind_props _ (GLnLocal.isOpen_integralGL _ n) (GLnLocal.isCompact_integralGL _ n)`. Establish `key` using `hw (fun u => (GLnLocal.integralGL (u.1.adicCompletion E) n : Set (GL (Fin n) (u.1.adicCompletion E))).indicator (1 : GL (Fin n) (u.1.adicCompletion E) → ℂ)) hh mF hF h1F mE mF hE hF h1E h1F`. Establish `e1 : GM.prodFn (n` using `n) (fun u : PlacesOver E v => (GLnLocal.integralGL (u.1.adicCompletion E) n : Set (GL (Fin n) (u.1.adicCompletion E))).indicator (1 : GL (Fin n) (u.1.adicCompletion E) → ℂ)) = (unitSet E n v).indicator 1 := by`. Use function extensionality and compare the values at `g`. Rewrite using `[GM.prodFn, finprod_eq_prod_of_fintype]`.
+
+Distinguish the cases in `hg : g ∈ unitSet E n v`. Rewrite using `[Set.indicator_of_mem hg]`. Use `Finset.prod_eq_one fun u _ => ?_` and prove the remaining obligations. Conclude with `Set.indicator_of_mem (hg u) _`. Rewrite using `[Set.indicator_of_notMem hg]`.
+
+Choose the witnesses or unpack the hypotheses as in `⟨u, hu⟩ : ∃ u : PlacesOver E v, GM.cmp u g ∉ GLnLocal.integralGL (u.1.adicCompletion E) n := by`. Assume the negation of the conclusion as `h`. Use `push_neg at h`. Conclude with `hg h`. Conclude with `Finset.prod_eq_zero (Finset.mem_univ u) (Set.indicator_of_notMem hu _)`.
+
+Establish `e2 : cvAll mF m (fun i g => (GLnLocal.integralGL ((w i).1.adicCompletion E) n : Set (GL (Fin n) ((w i).1.adicCompletion E))).indicator (1 : GL (Fin n) ((w i).1.adicCompletion E) → ℂ) (mapGL n (completionMap v (w i).1) g)) = (GLnLocal.integralGL (v.adicCompletion F) n : Set (GL (F …`. Use `cvAll_unit mF _ (GLnLocal.isOpen_integralGL _ n).measurableSet h1F m _ fun i => ?_` and prove the remaining obligations. Use function extensionality and compare the values at `g`. Establish `hi` using `(UpperTheory.ConvolutionTheory.L1.splitLoc F E v (w i) (hs (w i)) n).2.1 g`. Distinguish the cases in `hg : g ∈ GLnLocal.integralGL (v.adicCompletion F) n`.
+
+Rewrite using `[Set.indicator_of_mem (show g ∈ (_ : Set _) from hg), Set.indicator_of_mem (show _ ∈ (_ : Set _) from hi.2 hg)]`. Both sides reduce to the same expression. Rewrite using `[Set.indicator_of_notMem (show g ∉ (_ : Set _) from hg), Set.indicator_of_notMem (show _ ∉ (_ : Set _) from fun h => hg (hi.1 h))]`. Rewrite `key` using `[e1, e2]`. Conclude with `key`.
+-/
 theorem UpperTheory.ConvolutionTheory.L1.unitSplit :
     UpperTheory.ConvolutionTheory.L1.UnitSplit := by
   intro F E _ _ _ _ _ _ σ hσ n v hs

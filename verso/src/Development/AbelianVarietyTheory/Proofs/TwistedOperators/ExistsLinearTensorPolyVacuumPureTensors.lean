@@ -18,6 +18,11 @@ open Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes GlobalTheory.Weil
 
 variable {F : Type} [Field F] [NumberField F]
 
+/- English proof (translation)
+Establish `h : ∀ i, {w : Pl F | evFin F w (x i) ∉ w.adicCompletionIntegers F}.Finite` using `fun i => Filter.eventually_cofinite.1 (x i).2.2`. Use `(Set.finite_iUnion h).subset ?_` and prove the remaining obligations. Introduce `w hw`. Use `push_neg at hw`. Take `⟨i, hi⟩` from `hw`.
+
+Conclude with `Set.mem_iUnion.2 ⟨i, hi⟩`.
+-/
 theorem finite_nonint {κ : Type} [Finite κ] (x : κ → AF F) :
     {w : Pl F | ¬ ∀ i, evFin F w (x i) ∈ w.adicCompletionIntegers F}.Finite := by
   have h : ∀ i, {w : Pl F | evFin F w (x i) ∉ w.adicCompletionIntegers F}.Finite := fun i =>
@@ -41,6 +46,9 @@ def prodT (T : Finset (Pl F)) (x : Fin n × Fin d → AF F) :
   (MultilinearMap.mkPiAlgebra ℂ T ℂ).compLinearMap fun v =>
     (LinearMap.proj (fun i => evFin F v.1 (x i)) : ((Fin n × Fin d → Fv F v.1) → ℂ) →ₗ[ℂ] ℂ) ∘ₗ (SB _).subtype
 
+/- English proof (translation)
+Simplify using `[prodT]`.
+-/
 theorem prodT_apply (T : Finset (Pl F)) (x : Fin n × Fin d → AF F) (φ : ∀ v : T, ↥(SB (Fin n × Fin d → Fv F v.1))) :
     prodT T x φ = ∏ v : T, (φ v : (Fin n × Fin d → Fv F v.1) → ℂ) fun i => evFin F v.1 (x i) := by
   simp [prodT]
@@ -49,6 +57,9 @@ def multi (M : Model σ Y W) (T : Finset (Pl F)) (f : SInf F (Fin n × Fin d)) :
     MultilinearMap ℂ (fun v : T => ↥(SB (Fin n × Fin d → Fv F v.1))) ((Fin n × Fin d → AF F) → ℂ) :=
   MultilinearMap.pi fun x => (f (fun i => evI F (x i)) * vacOff M T x) • prodT T x
 
+/- English proof (translation)
+Simplify using `[multi]`.
+-/
 theorem multi_apply (M : Model σ Y W) (T : Finset (Pl F)) (f : SInf F (Fin n × Fin d))
     (φ : ∀ v : T, ↥(SB (Fin n × Fin d → Fv F v.1))) (x : Fin n × Fin d → AF F) :
     multi M T f φ x = f (fun i => evI F (x i)) * vacOff M T x * prodT T x φ := by
@@ -70,6 +81,19 @@ def multiL (M : Model σ Y W) (T : Finset (Pl F)) :
 
 open Classical in
 
+/- English proof (translation)
+Use `set ρ : Pl F → ℂ := fun w => if w ∈ T then (1 : ℂ) else M.vac w fun i => evFin F w (x i) with hρdef`. Use `set θ : Pl F → ℂ := fun w => if w ∈ T then φ' w (fun i => evFin F w (x i)) else 1 with hθdef`. Establish `e : (fun w => φ' w (fun i => evFin F w (x i))) = fun w => θ w * ρ w`. Use function extensionality and compare the values at `w`. Distinguish the cases in `hw : w ∈ T`.
+
+Simplify using `[θ, ρ, hw]`. Simplify using `[θ, ρ, hw, h2 w hw]`. Establish `hρ : (Function.mulSupport ρ).Finite`. Use `((Filter.eventually_cofinite.1 hstd).union (finite_nonint x)).subset ?_` and prove the remaining obligations. Introduce `w hw`.
+
+Assume the negation of the conclusion as `hc`. Simplify using `only [Set.mem_union, Set.mem_setOf_eq, not_or, not_not] at hc`. Apply `hw` to reduce the goal to its premises. Distinguish the cases in `hwT : w ∈ T`. Simplify using `[ρ, hwT]`.
+
+Simplify using `only [ρ, hwT, if_false, hc.1]`. Conclude with `Set.indicator_of_mem (s := {x : Fin n × Fin d → Fv F w | ∀ i, x i ∈ w.adicCompletionIntegers F}) hc.2 1`. Establish `hθ : Function.mulSupport θ ⊆ (T : Set (Pl F))`. Introduce `w hw`. Assume the negation of the conclusion as `hc`.
+
+Conclude with `hw (by simp [θ, show w ∉ T from hc])`. Rewrite using `[e, finprod_mul_distrib (T.finite_toSet.subset hθ) hρ, mul_comm]`. Use `congr 1`. Rewrite using `[finprod_eq_prod_of_mulSupport_subset θ hθ, prodT_apply, ← Finset.prod_coe_sort T]`. Use `Finset.prod_congr rfl fun v _ => ?_` and prove the remaining obligations.
+
+Simplify using `[θ, v.2, h1 v.1 v.2]`.
+-/
 theorem finprod_split (M : Model σ Y W)
     (hstd : ∀ᶠ v in Filter.cofinite, M.vac v = Set.indicator {x | ∀ i, x i ∈ v.adicCompletionIntegers F} 1)
     (T : Finset (Pl F)) (φ : ∀ v : T, ↥(SB (Fin n × Fin d → Fv F v.1)))
@@ -108,11 +132,19 @@ def tensL (M : Model σ Y W) (ψ : AddChar (AF F) ℂ) (emb : ∀ w : InfinitePl
       ((Fin n × Fin d → AF F) → ℂ) :=
   TensorProduct.lift ((PiTensorProduct.lift.toLinearMap ∘ₗ multiL M T) ∘ₗ (M.Pol ψ emb).subtype)
 
+/- English proof (translation)
+Simplify using `[tensL, multiL]`.
+-/
 theorem tensL_tmul (M : Model σ Y W) (ψ : AddChar (AF F) ℂ) (emb : ∀ w : InfinitePlace F, EmbOver E w)
     (T : Finset (Pl F)) (f : ↥(M.Pol ψ emb)) (φ : ∀ v : T, ↥(SB (Fin n × Fin d → Fv F v.1))) :
     tensL M ψ emb T (f ⊗ₜ[ℂ] PiTensorProduct.tprod ℂ φ) = multi M T (f : SInf F (Fin n × Fin d)) φ := by
   simp [tensL, multiL]
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ n d Y W M ψ emb hstd T`. Establish `hchar : ∀ (f : ↥(M.Pol ψ emb)) (φ : ∀ v : T, ↥(SB (Fin n × Fin d → Fv F v.1))) (φ' : ∀ v : Pl F, (Fin n × Fin d → Fv F v) → ℂ), (∀ v (h : v ∈ T), φ' v = φ ⟨v, h⟩) → (∀ v ∉ T, φ' v = M.vac v) → tensL M ψ emb T (f ⊗ₜ[ℂ] PiTensorProduct.tprod ℂ φ) = GlobalTheory.IndefiniteRowSideFul …`. Introduce `f φ φ' h1 h2`. Use function extensionality and compare the values at `x`. Rewrite using `[tensL_tmul, multi_apply, GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.pure, finprod_split M hstd T φ φ' h1 h2 x, mul_assoc]`.
+
+Use `⟨tensL M ψ emb T, hchar, Submodule.span_le.2 ?_⟩` and prove the remaining obligations. Introduce and unpack `Φ ⟨f, φ, hf, hφ, hv, rfl⟩`. Conclude with `⟨⟨f, hf⟩ ⊗ₜ[ℂ] PiTensorProduct.tprod ℂ (fun v : T => ⟨φ v.1, hφ v.1⟩), hchar ⟨f, hf⟩ _ φ (fun _ _ => rfl) hv⟩`.
+-/
 theorem exists_tensL : ∀ {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E} {n d : ℕ}
     {Y : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Spc F E n} {W : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Spc F E d} (M : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Model σ Y W)
     (ψ : AddChar (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.AF F) ℂ) (emb : ∀ w : InfinitePlace F, GlobalTheory.AdelicU.EmbOver E w),

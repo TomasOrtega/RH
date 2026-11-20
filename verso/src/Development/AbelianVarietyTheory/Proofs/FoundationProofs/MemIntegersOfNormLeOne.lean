@@ -9,6 +9,11 @@ open scoped Matrix
 
 namespace GlobalTheory.Ord2
 
+/- English proof (translation)
+Use `first`. Consider the case `exact @_root_.GlobalTheory.IntegralCoefficientNormBound.norm_le_one_of_isIntegral`. Consider the case `exact _root_.GlobalTheory.IntegralCoefficientNormBound.norm_le_one_of_isIntegral`. Consider the case `(apply _root_.GlobalTheory.IntegralCoefficientNormBound.norm_le_one_of_isIntegral <;> assumption)`. Consider the case `(intros; apply _root_.GlobalTheory.IntegralCoefficientNormBound.norm_le_one_of_isIntegral <;> assumption)`.
+
+Consider the case `(intros; apply @_root_.GlobalTheory.IntegralCoefficientNormBound.norm_le_one_of_isIntegral <;> first | assumption | infer_instance)`. Consider the case `(intros; exact _root_.GlobalTheory.IntegralCoefficientNormBound.norm_le_one_of_isIntegral ..)`.
+-/
 private theorem norm_le_one_of_isIntegral_zl (l : ℕ) [Fact l.Prime] (x : PadicAlgCl l)
     (hx : IsIntegral ℤ_[l] x) : ‖x‖ ≤ 1 := by
   first
@@ -19,10 +24,18 @@ private theorem norm_le_one_of_isIntegral_zl (l : ℕ) [Fact l.Prime] (x : Padic
   | (intros; apply @_root_.GlobalTheory.IntegralCoefficientNormBound.norm_le_one_of_isIntegral <;> first | assumption | infer_instance)
   | (intros; exact _root_.GlobalTheory.IntegralCoefficientNormBound.norm_le_one_of_isIntegral ..)
 
+/- English proof (translation)
+The claim follows from `norm_le_one_of_isIntegral_zl l _ ((Algebra.IsIntegral.isIntegral (R := ℤ_[l]) a).map c.O.val)`.
+-/
 theorem norm_le_one_of_mem_coefO {l : ℕ} [Fact l.Prime] (c : Coef l) (a : c.O) :
     ‖(a : PadicAlgCl l)‖ ≤ 1 :=
   norm_le_one_of_isIntegral_zl l _ ((Algebra.IsIntegral.isIntegral (R := ℤ_[l]) a).map c.O.val)
 
+/- English proof (translation)
+Establish `h1 : ‖((u : c.O) : PadicAlgCl l)‖ * ‖(((u⁻¹ : c.Oˣ) : c.O) : PadicAlgCl l)‖ = 1`. Rewrite using `[← norm_mul, ← Subalgebra.coe_mul, Units.mul_inv]`. Simplify using the standard rewrite rules. Establish `h2` using `norm_le_one_of_mem_coefO c u`. Establish `h3` using `norm_le_one_of_mem_coefO c (u⁻¹ : c.Oˣ)`.
+
+Establish `h4` using `norm_nonneg ((u : c.O) : PadicAlgCl l)`. Use the polynomial consequences of the given equalities and inequalities.
+-/
 theorem norm_unit_coefO {l : ℕ} [Fact l.Prime] (c : Coef l) (u : c.Oˣ) :
     ‖((u : c.O) : PadicAlgCl l)‖ = 1 := by
   have h1 : ‖((u : c.O) : PadicAlgCl l)‖ * ‖(((u⁻¹ : c.Oˣ) : c.O) : PadicAlgCl l)‖ = 1 := by
@@ -32,6 +45,33 @@ theorem norm_unit_coefO {l : ℕ} [Fact l.Prime] (c : Coef l) (u : c.Oˣ) :
   have h4 := norm_nonneg ((u : c.O) : PadicAlgCl l)
   nlinarith
 
+/- English proof (translation)
+Introduce `l _ c x hE hx`. Take `⟨k, hk⟩` from `hE`. Break down `Nat.eq_zero_or_pos k with rfl | hkpos` into its components or cases. Simplify using `using hk`. Use `set y : c.O := ⟨_, hk⟩ with hy`.
+
+Use `set L : c.O := (l : c.O) ^ k with hL`. Establish `hLval : ((L : c.O) : PadicAlgCl l) = (l : PadicAlgCl l) ^ k` using `by simp [hL]`. Establish `hl0 : (l : PadicAlgCl l) ≠ 0` using `Nat.cast_ne_zero.2 (Fact.out : l.Prime).ne_zero`. Establish `hL0 : L ≠ 0`. Introduce `h`.
+
+Establish `: ((L : c.O) : PadicAlgCl l) = 0` using `by rw [h]; rfl`. Rewrite `this` using `[hLval]`. Conclude with `pow_ne_zero k hl0 this`. Establish `hnl : ‖(l : PadicAlgCl l)‖ = (l : ℝ)⁻¹`. Establish `: (l : PadicAlgCl l) = algebraMap ℚ_[l] (PadicAlgCl l) (l : ℚ_[l])` using `by simp`.
+
+Rewrite using `[this, norm_algebraMap', Padic.norm_p]`. Distinguish the cases in `hy0 : y = 0`. Establish `: (l : PadicAlgCl l) ^ k * x = 0`. Use `congrArg (fun z : c.O => (z : PadicAlgCl l)) hy0` as an intermediate fact. Simplify `this` using `[hy]`.
+
+Break down `mul_eq_zero.1 this with h | h` into its components or cases. Conclude with `absurd h (pow_ne_zero k hl0)`. Rewrite using `[h]`. Conclude with `c.O.zero_mem`. Take `⟨ϖ, hϖ⟩` from `IsDiscreteValuationRing.exists_irreducible c.O`.
+
+Establish `key : ∀ z : c.O, z ≠ 0 → ∃ n : ℕ, ‖(z : PadicAlgCl l)‖ = ‖(ϖ : PadicAlgCl l)‖ ^ n ∧ ϖ ^ n ∣ z ∧ z ∣ ϖ ^ n`. Introduce `z hz`. Take `⟨n, u, h⟩` from `IsDiscreteValuationRing.eq_unit_mul_pow_irreducible hz hϖ`. Use `⟨n, ?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[h, Subalgebra.coe_mul, norm_mul, norm_unit_coefO, one_mul, Subalgebra.coe_pow, norm_pow]`.
+
+Conclude with `⟨(u : c.O), by rw [h, mul_comm]⟩`. Conclude with `⟨((u⁻¹ : c.Oˣ) : c.O), by rw [h, mul_comm, ← mul_assoc, Units.inv_mul, one_mul]⟩`. Take `⟨a, hya, hdy, -⟩` from `key y hy0`. Take `⟨b, hLb, -, hdL⟩` from `key L hL0`. Establish `hϖ1 : ‖(ϖ : PadicAlgCl l)‖ ≤ 1` using `norm_le_one_of_mem_coefO c ϖ`.
+
+Establish `hϖ0 : 0 < ‖(ϖ : PadicAlgCl l)‖`. Rewrite using `[norm_pos_iff]`. Introduce `h`. Conclude with `hϖ.ne_zero (Subtype.ext h)`. Establish `hlt1 : (l : ℝ)⁻¹ < 1` using `inv_lt_one_of_one_lt₀ (by exact_mod_cast (Fact.out : l.Prime).one_lt)`.
+
+Establish `hyx : ((y : c.O) : PadicAlgCl l) = (l : PadicAlgCl l) ^ k * x` using `rfl`. Establish `hLlt : ‖((L : c.O) : PadicAlgCl l)‖ < 1`. Rewrite using `[hLval, norm_pow, hnl]`. Conclude with `pow_lt_one₀ (by positivity) hlt1 (by omega)`. Establish `hϖlt : ‖(ϖ : PadicAlgCl l)‖ < 1`.
+
+Break down `lt_or_eq_of_le hϖ1 with h | h` into its components or cases. Conclude with `h`. It suffices to derive a contradiction. Rewrite `hLlt` using `[hLb, h, one_pow]`. Conclude with `lt_irrefl _ hLlt`.
+
+Establish `hab : b ≤ a`. Establish `hle : ‖(ϖ : PadicAlgCl l)‖ ^ a ≤ ‖(ϖ : PadicAlgCl l)‖ ^ b`. Rewrite using `[← hya, ← hLb, hyx, hLval, norm_mul]`. Combine the equalities or inequalities in the displayed calculation. Conclude with `(pow_le_pow_iff_right_of_lt_one₀ hϖ0 hϖlt).1 hle`.
+
+Establish `hdiv : L ∣ y` using `dvd_trans hdL (dvd_trans (pow_dvd_pow ϖ hab) hdy)`. Take `⟨z, hz⟩` from `hdiv`. Establish `: (l : PadicAlgCl l) ^ k * x = (l : PadicAlgCl l) ^ k * (z : PadicAlgCl l)`. Rewrite using `[← hyx, hz, Subalgebra.coe_mul, hLval]`. Rewrite using `[mul_left_cancel₀ (pow_ne_zero k hl0) this]`.
+
+Conclude with `z.2`.
+-/
 theorem mem_coefO_of_memE_norm_le_one : ∀ (l : ℕ) [Fact l.Prime] (c : Coef l) (x : Qbar l),
     MemE c x → ‖x‖ ≤ 1 → x ∈ c.O := by
   intro l _ c x hE hx

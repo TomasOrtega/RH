@@ -8,6 +8,9 @@ noncomputable section
 
 namespace UpperTheory.V.Z.GSp4Splitting
 
+/- English proof (translation)
+Use `IsLocallyConstant.continuous ((IsLocallyConstant.iff_eventually_eq f).2 fun g => ?_)` and prove the remaining obligations. Establish `ho : IsOpen {y : G | g⁻¹ * y ∈ K}` using `hK.preimage (continuous_const.mul continuous_id)`. Use `filter_upwards [ho.mem_nhds (show g⁻¹ * g ∈ K by simp)] with y hy`. Rewrite using `[← hf g _ hy, mul_inv_cancel_left]`.
+-/
 private theorem cont_of_right_inv {G : Type} [Group G] [TopologicalSpace G] [IsTopologicalGroup G] {K : Subgroup G}
     (hK : IsOpen (K : Set G)) {f : G → ℂ} (hf : ∀ g, ∀ k ∈ K, f (g * k) = f g) : Continuous f := by
   refine IsLocallyConstant.continuous ((IsLocallyConstant.iff_eventually_eq f).2 fun g => ?_)
@@ -29,6 +32,9 @@ private def res (π : CuspSub E n) (K : Subgroup (GL (Fin n) (Af E))) (T : Modul
     change finRep E n k (T ψ.1) = T ψ.1
     rw [← Module.End.mul_apply, ← (h2 k).eq, Module.End.mul_apply, hψ k hk]
 
+/- English proof (translation)
+Establish `h : ∀ i j x, Commute (lieS E n i j x) (finRep E n k)` using `fun i j x => lie_rt_fin _ k`. Establish `h' : ∀ τ : E →+* ℂ, Commute (Eop τ a b) (finRep E n k)` using `fun τ => ((h a b _).sub_left ((h a b _).smul_left _)).smul_left _`. Consider the cases of `s`. Conclude with `h' _`. Conclude with `h' _`.
+-/
 private theorem eopW_comm (w : InfinitePlace E) (s : Bool) (a b : Fin n) (k : GL (Fin n) (Af E)) :
     Commute (eopW w s a b) (finRep E n k) := by
   have h : ∀ i j x, Commute (lieS E n i j x) (finRep E n k) := fun i j x => lie_rt_fin _ k
@@ -38,6 +44,9 @@ private theorem eopW_comm (w : InfinitePlace E) (s : Bool) (a b : Fin n) (k : GL
   · exact h' _
   · exact h' _
 
+/- English proof (translation)
+Introduce `ψ hψ k hk` and use `by change rt E n (finGL E n k) (rt E n (infGL E n (locInf w (Unitary.toUnits c))) ψ.1) = rt E n (infGL E n (locInf w (Unitary.toUnits c))) ψ.1 rw [← Module.End.mul_apply, ← map_mul, ← infGL_comm, map_mul, Module.End.mul_apply] exact congrArg _ (hψ k hk)`.
+-/
 private theorem sV_mem (π : CuspSub E n) (K : Subgroup (GL (Fin n) (Af E))) (w : InfinitePlace E) (c : Un n) :
     ∀ ψ ∈ Fx π K, sV π w c ψ ∈ Fx π K := fun ψ hψ k hk => by
   change rt E n (finGL E n k) (rt E n (infGL E n (locInf w (Unitary.toUnits c))) ψ.1) =
@@ -51,6 +60,9 @@ private def sF (π : CuspSub E n) (K : Subgroup (GL (Fin n) (Af E))) (w : Infini
   map_one' := LinearMap.ext fun ψ => Subtype.ext (by simp)
   map_mul' a b := LinearMap.ext fun ψ => Subtype.ext (by simp)
 
+/- English proof (translation)
+Establish `e : atW w c.1 = toL (locInf w (Unitary.toUnits c)).val`. Use function extensionality and compare the values at `i j v`. Conclude with `(locInf_apply w (Unitary.toUnits c) i j v).symm`. Rewrite using `[along, e, chart_val]`. Both sides reduce to the same expression.
+-/
 private theorem along_unit (w : InfinitePlace E) (g : GA E n) (φ : GA E n → ℂ) (c : Un n) :
     along w g φ c.1 = φ (g * kAt w c) := by
   have e : atW w c.1 = toL (locInf w (Unitary.toUnits c)).val := by
@@ -59,16 +71,31 @@ private theorem along_unit (w : InfinitePlace E) (g : GA E n) (φ : GA E n → �
   rw [along, e, chart_val]
   rfl
 
+/- English proof (translation)
+The claim follows from `(rt_apply (finGL E n k) x ψ.1).symm.trans (congrArg (fun φ : Sm E n => φ.1 x) (hψ k hk))`.
+-/
 private theorem fix_apply {π : CuspSub E n} {K : Subgroup (GL (Fin n) (Af E))} {ψ : π.V} (hψ : ψ ∈ Fx π K)
     {k : GL (Fin n) (Af E)} (hk : k ∈ K) (x : GA E n) : ψ.1.1 (x * finGL E n k) = ψ.1.1 x :=
   (rt_apply (finGL E n k) x ψ.1).symm.trans (congrArg (fun φ : Sm E n => φ.1 x) (hψ k hk))
 
+/- English proof (translation)
+Introduce `ψ hψ k hk` and use `Subtype.ext <| funext fun x => by refine (rt_apply (finGL E n k) x _).trans ?_ rw [ThInv.thV_apply, ThInv.thV_apply, map_mul, ThInv.thetaA_finGL, fix_apply hψ (hK k hk)]`.
+-/
 private theorem thV_mem (π : CuspSub E n) (hθ : ThetaFix π) (K : Subgroup (GL (Fin n) (Af E)))
     (hK : ∀ k ∈ K, thetaF E n k ∈ K) : ∀ ψ ∈ Fx π K, ThInv.thV π hθ ψ ∈ Fx π K := fun ψ hψ k hk =>
   Subtype.ext <| funext fun x => by
     refine (rt_apply (finGL E n k) x _).trans ?_
     rw [ThInv.thV_apply, ThInv.thV_apply, map_mul, ThInv.thetaA_finGL, fix_apply hψ (hK k hk)]
 
+/- English proof (translation)
+Establish `ex : ∀ u : Fx π K, ∃ v : Fx π K, v.1.1.1 = heckeOp μf h.1 u.1.1.1` using `fun u => by`. Take `⟨_, _, ψ', -, h1, h2⟩` from `hM E n π K ho hc μf h.1 h.2 u.1`. Conclude with `⟨⟨ψ', h2⟩, h1⟩`. Use `choose r hr using ex`. Establish `hint : ∀ (u : Fx π K) (x : GA E n), Integrable (fun g => h.1 g * u.1.1.1 (x * finGL E n g)) μf` using `fun u x => by`.
+
+Use `Continuous.integrable_of_hasCompactSupport (cont_of_right_inv ho fun g k hk => ?_) h.2.1.mul_right` and prove the remaining obligations. Establish `e` using `h.2.2 1 K.one_mem k hk g`. Rewrite `e` using `[one_mul]`. Rewrite using `[e, map_mul, ← mul_assoc, fix_apply u.2 hk]`. Apply the tactic sequence `refine ⟨{ toFun := r, map_add' := fun a b => ?_, map_smul' := fun c a => ?_ }, hr⟩ <;>`.
+
+Use `Subtype.ext <| Subtype.ext <| Subtype.ext <| funext fun x => ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `(r (a + b)).1.1.1 x = (r a).1.1.1 x + (r b).1.1.1 x`. Rewrite using `[hr, hr, hr, heckeOp, heckeOp, heckeOp, ← integral_add (hint a x) (hint b x)]`. Use `integral_congr_ae (Filter.Eventually.of_forall fun g => ?_)` and prove the remaining obligations. Conclude with `mul_add _ _ _`.
+
+Express the relevant statement in the definitionally equal form `(r (c • a)).1.1.1 x = c * (r a).1.1.1 x`. Rewrite using `[hr, hr, heckeOp, heckeOp, ← integral_const_mul]`. Use `integral_congr_ae (Filter.Eventually.of_forall fun g => ?_)` and prove the remaining obligations. Conclude with `mul_left_comm _ _ _`.
+-/
 private theorem hecke_ex (hM : HeckeMem) (π : CuspSub E n) (K : Subgroup (GL (Fin n) (Af E)))
     (ho : IsOpen (K : Set (GL (Fin n) (Af E)))) (hc : IsCompact (K : Set (GL (Fin n) (Af E))))
     [MeasurableSpace (GL (Fin n) (Af E))] [BorelSpace (GL (Fin n) (Af E))] (μf : Measure (GL (Fin n) (Af E)))
@@ -112,6 +139,9 @@ private theorem hecke_ex (hM : HeckeMem) (π : CuspSub E n) (K : Subgroup (GL (F
 
 end UpperTheory.V.Z.GSp4Splitting
 
+/- English proof (translation)
+Introduce `hP hM E _ _ _ n hn π hθ K ho hc hK _ _ μf _`. Take `⟨H, hH⟩` from `hP E n hn π hθ`. Use `choose R hR using hecke_ex hM π K ho hc μf`. Use `letI c : InnerProductSpace.Core ℂ (Fx π K) := core π K H hH`. Conclude with `⟨{ U := Fx π K nacg := InnerProductSpace.Core.toNormedAddCommGroup (𝕜 := ℂ) ips := InnerProductSpace.ofCore c.toCore i := (Fx π K).subtype inj := Subtype.val_injective rng := fun ψ => ⟨fun ⟨u, hu⟩ => hu ▸ u.2, fun h => ⟨⟨ψ, h⟩, rfl⟩⟩ H := H pet := hH inner_eq := fun _ _ => rfl E1 …`.
+-/
 theorem UpperTheory.V.Z.GSp4Splitting.rlEx :
     PetEx → HeckeMem → RlEx := by
   intro hP hM E _ _ _ n hn π hθ K ho hc hK _ _ μf _

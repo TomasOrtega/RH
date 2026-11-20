@@ -25,22 +25,39 @@ open GlobalTheory.FockBottom
 private noncomputable def cen {R S : ℕ} (r₀ : Fin R) (s₀ : Fin S) : Mat R S :=
   Eab (.inl r₀) (.inl r₀) + Eab (.inr s₀) (.inr s₀)
 
+/- English proof (translation)
+Apply the tactic sequence `rcases a with a | a <;> rcases b with b | b <;> simp [cen, Eab, Matrix.single_apply] <;> aesop`.
+-/
 private theorem cen_apply {R S : ℕ} (r₀ : Fin R) (s₀ : Fin S) (a b : Ix R S) :
     cen r₀ s₀ a b = if a = b then (if b = .inl r₀ ∨ b = .inr s₀ then 1 else 0) else 0 := by
   rcases a with a | a <;> rcases b with b | b <;> simp [cen, Eab, Matrix.single_apply] <;> aesop
 
+/- English proof (translation)
+Introduce `a b h` and use `by rw [cen_apply, if_neg] rintro rfl apply h rcases a with a | a <;> simp [sameBlock]`.
+-/
 private theorem isKC_cen {R S : ℕ} (r₀ : Fin R) (s₀ : Fin S) : IsKC (cen r₀ s₀) := fun a b h => by
   rw [cen_apply, if_neg]
   rintro rfl
   apply h
   rcases a with a | a <;> simp [sameBlock]
 
+/- English proof (translation)
+Rewrite using `[cen, Matrix.trace_add, Eab, Eab, Matrix.trace_single_eq_same, Matrix.trace_single_eq_same]`. Evaluate the numerical expressions.
+-/
 private theorem trace_cen {R S : ℕ} (r₀ : Fin R) (s₀ : Fin S) : (cen r₀ s₀).trace = 2 := by
   rw [cen, Matrix.trace_add, Eab, Eab, Matrix.trace_single_eq_same, Matrix.trace_single_eq_same]; norm_num
 
+/- English proof (translation)
+Simplify using `[cen, Eab, Matrix.conjTranspose_single]`.
+-/
 private theorem cen_conjTranspose {R S : ℕ} (r₀ : Fin R) (s₀ : Fin S) : (cen r₀ s₀)ᴴ = cen r₀ s₀ := by
   simp [cen, Eab, Matrix.conjTranspose_single]
 
+/- English proof (translation)
+Establish `hz : ∀ v : Ln P Q (R + 1) (S + 1), (∀ m, Prod.map id (skipIx r₀ s₀) m ≠ v) → MvPolynomial.pderiv v (polIncl P Q r₀ s₀ f) = 0` using `fun v hv => GlobalTheory.FockSplit.pderiv_rename_eq_zero _ v hv f`. Rewrite using `[cen, map_add, fockAct2_Eab, fockAct2_Eab, LinearMap.add_apply, LinearMap.sum_apply, LinearMap.sum_apply, ← Finset.sum_add_distrib]`. Use `Finset.sum_eq_zero fun a _ => ?_` and prove the remaining obligations. Apply the tactic sequence `have hs : sameBlock a a := by rcases a with a | a <;> simp [sameBlock]`. Rewrite using `[GlobalTheory.FockInclHarm.omE_free a a _ hs _ (hz _ (GlobalTheory.FockInclHarm.incl_ne_left r₀ s₀ a)) (hz _ (GlobalTheory.FockInclHarm.incl_ne_left r₀ s₀ a)), GlobalTheory.FockInclHarm.omE_free a a _ hs _ (hz _ (GlobalTheory.FockInclHarm.incl_ne_right r₀ s₀ a)) (hz _ (GlobalTheo …`.
+
+Apply the tactic sequence `rcases a with a | a <;> simp [lineSign] <;> norm_num`.
+-/
 private theorem fock_cen_polIncl {P Q R S : ℕ} (r₀ : Fin (R + 1)) (s₀ : Fin (S + 1)) (f : Formalism.BasicNotions.TH.Pol P Q R S) :
     fockAct2 P Q (R + 1) (S + 1) (cen r₀ s₀) (polIncl P Q r₀ s₀ f) = 0 := by
   have hz : ∀ v : Ln P Q (R + 1) (S + 1), (∀ m, Prod.map id (skipIx r₀ s₀) m ≠ v) →
@@ -56,6 +73,11 @@ private theorem fock_cen_polIncl {P Q R S : ℕ} (r₀ : Fin (R + 1)) (s₀ : Fi
       (hz _ (GlobalTheory.FockInclHarm.incl_ne_right r₀ s₀ a)), if_pos rfl, if_pos rfl, ← add_smul]
   rcases a with a | a <;> simp [lineSign] <;> norm_num
 
+/- English proof (translation)
+Proceed by induction on `T using PiTensorProduct.induction_on with`. Consider the case `smul_tprod c f`. Rewrite using `[map_smul, map_smul, tensIncl, PiTensorProduct.map_tprod, atPl, PiTensorProduct.map_tprod, MultilinearMap.map_coord_zero _ w, smul_zero]`. Rewrite using `[Function.update_self]`. Conclude with `fock_cen_polIncl r₀ s₀ (f w)`.
+
+Consider the case `add x y hx hy => rw [map_add, map_add, hx, hy, add_zero]`.
+-/
 private theorem atPl_cen_tensIncl {F : Type} [Field F] [NumberField F] {P Q R S : ℕ} (r₀ : Fin (R + 1)) (s₀ : Fin (S + 1))
     [DecidableEq (InfinitePlace F)] (w : InfinitePlace F) (T : Tens F P Q R S) :
     atPl (V := fun _ : InfinitePlace F => Formalism.BasicNotions.TH.Pol P Q (R + 1) (S + 1)) w
@@ -71,6 +93,23 @@ private theorem atPl_cen_tensIncl {F : Type} [Field F] [NumberField F] {P Q R S 
 end GlobalTheory.LeviBeta
 
 open GlobalTheory.LeviBeta GlobalTheory.FockBottom in
+/- English proof (translation)
+Introduce `hKP F E _ _ _ _ _ σ B a b G G₁ H H' hCfg X om om' Rm Rf om₁ om₁' R₁ Rf₁ hM hM₁ P Q R₀ S₀ A C₁ C Φ₁ Φ r₀ s₀ _ hD hAd _ k hk t hL T`. Establish `hT` using `hM.triple`. Establish `hC` using `hD.1.1.2.2`. Establish `hθ` using `hD.1.2.2`. Establish `hwp : IsUWeilPair (cA σ) (adeleClass F) B.ψ (-1) (incM F G.V.J) (incM F G.W.J) G.M.co X.β (X.β / X.α) om` using `hT.weil`.
+
+Establish `hsec : LieSecond` using `Main.i_liesecond hKP.base Main.i_derex (Main.i_fockex Main.i_derex) (Main.i_vacline Main.i_derex) (Main.i_liescalar hKP.base Main.i_derex (Main.i_vacline Main.i_derex))`. Establish `hact : ActsBy B.emb C (om.comp (MonoidHom.inr _ _)) Φ (fockAct2 P Q _ _) fun w => (B.mβ w : ℂ) / 2` using `hsec F E σ _ _ _ _ _ _ _ B.ψ B.emb _ _ G.M.co 1 Complex.I A C Φ _ X.β B.mβ hT.base.cm hT.base.std hD.1.1 hD.2 hwp.1 hT.chars.expβ`. Establish `hadm : ∀ g, ∀ l ∈ (adeleClass F).adm (Fin a × Fin (a + (b + 2))), l ∘ₗ om g ∈ (adeleClass F).adm (Fin a × Fin (a + (b + 2)))` using `fun g => (hwp.isUSplitting).adm g`. Take `⟨h1, h2, h3⟩` from `GlobalTheory.T.adapted_real_line_second F E σ B _ _ _ _ _ _ _ _ G.W G₁.W H' hT.base hT.geo.hW hM₁.triple.geo.hW hCfg.hH' _ _ r₀ s₀ C hC hθ hAd k hk t hL`. Set `θ : InfinitePlace F → ℝ` to `fun w => Complex.arg (piInf (B.emb w) (t : AE F E))`.
+
+Establish `ht : ∀ w, piInf (B.emb w) (t : AE F E) = Complex.exp (θ w * Complex.I)` using `fun w => by`. Use `Complex.norm_mul_exp_arg_mul_I (piInf (B.emb w) (t : AE F E))` as an intermediate fact. Rewrite `this` using `[(h3 w).1, Complex.ofReal_one, one_mul]`. Conclude with `this.symm`. Take `⟨k', hk', hkC, U, hU, hAc⟩` from `exp_of_skew hT.base.cm hC hθ hact hadm (fun w => (θ w * Complex.I) • cen r₀ s₀) (fun w => GlobalTheory.FockKStab.isKC_smul (isKC_cen r₀ s₀) _) (fun w => by simp [Matrix.conjTranspose_smul, cen_conjTranspose])`.
+
+Establish `hkk : k = k'` using `eq_of_frame hT.base.cm hC hk.1 hk'.1 fun w => by`. Use extensionality with `i c`. Rewrite using `[hkC]`. Distinguish the cases in `e1 : c = .inl r₀`. Rewrite using `[e1, (h3 w).2.1, ht]`.
+
+Conclude with `(mul_exp_col _ _ _ _ (fun a => by simp [cen_apply]) i).symm`. Distinguish the cases in `e2 : c = .inr s₀`. Rewrite using `[e2, (h3 w).2.2.1, ht]`. Conclude with `(mul_exp_col _ _ _ _ (fun a => by simp [cen_apply]) i).symm`. Rewrite using `[(h3 w).2.2.2 c e1 e2, mul_exp_col _ _ c 0 (fun a => by simp [cen_apply, e1, e2]) i, Complex.exp_zero, one_mul]`.
+
+Substitute `hkk` using the available equality. Establish `hχ : (X.β t : ℂ) = Complex.exp (∑ w, θ w * Complex.I * B.mβ w)`. Rewrite using `[hT.chars.expβ t h1, Complex.exp_sum]`. Use `Finset.prod_congr rfl fun w _ => ?_` and prove the remaining obligations. Rewrite using `[ht, Complex.norm_exp_ofReal_mul_I, Complex.ofReal_one, div_one, mul_comm _ (B.mβ w : ℂ), Complex.exp_int_mul]`.
+
+Establish `hUT : U (tensIncl F P Q r₀ s₀ T) = Complex.exp (∑ w, θ w * Complex.I * B.mβ w) • tensIncl F P Q r₀ s₀ T`. Use `isExp_eig hU LinearMap.id _ (fun _ => rfl) ?_` and prove the remaining obligations. Rewrite using `[LinearMap.id_apply, genOp_apply, Finset.sum_smul]`. Use `Finset.sum_congr rfl fun w _ => ?_` and prove the remaining obligations. Rewrite using `[map_smul, Main.atPl_smul, LinearMap.smul_apply, atPl_cen_tensIncl, smul_zero, zero_add, Matrix.trace_smul, trace_cen]`.
+
+Use `congr 1`. Rewrite using `[smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree. Use `hAc (tensIncl F P Q r₀ s₀ T)` as an intermediate fact. Rewrite using `[h2, Real.one_rpow, Complex.ofReal_one, mul_one, hχ, ← map_smul, ← hUT]` and apply the resulting hypothesis.
+-/
 theorem _root_.GlobalTheory.T.configuration_b_global_integral : GlobalTheory.ThK.KP → ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E)
     (B : Base F E) (a b : ℕ) (G : Geo σ a (b + 2)) (G₁ : Geo σ a b) (H : Plane E (b + 2) b)
     (H' : Plane E (a + (b + 2)) (a + b)), CfgB B G G₁ H H' →

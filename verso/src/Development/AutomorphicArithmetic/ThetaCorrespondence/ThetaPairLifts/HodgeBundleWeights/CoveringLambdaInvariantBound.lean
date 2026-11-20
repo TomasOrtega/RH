@@ -14,6 +14,13 @@ namespace GlobalTheory.CovTop.LamAll
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 variable {D : D7} {L : SizeData₂ D} {hT : GatTies D} {Gi : Formalism.MainNotions.G.Inst D L} {Gl : Formalism.MainNotions.G.LatInst D} {Kc : Formalism.MainNotions.G.Consts}
   {Y0 : DivX D} {cX : ExtraC} {ex : Extra D L hT Gi Gl Kc Y0 cX} {Csz : ℝ} (p : PtAt ex Csz) (i : Fin D.R.m)
+/- English proof (translation)
+Introduce `hP hG hM`. Establish `hc` using `_root_.UpperTheory.Lit.Tam.integral_cusp_slope_power_bound_alt hP hG`. Establish `hH : HostN 1` using `GlobalTheory.CovTop.Sizes.hostN 1`. Establish `hW : WtN` using `GlobalTheory.T.weight_bound_holds`. Use `Closed.imp ((((hc.and hM).and hH).and hG).and hW) ?_` and prove the remaining obligations.
+
+Introduce `eps Fm CH _ h`. Take `⟨⟨⟨⟨⟨A1, hA1, hc⟩, ⟨Cm, hCm, hm⟩⟩, ⟨Ah, hAh, hh⟩⟩, ⟨Cg, -, hg⟩⟩, ⟨Cw, -, hw⟩⟩` from `h`. Use `⟨A1 + (Ah + 1) + (⌈2 * Cm⌉₊ : ℝ), by have := Nat.cast_nonneg (α := ℝ) ⌈2 * Cm⌉₊; linarith, ?_⟩` and prove the remaining obligations. Take `⟨x0, H⟩` from `(((hc.and hm).and hh).and hg).and hw`. Use `⟨x0, fun x hx hle ι p hp i => ?_⟩` and prove the remaining obligations.
+
+Take `⟨⟨⟨⟨a, b⟩, c⟩, d⟩, e⟩` from `H x hx hle ι p hp`. Establish `hH1` using `c i`. Establish `hX : 10 ≤ (Fm.L x ι).sc.x` using `hH1.big.2.1.trans hH1.big.2.2.1`. Establish `hb : 0 ≤ (Fm.L x ι).sc.b` using `le_trans (by positivity) hH1.room`. Conclude with `le_rpow_of_add hX hb hA1 (by linarith [hH1.poly.1]) hCm (unitE_le p i hH1 (e i)) ((slopeMax_all_le p i Cm (d i) (b i)).trans (by linarith [a i]))`.
+-/
 theorem covering_lambda_all_places : _root_.GlobalTheory.CovTop.PublishedHodgeBundleTheorems → Gram → Meas → abelian₂ := by
   intro hP hG hM
   have hc := _root_.UpperTheory.Lit.Tam.integral_cusp_slope_power_bound_alt hP hG
@@ -38,6 +45,9 @@ end
 section
 open GlobalTheory.CovTop GlobalTheory.BigTop
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @_root_.GlobalTheory.CovTop.LamAll.covering_lambda_all_places | exact _root_.GlobalTheory.CovTop.LamAll.covering_lambda_all_places | (intros; apply _root_.GlobalTheory.CovTop.LamAll.covering_lambda_all_places <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.covering_lambda_invariant_bound : _root_.GlobalTheory.CovTop.PublishedHodgeBundleTheorems → Gram → Meas → abelian₂ := by
   first | exact @_root_.GlobalTheory.CovTop.LamAll.covering_lambda_all_places | exact _root_.GlobalTheory.CovTop.LamAll.covering_lambda_all_places | (intros; apply _root_.GlobalTheory.CovTop.LamAll.covering_lambda_all_places <;> assumption)
 end

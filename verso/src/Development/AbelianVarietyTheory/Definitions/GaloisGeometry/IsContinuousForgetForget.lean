@@ -12,12 +12,18 @@ variable (X : Scheme.{0})
 
 set_option backward.isDefEq.respectTransparency.types false in
 
+/- English proof (translation)
+The claim follows from `Scheme.locallyCoverDense_of_le (P := @Etale) (Q := @Etale) X le_rfl`.
+-/
 theorem locallyCoverDense_forget :
     (MorphismProperty.Over.forget @Etale ⊤ X).LocallyCoverDense (Scheme.overGrothendieckTopology @Etale X) :=
   Scheme.locallyCoverDense_of_le (P := @Etale) (Q := @Etale) X le_rfl
 
 set_option backward.isDefEq.respectTransparency.types false in
 
+/- English proof (translation)
+The claim follows from `@Functor.mem_restrictedTopology_iff _ _ _ _ (MorphismProperty.Over.forget @Etale ⊤ X) _ (locallyCoverDense_forget X) inferInstance inferInstance U S`.
+-/
 theorem mem_small_iff {U : X.Etale} (S : Sieve U) :
     S ∈ X.smallEtaleTopology U ↔
       S.functorPushforward (Scheme.Etale.forget X) ∈ Scheme.etaleTopology.over X ((Scheme.Etale.forget X).obj U) :=
@@ -43,6 +49,9 @@ def bc : X.Etale ⥤ Y.Etale := MorphismProperty.Over.pullback @Etale ⊤ f
 
 set_option backward.isDefEq.respectTransparency.types false in
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem bc_forget : bc f ⋙ Scheme.Etale.forget Y = Scheme.Etale.forget X ⋙ Over.pullback f := rfl
 
 set_option backward.isDefEq.respectTransparency.types false in
@@ -51,6 +60,11 @@ instance : PreservesFiniteLimits (bc f) :=
 
 instance : RepresentablyFlat (bc f) := flat_of_preservesFiniteLimits _
 
+/- English proof (translation)
+Establish `h` using `(Scheme.etaleTopology.coverPreserving_overPullback f).cover_preserve ((mem_small_iff X S).1 hS)`. Rewrite using `[mem_small_iff]`. Establish `e : (S.functorPushforward (bc f)).functorPushforward (Scheme.Etale.forget Y) = (S.functorPushforward (Scheme.Etale.forget X)).functorPushforward (Over.pullback f)`. Rewrite using `[← Sieve.functorPushforward_comp, ← Sieve.functorPushforward_comp]`. Both sides reduce to the same expression.
+
+Rewrite using `[e]`. Conclude with `h`.
+-/
 theorem bc_coverPreserving : CoverPreserving X.smallEtaleTopology Y.smallEtaleTopology (bc f) where
   cover_preserve {U S} hS := by
     have h := (Scheme.etaleTopology.coverPreserving_overPullback f).cover_preserve ((mem_small_iff X S).1 hS)
@@ -174,15 +188,30 @@ def CmpStatement : Prop :=
   ∀ (X : Scheme.{0}) (F : Shv R) (n : ℤ),
     Nonempty (HX R X ((DerivedCategory.singleFunctor (ShvS R X) 0).obj ((res R X).obj F)) n ≃+ H R (sch.obj X) F n)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 example (F : Shv R) (U : X.Etale) : ((res R X).obj F).obj.obj (op U) = F.obj.obj (op U.left) := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 example (F : ShvS R Y) (U : X.Etale) : ((push R f).obj F).obj.obj (op U) = F.obj.obj (op ((bc f).obj U)) := rfl
 
 set_option backward.isDefEq.respectTransparency.types false in
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 example (U : X.Etale) : ((bc f).obj U).left = pullback U.hom f := rfl
 
+/- English proof (translation)
+The claim follows from `HX.one ℤ _`.
+-/
 example (K : Type) [Field K] : HX ℤ (Spec (CommRingCat.of K)) (unitD ℤ _) 0 := HX.one ℤ _
 
+/- English proof (translation)
+The claim follows from `inferInstance`.
+-/
 example : AddCommGroup (HX R X (unitD R X) 3) := inferInstance
 
 end GlobalTheory.EtC.Rel

@@ -15,6 +15,13 @@ namespace GP
 
 open ReciprocityTheory.AnForm
 
+/- English proof (translation)
+Establish `hd : ∀ k, ∀ᶠ y in 𝓝 z, DifferentiableAt ℝ (f k) y` using `fun k => ((hf k).eventually (by simp)).mono fun y hy => hy.differentiableAt (by norm_num)`. Establish `hd2 : ∀ k, DifferentiableAt ℝ (fderiv ℝ (f k)) z` using `fun k => ((hf k).fderiv_right (m := 1) (by norm_num)).differentiableAt (by norm_num)`. Establish `hEq : fderiv ℝ (fun y => ∑ k ∈ s, f k y) =ᶠ[𝓝 z] fun y => ∑ k ∈ s, fderiv ℝ (f k) y` using `by filter_upwards [(Filter.eventually_all_finset s).2 (fun k _ => hd k)] with y hy`. Establish `h1` using `fderiv_sum hy`. Rewrite `h1` using `[show (∑ i ∈ s, f i) = fun y => ∑ k ∈ s, f k y from by ext; simp]`. Then use the resulting hypothesis.
+
+Establish `h2` using `fderiv_sum (fun k (_ : k ∈ s) => hd2 k)`. Rewrite `h2` using `[show (∑ i ∈ s, fderiv ℝ (f i)) = fun y => ∑ k ∈ s, fderiv ℝ (f k) y from by ext; simp]`. Unfold `levi`. Rewrite using `[hEq.fderiv_eq, h2]`. Simplify using `only [ContinuousLinearMap.sum_apply]`.
+
+Rewrite using `[← Finset.sum_add_distrib, Finset.sum_div]`.
+-/
 theorem levi_sum {κ : Type} [Fintype κ] {K : Type} (s : Finset K) (f : K → (κ → ℂ) → ℝ) (z w : κ → ℂ)
     (hf : ∀ k, ContDiffAt ℝ 2 (f k) z) : levi (fun y => ∑ k ∈ s, f k y) z w = ∑ k ∈ s, levi (f k) z w := by
   have hd : ∀ k, ∀ᶠ y in 𝓝 z, DifferentiableAt ℝ (f k) y := fun k =>
@@ -32,9 +39,19 @@ theorem levi_sum {κ : Type} [Fintype κ] {K : Type} (s : Finset K) (f : K → (
   simp only [ContinuousLinearMap.sum_apply]
   rw [← Finset.sum_add_distrib, Finset.sum_div]
 
+/- English proof (translation)
+The claim follows from `fsMetric_isSemipositive.2 z hz w`.
+-/
 theorem levi_fs_nonneg {κ : Type} [Fintype κ] {z : κ → ℂ} (hz : z ≠ 0) (w : κ → ℂ) :
     0 ≤ levi (fun z => Real.log ((fsMetric κ).ρ z)) z w := fsMetric_isSemipositive.2 z hz w
 
+/- English proof (translation)
+Establish `hd : ∀ᶠ y in 𝓝 z, DifferentiableAt ℝ φ y` using `(hφ.eventually (by simp)).mono fun y hy => hy.differentiableAt (by norm_num)`. Establish `hd2 : DifferentiableAt ℝ (fderiv ℝ φ) z` using `(hφ.fderiv_right (m := 1) (by norm_num)).differentiableAt (by norm_num)`. Establish `hγ : ∀ t : ℝ, HasDerivAt (fun s : ℝ => z + s • v) v t` using `fun t => by`. Simplify using `using ((hasDerivAt_id t).smul_const v).const_add z`. Establish `hlim : Filter.Tendsto (fun s : ℝ => z + s • v) (𝓝 0) (𝓝 z)`.
+
+Simplify using `using (hγ 0).continuousAt.tendsto`. Establish `hev : ∀ᶠ t in 𝓝 (0 : ℝ), DifferentiableAt ℝ φ (z + t • v)` using `hlim.eventually hd`. Establish `h1 : deriv (fun t : ℝ => φ (z + t • v)) =ᶠ[𝓝 0] fun t => fderiv ℝ φ (z + t • v) v` using `by filter_upwards [hev] with t ht`. Conclude with `(ht.hasFDerivAt.comp_hasDerivAt t (hγ t)).deriv`. Rewrite using `[h1.deriv_eq]`.
+
+Establish `h2 : HasFDerivAt (fun y => fderiv ℝ φ y v) ((ContinuousLinearMap.apply ℝ ℝ v).comp (fderiv ℝ (fderiv ℝ φ) z)) z` using `(ContinuousLinearMap.apply ℝ ℝ v).hasFDerivAt.comp z hd2.hasFDerivAt`. Establish `h3 : HasDerivAt (fun t : ℝ => fderiv ℝ φ (z + t • v) v) (fderiv ℝ (fderiv ℝ φ) z v v) 0` using `h2.comp_hasDerivAt_of_eq (0 : ℝ) (hγ 0) (by simp)`. Conclude with `h3.deriv.symm`.
+-/
 private theorem fderiv_fderiv_eq_deriv_deriv_line {κ : Type} [Fintype κ] {φ : (κ → ℂ) → ℝ} {z : κ → ℂ}
     (hφ : ContDiffAt ℝ 2 φ z) (v : κ → ℂ) :
     fderiv ℝ (fderiv ℝ φ) z v v = deriv (deriv (fun t : ℝ => φ (z + t • v))) 0 := by
@@ -58,6 +75,17 @@ private theorem fderiv_fderiv_eq_deriv_deriv_line {κ : Type} [Fintype κ] {φ :
     h2.comp_hasDerivAt_of_eq (0 : ℝ) (hγ 0) (by simp)
   exact h3.deriv.symm
 
+/- English proof (translation)
+Establish `hN' : N ≠ 0` using `hN.ne'`. Establish `hq : ∀ t : ℝ, HasDerivAt (fun s : ℝ => N + 2 * s * P + s ^ 2 * C) (2 * P + 2 * t * C) t`. Introduce `t`. Establish `h1` using `((hasDerivAt_id' t).const_mul (2 * P)).const_add N`. Establish `h2` using `(hasDerivAt_pow 2 t).mul_const C`.
+
+Establish `e : (fun s : ℝ => N + 2 * s * P + s ^ 2 * C) = (fun x => N + 2 * P * x) + (fun y => y ^ 2 * C)`. Use function extensionality and compare the values at `s`. Simplify using `only [Pi.add_apply]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e]`.
+
+Conclude with `(h1.add h2).congr_deriv (by`. Rewrite using `[show (2 : ℕ) - 1 = 1 from rfl, pow_one]`. Use `push_cast`. Use the proof step `ring)`. Establish `hq0 : N + 2 * (0 : ℝ) * P + (0 : ℝ) ^ 2 * C ≠ 0` using `by simpa using hN'`.
+
+Establish `hev : ∀ᶠ t in 𝓝 (0 : ℝ), N + 2 * t * P + t ^ 2 * C ≠ 0` using `(hq 0).continuousAt.eventually_ne hq0`. Establish `hd : deriv (fun t : ℝ => Real.log (N + 2 * t * P + t ^ 2 * C) / 2) =ᶠ[𝓝 0] fun t => (P + C * t) / (N + 2 * t * P + t ^ 2 * C)` using `by filter_upwards [hev] with t ht`. Rewrite using `[(((hq t).log ht).div_const 2).deriv]`. Apply the tactic sequence `field_simp <;> ring`. Rewrite using `[hd.deriv_eq]`.
+
+Establish `h4` using `(((hasDerivAt_id' (0 : ℝ)).const_mul C).const_add P).div (hq 0) hq0`. Rewrite using `[show (fun t : ℝ => (P + C * t) / (N + 2 * t * P + t ^ 2 * C)) = (fun x => P + C * x) / (fun s => N + 2 * s * P + s ^ 2 * C) from rfl, h4.deriv]`. Simplify using `only [mul_zero, zero_mul, add_zero, mul_one, zero_pow two_ne_zero]`. Apply the tactic sequence `field_simp <;> ring`.
+-/
 private theorem deriv_deriv_half_log_quadratic_at_zero (N P C : ℝ) (hN : 0 < N) :
     deriv (deriv (fun t : ℝ => Real.log (N + 2 * t * P + t ^ 2 * C) / 2)) 0 =
       (C * N - 2 * P ^ 2) / N ^ 2 := by
@@ -90,6 +118,27 @@ private theorem deriv_deriv_half_log_quadratic_at_zero (N P C : ℝ) (hN : 0 < N
   simp only [mul_zero, zero_mul, add_zero, mul_one, zero_pow two_ne_zero]
   field_simp <;> ring
 
+/- English proof (translation)
+Establish `hxne : WithLp.toLp 2 z ≠ 0` using `fun h => hz (by simpa using congrArg WithLp.ofLp h)`. Establish `hN : 0 < ‖WithLp.toLp 2 z‖ ^ 2` using `pow_pos (norm_pos_iff.2 hxne) 2`. Establish `hρ : ContDiffAt ℝ 2 (fun u : κ → ℂ => (fsMetric κ).ρ u) z` using `by show ContDiffAt ℝ 2 (fun u => ‖WithLp.toLp 2 u‖) z`. Conclude with `(contDiffAt_norm ℂ hxne).comp z ((PiLp.continuousLinearEquiv 2 ℝ (fun _ : κ => ℂ)).symm.contDiff.contDiffAt)`. Establish `hφ : ContDiffAt ℝ 2 (fun u => Real.log ((fsMetric κ).ρ u)) z` using `hρ.log (ne_of_gt ((fsMetric κ).pos z hz))`.
+
+Establish `key : ∀ v : κ → ℂ, fderiv ℝ (fderiv ℝ (fun u => Real.log ((fsMetric κ).ρ u))) z v v = (‖WithLp.toLp 2 v‖ ^ 2 * ‖WithLp.toLp 2 z‖ ^ 2 - 2 * (inner ℂ (WithLp.toLp 2 z) (WithLp.toLp 2 v)).re ^ 2) / (‖WithLp.toLp 2 z‖ ^ 2) ^ 2`. Introduce `v`. Rewrite using `[fderiv_fderiv_eq_deriv_deriv_line hφ v]`. Establish `hF : (fun t : ℝ => Real.log ((fsMetric κ).ρ (z + t • v))) = fun t : ℝ => Real.log (‖WithLp.toLp 2 z‖ ^ 2 + 2 * t * (inner ℂ (WithLp.toLp 2 z) (WithLp.toLp 2 v)).re + t ^ 2 * ‖WithLp.toLp 2 v‖ ^ 2) / 2`. Use function extensionality and compare the values at `t`.
+
+Establish `e : WithLp.toLp 2 (z + t • v) = WithLp.toLp 2 z + (t : ℂ) • WithLp.toLp 2 v`. Rewrite using `[WithLp.toLp_add, WithLp.toLp_smul, Complex.coe_smul]`. Use `show Real.log ‖WithLp.toLp 2 (z + t • v)‖ = _`. Establish `hsq : ‖WithLp.toLp 2 z + (t : ℂ) • WithLp.toLp 2 v‖ ^ 2 = ‖WithLp.toLp 2 z‖ ^ 2 + 2 * t * (inner ℂ (WithLp.toLp 2 z) (WithLp.toLp 2 v)).re + t ^ 2 * ‖WithLp.toLp 2 v‖ ^ 2`. Rewrite using `[norm_add_sq (𝕜 := ℂ), inner_smul_right, RCLike.re_to_complex, Complex.re_ofReal_mul, norm_smul, mul_pow, Complex.norm_real, Real.norm_eq_abs, sq_abs]`.
+
+Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e, ← hsq, Real.log_pow]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hF, deriv_deriv_half_log_quadratic_at_zero _ _ _ hN]`.
+
+Establish `hI : inner ℂ (WithLp.toLp 2 z) (WithLp.toLp 2 (Complex.I • w)) = Complex.I * inner ℂ (WithLp.toLp 2 z) (WithLp.toLp 2 w)`. Rewrite using `[WithLp.toLp_smul, inner_smul_right]`. Establish `hIn : ‖WithLp.toLp 2 (Complex.I • w)‖ = ‖WithLp.toLp 2 w‖`. Rewrite using `[WithLp.toLp_smul, norm_smul]`. Simplify using the standard rewrite rules.
+
+Unfold `levi at h`. Rewrite `h` using `[key, key, hI, hIn, Complex.I_mul_re, neg_sq]`. Rewrite `h` using `[← add_div, div_div, div_eq_zero_iff]`. Establish `hsum : ‖WithLp.toLp 2 w‖ ^ 2 * ‖WithLp.toLp 2 z‖ ^ 2 = (inner ℂ (WithLp.toLp 2 z) (WithLp.toLp 2 w)).re ^ 2 + (inner ℂ (WithLp.toLp 2 z) (WithLp.toLp 2 w)).im ^ 2`. Break down `h with h | h` into its components or cases.
+
+Combine the linear equalities and inequalities to obtain the conclusion. It suffices to derive a contradiction. Establish `: 0 < (‖WithLp.toLp 2 z‖ ^ 2) ^ 2 * 4` using `by positivity`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hcs : ‖inner ℂ (WithLp.toLp 2 z) (WithLp.toLp 2 w)‖ = ‖WithLp.toLp 2 z‖ * ‖WithLp.toLp 2 w‖`.
+
+Establish `hsq : ‖inner ℂ (WithLp.toLp 2 z) (WithLp.toLp 2 w)‖ ^ 2 = (‖WithLp.toLp 2 z‖ * ‖WithLp.toLp 2 w‖) ^ 2`. Rewrite using `[Complex.sq_norm, Complex.normSq_apply, mul_pow]`. Take the linear combination `-hsum`. Conclude with `(pow_left_inj₀ (norm_nonneg _) (by positivity) two_ne_zero).1 hsq`. Distinguish the cases in `hw : WithLp.toLp 2 w = 0`.
+
+Use `⟨0, ?_⟩` and prove the remaining obligations. Simplify using `using congrArg WithLp.ofLp hw`. Take `⟨r, -, hr⟩` from `(norm_inner_eq_norm_iff hxne hw).1 hcs`. Use `⟨r, ?_⟩` and prove the remaining obligations. Use `congrArg WithLp.ofLp hr` as an intermediate fact.
+
+Simplify using `using this`.
+-/
 theorem levi_fs_zero {κ : Type} [Fintype κ] {z : κ → ℂ} (hz : z ≠ 0) (w : κ → ℂ)
     (h : levi (fun z => Real.log ((fsMetric κ).ρ z)) z w = 0) : ∃ c : ℂ, w = c • z := by
   have hxne : WithLp.toLp 2 z ≠ 0 := fun h => hz (by simpa using congrArg WithLp.ofLp h)
@@ -153,6 +202,9 @@ theorem levi_fs_zero {κ : Type} [Fintype κ] {z : κ → ℂ} (hz : z ≠ 0) (w
     have := congrArg WithLp.ofLp hr
     simpa using this
 
+/- English proof (translation)
+The claim follows from `ContDiffOn.contDiffAt fsMetric_isSmooth (isOpen_ne.mem_nhds hz)`.
+-/
 theorem contDiffAt_fs {κ : Type} [Fintype κ] {z : κ → ℂ} (hz : z ≠ 0) :
     ContDiffAt ℝ ((⊤ : ℕ∞) : WithTop ℕ∞) (fsMetric κ).ρ z :=
   ContDiffOn.contDiffAt fsMetric_isSmooth (isOpen_ne.mem_nhds hz)
@@ -162,6 +214,9 @@ variable {K : Type} [Fintype K] {ι : K → Type} [∀ k, Fintype (ι k)]
 noncomputable def blk (k : K) : ((Σ k, ι k) → ℂ) →L[ℂ] (ι k → ℂ) :=
   ContinuousLinearMap.pi fun i => ContinuousLinearMap.proj ⟨k, i⟩
 
+/- English proof (translation)
+Take `⟨i, hi⟩` from `hz k`. Introduce `h`. Apply `hi` to reduce the goal to its premises. Use `congrFun h i` as an intermediate fact. Simplify `this` using `[blk]`.
+-/
 theorem blk_ne {z : (Σ k, ι k) → ℂ} (hz : ∀ k, ∃ i, z ⟨k, i⟩ ≠ 0) (k : K) : blk k z ≠ 0 := by
   obtain ⟨i, hi⟩ := hz k
   intro h
@@ -169,6 +224,13 @@ theorem blk_ne {z : (Σ k, ι k) → ℂ} (hz : ∀ k, ∃ i, z ⟨k, i⟩ ≠ 0
   have := congrFun h i
   simpa [blk] using this
 
+/- English proof (translation)
+Establish `hl : HasDerivAt (fun t : ℂ => z + t • v) v 0`. Simplify using `using ((hasDerivAt_id (0 : ℂ)).smul_const v).const_add z`. Establish `h1` using `HasFDerivAt.comp_hasDerivAt_of_eq 0 (HolomorphicMinorCharts.analyticAt_affCoord p hz).differentiableAt.hasFDerivAt hl (by simp)`. Establish `h2 : HasDerivAt (affCoord p ∘ fun t : ℂ => z + t • v) 0 0`. Use `(hasDerivAt_const (0 : ℂ) (affCoord p z)).congr_of_eventuallyEq ?_` and prove the remaining obligations.
+
+Establish `: ∀ᶠ t in 𝓝 (0 : ℂ), ∀ k, 1 + t * c k ≠ 0` using `eventually_all.mpr fun k => ContinuousAt.eventually_ne (by fun_prop) (by simp)`. Use `filter_upwards [this] with t ht`. Use `HolomorphicMinorCharts.affCoord_so ⟨fun k => 1 + t * c k, ht, funext fun q => ?_⟩ p` and prove the remaining obligations. Simplify using `only [Pi.add_apply, Pi.smul_apply, smul_eq_mul, hv q]`. Expand and normalize the polynomial expressions, which then agree.
+
+Conclude with `h1.unique h2`.
+-/
 theorem fderiv_affCoord_zero (p : (k : K) → ι k) {z v : (Σ k, ι k) → ℂ} (hz : ∀ k, z ⟨k, p k⟩ ≠ 0) (c : K → ℂ)
     (hv : ∀ q, v q = c q.1 * z q) : fderiv ℂ (affCoord p) z v = 0 := by
   have hl : HasDerivAt (fun t : ℂ => z + t • v) v 0 := by
@@ -187,6 +249,9 @@ theorem fderiv_affCoord_zero (p : (k : K) → ι k) {z v : (Σ k, ι k) → ℂ}
 
 end GP
 
+/- English proof (translation)
+Establish `h1 : WithLp.toLp 2 (GP.blk k z) ≠ 0` using `fun h => hz (by simpa using congrArg WithLp.ofLp h)`. Use `show ContDiffAt ℝ _ (fun z => ‖WithLp.toLp 2 (GP.blk k z)‖) z`. Establish `hL : ContDiff ℝ ((⊤ : ℕ∞) : WithTop ℕ∞) (fun z : (k : K) × ι k → ℂ => WithLp.toLp 2 (GP.blk k z))` using `((PiLp.continuousLinearEquiv 2 ℝ (fun _ : ι k => ℂ)).symm.toContinuousLinearMap.comp ((GP.blk k).restrictScalars ℝ)).contDiff`. Conclude with `(contDiffAt_norm ℂ h1).comp z hL.contDiffAt`.
+-/
 private theorem contDiffAt_fsMetric_rho_blk {K : Type} [Fintype K] {ι : K → Type} [∀ k, Fintype (ι k)] (k : K)
     {z : (k : K) × ι k → ℂ} (hz : GP.blk k z ≠ 0) :
     ContDiffAt ℝ ((⊤ : ℕ∞) : WithTop ℕ∞)
@@ -199,6 +264,9 @@ private theorem contDiffAt_fsMetric_rho_blk {K : Type} [Fintype K] {ι : K → T
       ((GP.blk k).restrictScalars ℝ)).contDiff
   exact (contDiffAt_norm ℂ h1).comp z hL.contDiffAt
 
+/- English proof (translation)
+Establish `h1 : WithLp.toLp 2 z ≠ 0` using `fun h => hz (by simpa using congrArg WithLp.ofLp h)`. Establish `hρ : ContDiffAt ℝ ((⊤ : ℕ∞) : WithTop ℕ∞) (fun u : κ → ℂ => (fsMetric κ).ρ u) z` using `by show ContDiffAt ℝ _ (fun u => ‖WithLp.toLp 2 u‖) z`. Conclude with `(contDiffAt_norm ℂ h1).comp z ((PiLp.continuousLinearEquiv 2 ℝ (fun _ : κ => ℂ)).symm.contDiff.contDiffAt)`. Conclude with `hρ.log (ne_of_gt ((fsMetric κ).pos z hz))`.
+-/
 private theorem contDiffAt_log_fsMetric_rho {κ : Type} [Fintype κ] {z : κ → ℂ} (hz : z ≠ 0) :
     ContDiffAt ℝ ((⊤ : ℕ∞) : WithTop ℕ∞) (fun v : κ → ℂ => Real.log ((fsMetric κ).ρ v)) z := by
   have h1 : WithLp.toLp 2 z ≠ 0 := fun h => hz (by simpa using congrArg WithLp.ofLp h)
@@ -208,6 +276,9 @@ private theorem contDiffAt_log_fsMetric_rho {κ : Type} [Fintype κ] {z : κ →
       ((PiLp.continuousLinearEquiv 2 ℝ (fun _ : κ => ℂ)).symm.contDiff.contDiffAt)
   exact hρ.log (ne_of_gt ((fsMetric κ).pos z hz))
 
+/- English proof (translation)
+Establish `hpos : 0 < ∏ k, (fsMetric (ι k)).ρ (GP.blk k z)` using `Finset.prod_pos fun k _ => (fsMetric _).pos _ (hz k)`. Conclude with `(contDiffAt_prod fun k _ => contDiffAt_fsMetric_rho_blk k (hz k)).log hpos.ne'`.
+-/
 private theorem contDiffAt_log_prod_fsMetric_rho_blk {K : Type} [Fintype K] {ι : K → Type} [∀ k, Fintype (ι k)]
     {z : (k : K) × ι k → ℂ} (hz : ∀ k, GP.blk k z ≠ 0) :
     ContDiffAt ℝ ((⊤ : ℕ∞) : WithTop ℕ∞)
@@ -216,6 +287,13 @@ private theorem contDiffAt_log_prod_fsMetric_rho_blk {K : Type} [Fintype K] {ι 
     Finset.prod_pos fun k _ => (fsMetric _).pos _ (hz k)
   exact (contDiffAt_prod fun k _ => contDiffAt_fsMetric_rho_blk k (hz k)).log hpos.ne'
 
+/- English proof (translation)
+Establish `h2 : (2 : WithTop ℕ∞) ≤ ((⊤ : ℕ∞) : WithTop ℕ∞)` using `WithTop.coe_le_coe.2 le_top`. Establish `hev : ∀ᶠ y in 𝓝 z, ∀ k, GP.blk k y ≠ 0`. Rewrite using `[Filter.eventually_all]`. Introduce `k`. Conclude with `(GP.blk k).continuous.continuousAt.eventually_ne (hz k)`.
+
+Establish `hcongr : (fun z : (k : K) × ι k → ℂ => Real.log (∏ k, (fsMetric (ι k)).ρ (GP.blk k z))) =ᶠ[𝓝 z] fun y => ∑ k ∈ Finset.univ, Real.log ((fsMetric (ι k)).ρ (GP.blk k y))` using `by filter_upwards [hev] with y hy`. Conclude with `Real.log_prod (fun k _ => ((fsMetric _).pos _ (hy k)).ne')`. Rewrite using `[ReciprocityTheory.AnForm.levi_congr hcongr]`. Rewrite using `[GP.levi_sum (f := fun k y => Real.log ((fsMetric (ι k)).ρ (GP.blk k y)))]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations.
+
+Establish `hc` using `ReciprocityTheory.AnForm.levi_comp (φ := fun v : ι k → ℂ => Real.log ((fsMetric (ι k)).ρ v)) (τ := GP.blk (ι := ι) k) u ((GP.blk (ι := ι) k).analyticAt z) ((contDiffAt_log_fsMetric_rho (hz k)).of_le h2)`. Rewrite `hc` using `[ContinuousLinearMap.fderiv]`. Conclude with `hc`. Introduce `k`. Conclude with `(((contDiffAt_log_fsMetric_rho (hz k)).comp z (((GP.blk (ι := ι) k).contDiff.contDiffAt).restrict_scalars ℝ)).of_le h2)`.
+-/
 private theorem levi_log_prod_fsMetric_eq_sum {K : Type} [Fintype K] {ι : K → Type} [∀ k, Fintype (ι k)]
     {z : (k : K) × ι k → ℂ} (hz : ∀ k, GP.blk k z ≠ 0) (u : (k : K) × ι k → ℂ) :
     ReciprocityTheory.AnForm.levi (fun z : (k : K) × ι k → ℂ => Real.log (∏ k, (fsMetric (ι k)).ρ (GP.blk k z))) z u =
@@ -240,6 +318,23 @@ private theorem levi_log_prod_fsMetric_eq_sum {K : Type} [Fintype K] {ι : K →
     exact (((contDiffAt_log_fsMetric_rho (hz k)).comp z
       (((GP.blk (ι := ι) k).contDiff.contDiffAt).restrict_scalars ℝ)).of_le h2)
 
+/- English proof (translation)
+Establish `hm : lam x' y ∈ mcPts P` using `emb.mem x' y hy.2`. Use `choose q hq using hm.1`. Establish `hq' : ∀ k, lam x y ⟨k, q k⟩ ≠ 0` using `fun k => (HolomorphicMinorCharts.ne_zero_so (emb.compat x x' y hy) _).2 (hq k)`. Establish `hc0 : ∀ k, lam x y ⟨k, q k⟩ / lam x' y ⟨k, q k⟩ ≠ 0` using `fun k => div_ne_zero (hq' k) (hq k)`. Establish `hcont : ∀ x'' p, y ∈ U x'' → ContinuousAt (fun z => lam x'' z p) y` using `fun _ p h => HolomorphicMinorCharts.holo_continuousAt (emb.holo _ p) h`.
+
+Establish `hev : ∀ᶠ z in 𝓝 y, z ∈ U x ∧ z ∈ U x' ∧ ∀ k, lam x' z ⟨k, q k⟩ ≠ 0 ∧ lam x z ⟨k, q k⟩ / lam x' z ⟨k, q k⟩ / (lam x y ⟨k, q k⟩ / lam x' y ⟨k, q k⟩) ∈ Complex.slitPlane`. Use `Filter.Eventually.and ((emb.isOpen x).mem_nhds hy.1) (Filter.Eventually.and ((emb.isOpen x').mem_nhds hy.2) ?_)` and prove the remaining obligations. Rewrite using `[Filter.eventually_all]`. Introduce `k`. Establish `h1` using `(hcont x' ⟨k, q k⟩ hy.2).eventually_ne (hq k)`.
+
+Establish `h2 : ContinuousAt (fun z => lam x z ⟨k, q k⟩ / lam x' z ⟨k, q k⟩ / (lam x y ⟨k, q k⟩ / lam x' y ⟨k, q k⟩)) y` using `((hcont x _ hy.1).div (hcont x' _ hy.2) (hq k)).div_const _`. Establish `h3 : lam x y ⟨k, q k⟩ / lam x' y ⟨k, q k⟩ / (lam x y ⟨k, q k⟩ / lam x' y ⟨k, q k⟩) ∈ Complex.slitPlane`. Rewrite using `[div_self (hc0 k)]`. Conclude with `Complex.one_mem_slitPlane`. Conclude with `h1.and (h2.eventually_mem (Complex.isOpen_slitPlane.mem_nhds h3))`.
+
+Take `⟨W, hWP, hWo, hyW⟩` from `eventually_nhds_iff.1 hev`. Use `⟨W, hWo, hyW, fun z => ∑ k, (Complex.log (lam x z ⟨k, q k⟩ / lam x' z ⟨k, q k⟩ / (lam x y ⟨k, q k⟩ / lam x' y ⟨k, q k⟩)) + ((Real.log ‖lam x y ⟨k, q k⟩ / lam x' y ⟨k, q k⟩‖ : ℝ) : ℂ)), ?_, ?_⟩` and prove the remaining obligations. Introduce `j v hv`. Take `⟨hvt, hvW⟩` from `hv`. Establish `hP` using `hWP _ hvW`.
+
+Establish `ha : ∀ x'' p, (A.chart j).symm v ∈ U x'' → AnalyticAt ℂ ((fun z => lam x'' z p) ∘ (A.chart j).symm) v` using `fun x'' p h => emb.holo x'' p j v ⟨hvt, h⟩`. Use `show AnalyticAt ℂ (fun v => ∑ k, (Complex.log (lam x ((A.chart j).symm v) ⟨k, q k⟩ / lam x' ((A.chart j).symm v) ⟨k, q k⟩ / (lam x y ⟨k, q k⟩ / lam x' y ⟨k, q k⟩)) + ((Real.log ‖lam x y ⟨k, q k⟩ / lam x' y ⟨k, q k⟩‖ : ℝ) : ℂ))) v`. Apply `Finset.analyticAt_fun_sum` to reduce the goal to its premises. Introduce `k _`. Apply `AnalyticAt.add _ analyticAt_const` to reduce the goal to its premises.
+
+Establish `hf : AnalyticAt ℂ (fun a => lam x ((A.chart j).symm a) ⟨k, q k⟩ / lam x' ((A.chart j).symm a) ⟨k, q k⟩ / (lam x y ⟨k, q k⟩ / lam x' y ⟨k, q k⟩)) v` using `((ha x _ hP.1).div (ha x' _ hP.2.1) (hP.2.2 k).1).div analyticAt_const (hc0 k)`. Conclude with `hf.clog (hP.2.2 k).2`. Introduce and unpack `z ⟨⟨hzW, hzx⟩, hzx'⟩`. Take `⟨c, hc, hceq⟩` from `emb.compat x x' z ⟨hzx, hzx'⟩`. Establish `hΦz : Φ (lam x z) = ∑ k, Real.log ‖c k‖ + Φ (lam x' z)`.
+
+Rewrite using `[hceq]`. Conclude with `hΦ c _ hc (emb.mem x' z hzx').1`. Rewrite using `[hΦz, add_sub_cancel_right, Complex.re_sum]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Establish `hb` using `((hWP z hzW).2.2 k).1`.
+
+Establish `hk : lam x z ⟨k, q k⟩ = c k * lam x' z ⟨k, q k⟩` using `by rw [hceq]`. Simplify using `only [Complex.add_re, Complex.log_re, Complex.ofReal_re]`. Rewrite using `[hk, mul_div_cancel_right₀ _ hb, norm_div (c k), Real.log_div (norm_ne_zero_iff.2 (hc k)) (norm_ne_zero_iff.2 (hc0 k))]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 private theorem exists_holo_re_eq_sub_of_log_scaling {K : Type} [Fintype K] {ι : K → Type} [∀ k, Fintype (ι k)] {e : ℕ} {X : Type}
     [TopologicalSpace X] {A : FinHolAtlas e X} {P : Ideal (MRing ι)} {U : X → Set X}
     {lam : X → X → (k : K) × ι k → ℂ} (emb : IsEmbedded A P U lam) (Φ : ((k : K) × ι k → ℂ) → ℝ)
@@ -304,6 +399,11 @@ private theorem exists_holo_re_eq_sub_of_log_scaling {K : Type} [Fintype K] {ι 
       Real.log_div (norm_ne_zero_iff.2 (hc k)) (norm_ne_zero_iff.2 (hc0 k))]
     ring
 
+/- English proof (translation)
+Establish `hb : ∀ k, GP.blk k (fun p : (k : K) × ι k => c p.1 * z p) = c k • GP.blk k z`. Introduce `k`. Use extensionality with `i`. Simplify using `[GP.blk]`. Simplify using `only [hb, (fsMetric _).smul]`.
+
+Rewrite using `[Finset.prod_mul_distrib, Real.log_mul, Real.log_prod]`. Conclude with `fun k _ => norm_ne_zero_iff.2 (hc k)`. Conclude with `Finset.prod_ne_zero_iff.2 fun k _ => norm_ne_zero_iff.2 (hc k)`. Conclude with `(Finset.prod_pos fun k _ => (fsMetric _).pos _ (GP.blk_ne hz k)).ne'`.
+-/
 private theorem log_prod_fsMetric_blk_smul {K : Type} [Fintype K] {ι : K → Type} [∀ k, Fintype (ι k)]
     (c : K → ℂ) (z : (k : K) × ι k → ℂ) (hc : ∀ k, c k ≠ 0) (hz : ∀ k, ∃ i, z ⟨k, i⟩ ≠ 0) :
     Real.log (∏ k, (fsMetric (ι k)).ρ (GP.blk k (fun p => c p.1 * z p))) =
@@ -319,6 +419,37 @@ private theorem log_prod_fsMetric_blk_smul {K : Type} [Fintype K] {ι : K → Ty
   · exact (Finset.prod_pos fun k _ => (fsMetric _).pos _ (GP.blk_ne hz k)).ne'
 
 open GP HolomorphicMinorCharts ReciprocityTheory.AnForm in
+/- English proof (translation)
+Introduce `K _ ι _ P J e R emb`. Establish `h2 : (2 : WithTop ℕ∞) ≤ ((⊤ : ℕ∞) : WithTop ℕ∞)` using `WithTop.coe_le_coe.2 le_top`. Establish `hsm : ∀ (c : K → ℂ) (z : (k : K) × ι k → ℂ), (∀ k, c k ≠ 0) → (∏ k, (fsMetric (ι k)).ρ (blk k (fun p : (k : K) × ι k => c p.1 * z p))) = (∏ k, ‖c k‖ ^ (1 : ℤ)) * ∏ k, (fsMetric (ι k)).ρ (blk k z)`. Introduce `c z hc`. Establish `hb : ∀ k, blk k (fun p : (k : K) × ι k => c p.1 * z p) = c k • blk k z`.
+
+Introduce `k`. Use extensionality with `i`. Simplify using `[blk]`. Simplify using `only [hb, (fsMetric _).smul, zpow_one]`. Conclude with `Finset.prod_mul_distrib`.
+
+Establish `hpos : ∀ z : (k : K) × ι k → ℂ, (∀ k, ∃ i, z ⟨k, i⟩ ≠ 0) → 0 < ∏ k, (fsMetric (ι k)).ρ (blk k z)` using `fun z hz => Finset.prod_pos fun k _ => (fsMetric _).pos _ (blk_ne hz k)`. Set `Amp : HermLine ι` to `⟨fun _ => 1, fun z => ∏ k, (fsMetric (ι k)).ρ (blk k z), hpos, hsm⟩`. Establish `hΦ` using `fun c z hc hz => log_prod_fsMetric_blk_smul (ι := ι) c z hc hz`. Use `⟨Amp, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `z hz`.
+
+Conclude with `(contDiffAt_prod fun k _ => contDiffAt_fsMetric_rho_blk k (blk_ne hz k)).contDiffWithinAt`. Use `⟨fun x j v hv => ?_, fun x x' y hy => ?_⟩` and prove the remaining obligations. Apply `ContDiffAt.contDiffWithinAt` to reduce the goal to its premises. Establish `hτ : AnalyticAt ℂ (fun u => R.lift x ((R.A.chart j).symm u)) v` using `AnalyticAt.pi (fun p => emb.holo x p j v hv)`. Establish `hm` using `emb.mem x _ hv.2`.
+
+Use `(contDiffAt_log_prod_fsMetric_rho_blk (fun k => blk_ne hm.1 k)).comp v (hτ.contDiffAt.restrict_scalars ℝ)` as an intermediate fact. Conclude with `this`. Conclude with `exists_holo_re_eq_sub_of_log_scaling emb (fun z => Real.log (∏ k, (fsMetric (ι k)).ρ (blk k z))) hΦ x x' y hy`. Introduce `x j v hv w hw`. Establish `hysrc : (R.A.chart j).symm v ∈ (R.A.chart j).source` using `(R.A.chart j).map_target hv.1`.
+
+Establish `hyv : (R.A.chart j) ((R.A.chart j).symm v) = v` using `(R.A.chart j).right_inv hv.1`. Take `⟨W, hWo, hyW, G, hG, hdiff⟩` from `exists_holo_re_eq_sub_of_log_scaling emb (fun z => Real.log (∏ k, (fsMetric (ι k)).ρ (blk k z))) hΦ x ((R.A.chart j).symm v) ((R.A.chart j).symm v) ⟨hv.2, emb.mem_U _⟩`. Establish `hτ : AnalyticAt ℂ (fun u => R.lift ((R.A.chart j).symm v) ((R.A.chart j).symm u)) v` using `AnalyticAt.pi (fun p => emb.holo ((R.A.chart j).symm v) p j v ⟨hv.1, emb.mem_U _⟩)`. Establish `hmy` using `emb.mem ((R.A.chart j).symm v) ((R.A.chart j).symm v) (emb.mem_U _)`. Establish `hblk : ∀ k, blk k (R.lift ((R.A.chart j).symm v) ((R.A.chart j).symm v)) ≠ 0` using `fun k => blk_ne hmy.1 k`.
+
+Establish `hΦy : ContDiffAt ℝ 2 ((fun z : (k : K) × ι k → ℂ => Real.log (∏ k, (fsMetric (ι k)).ρ (blk k z))) ∘ fun u => R.lift ((R.A.chart j).symm v) ((R.A.chart j).symm u)) v` using `((contDiffAt_log_prod_fsMetric_rho_blk hblk).comp v (hτ.contDiffAt.restrict_scalars ℝ)).of_le h2`. Establish `hGa : AnalyticAt ℂ (G ∘ (R.A.chart j).symm) v`. Use `HolomorphicMinorCharts.holo_analyticAt hG j hysrc hyW` as an intermediate fact. Rewrite `this` using `[hyv]`. Then use the resulting hypothesis. Establish `hRe : ContDiffAt ℝ 2 (fun u => (G ((R.A.chart j).symm u)).re) v` using `(Complex.reCLM.contDiff.contDiffAt).comp v (hGa.contDiffAt.restrict_scalars ℝ)`.
+
+Establish `ht : Filter.Tendsto (R.A.chart j).symm (𝓝 v) (𝓝 ((R.A.chart j).symm v))`. Use `HolomorphicMinorCharts.tendsto_symm (R.A.chart j) hysrc` as an intermediate fact. Rewrite `this` using `[hyv]`. Then use the resulting hypothesis. Establish `hev : ((potOf R Amp).φ x ∘ (R.A.chart j).symm) =ᶠ[𝓝 v] fun u => ((fun z : (k : K) × ι k → ℂ => Real.log (∏ k, (fsMetric (ι k)).ρ (blk k z))) ∘ fun u => R.lift ((R.A.chart j).symm v) ((R.A.chart j).symm u)) u + 1 * (G ((R.A.chart j).symm u)).re`. Establish `hW' : ∀ᶠ u in 𝓝 v, (R.A.chart j).symm u ∈ W ∩ R.U x ∩ R.U ((R.A.chart j).symm v)` using `ht.eventually (((hWo.inter (emb.isOpen x)).inter (emb.isOpen _)).mem_nhds ⟨⟨hyW, hv.2⟩, emb.mem_U _⟩)`.
+
+Use `filter_upwards [hW'] with u hu`. Use `hdiff _ hu` as an intermediate fact. Simplify using `only [Function.comp, one_mul]`. Use `show Real.log (∏ k, (fsMetric (ι k)).ρ (blk k (R.lift x ((R.A.chart j).symm u)))) = _`. Combine the linear equalities and inequalities to obtain the conclusion.
+
+Rewrite using `[levi_congr hev, levi_add_smul 1 hΦy hRe]`. Establish `h0 : levi (fun u => (G ((R.A.chart j).symm u)).re) v w = 0` using `levi_re_analytic hGa w`. Rewrite using `[h0, mul_zero, add_zero, levi_comp w hτ ((contDiffAt_log_prod_fsMetric_rho_blk hblk).of_le h2)]`. Use `beta_reduce`. Rewrite using `[levi_log_prod_fsMetric_eq_sum hblk]`.
+
+Establish `hnn : ∀ k, 0 ≤ levi (fun z : ι k → ℂ => Real.log ((fsMetric (ι k)).ρ z)) (blk k (R.lift ((R.A.chart j).symm v) ((R.A.chart j).symm v))) (blk k (fderiv ℂ (fun u => R.lift ((R.A.chart j).symm v) ((R.A.chart j).symm u)) v w))` using `fun k => GP.levi_fs_nonneg (hblk k) _`. Assume the negation of the conclusion as `hle`. Use `push_neg at hle`. Establish `hz0 : ∀ k, levi (fun z : ι k → ℂ => Real.log ((fsMetric (ι k)).ρ z)) (blk k (R.lift ((R.A.chart j).symm v) ((R.A.chart j).symm v))) (blk k (fderiv ℂ (fun u => R.lift ((R.A.chart j).symm v) ((R.A.chart j).symm u)) v w)) = 0` using `fun k => le_antisymm ((Finset.single_le_sum (fun k _ => hnn k) (Finset.mem_univ k)).trans hle) (hnn k)`. Use `choose c hc using fun k => GP.levi_fs_zero (hblk k) _ (hz0 k)`.
+
+Establish `hdq : ∀ q, fderiv ℂ (fun u => R.lift ((R.A.chart j).symm v) ((R.A.chart j).symm u)) v w q = c q.1 * R.lift ((R.A.chart j).symm v) ((R.A.chart j).symm v) q`. Introduce `q`. Use `congrFun (hc q.1) q.2` as an intermediate fact. Simplify `this` using `[blk]`. Use `choose p hp using hmy.1`.
+
+Establish `h0'` using `GP.fderiv_affCoord_zero p hp c hdq`. Establish `himm` using `emb.immersion _ p hp j hysrc`. Rewrite `himm` using `[hyv]`. Establish `hA` using `HolomorphicMinorCharts.analyticAt_affCoord p hp`. Establish `hcomp` using `(hA.differentiableAt.hasFDerivAt.comp v hτ.differentiableAt.hasFDerivAt).fderiv`.
+
+Establish `hchain : fderiv ℂ (fun u => affCoord p (R.lift ((R.A.chart j).symm v) ((R.A.chart j).symm u))) v w = 0`. Establish `e1 : (fun u => affCoord p (R.lift ((R.A.chart j).symm v) ((R.A.chart j).symm u))) = affCoord p ∘ fun u => R.lift ((R.A.chart j).symm v) ((R.A.chart j).symm u)` using `rfl`. Rewrite using `[e1, hcomp, ContinuousLinearMap.comp_apply]`. Conclude with `h0'`. Establish `hk : w ∈ LinearMap.ker ((fderiv ℂ (fun u => affCoord p (R.lift ((R.A.chart j).symm v) ((R.A.chart j).symm u))) v : (Fin e → ℂ) →ₗ[ℂ] ((k : K) × ι k → ℂ)))` using `LinearMap.mem_ker.2 hchain`.
+
+Rewrite `hk` using `[himm]`. Conclude with `hw ((Submodule.mem_bot ℂ).1 hk)`.
+-/
 theorem g_pos : ∀ (K : Type) [Fintype K] (ι : K → Type) [∀ k, Fintype (ι k)] (P J : Ideal (MRing ι)) (e : ℕ) (R : AnLogRes P J e), IsEmbedded R.A P R.U R.lift → ∃ Amp : HermLine ι, IsSmoothHerm Amp ∧ IsPotential R.A (potOf R Amp) ∧ IsPosPot R.A (potOf R Amp) := by
   intro K _ ι _ P J e R emb
   have h2 : (2 : WithTop ℕ∞) ≤ ((⊤ : ℕ∞) : WithTop ℕ∞) := WithTop.coe_le_coe.2 le_top

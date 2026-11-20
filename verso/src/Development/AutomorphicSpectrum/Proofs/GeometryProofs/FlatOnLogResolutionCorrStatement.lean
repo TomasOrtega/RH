@@ -13,5 +13,8 @@ open ReciprocityTheory.ChartRestriction.G.AI.I4 (imageZ IsPullHerm)
 open GroundTheory.Heights₂.Heights.IndefiniteRowSideFullHecke.Inter (pullHerm)
 
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.CompanionTheory.Ar.Chg.isFlatOn_corr | exact GlobalTheory.CompanionTheory.Ar.Chg.isFlatOn_corr | (intros; apply GlobalTheory.CompanionTheory.Ar.Chg.isFlatOn_corr <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.flat_on_log_resolution_corr : ∀ (K : Type) [Fintype K] (J : K → Type) [∀ k, Fintype (J k)] (P Jd : Ideal (MRing J)) (D : ℕ) (R : AnLogRes P Jd D) (Ψ : Type) (N : ℕ) (T : Ψ × Fin N → HermLine J), (∀ r, IsFlatOn R (T r)) → ∀ a, IsFlatOn R (corr T a) := by
   first | exact @GlobalTheory.CompanionTheory.Ar.Chg.isFlatOn_corr | exact GlobalTheory.CompanionTheory.Ar.Chg.isFlatOn_corr | (intros; apply GlobalTheory.CompanionTheory.Ar.Chg.isFlatOn_corr <;> assumption)

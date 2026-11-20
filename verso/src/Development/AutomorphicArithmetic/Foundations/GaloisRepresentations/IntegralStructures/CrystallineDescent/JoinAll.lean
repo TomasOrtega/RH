@@ -13,6 +13,11 @@ open UpperTheory.Gal.TP
 
 namespace UpperTheory.Gal.Int.Core
 
+/- English proof (translation)
+Use `⟨fun _ h => h.1, fun S hS => ?_⟩` and prove the remaining obligations. Establish `hT` using `hS.union (Filter.eventually_cofinite.1 ((h1 E d hd).and (GlobalTheory.CongEx.eventually_not_mem_l E l)))`. Establish `hD` using `GlobalTheory.Published.ChebotarevDegreeOne.dense (F := E) (Ω := Ω) GlobalTheory.Published.chebotarevDegreeOne' hT`. Use `(hD.preimage (Homeomorph.inv (G E Ω)).isOpenMap).mono ?_` and prove the remaining obligations. Introduce and unpack `g ⟨v, hv, hdeg, A, hA, hσ⟩`.
+
+Simplify using `only [Set.mem_union, Set.mem_setOf_eq, not_or, not_not] at hv`. Conclude with `⟨v, hv.1, hv.2.1 (((GlobalTheory.absNorm_prime_iff_inertiaDeg_eq_one_and_finite_ramified E).1 v).2 hdeg), hv.2.2, A, hA, hσ⟩`.
+-/
 theorem goodGuard_usPl (h1 : OneUs) (E Ω : Type) [Field E] [NumberField E] [IsCMField E] [Field Ω] [Algebra E Ω]
     [IsAlgClosure E Ω] (l : ℕ) [Fact l.Prime] (d : ℕ) (hd : ImQ E d) : GoodGuard Ω l (UsPl (E := E) d) := by
   refine ⟨fun _ h => h.1, fun S hS => ?_⟩
@@ -23,6 +28,9 @@ theorem goodGuard_usPl (h1 : OneUs) (E Ω : Type) [Field E] [NumberField E] [IsC
   simp only [Set.mem_union, Set.mem_setOf_eq, not_or, not_not] at hv
   exact ⟨v, hv.1, hv.2.1 (((GlobalTheory.absNorm_prime_iff_inertiaDeg_eq_one_and_finite_ramified E).1 v).2 hdeg), hv.2.2, A, hA, hσ⟩
 
+/- English proof (translation)
+Introduce `hT hU E Ω _ _ _ _ _ _ l _ ι hF hI d hd hsq n hn`. Conclude with `allCoreQ_of hS hT E Ω l ι hF hI _ (goodGuard_usPl h1 E Ω l d hd) (fun m hm => hU m hm E Ω l ι hF d hd hsq) n hn`.
+-/
 theorem joinAll_of (h1 : OneUs) (hS : SubtractQ) : JoinAll := by
   intro hT hU E Ω _ _ _ _ _ _ l _ ι hF hI d hd hsq n hn
   exact allCoreQ_of hS hT E Ω l ι hF hI _ (goodGuard_usPl h1 E Ω l d hd) (fun m hm => hU m hm E Ω l ι hF d hd hsq) n hn

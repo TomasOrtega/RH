@@ -4,11 +4,47 @@ open NumberField IsDedekindDomain Matrix GlobalTheory.UPel.HT GlobalTheory.LKTri
 open UpperTheory.Gal.CertificateRingHomMap (GUf Gam0 AfQ Plc sim mat comp rat lev ZU)
 open scoped TensorProduct Classical
 
+/- English proof (translation)
+Rewrite using `[TensorProduct.smul_tmul, TensorProduct.smul_tmul']`. Simplify using the standard rewrite rules.
+-/
 private lemma one_tmul_smul_eq_add_of_algebraMap_eq_add {M R : Type} [AddCommGroup M] [CommRing R] [Algebra ℚ R] (r : R) (q : ℚ) (y : M) :
     (r ⊗ₜ[ℚ] (q ⊗ₜ[ℤ] y : ℚ ⊗[ℤ] M)) = (q • r) ⊗ₜ[ℚ] ((1 : ℚ) ⊗ₜ[ℤ] y : ℚ ⊗[ℤ] M) := by
   rw [TensorProduct.smul_tmul, TensorProduct.smul_tmul']
   simp
 
+/- English proof (translation)
+Introduce `hLat hEv E _ _ _ A n p _ S T`. Take `⟨ν, hν1, hν2, hν3⟩` from `hLat E A n p S T.μ T.mu`. Use `choose ev hev using fun (w : Plc E) (hw : (p : 𝓞 E) ∉ w.asIdeal) => hEv p E T.toAdT w hw`. Set `co : ∀ w : Plc E, (p : 𝓞 E) ∉ w.asIdeal → (AfP p ⊗[ℚ] VQ S.D →+ (Fin n → w.adicCompletion E))` to `fun w hw => { toFun := fun v i => ev w hw (ν v i) map_zero' := by ext i; simp map_add' := fun x y => by ext i; simp }`. Set `vec : ∀ w : Plc E, AfP p ⊗[ℚ] VQ S.D →+ (Fin n → w.adicCompletion E)` to `fun w => if hw : (p : 𝓞 E) ∉ w.asIdeal then co w hw else 0`.
+
+Establish `hvec : ∀ w (hw : (p : 𝓞 E) ∉ w.asIdeal) v i, vec w v i = ev w hw (ν v i)` using `fun w hw v i => by`. Simplify using `only [vec, dif_pos hw]`. Both sides reduce to the same expression. Establish `hE : ∀ w (hw : (p : 𝓞 E) ∉ w.asIdeal) (c : 𝓞 E), ev w hw ((1 : AfP p) ⊗ₜ[ℚ] (c : E)) = algebraMap (𝓞 E) (w.adicCompletion E) c`. Introduce `w hw c`.
+
+Rewrite using `[← T.Φ_E, hev]`. Both sides reduce to the same expression. Establish `hν4 : ∀ (r : AfP p) (q : ℚ) (y : Fin n → 𝓞 E) i, ν (r ⊗ₜ[ℚ] ((q ⊗ₜ[ℤ] (y : S.D.La) : VQ S.D))) i = (q • r) ⊗ₜ[ℚ] (y i : E)`. Introduce `r q y i`. Conclude with `(congrArg (fun z => ν z i) (one_tmul_smul_eq_add_of_algebraMap_eq_add (M := S.D.La) r q y)).trans (hν1 _ y i)`.
+
+Use `⟨vec, ?_, ?_, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `v h`. Apply `ν.injective` to reduce the goal to its premises. Rewrite using `[map_zero]`. Use function extensionality and compare the values at `i`.
+
+Take `⟨x, hx⟩` from `T.Φ_surj (ν v i)`. Rewrite using `[Pi.zero_apply, ← hx, T.Φ_ker]`. Introduce `w hw`. Use `congrFun (h w hw) i` as an intermediate fact. Rewrite `this` using `[hvec w hw, ← hx, hev]`.
+
+Conclude with `this`. Introduce `v`. Rewrite using `[hν3]`. Prove the components needed by the constructor for the conclusion. Introduce `h w hw i`.
+
+Take `⟨x, hx⟩` from `T.Φ_surj (ν v i)`. Use `(T.Φ_int x).1 (hx ▸ h i) w hw` as an intermediate fact. Rewrite using `[hvec w hw, ← hx, hev]`. Conclude with `(HeightOneSpectrum.mem_adicCompletionIntegers _ _ _).2 this`. Introduce `h i`.
+
+Take `⟨x, hx⟩` from `T.Φ_surj (ν v i)`. Rewrite using `[← hx, T.Φ_int]`. Introduce `w hw`. Use `h w hw i` as an intermediate fact. Rewrite `this` using `[hvec w hw, ← hx, hev]`.
+
+Conclude with `(HeightOneSpectrum.mem_adicCompletionIntegers _ _ _).1 this`. Introduce `y hy`. Set `x : Fin n → Af E` to `fun i => ⟨fun w => y w i, Filter.Eventually.of_forall fun w => hy w i⟩`. Use `⟨ν.symm (fun i => T.Φ (x i)), fun w hw => ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `i`.
+
+Rewrite using `[hvec w hw, ν.apply_symm_apply, hev]`. Both sides reduce to the same expression. Introduce `w hw y i`. Rewrite using `[hvec w hw, ← hE w hw]`. Use `congr 1`.
+
+Conclude with `hν1 1 y i`. Introduce `w hw g v`. Use function extensionality and compare the values at `i`. Rewrite using `[hvec w hw, hν2, T.j_mx, RingHom.map_mulVec]`. Establish `hG : GeneralLinearGroup.map (pLoc E w) T.a * comp w g * (GeneralLinearGroup.map (pLoc E w) T.a)⁻¹ = GeneralLinearGroup.map (pLoc E w) (T.a * mat g * T.a⁻¹)`.
+
+Simplify using `[UpperTheory.Gal.CertificateRingHomMap.comp]`. Establish `hM : (((T.a * mat g * T.a⁻¹ : GL (Fin n) (Af E)).val).map T.Φ).map (ev w hw) = (GeneralLinearGroup.map (pLoc E w) (T.a * mat g * T.a⁻¹)).val`. Conclude with `Matrix.ext fun a b => hev w hw _`. Establish `hV : (ev w hw) ∘ (ν v) = vec w v` using `funext fun k => (hvec w hw v k).symm`. Rewrite using `[hM, hV, hG]`.
+
+Introduce `w hw c v`. Proceed by induction on `v using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `add x y hx hy => rw [map_add, map_add, hx, hy, map_add, smul_add]`. Consider the case `tmul r u`.
+
+Proceed by induction on `u using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `add x y hx hy => rw [TensorProduct.tmul_add, map_add, map_add, hx, hy, map_add, smul_add]`. Consider the case `tmul q y`. Set `y' : Fin n → 𝓞 E` to `y`.
+
+Establish `key : UpperTheory.Gal.Int.Geo.mulF S.D c (r ⊗ₜ[ℚ] (q ⊗ₜ[ℤ] y)) = r ⊗ₜ[ℚ] ((q ⊗ₜ[ℤ] ((c • y' : Fin n → 𝓞 E) : S.D.La) : VQ S.D))`. Simplify using `only [UpperTheory.Gal.Int.Geo.mulF, LinearMap.baseChange_tmul, actQ]`. Both sides reduce to the same expression. Use function extensionality and compare the values at `i`. Establish `e2 : ν (r ⊗ₜ[ℚ] (q ⊗ₜ[ℤ] y)) i = (q • r) ⊗ₜ[ℚ] (y' i : E)` using `hν4 r q y' i`.
+
+Establish `e3 : (((c • y') i : 𝓞 E) : E) = (c : E) * (y' i : E)` using `by simp [Pi.smul_apply]`. Rewrite using `[key, Pi.smul_apply, hvec w hw, hvec w hw, hν4, e2, e3, ← hE w hw, smul_eq_mul, ← map_mul (ev w hw), Algebra.TensorProduct.tmul_mul_tmul, one_mul]`.
+-/
 theorem UpperTheory.Gal.W2.Seed.pVecCoord :
     LatCoord → EvEx → VecCoord := by
   intro hLat hEv E _ _ _ A n p _ S T

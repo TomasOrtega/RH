@@ -18,6 +18,11 @@ variable {W : Type*} [AddCommGroup W] [Module E W] {ι : Type*} [Fintype ι] [De
 omit [NumberField F] [NumberField E] [IsTotallyReal F] [IsTotallyComplex E] [Fintype ι]
   [DecidableEq ι] in
 
+/- English proof (translation)
+Assume the negation of the conclusion as `hlt`. Establish `hpos : 0 < finrank E W` using `Module.finrank_pos_iff_exists_ne_zero.mpr ⟨x₀, hne⟩`. Establish `h1 : finrank E W = 1` using `by omega`. Establish `hspan` using `(finrank_eq_one_iff_of_nonzero' x₀ hne).mp h1`. Apply `hne` to reduce the goal to its premises.
+
+Apply `h.nonsingular.1` to reduce the goal to its premises. Rewrite using `[map_zero]`. Use extensionality with `y`. Take `⟨c, rfl⟩` from `hspan y`. Rewrite using `[LinearMap.zero_apply, map_smul, hiso, smul_zero]`.
+-/
 theorem two_le_finrank_of_isotropic [FiniteDimensional E W] (h : HermitianForm F E W) {x₀ : W}
     (hne : x₀ ≠ 0) (hiso : h.toSesq x₀ x₀ = 0) : 2 ≤ finrank E W := by
   by_contra hlt
@@ -33,6 +38,9 @@ theorem two_le_finrank_of_isotropic [FiniteDimensional E W] (h : HermitianForm F
 
 omit [DecidableEq ι] in
 
+/- English proof (translation)
+Establish `hb : star b * b = ((‖b‖ ^ 2 : ℝ) : ℂ)`. Rewrite using `[Complex.star_def, Complex.conj_mul']`. Use `norm_cast`. Rewrite using `[star_smul, mulVec_smul, smul_dotProduct, dotProduct_smul, smul_eq_mul, smul_eq_mul, ← mul_assoc, hb, Complex.re_ofReal_mul, mul_comm]`.
+-/
 theorem re_form_smul (P : Matrix ι ι ℂ) (b : ℂ) (y : ι → ℂ) :
     (star (b • y) ⬝ᵥ (P *ᵥ (b • y))).re = (star y ⬝ᵥ (P *ᵥ y)).re * ‖b‖ ^ 2 := by
   have hb : star b * b = ((‖b‖ ^ 2 : ℝ) : ℂ) := by
@@ -41,6 +49,19 @@ theorem re_form_smul (P : Matrix ι ι ℂ) (b : ℂ) (y : ι → ℂ) :
   rw [star_smul, mulVec_smul, smul_dotProduct, dotProduct_smul, smul_eq_mul, smul_eq_mul,
     ← mul_assoc, hb, Complex.re_ofReal_mul, mul_comm]
 
+/- English proof (translation)
+Introduce `M μ _ D La x₀ hLa hx₀ hne hiso`. Establish `: FiniteDimensional E W` using `v.finiteDimensional_of_finite`. Establish `hdisc : DiscreteTopology (vecStabGroup h v La x₀)`. Use `ArchLatticeDiscrete.proof h v La hLa.isLattice` as an intermediate fact. Establish `hle : vecStabGroup h v La x₀ ≤ archLatticeGroup h v La`.
+
+Introduce and unpack `_ ⟨γ, -, rfl⟩`. Conclude with `⟨(γ : h.unitaryGroup), γ.2, rfl⟩`. Conclude with `DiscreteTopology.of_continuous_injective (f := Subgroup.inclusion hle) (continuous_subtype_val.subtype_mk _) (Subgroup.inclusion_injective hle)`. Take `⟨FD, -, hFD⟩` from `h₃ μ _ hdisc`. Take `⟨c, hc0, hctop, hc⟩` from `h₁ M μ D La x₀ hLa hx₀ hne hiso`.
+
+Use `set y := vecAt v x₀ with hy`. Use `set q : InfinitePlace E → ℝ := fun w => (star (y w) ⬝ᵥ (M.P w *ᵥ y w)).re with hq_def`. Establish `hq : ∀ w, 0 < q w` using `fun w => (Complex.pos_iff.mp ((M.posDef w).dotProduct_mulVec_pos (VecAtNeZero.proof v x₀ hne w))).1`. Take `⟨C, hC0, hCtop, hC⟩` from `h₂ q hq (finrank E W - 2)`. Take `⟨k, hk⟩ : ∃ k, finrank E W = k + 2` from `⟨finrank E W - 2, by have := two_le_finrank_of_isotropic h hne hiso; omega⟩`.
+
+Establish `hcard : Fintype.card (InfinitePlace E) = finrank ℚ F`. Establish `h1` using `IsTotallyComplex.finrank (K := E)`. Establish `h2 : finrank ℚ F * finrank F E = finrank ℚ E` using `Module.finrank_mul_finrank ℚ F E`. Rewrite `h2` using `[Algebra.IsQuadraticExtension.finrank_eq_two F E]`. Rewrite using `[InfinitePlace.card_eq_nrRealPlaces_add_nrComplexPlaces, IsTotallyComplex.nrRealPlaces_eq_zero]`.
+
+Use linear arithmetic over natural numbers and integers. Establish `hexp : (2 * (finrank E W - 2) + 2) * Fintype.card (InfinitePlace E) = 2 * finrank ℚ F * (finrank E W - 1)`. Rewrite using `[hcard, hk, Nat.add_sub_cancel, show k + 2 - 1 = k + 1 by omega]`. Expand and normalize the polynomial expressions, which then agree. Use `⟨FD, hFD, c * C, ENNReal.mul_pos hc0.ne' hC0.ne', ENNReal.mul_lt_top hctop hCtop, fun t ht => ?_⟩` and prove the remaining obligations.
+
+Establish `hset : {b : InfinitePlace E → ℂ | M.len (fun w => b w • y w) < t} = {b | ∑ w, q w * ‖b w‖ ^ 2 < t ^ 2}`. Use extensionality with `b`. Simplify using `only [Set.mem_ofPred_eq, Majorant.len, Real.sqrt_lt' ht, re_form_smul, hq_def, mul_comm]`. Rewrite using `[hc FD hFD t ht, hset, hC t ht, hexp]`. Conclude with `(mul_assoc c C _).symm`.
+-/
 theorem UnfoldingIntegral.proof (h : HermitianForm F E W) (v : Basis ι E W)
     (h₁ : UnfoldingTorus.Statement h v)
     (h₂ : TorusIntegralHomogeneous.Statement (InfinitePlace E))

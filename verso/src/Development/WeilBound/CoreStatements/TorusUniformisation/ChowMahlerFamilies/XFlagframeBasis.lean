@@ -13,11 +13,21 @@ namespace PositivityTheory.Xgn.A_flagframe_basis
 
 variable {Ω : Type*} [Field Ω] {V : Type*} [AddCommGroup V] [Module Ω V] {N : ℕ}
 
+/- English proof (translation)
+Use `conv_lhs => rw [← u.sum_repr v]`. Conclude with `GradedFrameCharacterisation.repr_sum_smul w _ _ j`.
+-/
 theorem repr_expand (w u : Module.Basis (Fin N) Ω V) (v : V) (j : Fin N) :
     w.repr v j = ∑ q, u.repr v q * w.repr (u q) j := by
   conv_lhs => rw [← u.sum_repr v]
   exact GradedFrameCharacterisation.repr_sum_smul w _ _ j
 
+/- English proof (translation)
+Use `⟨fun j hj => ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[repr_expand w u]`. Use `Finset.sum_eq_zero fun q _ => ?_` and prove the remaining obligations. Distinguish the cases in `hq : i < q`. Rewrite using `[hv q hq, zero_mul]`.
+
+Rewrite using `[hup q j (lt_of_le_of_lt (not_lt.mp hq) hj), mul_zero]`. Rewrite using `[repr_expand w u]`. Use `Finset.sum_eq_single i (fun q _ hq => ?_) (fun h => absurd (Finset.mem_univ i) h)` and prove the remaining obligations. Break down `lt_or_gt_of_ne hq with h | h` into its components or cases. Rewrite using `[hup q i h, mul_zero]`.
+
+Rewrite using `[hv q h, zero_mul]`.
+-/
 theorem top_coord (w u : Module.Basis (Fin N) Ω V) (hup : ∀ i j, i < j → w.repr (u i) j = 0)
     (v : V) (i : Fin N) (hv : ∀ j, i < j → u.repr v j = 0) :
     (∀ j, i < j → w.repr v j = 0) ∧ w.repr v i = u.repr v i * w.repr (u i) i := by
@@ -33,6 +43,15 @@ theorem top_coord (w u : Module.Basis (Fin N) Ω V) (hup : ∀ i j, i < j → w.
     · rw [hup q i h, mul_zero]
     · rw [hv q h, zero_mul]
 
+/- English proof (translation)
+Assume the negation of the conclusion as `hcon`. Use `push_neg at hcon`. Establish `hne : (Finset.univ.filter (fun j => i < j ∧ u.repr v j ≠ 0)).Nonempty`. Take `⟨j, hj, hj'⟩` from `hcon`. Conclude with `⟨j, Finset.mem_filter.mpr ⟨Finset.mem_univ _, hj, hj'⟩⟩`.
+
+Take `⟨m, hmS, hmax⟩` from `Finset.exists_max_image _ id hne`. Establish `hm` using `(Finset.mem_filter.mp hmS).2`. Establish `habove : ∀ j, m < j → u.repr v j = 0`. Introduce `j hj`. Assume the negation of the conclusion as `h0`.
+
+Establish `hjS` using `hmax j (Finset.mem_filter.mpr ⟨Finset.mem_univ _, lt_trans hm.1 hj, h0⟩)`. Conclude with `absurd hjS (not_le.mpr hj)`. Establish `ht` using `top_coord w u hup v m habove`. Establish `h0` using `hv m hm.1`. Rewrite `h0` using `[ht.2]`.
+
+Conclude with `mul_ne_zero hm.2 (hd m) h0`.
+-/
 theorem vanish_above (w u : Module.Basis (Fin N) Ω V) (hup : ∀ i j, i < j → w.repr (u i) j = 0)
     (hd : ∀ i, w.repr (u i) i ≠ 0) (v : V) (i : Fin N) (hv : ∀ j, i < j → w.repr v j = 0) :
     ∀ j, i < j → u.repr v j = 0 := by
@@ -54,6 +73,19 @@ theorem vanish_above (w u : Module.Basis (Fin N) Ω V) (hup : ∀ i j, i < j →
   rw [ht.2] at h0
   exact mul_ne_zero hm.2 (hd m) h0
 
+/- English proof (translation)
+Break down `isEmpty_or_nonempty (Fin N) with hN | hN` into its components or cases. Conclude with `⟨w, fun i => isEmptyElim i⟩`. Establish `hli : LinearIndependent Ω f`. Rewrite using `[Fintype.linearIndependent_iff]`. Introduce `g hg`.
+
+Assume the negation of the conclusion as `hcon`. Use `push_neg at hcon`. Establish `hne : (Finset.univ.filter (fun j => g j ≠ 0)).Nonempty`. Take `⟨j, hj⟩` from `hcon`. Conclude with `⟨j, Finset.mem_filter.mpr ⟨Finset.mem_univ _, hj⟩⟩`.
+
+Take `⟨m, hmS, hmax⟩` from `Finset.exists_max_image _ id hne`. Establish `hm` using `(Finset.mem_filter.mp hmS).2`. Establish `h0` using `congrArg (fun v => w.repr v m) hg`. Simplify using `only [map_sum, map_smul, Finsupp.finset_sum_apply, Finsupp.smul_apply, smul_eq_mul, map_zero, Finsupp.coe_zero, Pi.zero_apply] at h0`. Rewrite `h0` using `[Finset.sum_eq_single m]`.
+
+Conclude with `mul_ne_zero hm (hd m) h0`. Introduce `q _ hqm`. Break down `lt_or_gt_of_ne hqm with h | h` into its components or cases. Rewrite using `[hup q m h, mul_zero]`. Establish `hgq : g q = 0`.
+
+Assume the negation of the conclusion as `hq`. Conclude with `absurd (hmax q (Finset.mem_filter.mpr ⟨Finset.mem_univ _, hq⟩)) (not_le.mpr h)`. Rewrite using `[hgq, zero_mul]`. Introduce `h`. Conclude with `absurd (Finset.mem_univ m) h`.
+
+Use `⟨basisOfLinearIndependentOfCardEqFinrank hli ?_, fun i => ?_⟩` and prove the remaining obligations. Rewrite using `[Module.finrank_eq_card_basis w]`. Rewrite using `[coe_basisOfLinearIndependentOfCardEqFinrank]`.
+-/
 theorem exists_basis (w : Module.Basis (Fin N) Ω V) (f : Fin N → V)
     (hup : ∀ i j, i < j → w.repr (f i) j = 0) (hd : ∀ i, w.repr (f i) i ≠ 0) :
     ∃ u : Module.Basis (Fin N) Ω V, ∀ i, u i = f i := by
@@ -88,6 +120,23 @@ theorem exists_basis (w : Module.Basis (Fin N) Ω V) (f : Fin N → V)
     · rw [Module.finrank_eq_card_basis w]
     · rw [coe_basisOfLinearIndependentOfCardEqFinrank]
 
+/- English proof (translation)
+Establish `main : ∀ k : ℕ, ∀ v ∈ L, (∀ j : Fin N, k ≤ j.val → u.repr v j = 0) → ∀ i, u.repr v i ∈ R`. Introduce `k`. Proceed by induction on `k with`. Consider the case `zero`. Introduce `v _ hv i`.
+
+Rewrite using `[hv i (Nat.zero_le _)]`. Conclude with `R.zero_mem`. Consider the case `succ k ih`. Introduce `v hvL hv`. Distinguish the cases in `hk : k < N`.
+
+Establish `ha : u.repr v ⟨k, hk⟩ ∈ R` using `htop v hvL ⟨k, hk⟩ (fun j hj => hv j (Nat.succ_le_of_lt (Fin.lt_def.mp hj)))`. Establish `hv'L : v - u.repr v ⟨k, hk⟩ • u ⟨k, hk⟩ ∈ L` using `L.sub_mem hvL (hst _ ha _)`. Establish `hrep : ∀ j, u.repr (v - u.repr v ⟨k, hk⟩ • u ⟨k, hk⟩) j = u.repr v j - u.repr v ⟨k, hk⟩ * (if (⟨k, hk⟩ : Fin N) = j then 1 else 0)`. Introduce `j`. Rewrite using `[map_sub, map_smul, Module.Basis.repr_self, Finsupp.coe_sub, Pi.sub_apply, Finsupp.smul_apply, Finsupp.single_apply, smul_eq_mul]`.
+
+Establish `hv' : ∀ j : Fin N, k ≤ j.val → u.repr (v - u.repr v ⟨k, hk⟩ • u ⟨k, hk⟩) j = 0`. Introduce `j hj`. Rewrite using `[hrep j]`. Break down `Nat.lt_or_eq_of_le hj with h | h` into its components or cases. Establish `hne : (⟨k, hk⟩ : Fin N) ≠ j` using `fun e => by`.
+
+Rewrite `h` using `[← e]`. Conclude with `lt_irrefl _ h`. Rewrite using `[hv j h, if_neg hne, mul_zero, sub_zero]`. Establish `he : (⟨k, hk⟩ : Fin N) = j` using `Fin.ext h`. Substitute `he` using the available equality.
+
+Rewrite using `[if_pos rfl, mul_one, sub_self]`. Introduce `i`. Establish `hi` using `ih _ hv'L hv' i`. Rewrite `hi` using `[hrep i]`. Establish `h2 : u.repr v ⟨k, hk⟩ * (if (⟨k, hk⟩ : Fin N) = i then (1 : Ω) else 0) ∈ R` using `by split_ifs`.
+
+Rewrite using `[mul_one]`. Conclude with `ha`. Rewrite using `[mul_zero]`. Conclude with `R.zero_mem`. Establish `h3` using `R.add_mem hi h2`.
+
+Rewrite `h3` using `[sub_add_cancel]`. Then use the resulting hypothesis. Introduce `i`. Conclude with `ih v hvL (fun j hj => hv j (by have := j.isLt; omega)) i`. Introduce `v hv i`. Conclude with `main N v hv (fun j hj => absurd j.isLt (not_lt.mpr hj)) i`.
+-/
 theorem coords_mem {O : Type*} [CommRing O] [Algebra O Ω] (R : Subalgebra O Ω) (L : AddSubgroup V)
     (u : Module.Basis (Fin N) Ω V) (hst : ∀ a ∈ R, ∀ i, a • u i ∈ L)
     (htop : ∀ v ∈ L, ∀ i, (∀ j, i < j → u.repr v j = 0) → u.repr v i ∈ R) :
@@ -141,6 +190,31 @@ theorem coords_mem {O : Type*} [CommRing O] [Algebra O Ω] (R : Subalgebra O Ω)
 end PositivityTheory.Xgn.A_flagframe_basis
 
 open PositivityTheory.Xgn.A_flagframe_basis in
+/- English proof (translation)
+Introduce `O _ Ω _ _ K _ _ ι _ x N V _ _ E w b`. Establish `hmon : ∀ s, mseg x s ≠ 0 → ∀ d : K → ℤ, chartMon x s d ≠ 0`. Introduce `s hs d`. Establish `hs' : ∏ k : K, x ⟨k, s k⟩ ≠ 0` using `hs`. Use `show ∏ k : K, x ⟨k, s k⟩ ^ d k ≠ 0`.
+
+Conclude with `Finset.prod_ne_zero_iff.mpr fun k _ => zpow_ne_zero _ (Finset.prod_ne_zero_iff.mp hs' k (Finset.mem_univ _))`. Prove the components needed by the constructor for the conclusion. Introduce `hF s hs`. Establish `hdeg : ∀ i, ∃ f ∈ E.lat s, (∀ j, i < j → w.repr f j = 0) ∧ w.repr f i = chartMon x s (b i)`. Introduce `i`.
+
+Establish `hmem : chartMon x s (b i) ∈ degLat O x (b i) s` using `⟨1, Subalgebra.one_mem _, (one_mul _).symm⟩`. Rewrite `hmem` using `[← hF.graded s hs i]`. Conclude with `hmem`. Use `choose f hfL hfup hfd using hdeg`. Take `⟨u, hu⟩` from `exists_basis w f hfup (fun i => by rw [hfd i]; exact hmon s hs (b i))`.
+
+Establish `hup_u : ∀ i j, i < j → w.repr (u i) j = 0` using `fun i j hij => by`. Rewrite using `[hu i]`. Conclude with `hfup i j hij`. Use `⟨u, hup_u, fun i => by rw [hu i]; exact hfd i, fun v => ⟨fun hv => ?_, fun hv => ?_⟩⟩` and prove the remaining obligations. Use `coords_mem (chartRing O (mseg x) s) (E.lat s) u (fun a ha i => by rw [hu i]; exact E.stable s a ha _ (hfL i)) ?_ v hv` and prove the remaining obligations.
+
+Introduce `v' hv' i hup'`. Establish `ht` using `top_coord w u hup_u v' i hup'`. Establish `hin : w.repr v' i ∈ degLat O x (b i) s`. Rewrite using `[← hF.graded s hs i]`. Conclude with `⟨v', hv', ht.1, rfl⟩`.
+
+Take `⟨a, ha, hae⟩` from `hin`. Rewrite `hae` using `[ht.2, hu i, hfd i]`. Establish `hc` using `mul_right_cancel₀ (hmon s hs (b i)) hae`. Rewrite using `[hc]`. Conclude with `ha`.
+
+Rewrite using `[← u.sum_repr v]`. Conclude with `AddSubgroup.sum_mem _ fun q _ => by`. Rewrite using `[hu q]`. Conclude with `E.stable s _ (hv q) _ (hfL q)`. Introduce `hR`.
+
+Use `⟨fun s hs i => ?_⟩` and prove the remaining obligations. Take `⟨u, hup, hdiag, hmem⟩` from `hR s hs`. Use extensionality with `t`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨v, hv, habove, rfl⟩`.
+
+Establish `hd : ∀ i, w.repr (u i) i ≠ 0` using `fun i => by`. Rewrite using `[hdiag i]`. Conclude with `hmon s hs (b i)`. Establish `hu_above` using `vanish_above w u hup hd v i habove`. Establish `ht` using `top_coord w u hup v i hu_above`.
+
+Conclude with `⟨u.repr v i, (hmem v).mp hv i, by rw [ht.2, hdiag i]; rfl⟩`. Introduce and unpack `⟨a, ha, rfl⟩`. Use `⟨a • u i, (hmem _).mpr fun j => ?_, fun j hj => ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[map_smul, Module.Basis.repr_self, Finsupp.smul_apply, Finsupp.single_apply, smul_eq_mul] split_ifs`. Rewrite using `[mul_one]`.
+
+Conclude with `ha`. Rewrite using `[mul_zero]`. Conclude with `Subalgebra.zero_mem _`. Rewrite using `[map_smul, Finsupp.smul_apply, hup i j hj, smul_zero]`. Rewrite using `[map_smul, Finsupp.smul_apply, hdiag i, smul_eq_mul]`.
+
+Both sides reduce to the same expression.
+-/
 theorem PositivityTheory.Xgn.t_flagframe_basis : ∀ (O : Type) [CommRing O] (Ω : Type) [Field Ω] [Algebra O Ω] (K : Type) [Fintype K] [DecidableEq K] (ι : K → Type) [∀ k, Fintype (ι k)] (x : (Σ k, ι k) → Ω) (N : ℕ) (V : Type) [AddCommGroup V] [Module Ω V] (E : ChartBundle O (mseg x) N V) (w : Module.Basis (Fin N) Ω V) (b : Fin N → K → ℤ), IsFlagFrame x E w b ↔ ∀ s, mseg x s ≠ 0 → ∃ u : Module.Basis (Fin N) Ω V, (∀ i j, i < j → w.repr (u i) j = 0) ∧ (∀ i, w.repr (u i) i = chartMon x s (b i)) ∧ ∀ v, v ∈ E.lat s ↔ ∀ i, u.repr v i ∈ chartRing O (mseg x) s := by
   intro O _ Ω _ _ K _ _ ι _ x N V _ _ E w b
   have hmon : ∀ s, mseg x s ≠ 0 → ∀ d : K → ℤ, chartMon x s d ≠ 0 := by

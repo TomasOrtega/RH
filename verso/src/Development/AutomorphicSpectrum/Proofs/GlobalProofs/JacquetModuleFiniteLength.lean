@@ -15,6 +15,11 @@ variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchim
   {α : Type} {m : α → Type} [Fintype α] [LinearOrder α] [∀ a, Fintype (m a)]
   [∀ a, DecidableEq (m a)] {N : ℕ} {V : Type} [AddCommGroup V] [Module ℂ V]
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce `hf`. Use `le_antisymm (not_lt.1 fun hlt => ?_) (not_lt.1 fun hlt => ?_)` and prove the remaining obligations. Conclude with `(lt_irrefl (f i)) (by simpa [hf] using (h j i).2 hlt)`. Conclude with `(lt_irrefl (f i)) (by simpa [hf] using (h i j).2 hlt)`.
+
+Introduce `hg`. Use `le_antisymm (not_lt.1 fun hlt => ?_) (not_lt.1 fun hlt => ?_)` and prove the remaining obligations. Conclude with `(lt_irrefl (g i)) (by simpa [hg] using (h j i).1 hlt)`. Conclude with `(lt_irrefl (g i)) (by simpa [hg] using (h i j).1 hlt)`.
+-/
 theorem eq_iff_of_lt_iff {ι A B : Type} [LinearOrder A] [LinearOrder B] {f : ι → A} {g : ι → B}
     (h : ∀ i j, f i < f j ↔ g i < g j) (i j : ι) : f i = f j ↔ g i = g j := by
   constructor
@@ -27,12 +32,18 @@ theorem eq_iff_of_lt_iff {ι A B : Type} [LinearOrder A] [LinearOrder B] {f : ι
     · exact (lt_irrefl (g i)) (by simpa [hg] using (h j i).1 hlt)
     · exact (lt_irrefl (g i)) (by simpa [hg] using (h i j).1 hlt)
 
+/- English proof (translation)
+Use `show (g : Matrix (Fin N) (Fin N) k).BlockTriangular β ↔ (g : Matrix (Fin N) (Fin N) k).BlockTriangular (blk e)`. Conclude with `⟨fun h i j hij => h ((hβ j i).2 hij), fun h i j hij => h ((hβ j i).1 hij)⟩`.
+-/
 theorem mem_blockUpper_iff (e : (Σ a, m a) ≃ Fin N) {β : Fin N → ℕ}
     (hβ : ∀ i j, β i < β j ↔ blk e i < blk e j) (g : GL (Fin N) k) :
     g ∈ GroundTheory.Automorphic.Iwasawa.blockUpper k N β ↔ g ∈ parab k e := by
   show (g : Matrix (Fin N) (Fin N) k).BlockTriangular β ↔ (g : Matrix (Fin N) (Fin N) k).BlockTriangular (blk e)
   exact ⟨fun h i j hij => h ((hβ j i).2 hij), fun h i j hij => h ((hβ j i).1 hij)⟩
 
+/- English proof (translation)
+Rewrite using `[GroundTheory.Automorphic.Parabolic.mem_unipotentRadical, mem_unipRad_iff_blk, mem_blockUpper_iff e hβ]`. Conclude with `and_congr Iff.rfl (forall_congr' fun i => forall_congr' fun j => imp_congr_left (eq_iff_of_lt_iff hβ i j))`.
+-/
 theorem mem_unipotentRadical_iff (e : (Σ a, m a) ≃ Fin N) {β : Fin N → ℕ}
     (hβ : ∀ i j, β i < β j ↔ blk e i < blk e j) (g : GL (Fin N) k) :
     g ∈ GroundTheory.Automorphic.Parabolic.unipotentRadical k N β ↔ g ∈ unipRad k e := by
@@ -46,6 +57,9 @@ def leviMap (e : (Σ a, m a) ≃ Fin N) {β : Fin N → ℕ}
   (leviEmb k e).codRestrict _ fun g => GroundTheory.Automorphic.Parabolic.mem_levi.2 fun i j hij =>
     leviEmb_apply_of_blk_ne e g fun h => hij ((eq_iff_of_lt_iff hβ i j).2 h)
 
+/- English proof (translation)
+Introduce `x`. Set `p : parab k e` to `⟨x, (mem_blockUpper_iff e hβ _).1 (GroundTheory.Automorphic.Parabolic.levi_le_blockUpper x.2)⟩`. Establish `hoff : ∀ i j, blk e i ≠ blk e j → ((p : GL (Fin N) k) : Matrix (Fin N) (Fin N) k) i j = 0` using `fun i j hij => GroundTheory.Automorphic.Parabolic.mem_levi.1 x.2 i j (fun h => hij ((eq_iff_of_lt_iff hβ i j).1 h))`. Conclude with `⟨leviProj k e p, Subtype.ext (leviEmb_leviProj_of_blk e p hoff)⟩`.
+-/
 theorem leviMap_surjective (e : (Σ a, m a) ≃ Fin N) {β : Fin N → ℕ}
     (hβ : ∀ i j, β i < β j ↔ blk e i < blk e j) :
     Function.Surjective (leviMap (k := k) e hβ) := by
@@ -57,6 +71,9 @@ theorem leviMap_surjective (e : (Σ a, m a) ≃ Fin N) {β : Fin N → ℕ}
       (fun h => hij ((eq_iff_of_lt_iff hβ i j).1 h))
   exact ⟨leviProj k e p, Subtype.ext (leviEmb_leviProj_of_blk e p hoff)⟩
 
+/- English proof (translation)
+Establish `heq : GroundTheory.Automorphic.Parabolic.twist χ σ = GlobalTheory.SmGL.twist σ χ.toHomUnits`. Use extensionality with `g v`. Both sides reduce to the same expression. Rewrite `h` using `[heq]`. Conclude with `(hasFiniteLength_twist_iff σ χ.toHomUnits).1 h`.
+-/
 theorem hasFiniteLength_of_twist {G W : Type} [Group G] [AddCommGroup W] [Module ℂ W]
     (χ : G →* ℂ) (σ : Representation ℂ G W)
     (h : HasFiniteLength (GroundTheory.Automorphic.Parabolic.twist χ σ)) : HasFiniteLength σ := by
@@ -66,6 +83,15 @@ theorem hasFiniteLength_of_twist {G W : Type} [Group G] [AddCommGroup W] [Module
   rw [heq] at h
   exact (hasFiniteLength_twist_iff σ χ.toHomUnits).1 h
 
+/- English proof (translation)
+Establish `h1 : HasFiniteLength (GroundTheory.Automorphic.Parabolic.jacquetAction k N β π)` using `hasFiniteLength_of_twist ((GroundTheory.Automorphic.Parabolic.invSqrtModular k N β).comp GroundTheory.Automorphic.Parabolic.leviIncl) _ h`. Establish `h2 : HasFiniteLength ((GroundTheory.Automorphic.Parabolic.jacquetAction k N β π).comp (leviMap e hβ))` using `(hasFiniteLength_comp_iff _ _ (leviMap_surjective e hβ)).2 h1`. Establish `hU : ∀ u : GL (Fin N) k, u ∈ GroundTheory.Automorphic.Parabolic.unipotentRadical k N β → u ∈ unipRad k e` using `fun u hu => (mem_unipotentRadical_iff e hβ u).1 hu`. Set `f : GroundTheory.Automorphic.Parabolic.JacquetModule k N β π →ₗ[ℂ] V ⧸ twKer π (unipRad k e) 1` to `Representation.Coinvariants.lift _ (twKer π (unipRad k e) 1).mkQ (fun u => by`. Use extensionality with `v`.
+
+Simplify using `only [LinearMap.comp_apply, MonoidHom.comp_apply, Subgroup.coe_subtype, Submodule.mkQ_apply]`. Rewrite using `[Submodule.Quotient.eq]`. Apply `Submodule.subset_span` to reduce the goal to its premises. Conclude with `⟨⟨u, hU u u.2⟩, v, by simp⟩)`. Set `Φ : Representation.IntertwiningMap ((GroundTheory.Automorphic.Parabolic.jacquetAction k N β π).comp (leviMap e hβ)) (jacU e π)` to `⟨f, fun g => by`.
+
+Use `Representation.Coinvariants.hom_ext ?_` and prove the remaining obligations. Use extensionality with `v`. Use the proof step `rfl⟩`. Use `hasFiniteLength_of_surjective Φ ?_ h2` and prove the remaining obligations. Introduce `y`.
+
+Take `⟨v, rfl⟩` from `Submodule.Quotient.mk_surjective (twKer π (unipRad k e) 1) y`. Conclude with `⟨Representation.Coinvariants.mk _ v, rfl⟩`.
+-/
 theorem hasFiniteLength_jacU_of_labelling (e : (Σ a, m a) ≃ Fin N) {β : Fin N → ℕ}
     (hβ : ∀ i j, β i < β j ↔ blk e i < blk e j) (π : Representation ℂ (GL (Fin N) k) V)
     (h : HasFiniteLength (GroundTheory.Automorphic.Parabolic.jacquetRep k N β π)) :
@@ -97,6 +123,19 @@ theorem hasFiniteLength_jacU_of_labelling (e : (Σ a, m a) ≃ Fin N) {β : Fin 
 
 end Bridge
 
+/- English proof (translation)
+Introduce `k _ _ _ _ α n m _ _ _ _ _ _ e V _ _ π hπ hfl`. Use `show HasFiniteLength (GlobalTheory.SmGL.twist (jacU e π) (deltaHalf k m)⁻¹)`. Rewrite using `[hasFiniteLength_twist_iff]`. Set `ψ : Fin (Fintype.card n) ≃ n` to `(Fintype.equivFin n).symm`. Set `e0 : (Σ a, m a) ≃ Fin (Fintype.card n)` to `e.trans ψ.symm`.
+
+Establish `he : e0.trans ψ = e`. Use extensionality with `x`. Simplify using `[e0]`. Rewrite using `[← he]`. Use `hasFiniteLength_jacU_reindex e0 ψ π ?_` and prove the remaining obligations.
+
+Set `o : α ≃o Fin (Fintype.card α)` to `(Fintype.orderIsoFinOfCardEq α rfl).symm`. Set `β : Fin (Fintype.card n) → ℕ` to `fun i => (o (blk e0 i) : ℕ)`. Establish `hβ : ∀ i j, β i < β j ↔ blk e0 i < blk e0 j` using `fun i j => by show (o (blk e0 i) : ℕ) < (o (blk e0 j) : ℕ) ↔ _`. Rewrite using `[← Fin.lt_def]`. Conclude with `o.lt_iff_lt`.
+
+Use `hasFiniteLength_jacU_of_labelling e0 hβ _ ?_` and prove the remaining obligations. Use `GroundTheory.Automorphic.Parabolic.hasFiniteLength_jacquetRep ?_ ?_ β` and prove the remaining obligations. Introduce `v`. Establish `hcont : Continuous (Units.mapEquiv (Matrix.reindexAlgEquiv k k ψ).toMulEquiv)` using `by show Continuous (Units.map (Matrix.reindexAlgEquiv k k ψ).toMulEquiv.toMonoidHom)`. Conclude with `Units.continuous_map (continuous_id.matrix_reindex ψ ψ)`.
+
+Establish `hset : (GroundTheory.Automorphic.stabilizerOf (π.comp (Units.mapEquiv (Matrix.reindexAlgEquiv k k ψ).toMulEquiv).toMonoidHom) v : Set (GL (Fin (Fintype.card n)) k)) = (Units.mapEquiv (Matrix.reindexAlgEquiv k k ψ).toMulEquiv) ⁻¹' {g | π g v = v}`. Use extensionality with `g`. Conclude with `GroundTheory.Automorphic.mem_stabilizerOf`. Rewrite using `[hset]`. Conclude with `(hπ v).preimage hcont`.
+
+Conclude with `(hasFiniteLength_comp_iff π _ (MulEquiv.surjective _)).2 hfl`.
+-/
 theorem jacquetFiniteLength : ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k]
     [IsNonarchimedeanLocalField k], GlobalTheory.SmGL.JacquetFiniteLength k := by
   intro k _ _ _ _ α n m _ _ _ _ _ _ e V _ _ π hπ hfl

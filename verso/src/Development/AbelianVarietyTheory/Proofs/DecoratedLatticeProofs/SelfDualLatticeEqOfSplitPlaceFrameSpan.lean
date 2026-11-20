@@ -30,6 +30,11 @@ open GlobalTheory.FinPl (latV idAt intAt)
 
 variable {D : D7} {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
 
+/- English proof (translation)
+Use `⟨GlobalTheory.FrameGlob.e_mem_idAt q, ?_⟩` and prove the remaining obligations. Establish `h1 : q.sec 1 = q.e`. Use `q.sec_pr 1` as an intermediate fact. Rewrite `this` using `[map_one, mul_one]`. Then use the resulting hypothesis. Establish `h` using `(q.int_iff 1).1 (one_mem _)`.
+
+Rewrite `h` using `[h1]`. Then use the resulting hypothesis.
+-/
 theorem e_mem_intAt (q : GlobalTheory.FinPl.SplitPt D k) : q.e ∈ intAt D (· = q.v) := by
   refine ⟨GlobalTheory.FrameGlob.e_mem_idAt q, ?_⟩
   have h1 : q.sec 1 = q.e := by
@@ -38,22 +43,42 @@ theorem e_mem_intAt (q : GlobalTheory.FinPl.SplitPt D k) : q.e ∈ intAt D (· =
   have h := (q.int_iff 1).1 (one_mem _)
   rwa [h1] at h
 
+/- English proof (translation)
+The claim follows from `((((GlobalTheory.FinPl.localComponents D (· = v)).2 V).2.2.2 L z hL).1 hz).2 v rfl a ha`.
+-/
 theorem smul_mem_latV {V : HSp D} {L : GlobalTheory.FinPl.Lat V} (hL : Submodule.IsLattice D.host.E L) {v : GlobalTheory.FinPl.Pl D}
     {z : Fin V.rank → AE D} (hz : z ∈ latV V L (· = v)) {a : AE D} (ha : a ∈ intAt D (· = v)) :
     a • z ∈ latV V L (· = v) :=
   ((((GlobalTheory.FinPl.localComponents D (· = v)).2 V).2.2.2 L z hL).1 hz).2 v rfl a ha
 
+/- English proof (translation)
+Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem sec_pr_mul (q : GlobalTheory.FinPl.SplitPt D k) (a : AE D) (c : k) : q.sec (q.pr a * c) = a * q.sec c := by
   calc q.sec (q.pr a * c) = q.sec (q.pr (a * q.sec c)) := by rw [RingHom.map_mul q.pr, q.pr_sec]
     _ = q.e * (a * q.sec c) := q.sec_pr _
     _ = a * q.sec c := by rw [mul_left_comm, ← GlobalTheory.FrameGlob.sec_eq_mul]
 
+/- English proof (translation)
+Establish `h` using `q.pr_mem_iff (q.sec c)`. Rewrite `h` using `[q.pr_sec, ← map_mul, ← GlobalTheory.FrameGlob.sec_eq_mul]`. Conclude with `h.symm`.
+-/
 theorem sec_int_iff (q : GlobalTheory.FinPl.SplitPt D k) (c : k) :
     toEAf D (q.sec c) ∈ Formalism.L2.Herm.intAf D.host.F D.host.E ↔ c ∈ 𝒪[k] := by
   have h := q.pr_mem_iff (q.sec c)
   rw [q.pr_sec, ← map_mul, ← GlobalTheory.FrameGlob.sec_eq_mul] at h
   exact h.symm
 
+/- English proof (translation)
+Take `⟨b, hb⟩ : ∃ b : Matrix (Fin V.rank) (Fin V.rank) (AE D), b.map (toEAf D) = β.val` from `by choose f hf using fun s : Lev.EAf D => GlobalTheory.ResLoc.toEAf_surj (D := D) s`. Conclude with `⟨β.val.map f, by ext i j; simp [hf]⟩`. Use `set s : Fin V.rank → AE D := fun i => q.sec (x i) with hsdef`. Establish `hs : ∀ i, s i ∈ idAt D (· = q.v)` using `fun i => GlobalTheory.FrameGlob.sec_mem_idAt q _`. Establish `hy : ∀ i, (b *ᵥ s) i ∈ idAt D (· = q.v)` using `fun i => by`.
+
+Simplify using `only [Matrix.mulVec, dotProduct]`. Conclude with `Ideal.sum_mem _ fun j _ => Ideal.mul_mem_left _ _ (hs j)`. Establish `hkey : (fun i => q.sec ((M *ᵥ x) i)) = Formalism.L2.Theta.mt V t *ᵥ (b *ᵥ s)`. Rewrite using `[Matrix.mulVec_mulVec, ← hM b hb]`. Use function extensionality and compare the values at `i`.
+
+Simplify using `only [Matrix.mulVec, dotProduct, Matrix.map_apply, map_sum]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Conclude with `sec_pr_mul q _ _`. Rewrite using `[hkey, ← hm _ hy]`. Establish `hbridge : b *ᵥ s ∈ latV V Λ (· = q.v) ↔ (fun i => Formalism.IndefR.Lev.swapAE D (finPart D ((b *ᵥ s) i))) ∈ Formalism.L2.Herm.hatL (F` using `D.host.F) Λ := ⟨GlobalTheory.LatVHat.latV_mem_hatL D V Λ _ _, GlobalTheory.HatLatV.mem_latV_of_hatL D V Λ _ _ hy⟩`.
+
+Rewrite using `[hbridge, hβ]`. Establish `h2 : (fun i => Formalism.IndefR.Lev.swapAE D (finPart D ((b *ᵥ s) i))) = β.val *ᵥ fun i => toEAf D (s i)`. Use function extensionality and compare the values at `i`. Express the relevant statement in the definitionally equal form `toEAf D ((b *ᵥ s) i) = _`. Rewrite using `[← hb]`.
+
+Simplify using `only [Matrix.mulVec, dotProduct, Matrix.map_apply]`. Rewrite using `[map_sum (toEAf D)]`. Simplify using `only [RingHom.map_mul]`. Rewrite using `[h2, Matrix.mulVec_mulVec, ← Units.val_mul, inv_mul_cancel, Units.val_one, Matrix.one_mulVec]`. Conclude with `forall_congr' fun i => sec_int_iff q (x i)`.
+-/
 theorem sec_mem_iff (V : HSp D) (t : GA D V) (Λ L : GlobalTheory.FinPl.Lat V) (β : GL (Fin V.rank) (Lev.EAf D))
     (q : GlobalTheory.FinPl.SplitPt D k) (M : Matrix (Fin V.rank) (Fin V.rank) k)
     (hβ : Formalism.L2.DIV.IsFrame β Λ) (hm : GlobalTheory.FinPl.Moves V t Λ L (· = q.v)) (hM : MovedTo (ofSplit q) V t β M)
@@ -94,6 +119,29 @@ namespace GlobalTheory.SplitFrameLat
 
 open GlobalTheory.FinPl (latV idAt intAt)
 
+/- English proof (translation)
+Introduce `D V t Λ L N β k _ _ _ _ q Y _ _ F σ ht hΛ hβ hL hN hm hM hI`. Establish `he` using `e_mem_intAt q`. Establish `hw : ∀ z : Fin V.rank → AE D, q.e • z ∈ latV V L (· = q.v) ↔ q.e • z ∈ latV V N (· = q.v)`. Introduce `z`. Use `set y : Fin V.rank → k := fun i => q.pr (z i) with hydef`.
+
+Establish `hz : q.e • z = fun i => q.sec ((F.β *ᵥ (F.γ *ᵥ y)) i)`. Rewrite using `[Matrix.mulVec_mulVec, F.βγ, Matrix.one_mulVec]`. Use function extensionality and compare the values at `i`. Simplify using `only [hydef, q.sec_pr, Pi.smul_apply, smul_eq_mul]`. Establish `hL'` using `sec_mem_iff V t Λ L β q (F.β.submatrix id σ) hβ hm hM ((F.γ *ᵥ y) ∘ σ)`.
+
+Rewrite `hL'` using `[Matrix.submatrix_mulVec_equiv]`. Establish `e1 : ((F.γ *ᵥ y) ∘ σ) ∘ σ.symm = F.γ *ᵥ y`. Use function extensionality and compare the values at `i`. Simplify using the standard rewrite rules. Rewrite `hL'` using `[e1]`.
+
+Rewrite using `[hz, ← hI]`. Establish `e2 : (fun i => q.sec (((F.β *ᵥ (F.γ *ᵥ y)) ∘ id) i)) = fun i => q.sec ((F.β *ᵥ (F.γ *ᵥ y)) i)` using `rfl`. Rewrite `hL'` using `[e2]`. Rewrite using `[hL']`. Conclude with `⟨fun h i => by simpa using h (σ.symm i), fun h i => h (σ i)⟩`.
+
+Establish `hce : cA D q.e * cA D q.e = cA D q.e` using `by rw [← map_mul, q.split.1]`. Establish `hherm : ∀ y x : Fin V.rank → AE D, GlobalTheory.IwaPlace.hermAt V (cA D q.e • y) x = GlobalTheory.IwaPlace.hermAt V (cA D q.e • y) (q.e • x)`. Introduce `y x`. Unfold `GlobalTheory.IwaPlace.hermAt`. Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations.
+
+Simplify using `only [Pi.smul_apply, smul_eq_mul, map_mul]`. Take the linear combination `(-(cA D (x i) * gA V i j * y j)) * hce`. Establish `hbar : ∀ A B : GlobalTheory.FinPl.Lat V, IsSelfDualC V A → IsSelfDualC V B → (∀ z, q.e • z ∈ latV V B (· = q.v) → q.e • z ∈ latV V A (· = q.v)) → ∀ z : Fin V.rank → AE D, (∀ i, z i ∈ idAt D (· = q.v)) → cA D q.e • z ∈ latV V A (· = q.v) → cA D q.e • z ∈ latV V B (· = q.v)`. Introduce `A B hA hB hBA z hz h`. Establish `hz' : ∀ i, (cA D q.e • z) i ∈ idAt D (· = q.v)` using `fun i => Ideal.mul_mem_left _ _ (hz i)`.
+
+Use `((GlobalTheory.IwaPlace.LocSD.isSDAt_latV D V B q.v hB).2.2 _ hz').2 fun x hx => ?_` and prove the remaining obligations. Rewrite using `[hherm]`. Establish `hex : q.e • x ∈ latV V A (· = q.v)` using `hBA x (smul_mem_latV hB.1 hx he)`. Conclude with `((GlobalTheory.IwaPlace.LocSD.isSDAt_latV D V A q.v hA).2.2 _ hz').1 h _ hex`. Establish `hsplit : ∀ z : Fin V.rank → AE D, (∀ i, z i ∈ idAt D (· = q.v)) → q.e • z + cA D q.e • z = z`.
+
+Introduce `z hz`. Take `⟨ε, hε, hs⟩` from `q.above`. Rewrite using `[← add_smul, hs]`. Use function extensionality and compare the values at `i`. Conclude with `((GlobalTheory.T.placeIdempotent_acts_on_supportedAndOff D q.v ε hε).1 (z i)).1 (hz i)`.
+
+Establish `hgen : ∀ A B : GlobalTheory.FinPl.Lat V, IsSelfDualC V A → IsSelfDualC V B → (∀ z, q.e • z ∈ latV V A (· = q.v) ↔ q.e • z ∈ latV V B (· = q.v)) → latV V A (· = q.v) ≤ latV V B (· = q.v)`. Introduce `A B hA hB hAB z hz`. Establish `hs` using `GlobalTheory.FinPl.FrameLat.latV_supp hz`. Establish `h1 : q.e • z ∈ latV V A (· = q.v)` using `smul_mem_latV hA.1 hz he`. Establish `h3 : cA D q.e • z = z - q.e • z`.
+
+Rewrite using `[eq_sub_iff_add_eq']`. Conclude with `hsplit z hs`. Establish `h2 : cA D q.e • z ∈ latV V A (· = q.v)`. Rewrite using `[h3]`. Conclude with `sub_mem hz h1`.
+
+Use `add_mem ((hAB z).1 h1) (hbar A B hA hB (fun z => (hAB z).2) z hs h2)` as an intermediate fact. Rewrite `this` using `[hsplit z hs]`. Then use the resulting hypothesis. Conclude with `le_antisymm (hgen L N hL hN hw) (hgen N L hN hL fun z => (hw z).symm)`.
+-/
 theorem latV_eq : ∀ {D : D7} (V : HSp D) (t : GA D V) (Λ L N : GlobalTheory.FinPl.Lat V) (β : GL (Fin V.rank) (Lev.EAf D)) (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] (q : GlobalTheory.FinPl.SplitPt D k) (Y : Type) [Fintype Y] [DecidableEq Y] (F : Frame k V.rank Y) (σ : Fin V.rank ≃ Y), t ∈ GfC V → IsSelfDualC V Λ → Formalism.L2.DIV.IsFrame β Λ → IsSelfDualC V L → IsSelfDualC V N → GlobalTheory.FinPl.Moves V t Λ L (· = q.v) → MovedTo (ofSplit q) V t β (F.β.submatrix id σ) → IntIn q V F N → GlobalTheory.FinPl.latV V L (· = q.v) = GlobalTheory.FinPl.latV V N (· = q.v) := by
   intro D V t Λ L N β k _ _ _ _ q Y _ _ F σ ht hΛ hβ hL hN hm hM hI
   have he := e_mem_intAt q

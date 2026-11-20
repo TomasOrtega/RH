@@ -23,6 +23,9 @@ namespace GlobalTheory.Mum.TensPol
 
 variable {R : Type} [CommRing R] [IsDomain R] [IsLocalRing R]
 
+/- English proof (translation)
+Establish `: IsDominant (jK R)` using `DVR.isDominant_jK`. Use `choose pick hpk using fun p : Spec (CommRingCat.of R) ⟶ A.left => exists_chart hL (p (closedPoint R))`. Take `⟨J, hJ, e⟩` from `exists_good L hL (Z := (TK R).left) z (K := {p : Spec (CommRingCat.of R) ⟶ A.left // p ≫ A.hom = 𝟙 _}) (fun p => jK R ≫ p.1) (fun p => pick p.1) (fun a b h => congrArg pick (ext_of_isDominant_of_isSeparated (X := Spec (CommRingCat.of R)) A.hom (a.2.trans b.2.symm) (jK R) h)) (fun …`. Conclude with `⟨J, hJ, fun p hp => (e ⟨p, hp⟩).symm ▸ hpk p⟩`.
+-/
 theorem exists_int (A : Over (Spec (CommRingCat.of R))) [IsSeparated A.hom] (L : LB A.left) (hL : L.IsLB) (z : (TK R).left) :
     ∃ J, Good L z J ∧
       ∀ p : Spec (CommRingCat.of R) ⟶ A.left, p ≫ A.hom = 𝟙 _ → p (closedPoint R) ∈ L.U (J (jK R ≫ p)) := by
@@ -35,6 +38,9 @@ theorem exists_int (A : Over (Spec (CommRingCat.of R))) [IsSeparated A.hom] (L :
     (fun p => (IsLocalRing.specializes_closedPoint (jK R z)).mem_open (p.1 ⁻¹ᵁ L.U (pick p.1)).isOpen (hpk p.1))
   exact ⟨J, hJ, fun p hp => (e ⟨p, hp⟩).symm ▸ hpk p⟩
 
+/- English proof (translation)
+Use `gm_mem z (𝟙 _) (LB.wchart L φ (fun k => J (jK R ≫ φ k))) (Set.mem_iInter.2 fun k => hJ (φ k) (hφ k)) (t.s (fun k => J (jK R ≫ φ k)))` as an intermediate fact. Rewrite `this` using `[Category.comp_id]`. Conclude with `this`.
+-/
 theorem val_mem {A : Over (Spec (CommRingCat.of R))} {L : LB A.left} (z : (TK R).left) {J : ((TK R).left ⟶ A.left) → L.ι}
     (hJ : ∀ p : Spec (CommRingCat.of R) ⟶ A.left, p ≫ A.hom = 𝟙 _ → p (closedPoint R) ∈ L.U (J (jK R ≫ p)))
     {K : Type} [Fintype K] (φ : K → (Spec (CommRingCat.of R) ⟶ A.left)) (hφ : ∀ k, φ k ≫ A.hom = 𝟙 _) (ε : K → ℤ)
@@ -44,10 +50,16 @@ theorem val_mem {A : Over (Spec (CommRingCat.of R))} {L : LB A.left} (z : (TK R)
   rw [Category.comp_id] at this
   exact this
 
+/- English proof (translation)
+Take `⟨y, hy, e⟩` from `h`. Conclude with `(Units.map_injective (ev_inj z) e) ▸ hy`.
+-/
 theorem mem_unitsK (z : (TK R).left) {x : (FractionRing R)ˣ} (h : Units.map (ev z).toMonoidHom x ∈ unitsS z) : x ∈ unitsK R := by
   obtain ⟨y, hy, e⟩ := h
   exact (Units.map_injective (ev_inj z) e) ▸ hy
 
+/- English proof (translation)
+The claim follows from `Units.ext ((gs_unit _ z ⊤ trivial _).symm.trans (ev_eq z k))`.
+-/
 theorem gm_unitOn (z : (TK R).left) (k : (FractionRing R)ˣ) :
     gm (𝟙 (TK R).left) z ⊤ (unitOn k) = Units.map (ev z).toMonoidHom k :=
   Units.ext ((gs_unit _ z ⊤ trivial _).symm.trans (ev_eq z k))

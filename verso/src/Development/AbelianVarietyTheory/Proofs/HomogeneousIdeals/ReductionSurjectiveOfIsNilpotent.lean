@@ -28,6 +28,9 @@ def expHom (hv : ∀ i, IsTangent (v i)) {J : Ideal A} (hJ : J ^ 2 = ⊥) :
     (fun c c' => congrArg Additive.ofMul <| Subtype.ext <|
       lieExp_add hv _ _ _ _ (fun i => mul_eq_zero_of_sq hJ (c i).2 (c' i).2) _)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem expHom_apply (hv : ∀ i, IsTangent (v i)) {J : Ideal A} (hJ : J ^ 2 = ⊥) (c : Fin n → J) :
     ((expHom hv hJ c).toMul : sp A ⟶ G) =
       lieExp v (fun i => (c i : A)) (fun i => mul_eq_zero_of_sq hJ (c i).2 (c i).2) := rfl
@@ -38,12 +41,18 @@ variable {H : Over (Spec (CommRingCat.of R))} [GrpObj H] {m : ℕ}
   {w : Fin m → (epsR R ⟶ H)} (f : G ⟶ H) [IsMonHom f]
 
 omit [IsCommMonObj G] in
+/- English proof (translation)
+Unfold `IsTangent at hx ⊢`. Rewrite using `[Over.comp_left, ← Category.assoc, hx, ← Over.comp_left, IsMonHom.one_hom]`.
+-/
 theorem isTangent_comp {x : epsR R ⟶ G} (hx : IsTangent x) : IsTangent (x ≫ f) := by
   unfold IsTangent at hx ⊢
   rw [Over.comp_left, ← Category.assoc, hx, ← Over.comp_left, IsMonHom.one_hom]
 
 omit [IsCommMonObj G] in
 
+/- English proof (translation)
+Establish `hx : ∀ i, ∃! c, IsLieComb c w (v i ≫ f)` using `fun i => hw.2 _ (isTangent_comp f (hv i))`. Conclude with `⟨fun i => (hx i).exists.choose, fun i => (hx i).exists.choose_spec, fun M' hM' => funext fun i => (hx i).unique (hM' i) (hx i).exists.choose_spec⟩`.
+-/
 theorem existsUnique_lieMatrix (hv : ∀ i, IsTangent (v i)) (hw : IsLieBasis w) :
     ∃! M : Matrix (Fin n) (Fin m) R, ∀ i, IsLieComb (M i) w (v i ≫ f) := by
   have hx : ∀ i, ∃! c, IsLieComb c w (v i ≫ f) := fun i => hw.2 _ (isTangent_comp f (hv i))
@@ -56,6 +65,13 @@ end Hom
 
 variable [Smooth G.hom]
 
+/- English proof (translation)
+Take `⟨hinj, hsurj⟩` from `expBij A hv J hJ`. Use `⟨fun c c' h => ?_, fun y => ?_⟩` and prove the remaining obligations. Establish `h' : ((Additive.toMul (expHom hv.1 hJ c) : redKer (R` using `R) G J) : sp A ⟶ G) = ((Additive.toMul (expHom hv.1 hJ c') : redKer (R := R) G J) : sp A ⟶ G) := by rw [h]`. Rewrite `h'` using `[expHom_apply, expHom_apply]`. Use `hinj (fun i => (c i : A)) (fun i => (c' i : A)) (fun i => (c i).2) (fun i => (c' i).2) _ _ h'` as an intermediate fact.
+
+Use function extensionality and compare the values at `i`. Conclude with `Subtype.ext (congrFun this i)`. Take `⟨c, hc, hcJ, hy⟩` from `hsurj ((Additive.toMul y : redKer (R := R) G J) : sp A ⟶ G) (Additive.toMul y : redKer (R := R) G J).2`. Use `⟨fun i => ⟨c i, hcJ i⟩, ?_⟩` and prove the remaining obligations. Apply `Additive.toMul.injective` to reduce the goal to its premises.
+
+Apply `Subtype.ext` to reduce the goal to its premises. Rewrite using `[expHom_apply, hy]`.
+-/
 theorem expHom_bijective (hv : IsLieBasis v) {J : Ideal A} (hJ : J ^ 2 = ⊥) :
     Function.Bijective (expHom hv.1 hJ) := by
   obtain ⟨hinj, hsurj⟩ := expBij A hv J hJ
@@ -77,10 +93,20 @@ def kerEquiv (hv : IsLieBasis v) {J : Ideal A} (hJ : J ^ 2 = ⊥) :
     Additive (redKer (R := R) G J) ≃+ (Fin n → J) :=
   (AddEquiv.ofBijective (expHom hv.1 hJ) (expHom_bijective hv hJ)).symm
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem kerEquiv_symm_apply (hv : IsLieBasis v) {J : Ideal A} (hJ : J ^ 2 = ⊥) (c : Fin n → J) :
     (((kerEquiv hv hJ).symm c).toMul : sp A ⟶ G) =
       ∏ i, spMap (epsTo R (c i : A) (mul_eq_zero_of_sq hJ (c i).2 (c i).2)) ≫ v i := rfl
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce and unpack `rfl`. Use `kerEquiv_symm_apply hv hJ (kerEquiv hv hJ (Additive.ofMul y))` as an intermediate fact. Rewrite `this` using `[AddEquiv.symm_apply_apply]`. Conclude with `this`.
+
+Introduce `h`. Rewrite using `[← AddEquiv.eq_symm_apply]`. Apply `Additive.toMul.injective` to reduce the goal to its premises. Apply `Subtype.ext` to reduce the goal to its premises. Rewrite using `[kerEquiv_symm_apply]`.
+
+Conclude with `h`.
+-/
 theorem kerEquiv_eq_iff (hv : IsLieBasis v) {J : Ideal A} (hJ : J ^ 2 = ⊥)
     (y : redKer (R := R) G J) (c : Fin n → J) : kerEquiv hv hJ (Additive.ofMul y) = c ↔
       (y : sp A ⟶ G) =
@@ -97,6 +123,9 @@ theorem kerEquiv_eq_iff (hv : IsLieBasis v) {J : Ideal A} (hJ : J ^ 2 = ⊥)
     rw [kerEquiv_symm_apply]
     exact h
 
+/- English proof (translation)
+Use `kerEquiv_symm_apply hv hJ (kerEquiv hv hJ (Additive.ofMul y))` as an intermediate fact. Rewrite `this` using `[AddEquiv.symm_apply_apply]`. Conclude with `this`.
+-/
 theorem eq_lieExp_kerEquiv (hv : IsLieBasis v) {J : Ideal A} (hJ : J ^ 2 = ⊥)
     (y : redKer (R := R) G J) : (y : sp A ⟶ G) =
       lieExp v (fun i => (kerEquiv hv hJ (Additive.ofMul y) i : A))
@@ -105,6 +134,11 @@ theorem eq_lieExp_kerEquiv (hv : IsLieBasis v) {J : Ideal A} (hJ : J ^ 2 = ⊥)
   rw [AddEquiv.symm_apply_apply] at this
   exact this
 
+/- English proof (translation)
+Establish `hy` using `eq_lieExp_kerEquiv hv hJ y`. Establish `key : kerEquiv hv hJ' (Additive.ofMul ⟨spMap φ ≫ y.1, comp_mem_redKer y.2 φ hφ⟩) = fun i => ⟨φ (kerEquiv hv hJ (Additive.ofMul y) i), hφ _ (kerEquiv hv hJ (Additive.ofMul y) i).2⟩`. Rewrite using `[kerEquiv_eq_iff]`. Use `show spMap φ ≫ (y : sp A ⟶ G) = _`. Rewrite using `[hy]`.
+
+Use `(comp_lieExp v φ _ _).trans ?_` and prove the remaining obligations. Conclude with `lieExp_congr v (fun _ => rfl) _ _`. Rewrite using `[key]`.
+-/
 theorem kerEquiv_map (hv : IsLieBasis v) {J : Ideal A} (hJ : J ^ 2 = ⊥) {J' : Ideal A'}
     (hJ' : J' ^ 2 = ⊥) (φ : A →ₐ[R] A') (hφ : ∀ a ∈ J, φ a ∈ J') (y : redKer (R := R) G J)
     (i : Fin n) :
@@ -120,6 +154,11 @@ theorem kerEquiv_map (hv : IsLieBasis v) {J : Ideal A} (hJ : J ^ 2 = ⊥) {J' : 
     exact lieExp_congr v (fun _ => rfl) _ _
   rw [key]
 
+/- English proof (translation)
+Establish `hc : k • kerEquiv hv hJ (Additive.ofMul (⟨y, hy⟩ : redKer (R` using `R) G J)) = 0 := by`. Use function extensionality and compare the values at `i`. Apply `Subtype.ext` to reduce the goal to its premises. Simplify using `[hk _ (kerEquiv hv hJ (Additive.ofMul (⟨y, hy⟩ : redKer (R := R) G J)) i).2]`. Establish `h1 : k • Additive.ofMul (⟨y, hy⟩ : redKer (R` using `R) G J) = 0 := by`.
+
+Apply `(kerEquiv hv hJ).injective` to reduce the goal to its premises. Rewrite using `[map_zsmul, map_zero]`. Conclude with `hc`. Establish `h2` using `congrArg (fun z => ((Additive.toMul z : redKer (R := R) G J) : sp A ⟶ G)) h1`. Simplify using `using h2`.
+-/
 theorem zpow_eq_one_of_mem_redKer (hv : IsLieBasis v) {J : Ideal A} (hJ : J ^ 2 = ⊥) {k : ℤ}
     (hk : ∀ a ∈ J, k • a = 0) {y : sp A ⟶ G} (hy : y ∈ redKer G J) : y ^ k = 1 := by
   have hc : k • kerEquiv hv hJ (Additive.ofMul (⟨y, hy⟩ : redKer (R := R) G J)) = 0 := by
@@ -133,11 +172,19 @@ theorem zpow_eq_one_of_mem_redKer (hv : IsLieBasis v) {J : Ideal A} (hJ : J ^ 2 
   have h2 := congrArg (fun z => ((Additive.toMul z : redKer (R := R) G J) : sp A ⟶ G)) h1
   simpa using h2
 
+/- English proof (translation)
+Use `zpow_eq_one_of_mem_redKer hv hJ (k := (k : ℤ)) (fun a ha => by rw [natCast_zsmul]; exact hk a ha) hy` as an intermediate fact. Rewrite `this` using `[zpow_natCast]`. Then use the resulting hypothesis.
+-/
 theorem pow_eq_one_of_mem_redKer (hv : IsLieBasis v) {J : Ideal A} (hJ : J ^ 2 = ⊥) {k : ℕ}
     (hk : ∀ a ∈ J, k • a = 0) {y : sp A ⟶ G} (hy : y ∈ redKer G J) : y ^ k = 1 := by
   have := zpow_eq_one_of_mem_redKer hv hJ (k := (k : ℤ)) (fun a ha => by rw [natCast_zsmul]; exact hk a ha) hy
   rwa [zpow_natCast] at this
 
+/- English proof (translation)
+Establish `hmem : y' * y⁻¹ ∈ redKer G J` using `by show y' * y⁻¹ ∈ (pointsMap G (Ideal.Quotient.mkₐ R J)).ker`. Rewrite using `[MonoidHom.mem_ker, map_mul, map_inv, ptsMap_apply, ptsMap_apply, h, mul_inv_cancel]`. Use `⟨kerEquiv hv hJ (Additive.ofMul ⟨_, hmem⟩), ?_, ?_⟩` and prove the remaining obligations. Use `eq_lieExp_kerEquiv hv hJ ⟨_, hmem⟩ dsimp only` as an intermediate fact. Rewrite using `[← this]`.
+
+Conclude with `(inv_mul_cancel_right y' y).symm`. Introduce `c hc`. Establish `: (y' * y⁻¹ : sp A ⟶ G) = lieExp v (fun i => (c i : A)) (fun i => mul_eq_zero_of_sq hJ (c i).2 (c i).2)`. Rewrite using `[hc, mul_inv_cancel_right]`. Conclude with `((kerEquiv_eq_iff hv hJ ⟨_, hmem⟩ c).2 this).symm`.
+-/
 theorem existsUnique_eq_lieExp_mul (hv : IsLieBasis v) {J : Ideal A} (hJ : J ^ 2 = ⊥)
     {y y' : sp A ⟶ G}
     (h : spMap (Ideal.Quotient.mkₐ R J) ≫ y = spMap (Ideal.Quotient.mkₐ R J) ≫ y') :
@@ -166,6 +213,9 @@ def IsLiftAlong {X : Over (Spec (CommRingCat.of R))} (y₀ : sp (R₀ := R) (A �
   ∀ (T₀ : Type) [CommRing T₀] [Algebra R T₀] (q : T →ₐ[R] T₀) (q₀ : (A ⧸ J) →ₐ[R] T₀),
     q.comp φ = q₀.comp (Ideal.Quotient.mkₐ R J) → spMap q ≫ y = spMap q₀ ≫ y₀
 
+/- English proof (translation)
+Introduce `T₀ _ _ q q₀ hq`. Rewrite using `[← Category.assoc, spMap_comp]`. Conclude with `h T₀ (q.comp ψ) q₀ (by rw [AlgHom.comp_assoc]; exact hq)`.
+-/
 theorem IsLiftAlong.map {X : Over (Spec (CommRingCat.of R))} {y₀ : sp (R₀ := R) (A ⧸ J) ⟶ X}
     {φ : A →ₐ[R] T} {y : sp T ⟶ X} (h : IsLiftAlong y₀ φ y) (ψ : T →ₐ[R] T') :
     IsLiftAlong y₀ (ψ.comp φ) (spMap ψ ≫ y) := by
@@ -173,6 +223,13 @@ theorem IsLiftAlong.map {X : Over (Spec (CommRingCat.of R))} {y₀ : sp (R₀ :=
   rw [← Category.assoc, spMap_comp]
   exact h T₀ (q.comp ψ) q₀ (by rw [AlgHom.comp_assoc]; exact hq)
 
+/- English proof (translation)
+Introduce `T₀ _ _ q q₀ hq`. Establish `hker : ∀ a ∈ J.map φ, q a = 0` using `(fun a ha => RingHom.mem_ker.1 (Ideal.map_le_iff_le_comap.2 (fun b hb => Ideal.mem_comap.2 (RingHom.mem_ker.2 (by`. Use `AlgHom.congr_fun hq b` as an intermediate fact. Simplify `this))) ha))` using `[Ideal.Quotient.eq_zero_iff_mem.2 hb]`. Take `⟨q', rfl⟩ : ∃ q' : (T ⧸ J.map φ) →ₐ[R] T₀, q = q'.comp (Ideal.Quotient.mkₐ R _)` from `⟨Ideal.Quotient.liftₐ _ q hker, by ext a; rfl⟩`.
+
+Establish `e2 : q₀ = q'.comp (Ideal.quotientMapₐ (J.map φ) φ Ideal.le_comap_map)`. Use extensionality with `x`. Take `⟨a, rfl⟩` from `Ideal.Quotient.mk_surjective x`. Conclude with `(AlgHom.congr_fun hq a).symm`. Substitute `e2` using the available equality.
+
+Rewrite using `[← spMap_comp, ← spMap_comp, Category.assoc, h, Category.assoc]`.
+-/
 theorem isLiftAlong_of_quotient {X : Over (Spec (CommRingCat.of R))}
     {y₀ : sp (R₀ := R) (A ⧸ J) ⟶ X} {φ : A →ₐ[R] T} {y : sp T ⟶ X}
     (h : spMap (Ideal.Quotient.mkₐ R (J.map φ)) ≫ y =
@@ -191,6 +248,11 @@ theorem isLiftAlong_of_quotient {X : Over (Spec (CommRingCat.of R))}
   rw [← spMap_comp, ← spMap_comp, Category.assoc, h, Category.assoc]
 
 omit [IsCommMonObj G] [Smooth G.hom] in
+/- English proof (translation)
+Introduce `T₀ _ _ q q₀ hq`. Establish `hz' : spMap q ≫ z = 1` using `comp_eq_one_of_mem_redKer hz q (fun a ha => RingHom.mem_ker.1 (Ideal.map_le_iff_le_comap.2 (fun b hb => Ideal.mem_comap.2 (RingHom.mem_ker.2 (by`. Use `AlgHom.congr_fun hq b` as an intermediate fact. Simplify `this))) ha))` using `[Ideal.Quotient.eq_zero_iff_mem.2 hb]`. Rewrite using `[← ptsMap_apply, map_mul, ptsMap_apply, ptsMap_apply, hz', one_mul]`.
+
+Conclude with `h T₀ q q₀ hq`.
+-/
 theorem IsLiftAlong.mul {y₀ : sp (R₀ := R) (A ⧸ J) ⟶ G} {φ : A →ₐ[R] T} {y z : sp T ⟶ G}
     (h : IsLiftAlong y₀ φ y) (hz : z ∈ redKer G (J.map φ)) : IsLiftAlong y₀ φ (z * y) := by
   intro T₀ _ _ q q₀ hq
@@ -201,6 +263,9 @@ theorem IsLiftAlong.mul {y₀ : sp (R₀ := R) (A ⧸ J) ⟶ G} {φ : A →ₐ[R
   exact h T₀ q q₀ hq
 
 omit [Smooth G.hom] in
+/- English proof (translation)
+Establish `e : ∀ w, IsLiftAlong y₀ φ w → spMap (Ideal.Quotient.mkₐ R (J.map φ)) ≫ w = spMap (Ideal.quotientMapₐ (J.map φ) φ Ideal.le_comap_map) ≫ y₀` using `fun w hw => hw _ _ _ (by ext a; rfl)`. Use `show y * y'⁻¹ ∈ (pointsMap G (Ideal.Quotient.mkₐ R (J.map φ))).ker`. Rewrite using `[MonoidHom.mem_ker, map_mul, map_inv, ptsMap_apply, ptsMap_apply, e y h, e y' h', mul_inv_cancel]`.
+-/
 theorem IsLiftAlong.mul_inv_mem {y₀ : sp (R₀ := R) (A ⧸ J) ⟶ G} {φ : A →ₐ[R] T} {y y' : sp T ⟶ G}
     (h : IsLiftAlong y₀ φ y) (h' : IsLiftAlong y₀ φ y') : y * y'⁻¹ ∈ redKer G (J.map φ) := by
   have e : ∀ w, IsLiftAlong y₀ φ w → spMap (Ideal.Quotient.mkₐ R (J.map φ)) ≫ w =
@@ -209,6 +274,11 @@ theorem IsLiftAlong.mul_inv_mem {y₀ : sp (R₀ := R) (A ⧸ J) ⟶ G} {φ : A 
   show y * y'⁻¹ ∈ (pointsMap G (Ideal.Quotient.mkₐ R (J.map φ))).ker
   rw [MonoidHom.mem_ker, map_mul, map_inv, ptsMap_apply, ptsMap_apply, e y h, e y' h', mul_inv_cancel]
 
+/- English proof (translation)
+Introduce `T₀ _ _ q q₀ hq`. Establish `hs' : Ideal.span (Set.range fun i => q (s i)) = ⊤` using `span_range_map hs q`. Apply `away_ext hs' (fun i => awayHom R (q (s i))) (fun i => isAway_awayHom _)` to reduce the goal to its premises. Introduce `i`. Take `⟨ψ, hψ⟩` from `(isAway_awayHom (R := R) (s i)).lift ((awayHom R (q (s i))).comp q) (isAway_awayHom (R := R) (q (s i))).unit`.
+
+Rewrite using `[← Category.assoc, ← Category.assoc, spMap_comp, spMap_comp, ← hψ, ← spMap_comp (awayHom R (s i)) ψ, Category.assoc]`. Conclude with `h i _ ψ _ (by rw [← AlgHom.comp_assoc, hψ, AlgHom.comp_assoc, hq, AlgHom.comp_assoc])`.
+-/
 theorem isLiftAlong_of_away {X : Over (Spec (CommRingCat.of R))} {y₀ : sp (R₀ := R) (A ⧸ J) ⟶ X}
     {φ : A →ₐ[R] T} {y : sp T ⟶ X} {κ : Type} {s : κ → T} (hs : Ideal.span (Set.range s) = ⊤)
     (h : ∀ i, IsLiftAlong y₀ ((awayHom R (s i)).comp φ) (spMap (awayHom R (s i)) ≫ y)) :
@@ -223,6 +293,13 @@ theorem isLiftAlong_of_away {X : Over (Spec (CommRingCat.of R))} {y₀ : sp (R�
     Category.assoc]
   exact h i _ ψ _ (by rw [← AlgHom.comp_assoc, hψ, AlgHom.comp_assoc, hq, AlgHom.comp_assoc])
 
+/- English proof (translation)
+Take `⟨N, x, hx, hzx⟩` from `h.mem_map hz`. Take `⟨u, w, huw⟩` from `hfg.pow (m := N) (n := N)`. Take `⟨e₁, he₁⟩` from `h₁.unit.exists_left_inv`. Take `⟨e₂, he₂⟩` from `h₂.unit.exists_left_inv`. Use `⟨ρ₁ (w * x) * e₁ ^ N, Ideal.mul_mem_right _ _ (Ideal.mem_map_of_mem _ (Ideal.mul_mem_left _ _ hx)), ρ₂ (u * x) * e₂ ^ N, Ideal.mul_mem_right _ _ (Ideal.mem_map_of_mem _ (Ideal.mul_mem_left _ _ hx)), ?_⟩` and prove the remaining obligations.
+
+Establish `ha' : ∀ t, a (ρ₁ t) = ρ t` using `fun t => by rw [← ha]; rfl`. Establish `hb' : ∀ t, b (ρ₂ t) = ρ t` using `fun t => by rw [← hb]; rfl`. Establish `P1 : a e₁ ^ N * ρ f ^ N = 1` using `by rw [← mul_pow, ← ha', ← map_mul, he₁, map_one, one_pow]`. Establish `P2 : b e₂ ^ N * ρ g ^ N = 1` using `by rw [← mul_pow, ← hb', ← map_mul, he₂, map_one, one_pow]`. Establish `key` using `congrArg ρ huw`.
+
+Simplify using `only [map_add, map_mul, map_pow, map_one] at key`. Rewrite `hzx` using `[map_mul]`. Simplify using `only [map_mul, map_pow, ha', hb']`. Rewrite using `[← hzx]`. Take the linear combination `(-z) * key - (ρ w * z * ρ g ^ N) * P1 - (ρ u * z * ρ f ^ N) * P2`.
+-/
 theorem exists_add_eq_of_isCoprime {T₁ T₂ T₁₂ : Type} [CommRing T₁] [Algebra R T₁] [CommRing T₂]
     [Algebra R T₂] [CommRing T₁₂] [Algebra R T₁₂] {f g : T} (hfg : IsCoprime f g)
     {ρ₁ : T →ₐ[R] T₁} {ρ₂ : T →ₐ[R] T₂} {ρ : T →ₐ[R] T₁₂} (h₁ : IsAway ρ₁ f) (h₂ : IsAway ρ₂ g)
@@ -246,12 +323,42 @@ theorem exists_add_eq_of_isCoprime {T₁ T₂ T₁₂ : Type} [CommRing T₁] [A
   rw [← hzx]
   linear_combination (-z) * key - (ρ w * z * ρ g ^ N) * P1 - (ρ u * z * ρ f ^ N) * P2
 
+/- English proof (translation)
+The claim follows from `Ideal.map_le_iff_le_comap.2 (Ideal.map_le_iff_le_comap.2 fun _ hx => Ideal.mem_comap.2 (Ideal.mem_comap.2 (Ideal.mem_map_of_mem (q.comp p) hx)))`.
+-/
 private theorem ideal_map_map_le_map_comp {P Q S : Type} [CommRing P] [CommRing Q] [CommRing S] [Algebra R P]
     [Algebra R Q] [Algebra R S] (I : Ideal P) (p : P →ₐ[R] Q) (q : Q →ₐ[R] S) :
     (I.map p).map q ≤ I.map (q.comp p) :=
   Ideal.map_le_iff_le_comap.2 (Ideal.map_le_iff_le_comap.2 fun _ hx =>
     Ideal.mem_comap.2 (Ideal.mem_comap.2 (Ideal.mem_map_of_mem (q.comp p) hx)))
 
+/- English proof (translation)
+Establish `hfu : IsUnit (awayHom R (f * g) f * awayHom R (f * g) g)`. Rewrite using `[← map_mul]`. Conclude with `(isAway_awayHom (R := R) (f * g)).unit`. Take `⟨a, ha⟩` from `(isAway_awayHom (R := R) f).lift (awayHom R (f * g)) (isUnit_of_mul_isUnit_left hfu)`. Take `⟨b, hb⟩` from `(isAway_awayHom (R := R) g).lift (awayHom R (f * g)) (isUnit_of_mul_isUnit_right hfu)`.
+
+Establish `hK : (J.map ((awayHom R (f * g)).comp φ)) ^ 2 = ⊥` using `map_sq hJ _`. Establish `hy₁' : IsLiftAlong y₀ ((awayHom R (f * g)).comp φ) (spMap a ≫ y₁)`. Use `hy₁.map a` as an intermediate fact. Rewrite `this` using `[← AlgHom.comp_assoc, ha]`. Then use the resulting hypothesis. Establish `hy₂' : IsLiftAlong y₀ ((awayHom R (f * g)).comp φ) (spMap b ≫ y₂)`.
+
+Use `hy₂.map b` as an intermediate fact. Rewrite `this` using `[← AlgHom.comp_assoc, hb]`. Then use the resulting hypothesis. Establish `hmem` using `hy₁'.mul_inv_mem hy₂'`. Take `⟨-, hsurj⟩` from `expBij (Localization.Away (f * g)) hv (J.map ((awayHom R (f * g)).comp φ)) hK`. Take `⟨c, hc, hcJ, hcy⟩` from `hsurj _ hmem`.
+
+Establish `hcJ' : ∀ i, c i ∈ (J.map φ).map (awayHom R (f * g))` using `fun i => by`. Establish `h0 : J.map ((awayHom R (f * g)).comp φ) ≤ (J.map φ).map (awayHom R (f * g))` using `Ideal.map_le_iff_le_comap.2 fun _ hx => Ideal.mem_comap.2 (Ideal.mem_map_of_mem _ (Ideal.mem_map_of_mem φ hx))`. Conclude with `h0 (hcJ i)`. Use `choose z₁ hz₁ z₂ hz₂ hz using fun i => exists_add_eq_of_isCoprime (R := R) hfg (isAway_awayHom (R := R) f) (isAway_awayHom (R := R) g) (isAway_awayHom (R := R) (f * g)) ha hb (hcJ' i)`. Establish `E1 : ∀ i, z₁ i ∈ J.map ((awayHom R f).comp φ)` using `fun i => ideal_map_map_le_map_comp J φ _ (hz₁ i)`.
+
+Establish `E2 : ∀ i, z₂ i ∈ J.map ((awayHom R g).comp φ)` using `fun i => ideal_map_map_le_map_comp J φ _ (hz₂ i)`. Establish `H1 : ((J.map φ).map (awayHom R f)).map a ≤ J.map ((awayHom R (f * g)).comp φ)`. Use `(ideal_map_map_le_map_comp _ _ _).trans ?_` and prove the remaining obligations. Rewrite using `[ha]`. Conclude with `ideal_map_map_le_map_comp _ _ _`.
+
+Establish `H2 : ((J.map φ).map (awayHom R g)).map b ≤ J.map ((awayHom R (f * g)).comp φ)`. Use `(ideal_map_map_le_map_comp _ _ _).trans ?_` and prove the remaining obligations. Rewrite using `[hb]`. Conclude with `ideal_map_map_le_map_comp _ _ _`. Establish `ma : ∀ i, a (z₁ i) ∈ J.map ((awayHom R (f * g)).comp φ)` using `fun i => H1 (Ideal.mem_map_of_mem a (hz₁ i))`.
+
+Establish `mb : ∀ i, b (z₂ i) ∈ J.map ((awayHom R (f * g)).comp φ)` using `fun i => H2 (Ideal.mem_map_of_mem b (hz₂ i))`. Establish `hL₁ : lieExp v z₁ (fun i => mul_eq_zero_of_sq (map_sq hJ _) (E1 i) (E1 i)) ∈ redKer G (J.map ((awayHom R f).comp φ))` using `lieExp_mem_redKer hv.1 _ E1 _`. Establish `hL₂ : lieExp v z₂ (fun i => mul_eq_zero_of_sq (map_sq hJ _) (E2 i) (E2 i)) ∈ redKer G (J.map ((awayHom R g).comp φ))` using `lieExp_mem_redKer hv.1 _ E2 _`. Establish `hl₁` using `hy₁.mul (inv_mem hL₁)`. Establish `hl₂` using `hy₂.mul hL₂`.
+
+Establish `e1 : lieExp v c hc = (spMap a ≫ lieExp v z₁ (fun i => mul_eq_zero_of_sq (map_sq hJ _) (E1 i) (E1 i))) * (spMap b ≫ lieExp v z₂ (fun i => mul_eq_zero_of_sq (map_sq hJ _) (E2 i) (E2 i)))`. Rewrite using `[comp_lieExp, comp_lieExp, ← lieExp_add hv.1 _ _ _ _ (fun i => mul_eq_zero_of_sq hK (ma i) (mb i)) (fun i => mul_eq_zero_of_sq hK (add_mem (ma i) (mb i)) (add_mem (ma i) (mb i)))]`. Conclude with `lieExp_congr v (fun i => hz i) _ _`. Establish `key : spMap a ≫ ((lieExp v z₁ (fun i => mul_eq_zero_of_sq (map_sq hJ _) (E1 i) (E1 i)))⁻¹ * y₁) = spMap b ≫ (lieExp v z₂ (fun i => mul_eq_zero_of_sq (map_sq hJ _) (E2 i) (E2 i)) * y₂)`. Rewrite using `[← ptsMap_apply G a, ← ptsMap_apply G b, map_mul, map_mul, map_inv, ptsMap_apply, ptsMap_apply, ptsMap_apply, ptsMap_apply]`.
+
+Establish `: spMap a ≫ y₁ = (spMap a ≫ lieExp v z₁ (fun i => mul_eq_zero_of_sq (map_sq hJ _) (E1 i) (E1 i))) * (spMap b ≫ lieExp v z₂ (fun i => mul_eq_zero_of_sq (map_sq hJ _) (E2 i) (E2 i))) * (spMap b ≫ y₂)`. Rewrite using `[← e1, ← hcy, inv_mul_cancel_right]`. Rewrite using `[this, mul_assoc, inv_mul_cancel_left]`. Establish `hs : Ideal.span (Set.range fun i : Bool => cond i f g) = ⊤`. Take `⟨u, w, huw⟩` from `hfg`.
+
+Use `(Ideal.eq_top_iff_one _).2 ?_` and prove the remaining obligations. Rewrite using `[← huw]`. Conclude with `add_mem (Ideal.mul_mem_left _ _ (Ideal.subset_span ⟨true, rfl⟩)) (Ideal.mul_mem_left _ _ (Ideal.subset_span ⟨false, rfl⟩))`. Take `⟨z, hzz⟩` from `away_glue (X := G) hs (fun i => awayHom R (cond i f g)) (fun i => isAway_awayHom _) (fun i => Bool.rec (motive := fun i => sp (R₀ := R) (Localization.Away (cond i f g)) ⟶ G) (lieExp v z₂ (fun i => mul_eq_zero_of_sq (map_sq hJ _) (E2 i) (E2 i)) * y₂) ((lieExp v z₁ (fun i => mul_eq …`. Introduce `i j T₀ _ _ a' b' e`.
+
+Apply the tactic sequence `cases i <;> cases j`. Use `(isAway_awayHom (R := R) g).ext e` as an intermediate fact. Substitute `this` using the available equality. Both sides reduce to the same expression. Conclude with `(agree_of_isAway (isAway_awayHom (R := R) g) (isAway_awayHom (R := R) f) (hb.trans ha.symm) (by rw [hb, mul_comm]; exact isAway_awayHom _) key.symm T₀ a' b' e)`.
+
+Conclude with `(agree_of_isAway (isAway_awayHom (R := R) f) (isAway_awayHom (R := R) g) (ha.trans hb.symm) (by rw [ha]; exact isAway_awayHom _) key T₀ a' b' e)`. Use `(isAway_awayHom (R := R) f).ext e` as an intermediate fact. Substitute `this` using the available equality. Use the proof step `rfl)`. Use `⟨z, isLiftAlong_of_away hs fun i => ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[hzz i]`. Consider the cases of `i`. Conclude with `hl₂`. Conclude with `hl₁`.
+-/
 theorem exists_isLiftAlong_of_isCoprime (hv : IsLieBasis v) (hJ : J ^ 2 = ⊥)
     {y₀ : sp (R₀ := R) (A ⧸ J) ⟶ G} {φ : A →ₐ[R] T} {f g : T} (hfg : IsCoprime f g)
     {y₁ : sp (R₀ := R) (Localization.Away f) ⟶ G} {y₂ : sp (R₀ := R) (Localization.Away g) ⟶ G}
@@ -329,6 +436,33 @@ theorem exists_isLiftAlong_of_isCoprime (hv : IsLieBasis v) (hJ : J ^ 2 = ⊥)
   · exact hl₂
   · exact hl₁
 
+/- English proof (translation)
+Introduce `y₀`. Establish `hzero : ∃ y : sp (Localization.Away (0 : A)) ⟶ G, IsLiftAlong y₀ (awayHom R 0) y`. Use `⟨1, fun T₀ _ _ q q₀ _ => ?_⟩` and prove the remaining obligations. Establish `h01 : (0 : Localization.Away (0 : A)) = 1`. Use `(isAway_awayHom (R := R) (0 : A)).unit` as an intermediate fact.
+
+Rewrite `this` using `[map_zero]`. Conclude with `isUnit_zero_iff.1 this`. Establish `: Subsingleton T₀` using `subsingleton_of_zero_eq_one (by rw [← map_zero q, h01, map_one])`. Establish `hs : Ideal.span (Set.range fun i : Empty => i.elim) = (⊤ : Ideal T₀)` using `(Ideal.eq_top_iff_one _).2 (by rw [Subsingleton.elim (1 : T₀) 0]; exact zero_mem _)`. Conclude with `away_ext (X := G) (B := fun _ => T₀) hs (fun i => i.elim) (fun i => i.elim) (fun i => i.elim)`.
+
+Establish `hmul : ∀ c f : A, (∃ y : sp (Localization.Away f) ⟶ G, IsLiftAlong y₀ (awayHom R f) y) → ∃ y : sp (Localization.Away (c * f)) ⟶ G, IsLiftAlong y₀ (awayHom R (c * f)) y`. Introduce and unpack `c f ⟨y, hy⟩`. Establish `hu : IsUnit (awayHom R (c * f) c * awayHom R (c * f) f)`. Rewrite using `[← map_mul]`. Conclude with `(isAway_awayHom (R := R) (c * f)).unit`.
+
+Take `⟨ψ, hψ⟩` from `(isAway_awayHom (R := R) f).lift (awayHom R (c * f)) (isUnit_of_mul_isUnit_right hu)`. Conclude with `⟨spMap ψ ≫ y, by have := hy.map ψ; rwa [hψ] at this⟩`. Establish `hadd : ∀ f g : A, (∃ y : sp (Localization.Away f) ⟶ G, IsLiftAlong y₀ (awayHom R f) y) → (∃ y : sp (Localization.Away g) ⟶ G, IsLiftAlong y₀ (awayHom R g) y) → ∃ y : sp (Localization.Away (f + g)) ⟶ G, IsLiftAlong y₀ (awayHom R (f + g)) y`. Introduce and unpack `f g ⟨y₁, hy₁⟩ ⟨y₂, hy₂⟩`. Establish `hu : IsUnit (awayHom R (f + g) (f + g))` using `(isAway_awayHom (R := R) (f + g)).unit`.
+
+Establish `hcop : IsCoprime (awayHom R (f + g) f) (awayHom R (f + g) g)` using `⟨↑hu.unit⁻¹, ↑hu.unit⁻¹, by rw [← mul_add, ← map_add]; exact hu.val_inv_mul⟩`. Take `⟨ψ₁, hψ₁⟩` from `(isAway_awayHom (R := R) f).lift ((awayHom R (awayHom R (f + g) f)).comp (awayHom R (f + g))) (isAway_awayHom (R := R) (awayHom R (f + g) f)).unit`. Take `⟨ψ₂, hψ₂⟩` from `(isAway_awayHom (R := R) g).lift ((awayHom R (awayHom R (f + g) g)).comp (awayHom R (f + g))) (isAway_awayHom (R := R) (awayHom R (f + g) g)).unit`. Establish `h1 : IsLiftAlong y₀ ((awayHom R (awayHom R (f + g) f)).comp (awayHom R (f + g))) (spMap ψ₁ ≫ y₁)`. Use `hy₁.map ψ₁` as an intermediate fact.
+
+Rewrite `this` using `[hψ₁]`. Then use the resulting hypothesis. Establish `h2 : IsLiftAlong y₀ ((awayHom R (awayHom R (f + g) g)).comp (awayHom R (f + g))) (spMap ψ₂ ≫ y₂)`. Use `hy₂.map ψ₂` as an intermediate fact. Rewrite `this` using `[hψ₂]`. Then use the resulting hypothesis. Conclude with `exists_isLiftAlong_of_isCoprime hv hJ hcop h1 h2`.
+
+Establish `hmax : ∀ m : Ideal A, m.IsMaximal → ∃ f ∈ {f : A | ∃ y : sp (Localization.Away f) ⟶ G, IsLiftAlong y₀ (awayHom R f) y}, f ∉ m`. Introduce `m hm`. Use `hm.isPrime` as an intermediate fact. Establish `hJm : RingHom.ker (Ideal.Quotient.mkₐ R J) ≤ m`. Introduce `x hx`.
+
+Establish `hxJ : x ∈ J` using `by simpa [Ideal.Quotient.mkₐ_eq_mk, Ideal.Quotient.eq_zero_iff_mem] using hx`. Establish `h2 : x ^ 2 ∈ J ^ 2` using `Ideal.pow_mem_pow hxJ 2`. Rewrite `h2` using `[hJ, Ideal.mem_bot]`. Conclude with `hm.isPrime.mem_of_pow_mem 2 (h2 ▸ m.zero_mem)`. Establish `hm' : (m.map (Ideal.Quotient.mkₐ R J)).IsPrime` using `Ideal.map_isPrime_of_surjective (Ideal.Quotient.mkₐ_surjective R J) hJm`.
+
+Take `⟨fb, hfb, B, _, _, j, hj, hchart⟩` from `exists_local_chart y₀ _ hm'`. Use `hj` as an intermediate fact. Take `⟨f, rfl⟩` from `Ideal.Quotient.mkₐ_surjective R J fb`. Use `⟨f, ?_, fun hf => hfb (Ideal.mem_map_of_mem _ hf)⟩` and prove the remaining obligations. Establish `hI : (J.map (awayHom R f)) ^ 2 = ⊥` using `map_sq hJ _`.
+
+Take `⟨ψ₀, hψ₀⟩` from `hchart (Localization.Away f ⧸ J.map (awayHom R f)) (Ideal.quotientMapₐ (J.map (awayHom R f)) (awayHom R f) Ideal.le_comap_map) ((isAway_awayHom (R := R) f).unit.map (Ideal.Quotient.mkₐ R (J.map (awayHom R f))))`. Use `smooth_of_chart j` as an intermediate fact. Use `⟨spMap (Algebra.FormallySmooth.lift (J.map (awayHom R f)) ⟨2, hI.trans Ideal.zero_eq_bot.symm⟩ ψ₀) ≫ j, isLiftAlong_of_quotient ?_⟩` and prove the remaining obligations. Rewrite using `[hψ₀, ← Category.assoc, spMap_comp]`. Use `congr 2`.
+
+Use extensionality with `x`. Conclude with `Algebra.FormallySmooth.mk_lift _ _ _ x`. Establish `hspan` using `span_eq_top_of_forall_maximal hmax`. Establish `h1 : (1 : A) ∈ Ideal.span {f : A | ∃ y : sp (Localization.Away f) ⟶ G, IsLiftAlong y₀ (awayHom R f) y}` using `hspan ▸ Submodule.mem_top`. Establish `hL1 : ∃ y : sp (Localization.Away (1 : A)) ⟶ G, IsLiftAlong y₀ (awayHom R 1) y` using `Submodule.span_induction (p := fun x _ => ∃ y : sp (Localization.Away x) ⟶ G, IsLiftAlong y₀ (awayHom R x) y) (fun x hx => hx) hzero (fun x y _ _ hx hy => hadd x y hx hy) (fun c x _ hx => hmul c x hx) h1`.
+
+Take `⟨y1, hy1⟩` from `hL1`. Establish `hy1' : IsLiftAlong y₀ ((awayHom R (1 : A)).comp (AlgHom.id R A)) y1` using `by rw [AlgHom.comp_id]; exact hy1`. Take `⟨y, hy⟩` from `exists_isLiftAlong_of_isCoprime hv hJ isCoprime_one_left hy1' hy1'`. Use `⟨y, ?_⟩` and prove the remaining obligations. Use `hy (A ⧸ J) (Ideal.Quotient.mkₐ R J) (AlgHom.id R _) (by rw [AlgHom.comp_id, AlgHom.id_comp])` as an intermediate fact.
+
+Rewrite using `[ptsMap_apply, this, spMap_id, Category.id_comp]`.
+-/
 theorem reduction_surjective (hv : IsLieBasis v) (hJ : J ^ 2 = ⊥) :
     Function.Surjective (pointsMap G (Ideal.Quotient.mkₐ R J)) := by
   intro y₀
@@ -405,6 +539,21 @@ theorem reduction_surjective (hv : IsLieBasis v) (hJ : J ^ 2 = ⊥) :
   have := hy (A ⧸ J) (Ideal.Quotient.mkₐ R J) (AlgHom.id R _) (by rw [AlgHom.comp_id, AlgHom.id_comp])
   rw [ptsMap_apply, this, spMap_id, Category.id_comp]
 
+/- English proof (translation)
+Establish `main : ∀ k : ℕ, ∀ (B : Type) [CommRing B] [Algebra R B] (I : Ideal B), I ^ (k + 1) = ⊥ → Function.Surjective (pointsMap G (Ideal.Quotient.mkₐ R I))`. Introduce `k`. Proceed by induction on `k with`. Consider the case `zero`. Introduce `B _ _ I hI`.
+
+Use `reduction_surjective hv (le_bot_iff.1 ?_)` and prove the remaining obligations. Rewrite using `[← hI]; exact Ideal.pow_le_pow_right (by norm_num)`. Consider the case `succ k ih`. Introduce `B _ _ I hI`. Establish `hle : I ^ (k + 1) ≤ I` using `Ideal.pow_le_self (by omega)`.
+
+Establish `hsq : (I ^ (k + 1)) ^ 2 = ⊥`. Rewrite using `[← pow_mul]; exact le_bot_iff.1 (hI ▸ Ideal.pow_le_pow_right (by omega))`. Establish `hmap : (I.map (Ideal.Quotient.mkₐ R (I ^ (k + 1)))) ^ (k + 1) = ⊥`. Rewrite using `[← Ideal.map_pow]`. Conclude with `(Ideal.map_eq_bot_iff_le_ker _).2 (by`.
+
+Introduce `x hx`. Simplify `hx)` using `[Ideal.Quotient.mkₐ_eq_mk, Ideal.Quotient.eq_zero_iff_mem]`. Introduce `y₀`. Set `e` to `DoubleQuot.quotQuotEquivQuotOfLEₐ R hle`. Take `⟨y₂, hy₂⟩` from `ih _ _ hmap (spMap (e.symm : (B ⧸ I) →ₐ[R] _) ≫ y₀)`.
+
+Take `⟨y, hy⟩` from `reduction_surjective hv hsq y₂`. Use `⟨y, ?_⟩` and prove the remaining obligations. Rewrite `hy₂`, `hy`, the goal using `[ptsMap_apply]`. Establish `he : Ideal.Quotient.mkₐ R I = (e : _ →ₐ[R] B ⧸ I).comp ((Ideal.Quotient.mkₐ R (I.map (Ideal.Quotient.mkₐ R (I ^ (k + 1))))).comp (Ideal.Quotient.mkₐ R (I ^ (k + 1))))`. Use extensionality with `x`.
+
+Both sides reduce to the same expression. Rewrite using `[he, ← spMap_comp, ← spMap_comp]`. Simplify using `only [Category.assoc]`. Rewrite using `[hy, hy₂, ← Category.assoc, spMap_comp, AlgEquiv.comp_symm, spMap_id, Category.id_comp]`. Take `⟨k, hk⟩` from `hJ`.
+
+Use `main k A J (le_bot_iff.1 ?_)` and prove the remaining obligations. Rewrite using `[← Ideal.zero_eq_bot, ← hk]`. Conclude with `Ideal.pow_le_pow_right (by omega)`.
+-/
 theorem reduction_surjective_of_isNilpotent (hv : IsLieBasis v) (hJ : IsNilpotent J) :
     Function.Surjective (pointsMap G (Ideal.Quotient.mkₐ R J)) := by
   have main : ∀ k : ℕ, ∀ (B : Type) [CommRing B] [Algebra R B] (I : Ideal B), I ^ (k + 1) = ⊥ →
@@ -442,6 +591,11 @@ theorem reduction_surjective_of_isNilpotent (hv : IsLieBasis v) (hJ : IsNilpoten
   rw [← Ideal.zero_eq_bot, ← hk]
   exact Ideal.pow_le_pow_right (by omega)
 
+/- English proof (translation)
+Introduce `y₀`. Set `e` to `Ideal.quotientKerAlgEquivOfSurjective hq`. Take `⟨y, hy⟩` from `reduction_surjective_of_isNilpotent hv hn (spMap (e.symm : A' →ₐ[R] _) ≫ y₀)`. Use `⟨y, ?_⟩` and prove the remaining obligations. Rewrite `hy`, the goal using `[ptsMap_apply]`.
+
+Establish `he : q = (e : _ →ₐ[R] A').comp (Ideal.Quotient.mkₐ R (RingHom.ker q))` using `by ext x; rfl`. Rewrite using `[he, ← spMap_comp]`. Simplify using `only [Category.assoc]`. Rewrite using `[hy, ← Category.assoc, spMap_comp, AlgEquiv.comp_symm, spMap_id, Category.id_comp]`.
+-/
 theorem ptsMap_surjective_of_isNilpotent (hv : IsLieBasis v) (q : A →ₐ[R] A')
     (hq : Function.Surjective q) (hn : IsNilpotent (RingHom.ker q)) :
     Function.Surjective (pointsMap G q) := by
@@ -465,6 +619,9 @@ open SqZero
 
 attribute [local instance] Over.cartesianMonoidalCategory
 
+/- English proof (translation)
+Take `⟨n, v, hv⟩` from `ReciprocityTheory.ChartRestriction.G.Chart.exists_isLieBasis G inferInstance`. Use `⟨n, fun A _ _ J hJ => ⟨⟨kerEquiv hv hJ⟩, fun y₀ => ?_, fun k hk y hy => pow_eq_one_of_mem_redKer hv hJ hk hy⟩⟩` and prove the remaining obligations. Take `⟨y, hy⟩` from `reduction_surjective hv hJ y₀`. Conclude with `⟨y, by rw [← hy, ptsMap_apply]⟩`.
+-/
 theorem sqZero_reduction_of_isLocalRing {R : Type} [CommRing R] [IsLocalRing R] (G : Over (Sp R))
     [GrpObj G] [IsCommMonObj G] [Smooth G.hom] :
     ∃ n : ℕ, ∀ (A : Type) [CommRing A] [Algebra R A] (J : Ideal A), J ^ 2 = ⊥ →

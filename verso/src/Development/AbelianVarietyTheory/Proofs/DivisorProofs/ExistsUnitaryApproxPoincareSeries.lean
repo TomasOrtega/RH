@@ -24,6 +24,15 @@ namespace GlobalTheory.UPoinc.GApprox
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {D : Datum H} {l : Geo.Tor.Level H}
   {Xo : Moduli D l} {c : Coeff l} {C : UCompact Xo c}
 
+/- English proof (translation)
+Use `set u := algebraMap t.T.V (FractionRing t.T.V) t.T.ϖ with hu`. Establish `h0 : t.T.ϖ ≠ 0` using `t.T.irr.ne_zero`. Establish `hu0 : u ≠ 0`. Rewrite using `[hu]`. Conclude with `(IsFractionRing.injective t.T.V (FractionRing t.T.V)).ne_iff' (map_zero _) |>.2 h0`.
+
+Establish `hι0 : t.ι u ≠ 0` using `(map_ne_zero t.ι).2 hu0`. Establish `hle : ‖t.ι u‖ ≤ 1` using `(t.int u).2 ⟨_, rfl⟩`. Establish `hlt : ‖t.ι u‖ < 1`. Use `lt_of_le_of_ne hle fun h1 => ?_` and prove the remaining obligations. Establish `: ‖t.ι u⁻¹‖ ≤ 1` using `by rw [map_inv₀, norm_inv, h1, inv_one]`.
+
+Take `⟨v, hv⟩` from `(t.int _).1 this`. Apply `t.T.irr.not_isUnit` to reduce the goal to its premises. Use `IsUnit.of_mul_eq_one v ?_` and prove the remaining obligations. Apply `IsFractionRing.injective t.T.V (FractionRing t.T.V)` to reduce the goal to its premises. Rewrite using `[map_mul, hv, ← hu, mul_inv_cancel₀ hu0, map_one]`.
+
+Establish `hpos : 0 < ‖t.ι u‖` using `norm_pos_iff.2 hι0`. Unfold `UCTrait.sc`. Rewrite using `[← hu]`. Combine the linear relations using `[Real.log_neg hpos hlt]`.
+-/
 theorem sc_pos {X₁ : USetup C} {p : ℕ} [Fact p.Prime] {z₁ : X₁.M.Z} (t : UCTrait X₁ p z₁) : 0 < t.sc := by
   set u := algebraMap t.T.V (FractionRing t.T.V) t.T.ϖ with hu
   have h0 : t.T.ϖ ≠ 0 := t.T.irr.ne_zero
@@ -44,6 +53,11 @@ theorem sc_pos {X₁ : USetup C} {p : ℕ} [Fact p.Prime] {z₁ : X₁.M.Z} (t :
   rw [← hu]
   linarith [Real.log_neg hpos hlt]
 
+/- English proof (translation)
+Establish `hmem : toReal β ∈ psdCone bar X` using `StrictData.toReal_mem_psdCone hβ hp`. Establish `hform : toReal (pull e.toLinearMap β') = (s / s') • toReal β`. Use `LinearMap.ext₂ fun a b => ?_` and prove the remaining obligations. Use `he a b` as an intermediate fact. Simplify using `only [toReal_apply, pull_apply, LinearMap.smul_apply, smul_eq_mul, LinearEquiv.coe_coe]`.
+
+Clear the denominators using the available nonvanishing facts. Combine the linear equalities and inequalities to obtain the conclusion. Establish `h1 : φ.evalZ (pull e.toLinearMap β') = φ.evalZ β'` using `evalZ_pull φ e.surjective _`. Rewrite using `[← h1, ← evalR_toReal φ (pull _ _), hform, hP.homog _ hmem _ (div_nonneg hs0 hs'.le), evalR_toReal]`. Clear the denominators using the available nonvanishing facts.
+-/
 theorem sc_evalZ_eq_of_equiv {O : Type} [CommRing O] [IsDedekindDomain O] [CharZero O] [Module.Finite ℤ O] {bar : O → O}
     {φ : InvFun O} {X Y : Type} [AddCommGroup X] [Module O X] [Module.Finite O X] [AddCommGroup Y] [Module O Y]
     [Module.Finite O Y] (hP : IsPolFanOn bar φ X) {β : LinearMap.BilinForm ℤ X} (hβ : β ∈ balForms bar X)
@@ -60,6 +74,11 @@ theorem sc_evalZ_eq_of_equiv {O : Type} [CommRing O] [IsDedekindDomain O] [CharZ
   rw [← h1, ← evalR_toReal φ (pull _ _), hform, hP.homog _ hmem _ (div_nonneg hs0 hs'.le), evalR_toReal]
   field_simp
 
+/- English proof (translation)
+Unfold `PosW`. Establish `: ((!![(1 : ℤ)] + (!![(1 : ℤ)] : Matrix (Fin 1) (Fin 1) ℤ).transpose).map (Int.cast : ℤ → ℝ)) = Matrix.diagonal fun _ => (2 : ℝ)`. Use extensionality with `i j`. Use `fin_cases i`. Use `fin_cases j`.
+
+Evaluate the numerical expressions. Rewrite using `[this]`. Conclude with `Matrix.PosDef.diagonal (fun _ => by norm_num)`.
+-/
 theorem posW_one : PosW (!![(1 : ℤ)] : Matrix (Fin 1) (Fin 1) ℤ) := by
   unfold PosW
   have : ((!![(1 : ℤ)] + (!![(1 : ℤ)] : Matrix (Fin 1) (Fin 1) ℤ).transpose).map (Int.cast : ℤ → ℝ)) =
@@ -75,6 +94,9 @@ namespace GlobalTheory.UPoinc.GApprox
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {D : Datum H} {l : Geo.Tor.Level H}
   {Xo : Moduli D l} {c : Coeff l} {C : UCompact Xo c}
 
+/- English proof (translation)
+The claim follows from `sc_evalZ_eq_of_equiv (hpol _ (Φ.rank_le y)) (Φ.bal y) (fun x => by by_cases hx : x = 0 · simp [hx] · exact (Φ.pos y x hx).le) (Φ.sc_pos y).le (sc_pos t) e he`.
+-/
 theorem sc_evalZ_eq {X₁ : USetup C} {p : ℕ} [Fact p.Prime] {z₁ : X₁.M.Z} {φ : InvFun (𝓞 E)}
     (hpol : IsPolFan H.bar (min D.p D.q) φ)
     (Φ : FPre (H.bar : 𝓞 E → 𝓞 E) (min D.p D.q) p (X₁.M.Z.presheaf.stalk z₁)) (y : Φ.Y) (t : UCTrait X₁ p z₁)
@@ -85,6 +107,9 @@ theorem sc_evalZ_eq {X₁ : USetup C} {p : ℕ} [Fact p.Prime] {z₁ : X₁.M.Z}
       · simp [hx]
       · exact (Φ.pos y x hx).le) (Φ.sc_pos y).le (sc_pos t) e he
 
+/- English proof (translation)
+The claim follows from `exists_hasSupports (𝓞 E) H.bar q φ hpol fun X _ _ _ _ hX r γ hγ => GlobalTheory.T.exists_supportingTuple_smoothCone_cmField E H φ X (hpol X hX) r γ hγ`.
+-/
 theorem exists_hasSupports_cm (q : ℕ) (φ : InvFun (𝓞 E)) (hpol : IsPolFan H.bar q φ) :
     ∃ d, 1 ≤ d ∧ HasSupports (H.bar : 𝓞 E → 𝓞 E) q φ d :=
   exists_hasSupports (𝓞 E) H.bar q φ hpol fun X _ _ _ _ hX r γ hγ => GlobalTheory.T.exists_supportingTuple_smoothCone_cmField E H φ X (hpol X hX) r γ hγ
@@ -93,6 +118,21 @@ end GlobalTheory.UPoinc.GApprox
 
 open GlobalTheory.UPoinc.GApprox in
 
+/- English proof (translation)
+Introduce `E _ _ _ H Dw hpq l Xo c C X₁ φ hpol`. Take `⟨d₀, hd₀, hsup⟩` from `exists_hasSupports_cm (H := H) (min Dw.p Dw.q) φ hpol`. Establish `hN : 3 ≤ X₁.S.r * X₁.S.N`. Establish `h1` using `X₁.big.2.2`. Establish `h2 : 1 ≤ X₁.S.N ^ X₁.S.g * X₁.S.g.factorial` using `Nat.one_le_iff_ne_zero.2 (Nat.mul_ne_zero (pow_ne_zero _ (by have := X₁.S.N_ge; omega)) (Nat.factorial_ne_zero _))`.
+
+Use linear arithmetic over natural numbers and integers. Establish `hW1 : ((!![(1 : ℤ)] : Matrix (Fin 1) (Fin 1) ℤ) 0 0).toNat = 1` using `by simp`. Use `⟨((!![(1 : ℤ)] : Matrix (Fin 1) (Fin 1) ℤ) 0 0).toNat * d₀, by rw [hW1]; omega, ?_⟩` and prove the remaining obligations. Introduce `p _ z₁ t₀ e`. Establish `hcl : IsClosed ({z₁} : Set X₁.M.Z)` using `t₀.cen ▸ isClosed_singleton_cPt t₀.y`.
+
+Take `⟨Φ, hM, hL, hR⟩` from `GlobalTheory.T.exists_unitaryThetaSystem_classicalTraits_closedPoint E H Dw hpq l Xo c C X₁ p z₁ hcl`. Establish `hF` using `GlobalTheory.T.unitary_classicalTraits_fourierTerms_all_levels E H Dw hpq l Xo c C X₁ p z₁ Φ hR`. Use `haveI : IsDedekindDomain X₁.o₁ := X₁.ar.ded`. Use `haveI := X₁.M.lft`. Use `haveI : IsLocallyNoetherian X₁.M.Z := LocallyOfFiniteType.isLocallyNoetherian X₁.M.s`.
+
+Establish `hA` using `approx_of_fpre (𝓞 E) H.bar (bddAct_int_and_cm.2 E H) (min Dw.p Dw.q) φ hpol d₀ hsup 0 !![(1 : ℤ)] posW_one (X₁.S.r * X₁.S.N) p hN _ Φ hL hF`. Use `set d := ((!![(1 : ℤ)] : Matrix (Fin 1) (Fin 1) ℤ) 0 0).toNat * d₀ with hd`. Take `⟨y₀, hev₀, e₀, he₀⟩` from `hM t₀`. Take `⟨f, hf1, hf2⟩` from `hA y₀ e`. Establish `key : ∀ (y : Φ.Y) (t : UCTrait X₁ p z₁) (e' : Φ.X y ≃ₗ[𝓞 E] t.T.P.D.toPre.X), (∀ a b, Φ.sc y * Φ.β y a b = t.sc * t.T.be (e' a) (e' b)) → Φ.sc y * ((d : ℝ) * φ.evalZ (Φ.β y)) = t.sc * ((d : ℝ) * φ.evalZ t.T.be)`.
+
+Introduce `y t e' h`. Use `sc_evalZ_eq hpol Φ y t e' h` as an intermediate fact. Combine the equalities or inequalities in the displayed calculation. Use `⟨f, ?_, fun t => ?_⟩` and prove the remaining obligations. Rewrite using `[← hev₀ f, hf1, key y₀ t₀ e₀ he₀]`.
+
+Take `⟨y, hev, e', he'⟩` from `hM t`. Break down `hf2 y with h | ⟨h, hh, hle⟩` into its components or cases. Use `left`. Rewrite using `[← hev f, ← key y t e' he']`. Conclude with `h`.
+
+Use the proof step `right; exact ⟨h, hh, by rw [← hev f, ← hev h]; exact hle⟩`.
+-/
 theorem GlobalTheory.UPoinc.exists_uApproxAt : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (Dw : Datum H), 1 ≤ Dw.p + Dw.q → ∀ (l : Geo.Tor.Level H) (Xo : Moduli Dw l) (c : Coeff l) (C : UCompact Xo c) (X₁ : USetup C), ∀ φ : InvFun (𝓞 E), IsPolFan H.bar (min Dw.p Dw.q) φ → ∃ d : ℕ, 1 ≤ d ∧ UApproxAt X₁ φ d := by
   intro E _ _ _ H Dw hpq l Xo c C X₁ φ hpol
   obtain ⟨d₀, hd₀, hsup⟩ := exists_hasSupports_cm (H := H) (min Dw.p Dw.q) φ hpol

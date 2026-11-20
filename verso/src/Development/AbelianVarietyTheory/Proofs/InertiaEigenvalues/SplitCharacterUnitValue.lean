@@ -7,6 +7,9 @@ attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalDat
 
 namespace GlobalTheory.TupleCharAtType
 
+/- English proof (translation)
+Introduce `hv'` and use `by obtain ⟨s, t, hst⟩ : IsCoprime (p : 𝓞 E) (q : 𝓞 E) := Nat.Coprime.cast ((Nat.coprime_primes hp hq).2 h) apply v.isPrime.ne_top rw [Ideal.eq_top_iff_one, ← hst] exact v.asIdeal.add_mem (v.asIdeal.mul_mem_left _ hv) (v.asIdeal.mul_mem_left _ hv')`.
+-/
 theorem natCast_notMem {E : Type} [Field E] [NumberField E] {p q : ℕ} (hp : p.Prime) (hq : q.Prime) (h : p ≠ q)
     {v : HeightOneSpectrum (𝓞 E)} (hv : ((p : ℕ) : 𝓞 E) ∈ v.asIdeal) : ((q : ℕ) : 𝓞 E) ∉ v.asIdeal := fun hv' => by
   obtain ⟨s, t, hst⟩ : IsCoprime (p : 𝓞 E) (q : 𝓞 E) := Nat.Coprime.cast ((Nat.coprime_primes hp hq).2 h)
@@ -14,12 +17,28 @@ theorem natCast_notMem {E : Type} [Field E] [NumberField E] {p q : ℕ} (hp : p.
   rw [Ideal.eq_top_iff_one, ← hst]
   exact v.asIdeal.add_mem (v.asIdeal.mul_mem_left _ hv) (v.asIdeal.mul_mem_left _ hv')
 
+/- English proof (translation)
+Use `show Valued.v ((u : E) : v.adicCompletion E) = 1`. Rewrite using `[HeightOneSpectrum.valuedAdicCompletion_eq_valuation', HeightOneSpectrum.valuation_of_algebraMap]`. Conclude with `HeightOneSpectrum.intValuation_eq_one_iff.2 hv`.
+-/
 theorem isUnitAt_of_notMem {E : Type} [Field E] [NumberField E] {v : HeightOneSpectrum (𝓞 E)} (u : 𝓞 E)
     (hu : (u : E) ≠ 0) (hv : u ∉ v.asIdeal) : IsUnitAt v (atFin v (Units.mk0 (u : E) hu)) := by
   show Valued.v ((u : E) : v.adicCompletion E) = 1
   rw [HeightOneSpectrum.valuedAdicCompletion_eq_valuation', HeightOneSpectrum.valuation_of_algebraMap]
   exact HeightOneSpectrum.intValuation_eq_one_iff.2 hv
 
+/- English proof (translation)
+Establish `hwg : ((D.host.g k : ℕ) : 𝓞 D.host.E) ∈ (D.naut.plGw k v).asIdeal` using `D.naut.plGw_over k v`. Establish `hgp` using `D.host.g_prime k`. Rewrite using `[D.nd.mu_w i, P.tp.xi_tw, D.nd.w_l i]`. Establish `hdel : (P.cf.delAt (D.nd.l i)).UnrAt (D.naut.plGw k v)`. Unfold `CharFrame.delAt`.
+
+Use `split_ifs`. Conclude with `P.cf.isDel'.unr _ (natCast_notMem hgp D.host.pde'_prime (D.host.pde_ne_g k).2.symm hwg)`. Conclude with `P.cf.isDel.unr _ (natCast_notMem hgp D.host.pde_prime (D.host.pde_ne_g k).1.symm hwg)`. Establish `hpsi : (P.tp.psi (D.nd.w i)).UnrAt (D.naut.plGw k v)`. Establish `hψ` using `P.tp.psi_is (D.nd.w i) (D.nd.w_tw i)`.
+
+Distinguish the cases in `hl : D.nd.l i = D.host.g k`. Introduce `x _`. Use `hψ.atl _ ?_ x` and prove the remaining obligations. Unfold `OverP`. Rewrite using `[D.nd.w_l i, hl]`.
+
+Conclude with `hwg`. Use `(hψ.ram _).2 ?_` and prove the remaining obligations. Rewrite using `[← P.Q_eq i]`. Establish `hlp : (D.nd.l i).Prime` using `(D.nd.lPrime i).out`. Establish `hS : D.naut.plGw k v ∈ D.nd.S i`.
+
+Rewrite using `[D.nd.S_def i]`. Use `⟨?_, natCast_notMem hgp hlp (Ne.symm hl) hwg⟩` and prove the remaining obligations. Use `fin_cases k`. Conclude with `Or.inl hwg`. Conclude with `Or.inr (Or.inl hwg)`.
+
+Conclude with `Finset.disjoint_left.mp (D.nd.SQ_disj i) hS`. Introduce `x hx`. Rewrite using `[HChar.loc_mul, hdel x hx, hpsi x hx, mul_one]`.
+-/
 theorem xi_unrAt {hL : GlobalTheory.Published.LocalLanglandsGL} {D : D7} (P : Pin hL D) (i : D.nd.Loc) (k : Fin 2) (v : D.nd.PlG k) :
     (P.tp.xi (D.nd.mu i)).UnrAt (D.naut.plGw k v) := by
   have hwg : ((D.host.g k : ℕ) : 𝓞 D.host.E) ∈ (D.naut.plGw k v).asIdeal := D.naut.plGw_over k v
@@ -53,6 +72,11 @@ theorem xi_unrAt {hL : GlobalTheory.Published.LocalLanglandsGL} {D : D7} (P : Pi
   intro x hx
   rw [HChar.loc_mul, hdel x hx, hpsi x hx, mul_one]
 
+/- English proof (translation)
+Introduce `hL D P S hS i k v hw j hj u hu hnot`. Rewrite using `[(hS.mu i _ hw j hj).2 (Units.mk0 (u : D.host.E) hu)]`. Establish `hx` using `xi_unrAt P i k v _ (isUnitAt_of_notMem u hu hnot)`. Use `show (((P.cf.mu0 j * P.tp.xi (D.nd.mu i)).loc (D.naut.plGw k v) (atFin _ (Units.mk0 (u : D.host.E) hu)) : ℂˣ) : ℂ) = _`. Rewrite using `[HChar.loc_mul, hx, mul_one]`.
+
+Both sides reduce to the same expression.
+-/
 theorem value : ∀ (hL : GlobalTheory.Published.LocalLanglandsGL) (D : D7) (P : Pin hL D) (S : Reading P.T), IsTrue P S → ∀ (i : D.nd.Loc) (k : Fin 2) (v : D.nd.PlG k) (hw : IsSplitPl D.host (D.naut.plGw k v)) (j : Fin D.R.m), j.1 + 1 = D.nd.j i → ∀ (u : 𝓞 D.host.E) (hu : (u : D.host.E) ≠ 0), u ∉ (D.naut.plGw k v).asIdeal → (((S i _ hw).mu (Units.map (algebraMap D.host.E ((D.naut.plGw k v).adicCompletion D.host.E)).toMonoidHom (Units.mk0 (u : D.host.E) hu)) : ℂˣ) : ℂ) = (((P.cf.mu0 j).locK (D.naut.plGw k v) (Units.mk0 (u : D.host.E) hu) : ℂˣ) : ℂ) := by
   intro hL D P S hS i k v hw j hj u hu hnot
   rw [(hS.mu i _ hw j hj).2 (Units.mk0 (u : D.host.E) hu)]

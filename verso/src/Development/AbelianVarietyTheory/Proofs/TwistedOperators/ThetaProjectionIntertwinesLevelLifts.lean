@@ -15,6 +15,13 @@ namespace GlobalTheory.ThetaProjEquiv
 variable {D : D7} {G : Type} [Group G] [Fintype G] {Pl0 T0 : Type} {A : FamIn D.what₂.LL G Pl0 T0 D.R.m}
   {Ks : Type} [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL]
 
+/- English proof (translation)
+Use `(hR.thP.thF i t).elim fun thP hPF => ?_` and prove the remaining obligations. Establish `hpt : ∀ P, R.ωP i t (κ, κ') (R.ptP i t P) = c⁻¹ • R.ptP i t P` using `GlobalTheory.FiniteFock.om_pureTensorO_of_finite R.ψ R.θ (Vc D i) (Wc D i) _ _ (R.ωP i t) hR.models.inf (hR.thP.ωP i t) _ _ _ _ _ (hR.thP.pt_theta i t) κ hκ.1 κ' hκ' c⁻¹ hv`. Establish `hker` using `fun P => GlobalTheory.thetaKO_rat_left_and_eigen_right R.ψ (Vc D i) (Wc D i) _ _ (R.ωP i t) (hR.thP.ωP i t) (R.ptP i t P) (hR.thP.pt_theta i t P)`. Establish `hm` using `thetaLift_shift hPF.1 (GQ (Vc D i)) κ κ' c hc0 (integral_shift (Vc D i) (R.βV i) (R.datVt i t) g0 κ hκ (R.νV i t) (hR.models.νV i t).1.1 (R.fdV i t) (hR.models.νV i t).2) (fun P γ hγ g h => by`. Use `(hker P).1 γ hγ 1 (GQ (Wc D i)).one_mem h g` as an intermediate fact.
+
+Rewrite using `[one_mul] at this)` and apply the resulting hypothesis. Use the proof step `(fun P g h => (hker P).2 κ κ' c⁻¹ (hpt P) h g)`. Use the proof step `((R.extV i t).rangeRestrict y) ((R.extV i t).rangeRestrict y')`. Use the proof step `(extV_left R hR.models.HV i t y)`. Use the proof step `(fun h => (congrFun ((R.extV i t).map_smul c y').symm h).trans (extV_shift R hR.models.cV i t κ hκ.1 c hc0 y y' hy h))`.
+
+Use the proof step `(PiTensorProduct.tprod ℂ v) x`. Conclude with `(congrFun (hPF.2 y' v) x).trans (hm.trans (congrFun (hPF.2 y v) (x * κ')).symm)`.
+-/
 theorem thF_shift_core (R : RealDat D A Ks) (F : Face D A) (hR : GlobalTheory.Hk3.Core R F) (i : Fin D.R.m) (t : T0) (g0 : G0 R.Pg D.R.r)
     (κ : GA D (Vc D i)) (κ' : GA D (Wc D i)) (hκ : IsLevelLift (Vc D i) (R.βV i) (R.datVt i t) g0 κ)
     (hκ' : κ' ∈ GfC (Wc D i)) (y y' : (R.HV i t).H) (c : ℂ) (hc0 : c ≠ 0)
@@ -42,6 +49,11 @@ theorem thF_shift_core (R : RealDat D A Ks) (F : Face D A) (hR : GlobalTheory.Hk
     (PiTensorProduct.tprod ℂ v) x
   exact (congrFun (hPF.2 y' v) x).trans (hm.trans (congrFun (hPF.2 y v) (x * κ')).symm)
 
+/- English proof (translation)
+Establish `hinj` using `GlobalTheory.EvalAtUnitVector.eval_injective (R.MW i (sg0 D A)) (R.HW i (sg0 D A)).H (R.HW i (sg0 D A)).e _ (R.νW i) (R.fdW i) (hR.models.HW i (sg0 D A)).2.2 v hv`. Establish `e1 : (R.HW i (sg0 D A)).e (R.thG i t y') v = R.eWf i (sg0 D A) (R.thF i t y' v)` using `congrArg (fun T : MMap (R.MW i (sg0 D A)) => T v) (hR.thP.thG i t y')`. Establish `e2 : (R.HW i (sg0 D A)).e (R.thG i t y) v = R.eWf i (sg0 D A) (R.thF i t y v)` using `congrArg (fun T : MMap (R.MW i (sg0 D A)) => T v) (hR.thP.thG i t y)`. Establish `e3 : (R.HW i (sg0 D A)).e (R.gW i (sg0 D A) g (R.thG i t y)) v = actL (Wc D i) (R.βW i) (R.datWp i R.triv) (R.eG g) ((R.HW i (sg0 D A)).e (R.thG i t y) v)` using `congrArg (fun T : MMap (R.MW i (sg0 D A)) => T v) (hR.models.gW i (sg0 D A) g (R.thG i t y))`. Establish `e4` using `(GlobalTheory.ProjComm.proj_comm R hR.lev hR.grp.record).2 i (sg0 D A) g _ (thF_type R hR.thP.thF_mem i t y v)`.
+
+Conclude with `hinj (e1.trans ((congrArg (R.eWf i (sg0 D A)) hact).trans (e4.trans ((congrArg (actL (Wc D i) (R.βW i) (R.datWp i R.triv) (R.eG g)) e2.symm).trans e3.symm))))`.
+-/
 theorem thG_of_value_core (R : RealDat D A Ks) (F : Face D A) (hR : GlobalTheory.Hk3.Core R F) (i : Fin D.R.m) (t : T0) (g : G)
     (y y' : (R.HV i t).H) (v : (R.MW i (sg0 D A)).Vec) (hv : ∀ τ, ‖(v τ : (R.MW i (sg0 D A)).H τ)‖ = 1)
     (hact : R.thF i t y' v = actL (Wc D i) (R.βW i) (R.datWp i R.triv) (R.eG g) (R.thF i t y v)) :
@@ -59,6 +71,9 @@ theorem thG_of_value_core (R : RealDat D A Ks) (F : Face D A) (hR : GlobalTheory
   exact hinj (e1.trans ((congrArg (R.eWf i (sg0 D A)) hact).trans (e4.trans
     ((congrArg (actL (Wc D i) (R.βW i) (R.datWp i R.triv) (R.eG g)) e2.symm).trans e3.symm))))
 
+/- English proof (translation)
+Introduce `D G _ _ Pl0 T0 A Ks _ _ _ R F hR i t g κ hκ y y' hy`. Use `(Classical.em (∃ κ', IsLevelLift (Wc D i) (R.βW i) (R.datWp i R.triv) (R.eG g) κ')).elim (fun hl => hl.elim fun κ' hκ' => (hR.thP.ioP i t).2.2.elim fun v hv => hv.elim fun _ hw => ?_) (fun hl => (eq_zero_of_no_lift R hR.models.HW hR.models.gW i (sg0 D A) g hl _).trans (eq_zero_of …` and prove the remaining obligations. Conclude with `thG_of_value_core R F hR i t g y y' (fun ρ => v ρ) hw.1 (funext fun x => (thF_shift_core R F hR i t (R.eG g) κ κ' hκ hκ'.1 y y' (levChi (Vc D i) (R.βV i) (flagL (R.datVt i t)) κ) (levChi_ne_zero (V := Vc D i) (β := R.βV i) (flagL (R.datVt i t)) κ) (GlobalTheory.T.weilAction_liftP …`.
+-/
 theorem thG_intertwines_core : ∀ {D : D7} {G : Type} [Group G] [Fintype G] {Pl0 T0 : Type} {A : FamIn D.what₂.LL G Pl0 T0 D.R.m} {Ks : Type} [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] (R : RealDat D A Ks) (F : Face D A), GlobalTheory.Hk3.Core R F → ∀ i t g κ, IsLevelLift (Vc D i) (R.βV i) (R.datVt i t) (R.eG g) κ → ∀ y y' : (R.HV i t).H, (∀ h, (R.HV i t).e y' h = (levChi _ (R.βV i) (flagL (R.datVt i t)) κ)⁻¹ • (R.HV i t).e y (h * (finHom _).rangeRestrict κ)) → R.thG i t y' = R.gW i (sg0 D A) g (R.thG i t y) := by
   intro D G _ _ Pl0 T0 A Ks _ _ _ R F hR i t g κ hκ y y' hy
   refine (Classical.em (∃ κ', IsLevelLift (Wc D i) (R.βW i) (R.datWp i R.triv) (R.eG g) κ')).elim

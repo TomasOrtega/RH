@@ -19,6 +19,9 @@ namespace GlobalTheory.BoxLattice.DualRat
 
 variable {F : Type} [Field F] [NumberField F] {κ : Type} [Fintype κ]
 
+/- English proof (translation)
+Rewrite using `[GlobalTheory.VacLn.trPair_apply, ← GlobalTheory.PsiNontriv.trace_mixedEmbedding]`. Simplify using `[ratInf, dotProduct, map_sum, map_mul]`.
+-/
 theorem trPair_ratInf (x y : κ → F) :
     GlobalTheory.VacLn.trPair F κ (ratInf F κ x) (ratInf F κ y) = ((Algebra.trace ℚ F (x ⬝ᵥ y) : ℚ) : ℝ) := by
   rw [GlobalTheory.VacLn.trPair_apply, ← GlobalTheory.PsiNontriv.trace_mixedEmbedding]
@@ -27,6 +30,9 @@ theorem trPair_ratInf (x y : κ → F) :
 def vec (a : F) (i : κ) (k : Module.Free.ChooseBasisIndex ℤ (𝓞 F)) : κ → F :=
   Pi.single i (a * integralBasis F k)
 
+/- English proof (translation)
+Use `⟨Pi.single i (RingOfIntegers.basis F k), funext fun i' => ?_⟩` and prove the remaining obligations. Distinguish the cases in `h : i' = i`. Substitute `h` using the available equality. Simplify using `[ratInf, vec, integralBasis_apply]`. Simplify using `[ratInf, vec, h]`.
+-/
 theorem vec_mem (a : F) (i : κ) (k : Module.Free.ChooseBasisIndex ℤ (𝓞 F)) :
     ratInf F κ (vec a i k) ∈ boxLat F κ a := by
   refine ⟨Pi.single i (RingOfIntegers.basis F k), funext fun i' => ?_⟩
@@ -34,10 +40,16 @@ theorem vec_mem (a : F) (i : κ) (k : Module.Free.ChooseBasisIndex ℤ (𝓞 F))
   · subst h; simp [ratInf, vec, integralBasis_apply]
   · simp [ratInf, vec, h]
 
+/- English proof (translation)
+Simplify using `[vec, dotProduct, Pi.single_apply]`.
+-/
 theorem vec_dot (a : F) (i : κ) (k : Module.Free.ChooseBasisIndex ℤ (𝓞 F)) (z : κ → F) :
     vec a i k ⬝ᵥ z = a * integralBasis F k * z i := by
   simp [vec, dotProduct, Pi.single_apply]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `i'`. Distinguish the cases in `h : i' = i`. Substitute `h` using the available equality. Simplify using `[ratInf, vec]`. Simplify using `[ratInf, vec, h]`.
+-/
 theorem ratInf_vec (a : F) (i : κ) (k : Module.Free.ChooseBasisIndex ℤ (𝓞 F)) :
     ratInf F κ (vec a i k) = Pi.single i (mixedEmbedding F (a * integralBasis F k)) := by
   funext i'
@@ -49,6 +61,31 @@ end GlobalTheory.BoxLattice.DualRat
 
 open GlobalTheory.BoxLattice.DualRat in
 
+/- English proof (translation)
+Introduce `F _ _ κ _ a ha μ hμ`. Use `choose n hn using fun (j : κ × Module.Free.ChooseBasisIndex ℤ (𝓞 F)) => hμ _ (vec_mem a j.1 j.2)`. Set `T : (κ → F) →ₗ[ℚ] (κ × Module.Free.ChooseBasisIndex ℤ (𝓞 F) → ℚ)` to `LinearMap.pi fun j => (Algebra.trace ℚ F) ∘ₗ LinearMap.mulLeft ℚ (a * integralBasis F j.2) ∘ₗ LinearMap.proj j.1`. Establish `hT : ∀ z j, T z j = Algebra.trace ℚ F (a * integralBasis F j.2 * z j.1)` using `fun z j => rfl`. Establish `hinj : Function.Injective T`.
+
+Rewrite using `[← LinearMap.ker_eq_bot, LinearMap.ker_eq_bot']`. Introduce `z hz`. Use function extensionality and compare the values at `i`. Establish `h2 : ∀ y : F, Algebra.trace ℚ F (y * (a * z i)) = 0`. Introduce `y`.
+
+Establish `e` using `(integralBasis F).ext (f₁ := (Algebra.trace ℚ F) ∘ₗ LinearMap.mulRight ℚ (a * z i)) (f₂ := 0) (fun k => by`. Use `congrFun hz (i, k)` as an intermediate fact. Rewrite `this` using `[hT]`. Simplify `this)` using `[mul_comm, mul_left_comm, mul_assoc]`. Simplify `LinearMap.congr_fun e y` using `[mul_assoc]`.
+
+Assume the negation of the conclusion as `hne`. Establish `hz0 : a * z i ≠ 0` using `mul_ne_zero ha hne`. Establish `h3` using `h2 (a * z i)⁻¹`. Rewrite `h3` using `[inv_mul_cancel₀ hz0, ← map_one (algebraMap ℚ F), Algebra.trace_algebraMap]`. Simplify using `at h3`.
+
+Conclude with `(Module.finrank_pos (R := ℚ) (M := F)).ne' h3`. Establish `hdim : Module.finrank ℚ (κ → F) = Module.finrank ℚ (κ × Module.Free.ChooseBasisIndex ℤ (𝓞 F) → ℚ)`. Simplify using `[Module.finrank_pi_fintype, Module.finrank_fintype_fun_eq_card, Module.finrank_eq_card_basis (integralBasis F), Fintype.card_prod]`. Take `⟨z, hz⟩` from `(LinearMap.injective_iff_surjective_of_finrank_eq_finrank hdim).1 hinj (fun j => (n j : ℚ))`. Use `⟨z, ?_⟩` and prove the remaining obligations.
+
+Use `set w := μ - ratInf F κ z with hw`. Establish `hj : ∀ i k, Algebra.trace ℝ (mixedEmbedding.mixedSpace F) (mixedEmbedding F (a * integralBasis F k) * w i) = 0`. Introduce `i k`. Establish `h1` using `hn (i, k)`. Establish `h2` using `trPair_ratInf (vec a i k) z`.
+
+Rewrite `h2` using `[vec_dot]`. Establish `h3` using `congrFun hz (i, k)`. Rewrite `h3` using `[hT]`. Establish `h4 : GlobalTheory.VacLn.trPair F κ (ratInf F κ (vec a i k)) w = 0`. Rewrite using `[hw, map_sub, h1, h2, h3]`.
+
+Simplify using the standard rewrite rules. Rewrite `h4` using `[ratInf_vec, GlobalTheory.VacLn.trPair_apply]`. Simplify `h4` using `[Pi.single_apply]`. Establish `hall : ∀ i (t : mixedEmbedding.mixedSpace F), Algebra.trace ℝ (mixedEmbedding.mixedSpace F) (t * w i) = 0`. Introduce `i t`.
+
+Establish `e` using `(mixedEmbedding.latticeBasis F).ext (f₁ := (Algebra.trace ℝ (mixedEmbedding.mixedSpace F)) ∘ₗ LinearMap.mulRight ℝ (mixedEmbedding F a * w i)) (f₂ := 0) (fun k => by`. Use `hj i k` as an intermediate fact. Simplify using `only [LinearMap.coe_comp, Function.comp_apply, LinearMap.mulRight_apply, mixedEmbedding.latticeBasis_apply, LinearMap.zero_apply]`. Rewrite using `[← this, map_mul (mixedEmbedding F) a]`. Use `congr 1`.
+
+Use the proof step `ring)`. Establish `e2` using `LinearMap.congr_fun e (mixedEmbedding F a⁻¹ * t)`. Simplify using `only [LinearMap.coe_comp, Function.comp_apply, LinearMap.mulRight_apply, LinearMap.zero_apply] at e2`. Establish `e3 : mixedEmbedding F a⁻¹ * t * (mixedEmbedding F a * w i) = mixedEmbedding F (a⁻¹ * a) * (t * w i)` using `by rw [map_mul (mixedEmbedding F) a⁻¹ a]; ring`. Rewrite `e2` using `[e3, inv_mul_cancel₀ ha, map_one, one_mul]`.
+
+Conclude with `e2`. Establish `hw0 : w = 0`. Apply `GlobalTheory.VacLn.trPair_nondeg` to reduce the goal to its premises. Introduce `x`. Rewrite using `[GlobalTheory.VacLn.trPair_apply, map_sum]`.
+
+Conclude with `Finset.sum_eq_zero fun i _ => hall i (x i)`. Conclude with `sub_eq_zero.1 hw0`.
+-/
 theorem GlobalTheory.BoxLattice.dual_rat : ∀ (F : Type) [Field F] [NumberField F] (κ : Type) [Fintype κ] (a : F), a ≠ 0 →
     ∀ μ : κ → mixedEmbedding.mixedSpace F, (∀ l ∈ boxLat F κ a, ∃ k : ℤ, GlobalTheory.VacLn.trPair F κ l μ = k) →
       ∃ z : κ → F, μ = ratInf F κ z := by

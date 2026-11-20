@@ -4,6 +4,21 @@ open scoped ContDiff Topology
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Introduce `E _ _ A _ v c hc P hP`. Establish `key : ∀ φ, P φ → Differentiable ℝ φ ∧ ∃ (α χ : A → E → ℂ), (∀ a, ContDiff ℝ ∞ (α a)) ∧ (∀ a, P (χ a)) ∧ fderiv ℝ φ = fun y => ∑ a, (α a y * φ y + χ a y) • ((c a).smulRight (1 : ℂ))`. Introduce `φ hφ`. Take `⟨g, hg, hlim, hd⟩` from `hP φ hφ`. Use `choose α hα χ hχ hlim' using hd`.
+
+Establish `h` using `GlobalTheory.T.differentiableAt_limit_of_directional_derivs_converge v c hc φ g (fun a y => α a y * φ y + χ a y) hg hlim hlim'`. Use `⟨fun y => (h y).1, α, χ, hα, hχ, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `y`. Use extensionality with `x`. Use `conv_lhs => rw [← hc x]`.
+
+Simplify using `only [map_sum, map_smul, (h y).2, ContinuousLinearMap.sum_apply, ContinuousLinearMap.smul_apply, ContinuousLinearMap.smulRight_apply]`. Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Simplify using `only [Complex.real_smul, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree. Establish `main : ∀ n : ℕ, ∀ φ, P φ → ContDiff ℝ n φ`.
+
+Introduce `n`. Proceed by induction on `n with`. Consider the case `zero`. Introduce `φ hφ`. Simplify using `using (key φ hφ).1.continuous`.
+
+Consider the case `succ n ih`. Introduce `φ hφ`. Take `⟨hd, α, χ, hα, hχ, hf⟩` from `key φ hφ`. Establish `: ContDiff ℝ ((n : WithTop ℕ∞) + 1) φ`. Rewrite using `[contDiff_succ_iff_fderiv]`.
+
+Use `⟨hd, by simp, ?_⟩` and prove the remaining obligations. Rewrite using `[hf]`. Use `ContDiff.sum fun a _ => ?_` and prove the remaining obligations. Establish `h1 : ContDiff ℝ n (α a)` using `(hα a).of_le (by exact_mod_cast le_top)`. Conclude with `((h1.mul (ih φ hφ)).add (ih _ (hχ a))).smul contDiff_const`.
+
+Conclude with `this` after adjusting the coercions. Introduce `φ hφ`. Conclude with `contDiff_infty.2 fun n => main n φ hφ`.
+-/
 theorem contDiff_of_class_tendstoLocallyUniformly : ∀ {E : Type} [NormedAddCommGroup E] [NormedSpace ℝ E] {A : Type} [Fintype A] (v : A → E) (c : A → E →L[ℝ] ℝ), (∀ x, ∑ a, c a x • v a = x) → ∀ P : (E → ℂ) → Prop, (∀ φ, P φ → ∃ g : ℕ → E → ℂ, (∀ j, Differentiable ℝ (g j)) ∧ TendstoLocallyUniformly g φ Filter.atTop ∧ ∀ a, ∃ α : E → ℂ, ContDiff ℝ ∞ α ∧ ∃ χ, P χ ∧ TendstoLocallyUniformly (fun j y => fderiv ℝ (g j) y (v a)) (fun y => α y * φ y + χ y) Filter.atTop) → ∀ φ, P φ → ContDiff ℝ ∞ φ := by
   intro E _ _ A _ v c hc P hP
   have key : ∀ φ, P φ → Differentiable ℝ φ ∧ ∃ (α χ : A → E → ℂ), (∀ a, ContDiff ℝ ∞ (α a)) ∧

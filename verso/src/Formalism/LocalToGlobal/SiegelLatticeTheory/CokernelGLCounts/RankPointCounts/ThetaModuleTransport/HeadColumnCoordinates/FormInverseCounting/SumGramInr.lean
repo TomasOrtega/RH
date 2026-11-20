@@ -8,6 +8,11 @@ namespace Formalism.L2.SG.LocalCountModules.LocCnt0LAlg
 
 variable {E : Type} [CommRing E] (cj : E →+* E) {r : ℕ}
 
+/- English proof (translation)
+Rewrite using `[Fintype.sum_sum_type]`. Simplify using `only [gramC, Matrix.fromBlocks_apply₁₁, Matrix.fromBlocks_apply₂₁, Matrix.of_apply, Matrix.transpose_apply]`. Distinguish the cases in `hj : j = Fin.last r`. Substitute `hj` using the available equality. Simplify using `only [and_true, if_true, mul_ite, mul_zero, Finset.sum_ite_eq', Finset.mem_univ]`.
+
+Rewrite using `[mul_comm (c _) (-T), neg_mul, Finset.sum_congr rfl (fun b _ => mul_comm (c (Sum.inr b)) _)]`. Expand and normalize the polynomial expressions, which then agree. Simplify using `only [hj, and_false, if_false, mul_zero, Finset.sum_const_zero, zero_add, sub_zero]`. Conclude with `Finset.sum_congr rfl (fun b _ => mul_comm _ _)`.
+-/
 theorem sum_gram_inl (Z : Matrix (Fin (r + 1)) (Fin (r + 1)) E) (T T' : E) (c : Ix r → E)
     (j : Fin (r + 1)) :
     ∑ i, c i * gramC cj Z T T' i (Sum.inl j) =
@@ -23,6 +28,11 @@ theorem sum_gram_inl (Z : Matrix (Fin (r + 1)) (Fin (r + 1)) E) (T T' : E) (c : 
   · simp only [hj, and_false, if_false, mul_zero, Finset.sum_const_zero, zero_add, sub_zero]
     exact Finset.sum_congr rfl (fun b _ => mul_comm _ _)
 
+/- English proof (translation)
+Rewrite using `[Fintype.sum_sum_type]`. Simplify using `only [gramC, Matrix.fromBlocks_apply₁₂, Matrix.fromBlocks_apply₂₂, Matrix.of_apply]`. Distinguish the cases in `hj : j = Fin.last r`. Substitute `hj` using the available equality. Simplify using `only [and_true, mul_ite, mul_zero, Finset.sum_ite_eq', Finset.mem_univ, if_true]`.
+
+Rewrite using `[mul_comm (c _) (-T'), neg_mul, Finset.sum_congr rfl (fun a _ => mul_comm (c (Sum.inl a)) _)]`. Expand and normalize the polynomial expressions, which then agree. Simplify using `only [hj, and_false, if_false, mul_zero, Finset.sum_const_zero, add_zero, sub_zero]`. Conclude with `Finset.sum_congr rfl (fun a _ => mul_comm _ _)`.
+-/
 theorem sum_gram_inr (Z : Matrix (Fin (r + 1)) (Fin (r + 1)) E) (T T' : E) (c : Ix r → E)
     (j : Fin (r + 1)) :
     ∑ i, c i * gramC cj Z T T' i (Sum.inr j) =

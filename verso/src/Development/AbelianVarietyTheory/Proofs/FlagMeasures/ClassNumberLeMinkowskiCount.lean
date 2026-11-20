@@ -5,6 +5,9 @@ open NumberField
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Introduce `K _ _` and use `classNumber_le_sqrt_discr_mul_pow K`.
+-/
 theorem classNumber_le_minkowski_count :
     ∀ (K : Type) [Field K] [NumberField K], (classNumber K : ℝ) ≤
       Real.sqrt |(discr K : ℝ)| * (1 + Real.log (Real.sqrt |(discr K : ℝ)|)) ^ Module.finrank ℚ K :=

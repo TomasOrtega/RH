@@ -12,6 +12,9 @@ namespace GlobalTheory.CompanionTheory.GAUnfoldK
 
 variable {K : Type} [Field K] [NumberField K]
 
+/- English proof (translation)
+The claim follows from `(Module.finBasis ℚ K).equivFun.toEquiv.injective.countable`.
+-/
 theorem countable_number_field : Countable K :=
   (Module.finBasis ℚ K).equivFun.toEquiv.injective.countable
 

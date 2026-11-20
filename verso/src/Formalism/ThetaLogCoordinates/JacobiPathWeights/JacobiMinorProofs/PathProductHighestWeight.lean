@@ -13,11 +13,25 @@ namespace Formalism.InvariantFactorPaths.GelfandTsetlinBases
 
 namespace A1hw
 
+/- English proof (translation)
+Rewrite using `[← map_intCast (C : R →+* MvPolynomial σ R)]`. Conclude with `isWeightedHomogeneous_C w _`.
+-/
 theorem hom_int {σ R M : Type*} [CommRing R] [AddCommMonoid M] (w : σ → M) (z : ℤ) :
     IsWeightedHomogeneous w ((z : ℤ) : MvPolynomial σ R) 0 := by
   rw [← map_intCast (C : R →+* MvPolynomial σ R)]
   exact isWeightedHomogeneous_C w _
 
+/- English proof (translation)
+Unfold `stepF`. Consider the cases of `up`. Simplify using `only [Bool.false_eq_true, if_false] at hX ⊢`. Unfold `contrF`. Use `IsWeightedHomogeneous.sum _ _ _ fun m' hm' => ?_` and prove the remaining obligations.
+
+Use `((hom_int (R := R) w (sg J m')).mul (hX m')).mul (hK (insert m' J))` as an intermediate fact. Use `this using 1` and compare the differences between its conclusion and the goal. Rewrite `hm'` using `[Finset.mem_compl]`. Distinguish the cases in `h : m' = m`. Substitute `h` using the available equality.
+
+Simplify using `[hm']`. Establish `h2 : m ∈ insert m' J ↔ m ∈ J` using `by simp [Finset.mem_insert, Ne.symm h]`. Simplify using `[h, h2]`. Simplify using `only [if_true] at hX ⊢`. Unfold `wedgeF`.
+
+Use `IsWeightedHomogeneous.sum _ _ _ fun m' hm' => ?_` and prove the remaining obligations. Use `((hom_int (R := R) w (sg J m')).mul (hK (J.erase m'))).mul (hX m')` as an intermediate fact. Use `this using 1` and compare the differences between its conclusion and the goal. Distinguish the cases in `h : m' = m`. Substitute `h` using the available equality.
+
+Simplify using `[hm']`. Establish `h2 : m ∈ J.erase m' ↔ m ∈ J` using `by simp [Finset.mem_erase, Ne.symm h]`. Simplify using `[h, h2]`.
+-/
 theorem wt_step {σ R : Type*} [CommRing R] {n : ℕ} (w : σ → ℤ) (up : Bool) (m : Fin n) (s : ℤ)
     (Kf : Form (MvPolynomial σ R) n) (Xv : Fin n → MvPolynomial σ R)
     (hK : ∀ J, IsWeightedHomogeneous w (Kf J) (if m ∈ J then s else 0))
@@ -45,6 +59,15 @@ theorem wt_step {σ R : Type*} [CommRing R] {n : ℕ} (w : σ → ℤ) (up : Boo
     · have h2 : m ∈ J.erase m' ↔ m ∈ J := by simp [Finset.mem_erase, Ne.symm h]
       simp [h, h2]
 
+/- English proof (translation)
+Rewrite using `[← Finset.sum_subset hS]`. Break down `le_total 0 x with h | h` into its components or cases. Rewrite using `[Finset.Ioc_eq_empty (not_lt.2 h), Finset.union_empty]`. Rewrite using `[Finset.sum_congr rfl (g := fun _ => (1 : ℤ))]`. Simplify using `[h]`.
+
+Introduce `c hc`. Rewrite `hc` using `[Finset.mem_Ioc]`. Rewrite using `[if_pos (by omega), if_pos hc.2]`. Rewrite using `[Finset.Ioc_eq_empty (not_lt.2 h), Finset.empty_union]`. Rewrite using `[Finset.sum_congr rfl (g := fun _ => (-1 : ℤ))]`.
+
+Simplify using `[h]`. Introduce `c hc`. Rewrite `hc` using `[Finset.mem_Ioc]`. Rewrite using `[if_neg (by omega), if_pos hc.1]`. Introduce `c _ hc`.
+
+Rewrite `hc` using `[Finset.mem_union, Finset.mem_Ioc, Finset.mem_Ioc]`. Apply the tactic sequence `split_ifs <;> first | rfl | (exfalso; omega)`.
+-/
 theorem sum_wt (x : ℤ) (S : Finset ℤ) (hS : Finset.Ioc 0 x ∪ Finset.Ioc x 0 ⊆ S) :
     ∑ c ∈ S, (if 1 ≤ c then (if c ≤ x then (1 : ℤ) else 0) else (if x < c then -1 else 0)) = x := by
   rw [← Finset.sum_subset hS]
@@ -65,6 +88,11 @@ theorem sum_wt (x : ℤ) (S : Finset ℤ) (hS : Finset.Ioc 0 x ∪ Finset.Ioc x 
     rw [Finset.mem_union, Finset.mem_Ioc, Finset.mem_Ioc] at hc
     split_ifs <;> first | rfl | (exfalso; omega)
 
+/- English proof (translation)
+Unfold `canIdx`. Use `split_ifs with hc`. Simplify using `only [mem_filter, mem_univ, true_and]`. Conclude with `(Paths.le_iff_lt_colHeight h c m).symm`. Simplify using `only [mem_filter, mem_univ, true_and]`.
+
+Rewrite using `[← not_le, Paths.le_iff_lt_colHeight h c m, not_lt]`.
+-/
 theorem mem_can {n : ℕ} {μN : Fin n → ℤ} (h : Antitone μN) (c : ℤ) (m : Fin n) :
     m ∈ canIdx μN c ↔ if 1 ≤ c then c ≤ μN m else μN m < c := by
   unfold canIdx
@@ -74,6 +102,15 @@ theorem mem_can {n : ℕ} {μN : Fin n → ℤ} (h : Antitone μN) (c : ℤ) (m 
   · simp only [mem_filter, mem_univ, true_and]
     rw [← not_le, Paths.le_iff_lt_colHeight h c m, not_lt]
 
+/- English proof (translation)
+Introduce `c`. Establish `hn` using `Paths.colHeight_le μN c`. Unfold `canIdx`. Use `split_ifs with hc`. Establish `: (univ.filter fun m : Fin n => m.val < colHeight μN c) = (Finset.range (colHeight μN c)).attachFin (fun i hi => by`.
+
+Rewrite using `[Finset.mem_range] at hi; omega) := by`. Use extensionality with `m`. Simplify using the standard rewrite rules. Rewrite using `[this, Finset.card_attachFin, Finset.card_range]`. Establish `h1 : (univ.filter fun m : Fin n => colHeight μN c ≤ m.val) = (univ.filter fun m : Fin n => m.val < colHeight μN c)ᶜ`.
+
+Use extensionality with `m`. Simplify using the standard rewrite rules. Establish `h2 : (univ.filter fun m : Fin n => m.val < colHeight μN c) = (Finset.range (colHeight μN c)).attachFin (fun i hi => by`. Rewrite using `[Finset.mem_range] at hi; omega) := by`. Use extensionality with `m`.
+
+Simplify using the standard rewrite rules. Rewrite using `[h1, Finset.card_compl, h2, Finset.card_attachFin, Finset.card_range, Fintype.card_fin]`.
+-/
 theorem isIndex_can {n : ℕ} (μN : Fin n → ℤ) : IsIndex μN (canIdx μN) := by
   intro c
   have hn := Paths.colHeight_le μN c
@@ -93,6 +130,9 @@ theorem isIndex_can {n : ℕ} (μN : Fin n → ℤ) : IsIndex μN (canIdx μN) :
       ext m; simp
     rw [h1, Finset.card_compl, h2, Finset.card_attachFin, Finset.card_range, Fintype.card_fin]
 
+/- English proof (translation)
+Unfold `stepF`. Consider the cases of `up`. Simplify using `only [Bool.false_eq_true, if_false, contrF, map_sum, map_mul, map_intCast, hK]`. Simplify using `only [if_true, wedgeF, map_sum, map_mul, map_intCast, hK]`.
+-/
 theorem map_step {A A' : Type*} [CommRing A] [CommRing A'] (φ : A →+* A') {n : ℕ} (up : Bool)
     (K : Form A n) (K' : Form A' n) (Xv : Fin n → A) (hK : ∀ J, φ (K J) = K' J) (J : Finset (Fin n)) :
     φ (stepF up K Xv J) = stepF up K' (fun a => φ (Xv a)) J := by
@@ -101,6 +141,13 @@ theorem map_step {A A' : Type*} [CommRing A] [CommRing A'] (φ : A →+* A') {n 
   · simp only [Bool.false_eq_true, if_false, contrF, map_sum, map_mul, map_intCast, hK]
   · simp only [if_true, wedgeF, map_sum, map_mul, map_intCast, hK]
 
+/- English proof (translation)
+Introduce `j`. Proceed by induction on `j with`. Consider the case `zero`. Introduce `J`. Use `show φ (if J = ∅ then 1 else 0) = if J = ∅ then 1 else 0`.
+
+Apply the tactic sequence `split <;> simp`. Consider the case `succ j ih`. Introduce `J`. Distinguish the cases in `hch : colHeight (μ (j + 1)) c = colHeight (μ j) c`. Rewrite using `[pathWord, pathWord, if_pos hch, if_pos hch]`.
+
+Conclude with `ih J`. Rewrite using `[pathWord, pathWord, if_neg hch, if_neg hch]`. Conclude with `map_step φ _ _ _ _ ih J`.
+-/
 theorem map_pathWord {A A' : Type*} [CommRing A] [CommRing A'] (φ : A →+* A') {n : ℕ}
     (isVec : ℕ → Bool) (μ : ℕ → Fin n → ℤ) (c : ℤ) (Xr : ℕ → Fin n → A) :
     ∀ (j : ℕ) (J : Finset (Fin n)),
@@ -119,6 +166,13 @@ theorem map_pathWord {A A' : Type*} [CommRing A] [CommRing A'] (φ : A →+* A')
     · rw [pathWord, pathWord, if_neg hch, if_neg hch]
       exact map_step φ _ _ _ _ ih J
 
+/- English proof (translation)
+Introduce `j`. Proceed by induction on `j with`. Consider the case `zero => exact (actF_oneF _).symm`. Consider the case `succ j ih`. Distinguish the cases in `hch : colHeight (μ (j + 1)) c = colHeight (μ j) c`.
+
+Rewrite using `[pathWord, pathWord, if_pos hch, if_pos hch]`. Conclude with `ih`. Rewrite using `[pathWord, pathWord, if_neg hch, if_neg hch, ih]`. Unfold `stepF`. Consider the cases of `hup : (isVec j == decide (1 ≤ c))`.
+
+Simplify using `only [Bool.false_eq_true, if_false]`. Rewrite using `[hc, h2 j hup]`. Simplify using `only [if_true]`. Rewrite using `[hw, h1 j hup]`.
+-/
 theorem act_pathWord (hw : FactX2wedge) (hc : FactX2contr) {A : Type} [CommRing A] {n : ℕ}
     (isVec : ℕ → Bool) (μ : ℕ → Fin n → ℤ) (c : ℤ) (Xc Xe : ℕ → Fin n → A)
     (g : (Matrix (Fin n) (Fin n) A)ˣ)
@@ -148,6 +202,9 @@ def tv {A : Type*} [CommRing A] {n : ℕ} (a b : Fin n) (hab : a ≠ b) (t : A) 
   val_inv := by rw [Matrix.transvection_mul_transvection_same _ _ hab]; simp
   inv_val := by rw [Matrix.transvection_mul_transvection_same _ _ hab]; simp
 
+/- English proof (translation)
+Simplify using `[Matrix.transvection, Matrix.one_apply, Matrix.single_apply]`.
+-/
 theorem tv_apply {A : Type*} [CommRing A] {n : ℕ} (a b : Fin n) (t : A) (i j : Fin n) :
     Matrix.transvection a b t i j = (if i = j then 1 else 0) + if a = i ∧ b = j then t else 0 := by
   simp [Matrix.transvection, Matrix.one_apply, Matrix.single_apply]

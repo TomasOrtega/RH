@@ -8,6 +8,13 @@ attribute [local instance] Over.cartesianMonoidalCategory
 
 namespace GlobalTheory.PullConst
 
+/- English proof (translation)
+Introduce `T Ω _ _ χ Y q U w h hwq a`. Establish `key : q.appLE ⊤ U le_top ≫ w.appLE U ⊤ h = (w ≫ q).appTop` using `(Scheme.Hom.appLE_comp_appLE w q ⊤ U ⊤ le_top h).trans (Scheme.Hom.appLE_eq_app (f := w ≫ q) (U := ⊤))`. Establish `k1 : (w.appLE U ⊤ h).hom ((q.appLE ⊤ U le_top).hom (toΓ T a)) = (w ≫ q).appTop.hom (toΓ T a)`. Use `congrArg (fun g => g.hom (toΓ T a)) key` as an intermediate fact. Simplify `this` using `only [CommRingCat.comp_apply]`.
+
+Use `k1.trans ?_` and prove the remaining obligations. Rewrite using `[hwq]`. Establish `h3` using `Scheme.ΓSpecIso_inv_naturality (CommRingCat.ofHom χ)`. Establish `h4` using `congrArg (fun g => g.hom a) h3`. Simplify using `only [CommRingCat.comp_apply] at h4`.
+
+Conclude with `h4.symm`.
+-/
 theorem pull_const_apply : ∀ {T Ω : Type} [CommRing T] [CommRing Ω] (χ : T →+* Ω) {Y : Scheme.{0}} (q : Y ⟶ Sp T) (U : Y.Opens) (w : Sp Ω ⟶ Y) (h : ⊤ ≤ w ⁻¹ᵁ U), w ≫ q = spMap χ → ∀ a : T, (w.appLE U ⊤ h).hom ((q.appLE ⊤ U le_top).hom (toΓ T a)) = toΓ Ω (χ a) := by
   intro T Ω _ _ χ Y q U w h hwq a
   have key : q.appLE ⊤ U le_top ≫ w.appLE U ⊤ h = (w ≫ q).appTop :=

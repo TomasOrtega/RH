@@ -28,10 +28,26 @@ variable {G : Type} [Group G] [TopologicalSpace G] [IsTopologicalGroup G] [Local
   {ρ : G →* (K →L[ℂ] K)}
 
 omit [LocallyCompactSpace G] [SecondCountableTopology G] [T2Space G] [μ.IsHaarMeasure] [CompleteSpace K] in
+/- English proof (translation)
+The claim follows from `(htr g v).trans ((measurePreserving_mul_right μ g).quasiMeasurePreserving.ae h)`.
+-/
 theorem rep_tr [μ.IsMulRightInvariant] (htr : ∀ g v, ι (ρ g v) =ᵐ[μ] fun x => ι v (x * g)) {v : K} {φ : G → ℂ}
     (h : ι v =ᵐ[μ] φ) (g : G) : ι (ρ g v) =ᵐ[μ] fun x => φ (x * g) :=
   (htr g v).trans ((measurePreserving_mul_right μ g).quasiMeasurePreserving.ae h)
 
+/- English proof (translation)
+Establish `hd' : ∀ t, HasDerivAt (fun t : ℝ => ρ (c t) v) (ρ (c t) v') t` using `fun t => by`. Establish `h1 : HasDerivAt (fun r : ℝ => ρ (c (r - t)) v) v' t`. Establish `h2 : HasDerivAt (fun t : ℝ => ρ (c t) v) v' (t - t)` using `by rwa [sub_self]`. Conclude with `h2.comp_sub_const t t`. Establish `h2` using `((ρ (c t)).restrictScalars ℝ).hasFDerivAt.comp_hasDerivAt t h1`.
+
+Use `h2 using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `r show _ = (ρ (c t) * ρ (c (r - t))) v`. Rewrite using `[← map_mul, ← hadd, add_sub_cancel]`. Both sides reduce to the same expression. Establish `hw : Continuous fun t => ρ (c t) v'` using `(hρ v').comp hc`.
+
+Establish `key : ∀ a b : ℝ, a ≤ b → ∀ y, φ (y * c b) - φ (y * c a) = ∫ t in a..b, φ' (y * c t)` using `fun a b hab => by`. Take `⟨p1, p2⟩` from `GlobalTheory.T.representative_parametric_integral_continuous_family G μ K ι hloc hlin ℝ volume (Set.Icc a b) (fun t => ρ (c t) v') (fun t y => φ' (y * c t)) isCompact_Icc hw (hφ'.comp (continuous_snd.mul (hc.comp continuous_fst))) fun t => rep_tr htr hv' _`. Rewrite `p2` using `[integral_Icc_eq_integral_Ioc, ← intervalIntegral.integral_of_le hab, intervalIntegral.integral_eq_sub_of_hasDerivAt (fun t _ => hd' t) (hw.intervalIntegrable _ _)]`. Establish `e : (fun y => φ (y * c b) - φ (y * c a)) = fun y => ∫ t in Set.Icc a b, φ' (y * c t)`. Use `(Continuous.ae_eq_iff_eq μ (by fun_prop) p1).1 ?_` and prove the remaining obligations.
+
+Use `filter_upwards [p2, rep_sub hlin (ρ (c b) v) (ρ (c a) v), rep_tr htr hv (c a), rep_tr htr hv (c b)] with y e1 e2 e3 e4`. Rewrite using `[← e1, e2, e3, e4]`. Introduce `y`. Rewrite using `[congrFun e y, integral_Icc_eq_integral_Ioc, ← intervalIntegral.integral_of_le hab]`. Establish `e : (fun t : ℝ => φ (x * c t)) = fun t => φ x + ∫ r in (0 : ℝ)..t, φ' (x * c r)`.
+
+Use function extensionality and compare the values at `t`. Break down `le_total 0 t with h | h` into its components or cases. Rewrite using `[← key 0 t h x, h0, mul_one]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[intervalIntegral.integral_symm, ← key t 0 h x, h0, mul_one]`.
+
+Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e]`. Establish `hcc : Continuous fun r => φ' (x * c r)` using `by fun_prop`. Simplify `(intervalIntegral.integral_hasDerivAt_right (hcc.intervalIntegrable 0 0) (hcc.stronglyMeasurableAtFilter _ _) hcc.continuousAt).const_add (φ x)` using `[h0]`.
+-/
 theorem hasDerivAt_rep [μ.IsMulRightInvariant]
     (hloc : ∀ C, IsCompact C → ∃ M : ℝ, ∀ v, IntegrableOn (ι v) C μ ∧ ∫ x in C, ‖ι v x‖ ∂μ ≤ M * ‖v‖)
     (hlin : ∀ (a : ℂ) v w, ι (a • v + w) =ᵐ[μ] fun x => a * ι v x + ι w x)
@@ -73,6 +89,27 @@ theorem hasDerivAt_rep [μ.IsMulRightInvariant]
   simpa [h0] using (intervalIntegral.integral_hasDerivAt_right (hcc.intervalIntegrable 0 0)
     (hcc.stronglyMeasurableAtFilter _ _) hcc.continuousAt).const_add (φ x)
 
+/- English proof (translation)
+Establish `hw : ∀ v, Continuous fun t => κ t • ρ (Θ t) v` using `fun v => hκ.smul ((hρ v).comp hΘ)`. Establish `hi : ∀ v, IntegrableOn (fun t => κ t • ρ (Θ t) v) Q` using `fun v => (hw v).continuousOn.integrableOn_compact hQ`. Set `A₀ : K →ₗ[ℂ] K` to `{ toFun := fun v => ∫ t in Q, κ t • ρ (Θ t) v map_add' := fun v w => by`. Simplify using `only [map_add, smul_add]`. Conclude with `integral_add (hi v) (hi w)`.
+
+Use the proof step `map_smul' := fun a v => by`. Simplify using `only [map_smul, RingHom.id_apply, ← integral_smul]`. Simplify using `only [smul_comm a] }`. Set `A : K →L[ℂ] K` to `A₀.mkContinuous (∫ t in Q, ‖κ t‖) fun v => by`. Use `(norm_integral_le_integral_norm _).trans (le_of_eq ?_)` and prove the remaining obligations.
+
+Simplify using `only [norm_smul, hiso, integral_mul_const]`. Set `E : Submodule ℂ K` to `{ carrier := {v | (∀ k ∈ H, ρ k v = v) ∧ ∃ φ : G → ℂ, Continuous φ ∧ ι v =ᵐ[μ] φ} zero_mem' := ⟨fun k _ => map_zero _, fun _ => 0, continuous_const, rep_zero hlin⟩ add_mem' := fun {v w} ⟨a1, φ, a2, a3⟩ ⟨b1, ψ, b2, b3⟩ => ⟨fun k hk => by rw [map_add, a1 k hk, b1 k hk], fun x => φ …`. Rewrite using `[e1, e2, e3]⟩`. Use the proof step `smul_mem' := fun a v ⟨a1, φ, a2, a3⟩ => ⟨fun k hk => by rw [map_smul, a1 k hk], fun x => a * φ x, continuous_const.mul a2, by filter_upwards [rep_smul hlin a v, a3] with x e1 e2`. Rewrite using `[e1, e2]⟩ }`.
+
+Establish `hA : ∀ v (φ : G → ℂ), Continuous φ → ι v =ᵐ[μ] φ → (Continuous fun x => ∫ t in Q, κ t * φ (x * Θ t)) ∧ ι (A v) =ᵐ[μ] fun x => ∫ t in Q, κ t * φ (x * Θ t)` using `fun v φ hφ hv => GlobalTheory.T.representative_parametric_integral_continuous_family G μ K ι hloc hlin _ volume Q (fun t => κ t • ρ (Θ t) v) (fun t x => κ t * φ (x * Θ t)) hQ (hw v) ((hκ.comp continuous_fst).mul (hφ.comp (continuous_snd.mul (hΘ.comp continuous_fst)))) fun t => by …`. Rewrite using `[e1, e2]`. Take `⟨Λ, hΛ⟩` from `GlobalTheory.T.exists_evaluation_extension_closure_representatives G μ K ι hloc hlin A E (fun v ⟨_, φ, a2, a3⟩ => ⟨_, hA v φ a2 a3⟩) fun B hB => by`. Take `⟨M, hM'⟩` from `hloc (B * Ω) (hB.mul hΩ)`. Take `⟨κ₀, hκ₀⟩` from `hQ.exists_bound_of_continuousOn hκ.continuousOn`.
+
+Use `⟨max κ₀ 0 * (C * M), fun v ⟨a1, φ, a2, a3⟩ ψ hψ hv x hx => ?_⟩` and prove the remaining obligations. Establish `e : ψ = _` using `(hψ.ae_eq_iff_eq μ (hA v φ a2 a3).1).1 (hv.symm.trans (hA v φ a2 a3).2)`. Establish `hk : ∀ k ∈ H, ∀ g, φ (g * k) = φ g` using `fun k hk => by`. Establish `h1` using `rep_tr htr a3 k`. Rewrite `h1` using `[a1 k hk]`.
+
+Conclude with `congrFun ((Continuous.ae_eq_iff_eq μ (by fun_prop) a2).1 (h1.symm.trans a3))`. Establish `h1` using `hM (fun g => ‖φ (x * g)‖) (by fun_prop) (fun g => norm_nonneg _) fun k hk' g => by`. Simplify using `only [← mul_assoc, hk k hk']`. Establish `h2 : ∫ y in Ω, ‖φ (x * y)‖ ∂μ ≤ M * ‖v‖`. Use `le_trans ?_ (hM' v).2` and prove the remaining obligations.
+
+Establish `h3 : ∫ y in B * Ω, ‖ι v y‖ ∂μ = ∫ y in B * Ω, ‖φ y‖ ∂μ` using `integral_congr_ae (ae_restrict_of_ae (by filter_upwards [a3] with y hy; rw [hy]))`. Establish `h4` using `(measurePreserving_mul_left μ x).setIntegral_image_emb (measurableEmbedding_mulLeft x) (fun y => ‖φ y‖) Ω`. Rewrite using `[h3, ← h4]`. Use `setIntegral_mono_set (a2.norm.continuousOn.integrableOn_compact (hB.mul hΩ)) (Filter.Eventually.of_forall fun y => norm_nonneg _) (LE.le.eventuallyLE ?_)` and prove the remaining obligations. Introduce and unpack `_ ⟨y, hy, rfl⟩`.
+
+Conclude with `Set.mul_mem_mul hx hy`. Rewrite using `[e]`. Combine the equalities or inequalities in the displayed calculation. Use `norm_integral_le_of_norm_le (Continuous.continuousOn (by fun_prop) |>.integrableOn_compact hQ) ?_` and prove the remaining obligations. Use `filter_upwards [ae_restrict_mem hQ.measurableSet] with t ht`.
+
+Rewrite using `[norm_mul]`. Conclude with `mul_le_mul_of_nonneg_right ((hκ₀ t ht).trans (le_max_left _ _)) (norm_nonneg _)`. Use `_ ≤ max κ₀ 0 * (C * M) * ‖v‖ := by`. Rewrite using `[integral_const_mul, mul_assoc, mul_assoc]`. Conclude with `mul_le_mul_of_nonneg_left (h1.trans (mul_le_mul_of_nonneg_left h2 hC)) (le_max_right _ _)`.
+
+Use `⟨Λ, fun v hv => hΛ v (Metric.mem_closure_iff.2 fun ε hε => ?_)⟩` and prove the remaining obligations. Take `⟨η, e1, e2, e3, e4⟩` from `GlobalTheory.T.exists_fixed_average_approx_of_subgroup_fixed G μ K ρ hiso hρ H U hU hH v hv ε hε`. Conclude with `⟨_, ⟨e3, GlobalTheory.T.exists_continuous_representative_average G μ K ι hloc hlin ρ hiso hρ htr η v e1 e2⟩, by rwa [dist_eq_norm]⟩`.
+-/
 theorem exists_eval [μ.IsMulRightInvariant]
     (hloc : ∀ C, IsCompact C → ∃ M : ℝ, ∀ v, IntegrableOn (ι v) C μ ∧ ∫ x in C, ‖ι v x‖ ∂μ ≤ M * ‖v‖)
     (hlin : ∀ (a : ℂ) v w, ι (a • v + w) =ᵐ[μ] fun x => a * ι v x + ι w x) (hiso : ∀ g v, ‖ρ g v‖ = ‖v‖)
@@ -156,12 +193,34 @@ def Sm (ρ : G →* (K →L[ℂ] K)) {P : Type} (A : Set P) (e : P → ℝ → G
 
 omit [TopologicalSpace G] [IsTopologicalGroup G] [LocallyCompactSpace G]
   [SecondCountableTopology G] [T2Space G] [MeasurableSpace G] [BorelSpace G] [CompleteSpace K] in
+/- English proof (translation)
+Establish `h1` using `(h 1 (fun _ => p) fun _ => hp).comp (contDiff_pi.2 fun _ => contDiff_id : ContDiff ℝ ∞ fun r : ℝ => fun _ : Fin 1 => r)`. Establish `h2 : ContDiff ℝ ∞ fun r : ℝ => ρ (e p r) v` using `by simpa [Function.comp_def] using h1`. Conclude with `(h2.differentiable (by simp) 0).hasDerivAt`.
+-/
 theorem Sm.hasDerivAt {P : Type} {A : Set P} {e : P → ℝ → G} {v : K} (h : Sm ρ A e v) {p : P} (hp : p ∈ A) :
     HasDerivAt (fun r : ℝ => ρ (e p r) v) (deriv (fun r : ℝ => ρ (e p r) v) 0) 0 := by
   have h1 := (h 1 (fun _ => p) fun _ => hp).comp (contDiff_pi.2 fun _ => contDiff_id : ContDiff ℝ ∞ fun r : ℝ => fun _ : Fin 1 => r)
   have h2 : ContDiff ℝ ∞ fun r : ℝ => ρ (e p r) v := by simpa [Function.comp_def] using h1
   exact (h2.differentiable (by simp) 0).hasDerivAt
 
+/- English proof (translation)
+Take `⟨J, _, κ, l, hκ, hT⟩` from `GlobalTheory.T.eq_sum_integral_cube_derivatives_alt G K ρ hiso hρ s hs N (fun i => e (qs i)) fun i => he _ (hq i)`. Use `choose Λ hΛ using fun j => exists_eval hloc hlin hiso hρ htr hU hH hΘ (isCompact_univ_pi fun _ => isCompact_Icc) hΩ hC hM (hκ j)`. Set `d : P → K → K` to `fun p w => deriv (fun r : ℝ => ρ (e p r) w) 0`. Set `S : Set K` to `{v | Sm ρ A e v ∧ ∀ k ∈ H, ρ k v = v}`. Establish `hS : ∀ v ∈ S, ∀ p ∈ A, d p v ∈ S` using `fun v hv p hp => by`.
+
+Use `⟨(GlobalTheory.T.smooth_along_curve_products_stable_alt G K ρ P A e v hv.1).1 p hp, fun k hk => ?_⟩` and prove the remaining obligations. Establish `h1` using `hv.1.hasDerivAt hp`. Establish `h2` using `((ρ k).restrictScalars ℝ).hasFDerivAt.comp_hasDerivAt 0 h1`. Use `HasDerivAt.unique (f := fun r : ℝ => ρ (e p r) v) (x := 0) ?_ h1` and prove the remaining obligations. Use `h2 using 1` and compare the differences between its conclusion and the goal.
+
+Use function extensionality and compare the values at `r show _ = (ρ k * ρ (e p r)) v`. Rewrite using `[← map_mul, ← hcomm p r k hk, map_mul, mul_apply_eq_comp, hv.2 k hk]`. Both sides reduce to the same expression. Establish `hSl : ∀ v ∈ S, ∀ m : List (Fin N), m.foldr (fun i => d (qs i)) v ∈ S` using `fun v hv m => by`. Proceed by induction on `m with`.
+
+Consider the case `nil => exact hv`. Consider the case `cons i m ih => exact hS _ ih _ (hq i)`. Set `R : K → G → ℂ` to `fun v x => ∑ j, Λ j x ((l j).foldr (fun i => d (qs i)) v)`. Establish `hR : ∀ v ∈ S, Continuous (R v) ∧ ι v =ᵐ[μ] R v` using `fun v hv => by`. Use `⟨continuous_finsetSum _ fun j _ => (hΛ j _ (hSl v hv _).2).1, ?_⟩` and prove the remaining obligations.
+
+Establish `h1` using `hT (fun i => d (qs i)) S (fun w hw i => ⟨hS w hw _ (hq i), hw.1.hasDerivAt (hq i)⟩) v hv`. Establish `h2` using `rep_sum hlin Finset.univ fun j => ∫ t in Set.pi Set.univ (fun _ : Fin N => Set.Icc (0 : ℝ) s), κ j t • ρ (List.ofFn fun i => e (qs i) (t i)).prod ((l j).foldr (fun i => d (qs i)) v)`. Rewrite `h2` using `[← h1]`. Use `filter_upwards [h2, ae_all_iff.2 fun j => (hΛ j _ (hSl v hv (l j)).2).2] with x e1 e2`. Rewrite using `[e1]`.
+
+Conclude with `Finset.sum_congr rfl fun j _ => e2 j`. Use `⟨R, fun v h1 h2 => ⟨(hR v ⟨h1, h2⟩).1, (hR v ⟨h1, h2⟩).2, fun k ps hps g => ?_, fun p hp => ⟨(hS v ⟨h1, h2⟩ p hp).1, (hS v ⟨h1, h2⟩ p hp).2, hasDerivAt_rep hloc hlin hρ htr (he p hp).1 (he p hp).2.1 (he p hp).2.2 (h1.hasDerivAt hp) (hR v ⟨h1, h2⟩).1 (hR _ (hS v ⟨h1, h2⟩ p hp)).1 …` and prove the remaining obligations. Take `⟨-, s2, s3⟩` from `GlobalTheory.T.smooth_along_curve_products_stable_alt G K ρ P A e v h1`. Establish `e1 : ∀ t : Fin k → ℝ, R v (g * (List.ofFn fun i => e (ps i) (t i)).prod) = R (ρ (List.ofFn fun i => e (ps i) (t i)).prod v) g` using `fun t => by`. Establish `hm : ρ (List.ofFn fun i => e (ps i) (t i)).prod v ∈ S`.
+
+Use `⟨s2 k ps t hps, fun a ha => ?_⟩` and prove the remaining obligations. Establish `hc : Commute a (List.ofFn fun i => e (ps i) (t i)).prod` using `Commute.list_prod_right _ _ (List.forall_mem_ofFn_iff.2 fun i => (hcomm _ _ a ha).symm)`. Use `show (ρ a * ρ _) v = _`. Rewrite using `[← map_mul, hc.eq, map_mul, mul_apply_eq_comp, h2 a ha]`. Establish `hc` using `(hR v ⟨h1, h2⟩).1`.
+
+Conclude with `congrFun ((Continuous.ae_eq_iff_eq μ (by fun_prop) (hR _ hm).1).1 ((rep_tr htr (hR v ⟨h1, h2⟩).2 _).symm.trans (hR _ hm).2)) g`. Simplify using `only [e1]`. Use `ContDiff.sum fun j _ => ((Λ j g).restrictScalars ℝ).contDiff.comp ?_` and prove the remaining obligations. Establish `h3` using `s3 ((l j).map qs) (fun p hp => by`. Take `⟨i, -, rfl⟩` from `List.mem_map.1 hp`.
+
+Conclude with `hq i) k ps hps`. Simplify `h3` using `only [List.foldr_map]`.
+-/
 theorem exists_smooth_rep [μ.IsMulRightInvariant]
     (hloc : ∀ C, IsCompact C → ∃ M : ℝ, ∀ v, IntegrableOn (ι v) C μ ∧ ∫ x in C, ‖ι v x‖ ∂μ ≤ M * ‖v‖)
     (hlin : ∀ (a : ℂ) v w, ι (a • v + w) =ᵐ[μ] fun x => a * ι v x + ι w x) (hiso : ∀ g v, ‖ρ g v‖ = ‖v‖)
@@ -234,6 +293,11 @@ theorem exists_smooth_rep [μ.IsMulRightInvariant]
     exact hq i) k ps hps
   simpa only [List.foldr_map] using h3
 
+/- English proof (translation)
+Proceed by induction on `l with`. Consider the case `nil => exact ⟨hv, rfl⟩`. Consider the case `cons p l ih`. Take `⟨i1, i2⟩` from `ih fun q hq => hl q (List.mem_cons_of_mem _ hq)`. Rewrite using `[List.foldr_cons, List.foldr_cons, i2]`.
+
+Conclude with `h _ i1 p (hl p List.mem_cons_self)`.
+-/
 theorem foldr_rel {P X Y : Type} {A : P → Prop} {S : X → Prop} {d : P → X → X} {d' : P → Y → Y} {R : X → Y}
     (h : ∀ w, S w → ∀ p, A p → S (d p w) ∧ d' p (R w) = R (d p w)) {v : X} (hv : S v) (l : List P)
     (hl : ∀ p ∈ l, A p) : S (l.foldr d v) ∧ l.foldr d' (R v) = R (l.foldr d v) := by
@@ -252,6 +316,29 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 set_option maxHeartbeats 1000000 in
 
+/- English proof (translation)
+Introduce `D θ V hθ μ 𝓕 ρ hp hr U hU F hF hFU`. Take `⟨_, _, _, _, _, -, _⟩` from `GlobalTheory.Mem.AdelicGroupTop.adelic_unitary_topology D V`. Use `hp.haar` as an intermediate fact. Use `hp.right` as an intermediate fact. Take `⟨N, τs, Xs, s, S, K, W, hX, hs, hK, hW, h⟩` from `GlobalTheory.SobLoc.exists_adelic_chart hθ V U hU`.
+
+Take `⟨-, -, -, -, -, -, -, -, -, hH⟩` from `GlobalTheory.RealLift.exists_real_lift D θ V hθ`. Take `⟨B, hB, hBW, hBc⟩` from `local_compact_nhds hW`. Establish `hc` using `fun i => GlobalTheory.SobLoc.oneP_spec hθ V (hH (τs i)).2 (hX i)`. Establish `hΘ` using `GlobalTheory.continuous_prod_ofFn_curves N (fun i => oneP θ V (τs i) (Xs i)) fun i => (hc i).1`. Take `⟨C₁, hC₁, h₁⟩` from `GlobalTheory.T.le_mul_setIntegral_image2_of_forall_le_alt (GA D V) μ N _ (Metric.closedBall 0 S) B (K ^ N) hΘ (isCompact_closedBall _ _) hBc hB (pow_nonneg hK _)`.
+
+Establish `hΩ : IsCompact (Set.image2 (fun (t : Fin N → ℝ) b => (List.ofFn fun i => oneP θ V (τs i) (Xs i) (t i)).prod * b) (Metric.closedBall 0 S) B)`. Rewrite using `[← Set.image_prod]`. Conclude with `((isCompact_closedBall _ _).prod hBc).image ((hΘ.comp continuous_fst).mul continuous_snd)`. Take `⟨-, huniq, -, -, hlin, -⟩` from `GlobalTheory.HolDict.RepresentativeL2.repr_properties D V μ 𝓕 ρ hp hr`. Take `⟨R, hR⟩` from `exists_smooth_rep (μ := μ) (ι := fun (F : Lp ℂ 2 (nuQ V μ 𝓕)) x => F (autMk V x)) (ρ := ρ) (H := U ⊓ GfC V) (U := U) (A := {p : D.what₂.Tau × Mt V.rank | p.2 ∈ lieAt V p.1}) (e := fun p => oneP θ V p.1 p.2) (qs := fun i => (τs i, Xs i)) (fun C hC => by`.
+
+Take `⟨m, hm⟩` from `GlobalTheory.T.ncard_rationalPoints_translatedCompact_le_pow D θ V hθ C hC`. Take `⟨c, hc⟩` from `hm 1`. Use `GlobalTheory.T.fundamental_domain_L2_bound (GA D V) μ (GQ V) 𝓕 hp.fd C hC (c * normInf θ V 1 ^ m) fun y => ?_` and prove the remaining obligations. Simplify using `using hc 1 (one_mem _) y)`. Use the proof step `(fun a v w => hlin v w _ _ a (Filter.Eventually.of_forall fun _ => rfl) (Filter.Eventually.of_forall fun _ => rfl))`.
+
+Use the proof step `hr.iso hr.cont hr.val hU`. Use the proof step `(fun y hy k hk => ⟨U.mul_mem (U.mul_mem (U.inv_mem hy) hk.1) hy, (MonoidHom.normal_ker (infHom V)).conj_mem' k hk.2 y⟩)`. Use the proof step `(fun p hp => GlobalTheory.SobLoc.oneP_spec hθ V (hH p.1).2 hp)`. Use the proof step `(fun p t k hk => GlobalTheory.PointAtPlaceHom.comm_of_mem V (GlobalTheory.PointAtPlaceHom.atTau_mem V _ _) hk.2)`. Use `hX hs hΘ hΩ hC₁`.
+
+Use the proof step `(fun f hf hf0 hfk => h₁ f _ hf hf0 fun x hx => by`. Take `⟨φ, a, haU, ha, hφ, hφ'⟩` from `h x (hBW hx)`. Use `GlobalTheory.T.setIntegral_le_pow_mul_setIntegral_of_expanding N _ _ K φ (fun t => f (List.ofFn fun i => oneP θ V (τs i) (Xs i) (t i)).prod) (fun t => f ((List.ofFn fun i => oneP θ V (τs i) (Xs i) (t i)).prod * x)) (isCompact_univ_pi fun _ => isCompact_Icc) (isCompact_closedBall …` and prove the remaining obligations. Rewrite using `[(hφ t ht).2, hfk a ⟨haU, ha⟩])`. Establish `hF' : Sm ρ {p : D.what₂.Tau × Mt V.rank | p.2 ∈ lieAt V p.1} (fun p => oneP θ V p.1 p.2) F` using `fun k ps hps => hF k (fun i => (ps i).1) (fun i => (ps i).2) hps`.
+
+Establish `hFU' : ∀ k ∈ U ⊓ GfC V, ρ k F = F` using `fun k hk => hFU k hk.1 hk.2`. Take `⟨r1, r2, r3, -⟩` from `hR F hF' hFU'`. Establish `hR' : ∀ w, Sm ρ {p : D.what₂.Tau × Mt V.rank | p.2 ∈ lieAt V p.1} (fun p => oneP θ V p.1 p.2) w → (∀ k ∈ U ⊓ GfC V, ρ k w = w) → ∀ p : D.what₂.Tau × Mt V.rank, p.2 ∈ lieAt V p.1 → Sm ρ {p : D.what₂.Tau × Mt V.rank | p.2 ∈ lieAt V p.1} (fun p => oneP θ V p.1 p.2) (dL2 θ V ρ p w) ∧ …`. Introduce `w i1 i2 p hp`. Take `⟨j1, j2, j3⟩` from `(hR w i1 i2).2.2.2 p hp`.
+
+Unfold `dL2 Rder`. Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Use `j1` and compare the differences between its conclusion and the goal. Use `j2` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `x`.
+
+Use `(j3 x).deriv` and compare the differences between its conclusion and the goal. Establish `hw` using `foldr_rel (A := fun p : D.what₂.Tau × Mt V.rank => p.2 ∈ lieAt V p.1) (S := fun w => Sm ρ {p : D.what₂.Tau × Mt V.rank | p.2 ∈ lieAt V p.1} (fun p => oneP θ V p.1 p.2) w ∧ ∀ k ∈ U ⊓ GfC V, ρ k w = w) (d := dL2 θ V ρ) (d' := fun p f => Rder θ V p.1 p.2 f) (R := R) (fun w i p hp => …`. Use `⟨R F, r2, ⟨fun γ hγ g => ?_, ⟨U, hU, fun k hk hk' g => ?_⟩, r1⟩, fun k τs Xs hX g => r3 k (fun i => (τs i, Xs i)) hX g, fun l hl => ?_⟩` and prove the remaining obligations. Use `congrFun (huniq F (fun x => R F (γ * x)) (R F) (by fun_prop) r1 ?_ r2) g filter_upwards [(measurePreserving_mul_left μ γ).quasiMeasurePreserving.ae r2] with x hx` and prove the remaining obligations. Rewrite using `[← hx]`.
+
+Use `congr 1`. Use `Quotient.sound (QuotientGroup.rightRel_apply.2 ?_)` and prove the remaining obligations. Simplify using `using hγ`. Use `congrFun (huniq F (fun x => R F (x * k)) (R F) (by fun_prop) r1 ?_ r2) g filter_upwards [(measurePreserving_mul_right μ k).quasiMeasurePreserving.ae r2, hr.val k F] with x hx hx'` and prove the remaining obligations. Rewrite using `[← hx, ← hx', hFU k hk hk']`.
+
+Take `⟨⟨i1, i2⟩, i3⟩` from `hw l hl`. Rewrite using `[i3]`. Conclude with `⟨(hR _ i1 i2).1, (hR _ i1 i2).2.1⟩`.
+-/
 theorem exists_smooth_repr : ∀ (D : D7) (θ : InfFam D) (V : HSp D), IsInfFam θ → ∀ (μ : Measure (GA D V)) (𝓕 : Set (GA D V)) (ρ : GA D V →* (Lp ℂ 2 (nuQ V μ 𝓕) →L[ℂ] Lp ℂ 2 (nuQ V μ 𝓕))), FinPair V μ 𝓕 → IsReg V μ 𝓕 ρ → ∀ U : Subgroup (GA D V), IsOpen (U : Set (GA D V)) → ∀ F, IsSmoothVector' θ V ρ F → (∀ k ∈ U, k ∈ GfC V → ρ k F = F) → ∃ ψ, Repr V μ 𝓕 F ψ ∧ IsAutFun V ψ ∧ (∀ (k : ℕ) (τs : Fin k → D.what₂.Tau) (Xs : Fin k → Mt V.rank), (∀ i, Xs i ∈ lieAt V (τs i)) → ∀ g, ContDiff ℝ ∞ fun t : Fin k → ℝ => ψ (g * (List.ofFn fun i => oneP θ V (τs i) (Xs i) (t i)).prod)) ∧ ∀ l : List (D.what₂.Tau × Mt V.rank), (∀ p ∈ l, p.2 ∈ lieAt V p.1) → Continuous (l.foldr (fun p f => Rder θ V p.1 p.2 f) ψ) ∧ Repr V μ 𝓕 (l.foldr (dL2 θ V ρ) F) (l.foldr (fun p f => Rder θ V p.1 p.2 f) ψ) := by
   intro D θ V hθ μ 𝓕 ρ hp hr U hU F hF hFU
   obtain ⟨_, _, _, _, _, -, _⟩ := GlobalTheory.Mem.AdelicGroupTop.adelic_unitary_topology D V

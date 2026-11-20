@@ -10,6 +10,15 @@ noncomputable section
 open NumberField Formalism.BasicNotions Formalism.MainNotions Formalism.L2 Formalism.L2.DIV Formalism.L2.Pj Formalism.IndefR.Links ReciprocityTheory.ChartRestriction.G.Geo.Tor ReciprocityTheory.ChartRestriction.G.FD GlobalTheory.AllWt GlobalTheory.CompHt GlobalTheory.BigTop GlobalTheory.CovTop
 namespace GlobalTheory.CovTop.FlatVal
 variable {D : D7} {L : SizeData₂ D}
+/- English proof (translation)
+Introduce `hF`. Use `Closed.imp (Closed.and hF (_root_.GlobalTheory.CovTop.Sizes.hostN_alt 0)) ?_` and prove the remaining obligations. Introduce and unpack `eps Fm CH _ ⟨⟨C, -, h1⟩, A, -, h2⟩`. Take `⟨x0, h⟩` from `h1.and h2`. Use `⟨0, le_rfl, x0, fun x hx hle ι p hp i hi Y hY => ?_⟩` and prove the remaining obligations.
+
+Take `⟨a, b⟩` from `h x hx hle ι p hp`. Establish `hN` using `b i`. Establish `hD : GlobalTheory.FlatLine.FlatDegree Y.U _ _` using `a i hi Y hY`. Establish `hT` using `p.fw.laws`. Establish `hj : InR (Fm.D x ι) ((i : ℕ) + 1)` using `⟨by omega, hi.le⟩`.
+
+Establish `hpos` using `Inhab.rank_pos _ hT.pins _ hj`. Use `⟨isComplexData hT hj hY.1, (GlobalTheory.LawsDeep.laws_deep _ _ _ Y _ _ hT hj hY.1).good, hD.flatExists, fun τ => ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[hD.c1_eq (GlobalTheory.GeomIrr.compNe_and_exists_fnAlgClosed _ _ _ _ Y.d.Xo₂ Y.d.c₂ hpos).1, hT.pins.1.1]`. Establish `e : ∀ u v : ℝ, -u - v + u = -v` using `fun u v => by ring`. Rewrite using `[e, abs_neg, abs_mul, Nat.abs_cast, mul_comm 3, mul_assoc]`.
+
+Conclude with `mul_le_mul_of_nonneg_left (abs_log_sub_lrd_le hN) (Nat.cast_nonneg _)`. Conclude with `(GlobalTheory.BadLog.logSum_le_log (GlobalTheory.BadLog.log_level_le (Fm.params x hx ι)).1 fun q hq => GlobalTheory.BadLog.dvd_of_mem_badPrimes hT.pins hY.1 hq).trans (log_level_le (Fm.params x hx ι) hN)`.
+-/
 theorem flat_val_alt : _root_.GlobalTheory.CovTop.FlatDegreeCondition → _root_.GlobalTheory.CovTop.CoversCondition fun Fm x _ ι p i Y _ _ => GlobalTheory.IndefiniteRowSideFullHecke.ComponentMassSum.IsComplexData Y.U (fun _ => (Fm.D x ι).sp.W ((i : ℕ) + 1)) Y.dict ∧ (∀ q : ℕ, q.Prime → Y.d.l₂.GoodAt q) ∧ GlobalTheory.FlatLine.FlatExists Y.U (xiR (Fm.D x ι)) ∧ (∀ τ, |GlobalTheory.FlatLine.c1 Y.U (xiR (Fm.D x ι)) τ + (((dat p i).p : ℝ) - (dat p i).q) / 2 * (ofRecord (Fm.D x ι) (Fm.L x ι) p.Del p.h0).logOm| ≤ 3 * (dat p i).q * (Fm.L x ι).sc.L) ∧ GlobalTheory.FlatTw.logSum (GlobalTheory.FlatTw.badPrimes p.T.Q.H Y.d.l₂) ≤ 40 * (Fm.L x ι).sc.L := by
   intro hF
   refine Closed.imp (Closed.and hF (_root_.GlobalTheory.CovTop.Sizes.hostN_alt 0)) ?_

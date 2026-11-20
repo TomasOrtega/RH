@@ -16,6 +16,11 @@ section LocalIntegers
 variable {F E : Type*} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
   [Algebra.IsQuadraticExtension F E] (v : HeightOneSpectrum (𝓞 F))
 
+/- English proof (translation)
+Rewrite using `[locIntegers, mem_integralClosure_iff]`. Take `⟨p, hp, hpx⟩` from `hx`. Use `⟨p.map (Int.castRingHom (v.adicCompletionIntegers F)), hp.map _, ?_⟩` and prove the remaining obligations. Use `set g : E →+* v.adicCompletion F ⊗[F] E := (Algebra.TensorProduct.includeRight : E →ₐ[F] v.adicCompletion F ⊗[F] E).toRingHom`. Establish `e : (algebraMap (v.adicCompletionIntegers F) (v.adicCompletion F ⊗[F] E)).comp (Int.castRingHom (v.adicCompletionIntegers F)) = g.comp (algebraMap ℤ E)` using `RingHom.ext_int _ _`.
+
+Rewrite using `[Polynomial.eval₂_map, e]`. Use `show Polynomial.eval₂ (g.comp (algebraMap ℤ E)) (g x) p = 0`. Rewrite using `[← Polynomial.hom_eval₂, hpx, map_zero]`.
+-/
 theorem one_tmul_mem_locIntegers {x : E} (hx : IsIntegral ℤ x) :
     (1 : v.adicCompletion F) ⊗ₜ[F] x ∈ locIntegers F E v := by
   rw [locIntegers, mem_integralClosure_iff]
@@ -39,6 +44,9 @@ section Scaling
 variable {F E : Type*} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
   [Algebra.IsQuadraticExtension F E] (v : HeightOneSpectrum (𝓞 F))
 
+/- English proof (translation)
+Establish `hv : Valued.v (algebraMap F (v.adicCompletion F) (c : F)) = v.valuation F (c : F)` using `HeightOneSpectrum.valuedAdicCompletion_eq_valuation' v (c : F)`. Rewrite using `[HeightOneSpectrum.mem_adicCompletionIntegers, map_inv₀, hv, show (c : F) = algebraMap (𝓞 F) F c from rfl, HeightOneSpectrum.valuation_of_algebraMap, (HeightOneSpectrum.intValuation_eq_one_iff_mem_primeCompl v c).2 hc, inv_one]`.
+-/
 theorem inv_mem_of_notMem {c : 𝓞 F} (hc : c ∉ v.asIdeal) :
     (algebraMap F (v.adicCompletion F) (c : F))⁻¹ ∈ v.adicCompletionIntegers F := by
   have hv : Valued.v (algebraMap F (v.adicCompletion F) (c : F)) = v.valuation F (c : F) :=
@@ -60,17 +68,44 @@ variable {F E : Type*} [Field F] [NumberField F] [Field E] [NumberField E] [Alge
 
 variable (v : HeightOneSpectrum (𝓞 F))
 
+/- English proof (translation)
+Establish `hv : Valued.v (algebraMap F (v.adicCompletion F) x) = v.valuation F x` using `HeightOneSpectrum.valuedAdicCompletion_eq_valuation' v x`. Rewrite using `[HeightOneSpectrum.mem_adicCompletionIntegers, hv]`.
+-/
 theorem algebraMap_mem_iff (x : F) :
     algebraMap F (v.adicCompletion F) x ∈ v.adicCompletionIntegers F ↔ v.valuation F x ≤ 1 := by
   have hv : Valued.v (algebraMap F (v.adicCompletion F) x) = v.valuation F x :=
     HeightOneSpectrum.valuedAdicCompletion_eq_valuation' v x
   rw [HeightOneSpectrum.mem_adicCompletionIntegers, hv]
 
+/- English proof (translation)
+Rewrite using `[algebraMap_mem_iff]`. Conclude with `HeightOneSpectrum.valuation_le_one v c`.
+-/
 theorem algebraMap_integer_mem (c : 𝓞 F) :
     algebraMap F (v.adicCompletion F) (c : F) ∈ v.adicCompletionIntegers F := by
   rw [algebraMap_mem_iff]
   exact HeightOneSpectrum.valuation_le_one v c
 
+/- English proof (translation)
+Establish `hNF : (N : F) ≠ 0` using `by exact_mod_cast hN`. Use `set n := algebraMap F (v.adicCompletion F) (N : F) with hn_def`. Establish `hn0 : n ≠ 0` using `by rw [hn_def, map_ne_zero]; exact hNF`. Establish `hnO : n ∈ v.adicCompletionIntegers F` using `algebraMap_integer_mem v N`. Establish `hcont : Continuous fun y : v.adicCompletion F => (y - r) * n⁻¹` using `(continuous_id.sub continuous_const).mul continuous_const`.
+
+Establish `hopen : IsOpen ((fun y : v.adicCompletion F => (y - r) * n⁻¹) ⁻¹' (v.adicCompletionIntegers F : Set (v.adicCompletion F)))` using `(Valued.isOpen_valuationSubring (v.adicCompletion F)).preimage hcont`. Establish `hr0 : r ∈ (fun y : v.adicCompletion F => (y - r) * n⁻¹) ⁻¹' (v.adicCompletionIntegers F : Set (v.adicCompletion F))` using `by show (r - r) * n⁻¹ ∈ v.adicCompletionIntegers F`. Rewrite using `[sub_self, zero_mul]`. Conclude with `zero_mem _`. Take `⟨f, hf⟩` from `(HeightOneSpectrum.denseRange_algebraMap (R := 𝓞 F) (K := F) v).exists_mem_open hopen ⟨r, hr0⟩`.
+
+Express the relevant statement in the definitionally equal form `(algebraMap F (v.adicCompletion F) f - r) * n⁻¹ ∈ v.adicCompletionIntegers F at hf`. Establish `hfO : algebraMap F (v.adicCompletion F) f ∈ v.adicCompletionIntegers F`. Establish `: algebraMap F (v.adicCompletion F) f = ((algebraMap F (v.adicCompletion F) f - r) * n⁻¹) * n + r` using `by field_simp; ring`. Rewrite using `[this]`. Conclude with `add_mem (mul_mem hf hnO) hr`.
+
+Take `⟨k, hk1, hk2⟩` from `GroundTheory.Global.exists_valuation_sub_le_one (R := 𝓞 F) (K := F) (insert v S) (fun u => if u = v then f / N else 0)`. Establish `hkv : algebraMap F (v.adicCompletion F) (k - f / N) ∈ v.adicCompletionIntegers F`. Rewrite using `[algebraMap_mem_iff]`. Simplify using `using hk1 v (Finset.mem_insert_self v S)`. Establish `hkS : ∀ u ∈ S, u ≠ v → algebraMap F (u.adicCompletion F) k ∈ u.adicCompletionIntegers F`.
+
+Introduce `u hu huv`. Rewrite using `[algebraMap_mem_iff]`. Simplify `hk1 u (Finset.mem_insert_of_mem hu)` using `[huv]`. Establish `hint : ∀ u : HeightOneSpectrum (𝓞 F), u.valuation F ((N : F) * k) ≤ 1`. Introduce `u`.
+
+Rewrite using `[← algebraMap_mem_iff]`. Distinguish the cases in `huv : u = v`. Substitute `huv` using the available equality. Establish `: algebraMap F (u.adicCompletion F) ((N : F) * k) = algebraMap F (u.adicCompletion F) (N : F) * algebraMap F (u.adicCompletion F) (k - f / N) + algebraMap F (u.adicCompletion F) f`. Rewrite using `[← map_mul, ← map_add]`.
+
+Use `congr 1`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[this]`. Conclude with `add_mem (mul_mem (algebraMap_integer_mem u N) hkv) hfO`.
+
+Rewrite using `[map_mul]`. Use `mul_mem (algebraMap_integer_mem u N) ?_` and prove the remaining obligations. Distinguish the cases in `huS : u ∈ S`. Conclude with `hkS u huS huv`. Rewrite using `[algebraMap_mem_iff]`.
+
+Conclude with `hk2 u (by simp [huv, huS])`. Take `⟨b, hb⟩` from `HeightOneSpectrum.mem_integers_of_valuation_le_one F ((N : F) * k) hint`. Establish `hbF : (b : F) = (N : F) * k` using `hb`. Use `⟨b, ⟨algebraMap F (v.adicCompletion F) (k - f / N) + (algebraMap F (v.adicCompletion F) f - r) * n⁻¹, add_mem hkv hf, ?_⟩, fun u hu huv => ⟨algebraMap F (u.adicCompletion F) k, hkS u hu huv, by rw [hbF, map_mul]⟩⟩` and prove the remaining obligations. Rewrite using `[hbF, map_mul, mul_add, map_sub, map_div₀, ← hn_def]`.
+
+Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem exists_approx (S : Finset (HeightOneSpectrum (𝓞 F))) (N : 𝓞 F) (hN : N ≠ 0)
     {r : v.adicCompletion F} (hr : r ∈ v.adicCompletionIntegers F) :
     ∃ b : 𝓞 F, (∃ o ∈ v.adicCompletionIntegers F,

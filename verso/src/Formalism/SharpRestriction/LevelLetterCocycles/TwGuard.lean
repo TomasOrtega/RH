@@ -13,6 +13,11 @@ def SetAt (D : D7) (i : D.ntw.Tw) (v : HeightOneSpectrum (𝓞 D.LL0)) : Prop :=
   ∀ x : 𝓞 D.LL0, (∃ y ∈ IsLocalRing.maximalIdeal (D.ntw.O0 i),
       algebraMap (D.ntw.O0 i) (FractionRing (D.ntw.O0 i)) y = D.ntw.emb0 i (x : D.LL0)) ↔ x ∈ v.asIdeal
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨w', hmu, hx⟩`. Take `⟨v, hv, hov⟩` from `(hW w').1 hmu`. Conclude with `⟨v, hv, fun x => (hx x).trans (hov x)⟩`. Introduce and unpack `⟨v, hv, hs⟩`.
+
+Take `⟨w', hov⟩` from `hExt v hv`. Conclude with `⟨w', (hW w').2 ⟨v, hv, hov⟩, fun x => (hs x).trans (hov x).symm⟩`.
+-/
 theorem nonzeroIndexPlace_iff_exists_setAt (D : D7) (W : Set (HeightOneSpectrum (𝓞 D.LL0)))
     (hW : ∀ w', D.what₂.muAt w' ≠ D.what₂.mu0 ↔ ∃ v ∈ W, PlaceLiesOver D w' v)
     (hExt : ∀ v ∈ W, ∃ w', PlaceLiesOver D w' v) (i : D.ntw.Tw) :
@@ -27,15 +32,30 @@ theorem nonzeroIndexPlace_iff_exists_setAt (D : D7) (W : Set (HeightOneSpectrum 
 
 abbrev integersBaseMap (D : D7) : 𝓞 D.LL0 →+* 𝓞 D.what₂.LL := RingOfIntegers.mapRingHom D.LL0.val.toRingHom
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem integersBaseMap_coe (D : D7) (x : 𝓞 D.LL0) :
     algebraMap (𝓞 D.what₂.LL) D.what₂.LL (integersBaseMap D x) = ((x : D.LL0) : D.what₂.LL) := rfl
 
+/- English proof (translation)
+Introduce `a b h`. Establish `h1` using `congrArg (algebraMap (𝓞 D.what₂.LL) D.what₂.LL) h`. Rewrite `h1` using `[integersBaseMap_coe, integersBaseMap_coe]`. Conclude with `FaithfulSMul.algebraMap_injective (𝓞 D.LL0) D.LL0 (Subtype.ext h1)`.
+-/
 theorem integersBaseMap_injective (D : D7) : Function.Injective (integersBaseMap D) := by
   intro a b h
   have h1 := congrArg (algebraMap (𝓞 D.what₂.LL) D.what₂.LL) h
   rw [integersBaseMap_coe, integersBaseMap_coe] at h1
   exact FaithfulSMul.algebraMap_injective (𝓞 D.LL0) D.LL0 (Subtype.ext h1)
 
+/- English proof (translation)
+Establish `h0 : la.valuation K (a : K) ≠ 0`. Rewrite using `[Ne, Valuation.zero_iff]`. Conclude with `ha` after adjusting the coercions. Establish `hle` using `la.valuation_le_one (K := K) a`. Establish `hlt : la.valuation K (algebraMap (𝓞 K) K a) < 1 ↔ a ∈ la.asIdeal` using `la.valuation_lt_one_iff_mem a`.
+
+Unfold `vAdd`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Assume the negation of the conclusion as `hm`. Establish `h1 : la.valuation K (a : K) = 1` using `le_antisymm hle (not_lt.1 fun h' => hm (hlt.1 h'))`.
+
+Rewrite `h` using `[h1]`. Simplify using `at h`. Introduce `hm`. Establish `h2 : la.valuation K (a : K) < 1` using `hlt.2 hm`. Establish `h3` using `(WithZero.log_lt_log h0 one_ne_zero).2 h2`.
+
+Simplify using `at h3`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem vAdd_pos_iff_mem {K : Type} [Field K] [NumberField K] (la : HeightOneSpectrum (𝓞 K)) {a : 𝓞 K}
     (ha : a ≠ 0) : 0 < vAdd la (a : K) ↔ a ∈ la.asIdeal := by
   have h0 : la.valuation K (a : K) ≠ 0 := by
@@ -56,6 +76,23 @@ theorem vAdd_pos_iff_mem {K : Type} [Field K] [NumberField K] (la : HeightOneSpe
     simp at h3
     omega
 
+/- English proof (translation)
+Use `letI : Algebra (𝓞 D.LL0) (𝓞 D.what₂.LL) := (integersBaseMap D).toAlgebra`. Use `haveI hint : Algebra.IsIntegral (𝓞 D.LL0) (𝓞 D.what₂.LL) := ⟨fun x => (Algebra.IsIntegral.isIntegral (R := ℤ) x).tower_top⟩`. Take `⟨Q, -, hQ, hQv⟩` from `Ideal.exists_ideal_over_prime_of_isIntegral v.asIdeal (⊥ : Ideal (𝓞 D.what₂.LL)) (by`. Introduce `x hx`. Rewrite `hx` using `[Ideal.mem_comap, Ideal.mem_bot]`.
+
+Establish `: x = 0` using `integersBaseMap_injective D (by rw [map_zero]; exact hx)`. Rewrite using `[this]`. Conclude with `Ideal.zero_mem _)`. Establish `hQ0 : Q ≠ ⊥`. Introduce and unpack `rfl`.
+
+Apply `v.ne_bot` to reduce the goal to its premises. Rewrite using `[← hQv, eq_bot_iff]`. Introduce `x hx`. Rewrite `hx` using `[Ideal.mem_comap, Ideal.mem_bot]`. Rewrite using `[Ideal.mem_bot]`.
+
+Conclude with `integersBaseMap_injective D (by rw [map_zero]; exact hx)`. Set `P : HeightOneSpectrum (𝓞 D.what₂.LL)` to `⟨Q, hQ, hQ0⟩`. Use `⟨D.plEq.symm P, fun x => ?_⟩` and prove the remaining obligations. Establish `hmem : x ∈ v.asIdeal ↔ integersBaseMap D x ∈ Q`. Rewrite using `[← hQv, Ideal.mem_comap]`.
+
+Both sides reduce to the same expression. Distinguish the cases in `hx : x = 0`. Substitute `hx` using the available equality. Simplify using `only [ZeroMemClass.coe_zero, map_zero, Submodule.zero_mem, iff_true]`. Rewrite using `[AddValuation.map_zero]`.
+
+Conclude with `WithTop.coe_lt_top (0 : ℤ)`. Establish `hx' : ((x : D.LL0) : D.what₂.LL) ≠ 0`. Introduce `h`. Apply `hx` to reduce the goal to its premises. Apply `integersBaseMap_injective D` to reduce the goal to its premises.
+
+Apply `FaithfulSMul.algebraMap_injective (𝓞 D.what₂.LL) D.what₂.LL` to reduce the goal to its premises. Rewrite using `[integersBaseMap_coe, h, map_zero, map_zero]`. Rewrite using `[D.val_eq _ _ hx', Equiv.apply_symm_apply, hmem, ← integersBaseMap_coe]`. Establish `hne : integersBaseMap D x ≠ 0` using `fun h => hx (integersBaseMap_injective D (by rw [h, map_zero]))`. Rewrite using `[WithTop.coe_pos]`.
+
+Conclude with `vAdd_pos_iff_mem P hne`.
+-/
 theorem exists_placeOver_of_place (D : D7) (v : HeightOneSpectrum (𝓞 D.LL0)) : ∃ w', PlaceLiesOver D w' v := by
   letI : Algebra (𝓞 D.LL0) (𝓞 D.what₂.LL) := (integersBaseMap D).toAlgebra
   haveI hint : Algebra.IsIntegral (𝓞 D.LL0) (𝓞 D.what₂.LL) :=
@@ -94,6 +131,9 @@ theorem exists_placeOver_of_place (D : D7) (v : HeightOneSpectrum (𝓞 D.LL0)) 
     rw [WithTop.coe_pos]
     exact vAdd_pos_iff_mem P hne
 
+/- English proof (translation)
+The claim follows from `nonzeroIndexPlace_iff_exists_setAt D W hW (fun v _ => exists_placeOver_of_place D v) i`.
+-/
 theorem inNonzeroPlaces_recursive_iff (D : D7) (W : Set (HeightOneSpectrum (𝓞 D.LL0)))
     (hW : ∀ w', D.what₂.muAt w' ≠ D.what₂.mu0 ↔ ∃ v ∈ W, PlaceLiesOver D w' v) (i : D.ntw.Tw) :
     D.ntw.NonzeroIndexPlace i ↔ ∃ v ∈ W, SetAt D i v :=

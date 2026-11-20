@@ -16,17 +16,30 @@ open scoped Classical
 
 namespace GlobalTheory.Shin.PairPM
 
+/- English proof (translation)
+Simplify using `only [rootSum, pow_zero, Multiset.map_const', Multiset.sum_replicate, nsmul_eq_mul, mul_one]`. Rewrite using `[IsAlgClosed.card_roots_eq_natDegree, natDegree_map]`.
+-/
 theorem rootSum_zero {K : Type} [Field K] (θ : AlgebraicClosure K →* ℂ) (P : K[X]) :
     rootSum θ 0 P = (P.natDegree : ℂ) := by
   simp only [rootSum, pow_zero, Multiset.map_const', Multiset.sum_replicate, nsmul_eq_mul, mul_one]
   rw [IsAlgClosed.card_roots_eq_natDegree, natDegree_map]
 
+/- English proof (translation)
+Use `haveI : Finite F := Finite.of_injective _ (algebraMap F F').injective`. Use `haveI := Fintype.ofFinite F`. Use `haveI := Fintype.ofFinite F'`. Rewrite using `[Nat.card_eq_fintype_card, Nat.card_eq_fintype_card, Module.card_eq_pow_finrank (K := F) (V := F')]`.
+-/
 theorem natCard_ext (F F' : Type) [Field F] [Field F'] [Algebra F F'] [Finite F'] :
     Nat.card F' = Nat.card F ^ Module.finrank F F' := by
   haveI : Finite F := Finite.of_injective _ (algebraMap F F').injective
   haveI := Fintype.ofFinite F; haveI := Fintype.ofFinite F'
   rw [Nat.card_eq_fintype_card, Nat.card_eq_fintype_card, Module.card_eq_pow_finrank (K := F) (V := F')]
 
+/- English proof (translation)
+Establish `H` using `finsum_cusp_mul_star_chG K θ hθ m e 0 hm`. Establish `hf : (Finset.range m).filter (fun i => e * Nat.card K ^ i ≡ 0 [MOD Nat.card K ^ m - 1]) = ∅`. Use extensionality with `i`. Simplify using `[h i]`. Rewrite `H` using `[hf]`.
+
+Establish `hc : ∀ x : GL (Fin m) K, star (chG (rootSum θ 0) m x) = (m : ℂ)`. Introduce `x`. Simplify using `[chG, rootSum_zero, Matrix.charpoly_natDegree_eq_dim]`. Simplify using `only [hc, Finset.card_empty, Nat.cast_zero, mul_zero] at H`. Rewrite `H` using `[← finsum_mul]`.
+
+Conclude with `(mul_eq_zero.1 H).resolve_right (by exact_mod_cast hm.ne')`.
+-/
 theorem sum_cusp_eq_zero {K : Type} [Field K] [Finite K] (θ : AlgebraicClosure K →* ℂ)
     (hθ : ∀ x y : AlgebraicClosure K, x ≠ 0 → y ≠ 0 → θ x = θ y → x = y) (m e : ℕ) (hm : 0 < m)
     (h : ∀ a, ¬ e * Nat.card K ^ a ≡ 0 [MOD Nat.card K ^ m - 1]) :
@@ -41,6 +54,17 @@ theorem sum_cusp_eq_zero {K : Type} [Field K] [Finite K] (θ : AlgebraicClosure 
   rw [← finsum_mul] at H
   exact (mul_eq_zero.1 H).resolve_right (by exact_mod_cast hm.ne')
 
+/- English proof (translation)
+Introduce `i j hi hj`. Rewrite using `[finsum_cusp_mul_star_chG K θ hθ m _ _ hm, hK]`. Establish `h3` using `(reg_step_of_dvd q l m k hq hl hm hreg).2.2 i j`. Establish `hf : (Finset.range m).filter (fun a => k * q ^ i * (q ^ l) ^ a ≡ k * q ^ j [MOD (q ^ l) ^ m - 1]) = if i = j then {0} else ∅`. Use extensionality with `a`.
+
+Simplify using `only [Finset.mem_filter, Finset.mem_range]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨ha, h⟩`. Take `⟨rfl, rfl⟩` from `(h3 a hi hj ha).1 h`. Simplify using the standard rewrite rules.
+
+Introduce `h`. Distinguish the cases in `hij : i = j`. Rewrite `h` using `[if_pos hij, Finset.mem_singleton]`. Substitute `h` using the available equality. Substitute `hij` using the available equality.
+
+Conclude with `⟨hm, (h3 0 hi hi hm).2 ⟨rfl, rfl⟩⟩`. Rewrite `h` using `[if_neg hij]`. Simplify using `at h`. Rewrite using `[hf]`. Distinguish the cases in `hij : i = j`.
+
+Simplify using `[hij]`. Simplify using `[hij]`.
+-/
 theorem gram_lift {K : Type} [Field K] [Finite K] (θ : AlgebraicClosure K →* ℂ)
     (hθ : ∀ x y : AlgebraicClosure K, x ≠ 0 → y ≠ 0 → θ x = θ y → x = y) (q l m k : ℕ) (hq : 2 ≤ q)
     (hl : 0 < l) (hm : 0 < m) (hK : Nat.card K = q ^ l) (hreg : Reg q (l * m) k) :
@@ -69,6 +93,9 @@ theorem gram_lift {K : Type} [Field K] [Finite K] (θ : AlgebraicClosure K →* 
   · simp [hij]
   · simp [hij]
 
+/- English proof (translation)
+The claim follows from `| [], _ => by intro h; simp [deg] at h | p :: L, hL => by have hp := hL p (List.mem_cons_self ..) have hL' : ∀ p ∈ L, 0 < p.1 ∧ Reg (Nat.card K) p.1 p.2 ∧ (2 ≤ p.1 ∨ ¬ p.2 ≡ 0 [MOD Nat.card K - 1]) := fun p' h' => hL p' (List.mem_cons_of_mem _ h') rw [J_cons] have hdeg : deg (p : …`.
+-/
 theorem hfree_J {K : Type} [Field K] [Finite K] (θ : AlgebraicClosure K →* ℂ)
     (hθ : ∀ x y : AlgebraicClosure K, x ≠ 0 → y ≠ 0 → θ x = θ y → x = y) :
     ∀ L : List (ℕ × ℕ), (∀ p ∈ L, 0 < p.1 ∧ Reg (Nat.card K) p.1 p.2 ∧
@@ -89,6 +116,31 @@ end GlobalTheory.Shin.PairPM
 
 namespace GlobalTheory.Shin.PairPM
 
+/- English proof (translation)
+Introduce `F F' _ _ _ _ s hl _ ι θ hθ m k n hm hn hreg`. Use `haveI : Finite F := Finite.of_injective _ (algebraMap F F').injective`. Establish `hK : Nat.card F' = Nat.card F ^ Module.finrank F F'` using `natCard_ext F F'`. Use `set l := Module.finrank F F' with hl_def`. Use `set q := Nat.card F with hq_def`.
+
+Establish `hq : 2 ≤ q` using `Finite.one_lt_card`. Establish `hl0 : 0 < l` using `hl.pos`. Establish `hl2 : 2 ≤ l` using `hl.two_le`. Establish `hreg' : Reg q (l * m) k` using `hn ▸ hreg`. Establish `hR` using `reg_step_of_dvd q l m k hq hl0 hm hreg'`.
+
+Establish `hLL : liftL q l [(n, k)] = (List.range l).map (fun i => (m, k * q ^ i))`. Simplify using `[liftL, hn, Nat.mul_div_cancel_left _ hl0]`. Take `⟨hdeg, hmem⟩` from `GlobalTheory.T.deg_liftL_and_reg_pow q l [(n, k)] hq hl0 (by`. Introduce `p hp`. Rewrite `hp` using `[List.mem_singleton]`.
+
+Substitute `hp` using the available equality. Conclude with `⟨by rw [hn]; exact Nat.mul_pos hl0 hm, by rw [hn]; exact dvd_mul_right _ _, hreg⟩)`. Establish `hdeg' : deg (liftL q l [(n, k)]) = n` using `by rw [hdeg]; simp [deg]`. Establish `hY` using `GlobalTheory.T.isCharacter_harishChandraProductCuspidalGL_of_regular F' θ hθ (liftL q l [(n, k)]) (fun p hp => by rw [hK]; exact hmem p hp) n hdeg'.symm`. Establish `hF` using `hfree_J θ hθ (liftL q l [(n, k)]) (by`.
+
+Introduce `p hp`. Use `⟨(hmem p hp).1, by rw [hK]; exact (hmem p hp).2, ?_⟩` and prove the remaining obligations. Rewrite `hp` using `[hLL, List.mem_map]`. Take `⟨i, -, rfl⟩` from `hp`. Distinguish the cases in `h2 : 2 ≤ m`.
+
+Conclude with `Or.inl h2`. Use `right`. Establish `h1 : m = 1` using `by omega`. Use `hR.2.1 (by nlinarith) i` as an intermediate fact. Rewrite `this` using `[h1, mul_one]`.
+
+Rewrite using `[hK]`. Conclude with `this)`. Rewrite `hF` using `[hdeg']`. Use `⟨((-1 : ℤ) ^ (m - 1)) ^ l, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[← pow_mul]`.
+
+Conclude with `neg_one_pow_eq_or ℤ _`. Rewrite using `[GlobalTheory.T.finsum_psiG_mul_star_eq_chG F' _ n _ hY hF]`. Establish `hS : chG (fun P => ∏ t : F' ≃ₐ[F] F', rootSum θ k (P.map (t : F' →+* F'))) n = chG (fun P => ∏ j ∈ Finset.range l, rootSum θ (k * q ^ j) P) n`. Use function extensionality and compare the values at `x`. Simplify using `only [chG]`.
+
+Conclude with `GlobalTheory.T.prod_rootPowerSum_map_galois_eq F F' θ k _`. Rewrite using `[hS]`. Establish `hZ` using `GlobalTheory.T.pairing_cuspidalCharacterGL_rootPowerSumCharacter F' θ m (fun i => k * q ^ i) ((-1) ^ (m - 1)) (fun i => sum_cusp_eq_zero θ hθ m _ hm (by`. Introduce `a`. Rewrite using `[hK, ← pow_mul, ← pow_mul, mul_assoc, ← pow_add]`.
+
+Conclude with `hR.2.1 (by nlinarith) _))`. Use `l (gram_lift θ hθ q l m k hq hl0 hm hK hreg') (List.range l) (Finset.range l) List.nodup_range`. Use the proof step `(fun i hi => List.mem_range.1 hi) (fun j hj => Finset.mem_range.1 hj) (by simp) n`. Use the proof step `(by rw [hn, List.length_range, mul_comm])`. Rewrite `hZ` using `[List.toFinset_range, if_pos rfl, List.length_range, ← hLL]`.
+
+Establish `hst : ∀ (a b : GL (Fin n) F' → ℂ), ∑ᶠ x, a x * star (b x) = star (∑ᶠ x, b x * star (a x))`. Introduce `a b`. Rewrite using `[show star (∑ᶠ x, b x * star (a x)) = starAddEquiv (∑ᶠ x, b x * star (a x)) from rfl, map_finsum _ (Set.toFinite _)]`. Use `finsum_congr fun x => ?_` and prove the remaining obligations. Simplify using `[star_mul]`.
+
+Rewrite using `[hst, hZ]`. Use `push_cast`. Simplify using `[star_pow]`.
+-/
 theorem pairing_pm_one : ∀ (F F' : Type) [Field F] [Field F'] [Algebra F F'] [Finite F'] (s : F' ≃ₐ[F] F'),
     (Module.finrank F F').Prime → s ≠ 1 → ∀ (ι : AlgebraicClosure F →ₐ[F] AlgebraicClosure F')
     (θ : AlgebraicClosure F' →* ℂ), (∀ x y : AlgebraicClosure F', x ≠ 0 → y ≠ 0 → θ x = θ y → x = y) →

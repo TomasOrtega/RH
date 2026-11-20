@@ -16,6 +16,9 @@ namespace GlobalTheory.ExpansionInvariance
 
 variable {D : D7} {T : Type} {L : LevCh D T} {sc : Consts} {G : GridData L sc} {W : G.Weil} {U : Set T}
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨GlobalTheory.T.expansionPairing_invariant_inner_vertex_level S hL hde hc ht hβ hτ hv Ψ F, GlobalTheory.T.expansionPairing_invariant_parabolic_basePoint S hL hde hc ht hβ hτ hv Ψ F, GlobalTheory.T.expansionPairing_invariant_innerVertex_level S hL hde hc ht hβ hτ hv Ψ F, GlobalThe …`.
+-/
 theorem levels_invariant (S : GridChoice W U) {t : T} {Φ : G.Datum} {β : CosFam G t} {τ : PureDat G t →₀ ℂ} {μ₀ : T}
     (hL : L.Is μ₀) (hde : Nat.Coprime D.host.pde (D.host.QS * D.host.q) ∧ Nat.Coprime D.host.pde' (D.host.QS * D.host.q))
     (hc : ∀ P ∈ L.Q t, ((Ideal.absNorm D.host.ccK : ℕ) : 𝓞 D.host.E) ∉ P.asIdeal) (ht : t ∈ U)

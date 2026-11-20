@@ -15,6 +15,21 @@ open GlobalTheory.ShFam GlobalTheory.TrueGeo GlobalTheory.CxPts
 noncomputable section
 namespace GlobalTheory.GeoCObj
 
+/- English proof (translation)
+Establish `hcR : IsPotential A (R.rsmul c)` using `isPotentialRsmul A c R hR`. Establish `h1 : mInt A (fun _ => P) g = mInt A (fun _ => R.rsmul c) g` using `(LeviOnly.mInt_eq_of_leviEq e X A _ _ g (fun _ => hP) (fun _ => hcR) fun _ j y hy w => by`. Rewrite using `[h j y hy w, Deg.leviAt_rsmul]).1`. Rewrite using `[h1]`. Establish `key : ∀ k ≤ e, mInt A (fun i : Fin e => if (i : ℕ) < k then R.rsmul c else R) g = c ^ k * mInt A (fun _ => R) g`.
+
+Introduce `k`. Proceed by induction on `k with`. Consider the case `zero => intro _`. Simplify using the standard rewrite rules. Consider the case `succ k ih`.
+
+Introduce `hk`. Establish `hF : ∀ i : Fin e, IsPotential A (if (i : ℕ) < k then R.rsmul c else R)` using `fun i => by split_ifs exacts [hcR, hR]`. Establish `e1 : (fun i : Fin e => if (i : ℕ) < k + 1 then R.rsmul c else R) = Function.update (fun i : Fin e => if (i : ℕ) < k then R.rsmul c else R) ⟨k, hk⟩ (R.rsmul c)`. Use function extensionality and compare the values at `i`. Distinguish the cases in `hi : i = ⟨k, hk⟩`.
+
+Substitute `hi` using the available equality. Simplify using the standard rewrite rules. Establish `hi' : (i : ℕ) ≠ k` using `fun h' => hi (Fin.ext h')`. Rewrite using `[Function.update_of_ne hi]`. Distinguish the cases in `h2 : (i : ℕ) < k`.
+
+Rewrite using `[if_pos h2, if_pos (by omega)]`. Rewrite using `[if_neg h2, if_neg (by omega)]`. Establish `e2 : (fun i : Fin e => if (i : ℕ) < k then R.rsmul c else R) = Function.update (fun i : Fin e => if (i : ℕ) < k then R.rsmul c else R) ⟨k, hk⟩ R`. Use function extensionality and compare the values at `i`. Distinguish the cases in `hi : i = ⟨k, hk⟩`.
+
+Substitute `hi` using the available equality. Simplify using the standard rewrite rules. Rewrite using `[Function.update_of_ne hi]`. Rewrite using `[e1, InhabCalc.mInt_update_rsmul A _ ⟨k, hk⟩ c R hF hR g, ← e2, ih (Nat.le_of_succ_le hk), pow_succ]`. Expand and normalize the polynomial expressions, which then agree.
+
+Establish `e3 : (fun i : Fin e => if (i : ℕ) < e then R.rsmul c else R) = fun _ => R.rsmul c`. Use function extensionality and compare the values at `fun i => if_pos i.2`. Rewrite using `[← key e le_rfl, e3]`.
+-/
 theorem mInt_scale (e : ℕ) (X : Type) [TopologicalSpace X] [CompactSpace X] [T2Space X] (A : FinHolAtlas e X)
     (P R : LocPot X) (c : ℝ) (g : X → ℝ) (hP : IsPotential A P) (hR : IsPotential A R)
     (h : ∀ j, ∀ y ∈ (A.chart j).target, ∀ w, leviAt A P j y w = c * leviAt A R j y w) :
@@ -56,6 +71,9 @@ theorem mInt_scale (e : ℕ) (X : Type) [TopologicalSpace X] [CompactSpace X] [T
     funext fun i => if_pos i.2
   rw [← key e le_rfl, e3]
 
+/- English proof (translation)
+The claim follows from `GlobalTheory.T.mixed_integral_of_combined_metrics`.
+-/
 theorem mInt_combPot_eq_inter : GlobalTheory.Published.ChernDegree → ∀ (F : Type) [Field F] [NumberField F] (Y : GlobalTheory.ProjVar.Var F)
     (e : ℕ) (M : Man e) (I : ManIs M Y) (a : Fin (M.n + 1)) (ι : Type) [Fintype ι] (Δ : ι → Y.Dv)
     (m : ∀ i (σ : F →+* ℂ), (cxSt F).Met Y σ (Δ i)) (b : ι → ℤ) (Q : ι → LocPot (M.X a)), Y.dim = e →
@@ -64,6 +82,37 @@ theorem mInt_combPot_eq_inter : GlobalTheory.Published.ChernDegree → ∀ (F : 
     mInt (M.A a) (fun _ => InhabCalc.combPot Q (fun i => (b i : ℝ)) (fun _ => 0)) (fun _ => 1) =
       (Y.inter (fun _ => ∑ i, b i • Δ i) : ℝ) := GlobalTheory.T.mixed_integral_of_combined_metrics
 
+/- English proof (translation)
+Introduce `_ hH D O hO _ A T H h B _ u s hu hs c`. Take `⟨x, P, hc⟩` from `hO`. Establish `hChern : GlobalTheory.Published.ChernDegree` using `hH.deg.2`. Use `set u' : D.what₂.Tau → Fin O.N → ℚ := fun τ i => ratOf (u τ i) with hu'`. Establish `hu'c : ∀ τ i, ((u' τ i : ℚ) : ℝ) = u τ i` using `fun τ i => by`.
+
+Take `⟨q, hq⟩` from `hu τ i`. Simplify using `[hu', hq]`. Use `set ρ := P.gens c B with hρ`. Use `set t : Option (DV.Rt D.what₂.Tau O.N) → ℚ := fun o => o.elim s fun x => -(u' x.1 x.2 - s * P.dirQ x.1 x.2) with ht`. Establish `hL : O.Y.geoC (O.Y.Mbar B u s) c = (((O.var c).inter fun _ => ∑ o, combNum ρ t o • (ρ o).D : ℤ) : ℝ) / ((combDen ρ t : ℕ) : ℝ) ^ (O.var c).dim`.
+
+Express the relevant statement in the definitionally equal form `Adl.deg (O.Mb B u s c) = _`. Rewrite using `[hc.Mb]`. Unfold `mbarOf`. Rewrite using `[if_pos ⟨hu, hs⟩]`. Both sides reduce to the same expression.
+
+Establish `hR : (T.M c).int (fun _ => (T.F c).form (A.sh u s) s 0) (fun _ _ => 1) = (T.M c).κ * ∑ a, mInt ((T.M c).A a) (fun _ => (T.F c).form (A.sh u s) s 0 a) (fun _ => 1)` using `rfl`. Establish `hdim : (O.var c).dim = dimY O.Y` using `O.dim_eq c`. Establish `key : ∀ a, mInt ((T.M c).A a) (fun _ => (T.F c).form (A.sh u s) s 0 a) (fun _ => 1) = (((combDen ρ t : ℕ) : ℝ)⁻¹) ^ (O.var c).dim * (((O.var c).inter fun _ => ∑ o, combNum ρ t o • (ρ o).D : ℤ) : ℝ)`. Introduce `a`. Take `⟨Qt, hQt, hLt⟩` from `(h.an c).th (A.sh u s) a`.
+
+Take `⟨Qa, hQa, hLa⟩` from `(h.an c).a a`. Set `Q : Option (DV.Rt D.what₂.Tau O.N) → LocPot ((T.M c).X a)` to `fun o => o.elim (Qa ()) Qt`. Establish `hmove : ∀ {n n' : Pad.Letter O.S.Dw → ℤ} {R : LocPot ((T.M c).X a)}, n = n' → (IsPot ((h.man c).pt a) (refMet x O.Φ c ((h.man c).ε a) n) R ∧ IsPotential ((T.M c).A a) R) → (IsPot ((h.man c).pt a) (refMet x O.Φ c ((h.man c).ε a) n') R ∧ IsPotential ((T.M c).A a) R)`. Introduce and unpack `_ _ _ rfl hh`. Conclude with `hh`.
+
+Establish `hQ : ∀ o, IsPot ((h.man c).pt a) ((ρ o).m ((h.man c).ε a)) (Q o) ∧ IsPotential ((T.M c).A a) (Q o)`. Introduce and unpack `(_ | r)`. Establish `hh` using `hQa ()`. Rewrite `hh` using `[hc.ab_eq]`. Conclude with `hh`.
+
+Establish `hh` using `hQt r`. Rewrite `hh` using `[hc.h0_eq]`. Conclude with `hmove (expo_rootSym _ _ _ _ _).symm hh`. Establish `hsm : ∀ o σ, (cxSt D.what₂.LL).mSmooth _ σ ((ρ o).D) ((ρ o).m σ)`. Introduce and unpack `(_ | r) σ`.
+
+Conclude with `P.ab_smooth c σ`. Conclude with `(GlobalTheory.metsOf_smooth D O.A O.N O.j O.S O.κ O.s x O.Φ c σ _).2.1`. Use `set q : ℝ := ((combDen ρ t : ℕ) : ℝ) with hq`. Establish `hq0 : q ≠ 0` using `Nat.cast_ne_zero.2 (combDen ρ t).ne_zero`. Establish `hb : ∀ o, ((combNum ρ t o : ℤ) : ℝ) = q * (t o : ℝ) / (((ρ o).n : ℕ) : ℝ)` using `fun o => by`.
+
+Establish `e` using `congrArg (fun r : ℚ => (r : ℝ)) (combNum_mul ρ t o)`. Move the coercions through the operations in `at e`. Establish `hn : (((ρ o).n : ℕ) : ℝ) ≠ 0` using `Nat.cast_ne_zero.2 (ρ o).n.ne_zero`. Rewrite using `[eq_div_iff hn, e]`. Establish `hz : ((T.M c).A a).Smooth (fun _ => (0 : ℝ))` using `Deg.smooth_const _ 0`.
+
+Establish `hthp` using `T.th_pot c (A.sh u s) a`. Establish `hap` using `T.a_pot c a`. Establish `h12 : IsPotential ((T.M c).A a) ((T.F c).th (A.sh u s) a + ((T.F c).a a).rsmul s)` using `isPotentialAdd _ _ _ hthp (isPotentialRsmul _ _ _ hap)`. Establish `hpot : IsPotential ((T.M c).A a) ((T.F c).form (A.sh u s) s 0 a)` using `isPotentialAdd _ _ _ h12 (isPotential_ofFun _ _ hz)`. Establish `hcp : IsPotential ((T.M c).A a) (InhabCalc.combPot Q (fun o => (combNum ρ t o : ℝ)) fun _ => 0)` using `InhabCalc.isPotential_combPot _ Q (fun o => (hQ o).2) _ _ hz`.
+
+Rewrite using `[mInt_scale _ _ _ _ _ q⁻¹ _ hpot hcp ?_, mInt_combPot_eq_inter hChern _ _ _ _ (h.man c) a _ (fun o => (ρ o).D) (fun o σ => (ρ o).m σ) (combNum ρ t) Q hdim hsm hQ, ← hdim]`. Introduce `j y hy w`. Rewrite using `[LeviFormCombination.GlobalTheory.CompanionTheory.LeviComb.leviAt_combPot _ _ _ _ Q _ _ (fun o => (hQ o).2) hz j y hy w, Deg.leviAt_const]`. Use `show leviAt _ ((T.F c).th (A.sh u s) a + ((T.F c).a a).rsmul s + LocPot.ofFun fun _ => 0) j y w = _`. Rewrite using `[Deg.leviAt_add _ h12 (isPotential_ofFun _ _ hz) j hy w, Deg.leviAt_const, Deg.leviAt_add _ hthp (isPotentialRsmul _ _ _ hap) j hy w, Deg.leviAt_rsmul, hLt j y hy w, hLa j y hy w, Fintype.sum_option]`.
+
+Establish `tn : q⁻¹ * (q * (t none : ℝ) / (((ρ none).n : ℕ) : ℝ)) = (s : ℝ) * ((((O.met.ab c).n : ℕ) : ℝ))⁻¹`. Rewrite using `[hc.ab_eq]`. Use `show q⁻¹ * (q * (s : ℝ) / (((P.ab c).n : ℕ) : ℝ)) = _`. Clear the denominators using the available nonvanishing facts. Establish `ts : ∀ r : DV.Rt D.what₂.Tau O.N, q⁻¹ * (q * (t (some r) : ℝ) / (((ρ (some r)).n : ℕ) : ℝ)) = -A.sh u s r.1 r.2`.
+
+Introduce `r`. Use `show q⁻¹ * (q * ((-(u' r.1 r.2 - s * P.dirQ r.1 r.2) : ℚ) : ℝ) / ((1 : ℕ) : ℝ)) = -(u r.1 r.2 - s * A.dir r.1 r.2)`. Rewrite using `[h.aux.dir, hc.dir_eq]`. Use `push_cast`. Rewrite using `[hu'c]`.
+
+Clear the denominators using the available nonvanishing facts. Both sides reduce to the same expression. Simplify using `only [Q, Option.elim, Fintype.sum_unique, add_zero, hb]`. Rewrite using `[mul_add, Finset.mul_sum]`. Simplify using `only [← mul_assoc, tn, ts]`.
+
+Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hL, hR, Finset.sum_congr rfl fun a _ => key a, Finset.sum_const, Finset.card_univ, Fintype.card_fin, nsmul_eq_mul, (T.M c).κ_eq]`. Establish `: ((T.M c).n : ℝ) + 1 ≠ 0` using `by positivity`. Use `push_cast`. Rewrite using `[← mul_assoc, inv_mul_cancel₀ this, one_mul, inv_pow, div_eq_inv_mul]`.
+-/
 theorem geoC_onObj : Hypotheses2 → HypothesesH → OnObj fun _ O A T _ _ => ∀ B : ℝ, 2 ≤ B → ∀ (u : Wt O.Y) (s : ℚ), IsRat O.Y u → 0 < s →
     ∀ c, O.Y.geoC (O.Y.Mbar B u s) c = (T.M c).int (fun _ => (T.F c).form (A.sh u s) s 0) (fun _ _ => 1) := by
   intro _ hH D O hO _ A T H h B _ u s hu hs c

@@ -13,14 +13,23 @@ open GlobalTheory.DownLift.SplitCoef
 
 namespace GlobalTheory.DownLift.SplitCoef
 
+/- English proof (translation)
+Rewrite using `[Matrix.mul_smul, Matrix.smul_mul]`.
+-/
 theorem smul_conj {R : Type*} [CommRing R] {n : Type*} [Fintype n] [DecidableEq n] (c : R) (B X Bi : Matrix n n R) :
     c • (B * X * Bi) = B * (c • X) * Bi := by
   rw [Matrix.mul_smul, Matrix.smul_mul]
 
+/- English proof (translation)
+Rewrite using `[← smul_conj, Matrix.mul_one, h]`.
+-/
 theorem smul_one_conj {R : Type*} [CommRing R] {n : Type*} [Fintype n] [DecidableEq n] (c : R) (B Bi : Matrix n n R)
     (h : B * Bi = 1) : B * (c • (1 : Matrix n n R)) * Bi = c • (1 : Matrix n n R) := by
   rw [← smul_conj, Matrix.mul_one, h]
 
+/- English proof (translation)
+Introduce `i j`. Establish `h` using `congrFun (congrFun (GlobalTheory.SplitScalar.off_smul_mt_inv hg) i) j`. Simplify using `only [Matrix.smul_apply, smul_eq_mul] at h`. Rewrite using `[Matrix.sub_apply]`. Take the linear combination `(-1 : AE D) * h`.
+-/
 theorem suppAt_inv_of {D : D7} {e : AE D} {V : HSp D} {g : GA D V} (hg : SuppAt e V g) : SuppAt e V g⁻¹ := by
   intro i j
   have h := congrFun (congrFun (GlobalTheory.SplitScalar.off_smul_mt_inv hg) i) j
@@ -28,6 +37,9 @@ theorem suppAt_inv_of {D : D7} {e : AE D} {V : HSp D} {g : GA D V} (hg : SuppAt 
   rw [Matrix.sub_apply]
   linear_combination (-1 : AE D) * h
 
+/- English proof (translation)
+Establish `h0 : φ (toEAf D e - 1) = 0`. Rewrite using `[hL.2.1, mul_sub, mul_one, ← map_mul, he.1.1, sub_self]`. Rewrite `h0` using `[map_sub, map_one, sub_eq_zero]`. Then use the resulting hypothesis.
+-/
 theorem chart_idem_one {D : D7} {e : AE D} {PP : Pl D.host.E} {v : HeightOneSpectrum (𝓞 D.host.F)}
     {φ : Formalism.IndefR.Lev.EAf D →+* Fv D.host.F v} {ι : kP PP ≃+* IsLocalRing.ResidueField (GlobalTheory.SplitHecke.Ov D v)}
     (he : Formalism.L2.NTheta.IsIdemAt e PP) (hL : LevChart e PP v φ ι) : φ (toEAf D e) = 1 := by
@@ -37,6 +49,27 @@ theorem chart_idem_one {D : D7} {e : AE D} {PP : Pl D.host.E} {v : HeightOneSpec
 
 set_option maxHeartbeats 1000000 in
 
+/- English proof (translation)
+Introduce `D S T βS βT e PP v φ ι he hL γ`. Establish `hfin : GlobalTheory.LevSplit.finSw D = toEAf D` using `rfl`. Establish `h1 : φ (toEAf D e) = 1` using `chart_idem_one he hL`. Use `choose M hM using fun i j => hL.1 (γ.val i j)`. Use `choose M' hM' using fun i j => hL.1 ((γ⁻¹).val i j)`.
+
+Use `set A : Matrix (Fin T.rank) (Fin T.rank) (Formalism.IndefR.Lev.EAf D) := Matrix.of M with hA`. Use `set A' : Matrix (Fin T.rank) (Fin T.rank) (Formalism.IndefR.Lev.EAf D) := Matrix.of M' with hA'`. Establish `eA : A.map φ = γ.val` using `Matrix.ext hM`. Establish `eA' : A'.map φ = (γ⁻¹).val` using `Matrix.ext hM'`. Use `set c := toEAf D e with hc`.
+
+Establish `hAA : c • (A * A') = c • (1 : Matrix (Fin T.rank) (Fin T.rank) (Formalism.IndefR.Lev.EAf D))`. Use extensionality with `i j`. Establish `hm : (A * A').map φ = (1 : Matrix (Fin T.rank) (Fin T.rank) (Fv D.host.F v))`. Rewrite using `[Matrix.map_mul, eA, eA', ← Units.val_mul, mul_inv_cancel, Units.val_one]`. Establish `hz : φ ((A * A') i j - (1 : Matrix (Fin T.rank) (Fin T.rank) (Formalism.IndefR.Lev.EAf D)) i j) = 0`.
+
+Rewrite using `[map_sub]`. Use `congrFun (congrFun hm i) j` as an intermediate fact. Rewrite `this` using `[Matrix.map_apply]`. Rewrite using `[this, ← Matrix.map_apply (f := φ), Matrix.map_one φ (map_zero φ) (map_one φ), sub_self]`. Use `(hL.2.1 _).1 hz` as an intermediate fact.
+
+Simplify using `only [Matrix.smul_apply, smul_eq_mul]`. Rewrite `this` using `[mul_sub, sub_eq_zero]`. Conclude with `this`. Establish `hb : (βT⁻¹).val * βT.val = 1` using `by rw [← Units.val_mul, inv_mul_cancel, Units.val_one]`. Establish `hb' : βT.val * (βT⁻¹).val = 1` using `by rw [← Units.val_mul, mul_inv_cancel, Units.val_one]`.
+
+Establish `hmm : GlobalTheory.LevSplit.finSw D e • ((βT.val * A * (βT⁻¹).val) * (βT.val * A' * (βT⁻¹).val)) = GlobalTheory.LevSplit.finSw D e • (1 : Matrix (Fin T.rank) (Fin T.rank) (Formalism.IndefR.Lev.EAf D))`. Rewrite using `[hfin, ← hc]`. Establish `: (βT.val * A * (βT⁻¹).val) * (βT.val * A' * (βT⁻¹).val) = βT.val * (A * A') * (βT⁻¹).val`. Simplify using `only [Matrix.mul_assoc]`. Rewrite using `[← Matrix.mul_assoc (βT⁻¹).val βT.val, hb, Matrix.one_mul]`.
+
+Rewrite using `[this, smul_conj, hAA, smul_one_conj _ _ _ hb']`. Take `⟨g₀, hs, hg₀⟩` from `GlobalTheory.ParahoricLift.split_lift_fin T he.1 _ _ hmm`. Rewrite `hg₀` using `[hfin, ← hc]`. Establish `hX : ((βT⁻¹).val * (Formalism.L2.Theta.mt T g₀).map (toEAf D) * βT.val).map φ = γ.val`. Establish `hfe : (Formalism.L2.Theta.mt T g₀).map (toEAf D) = (finE T g₀).val` using `rfl`.
+
+Establish `h2 : c • ((βT⁻¹).val * (finE T g₀).val * βT.val) = c • A`. Rewrite using `[smul_conj, hg₀, ← smul_conj]`. Use `congr 1`. Simplify using `only [Matrix.mul_assoc]`. Rewrite using `[hb, Matrix.mul_one, ← Matrix.mul_assoc, hb, Matrix.one_mul]`.
+
+Rewrite using `[hfe, ← eA]`. Use `Matrix.ext fun i j => ?_` and prove the remaining obligations. Use `show φ _ = φ _`. Use `congrArg φ (congrFun (congrFun h2 i) j)` as an intermediate fact. Simplify `this` using `only [Matrix.map_apply, Matrix.smul_apply, smul_eq_mul, map_mul, h1, one_mul]`.
+
+Use `⟨g₀⁻¹, suppAt_inv_of hs, fun x => ?_⟩` and prove the remaining obligations. Rewrite using `[rdAdj, rdAdj, GlobalTheory.TranslateAdj.frMapAdj_actO_inv, Matrix.map_mul, hX]`.
+-/
 theorem exists_supp_rdAdj_mul : ∀ (D : D7) (S T : HSp D) (βS : GL (Fin S.rank) (Formalism.IndefR.Lev.EAf D)) (βT : GL (Fin T.rank) (Formalism.IndefR.Lev.EAf D)) (e : AE D) (PP : Pl D.host.E) (v : HeightOneSpectrum (𝓞 D.host.F)) (φ : Formalism.IndefR.Lev.EAf D →+* Fv D.host.F v) (ι : kP PP ≃+* IsLocalRing.ResidueField (GlobalTheory.SplitHecke.Ov D v)), Formalism.L2.NTheta.IsIdemAt e PP → LevChart e PP v φ ι → ∀ γ : GL (Fin T.rank) (Fv D.host.F v), ∃ g : GA D T, SuppAt e T g ∧ ∀ x : WO S T, rdAdj S T βS βT φ (actO S T 1 g x) = rdAdj S T βS βT φ x * γ.val := by
   intro D S T βS βT e PP v φ ι he hL γ
   have hfin : GlobalTheory.LevSplit.finSw D = toEAf D := rfl

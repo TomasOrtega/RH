@@ -15,6 +15,9 @@ open Formalism.BasicNotions Formalism.MainNotions GlobalTheory GlobalTheory.Cart
 open scoped Classical
 open GlobalTheory.EqHalf
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.EqHalf.IsoLevel.isotropic_dualForm | exact GlobalTheory.EqHalf.IsoLevel.isotropic_dualForm | (intros; apply GlobalTheory.EqHalf.IsoLevel.isotropic_dualForm <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.local_height_prime_vanishing : Hypotheses2 → HypothesesH → GlobalTheory.Published.RegularAlteration → GlobalTheory.Published.ScholzeWeinsteinB → GlobalTheory.Published.PrismaticDieudonnePerfd →
     ∀ (D : D7) (O : Setup D), O.Core → ∀ (T : Finset ℕ) (R : ℝ), 2 ≤ R → ∀ p : ℕ, p.Prime → p ∈ T → ∀ (c : O.s.Comp)
     (b : Module.Basis (Fin (D.R.f * O.N + D.R.f * O.N)) ℤ O.S.Dw.La) (n : ℕ), 3 ≤ n →

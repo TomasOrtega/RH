@@ -1,5 +1,12 @@
 import Development.AutomorphicArithmetic.AutomorphicVarieties.IdeleGenerators.QuadraticSplitting.QuadSplit
 
+/- English proof (translation)
+Introduce `Ω _ _ _ a b ha hb`. Take `⟨j, hj⟩` from `ha`. Take `⟨j', hj'⟩` from `hb`. Use `haveI : IsGalois ℚ Ω := IsAlgClosure.isGalois ℚ Ω`. Take `⟨σ, hσ⟩` from `NumberField.ComplexEmbedding.exists_comp_symm_eq_of_comp_eq (k := ℚ) j j' (Subsingleton.elim _ _)`.
+
+Establish `h : ∀ x, j (σ.symm x) = j' x` using `fun x => by`. Rewrite using `[← hσ]`. Both sides reduce to the same expression. Use `isConj_iff.2 ⟨σ, ?_⟩` and prove the remaining obligations. Use `AlgEquiv.ext fun x => ?_` and prove the remaining obligations.
+
+Apply `j'.injective` to reduce the goal to its premises. Rewrite using `[hj', ← h, ← h]`. Express the relevant statement in the definitionally equal form `j (σ.symm (σ (a (σ.symm x)))) = _`. Rewrite using `[AlgEquiv.symm_apply_apply, hj]`.
+-/
 theorem UpperTheory.complex_conjugations_are_conjugate :
     UpperTheory.V.Sd.S2.ConjCc := by
   intro Ω _ _ _ a b ha hb

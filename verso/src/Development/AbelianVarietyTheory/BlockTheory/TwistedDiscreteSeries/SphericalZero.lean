@@ -95,19 +95,34 @@ section Basic₂
 
 variable (A B : HSp D)
 
+/- English proof (translation)
+Use extensionality with `i j`. Simplify using `[resL, lagr]`.
+-/
 @[simp] theorem resL_lagr (w : WO A B) : resL A B (lagr A B w) = w := by
   ext i j; simp [resL, lagr]
 
+/- English proof (translation)
+Use extensionality with `i j`. Simplify using `only [resR, lagr, Matrix.of_apply, Equiv.symm_apply_apply, Sum.elim_inr, Matrix.neg_apply]`.
+-/
 @[simp] theorem resR_lagr (w : WO A B) : resR A B (lagr A B w) = -w := by
   ext i j; simp only [resR, lagr, Matrix.of_apply, Equiv.symm_apply_apply, Sum.elim_inr, Matrix.neg_apply]
 
+/- English proof (translation)
+Simplify using `[delta]`.
+-/
 theorem delta_lagr (f₁ f₂ : WO A B → ℂ) (w : WO A B) : delta A B f₁ f₂ (lagr A B w) = f₁ w * conj (f₂ w) := by
   simp [delta]
 
+/- English proof (translation)
+Simplify using `only [evZero, ip, delta_lagr]`.
+-/
 theorem evZero_delta (ν : Measure (WO A B)) (𝓕 : Set (WO A B)) (f₁ f₂ : WO A B → ℂ) :
     evZero A B ν 𝓕 (delta A B f₁ f₂) = ip A B ν 𝓕 f₁ f₂ := by
   simp only [evZero, ip, delta_lagr]
 
+/- English proof (translation)
+Rewrite using `[sZero]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 example : sZero A B + (A.rank : ℂ) / 2 = (B.rank : ℂ) / 2 := by rw [sZero]; ring
 
 end Basic₂

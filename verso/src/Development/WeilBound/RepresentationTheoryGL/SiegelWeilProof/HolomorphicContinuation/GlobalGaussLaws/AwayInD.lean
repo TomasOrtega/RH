@@ -15,6 +15,25 @@ namespace PositivityTheory.Rg.Sw.Glob.AwayPf
 variable {D : D7} {n : ℕ}
 
 open Classical in
+/- English proof (translation)
+Take `⟨S, hS⟩` from `hf`. Use `set A : D.what₂.Tau → Matrix (Fin V.rank) (Fin V.rank) ℂ := fun t => gramAt D V t * s t with hAdef`. Establish `hA : ∀ t, t ≠ τ → (A t).PosDef` using `fun t _ => (hs t).2.2`. Establish `hw : ∀ t, t ≠ τ → 0 < |l t|` using `fun t _ => abs_pos.mpr (hl t)`. Take `⟨G, hG⟩` from `exists_gauss (n := n) τ A hA (fun t => |l t|) hw`.
+
+Use `set poly : Bsp τ V.rank n → ℂ := fun b => MvPolynomial.eval (fun k => vC τ k b) p with hpoly`. Establish `hpolyT : poly.HasTemperateGrowth` using `tg_poly τ p`. Use `set h : 𝓢(Bsp τ V.rank n, ℂ) := SchwartzMap.smulLeftCLM ℂ poly G with hh`. Establish `hhv : ∀ b, h b = poly b * G b` using `fun b => by`. Rewrite using `[hh, SchwartzMap.smulLeftCLM_apply_apply hpolyT, smul_eq_mul]`.
+
+Take `⟨Fp, hFp⟩` from `GlobalTheory.SchwartzHadamard.exists_schwartz_prod S h`. Set `e` to `(eL (n := n) τ fr hfr).toContinuousLinearEquiv`. Set `Fz : 𝓢(D.what₂.Tau → Fin V.rank → Fin n → ℂ, ℂ)` to `SchwartzMap.compCLMOfContinuousLinearEquiv ℂ e Fp`. Establish `hFz : ∀ z, Fz z = S (Matrix.of.symm (fr⁻¹ * Matrix.of (z τ))) * (poly (fun t => z t.1) * G (fun t => z t.1))`. Introduce `z`.
+
+Simplify using `only [Fz, SchwartzMap.compCLMOfContinuousLinearEquiv_apply, Function.comp_apply, hFp, hhv]`. Both sides reduce to the same expression. Establish `hpolyz : ∀ z : D.what₂.Tau → Fin V.rank → Fin n → ℂ, poly (fun t => z t.1) = evalPoly p (fun t => Matrix.of (z t))`. Introduce `z`. Rewrite using `[evalPoly_congr p τ hp (fun t => Matrix.of (z t)) (extF τ (fun t => z t.1)) (fun t ht => by simp only [extF, dif_neg ht]; rfl)]`.
+
+Both sides reduce to the same expression. Establish `hGz : ∀ z : D.what₂.Tau → Fin V.rank → Fin n → ℂ, G (fun t => z t.1) = gAway V l s τ (fun t => Matrix.of (z t))`. Introduce `z`. Rewrite using `[hG]`. Unfold `gAway qf`.
+
+Use `congr 1`. Rewrite using `[Finset.sum_subtype _ (p := fun τ' => τ' ≠ τ) (fun x => by simp)]`. Use `push_cast`. Rewrite using `[Finset.mul_sum, Finset.mul_sum, Finset.mul_sum]`. Use `Finset.sum_congr rfl (fun t _ => ?_)` and prove the remaining obligations.
+
+Rewrite using `[← tr_im_zero (hA t.1 t.2).isHermitian (Matrix.of (z t.1))]`. Simplify using `only [hAdef]`. Expand and normalize the polynomial expressions, which then agree. Establish `key : ∀ z : D.what₂.Tau → Fin V.rank → Fin n → ℂ, Fz z = f (Matrix.of.symm (fr⁻¹ * Matrix.of (z τ))) * (evalPoly p (fun t => Matrix.of (z t)) * gAway V l s τ (fun t => Matrix.of (z t)))`. Introduce `z`.
+
+Rewrite using `[hFz, hpolyz, hGz, hS]`. Use `Submodule.subset_span ⟨Fz, g, hg, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `x`. Rewrite using `[key]`. Simplify using `only [tens, mul_assoc]`.
+
+Both sides reduce to the same expression.
+-/
 theorem gen_sch (θ : InfFam D) (V : HSp D) (l : D.what₂.Tau → ℝ) (s : D.what₂.Tau → Matrix (Fin V.rank) (Fin V.rank) ℂ)
     (τ : D.what₂.Tau) (fr : Matrix (Fin V.rank) (Fin V.rank) ℂ) (hfr : IsUnit fr.det)
     (hs : ∀ τ, IsCartanInv (gramAt D V τ) (s τ)) (hl : ∀ τ', l τ' ≠ 0)

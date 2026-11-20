@@ -8,6 +8,13 @@ open scoped Classical
 
 namespace GlobalTheory.CompanionTheory.LTPer
 
+/- English proof (translation)
+Use `haveI : FiniteDimensional ℚ_[l] ↥K.1 := K.2`. Use `letI : Fintype (↥K.1 →ₐ[ℚ_[l]] Om l) := minpoly.AlgHom.fintype ℚ_[l] (↥K.1) (Om l)`. Establish `hsu : s = Finset.univ` using `Finset.eq_univ_iff_forall.2 hs`. Use `set y : ↥K.1 := ((χ ⟨g, hg⟩ : (↥K.1)ˣ) : ↥K.1) with hy`. Establish `hn : algebraMap ℚ_[l] (Om l) (Algebra.norm ℚ_[l] y) = ∏ μ ∈ s, μ y`.
+
+Rewrite using `[hsu]`. Conclude with `Algebra.norm_eq_prod_embeddings ℚ_[l] (Om l) y`. Establish `hr : algebraMap ℚ_[l] (Formalism.Per6.BdRp l) (Algebra.norm ℚ_[l] y) = ∏ μ ∈ s, rB l (μ y)`. Rewrite using `[← map_prod, ← hn]`. Conclude with `((GroundTheory.PAdicHodge.algClToBdR l).commutes _).symm`.
+
+Rewrite using `[map_prod, hr, ← Finset.prod_mul_distrib]`. Conclude with `Finset.prod_congr rfl fun μ _ => (ht μ).2.1 g hg (hfix μ)`.
+-/
 theorem actB_prod_periods {l : ℕ} [Fact l.Prime] (K : FinExt l) (χ : ↥(GK K) →* (↥K.1)ˣ)
     (t : (↥K.1 →ₐ[ℚ_[l]] Om l) → Formalism.Per6.BdRp l) (s : Finset (↥K.1 →ₐ[ℚ_[l]] Om l))
     (hs : ∀ μ, μ ∈ s) (ht : ∀ μ, PrePer K χ μ (t μ))

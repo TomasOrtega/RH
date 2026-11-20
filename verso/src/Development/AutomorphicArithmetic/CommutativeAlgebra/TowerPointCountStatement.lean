@@ -3,6 +3,21 @@ import Development.AutomorphicArithmetic.Foundations.GaloisRepresentations.Integ
 
 open UpperTheory.Gal.Int.Geo
 
+/- English proof (translation)
+Introduce `Γ _ K₀ H K hKH hHK₀ hK F κ hF hκ ζ`. Establish `hmul : K.relIndex H * H.relIndex K₀ = K.relIndex K₀` using `Subgroup.relIndex_mul_relIndex K H K₀ hKH hHK₀`. Establish `hKH0 : K.relIndex H ≠ 0` using `fun h0 => hK (by rw [← hmul, h0, zero_mul])`. Establish `hH0 : H.relIndex K₀ ≠ 0` using `fun h0 => hK (by rw [← hmul, h0, mul_zero])`. Use `haveI : Finite F := Nat.finite_of_card_ne_zero (by rw [hF]; exact hH0)`.
+
+Use `haveI : Fintype F := Fintype.ofFinite F`. Use `haveI : Finite (↥K₀ ⧸ K.subgroupOf K₀) := Nat.finite_of_card_ne_zero hK`. Use `haveI : Finite (↥H ⧸ K.subgroupOf H) := Nat.finite_of_card_ne_zero hKH0`. Establish `bound : ∀ ξ : F, Nat.card {x // κ x = ξ} ≤ K.relIndex H`. Introduce `ξ`.
+
+Distinguish the cases in `hne : Nonempty {x // κ x = ξ}`. Take `⟨⟨q0, hq0⟩⟩` from `hne`. Establish `memH : ∀ q : {x // κ x = ξ}, ((q0.out : ↥K₀) : Γ)⁻¹ * ((q.1.out : ↥K₀) : Γ) ∈ H`. Introduce `q`. Apply `hκ` to reduce the goal to its premises.
+
+Rewrite using `[QuotientGroup.out_eq', QuotientGroup.out_eq', hq0, q.2]`. Set `f : {x // κ x = ξ} → ↥H ⧸ K.subgroupOf H` to `fun q => ((⟨_, memH q⟩ : ↥H) : ↥H ⧸ K.subgroupOf H)`. Establish `hinj : Function.Injective f`. Introduce `q1 q2 h12`. Establish `h'` using `QuotientGroup.eq.mp h12`.
+
+Rewrite `h'` using `[Subgroup.mem_subgroupOf]`. Apply `Subtype.ext` to reduce the goal to its premises. Rewrite using `[← QuotientGroup.out_eq' q1.1, ← QuotientGroup.out_eq' q2.1]`. Apply `QuotientGroup.eq.mpr` to reduce the goal to its premises. Rewrite using `[Subgroup.mem_subgroupOf]`.
+
+Simplify `h'` using `[mul_assoc]`. Combine the equalities or inequalities in the displayed calculation. Use `haveI := not_nonempty_iff.mp hne`. Rewrite using `[Nat.card_of_isEmpty]`. Conclude with `Nat.zero_le _`.
+
+Establish `hsum : ∑ ξ : F, Nat.card {x // κ x = ξ} = ∑ ξ : F, K.relIndex H`. Rewrite using `[← Nat.card_sigma, Nat.card_congr (Equiv.sigmaFiberEquiv κ), Finset.sum_const, Finset.card_univ, smul_eq_mul, ← Nat.card_eq_fintype_card, hF, mul_comm, hmul]`. Both sides reduce to the same expression. Conclude with `(Finset.sum_eq_sum_iff_of_le (fun ξ _ => bound ξ)).mp hsum ζ (Finset.mem_univ _)`.
+-/
 theorem UpperTheory.tower_point_count_statement :
     Count := by
   intro Γ _ K₀ H K hKH hHK₀ hK F κ hF hκ ζ

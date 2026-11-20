@@ -13,6 +13,71 @@ open PositivityTheory.PfBern.Frob (FrobeniusReciprocity IsUnimod eqv eqvF transl
 variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
 
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Introduce `n Z hZ s hs hss hV F P hFc hFB hFinv hP ξ hsupp hinv f hf`. Establish `hCR : CR (adj Z s)` using `CRAdj.cr_adj Z hZ s hs hss`. Use `haveI : T2Space k := t2k`. Use `haveI : TotallyDisconnectedSpace k := tdk`. Use `haveI : SecondCountableTopology k := sck`.
+
+Use `haveI : TotallyDisconnectedSpace (Matrix (Fin n) (Fin n) k) := inferInstanceAs (TotallyDisconnectedSpace (Fin n → Fin n → k))`. Break down `F.eq_empty_or_nonempty with hF0 | ⟨x0, hx0⟩` into its components or cases. Conclude with `hsupp f ⟨hf.1, Set.subset_univ _⟩ (fun p hp => by simp [hF0] at hp)`. Establish `hsT : s ∈ Tset F P`. Take `⟨g, hg, e⟩` from `exists_conj_eq_semisimple hP (P_mem_Tset hP hx0)`.
+
+Rewrite using `[← e]`. Conclude with `cj_mem_Tset hFinv hg (P_mem_Tset hP hx0)`. Use `letI A := actT (P := P) hFinv`. Use `haveI := continuousSMul_actT (P := P) hFinv`. Use `haveI := isPretransitive_actT hFinv hP hsT`.
+
+Use `haveI : LocallyCompactSpace (Tset F P) := (isClosed_Tset hFc P).isClosedEmbedding_subtypeVal.locallyCompactSpace`. Set `t : Tset F P` to `⟨s, hsT⟩`. Take `⟨e, he⟩` from `exists_quotient_homeo (G := GzS Z) t`. Set `H` to `MulAction.stabilizer (GzS Z) t`. Establish `hHc : IsClosed (H : Set (GzS Z))`.
+
+Establish `: (H : Set (GzS Z)) = (fun g : GzS Z => g • t) ⁻¹' {t}` using `by ext g; rfl`. Rewrite using `[this]`. Conclude with `isClosed_singleton.preimage (continuous_id.smul continuous_const)`. Use `haveI : LocallyCompactSpace H := hHc.isClosedEmbedding_subtypeVal.locallyCompactSpace`. Establish `memH : ∀ g : GzS Z, g ∈ H ↔ s * g.1.val = g.1.val * s`.
+
+Introduce `g`. Establish `h1 : g.1⁻¹.val * g.1.val = 1` using `by rw [← Units.val_mul, inv_mul_cancel, Units.val_one]`. Establish `h2 : g.1.val * g.1⁻¹.val = 1` using `by rw [← Units.val_mul, mul_inv_cancel, Units.val_one]`. Use `show g • t = t ↔ _`. Prove the components needed by the constructor for the conclusion.
+
+Introduce `h`. Establish `e1 : g.1.val * s * g.1⁻¹.val = s` using `congrArg Subtype.val h`. Combine the equalities or inequalities in the displayed calculation. Introduce `h`. Apply `Subtype.ext` to reduce the goal to its premises.
+
+Express the relevant statement in the definitionally equal form `g.1.val * s * g.1⁻¹.val = s`. Rewrite using `[← h, mul_assoc, h2, mul_one]`. Establish `uG : IsUnimod (GzS Z)` using `hU n Z hZ`. Set `φ : H ≃ₜ* GzS (adj Z s)` to `{ toFun := fun h => ⟨h.1.1, mem_Gz_adj_iff.2 ⟨h.1.2, (memH h.1).1 h.2⟩⟩ invFun := fun g => ⟨⟨g.1, (mem_Gz_adj_iff.1 g.2).1⟩, (memH _).2 (mem_Gz_adj_iff.1 g.2).2⟩ left_inv := fun h => rfl right_inv := fun g => rfl map_mul' := fun a b => rfl continuous_toFun := Continuous.subtype_m …`. Establish `uH : IsUnimod H` using `isUnimod_of_equiv φ (hU n (adj Z s) hCR)`.
+
+Use `letI B := actX (F := F) hFinv`. Use `haveI := continuousSMul_actX (F := F) hFinv`. Establish `hXc : IsClosed (Xs F)` using `hFc.prod isClosed_univ`. Use `haveI : LocallyCompactSpace (Xs F) := hXc.isClosedEmbedding_subtypeVal.locallyCompactSpace`. Set `σX : Xs F → Tset F P` to `fun q => ⟨aeval q.1.1 P, P_mem_Tset hP q.2.1⟩`.
+
+Establish `hσc : Continuous σX` using `Continuous.subtype_mk ((continuous_aevalM P).comp (continuous_fst.comp continuous_subtype_val)) _`. Establish `hσeq : ∀ (g : GzS Z) (q : Xs F), σX (g • q) = g • σX q` using `fun g q => Subtype.ext (Asm.aeval_conj g.1 q.1.1 P)`. Establish `he_eq : ∀ (g : GzS Z) (c : GzS Z ⧸ H), e (g • c) = g • e c`. Introduce `g c`. Proceed by induction on `c using QuotientGroup.induction_on with`.
+
+Consider the case `H g' => rw [MulAction.Quotient.smul_mk, he, he, smul_assoc]`. Set `p : Xs F → GzS Z ⧸ H` to `fun q => e.symm (σX q)`. Establish `hpc : Continuous p` using `e.symm.continuous.comp hσc`. Establish `hp : ∀ (g : GzS Z) (q : Xs F), p (g • q) = g • p q`. Introduce `g q`.
+
+Apply `e.injective` to reduce the goal to its premises. Simplify using `only [p, Homeomorph.apply_symm_apply, he_eq, hσeq]`. Establish `hfib : ∀ q : Xs F, p q = ((1 : GzS Z) : GzS Z ⧸ H) ↔ aeval q.1.1 P = s`. Introduce `q`. Prove the components needed by the constructor for the conclusion.
+
+Introduce `h`. Establish `h' : σX q = e ((1 : GzS Z) : GzS Z ⧸ H)` using `by rw [← h]; simp [p]`. Rewrite `h'` using `[he, one_smul]`. Conclude with `congrArg Subtype.val h'`. Introduce `h`.
+
+Apply `e.injective` to reduce the goal to its premises. Simplify using `only [p, Homeomorph.apply_symm_apply, he, one_smul]`. Conclude with `Subtype.ext h`. Use `letI : MeasurableSpace (GzS Z) := borel _`. Use `haveI : BorelSpace (GzS Z) := ⟨rfl⟩`.
+
+Take `⟨Fr, hFr1, -⟩` from `hFr (GzS Z) H hHc uG uH (Xs F) p hpc hp (1 : GzS Z →* ℂˣ) (by simpa using continuous_const) Measure.haar Measure.haar`. Take `⟨D, hD⟩` from `exists_distr_on ξ hXc hsupp`. Set `actH : GL (Fin n) k → Sp k n ≃ₜ Sp k n` to `fun g => { toFun := act g, invFun := act g⁻¹ left_inv := fun q => by rw [← act_mul, inv_mul_cancel, act_one] right_inv := fun q => by rw [← act_mul, mul_inv_cancel, act_one] continuous_toFun := continuous_act.comp (continuous_const.prodMk continuous_id) continuous_invFun := conti …`. Establish `hDeqv : D ∈ eqv (Xs F) (1 : GzS Z →* ℂˣ)`. Introduce `g φ0`.
+
+Take `⟨f0, rfl⟩` from `restr_surjective hXc φ0`. Set `f1 : SC (Sp k n)` to `pullL (actH g⁻¹.1) f0`. Establish `e1 : transl g (restr hXc f0) = restr hXc f1` using `Subtype.ext (funext fun x => rfl)`. Rewrite using `[e1]`. Simplify using `only [MonoidHom.one_apply, Units.val_one, one_mul]`.
+
+Conclude with `((hD f1).symm.trans (hinv g⁻¹.1 (g⁻¹).2 f0 ⟨f0.2, Set.subset_univ _⟩)).trans (hD f0)`. Set `C : Set (Xs F)` to `{q | q.1.2 = 0}`. Establish `hCc : IsClosed C` using `isClosed_eq (continuous_snd.comp continuous_subtype_val) continuous_const`. Establish `hCinv : ∀ (g : GzS Z), ∀ x ∈ C, g • x ∈ C`. Introduce `g x hx`.
+
+Express the relevant statement in the definitionally equal form `g.1.val *ᵥ x.1.2 = 0`. Rewrite using `[show x.1.2 = 0 from hx, Matrix.mulVec_zero]`. Establish `hSD : PositivityTheory.PfBern.Frob.SupportedIn (D : PositivityTheory.PfBern.Frob.Distr (Xs F)) C`. Use `(hFr1 ⟨D, hDeqv⟩ C hCc hCinv).2 ?_` and prove the remaining obligations. Introduce `φ0 hφ0`.
+
+Establish `hEeqv` using `(Fr ⟨D, hDeqv⟩).2`. Use `set E : PositivityTheory.PfBern.Frob.Distr (Fib p) := ((Fr ⟨D, hDeqv⟩ : eqvF hp _) : PositivityTheory.PfBern.Frob.Distr (Fib p)) with hEdef`. Set `Ys : Set (Sp k n)` to `{q | q.1 ∈ F ∧ aeval q.1 P = s}`. Establish `hYc : IsClosed Ys` using `(hFc.preimage continuous_fst).inter (isClosed_eq ((continuous_aevalM P).comp continuous_fst) continuous_const)`. Set `hY : Fib p ≃ₜ Ys` to `{ toFun := fun z => ⟨z.1.1, z.1.2.1, (hfib z.1).1 z.2⟩ invFun := fun y => ⟨⟨y.1, y.2.1, trivial⟩, (hfib _).2 y.2.2⟩ left_inv := fun z => rfl right_inv := fun y => rfl continuous_toFun := Continuous.subtype_mk (continuous_subtype_val.comp continuous_subtype_val) _ continuous_invFu …`.
+
+Set `E' : PositivityTheory.PfBern.Loc.Distr Ys` to `E.comp (pullL hY)`. Take `⟨η, hη⟩` from `exists_functional hYc E'`. Establish `hcommY : ∀ y ∈ Ys, s * y.1 = y.1 * s`. Introduce `y hy`. Use `Asm.comm_aeval (a := y.1) (x := y.1) rfl P` as an intermediate fact.
+
+Rewrite `this` using `[hy.2]`. Conclude with `this.symm`. Establish `hSη : Supp η (Bz (adj Z s) ×ˢ Set.univ)`. Introduce `f hf1 hvan`. Establish `hr : restr hYc ⟨f, hf1.1⟩ = 0` using `Subtype.ext (funext fun y => hvan y.1 ⟨mem_Bz_adj (hFB y.2.1) (hcommY y.1 y.2), trivial⟩)`.
+
+Use `hη ⟨f, hf1.1⟩` as an intermediate fact. Rewrite `this` using `[hr, map_zero]`. Conclude with `this`. Establish `hIη : Inv (adj Z s) η`. Introduce `h hh f hf1`.
+
+Take `⟨hhZ, hhs⟩` from `mem_Gz_adj_iff.1 hh`. Set `hG : GzS Z` to `⟨h, hhZ⟩`. Set `hH : H` to `⟨hG, (memH hG).2 hhs⟩`. Set `f1 : SC (Sp k n)` to `pullL (actH h) ⟨f, hf1.1⟩`. Establish `key : pullL hY (restr hYc f1) = translF hp hH⁻¹ (pullL hY (restr hYc ⟨f, hf1.1⟩))` using `Subtype.ext (funext fun z => rfl)`.
+
+Establish `h1 : η (fun q => f (act h q)) = η f1` using `rfl`. Rewrite using `[h1, hη f1, hη ⟨f, hf1.1⟩]`. Express the relevant statement in the definitionally equal form `E (pullL hY (restr hYc f1)) = E (pullL hY (restr hYc ⟨f, hf1.1⟩))`. Rewrite using `[key]`. Conclude with `(hEeqv hH⁻¹ _).trans (by simp)`.
+
+Establish `hkill` using `hV η hSη hIη`. Set `φ' : SC Ys` to `pullL hY.symm φ0`. Take `⟨f0, hf0⟩` from `restr_surjective hYc φ'`. Establish `hsupp' : Function.support (φ' : Ys → ℂ) ⊆ {y | y.1.2 ≠ 0}` using `fun y hy => hφ0 hy`. Establish `hK : IsCompact (Subtype.val '' Function.support (φ' : Ys → ℂ))` using `(isCompact_support φ'.2).image continuous_subtype_val`.
+
+Establish `hKsub : Subtype.val '' Function.support (φ' : Ys → ℂ) ⊆ {q : Sp k n | q.2 ≠ 0}`. Introduce and unpack `_ ⟨y, hy, rfl⟩`. Conclude with `hsupp' hy`. Establish `hUo : IsOpen {q : Sp k n | q.2 ≠ 0}` using `isOpen_ne_fun continuous_snd continuous_const`. Take `⟨Bc, hBc, hBo, hKB, hBU⟩` from `exists_isCompact_isOpen_between hK hUo hKsub`.
+
+Set `f : SC (Sp k n)` to `mulInd Bc ⟨hBc.isClosed, hBo⟩ f0`. Establish `hrf : restr hYc f = φ'`. Apply `Subtype.ext` to reduce the goal to its premises. Use function extensionality and compare the values at `y`. Express the relevant statement in the definitionally equal form `Bc.indicator 1 y.1 * (f0 : Sp k n → ℂ) y.1 = (φ' : Ys → ℂ) y`.
+
+Establish `e0 : (f0 : Sp k n → ℂ) y.1 = (φ' : Ys → ℂ) y` using `congrFun (congrArg Subtype.val hf0) y`. Distinguish the cases in `hyB : y.1 ∈ Bc`. Simplify using `[hyB, e0]`. Establish `: (φ' : Ys → ℂ) y = 0`. Assume the negation of the conclusion as `hne`.
+
+Conclude with `hyB (hKB ⟨y, hne, rfl⟩)`. Simplify using `[hyB, this]`. Establish `hfU : (f : Sp k n → ℂ) ∈ supportedIn {q : Sp k n | q.2 ≠ 0}`. Use `⟨f.2, fun q hq => hBU ?_⟩` and prove the remaining obligations. Assume the negation of the conclusion as `hqB`.
+
+Conclude with `hq (by simp [f, mulInd, hqB])`. Establish `hz` using `hkill f hfU`. Rewrite `hz` using `[hη f, hrf]`. Establish `e2 : pullL hY φ' = φ0` using `PositivityTheory.PfBern.Loc.pullL_pullL_symm hY φ0`. Express the relevant statement in the definitionally equal form `E (pullL hY φ') = 0 at hz`.
+
+Rewrite `hz` using `[e2]`. Conclude with `hz`. Rewrite using `[show ξ f = D (restr hXc ⟨f, hf.1⟩) from hD ⟨f, hf.1⟩]`. Use `hSD _ fun x hx hxC => hx ?_` and prove the remaining obligations. Establish `h0 : x.1.2 = 0` using `hxC`.
+
+Use `show f x.1 = 0`. Assume the negation of the conclusion as `hfx`. Conclude with `hf.2 hfx h0`.
+-/
 theorem sliceVan_of_frob' [CharZero k] (hFr : FrobeniusReciprocity) (hU : Unimod (k := k)) : SliceVan (k := k) := by
   intro n Z hZ s hs hss hV F P hFc hFB hFinv hP ξ hsupp hinv f hf
   have hCR : CR (adj Z s) := CRAdj.cr_adj Z hZ s hs hss

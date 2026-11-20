@@ -9,5 +9,8 @@ open Formalism.BasicNotions Formalism.MainNotions Formalism.DegreeFormula Formal
 open GlobalTheory.TwoLat GlobalTheory.OrthFilt GlobalTheory.VdmRec GlobalTheory.MixDens GlobalTheory.CovTop GlobalTheory.CovHt GlobalTheory.Published
 open scoped Classical
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.FlagSpDual.exists_isVal_dual | exact GlobalTheory.FlagSpDual.exists_isVal_dual | (intros; apply GlobalTheory.FlagSpDual.exists_isVal_dual <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.dual_flag_value_preserved : ArCalc → ∀ (k : Type) [CommRing k] (X : Scheme.{0}) [IsIntegral X] (p : X ⟶ Sp k) (d : ℕ), IsArithVar p d → ∀ (E : X.Modules) (r : ℕ) (h : VMetric p E r) (H : h.IsCInf) (F : FlagSp E r), ∃ F' : FlagSp (VB.dual E) r, ∀ (N : HermLB p) (e : ℕ) (a : ℝ), d = e + 1 → F.IsVal H N (genericPoint X) e a → F'.IsVal H.dual N (genericPoint X) e a := by
   first | exact @GlobalTheory.FlagSpDual.exists_isVal_dual | exact GlobalTheory.FlagSpDual.exists_isVal_dual | (intros; apply GlobalTheory.FlagSpDual.exists_isVal_dual <;> assumption)

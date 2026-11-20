@@ -9,6 +9,11 @@ namespace GlobalTheory.TopSteps.FinSummandJumps
 
 open Module
 
+/- English proof (translation)
+Establish `h1 : ∀ a : ℤ, ∑ᶠ (_ : a < 0), m a = (((U.filter (· < 0)).count a : ℕ) : ℤ)` using `fun a => by`. Rewrite using `[finsum_eq_if, h, Multiset.count_filter]`. Apply the tactic sequence `split_ifs <;> simp`. Rewrite using `[finsum_congr h1, finsum_eq_sum_of_support_subset (s := (U.filter (· < 0)).toFinset), ← Nat.cast_sum, Multiset.toFinset_sum_count_eq]`. Introduce `a ha`.
+
+Establish `ha' : (U.filter (· < 0)).count a ≠ 0` using `fun h0 => ha (by simp only [h0, Nat.cast_zero])`. Conclude with `Finset.mem_coe.2 (Multiset.mem_toFinset.2 (Multiset.count_ne_zero.1 ha'))`.
+-/
 theorem finsum_count_neg (U : Multiset ℤ) (m : ℤ → ℤ) (h : ∀ a, m a = (U.count a : ℤ)) :
     ∑ᶠ (a : ℤ) (_ : a < 0), m a = (Multiset.card (U.filter (· < 0)) : ℤ) := by
   classical
@@ -34,6 +39,11 @@ variable {G : Type} [Group G] {Qp K₀ K : Type} [Field Qp] [Field K₀] [Field 
     {V : Type} [AddCommGroup V] [Module LL V] [Module Qp V] [IsScalarTower Qp LL V]
     {ρ : Representation LL G V}
 
+/- English proof (translation)
+Set `E : K₀ ≃ₐ[Qp] K` to `AlgEquiv.ofBijective (IsScalarTower.toAlgHom Qp K₀ K) hK`. Set `e : ZMod n ≃ (K →ₐ[Qp] LL)` to `(Equiv.ofBijective emb hemb).trans (E.arrowCongr AlgEquiv.refl)`. Establish `he : ∀ i x, e i (algebraMap K₀ K x) = emb i x` using `fun i x => by`. Express the relevant statement in the definitionally equal form `emb i (E.symm (E x)) = emb i x`. Rewrite using `[AlgEquiv.symm_apply_apply]`.
+
+Rewrite using `[← finsum_comp_equiv e, finsum_eq_sum_of_fintype]`. Conclude with `Finset.sum_congr rfl fun i _ => finsum_count_neg (U i) _ (hU i (e i) (he i))`.
+-/
 theorem finsum_multV_neg {n : ℕ} [NeZero n] (emb : ZMod n → (K₀ →ₐ[Qp] LL)) (hemb : Function.Bijective emb)
     (hK : Function.Bijective (algebraMap K₀ K)) (U : ZMod n → Multiset ℤ)
     (hU : ∀ i, HasJumps PD ρ (emb i) (U i)) :
@@ -51,6 +61,9 @@ end General
 
 open GlobalTheory.AdmLoc GlobalTheory.TopSteps Formalism.WeaklyAdmissibleFiltrations Formalism.BasicNotions Formalism.BasicNotions.Loc Formalism.MainNotions GlobalTheory.TopSteps.FinSummandDim in
 
+/- English proof (translation)
+Introduce `l _ P S hB hC hV hH`. Take `⟨⟨-, -, -, hemb, -⟩, -⟩` from `S.hyp`. Establish `: IsTopologicalAddGroup (tw S hC).V` using `IsModuleTopology.topologicalAddGroup ↥S.LL.1 (tw S hC).V`. Establish `h` using `hB.1 (tw S hC).V (tw S hC).ρ (tw S hC).cont (tw_crysWith S hC).1`. Conclude with `fSummand_of_dim S hC hV hH (h.trans (congrArg _ (finsum_multV_neg (P.PD S.K) S.emb hemb (bijective_maxUnramifiedSubfield_algebraMap S) _ (tw_crysWith S hC).2)))`.
+-/
 theorem fSummand : ∀ {l : ℕ} [Fact l.Prime] {P : LocPrime l} (S : TopSit P), tableLineDegreeTwo.BlochKatoJumpDimension (P.PD S.K) (LL := ↥S.LL.1) (O := S.O) (IK S.K) → S.CrysCalc → S.Vanish → S.FreeH → S.FSummand := by
   intro l _ P S hB hC hV hH
   obtain ⟨⟨-, -, -, hemb, -⟩, -⟩ := S.hyp

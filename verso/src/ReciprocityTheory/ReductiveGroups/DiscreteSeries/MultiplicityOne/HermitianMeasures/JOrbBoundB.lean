@@ -32,30 +32,72 @@ def iM (k r' : ℕ) (j : Fin (2 * r' + k + 1)) : Fin (2 * (1 + r') + k + 1) := �
 
 def mid (k r' : ℕ) (v : Fin (2 * (1 + r') + k + 1) → ℂ) : Fin (2 * r' + k + 1) → ℂ := fun j => v (iM k r' j)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem first_index_val : (i0 k r').val = 0 := rfl
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem iL_val : (iL k r').val = 2 * (1 + r') + k := rfl
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem iM_val (j : Fin (2 * r' + k + 1)) : (iM k r' j).val = j.val + 1 := rfl
 
+/- English proof (translation)
+Rewrite using `[Ne, Fin.ext_iff, iM_val, first_index_val]`. Use linear arithmetic over natural numbers and integers.
+-/
 @[simp] theorem middle_ne_first_index (j : Fin (2 * r' + k + 1)) : iM k r' j ≠ i0 k r' := by
   rw [Ne, Fin.ext_iff, iM_val, first_index_val]; omega
+/- English proof (translation)
+Introduce `h` and use `middle_ne_first_index j h.symm`.
+-/
 @[simp] theorem first_ne_middle_index (j : Fin (2 * r' + k + 1)) : i0 k r' ≠ iM k r' j := fun h => middle_ne_first_index j h.symm
+/- English proof (translation)
+Use `j.isLt` as an intermediate fact. Rewrite using `[Ne, Fin.ext_iff, iM_val, iL_val]`. Use linear arithmetic over natural numbers and integers.
+-/
 @[simp] theorem iM_ne_iL (j : Fin (2 * r' + k + 1)) : iM k r' j ≠ iL k r' := by
   have := j.isLt; rw [Ne, Fin.ext_iff, iM_val, iL_val]; omega
+/- English proof (translation)
+Introduce `h` and use `iM_ne_iL j h.symm`.
+-/
 @[simp] theorem iL_ne_iM (j : Fin (2 * r' + k + 1)) : iL k r' ≠ iM k r' j := fun h => iM_ne_iL j h.symm
+/- English proof (translation)
+Rewrite using `[Ne, Fin.ext_iff, first_index_val, iL_val]`. Use linear arithmetic over natural numbers and integers.
+-/
 @[simp] theorem first_ne_last_index : i0 k r' ≠ iL k r' := by rw [Ne, Fin.ext_iff, first_index_val, iL_val]; omega
+/- English proof (translation)
+Introduce `h` and use `first_ne_last_index h.symm`.
+-/
 @[simp] theorem last_ne_first_index : iL k r' ≠ i0 k r' := fun h => first_ne_last_index h.symm
+/- English proof (translation)
+Apply the tactic sequence `rw [Fin.ext_iff, Fin.ext_iff, iM_val, iM_val]; constructor <;> intro h <;> omega`.
+-/
 @[simp] theorem iM_inj {a b : Fin (2 * r' + k + 1)} : iM k r' a = iM k r' b ↔ a = b := by
   rw [Fin.ext_iff, Fin.ext_iff, iM_val, iM_val]; constructor <;> intro h <;> omega
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem lift_apply (y : Fin (2 * r' + k + 1) → ℂ) (p : Fin (2 * (1 + r') + k + 1)) : liftVec k 1 r' y p =
     if hp : 1 ≤ p.val ∧ p.val < 2 * r' + k + 1 + 1 then y ⟨p.val - 1, by omega⟩ else 0 := rfl
 
+/- English proof (translation)
+Rewrite using `[lift_apply, dif_neg (by simp)]`.
+-/
 @[simp] theorem lifted_vector_first (y : Fin (2 * r' + k + 1) → ℂ) : liftVec k 1 r' y (i0 k r') = 0 := by
   rw [lift_apply, dif_neg (by simp)]
 
+/- English proof (translation)
+Rewrite using `[lift_apply, dif_neg (by simp only [iL_val]; omega)]`.
+-/
 @[simp] theorem lift_iL (y : Fin (2 * r' + k + 1) → ℂ) : liftVec k 1 r' y (iL k r') = 0 := by
   rw [lift_apply, dif_neg (by simp only [iL_val]; omega)]
 
+/- English proof (translation)
+Use `j.isLt` as an intermediate fact. Rewrite using `[lift_apply, dif_pos (by simp only [iM_val]; omega)]`. Conclude with `congrArg y (Fin.ext (by simp))`.
+-/
 @[simp] theorem lift_iM (y : Fin (2 * r' + k + 1) → ℂ) (j : Fin (2 * r' + k + 1)) :
     liftVec k 1 r' y (iM k r' j) = y j := by
   have := j.isLt

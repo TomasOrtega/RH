@@ -22,29 +22,50 @@ def leviM (X Y : Matrix (Fin n) (Fin r) R) (Xs Ys : Matrix (Fin r) (Fin n) R) (D
 
 variable {X Y : Matrix (Fin n) (Fin r) R} {Xs Ys : Matrix (Fin r) (Fin n) R}
 
+/- English proof (translation)
+Simplify using `only [piM, Matrix.sub_mul, Matrix.one_mul, Matrix.mul_assoc, hxx, hyx, Matrix.mul_one, Matrix.mul_zero, sub_self, sub_zero]`.
+-/
 theorem piM_mul_X (hxx : Xs * X = 0) (hyx : Ys * X = 1) : piM X Y Xs Ys * X = 0 := by
   simp only [piM, Matrix.sub_mul, Matrix.one_mul, Matrix.mul_assoc, hxx, hyx, Matrix.mul_one, Matrix.mul_zero, sub_self,
     sub_zero]
 
+/- English proof (translation)
+Simplify using `only [piM, Matrix.sub_mul, Matrix.one_mul, Matrix.mul_assoc, hxy, hyy, Matrix.mul_one, Matrix.mul_zero, sub_self, sub_zero]`.
+-/
 theorem piM_mul_Y (hxy : Xs * Y = 1) (hyy : Ys * Y = 0) : piM X Y Xs Ys * Y = 0 := by
   simp only [piM, Matrix.sub_mul, Matrix.one_mul, Matrix.mul_assoc, hxy, hyy, Matrix.mul_one, Matrix.mul_zero, sub_self,
     sub_zero]
 
+/- English proof (translation)
+Simplify using `only [piM, Matrix.mul_sub, Matrix.mul_one, ← Matrix.mul_assoc, hxx, hxy, Matrix.zero_mul, Matrix.one_mul, sub_self, sub_zero]`.
+-/
 theorem Xs_mul_piM (hxx : Xs * X = 0) (hxy : Xs * Y = 1) : Xs * piM X Y Xs Ys = 0 := by
   simp only [piM, Matrix.mul_sub, Matrix.mul_one, ← Matrix.mul_assoc, hxx, hxy, Matrix.zero_mul, Matrix.one_mul, sub_self,
     sub_zero]
 
+/- English proof (translation)
+Simplify using `only [piM, Matrix.mul_sub, Matrix.mul_one, ← Matrix.mul_assoc, hyx, hyy, Matrix.zero_mul, Matrix.one_mul, sub_self, sub_zero]`.
+-/
 theorem Ys_mul_piM (hyx : Ys * X = 1) (hyy : Ys * Y = 0) : Ys * piM X Y Xs Ys = 0 := by
   simp only [piM, Matrix.mul_sub, Matrix.mul_one, ← Matrix.mul_assoc, hyx, hyy, Matrix.zero_mul, Matrix.one_mul, sub_self,
     sub_zero]
 
+/- English proof (translation)
+Simplify using `only [piM, Matrix.sub_mul, Matrix.one_mul, Matrix.mul_assoc]`.
+-/
 theorem piM_mul (W : Matrix (Fin n) (Fin n) R) : piM X Y Xs Ys * W = W - X * (Ys * W) - Y * (Xs * W) := by
   simp only [piM, Matrix.sub_mul, Matrix.one_mul, Matrix.mul_assoc]
 
+/- English proof (translation)
+Rewrite using `[piM_mul, Xs_mul_piM hxx hxy, Ys_mul_piM hyx hyy, Matrix.mul_zero, Matrix.mul_zero, sub_zero, sub_zero]`.
+-/
 theorem piM_idem (hxx : Xs * X = 0) (hxy : Xs * Y = 1) (hyx : Ys * X = 1) (hyy : Ys * Y = 0) :
     piM X Y Xs Ys * piM X Y Xs Ys = piM X Y Xs Ys := by
   rw [piM_mul, Xs_mul_piM hxx hxy, Ys_mul_piM hyx hyy, Matrix.mul_zero, Matrix.mul_zero, sub_zero, sub_zero]
 
+/- English proof (translation)
+Establish `e2 : Xs * (h * piM X Y Xs Ys) = 0`. Rewrite using `[← Matrix.mul_assoc, hC, Matrix.mul_assoc, Xs_mul_piM hxx hxy, Matrix.mul_zero]`. Rewrite using `[piM_mul (h * piM X Y Xs Ys), e2, Matrix.mul_zero, sub_zero, Matrix.mul_sub, ← Matrix.mul_assoc g h, hgh, Matrix.one_mul, ← Matrix.mul_assoc g X, hgX, Matrix.mul_assoc]`.
+-/
 theorem mul_piM_mul {g h : Matrix (Fin n) (Fin n) R} {B C : Matrix (Fin r) (Fin r) R} (hxx : Xs * X = 0)
     (hxy : Xs * Y = 1) (hgh : g * h = 1) (hgX : g * X = X * B) (hC : Xs * h = C * Xs) :
     g * (piM X Y Xs Ys * (h * piM X Y Xs Ys)) =
@@ -54,6 +75,9 @@ theorem mul_piM_mul {g h : Matrix (Fin n) (Fin n) R} {B C : Matrix (Fin r) (Fin 
   rw [piM_mul (h * piM X Y Xs Ys), e2, Matrix.mul_zero, sub_zero, Matrix.mul_sub, ← Matrix.mul_assoc g h, hgh,
     Matrix.one_mul, ← Matrix.mul_assoc g X, hgX, Matrix.mul_assoc]
 
+/- English proof (translation)
+Rewrite using `[mul_piM_mul hxx hxy hgh hgX hC, Matrix.mul_sub, piM_idem hxx hxy hyx hyy, ← Matrix.mul_assoc (piM X Y Xs Ys) X, piM_mul_X hxx hyx, Matrix.zero_mul, sub_zero]`.
+-/
 theorem piM_sandwich {g h : Matrix (Fin n) (Fin n) R} {B C : Matrix (Fin r) (Fin r) R} (hxx : Xs * X = 0)
     (hxy : Xs * Y = 1) (hyx : Ys * X = 1) (hyy : Ys * Y = 0) (hgh : g * h = 1) (hgX : g * X = X * B)
     (hC : Xs * h = C * Xs) :
@@ -61,6 +85,17 @@ theorem piM_sandwich {g h : Matrix (Fin n) (Fin n) R} {B C : Matrix (Fin r) (Fin
   rw [mul_piM_mul hxx hxy hgh hgX hC, Matrix.mul_sub, piM_idem hxx hxy hyx hyy, ← Matrix.mul_assoc (piM X Y Xs Ys) X,
     piM_mul_X hxx hyx, Matrix.zero_mul, sub_zero]
 
+/- English proof (translation)
+Establish `a1 : ∀ {k : Type} [Fintype k] (M : Matrix (Fin r) k R), Ys * (X * M) = M` using `fun M => by`. Rewrite using `[← Matrix.mul_assoc, hyx, Matrix.one_mul]`. Establish `a2 : ∀ {k : Type} [Fintype k] (M : Matrix (Fin r) k R), Xs * (Y * M) = M` using `fun M => by`. Rewrite using `[← Matrix.mul_assoc, hxy, Matrix.one_mul]`. Establish `a3 : ∀ {k : Type} [Fintype k] (M : Matrix (Fin r) k R), Xs * (X * M) = 0` using `fun M => by`.
+
+Rewrite using `[← Matrix.mul_assoc, hxx, Matrix.zero_mul]`. Establish `a4 : ∀ {k : Type} [Fintype k] (M : Matrix (Fin r) k R), Ys * (Y * M) = 0` using `fun M => by`. Rewrite using `[← Matrix.mul_assoc, hyy, Matrix.zero_mul]`. Establish `a5 : ∀ {k : Type} [Fintype k] (M : Matrix (Fin n) k R), Xs * (piM X Y Xs Ys * M) = 0` using `fun M => by`. Rewrite using `[← Matrix.mul_assoc, Xs_mul_piM hxx hxy, Matrix.zero_mul]`.
+
+Establish `a6 : ∀ {k : Type} [Fintype k] (M : Matrix (Fin n) k R), Ys * (piM X Y Xs Ys * M) = 0` using `fun M => by`. Rewrite using `[← Matrix.mul_assoc, Ys_mul_piM hyx hyy, Matrix.zero_mul]`. Establish `a7 : ∀ {k : Type} [Fintype k] (M : Matrix (Fin r) k R), piM X Y Xs Ys * (X * M) = 0` using `fun M => by`. Rewrite using `[← Matrix.mul_assoc, piM_mul_X hxx hyx, Matrix.zero_mul]`. Establish `a8 : ∀ {k : Type} [Fintype k] (M : Matrix (Fin r) k R), piM X Y Xs Ys * (Y * M) = 0` using `fun M => by`.
+
+Rewrite using `[← Matrix.mul_assoc, piM_mul_Y hxy hyy, Matrix.zero_mul]`. Establish `a9 : ∀ {k : Type} [Fintype k] (M : Matrix (Fin n) k R), piM X Y Xs Ys * (piM X Y Xs Ys * M) = piM X Y Xs Ys * M` using `fun M => by`. Rewrite using `[← Matrix.mul_assoc, piM_idem hxx hxy hyx hyy]`. Establish `b1 : ∀ {k : Type} [Fintype k] (M : Matrix (Fin r) k R), D * (Di * M) = M` using `fun M => by`. Rewrite using `[← Matrix.mul_assoc, h1, Matrix.one_mul]`.
+
+Establish `b2 : ∀ {k : Type} [Fintype k] (M : Matrix (Fin r) k R), D' * (Di' * M) = M` using `fun M => by`. Rewrite using `[← Matrix.mul_assoc, h2, Matrix.one_mul]`. Simplify using `only [leviM, Matrix.add_mul, Matrix.mul_add, Matrix.mul_assoc, a1, a2, a3, a4, a5, a6, a7, a8, a9, b1, b2, Matrix.mul_zero, add_zero, zero_add, hs]`. Unfold `piM`. Normalize the expressions using the abelian group laws.
+-/
 theorem leviM_mul {g h : Matrix (Fin n) (Fin n) R} {D Di D' Di' : Matrix (Fin r) (Fin r) R} (hxx : Xs * X = 0)
     (hxy : Xs * Y = 1) (hyx : Ys * X = 1) (hyy : Ys * Y = 0) (h1 : D * Di = 1) (h2 : D' * Di' = 1)
     (hs : piM X Y Xs Ys * (g * (piM X Y Xs Ys * (h * piM X Y Xs Ys))) = piM X Y Xs Ys) :
@@ -93,16 +128,27 @@ theorem leviM_mul {g h : Matrix (Fin n) (Fin n) R} {D Di D' Di' : Matrix (Fin r)
   unfold piM
   abel
 
+/- English proof (translation)
+Simplify using `only [leviM, Matrix.add_mul, Matrix.mul_assoc, hxx, hyx, piM_mul_X hxx hyx, Matrix.mul_one, Matrix.mul_zero, add_zero]`.
+-/
 theorem leviM_mul_X {g : Matrix (Fin n) (Fin n) R} (D D' : Matrix (Fin r) (Fin r) R) (hxx : Xs * X = 0)
     (hyx : Ys * X = 1) : leviM X Y Xs Ys D D' g * X = X * D := by
   simp only [leviM, Matrix.add_mul, Matrix.mul_assoc, hxx, hyx, piM_mul_X hxx hyx, Matrix.mul_one, Matrix.mul_zero,
     add_zero]
 
+/- English proof (translation)
+Simplify using `only [leviM, Matrix.add_mul, Matrix.mul_assoc, hxy, hyy, piM_mul_Y hxy hyy, Matrix.mul_one, Matrix.mul_zero, add_zero, zero_add]`.
+-/
 theorem leviM_mul_Y {g : Matrix (Fin n) (Fin n) R} (D D' : Matrix (Fin r) (Fin r) R) (hxy : Xs * Y = 1)
     (hyy : Ys * Y = 0) : leviM X Y Xs Ys D D' g * Y = Y * D' := by
   simp only [leviM, Matrix.add_mul, Matrix.mul_assoc, hxy, hyy, piM_mul_Y hxy hyy, Matrix.mul_one, Matrix.mul_zero,
     add_zero, zero_add]
 
+/- English proof (translation)
+Establish `e1 : (1 : Matrix (Fin n) (Fin n) R) = X * Ys + Y * Xs + piM X Y Xs Ys`. Unfold `piM`. Normalize the expressions using the abelian group laws. Establish `e2 : g * (X * (Di * Ys)) = X * (B * (Di * Ys))`. Rewrite using `[← Matrix.mul_assoc, hgX, Matrix.mul_assoc]`.
+
+Rewrite using `[leviM, Matrix.mul_add, Matrix.mul_add, mul_piM_mul hxx hxy hgh hgX hC, e2]`. Generalize the expression as in `Ys * (h * piM X Y Xs Ys) = Q`. Rewrite using `[e1]`. Simplify using `only [Matrix.mul_sub, Matrix.sub_mul, Matrix.mul_assoc]`. Normalize the expressions using the abelian group laws.
+-/
 theorem mul_leviM_sub_one {g h : Matrix (Fin n) (Fin n) R} {B C : Matrix (Fin r) (Fin r) R}
     (Di Di' : Matrix (Fin r) (Fin r) R) (hxx : Xs * X = 0) (hxy : Xs * Y = 1) (hgh : g * h = 1)
     (hgX : g * X = X * B) (hC : Xs * h = C * Xs) :
@@ -119,6 +165,9 @@ theorem mul_leviM_sub_one {g h : Matrix (Fin n) (Fin n) R} {B C : Matrix (Fin r)
   simp only [Matrix.mul_sub, Matrix.sub_mul, Matrix.mul_assoc]
   abel
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨T *ᵥ w, by rw [hA, Matrix.add_mulVec, ← Matrix.mulVec_mulVec, ← Matrix.mulVec_mulVec, hw, Matrix.mulVec_zero, add_zero]⟩`.
+-/
 theorem exists_mulVec_eq {A : Matrix (Fin n) (Fin n) R} {T : Matrix (Fin r) (Fin n) R} {V : Matrix (Fin n) (Fin r) R}
     (hA : A = X * T + V * Xs) {w : Fin n → R} (hw : Xs *ᵥ w = 0) : ∃ a, A *ᵥ w = X *ᵥ a :=
   ⟨T *ᵥ w, by
@@ -131,12 +180,21 @@ section Frame
 variable {n r : ℕ} {R : Type} [CommRing R] {s : R →+* R} {Jm : Matrix (Fin n) (Fin n) R}
   {X Y : Matrix (Fin n) (Fin r) R}
 
+/- English proof (translation)
+The claim follows from `Matrix.ext fun _ _ => by simp [cT]`.
+-/
 theorem cT_sub' {a b : Type} (P Q : Matrix a b R) : cT s (P - Q) = cT s P - cT s Q :=
   Matrix.ext fun _ _ => by simp [cT]
 
+/- English proof (translation)
+The claim follows from `Matrix.ext fun _ _ => by simp [cT]`.
+-/
 theorem cT_add' {a b : Type} (P Q : Matrix a b R) : cT s (P + Q) = cT s P + cT s Q :=
   Matrix.ext fun _ _ => by simp [cT]
 
+/- English proof (translation)
+Use extensionality with `i j`. Distinguish the cases in `hij : i = j`. Substitute `hij` using the available equality. Simplify using `[cT]`. Simplify using `[cT, Matrix.diagonal_apply, hij, Ne.symm hij]`.
+-/
 theorem cT_diagonal' (d : Fin r → R) : cT s (diagonal d) = diagonal (fun i => s (d i)) := by
   ext i j
   by_cases hij : i = j
@@ -144,12 +202,22 @@ theorem cT_diagonal' (d : Fin r → R) : cT s (diagonal d) = diagonal (fun i => 
     simp [cT]
   · simp [cT, Matrix.diagonal_apply, hij, Ne.symm hij]
 
+/- English proof (translation)
+Simplify using `only [piM, cT_sub', Formalism.UG.cT_one, Formalism.UG.cT_mul, hF.cc, hF.herm, Matrix.sub_mul, Matrix.mul_sub, Matrix.one_mul, Matrix.mul_one, Matrix.mul_assoc]`. Normalize the expressions using the abelian group laws.
+-/
 theorem cT_piM_mul (hF : PFr s Jm X Y) :
     cT s (piM X Y (cT s X * Jm) (cT s Y * Jm)) * Jm = Jm * piM X Y (cT s X * Jm) (cT s Y * Jm) := by
   simp only [piM, cT_sub', Formalism.UG.cT_one, Formalism.UG.cT_mul, hF.cc, hF.herm, Matrix.sub_mul, Matrix.mul_sub, Matrix.one_mul,
     Matrix.mul_one, Matrix.mul_assoc]
   abel
 
+/- English proof (translation)
+Establish `hp` using `cT_piM_mul hF`. Establish `e3 : cT s (piM X Y (cT s X * Jm) (cT s Y * Jm) * (g * piM X Y (cT s X * Jm) (cT s Y * Jm))) * Jm = Jm * (piM X Y (cT s X * Jm) (cT s Y * Jm) * (h * piM X Y (cT s X * Jm) (cT s Y * Jm)))`. Generalize the expression as in `piM X Y (cT s X * Jm) (cT s Y * Jm) = P at hp`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Formalism.UG.cT_mul, Formalism.UG.cT_mul]`.
+
+Simplify using `only [Matrix.mul_assoc]`. Use `_ = cT s P * ((cT s g * Jm) * P) := by rw [hp, Matrix.mul_assoc]`. Use `_ = (cT s P * Jm) * (h * P) := by rw [hgJ]; simp only [Matrix.mul_assoc]`. Use `_ = Jm * (P * (h * P)) := by rw [hp, Matrix.mul_assoc]`. Rewrite using `[leviM, leviM, cT_add', cT_add', Matrix.add_mul, Matrix.add_mul, Matrix.mul_add, Matrix.mul_add, e3]`.
+
+Use `congr 1`. Simplify using `only [Formalism.UG.cT_mul, hF.cc, hF.herm, Matrix.mul_assoc]`. Rewrite using `[add_comm]`.
+-/
 theorem cT_leviM_mul (hF : PFr s Jm X Y) {g h : Matrix (Fin n) (Fin n) R} (D D' : Matrix (Fin r) (Fin r) R)
     (hgJ : cT s g * Jm = Jm * h) :
     cT s (leviM X Y (cT s X * Jm) (cT s Y * Jm) D D' g) * Jm =
@@ -169,6 +237,15 @@ theorem cT_leviM_mul (hF : PFr s Jm X Y) {g h : Matrix (Fin n) (Fin n) R} (D D' 
   simp only [Formalism.UG.cT_mul, hF.cc, hF.herm, Matrix.mul_assoc]
   rw [add_comm]
 
+/- English proof (translation)
+Establish `hgJ : cT s g * Jm = Jm * h` using `by conv_rhs => rw [← hg]`. Rewrite using `[Matrix.mul_assoc _ g h, hgh, Matrix.mul_one]`. Establish `hhJ : cT s h * Jm = Jm * g` using `by conv_rhs => rw [← hh]`. Rewrite using `[Matrix.mul_assoc _ h g, hhg, Matrix.mul_one]`. Establish `hC : cT s X * Jm * h = cT s B * (cT s X * Jm)`.
+
+Rewrite using `[Matrix.mul_assoc, ← hgJ, ← Matrix.mul_assoc, ← Formalism.UG.cT_mul, hgX, Formalism.UG.cT_mul, Matrix.mul_assoc]`. Establish `hC' : cT s X * Jm * g = cT s Q * (cT s X * Jm)`. Rewrite using `[Matrix.mul_assoc, ← hhJ, ← Matrix.mul_assoc, ← Formalism.UG.cT_mul, hhX, Formalism.UG.cT_mul, Matrix.mul_assoc]`. Establish `hxx : cT s X * Jm * X = 0` using `hF.xx`. Establish `hxy : cT s X * Jm * Y = 1` using `hF.xy`.
+
+Establish `hyx : cT s Y * Jm * X = 1` using `hF.yx`. Establish `hyy : cT s Y * Jm * Y = 0` using `hF.yy`. Establish `c1 : cT s Di * cT s D = 1` using `by rw [← Formalism.UG.cT_mul, hD, Formalism.UG.cT_one]`. Establish `c2 : cT s D * cT s Di = 1` using `by rw [← Formalism.UG.cT_mul, hDi, Formalism.UG.cT_one]`. Establish `m1` using `leviM_mul hxx hxy hyx hyy hD c1 (piM_sandwich hxx hxy hyx hyy hgh hgX hC)`.
+
+Establish `m2` using `leviM_mul hxx hxy hyx hyy hDi c2 (piM_sandwich hxx hxy hyx hyy hhg hhX hC')`. Use `⟨m1, m2, ?_, hC⟩` and prove the remaining obligations. Rewrite using `[cT_leviM_mul hF D (cT s Di) hgJ, hF.cc, Matrix.mul_assoc, m2, Matrix.mul_one]`.
+-/
 theorem frame_levi (hF : PFr s Jm X Y) {g h : Matrix (Fin n) (Fin n) R} {B Q D Di : Matrix (Fin r) (Fin r) R}
     (hgh : g * h = 1) (hhg : h * g = 1) (hg : cT s g * Jm * g = Jm) (hh : cT s h * Jm * h = Jm)
     (hgX : g * X = X * B) (hhX : h * X = X * Q) (hD : D * Di = 1) (hDi : Di * D = 1) :
@@ -200,6 +277,27 @@ theorem frame_levi (hF : PFr s Jm X Y) {g h : Matrix (Fin n) (Fin n) R} {B Q D D
 
 end Frame
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ hcm n J hJ r X Y hW p hp`. Establish `hF` using `pfrA hcm hJ hW`. Take `⟨B, hB, e, hu⟩` from `id hp`. Use `choose v hv1 hv2 using hu`. Take `⟨Q, -, eQ⟩` from `inv_mem_minPar hcm hJ hW (minParOne_sub hp)`.
+
+Establish `hgh : (matHom _ σ J p).1 * (matHom _ σ J p⁻¹).1 = 1`. Rewrite using `[← Units.val_mul, ← map_mul, mul_inv_cancel, map_one, Units.val_one]`. Establish `hhg : (matHom _ σ J p⁻¹).1 * (matHom _ σ J p).1 = 1`. Rewrite using `[← Units.val_mul, ← map_mul, inv_mul_cancel, map_one, Units.val_one]`. Establish `hD : diagonal (fun i => (v i : AF F ⊗[F] E)) * diagonal (fun i => ((v i)⁻¹ : (AF F ⊗[F] E)ˣ).1) = 1`.
+
+Rewrite using `[Matrix.diagonal_mul_diagonal]`. Simplify using the standard rewrite rules. Establish `hDi : diagonal (fun i => ((v i)⁻¹ : (AF F ⊗[F] E)ˣ).1) * diagonal (fun i => (v i : AF F ⊗[F] E)) = 1`. Rewrite using `[Matrix.diagonal_mul_diagonal]`. Simplify using the standard rewrite rules.
+
+Take `⟨m1, m2, m3, hC⟩` from `frame_levi hF hgh hhg (unitaryA_matHom p) (unitaryA_matHom p⁻¹) e eQ hD hDi`. Set `m : GAd σ J` to `⟨⟨_, _, m1, m2⟩, m3⟩`. Establish `hm : (matHom _ σ J m).1 = leviM (adMat F X) (adMat F Y) (cT (sigR (AF F) σ) (adMat F X) * JR (AF F) J) (cT (sigR (AF F) σ) (adMat F Y) * JR (AF F) J) (diagonal (fun i => (v i : AF F ⊗[F] E))) (cT (sigR (AF F) σ) (diagonal (fun i => ((v i)⁻¹ : (AF F ⊗[F] E)ˣ).1))) (matHom _ σ J p) …` using `rfl`. Establish `hmi : (matHom _ σ J m⁻¹).1 = leviM (adMat F X) (adMat F Y) (cT (sigR (AF F) σ) (adMat F X) * JR (AF F) J) (cT (sigR (AF F) σ) (adMat F Y) * JR (AF F) J) (diagonal (fun i => ((v i)⁻¹ : (AF F ⊗[F] E)ˣ).1)) (cT (sigR (AF F) σ) (diagonal (fun i => (v i : AF F ⊗[F] E)))) (matHom _ σ J …` using `rfl`. Establish `hmX : (matHom _ σ J m).1 * adMat F X = adMat F X * diagonal (fun i => (v i : AF F ⊗[F] E))`.
+
+Rewrite using `[hm]`. Conclude with `leviM_mul_X _ _ hF.xx hF.yx`. Establish `hmY : (matHom _ σ J m).1 * adMat F Y = adMat F Y * diagonal (fun i => sigR (AF F) σ (((v i)⁻¹ : (AF F ⊗[F] E)ˣ).1))`. Rewrite using `[hm]`. Conclude with `(leviM_mul_Y (X := adMat F X) _ _ hF.xy hF.yy).trans (congrArg (adMat F Y * ·) (cT_diagonal' _))`.
+
+Establish `hmiX : (matHom _ σ J m⁻¹).1 * adMat F X = adMat F X * diagonal (fun i => ((v i)⁻¹ : (AF F ⊗[F] E)ˣ).1)`. Rewrite using `[hmi]`. Conclude with `leviM_mul_X _ _ hF.xx hF.yx`. Use `⟨p * m⁻¹, ?_, m, ⟨_, _, hmX, hmY⟩, ⟨_, Matrix.blockTriangular_diagonal _, hmX, fun i => ⟨v i, Matrix.diagonal_apply_eq _ _, hv2 i⟩⟩, (inv_mul_cancel_right p m).symm⟩` and prove the remaining obligations. Establish `hval : (matHom _ σ J (p * m⁻¹)).1 = (matHom _ σ J p).1 * (matHom _ σ J m⁻¹).1`.
+
+Rewrite using `[map_mul, Units.val_mul]`. Use `⟨B * diagonal (fun i => ((v i)⁻¹ : (AF F ⊗[F] E)ˣ).1), hB.mul (Matrix.blockTriangular_diagonal _), fun i => ?_, ?_, fun z hz => ?_⟩` and prove the remaining obligations. Rewrite using `[Matrix.mul_diagonal, hv1]`. Simplify using the standard rewrite rules. Rewrite using `[hval, Matrix.mul_assoc, hmiX, ← Matrix.mul_assoc, e, Matrix.mul_assoc]`.
+
+Establish `hs : (cT (sigR (AF F) σ) (adMat F X) * JR (AF F) J) *ᵥ (fun i => inclR (F` using `F) (AF F) (z i)) = 0 := by`. Establish `e1 : cT (sigR (AF F) σ) (adMat F X) * JR (AF F) J = (cT (σ : E →+* E) X * J).map (inclR (F` using `F) (AF F)) := by`. Unfold `JR`. Rewrite using `[← cT_map_inclR]`. Conclude with `(Matrix.map_mul (L := cT (σ : E →+* E) X) (M := J) (f := inclR (F := F) (AF F))).symm`.
+
+Rewrite using `[e1]`. Use function extensionality and compare the values at `i`. Use `RingHom.map_mulVec (inclR (F := F) (AF F)) (cT (σ : E →+* E) X * J) z i` as an intermediate fact. Rewrite `this` using `[hz, Pi.zero_apply, map_zero]`. Conclude with `this.symm`.
+
+Rewrite using `[hval, hmi]`. Conclude with `exists_mulVec_eq (mul_leviM_sub_one (Ys := cT (sigR (AF F) σ) (adMat F Y) * JR (AF F) J) _ _ hF.xx hF.xy hgh e hC) hs`.
+-/
 theorem levi_decomp : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E),
     IsCMExt F E σ → ∀ (n : ℕ) (J : Matrix (Fin n) (Fin n) E), IsHermND σ J → ∀ (r : ℕ) (X Y : Matrix (Fin n) (Fin r) E),
     IsWittFrame σ J X Y → ∀ p ∈ minParOne σ J X, ∃ u ∈ unipMin σ J X, ∃ m ∈ leviMin σ J X Y,

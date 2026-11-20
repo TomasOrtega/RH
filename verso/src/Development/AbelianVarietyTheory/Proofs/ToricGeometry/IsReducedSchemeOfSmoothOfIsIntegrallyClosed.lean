@@ -10,6 +10,9 @@ open scoped BigOperators Real
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Establish `hT : GlobalTheory.IsNormalScheme (Sp T)` using `inferInstance`. Establish `hX : GlobalTheory.IsNormalScheme X` using `(isNormalScheme_iff X).mpr (forall_isDomain_and_isIntegrallyClosed_stalk_of_smooth f ((isNormalScheme_iff _).mp hT))`. Use `infer_instance`.
+-/
 theorem isReduced_scheme_of_smooth_of_isIntegrallyClosed (T : Type) [CommRing T] [IsDomain T]
     [IsIntegrallyClosed T] {X : Scheme.{0}} (f : X ⟶ Sp T) [Smooth f] :
     AlgebraicGeometry.IsReduced X := by
@@ -18,6 +21,9 @@ theorem isReduced_scheme_of_smooth_of_isIntegrallyClosed (T : Type) [CommRing T]
     (forall_isDomain_and_isIntegrallyClosed_stalk_of_smooth f ((isNormalScheme_iff _).mp hT))
   infer_instance
 
+/- English proof (translation)
+The claim follows from `fun _ p _ ↦ isReduced_scheme_of_smooth_of_isIntegrallyClosed ℂ p`.
+-/
 theorem isReduced_of_smooth_complex :
     (∀ (X : Scheme.{0}) (p : X ⟶ Sp ℂ), Smooth p → IsReduced X) :=
   fun _ p _ ↦ isReduced_scheme_of_smooth_of_isIntegrallyClosed ℂ p

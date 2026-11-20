@@ -223,6 +223,9 @@ def SqDec {S : Scheme.{0}} (A : Over S) [GrpObj A] (L M : LB A.left) : Prop :=
 def HasExt {X S : Scheme.{0}} (j : X ⟶ S) (A : Over X) [GrpObj A] : Prop :=
   ∃ (G : Over S) (_ : GrpObj G) (e : A.left ⟶ G.left), IsSemiAbelian G ∧ IsGrpPullback A G j e
 
+/- English proof (translation)
+Introduce `t ht` and use `⟨1, fun _ => 1, fun _ => t, fun _ => ht, by simp⟩`.
+-/
 theorem subset_spanBy {R₁ F₁ : Type} [CommRing R₁] [CommRing F₁] (c : R₁ →+* F₁) (T : Set F₁) : T ⊆ spanBy c T :=
   fun t ht => ⟨1, fun _ => 1, fun _ => t, fun _ => ht, by simp⟩
 

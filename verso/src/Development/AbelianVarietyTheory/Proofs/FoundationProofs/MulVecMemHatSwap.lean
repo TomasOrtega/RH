@@ -12,6 +12,11 @@ section General
 
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {n : ℕ}
 
+/- English proof (translation)
+Take `⟨y, rfl⟩` from `hx`. Rewrite `hz`, the goal using `[hβ]`. Introduce `i`. Establish `e : (β⁻¹).1 *ᵥ ((frGL β y).1 *ᵥ z) = (intGL F E n y).1 *ᵥ ((β⁻¹).1 *ᵥ z)`. Rewrite using `[Matrix.mulVec_mulVec, Matrix.mulVec_mulVec, ← Units.val_mul, ← Units.val_mul]`.
+
+Use `congr 2`. Express the relevant statement in the definitionally equal form `β⁻¹ * (β * intGL F E n y * β⁻¹) = _`. Use `group`. Rewrite using `[e]`. Conclude with `Subring.sum_mem (t := Finset.univ) _ fun j _ => mul_mem (y.1 i j).2 (hz j)`.
+-/
 theorem mulVec_mem_hatL {β x : GL (Fin n) (E ⊗[F] Formalism.L2.Herm.Af F)} {Λ : Submodule (𝓞 E) (Fin n → E)}
     (hβ : IsFrame β Λ) (hx : x ∈ St β) {z : Fin n → E ⊗[F] Formalism.L2.Herm.Af F}
     (hz : z ∈ Formalism.L2.Herm.hatL (F := F) Λ) : x.1 *ᵥ z ∈ Formalism.L2.Herm.hatL (F := F) Λ := by
@@ -26,6 +31,11 @@ theorem mulVec_mem_hatL {β x : GL (Fin n) (E ⊗[F] Formalism.L2.Herm.Af F)} {�
   rw [e]
   exact Subring.sum_mem (t := Finset.univ) _ fun j _ => mul_mem (y.1 i j).2 (hz j)
 
+/- English proof (translation)
+Establish `h` using `GlobalTheory.PrincInLevel.swap_symm_mem_hat Λ _ (mulVec_mem_hatL hβ hq (GlobalTheory.PrincInLevel.swap_mem_hatL Λ z hz))`. Use `h using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `i`. Rewrite using `[AlgEquiv.eq_symm_apply]`. Simplify using `only [Matrix.mulVec, dotProduct, map_sum, map_mul]`.
+
+Both sides reduce to the same expression.
+-/
 theorem mulVec_mem_hat {β : GL (Fin n) (E ⊗[F] Formalism.L2.Herm.Af F)} {Λ : Submodule (𝓞 E) (Fin n → E)}
     (hβ : IsFrame β Λ) {q : GL (Fin n) (FiniteAdeleRing (𝓞 F) F ⊗[F] E)}
     (hq : Formalism.UG.bc (Algebra.TensorProduct.comm F _ E).toAlgHom.toRingHom q ∈ St β)
@@ -41,6 +51,9 @@ theorem mulVec_mem_hat {β : GL (Fin n) (E ⊗[F] Formalism.L2.Herm.Af F)} {Λ :
 
 omit [NumberField F] [NumberField E] in
 
+/- English proof (translation)
+Use `Units.ext (Matrix.ext fun i j => ?_)` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `Algebra.TensorProduct.map f (AlgHom.id F E) (1 ⊗ₜ g.1 i j) = 1 ⊗ₜ g.1 i j`. Rewrite using `[Algebra.TensorProduct.map_tmul, map_one]`. Both sides reduce to the same expression.
+-/
 theorem bc_map_bc_inclR {R S : Type} [CommRing R] [Algebra F R] [CommRing S] [Algebra F S] (f : R →ₐ[F] S)
     (g : GL (Fin n) E) :
     Formalism.UG.bc (Algebra.TensorProduct.map f (AlgHom.id F E)).toRingHom (Formalism.UG.bc (inclR (F := F) R) g) =
@@ -51,6 +64,17 @@ theorem bc_map_bc_inclR {R S : Type} [CommRing R] [Algebra F R] [CommRing S] [Al
 
 omit [NumberField F] [NumberField E] in
 
+/- English proof (translation)
+Establish `hv : ∀ (g : GL (Fin n) E) (x : Fin n → E), (Formalism.UG.bc (inclR (F` using `F) R) g).1 *ᵥ (fun i => (1 : R) ⊗ₜ[F] x i) = fun i => (1 : R) ⊗ₜ[F] (g.1 *ᵥ x) i := by`. Introduce `g x`. Use function extensionality and compare the values at `i`. Conclude with `(RingHom.map_mulVec (inclR (F := F) R) g.1 x i).symm`. Establish `key : ∀ z, (q⁻¹).1 *ᵥ z ∈ H ↔ z ∈ H`.
+
+Use `fun z => ⟨fun hz => ?_, h2 z⟩` and prove the remaining obligations. Use `h1 _ hz` as an intermediate fact. Rewrite `this` using `[Matrix.mulVec_mulVec, Units.mul_inv, Matrix.one_mulVec]`. Then use the resulting hypothesis. Establish `hs : ∀ x : Fin n → E, ((Formalism.UG.bc (inclR (F` using `F) R) g * h * q)⁻¹).1 *ᵥ (fun i => (1 : R) ⊗ₜ[F] x i) = (q⁻¹).1 *ᵥ ((h⁻¹).1 *ᵥ fun i => (1 : R) ⊗ₜ[F] ((g⁻¹).1 *ᵥ x) i) := by`. Introduce `x`.
+
+Rewrite using `[← hv, map_inv, Matrix.mulVec_mulVec, Matrix.mulVec_mulVec, ← Units.val_mul, ← Units.val_mul, mul_inv_rev, mul_inv_rev, mul_assoc]`. Rewrite using `[Submodule.map_span]`. Use `congr 1`. Use extensionality with `x`. Prove the components needed by the constructor for the conclusion.
+
+Introduce `hx`. Use `⟨(g⁻¹).1 *ᵥ x, (key _).1 (hs x ▸ hx), ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `g.1 *ᵥ ((g⁻¹).1 *ᵥ x) = x`. Rewrite using `[Matrix.mulVec_mulVec, Units.mul_inv, Matrix.one_mulVec]`. Introduce and unpack `⟨y, hy, rfl⟩`.
+
+Express the relevant statement in the definitionally equal form `_ *ᵥ _ ∈ H`. Rewrite using `[hs, key]`. Express the relevant statement in the definitionally equal form `_ *ᵥ (fun i => (1 : R) ⊗ₜ[F] ((g⁻¹).1 *ᵥ (g.1 *ᵥ y)) i) ∈ H`. Rewrite using `[Matrix.mulVec_mulVec, Units.inv_mul, Matrix.one_mulVec]`. Conclude with `hy`.
+-/
 theorem span_move {R O : Type} [CommRing R] [Algebra F R] [CommRing O] [Algebra O E] (H : AddSubgroup (Fin n → R ⊗[F] E))
     (g : GL (Fin n) E) (h q : GL (Fin n) (R ⊗[F] E)) (h1 : ∀ z ∈ H, q.1 *ᵥ z ∈ H) (h2 : ∀ z ∈ H, (q⁻¹).1 *ᵥ z ∈ H) :
     Submodule.span O {x : Fin n → E |
@@ -91,6 +115,11 @@ end General
 
 variable {D : D7}
 
+/- English proof (translation)
+Take `⟨γE, -, hγ⟩` from `γ.2`. Establish `hm : matHom V γ.1 = Formalism.UG.bc (inclR (F` using `D.host.F) (AF D.host.F)) γE := hγ.symm`. Use `⟨γE, hm, ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `finHom V γ.1 = _`. Rewrite using `[finHom, MonoidHom.comp_apply, hm]`.
+
+Conclude with `bc_map_bc_inclR _ _`.
+-/
 theorem exists_ratMat (V : HSp D) (γ : GQ V) : ∃ γE : GL (Fin V.rank) D.host.E, Bridge.IsRatMat V γ γE ∧
     (Bridge.ratF V γ).1 = Formalism.UG.bc (inclR (F := D.host.F) (Af D.host.F)) γE := by
   obtain ⟨γE, -, hγ⟩ := γ.2
@@ -100,6 +129,9 @@ theorem exists_ratMat (V : HSp D) (γ : GQ V) : ∃ γE : GL (Fin V.rank) D.host
   rw [finHom, MonoidHom.comp_apply, hm]
   exact bc_map_bc_inclR _ _
 
+/- English proof (translation)
+Rewrite using `[GlobalTheory.PrincInLevel.eq_latC hΛ, GlobalTheory.Member.coe_selfDualLatticeInFrameCoordinates_eq]`. Both sides reduce to the same expression.
+-/
 theorem hLat_eq_span {V : HSp D} {β : GL (Fin V.rank) (Lev.EAf D)} {Λ : Submodule (𝓞 D.host.E) (Fin V.rank → D.host.E)}
     (hΛ : IsSDFrame V β Λ 1) (h : Bridge.Gf V) :
     Bridge.hLat V h = Submodule.span (𝓞 D.host.E) {x : Fin V.rank → D.host.E |
@@ -108,12 +140,20 @@ theorem hLat_eq_span {V : HSp D} {β : GL (Fin V.rank) (Lev.EAf D)} {Λ : Submod
   rw [GlobalTheory.PrincInLevel.eq_latC hΛ, GlobalTheory.Member.coe_selfDualLatticeInFrameCoordinates_eq]
   rfl
 
+/- English proof (translation)
+Introduce `_ hz` and use `mulVec_mem_hat hβ hq hz`.
+-/
 theorem mulVec_mem_hat_swap {n : ℕ} {β : GL (Fin n) (Lev.EAf D)} {Λ : Submodule (𝓞 D.host.E) (Fin n → D.host.E)}
     (hβ : IsFrame β Λ) {q : GL (Fin n) (Af D.host.F ⊗[D.host.F] D.host.E)} (hq : Formalism.UG.bc (swapAE D) q ∈ St β) :
     ∀ z ∈ GlobalTheory.AdLat.hat D.host.F (Λ : Set (Fin n → D.host.E)),
       q.1 *ᵥ z ∈ GlobalTheory.AdLat.hat D.host.F (Λ : Set (Fin n → D.host.E)) :=
   fun _ hz => mulVec_mem_hat hβ hq hz
 
+/- English proof (translation)
+Establish `hfr : IsFrame β Λ` using `by obtain ⟨c, h, -⟩ := hΛ; exact h`. Establish `hq' : Formalism.UG.bc (swapAE D) (q.1⁻¹) ∈ St β`. Rewrite using `[MonoidHom.map_inv]`. Conclude with `(St β).inv_mem hq`. Establish `e : (g * h * q).1 = Formalism.UG.bc (inclR (F` using `D.host.F) (Af D.host.F)) γE * h.1 * q.1 := hf ▸ rfl`.
+
+Rewrite using `[hLat_eq_span hΛ, hLat_eq_span hΛ, e]`. Conclude with `span_move _ γE h.1 q.1 (mulVec_mem_hat_swap hfr hq) (mulVec_mem_hat_swap hfr hq')`.
+-/
 theorem hLat_mul {V : HSp D} {β : GL (Fin V.rank) (Lev.EAf D)} {Λ : Submodule (𝓞 D.host.E) (Fin V.rank → D.host.E)}
     (hΛ : IsSDFrame V β Λ 1) (g h q : Bridge.Gf V) (γE : GL (Fin V.rank) D.host.E)
     (hf : g.1 = Formalism.UG.bc (inclR (F := D.host.F) (Af D.host.F)) γE) (hq : Formalism.UG.bc (swapAE D) q.1 ∈ St β) :
@@ -125,6 +165,9 @@ theorem hLat_mul {V : HSp D} {β : GL (Fin V.rank) (Lev.EAf D)} {Λ : Submodule 
   rw [hLat_eq_span hΛ, hLat_eq_span hΛ, e]
   exact span_move _ γE h.1 q.1 (mulVec_mem_hat_swap hfr hq) (mulVec_mem_hat_swap hfr hq')
 
+/- English proof (translation)
+Introduce `D V β Λ hΛ γ`. Take `⟨γE, hγ, hf⟩` from `exists_ratMat V γ`. Use `⟨γE, hγ, fun h q hq => ?_⟩` and prove the remaining obligations. Rewrite using `[Formalism.L2.Col.gmap_eq_map, MulEquiv.apply_symm_apply]`. Conclude with `hLat_mul hΛ _ h q γE hf hq`.
+-/
 theorem hLat_rat_mul_stab : ∀ {D : D7} (V : HSp D) (β : GL (Fin V.rank) (Lev.EAf D)) (Λ : Submodule (𝓞 D.host.E) (Fin V.rank → D.host.E)), IsSDFrame V β Λ 1 → ∀ γ : GQ V, ∃ γE : GL (Fin V.rank) D.host.E, Bridge.IsRatMat V γ γE ∧ ∀ h q : Bridge.Gf V, Formalism.UG.bc (swapAE D) (q : GL (Fin V.rank) _) ∈ St β → Bridge.hLat V (Bridge.ratF V γ * h * q) = Formalism.HermitianLatticesTheory.gmap ((Formalism.L2.Col.toGLm D.host.E V.rank).symm γE) (Bridge.hLat V h) := by
   intro D V β Λ hΛ γ
   obtain ⟨γE, hγ, hf⟩ := exists_ratMat V γ

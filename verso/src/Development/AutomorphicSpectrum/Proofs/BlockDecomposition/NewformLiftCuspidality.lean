@@ -19,6 +19,9 @@ open Ad3 Ad3.R
 def cf (f : 𝔸[ℚ] → ℂ) (α : ℚ) : ℂ :=
   ∫ x in fundamentalSet ℚ, f x * (adelicChar ℚ (-(algebraMap ℚ 𝔸[ℚ] α * x)) : ℂ) ∂adeleMeasure ℚ
 
+/- English proof (translation)
+Rewrite using `[Units.continuous_iff]`. Prove the components needed by the constructor for the conclusion. Apply the tactic sequence `refine continuous_matrix fun i j => ?_ fin_cases i <;> fin_cases j <;> simp [uni2] <;> fun_prop`. Apply the tactic sequence `refine continuous_matrix fun i j => ?_ fin_cases i <;> fin_cases j <;> simp [uni2] <;> fun_prop`.
+-/
 theorem continuous_unipotentGL2 : Continuous (uni2 : 𝔸[ℚ] → G2) := by
   rw [Units.continuous_iff]
   constructor
@@ -27,31 +30,56 @@ theorem continuous_unipotentGL2 : Continuous (uni2 : 𝔸[ℚ] → G2) := by
   · refine continuous_matrix fun i j => ?_
     fin_cases i <;> fin_cases j <;> simp [uni2] <;> fun_prop
 
+/- English proof (translation)
+Use extensionality with `i j`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;> simp [AdelicGLn.diagonal_apply, uni2]`.
+-/
 theorem rationalEmbedding_unipotent (q : ℚ) : dia2 (uni2 q) = uni2 (algebraMap ℚ 𝔸[ℚ] q) := by
   ext i j
   fin_cases i <;> fin_cases j <;> simp [AdelicGLn.diagonal_apply, uni2]
 
+/- English proof (translation)
+Use extensionality with `i j`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;> simp [AdelicGLn.diagonal_apply, dg2, pri]`.
+-/
 theorem rationalEmbedding_diagonal (α : ℚˣ) : dia2 (dg2 α 1) = dg2 (pri α) 1 := by
   ext i j
   fin_cases i <;> fin_cases j <;> simp [AdelicGLn.diagonal_apply, dg2, pri]
 
+/- English proof (translation)
+Use extensionality with `i j`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;> simp [uni2, Matrix.mul_apply, Fin.sum_univ_two] <;> exact add_comm _ _`.
+-/
 theorem unipotent_add (x y : 𝔸[ℚ]) : (uni2 (x + y) : G2) = uni2 x * uni2 y := by
   ext i j
   fin_cases i <;> fin_cases j <;> simp [uni2, Matrix.mul_apply, Fin.sum_univ_two] <;> exact add_comm _ _
 
+/- English proof (translation)
+Rewrite using `[unipotent_add, ← rationalEmbedding_unipotent, mul_assoc, hL]`.
+-/
 theorem periodic_of_LInv {X : Type} {φ : G2 → X} (hL : LInv φ) (g : G2) (q : ℚ) (x : 𝔸[ℚ]) :
     φ (uni2 (algebraMap ℚ 𝔸[ℚ] q + x) * g) = φ (uni2 x * g) := by
   rw [unipotent_add, ← rationalEmbedding_unipotent, mul_assoc, hL]
 
+/- English proof (translation)
+Use extensionality with `i j`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;> simp [uni2, dg2, Matrix.mul_apply, Fin.sum_univ_two]`.
+-/
 theorem unipotent_mul_torus_commute (a : Jd) (x : 𝔸[ℚ]) :
     (uni2 x * dg2 a 1 : G2) = dg2 a 1 * uni2 (((a⁻¹ : Jd) : 𝔸[ℚ]) * x) := by
   ext i j
   fin_cases i <;> fin_cases j <;> simp [uni2, dg2, Matrix.mul_apply, Fin.sum_univ_two]
 
+/- English proof (translation)
+Use extensionality with `i j`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;> simp [dg2, Matrix.mul_apply, Fin.sum_univ_two]`.
+-/
 theorem diagonal_mul_diagonal_alt (a b : Jd) : (dg2 (a * b) 1 : G2) = dg2 a 1 * dg2 b 1 := by
   ext i j
   fin_cases i <;> fin_cases j <;> simp [dg2, Matrix.mul_apply, Fin.sum_univ_two]
 
+/- English proof (translation)
+Use `IsAddFundamentalDomain.mk' ((measurableSet_fundamentalSet ℚ).preimage T.continuous.measurable).nullMeasurableSet fun x => ?_` and prove the remaining obligations. Take `⟨k, hk, hu⟩` from `existsUnique_sub_mem_fundamentalSet ℚ (T x)`. Use `⟨⟨algebraMap ℚ 𝔸[ℚ] (σ.symm (-k)), _, rfl⟩, ?_, ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `T (algebraMap ℚ 𝔸[ℚ] (σ.symm (-k)) + x) ∈ fundamentalSet ℚ`. Rewrite using `[hT, σ.apply_symm_apply, map_neg, neg_add_eq_sub]`.
+
+Conclude with `hk`. Introduce and unpack `⟨_, ξ, rfl⟩ h`. Establish `h' : T (algebraMap ℚ 𝔸[ℚ] ξ + x) ∈ fundamentalSet ℚ` using `h`. Rewrite `h'` using `[hT]`. Establish `e : -σ ξ = k` using `hu _ (by show T x - algebraMap ℚ 𝔸[ℚ] (-σ ξ) ∈ fundamentalSet ℚ`.
+
+Rewrite using `[map_neg, sub_neg_eq_add, add_comm]`. Conclude with `h')`. Use `Subtype.ext ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `algebraMap ℚ 𝔸[ℚ] ξ = algebraMap ℚ 𝔸[ℚ] (σ.symm (-k))`. Rewrite using `[← e, neg_neg, σ.symm_apply_apply]`.
+-/
 theorem fd_preimage (T : 𝔸[ℚ] ≃ₜ 𝔸[ℚ]) (σ : ℚ ≃ ℚ)
     (hT : ∀ (q : ℚ) x, T (algebraMap ℚ 𝔸[ℚ] q + x) = algebraMap ℚ 𝔸[ℚ] (σ q) + T x) :
     IsAddFundamentalDomain (AdeleRing.principalSubgroup (𝓞 ℚ) ℚ) (T ⁻¹' fundamentalSet ℚ) (adeleMeasure ℚ) := by
@@ -72,12 +100,20 @@ theorem fd_preimage (T : 𝔸[ℚ] ≃ₜ 𝔸[ℚ]) (σ : ℚ ≃ ℚ)
     change algebraMap ℚ 𝔸[ℚ] ξ = algebraMap ℚ 𝔸[ℚ] (σ.symm (-k))
     rw [← e, neg_neg, σ.symm_apply_apply]
 
+/- English proof (translation)
+Apply `T.injective` to reduce the goal to its premises. Rewrite using `[hT, T.apply_symm_apply, T.apply_symm_apply, σ.apply_symm_apply]`.
+-/
 theorem hT_symm (T : 𝔸[ℚ] ≃ₜ 𝔸[ℚ]) (σ : ℚ ≃ ℚ)
     (hT : ∀ (q : ℚ) x, T (algebraMap ℚ 𝔸[ℚ] q + x) = algebraMap ℚ 𝔸[ℚ] (σ q) + T x) (q : ℚ) (x : 𝔸[ℚ]) :
     T.symm (algebraMap ℚ 𝔸[ℚ] q + x) = algebraMap ℚ 𝔸[ℚ] (σ.symm q) + T.symm x := by
   apply T.injective
   rw [hT, T.apply_symm_apply, T.apply_symm_apply, σ.apply_symm_apply]
 
+/- English proof (translation)
+Establish `fd` using `fd_preimage T.symm σ.symm (hT_symm T σ hT)`. Establish `e` using `hm.setIntegral_preimage_emb T.measurableEmbedding h (T.symm ⁻¹' fundamentalSet ℚ)`. Establish `e2 : T ⁻¹' (T.symm ⁻¹' fundamentalSet ℚ) = fundamentalSet ℚ`. Use extensionality with `x`. Simplify using the standard rewrite rules.
+
+Rewrite `e` using `[e2]`. Rewrite using `[e]`. Use `fd.setIntegral_eq (isAddFundamentalDomain_fundamentalSet ℚ) ?_` and prove the remaining obligations. Introduce and unpack `⟨_, q, rfl⟩ x`. Conclude with `hh q x`.
+-/
 theorem setIntegral_comp (T : 𝔸[ℚ] ≃ₜ 𝔸[ℚ]) (σ : ℚ ≃ ℚ)
     (hT : ∀ (q : ℚ) x, T (algebraMap ℚ 𝔸[ℚ] q + x) = algebraMap ℚ 𝔸[ℚ] (σ q) + T x)
     (hm : MeasurePreserving T (adeleMeasure ℚ) (adeleMeasure ℚ)) (h : 𝔸[ℚ] → ℂ)
@@ -95,12 +131,23 @@ theorem setIntegral_comp (T : 𝔸[ℚ] ≃ₜ 𝔸[ℚ]) (σ : ℚ ≃ ℚ)
 
 def scaleH (α : ℚˣ) : 𝔸[ℚ] ≃ₜ 𝔸[ℚ] := Homeomorph.smul (pri α)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem scaleH_apply (α : ℚˣ) (x : 𝔸[ℚ]) : scaleH α x = algebraMap ℚ 𝔸[ℚ] α * x := rfl
 
+/- English proof (translation)
+Simplify using `only [scaleH_apply, mul_add, Units.mulLeft_apply, map_mul]`.
+-/
 theorem scaleH_add (α : ℚˣ) (q : ℚ) (x : 𝔸[ℚ]) :
     scaleH α (algebraMap ℚ 𝔸[ℚ] q + x) = algebraMap ℚ 𝔸[ℚ] (Units.mulLeft α q) + scaleH α x := by
   simp only [scaleH_apply, mul_add, Units.mulLeft_apply, map_mul]
 
+/- English proof (translation)
+Use `⟨(scaleH α).continuous.measurable, ?_⟩` and prove the remaining obligations. Establish `hmap : (adeleMeasure ℚ).map (scaleH α) = _` using `map_smul_adeleMeasure (K := ℚ) (pri α)`. Establish `hfd` using `fd_preimage (scaleH α) (Units.mulLeft α) (scaleH_add α)`. Establish `h1` using `hfd.measure_eq (isAddFundamentalDomain_fundamentalSet ℚ)`. Rewrite `h1` using `[adeleMeasure_fundamentalSet]`.
+
+Establish `hD` using `measurableSet_fundamentalSet ℚ`. Establish `h2` using `congrArg (fun ν : Measure 𝔸[ℚ] => ν (fundamentalSet ℚ)) hmap`. Simplify using `only [Measure.smul_apply, adeleMeasure_fundamentalSet, smul_eq_mul, mul_one] at h2`. Rewrite `h2` using `[Measure.map_apply (scaleH α).continuous.measurable hD, h1]`. Rewrite using `[hmap, ← h2, one_smul]`.
+-/
 theorem measurePreserving_scaleH (α : ℚˣ) :
     MeasurePreserving (scaleH α) (adeleMeasure ℚ) (adeleMeasure ℚ) := by
   refine ⟨(scaleH α).continuous.measurable, ?_⟩
@@ -114,6 +161,13 @@ theorem measurePreserving_scaleH (α : ℚˣ) :
   rw [Measure.map_apply (scaleH α).continuous.measurable hD, h1] at h2
   rw [hmap, ← h2, one_smul]
 
+/- English proof (translation)
+Use `set h : 𝔸[ℚ] → ℂ := fun y => φ (uni2 y * g) * (adelicChar ℚ (-(algebraMap ℚ 𝔸[ℚ] α * y)) : ℂ) with hh`. Establish `hper : ∀ (q : ℚ) x, h (algebraMap ℚ 𝔸[ℚ] q + x) = h x`. Introduce `q x`. Simplify using `only [hh, periodic_of_LInv hL g q x]`. Use `congr 2`.
+
+Rewrite using `[mul_add, ← map_mul, neg_add, AddChar.map_add_eq_mul, ← map_neg, adelicChar_algebraMap, one_mul]`. Establish `e` using `setIntegral_comp (scaleH α⁻¹) (Units.mulLeft α⁻¹) (scaleH_add α⁻¹) (measurePreserving_scaleH α⁻¹) h hper`. Unfold `cf Wh`. Rewrite using `[← e]`. Use `integral_congr_ae (ae_of_all _ fun x => ?_)` and prove the remaining obligations.
+
+Simplify using `only [hh, scaleH_apply]`. Establish `e1 : algebraMap ℚ 𝔸[ℚ] ((α : ℚ)) * (algebraMap ℚ 𝔸[ℚ] ((α⁻¹ : ℚˣ) : ℚ) * x) = x`. Rewrite using `[← mul_assoc, ← map_mul, Units.mul_inv, map_one, one_mul]`. Rewrite using `[e1, ← mul_assoc, unipotent_mul_torus_commute, mul_assoc, ← rationalEmbedding_diagonal, hL]`. Both sides reduce to the same expression.
+-/
 theorem coef (φ : G2 → ℂ) (hL : LInv φ) (α : ℚˣ) (g : G2) :
     Wh φ (dg2 (pri α) 1 * g) = cf (fun x => φ (uni2 x * g)) α := by
   set h : 𝔸[ℚ] → ℂ := fun y => φ (uni2 y * g) * (adelicChar ℚ (-(algebraMap ℚ 𝔸[ℚ] α * y)) : ℂ) with hh
@@ -144,23 +198,44 @@ instance : BorelSpace Cq := ⟨rfl⟩
 
 def pc (x : 𝔸[ℚ]) : Cq := Multiplicative.ofAdd (QuotientAddGroup.mk x : AdeleQuotient ℚ)
 
+/- English proof (translation)
+The claim follows from `QuotientAddGroup.isQuotientMap_mk (AdeleRing.principalSubgroup (𝓞 ℚ) ℚ)`.
+-/
 theorem isQuotientMap_pc : IsQuotientMap pc :=
   QuotientAddGroup.isQuotientMap_mk (AdeleRing.principalSubgroup (𝓞 ℚ) ℚ)
 
+/- English proof (translation)
+The claim follows from `isQuotientMap_pc.continuous`.
+-/
 theorem continuous_pc : Continuous pc := isQuotientMap_pc.continuous
 
+/- English proof (translation)
+The claim follows from `isQuotientMap_pc.surjective`.
+-/
 theorem pc_surjective : Function.Surjective pc := isQuotientMap_pc.surjective
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem pc_add (x y : 𝔸[ℚ]) : pc (x + y) = pc x * pc y := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem pc_zero : pc 0 = 1 := rfl
 
+/- English proof (translation)
+Take `⟨q, hq⟩` from `QuotientAddGroup.eq.1 (Multiplicative.ofAdd.injective h)`. Use `⟨q, ?_⟩` and prove the remaining obligations. Establish `hq' : algebraMap ℚ 𝔸[ℚ] q = -x + y` using `hq`. Rewrite using `[hq']`. Normalize the expressions using the abelian group laws.
+-/
 theorem exists_of_pc_eq {x y : 𝔸[ℚ]} (h : pc x = pc y) : ∃ q : ℚ, y = algebraMap ℚ 𝔸[ℚ] q + x := by
   obtain ⟨q, hq⟩ := QuotientAddGroup.eq.1 (Multiplicative.ofAdd.injective h)
   refine ⟨q, ?_⟩
   have hq' : algebraMap ℚ 𝔸[ℚ] q = -x + y := hq
   rw [hq']; abel
 
+/- English proof (translation)
+Rewrite using `[pc_add]`. Establish `: pc (algebraMap ℚ 𝔸[ℚ] q) = 1` using `congrArg Multiplicative.ofAdd ((QuotientAddGroup.eq_zero_iff _).2 ⟨q, rfl⟩)`. Rewrite using `[this, one_mul]`.
+-/
 theorem pc_algebraMap_add (q : ℚ) (x : 𝔸[ℚ]) : pc (algebraMap ℚ 𝔸[ℚ] q + x) = pc x := by
   rw [pc_add]
   have : pc (algebraMap ℚ 𝔸[ℚ] q) = 1 :=
@@ -169,11 +244,17 @@ theorem pc_algebraMap_add (q : ℚ) (x : 𝔸[ℚ]) : pc (algebraMap ℚ 𝔸[�
 
 def desc {X : Type} (f : 𝔸[ℚ] → X) (c : Cq) : X := f (Function.surjInv pc_surjective c)
 
+/- English proof (translation)
+Take `⟨q, hq⟩` from `exists_of_pc_eq (Function.surjInv_eq pc_surjective (pc x)).symm`. Rewrite using `[desc, show Function.surjInv pc_surjective (pc x) = algebraMap ℚ 𝔸[ℚ] q + x from hq, hp]`.
+-/
 theorem desc_pc {X : Type} {f : 𝔸[ℚ] → X} (hp : ∀ (q : ℚ) x, f (algebraMap ℚ 𝔸[ℚ] q + x) = f x) (x : 𝔸[ℚ]) :
     desc f (pc x) = f x := by
   obtain ⟨q, hq⟩ := exists_of_pc_eq (Function.surjInv_eq pc_surjective (pc x)).symm
   rw [desc, show Function.surjInv pc_surjective (pc x) = algebraMap ℚ 𝔸[ℚ] q + x from hq, hp]
 
+/- English proof (translation)
+Rewrite using `[isQuotientMap_pc.continuous_iff]`. Establish `: desc f ∘ pc = f` using `funext (desc_pc hp)`. Rewrite using `[this]` and apply the resulting hypothesis.
+-/
 theorem continuous_desc {X : Type} [TopologicalSpace X] {f : 𝔸[ℚ] → X} (hf : Continuous f)
     (hp : ∀ (q : ℚ) x, f (algebraMap ℚ 𝔸[ℚ] q + x) = f x) : Continuous (desc f) := by
   rw [isQuotientMap_pc.continuous_iff]
@@ -188,6 +269,9 @@ instance : IsProbabilityMeasure ((adeleMeasure ℚ).restrict (fundamentalSet ℚ
 instance : IsProbabilityMeasure nu :=
   Measure.isProbabilityMeasure_map continuous_pc.aemeasurable
 
+/- English proof (translation)
+Simplify using `[add_assoc]`.
+-/
 theorem addRight_add (a : 𝔸[ℚ]) (q : ℚ) (x : 𝔸[ℚ]) :
     Homeomorph.addRight a (algebraMap ℚ 𝔸[ℚ] q + x) = algebraMap ℚ 𝔸[ℚ] (Equiv.refl ℚ q) + Homeomorph.addRight a x := by
   simp [add_assoc]
@@ -223,10 +307,16 @@ instance : nu.IsHaarMeasure := by
   haveI : nu.IsOpenPosMeasure := isOpenPosMeasure_of_mulLeftInvariant_of_compact Set.univ isCompact_univ (by simp)
   exact {}
 
+/- English proof (translation)
+The claim follows from `integral_map continuous_pc.aemeasurable hG.aestronglyMeasurable`.
+-/
 theorem integral_nu (G : Cq → ℂ) (hG : Continuous G) :
     ∫ c, G c ∂nu = ∫ x in fundamentalSet ℚ, G (pc x) ∂adeleMeasure ℚ :=
   integral_map continuous_pc.aemeasurable hG.aestronglyMeasurable
 
+/- English proof (translation)
+Rewrite using `[mul_add, ← map_mul, AddChar.map_add_eq_mul, adelicChar_algebraMap, one_mul]`.
+-/
 theorem char_periodic (α : ℚ) (q : ℚ) (x : 𝔸[ℚ]) :
     adelicChar ℚ (algebraMap ℚ 𝔸[ℚ] α * (algebraMap ℚ 𝔸[ℚ] q + x)) = adelicChar ℚ (algebraMap ℚ 𝔸[ℚ] α * x) := by
   rw [mul_add, ← map_mul, AddChar.map_add_eq_mul, adelicChar_algebraMap, one_mul]
@@ -244,9 +334,19 @@ def ech (α : ℚ) : Cq →ₜ* Circle where
     rw [← pc_add, hd, hd, hd, mul_add, AddChar.map_add_eq_mul]
   continuous_toFun := continuous_desc (continuous_adelicChar_mul α) (char_periodic α)
 
+/- English proof (translation)
+The claim follows from `desc_pc (f := fun x => adelicChar ℚ (algebraMap ℚ 𝔸[ℚ] α * x)) (char_periodic α) x`.
+-/
 theorem ech_pc (α : ℚ) (x : 𝔸[ℚ]) : ech α (pc x) = adelicChar ℚ (algebraMap ℚ 𝔸[ℚ] α * x) :=
   desc_pc (f := fun x => adelicChar ℚ (algebraMap ℚ 𝔸[ℚ] α * x)) (char_periodic α) x
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce `α β h`. Use `eq_of_forall_adelicChar_mul_eq fun x => ?_` and prove the remaining obligations. Rewrite using `[← ech_pc, ← ech_pc, h]`. Introduce `χ`.
+
+Set `χ' : AddChar (AdeleQuotient ℚ) Circle` to `{ toFun := fun c => χ (Multiplicative.ofAdd c) map_zero_eq_one' := map_one χ map_add_eq_mul' := fun a b => map_mul χ (Multiplicative.ofAdd a) (Multiplicative.ofAdd b) }`. Establish `hχ' : Continuous χ'` using `χ.continuous_toFun`. Take `⟨ξ, hξ, -⟩` from `existsUnique_adeleQuotient_char_eq χ' hχ'`. Use `⟨ξ, ContinuousMonoidHom.ext fun c => ?_⟩` and prove the remaining obligations. Take `⟨x, rfl⟩` from `pc_surjective c`.
+
+Rewrite using `[ech_pc, ← hξ x]`. Both sides reduce to the same expression.
+-/
 theorem ech_bijective : Function.Bijective ech := by
   constructor
   · intro α β h
@@ -265,6 +365,19 @@ theorem ech_bijective : Function.Bijective ech := by
     rfl
 
 open GroundTheory.Automorphic.CompactAbelianFourier in
+/- English proof (translation)
+Set `F : C(Cq, ℂ)` to `⟨desc f, continuous_desc hf hp⟩`. Set `F' : C(Cq, ℂ)` to `⟨desc f', continuous_desc hf' hp'⟩`. Establish `hF : ∀ x, F (pc x) = f x` using `desc_pc hp`. Establish `hF' : ∀ x, F' (pc x) = f' x` using `desc_pc hp'`. Establish `hco : ∀ (G : C(Cq, ℂ)) (g : 𝔸[ℚ] → ℂ), (∀ x, G (pc x) = g x) → ∀ α, inner ℂ (charL2 nu (ech α)) (ContinuousMap.toLp 2 nu ℂ G) = cf g α`.
+
+Introduce `G g hG α`. Rewrite using `[inner_charL2_toLp]`. Use `(integral_nu _ ((Complex.continuous_conj.comp (charCM (ech α)).continuous).mul G.continuous)).trans ?_` and prove the remaining obligations. Use `integral_congr_ae (ae_of_all _ fun x => ?_)` and prove the remaining obligations. Use `show conj ((ech α (pc x) : Circle) : ℂ) * G (pc x) = _`.
+
+Rewrite using `[ech_pc, hG]`. Use `show conj ((adelicChar ℚ (algebraMap ℚ 𝔸[ℚ] α * x) : Circle) : ℂ) * g x = g x * ((adelicChar ℚ (-(algebraMap ℚ 𝔸[ℚ] α * x)) : Circle) : ℂ)`. Rewrite using `[AddChar.map_neg_eq_inv, Circle.coe_inv_eq_conj, mul_comm]`. Establish `h` using `(charBasis nu).hasSum_inner_mul_inner (ContinuousMap.toLp 2 nu ℂ F') (ContinuousMap.toLp 2 nu ℂ F)`. Rewrite `h` using `[coe_charBasis]`.
+
+Establish `h2` using `((Equiv.ofBijective ech ech_bijective).hasSum_iff).2 h`. Establish `e1 : inner ℂ (ContinuousMap.toLp 2 nu ℂ F') (ContinuousMap.toLp 2 nu ℂ F) = ∫ x in fundamentalSet ℚ, f x * conj (f' x) ∂adeleMeasure ℚ`. Rewrite using `[ContinuousMap.inner_toLp]`. Use `(integral_nu _ (F.continuous.mul (Complex.continuous_conj.comp F'.continuous))).trans ?_` and prove the remaining obligations. Use `integral_congr_ae (ae_of_all _ fun x => ?_)` and prove the remaining obligations.
+
+Use `show F (pc x) * conj (F' (pc x)) = _`. Rewrite using `[hF, hF']`. Rewrite `h2` using `[e1]`. Establish `e3 : ∀ α, ((fun i : Cq →ₜ* Circle => inner ℂ (ContinuousMap.toLp 2 nu ℂ F') (charL2 nu i) * inner ℂ (charL2 nu i) (ContinuousMap.toLp 2 nu ℂ F)) ∘ ⇑(Equiv.ofBijective ech ech_bijective)) α = cf f α * conj (cf f' α)`. Introduce `α`.
+
+Simplify using `only [Function.comp, Equiv.ofBijective_apply]`. Rewrite using `[← inner_conj_symm, hco F f hF, hco F' f' hF', mul_comm]`. Rewrite `h2` using `[funext e3]`. Then use the resulting hypothesis.
+-/
 theorem parseval (f f' : 𝔸[ℚ] → ℂ) (hf : Continuous f) (hf' : Continuous f')
     (hp : ∀ (q : ℚ) x, f (algebraMap ℚ 𝔸[ℚ] q + x) = f x)
     (hp' : ∀ (q : ℚ) x, f' (algebraMap ℚ 𝔸[ℚ] q + x) = f' x) :
@@ -303,6 +416,15 @@ theorem parseval (f f' : 𝔸[ℚ] → ℂ) (hf : Continuous f) (hf' : Continuou
     rw [← inner_conj_symm, hco F f hF, hco F' f' hF', mul_comm]
   rwa [funext e3] at h2
 
+/- English proof (translation)
+Establish `h` using `parseval f f hf hf hp hp`. Establish `e1 : ∀ α, cf f α * conj (cf f α) = ((‖cf f α‖ ^ 2 : ℝ) : ℂ)` using `fun α => by`. Rewrite using `[Complex.mul_conj']`. Use `push_cast`. Both sides reduce to the same expression.
+
+Establish `e2 : ∀ x, f x * conj (f x) = ((‖f x‖ ^ 2 : ℝ) : ℂ)` using `fun x => by`. Rewrite using `[Complex.mul_conj']`. Use `push_cast`. Both sides reduce to the same expression. Simplify using `only [e1, e2] at h`.
+
+Rewrite `h` using `[integral_complex_ofReal]`. Use `⟨_, Complex.hasSum_ofReal.1 h, ?_⟩` and prove the remaining obligations. Establish `hA0 : 0 ≤ A` using `(norm_nonneg _).trans (hA 0)`. Establish `hb` using `norm_setIntegral_le_of_norm_le_const (μ := adeleMeasure ℚ) (s := fundamentalSet ℚ) (f := fun x => ‖f x‖ ^ 2) (C := A ^ 2) (by rw [adeleMeasure_fundamentalSet]; exact ENNReal.one_lt_top) (fun x _ => by`. Rewrite using `[norm_pow, norm_norm]`.
+
+Conclude with `pow_le_pow_left₀ (norm_nonneg _) (hA x) 2)`. Rewrite `hb` using `[measureReal_def, adeleMeasure_fundamentalSet, ENNReal.toReal_one, mul_one]`. Conclude with `(le_abs_self _).trans hb`.
+-/
 theorem sq_sum_le (f : 𝔸[ℚ] → ℂ) (hf : Continuous f) (hp : ∀ (q : ℚ) x, f (algebraMap ℚ 𝔸[ℚ] q + x) = f x)
     (A : ℝ) (hA : ∀ x, ‖f x‖ ≤ A) :
     ∃ S : ℝ, HasSum (fun α : ℚ => ‖cf f α‖ ^ 2) S ∧ S ≤ A ^ 2 := by
@@ -323,6 +445,19 @@ theorem sq_sum_le (f : 𝔸[ℚ] → ℂ) (hf : Continuous f) (hp : ∀ (q : ℚ
   rw [measureReal_def, adeleMeasure_fundamentalSet, ENNReal.toReal_one, mul_one] at hb
   exact (le_abs_self _).trans hb
 
+/- English proof (translation)
+Take `⟨S, hS, hSA⟩` from `sq_sum_le f hf hp A hA`. Take `⟨S', hS', hSB⟩` from `sq_sum_le f' hf' hp' B hB`. Use `set w : ℚ → ℝ := fun α => B / (2 * A) * ‖cf f α‖ ^ 2 + A / (2 * B) * ‖cf f' α‖ ^ 2 with hw`. Establish `hsum : HasSum w (B / (2 * A) * S + A / (2 * B) * S')` using `(hS.mul_left _).add (hS'.mul_left _)`. Establish `hw0 : ∀ α, 0 ≤ w α` using `fun α => by positivity`.
+
+Establish `hle : ∀ α, ‖cf f α * conj (cf f' α)‖ ≤ w α` using `fun α => by`. Rewrite using `[norm_mul, RCLike.norm_conj]`. Use `set u := ‖cf f α‖`. Use `set v := ‖cf f' α‖`. Establish `: 0 ≤ (B * u - A * v) ^ 2 / (2 * A * B)` using `by positivity`.
+
+Establish `e : (B * u - A * v) ^ 2 / (2 * A * B) = B / (2 * A) * u ^ 2 + A / (2 * B) * v ^ 2 - u * v`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Simplify using `only [hw]`. Combine the linear equalities and inequalities to obtain the conclusion.
+
+Combine the equalities or inequalities in the displayed calculation. Rewrite using `[← ofReal_norm_eq_enorm]`. Conclude with `ENNReal.ofReal_le_ofReal (hle α)`. Use `_ = ENNReal.ofReal (∑' α, w α) := (ENNReal.ofReal_tsum_of_nonneg hw0 hsum.summable).symm`. Use `_ ≤ ENNReal.ofReal (A * B) := by`.
+
+Use `ENNReal.ofReal_le_ofReal ?_` and prove the remaining obligations. Rewrite using `[hsum.tsum_eq]`. Establish `h1 : B / (2 * A) * S ≤ B / (2 * A) * A ^ 2` using `by gcongr`. Establish `h2 : A / (2 * B) * S' ≤ A / (2 * B) * B ^ 2` using `by gcongr`. Establish `e1 : B / (2 * A) * A ^ 2 + A / (2 * B) * B ^ 2 = A * B` using `by field_simp; ring`.
+
+Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem sum_bound (f f' : 𝔸[ℚ] → ℂ) (hf : Continuous f) (hf' : Continuous f')
     (hp : ∀ (q : ℚ) x, f (algebraMap ℚ 𝔸[ℚ] q + x) = f x)
     (hp' : ∀ (q : ℚ) x, f' (algebraMap ℚ 𝔸[ℚ] q + x) = f' x) (A B : ℝ) (hA0 : 0 < A) (hB0 : 0 < B)
@@ -358,6 +493,23 @@ theorem sum_bound (f f' : 𝔸[ℚ] → ℂ) (hf : Continuous f) (hf' : Continuo
         have e1 : B / (2 * A) * A ^ 2 + A / (2 * B) * B ^ 2 = A * B := by field_simp; ring
         linarith
 
+/- English proof (translation)
+Introduce `φ φ' hφ hφ' hL hL' hD hB hc hW hW'`. Take `⟨B, hB⟩` from `hB`. Establish `hcont : ∀ {ρ : G2 → ℂ}, Continuous ρ → ∀ g : G2, Continuous fun x : 𝔸[ℚ] => ρ (uni2 x * g)` using `fun h g => h.comp (continuous_unipotentGL2.mul continuous_const)`. Establish `hterm : ∀ (a : Jd) (κ : KA) (α : ℚˣ), Wh φ (dg2 (pri α * a) 1 * κ.1) * conj (Wh φ' (dg2 (pri α * a) 1 * κ.1)) = cf (fun x => φ (uni2 x * (dg2 a 1 * κ.1))) α * conj (cf (fun x => φ' (uni2 x * (dg2 a 1 * κ.1))) α)`. Introduce `a κ α`.
+
+Rewrite using `[diagonal_mul_diagonal_alt, mul_assoc, coef φ hL, coef φ' hL']`. Use `⟨hW.mul (Complex.continuous_conj.comp hW'), ?_, ?_⟩` and prove the remaining obligations. Introduce `a κ set g : G2 := dg2 a 1 * κ.1 with hg`. Establish `h` using `parseval (fun x => φ (uni2 x * g)) (fun x => φ' (uni2 x * g)) (hcont hφ g) (hcont hφ' g) (periodic_of_LInv hL g) (periodic_of_LInv hL' g)`. Establish `h0 : cf (fun x => φ (uni2 x * g)) 0 = 0`.
+
+Simplify using `only [cf, map_zero, zero_mul, neg_zero, AddChar.map_zero_eq_one, Circle.coe_one, mul_one]`. Conclude with `hc g`. Establish `h1 : HasSum (fun α : ℚˣ => cf (fun x => φ (uni2 x * g)) α * conj (cf (fun x => φ' (uni2 x * g)) α)) (∫ x in fundamentalSet ℚ, φ (uni2 x * g) * conj (φ' (uni2 x * g)) ∂adeleMeasure ℚ)`. Use `(Function.Injective.hasSum_iff (g := fun α : ℚˣ => (α : ℚ)) Units.val_injective ?_).2 h` and prove the remaining obligations. Introduce `q hq`.
+
+Establish `: q = 0`. Assume the negation of the conclusion as `h2`. Conclude with `hq ⟨Units.mk0 q h2, rfl⟩`. Substitute `this` using the available equality. Simplify using `[h0]`.
+
+Simplify using `only [hterm, ← mul_assoc] at h1 ⊢`. Simplify `h1` using `only [hg, ← mul_assoc]`. Introduce `M`. Take `⟨C, hC⟩` from `hD M`. Use `⟨max C 1 * max B 1, fun a κ => ?_⟩` and prove the remaining obligations.
+
+Use `set g : G2 := dg2 a 1 * κ.1 with hg`. Simplify using `only [hterm]`. Establish `hm : 0 < min 1 (md a)⁻¹` using `lt_min one_pos (inv_pos.2 (IdeleGroup.ideleModule ℚ a).2)`. Use `sum_bound (fun x => φ (uni2 x * g)) (fun x => φ' (uni2 x * g)) (hcont hφ g) (hcont hφ' g) (periodic_of_LInv hL g) (periodic_of_LInv hL' g) (max C 1 * min 1 (md a)⁻¹ ^ M) (max B 1) (by positivity) (by positivity) (fun x => by` as an intermediate fact. Use `hC x a κ` as an intermediate fact.
+
+Simplify using `only [hg, ← mul_assoc]`. Use `this.trans ?_` and prove the remaining obligations. Use `gcongr`. Conclude with `le_max_left _ _)`. Use the proof step `(fun x => (hB _).trans (le_max_left _ _))`.
+
+Use `this.trans (le_of_eq ?_)` and prove the remaining obligations. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem f6 : Ad3.R.F6 := by
   intro φ φ' hφ hφ' hL hL' hD hB hc hW hW'
   obtain ⟨B, hB⟩ := hB

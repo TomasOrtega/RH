@@ -16,6 +16,19 @@ open GlobalTheory.HSApp
 open GlobalTheory.Vanishing.H0
 open GlobalTheory.Vanishing.H0
 namespace GlobalTheory.CuspTransfer
+/- English proof (translation)
+Introduce `hP hG E _ _ _ H Dw l Xo c TF Z r U hF M ω b s hs hvs`. Use `set C := ((common₀ TF.X Z).pull M.σ).canChart M.K.isLB hs with hC`. Establish `key : ∀ g : H0 M.str (tens M.K.bundle ((L₀ TF.X Z b).pull M.σ)) ⊤, ∃ f : Cusp Z U s, C.mul ω.ω (M.pullOff (cuspSec TF.X Z U s f)) = H0.restr le_top g`. Introduce `g`. Take `⟨m, hm⟩` from `(M.bijective_pullOff (isLB_L₀ TF.X Z s)).2 ((C.mulEquiv ω.unit).symm (H0.restr le_top g))`.
+
+Establish `hm' : C.mul ω.ω (M.pullOff m) = H0.restr le_top g`. Rewrite using `[hm, ← ProdChart.mulEquiv_apply C ω.unit, LinearEquiv.apply_symm_apply]`. Take `⟨g', hv, hr⟩` from `(_root_.GlobalTheory.T.log_canonical_criterion_boundary hP hG E H Dw l Xo c TF Z hF M ω b s hs m).2 ⟨g, hm'.symm⟩`. Use `⟨ofSpace TF.X Z U s ⟨g', hvs hv⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[cuspSec_ofSpace]`.
+
+Conclude with `(congrArg (fun x => C.mul ω.ω (M.pullOff x)) hr).trans hm'`. Use `⟨fun g => (key g).choose, ?_⟩` and prove the remaining obligations. Introduce `z hz j hj i hi`. Take `⟨t, ha, hb, hc⟩` from `C.cover z`. Establish `hω : IsUnit (H0.germ (C.a t) z hz ha ω.ω)` using `ω.unit z hz (C.a t) ha`.
+
+Use `⟨tr _ z j (C.c t) * hω.unit * Units.map (M.σ.stalkMap z).hom.toMonoidHom (tr (L₀ TF.X Z s) (M.σ z) (C.b t PUnit.unit) i), ?_⟩` and prove the remaining obligations. Introduce `g`. Establish `hg` using `(key g).choose_spec`. Rewrite using `[H0.germ_change j (C.c t) z (memTop z) hj hc g, ← H0.germ_restr le_top (C.c t) z hz hc g, ← hg, C.germ_mul ω.ω _ t z hz ha hb hc]`. Express the relevant statement in the definitionally equal form `_ = _ * (M.σ.stalkMap z).hom _`.
+
+Establish `e2` using `H0.germ_pull M.σ M.off_eq.le (C.b t) z hz hb (cuspSec TF.X Z U s (key g).choose)`. Express the relevant statement in the definitionally equal form `_ * (_ * H0.germ (C.b t) z hz hb (H0.pull M.σ M.off_eq.le (cuspSec TF.X Z U s (key g).choose))) = _`. Rewrite using `[e2]`. Use `erw [H0.germ_change (B := L₀ TF.X Z s) (C.b t PUnit.unit) i (M.σ z) (M.off_eq.le hz) _ hi, map_mul]`. Simplify using `only [Units.val_mul, IsUnit.unit_spec, Units.coe_map]`.
+
+Simplify using `only [mul_assoc]`. Both sides reduce to the same expression.
+-/
 theorem exists_cusp_germ_transfer : _root_.GlobalTheory.CovTop.Hypotheses'' → GlobalTheory.Published.GrothendieckDeformation → ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l) (TF : TorFlag Xo c) (Z : Comp Xo c) (r : ℕ) (U : ∀ σ : c.F →+* ℂ, Unf Xo c σ r), FnAlgClosed Xo c → ∀ (M : Modif (str₀ TF.X Z) (U₀ TF.X Z) (dimFlag Dw)) (ω : CanId M) (b s : AllWt.Weight Dw), FlagTan.kap Dw + b = s → vanBd TF.X Z s ≤ space TF.X Z U s → ∃ F : H0 M.str (tens M.K.bundle ((L₀ TF.X Z b).pull M.σ)) ⊤ → Cusp Z U s, ∀ (z : M.X) (hz : z ∈ M.off) (j : (tens M.K.bundle ((L₀ TF.X Z b).pull M.σ)).ι) (hj : z ∈ (tens M.K.bundle ((L₀ TF.X Z b).pull M.σ)).U j) (i : (L₀ TF.X Z s).ι) (hi : M.σ z ∈ (L₀ TF.X Z s).U i), ∃ u : (M.X.presheaf.stalk z)ˣ, ∀ g : H0 M.str (tens M.K.bundle ((L₀ TF.X Z b).pull M.σ)) ⊤, germ j z (memTop z) hj g = u.val * (M.σ.stalkMap z).hom (germ i (M.σ z) (M.off_eq.le hz) hi (cuspSec TF.X Z U s (F g))) := by
   intro hP hG E _ _ _ H Dw l Xo c TF Z r U hF M ω b s hs hvs
   set C := ((common₀ TF.X Z).pull M.σ).canChart M.K.isLB hs with hC
@@ -62,6 +75,9 @@ open GlobalTheory.HSApp
 open GlobalTheory.Vanishing.H0
 open GlobalTheory.Vanishing.H0
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @_root_.GlobalTheory.CuspTransfer.exists_cusp_germ_transfer | exact _root_.GlobalTheory.CuspTransfer.exists_cusp_germ_transfer | (intros; apply _root_.GlobalTheory.CuspTransfer.exists_cusp_germ_transfer <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.cusp_germ_transfer_of_boundary : _root_.GlobalTheory.CovTop.Hypotheses'' → GlobalTheory.Published.GrothendieckDeformation → ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l) (TF : TorFlag Xo c) (Z : Comp Xo c) (r : ℕ) (U : ∀ σ : c.F →+* ℂ, Unf Xo c σ r), FnAlgClosed Xo c → ∀ (M : Modif (str₀ TF.X Z) (U₀ TF.X Z) (dimFlag Dw)) (ω : CanId M) (b s : AllWt.Weight Dw), FlagTan.kap Dw + b = s → vanBd TF.X Z s ≤ space TF.X Z U s → ∃ F : H0 M.str (tens M.K.bundle ((L₀ TF.X Z b).pull M.σ)) ⊤ → Cusp Z U s, ∀ (z : M.X) (hz : z ∈ M.off) (j : (tens M.K.bundle ((L₀ TF.X Z b).pull M.σ)).ι) (hj : z ∈ (tens M.K.bundle ((L₀ TF.X Z b).pull M.σ)).U j) (i : (L₀ TF.X Z s).ι) (hi : M.σ z ∈ (L₀ TF.X Z s).U i), ∃ u : (M.X.presheaf.stalk z)ˣ, ∀ g : H0 M.str (tens M.K.bundle ((L₀ TF.X Z b).pull M.σ)) ⊤, germ j z (memTop z) hj g = u.val * (M.σ.stalkMap z).hom (germ i (M.σ z) (M.off_eq.le hz) hi (cuspSec TF.X Z U s (F g))) := by
   first | exact @_root_.GlobalTheory.CuspTransfer.exists_cusp_germ_transfer | exact _root_.GlobalTheory.CuspTransfer.exists_cusp_germ_transfer | (intros; apply _root_.GlobalTheory.CuspTransfer.exists_cusp_germ_transfer <;> assumption)
 end

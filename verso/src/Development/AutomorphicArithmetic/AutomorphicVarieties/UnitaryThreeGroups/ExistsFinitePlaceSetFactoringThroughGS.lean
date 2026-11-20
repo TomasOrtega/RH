@@ -10,6 +10,13 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.CharacterLevelBoun
 open NumberField IsDedekindDomain Formalism.ConjugateSelfDual ReciprocityTheory.Gal Matrix IsLocalRing
 open UpperTheory.V UpperTheory.V.Base UpperTheory.V.HV UpperTheory.V.Alg UpperTheory.V.U3
 
+/- English proof (translation)
+Set `e : 𝓞 ℚ ≃+* ℤ` to `Rat.ringOfIntegersEquiv`. Establish `hmax : (Ideal.span {(l : ℤ)}).IsMaximal` using `PrincipalIdealRing.isMaximal_of_irreducible (Nat.prime_iff_prime_int.mp hl).irreducible`. Establish `key : ∀ u : HeightOneSpectrum (𝓞 ℚ), (l : 𝓞 ℚ) ∈ u.asIdeal → Ideal.span {(l : ℤ)} = u.asIdeal.map (e : 𝓞 ℚ →+* ℤ)`. Introduce `u hu`. Apply `hmax.eq_of_le` to reduce the goal to its premises.
+
+Rewrite using `[Ideal.map_comap_of_equiv]`. Conclude with `Ideal.comap_ne_top _ u.isPrime.ne_top`. Rewrite using `[Ideal.span_le, Set.singleton_subset_iff]`. Establish `hel : e (l : 𝓞 ℚ) = (l : ℤ)` using `map_natCast e l`. Rewrite using `[← hel]`.
+
+Conclude with `Ideal.mem_map_of_mem _ hu`. Apply `HeightOneSpectrum.ext` to reduce the goal to its premises. Rewrite using `[← Ideal.map_of_equiv (I := v.asIdeal) e, ← Ideal.map_of_equiv (I := w.asIdeal) e, ← key v hv, ← key w hw]`.
+-/
 private theorem place_uniq {l : ℕ} (hl : l.Prime) (v w : HeightOneSpectrum (𝓞 ℚ)) (hv : (l : 𝓞 ℚ) ∈ v.asIdeal)
     (hw : (l : 𝓞 ℚ) ∈ w.asIdeal) : v = w := by
   let e : 𝓞 ℚ ≃+* ℤ := Rat.ringOfIntegersEquiv
@@ -28,6 +35,45 @@ private theorem place_uniq {l : ℕ} (hl : l.Prime) (v w : HeightOneSpectrum (�
   apply HeightOneSpectrum.ext
   rw [← Ideal.map_of_equiv (I := v.asIdeal) e, ← Ideal.map_of_equiv (I := w.asIdeal) e, ← key v hv, ← key w hw]
 
+/- English proof (translation)
+Introduce `Ω _ _ _ K _ _ _ l _ c N _ e ψ D`. Establish `hlp : l.Prime` using `Fact.out`. Take `⟨-, -, -, hηlc, -, -, -, -, -, -, -⟩` from `dat_facts D`. Use `haveI : IsScalarTower ℚ K Ω := inferInstance`. Use `haveI : IsAlgClosure K Ω := ⟨IsAlgClosure.isAlgClosed ℚ, Algebra.IsAlgebraic.tower_top (K := ℚ) K⟩`.
+
+Take `⟨⟨T, hT⟩, -⟩` from `ramFinite ℚ ℚ K Ω`. Establish `hlN0 : ((l * N : ℕ) : 𝓞 ℚ) ≠ 0` using `Nat.cast_ne_zero.mpr (Nat.mul_ne_zero hlp.ne_zero (NeZero.ne N))`. Establish `hfin : {v : HeightOneSpectrum (𝓞 ℚ) | v.asIdeal ∣ Ideal.span {((l * N : ℕ) : 𝓞 ℚ)}}.Finite` using `Ideal.finite_factors (by rwa [Ne, Ideal.zero_eq_bot, Ideal.span_singleton_eq_bot])`. Set `S : Finset (HeightOneSpectrum (𝓞 ℚ))` to `T ∪ hfin.toFinset`. Establish `hmemS : ∀ v : HeightOneSpectrum (𝓞 ℚ), ((l * N : ℕ) : 𝓞 ℚ) ∈ v.asIdeal → v ∈ S`.
+
+Introduce `v hv`. Apply `Finset.mem_union_right` to reduce the goal to its premises. Rewrite using `[Set.Finite.mem_toFinset, Set.mem_setOf_eq, Ideal.dvd_iff_le, Ideal.span_singleton_le_iff_mem]`. Conclude with `hv`. Establish `hcast : ∀ n : ℕ, algebraMap ℚ Ω (((n : 𝓞 ℚ)) : ℚ) = (n : Ω)` using `fun n => by simp`.
+
+Establish `hlv : ∀ v : HeightOneSpectrum (𝓞 ℚ), ((l : ℕ) : 𝓞 ℚ) ∈ v.asIdeal → ((l * N : ℕ) : 𝓞 ℚ) ∈ v.asIdeal`. Introduce `v hv`. Rewrite using `[Nat.cast_mul]`. Conclude with `Ideal.mul_mem_right _ _ hv`. Establish `hNv : ∀ v : HeightOneSpectrum (𝓞 ℚ), ((N : ℕ) : 𝓞 ℚ) ∈ v.asIdeal → ((l * N : ℕ) : 𝓞 ℚ) ∈ v.asIdeal`.
+
+Introduce `v hv`. Rewrite using `[Nat.cast_mul]`. Conclude with `Ideal.mul_mem_left _ _ hv`. Take `⟨A₀, hA₀l, hA₀dec, -⟩` from `dat_loc D`. Establish `hA₀top : A₀ ≠ ⊤`.
+
+Introduce `h`. Conclude with `((places ℚ Ω l A₀).2.1 h).2 hA₀l`. Take `⟨v₀, hv₀⟩` from `(places ℚ Ω l A₀).1 hA₀top`. Establish `hlv₀ : ((l : ℕ) : 𝓞 ℚ) ∈ v₀.asIdeal`. Rewrite using `[← hv₀, hcast]`.
+
+Conclude with `hA₀l`. Establish `hv₀S : v₀ ∈ S` using `hmemS v₀ (hlv v₀ hlv₀)`. Set `v₀' : S` to `⟨v₀, hv₀S⟩`. Set `A : S → ValuationSubring Ω` to `fun v => if v.1 = v₀ then A₀ else Classical.choose (exists_isPlaceOver Ω v.1)`. Set `H : Subgroup (G ℚ Ω)` to `(cycZ ℚ Ω l).ker ⊓ (Chr.cls ℚ Ω N).ker ⊓ D.η.ker`.
+
+Establish `hHclosed : IsClosed (H : Set (G ℚ Ω))`. Simplify using `only [H, Subgroup.coe_inf]`. Use `(IsClosed.inter ?_ ?_).inter ?_` and prove the remaining obligations. Rewrite using `[MonoidHom.coe_ker]`. Conclude with `isClosed_singleton.preimage (contTw ℚ Ω l).1`.
+
+Conclude with `Subgroup.isClosed_of_isOpen _ (Chr.clsFacts ℚ Ω N).1`. Conclude with `Subgroup.isClosed_of_isOpen _ (hηlc.isOpen_fiber 1)`. Establish `hNS : NS Ω (S : Set (HeightOneSpectrum (𝓞 ℚ))) ≤ H`. Apply `Subgroup.topologicalClosure_minimal _ _ hHclosed` to reduce the goal to its premises. Apply `Subgroup.normalClosure_le_normal` to reduce the goal to its premises.
+
+Simplify using `only [Set.iUnion_subset_iff]`. Introduce `v hv B hB g hg`. Establish `hg' : g ∈ Ine (F` using `ℚ) B := hg`. Establish `hvS : v ∉ S` using `hv`. Establish `hvT : v ∉ T` using `fun h => hvS (Finset.mem_union_left _ h)`.
+
+Establish `hlB : ¬ B.valuation (l : Ω) < 1`. Introduce `h`. Rewrite `h` using `[← hcast]`. Conclude with `hvS (hmemS v (hlv v ((hB _).mp h)))`. Establish `hNB : ¬ B.valuation (N : Ω) < 1`.
+
+Introduce `h`. Rewrite `h` using `[← hcast]`. Conclude with `hvS (hmemS v (hNv v ((hB _).mp h)))`. Use `⟨⟨(places ℚ Ω l B).2.2.2 hlB hg', (Chr.clsFacts ℚ Ω N).2.2.2.2 B hNB hg'⟩, ?_⟩` and prove the remaining obligations. Use `show g ∈ D.η.ker`.
+
+Rewrite using `[D.η_ker]`. Conclude with `hT v hvT B hB ⟨by rw [galOf_self]; trivial, hg'⟩`. Establish `hηk : NS Ω (S : Set (HeightOneSpectrum (𝓞 ℚ))) ≤ D.η.ker` using `hNS.trans inf_le_right`. Establish `hΨk : NS Ω (S : Set (HeightOneSpectrum (𝓞 ℚ))) ≤ D.Ψ.ker`. Introduce `g hg`.
+
+Establish `hH` using `hNS hg`. Establish `h1 : cycZ ℚ Ω l g = 1` using `hH.1.1`. Establish `h2 : Chr.cls ℚ Ω N g = 1` using `hH.1.2`. Rewrite using `[MonoidHom.mem_ker]`. Simplify using `[Dat.Ψ, Chr.Psi, chiO, Chr.dirG, h1, h2]`.
+
+Use `⟨S, A, v₀', QuotientGroup.lift _ D.η hηk, QuotientGroup.lift _ D.Ψ hΨk, ?_, ?_, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `v hv`. Conclude with `hmemS v (hlv v hv)`. Introduce `v`. Distinguish the cases in `h : v.1 = v₀`.
+
+Simplify using `only [A, if_pos h]`. Rewrite using `[h]`. Conclude with `hv₀`. Simplify using `only [A, if_neg h]`. Conclude with `Classical.choose_spec (exists_isPlaceOver Ω v.1)`.
+
+Simplify using `only [A, v₀', if_pos rfl]`. Conclude with `hA₀dec`. Introduce `v`. Prove the components needed by the constructor for the conclusion. Introduce `hv`.
+
+Conclude with `Subtype.ext (place_uniq hlp _ _ hv hlv₀)`. Introduce and unpack `rfl`. Conclude with `hlv₀`. Use extensionality with `g`. Both sides reduce to the same expression.
+
+Use extensionality with `g`. Both sides reduce to the same expression.
+-/
 theorem UpperTheory.exists_finite_place_set_factoring_through_GS :
     ∀ {Ω : Type} [Field Ω] [CharZero Ω] [IsAlgClosure ℚ Ω] {K : Type} [Field K] [NumberField K] [Algebra K Ω]
           {l : ℕ} [Fact l.Prime] {c : Coef l} {N : ℕ} [NeZero N] {e : ℕ} {ψ : DirichletCharacter c.O N} (D : Dat Ω K c e ψ),

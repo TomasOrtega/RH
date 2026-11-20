@@ -10,6 +10,11 @@ attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalDat
 
 namespace GlobalTheory.DelGlob
 
+/- English proof (translation)
+Introduce `Ω _ k _ _ _ _ N hN`. Take `⟨L, hL, hLN⟩` from `(krullTopology_mem_nhds_one_iff k Ω (N : Set (G k Ω))).1 (hN.mem_nhds N.one_mem)`. Use `haveI : FiniteDimensional k L := hL`. Use `(GlobalTheory.InertiaAlmostAll.finite_ramified k Ω L).subset ?_` and prove the remaining obligations. Introduce and unpack `w ⟨B, hB, h⟩`.
+
+Conclude with `⟨B, hB, fun h' => h fun x hx => hLN (h' hx)⟩`.
+-/
 theorem finite_not_ine_le_of_isOpen : ∀ (Ω : Type) [Field Ω] (k : Type) [Field k] [NumberField k] [Algebra k Ω]
     [IsAlgClosure k Ω] (N : Subgroup (G k Ω)), IsOpen (N : Set (G k Ω)) →
     {w : HeightOneSpectrum (𝓞 k) | ∃ A : ValuationSubring Ω, IsPlaceOver A w ∧ ¬ Ine (F := k) A ≤ N}.Finite := by

@@ -13,6 +13,9 @@ variable {D : D7}
 
 open Formalism.L2.SG.Pf.KppRedW Formalism.L2.SG.Pf.AllRowsRedKerA Formalism.L2.SG.Pf.RowDictPf in
 
+/- English proof (translation)
+Use `Submodule.span_le.2 ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨a, ha, rfl⟩`. Use `Submodule.subset_span ⟨a, ⟨RingOfIntegers.mapRingEquiv X.ιE a, ha, by simp⟩, rfl⟩` and prove the remaining obligations.
+-/
 theorem Wq_le_wInt (X : HidaSetting D) (w : HeightOneSpectrum (𝓞 D.host.E)) :
     Wq X.B.I (wB X w) ≤ GlobalTheory.Mem.SymChar.wInt X w := by
   refine Submodule.span_le.2 ?_
@@ -21,11 +24,21 @@ theorem Wq_le_wInt (X : HidaSetting D) (w : HeightOneSpectrum (𝓞 D.host.E)) :
 
 open Formalism.L2.SG.Pf.KppRedW Formalism.L2.SG.Pf.AllRowsRedKerA Formalism.L2.SG.Pf.RowDictPf in
 
+/- English proof (translation)
+Use `show Formalism.MainNotions.S.lamAf (F := X.B.I.F) (wLat0 X.B.I (wB X w)) ≤ Formalism.MainNotions.S.lamAf (F := X.B.I.F) (wLat X w)`. Rewrite using `[wLat_eq]`.
+-/
 theorem Lq_le_wLf (X : HidaSetting D) (w : HeightOneSpectrum (𝓞 D.host.E)) :
     Lq X.B.I (wB X w) ≤ wLf X w := by
   show Formalism.MainNotions.S.lamAf (F := X.B.I.F) (wLat0 X.B.I (wB X w)) ≤ Formalism.MainNotions.S.lamAf (F := X.B.I.F) (wLat X w)
   rw [wLat_eq]
 
+/- English proof (translation)
+Take `⟨ob, h1, -⟩` from `Formalism.L2.SG.Pf.KppFwdPf.ew_res X kv`. Consider the cases of `ob with`. Consider the case `false`. Simplify using `only [Bool.false_eq_true, if_false, sub_zero] at h1`. Conclude with `Wq_le_wInt X _ h1`.
+
+Consider the case `true`. Simplify using `only [if_true] at h1`. It suffices to derive a contradiction. Apply `hw` to reduce the goal to its premises. Introduce `y hy`.
+
+Establish `h2 : 1 - X.ew ∈ Formalism.L2.SG.Pf.KppRedW.Wq X.B.I (Formalism.L2.SG.Pf.RowDictPf.wB X (D.naut.plGw kv.1 kv.2))`. Use `neg_mem h1` as an intermediate fact. Rewrite `this` using `[neg_sub]`. Then use the resulting hypothesis. Conclude with `Lq_le_wLf X _ (Formalism.L2.SG.Pf.KppRedW.Wq_smul h2 hy)`.
+-/
 theorem ew_mem_wInt (D : D7) (X : HidaSetting D) (kv : Σ k : Fin 2, D.nd.PlG k)
     (hw : ¬ GlobalTheory.Mem.SymFrame.EwAt X (D.naut.plGw kv.1 kv.2)) :
     X.ew ∈ GlobalTheory.Mem.SymChar.wInt X (D.naut.plGw kv.1 kv.2) := by

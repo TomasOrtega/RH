@@ -1,6 +1,15 @@
 import Development.AutomorphicArithmetic.AutomorphicVarieties.UnitaryThreeGroups.MopBase
 open Matrix IsLocalRing UpperTheory.V.U3 UpperTheory.V.Alg UpperTheory.V.HV UpperTheory.V.U3.Mop
 
+/- English proof (translation)
+Use extensionality with `n`. Rewrite using `[coeff_wcomp, MvPowerSeries.coeff_mul, MvPowerSeries.coeff_mul]`. Use `split_ifs with h`. Use `Finset.sum_congr rfl fun p hp => ?_` and prove the remaining obligations. Establish `hp'` using `Finset.HasAntidiagonal.mem_antidiagonal.1 hp`.
+
+Distinguish the cases in `h2 : Finsupp.weight wt p.2 = w`. Rewrite using `[coeff_wcomp, if_pos]`. Rewrite using `[← h, ← hp', map_add, h2, add_sub_cancel_right]`. Rewrite using `[he _ h2, mul_zero, mul_zero]`. Use `symm`.
+
+Use `Finset.sum_eq_zero fun p hp => ?_` and prove the remaining obligations. Establish `hp'` using `Finset.HasAntidiagonal.mem_antidiagonal.1 hp`. Distinguish the cases in `h2 : Finsupp.weight wt p.2 = w`. Rewrite using `[coeff_wcomp, if_neg, zero_mul]`. Introduce `h1`.
+
+Apply `h` to reduce the goal to its premises. Rewrite using `[← hp', map_add, h1, h2, sub_add_cancel]`. Rewrite using `[he _ h2, mul_zero]`.
+-/
 private theorem lc_wcomp_mul (O : Type) [CommRing O] {σ X : Type} [AddCommGroup X] (wt : σ → X)
     {w : X} {e : MvPowerSeries σ O} (he : e ∈ wtPart O wt w) (G : MvPowerSeries σ O) (j : X) :
     wcomp O wt j (G * e) = wcomp O wt (j - w) G * e := by
@@ -24,6 +33,9 @@ private theorem lc_wcomp_mul (O : Type) [CommRing O] {σ X : Type} [AddCommGroup
       rw [← hp', map_add, h1, h2, sub_add_cancel]
     · rw [he _ h2, mul_zero]
 
+/- English proof (translation)
+Use extensionality with `n`. Rewrite using `[coeff_wcomp]`. Use `split_ifs with h`. Both sides reduce to the same expression. Conclude with `(he n h).symm`.
+-/
 private theorem lc_wcomp_self (O : Type) [CommRing O] {σ X : Type} [AddCommGroup X] (wt : σ → X)
     {w : X} {e : MvPowerSeries σ O} (he : e ∈ wtPart O wt w) : wcomp O wt w e = e := by
   ext n
@@ -32,6 +44,15 @@ private theorem lc_wcomp_self (O : Type) [CommRing O] {σ X : Type} [AddCommGrou
   · rfl
   · exact (he n h).symm
 
+/- English proof (translation)
+Set `B' : Matrix ι ι (MvPowerSeries τ E)` to `Matrix.of fun a b => wcomp E w (u a - u b) (B a b)`. Establish `h3 : B' * A = 1` using `by ext1 a c`. Establish `e : (B' * A) a c = wcomp E w (u a - u c) ((B * A) a c)`. Rewrite using `[Matrix.mul_apply, Matrix.mul_apply, map_sum]`. Use `Finset.sum_congr rfl fun b _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[lc_wcomp_mul E w (hA b c)]`. Establish `: u a - u c - (u b - u c) = u a - u b` using `by ring`. Rewrite using `[this]`. Both sides reduce to the same expression. Rewrite using `[e, h2]`.
+
+Distinguish the cases in `hac : a = c`. Substitute `hac` using the available equality. Rewrite using `[Matrix.one_apply_eq, sub_self]`. Conclude with `lc_wcomp_self E w (one_mem_wtPart E w)`. Rewrite using `[Matrix.one_apply_ne hac, map_zero]`.
+
+Establish `h4 : B' = B`. Rewrite using `[← Matrix.mul_one B', ← h1, ← Matrix.mul_assoc, h3, Matrix.one_mul]`. Rewrite using `[← h4]`. Conclude with `wcomp_mem E w _ _`.
+-/
 private theorem lc_inv {E τ ι : Type} [CommRing E] [Fintype ι] [DecidableEq ι] (w : τ → ℤ) (u : ι → ℤ)
     (A B : Matrix ι ι (MvPowerSeries τ E)) (h1 : A * B = 1) (h2 : B * A = 1)
     (hA : ∀ a b, A a b ∈ wtPart E w (u a - u b)) (a b : ι) : B a b ∈ wtPart E w (u a - u b) := by
@@ -55,11 +76,21 @@ private theorem lc_inv {E τ ι : Type} [CommRing E] [Fintype ι] [DecidableEq �
   rw [← h4]
   exact wcomp_mem E w _ _
 
+/- English proof (translation)
+Apply the tactic sequence `fin_cases a <;> fin_cases b <;>`. Simplify using `[Matrix.mul_apply, Fin.sum_univ_three, Jmat, Fin.rev]`.
+-/
 private theorem lc_JMJ {R : Type} [CommRing R] (M : Matrix (Fin 3) (Fin 3) R) (a b : Fin 3) :
     (Jmat R 3 * Mᵀ * Jmat R 3) a b = M b.rev a.rev := by
   fin_cases a <;> fin_cases b <;>
     simp [Matrix.mul_apply, Fin.sum_univ_three, Jmat, Fin.rev]
 
+/- English proof (translation)
+Establish `hθ : ∀ a b, (theta x.left : Matrix (Fin 3) (Fin 3) (MvPowerSeries τ E)) a b ∈ wtPart E w (wt1 a - wt1 b)`. Introduce `a b`. Rewrite using `[theta_val, lc_JMJ]`. Use `lc_inv w wt1 x.mat ((x.left⁻¹ : GL (Fin 3) _) : Matrix (Fin 3) (Fin 3) (MvPowerSeries τ E)) (Units.mul_inv x.left) (Units.inv_mul x.left) hx b.rev a.rev` as an intermediate fact. Establish `e : ∀ a b : Fin 3, wt1 b.rev - wt1 a.rev = wt1 a - wt1 b` using `by decide`.
+
+Rewrite `this` using `[e]`. Then use the resulting hypothesis. Rewrite using `[emb_apply]`. Apply the tactic sequence `split_ifs <;> rcases a with a | a <;> rcases b with b | b <;> first`. Consider the case `exact hx a b`. Consider the case `exact hθ a b`.
+
+Consider the case `exact zero_mem _`.
+-/
 private theorem lc_emb {E τ : Type} [CommRing E] (w : τ → ℤ) (x : GG 3 (MvPowerSeries τ E))
     (hx : ∀ a b, x.mat a b ∈ wtPart E w (wt a b)) (a b : Fin 3 ⊕ Fin 3) :
     emb x a b ∈ wtPart E w (wt6 a - wt6 b) := by
@@ -77,6 +108,13 @@ private theorem lc_emb {E τ : Type} [CommRing E] (w : τ → ℤ) (x : GG 3 (Mv
     | exact hθ a b
     | exact zero_mem _
 
+/- English proof (translation)
+Proceed by induction on `n with`. Consider the case `zero => intro g _`. Simplify using the standard rewrite rules. Consider the case `succ n ih`. Introduce `x hx`.
+
+Rewrite `hx` using `[pow_succ]`. Use `Submodule.mul_induction_on hx (fun a ha b hb => ?_) ?_` and prove the remaining obligations. Use `le_trans ?_ MvPowerSeries.le_order_mul` and prove the remaining obligations. Use `push_cast`. Conclude with `add_le_add (ih a ha) (MvPowerSeries.one_le_order_iff_constCoeff_eq_zero.2 hb)`.
+
+Introduce `a b ha hb`. Conclude with `le_trans (le_min ha hb) MvPowerSeries.min_order_le_add`.
+-/
 private theorem lc_order {K τ : Type} [CommRing K] (n : ℕ) :
     ∀ g ∈ RingHom.ker (MvPowerSeries.constantCoeff : MvPowerSeries τ K →+* K) ^ n, (n : ℕ∞) ≤ g.order := by
   induction n with
@@ -91,6 +129,11 @@ private theorem lc_order {K τ : Type} [CommRing K] (n : ℕ) :
     · intro a b ha hb
       exact le_trans (le_min ha hb) MvPowerSeries.min_order_le_add
 
+/- English proof (translation)
+Introduce `d hd`. Take `⟨y, hy, hm⟩` from `approx v Φ (RingHom.ker (MvPowerSeries.constantCoeff : MvPowerSeries τ E →+* E)) (fun j => (wtPart E w j).restrictScalars O) (one_mem_wtPart E w) (fun i j a ha b hb => mul_mem_wtPart E w ha hb) h0 h1 j F hF (d.degree + 1)`. Establish `h2 : MvPowerSeries.coeff d (Φ F - y) = 0`. Use `MvPowerSeries.coeff_of_lt_order (lt_of_lt_of_le ?_ (lc_order _ _ hm))` and prove the remaining obligations. Conclude with `Nat.lt_succ_self _` after adjusting the coercions.
+
+Rewrite `h2` using `[map_sub, hy d hd, sub_zero]`. Then use the resulting hypothesis.
+-/
 private theorem lc_graded {O E σ τ : Type} [CommRing O] [CommRing E] [Algebra O E] [Finite σ] (v : σ → ℤ) (w : τ → ℤ)
     (Φ : MvPowerSeries σ O →ₐ[O] MvPowerSeries τ E)
     (h0 : ∀ s, MvPowerSeries.constantCoeff (Φ (MvPowerSeries.X s)) = 0)
@@ -105,6 +148,27 @@ private theorem lc_graded {O E σ τ : Type} [CommRing O] [CommRing E] [Algebra 
     exact_mod_cast Nat.lt_succ_self _
   rwa [map_sub, hy d hd, sub_zero] at h2
 
+/- English proof (translation)
+Introduce `O _ _ _ H _ _ η Ψ U I x τ _ w φ WB hx hφ hW`. Establish `hφI : ∀ f ∈ I, φ f = 0` using `fun f hf => by rw [← hφ.ker] at hf; exact hf`. Establish `hxI : ∀ f ∈ I, x f = 0` using `fun f hf => by`. Apply `IsFractionRing.injective O (FractionRing O)` to reduce the goal to its premises. Rewrite using `[← hφ.const, hφI f hf, map_zero, map_zero]`.
+
+Set `xb : (U.R ⧸ I) →ₐ[O] O` to `Ideal.Quotient.liftₐ I x hxI`. Set `φb : (U.R ⧸ I) →ₐ[O] MvPowerSeries τ (FractionRing O)` to `Ideal.Quotient.liftₐ I φ hφI`. Establish `hxb : ∀ f, xb (Ideal.Quotient.mkₐ O I f) = x f` using `fun f => rfl`. Establish `hφb : ∀ f, φb (Ideal.Quotient.mkₐ O I f) = φ f` using `fun f => rfl`. Establish `hz : ∀ s, ∃ g a b, WB.wt s = wt6 a - wt6 b ∧ WB.z s = Ideal.Quotient.mkₐ O I (emb (U.r.hom g) a b - algebraMap O U.R (emb (r0 η Ψ g) a b))` using `fun s => by`.
+
+Take `⟨g, a, b, h1, h2⟩` from `hW.1 s`. Conclude with `⟨g, a, b, h1, by rw [h2, emb_push, map_sub, AlgHom.commutes]⟩`. Establish `hz0 : ∀ s, xb (WB.z s) = 0` using `fun s => by`. Take `⟨g, a, b, -, h2⟩` from `hz s`. Rewrite using `[h2, hxb]`.
+
+Conclude with `base_coord hx g a b`. Establish `hconst : ∀ f, MvPowerSeries.constantCoeff (φb f) = algebraMap O (FractionRing O) (xb f)` using `fun f => by`. Take `⟨f, rfl⟩` from `Ideal.Quotient.mkₐ_surjective O I f`. Rewrite using `[hφb, hxb, hφ.const]`. Take `⟨hB, hO⟩` from `origin_of WB xb hz0`.
+
+Use `⟨hB, by rw [hO]; exact AlgHom.ext hxb, φb, ?_⟩` and prove the remaining obligations. Rewrite using `[hO]`. Use `⟨?_, hconst, fun i => ?_, fun f hf0 hf1 => ?_⟩` and prove the remaining obligations. Introduce and unpack `j _ ⟨F, hF, rfl⟩`. Use `lc_graded WB.wt w (φb.comp WB.π) (fun s => ?_) (fun s => ?_) j F hF` and prove the remaining obligations.
+
+Use `show MvPowerSeries.constantCoeff (φb (WB.z s)) = 0`. Rewrite using `[hconst, hz0, map_zero]`. Use `show φb (WB.z s) ∈ _`. Take `⟨g, a, b, h1, h2⟩` from `hz s`. Rewrite using `[h2, hφb, h1, map_sub, AlgHom.commutes, ← emb_push]`.
+
+Use `sub_mem (lc_emb w _ (fun a b => hφ.graded g a b) a b) ?_` and prove the remaining obligations. Distinguish the cases in `hab : wt6 a = wt6 b`. Rewrite using `[hab, sub_self, Algebra.algebraMap_eq_smul_one]`. Conclude with `Submodule.smul_of_tower_mem _ _ (one_mem_wtPart _ w)`. Rewrite using `[unitaryEmbedding_residualRep_eq_zero_of_weight_ne η Ψ g a b hab, map_zero]`.
+
+Conclude with `zero_mem _`. Take `⟨f, hf⟩` from `hφ.onto i`. Conclude with `⟨Ideal.Quotient.mkₐ O I f, hf⟩`. Take `⟨f, rfl⟩` from `Ideal.Quotient.mkₐ_surjective O I f`. Take `⟨c, hc, hf⟩` from `hφ.inj f hf0 hf1`.
+
+Use `⟨c, hc, ?_⟩` and prove the remaining obligations. Rewrite using `[← map_smul]`. Establish `hle : RingHom.ker x ^ 2 ⊔ I ≤ (RingHom.ker xb ^ 2).comap (Ideal.Quotient.mkₐ O I)`. Use `sup_le ?_ fun y hy => ?_` and prove the remaining obligations. Use `le_trans (Ideal.pow_right_mono (fun y hy => ?_) 2) (Ideal.le_comap_pow _ 2)` and prove the remaining obligations.
+
+Conclude with `hy`. Rewrite using `[Ideal.mem_comap, Ideal.Quotient.mkₐ_eq_mk, Ideal.Quotient.eq_zero_iff_mem.2 hy]`. Conclude with `zero_mem _`. Conclude with `hle hf`.
+-/
 theorem UpperTheory.exists_origin_and_chart_of_isLocPres :
     ∀ {O : Type} [CommRing O] [IsDomain O] [IsLocalRing O] {H : Type} [Group H] [TopologicalSpace H] {η : H →* ℤˣ} {Ψ : H →* Oˣ}
           (U : Univ (GCond.noCondition O η Ψ)) (I : Ideal U.R) (x : U.R →ₐ[O] O) {τ : Type} [Fintype τ] (w : τ → ℤ) (φ : U.R →ₐ[O] MvPowerSeries τ (FractionRing O))

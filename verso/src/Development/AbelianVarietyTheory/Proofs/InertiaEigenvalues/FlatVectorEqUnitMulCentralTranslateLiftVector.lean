@@ -17,6 +17,13 @@ set_option synthInstance.maxHeartbeats 400000
 
 namespace GlobalTheory.FlatLift
 
+/- English proof (translation)
+Take `⟨hu0, n, hn1, hn2⟩` from `hu`. Take `⟨hv0, m, hm1, hm2⟩` from `hv`. Use `⟨inv_ne_zero (mul_ne_zero hu0 hv0), n + m, ?_, ?_⟩` and prove the remaining obligations. Establish `e : (N : ℂ) ^ (n + m) * (u * v)⁻¹ = ((N : ℂ) ^ n * u⁻¹) * ((N : ℂ) ^ m * v⁻¹)`. Rewrite using `[pow_add, mul_inv]`.
+
+Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e]`. Conclude with `hn2.mul hm2`. Establish `e : (N : ℂ) ^ (n + m) * (u * v)⁻¹⁻¹ = ((N : ℂ) ^ n * u) * ((N : ℂ) ^ m * v)`. Rewrite using `[inv_inv, pow_add]`.
+
+Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e]`. Conclude with `hn1.mul hm1`.
+-/
 theorem unitOff_inv_mul {N : ℕ} {u v : ℂ} (hu : UnitOff N u) (hv : UnitOff N v) : UnitOff N (u * v)⁻¹ := by
   obtain ⟨hu0, n, hn1, hn2⟩ := hu
   obtain ⟨hv0, m, hm1, hm2⟩ := hv
@@ -28,6 +35,15 @@ theorem unitOff_inv_mul {N : ℕ} {u v : ℂ} (hu : UnitOff N u) (hv : UnitOff N
       rw [inv_inv, pow_add]; ring
     rw [e]; exact hn1.mul hm1
 
+/- English proof (translation)
+Establish `hx : ∀ PP : IsDedekindDomain.HeightOneSpectrum (𝓞 E), ∃ x ∈ PP.asIdeal, x ∉ PP.asIdeal ^ 2` using `fun PP => by`. Simplify using `using Ideal.exists_mem_pow_notMem_pow_succ PP.asIdeal PP.ne_bot PP.isPrime.ne_top 1`. Use `choose x hx1 hx2 using hx`. Take `⟨y, hy⟩` from `IsDedekindDomain.exists_forall_sub_mem_ideal (s := Q) (fun PP => PP.asIdeal) (fun _ => 2) (fun PP _ => Ideal.prime_of_isPrime PP.ne_bot PP.isPrime) (fun PP _ PP' _ h e => h (IsDedekindDomain.HeightOneSpectrum.ext e)) (fun PP => x PP.1)`. Establish `key : ∀ PP ∈ Q, y ∈ PP.asIdeal ∧ y ∉ PP.asIdeal ^ 2` using `fun PP hPP => by`.
+
+Establish `h1` using `hy PP hPP`. Establish `hle : PP.asIdeal ^ 2 ≤ PP.asIdeal` using `Ideal.pow_le_self (by norm_num)`. Use `⟨?_, fun h => hx2 PP ?_⟩` and prove the remaining obligations. Use `PP.asIdeal.add_mem (hle h1) (hx1 PP)` as an intermediate fact. Simplify using `using this`.
+
+Use `(PP.asIdeal ^ 2).sub_mem h h1` as an intermediate fact. Simplify using `using this`. Distinguish the cases in `hQ : Q.Nonempty`. Take `⟨PP, hPP⟩` from `hQ`. Use `⟨y, fun h0 => (key PP hPP).2 (h0 ▸ Ideal.zero_mem _), key⟩` and prove the remaining obligations.
+
+Use `⟨1, one_ne_zero, fun PP hPP => absurd ⟨PP, hPP⟩ hQ⟩` and prove the remaining obligations.
+-/
 theorem exists_unif (E : Type) [Field E] [NumberField E] (Q : Finset (IsDedekindDomain.HeightOneSpectrum (𝓞 E))) :
     ∃ ϖ : 𝓞 E, ϖ ≠ 0 ∧ ∀ PP ∈ Q, ϖ ∈ PP.asIdeal ∧ ϖ ∉ PP.asIdeal ^ 2 := by
   have hx : ∀ PP : IsDedekindDomain.HeightOneSpectrum (𝓞 E), ∃ x ∈ PP.asIdeal, x ∉ PP.asIdeal ^ 2 := fun PP => by
@@ -49,6 +65,15 @@ theorem exists_unif (E : Type) [Field E] [NumberField E] (Q : Finset (IsDedekind
     refine ⟨y, fun h0 => (key PP hPP).2 (h0 ▸ Ideal.zero_mem _), key⟩
   · refine ⟨1, one_ne_zero, fun PP hPP => absurd ⟨PP, hPP⟩ hQ⟩
 
+/- English proof (translation)
+Introduce `D G _ _ Pl0 T0 A Ks _ _ _ R F hC hQG i t hV f hf`. Take `⟨eg, eQ, fg, heg, heQ, hfg, hf⟩` from `hf`. Take `⟨ϖ, hϖ0, hϖ⟩` from `exists_unif D.host.E (R.Q t)`. Establish `hϖE : (ϖ : D.host.E) ≠ 0` using `by exact_mod_cast hϖ0`. Take `⟨z, hz, hzm⟩` from `GlobalTheory.CentScal.exists_isCentAt_scalar D i (R.Q t) eQ heQ (ϖ : D.host.E) hϖE`.
+
+Take `⟨κ, hκ, hact⟩` from `GlobalTheory.T.weilRep_central_acts_by_dilation_unit D G Pl0 T0 A Ks R F hC hQG i t hV eg eQ fg heg heQ hfg ϖ hϖ0 hϖ z hzm`. Take `⟨Gc, hG, hSB, hvP⟩` from `GlobalTheory.T.lift_vector_eq_unit_mul_dilated_flat_datum D G Pl0 T0 A Ks R F hC hQG i t hV eg eQ fg heg heQ hfg ϖ hϖ0 hϖ`. Take `⟨Tm, hTm⟩` from `hf.1`. Establish `hfT` using `hf.2 Tm hTm`. Establish `hvT` using `hvP Tm hTm`.
+
+Use `⟨z, (κ * Gc)⁻¹, hz, unitOff_inv_mul hκ hG, ?_⟩` and prove the remaining obligations. Establish `hne : κ * Gc ≠ 0` using `mul_ne_zero hκ.1 hG.1`. Establish `hcomp : ∀ x : WO (Vc D i) (Wc D i), ((x.map fun w => incA D ((ϖ : D.host.E)⁻¹) * w).map fun w => incA D (ϖ : D.host.E) * w) = x`. Introduce `x`. Use extensionality with `a b`.
+
+Simplify using `only [Matrix.map_apply, ← mul_assoc, ← map_mul, mul_inv_cancel₀ hϖE, map_one, one_mul]`. Rewrite using `[hvT, hact Tm hTm _ hSB]`. Simplify using `only [hcomp]`. Establish `hsm : (fun x : WO (Vc D i) (Wc D i) => Gc * (if IsHalf eQ x ∧ IsIntM (frMapO (Vc D i) (Wc D i) (R.βV i) (R.βW i) x) then omegaFlat (R.Q t) (Wc D i).rank (R.xiR t) (fun PP => redM PP (frMapO (Vc D i) (Wc D i) (R.βV i) (R.βW i) x)) else 0)) = Gc • (fun x : WO (Vc D i) (Wc D i) => i …` using `rfl`. Rewrite using `[hsm, map_smul, ← hfT, smul_smul, smul_smul, mul_assoc (κ * Gc)⁻¹, inv_mul_cancel₀ hne, one_smul]`.
+-/
 theorem flat_eq_unit_smul_om : ∀ (D : D7) (G : Type) [Group G] [Fintype G] (Pl0 T0 : Type) (A : FamIn D.what₂.LL G Pl0 T0 D.R.m) (Ks : Type) [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] (R : RealDat D A Ks) (F : Face D A), GlobalTheory.Hk3.Core R F → QGuard R → ∀ (i : Fin D.R.m) (t : T0), VStd D i → ∀ f, IsFlatVec R i t f → ∃ (z : GA D (Vc D i)) (c : ℂ), IsCentAt i (R.Q t) z ∧ UnitOff (GlobalTheory.TwistField.tupPrime R t) c ∧ f = c • R.ωP i t (z, 1) (R.vP i t) := by
   intro D G _ _ Pl0 T0 A Ks _ _ _ R F hC hQG i t hV f hf
   obtain ⟨eg, eQ, fg, heg, heQ, hfg, hf⟩ := hf

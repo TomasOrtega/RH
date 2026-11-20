@@ -14,6 +14,11 @@ variable {B : Type*} [CommRing B] {ι : Type*} [Fintype ι] {n : ℕ} (LL : Lett
   (a b : Fin n) (t : B) (m : ι × Fin n →₀ ℕ)
 
 open Classical in
+/- English proof (translation)
+Establish `sum_support_single_eq_lemma {σ ι : Type _} [Fintype ι] (f : ι →₀ ℕ) (g : ι → σ) : ∑ l ∈ f.support, Finsupp.single (g l) (f l) = ∑ l, Finsupp.single (g l) (f l)` using `Finset.sum_subset (Finset.subset_univ _) fun l _ hl => by`. Establish `h0 : f l = 0` using `by simpa using hl`. Rewrite using `[h0, Finsupp.single_zero]`. Simplify using `only [Formalism.MainNotions.G.divPowMono, shiftedExponent, rootShiftCoefficient, sourceVar, targetVar]`. Use `Finset.sum_congr rfl fun f _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[sum_support_single_eq_lemma f, sum_support_single_eq_lemma f, Finset.prod_subset (Finset.subset_univ f.support)]`. Introduce `l _ hl`. Establish `h0 : f l = 0` using `by simpa using hl`. Simplify using `[h0]`.
+-/
 theorem dividedPowerMonomial_eq_sum (k : ℕ) :
     divPowMono B LL S a b k m = ∑ f ∈ Finset.finsuppAntidiag (Finset.univ.filter (· ∈ S)) k,
       monomial (shiftedExponent LL a b m (⇑f)) (rootShiftCoefficient B LL a b m (⇑f)) := by
@@ -30,6 +35,29 @@ theorem dividedPowerMonomial_eq_sum (k : ℕ) :
   simp [h0]
 
 open Classical in
+/- English proof (translation)
+Establish `hcf : ∀ p : ι → ℕ, rootShiftCoefficient B LL a b m p ≠ 0 → ∀ l, p l ≤ m (sourceVar LL a b l)`. Introduce `p hp l`. Assume the negation of the conclusion as `hlt`. Use `push_neg at hlt`. Apply `hp` to reduce the goal to its premises.
+
+Unfold `rootShiftCoefficient`. Use `Finset.prod_eq_zero (Finset.mem_univ l) ?_` and prove the remaining obligations. Unfold `sourceVar at hlt`. Use `split_ifs at hlt ⊢ with hv`. Rewrite using `[Nat.choose_eq_zero_of_lt hlt, Nat.cast_zero]`.
+
+Rewrite using `[Nat.choose_eq_zero_of_lt hlt, Nat.cast_zero, mul_zero]`. Establish `hmon : ∀ (s : ι × Fin n →₀ ℕ) (c : B), (monomial s c : MvPolynomial (ι × Fin n) B) ≠ 0 → c ≠ 0` using `fun s c h hc => h (by rw [hc, map_zero])`. Establish `hsumS : ∀ p : ι → ℕ, (∀ l, l ∉ S → p l = 0) → ∑ l ∈ Finset.univ.filter (· ∈ S), p l = ∑ l, p l`. Introduce `p hp`. Use `Finset.sum_subset (Finset.subset_univ _) fun l _ hl => hp l ?_` and prove the remaining obligations.
+
+Introduce `hS`. Conclude with `hl (Finset.mem_filter.mpr ⟨Finset.mem_univ _, hS⟩)`. Use `Finset.sum_bij_ne_zero (fun f _ _ => ⇑f) ?_ ?_ ?_ ?_` and prove the remaining obligations. Introduce `f hf hne`. Rewrite `hf` using `[Finset.mem_finsuppAntidiag]`.
+
+Establish `hz : ∀ l, l ∉ S → f l = 0` using `fun l hl => by`. Assume the negation of the conclusion as `h`. Conclude with `hl (Finset.mem_filter.mp (hf.2 (Finsupp.mem_support_iff.mpr h))).2`. Simplify using `only [Finset.mem_filter, Fintype.mem_piFinset, Finset.mem_range]`. Use `⟨fun l => ?_, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[Nat.lt_succ_iff]`. Distinguish the cases in `hl : l ∈ S`. Rewrite using `[sourceExp, if_pos hl]`. Conclude with `hcf _ (hmon _ _ hne) l`. Rewrite using `[hz l hl]`.
+
+Conclude with `Nat.zero_le _`. Rewrite using `[← hsumS _ hz]`. Conclude with `hf.1`. Introduce `f₁ _ _ f₂ _ _ h`. Conclude with `DFunLike.coe_injective h`.
+
+Introduce `p hp hne`. Simplify using `only [Finset.mem_filter, Fintype.mem_piFinset, Finset.mem_range] at hp`. Establish `hle : ∀ l, p l ≤ sourceExp LL S a b m l` using `fun l => Nat.lt_succ_iff.mp (hp.1 l)`. Establish `hz : ∀ l, l ∉ S → p l = 0` using `fun l hl => by`. Establish `h` using `hle l`.
+
+Rewrite `h` using `[sourceExp, if_neg hl]`. Use linear arithmetic over natural numbers and integers. Use `⟨Finsupp.equivFunOnFinite.symm p, ?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[Finset.mem_finsuppAntidiag, Finsupp.coe_equivFunOnFinite_symm]`. Use `⟨by rw [hsumS _ hz]; exact hp.2, fun l hl => ?_⟩` and prove the remaining obligations.
+
+Rewrite `hl` using `[Finsupp.mem_support_iff, Finsupp.coe_equivFunOnFinite_symm]`. Use `Finset.mem_filter.mpr ⟨Finset.mem_univ _, ?_⟩` and prove the remaining obligations. Assume the negation of the conclusion as `hS`. Conclude with `hl (hz l hS)`. Simplify using `only [Finsupp.coe_equivFunOnFinite_symm]`.
+
+Conclude with `hne`. Conclude with `Finsupp.coe_equivFunOnFinite_symm p`. Introduce `f _ _`. Both sides reduce to the same expression.
+-/
 theorem sum_finsuppAntidiag_eq_sum_piFinset (k : ℕ) :
     ∑ f ∈ Finset.finsuppAntidiag (Finset.univ.filter (· ∈ S)) k,
       monomial (shiftedExponent LL a b m (⇑f)) (rootShiftCoefficient B LL a b m (⇑f)) =
@@ -93,6 +121,9 @@ theorem sum_finsuppAntidiag_eq_sum_piFinset (k : ℕ) :
   · intro f _ _
     rfl
 
+/- English proof (translation)
+Establish `hinj : ∀ x ∈ (Finset.univ : Finset ι), ∀ y ∈ (Finset.univ : Finset ι), sourceVar LL a b x = sourceVar LL a b y → x = y`. Introduce `x _ y _ h`. Establish `h1` using `congrArg Prod.fst h`. Rewrite `h1` using `[sourceVar_fst, sourceVar_fst]`. Then use the resulting hypothesis. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem sum_sourceExp_le : ∑ l : ι, sourceExp LL S a b m l ≤ m.sum fun _ e => e := by
   classical
   have hinj : ∀ x ∈ (Finset.univ : Finset ι), ∀ y ∈ (Finset.univ : Finset ι),
@@ -108,6 +139,13 @@ theorem sum_sourceExp_le : ∑ l : ι, sourceExp LL S a b m l ≤ m.sum fun _ e 
 
 variable {R : Type*} [CommRing R] (φ : R →+* B)
 
+/- English proof (translation)
+Rewrite using `[matrixSubst_transvection_monomial_sum]`. Establish `hmaps : ∀ p ∈ Fintype.piFinset (fun l : ι => Finset.range (sourceExp LL S a b m l + 1)), (∑ l, p l) ∈ Finset.range N`. Introduce `p hp`. Rewrite `hp` using `[Fintype.mem_piFinset]`. Rewrite using `[Finset.mem_range]`.
+
+Combine the equalities or inequalities in the displayed calculation. Rewrite using `[← Finset.sum_fiberwise_of_maps_to hmaps]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[dividedPowerMonomial_eq_sum, sum_finsuppAntidiag_eq_sum_piFinset, Finset.mul_sum]`. Use `Finset.sum_congr (by ext p; simp only [Finset.mem_filter]) fun p hp => ?_` and prove the remaining obligations.
+
+Establish `hk : ∑ l, p l = k` using `(Finset.mem_filter.mp hp).2`. Rewrite using `[hk]`.
+-/
 theorem matrixSubst_transvection_monomial (N : ℕ) (hN : (m.sum fun _ e => e) < N) :
     matrixSubst LL S φ (Matrix.transvection a b t) (Matrix.transvection a b (-t)) (monomial m 1) =
       ∑ k ∈ Finset.range N, C (t ^ k) * divPowMono B LL S a b k m := by
@@ -129,6 +167,9 @@ theorem matrixSubst_transvection_monomial (N : ℕ) (hN : (m.sum fun _ e => e) <
   have hk : ∑ l, p l = k := (Finset.mem_filter.mp hp).2
   rw [hk]
 
+/- English proof (translation)
+Unfold `Formalism.MainNotions.G.divPowMono`. Rewrite using `[map_sum]`. Use `Finset.sum_congr rfl fun f _ => ?_` and prove the remaining obligations. Apply the tactic sequence `have h : ∀ l, φ (if LL.vec l then ((m (l, b)).choose (f l) : R) else (-1 : R) ^ (f l) * ((m (l, a)).choose (f l) : R)) = (if LL.vec l then ((m (l, b)).choose (f l) : B) else (-1 : B) ^ (f l) * ((m (l, a)).choose (f l) : B)) := fun l => by split_ifs <;> simp`. Simplify using `only [MvPolynomial.map_monomial, map_prod, h]`.
+-/
 theorem map_dividedPowerMonomial (k : ℕ) :
     MvPolynomial.map φ (divPowMono R LL S a b k m) = divPowMono B LL S a b k m := by
   unfold Formalism.MainNotions.G.divPowMono
@@ -139,6 +180,9 @@ theorem map_dividedPowerMonomial (k : ℕ) :
     fun l => by split_ifs <;> simp
   simp only [MvPolynomial.map_monomial, map_prod, h]
 
+/- English proof (translation)
+Establish `h1 : (monomial m c : MvPolynomial (ι × Fin n) R) = c • MvPolynomial.basisMonomials (ι × Fin n) R m`. Simplify using `only [MvPolynomial.coe_basisMonomials, MvPolynomial.smul_monomial, smul_eq_mul, mul_one]`. Rewrite using `[h1, map_smul]`. Unfold `Formalism.MainNotions.G.divPow`. Rewrite using `[Module.Basis.constr_basis]`.
+-/
 theorem dividedPower_monomial (k : ℕ) (c : R) :
     divPow R LL S a b k (monomial m c) = c • divPowMono R LL S a b k m := by
   have h1 : (monomial m c : MvPolynomial (ι × Fin n) R) = c • MvPolynomial.basisMonomials (ι × Fin n) R m := by
@@ -149,6 +193,15 @@ theorem dividedPower_monomial (k : ℕ) (c : R) :
 
 end mtch
 
+/- English proof (translation)
+Unfold `TransvectionExpansion`. Introduce `R B _ _ ι _ LL n S φ a b _ t F N hF`. Establish `key : ∀ v ∈ F.support, matrixSubst LL S φ (Matrix.transvection a b t) (Matrix.transvection a b (-t)) (monomial v (coeff v F)) = ∑ k ∈ Finset.range N, C (t ^ k) * MvPolynomial.map φ (Formalism.MainNotions.G.divPow R LL S a b k (monomial v (coeff v F)))`. Introduce `v hv`. Establish `hv' : (v.sum fun _ e => e) < N` using `lt_of_le_of_lt (MvPolynomial.le_totalDegree hv) hF`.
+
+Establish `hmono : (monomial v (coeff v F) : MvPolynomial (ι × Fin n) R) = C (coeff v F) * monomial v 1`. Rewrite using `[MvPolynomial.C_mul_monomial, mul_one]`. Establish `hL : matrixSubst LL S φ (Matrix.transvection a b t) (Matrix.transvection a b (-t)) (monomial v (coeff v F)) = C (φ (coeff v F)) * ∑ k ∈ Finset.range N, C (t ^ k) * Formalism.MainNotions.G.divPowMono B LL S a b k v`. Rewrite using `[hmono, map_mul, matrixSubst_C, matrixSubst_transvection_monomial LL S a b t v φ N hv']`. Rewrite using `[hL, Finset.mul_sum]`.
+
+Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[dividedPower_monomial, MvPolynomial.smul_eq_C_mul, map_mul, MvPolynomial.map_C, map_dividedPowerMonomial]`. Expand and normalize the polynomial expressions, which then agree. Use `conv_lhs => rw [F.as_sum]`. Rewrite using `[map_sum]`.
+
+Use `(Finset.sum_congr rfl key).trans ?_` and prove the remaining obligations. Use `conv_rhs => rw [F.as_sum]`. Simplify using `only [map_sum, Finset.mul_sum]`. Conclude with `Finset.sum_comm`.
+-/
 theorem transvectionExpansion : TransvectionExpansion := by
   unfold TransvectionExpansion
   intro R B _ _ ι _ LL n S φ a b _ t F N hF

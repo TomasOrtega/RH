@@ -11,5 +11,8 @@ open CategoryTheory CategoryTheory.Limits AlgebraicGeometry MonoidalCategory Car
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Out ReciprocityTheory.ChartRestriction.G.DVR
 attribute [local instance] Over.cartesianMonoidalCategory
 open scoped CategoryTheory.Obj
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.PullComb.main | exact GlobalTheory.PullComb.main | (intros; apply GlobalTheory.PullComb.main <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.pullAl_linear_combination : GlobalFnsSt → ∀ (V : Type) [CommRing V] [IsDomain V] [IsDiscreteValuationRing V] (D : DegData V (maximalIdeal V)) (F : Type) [Field F] [Algebra (FractionRing V) F] (O : Type) [Ring O] [StarRing O] [Module O D.toPre.X] (oa : D.toPre.OAct O) (a : O) (k N n : ℕ), 0 < n → ∀ (c : Fin n → F) (s : Fin n → Fam D.toPre F k) (s' : Fin n → Fam D.toPre F (k * N)), (∀ l, PullAl D F oa a k N (s l) (s' l)) → PullAl D F oa a k N (∑ l, c l • s l) (∑ l, c l • s' l) := by
   first | exact @GlobalTheory.PullComb.main | exact GlobalTheory.PullComb.main | (intros; apply GlobalTheory.PullComb.main <;> assumption)

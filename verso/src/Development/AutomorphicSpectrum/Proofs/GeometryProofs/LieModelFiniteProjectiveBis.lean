@@ -17,6 +17,9 @@ noncomputable section
 
 namespace GlobalTheory.CompanionTheory.Ar.LieFin
 
+/- English proof (translation)
+Establish `: dualMap (d.comp c) = (dualMap d).comp (dualMap c)`. Apply the tactic sequence `ext a <;> simp [dualMap]`. Simplify using `only [this, spMap, ← Spec.map_comp]`. Both sides reduce to the same expression.
+-/
 theorem spMap_dual_comp {A B C : Type} [CommRing A] [CommRing B] [CommRing C] (c : A →+* B) (d : B →+* C) :
     spMap (dualMap d) ≫ spMap (dualMap c) = spMap (dualMap (d.comp c)) := by
   have : dualMap (d.comp c) = (dualMap d).comp (dualMap c) := by
@@ -24,6 +27,9 @@ theorem spMap_dual_comp {A B C : Type} [CommRing A] [CommRing B] [CommRing C] (c
   simp only [this, spMap, ← Spec.map_comp]
   rfl
 
+/- English proof (translation)
+Establish `: dualMap (RingHom.id A) = RingHom.id _`. Apply the tactic sequence `ext a <;> simp [dualMap]`. Simplify using `only [this, spMap]`. Conclude with `Spec.map_id _`.
+-/
 theorem spMap_dual_id {A : Type} [CommRing A] : spMap (dualMap (RingHom.id A)) = 𝟙 _ := by
   have : dualMap (RingHom.id A) = RingHom.id _ := by
     ext a <;> simp [dualMap]
@@ -32,10 +38,16 @@ theorem spMap_dual_id {A : Type} [CommRing A] : spMap (dualMap (RingHom.id A)) =
 
 variable {S : Scheme.{0}} {G : Over S} [GrpObj G]
 
+/- English proof (translation)
+The claim follows from `M.inj (Over.OverMorphism.ext h)`.
+-/
 theorem pt_left_inj {A : Type} [CommRing A] {a : Sp A ⟶ S} {E : Type} [AddCommGroup E] [Module A E]
     (M : LieModel G a E) {u v : E} (h : (M.pt u).left = (M.pt v).left) : u = v :=
   M.inj (Over.OverMorphism.ext h)
 
+/- English proof (translation)
+Substitute `h` using the available equality. Take `⟨j, hj, -⟩` from `GlobalTheory.T.lie_model_existsUnique_semilinear S G A B c a E E' M M'`. Use `⟨j, fun e => ?_⟩` and prove the remaining obligations. Use `hj e` as an intermediate fact. Simplify `this` using `[LieModel.Lifts]`.
+-/
 theorem exists_tr {A B : Type} [CommRing A] [CommRing B] (a : Sp A ⟶ S) (b : Sp B ⟶ S) (c : A →+* B)
     (h : spMap c ≫ a = b) {E E' : Type} [AddCommGroup E] [AddCommGroup E'] [Module A E] [Module B E']
     (M : LieModel G a E) (M' : LieModel G b E') :
@@ -46,6 +58,11 @@ theorem exists_tr {A B : Type} [CommRing A] [CommRing B] (a : Sp A ⟶ S) (b : S
   have := hj e
   simpa [LieModel.Lifts] using this
 
+/- English proof (translation)
+Take `⟨j, hj⟩` from `exists_tr a b c h M M'`. Use `⟨{ toFun := j, map_add' := j.map_add, map_smul' := fun r e => ?_ }, hj⟩` and prove the remaining obligations. Establish `h1 : r • e = algebraMap R A r • e` using `(algebraMap_smul A r e).symm`. Establish `h2 : r • j e = algebraMap R B r • j e` using `(algebraMap_smul B r (j e)).symm`. Simplify using `only [RingHom.id_apply]`.
+
+Rewrite using `[h1, h2, j.map_smulₛₗ, hc]`.
+-/
 theorem exists_trL {R A B : Type} [CommRing R] [CommRing A] [CommRing B] [Algebra R A] [Algebra R B]
     (a : Sp A ⟶ S) (b : Sp B ⟶ S) (c : A →+* B) (hc : ∀ r, c (algebraMap R A r) = algebraMap R B r)
     (h : spMap c ≫ a = b) {E E' : Type} [AddCommGroup E] [AddCommGroup E'] [Module A E] [Module B E']
@@ -59,6 +76,9 @@ theorem exists_trL {R A B : Type} [CommRing R] [CommRing A] [CommRing B] [Algebr
   simp only [RingHom.id_apply]
   rw [h1, h2, j.map_smulₛₗ, hc]
 
+/- English proof (translation)
+The claim follows from `isUnit_of_dvd_unit (map_dvd _ h) (IsLocalization.Away.algebraMap_isUnit g)`.
+-/
 theorem unit_of_dvd {R : Type} [CommRing R] {a g : R} (h : a ∣ g) :
     IsUnit (algebraMap R (Localization.Away g) a) :=
   isUnit_of_dvd_unit (map_dvd _ h) (IsLocalization.Away.algebraMap_isUnit g)
@@ -70,11 +90,19 @@ def cmap {R : Type} [CommRing R] {g g' : R} (h : g ∣ g') :
       rintro ⟨_, n, rfl⟩
       simpa [Algebra.ofId_apply] using (unit_of_dvd h).pow n)
 
+/- English proof (translation)
+The claim follows from `IsLocalization.ringHom_ext (Submonoid.powers g) (ha.trans hb.symm)`.
+-/
 theorem ringHom_unique {R B : Type} [CommRing R] [CommRing B] [Algebra R B] {g : R}
     (a b : Localization.Away g →+* B) (ha : a.comp (algebraMap R _) = algebraMap R B)
     (hb : b.comp (algebraMap R _) = algebraMap R B) : a = b :=
   IsLocalization.ringHom_ext (Submonoid.powers g) (ha.trans hb.symm)
 
+/- English proof (translation)
+Take `⟨u, hu⟩` from `h`. Establish `hinv : ∀ y : F, a • ((↑u⁻¹ : A) • y) = y` using `fun y => by`. Rewrite using `[← algebraMap_smul A a, ← hu, smul_smul, Units.mul_inv, one_smul]`. Establish `hinv' : ∀ y : F, (↑u⁻¹ : A) • (a • y) = y` using `fun y => by`. Rewrite using `[← algebraMap_smul A a y, ← hu, smul_smul, Units.inv_mul, one_smul]`.
+
+Rewrite using `[Module.End.isUnit_iff]`. Use `⟨fun y z hyz => ?_, fun y => ⟨(↑u⁻¹ : A) • y, ?_⟩⟩` and prove the remaining obligations. Establish `: a • y = a • z` using `by simpa [Module.algebraMap_end_apply] using hyz`. Rewrite using `[← hinv' y, ← hinv' z, this]`. Simplify `hinv y` using `[Module.algebraMap_end_apply]`.
+-/
 theorem unit_end {R A F : Type} [CommRing R] [CommRing A] [Algebra R A] [AddCommGroup F] [Module R F]
     [Module A F] [IsScalarTower R A F] {a : R} (h : IsUnit (algebraMap R A a)) :
     IsUnit (algebraMap R (Module.End R F) a) := by
@@ -89,11 +117,17 @@ theorem unit_end {R A F : Type} [CommRing R] [CommRing A] [Algebra R A] [AddComm
     rw [← hinv' y, ← hinv' z, this]
   · simpa [Module.algebraMap_end_apply] using hinv y
 
+/- English proof (translation)
+Simplify using `only [spMap, ← Spec.map_comp]`. Both sides reduce to the same expression.
+-/
 theorem spMap_comp' {A B C : Type} [CommRing A] [CommRing B] [CommRing C] (d : A →+* B) (c : B →+* C) :
     spMap c ≫ spMap d = spMap (c.comp d) := by
   simp only [spMap, ← Spec.map_comp]
   rfl
 
+/- English proof (translation)
+Rewrite using `[spMap_comp', spMap_comp']`. Use `congr 1`. Apply the tactic sequence `ext a <;> simp [dualMap, TrivSqZeroExt.algebraMap_eq_inl]`.
+-/
 theorem spMap_dual_alg {A B : Type} [CommRing A] [CommRing B] (c : A →+* B) :
     spMap (dualMap c) ≫ spMap (algebraMap A (DualNumber A)) =
       spMap (algebraMap B (DualNumber B)) ≫ spMap c := by
@@ -101,6 +135,9 @@ theorem spMap_dual_alg {A B : Type} [CommRing A] [CommRing B] (c : A →+* B) :
   congr 1
   ext a <;> simp [dualMap, TrivSqZeroExt.algebraMap_eq_inl]
 
+/- English proof (translation)
+Rewrite using `[spMap_comp', spMap_comp']`. Use `congr 1`. Apply the tactic sequence `ext a <;> simp [dualMap, TrivSqZeroExt.algebraMap_eq_inl]`.
+-/
 theorem spMap_fst_dual {A B : Type} [CommRing A] [CommRing B] (c : A →+* B) :
     spMap c ≫ spMap (TrivSqZeroExt.fstHom A A A).toRingHom =
       spMap (TrivSqZeroExt.fstHom B B B).toRingHom ≫ spMap (dualMap c) := by
@@ -113,21 +150,60 @@ abbrev Idx {R J : Type} [CommRing R] (f : J → R) : Type := {g : R // ∃ i, f 
 abbrev ptAt {R : Type} [CommRing R] (x : Sp R ⟶ S) (g : R) : Sp (Localization.Away g) ⟶ S :=
   spMap (algebraMap R (Localization.Away g)) ≫ x
 
+/- English proof (translation)
+The claim follows from `RingHom.ext (cmap h).commutes`.
+-/
 theorem cmap_alg {R : Type} [CommRing R] {g g' : R} (h : g ∣ g') :
     (cmap h).toRingHom.comp (algebraMap R (Localization.Away g)) = algebraMap R (Localization.Away g') :=
   RingHom.ext (cmap h).commutes
 
+/- English proof (translation)
+Rewrite using `[← Category.assoc, spMap_comp', cmap_alg]`.
+-/
 theorem pt_cmap {R : Type} [CommRing R] (x : Sp R ⟶ S) {g g' : R} (h : g ∣ g') :
     spMap (cmap h).toRingHom ≫ ptAt x g = ptAt x g' := by
   rw [← Category.assoc, spMap_comp', cmap_alg]
 
+/- English proof (translation)
+The claim follows from `ringHom_unique (R := R) _ _ (cmap_alg h) rfl`.
+-/
 theorem cmap_self {R : Type} [CommRing R] {g : R} (h : g ∣ g) : (cmap h).toRingHom = RingHom.id _ :=
   ringHom_unique (R := R) _ _ (cmap_alg h) rfl
 
+/- English proof (translation)
+The claim follows from `ringHom_unique (R := R) _ _ (by rw [RingHom.comp_assoc, cmap_alg, cmap_alg]) (cmap_alg h'')`.
+-/
 theorem cmap_comp {R : Type} [CommRing R] {g g' g'' : R} (h : g ∣ g') (h' : g' ∣ g'') (h'' : g ∣ g'') :
     (cmap h').toRingHom.comp (cmap h).toRingHom = (cmap h'').toRingHom :=
   ringHom_unique (R := R) _ _ (by rw [RingHom.comp_assoc, cmap_alg, cmap_alg]) (cmap_alg h'')
 
+/- English proof (translation)
+Establish `hres : ∀ (g g' : Idx f) (h : g.1 ∣ g'.1), ∃ r : F g →ₗ[R] F g', ∀ y, ((mg g').pt (r y)).left = spMap (dualMap (cmap h).toRingHom) ≫ ((mg g).pt y).left` using `fun g g' h => exists_trL (R := R) _ _ (cmap h).toRingHom (cmap h).commutes (pt_cmap x h) (mg g) (mg g')`. Use `choose res hres using hres`. Establish `hρ : ∀ g : Idx f, ∃ r : E →ₗ[R] F g, ∀ e, ((mg g).pt (r e)).left = spMap (dualMap (algebraMap R (Localization.Away g.1))) ≫ (M.pt e).left` using `fun g => exists_trL (R := R) x (ptAt x g.1) (algebraMap R _) (fun _ => rfl) rfl M (mg g)`. Use `choose ρ hρ using hρ`. Establish `hglue` using `fun X => GlobalTheory.T.dual_number_points_glue X R J f hf`.
+
+Use `⟨ρ, hρ, GlobalTheory.T.localization_sheaf_glue_modules R E J f hf F res ρ ?_ ?_ ?_ ?_ ?_ ?_ ?_⟩` and prove the remaining obligations. Introduce `g h y`. Apply `pt_left_inj (mg g)` to reduce the goal to its premises. Rewrite using `[hres, cmap_self, spMap_dual_id, Category.id_comp]`. Introduce `g g' g'' h h' h'' y`.
+
+Apply `pt_left_inj (mg g'')` to reduce the goal to its premises. Rewrite using `[hres, hres, hres, ← Category.assoc, spMap_dual_comp, cmap_comp h h' h'']`. Introduce `g g' h e`. Apply `pt_left_inj (mg g')` to reduce the goal to its premises. Rewrite using `[hres, hρ, hρ, ← Category.assoc, spMap_dual_comp, cmap_alg]`.
+
+Introduce `g a h`. Take `⟨i, -⟩` from `g.2`. Conclude with `unit_end (A := Localization.Away g.1) (unit_of_dvd h)`. Introduce `g g' h t ht`. Conclude with `hqc g g' h t ht _ (hres g g' h)`.
+
+Introduce `e he`. Use `pt_left_inj M (v := 0) ((hglue G.left).2.1 _ _ fun i => ?_)` and prove the remaining obligations. Establish `h1` using `hρ ⟨f i, i, dvd_rfl⟩ e`. Establish `h2` using `hρ ⟨f i, i, dvd_rfl⟩ 0`. Rewrite `h1` using `[he i]`.
+
+Rewrite `h2` using `[map_zero]`. Conclude with `h1.symm.trans h2`. Introduce `w hw`. Take `⟨v0, hv0⟩` from `(hglue G.left).2.2 (fun i => ((mg ⟨f i, i, dvd_rfl⟩).pt (w i)).left) (by`. Introduce `i j a b ha hb`.
+
+Establish `ea : a = (cmap (dvd_mul_right (f i) (f j))).toRingHom` using `ringHom_unique (R := R) _ _ ha (cmap_alg _)`. Establish `eb : b = (cmap (dvd_mul_left (f j) (f i))).toRingHom` using `ringHom_unique (R := R) _ _ hb (cmap_alg _)`. Substitute `ea eb` using the available equality. Establish `h1` using `hres ⟨f i, i, dvd_rfl⟩ ⟨f i * f j, i, dvd_mul_right _ _⟩ (dvd_mul_right _ _) (w i)`. Establish `h2` using `hres ⟨f j, j, dvd_rfl⟩ ⟨f i * f j, i, dvd_mul_right _ _⟩ (dvd_mul_left _ _) (w j)`.
+
+Rewrite `h1` using `[hw i j]`. Conclude with `h1.symm.trans h2)`. Establish `hover : v0 ≫ G.hom = (epsAt x).hom`. Use `(hglue S).2.1 _ _ fun i => ?_` and prove the remaining obligations. Rewrite using `[← Category.assoc, hv0 i]`.
+
+Establish `h1` using `Over.w ((mg ⟨f i, i, dvd_rfl⟩).pt (w i))`. Use `h1.trans ?_` and prove the remaining obligations. Establish `h2` using `spMap_dual_alg (algebraMap R (Localization.Away (f i)))`. Simplify using `only [epsAt, Over.mk_hom]`. Rewrite using `[← Category.assoc, ← Category.assoc]`.
+
+Conclude with `congrArg (· ≫ x) h2.symm`. Establish `htan : IsTanAt G x (Over.homMk v0 hover : epsAt x ⟶ G)`. Use `(hglue G.left).1 _ _ fun i => ?_` and prove the remaining obligations. Establish `h1` using `(mg ⟨f i, i, dvd_rfl⟩).tan (w i)`. Establish `h2` using `spMap_fst_dual (algebraMap R (Localization.Away (f i)))`.
+
+Set `u : Over.mk (ptAt x (f i)) ⟶ Over.mk x` to `Over.homMk (spMap (algebraMap R _)) rfl`. Establish `h3 : u ≫ (1 : Over.mk x ⟶ G) = 1` using `MonObj.comp_one u`. Establish `h4` using `congrArg (fun q => q.left) h3`. Simplify using `only [Over.comp_left] at h4`. Use `Eq.trans ?_ (h1.trans h4.symm)` and prove the remaining obligations.
+
+Simplify using `only [Over.homMk_left]`. Rewrite using `[← Category.assoc]`. Use `(congrArg (· ≫ v0) h2).trans ?_` and prove the remaining obligations. Simplify using `only [Category.assoc]`. Rewrite using `[hv0 i]`.
+
+Take `⟨e, he⟩` from `M.onto _ htan`. Use `⟨e, fun i => pt_left_inj (mg ⟨f i, i, dvd_rfl⟩) ?_⟩` and prove the remaining obligations. Use `(hρ ⟨f i, i, dvd_rfl⟩ e).trans ?_` and prove the remaining obligations. Rewrite using `[he]`. Conclude with `hv0 i`.
+-/
 theorem loc_of_family {R : Type} [CommRing R] (x : Sp R ⟶ S) {J : Type} [Finite J] (f : J → R)
     (hf : Ideal.span (Set.range f) = ⊤) {E : Type} [AddCommGroup E] [Module R E] (M : LieModel G x E)
     (F : Idx f → Type) [∀ g, AddCommGroup (F g)] [∀ g, Module R (F g)]
@@ -212,6 +288,13 @@ theorem loc_of_family {R : Type} [CommRing R] (x : Sp R ⟶ S) {J : Type} [Finit
     rw [he]
     exact hv0 i
 
+/- English proof (translation)
+Establish `hid : spMap (RingHom.id C) ≫ a = a`. Establish `: spMap (RingHom.id C) = 𝟙 _` using `Spec.map_id _`. Rewrite using `[this, Category.id_comp]`. Take `⟨j, hj⟩` from `exists_trL (R := R) a a (RingHom.id C) (fun _ => rfl) hid M M'`. Take `⟨k, hk⟩` from `exists_trL (R := R) a a (RingHom.id C) (fun _ => rfl) hid M' M`.
+
+Simplify using `only [spMap_dual_id, Category.id_comp] at hj hk`. Use `⟨LinearEquiv.ofLinear j k ?_ ?_, hj⟩` and prove the remaining obligations. Use `LinearMap.ext fun y => pt_left_inj M' ?_` and prove the remaining obligations. Simplify using `only [LinearMap.comp_apply, LinearMap.id_apply]`. Rewrite using `[hj, hk]`.
+
+Use `LinearMap.ext fun y => pt_left_inj M ?_` and prove the remaining obligations. Simplify using `only [LinearMap.comp_apply, LinearMap.id_apply]`. Rewrite using `[hk, hj]`.
+-/
 theorem exists_equiv {R C : Type} [CommRing R] [CommRing C] [Algebra R C] (a : Sp C ⟶ S)
     {E E' : Type} [AddCommGroup E] [AddCommGroup E'] [Module C E] [Module C E'] [Module R E] [Module R E']
     [IsScalarTower R C E] [IsScalarTower R C E'] (M : LieModel G a E) (M' : LieModel G a E') :
@@ -230,6 +313,25 @@ theorem exists_equiv {R C : Type} [CommRing R] [CommRing C] [Algebra R C] (a : S
     simp only [LinearMap.comp_apply, LinearMap.id_apply]
     rw [hk, hj]
 
+/- English proof (translation)
+Substitute `ht` using the available equality. Establish `hgB : IsUnit (algebraMap R (Localization.Away (g * t)) g)` using `unit_of_dvd h`. Establish `htB : IsUnit (algebraMap R (Localization.Away (g * t)) t)` using `unit_of_dvd (dvd_mul_left t g)`. Establish `hgA : IsUnit (algebraMap R (Localization.Away g) g)` using `IsLocalization.Away.algebraMap_isUnit g`. Establish `hc : ∀ r, cmap h (algebraMap R (Localization.Away g) r) = algebraMap R (Localization.Away (g * t)) r` using `(cmap h).commutes`.
+
+Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Introduce and unpack `⟨_, n, rfl⟩`. Use `unit_end (A := Localization.Away (g * t)) ?_` and prove the remaining obligations. Simplify using `using htB.pow n`. Introduce `y`.
+
+Take `⟨n, a, hy⟩` from `IsLocalization.Away.surj (g * t) y`. Use `⟨(IsLocalization.mk' (Localization.Away g) a (⟨g ^ n, n, rfl⟩ : Submonoid.powers g), ⟨t ^ n, n, rfl⟩), ?_⟩` and prove the remaining obligations. Establish `hmk` using `IsLocalization.mk'_spec (Localization.Away g) a (⟨g ^ n, n, rfl⟩ : Submonoid.powers g)`. Establish `h1` using `congrArg (cmap h) hmk`. Rewrite `h1` using `[map_mul, hc, hc]`.
+
+Simplify using `only at h1`. Express the relevant statement in the definitionally equal form `t ^ n • y = cmap h _`. Use `(hgB.pow n).mul_right_cancel ?_` and prove the remaining obligations. Rewrite using `[Algebra.smul_def]`. Rewrite `h1`, the goal using `[map_pow]`.
+
+Rewrite using `[h1, ← hy, map_mul, mul_pow]`. Expand and normalize the polynomial expressions, which then agree. Introduce `x₁ x₂ he`. Establish `hz : cmap h (x₁ - x₂) = 0`. Rewrite using `[map_sub, sub_eq_zero]`.
+
+Conclude with `he`. Take `⟨n, a, hy⟩` from `IsLocalization.Away.surj g (x₁ - x₂)`. Establish `h0 : algebraMap R (Localization.Away (g * t)) a = 0`. Establish `h1` using `congrArg (cmap h) hy`. Rewrite `h1` using `[map_mul, hz, zero_mul, hc]`.
+
+Conclude with `h1.symm`. Take `⟨⟨_, k, rfl⟩, hk⟩` from `(IsLocalization.map_eq_zero_iff (Submonoid.powers (g * t)) _ a).1 h0`. Use `⟨⟨t ^ k, k, rfl⟩, ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `t ^ k • x₁ = t ^ k • x₂`. Rewrite using `[← sub_eq_zero, ← smul_sub]`.
+
+Establish `h2 : algebraMap R (Localization.Away g) ((g * t) ^ k * a) = 0`. Simplify using `only at hk`. Rewrite using `[hk, map_zero]`. Use `((hgA.pow (k + n)).mul_left_eq_zero).1 ?_` and prove the remaining obligations. Rewrite `*` using `[Algebra.smul_def, map_mul, map_pow, map_mul, mul_pow, ← hy]`.
+
+Rewrite using `[pow_add]`. Take the linear combination `h2`.
+-/
 theorem cmap_loc {R : Type} [CommRing R] {g g' t : R} (h : g ∣ g') (ht : g' = g * t) :
     IsLocalizedModule (Submonoid.powers t) (cmap h).toLinearMap := by
   subst ht
@@ -277,6 +379,17 @@ theorem cmap_loc {R : Type} [CommRing R] {g g' t : R} (h : g ∣ g') (ht : g' = 
     rw [pow_add]
     linear_combination h2
 
+/- English proof (translation)
+Establish `hix : ∀ g : Idx f, ∃ i, f i ∣ g.1` using `fun g => g.2`. Use `choose ix hix using hix`. Establish `hqc : ∀ (g g' : Idx f) (h : g.1 ∣ g'.1) (t : R), g'.1 = g.1 * t → ∀ r : (P (ix g) →ₗ[R] Localization.Away g.1) →ₗ[R] (P (ix g') →ₗ[R] Localization.Away g'.1), (∀ y, ((m (ix g') _ (unit_of_dvd (hix g'))).pt (r y)).left = spMap (dualMap (cmap h).toRingHom) ≫ ((m (ix g) _ (unit_of_d …`. Introduce `g g' h t ht r hr`. Establish `hu' : IsUnit (algebraMap R (Localization.Away g'.1) (f (ix g)))` using `unit_of_dvd ((hix g).trans h)`.
+
+Take `⟨e, he⟩` from `exists_equiv (R := R) (ptAt x g'.1) (m (ix g) _ hu') (m (ix g') _ (unit_of_dvd (hix g')))`. Use `haveI := cmap_loc h ht`. Use `haveI hcr := GlobalTheory.T.localized_module_base_change R (P (ix g)) (Localization.Away g.1) (Localization.Away g'.1) (f (ix g)) t (unit_of_dvd (hix g)) (cmap h) (cmap_loc h ht)`. Establish `hrr : r = (e : _ →ₗ[R] _) ∘ₗ LinearMap.compRight R (cmap h).toLinearMap`. Use `LinearMap.ext fun y => pt_left_inj (m (ix g') _ (unit_of_dvd (hix g'))) ?_` and prove the remaining obligations.
+
+Rewrite using `[hr]`. Use `Eq.trans ?_ (he _).symm` and prove the remaining obligations. Conclude with `(nat (ix g) _ _ (unit_of_dvd (hix g)) hu' (cmap h) y).symm`. Rewrite using `[hrr]`. Conclude with `IsLocalizedModule.of_linearEquiv _ _ _`.
+
+Take `⟨ρ, -, hloc⟩` from `loc_of_family x f hf M (fun g => P (ix g) →ₗ[R] Localization.Away g.1) (fun g => m (ix g) _ (unit_of_dvd (hix g))) hqc`. Establish `hcmp : ∀ i, ∃ _ : (P (ix ⟨f i, i, dvd_rfl⟩) →ₗ[R] Localization.Away (f i)) ≃ₗ[R] (P i →ₗ[R] Localization.Away (f i)), True` using `fun i => by`. Take `⟨e, -⟩` from `exists_equiv (R := R) (ptAt x (f i)) (m (ix ⟨f i, i, dvd_rfl⟩) _ (unit_of_dvd (hix ⟨f i, i, dvd_rfl⟩))) (m i _ (unit_of_dvd (dvd_refl (f i))))`. Conclude with `⟨e, trivial⟩`. Use `choose e _ using hcmp`.
+
+Use `haveI : ∀ i, Module.Finite (Localization.Away (f i)) (P i →ₗ[R] Localization.Away (f i)) := fun i => (GlobalTheory.T.dual_module_finite_projective R (P i) (f i)).1`. Use `haveI : ∀ i, Module.Projective (Localization.Away (f i)) (P i →ₗ[R] Localization.Away (f i)) := fun i => (GlobalTheory.T.dual_module_finite_projective R (P i) (f i)).2`. Use `GlobalTheory.T.projective_modules_glue_cover R E J f hf (fun i => P i →ₗ[R] Localization.Away (f i)) (fun i => (e i : _ →ₗ[R] _) ∘ₗ ρ ⟨f i, i, dvd_rfl⟩) fun i => ?_` and prove the remaining obligations. Use `haveI := hloc i`. Conclude with `IsLocalizedModule.of_linearEquiv _ _ _`.
+-/
 theorem fin_of_charts {R : Type} [CommRing R] (x : Sp R ⟶ S) {J : Type} [Finite J] (f : J → R)
     (hf : Ideal.span (Set.range f) = ⊤) {E : Type} [AddCommGroup E] [Module R E]
     (P : J → Type) [∀ i, AddCommGroup (P i)] [∀ i, Module R (P i)]
@@ -330,6 +443,9 @@ theorem fin_of_charts {R : Type} [CommRing R] (x : Sp R ⟶ S) {J : Type} [Finit
 
 end GlobalTheory.CompanionTheory.Ar.LieFin
 
+/- English proof (translation)
+Introduce `S G _ R _ x J _ f hf hch E _ _ M`. Use `choose P iA iM iL ist ifin iproj m nat using hch`. Conclude with `@GlobalTheory.CompanionTheory.Ar.LieFin.fin_of_charts S G _ R _ x J _ f hf E _ _ P iA iM iL ist ifin iproj m nat M`.
+-/
 theorem GlobalTheory.CompanionTheory.Ar.LieFin.lieModel_finite_projective :
     ∀ (S : Scheme.{0}) (G : Over S) [GrpObj G] (R : Type) [CommRing R] (x : Sp R ⟶ S) (J : Type) [Finite J] (f : J → R),
       Ideal.span (Set.range f) = ⊤ → (∀ i, LieChart G x (f i)) →

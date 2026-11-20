@@ -19,6 +19,15 @@ open scoped Matrix
 
 namespace GlobalTheory.ShFam.Hor.LogCh
 
+/- English proof (translation)
+Establish `hchain : ∀ w v, IsDerivAt0 (fun u => (e (M *ᵥ u)).left) w v ↔ IsDerivAt0 (fun u => (e u).left) (M *ᵥ w) v`. Introduce `w v`. Rewrite using `[GlobalTheory.HolHom.isDerivAt0_iff, GlobalTheory.HolHom.isDerivAt0_iff]`. Conclude with `GlobalTheory.ShFam.BdArc.LatSec.isDerivAt_comp_iff (GlobalTheory.HolHom.holAt_of_isHolTo hhol (Set.mem_univ 0)) (Matrix.mulVecLin M).toContinuousLinearMap w v`. Establish `hMi : M * M⁻¹ = 1` using `Matrix.mul_nonsing_inv M hM`.
+
+Establish `hiM : M⁻¹ * M = 1` using `Matrix.nonsing_inv_mul M hM`. Use `⟨fun v w => ?_, fun w => ?_, fun v hv => ?_⟩` and prove the remaining obligations. Simplify using `only [Matrix.mulVec_add]`. Conclude with `he.1 _ _`. Repeatedly rewrite using `[hchain]`.
+
+Conclude with `he.2.1 (M *ᵥ w)`. Take `⟨w', hw', huniq⟩` from `he.2.2 v hv`. Use `⟨M⁻¹ *ᵥ w', ?_, fun w₂ hw₂ => ?_⟩` and prove the remaining obligations. Use `show IsDerivAt0 (fun u => (e (M *ᵥ u)).left) (M⁻¹ *ᵥ w') v`. Rewrite using `[hchain, Matrix.mulVec_mulVec, hMi, Matrix.one_mulVec]`.
+
+Conclude with `hw'`. Establish `h2 : M *ᵥ w₂ = w'` using `huniq _ ((hchain w₂ v).1 hw₂)`. Rewrite using `[← h2, Matrix.mulVec_mulVec, hiM, Matrix.one_mulVec]`.
+-/
 theorem isExpAt_mulVec {E : Type} [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E)
     (X : Scheme.{0}) (t : SAB H X) (y : Sp ℂ ⟶ X) (g : ℕ) (e : (Fin g → ℂ) → (Over.mk y ⟶ t.G))
     (M : Matrix (Fin g) (Fin g) ℂ) (hM : IsUnit M.det) (hhol : IsHolTo Set.univ (fun z => (e z).left))

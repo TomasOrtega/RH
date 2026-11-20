@@ -8,12 +8,32 @@ open GlobalTheory.Mum
 
 namespace GlobalTheory.GlueCopies
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨Multicoequalizer.desc D.toGlueData.diagram S p (by rintro ⟨i, j⟩; exact h i j), fun i => Multicoequalizer.π_desc _ _ _ _ _⟩`.
+-/
 theorem desc_of_compat (D : Scheme.GlueData.{0}) {S : Scheme.{0}} (p : ∀ i, D.U i ⟶ S)
     (h : ∀ i j, D.f i j ≫ p i = (D.t i j ≫ D.f j i) ≫ p j) :
     ∃ F : D.glued ⟶ S, ∀ i, D.ι i ≫ F = p i :=
   ⟨Multicoequalizer.desc D.toGlueData.diagram S p (by rintro ⟨i, j⟩; exact h i j),
     fun i => Multicoequalizer.π_desc _ _ _ _ _⟩
 
+/- English proof (translation)
+Introduce `Y J V τ hV hτ hr hc`. Establish `mem_of : ∀ (U : Y.Opens) {T : Scheme.{0}} (f : T ⟶ U.toScheme) (p : T), (f ≫ U.ι) p ∈ U` using `fun U T f p => by`. Establish `h` using `Set.mem_range_self (f := ⇑U.ι) (f p)`. Rewrite `h` using `[Scheme.Opens.range_ι]`. Rewrite using `[Scheme.Hom.comp_apply]`.
+
+Conclude with `h`. Establish `hs : ∀ i, ∃ s : Y ⟶ (V i i).toScheme, s ≫ (V i i).ι = 𝟙 _` using `fun i => ⟨IsOpenImmersion.lift (V i i).ι (𝟙 _) (by`. Rewrite using `[Scheme.Opens.range_ι, hV]`. Introduce `x _`. Use the proof step `simp), IsOpenImmersion.lift_fac _ _ _⟩`.
+
+Use `choose s hs using hs`. Establish `ht : ∀ i j, ∃ t : (V i j).toScheme ⟶ (V j i).toScheme, t ≫ (V j i).ι = τ i j` using `fun i j => ⟨IsOpenImmersion.lift (V j i).ι (τ i j) (by`. Introduce and unpack `_ ⟨x, rfl⟩`. Rewrite using `[Scheme.Opens.range_ι]`. Conclude with `hr i j i x (by rw [hV]; simp)), IsOpenImmersion.lift_fac _ _ _⟩`.
+
+Use `choose t ht using ht`. Establish `htb : ∀ i j, t i j ≫ τ j i = (V i j).ι` using `fun i j => by`. Establish `h1` using `hc i j i _ (𝟙 _) ((V i j).ι ≫ s i) (t i j) (by simp [hs]) (by simp [ht])`. Rewrite using `[h1, hτ, Category.assoc, hs, Category.comp_id]`. Establish `hu : ∀ i j k, ∃ u : pullback (V i j).ι (V i k).ι ⟶ (V j k).toScheme, u ≫ (V j k).ι = pullback.fst _ _ ≫ τ i j` using `fun i j k => ⟨IsOpenImmersion.lift (V j k).ι (pullback.fst _ _ ≫ τ i j) (by`.
+
+Introduce and unpack `_ ⟨p, rfl⟩`. Rewrite using `[Scheme.Opens.range_ι, Scheme.Hom.comp_apply]`. Apply `hr i j k` to reduce the goal to its premises. Rewrite using `[← Scheme.Hom.comp_apply, pullback.condition]`. Conclude with `mem_of _ _ _), IsOpenImmersion.lift_fac _ _ _⟩`.
+
+Use `choose u hu using hu`. Establish `hub : ∀ i j k, u i j k ≫ τ j k = pullback.snd _ _ ≫ τ i k` using `fun i j k => hc i j k _ (pullback.fst _ _) (pullback.snd _ _) (u i j k) pullback.condition (hu i j k).symm`. Set `D : Scheme.GlueData.{0}` to `{ J := J U := fun _ => Y V := fun p => (V p.1 p.2).toScheme f := fun i j => (V i j).ι f_mono := fun i j => inferInstance f_id := fun i => ⟨s i, by rw [← cancel_mono (V i i).ι, Category.assoc, hs]; simp, hs i⟩ t := t t_id := fun i => by rw [← cancel_mono (V i i).ι, ht, hτ, Categor …`. Rewrite using `[← cancel_mono (pullback.fst (V i j).ι (V i k).ι), ← cancel_mono (V i j).ι]`. Simplify using `only [Category.assoc, pullback.lift_fst_assoc, hu, hub, pullback.lift_snd_assoc, htb, Category.id_comp]`.
+
+Use `f_open := fun i j => inferInstance }`. Establish `hP : ∀ i j, IsPullback (V i j).ι (τ i j) (D.ι i) (D.ι j)` using `fun i j => by`. Rewrite using `[← ht]`. Conclude with `IsPullback.of_isLimit (D.vPullbackConeIsLimit i j)`. Use `⟨D.glued, D.ι, fun j => D.ι_isOpenImmersion j, fun g => ?_, hP, fun Z g hg => ?_⟩` and prove the remaining obligations.
+
+Take `⟨j, y, rfl⟩` from `D.ι_jointly_surjective g`. Conclude with `⟨j, y, rfl⟩`. Use `desc_of_compat D g fun i j => ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `(V i j).ι ≫ g i = (t i j ≫ (V j i).ι) ≫ g j`. Rewrite using `[ht, hg]`.
+-/
 theorem exists_glue_copies : ∀ (Y : Scheme.{0}) (J : Type) (V : J → J → Y.Opens) (τ : ∀ i j, (V i j).toScheme ⟶ Y), (∀ i, V i i = ⊤) → (∀ i, τ i i = (V i i).ι) → (∀ (i j k : J) (x : (V i j).toScheme), (V i j).ι x ∈ V i k → τ i j x ∈ V j k) → (∀ (i j k : J) (T : Scheme.{0}) (x : T ⟶ (V i j).toScheme) (y : T ⟶ (V i k).toScheme) (w : T ⟶ (V j k).toScheme), x ≫ (V i j).ι = y ≫ (V i k).ι → x ≫ τ i j = w ≫ (V j k).ι → w ≫ τ j k = y ≫ τ i k) → ∃ (G : Scheme.{0}) (ψ : J → (Y ⟶ G)), (∀ j, IsOpenImmersion (ψ j)) ∧ (∀ g : G, ∃ j, g ∈ Set.range (ψ j)) ∧ (∀ i j, IsPullback (V i j).ι (τ i j) (ψ i) (ψ j)) ∧ ∀ (Z : Scheme.{0}) (g : J → (Y ⟶ Z)), (∀ i j, (V i j).ι ≫ g i = τ i j ≫ g j) → ∃ F : G ⟶ Z, ∀ j, ψ j ≫ F = g j := by
   intro Y J V τ hV hτ hr hc
   have mem_of : ∀ (U : Y.Opens) {T : Scheme.{0}} (f : T ⟶ U.toScheme) (p : T), (f ≫ U.ι) p ∈ U :=

@@ -2,6 +2,27 @@ import Mathlib
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Use `set I : Ideal R := RingHom.ker (algebraMap R (Localization.AtPrime 𝔭)) with hI`. Take `⟨s, hs⟩ : I.FG` from `IsNoetherian.noetherian I`. Establish `key : ∀ s : Finset R, (∀ x ∈ s, algebraMap R (Localization.AtPrime 𝔭) x = 0) → ∃ t ∉ 𝔭, ∀ x ∈ s, t * x = 0`. Introduce `s`. Proceed by induction on `s using Finset.induction_on with`.
+
+Consider the case `empty`. Introduce `_`. Conclude with `⟨1, fun h => ‹𝔭.IsPrime›.ne_top ((Ideal.eq_top_iff_one _).mpr h), by simp⟩`. Consider the case `insert a s ha ih`. Introduce `h`.
+
+Take `⟨t, ht, hts⟩` from `ih (fun x hx => h x (Finset.mem_insert_of_mem hx))`. Take `⟨m, hm⟩` from `(IsLocalization.map_eq_zero_iff 𝔭.primeCompl (Localization.AtPrime 𝔭) a).mp (h a (Finset.mem_insert_self a s))`. Use `⟨(m : R) * t, 𝔭.primeCompl.mul_mem m.2 ht, ?_⟩` and prove the remaining obligations. Introduce `x hx`. Break down `Finset.mem_insert.mp hx with rfl | hx` into its components or cases.
+
+Rewrite using `[mul_comm (m : R) t, mul_assoc, hm, mul_zero]`. Rewrite using `[mul_assoc, hts x hx, mul_zero]`. Take `⟨t, ht, hts⟩` from `key s (fun x hx => by`. Establish `: x ∈ I` using `hs ▸ Submodule.subset_span hx`. Simplify `this)` using `[hI]`.
+
+Establish `hker : ∀ x ∈ I, t * x = 0`. Establish `hle : I ≤ LinearMap.ker (LinearMap.mulLeft R t)`. Rewrite using `[← hs, Submodule.span_le]`. Introduce `x hx`. Simplify using `[hts x hx]`.
+
+Introduce `x hx`. Simplify using `using hle hx`. Use `⟨t, ht, ?_⟩` and prove the remaining obligations. Introduce `c ⟨d, hd⟩ κ hκ`. Rewrite using `[injective_iff_map_eq_zero]`.
+
+Introduce `x hx`. Take `⟨⟨a, m⟩, rfl⟩` from `IsLocalization.mk'_surjective (Submonoid.powers c) x`. Establish `hspec` using `IsLocalization.mk'_spec (Localization.Away c) a m`. Establish `h1 : algebraMap R (Localization.AtPrime 𝔭) a = 0`. Use `congrArg κ hspec` as an intermediate fact.
+
+Rewrite `this` using `[map_mul, hx, zero_mul]`. Rewrite using `[← hκ, RingHom.comp_apply, ← this]`. Establish `hta : t * a = 0` using `hker a (by simpa [hI] using h1)`. Establish `hu : IsUnit (algebraMap R (Localization.Away c) t)`. Establish `hc` using `IsLocalization.Away.algebraMap_isUnit (S := Localization.Away c) c`.
+
+Establish `hc' : IsUnit (algebraMap R (Localization.Away c) t * algebraMap R (Localization.Away c) d)`. Rewrite using `[← map_mul, ← hd]`. Conclude with `hc`. Conclude with `isUnit_of_mul_isUnit_left hc'`. Establish `ha : algebraMap R (Localization.Away c) a = 0`.
+
+Establish `: algebraMap R (Localization.Away c) t * algebraMap R (Localization.Away c) a = 0`. Rewrite using `[← map_mul, hta, map_zero]`. Conclude with `(hu.mul_right_eq_zero).mp this`. Use `show IsLocalization.mk' (Localization.Away c) a m = 0`. Rewrite using `[IsLocalization.mk'_eq_mul_mk'_one, ha, zero_mul]`.
+-/
 theorem localization_away_injective_of_dvd (R : Type) [CommRing R] [IsNoetherianRing R] (𝔭 : Ideal R) [𝔭.IsPrime] :
     ∃ t ∉ 𝔭, ∀ (c : R), t ∣ c → ∀ κ : Localization.Away c →+* Localization.AtPrime 𝔭,
       κ.comp (algebraMap R (Localization.Away c)) = algebraMap R (Localization.AtPrime 𝔭) →

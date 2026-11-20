@@ -5,6 +5,15 @@ open NumberField GlobalTheory.ShFam.Pad AlgebraicGeometry CategoryTheory Limits
 
 namespace GlobalTheory.ModelPointExt
 
+/- English proof (translation)
+Set `jO : 𝓞 c.F →+* 𝓞 K` to `RingOfIntegers.mapRingHom jF`. Establish `hring : (algebraMap (𝓞 K) K).comp jO = jF.comp (algebraMap (𝓞 c.F) c.F)`. Use extensionality with `x`. Both sides reduce to the same expression. Use `haveI : IsProper Z.s := GlobalTheory.Toroidal.isProper_toroidalModel_structureMap Z`.
+
+Set `X' : Over (ReciprocityTheory.ChartRestriction.G.Geo.Tor.Sp (𝓞 K))` to `Over.mk (pullback.snd Z.s (ReciprocityTheory.ChartRestriction.G.Geo.Tor.spMap jO))`. Establish `hP : IsProper X'.hom` using `by show IsProper (pullback.snd Z.s (ReciprocityTheory.ChartRestriction.G.Geo.Tor.spMap jO)) infer_instance`. Establish `hsq : (yK ≫ GlobalTheory.Toroidal.genι Z) ≫ Z.s = ReciprocityTheory.ChartRestriction.G.Geo.Tor.spMap (algebraMap (𝓞 K) K) ≫ ReciprocityTheory.ChartRestriction.G.Geo.Tor.spMap jO`. Rewrite using `[Category.assoc, pullback.condition, ← Category.assoc, hy]`. Simplify using `only [ReciprocityTheory.ChartRestriction.G.Geo.Tor.spMap, ← Spec.map_comp, ← CommRingCat.ofHom_comp]`.
+
+Rewrite using `[hring]`. Set `x : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Sp K ⟶ X'.left` to `pullback.lift _ _ hsq`. Establish `hx : x ≫ X'.hom = Formalism.L2.Pj.abelian₂.gmap K` using `pullback.lift_snd _ _ _`. Take `⟨s, hs⟩` from `GlobalTheory.CuspFamilyCompare.exists_integral_point K X' hP x hx`. Use `⟨s.left ≫ pullback.fst _ _, ?_⟩` and prove the remaining obligations.
+
+Establish `: x ≫ pullback.fst _ _ = yK ≫ GlobalTheory.Toroidal.genι Z` using `pullback.lift_fst _ _ _`. Rewrite using `[← this, hs, Category.assoc]`.
+-/
 theorem exists_integral_extension {E : Type} [Field E] [NumberField E] [IsCMField E]
     {H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E} {Dw : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Datum H} {l : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Level H}
     {Xo : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Moduli Dw l} {c : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Coeff l}

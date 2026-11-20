@@ -40,13 +40,22 @@ def liftPt (p : Over.mk y ⟶ G) : 𝟙_ (Over (Sp ℂ)) ⟶ A :=
   Over.homMk (h.1.lift (show Sp ℂ ⟶ _ from p.left) (𝟙 _) ((Over.w p).trans (Category.id_comp _).symm))
     (h.1.lift_snd _ _ _)
 
+/- English proof (translation)
+The claim follows from `h.1.lift_fst _ _ _`.
+-/
 theorem liftPt_comp (p : Over.mk y ⟶ G) : (liftPt h p).left ≫ φ = p.left :=
   h.1.lift_fst _ _ _
 
 include h in
+/- English proof (translation)
+The claim follows from `Over.OverMorphism.ext (h.1.hom_ext e (by rw [Over.w, Over.w]))`.
+-/
 theorem pt_ext {a b : 𝟙_ (Over (Sp ℂ)) ⟶ A} (e : a.left ≫ φ = b.left ≫ φ) : a = b :=
   Over.OverMorphism.ext (h.1.hom_ext e (by rw [Over.w, Over.w]))
 
+/- English proof (translation)
+Set `k : Over.mk ((𝟙_ (Over (Sp ℂ))).hom ≫ y) ⟶ Over.mk y` to `Over.homMk (𝟙 _) rfl`. Use `pt_ext h ((liftPt_comp h _).trans ?_)` and prove the remaining obligations. Rewrite using `[← h.2 _ (liftPt h a) (liftPt h b) (k ≫ a) (k ≫ b) ((Category.id_comp _).trans (liftPt_comp h a).symm) ((Category.id_comp _).trans (liftPt_comp h b).symm), ← MonObj.comp_mul]`. Conclude with `(Category.id_comp _).symm`.
+-/
 theorem liftPt_mul (a b : Over.mk y ⟶ G) : liftPt h (a * b) = liftPt h a * liftPt h b := by
   let k : Over.mk ((𝟙_ (Over (Sp ℂ))).hom ≫ y) ⟶ Over.mk y :=
     Over.homMk (𝟙 _) rfl
@@ -56,20 +65,32 @@ theorem liftPt_mul (a b : Over.mk y ⟶ G) : liftPt h (a * b) = liftPt h a * lif
     ← MonObj.comp_mul]
   exact (Category.id_comp _).symm
 
+/- English proof (translation)
+Introduce `a b e` and use `Over.OverMorphism.ext ((liftPt_comp h a).symm.trans ((congrArg (·.left ≫ φ) e).trans (liftPt_comp h b)))`.
+-/
 theorem liftPt_injective : Function.Injective (liftPt h) := fun a b e =>
   Over.OverMorphism.ext ((liftPt_comp h a).symm.trans ((congrArg (·.left ≫ φ) e).trans (liftPt_comp h b)))
 
+/- English proof (translation)
+Introduce `q` and use `by refine ⟨Over.homMk ((show Sp ℂ ⟶ _ from q.left) ≫ φ) ?_, pt_ext h (liftPt_comp h _)⟩ rw [Category.assoc, h.1.w, ← Category.assoc, show (show Sp ℂ ⟶ _ from q.left) ≫ A.hom = 𝟙 _ from Over.w q] exact Category.id_comp _`.
+-/
 theorem liftPt_surjective : Function.Surjective (liftPt h) := fun q => by
   refine ⟨Over.homMk ((show Sp ℂ ⟶ _ from q.left) ≫ φ) ?_, pt_ext h (liftPt_comp h _)⟩
   rw [Category.assoc, h.1.w, ← Category.assoc,
     show (show Sp ℂ ⟶ _ from q.left) ≫ A.hom = 𝟙 _ from Over.w q]
   exact Category.id_comp _
 
+/- English proof (translation)
+Use `liftPt_mul h 1 1` as an intermediate fact. Rewrite `this` using `[_root_.mul_one]`. Conclude with `left_eq_mul.1 this`.
+-/
 theorem liftPt_one : liftPt h 1 = 1 := by
   have := liftPt_mul h 1 1
   rw [_root_.mul_one] at this
   exact left_eq_mul.1 this
 
+/- English proof (translation)
+Use `(le_pull_iff L _ _ j).trans ?_` and prove the remaining obligations. Rewrite using `[liftPt_comp]`.
+-/
 theorem lift_le {L : LB G.left} (p : Over.mk y ⟶ G) (j : (L.pull φ).ι) :
     ⊤ ≤ (liftPt h p).left ⁻¹ᵁ (L.pull φ).U j ↔ ⊤ ≤ p.left ⁻¹ᵁ L.U (j PUnit.unit) := by
   refine (le_pull_iff L _ _ j).trans ?_
@@ -121,6 +142,13 @@ section Fibre
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {Dw : Datum H} {l : Level H}
   {Xo : Moduli Dw l}
 
+/- English proof (translation)
+Take `⟨w, s1, hw, hm, hs⟩` from `ht`. Set `k : t'.G.left ⟶ Gx y` to `pullback.lift (f := y) (g := Xo.univ.t.G.hom) t'.G.hom m.φ m.cart.1.w.symm`. Establish `k₁ : k ≫ gxFst y = m.φ` using `pullback.lift_snd _ _ _`. Establish `k₂ : k ≫ gxSnd y = t'.G.hom` using `pullback.lift_fst _ _ _`. Use `⟨w, hw, fun p hp => ⟨p ≫ k, by rw [Category.assoc, k₁], by rw [Category.assoc, k₂, hp], fun j i hz => ?_⟩⟩` and prove the remaining obligations.
+
+Establish `le : (Xo.univ.t.PP.L.pull m.φ).U (fun _ => j) ≤ k ⁻¹ᵁ (PPx y).U (fun _ => j)` using `fun q hq => Set.mem_iInter.2 fun _ => by`. Use `mem_pull.1 hq` as an intermediate fact. Rewrite `this` using `[← k₁]`. Conclude with `this`. Establish `e` using `congrArg (valAt' p _) (hm (fun _ => j) i)`.
+
+Rewrite `e` using `[valAt'_map _ _ _ hz, valAt'_mul, valAt'_map _ _ _ hz, hs k k₁ k₂ _ le, valAt'_appLE _ _ _ _ _ _ (top_le_preimage_mono _ inf_le_left hz)]`. Conclude with `e`.
+-/
 theorem val_tie {y : Sp ℂ ⟶ Xo.X} {t' : SAB H (Sp ℂ)} (m : SABMap t' Xo.univ.t y) {th : LB.Sec t'.PP.L}
     {s : LB.Sec (PPx y)} (ht : SecTie m th s) :
     ∃ w : LB.Iso t'.PP.L (Xo.univ.t.PP.L.pull m.φ), RigIso m w ∧
@@ -144,6 +172,11 @@ theorem val_tie {y : Sp ℂ ⟶ Xo.X} {t' : SAB H (Sp ℂ)} (m : SABMap t' Xo.un
     valAt'_appLE _ _ _ _ _ _ (top_le_preimage_mono _ inf_le_left hz)] at e
   exact e
 
+/- English proof (translation)
+Take `rfl : (fun z => (show Sp ℂ ⟶ _ from (u.ex z).left) ≫ φ) = e` from `funext he`. Use `⟨?_, fun U hU f => ?_⟩` and prove the remaining obligations. Rewrite using `[← Category.assoc]`. Use `congrArg (· ≫ φ) (hv.trans ?_)` and prove the remaining obligations. Rewrite using `[(u.ker 0).2 u.Λ.zero_mem, Hom.one_def]`.
+
+Simplify using the standard rewrite rules. Use `hd (φ ⁻¹ᵁ U) hU ((φ.app U).hom f)` as an intermediate fact. Simplify using `only [valAt'_comp] at this`. Rewrite using `[← this, Scheme.Hom.comp_appLE]`. Both sides reduce to the same expression.
+-/
 theorem isDerivAt0_comp {A : Over (Sp ℂ)} [GrpObj A] {L : LB A.left} {g : ℕ} (u : HolUnif A L g) {Y : Scheme.{0}}
     (φ : A.left ⟶ Y) {w : Fin g → ℂ} {v : epsR ℂ ⟶ A} {e : (Fin g → ℂ) → (Sp ℂ ⟶ Y)}
     (he : ∀ z, (u.ex z).left ≫ φ = e z) (hv : IsTangent v) (hd : u.IsDiff w v) :
@@ -159,6 +192,9 @@ theorem isDerivAt0_comp {A : Over (Sp ℂ)} [GrpObj A] {L : LB A.left} {g : ℕ}
     rw [← this, Scheme.Hom.comp_appLE]
     rfl
 
+/- English proof (translation)
+Introduce `U f` and use `by have h := (F.hol i 0 Set.univ (fun _ => P) isOpen_univ ⟨fun _ _ => hP, fun _ => differentiableOn_const _⟩).2 U f have hd : Differentiable ℂ (fun z : Fin g → ℂ => ((0 : Fin 0 → ℂ), z)) := by fun_prop refine ⟨?_, h.2.comp (f := fun z : Fin g → ℂ => ((0 : Fin 0 → ℂ), z)) hd.diffe …`.
+-/
 theorem isHolTo_exp {σ : KA l →+* ℂ} {g : ℕ} {ty : Fin g → (E →+* ℂ)} (F : FamilyUnif Xo σ ty) (i : Fin F.n)
     {P : (F.Di i).La →+ (Fin g → ℂ)} (hP : IsPeriod (F.Di i) ty P) :
     IsHolTo Set.univ fun z => (F.ex i P z).left := fun U f => by
@@ -174,6 +210,9 @@ theorem isHolTo_exp {σ : KA l →+* ℂ} {g : ℕ} {ty : Fin g → (E →+* ℂ
     exact ⟨fun hz => ⟨⟨trivial, trivial⟩, hz.2⟩, fun hz => ⟨trivial, hz.2⟩⟩
   exact e ▸ h.1.preimage hd.continuous
 
+/- English proof (translation)
+Set `a : epsPt (F.u i P) ⟶ Xo.univ.t.G` to `Over.homMk v o`. Set `a' : epsPt (F.u i P) ⟶ Xo.univ.t.G` to `Over.homMk v' o'`. Establish `e : a = a'` using `((F.ex_diff i P hP).1 w).unique d d'`. Conclude with `congrArg (·.left) e`.
+-/
 theorem eq_of_isDerivAt0 {σ : KA l →+* ℂ} {g : ℕ} {ty : Fin g → (E →+* ℂ)} (F : FamilyUnif Xo σ ty) (i : Fin F.n)
     {P : (F.Di i).La →+ (Fin g → ℂ)} (hP : IsPeriod (F.Di i) ty P) {w : Fin g → ℂ}
     {v v' : Sp (DualNumber ℂ) ⟶ Xo.univ.t.G.left}
@@ -185,6 +224,31 @@ theorem eq_of_isDerivAt0 {σ : KA l →+* ℂ} {g : ℕ} {ty : Fin g → (E →+
   have e : a = a' := ((F.ex_diff i P hP).1 w).unique d d'
   exact congrArg (·.left) e
 
+/- English proof (translation)
+Substitute `hy` using the available equality. Take `⟨w, ⟨hw, hrig⟩, hth⟩` from `val_tie Φ.m ht`. Take `⟨w', hw', hinv⟩` from `ConjUnif.exists_inv w hw`. Establish `hL` using `Φ.T.t.PP.isLB`. Establish `hM` using `pull_isLB Xo.univ.t.PP.isLB Φ.m.φ`.
+
+Establish `hol` using `isHolTo_exp F i hP`. Set `u₁` to `fibreUnif Φ.m.cart (F.ex i P) P.range fr (F.ex_add i P hP) (F.ex_onto i P hP) (F.ex_ker i P hP) hP.2.2.1 hP.2.2.2.1 hol c₁ c₂ c₃`. Establish `hex : ∀ z, (u₁.ex z).left ≫ Φ.m.φ = (F.ex i P z).left` using `fun z => liftPt_comp Φ.m.cart _`. Establish `hle : ∀ z j, ⊤ ≤ (u₁.ex z).left ⁻¹ᵁ (Xo.univ.t.PP.L.pull Φ.m.φ).U j → ⊤ ≤ (F.ex i P z).left ⁻¹ᵁ Xo.univ.t.PP.L.U (j PUnit.unit)` using `fun z j => (lift_le Φ.m.cart _ j).1`. Establish `hfr : ∀ (j : Xo.univ.t.PP.L.ι) (k : Φ.T.t.PP.L.ι) (z : Fin g → ℂ), ⊤ ≤ (u₁.ex z).left ⁻¹ᵁ ((Xo.univ.t.PP.L.pull Φ.m.φ).U (fun _ => j) ⊓ Φ.T.t.PP.L.U k) → valAt' (u₁.ex z).left ((Xo.univ.t.PP.L.pull Φ.m.φ).U (fun _ => j) ⊓ Φ.T.t.PP.L.U k) (w.s (fun _ => j, k)).val * (carry u₁ hM h …`.
+
+Introduce `j k z hz`. Take `⟨hj, hk⟩` from `(top_le_preimage_inf _ _ _).1 hz`. Rewrite using `[carry_fr u₁ hM hL hw' k (fun _ => j) z hk hj, hinv _ _ _ hz]`. Conclude with `mul_inv_cancel_left₀ (valAt'_unit_ne_zero _ hz (w.s (fun _ => j, k))) _`. Establish `hA₁ : u₁.IsAH Hm fun a => χl a`.
+
+Use `⟨herm, pos, ?_, ?_⟩` and prove the remaining obligations. Introduce and unpack `⟨_, a, rfl⟩`. Take `⟨j, -⟩` from `exists_chart_at hM (u₁.ex 0).left`. Conclude with `(c₅ a (j PUnit.unit) 0).1`. Introduce and unpack `⟨_, a, rfl⟩ j z hj`.
+
+Conclude with `(c₅ a _ z).2 (hle z j hj)`. Establish `hA` using `carry_isAH hM hL hw' hA₁`. Take `⟨-, -, -, hg, -, htan, -⟩` from `AHWeil.tangent_and_weil_of_isAH thetaUnifAV_all Φ.key.P g _ Hm _ hA`. Use `⟨carry u₁ hM hL hw', _, rfl, hA, ?_, ?_, hg, fun a v hv hd => ?_⟩` and prove the remaining obligations. Introduce `k hk`.
+
+Establish `h0 : (u₁.ex 0).left = eSec Φ.T.t.G`. Rewrite using `[(u₁.ker 0).2 u₁.Λ.zero_mem, Hom.one_def]`. Simplify using `[eSec]`. Take `⟨j, hj⟩` from `exists_chart_at hM (u₁.ex 0).left`. Establish `hk' : ⊤ ≤ (u₁.ex 0).left ⁻¹ᵁ Φ.T.t.PP.L.U (k PUnit.unit)`.
+
+Rewrite using `[h0]`. Conclude with `fun p hp => mem_pull.1 (hk hp)`. Establish `hz` using `(top_le_preimage_inf _ _ _).2 ⟨hj, hk'⟩`. Establish `e` using `hfr (j PUnit.unit) (k PUnit.unit) 0 hz`. Rewrite `e` using `[c₄ _ (hle 0 j hj), h0]`.
+
+Rewrite `hz` using `[h0]`. Establish `e'` using `val_rig Φ.m.cm.e_comm w Φ.T.t.PP.rig Xo.univ.t.PP.rig hrig (j PUnit.unit) (k PUnit.unit) hz`. Rewrite `e'` using `[Φ.m.base]`. Conclude with `mul_left_cancel₀ (valAt'_unit_ne_zero _ hz _) (e.trans e')`. Introduce `k z hk`.
+
+Take `⟨j, hj⟩` from `exists_chart_at hM (u₁.ex z).left`. Establish `hz` using `(top_le_preimage_inf _ _ _).2 ⟨hj, hk⟩`. Take `⟨pt, p₁, p₂, hpt⟩` from `hth (u₁.ex z).left (Over.w _)`. Establish `e` using `hfr (j PUnit.unit) k z hz`. Use `mul_left_cancel₀ (valAt'_unit_ne_zero _ hz (w.s (fun _ => j PUnit.unit, k))) ?_` and prove the remaining obligations.
+
+Establish `e₁` using `hpt (j PUnit.unit) k hz`. Establish `e₂` using `c₆ (j PUnit.unit) z pt (p₁.trans (hex z)) p₂ (hle z j hj)`. Rewrite `e₂` using `[← e]`. Conclude with `e₁.symm.trans (e₂.trans (mul_left_comm _ _ _))`. Take `⟨v', ⟨t', d'⟩, -⟩` from `htan a`.
+
+Use `⟨v', ?_, d'⟩` and prove the remaining obligations. Establish `d` using `isDerivAt0_comp _ Φ.m.φ (e := fun z => (F.ex i P z).left) hex t' d'`. Establish `o : ((show Sp (DualNumber ℂ) ⟶ _ from v'.left) ≫ Φ.m.φ) ≫ Xo.univ.t.G.hom = spMap (algebraMap ℂ (DualNumber ℂ)) ≫ F.u i P`. Rewrite using `[Category.assoc, Φ.m.cart.1.w, ← Category.assoc]`. Conclude with `congrArg (· ≫ _) (Over.w v')`.
+
+Conclude with `eq_of_isDerivAt0 F i hP o hv.1 d hd`.
+-/
 theorem exists_unif {σ : KA l →+* ℂ} {g : ℕ} {ty : Fin g → (E →+* ℂ)} (F : FamilyUnif Xo σ ty) (i : Fin F.n)
     {P : (F.Di i).La →+ (Fin g → ℂ)} (hP : IsPeriod (F.Di i) ty P) {y : Sp ℂ ⟶ Xo.X} (hy : y = F.u i P)
     {s : LB.Sec (PPx y)} (Φ : FibKey Xo ℂ y) (ht : SecTie Φ.m Φ.th s) {Hm : Matrix (Fin g) (Fin g) ℂ}
@@ -272,6 +336,9 @@ theorem exists_unif {σ : KA l →+* ℂ} {g : ℕ} {ty : Fin g → (E →+* ℂ
       exact congrArg (· ≫ _) (Over.w v')
     exact eq_of_isDerivAt0 F i hP o hv.1 d hd
 
+/- English proof (translation)
+Substitute `hg` using the available equality. Conclude with `⟨Φ, u, Hm, χ, θ, Fd, w, W, h⟩`.
+-/
 theorem isMetricAt_of {y : Sp ℂ ⟶ Xo.X} {s : LB.Sec (PPx y)}
     {uu : ∀ τ : E →+* ℂ, Fin (Dw.mult τ) → (Sp (DualNumber ℂ) ⟶ Xo.univ.t.G.left)} {N : ℝ}
     {Gr : ∀ b : E →+* ℂ, Matrix (Fin (Dw.mult b)) (Fin (Dw.mult b)) ℂ} (Φ : FibKey Xo ℂ y) {g : ℕ}
@@ -288,6 +355,15 @@ theorem isMetricAt_of {y : Sp ℂ ⟶ Xo.X} {s : LB.Sec (PPx y)}
 
 end Fibre
 
+/- English proof (translation)
+Introduce `E _ _ _ H Dw l Xo c σ r U ξ hσ hU hpq k x hξ hx`. Take `⟨W⟩` from `PullbackSections.nonempty_unfAt hU k x`. Take `⟨Wu⟩` from `PullbackSections.nonempty_unitAt W (PullbackSections.PfSupAtUnit.dmin_ortho _ hx)`. Establish `hH` using `OrthoHerm.hm_eq_smul_one E H Dw l Xo c σ r U ξ hσ hU k x W Wu hξ hx`. Take `⟨Φ₀⟩` from `nonempty_fibKey E H Dw l Xo ℂ (U.un k x).x hpq`.
+
+Take `⟨-, h₁, h₂⟩` from `SecTieEx.secTie_exists_unique E H Dw l Xo ℂ (U.un k x).x Φ₀.T.t Φ₀.m`. Take `⟨th, ht⟩` from `h₁ (U.un k x).s`. Establish `hne` using `(h₂ th _ ht).2.1 (secNZ_of_secGen lawsFieldsSeparately.2.1 E H Dw l Xo ℂ _ _ (U.un k x).gen)`. Set `Φ : FibKey Xo ℂ (U.un k x).x` to `{ Φ₀ with th := th, th_ne := hne }`. Take `⟨u, χ, hΛ, hA, hR, hF, hg, hD⟩` from `exists_unif W.F (W.ik k) W.per W.pt Φ ht Wu.herm Wu.pos Wu.c2 Wu.c3 Wu.c4 Wu.c5 Wu.c6 Wu.c7`.
+
+Use `choose w hw using fun τ i => hD _ _ ((U.un k x).tan τ i) (W.der τ i)`. Establish `hFd : IsAddFundamentalDomain u.Λ Wu.Fd volume` using `hΛ ▸ Wu.c8`. Establish `hN` using `Wu.c9.symm`. Establish `hG : ∀ (b : E →+* ℂ) (i j : Fin (Dw.mult b)), (((2 * Real.pi * ξ : ℝ) : ℂ) • (1 : Matrix (Fin (Dw.mult b)) (Fin (Dw.mult b)) ℂ)) i j = Real.pi * hermForm Wu.Hm (Pi.single (W.e.symm ⟨b, j⟩) 1) (Pi.single (W.e.symm ⟨b, i⟩) 1)`. Introduce `b i j`.
+
+Rewrite using `[hH]`. Simplify using `[hermForm, Matrix.smul_mulVec, Pi.single_apply, Matrix.one_apply]`. Apply the tactic sequence `split_ifs <;> simp_all <;> ring`. Conclude with `isMetricAt_of Φ hg u Wu.Hm χ Wu.θ Wu.Fd w (fun b i => Pi.single (W.e.symm ⟨b, i⟩) 1) ⟨ht, hA, hR, hF, hFd, hN, hw, hG⟩`.
+-/
 theorem isMetric_of_isOrtho : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l) (σ : c.F →+* ℂ) (r : ℕ) (U : Unf Xo c σ r) (ξ : ℝ), GoodEmb c σ → IsUnf U → 1 ≤ Dw.p + Dw.q → ∀ (k : U.Comp) (x : (U.X k).dom), (∀ τ : E →+* ℂ, ‖τ (U.X k).ξ0‖ = ξ) → (U.X k).IsOrtho x.1 → IsMetric (U.un k x) 1 (fun _ => ((2 * Real.pi * ξ : ℝ) : ℂ) • 1) := by
   intro E _ _ _ H Dw l Xo c σ r U ξ hσ hU hpq k x hξ hx
   obtain ⟨W⟩ := PullbackSections.nonempty_unfAt hU k x

@@ -3,6 +3,13 @@ open scoped Matrix
 
 namespace GlobalTheory.TriSqrt
 
+/- English proof (translation)
+Establish `hi : Function.Injective (fun j => toLex (Fintype.equivFin α (t j), w j))`. Introduce `k l hkl`. Establish `h'` using `toLex.injective hkl`. Rewrite `h'` using `[Prod.mk.injEq]`. Conclude with `hinj _ _ ((Fintype.equivFin α).injective h'.1) h'.2`.
+
+Use `letI : LinearOrder n := LinearOrder.lift' _ hi`. Use `Matrix.det_of_upperTriangular fun k l hkl => ?_` and prove the remaining obligations. Assume the negation of the conclusion as `hne`. Take `⟨h1, h2⟩` from `hs k l hne`. Establish `hkl' : toLex (Fintype.equivFin α (t l), w l) < toLex (Fintype.equivFin α (t k), w k)` using `hkl`.
+
+Simplify using `only [h1, Prod.Lex.toLex_lt_toLex, lt_self_iff_false, true_and, false_or] at hkl'`. Use linear arithmetic over natural numbers and integers.
+-/
 lemma det_eq_prod_diag {n α : Type*} [Fintype n] [DecidableEq n] [Fintype α] (t : n → α) (w : n → ℕ)
     (hinj : ∀ j j', t j = t j' → w j = w j' → j = j')
     (h : Matrix n n ℂ) (hs : ∀ j j', h j j' ≠ 0 → t j = t j' ∧ w j ≤ w j') :
@@ -20,6 +27,17 @@ lemma det_eq_prod_diag {n α : Type*} [Fintype n] [DecidableEq n] [Fintype α] (
   simp only [h1, Prod.Lex.toLex_lt_toLex, lt_self_iff_false, true_and, false_or] at hkl'
   omega
 
+/- English proof (translation)
+Use `set T : Matrix {x // p x} {x // p x} ℂ := S.submatrix Subtype.val Subtype.val with hT`. Establish `e : (Sᵀ * ((Matrix.diagonal fun j => ((d j : ℝ) : ℂ)) * S.map (starRingEnd ℂ))).submatrix (Subtype.val : {x // p x} → n) Subtype.val = Tᵀ * ((Matrix.diagonal fun j => ((d j.1 : ℝ) : ℂ)) * T.map (starRingEnd ℂ))`. Use extensionality with `a a'`. Simplify using `only [Matrix.submatrix_apply, Matrix.mul_apply, Matrix.transpose_apply, hT, Matrix.diagonal_apply, Matrix.map_apply, ite_mul, zero_mul, Finset.sum_ite_eq, Finset.mem_univ, if_true]`. Rewrite using `[← Finset.sum_subtype (Finset.univ.filter p) (by simp) (fun c => S c a * ((d c : ℂ) * (starRingEnd ℂ) (S c a')))]`.
+
+Use `symm`. Use `Finset.sum_subset (Finset.subset_univ _) fun c _ hc => ?_` and prove the remaining obligations. Establish `: S c a = 0`. Assume the negation of the conclusion as `hne`. Conclude with `hc (by simpa using hp c a hne a.2)`.
+
+Rewrite using `[this, zero_mul]`. Establish `hdT : T.det = ∏ c, T c c` using `det_eq_prod_diag (fun c => t c.1) (fun c => w c.1) (fun c c' h1 h2 => Subtype.ext (hinj _ _ h1 h2)) T fun c c' hne => hs _ _ hne`. Establish `hdT' : (T.map (starRingEnd ℂ)).det = (starRingEnd ℂ) T.det`. Rewrite using `[RingHom.map_det]`. Both sides reduce to the same expression.
+
+Rewrite using `[e, Matrix.det_mul, Matrix.det_mul, Matrix.det_transpose, Matrix.det_diagonal, hdT', hdT, map_prod, ← Finset.prod_mul_distrib, ← Finset.prod_mul_distrib, Finset.prod_subtype (p := p) (Finset.univ.filter p) (by simp), Complex.ofReal_prod]`. Use `Finset.prod_congr rfl fun c _ => ?_` and prove the remaining obligations. Use `Complex.mul_conj' (S c c)` as an intermediate fact. Simplify using `only [hT, Matrix.submatrix_apply]`. Use `push_cast`.
+
+Rewrite using `[← this]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 lemma det_minor {n α : Type*} [Fintype n] [DecidableEq n] [Fintype α] (t : n → α) (w : n → ℕ)
     (hinj : ∀ j j', t j = t j' → w j = w j' → j = j') (d : n → ℝ)
     (S : Matrix n n ℂ) (hs : ∀ j j', S j j' ≠ 0 → t j = t j' ∧ w j ≤ w j')
@@ -60,6 +78,21 @@ lemma det_minor {n α : Type*} [Fintype n] [DecidableEq n] [Fintype α] (t : n �
 
 end GlobalTheory.TriSqrt
 
+/- English proof (translation)
+Introduce `g α _ V _ t w d B S Hm hinj hd hc hS j`. Establish `hH : ContinuousOn Hm B` using `continuousOn_pi.2 fun k => continuousOn_pi.2 fun l => hc k l`. Establish `hP : ∀ n : ℕ, ContinuousOn (fun b => ∏ c ∈ Finset.univ.filter (fun c => t c = t j ∧ w c < n), ‖S b c c‖ ^ 2 * d c) B`. Introduce `n`. Establish `h1 : Continuous fun M : Matrix (Fin g) (Fin g) ℂ => ((M.submatrix (Subtype.val : {c // t c = t j ∧ w c < n} → Fin g) Subtype.val).det).re` using `Complex.continuous_re.comp (continuous_id.matrix_submatrix _ _).matrix_det`.
+
+Use `(h1.comp_continuousOn hH).congr fun b hb => ?_` and prove the remaining obligations. Take `⟨-, h2, h3⟩` from `hS b hb`. Simplify using `only [Function.comp_apply]`. Rewrite using `[h3, GlobalTheory.TriSqrt.det_minor t w hinj d (S b) h2 (fun c => t c = t j ∧ w c < n), Complex.ofReal_re]`. Introduce `c a hne ha`.
+
+Take `⟨h4, h5⟩` from `h2 c a hne`. Conclude with `⟨h4.trans ha.1, by omega⟩`. Establish `hne : ∀ b ∈ B, ∀ c, S b c c ≠ 0`. Introduce `b hb c`. Take `⟨h1, h2, -⟩` from `hS b hb`.
+
+Rewrite `h1` using `[GlobalTheory.TriSqrt.det_eq_prod_diag t w hinj _ h2, isUnit_iff_ne_zero]`. Conclude with `Finset.prod_ne_zero_iff.1 h1 c (Finset.mem_univ _)`. Establish `hne' : ∀ b ∈ B, (∏ c ∈ Finset.univ.filter (fun c => t c = t j ∧ w c < w j), ‖S b c c‖ ^ 2 * d c) * d j ≠ 0` using `fun b hb => mul_ne_zero (Finset.prod_ne_zero_iff.2 fun c _ => mul_ne_zero (pow_ne_zero _ (norm_ne_zero_iff.2 (hne b hb c))) (hd c).ne') (hd j).ne'`. Establish `hins : Finset.univ.filter (fun c => t c = t j ∧ w c < w j + 1) = insert j (Finset.univ.filter (fun c => t c = t j ∧ w c < w j))`. Use extensionality with `c`.
+
+Simplify using `only [Finset.mem_filter, Finset.mem_univ, true_and, Finset.mem_insert]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨h1, h2⟩`. Distinguish the cases in `h3 : w c = w j`. Conclude with `Or.inl (hinj _ _ h1 h3)`.
+
+Conclude with `Or.inr ⟨h1, by omega⟩`. Introduce and unpack `(rfl | ⟨h1, h2⟩)`. Conclude with `⟨rfl, by omega⟩`. Conclude with `⟨h1, by omega⟩`. Use `(((hP (w j + 1)).div ((hP (w j)).mul continuousOn_const) hne').sqrt).congr fun b hb => ?_` and prove the remaining obligations.
+
+Establish `h0` using `hne' b hb`. Simplify using `only [Pi.div_apply, Pi.mul_apply]`. Rewrite using `[hins, Finset.prod_insert (by simp), mul_assoc, mul_comm (d j), mul_div_assoc, div_self h0, mul_one, Real.sqrt_sq (norm_nonneg _)]`.
+-/
 theorem GlobalTheory.continuousOn_norm_diag_of_triangular_sqrt : ∀ (g : ℕ) (α : Type) [Fintype α] (V : Type) [TopologicalSpace V] (t : Fin g → α) (w : Fin g → ℕ) (d : Fin g → ℝ) (B : Set V) (S Hm : V → Matrix (Fin g) (Fin g) ℂ), (∀ j j', t j = t j' → w j = w j' → j = j') → (∀ j, 0 < d j) → (∀ j j', ContinuousOn (fun b => Hm b j j') B) → (∀ b ∈ B, IsUnit (S b).det ∧ (∀ j j', S b j j' ≠ 0 → t j = t j' ∧ w j ≤ w j') ∧ Hm b = (S b)ᵀ * ((Matrix.diagonal fun j => ((d j : ℝ) : ℂ)) * (S b).map (starRingEnd ℂ))) → ∀ j, ContinuousOn (fun b => ‖S b j j‖) B := by
   intro g α _ V _ t w d B S Hm hinj hd hc hS j
   classical

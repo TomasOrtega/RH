@@ -19,6 +19,17 @@ open GlobalTheory GlobalTheory.QCoh GlobalTheory.CechPic GlobalTheory.Twist
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Introduce `k _ _ X _ hproj d F _ hsupp L hL`. Establish `hv : DiffVanish (d + 1) (chiPic k F)` using `diffVanish_chiPic_of_isProjOver (algebraMap_eq_strHom k X) F hproj hsupp`. Take `⟨p, hpdeg, hpeval, hpcoeff⟩` from `hv.exists_polynomial_int ℚ (cls L hL) 0`. Take `⟨C, hC⟩` from `abs_factorial_mul_eval_sub_top_le d p hpdeg`. Use `⟨C, fun m => ?_⟩` and prove the remaining obligations.
+
+Establish `hmd : multiDiff (fun _ : Fin d => cls L hL) (chiPic k F) 0 = interNum k F (fun _ : Fin d => L)` using `hv.multiDiff_chiPic (L := fun _ : Fin d => L) (by simp) (fun _ => hL) 0`. Establish `hchi : chi k (twist F (lbPow L m)) = chiPic k F ((m : ℤ) • cls L hL)`. Rewrite using `[← twistZ_natCast]`. Conclude with `chi_twistZ k F hL (m : ℤ)`. Establish `heval : p.eval (m : ℚ) = (chi k (twist F (lbPow L m)) : ℚ)`.
+
+Establish `e` using `hpeval (m : ℤ)`. Rewrite `e` using `[zero_add, ← hchi, Int.cast_natCast]`. Conclude with `e`. Establish `hfac : (d.factorial : ℚ) * p.coeff d = (interNum k F (fun _ : Fin d => L) : ℚ)`. Rewrite using `[hpcoeff, hmd, ← mul_assoc, mul_inv_cancel₀ (by exact_mod_cast d.factorial_ne_zero), one_mul]`.
+
+Establish `h` using `hC m`. Rewrite `h` using `[heval, hfac]`. Establish `h' : ((|(d.factorial : ℤ) * chi k (twist F (lbPow L m)) - interNum k F (fun _ : Fin d => L) * (m : ℤ) ^ d| : ℤ) : ℚ) ≤ ((C * ((d : ℤ) * ((m : ℤ) + 1) ^ (d - 1)) : ℤ) : ℚ)`. Use `push_cast`. Conclude with `h`.
+
+Conclude with `h'` after adjusting the coercions.
+-/
 theorem abs_factorial_mul_chi_twist_lbPow_sub_le : ∀ (k : Type) [Field k] [Infinite k] (X : Scheme.{0}) [Algebra k Γ(X, ⊤)], IsProjOver (strHom k X) → ∀ (d : ℕ) (F : X.Modules) [IsFiniteQC F], suppDim F ≤ (d : ℕ) → ∀ L : LB X, L.IsLB → ∃ C : ℕ, ∀ m : ℕ, |(d.factorial : ℤ) * chi k (twist F (lbPow L m)) - interNum k F (fun _ : Fin d => L) * (m : ℤ) ^ d| ≤ C * ((d : ℤ) * ((m : ℤ) + 1) ^ (d - 1)) := by
   intro k _ _ X _ hproj d F _ hsupp L hL
   have hv : DiffVanish (d + 1) (chiPic k F) :=

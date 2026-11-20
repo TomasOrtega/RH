@@ -33,6 +33,11 @@ abbrev cols {W : Y.Opens} (hW : W ≤ π ⁻¹ᵁ cE.U) (n : Γ(Y, W)) : Fin 2 �
 
 include w in
 
+/- English proof (translation)
+Establish `hc : y ∈ ptsIn p σ (π ⁻¹ᵁ cE.U)` using `ptsIn_mono hW hy`. Establish `hc' : PtsOver.map π w (spMap σ) y ∈ ptsIn q σ cE.U` using `hc`. Establish `key (b : Fin 2) : (cE.pull hE π).crd p σ (cols π cE hW n b) y = fun a => ev p σ W (uniR (fun _ : Low 2 => n) a b) y`. Use function extensionality and compare the values at `a`. Simplify using `only [cols, pullCol, Chart.crd_sum, Chart.crd_smul, cE.crd_pull hE π w _ hW hy hc, cE.crd_frame hc', Finset.sum_apply, Pi.smul_apply, smul_eq_mul, Pi.single_apply, mul_ite, mul_one, mul_zero, Finset.sum_ite_eq, Finset.mem_univ, if_true]`.
+
+Apply the tactic sequence `constructor <;> rw [key] <;> funext a <;> fin_cases a <;> simp [uniR_apply, ev_eq hy]`.
+-/
 theorem crd_cols {W : Y.Opens} (hW : W ≤ π ⁻¹ᵁ cE.U) (n : Γ(Y, W)) {y : CxPts p σ} (hy : y ∈ ptsIn p σ W) :
     (cE.pull hE π).crd p σ (cols π cE hW n 0) y = ![1, ev p σ W n y] ∧
       (cE.pull hE π).crd p σ (cols π cE hW n 1) y = ![0, 1] := by
@@ -48,6 +53,13 @@ theorem crd_cols {W : Y.Opens} (hW : W ≤ π ⁻¹ᵁ cE.U) (n : Γ(Y, W)) {y :
 
 include w in
 
+/- English proof (translation)
+Take `⟨s, hs, es⟩` from `h 1`. Set `cs : Chart (fl.F 1) 1` to `⟨W, s, hs⟩`. Establish `ha` using `mem_frameAt fl y`. Establish `hu` using `(isUnit_iff_isUnit_det _).1 (cs.isUnit_tr (frameAt fl y).sub hy ha)`. Rewrite `hu` using `[det_unique]`.
+
+Use `⟨_, hu.ne_zero, ?_⟩` and prove the remaining obligations. Use `((cE.pull hE π).crd_app cs (fl.ι 1) ((frameAt fl y).e 0) ha hy).trans ?_` and prove the remaining obligations. Establish `e : (fl.ι 1).app W (cs.e 0) = cols π cE hW n 0` using `es (0 : Fin 1)`. Use function extensionality and compare the values at `a`. Simplify using `only [mulVec, dotProduct, Fin.sum_univ_one, of_apply, Pi.smul_apply, smul_eq_mul]`.
+
+Rewrite using `[mul_comm, ← (crd_cols π w hE cE hW n hy).1, ← e]`. Both sides reduce to the same expression.
+-/
 theorem lineVec_of_spans {W : Y.Opens} (hW : W ≤ π ⁻¹ᵁ cE.U) (n : Γ(Y, W)) (h : Spans fl W (cols π cE hW n))
     {y : CxPts p σ} (hy : y ∈ ptsIn p σ W) : ∃ t : ℂ, t ≠ 0 ∧ lineVec π hE cE fl y = t • ![1, ev p σ W n y] := by
   obtain ⟨s, hs, es⟩ := h 1
@@ -63,6 +75,9 @@ theorem lineVec_of_spans {W : Y.Opens} (hW : W ≤ π ⁻¹ᵁ cE.U) (n : Γ(Y, 
   rw [mul_comm, ← (crd_cols π w hE cE hW n hy).1, ← e]
   rfl
 
+/- English proof (translation)
+Take `⟨t, ht, e⟩` from `lineVec_of_spans π w hE cE fl hW n h hy`. Use `⟨⟨ptsIn_mono hW hy, by simpa [e] using ht⟩, ?_⟩` and prove the remaining obligations. Simplify using `[slope, e, ht]`.
+-/
 theorem mem_finPart_of_spans {W : Y.Opens} (hW : W ≤ π ⁻¹ᵁ cE.U) (n : Γ(Y, W)) (h : Spans fl W (cols π cE hW n))
     {y : CxPts p σ} (hy : y ∈ ptsIn p σ W) :
     y ∈ finPart π w hE cE fl σ ∧ slope π hE cE fl y = ev p σ W n y := by
@@ -70,6 +85,21 @@ theorem mem_finPart_of_spans {W : Y.Opens} (hW : W ≤ π ⁻¹ᵁ cE.U) (n : Γ
   refine ⟨⟨ptsIn_mono hW hy, by simpa [e] using ht⟩, ?_⟩
   simp [slope, e, ht]
 
+/- English proof (translation)
+Set `a` to `frameAt fl y`. Set `c` to `cE.pull hE π`. Establish `h₀ : y ∈ ptsIn p σ (a.U ⊓ c.U)` using `mem_ptsIn_inf.2 ⟨mem_frameAt fl y, hy.1⟩`. Set `α : Fin 2 → Γ(Y, a.U ⊓ c.U)` to `(c.isFrame.basis inf_le_right).repr (resM _ inf_le_left (a.frame (.inl 0)))`. Establish `hα : resM _ inf_le_left (a.frame (.inl 0)) = ∑ i, α i • resM _ inf_le_right (c.e i)` using `by conv_lhs => rw [← (c.isFrame.basis inf_le_right).sum_repr (resM _ inf_le_left (a.frame (.inl 0)))]`.
+
+Simplify using `only [IsFrame.basis_apply]`. Both sides reduce to the same expression. Establish `hle` using `Y.basicOpen_le (α 0)`. Take `⟨u, hu⟩ : IsUnit (resG Y hle (α 0))` from `Y.toRingedSpace.isUnit_res_basicOpen (α 0)`. Use `⟨Y.basicOpen (α 0), hle.trans inf_le_right, resG Y hle (α 1) * u⁻¹.val, (mem_ptsIn_basicOpen h₀ _).2 hy.2, fun l => ?_⟩` and prove the remaining obligations.
+
+Use `fin_cases l`. Use `⟨Fin.elim0, fun W h => ?_, fun j => j.elim0⟩` and prove the remaining obligations. Establish `z` using `isVB_zero_iff.1 (fl.isVB 0)`. Use `⟨fun _ _ _ => funext fun j => j.elim0, fun s => ⟨0, ?_⟩⟩` and prove the remaining obligations. Establish `e` using `congrArg (fun φ => Scheme.Modules.Hom.app φ W s) (z.eq_of_src (𝟙 _) 0)`.
+
+Conclude with `(map_zero _).trans e.symm`. Use `⟨_, UniColFrame.isFrame_cols (a.he.res (hle.trans inf_le_left)) (Matrix.of fun _ _ => u⁻¹.val) (by simp), fun j => ?_⟩` and prove the remaining obligations. Take `rfl : j = (0 : Fin 1)` from `Subsingleton.elim (α := Fin 1) _ _`. Establish `e` using `congrArg (resM _ hle) hα`. Establish `e' (i : Fin 2) : resM _ (hle.trans inf_le_right) (c.e i) = pullbackSections π E (hle.trans inf_le_right) (cE.e i)` using `QCoh.res_pullbackSections π E _ _ _`.
+
+Simplify using `only [resM_resM, map_add, resM_smul, Fin.sum_univ_two, ← hu, e'] at e`. Use `(congrArg _ (Fin.sum_univ_one _)).trans ((Scheme.Modules.Hom.app_smul _ _ _).trans ?_)` and prove the remaining obligations. Use `(congrArg (_ • ·) ((app_resM _ _ _).trans e)).trans ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `_ = cols π cE _ _ 0`. Rewrite using `[of_apply, smul_add, smul_smul, smul_smul, Units.inv_mul, mul_comm]`.
+
+Unfold `cols pullCol`. Rewrite using `[Fin.sum_univ_two]`. Both sides reduce to the same expression. Establish `hf` using `UniColFrame.isFrame_pullCol_uniR _ _ π E 2 hE _ cE.e cE.isFrame _ (hle.trans inf_le_right) fun _ => resG Y hle (α 1) * u⁻¹.val`. Use `⟨_, hf.map_iso (inv (fl.ι (Fin.last 2))), fun j => ?_⟩` and prove the remaining obligations.
+
+Conclude with `congrArg (fun φ => Scheme.Modules.Hom.app φ _ _) (IsIso.inv_hom_id (fl.ι (Fin.last 2)))`.
+-/
 theorem exists_spans {y : CxPts p σ} (hy : y ∈ finPart π w hE cE fl σ) :
     ∃ (W : Y.Opens) (hW : W ≤ π ⁻¹ᵁ cE.U) (n : Γ(Y, W)), y ∈ ptsIn p σ W ∧ Spans fl W (cols π cE hW n) := by
   let a := frameAt fl y
@@ -108,6 +138,13 @@ theorem exists_spans {y : CxPts p σ} (hy : y ∈ finPart π w hE cE fl σ) :
     refine ⟨_, hf.map_iso (inv (fl.ι (Fin.last 2))), fun j => ?_⟩
     exact congrArg (fun φ => Scheme.Modules.Hom.app φ _ _) (IsIso.inv_hom_id (fl.ι (Fin.last 2)))
 
+/- English proof (translation)
+Take `⟨W, hW, n, hyW, hs⟩` from `exists_spans π w hE cE fl hy`. Take `⟨W', hW', n', hyW', hs'⟩` from `exists_spans π w hE cE fl hy'`. Rewrite `es` using `[(mem_finPart_of_spans π w hE cE fl hW n hs hyW).2, (mem_finPart_of_spans π w hE cE fl hW' n' hs' hyW').2, ev_eq hyW, ev_eq hyW']`. Establish `e₁ : y'.1 ≫ π = y.1 ≫ π` using `(congrArg Subtype.val e).symm`. Establish `k₁` using `spans_pullCol_of_carries _ _ _ π Unit (fun _ => 2) (fun _ => E) (fun _ => fl) y.1 (y.1 ≫ π) rfl _ (carries_carried π _ _ _ y.1 _ rfl) cE.U () cE.e W hW _ ⊤ hyW hy.1 hs`.
+
+Establish `k₂` using `spans_pullCol_of_carries _ _ _ π Unit (fun _ => 2) (fun _ => E) (fun _ => fl) y'.1 (y.1 ≫ π) e₁ _ (carries_carried π _ _ _ y'.1 _ e₁) cE.U () cE.e W' hW' _ ⊤ hyW' hy.1 hs'`. Rewrite `k₁`, `k₂` using `[map_uniR]`. Establish `e₂ : (y'.1.appLE W' ⊤ hyW').hom n' = (y.1.appLE W ⊤ hyW).hom n` using `(ConcreteCategory.bijective_of_isIso (Scheme.ΓSpecIso (CommRingCat.of ℂ)).hom).1 es.symm`. Rewrite `k₂` using `[e₂]`. Use `Subtype.ext ((hfl _ (y.1 ≫ π) (carried π _ _ (fun _ => fl) y.1 _ rfl)).unique ⟨rfl, carries_carried π _ _ _ y.1 _ rfl⟩ ⟨e₁, fun a i => ?_⟩)` and prove the remaining obligations.
+
+Take `⟨e, he⟩` from `steps_iso_of_spans_top _ _ _ _ _ _ k₂ k₁ i`. Conclude with `⟨e, by simpa [carried, Vert.Flag.ofIso, Vert.Flag.pull] using he⟩`.
+-/
 theorem eq_of_slope_eq (hfl : IsFlagBundle π (fun _ : Unit => E) (fun _ => 2) fun _ => fl) {y y' : CxPts p σ}
     (hy : y ∈ finPart π w hE cE fl σ) (hy' : y' ∈ finPart π w hE cE fl σ)
     (e : PtsOver.map π w (spMap σ) y = PtsOver.map π w (spMap σ) y') (es : slope π hE cE fl y = slope π hE cE fl y') :
@@ -130,6 +167,15 @@ theorem eq_of_slope_eq (hfl : IsFlagBundle π (fun _ : Unit => E) (fun _ => 2) f
   obtain ⟨e, he⟩ := steps_iso_of_spans_top _ _ _ _ _ _ k₂ k₁ i
   exact ⟨e, by simpa [carried, Vert.Flag.ofIso, Vert.Flag.pull] using he⟩
 
+/- English proof (translation)
+Take `⟨W, hW, hWa, n, hn, hs⟩` from `GlobalTheory.T.flag_bundle_affine_polynomial_coords B Y π Unit (fun _ => 2) (fun _ => E) (fun _ => fl) hfl (fun _ => hE) U hU (fun _ i => resM E h (cE.e i)) fun _ => cE.isFrame.res h`. Set `s₀ : Σ _ : Unit, Low 2` to `⟨(), ⟨(1, 0), by decide⟩⟩`. Establish `hs₀ (s : Σ _ : Unit, Low 2) : s = s₀` using `by revert s; decide`. Establish `hb : Function.Bijective (MvPolynomial.eval₂Hom (π.appLE U W hW).hom fun _ : Unit => n s₀)`. Set `ε : Unit ≃ Σ _ : Unit, Low 2` to `⟨fun _ => s₀, fun _ => (), fun _ => rfl, fun s => (hs₀ s).symm⟩`.
+
+Establish `e : (MvPolynomial.eval₂Hom (π.appLE U W hW).hom fun _ : Unit => n s₀) = (MvPolynomial.eval₂Hom (π.appLE U W hW).hom n).comp (MvPolynomial.renameEquiv Γ(B, U) ε).toRingEquiv.toRingHom` using `MvPolynomial.ringHom_ext (fun a => by simp) fun a => by simp [ε]`. Rewrite using `[e]`. Conclude with `hn.comp (MvPolynomial.renameEquiv Γ(B, U) ε).bijective`. Establish `hS : Spans fl W (cols π cE (hW.trans (π.preimage_mono h)) (n s₀))`. Use `hs ()` as an intermediate fact.
+
+Simplify using `only [hs₀ ⟨(), _⟩] at this`. Use `this using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `j`. Conclude with `Finset.sum_congr rfl fun l _ => congrArg _ (QCoh.pullbackSections_res π E hW h (cE.e l)).symm`. Use `⟨W, hW, n s₀, hWa, hb, hS, Set.ext fun y => ⟨fun hy => ⟨CellChart.map_mem π w hW hy, (mem_finPart_of_spans π w hE cE fl _ _ hS hy).1⟩, fun hy => ?_⟩⟩` and prove the remaining obligations.
+
+Establish `hm` using `CellChart.cellPt_mem π w hW hWa _ hb hy.1 fun _ => slope π hE cE fl y`. Establish `h₁` using `mem_finPart_of_spans π w hE cE fl _ _ hS hm`. Rewrite `hm` using `[eq_of_slope_eq π w hE cE fl hfl h₁.1 hy.2 (CellChart.map_cellPt π w hW hWa _ hb hU _ _) (h₁.2.trans (CellChart.ev_n_cellPt π w hW hWa _ hb _ _ ()))]`. Then use the resulting hypothesis.
+-/
 theorem exists_cell (hfl : IsFlagBundle π (fun _ : Unit => E) (fun _ => 2) fun _ => fl) {U : B.Opens} (hU : IsAffineOpen U)
     (h : U ≤ cE.U) : ∃ (W : Y.Opens) (hW : W ≤ π ⁻¹ᵁ U) (n : Γ(Y, W)), IsAffineOpen W ∧
       Function.Bijective (MvPolynomial.eval₂Hom (π.appLE U W hW).hom fun _ : Unit => n) ∧
@@ -163,6 +209,11 @@ def swapChart : Chart E 2 := ⟨cE.U, cE.e ∘ Equiv.swap 0 1, cE.isFrame.comp_e
 
 include w in
 
+/- English proof (translation)
+Establish `h` using `(cE.pull hE π).tr_mulVec ((swapChart cE).pull hE π) ((frameAt fl y).frame (.inl 0)) (mem_frameAt fl y) hy`. Establish `e (b : Fin 2) : (cE.pull hE π).crd p σ (((swapChart cE).pull hE π).e b) y = Pi.single (Equiv.swap 0 1 b) 1` using `(cE.crd_pull hE π w _ le_rfl hy hy).trans (cE.crd_frame hy _)`. Establish `h₀` using `congrFun h 0`. Establish `h₁` using `congrFun h 1`. Simplify using `[mulVec, dotProduct, Chart.tr, e] at h₀ h₁`.
+
+Conclude with `⟨h₁, h₀⟩`.
+-/
 theorem lineVec_swap {y : CxPts p σ} (hy : PtsOver.map π w (spMap σ) y ∈ ptsIn q σ cE.U) :
     lineVec π hE (swapChart cE) fl y 0 = lineVec π hE cE fl y 1 ∧
       lineVec π hE (swapChart cE) fl y 1 = lineVec π hE cE fl y 0 := by
@@ -176,6 +227,9 @@ theorem lineVec_swap {y : CxPts p σ} (hy : PtsOver.map π w (spMap σ) y ∈ pt
 
 include w in
 
+/- English proof (translation)
+Take `⟨s, hs, es⟩` from `h 1`. Establish `hf` using `UniColFrame.isFrame_pullCol_uniR _ _ π E 2 hE _ cE.e cE.isFrame _ hW fun _ => n`. Use `⟨⟨W, s, fun j => cols π cE hW n (Fin.natAdd 1 j), hs, isFrame_cokernel_π (l := 1) (m := 1) (fl.ι 1) hf hs fun j => es j⟩, rfl, fun y hy => ⟨?_, ?_⟩⟩` and prove the remaining obligations. Conclude with `(congrArg (fun t => (cE.pull hE π).crd p σ t y) (es (0 : Fin 1))).trans (crd_cols π w hE cE hW n hy).1`. Conclude with `(crd_cols π w hE cE hW n hy).2`.
+-/
 theorem exists_adapted_of_spans {W : Y.Opens} (hW : W ≤ π ⁻¹ᵁ cE.U) (n : Γ(Y, W)) (h : Spans fl W (cols π cE hW n)) :
     ∃ a : AdaptedChart (lineSC fl) 1 1, a.U = W ∧ ∀ y ∈ ptsIn p σ W,
       (cE.pull hE π).crd p σ (a.frame (.inl 0)) y = ![1, ev p σ W n y] ∧
@@ -191,6 +245,11 @@ section
 
 variable {d : ℕ}
 
+/- English proof (translation)
+Set `ι : MvPolynomial (Fin (d + 1)) k →+* MvPolynomial Unit (MvPolynomial (Fin d) k)` to `MvPolynomial.eval₂Hom (MvPolynomial.C.comp MvPolynomial.C) (Fin.snoc (α := fun _ => _) (fun a => MvPolynomial.C (MvPolynomial.X a)) (MvPolynomial.X ()))`. Set `κ : MvPolynomial Unit (MvPolynomial (Fin d) k) →+* MvPolynomial (Fin (d + 1)) k` to `MvPolynomial.eval₂Hom (MvPolynomial.eval₂Hom MvPolynomial.C fun a => MvPolynomial.X a.castSucc) fun _ => MvPolynomial.X (Fin.last d)`. Establish `h1 : κ.comp ι = RingHom.id _` using `MvPolynomial.ringHom_ext (fun r => by simp [ι, κ]) fun j => by`. Apply the tactic sequence `induction j using Fin.lastCases <;> simp [ι, κ]`. Establish `h2 : ι.comp κ = RingHom.id _` using `MvPolynomial.ringHom_ext' (MvPolynomial.ringHom_ext (fun r => by simp [ι, κ]) fun j => by simp [ι, κ]) fun j => by simp [ι, κ]`.
+
+Establish `hι : Function.Bijective ι` using `Function.bijective_iff_has_inverse.2 ⟨κ, fun x => DFunLike.congr_fun h1 x, fun x => DFunLike.congr_fun h2 x⟩`. Apply the tactic sequence `have key : MvPolynomial.eval₂Hom (f.comp α) (Fin.snoc (α := fun _ => R) (fun a => f (t a)) n) = (MvPolynomial.eval₂Hom f fun _ : Unit => n).comp ((MvPolynomial.map (MvPolynomial.eval₂Hom α t)).comp ι) := MvPolynomial.ringHom_ext (fun r => by simp [ι]) fun j => by induction j usin …`. Rewrite using `[key]`. Conclude with `RingHom.Etale.stableUnderComposition _ _ (RingHom.Etale.stableUnderComposition _ _ (RingHom.Etale.of_bijective hι) (etale_mvPolynomial_map_of_etale _ hg)) (RingHom.Etale.of_bijective hΦ)`.
+-/
 theorem etale_snoc {k A R : Type} [CommRing k] [CommRing A] [CommRing R] (α : k →+* A) (t : Fin d → A) (f : A →+* R) (n : R)
     (hg : (MvPolynomial.eval₂Hom α t).Etale) (hΦ : Function.Bijective (MvPolynomial.eval₂Hom f fun _ : Unit => n)) :
     (MvPolynomial.eval₂Hom (f.comp α) (Fin.snoc (α := fun _ => R) (fun a => f (t a)) n)).Etale := by
@@ -214,6 +273,13 @@ theorem etale_snoc {k A R : Type} [CommRing k] [CommRing A] [CommRing R] (α : k
     (RingHom.Etale.stableUnderComposition _ _ (RingHom.Etale.of_bijective hι) (etale_mvPolynomial_map_of_etale _ hg))
     (RingHom.Etale.of_bijective hΦ)
 
+/- English proof (translation)
+Take `⟨f, hfU, hf⟩` from `c.affine.exists_basicOpen_le (V := U) ⟨_, mem_ptsIn.1 hU⟩ (mem_ptsIn.1 (c.source_subset hb))`. Establish `hle : B.basicOpen f ≤ c.U` using `B.basicOpen_le f`. Use `⟨⟨c.e.restrOpen (ptsIn q σ (B.basicOpen f)) (isOpen_ptsIn _), B.basicOpen f, c.affine.basicOpen f, fun a => resG B hle (c.x a), ?_, inter_subset_right, fun y hy a => (c.apply_eq y hy.1 a).trans (ev_res hle hy.2 _).symm, fun W g => (c.holo W g).mono fun v hv => ⟨hv.1.1, hv.2⟩⟩, ⟨h …` and prove the remaining obligations. Establish `e : MvPolynomial.eval₂Hom (algX q (B.basicOpen f)) (fun a => resG B hle (c.x a)) = (resG B hle).comp (MvPolynomial.eval₂Hom (algX q c.U) c.x)`. Rewrite using `[MvPolynomial.comp_eval₂Hom, GlobalTheory.TopForm.resG_comp_algX]`.
+
+Rewrite using `[e]`. Establish `hR : (resG B hle).Etale`. Use `letI : Algebra Γ(B, c.U) Γ(B, B.basicOpen f) := (resG B hle).toAlgebra`. Use `haveI : IsLocalization.Away f Γ(B, B.basicOpen f) := c.affine.isLocalization_basicOpen f`. Conclude with `RingHom.etale_algebraMap.2 (Algebra.Etale.of_isLocalizationAway f)`.
+
+Conclude with `RingHom.Etale.stableUnderComposition _ _ c.etale hR`.
+-/
 theorem exists_chart_le (c : AlgChart q σ d) {b : CxPts q σ} (hb : b ∈ c.e.source) {U : B.Opens} (hU : b ∈ ptsIn q σ U) :
     ∃ c₁ : AlgChart q σ d, b ∈ c₁.e.source ∧ c₁.U ≤ U ∧ c₁.e = c.e.restrOpen (ptsIn q σ c₁.U) (isOpen_ptsIn _) := by
   obtain ⟨f, hfU, hf⟩ := c.affine.exists_basicOpen_le (V := U) ⟨_, mem_ptsIn.1 hU⟩ (mem_ptsIn.1 (c.source_subset hb))
@@ -231,6 +297,25 @@ theorem exists_chart_le (c : AlgChart q σ d) {b : CxPts q σ} (hb : b ∈ c.e.s
     exact RingHom.etale_algebraMap.2 (Algebra.Etale.of_isLocalizationAway f)
   exact RingHom.Etale.stableUnderComposition _ _ c.etale hR
 
+/- English proof (translation)
+Set `s (v : V (d + 1)) : CxPts p σ` to `if h : basePt v ∈ c.e.target then CellChart.cellPt π w hW hWa _ hΦ (c.source_subset (c.e.map_target h)) (fun _ => v (Fin.last d)) else y₀`. Establish `hs {v : V (d + 1)} (h : basePt v ∈ c.e.target) : s v = CellChart.cellPt π w hW hWa _ hΦ (c.source_subset (c.e.map_target h)) (fun _ => v (Fin.last d))` using `dif_pos h`. Establish `s₁ (v : V (d + 1)) (h : basePt v ∈ c.e.target) : s v ∈ ptsIn p σ W`. Rewrite using `[hs h]`. Conclude with `CellChart.cellPt_mem ..`.
+
+Establish `s₂ (v : V (d + 1)) (h : basePt v ∈ c.e.target) : PtsOver.map π w (spMap σ) (s v) = c.e.symm (basePt v)`. Rewrite using `[hs h]`. Conclude with `CellChart.map_cellPt _ _ _ _ _ _ c.affine _ _`. Establish `s₃ (v : V (d + 1)) (h : basePt v ∈ c.e.target) : ev p σ W n (s v) = v (Fin.last d)`. Rewrite using `[hs h]`.
+
+Conclude with `CellChart.ev_n_cellPt π w hW hWa _ hΦ _ _ ()`. Establish `hT : IsOpen (basePt ⁻¹' c.e.target : Set (V (d + 1)))` using `c.e.open_target.preimage differentiable_basePt.continuous`. Establish `hol (g : Γ(Y, W)) : DifferentiableOn ℂ (fun v => ev p σ W g (s v)) (basePt ⁻¹' c.e.target)`. Take `⟨P, rfl⟩` from `hΦ.2 g`. Proceed by induction on `P using MvPolynomial.induction_on with`.
+
+Consider the case `C a`. Establish `hd : DifferentiableOn ℂ (fun v : V (d + 1) => ev q σ c.U a (c.e.symm (basePt v))) (basePt ⁻¹' c.e.target)` using `(c.holo c.U a).comp differentiable_basePt.differentiableOn fun v hv => ⟨hv, c.source_subset (c.e.map_target hv)⟩`. Use `hd.congr fun v hv => ?_` and prove the remaining obligations. Rewrite using `[MvPolynomial.eval₂Hom_C, CellChart.ev_appLE π w hW (s₁ v hv), s₂ v hv]`. Consider the case `add P Q hP hQ`.
+
+Simplify using `only [map_add, ev_add]`. Conclude with `hP.add hQ`. Consider the case `mul_X P i hP`. Establish `hd : DifferentiableOn ℂ (fun v : V (d + 1) => v (Fin.last d)) (basePt ⁻¹' c.e.target)` using `by fun_prop`. Simplify using `only [map_mul, ev_mul, MvPolynomial.eval₂Hom_X']`.
+
+Conclude with `hP.mul (hd.congr s₃)`. Take `⟨hc, hh⟩` from `holo_of_affine hWa hT s₁ hol`. Establish `hπ` using `PtsOver.continuous_map π w (spMap σ)`. Set `e : OpenPartialHomeomorph (CxPts p σ) (V (d + 1))` to `{ toFun y := prodPt (c.e (PtsOver.map π w (spMap σ) y)) (ev p σ W n y) invFun := s source := PtsOver.map π w (spMap σ) ⁻¹' c.e.source ∩ ptsIn p σ W target := basePt ⁻¹' c.e.target map_source' y hy := by simpa using c.e.map_source hy.1 map_target' v hv := ⟨by rw [mem_preimage, s₂ …`. Rewrite using `[hs (by simpa using c.e.map_source hy.1)]`.
+
+Use `(CellChart.cellPt_congr π w hW hWa _ hΦ _ (CellChart.map_mem π w hW hy.2) ?_ ?_).trans (CellChart.cellPt_self π w hW hWa _ hΦ hy.2)` and prove the remaining obligations. Rewrite using `[basePt_prodPt, c.e.left_inv hy.1]`. Simplify using the standard rewrite rules. Use the proof step `right_inv' v hv := by rw [s₂ v hv, s₃ v hv, c.e.right_inv hv, prodPt_basePt]`. Use `open_source := (c.e.open_source.preimage hπ).inter (isOpen_ptsIn W)`.
+
+Use `open_target := hT`. Use `continuousOn_toFun := differentiable_prodPt.continuous.comp_continuousOn ((c.e.continuousOn.comp hπ.continuousOn fun y hy => hy.1).prodMk ((continuousOn_ev n).mono inter_subset_right))`. Use `continuousOn_invFun := hc }`. Use `⟨⟨e, W, hWa, Fin.snoc (α := fun _ => _) (fun a => (π.appLE c.U W hW).hom (c.x a)) n, ?_, inter_subset_right, fun y hy a => ?_, hh⟩, rfl, rfl, fun _ => rfl⟩` and prove the remaining obligations. Establish `h` using `etale_snoc (algX q c.U) c.x (π.appLE c.U W hW).hom n c.etale hΦ`.
+
+Rewrite `h` using `[CellChart.algX_eq π w hW]`. Then use the resulting hypothesis. Express the relevant statement in the definitionally equal form `prodPt _ _ a = _`. Proceed by induction on `a using Fin.lastCases with`. Consider the case `last => rw [prodPt_last, Fin.snoc_last]`. Consider the case `cast a => rw [prodPt_castSucc, Fin.snoc_castSucc, c.apply_eq _ hy.1, CellChart.ev_appLE π w hW hy.2]`.
+-/
 theorem exists_prodChart (c : AlgChart q σ d) {W : Y.Opens} (hW : W ≤ π ⁻¹ᵁ c.U) (hWa : IsAffineOpen W) (n : Γ(Y, W))
     (hΦ : Function.Bijective (MvPolynomial.eval₂Hom (π.appLE c.U W hW).hom fun _ : Unit => n)) (y₀ : CxPts p σ) :
     ∃ c' : AlgChart p σ (d + 1), c'.e.source = PtsOver.map π w (spMap σ) ⁻¹' c.e.source ∩ ptsIn p σ W ∧
@@ -299,6 +384,9 @@ variable {d : ℕ} (hfl : IsFlagBundle π (fun _ : Unit => E) (fun _ => 2) fun _
 
 include hfl in
 
+/- English proof (translation)
+Take `⟨U, hU, hbU, h⟩` from `exists_isAffineOpen_le b.1 hb`. Take `⟨W, hW, n, hWa, hΦ, hS, -⟩` from `exists_cell (σ := σ) π w hE cE fl hfl hU h`. Establish `h₁` using `mem_finPart_of_spans π w hE cE fl _ _ hS (CellChart.cellPt_mem π w hW hWa _ hΦ (b := b) hbU fun _ => x)`. Conclude with `⟨_, h₁.1, CellChart.map_cellPt π w hW hWa _ hΦ hU _ _, h₁.2.trans (CellChart.ev_n_cellPt π w hW hWa _ hΦ _ _ ())⟩`.
+-/
 theorem exists_slope_eq {b : CxPts q σ} (hb : b ∈ ptsIn q σ cE.U) (x : ℂ) :
     ∃ y ∈ finPart π w hE cE fl σ, PtsOver.map π w (spMap σ) y = b ∧ slope π hE cE fl y = x := by
   obtain ⟨U, hU, hbU, h⟩ := exists_isAffineOpen_le b.1 hb
@@ -308,6 +396,9 @@ theorem exists_slope_eq {b : CxPts q σ} (hb : b ∈ ptsIn q σ cE.U) (x : ℂ) 
 
 include hfl in
 
+/- English proof (translation)
+Distinguish the cases in `hb : b ∈ ptsIn q σ cE.U`. Take `⟨y, h₁, h₂, h₃⟩` from `exists_slope_eq π w hE cE fl hfl hb x`. Conclude with `⟨y, h₂, fun _ => ⟨h₁, h₃⟩⟩`. Take `⟨y, -, h₂, -⟩` from `exists_slope_eq π w hE _ fl hfl (hE.mem_pick b) x`. Conclude with `⟨y, h₂, fun h => (hb h).elim⟩`.
+-/
 theorem exists_triv (b : CxPts q σ) (x : ℂ) : ∃ y : CxPts p σ, PtsOver.map π w (spMap σ) y = b ∧
     (b ∈ ptsIn q σ cE.U → y ∈ finPart π w hE cE fl σ ∧ slope π hE cE fl y = x) := by
   by_cases hb : b ∈ ptsIn q σ cE.U
@@ -318,25 +409,42 @@ theorem exists_triv (b : CxPts q σ) (x : ℂ) : ∃ y : CxPts p σ, PtsOver.map
 
 def triv (b : CxPts q σ) (x : ℂ) : CxPts p σ := (exists_triv π w hE cE fl hfl b x).choose
 
+/- English proof (translation)
+The claim follows from `(exists_triv π w hE cE fl hfl b x).choose_spec.1`.
+-/
 theorem map_triv (b : CxPts q σ) (x : ℂ) : PtsOver.map π w (spMap σ) (triv π w hE cE fl hfl b x) = b :=
   (exists_triv π w hE cE fl hfl b x).choose_spec.1
 
 variable {cE}
 
+/- English proof (translation)
+The claim follows from `((exists_triv π w hE cE fl hfl b x).choose_spec.2 hb).1`.
+-/
 theorem triv_mem {b : CxPts q σ} (hb : b ∈ ptsIn q σ cE.U) (x : ℂ) :
     triv π w hE cE fl hfl b x ∈ finPart π w hE cE fl σ :=
   ((exists_triv π w hE cE fl hfl b x).choose_spec.2 hb).1
 
+/- English proof (translation)
+The claim follows from `((exists_triv π w hE cE fl hfl b x).choose_spec.2 hb).2`.
+-/
 theorem slope_triv {b : CxPts q σ} (hb : b ∈ ptsIn q σ cE.U) (x : ℂ) :
     slope π hE cE fl (triv π w hE cE fl hfl b x) = x :=
   ((exists_triv π w hE cE fl hfl b x).choose_spec.2 hb).2
 
+/- English proof (translation)
+The claim follows from `eq_of_slope_eq π w hE cE fl hfl (triv_mem π w hE fl hfl hy.1 _) hy (map_triv ..) (slope_triv π w hE fl hfl hy.1 _)`.
+-/
 theorem triv_slope {y : CxPts p σ} (hy : y ∈ finPart π w hE cE fl σ) :
     triv π w hE cE fl hfl (PtsOver.map π w (spMap σ) y) (slope π hE cE fl y) = y :=
   eq_of_slope_eq π w hE cE fl hfl (triv_mem π w hE fl hfl hy.1 _) hy (map_triv ..) (slope_triv π w hE fl hfl hy.1 _)
 
 omit hfl in
 
+/- English proof (translation)
+Use `⟨fun h => ?_, fun h => ⟨h.1.1, ?_⟩⟩` and prove the remaining obligations. Take `⟨e₀, e₁⟩` from `lineVec_swap π w hE cE fl h.1`. Use `⟨⟨h.1, fun h₀ => lineVec_ne_zero π w hE cE fl h.1 (funext fun a => ?_)⟩, by rw [slope, e₁, h.2, zero_div]⟩` and prove the remaining obligations. Use `fin_cases a`. Use `exacts [h.2, e₀.symm.trans h₀]`.
+
+Conclude with `(lineVec_swap π w hE cE fl h.1.1).2.symm.trans ((div_eq_zero_iff.1 h.2).resolve_right h.1.2)`.
+-/
 theorem mem_infPart_iff {y : CxPts p σ} : y ∈ infPart π w hE cE fl σ ↔
     y ∈ finPart π w hE (swapChart cE) fl σ ∧ slope π hE (swapChart cE) fl y = 0 := by
   refine ⟨fun h => ?_, fun h => ⟨h.1.1, ?_⟩⟩
@@ -346,6 +454,15 @@ theorem mem_infPart_iff {y : CxPts p σ} : y ∈ infPart π w hE cE fl σ ↔
     exacts [h.2, e₀.symm.trans h₀]
   · exact (lineVec_swap π w hE cE fl h.1.1).2.symm.trans ((div_eq_zero_iff.1 h.2).resolve_right h.1.2)
 
+/- English proof (translation)
+Take `⟨c₁, h₁, h₂, h₃⟩` from `exists_chart_le c hc hb`. Take `⟨W, hW, n, hWa, hΦ, hS, hP⟩` from `exists_cell (σ := σ) π w hE cE fl hfl c₁.affine h₂`. Take `⟨c', e₁, e₂, e₃⟩` from `exists_prodChart π w c₁ hW hWa n hΦ (triv π w hE cE fl hfl b 0)`. Take `⟨a, ha, ha'⟩` from `exists_adapted_of_spans (σ := σ) π w hE cE fl _ n hS`. Establish `hm (y) (hy : y ∈ c'.e.source) : y ∈ ptsIn p σ W` using `(e₁ ▸ hy).2`.
+
+Establish `hs (y) (hy : y ∈ c'.e.source)` using `mem_finPart_of_spans π w hE cE fl _ n hS (hm y hy)`. Establish `e₄ (y) (hy : y ∈ c'.e.source) : c'.e y = prodPt (c₁.e (PtsOver.map π w (spMap σ) y)) (slope π hE cE fl y)`. Rewrite using `[e₃, (hs y hy).2]`. Use `⟨c₁, c', a, h₁, h₂, h₃, ?_, e₂, e₄, fun v hv => ?_, fun y hy => ⟨ha ▸ hm y hy, ?_⟩⟩` and prove the remaining obligations. Rewrite using `[e₁, hP]`.
+
+Conclude with `Set.ext fun y => ⟨fun h => ⟨h.1, h.2.2⟩, fun h => ⟨h.1, c₁.source_subset h.1, h.2⟩⟩`. Establish `hy` using `c'.e.map_target hv`. Establish `e` using `(c'.e.right_inv hv).symm.trans (e₄ _ hy)`. Use `conv_rhs => rw [e]`. Rewrite using `[basePt_prodPt, prodPt_last, c₁.e.left_inv (e₁ ▸ hy).1, triv_slope π w hE fl hfl (hs _ hy).1]`.
+
+Rewrite using `[(hs y hy).2]`. Conclude with `ha' y (hm y hy)`.
+-/
 theorem exists_trivChart (c : AlgChart q σ d) {b : CxPts q σ} (hc : b ∈ c.e.source) (hb : b ∈ ptsIn q σ cE.U) :
     ∃ (c₁ : AlgChart q σ d) (c' : AlgChart p σ (d + 1)) (a : AdaptedChart (lineSC fl) 1 1),
       b ∈ c₁.e.source ∧ c₁.U ≤ cE.U ∧ c₁.e = c.e.restrOpen (ptsIn q σ c₁.U) (isOpen_ptsIn _) ∧
@@ -376,6 +493,9 @@ theorem exists_trivChart (c : AlgChart q σ d) {b : CxPts q σ} (hc : b ∈ c.e.
 
 include hfl in
 
+/- English proof (translation)
+Take `⟨c₁, c', -, h₁, -, -, e₁, -, e₃, -⟩` from `exists_trivChart (cE := swapChart cE) π w hE fl hfl c hc hy.1`. Use `⟨c', e₁ ▸ ⟨h₁, ((mem_infPart_iff π w hE fl).1 hy).1⟩, fun z hz => ?_⟩` and prove the remaining obligations. Rewrite using `[e₃ z hz, prodPt_last, mem_infPart_iff, and_iff_right (e₁ ▸ hz).2]`.
+-/
 theorem exists_chart_infPart (c : AlgChart q σ d) {y : CxPts p σ} (hc : PtsOver.map π w (spMap σ) y ∈ c.e.source)
     (hy : y ∈ infPart π w hE cE fl σ) : ∃ c' : AlgChart p σ (d + 1), y ∈ c'.e.source ∧
       ∀ z ∈ c'.e.source, z ∈ infPart π w hE cE fl σ ↔ c'.e z (Fin.last d) = 0 := by

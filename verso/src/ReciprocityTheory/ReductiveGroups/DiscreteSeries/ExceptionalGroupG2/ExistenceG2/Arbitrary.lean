@@ -39,6 +39,9 @@ variable {H : Type*} [NormedAddCommGroup H] [InnerProductSpace ℂ H] [CompleteS
 
 variable {lam : Fin n → ℝ}
 
+/- English proof (translation)
+Take `⟨V, hV, hV0, hVK, hc⟩` from `ReciprocityTheory.ChartRestriction.DS.arb_datum hDS hcas`. Take `⟨-, -, hσ, hirr, -⟩` from `hDS`. Establish `hD` using `ReciprocityTheory.ChartRestriction.DS.isDerivedOn_smE hσ`. Establish `htop` using `data_closGen_eq_top hgap hσ hD hV hc hVK hirr hV0`. Rewrite using `[data_lowK_eq hgap hσ hD hV hc hVK S (htop ▸ le_top) hS, data_lowK_eq hgap hσ hD hV hc hVK S' (htop ▸ le_top) hS']`.
+-/
 theorem lowKMultOne_of_cas (hDS : Formalism.MainNotions.S.IsDS ε lam σ) (hgap : StdGap ε lam) (hcas : CasOnSmooth ε lam σ)
     (S S' : Submodule ℂ H) (hS : Formalism.MainNotions.S.IsKTypeOf ε σ (Formalism.QuantumDeterminants.lowK ε lam) S)
     (hS' : Formalism.MainNotions.S.IsKTypeOf ε σ (Formalism.QuantumDeterminants.lowK ε lam) S') : S = S' := by
@@ -49,11 +52,19 @@ theorem lowKMultOne_of_cas (hDS : Formalism.MainNotions.S.IsDS ε lam σ) (hgap 
   rw [data_lowK_eq hgap hσ hD hV hc hVK S (htop ▸ le_top) hS,
     data_lowK_eq hgap hσ hD hV hc hVK S' (htop ▸ le_top) hS']
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨LinearIsometryEquiv.ofSurjective C.subtypeₗᵢ (fun y => ⟨⟨y, by rw [hC]; exact Submodule.mem_top⟩, rfl⟩), fun _ => rfl⟩`.
+-/
 private theorem exists_linearIsometryEquiv_of_eq_top {H : Type*} [NormedAddCommGroup H] [InnerProductSpace ℂ H]
     (C : Submodule ℂ H) (hC : C = ⊤) : ∃ W : C ≃ₗᵢ[ℂ] H, ∀ y : C, W y = y :=
   ⟨LinearIsometryEquiv.ofSurjective C.subtypeₗᵢ
     (fun y => ⟨⟨y, by rw [hC]; exact Submodule.mem_top⟩, rfl⟩), fun _ => rfl⟩
 
+/- English proof (translation)
+Take `⟨V, hV, hV0, hVK, hc⟩` from `ReciprocityTheory.ChartRestriction.DS.arb_datum hDS hcas`. Take `⟨-, -, hσ, hirr, -⟩` from `hDS`. Establish `hD` using `ReciprocityTheory.ChartRestriction.DS.isDerivedOn_smE hσ`. Establish `htop` using `data_closGen_eq_top hgap hσ hD hV hc hVK hirr hV0`. Take `⟨U, hU⟩` from `sigLam_equiv_data hgap hP hv₀ hσ hD hV hc hVK hV0`.
+
+Take `⟨W, hW⟩` from `exists_linearIsometryEquiv_of_eq_top _ htop`. Use `⟨U.trans W, fun g hg x => ?_⟩` and prove the remaining obligations. Simplify using `only [LinearIsometryEquiv.trans_apply, hW]`. Conclude with `hU g hg x`.
+-/
 theorem equiv_sigLam_of_cas (hDS : Formalism.MainNotions.S.IsDS ε lam σ) (hgap : StdGap ε lam) (hcas : CasOnSmooth ε lam σ)
     {T : S7.KType ε (lowK ε lam)} {Ψ : Matrix (Fin n) (Fin n) ℂ → (T.V →L[ℂ] T.V)} {v₀ : T.V}
     (hP : IsPsiFor ε lam T Ψ) (hv₀ : v₀ ≠ 0) :
@@ -70,11 +81,21 @@ theorem equiv_sigLam_of_cas (hDS : Formalism.MainNotions.S.IsDS ε lam σ) (hgap
 
 end One
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨LinearIsometryEquiv.ofSurjective C.subtypeₗᵢ (fun y => ⟨⟨y, by rw [hC]; exact Submodule.mem_top⟩, rfl⟩), fun _ => rfl⟩`.
+-/
 private theorem exists_coe_linearIsometryEquiv_of_eq_top {H : Type*} [NormedAddCommGroup H] [InnerProductSpace ℂ H]
     (C : Submodule ℂ H) (hC : C = ⊤) : ∃ W : C ≃ₗᵢ[ℂ] H, ∀ y : C, W y = y :=
   ⟨LinearIsometryEquiv.ofSurjective C.subtypeₗᵢ
     (fun y => ⟨⟨y, by rw [hC]; exact Submodule.mem_top⟩, rfl⟩), fun _ => rfl⟩
 
+/- English proof (translation)
+Take `⟨V, hV, hV0, hVK, hc⟩` from `ReciprocityTheory.ChartRestriction.DS.arb_datum hDS hcas`. Take `⟨V', hV', hV0', hVK', hc'⟩` from `ReciprocityTheory.ChartRestriction.DS.arb_datum hDS' hcas'`. Take `⟨-, -, hσ, hirr, -⟩` from `hDS`. Take `⟨-, -, hσ', hirr', -⟩` from `hDS'`. Establish `hD` using `ReciprocityTheory.ChartRestriction.DS.isDerivedOn_smE hσ`.
+
+Establish `hD'` using `ReciprocityTheory.ChartRestriction.DS.isDerivedOn_smE hσ'`. Take `⟨W, hW⟩` from `exists_coe_linearIsometryEquiv_of_eq_top _ (data_closGen_eq_top hgap hσ hD hV hc hVK hirr hV0)`. Take `⟨W', hW'⟩` from `exists_coe_linearIsometryEquiv_of_eq_top _ (data_closGen_eq_top hgap hσ' hD' hV' hc' hVK' hirr' hV0')`. Take `⟨U, hU⟩` from `data_unitary_equiv hgap hσ hD hV hc hVK hV0 hσ' hD' hV' hc' hVK' hV0'`. Establish `hWs : ∀ z : H, ((W.symm z : closGen (ReciprocityTheory.ChartRestriction.DS.smE ε σ) V) : H) = z` using `fun z => by`.
+
+Rewrite using `[← hW]`. Conclude with `W.apply_symm_apply z`. Use `⟨(W.symm.trans U).trans W', fun g hg x => ?_⟩` and prove the remaining obligations. Simplify using `only [LinearIsometryEquiv.trans_apply, hW']`. Conclude with `hU g hg _ _ (by rw [hWs, hWs])`.
+-/
 theorem dsUnique_of_cas {ε : Fin n → Bool} {lam : Fin n → ℝ} (hgap : StdGap ε lam)
     {H : Type*} [NormedAddCommGroup H] [InnerProductSpace ℂ H] [CompleteSpace H]
     {σ : Matrix (Fin n) (Fin n) ℂ → (H →L[ℂ] H)} (hDS : Formalism.MainNotions.S.IsDS ε lam σ) (hcas : CasOnSmooth ε lam σ)

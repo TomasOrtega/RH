@@ -21,6 +21,11 @@ variable (K Ω : Type) [Field K] [ValuativeRel K] [TopologicalSpace K] [IsNonarc
   [Field Ω] [Algebra K Ω] [IsSepClosure K Ω]
   [ValuativeRel Ω] [TopologicalSpace Ω] [IsValuativeTopology Ω] [ValuativeExtension K Ω]
 
+/- English proof (translation)
+Rewrite using `[localInv_apply]`. Establish `: IsSepClosure (fixedField ((⊤ : OpenSubgroup Gal(Ω/K)) : Subgroup Gal(Ω/K))) Ω` using `⟨IsSepClosure.sep_closed K, Algebra.isSeparable_tower_top_of_isSeparable K _ Ω⟩`. Establish `: IsGalois (fixedField ((⊤ : OpenSubgroup Gal(Ω/K)) : Subgroup Gal(Ω/K))) Ω` using `IsGalois.tower_top_of_isGalois K _ Ω`. Establish `hres : (openCohomologyIso (⊤ : OpenSubgroup Gal(Ω/K)) 2).hom.hom ((cohomologyRes (galUnits.{0} K Ω) ((⊤ : OpenSubgroup Gal(Ω/K)) : Subgroup Gal(Ω/K)) 2).hom y) = (brauerRes K (fixedField ((⊤ : OpenSubgroup Gal(Ω/K)) : Subgroup Gal(Ω/K))) Ω).hom y`. Rewrite using `[openCohomologyIso_hom, cohomologyRes_eq, ← ModuleCat.comp_apply, ← cohomologyMapAlong_comp, brauerRes_eq]`.
+
+Use `congr 1`. Establish `hrank : Module.finrank K (fixedField ((⊤ : OpenSubgroup Gal(Ω/K)) : Subgroup Gal(Ω/K))) = 1`. Rewrite using `[← index_openSubgroup]`. Conclude with `Subgroup.index_top`. Rewrite using `[hres, brauerInv_brauerRes, hrank, one_smul]`.
+-/
 theorem brauerInv_eq_localInv_top (y : galoisBrauerGroup K Ω) :
     brauerInv K Ω y = localInv K Ω ⊤
       ((cohomologyRes (galUnits.{0} K Ω) ((⊤ : OpenSubgroup Gal(Ω/K)) : Subgroup Gal(Ω/K)) 2).hom
@@ -57,6 +62,9 @@ def brauerInvOfIsSepClosure : galoisBrauerGroup K Ksep →+ QZ :=
   haveI := algebraicValuativeRel_valuativeExtension K Ksep
   brauerInv K Ksep
 
+/- English proof (translation)
+The claim follows from `letI := algebraicValuativeRel K Ksep letI := algebraicTopology K Ksep haveI := algebraicTopology_isValuativeTopology K Ksep haveI := algebraicValuativeRel_valuativeExtension K Ksep brauerInv_bijective K Ksep`.
+-/
 theorem brauerInvOfIsSepClosure_bijective :
     Function.Bijective (brauerInvOfIsSepClosure K Ksep) :=
   letI := algebraicValuativeRel K Ksep
@@ -69,10 +77,16 @@ def brauerInvEquivOfIsSepClosure : galoisBrauerGroup K Ksep ≃+ QZ :=
   AddEquiv.ofBijective (brauerInvOfIsSepClosure K Ksep) (brauerInvOfIsSepClosure_bijective K Ksep)
 
 @[simp]
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem brauerInvEquivOfIsSepClosure_apply (y : galoisBrauerGroup K Ksep) :
     brauerInvEquivOfIsSepClosure K Ksep y = brauerInvOfIsSepClosure K Ksep y :=
   rfl
 
+/- English proof (translation)
+The claim follows from `letI := algebraicValuativeRel K Ksep letI := algebraicTopology K Ksep haveI := algebraicTopology_isValuativeTopology K Ksep haveI := algebraicValuativeRel_valuativeExtension K Ksep brauerInv_eq_localInv_top K Ksep y`.
+-/
 theorem brauerInvOfIsSepClosure_eq_inv_top (y : galoisBrauerGroup K Ksep) :
     brauerInvOfIsSepClosure K Ksep y = (localClassFormationOfIsSepClosure K Ksep).inv ⊤
       ((cohomologyRes (galUnits.{0} K Ksep)
@@ -94,6 +108,9 @@ def localDualityHypotheses (hn : (n : K) ≠ 0) :
   t_cores := localInvRootsOfUnity_cores hn
   isPerfectPairing := isPerfectPairing_localInvRootsOfUnity hn
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem localDualityHypotheses_alt (hn : (n : K) ≠ 0) (U : OpenSubgroup Gal(Ksep/K)) :
     (localDualityHypotheses (Ksep := Ksep) hn).t U = localInvRootsOfUnity hn U :=
   rfl
@@ -112,6 +129,9 @@ def dualRepRootsOfUnityIso (M : Rep.{u} (ULift.{u} ℤ) Gal(L/K)) (n : ℕ)
 variable {K L}
 
 @[simp]
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem dualRepRootsOfUnityIso_hom_apply (M : Rep.{u} (ULift.{u} ℤ) Gal(L/K)) (n : ℕ)
     (hM : ∀ m : M, n • m = 0) (f : M →ₗ[ULift.{u} ℤ] galRootsOfUnity.{u} K L n) (m : M) :
     ((dualRepRootsOfUnityIso K L M n hM).hom.hom f : M →ₗ[ULift.{u} ℤ] galUnits.{u} K L) m =
@@ -133,6 +153,9 @@ def localDualityPairing (M : Rep (ULift.{0} ℤ) Gal(Ksep/K)) [IsDiscreteRep M] 
 
 variable {K Ksep}
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem localDualityPairing_apply (M : Rep (ULift.{0} ℤ) Gal(Ksep/K)) [IsDiscreteRep M] [Finite M]
     {r s : ℕ} (h : r + s = 2) (x : cohomology M r) (y : cohomology (cartierDual K Ksep M) s) :
     localDualityPairing K Ksep M h x y =

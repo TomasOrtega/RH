@@ -15,6 +15,15 @@ section
 variable {E : Type} [Field E] [NumberField E] [IsCMField E]
 attribute [local instance] IsCMField.starRing
 
+/- English proof (translation)
+Use `haveI := GlobalTheory.DefiniteMass.unramified_of_isCMUnram hc`. Establish `hone : ∀ z : E, z ∈ (1 : FractionalIdeal (𝓞 E)⁰ E) ↔ IsIntegral ℤ z` using `fun z => (FractionalIdeal.mem_one_iff _).trans ⟨fun ⟨a, ha⟩ => ha ▸ a.2, fun hz => ⟨⟨z, hz⟩, rfl⟩⟩`. Take `⟨P, hP0, hP⟩` from `congr_of_modular (G := Jᵀ) (G' := J'ᵀ) (L := L) (L' := L') (𝔟 := 1) (GlobalTheory.LocalQuad.landherr_of_hasseNormSt GlobalTheory.QNorm.hasseNormSt) GlobalTheory.QNorm.hasseNormSt one_ne_zero (fun z hz => by`. Take `⟨a, rfl⟩` from `(FractionalIdeal.mem_one_iff _).1 hz`. Conclude with `(FractionalIdeal.mem_one_iff _).2 ⟨IsCMField.ringOfIntegersComplexConj E a, rfl⟩)`.
+
+Use `hG hG' (by rwa [Matrix.det_transpose]) (by rwa [Matrix.det_transpose]) hL hL'`. Use the proof step `(by simpa only [hone] using hsd) (by simpa only [hone] using hsd')`. Use the proof step `(fun τ => by`. Take `⟨p, q, h, h'⟩` from `hs τ`. Take `⟨f⟩ : Nonempty (Fin r ≃ Fin p ⊕ Fin q)` from `⟨h.choose⟩`.
+
+Take `⟨A, hA, e⟩` from `GlobalTheory.FlagMeas.exists_congr_of_hasSignature h f`. Take `⟨A', hA', e'⟩` from `GlobalTheory.FlagMeas.exists_congr_of_hasSignature h' f`. Use `GlobalTheory.Published.Landherr.congr_of_gram_eq τ hA hA' ?_` and prove the remaining obligations. Rewrite using `[GlobalTheory.Published.gram_eq, GlobalTheory.Published.gram_eq]`. Conclude with `e.trans e'.symm)`.
+
+Conclude with `⟨P, hP0, fun x y => by rw [herm_mulVec, ← hP]⟩`.
+-/
 theorem exists_congr (hc : Formalism.HermitianLatticesTheory.IsCMUnram E) {r : ℕ} {J J' : Matrix (Fin r) (Fin r) E}
     (hG : ∀ a b, cc (Jᵀ a b) = Jᵀ b a) (hG' : ∀ a b, cc (J'ᵀ a b) = J'ᵀ b a)
     (hd : J.det ≠ 0) (hd' : J'.det ≠ 0) {L L' : Submodule (𝓞 E) (Fin r → E)}
@@ -43,9 +52,17 @@ theorem exists_congr (hc : Formalism.HermitianLatticesTheory.IsCMUnram E) {r : �
       exact e.trans e'.symm)
   exact ⟨P, hP0, fun x y => by rw [herm_mulVec, ← hP]⟩
 
+/- English proof (translation)
+The claim follows from `W.herm.eq (W.frame b) (W.frame a)`.
+-/
 theorem gram_herm (W : HSpace E) (a b : Fin W.rank) : cc (W.gramᵀ a b) = W.gramᵀ b a :=
   W.herm.eq (W.frame b) (W.frame a)
 
+/- English proof (translation)
+Take `@⟨V, i1, i2, i3, i4, i5, hT, hh, hn, r, hrk, fr, sg, L, hL, hu⟩` from `Y`. Express the relevant statement in the definitionally equal form `W.rank = r at hr`. Substitute `hr` using the available equality. Set `Y : HSpace E` to `⟨V, hT, hh, hn, W.rank, hrk, fr, sg, L, hL, hu⟩`. Take `⟨P, hP0, hP⟩` from `exists_congr hc (r := W.rank) (J := Y.gram) (J' := W.gram) (gram_herm Y) (gram_herm W) (GlobalTheory.IndefiniteRowSideFullHecke.AdelicUnitaryGroups.gram_det_isUnit Y).ne_zero (GlobalTheory.IndefiniteRowSideFullHecke.AdelicUnitaryGroups.gram_det_isUnit W).ne_zero (isLattice_coordL …`.
+
+Use `⟨(W.frame.equivFun.trans (Matrix.toLinearEquiv' P (Matrix.invertibleOfIsUnitDet P hP0.isUnit))).trans Y.frame.equivFun.symm, fun x y => ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `Y.hT (Y.frame.equivFun.symm (P *ᵥ W.frame.equivFun x)) (Y.frame.equivFun.symm (P *ᵥ W.frame.equivFun y)) = _`. Rewrite using `[← herm_coord, ← herm_coord, LinearEquiv.apply_symm_apply, LinearEquiv.apply_symm_apply]`. Conclude with `hP _ _`.
+-/
 theorem exists_isometry (hc : Formalism.HermitianLatticesTheory.IsCMUnram E) (W Y : HSpace E) (hW : W.SigOK) (hY : Y.SigOK)
     (hr : W.rank = Y.rank) (hs : ∀ τ, W.sig τ = Y.sig τ) :
     ∃ φ : W.V ≃ₗ[E] Y.V, HSpace.IsIsomEmb W Y φ.toLinearMap := by
@@ -67,6 +84,9 @@ theorem exists_isometry (hc : Formalism.HermitianLatticesTheory.IsCMUnram E) (W 
 
 end
 
+/- English proof (translation)
+The claim follows from `haveI : IsCMField D.host.E := D.host.isCMField_hostE fun W Y hW hY hr hs => exists_isometry (E := D.host.E) D.sp.cm.cmUnram W Y hW hY hr hs`.
+-/
 theorem rationalSt (D : D7) : GlobalTheory.IndefiniteRowSideFullHecke.FlatSpaceComponents.RationalSt D :=
   haveI : IsCMField D.host.E := D.host.isCMField_hostE
   fun W Y hW hY hr hs => exists_isometry (E := D.host.E) D.sp.cm.cmUnram W Y hW hY hr hs

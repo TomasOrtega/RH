@@ -16,6 +16,11 @@ namespace GlobalTheory.InertUnitOrb.LatOnto
 
 open GlobalTheory.InertUnitOrb.ModelOfN
 
+/- English proof (translation)
+Use `first`. Consider the case `exact @_root_.GlobalTheory.InvolutionTraceUnit.exists_orthonormal`. Consider the case `exact _root_.GlobalTheory.InvolutionTraceUnit.exists_orthonormal`. Consider the case `(apply _root_.GlobalTheory.InvolutionTraceUnit.exists_orthonormal <;> assumption)`. Consider the case `(intros; apply _root_.GlobalTheory.InvolutionTraceUnit.exists_orthonormal <;> assumption)`.
+
+Consider the case `(intros; apply @_root_.GlobalTheory.InvolutionTraceUnit.exists_orthonormal <;> first | assumption | infer_instance)`. Consider the case `(intros; exact _root_.GlobalTheory.InvolutionTraceUnit.exists_orthonormal ..)`.
+-/
 theorem exists_orthonormal_mem {K : UQ} (n : ℕ) : ∀ (V : Type) [AddCommGroup V] [Module K.E V] [Module K.O V]
     [IsScalarTower K.O K.E V] [FiniteDimensional K.E V] (h : V → V → K.E),
     (∀ y y' z, h (y + y') z = h y z + h y' z) → (∀ (a : K.E) y z, h (a • y) z = a * h y z) →
@@ -36,6 +41,41 @@ namespace GlobalTheory.InertUnitOrb.LatOnto
 
 open GlobalTheory.InertUnitOrb.ModelOfN
 
+/- English proof (translation)
+Introduce `E _ _ _ _ w hns K e he hint n B ψ x hσx hH L hLat hdual`. Establish `hadd : ∀ y y' z, B.herm x (y + y') z = B.herm x y z + B.herm x y' z`. Introduce `y y' z`. Simplify using `only [InvAlg.herm, mul_add, add_mul, map_add]`. Establish `hsmul : ∀ (a : K.E) y z, B.herm x (a • y) z = a * B.herm x y z`.
+
+Introduce `a y z`. Simplify using `only [InvAlg.herm, mul_smul_comm, smul_mul_assoc, map_smul, smul_eq_mul]`. Establish `hsym : ∀ y z, B.herm x z y = K.c (B.herm x y z)`. Introduce `y z`. Simplify using `only [InvAlg.herm]`.
+
+Rewrite using `[← trace_sigma B, map_mul B.σ, map_mul B.σ, B.σ_σ, hσx]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree. Establish `hn : Module.finrank K.E B.A = n` using `by rw [ψ.finrank_eq, Module.finrank_fin_fun]`. Take `⟨v, hvL, hv⟩` from `exists_orthonormal_mem n B.A (B.herm x) hadd hsmul hsym hn L hLat.1 hLat.2 hdual`.
+
+Take `⟨b, hb⟩` from `exists_basis_of_orthonormal (B.herm x) hadd hsmul hn v hv`. Set `P : Matrix (Fin n) (Fin n) K.E` to `Matrix.of fun i j => ψ (v j) i`. Set `Pc : Matrix (Fin n) (Fin n) K.E` to `Formalism.UG.cT (K.c : K.E →+* K.E) P`. Establish `hPc : ∀ i k, Pc i k = K.c (ψ (v i) k)` using `fun i k => rfl`. Establish `hPP : Pc * P = 1`.
+
+Use extensionality with `i j`. Rewrite using `[Matrix.mul_apply, Matrix.one_apply]`. Establish `h1` using `hH (v j) (v i)`. Simplify using `only [stdH] at h1`. Simplify using `only [hPc, P, Matrix.of_apply]`.
+
+Rewrite using `[show (∑ k, K.c (ψ (v i) k) * ψ (v j) k) = ∑ k, ψ (v j) k * K.c (ψ (v i) k) from Finset.sum_congr rfl fun k _ => mul_comm _ _, h1, hv]`. Distinguish the cases in `hij : i = j`. Substitute `hij` using the available equality. Simplify using the standard rewrite rules. Simplify using `[hij, Ne.symm hij]`.
+
+Establish `hPP' : P * Pc = 1` using `mul_eq_one_comm.1 hPP`. Set `eh : K.E →+* w.adicCompletion E` to `e.toRingHom`. Establish `hmul1 : P.map eh * Pc.map eh = 1`. Rewrite using `[← Matrix.map_mul, hPP', Matrix.map_one _ (map_zero eh) (map_one eh)]`. Establish `hmul2 : Pc.map eh * P.map eh = 1`.
+
+Rewrite using `[← Matrix.map_mul, hPP, Matrix.map_one _ (map_zero eh) (map_one eh)]`. Set `qG : GLw n w` to `⟨P.map eh, Pc.map eh, hmul1, hmul2⟩`. Establish `hcT : Formalism.UG.cT (cj w) (P.map eh) = Pc.map eh`. Use `Matrix.ext fun i j => ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `cj w (e (ψ (v i) j)) = e (K.c (ψ (v i) j))`.
+
+Conclude with `(he _).symm`. Establish `hqU : qG ∈ UL n w`. Unfold `UL`. Rewrite using `[if_neg hns]`. Use `show Formalism.UG.cT (cj w) (P.map eh) * 1 * P.map eh = 1`.
+
+Rewrite using `[hcT, Matrix.mul_one, hmul2]`. Use `⟨⟨qG, hqU⟩, ?_⟩` and prove the remaining obligations. Establish `hinv : ((((⟨qG, hqU⟩ : UL n w)⁻¹ : UL n w) : GLw n w) : Matrix (Fin n) (Fin n) (w.adicCompletion E)).map e.symm = Pc`. Use `Matrix.ext fun i j => ?_` and prove the remaining obligations. Use `show e.symm (e (Pc i j)) = Pc i j`.
+
+Conclude with `e.symm_apply_apply _`. Establish `hcoef : ∀ y i, (Pc *ᵥ ψ y) i = B.herm x y (v i)`. Introduce `y i`. Rewrite using `[← hH]`. Simplify using `only [Matrix.mulVec, dotProduct, hPc, stdH]`.
+
+Conclude with `Finset.sum_congr rfl fun k _ => mul_comm _ _`. Establish `hexp : ∀ y j, B.herm x y (v j) = b.repr y j`. Introduce `y j`. Use `conv_lhs => rw [← b.sum_repr y]`. Rewrite using `[show B.herm x (∑ i, b.repr y i • b i) (v j) = ∑ i, b.repr y i * B.herm x (b i) (v j) from ?_]`.
+
+Simplify using `only [hb, hv, mul_ite, mul_one, mul_zero, Finset.sum_ite_eq', Finset.mem_univ, if_true]`. Proceed by induction on `(Finset.univ : Finset (Fin n)) using Finset.induction_on with`. Consider the case `empty`. Simplify using `only [Finset.sum_empty]`. Use `hsmul 0 0 (v j)` as an intermediate fact.
+
+Simplify using `using this`. Consider the case `insert a s ha ih'`. Rewrite using `[Finset.sum_insert ha, Finset.sum_insert ha, hadd, hsmul, ih']`. Unfold `unitLat`. Rewrite using `[hinv]`.
+
+Use extensionality with `y`. Use `show (∀ i, (Matrix.toLin' Pc (ψ y)) i ∈ (algebraMap K.O K.E).range) ↔ y ∈ L`. Simplify using `only [Matrix.toLin'_apply, hcoef]`. Prove the components needed by the constructor for the conclusion. Introduce `H choose a ha using H`.
+
+Establish `hy : y = ∑ i, a i • v i` using `by conv_lhs => rw [← b.sum_repr y]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[← hexp, ← ha, algebraMap_smul, hb]`. Rewrite using `[hy]`. Conclude with `Submodule.sum_mem _ fun i _ => L.smul_mem _ (hvL i)`.
+
+Introduce `hy i`. Conclude with `(hdual y).1 hy (v i) (hvL i)`.
+-/
 theorem exists_unitLat_eq : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E], Unr E → ∀ (w : Pl E), ¬ IsSplitAt w → ∀ (K : UQ) (e : K.E ≃+* w.adicCompletion E), (∀ x, e (K.c x) = cj w (e x)) → (∀ x, x ∈ (algebraMap K.O K.E).range ↔ Valued.v (e x) ≤ 1) → ∀ (n : ℕ) (B : InvAlg K) (ψ : B.A ≃ₗ[K.E] (Fin n → K.E)), ∀ (x : B.Aˣ), B.σ (x : B.A) = x → (∀ y z, stdH K n (ψ y) (ψ z) = B.herm x y z) → ∀ L : Submodule K.O B.A, IsLat K.O K.E L → (∀ y, y ∈ L ↔ ∀ z ∈ L, B.herm x y z ∈ (algebraMap K.O K.E).range) → ∃ q : UL n w, unitLat e B ψ q = L := by
   intro E _ _ _ _ w hns K e he hint n B ψ x hσx hH L hLat hdual
   have hadd : ∀ y y' z, B.herm x (y + y') z = B.herm x y z + B.herm x y' z := by

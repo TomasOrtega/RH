@@ -14,10 +14,21 @@ variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algeb
 
 def idem (v : Pl F) : AF F := ((0, singleFin v 1) : Ainf F × Af F)
 
+/- English proof (translation)
+The claim follows from `evalV_singleFin_self v 1`.
+-/
 theorem ev_self (v : Pl F) : evFin F v (idem v) = 1 := evalV_singleFin_self v 1
 
+/- English proof (translation)
+The claim follows from `evalV_singleFin_ne h 1`.
+-/
 theorem ev_ne {v u : Pl F} (h : u ≠ v) : evFin F u (idem v) = 0 := evalV_singleFin_ne h 1
 
+/- English proof (translation)
+Use `Prod.ext (mul_zero a.1) (af_ext fun u => ?_)` and prove the remaining obligations. Use `show evFin F u (a * idem v) = evFin F u 0`. Rewrite using `[map_mul, map_zero]`. Distinguish the cases in `e : u = v`. Rewrite using `[e, h, zero_mul]`.
+
+Rewrite using `[ev_ne e, mul_zero]`.
+-/
 theorem mul_idem {v : Pl F} {a : AF F} (h : evFin F v a = 0) : a * idem v = 0 := by
   refine Prod.ext (mul_zero a.1) (af_ext fun u => ?_)
   show evFin F u (a * idem v) = evFin F u 0
@@ -26,12 +37,18 @@ theorem mul_idem {v : Pl F} {a : AF F} (h : evFin F v a = 0) : a * idem v = 0 :=
   · rw [e, h, zero_mul]
   · rw [ev_ne e, mul_zero]
 
+/- English proof (translation)
+Use `⟨fun h => ?_, fun h u hu => by rw [← h, smul_smul, mul_idem hu, zero_smul]⟩` and prove the remaining obligations. Use `h (1 - idem v) (by rw [map_sub, map_one, ev_self, sub_self])` as an intermediate fact. Rewrite `this` using `[sub_smul, one_smul, sub_eq_zero]`. Conclude with `this.symm`.
+-/
 theorem at_iff {M : Type} [AddCommGroup M] [Module (AF F) M] {v : Pl F} {z : M} : At (evFin F v) z ↔ idem v • z = z := by
   refine ⟨fun h => ?_, fun h u hu => by rw [← h, smul_smul, mul_idem hu, zero_smul]⟩
   have := h (1 - idem v) (by rw [map_sub, map_one, ev_self, sub_self])
   rw [sub_smul, one_smul, sub_eq_zero] at this
   exact this.symm
 
+/- English proof (translation)
+Use `mul_idem (v := v) (a := 1 - idem v) (by rw [map_sub, map_one, ev_self, sub_self])` as an intermediate fact. Take the linear combination `-this`.
+-/
 theorem idem_sq (v : Pl F) : idem v * idem v = idem v := by
   have := mul_idem (v := v) (a := 1 - idem v) (by rw [map_sub, map_one, ev_self, sub_self])
   linear_combination -this
@@ -47,6 +64,9 @@ def Oh : AddSubgroup (AF F) where
   neg_mem' := fun {a} ha => ⟨(map_neg (InfiniteAdeleRing.ringEquiv_mixedSpace F) a.1).trans
     ((congrArg Neg.neg ha.1).trans neg_zero), fun v => by rw [map_neg]; exact neg_mem (ha.2 v)⟩
 
+/- English proof (translation)
+Establish `h : IsCompact ((fun a : Af F => (show AF F from ((0, a) : Ainf F × Af F))) '' _)` using `(GlobalTheory.IntegralFinAdele.integral_finiteAdele_properties F).1.image (continuous_const.prodMk continuous_id)`. Use `(Set.ext fun a => ?_ : _ = (Oh F : Set (AF F))) ▸ h` and prove the remaining obligations. Use `⟨?_, fun ha => ⟨a.2, ha.2, Prod.ext ((map_eq_zero_iff _ (InfiniteAdeleRing.ringEquiv_mixedSpace F).injective).1 ha.1).symm rfl⟩⟩` and prove the remaining obligations. Introduce and unpack `⟨b, hb, rfl⟩`. Conclude with `⟨map_zero (InfiniteAdeleRing.ringEquiv_mixedSpace F), hb⟩`.
+-/
 theorem isCompact_Oh : IsCompact (Oh F : Set (AF F)) := by
   have h : IsCompact ((fun a : Af F => (show AF F from ((0, a) : Ainf F × Af F))) '' _) :=
     (GlobalTheory.IntegralFinAdele.integral_finiteAdele_properties F).1.image (continuous_const.prodMk continuous_id)
@@ -56,6 +76,11 @@ theorem isCompact_Oh : IsCompact (Oh F : Set (AF F)) := by
   rintro ⟨b, hb, rfl⟩
   exact ⟨map_zero (InfiniteAdeleRing.ringEquiv_mixedSpace F), hb⟩
 
+/- English proof (translation)
+Use `⟨?_, fun u => ?_⟩` and prove the remaining obligations. Use `show InfiniteAdeleRing.ringEquiv_mixedSpace F (0 * a.1) = 0`. Rewrite using `[zero_mul, map_zero]`. Rewrite using `[map_mul]`. Distinguish the cases in `e : u = v`.
+
+Substitute `e` using the available equality. Rewrite using `[ev_self, one_mul]` and apply the resulting hypothesis. Rewrite using `[ev_ne e, zero_mul]`. Conclude with `zero_mem _`.
+-/
 theorem idem_mem {v : Pl F} {a : AF F} (h : evFin F v a ∈ v.adicCompletionIntegers F) : idem v * a ∈ Oh F := by
   refine ⟨?_, fun u => ?_⟩
   · show InfiniteAdeleRing.ringEquiv_mixedSpace F (0 * a.1) = 0
@@ -72,19 +97,33 @@ def incA : (Fin n → E) →+ (Fin n → AE F E) := AddMonoidHom.mk' (incV F) fu
 variable {Y : Spc F E n}
 
 omit [NumberField E] in
+/- English proof (translation)
+The claim follows from `AddSubgroup.subset_closure ⟨a, ha.1, ha.2, x, hx, rfl⟩`.
+-/
 theorem gen_mem {a : AF F} (ha : a ∈ Oh F) {x : Fin n → E} (hx : x ∈ Y.L) : a • incV F x ∈ latHat Y :=
   AddSubgroup.subset_closure ⟨a, ha.1, ha.2, x, hx, rfl⟩
 
+/- English proof (translation)
+The claim follows from `_root_.UpperTheory.Reformulated.B.OrthogonalGroupLemmas.lat_gen hL`.
+-/
 theorem lat_gen (hL : Y.L.IsLattice E) : ∃ (m : ℕ) (x : Fin m → Y.L), Submodule.span ℤ (Set.range x) = ⊤ ∧ ∀ z, z ∈ latHat Y ↔
     ∃ a : Fin m → AF F, (∀ i, a i ∈ Oh F) ∧ ∑ i, a i • incV F (x i).1 = z :=
   _root_.UpperTheory.Reformulated.B.OrthogonalGroupLemmas.lat_gen hL
 
+/- English proof (translation)
+Establish `: Module.Finite F E` using `Module.Finite.of_restrictScalars_finite ℚ F E`. Use `GlobalTheory.AdelicUnitaryTop.t2Space_adeleRing_numberField F` as an intermediate fact. Take `⟨e⟩` from `GlobalTheory.AdelicUnitaryTop.nonempty_homeomorph (F := F) (E := E) (AF F)`. Conclude with `e.isEmbedding.t2Space`.
+-/
 theorem t2Space_cm_host_adeles : T2Space (AE F E) := by
   have : Module.Finite F E := Module.Finite.of_restrictScalars_finite ℚ F E
   have := GlobalTheory.AdelicUnitaryTop.t2Space_adeleRing_numberField F
   obtain ⟨e⟩ := GlobalTheory.AdelicUnitaryTop.nonempty_homeomorph (F := F) (E := E) (AF F)
   exact e.isEmbedding.t2Space
 
+/- English proof (translation)
+Take `⟨m, x, -, hx⟩` from `lat_gen hL`. Establish `: ContinuousSMul (AF F) (AE F E)` using `IsModuleTopology.toContinuousSMul _ _`. Establish `: ContinuousAdd (AE F E)` using `IsModuleTopology.toContinuousAdd (AF F) _`. Establish `h` using `(isCompact_univ_pi fun _ : Fin m => isCompact_Oh (F := F)).image (f := fun a : Fin m → AF F => ∑ i, a i • incV F (x i).1) (by fun_prop)`. Use `h using 1` and compare the differences between its conclusion and the goal.
+
+Use extensionality with `z`. Conclude with `(hx z).trans (exists_congr fun a => and_congr_left' (by simp))`.
+-/
 theorem isCompact_latHat (hL : Y.L.IsLattice E) : IsCompact (latHat Y : Set (Fin n → AE F E)) := by
   obtain ⟨m, x, -, hx⟩ := lat_gen hL
   have : ContinuousSMul (AF F) (AE F E) := IsModuleTopology.toContinuousSMul _ _
@@ -96,6 +135,9 @@ theorem isCompact_latHat (hL : Y.L.IsLattice E) : IsCompact (latHat Y : Set (Fin
   ext z
   exact (hx z).trans (exists_congr fun a => and_congr_left' (by simp))
 
+/- English proof (translation)
+The claim follows from `have := t2Space_cm_host_adeles (F := F) (E := E) (isCompact_latHat hL).isClosed`.
+-/
 theorem isClosed_latHat (hL : Y.L.IsLattice E) : IsClosed (latHat Y : Set (Fin n → AE F E)) :=
   have := t2Space_cm_host_adeles (F := F) (E := E)
   (isCompact_latHat hL).isClosed
@@ -115,8 +157,24 @@ def aeInt (Y : Spc F E n) : Submodule (AF F) (Fin n → AE F E) where
     rwa [← mul_assoc, idem_sq, ← mul_assoc, mul_smul] at this
 
 omit [NumberField E] in
+/- English proof (translation)
+Unfold both sides. The equivalence is reflexive.
+-/
 theorem aeInt_iff {w} : w ∈ aeInt Y ↔ ∀ᶠ v : Pl F in cofinite, ∀ a ∈ Oh F, (idem v * a) • w ∈ latHat Y := Iff.rfl
 
+/- English proof (translation)
+Establish `h1 : ∀ x : Fin n → E, ∀ t : E, incV F (t • x) ∈ P` using `fun x => by`. Proceed by induction on `(hL.span_eq_top ▸ Submodule.mem_top : x ∈ Submodule.span E (Y.L : Set (Fin n → E))) using Submodule.span_induction with`. Consider the case `mem x hx`. Introduce `t`. Take `⟨N, hN, hi⟩` from `((IsFractionRing.isAlgebraic_iff ℤ ℚ E).2 (Algebra.IsAlgebraic.isAlgebraic t)).exists_integral_multiple`.
+
+Establish `h2 : incV F ((N • t) • x) ∈ P` using `hP _ (Y.L.smul_mem (⟨N • t, hi⟩ : 𝓞 E) hx)`. Establish `h3` using `P.smul_mem (algebraMap F (AF F) (N : F)⁻¹) h2`. Rewrite `h3` using `[smul_assoc, show incV F (N • t • x) = N • incV F (t • x) from map_zsmul (incA F) _ _, ← Int.cast_smul_eq_zsmul (AF F), smul_smul, ← map_intCast (algebraMap F (AF F)), ← map_mul, inv_mul_cancel₀ (Int.cast_ne_zero.2 hN), map_one, one_smul]`. Then use the resulting hypothesis. Consider the case `zero => exact fun t => by rw [smul_zero, show incV F (0 : Fin n → E) = 0 from map_zero (incA F)]; exact zero_mem _`. Consider the case `add x y _ _ hx hy`.
+
+Introduce `t`. Rewrite using `[smul_add, show incV F (t • x + t • y) = _ from map_add (incA F) _ _]`. Conclude with `add_mem (hx t) (hy t)`. Consider the case `smul s x _ hx => exact fun t => by rw [smul_smul]; exact hx _`. Rewrite using `[← Finset.univ_sum_single w]`.
+
+Use `sum_mem fun i _ => ?_` and prove the remaining obligations. Proceed by induction on `w i using TensorProduct.induction_on with`. Consider the case `zero => rw [Pi.single_zero]`. Conclude with `zero_mem _`. Consider the case `add x y hx hy => rw [Pi.single_add]`.
+
+Conclude with `add_mem hx hy`. Consider the case `tmul a y`. Use `P.smul_mem a (h1 (Pi.single i y) 1) using 1` and compare the differences between its conclusion and the goal. Use extensionality with `j`. Distinguish the cases in `e : j = i`.
+
+Substitute `e` using the available equality. Simplify using `[incV, inclR, TensorProduct.smul_tmul']`. Simplify using `[incV, e]`.
+-/
 theorem mem_of_lat (hL : Y.L.IsLattice E) (P : Submodule (AF F) (Fin n → AE F E)) (hP : ∀ x ∈ Y.L, incV F x ∈ P)
     (w : Fin n → AE F E) : w ∈ P := by
   have h1 : ∀ x : Fin n → E, ∀ t : E, incV F (t • x) ∈ P := fun x => by
@@ -146,9 +204,15 @@ theorem mem_of_lat (hL : Y.L.IsLattice E) (P : Submodule (AF F) (Fin n → AE F 
     · subst e; simp [incV, inclR, TensorProduct.smul_tmul']
     · simp [incV, e]
 
+/- English proof (translation)
+The claim follows from `mem_of_lat hL _ (fun _ hx => aeInt_iff.2 <| Eventually.of_forall fun v _ ha => gen_mem (idem_mem (ha.2 v)) hx) w`.
+-/
 theorem mem_aeInt (hL : Y.L.IsLattice E) (w : Fin n → AE F E) : w ∈ aeInt Y :=
   mem_of_lat hL _ (fun _ hx => aeInt_iff.2 <| Eventually.of_forall fun v _ ha => gen_mem (idem_mem (ha.2 v)) hx) w
 
+/- English proof (translation)
+Introduce `w` and use `by refine mem_of_lat hL (LinearMap.range _) (fun y hy => ?_) w obtain ⟨c, hc⟩ := (Submodule.mem_span_range_iff_exists_fun ℤ).1 (hx ▸ Submodule.mem_top : (⟨y, hy⟩ : Y.L) ∈ _) have e := congrArg (fun t : Y.L => incA F t.1) hc simp only [AddSubmonoidClass.coe_finsetSum, map_sum, Set …`.
+-/
 theorem gen_surj (hL : Y.L.IsLattice E) {m : ℕ} {x : Fin m → Y.L} (hx : Submodule.span ℤ (Set.range x) = ⊤) :
     Function.Surjective (Fintype.linearCombination (AF F) fun i => incV F (x i).1) := fun w => by
   refine mem_of_lat hL (LinearMap.range _) (fun y hy => ?_) w
@@ -159,6 +223,9 @@ theorem gen_surj (hL : Y.L.IsLattice E) {m : ℕ} {x : Fin m → Y.L} (hx : Subm
   rw [Fintype.linearCombination_apply]
   exact Finset.sum_congr rfl fun i _ => Int.cast_smul_eq_zsmul _ _ _
 
+/- English proof (translation)
+Take `⟨m, x, -, hx⟩` from `lat_gen hL`. Use `filter_upwards [eventually_all.2 fun i => aeInt_iff.1 (mem_aeInt hL (A *ᵥ incV F (x i).1))] with v hv z hz h`. Take `⟨a, ha, rfl⟩` from `(hx z).1 hz`. Rewrite using `[← at_iff.1 h, Finset.smul_sum, Matrix.mulVec_sum]`. Conclude with `sum_mem fun i _ => by rw [smul_smul, Matrix.mulVec_smul]; exact hv i _ (ha i)`.
+-/
 theorem ae_mulVec (hL : Y.L.IsLattice E) (A : Matrix (Fin n) (Fin n) (AE F E)) :
     ∀ᶠ v in cofinite, ∀ z ∈ latHat Y, At (evFin F v) z → A *ᵥ z ∈ latHat Y := by
   obtain ⟨m, x, -, hx⟩ := lat_gen hL

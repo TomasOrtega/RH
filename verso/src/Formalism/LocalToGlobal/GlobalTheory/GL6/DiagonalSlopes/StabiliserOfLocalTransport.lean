@@ -17,6 +17,13 @@ variable {D : D7} {u : D.what₂.Word} {i : ℕ} {hi : i ≤ D.R.m}
 set_option synthInstance.maxHeartbeats 400000 in
 set_option maxHeartbeats 1000000 in
 
+/- English proof (translation)
+Introduce `x hx`. Apply `Submodule.subset_span` to reduce the goal to its premises. Introduce `x' hx'`. Establish `hglob : ∀ z ∈ clsCrd D u i hi c, z ∈ Formalism.UG.CS.globLat (K.y c).1 K.lev.Lb`. Introduce `z hz`.
+
+Conclude with `(K.y_lat c _).1 (Submodule.subset_span ⟨z, hz, rfl⟩)`. Establish `hm : ∀ a ∈ K.lev.Lb, ∀ b ∈ K.lev.Lb, IsIntegral ℤ (((1 : ℤ) : D.host.E) * Formalism.UG.hform (sigD D : D.host.E →+* D.host.E) (gramN D i hi) a b)`. Introduce `a ha b hb`. Take `⟨r, hr⟩` from `K.lev.Lb_int b hb a ha`. Rewrite using `[Int.cast_one, one_mul, ← hr]`.
+
+Conclude with `RingOfIntegers.isIntegral_coe r`. Establish `h` using `Formalism.UG.P.csScale_glob (sigD D) (gramN D i hi) K.lev.Lb 1 hm (K.y c).1 (K.y c).2 (hglob x' hx') (hglob x hx)`. Rewrite `h` using `[Int.cast_one, one_mul]`. Conclude with `bwL_descent _ _ _ h`.
+-/
 theorem class_lattice_le_dual (K : ClsTied u i hi) (c : (D.mem u).C.cls i) : clsCrd D u i hi c ≤ Ld D u i hi c := by
   intro x hx
   apply Submodule.subset_span
@@ -37,6 +44,13 @@ theorem class_lattice_le_dual (K : ClsTied u i hi) (c : (D.mem u).C.cls i) : cls
 
 set_option maxHeartbeats 1000000 in
 
+/- English proof (translation)
+Establish `hLb : Submodule.IsLattice D.host.E K.lev.Lb` using `⟨Module.Finite.iff_fg.1 K.lev.Lb_fin, K.lev.Lb_span⟩`. Use `Formalism.L2.GlobalTheoryTheory.TraceIntegrality.isLattice_between K.lev.Lb (Formalism.L2.GlobalTheoryTheory.Comp.dl (sigD D) (gramN D i hi) K.lev.Lb) hLb (fun x hx => Submodule.subset_span (K.lev.Lb_int x hx)) _ (D.mem u).A.T_prime.ne_zero (by` as an intermediate fact. Introduce `x hx`. Proceed by induction on `hx using Submodule.span_induction with`. Consider the case `mem x hx => exact K.lev.Lb_dual x hx`.
+
+Consider the case `zero => rw [smul_zero]`. Conclude with `zero_mem _`. Consider the case `add x z _ _ hx hz => rw [smul_add]`. Conclude with `add_mem hx hz`. Consider the case `smul b x _ hx => rw [smul_comm]`.
+
+Conclude with `Submodule.smul_mem _ b hx)`. Conclude with `⟨Module.Finite.iff_fg.2 this.fg, this.span_eq_top⟩`.
+-/
 theorem dual_base_lattice_full (K : ClsTied u i hi) :
     Formalism.L2.GlobalTheoryTheory.Comp.IsLat (Formalism.L2.GlobalTheoryTheory.Comp.dl (sigD D) (gramN D i hi) K.lev.Lb) := by
   have hLb : Submodule.IsLattice D.host.E K.lev.Lb :=
@@ -55,6 +69,15 @@ theorem dual_base_lattice_full (K : ClsTied u i hi) :
 set_option maxHeartbeats 2000000 in
 set_option synthInstance.maxHeartbeats 400000 in
 
+/- English proof (translation)
+Establish `hLb : Formalism.L2.GlobalTheoryTheory.Comp.IsLat K.lev.Lb` using `⟨K.lev.Lb_fin, K.lev.Lb_span⟩`. Establish `hLc` using `tld_isLat (D := D) (u := u) i hi c`. Establish `hLd : Formalism.L2.GlobalTheoryTheory.Comp.IsLat (Formalism.L2.GlobalTheoryTheory.Comp.dl (sigD D) (gramN D i hi) (clsCrd D u i hi c))`. Use `⟨Module.Finite.iff_fg.2 ((rlv_coordFacts (D := D) (u := u) i hi).2.1 c), ?_⟩` and prove the remaining obligations. Rewrite using `[eq_top_iff, ← hLc.2]`.
+
+Conclude with `Submodule.span_mono (fun x hx => class_lattice_le_dual K c hx)`. Establish `hg` using `(K.y c).2`. Establish `hc : clsCrd D u i hi c = Formalism.UG.CS.globLat (K.y c).1 K.lev.Lb` using `Formalism.L2.GlobalTheoryTheory.Comp.eq_glob_of_hat hLc _ (fun x => K.y_lat c x)`. Apply `le_antisymm` to reduce the goal to its premises. Establish `hle1` using `Formalism.L2.GlobalTheoryTheory.Comp.glob_dl_le (sigD D) (gramN D i hi) (clsCrd D u i hi c) (K.y c).1⁻¹ (inv_mem hg)`.
+
+Establish `e1 : Formalism.UG.CS.globLat (K.y c).1⁻¹ (clsCrd D u i hi c) = K.lev.Lb`. Rewrite using `[hc]`. Conclude with `Formalism.L2.GlobalTheoryTheory.Comp.glob_glob_inv hLb _`. Rewrite `hle1` using `[e1]`. Establish `h2` using `Formalism.L2.GlobalTheoryTheory.Comp.glob_mono (K.y c).1 hle1`.
+
+Rewrite `h2` using `[Formalism.L2.GlobalTheoryTheory.Comp.glob_inv_glob hLd]`. Then use the resulting hypothesis. Establish `h` using `Formalism.L2.GlobalTheoryTheory.Comp.glob_dl_le (sigD D) (gramN D i hi) K.lev.Lb (K.y c).1 hg`. Rewrite `h` using `[← hc]`. Conclude with `h`.
+-/
 theorem dual_class_lattice_eq_global (K : ClsTied u i hi) (c : (D.mem u).C.cls i) :
     Ld D u i hi c = Formalism.UG.CS.globLat (K.y c).1
       (Formalism.L2.GlobalTheoryTheory.Comp.dl (sigD D) (gramN D i hi) K.lev.Lb) := by
@@ -82,6 +105,9 @@ theorem dual_class_lattice_eq_global (K : ClsTied u i hi) (c : (D.mem u).C.cls i
 set_option maxHeartbeats 2000000 in
 set_option synthInstance.maxHeartbeats 400000 in
 
+/- English proof (translation)
+The claim follows from `rlv_yloc v (K.y c).1 (fun x => by rw [dual_class_lattice_eq_global K c] exact Formalism.L2.GlobalTheoryTheory.Comp.mem_hat_glob (dual_base_lattice_full K) _ x) x`.
+-/
 theorem mem_local_dual_lattice_iff (K : ClsTied u i hi) (c : (D.mem u).C.cls i)
     (v : HeightOneSpectrum (𝓞 D.host.F)) (x : Fin (D.R.N i) → D.host.E ⊗[D.host.F] v.adicCompletion D.host.F) :
     x ∈ latS (F := D.host.F) (v.adicCompletion D.host.F) (intV D.host.E v) (Ld D u i hi c) ↔
@@ -96,6 +122,9 @@ theorem mem_local_dual_lattice_iff (K : ClsTied u i hi) (c : (D.mem u).C.cls i)
 set_option maxHeartbeats 1000000 in
 set_option synthInstance.maxHeartbeats 400000 in
 
+/- English proof (translation)
+Simplify `mem_local_dual_lattice_iff K c v x` using `only [map_inv]`.
+-/
 theorem mem_local_dual_lattice_iff' (K : ClsTied u i hi) (c : (D.mem u).C.cls i) (v : HeightOneSpectrum (𝓞 D.host.F))
     (x : Fin (D.R.N i) → D.host.E ⊗[D.host.F] v.adicCompletion D.host.F) :
     x ∈ latS (F := D.host.F) (v.adicCompletion D.host.F) (intV D.host.E v) (Ld D u i hi c) ↔
@@ -114,6 +143,9 @@ variable {D : D7} {u : D.what₂.Word} {i : ℕ} {hi : i ≤ D.R.m}
 set_option maxHeartbeats 20000000 in
 set_option synthInstance.maxHeartbeats 400000 in
 
+/- English proof (translation)
+Introduce `z hz`. Take `⟨a, ha, h, hfa⟩` from `hF z hz`. Conclude with `⟨a, ha, h, fun h1 h2 => (fMe v).injective ((hfv v c ⟨_, h⟩ h1).symm.trans (hfa.trans (hfv v c2 ⟨_, Submodule.smul_mem _ _ hz⟩ h2)))⟩`.
+-/
 theorem local_dual_lattice_transport {A : AtTTied u} (K : ClsTied u i hi) (L : LvTied u A i hi)
     (fMe : ∀ v, K.lev.fM (A.eV v).1 (A.eV v).2 ≃+ (D.mem u).A.Fv v) (hfv : FvTie L K fMe)
     (v : (D.mem u).A.vT) (c c2 : (D.mem u).C.cls i) (Γ : Matrix (Fin (D.R.N i)) (Fin (D.R.N i)) D.host.E)
@@ -145,6 +177,9 @@ theorem local_dual_lattice_transport {A : AtTTied u} (K : ClsTied u i hi) (L : L
 set_option maxHeartbeats 2000000 in
 set_option synthInstance.maxHeartbeats 400000 in
 
+/- English proof (translation)
+The claim follows from `sf_two (F := D.host.F) (E := D.host.E) (A.eV v).1 (Ld D u i hi c) (Ld D u i hi c2) (Formalism.L2.GlobalTheoryTheory.Comp.dl (sigD D) (gramN D i hi) K.lev.Lb) (K.lev.fT (A.eV v).1 (A.eV v).2) (bc (prV (E := D.host.E) (A.eV v).1) (K.y c).1) (bc (prV (E := D.host.E) (A.eV v).1) (K.y …`.
+-/
 theorem stabiliser_of_local_transport {A : AtTTied u} (K : ClsTied u i hi) (L : LvTied u A i hi)
     (fMe : ∀ v, K.lev.fM (A.eV v).1 (A.eV v).2 ≃+ (D.mem u).A.Fv v) (hfv : FvTie L K fMe)
     (v : (D.mem u).A.vT) (c c2 : (D.mem u).C.cls i) (Γ : GL (Fin (D.R.N i)) D.host.E)

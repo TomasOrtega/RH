@@ -18,10 +18,18 @@ namespace GlobalTheory.ToricDenomRow
 
 variable {E : Type} [Field E] [NumberField E] {I : Type} [Fintype I]
 
+/- English proof (translation)
+Rewrite using `[beta, div_pow, ← pow_mul, mul_comm _ 12, pow_mul, hΩ]`.
+-/
 theorem beta_eq_pow (d s : ℕ) (κ : I → ℕ) (Λ : PeriodPair) {Ω : ℂ} (hΩ : Ω ^ 12 = latDisc Λ) (T : ℂ) :
     beta E d s κ Λ T = ((C0 E d (2 * s) κ : ℂ) * T / Ω ^ Formalism.PairingDivisionLocalBalance.wtM (2 * s) κ) ^ 12 := by
   rw [beta, div_pow, ← pow_mul, mul_comm _ 12, pow_mul, hΩ]
 
+/- English proof (translation)
+Take `⟨y', hy', hone⟩` from `GlobalTheory.CMVal.TrivAbove.exists_rep_trivial_above E c l hc hl (QuotientGroup.mk y)`. Take `⟨S', hS'⟩` from `hex y'`. Use `⟨y', hone, S', hS', ((finPart χ y' : ℂ) * ((modF y' ^ s : ℝ) : ℂ))⁻¹, ?_, ?_⟩` and prove the remaining obligations. Establish `hu` using `GlobalTheory.CMVal.value_unitAt E I φ hφ s κ c χ l hc hl hinf htriv y' fun w hw => by`. Rewrite using `[hone w hw, map_one]`.
+
+Conclude with `(GlobalTheory.CMVal.LUnit.unitAt_inv hu).2.1`. Conclude with `GlobalTheory.ClassInvAny.classInv_of_unit_trivial E I φ hφ s κ c χ hinf htriv y y' S S' hy'.symm hS hS'`.
+-/
 theorem classTerm_rep [IsCMField E] {φ : I → E →+* ℂ} (hφ : IsCMType φ) {s : ℕ} {κ : I → ℕ} {c : Ideal (OF E)}
     (hc : c ≠ ⊥) {χ : HChar E} (hinf : HasInf χ φ (fun i => (κ i : ℤ) + s)) (htriv : ∀ u ∈ hatOUnits c, finPart χ u = 1)
     {l : ℕ} (hl : l.Prime) (hex : ∀ y : (Af E)ˣ, ∃ S, IsLatSum φ (2 * s) κ (lattice c y) S)
@@ -36,6 +44,25 @@ theorem classTerm_rep [IsCMField E] {φ : I → E →+* ℂ} (hφ : IsCMType φ)
     exact (GlobalTheory.CMVal.LUnit.unitAt_inv hu).2.1
   · exact GlobalTheory.ClassInvAny.classInv_of_unit_trivial E I φ hφ s κ c χ hinf htriv y y' S S' hy'.symm hS hS'
 
+/- English proof (translation)
+Introduce `E _ _ _ _ I _ d φ s hd hs`. Take `⟨z, hz⟩` from `(hZ E s hs).1`. Establish `hzc : IsClassZetaVals (2 * s) z` using `hz`. Use `⟨z, hzc, fun κ 𝔣 Λ χ hb hΛ hχ => ?_⟩` and prove the remaining obligations. Establish `hUr : UnramFin E` using `hd.2.2.1`.
+
+Establish `hφ : IsCMType φ` using `hd.2.2.2.2.2.2.1`. Take `⟨Ω, hΩ⟩` from `IsAlgClosed.exists_pow_nat_eq (latDisc Λ) (by norm_num : 0 < 12)`. Introduce `l hl Q hQ hQl`. Use `set c := condQ 𝔣 Q with hcdef`. Establish `hc : c ≠ ⊥` using `mul_ne_zero hb.1 (Finset.prod_ne_zero_iff.2 fun q _ => q.ne_bot)`.
+
+Establish `hle : condQ 𝔣 Q ≤ condQ 𝔣 ∅`. Rewrite using `[show condQ 𝔣 ∅ = 𝔣 by simp [condQ]]`. Conclude with `Ideal.dvd_iff_le.1 (dvd_mul_right 𝔣 _)`. Establish `h0` using `GlobalTheory.CMVal.OrderUnits.finPart_eq_one E I φ hφ s κ 𝔣 ∅ χ hUr hb (fun _ h => absurd h (Finset.notMem_empty _)) hχ`. Establish `htriv : ∀ u ∈ hatOUnits c, finPart χ u = 1` using `fun u hu => h0 u (hatOUnits_mono hle hu)`.
+
+Establish `hex : ∀ y : (Af E)ˣ, ∃ S, IsLatSum φ (2 * s) κ (lattice c y) S` using `fun y => GlobalTheory.CMVal.LatEnt.exists_isLatSum GlobalTheory.ToricDistribution.exists_isHeckeL_of_hasInf E I φ hφ s κ 𝔣 c χ hUr hs hb (dvd_mul_right _ _) hc hχ.1 hχ.2.2.1 htriv y`. Use `set x : ℂ → ℂ := fun T => (C0 E d (2 * s) κ : ℂ) * T / Ω ^ Formalism.PairingDivisionLocalBalance.wtM (2 * s) κ with hxdef`. Establish `hx : ∀ T, beta E d s κ Λ T = x T ^ 12` using `fun T => beta_eq_pow d s κ Λ hΩ T`. Establish `hxmul : ∀ u T, x (u * T) = u * x T` using `fun u T => by simp only [hxdef]; ring`. Establish `hlat : ∀ y' : (Af E)ˣ, OneOver l y' → ∀ S' : ℂ → ℂ, IsLatSum φ (2 * s) κ (lattice c y') S' → ValGe_vp l (betaBound_vp d s κ 𝔣 z l) (x (S' 0) ^ 12)` using `fun y' hy' S' hS' => by`.
+
+Rewrite using `[← hx]`. Distinguish the cases in `h : c_vp 𝔣 l = 0`. Conclude with `hU E I d φ s hd hs z hzc 𝔣 Λ hb hΛ l hl Q hQ hQl y' hy' h κ S' hS'`. Conclude with `hR E I d φ s hd hs z hzc 𝔣 Λ hb hΛ l hl Q hQ hQl y' hy' h κ S' hS'`. Establish `hterm : ∀ χ' : HChar E, HasInf χ' φ (fun i => (κ i : ℤ) + s) → (∀ u ∈ hatOUnits c, finPart χ' u = 1) → ∀ (y : (Af E)ˣ) (S : ℂ → ℂ), IsLatSum φ (2 * s) κ (lattice c y) S → ∃ u w : ℂ, IntAt l u ∧ ValGe_vp l (betaBound_vp d s κ 𝔣 z l) (w ^ 12) ∧ x (((finPart χ' y : ℂ) * ((modF y ^ s …`.
+
+Introduce `χ' hinf' htriv' y S hS`. Take `⟨y', hy', S', hS', u, hu, e⟩` from `classTerm_rep hφ hc hinf' htriv' hl hex y S hS`. Conclude with `⟨u, x (S' 0), hu, hlat y' hy' S' hS', by rw [e, hxmul]⟩`. Use `⟨fun y T ⟨S, hS, hT⟩ => ?_, fun ψ T hψ ⟨hfin, S, hS, hT⟩ => ?_⟩` and prove the remaining obligations. Take `⟨u, w, hu, hw, e⟩` from `hterm χ hχ.2.2.1 htriv y S hS`.
+
+Use `GlobalTheory.T.powerValuationLowerBound_sum_pow_twelve l hl (betaBound_vp d s κ 𝔣 z l) Unit (fun _ => u) (fun _ => w) (fun _ => hu) (fun _ => hw)` as an intermediate fact. Rewrite using `[hx, hT, e]`. Simplify using `using this`. Establish `hinf' : HasInf (χ * ψ) φ (fun i => (κ i : ℤ) + s)` using `hχ.2.2.1.mul_triv hψ.1`. Establish `htriv' : ∀ u ∈ hatOUnits c, finPart (χ * ψ) u = 1` using `fun u hu => by show finPart χ u * finPart ψ u = 1`.
+
+Rewrite using `[htriv u hu, hψ.2 u hu, one_mul]`. Use `Fintype.ofFinite (PicO c)` as an intermediate fact. Use `choose u w hu hw e using fun q : PicO c => hterm (χ * ψ) hinf' htriv' q.out (S q) (hS q)`. Establish `key` using `GlobalTheory.T.powerValuationLowerBound_sum_pow_twelve l hl (betaBound_vp d s κ 𝔣 z l) (PicO c) u w hu hw`. Rewrite using `[hx, hT, finsum_eq_sum_of_fintype]`.
+
+Establish `: x (∑ q, ((finPart (χ * ψ) q.out : ℂ) * ((modF q.out ^ s : ℝ) : ℂ))⁻¹ * S q 0) = ∑ q, u q * w q`. Rewrite using `[← Finset.sum_congr rfl fun q _ => e q]`. Simplify using `only [hxdef, Finset.mul_sum, Finset.sum_div]`. Rewrite using `[this]`. Conclude with `key`.
+-/
 theorem toricDenominator (hZ : GlobalTheory.IndefiniteRowSideFullHecke.ZetaValueIdeals.ZetaDenominators) (hR : LatIntRam) (hU : LatIntUnr) :
     GlobalTheory.IndefiniteRowSideFullHecke.ClassZetaValuationBounds.ToricDenominator := by
   intro E _ _ _ _ I _ d φ s hd hs

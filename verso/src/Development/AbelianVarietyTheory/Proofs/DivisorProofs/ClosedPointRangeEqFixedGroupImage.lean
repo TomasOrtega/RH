@@ -10,6 +10,29 @@ open GlobalTheory.Mum
 
 namespace GlobalTheory.Mum
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce `g hg`. Take `⟨p, hp⟩ : ∃ p, p = E.H.ι g` from `⟨_, rfl⟩`. Rewrite `hg` using `[← hp]`. Set `Ω` to `G'.left.residueField p`.
+
+Set `x0 : Sp Ω ⟶ G'.left` to `G'.left.fromSpecResidueField p`. Set `x : Sp Ω ⟶ S` to `x0 ≫ G'.hom`. Establish `hx : ∀ w, (x ≫ π) w = closedPoint R`. Introduce `w`. Simplify using `only [x, x0, Scheme.Hom.comp_apply]`.
+
+Rewrite using `[Scheme.fromSpecResidueField_apply]`. Conclude with `hg`. Take `⟨κ, hκ⟩` from `spMap_factor_residueField_of_closedPoint R Ω (x ≫ π) hx`. Take `⟨Ω', _, io, e, l, -, hl1, hl2⟩` from `E.fib Ω x κ hκ`. Set `w : Sp Ω' ⟶ pullback G'.hom (spMap io ≫ x)` to `pullback.lift (spMap io ≫ x0) (𝟙 _) (by simp [x])`.
+
+Set `w0 : Sp Ω'` to `closedPoint Ω'`. Establish `hw : pullback.fst G'.hom (spMap io ≫ x) (w w0) = p`. Rewrite using `[← Scheme.Hom.comp_apply, pullback.lift_fst, Scheme.Hom.comp_apply]`. Conclude with `Scheme.fromSpecResidueField_apply _ _`. Establish `hlw : l (w w0) = g`.
+
+Apply `E.H.ι.isOpenEmbedding.injective` to reduce the goal to its premises. Rewrite using `[← Scheme.Hom.comp_apply, hl1, ← hp]`. Conclude with `hw`. Use `⟨pullback.fst E.Y.hom (spMap (io.comp κ)) (e.hom.left (w w0)), ?_⟩` and prove the remaining obligations. Rewrite using `[← hlw, ← Scheme.Hom.comp_apply, hl2]`.
+
+Simplify using `only [Scheme.Hom.comp_apply]`. Introduce `hπ y`. Take `⟨s, hs⟩` from `hπ.surj (closedPoint R)`. Set `Ω` to `S.residueField s`. Set `x : Sp Ω ⟶ S` to `S.fromSpecResidueField s`.
+
+Establish `hx : ∀ w, (x ≫ π) w = closedPoint R`. Introduce `w`. Simplify using `only [x, Scheme.Hom.comp_apply]`. Rewrite using `[Scheme.fromSpecResidueField_apply]`. Conclude with `hs`.
+
+Take `⟨κ, hκ⟩` from `spMap_factor_residueField_of_closedPoint R Ω (x ≫ π) hx`. Take `⟨Ω', _, io, e, l, -, hl1, hl2⟩` from `E.fib Ω x κ hκ`. Take `⟨w', hw'⟩` from `(pullback.fst E.Y.hom (spMap (io.comp κ))).surjective y`. Set `w` to `e.inv.left w'`. Establish `hew : e.hom.left w = w'`.
+
+Simplify using `only [w]`. Rewrite using `[← Scheme.Hom.comp_apply, ← Over.comp_left, e.inv_hom_id]`. Both sides reduce to the same expression. Use `⟨l w, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[← Scheme.Hom.comp_apply l E.H.ι, hl1, ← Scheme.Hom.comp_apply (pullback.fst G'.hom (spMap io ≫ x)) G'.hom, pullback.condition]`.
+
+Simplify using `only [Scheme.Hom.comp_apply, x]`. Rewrite using `[Scheme.fromSpecResidueField_apply]`. Conclude with `hs`. Rewrite using `[← Scheme.Hom.comp_apply, hl2]`. Simplify using `only [Scheme.Hom.comp_apply]`.
+
+Rewrite using `[hew, hw']`.
+-/
 theorem Emb.range_closed (R : Type) [CommRing R] [IsLocalRing R] (S : Scheme.{0}) (π : S ⟶ Sp R) (G' : Over S)
     [GrpObj G'] (E : Emb π G') :
     (∀ g : E.H.toScheme, π (G'.hom (E.H.ι g)) = closedPoint R → ∃ y : E.Y.left, E.f g = E.j y) ∧

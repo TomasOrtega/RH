@@ -28,6 +28,13 @@ end GlobalTheory.SphLoc
 end
 section
 attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField
+/- English proof (translation)
+Introduce `hL D π s x hx hs`. Take `⟨s', σ, h, hσ, e⟩` from `hx`. Establish `hv : s'.v = s.v` using `HeightOneSpectrum.ext (by rw [← s'.w_under, ← s.w_under, h])`. Establish `hsph` using `_root_.UpperTheory.One.M.Sph.isSph π s' σ hσ (hv ▸ hs)`. Establish `hu` using `(_root_.GlobalTheory.CuspRep.ParLaws.reciprocity_unramified_iff_spherical (_root_.GlobalTheory.CuspRep.ParLawsT.isRecT_locRecT hL (D.nd.plOm.2 s'.w)) σ).2 hsph`.
+
+Establish `key : ∀ (u u' : HeightOneSpectrum (𝓞 D.host.E)) (_ : u = u') (a : GlobalTheory.LocGL.IrrGL (u.adicCompletion D.host.E)) (b : GlobalTheory.LocGL.IrrGL (u'.adicCompletion D.host.E)), HEq a b → (_root_.GlobalTheory.CuspRep.ParLawsT.locRecT hL (D.nd.plOm.2 u) a).unr → (_root_.GlobalT …`. Introduce `u u' hu a b hab`. Substitute `hu` using the available equality. Consider the cases of `eq_of_heq hab`. Conclude with `id`.
+
+Conclude with `key _ _ h _ _ e hu`.
+-/
 theorem GlobalTheory.SphLoc.main_alt_alt : ∀ (hL : _root_.UpperTheory.Zero.LLC.RecTExists) (D : D7) (π : NG.AutRep D.host.E D.R.nV) (s : SplitPlace D.host.E) x,
     GlobalTheory.AutQuot.LocAt π s.w x → π.SphericalAtPlace s.v → (_root_.GlobalTheory.CuspRep.ParLawsT.locRecT hL (D.nd.plOm.2 s.w) x).unr := by
   intro hL D π s x hx hs

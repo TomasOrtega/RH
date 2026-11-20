@@ -20,6 +20,15 @@ namespace GlobalTheory.RowVertexInv.FactorTheta
 
 variable {D : D7} {T : Type} {L : LevCh D T} {sc : Consts} {G : GridData L sc} {W : G.Weil} {U : Set T}
 
+/- English proof (translation)
+Establish `hΛ' : ∀ u, u ∈ latO S' T' (ΛS : Set _) (ΛT : Set _) (fun _ => True) ↔ actO S' T' g⁻¹.1 g⁻¹.2 u ∈ latO S' T' (ΛS : Set _) (ΛT : Set _) (fun _ => True)`. Introduce `u`. Establish `e1 : actO S' T' g.1 g.2 (actO S' T' g⁻¹.1 g⁻¹.2 u) = u`. Rewrite using `[Prod.fst_inv, Prod.snd_inv]`. Conclude with `GlobalTheory.AdelicLatMove.actO_actO_inv _ _ _ _ u`.
+
+Rewrite using `[hΛ (actO S' T' g⁻¹.1 g⁻¹.2 u), e1]`. Establish `hinv : om g⁻¹ f₀ = c⁻¹ • f₀`. Establish `e2 : om g⁻¹ (om g f₀) = f₀`. Rewrite using `[← Module.End.mul_apply, ← map_mul, inv_mul_cancel, map_one, Module.End.one_apply]`. Rewrite `e2` using `[h0, LinearMap.map_smul]`.
+
+Combine the equalities or inequalities in the displayed calculation. Establish `hth` using `GlobalTheory.SchrTheta.isTheta_placeModel D ψ hW.std S' T' ΛS ΛT hS hT e he hinf f₀ hf₀ Tm hTm`. Establish `hmod` using `GlobalTheory.SchrMove.isPlaceModel_move hW hΛ' hTm hth (inv_ne_zero hc) hinv`. Establish `hfe : f = ((c⁻¹)⁻¹ • (om g⁻¹ ∘ₗ Tm ∘ₗ LinearMap.funLeft ℂ ℂ (actO S' T' g⁻¹.1 g⁻¹.2))) Φ` using `hf.2 _ hmod`. Rewrite using `[hfe, inv_inv, LinearMap.smul_apply, LinearMap.map_smul, LinearMap.comp_apply, LinearMap.comp_apply, ← Module.End.mul_apply, ← map_mul, mul_inv_cancel, map_one, Module.End.one_apply, LinearMap.map_smul]`.
+
+Both sides reduce to the same expression.
+-/
 theorem om_theta_eq {ψ : AddChar (AF D.host.F) ℂ} {S' T' : HSp D} {χS χT : (AE D)ˣ →* Circle}
     {om : GA D S' × GA D T' →* Module.End ℂ (WO S' T' → ℂ)} (hW : IsWeilDatumO ψ S' T' χS χT om) {e : AE D}
     (he : e * e = e) (hinf : infPart D e = 0) {ΛS : Submodule (𝓞 D.host.E) (Fin S'.rank → D.host.E)}
@@ -59,16 +68,29 @@ open Matrix
 
 variable {D : D7} {T : Type} {L : LevCh D T} {sc : Consts} {G : GridData L sc} {W : G.Weil} {U : Set T}
 
+/- English proof (translation)
+The claim follows from `GlobalTheory.T.conjugatedLevelElement_keeps_standardLattice S j hj k hk v`.
+-/
 theorem keepStd (S : GridChoice W U) {t : T} (j : ℕ) (hj : j + 1 < D.R.m) (k : FinPt G (.grid (j + 1) D.R.m))
     (hk : finG (G.V (.grid (j + 1) D.R.m)) k ∈ S.levRow t (j + 1) hj.le) (v : Fin (G.V (.grid (j + 1) D.R.m)).rank → Formalism.IndefR.Lev.EAf D) :
     v ∈ Formalism.L2.Herm.hatL (F := D.host.F) (colLat (S.N.fr (.grid (j + 1) D.R.m))) ↔
       (Formalism.IndefR.Lev.finE (G.V (.grid (j + 1) D.R.m)) (moved S j k)).1 *ᵥ v ∈ Formalism.L2.Herm.hatL (F := D.host.F) (colLat (S.N.fr (.grid (j + 1) D.R.m))) :=
   GlobalTheory.T.conjugatedLevelElement_keeps_standardLattice S j hj k hk v
 
+/- English proof (translation)
+Rewrite using `[Matrix.mulVec_mulVec, Units.mul_inv, Matrix.one_mulVec]`.
+-/
 theorem mulVec_mulVec_inv {n : ℕ} {R : Type} [CommRing R] (X : GL (Fin n) R) (v : Fin n → R) :
     X.1 *ᵥ ((X⁻¹).1 *ᵥ v) = v := by
   rw [Matrix.mulVec_mulVec, Units.mul_inv, Matrix.one_mulVec]
 
+/- English proof (translation)
+Establish `sdT` using `S.N.selfDual (X := .grid i D.R.m) ⟨by omega, rfl⟩`. Establish `sdS` using `S.N.selfDual (X := .grid (i + 1) D.R.m) ⟨hi, rfl⟩`. Take `⟨βT, hβT⟩` from `GlobalTheory.AdelicFrame.exists_isFrame D.host.F _ sdT.1.fg sdT.1.span_eq_top`. Take `⟨βS, hβS⟩` from `GlobalTheory.AdelicFrame.exists_isFrame D.host.F _ sdS.1.fg sdS.1.span_eq_top`. Establish `keep : ∀ {V : HSp D} (Λ : Submodule (𝓞 D.host.E) (Fin V.rank → D.host.E)) (β : GL (Fin V.rank) (Formalism.IndefR.Lev.EAf D)), Formalism.L2.DIV.IsFrame β Λ → ∀ X : GL (Fin V.rank) (Formalism.IndefR.Lev.EAf D), (∀ v, v ∈ Formalism.L2.Herm.hatL (F` using `D.host.F) Λ ↔ X.1 *ᵥ v ∈ Formalism.L2.Herm.hatL (F := D.host.F) Λ) → X ∈ Formalism.L2.DIV.St β := by`.
+
+Introduce `V Λ β hβ X hX`. Use `(GlobalTheory.LevSplit.mem_St_iff β Λ hβ X).2 ⟨fun v hv => (hX v).1 hv, fun v hv => ?_⟩` and prove the remaining obligations. Use `(hX _).2 ?_` and prove the remaining obligations. Rewrite using `[mulVec_mulVec_inv]`. Conclude with `hv`.
+
+Establish `stx` using `keep _ βT hβT _ hx`. Establish `sty` using `keep _ βS hβS _ hy`. Establish `sty' : Formalism.IndefR.Lev.finE (G.pS (.chi i D.R.m : Pair T)) (negGA _ y) ∈ Formalism.L2.DIV.St βS` using `sty`. Conclude with `GlobalTheory.StabLatInv.mem_latO_iff_actO_mem D (G.pS (.chi i D.R.m : Pair T)) (G.pT (.chi i D.R.m : Pair T)) (S.N.latS (.chi i D.R.m)) (S.N.latT (.chi i D.R.m)) βS βT (isSelfDualC_neg sdS) sdT hβS hβT (negGA _ y) x sty' stx u`.
+-/
 theorem keepPair (S : GridChoice W U) {i : ℕ} (hi : i + 1 ≤ D.R.m) (x : GA D (G.V (.grid i D.R.m))) (y : GA D (G.V (.grid (i + 1) D.R.m)))
     (hxf : x ∈ GfC (G.V (.grid i D.R.m))) (hyf : y ∈ GfC (G.V (.grid (i + 1) D.R.m)))
     (hx : ∀ v, v ∈ Formalism.L2.Herm.hatL (F := D.host.F) (colLat (S.N.fr (.grid i D.R.m))) ↔
@@ -98,6 +120,11 @@ theorem keepPair (S : GridChoice W U) {i : ℕ} (hi : i + 1 ≤ D.R.m) (x : GA D
     (S.N.latS (.chi i D.R.m)) (S.N.latT (.chi i D.R.m)) βS βT (isSelfDualC_neg sdS) sdT hβS hβT
     (negGA _ y) x sty' stx u
 
+/- English proof (translation)
+Establish `h1 : ∀ v, v ∈ Formalism.L2.Herm.hatL (F` using `D.host.F) (colLat (S.N.fr (.grid j D.R.m))) ↔ (Formalism.IndefR.Lev.finE (G.V (.grid j D.R.m)) 1).1 *ᵥ v ∈ Formalism.L2.Herm.hatL (F := D.host.F) (colLat (S.N.fr (.grid j D.R.m))) := by`. Introduce `v`. Establish `e0 : Formalism.IndefR.Lev.finE (G.V (.grid j D.R.m)) 1 = 1` using `MonoidHom.map_one _`. Establish `e1 : (Formalism.IndefR.Lev.finE (G.V (.grid j D.R.m)) 1).1 *ᵥ v = v` using `by rw [e0]; exact Matrix.one_mulVec v`. Rewrite using `[e1]`.
+
+Establish `h2 : moved S j k ∈ GfC (G.V (.grid (j + 1) D.R.m))` using `((S.N.u (.grid (j + 1) D.R.m))⁻¹ * k * S.N.u _).2`. Establish `h3` using `keepStd S j hj k hk`. Conclude with `keepPair S (i := j) (by omega) 1 (moved S j k) (one_mem _) h2 h1 h3 u`.
+-/
 theorem keepLow (S : GridChoice W U) {t : T} (j : ℕ) (hj : j + 1 < D.R.m) (k : FinPt G (.grid (j + 1) D.R.m))
     (hk : finG (G.V (.grid (j + 1) D.R.m)) k ∈ S.levRow t (j + 1) hj.le) (u : WO (G.pS (.chi j D.R.m : Pair T)) (G.pT (.chi j D.R.m : Pair T))) :
     u ∈ latO (G.pS (.chi j D.R.m : Pair T)) (G.pT (.chi j D.R.m : Pair T)) (S.N.latS (.chi j D.R.m) : Set _) (S.N.latT (.chi j D.R.m) : Set _) (fun _ => True) ↔
@@ -113,6 +140,11 @@ theorem keepLow (S : GridChoice W U) {t : T} (j : ℕ) (hj : j + 1 < D.R.m) (k :
   have h3 := keepStd S j hj k hk
   exact keepPair S (i := j) (by omega) 1 (moved S j k) (one_mem _) h2 h1 h3 u
 
+/- English proof (translation)
+Establish `h1 : ∀ v, v ∈ Formalism.L2.Herm.hatL (F` using `D.host.F) (colLat (S.N.fr (.grid (j + 1 + 1) D.R.m))) ↔ (Formalism.IndefR.Lev.finE (G.V (.grid (j + 1 + 1) D.R.m)) 1).1 *ᵥ v ∈ Formalism.L2.Herm.hatL (F := D.host.F) (colLat (S.N.fr (.grid (j + 1 + 1) D.R.m))) := by`. Introduce `v`. Establish `e0 : Formalism.IndefR.Lev.finE (G.V (.grid (j + 1 + 1) D.R.m)) 1 = 1` using `MonoidHom.map_one _`. Establish `e1 : (Formalism.IndefR.Lev.finE (G.V (.grid (j + 1 + 1) D.R.m)) 1).1 *ᵥ v = v` using `by rw [e0]; exact Matrix.one_mulVec v`. Rewrite using `[e1]`.
+
+Establish `h2 : moved S j k ∈ GfC (G.V (.grid (j + 1) D.R.m))` using `((S.N.u (.grid (j + 1) D.R.m))⁻¹ * k * S.N.u _).2`. Establish `h3` using `keepStd S j hj k hk`. Conclude with `keepPair S (i := j + 1) (by omega) (moved S j k) 1 h2 (one_mem _) h3 h1 u`.
+-/
 theorem keepHigh (S : GridChoice W U) {t : T} (j : ℕ) (hj : j + 1 < D.R.m) (k : FinPt G (.grid (j + 1) D.R.m))
     (hk : finG (G.V (.grid (j + 1) D.R.m)) k ∈ S.levRow t (j + 1) hj.le) (u : WO (G.pS (.chi (j + 1) D.R.m : Pair T)) (G.pT (.chi (j + 1) D.R.m : Pair T))) :
     u ∈ latO (G.pS (.chi (j + 1) D.R.m : Pair T)) (G.pT (.chi (j + 1) D.R.m : Pair T)) (S.N.latS (.chi (j + 1) D.R.m) : Set _) (S.N.latT (.chi (j + 1) D.R.m) : Set _) (fun _ => True) ↔
@@ -128,10 +160,16 @@ theorem keepHigh (S : GridChoice W U) {t : T} (j : ℕ) (hj : j + 1 < D.R.m) (k 
   have h3 := keepStd S j hj k hk
   exact keepPair S (i := j + 1) (by omega) (moved S j k) 1 h2 (one_mem _) h3 h1 u
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨isSelfDualC_neg (S.N.selfDual (X := .grid (i + 1) D.R.m) ⟨hi, rfl⟩), S.N.selfDual (X := .grid i D.R.m) ⟨by omega, rfl⟩⟩`.
+-/
 theorem selfDual (S : GridChoice W U) {i : ℕ} (hi : i + 1 ≤ D.R.m) :
     IsSelfDualC (G.pS (.chi i D.R.m : Pair T)) (S.N.latS (.chi i D.R.m)) ∧ IsSelfDualC (G.pT (.chi i D.R.m : Pair T)) (S.N.latT (.chi i D.R.m)) :=
   ⟨isSelfDualC_neg (S.N.selfDual (X := .grid (i + 1) D.R.m) ⟨hi, rfl⟩), S.N.selfDual (X := .grid i D.R.m) ⟨by omega, rfl⟩⟩
 
+/- English proof (translation)
+The claim follows from `GlobalTheory.T.chiArrowPair_moves_standardVacuum_by_scalar S hi x y hΛ`.
+-/
 theorem vacScalar (S : GridChoice W U) {i : ℕ} (hi : i + 1 ≤ D.R.m) (x : FinPt G (.grid i D.R.m)) (y : FinPt G (.grid (i + 1) D.R.m))
     (hΛ : ∀ u, u ∈ latO (G.pS (.chi i D.R.m : Pair T)) (G.pT (.chi i D.R.m : Pair T)) (S.N.latS (.chi i D.R.m) : Set _) (S.N.latT (.chi i D.R.m) : Set _) (fun _ => True) ↔
       actO _ _ (G.toPair (.chi i D.R.m) x y).1 (G.toPair (.chi i D.R.m) x y).2 u ∈
@@ -145,6 +183,13 @@ namespace GlobalTheory.RowVertexInv.FactorTheta
 
 variable {D : D7} {T : Type} {L : LevCh D T} {sc : Consts} {G : GridData L sc} {W : G.Weil} {U : Set T}
 
+/- English proof (translation)
+Establish `key : ∀ {p : Pair T} (x : FinDatum G t p), x.e = e → x.z = 1 → S.Z.HasVec x → IsThetaAt W.ψ (symplO _ _) (heisO W.ψ _ _) e (latO (G.pS p) (G.pT p) (S.N.latS p : Set _) (S.N.latT p : Set _) fun _ => True) 1 (S.Z.vac p) x.fn (S.Z.vec x)`. Introduce `p x hxe hxz hx`. Take `⟨f, hf⟩` from `hx`. Establish `h1 : S.Z.vec x = f`. Rewrite using `[Normal.vec, FinDatum.vec_eq W hf, hxz]`.
+
+Establish `h2 : W.om p (1, 1) = 1` using `map_one _`. Rewrite using `[h2]`. Both sides reduce to the same expression. Rewrite using `[h1, ← hxe]`. Conclude with `hf`.
+
+Break down `a with j | i` into its components or cases. Conclude with `key (d.1 j) (hd.1 j).1 (hd.1 j).2 (hv.1 j)`. Conclude with `key (d.2 i) (hd.2 i).1 (hd.2 i).2 (hv.2 i)`.
+-/
 theorem position_theta (S : GridChoice W U) {t : T} {e : AE D} (d : PureDat G t)
     (hd : (∀ j, (d.1 j).e = e ∧ (d.1 j).z = 1) ∧ ∀ i, (d.2 i).e = e ∧ (d.2 i).z = 1)
     (hv : (∀ j, S.Z.HasVec (d.1 j)) ∧ ∀ i, S.Z.HasVec (d.2 i)) (a : Fin D.R.m ⊕ Fin D.R.m) :
@@ -165,6 +210,11 @@ theorem position_theta (S : GridChoice W U) {t : T} {e : AE D} (d : PureDat G t)
   · exact key (d.1 j) (hd.1 j).1 (hd.1 j).2 (hv.1 j)
   · exact key (d.2 i) (hd.2 i).1 (hd.2 i).2 (hv.2 i)
 
+/- English proof (translation)
+Introduce `hc`. Apply `hf` to reduce the goal to its premises. Establish `e1 : W.om p g⁻¹ (W.om p g f) = f`. Rewrite using `[← Module.End.mul_apply, ← map_mul, inv_mul_cancel, map_one, Module.End.one_apply]`. Rewrite `e1` using `[h, hc, zero_smul, map_zero]`.
+
+Conclude with `e1.symm`.
+-/
 theorem scalar_ne_zero {p : Pair T} (g : GA D (G.pS p) × GA D (G.pT p)) {c : ℂ} {f : WO (G.pS p) (G.pT p) → ℂ}
     (hf : f ≠ 0) (h : W.om p g f = c • f) : c ≠ 0 := by
   intro hc
@@ -174,12 +224,38 @@ theorem scalar_ne_zero {p : Pair T} (g : GA D (G.pS p) × GA D (G.pT p)) {c : �
   rw [h, hc, zero_smul, map_zero] at e1
   exact e1.symm
 
+/- English proof (translation)
+Introduce `h0`. Take `⟨⟨p, hp⟩, hn⟩` from `(S.Z.vac_is (.chi i D.R.m) ⟨hi, rfl⟩).2.norm`. Use `hn p hp` as an intermediate fact. Simplify using `[nrm2, h0] at this`.
+-/
 theorem vac_ne_zero (S : GridChoice W U) {i : ℕ} (hi : i + 1 ≤ D.R.m) : S.Z.vac (.chi i D.R.m) ≠ 0 := by
   intro h0
   obtain ⟨⟨p, hp⟩, hn⟩ := (S.Z.vac_is (.chi i D.R.m) ⟨hi, rfl⟩).2.norm
   have := hn p hp
   simp [nrm2, h0] at this
 
+/- English proof (translation)
+Introduce `D T L sc G W U S t Φ β τ hexp hvec j hj k hk`. Take `⟨e, he, hsupp, -⟩` from `hexp`. Establish `hee : e * e = e` using `GlobalTheory.PlaceDatum.idemSum_mul_self he`. Establish `hinf : infPart D e = 0` using `GlobalTheory.PlaceDatum.infPart_idemSum he`. Set `Tm : ∀ a, FactorFn G t a →ₗ[ℂ] FactorFn G t a` to `fun a => Classical.epsilon (IsPlaceModel W.ψ (symplO _ _) (heisO W.ψ _ _) e (latO (G.pS (positionPair t D.R.m a)) (G.pT (positionPair t D.R.m a)) (S.N.latS (positionPair t D.R.m a) : Set _) (S.N.latT (positionPair t D.R.m a) : Set _) fun _ => True) 1 (S.Z.vac (positionPair t D.R. …`.
+
+Establish `hth : ∀ d ∈ τ.support, ∀ a, IsThetaAt W.ψ (symplO _ _) (heisO W.ψ _ _) e (latO (G.pS (positionPair t D.R.m a)) (G.pT (positionPair t D.R.m a)) (S.N.latS (positionPair t D.R.m a) : Set _) (S.N.latT (positionPair t D.R.m a) : Set _) fun _ => True) 1 (S.Z.vac (positionPair t D.R.m a …` using `fun d hd a => position_theta S d ⟨fun j' => ⟨((hsupp d hd).1 j').2.1, ((hsupp d hd).1 j').2.2⟩, fun i => ⟨((hsupp d hd).2 i).2.1, ((hsupp d hd).2 i).2.2⟩⟩ (hvec d hd) a`. Establish `hTm : ∀ d ∈ τ.support, ∀ a, IsPlaceModel W.ψ (symplO _ _) (heisO W.ψ _ _) e (latO (G.pS (positionPair t D.R.m a)) (G.pT (positionPair t D.R.m a)) (S.N.latS (positionPair t D.R.m a) : Set _) (S.N.latT (positionPair t D.R.m a) : Set _) fun _ => True) 1 (S.Z.vac (positionPair t D.R. …`. Introduce `d hd a`. Establish `h` using `hth d hd a`. Establish `hs` using `Classical.epsilon_spec h.1`.
+
+Conclude with `⟨hs, h.2 _ hs⟩`. Establish `hj1 : j + 1 ≤ D.R.m` using `by omega`. Establish `hj2 : j + 1 + 1 ≤ D.R.m` using `by omega`. Take `⟨c₁, hc₁⟩` from `vacScalar S hj1 1 ((S.N.u _)⁻¹ * k * S.N.u _) (keepLow S j hj k hk)`. Take `⟨c₂, hc₂⟩` from `vacScalar S hj2 ((S.N.u _)⁻¹ * k * S.N.u _) 1 (keepHigh S j hj k hk)`.
+
+Use `⟨c₁, c₂, Tm, hc₁, hc₂, fun d hd a => ⟨(hTm d hd a).2, ?_⟩⟩` and prove the remaining obligations. Distinguish the cases in `h2 : a = .inr ⟨j + 1, hj⟩`. Substitute `h2` using the available equality. Establish `e1 : moveV S j hj k (vecOf S d) (.inr ⟨j + 1, hj⟩) = W.om (.chi (j + 1) D.R.m) (G.toPair (.chi (j + 1) D.R.m) (moved S j k) 1) (vecOf S d (.inr ⟨j + 1, hj⟩))`. Unfold `moveV`.
+
+Conclude with `Function.update_self _ _ _`. Establish `e2 : scaleAt j hj c₁ c₂ (.inr ⟨j + 1, hj⟩) = c₂` using `by unfold scaleAt; exact Function.update_self _ _ _`. Establish `e3 : movFn S j hj k (fnOf d) (.inr ⟨j + 1, hj⟩) = fun x => fnOf d (.inr ⟨j + 1, hj⟩) (actO _ _ (G.toPair (.chi (j + 1) D.R.m) (moved S j k) 1)⁻¹.1 (G.toPair (.chi (j + 1) D.R.m) (moved S j k) 1)⁻¹.2 x)`. Unfold `movFn`. Conclude with `Function.update_self _ _ _`.
+
+Rewrite using `[e1, e2, e3]`. Conclude with `om_theta_eq (W.om_is _ (by simp only [Pair.InRange, Pair.big, Node.InRange]; omega)) hee hinf (selfDual S hj2).1 (selfDual S hj2).2 (S.Z.vac_is (.chi (j + 1) D.R.m) ⟨hj2, rfl⟩).2.theta _ (keepHigh S j hj k hk) (scalar_ne_zero _ (vac_ne_zero S hj2) hc₂) hc₂ (hTm d hd (.inr ⟨j + 1, …`. Distinguish the cases in `h1 : a = .inr ⟨j, by omega⟩`. Substitute `h1` using the available equality. Establish `hne : (Sum.inr ⟨j, by omega⟩ : Fin D.R.m ⊕ Fin D.R.m) ≠ .inr ⟨j + 1, hj⟩` using `by simp`.
+
+Establish `e1 : moveV S j hj k (vecOf S d) (.inr ⟨j, by omega⟩) = W.om (.chi j D.R.m) (G.toPair (.chi j D.R.m) 1 (moved S j k)) (vecOf S d (.inr ⟨j, by omega⟩))`. Unfold `moveV`. Conclude with `(Function.update_of_ne hne _ _).trans (Function.update_self _ _ _)`. Establish `e2 : scaleAt j hj c₁ c₂ (.inr ⟨j, by omega⟩) = c₁`. Unfold `scaleAt`.
+
+Conclude with `(Function.update_of_ne hne _ _).trans (Function.update_self _ _ _)`. Establish `e3 : movFn S j hj k (fnOf d) (.inr ⟨j, by omega⟩) = fun x => fnOf d (.inr ⟨j, by omega⟩) (actO _ _ (G.toPair (.chi j D.R.m) 1 (moved S j k))⁻¹.1 (G.toPair (.chi j D.R.m) 1 (moved S j k))⁻¹.2 x)`. Unfold `movFn`. Conclude with `(Function.update_of_ne hne _ _).trans (Function.update_self _ _ _)`. Rewrite using `[e1, e2, e3]`.
+
+Conclude with `om_theta_eq (W.om_is _ (by simp only [Pair.InRange, Pair.big, Node.InRange]; omega)) hee hinf (selfDual S hj1).1 (selfDual S hj1).2 (S.Z.vac_is (.chi j D.R.m) ⟨hj1, rfl⟩).2.theta _ (keepLow S j hj k hk) (scalar_ne_zero _ (vac_ne_zero S hj1) hc₁) hc₁ (hTm d hd (.inr ⟨j, by omega⟩) …`. Establish `e1 : moveV S j hj k (vecOf S d) a = vecOf S d a`. Unfold `moveV`. Conclude with `(Function.update_of_ne h2 _ _).trans (Function.update_of_ne h1 _ _)`. Establish `e2 : scaleAt j hj c₁ c₂ a = 1`.
+
+Unfold `scaleAt`. Conclude with `(Function.update_of_ne h2 _ _).trans (Function.update_of_ne h1 _ _)`. Establish `e3 : movFn S j hj k (fnOf d) a = fnOf d a`. Unfold `movFn`. Conclude with `(Function.update_of_ne h2 _ _).trans (Function.update_of_ne h1 _ _)`.
+
+Rewrite using `[e1, e2, e3, one_smul]`. Conclude with `(hTm d hd a).2`.
+-/
 theorem vecOf_eq_intertwiner : ∀ {D : D7} {T : Type} {L : LevCh D T} {sc : Consts} {G : GridData L sc} {W : G.Weil} {U : Set T} (S : GridChoice W U) {t : T} {Φ : G.Datum} {β : CosFam G t} {τ : PureDat G t →₀ ℂ}, S.IsExpansion t Φ β τ → (∀ d ∈ τ.support, (∀ j, S.Z.HasVec (d.1 j)) ∧ ∀ i, S.Z.HasVec (d.2 i)) → ∀ (j : ℕ) (hj : j + 1 < D.R.m) (k : FinPt G (.grid (j + 1) D.R.m)), finG (G.V (.grid (j + 1) D.R.m)) k ∈ S.levRow t (j + 1) hj.le → ∃ (c₁ c₂ : ℂ) (Tm : ∀ a, FactorFn G t a →ₗ[ℂ] FactorFn G t a), W.om (.chi j D.R.m) (G.toPair (.chi j D.R.m) 1 (moved S j k)) (S.Z.vac (.chi j D.R.m)) = c₁ • S.Z.vac (.chi j D.R.m) ∧ W.om (.chi (j + 1) D.R.m) (G.toPair (.chi (j + 1) D.R.m) (moved S j k) 1) (S.Z.vac (.chi (j + 1) D.R.m)) = c₂ • S.Z.vac (.chi (j + 1) D.R.m) ∧ ∀ d ∈ τ.support, ∀ a, vecOf S d a = Tm a (fnOf d a) ∧ moveV S j hj k (vecOf S d) a = Tm a (scaleAt j hj c₁ c₂ a • movFn S j hj k (fnOf d) a) := by
   intro D T L sc G W U S t Φ β τ hexp hvec j hj k hk
   classical

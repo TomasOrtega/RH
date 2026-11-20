@@ -8,6 +8,9 @@ open MvPolynomial Finset
 
 noncomputable section
 
+/- English proof (translation)
+Rewrite using `[monomial_eq, C_1, one_mul, Finsupp.prod_fintype _ _ (fun _ => pow_zero _), Fintype.prod_prod_type]`. Simplify using `[Coinv.staircase]`.
+-/
 theorem Coinv.monomial_staircase_eq (f N : ℕ) :
     (monomial (Coinv.staircase f N) (1 : ℚ) : RootRing f N) =
       ∏ τ : Fin f, ∏ i : Fin N, X (τ, i) ^ (i : ℕ) := by
@@ -15,10 +18,16 @@ theorem Coinv.monomial_staircase_eq (f N : ℕ) :
     Fintype.prod_prod_type]
   simp [Coinv.staircase]
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem Coinv.psumIdeal_rat_eq (f N : ℕ) :
     Coinv.psumIdeal ℚ f N =
       Ideal.span {P | ∃ k τ, 1 ≤ k ∧ k ≤ N ∧ P = blockPowerSum f N k τ} := rfl
 
+/- English proof (translation)
+Introduce `f N H hH`. Take `⟨c, hc⟩` from `h1 ℚ f N H hH`. Use `⟨c, ?_⟩` and prove the remaining obligations. Rewrite using `[← Coinv.monomial_staircase_eq, ← Coinv.psumIdeal_rat_eq]`. Conclude with `hc`.
+-/
 theorem CoinvariantTopDegree.proof (h1 : CoinvAtTop.Statement) : CoinvariantTopDegree.Statement := by
   intro f N H hH
   obtain ⟨c, hc⟩ := h1 ℚ f N H hH

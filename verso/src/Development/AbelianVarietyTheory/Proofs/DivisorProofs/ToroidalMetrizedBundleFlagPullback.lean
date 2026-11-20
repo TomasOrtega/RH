@@ -19,6 +19,9 @@ namespace GlobalTheory.CovTest
 
 set_option maxHeartbeats 1000000 in
 
+/- English proof (translation)
+Introduce `p2 pH rA sw D O hO B hB R hR c`. Take `⟨Bs, iB, q, aq, nB, E, h, H, Y₀, i₀, π₀, fl₀, u₀, ar₀, n₀, hI⟩` from `GlobalTheory.T.flag_bundle_metric_base_exists p2 pH rA sw D O hO B hB R hR c`. Use `⟨Bs, iB, q, aq, nB, E, h, H, fun Y iY π fl u arY nY => ?_⟩` and prove the remaining obligations. Conclude with `GlobalTheory.T.flag_bundle_adelic_metric_data _ Bs q _ E _ h H _ Y₀ i₀ π₀ fl₀ u₀ ar₀ n₀ hI Y iY π fl u arY nY`.
+-/
 theorem exists_base_flagInduces : Hypotheses2 → HypothesesH → RegularAlteration → ScholzeWeinsteinB →
   ∀ (D : D7) (O : Setup D), O.Core → ∀ B : ℝ, 2 ≤ B → ∀ R : ℝ, 2 ≤ R → ∀ c : O.s.Comp,
   ∃ (Bs : Scheme.{0}) (_ : IsIntegral Bs) (q : Bs ⟶ Sp (𝓞 D.what₂.LL)) (_ : IsArithVar q (dimGr D.what₂.Tau O.N O.j))

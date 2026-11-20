@@ -6,6 +6,11 @@ open scoped ComplexOrder ENNReal Matrix
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Apply `le_antisymm` to reduce the goal to its premises. Introduce and unpack `x ⟨hs, ht⟩`. Take `⟨l, hl, hlx⟩` from `(Finsupp.mem_span_image_iff_linearCombination R).1 hs`. Take `⟨m, hm, hmx⟩` from `(Finsupp.mem_span_image_iff_linearCombination R).1 ht`. Establish `hlm : l = m` using `hw (hlx.trans hmx.symm)`.
+
+Substitute `hlm` using the available equality. Use `(Finsupp.mem_span_image_iff_linearCombination R).2 ⟨l, ?_, hlx⟩` and prove the remaining obligations. Rewrite `hl`, `hm`, the goal using `[Finsupp.mem_supported]`. Conclude with `Set.subset_inter hl hm`. Conclude with `le_inf (Submodule.span_mono (Set.image_mono Set.inter_subset_left)) (Submodule.span_mono (Set.image_mono Set.inter_subset_right))`.
+-/
 theorem span_image_inf_span_image_of_linearIndependent {R V ι : Type} [CommRing R]
     [AddCommGroup V] [Module R V] {w : ι → V} (hw : LinearIndependent R w) (s t : Set ι) :
     Submodule.span R (w '' s) ⊓ Submodule.span R (w '' t) = Submodule.span R (w '' (s ∩ t)) := by
@@ -21,6 +26,11 @@ theorem span_image_inf_span_image_of_linearIndependent {R V ι : Type} [CommRing
   · exact le_inf (Submodule.span_mono (Set.image_mono Set.inter_subset_left))
       (Submodule.span_mono (Set.image_mono Set.inter_subset_right))
 
+/- English proof (translation)
+Introduce `R V α β γ _ _ _ w hw`. Prove the components needed by the constructor for the conclusion. Rewrite using `[Set.range_comp, Set.range_comp, Set.range_comp, span_image_inf_span_image_of_linearIndependent hw]`. Use `congr 2`. Use extensionality with `x`.
+
+Apply the tactic sequence `rcases x with a | b | c <;> simp`. Rewrite using `[← Submodule.span_union, Set.range_comp, Set.range_comp, ← Set.image_union, show (Set.range (Sum.map id Sum.inl : α ⊕ β → α ⊕ β ⊕ γ) ∪ Set.range (Sum.map id Sum.inr : α ⊕ γ → α ⊕ β ⊕ γ)) = Set.univ from by`. Use extensionality with `x`. Apply the tactic sequence `rcases x with a | b | c <;> simp, Set.image_univ]`.
+-/
 theorem span_inf_sup_overlapping_parts :
     ∀ (R V α β γ : Type) [CommRing R] [AddCommGroup V] [Module R V] (w : α ⊕ β ⊕ γ → V),
       LinearIndependent R w →

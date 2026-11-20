@@ -19,6 +19,13 @@ noncomputable section
 
 namespace GlobalTheory.CharKer
 
+/- English proof (translation)
+Introduce `K _ _ A A' N _ _ _ i q hA hA' hi hq hNf hqf hqfl hqs hker hi1`. Establish `hmono : Mono i` using `hker.mono_fst_of_mono`. Establish `hcomm : IsCommMonObj A` using `hA.comm`. Establish `: IsCommMonObj N` using `AbelianSubgroupFinite.isCommMonObj_of_mono i`. Establish `hN1 : 𝟙 N ≠ (1 : N ⟶ N)`.
+
+Introduce `h`. Apply `hi1` to reduce the goal to its premises. Rewrite using `[← Category.id_comp i, h, MonObj.one_comp]`. Take `⟨T, χ, hχ, hne⟩` from `GlobalTheory.T.exists_nontrivial_character_finite_comm_group K N hNf hN1`. Take `⟨M, e, hM, he⟩` from `GlobalTheory.T.exists_descended_lineBundle_equivariantGenerator _ A A' N T i q χ hi hq hqf hqfl hqs hker hχ`.
+
+Conclude with `⟨T, M, hM, GlobalTheory.T.characterLineBundle_additive_of_equivariantGenerator K A A' N T i q χ M e hA hA' hi hq hqf hqfl hqs hker hχ hM he, GlobalTheory.T.cechTrivial_pullback_of_isPullbackGenerator _ _ _ M e he.1, fun h => hne (GlobalTheory.T.character_eq_one_of_descended_lineB …`.
+-/
 theorem exists_nontriv_family : ∀ (K : Type) [Field K] [IsAlgClosed K] (A A' N : Over (Sp K)) [GrpObj A] [GrpObj A'] [GrpObj N] (i : N ⟶ A) (q : A ⟶ A'), IsAbelianScheme A → IsAbelianScheme A' → IsMonHom i → IsMonHom q → IsFinite N.hom → IsFinite q.left → Flat q.left → Surjective q.left → IsPullback i (toUnit N) q η[A'] → i ≠ 1 → ∃ (T : Over (Sp K)) (M : LB (A' ⊗ T).left), M.IsLB ∧ IsAdditive M ∧ Triv (ev M (fst A T ≫ q) (snd A T)) ∧ ¬ Triv M := by
   intro K _ _ A A' N _ _ _ i q hA hA' hi hq hNf hqf hqfl hqs hker hi1
   have hmono : Mono i := hker.mono_fst_of_mono

@@ -17,17 +17,44 @@ namespace GlobalTheory.HalfGeo
 
 attribute [local instance] Over.cartesianMonoidalCategory
 
+/- English proof (translation)
+Unfold `minorAt`. Rewrite using `[RingHom.map_det]`. Both sides reduce to the same expression.
+-/
 theorem map_minorAt {K L : Type} [CommRing K] [CommRing L] (f : K →+* L) {n g : ℕ} (M : Matrix (Fin n) (Fin g) K)
     (k : ℕ) (hk : k ≤ g) (σ : Fin k → Fin n) : f (minorAt M k hk σ) = minorAt (M.map f) k hk σ := by
   unfold minorAt
   rw [RingHom.map_det]
   rfl
 
+/- English proof (translation)
+Use function extensionality and compare the values at `r`. Conclude with `RingHom.map_mulVec f M u r`.
+-/
 theorem comp_mulVec {K L : Type} [CommRing K] [CommRing L] (f : K →+* L) {n g : ℕ} (M : Matrix (Fin n) (Fin g) K)
     (u : Fin g → K) : f ∘ M.mulVec u = (M.map f).mulVec (f ∘ u) := by
   funext r
   exact RingHom.map_mulVec f M u r
 
+/- English proof (translation)
+Introduce `F _ _ v ε _ g J ν M M' hν h`. Take `⟨h1, h2, h3, h4⟩` from `h`. Use `set io := ioOf (resP v) ε with hio`. Use `set c := -Real.log (ε.w ((resP v : ℕ) : AlgebraicClosure F)) / Real.log (resP v) with hc_def`. Establish `hw : ∀ z, ε.w z = ‖io z‖ ^ c` using `GlobalTheory.CovHt.Link.w_eq_norm_ioOf_rpow (resP v) v (residueCharacteristic_mem v) ε`.
+
+Establish `hq` using `(Fact.out : (resP v).Prime)`. Establish `hw1 : ε.w ((resP v : ℕ) : AlgebraicClosure F) < 1`. Establish `e1 : ((resP v : ℕ) : AlgebraicClosure F) = algebraMap F _ (algebraMap (𝓞 F) F ((resP v : ℕ) : 𝓞 F))` using `by simp`. Rewrite using `[e1, ε.w_alg]`. Conclude with `(v.adicAbv_coe_lt_one_iff (HeightOneSpectrum.one_lt_absNorm_nnreal v) _).2 (residueCharacteristic_mem v)`.
+
+Establish `hw0 : 0 < ε.w ((resP v : ℕ) : AlgebraicClosure F)` using `ε.w.pos (Nat.cast_ne_zero.2 hq.ne_zero)`. Establish `hlp : 0 < Real.log (resP v)` using `Real.log_pos (by exact_mod_cast hq.one_lt)`. Establish `hc : 0 < c` using `div_pos (neg_pos.2 (Real.log_neg hw0 hw1)) hlp`. Establish `hexp : ∀ k, Real.exp (c * Real.log (ν k)) = ν k ^ c` using `fun k => by`. Rewrite using `[Real.rpow_def_of_pos (hν k), mul_comm]`.
+
+Establish `hle1 : ∀ z, ε.w z ≤ 1 ↔ ‖io z‖ ≤ 1` using `fun z => by`. Establish `e` using `Real.rpow_le_rpow_iff (x := ‖io z‖) (y := 1) (norm_nonneg _) zero_le_one hc`. Rewrite `e` using `[Real.one_rpow]`. Rewrite using `[hw]`. Conclude with `e`.
+
+Establish `hlt1 : ∀ z, ε.w z < 1 ↔ ‖io z‖ < 1` using `fun z => by`. Establish `e` using `Real.rpow_lt_rpow_iff (x := ‖io z‖) (y := 1) (norm_nonneg _) zero_le_one hc`. Rewrite `e` using `[Real.one_rpow]`. Rewrite using `[hw]`. Conclude with `e`.
+
+Establish `hJ : (J.map (Int.castRingHom (AlgebraicClosure F))).map io = J.map (Int.castRingHom ℂ_[resP v])`. Use extensionality with `i j`. Simplify using the standard rewrite rules. Establish `hball : ∀ u : Fin g → AlgebraicClosure F, (∀ r, ε.w (M.mulVec u r) ≤ 1) → ∀ r, ‖(M.map io).mulVec (io ∘ u) r‖ ≤ 1` using `fun u hu r => by`. Rewrite using `[← RingHom.map_mulVec]`.
+
+Conclude with `(hle1 _).1 (hu r)`. Use `⟨fun k hk σ => ?_, fun k hk => ?_, fun u u' hu hu' => ?_, fun u hu r => ?_⟩` and prove the remaining obligations. Use `beta_reduce`. Rewrite using `[hexp, hw, map_minorAt]`. Conclude with `Real.rpow_le_rpow (norm_nonneg _) (h1 k hk σ) hc.le`.
+
+Take `⟨σ, hσ⟩` from `h2 k hk`. Use `⟨σ, ?_⟩` and prove the remaining obligations. Use `beta_reduce`. Rewrite using `[hexp, hw, map_minorAt]`. Conclude with `congrArg (· ^ c) hσ`.
+
+Use `beta_reduce`. Rewrite using `[hlt1, RingHom.map_dotProduct, comp_mulVec, comp_mulVec, comp_mulVec, hJ]`. Conclude with `h3 _ _ (hball u hu) (hball u' hu')`. Use `beta_reduce`. Rewrite using `[hlt1, map_sub, RingHom.map_mulVec, RingHom.map_mulVec]`.
+
+Conclude with `h4 _ (hball u hu) r`.
+-/
 theorem convSt : ConvSt := by
   intro F _ _ v ε _ g J ν M M' hν h
   obtain ⟨h1, h2, h3, h4⟩ := h

@@ -5,6 +5,21 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.GaloisCochains.Loc
 
 open NumberField IsDedekindDomain Formalism.ConjugateSelfDual ReciprocityTheory.Gal Module UpperTheory.V UpperTheory.V.Fr UpperTheory.V.GC
 
+/- English proof (translation)
+Use `haveI := hV`. Use `haveI := hW`. Take `rfl : p = fun i => (f i).comp (r i)` from `funext hp`. Use `set X : Submodule k V := ⨅ i, LinearMap.ker ((f i).comp (r i)) with hX`. Use `set Y : Submodule k V := ⨅ i, LinearMap.ker (r i) with hY`.
+
+Establish `hmem : ∀ x : X, ∀ i, r i x ∈ LinearMap.ker (f i)` using `fun x i => by`. Use `(Submodule.mem_iInf _).mp x.2 i` as an intermediate fact. Simplify using `using this`. Set `g : X →ₗ[k] (∀ i, LinearMap.ker (f i))` to `LinearMap.pi fun i => ((r i).comp X.subtype).codRestrict (LinearMap.ker (f i)) (fun x => hmem x i)`. Establish `h1` using `LinearMap.finrank_range_add_finrank_ker g`.
+
+Establish `h2 : finrank k (LinearMap.range g) ≤ ∑ i, finrank k (LinearMap.ker (f i))`. Combine the equalities or inequalities in the displayed calculation. Establish `h3 : finrank k (LinearMap.ker g) ≤ finrank k Y`. Set `e : LinearMap.ker g →ₗ[k] Y` to `(X.subtype.comp (LinearMap.ker g).subtype).codRestrict Y (fun x => by`. Establish `hx` using `LinearMap.mem_ker.mp x.2`.
+
+Use `(Submodule.mem_iInf _).mpr fun i => ?_` and prove the remaining obligations. Use `congrArg Subtype.val (congrFun hx i)` as an intermediate fact. Conclude with `this)`. Use `LinearMap.finrank_le_finrank_of_injective (f := e) ?_` and prove the remaining obligations. Introduce `a b hab`.
+
+Use `congrArg Subtype.val hab` as an intermediate fact. Conclude with `Subtype.ext (Subtype.ext this)`. Establish `h4 : ∀ i, finrank k (LinearMap.ker (f i)) + finrank k (U i) = finrank k (W i)`. Introduce `i`. Use `LinearMap.finrank_range_add_finrank_ker (f i)` as an intermediate fact.
+
+Rewrite `this` using `[LinearMap.range_eq_top.mpr (hf i), finrank_top]`. Use linear arithmetic over natural numbers and integers. Establish `h5 : ∑ i, finrank k (LinearMap.ker (f i)) + ∑ i, finrank k (U i) = ∑ i, finrank k (W i)`. Rewrite using `[← Finset.sum_add_distrib]`. Conclude with `Finset.sum_congr rfl fun i _ => h4 i`.
+
+Use linear arithmetic over natural numbers and integers.
+-/
 private theorem finrank_iInf_ker_add_sum_le_of_surjective {k V : Type} [Field k] [AddCommGroup V] [Module k V] {ι : Type} [Fintype ι]
     (W U : ι → Type) [∀ i, AddCommGroup (W i)] [∀ i, Module k (W i)] [∀ i, AddCommGroup (U i)]
     [∀ i, Module k (U i)] (hV : Module.Finite k V) (hW : ∀ i, Module.Finite k (W i))
@@ -47,6 +62,13 @@ private theorem finrank_iInf_ker_add_sum_le_of_surjective {k V : Type} [Field k]
     exact Finset.sum_congr rfl fun i _ => h4 i
   omega
 
+/- English proof (translation)
+Introduce `P F Ω _ _ _ _ _ l _ hF S K Γ _ _ _ _ _ _ π h k _ _ _ M _ _ _ _ _ ρ hρ c hc A hA hdual Q _ _ _ _ σ q hq hsurj`. Take `⟨_, hfin2, hG⟩` from `H2_galois_quotient_eq P F Ω l hF S K Γ π h k M ρ hρ c hc A hA`. Rewrite `hG` using `[hdual, finrank_bot, add_zero]`. Establish `hcv : ∀ v : S, Continuous (π.comp (Dec (F` using `F) (A v)).subtype) := fun v => h.cont.comp continuous_subtype_val`. Establish `hρv : ∀ v : S, ReciprocityTheory.Gal.ContAction (ρ.comp (π.comp (Dec (F` using `F) (A v)).subtype)) := fun v => hρ.comp (((hcv v).comp continuous_fst).prodMk continuous_snd)`.
+
+Establish `hfinv : ∀ v : S, Module.Finite k (H2 (ρ.comp (π.comp (Dec (F` using `F) (A v)).subtype))) := fun v => (locEuler P.lf P.lt P.le F Ω l v.1 (A v) (hA v) k M _ (hρv v)).2.1`. Establish `hontov : ∀ v : S, Function.Surjective (mapH2 (ρ.comp (π.comp (Dec (F` using `F) (A v)).subtype)) (σ v) (q v) continuous_of_discreteTopology (hq v)) := fun v => local_second_cohomology_surjective_at_place P.lf F Ω l v.1 (A v) (hA v) k M (Q v) _ (σ v) (hρv v) (q v) (hq v) (hsurj v)`. Establish `key` using `finrank_iInf_ker_add_sum_le_of_surjective (k := k) (V := H2 ρ) (fun v : S => H2 (ρ.comp (π.comp (Dec (F := F) (A v)).subtype))) (fun v => H2 (σ v)) hfin2 hfinv (fun v => resH2 ρ _ (hcv v)) (fun v => mapH2 _ (σ v) (q v) continuous_of_discreteTopology (hq v)) hontov (fun v => compa …`. Unfold `Sha2 at hG`. Use `beta_reduce at hG key`.
+
+Use linear arithmetic over natural numbers and integers.
+-/
 theorem UpperTheory.V.GC.H2_galois_quotient_surjective :
     Hypotheses₂ → ∀ (F Ω : Type) [Field F] [NumberField F] [Field Ω] [Algebra F Ω] [IsAlgClosure F Ω] (l : ℕ) [Fact l.Prime], IsTotallyReal F → ∀ (S : Finset (HeightOneSpectrum (𝓞 F))) (K : Subgroup (G F Ω)) (Γ : Type) [Group Γ] [TopologicalSpace Γ] [IsTopologicalGroup Γ] [CompactSpace Γ] [T2Space Γ] [TotallyDisconnectedSpace Γ] (π : G F Ω →* Γ) (h : GLink l S K π) (k : Type) [Field k] [Finite k] [CharP k l] (M : Type) [AddCommGroup M] [Module k M] [Module.Finite k M] [TopologicalSpace M] [DiscreteTopology M] (ρ : Representation k Γ M), ContAction ρ →
     ∀ c : InfinitePlace F → G F Ω, (∀ w, IsCCAt w (c w)) → ∀ (A : S → ValuationSubring Ω), (∀ v, IsPlaceOver (A v) v.1) → Loc.H0dual (cycF F Ω l k) (ρ.comp π) = ⊥ →

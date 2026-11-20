@@ -6,6 +6,13 @@ open GlobalTheory.NeedB Polynomial
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Introduce `K Ω _ _ _ _ _ w hw hc`. Establish `h1 : w 1 = 1`. Apply `Units.ext` to reduce the goal to its premises. Establish `h` using `hc 1 1`. Rewrite `h` using `[mul_one, AlgEquiv.one_apply]`.
+
+Establish `h' : ((w 1 : Ωˣ) : Ω) * 1 = (w 1 : Ω) * (w 1 : Ω)` using `by rw [mul_one]; exact h`. Conclude with `(mul_left_cancel₀ (w 1).ne_zero h').symm`. Establish `hopen : IsOpen (w ⁻¹' {1})` using `hw _`. Take `⟨E, hfin, hE⟩` from `(krullTopology_mem_nhds_one_iff K Ω _).1 (hopen.mem_nhds (by simp [h1]))`. Use `haveI := hfin`.
+
+Take `⟨β, hβ⟩` from `ReciprocityTheory.DiscreteGroups.LocalClassField.exists_units_of_cocycle (⊤ : Subgroup (Ω ≃ₐ[K] Ω)) (fun h => w h.1) E (fun h hh => hE hh) (fun g h => Units.ext (by simp [hc]))`. Use `⟨β, fun g => ?_⟩` and prove the remaining obligations. Use `congrArg Units.val (hβ ⟨g, Subgroup.mem_top g⟩)` as an intermediate fact. Simplify `this` using `[div_eq_mul_inv]`.
+-/
 theorem hilbert90_locallyConstant_cocycle :
     ∀ (K Ω : Type) [Field K] [CharZero K] [Field Ω] [Algebra K Ω] [IsAlgClosure K Ω] (w : (Ω ≃ₐ[K] Ω) → Ωˣ),
       IsLocallyConstant w → (∀ g h, ((w (g * h) : Ωˣ) : Ω) = w g * g (w h)) →

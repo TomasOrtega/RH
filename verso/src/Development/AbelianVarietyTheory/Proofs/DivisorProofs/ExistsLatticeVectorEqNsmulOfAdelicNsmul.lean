@@ -16,12 +16,26 @@ variable {p : ℕ} [Fact p.Prime]
 def adBasis {D : Datum p} {J : Type} (b : Module.Basis J ℤ D.La) : Module.Basis J (AfP p) (AfP p ⊗[ℚ] VQ D) :=
   (b.baseChange ℚ).baseChange (AfP p)
 
+/- English proof (translation)
+Simplify using `only [adBasis, inAf, Module.Basis.baseChange_repr_tmul]`. Rewrite using `[Algebra.algebraMap_eq_smul_one]`. Simplify using the standard rewrite rules.
+-/
 theorem adBasis_repr_inAf {D : Datum p} {J : Type} (b : Module.Basis J ℤ D.La) (z : D.La) (i : J) :
     (adBasis b).repr (inAf D z) i = algebraMap ℚ (AfP p) ((b.repr z i : ℤ) : ℚ) := by
   simp only [adBasis, inAf, Module.Basis.baseChange_repr_tmul]
   rw [Algebra.algebraMap_eq_smul_one]
   simp
 
+/- English proof (translation)
+Proceed by induction on `hw using AddSubgroup.closure_induction with`. Consider the case `mem z hz`. Take `⟨c, x, hc, rfl⟩` from `hz`. Establish `e : (adBasis b).repr (c ⊗ₜ[ℚ] ((1 : ℚ) ⊗ₜ[ℤ] x : VQ D)) i = ((b.repr x i : ℤ) : AfP p) * c`. Simplify using `[adBasis, Algebra.smul_def]`.
+
+Rewrite using `[e]`. Introduce `v`. Rewrite using `[map_mul, map_intCast]`. Conclude with `mul_mem (intCast_mem _ _) (hc v)`. Consider the case `zero`.
+
+Introduce `v`. Rewrite using `[map_zero, Finsupp.zero_apply, map_zero]`. Conclude with `zero_mem _`. Consider the case `add x y _ _ hx hy`. Introduce `v`.
+
+Rewrite using `[map_add, Finsupp.add_apply, map_add]`. Conclude with `add_mem (hx v) (hy v)`. Consider the case `neg x _ hx`. Introduce `v`. Rewrite using `[map_neg, Finsupp.neg_apply, map_neg]`.
+
+Conclude with `neg_mem (hx v)`.
+-/
 theorem isIntAf_adBasis_repr {D : Datum p} {J : Type} (b : Module.Basis J ℤ D.La) (i : J) {w : AfP p ⊗[ℚ] VQ D}
     (hw : w ∈ LaHat D) : IsIntAf ((adBasis b).repr w i) := by
   induction hw using AddSubgroup.closure_induction with
@@ -46,6 +60,13 @@ theorem isIntAf_adBasis_repr {D : Datum p} {J : Type} (b : Module.Basis J ℤ D.
     rw [map_neg, Finsupp.neg_apply, map_neg]
     exact neg_mem (hx v)
 
+/- English proof (translation)
+Take `⟨w, hw, e⟩` from `hz`. Use `D.freeLa` as an intermediate fact. Use `D.finLa` as an intermediate fact. Set `b` to `Module.Free.chooseBasis ℤ D.La`. Establish `hd : ∀ i, (n : ℤ) ∣ b.repr z i`.
+
+Introduce `i`. Use `h _ _ (isIntAf_adBasis_repr b i hw) ?_` and prove the remaining obligations. Rewrite using `[← adBasis_repr_inAf, e, map_nsmul, Finsupp.smul_apply, nsmul_eq_mul]`. Use `choose d hd using hd`. Use `⟨∑ i, d i • b i, ?_⟩` and prove the remaining obligations.
+
+Use `conv_lhs => rw [← b.sum_repr z]`. Rewrite using `[Finset.smul_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[hd i, mul_smul, Nat.cast_smul_eq_nsmul]`.
+-/
 theorem exists_eq_nsmul_of_inAf (p : ℕ) [Fact p.Prime] (D : Datum p) (n : ℕ) (_hn : 0 < n) (_hc : n.Coprime p)
     (h : ∀ (c : ℤ) (a : AfP p), IsIntAf a → algebraMap ℚ (AfP p) (c : ℚ) = (n : AfP p) * a → (n : ℤ) ∣ c)
     (z : D.La) (hz : ∃ w ∈ LaHat D, inAf D z = n • w) : ∃ u : D.La, z = n • u := by

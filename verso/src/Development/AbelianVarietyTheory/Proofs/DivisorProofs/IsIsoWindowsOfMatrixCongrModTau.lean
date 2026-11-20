@@ -17,6 +17,11 @@ noncomputable def rgt (σ : B →+* B) (N : Matrix ι ι B) : ℕ → Matrix ι 
   | 0 => 1
   | n + 1 => (rgt σ N n).map σ * N
 
+/- English proof (translation)
+Proceed by induction on `n with`. Consider the case `zero => simp [lft]`. Consider the case `succ n ih`. Rewrite using `[Function.iterate_succ_apply', ih, lft, ← Matrix.mulVec_mulVec]`. Use `congr 1`.
+
+Use function extensionality and compare the values at `j`. Simplify using `[Matrix.mulVec, dotProduct, map_sum, map_mul, Function.iterate_succ_apply']`.
+-/
 theorem iter_vec (σ : B →+* B) (M : Matrix ι ι B) (n : ℕ) (w : ι → B) :
     (fun w : ι → B => M.mulVec fun j => σ (w j))^[n] w =
       (lft σ M n).mulVec fun j => σ^[n] (w j) := by
@@ -28,6 +33,11 @@ theorem iter_vec (σ : B →+* B) (M : Matrix ι ι B) (n : ℕ) (w : ι → B) 
     funext j
     simp [Matrix.mulVec, dotProduct, map_sum, map_mul, Function.iterate_succ_apply']
 
+/- English proof (translation)
+Proceed by induction on `n with`. Consider the case `zero => simp [lft, rgt]`. Consider the case `succ n ih`. Rewrite using `[Function.iterate_succ_apply', ih, lft, rgt, Matrix.map_mul, Matrix.map_mul, Matrix.map_map]`. Rewrite using `[Function.iterate_succ']`.
+
+Simplify using `only [Matrix.mul_assoc]`.
+-/
 theorem iter_mat (σ : B →+* B) (M N : Matrix ι ι B) (n : ℕ) (Y : Matrix ι ι B) :
     (fun Y : Matrix ι ι B => M * Y.map σ * N)^[n] Y =
       lft σ M n * Y.map σ^[n] * rgt σ N n := by
@@ -41,6 +51,9 @@ theorem iter_mat (σ : B →+* B) (M N : Matrix ι ι B) (n : ℕ) (Y : Matrix �
 noncomputable def kron (M N : Matrix ι ι B) : Matrix (ι × ι) (ι × ι) B :=
   Matrix.of fun x y => M x.1 y.1 * N y.2 x.2
 
+/- English proof (translation)
+Simplify using `only [kron, Matrix.mulVec, dotProduct, Matrix.of_apply, Matrix.mul_apply, Matrix.map_apply, Fintype.sum_prod_type, Finset.sum_mul]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun m _ => Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem kron_mulVec (σ : B →+* B) (M N Y : Matrix ι ι B) (x : ι × ι) :
     (kron M N).mulVec (fun y => σ (Y y.1 y.2)) x = (M * Y.map σ * N) x.1 x.2 := by
   simp only [kron, Matrix.mulVec, dotProduct, Matrix.of_apply, Matrix.mul_apply, Matrix.map_apply,
@@ -49,6 +62,11 @@ theorem kron_mulVec (σ : B →+* B) (M N Y : Matrix ι ι B) (x : ι × ι) :
   refine Finset.sum_congr rfl fun m _ => Finset.sum_congr rfl fun j _ => ?_
   ring
 
+/- English proof (translation)
+Rewrite using `[← iter_mat]`. Proceed by induction on `n generalizing x with`. Consider the case `zero => rfl`. Consider the case `succ n ih`. Rewrite using `[Function.iterate_succ_apply', Function.iterate_succ_apply']`.
+
+Establish `: (fun w : ι × ι → B => (kron M N).mulVec fun j => σ (w j))^[n] v = fun y => ((fun Y : Matrix ι ι B => M * Y.map σ * N)^[n] (Matrix.of fun j m => v (j, m))) y.1 y.2`. Use function extensionality and compare the values at `ih`. Rewrite using `[this, kron_mulVec]`.
+-/
 theorem kron_iter (σ : B →+* B) (M N : Matrix ι ι B) (n : ℕ) (v : ι × ι → B) (x : ι × ι) :
     (fun w : ι × ι → B => (kron M N).mulVec fun j => σ (w j))^[n] v x =
       (lft σ M n * (Matrix.of fun j m => v (j, m)).map σ^[n] * rgt σ N n) x.1 x.2 := by
@@ -70,6 +88,15 @@ namespace GlobalTheory.WindowIso
 
 section Nil
 
+/- English proof (translation)
+Take `⟨n, hn⟩` from `h`. Establish `hL : ∀ i j, θ (lft σ M n i j) ∈ IsLocalRing.maximalIdeal O`. Introduce `i j`. Establish `h1` using `hn (Pi.single j 1) i`. Rewrite `h1` using `[iter_vec]`.
+
+Establish `h2 : (fun m => σ^[n] ((Pi.single j (1 : B) : ι → B) m)) = Pi.single j 1`. Use function extensionality and compare the values at `m`. Distinguish the cases in `hm : m = j`. Substitute `hm` using the available equality. Simplify using `[Function.iterate_fixed (map_one σ)]`.
+
+Simplify using `[hm, Function.iterate_fixed (map_zero σ)]`. Rewrite `h1` using `[h2]`. Simplify using `only [Matrix.mulVec, dotProduct, Pi.single_apply, mul_ite, mul_one, mul_zero, Finset.sum_ite_eq', Finset.mem_univ, if_true] at h1`. Conclude with `(IsLocalRing.mem_maximalIdeal _).2 h1`. Use `⟨n, fun v x => ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[kron_iter]`. Use `(IsLocalRing.mem_maximalIdeal _).1 ?_` and prove the remaining obligations. Simplify using `only [Matrix.mul_apply, map_sum, map_mul]`. Conclude with `Ideal.sum_mem _ fun m _ => Ideal.mul_mem_right _ _ (Ideal.sum_mem _ fun j _ => Ideal.mul_mem_right _ _ (hL _ _))`.
+-/
 theorem isNil_kron {B O ι : Type} [CommRing B] [CommRing O] [IsLocalRing O] [Fintype ι] [DecidableEq ι]
     (θ : B →+* O) (σ : B →+* B) (M N : Matrix ι ι B) (h : IsNil θ σ M) : IsNil θ σ (kron M N) := by
   obtain ⟨n, hn⟩ := h
@@ -93,6 +120,17 @@ theorem isNil_kron {B O ι : Type} [CommRing B] [CommRing O] [IsLocalRing O] [Fi
   exact Ideal.sum_mem _ fun m _ => Ideal.mul_mem_right _ _ (Ideal.sum_mem _ fun j _ =>
     Ideal.mul_mem_right _ _ (hL _ _))
 
+/- English proof (translation)
+Take `⟨n, hn⟩` from `h`. Establish `key : ∀ (m : ℕ) (v : ι → A) (i : ι), (fun w : ι → B => K.mulVec fun j => σB (w j))^[m] (fun j => a (v j)) i - a ((fun w : ι → A => KA.mulVec fun j => φ (w j))^[m] v i) ∈ I`. Introduce `m v`. Proceed by induction on `m with`. Consider the case `zero => intro i`.
+
+Simplify using the standard rewrite rules. Consider the case `succ m ih`. Introduce `i`. Rewrite using `[Function.iterate_succ_apply', Function.iterate_succ_apply']`. Use `set w := (fun w : ι → B => K.mulVec fun j => σB (w j))^[m] (fun j => a (v j))`.
+
+Use `set u := (fun w : ι → A => KA.mulVec fun j => φ (w j))^[m] v`. Simplify using `only [Matrix.mulVec, dotProduct, map_sum, map_mul, ← Finset.sum_sub_distrib]`. Use `Ideal.sum_mem _ fun j _ => ?_` and prove the remaining obligations. Establish `e : K i j * σB (w j) - a (KA i j) * a (φ (u j)) = (K i j - a (KA i j)) * σB (w j) + a (KA i j) * σB (w j - a (u j))`. Rewrite using `[map_sub, hσ]`.
+
+Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e]`. Conclude with `I.add_mem (I.mul_mem_right _ (hK i j)) (I.mul_mem_left _ (hσI _ (ih j)))`. Use `⟨n, fun v i => ?_⟩` and prove the remaining obligations. Establish `h1` using `hn (fun j => a (v j)) i`.
+
+Establish `h2` using `hI _ (key n v i)`. Rewrite `h2` using `[map_sub, sub_eq_zero, hθ]`. Rewrite `h1` using `[h2]`. Then use the resulting hypothesis.
+-/
 theorem isNil_lift {A B O ι : Type} [CommRing A] [CommRing B] [CommRing O] [Fintype ι]
     (θB : B →+* O) (σB : B →+* B) (θA : A →+* O) (φ : A →+* A) (a : A →+* B) (I : Ideal B)
     (hθ : ∀ x, θB (a x) = θA x) (hσ : ∀ x, σB (a x) = a (φ x)) (hI : ∀ x ∈ I, θB x = 0)
@@ -130,12 +168,22 @@ section Frame
 variable {p : ℕ} [Fact p.Prime] {O : Type} [CommRing O] [Fact ¬IsUnit (p : O)]
   [IsAdicComplete (Ideal.span {(p : O)}) O] {ε : PreTilt O p} (F : BFrame ε)
 
+/- English proof (translation)
+Apply `F.frame.inj` to reduce the goal to its premises. Establish `h'` using `congrArg (algebraMap F.B F.Q) h`. Simplify using `only [map_mul, map_natCast] at h'`. Conclude with `F.frame.unit_p.mul_left_cancel h'`.
+-/
 theorem p_cancel {x y : F.B} (h : (p : F.B) * x = p * y) : x = y := by
   apply F.frame.inj
   have h' := congrArg (algebraMap F.B F.Q) h
   simp only [map_mul, map_natCast] at h'
   exact F.frame.unit_p.mul_left_cancel h'
 
+/- English proof (translation)
+Apply `p_cancel F` to reduce the goal to its premises. Establish `h1 : (p : F.B) * F.σ F.τ = F.σ (p * F.τ)` using `by rw [map_mul, map_natCast]`. Rewrite using `[h1, F.p_τ, F.σ_a]`. Use `set x : Ainf p O := WittVector.teichmuller p ε`. Establish `hφ : WittVector.frobenius (Sandwich.mu ε) = (∑ i ∈ Finset.range p, x ^ i) * (x - 1)`.
+
+Rewrite using `[geom_sum_mul, Sandwich.mu, map_sub, map_one, WittVector.frobenius_eq_map_frobenius, WittVector.map_teichmuller, frobenius_def, map_pow]`. Establish `hd : x - 1 ∣ (∑ i ∈ Finset.range p, x ^ i) - p`. Establish `: (∑ i ∈ Finset.range p, x ^ i) - p = ∑ i ∈ Finset.range p, (x ^ i - 1 ^ i)`. Simplify using `[Finset.sum_sub_distrib]`. Rewrite using `[this]`.
+
+Conclude with `Finset.dvd_sum fun i _ => sub_dvd_pow_sub_pow x 1 i`. Take `⟨w, hw⟩` from `hd`. Establish `hS : (∑ i ∈ Finset.range p, x ^ i) = p + (x - 1) * w` using `by rw [← hw]; ring`. Rewrite using `[hφ, hS, map_mul, map_add, map_mul, map_natCast, show x - 1 = Sandwich.mu ε from rfl, ← F.p_τ]`. Take the linear combination `((p : F.B) * p * F.a w) * F.τ_sq`.
+-/
 theorem σ_τ : F.σ F.τ = p * F.τ := by
   apply p_cancel F
   have h1 : (p : F.B) * F.σ F.τ = F.σ (p * F.τ) := by rw [map_mul, map_natCast]
@@ -154,6 +202,9 @@ theorem σ_τ : F.σ F.τ = p * F.τ := by
   rw [hφ, hS, map_mul, map_add, map_mul, map_natCast, show x - 1 = Sandwich.mu ε from rfl, ← F.p_τ]
   linear_combination ((p : F.B) * p * F.a w) * F.τ_sq
 
+/- English proof (translation)
+Apply `F.frame.sat` to reduce the goal to its premises. Rewrite using `[← map_natCast F.θ p, ← map_mul, F.p_τ, F.θ_a, Sandwich.mu, map_sub, map_one, WittVector.fontaineTheta_teichmuller]`. Use `hε.zeta_zero` as an intermediate fact. Simplify using `only [zeta, Function.iterate_zero, id] at this`. Rewrite using `[this, sub_self]`.
+-/
 theorem θ_τ (hε : IsPrimitiveSystem ε) : F.θ F.τ = 0 := by
   apply F.frame.sat
   rw [← map_natCast F.θ p, ← map_mul, F.p_τ, F.θ_a, Sandwich.mu, map_sub, map_one,
@@ -168,6 +219,43 @@ end GlobalTheory.WindowIso
 
 namespace GlobalTheory.WindowIso
 
+/- English proof (translation)
+Introduce `p _ C _ _ _ v O _ _ _ _ _ hv ε hε F d k U U' hU _ hUU' hnil`. Use `haveI : Nontrivial O := ⟨⟨p, 1, fun h => (Fact.out : ¬IsUnit (p : O)) (h ▸ isUnit_one)⟩⟩`. Use `haveI : IsLocalRing O := by`. Use `IsLocalRing.of_nonunits_add fun x y hx hy => ?_` and prove the remaining obligations. Rewrite `hx`, `hy`, the goal using `[mem_nonunits_iff, hv.isUnit_iff_valuation_eq_one]`.
+
+Establish `hx'` using `lt_of_le_of_ne (hv.map_le_one x) hx`. Establish `hy'` using `lt_of_le_of_ne (hv.map_le_one y) hy`. Rewrite using `[map_add]`. Conclude with `ne_of_lt (lt_of_le_of_lt (v.map_add _ _) (max_lt hx' hy'))`. Use `set P : Matrix (Fin d ⊕ Fin k) (Fin d ⊕ Fin k) F.B := blk d k (p : F.B) 1 with hP`.
+
+Use `set Pd : Matrix (Fin d ⊕ Fin k) (Fin d ⊕ Fin k) F.B := blk d k 1 (p : F.B) with hPd`. Establish `hPP : Pd * P = (p : F.B) • 1`. Use extensionality with `i j`. Apply the tactic sequence `rcases i with i | i <;> rcases j with j | j <;>`. Simplify using `[hP, hPd, blk, Matrix.diagonal_mul_diagonal, Matrix.diagonal_apply, Matrix.one_apply]`.
+
+Establish `hUi : U⁻¹ * U = 1` using `Matrix.nonsing_inv_mul U ((Matrix.isUnit_iff_isUnit_det U).1 hU)`. Use `choose E hE using hUU'`. Use `set M := U * P with hM`. Use `set N := Pd * U⁻¹ with hN`. Use `set c := Matrix.of E * U⁻¹ with hc`.
+
+Use `set K := kron M N with hK`. Use `set I : Ideal F.B := Ideal.span {F.τ} with hI`. Establish `hσI : ∀ x ∈ I, F.σ x ∈ I`. Introduce `x hx`. Take `⟨y, rfl⟩` from `Ideal.mem_span_singleton'.1 hx`.
+
+Rewrite using `[map_mul, σ_τ F]`. Conclude with `Ideal.mem_span_singleton'.2 ⟨F.σ y * p, by ring⟩`. Establish `hθI : ∀ x ∈ I, F.θ x = 0`. Introduce `x hx`. Take `⟨y, rfl⟩` from `Ideal.mem_span_singleton'.1 hx`.
+
+Rewrite using `[map_mul, θ_τ F hε, mul_zero]`. Establish `hτI : ∀ x ∈ I, F.τ * x = 0`. Introduce `x hx`. Take `⟨y, rfl⟩` from `Ideal.mem_span_singleton'.1 hx`. Take the linear combination `y * F.τ_sq`.
+
+Use `choose g h hg using F.gen`. Establish `hgI : ∀ b, b - F.a (g b) ∈ I` using `fun b => by`. Rewrite using `[show b - F.a (g b) = F.a (h b) * F.τ by linear_combination hg b]`. Conclude with `Ideal.mul_mem_left _ _ (Ideal.mem_span_singleton_self _)`. Use `set KA : Matrix (_ × _) (_ × _) (Ainf p O) := Matrix.of fun x y => g (K x y) with hKA`.
+
+Establish `hnilA : IsNil (WittVector.fontaineTheta O p) (WittVector.frobenius : Ainf p O →+* Ainf p O) KA` using `isNil_lift F.θ F.σ _ _ F.a I F.θ_a F.σ_a hθI hσI K KA (fun i j => hgI _) (isNil_kron F.θ F.σ M N hnil)`. Take `⟨vA, hvA⟩` from `(GlobalTheory.T.ainf_frobenius_semilinear_equation_existsUnique p C v O hv ε hε _ KA hnilA).1 (fun y => g (c y.1 y.2))`. Use `set Z : Matrix (Fin d ⊕ Fin k) (Fin d ⊕ Fin k) F.B := Matrix.of fun j m => F.a (vA (j, m)) with hZ`. Establish `hΔ : ∀ i l, (Z - M * Z.map F.σ * N - c) i l ∈ I`. Introduce `i l`.
+
+Establish `h1` using `congrArg F.a (hvA (i, l))`. Establish `h2 : F.a ((KA.mulVec fun j => WittVector.frobenius (vA j)) (i, l)) = (KA.map F.a).mulVec (fun j => F.σ (F.a (vA j))) (i, l)`. Simplify using `[Matrix.mulVec, dotProduct, map_sum, map_mul, F.σ_a]`. Establish `h3 : (M * Z.map F.σ * N) i l = K.mulVec (fun y => F.σ (F.a (vA y))) (i, l)` using `(kron_mulVec F.σ M N Z (i, l)).symm`. Rewrite `h1` using `[map_sub, h2]`.
+
+Establish `e : (Z - M * Z.map F.σ * N - c) i l = (F.a (vA (i, l)) - (KA.map F.a).mulVec (fun j => F.σ (F.a (vA j))) (i, l) - F.a (g (c i l))) - (K - KA.map F.a).mulVec (fun j => F.σ (F.a (vA j))) (i, l) + (F.a (g (c i l)) - c i l)`. Rewrite using `[Matrix.sub_apply, Matrix.sub_apply, h3, Matrix.sub_mulVec, Pi.sub_apply]`. Simplify using `only [hZ, Matrix.of_apply]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e, h1, sub_self, zero_sub]`.
+
+Use `I.add_mem (I.neg_mem ?_) ?_` and prove the remaining obligations. Simplify using `only [Matrix.mulVec, dotProduct]`. Conclude with `Ideal.sum_mem _ fun y _ => I.mul_mem_right _ (by simpa [hKA] using hgI (K (i, l) y))`. Use `I.neg_mem (hgI (c i l))` as an intermediate fact. Rewrite `this` using `[neg_sub]`. Then use the resulting hypothesis.
+
+Use `set R := Z * (U * P) - (p : F.B) • (M * Z.map F.σ) - Matrix.of E * P with hR`. Establish `hDR : (Z - M * Z.map F.σ * N - c) * (U * P) = R`. Establish `hN' : N * (U * P) = (p : F.B) • 1`. Rewrite using `[hN, Matrix.mul_assoc, ← Matrix.mul_assoc U⁻¹ U P, hUi, Matrix.one_mul, hPP]`. Establish `hc' : c * (U * P) = Matrix.of E * P`.
+
+Rewrite using `[hc, Matrix.mul_assoc, ← Matrix.mul_assoc U⁻¹ U P, hUi, Matrix.one_mul]`. Rewrite using `[Matrix.sub_mul, Matrix.sub_mul, Matrix.mul_assoc (M * Z.map F.σ), hN', hc', Matrix.mul_smul, Matrix.mul_one]`. Establish `hR0 : F.τ • R = 0`. Use extensionality with `i j`. Rewrite using `[Matrix.smul_apply, smul_eq_mul, Matrix.zero_apply, ← hDR]`.
+
+Apply `hτI` to reduce the goal to its premises. Rewrite using `[Matrix.mul_apply]`. Conclude with `Ideal.sum_mem _ fun m _ => I.mul_mem_right _ (hΔ i m)`. Use `⟨1 + F.τ • Z, fun i j => ⟨Z i j, by simp⟩, ?_⟩` and prove the remaining obligations. Establish `hU' : U' = U - F.τ • Matrix.of E`.
+
+Use extensionality with `i j`. Simplify using `only [Matrix.sub_apply, Matrix.smul_apply, Matrix.of_apply, smul_eq_mul]`. Take the linear combination `-(hE i j)`. Establish `hXσ : (1 + F.τ • Z).map F.σ = 1 + ((p : F.B) * F.τ) • Z.map F.σ`. Use extensionality with `i j`.
+
+Simplify using `[Matrix.one_apply, apply_ite F.σ, σ_τ F]`. Rewrite using `[hU', hXσ, ← sub_eq_zero]`. Establish `e : (1 + F.τ • Z) * ((U - F.τ • Matrix.of E) * P) - U * P * (1 + ((p : F.B) * F.τ) • Z.map F.σ) = F.τ • R - (F.τ * F.τ) • (Z * (Matrix.of E * P))`. Simplify using `only [hR, hM, mul_add, add_mul, mul_sub, sub_mul, Matrix.smul_mul, Matrix.mul_smul, Matrix.mul_one, Matrix.one_mul, Matrix.mul_assoc, smul_sub, smul_smul]`. Use `module`.
+
+Rewrite using `[e, hR0, F.τ_sq, zero_smul, sub_zero]`.
+-/
 theorem window_iso : ∀ (p : ℕ) [Fact p.Prime] (C : Type) [Field C] [IsAlgClosed C] [CharZero C] (v : Valuation C NNReal) (O : Type) [CommRing O] [Algebra O C] [Fact ¬IsUnit (p : O)] [IsAdicComplete (Ideal.span {(p : O)}) O] [IsDomain O], v.Integers O → ∀ (ε : PreTilt O p) (hε : IsPrimitiveSystem ε), ∀ F : BFrame ε, ∀ (d k : ℕ) (U U' : Matrix (Fin d ⊕ Fin k) (Fin d ⊕ Fin k) F.B), IsUnit U → IsUnit U' → (∀ i j, F.τ ∣ U i j - U' i j) → IsNil F.θ F.σ (U * blk d k (p : F.B) 1) → ∃ X : Matrix (Fin d ⊕ Fin k) (Fin d ⊕ Fin k) F.B, (∀ i j, F.τ ∣ X i j - (1 : Matrix (Fin d ⊕ Fin k) (Fin d ⊕ Fin k) F.B) i j) ∧ X * (U' * blk d k (p : F.B) 1) = U * blk d k (p : F.B) 1 * X.map F.σ := by
   intro p _ C _ _ _ v O _ _ _ _ _ hv ε hε F d k U U' hU _ hUU' hnil
   classical

@@ -22,6 +22,9 @@ namespace GlobalTheory.MixHt.StepVal
 
 variable {k : Type} [CommRing k]
 
+/- English proof (translation)
+Substitute `e` using the available equality. Establish `R` using `L.refines_pull_pull f hf g hg hc`. Conclude with `HermLB.isometric_of_chart _ R.le (fun x => R.g Z (𝟙 Z) x) fun σ c y hy => ((R.φ σ c y hy).trans (add_zero _)).symm`.
+-/
 theorem isometric_pull_pull' {X Y Z : Scheme.{0}} {p : X ⟶ Sp k} {q : Y ⟶ Sp k}
     {s : Z ⟶ Sp k} (L : HermLB p) (f : Y ⟶ X) (hf : f ≫ p = q) (g : Z ⟶ Y) (hg : g ≫ q = s) (c : Z ⟶ X)
     (hc : c ≫ p = s) (e : g ≫ f = c) : ((L.pull f hf).pull g hg).Isometric (L.pull c hc) := by
@@ -30,6 +33,11 @@ theorem isometric_pull_pull' {X Y Z : Scheme.{0}} {p : X ⟶ Sp k} {q : Y ⟶ Sp
   exact HermLB.isometric_of_chart _ R.le (fun x => R.g Z (𝟙 Z) x) fun σ c y hy =>
     ((R.φ σ c y hy).trans (add_zero _)).symm
 
+/- English proof (translation)
+Unfold `recVal`. Use `congr 1`. Use `finsum_congr fun z => ?_` and prove the remaining obligations. Distinguish the cases in `hz : (M.div hr).mult z = 0`. Simplify using `[hz]`.
+
+Rewrite using `[H z (CartierDiv.coheight_eq_one_of_mult_ne_zero hz)]`.
+-/
 theorem recVal_congr {Y : Scheme.{0}} [IsIntegral Y] [IsLocallyNoetherian Y] {q : Y ⟶ Sp k} {e : ℕ}
     {h h' : Y → ℝ} (H : ∀ z : Y, Order.coheight z = 1 → h z = h' z) (L : Fin e → HermLB q) (M : HermLB q)
     {r : M.B.ι → Y.functionFieldˣ} (hr : IsRatSec M.B r) : recVal h L M hr = recVal h' L M hr := by
@@ -40,6 +48,9 @@ theorem recVal_congr {Y : Scheme.{0}} [IsIntegral Y] [IsLocallyNoetherian Y] {q 
   · simp [hz]
   · rw [H z (CartierDiv.coheight_eq_one_of_mult_ne_zero hz)]
 
+/- English proof (translation)
+Establish `H` using `(GlobalTheory.T.hasPointClosureDim_basic_projArithAmbient k X p hp).2.2.2.2`. Rewrite using `[← H.2 Y d, ← H.1 Y i (genericPoint Y) d, hg]`. Conclude with `hx`.
+-/
 theorem dim_of_genericPoint {X Y : Scheme.{0}} [IsIntegral Y] {p : X ⟶ Sp k} (hp : IsAmb p) (i : Y ⟶ X)
     [IsClosedImmersion i] {x : X} {d : ℕ} (hx : HasDim x d) (hg : i (genericPoint Y) = x) :
     topologicalKrullDim Y = d := by
@@ -47,6 +58,11 @@ theorem dim_of_genericPoint {X Y : Scheme.{0}} [IsIntegral Y] {p : X ⟶ Sp k} (
   rw [← H.2 Y d, ← H.1 Y i (genericPoint Y) d, hg]
   exact hx
 
+/- English proof (translation)
+Consider the cases of `m with`. Consider the case `zero`. Establish `H : ∀ z : Y, Order.coheight z = 1 → T 0 L z = Real.log (Nat.card (Y.residueField z))` using `fun z hz => hT.zero L z (((GlobalTheory.T.coheight_one_iff_pointClosure_dim_projArith k Y q hq 0 hY).1 z).1 hz)`. Rewrite using `[recVal_congr H, recVal_congr H]`. Conclude with `GlobalTheory.T.arithmetic_curve_degree_independent_of_section k Y q hq hY N L r hr r' hr'`.
+
+Consider the case `succ e => exact GlobalTheory.T.mixedHeightInduction_independent_of_section hInt hRec k Y q hq e hY T hT N L r hr r' hr'`.
+-/
 theorem recVal_indep_section (hInt : ArchInteg) (hRec : ArchRecip) (m : ℕ) {Y : Scheme.{0}} [IsIntegral Y]
     [IsLocallyNoetherian Y] {q : Y ⟶ Sp k} (hq : IsAmb q) (hY : topologicalKrullDim Y = (m + 1 : ℕ)) {T}
     (hT : IsMix q m T) (L : Fin m → HermLB q) (N : HermLB q) {r r' : N.B.ι → Y.functionFieldˣ} (hr : IsRatSec N.B r)
@@ -59,6 +75,9 @@ theorem recVal_indep_section (hInt : ArchInteg) (hRec : ArchRecip) (m : ℕ) {Y 
     exact GlobalTheory.T.arithmetic_curve_degree_independent_of_section k Y q hq hY N L r hr r' hr'
   | succ e => exact GlobalTheory.T.mixedHeightInduction_independent_of_section hInt hRec k Y q hq e hY T hT N L r hr r' hr'
 
+/- English proof (translation)
+Establish `H` using `GlobalTheory.T.mixedHeight_inductive_rhs_symm_isometry_invariant hInt k Y q hq m hY T hT M r hr`. Take `⟨r₃, hr₃, e₃⟩` from `H.2.2 L' M' hM`. Rewrite using `[H.1 L L' hL, ← e₃]`. Conclude with `recVal_indep_section hInt hRec m hq hY hT L' M' hr₃ hr'`.
+-/
 theorem recVal_indep (hInt : ArchInteg) (hRec : ArchRecip) (m : ℕ) {Y : Scheme.{0}} [IsIntegral Y]
     [IsLocallyNoetherian Y] {q : Y ⟶ Sp k} (hq : IsAmb q) (hY : topologicalKrullDim Y = (m + 1 : ℕ)) {T}
     (hT : IsMix q m T) (L L' : Fin m → HermLB q) (hL : ∀ a, (L a).Isometric (L' a)) (M M' : HermLB q)
@@ -75,6 +94,11 @@ namespace GlobalTheory.MixHt.StepVal
 
 variable {k : Type} [CommRing k]
 
+/- English proof (translation)
+Establish `hq : IsAmb q` using `by subst hi; exact hp.sub i`. Establish `hY` using `dim_of_genericPoint hp i hx hg`. Take `⟨T', hT'⟩` from `hall k Y q hq`. Establish `E : ∀ N : Fin m → HermLB q, (∀ a, ((L a).pull i hi).Isometric (N a)) → ∀ z : Y, Order.coheight z = 1 → T m L (i z) = T' m N z` using `fun N hN z hz => GlobalTheory.T.mixedHeight_unique_restrict_closedSubscheme k X Y p q hp i hi m m T T' hT hT' m le_rfl le_rfl L N hN z (((GlobalTheory.T.coheight_one_iff_pointClosure_dim_projArith k Y q hq m hY).1 z).1 hz)`. Rewrite using `[recVal_congr (E L' hL'), recVal_congr (E L'' hL'')]`.
+
+Conclude with `recVal_indep hInt hRec m hq hY hT' L' L'' (fun a => (hL' a).symm.trans (hL'' a)) M' M'' (hM'.symm.trans hM'') hr' hr''`.
+-/
 theorem recVal_eq_of_same (hInt : ArchInteg) (hRec : ArchRecip) (m : ℕ)
     (hall : ∀ (k : Type) [CommRing k] (Y : Scheme.{0}) (q : Y ⟶ Sp k), IsAmb q → ∃ T, IsMix q m T)
     {X : Scheme.{0}} {p : X ⟶ Sp k} (hp : IsAmb p) {T} (hT : IsMix p m T) {x : X} (hx : HasDim x (m + 1))
@@ -96,6 +120,13 @@ theorem recVal_eq_of_same (hInt : ArchInteg) (hRec : ArchRecip) (m : ℕ)
   exact recVal_indep hInt hRec m hq hY hT' L' L'' (fun a => (hL' a).symm.trans (hL'' a)) M' M''
     (hM'.symm.trans hM'') hr' hr''
 
+/- English proof (translation)
+Take `⟨g, hiso, hgi, hη⟩` from `GlobalTheory.T.exists_iso_closedImmersions_same_genericPoint X Y₁ Y₂ i₁ i₂ (hg₁.trans hg₂.symm)`. Establish `hgq : g ≫ q₁ = q₂` using `by rw [← hi₁, ← hi₂, ← Category.assoc, hgi]`. Establish `hq₁ : IsAmb q₁` using `by subst hi₁; exact hp.sub i₁`. Establish `hq₂ : IsAmb q₂` using `by subst hi₂; exact hp.sub i₂`. Establish `hY₁` using `dim_of_genericPoint hp i₁ hx hg₁`.
+
+Establish `tr` using `GlobalTheory.T.inductive_height_formula_rhs_transport_iso k Y₁ Y₂ q₁ q₂ hq₁ hq₂ g hgq hη hiso m hY₁ (fun z => T m L (i₁ z)) L₁ M₁ r₁ hr₁`. Rewrite using `[← tr]`. Establish `hfun : (fun w => T m L (i₁ (g w))) = fun w => T m L (i₂ w)`. Use function extensionality and compare the values at `w`. Rewrite using `[← hgi]`.
+
+Simplify using the standard rewrite rules. Rewrite using `[hfun]`. Use `recVal_eq_of_same hInt hRec m hall hp hT hx M L i₂ hi₂ hg₂ _ _ _ _ ?_ hM₂ (fun a => ?_) hL₂ _ hr₂` and prove the remaining obligations. Conclude with `(isometric_pull_pull' M i₁ hi₁ g hgq i₂ hi₂ hgi).symm.trans (hM₁.pull g hgq)`. Conclude with `(isometric_pull_pull' (L a) i₁ hi₁ g hgq i₂ hi₂ hgi).symm.trans ((hL₁ a).pull g hgq)`.
+-/
 theorem recVal_eq_of_two (hInt : ArchInteg) (hRec : ArchRecip) (m : ℕ)
     (hall : ∀ (k : Type) [CommRing k] (Y : Scheme.{0}) (q : Y ⟶ Sp k), IsAmb q → ∃ T, IsMix q m T)
     {X : Scheme.{0}} {p : X ⟶ Sp k} (hp : IsAmb p) {T} (hT : IsMix p m T) {x : X} (hx : HasDim x (m + 1))
@@ -125,6 +156,9 @@ theorem recVal_eq_of_two (hInt : ArchInteg) (hRec : ArchRecip) (m : ℕ)
   · exact (isometric_pull_pull' M i₁ hi₁ g hgq i₂ hi₂ hgi).symm.trans (hM₁.pull g hgq)
   · exact (isometric_pull_pull' (L a) i₁ hi₁ g hgq i₂ hi₂ hgi).symm.trans ((hL₁ a).pull g hgq)
 
+/- English proof (translation)
+Introduce `hInt hRec m hall k _ X p hp T hT x hx M L`. Distinguish the cases in `H : ∃ v : ℝ, ∃ (Y : Scheme.{0}) (_ : IsIntegral Y) (_ : IsLocallyNoetherian Y) (q : Y ⟶ Sp k) (i : Y ⟶ X) (_ : IsClosedImmersion i) (hi : i ≫ p = q) (_ : i (genericPoint Y) = x) (M' : HermLB q) (L' : Fin m → HermLB q) (_ : (M.pull i hi).Isometric M') (_ : ∀ a, ((L a).pull i hi).I …`. Take `⟨v, Y₁, _, _, q₁, i₁, _, hi₁, hg₁, M₁, L₁, hM₁, hL₁, r₁, hr₁, rfl⟩` from `H`. Conclude with `⟨_, fun Y _ _ q i _ hi hg M' L' hM hL r hr => recVal_eq_of_two hInt hRec m hall hp hT hx M L i₁ hi₁ hg₁ M₁ L₁ hM₁ hL₁ hr₁ i hi hg M' L' hM hL hr⟩`. Conclude with `⟨0, fun Y _ _ q i _ hi hg M' L' hM hL r hr => absurd ⟨_, Y, ‹_›, ‹_›, q, i, ‹_›, hi, hg, M', L', hM, hL, r, hr, rfl⟩ H⟩`.
+-/
 theorem step_val : ArchInteg → ArchRecip → ∀ m : ℕ, (∀ (k : Type) [CommRing k] (Y : Scheme.{0}) (q : Y ⟶ Sp k),
     IsAmb q → ∃ T, IsMix q m T) → ∀ (k : Type) [CommRing k] (X : Scheme.{0}) (p : X ⟶ Sp k), IsAmb p → ∀ T,
     IsMix p m T → ∀ (x : X), HasDim x (m + 1) → ∀ (M : HermLB p) (L : Fin m → HermLB p), ∃ v : ℝ,

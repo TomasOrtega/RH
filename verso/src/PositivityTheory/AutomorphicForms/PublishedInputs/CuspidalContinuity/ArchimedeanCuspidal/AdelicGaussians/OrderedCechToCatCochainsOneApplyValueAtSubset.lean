@@ -27,11 +27,32 @@ def F (M : ℕ) (p : ℚ × ℚ × ℚ) : ℝ :=
   if ((M : ℚ) * p.1).den = 1 ∧ ((M : ℚ) * p.2.1).den = 1 ∧ ((M : ℚ) * p.2.2).den = 1 then
     ((1 + |(p.1 : ℝ)| + |(p.2.1 : ℝ)|) ^ 3 * (1 + |(p.2.2 : ℝ)|) ^ 2)⁻¹ else 0
 
+/- English proof (translation)
+Apply the tactic sequence `unfold F; split_ifs <;> positivity`.
+-/
 theorem F_nonneg (M : ℕ) (p : ℚ × ℚ × ℚ) : 0 ≤ F M p := by
   unfold F; split_ifs <;> positivity
 
+/- English proof (translation)
+The claim follows from `GlobalTheory.T.summable_lattice_weight_three M hM`.
+-/
 theorem summable_F (M : ℕ) (hM : 0 < M) : Summable (F M) := GlobalTheory.T.summable_lattice_weight_three M hM
 
+/- English proof (translation)
+Use `set B1 := max 1 B`. Establish `hB1 : 1 ≤ B1` using `le_max_left _ _`. Establish `hBB1 : B ≤ B1` using `le_max_right _ _`. Establish `hD : 1 ≤ (1 + α) * (1 + β)` using `by nlinarith`. Establish `e1 : 1 + ρ ≤ B1 * (1 + β)` using `by nlinarith`.
+
+Establish `e2 : 1 + Y ≤ B1 * ((1 + α) * (1 + β) ^ 2)`. Establish `: α * β ^ 2 ≤ (1 + α) * (1 + β) ^ 2 - 1` using `by nlinarith [sq_nonneg β, mul_nonneg hα hβ]`. Establish `h0 : 0 ≤ α * β ^ 2` using `by positivity`. Use the polynomial consequences of the given equalities and inequalities. Establish `e3 : (1 + ρ) * (1 + Y) ≤ B1 ^ 2 * ((1 + α) * (1 + β)) ^ 3`.
+
+Establish `h4 : (1 + α) * (1 + β) ^ 3 ≤ ((1 + α) * (1 + β)) ^ 3`. Establish `: (1 + α) ≤ (1 + α) ^ 3` using `le_self_pow₀ (by linarith) (by norm_num)`. Establish `: (1 + α) * (1 + β) ^ 3 ≤ (1 + α) ^ 3 * (1 + β) ^ 3` using `mul_le_mul_of_nonneg_right this (by positivity)`. Simplify `this` using `[mul_pow]`. Combine the equalities or inequalities in the displayed calculation.
+
+Establish `e4 : ((1 + ρ) * (1 + Y)) ^ L ≤ B1 ^ (2 * L) * ((1 + α) * (1 + β)) ^ (3 * L)`. Combine the equalities or inequalities in the displayed calculation. Establish `e5 : Ai ^ T ≤ Q ^ T * (1 + ρ) ^ T`. Rewrite using `[← mul_pow]; exact pow_le_pow_left₀ hAi0 (hAi.trans (by nlinarith)) T`. Establish `hDpos : 0 < ((1 + α) * (1 + β)) ^ (3 * L)` using `by positivity`.
+
+Establish `e6 : (1 + ρ) ^ T * ((1 + ρ) ^ 3 * (1 + Y) ^ 2) ≤ ((1 + ρ) * (1 + Y)) ^ L`. Rewrite using `[mul_pow]`. Establish `h1 : (1 + ρ) ^ T * (1 + ρ) ^ 3 ≤ (1 + ρ) ^ L`. Rewrite using `[← pow_add]; exact pow_le_pow_right₀ (by linarith) hL`. Establish `h2 : (1 + Y) ^ 2 ≤ (1 + Y) ^ L` using `pow_le_pow_right₀ (by linarith) (by omega)`.
+
+Combine the equalities or inequalities in the displayed calculation. Establish `hP : 0 < (1 + ρ) ^ 3 * (1 + Y) ^ 2` using `by positivity`. Establish `hCg : Cg ≤ max Cg 0` using `le_max_left _ _`. Establish `hCg0 : 0 ≤ max Cg 0` using `le_max_right _ _`. Combine the equalities or inequalities in the displayed calculation.
+
+Rewrite using `[div_le_iff₀ hDpos]`. Establish `key : (1 + ρ) ^ T ≤ B1 ^ (2 * L) * ((1 + α) * (1 + β)) ^ (3 * L) * ((1 + ρ) ^ 3 * (1 + Y) ^ 2)⁻¹`. Rewrite using `[le_mul_inv_iff₀ hP]`. Conclude with `e6.trans e4`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem real_bound {T L : ℕ} (hL : T + 3 ≤ L) {X Cg Ai α β ρ Y B Q : ℝ} (hα : 0 ≤ α) (hβ : 0 ≤ β)
     (hρ : 0 ≤ ρ) (hY : 0 ≤ Y) (hB : 0 ≤ B) (hQ : 0 ≤ Q) (hAi0 : 0 ≤ Ai)
     (hX : X ≤ Cg * Ai ^ T / ((1 + α) * (1 + β)) ^ (3 * L))
@@ -86,6 +107,23 @@ theorem real_bound {T L : ℕ} (hL : T + 3 ≤ L) {X Cg Ai α β ρ Y B Q : ℝ}
               ((1 + ρ) ^ 3 * (1 + Y) ^ 2)⁻¹) := mul_le_mul_of_nonneg_left key (by positivity)
           _ = _ := by ring
 
+/- English proof (translation)
+Establish `hs : Continuous (Prod.snd : 𝔸[ℚ] → 𝔸f)` using `continuous_snd`. Use `set D : Set 𝔸f := ((fun p : 𝔸f × G3 => p.1 * (Φ0 p.2).2) '' (Ω ×ˢ C)) ∪ ((fun p : 𝔸f × G3 => p.1 * (Φ1 p.2).2) '' (Ω ×ˢ C)) ∪ ((fun p : 𝔸f × 𝔸f × G3 => p.1 * p.2.1 ^ 2 * (Ψ p.2.2).2) '' (Ω ×ˢ Ω ×ˢ C)) with hDdef`. Establish `hD : IsCompact D`. Use `(((hΩ.prod hC).image ?_).union ((hΩ.prod hC).image ?_)).union ((hΩ.prod (hΩ.prod hC)).image ?_)` and prove the remaining obligations. Conclude with `continuous_fst.mul (hs.comp (h0.comp continuous_snd))`.
+
+Conclude with `continuous_fst.mul (hs.comp (h1.comp continuous_snd))`. Conclude with `(continuous_fst.mul ((continuous_fst.comp continuous_snd).pow 2)).mul (hs.comp (hΨ.comp (continuous_snd.comp continuous_snd)))`. Take `⟨d, hd0, hd⟩` from `GroundTheory.Global.exists_mul_mem_integralFiniteAdeles_of_isCompact hD`. Use `set n : ℤ := Rat.ringOfIntegersEquiv d with hn`. Establish `hnr : (n : ℚ) = algebraMap (𝓞 ℚ) ℚ d` using `by rw [hn, Rat.ringOfIntegersEquiv_apply_coe]`.
+
+Establish `hn0 : n ≠ 0`. Introduce `h`. Apply `hd0` to reduce the goal to its premises. Establish `: algebraMap (𝓞 ℚ) ℚ d = 0` using `by rw [← hnr, h, Int.cast_zero]`. Conclude with `(map_eq_zero_iff _ (IsFractionRing.injective (𝓞 ℚ) ℚ)).1 this`.
+
+Establish `key : ∀ x : ℚ, algebraMap ℚ 𝔸f x ∈ D → ((n.natAbs : ℚ) * x).den = 1`. Introduce `x hx`. Establish `hm` using `hd _ hx`. Rewrite `hm` using `[← hnr, ← map_mul]`. Take `⟨z, hz⟩` from `GroundTheory.Automorphic.GL2Classical.exists_int_of_mem_integralFiniteAdeles hm`.
+
+Break down `Int.natAbs_eq n with h | h` into its components or cases. Establish `: ((n.natAbs : ℚ)) = (n : ℚ)` using `by conv_rhs => rw [h]`. Simplify using the standard rewrite rules. Rewrite using `[this, hz]`. Simplify using the standard rewrite rules.
+
+Establish `: ((n.natAbs : ℚ)) = -(n : ℚ)` using `by conv_rhs => rw [h]`. Simplify using the standard rewrite rules. Rewrite using `[this, neg_mul, hz, ← Int.cast_neg]`. Simplify using the standard rewrite rules. Use `⟨n.natAbs, Int.natAbs_pos.2 hn0, fun u v hu hv m hm x0 x1 y e0 e1 ey => ⟨key _ ?_, key _ ?_, key _ ?_⟩⟩` and prove the remaining obligations.
+
+Use `Or.inl (Or.inl ⟨((v : 𝔸[ℚ]).2, m), ⟨hv, hm⟩, ?_⟩)` and prove the remaining obligations. Use `congrArg Prod.snd e0` as an intermediate fact. Simplify using `using this.symm`. Use `Or.inl (Or.inr ⟨((v : 𝔸[ℚ]).2, m), ⟨hv, hm⟩, ?_⟩)` and prove the remaining obligations. Use `congrArg Prod.snd e1` as an intermediate fact.
+
+Simplify using `using this.symm`. Use `Or.inr ⟨((u : 𝔸[ℚ]).2, (v : 𝔸[ℚ]).2, m), ⟨hu, hv, hm⟩, ?_⟩` and prove the remaining obligations. Use `congrArg Prod.snd ey` as an intermediate fact. Establish `h2 : ((v : 𝔸[ℚ]) ^ 2).2 = (v : 𝔸[ℚ]).2 ^ 2` using `by rw [pow_two, pow_two]; rfl`. Simplify `this.symm` using `[h2]`.
+-/
 theorem lattice {Ω : Set 𝔸f} (hΩ : IsCompact Ω) {C : Set G3} (hC : IsCompact C)
     {Φ0 Φ1 Ψ : G3 → 𝔸[ℚ]} (h0 : Continuous Φ0) (h1 : Continuous Φ1) (hΨ : Continuous Ψ) :
     ∃ M : ℕ, 0 < M ∧ ∀ (u v : (𝔸[ℚ])ˣ), (u : 𝔸[ℚ]).2 ∈ Ω → (v : 𝔸[ℚ]).2 ∈ Ω → ∀ m ∈ C,
@@ -137,6 +175,9 @@ theorem lattice {Ω : Set 𝔸f} (hΩ : IsCompact Ω) {C : Set G3} (hC : IsCompa
     have h2 : ((v : 𝔸[ℚ]) ^ 2).2 = (v : 𝔸[ℚ]).2 ^ 2 := by rw [pow_two, pow_two]; rfl
     simpa [h2] using this.symm
 
+/- English proof (translation)
+Use `NumberField.InfinitePlace.Completion.Rat.norm_infinitePlace_completion Rat.infinitePlace x` as an intermediate fact. Rewrite `this` using `[Rat.cast_abs]`. Establish `e : (algebraMap ℚ 𝔸[ℚ] x).1 Rat.infinitePlace = (x : Rat.infinitePlace.Completion)` using `eq_ratCast ((Pi.evalRingHom _ Rat.infinitePlace).comp ((RingHom.fst _ _).comp (algebraMap ℚ 𝔸[ℚ]))) x`. Rewrite using `[e]`. Conclude with `this`.
+-/
 theorem rat_inf (x : ℚ) : ‖(algebraMap ℚ 𝔸[ℚ] x).1 Rat.infinitePlace‖ = |(x : ℝ)| := by
   have := NumberField.InfinitePlace.Completion.Rat.norm_infinitePlace_completion Rat.infinitePlace x
   rw [Rat.cast_abs] at this
@@ -144,9 +185,47 @@ theorem rat_inf (x : ℚ) : ‖(algebraMap ℚ 𝔸[ℚ] x).1 Rat.infinitePlace�
     eq_ratCast ((Pi.evalRingHom _ Rat.infinitePlace).comp ((RingHom.fst _ _).comp (algebraMap ℚ 𝔸[ℚ]))) x
   rw [e]; exact this
 
+/- English proof (translation)
+Rewrite using `[show (a * b).1 Rat.infinitePlace = a.1 Rat.infinitePlace * b.1 Rat.infinitePlace from rfl, norm_mul]`.
+-/
 theorem norm_inf_mul (a b : 𝔸[ℚ]) : ‖(a * b).1 Rat.infinitePlace‖ = ‖a.1 Rat.infinitePlace‖ * ‖b.1 Rat.infinitePlace‖ := by
   rw [show (a * b).1 Rat.infinitePlace = a.1 Rat.infinitePlace * b.1 Rat.infinitePlace from rfl, norm_mul]
 
+/- English proof (translation)
+Take `⟨M, hM, hlat⟩` from `lattice hΩ hC h0 h1 hΨ`. Establish `hcf : ∀ f : G3 → 𝔸[ℚ], Continuous f → Continuous fun m => ‖(f m).1 Rat.infinitePlace‖` using `fun f hf => ((continuous_apply Rat.infinitePlace).comp (continuous_fst.comp hf)).norm`. Take `⟨B0, hB0⟩` from `hC.exists_bound_of_continuousOn (((hcf _ h0).add (hcf _ h1)).add (hcf _ hΨ)).continuousOn`. Use `set B := max B0 0 with hBdef`. Establish `hB : 0 ≤ B` using `le_max_right _ _`.
+
+Establish `hbd : ∀ m ∈ C, ‖(Φ0 m).1 Rat.infinitePlace‖ ≤ B ∧ ‖(Φ1 m).1 Rat.infinitePlace‖ ≤ B ∧ ‖(Ψ m).1 Rat.infinitePlace‖ ≤ B`. Introduce `m hm`. Establish `h` using `hB0 m hm`. Establish `n0` using `norm_nonneg ((Φ0 m).1 Rat.infinitePlace)`. Establish `n1` using `norm_nonneg ((Φ1 m).1 Rat.infinitePlace)`.
+
+Establish `n2` using `norm_nonneg ((Ψ m).1 Rat.infinitePlace)`. Simplify using `only [Pi.add_apply] at h`. Rewrite `h` using `[Real.norm_eq_abs, abs_of_nonneg (by positivity)]`. Use `le_max_left B0 0` as an intermediate fact. Apply the tactic sequence `refine ⟨?_, ?_, ?_⟩ <;> linarith`.
+
+Use `set Q : ℝ := K0 * M * 3 with hQdef`. Establish `hQ : 0 ≤ Q` using `by positivity`. Use `⟨M, hM, max Cg 0 * Q ^ T * (max 1 (2 * B)) ^ (2 * (T + 3)), ?_⟩` and prove the remaining obligations. Introduce `X u v m hm x0 x1 y z e0 e1 ey hz hA hX hsupp`. Establish `hF0` using `F_nonneg M (x0, x1, y)`.
+
+Establish `hK : 0 ≤ max Cg 0 * Q ^ T * (max 1 (2 * B)) ^ (2 * (T + 3))`. Establish `: 0 ≤ max Cg 0` using `le_max_right _ _`. Check the signs of the components of the expression. Distinguish the cases in `hX0 : X = 0`. Rewrite using `[hX0]`.
+
+Conclude with `mul_nonneg hK hF0`. Take `⟨hu, hv⟩` from `hsupp hX0`. Take `⟨d0, d1, dy⟩` from `hlat u v hu hv m hm x0 x1 y e0 e1 ey`. Establish `hFe : F M (x0, x1, y) = ((1 + |(x0 : ℝ)| + |(x1 : ℝ)|) ^ 3 * (1 + |(y : ℝ)|) ^ 2)⁻¹`. Simplify using `only [F]`.
+
+Rewrite using `[if_pos ⟨d0, d1, dy⟩]`. Rewrite using `[hFe]`. Establish `ninf : ∀ (s : ℚ) (a b : 𝔸[ℚ]), algebraMap ℚ 𝔸[ℚ] s = a * b → |(s : ℝ)| = ‖a.1 Rat.infinitePlace‖ * ‖b.1 Rat.infinitePlace‖`. Introduce `s a b h`. Rewrite using `[← rat_inf, h, norm_inf_mul]`.
+
+Use `set α := ‖(u : 𝔸[ℚ]).1 Rat.infinitePlace‖ with hαdef`. Use `set β := ‖(v : 𝔸[ℚ]).1 Rat.infinitePlace‖ with hβdef`. Establish `hα : 0 ≤ α` using `norm_nonneg _`. Establish `hβ : 0 ≤ β` using `norm_nonneg _`. Take `⟨b0, b1, b2⟩` from `hbd m hm`.
+
+Establish `hx0 : |(x0 : ℝ)| ≤ B * β`. Rewrite using `[ninf _ _ _ e0]`. Use polynomial arithmetic with `[norm_nonneg ((Φ0 m).1 Rat.infinitePlace)]`. Establish `hx1 : |(x1 : ℝ)| ≤ B * β`. Rewrite using `[ninf _ _ _ e1]`.
+
+Use polynomial arithmetic with `[norm_nonneg ((Φ1 m).1 Rat.infinitePlace)]`. Establish `hy : |(y : ℝ)| ≤ 2 * B * (α * β ^ 2)`. Rewrite using `[ninf _ _ _ ey, norm_inf_mul, pow_two, norm_inf_mul]`. Establish `h3 : 0 ≤ α * (β * β)` using `by positivity`. Establish `h4` using `norm_nonneg ((Ψ m).1 Rat.infinitePlace)`.
+
+Use the polynomial consequences of the given equalities and inequalities. Establish `hz' : ∀ i, ∃ k : ℤ, (M : ℚ) * z i = k`. Introduce `i`. Apply the tactic sequence `rcases hz i with h | h | h <;> rw [h]`. Conclude with `⟨0, by simp⟩`.
+
+Conclude with `⟨((M : ℚ) * x0).num, (Rat.coe_int_num_of_den_eq_one d0).symm⟩`. Conclude with `⟨((M : ℚ) * x1).num, (Rat.coe_int_num_of_den_eq_one d1).symm⟩`. Establish `hH` using `GlobalTheory.T.adelic_norm_rat_vector_bound M hM z hz'`. Establish `hzi : ∀ i, |((z i : ℚ) : ℝ)| ≤ |(x0 : ℝ)| + |(x1 : ℝ)|`. Introduce `i`.
+
+Establish `a0` using `abs_nonneg (x0 : ℝ)`. Establish `a1` using `abs_nonneg (x1 : ℝ)`. Apply the tactic sequence `rcases hz i with h | h | h <;> rw [h]`. Simplify using the standard rewrite rules. Check the signs of the components of the expression.
+
+Combine the linear equalities and inequalities to obtain the conclusion. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hsum : ∑ i, |((z i : ℚ) : ℝ)| ≤ 3 * (|(x0 : ℝ)| + |(x1 : ℝ)|)`. Rewrite using `[Fin.sum_univ_three]`. Combine the linear relations using `[hzi 0, hzi 1, hzi 2]`.
+
+Use `set Ai := ((IdeleGroup.ideleModule ℚ u : ℝ) * IdeleGroup.ideleModule ℚ v)⁻¹ with hAidef`. Establish `hAi0 : 0 ≤ Ai`. Use `(IdeleGroup.ideleModule ℚ u).2` as an intermediate fact. Use `(IdeleGroup.ideleModule ℚ v).2` as an intermediate fact. Check the signs of the components of the expression.
+
+Establish `hMr : (0 : ℝ) ≤ M` using `Nat.cast_nonneg _`. Establish `hAi : Ai ≤ Q * (|(x0 : ℝ)| + |(x1 : ℝ)|)`. Use `hA.trans ?_` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation. Establish `hX' : X ≤ Cg * Ai ^ T / ((1 + α) * (1 + β)) ^ (3 * (T + 3))`.
+
+Rewrite using `[hAidef, inv_pow, ← div_eq_mul_inv]`. Conclude with `hX`. Establish `hρ : |(x0 : ℝ)| + |(x1 : ℝ)| ≤ 2 * B * β` using `by linarith`. Use `real_bound (T := T) (L := T + 3) le_rfl hα hβ (by positivity) (abs_nonneg (y : ℝ)) (by positivity : (0 : ℝ) ≤ 2 * B) hQ hAi0 hX' hAi hρ hy` as an intermediate fact. Rewrite `this` using `[← add_assoc]`. Then use the resulting hypothesis.
+-/
 theorem core {Ω : Set 𝔸f} (hΩ : IsCompact Ω) {C : Set G3} (hC : IsCompact C)
     {Φ0 Φ1 Ψ : G3 → 𝔸[ℚ]} (h0 : Continuous Φ0) (h1 : Continuous Φ1) (hΨ : Continuous Ψ)
     (T : ℕ) (Cg K0 : ℝ) (hK0 : 0 ≤ K0) :
@@ -247,38 +326,80 @@ theorem core {Ω : Set 𝔸f} (hΩ : IsCompact Ω) {C : Set G3} (hC : IsCompact 
     (by positivity : (0 : ℝ) ≤ 2 * B) hQ hAi0 hX' hAi hρ hy
   rwa [← add_assoc] at this
 
+/- English proof (translation)
+The claim follows from `AdelicGLn.diagonal_apply ℚ 3 ξ i j`.
+-/
 theorem dia_apply (ξ : GL (Fin 3) ℚ) (i j : Fin 3) :
     (dia ξ : M3A) i j = algebraMap ℚ 𝔸[ℚ] ((ξ : Matrix (Fin 3) (Fin 3) ℚ) i j) :=
   AdelicGLn.diagonal_apply ℚ 3 ξ i j
 
+/- English proof (translation)
+Rewrite using `[RingHom.map_det]`. Use `congr 1`.
+-/
 theorem dia_det (ξ : GL (Fin 3) ℚ) :
     (dia ξ : M3A).det = algebraMap ℚ 𝔸[ℚ] (ξ : Matrix (Fin 3) (Fin 3) ℚ).det := by
   rw [RingHom.map_det]
   congr 1
 
+/- English proof (translation)
+The claim follows from `(Reduction.mem_adelicBorel.1 hβ) h`.
+-/
 theorem upper_zero {β : G3} (hβ : β ∈ (Reduction.adelicBorel : Subgroup G3)) {i j : Fin 3} (h : j < i) :
     (β : M3A) i j = 0 :=
   (Reduction.mem_adelicBorel.1 hβ) h
 
+/- English proof (translation)
+Rewrite using `[Matrix.det_of_upperTriangular (Reduction.mem_adelicBorel.1 hβ), Fin.prod_univ_three]`.
+-/
 theorem upper_det {β : G3} (hβ : β ∈ (Reduction.adelicBorel : Subgroup G3)) :
     (β : M3A).det = (β : M3A) 0 0 * (β : M3A) 1 1 * (β : M3A) 2 2 := by
   rw [Matrix.det_of_upperTriangular (Reduction.mem_adelicBorel.1 hβ), Fin.prod_univ_three]
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem orderedCechToCatCochainsOne_apply_valueAtSubset (γ : GL (Fin 2) ℚ) :
     ((e1 γ : GL (Fin 3) ℚ) : Matrix (Fin 3) (Fin 3) ℚ) =
       !![(γ : Matrix (Fin 2) (Fin 2) ℚ) 0 0, (γ : Matrix (Fin 2) (Fin 2) ℚ) 0 1, 0;
         (γ : Matrix (Fin 2) (Fin 2) ℚ) 1 0, (γ : Matrix (Fin 2) (Fin 2) ℚ) 1 1, 0; 0, 0, 1] := rfl
 
+/- English proof (translation)
+Rewrite using `[← e, Units.val_mul, Matrix.mul_apply, Fin.sum_univ_three, dia_apply, dia_apply, dia_apply]`.
+-/
 theorem beta_apply {ξ : GL (Fin 3) ℚ} {m β : G3} (e : dia ξ * m = β) (i j : Fin 3) :
     (β : M3A) i j = algebraMap ℚ 𝔸[ℚ] ((ξ : Matrix (Fin 3) (Fin 3) ℚ) i 0) * (m : M3A) 0 j +
       algebraMap ℚ 𝔸[ℚ] ((ξ : Matrix (Fin 3) (Fin 3) ℚ) i 1) * (m : M3A) 1 j +
       algebraMap ℚ 𝔸[ℚ] ((ξ : Matrix (Fin 3) (Fin 3) ℚ) i 2) * (m : M3A) 2 j := by
   rw [← e, Units.val_mul, Matrix.mul_apply, Fin.sum_univ_three, dia_apply, dia_apply, dia_apply]
 
+/- English proof (translation)
+Rewrite using `[← e, Units.val_mul, Matrix.det_mul, dia_det]`.
+-/
 theorem beta_det {ξ : GL (Fin 3) ℚ} {m β : G3} (e : dia ξ * m = β) :
     (β : M3A).det = algebraMap ℚ 𝔸[ℚ] (ξ : Matrix (Fin 3) (Fin 3) ℚ).det * (m : M3A).det := by
   rw [← e, Units.val_mul, Matrix.det_mul, dia_det]
 
+/- English proof (translation)
+Use `set A := algebraMap ℚ 𝔸[ℚ]`. Establish `hb : ∀ i j, (β : M3A) i j = _` using `beta_apply e`. Establish `r20 : (m : M3A) 2 0 = 0`. Establish `x` using `hb 2 0; simp [orderedCechToCatCochainsOne_apply_valueAtSubset] at x; rw [← x]; exact upper_zero hβ (by decide)`. Establish `r21 : (m : M3A) 2 1 = 0`.
+
+Establish `x` using `hb 2 1; simp [orderedCechToCatCochainsOne_apply_valueAtSubset] at x; rw [← x]; exact upper_zero hβ (by decide)`. Establish `r22 : (m : M3A) 2 2 = t3`. Establish `x` using `hb 2 2`. Simplify using `[orderedCechToCatCochainsOne_apply_valueAtSubset] at x`. Rewrite using `[← x]`.
+
+Conclude with `h3`. Establish `f10 : A ((γ : Matrix (Fin 2) (Fin 2) ℚ) 1 0) * (m : M3A) 0 0 + A ((γ : Matrix (Fin 2) (Fin 2) ℚ) 1 1) * (m : M3A) 1 0 = 0`. Establish `x` using `hb 1 0; simp [orderedCechToCatCochainsOne_apply_valueAtSubset] at x; rw [← x]; exact upper_zero hβ (by decide)`. Establish `f00 : A ((γ : Matrix (Fin 2) (Fin 2) ℚ) 0 0) * (m : M3A) 0 0 + A ((γ : Matrix (Fin 2) (Fin 2) ℚ) 0 1) * (m : M3A) 1 0 = t1`. Establish `x` using `hb 0 0`.
+
+Simplify using `[orderedCechToCatCochainsOne_apply_valueAtSubset] at x`. Rewrite using `[← x]`. Conclude with `h1`. Establish `hdγ : A (γ : Matrix (Fin 2) (Fin 2) ℚ).det = A ((γ : Matrix (Fin 2) (Fin 2) ℚ) 0 0) * A ((γ : Matrix (Fin 2) (Fin 2) ℚ) 1 1) - A ((γ : Matrix (Fin 2) (Fin 2) ℚ) 0 1) * A ((γ : Matrix (Fin 2) (Fin 2) ℚ) 1 0)`. Rewrite using `[Matrix.det_fin_two]`.
+
+Simplify using `[A, map_sub, map_mul]`. Establish `hdξ : ((e1 γ : GL (Fin 3) ℚ) : Matrix (Fin 3) (Fin 3) ℚ).det = (γ : Matrix (Fin 2) (Fin 2) ℚ).det`. Rewrite using `[orderedCechToCatCochainsOne_apply_valueAtSubset, Matrix.det_fin_three, Matrix.det_fin_two]`. Simplify using the standard rewrite rules. Establish `hdet : A (γ : Matrix (Fin 2) (Fin 2) ℚ).det * (m : M3A).det = t1 * t2 * t3`.
+
+Rewrite using `[← hdξ, ← beta_det e, upper_det hβ, h1, h2, h3]`. Establish `h00 : A (γ : Matrix (Fin 2) (Fin 2) ℚ).det * (m : M3A) 0 0 = A ((γ : Matrix (Fin 2) (Fin 2) ℚ) 1 1) * t1`. Rewrite using `[hdγ]`. Take the linear combination `A ((γ : Matrix (Fin 2) (Fin 2) ℚ) 1 1) * f00 - A ((γ : Matrix (Fin 2) (Fin 2) ℚ) 0 1) * f10`. Establish `h10 : A (γ : Matrix (Fin 2) (Fin 2) ℚ).det * (m : M3A) 1 0 = -A ((γ : Matrix (Fin 2) (Fin 2) ℚ) 1 0) * t1`.
+
+Rewrite using `[hdγ]`. Take the linear combination `A ((γ : Matrix (Fin 2) (Fin 2) ℚ) 0 0) * f10 - A ((γ : Matrix (Fin 2) (Fin 2) ℚ) 1 0) * f00`. Establish `i1 : (t1 : 𝔸[ℚ]) * ((t1⁻¹ : (𝔸[ℚ])ˣ) : 𝔸[ℚ]) = 1` using `Units.mul_inv t1`. Establish `i2 : (t2 : 𝔸[ℚ]) * ((t2⁻¹ : (𝔸[ℚ])ˣ) : 𝔸[ℚ]) = 1` using `Units.mul_inv t2`. Establish `i3 : (t3 : 𝔸[ℚ]) * ((t3⁻¹ : (𝔸[ℚ])ˣ) : 𝔸[ℚ]) = 1` using `Units.mul_inv t3`.
+
+Establish `iD : (m : M3A).det * (((AdelicGLn.det ℚ 3 m)⁻¹ : (𝔸[ℚ])ˣ) : 𝔸[ℚ]) = 1`. Rewrite using `[← AdelicGLn.coe_det]`. Conclude with `Units.mul_inv _`. Use `set Dinv : 𝔸[ℚ] := (((AdelicGLn.det ℚ 3 m)⁻¹ : (𝔸[ℚ])ˣ) : 𝔸[ℚ])`. Use `set dm := (m : M3A).det`.
+
+Use `set t1i : 𝔸[ℚ] := ((t1⁻¹ : (𝔸[ℚ])ˣ) : 𝔸[ℚ])`. Use `set t2i : 𝔸[ℚ] := ((t2⁻¹ : (𝔸[ℚ])ˣ) : 𝔸[ℚ])`. Use `set t3i : 𝔸[ℚ] := ((t3⁻¹ : (𝔸[ℚ])ˣ) : 𝔸[ℚ])`. Use `⟨?_, ?_, ?_, r20, r21, r22, h00, h10⟩` and prove the remaining obligations. Rewrite using `[r22, Units.val_mul]`.
+
+Take the linear combination `(-(t1i * Dinv * dm)) * h00 + (t1i * Dinv * (m : M3A) 0 0) * hdet + ((t2 : 𝔸[ℚ]) * t3 * (m : M3A) 0 0 * Dinv - A ((γ : Matrix (Fin 2) (Fin 2) ℚ) 1 1) * dm * Dinv) * i1 - A ((γ : Matrix (Fin 2) (Fin 2) ℚ) 1 1) * iD - ((t2 : 𝔸[ℚ]) * t3 * (m : M3A) 0 0 * Dinv) * i3`. Rewrite using `[r22, Units.val_mul, map_neg]`. Take the linear combination `(-(t1i * Dinv * dm)) * h10 + (t1i * Dinv * (m : M3A) 1 0) * hdet + ((t2 : 𝔸[ℚ]) * t3 * (m : M3A) 1 0 * Dinv + A ((γ : Matrix (Fin 2) (Fin 2) ℚ) 1 0) * dm * Dinv) * i1 + A ((γ : Matrix (Fin 2) (Fin 2) ℚ) 1 0) * iD - ((t2 : 𝔸[ℚ]) * t3 * (m : M3A) 1 0 * Dinv) * i3`. Rewrite using `[r22, Units.val_mul, Units.val_mul]`. Take the linear combination `(-A (γ : Matrix (Fin 2) (Fin 2) ℚ).det) * iD + Dinv * hdet - ((t1 : 𝔸[ℚ]) * t2 * t3 * Dinv * ((t3 : 𝔸[ℚ]) * t3i) ^ 2) * i2 - ((t1 : 𝔸[ℚ]) * t2 * t3 * Dinv * ((t3 : 𝔸[ℚ]) * t3i + 1)) * i3`.
+-/
 theorem algU (γ : GL (Fin 2) ℚ) {m β : G3} (hβ : β ∈ (Reduction.adelicBorel : Subgroup G3))
     (e : dia (e1 γ) * m = β) (t1 t2 t3 : (𝔸[ℚ])ˣ) (h1 : (β : M3A) 0 0 = t1) (h2 : (β : M3A) 1 1 = t2)
     (h3 : (β : M3A) 2 2 = t3) :
@@ -346,17 +467,31 @@ theorem algU (γ : GL (Fin 2) ℚ) {m β : G3} (hβ : β ∈ (Reduction.adelicBo
       ((t1 : 𝔸[ℚ]) * t2 * t3 * Dinv * ((t3 : 𝔸[ℚ]) * t3i) ^ 2) * i2 -
       ((t1 : 𝔸[ℚ]) * t2 * t3 * Dinv * ((t3 : 𝔸[ℚ]) * t3i + 1)) * i3
 
+/- English proof (translation)
+The claim follows from `Reduction.continuous_GL_apply i j`.
+-/
 theorem contEnt (i j : Fin 3) : Continuous fun m : G3 => (m : M3A) i j :=
   Reduction.continuous_GL_apply i j
 
+/- English proof (translation)
+The claim follows from `Units.continuous_coe_inv.comp (AdelicGLn.continuous_det ℚ 3)`.
+-/
 theorem contDinv : Continuous fun m : G3 => (((AdelicGLn.det ℚ 3 m)⁻¹ : (𝔸[ℚ])ˣ) : 𝔸[ℚ]) :=
   Units.continuous_coe_inv.comp (AdelicGLn.continuous_det ℚ 3)
 
+/- English proof (translation)
+Use `AdelicGLn.isTopologicalGroup ℚ 3` as an intermediate fact. Conclude with `(hKc.prod Reduction.isCompact_maxCompact).image (continuous_fst.mul continuous_snd.inv)`.
+-/
 theorem compact_C {Kc : Set G3} (hKc : IsCompact Kc) :
     IsCompact ((fun p : G3 × G3 => p.1 * p.2⁻¹) '' (Kc ×ˢ ((Reduction.maxCompact : Subgroup G3) : Set G3))) := by
   have := AdelicGLn.isTopologicalGroup ℚ 3
   exact (hKc.prod Reduction.isCompact_maxCompact).image (continuous_fst.mul continuous_snd.inv)
 
+/- English proof (translation)
+Establish `e : ((IdeleGroup.ideleModule ℚ (t1 * t2⁻¹) : ℝ) * IdeleGroup.ideleModule ℚ (t2 * t3⁻¹)) = (IdeleGroup.ideleModule ℚ t1 : ℝ) / IdeleGroup.ideleModule ℚ t3`. Establish `hg : t1 * t2⁻¹ * (t2 * t3⁻¹) = t1 * t3⁻¹` using `by group`. Use `congrArg (fun x => ((IdeleGroup.ideleModule ℚ x : ℝ))) hg` as an intermediate fact. Simplify using `only [map_mul, map_inv, Positive.val_mul, Positive.coe_inv] at this ⊢`. Rewrite using `[div_eq_mul_inv]`.
+
+Take the linear combination `this`. Establish `p1` using `(IdeleGroup.ideleModule ℚ t1).2`. Establish `p3` using `(IdeleGroup.ideleModule ℚ t3).2`. Rewrite using `[e, inv_div]`. Conclude with `div_le_div₀ (by linarith) h3 hX1 h1`.
+-/
 theorem poly_gen (t1 t2 t3 : (𝔸[ℚ])ˣ) {X1 X3 : ℝ} (hX1 : 0 < X1)
     (h1 : X1 ≤ (IdeleGroup.ideleModule ℚ t1 : ℝ)) (h3 : (IdeleGroup.ideleModule ℚ t3 : ℝ) ≤ X3) :
     ((IdeleGroup.ideleModule ℚ (t1 * t2⁻¹) : ℝ) * IdeleGroup.ideleModule ℚ (t2 * t3⁻¹))⁻¹ ≤ X3 / X1 := by
@@ -372,6 +507,9 @@ theorem poly_gen (t1 t2 t3 : (𝔸[ℚ])ˣ) {X1 X3 : ℝ} (hX1 : 0 < X1)
   rw [e, inv_div]
   exact div_le_div₀ (by linarith) h3 hX1 h1
 
+/- English proof (translation)
+Rewrite using `[Reduction.adelicNorm_smul (Reduction.hasFiniteContent_single_one 2), Reduction.adelicNorm_single_one, mul_one]`.
+-/
 theorem adelicNorm_row (t : (𝔸[ℚ])ˣ) :
     Reduction.adelicNorm ((t : 𝔸[ℚ]) • (Pi.single 2 (1 : 𝔸[ℚ]) : Fin 3 → 𝔸[ℚ])) = IdeleGroup.ideleModule ℚ t := by
   rw [Reduction.adelicNorm_smul (Reduction.hasFiniteContent_single_one 2), Reduction.adelicNorm_single_one, mul_one]
@@ -380,20 +518,32 @@ def ιU (q : NQ) : ℚ × ℚ × ℚ :=
   ((q.out : Matrix (Fin 2) (Fin 2) ℚ) 1 1, -(q.out : Matrix (Fin 2) (Fin 2) ℚ) 1 0,
     (q.out : Matrix (Fin 2) (Fin 2) ℚ).det)
 
+/- English proof (translation)
+Introduce `q q' h`. Simplify using `only [ιU, Prod.mk.injEq, neg_inj] at h`. Conclude with `GlobalTheory.T.rat_double_coset_eq_of_row_det q q' h.2.1 h.1 h.2.2`.
+-/
 theorem ιU_inj : Function.Injective ιU := by
   intro q q' h
   simp only [ιU, Prod.mk.injEq, neg_inj] at h
   exact GlobalTheory.T.rat_double_coset_eq_of_row_det q q' h.2.1 h.1 h.2.2
 
+/- English proof (translation)
+The claim follows from `((Matrix.isUnit_iff_isUnit_det _).1 γ.isUnit).ne_zero`.
+-/
 theorem det_ne_zero' (γ : GL (Fin 2) ℚ) : (γ : Matrix (Fin 2) (Fin 2) ℚ).det ≠ 0 :=
   ((Matrix.isUnit_iff_isUnit_det _).1 γ.isUnit).ne_zero
 
+/- English proof (translation)
+Use extensionality with `j`. Apply the tactic sequence `fin_cases j <;> simp [Matrix.vecMul, dotProduct, Fin.sum_univ_three, Pi.single_apply, r20, r21, r22]`.
+-/
 theorem row_two {m : G3} {t : (𝔸[ℚ])ˣ} (r20 : (m : M3A) 2 0 = 0) (r21 : (m : M3A) 2 1 = 0)
     (r22 : (m : M3A) 2 2 = t) :
     (Pi.single 2 (1 : 𝔸[ℚ]) : Fin 3 → 𝔸[ℚ]) ᵥ* (m : M3A) = (t : 𝔸[ℚ]) • (Pi.single 2 (1 : 𝔸[ℚ]) : Fin 3 → 𝔸[ℚ]) := by
   ext j
   fin_cases j <;> simp [Matrix.vecMul, dotProduct, Fin.sum_univ_three, Pi.single_apply, r20, r21, r22]
 
+/- English proof (translation)
+Use extensionality with `i j`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;>`. Simplify using `[e2, b2M, sw, Matrix.mul_apply, Fin.sum_univ_three]`.
+-/
 theorem xiV_apply (γ : GL (Fin 2) ℚ) :
     ((e2 γ * sw : GL (Fin 3) ℚ) : Matrix (Fin 3) (Fin 3) ℚ) =
       !![0, 1, 0; (γ : Matrix (Fin 2) (Fin 2) ℚ) 0 0, 0, (γ : Matrix (Fin 2) (Fin 2) ℚ) 0 1;
@@ -402,6 +552,35 @@ theorem xiV_apply (γ : GL (Fin 2) ℚ) :
   fin_cases i <;> fin_cases j <;>
     simp [e2, b2M, sw, Matrix.mul_apply, Fin.sum_univ_three]
 
+/- English proof (translation)
+Use `set A := algebraMap ℚ 𝔸[ℚ]`. Establish `hδ : (γ : Matrix (Fin 2) (Fin 2) ℚ).det ≠ 0` using `((Matrix.isUnit_iff_isUnit_det _).1 γ.isUnit).ne_zero`. Establish `hi : A (γ : Matrix (Fin 2) (Fin 2) ℚ).det * A ((γ : Matrix (Fin 2) (Fin 2) ℚ).det)⁻¹ = 1`. Rewrite using `[← map_mul, mul_inv_cancel₀ hδ, map_one]`. Establish `hb : ∀ i j, (β : M3A) i j = _` using `beta_apply e`.
+
+Establish `f00 : (m : M3A) 1 0 = t1`. Establish `x` using `hb 0 0`. Rewrite `x` using `[xiV_apply]`. Simplify using `at x`. Rewrite using `[← x]`.
+
+Conclude with `h1`. Establish `f10 : A ((γ : Matrix (Fin 2) (Fin 2) ℚ) 0 0) * (m : M3A) 0 0 + A ((γ : Matrix (Fin 2) (Fin 2) ℚ) 0 1) * (m : M3A) 2 0 = 0`. Establish `x` using `hb 1 0; rw [xiV_apply] at x; simp at x; rw [← x]; exact upper_zero hβ (by decide)`. Establish `f20 : A ((γ : Matrix (Fin 2) (Fin 2) ℚ) 1 0) * (m : M3A) 0 0 + A ((γ : Matrix (Fin 2) (Fin 2) ℚ) 1 1) * (m : M3A) 2 0 = 0`. Establish `x` using `hb 2 0; rw [xiV_apply] at x; simp at x; rw [← x]; exact upper_zero hβ (by decide)`.
+
+Establish `f11 : A ((γ : Matrix (Fin 2) (Fin 2) ℚ) 0 0) * (m : M3A) 0 1 + A ((γ : Matrix (Fin 2) (Fin 2) ℚ) 0 1) * (m : M3A) 2 1 = t2`. Establish `x` using `hb 1 1`. Rewrite `x` using `[xiV_apply]`. Simplify using `at x`. Rewrite using `[← x]`.
+
+Conclude with `h2`. Establish `f21 : A ((γ : Matrix (Fin 2) (Fin 2) ℚ) 1 0) * (m : M3A) 0 1 + A ((γ : Matrix (Fin 2) (Fin 2) ℚ) 1 1) * (m : M3A) 2 1 = 0`. Establish `x` using `hb 2 1; rw [xiV_apply] at x; simp at x; rw [← x]; exact upper_zero hβ (by decide)`. Establish `f22 : A ((γ : Matrix (Fin 2) (Fin 2) ℚ) 1 0) * (m : M3A) 0 2 + A ((γ : Matrix (Fin 2) (Fin 2) ℚ) 1 1) * (m : M3A) 2 2 = t3`. Establish `x` using `hb 2 2`.
+
+Rewrite `x` using `[xiV_apply]`. Simplify using `at x`. Rewrite using `[← x]`. Conclude with `h3`. Establish `hdγ : A (γ : Matrix (Fin 2) (Fin 2) ℚ).det = A ((γ : Matrix (Fin 2) (Fin 2) ℚ) 0 0) * A ((γ : Matrix (Fin 2) (Fin 2) ℚ) 1 1) - A ((γ : Matrix (Fin 2) (Fin 2) ℚ) 0 1) * A ((γ : Matrix (Fin 2) (Fin 2) ℚ) 1 0)`.
+
+Rewrite using `[Matrix.det_fin_two]`. Simplify using `[A, map_sub, map_mul]`. Establish `hdξ : ((e2 γ * sw : GL (Fin 3) ℚ) : Matrix (Fin 3) (Fin 3) ℚ).det = -(γ : Matrix (Fin 2) (Fin 2) ℚ).det`. Rewrite using `[xiV_apply, Matrix.det_fin_three, Matrix.det_fin_two]`. Simplify using the standard rewrite rules.
+
+Expand and normalize the polynomial expressions, which then agree. Establish `hdet : -A (γ : Matrix (Fin 2) (Fin 2) ℚ).det * (m : M3A).det = t1 * t2 * t3`. Rewrite using `[← map_neg, ← hdξ, ← beta_det e, upper_det hβ, h1, h2, h3]`. Establish `hm00 : A (γ : Matrix (Fin 2) (Fin 2) ℚ).det * (m : M3A) 0 0 = 0`. Rewrite using `[hdγ]`.
+
+Take the linear combination `A ((γ : Matrix (Fin 2) (Fin 2) ℚ) 1 1) * f10 - A ((γ : Matrix (Fin 2) (Fin 2) ℚ) 0 1) * f20`. Establish `hm20 : A (γ : Matrix (Fin 2) (Fin 2) ℚ).det * (m : M3A) 2 0 = 0`. Rewrite using `[hdγ]`. Take the linear combination `A ((γ : Matrix (Fin 2) (Fin 2) ℚ) 0 0) * f20 - A ((γ : Matrix (Fin 2) (Fin 2) ℚ) 1 0) * f10`. Establish `hm01 : A (γ : Matrix (Fin 2) (Fin 2) ℚ).det * (m : M3A) 0 1 = A ((γ : Matrix (Fin 2) (Fin 2) ℚ) 1 1) * t2`.
+
+Rewrite using `[hdγ]`. Take the linear combination `A ((γ : Matrix (Fin 2) (Fin 2) ℚ) 1 1) * f11 - A ((γ : Matrix (Fin 2) (Fin 2) ℚ) 0 1) * f21`. Establish `hm21 : A (γ : Matrix (Fin 2) (Fin 2) ℚ).det * (m : M3A) 2 1 = -A ((γ : Matrix (Fin 2) (Fin 2) ℚ) 1 0) * t2`. Rewrite using `[hdγ]`. Take the linear combination `A ((γ : Matrix (Fin 2) (Fin 2) ℚ) 0 0) * f21 - A ((γ : Matrix (Fin 2) (Fin 2) ℚ) 1 0) * f11`.
+
+Use `set Ai := A ((γ : Matrix (Fin 2) (Fin 2) ℚ).det)⁻¹`. Establish `z00 : (m : M3A) 0 0 = 0` using `by linear_combination Ai * hm00 - (m : M3A) 0 0 * hi`. Establish `z20 : (m : M3A) 2 0 = 0` using `by linear_combination Ai * hm20 - (m : M3A) 2 0 * hi`. Establish `p : ((m⁻¹ : G3) : M3A) 0 1 * t1 = 1`. Establish `x : ((m⁻¹ * m : G3) : M3A) 0 0 = 1` using `by rw [inv_mul_cancel]; simp`.
+
+Rewrite `x` using `[Units.val_mul, Matrix.mul_apply, Fin.sum_univ_three, z00, z20, f00]`. Simplify using `using x`. Establish `i2 : (t2 : 𝔸[ℚ]) * ((t2⁻¹ : (𝔸[ℚ])ˣ) : 𝔸[ℚ]) = 1` using `Units.mul_inv t2`. Establish `i3 : (t3 : 𝔸[ℚ]) * ((t3⁻¹ : (𝔸[ℚ])ˣ) : 𝔸[ℚ]) = 1` using `Units.mul_inv t3`. Use `set mi := ((m⁻¹ : G3) : M3A) 0 1`.
+
+Use `set t2i : 𝔸[ℚ] := ((t2⁻¹ : (𝔸[ℚ])ˣ) : 𝔸[ℚ])`. Use `set t3i : 𝔸[ℚ] := ((t3⁻¹ : (𝔸[ℚ])ˣ) : 𝔸[ℚ])`. Use `set dm := (m : M3A).det`. Use `⟨?_, ?_, ?_, z00, f00, z20, f21, f22⟩` and prove the remaining obligations. Rewrite using `[div_eq_mul_inv, map_mul, Units.val_mul]`.
+
+Take the linear combination `(-A ((γ : Matrix (Fin 2) (Fin 2) ℚ) 1 0) * Ai) * i2 + (t2i * Ai) * hm21 - ((m : M3A) 2 1 * t2i) * hi + ((m : M3A) 2 1 * t2i) * p`. Rewrite using `[div_eq_mul_inv, map_mul, Units.val_mul]`. Take the linear combination `(-A ((γ : Matrix (Fin 2) (Fin 2) ℚ) 1 1) * Ai) * i2 - (t2i * Ai) * hm01 + ((m : M3A) 0 1 * t2i) * hi - ((m : M3A) 0 1 * t2i) * p`. Rewrite using `[Units.val_mul, Units.val_mul]`. Take the linear combination `(-Ai - (-dm * mi * t2i * t3i) * (mi * t1 + 1) * ((t2 : 𝔸[ℚ]) * t2i)) * p + (-Ai * (mi * t1) - (-dm * mi * t2i * t3i)) * i2 + (-Ai * (mi * t1) * ((t2 : 𝔸[ℚ]) * t2i)) * i3 + (-Ai * mi * t2i * t3i) * hdet + (-dm * mi * t2i * t3i) * hi`.
+-/
 theorem algV (γ : GL (Fin 2) ℚ) {m β : G3} (hβ : β ∈ (Reduction.adelicBorel : Subgroup G3))
     (e : dia (e2 γ * sw) * m = β) (t1 t2 t3 : (𝔸[ℚ])ˣ) (h1 : (β : M3A) 0 0 = t1) (h2 : (β : M3A) 1 1 = t2)
     (h3 : (β : M3A) 2 2 = t3) :
@@ -480,6 +659,9 @@ theorem algV (γ : GL (Fin 2) ℚ) {m β : G3} (hβ : β ∈ (Reduction.adelicBo
       (-Ai * (mi * t1) - (-dm * mi * t2i * t3i)) * i2 + (-Ai * (mi * t1) * ((t2 : 𝔸[ℚ]) * t2i)) * i3 +
       (-Ai * mi * t2i * t3i) * hdet + (-dm * mi * t2i * t3i) * hi
 
+/- English proof (translation)
+Rewrite using `[Reduction.adelicNorm_smul (Reduction.hasFiniteContent_single_one i), Reduction.adelicNorm_single_one, mul_one]`.
+-/
 theorem adelicNorm_single_smul (i : Fin 3) (t : (𝔸[ℚ])ˣ) :
     Reduction.adelicNorm ((t : 𝔸[ℚ]) • (Pi.single i (1 : 𝔸[ℚ]) : Fin 3 → 𝔸[ℚ])) = IdeleGroup.ideleModule ℚ t := by
   rw [Reduction.adelicNorm_smul (Reduction.hasFiniteContent_single_one i), Reduction.adelicNorm_single_one, mul_one]
@@ -489,6 +671,11 @@ def ιV (q : NQ) : ℚ × ℚ × ℚ :=
     (q.out : Matrix (Fin 2) (Fin 2) ℚ) 1 1 / (q.out : Matrix (Fin 2) (Fin 2) ℚ).det,
     ((q.out : Matrix (Fin 2) (Fin 2) ℚ).det)⁻¹)
 
+/- English proof (translation)
+Introduce `q q' h`. Simplify using `only [ιV, Prod.mk.injEq, _root_.inv_inj] at h`. Take `⟨hc, hd, hδ⟩` from `h`. Rewrite `hc`, `hd` using `[hδ]`. Establish `h0` using `det_ne_zero' q'.out`.
+
+Use `GlobalTheory.T.rat_double_coset_eq_of_row_det q q' ?_ ?_ hδ` and prove the remaining obligations. Conclude with `(div_left_inj' h0).1 hc`. Conclude with `(div_left_inj' h0).1 hd`.
+-/
 theorem ιV_inj : Function.Injective ιV := by
   intro q q' h
   simp only [ιV, Prod.mk.injEq, _root_.inv_inj] at h
@@ -499,16 +686,49 @@ theorem ιV_inj : Function.Injective ιV := by
   · exact (div_left_inj' h0).1 hc
   · exact (div_left_inj' h0).1 hd
 
+/- English proof (translation)
+Use `AdelicGLn.isTopologicalGroup ℚ 3` as an intermediate fact. Conclude with `(Reduction.continuous_GL_apply 0 1).comp continuous_inv`.
+-/
 theorem contMi : Continuous fun m : G3 => ((m⁻¹ : G3) : M3A) 0 1 := by
   have := AdelicGLn.isTopologicalGroup ℚ 3
   exact (Reduction.continuous_GL_apply 0 1).comp continuous_inv
 
+/- English proof (translation)
+The claim follows from `Continuous.matrix_det Units.continuous_val`.
+-/
 theorem contDet : Continuous fun m : G3 => (m : M3A).det :=
   Continuous.matrix_det Units.continuous_val
 
 end majorantEstimates
 
 open majorantEstimates in
+/- English proof (translation)
+Introduce `V hV W hW Kc hKc`. Take `⟨Ω, hΩ, T, hg⟩` from `hV.gauge W hW`. Take `⟨Cg, hCg⟩` from `hg (3 * (T + 3))`. Use `set C := (fun p : G3 × G3 => p.1 * p.2⁻¹) '' (Kc ×ˢ ((Reduction.maxCompact : Subgroup G3) : Set G3)) with hCdef`. Establish `hC : IsCompact C` using `compact_C hKc`.
+
+Take `⟨P, hP, hPb⟩` from `Reduction.exists_adelicNorm_vecMul_le_mul hC`. Take `⟨ε, hε, hεb⟩` from `GlobalTheory.T.compact_adelic_column_norm_lower C hC`. Take `⟨M, hM, K, hK⟩` from `core hΩ hC ((((contEnt 2 2).pow 2).mul (contEnt 0 0)).mul contDinv) ((((contEnt 2 2).pow 2).mul (contEnt 1 0)).mul contDinv) (((contEnt 2 2).pow 3).mul contDinv) T Cg (P / ε) (div_nonneg hP.le hε.le)`. Use `⟨fun q => K * F M (ιU q), ((summable_F M hM).comp_injective ιU_inj).mul_left K, ?_⟩` and prove the remaining obligations. Introduce `q g hg`.
+
+Take `⟨β, hβ, k, hk, hh⟩` from `Reduction.exists_adelicBorel_mul_maxCompact (dia (e1 q.out) * g)`. Use `set t1 := (Reduction.isUnit_apply_self_of_mem_adelicBorel hβ 0).unit with ht1`. Use `set t2 := (Reduction.isUnit_apply_self_of_mem_adelicBorel hβ 1).unit with ht2`. Use `set t3 := (Reduction.isUnit_apply_self_of_mem_adelicBorel hβ 2).unit with ht3`. Establish `h1 : (β : M3A) 0 0 = t1` using `(IsUnit.unit_spec _).symm`.
+
+Establish `h2 : (β : M3A) 1 1 = t2` using `(IsUnit.unit_spec _).symm`. Establish `h3 : (β : M3A) 2 2 = t3` using `(IsUnit.unit_spec _).symm`. Establish `e : dia (e1 q.out) * (g * k⁻¹) = β` using `by rw [← mul_assoc, hh, mul_inv_cancel_right]`. Establish `hmC : g * k⁻¹ ∈ C` using `⟨(g, k), ⟨hg, hk⟩, rfl⟩`. Take `⟨a0, a1, a2, r20, r21, r22, h00, h10⟩` from `algU q.out hβ e t1 t2 t3 h1 h2 h3`.
+
+Rewrite using `[hh, GlobalTheory.T.whittaker_norm_diagonal_reduction V hV W hW β hβ t1 t2 t3 h1 h2 h3 k]`. Establish `hgau` using `hCg (t1 * t2⁻¹) (t2 * t3⁻¹) k hk Rat.infinitePlace`. Use `set γ := q.out with hγ`. Use `set m := g * k⁻¹ with hmdef`. Use `set z : Fin 3 → ℚ := ![(γ : Matrix (Fin 2) (Fin 2) ℚ) 1 1, -(γ : Matrix (Fin 2) (Fin 2) ℚ) 1 0, 0] with hzdef`.
+
+Establish `hz : ∀ i, z i = 0 ∨ z i = (γ : Matrix (Fin 2) (Fin 2) ℚ) 1 1 ∨ z i = -(γ : Matrix (Fin 2) (Fin 2) ℚ) 1 0`. Apply the tactic sequence `intro i; fin_cases i <;> simp [z]`. Establish `hz0 : z ≠ 0`. Introduce `h0`. Establish `c0 : (γ : Matrix (Fin 2) (Fin 2) ℚ) 1 0 = 0`.
+
+Use `congrFun h0 1` as an intermediate fact. Simplify `this` using `[z]`. Establish `d0 : (γ : Matrix (Fin 2) (Fin 2) ℚ) 1 1 = 0`. Use `congrFun h0 0` as an intermediate fact. Simplify `this` using `[z]`.
+
+Conclude with `det_ne_zero' γ (by rw [Matrix.det_fin_two, c0, d0]; ring)`. Use `set δ := (γ : Matrix (Fin 2) (Fin 2) ℚ).det with hδdef`. Establish `hδ : δ ≠ 0` using `det_ne_zero' γ`. Establish `hi : algebraMap ℚ 𝔸[ℚ] δ * algebraMap ℚ 𝔸[ℚ] δ⁻¹ = 1`. Rewrite using `[← map_mul, mul_inv_cancel₀ hδ, map_one]`.
+
+Establish `hcol : (fun i => (m : M3A) i 0) = (t1 : 𝔸[ℚ]) • Reduction.ratVec (δ⁻¹ • z)`. Use extensionality with `i`. Use `fin_cases i`. Simplify using `[Reduction.ratVec, z, map_mul]`. Take the linear combination `(algebraMap ℚ 𝔸[ℚ] δ⁻¹) * h00 - (m : M3A) 0 0 * hi`.
+
+Simplify using `[Reduction.ratVec, z, map_mul, map_neg]`. Take the linear combination `(algebraMap ℚ 𝔸[ℚ] δ⁻¹) * h10 - (m : M3A) 1 0 * hi`. Simplify using `[Reduction.ratVec, z, r20]`. Establish `hz1 : δ⁻¹ • z ≠ 0` using `smul_ne_zero (inv_ne_zero hδ) hz0`. Use `set H := Reduction.adelicNorm (Reduction.ratVec z : Fin 3 → 𝔸[ℚ]) with hHdef`.
+
+Establish `hH1 : 1 ≤ H` using `Reduction.one_le_adelicNorm_ratVec hz0`. Establish `hnorm : Reduction.adelicNorm (fun i => (m : M3A) i 0) = IdeleGroup.ideleModule ℚ t1 * H`. Rewrite using `[hcol, Reduction.adelicNorm_smul (Reduction.hasFiniteContent_ratVec hz1), Reduction.ratVec_smul, Reduction.adelicNorm_smul_rat (Reduction.hasFiniteContent_ratVec hz0) (inv_ne_zero hδ)]`. Establish `hε1 : ε / H ≤ IdeleGroup.ideleModule ℚ t1`. Rewrite using `[div_le_iff₀ (by linarith)]; rw [← hnorm]; exact (hεb m hmC 0).2`.
+
+Establish `hP3 : (IdeleGroup.ideleModule ℚ t3 : ℝ) ≤ P`. Use `hPb m hmC _ (Reduction.hasFiniteContent_single_one 2)` as an intermediate fact. Rewrite `this` using `[row_two r20 r21 r22, adelicNorm_row, Reduction.adelicNorm_single_one, mul_one]`. Conclude with `this`. Establish `hpoly` using `poly_gen t1 t2 t3 (div_pos hε (by linarith)) hε1 hP3`.
+
+Establish `hpoly' : ((IdeleGroup.ideleModule ℚ (t1 * t2⁻¹) : ℝ) * IdeleGroup.ideleModule ℚ (t2 * t3⁻¹))⁻¹ ≤ P / ε * H`. Use `hpoly.trans (le_of_eq ?_)` and prove the remaining obligations. Clear the denominators using the available nonvanishing facts. Conclude with `hK _ (t1 * t2⁻¹) (t2 * t3⁻¹) m hmC _ _ _ z a0 a1 a2 hz hpoly' hgau.1 (fun h => hgau.2 (fun h' => h (by rw [h', norm_zero])))`.
+-/
 theorem majorant_first_holds : MajU := by
   intro V hV W hW Kc hKc
   obtain ⟨Ω, hΩ, T, hg⟩ := hV.gauge W hW
@@ -582,6 +802,35 @@ theorem majorant_first_holds : MajU := by
     (fun h => hgau.2 (fun h' => h (by rw [h', norm_zero])))
 
 open majorantEstimates in
+/- English proof (translation)
+Introduce `V hV W hW Kc hKc`. Take `⟨Ω, hΩ, T, hg⟩` from `hV.gauge W hW`. Take `⟨Cg, hCg⟩` from `hg (3 * (T + 3))`. Use `set C := (fun p : G3 × G3 => p.1 * p.2⁻¹) '' (Kc ×ˢ ((Reduction.maxCompact : Subgroup G3) : Set G3)) with hCdef`. Establish `hC : IsCompact C` using `compact_C hKc`.
+
+Take `⟨P, hP, hPb⟩` from `Reduction.exists_adelicNorm_vecMul_le_mul hC`. Take `⟨ε, hε, hεb⟩` from `GlobalTheory.T.compact_adelic_column_norm_lower C hC`. Take `⟨M, hM, K, hK⟩` from `core hΩ hC (((contEnt 2 1).neg).mul contMi) ((contEnt 0 1).mul contMi) ((contDet.neg).mul (contMi.pow 3)) T Cg (P / ε) (div_nonneg hP.le hε.le)`. Use `⟨fun q => K * F M (ιV q), ((summable_F M hM).comp_injective ιV_inj).mul_left K, ?_⟩` and prove the remaining obligations. Introduce `q g hg`.
+
+Take `⟨β, hβ, k, hk, hh⟩` from `Reduction.exists_adelicBorel_mul_maxCompact (dia (e2 q.out * sw) * g)`. Use `set t1 := (Reduction.isUnit_apply_self_of_mem_adelicBorel hβ 0).unit with ht1`. Use `set t2 := (Reduction.isUnit_apply_self_of_mem_adelicBorel hβ 1).unit with ht2`. Use `set t3 := (Reduction.isUnit_apply_self_of_mem_adelicBorel hβ 2).unit with ht3`. Establish `h1 : (β : M3A) 0 0 = t1` using `(IsUnit.unit_spec _).symm`.
+
+Establish `h2 : (β : M3A) 1 1 = t2` using `(IsUnit.unit_spec _).symm`. Establish `h3 : (β : M3A) 2 2 = t3` using `(IsUnit.unit_spec _).symm`. Establish `e : dia (e2 q.out * sw) * (g * k⁻¹) = β` using `by rw [← mul_assoc, hh, mul_inv_cancel_right]`. Establish `hmC : g * k⁻¹ ∈ C` using `⟨(g, k), ⟨hg, hk⟩, rfl⟩`. Take `⟨v0, v1, v2, z00, f00, z20, g1, g2⟩` from `algV q.out hβ e t1 t2 t3 h1 h2 h3`.
+
+Rewrite using `[hh, GlobalTheory.T.whittaker_norm_diagonal_reduction V hV W hW β hβ t1 t2 t3 h1 h2 h3 k]`. Establish `hgau` using `hCg (t1 * t2⁻¹) (t2 * t3⁻¹) k hk Rat.infinitePlace`. Use `set γ := q.out with hγ`. Use `set m := g * k⁻¹ with hmdef`. Use `set δ := (γ : Matrix (Fin 2) (Fin 2) ℚ).det with hδdef`.
+
+Establish `hδ : δ ≠ 0` using `det_ne_zero' γ`. Use `set z : Fin 3 → ℚ := ![(γ : Matrix (Fin 2) (Fin 2) ℚ) 1 0 / δ, 0, (γ : Matrix (Fin 2) (Fin 2) ℚ) 1 1 / δ] with hzdef`. Use `set y0 : Fin 3 → ℚ := ![(γ : Matrix (Fin 2) (Fin 2) ℚ) 1 0, 0, (γ : Matrix (Fin 2) (Fin 2) ℚ) 1 1] with hy0def`. Establish `hz : ∀ i, z i = 0 ∨ z i = (γ : Matrix (Fin 2) (Fin 2) ℚ) 1 0 / δ ∨ z i = (γ : Matrix (Fin 2) (Fin 2) ℚ) 1 1 / δ`. Apply the tactic sequence `intro i; fin_cases i <;> simp [z]`.
+
+Establish `hy0 : y0 ≠ 0`. Introduce `h0`. Establish `c0 : (γ : Matrix (Fin 2) (Fin 2) ℚ) 1 0 = 0`. Use `congrFun h0 0` as an intermediate fact. Simplify `this` using `[y0]`.
+
+Establish `d0 : (γ : Matrix (Fin 2) (Fin 2) ℚ) 1 1 = 0`. Use `congrFun h0 2` as an intermediate fact. Simplify `this` using `[y0]`. Conclude with `hδ (by rw [hδdef, Matrix.det_fin_two, c0, d0]; ring)`. Establish `hzy : z = δ⁻¹ • y0`.
+
+Apply the tactic sequence `ext i; fin_cases i <;> simp [z, y0, div_eq_inv_mul]`. Use `set H := Reduction.adelicNorm (Reduction.ratVec z : Fin 3 → 𝔸[ℚ]) with hHdef`. Establish `hH : H = Reduction.adelicNorm (Reduction.ratVec y0 : Fin 3 → 𝔸[ℚ])`. Rewrite using `[hHdef, hzy, Reduction.ratVec_smul, Reduction.adelicNorm_smul_rat (Reduction.hasFiniteContent_ratVec hy0) (inv_ne_zero hδ)]`. Establish `hcol : (fun i => (m : M3A) i 0) = (t1 : 𝔸[ℚ]) • (Pi.single 1 (1 : 𝔸[ℚ]) : Fin 3 → 𝔸[ℚ])`.
+
+Apply the tactic sequence `ext i; fin_cases i <;> simp [z00, f00, z20]`. Establish `hε1 : ε ≤ IdeleGroup.ideleModule ℚ t1`. Use `(hεb m hmC 0).2` as an intermediate fact. Rewrite `this` using `[hcol, adelicNorm_single_smul]`. Then use the resulting hypothesis. Establish `hrow : Reduction.ratVec y0 ᵥ* (m : M3A) = (t3 : 𝔸[ℚ]) • (Pi.single 2 (1 : 𝔸[ℚ]) : Fin 3 → 𝔸[ℚ])`.
+
+Use extensionality with `j`. Use `fin_cases j`. Simplify using `[Matrix.vecMul, dotProduct, Fin.sum_univ_three, Reduction.ratVec, y0, z00, z20]`. Simplify using `[Matrix.vecMul, dotProduct, Fin.sum_univ_three, Reduction.ratVec, y0]`. Take the linear combination `g1`.
+
+Simplify using `[Matrix.vecMul, dotProduct, Fin.sum_univ_three, Reduction.ratVec, y0]`. Take the linear combination `g2`. Establish `hP3 : (IdeleGroup.ideleModule ℚ t3 : ℝ) ≤ P * H`. Use `hPb m hmC _ (Reduction.hasFiniteContent_ratVec hy0)` as an intermediate fact. Rewrite `this` using `[hrow, adelicNorm_single_smul, ← hH]`.
+
+Conclude with `this`. Establish `hpoly` using `poly_gen t1 t2 t3 hε hε1 hP3`. Establish `hpoly' : ((IdeleGroup.ideleModule ℚ (t2 * t3⁻¹) : ℝ) * IdeleGroup.ideleModule ℚ (t1 * t2⁻¹))⁻¹ ≤ P / ε * H`. Rewrite using `[mul_comm]`. Use `hpoly.trans (le_of_eq ?_)` and prove the remaining obligations.
+
+Expand and normalize the polynomial expressions, which then agree. Establish `hg1` using `hgau.1`. Rewrite `hg1` using `[mul_comm ((IdeleGroup.ideleModule ℚ (t1 * t2⁻¹) : ℝ)), mul_comm (1 + ‖((t1 * t2⁻¹ : (𝔸[ℚ])ˣ) : 𝔸[ℚ]).1 Rat.infinitePlace‖)]`. Conclude with `hK _ (t2 * t3⁻¹) (t1 * t2⁻¹) m hmC _ _ _ z v0 v1 v2 hz hpoly' hg1 (fun h => (hgau.2 (fun h' => h (by rw [h', norm_zero]))).symm)`.
+-/
 theorem majorant_second_holds : MajV := by
   intro V hV W hW Kc hKc
   obtain ⟨Ω, hΩ, T, hg⟩ := hV.gauge W hW

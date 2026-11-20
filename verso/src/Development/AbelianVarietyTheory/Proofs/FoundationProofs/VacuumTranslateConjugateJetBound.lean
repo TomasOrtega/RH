@@ -20,6 +20,19 @@ namespace GlobalTheory.ConjJet
 
 open MeasureTheory in
 
+/- English proof (translation)
+Use `haveI := GlobalTheory.countable_of_discrete_addSubgroup A`. Take `⟨F0, -, -, hF0⟩` from `GlobalTheory.exists_isAddFundamentalDomain_addSubgroup A`. Set `φ : A ≃ A'` to `{ toFun := fun a => ⟨P a, (hA _).2 a.2⟩ invFun := fun a => ⟨P.symm a, (hA _).1 (by simp)⟩ left_inv := fun a => by simp right_inv := fun a => by simp }`. Establish `hex' : ∃ Fd, IsAddFundamentalDomain A' Fd μ`. Use `⟨e.symm ⁻¹' F0, (hF0 μ).preimage_of_equiv (hP.symm e).quasiMeasurePreserving φ.bijective ?_⟩` and prove the remaining obligations.
+
+Introduce `g z`. Apply `e.injective` to reduce the goal to its premises. Establish `h1 : ∀ y, P (e.symm y) = y` using `fun y => by rw [← he]; simp`. Simplify using `only [MeasurableEquiv.apply_symm_apply]`. Express the relevant statement in the definitionally equal form `P g + z = e (g + e.symm z)`.
+
+Rewrite using `[he, map_add, h1]`. Establish `h'` using `Classical.epsilon_spec hex'`. Establish `h` using `Classical.epsilon_spec (⟨F0, hF0 μ⟩ : ∃ Fd, IsAddFundamentalDomain A Fd μ)`. Use `set S' := Classical.epsilon (fun Fd => IsAddFundamentalDomain A' Fd μ)`. Use `set S := Classical.epsilon (fun Fd => IsAddFundamentalDomain A Fd μ)`.
+
+Establish `h2 : IsAddFundamentalDomain A (e ⁻¹' S') μ`. Use `h'.preimage_of_equiv hP.quasiMeasurePreserving φ.symm.bijective ?_` and prove the remaining obligations. Introduce `g z`. Express the relevant statement in the definitionally equal form `e (P.symm g + z) = g + e z`. Rewrite using `[he, he, map_add]`.
+
+Simplify using the standard rewrite rules. Establish `hi : ∫ z in S', f z ∂μ = ∫ z in S, f (P z) ∂μ`. Rewrite using `[← hP.setIntegral_preimage_emb e.measurableEmbedding]`. Simplify using `only [he]`. Conclude with `h2.setIntegral_eq h (fun g z => hf g g.2 z)`.
+
+Establish `hm : μ S' = μ S`. Rewrite using `[← hP.measure_preimage_equiv S']`. Use `h2.setLIntegral_eq h (fun _ => (1 : ENNReal)) (fun _ _ => rfl)` as an intermediate fact. Simplify using `using this`. Rewrite using `[setAverage_eq, setAverage_eq, hi, Measure.real, Measure.real, hm]`.
+-/
 theorem mean_transport {V : Type} [NormedAddCommGroup V] [SecondCountableTopology V]
     [MeasurableSpace V] [BorelSpace V] (μ : Measure V) [μ.IsAddLeftInvariant]
     (P : V ≃+ V) (e : V ≃ᵐ V) (he : ∀ x, e x = P x) (hP : MeasurePreserving e μ μ)
@@ -62,12 +75,20 @@ theorem mean_transport {V : Type} [NormedAddCommGroup V] [SecondCountableTopolog
     simpa using this
   rw [setAverage_eq, setAverage_eq, hi, Measure.real, Measure.real, hm]
 
+/- English proof (translation)
+Unfold `Hf`. Rewrite using `[Complex.div_ofReal_re]`. Simplify using `only [Complex.mul_conj, Complex.re_sum, Complex.ofReal_re, Complex.normSq_eq_norm_sq]`.
+-/
 theorem Hf_re (D : D7) (T : Tor D) {N N' : ℕ} (z : VC D N N') :
     (Hf D T z z).re = (∑ τ, ∑ i, ∑ j, ‖z τ i j‖ ^ 2) / area T.abelian₂ := by
   unfold Hf
   rw [Complex.div_ofReal_re]
   simp only [Complex.mul_conj, Complex.re_sum, Complex.ofReal_re, Complex.normSq_eq_norm_sq]
 
+/- English proof (translation)
+Unfold `Hf`. Simplify using `only [Complex.div_ofReal_re, Complex.re_sum]`. Rewrite using `[mul_div_assoc', ← add_div, ← add_div]`. Use `congr 1`. Simplify using `only [Finset.mul_sum, ← Finset.sum_add_distrib]`.
+
+Use `Finset.sum_congr rfl fun τ _ => Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem Hf_add_re (D : D7) (T : Tor D) {N N' : ℕ} (z x : VC D N N') :
     (Hf D T (z + x) (z + x)).re = (Hf D T z z).re + 2 * (Hf D T z x).re + (Hf D T x x).re := by
   unfold Hf
@@ -80,6 +101,11 @@ theorem Hf_add_re (D : D7) (T : Tor D) {N N' : ℕ} (z x : VC D N N') :
   simp
   ring
 
+/- English proof (translation)
+Rewrite using `[← hG.2 x hx z, add_comm x z, Hf_add_re]`. Simplify using `only [al, U, norm_mul, norm_zpow, norm_neg, norm_one, one_zpow, one_mul, Complex.norm_exp, mul_pow]`. Rewrite using `[mul_assoc, ← Real.exp_nat_mul, ← Real.exp_add]`. Use `congr 2`. Simplify using the standard rewrite rules.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem weight_periodic (D : D7) (T : Tor D) {N N' : ℕ} (A : AddSubgroup (VC D N N'))
     (G : VC D N N' → ℂ) (hG : G ∈ ThSp D T A) (x : VC D N N') (hx : x ∈ A) (z : VC D N N') :
     ‖G (x + z)‖ ^ 2 * Real.exp (-Real.pi * (Hf D T (x + z) (x + z)).re) =
@@ -103,6 +129,9 @@ section Perm
 
 variable {D : D7} {T T' : Tor D} {N N' : ℕ} {π : Equiv.Perm D.what₂.Tau}
 
+/- English proof (translation)
+Unfold `Hf`. Rewrite using `[hL]`. Use `congr 1`. Conclude with `Equiv.sum_comp π (fun τ => ∑ i, ∑ j, z τ i j * (starRingEnd ℂ) (w τ i j))`.
+-/
 theorem Hf_perm (hL : T'.abelian₂ = T.abelian₂) (z w : VC D N N') :
     Hf D T' (perm D N N' π z) (perm D N N' π w) = Hf D T z w := by
   unfold Hf
@@ -110,10 +139,22 @@ theorem Hf_perm (hL : T'.abelian₂ = T.abelian₂) (z w : VC D N N') :
   congr 1
   exact Equiv.sum_comp π (fun τ => ∑ i, ∑ j, z τ i j * (starRingEnd ℂ) (w τ i j))
 
+/- English proof (translation)
+Simplify using `only [U, Hf_perm hL, map_add]`.
+-/
 theorem U_perm (hL : T'.abelian₂ = T.abelian₂) (x z : VC D N N') (G : VC D N N' → ℂ) :
     U D T' (perm D N N' π x) G (perm D N N' π z) = U D T x (fun w => G (perm D N N' π w)) z := by
   simp only [U, Hf_perm hL, map_add]
 
+/- English proof (translation)
+Establish `h : La D T' L L' = (La D T L L').map (perm D N N' π).toAddMonoidHom`. Unfold `La`. Rewrite using `[AddMonoidHom.map_closure, hL]`. Use `congr 1`. Establish `hv : ∀ (w : ℂ) (A : Matrix (Fin N') (Fin N) D.host.E), (perm D N N' π).toAddMonoidHom (w • embV D T A) = w • embV D T' A`.
+
+Introduce `w A`. Use function extensionality and compare the values at `τ i j`. Express the relevant statement in the definitionally equal form `w * T.emb (π τ) (A i j) = w * T'.emb τ (A i j)`. Rewrite using `[hE]`. Use extensionality with `z`.
+
+Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨w, hw, A, hA, rfl⟩`. Conclude with `⟨_, ⟨w, hw, A, hA, rfl⟩, hv w A⟩`. Introduce and unpack `⟨_, ⟨w, hw, A, hA, rfl⟩, rfl⟩`. Conclude with `⟨w, hw, A, hA, hv w A⟩`.
+
+Rewrite using `[h]`. Conclude with `AddSubgroup.mem_map_iff_mem (f := (perm D N N' π).toAddMonoidHom) (perm D N N' π).injective`.
+-/
 theorem La_perm (hL : T'.abelian₂ = T.abelian₂) (hE : ∀ τ x, T'.emb τ x = T.emb (π τ) x) (L L')
     (x : VC D N N') : perm D N N' π x ∈ La D T' L L' ↔ x ∈ La D T L L' := by
   have h : La D T' L L' = (La D T L L').map (perm D N N' π).toAddMonoidHom := by
@@ -135,6 +176,11 @@ theorem La_perm (hL : T'.abelian₂ = T.abelian₂) (hE : ∀ τ x, T'.emb τ x 
   rw [h]
   exact AddSubgroup.mem_map_iff_mem (f := (perm D N N' π).toAddMonoidHom) (perm D N N' π).injective
 
+/- English proof (translation)
+Use `⟨hG.1.comp ?_, fun x hx z => ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `Differentiable ℂ (fun (z : VC D N N') τ => z (π τ)) fun_prop`. Use `hG.2 _ ((La_perm hL hE L L' x).2 hx) (perm D N N' π z)` as an intermediate fact. Rewrite `this` using `[U_perm hL]`. Simplify using `only [al, Hf_perm hL] at this ⊢`.
+
+Conclude with `this`.
+-/
 theorem Th_perm (hL : T'.abelian₂ = T.abelian₂) (hE : ∀ τ x, T'.emb τ x = T.emb (π τ) x) (L L')
     (G : VC D N N' → ℂ) (hG : G ∈ Th D T' L L') :
     (fun w => G (perm D N N' π w)) ∈ Th D T L L' := by
@@ -146,6 +192,11 @@ theorem Th_perm (hL : T'.abelian₂ = T.abelian₂) (hE : ∀ τ x, T'.emb τ x 
     simp only [al, Hf_perm hL] at this ⊢
     exact this
 
+/- English proof (translation)
+Use `haveI h1 : (MeasureTheory.volume : MeasureTheory.Measure (Fin N → ℂ)).IsAddLeftInvariant := MeasureTheory.Measure.pi.isAddLeftInvariant _`. Use `haveI h2 : (MeasureTheory.volume : MeasureTheory.Measure (Fin N' → Fin N → ℂ)).IsAddLeftInvariant := MeasureTheory.Measure.pi.isAddLeftInvariant _`. Use `haveI h3 : (MeasureTheory.volume : MeasureTheory.Measure (VC D N N')).IsAddLeftInvariant := MeasureTheory.Measure.pi.isAddLeftInvariant _`. Establish `h` using `mean_transport (V := VC D N N') MeasureTheory.volume (perm D N N' π) (MeasurableEquiv.piCongrLeft (fun _ : D.what₂.Tau => Fin N' → Fin N → ℂ) π).symm (fun _ => rfl) (MeasureTheory.MeasurePreserving.symm _ (MeasureTheory.volume_measurePreserving_piCongrLeft _ π)) (La D T L L') (La …`. Simplify using `only [Hf_perm hL]`.
+
+Conclude with `weight_periodic D T _ _ (Th_perm hL hE L L' G hG) x hx z)`. Simplify using `only [Hf_perm hL] at h`. Conclude with `h`.
+-/
 theorem normSq_perm (hL : T'.abelian₂ = T.abelian₂) (hE : ∀ τ x, T'.emb τ x = T.emb (π τ) x) (L L')
     [DiscreteTopology (La D T L L' : AddSubgroup (VC D N N'))]
     (G : VC D N N' → ℂ) (hG : G ∈ Th D T' L L') :
@@ -170,6 +221,23 @@ theorem normSq_perm (hL : T'.abelian₂ = T.abelian₂) (hE : ∀ τ x, T'.emb �
 
 end Perm
 
+/- English proof (translation)
+Establish `hc : Continuous (fun x : VC D N N' => qH D T x)`. Simplify using `only [qH, Hf_re]`. Use `fun_prop`. Use `discreteTopology_of_isOpen_singleton_zero ?_` and prove the remaining obligations. Establish `: ({0} : Set A) = Subtype.val ⁻¹' ((fun x : VC D N N' => qH D T x) ⁻¹' Set.Iio 1)`.
+
+Use extensionality with `x`. Simplify using `only [Set.mem_singleton_iff, Set.mem_preimage, Set.mem_Iio]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `rfl`. Simplify using `[qH, Hf_re]`.
+
+Introduce `hx`. Take `⟨m, hm⟩` from `h x x.2`. Establish `hs : 0 < Real.sqrt D.host.d` using `Real.sqrt_pos.2 (by exact_mod_cast hd)`. Establish `h0 : 0 ≤ qH D T (x : VC D N N')`. Simplify using `only [qH, Hf_re]`.
+
+Check the signs of the components of the expression. Establish `hm0 : m = 0`. Rewrite `hx`, `h0` using `[hm]`. Establish `h1 : m < 1` using `by exact_mod_cast hx`. Establish `h2 : 0 ≤ m` using `by exact_mod_cast h0`.
+
+Use linear arithmetic over natural numbers and integers. Rewrite `hm` using `[hm0]`. Simplify using `only [qH, Hf_re, Int.cast_zero, mul_eq_zero, div_eq_zero_iff] at hm`. Establish `hz : ∑ τ, ∑ i, ∑ j, ‖(x : VC D N N') τ i j‖ ^ 2 = 0`. Break down `hm with (h1 | h1) | h1 | h1` into its components or cases.
+
+Conclude with `absurd h1 hs.ne'`. Evaluate the numerical expressions using `at h1`. Conclude with `h1`. Conclude with `absurd h1 ha.ne'`. Apply `Subtype.ext` to reduce the goal to its premises.
+
+Use function extensionality and compare the values at `τ i j`. Establish `h1` using `(Finset.sum_eq_zero_iff_of_nonneg (fun _ _ => by positivity)).1 hz τ (Finset.mem_univ _)`. Establish `h2` using `(Finset.sum_eq_zero_iff_of_nonneg (fun _ _ => by positivity)).1 h1 i (Finset.mem_univ _)`. Establish `h3` using `(Finset.sum_eq_zero_iff_of_nonneg (fun _ _ => by positivity)).1 h2 j (Finset.mem_univ _)`. Simplify using `using h3`.
+
+Rewrite using `[this]`. Conclude with `(isOpen_Iio.preimage hc).preimage continuous_subtype_val`.
+-/
 theorem discrete_of_int (D : D7) (T : Tor D) {N N' : ℕ} (A : AddSubgroup (VC D N N'))
     (ha : 0 < area T.abelian₂) (hd : 0 < D.host.d) (h : ∀ x ∈ A, ∃ m : ℤ, qH D T x = m) :
     DiscreteTopology A := by
@@ -211,6 +279,11 @@ theorem discrete_of_int (D : D7) (T : Tor D) {N N' : ℕ} (A : AddSubgroup (VC D
   rw [this]
   exact (isOpen_Iio.preimage hc).preimage continuous_subtype_val
 
+/- English proof (translation)
+Take `⟨-, hδ, -, ha, -⟩` from `GlobalTheory.CurveLattice.lattice_of_curve D hg cc δ hc`. Establish `hd : (0 : ℝ) < D.host.d` using `by exact_mod_cast D.host.hyp.2.1.pos`. Establish `hN : (0 : ℝ) < (Ideal.absNorm cc : ℝ)`. Establish `: Ideal.absNorm cc ≠ 0` using `fun h => hc.1.1 (Ideal.absNorm_eq_zero_iff.1 h)`. Check the signs of the components of the expression.
+
+Use `norm_pos_iff.2 hδ` as an intermediate fact. Rewrite using `[ha]`. Check the signs of the components of the expression.
+-/
 theorem area_pos (D : D7) (hg : admG1 D) (cc : Ideal (𝓞 D.host.K)) (δ : ℂ) (hc : Crv D cc δ) :
     0 < area (lamOf D cc δ) := by
   obtain ⟨-, hδ, -, ha, -⟩ := GlobalTheory.CurveLattice.lattice_of_curve D hg cc δ hc
@@ -222,6 +295,17 @@ theorem area_pos (D : D7) (hg : admG1 D) (cc : Ideal (𝓞 D.host.K)) (δ : ℂ)
   rw [ha]
   positivity
 
+/- English proof (translation)
+Establish `ha` using `area_pos D hg cc δ hc`. Take `⟨hl, -, hΔ, -, hO⟩` from `GlobalTheory.CurveLattice.lattice_of_curve D hg cc δ hc`. Take `⟨h1, h2⟩` from `GlobalTheory.OddThetaNorm.odd_theta_norm_sigma_star _ hl hΔ`. Establish `htn : t ∉ lamOf D cc δ`. Introduce `h`.
+
+Take `⟨a, ha⟩` from `exists_integer_map_eq_w0 D`. Use `hO a t h` as an intermediate fact. Rewrite `this` using `[ha]`. Conclude with `ht.2.1 this`. Establish `hu : U1 (lamOf D cc δ) t (sgStar (lamOf D cc δ)) 0 ≠ 0`.
+
+Unfold `U1`. Use `mul_ne_zero ?_ (Complex.exp_ne_zero _)` and prove the remaining obligations. Rewrite using `[zero_add]`. Conclude with `fun h => htn (((GlobalTheory.OddTheta.sgStar_laws _ hl).2.1 t).1 h)`. Rewrite using `[h2 t hu]`.
+
+Use `div_ne_zero (fun h => ?_) (pow_ne_zero _ (norm_ne_zero_iff.2 hu))` and prove the remaining obligations. Rewrite `h1` using `[h]`. Establish `: 0 < 2 * Real.pi ^ 2 / area (lamOf D cc δ)`. Use `Real.pi_pos` as an intermediate fact. Check the signs of the components of the expression.
+
+Rewrite `this` using `[← h1]`. Simplify using `at this`.
+-/
 theorem thetaZeroNormSq_ne_zero_cmLattice (D : D7) (hg : admG1 D) (cc : Ideal (𝓞 D.host.K)) (δ t : ℂ)
     (hc : Crv D cc δ) (ht : GL3Theta.IsTwoTorsionPointUnkilled D (lamOf D cc δ) t) :
     nrm1Sq (lamOf D cc δ) (GL3Theta.th0 (lamOf D cc δ) t) ≠ 0 := by
@@ -248,10 +332,16 @@ theorem thetaZeroNormSq_ne_zero_cmLattice (D : D7) (hg : admG1 D) (cc : Ideal (�
   rw [← h1] at this
   simp at this
 
+/- English proof (translation)
+Use function extensionality and compare the values at `z`. Simplify using `[U, Hf]`.
+-/
 theorem U_zero (D : D7) (T : Tor D) {N N' : ℕ} (G : VC D N N' → ℂ) : U D T 0 G = G := by
   funext z
   simp [U, Hf]
 
+/- English proof (translation)
+Introduce `h`. Apply `hG` to reduce the goal to its premises. Use function extensionality and compare the values at `z`. Use `congrFun h (z - x)` as an intermediate fact. Simplify `this` using `[U]`.
+-/
 theorem U_ne_zero (D : D7) (T : Tor D) {N N' : ℕ} (x : VC D N N') (G : VC D N N' → ℂ)
     (hG : G ≠ 0) : U D T x G ≠ 0 := by
   intro h
@@ -260,11 +350,17 @@ theorem U_ne_zero (D : D7) (T : Tor D) {N N' : ℕ} (x : VC D N N') (G : VC D N 
   have := congrFun h (z - x)
   simpa [U] using this
 
+/- English proof (translation)
+Unfold `U Hf`. Use `fun_prop`.
+-/
 theorem U_diff (D : D7) (T : Tor D) {N N' : ℕ} (x : VC D N N') (G : VC D N N' → ℂ)
     (hG : Differentiable ℂ G) : Differentiable ℂ (U D T x G) := by
   unfold U Hf
   fun_prop
 
+/- English proof (translation)
+Unfold `normSq`. Simplify using `only [MeasureTheory.average_eq, smul_eq_mul]`. Conclude with `mul_nonneg (inv_nonneg.2 MeasureTheory.measureReal_nonneg) (MeasureTheory.integral_nonneg fun z => by positivity)`.
+-/
 theorem normSq_nonneg (D : D7) (T : Tor D) {N N' : ℕ} (A : AddSubgroup (VC D N N'))
     (G : VC D N N' → ℂ) : 0 ≤ normSq D T A G := by
   unfold normSq
@@ -272,11 +368,19 @@ theorem normSq_nonneg (D : D7) (T : Tor D) {N N' : ℕ} (A : AddSubgroup (VC D N
   exact mul_nonneg (inv_nonneg.2 MeasureTheory.measureReal_nonneg)
     (MeasureTheory.integral_nonneg fun z => by positivity)
 
+/- English proof (translation)
+Use function extensionality and compare the values at `z`. Simplify using `[comb, U_zero]`.
+-/
 theorem comb_one (D : D7) (T : Tor D) {N N' : ℕ} (G : VC D N N' → ℂ) :
     comb D T (fun _ : Fin 1 => 1) (fun _ => 0) G = G := by
   funext z
   simp [comb, U_zero]
 
+/- English proof (translation)
+Establish `hL' : T.abelian₂ = (tor0 D cc δ).abelian₂` using `hL`. Establish `hE' : ∀ τ x, T.emb τ x = (tor0 D cc δ).emb (π τ) x` using `hE`. Use `haveI : DiscreteTopology (La D (tor0 D cc δ) L L' : AddSubgroup (VC D N N')) := discrete_of_int D (tor0 D cc δ) _ (area_pos D hg cc δ hc) D.host.hyp.2.1.pos (GlobalTheory.ThetaLine.theta_line D hg cc δ hc N N' _ (Or.inr ⟨L, L', h1, h2, rfl⟩)).2.2.2.2.2.2`. Take `⟨y, rfl⟩` from `(perm D N N' π).surjective y`. Take `⟨z, rfl⟩` from `(perm D N N' π).surjective z`.
+
+Rewrite using `[U_perm hL', Hf_perm hL', normSq_perm hL' hE' L L' G hG]`. Conclude with `GlobalTheory.ThetaSupPair.sup_translate_le D hg cc δ hc N N' L L' h1 h2 _ (Th_perm hL' hE' L L' G hG) y z`.
+-/
 theorem sup_perm (D : D7) (hg : admG1 D) (cc : Ideal (𝓞 D.host.K)) (δ : ℂ) (hc : Crv D cc δ)
     (T : Tor D) (π : Equiv.Perm D.what₂.Tau) (hL : T.abelian₂ = lamOf D cc δ)
     (hE : ∀ τ x, T.emb τ x = embT D (π τ) x) (N N' : ℕ) (L L') (h1 : SD D L) (h2 : SD D L')
@@ -293,10 +397,20 @@ theorem sup_perm (D : D7) (hg : admG1 D) (cc : Ideal (𝓞 D.host.K)) (δ : ℂ)
   rw [U_perm hL', Hf_perm hL', normSq_perm hL' hE' L L' G hG]
   exact GlobalTheory.ThetaSupPair.sup_translate_le D hg cc δ hc N N' L L' h1 h2 _ (Th_perm hL' hE' L L' G hG) y z
 
+/- English proof (translation)
+Simplify using `[cj, rhoBar]`.
+-/
 theorem cj_bar (M : IntermediateField ℚ ℂ) (ρ : M →ₐ[ℚ] ℂ) (x : ℂ) :
     ‖cj M (rhoBar M ρ) x‖ = ‖cj M ρ x‖ := by
   simp [cj, rhoBar]
 
+/- English proof (translation)
+Unfold `area`. Use `congr 1`. Use extensionality with `a`. Establish `key : ∀ u v : ℂ, |((starRingEnd ℂ) ((starRingEnd ℂ) u) * (starRingEnd ℂ) v).im| = |((starRingEnd ℂ) u * v).im|`. Introduce `u v`.
+
+Rewrite using `[← map_mul, Complex.conj_im, abs_neg]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨h0, _, ⟨u, hu, rfl⟩, _, ⟨v, hv, rfl⟩, h⟩`. Conclude with `⟨h0, u, hu, v, hv, h.trans (key u v)⟩`. Introduce and unpack `⟨h0, u, hu, v, hv, h⟩`.
+
+Conclude with `⟨h0, _, ⟨u, hu, rfl⟩, _, ⟨v, hv, rfl⟩, h.trans (key u v).symm⟩`.
+-/
 theorem area_conj (Λ : AddSubgroup ℂ) :
     area (Λ.map (starRingEnd ℂ).toAddMonoidHom) = area Λ := by
   unfold area
@@ -312,6 +426,19 @@ theorem area_conj (Λ : AddSubgroup ℂ) :
   · rintro ⟨h0, u, hu, v, hv, h⟩
     exact ⟨h0, _, ⟨u, hu, rfl⟩, _, ⟨v, hv, rfl⟩, h.trans (key u v).symm⟩
 
+/- English proof (translation)
+Take `⟨hdata, htors⟩` from `(GlobalTheory.CurveAlgebraic.integral_j_and_algebraic_data D hI.g1).2 cc δ hc`. Take `⟨hA, hAU, -⟩` from `hI.alg cc δ hc t0 ht a d L L' h1 h2 hev G hG`. Take `⟨hTh, -⟩` from `hI.conj cc δ hc t0 ht a d L L' h1 h2 hev G hG Qbar ρ hdata hA`. Take `⟨t', ht'⟩` from `(hI.t0Ex cc δ hc).2 Qbar ρ hdata.2.1 hdata.2.2`. Take `⟨hN, -⟩` from `hI.nrm cc δ hc t0 ht a d L L' h1 h2 hev G hG Qbar ρ hdata hA t' ht'`.
+
+Take `⟨cc', δ', hc', -, hΛ⟩` from `hI.curve cc δ hc Qbar ρ hρ hdata.2.1 hdata.2.2 1 one_pos`. Take `⟨π, hπ⟩` from `hI.perm Qbar ρ hρ hdata.1`. Establish `hne : fnConj D Qbar ρ G ≠ 0`. Introduce `h`. Rewrite `hN` using `[h, hΛ]`.
+
+Rewrite `ht'` using `[hΛ]`. Use `pow_ne_zero _ (thetaZeroNormSq_ne_zero_cmLattice D hI.g1 cc' δ' t' hc' ht') (hN.symm.trans ?_)` and prove the remaining obligations. Simplify using `[normSq]`. Take `⟨m, hm, hmy⟩` from `id hy`. Take `⟨y', hy', -⟩` from `hI.galEx cc δ hc Qbar ρ hρ hdata htors a d L L' h1 h2 y (2 * m) hy (by omega)`.
+
+Establish `hgal` using `(hI.gal cc δ hc Qbar ρ hρ hdata a d L L' h1 h2 1 (fun _ => 1) (fun _ => 0) G y y' m hGT hm hmy (fun _ => by simp) hy' (by rw [comb_one]; exact hA) (by rw [comb_one]; exact hAU y hy)).1`. Rewrite `hgal` using `[comb_one]`. Establish `hdiff` using `U_diff D (torConj D (tor0 D cc δ) Qbar ρ) y' _ hTh.1`. Take `⟨hmem, hcj⟩` from `(GlobalTheory.ConjSeries.taylor_fnConj D a d Qbar ρ (U D (tor0 D cc δ) y G) (by rw [hgal]; exact hdiff) (by rw [hgal]; exact U_ne_zero D _ _ _ hne)).2 (hAU y hy) n T`. Use `⟨hmem, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[hcj, hgal]`. Establish `hr : 0 ≤ D.host.rdE` using `Real.rpow_nonneg (abs_nonneg _) _`. Use `(GlobalTheory.MinorBound.minor_bound D a d n _ _ (area (lamConj Qbar ρ (lamOf D cc δ))) B (by rw [hΛ]; exact area_pos D hI.g1 cc' δ' hc') hB ?_ hn hdiff fun z => ?_).2 T` and prove the remaining obligations. Use `normSq_nonneg D (torConj D (tor0 D cc δ) Qbar ρ) (La D (torConj D (tor0 D cc δ) Qbar ρ) L L') (fnConj D Qbar ρ G)` as an intermediate fact. Check the signs of the components of the expression.
+
+Use `sup_perm D hI.g1 cc' δ' hc' (torConj D (tor0 D cc δ) Qbar ρ) π hΛ hπ a d L L' h1 h2 _ hTh y' z` as an intermediate fact. Rewrite `this` using `[Hf_re, ← mul_div_assoc]`. Conclude with `this`.
+-/
 theorem jet_bound_fix (D : D7) (hI : Inp D) (cc : Ideal (𝓞 D.host.K)) (δ : ℂ) (t0 : ℂ)
     (hc : Crv D cc δ) (ht : GL3Theta.IsTwoTorsionPointUnkilled D (lamOf D cc δ) t0) (a d : ℕ) (L L')
     (h1 : SD D L) (h2 : SD D L') (hev : Even (a * d)) (G : VC D a d → ℂ)
@@ -362,6 +489,11 @@ theorem jet_bound_fix (D : D7) (hI : Inp D) (cc : Ideal (𝓞 D.host.K)) (δ : �
     rw [Hf_re, ← mul_div_assoc] at this
     exact this
 
+/- English proof (translation)
+Take `⟨b, κ, hb, -, rfl⟩` from `hG`. Take `⟨-, ⟨hd, hinv⟩, -⟩` from `hI.uni cc δ hc a d _ _ (Or.inl ⟨_, b, hb, rfl⟩) (Or.inr ⟨L, L', h1, h2, rfl⟩) _ (GlobalTheory.VacuumMove.pullbackOrthonormal_normalizedTheta_mem_thetaSpace D hI.g1 cc δ t0 hc ht b hb.1)`. Use `⟨hd.const_mul κ, fun x hx z => ?_⟩` and prove the remaining obligations. Use `hinv x hx z` as an intermediate fact. Simplify using `only [U] at this ⊢`.
+
+Rewrite using `[show (tor0 D cc δ).abelian₂ = lamOf D cc δ from rfl, ← this]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem vacuum_mem_thetaSpace_pair (D : D7) (hI : Inp D) (cc : Ideal (𝓞 D.host.K)) (δ : ℂ) (t0 : ℂ)
     (hc : Crv D cc δ) (ht : GL3Theta.IsTwoTorsionPointUnkilled D (lamOf D cc δ) t0) (a d : ℕ) (L L')
     (h1 : SD D L) (h2 : SD D L') (G : VC D a d → ℂ)
@@ -375,6 +507,15 @@ theorem vacuum_mem_thetaSpace_pair (D : D7) (hI : Inp D) (cc : Ideal (𝓞 D.hos
   rw [show (tor0 D cc δ).abelian₂ = lamOf D cc δ from rfl, ← this]
   ring
 
+/- English proof (translation)
+Introduce `D hI cc δ t0 hc ht a d L L' h1 h2 hev G hG y hy n B hB hn ρ t0' ht' T`. Establish `hGT` using `vacuum_mem_thetaSpace_pair D hI cc δ t0 hc ht a d L L' h1 h2 G hG`. Take `⟨hdata, -⟩` from `(GlobalTheory.CurveAlgebraic.integral_j_and_algebraic_data D hI.g1).2 cc δ hc`. Take `⟨hA, -⟩` from `hI.alg cc δ hc t0 ht a d L L' h1 h2 hev G hG`. Take `⟨hN, -⟩` from `hI.nrm cc δ hc t0 ht a d L L' h1 h2 hev G hG Qbar ρ hdata hA t0' ht'`.
+
+Rewrite using `[← hN]`. Take `⟨hfix | hfix, htor, hbar⟩` from `hI.bar cc δ hc Qbar ρ hdata`. Conclude with `jet_bound_fix D hI cc δ t0 hc ht a d L L' h1 h2 hev G hG hGT y hy n B hB hn ρ hfix T`. Take `⟨hmem, hle⟩` from `jet_bound_fix D hI cc δ t0 hc ht a d L L' h1 h2 hev G hG hGT y hy n B hB hn (rhoBar Qbar ρ) hfix T`. Use `⟨hmem, ?_⟩` and prove the remaining obligations.
+
+Take `⟨hTh, -⟩` from `hI.conj cc δ hc t0 ht a d L L' h1 h2 hev G hG Qbar ρ hdata hA`. Establish `hn2` using `((hbar a d L L' (fnConj D Qbar ρ G)).2.2 hTh).2 h1 h2 0`. Rewrite `hn2` using `[U_zero]`. Establish `hL : lamConj Qbar (rhoBar Qbar ρ) (lamOf D cc δ) = (lamConj Qbar ρ (lamOf D cc δ)).map (starRingEnd ℂ).toAddMonoidHom` using `congrArg Tor.abelian₂ htor`. Rewrite `hle` using `[cj_bar, (hbar a d L L' G).1, htor, hn2, hL, area_conj]`.
+
+Conclude with `hle`.
+-/
 theorem conj_jet_bound : ∀ (D : D7), Inp D → ∀ (cc : Ideal (𝓞 D.host.K)) (δ : ℂ) (t0 : ℂ), Crv D cc δ → GL3Theta.IsTwoTorsionPointUnkilled D (lamOf D cc δ) t0 → ∀ (a d : ℕ) L L', SD D L → SD D L' → Even (a * d) → ∀ G, ThetaVectorUpToUnits D (tor0 D cc δ) t0 L L' G → ∀ y, LaQ D (tor0 D cc δ) L L' y → ∀ (n : D.what₂.Tau → ℕ) (B : ℝ), 1 ≤ B → (∀ τ, (n τ : ℝ) ≤ 2 * B) → ∀ (ρ : Qbar →ₐ[ℚ] ℂ) t0', GL3Theta.IsTwoTorsionPointUnkilled D (lamConj Qbar ρ (lamOf D cc δ)) t0' → ∀ T : Tup D a d n, GL3Theta.applyAt0 D (minorPol D T) (U D (tor0 D cc δ) y G) ∈ Qbar ∧ ‖cj Qbar ρ (GL3Theta.applyAt0 D (minorPol D T) (U D (tor0 D cc δ) y G))‖ ^ 2 ≤ ((a.factorial : ℝ) ^ (∑ τ, n τ)) ^ 2 * (3 * (2 * ((fF D * a * d : ℕ) : ℝ) * D.host.rdE + 1) ^ (fF D * a * d) * nrm1Sq (lamConj Qbar ρ (lamOf D cc δ)) (GL3Theta.th0 (lamConj Qbar ρ (lamOf D cc δ)) t0') ^ (fF D * a * d) * (2 * Real.exp 1 * Real.pi * B / area (lamConj Qbar ρ (lamOf D cc δ))) ^ (a * ∑ τ, n τ)) := by
   intro D hI cc δ t0 hc ht a d L L' h1 h2 hev G hG y hy n B hB hn ρ t0' ht' T
   have hGT := vacuum_mem_thetaSpace_pair D hI cc δ t0 hc ht a d L L' h1 h2 G hG

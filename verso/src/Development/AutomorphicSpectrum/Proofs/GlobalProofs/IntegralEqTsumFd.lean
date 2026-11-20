@@ -21,6 +21,9 @@ def per (ι : C →+ V) (f : V → ℂ) (b : V) : ℂ := ∑' c, f (b + ι c)
 def UnifSummable (ι : C →+ V) (f : V → ℂ) : Prop :=
   ∀ K : Set V, IsCompact K → ∃ u : C → ℝ, Summable u ∧ ∀ c : C, ∀ b ∈ K, ‖f (b + ι c)‖ ≤ u c
 
+/- English proof (translation)
+Use `continuous_iff_continuousAt.2 fun x => ?_` and prove the remaining obligations. Take `⟨K, hK, hxK⟩` from `exists_compact_mem_nhds x`. Take `⟨u, hu, hb⟩` from `h K hK`. Establish `: ContinuousOn (per ι f) K` using `continuousOn_tsum (fun c => (hf.comp (continuous_id.add continuous_const)).continuousOn) hu (fun c b hb' => hb c b hb')`. Conclude with `this.continuousAt hxK`.
+-/
 theorem continuous_per {ι : C →+ V} {f : V → ℂ} (hf : Continuous f) (h : UnifSummable ι f) :
     Continuous (per ι f) := by
   refine continuous_iff_continuousAt.2 fun x => ?_
@@ -31,12 +34,20 @@ theorem continuous_per {ι : C →+ V} {f : V → ℂ} (hf : Continuous f) (h : 
       (fun c b hb' => hb c b hb')
   exact this.continuousAt hxK
 
+/- English proof (translation)
+Unfold `per`. Rewrite using `[← (Equiv.addLeft c).tsum_eq (fun d => f (x + ι d))]`. Use `tsum_congr fun d => ?_` and prove the remaining obligations. Simplify using `[add_assoc]`.
+-/
 theorem per_add (ι : C →+ V) (f : V → ℂ) (x : V) (c : C) : per ι f (x + ι c) = per ι f x := by
   unfold per
   rw [← (Equiv.addLeft c).tsum_eq (fun d => f (x + ι d))]
   refine tsum_congr fun d => ?_
   simp [add_assoc]
 
+/- English proof (translation)
+Take `⟨u, hu, hb⟩` from `h K hK`. Use `⟨∑' c, u c, fun x => ?_⟩` and prove the remaining obligations. Take `⟨a, ha⟩` from `hx x`. Establish `e : per ι f x = per ι f (x - ι a)`. Rewrite using `[← per_add ι f (x - ι a) a, sub_add_cancel]`.
+
+Rewrite using `[e]`. Conclude with `tsum_of_norm_bounded hu.hasSum fun c => hb c _ ha`.
+-/
 theorem per_bounded {ι : C →+ V} {f : V → ℂ} (h : UnifSummable ι f) {K : Set V} (hK : IsCompact K)
     (hx : ∀ x, ∃ a, x - ι a ∈ K) : ∃ M, ∀ x, ‖per ι f x‖ ≤ M := by
   obtain ⟨u, hu, hb⟩ := h K hK
@@ -47,10 +58,26 @@ theorem per_bounded {ι : C →+ V} {f : V → ℂ} (h : UnifSummable ι f) {K :
   rw [e]
   exact tsum_of_norm_bounded hu.hasSum fun c => hb c _ ha
 
+/- English proof (translation)
+The claim follows from `Measure.integrableOn_of_bounded hD hg.aestronglyMeasurable (Filter.Eventually.of_forall hM)`.
+-/
 theorem integrableOn_bdd {μ : Measure V} {D : Set V} (hD : μ D ≠ ∞) {g : V → ℂ} (hg : Continuous g)
     {M : ℝ} (hM : ∀ x, ‖g x‖ ≤ M) : IntegrableOn g D μ :=
   Measure.integrableOn_of_bounded hD hg.aestronglyMeasurable (Filter.Eventually.of_forall hM)
 
+/- English proof (translation)
+Take `⟨u, hu, hb⟩` from `h K hK`. Choose the witnesses or unpack the hypotheses as in `⟨k, hk⟩ : K.Nonempty := by`. Take `⟨a, ha⟩` from `hx 0`. Conclude with `⟨_, ha⟩`. Establish `hu0 : ∀ a, 0 ≤ u a` using `fun a => (norm_nonneg _).trans (hb a k hk)`.
+
+Set `s : C → TopologicalSpace.Compacts V` to `fun a => ⟨(fun y => y + ι a) '' K, hK.image (continuous_id.add continuous_const)⟩`. Set `G : C(V, ℂ)` to `⟨f, hf⟩`. Establish `hs : ⋃ a, (s a : Set V) = Set.univ`. Use extensionality with `x`. Simplify using `only [Set.mem_iUnion, Set.mem_univ, iff_true]`.
+
+Take `⟨a, ha⟩` from `hx x`. Conclude with `⟨a, x - ι a, ha, sub_add_cancel _ _⟩`. Establish `hμ : ∀ a, μ.real (s a : Set V) = μ.real K`. Introduce `a`. Establish `: ((s a : TopologicalSpace.Compacts V) : Set V) = (fun y => y + -ι a) ⁻¹' K` using `by show (fun y => y + ι a) '' K = _`.
+
+Rewrite using `[Set.image_add_right]`. Rewrite using `[this, Measure.real, Measure.real, measure_preimage_add_right]`. Establish `hn : ∀ a, ‖G.restrict (s a : Set V)‖ ≤ u a`. Introduce `a`. Rewrite using `[ContinuousMap.norm_le _ (hu0 a)]`.
+
+Introduce and unpack `⟨y, b, hb', rfl⟩`. Conclude with `hb a b hb'`. Use `integrable_of_summable_norm_restrict (f := G) (s := s) ?_ hs` and prove the remaining obligations. Use `Summable.of_nonneg_of_le (fun _ => mul_nonneg (norm_nonneg _) measureReal_nonneg) (fun a => ?_) (hu.mul_right (μ.real K))` and prove the remaining obligations. Rewrite using `[hμ]`.
+
+Conclude with `mul_le_mul_of_nonneg_right (hn a) measureReal_nonneg`.
+-/
 theorem integrable_of_unif {ι : C →+ V} {f : V → ℂ} (hf : Continuous f) (h : UnifSummable ι f)
     (μ : Measure V) [μ.IsAddHaarMeasure] {K : Set V} (hK : IsCompact K) (hx : ∀ x, ∃ a, x - ι a ∈ K) :
     Integrable f μ := by
@@ -84,9 +111,19 @@ theorem integrable_of_unif {ι : C →+ V} {f : V → ℂ} (hf : Continuous f) (
   rw [hμ]
   exact mul_le_mul_of_nonneg_right (hn a) measureReal_nonneg
 
+/- English proof (translation)
+The claim follows from `ι.rangeRestrict_surjective.countable`.
+-/
 theorem countable_range (ι : C →+ V) : Countable ι.range :=
   ι.rangeRestrict_surjective.countable
 
+/- English proof (translation)
+Use `countable_range ι` as an intermediate fact. Establish `hsum` using `hD.lintegral_eq_tsum'' (fun x => ‖h x‖ₑ)`. Establish `hfin : ∑' g : ι.range, ∫⁻ x in D, ‖h (g +ᵥ x)‖ₑ ∂μ ≠ ∞`. Rewrite using `[← hsum]`. Conclude with `hh.2.ne`.
+
+Establish `hs` using `ENNReal.summable_toReal hfin`. Establish `h2` using `((ι.ofInjective hι).toEquiv.summable_iff).2 hs`. Use `h2.congr fun c => ?_` and prove the remaining obligations. Rewrite using `[integral_norm_eq_lintegral_enorm (hh.comp_add_right (ι c)).integrableOn.aestronglyMeasurable]`. Establish `: ∀ x, ((ι.ofInjective hι).toEquiv c : ι.range) +ᵥ x = x + ι c` using `fun x => by show ι c + x = x + ι c`.
+
+Conclude with `add_comm _ _`. Simplify using `only [Function.comp, this]`.
+-/
 theorem summable_fd {ι : C →+ V} (hι : Function.Injective ι) {μ : Measure V} [μ.IsAddHaarMeasure]
     {D : Set V} (hD : IsAddFundamentalDomain ι.range D μ) {h : V → ℂ} (hh : Integrable h μ) :
     Summable fun c => ∫ x in D, ‖h (x + ι c)‖ ∂μ := by
@@ -104,6 +141,11 @@ theorem summable_fd {ι : C →+ V} (hι : Function.Injective ι) {μ : Measure 
     exact add_comm _ _
   simp only [Function.comp, this]
 
+/- English proof (translation)
+Use `countable_range ι` as an intermediate fact. Rewrite using `[hD.integral_eq_tsum'' h hh, ← (ι.ofInjective hι).toEquiv.tsum_eq]`. Use `tsum_congr fun c => ?_` and prove the remaining obligations. Establish `: ∀ x, ((ι.ofInjective hι).toEquiv c : ι.range) +ᵥ x = x + ι c` using `fun x => by show ι c + x = x + ι c`. Conclude with `add_comm _ _`.
+
+Simplify using `only [this]`.
+-/
 theorem integral_eq_tsum_fd {ι : C →+ V} (hι : Function.Injective ι) {μ : Measure V} [μ.IsAddHaarMeasure]
     {D : Set V} (hD : IsAddFundamentalDomain ι.range D μ) {h : V → ℂ} (hh : Integrable h μ) :
     ∫ x, h x ∂μ = ∑' c, ∫ x in D, h (x + ι c) ∂μ := by
@@ -115,6 +157,9 @@ theorem integral_eq_tsum_fd {ι : C →+ V} (hι : Function.Injective ι) {μ : 
     exact add_comm _ _
   simp only [this]
 
+/- English proof (translation)
+Establish `hs` using `hasSum_integral_of_summable_integral_norm (μ := μ.restrict D) (F := fun c x => h (x + ι c)) (fun c => (hh.comp_add_right (ι c)).integrableOn) (summable_fd hι hD hh)`. Rewrite using `[integral_eq_tsum_fd hι hD hh]`. Conclude with `hs.tsum_eq.symm`.
+-/
 theorem setIntegral_tsum_fd {ι : C →+ V} (hι : Function.Injective ι) {μ : Measure V} [μ.IsAddHaarMeasure]
     {D : Set V} (hD : IsAddFundamentalDomain ι.range D μ) {h : V → ℂ} (hh : Integrable h μ) :
     ∫ x in D, ∑' c, h (x + ι c) ∂μ = ∫ x, h x ∂μ := by
@@ -124,6 +169,11 @@ theorem setIntegral_tsum_fd {ι : C →+ V} (hι : Function.Injective ι) {μ : 
   rw [integral_eq_tsum_fd hι hD hh]
   exact hs.tsum_eq.symm
 
+/- English proof (translation)
+Establish `hh : Integrable (fun b => f b * e b) μ` using `hfi.mono (hfi.aestronglyMeasurable.mul he.aestronglyMeasurable) (Filter.Eventually.of_forall fun x => by simp [hen])`. Rewrite using `[← setIntegral_tsum_fd hι hD hh]`. Use `integral_congr_ae (Filter.Eventually.of_forall fun x => ?_)` and prove the remaining obligations. Use `show per ι f x * e x = ∑' c, f (x + ι c) * e (x + ι c)`. Simplify using `only [hep]`.
+
+Conclude with `tsum_mul_right.symm`.
+-/
 theorem per_unfold {ι : C →+ V} (hι : Function.Injective ι) {μ : Measure V} [μ.IsAddHaarMeasure]
     {D : Set V} (hD : IsAddFundamentalDomain ι.range D μ) {f e : V → ℂ} (hfi : Integrable f μ)
     (he : Continuous e) (hen : ∀ x, ‖e x‖ = 1) (hep : ∀ x c, e (x + ι c) = e x) :
@@ -139,14 +189,29 @@ theorem per_unfold {ι : C →+ V} (hι : Function.Injective ι) {μ : Measure V
 
 def ser (a : C → ℂ) (E : C → V → ℂ) (b : V) : ℂ := ∑' t, a t * E t b
 
+/- English proof (translation)
+The claim follows from `continuous_tsum (fun t => continuous_const.mul (hEc t)) ha (fun t b => by simp [hEn])`.
+-/
 theorem continuous_ser {a : C → ℂ} (ha : Summable fun t => ‖a t‖) {E : C → V → ℂ}
     (hEc : ∀ t, Continuous (E t)) (hEn : ∀ t b, ‖E t b‖ = 1) : Continuous (ser a E) :=
   continuous_tsum (fun t => continuous_const.mul (hEc t)) ha (fun t b => by simp [hEn])
 
+/- English proof (translation)
+The claim follows from `tsum_of_norm_bounded ha.hasSum fun t => by simp [hEn]`.
+-/
 theorem norm_ser_le {a : C → ℂ} (ha : Summable fun t => ‖a t‖) {E : C → V → ℂ}
     (hEn : ∀ t b, ‖E t b‖ = 1) (b : V) : ‖ser a E b‖ ≤ ∑' t, ‖a t‖ :=
   tsum_of_norm_bounded ha.hasSum fun t => by simp [hEn]
 
+/- English proof (translation)
+Establish `hDf : μ D ≠ ∞` using `by rw [hD1]; exact ENNReal.one_ne_top`. Establish `hr : μ.real D = 1` using `by simp [Measure.real, hD1]`. Establish `hint : ∀ t, IntegrableOn (fun x => a t * E t x * E (-s) x) D μ` using `fun t => integrableOn_bdd hDf ((continuous_const.mul (hEc t)).mul (hEc (-s))) (M := ‖a t‖) (fun x => by simp [hEn])`. Establish `hn : ∀ t, ∫ x in D, ‖a t * E t x * E (-s) x‖ ∂μ = ‖a t‖` using `fun t => by`. Simplify using `[hEn, hr]`.
+
+Establish `hs` using `hasSum_integral_of_summable_integral_norm (μ := μ.restrict D) (F := fun t x => a t * E t x * E (-s) x) hint (by simpa only [hn] using ha)`. Establish `hval : ∀ t, t ≠ s → ∫ x in D, a t * E t x * E (-s) x ∂μ = 0` using `fun t ht => by`. Simplify using `only [mul_assoc]`. Rewrite using `[integral_const_mul, horth s t ht, mul_zero]`. Establish `hs1 : ∫ x in D, a s * E s x * E (-s) x ∂μ = a s`.
+
+Simplify using `only [mul_assoc, hself]`. Simplify using `[hr]`. Establish `h1` using `hasSum_single (f := fun t => ∫ x in D, a t * E t x * E (-s) x ∂μ) s (fun t ht => hval t ht)`. Establish `h2` using `hs.unique h1`. Rewrite `h2` using `[hs1]`.
+
+Rewrite using `[← h2]`. Use `integral_congr_ae (Filter.Eventually.of_forall fun x => ?_)` and prove the remaining obligations. Use `show ser a E x * E (-s) x = ∑' t, a t * E t x * E (-s) x`. Simplify using `only [ser, tsum_mul_right]`.
+-/
 theorem coef_ser {a : C → ℂ} (ha : Summable fun t => ‖a t‖) {E : C → V → ℂ}
     (hEc : ∀ t, Continuous (E t)) (hEn : ∀ t b, ‖E t b‖ = 1) {μ : Measure V} {D : Set V}
     (hD1 : μ D = 1) (hself : ∀ t x, E t x * E (-t) x = 1)
@@ -177,6 +242,15 @@ theorem coef_ser {a : C → ℂ} (ha : Summable fun t => ‖a t‖) {E : C → V
   show ser a E x * E (-s) x = ∑' t, a t * E t x * E (-s) x
   simp only [ser, tsum_mul_right]
 
+/- English proof (translation)
+Establish `hfi` using `integrable_of_unif hf h μ hK hx`. Use `⟨hfi, fun hsum => ?_⟩` and prove the remaining obligations. Establish `hDf : μ D ≠ ∞` using `by rw [hD1]; exact ENNReal.one_ne_top`. Use `set a : C → ℂ := fun t => ∫ b, f b * E (-t) b ∂μ with hadef`. Establish `ha : Summable fun t => ‖a t‖` using `hsum.norm`.
+
+Establish `hP` using `continuous_per hf h`. Establish `hS` using `continuous_ser ha hEc hEn`. Take `⟨M, hM⟩` from `per_bounded h hK hx`. Establish `hperS : ∀ x c, ser a E (x + ι c) = ser a E x` using `fun x c => by`. Simplify using `only [ser, hEp]`.
+
+Establish `hz` using `hcomp (fun x => per ι f x - ser a E x) (hP.sub hS) (fun x c => by simp only [per_add, hperS]) (fun t => ?_) 0`. Establish `e1 : per ι f 0 = ∑' c, f (ι c)` using `by simp [per]`. Establish `e2 : ser a E 0 = ∑' t, a t` using `by simp [ser, hE0]`. Rewrite using `[← e1, ← e2]`. Conclude with `sub_eq_zero.1 hz`.
+
+Establish `i1 : IntegrableOn (fun b => per ι f b * E (-t) b) D μ` using `integrableOn_bdd hDf (hP.mul (hEc _)) (M := M) (fun x => by simpa [hEn] using hM x)`. Establish `i2 : IntegrableOn (fun b => ser a E b * E (-t) b) D μ` using `integrableOn_bdd hDf (hS.mul (hEc _)) (M := ∑' t, ‖a t‖) (fun x => by simpa [hEn] using norm_ser_le ha hEn x)`. Simplify using `only [sub_mul]`. Rewrite using `[integral_sub i1 i2, per_unfold hι hD hfi (hEc _) (hEn _) (hEp _), coef_ser ha hEc hEn hD1 hself horth t, sub_eq_zero]`.
+-/
 theorem poisson_gen {ι : C →+ V} (hι : Function.Injective ι) {μ : Measure V} [μ.IsAddHaarMeasure]
     {D : Set V} (hD : IsAddFundamentalDomain ι.range D μ) (hD1 : μ D = 1) {K : Set V}
     (hK : IsCompact K) (hx : ∀ x, ∃ a, x - ι a ∈ K) {E : C → V → ℂ}

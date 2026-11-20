@@ -8,6 +8,9 @@ import Development.AutomorphicSpectrum.Proofs.MetricProofs.DegreeOfIsIntersectio
 
 namespace GlobalTheory.CompanionTheory.Ar.Giv
 
+/- English proof (translation)
+Introduce `hI _` and use `GroundTheory.Heights₂.Heights.HilbertSamuel.GenDegGeomDeg.proof (degreeGeneric_of_degree (degree_of_system hI))`.
+-/
 theorem genDegGeomDeg_of_system :
     ReciprocityTheory.ChartRestriction.G.Geo.ArithIntersectionSystemStatement → ReciprocityTheory.ChartRestriction.G.Geo.ResK.ResKStatement →
       GroundTheory.Heights₂.Heights.HilbertSamuel.GenDegGeomDeg.Statement :=

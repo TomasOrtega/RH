@@ -10,6 +10,11 @@ namespace GlobalTheory.CompanionTheory.AdeleComp
 
 open TensorProduct
 
+/- English proof (translation)
+Establish `h1 : (c.mapRange f (map_zero f)).sum (fun i m => m ⊗ₜ[F] ℬ i) = 0`. Rewrite using `[Finsupp.sum_mapRange_index (by intro i; simp)]`. Rewrite using `[← h, Finsupp.sum, Finsupp.sum, map_sum]`. Simplify using the standard rewrite rules. Establish `h2` using `TensorProduct.sum_tmul_basis_right_eq_zero ℬ _ h1`.
+
+Simplify using `using DFunLike.congr_fun h2 i`.
+-/
 theorem coord_zero {F A B E ι : Type*} [Field F] [AddCommGroup E] [Module F E]
     [AddCommGroup A] [Module F A] [AddCommGroup B] [Module F B]
     (ℬ : Module.Basis ι F E) (f : A →ₗ[F] B) (c : ι →₀ A)
@@ -21,11 +26,21 @@ theorem coord_zero {F A B E ι : Type*} [Field F] [AddCommGroup E] [Module F E]
   have h2 := TensorProduct.sum_tmul_basis_right_eq_zero ℬ _ h1
   simpa using DFunLike.congr_fun h2 i
 
+/- English proof (translation)
+Use `Prod.ext (funext fun w => hi w) ?_` and prove the remaining obligations. Conclude with `RestrictedProduct.ext _ _ fun v => hf v`.
+-/
 theorem adele_eq_zero {F : Type} [Field F] [NumberField F] (x : AF F)
     (hi : ∀ w, evInf F w x = 0) (hf : ∀ v, evFin F v x = 0) : x = 0 := by
   refine Prod.ext (funext fun w => hi w) ?_
   exact RestrictedProduct.ext _ _ fun v => hf v
 
+/- English proof (translation)
+Set `ℬ` to `Module.Basis.ofVectorSpace F E`. Take `⟨c, rfl⟩` from `TensorProduct.eq_repr_basis_right ℬ a`. Establish `hc : c = 0`. Use extensionality with `i`. Use `adele_eq_zero _ (fun w => ?_) (fun v => ?_)` and prove the remaining obligations.
+
+Use `coord_zero ℬ (evInf F w).toLinearMap c ?_ i` and prove the remaining obligations. Rewrite using `[← hi w]`. Simplify using `only [compInf, Finsupp.sum, map_sum]`. Both sides reduce to the same expression. Use `coord_zero ℬ (evFin F v).toLinearMap c ?_ i` and prove the remaining obligations.
+
+Rewrite using `[← hf v]`. Simplify using `only [compFin, Finsupp.sum, map_sum]`. Both sides reduce to the same expression. Simplify using `[hc]`.
+-/
 theorem tensor_eq_zero {F E : Type} [Field F] [NumberField F] [Field E] [Algebra F E]
     (a : AF F ⊗[F] E) (hi : ∀ w, compInf F E w a = 0) (hf : ∀ v, compFin F E v a = 0) : a = 0 := by
   let ℬ := Module.Basis.ofVectorSpace F E
@@ -43,6 +58,9 @@ theorem tensor_eq_zero {F E : Type} [Field F] [NumberField F] [Field E] [Algebra
       rfl
   simp [hc]
 
+/- English proof (translation)
+The claim follows from `tensor_eq_zero a hi hf`.
+-/
 theorem eq_zero_of_comps (D : D7) (a : AE D) (hi : ∀ w, compInf D.host.F D.host.E w a = 0)
     (hf : ∀ v, cv D v a = 0) : a = 0 :=
   tensor_eq_zero a hi hf

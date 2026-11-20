@@ -11,6 +11,13 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar GlobalTheory.Local
 open GlobalTheory.Grow GlobalTheory.Size
 noncomputable section
 open Classical in
+/- English proof (translation)
+Introduce `D θ hθ hP N ψ hψ U hU hlev hK μ 𝓕 hμ h𝓕`. Use `choose W i1 i2 i3 ρ hρc hρ using hK`. Use `letI := i1`. Use `letI := i2`. Use `letI := i3`.
+
+Take `⟨n, T₀, u, hv, hk, hl, he⟩` from `GlobalTheory.T.kFiniteDecomposition_assemble_realPlaces D θ N (GlobalTheory.KFinDecomp.Cls θ N U) (fun τ f => GlobalTheory.Published.AutFin.HasTypeAt θ N.V τ (N.M.ε τ) (N.M.fr τ) (ρ τ) f) (fun f hf => hf.1.1.cont) (_root_.GlobalTheory.T.weil_representation_place_decomposition D θ …`. Use `⟨n, T₀, u, fun j => ?_, he⟩` and prove the remaining obligations. Establish `hc` using `fun v => (hv j v).1`. Use `⟨fun v => (hc v).1.toIsAutFun, fun v => (hc v).1.smooth, fun v => (hc v).2.1, fun v => GlobalTheory.CuspDecay.memLp_two_of_cuspBounded hP.cuspBounded hθ (hc v).1.toIsAutFun (hc v).1.smooth (hc v).1.growth (hc v).2.1 μ 𝓕 hμ h𝓕, fun v => unifModGrowth_of_isAutFunSm hθ (hc v).1, fun …` and prove the remaining obligations. Rewrite using `[Pi.one_apply, one_mul]`.
+
+Conclude with `(hv j v).2 k hk.1 hk.2 g`.
+-/
 theorem GlobalTheory.KFinDecomp.cuspForm_kFinite_decomposition : ∀ (D : D7) (θ : InfFam D), IsInfFam θ → _root_.GlobalTheory.FunPr.ThetaLocalInputs → ∀ (N : GlobalTheory.Grid.Node D) (ψ : GA D N.V → ℂ), GlobalTheory.IndefiniteRowSideFullHecke.CuspAlongSmoothLifts.IsCuspOfType θ N ψ → ∀ (U : Subgroup (GA D N.V)), IsOpen (U : Set (GA D N.V)) → (∀ k ∈ U, k ∈ GfC N.V → ∀ g, ψ (g * k) = ψ g) → (∀ τ, GlobalTheory.CuspKFin.KFinAt θ N τ ψ) → ∀ (μ : Measure (GA D N.V)) (𝓕 : Set (GA D N.V)), μ.IsHaarMeasure → IsFundamentalDomain (GQ N.V) 𝓕 μ → ∃ (n : ℕ) (T₀ : Fin n → GlobalTheory.IndefiniteRowSideFullHecke.KTypeExtension.KMap N.M) (u : Fin n → GlobalTheory.IndefiniteRowSideFullHecke.KTypeExtension.KVec N.M), (∀ j, GlobalTheory.IndefiniteRowSideFullHecke.KTypeExtension.IsGKMap θ N.M {k | k ∈ U ∧ k ∈ GfC N.V} 1 μ 𝓕 (T₀ j)) ∧ ψ = ∑ j, T₀ j (u j) := by
   intro D θ hθ hP N ψ hψ U hU hlev hK μ 𝓕 hμ h𝓕
   choose W i1 i2 i3 ρ hρc hρ using hK
@@ -35,6 +42,9 @@ open IsDedekindDomain NumberField MeasureTheory GlobalTheory.ChiGrid GlobalTheor
 attribute [local instance] Formalism.BasicNotions.Host.cmStar GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField borelKw borelSpaceKw
 open GlobalTheory.Grow GlobalTheory.Size
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @_root_.GlobalTheory.KFinDecomp.cuspForm_kFinite_decomposition | exact _root_.GlobalTheory.KFinDecomp.cuspForm_kFinite_decomposition | (intros; apply _root_.GlobalTheory.KFinDecomp.cuspForm_kFinite_decomposition <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.cuspForm_decomposes_into_kFinite_components : ∀ (D : D7) (θ : InfFam D), IsInfFam θ → _root_.GlobalTheory.FunPr.ThetaLocalInputs → ∀ (N : GlobalTheory.Grid.Node D) (ψ : GA D N.V → ℂ), GlobalTheory.IndefiniteRowSideFullHecke.CuspAlongSmoothLifts.IsCuspOfType θ N ψ → ∀ (U : Subgroup (GA D N.V)), IsOpen (U : Set (GA D N.V)) → (∀ k ∈ U, k ∈ GfC N.V → ∀ g, ψ (g * k) = ψ g) → (∀ τ, GlobalTheory.CuspKFin.KFinAt θ N τ ψ) → ∀ (μ : Measure (GA D N.V)) (𝓕 : Set (GA D N.V)), μ.IsHaarMeasure → IsFundamentalDomain (GQ N.V) 𝓕 μ → ∃ (n : ℕ) (T₀ : Fin n → GlobalTheory.IndefiniteRowSideFullHecke.KTypeExtension.KMap N.M) (u : Fin n → GlobalTheory.IndefiniteRowSideFullHecke.KTypeExtension.KVec N.M), (∀ j, GlobalTheory.IndefiniteRowSideFullHecke.KTypeExtension.IsGKMap θ N.M {k | k ∈ U ∧ k ∈ GfC N.V} 1 μ 𝓕 (T₀ j)) ∧ ψ = ∑ j, T₀ j (u j) := by
   first | exact @_root_.GlobalTheory.KFinDecomp.cuspForm_kFinite_decomposition | exact _root_.GlobalTheory.KFinDecomp.cuspForm_kFinite_decomposition | (intros; apply _root_.GlobalTheory.KFinDecomp.cuspForm_kFinite_decomposition <;> assumption)
 end

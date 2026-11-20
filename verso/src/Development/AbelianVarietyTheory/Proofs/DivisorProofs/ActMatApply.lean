@@ -55,6 +55,9 @@ def ct {t : SAB H (Sp A)} {act : PDivGroup.Action (𝓞 E) GG} {pol : GG ≅ GG.
 def actMat {n : ℕ} (b : Module.Basis (Fin n) ℤ Dw.La) : 𝓞 E →+* Matrix (Fin n) (Fin n) ℤ :=
   (LinearMap.toMatrixAlgEquiv b).toRingEquiv.toRingHom.comp (Module.toModuleEnd ℤ Dw.La)
 
+/- English proof (translation)
+The claim follows from `LinearMap.toMatrixAlgEquiv_apply b _ k i`.
+-/
 theorem actMat_apply {n : ℕ} (b : Module.Basis (Fin n) ℤ Dw.La) (a : 𝓞 E) (k i : Fin n) :
     actMat b a k i = b.repr (a • b i) k := LinearMap.toMatrixAlgEquiv_apply b _ k i
 

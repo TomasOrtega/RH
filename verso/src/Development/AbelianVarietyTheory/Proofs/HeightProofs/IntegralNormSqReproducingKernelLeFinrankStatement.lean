@@ -19,5 +19,8 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 open GlobalTheory.KFourier MeasureTheory
 
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.KFourier.integral_norm_sq_ker_le | exact GlobalTheory.KFourier.integral_norm_sq_ker_le | (intros; apply GlobalTheory.KFourier.integral_norm_sq_ker_le <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.integral_normSq_reproducingKernel_le_finrank : ∀ {n : ℕ} (ε : Fin n → Bool) (i : ℕ) (e : KG ε → ℂ), IsKer ε i e → ∫ k, ‖e k‖ ^ 2 ∂(muK ε) ≤ (Module.finrank ℂ (polyV ε i) : ℝ) := by
   first | exact @GlobalTheory.KFourier.integral_norm_sq_ker_le | exact GlobalTheory.KFourier.integral_norm_sq_ker_le | (intros; apply GlobalTheory.KFourier.integral_norm_sq_ker_le <;> assumption)

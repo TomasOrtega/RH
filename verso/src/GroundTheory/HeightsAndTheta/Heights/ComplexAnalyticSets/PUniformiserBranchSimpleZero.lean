@@ -9,6 +9,17 @@ namespace GroundTheory.Heights₂.Heights
 
 open MvPolynomial Topology
 
+/- English proof (translation)
+Introduce `σ _ I w t r φ hI hic hdim ht hr hdiff hinj hmaps hw0`. Establish `hball : ∀ {ρ : ℝ} {τ : ℂ}, τ ∈ Metric.ball (0 : ℂ) ρ → (fun _ : Fin 1 ↦ τ) ∈ Metric.ball (0 : Fin 1 → ℂ) ρ`. Introduce `ρ τ hτ`. Rewrite `hτ`, the goal using `[mem_ball_zero_iff]`. Conclude with `lt_of_le_of_lt (pi_norm_const_le τ) hτ`.
+
+Establish `hwZ : w ∈ IndefiniteRowSideFullHecke.ComplexSets.zeroSetIn I` using `hw0 ▸ hmaps (Metric.mem_ball_self hr)`. Establish `htw : eval w t = 0`. Assume the negation of the conclusion as `h`. Conclude with `ht.not_isUnit (isUnit_algebraMap_pointLocalRing I w t h)`. Take `⟨U, hU, hUinj⟩` from `hloc σ I w t hI hic hdim hwZ ht`.
+
+Establish `hφc : ContinuousAt φ 0` using `(hdiff.differentiableAt (Metric.ball_mem_nhds 0 hr)).continuousAt`. Establish `hc1 : Continuous fun τ : ℂ ↦ (fun _ : Fin 1 ↦ τ)` using `continuous_pi fun _ ↦ continuous_id`. Establish `hcont : ContinuousAt (fun τ : ℂ ↦ φ fun _ ↦ τ) 0` using `ContinuousAt.comp_of_eq (g := φ) (f := fun τ : ℂ ↦ (fun _ : Fin 1 ↦ τ)) hφc hc1.continuousAt rfl`. Establish `hpre : (fun τ : ℂ ↦ φ fun _ ↦ τ) ⁻¹' U ∈ 𝓝 (0 : ℂ)` using `hcont.preimage_mem_nhds (by rw [← hw0] at hU; exact hU)`. Take `⟨ε, hε, hεU⟩` from `Metric.mem_nhds_iff.1 (Filter.inter_mem hpre (Metric.ball_mem_nhds 0 hr))`.
+
+Establish `hfd : DifferentiableOn ℂ (fun τ : ℂ ↦ eval (φ fun _ ↦ τ) t) (Metric.ball 0 ε)` using `(differentiable_eval_pointLocal t).comp_differentiableOn (hdiff.comp (differentiable_pi.2 fun _ ↦ differentiable_id).differentiableOn fun τ hτ ↦ hball (hεU hτ).2)`. Establish `hfi : Set.InjOn (fun τ : ℂ ↦ eval (φ fun _ ↦ τ) t) (Metric.ball 0 ε)`. Introduce `a ha b hb hab`. Establish `hab'` using `hUinj ⟨hmaps (hball (hεU ha).2), (hεU ha).1⟩ ⟨hmaps (hball (hεU hb).2), (hεU hb).1⟩ hab`. Conclude with `congrFun (hinj (hball (hεU ha).2) (hball (hεU hb).2) hab') 0`.
+
+Establish `hd` using `hder _ _ Metric.isOpen_ball hfd hfi 0 (Metric.mem_ball_self hε)`. Establish `hf0 : (fun τ : ℂ ↦ eval (φ fun _ ↦ τ) t) 0 = 0`. Express the relevant statement in the definitionally equal form `eval (φ 0) t = 0`. Rewrite using `[hw0, htw]`. Conclude with `(analyticAt_eval_disc hr hdiff t).analyticOrderAt_eq_one_of_zero_deriv_ne_zero hf0 hd`.
+-/
 theorem UniformiserBranchSimpleZero.proof (hloc : UniformiserLocallyInjective.Statement)
     (hder : InjectiveHolomorphicDerivNeZero.Statement) : UniformiserBranchSimpleZero.Statement := by
   intro σ _ I w t r φ hI hic hdim ht hr hdiff hinj hmaps hw0

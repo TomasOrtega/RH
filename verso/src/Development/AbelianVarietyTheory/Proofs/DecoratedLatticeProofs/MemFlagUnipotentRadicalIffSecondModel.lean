@@ -25,18 +25,27 @@ open Formalism.L2.SG.AdBridge GlobalTheory.BesselChar
 
 variable {D : D7}
 
+/- English proof (translation)
+The claim follows from `GlobalTheory.T.isFlagUnipotentMatrix_iff_jointlyBijective_pair f g hinj hsurj E K M`.
+-/
 theorem unip_joint {A R₁ R₂ : Type} [CommRing A] [CommRing R₁] [CommRing R₂] (f : A →+* R₁) (g : A →+* R₂)
     (hinj : ∀ y, f y = 0 → g y = 0 → y = 0) (hsurj : ∀ a b, ∃ y, f y = a ∧ g y = b) {n ρ : ℕ}
     (E : Matrix (Fin n) (Fin ρ) A) (K : Matrix (Fin ρ) (Fin n) A) (M : Matrix (Fin n) (Fin n) A) :
     Unip E K M ↔ Unip (E.map f) (K.map f) (M.map f) ∧ Unip (E.map g) (K.map g) (M.map g) :=
   GlobalTheory.T.isFlagUnipotentMatrix_iff_jointlyBijective_pair f g hinj hsurj E K M
 
+/- English proof (translation)
+The claim follows from `GlobalTheory.T.isFlagUnipotentMatrix_pi_iff_forall_eval E K M`.
+-/
 theorem unip_pi {ι S : Type} [Fintype ι] [DecidableEq ι] [CommRing S] {n ρ : ℕ} (E : Matrix (Fin n) (Fin ρ) (ι → S))
     (K : Matrix (Fin ρ) (Fin n) (ι → S)) (M : Matrix (Fin n) (Fin n) (ι → S)) :
     Unip E K M ↔ ∀ i, Unip (E.map (Pi.evalRingHom (fun _ => S) i)) (K.map (Pi.evalRingHom (fun _ => S) i))
       (M.map (Pi.evalRingHom (fun _ => S) i)) :=
   GlobalTheory.T.isFlagUnipotentMatrix_pi_iff_forall_eval E K M
 
+/- English proof (translation)
+The claim follows from `GlobalTheory.T.isFlagUnipotent_realPlace_iff_frame_unipotentRadical I v x c z hc hz N`.
+-/
 theorem unip_real (I : Formalism.MainNotions.S.AutInst) (v : InfinitePlace I.F) {ρ : ℕ} (x : Fin ρ → Fin I.n → I.E) (c : Fin ρ → I.E)
     (z : Fin I.n → I.E) (hc : ∀ a, c a ≠ 0) (hz : ∀ a, Formalism.UG.hform (starRingEnd I.E) I.J (x a) z = 0)
     (N : Matrix (Fin I.n) (Fin I.n) ℂ) :
@@ -45,6 +54,9 @@ theorem unip_real (I : Formalism.MainNotions.S.AutInst) (v : InfinitePlace I.F) 
     InN (I.ε v) (fun a => rv I v (x a)) (rv I v z) ((I.P v)⁻¹ * N * I.P v) :=
   GlobalTheory.T.isFlagUnipotent_realPlace_iff_frame_unipotentRadical I v x c z hc hz N
 
+/- English proof (translation)
+The claim follows from `GlobalTheory.T.isFlagUnipotent_finiteAdeles_iff_frame_unipotentRadical I x c z hc hz N`.
+-/
 theorem unip_fin (I : Formalism.MainNotions.S.AutInst) {ρ : ℕ} (x : Fin ρ → Fin I.n → I.E) (c : Fin ρ → I.E)
     (z : Fin I.n → I.E) (hc : ∀ a, c a ≠ 0) (hz : ∀ a, Formalism.UG.hform (starRingEnd I.E) I.J (x a) z = 0)
     (N : Matrix (Fin I.n) (Fin I.n) (I.E ⊗[I.F] Formalism.MainNotions.S.Af I.F)) :
@@ -57,27 +69,51 @@ theorem unip_fin (I : Formalism.MainNotions.S.AutInst) {ρ : ℕ} (x : Fin ρ �
       (N - 1) *ᵥ y ∈ Submodule.span (I.E ⊗[I.F] Formalism.MainNotions.S.Af I.F) (Set.range fun b => incl I (x b))) :=
   GlobalTheory.T.isFlagUnipotent_finiteAdeles_iff_frame_unipotentRadical I x c z hc hz N
 
+/- English proof (translation)
+The claim follows from `GlobalTheory.T.linearIndependent_scaledBasisColumnsMatrix_transpose X h t lam ht hl`.
+-/
 theorem eM_linIndep (X : HidaSetting D) (h : X.B.I = Formalism.L2.SG.InstExistsPf.instOf D) (t lam : D.host.E) (ht : t ≠ 0)
     (hl : lam ≠ 0) : LinearIndependent D.host.E (GlobalTheory.Core.SBesEx.eM X h t lam).transpose :=
   GlobalTheory.T.linearIndependent_scaledBasisColumnsMatrix_transpose X h t lam ht hl
 
+/- English proof (translation)
+Substitute `hE hK hM` using the available equality. Both sides reduce to the same expression.
+-/
 theorem unip_congr {R : Type} [CommRing R] {n ρ : ℕ} {E E' : Matrix (Fin n) (Fin ρ) R}
     {K K' : Matrix (Fin ρ) (Fin n) R} {M M' : Matrix (Fin n) (Fin n) R} (hE : E = E') (hK : K = K') (hM : M = M') :
     Unip E K M ↔ Unip E' K' M' := by
   subst hE hK hM; rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem castGA_self {I : Formalism.MainNotions.S.AutInst} (e : I = I) (x : I.GA) : castGA e x = x := rfl
 
+/- English proof (translation)
+Use `thetaV_tmul (Formalism.L2.SG.InstExistsPf.instOf D) v 1 y` as an intermediate fact. Rewrite `this` using `[map_one, one_mul]`. Conclude with `this`.
+-/
 theorem thetaV_incA (v : InfinitePlace (Formalism.L2.SG.InstExistsPf.instOf D).F) (y : D.host.E) :
     thetaV (Formalism.L2.SG.InstExistsPf.instOf D) v (incA D y) = (Formalism.L2.SG.InstExistsPf.instOf D).φ v y := by
   have := thetaV_tmul (Formalism.L2.SG.InstExistsPf.instOf D) v 1 y
   rw [map_one, one_mul] at this
   exact this
 
+/- English proof (translation)
+Conclude with `tauF_tmul (Formalism.L2.SG.InstExistsPf.instOf D) 1 y`.
+-/
 theorem tauF_incA (y : D.host.E) :
     tauF (Formalism.L2.SG.InstExistsPf.instOf D) (incA D y) = Formalism.UG.inclE (F := D.host.F) (Formalism.MainNotions.S.Af D.host.F) y := by
   exact tauF_tmul (Formalism.L2.SG.InstExistsPf.instOf D) 1 y
 
+/- English proof (translation)
+Establish `hb` using `Formalism.IndefR.RationalEmbedding.iota_symm_isBridge D (Formalism.IndefR.RationalEmbedding.iota D g)`. Establish `key : (Formalism.IndefR.RationalEmbedding.iota D).symm (Formalism.IndefR.RationalEmbedding.iota D g) = g` using `(Formalism.IndefR.RationalEmbedding.iota D).symm_apply_apply g`. Establish `hb1 : ∀ v, uMat ((Formalism.IndefR.RationalEmbedding.iota D g).1 v) = ofHAInf (Formalism.IndefR.RationalEmbedding.inst D) g v` using `fun v => (hb.1 v).trans (congrArg (fun q => ofHAInf (Formalism.IndefR.RationalEmbedding.inst D) q v) key)`. Establish `hb2 : (Formalism.IndefR.RationalEmbedding.inst D).fmat (Formalism.IndefR.RationalEmbedding.iota D g).2 = ofHAFin (Formalism.IndefR.RationalEmbedding.inst D) g` using `hb.2.trans (congrArg (fun q => ofHAFin (Formalism.IndefR.RationalEmbedding.inst D) q) key)`. Use `(GlobalTheory.BesselChar.mem_NFlag_iff _ _ hLI g).trans ?_` and prove the remaining obligations.
+
+Use `(unip_joint (A := AF D.host.F ⊗[D.host.F] D.host.E) (Pi.ringHom fun v => thetaV (Formalism.L2.SG.InstExistsPf.instOf D) v) (tauF (Formalism.L2.SG.InstExistsPf.instOf D)) (fun y h1 h2 => Formalism.L2.SG.Pf.TT_ext _ y (fun v => congr_fun h1 v) h2) (fun a b => by` and prove the remaining obligations. Take `⟨y, h1, h2⟩` from `Formalism.L2.SG.Pf.TT_surj (Formalism.L2.SG.InstExistsPf.instOf D) a b`. Conclude with `⟨y, funext h1, h2⟩) _ _ _).trans ?_`. Use `(and_congr_left' (unip_pi _ _ _)).trans ?_` and prove the remaining obligations. Use `and_congr (forall_congr' fun v => ?_) ?_` and prove the remaining obligations.
+
+Establish `hR` using `unip_real (Formalism.L2.SG.InstExistsPf.instOf D) v x c z hc hz ((hmat (Formalism.IndefR.RationalEmbedding.inst D) g).map (thetaV (Formalism.IndefR.RationalEmbedding.inst D) v))`. Use `(unip_congr (Matrix.ext fun k a => thetaV_incA v _) (Matrix.ext fun k a => thetaV_incA v _) (Matrix.ext fun k a => rfl)).trans (hR.trans ?_)` and prove the remaining obligations. Use `show _ ↔ InN _ _ _ (uMat ((Formalism.IndefR.RationalEmbedding.iota D g).1 v))`. Rewrite using `[hb1 v]`. Both sides reduce to the same expression.
+
+Establish `hF` using `unip_fin (Formalism.L2.SG.InstExistsPf.instOf D) x c z hc hz ((hmat (Formalism.IndefR.RationalEmbedding.inst D) g).map (tauF (Formalism.IndefR.RationalEmbedding.inst D)))`. Use `(unip_congr (Matrix.ext fun k a => tauF_incA _) (Matrix.ext fun k a => tauF_incA _) (Matrix.ext fun k a => rfl)).trans (hF.trans ?_)` and prove the remaining obligations. Use `show _ ↔ (_ ∧ _ ∧ _)`. Rewrite using `[hb2]`. Both sides reduce to the same expression.
+-/
 theorem core (D : D7) {ρ : ℕ} (x : Fin ρ → Fin (D.sp.Y 0).rank → D.host.E) (c : Fin ρ → D.host.E)
     (z : Fin (D.sp.Y 0).rank → D.host.E) (hc : ∀ a, c a ≠ 0)
     (hz : ∀ a, Formalism.UG.hform (starRingEnd D.host.E) (Formalism.L2.SG.InstExistsPf.instOf D).J (x a) z = 0)
@@ -116,6 +152,13 @@ theorem core (D : D7) {ρ : ℕ} (x : Fin ρ → Fin (D.sp.Y 0).rank → D.host.
     rw [hb2]
     rfl
 
+/- English proof (translation)
+Generalize the expression as in `hI.symm = e`. Substitute `hI` using the available equality. Establish `hid : ∀ y, ιE y = y` using `fun y => eq_of_heq (hId y)`. Establish `hv : ∀ p : Fin (Formalism.L2.SG.InstExistsPf.instOf D).n → (Formalism.L2.SG.InstExistsPf.instOf D).E, (fun k => ιE (p (Fin.cast hr k))) = p` using `fun p => funext fun k => by rw [hid]; rfl`. Establish `hx : (fun a k => ιE (eR a (Fin.cast hr k))) = eR` using `funext fun a => hv (eR a)`.
+
+Use `⟨?_, ?_, fun p q => ?_⟩` and prove the remaining obligations. Rewrite using `[castGA_self]`. Conclude with `Iff.of_eq (congrArg₂ (fun A B => s.1 ∈ Ninf (Formalism.L2.SG.InstExistsPf.instOf D) A B) hx.symm (hv zR).symm)`. Rewrite using `[castGA_self]`. Conclude with `Iff.of_eq (congrArg₂ (fun A B => s.2 ∈ Nfin (Formalism.L2.SG.InstExistsPf.instOf D) A B) hx.symm (hv zR).symm)`.
+
+Conclude with `(congrArg₂ (fun A B => Formalism.UG.hform (starRingEnd D.host.E) (Formalism.L2.SG.InstExistsPf.instOf D).J A B) (hv p) (hv q)).trans (hid _).symm`.
+-/
 theorem transport (D : D7) (I : Formalism.MainNotions.S.AutInst) (ιE : I.E ≃+* D.host.E) (hId : ∀ y, HEq (ιE y) y)
     (hI : I = Formalism.L2.SG.InstExistsPf.instOf D) (hr : (D.sp.Y 0).rank = I.n) {ρ : ℕ} (eR : Fin ρ → Fin I.n → I.E)
     (zR : Fin I.n → I.E) (s : (Formalism.L2.SG.InstExistsPf.instOf D).GA) :
@@ -140,6 +183,13 @@ theorem transport (D : D7) (I : Formalism.MainNotions.S.AutInst) (ιE : I.E ≃+
   · exact (congrArg₂ (fun A B => Formalism.UG.hform (starRingEnd D.host.E) (Formalism.L2.SG.InstExistsPf.instOf D).J A B)
       (hv p) (hv q)).trans (hid _).symm
 
+/- English proof (translation)
+Introduce `D X h u t lam ht hl hId V₀ d hd n`. Establish `hLI` using `eM_linIndep X h t lam ht hl`. Establish `hsc : ∀ a, GlobalTheory.Core.SBesEx.scl t lam a ≠ 0` using `fun a => mul_ne_zero ht (pow_ne_zero _ hl)`. Establish `horth : ∀ a, Formalism.UG.hform (starRingEnd X.B.I.E) X.B.I.J (X.eR a) (X.zR u) = 0`. Introduce `a`.
+
+Apply `X.ιE.injective` to reduce the goal to its premises. Use `show X.ιE (Formalism.UG.hform (starRingEnd X.B.I.E) X.B.I.J (X.crd (X.eX a)) (X.crd (X.zu u))) = X.ιE 0`. Rewrite using `[Formalism.L2.SG.PoincareInHH.Cut.hform_crd X, map_zero]`. Conclude with `(X.zu_orth u a).1`. Establish `hT` using `transport D X.B.I X.ιE hId h (rank_eq X h) X.eR (X.zR u) (Formalism.IndefR.RationalEmbedding.iota D n)`.
+
+Establish `hz : ∀ a, Formalism.UG.hform (starRingEnd D.host.E) (Formalism.L2.SG.InstExistsPf.instOf D).J (fun k => X.ιE (X.eR a (Fin.cast (rank_eq X h) k))) (fun k => X.ιE (X.zR u (Fin.cast (rank_eq X h) k))) = 0` using `fun a => by rw [hT.2.2, horth a, map_zero]`. Establish `hcore` using `core D (fun a k => X.ιE (X.eR a (Fin.cast (rank_eq X h) k))) (GlobalTheory.Core.SBesEx.scl t lam) (fun k => X.ιE (X.zR u (Fin.cast (rank_eq X h) k))) hsc hz hLI n`. Use `show n ∈ NFlag (D.sp.Y 0) d.e ↔ _`. Rewrite using `[hd]`. Conclude with `hcore.trans (and_congr hT.1.symm hT.2.1.symm)`.
+-/
 theorem mem_flagN_iff : ∀ (D : D7) (X : HidaSetting D) (h : X.B.I = Formalism.L2.SG.InstExistsPf.instOf D) (u : D.what₂.Word) (t lam : D.host.E), t ≠ 0 → lam ≠ 0 → IdE X → ∀ (V₀ : HSp D) (d : HypDec (D.sp.Y 0) V₀ D.R.rS), d.e = GlobalTheory.Core.SBesEx.eM X h t lam → ∀ n, n ∈ flagN d ↔ (iotaX X h n).1 ∈ X.NinfU u ∧ (iotaX X h n).2 ∈ X.NfinU u := by
   intro D X h u t lam ht hl hId V₀ d hd n
   have hLI := eM_linIndep X h t lam ht hl

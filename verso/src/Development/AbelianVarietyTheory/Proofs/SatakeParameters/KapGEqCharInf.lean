@@ -6,16 +6,39 @@ noncomputable section
 
 namespace GlobalTheory.TwV.Xc
 
+/- English proof (translation)
+Rewrite using `[mem_algebraicClosure_iff']`. Conclude with `(Algebra.IsIntegral.isIntegral x).map (TaylorLogMetric.embT D τ).toRatAlgHom`.
+-/
 theorem embT_mem_qbar (D : D7) (τ : D.what₂.Tau) (x : D.host.E) : TaylorLogMetric.embT D τ x ∈ TaylorLogMetric.Qbar := by
   rw [mem_algebraicClosure_iff']
   exact (Algebra.IsIntegral.isIntegral x).map (TaylorLogMetric.embT D τ).toRatAlgHom
 
+/- English proof (translation)
+Unfold `TaylorLogMetric.lamC`. Rewrite using `[dif_pos (show algebraMap TaylorLogMetric.Qbar ℂ q ∈ TaylorLogMetric.Qbar from q.2)]`. Both sides reduce to the same expression.
+-/
 theorem lamC_qbar {p : ℕ} [Fact p.Prime] (lam : TaylorLogMetric.Qbar →+* ℂ_[p]) (q : TaylorLogMetric.Qbar) :
     TaylorLogMetric.lamC lam (algebraMap TaylorLogMetric.Qbar ℂ q) = lam q := by
   unfold TaylorLogMetric.lamC
   rw [dif_pos (show algebraMap TaylorLogMetric.Qbar ℂ q ∈ TaylorLogMetric.Qbar from q.2)]
   rfl
 
+/- English proof (translation)
+Introduce `D p _ X E pos lam ρ hLP j c γ a ha hdet`. Use `letI := wittFractionAlgebraCp p`. Use `letI := algKfC E`. Establish `hp : (p : ℂ_[p]) ≠ 0` using `Nat.cast_ne_zero.2 (Fact.out : p.Prime).ne_zero`. Establish `ha0 : a ≠ 0`.
+
+Introduce and unpack `rfl`. Rewrite `ha` using `[zero_mul]`. Conclude with `zero_ne_one ha`. Establish `hconj : D.host.conj a = a⁻¹` using `eq_inv_of_mul_eq_one_right ha`. Establish `hcA : cA X ℂ_[p] j (gamAt X j c γ) = TaylorLogMetric.lamC lam (∏ v : X.Pl, ∏ s : Fin (X.G.P.n' v), TaylorLogMetric.embT D (pos ⟨v, s⟩) a ^ X.w v (j + 1) s)`.
+
+Set `q : ∀ v : X.Pl, Fin (X.G.P.n' v) → TaylorLogMetric.Qbar` to `fun v s => ⟨TaylorLogMetric.embT D (pos ⟨v, s⟩) a, embT_mem_qbar D _ a⟩`. Establish `h1 : (∏ v : X.Pl, ∏ s : Fin (X.G.P.n' v), TaylorLogMetric.embT D (pos ⟨v, s⟩) a ^ X.w v (j + 1) s) = algebraMap TaylorLogMetric.Qbar ℂ (∏ v : X.Pl, ∏ s : Fin (X.G.P.n' v), q v s ^ X.w v (j + 1) s)`. Rewrite using `[map_prod]`. Use `Finset.prod_congr rfl fun v _ => ?_` and prove the remaining obligations. Rewrite using `[map_prod]`.
+
+Use `Finset.prod_congr rfl fun s _ => ?_` and prove the remaining obligations. Rewrite using `[map_zpow₀]`. Both sides reduce to the same expression. Rewrite using `[h1, lamC_qbar, map_prod]`. Unfold `cA`.
+
+Use `Finset.prod_congr rfl fun v _ => ?_` and prove the remaining obligations. Rewrite using `[map_prod]`. Use `Finset.prod_congr rfl fun s _ => ?_` and prove the remaining obligations. Rewrite using `[map_zpow₀, hdet v]`. Establish `h2 : lam (q v s) = twG X E v s (ρ v (if IsOddPos s then D.host.conj a else a))`.
+
+Rewrite using `[← hLP v s a, ← lamC_qbar lam (q v s)]`. Both sides reduce to the same expression. Rewrite using `[h2, twG_eq_tw]`. Distinguish the cases in `hs : IsOddPos s`. Rewrite using `[if_pos hs, if_pos hs, hconj, map_inv₀, map_inv₀, inv_zpow', neg_one_mul]`.
+
+Rewrite using `[if_neg hs, if_neg hs, one_mul]`. Establish `hP : (∏ v : X.Pl, (p : ℂ_[p]) ^ (-(X.vm v (j + 1) * ordP (X.G.P.W v) p (gamAt X j c γ v : Matrix (Fin ((X.Pj j).m + 1)) (Fin ((X.Pj j).m + 1)) (X.G.P.Qq v)).det))) = (p : ℂ_[p]) ^ (-(∑ v : X.Pl, X.vm v (j + 1) * ordP (X.G.P.W v) p (ρ v a)))`. Repeatedly rewrite using `[hdet]`. Rewrite using `[← Finset.sum_neg_distrib]`. Proceed by induction on `(Finset.univ : Finset X.Pl) using Finset.cons_induction with`.
+
+Consider the case `empty => simp`. Consider the case `cons b s hb ih => rw [Finset.sum_cons, Finset.prod_cons, zpow_add₀ hp, ih]`. Unfold `kapG`. Rewrite using `[hcA, hP]`. Both sides reduce to the same expression.
+-/
 theorem kapG_eq_char_inf : ∀ (D : D7) (p : ℕ) [Fact p.Prime] (X : Sys p) (E : CEmb X.G) (pos : (Σ v : X.Pl, Fin (X.G.P.n' v)) ≃ D.what₂.Tau) (lam : TaylorLogMetric.Qbar →+* ℂ_[p]) (ρ : ∀ v : X.Pl, D.host.E →+* X.G.P.Qq v), LamPos X E pos lam ρ → ∀ (j : ℕ) (c : X.Lv.comp j) (γ : (X.Lv.lev j c).Γ) (a : D.host.E), a * D.host.conj a = 1 → (∀ v, (gamAt X j c γ v : Matrix (Fin ((X.Pj j).m + 1)) (Fin ((X.Pj j).m + 1)) (X.G.P.Qq v)).det = ρ v a) → letI := wittFractionAlgebraCp p; letI := algKfC E; kapG X ℂ_[p] j c γ = E.iK (algebraMap X.G.O X.G.Kf (((X.Lv.lev j c).χ γ : X.G.Oˣ) : X.G.O)) * TaylorLogMetric.lamC lam (∏ v : X.Pl, ∏ s : Fin (X.G.P.n' v), TaylorLogMetric.embT D (pos ⟨v, s⟩) a ^ X.w v (j + 1) s) * (p : ℂ_[p]) ^ (-(∑ v : X.Pl, X.vm v (j + 1) * ordP (X.G.P.W v) p (ρ v a))) := by
   intro D p _ X E pos lam ρ hLP j c γ a ha hdet
   letI := wittFractionAlgebraCp p

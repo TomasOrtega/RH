@@ -25,6 +25,23 @@ variable {ψ : AddChar k Circle} (hψ : Continuous ψ) (hψ1 : ψ ≠ 1) {m : �
   (hCB : ∀ v, (C v v).re ≤ (B' v v).re)
   {ν : Measure (Fin (m + 1) → k)} [ν.IsAddHaarMeasure] (hν : ν (perp ψ A₀) = 1)
 
+/- English proof (translation)
+Take `⟨ϖ, hϖ⟩` from `IsDiscreteValuationRing.exists_irreducible (ValuativeRel.valuation k).integer`. Establish `hϖ0 : (ϖ : k) ≠ 0` using `fun h => hϖ.ne_zero (Subtype.ext h)`. Use `set x : kˣ := Units.mk0 (ϖ : k) hϖ0 with hxdef`. Establish `hx : nabs k x < 1`. Rewrite using `[nabs_uniformiser hϖ rfl]`.
+
+Conclude with `inv_lt_one_of_one_lt₀ (by exact_mod_cast one_lt_resCard k)`. Establish `hx0 : 0 < nabs k x` using `nabs_pos k x`. Set `g : GL (Fin (m + 1)) k` to `Matrix.GeneralLinearGroup.mkOfDetNeZero (((x⁻¹ : kˣ) : k) • (1 : Matrix (Fin (m + 1)) (Fin (m + 1)) k)) (by simp [Matrix.det_smul])`. Establish `hdet : Matrix.GeneralLinearGroup.det g = x⁻¹ ^ (m + 1)`. Use `ext`.
+
+Simplify using `[g, Matrix.GeneralLinearGroup.val_det_apply, Matrix.det_smul]`. Establish `hg : md g = (nabs k x)⁻¹ ^ (m + 1)` using `by show nabs k (Matrix.GeneralLinearGroup.det g) = _`. Rewrite using `[hdet]`. Simplify using `[nabs, map_pow, map_inv]`. Establish `hg1 : 1 < md g`.
+
+Rewrite using `[hg]`. Conclude with `one_lt_pow₀ (one_lt_inv₀ hx0 |>.2 hx) (Nat.succ_ne_zero m)`. Take `⟨A, hA, -⟩` from `lat_over (isCompact_empty (X := Fin (m + 1) → k))`. Establish `hpow : ∀ j : ℕ, md (g ^ j) = md g ^ j`. Introduce `j`.
+
+Proceed by induction on `j with`. Consider the case `zero => simp [md_one]`. Consider the case `succ j ih => rw [pow_succ, md_mul, ih, pow_succ]`. Establish `hbound : ∀ j : ℕ, (ν {0}).toReal ≤ ((md g)⁻¹) ^ j * (ν (perp ψ A)).toReal`. Introduce `j`.
+
+Establish `h0 : ({0} : Set (Fin (m + 1) → k)) ⊆ (perp ψ (gmap (g ^ j) A) : Set _)`. Simplify using `[(perp ψ (gmap (g ^ j) A)).zero_mem]`. Combine the equalities or inequalities in the displayed calculation. Establish `hlim : Tendsto (fun j : ℕ => ((md g)⁻¹) ^ j * (ν (perp ψ A)).toReal) atTop (𝓝 0)`. Use `tendsto_pow_atTop_nhds_zero_of_lt_one (inv_nonneg.2 (md_pos g).le) (inv_lt_one_of_one_lt₀ hg1)` as an intermediate fact.
+
+Simplify using `using this.mul_const (ν (perp ψ A)).toReal`. Establish `hle : (ν {0}).toReal ≤ 0` using `ge_of_tendsto' hlim hbound`. Establish `hfin : ν {0} ≠ ⊤`. Use `ne_top_of_le_ne_top (meas_perp_lt_top ψ ν hψ hψ1 hA).ne (measure_mono ?_)` and prove the remaining obligations. Simplify using `[(perp ψ A).zero_mem]`.
+
+Use `le_antisymm hle ENNReal.toReal_nonneg` as an intermediate fact. Break down `(ENNReal.toReal_eq_zero_iff _).1 this with h | h` into its components or cases. Conclude with `h`. Conclude with `absurd h hfin`.
+-/
 private theorem addHaar_singleton_zero_eq_zero {m : ℕ} {ψ : AddChar k Circle} (hψ : Continuous ψ) (hψ1 : ψ ≠ 1)
     (ν : Measure (Fin (m + 1) → k)) [ν.IsAddHaarMeasure] : ν {0} = 0 := by
   obtain ⟨ϖ, hϖ⟩ := IsDiscreteValuationRing.exists_irreducible (ValuativeRel.valuation k).integer
@@ -74,6 +91,65 @@ private theorem addHaar_singleton_zero_eq_zero {m : ℕ} {ψ : AddChar k Circle}
 
 include hψ hψ1 hS hA₀ hBp hBc hBg hD hCp hCc hC hCB hν in
 
+/- English proof (translation)
+Establish `hC' : ∀ p ∈ Mir k m, ∀ v w, C (gl p v) (gl p w) = ((md p ^ (s + 1) : ℝ) : ℂ) * C v w` using `hC`. Establish `hint : ∀ v w, Integrable (fun ξ => Df gl s C ξ v w) ν` using `integrable_Df hψ hψ1 hS hA₀ hBp hBc hBg hD hCp hC' hCB hν`. Set `I : V →ₗ[ℂ] V →ₗ⋆[ℂ] ℂ` to `LinearMap.mk₂'ₛₗ (RingHom.id ℂ) (starRingEnd ℂ) (fun v w => ∫ ξ, Df gl s C ξ v w ∂ν) (fun v₁ v₂ w => by`. Simplify using `only [map_add, LinearMap.add_apply]`. Conclude with `integral_add (hint _ _) (hint _ _))`.
+
+Use the proof step `(fun c v w => by`. Simplify using `only [map_smul, LinearMap.smul_apply, smul_eq_mul, RingHom.id_apply]`. Conclude with `integral_const_mul c _)`. Use the proof step `(fun v w₁ w₂ => by`. Simplify using `only [map_add]`.
+
+Conclude with `integral_add (hint _ _) (hint _ _))`. Use the proof step `(fun c v w => by`. Simplify using `only [LinearMap.map_smulₛₗ, smul_eq_mul]`. Conclude with `integral_const_mul _ _)`. Establish `hI : ∀ v w, I v w = ∫ ξ, Df gl s C ξ v w ∂ν` using `fun _ _ => rfl`.
+
+Use `⟨I, ⟨?_, ?_⟩, ?_, ?_, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `v w`. Rewrite using `[hI, hI, ← integral_conj]`. Conclude with `integral_congr_ae (Filter.Eventually.of_forall fun ξ => Df_herm hCp ξ v w)`. Introduce `v`.
+
+Rewrite using `[hI]`. Use `integral_re (hint v v)` as an intermediate fact. Simplify using `only [RCLike.re_to_complex] at this`. Rewrite using `[← this]`. Conclude with `integral_nonneg fun ξ => Df_re_nonneg hCp ξ v`.
+
+Introduce `x v w`. Rewrite using `[hI, hI]`. Conclude with `integral_congr_ae (Filter.Eventually.of_forall fun ξ => form_column_invariant hS hCp hCc hC' ξ x v w)`. Introduce `g v w`. Rewrite using `[hI, hI]`.
+
+Establish `h1 : ∀ ξ, Df gl s C ξ (gl g v) (gl g w) = ((md g ^ (s + 1) : ℝ) : ℂ) * Df gl s C (ξ ᵥ* (g : Matrix (Fin (m + 1)) (Fin (m + 1)) k)) v w`. Introduce `ξ`. Distinguish the cases in `hξ : ξ = 0`. Substitute `hξ` using the available equality. Simplify using `[Df_zero, Matrix.zero_vecMul]`.
+
+Conclude with `Df_gl hS hC' hξ g v w`. Repeatedly rewrite using `[h1]`. Rewrite using `[integral_const_mul, integral_vecMul ν (fun ξ => Df gl s C ξ v w) g, ← mul_assoc]`. Use `congr 1`. Establish `hp` using `md_pos g`.
+
+Rewrite using `[Real.rpow_add_one hp.ne']`. Use `push_cast`. Conclude with `mul_div_cancel_right₀ _ (by exact_mod_cast hp.ne')`. Introduce `v`. Rewrite using `[hI]`.
+
+Use `integral_re (hint v v)` as an intermediate fact. Simplify using `only [RCLike.re_to_complex] at this`. Rewrite using `[← this]`. Establish `hb` using `bessel hψ hψ1 hS hA₀ hBp hBc hBg hD hCp hC' hCB hν v`. Rewrite using `[integral_eq_lintegral_of_nonneg_ae (Filter.Eventually.of_forall fun ξ => Df_re_nonneg hCp ξ v) (integrable_re hψ hψ1 hS hA₀ hBp hBc hBg hD hCp hC' hCB hν v).aestronglyMeasurable]`.
+
+Combine the equalities or inequalities in the displayed calculation. Introduce `v w`. Establish `hxz : xz m ≠ (0 : Fin (m + 1) → k)`. Introduce `h`. Use `congrFun h (Fin.last m)` as an intermediate fact.
+
+Simplify using `[xz] at this`. Establish `hloc` using `Df_loc hS hC' hxz v w`. Rewrite `hloc` using `[Df_xz hC']`. Establish `hU : (fun η => xz m + η) ⁻¹' {ξ | Df gl s C ξ v w = C v w} ∈ 𝓝 (0 : Fin (m + 1) → k)`. Establish `ht : Tendsto (fun η : Fin (m + 1) → k => xz m + η) (𝓝 0) (𝓝 (xz m))`.
+
+Use `(continuous_add_left (xz m)).tendsto (0 : Fin (m + 1) → k)` as an intermediate fact. Simplify using `using this`. Conclude with `ht hloc`. Take `⟨A₂, hA₂, hsub⟩` from `lat_shrink ψ hψ hψ1 hU`. Take `⟨A₁, hA₁, h01, h21⟩` from `lat_sup hA₀ hA₂`.
+
+Use `⟨A₁, hA₁, h01, fun A hA hA1 => ?_⟩` and prove the remaining obligations. Rewrite using `[hI]`. Establish `hav : ∀ ξ, Df gl s C ξ (av ψ col (xz m) A v) w = Set.indicator {ξ | ξ - xz m ∈ perp ψ A} (fun _ => C v w) ξ`. Introduce `ξ`. Rewrite using `[AvA.av_eigen' ψ hψ col hS.col_zero hS.col_add hS.smooth_col (Df gl s C ξ) ψ ξ (Df_col hS hCc hC' ξ) A hA (xz m) v w]`.
+
+Distinguish the cases in `hm : ξ - xz m ∈ perp ψ A`. Rewrite using `[Set.indicator_of_mem (show ξ ∈ {ξ | ξ - xz m ∈ perp ψ A} from hm), if_pos]`. Establish `h2 : ξ - xz m ∈ perp ψ A₂` using `perp_anti ψ (h21.trans hA1) hm`. Establish `h3` using `hsub h2`. Simplify using `using h3`.
+
+Introduce `a ha`. Use `(mem_perp ψ A _).1 hm a ha` as an intermediate fact. Rewrite `this` using `[sub_dotProduct, AddChar.map_sub_eq_div, div_eq_one]`. Conclude with `this`. Rewrite using `[Set.indicator_of_notMem (show ξ ∉ {ξ | ξ - xz m ∈ perp ψ A} from hm), if_neg]`.
+
+Introduce `hall`. Apply `hm` to reduce the goal to its premises. Rewrite using `[mem_perp]`. Introduce `a ha`. Rewrite using `[sub_dotProduct, AddChar.map_sub_eq_div, hall a ha, div_self']`.
+
+Establish `hset : {ξ | ξ - xz m ∈ perp ψ A} = (fun ξ => ξ + -xz m) ⁻¹' (perp ψ A : Set (Fin (m + 1) → k))`. Use extensionality with `ξ`. Simplify using `[sub_eq_add_neg]`. Establish `hmeas : MeasurableSet {ξ | ξ - xz m ∈ perp ψ A}`. Rewrite using `[hset]`.
+
+Conclude with `(perp_open ψ hψ hψ1 hA).measurableSet.preimage (measurable_add_const _)`. Repeatedly rewrite using `[hav]`. Rewrite using `[integral_indicator_const _ hmeas, measureReal_def, hset, measure_preimage_add_right]`. Establish `h1 : ((A₀.relIndex A : ℝ)) * (ν (perp ψ A)).toReal = 1`. Use `meas_perp_index ψ ν hψ hψ1 hA₀ hA (h01.trans hA1)` as an intermediate fact.
+
+Rewrite `this` using `[hν]`. Use `congrArg ENNReal.toReal this` as an intermediate fact. Rewrite `this` using `[ENNReal.toReal_mul, ENNReal.toReal_natCast]`. Simplify using `using this.symm`. Establish `h2 : ((A₀.relIndex A : ℂ)) * (((ν (perp ψ A)).toReal : ℝ) : ℂ) = 1`.
+
+Conclude with `h1` after adjusting the coercions. Rewrite using `[Complex.real_smul, ← mul_assoc, h2, one_mul]`. Introduce `v w`. Simplify using `only [LinearMap.zero_apply]`. Establish `hone : Continuous ⇑(1 : AddChar k Circle)`.
+
+Establish `: ⇑(1 : AddChar k Circle) = fun _ => 1`. Use function extensionality and compare the values at `x`. Conclude with `AddChar.one_apply x`. Rewrite using `[this]`. Conclude with `continuous_const`.
+
+Establish `hav : ∀ A : {A : AddSubgroup (Fin (m + 1) → k) // Lat A}, I (av 1 col 0 A.1 v) w = ∫ ξ in (perp ψ A.1 : Set (Fin (m + 1) → k)), Df gl s C ξ v w ∂ν`. Introduce `A`. Rewrite using `[hI, ← integral_indicator (perp_open ψ hψ hψ1 A.2).measurableSet]`. Use `congr 1`. Use function extensionality and compare the values at `ξ`.
+
+Rewrite using `[AvA.av_eigen' 1 hone col hS.col_zero hS.col_add hS.smooth_col (Df gl s C ξ) ψ ξ (Df_col hS hCc hC' ξ) A.1 A.2 0 v w]`. Distinguish the cases in `hm : ξ ∈ perp ψ A.1`. Rewrite using `[Set.indicator_of_mem (show ξ ∈ (perp ψ A.1 : Set (Fin (m + 1) → k)) from hm), if_pos]`. Introduce `a ha`. Rewrite using `[(mem_perp ψ _ _).1 hm a ha, AddChar.one_apply]`.
+
+Rewrite using `[Set.indicator_of_notMem (show ξ ∉ (perp ψ A.1 : Set (Fin (m + 1) → k)) from hm), if_neg]`. Introduce `hall`. Apply `hm` to reduce the goal to its premises. Rewrite using `[mem_perp]`. Introduce `a ha`.
+
+Rewrite using `[hall a ha, AddChar.one_apply]`. Establish `hfun : (fun A : {A : AddSubgroup (Fin (m + 1) → k) // Lat A} => I (av 1 col 0 A.1 v) w) = fun A => ∫ ξ in (perp ψ A.1 : Set (Fin (m + 1) → k)), Df gl s C ξ v w ∂ν` using `funext hav`. Rewrite using `[hfun]`. Apply `(hint v w).tendsto_setIntegral_nhds_zero` to reduce the goal to its premises. Rewrite using `[ENNReal.tendsto_nhds_zero]`.
+
+Introduce `ε hε`. Establish `h0 : ν {0} < ε`. Rewrite using `[addHaar_singleton_zero_eq_zero hψ hψ1 ν]`. Conclude with `hε`. Take `⟨U, hU0, hUo, hUε⟩` from `Set.exists_isOpen_lt_of_lt _ _ h0`.
+
+Take `⟨A₂, hA₂, hsub⟩` from `lat_shrink ψ hψ hψ1 (hUo.mem_nhds (hU0 rfl))`. Use `filter_upwards [Filter.mem_atTop (⟨A₂, hA₂⟩ : {A : AddSubgroup (Fin (m + 1) → k) // Lat A})] with A hA`. Establish `hsub2 : (perp ψ A.1 : Set (Fin (m + 1) → k)) ⊆ U` using `(SetLike.coe_subset_coe.2 (perp_anti ψ (show A₂ ≤ A.1 from hA))).trans hsub`. Conclude with `(measure_mono hsub2).trans hUε.le`. Introduce `Y hY hCY y hy w`.
+
+Rewrite using `[hI]`. Establish `: (fun ξ => Df gl s C ξ y w) = fun _ => (0 : ℂ)` using `funext fun ξ => Df_ker hCp hC' Y hY hCY ξ hy w`. Rewrite using `[this, integral_zero]`.
+-/
 theorem lift_form : ∃ I : V →ₗ[ℂ] V →ₗ⋆[ℂ] ℂ, Psd I ∧ (∀ x v w, I (col x v) (col x w) = I v w) ∧
       (∀ g v w, I (gl g v) (gl g w) = ((nabs k (Matrix.GeneralLinearGroup.det g) ^ s : ℝ) : ℂ) * I v w) ∧
       (∀ v, (I v v).re ≤ (B v v).re) ∧ IsD ψ col A₀ I C ∧ IsA col I 0 ∧
@@ -236,6 +312,13 @@ theorem lift_form : ∃ I : V →ₗ[ℂ] V →ₗ⋆[ℂ] ℂ, Psd I ∧ (∀ x
 
 end Main
 
+/- English proof (translation)
+Introduce `ψ hψ hψ1 m V _ _ col gl hS s B B' C A₀ hA₀ hBp hBc hBg hD hCp hCc hC hCB`. Use `letI : MeasurableSpace k := measurableSpaceFourthLift`. Use `haveI : BorelSpace k := borelSpaceOnK`. Use `haveI : SecondCountableTopology k := instSCK4`. Set `μ : Measure (Fin (m + 1) → k)` to `Measure.addHaar`.
+
+Establish `h0 : μ (perp ψ A₀) ≠ 0` using `meas_perp_ne_zero ψ μ hψ hψ1 hA₀`. Establish `htop : μ (perp ψ A₀) ≠ ⊤` using `(meas_perp_lt_top ψ μ hψ hψ1 hA₀).ne`. Set `ν : Measure (Fin (m + 1) → k)` to `(μ (perp ψ A₀))⁻¹ • μ`. Use `haveI : ν.IsAddHaarMeasure := Measure.IsAddHaarMeasure.smul μ (ENNReal.inv_ne_zero.2 htop) (ENNReal.inv_ne_top.2 h0)`. Establish `hν : ν (perp ψ A₀) = 1`.
+
+Simplify using `only [ν, Measure.smul_apply, smul_eq_mul]`. Conclude with `ENNReal.inv_mul_cancel h0 htop`. Conclude with `lift_form hψ hψ1 hS hA₀ hBp hBc hBg hD hCp hCc hC hCB hν`.
+-/
 theorem absLift : @AbsLift k _ _ _ _ := by
   intro ψ hψ hψ1 m V _ _ col gl hS s B B' C A₀ hA₀ hBp hBc hBg hD hCp hCc hC hCB
   letI : MeasurableSpace k := measurableSpaceFourthLift

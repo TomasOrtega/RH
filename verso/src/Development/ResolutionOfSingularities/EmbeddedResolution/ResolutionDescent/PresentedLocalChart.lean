@@ -37,6 +37,35 @@ structure PresentedLocalChart {k : Type u} [Field k] [CharZero k] {Y V : Scheme.
         (P.codimBound + (N - r) + 1)
   le_threshold : r ≤ threshold
 
+/- English proof (translation)
+Take `⟨V₀, hyV₀, hV₀aff, A', pA', hA'aff, hA'sm, hA'ft, hA'qc, gg, hgsm, hgp, jj, hjci, hjpb, N₀, hrN₀, hpres⟩` from `hS k Y V G.ambient pY pV G.ambientStruct G.emb G.comp_eq P.dim P.codimBound P.toAffine P.toAffine_comp P.locallyConstCodim r u hu y`. Use `hA'aff` as an intermediate fact. Use `hA'sm` as an intermediate fact. Use `hA'ft` as an intermediate fact. Use `hA'qc` as an intermediate fact.
+
+Use `hgsm` as an intermediate fact. Use `hjci` as an intermediate fact. Take `⟨σ₀, hσ₀ci, hσ₀comp, hσ₀codim⟩` from `hpres N₀ le_rfl`. Use `hσ₀ci` as an intermediate fact. Establish `hembCI : AlgebraicGeometry.IsClosedImmersion H.emb` using `H.isClosedImmersion_emb`.
+
+Establish `hind` using `H.emb.isClosedEmbedding.toIsEmbedding.toIsInducing`. Take `⟨Ω, hΩ, hΩeq⟩` from `hind.isOpen_iff.mp V₀.isOpen`. Establish `hyΩ : H.emb.base y ∈ Ω`. Establish `h0 : y ∈ ⇑H.emb.base ⁻¹' Ω` using `by rw [hΩeq]; exact hyV₀`. Conclude with `h0`.
+
+Take `⟨Ubase, hUmem, hyU, hUΩ⟩` from `TopologicalSpace.Opens.isBasis_iff_nbhd.mp (isBasis_basicOpen H.ambient) (U := (⟨Ω, hΩ⟩ : H.ambient.Opens)) (x := H.emb.base y) hyΩ`. Take `⟨func, rfl⟩` from `hUmem`. Establish `hymem : y ∈ (H.emb ⁻¹ᵁ H.ambient.basicOpen func)` using `hyU`. Establish `hsub : (H.emb ⁻¹ᵁ H.ambient.basicOpen func) ≤ V₀`. Introduce `x hx`.
+
+Establish `hx1 : H.emb.base x ∈ H.ambient.basicOpen func` using `hx`. Establish `hx2 : x ∈ ⇑H.emb.base ⁻¹' Ω` using `hUΩ hx1`. Rewrite `hx2` using `[hΩeq]`. Conclude with `hx2`. Take `⟨L, hL⟩ : ∃ L : Γ(affineSpaceIndexedBy k (ULift.{u, 0} (Fin (P.dim + N₀))), ⊤), (ConcreteCategory.hom (Scheme.Hom.appTop (jj ≫ σ₀))) L = (ConcreteCategory.hom (Scheme.Hom.appTop (V₀.ι ≫ H.emb))) func` from `⟨_, appTop_globalSectionLift k (P.dim + N₀) (jj ≫ σ₀) _⟩`.
+
+Choose the witnesses or unpack the hypotheses as in `⟨Fsec, hopen⟩ : ∃ Fsec : Γ(A', ⊤), jj ⁻¹ᵁ (A'.basicOpen Fsec) = V₀.ι ⁻¹ᵁ (H.emb ⁻¹ᵁ H.ambient.basicOpen func) := by`. Use `⟨(ConcreteCategory.hom (Scheme.Hom.appTop σ₀)) L, ?_⟩` and prove the remaining obligations. Establish `eA : A'.basicOpen ((ConcreteCategory.hom (Scheme.Hom.appTop σ₀)) L) = σ₀ ⁻¹ᵁ ((affineSpaceIndexedBy k (ULift.{u, 0} (Fin (P.dim + N₀)))).basicOpen L)` using `(Scheme.preimage_basicOpen σ₀ L).symm`. Establish `e1 : jj ⁻¹ᵁ (σ₀ ⁻¹ᵁ ((affineSpaceIndexedBy k (ULift.{u, 0} (Fin (P.dim + N₀)))).basicOpen L)) = (jj ≫ σ₀) ⁻¹ᵁ ((affineSpaceIndexedBy k (ULift.{u, 0} (Fin (P.dim + N₀)))).basicOpen L)` using `rfl`. Establish `eB : (jj ≫ σ₀) ⁻¹ᵁ ((affineSpaceIndexedBy k (ULift.{u, 0} (Fin (P.dim + N₀)))).basicOpen L) = (↑V₀ : Scheme.{u}).basicOpen ((ConcreteCategory.hom (Scheme.Hom.appTop (jj ≫ σ₀))) L)` using `Scheme.preimage_basicOpen _ _`.
+
+Establish `e2 : V₀.ι ⁻¹ᵁ (H.emb ⁻¹ᵁ H.ambient.basicOpen func) = (V₀.ι ≫ H.emb) ⁻¹ᵁ (H.ambient.basicOpen func)` using `rfl`. Establish `eC : (V₀.ι ≫ H.emb) ⁻¹ᵁ (H.ambient.basicOpen func) = (↑V₀ : Scheme.{u}).basicOpen ((ConcreteCategory.hom (Scheme.Hom.appTop (V₀.ι ≫ H.emb))) func)` using `Scheme.preimage_basicOpen _ _`. Rewrite using `[eA, e1, eB, hL, e2, eC]`. Choose the witnesses or unpack the hypotheses as in `⟨θ, hθ⟩ : ∃ θ : (H.emb ⁻¹ᵁ H.ambient.basicOpen func).toScheme ≅ (jj ⁻¹ᵁ A'.basicOpen Fsec).toScheme, θ.hom ≫ ((jj ⁻¹ᵁ A'.basicOpen Fsec).ι ≫ V₀.ι) = (H.emb ⁻¹ᵁ H.ambient.basicOpen func).ι := by`. Establish `hrange : Set.range ⇑(H.emb ⁻¹ᵁ H.ambient.basicOpen func).ι.base = Set.range ⇑((jj ⁻¹ᵁ A'.basicOpen Fsec).ι ≫ V₀.ι).base`.
+
+Establish `hcomp : Set.range ⇑((jj ⁻¹ᵁ A'.basicOpen Fsec).ι ≫ V₀.ι).base = ⇑V₀.ι.base '' Set.range ⇑(jj ⁻¹ᵁ A'.basicOpen Fsec).ι.base`. Simplify using `[Set.range_comp]`. Rewrite using `[hcomp, hopen, Scheme.Opens.range_ι, Scheme.Opens.range_ι]`. Establish `h4 : (↑(V₀.ι ⁻¹ᵁ (H.emb ⁻¹ᵁ H.ambient.basicOpen func)) : Set ↥V₀.toScheme) = ⇑V₀.ι.base ⁻¹' (↑(H.emb ⁻¹ᵁ H.ambient.basicOpen func) : Set ↥V)` using `rfl`. Rewrite using `[h4, Set.image_preimage_eq_inter_range, Scheme.Opens.range_ι]`.
+
+Conclude with `(Set.inter_eq_self_of_subset_left (fun x hx => hsub hx)).symm`. Conclude with `⟨AlgebraicGeometry.IsOpenImmersion.isoOfRangeEq _ _ hrange, AlgebraicGeometry.IsOpenImmersion.isoOfRangeEq_hom_fac _ _ hrange⟩`. Establish `hθ' : (θ.hom ≫ (jj ⁻¹ᵁ A'.basicOpen Fsec).ι) ≫ V₀.ι = (H.emb ⁻¹ᵁ H.ambient.basicOpen func).ι`. Rewrite using `[Category.assoc]`. Conclude with `hθ`.
+
+Establish `hpb1 : CategoryTheory.IsPullback (AlgebraicGeometry.morphismRestrict jj (A'.basicOpen Fsec)) ((jj ⁻¹ᵁ A'.basicOpen Fsec).ι ≫ (V₀.ι ≫ u)) ((A'.basicOpen Fsec).ι ≫ gg) G.emb` using `(AlgebraicGeometry.isPullback_morphismRestrict jj (A'.basicOpen Fsec)).paste_vert hjpb`. Establish `hcomm : CategoryTheory.CommSq θ.hom ((H.emb ⁻¹ᵁ H.ambient.basicOpen func).ι ≫ u) ((jj ⁻¹ᵁ A'.basicOpen Fsec).ι ≫ (V₀.ι ≫ u)) (𝟙 Y)`. Prove the components needed by the constructor for the conclusion. Rewrite using `[Category.comp_id, ← Category.assoc, ← Category.assoc, hθ']`. Establish `hiso : CategoryTheory.IsPullback θ.hom ((H.emb ⁻¹ᵁ H.ambient.basicOpen func).ι ≫ u) ((jj ⁻¹ᵁ A'.basicOpen Fsec).ι ≫ (V₀.ι ≫ u)) (𝟙 Y)` using `CategoryTheory.IsPullback.of_horiz_isIso hcomm`.
+
+Establish `hpb : CategoryTheory.IsPullback (θ.hom ≫ AlgebraicGeometry.morphismRestrict jj (A'.basicOpen Fsec)) ((H.emb ⁻¹ᵁ H.ambient.basicOpen func).ι ≫ u) ((A'.basicOpen Fsec).ι ≫ gg) G.emb`. Establish `h5` using `hiso.paste_horiz hpb1`. Rewrite `h5` using `[Category.id_comp]`. Then use the resulting hypothesis. Establish `hambaff : AlgebraicGeometry.IsAffine (A'.basicOpen Fsec).toScheme` using `(AlgebraicGeometry.isAffineOpen_top A').basicOpen Fsec`. Use `⟨{ func := func mem_domain := hymem ambient := (A'.basicOpen Fsec).toScheme ambientStruct := (A'.basicOpen Fsec).ι ≫ pA' isAffine_ambient := hambaff smooth_ambientStruct := by infer_instance locallyOfFiniteType_ambientStruct := by infer_instance quasiCompact_ambientStruct := by i …` and prove the remaining obligations.
+
+Establish `: AlgebraicGeometry.IsClosedImmersion (AlgebraicGeometry.morphismRestrict jj (A'.basicOpen Fsec))` using `by infer_instance`. Use `infer_instance`. Use `isPullback := hpb`. Use `threshold := N₀`. Use `le_threshold := hrN₀`.
+
+Use `presentation := by`. Introduce `N hN`. Take `⟨σ, hσci, hσcomp, hσcodim⟩` from `hpres N hN`. Use `hσci` as an intermediate fact. Use `⟨basicOpenEmbedding k (P.dim + N) σ Fsec ≫ (affineSpaceIsoOfEquiv (uliftFinSumEquiv.{u} (P.dim + N) 1) (Spec (CommRingCat.of k))).hom, by infer_instance, ?_, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[Category.assoc, affineSpaceIsoOfEquiv_hom_comp_toSpec]`. Conclude with `basicOpenEmbedding_comp_affineSpaceIndexedByToSpec k (P.dim + N) σ Fsec pA' hσcomp`. Conclude with `hasSmoothCoordCodim_basicOpenEmbedding hsm k (P.dim + N) (P.codimBound + (N - r)) σ Fsec hσcodim }⟩`.
+-/
 theorem nonempty_presentedLocalChart (hS : SmoothPullbackHasLocalAmbientEmbedding.{u})
     (hsm : AffineSpaceIsSmooth.{u}) (k : Type u) [Field k] [CharZero k] (Y V : Scheme.{u})
     [AlgebraicGeometry.IsAffine Y] [AlgebraicGeometry.IsAffine V]

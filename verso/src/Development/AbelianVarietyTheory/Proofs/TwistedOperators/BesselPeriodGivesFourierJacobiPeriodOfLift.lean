@@ -21,6 +21,19 @@ namespace GlobalTheory.UpFromBessel
 
 variable {D : D7}
 
+/- English proof (translation)
+Take `⟨i1, i2, i3, i4, i5, -⟩` from `GlobalTheory.MixModel.lattice_Mx D T.rank S.rank`. Use `haveI : BorelSpace (Mx D T.rank S.rank) := ⟨rfl⟩`. Use `haveI : DiscreteTopology (ratMx D T.rank S.rank) := i5`. Use `haveI : Countable (ratMx D T.rank S.rank) := TopologicalSpace.separableSpace_iff_countable.1 inferInstance`. Take `⟨hμ, hF, h1⟩` from `v.covol`.
+
+Use `haveI := hμ`. Use `haveI : IsFiniteMeasure (v.μ.restrict v.𝓕) := ⟨by rw [Measure.restrict_apply_univ, h1]; exact ENNReal.one_lt_top⟩`. Take `⟨C, hC⟩` from `GlobalTheory.OrientedHeis.theta_bounded hψ hf`. Establish `e : ∀ w, f₀ w * star (f₀ w) = ((‖f₀ w‖ ^ 2 : ℝ) : ℂ)` using `fun w => by`. Rewrite using `[Complex.star_def, Complex.mul_conj']`.
+
+Use `push_cast`. Both sides reduce to the same expression. Establish `hint : Integrable (fun w => ‖f₀ w‖ ^ 2) (v.μ.restrict v.𝓕)` using `Integrable.of_bound (hf.cont.norm.pow 2).measurable.aestronglyMeasurable (C ^ 2) (Filter.Eventually.of_forall fun w => by`. Rewrite using `[Real.norm_of_nonneg (by positivity)]`. Conclude with `pow_le_pow_left₀ (norm_nonneg _) (hC w) 2)`.
+
+Introduce `h0`. Establish `h2 : (∫ w in v.𝓕, ‖f₀ w‖ ^ 2 ∂v.μ) = 0`. Establish `: thPair v.μ v.𝓕 f₀ f₀ = ((∫ w in v.𝓕, ‖f₀ w‖ ^ 2 ∂v.μ : ℝ) : ℂ)`. Unfold `thPair`. Repeatedly rewrite using `[e]`.
+
+Conclude with `integral_ofReal`. Rewrite `h0` using `[this]`. Conclude with `h0` after adjusting the coercions. Establish `h3 : ∫⁻ w in v.𝓕, ‖f₀ w‖ₑ ^ 2 ∂v.μ = 0`. Establish `en : ∀ z : ℂ, ‖z‖ₑ ^ 2 = ENNReal.ofReal (‖z‖ ^ 2)` using `fun z => by`.
+
+Rewrite using `[ENNReal.ofReal_pow (norm_nonneg _), ofReal_norm_eq_enorm]`. Repeatedly rewrite using `[en]`. Rewrite using `[← ofReal_integral_eq_lintegral_ofReal hint (Filter.Eventually.of_forall fun w => by positivity), h2, ENNReal.ofReal_zero]`. Conclude with `hne (GlobalTheory.OrientedHeis.eq_zero_of_lintegral_eq_zero (ratMx D T.rank S.rank) v.μ v.𝓕 hF f₀ hf.cont (fun γ hγ w => GlobalTheory.OrientedHeis.theta_norm_periodic hψ hf γ hγ w) h3)`.
+-/
 theorem pair_self_ne_zero {ψ : AddChar (AF D.host.F) ℂ} (hψ : IsStdChar D ψ (-1)) {S T : HSp D}
     (v : VolM D T.rank S.rank) {f₀ : WO S T → ℂ} (hf : IsThetaFunO ψ S T f₀) (hne : f₀ ≠ 0) :
     thPair v.μ v.𝓕 f₀ f₀ ≠ 0 := by
@@ -57,10 +70,22 @@ theorem pair_self_ne_zero {ψ : AddChar (AF D.host.F) ℂ} (hψ : IsStdChar D ψ
   exact hne (GlobalTheory.OrientedHeis.eq_zero_of_lintegral_eq_zero (ratMx D T.rank S.rank) v.μ v.𝓕 hF f₀ hf.cont
     (fun γ hγ w => GlobalTheory.OrientedHeis.theta_norm_periodic hψ hf γ hγ w) h3)
 
+/- English proof (translation)
+Simplify using `only [BesL.per, besPer, besFun, Pi.smul_apply, smul_eq_mul, mul_assoc, integral_const_mul]`.
+-/
 theorem per_smul {ρ : ℕ} (B : BesL D ρ) (ψ : AddChar (AF D.host.F) ℂ) (c : ℂ) (φ : GA D B.A → ℂ) (f : GA D B.V → ℂ) :
     B.per ψ (c • φ) f = c * B.per ψ φ f := by
   simp only [BesL.per, besPer, besFun, Pi.smul_apply, smul_eq_mul, mul_assoc, integral_const_mul]
 
+/- English proof (translation)
+Introduce `D ψ σ J B s 𝒮 Γ₀ K hL χA χz omb omz hχ hb hz φ G hφ hG hK Ξ₁ Φ₀ hΞ hΦ hne hvac hper`. Assume the negation of the conclusion as `hcon`. Use `push_neg at hcon`. Establish `hψ` using `s.weil.std`. Take `⟨vL⟩` from `(GlobalTheory.Unf.VolExist.measures_exist D).2.2.1 B.L.rank J.W₀.rank`.
+
+Establish `hvan` using `GlobalTheory.T.vanishing_descends_fourierJacobi_to_bessel D ψ σ J B s 𝒮 Γ₀ K hL vL _ _ omz hz φ G Φ₀ hφ hG hΦ hK hcon`. Establish `htame` using `GlobalTheory.T.besselPeriod_handedDown_isTameThetaFunctional D ψ σ J B s vL _ _ omz hz φ G Φ₀ hφ hG hΦ`. Take `⟨Φ, hΦS, hfl⟩` from `hL.ne`. Establish `hall` using `GlobalTheory.T.tame_functional_vacuum_irreducibility D ψ hψ J.W₀ B.V₀ Γ₀ _ htame _ (hL.vac Φ hΦS) hfl (fun w hw => by`. Establish `h1` using `(GlobalTheory.FlatHeis.flatAt_heisO D ψ hψ J.W J.W₀ B.V B.V₀ (σ + 1) σ J.d B.d s.vS s.vT s.vU (xLast B.d (vecB B.o B.ζ)) 0 Φ (hL.theta Φ hΦS)).2.1 w`.
+
+Establish `h2` using `hvan _ (hL.core Φ hΦS w hw)`. Simplify using `only [flFB, flatS] at h2 ⊢`. Rewrite `h2` using `[h1]`. Conclude with `h2) _ hvac`. Establish `hlink` using `GlobalTheory.T.besselHandedFunction_product_eq_coreLift_mul_pairing D ψ σ J B s vL χA χz omb omz hχ hb hz φ Ξ₁ Φ₀ Φ₀ hΞ hΦ hΦ`.
+
+Simplify using `only [hlink, per_smul] at hall`. Conclude with `hper ((mul_eq_zero.1 hall).resolve_left (pair_self_ne_zero hψ vL hΦ hne))`.
+-/
 theorem upFB : ∀ D : D7, UpFB D := by
   intro D ψ σ J B s 𝒮 Γ₀ K hL χA χz omb omz hχ hb hz φ G hφ hG hK Ξ₁ Φ₀ hΞ hΦ hne hvac hper
   by_contra hcon

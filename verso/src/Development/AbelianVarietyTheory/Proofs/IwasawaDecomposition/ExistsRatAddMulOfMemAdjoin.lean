@@ -2,6 +2,15 @@ import Mathlib
 
 namespace GlobalTheory.RatCoordsAdjoin
 
+/- English proof (translation)
+Establish `halg : IsAlgebraic ℚ s` using `Algebra.IsAlgebraic.isAlgebraic s`. Establish `hx' : x ∈ Algebra.adjoin ℚ ({s} : Set E)`. Rewrite using `[← IntermediateField.adjoin_toSubalgebra_of_isAlgebraic (F := ℚ) (S := ({s} : Set E)) (by intro y hy; rw [Set.mem_singleton_iff.mp hy]; exact halg)]`. Conclude with `hx`. Use `clear hx`.
+
+Proceed by induction on `hx' using Algebra.adjoin_induction with`. Consider the case `mem y hy => exact ⟨0, 1, by rw [Set.mem_singleton_iff.mp hy]; simp⟩`. Consider the case `algebraMap r => exact ⟨r, 0, by simp⟩`. Consider the case `add y z _ _ hy hz`. Take `⟨a, b, rfl⟩` from `hy`.
+
+Take `⟨c, e, rfl⟩` from `hz`. Conclude with `⟨a + c, b + e, by push_cast; ring⟩`. Consider the case `mul y z _ _ hy hz`. Take `⟨a, b, rfl⟩` from `hy`. Take `⟨c, e, rfl⟩` from `hz`.
+
+Conclude with `⟨a * c - b * e * d, a * e + b * c, by push_cast; linear_combination ((b : E) * (e : E)) * hs⟩`.
+-/
 theorem exists_rat_add_mul_of_mem_adjoin {E : Type} [Field E] [NumberField E] (d : ℕ) (s : E)
     (hs : s ^ 2 = -(d : E)) {x : E} (hx : x ∈ IntermediateField.adjoin ℚ ({s} : Set E)) :
     ∃ a b : ℚ, x = (a : E) + (b : E) * s := by

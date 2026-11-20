@@ -6,6 +6,23 @@ open GlobalTheory GlobalTheory.ChowHt GlobalTheory.Adelic GlobalTheory.HermTools
 
 namespace GlobalTheory.HSShort
 
+/- English proof (translation)
+Establish `hdeg : α.degree = ∑ i, α i` using `Finsupp.degree_eq_sum α`. Use `set L : List (Fin (D + 1)) := (List.ofFn fun i : Fin D => List.replicate (α i) i.castSucc).flatten ++ List.replicate (t - α.degree) (Fin.last D) with hL`. Establish `hlen : L.length = t`. Simplify using `only [hL, List.length_append, List.length_flatten, List.map_ofFn, List.length_replicate, List.sum_ofFn, Function.comp_def]`. Use linear arithmetic over natural numbers and integers.
+
+Use `⟨fun q => L.get (Fin.cast hlen.symm q), ?_⟩` and prove the remaining obligations. Use `set β : Fin t → Fin (D + 1) := fun q => L.get (Fin.cast hlen.symm q) with hβ`. Establish `hofFn : List.ofFn β = L`. Apply `List.ext_get` to reduce the goal to its premises. Simplify using `[hlen]`.
+
+Introduce `n h1 h2`. Simplify using `[hβ]`. Establish `hcount : ∀ x, (Finset.univ.filter fun q => β q = x).card = L.count x`. Introduce `x`. Rewrite using `[← hofFn, ← Multiset.coe_count, ← Fin.univ_val_map, Multiset.count_map, Finset.card_def, Finset.filter_val]`.
+
+Use `congr 1`. Apply `Multiset.filter_congr` to reduce the goal to its premises. Introduce `a _`. Conclude with `eq_comm`. Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations.
+
+Introduce `i`. Rewrite using `[hcount]`. Simplify using `[hL, List.count_flatten, List.count_replicate, Function.comp_def, Fin.castSucc_inj, List.sum_ofFn, (Fin.castSucc_ne_last i).symm]`. Introduce `ht q`. Establish `hmem : β q ∈ L` using `List.get_mem _ _`.
+
+Establish `h0 : t - α.degree = 0` using `by omega`. Simplify using `only [hL, h0, List.replicate_zero, List.append_nil, List.mem_flatten, List.mem_ofFn] at hmem`. Take `⟨l, ⟨j, rfl⟩, hl⟩` from `hmem`. Rewrite `hl` using `[List.mem_replicate]`. Rewrite using `[hl.2]`.
+
+Conclude with `Fin.castSucc_ne_last j`. Introduce `M _ f`. Establish `: (List.ofFn fun q => f (β q)) = (List.ofFn β).map f`. Rewrite using `[List.map_ofFn]`. Both sides reduce to the same expression.
+
+Rewrite using `[this, hofFn, hL]`. Simplify using `[List.prod_append, List.map_flatten, List.prod_flatten, List.map_ofFn, Function.comp_def, List.prod_replicate]`.
+-/
 theorem words_of_type (D t : ℕ) (α : Fin D →₀ ℕ) (hα : α.degree ≤ t) :
     ∃ β : Fin t → Fin (D + 1), (∀ i : Fin D, (Finset.univ.filter fun q => β q = i.castSucc).card = α i) ∧
       (α.degree = t → ∀ q, β q ≠ Fin.last D) ∧

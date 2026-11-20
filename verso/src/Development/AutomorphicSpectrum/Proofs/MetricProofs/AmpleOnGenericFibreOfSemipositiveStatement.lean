@@ -9,5 +9,8 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.G
 open GroundTheory.Heights₂.Heights.LowerBoundFree GlobalTheory.CompanionTheory.Ar GlobalTheory.CompanionTheory.Ar.Cusp
 open ReciprocityTheory.AnForm (levi)
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.CompanionTheory.Relay.ample_on_generic_fibre_of_semipositive | exact GlobalTheory.CompanionTheory.Relay.ample_on_generic_fibre_of_semipositive | (intros; apply GlobalTheory.CompanionTheory.Relay.ample_on_generic_fibre_of_semipositive <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.ample_on_generic_fibre_of_semipositive : PB.Inputs → ∀ II : IntersectionSystem, IsFullIntersectionSystem II → ∀ (K : Type) [Fintype K] (J : K → Type) [∀ k, Fintype (J k)] (P : Ideal (MRing J)) (N A : HermLine J) (a' : K → ℤ) (m p : ℕ), IsSemipositiveH P N → IsSmoothHerm A → (∀ k, 0 < a' k) → 1 ≤ m → 1 ≤ p → (m : ℤ) • A.a = N.a + (p : ℤ) • a' → AmpleOnGenericFibre P A := by
   first | exact @GlobalTheory.CompanionTheory.Relay.ample_on_generic_fibre_of_semipositive | exact GlobalTheory.CompanionTheory.Relay.ample_on_generic_fibre_of_semipositive | (intros; apply GlobalTheory.CompanionTheory.Relay.ample_on_generic_fibre_of_semipositive <;> assumption)

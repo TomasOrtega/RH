@@ -7,6 +7,9 @@ open GlobalTheory GlobalTheory.PRep GlobalTheory.SplitWeil GlobalTheory.SmGL Glo
 
 namespace GlobalTheory.SmGL.Exponents
 
+/- English proof (translation)
+Use `⟨LocGL.equivOfBijective ⟨(PiTensorProduct.constantBaseRingEquiv β ℂ).toLinearMap, fun g => ?_⟩ (PiTensorProduct.constantBaseRingEquiv β ℂ).bijective⟩` and prove the remaining obligations. Use extensionality with `x`. Simplify using `[leviChar_apply, detRep, Finset.prod_mul_distrib]`.
+-/
 theorem nonempty_piTensor_detRep_equiv (R β : Type) [CommRing R] [Fintype β] (c : β → Type)
     [∀ j, Fintype (c j)] [∀ j, DecidableEq (c j)] (χ : β → Rˣ →* ℂˣ) :
     Nonempty ((piTensor fun j => detRep (c j) (χ j)).Equiv (ofChar (leviChar c χ))) := by

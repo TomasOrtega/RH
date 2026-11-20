@@ -17,6 +17,11 @@ noncomputable section
 
 namespace GlobalTheory.CompanionTheory.Ar.Sl.Reg
 
+/- English proof (translation)
+Establish `h' : ⊤ ≤ (spMap (algebraMap O C) ≫ a) ⁻¹ᵁ U` using `fun x _ => h (x := spMap (algebraMap O C) x) trivial`. Apply the tactic sequence `have e₀ : (spMap (algebraMap O C)).appLE ⊤ ⊤ (by first | exact le_rfl | simp) = (spMap (algebraMap O C)).appTop := by`. Rewrite using `[Scheme.Hom.appTop, Scheme.Hom.app_eq_appLE]`. Both sides reduce to the same expression. Establish `e : (spMap (algebraMap O C) ≫ a).appLE U ⊤ h' = a.appLE U ⊤ h ≫ (spMap (algebraMap O C)).appTop`.
+
+Rewrite using `[← e₀]`. Conclude with `(Scheme.Hom.appLE_comp_appLE (spMap (algebraMap O C)) a U ⊤ ⊤ h _).symm`. Establish `n` using `congrArg (fun φ => φ.hom ((a.appLE U ⊤ h).hom f)) (Scheme.ΓSpecIso_naturality (CommRingCat.ofHom (algebraMap O C)))`. Rewrite using `[valF, dif_pos h', e]`. Conclude with `n`.
+-/
 theorem valF_comp_valR {O C : Type} [CommRing O] [Field C] [Algebra O C] {X : Scheme.{0}} (a : Sp O ⟶ X) (U : X.Opens)
     (h : ⊤ ≤ a ⁻¹ᵁ U) (f : Γ(X, U)) :
     valF (spMap (algebraMap O C) ≫ a) U f = algebraMap O C (valR a U h f) := by
@@ -32,10 +37,16 @@ theorem valF_comp_valR {O C : Type} [CommRing O] [Field C] [Algebra O C] {X : Sc
   rw [valF, dif_pos h', e]
   exact n
 
+/- English proof (translation)
+The claim follows from `f.isUnit.map (valR a U h)`.
+-/
 theorem valR_unit {O : Type} [CommRing O] {X : Scheme.{0}} (a : Sp O ⟶ X) (U : X.Opens) (h : ⊤ ≤ a ⁻¹ᵁ U)
     (f : Γ(X, U)ˣ) : IsUnit (valR a U h f.val) :=
   f.isUnit.map (valR a U h)
 
+/- English proof (translation)
+Substitute `e0 e1 e2` using the available equality. Establish `: ((u1 ^ n * ((u0 * u2 ^ M) ^ n)⁻¹ * (u0 * u2 ^ M) ^ n : Oˣ)).val = (u1 ^ n : Oˣ).val`. Rewrite using `[inv_mul_cancel_right]`. Simplify using `only [Units.val_mul, Units.val_pow_eq_pow_val] at this ⊢`. Rewrite using `[_root_.mul_assoc, this]`.
+-/
 theorem unit_alg {O : Type} [CommRing O] (t r0 r2 r1 : O) (u0 u1 u2 : Oˣ) (e0 : u0.val = r0) (e1 : u1.val = r1)
     (e2 : u2.val = r2) (M n : ℕ) :
     t ^ M * (u1 ^ n * ((u0 * u2 ^ M) ^ n)⁻¹ : Oˣ).val * (r0 * r2 ^ M) ^ n = t ^ M * r1 ^ n := by
@@ -45,6 +56,29 @@ theorem unit_alg {O : Type} [CommRing O] (t r0 r2 r1 : O) (u0 u1 u2 : Oˣ) (e0 :
   simp only [Units.val_mul, Units.val_pow_eq_pow_val] at this ⊢
   rw [_root_.mul_assoc, this]
 
+/- English proof (translation)
+Introduce `E _ _ _ H L _ _ D n s O C _ _ _ _ _ _ ρ y N hN hy i h b hb yC hyC T hT`. Substitute `hb` using the available equality. Take `⟨-, hyCN, w, -, -, hw, -, -, -⟩` from `id hT`. Set `e : Sp O ⟶ D.t.G.left` to `(1 : Over.mk (spMap ρ) ⟶ D.t.G).left`. Take `⟨i₀, h₀⟩` from `exists_chart D.t.PP.isLB (e (IsLocalRing.closedPoint O))`.
+
+Establish `he : ⊤ ≤ e ⁻¹ᵁ D.t.PP.L.U i₀` using `top_le_of_closedPoint _ h₀`. Establish `eN : (show Sp O ⟶ D.t.G.left from y.left) ≫ ((𝟙 D.t.G : D.t.G ⟶ D.t.G) ^ N).left = e` using `by show y.left ≫ _ = _`. Rewrite using `[left_pow, hy]`. Establish `e1 : e ≫ ((𝟙 D.t.G : D.t.G ⟶ D.t.G) ^ N).left = e` using `by show (1 : Over.mk (spMap ρ) ⟶ D.t.G).left ≫ _ = _`. Rewrite using `[left_pow, one_pow]`.
+
+Establish `hrig : spMap ρ ≫ eSec D.t.G = e` using `(one_left (Over.mk (spMap ρ))).symm`. Establish `hi : ⊤ ≤ (show Sp O ⟶ D.t.G.left from y.left) ⁻¹ᵁ D.t.PP.L.U i` using `fun x _ => Set.mem_iInter.1 (h (x := x) trivial) 0`. Establish `hY : ⊤ ≤ (show Sp O ⟶ D.t.G.left from y.left) ⁻¹ᵁ LB.wchart D.t.PP.L (![((𝟙 D.t.G : D.t.G ⟶ D.t.G) ^ N).left, 𝟙 D.t.G.left] : Fin 2 → _) ![i₀, i]`. Introduce `x _`. Use `Set.mem_iInter.2 fun k => ?_` and prove the remaining obligations.
+
+Use `fin_cases k`. Use `show (((show Sp O ⟶ D.t.G.left from y.left) ≫ ((𝟙 D.t.G : D.t.G ⟶ D.t.G) ^ N).left) x) ∈ D.t.PP.L.U i₀`. Rewrite using `[eN]`. Conclude with `he (x := x) trivial`. Conclude with `hi (x := x) trivial`.
+
+Establish `hZ : ⊤ ≤ e ⁻¹ᵁ LB.wchart D.t.PP.L (![((𝟙 D.t.G : D.t.G ⟶ D.t.G) ^ N).left, 𝟙 D.t.G.left] : Fin 2 → _) ![i₀, i₀]`. Introduce `x _`. Use `Set.mem_iInter.2 fun k => ?_` and prove the remaining obligations. Use `fin_cases k`. Use `show ((e ≫ ((𝟙 D.t.G : D.t.G ⟶ D.t.G) ^ N).left) x) ∈ D.t.PP.L.U i₀`.
+
+Rewrite using `[e1]`. Conclude with `he (x := x) trivial`. Conclude with `he (x := x) trivial`. Establish `hR : ⊤ ≤ (show Sp O ⟶ (𝟙_ (Over (Sp (𝓞 L)))).left from spMap ρ) ⁻¹ᵁ LB.wchart D.t.PP.L (K` using `PUnit) (fun _ => eSec D.t.G) (fun _ => i₀) := by`. Introduce `x _`.
+
+Use `Set.mem_iInter.2 fun _ => ?_` and prove the remaining obligations. Use `show (spMap ρ ≫ eSec D.t.G) x ∈ D.t.PP.L.U i₀`. Rewrite using `[hrig]`. Conclude with `he (x := x) trivial`. Take `⟨u1, e1'⟩` from `valR_unit _ _ hY (w.s ![i₀, i])`.
+
+Take `⟨u0, e0'⟩` from `valR_unit _ _ hZ (w.s ![i₀, i₀])`. Take `⟨u2, e2'⟩` from `valR_unit (X := (𝟙_ (Over (Sp (𝓞 L)))).left) _ _ hR (D.t.PP.rig.s fun _ => i₀)`. Establish `hone : (1 : Over.mk (spMap (algebraMap O C) ≫ spMap ρ) ⟶ D.t.G).left = spMap (algebraMap O C) ≫ e` using `by show _ = spMap (algebraMap O C) ≫ (1 : Over.mk (spMap ρ) ⟶ D.t.G).left`. Rewrite using `[one_left, one_left]`. Simplify using the standard rewrite rules.
+
+Use `⟨u1 ^ n * ((u0 * u2 ^ (N ^ 2)) ^ n)⁻¹, ?_⟩` and prove the remaining obligations. Establish `hT' : TorsVal D.t.PP s yC N (algebraMap O C (valR (show Sp O ⟶ D.t.G.left from y.left) _ h (s.f fun _ => i) ^ (N ^ 2) * (u1 ^ n * ((u0 * u2 ^ (N ^ 2)) ^ n)⁻¹ : Oˣ).val))`. Use `⟨hN, hyCN, w, i₀, i, hw, ?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[hone]`. Conclude with `fun x _ => he (x := spMap (algebraMap O C) x) trivial`.
+
+Rewrite using `[hyC]`. Conclude with `fun x _ => hi (x := spMap (algebraMap O C) x) trivial`. Rewrite using `[hone, hyC] erw [valF_comp_valR e _ hZ, valF_comp_valR (X := (𝟙_ (Over (Sp (𝓞 L)))).left) _ _ hR, valF_comp_valR _ _ h, valF_comp_valR _ _ hY]`. Establish `key` using `congrArg (algebraMap O C) (unit_alg (valR (show Sp O ⟶ D.t.G.left from y.left) _ h (s.f fun _ => i)) _ _ _ u0 u1 u2 e0' e1' e2' (N ^ 2) n)`. Simplify using `only [map_mul, map_pow] at key ⊢`.
+
+Conclude with `key`. Conclude with `(GlobalTheory.T.torsion_value_unique_base_change E H L D n s C _ yC N hN hyCN).1.unique hT hT'`.
+-/
 theorem torsVal_eq_unit_mul : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (L : Type) [Field L] [NumberField L] (D : PPData H L) (n : ℕ) (s : Out.H0 D.t.PP.L n) (O C : Type) [CommRing O] [IsDomain O] [IsLocalRing O] [Field C] [Algebra O C] [FaithfulSMul O C] (ρ : 𝓞 L →+* O) (y : Over.mk (spMap ρ) ⟶ D.t.G) (N : ℕ), 1 ≤ N → y ^ N = 1 → ∀ (i : D.t.PP.L.ι) (h : ⊤ ≤ (show Sp O ⟶ D.t.G.left from y.left) ⁻¹ᵁ (LB.LinComb D.t.PP.L (K := Fin 1) (fun _ => 𝟙 _) (fun _ => (n : ℤ))).U (fun _ => i)) (b : Sp C ⟶ Sp (𝓞 L)), b = spMap (algebraMap O C) ≫ spMap ρ → ∀ (yC : Over.mk b ⟶ D.t.G), yC.left = spMap (algebraMap O C) ≫ y.left → ∀ T : C, TorsVal D.t.PP s yC N T → ∃ ε : Oˣ, T = algebraMap O C (valR (show Sp O ⟶ D.t.G.left from y.left) _ h (s.f fun _ => i) ^ (N ^ 2) * ε) := by
   intro E _ _ _ H L _ _ D n s O C _ _ _ _ _ _ ρ y N hN hy i h b hb yC hyC T hT
   subst hb

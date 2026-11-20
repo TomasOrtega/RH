@@ -24,6 +24,11 @@ def StepCmp (M : MemberForms LL embLL Pl Tau hc C A P) {p : ℕ} {G : GAtP p} {F
     (LinearIndependent G.Kf fun a => cmp R.m ((M.lat R.m).b a)) ∧
     Lv.Int R.m ≤ Submodule.span G.O (cmp R.m '' ((M.lat R.m).L : Set (M.lat R.m).V))
 
+/- English proof (translation)
+Proceed by induction on `j with`. Consider the case `zero => exact ⟨x, rfl, rfl⟩`. Consider the case `succ j ih`. Take `⟨y, hy, hy'⟩` from `ih (by omega)`. Take `⟨z, hz⟩` from `hrat j (by omega) y`.
+
+Use `⟨z, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[hz, hy]`. Both sides reduce to the same expression. Rewrite using `[hK j (by omega) y z hz, hy']; rfl`.
+-/
 theorem exists_chain (M : MemberForms LL embLL Pl Tau hc C A P) {p : ℕ} {G : GAtP p} {Fl : Fills G} {Lv : Levels Fl}
     (Ch : Chain Lv) (σ : LL →+* G.Kf) (cmp : ∀ j, (M.lat j).V →ₛₗ[σ] Lv.Fm j)
     (hK : ∀ j, j < R.m → ∀ (x : (M.lat j).V) (y : (M.lat (j + 1)).V),
@@ -63,12 +68,20 @@ def RatTw (T : TwForms D) : Prop :=
 
 def StepZeroRef (D : D7) : Prop := ∀ u φ, HEq (D.e0Tw u D.what₂.mu0 φ) φ
 
+/- English proof (translation)
+Substitute `h` using the available equality. Rewrite using `[eq_of_heq hφ]`.
+-/
 theorem col_heq {R : Ranks} {Tau : Type} [Fintype Tau] {hc : Tau → HCParam R} {C C' : ColumnChain R Tau hc}
     (h : C = C') {φ : C.cls 0 → C.Y 0 → ℂ} {φ' : C'.cls 0 → C'.Y 0 → ℂ} (hφ : HEq φ φ') :
     HEq (C.col φ) (C'.col φ') := by
   subst h
   rw [eq_of_heq hφ]
 
+/- English proof (translation)
+Take `⟨a, z, hz, rfl, ha⟩` from `h`. Use `⟨a, e.symm z, ?_, map_smul _ _ _, ha⟩` and prove the remaining obligations. Take `⟨t, ht, hz⟩` from `(D.mem_locW_iff w _ _).1 hz`. Use `(D.mem_locW_iff w _ _).2 ⟨t, ht, (he _).2 ?_⟩` and prove the remaining obligations. Rewrite using `[← algebraMap_smul D.what₂.LL t, map_smul, LinearEquiv.apply_symm_apply, algebraMap_smul]`.
+
+Conclude with `hz`.
+-/
 theorem VGe_symm {w : D.what₂.places.Pl} (A B : HLat D.what₂.LL) (e : A.V ≃ₗ[D.what₂.LL] B.V)
     (he : ∀ x, x ∈ A.L ↔ e x ∈ B.L) {y : B.V} {s : ℝ} (h : VGe D w B.L y s) : VGe D w A.L (e.symm y) s := by
   obtain ⟨a, z, hz, rfl, ha⟩ := h
@@ -78,6 +91,9 @@ theorem VGe_symm {w : D.what₂.places.Pl} (A B : HLat D.what₂.LL) (e : A.V �
   rw [← algebraMap_smul D.what₂.LL t, map_smul, LinearEquiv.apply_symm_apply, algebraMap_smul]
   exact hz
 
+/- English proof (translation)
+Take `⟨y, hy, hv⟩` from `h`. Use `⟨(T.eMu0 u D.R.m le_rfl).symm y, ?_, VGe_symm _ _ _ (T.eMu0_lat u D.R.m le_rfl) hv⟩` and prove the remaining obligations. Establish `h1` using `T.eMu0_emb u D.R.m le_rfl ((T.eMu0 u D.R.m le_rfl).symm y)`. Rewrite `h1` using `[LinearEquiv.apply_symm_apply, hy]`. Conclude with `eq_of_heq (h1.symm.trans (col_heq (D.memberColumns_twistedChain_base u) (h0 u _)))`.
+-/
 theorem colGe0_of_colGeTw (T : TwForms D) (h0 : StepZeroRef D) {u : D.what₂.Word} {w : D.what₂.places.Pl}
     {x : ((D.fm u).lat 0).V} {s : ℝ} (h : ColGeTw T u D.what₂.mu0 w x s) : ColGe0 D u w x s := by
   obtain ⟨y, hy, hv⟩ := h

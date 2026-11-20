@@ -18,6 +18,11 @@ open Matrix Formalism.L2.NG ReciprocityTheory.Aut Formalism.AUTREP NumberField F
 section
 variable {n : ℕ} {ι : Type} [Fintype ι] [DecidableEq ι]
 
+/- English proof (translation)
+Establish `h : Sle Φ lam ≤ (Sle Φ lam).comap (Matrix.mulVecLin M)`. Use `Submodule.span_le.2 ?_` and prove the remaining obligations. Introduce and unpack `w ⟨ν, hν, hw⟩`. Use `Submodule.subset_span ⟨ν, hν, fun D hD => ?_⟩` and prove the remaining obligations. Use `show Φ D *ᵥ (M *ᵥ w) = _`.
+
+Rewrite using `[Matrix.mulVec_mulVec, ← hM, ← Matrix.mulVec_mulVec, hw D hD, Matrix.mulVec_smul]`. Both sides reduce to the same expression. Conclude with `h hx`.
+-/
 theorem sle_mulVec {Φ : GL (Fin n) ℂ → Matrix ι ι ℂ} {M : Matrix ι ι ℂ} (hM : ∀ A, M * Φ A = Φ A * M)
     (lam : Fin n → ℤ) {x : ι → ℂ} (hx : x ∈ Sle Φ lam) : M *ᵥ x ∈ Sle Φ lam := by
   have h : Sle Φ lam ≤ (Sle Φ lam).comap (Matrix.mulVecLin M) := by
@@ -29,15 +34,24 @@ theorem sle_mulVec {Φ : GL (Fin n) ℂ → Matrix ι ι ℂ} {M : Matrix ι ι 
     rfl
   exact h hx
 
+/- English proof (translation)
+Use extensionality with `j`. Simplify using `only [mem_filter, mem_univ, true_and, mem_insert, Fin.ext_iff]`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem filter_succ (i : Fin n) : univ.filter (fun j : Fin n => (j : ℕ) < (i : ℕ) + 1) =
     insert i (univ.filter (fun j : Fin n => (j : ℕ) < i)) := by
   ext j
   simp only [mem_filter, mem_univ, true_and, mem_insert, Fin.ext_iff]
   omega
 
+/- English proof (translation)
+Simplify using the standard rewrite rules.
+-/
 theorem not_mem_filter_self (i : Fin n) : i ∉ univ.filter (fun j : Fin n => (j : ℕ) < i) := by
   simp
 
+/- English proof (translation)
+Establish `hs : ∀ k : ℕ, ∑ i ∈ univ.filter (fun i : Fin n => (i : ℕ) < k), μ i = ∑ i ∈ univ.filter (fun i : Fin n => (i : ℕ) < k), lam i` using `fun k => le_antisymm (h1.2 k) (h2.2 k)`. Use function extensionality and compare the values at `i`. Establish `h` using `hs ((i : ℕ) + 1)`. Rewrite `h` using `[filter_succ, sum_insert (not_mem_filter_self i), sum_insert (not_mem_filter_self i), hs i]`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem domLE_antisymm {μ lam : Fin n → ℤ} (h1 : DomLE μ lam) (h2 : DomLE lam μ) : μ = lam := by
   have hs : ∀ k : ℕ, ∑ i ∈ univ.filter (fun i : Fin n => (i : ℕ) < k), μ i =
       ∑ i ∈ univ.filter (fun i : Fin n => (i : ℕ) < k), lam i := fun k => le_antisymm (h1.2 k) (h2.2 k)
@@ -46,6 +60,13 @@ theorem domLE_antisymm {μ lam : Fin n → ℤ} (h1 : DomLE μ lam) (h2 : DomLE 
   rw [filter_succ, sum_insert (not_mem_filter_self i), sum_insert (not_mem_filter_self i), hs i] at h
   linarith
 
+/- English proof (translation)
+Establish `h1` using `h.2 ((i : ℕ) + 1)`. Rewrite `h1` using `[filter_succ, sum_insert (not_mem_filter_self i), sum_insert (not_mem_filter_self i)]`. Establish `h2 : ∑ l ∈ univ.filter (fun l : Fin n => (l : ℕ) < i), (lam ∘ Equiv.swap i j) l = ∑ l ∈ univ.filter (fun l : Fin n => (l : ℕ) < i), lam l`. Use `sum_congr rfl fun l hl => ?_` and prove the remaining obligations. Simplify using `only [mem_filter, mem_univ, true_and] at hl`.
+
+Establish `hli : l ≠ i` using `fun e => by rw [e] at hl; omega`. Establish `hlj : l ≠ j` using `fun e => by rw [e] at hl; rw [Fin.lt_def] at hij; omega`. Simplify using `[Function.comp, Equiv.swap_apply_of_ne_of_ne hli hlj]`. Rewrite `h1` using `[h2]`. Simplify using `only [Function.comp, Equiv.swap_apply_left] at h1`.
+
+Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem le_of_domLE_swap {lam : Fin n → ℤ} {i j : Fin n} (hij : i < j)
     (h : DomLE (lam ∘ Equiv.swap i j) lam) : lam j ≤ lam i := by
   have h1 := h.2 ((i : ℕ) + 1)
@@ -66,6 +87,9 @@ end
 section
 variable {L : Type} [Field L] [NumberField L] [IsCMField L] {n : ℕ}
 
+/- English proof (translation)
+Assume the negation of the conclusion as `h`. Rewrite `h` using `[not_nontrivial_iff_subsingleton]`. Use `a.irr` as an intermediate fact. Conclude with `bot_ne_top (α := Subrepresentation a.ρ) (Subrepresentation.toSubmodule_injective (Subsingleton.elim _ _))`.
+-/
 theorem algWeight_space_nontrivial (a : AlgWt L n) : Nontrivial a.W := by
   by_contra h
   rw [not_nontrivial_iff_subsingleton] at h
@@ -73,6 +97,9 @@ theorem algWeight_space_nontrivial (a : AlgWt L n) : Nontrivial a.W := by
   exact bot_ne_top (α := Subrepresentation a.ρ)
     (Subrepresentation.toSubmodule_injective (Subsingleton.elim _ _))
 
+/- English proof (translation)
+Take `⟨ι, i1, i2, b, P, hP, v, hv, hB⟩` from `h`. Conclude with `⟨ι, i1, i2, b, P, v, hP, hv, hB⟩`.
+-/
 theorem beig_of_hwAt {a : AlgWt L n} {τ : L →+* ℂ} {lam : Fin n → ℤ} (h : a.HWAt τ lam) :
     ∃ (ι : Type) (_ : Fintype ι) (_ : DecidableEq ι) (b : Module.Basis ι ℂ a.W)
       (P : ι → ι → MvPolynomial ((L →+* ℂ) × Fin n × Fin n) ℂ) (v : ι → ℂ),
@@ -80,6 +107,11 @@ theorem beig_of_hwAt {a : AlgWt L n} {τ : L →+* ℂ} {lam : Fin n → ℤ} (h
   obtain ⟨ι, i1, i2, b, P, hP, v, hv, hB⟩ := h
   exact ⟨ι, i1, i2, b, P, v, hP, hv, hB⟩
 
+/- English proof (translation)
+Take `⟨w, hw0, hw⟩` from `hμ`. Establish `hR` using `GlobalTheory.T.isPolynomialRepGLComplex_algebraicWeight_evalPoint L n a ι b P hP τ`. Use `GlobalTheory.T.dominanceOrderLE_of_mem_spanWeightVectorsDominatedBy n ι _ hR μ lam w hw hw0 ?_` and prove the remaining obligations. Establish `hspan` using `GlobalTheory.T.algebraicWeight_span_translates_factor_commutant L n a ι b P hP τ v hv.1 w`. Use `(Submodule.span_le.2 ?_) hspan` and prove the remaining obligations.
+
+Introduce and unpack `x ⟨B, M, hM, rfl⟩`. Establish `e : evM P (evPt τ B) *ᵥ (M *ᵥ v) = M *ᵥ (evM P (evPt τ B) *ᵥ v)`. Rewrite using `[Matrix.mulVec_mulVec, Matrix.mulVec_mulVec, hM]`. Rewrite using `[e]`. Conclude with `sle_mulVec hM lam (GlobalTheory.T.mulVec_mem_span_lower_weights_of_borelEigenvector n ι _ hR v lam hv B)`.
+-/
 theorem domLE_of_agrees {a : AlgWt L n} {τ : L →+* ℂ} {ι : Type} [Fintype ι] [DecidableEq ι]
     {b : Module.Basis ι ℂ a.W} {P : ι → ι → MvPolynomial ((L →+* ℂ) × Fin n × Fin n) ℂ}
     (hP : Agrees a b P) {v : ι → ℂ} {lam μ : Fin n → ℤ}
@@ -96,10 +128,18 @@ theorem domLE_of_agrees {a : AlgWt L n} {τ : L →+* ℂ} {ι : Type} [Fintype 
   rw [e]
   exact sle_mulVec hM lam (GlobalTheory.T.mulVec_mem_span_lower_weights_of_borelEigenvector n ι _ hR v lam hv B)
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨v, h.1, fun D hD => h.2 D (fun i j hij => hD (ne_of_gt hij))⟩`.
+-/
 theorem isWt_of_beig {ι : Type} [Fintype ι] {Φ : GL (Fin n) ℂ → Matrix ι ι ℂ} {v : ι → ℂ} {lam : Fin n → ℤ}
     (h : IsBEig Φ v lam) : IsWt Φ lam :=
   ⟨v, h.1, fun D hD => h.2 D (fun i j hij => hD (ne_of_gt hij))⟩
 
+/- English proof (translation)
+Establish `hC : b'.toMatrix b * b.toMatrix b' = 1` using `Module.Basis.toMatrix_mul_toMatrix_flip b' b`. Use `⟨fun h0 => hv.1 ?_, fun B hB => ?_⟩` and prove the remaining obligations. Use `congrArg (fun x => b'.toMatrix b *ᵥ x) h0` as an intermediate fact. Simplify `this` using `[Matrix.mulVec_mulVec, hC]`. Use `show evM P (evPt τ B) *ᵥ (b.toMatrix b' *ᵥ v') = _`.
+
+Rewrite using `[GlobalTheory.T.algebraicWeight_polyMatrix_change_of_basis L n a ι' b' P' ι b P hP' hP τ B, Matrix.mulVec_mulVec, Matrix.mul_assoc, Matrix.mul_assoc, hC, Matrix.mul_one, ← Matrix.mulVec_mulVec]`. Use `hv.2 B hB` as an intermediate fact. Simplify using `only at this`. Rewrite using `[this, Matrix.mulVec_smul]`.
+-/
 theorem beig_transport {a : AlgWt L n} {τ : L →+* ℂ} {ι : Type} [Fintype ι] [DecidableEq ι]
     {b : Module.Basis ι ℂ a.W} {P : ι → ι → MvPolynomial ((L →+* ℂ) × Fin n × Fin n) ℂ}
     {ι' : Type} [Fintype ι'] [DecidableEq ι']
@@ -118,6 +158,15 @@ theorem beig_transport {a : AlgWt L n} {τ : L →+* ℂ} {ι : Type} [Fintype �
     simp only at this
     rw [this, Matrix.mulVec_smul]
 
+/- English proof (translation)
+Introduce `L _ _ _ n a τ`. Establish `hanti : ∀ lam, a.HWAt τ lam → Antitone lam`. Introduce `lam h`. Take `⟨ι, _, _, b, P, v, hP, hv⟩` from `beig_of_hwAt h`. Introduce `i j hij`.
+
+Break down `eq_or_lt_of_le hij with e | hlt` into its components or cases. Rewrite using `[e]`. Conclude with `le_of_domLE_swap hlt (domLE_of_agrees hP hv (GlobalTheory.T.isTorusWeightOfPolyRep_comp_swap n ι _ (GlobalTheory.T.isPolynomialRepGLComplex_algebraicWeight_evalPoint L n a ι b P hP τ) lam (isWt_of_beig hv) i j))`. Use `⟨?_, hanti⟩` and prove the remaining obligations. Take `⟨_, ι, _, _, b, P, hP⟩` from `a.alg`.
+
+Use `haveI := algWeight_space_nontrivial a`. Use `haveI := b.index_nonempty`. Take `⟨v, lam, hv⟩` from `GlobalTheory.T.exists_borelEigenvector_of_polynomialRepGLComplex n ι _ (GlobalTheory.T.isPolynomialRepGLComplex_algebraicWeight_evalPoint L n a ι b P hP τ)`. Use `⟨lam, ⟨ι, inferInstance, inferInstance, b, P, hP, v, hv.1, hv.2⟩, fun lam' h' => ?_⟩` and prove the remaining obligations. Take `⟨ι', _, _, b', P', v', hP', hv'⟩` from `beig_of_hwAt h'`.
+
+Establish `hv''` using `beig_transport hP hP' hv'`. Conclude with `domLE_antisymm (domLE_of_agrees hP hv (isWt_of_beig hv'')) (domLE_of_agrees hP hv'' (isWt_of_beig hv))`.
+-/
 theorem hw_exists_unique_antitone : ∀ (L : Type) [Field L] [NumberField L] [IsCMField L] (n : ℕ) (a : NG.AlgWt L n)
     (τ : L →+* ℂ), (∃! lam, a.HWAt τ lam) ∧ ∀ lam, a.HWAt τ lam → Antitone lam := by
   intro L _ _ _ n a τ

@@ -8,6 +8,11 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 namespace GlobalTheory.HolRead.PrincLevelSub
 
+/- English proof (translation)
+Take `⟨k, hk⟩` from `(hL.Pg PP).1 hP`. Establish `h : ((D.host.g k : ℕ) : 𝓞 D.host.E) ∈ PP.asIdeal` using `Formalism.L2.Host.PiBar.overP L.C.P hk`. Rewrite using `[Nat.cast_mul]`. Use `fin_cases k`. Conclude with `Ideal.mul_mem_right _ _ h`.
+
+Conclude with `Ideal.mul_mem_left _ _ h`.
+-/
 theorem prod_mem_of_mem_Pg {D : D7} {T0 : Type} {L : LevCh D T0} {μ0 : T0} (hL : L.Is μ0) {PP : Pl D.host.E}
     (hP : PP ∈ L.Pg) : ((D.host.g 0 * D.host.g 1 : ℕ) : 𝓞 D.host.E) ∈ PP.asIdeal := by
   obtain ⟨k, hk⟩ := (hL.Pg PP).1 hP
@@ -17,17 +22,30 @@ theorem prod_mem_of_mem_Pg {D : D7} {T0 : Type} {L : LevCh D T0} {μ0 : T0} (hL 
   · exact Ideal.mul_mem_right _ _ h
   · exact Ideal.mul_mem_left _ _ h
 
+/- English proof (translation)
+Unfold `Formalism.L2.DIV.ext1`. Apply the tactic sequence `split <;> rfl`.
+-/
 private lemma ext1_bot_one_apply {G : Type} [Group G] (x : G) :
     Formalism.L2.DIV.ext1 (⊥ : Subgroup G) (⇑(1 : (⊥ : Subgroup G) →* ℂˣ)) x = 1 := by
   unfold Formalism.L2.DIV.ext1
   split <;> rfl
 
+/- English proof (translation)
+Simplify using `[Lev.levChi, Formalism.L2.DIV.levFn, LevCh.datWp, LevCh.triv, Lev.datY, Formalism.L2.DIV.LevelP.triv, ext1_bot_one_apply]`. Conclude with `ext1_bot_one_apply _`.
+-/
 theorem levChi_triv {D : D7} {T0 : Type} (L : LevCh D T0) (i : Fin D.R.m) (k : GA D (Wc D i)) :
     Lev.levChi (Wc D i) (L.βW i) (L.datWp i L.triv) k = 1 := by
   simp [Lev.levChi, Formalism.L2.DIV.levFn, LevCh.datWp, LevCh.triv, Lev.datY, Formalism.L2.DIV.LevelP.triv,
     ext1_bot_one_apply]
   exact ext1_bot_one_apply _
 
+/- English proof (translation)
+Introduce `D T0 L μ0 hL i Kf hK k hk`. Use `⟨?_, levChi_triv L i k⟩` and prove the remaining obligations. Take `⟨hG, hC⟩` from `((GlobalTheory.Member.isLevelK_iff_finCong _ _ _).1 hK k).1 hk`. Establish `hPg : ∀ PP, PP ∈ (L.datWp i L.triv).Pg ∨ PP ∈ (L.datWp i L.triv).Q → ((D.host.g 0 * D.host.g 1 : ℕ) : 𝓞 D.host.E) ∈ PP.asIdeal`. Introduce and unpack `PP (h | h)`.
+
+Conclude with `prod_mem_of_mem_Pg hL h`. Express the relevant statement in the definitionally equal form `PP ∈ (∅ : Finset (Pl D.host.E)) at h`. Simplify using `at h`. Establish `hJ` using `GlobalTheory.PrincInLevel.finCong_mem_levEnv D (Wc D i) (L.βW i) (L.ΛW i) (L.datWp i L.triv) (D.host.g 0 * D.host.g 1) k (hL.βW i) hPg hC`. Establish `hfl : Lev.flag1L (L.datWp i L.triv) = L.datWp i L.triv`.
+
+Simplify using `[Lev.flag1L, Lev.withP, LevCh.datWp, LevCh.triv, Lev.datY]`. Establish `h2 : Lev.finE (Wc D i) k ∈ Formalism.L2.DIV.lev D.sp.cm (Wc D i).gram (L.βW i) (Lev.flag1L (L.datWp i L.triv))` using `hJ`. Rewrite `h2` using `[hfl]`. Conclude with `Subgroup.mem_inf.2 ⟨hG, h2⟩`.
+-/
 theorem mem_levS_and_levChi : ∀ (D : D7) (T0 : Type) (L : LevCh D T0) (μ0 : T0), L.Is μ0 → ∀ (i : Fin D.R.m) (Kf : Subgroup (GA D (Wc D i))), IsLevelK (Wc D i) (D.host.g 0 * D.host.g 1) Kf → ∀ k ∈ Kf, k ∈ levS (Wc D i) (L.βW i) (L.datWp i L.triv) ∧ Lev.levChi (Wc D i) (L.βW i) (L.datWp i L.triv) k = 1 := by
   intro D T0 L μ0 hL i Kf hK k hk
   refine ⟨?_, levChi_triv L i k⟩

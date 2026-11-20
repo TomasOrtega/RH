@@ -17,10 +17,16 @@ open UpperTheory.Et
 
 variable {R : Type} [CommRing R]
 
+/- English proof (translation)
+Simplify using `[rs]`.
+-/
 private theorem rs_comp (M : PMod R) {W V U : Scheme.{0}} (f : W ⟶ V) (g : V ⟶ U) (z : sec M U) :
     rs M (f ≫ g) z = rs M f (rs M g z) := by
   simp [rs]
 
+/- English proof (translation)
+The claim follows from `map_nsmul _ _ _`.
+-/
 private theorem rs_nsmul (M : PMod R) {V U : Scheme.{0}} (g : V ⟶ U) (c : ℕ) (z : sec M U) :
     rs M g (c • z) = c • rs M g z :=
   map_nsmul _ _ _
@@ -31,6 +37,11 @@ private abbrev Rel (M N : PMod R) {U : Scheme.{0}} (g : sec M U) (h : sec N U) (
 
 end UpperTheory.Cb.SecLc
 
+/- English proof (translation)
+Take `⟨S, hS, hSP⟩` from `hP`. Establish `hsh` using `(isSheaf_iff_isSheaf_of_type _ _).mp ((Presheaf.isSheaf_iff_isSheaf_forget Scheme.etaleTopology N (forget _)).mp hN) S hS`. Set `x : Presieve.FamilyOfElements (N ⋙ forget _) S.arrows` to `fun V k hk => s V k (hSP V k hk)`. Establish `hx : x.Compatible`. Introduce `Y1 Y2 Z g1 g2 f1 f2 h1 h2 hcomm`.
+
+Conclude with `hc Y1 Y2 Z f1 f2 g1 g2 _ _ hcomm`. Take `⟨z, hz, -⟩` from `hsh x hx`. Conclude with `⟨z, S, hS, fun V k hk => ⟨hSP V k hk, hz k hk⟩⟩`.
+-/
 private theorem exists_sec_locT_rs_eq_of_compatible {R : Type} [CommRing R] (N : UpperTheory.Et.PMod R)
     (hN : Presheaf.IsSheaf Scheme.etaleTopology N) {U : Scheme}
     (P : (V : Scheme) → (V ⟶ U) → Prop) (hP : UpperTheory.Et.LocT Scheme.etaleTopology U P)
@@ -50,10 +61,24 @@ private theorem exists_sec_locT_rs_eq_of_compatible {R : Type} [CommRing R] (N :
   obtain ⟨z, hz, -⟩ := hsh x hx
   exact ⟨z, S, hS, fun V k hk => ⟨hSP V k hk, hz k hk⟩⟩
 
+/- English proof (translation)
+Simplify using `using UpperTheory.Cb.SecLc.rs_nsmul M k 0 0`.
+-/
 private theorem pmod_rs_zero {R : Type} [CommRing R] (M : UpperTheory.Et.PMod R) {V U : Scheme}
     (k : V ⟶ U) : UpperTheory.Et.rs M k 0 = 0 := by
   simpa using UpperTheory.Cb.SecLc.rs_nsmul M k 0 0
 
+/- English proof (translation)
+Establish `hm : ∀ z : A, q • z = 0 → ∀ n : ℕ, n • z = (n % q) • z`. Introduce `z hz n`. Use `conv_lhs => rw [← Nat.mod_add_div n q]`. Rewrite using `[add_nsmul, mul_comm q, mul_nsmul', hz, nsmul_zero, add_zero]`. Establish `hm' : ∀ z : B, q • z = 0 → ∀ n : ℕ, n • z = (n % q) • z`.
+
+Introduce `z hz n`. Use `conv_lhs => rw [← Nat.mod_add_div n q]`. Rewrite using `[add_nsmul, mul_comm q, mul_nsmul', hz, nsmul_zero, add_zero]`. Establish `e : (c % q) • x = (c' % q) • x` using `by rw [← hm x hx, ← hm x hx, h]`. Establish `key : c % q = c' % q`.
+
+Break down `le_total (c' % q) (c % q) with hle | hle` into its components or cases. Establish `h0 : (c % q - c' % q) • x = 0`. Rewrite `e` using `[← Nat.sub_add_cancel hle, add_nsmul]`. Simplify using `using e`. Use `Nat.eq_zero_of_dvd_of_lt (hdiv _ h0) (lt_of_le_of_lt (Nat.sub_le _ _) (Nat.mod_lt _ hq))` as an intermediate fact.
+
+Use linear arithmetic over natural numbers and integers. Establish `h0 : (c' % q - c % q) • x = 0`. Rewrite `e` using `[← Nat.sub_add_cancel hle, add_nsmul]`. Simplify using `using e.symm`. Use `Nat.eq_zero_of_dvd_of_lt (hdiv _ h0) (lt_of_le_of_lt (Nat.sub_le _ _) (Nat.mod_lt _ hq))` as an intermediate fact.
+
+Use linear arithmetic over natural numbers and integers. Rewrite using `[hm' y hy c, hm' y hy c', key]`.
+-/
 private theorem nsmul_eq_nsmul_of_nsmul_eq_nsmul_of_exact_order {A B : Type*} [AddCommGroup A] [AddCommGroup B] (q : ℕ) (hq : 0 < q)
     (x : A) (hx : q • x = 0) (hdiv : ∀ c : ℕ, c • x = 0 → q ∣ c) (y : B) (hy : q • y = 0)
     (c c' : ℕ) (h : c • x = c' • x) : c • y = c' • y := by
@@ -82,6 +107,11 @@ private theorem nsmul_eq_nsmul_of_nsmul_eq_nsmul_of_exact_order {A B : Type*} [A
       omega
   rw [hm' y hy c, hm' y hy c', key]
 
+/- English proof (translation)
+Establish `h0 : a - b = 0`. Use `(UpperTheory.locallyHolds_of_forall_and_mono_and_inter_and_pullback Scheme.etaleTopology).2.2.2.2.2.2.1 R N hN W (a - b) ?_` and prove the remaining obligations. Use `(UpperTheory.etaleLocallyHolds_of_pointwise_cover_or_affine_local W _ ?_).1 ?_` and prove the remaining obligations. Introduce `V V' g k hg`. Rewrite using `[UpperTheory.Cb.SecLc.rs_comp, hg, pmod_rs_zero]`.
+
+Introduce `x`. Conclude with `(hW ⟨x⟩).elim`. Conclude with `sub_eq_zero.mp h0`.
+-/
 private theorem sec_eq_of_isSheaf_of_not_nonempty {R : Type} [CommRing R] (N : UpperTheory.Et.PMod R)
     (hN : Presheaf.IsSheaf Scheme.etaleTopology N) {W : Scheme} (hW : ¬ Nonempty ↥W)
     (a b : UpperTheory.Et.sec N W) : a = b := by
@@ -94,6 +124,11 @@ private theorem sec_eq_of_isSheaf_of_not_nonempty {R : Type} [CommRing R] (N : U
       exact (hW ⟨x⟩).elim
   exact sub_eq_zero.mp h0
 
+/- English proof (translation)
+Distinguish the cases in `hW : Nonempty ↥W`. Use `nsmul_eq_nsmul_of_nsmul_eq_nsmul_of_exact_order q hq (UpperTheory.Et.rs M k g) ?_ ?_ (UpperTheory.Et.rs N k h) ?_ c c' e` and prove the remaining obligations. Rewrite using `[← UpperTheory.Cb.SecLc.rs_nsmul, hg.1, pmod_rs_zero]`. Introduce `c hc`. Conclude with `hg.2.1 W k c hW hc`.
+
+Rewrite using `[← UpperTheory.Cb.SecLc.rs_nsmul, hh, pmod_rs_zero]`. Conclude with `sec_eq_of_isSheaf_of_not_nonempty N hN hW _ _`.
+-/
 private theorem nsmul_rs_eq_nsmul_rs_of_gen_of_nsmul_eq_zero {R : Type} [CommRing R] (M N : UpperTheory.Et.PMod R)
     (hN : Presheaf.IsSheaf Scheme.etaleTopology N) (q : ℕ) (hq : 0 < q) {U : Scheme}
     (g : UpperTheory.Et.sec M U) (h : UpperTheory.Et.sec N U) (hg : UpperTheory.Et.Gen Scheme.etaleTopology q M g)
@@ -108,16 +143,29 @@ private theorem nsmul_rs_eq_nsmul_rs_of_gen_of_nsmul_eq_zero {R : Type} [CommRin
     · rw [← UpperTheory.Cb.SecLc.rs_nsmul, hh, pmod_rs_zero]
   · exact sec_eq_of_isSheaf_of_not_nonempty N hN hW _ _
 
+/- English proof (translation)
+The claim follows from `map_sub _ _ _`.
+-/
 private theorem pmod_rs_sub {R : Type} [CommRing R] (M : UpperTheory.Et.PMod R) {V U : Scheme}
     (k : V ⟶ U) (a b : UpperTheory.Et.sec M U) :
     UpperTheory.Et.rs M k (a - b) = UpperTheory.Et.rs M k a - UpperTheory.Et.rs M k b :=
   map_sub _ _ _
 
+/- English proof (translation)
+The claim follows from `map_add _ _ _`.
+-/
 private theorem pmod_rs_add {R : Type} [CommRing R] (M : UpperTheory.Et.PMod R) {V U : Scheme}
     (k : V ⟶ U) (a b : UpperTheory.Et.sec M U) :
     UpperTheory.Et.rs M k (a + b) = UpperTheory.Et.rs M k a + UpperTheory.Et.rs M k b :=
   map_add _ _ _
 
+/- English proof (translation)
+Establish `hy` using `hg.2.2 U (𝟙 U) y`. Simplify using `only [Category.comp_id] at hy`. Take `⟨z, hz⟩` from `exists_sec_locT_rs_eq_of_compatible N hN (fun V k => ∃ c : ℕ, UpperTheory.Et.rs M k y = c • UpperTheory.Et.rs M k g) hy (fun V k hk => hk.choose • UpperTheory.Et.rs N k h) (by`. Introduce `V1 V2 W k1 k2 f1 f2 h1 h2 hc`. Rewrite using `[UpperTheory.Cb.SecLc.rs_nsmul, UpperTheory.Cb.SecLc.rs_nsmul, ← UpperTheory.Cb.SecLc.rs_comp, ← UpperTheory.Cb.SecLc.rs_comp, hc]`.
+
+Apply `nsmul_rs_eq_nsmul_rs_of_gen_of_nsmul_eq_zero M N hN q hq g h hg hh` to reduce the goal to its premises. Establish `e1` using `congrArg (UpperTheory.Et.rs M f1) h1.choose_spec`. Establish `e2` using `congrArg (UpperTheory.Et.rs M f2) h2.choose_spec`. Rewrite `e1`, `e2` using `[← UpperTheory.Cb.SecLc.rs_comp, UpperTheory.Cb.SecLc.rs_nsmul, ← UpperTheory.Cb.SecLc.rs_comp]`. Rewrite `e1` using `[hc]`.
+
+Conclude with `e1.symm.trans e2)`. Use `⟨z, (UpperTheory.locallyHolds_of_forall_and_mono_and_inter_and_pullback Scheme.etaleTopology).2.1 U _ _ hz ?_⟩` and prove the remaining obligations. Introduce and unpack `V k ⟨hk, e⟩`. Conclude with `⟨hk.choose, hk.choose_spec, e⟩`.
+-/
 private theorem exists_secLc_rel_of_gen_of_nsmul_eq_zero {R : Type} [CommRing R] (M N : UpperTheory.Et.PMod R)
     (hN : Presheaf.IsSheaf Scheme.etaleTopology N) (q : ℕ) (hq : 0 < q) {U : Scheme}
     (g : UpperTheory.Et.sec M U) (h : UpperTheory.Et.sec N U) (hg : UpperTheory.Et.Gen Scheme.etaleTopology q M g)
@@ -140,6 +188,11 @@ private theorem exists_secLc_rel_of_gen_of_nsmul_eq_zero {R : Type} [CommRing R]
   rintro V k ⟨hk, e⟩
   exact ⟨hk.choose, hk.choose_spec, e⟩
 
+/- English proof (translation)
+Establish `h12` using `(UpperTheory.locallyHolds_of_forall_and_mono_and_inter_and_pullback Scheme.etaleTopology).2.2.1 U _ _ h1 h2`. Establish `h0 : z - z' = 0`. Use `(UpperTheory.locallyHolds_of_forall_and_mono_and_inter_and_pullback Scheme.etaleTopology).2.2.2.2.2.2.1 R N hN U (z - z') ?_` and prove the remaining obligations. Use `(UpperTheory.locallyHolds_of_forall_and_mono_and_inter_and_pullback Scheme.etaleTopology).2.1 U _ _ h12 ?_` and prove the remaining obligations. Introduce and unpack `V k ⟨⟨c, ey, ez⟩, ⟨c', ey', ez'⟩⟩`.
+
+Rewrite using `[pmod_rs_sub, ez, ez', nsmul_rs_eq_nsmul_rs_of_gen_of_nsmul_eq_zero M N hN q hq g h hg hh k c c' (ey.symm.trans ey'), sub_self]`. Conclude with `sub_eq_zero.mp h0`.
+-/
 private theorem secLc_rel_right_unique_of_gen_of_nsmul_eq_zero {R : Type} [CommRing R] (M N : UpperTheory.Et.PMod R)
     (hN : Presheaf.IsSheaf Scheme.etaleTopology N) (q : ℕ) (hq : 0 < q) {U : Scheme}
     (g : UpperTheory.Et.sec M U) (h : UpperTheory.Et.sec N U) (hg : UpperTheory.Et.Gen Scheme.etaleTopology q M g)
@@ -154,6 +207,9 @@ private theorem secLc_rel_right_unique_of_gen_of_nsmul_eq_zero {R : Type} [CommR
       sub_self]
   exact sub_eq_zero.mp h0
 
+/- English proof (translation)
+Use `(UpperTheory.locallyHolds_of_forall_and_mono_and_inter_and_pullback Scheme.etaleTopology).2.1 U _ _ ((UpperTheory.locallyHolds_of_forall_and_mono_and_inter_and_pullback Scheme.etaleTopology).2.2.1 U _ _ h1 h2) ?_` and prove the remaining obligations. Introduce and unpack `V k ⟨⟨c, ey, ez⟩, ⟨c', ey', ez'⟩⟩`. Conclude with `⟨c + c', by rw [pmod_rs_add, ey, ey', add_nsmul], by rw [pmod_rs_add, ez, ez', add_nsmul]⟩`.
+-/
 private theorem secLc_rel_add {R : Type} [CommRing R] (M N : UpperTheory.Et.PMod R) {U : Scheme}
     (g : UpperTheory.Et.sec M U) (h : UpperTheory.Et.sec N U) {y y' : UpperTheory.Et.sec M U} {z z' : UpperTheory.Et.sec N U}
     (h1 : UpperTheory.Cb.SecLc.Rel M N g h y z) (h2 : UpperTheory.Cb.SecLc.Rel M N g h y' z') :
@@ -163,6 +219,9 @@ private theorem secLc_rel_add {R : Type} [CommRing R] (M N : UpperTheory.Et.PMod
   rintro V k ⟨⟨c, ey, ez⟩, ⟨c', ey', ez'⟩⟩
   exact ⟨c + c', by rw [pmod_rs_add, ey, ey', add_nsmul], by rw [pmod_rs_add, ez, ez', add_nsmul]⟩
 
+/- English proof (translation)
+Use `(UpperTheory.locallyHolds_of_forall_and_mono_and_inter_and_pullback Scheme.etaleTopology).2.1 W _ _ ((UpperTheory.locallyHolds_of_forall_and_mono_and_inter_and_pullback Scheme.etaleTopology).2.2.2.1 U W k _ hr) ?_` and prove the remaining obligations. Introduce and unpack `V k' ⟨c, ey, ez⟩`. Conclude with `⟨c, by rw [← UpperTheory.Cb.SecLc.rs_comp, ← UpperTheory.Cb.SecLc.rs_comp, ey], by rw [← UpperTheory.Cb.SecLc.rs_comp, ← UpperTheory.Cb.SecLc.rs_comp, ez]⟩`.
+-/
 private theorem secLc_rel_rs {R : Type} [CommRing R] (M N : UpperTheory.Et.PMod R) {U : Scheme}
     (g : UpperTheory.Et.sec M U) (h : UpperTheory.Et.sec N U) {y : UpperTheory.Et.sec M U} {z : UpperTheory.Et.sec N U}
     (hr : UpperTheory.Cb.SecLc.Rel M N g h y z) {W : Scheme} (k : W ⟶ U) :
@@ -174,6 +233,9 @@ private theorem secLc_rel_rs {R : Type} [CommRing R] (M N : UpperTheory.Et.PMod 
   exact ⟨c, by rw [← UpperTheory.Cb.SecLc.rs_comp, ← UpperTheory.Cb.SecLc.rs_comp, ey],
     by rw [← UpperTheory.Cb.SecLc.rs_comp, ← UpperTheory.Cb.SecLc.rs_comp, ez]⟩
 
+/- English proof (translation)
+Use `(UpperTheory.locallyHolds_of_forall_and_mono_and_inter_and_pullback Scheme.etaleTopology).2.1 U _ _ hr ?_` and prove the remaining obligations. Introduce and unpack `V k ⟨c, ey, ez⟩`. Conclude with `⟨c, ez, ey⟩`.
+-/
 private theorem secLc_rel_symm {R : Type} [CommRing R] (M N : UpperTheory.Et.PMod R) {U : Scheme}
     (g : UpperTheory.Et.sec M U) (h : UpperTheory.Et.sec N U) {y : UpperTheory.Et.sec M U} {z : UpperTheory.Et.sec N U}
     (hr : UpperTheory.Cb.SecLc.Rel M N g h y z) : UpperTheory.Cb.SecLc.Rel N M h g z y := by
@@ -181,6 +243,13 @@ private theorem secLc_rel_symm {R : Type} [CommRing R] (M N : UpperTheory.Et.PMo
   rintro V k ⟨c, ey, ez⟩
   exact ⟨c, ez, ey⟩
 
+/- English proof (translation)
+Use `choose f hf using exists_secLc_rel_of_gen_of_nsmul_eq_zero M N hN q hq g h hg hh.1`. Establish `fadd : ∀ a b, f (a + b) = f a + f b` using `fun a b => secLc_rel_right_unique_of_gen_of_nsmul_eq_zero M N hN q hq g h hg hh.1 (hf (a + b)) (secLc_rel_add M N g h (hf a) (hf b))`. Establish `finj : Function.Injective f`. Introduce `a b e`. Establish `ha` using `secLc_rel_symm M N g h (hf a)`.
+
+Establish `hb` using `secLc_rel_symm M N g h (hf b)`. Rewrite `ha` using `[e]`. Conclude with `secLc_rel_right_unique_of_gen_of_nsmul_eq_zero N M hM q hq h g hh hg.1 ha hb`. Establish `fsurj : Function.Surjective f`. Introduce `z`.
+
+Take `⟨y, hy⟩` from `exists_secLc_rel_of_gen_of_nsmul_eq_zero N M hM q hq h g hh hg.1 z`. Conclude with `⟨y, secLc_rel_right_unique_of_gen_of_nsmul_eq_zero M N hN q hq g h hg hh.1 (hf y) (secLc_rel_symm N M h g hy)⟩`. Conclude with `⟨AddEquiv.ofBijective (AddMonoidHom.mk' f fadd) ⟨finj, fsurj⟩, hf⟩`.
+-/
 private theorem exists_sec_addEquiv_secLc_rel_of_gen {R : Type} [CommRing R] (M N : UpperTheory.Et.PMod R)
     (hM : Presheaf.IsSheaf Scheme.etaleTopology M) (hN : Presheaf.IsSheaf Scheme.etaleTopology N)
     (q : ℕ) (hq : 0 < q) {U : Scheme} (g : UpperTheory.Et.sec M U) (h : UpperTheory.Et.sec N U)
@@ -201,6 +270,11 @@ private theorem exists_sec_addEquiv_secLc_rel_of_gen {R : Type} [CommRing R] (M 
     exact ⟨y, secLc_rel_right_unique_of_gen_of_nsmul_eq_zero M N hN q hq g h hg hh.1 (hf y) (secLc_rel_symm N M h g hy)⟩
   exact ⟨AddEquiv.ofBijective (AddMonoidHom.mk' f fadd) ⟨finj, fsurj⟩, hf⟩
 
+/- English proof (translation)
+Unfold `twGen Sec.res ofRings.sec`. Establish `h` using `(toSheafify Scheme.etaleTopology (Scheme.Γ ⋙ twF q i)).naturality g.op`. Establish `h2` using `congrArg (fun f => ModuleCat.Hom.hom f (Submodule.Quotient.mk (Finsupp.single ζ 1) : (Scheme.Γ ⋙ twF q i).obj (op V))) h`. Simplify using `only [ModuleCat.hom_comp, LinearMap.comp_apply] at h2`. Use `erw [← h2]`.
+
+Use `congrArg (ModuleCat.Hom.hom ((toSheafify Scheme.etaleTopology (Scheme.Γ ⋙ twF q i)).app (op V'))) ?_` and prove the remaining obligations. Simplify using `only [Functor.comp_map, twF, ModuleCat.hom_ofHom]`. Use `erw [Submodule.mapQ_apply, Finsupp.lmapDomain_apply, Finsupp.mapDomain_single]`. Both sides reduce to the same expression.
+-/
 private theorem sec_res_twGen (q : ℕ) (i : ℤ) (V' V : Scheme) (g : V' ⟶ V)
     (ζ : Prim q Γ(V, ⊤)) : Sec.res g (twGen i ζ) = twGen i (ζ.map g.appTop.hom) := by
   unfold twGen Sec.res ofRings.sec
@@ -216,6 +290,23 @@ private theorem sec_res_twGen (q : ℕ) (i : ℤ) (V' V : Scheme) (g : V' ⟶ V)
   rfl
 
 open UpperTheory.Cb.SecLc in
+/- English proof (translation)
+Introduce `q _ i`. Establish `hq : 0 < q` using `Nat.pos_of_ne_zero (NeZero.ne q)`. Establish `hM : Presheaf.IsSheaf Scheme.etaleTopology (tw q i).obj` using `(tw q i).property`. Establish `hN : Presheaf.IsSheaf Scheme.etaleTopology (UpperTheory.Et.cSh (ZMod q) (ZMod q)).obj` using `Presheaf.IsSheaf.of_le Scheme.etaleTopology_le_proetaleTopology (UpperTheory.Et.cSh (ZMod q) (ZMod q)).property`. Establish `hone : ∀ V : Scheme, UpperTheory.Et.Gen Scheme.etaleTopology q (UpperTheory.Et.cSh (ZMod q) (ZMod q)).obj (UpperTheory.Et.cSec (ZMod q) (ZMod q) (ContinuousMap.const V (1 : ZMod q)))`.
+
+Introduce `V`. Use `UpperTheory.constantSheaf_cyclic_generator_of_order (ZMod q) (ZMod q) q 1 (by simp) ?_ ?_ V` and prove the remaining obligations. Introduce `c hc`. Rewrite `hc` using `[nsmul_eq_mul, mul_one]`. Conclude with `(ZMod.natCast_eq_zero_iff c q).mp hc`.
+
+Introduce `x`. Conclude with `⟨x.val, by simp⟩`. Establish `hgen : ∀ (V : Scheme) (ζ : Prim q Γ(V, ⊤)), UpperTheory.Et.Gen Scheme.etaleTopology q (tw q i).obj (twGen i ζ)` using `fun V ζ => (UpperTheory.tateTwist_generator_of_primitiveRoot_and_roots_etaleLocal q i V).1 ζ`. Use `choose φ hφ using fun (V : Scheme) (ζ : Prim q Γ(V, ⊤)) => exists_sec_addEquiv_secLc_rel_of_gen (tw q i).obj _ hM hN q hq _ _ (hgen V ζ) (hone V)`. Set `B : ∀ V : Scheme, C(V, ZMod q) ≃+ UpperTheory.Et.sec (UpperTheory.Et.cSh (ZMod q) (ZMod q)).obj V` to `fun V => AddEquiv.ofBijective (AddMonoidHom.mk' (UpperTheory.Et.cSec (ZMod q) (ZMod q)) (UpperTheory.continuousSections_bijective_additive_natural (ZMod q) (ZMod q) V).2.1) (UpperTheory.continuousSections_bijective_additive_natural (ZMod q) (ZMod q) V).1`.
+
+Set `C : ∀ V : Scheme, LocallyConstant V (ZMod q) ≃+ C(V, ZMod q)` to `fun V => AddEquiv.ofBijective LocallyConstant.toContinuousMapAddMonoidHom ⟨LocallyConstant.toContinuousMap_injective, fun f => ⟨⟨f, (IsLocallyConstant.iff_continuous f).mpr f.continuous⟩, rfl⟩⟩`. Use `⟨fun V ζ => (φ V ζ).trans ((B V).symm.trans (C V).symm), ?_⟩` and prove the remaining obligations. Introduce `V' V g ζ s`. Establish `hB : ∀ f : C(V, ZMod q), B V' (C V' (((C V).symm f).comap ⟨g, g.continuous⟩)) = UpperTheory.Et.rs _ g (B V f)`. Introduce `f`.
+
+Use `show UpperTheory.Et.cSec (ZMod q) (ZMod q) _ = UpperTheory.Et.rs _ g (UpperTheory.Et.cSec (ZMod q) (ZMod q) f)`. Rewrite using `[(UpperTheory.continuousSections_bijective_additive_natural (ZMod q) (ZMod q) V).2.2.1]`. Use `congr 1`. Use extensionality with `x`. Conclude with `congrArg (fun u : C(V, ZMod q) => u (g.base x)) ((C V).apply_symm_apply f)`.
+
+Establish `e1 : UpperTheory.Et.rs (tw q i).obj g (twGen i ζ) = twGen i (ζ.map g.appTop.hom)` using `sec_res_twGen q i V' V g ζ`. Establish `e2 : UpperTheory.Et.rs _ g (UpperTheory.Et.cSec (ZMod q) (ZMod q) (ContinuousMap.const V (1 : ZMod q))) = UpperTheory.Et.cSec (ZMod q) (ZMod q) (ContinuousMap.const V' (1 : ZMod q))`. Rewrite using `[(UpperTheory.continuousSections_bijective_additive_natural (ZMod q) (ZMod q) V).2.2.1]`. Both sides reduce to the same expression. Establish `hr` using `secLc_rel_rs _ _ _ _ (hφ V ζ s) g`.
+
+Rewrite `hr` using `[e1, e2]`. Establish `key` using `secLc_rel_right_unique_of_gen_of_nsmul_eq_zero _ _ hN q hq _ _ (hgen V' _) (hone V').1 (hφ V' _ (Sec.res g s)) hr`. Apply `(C V').injective` to reduce the goal to its premises. Apply `(B V').injective` to reduce the goal to its premises. Simplify using `only [AddEquiv.trans_apply, AddEquiv.apply_symm_apply]`.
+
+Rewrite using `[hB, AddEquiv.apply_symm_apply]`. Conclude with `key`.
+-/
 theorem UpperTheory.exists_tateTwist_sections_equiv_locallyConstant :
     ∀ (q : ℕ) [NeZero q] (i : ℤ), ∃ E : ∀ (V : Scheme.{0}), Prim q Γ(V, ⊤) → (Sec (tw q i) V ≃+ LocallyConstant V (ZMod q)), ∀ (V' V : Scheme.{0}) (g : V' ⟶ V) (ζ : Prim q Γ(V, ⊤)) (s : Sec (tw q i) V), E V' (ζ.map g.appTop.hom) (Sec.res g s) = (E V ζ s).comap ⟨g, g.continuous⟩ := by
   intro q _ i

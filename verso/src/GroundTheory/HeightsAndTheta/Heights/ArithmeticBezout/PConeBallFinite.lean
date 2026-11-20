@@ -10,6 +10,11 @@ open MvPolynomial MeasureTheory
 
 noncomputable section
 
+/- English proof (translation)
+Introduce `n e h W f hW hf`. Take `⟨δ, hδ1, hδ⟩` from `hf.exists_multiHomog hW`. Establish `hm` using `hMass n e δ h W f hW hf hδ`. Rewrite using `[lt_top_iff_ne_top]`. Introduce `hinf`.
+
+Unfold `coneIntegral at hm`. Express the relevant statement in the definitionally equal form `(∫ y in coneBall h W, (1 : ℝ) ∂(Measure.hausdorffMeasure ((2 * (e + 1) : ℕ) : ℝ))) / _ = (δ : ℝ) at hm`. Rewrite `hm` using `[setIntegral_const, measureReal_def, hinf, ENNReal.toReal_top, zero_smul, zero_div]`. Establish `hδ0 : (δ : ℝ) ≠ 0` using `by exact_mod_cast (by omega : δ ≠ 0)`. Conclude with `hδ0 hm.symm`.
+-/
 theorem ConeBallFinite.proof (hMass : ConeIntegralMass.Statement) : ConeBallFinite.Statement := by
   intro n e h W f hW hf
   obtain ⟨δ, hδ1, hδ⟩ := hf.exists_multiHomog hW

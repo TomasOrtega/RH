@@ -13,12 +13,18 @@ open GlobalTheory.ArLieBase
 noncomputable section
 namespace GlobalTheory.EigProjPoly
 
+/- English proof (translation)
+Proceed by induction on `k with`. Consider the case `zero => simp`. Consider the case `succ k ih => rw [pow_succ', mul_assoc, ih, mul_smul_comm, h, smul_smul, pow_succ, mul_comm]`.
+-/
 theorem pow_mul_eig {S A : Type} [CommRing S] [Ring A] [Algebra S A] (M Y : A) (l : S)
     (h : M * Y = l • Y) (k : ℕ) : M ^ k * Y = l ^ k • Y := by
   induction k with
   | zero => simp
   | succ k ih => rw [pow_succ', mul_assoc, ih, mul_smul_comm, h, smul_smul, pow_succ, mul_comm]
 
+/- English proof (translation)
+Proceed by induction on `p using Polynomial.induction_on' with`. Consider the case `add p q hp hq => rw [map_add, add_mul, hp, hq, Polynomial.eval_add, add_smul]`. Consider the case `monomial k a`. Rewrite using `[Polynomial.aeval_monomial, mul_assoc, pow_mul_eig M Y l h k, Polynomial.eval_monomial, Algebra.algebraMap_eq_smul_one, smul_mul_assoc, one_mul, smul_smul]`.
+-/
 theorem aeval_mul_eig {S A : Type} [CommRing S] [Ring A] [Algebra S A] (M Y : A) (l : S)
     (h : M * Y = l • Y) (p : Polynomial S) : Polynomial.aeval M p * Y = p.eval l • Y := by
   induction p using Polynomial.induction_on' with
@@ -27,6 +33,11 @@ theorem aeval_mul_eig {S A : Type} [CommRing S] [Ring A] [Algebra S A] (M Y : A)
     rw [Polynomial.aeval_monomial, mul_assoc, pow_mul_eig M Y l h k, Polynomial.eval_monomial, Algebra.algebraMap_eq_smul_one,
       smul_mul_assoc, one_mul, smul_smul]
 
+/- English proof (translation)
+Proceed by induction on `p using Polynomial.induction_on' with`. Consider the case `add p q hp hq => rw [map_add, Matrix.add_mulVec, hp, hq, Polynomial.eval_add, add_smul]`. Consider the case `monomial k a`. Establish `hk : ∀ k : ℕ, (M ^ k).mulVec v = l ^ k • v`. Introduce `k`.
+
+Proceed by induction on `k with`. Consider the case `zero => simp`. Consider the case `succ k ih => rw [pow_succ', ← Matrix.mulVec_mulVec, ih, Matrix.mulVec_smul, h, smul_smul, pow_succ, mul_comm]`. Rewrite using `[Polynomial.aeval_monomial, Algebra.algebraMap_eq_smul_one, smul_mul_assoc, one_mul, Matrix.smul_mulVec, hk, Polynomial.eval_monomial, smul_smul]`.
+-/
 theorem aeval_mulVec_eig {S n : Type} [CommRing S] [Fintype n] [DecidableEq n] (M : Matrix n n S) (v : n → S)
     (l : S) (h : M.mulVec v = l • v) (p : Polynomial S) : (Polynomial.aeval M p).mulVec v = p.eval l • v := by
   induction p using Polynomial.induction_on' with
@@ -40,6 +51,11 @@ theorem aeval_mulVec_eig {S n : Type} [CommRing S] [Fintype n] [DecidableEq n] (
     rw [Polynomial.aeval_monomial, Algebra.algebraMap_eq_smul_one, smul_mul_assoc, one_mul, Matrix.smul_mulVec, hk,
       Polynomial.eval_monomial, smul_smul]
 
+/- English proof (translation)
+Proceed by induction on `p using Polynomial.induction_on' with`. Consider the case `add p q hp hq => rw [map_add, Matrix.map_add _ (map_add ψ), hp, hq, Polynomial.map_add, map_add]`. Consider the case `monomial k a`. Rewrite using `[Polynomial.aeval_monomial, Polynomial.map_monomial, Polynomial.aeval_monomial]`. Use `(ψ.mapMatrix (m := n)).map_mul (algebraMap R (Matrix n n R) a) (M ^ k)` as an intermediate fact.
+
+Simplify using `only [RingHom.mapMatrix_apply] at this`. Rewrite using `[this, show (M ^ k).map ψ = (M.map ψ) ^ k from (ψ.mapMatrix (m := n)).map_pow M k]`. Simplify using `[Matrix.algebraMap_eq_diagonal, Matrix.diagonal_map]`. Both sides reduce to the same expression.
+-/
 theorem aeval_map_matrix {R K n : Type} [CommRing R] [CommRing K] [Fintype n] [DecidableEq n] (ψ : R →+* K)
     (M : Matrix n n R) (p : Polynomial R) : (Polynomial.aeval M p).map ψ = Polynomial.aeval (M.map ψ) (p.map ψ) := by
   induction p using Polynomial.induction_on' with
@@ -52,6 +68,11 @@ theorem aeval_map_matrix {R K n : Type} [CommRing R] [CommRing K] [Fintype n] [D
     simp [Matrix.algebraMap_eq_diagonal, Matrix.diagonal_map]
     rfl
 
+/- English proof (translation)
+Establish `h1 : M * Polynomial.aeval M (Q.map θ) = θ a • Polynomial.aeval M (Q.map θ)`. Use `congrArg (fun p : Polynomial O => Polynomial.aeval M (p.map θ)) hF` as an intermediate fact. Simplify using `only [Polynomial.map_mul, Polynomial.map_sub, Polynomial.map_X, Polynomial.map_C, map_mul, map_sub, Polynomial.aeval_X, Polynomial.aeval_C, hM, mul_zero] at this`. Rewrite `this` using `[sub_mul, sub_eq_zero, Algebra.algebraMap_eq_smul_one, smul_mul_assoc, one_mul]`. Conclude with `this`.
+
+Use `⟨h1, ?_⟩` and prove the remaining obligations. Rewrite using `[aeval_mul_eig M _ (θ a) h1, Polynomial.eval_map, Polynomial.eval₂_at_apply, hD]`.
+-/
 theorem core {O S n : Type} [CommRing O] [CommRing S] [Fintype n] [DecidableEq n] (θ : O →+* S) (M : Matrix n n S)
     (Q F : Polynomial O) (a c0 D : O) (hF : (Polynomial.X - Polynomial.C a) * Q = Polynomial.C c0 * F) (hD : Q.eval a = D) (hM : Polynomial.aeval M (F.map θ) = 0) :
     M * Polynomial.aeval M (Q.map θ) = θ a • Polynomial.aeval M (Q.map θ) ∧
@@ -69,6 +90,37 @@ end GlobalTheory.EigProjPoly
 
 namespace GlobalTheory.EigProjPoly
 
+/- English proof (translation)
+Introduce `E _ _ _ H l c R _ κ g ρ τ`. Take `⟨α, hinj, ⟨f, hf, hfs⟩, hN⟩` from `ReciprocityTheory.ChartRestriction.G.PullbackSections.exists_sepElt (E := E) (F := c.F) c.F.val.toRingHom (embK c) (fun τ a => embK_coe c τ a)`. Establish `hint : ∀ σ : E →+* ℂ, IsIntegral ℤ (embK c σ α)` using `fun σ => (NumberField.RingOfIntegers.isIntegral α).map (embK c σ).toIntAlgHom`. Set `aO : (E →+* ℂ) → 𝓞 c.F` to `fun σ => ⟨embK c σ α, hint σ⟩`. Establish `haO : ∀ σ, algebraMap (𝓞 c.F) c.F (aO σ) = embK c σ α` using `fun _ => rfl`.
+
+Establish `hinjO : Function.Injective (algebraMap (𝓞 c.F) c.F)` using `FaithfulSMul.algebraMap_injective (𝓞 c.F) c.F`. Set `fO : Polynomial (𝓞 c.F)` to `f.map (Int.castRingHom (𝓞 c.F))`. Establish `hfO : fO = ∏ σ, (Polynomial.X - Polynomial.C (aO σ))`. Apply `Polynomial.map_injective _ hinjO` to reduce the goal to its premises. Rewrite using `[Polynomial.map_map, show (algebraMap (𝓞 c.F) c.F).comp (Int.castRingHom (𝓞 c.F)) = Int.castRingHom c.F from RingHom.ext_int _ _, hfs, Polynomial.map_prod]`.
+
+Simplify using `only [Polynomial.map_sub, Polynomial.map_X, Polynomial.map_C, haO]`. Set `δO : 𝓞 c.F` to `∏ σ ∈ Finset.univ.erase τ, (aO τ - aO σ)`. Establish `hδO : δO ≠ 0`. Use `Finset.prod_ne_zero_iff.2 fun σ hσ h => (Finset.ne_of_mem_erase hσ) ?_` and prove the remaining obligations. Establish `h' : embK c τ α = embK c σ α` using `by rw [← haO, ← haO, sub_eq_zero.1 h]`.
+
+Conclude with `(hinj h').symm`. Establish `hδ : (algebraMap (𝓞 c.F) c.F δO) ≠ 0` using `fun h => hδO (hinjO (h.trans (map_zero _).symm))`. Take `⟨y, hy0, hyi⟩` from `exists_integral_multiples ℤ ℚ ({(algebraMap (𝓞 c.F) c.F δO)⁻¹} : Finset c.F)`. Set `c1 : 𝓞 c.F` to `⟨y • (algebraMap (𝓞 c.F) c.F δO)⁻¹, hyi _ (Finset.mem_singleton_self _)⟩`. Establish `hc1 : c1 * δO = (y : 𝓞 c.F)`.
+
+Apply `hinjO` to reduce the goal to its premises. Rewrite using `[map_mul, map_intCast]`. Express the relevant statement in the definitionally equal form `y • (algebraMap (𝓞 c.F) c.F δO)⁻¹ * _ = _`. Rewrite using `[zsmul_eq_mul, mul_assoc, inv_mul_cancel₀ hδ, mul_one]`. Set `c0 : 𝓞 c.F` to `c1 * (y.sign : 𝓞 c.F)`.
+
+Set `D : ℕ` to `y.natAbs`. Establish `hc0 : c0 * δO = (D : 𝓞 c.F)`. Rewrite using `[mul_right_comm, hc1, ← Int.cast_mul, Int.mul_sign_self, Int.cast_natCast]`. Set `Q : Polynomial (𝓞 c.F)` to `Polynomial.C c0 * ∏ σ ∈ Finset.univ.erase τ, (Polynomial.X - Polynomial.C (aO σ))`. Establish `hF : (Polynomial.X - Polynomial.C (aO τ)) * Q = Polynomial.C c0 * fO`.
+
+Rewrite using `[hfO, ← Finset.mul_prod_erase Finset.univ _ (Finset.mem_univ τ)]`. Expand and normalize the polynomial expressions, which then agree. Establish `hD : Q.eval (aO τ) = (D : 𝓞 c.F)`. Rewrite using `[← hc0]`. Simplify using `only [Q, δO, Polynomial.eval_mul, Polynomial.eval_C, Polynomial.eval_prod, Polynomial.eval_sub, Polynomial.eval_X]`.
+
+Establish `hfz : ∀ {S : Type} [CommRing S] (θ : 𝓞 c.F →+* S) (ρ' : 𝓞 E →+* Matrix (Fin g) (Fin g) S), Polynomial.aeval (ρ' α) (fO.map θ) = 0`. Introduce `S _ θ ρ'`. Rewrite using `[Polynomial.map_map, show θ.comp (Int.castRingHom (𝓞 c.F)) = algebraMap ℤ S from RingHom.ext_int _ _, Polynomial.aeval_map_algebraMap]`. Conclude with `(Polynomial.aeval_algHom_apply ρ'.toIntAlgHom α f).trans (by rw [hf, map_zero])`. Use `⟨D, Polynomial.aeval (ρ α) (Q.map κ), Int.natAbs_ne_zero.2 hy0, ?_, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[(core κ (ρ α) Q fO (aO τ) c0 D hF hD (hfz κ ρ)).2, map_natCast]`. Introduce `K _ ψ φ hcomp cf`. Set `φ' : 𝓞 c.F →+* K` to `φ.comp (algebraMap (𝓞 c.F) c.F)`. Set `ρ' : 𝓞 E →+* Matrix (Fin g) (Fin g) K` to `ψ.mapMatrix.comp ρ`. Establish `hPm : (Polynomial.aeval (ρ α) (Q.map κ)).map ψ = Polynomial.aeval (ρ' α) (Q.map φ')`.
+
+Rewrite using `[aeval_map_matrix, Polynomial.map_map, hcomp]`. Both sides reduce to the same expression. Take `⟨h1, -⟩` from `core φ' (ρ' α) Q fO (aO τ) c0 D hF hD (hfz φ' ρ')`. Establish `hl : φ' (aO τ) = φ (embK c τ α)` using `rfl`. Establish `hDK : φ' (D : 𝓞 c.F) = (D : K)` using `map_natCast _ _`.
+
+Rewrite using `[hPm]`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Use `aeval_mulVec_eig (ρ' α) cf (φ' (aO τ)) (h α) (Q.map φ')` as an intermediate fact. Rewrite using `[this, Polynomial.eval_map, Polynomial.eval₂_at_apply, hD, hDK]`.
+
+Introduce `h`. Establish `hu : IsUnit (D : K)`. Rewrite using `[← hDK]`. Conclude with `(isUnit_iff_ne_zero.2 (Nat.cast_ne_zero.2 (Int.natAbs_ne_zero.2 hy0) : ((D : c.F)) ≠ 0)).map φ`. Establish `hα : (ρ' α).mulVec cf = φ (embK c τ α) • cf`.
+
+Establish `e : (ρ' α).mulVec ((Polynomial.aeval (ρ' α) (Q.map φ')).mulVec cf) = (φ' (aO τ) • Polynomial.aeval (ρ' α) (Q.map φ')).mulVec cf`. Rewrite using `[Matrix.mulVec_mulVec, h1]`. Rewrite `e` using `[h, Matrix.mulVec_smul, Matrix.smul_mulVec, h, smul_comm (φ' (aO τ)), hl]`. Conclude with `(hu.smul_left_cancel).1 e`. Use `letI : Algebra c.F K := φ.toAlgebra`.
+
+Set `ρL : 𝓞 E →+* Module.End K (Fin g → K)` to `(Matrix.toLinAlgEquiv' (R := K) (n := Fin g)).toRingHom.comp ρ'`. Use `ReciprocityTheory.ChartRestriction.G.PullbackSections.eig_of_alpha (K := c.F) ρL (embK c) α hN τ (m := cf) (by` as an intermediate fact. Express the relevant statement in the definitionally equal form `Matrix.toLinAlgEquiv' (ρ' α) cf = _`. Rewrite using `[Matrix.toLinAlgEquiv'_apply]`. Conclude with `hα)`.
+
+Introduce `a`. Establish `e` using `this a`. Express the relevant statement in the definitionally equal form `Matrix.toLinAlgEquiv' (ρ' a) cf = _ at e`. Rewrite `e` using `[Matrix.toLinAlgEquiv'_apply]`. Conclude with `e`.
+-/
 theorem exists_scaled_eigProj : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (l : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Level H) (c : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Coeff l) (R : Type) [CommRing R] (κ : 𝓞 c.F →+* R) (g : ℕ) (ρ : 𝓞 E →+* Matrix (Fin g) (Fin g) R) (τ : E →+* ℂ), ∃ (D : ℕ) (P : Matrix (Fin g) (Fin g) R), D ≠ 0 ∧ P * P = (D : R) • P ∧ ∀ (K : Type) [CommRing K] (ψ : R →+* K) (φ : c.F →+* K), ψ.comp κ = φ.comp (algebraMap (𝓞 c.F) c.F) → ∀ cf : Fin g → K, ((∀ a, ((ρ a).map ψ).mulVec cf = φ (embK c τ a) • cf) ↔ (P.map ψ).mulVec cf = (D : K) • cf) := by
   classical
   intro E _ _ _ H l c R _ κ g ρ τ

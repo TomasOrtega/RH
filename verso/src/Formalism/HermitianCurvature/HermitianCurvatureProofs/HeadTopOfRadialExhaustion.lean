@@ -45,6 +45,11 @@ end Formalism.FourierDecayAlt.P.PBI
 
 namespace Formalism.FourierDecayAlt.P
 
+/- English proof (translation)
+Introduce `hPic Wp Wq _ _ _ _ _ _ P p F w X μ L st Cb hD hdd hF hcut e h hh`. Take `⟨X₀, μ₀, L₀, st₀, hD₀, hTL⟩` from `p.hΘ`. Take `⟨F₁, F₂, hF₁, hF₂, hloc, hpic, hii⟩` from `hPic Wp Wq P p F w X μ L st Cb X₀ μ₀ L₀ st₀ hD hD₀ hTL hdd hF hcut e h hh`. Take `⟨F', hF', hagree, hVeq⟩` from `theta_compact_support Wp Wq P p F₁ w e Cb hdd hF₁ hcut`. Use `⟨F₂, hF₂, fun ζ => ?_, hii⟩` and prove the remaining obligations.
+
+Take `⟨Φ₁, hΦ₁⟩` from `PBN.radExists p hF₁`. Establish `hΘpic` using `hTL w hcut F₁ hF₁ Φ₁ hΦ₁ e`. Establish `hF'pic` using `PBN.isRadOf_congr p.T.base hΘpic hagree`. Rewrite using `[hloc ζ, hVeq]`. Conclude with `PBN.vecV_eq_of_rad density_constant p hF' hF₂ hF'pic (hpic Φ₁ hΦ₁) _`.
+-/
 theorem exhaustion_of_radial_form : PBI.ExhPic → PBI.Exh := by
   intro hPic Wp Wq _ _ _ _ _ _ P p F w X μ L st Cb hD hdd hF hcut e h hh
   obtain ⟨X₀, μ₀, L₀, st₀, hD₀, hTL⟩ := p.hΘ
@@ -58,6 +63,9 @@ theorem exhaustion_of_radial_form : PBI.ExhPic → PBI.Exh := by
   rw [hloc ζ, hVeq]
   exact PBN.vecV_eq_of_rad density_constant p hF' hF₂ hF'pic (hpic Φ₁ hΦ₁) _
 
+/- English proof (translation)
+The claim follows from `head_top_of_parts hU5 (exhaustion_of_radial_form hPic) hW`.
+-/
 theorem head_top_of_radial_exhaustion (hU5 : PBI.HighestUnipotentIntegral) (hPic : PBI.ExhPic) (hW : PBI.HeadWeightAt) : KB.HeadTop :=
   head_top_of_parts hU5 (exhaustion_of_radial_form hPic) hW
 

@@ -3,6 +3,25 @@ open AlgebraicGeometry CategoryTheory Limits
 
 namespace GlobalTheory.FibreMinimalPrime
 
+/- English proof (translation)
+Use `set q : Ideal R := Q.comap (MvPolynomial.C : R →+* _) with hq_def`. Set `f : MvPolynomial (Fin r) R →+* MvPolynomial (Fin r) (R ⧸ q)` to `MvPolynomial.map (Ideal.Quotient.mk q)`. Establish `hfs : Function.Surjective f` using `MvPolynomial.map_surjective _ Ideal.Quotient.mk_surjective`. Establish `hker_prime : (RingHom.ker f).IsPrime` using `RingHom.ker_isPrime f`. Establish `hker_le : RingHom.ker f ≤ Q` using `by show RingHom.ker (MvPolynomial.map (Ideal.Quotient.mk q)) ≤ Q`.
+
+Rewrite using `[MvPolynomial.ker_map, Ideal.mk_ker, Ideal.map_le_iff_le_comap]`. Establish `hker_comap : (RingHom.ker f).comap (MvPolynomial.C : R →+* _) = q`. Use extensionality with `a`. Simplify using `only [Ideal.mem_comap, RingHom.mem_ker, f, MvPolynomial.map_C, MvPolynomial.C_eq_zero, Ideal.Quotient.eq_zero_iff_mem]`. Establish `hQ : Q = RingHom.ker f` using `(hmin _ hker_prime hker_le hker_comap).symm`.
+
+Use `letI algKL : Algebra q.ResidueField Q.ResidueField := (Ideal.ResidueField.map q Q MvPolynomial.C rfl).toAlgebra`. Use `letI algkL : Algebra (R ⧸ q) Q.ResidueField := ((algebraMap q.ResidueField Q.ResidueField).comp (algebraMap (R ⧸ q) q.ResidueField)).toAlgebra`. Use `haveI : IsScalarTower (R ⧸ q) q.ResidueField Q.ResidueField := IsScalarTower.of_algebraMap_eq (fun _ => rfl)`. Use `letI algkB : Algebra (R ⧸ q) (MvPolynomial (Fin r) R ⧸ Q) := (Ideal.quotientMap Q (MvPolynomial.C : R →+* _) le_rfl).toAlgebra`. Use `haveI : IsScalarTower (R ⧸ q) (MvPolynomial (Fin r) R ⧸ Q) Q.ResidueField := by`.
+
+Use `IsScalarTower.of_algebraMap_eq (fun x => ?_)` and prove the remaining obligations. Take `⟨a, rfl⟩` from `Ideal.Quotient.mk_surjective x`. Use `show Ideal.ResidueField.map q Q MvPolynomial.C rfl (algebraMap (R ⧸ q) q.ResidueField (Ideal.Quotient.mk q a)) = algebraMap (MvPolynomial (Fin r) R ⧸ Q) Q.ResidueField (Ideal.quotientMap Q (MvPolynomial.C : R →+* _) le_rfl (Ideal.Quotient.mk q a))`. Rewrite using `[Ideal.algebraMap_quotient_residueField_mk, Ideal.ResidueField.map_algebraMap, Ideal.quotientMap_mk, Ideal.algebraMap_quotient_residueField_mk]`. Use `haveI : FaithfulSMul (R ⧸ q) q.ResidueField := (faithfulSMul_iff_algebraMap_injective _ _).mpr (IsFractionRing.injective _ _)`.
+
+Use `haveI : FaithfulSMul q.ResidueField Q.ResidueField := (faithfulSMul_iff_algebraMap_injective _ _).mpr (algebraMap q.ResidueField Q.ResidueField).injective`. Use `haveI : FaithfulSMul (R ⧸ q) (MvPolynomial (Fin r) R ⧸ Q) := (faithfulSMul_iff_algebraMap_injective _ _).mpr Ideal.quotientMap_injective`. Use `haveI : FaithfulSMul (MvPolynomial (Fin r) R ⧸ Q) Q.ResidueField := (faithfulSMul_iff_algebraMap_injective _ _).mpr (IsFractionRing.injective _ _)`. Set `e0 : (MvPolynomial (Fin r) R ⧸ Q) ≃+* MvPolynomial (Fin r) (R ⧸ q)` to `(Ideal.quotEquivOfEq hQ).trans (RingHom.quotientKerEquivOfSurjective hfs)`. Set `e : (MvPolynomial (Fin r) R ⧸ Q) ≃ₐ[R ⧸ q] MvPolynomial (Fin r) (R ⧸ q)` to `AlgEquiv.ofRingEquiv (f := e0) (fun x => by`.
+
+Take `⟨a, rfl⟩` from `Ideal.Quotient.mk_surjective x`. Use `show e0 (Ideal.quotientMap Q (MvPolynomial.C : R →+* _) le_rfl (Ideal.Quotient.mk q a)) = MvPolynomial.C (Ideal.Quotient.mk q a)`. Rewrite using `[Ideal.quotientMap_mk]`. Simplify using `only [e0, RingEquiv.trans_apply, Ideal.quotEquivOfEq_mk, RingHom.quotientKerEquivOfSurjective_apply_mk, f, MvPolynomial.map_C])`. Establish `hB : Algebra.trdeg (R ⧸ q) (MvPolynomial (Fin r) R ⧸ Q) = r`.
+
+Rewrite using `[e.trdeg_eq, MvPolynomial.trdeg_of_isDomain]`. Simplify using the standard rewrite rules. Establish `h0K : Algebra.trdeg (R ⧸ q) q.ResidueField = 0` using `by haveI := IsLocalization.isAlgebraic (R := R ⧸ q) q.ResidueField (nonZeroDivisors (R ⧸ q))`. Conclude with `trdeg_eq_zero`. Establish `h0L : Algebra.trdeg (MvPolynomial (Fin r) R ⧸ Q) Q.ResidueField = 0` using `by haveI := IsLocalization.isAlgebraic (R := MvPolynomial (Fin r) R ⧸ Q) Q.ResidueField (nonZeroDivisors _)`.
+
+Conclude with `trdeg_eq_zero`. Establish `h1` using `trdeg_add_eq (R ⧸ q) q.ResidueField (A := Q.ResidueField)`. Establish `h2` using `trdeg_add_eq (R ⧸ q) (MvPolynomial (Fin r) R ⧸ Q) (A := Q.ResidueField)`. Rewrite `h1` using `[h0K, zero_add]`. Rewrite `h2` using `[hB, h0L, add_zero]`.
+
+Conclude with `h1.trans h2.symm`.
+-/
 theorem trdeg_residueField_eq {R : Type} [CommRing R] (r : ℕ) (Q : Ideal (MvPolynomial (Fin r) R)) [Q.IsPrime]
     (hmin : ∀ Q' : Ideal (MvPolynomial (Fin r) R), Q'.IsPrime → Q' ≤ Q →
       Q'.comap (MvPolynomial.C : R →+* _) = Q.comap MvPolynomial.C → Q' = Q) :

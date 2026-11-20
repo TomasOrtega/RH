@@ -17,16 +17,53 @@ attribute [local instance] Over.cartesianMonoidalCategory
 
 namespace GlobalTheory.HtGen.IntPt
 
+/- English proof (translation)
+Introduce `p _` and use `((IsLocalRing.specializes_closedPoint p).map t.continuous).mem_open W.isOpen h`.
+-/
 theorem top_le_of_closedPoint {R : Type} [CommRing R] [IsLocalRing R] {X : Scheme.{0}} (t : Sp R ⟶ X) {W : X.Opens}
     (h : t (IsLocalRing.closedPoint R) ∈ W) : ⊤ ≤ t ⁻¹ᵁ W := fun p _ =>
   ((IsLocalRing.specializes_closedPoint p).map t.continuous).mem_open W.isOpen h
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fun h => RegCrit.isUnit_of_one_le e c h.ge, fun h => OfModel.w_unit e h⟩`.
+-/
 theorem w_eq_one_iff {F : Type} [Field F] [NumberField F] {v : HeightOneSpectrum (𝓞 F)} (e : Ext v) (c : e.O) :
     e.w c = 1 ↔ IsUnit c :=
   ⟨fun h => RegCrit.isUnit_of_one_le e c h.ge, fun h => OfModel.w_unit e h⟩
 
 open GlobalTheory.TrueGeo.HorizPt in
 
+/- English proof (translation)
+Introduce `F _ _ Y V l W x hx hl`. Use `V.ar.flat` as an intermediate fact. Establish `: IsProper V.p`. Take `⟨n, c, hc, h⟩` from `V.ar.isProjOver`. Use `isProper_str (𝓞 F) n` as an intermediate fact.
+
+Rewrite using `[← h]`. Use `infer_instance`. Take `⟨U, hU, hxU, hUW⟩` from `exists_isAffineOpen_mem_and_subset hx`. Establish `hle : U ≤ W` using `hUW`. Establish `: Nonempty U` using `⟨⟨x, hxU⟩⟩`.
+
+Establish `: CharZero Γ(V.X, U)` using `charZero (V.p ≫ spMap (Int.castRingHom (𝓞 F))) hU`. Set `_ : Algebra (𝓞 F) Γ(V.X, U)` to `(HorizPt.strHom V.p U).hom.toAlgebra`. Establish `: Algebra.FiniteType (𝓞 F) Γ(V.X, U)` using `RingHom.FiniteType.comp (V.p.finiteType_appLE (isAffineOpen_top _) hU le_top) (RingHom.FiniteType.of_surjective _ (ConcreteCategory.bijective_of_isIso (Scheme.ΓSpecIso (CommRingCat.of (𝓞 F))).inv).2)`. Take `⟨𝔪, h𝔪, hle'⟩` from `Ideal.exists_le_maximal _ (hU.primeIdealOf ⟨x, hxU⟩).isPrime.ne_top`. Take `⟨v, e, φ, h₁, h₂, -⟩` from `GlobalTheory.T.exists_ext_place_of_ne_zero_maximal F Γ(V.X, U) 𝔪 h𝔪 1 one_ne_zero`.
+
+Set `yt : Sp e.O ⟶ V.X` to `Spec.map (CommRingCat.ofHom φ) ≫ hU.fromSpec`. Establish `hw : (spMap e.O.subtype ≫ yt) ≫ V.p = spMap (algebraMap F (AlgebraicClosure F)) ≫ spMap (algebraMap (𝓞 F) F)`. Simplify using `only [yt, Category.assoc]`. Rewrite using `[fromSpec_str, ← Spec.map_comp, ← Spec.map_comp, ← Spec.map_comp]`. Use `congr 1`.
+
+Use extensionality with `a`. Conclude with `h₁ a`. Establish `hy` using `V.pb.lift_fst _ _ hw`. Establish `hc : yt (IsLocalRing.closedPoint e.O) = hU.fromSpec ⟨𝔪, h𝔪.isPrime⟩`. Express the relevant statement in the definitionally equal form `hU.fromSpec (PrimeSpectrum.comap φ (IsLocalRing.closedPoint e.O)) = _`.
+
+Use `congr 1`. Conclude with `PrimeSpectrum.ext h₂`. Establish `hsp : x ⤳ yt (IsLocalRing.closedPoint e.O)`. Establish `h0 : hU.fromSpec (hU.primeIdealOf ⟨x, hxU⟩) ⤳ hU.fromSpec ⟨𝔪, h𝔪.isPrime⟩` using `((PrimeSpectrum.le_iff_specializes _ ⟨𝔪, h𝔪.isPrime⟩).1 hle').map hU.fromSpec.continuous`. Rewrite `h0` using `[hU.fromSpec_primeIdealOf]`.
+
+Rewrite using `[hc]`. Conclude with `h0`. Establish `hl' : algebraMap (𝓞 F) Γ(V.X, U) (l : 𝓞 F) ∈ 𝔪`. Apply `hle'` to reduce the goal to its premises. Establish `e1 : V.p x = (Spec.map (HorizPt.strHom V.p U)) (hU.primeIdealOf ⟨x, hxU⟩)`.
+
+Rewrite using `[← fromSpec_str V.p hU]`. Express the relevant statement in the definitionally equal form `V.p x = V.p (hU.fromSpec _)`. Rewrite using `[hU.fromSpec_primeIdealOf]`. Rewrite `hl` using `[e1]`. Conclude with `hl`.
+
+Establish `hv : (l : 𝓞 F) ∈ v.asIdeal`. Establish `hm : φ (algebraMap (𝓞 F) Γ(V.X, U) (l : 𝓞 F)) ∈ IsLocalRing.maximalIdeal e.O`. Rewrite using `[← Ideal.mem_comap, h₂]`. Conclude with `hl'`. Establish `hlt : e.w ((φ (algebraMap (𝓞 F) Γ(V.X, U) (l : 𝓞 F)) : e.O) : AlgebraicClosure F) < 1`.
+
+Use `lt_of_le_of_ne ((e.mem_O _).1 (φ _).2) fun h => ?_` and prove the remaining obligations. Conclude with `(IsLocalRing.mem_maximalIdeal _).1 hm (RegCrit.isUnit_of_one_le e _ h.ge)`. Rewrite `hlt` using `[h₁, e.w_alg]`. Conclude with `(v.adicAbv_coe_lt_one_iff _ _).1 hlt`. Use `⟨v, e, V.pb.lift _ _ hw, yt, hv, V.pb.lift_snd _ _ hw, hy.symm, ?_, hsp, ?_⟩` and prove the remaining obligations.
+
+Introduce `p _`. Conclude with `hle ((Set.ext_iff.1 hU.range_fromSpec _).1 ⟨_, rfl⟩)`. Introduce `g hg`. Take `⟨W₀, hW₀, s, hs⟩` from `hg.exists_fnOf`. Establish `ht : ⊤ ≤ yt ⁻¹ᵁ W₀` using `top_le_of_closedPoint yt hW₀`.
+
+Establish `hb : below (V.pb.lift _ _ hw ≫ V.j) ∈ W₀`. Express the relevant statement in the definitionally equal form `(V.pb.lift _ _ hw ≫ V.j) (IsLocalRing.closedPoint (AlgebraicClosure F)) ∈ W₀`. Rewrite using `[hy]`. Conclude with `ht trivial`. Establish `ht' : ⊤ ≤ (V.pb.lift _ _ hw ≫ V.j) ⁻¹ᵁ W₀` using `fun p _ => by`.
+
+Express the relevant statement in the definitionally equal form `(V.pb.lift _ _ hw ≫ V.j) p ∈ W₀`. Rewrite using `[hy]`. Conclude with `ht (x := spMap e.O.subtype p) trivial`. Establish `hev` using `OfModel.eval_pull e.O.subtype (𝟙 V.X) (V.pb.lift _ _ hw ≫ V.j) yt (hy.symm.trans (Category.comp_id _).symm) (U := W₀) (W := W₀) le_rfl ht' ht s`. Establish `hid : ((𝟙 V.X : V.X ⟶ V.X).appLE W₀ W₀ le_rfl).hom s = s`.
+
+Establish `: (𝟙 V.X : V.X ⟶ V.X).appLE W₀ W₀ le_rfl = 𝟙 _` using `(Category.id_comp _).trans (V.X.presheaf.map_id _)`. Rewrite using `[this]`. Both sides reduce to the same expression. Rewrite `hev` using `[hid]`. Rewrite using `[← hs, OfModel.valAt_fnOf _ hb ht', hev, unitAt_fnOf_iff hW₀, ← RegCrit.isUnit_eval_iff yt ht s]`.
+
+Conclude with `w_eq_one_iff e _`.
+-/
 theorem exists_intPt : ∀ (F : Type) [Field F] [NumberField F] (Y : Var F) (V : Cover Y) (l : ℕ) (W : V.X.Opens) (x : V.X), x ∈ W → (l : 𝓞 F) ∈ (V.p x).asIdeal → ∃ (v : HeightOneSpectrum (𝓞 F)) (e : TrueGeo.Ext v) (z : Sp (AlgebraicClosure F) ⟶ V.G) (yt : Sp e.O ⟶ V.X), (l : 𝓞 F) ∈ v.asIdeal ∧ z ≫ V.π ≫ Y.str = spMap (algebraMap F (AlgebraicClosure F)) ∧ spMap e.O.subtype ≫ yt = z ≫ V.j ∧ ⊤ ≤ yt ⁻¹ᵁ W ∧ x ⤳ yt (IsLocalRing.closedPoint e.O) ∧ ∀ g : V.X.functionField, RegAt (yt (IsLocalRing.closedPoint e.O)) g → (e.w (TrueGeo.valAt (z ≫ V.j) g) = 1 ↔ UnitAt (yt (IsLocalRing.closedPoint e.O)) g) := by
   intro F _ _ Y V l W x hx hl
   have := V.ar.flat

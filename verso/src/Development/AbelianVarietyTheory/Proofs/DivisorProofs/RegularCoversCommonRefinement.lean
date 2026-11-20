@@ -16,6 +16,11 @@ noncomputable section
 
 namespace GlobalTheory.RegCoverCommon
 
+/- English proof (translation)
+Introduce `hRA k _ B _ q hq C₁ C₂`. Take `⟨Z, hZ, t₁, t₂, e, hZa, g₁, g₂, d₁, d₂⟩` from `RegCover.exists_common hq C₁ C₂`. Take `⟨D⟩` from `GlobalTheory.T.exists_regular_cover_of_alteration hRA k Z ((t₁ ≫ C₁.ρ) ≫ q) hZa`. Use `⟨⟨D.Y, D.ρ ≫ t₁ ≫ C₁.ρ, ?_, ?_, ?_⟩, ⟨D.ρ ≫ t₁, by simp⟩, ⟨D.ρ ≫ t₂, by simp [e]⟩⟩` and prove the remaining obligations. Simplify `D.reg` using `[Category.assoc]`.
+
+Simplify using `only [Scheme.Hom.comp_apply]`. Rewrite using `[D.generic, g₁, C₁.generic]`. Rewrite using `[CurveDegreesCompare.residueDegree_comp, CurveDegreesCompare.residueDegree_comp, D.generic, g₁]`. Conclude with `mul_ne_zero (mul_ne_zero C₁.finite d₁) D.finite`.
+-/
 theorem exists_regCover_le_both : RegularAlteration → ∀ (k : Type) [CommRing k] (B : Scheme.{0}) [IsIntegral B]
     (q : B ⟶ Sp k), IsArithVar q 1 → ∀ C₁ C₂ : RegCover q, ∃ C : RegCover q,
       (∃ t₁ : C.Y ⟶ C₁.Y, t₁ ≫ C₁.ρ = C.ρ) ∧ ∃ t₂ : C.Y ⟶ C₂.Y, t₂ ≫ C₂.ρ = C.ρ := by

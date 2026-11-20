@@ -15,6 +15,11 @@ def QTop : Prop :=
     ∃ d : ℕ → A, (∀ Y : ℂ, qminor E id id (Y + h) = ∑ j ∈ Finset.range (n + 1), Y ^ j • d j) ∧
       (1 ≤ n → d (n - 1) = ∑ a, E a a + algebraMap ℂ A ((n : ℂ) * h - (n : ℂ) * ((n : ℂ) - 1) / 2))
 
+/- English proof (translation)
+Establish `key : ∀ l : Fin N, ∑ i : Fin N, W j i * ((i : ℕ) : ℂ) ^ (l : ℕ) = if j = l then 1 else 0`. Introduce `l`. Establish `h` using `congrFun (congrFun hW j) l`. Simplify `h` using `[Matrix.mul_apply, Matrix.vandermonde_apply, Matrix.one_apply]`. Repeatedly rewrite using `[ha, Finset.sum_range, Finset.smul_sum, smul_smul]`.
+
+Rewrite using `[Finset.sum_comm]`. Repeatedly rewrite using `[← Finset.sum_smul, key, ite_smul, one_smul, zero_smul]`. Simplify using the standard rewrite rules.
+-/
 theorem interp {V : Type*} [AddCommGroup V] [Module ℂ V] (N : ℕ) (W : Matrix (Fin N) (Fin N) ℂ)
     (hW : W * Matrix.vandermonde (fun i : Fin N => ((i : ℕ) : ℂ)) = 1) (p : ℂ → V) (a : ℕ → V)
     (ha : ∀ Y, p Y = ∑ j ∈ Finset.range N, Y ^ j • a j) (j : Fin N) :
@@ -28,6 +33,9 @@ theorem interp {V : Type*} [AddCommGroup V] [Module ℂ V] (N : ℕ) (W : Matrix
   simp_rw [← Finset.sum_smul, key, ite_smul, one_smul, zero_smul]
   simp
 
+/- English proof (translation)
+Use `⟨(Matrix.vandermonde (fun i : Fin N => ((i : ℕ) : ℂ)))⁻¹, Matrix.nonsing_inv_mul _ ?_⟩` and prove the remaining obligations. Rewrite using `[isUnit_iff_ne_zero, Matrix.det_vandermonde_ne_zero_iff]`. Introduce `a b h`. Conclude with `Fin.ext (Nat.cast_injective h)`.
+-/
 theorem vdm_inv (N : ℕ) : ∃ W : Matrix (Fin N) (Fin N) ℂ,
     W * Matrix.vandermonde (fun i : Fin N => ((i : ℕ) : ℂ)) = 1 := by
   refine ⟨(Matrix.vandermonde (fun i : Fin N => ((i : ℕ) : ℂ)))⁻¹, Matrix.nonsing_inv_mul _ ?_⟩
@@ -35,6 +43,13 @@ theorem vdm_inv (N : ℕ) : ∃ W : Matrix (Fin N) (Fin N) ℂ,
   intro a b h
   exact Fin.ext (Nat.cast_injective h)
 
+/- English proof (translation)
+Take `⟨d, hd, htop⟩` from `hQ (Module.End ℂ (SV k r (Fin.last r) D V)) (mdim k r (Fin.last r)) (EV k r (Fin.last r) D V) (((mdim k r (Fin.last r) : ℂ) - 1) / 2)`. Use `⟨fun j => (d j (mkV hD f hf)).1 g, fun Y => ?_, ?_⟩` and prove the remaining obligations. Establish `h1` using `(OperatorRepresentations.rep_qminor (E := V) hD (id : Fin (mdim k r (Fin.last r)) → Fin (mdim k r (Fin.last r))) id (uC k r (Fin.last r) Y)).mkV hD hf hg`. Simplify using `only [Function.comp_id] at h1`. Establish `e : uC k r (Fin.last r) Y = Y + ((mdim k r (Fin.last r) : ℂ) - 1) / 2` using `rfl`.
+
+Unfold `capL`. Rewrite using `[← h1, e, hd Y, LinearMap.sum_apply, Submodule.coe_sum, Finset.sum_apply]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[LinearMap.smul_apply, Submodule.coe_smul, Pi.smul_apply]`. Establish `hn1 : 1 ≤ mdim k r (Fin.last r)` using `by simp [mdim] show (d (mdim k r (Fin.last r) - 1) (mkV hD f hf)).1 g = _`.
+
+Rewrite using `[htop hn1]`. Establish `e0 : ((mdim k r (Fin.last r) : ℂ) * (((mdim k r (Fin.last r) : ℂ) - 1) / 2) - (mdim k r (Fin.last r) : ℂ) * ((mdim k r (Fin.last r) : ℂ) - 1) / 2) = 0` using `by ring`. Rewrite using `[e0, map_zero, add_zero, LinearMap.sum_apply, Submodule.coe_sum, Finset.sum_apply]`. Conclude with `Finset.sum_congr rfl fun b _ => (OperatorRepresentations.rep_EV (E := V) hD b b).mkV hD hf hg`.
+-/
 theorem pt_poly (hQ : QTop) {k r : ℕ} {V : Type} [NormedAddCommGroup V] [NormedSpace ℂ V]
     (D : Set (Mx k r)) (hD : IsOpen D) (f : Mx k r → V) (hf : SmoothLev k r (Fin.last r) D f)
     {g : Mx k r} (hg : g ∈ Glev k r (Fin.last r) ∩ D) :
@@ -61,9 +76,37 @@ theorem pt_poly (hQ : QTop) {k r : ℕ} {V : Type} [NormedAddCommGroup V] [Norme
     rw [e0, map_zero, add_zero, LinearMap.sum_apply, Submodule.coe_sum, Finset.sum_apply]
     exact Finset.sum_congr rfl fun b _ => (OperatorRepresentations.rep_EV (E := V) hD b b).mkV hD hf hg
 
+/- English proof (translation)
+Simplify using `[Q.mdim]`.
+-/
 theorem mdim_last (k r : ℕ) : mdim k r (Fin.last r) = k + 1 := by
   simp [Q.mdim]
 
+/- English proof (translation)
+Introduce `Wp Wq _ _ _ _ _ _ P z z' π π' hpl hk X`. Take `⟨W, hW⟩` from `vdm_inv (P.k + 2)`. Establish `hpt : ∀ (Φ : RadSp P.k P.r z z' π π'), ∀ x ∈ DomR P.k P.r z z', ∃ a : ℕ → (Wq →L[ℂ] Wp), (∀ Y : ℂ, ((X.t Y 0 0 Φ : RadSp P.k P.r z z' π π') : Fn P.k P.r (Wq →L[ℂ] Wp)) x.1 x.2 = ∑ j ∈ Finset.range (P.k + 2), Y ^ j • a j) ∧ a P.k = ∑ b : Fin (mdim P.k P.r (Fin.last P.r)), EH P.k P …`. Introduce `Φ x hx`. Establish `hmem` using `Φ.2`.
+
+Take `⟨_, hs, _⟩` from `hmem`. Take `⟨U, F, hU, hxU, hF, hΦ⟩` from `hs x hx`. Use `set D : Set (Mx P.k P.r) := {g | (x.1, g) ∈ U} with hDdef`. Establish `hc : ContDiff ℝ ∞ (fun g : Mx P.k P.r => (x.1, g))` using `contDiff_prodMk_right x.1`. Establish `hD : IsOpen D` using `hU.preimage hc.continuous`.
+
+Establish `hf : SmoothLev P.k P.r (Fin.last P.r) D ((Φ : Fn P.k P.r (Wq →L[ℂ] Wp)) x.1)`. Introduce `g₀ hg₀`. Use `⟨D, fun g => F (x.1, g), hD, hg₀.2, ?_, fun g hgD hgG => hΦ (x.1, g) hgD hgG⟩` and prove the remaining obligations. Conclude with `hF.comp hc.contDiffOn (fun g hg => hg)`. Establish `hg : x.2 ∈ Glev P.k P.r (Fin.last P.r) ∩ D` using `⟨hx.2.1, by simpa [hDdef] using hxU⟩`.
+
+Take `⟨a, ha, htop⟩` from `pt_poly hQ D hD _ hf hg`. Establish `hm : mdim P.k P.r (Fin.last P.r) + 1 = P.k + 2` using `by rw [mdim_last]`. Establish `hm1 : mdim P.k P.r (Fin.last P.r) - 1 = P.k` using `by rw [mdim_last]; rfl`. Use `⟨a, fun Y => ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[X.t_apply Y 0 0 Φ x hx, ← hm]`.
+
+Conclude with `ha Y`. Rewrite using `[← htop, hm1]`. Set `c : ℕ → Module.End ℂ (RadSp P.k P.r z z' π π')` to `fun j => if h : j < P.k + 2 then ∑ i : Fin (P.k + 2), W ⟨j, h⟩ i • X.t ((i : ℕ) : ℂ) 0 0 else 0`. Establish `hval : ∀ (T : Module.End ℂ (RadSp P.k P.r z z' π π')) (Φ : RadSp P.k P.r z z' π π') x, x ∉ DomR P.k P.r z z' → ((T Φ : RadSp P.k P.r z z' π π') : Fn P.k P.r (Wq →L[ℂ] Wp)) x.1 x.2 = 0`. Introduce `T Φ x hx`.
+
+Establish `hmem` using `(T Φ).2`. Take `⟨h0, _, _⟩` from `hmem`. Conclude with `h0 x hx`. Establish `hc : ∀ (Φ : RadSp P.k P.r z z' π π'), ∀ x ∈ DomR P.k P.r z z', ∀ (a : ℕ → (Wq →L[ℂ] Wp)), (∀ Y : ℂ, ((X.t Y 0 0 Φ : RadSp P.k P.r z z' π π') : Fn P.k P.r (Wq →L[ℂ] Wp)) x.1 x.2 = ∑ j ∈ Finset.range (P.k + 2), Y ^ j • a j) → ∀ j ∈ Finset.range (P.k + 2), ((c j Φ : RadSp P.k P.r z …`. Introduce `Φ x hx a ha j hj`.
+
+Establish `hj' : j < P.k + 2` using `Finset.mem_range.1 hj`. Establish `e1 : c j = ∑ i : Fin (P.k + 2), W ⟨j, hj'⟩ i • X.t ((i : ℕ) : ℂ) 0 0` using `dif_pos hj'`. Rewrite using `[e1, LinearMap.sum_apply, Submodule.coe_sum, Finset.sum_apply, Finset.sum_apply]`. Simplify using `only [LinearMap.smul_apply, Submodule.coe_smul, Pi.smul_apply]`. Conclude with `interp (P.k + 2) W hW (fun Y => ((X.t Y 0 0 Φ : RadSp P.k P.r z z' π π') : Fn P.k P.r (Wq →L[ℂ] Wp)) x.1 x.2) a ha ⟨j, hj'⟩`.
+
+Use `⟨c, fun Y => ?_, 0, fun Φ x hx => ?_⟩` and prove the remaining obligations. Apply `LinearMap.ext` to reduce the goal to its premises. Introduce `Φ`. Apply `Subtype.ext` to reduce the goal to its premises. Use function extensionality and compare the values at `c0 g`.
+
+Distinguish the cases in `hx : (c0, g) ∈ DomR P.k P.r z z'`. Take `⟨a, ha, -⟩` from `hpt Φ (c0, g) hx`. Establish `hL` using `ha Y`. Simplify using `only at hL`. Rewrite using `[hL, LinearMap.sum_apply, Submodule.coe_sum, Finset.sum_apply, Finset.sum_apply]`.
+
+Use `Finset.sum_congr rfl fun j hj => ?_` and prove the remaining obligations. Rewrite using `[LinearMap.smul_apply, Submodule.coe_smul, Pi.smul_apply, Pi.smul_apply]`. Use `congr 1`. Conclude with `(hc Φ (c0, g) hx a ha j hj).symm`. Establish `h1` using `hval (X.t Y 0 0) Φ (c0, g) hx`.
+
+Establish `h2` using `hval (∑ j ∈ Finset.range (P.k + 2), Y ^ j • c j) Φ (c0, g) hx`. Simplify using `only at h1 h2`. Rewrite using `[h1, h2]`. Take `⟨a, ha, htop⟩` from `hpt Φ x hx`. Rewrite using `[hc Φ x hx a ha P.k (Finset.mem_range.2 (by omega)), htop]`.
+
+Simplify using the standard rewrite rules.
+-/
 theorem gTRTopAct_of_cut (hQ : QTop) : GTRTopAct := by
   intro Wp Wq _ _ _ _ _ _ P z z' π π' hpl hk X
   obtain ⟨W, hW⟩ := vdm_inv (P.k + 2)

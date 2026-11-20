@@ -21,6 +21,9 @@ noncomputable def oneF (Ψ : Finset (E →+* ℂ)) (r : ℕ) : Frame Ψ r :=
   fun _ => (1 : Matrix (Fin r) (Fin r) ℂ)
 
 omit [NumberField E] [IsCMField E] in
+/- English proof (translation)
+Introduce `τ`. Use `⟨?_, fun a c h => ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `(1 : Matrix (Fin r) (Fin r) ℂ).det ≠ 0`. Simplify using the standard rewrite rules. Conclude with `Matrix.one_apply_ne h.ne'`.
+-/
 theorem oneF_mem (Ψ : Finset (E →+* ℂ)) (r : ℕ) : oneF Ψ r ∈ Bor Ψ r := by
   intro τ
   refine ⟨?_, fun a c h => ?_⟩
@@ -29,6 +32,9 @@ theorem oneF_mem (Ψ : Finset (E →+* ℂ)) (r : ℕ) : oneF Ψ r ∈ Bor Ψ r 
   · exact Matrix.one_apply_ne h.ne'
 
 omit [NumberField E] [IsCMField E] in
+/- English proof (translation)
+Use function extensionality and compare the values at `τ`. Express the relevant statement in the definitionally equal form `mat x τ * (1 : Matrix (Fin r) (Fin r) ℂ) = mat x τ`. Conclude with `Matrix.mul_one _`.
+-/
 theorem rmul_oneF {Ψ : Finset (E →+* ℂ)} {r : ℕ} (x : Frame Ψ r) : rmul x (oneF Ψ r) = x := by
   funext τ
   change mat x τ * (1 : Matrix (Fin r) (Fin r) ℂ) = mat x τ
@@ -43,12 +49,18 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E]
 open NumberField MeasureTheory Topology in
 open scoped ContDiff ENNReal Matrix in
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] in
+/- English proof (translation)
+Apply the tactic sequence `unfold _root_.ReciprocityTheory.ChartRestriction.G.FD.sgn; split_ifs <;> norm_num`.
+-/
 private lemma sgn_ne_zero_torus_haar_measure (p a : ℕ) : _root_.ReciprocityTheory.ChartRestriction.G.FD.sgn p a ≠ 0 := by
   unfold _root_.ReciprocityTheory.ChartRestriction.G.FD.sgn; split_ifs <;> norm_num
 
 open NumberField MeasureTheory Topology in
 open scoped ContDiff ENNReal Matrix in
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] in
+/- English proof (translation)
+Introduce `h0`. Use `congrArg Matrix.det (h τ)` as an intermediate fact. Rewrite `this` using `[_root_.ReciprocityTheory.ChartRestriction.G.FD.FrameDegreeData.gram_eq, Matrix.det_mul, Matrix.det_mul, Matrix.det_transpose, h0, zero_mul, zero_mul, Matrix.det_diagonal]`. Conclude with `(Finset.prod_ne_zero_iff.mpr fun a _ => by exact_mod_cast sgn_ne_zero_torus_haar_measure X.p0 a) this.symm`.
+-/
 private lemma det_mat_ne_zero_of_isOrth' {r : ℕ} (X : _root_.ReciprocityTheory.ChartRestriction.G.FD.Data E r) {x0 : _root_.ReciprocityTheory.ChartRestriction.G.FD.Frame X.Ψ r}
     (h : _root_.ReciprocityTheory.ChartRestriction.G.AR.Up.IsOrth X x0) (τ : X.Ψ) : (_root_.ReciprocityTheory.ChartRestriction.G.FD.mat x0 τ).det ≠ 0 := by
   intro h0
@@ -60,6 +72,11 @@ private lemma det_mat_ne_zero_of_isOrth' {r : ℕ} (X : _root_.ReciprocityTheory
 open NumberField MeasureTheory Topology in
 open scoped ContDiff ENNReal Matrix in
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] in
+/- English proof (translation)
+Unfold `_root_.ReciprocityTheory.ChartRestriction.G.FD.Data.dom _root_.ReciprocityTheory.ChartRestriction.G.FD.GG`. Use `fun τ => ⟨det_mat_ne_zero_of_isOrth' X h τ, fun i => ?_⟩` and prove the remaining obligations. Unfold `_root_.ReciprocityTheory.ChartRestriction.G.FD.dmin _root_.ReciprocityTheory.ChartRestriction.G.FD.lminor`. Rewrite using `[h τ, Matrix.submatrix_diagonal _ _ (Fin.castLE_injective _), Matrix.det_diagonal]`. Simplify using `only [Function.comp_apply, Fin.coe_castLE]`.
+
+Rewrite using `[← Complex.ofReal_prod, Complex.ofReal_re, Fin.prod_univ_eq_prod_range (fun j => _root_.ReciprocityTheory.ChartRestriction.G.FD.sgn X.p0 j) i]`. Unfold `_root_.ReciprocityTheory.ChartRestriction.G.FD.psgn`. Conclude with `mul_self_pos.mpr (Finset.prod_ne_zero_iff.mpr fun a _ => sgn_ne_zero_torus_haar_measure X.p0 a)`.
+-/
 private lemma mem_dom_of_isOrth {r : ℕ} (X : _root_.ReciprocityTheory.ChartRestriction.G.FD.Data E r) {x0 : _root_.ReciprocityTheory.ChartRestriction.G.FD.Frame X.Ψ r}
     (h : _root_.ReciprocityTheory.ChartRestriction.G.AR.Up.IsOrth X x0) : x0 ∈ X.dom := by
   unfold _root_.ReciprocityTheory.ChartRestriction.G.FD.Data.dom _root_.ReciprocityTheory.ChartRestriction.G.FD.GG
@@ -75,6 +92,9 @@ private lemma mem_dom_of_isOrth {r : ℕ} (X : _root_.ReciprocityTheory.ChartRes
 open NumberField MeasureTheory Topology in
 open scoped ContDiff ENNReal Matrix in
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] in
+/- English proof (translation)
+Unfold `_root_.GlobalTheory.GrpSep.shift _root_.ReciprocityTheory.ChartRestriction.G.FD.mat`. Use `continuous_pi fun τ => ?_` and prove the remaining obligations. Conclude with `continuous_const.matrix_mul ((continuous_apply τ).add continuous_const)`.
+-/
 private lemma continuous_shift' {Ψ : Finset (E →+* ℂ)} {r : ℕ} (x0 : _root_.ReciprocityTheory.ChartRestriction.G.FD.Frame Ψ r) :
     Continuous (fun M : Ψ → Fin r → Fin r → ℂ =>
       (_root_.GlobalTheory.GrpSep.shift x0 M : Ψ → Fin r → Fin r → ℂ)) := by
@@ -85,6 +105,9 @@ private lemma continuous_shift' {Ψ : Finset (E →+* ℂ)} {r : ℕ} (x0 : _roo
 open NumberField MeasureTheory Topology in
 open scoped ContDiff ENNReal Matrix in
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] in
+/- English proof (translation)
+Use function extensionality and compare the values at `τ`. Express the relevant statement in the definitionally equal form `_root_.ReciprocityTheory.ChartRestriction.G.FD.mat x0 τ * (0 + 1) = x0 τ`. Rewrite using `[zero_add, Matrix.mul_one]`. Both sides reduce to the same expression.
+-/
 private lemma shift_zero_torus_haar_measure {Ψ : Finset (E →+* ℂ)} {r : ℕ} (x0 : _root_.ReciprocityTheory.ChartRestriction.G.FD.Frame Ψ r) :
     _root_.GlobalTheory.GrpSep.shift x0 0 = x0 := by
   funext τ
@@ -94,6 +117,9 @@ private lemma shift_zero_torus_haar_measure {Ψ : Finset (E →+* ℂ)} {r : ℕ
 open NumberField MeasureTheory Topology in
 open scoped ContDiff ENNReal Matrix in
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] in
+/- English proof (translation)
+Break down `S.eq_empty_or_nonempty with h | h` into its components or cases. Conclude with `⟨1, one_pos, by simp [h]⟩`. Take `⟨a0, ha0, hmin⟩` from `Set.exists_min_image S f hS h`. Conclude with `⟨f a0, hf a0 ha0, hmin⟩`.
+-/
 private lemma exists_pos_le_of_finite_pos {α : Type*} (S : Set α) (hS : S.Finite) (f : α → ℝ)
     (hf : ∀ a ∈ S, 0 < f a) : ∃ δ > 0, ∀ a ∈ S, δ ≤ f a := by
   rcases S.eq_empty_or_nonempty with h | h
@@ -104,6 +130,11 @@ private lemma exists_pos_le_of_finite_pos {α : Type*} (S : Set α) (hS : S.Fini
 open NumberField MeasureTheory Topology in
 open scoped ContDiff ENNReal Matrix in
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] in
+/- English proof (translation)
+Unfold `_root_.ReciprocityTheory.ChartRestriction.G.FD.Bor`. Use `fun τ => ⟨?_, fun a c h => ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `(1 : Matrix (Fin r) (Fin r) ℂ).det ≠ 0`. Simplify using the standard rewrite rules. Express the relevant statement in the definitionally equal form `(1 : Matrix (Fin r) (Fin r) ℂ) a c = 0`.
+
+Conclude with `Matrix.one_apply_ne h.ne'`.
+-/
 private lemma oneF_mem_bor {Ψ : Finset (E →+* ℂ)} {r : ℕ} :
     _root_.GlobalTheory.GrpSep.oneF Ψ r ∈ _root_.ReciprocityTheory.ChartRestriction.G.FD.Bor Ψ r := by
   unfold _root_.ReciprocityTheory.ChartRestriction.G.FD.Bor
@@ -116,6 +147,9 @@ private lemma oneF_mem_bor {Ψ : Finset (E →+* ℂ)} {r : ℕ} :
 open NumberField MeasureTheory Topology in
 open scoped ContDiff ENNReal Matrix in
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] in
+/- English proof (translation)
+Use function extensionality and compare the values at `τ`. Express the relevant statement in the definitionally equal form `_root_.ReciprocityTheory.ChartRestriction.G.FD.mat x0 τ * ((_root_.ReciprocityTheory.ChartRestriction.G.FD.mat x0 τ)⁻¹ * (γ : Matrix (Fin r) (Fin r) E).map τ.1 * _root_.ReciprocityTheory.ChartRestriction.G.FD.mat x0 τ - 1 + 1) = (γ : Matrix (Fin r) (Fin r) E).map τ.1 * _root_.Rec …`. Rewrite using `[sub_add_cancel, ← Matrix.mul_assoc, ← Matrix.mul_assoc, Matrix.mul_nonsing_inv _ (Ne.isUnit (hdet τ)), Matrix.one_mul]`.
+-/
 private lemma shift_dev_eq_lact {Ψ : Finset (E →+* ℂ)} {r : ℕ} (x0 : _root_.ReciprocityTheory.ChartRestriction.G.FD.Frame Ψ r)
     (hdet : ∀ τ, (_root_.ReciprocityTheory.ChartRestriction.G.FD.mat x0 τ).det ≠ 0) (γ : GL (Fin r) E) :
     _root_.GlobalTheory.GrpSep.shift x0 (_root_.GlobalTheory.GrpSep.dev x0 γ) = _root_.ReciprocityTheory.ChartRestriction.G.FD.lact γ x0 := by
@@ -128,6 +162,9 @@ private lemma shift_dev_eq_lact {Ψ : Finset (E →+* ℂ)} {r : ℕ} (x0 : _roo
 open NumberField MeasureTheory Topology in
 open scoped ContDiff ENNReal Matrix in
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] in
+/- English proof (translation)
+Use function extensionality and compare the values at `τ`. Express the relevant statement in the definitionally equal form `(_root_.ReciprocityTheory.ChartRestriction.G.FD.mat x0 τ * 1 : Matrix (Fin r) (Fin r) ℂ) = _root_.ReciprocityTheory.ChartRestriction.G.FD.mat x0 τ`. Conclude with `Matrix.mul_one _`.
+-/
 private lemma rmul_oneF' {Ψ : Finset (E →+* ℂ)} {r : ℕ} (x0 : _root_.ReciprocityTheory.ChartRestriction.G.FD.Frame Ψ r) :
     _root_.ReciprocityTheory.ChartRestriction.G.FD.rmul x0 (_root_.GlobalTheory.GrpSep.oneF Ψ r) = x0 := by
   funext τ
@@ -138,6 +175,17 @@ open NumberField MeasureTheory Topology in
 open scoped ContDiff ENNReal Matrix in
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] in
 
+/- English proof (translation)
+Introduce `r X x0 hO hP`. Establish `hdom` using `mem_dom_of_isOrth X hO`. Establish `hdet` using `det_mat_ne_zero_of_isOrth' X hO`. Take `⟨U, hU, U', hU', hfin⟩` from `hP x0 hdom x0 hdom`. Establish `hV : (fun M : X.Ψ → Fin r → Fin r → ℂ => (_root_.GlobalTheory.GrpSep.shift x0 M : X.Ψ → Fin r → Fin r → ℂ)) ⁻¹' U' ∈ nhds (0 : X.Ψ → Fin r → Fin r → ℂ)` using `(continuous_shift' x0).continuousAt.preimage_mem_nhds (by erw [shift_zero_torus_haar_measure]; exact hU')`.
+
+Take `⟨ε, hε, hball⟩` from `Metric.mem_nhds_iff.mp hV`. Take `⟨δ, hδ, hmin⟩` from `exists_pos_le_of_finite_pos _ (hfin.subset Set.diff_subset) (fun γ => ‖(_root_.GlobalTheory.GrpSep.dev x0 γ : X.Ψ → Fin r → Fin r → ℂ)‖) (by`. Introduce and unpack `γ ⟨hγ, h1⟩`. Use `norm_pos_iff.mpr fun h0 => h1 ?_` and prove the remaining obligations. Use `X.Γ_free γ hγ.1 x0 hdom (_root_.GlobalTheory.GrpSep.oneF X.Ψ r) oneF_mem_bor ?_` and prove the remaining obligations.
+
+Rewrite using `[← shift_dev_eq_lact x0 hdet, rmul_oneF']`. Conclude with `(congrArg (_root_.GlobalTheory.GrpSep.shift x0) h0).trans (shift_zero_torus_haar_measure x0))`. Use `⟨min ε δ, lt_min hε hδ, fun γ hγ h1 => ?_⟩` and prove the remaining obligations. Assume the negation of the conclusion as `hcon`. Use `push_neg at hcon`.
+
+Establish `hlt : ‖(_root_.GlobalTheory.GrpSep.dev x0 γ : X.Ψ → Fin r → Fin r → ℂ)‖ < min ε δ`. Use `(pi_norm_lt_iff (lt_min hε hδ)).mpr fun τ => (pi_norm_lt_iff (lt_min hε hδ)).mpr fun a => (pi_norm_lt_iff (lt_min hε hδ)).mpr fun b => hcon τ a b` and prove the remaining obligations. Establish `hmem : _root_.ReciprocityTheory.ChartRestriction.G.FD.lact γ x0 ∈ U'`. Rewrite using `[← shift_dev_eq_lact x0 hdet]`. Conclude with `hball (mem_ball_zero_iff.mpr (hlt.trans_le (min_le_left _ _)))`.
+
+Establish `hS` using `hmin γ ⟨⟨hγ, x0, mem_of_mem_nhds hU, _, hmem, _root_.GlobalTheory.GrpSep.oneF X.Ψ r, oneF_mem_bor, (rmul_oneF' _).symm⟩, h1⟩`. Conclude with `absurd hS (not_le.mpr (hlt.trans_le (min_le_right _ _)))`.
+-/
 theorem _root_.GlobalTheory.grpSep : ∀ (r : ℕ) (X : _root_.ReciprocityTheory.ChartRestriction.G.FD.Data E r) (x0 : _root_.ReciprocityTheory.ChartRestriction.G.FD.Frame X.Ψ r),
     _root_.ReciprocityTheory.ChartRestriction.G.AR.Up.IsOrth X x0 → _root_.ReciprocityTheory.ChartRestriction.G.AR.Inst.PropDisc X →
     ∃ c : ℝ, 0 < c ∧ ∀ γ ∈ X.Γ, γ ≠ 1 → ∃ (τ : X.Ψ) (a b : Fin r),

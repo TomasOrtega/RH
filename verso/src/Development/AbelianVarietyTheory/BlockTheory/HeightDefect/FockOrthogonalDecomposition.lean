@@ -33,12 +33,18 @@ def KAt (V : HSp D) (τ : D.what₂.Tau) (s : Module.End D.host.E V.V) : Set (Ma
 
 abbrev InfFam (D : D7) : Type := D.what₂.Tau → (Ainf D.host.F ⊗[D.host.F] D.host.E →+* ℂ)
 
+/- English proof (translation)
+Establish `: HA.mat (AF D.host.F) D.sp.cm.sig V.gram (1 : GA D V) = 1` using `rfl`. Simplify using `only [infMat, this, Units.val_one]`. Rewrite using `[Matrix.map_one _ (map_zero _) (map_one _), Matrix.map_one _ (map_zero _) (map_one _)]`.
+-/
 theorem infMat_one (θ : Ainf D.host.F ⊗[D.host.F] D.host.E →+* ℂ) (V : HSp D) :
     infMat D.sp.cm.sig V.gram θ (1 : GA D V) = 1 := by
   have : HA.mat (AF D.host.F) D.sp.cm.sig V.gram (1 : GA D V) = 1 := rfl
   simp only [infMat, this, Units.val_one]
   rw [Matrix.map_one _ (map_zero _) (map_one _), Matrix.map_one _ (map_zero _) (map_one _)]
 
+/- English proof (translation)
+Establish `: HA.mat (AF D.host.F) D.sp.cm.sig V.gram (g * h) = HA.mat (AF D.host.F) D.sp.cm.sig V.gram g * HA.mat (AF D.host.F) D.sp.cm.sig V.gram h` using `rfl`. Simplify using `only [infMat, this, Units.val_mul]`. Rewrite using `[Matrix.map_mul, Matrix.map_mul]`.
+-/
 theorem infMat_mul (θ : Ainf D.host.F ⊗[D.host.F] D.host.E →+* ℂ) (V : HSp D) (g h : GA D V) :
     infMat D.sp.cm.sig V.gram θ (g * h) = infMat D.sp.cm.sig V.gram θ g * infMat D.sp.cm.sig V.gram θ h := by
   have : HA.mat (AF D.host.F) D.sp.cm.sig V.gram (g * h) =
@@ -216,11 +222,17 @@ def ClaimPolSwap (Wl : WeilTied D X T) : Prop :=
     ∀ (Φ : X.Sch V W) (Φ' : X.Sch W V), (∀ x : WA V W, Wl.evS W V Φ' x.transpose = Wl.evS V W Φ x) →
       (Φ ∈ polSch Wl θ V W s s' ↔ Φ' ∈ polSch Wl θ W V s' s)
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨⊤, ⊥, ⟨isCompl_top_bot, fun x _ y hy => by rw [(Submodule.mem_bot _).1 hy, map_zero], fun x _ => h x, fun x hx hx' => absurd ((Submodule.mem_bot _).1 hx) hx'⟩, fun _ _ => rfl, fun x hx => by rw [(Submodule.mem_bot _).1 hx]; simp⟩`.
+-/
 example (V : HSp D) (τ : D.what₂.Tau) (h : ∀ x : V.V, x ≠ 0 → 0 < (tauE D τ (V.hT x x)).re) : IsSignInv V τ 1 :=
   ⟨⊤, ⊥, ⟨isCompl_top_bot, fun x _ y hy => by rw [(Submodule.mem_bot _).1 hy, map_zero], fun x _ => h x,
     fun x hx hx' => absurd ((Submodule.mem_bot _).1 hx) hx'⟩, fun _ _ => rfl,
     fun x hx => by rw [(Submodule.mem_bot _).1 hx]; simp⟩
 
+/- English proof (translation)
+Establish `h : ∀ U : HSp D, thAt U τ 1 = 1` using `fun U => by`. Simplify using `only [thAt, LinearMap.toMatrix_one]`. Conclude with `Matrix.map_one _ (map_zero _) (map_one _)`. Simplify using `only [jAt, actC, h]`. Apply the tactic sequence `split_ifs <;> simp`.
+-/
 example (V W : HSp D) (τ : D.what₂.Tau) (x : WC V W) : jAt V W τ 1 1 x = Complex.I • x := by
   have h : ∀ U : HSp D, thAt U τ 1 = 1 := fun U => by
     simp only [thAt, LinearMap.toMatrix_one]
@@ -228,6 +240,9 @@ example (V W : HSp D) (τ : D.what₂.Tau) (x : WC V W) : jAt V W τ 1 1 x = Com
   simp only [jAt, actC, h]
   split_ifs <;> simp
 
+/- English proof (translation)
+The claim follows from `let ⟨s, _, hs⟩ := h; ⟨s, hs⟩`.
+-/
 theorem KfinTied.some {Wl : WeilTied D X T} (h : KfinTied Wl) : KfinWeilCompatibleExists Wl :=
   let ⟨s, _, hs⟩ := h; ⟨s, hs⟩
 

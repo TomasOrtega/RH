@@ -11,6 +11,9 @@ noncomputable section
 
 namespace GlobalTheory.FlagZ
 
+/- English proof (translation)
+The claim follows from `| 0, f => by simp | N + 1, f => by rw [Fin.sum_univ_castSucc] simp only [Fin.succ_castSucc] rw [sum_castSucc_sub_succ N (fun i => f i.castSucc)] simp only [Fin.castSucc_zero, Fin.succ_last] abel`.
+-/
 theorem sum_castSucc_sub_succ {G : Type*} [AddCommGroup G] :
     ∀ (N : ℕ) (f : Fin (N + 1) → G), ∑ i : Fin N, (f i.castSucc - f i.succ) = f 0 - f (Fin.last N)
   | 0, f => by simp
@@ -21,11 +24,17 @@ theorem sum_castSucc_sub_succ {G : Type*} [AddCommGroup G] :
     simp only [Fin.castSucc_zero, Fin.succ_last]
     abel
 
+/- English proof (translation)
+The claim follows from `(HermLB.icls_pull _ _ _).trans ((congrArg _ (HermLB.icls_eq_iff.2 (Plane.isometric_fubini_study_dim_zero hl))).trans (map_zero _))`.
+-/
 theorem icls_flDet_eq_zero {ι : Type} [Fintype ι] {N : ℕ} (τ : ι) (l : Fin (N + 1)) (hl : plDim N l = 0) :
     (flDet (ι := ι) (N := N) τ l).icls = 0 :=
   (HermLB.icls_pull _ _ _).trans ((congrArg _ (HermLB.icls_eq_iff.2 (Plane.isometric_fubini_study_dim_zero hl))).trans
     (map_zero _))
 
+/- English proof (translation)
+Establish `e (i : Fin N) : (grLine (ι` using `ι) (N := N) (τ, i)).icls = (flDet (ι := ι) (N := N) τ i.castSucc).icls - (flDet (ι := ι) (N := N) τ i.succ).icls := by`. Rewrite using `[grLine, HermLB.icls_tens, HermLB.icls_dual, sub_eq_add_neg]`. Simplify using `only [e]`. Rewrite using `[sum_castSucc_sub_succ N (fun l => (flDet (ι := ι) (N := N) τ l).icls), icls_flDet_eq_zero τ 0 (by simp [plDim]), icls_flDet_eq_zero τ (Fin.last N) (by simp [plDim]), sub_zero]`.
+-/
 theorem sum_icls_grLine {ι : Type} [Fintype ι] {N : ℕ} (τ : ι) :
     ∑ i : Fin N, (grLine (ι := ι) (N := N) (τ, i)).icls = 0 := by
   have e (i : Fin N) : (grLine (ι := ι) (N := N) (τ, i)).icls =
@@ -35,6 +44,11 @@ theorem sum_icls_grLine {ι : Type} [Fintype ι] {N : ℕ} (τ : ι) :
   rw [sum_castSucc_sub_succ N (fun l => (flDet (ι := ι) (N := N) τ l).icls),
     icls_flDet_eq_zero τ 0 (by simp [plDim]), icls_flDet_eq_zero τ (Fin.last N) (by simp [plDim]), sub_zero]
 
+/- English proof (translation)
+Introduce `_ ι _ _ N τ n t a H`. Use `HermLB.Isometric.isSelfInter (isArithVar_hasHh_unique ι N).1 (HermLB.icls_eq_iff.1 ?_) H` and prove the remaining obligations. Rewrite using `[icls_comb, icls_comb]`. Rewrite using `[Finset.sum_congr rfl fun x _ => add_zsmul (grLine (ι := ι) (N := N) x).icls (n x) _, Finset.sum_add_distrib]`. Establish `hz : ∑ x : ι × Fin N, (if x.1 = τ then t else 0) • (grLine (ι` using `ι) (N := N) x).icls = 0 := by`.
+
+Rewrite using `[Fintype.sum_prod_type]`. Use `Finset.sum_eq_zero fun τ' _ => ?_` and prove the remaining obligations. Use `show ∑ i : Fin N, (if τ' = τ then t else 0) • (grLine (ι := ι) (N := N) (τ', i)).icls = 0`. Rewrite using `[← Finset.smul_sum, sum_icls_grLine, smul_zero]`. Rewrite using `[hz, add_zero]`.
+-/
 theorem isSelfInter_comb_grLine_shift : Hypotheses2 → ∀ (ι : Type) [Fintype ι] [DecidableEq ι] (N : ℕ) (τ : ι)
     (n : ι × Fin N → ℤ) (t : ℤ) (a : ℝ), (comb (grLine (ι := ι) (N := N)) n).IsSelfInter a →
     (comb (grLine (ι := ι) (N := N)) fun x => n x + if x.1 = τ then t else 0).IsSelfInter a := by

@@ -9,5 +9,8 @@ import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.CoordinatesRest
 set_option backward.isDefEq.respectTransparency false
 open CategoryTheory AlgebraicGeometry TensorProduct GlobalTheory.LogCris DividedPowers CrystallineSemistableComparison CrystallineSemistableComparison.Pb
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.CompanionTheory.GrForm.stFrame | exact GlobalTheory.CompanionTheory.GrForm.stFrame | (intros; apply GlobalTheory.CompanionTheory.GrForm.stFrame <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.graded_form_frame : GlobalTheory.CompanionTheory.GrForm.StFrame := by
   first | exact @GlobalTheory.CompanionTheory.GrForm.stFrame | exact GlobalTheory.CompanionTheory.GrForm.stFrame | (intros; apply GlobalTheory.CompanionTheory.GrForm.stFrame <;> assumption)

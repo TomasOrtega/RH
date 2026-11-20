@@ -2,6 +2,29 @@ import Mathlib
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Use `set E : Module.End L V := ∑ x : G, ρ x * e * ρ x⁻¹ with hE`. Establish `hcomm : ∀ g : G, ρ g * E = E * ρ g`. Introduce `g`. Rewrite using `[hE, Finset.mul_sum, Finset.sum_mul]`. Use `Fintype.sum_equiv (Equiv.mulLeft g) _ _ ?_` and prove the remaining obligations.
+
+Introduce `x`. Establish `h1 : ρ (g * x)⁻¹ * ρ g = ρ x⁻¹`. Rewrite using `[← map_mul]`. Use `congr 1`. Use `group`.
+
+Simplify using `only [Equiv.coe_mulLeft]`. Rewrite using `[mul_assoc (ρ (g * x) * e), h1, map_mul]`. Simplify using `only [mul_assoc]`. Establish `hEe : E * e = (Nat.card T : L) • e`. Rewrite using `[hE, Finset.sum_mul]`.
+
+Establish `h2 : ∀ x : G, ρ x * e * ρ x⁻¹ * e = if x ∈ T then e else 0`. Introduce `x`. Use `split_ifs with hx`. Establish `h3 : ρ x * ρ x⁻¹ = 1` using `by rw [← map_mul, mul_inv_cancel, map_one]`. Rewrite using `[hT x hx, mul_assoc e, h3, mul_one, hee]`.
+
+Establish `h4` using `hoff x⁻¹ (fun h => hx (by simpa using T.inv_mem h))`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Finset.sum_congr rfl (fun x _ => h2 x), ← Finset.sum_filter, Finset.sum_const, Nat.cast_smul_eq_nsmul, Nat.card_eq_fintype_card, Fintype.card_subtype]`. Use `set D : Module.End L V := E - (Nat.card T : L) • (1 : Module.End L V) with hD`. Establish `hDc : ∀ g : G, ρ g * D = D * ρ g`.
+
+Introduce `g`. Rewrite using `[hD, mul_sub, sub_mul, hcomm, mul_smul_comm, smul_mul_assoc, mul_one, one_mul]`. Establish `hDe : D * e = 0`. Rewrite using `[hD, sub_mul, hEe, smul_mul_assoc, one_mul, sub_self]`. Set `K : Subrepresentation ρ` to `{ toSubmodule := LinearMap.ker D apply_mem_toSubmodule := by`.
+
+Introduce `g v hv`. Rewrite `hv`, the goal using `[LinearMap.mem_ker]`. Use `congrArg (fun f : Module.End L V => f v) (hDc g)` as an intermediate fact. Simplify using `only [Module.End.mul_apply] at this`. Rewrite using `[← this, hv, map_zero] }`.
+
+Use `hirr` as an intermediate fact. Break down `IsSimpleOrder.eq_bot_or_eq_top K with h | h` into its components or cases. It suffices to derive a contradiction. Apply `he0` to reduce the goal to its premises. Use extensionality with `v`.
+
+Establish `hv : e v ∈ K.toSubmodule`. Express the relevant statement in the definitionally equal form `e v ∈ LinearMap.ker D`. Rewrite using `[LinearMap.mem_ker, ← Module.End.mul_apply, hDe]`. Both sides reduce to the same expression. Rewrite `hv` using `[h]`.
+
+Conclude with `hv`. Establish `hk : LinearMap.ker D = ⊤`. Express the relevant statement in the definitionally equal form `K.toSubmodule = ⊤`. Rewrite using `[h]`. Both sides reduce to the same expression.
+
+Conclude with `sub_eq_zero.mp (LinearMap.ker_eq_top.mp hk)`.
+-/
 theorem sum_conj_idempotent_eq_card_smul (L : Type) [Field L] (G : Type) [Group G] [Fintype G]
     (V : Type) [AddCommGroup V] [Module L V] (ρ : Representation L G V) (T : Subgroup G)
     (e : Module.End L V) (hirr : ρ.IsIrreducible) (he0 : e ≠ 0) (hee : e * e = e)

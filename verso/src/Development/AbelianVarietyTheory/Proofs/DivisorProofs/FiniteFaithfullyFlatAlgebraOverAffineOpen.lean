@@ -8,6 +8,21 @@ open TensorProduct
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Introduce `X Y f _ _ _ _ V₀ hV₀`. Use `letI : Algebra Γ(Y, V₀) Γ(X, f ⁻¹ᵁ V₀) := (f.app V₀).hom.toAlgebra`. Establish `hV : IsAffineOpen (f ⁻¹ᵁ V₀)` using `hV₀.preimage f`. Use `⟨IsLocallyNoetherian.component_noetherian ⟨V₀, hV₀⟩, ?_, ?_⟩` and prove the remaining obligations. Conclude with `IsFinite.finite_app f V₀ hV₀`.
+
+Establish `hflat : (f.app V₀).hom.Flat`. Use `Flat.flat_appLE f hV₀ hV le_rfl` as an intermediate fact. Rewrite `this` using `[Scheme.Hom.appLE_eq_app]`. Then use the resulting hypothesis. Use `haveI : Module.Flat Γ(Y, V₀) Γ(X, f ⁻¹ᵁ V₀) := hflat`. Apply `Module.FaithfullyFlat.of_comap_surjective` to reduce the goal to its premises.
+
+Introduce `p`. Establish `hsq` using `IsAffineOpen.SpecMap_appLE_fromSpec f hV₀ hV le_rfl`. Rewrite `hsq` using `[Scheme.Hom.appLE_eq_app]`. Establish `hy : hV₀.fromSpec p ∈ (V₀ : Set Y)`. Rewrite using `[← hV₀.range_fromSpec]`.
+
+Conclude with `⟨p, rfl⟩`. Take `⟨x, hx⟩` from `f.surjective (hV₀.fromSpec p)`. Establish `hxV : x ∈ Set.range hV.fromSpec`. Rewrite using `[hV.range_fromSpec]`. Use `show f x ∈ (V₀ : Set Y)`.
+
+Rewrite using `[hx]`. Conclude with `hy`. Take `⟨q, rfl⟩` from `hxV`. Use `⟨q, ?_⟩` and prove the remaining obligations. Apply `hV₀.fromSpec.isOpenEmbedding.injective` to reduce the goal to its premises.
+
+Use `congrArg (fun g => g q) (congrArg (fun h => h.base) hsq)` as an intermediate fact. Simplify using `only [Scheme.Hom.comp_base, TopCat.comp_app] at this`. Rewrite using `[← hx]`. Use `this using 2` and compare the differences between its conclusion and the goal. Rewrite using `[Spec.map_base]`.
+
+Both sides reduce to the same expression.
+-/
 theorem finiteFlatSurj_affine_algebra : ∀ {X Y : Scheme.{0}} (f : X ⟶ Y) [IsFinite f] [Flat f] [Surjective f] [IsLocallyNoetherian Y] (V₀ : Y.Opens), IsAffineOpen V₀ →
     letI : Algebra Γ(Y, V₀) Γ(X, f ⁻¹ᵁ V₀) := (f.app V₀).hom.toAlgebra
     IsNoetherianRing Γ(Y, V₀) ∧ Module.Finite Γ(Y, V₀) Γ(X, f ⁻¹ᵁ V₀) ∧ Module.FaithfullyFlat Γ(Y, V₀) Γ(X, f ⁻¹ᵁ V₀) := by

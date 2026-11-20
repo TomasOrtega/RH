@@ -18,15 +18,24 @@ section Gen
 
 variable {e : ℕ} {X : Type} [TopologicalSpace X] {A : FinHolAtlas e X}
 
+/- English proof (translation)
+The claim follows from `hp _ j y ⟨hy, P.mem_U _⟩ w`.
+-/
 theorem levi_nonneg {P : LocPot X} (hp : IsPsh A P) (j : Fin A.n) {y : Fin e → ℂ} (hy : y ∈ (A.chart j).target)
     (w : Fin e → ℂ) : 0 ≤ leviAt A P j y w := hp _ j y ⟨hy, P.mem_U _⟩ w
 
+/- English proof (translation)
+Introduce `x j y hy w`. Rewrite using `[GlobalTheory.LeviOnly.levi_base hP x j hy.1 hy.2]`. Conclude with `h j y hy.1 w`.
+-/
 theorem psh_of_levi {P : LocPot X} (hP : IsPotential A P)
     (h : ∀ j, ∀ y ∈ (A.chart j).target, ∀ w, 0 ≤ leviAt A P j y w) : IsPsh A P := by
   intro x j y hy w
   rw [GlobalTheory.LeviOnly.levi_base hP x j hy.1 hy.2]
   exact h j y hy.1 w
 
+/- English proof (translation)
+Establish `h` using `leviAt_add A (isPotential_ofFun A _ hg) (isPotential_ofFun A _ (smooth_const A (-b))) j hy w`. Rewrite `h` using `[leviAt_const, add_zero]`. Rewrite using `[← h]`. Conclude with `congrArg (levi · y w) (funext fun _ => sub_eq_add_neg _ _)`.
+-/
 theorem leviAt_sub_const {g : X → ℝ} (hg : A.Smooth g) (b : ℝ) (j : Fin A.n) {y : Fin e → ℂ}
     (hy : y ∈ (A.chart j).target) (w : Fin e → ℂ) :
     leviAt A (LocPot.ofFun fun x => g x - b) j y w = leviAt A (LocPot.ofFun g) j y w := by
@@ -37,6 +46,11 @@ theorem leviAt_sub_const {g : X → ℝ} (hg : A.Smooth g) (b : ℝ) (j : Fin A.
 
 variable [CompactSpace X] [T2Space X]
 
+/- English proof (translation)
+Take `⟨C, hC, h1, h2⟩` from `ReciprocityTheory.AnForm.P.TailBoundAlt.exists_psh_chern_bound A Om L hO hp hL`. Use `⟨C, hC, fun j y hy w => ?_⟩` and prove the remaining obligations. Establish `a` using `levi_nonneg h1 j hy w`. Establish `b` using `levi_nonneg h2 j hy w`. Rewrite `a` using `[leviAt_add A (isPotentialRsmul A _ _ hO) hL j hy, leviAt_rsmul]`.
+
+Rewrite `b` using `[leviAt_add A (isPotentialRsmul A _ _ hO) (isPotentialRsmul A _ _ hL) j hy, leviAt_rsmul, leviAt_rsmul]`. Rewrite using `[abs_le]`. Apply the tactic sequence `constructor <;> linarith`.
+-/
 theorem abs_levi_le {Om L : LocPot X} (hO : IsPotential A Om) (hp : IsPosPot A Om) (hL : IsPotential A L) :
     ∃ C : ℝ, 0 ≤ C ∧ ∀ j, ∀ y ∈ (A.chart j).target, ∀ w, |leviAt A L j y w| ≤ C * leviAt A Om j y w := by
   obtain ⟨C, hC, h1, h2⟩ := ReciprocityTheory.AnForm.P.TailBoundAlt.exists_psh_chern_bound A Om L hO hp hL
@@ -48,6 +62,9 @@ theorem abs_levi_le {Om L : LocPot X} (hO : IsPotential A Om) (hp : IsPosPot A O
   rw [abs_le]
   constructor <;> linarith
 
+/- English proof (translation)
+The claim follows from `|leviAt A (th u) j y w| ≤ C * ‖u‖ * leviAt A Om j y w := by choose C hC h using fun p : ι × Fin N => abs_levi_le hO hp (hth (Pi.single p.1 (Pi.single p.2 1))) refine ⟨∑ p, C p, Finset.sum_nonneg fun p _ => hC p, fun u j y hy w => ?_⟩ have hu : u = ∑ p : ι × Fin N, u p.1 p.2 • (Pi …`.
+-/
 theorem abs_levi_lin_le {ι : Type} [Fintype ι] {N : ℕ} {Om : LocPot X} (hO : IsPotential A Om) (hp : IsPosPot A Om)
     (th : (ι → Fin N → ℝ) → LocPot X) (hth : ∀ u, IsPotential A (th u))
     (hlin : ∀ j, ∀ y ∈ (A.chart j).target, ∀ w, IsLinearMap ℝ fun u => leviAt A (th u) j y w) :
@@ -75,6 +92,17 @@ end Gen
 
 variable {e : ℕ} {M : Man e} {ι : Type} [Fintype ι] {N : ℕ} {F : An M ι N}
 
+/- English proof (translation)
+Take `⟨s₀, hs₀, C, h⟩` from `h`. Introduce `u hu ε hε σ`. Take `⟨s₁, hs₁, hs₁', h₁⟩` from `GlobalTheory.mul_log_inv_sq_div_le_small C ‖u‖ ε hε`. Establish `hs : 0 < min s₀ s₁` using `lt_min hs₀ hs₁`. Take `⟨hg, hp, -⟩` from `h u hu _ hs (min_le_left _ _) _ rfl σ`.
+
+Establish `h2` using `h₁ _ hs (min_le_right _ _)`. Establish `h3 : min s₀ s₁ * min (ε / 2) (1 / 4) ≤ ε`. Establish `a : min (ε / 2) (1 / 4) ≤ ε / 2` using `min_le_left _ _`. Establish `b : min s₀ s₁ ≤ s₁` using `min_le_right _ _`. Establish `c : 0 < min (ε / 2) (1 / 4)` using `lt_min (by linarith) (by norm_num)`.
+
+Use the polynomial consequences of the given equalities and inequalities. Take `⟨-, -, hO, hOp, -⟩` from `M.bd σ`. Establish `pF` using `isPotential_ofFun _ _ hg`. Establish `pO` using `fun t => isPotentialRsmul _ t _ hO`. Use `⟨_, hg, psh_of_levi (isPotentialAdd _ _ _ (isPotentialAdd _ _ _ (hth u σ) (pO _)) pF) fun j y hy w => ?_⟩` and prove the remaining obligations.
+
+Establish `a` using `levi_nonneg hp j hy w`. Establish `h0` using `levi_nonneg (ReciprocityTheory.AnForm.P.TailBoundAlt.isPsh_of_isPosPot _ _ hOp) j hy w`. Rewrite `a` using `[leviAt_add _ (isPotentialAdd _ _ _ (hth u σ) pF) (pO _) j hy, leviAt_add _ (hth u σ) pF j hy, leviAt_rsmul]`. Rewrite using `[leviAt_add _ (isPotentialAdd _ _ _ (hth u σ) (pO _)) pF j hy, leviAt_add _ (hth u σ) (pO _) j hy, leviAt_rsmul]`. Use `mul_le_mul_of_nonneg_right (h2.trans h3) h0` as an intermediate fact.
+
+Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem nefAn (hth : ∀ u σ, IsPotential (M.A σ) (F.th u σ)) (h : F.InS) : F.NefAn := by
   obtain ⟨s₀, hs₀, C, h⟩ := h
   intro u hu ε hε σ
@@ -98,6 +126,51 @@ theorem nefAn (hth : ∀ u σ, IsPotential (M.A σ) (F.th u σ)) (h : F.InS) : F
   have := mul_le_mul_of_nonneg_right (h2.trans h3) h0
   linarith
 
+/- English proof (translation)
+Take `⟨s₀, hs₀, C, h⟩` from `h`. Take `⟨-, -, -, Cs, hCs⟩` from `hS`. Use `choose c hc hca using fun σ => (hQ σ).2.1`. Take `⟨σ₀, hσ₀⟩` from `Finite.exists_min c`. Use `choose Ct hCt ht using fun σ => abs_levi_lin_le (M.bd σ).2.2.1 (M.bd σ).2.2.2.1 (fun u => F.th u σ) (fun u => hth u σ) (hlin σ)`.
+
+Use `choose Ca hCa hab using fun σ => abs_levi_le (M.bd σ).2.2.1 (M.bd σ).2.2.2.1 (ha σ)`. Take `⟨C₃, hC₃⟩` from `GlobalTheory.exp_neg_and_log_pow_div_le_mul 1`. Introduce `Λ`. Use `set B : ℝ := |C| * |Λ| with hB`. Establish `hB0 : 0 ≤ B` using `by positivity`.
+
+Take `⟨s₁, hs₁, hs₁', h₁⟩` from `GlobalTheory.mul_log_inv_sq_div_le_small B 1 (c σ₀) (hc σ₀)`. Establish `hSt : 0 ≤ (∑ σ, Ct σ) * |Λ|` using `mul_nonneg (Finset.sum_nonneg fun σ _ => hCt σ) (abs_nonneg _)`. Establish `hSa : 0 ≤ ∑ σ, Ca σ` using `Finset.sum_nonneg fun σ _ => hCa σ`. Establish `hSs : 0 ≤ |Cs| * |Λ|` using `by positivity`. Establish `hS3 : 0 ≤ B * |C₃|` using `by positivity`.
+
+Take `⟨K, hK⟩ : ∃ K : ℝ, K = (∑ σ, Ct σ) * |Λ| + ∑ σ, Ca σ + |Cs| * |Λ| + 2 * B + 2 * (B * |C₃|) + 1` from `⟨_, rfl⟩`. Use `⟨min s₀ s₁, lt_min hs₀ hs₁, K, fun u hu huΛ s hs hss σ => ?_⟩` and prove the remaining obligations. Establish `hs1 : s ≤ s₁` using `hss.trans (min_le_right _ _)`. Establish `hsle : s ≤ 1` using `by linarith`. Establish `huΛ' : ‖u‖ ≤ |Λ|` using `huΛ.trans (le_abs_self _)`.
+
+Establish `hCB : C * ‖u‖ ≤ B` using `mul_le_mul (le_abs_self _) huΛ' (norm_nonneg _) (abs_nonneg _)`. Take `⟨hg, hp, hb⟩` from `h u hu s hs (hss.trans (min_le_left _ _)) _ rfl σ`. Establish `hlog : Real.log ((s ^ 2)⁻¹) = 2 * Real.log (1 / s)`. Rewrite using `[one_div, ← inv_pow, Real.log_pow]`. Evaluate the numerical expressions.
+
+Establish `hl0 : 0 ≤ Real.log (1 / s)` using `Real.log_nonneg ((one_le_div hs).2 hsle)`. Establish `hq0 : 0 ≤ Real.log ((s ^ 2)⁻¹) / (s ^ 2)⁻¹` using `by rw [hlog]; positivity`. Establish `hsmall : C * ‖u‖ * (Real.log ((s ^ 2)⁻¹) / (s ^ 2)⁻¹) ≤ s * c σ`. Establish `a` using `h₁ s hs hs1`. Establish `b` using `mul_le_mul_of_nonneg_right hCB hq0`.
+
+Establish `c' : min (c σ₀ / 2) (1 / 4) ≤ c σ` using `(min_le_left _ _).trans (by linarith [hσ₀ σ, hc σ₀])`. Use `mul_le_mul_of_nonneg_left c' hs.le` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Take `⟨-, -, hO, hOp, -, hr, -⟩` from `M.bd σ`. Establish `hO0` using `levi_nonneg (ReciprocityTheory.AnForm.P.TailBoundAlt.isPsh_of_isPosPot _ _ hOp)`.
+
+Establish `pF` using `isPotential_ofFun _ _ hg`. Establish `pO` using `fun t => isPotentialRsmul _ t _ hO`. Establish `pθ` using `isPotentialAdd _ _ _ (hth u σ) (isPotentialRsmul _ s _ (ha σ))`. Establish `pP : IsPotential (M.A σ) (F.form u s (F.phS u s) σ)` using `isPotentialAdd _ _ _ pθ pF`. Establish `hg' : (M.A σ).Smooth fun x => F.phS u s σ x - B` using `fun j => (hg j).sub contDiffOn_const`.
+
+Establish `pF'` using `isPotential_ofFun _ _ hg'`. Establish `hpsh : IsPsh (M.A σ) (F.form u s (F.phS u s) σ)`. Use `psh_of_levi pP fun j y hy w => ?_` and prove the remaining obligations. Establish `a` using `levi_nonneg hp j hy w`. Establish `b` using `levi_nonneg (hca σ) j hy w`.
+
+Rewrite `a` using `[leviAt_add _ (isPotentialAdd _ _ _ (hth u σ) pF) (pO _) j hy, leviAt_add _ (hth u σ) pF j hy, leviAt_rsmul]`. Rewrite `b` using `[leviAt_add _ (ha σ) (pO _) j hy, leviAt_rsmul]`. Rewrite using `[An.form, leviAt_add _ pθ pF j hy, leviAt_add _ (hth u σ) (isPotentialRsmul _ s _ (ha σ)) j hy, leviAt_rsmul]`. Establish `c₁` using `mul_le_mul_of_nonneg_right hsmall (hO0 j hy w)`. Establish `c₂` using `mul_nonneg hs.le b`.
+
+Combine the linear equalities and inequalities to obtain the conclusion. Establish `hθ : ∀ j, ∀ y ∈ ((M.A σ).chart j).target, ∀ w, |leviAt (M.A σ) (F.th u σ + (F.a σ).rsmul s) j y w| ≤ K * leviAt (M.A σ) (M.Om σ) j y w`. Introduce `j y hy w`. Rewrite using `[leviAt_add _ (hth u σ) (isPotentialRsmul _ s _ (ha σ)) j hy, leviAt_rsmul]`. Establish `a : Ct σ * ‖u‖ ≤ (∑ σ, Ct σ) * |Λ|` using `mul_le_mul (Finset.single_le_sum (fun i _ => hCt i) (Finset.mem_univ σ)) huΛ' (norm_nonneg _) (Finset.sum_nonneg fun σ _ => hCt σ)`.
+
+Establish `b : Ca σ ≤ ∑ σ, Ca σ` using `Finset.single_le_sum (fun i _ => hCa i) (Finset.mem_univ σ)`. Establish `c₁ : |s * leviAt (M.A σ) (F.a σ) j y w| ≤ |leviAt (M.A σ) (F.a σ) j y w|`. Rewrite using `[abs_mul, abs_of_pos hs]`. Conclude with `mul_le_of_le_one_left (abs_nonneg _) hsle`. Establish `c₂ : Ct σ * ‖u‖ + Ca σ ≤ K` using `by linarith`.
+
+Establish `c₃` using `mul_le_mul_of_nonneg_right c₂ (hO0 j hy w)`. Use `ht σ u j y hy w` as an intermediate fact. Use `hab σ j y hy w` as an intermediate fact. Use `(abs_add_le _ _).trans ?_` and prove the remaining obligations. Combine the linear equalities and inequalities to obtain the conclusion.
+
+Establish `hEq : ∀ j, ∀ y ∈ ((M.A σ).chart j).target, ∀ w, leviAt (M.A σ) (F.form u s (F.phS u s) σ) j y w = leviAt (M.A σ) (F.th u σ + (F.a σ).rsmul s + LocPot.ofFun fun x => F.phS u s σ x - B) j y w`. Introduce `j y hy w`. Rewrite using `[An.form, leviAt_add _ pθ pF j hy, leviAt_add _ pθ pF' j hy, leviAt_sub_const hg B j hy]`. Use `⟨hg, hpsh, ⟨pP, fun _ => F.th u σ + (F.a σ).rsmul s + LocPot.ofFun fun x => F.phS u s σ x - B, fun _ => 1 / 3, fun _ => ⟨⟨_, _, rfl, pθ, ?_, ?_, ?_, fun x hx => ⟨?_, ?_⟩, Or.inl hg', fun j y hy _ w => ?_⟩, ?_⟩, fun j y hy _ w => ?_⟩, fun x => ⟨⟨?_, ?_⟩, fun hx => ⟨((hb x).2 hx).1 …` and prove the remaining obligations. Use `psh_of_levi (isPotentialAdd _ _ _ (pO _) pθ) fun j y hy w => ?_` and prove the remaining obligations.
+
+Rewrite using `[leviAt_add _ (pO _) pθ j hy, leviAt_rsmul]`. Combine the linear relations using `[(abs_le.1 (hθ j y hy w)).1]`. Use `psh_of_levi (isPotentialAdd _ _ _ (pO _) (isPotentialRsmul _ _ _ pθ)) fun j y hy w => ?_` and prove the remaining obligations. Rewrite using `[leviAt_add _ (pO _) (isPotentialRsmul _ _ _ pθ) j hy, leviAt_rsmul, leviAt_rsmul]`. Combine the linear relations using `[(abs_le.1 (hθ j y hy w)).2]`.
+
+Conclude with `fun j => (hg' j).mono (Set.inter_subset_inter_right _ (Set.preimage_mono (Set.subset_univ _)))`. Establish `hlr : 1 ≤ Real.log (M.r σ x)`. Rewrite using `[← Real.log_exp 1]`. Conclude with `Real.log_le_log (Real.exp_pos 1) (hr x hx)`. Establish `a` using `(abs_le.1 (hCs u σ x hx).1).1`.
+
+Establish `b : Cs * ‖u‖ ≤ |Cs| * |Λ|` using `mul_le_mul (le_abs_self _) huΛ' (norm_nonneg _) (abs_nonneg _)`. Establish `c₁ : Cs * ‖u‖ + B ≤ K` using `by linarith`. Establish `c₂` using `mul_le_mul_of_nonneg_right c₁ (zero_le_one.trans hlr)`. Establish `c₃` using `le_mul_of_one_le_right hB0 hlr`. Use `((hb x).2 hx).1` as an intermediate fact.
+
+Combine the linear equalities and inequalities to obtain the conclusion. Combine the linear relations using `[(hb x).1.2]`. Rewrite using `[← hEq j y hy]`. Conclude with `levi_nonneg hpsh j hy w`. Rewrite using `[abs_of_pos (by norm_num)]`.
+
+Combine the linear equalities and inequalities to obtain the conclusion. Rewrite using `[hEq j y hy, Fin.sum_univ_three]`. Expand and normalize the polynomial expressions, which then agree. Establish `a` using `(hb x).1.1`. Rewrite `a` using `[hlog]`.
+
+Establish `b : 2 * (C * ‖u‖) ≤ K` using `by linarith`. Establish `c₁` using `mul_le_mul_of_nonneg_right b hl0`. Combine the linear equalities and inequalities to obtain the conclusion. Combine the linear relations using `[(hb x).1.2]`. Establish `a` using `((hb x).2 hx).2.1 hrx`.
+
+Take `⟨b₁, b₂⟩` from `hC₃ s hs hsle`. Rewrite `b₂` using `[pow_one]`. Establish `b₃` using `mul_le_mul_of_nonneg_right (le_abs_self C₃) hs.le`. Establish `c₁` using `mul_le_mul hCB (b₁.trans b₃) (Real.exp_pos _).le hB0`. Establish `c₂` using `mul_le_mul hCB (b₂.trans b₃) hq0 hB0`.
+
+Establish `c₃ : 2 * (B * |C₃|) ≤ K` using `by linarith`. Establish `c₄` using `mul_le_mul_of_nonneg_right c₃ hs.le`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem famS (hth : ∀ u σ, IsPotential (M.A σ) (F.th u σ)) (ha : ∀ σ, IsPotential (M.A σ) (F.a σ))
     (hlin : ∀ σ j, ∀ y ∈ ((M.A σ).chart j).target, ∀ w, IsLinearMap ℝ fun u => leviAt (M.A σ) (F.th u σ) j y w)
     (h : F.InS) {d : ι → Fin N → ℝ} (hQ : F.QPolBd d) (hS : F.Size) : F.FamS := by
@@ -217,6 +290,11 @@ theorem famS (hth : ∀ u σ, IsPotential (M.A σ) (F.th u σ)) (ha : ∀ σ, Is
     have c₄ := mul_le_mul_of_nonneg_right c₃ hs.le
     linarith
 
+/- English proof (translation)
+Introduce `D Y T c h`. Use `⟨nefAn (T.th_pot c) h, fun d hQ hS => famS (T.th_pot c) (T.a_pot c) (fun σ j y hy w => ⟨?_, ?_⟩) h hQ hS⟩` and prove the remaining obligations. Introduce `u v`. Rewrite using `[← T.c1_L 0 c _ σ j y hy, ← T.c1_L 0 c _ σ j y hy, ← T.c1_L 0 c _ σ j y hy, map_add, (T.K 0 c).isOneCochain_add _ _ σ j y hy, leviAt_add _ ((T.K 0 c).firstChern_isPotential _ σ) ((T.K 0 c).firstChern_isPotential _ σ) j hy]`. Introduce `t u`.
+
+Rewrite using `[← T.c1_L 0 c _ σ j y hy, ← T.c1_L 0 c _ σ j y hy, map_smul, (T.K 0 c).firstChern_smul_leviEq _ _ σ j y hy, leviAt_rsmul, smul_eq_mul]`.
+-/
 theorem nefAn_and_famS : ∀ (D : D7) (Y : ShimX D.what₂.Tau) (T : Real0 Y) (c : Y.Comp), (T.F c).InS → (T.F c).NefAn ∧ ∀ d, (T.F c).QPolBd d → (T.F c).Size → (T.F c).FamS := by
   intro D Y T c h
   refine ⟨nefAn (T.th_pot c) h, fun d hQ hS => famS (T.th_pot c) (T.a_pot c) (fun σ j y hy w => ⟨?_, ?_⟩) h hQ hS⟩

@@ -1,5 +1,10 @@
 import Mathlib
 
+/- English proof (translation)
+Introduce `Y h f g z hh ⟨C, N, hf⟩ ⟨D, M, hg⟩`. Use `⟨|C| + ‖z‖ * |D|, N + M, fun y => ?_⟩` and prove the remaining obligations. Establish `h0 : 0 ≤ h y` using `zero_le_one.trans (hh y)`. Establish `h1 : ‖f y‖ ≤ |C| * h y ^ (N + M)` using `(hf y).trans (mul_le_mul (le_abs_self C) (pow_le_pow_right₀ (hh y) (Nat.le_add_right N M)) (pow_nonneg h0 _) (abs_nonneg C))`. Establish `h2 : ‖g y‖ ≤ |D| * h y ^ (N + M)` using `(hg y).trans (mul_le_mul (le_abs_self D) (pow_le_pow_right₀ (hh y) (Nat.le_add_left M N)) (pow_nonneg h0 _) (abs_nonneg D))`.
+
+Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem UpperTheory.moderate_growth_add_smul :
     ∀ {Y : Type} (h : Y → ℝ) (f g : Y → ℂ) (z : ℂ), (∀ y, 1 ≤ h y) →
         (∃ (C : ℝ) (N : ℕ), ∀ y, ‖f y‖ ≤ C * h y ^ N) → (∃ (C : ℝ) (N : ℕ), ∀ y, ‖g y‖ ≤ C * h y ^ N) →

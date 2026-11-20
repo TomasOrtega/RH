@@ -26,6 +26,11 @@ section Abstract
 
 variable {G U : Type} [Group G] [CommGroup U] {W : G → G → U → Prop} {M : ℕ}
 
+/- English proof (translation)
+Establish `ha' : a⁻¹ ^ M = 1` using `by rw [inv_pow, ha, inv_one]`. Use `inv_mul_eq_one.1 (hn _ (by rw [(cm _ _).mul_pow, ha', hb, _root_.mul_one]) fun y hy => ?_)` and prove the remaining obligations. Take `⟨c, h₁, h₂⟩` from `h y hy`. Take `⟨d, hd, -⟩` from `hu _ y ha' hy`. Establish `e` using `hm _ _ _ _ _ hd h₁`.
+
+Rewrite `e` using `[inv_mul_cancel]`. Conclude with `(hu 1 y (one_pow _) hy).unique e (rel_one hu hm hy) ▸ hm _ _ _ _ _ hd h₂`.
+-/
 theorem eq_of_pairing (cm : ∀ a b : G, Commute a b)
     (hu : ∀ x y : G, x ^ M = 1 → y ^ M = 1 → ∃! c, W x y c)
     (hm : ∀ x x' y c c', W x y c → W x' y c' → W (x * x') y (c * c'))
@@ -39,6 +44,11 @@ theorem eq_of_pairing (cm : ∀ a b : G, Commute a b)
   rw [inv_mul_cancel] at e
   exact (hu 1 y (one_pow _) hy).unique e (rel_one hu hm hy) ▸ hm _ _ _ _ _ hd h₂
 
+/- English proof (translation)
+Use `eq_of_pairing cm hu hm hn (t₂ p) (prod_pow_eq_one cm _ (fun i => t₂ (b i)) a) fun y hy => ?_` and prove the remaining obligations. Take `⟨q, rfl⟩` from `s₂ y hy`. Use `choose c hc using fun i => (hu _ _ (t₁ (b i)) (t₁ q)).exists`. Establish `o₁` using `rel_one hu hm (t₁ q)`. Establish `o₂` using `rel_one hu hm (t₂ q)`.
+
+Use `⟨∏ i, c i ^ a i, hw _ _ _ ?_, rel_prod hm o₂ _ _ fun i => rel_pow hm o₂ (hw _ _ _ (hc i)) _⟩` and prove the remaining obligations. Rewrite using `[hp]`. Conclude with `rel_prod hm o₁ _ _ fun i => rel_pow hm o₁ (hc i) _`.
+-/
 theorem comb_eq (cm : ∀ a b : G, Commute a b)
     (hu : ∀ x y : G, x ^ M = 1 → y ^ M = 1 → ∃! c, W x y c)
     (hm : ∀ x x' y c c', W x y c → W x' y c' → W (x * x') y (c * c'))
@@ -57,6 +67,27 @@ theorem comb_eq (cm : ∀ a b : G, Commute a b)
 
 end Abstract
 
+/- English proof (translation)
+Establish `hL` using `GlobalTheory.abelianSchemeLaws_all.1`. Use `P.isAb.comm` as an intermediate fact. Establish `cm : ∀ a b : baseOver (Sp K) ⟶ P.A, Commute a b` using `fun a b => _root_.mul_comm a b`. Establish `hm0 : m ^ 2 ≠ 0` using `pow_ne_zero _ (by omega)`. Establish `hK : ((m ^ 2 : ℕ) : K) ≠ 0` using `Nat.cast_ne_zero.2 hm0`.
+
+Establish `: NeZero (m ^ 2)` using `⟨hm0⟩`. Establish `: NeZero ((m ^ 2 : ℕ) : K)` using `⟨hK⟩`. Take `⟨z, hz⟩` from `HasEnoughRootsOfUnity.exists_primitiveRoot K (m ^ 2)`. Establish `hζ` using `hz.isUnit_unit (NeZero.ne _)`. Generalize the expression as in `(hz.isUnit (NeZero.ne _)).unit = ζ at hζ`.
+
+Take `⟨lev⟩` from `GlobalTheory.nonempty_level_of_isAlgClosed K P (m ^ 2) ζ hK hζ`. Take `⟨hu, hmul, -⟩` from `hL.weil _ P (m ^ 2) (baseOver (Sp K))`. Establish `hnd` using `hL.weilNondeg K P (m ^ 2) hK`. Use `choose b hb' using fun i => s₁ _ (lev.torsion i)`. Establish `eb : lev.pt = fun i => y₁ (b i)` using `funext fun i => (hb' i).symm`.
+
+Establish `comb : ∀ (a : Fin (2 * P.g) → ℕ) (q : I), y₁ q = linComb lev.pt a → y₂ q = linComb (fun i => y₂ (b i)) a` using `fun a q h => comb_eq (W := fun a b u => WeilIs P.A P.L (m ^ 2 : ℕ) a b u) cm hu hmul hnd t₁ t₂ s₂ hw b a q (by rw [h, eb]; rfl)`. Establish `prim : ∀ {T : Type} [CommRing T] [Nontrivial T] (φ : K →+* T), IsPrimitiveRoot (Units.map φ.toMonoidHom ζ) (m ^ 2)` using `fun φ => hζ.map_of_injective (f := Units.map φ.toMonoidHom) (Units.map_injective φ.injective)`. Take `⟨lev', hl'⟩` from `GlobalTheory.exists_level_of_pairing hL.globalFns hL.weil hL.mulN (Sp K) P (m ^ 2) (unitOn ζ) lev.prim (fun F _ s => by`. Establish `: Nontrivial Γ(Spec (CommRingCat.of F), ⊤)` using `(Scheme.ΓSpecIso (CommRingCat.of F)).commRingCatIsoToRingEquiv.toEquiv.nontrivial`. Use `⟨?_, prim (s.appTop.hom.comp (Scheme.ΓSpecIso (CommRingCat.of K)).inv.hom)⟩` and prove the remaining obligations.
+
+Rewrite using `[← map_natCast (Spec.preimage s).hom]`. Conclude with `(map_ne_zero _).2 hK) (fun i => y₂ (b i)) (fun i => t₂ _)`. Use the proof step `(fun i k => hw _ _ _ (by rw [hb', hb']; exact lev.pairing i k))`. Use `choose q hq using fun a => s₁ _ (ThetaPtDet.levelPoint_pow lev rfl a)`. Establish `e₁ : (fun a => y₁ (q a)) = GlobalTheory.levelPoint lev rfl` using `funext hq`.
+
+Establish `e₂ : (fun a => y₂ (q a)) = GlobalTheory.levelPoint lev' rfl` using `funext fun a => (comb _ _ (hq a)).trans (by rw [← hl']; rfl)`. Establish `w₁` using `ThetaDescentLevel.isThetaPt_reindex v₁ q`. Establish `w₂` using `ThetaDescentLevel.isThetaPt_reindex v₂ q`. Rewrite `w₁` using `[e₁]`. Rewrite `w₂` using `[e₂]`.
+
+Take `⟨φ, ⟨hφ, t, ht⟩, hl⟩` from `GlobalTheory.thetaPtDetermines_and_endDeterminedOnTorsion.1 P.g n 2 j _ m hn ho le_rfl rfl hm hb K (Nat.cast_ne_zero.2 hn.ne_zero) P P rfl rfl _ lev lev' _ w₁ w₂`. Establish `key : ∀ p, y₁ p ≫ φ.hom = y₂ p` using `fun p => by`. Take `⟨d, hd⟩` from `lev.span K (𝟙 _) (y₁ p) (t₁ p)`. Establish `hd' : linComb lev.pt (fun i => (d i : ℕ)) = y₁ p` using `(congrArg (linComb · _) (funext fun i => (Category.id_comp (lev.pt i)).symm)).trans hd`. Rewrite using `[comb _ _ hd'.symm, ← hd', ThetaPtDet.linComb_comp, ← hl']`.
+
+Conclude with `congrArg (linComb · _) (funext hl)`. Take `⟨w, hw'⟩` from `LBIso.symm (⟨t, ht⟩ : LBIso _ _)`. Establish `h3 : 3 ≤ n`. Use `hn.two_le` as an intermediate fact. Take `⟨c, rfl⟩` from `ho`.
+
+Use linear arithmetic over natural numbers and integers. Establish `hid` using `MatchRigid.aut_eq_id hL P (𝟙 _) h3 (Nat.cast_ne_zero.2 hn.ne_zero) φ w hw' fun x hx => by`. Establish `hd : n ∣ m ^ 2`. Rewrite using `[hm]`. Conclude with `dvd_pow (Dvd.dvd.mul_left (dvd_pow (dvd_pow_self n two_ne_zero) two_ne_zero) _) two_ne_zero`.
+
+Take `⟨c, hc⟩` from `hd`. Take `⟨r, rfl⟩` from `s₁ x (by rw [hc, pow_mul]; erw [hx]; exact one_pow _)`. Conclude with `(key r).trans (hfix r hx)`. Rewrite using `[← key, hid, Category.comp_id]`.
+-/
 theorem eq_of_isAlgClosed {K : Type} [Field K] [IsAlgClosed K] [CharZero K] (P : PolAV (Sp K)) {n j m : ℕ}
     (hn : n.Prime) (ho : Odd n) (hm : m = n ^ j * (n ^ 2) ^ 2) (hb : ((n ^ 2) ^ 2) ^ P.g * P.g.factorial < m)
     {I : Type} {y₁ y₂ : I → (baseOver (Sp K) ⟶ P.A)}
@@ -124,6 +155,17 @@ theorem eq_of_isAlgClosed {K : Type} [Field K] [IsAlgClosed K] [CharZero K] (P :
     exact (key r).trans (hfix r hx)
   rw [← key, hid, Category.comp_id]
 
+/- English proof (translation)
+Introduce `R _ _ _ D A n j m hn ho hm hb x₁ x₂ ⟨s₁, t₁, _, _, w₁⟩ ⟨s₂, t₂, _, _, w₂⟩ hfix v v₁ v₂ p`. Establish `hL` using `GlobalTheory.abelianSchemeLaws_all.1`. Establish `: CharZero (FractionRing R)` using `charZero_of_injective_algebraMap (IsFractionRing.injective R _)`. Take `⟨P, g, hg, hP, hmul, hs⟩` from `hL.polBaseChange _ (Sp (Kb R)) (jFK (R := R) (Kb R)) A`. Establish `hp : IsGrpPullback P.A A.A _ g` using `⟨hg, fun T x y x₀ y₀ hx hy => by`.
+
+Rewrite using `[(Over.OverMorphism.ext hx : x₀ = toBase hg.w x), (Over.OverMorphism.ext hy : y₀ = toBase hg.w y), ← hmul]`. Use the proof step `rfl⟩`. Establish `hl : LBIso P.L (A.L.pull g)` using `LBIso.symm hs`. Take `⟨e, he⟩` from `exists_mulEquiv_of_isGrpPullback hp (𝟙 (Sp (Kb R))) (jFK (R := R) (Kb R)) (Category.id_comp _).symm`. Establish `hE : ∀ x, x.left = (e.symm x).left ≫ g` using `fun x => (congrArg (fun z => z.left) (e.apply_symm_apply x).symm).trans (he _)`.
+
+Establish `kW : ∀ (s : Sp (Kb R) ⟶ Sp (FractionRing R)) (_ : s = 𝟙 _ ≫ jFK (R` using `R) (Kb R)) (x y : baseOver (Sp (Kb R)) ⟶ P.A) (x₀ y₀ : Over.mk s ⟶ A.A) (c : Γ(Sp (Kb R), ⊤)ˣ), x₀.left = x.left ≫ g → y₀.left = y.left ≫ g → (WeilIs P.A P.L (m ^ 2 : ℕ) x y c ↔ WeilIs A.A A.L (m ^ 2 : ℕ) x₀ y₀ c) := by`. Introduce and unpack `s rfl x y x₀ y₀ c hx hy`. Use `P.isAb.comm` as an intermediate fact. Conclude with `weilIs_grpPullback_of_comm' _ _ _ _ _ g _ _ A.isLB P.isLB hp hl (baseOver _) _ x y x₀ y₀ c hx hy`. Establish `kT : ∀ (s : Sp (Kb R) ⟶ Sp (FractionRing R)) (_ : s = 𝟙 _ ≫ jFK (R` using `R) (Kb R)) (x : QkPt D (Kb R) (m ^ 2) → (baseOver (Sp (Kb R)) ⟶ P.A)) (x₀ : QkPt D (Kb R) (m ^ 2) → (Over.mk s ⟶ A.A)) (u : QkPt D (Kb R) (m ^ 2) → Γ(Sp (Kb R), ⊤)), (∀ i, (x₀ i).left = (x i).left ≫ g) → (∀ i, x i ^ m ^ 2 = 1) → IsThetaPt A m x₀ u → IsThetaPt P m x u := by`.
+
+Introduce and unpack `s rfl x x₀ u hx ht h`. Conclude with `(ThetaPtUp.isThetaPt_iff (T := baseOver (Sp (Kb R))) hp hl hx ht _).2 h`. Establish `tor : ∀ {k : ℕ} (x), x ^ k = 1 → e.symm x ^ k = 1` using `fun x h => by rw [← map_pow, h, map_one]`. Establish `tor' : ∀ {k : ℕ} (x), x ^ k = 1 → e x ^ k = 1` using `fun x h => by rw [← map_pow, h, map_one]`. Use `e.symm.injective (eq_of_isAlgClosed P hn ho hm (by rw [hP]; exact hb) (y₁ := fun p => e.symm (x₁ p)) (y₂ := fun p => e.symm (x₂ p)) (fun p => tor _ (t₁ p)) (fun p => tor _ (t₂ p)) (fun y hy => (s₁ _ (tor' y hy)).imp fun q h => (congrArg e.symm h).trans (e.symm_apply_apply y)) (fu …` and prove the remaining obligations.
+
+Take `⟨z, rfl⟩ : ∃ z : (Kb R)ˣ, unitOn z = c` from `⟨Units.map (Scheme.ΓSpecIso (CommRingCat.of (Kb R))).hom.hom.toMonoidHom c, Units.ext ((Scheme.ΓSpecIso (CommRingCat.of (Kb R))).commRingCatIsoToRingEquiv.symm_apply_apply c.val)⟩`. Conclude with `(kW _ (Category.id_comp _).symm _ _ _ _ _ (hE _) (hE _)).2 ((w₂ _ _ _).1 ((w₁ _ _ _).2 ((kW _ (Category.id_comp _).symm _ _ _ _ _ (hE _) (hE _)).1 h)))`. Conclude with `(congrArg (· ^ n) (e.apply_symm_apply _).symm).trans (tor' _ h)`.
+-/
 theorem labels_eq : ∀ (R : Type) [CommRing R] [IsDomain R] [CharZero R] (D : DegPre R) (A : PolAV (Sp (FractionRing R))) (n j m : ℕ), n.Prime → Odd n → m = n ^ j * (n ^ 2) ^ 2 → ((n ^ 2) ^ 2) ^ A.g * A.g.factorial < m → ∀ (x₁ x₂ : QkPt D (Kb R) (m ^ 2) → (TFK (R := R) (Kb R) ⟶ A.A)), LabTors D A (m ^ 2) x₁ → LabTors D A (m ^ 2) x₂ → (∀ p, x₁ p ^ n = 1 → x₂ p = x₁ p) → ∀ v : QkPt D (Kb R) (m ^ 2) → Kb R, IsThetaPt A m x₁ (fun p => GlobalTheory.Ex.fnOf (v p)) → IsThetaPt A m x₂ (fun p => GlobalTheory.Ex.fnOf (v p)) → ∀ p, x₂ p = x₁ p := by
   intro R _ _ _ D A n j m hn ho hm hb x₁ x₂ ⟨s₁, t₁, _, _, w₁⟩ ⟨s₂, t₂, _, _, w₂⟩ hfix v v₁ v₂ p
   have hL := GlobalTheory.abelianSchemeLaws_all.1

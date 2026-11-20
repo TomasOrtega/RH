@@ -15,6 +15,9 @@ open scoped ComplexConjugate Real in
 open NumberField in
 variable {K κ ι : Type} [Field K] [NumberField K] [Fintype κ] [Fintype ι] in
 omit [NumberField K] [Fintype κ] [Fintype ι] in
+/- English proof (translation)
+Take `⟨y, rfl⟩` from `(_root_.GlobalTheory.SW.HaarLevel.mem_perSub R x).mp hx`. Conclude with `⟨_root_.GlobalTheory.SW.HaarLevel.incl K κ ι y, (_root_.GlobalTheory.SW.HaarLevel.intM_iff _).mpr ⟨y, rfl⟩, (Nat.cast_smul_eq_nsmul K R _).symm⟩`.
+-/
 theorem _root_.GlobalTheory.SW.IpPos.exists_of_mem_perSub {R : ℕ} {x : Matrix κ ι K}
     (hx : x ∈ _root_.GlobalTheory.SW.perSub K κ ι R) :
     ∃ y : Matrix κ ι K, _root_.GlobalTheory.SW.IntM y ∧ x = (R : K) • y := by
@@ -28,6 +31,9 @@ open scoped ComplexConjugate Real in
 open NumberField in
 variable {K κ ι : Type} [Field K] [NumberField K] [Fintype κ] [Fintype ι] in
 omit [NumberField K] [Fintype κ] [Fintype ι] in
+/- English proof (translation)
+Establish `hmem` using `QuotientAddGroup.eq.mp (QuotientAddGroup.out_eq' (QuotientAddGroup.mk (s := _root_.GlobalTheory.SW.perSub K κ ι R) x)).symm`. Rewrite using `[← _root_.GlobalTheory.SW.HaarLevel.periodic h x _ hmem, add_neg_cancel_left]`.
+-/
 theorem _root_.GlobalTheory.SW.IpPos.apply_out_mk {R : ℕ} {φ : Matrix κ ι K → ℂ}
     (h : _root_.GlobalTheory.SW.HasLevel R φ) (x : Matrix κ ι K) :
     φ (QuotientAddGroup.mk (s := _root_.GlobalTheory.SW.perSub K κ ι R) x).out = φ x := by
@@ -40,6 +46,9 @@ open scoped ComplexConjugate Real in
 open NumberField in
 variable {K κ ι : Type} [Field K] [NumberField K] [Fintype κ] [Fintype ι] in
 omit [NumberField K] [Fintype κ] [Fintype ι] in
+/- English proof (translation)
+Introduce `k i`. Rewrite using `[Matrix.smul_apply, smul_eq_mul]`. Conclude with `(isIntegral_natCast n).mul (hx k i)`.
+-/
 theorem _root_.GlobalTheory.SW.IpPos.intM_natCast_smul (n : ℕ) {x : Matrix κ ι K}
     (hx : _root_.GlobalTheory.SW.IntM x) : _root_.GlobalTheory.SW.IntM ((n : K) • x) := by
   intro k i
@@ -51,6 +60,9 @@ open scoped ComplexConjugate Real in
 open NumberField in
 variable {K κ ι : Type} [Field K] [NumberField K] [Fintype κ] [Fintype ι] in
 omit [NumberField K] [Fintype κ] [Fintype ι] in
+/- English proof (translation)
+Use `⟨fun x hx => ?_, fun x y hy => ?_⟩` and prove the remaining obligations. Rewrite using `[Nat.cast_mul, mul_comm, mul_smul]`. Conclude with `_root_.GlobalTheory.SW.IpPos.intM_natCast_smul S (h.1 x hx)`. Rewrite using `[Nat.cast_mul, mul_smul]`. Conclude with `h.2 x _ (_root_.GlobalTheory.SW.IpPos.intM_natCast_smul S hy)`.
+-/
 theorem _root_.GlobalTheory.SW.IpPos.hasLevel_mul {R : ℕ} {φ : Matrix κ ι K → ℂ} (h : _root_.GlobalTheory.SW.HasLevel R φ)
     (S : ℕ) : _root_.GlobalTheory.SW.HasLevel (R * S) φ := by
   refine ⟨fun x hx => ?_, fun x y hy => ?_⟩
@@ -66,6 +78,17 @@ open Matrix Complex in
 open scoped ComplexConjugate Real in
 open NumberField in
 variable {K κ ι : Type} [Field K] [NumberField K] [Fintype κ] [Fintype ι] in
+/- English proof (translation)
+Use `set L := _root_.GlobalTheory.SW.perSub K κ ι 1`. Use `set H := (_root_.GlobalTheory.SW.perSub K κ ι (1 * (R * R))).addSubgroupOf L`. Establish `hRK : (R : K) ≠ 0` using `Nat.cast_ne_zero.mpr hR.ne'`. Establish `hidx : H.index = (R ^ (Module.finrank ℚ K * (Fintype.card κ * Fintype.card ι))) ^ 2` using `by show (_root_.GlobalTheory.SW.perSub K κ ι (1 * (R * R))).relIndex L = _`. Rewrite using `[_root_.GlobalTheory.SW.HaarLevel.relIndex_perSub 1 (R * R) one_pos, mul_pow, ← sq]`.
+
+Set `g : L →+ Matrix κ ι K ⧸ _root_.GlobalTheory.SW.perSub K κ ι R` to `(QuotientAddGroup.mk' _).comp ((DistribMulAction.toAddMonoidHom (Matrix κ ι K) ((R : K)⁻¹)).comp L.subtype)`. Establish `hker : H ≤ g.ker`. Introduce `z hz`. Rewrite using `[AddMonoidHom.mem_ker]`. Take `⟨y, hy, hzy⟩` from `_root_.GlobalTheory.SW.IpPos.exists_of_mem_perSub (AddSubgroup.mem_addSubgroupOf.mp hz)`.
+
+Simplify using `only [g, AddMonoidHom.comp_apply, AddSubgroup.coe_subtype, DistribMulAction.toAddMonoidHom_apply, QuotientAddGroup.mk'_apply, QuotientAddGroup.eq_zero_iff, hzy, smul_smul]`. Rewrite using `[show ((R : K))⁻¹ * ((1 * (R * R) : ℕ) : K) = R by push_cast; field_simp]`. Conclude with `AddSubgroup.subset_closure ⟨y, hy, rfl⟩`. Set `F` to `QuotientAddGroup.lift H g hker`. Establish `hsub : _root_.GlobalTheory.SW.IpPos.classes K κ ι R ⊆ Set.range F`.
+
+Introduce `q hq`. Establish `hL : (R : K) • q.out ∈ L` using `AddSubgroup.subset_closure ⟨_, hq, by rw [Nat.cast_one, one_smul]⟩`. Use `⟨QuotientAddGroup.mk ⟨_, hL⟩, ?_⟩` and prove the remaining obligations. Simplify using `only [F, QuotientAddGroup.lift_mk, g, AddMonoidHom.comp_apply, AddSubgroup.coe_subtype, DistribMulAction.toAddMonoidHom_apply, QuotientAddGroup.mk'_apply, smul_smul, inv_mul_cancel₀ hRK, one_smul]`. Conclude with `QuotientAddGroup.out_eq' q`.
+
+Establish `hfin : Finite (L ⧸ H)` using `Nat.finite_of_card_ne_zero (by`. Rewrite using `[← AddSubgroup.index, hidx]`. Use the proof step `positivity)`. Use `⟨(Set.finite_range F).subset hsub, ?_⟩` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem _root_.GlobalTheory.SW.IpPos.classes_finite_card {R : ℕ} (hR : 0 < R) :
     (_root_.GlobalTheory.SW.IpPos.classes K κ ι R).Finite ∧
       (_root_.GlobalTheory.SW.IpPos.classes K κ ι R).ncard ≤
@@ -112,6 +135,13 @@ open Matrix Complex in
 open scoped ComplexConjugate Real in
 open NumberField in
 variable {K κ ι : Type} [Field K] [NumberField K] [Fintype κ] [Fintype ι] in
+/- English proof (translation)
+Establish `hlev : _root_.GlobalTheory.SW.HasLevel R (fun x => φ x * conj (ψ x))`. Use `⟨fun x hx => hφ.1 x (left_ne_zero_of_mul hx), fun x y hy => ?_⟩` and prove the remaining obligations. Simplify using `only [hφ.2 x y hy, hψ.2 x y hy]`. Unfold `_root_.GlobalTheory.SW.ip`. Rewrite using `[(_root_.GlobalTheory.SW.haar_eq_haarAt K κ ι R _ hR hlev).1]`.
+
+Unfold `_root_.GlobalTheory.SW.haarAt`. Use `congr 1`. Use `finsum_eq_sum_of_support_subset _ ?_` and prove the remaining obligations. Introduce `q hq`. Rewrite using `[Set.Finite.coe_toFinset]`.
+
+Conclude with `hφ.1 _ (left_ne_zero_of_mul hq)`.
+-/
 theorem _root_.GlobalTheory.SW.IpPos.ip_eq_sum {R : ℕ} (hR : 0 < R) {φ ψ : Matrix κ ι K → ℂ}
     (hφ : _root_.GlobalTheory.SW.HasLevel R φ) (hψ : _root_.GlobalTheory.SW.HasLevel R ψ) :
     _root_.GlobalTheory.SW.ip φ ψ =
@@ -136,6 +166,9 @@ open Matrix Complex in
 open scoped ComplexConjugate Real in
 open NumberField in
 variable {K κ ι : Type} [Field K] [NumberField K] [Fintype κ] [Fintype ι] in
+/- English proof (translation)
+Rewrite using `[_root_.GlobalTheory.SW.IpPos.ip_eq_sum hR hφ hφ]`. Repeatedly rewrite using `[Complex.mul_conj, Complex.normSq_eq_norm_sq]`. Use `push_cast`. Both sides reduce to the same expression.
+-/
 private lemma schwartzBruhatInnerProduct_self_eq_lemma {R : ℕ} (hR : 0 < R) {φ : Matrix κ ι K → ℂ}
     (hφ : _root_.GlobalTheory.SW.HasLevel R φ) :
     _root_.GlobalTheory.SW.ip φ φ =
@@ -150,6 +183,27 @@ private lemma schwartzBruhatInnerProduct_self_eq_lemma {R : ℕ} (hR : 0 < R) {�
 open Matrix Complex in
 open scoped ComplexConjugate Real in
 
+/- English proof (translation)
+Introduce `K κ ι _ _ _ _ R φ hR hφ`. Use `set N := Module.finrank ℚ K * (Fintype.card κ * Fintype.card ι)`. Establish `hfc` using `_root_.GlobalTheory.SW.IpPos.classes_finite_card (K := K) (κ := κ) (ι := ι) hR`. Use `set s := hfc.1.toFinset with hs`. Use `set Sφ := ∑ q ∈ s, ‖φ q.out‖ ^ 2 with hSφ`.
+
+Establish `hc : (0 : ℝ) < (R : ℝ) ^ N` using `by positivity`. Establish `hip : _root_.GlobalTheory.SW.ip φ φ = (((R : ℝ) ^ N)⁻¹ * Sφ : ℝ)` using `schwartzBruhatInnerProduct_self_eq_lemma hR hφ`. Establish `hre : (_root_.GlobalTheory.SW.ip φ φ).re = ((R : ℝ) ^ N)⁻¹ * Sφ`. Rewrite using `[hip, Complex.ofReal_re]`. Establish `hS0 : 0 ≤ Sφ` using `Finset.sum_nonneg fun _ _ => by positivity`.
+
+Establish `hpt : ∀ x, ‖φ x‖ ^ 2 ≤ (R : ℝ) ^ N * (_root_.GlobalTheory.SW.ip φ φ).re`. Introduce `x`. Rewrite using `[hre, ← mul_assoc, mul_inv_cancel₀ hc.ne', one_mul]`. Distinguish the cases in `hx : φ x = 0`. Simplify `hS0` using `[hx]`.
+
+Establish `hq : (QuotientAddGroup.mk x : Matrix κ ι K ⧸ _root_.GlobalTheory.SW.perSub K κ ι R) ∈ s`. Rewrite using `[hs, Set.Finite.mem_toFinset]`. Use `show _root_.GlobalTheory.SW.IntM _`. Conclude with `hφ.1 _ (by rwa [_root_.GlobalTheory.SW.IpPos.apply_out_mk hφ])`. Establish `h` using `Finset.single_le_sum (f := fun q => ‖φ q.out‖ ^ 2) (fun _ _ => by positivity) hq`.
+
+Simplify `h` using `only [_root_.GlobalTheory.SW.IpPos.apply_out_mk hφ]`. Use `⟨by rw [hip, Complex.ofReal_im], by rw [hre]; positivity, hpt, fun B hB => ?_, ⟨√((R : ℝ) ^ N * (_root_.GlobalTheory.SW.ip φ φ).re), fun x => by` and prove the remaining obligations. Simplify using `using Real.abs_le_sqrt (hpt x)⟩, fun ψ hψ => ?_⟩`. Establish `h1 : Sφ ≤ s.card • B ^ 2` using `Finset.sum_le_card_nsmul _ _ _ (fun q _ => pow_le_pow_left₀ (norm_nonneg _) (hB _) 2)`. Establish `hcard : (s.card : ℝ) ≤ ((R : ℝ) ^ N) ^ 2`.
+
+Rewrite using `[hs, ← Set.ncard_eq_toFinset_card _ hfc.1]`. Conclude with `hfc.2` after adjusting the coercions. Rewrite `h1` using `[nsmul_eq_mul]`. Rewrite using `[hre]`. Combine the equalities or inequalities in the displayed calculation.
+
+Conclude with `h1.trans (mul_le_mul_of_nonneg_right hcard (sq_nonneg B))`. Use `_ = (R : ℝ) ^ N * B ^ 2 := by field_simp`. Take `⟨S, hS, hψS⟩` from `hψ`. Establish `hRS : 0 < R * S` using `Nat.mul_pos hR hS`. Establish `hφ'` using `_root_.GlobalTheory.SW.IpPos.hasLevel_mul hφ S`.
+
+Establish `hψ' : _root_.GlobalTheory.SW.HasLevel (R * S) ψ`. Rewrite using `[mul_comm]`. Conclude with `_root_.GlobalTheory.SW.IpPos.hasLevel_mul hψS R`. Rewrite using `[_root_.GlobalTheory.SW.IpPos.ip_eq_sum hRS hφ' hψ', schwartzBruhatInnerProduct_self_eq_lemma hRS hφ', schwartzBruhatInnerProduct_self_eq_lemma hRS hψ', Complex.ofReal_re, Complex.ofReal_re, norm_mul, norm_inv, norm_pow, Complex.norm_natCast]`. Use `set t := (_root_.GlobalTheory.SW.IpPos.classes_finite_card (K := K) (κ := κ) (ι := ι) hRS).1.toFinset`.
+
+Use `set d : ℝ := ((R * S : ℕ) : ℝ) ^ N`. Establish `hcs : ‖∑ q ∈ t, φ q.out * conj (ψ q.out)‖ ^ 2 ≤ (∑ q ∈ t, ‖φ q.out‖ ^ 2) * ∑ q ∈ t, ‖ψ q.out‖ ^ 2`. Combine the equalities or inequalities in the displayed calculation. Use `(norm_sum_le _ _).trans (le_of_eq ?_)` and prove the remaining obligations. Simplify using `[Complex.norm_conj]`.
+
+Use `_ ≤ _ := Finset.sum_mul_sq_le_sq_mul_sq _ _ _`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem _root_.GlobalTheory.SW.ip_self_nonneg_and_bounds : ∀ (K κ ι : Type) [Field K] [NumberField K]
     [Fintype κ] [Fintype ι] (R : ℕ) (φ : Matrix κ ι K → ℂ), 0 < R → _root_.GlobalTheory.SW.HasLevel R φ →
     (_root_.GlobalTheory.SW.ip φ φ).im = 0 ∧ 0 ≤ (_root_.GlobalTheory.SW.ip φ φ).re ∧

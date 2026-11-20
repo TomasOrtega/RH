@@ -4,6 +4,9 @@ set_option maxSynthPendingDepth 1
 
 namespace GroundTheory.Heights₂.Heights.TheoremB
 
+/- English proof (translation)
+Introduce `d S hI9 u hu`. Conclude with `mul_nonneg S.vol_pos.le (hI9 u hu).1`.
+-/
 theorem TermA.proof : TermA.Statement := by
   intro d S hI9 u hu
   exact mul_nonneg S.vol_pos.le (hI9 u hu).1

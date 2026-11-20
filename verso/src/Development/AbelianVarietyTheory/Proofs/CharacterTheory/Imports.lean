@@ -2,6 +2,25 @@ import Mathlib
 
 namespace GlobalTheory.UnimodularLatticeLemma
 
+/- English proof (translation)
+Set `S : Set (Submodule L V)` to `{W | W ≠ ⊥ ∧ ∀ b, ∀ x ∈ W, f b x ∈ W}`. Establish `hS : (⊤ : Submodule L V) ∈ S` using `⟨top_ne_bot, fun _ _ _ => Submodule.mem_top⟩`. Take `⟨W, hW, hmin⟩` from `(wellFounded_lt (α := Submodule L V)).has_min S ⟨⊤, hS⟩`. Establish `key : ∀ b, ∃ μ : L, ∀ x ∈ W, f b x = μ • x`. Introduce `b`.
+
+Establish `hWb : ∀ x ∈ W, f b x ∈ W` using `hW.2 b`. Use `haveI : Nontrivial W := Submodule.nontrivial_iff_ne_bot.mpr hW.1`. Take `⟨μ, hμ⟩` from `Module.End.exists_eigenvalue ((f b).restrict hWb)`. Take `⟨w, hw⟩` from `hμ.exists_hasEigenvector`. Establish `hw1 : (f b).restrict hWb w = μ • w` using `hw.apply_eq_smul`.
+
+Establish `hw0 : w ≠ 0` using `hw.2`. Set `W' : Submodule L V` to `W ⊓ LinearMap.ker (f b - μ • 1)`. Establish `hmem : ∀ x, x ∈ W' ↔ x ∈ W ∧ f b x = μ • x`. Introduce `x`. Simplify using `only [W', Submodule.mem_inf, LinearMap.mem_ker, LinearMap.sub_apply, LinearMap.smul_apply, Module.End.one_apply, sub_eq_zero]`.
+
+Establish `hW'S : W' ∈ S`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Introduce `h`. Apply `hw0` to reduce the goal to its premises. Establish `: (w : V) ∈ W'`.
+
+Rewrite using `[hmem]`. Use `⟨w.2, ?_⟩` and prove the remaining obligations. Use `congrArg Subtype.val hw1` as an intermediate fact. Simplify using `using this`. Rewrite `this` using `[h, Submodule.mem_bot]`.
+
+Conclude with `Subtype.ext this`. Introduce `c x hx`. Rewrite `hx`, the goal using `[hmem]`. Use `⟨hW.2 c x hx.1, ?_⟩` and prove the remaining obligations. Establish `h1 : f b (f c x) = (f b * f c) x` using `rfl`.
+
+Rewrite using `[h1, hc b c, Module.End.mul_apply, hx.2, map_smul]`. Establish `hle : W' ≤ W` using `inf_le_left`. Establish `heq : W' = W`. Assume the negation of the conclusion as `hne`. Conclude with `hmin W' hW'S (lt_of_le_of_ne hle hne)`.
+
+Use `⟨μ, fun x hx => ?_⟩` and prove the remaining obligations. Establish `: x ∈ W'` using `heq ▸ hx`. Conclude with `((hmem x).1 this).2`. Take `⟨v, hvW, hv0⟩` from `Submodule.exists_mem_ne_zero_of_ne_bot hW.1`. Use `⟨v, hv0, fun b => ?_⟩` and prove the remaining obligations.
+
+Take `⟨μ, hμ⟩` from `key b`. Conclude with `⟨μ, hμ v hvW⟩`.
+-/
 theorem main {L : Type} [Field L] [IsAlgClosed L] {ι V : Type} [AddCommGroup V] [Module L V]
     [FiniteDimensional L V] [Nontrivial V] (f : ι → Module.End L V)
     (hc : ∀ (a b : ι), f a * f b = f b * f a) :

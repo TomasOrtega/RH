@@ -17,6 +17,17 @@ section Abstract
 variable {V : Type} [AddCommGroup V] [TopologicalSpace V] [IsTopologicalAddGroup V]
   [MeasurableSpace V] [BorelSpace V]
 
+/- English proof (translation)
+Distinguish the cases in `hy : y ∈ N`. Rewrite using `[Set.indicator_of_mem (by exact hy)]`. Establish `e1 : (fun x => (M : Set V).indicator (fun _ => (1 : ℂ)) x * B x y) = (M : Set V).indicator (fun _ => (1 : ℂ))`. Use extensionality with `x`. Distinguish the cases in `hx : x ∈ M`.
+
+Rewrite using `[(hN _).1 hy x hx, mul_one]`. Simplify using `[hx]`. Rewrite using `[e1, integral_indicator_const _ hMo.measurableSet]`. Simplify using the standard rewrite rules. Rewrite using `[Set.indicator_of_notMem (by exact hy)]`.
+
+Rewrite `hy` using `[hN]`. Use `push Not at hy`. Take `⟨n, hn, hn1⟩` from `hy`. Use `GlobalTheory.JR.AbsInv.integral_eq_zero_of_translate μ _ n _ hn1 fun x => ?_` and prove the remaining obligations. Establish `: (M : Set V).indicator (fun _ => (1 : ℂ)) (x + n) = (M : Set V).indicator (fun _ => (1 : ℂ)) x`.
+
+Distinguish the cases in `hx : x ∈ M`. Simplify using `[hx, M.add_mem hx hn]`. Establish `: x + n ∉ M` using `fun h => hx (by simpa using M.sub_mem h hn)`. Simplify using `[hx, this]`. Rewrite using `[this, ha]`.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem integral_indicator_mul (μ : Measure V) [μ.IsAddHaarMeasure] (B : V → V → ℂ)
     (ha : ∀ x x' y, B (x + x') y = B x y * B x' y) (M N : AddSubgroup V) (hMo : IsOpen (M : Set V))
     (hN : ∀ y, y ∈ N ↔ ∀ x ∈ M, B x y = 1) (y : V) :
@@ -47,6 +58,19 @@ theorem integral_indicator_mul (μ : Measure V) [μ.IsAddHaarMeasure] (B : V →
 
 variable [T2Space V] [LocallyCompactSpace V] [SecondCountableTopology V]
 
+/- English proof (translation)
+Use `set χ : V → ℂ := (N : Set V).indicator (fun _ => 1) with hχ`. Establish `hχc : Continuous χ` using `(IsClopen.continuous_indicator ⟨hNc.isClosed, hNo⟩ continuous_const)`. Establish `h1 : ∀ y, χ y * ((∫ x, f x * B x y ∂μ) * B y z) = ∫ x, f x * (χ y * B y (x + z)) ∂μ`. Introduce `y`. Rewrite using `[← integral_mul_const, ← integral_const_mul]`.
+
+Use `congr 1`. Use extensionality with `x`. Rewrite using `[hs y (x + z), ha, hs y z]`. Expand and normalize the polynomial expressions, which then agree. Establish `hsw : ∫ y, ∫ x, f x * (χ y * B y (x + z)) ∂μ ∂μ = ∫ x, ∫ y, f x * (χ y * B y (x + z)) ∂μ ∂μ`.
+
+Use `integral_integral_swap (Continuous.integrable_of_hasCompactSupport ?_ ?_)` and prove the remaining obligations. Establish `: Continuous fun p : V × V => B p.1 (p.2 + z)` using `hB.comp (f := fun p : V × V => (p.1, p.2 + z)) (by fun_prop)`. Conclude with `(hf.comp continuous_snd).mul ((hχc.comp continuous_fst).mul this)`. Use `HasCompactSupport.intro (hNc.prod hfc) ?_` and prove the remaining obligations. Introduce and unpack `⟨y, x⟩ h`.
+
+Simplify using `only [Set.mem_prod, not_and_or] at h`. Break down `h with h | h` into its components or cases. Simplify using `[Function.uncurry, hχ, Set.indicator_of_notMem h]`. Simplify using `[Function.uncurry, image_eq_zero_of_notMem_tsupport h]`. Establish `h2 : ∀ x, ∫ y, f x * (χ y * B y (x + z)) ∂μ = (M : Set V).indicator (fun w => (μ.real N : ℂ) * f (w - z)) (x + z)`.
+
+Introduce `x`. Rewrite using `[integral_const_mul, hχ, integral_indicator_mul μ B ha N M hNo (fun x => (hM x).trans (by simp only [hs x]))]`. Distinguish the cases in `hx : x + z ∈ (M : Set V)`. Simplify using `[hx, mul_comm]`. Simplify using `[hx]`.
+
+Repeatedly rewrite using `[h1]`. Rewrite using `[hsw]`. Repeatedly rewrite using `[h2]`. Rewrite using `[integral_add_right_eq_self (μ := μ) ((M : Set V).indicator (fun w => (μ.real N : ℂ) * f (w - z))) z, integral_indicator hMo.measurableSet, integral_const_mul]`.
+-/
 theorem integral_trunc (μ : Measure V) [μ.IsAddHaarMeasure] (B : V → V → ℂ)
     (hB : Continuous (fun p : V × V => B p.1 p.2)) (hs : ∀ x y, B x y = B y x)
     (ha : ∀ x x' y, B (x + x') y = B x y * B x' y) (M N : AddSubgroup V) (hMo : IsOpen (M : Set V))
@@ -87,6 +111,33 @@ theorem integral_trunc (μ : Measure V) [μ.IsAddHaarMeasure] (B : V → V → �
   rw [integral_add_right_eq_self (μ := μ) ((M : Set V).indicator (fun w => (μ.real N : ℂ) * f (w - z))) z,
     integral_indicator hMo.measurableSet, integral_const_mul]
 
+/- English proof (translation)
+Take `⟨μ, hμ, hinv⟩` from `GlobalTheory.JR.AbsInv.exists_selfDual B hB hs ha H`. Establish `hsd : SelfDual μ B`. Use `⟨hμ, fun Φ hc hk hI z => ?_⟩` and prove the remaining obligations. Take `⟨U, hU⟩` from `(𝓝 (0 : V)).exists_antitone_basis`. Use `choose M N hMU hMo hMc hNo hNc hN hM using fun k => H (U k) (hU.mem k)`.
+
+Establish `hvol : ∀ k, μ.real (N k) * μ.real (M k) = 1`. Introduce `k`. Establish `hcl : IsClopen (M k : Set V)` using `⟨(hMc k).isClosed, hMo k⟩`. Establish `hχc : Continuous ((M k : Set V).indicator (fun _ => (1 : ℂ)))` using `hcl.continuous_indicator continuous_const`. Establish `hχs : HasCompactSupport ((M k : Set V).indicator (fun _ => (1 : ℂ)))` using `HasCompactSupport.intro (hMc k) fun x hx => by simp [hx]`.
+
+Establish `hlc : IsLocallyConstant ((M k : Set V).indicator (fun _ => (1 : ℂ)))`. Use `(IsLocallyConstant.iff_eventually_eq _).mpr fun x => ?_` and prove the remaining obligations. Distinguish the cases in `hx : x ∈ (M k : Set V)`. Use `filter_upwards [hcl.isOpen.mem_nhds hx] with y hy`. Rewrite using `[Set.indicator_of_mem hy, Set.indicator_of_mem hx]`.
+
+Use `filter_upwards [hcl.isClosed.isOpen_compl.mem_nhds hx] with y hy`. Rewrite using `[Set.indicator_of_notMem hy, Set.indicator_of_notMem hx]`. Establish `e1` using `hinv _ ⟨hlc, hχs⟩ 0`. Rewrite `e1` using `[GlobalTheory.JR.AbsInv.fourB_fourB μ B hB hs ha (M k) (N k) (hMo k) (hNo k) (hNc k) (hN k) (hM k) _ hχc hχs (fun x m hm => ?_)]`. Simplify using `only [neg_zero, Set.indicator_of_mem (show (0 : V) ∈ (M k : Set V) from (M k).zero_mem), mul_one] at e1`.
+
+Rewrite using `[mul_comm]`. Conclude with `e1` after adjusting the coercions. Distinguish the cases in `hx : x ∈ M k`. Simplify using `[hx, (M k).add_mem hx hm]`. Establish `: x + m ∉ M k` using `fun h => hx (by simpa using (M k).sub_mem h hm)`.
+
+Simplify using `[hx, this]`. Establish `hBc : ∀ y, Continuous fun x => B x y` using `fun y => hB.comp (f := fun x : V => (x, y)) (by fun_prop)`. Establish `hev : ∀ y, ∀ᶠ k in atTop, y ∈ N k`. Introduce `y`. Establish `: {x | ‖B x y - 1‖ < 1 / 2} ∈ 𝓝 (0 : V)` using `(isOpen_lt ((hBc y).sub continuous_const).norm continuous_const).mem_nhds (by simp [h0])`.
+
+Use `filter_upwards [hU.eventually_subset this] with k hk`. Use `(hN k y).2 fun x hx => GlobalTheory.CharConductor.eq_one_of_pow_near_one fun n => ?_` and prove the remaining obligations. Establish `e : B x y ^ n = B (n • x) y`. Proceed by induction on `n with`. Consider the case `zero => simp [h0]`.
+
+Consider the case `succ n ih => rw [pow_succ, ih, succ_nsmul, ha]`. Rewrite using `[e]`. Conclude with `hk (hMU k ((M k).nsmul_mem hx n))`. Establish `t1 : Tendsto (fun k => ∫ y, (N k : Set V).indicator (fun _ => (1 : ℂ)) y * ((∫ x, Φ x * B x y ∂μ) * B y z) ∂μ) atTop (𝓝 (∫ y, (∫ x, Φ x * B x y ∂μ) * B y z ∂μ))`. Use `tendsto_integral_of_dominated_convergence (fun y => ‖∫ x, Φ x * B x y ∂μ‖) (fun k => ?_) hI.norm (fun k => ae_of_all _ fun y => ?_) (ae_of_all _ fun y => ?_)` and prove the remaining obligations.
+
+Conclude with `(aestronglyMeasurable_const.indicator (hNo k).measurableSet).mul (hI.1.mul (hBc z).aestronglyMeasurable)`. Apply the tactic sequence `by_cases hy : y ∈ (N k : Set V) <;> simp [hy, hn]`. Use `tendsto_const_nhds.congr' ?_ filter_upwards [hev y] with k hk` and prove the remaining obligations. Rewrite using `[Set.indicator_of_mem (by exact hk), one_mul]`. Establish `t2 : Tendsto (fun k => (μ.real (N k) : ℂ) * ∫ x in M k, Φ (x - z) ∂μ) atTop (𝓝 (Φ (-z)))`.
+
+Rewrite using `[Metric.tendsto_nhds]`. Introduce `ε hε`. Establish `hc' : Continuous fun x => Φ (x - z)` using `hc.comp (by fun_prop)`. Establish `: {x | ‖Φ (x - z) - Φ (-z)‖ < ε / 2} ∈ 𝓝 (0 : V)` using `(isOpen_lt (hc'.sub continuous_const).norm continuous_const).mem_nhds (by simp [hε])`. Use `filter_upwards [hU.eventually_subset this] with k hk`.
+
+Establish `hv : (μ.real (N k) : ℂ) * (μ.real (M k) : ℂ) = 1` using `by exact_mod_cast hvol k`. Establish `e : (μ.real (N k) : ℂ) * ∫ x in M k, Φ (x - z) ∂μ - Φ (-z) = (μ.real (N k) : ℂ) * ∫ x in M k, (Φ (x - z) - Φ (-z)) ∂μ`. Rewrite using `[integral_sub (hc'.continuousOn.integrableOn_compact (hMc k)) (continuousOn_const.integrableOn_compact (hMc k)), setIntegral_const, Complex.real_smul, mul_sub, ← mul_assoc, hv, one_mul]`. Establish `b` using `norm_setIntegral_le_of_norm_le_const (μ := μ) (f := fun x => Φ (x - z) - Φ (-z)) (hMc k).measure_lt_top (fun x hx => le_of_lt (hk (hMU k hx)))`. Rewrite using `[dist_eq_norm, e, norm_mul, Complex.norm_real, Real.norm_of_nonneg measureReal_nonneg]`.
+
+Combine the equalities or inequalities in the displayed calculation. Use `tendsto_nhds_unique t1 (t2.congr fun k => ?_)` and prove the remaining obligations. Conclude with `(integral_trunc μ B hB hs ha (M k) (N k) (hMo k) (hNo k) (hNc k) (hM k) Φ hc hk z).symm`. Use `⟨μ, hsd, fun ν hν => ?_⟩` and prove the remaining obligations. Take `⟨M, N, -, hMo, hMc, hNo, hNc, hN, -⟩` from `H Set.univ univ_mem`.
+
+Use `hsd.eq_of_test hν ((M : Set V).indicator (fun _ => (1 : ℂ))) (IsClopen.continuous_indicator ⟨hMc.isClosed, hMo⟩ continuous_const) (HasCompactSupport.intro hMc fun x hx => by simp [hx]) ?_ 0 (by simp)` and prove the remaining obligations. Simplify using `only [integral_indicator_mul μ B ha M N hMo hN]`. Conclude with `(integrable_indicator_iff hNo.measurableSet).2 (continuousOn_const.integrableOn_compact hNc)`.
+-/
 theorem existsUnique_selfDual (B : V → V → ℂ)
     (hB : Continuous (fun p : V × V => B p.1 p.2)) (hs : ∀ x y, B x y = B y x)
     (ha : ∀ x x' y, B (x + x') y = B x y * B x' y) (h0 : ∀ y, B 0 y = 1) (hn : ∀ x y, ‖B x y‖ = 1)
@@ -182,6 +233,21 @@ section Local
 
 variable {F : Type} [Field F] [NumberField F] (v : HeightOneSpectrum (𝓞 F))
 
+/- English proof (translation)
+Use `letI : NontriviallyNormedField (Fv F v) := Valued.toNontriviallyNormedField (Fv F v) (WithZero (Multiplicative ℤ))`. Use `haveI : IsUltrametricDist (Fv F v) := inferInstance`. Take `⟨n, hc⟩` from `GlobalTheory.CharConductor.exists_exponent_of_valued ψ hψ hne`. Take `⟨c, hcv⟩` from `HeightOneSpectrum.valuedAdicCompletion_surjective F v (WithZero.exp n)`. Establish `hc0 : c ≠ 0`.
+
+Introduce and unpack `rfl`. Conclude with `WithZero.exp_ne_zero (hcv.symm.trans (map_zero _))`. Establish `hstd : GlobalTheory.JR.IsStdChar (ψ.mulShift c)`. Prove the components needed by the constructor for the conclusion. Introduce `x hx`.
+
+Conclude with `(hc c).2 hcv.le x (Valued.toNormedField.norm_le_one_iff.1 hx)`. Take `⟨t, ht⟩` from `HeightOneSpectrum.valuedAdicCompletion_surjective F v (WithZero.exp 1)`. Establish `h1 : ¬ ∀ s : Fv F v, Valued.v s ≤ (1 : WithZero (Multiplicative ℤ)) → ψ (c * t * s) = 1`. Rewrite using `[hc, map_mul, hcv, ht, ← WithZero.exp_add, WithZero.exp_le_exp]`. Use linear arithmetic over natural numbers and integers.
+
+Use `push Not at h1`. Take `⟨s, hs1, hs2⟩` from `h1`. Use `⟨t * s, by rwa [AddChar.mulShift_apply, ← mul_assoc], fun y hy => ?_⟩` and prove the remaining obligations. Rewrite `hy` using `[Valued.toNormedField.norm_lt_one_iff]`. Rewrite using `[Valued.toNormedField.norm_le_one_iff, mul_right_comm, map_mul]`.
+
+Use `mul_le_one' ?_ hs1` and prove the remaining obligations. Rewrite using `[map_mul, ht]`. Break down `eq_or_ne (Valued.v y : WithZero (Multiplicative ℤ)) 0 with h | h` into its components or cases. Simplify using `[h]`. Rewrite `hy` using `[← WithZero.exp_log h, ← WithZero.exp_zero, WithZero.exp_lt_exp]`.
+
+Rewrite using `[← WithZero.exp_log h, ← WithZero.exp_add, ← WithZero.exp_zero, WithZero.exp_le_exp]`. Use linear arithmetic over natural numbers and integers. Establish `hn' : ∀ x, (∀ y, (c⁻¹ • β) x y = 0) → x = 0` using `fun x h => hn x fun y => by`. Simplify `h y` using `[hc0]`. Establish `hs' : ∀ x y, (c⁻¹ • β) x y = (c⁻¹ • β) y x` using `fun x y => by simp [hs x y]`.
+
+Establish `key` using `GlobalTheory.JR.exists_small_dual_lattices (Fv F v) _ hstd V (c⁻¹ • β) ⟨hs'⟩ ⟨hn', fun y h => hn' y fun x => (hs' y x).trans (h x)⟩`. Establish `e : ∀ x y, ψ.mulShift c ((c⁻¹ • β) x y) = ψ (β x y)` using `fun x y => by`. Simplify using `[AddChar.mulShift_apply, hc0]`. Simplify using `only [e] at key`. Conclude with `existsUnique_selfDual _ key.1 (fun x y => by rw [hs]) (fun x x' y => by simp [AddChar.map_add_eq_mul]) (fun y => by simp) (fun x y => hu _) key.2`.
+-/
 theorem existsUnique_of_bilin (ψ : AddChar (Fv F v) ℂ) (hψ : Continuous ψ) (hu : ∀ t, ‖ψ t‖ = 1)
     (hne : ∃ t, ψ t ≠ 1) (V : Type) [AddCommGroup V] [Module (Fv F v) V] [Module.Finite (Fv F v) V]
     [TopologicalSpace V] [IsModuleTopology (Fv F v) V] [IsTopologicalAddGroup V] [T2Space V]
@@ -236,6 +302,9 @@ open GlobalTheory.SelfDualLatticeCompare
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
   (R : Type) [Field R] [Algebra F R] (σ : E →ₐ[F] E) {M : ℕ} (J : Matrix (Fin M) (Fin M) E)
 
+/- English proof (translation)
+Proceed by induction on `z using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `add a b ha hb => simp only [smul_add, map_add, ha, hb]`. Consider the case `tmul a e => rfl`.
+-/
 theorem sigR_smul (c : R) (z : R ⊗[F] E) : sigR R σ (c • z) = c • sigR R σ z := by
   induction z using TensorProduct.induction_on with
   | zero => simp
@@ -255,6 +324,11 @@ noncomputable def bilin (n : ℕ) : LinearMap.BilinForm R (Fin n → Fin M → R
 
 variable {σ J}
 
+/- English proof (translation)
+Establish `hJ' : ∀ i j, sigR R σ (JR R J j i) = JR R J i j`. Introduce `i j`. Use `show (1 : R) ⊗ₜ[F] σ (J j i) = (1 : R) ⊗ₜ[F] J i j`. Rewrite using `[hJ.1]`. Simplify using `only [hR, Formalism.UG.hform, map_sum, map_mul, sigR_sigR R h]`.
+
+Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[hJ']`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem sigR_hR (h : IsCMExt F E σ) (hJ : IsHermND σ J) (x y : Fin M → R ⊗[F] E) :
     sigR R σ (hR R σ J x y) = hR R σ J y x := by
   have hJ' : ∀ i j, sigR R σ (JR R J j i) = JR R J i j := by
@@ -267,11 +341,23 @@ theorem sigR_hR (h : IsCMExt F E σ) (hJ : IsHermND σ J) (x y : Fin M → R ⊗
   rw [hJ']
   ring
 
+/- English proof (translation)
+Use `Finset.sum_congr rfl fun a _ => (algebraMap R (R ⊗[F] E)).injective ?_` and prove the remaining obligations. Rewrite using `[trace_tensor R h, trace_tensor R h, sigR_hR R h hJ, sigR_hR R h hJ, add_comm]`.
+-/
 theorem BR_symm (h : IsCMExt F E σ) (hJ : IsHermND σ J) {n : ℕ} (x y : Fin n → Fin M → R ⊗[F] E) :
     BR R σ J x y = BR R σ J y x := by
   refine Finset.sum_congr rfl fun a _ => (algebraMap R (R ⊗[F] E)).injective ?_
   rw [trace_tensor R h, trace_tensor R h, sigR_hR R h hJ, sigR_hR R h hJ, add_comm]
 
+/- English proof (translation)
+Establish `h1 : ∀ c, c * z + sigR R σ c * sigR R σ z = 0` using `fun c => by`. Rewrite using `[← map_mul, ← trace_tensor R h, hz, map_zero]`. Choose the witnesses or unpack the hypotheses as in `⟨e, he⟩ : ∃ e : E, σ e ≠ e := by`. Assume the negation of the conclusion as `hc`. Use `push Not at hc`.
+
+Establish `hsurj : Function.Surjective (algebraMap F E)` using `fun e => exists_of_conj_eq h e (hc e)`. Use `(LinearEquiv.ofBijective (Algebra.linearMap F E) ⟨(algebraMap F E).injective, hsurj⟩).finrank_eq` as an intermediate fact. Rewrite `this` using `[h.2.2.1]`. Simplify using `at this`. Establish `h2` using `h1 1`.
+
+Establish `h3` using `h1 (inclR R e)`. Establish `h4 : sigR R σ (inclR R e) = inclR R (σ e)` using `rfl`. Rewrite `h3` using `[h4]`. Rewrite `h2` using `[map_one]`. Establish `h5 : inclR R (e - σ e) * z = 0`.
+
+Rewrite using `[map_sub]`. Take the linear combination `h3 - inclR R (σ e) * h2`. Conclude with `(((IsUnit.mk0 _ (sub_ne_zero.2 he.symm)).map (inclR R)).mul_right_eq_zero).1 h5`.
+-/
 theorem eq_zero_of_trace (h : IsCMExt F E σ) (z : R ⊗[F] E)
     (hz : ∀ c, Algebra.trace R (R ⊗[F] E) (c * z) = 0) : z = 0 := by
   have h1 : ∀ c, c * z + sigR R σ c * sigR R σ z = 0 := fun c => by
@@ -292,6 +378,15 @@ theorem eq_zero_of_trace (h : IsCMExt F E σ) (z : R ⊗[F] E)
     rw [map_sub]; linear_combination h3 - inclR R (σ e) * h2
   exact (((IsUnit.mk0 _ (sub_ne_zero.2 he.symm)).map (inclR R)).mul_right_eq_zero).1 h5
 
+/- English proof (translation)
+Establish `h1 : ∀ y, hR R σ J (x 0) y = 0` using `fun y => eq_zero_of_trace R h _ fun c => by`. Use `hx fun _ => c • y` as an intermediate fact. Rewrite `this` using `[BR, Fin.sum_univ_one, hR_smul_right]`. Then use the resulting hypothesis. Establish `h2 : Matrix.vecMul (fun i => sigR R σ (x 0 i)) (JR R J) = 0`. Use extensionality with `j`.
+
+Use `h1 (Pi.single j 1)` as an intermediate fact. Simplify `this` using `[hR, Formalism.UG.hform, Pi.single_apply, Matrix.vecMul, dotProduct]`. Establish `h3 : IsUnit (JR (F` using `F) R J).det := by`. Establish `: (JR (F` using `F) R J).det = inclR (F := F) R J.det := (RingHom.map_det (inclR (F := F) R) J).symm`. Rewrite using `[this]`.
+
+Conclude with `(IsUnit.mk0 _ hJ.2).map _`. Establish `h4 : (fun i => sigR R σ (x 0 i)) = 0`. Use `congrArg (fun w => Matrix.vecMul w (JR (F := F) R J)⁻¹) h2` as an intermediate fact. Simplify `this` using `[Matrix.vecMul_vecMul, Matrix.mul_nonsing_inv _ h3]`. Use extensionality with `a i`.
+
+Rewrite using `[Subsingleton.elim a 0, ← sigR_sigR R h (x 0 i), congrFun h4 i]`. Simplify using the standard rewrite rules.
+-/
 theorem eq_zero_of_BR (h : IsCMExt F E σ) (hJ : IsHermND σ J) (x : Fin 1 → Fin M → R ⊗[F] E)
     (hx : ∀ y, BR R σ J x y = 0) : x = 0 := by
   classical
@@ -315,6 +410,11 @@ theorem eq_zero_of_BR (h : IsCMExt F E σ) (hJ : IsHermND σ J) (x : Fin 1 → F
 
 end Form
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ h ψ hψ v`. Use `haveI := h.1`. Set `χ : AddChar (Fv F v) ℂ` to `ψ.compAddMonoidHom ((AddMonoidHom.inr (Ainf F) (Af F)).comp (GlobalTheory.AdelicU.singleFin v).toAddMonoidHom)`. Establish `hc : Continuous χ` using `hψ.1.comp (Continuous.prodMk continuous_const (GlobalTheory.AdelicU.continuous_singleFin v))`. Establish `hu : ∀ t, ‖χ t‖ = 1` using `fun t => hψ.2.1 _`.
+
+Establish `hne : ∃ t, χ t ≠ 1` using `(GlobalTheory.T.localComponents_nontrivial_adelic_character F ψ hψ).1 v`. Use `⟨existsUnique_of_bilin v χ hc hu hne (Fv F v) (LinearMap.mul _ _) (fun x y => mul_comm x y) (fun x hx => by simpa using hx 1), fun M J hJ => ?_⟩` and prove the remaining obligations. Conclude with `existsUnique_of_bilin v χ hc hu hne _ (bilin (Fv F v) σ J 1) (BR_symm _ h hJ) (eq_zero_of_BR _ h hJ)`.
+-/
 theorem existsUnique_selfDual_finite : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E), IsCMExt F E σ → ∀ ψ : AddChar (AF F) ℂ, IsCharAF F ψ → ∀ v : HeightOneSpectrum (𝓞 F), (∃! ν, SdR (Fv F v) (psiV F ψ v) ν) ∧ ∀ (M : ℕ) (J : Matrix (Fin M) (Fin M) E), IsHermND σ J → ∃! μ, SdW F E σ M J (Fv F v) (psiV F ψ v) 1 μ := by
   intro F E _ _ _ _ _ σ h ψ hψ v
   haveI := h.1

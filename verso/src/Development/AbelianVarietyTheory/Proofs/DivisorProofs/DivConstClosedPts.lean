@@ -38,6 +38,9 @@ def DivConstOrigin : Prop :=
   DivConstWith (fun T _ _ P =>
     P = (maximalIdeal T).map (Polynomial.C : T →+* Polynomial T) ⊔ Ideal.span {Polynomial.X})
 
+/- English proof (translation)
+Introduce `T O _ _ _ _ _ _ _ _ hT P _ φ hφ hsh hP _`. Distinguish the cases in `hg : P = (maximalIdeal T).map (Polynomial.C : T →+* Polynomial T)`. Conclude with `h₂ T O hT P φ hφ hsh hP hg`. Conclude with `h₁ T O hT P φ hφ hsh hP hg`.
+-/
 theorem divConstLocal_of (h₁ : DivConstClosedPts) (h₂ : DivConstGeneric) : DivConstLocal := by
   intro T O _ _ _ _ _ _ _ _ hT P _ φ hφ hsh hP _
   by_cases hg : P = (maximalIdeal T).map (Polynomial.C : T →+* Polynomial T)

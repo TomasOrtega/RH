@@ -20,6 +20,13 @@ namespace GlobalTheory.HalfGeo
 
 attribute [local instance] Over.cartesianMonoidalCategory
 
+/- English proof (translation)
+Introduce `n`. Proceed by induction on `n with`. Consider the case `zero => exact fun _ => ⟨Cover.ofModel M₀ h₀, fun i => i.elim0⟩`. Consider the case `succ n ih`. Introduce `M`.
+
+Take `⟨V, hV⟩` from `ih (fun i => M i.castSucc)`. Take `⟨V', a, g, b, -, -, e₁, e₂, -, e₃⟩` from `CoverDom.exists_cover_dominating F Y V (M (Fin.last n))`. Use `⟨V', fun i => ?_⟩` and prove the remaining obligations. Proceed by induction on `i using Fin.lastCases with`. Consider the case `last => exact ⟨b, e₃⟩`.
+
+Consider the case `cast i`. Take `⟨c, hc⟩` from `hV i`. Use `⟨a ≫ c, ?_⟩` and prove the remaining obligations. Rewrite using `[← Category.assoc, e₁, Category.assoc, hc, ← Category.assoc, e₂]`.
+-/
 theorem exists_cover_over_models {F : Type} [Field F] [NumberField F] (Y : Var F) (M₀ : TrueGeo.Model Y)
     (h₀ : ReciprocityTheory.ChartRestriction.G.Geo.Tor.IsNormalScheme M₀.X) :
     ∀ (n : ℕ) (M : Fin n → TrueGeo.Model Y), ∃ V : Cover Y, ∀ i, ∃ b : V.X ⟶ (M i).X, V.j ≫ b = V.π ≫ (M i).j := by
@@ -38,6 +45,17 @@ theorem exists_cover_over_models {F : Type} [Field F] [NumberField F] (Y : Var F
       refine ⟨a ≫ c, ?_⟩
       rw [← Category.assoc, e₁, Category.assoc, hc, ← Category.assoc, e₂]
 
+/- English proof (translation)
+Take `⟨r, hr, hu, hf⟩` from `h`. Establish `key : ∀ (g : Y.Fn) (i : ((lbPow L k).pull V.j).ι), V.φ (g ^ k) * ((r (fun _ => i PUnit.unit PUnit.unit) ^ k : V.G.functionFieldˣ) : V.G.functionField) = (V.φ g * (r (fun _ => i PUnit.unit PUnit.unit) : V.G.functionField)) ^ k`. Introduce `g i`. Rewrite using `[map_pow, Units.val_pow_eq_pow_val, mul_pow]`. Use `⟨fun i => r (fun _ => i PUnit.unit PUnit.unit) ^ k, isRatSec_pull_pow L V.j k hr, ?_, ?_⟩` and prove the remaining obligations.
+
+Introduce `i x hx show UnitAt x (V.φ (f (V.π x) ^ k) * _) erw [key]`. Conclude with `InducedPow.unitAt_pow (hu _ x (InducedPow.mem_chart L V.j k hx)) k`. Introduce `v hv e y hy z yt i e₁ e₂ hi`. Establish `hi' : ⊤ ≤ yt ⁻¹ᵁ L.U (i PUnit.unit PUnit.unit)` using `fun x hx => Set.mem_iInter.1 (hi hx) PUnit.unit`. Establish `H` using `hf v hv e y hy z yt (fun _ => i PUnit.unit PUnit.unit) e₁ e₂ hi'`.
+
+Establish `hmem : below z ∈ (L.pull V.j).U (fun _ => i PUnit.unit PUnit.unit)`. Establish `h1 : (z ≫ V.j) (IsLocalRing.closedPoint _) ∈ L.U (i PUnit.unit PUnit.unit)`. Rewrite using `[← e₂]`. Conclude with `hi' (Set.mem_univ _)`. Conclude with `Set.mem_iInter.2 fun _ => h1`.
+
+Establish `hπ : V.π (below z) = below y.1`. Rewrite using `[← e₁]`. Both sides reduce to the same expression. Establish `hU` using `hu _ _ hmem`. Rewrite `hU` using `[hπ]`.
+
+Use `show (k : ℝ) * l v e y = Real.log (e.w (TrueGeo.valAt z (V.φ (f (below y.1) ^ k) * _)))`. Use `erw [key, InducedPow.valAt_pow _ hU.regAt, map_pow, Real.log_pow, H]`.
+-/
 theorem normsAt_pow {F : Type} [Field F] [NumberField F] {Y : Var F} {V : Cover Y} {L : LB V.X} {p : ℕ}
     {W : Y.X.Opens} {f : Y.X → Y.Fn} {l : ∀ v : HeightOneSpectrum (𝓞 F), Ext v → AlgPt Y → ℝ}
     (h : NormsAt V L p W f l) (k : ℕ) :
@@ -69,6 +87,29 @@ theorem normsAt_pow {F : Type} [Field F] [NumberField F] {Y : Var F} {V : Cover 
     show (k : ℝ) * l v e y = Real.log (e.w (TrueGeo.valAt z (V.φ (f (below y.1) ^ k) * _)))
     erw [key, InducedPow.valAt_pow _ hU.regAt, map_pow, Real.log_pow, H]
 
+/- English proof (translation)
+Use `haveI := M.ar.isIntegral`. Take `⟨hη, e⟩` from `V.φ_eq_fnMap`. Use `set ψ := SmallSec.fnMap V.π hη with hψ`. Establish `hφV : ∀ t, V.φ t = ψ t` using `fun t => by rw [e]`. Establish `hg (x : Y.X)` using `generatesAt_genAt_pow Δ m x`.
+
+Establish `hch : ∀ (i : ((L.pull c).pull V.j).ι), ∀ x ∈ ((L.pull c).pull V.j).U i, V.π x ∈ (L.pull M.j).U (fun _ => i PUnit.unit PUnit.unit)`. Introduce `i x hx`. Establish `h1` using `Set.mem_iInter.1 (InducedPull.chart_le L c V.j i hx) PUnit.unit`. Establish `h2 : (V.j ≫ c) x = M.j (V.π x)` using `by rw [hc]; rfl`. Use `Set.mem_iInter.2 fun _ => ?_` and prove the remaining obligations.
+
+Use `show M.j (V.π x) ∈ L.U _`. Rewrite using `[← h2]`. Conclude with `h1`. Set `r' : ((L.pull c).pull V.j).ι → V.G.functionFieldˣ` to `fun i => Units.map ψ.toMonoidHom (r fun _ => i PUnit.unit PUnit.unit)`. Establish `hr' : ∀ i, (r' i : V.G.functionField) = ψ (r fun _ => i PUnit.unit PUnit.unit)` using `fun _ => rfl`.
+
+Use `⟨r', ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `i j hij`. Establish `hmem : V.π (genericPoint V.G) ∈ (L.pull M.j).U (fun _ => i PUnit.unit PUnit.unit) ⊓ (L.pull M.j).U (fun _ => j PUnit.unit PUnit.unit)` using `⟨hch i _ hij.1, hch j _ hij.2⟩`. Establish `h0 : genericPoint Y.X ∈ (L.pull M.j).U (fun _ => i PUnit.unit PUnit.unit) ⊓ (L.pull M.j).U (fun _ => j PUnit.unit PUnit.unit)` using `(genericPoint_specializes _).mem_open (TopologicalSpace.Opens.isOpen _) hmem`. Establish `le : ((L.pull c).pull V.j).U i ⊓ ((L.pull c).pull V.j).U j ≤ V.π ⁻¹ᵁ ((L.pull M.j).U (fun _ => i PUnit.unit PUnit.unit) ⊓ (L.pull M.j).U (fun _ => j PUnit.unit PUnit.unit))` using `fun x hx => ⟨hch i x hx.1, hch j x hx.2⟩`.
+
+Rewrite using `[hr', hr', hr.isRatSec _ _ h0, map_mul, ← ProjSpace.fnOf_appLE V.π hη le h0 hij]`. Use `congr 2`. Establish `k1` using `InducedPull.val_pull_g L M.j (fun _ => i PUnit.unit PUnit.unit) (fun _ => j PUnit.unit PUnit.unit) (InducedPull.inf_le _ _ _ _)`. Establish `k2` using `InducedPull.val_pull_g (L.pull c) V.j i j (InducedPull.inf_le _ _ _ _)`. Establish `k3` using `InducedPull.val_pull_g L c (i PUnit.unit) (j PUnit.unit) (InducedPull.inf_le _ _ _ _)`.
+
+Use `(congrArg _ k1).trans (k2.trans ?_).symm` and prove the remaining obligations. Use `(congrArg _ k3).trans ?_` and prove the remaining obligations. Rewrite using `[← RingHom.comp_apply, ← RingHom.comp_apply, ← CommRingCat.hom_comp, ← CommRingCat.hom_comp, Scheme.Hom.appLE_comp_appLE, Scheme.Hom.appLE_comp_appLE]`. Conclude with `appLE_apply_congr hc _ _ _ _ _`. Introduce `i x hx`.
+
+Establish `hU` using `(hr.isEqn _ _ (hch i x hx)).generatesAt_iff.1 (hg (V.π x))`. Rewrite using `[hr', hφV, ← map_mul]`. Conclude with `unitAt_fnMap_of V.π hη hU`. Introduce `v _ e y _ z yt i e₁ e₂ hi`. Establish `e₂' : spMap e.O.subtype ≫ (yt ≫ c) = y.1 ≫ M.j`.
+
+Rewrite using `[← Category.assoc, e₂, Category.assoc, hc, ← Category.assoc, e₁]`. Establish `hi' : ⊤ ≤ (yt ≫ c) ⁻¹ᵁ L.U (i PUnit.unit PUnit.unit)` using `fun x hx => Set.mem_iInter.1 (hi hx) PUnit.unit`. Establish `H` using `hφ v e y (yt ≫ c) (fun _ => i PUnit.unit PUnit.unit) e₂' hi'`. Establish `hmem : below y.1 ∈ (L.pull M.j).U (fun _ => i PUnit.unit PUnit.unit)`. Establish `h1 : (y.1 ≫ M.j) (IsLocalRing.closedPoint _) ∈ L.U (i PUnit.unit PUnit.unit)`.
+
+Rewrite using `[← e₂']`. Conclude with `hi' (Set.mem_univ _)`. Conclude with `Set.mem_iInter.2 fun _ => h1`. Establish `hU` using `(hr.isEqn _ _ hmem).generatesAt_iff.1 (hg (below y.1))`. Establish `hπ₀ : V.π (below z) = below y.1`.
+
+Rewrite using `[← e₁]`. Both sides reduce to the same expression. Establish `hU' : RegAt (V.π (below z)) (genAt Δ (below y.1) ^ (m : ℕ) * (r fun _ => i PUnit.unit PUnit.unit : Y.Fn))`. Rewrite using `[hπ₀]`. Conclude with `hU.regAt`.
+
+Rewrite `H` using `[Units.val_mul, Units.val_pow_eq_pow_val]`. Rewrite using `[hr', hφV, ← map_mul, SmallSec.valAt_fnMap V.π hη z hU', e₁]`. Conclude with `H`.
+-/
 theorem normsAt_pull {F : Type} [Field F] [NumberField F] {Y : Var F} {Δ : Y.Dv} {φ : PtFn Y}
     (M : TrueGeo.Model Y) (L : LB M.X) (m : ℕ+) (r : (L.pull M.j).ι → Y.Fnˣ)
     (hr : Presents ((m : ℕ) • Δ) (L.pull M.j) r)
@@ -141,6 +182,13 @@ theorem normsAt_pull {F : Type} [Field F] [NumberField F] {Y : Var F} {Δ : Y.Dv
     rw [hr', hφV, ← map_mul, SmallSec.valAt_fnMap V.π hη z hU', e₁]
     exact H
 
+/- English proof (translation)
+Introduce `F _ _ Y n Δ φ ⟨M₀, h₀⟩ hφ`. Unfold `FromModel at hφ`. Use `choose M L m r hL hr hv using hφ`. Take `⟨V₀, hV₀⟩` from `exists_cover_over_models Y M₀ h₀ n M`. Use `choose b hb using hV₀`.
+
+Establish `hd : ∀ i, (m i : ℕ) * ((∏ j, (m j : ℕ)) / m i) = ∏ j, (m j : ℕ)` using `fun i => Nat.mul_div_cancel' (Finset.dvd_prod_of_mem _ (Finset.mem_univ i))`. Use `⟨V₀, ∏ i, (m i : ℕ), Finset.prod_pos fun i _ => (m i).pos, fun V a g _ hj hπ _ => ?_⟩` and prove the remaining obligations. Use `⟨fun i => lbPow ((L i).pull (a ≫ b i)) ((∏ j, (m j : ℕ)) / m i), fun i => ⟨isLB_lbPow (LB.isLB_pull (hL i) _) _, fun p => ?_⟩⟩` and prove the remaining obligations. Establish `hc : V.j ≫ a ≫ b i = V.π ≫ (M i).j`. Rewrite using `[← Category.assoc, hj, Category.assoc, hb i, ← Category.assoc, hπ]`.
+
+Use `GlobalTheory.TrivFlag.NormsAt.congr (normsAt_pow (normsAt_pull (M i) (L i) (m i) (r i) (hr i) (hv i) V (a ≫ b i) hc p) _) (fun y => ?_) (fun v _ e y => ?_)` and prove the remaining obligations. Rewrite using `[← pow_mul, hd i]`. Rewrite using `[← _root_.mul_assoc, ← Nat.cast_mul, mul_comm ((∏ j, (m j : ℕ)) / m i), hd i]`.
+-/
 theorem bundleSt : BundleSt := by
   intro F _ _ Y n Δ φ ⟨M₀, h₀⟩ hφ
   unfold FromModel at hφ

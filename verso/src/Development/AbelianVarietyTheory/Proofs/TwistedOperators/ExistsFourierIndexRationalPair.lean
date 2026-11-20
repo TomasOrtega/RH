@@ -36,12 +36,20 @@ namespace GlobalTheory.MovedJetNZ
 
 open GlobalTheory.Grid (neg ofSgn)
 
+/- English proof (translation)
+Use extensionality with `y`. Simplify using `only [SetLike.mem_coe, hL, lc_mem_colLat_one, Submodule.mem_one]`.
+-/
 theorem std_eq_colLat_one' {D : D7} {n : ℕ} (L : Submodule (𝓞 D.host.E) (Fin n → D.host.E))
     (hL : ∀ y, y ∈ L ↔ ∀ i, ∃ b : 𝓞 D.host.E, (b : D.host.E) = y i) :
     (L : Set (Fin n → D.host.E)) = (colLat (1 : GL (Fin n) D.host.E) : Set _) := by
   ext y
   simp only [SetLike.mem_coe, hL, lc_mem_colLat_one, Submodule.mem_one]
 
+/- English proof (translation)
+Use `Even.mul_left ?_ _` and prove the remaining obligations. Establish `h1` using `hX.rank`. Establish `h2` using `hX.rank'`. Establish `h3` using `hX.is.rank`. Establish `h4` using `SqNum.ranks_exact D i j`.
+
+Rewrite using `[← h3, h1, h2]`. Use `⟨SqNum.halfRank D i j - (D.R.m - (j.1 + 1)) / 2 - (D.R.m - j.1) / 2, ?_⟩` and prove the remaining obligations. Use linear arithmetic over natural numbers and integers.
+-/
 theorem even_bot' {D : D7} {T : Type} {L : LevCh D T} {sc : Consts} {G : GridData L sc} {W : G.Weil}
     {i j : Fin D.R.m} {A A' WW : HSp D} {X : Tri T A A' WW} (hX : IsBottomTri W i j X) : Even (A.rank * WW.rank) := by
   refine Even.mul_left ?_ _
@@ -53,6 +61,21 @@ theorem even_bot' {D : D7} {T : Type} {L : LevCh D T} {sc : Consts} {G : GridDat
   refine ⟨SqNum.halfRank D i j - (D.R.m - (j.1 + 1)) / 2 - (D.R.m - j.1) / 2, ?_⟩
   omega
 
+/- English proof (translation)
+Establish `hIs` using `hX.is`. Establish `hψ : IsStdChar D W.ψ (-1)` using `hIs.isVac.1`. Establish `hθ : IsInfFam W.θ` using `hIs.isVac.2.inf`. Use `set f : WO A WW → ℂ := fun w => starRingEnd ℂ (X.vac w) with hfdef`. Establish `hf0 : IsVacO W.ψ W.θ A WW X.rA.s X.rW.s X.rA.Λ X.rW.Λ f` using `GlobalTheory.VacConj.isVacO_conj_negSp W.ψ W.θ A WW X.rA.s X.rW.s _ _ X.vac hIs.isVac`.
+
+Establish `hf : IsVacO W.ψ W.θ A WW X.rA.s X.rW.s (colLat (1 : GL (Fin A.rank) D.host.E) : Set _) (colLat (1 : GL (Fin WW.rank) D.host.E) : Set _) f`. Rewrite using `[← std_eq_colLat_one' X.rA.Λ hX.std.2.1, ← std_eq_colLat_one' X.rW.Λ hX.stdW.2.1]`. Conclude with `hf0`. Establish `hS : Formalism.UG.cT (D.sp.cm.sig : D.host.E →+* D.host.E) (1 : GL (Fin A.rank) D.host.E).1 * A.gram * (1 : GL (Fin A.rank) D.host.E).1 = 1`. Rewrite using `[hX.std.1]`.
+
+Simplify using `[Formalism.UG.cT]`. Establish `hW : Formalism.UG.cT (D.sp.cm.sig : D.host.E →+* D.host.E) (1 : GL (Fin WW.rank) D.host.E).1 * WW.gram * (1 : GL (Fin WW.rank) D.host.E).1 = 1`. Rewrite using `[hX.stdW.1]`. Simplify using `[Formalism.UG.cT]`. Establish `hcA : ∀ τ, IsCartanInv (gramAt D A τ) (X.rA.s τ)` using `fun τ => (hIs.rigA.2.2 τ).1`.
+
+Establish `hcW : ∀ τ, IsCartanInv (gramAt D WW τ) (X.rW.s τ)` using `fun τ => (hIs.rigW.2.2 τ).1`. Establish `hBA : (fun τ => (1 : GL (Fin A.rank) D.host.E).1.map (tauE D τ)) = X.rA.B`. Use function extensionality and compare the values at `τ`. Rewrite using `[(hX.std.2.2 τ).2]`. Simplify using the standard rewrite rules.
+
+Establish `hBW : (fun τ => (1 : GL (Fin WW.rank) D.host.E).1.map (tauE D τ)) = X.rW.B`. Use function extensionality and compare the values at `τ`. Rewrite using `[(hX.stdW.2.2 τ).2]`. Simplify using the standard rewrite rules. Take `⟨δ, hC, hδ⟩` from `GlobalTheory.FunObj.exists_delta D`.
+
+Take `⟨t0, ht0⟩` from `((hI D).t0Ex D.host.ccK δ hC).1`. Take `⟨e0, he0, he0ne⟩` from `GlobalTheory.Vacuum.exists_vacuum D D.host.ccK δ hC t0 ht0 A.rank WW.rank (even_bot' hX)`. Take `⟨c, hc⟩` from `GlobalTheory.FockPos.fock_jets_eq_unit_mul_period_jets W.ψ W.θ A WW X.rA.s X.rW.s 1 1 hS hW hcA hcW δ t0 hC hδ ht0 e0 he0 f hf`. Take `⟨α, hα⟩` from `GlobalTheory.NatFamily.exists_taylor_ne D he0.1.1 he0ne`. Use `⟨α, ?_⟩` and prove the remaining obligations.
+
+Express the relevant statement in the definitionally equal form `pureTensorO W.ψ W.θ (negSp A) WW (fun τ => -X.rA.s τ) X.rW.s X.rA.B X.rW.B X.vac (MvPolynomial.monomial α 1) 0 ≠ 0`. Rewrite using `[GlobalTheory.FockConj.pureTensorO_negSp_monomial W.ψ W.θ A WW X.rA.s X.rW.s X.rA.B X.rW.B X.vac hψ hθ α 0, map_ne_zero, ← hBA, ← hBW, hc α, GlobalTheory.FockPos.applyAt0_monomial']`. Establish `hprod : (α.prod fun v n => GlobalTheory.FunObj.period δ v.1 ^ n) ≠ 0` using `Finsupp.prod_ne_zero_iff.2 fun v _ => pow_ne_zero _ (GlobalTheory.FunObj.period_ne_zero hδ v.1)`. Establish `hfac : (α.prod fun _ n => (n.factorial : ℂ)) ≠ 0` using `Finsupp.prod_ne_zero_iff.2 fun _ _ => Nat.cast_ne_zero.2 (Nat.factorial_ne_zero _)`. Conclude with `mul_ne_zero c.ne_zero (mul_ne_zero hprod (mul_ne_zero hfac hα))`.
+-/
 theorem vac_jet_ne_zero {D : D7} {T : Type} {L : LevCh D T} {sc : Consts} {G : GridData L sc} {W : G.Weil}
     {i j : Fin D.R.m} {A A' WW : HSp D} {X : Tri T A A' WW} (hI : ∀ D, GlobalTheory.NormSum.Inp D) (hX : IsBottomTri W i j X) :
     ∃ k : FVar D WW.rank A.rank →₀ ℕ, pureTensorO W.ψ W.θ (neg A) WW (fun τ => -X.rA.s τ) X.rW.s X.rA.B X.rW.B X.vac
@@ -110,6 +133,25 @@ namespace GlobalTheory.MovedJetNZ
 
 open GlobalTheory.Grid (neg ofSgn)
 
+/- English proof (translation)
+Introduce `D T _ L μ₀ sc G W i j A A' WW X _ hI _ hX t γ hγ _ _ γ' hγ' _ _ _ _`. Establish `hIs` using `hX.is`. Establish `hψ : IsStdChar D W.ψ (-1)` using `hIs.isVac.1`. Establish `hθ : IsInfFam W.θ` using `hIs.isVac.2.inf`. Use `set om' := (X.ω t).toSgn true with hom'`.
+
+Establish `hom` using `hIs.weil t`. Establish `hsA : ∀ τ, X.rA.s τ = 1` using `fun τ => (hX.std.2.2 τ).1`. Establish `hsW : ∀ τ, X.rW.s τ = 1` using `fun τ => (hX.stdW.2.2 τ).1`. Establish `hBA : ∀ τ, X.rA.B τ = 1` using `fun τ => by rw [(hX.std.2.2 τ).2]`. Take `⟨k₀, hk₀⟩` from `vac_jet_ne_zero hI hX`.
+
+Assume the negation of the conclusion as `hall`. Use `push_neg at hall`. Use `set γs := (ofSgn true A).symm γ with hγs`. Establish `hγsQ : γs ∈ GQ (neg A)` using `(GlobalTheory.SgnIdent.mem_GQ_sgn true A γs).2 (by rw [hγs, MulEquiv.apply_symm_apply]; exact hγ)`. Establish `hg : X.ω t (γ, γ') X.vac = om' (γs, γ') X.vac` using `by show _ = (X.ω t) ((ofSgn true A) ((ofSgn true A).symm γ), γ') X.vac`.
+
+Rewrite using `[MulEquiv.apply_symm_apply]`. Simplify using `only [hg] at hall`. Establish `hvθ : IsThetaFunO W.ψ (neg A) WW X.vac` using `hIs.isVac.2.theta`. Establish `hgθ : IsThetaFunO W.ψ (neg A) WW (om' (γs, γ') X.vac)` using `hom.om_pres _ _ hvθ`. Establish `hzero : ∀ P, pureTensorO W.ψ W.θ (neg A) WW (fun τ => -X.rA.s τ) X.rW.s X.rA.B X.rW.B (om' (γs, γ') X.vac) P 0 = 0`.
+
+Introduce `P`. Rewrite using `[P.as_sum, map_sum, Finset.sum_apply]`. Use `Finset.sum_eq_zero fun k _ => ?_` and prove the remaining obligations. Establish `e : MvPolynomial.monomial k (P.coeff k) = P.coeff k • MvPolynomial.monomial k 1`. Rewrite using `[MvPolynomial.smul_monomial, smul_eq_mul, mul_one]`.
+
+Rewrite using `[e, map_smul, Pi.smul_apply, hall k, smul_zero]`. Establish `hop` using `GlobalTheory.OrientedHeis.om_pureTensorO D W.ψ W.θ (neg A) WW _ _ om' hom hθ (fun τ => -X.rA.s τ) (fun τ => -X.rA.s τ) X.rA.B (fun τ => compAt W.θ τ (Formalism.L2.Theta.mt (neg A) γs) * X.rA.B τ) X.rW.s X.rW.s X.rW.B (fun τ => compAt W.θ τ (Formalism.L2.Theta.mt WW γ') * X.rW.B τ …`. Establish `haut` using `hom.om_aut γs hγsQ γ' hγ' _ hop.1`. Apply `hk₀` to reduce the goal to its premises. Rewrite using `[← haut, hop.2]`.
+
+Establish `hBW : ∀ τ, X.rW.B τ = 1` using `fun τ => by rw [(hX.stdW.2.2 τ).2]`. Establish `e1 : (fun τ => compAt W.θ τ (Formalism.L2.Theta.mt (neg A) γs) * X.rA.B τ) = fun τ => X.rA.B τ * compAt W.θ τ (Formalism.L2.Theta.mt (neg A) γs)`. Use function extensionality and compare the values at `τ`. Rewrite using `[hBA, Matrix.mul_one, Matrix.one_mul]`. Establish `e2 : (fun τ => compAt W.θ τ (Formalism.L2.Theta.mt WW γ') * X.rW.B τ) = fun τ => X.rW.B τ * compAt W.θ τ (Formalism.L2.Theta.mt WW γ')`.
+
+Use function extensionality and compare the values at `τ`. Rewrite using `[hBW, Matrix.mul_one, Matrix.one_mul]`. Establish `es : (fun τ => -X.rA.s τ) = fun _ => (-1 : Matrix (Fin A.rank) (Fin A.rank) ℂ)` using `funext fun τ => by rw [hsA]`. Establish `et : X.rW.s = fun _ => (1 : Matrix (Fin WW.rank) (Fin WW.rank) ℂ)` using `funext hsW`. Rewrite using `[e1, e2]`.
+
+Rewrite `hzero`, the goal using `[es, et]`. Express the relevant statement in the definitionally equal form `pureTensorO W.ψ W.θ (negSp A) WW (fun _ => -1) (fun _ => 1) _ _ _ _ _ = _`. Rewrite using `[GlobalTheory.FockNegSubst.pureTensorO_negSp_subst D W.ψ W.θ A WW hψ hθ _ _ _ _ _ hgθ]`. Conclude with `hzero _`.
+-/
 theorem moved_vac_jet_ne_zero : ∀ {D : D7} {T : Type} [Finite T] {L : LevCh D T} {μ₀ : T} {sc : Consts} {G : GridData L sc} {W : G.Weil}
     {i j : Fin D.R.m} {A A' WW : HSp D} {X : Tri T A A' WW}, GlobalTheory.FunPr.Hypotheses₂ → (∀ D, GlobalTheory.NormSum.Inp D) → L.Is μ₀ →
     IsBottomTri W i j X → ∀ (t : T), ∀ γ ∈ Formalism.L2.Theta.GQ A, ∀ a ∈ GinfC A, ∀ γ' ∈ Formalism.L2.Theta.GQ WW, ∀ a' ∈ GinfC WW,

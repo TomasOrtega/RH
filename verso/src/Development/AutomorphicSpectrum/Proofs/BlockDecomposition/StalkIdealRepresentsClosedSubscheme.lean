@@ -5,6 +5,31 @@ attribute [local instance] Over.cartesianMonoidalCategory
 
 namespace GlobalTheory.CompanionTheory.StalkIdeal
 
+/- English proof (translation)
+Introduce `X Z i _ x hx hcl`. Establish `hq : IsClosedImmersion (pullback.snd i (X.fromSpecStalk x))` using `inferInstance`. Take `⟨I, e, he⟩` from `IsClosedImmersion.Spec_iff.1 hq`. Establish `hpt : ∀ p : ↥(pullback i (X.fromSpecStalk x)), X.fromSpecStalk x (pullback.snd i (X.fromSpecStalk x) p) = i (pullback.fst i (X.fromSpecStalk x) p)`. Introduce `p`.
+
+Rewrite using `[← Scheme.Hom.comp_apply, ← Scheme.Hom.comp_apply, pullback.condition]`. Establish `hsnd : ∀ s : ↥(Spec (CommRingCat.of (X.presheaf.stalk x ⧸ I))), pullback.snd i (X.fromSpecStalk x) (e.inv s) = PrimeSpectrum.comap (Ideal.Quotient.mk I) s`. Introduce `s`. Rewrite using `[he, Scheme.Hom.comp_apply, ← Scheme.Hom.comp_apply e.inv e.hom, Iso.inv_hom_id]`. Both sides reduce to the same expression.
+
+Use `⟨I, ?_, ?_, ?_⟩` and prove the remaining obligations. Take `⟨z, hz⟩` from `hx`. Take `⟨p, -, -⟩` from `Scheme.Pullback.exists_preimage_pullback (f := i) (g := X.fromSpecStalk x) z (IsLocalRing.closedPoint _) (by rw [Scheme.fromSpecStalk_closedPoint, hz])`. Establish `hs : (show PrimeSpectrum (X.presheaf.stalk x ⧸ I) from e.hom p).asIdeal.IsPrime` using `PrimeSpectrum.isPrime _`. Rewrite using `[← Ideal.Quotient.nontrivial_iff]`.
+
+Assume the negation of the conclusion as `hnt`. Rewrite `hnt` using `[not_nontrivial_iff_subsingleton]`. Conclude with `hs.ne_top (Subsingleton.elim _ _)`. Introduce `q hq hIq`. Establish `hQ : (Ideal.map (Ideal.Quotient.mk I) q).IsPrime` using `Ideal.map_isPrime_of_surjective Ideal.Quotient.mk_surjective (by rwa [Ideal.mk_ker])`.
+
+Set `Q0 : PrimeSpectrum (X.presheaf.stalk x ⧸ I)` to `⟨_, hQ⟩`. Set `Q : ↥(Spec (CommRingCat.of (X.presheaf.stalk x ⧸ I)))` to `Q0`. Set `P : PrimeSpectrum (X.presheaf.stalk x)` to `⟨q, hq⟩`. Establish `hPQ : PrimeSpectrum.comap (Ideal.Quotient.mk I) Q = P` using `by ext1 show Ideal.comap (Ideal.Quotient.mk I) (Ideal.map (Ideal.Quotient.mk I) q) = q`. Rewrite using `[Ideal.comap_map_of_surjective _ Ideal.Quotient.mk_surjective, ← RingHom.ker_eq_comap_bot, Ideal.mk_ker, sup_eq_left.2 hIq]`.
+
+Establish `h1 : X.fromSpecStalk x P = i (pullback.fst i (X.fromSpecStalk x) (e.inv Q))`. Rewrite using `[← hPQ, ← hsnd, hpt]`. Establish `hspec : P ⤳ IsLocalRing.closedPoint (X.presheaf.stalk x)`. Rewrite using `[← PrimeSpectrum.le_iff_specializes, ← PrimeSpectrum.asIdeal_le_asIdeal]`. Conclude with `IsLocalRing.le_maximalIdeal hq.ne_top`.
+
+Establish `h2 : X.fromSpecStalk x P ⤳ x`. Use `hspec.map (X.fromSpecStalk x).continuous` as an intermediate fact. Rewrite `this` using `[Scheme.fromSpecStalk_closedPoint]`. Then use the resulting hypothesis. Establish `hclosed : IsClosed ({i (pullback.fst i (X.fromSpecStalk x) (e.inv Q))} : Set X)`. Rewrite using `[← Set.image_singleton]`.
+
+Conclude with `i.isClosedEmbedding.isClosedMap _ (hcl _)`. Establish `h3 : x = X.fromSpecStalk x P`. Use `h2.mem_closed hclosed (by rw [h1]; exact Set.mem_singleton _)` as an intermediate fact. Rewrite `this` using `[Set.mem_singleton_iff]`. Conclude with `this.trans h1.symm`.
+
+Establish `h4 : P = IsLocalRing.closedPoint (X.presheaf.stalk x)` using `(X.fromSpecStalk x).isEmbedding.injective (by rw [Scheme.fromSpecStalk_closedPoint]; exact h3.symm)`. Conclude with `congrArg PrimeSpectrum.asIdeal h4`. Introduce `J`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨z, hz⟩`.
+
+Establish `hw` using `pullback.lift_snd z (spMap (Ideal.Quotient.mk J)) hz`. Rewrite `hw` using `[he, ← Category.assoc]`. Establish `h2 : Spec.map (CommRingCat.ofHom (Ideal.Quotient.mk I) ≫ Spec.preimage (S` using `CommRingCat.of (X.presheaf.stalk x ⧸ J)) (pullback.lift z (spMap (Ideal.Quotient.mk J)) hz ≫ e.hom)) = Spec.map (CommRingCat.ofHom (Ideal.Quotient.mk J)) := by`. Rewrite using `[Spec.map_comp, Spec.map_preimage]`. Conclude with `hw`.
+
+Rewrite `h2` using `[Spec.map_inj]`. Introduce `a ha`. Establish `h3` using `congrArg (fun g => g.hom a) h2`. Establish `h4 : Ideal.Quotient.mk I a = 0` using `Ideal.Quotient.eq_zero_iff_mem.2 ha`. Simplify using `only [CommRingCat.hom_comp, CommRingCat.hom_ofHom, RingHom.comp_apply, h4, map_zero] at h3`.
+
+Conclude with `Ideal.Quotient.eq_zero_iff_mem.1 h3.symm`. Introduce `hIJ`. Use `⟨Spec.map (CommRingCat.ofHom (Ideal.Quotient.factor hIJ)) ≫ e.inv ≫ pullback.fst i (X.fromSpecStalk x), ?_⟩` and prove the remaining obligations. Rewrite using `[Category.assoc, Category.assoc, pullback.condition, he, Category.assoc, Iso.inv_hom_id_assoc, ← Category.assoc, ← Spec.map_comp, ← CommRingCat.ofHom_comp, Ideal.Quotient.factor_comp_mk]`.
+-/
 theorem exists_stalk_ideal : ∀ (X Z : Scheme.{0}) (i : Z ⟶ X) [IsClosedImmersion i] (x : X), x ∈ Set.range i → (∀ z : Z, IsClosed ({z} : Set Z)) → ∃ I : Ideal (X.presheaf.stalk x), I ≠ ⊤ ∧ (∀ q : Ideal (X.presheaf.stalk x), q.IsPrime → I ≤ q → q = IsLocalRing.maximalIdeal (X.presheaf.stalk x)) ∧ ∀ J : Ideal (X.presheaf.stalk x), (∃ z : Sp (X.presheaf.stalk x ⧸ J) ⟶ Z, z ≫ i = spMap (Ideal.Quotient.mk J) ≫ X.fromSpecStalk x) ↔ I ≤ J := by
   intro X Z i _ x hx hcl
   have hq : IsClosedImmersion (pullback.snd i (X.fromSpecStalk x)) := inferInstance

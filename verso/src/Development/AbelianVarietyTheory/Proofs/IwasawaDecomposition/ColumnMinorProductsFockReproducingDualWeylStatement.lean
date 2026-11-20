@@ -5,6 +5,9 @@ import Development.AbelianVarietyTheory.Proofs.SatakeParameters.DualWeylEqSpanCo
 import Development.AbelianVarietyTheory.Proofs.FoundationProofs.StandardWeylLatticesFockDual
 open MvPolynomial
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.WeylReproducingSym.reproducing_left | exact GlobalTheory.WeylReproducingSym.reproducing_left | (intros; apply GlobalTheory.WeylReproducingSym.reproducing_left <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.columnMinorProducts_fock_reproducing_dualWeyl : ∀ (N : ℕ) (Y : YoungDiagram) (hY : Y.colLen 0 ≤ N) (f : MvPolynomial (Fin N × Fin N) ℚ),
     f ∈ Formalism.GradedWeylDivisibility.dualWeyl ℚ N N (fun r : Fin N => Y.rowLen r) →
     ∑ J : (∀ c : Fin (Y.rowLen 0), Fin (Y.colLen c) ↪o Fin N),

@@ -19,6 +19,11 @@ namespace GlobalTheory.HtGen.SplitCover
 
 variable {F : Type} [Field F] [NumberField F] {Y : Var F}
 
+/- English proof (translation)
+Establish `key (W : Cover Y) : W.π (genericPoint W.G) = genericPoint Y.X`. Use `(genericPoint_spec W.G).image W.π.continuous` as an intermediate fact. Rewrite `this` using `[Set.image_univ, W.π.surjective.range_eq, closure_univ]`. Conclude with `this.eq (genericPoint_spec _)`. Take `⟨U, hU, e⟩` from `isDiscrete_iff_forall_mem_exists_isOpen.mp (V.π.isDiscrete_preimage_singleton (genericPoint Y.X)) (g (genericPoint V'.G)) (by rw [Set.mem_preimage, ← Scheme.Hom.comp_apply, h, key]; rfl)`.
+
+Establish `h₁ : g (genericPoint V'.G) ∈ U` using `(e.ge rfl).1`. Conclude with `(e.le ⟨(genericPoint_specializes _).mem_open hU h₁, key V⟩).symm`.
+-/
 theorem map_genericPoint {V' V : Cover Y} (g : V'.G ⟶ V.G) (h : g ≫ V.π = V'.π) :
     g (genericPoint V'.G) = genericPoint V.G := by
   have key (W : Cover Y) : W.π (genericPoint W.G) = genericPoint Y.X := by
@@ -30,6 +35,9 @@ theorem map_genericPoint {V' V : Cover Y} (g : V'.G ⟶ V.G) (h : g ≫ V.π = V
   have h₁ : g (genericPoint V'.G) ∈ U := (e.ge rfl).1
   exact (e.le ⟨(genericPoint_specializes _).mem_open hU h₁, key V⟩).symm
 
+/- English proof (translation)
+Rewrite using `[← Scheme.Hom.comp_apply, V.pb.w, Scheme.Hom.comp_apply]`. Express the relevant statement in the definitionally equal form `Ideal.comap (algebraMap (𝓞 F) F) ((V.π ≫ Y.str) y).asIdeal = ⊥`. Use `((V.π ≫ Y.str) y).isPrime` as an intermediate fact. Rewrite using `[Ideal.eq_bot_of_prime ((V.π ≫ Y.str) y).asIdeal]`. Conclude with `Ideal.comap_bot_of_injective _ (IsFractionRing.injective (𝓞 F) F)`.
+-/
 theorem asIdeal_p_j (V : Cover Y) (y : V.G) : (V.p (V.j y)).asIdeal = ⊥ := by
   rw [← Scheme.Hom.comp_apply, V.pb.w, Scheme.Hom.comp_apply]
   change Ideal.comap (algebraMap (𝓞 F) F) ((V.π ≫ Y.str) y).asIdeal = ⊥
@@ -37,6 +45,9 @@ theorem asIdeal_p_j (V : Cover Y) (y : V.G) : (V.p (V.j y)).asIdeal = ⊥ := by
   rw [Ideal.eq_bot_of_prime ((V.π ≫ Y.str) y).asIdeal]
   exact Ideal.comap_bot_of_injective _ (IsFractionRing.injective (𝓞 F) F)
 
+/- English proof (translation)
+Rewrite using `[← V.pb.isoPullback_hom_fst, Scheme.Hom.comp_base, TopCat.coe_comp, Set.range_comp, V.pb.isoPullback.hom.surjective.range_eq, Set.image_univ, Scheme.Pullback.range_fst]`. Use `⟨IsLocalRing.closedPoint F, PrimeSpectrum.ext (Eq.trans ?_ hx.symm)⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `Ideal.comap (algebraMap (𝓞 F) F) (IsLocalRing.maximalIdeal F) = ⊥`. Rewrite using `[IsLocalRing.maximalIdeal_eq_bot]`. Conclude with `Ideal.comap_bot_of_injective _ (IsFractionRing.injective (𝓞 F) F)`.
+-/
 theorem mem_range_j (V : Cover Y) {x : V.X} (hx : (V.p x).asIdeal = ⊥) : x ∈ Set.range V.j := by
   rw [← V.pb.isoPullback_hom_fst, Scheme.Hom.comp_base, TopCat.coe_comp,
     Set.range_comp, V.pb.isoPullback.hom.surjective.range_eq, Set.image_univ,
@@ -46,6 +57,9 @@ theorem mem_range_j (V : Cover Y) {x : V.X} (hx : (V.p x).asIdeal = ⊥) : x ∈
   rw [IsLocalRing.maximalIdeal_eq_bot]
   exact Ideal.comap_bot_of_injective _ (IsFractionRing.injective (𝓞 F) F)
 
+/- English proof (translation)
+Establish `h0 : (V.p (genericPoint V.X)).asIdeal = ⊥` using `eq_bot_iff.2 (((PrimeSpectrum.asIdeal_le_asIdeal _ _).2 ((PrimeSpectrum.le_iff_specializes _ _).2 ((genericPoint_specializes (V.j (genericPoint V.G))).map V.p.continuous))).trans (asIdeal_p_j V _).le)`. Take `⟨y, hy⟩` from `mem_range_j V h0`. Conclude with `hy ▸ (genericPoint_specializes y).map V.j.continuous`.
+-/
 theorem j_gen_specializes (V : Cover Y) : V.j (genericPoint V.G) ⤳ genericPoint V.X := by
   have h0 : (V.p (genericPoint V.X)).asIdeal = ⊥ :=
     eq_bot_iff.2 (((PrimeSpectrum.asIdeal_le_asIdeal _ _).2 ((PrimeSpectrum.le_iff_specializes _ _).2
@@ -54,10 +68,16 @@ theorem j_gen_specializes (V : Cover Y) : V.j (genericPoint V.G) ⤳ genericPoin
   obtain ⟨y, hy⟩ := mem_range_j V h0
   exact hy ▸ (genericPoint_specializes y).map V.j.continuous
 
+/- English proof (translation)
+The claim follows from `have := IsPreimmersion.of_isLocalization (R := 𝓞 F) (S := F) (nonZeroDivisors (𝓞 F)) MorphismProperty.of_isPullback V.pb.flip this`.
+-/
 theorem isPreimmersion_j (V : Cover Y) : IsPreimmersion V.j :=
   have := IsPreimmersion.of_isLocalization (R := 𝓞 F) (S := F) (nonZeroDivisors (𝓞 F))
   MorphismProperty.of_isPullback V.pb.flip this
 
+/- English proof (translation)
+Establish `e : spMap (SmallSec.fnMap j hη) = Spec.map (Z.presheaf.stalkSpecializes hη ≫ j.stalkMap (genericPoint W))` using `rfl`. Rewrite using `[e, Spec.map_comp, Category.assoc, Scheme.SpecMap_stalkSpecializes_fromSpecStalk, Scheme.SpecMap_stalkMap_fromSpecStalk]`.
+-/
 theorem spMap_fnMap {Z W : Scheme.{0}} [IsIntegral Z] [IsIntegral W] (j : W ⟶ Z)
     (hη : j (genericPoint W) ⤳ genericPoint Z) :
     spMap (SmallSec.fnMap j hη) ≫ Z.fromSpecStalk (genericPoint Z) = W.fromSpecStalk (genericPoint W) ≫ j := by
@@ -66,10 +86,20 @@ theorem spMap_fnMap {Z W : Scheme.{0}} [IsIntegral Z] [IsIntegral W] (j : W ⟶ 
   rw [e, Spec.map_comp, Category.assoc, Scheme.SpecMap_stalkSpecializes_fromSpecStalk,
     Scheme.SpecMap_stalkMap_fromSpecStalk]
 
+/- English proof (translation)
+Simplify using `only [spMap, ← Spec.map_comp]`. Both sides reduce to the same expression.
+-/
 theorem spMap_spMap {R R' R'' : Type} [CommRing R] [CommRing R'] [CommRing R''] (f : R →+* R') (g : R' →+* R'') :
     spMap g ≫ spMap f = spMap (g.comp f) := by
   simp only [spMap, ← Spec.map_comp]; rfl
 
+/- English proof (translation)
+Substitute `hξ` using the available equality. Introduce `Ω _ io`. Set `ε` to `(FractionRing.algEquiv K K).toRingEquiv`. Establish `e : ((io.comp κ).comp ε.toRingHom).comp (algebraMap K (FractionRing K)) = io.comp κ` using `RingHom.ext fun a => congrArg (io.comp κ) ((FractionRing.algEquiv K K).commutes a)`. Establish `h'` using `h Ω ((io.comp κ).comp ε.toRingHom)`.
+
+Rewrite `h'` using `[e]`. Rewrite using `[← Category.assoc, spMap_spMap]`. Introduce `w hw`. Take `⟨w₀, h₀⟩` from `h' w hw`. Use `⟨spMap (κ.comp ε.toRingHom) ≫ w₀, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[← h₀, ← Category.assoc, spMap_spMap]`.
+-/
 theorem splitK_of_splitTors {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E}
     {X : Scheme.{0}} (t : SAB H X) {K L : Type} [Field K] [Field L] (x : Sp K ⟶ X) (κ : K →+* L) (ξ : Sp L ⟶ X)
     (hξ : ξ = spMap κ ≫ x) {q : ℕ} (h : SplitTors t x q) : SplitK t ξ q := by
@@ -86,6 +116,19 @@ theorem splitK_of_splitTors {E : Type} [Field E] [NumberField E] [IsCMField E] {
   refine ⟨spMap (κ.comp ε.toRingHom) ≫ w₀, ?_⟩
   rw [← h₀, ← Category.assoc, spMap_spMap]
 
+/- English proof (translation)
+Introduce `E _ _ _ H X _ t F _ _ Y M ρ' V₀ q hq`. Use `haveI : CharZero Y.Fn := charZero_of_injective_algebraMap (algebraMap F Y.Fn).injective`. Set `x : Sp Y.Fn ⟶ X` to `Y.X.fromSpecStalk (genericPoint Y.X) ≫ M.j ≫ ρ'`. Take `⟨K, i1, i2, i3, hfin, hinj, -, ⟨ζ, hζ⟩, hs⟩` from `GlobalTheory.T.exists_finite_extension_splitting_torsion E H X t Y.Fn x q hq`. Establish `hK : IsField K`.
+
+Establish `: Algebra.IsIntegral Y.Fn K` using `Algebra.IsIntegral.of_finite _ _`. Conclude with `(Algebra.IsIntegral.isField_iff_isField hinj).1 (Field.toIsField _)`. Use `letI : Field K := hK.toField`. Take `⟨V₁, ρ₁, ψ, hρ₁, hψ⟩` from `GlobalTheory.T.exists_cover_function_field_embedding F Y M K`. Take `⟨V, π₀, π₁, hπ₀, -, ⟨g₀, e₀, f₀⟩, ⟨g₁, e₁, f₁⟩⟩` from `GlobalTheory.T.common_refinement_covers F Y V₀ V₁`.
+
+Use `haveI := isPreimmersion_j V`. Establish `hη` using `j_gen_specializes V`. Establish `hg₁ : g₁ (genericPoint V.G) ⤳ genericPoint V₁.G` using `specializes_of_eq (map_genericPoint g₁ f₁)`. Set `r : V.X.functionField ≃+* V.G.functionField` to `RingEquiv.ofBijective (SmallSec.fnMap V.j hη) ⟨(SmallSec.fnMap V.j hη).injective, SmallSec.fnMap_surjective V.j hη⟩`. Set `κ : K →+* V.X.functionField` to `r.symm.toRingHom.comp ((SmallSec.fnMap g₁ hg₁).comp ψ)`.
+
+Establish `hj : V.j ≫ π₁ ≫ ρ₁ ≫ ρ' = V.π ≫ M.j ≫ ρ'`. Rewrite using `[← reassoc_of% e₁, reassoc_of% hρ₁, reassoc_of% f₁]`. Establish `hr : V.X.fromSpecStalk (genericPoint V.X) = spMap r.symm.toRingHom ≫ V.G.fromSpecStalk (genericPoint V.G) ≫ V.j`. Rewrite using `[← spMap_fnMap V.j hη, ← Category.assoc, spMap_spMap]`. Establish `: r.symm.toRingHom.comp (SmallSec.fnMap V.j hη) = RingHom.id _` using `RingHom.ext fun a => r.symm_apply_apply a`.
+
+Rewrite using `[this]`. Conclude with `((congrArg (· ≫ _) (Spec.map_id _)).trans (Category.id_comp _)).symm`. Use `⟨V, π₀, g₀, π₁ ≫ ρ₁ ≫ ρ', hπ₀, e₀.symm, f₀, map_genericPoint g₀ f₀, hj, (κ.comp (algebraMap Y.Fn K)).charZero_iff (κ.comp (algebraMap Y.Fn K)).injective |>.1 inferInstance, ⟨κ ζ, hζ.map_of_injective κ.injective⟩, splitK_of_splitTors t _ κ _ ?_ hs⟩` and prove the remaining obligations. Establish `h₁` using `spMap_fnMap g₁ hg₁`. Establish `h₂` using `V₁.φ_spec`.
+
+Establish `h₃ : spMap κ ≫ spMap (algebraMap Y.Fn K) = spMap r.symm.toRingHom ≫ spMap (SmallSec.fnMap g₁ hg₁) ≫ spMap V₁.φ`. Rewrite using `[← hψ, spMap_spMap, spMap_spMap, spMap_spMap]`. Rewrite using `[hr, Category.assoc, Category.assoc, hj, ← f₁, reassoc_of% h₃]`. Use `congr 1`. Rewrite using `[Category.assoc, ← reassoc_of% h₁, reassoc_of% h₂]`.
+-/
 theorem exists_cover : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (X : Scheme.{0}) [IsLocallyNoetherian X] (t : SAB H X) (F : Type) [Field F] [NumberField F] (Y : Var F) (M : TrueGeo.Model Y) (ρ' : M.X ⟶ X) (V₀ : Cover Y) (q : ℕ), q ≠ 0 → ∃ (V : Cover Y) (a : V.X ⟶ V₀.X) (g : V.G ⟶ V₀.G) (ρ'' : V.X ⟶ X), a ≫ V₀.p = V.p ∧ V.j ≫ a = g ≫ V₀.j ∧ g ≫ V₀.π = V.π ∧ g (genericPoint V.G) = genericPoint V₀.G ∧ V.j ≫ ρ'' = V.π ≫ M.j ≫ ρ' ∧ CharZero V.X.functionField ∧ (∃ ζ : V.X.functionField, IsPrimitiveRoot ζ q) ∧ SplitK t (K := V.X.functionField) (V.X.fromSpecStalk (genericPoint V.X) ≫ ρ'') q := by
   intro E _ _ _ H X _ t F _ _ Y M ρ' V₀ q hq
   haveI : CharZero Y.Fn := charZero_of_injective_algebraMap (algebraMap F Y.Fn).injective

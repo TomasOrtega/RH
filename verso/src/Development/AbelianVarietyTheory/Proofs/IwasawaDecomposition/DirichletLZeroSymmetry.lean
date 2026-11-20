@@ -8,12 +8,18 @@ namespace GlobalTheory.Mem.An
 section
 variable {q : ℕ}
 
+/- English proof (translation)
+Apply the tactic sequence `rcases χ.even_or_odd with h | h <;> rw [h.gammaFactor_def]`. Conclude with `Gammaℝ_ne_zero_of_re_pos hs`. Conclude with `Gammaℝ_ne_zero_of_re_pos (by simp; linarith)`.
+-/
 theorem zsym_gammaFactor_ne_zero (χ : DirichletCharacter ℂ q) {s : ℂ} (hs : 0 < s.re) :
     χ.gammaFactor s ≠ 0 := by
   rcases χ.even_or_odd with h | h <;> rw [h.gammaFactor_def]
   · exact Gammaℝ_ne_zero_of_re_pos hs
   · exact Gammaℝ_ne_zero_of_re_pos (by simp; linarith)
 
+/- English proof (translation)
+Apply the tactic sequence `rcases χ.even_or_odd with h | h <;> simp only [h.gammaFactor_def]`. Conclude with `differentiable_Gammaℝ_inv`. Conclude with `differentiable_Gammaℝ_inv.comp (differentiable_id.add_const 1)`.
+-/
 theorem zsym_differentiable_gammaFactor_inv (χ : DirichletCharacter ℂ q) :
     Differentiable ℂ (fun s => (χ.gammaFactor s)⁻¹) := by
   rcases χ.even_or_odd with h | h <;> simp only [h.gammaFactor_def]
@@ -22,6 +28,11 @@ theorem zsym_differentiable_gammaFactor_inv (χ : DirichletCharacter ℂ q) :
 
 variable [NeZero q]
 
+/- English proof (translation)
+Introduce `h`. Establish `h1` using `hχ.completedLFunction_one_sub (-1)`. Rewrite `h1` using `[h, mul_zero, zero_mul]`. Establish `h2` using `χ.LFunction_eq_completed_div_gammaFactor (1 - -1) (Or.inl (by norm_num))`. Rewrite `h2` using `[h1, zero_div]`.
+
+Conclude with `χ.LFunction_ne_zero_of_one_le_re (Or.inr (by norm_num)) (by norm_num) h2`.
+-/
 theorem zsym_rootNumber_ne_zero {χ : DirichletCharacter ℂ q} (hχ : χ.IsPrimitive) :
     χ.rootNumber ≠ 0 := by
   intro h
@@ -34,6 +45,13 @@ theorem zsym_rootNumber_ne_zero {χ : DirichletCharacter ℂ q} (hχ : χ.IsPrim
 noncomputable def zsymFactor (χ : DirichletCharacter ℂ q) (s : ℂ) : ℂ :=
   (q : ℂ) ^ ((1 - s) - 1 / 2) * χ.rootNumber * (χ.gammaFactor s)⁻¹ / (χ⁻¹.gammaFactor (1 - s))⁻¹
 
+/- English proof (translation)
+Establish `hs0 : s ≠ 0` using `by rintro rfl; simp at h0`. Establish `hs1 : 1 - s ≠ 0`. Introduce `h`. Rewrite `h` using `[sub_eq_zero]`. Substitute `h` using the available equality.
+
+Simplify using `at h1`. Establish `h2` using `hχ.completedLFunction_one_sub (1 - s)`. Rewrite `h2` using `[sub_sub_cancel]`. Establish `g1` using `zsym_gammaFactor_ne_zero χ h0`. Establish `g2` using `zsym_gammaFactor_ne_zero χ⁻¹ (s := 1 - s) (by simp; linarith)`.
+
+Rewrite using `[χ.LFunction_eq_completed_div_gammaFactor s (Or.inl hs0), χ⁻¹.LFunction_eq_completed_div_gammaFactor (1 - s) (Or.inl hs1), h2, zsymFactor]`. Clear the denominators using the available nonvanishing facts.
+-/
 theorem zsym_eq {χ : DirichletCharacter ℂ q} (hχ : χ.IsPrimitive) {s : ℂ} (h0 : 0 < s.re)
     (h1 : s.re < 1) : χ.LFunction s = zsymFactor χ s * χ⁻¹.LFunction (1 - s) := by
   have hs0 : s ≠ 0 := by rintro rfl; simp at h0
@@ -47,6 +65,11 @@ theorem zsym_eq {χ : DirichletCharacter ℂ q} (hχ : χ.IsPrimitive) {s : ℂ}
     χ⁻¹.LFunction_eq_completed_div_gammaFactor (1 - s) (Or.inl hs1), h2, zsymFactor]
   field_simp
 
+/- English proof (translation)
+Establish `g1` using `zsym_gammaFactor_ne_zero χ h0`. Establish `g2` using `zsym_gammaFactor_ne_zero χ⁻¹ (s := 1 - s) (by simp; linarith)`. Establish `g3` using `zsym_rootNumber_ne_zero hχ`. Establish `g4 : (q : ℂ) ^ ((1 - s) - 1 / 2) ≠ 0`. Simplify using `[cpow_eq_zero_iff, NeZero.ne q]`.
+
+Unfold `zsymFactor`. Conclude with `div_ne_zero (mul_ne_zero (mul_ne_zero g4 g3) (inv_ne_zero g1)) (inv_ne_zero g2)`.
+-/
 theorem zsymFactor_ne_zero {χ : DirichletCharacter ℂ q} (hχ : χ.IsPrimitive) {s : ℂ}
     (h0 : 0 < s.re) (h1 : s.re < 1) : zsymFactor χ s ≠ 0 := by
   have g1 := zsym_gammaFactor_ne_zero χ h0
@@ -57,6 +80,11 @@ theorem zsymFactor_ne_zero {χ : DirichletCharacter ℂ q} (hχ : χ.IsPrimitive
   unfold zsymFactor
   exact div_ne_zero (mul_ne_zero (mul_ne_zero g4 g3) (inv_ne_zero g1)) (inv_ne_zero g2)
 
+/- English proof (translation)
+Establish `g2` using `zsym_gammaFactor_ne_zero χ⁻¹ (s := 1 - s) (by simp; linarith)`. Establish `d1 : Differentiable ℂ (fun s : ℂ => (q : ℂ) ^ ((1 - s) - 1 / 2))`. Establish `: NeZero (q : ℂ)` using `⟨by exact_mod_cast NeZero.ne q⟩`. Use `fun_prop`. Establish `d2 : Differentiable ℂ (fun s : ℂ => (χ⁻¹.gammaFactor (1 - s))⁻¹)` using `(zsym_differentiable_gammaFactor_inv χ⁻¹).comp (differentiable_id.const_sub 1)`.
+
+Establish `d3` using `(d1.mul_const χ.rootNumber).mul (zsym_differentiable_gammaFactor_inv χ)`. Conclude with `(d3.analyticAt s).div (d2.analyticAt s) (inv_ne_zero g2)`.
+-/
 theorem zsymFactor_analyticAt (χ : DirichletCharacter ℂ q) {s : ℂ}
     (h1 : s.re < 1) : AnalyticAt ℂ (zsymFactor χ) s := by
   have g2 := zsym_gammaFactor_ne_zero χ⁻¹ (s := 1 - s) (by simp; linarith)
@@ -68,6 +96,9 @@ theorem zsymFactor_analyticAt (χ : DirichletCharacter ℂ q) {s : ℂ}
   have d3 := (d1.mul_const χ.rootNumber).mul (zsym_differentiable_gammaFactor_inv χ)
   exact (d3.analyticAt s).div (d2.analyticAt s) (inv_ne_zero g2)
 
+/- English proof (translation)
+Use `DifferentiableOn.analyticAt (s := {1}ᶜ) (fun z hz => ?_) (isOpen_compl_singleton.mem_nhds hs)` and prove the remaining obligations. Conclude with `(χ.differentiableAt_LFunction z (Or.inl hz)).differentiableWithinAt`.
+-/
 theorem zsym_analyticAt_LFunction (χ : DirichletCharacter ℂ q) {s : ℂ} (hs : s ≠ 1) :
     AnalyticAt ℂ χ.LFunction s := by
   refine DifferentiableOn.analyticAt (s := {1}ᶜ) (fun z hz => ?_)
@@ -76,6 +107,15 @@ theorem zsym_analyticAt_LFunction (χ : DirichletCharacter ℂ q) {s : ℂ} (hs 
 
 end
 
+/- English proof (translation)
+Introduce `q _ χ hχ ρ h0 h1`. Establish `hne` using `zsymFactor_ne_zero hχ h0 h1`. Use `⟨by rw [zsym_eq hχ h0 h1]; simp [hne], ?_⟩` and prove the remaining obligations. Establish `hev : χ.LFunction =ᶠ[𝓝 ρ] zsymFactor χ * (χ⁻¹.LFunction ∘ fun s => 1 - s)`. Establish `a : ∀ᶠ s : ℂ in 𝓝 ρ, 0 < s.re` using `(isOpen_lt continuous_const continuous_re).mem_nhds h0`.
+
+Establish `b : ∀ᶠ s : ℂ in 𝓝 ρ, s.re < 1` using `(isOpen_lt continuous_re continuous_const).mem_nhds h1`. Use `filter_upwards [a, b] with s a b`. Conclude with `zsym_eq hχ a b`. Establish `hρ : 1 - ρ ≠ 1`. Introduce `h`.
+
+Rewrite `h` using `[sub_eq_self]`. Substitute `h` using the available equality. Simplify using `at h0`. Establish `hL` using `zsym_analyticAt_LFunction χ⁻¹ hρ`. Establish `hg : AnalyticAt ℂ (fun s : ℂ => 1 - s) ρ` using `by fun_prop`.
+
+Establish `hf` using `zsymFactor_analyticAt χ h1`. Unfold `zmult analyticOrderNatAt`. Use `congr 1`. Rewrite using `[analyticOrderAt_congr hev, analyticOrderAt_mul hf (AnalyticAt.comp hL hg), hf.analyticOrderAt_eq_zero.2 hne, zero_add, analyticOrderAt_comp_of_deriv_ne_zero hg (by simp)]`.
+-/
 theorem zeros_symm_one_sub : ∀ (q : ℕ) [NeZero q] (χ : DirichletCharacter ℂ q), χ.IsPrimitive →
     ∀ ρ : ℂ, 0 < ρ.re → ρ.re < 1 →
       ((DirichletCharacter.LFunction χ ρ = 0 ↔ DirichletCharacter.LFunction χ⁻¹ (1 - ρ) = 0) ∧

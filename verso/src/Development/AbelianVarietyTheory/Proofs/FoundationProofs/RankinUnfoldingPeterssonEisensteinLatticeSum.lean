@@ -18,6 +18,29 @@ namespace GlobalTheory.EisM
 def rkPsi (k : ℕ) (s : ℝ) (h b : ℕ → ℂ) (τ : ℍ) : ℂ :=
   conj (qs h τ) * qs b τ * ((τ.im ^ ((k : ℝ) + s) : ℝ) : ℂ)
 
+/- English proof (translation)
+Use `set j : ℂ := ((γ 1 0 : ℤ) : ℂ) * τ + ((γ 1 1 : ℤ) : ℂ) with hjdef`. Establish `hdenom : UpperHalfPlane.denom γ τ = j` using `ModularGroup.denom_apply γ τ`. Establish `hj : j ≠ 0` using `by rw [← hdenom]; exact UpperHalfPlane.denom_ne_zero _ τ`. Establish `him : (γ • τ).im = τ.im / Complex.normSq j` using `by rw [ModularGroup.im_smul_eq_div_normSq, hdenom]`. Establish `hdet : γ 0 0 * γ 1 1 - γ 0 1 * γ 1 0 = 1`.
+
+Use `γ.2` as an intermediate fact. Rewrite `this` using `[Matrix.det_fin_two]`. Conclude with `this`. Take `⟨m, hm⟩` from `hγ`. Establish `hcop : IsCoprime (γ 1 1) (L : ℤ)` using `⟨γ 0 0, -(γ 0 1 * m), by rw [hm] at hdet; linear_combination hdet⟩`.
+
+Establish `hunit : IsUnit ((γ 1 1 : ℤ) : ZMod N)`. Take `⟨n, hn⟩` from `hNL`. Establish `h1 : ((γ 1 1 * γ 0 0 + (-(γ 0 1 * m * n)) * (N : ℤ) : ℤ) : ZMod N) = 1`. Rewrite `hdet` using `[hm, hn]`. Move the coercions through the operations in `at hdet`.
+
+Establish `: γ 1 1 * γ 0 0 + (-(γ 0 1 * m * n)) * (N : ℤ) = 1` using `by linear_combination hdet`. Rewrite using `[this]`. Simplify using the standard rewrite rules. Move the coercions through the operations in `at h1`. Simplify using `only [mul_neg, neg_mul, ZMod.natCast_self, mul_zero, neg_zero, add_zero] at h1`.
+
+Conclude with `⟨⟨_, ((γ 0 0 : ℤ) : ZMod N), h1, by rw [mul_comm]; exact h1⟩, rfl⟩`. Establish `hεε : conj (ch ε (γ 1 1)) * ch ε (γ 1 1) = 1`. Establish `hn : ‖ch ε (γ 1 1)‖ = 1`. Unfold `ch`. Rewrite using `[← hunit.unit_spec]`.
+
+Conclude with `DirichletCharacter.unit_norm_eq_one ε hunit.unit`. Rewrite using `[mul_comm, Complex.mul_conj, Complex.normSq_eq_norm_sq, hn]`. Simplify using the standard rewrite rules. Establish `hH` using `hh.1.2 γ ⟨m, hm⟩ τ`. Establish `hB` using `hb.2 γ ⟨m, hm⟩ τ`.
+
+Rewrite `hB` using `[hχ _ hcop]`. Rewrite `hH`, `hB` using `[← hjdef]`. Establish `hNpos : 0 < Complex.normSq j` using `Complex.normSq_pos.2 hj`. Establish `hy` using `τ.im_pos`. Unfold `rkPsi trm`.
+
+Rewrite using `[hH, hB, him, Real.div_rpow hy.le hNpos.le, Real.rpow_add hNpos, Real.rpow_natCast]`. Establish `hn2 : ‖j‖ ^ (-2 * s) = (Complex.normSq j ^ s)⁻¹`. Rewrite using `[Complex.normSq_eq_norm_sq, ← Real.rpow_natCast, ← Real.rpow_mul (norm_nonneg _), ← Real.rpow_neg (norm_nonneg _)]`. Use `congr 1`. Use `push_cast`.
+
+Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hn2]`. Establish `hP : (Complex.normSq j ^ s) ≠ 0` using `(Real.rpow_pos_of_pos hNpos s).ne'`. Establish `hcj : conj j ≠ 0` using `by simpa using hj`. Establish `hNc : ((Complex.normSq j : ℝ) : ℂ) = j * conj j` using `(Complex.mul_conj j).symm`.
+
+Simplify using `only [ch] at hεε ⊢`. Establish `hε0 : ε ((γ 1 1 : ℤ) : ZMod N) ≠ 0` using `by intro h0; rw [h0, mul_zero] at hεε; exact zero_ne_one hεε`. Establish `hεc : conj (ε ((γ 1 1 : ℤ) : ZMod N)) = (ε ((γ 1 1 : ℤ) : ZMod N))⁻¹` using `eq_inv_of_mul_eq_one_left hεε`. Use `push_cast`. Rewrite using `[hNc]`.
+
+Simplify using `only [map_mul, map_pow, hεc]`. Clear the denominators using the available nonvanishing facts. Put the polynomial expressions in normal form.
+-/
 theorem rankin_transf (e L N : ℕ) (ε : DirichletCharacter ℂ N) (φ : DirichletCharacter ℂ L) (χ : ℤ → ℂ)
     (h b : ℕ → ℂ) (s : ℝ) (hNL : N ∣ L) (hh : CF (2 * e + 1) L (ch ε) h) (hb : MF e L χ b)
     (hχ : ∀ d : ℤ, IsCoprime d L → χ d = ch φ d * ch ε d) (γ : SL(2, ℤ)) (hγ : (L : ℤ) ∣ γ 1 0) (τ : ℍ) :
@@ -67,6 +90,15 @@ theorem rankin_transf (e L N : ℕ) (ε : DirichletCharacter ℂ N) (φ : Dirich
   field_simp
   ring_nf
 
+/- English proof (translation)
+Introduce `x`. Break down `Nat.eq_zero_or_pos L with hL | hL` into its components or cases. Substitute `hL` using the available equality. Simplify using the standard rewrite rules. Take `⟨n, rfl⟩ : ∃ n, L = n + 1` from `⟨L - 1, by omega⟩`.
+
+Establish `h0 : ∑ z : ZMod (n + 1), φ z = 0` using `MulChar.sum_eq_zero_of_ne_one hφ`. Unfold `latF`. Establish `e1 : ∀ r : ℕ, (x - (r : ℤ) • ((0 : ℤ), (1 : ℤ))).1 = x.1` using `by intro r; simp`. Distinguish the cases in `hx : ((n + 1 : ℕ) : ℤ) ∣ x.1`. Establish `e2 : ∀ r : ℕ, (x - (r : ℤ) • ((0 : ℤ), (1 : ℤ))).2 = x.2 - r` using `by intro r; simp`.
+
+Simplify using `only [e1, e2, hx, if_true, one_mul]`. Rewrite using `[← h0]`. Use `Finset.sum_nbij' (fun r : ℕ => (((x.2 - r : ℤ)) : ZMod (n + 1))) (fun z => ((x.2 : ZMod (n + 1)) - z).val) (fun _ _ => Finset.mem_univ _) (fun z _ => Finset.mem_range.2 (ZMod.val_lt _)) ?_ ?_ (fun _ _ => rfl)` and prove the remaining obligations. Introduce `r hr`. Establish `hr' : r < n + 1` using `Finset.mem_range.1 hr`.
+
+Simplify using `[ZMod.val_cast_of_lt hr']`. Introduce `z _`. Simplify using the standard rewrite rules. Simplify using `only [e1, hx, if_false, Finset.sum_const_zero]`.
+-/
 theorem latF_kills (L : ℕ) (φ : DirichletCharacter ℂ L) (hφ : φ ≠ 1) :
     Kills L (0, 1) (latF L (fun _ => 1) φ) := by
   intro x
@@ -90,6 +122,27 @@ theorem latF_kills (L : ℕ) (φ : DirichletCharacter ℂ L) (hφ : φ ≠ 1) :
       simp
   · simp only [e1, hx, if_false, Finset.sum_const_zero]
 
+/- English proof (translation)
+Take `⟨C, hC⟩` from `hb`. Establish `hb2 : Summable fun n : ℕ => ‖b n‖ ^ 2 / (n : ℝ) ^ (2 * (e : ℝ) - 1 + s)`. Use `Summable.of_nonneg_of_le (fun n => by positivity) (fun n => ?_) ((GlobalTheory.T.summable_card_divisors_sq_div_one_add_rpow s hs).mul_left (C ^ 2))` and prove the remaining obligations. Break down `Nat.eq_zero_or_pos n with hn | hn` into its components or cases. Substitute `hn` using the available equality.
+
+Establish `: (2 * (e : ℝ) - 1 + s) ≠ 0`. Establish `: (1 : ℝ) ≤ e` using `by exact_mod_cast he`. Combine the linear equalities and inequalities to obtain the conclusion. Simplify using `[Real.zero_rpow this]`. Establish `hn0 : (0 : ℝ) < n` using `by exact_mod_cast hn`.
+
+Establish `key : (n : ℝ) ^ (2 * (e : ℝ) - 1 + s) = ((n : ℝ) ^ (e - 1)) ^ 2 * (n : ℝ) ^ (1 + s)`. Rewrite using `[← pow_mul, ← Real.rpow_natCast, ← Real.rpow_add hn0]`. Use `congr 1`. Move the coercions through the operations in `[Nat.cast_sub he]`. Expand and normalize the polynomial expressions, which then agree.
+
+Establish `hA : 0 < (n : ℝ) ^ (e - 1)` using `by positivity`. Establish `hB : 0 < (n : ℝ) ^ (1 + s)` using `Real.rpow_pos_of_pos hn0 _`. Establish `hle` using `hC n hn.ne'`. Rewrite using `[key, div_le_iff₀ (by positivity)]`. Combine the equalities or inequalities in the displayed calculation.
+
+Clear the denominators using the available nonvanishing facts. Use `⟨hb2, ?_⟩` and prove the remaining obligations. Unfold `LSeriesSummable`. Use `Summable.of_norm (Summable.of_nonneg_of_le (fun n => norm_nonneg _) (fun n => ?_) ((hh.add hb2).div_const 2))` and prove the remaining obligations. Rewrite using `[LSeries.norm_term_eq]`.
+
+Use `split_ifs with hn`. Check the signs of the components of the expression. Establish `hn0 : (0 : ℝ) < n` using `by exact_mod_cast Nat.pos_of_ne_zero hn`. Simplify using `only [Complex.ofReal_re, norm_mul, Complex.norm_conj]`. Establish `e1 : (n : ℝ) ^ (((2 * e + 1 : ℕ) : ℝ) + s) = (n : ℝ) ^ (2 * (e : ℝ) - 1 + s) * n * n`.
+
+Rewrite using `[← Real.rpow_add_one hn0.ne', ← Real.rpow_add_one hn0.ne']`. Use `congr 1`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Establish `e2 : (n : ℝ) ^ (2 * (e : ℝ) + s) = (n : ℝ) ^ (2 * (e : ℝ) - 1 + s) * n`.
+
+Rewrite using `[← Real.rpow_add_one hn0.ne']`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e1, e2]`. Establish `hu : 0 < (n : ℝ) ^ (2 * (e : ℝ) - 1 + s)` using `Real.rpow_pos_of_pos hn0 _`.
+
+Use `set u := (n : ℝ) ^ (2 * (e : ℝ) - 1 + s)`. Use `set A := ‖h n‖`. Use `set B := ‖b n‖`. Establish `: (A ^ 2 / (u * n * n) + B ^ 2 / u) / 2 - A * B / (u * n) = (A - B * n) ^ 2 / (2 * u * n ^ 2)` using `by field_simp; ring`. Establish `h2 : 0 ≤ (A - B * n) ^ 2 / (2 * u * n ^ 2)` using `by positivity`.
+
+Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem rankin_summ (e : ℕ) (h b : ℕ → ℂ) (s : ℝ) (he : 1 ≤ e) (hs : 0 < s)
     (hb : ∃ C : ℝ, ∀ n, n ≠ 0 → ‖b n‖ ≤ C * n.divisors.card * (n : ℝ) ^ (e - 1))
     (hh : Summable fun n : ℕ => ‖h n‖ ^ 2 / (n : ℝ) ^ (((2 * e + 1 : ℕ) : ℝ) + s)) :
@@ -137,6 +190,25 @@ theorem rankin_summ (e : ℕ) (h b : ℕ → ℂ) (s : ℝ) (he : 1 ≤ e) (hs :
   have h2 : 0 ≤ (A - B * n) ^ 2 / (2 * u * n ^ 2) := by positivity
   linarith
 
+/- English proof (translation)
+Introduce `e L N ε φ χ ρ h b s he hs hL hNL hρ hφ hh hb hχ hbC`. Establish `hcont` using `fun a (ha : PolyB a) => (GlobalTheory.T.qExpansion_polyGrowth_summable_continuous a ha).2`. Use `set Lφ := LSeries (fun n => φ n) ((e + 1 : ℕ) + 2 * s) with hLφ`. Establish `hlat : ∀ τ : ℍ, lat (e + 1) s L (0, 1) (latF L (fun _ => 1) φ) τ = Lφ * ∑' x : {x : ℤ × ℤ // IsCoprime x.1 x.2 ∧ (L : ℤ) ∣ x.1}, φ (x.1.2 : ZMod L) * trm (e + 1) s ((x.1.1 : ℂ) * τ + x.1.2)`. Introduce `τ`.
+
+Establish `hb1 : ∃ C : ℝ, ∀ x, ‖latF L (fun _ => 1) φ x‖ ≤ C` using `⟨1, fun x => by`. Apply the tactic sequence `unfold latF; split_ifs <;> simp [DirichletCharacter.norm_le_one]⟩`. Rewrite using `[(GlobalTheory.T.regularizedEisensteinLatticeSum_eq_tsum_of_kills (e + 1) L s (0, 1) _ τ (by omega) hs hL hb1 (latF_kills L φ hφ)).2]`. Conclude with `GlobalTheory.T.eisenstein_lattice_sum_gcd_factor_out (e + 1) L s φ τ (by omega) hs hL`. Use `set Ψ := rkPsi (2 * e + 1) s h b with hΨ`.
+
+Use `set W : ℤ × ℤ → ℍ → ℂ := fun x τ => φ (x.2 : ZMod L) * trm (e + 1) s ((x.1 : ℂ) * τ + x.2) * Ψ τ with hW`. Establish `hpt : ∀ τ : ℍ, (ρ τ : ℂ) * (conj (qs h τ) * (qs b τ * lat (e + 1) s L (0, 1) (latF L (fun _ => 1) φ) τ * ((τ.im ^ s : ℝ) : ℂ)) * (τ.im : ℂ) ^ (2 * e + 1)) = Lφ * ((ρ τ : ℂ) * ∑' x : {x : ℤ × ℤ // IsCoprime x.1 x.2 ∧ (L : ℤ) ∣ x.1}, W x.1 τ)`. Introduce `τ`. Rewrite using `[hlat τ]`. Simplify using `only [hW]`.
+
+Rewrite using `[tsum_mul_right]`. Establish `hy : ((τ.im ^ (((2 * e + 1 : ℕ) : ℝ) + s) : ℝ) : ℂ) = (τ.im : ℂ) ^ (2 * e + 1) * ((τ.im ^ s : ℝ) : ℂ)`. Rewrite using `[Real.rpow_add τ.im_pos, Real.rpow_natCast]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+
+Simplify using `only [hΨ, rkPsi, hy]`. Expand and normalize the polynomial expressions, which then agree. Establish `hmsq` using `GlobalTheory.T.rankin_mean_square_cuspForm (2 * e + 1) L (ch ε) h (by omega) hh`. Take `⟨hbsq, hLS⟩` from `rankin_summ e h b s he hs hbC (by simpa using hmsq.2.2.1 s hs)`. Establish `hint : IntegrableOn Ψ strip`.
+
+Conclude with `GlobalTheory.T.integrableOn_strip_unfolded_rankin_integrand (2 * e + 1) e L N ε h b s rfl he hs hL hNL hh hb.1 hbsq`. Establish `hmeas : AEStronglyMeasurable Ψ`. Use `Continuous.aestronglyMeasurable ?_` and prove the remaining obligations. Simplify using `only [hΨ, rkPsi]`. Use `((Complex.continuous_conj.comp (hcont h hh.1.1)).mul (hcont b hb.1)).mul (Complex.continuous_ofReal.comp ?_)` and prove the remaining obligations.
+
+Conclude with `(UpperHalfPlane.continuous_im).rpow_const (fun τ => Or.inl τ.im_pos.ne')`. Establish `hunf` using `GlobalTheory.T.integral_coprime_sum_unfold_to_unitStrip L ρ Ψ W hρ hint hmeas (fun γ hγ τ => by`. Simplify `rankin_transf e L N ε φ χ h b s hNL hh hb hχ γ hγ τ)` using `[hW]`. Establish `hmel` using `GlobalTheory.T.unitStrip_integral_qExpansion_eq_LSeries h b (2 * (e : ℝ) + s) (by positivity) hh.1.1 hb.1 hmsq.1 hLS`. Establish `hΨeq : (fun τ : ℍ => conj (qs h τ) * qs b τ * ((τ.im ^ ((2 * (e : ℝ) + s) + 1) : ℝ) : ℂ)) = Ψ`.
+
+Use function extensionality and compare the values at `τ`. Simplify using `only [hΨ, rkPsi]`. Use `congr 3`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+
+Rewrite `hmel` using `[hΨeq]`. Unfold `pet`. Repeatedly rewrite using `[hpt]`. Rewrite using `[integral_const_mul, hunf, hmel hint]`.
+-/
 theorem rankin_unfold : ∀ (e L N : ℕ) (ε : DirichletCharacter ℂ N) (φ : DirichletCharacter ℂ L) (χ : ℤ → ℂ) (ρ : ℍ → ℝ) (h b : ℕ → ℂ) (s : ℝ), 1 ≤ e → 0 < s → 0 < L → N ∣ L → Wt L ρ → φ ≠ 1 → CF (2 * e + 1) L (ch ε) h → MF e L χ b → (∀ d : ℤ, IsCoprime d L → χ d = ch φ d * ch ε d) → (∃ C : ℝ, ∀ n, n ≠ 0 → ‖b n‖ ≤ C * n.divisors.card * (n : ℝ) ^ (e - 1)) → pet (2 * e + 1) ρ (qs h) (fun τ => qs b τ * lat (e + 1) s L (0, 1) (latF L (fun _ => 1) φ) τ * ((τ.im ^ s : ℝ) : ℂ)) = LSeries (fun n => φ n) ((e + 1 : ℕ) + 2 * s) * (((Real.Gamma (2 * (e : ℝ) + s) / (4 * π) ^ (2 * (e : ℝ) + s) : ℝ) : ℂ) * LSeries (fun n => conj (h n) * b n) ((2 * (e : ℝ) + s : ℝ) : ℂ)) := by
   intro e L N ε φ χ ρ h b s he hs hL hNL hρ hφ hh hb hχ hbC
   have hcont := fun a (ha : PolyB a) => (GlobalTheory.T.qExpansion_polyGrowth_summable_continuous a ha).2

@@ -12,9 +12,17 @@ section Count
 
 variable (F : Type) [Field F] [NumberField F]
 
+/- English proof (translation)
+Conclude with `Finsupp.Countable.of_moduleFinite (R := ℚ) (M := F)`.
+-/
 theorem numField_countable : Countable F := by
   exact Finsupp.Countable.of_moduleFinite (R := ℚ) (M := F)
 
+/- English proof (translation)
+Use `numField_countable F` as an intermediate fact. Establish `: Countable (𝓞 F)` using `inferInstanceAs (Countable {x : F // x ∈ integralClosure ℤ F})`. Establish `hs : Function.Surjective (fun s : Finset (𝓞 F) => Ideal.span (s : Set (𝓞 F)))`. Introduce `I`. Take `⟨s, hs⟩` from `(IsNoetherian.noetherian I : I.FG)`.
+
+Conclude with `⟨s, hs⟩`. Establish `: Countable (Ideal (𝓞 F))` using `hs.countable`. Conclude with `Function.Injective.countable (f := fun v : HeightOneSpectrum (𝓞 F) => v.asIdeal) (fun v w h => HeightOneSpectrum.ext h)`.
+-/
 theorem numField_hos_countable : Countable (HeightOneSpectrum (𝓞 F)) := by
   have := numField_countable F
   have : Countable (𝓞 F) := inferInstanceAs (Countable {x : F // x ∈ integralClosure ℤ F})
@@ -32,12 +40,18 @@ section Local
 
 variable {F : Type} [Field F] [NumberField F]
 
+/- English proof (translation)
+Use `numField_countable F` as an intermediate fact. Establish `: TopologicalSpace.SeparableSpace (Fv F v)` using `TopologicalSpace.SeparableSpace.of_denseRange _ (HeightOneSpectrum.denseRange_algebraMap F v)`. Conclude with `UniformSpace.secondCountable_of_separable (Fv F v)`.
+-/
 theorem fv_secondCountable (v : HeightOneSpectrum (𝓞 F)) : SecondCountableTopology (Fv F v) := by
   have := numField_countable F
   have : TopologicalSpace.SeparableSpace (Fv F v) :=
     TopologicalSpace.SeparableSpace.of_denseRange _ (HeightOneSpectrum.denseRange_algebraMap F v)
   exact UniformSpace.secondCountable_of_separable (Fv F v)
 
+/- English proof (translation)
+Establish `hc : IsCompact ((v.adicCompletionIntegers F : Set (v.adicCompletion F)))` using `PI.IntAdCpctOpenWork.isCompact_adicCompletionIntegers v`. Establish `ho : IsOpen ((v.adicCompletionIntegers F : Set (v.adicCompletion F)))` using `Valued.isOpen_valuationSubring _`. Conclude with `hc.locallyCompactSpace_of_mem_nhds_of_addGroup (ho.mem_nhds (zero_mem _))`.
+-/
 theorem fv_locallyCompact (v : HeightOneSpectrum (𝓞 F)) : LocallyCompactSpace (Fv F v) := by
   have hc : IsCompact ((v.adicCompletionIntegers F : Set (v.adicCompletion F))) :=
     PI.IntAdCpctOpenWork.isCompact_adicCompletionIntegers v
@@ -45,6 +59,9 @@ theorem fv_locallyCompact (v : HeightOneSpectrum (𝓞 F)) : LocallyCompactSpace
     Valued.isOpen_valuationSubring _
   exact hc.locallyCompactSpace_of_mem_nhds_of_addGroup (ho.mem_nhds (zero_mem _))
 
+/- English proof (translation)
+Use `numField_countable F` as an intermediate fact. Establish `: Countable (WithAbs w.1)` using `Countable.of_equiv F (WithAbs.equiv w.1).symm`. Establish `: TopologicalSpace.SeparableSpace w.Completion` using `TopologicalSpace.SeparableSpace.of_denseRange _ (InfinitePlace.Completion.denseRange_coe w)`. Conclude with `UniformSpace.secondCountable_of_separable _`.
+-/
 theorem compl_secondCountable (w : InfinitePlace F) : SecondCountableTopology w.Completion := by
   have := numField_countable F
   have : Countable (WithAbs w.1) := Countable.of_equiv F (WithAbs.equiv w.1).symm
@@ -52,10 +69,16 @@ theorem compl_secondCountable (w : InfinitePlace F) : SecondCountableTopology w.
     TopologicalSpace.SeparableSpace.of_denseRange _ (InfinitePlace.Completion.denseRange_coe w)
   exact UniformSpace.secondCountable_of_separable _
 
+/- English proof (translation)
+Use `fun w : InfinitePlace F => compl_secondCountable w` as an intermediate fact. Conclude with `inferInstanceAs (SecondCountableTopology ((w : InfinitePlace F) → w.Completion))`.
+-/
 theorem ainf_secondCountable : SecondCountableTopology (Ainf F) := by
   have := fun w : InfinitePlace F => compl_secondCountable w
   exact inferInstanceAs (SecondCountableTopology ((w : InfinitePlace F) → w.Completion))
 
+/- English proof (translation)
+The claim follows from `inferInstanceAs (T2Space ((w : InfinitePlace F) → w.Completion))`.
+-/
 theorem t2Space_Ainf : T2Space (Ainf F) :=
   inferInstanceAs (T2Space ((w : InfinitePlace F) → w.Completion))
 
@@ -65,6 +88,9 @@ section Fin
 
 variable {F : Type} [Field F] [NumberField F]
 
+/- English proof (translation)
+Establish `: ∀ v : HeightOneSpectrum (𝓞 F), LocallyCompactSpace (v.adicCompletion F)` using `fun v => fv_locallyCompact v`. Establish `: Fact (∀ v : HeightOneSpectrum (𝓞 F), IsOpen ((v.adicCompletionIntegers F : Set (v.adicCompletion F))))` using `⟨fun v => Valued.isOpen_valuationSubring _⟩`. Conclude with `inferInstanceAs (LocallyCompactSpace (Πʳ v : HeightOneSpectrum (𝓞 F), [v.adicCompletion F, v.adicCompletionIntegers F]))`.
+-/
 theorem af_locallyCompact : LocallyCompactSpace (Af F) := by
   have : ∀ v : HeightOneSpectrum (𝓞 F), LocallyCompactSpace (v.adicCompletion F) :=
     fun v => fv_locallyCompact v
@@ -74,10 +100,24 @@ theorem af_locallyCompact : LocallyCompactSpace (Af F) := by
   exact inferInstanceAs (LocallyCompactSpace
     (Πʳ v : HeightOneSpectrum (𝓞 F), [v.adicCompletion F, v.adicCompletionIntegers F]))
 
+/- English proof (translation)
+The claim follows from `inferInstanceAs (T2Space (Πʳ v : HeightOneSpectrum (𝓞 F), [v.adicCompletion F, v.adicCompletionIntegers F]))`.
+-/
 theorem finite_adeles_t2 : T2Space (Af F) :=
   inferInstanceAs (T2Space
     (Πʳ v : HeightOneSpectrum (𝓞 F), [v.adicCompletion F, v.adicCompletionIntegers F]))
 
+/- English proof (translation)
+Use `numField_hos_countable F` as an intermediate fact. Establish `hfv : ∀ v : HeightOneSpectrum (𝓞 F), SecondCountableTopology (v.adicCompletion F)` using `fun v => fv_secondCountable v`. Set `R` to `fun v : HeightOneSpectrum (𝓞 F) => v.adicCompletion F`. Set `A` to `fun v : HeightOneSpectrum (𝓞 F) => (v.adicCompletionIntegers F : Set (v.adicCompletion F))`. Establish `hAo : ∀ v, IsOpen (A v)` using `fun v => Valued.isOpen_valuationSubring _`.
+
+Establish `hS : ∀ T : Finset (HeightOneSpectrum (𝓞 F)), cofinite ≤ 𝓟 ((T : Set (HeightOneSpectrum (𝓞 F)))ᶜ)`. Introduce `T`. Rewrite using `[le_principal_iff, mem_cofinite, compl_compl]`. Conclude with `T.finite_toSet`. Set `U : Finset (HeightOneSpectrum (𝓞 F)) → Set (Πʳ v, [R v, A v])` to `fun T => Set.range (RestrictedProduct.inclusion R A (hS T))`.
+
+Establish `hU : ∀ T, IsOpenEmbedding (RestrictedProduct.inclusion R A (hS T))` using `fun T => RestrictedProduct.isOpenEmbedding_inclusion_principal hAo (hS T)`. Establish `hsc : ∀ T, SecondCountableTopology (U T)`. Introduce `T`. Establish `: SecondCountableTopology (Πʳ v, [R v, A v]_[𝓟 ((T : Set (HeightOneSpectrum (𝓞 F)))ᶜ)])` using `RestrictedProduct.isEmbedding_coe_of_principal.secondCountableTopology`. Conclude with `(hU T).isEmbedding.toHomeomorph.symm.secondCountableTopology`.
+
+Establish `hcov : ⋃ T, U T = Set.univ`. Use `Set.eq_univ_of_forall fun x => ?_` and prove the remaining obligations. Establish `hx : Set.Finite {v | x v ∉ A v}` using `x.2`. Use `Set.mem_iUnion.2 ⟨hx.toFinset, ?_⟩` and prove the remaining obligations. Use `show x ∈ Set.range (RestrictedProduct.inclusion R A (hS hx.toFinset))`.
+
+Rewrite using `[RestrictedProduct.range_inclusion]`. Use `eventually_principal.2 fun v hv => ?_` and prove the remaining obligations. Assume the negation of the conclusion as `h`. Conclude with `hv (by simpa using h)`. Conclude with `@TopologicalSpace.secondCountableTopology_of_countable_cover _ _ _ _ U hsc (fun T => (hU T).isOpen_range) hcov`.
+-/
 theorem af_secondCountable : SecondCountableTopology (Af F) := by
   have := numField_hos_countable F
   have hfv : ∀ v : HeightOneSpectrum (𝓞 F), SecondCountableTopology (v.adicCompletion F) :=
@@ -116,6 +156,11 @@ section Tens
 
 variable {F E : Type} [Field F] [Field E] [Algebra F E]
 
+/- English proof (translation)
+Establish `: Module.Finite F E` using `Module.finite_of_finrank_eq_succ hE`. Set `b : Module.Basis (Fin 2) F E` to `Module.finBasisOfFinrankEq F E hE`. Set `L : (R ⊗[F] E) ≃ₗ[R] (Fin 2 → R)` to `(Algebra.TensorProduct.basis R b).equivFun`. Establish `: IsModuleTopology R (R ⊗[F] E)` using `⟨rfl⟩`. Establish `: ContinuousAdd (R ⊗[F] E)` using `IsModuleTopology.toContinuousAdd R (R ⊗[F] E)`.
+
+Conclude with `⟨{ toEquiv := L.toEquiv continuous_toFun := IsModuleTopology.continuous_of_linearMap L.toLinearMap continuous_invFun := IsModuleTopology.continuous_of_linearMap L.symm.toLinearMap }⟩`.
+-/
 theorem tens_homeo (R : Type) [CommRing R] [Algebra F R] [TopologicalSpace R] [IsTopologicalRing R]
     (hE : Module.finrank F E = 2) : Nonempty ((R ⊗[F] E) ≃ₜ (Fin 2 → R)) := by
   have : Module.Finite F E := Module.finite_of_finrank_eq_succ hE
@@ -127,6 +172,9 @@ theorem tens_homeo (R : Type) [CommRing R] [Algebra F R] [TopologicalSpace R] [I
            continuous_toFun := IsModuleTopology.continuous_of_linearMap L.toLinearMap
            continuous_invFun := IsModuleTopology.continuous_of_linearMap L.symm.toLinearMap }⟩
 
+/- English proof (translation)
+Establish `: Module.Finite F E` using `Module.finite_of_finrank_eq_succ hE`. Set `b : Module.Basis (Fin 2) F E` to `Module.finBasisOfFinrankEq F E hE`. Establish `: Module.Finite R (R ⊗[F] E)` using `Module.Finite.of_basis (Algebra.TensorProduct.basis R b)`. Establish `: IsModuleTopology R (R ⊗[F] E)` using `⟨rfl⟩`. Conclude with `IsModuleTopology.isTopologicalRing R (R ⊗[F] E)`.
+-/
 theorem tens_ring (R : Type) [CommRing R] [Algebra F R] [TopologicalSpace R] [IsTopologicalRing R]
     (hE : Module.finrank F E = 2) : IsTopologicalRing (R ⊗[F] E) := by
   have : Module.Finite F E := Module.finite_of_finrank_eq_succ hE
@@ -135,6 +183,9 @@ theorem tens_ring (R : Type) [CommRing R] [Algebra F R] [TopologicalSpace R] [Is
   have : IsModuleTopology R (R ⊗[F] E) := ⟨rfl⟩
   exact IsModuleTopology.isTopologicalRing R (R ⊗[F] E)
 
+/- English proof (translation)
+Take `⟨e⟩` from `tens_homeo (E := E) R hE`. Conclude with `⟨tens_ring R hE, e.isEmbedding.t2Space, e.isClosedEmbedding.locallyCompactSpace, e.isEmbedding.isInducing.secondCountableTopology, ⟨rfl⟩⟩`.
+-/
 theorem tens_facts (R : Type) [CommRing R] [Algebra F R] [TopologicalSpace R] [IsTopologicalRing R]
     [T2Space R] [LocallyCompactSpace R] [SecondCountableTopology R] (hE : Module.finrank F E = 2) :
     IsTopologicalRing (R ⊗[F] E) ∧ T2Space (R ⊗[F] E) ∧ LocallyCompactSpace (R ⊗[F] E) ∧
@@ -143,6 +194,11 @@ theorem tens_facts (R : Type) [CommRing R] [Algebra F R] [TopologicalSpace R] [I
   exact ⟨tens_ring R hE, e.isEmbedding.t2Space, e.isClosedEmbedding.locallyCompactSpace,
     e.isEmbedding.isInducing.secondCountableTopology, ⟨rfl⟩⟩
 
+/- English proof (translation)
+Establish `: IsModuleTopology R (R ⊗[F] E)` using `⟨rfl⟩`. Establish `: ContinuousAdd (R ⊗[F] E)` using `IsModuleTopology.toContinuousAdd R (R ⊗[F] E)`. Establish `h : (sigR R σ : R ⊗[F] E → R ⊗[F] E) = LinearMap.baseChange R σ.toLinearMap`. Use function extensionality and compare the values at `x`. Proceed by induction on `x using TensorProduct.induction_on with`.
+
+Consider the case `zero => simp`. Consider the case `tmul r e => simp [sigR]`. Consider the case `add x y hx hy => rw [map_add, map_add, hx, hy]`. Rewrite using `[h]`. Conclude with `IsModuleTopology.continuous_of_linearMap _`.
+-/
 theorem sigR_continuous (R : Type) [CommRing R] [Algebra F R] [TopologicalSpace R]
     [IsTopologicalRing R] (σ : E →ₐ[F] E) : Continuous (sigR R σ) := by
   have : IsModuleTopology R (R ⊗[F] E) := ⟨rfl⟩
@@ -162,6 +218,13 @@ section Grp
 
 variable {F E : Type} [Field F] [Field E] [Algebra F E]
 
+/- English proof (translation)
+Take `⟨h1, h2, h3, h4, -⟩` from `tens_facts (E := E) R hE`. Establish `: T2Space (Matrix (Fin M) (Fin M) (R ⊗[F] E))` using `inferInstanceAs (T2Space (Fin M → Fin M → R ⊗[F] E))`. Establish `: LocallyCompactSpace (Matrix (Fin M) (Fin M) (R ⊗[F] E))` using `inferInstanceAs (LocallyCompactSpace (Fin M → Fin M → R ⊗[F] E))`. Establish `: SecondCountableTopology (Matrix (Fin M) (Fin M) (R ⊗[F] E))` using `inferInstanceAs (SecondCountableTopology (Fin M → Fin M → R ⊗[F] E))`. Establish `: SecondCountableTopology (Matrix (Fin M) (Fin M) (R ⊗[F] E))ᵐᵒᵖ` using `MulOpposite.opHomeomorph.symm.isEmbedding.isInducing.secondCountableTopology`.
+
+Establish `: SecondCountableTopology (GL (Fin M) (R ⊗[F] E))` using `Units.isEmbedding_embedProduct.isInducing.secondCountableTopology`. Establish `hcl : IsClosed (HR R σ J : Set (GL (Fin M) (R ⊗[F] E)))`. Establish `hv : Continuous (fun g : GL (Fin M) (R ⊗[F] E) => (g : Matrix (Fin M) (Fin M) (R ⊗[F] E)))` using `Units.continuous_val`. Establish `hc : Continuous (fun g : GL (Fin M) (R ⊗[F] E) => Formalism.UG.cT (sigR R σ) (g : Matrix (Fin M) (Fin M) (R ⊗[F] E)) * JR R J * (g : Matrix (Fin M) (Fin M) (R ⊗[F] E)))`. Unfold `Formalism.UG.cT`.
+
+Conclude with `(((hv.matrix_map (sigR_continuous R σ)).matrix_transpose).matrix_mul continuous_const).matrix_mul hv`. Conclude with `isClosed_eq hc continuous_const`. Establish `hLC : LocallyCompactSpace (HR R σ J)` using `hcl.isClosedEmbedding_subtypeVal.locallyCompactSpace`. Conclude with `⟨inferInstanceAs (IsTopologicalGroup (HR R σ J)), inferInstanceAs (T2Space (HR R σ J)), hLC, (IsInducing.subtypeVal (t := (HR R σ J : Set (GL (Fin M) (R ⊗[F] E))))).secondCountableTopology, ⟨rfl⟩⟩`.
+-/
 theorem ha_facts (R : Type) [CommRing R] [Algebra F R] [TopologicalSpace R] [IsTopologicalRing R]
     [T2Space R] [LocallyCompactSpace R] [SecondCountableTopology R] (hE : Module.finrank F E = 2)
     (σ : E →ₐ[F] E) {M : ℕ} (J : Matrix (Fin M) (Fin M) E) :
@@ -194,6 +257,11 @@ theorem ha_facts (R : Type) [CommRing R] [Algebra F R] [TopologicalSpace R] [IsT
 
 end Grp
 
+/- English proof (translation)
+Establish `: T2Space (Ainf F)` using `t2Space_Ainf (F := F)`. Establish `: SecondCountableTopology (Ainf F)` using `ainf_secondCountable (F := F)`. Establish `: T2Space (Af F)` using `finite_adeles_t2 (F := F)`. Establish `: LocallyCompactSpace (Af F)` using `af_locallyCompact (F := F)`. Establish `: SecondCountableTopology (Af F)` using `af_secondCountable (F := F)`.
+
+Conclude with `⟨inferInstanceAs (T2Space (Ainf F × Af F)), inferInstanceAs (LocallyCompactSpace (Ainf F × Af F)), inferInstanceAs (SecondCountableTopology (Ainf F × Af F))⟩`.
+-/
 theorem af_facts (F : Type) [Field F] [NumberField F] :
     T2Space (AF F) ∧ LocallyCompactSpace (AF F) ∧ SecondCountableTopology (AF F) := by
   have : T2Space (Ainf F) := t2Space_Ainf (F := F)

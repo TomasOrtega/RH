@@ -10,11 +10,23 @@ open scoped TensorProduct
 
 namespace GlobalTheory.PDiv
 
+/- English proof (translation)
+Take `⟨x, rfl⟩` from `(augIdeal R A).toCotangent_surjective w`. Conclude with `⟨x, x.2, AugCot.d_coe _ x⟩`.
+-/
 theorem exists_aug_dUnit_eq {R A : Type*} [CommRing R] [CommRing A] [Bialgebra R A] (w : Cot R A) :
     ∃ a : A, Coalgebra.counit (R := R) a = 0 ∧ dUnit R a = w := by
   obtain ⟨x, rfl⟩ := (augIdeal R A).toCotangent_surjective w
   exact ⟨x, x.2, AugCot.d_coe _ x⟩
 
+/- English proof (translation)
+Take `⟨y, hy, rfl⟩` from `exists_aug_dUnit_eq w`. Establish `h1 : dUnit R (f y - a) = 0`. Rewrite using `[dUnit, map_sub, sub_eq_zero]`. Conclude with `(cotMap_d f y).symm.trans hw`. Establish `h2 : Bialgebra.counitAlgHom R A (f y - a) = 0` using `by simp [hy, ha]`.
+
+Rewrite `h1` using `[dUnit, AugCot.d_eq_zero_iff, h2, map_zero, sub_zero]`. Establish `h3 : f y - a ∈ Ideal.map (f : C →ₐ[R] A) (augIdeal R C ^ 2)`. Rewrite using `[Ideal.map_pow]`. Use `kerIdeal_of_surjective hf` as an intermediate fact. Rewrite `this` using `[kerIdeal]`.
+
+Rewrite using `[this]`. Conclude with `h1`. Take `⟨z, hz, hfz⟩` from `(Ideal.mem_map_iff_of_surjective (f : C →ₐ[R] A) hf).1 h3`. Establish `hz0 : Bialgebra.counitAlgHom R C z = 0` using `Ideal.pow_le_self two_ne_zero hz`. Establish `hz1 : Coalgebra.counit (R` using `R) z = 0 := hz0`.
+
+Use `⟨y - z, by rw [map_sub, hy, hz1, sub_zero], ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[dUnit, map_sub, (AugCot.d_eq_zero_iff _ z).2 (by rw [hz0, map_zero, sub_zero]; exact hz), sub_zero]`. Establish `: f z = f y - a` using `hfz`. Rewrite using `[map_sub, this, sub_sub_cancel]`.
+-/
 theorem exists_aug_lift_dUnit_eq {R A C : Type*} [CommRing R] [CommRing A] [CommRing C] [Bialgebra R A]
     [Bialgebra R C] {f : C →ₐc[R] A} (hf : Function.Surjective f) (a : A)
     (ha : Coalgebra.counit (R := R) a = 0) (w : Cot R C) (hw : cotMap f w = dUnit R a) :
@@ -39,6 +51,11 @@ theorem exists_aug_lift_dUnit_eq {R A C : Type*} [CommRing R] [CommRing A] [Comm
   · have : f z = f y - a := hfz
     rw [map_sub, this, sub_sub_cancel]
 
+/- English proof (translation)
+Take `⟨a, ha⟩` from `exists_aug_dUnit_eq (w.1 0)`. Establish `step : ∀ (n : ℕ) (a : {a : G.A n // Coalgebra.counit (R` using `O) a = 0 ∧ dUnit O a = w.1 n}), ∃ c : {a : G.A (n + 1) // Coalgebra.counit (R := O) a = 0 ∧ dUnit O a = w.1 (n + 1)}, G.res n c.1 = a.1 := fun n a => by`. Take `⟨c, h1, h2, h3⟩` from `exists_aug_lift_dUnit_eq (G.res_surjective n) a.1 a.2.1 (w.1 (n + 1)) ((w.2 n).trans a.2.2.symm)`. Conclude with `⟨⟨c, h1, h2⟩, h3⟩`. Use `choose s hs using step`.
+
+Set `x : ∀ n, {a : G.A n // Coalgebra.counit (R` to `O) a = 0 ∧ dUnit O a = w.1 n} := fun n => Nat.rec ⟨a, ha⟩ s n`. Conclude with `⟨fun n => (x n).1, fun n => (x n).2.1, fun n => hs n (x n), fun n => (x n).2.2⟩`.
+-/
 theorem exists_compatible_dUnit_eq {p : ℕ} {O : Type} [CommRing O] (G : PDivGroup p O) (w : G.omega) :
     ∃ x : ∀ n, G.A n, (∀ n, Coalgebra.counit (R := O) (x n) = 0) ∧ (∀ n, G.res n (x (n + 1)) = x n) ∧
       ∀ n, dUnit O (x n) = w.1 n := by
@@ -54,6 +71,17 @@ theorem exists_compatible_dUnit_eq {p : ℕ} {O : Type} [CommRing O] (G : PDivGr
     fun n => Nat.rec ⟨a, ha⟩ s n
   exact ⟨fun n => (x n).1, fun n => (x n).2.1, fun n => hs n (x n), fun n => (x n).2.2⟩
 
+/- English proof (translation)
+Establish `: ValuationRing O` using `ValuationRing.of_integers v hv`. Take `⟨h1, h2⟩` from `omega_finite_projective p C v O hv G`. Establish `: Module.Free O G.omega` using `Module.free_of_flat_of_isLocalRing`. Set `b` to `Module.finBasis O G.omega`. Use `choose x hx0 hx1 hx2 using fun i => exists_compatible_dUnit_eq G (b i)`.
+
+Use `⟨_, fun n i => x i n, fun n i => hx0 i n, fun n i => hx1 i n, fun n => ?_, fun n => ?_⟩` and prove the remaining obligations. Establish `: (fun i => dUnit O (x i n)) = G.omegaLevel n ∘ b` using `funext fun i => hx2 i n`. Rewrite using `[this, Set.range_comp, ← Submodule.map_span, b.span_eq, Submodule.map_top, LinearMap.range_eq_top.2 (G.omegaLevel_surjective n)]`. Establish `hker : ∀ i, LinearMap.ker (G.omegaLevel n) ≤ LinearMap.ker ((Ideal.span {(p : O) ^ n}).mkQ ∘ₗ b.coord i)` using `fun i w hw => by`. Take `⟨u, rfl⟩` from `(G.omega_val_eq_zero_iff n w).1 hw`.
+
+Rewrite using `[LinearMap.mem_ker, LinearMap.comp_apply, map_smul, Submodule.mkQ_apply, Submodule.Quotient.mk_eq_zero, smul_eq_mul]`. Conclude with `Ideal.mul_mem_right _ _ (Ideal.mem_span_singleton_self _)`. Use `⟨fun i => ((LinearMap.ker (G.omegaLevel n)).liftQ _ (hker i)) ∘ₗ ((G.omegaLevel n).quotKerEquivOfSurjective (G.omegaLevel_surjective n)).symm.toLinearMap, fun i j => ?_⟩` and prove the remaining obligations. Establish `h : ((G.omegaLevel n).quotKerEquivOfSurjective (G.omegaLevel_surjective n)).symm (dUnit O (x j n)) = Submodule.Quotient.mk (b j)`. Rewrite using `[LinearEquiv.symm_apply_eq, hx2]`.
+
+Both sides reduce to the same expression. Rewrite using `[LinearMap.comp_apply, LinearEquiv.coe_coe, h, Submodule.liftQ_apply, LinearMap.comp_apply, Module.Basis.coord_apply, b.repr_self, Finsupp.single_apply]`. Distinguish the cases in `hij : i = j`. Rewrite using `[if_pos hij, if_pos hij.symm]`. Both sides reduce to the same expression.
+
+Rewrite using `[if_neg hij, if_neg (Ne.symm hij), map_zero]`.
+-/
 theorem exists_compatible_coordinates (p : ℕ) [Fact p.Prime] (C : Type) [Field C] [IsAlgClosed C] [CharZero C]
     (v : Valuation C NNReal) (O : Type) [CommRing O] [Algebra O C] [Fact ¬IsUnit (p : O)]
     [IsAdicComplete (Ideal.span {(p : O)}) O] [IsDomain O] (hv : v.Integers O) (G : PDivGroup p O) :

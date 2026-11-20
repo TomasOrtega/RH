@@ -13,12 +13,24 @@ noncomputable section
 
 namespace GlobalTheory.MuHPi
 
+/- English proof (translation)
+Rewrite using `[Formalism.L2.SG.Pf.WuDec.Hloc_eq]`. Both sides reduce to the same expression.
+-/
 theorem hloc_eq_HGv {D : D7} (X : HidaSetting D) (u : D.what₂.Word) (v : InfinitePlace X.B.I.F) :
     Formalism.L2.SG.Pf.WuDec.Hloc X u v =
       (Formalism.L2.SG.RealObj.InfCut.ProductExactness.HGv X u v : Set (Formalism.REAL.UJ (X.B.I.ε v))) := by
   rw [Formalism.L2.SG.Pf.WuDec.Hloc_eq]
   rfl
 
+/- English proof (translation)
+Introduce `D X θ C u`. Establish `hloc : ∀ v, QPK.InvOn (muHl C u (X.pl v) v) (Formalism.L2.SG.Pf.WuDec.Hloc X u v)`. Establish `h : ∀ τ w, vOf X τ = w → QPK.InvOn (muHl C u τ w) (Formalism.L2.SG.Pf.WuDec.Hloc X u w)`. Introduce and unpack `τ _ rfl`. Conclude with `invOn_muHl C u τ`.
+
+Introduce `v`. Conclude with `h (X.pl v) v (X.pl.symm_apply_apply v)`. Use `haveI : ∀ v, SigmaFinite (muHl C u (X.pl v) v) := fun v => (hloc v).1`. Take `⟨hσ, h0, hc, hi⟩` from `X.muH_haar u`. Use `haveI := hσ`.
+
+Rewrite `hc`, `hi` using `[← Formalism.L2.SG.RealObj.InfCut.ProductExactness.HinfG_coe]`. Use `Formalism.L2.SG.RealObj.InfCut.ProductExactness.PiM.uniq_on_closed (Formalism.L2.SG.RealObj.InfCut.ProductExactness.HinfG X u) (Formalism.L2.SG.RealObj.InfCut.ProductExactness.HinfG_closed X u) _ _ hc ?_ hi ?_ h0 ?_` and prove the remaining obligations. Rewrite using `[Formalism.L2.SG.RealObj.InfCut.ProductExactness.HinfG, Subgroup.coe_pi]`. Conclude with `Formalism.L2.SG.RealObj.InfCut.ProductExactness.PiM.pi_conc _ _ fun v => by rw [← hloc_eq_HGv]; exact (hloc v).2.2.1`. Introduce `g hg`.
+
+Conclude with `Formalism.L2.SG.RealObj.InfCut.ProductExactness.PiM.pi_map_mul_left _ g fun v => (hloc v).2.2.2 (g v) (by rw [hloc_eq_HGv]; exact hg v (Set.mem_univ v))`. Conclude with `Formalism.L2.SG.RealObj.InfCut.ProductExactness.PiM.pi_ne_zero _ fun v => (hloc v).2.1`.
+-/
 theorem muH_eq_pi : ∀ (D : D7) (X : HidaSetting D) (θ : ℝ) (C : Choice X θ) (u : D.what₂.Word), ∃ κ : ℝ≥0∞, κ ≠ 0 ∧ κ ≠ ∞ ∧ X.muH u = κ • Measure.pi (fun v => muHl C u (X.pl v) v) := by
   intro D X θ C u
   have hloc : ∀ v, QPK.InvOn (muHl C u (X.pl v) v) (Formalism.L2.SG.Pf.WuDec.Hloc X u v) := by

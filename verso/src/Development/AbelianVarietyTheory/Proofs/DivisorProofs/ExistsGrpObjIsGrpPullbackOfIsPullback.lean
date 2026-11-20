@@ -16,6 +16,11 @@ attribute [local instance] Over.cartesianMonoidalCategory
 
 namespace GlobalTheory.AbCoh
 
+/- English proof (translation)
+Introduce `R R' _ _ σ A _ X' s' φ h`. Use `letI : GrpObj ((Over.pullback (spMap σ)).obj A) := Functor.grpObjObj`. Set `e : Over.mk s' ≅ (Over.pullback (spMap σ)).obj A` to `Over.isoMk h.isoPullback h.isoPullback_hom_snd`. Use `letI I : GrpObj (Over.mk s') := GrpObj.ofIso e.symm`. Establish `: IsMonHom e.symm.hom` using `CategoryTheory.isMonHom_ofIso e.symm`.
+
+Establish `: IsMonHom e.hom` using `inferInstanceAs (IsMonHom e.symm.inv)`. Establish `hP : IsGrpPullback (Over.mk s' : Over (Sp R')) A (spMap σ) φ` using `((isGrpPullback_of_iso e).comp (isGrpPullback_pullback A (spMap σ))).congr (Category.id_comp _) (by simp [e])`. Conclude with `⟨I, hP, fun hA => GlobalTheory.PolPull.isAbelianScheme_of_isGrpPullback hA hP, fun g hg => (smoothOfRelativeDimension_isStableUnderBaseChange (n := g)).of_isPullback h hg⟩`.
+-/
 theorem exists_grpObj_isGrpPullback_of_isPullback : ∀ (R R' : Type) [CommRing R] [CommRing R'] (σ : R →+* R') (A : Over (Sp R)) [GrpObj A] (X' : Scheme.{0}) (s' : X' ⟶ Sp R') (φ : X' ⟶ A.left), IsPullback φ s' A.hom (spMap σ) → ∃ _ : GrpObj (Over.mk s' : Over (Sp R')), IsGrpPullback (Over.mk s' : Over (Sp R')) A (spMap σ) φ ∧ (IsAbelianScheme A → IsAbelianScheme (Over.mk s' : Over (Sp R'))) ∧ ∀ g, SmoothOfRelativeDimension g A.hom → SmoothOfRelativeDimension g s' := by
   intro R R' _ _ σ A _ X' s' φ h
   letI : GrpObj ((Over.pullback (spMap σ)).obj A) := Functor.grpObjObj

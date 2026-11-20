@@ -11,6 +11,21 @@ namespace GlobalTheory.ThKTorus
 
 open Module
 
+/- English proof (translation)
+Set `N : Submodule R M` to `(⨅ i, LinearMap.ker (B (v i))) ⊓ ⨅ i, LinearMap.ker (B (f i))`. Establish `hmem : ∀ y, y ∈ N ↔ (∀ i, B (v i) y = 0) ∧ ∀ i, B (f i) y = 0` using `fun y => by`. Simplify using `[N, Submodule.mem_iInf]`. Establish `hdec : ∀ y, ∃ a b : ι → R, ∃ y' ∈ N, y = ∑ i, a i • v i + ∑ i, b i • f i + y'`. Introduce `y`.
+
+Use `⟨fun i => B y (f i), fun i => B (v i) y, y - ∑ i, B y (f i) • v i - ∑ i, B (v i) y • f i, (hmem _).2 ⟨fun k => ?_, fun k => ?_⟩, by abel⟩` and prove the remaining obligations. Simplify using `[hf.left_left, hf.left_right]`. Simplify using `[hf.right_right, hf.right_left hB, ← hB.neg_eq y]`. Take `⟨g, e', f', d, h', hd, -, hspan⟩` from `exists_isSymplecticFamily_span_eq hB N (by`. Introduce `x hx hx0`.
+
+Use `(injective_iff_map_eq_zero B).1 hp x (LinearMap.ext fun y => ?_)` and prove the remaining obligations. Take `⟨a, b, y', hy', rfl⟩` from `hdec y`. Simplify using `[hx0 y' hy', fun i => hB.eq_iff.1 (((hmem x).1 hx).1 i), fun i => hB.eq_iff.1 (((hmem x).1 hx).2 i)])`. Establish `he' : ∀ i, e' i ∈ N` using `fun i => hspan ▸ Submodule.subset_span ⟨Sum.inl i, rfl⟩`. Establish `hf' : ∀ i, f' i ∈ N` using `fun i => hspan ▸ Submodule.subset_span ⟨Sum.inr i, rfl⟩`.
+
+Establish `h'' : IsSymplecticFamily B e' (fun i => (d i)⁻¹ • f' i) fun _ => 1` using `⟨h'.left_left, fun i j => by simp [h'.right_right], fun i => by simp [h'.left_right_self, hd i], fun i j hij => by simp [h'.left_right_ne i j hij]⟩`. Establish `hs` using `IsSymplecticFamily.sum hB hf h'' (fun i j => ((hmem _).1 (he' j)).1 i) (fun i j => ((hmem _).1 (N.smul_mem _ (hf' j))).1 i) (fun i j => ((hmem _).1 (he' j)).2 i) (fun i j => ((hmem _).1 (N.smul_mem _ (hf' j))).2 i)`. Establish `h1 : (Sum.elim (fun _ : ι => (1 : R)) fun _ : Fin g => (1 : R)) = fun _ => 1`. Apply the tactic sequence `funext i; cases i <;> rfl`. Rewrite `hs` using `[h1]`.
+
+Establish `hsp : ⊤ ≤ Submodule.span R (Set.range (Sum.elim (Sum.elim v e') (Sum.elim f fun i => (d i)⁻¹ • f' i)))`. Introduce `y _`. Take `⟨a, b, y', hy', rfl⟩` from `hdec y`. Use `Submodule.add_mem _ (Submodule.add_mem _ (Submodule.sum_mem _ fun i _ => Submodule.smul_mem _ _ ?_) (Submodule.sum_mem _ fun i _ => Submodule.smul_mem _ _ ?_)) ?_` and prove the remaining obligations. Conclude with `Submodule.subset_span ⟨Sum.inl (Sum.inl i), rfl⟩`.
+
+Conclude with `Submodule.subset_span ⟨Sum.inr (Sum.inl i), rfl⟩`. Rewrite `hy'` using `[← hspan]`. Use `Submodule.span_le.2 ?_ hy'` and prove the remaining obligations. Introduce and unpack `_ ⟨i | i, rfl⟩`. Conclude with `Submodule.subset_span ⟨Sum.inl (Sum.inr i), rfl⟩`.
+
+Establish `: Sum.elim e' f' (Sum.inr i) = d i • (d i)⁻¹ • f' i` using `by simp [smul_smul, hd i]`. Rewrite using `[this]`. Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span ⟨Sum.inr (Sum.inr i), rfl⟩)`. Use `⟨g, Basis.mk (hs.linearIndependent fun _ => one_ne_zero) hsp, ?_, fun i => by simp, fun i => by simp⟩` and prove the remaining obligations. Simplify `hs` using `[IsSymplecticBasis, IsSymplecticBasisOfType]`.
+-/
 theorem exists_isSymplecticBasis_extend_family {R M ι : Type} [Field R] [AddCommGroup M] [Module R M]
     [Module.Finite R M] [Fintype ι] {B : LinearMap.BilinForm R M} (hB : B.IsAlt) (hp : Function.Injective B)
     {v f : ι → M} (hf : IsSymplecticFamily B v f fun _ => 1) :
@@ -77,9 +92,21 @@ noncomputable def colTraceBil (σ : E →ₐ[F] E) {d : ℕ} (K : Matrix (Fin d)
     (fun a x y => by
       simp only [form, dotProduct, Matrix.mulVec, Pi.smul_apply, ← Finset.smul_sum, mul_smul_comm, map_smul])
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem colTraceBil_apply (σ : E →ₐ[F] E) {d : ℕ} (K : Matrix (Fin d) (Fin d) E) (f g : Fin d → E) :
     colTraceBil σ K f g = Algebra.trace F E (-1 * form σ K f g) := rfl
 
+/- English proof (translation)
+Rewrite using `[LinearMap.BilinForm.nondegenerate_iff_ker_eq_bot, LinearMap.ker_eq_bot']`. Introduce `f hf`. Use `Matrix.eq_zero_of_vecMul_eq_zero hK (funext fun l => ?_)` and prove the remaining obligations. Use `(traceForm_nondegenerate F E).1 _ fun a => ?_` and prove the remaining obligations. Use `LinearMap.congr_fun hf (Pi.single l (σ (-a)))` as an intermediate fact.
+
+Rewrite `this` using `[colTraceBil_apply, LinearMap.zero_apply]`. Rewrite using `[Algebra.traceForm_apply, ← this]`. Use `congr 1`. Establish `h : (fun i => σ ((Pi.single l (σ (-a)) : Fin d → E) i)) = Pi.single l (-a)`. Use function extensionality and compare the values at `i`.
+
+Distinguish the cases in `hi : i = l`. Substitute `hi` using the available equality. Simplify using `only [Pi.single_eq_same, hσ]`. Simplify using `[hi]`. Rewrite using `[form, h, Matrix.dotProduct_mulVec, dotProduct_single]`.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem nondegenerate_colTraceBil [CharZero F] [FiniteDimensional F E] (σ : E →ₐ[F] E) (hσ : ∀ a, σ (σ a) = a)
     {d : ℕ} {K : Matrix (Fin d) (Fin d) E} (hK : K.det ≠ 0) : (colTraceBil σ K).Nondegenerate := by
   rw [LinearMap.BilinForm.nondegenerate_iff_ker_eq_bot, LinearMap.ker_eq_bot']
@@ -98,6 +125,11 @@ theorem nondegenerate_colTraceBil [CharZero F] [FiniteDimensional F E] (σ : E �
   rw [form, h, Matrix.dotProduct_mulVec, dotProduct_single]
   ring
 
+/- English proof (translation)
+Rewrite using `[colTraceBil_apply, symp]`. Use `congr 2`. Simplify using `only [hTens, form, dotProduct, Matrix.mulVec, Matrix.vecMulVec_apply, map_mul, Finset.sum_mul, Finset.mul_sum]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations.
+
+Use `conv_rhs => rw [Finset.sum_comm]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Use `conv_rhs => rw [Finset.sum_comm]`. Use `Finset.sum_congr rfl fun k _ => Finset.sum_congr rfl fun l _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem symp_vecMulVec_right (σ : E →ₐ[F] E) {n d : ℕ} (J : Matrix (Fin n) (Fin n) E)
     (K : Matrix (Fin d) (Fin d) E) (m : Matrix (Fin n) (Fin d) E) (v : Fin n → E) (w : Fin d → E) :
     symp σ (-1) J K m (Matrix.vecMulVec v w) = colTraceBil σ K (fun l => form σ J (fun r => m r l) v) w := by
@@ -113,6 +145,9 @@ theorem symp_vecMulVec_right (σ : E →ₐ[F] E) {n d : ℕ} (J : Matrix (Fin n
   refine Finset.sum_congr rfl fun k _ => Finset.sum_congr rfl fun l _ => ?_
   ring
 
+/- English proof (translation)
+Rewrite using `[symp_vecMulVec_right]`. Use `congr 2`. Use function extensionality and compare the values at `l`. Simplify using `only [form, dotProduct, Matrix.vecMulVec_apply, Pi.smul_apply, smul_eq_mul, Finset.sum_mul]`. Conclude with `Finset.sum_congr rfl fun i _ => by ring`.
+-/
 theorem symp_vecMulVec (σ : E →ₐ[F] E) {n d : ℕ} (J : Matrix (Fin n) (Fin n) E)
     (K : Matrix (Fin d) (Fin d) E) (u v : Fin n → E) (f w : Fin d → E) :
     symp σ (-1) J K (Matrix.vecMulVec u f) (Matrix.vecMulVec v w) = colTraceBil σ K (form σ J u v • f) w := by
@@ -122,6 +157,9 @@ theorem symp_vecMulVec (σ : E →ₐ[F] E) {n d : ℕ} (J : Matrix (Fin n) (Fin
   simp only [form, dotProduct, Matrix.vecMulVec_apply, Pi.smul_apply, smul_eq_mul, Finset.sum_mul]
   exact Finset.sum_congr rfl fun i _ => by ring
 
+/- English proof (translation)
+Simplify using `only [form, dotProduct, Matrix.mulVec, map_sum, map_mul, hσ, hJ, Finset.mul_sum]`. Rewrite using `[Finset.sum_comm]`. Conclude with `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => by ring`.
+-/
 theorem form_swap (σ : E →ₐ[F] E) (hσ : ∀ a, σ (σ a) = a) {n : ℕ} {J : Matrix (Fin n) (Fin n) E}
     (hJ : ∀ i j, σ (J j i) = J i j) (u v : Fin n → E) : form σ J u v = σ (form σ J v u) := by
   simp only [form, dotProduct, Matrix.mulVec, map_sum, map_mul, hσ, hJ, Finset.mul_sum]
@@ -130,6 +168,33 @@ theorem form_swap (σ : E →ₐ[F] E) (hσ : ∀ a, σ (σ a) = a) {n : ℕ} {J
 
 end
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ n d q J K x y hσ h2 hJ hJ' hK hK' hfr`. Use `haveI : FiniteDimensional F E := Module.finite_of_finrank_pos (by omega)`. Establish `halt` using `GlobalTheory.RatDarboux.isAlt_sympBil σ hσ hJ hK`. Establish `hinj` using `(GlobalTheory.RatDarboux.bijective_sympBil σ hσ hJ' hK').1`. Establish `hnd` using `nondegenerate_colTraceBil σ hσ hK'`.
+
+Use `set B := GlobalTheory.RatDarboux.sympBil σ (-1) J K with hBdef`. Establish `hB : ∀ a b, B a b = symp σ (-1) J K a b` using `fun _ _ => rfl`. Set `g` to `Module.finBasis F (Fin d → E)`. Set `f` to `(colTraceBil σ K).dualBasis hnd g`. Establish `hfg : ∀ k l, colTraceBil σ K (f k) (g l) = if l = k then 1 else 0` using `LinearMap.BilinForm.apply_dualBasis_left hnd g`.
+
+Establish `hyx : ∀ i j, form σ J (y i) (x j) = if i = j then 1 else 0` using `fun i j => by`. Rewrite using `[form_swap σ hσ hJ, hfr.2.2]`. Distinguish the cases in `h : i = j`. Simplify using `[h]`. Simplify using `[h, Ne.symm h]`.
+
+Establish `hfam : IsSymplecticFamily B (fun p : Fin q × Fin (Module.finrank F (Fin d → E)) => Matrix.vecMulVec (y p.1) (f p.2)) (fun p => Matrix.vecMulVec (x p.1) (g p.2)) fun _ => 1`. Use `⟨fun p r => ?_, fun p r => ?_, fun p => ?_, fun p r hpr => ?_⟩` and prove the remaining obligations. Simplify using `[hB, symp_vecMulVec, hfr.2.1]`. Simplify using `[hB, symp_vecMulVec, hfr.1]`. Simplify using `[hB, symp_vecMulVec, hyx, hfg]`.
+
+Rewrite using `[hB, symp_vecMulVec, hyx]`. Distinguish the cases in `h : p.1 = r.1`. Establish `h' : ¬ r.2 = p.2` using `fun h' => hpr (Prod.ext h h'.symm)`. Simplify using `[h, hfg, h']`. Simplify using `[h]`.
+
+Take `⟨s, b₀, hb₀, hl, hr⟩` from `exists_isSymplecticBasis_extend_family halt hinj hfam`. Establish `hcard : Fintype.card ((Fin q × Fin (Module.finrank F (Fin d → E))) ⊕ Fin s) = Fintype.card (Fin n × Fin d)`. Establish `h1` using `IsSymplecticBasisOfType.finrank_eq b₀`. Rewrite `h1` using `[Module.finrank_matrix, h2]`. Rewrite using `[Fintype.card_prod (Fin n)]`.
+
+Use linear arithmetic over natural numbers and integers. Set `ε` to `Fintype.equivOfCardEq hcard`. Establish `hb` using `hb₀.reindex ε`. Establish `hbl : ∀ k, b₀.reindex (ε.sumCongr ε) (.inl (ε k)) = b₀ (.inl k)` using `fun k => by simp`. Establish `hbr : ∀ k, b₀.reindex (ε.sumCongr ε) (.inr (ε k)) = b₀ (.inr k)` using `fun k => by simp`.
+
+Establish `hcol : ∀ (m : Matrix (Fin n) (Fin d) E) (v : Fin n → E) (c : Basis (Fin (Module.finrank F (Fin d → E))) F (Fin d → E)), (∀ k, B m (Matrix.vecMulVec v (c k)) = 0) → ∀ l, form σ J (fun r => m r l) v = 0`. Introduce `m v c h l`. Establish `h0 : colTraceBil σ K (fun l => form σ J (fun r => m r l) v) = 0` using `c.ext fun k => by rw [← symp_vecMulVec_right, ← hB, h, LinearMap.zero_apply]`. Conclude with `congrFun (hnd.1 _ fun w => by rw [h0, LinearMap.zero_apply]) l`. Use `⟨b₀.reindex (ε.sumCongr ε), fun i => Finset.univ.image fun k => ε (.inl (i, k)), ?_, hb.left_left, hb.right_right, hb.left_right, hb.right_left halt, ?_, ?_, ?_⟩` and prove the remaining obligations.
+
+Introduce `i j hij`. Rewrite using `[Finset.disjoint_left]`. Introduce `a ha ha'`. Take `⟨k, -, rfl⟩` from `Finset.mem_image.1 ha`. Take `⟨k', -, h⟩` from `Finset.mem_image.1 ha'`.
+
+Conclude with `hij (congrArg Prod.fst (Sum.inl_injective (ε.injective h))).symm`. Introduce `i k hk`. Take `⟨k, -, rfl⟩` from `Finset.mem_image.1 hk`. Conclude with `⟨f k, by rw [hbl, hl]⟩`. Introduce `i k hk`.
+
+Take `⟨k, -, rfl⟩` from `Finset.mem_image.1 hk`. Conclude with `⟨g k, by rw [hbr, hr]⟩`. Introduce `k hk l i`. Take `⟨k, rfl⟩` from `ε.surjective k`. Break down `k with ⟨j, k⟩ | k` into its components or cases.
+
+Conclude with `absurd (Finset.mem_image.2 ⟨k, Finset.mem_univ _, rfl⟩) (hk j)`. Rewrite using `[hbl, hbr]`. Use `⟨hcol _ _ g (fun k' => ?_) l, hcol _ _ f (fun k' => ?_) l, hcol _ _ g (fun k' => ?_) l, hcol _ _ f (fun k' => ?_) l⟩` and prove the remaining obligations. Rewrite using `[← hr (i, k'), hb₀.left_right]`. Simplify using the standard rewrite rules.
+
+Rewrite using `[← hl (i, k'), hb₀.left_left]`. Rewrite using `[← hr (i, k'), hb₀.right_right]`. Rewrite using `[← hl (i, k'), hb₀.right_left halt]`. Simplify using the standard rewrite rules.
+-/
 theorem exists_frame_symplectic_basis : ∀ {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) {n d q : ℕ}
     (J : Matrix (Fin n) (Fin n) E) (K : Matrix (Fin d) (Fin d) E) (x y : Fin q → Fin n → E),
     (∀ a, σ (σ a) = a) → Module.finrank F E = 2 → (∀ i j, σ (J j i) = J i j) → J.det ≠ 0 →

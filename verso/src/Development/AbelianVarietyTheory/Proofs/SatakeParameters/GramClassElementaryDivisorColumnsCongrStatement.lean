@@ -5,6 +5,9 @@ import Development.AbelianVarietyTheory.Proofs.SatakeParameters.LatticeModelVacu
 import Development.AbelianVarietyTheory.Proofs.SatakeParameters.DvdPowZeroIff
 open Matrix
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.Hk3.IntWitt.gram_class_columns | exact GlobalTheory.Hk3.IntWitt.gram_class_columns | (intros; apply GlobalTheory.Hk3.IntWitt.gram_class_columns <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.gramClass_elementaryDivisor_columns_congr : ∀ (L : Type) [Field L] [Valued L (WithZero (Multiplicative ℤ))] (ϖ : L) (σ : L →+* L) (q : ℕ),
     Formalism.UG.IsUnramInv ϖ σ q → ∀ (n n' : ℕ) (JT : GL (Fin n') L) (x y : Matrix (Fin n') (Fin n) L)
     (V : Matrix (Fin n) (Fin n) L) (a : Fin n → ℕ), (∀ i j, V i j ∈ Formalism.UG.intL L) →

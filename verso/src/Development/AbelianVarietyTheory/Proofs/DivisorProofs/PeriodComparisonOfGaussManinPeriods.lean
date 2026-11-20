@@ -15,6 +15,9 @@ attribute [local instance] Over.cartesianMonoidalCategory
 
 namespace GlobalTheory.PeriodFamily
 
+/- English proof (translation)
+Take `⟨ε, h⟩` from `h`. Use `⟨ε, fun A _ g hA hs L hL u ↦ ?_⟩` and prove the remaining obligations. Establish `hp : IsGrpPullback A A (spMap ((AlgHom.id ℂ ℂ : ℂ →ₐ[ℂ] ℂ) : ℂ →+* ℂ)) (𝟙 _)` using `haveI : IsMonHom (Iso.refl A).hom := inferInstanceAs (IsMonHom (𝟙 A)) (isGrpPullback_of_iso (Iso.refl A)).congr (Cris.spMap_id ℂ).symm rfl`. Take `⟨V, u', τ, Q', Q, -, -, -, hQ, -⟩` from `h ℂ A g hA hs Empty Set.univ (fun _ ↦ AlgHom.id ℂ ℂ) isOpen_univ trivial (fun _ ↦ differentiableOn_const _) (fun _ ↦ A) (fun _ ↦ 𝟙 _) (fun _ ↦ hp) (fun _ ↦ GrpMor.of_isGrpPullback (isDPMorphism_of_eq_bot _ rfl _ _) (by simp) hp) (fun _ ↦ L) (fun _ ↦ hL) A (𝟙 _) hp L hL u`. Conclude with `⟨Q, hQ⟩`.
+-/
 theorem periodComparison_of_gaussManinPeriods (h : GlobalTheory.Published.GaussManinPeriods) : GlobalTheory.Published.PeriodComparison := by
   obtain ⟨ε, h⟩ := h
   refine ⟨ε, fun A _ g hA hs L hL u ↦ ?_⟩

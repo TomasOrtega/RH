@@ -134,6 +134,9 @@ def PerLaw (Y : Formalism.L2.SG.Full.Full X) : Prop :=
 
 end SBes
 
+/- English proof (translation)
+Rewrite using `[h]`. Both sides reduce to the same expression.
+-/
 theorem rank_eq (X : HidaSetting D) (h : X.B.I = Formalism.L2.SG.InstExistsPf.instOf D) : (D.sp.Y 0).rank = X.B.I.n := by
   rw [h]; rfl
 
@@ -173,8 +176,14 @@ def ThetaIdentityOfMapsAll {Bs : Base} {Xp : PreX Bs.toPre} {I : TC Bs Xp} {l : 
     (B : SBes w.S.X w.S.inst u W.ψ ((I.rec7 l Z).sp.X 0)),
     W.Is ∧ L.TopPin (w.C.forms u) ∧ ThetaVectorCompatibility w.S u W L v₀ t ∧ B.Adapted (w.S.tr u).wt ∧ ThetaIdentityOfMapsAt w.S u W L t B
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨0, fun _ => by simp⟩`.
+-/
 example {I : Type} (τ : I → ℂ) : PropTo (fun _ => 0) τ := ⟨0, fun _ => by simp⟩
 
+/- English proof (translation)
+Introduce `⟨a, h⟩` and use `by simpa using h ()`.
+-/
 example : ¬ PropTo (fun _ : Unit => (1 : ℂ)) (fun _ => 0) := fun ⟨a, h⟩ => by simpa using h ()
 
 end GlobalTheory.Core.Mi

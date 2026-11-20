@@ -10,6 +10,31 @@ open scoped TensorProduct
 
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {N : ℕ}
 
+/- English proof (translation)
+Take `⟨hfg, hspan⟩` from `h`. Use `haveI : Module.Finite (𝓞 E) Λ := Module.Finite.iff_fg.2 hfg`. Use `haveI : Module.Finite (𝓞 F) Λ := Module.Finite.trans (𝓞 E) Λ`. Use `haveI : Module.FinitePresentation (𝓞 F) Λ := Module.finitePresentation_of_finite _ _`. Use `haveI : Module.Flat (𝓞 F) Λ := IsDedekindDomain.flat_iff_torsion_eq_bot.2 (Submodule.isTorsionFree_iff_torsion_eq_bot.1 inferInstance)`.
+
+Use `haveI : Module.Projective (𝓞 F) Λ := Module.Flat.projective_of_finitePresentation`. Take `⟨n, f, g, -, -, hfg'⟩` from `Module.Finite.exists_comp_eq_id_of_projective (𝓞 F) Λ`. Establish `hne : ∀ s : nonZeroDivisors (𝓞 F), algebraMap (𝓞 F) F s ≠ 0` using `fun s => IsFractionRing.to_map_ne_zero_of_mem_nonZeroDivisors s.2`. Establish `hunit : ∀ {M : Type} [AddCommGroup M] [Module F M] [Module (𝓞 F) M] [IsScalarTower (𝓞 F) F M] (s : nonZeroDivisors (𝓞 F)), IsUnit (algebraMap (𝓞 F) (Module.End (𝓞 F) M) s)`. Introduce `M _ _ _ _ s`.
+
+Rewrite using `[Module.End.isUnit_iff]`. Prove the components needed by the constructor for the conclusion. Introduce `a b hab`. Establish `hab' : (algebraMap (𝓞 F) F s) • a = (algebraMap (𝓞 F) F s) • b`. Simplify `hab` using `[IsScalarTower.algebraMap_smul]`.
+
+Conclude with `smul_right_injective M (hne s) hab'`. Introduce `b`. Use `⟨(algebraMap (𝓞 F) F s)⁻¹ • b, ?_⟩` and prove the remaining obligations. Simplify using `only [Module.algebraMap_end_apply]`. Rewrite using `[← IsScalarTower.algebraMap_smul F (s : 𝓞 F), smul_smul, mul_inv_cancel₀ (hne s), one_smul]`.
+
+Set `ι : Λ →ₗ[𝓞 F] (Fin N → E)` to `Λ.subtype.restrictScalars (𝓞 F)`. Use `haveI hloc : IsLocalizedModule (nonZeroDivisors (𝓞 F)) ι := by`. Use `IsLocalizedModule.mk (fun s => hunit s) (fun v => ?_) (fun {x₁ x₂} hx => ⟨1, by simpa using Subtype.ext hx⟩)` and prove the remaining obligations. Take `⟨m, hm0, hm⟩` from `exists_smul_mem ⟨hfg, hspan⟩ v`. Use `⟨(⟨_, hm⟩, ⟨(m : 𝓞 F), mem_nonZeroDivisors_of_ne_zero (by exact_mod_cast hm0)⟩), ?_⟩` and prove the remaining obligations.
+
+Express the relevant statement in the definitionally equal form `(m : 𝓞 F) • v = _`. Simplify using `[ι, Nat.cast_smul_eq_nsmul]`. Set `gj : Fin n → (Λ →ₗ[𝓞 F] F)` to `fun j => (Algebra.linearMap (𝓞 F) F) ∘ₗ (LinearMap.proj j) ∘ₗ g`. Set `L : Fin n → ((Fin N → E) →ₗ[F] F)` to `fun j => (IsLocalizedModule.lift (nonZeroDivisors (𝓞 F)) ι (gj j) (fun s => hunit s)).extendScalarsOfIsLocalization (nonZeroDivisors (𝓞 F)) F`. Establish `hL : ∀ j (x : Λ), L j (x : Fin N → E) = algebraMap (𝓞 F) F (g x j)`.
+
+Introduce `j x`. Conclude with `LinearMap.congr_fun (IsLocalizedModule.lift_comp (nonZeroDivisors (𝓞 F)) ι (gj j) (fun s => hunit s)) x`. Set `yy : Fin n → Fin N → E` to `fun j => (f (Pi.single j 1) : Fin N → E)`. Establish `hΛsum : ∀ x : Λ, (x : Fin N → E) = ∑ j, L j x • yy j`. Introduce `x`.
+
+Establish `hx : x = f (g x)` using `(LinearMap.congr_fun hfg' x).symm`. Establish `hgx : g x = ∑ j, g x j • (Pi.single j 1 : Fin n → 𝓞 F)`. Use extensionality with `i`. Simplify using `[Finset.sum_apply, Pi.single_apply]`. Use `conv_lhs => rw [hx, hgx]`.
+
+Rewrite using `[map_sum, Submodule.coe_sum]`. Use `Finset.sum_congr rfl (fun j _ => ?_)` and prove the remaining obligations. Rewrite using `[hL, IsScalarTower.algebraMap_smul, map_smul]`. Both sides reduce to the same expression. Establish `hall : ∀ v, v = ∑ j, L j v • yy j`.
+
+Introduce `v`. Take `⟨⟨x, s⟩, hs⟩` from `IsLocalizedModule.surj (nonZeroDivisors (𝓞 F)) ι v`. Express the relevant statement in the definitionally equal form `(s : 𝓞 F) • v = (x : Fin N → E) at hs`. Establish `h1 : (s : 𝓞 F) • (∑ j, L j v • yy j) = (s : 𝓞 F) • v`. Rewrite using `[Finset.smul_sum]`.
+
+Establish `hj : ∀ j, (s : 𝓞 F) • (L j v • yy j) = L j ((s : 𝓞 F) • v) • yy j`. Introduce `j`. Rewrite using `[LinearMap.map_smul_of_tower, smul_assoc]`. Repeatedly rewrite using `[hj]`. Rewrite using `[hs]`.
+
+Conclude with `(hΛsum x).symm`. Rewrite `h1` using `[← IsScalarTower.algebraMap_smul F (s : 𝓞 F), ← IsScalarTower.algebraMap_smul F (s : 𝓞 F)]`. Conclude with `(smul_right_injective _ (hne s) h1).symm`. Conclude with `⟨n, yy, L, fun j => (f (Pi.single j 1)).2, fun j x hx => ⟨g ⟨x, hx⟩ j, hL j ⟨x, hx⟩⟩, hall⟩`.
+-/
 theorem exists_dualBasis {Λ : Submodule (𝓞 E) (Fin N → E)} (h : IsLat Λ) :
     ∃ (k : ℕ) (y : Fin k → Fin N → E) (l : Fin k → (Fin N → E) →ₗ[F] F), (∀ j, y j ∈ Λ) ∧
       (∀ j, ∀ x ∈ Λ, ∃ o : 𝓞 F, l j x = o) ∧ ∀ x, x = ∑ j, l j x • y j := by
@@ -90,20 +115,39 @@ def coordR (y : Fin N → R ⊗[F] E) : R :=
 
 variable {R}
 
+/- English proof (translation)
+Simplify using `[coordR, Finset.sum_add_distrib]`.
+-/
 theorem coordR_add (x y : Fin N → R ⊗[F] E) : coordR l R (x + y) = coordR l R x + coordR l R y := by
   simp [coordR, Finset.sum_add_distrib]
 
+/- English proof (translation)
+Simplify using `[coordR]`.
+-/
 theorem coordR_zero : coordR l R 0 = 0 := by simp [coordR]
 
+/- English proof (translation)
+Simplify using `[coordR]`.
+-/
 theorem coordR_neg (x : Fin N → R ⊗[F] E) : coordR l R (-x) = -coordR l R x := by
   simp [coordR]
 
+/- English proof (translation)
+Simplify using `only [coordR, LinearMap.lTensor_tmul, TensorProduct.rid_tmul, ← Finset.sum_smul, LinearMap.comp_apply, ← map_sum]`. Use `congr 2`. Conclude with `Finset.univ_sum_single x`.
+-/
 theorem coordR_tmul (a : R) (x : Fin N → E) : coordR l R (fun i => a ⊗ₜ[F] x i) = l x • a := by
   simp only [coordR, LinearMap.lTensor_tmul, TensorProduct.rid_tmul, ← Finset.sum_smul, LinearMap.comp_apply,
     ← map_sum]
   congr 2
   exact Finset.univ_sum_single x
 
+/- English proof (translation)
+Establish `hs : ∀ (i : Fin N) (t : R ⊗[F] E), P (Pi.single i t)`. Introduce `i t`. Proceed by induction on `t using TensorProduct.induction_on with`. Consider the case `zero => simpa using h0`. Consider the case `tmul a e`.
+
+Use `h1 a (Pi.single i e) using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `j`. Distinguish the cases in `hj : j = i`. Substitute `hj` using the available equality. Simplify using the standard rewrite rules.
+
+Simplify using `[Pi.single_eq_of_ne hj]`. Consider the case `add s t hs ht => simpa [Pi.single_add] using h2 _ _ hs ht`. Rewrite using `[← Finset.univ_sum_single y]`. Conclude with `Finset.sum_induction _ P h2 h0 (fun i _ => hs i (y i))`.
+-/
 theorem pi_induction {P : (Fin N → R ⊗[F] E) → Prop} (h0 : P 0) (h1 : ∀ (a : R) (x : Fin N → E), P fun i => a ⊗ₜ[F] x i)
     (h2 : ∀ x y, P x → P y → P (x + y)) (y : Fin N → R ⊗[F] E) : P y := by
   have hs : ∀ (i : Fin N) (t : R ⊗[F] E), P (Pi.single i t) := by
@@ -121,6 +165,15 @@ theorem pi_induction {P : (Fin N → R ⊗[F] E) → Prop} (h0 : P 0) (h1 : ∀ 
   rw [← Finset.univ_sum_single y]
   exact Finset.sum_induction _ P h2 h0 (fun i _ => hs i (y i))
 
+/- English proof (translation)
+Proceed by induction on `z using pi_induction with`. Consider the case `h0`. Use function extensionality and compare the values at `i`. Simplify using `[coordR_zero, Finset.sum_apply]`. Consider the case `h1 a x`.
+
+Use function extensionality and compare the values at `i`. Simplify using `only [coordR_tmul, Finset.sum_apply, TensorProduct.smul_tmul, ← TensorProduct.tmul_sum]`. Use `congr 1`. Establish `hx` using `congrFun (h x) i`. Simplify `hx` using `[Finset.sum_apply]`.
+
+Consider the case `h2 u v hu hv`. Use function extensionality and compare the values at `i`. Establish `hu'` using `congrFun hu i`. Establish `hv'` using `congrFun hv i`. Simplify using `only [Pi.add_apply, Finset.sum_apply, coordR_add, TensorProduct.add_tmul, Finset.sum_add_distrib] at hu' hv' ⊢`.
+
+Rewrite using `[← hu', ← hv']`.
+-/
 theorem eq_sum_coordR {k : ℕ} {y : Fin k → Fin N → E} {l : Fin k → (Fin N → E) →ₗ[F] F}
     (h : ∀ x, x = ∑ j, l j x • y j) (z : Fin N → R ⊗[F] E) : z = ∑ j, fun i => coordR (l j) R z ⊗ₜ[F] y j i := by
   induction z using pi_induction with
@@ -141,6 +194,15 @@ theorem eq_sum_coordR {k : ℕ} {y : Fin k → Fin N → E} {l : Fin k → (Fin 
       Finset.sum_add_distrib] at hu' hv' ⊢
     rw [← hu', ← hv']
 
+/- English proof (translation)
+Proceed by induction on `z using pi_induction with`. Consider the case `h0`. Establish `hz : (fun i => Algebra.TensorProduct.map f (AlgHom.id F E) ((0 : Fin N → R ⊗[F] E) i)) = 0`. Use function extensionality and compare the values at `i`. Simplify using the standard rewrite rules.
+
+Rewrite using `[hz, coordR_zero, coordR_zero, map_zero]`. Consider the case `h1 a x`. Establish `hz : (fun i => Algebra.TensorProduct.map f (AlgHom.id F E) (a ⊗ₜ[F] x i)) = fun i => f a ⊗ₜ[F] x i`. Use function extensionality and compare the values at `i`. Simplify using `[Algebra.TensorProduct.map_tmul]`.
+
+Rewrite using `[hz, coordR_tmul, coordR_tmul, map_smul]`. Consider the case `h2 u v hu hv`. Establish `hz : (fun i => Algebra.TensorProduct.map f (AlgHom.id F E) ((u + v) i)) = (fun i => Algebra.TensorProduct.map f (AlgHom.id F E) (u i)) + (fun i => Algebra.TensorProduct.map f (AlgHom.id F E) (v i))`. Use function extensionality and compare the values at `i`. Simplify using the standard rewrite rules.
+
+Rewrite using `[hz, coordR_add, coordR_add, map_add, hu, hv]`.
+-/
 theorem map_coordR {S : Type} [CommRing S] [Algebra F S] (f : R →ₐ[F] S) (z : Fin N → R ⊗[F] E) :
     f (coordR l R z) = coordR l S fun i => Algebra.TensorProduct.map f (AlgHom.id F E) (z i) := by
   induction z using pi_induction with
@@ -164,6 +226,15 @@ theorem map_coordR {S : Type} [CommRing S] [Algebra F S] (f : R →ₐ[F] S) (z 
 
 end coord
 
+/- English proof (translation)
+Proceed by induction on `hz using AddSubgroup.closure_induction with`. Consider the case `mem z hz`. Take `⟨a, ha, x, hx, rfl⟩` from `hz`. Rewrite using `[coordR_tmul]`. Take `⟨o, ho⟩` from `hl x hx`.
+
+Rewrite using `[ho, Algebra.smul_def]`. Conclude with `Subring.mul_mem _ (GroundTheory.Global.algebraMap_integers_mem_integralFiniteAdeles F o) (GroundTheory.Global.mem_integralFiniteAdeles.2 ha)`. Consider the case `zero`. Rewrite using `[coordR_zero]`. Conclude with `Subring.zero_mem _`.
+
+Consider the case `add u v _ _ hu hv`. Rewrite using `[coordR_add]`. Conclude with `Subring.add_mem _ hu hv`. Consider the case `neg u _ hu`. Rewrite using `[coordR_neg]`.
+
+Conclude with `Subring.neg_mem _ hu`.
+-/
 theorem coordR_hat {Λ : Submodule (𝓞 E) (Fin N → E)} {l : (Fin N → E) →ₗ[F] F} (hl : ∀ x ∈ Λ, ∃ o : 𝓞 F, l x = o)
     {z : Fin N → Adf F E} (hz : z ∈ hatLat F Λ.toAddSubgroup) :
     coordR l _ z ∈ GroundTheory.Global.integralFiniteAdeles (𝓞 F) F := by
@@ -185,6 +256,17 @@ theorem coordR_hat {Λ : Submodule (𝓞 E) (Fin N → E)} {l : (Fin N → E) �
     rw [coordR_neg]
     exact Subring.neg_mem _ hu
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ N Λ hΛ x`. Prove the components needed by the constructor for the conclusion. Introduce `hx`. Take `⟨k, y, l, hy, hl, hsum⟩` from `exists_dualBasis (F := F) hΛ`. Establish `key : ∀ b : F, algebraMap F (FiniteAdeleRing (𝓞 F) F) b ∈ GroundTheory.Global.integralFiniteAdeles (𝓞 F) F → b ∈ (algebraMap (𝓞 F) F).range`.
+
+Introduce `b hb`. Apply `IsDedekindDomain.HeightOneSpectrum.mem_integers_of_valuation_le_one` to reduce the goal to its premises. Introduce `v`. Establish `hv` using `(IsDedekindDomain.HeightOneSpectrum.mem_adicCompletionIntegers (𝓞 F) F v).1 (GroundTheory.Global.mem_integralFiniteAdeles.1 hb v)`. Rewrite `hv` using `[IsDedekindDomain.FiniteAdeleRing.algebraMap_apply, IsDedekindDomain.HeightOneSpectrum.valuedAdicCompletion_eq_valuation']`. Then use the resulting hypothesis.
+
+Establish `hc : ∀ j, ∃ o : 𝓞 F, l j x = algebraMap (𝓞 F) F o`. Introduce `j`. Establish `h1` using `coordR_hat (hl j) hx`. Establish `h2 : (fun i => inclAd F E (x i)) = fun i => (1 : FiniteAdeleRing (𝓞 F) F) ⊗ₜ[F] x i` using `rfl`. Rewrite `h1` using `[h2, coordR_tmul, Algebra.smul_def, mul_one]`.
+
+Take `⟨o, ho⟩` from `key _ h1`. Conclude with `⟨o, ho.symm⟩`. Rewrite using `[hsum x]`. Use `Submodule.sum_mem _ (fun j _ => ?_)` and prove the remaining obligations. Take `⟨o, ho⟩` from `hc j`.
+
+Rewrite using `[ho, IsScalarTower.algebraMap_smul]`. Conclude with `Submodule.smul_of_tower_mem Λ o (hy j)`. Introduce `hx`. Conclude with `incl_mem_hat hx`.
+-/
 theorem hatRat : HatRat := by
   intro F E _ _ _ _ _ N Λ hΛ x
   constructor
@@ -214,6 +296,31 @@ theorem hatRat : HatRat := by
   · intro hx
     exact incl_mem_hat hx
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ N Λ hΛ`. Take `⟨k, y, l, hy, hl, hsum⟩` from `exists_dualBasis (F := F) hΛ`. Use `haveI : ContinuousAdd (Adf F E) := IsModuleTopology.toContinuousAdd (FiniteAdeleRing (𝓞 F) F) (Adf F E)`. Establish `hsmul : ∀ j (r : FiniteAdeleRing (𝓞 F) F) (z : Fin N → Adf F E), coordR (l j) (FiniteAdeleRing (𝓞 F) F) (r • z) = r * coordR (l j) (FiniteAdeleRing (𝓞 F) F) z`. Introduce `j r z`.
+
+Proceed by induction on `z using pi_induction with`. Consider the case `h0 => simp [coordR_zero]`. Consider the case `h1 a x`. Establish `hz : r • (fun i => a ⊗ₜ[F] x i) = fun i => (r * a) ⊗ₜ[F] x i`. Use function extensionality and compare the values at `i`.
+
+Simplify using `[TensorProduct.smul_tmul']`. Rewrite using `[hz, coordR_tmul, coordR_tmul, mul_smul_comm]`. Consider the case `h2 u v hu hv => rw [smul_add, coordR_add, coordR_add, hu, hv, mul_add]`. Set `Φ : (Fin N → Adf F E) →ₗ[FiniteAdeleRing (𝓞 F) F] (Fin k → FiniteAdeleRing (𝓞 F) F)` to `{ toFun := fun z j => coordR (l j) (FiniteAdeleRing (𝓞 F) F) z map_add' := fun u v => by`. Use function extensionality and compare the values at `j`.
+
+Conclude with `coordR_add _ u v`. Use the proof step `map_smul' := fun r z => by`. Use function extensionality and compare the values at `j`. Conclude with `hsmul j r z }`. Establish `hΦ : Continuous Φ` using `IsModuleTopology.continuous_of_linearMap Φ`.
+
+Set `Ψ : (Fin k → FiniteAdeleRing (𝓞 F) F) → (Fin N → Adf F E)` to `fun a => ∑ j, fun i => a j ⊗ₜ[F] y j i`. Establish `hΨ : Continuous Ψ`. Apply `continuous_finset_sum` to reduce the goal to its premises. Introduce `j _`. Apply `continuous_pi` to reduce the goal to its premises.
+
+Introduce `i`. Establish `he : (fun a : Fin k → FiniteAdeleRing (𝓞 F) F => a j ⊗ₜ[F] y j i) = fun a => a j • ((1 : FiniteAdeleRing (𝓞 F) F) ⊗ₜ[F] y j i : Adf F E)`. Use function extensionality and compare the values at `a`. Rewrite using `[TensorProduct.smul_tmul', smul_eq_mul, mul_one]`. Rewrite using `[he]`.
+
+Conclude with `Continuous.smul (continuous_apply (A := fun _ : Fin k => FiniteAdeleRing (𝓞 F) F) j) (continuous_const (y := ((1 : FiniteAdeleRing (𝓞 F) F) ⊗ₜ[F] y j i : Adf F E)))`. Establish `hΨΦ : ∀ z, Ψ (Φ z) = z` using `fun z => (eq_sum_coordR hsum z).symm`. Establish `hmemΨ : ∀ a : Fin k → FiniteAdeleRing (𝓞 F) F, (∀ j, a j ∈ GroundTheory.Global.integralFiniteAdeles (𝓞 F) F) → Ψ a ∈ hatLat F Λ.toAddSubgroup`. Introduce `a ha`. Use `AddSubgroup.sum_mem _ (fun j _ => AddSubgroup.subset_closure ⟨a j, ?_, y j, hy j, rfl⟩)` and prove the remaining obligations.
+
+Conclude with `GroundTheory.Global.mem_integralFiniteAdeles.1 (ha j)`. Establish `hset : (hatLat F Λ.toAddSubgroup : Set (Fin N → Adf F E)) = Φ ⁻¹' (Set.univ.pi fun _ => (GroundTheory.Global.integralFiniteAdeles (𝓞 F) F : Set _))`. Use extensionality with `z`. Prove the components needed by the constructor for the conclusion. Introduce `hz j _`.
+
+Conclude with `coordR_hat (hl j) hz`. Introduce `hz`. Rewrite using `[← hΨΦ z]`. Conclude with `hmemΨ _ (fun j => hz j (Set.mem_univ j))`. Establish `hset2 : (hatLat F Λ.toAddSubgroup : Set (Fin N → Adf F E)) = Ψ '' (Set.univ.pi fun _ => (GroundTheory.Global.integralFiniteAdeles (𝓞 F) F : Set _))`.
+
+Use extensionality with `z`. Prove the components needed by the constructor for the conclusion. Introduce `hz`. Rewrite `hz` using `[hset]`. Conclude with `⟨Φ z, hz, hΨΦ z⟩`.
+
+Introduce and unpack `⟨a, ha, rfl⟩`. Conclude with `hmemΨ a (fun j => ha j (Set.mem_univ j))`. Prove the components needed by the constructor for the conclusion. Rewrite using `[hset2]`. Conclude with `(isCompact_univ_pi fun _ => GroundTheory.Global.isCompact_integralFiniteAdeles F).image hΨ`.
+
+Rewrite using `[hset]`. Conclude with `(isOpen_set_pi Set.finite_univ fun _ _ => GroundTheory.Global.isOpen_integralFiniteAdeles).preimage hΦ`.
+-/
 theorem hatCompactOpen : HatCompactOpen := by
   intro F E _ _ _ _ _ N Λ hΛ
   obtain ⟨k, y, l, hy, hl, hsum⟩ := exists_dualBasis (F := F) hΛ

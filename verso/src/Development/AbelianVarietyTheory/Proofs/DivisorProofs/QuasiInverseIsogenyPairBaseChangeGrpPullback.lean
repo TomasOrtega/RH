@@ -11,6 +11,15 @@ noncomputable section
 
 namespace GlobalTheory.UPel.HT.ES
 
+/- English proof (translation)
+Introduce `T Y t A B _ _ _ _ k ψ ψ' A₁ _ _ φ hB hq hA`. Take `⟨hψ, hψ', h1, h2⟩` from `hq`. Take `⟨e, he, hφ⟩` from `grpPullback_iso hA (isGrpPullback_pullback A t)`. Establish `hinv : IsMonHom e.inv` using `inferInstance`. Establish `hinvφ : e.inv.left ≫ φ = pullback.fst A.hom t`.
+
+Rewrite using `[← hφ, ← Category.assoc, ← Over.comp_left, e.inv_hom_id, Over.id_left, Category.id_comp]`. Establish `hmap : ∀ (X M : Over Y) [MonObj M] (f : X ⟶ M) (n : ℕ), (Over.pullback t).map (f ^ n) = ((Over.pullback t).map f) ^ n` using `fun X M _ f n => by`. Rewrite using `[← Functor.homMonoidHom_apply, map_pow, Functor.homMonoidHom_apply]`. Establish `hid : ∀ (M : Over Y) [GrpObj M], (Over.pullback t).map ((𝟙 M) ^ k) = (𝟙 _) ^ k` using `fun M _ => by`. Rewrite using `[hmap, CategoryTheory.Functor.map_id]`.
+
+Use `⟨(Over.pullback t).obj B, inferInstance, inferInstance, pullback.fst B.hom t, e.hom ≫ (Over.pullback t).map ψ, (Over.pullback t).map ψ' ≫ e.inv, ReciprocityTheory.ChartRestriction.G.Out.TLinPf.isAb_pullback t B hB, isGrpPullback_pullback B t, ⟨inferInstance, inferInstance, ?_, ?_ …` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[MonObj.pow_comp, MonObj.comp_pow, Category.id_comp, e.hom_inv_id]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Over.comp_left, Category.assoc] show φ ≫ ψ.left = e.hom.left ≫ pullback.lift _ _ _ ≫ pullback.fst B.hom t`.
+
+Rewrite using `[pullback.lift_fst, ← Category.assoc, hφ]`. Rewrite using `[Over.comp_left, Category.assoc, hinvφ] show pullback.fst B.hom t ≫ ψ'.left = pullback.lift _ _ _ ≫ pullback.fst A.hom t`. Rewrite using `[pullback.lift_fst]`.
+-/
 theorem pullQuasiInv : ∀ (T Y : Scheme.{0}) (t : T ⟶ Y) (A B : Over Y) [GrpObj A] [IsCommMonObj A] [GrpObj B] [IsCommMonObj B] (k : ℕ) (ψ : A ⟶ B) (ψ' : B ⟶ A) (A₁ : Over T) [GrpObj A₁] [IsCommMonObj A₁] (φ : A₁.left ⟶ A.left), IsAbelianScheme B → IsQuasiInv k ψ ψ' → IsGrpPullback A₁ A t φ → ∃ (B₁ : Over T) (_ : GrpObj B₁) (_ : IsCommMonObj B₁) (θ : B₁.left ⟶ B.left) (ψ₁ : A₁ ⟶ B₁) (ψ₁' : B₁ ⟶ A₁), IsAbelianScheme B₁ ∧ IsGrpPullback B₁ B t θ ∧ IsQuasiInv k ψ₁ ψ₁' ∧ φ ≫ ψ.left = ψ₁.left ≫ θ ∧ θ ≫ ψ'.left = ψ₁'.left ≫ φ := by
   intro T Y t A B _ _ _ _ k ψ ψ' A₁ _ _ φ hB hq hA
   obtain ⟨hψ, hψ', h1, h2⟩ := hq

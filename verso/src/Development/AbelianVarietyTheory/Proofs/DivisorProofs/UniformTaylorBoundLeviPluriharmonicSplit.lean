@@ -10,21 +10,35 @@ open Complex Set
 
 variable {n : ℕ}
 
+/- English proof (translation)
+Use extensionality with `j`. Simplify using `only [PiLp.add_apply, PiLp.smul_apply, smul_eq_mul, Complex.real_smul]`. Use `conv_lhs => rw [← Complex.re_add_im c]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem smul_decomp (c : ℂ) (v : V n) : c • v = c.re • v + c.im • (I • v) := by
   ext j
   simp only [PiLp.add_apply, PiLp.smul_apply, smul_eq_mul, Complex.real_smul]
   conv_lhs => rw [← Complex.re_add_im c]
   ring
 
+/- English proof (translation)
+Establish `h` using `(EuclideanSpace.basisFun (Fin n) ℂ).sum_repr w`. Simplify `h.symm` using `[bas]`.
+-/
 theorem vec_expand' (w : V n) : w = ∑ j, w j • bas n j := by
   have h := (EuclideanSpace.basisFun (Fin n) ℂ).sum_repr w
   simpa [bas] using h.symm
 
+/- English proof (translation)
+Rewrite using `[Finset.sum_congr rfl fun k _ => (smul_decomp (w k) (bas n k)).symm]`. Conclude with `(vec_expand' w).symm`.
+-/
 theorem sum_re_im_eq (w : V n) :
     (∑ k, ((w k).re • bas n k + (w k).im • (I • bas n k))) = w := by
   rw [Finset.sum_congr rfl fun k _ => (smul_decomp (w k) (bas n k)).symm]
   exact (vec_expand' w).symm
 
+/- English proof (translation)
+Establish `h : ∀ k, (w k).re • (I • bas n k) - (w k).im • bas n k = (I * w k) • bas n k`. Introduce `k`. Rewrite using `[smul_decomp (I * w k) (bas n k)]`. Simplify using `only [Complex.mul_re, Complex.mul_im, Complex.I_re, Complex.I_im, zero_mul, one_mul, zero_sub, zero_add, neg_smul]`. Normalize the expressions using the abelian group laws.
+
+Rewrite using `[Finset.sum_congr rfl fun k _ => h k]`. Repeatedly rewrite using `[mul_smul]`. Rewrite using `[← Finset.smul_sum, ← vec_expand']`.
+-/
 theorem sum_I_eq (w : V n) :
     (∑ k, ((w k).re • (I • bas n k) - (w k).im • bas n k)) = I • w := by
   have h : ∀ k, (w k).re • (I • bas n k) - (w k).im • bas n k = (I * w k) • bas n k := by
@@ -46,6 +60,9 @@ def qc (B : V n →L[ℝ] V n →L[ℝ] ℝ) (j k : Fin n) : ℂ :=
   ((B (bas n j) (bas n k) : ℂ) - (B (I • bas n j) (I • bas n k) : ℂ) -
     I * ((B (bas n j) (I • bas n k) : ℂ) + (B (I • bas n j) (bas n k) : ℂ))) / 8
 
+/- English proof (translation)
+Simplify using `only [map_sum, map_add, map_smul, smul_eq_mul, Complex.re_sum, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Simplify using `only [lc, Complex.mul_re, Complex.mul_im, Complex.add_re, Complex.add_im, Complex.ofReal_re, Complex.ofReal_im, Complex.I_re, Complex.I_im, Complex.div_ofNat_re, Complex.div_ofNat_im, Complex.sub_re, Complex.sub_im]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem re_holomorphicLinearTaylorCoeff_sum_eq (F : V n →L[ℝ] ℝ) (a c : Fin n → ℝ) :
     2 * (∑ j, ((a j : ℂ) + (c j : ℂ) * I) * lc F j).re =
       F (∑ k, (a k • bas n k + c k • (I • bas n k))) := by
@@ -56,6 +73,11 @@ theorem re_holomorphicLinearTaylorCoeff_sum_eq (F : V n →L[ℝ] ℝ) (a c : Fi
     Complex.div_ofNat_im, Complex.sub_re, Complex.sub_im]
   ring
 
+/- English proof (translation)
+Establish `e : ∀ x y : Fin n → V n, B (∑ j, x j) (∑ k, y k) = ∑ j, ∑ k, B (x j) (y k)`. Introduce `x y`. Rewrite using `[map_sum B, ContinuousLinearMap.sum_apply]`. Repeatedly rewrite using `[map_sum]`. Rewrite using `[e, e, Complex.re_sum, Finset.mul_sum, ← Finset.sum_sub_distrib]`.
+
+Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[Complex.re_sum, Finset.mul_sum, ← Finset.sum_sub_distrib]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Simplify using `only [map_add, map_sub, map_smul, ContinuousLinearMap.add_apply, ContinuousLinearMap.sub_apply, ContinuousLinearMap.smul_apply, smul_eq_mul, qc, Complex.mul_re, Complex.mul_im, Complex.add_re, Complex.add_im, Complex.ofReal_re, Complex.ofReal_im, Complex.I_re, Complex.I_im, Compl …`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem re_holomorphicQuadraticTaylorCoeff_sum_eq (B : V n →L[ℝ] V n →L[ℝ] ℝ) (a c : Fin n → ℝ) :
     8 * (∑ j, ∑ k, ((a j : ℂ) + (c j : ℂ) * I) * ((a k : ℂ) + (c k : ℂ) * I) * qc B j k).re =
       B (∑ k, (a k • bas n k + c k • (I • bas n k))) (∑ k, (a k • bas n k + c k • (I • bas n k))) -
@@ -85,6 +107,35 @@ open Set
 
 variable {n : ℕ}
 
+/- English proof (translation)
+Take `⟨δ₀, hδ₀, hsub⟩` from `hK.exists_cthickening_subset_open hU hKU`. Establish `hK' : IsCompact (cthickening δ₀ K)` using `hK.cthickening`. Establish `h1 : ContDiffOn ℝ 1 (fderiv ℝ φ) U` using `hφ.fderiv_of_isOpen hU (by norm_num)`. Establish `h2 : ContinuousOn (fderiv ℝ (fderiv ℝ φ)) U` using `(h1.fderiv_of_isOpen hU (m := 0) (by norm_num)).continuousOn`. Take `⟨δ₁, hδ₁, hunif⟩` from `Metric.uniformContinuousOn_iff.1 (hK'.uniformContinuousOn_of_continuous (h2.mono hsub)) η hη`.
+
+Use `⟨min δ₀ (δ₁ / 2), lt_min hδ₀ (half_pos hδ₁), fun z hz => ?_⟩` and prove the remaining obligations. Establish `hball : closedBall z (min δ₀ (δ₁ / 2)) ⊆ U` using `(closedBall_subset_closedBall (min_le_left _ _)).trans ((closedBall_subset_cthickening hz δ₀).trans hsub)`. Use `⟨hball, fun w hw => ?_⟩` and prove the remaining obligations. Rewrite `hw` using `[mem_closedBall, dist_zero_right]`. Use `set f1 := fderiv ℝ φ`.
+
+Use `set f2 := fderiv ℝ f1`. Establish `hpt : ∀ t ∈ Icc (0:ℝ) 1, z + t • w ∈ closedBall z (min δ₀ (δ₁ / 2))`. Introduce `t ht`. Rewrite using `[mem_closedBall, dist_self_add_left, norm_smul, Real.norm_of_nonneg ht.1]`. Conclude with `(mul_le_of_le_one_left (norm_nonneg _) ht.2).trans hw`.
+
+Establish `hnhds : ∀ t ∈ Icc (0:ℝ) 1, U ∈ 𝓝 (z + t • w)` using `fun t ht => hU.mem_nhds (hball (hpt t ht))`. Establish `hpath : ∀ t : ℝ, HasDerivAt (fun s : ℝ => z + s • w) w t`. Introduce `t`. Simplify using `using ((hasDerivAt_id t).smul_const w).const_add z`. Establish `hg : ∀ t ∈ Icc (0:ℝ) 1, HasDerivAt (fun s : ℝ => φ (z + s • w)) (f1 (z + t • w) w) t`.
+
+Introduce `t ht`. Establish `hd : DifferentiableAt ℝ φ (z + t • w)` using `(hφ.contDiffAt (hnhds t ht)).differentiableAt (by norm_num)`. Conclude with `hd.hasFDerivAt.comp_hasDerivAt t (hpath t)`. Establish `hg1 : ∀ t ∈ Icc (0:ℝ) 1, HasDerivAt (fun s : ℝ => f1 (z + s • w) w) (f2 (z + t • w) w w) t`. Introduce `t ht`.
+
+Establish `hd : DifferentiableAt ℝ f1 (z + t • w)` using `(h1.contDiffAt (hnhds t ht)).differentiableAt (by norm_num)`. Establish `hc : HasDerivAt (fun s : ℝ => f1 (z + s • w)) (f2 (z + t • w) w) t` using `hd.hasFDerivAt.comp_hasDerivAt t (hpath t)`. Establish `hw0 : HasDerivAt (fun _ : ℝ => w) (0 : V n) t` using `hasDerivAt_const t w`. Use `hc.clm_apply hw0` as an intermediate fact. Simplify using `using this`.
+
+Establish `hclose : ∀ t ∈ Icc (0:ℝ) 1, ‖f2 (z + t • w) - f2 z‖ ≤ η`. Introduce `t ht`. Establish `hz' : z ∈ cthickening δ₀ K` using `self_subset_cthickening K hz`. Establish `hy : z + t • w ∈ cthickening δ₀ K` using `closedBall_subset_cthickening hz δ₀ (closedBall_subset_closedBall (min_le_left _ _) (hpt t ht))`. Establish `hd : dist (z + t • w) z < δ₁`.
+
+Use `hpt t ht` as an intermediate fact. Rewrite `this` using `[mem_closedBall]`. Combine the linear relations using `[min_le_right δ₀ (δ₁ / 2)]`. Use `hunif _ hy _ hz' hd` as an intermediate fact. Rewrite `this` using `[dist_eq_norm]`.
+
+Conclude with `this.le`. Establish `hud : ∀ t ∈ Icc (0:ℝ) 1, HasDerivWithinAt (fun s : ℝ => f1 (z + s • w) w - f1 z w - s * f2 z w w) (f2 (z + t • w) w w - f2 z w w) (Icc 0 1) t`. Introduce `t ht`. Use `((hg1 t ht).sub_const (f1 z w)).sub ((hasDerivAt_id t).mul_const (f2 z w w))` as an intermediate fact. Conclude with `(this.congr_deriv (by simp)).hasDerivWithinAt`.
+
+Establish `hbd : ∀ t ∈ Ico (0:ℝ) 1, ‖f2 (z + t • w) w w - f2 z w w‖ ≤ η * ‖w‖ ^ 2`. Introduce `t ht`. Establish `hT` using `hclose t (Ico_subset_Icc_self ht)`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [ContinuousLinearMap.sub_apply]`.
+
+Use `_ ≤ ‖f2 (z + t • w) - f2 z‖ * ‖w‖ * ‖w‖ := ContinuousLinearMap.le_opNorm₂ _ _ _`. Use `_ ≤ η * ‖w‖ * ‖w‖ := by gcongr`. Use `_ = η * ‖w‖ ^ 2 := by ring`. Establish `hu : ∀ t ∈ Icc (0:ℝ) 1, ‖f1 (z + t • w) w - f1 z w - t * f2 z w w‖ ≤ η * ‖w‖ ^ 2`. Introduce `t ht`.
+
+Use `norm_image_sub_le_of_norm_deriv_le_segment' hud hbd t ht` as an intermediate fact. Simplify using `only [zero_smul, add_zero, sub_self, zero_mul, sub_zero] at this`. Conclude with `this.trans (mul_le_of_le_one_right (mul_nonneg hη.le (sq_nonneg _)) ht.2)`. Establish `hGd : ∀ t ∈ Icc (0:ℝ) 1, HasDerivWithinAt (fun s : ℝ => φ (z + s • w) - φ z - s * f1 z w - s ^ 2 / 2 * f2 z w w) (f1 (z + t • w) w - f1 z w - t * f2 z w w) (Icc 0 1) t`. Introduce `t ht`.
+
+Use `(((hg t ht).sub_const (φ z)).sub ((hasDerivAt_id t).mul_const (f1 z w))).sub (((hasDerivAt_pow 2 t).div_const 2).mul_const (f2 z w w))` as an intermediate fact. Conclude with `(this.congr_deriv (by norm_num)).hasDerivWithinAt`. Establish `hG` using `norm_image_sub_le_of_norm_deriv_le_segment' hGd (fun t ht => hu t (Ico_subset_Icc_self ht)) 1 ⟨zero_le_one, le_rfl⟩`. Simplify using `only [one_smul, zero_smul, add_zero, one_mul, zero_mul, one_pow, sub_self, sub_zero, ne_eq, OfNat.ofNat_ne_zero, not_false_eq_true, zero_pow, zero_div, mul_one] at hG`. Establish `hab` using `(Real.le_norm_self _).trans hG`.
+
+Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem taylor_two_unif (U K : Set (V n)) (φ : V n → ℝ) (η : ℝ) (hU : IsOpen U)
     (hK : IsCompact K) (hKU : K ⊆ U) (hφ : ContDiffOn ℝ 2 φ U) (hη : 0 < η) :
     ∃ δ : ℝ, 0 < δ ∧ ∀ z ∈ K, closedBall z δ ⊆ U ∧ ∀ w ∈ closedBall (0 : V n) δ,
@@ -180,6 +231,13 @@ namespace GlobalTheory.PluriTaylor
 
 open Complex
 
+/- English proof (translation)
+Introduce `n U K φ η hU hK hKU hφ hη`. Take `⟨δ, hδ, hT⟩` from `taylor_two_unif U K φ η hU hK hKU hφ hη`. Use `⟨δ, hδ, fun z hz => ⟨(hT z hz).1, ?_⟩⟩` and prove the remaining obligations. Establish `hp : ∀ j : Fin n, Differentiable ℂ (fun w : V n => w j)` using `fun j => (EuclideanSpace.proj (𝕜 := ℂ) j).differentiable`. Use `⟨fun w => ∑ j, w j * lc (fderiv ℝ φ z) j + ∑ j, ∑ k, w j * w k * qc (fderiv ℝ (fderiv ℝ φ) z) j k, ?_, ?_, fun w hw => ?_⟩` and prove the remaining obligations.
+
+Use `fun_prop`. Simplify using the standard rewrite rules. Establish `hcd : ContDiffAt ℝ 2 φ z` using `hφ.contDiffAt (hU.mem_nhds (hKU hz))`. Establish `h1` using `re_holomorphicLinearTaylorCoeff_sum_eq (fderiv ℝ φ z) (fun j => (w j).re) (fun j => (w j).im)`. Establish `h2` using `re_holomorphicQuadraticTaylorCoeff_sum_eq (fderiv ℝ (fderiv ℝ φ) z) (fun j => (w j).re) (fun j => (w j).im)`.
+
+Establish `h3` using `ReciprocityTheory.L2DbarEstimates.Y.LocalMaximumSecondDerivative.leviV_re_eq hcd (fun j => w j)`. Simplify using `only [Complex.re_add_im, sum_re_im_eq, sum_I_eq] at h1 h2 h3`. Establish `h4` using `(hT z hz).2 w hw`. Simplify using `only [Complex.add_re]`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem taylor_levi_unif : ∀ (n : ℕ) (U K : Set (V n)) (φ : V n → ℝ) (η : ℝ), IsOpen U →
     IsCompact K → K ⊆ U → ContDiffOn ℝ 2 φ U → 0 < η → ∃ δ : ℝ, 0 < δ ∧ ∀ z ∈ K,
       closedBall z δ ⊆ U ∧ ∃ h : V n → ℂ, Differentiable ℂ h ∧ h 0 = 0 ∧

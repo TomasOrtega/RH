@@ -18,6 +18,13 @@ noncomputable section
 
 variable {K : FiniteSubfield} {S : Set (HeightOneSpectrum (𝓞 K.1))}
 
+/- English proof (translation)
+Establish `e : ((A.ρ.ker : Subgroup G) : Set G) = ⋂ a : A, (stabilizer A.ρ a : Set G)`. Use extensionality with `g`. Simplify using `only [SetLike.mem_coe, MonoidHom.mem_ker, Set.mem_iInter]`. Prove the components needed by the constructor for the conclusion. Introduce `h a`.
+
+Express the relevant statement in the definitionally equal form `A.ρ g a = a`. Rewrite using `[h, Module.End.one_apply]`. Introduce `h`. Conclude with `LinearMap.ext fun a => h a`. Rewrite using `[e]`.
+
+Conclude with `isOpen_iInter_of_finite fun a => isOpen_stabilizer A a`.
+-/
 theorem isOpen_ker_ρ {k G : Type*} [CommRing k] [Group G] [TopologicalSpace G] (A : Rep k G) [IsDiscreteRep A]
     [Finite A] : IsOpen ((A.ρ.ker : Subgroup G) : Set G) := by
   have e : ((A.ρ.ker : Subgroup G) : Set G) = ⋂ a : A, (stabilizer A.ρ a : Set G) := by
@@ -32,6 +39,11 @@ theorem isOpen_ker_ρ {k G : Type*} [CommRing k] [Group G] [TopologicalSpace G] 
   rw [e]
   exact isOpen_iInter_of_finite fun a => isOpen_stabilizer A a
 
+/- English proof (translation)
+Establish `hI : Ideal.span {((N : ℕ) : 𝓞 K.1)} ≠ 0`. Rewrite using `[Ne, Ideal.zero_eq_bot, Ideal.span_singleton_eq_bot]`. Conclude with `hN` after adjusting the coercions. Use `(Ideal.finite_factors hI).subset fun v hv => ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `v.asIdeal ∣ Ideal.span {((N : ℕ) : 𝓞 K.1)}`.
+
+Rewrite using `[Ideal.dvd_iff_le, Ideal.span_singleton_le_iff_mem]`. Conclude with `hv`.
+-/
 theorem finite_setOf_natCast_mem {N : ℕ} (hN : N ≠ 0) :
     {v : HeightOneSpectrum (𝓞 K.1) | ((N : ℕ) : 𝓞 K.1) ∈ v.asIdeal}.Finite := by
   have hI : Ideal.span {((N : ℕ) : 𝓞 K.1)} ≠ 0 := by
@@ -42,6 +54,9 @@ theorem finite_setOf_natCast_mem {N : ℕ} (hN : N ≠ 0) :
   rw [Ideal.dvd_iff_le, Ideal.span_singleton_le_iff_mem]
   exact hv
 
+/- English proof (translation)
+Introduce `g hg` and use `hM g (by rw [gsResCont_apply] at hg ⊢ rw [← gsRes_gsRes h' hTT', hg, map_one])`.
+-/
 theorem isLevelModule_mono {T T' : Set (HeightOneSpectrum (𝓞 K.1))} {h : T ⊆ S}
     {M : Rep.{0} (ULift.{0} ℤ) (galUnramifiedOutside K.1 ℚ̄ S)}
     (hM : ∀ g, gsResCont (Ω := ℚ̄) h g = 1 → M.ρ g = 1) (hTT' : T ⊆ T') (h' : T' ⊆ S) :
@@ -49,6 +64,11 @@ theorem isLevelModule_mono {T T' : Set (HeightOneSpectrum (𝓞 K.1))} {h : T �
   rw [gsResCont_apply] at hg ⊢
   rw [← gsRes_gsRes h' hTT', hg, map_one])
 
+/- English proof (translation)
+Take `⟨T, hT, hNT, hTS, hker⟩` from `exists_finite_ker_gsRes_le (M.ρ.ker : Subgroup _) (isOpen_ker_ρ M) (finite_setOf_natCast_mem hN) fun v hv => hS v hv`. Use `⟨hT.toFinset, by rw [Set.Finite.coe_toFinset]; exact hTS, fun v hv => hT.mem_toFinset.2 (hNT hv), fun g hg => ?_⟩` and prove the remaining obligations. Rewrite `hg` using `[gsResCont_apply]`. Establish `hg' : gsRes (Ω` using `ℚ̄) hTS g = 1 := by`. Rewrite using `[← gsRes_gsRes (T := (hT.toFinset : Set _)) (by rw [Set.Finite.coe_toFinset]; exact hTS) (by rw [Set.Finite.coe_toFinset]), hg, map_one]`.
+
+Conclude with `MonoidHom.mem_ker.1 (hker (MonoidHom.mem_ker.2 hg'))`.
+-/
 theorem exists_finset_isLevelModule (M : Rep.{0} (ULift.{0} ℤ) (galUnramifiedOutside K.1 ℚ̄ S)) [IsDiscreteRep M] [Finite M]
     {N : ℕ} (hN : N ≠ 0) (hS : ∀ v : HeightOneSpectrum (𝓞 K.1), ((N : ℕ) : 𝓞 K.1) ∈ v.asIdeal → v ∈ S) :
     ∃ T₀ : Finset (HeightOneSpectrum (𝓞 K.1)), ∃ h : (T₀ : Set (HeightOneSpectrum (𝓞 K.1))) ⊆ S,
@@ -66,6 +86,9 @@ theorem exists_finset_isLevelModule (M : Rep.{0} (ULift.{0} ℤ) (galUnramifiedO
 
 variable {T : Set (HeightOneSpectrum (𝓞 K.1))} (h : T ⊆ S)
 
+/- English proof (translation)
+Introduce `τ` and use `by obtain ⟨σ, hσ⟩ := gsRes_surjective (Ω := ℚ̄) h τ exact ⟨σ, by rw [gsResCont_apply]; exact hσ⟩`.
+-/
 theorem gsResCont_surjective : Function.Surjective (gsResCont (Ω := ℚ̄) h) := fun τ => by
   obtain ⟨σ, hσ⟩ := gsRes_surjective (Ω := ℚ̄) h τ
   exact ⟨σ, by rw [gsResCont_apply]; exact hσ⟩
@@ -79,6 +102,9 @@ abbrev levelModule : Rep.{0} (ULift.{0} ℤ) (galUnramifiedOutside K.1 ℚ̄ T) 
 abbrev levelModuleIso : Rep.res (gsResCont (Ω := ℚ̄) h).toMonoidHom (levelModule h M hM) ≅ M :=
   resDescendRepIso (gsResCont (Ω := ℚ̄) h) (gsResCont_surjective h) M hM
 
+/- English proof (translation)
+The claim follows from `(gsResCont (Ω := ℚ̄) h).continuous.isClosedMap.isQuotientMap (gsResCont (Ω := ℚ̄) h).continuous (gsResCont_surjective h)`.
+-/
 theorem isQuotientMap_gsResCont : Topology.IsQuotientMap (gsResCont (Ω := ℚ̄) h) :=
   (gsResCont (Ω := ℚ̄) h).continuous.isClosedMap.isQuotientMap (gsResCont (Ω := ℚ̄) h).continuous
     (gsResCont_surjective h)

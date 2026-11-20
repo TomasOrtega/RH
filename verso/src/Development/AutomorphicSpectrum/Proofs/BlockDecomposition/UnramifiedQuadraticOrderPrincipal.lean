@@ -4,6 +4,23 @@ namespace GlobalTheory.CompanionTheory.QuadraticUnit
 
 open Polynomial IsLocalRing
 
+/- English proof (translation)
+Establish `hmax : ∀ x : R, x ∈ maximalIdeal R ↔ ¬ IsUnit x` using `fun x => by`. Rewrite using `[mem_maximalIdeal, mem_nonunits_iff]`. Assume the negation of the conclusion as `hnu`. Establish `hm : a * a - D * (b * b) ∈ maximalIdeal R` using `(hmax _).2 hnu`. Establish `hb : IsUnit b`.
+
+Break down `hab with ha | hb` into its components or cases. Assume the negation of the conclusion as `hb`. Establish `hbm : b ∈ maximalIdeal R` using `(hmax b).2 hb`. Establish `haa : a * a ∈ maximalIdeal R`. Establish `he : a * a = (a * a - D * (b * b)) + D * (b * b)` using `by ring`.
+
+Rewrite using `[he]`. Conclude with `add_mem hm (Ideal.mul_mem_left _ _ (Ideal.mul_mem_left _ _ hbm))`. Conclude with `(hmax _).1 haa (ha.mul ha)`. Conclude with `hb`. Take `⟨w, hw⟩ : ∃ w : R, b * w = 1` from `⟨_, hb.mul_val_inv⟩`.
+
+Use `set c := a * w with hc`. Establish `hcD : c * c - D ∈ maximalIdeal R`. Establish `he : c * c - D = (a * a - D * (b * b)) * (w * w)`. Establish `hw2 : D = D * ((b * w) * (b * w))` using `by rw [hw]; ring`. Rewrite using `[hc]`.
+
+Use `nth_rewrite 1 [hw2]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[he]`. Conclude with `Ideal.mul_mem_right _ _ hm`. Establish `hcc : IsUnit (c * c)`.
+
+Assume the negation of the conclusion as `hcc`. Establish `hDm : D ∈ maximalIdeal R`. Establish `he : D = c * c - (c * c - D)` using `by ring`. Rewrite using `[he]`. Conclude with `sub_mem ((hmax _).2 hcc) hcD`.
+
+Conclude with `(hmax _).1 hDm hD`. Establish `hcu : IsUnit c` using `isUnit_of_mul_isUnit_left hcc`. Take `⟨e, he, -⟩` from `HenselianLocalRing.is_henselian (X ^ 2 - C D) (monic_X_pow_sub_C D two_ne_zero) c (by simpa [sq] using hcD) (by simpa [derivative_X_pow, one_add_one_eq_two] using h2.mul hcu)`. Apply `hns` to reduce the goal to its premises. Use `⟨e, ?_⟩` and prove the remaining obligations.
+
+Use `he.eq_zero` as an intermediate fact. Simplify using `only [eval_sub, eval_pow, eval_X, eval_C] at this`. Take the linear combination `-this`.
+-/
 theorem norm_isUnit {R : Type} [CommRing R] [HenselianLocalRing R] (D : R) (hD : IsUnit D)
     (h2 : IsUnit (2 : R)) (hns : ¬ ∃ e : R, D = e * e) (a b : R)
     (hab : IsUnit a ∨ IsUnit b) : IsUnit (a * a - D * (b * b)) := by
@@ -47,6 +64,11 @@ theorem norm_isUnit {R : Type} [CommRing R] [HenselianLocalRing R] (D : R) (hD :
   simp only [eval_sub, eval_pow, eval_X, eval_C] at this
   linear_combination -this
 
+/- English proof (translation)
+Establish `hn` using `(norm_isUnit D hD h2 hns a b hab).map ι`. Establish `he : (ι a + ι b * δ) * (ι a - ι b * δ) = ι (a * a - D * (b * b))`. Rewrite using `[map_sub, map_mul, map_mul, map_mul, ← hδ]`. Expand and normalize the polynomial expressions, which then agree. Rewrite `hn` using `[← he]`.
+
+Conclude with `isUnit_of_mul_isUnit_left hn`.
+-/
 theorem isUnit_add_mul {R O : Type} [CommRing R] [HenselianLocalRing R] [CommRing O]
     (ι : R →+* O) (δ : O) (D : R) (hδ : δ * δ = ι D) (hD : IsUnit D)
     (h2 : IsUnit (2 : R)) (hns : ¬ ∃ e : R, D = e * e) (a b : R)
@@ -58,6 +80,11 @@ theorem isUnit_add_mul {R O : Type} [CommRing R] [HenselianLocalRing R] [CommRin
   rw [← he] at hn
   exact isUnit_of_mul_isUnit_left hn
 
+/- English proof (translation)
+Take `⟨p, q, rfl⟩` from `hspan y`. Break down `ValuationRing.dvd_total p q with ⟨r, rfl⟩ | ⟨r, rfl⟩` into its components or cases. Use `⟨p, 1 + ι r * δ, ?_, by rw [map_mul]; ring⟩` and prove the remaining obligations. Simplify using `using isUnit_add_mul ι δ D hδ hD h2 hns 1 r (Or.inl isUnit_one)`. Use `⟨q, ι r + δ, ?_, by rw [map_mul]; ring⟩` and prove the remaining obligations.
+
+Simplify using `using isUnit_add_mul ι δ D hδ hD h2 hns r 1 (Or.inr isUnit_one)`.
+-/
 theorem exists_eq_mul_isUnit {R O : Type} [CommRing R] [IsDomain R] [IsDiscreteValuationRing R]
     [HenselianLocalRing R] [CommRing O] (ι : R →+* O) (δ : O) (D : R) (hδ : δ * δ = ι D)
     (hspan : ∀ y : O, ∃ p q : R, y = ι p + ι q * δ) (hD : IsUnit D)
@@ -70,6 +97,17 @@ theorem exists_eq_mul_isUnit {R O : Type} [CommRing R] [IsDomain R] [IsDiscreteV
   · refine ⟨q, ι r + δ, ?_, by rw [map_mul]; ring⟩
     simpa using isUnit_add_mul ι δ D hδ hD h2 hns r 1 (Or.inr isUnit_one)
 
+/- English proof (translation)
+Introduce `R O _ _ _ _ _ ι δ D hδ hspan _ hD h2 hns`. Use `⟨fun I => ⟨?_⟩⟩` and prove the remaining obligations. Take `⟨g₀, hg₀⟩` from `(IsPrincipalIdealRing.principal (Ideal.comap ι I)).principal`. Establish `hg₀I : ι g₀ ∈ I`. Establish `hmem : g₀ ∈ Ideal.comap ι I`.
+
+Rewrite using `[hg₀]`. Conclude with `Submodule.mem_span_singleton_self g₀`. Conclude with `Ideal.mem_comap.1 hmem`. Use `⟨ι g₀, le_antisymm ?_ ((Ideal.span_singleton_le_iff_mem I).2 hg₀I)⟩` and prove the remaining obligations. Introduce `y hy`.
+
+Take `⟨g, u, hu, rfl⟩` from `exists_eq_mul_isUnit ι δ D hδ hspan hD h2 hns y`. Establish `hg : g ∈ Ideal.comap ι I`. Rewrite using `[Ideal.mem_comap]`. Establish `he : ι g = ι g * u * ↑hu.unit⁻¹` using `by rw [mul_assoc, hu.mul_val_inv, mul_one]`. Rewrite using `[he]`.
+
+Conclude with `I.mul_mem_right _ hy`. Rewrite `hg` using `[hg₀]`. Take `⟨r, hr⟩` from `Submodule.mem_span_singleton.1 hg`. Use `Ideal.mem_span_singleton.2 ⟨ι r * u, ?_⟩` and prove the remaining obligations. Rewrite using `[← hr, smul_eq_mul, map_mul]`.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem isPrincipalIdealRing_of_nonsquare_unit :
     ∀ (R O : Type) [CommRing R] [IsDomain R] [IsDiscreteValuationRing R] [HenselianLocalRing R]
       [CommRing O] (ι : R →+* O) (δ : O) (D : R), δ * δ = ι D →

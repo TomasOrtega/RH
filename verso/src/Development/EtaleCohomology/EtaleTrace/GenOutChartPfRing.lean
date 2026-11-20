@@ -6,6 +6,13 @@ attribute [local instance] MvPolynomial.gradedAlgebra
 
 namespace LateralTheory.EtaleTrace.Cov
 
+/- English proof (translation)
+Rewrite using `[eval₂_eq, Finset.sum_div]`. Use `Subring.sum_mem _ fun d hd => ?_` and prove the remaining obligations. Establish `hdeg : ∑ j, d j = m`. Rewrite using `[← hg (mem_support_iff.mp hd), Finsupp.weight_apply, Finsupp.sum_fintype _ _ (by simp)]`. Simplify using the standard rewrite rules.
+
+Establish `: (κ (coeff d g) * ∏ j, w j ^ d j) / w i ^ m = κ (coeff d g) * ∏ j, (w j / w i) ^ d j`. Rewrite using `[mul_div_assoc]`. Use `congr 1`. Repeatedly rewrite using `[div_pow]`. Rewrite using `[Finset.prod_div_distrib, Finset.prod_pow_eq_pow_sum, hdeg]`.
+
+Establish `hsupp : ∏ j ∈ d.support, w j ^ d j = ∏ j, w j ^ d j` using `Finset.prod_subset (Finset.subset_univ _) (fun j _ hj => by simp [Finsupp.notMem_support_iff.mp hj])`. Rewrite using `[hsupp, this]`. Conclude with `Subring.mul_mem _ (hκ _) (Subring.prod_mem _ fun j _ => Subring.pow_mem _ (hw j) _)`.
+-/
 theorem homog_div_mem {k : Type} [Field k] {K : Type} [Field K] (κ : k →+* K) {N : ℕ} (w : Fin (N + 1) → K)
     (i : Fin (N + 1)) (_hi : w i ≠ 0) (R : Subring K) (hκ : ∀ c, κ c ∈ R) (hw : ∀ j, w j / w i ∈ R)
     (m : ℕ) (g : MvPolynomial (Fin (N + 1)) k) (hg : g.IsHomogeneous m) : eval₂ κ w g / w i ^ m ∈ R := by
@@ -31,6 +38,9 @@ def chartVal {k : Type} [Field k] {K : Type} [Field K] (κ : k →+* K) {N : ℕ
     (algebraMap (HomogeneousLocalization.Away (homogeneousSubmodule (Fin (N + 1)) k) (MvPolynomial.X i))
       (Localization.Away (MvPolynomial.X i : MvPolynomial (Fin (N + 1)) k)))
 
+/- English proof (translation)
+Simplify using `only [chartVal, RingHom.comp_apply, HomogeneousLocalization.algebraMap_apply, HomogeneousLocalization.Away.val_mk, Localization.mk_eq_mk']`. Rewrite using `[IsLocalization.Away.lift, IsLocalization.lift_mk'_spec]`. Simplify using `only [coe_eval₂Hom, eval₂_pow, eval₂_X]`. Rewrite using `[mul_div_cancel₀ _ (pow_ne_zero _ hi)]`.
+-/
 theorem chartVal_mk {k : Type} [Field k] {K : Type} [Field K] (κ : k →+* K) {N : ℕ} (w : Fin (N + 1) → K)
     (i : Fin (N + 1)) (hi : w i ≠ 0)
     (hx : (MvPolynomial.X i : MvPolynomial (Fin (N + 1)) k) ∈ homogeneousSubmodule (Fin (N + 1)) k 1)
@@ -47,6 +57,13 @@ def SectOfLoc : Prop := ∀ (X : Scheme.{0}) [IsIntegral X] (U : X.Opens) (R : S
   ∃ φ : R →+* Γ(X, U), ∀ (z : R) (y : X) (hy : y ∈ U),
     algebraMap (X.presheaf.stalk y) X.functionField (X.presheaf.germ U y hy (φ z)) = z
 
+/- English proof (translation)
+Introduce `k _ X _ p N w i hi U hU hx`. Set `ψ` to `chartVal (kHom p) w i hi`. Establish `hR : ∀ z ∈ ψ.range, ∀ y ∈ U, z ∈ loc X y`. Introduce and unpack `_ ⟨a, rfl⟩ y hy`. Take `⟨m, g, hg, rfl⟩` from `HomogeneousLocalization.Away.mk_surjective _ hx a`.
+
+Rewrite using `[chartVal_mk]`. Establish `hg' : g.IsHomogeneous m`. Simplify using `using (mem_homogeneousSubmodule _ _).1 hg`. Conclude with `homog_div_mem (kHom p) w i hi (loc X y) (fun c => kHom_mem_loc p y c) (fun j => hU y hy j) m g hg'`. Take `⟨φ, hφ⟩` from `h X U ψ.range hR`.
+
+Use `⟨φ.comp ψ.rangeRestrict, fun y hy m g hg => ?_⟩` and prove the remaining obligations. Rewrite using `[RingHom.comp_apply, hφ]`. Conclude with `chartVal_mk (kHom p) w i hi hx m g hg`.
+-/
 theorem ChartRing_of (h : SectOfLoc) : ChartRing := by
   intro k _ X _ p N w i hi U hU hx
   let ψ := chartVal (kHom p) w i hi
@@ -62,6 +79,9 @@ theorem ChartRing_of (h : SectOfLoc) : ChartRing := by
   rw [RingHom.comp_apply, hφ]
   exact chartVal_mk (kHom p) w i hi hx m g hg
 
+/- English proof (translation)
+The claim follows from `GenOutChart_of (ChartRing_of h1) h2`.
+-/
 theorem GenOutChart_of_sect (h1 : SectOfLoc) (h2 : ChartGen) : GenOutChart :=
   GenOutChart_of (ChartRing_of h1) h2
 

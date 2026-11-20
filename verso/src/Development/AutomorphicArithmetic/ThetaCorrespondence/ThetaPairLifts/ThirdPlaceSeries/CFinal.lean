@@ -16,6 +16,9 @@ set_option synthInstance.maxHeartbeats 200000
 section
 noncomputable section
 namespace UpperTheory.GalC
+/- English proof (translation)
+Introduce `hP prN hX serN dzs lf ltd lec hL cDep hAt`. Conclude with `_root_.UpperTheory.GalC.final_of_alt hP (fun _ _ h hT => _root_.UpperTheory.GalC.exists_good_cut_facts_tie4 prN.cheb lf ltd lec h hT) prN hX dzs hL cDep (_root_.UpperTheory.GalS.galois_preconditions_at_mem prN hX serN dzs lf ltd lec hL) hAt`.
+-/
 theorem final_alt_alt : _root_.GlobalTheory.NLink.Final.mainTheorem := by
   intro hP prN hX serN dzs lf ltd lec hL cDep hAt
   exact _root_.UpperTheory.GalC.final_of_alt hP (fun _ _ h hT => _root_.UpperTheory.GalC.exists_good_cut_facts_tie4 prN.cheb lf ltd lec h hT) prN hX dzs hL cDep

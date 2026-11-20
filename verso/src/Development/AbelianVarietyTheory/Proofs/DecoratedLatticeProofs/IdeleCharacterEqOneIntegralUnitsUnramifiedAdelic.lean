@@ -19,6 +19,17 @@ namespace GlobalTheory.LFun
 
 open GlobalTheory.Doubling GlobalTheory.AdelicU Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes
 
+/- English proof (translation)
+Establish `hc : ∀ u' : HeightOneSpectrum (𝓞 F), Algebra.TensorProduct.map (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.evalV F u') (AlgHom.id F E) (finTens F E (ideleAt F E v x)) = (unitFin F E u' (ideleAt F E v x) : Fv F u' ⊗[F] E)` using `fun u' => by`. Express the relevant statement in the definitionally equal form `((Algebra.TensorProduct.map _ _).comp (Algebra.TensorProduct.map _ _)) _ = _`. Rewrite using `[← Algebra.TensorProduct.map_comp]`. Both sides reduce to the same expression. Use `Units.ext (tens_ext ?_ ((finAdEquiv F E).injective (FiniteAdeleRing.ext _ fun u => ?_)))` and prove the remaining obligations.
+
+Rewrite using `[Units.coe_prod, map_prod]`. Simplify using `only [infTens_locIdele, Finset.prod_const_one]`. Conclude with `map_extUnit_zero (fstA F) _ _ (fun a => rfl) x`. Rewrite using `[Units.coe_prod, map_prod (finTens F E), map_prod (finAdEquiv F E)]`. Simplify using `only [finTens_locIdele]`.
+
+Express the relevant statement in the definitionally equal form `_ = evalV E u (∏ w ∈ (Formalism.L2.Host.finite_aboveF (L := E) F v).toFinset.attach, _)`. Rewrite using `[map_prod]`. Distinguish the cases in `hu : u.under (𝓞 F) = v`. Rewrite using `[finAdEquiv_apply hu, hc, unitFin_ideleAt_self]`. Establish `hm : u ∈ (Formalism.L2.Host.finite_aboveF (L` using `E) F v).toFinset := (Formalism.L2.Host.finite_aboveF (L := E) F v).mem_toFinset.2 hu`.
+
+Rewrite using `[Finset.prod_eq_single_of_mem ⟨u, hm⟩ (Finset.mem_attach _ _)]`. Conclude with `(finSingle_self u _).symm`. Introduce and unpack `b - hb`. Conclude with `finSingle_ne (fun e => hb (Subtype.ext e.symm)) _`. Rewrite using `[finAdEquiv_apply rfl, hc, unitFin_ideleAt_ne hu, Units.val_one, map_one]`.
+
+Use `(Finset.prod_eq_one fun b _ => ?_).symm` and prove the remaining obligations. Establish `hb : b.1.under (𝓞 F) = v` using `(Formalism.L2.Host.finite_aboveF (L := E) F v).mem_toFinset.1 b.2`. Conclude with `finSingle_ne (fun e : u = b.1 => hu (by rw [e]; exact hb)) _`.
+-/
 theorem ideleAt_eq_prod_locIdele {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
     (v : HeightOneSpectrum (𝓞 F)) (x : (Fv F v ⊗[F] E)ˣ) :
     ideleAt F E v x = ∏ w ∈ (Formalism.L2.Host.finite_aboveF (L := E) F v).toFinset.attach,
@@ -50,6 +61,13 @@ theorem ideleAt_eq_prod_locIdele {F E : Type} [Field F] [NumberField F] [Field E
       have hb : b.1.under (𝓞 F) = v := (Formalism.L2.Host.finite_aboveF (L := E) F v).mem_toFinset.1 b.2
       exact finSingle_ne (fun e : u = b.1 => hu (by rw [e]; exact hb)) _
 
+/- English proof (translation)
+Use `show μ (ideleAt F E v y) = 1`. Rewrite using `[ideleAt_eq_prod_locIdele, map_prod]`. Use `Finset.prod_eq_one fun w _ => ?_` and prove the remaining obligations. Establish `h : w.1.under (𝓞 F) = v` using `(Formalism.L2.Host.finite_aboveF (L := E) F v).mem_toFinset.1 w.2`. Establish `hu : Formalism.L2.Host.IsUnitAt w.1 (Units.map (toCompl h).toMonoidHom y)`.
+
+Use `(EulerTie.isUnitAt_iff w.1 _).2 ⟨?_, ?_⟩` and prove the remaining obligations. Conclude with `(HeightOneSpectrum.mem_adicCompletionIntegers _ _ _).1 (InertChart.toCompl_mem h hy)`. Rewrite using `[← map_inv]`. Conclude with `(HeightOneSpectrum.mem_adicCompletionIntegers _ _ _).1 (InertChart.toCompl_mem h hy')`. Use `hμ w.1 h _ hu` as an intermediate fact.
+
+Conclude with `Circle.ext (congrArg Units.val this)`.
+-/
 theorem charAt_eq_one_of_unrAt {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
     (μ : (AF F ⊗[F] E)ˣ →* Circle) (v : HeightOneSpectrum (𝓞 F)) (y : (Fv F v ⊗[F] E)ˣ)
     (hy : (y : Fv F v ⊗[F] E) ∈ intLoc F E v) (hy' : ((y⁻¹ : (Fv F v ⊗[F] E)ˣ) : Fv F v ⊗[F] E) ∈ intLoc F E v)
@@ -68,6 +86,9 @@ theorem charAt_eq_one_of_unrAt {F E : Type} [Field F] [NumberField F] [Field E] 
 
 end GlobalTheory.LFun
 
+/- English proof (translation)
+Introduce `D μ v y hy hy' hμ`. Conclude with `GlobalTheory.LFun.charAt_eq_one_of_unrAt μ v y hy hy' hμ`.
+-/
 theorem GlobalTheory.LFun.charAt_eq_one_of_unrAt_datum : ∀ (D : D7) (μ : (AE D)ˣ →* Circle) (v : FinPl D) (y : (Fv D.host.F v ⊗[D.host.F] D.host.E)ˣ), (y : Fv D.host.F v ⊗[D.host.F] D.host.E) ∈ intLoc D.host.F D.host.E v → ((y⁻¹ : (Fv D.host.F v ⊗[D.host.F] D.host.E)ˣ) : Fv D.host.F v ⊗[D.host.F] D.host.E) ∈ intLoc D.host.F D.host.E v → (∀ w : HeightOneSpectrum (𝓞 D.host.E), w.under (𝓞 D.host.F) = v → GlobalTheory.LFun.UnrAt μ w) → charAt μ v y = 1 := by
   intro D μ v y hy hy' hμ
   exact GlobalTheory.LFun.charAt_eq_one_of_unrAt μ v y hy hy' hμ

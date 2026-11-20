@@ -8,6 +8,11 @@ open scoped TensorProduct
 noncomputable section
 namespace GlobalTheory.ScalLeft
 
+/- English proof (translation)
+Set `w : S.toSubmodule` to `⟨v, hv⟩`. Establish `h1 : φ.toLinearEquiv (subQuot S T z (Submodule.Quotient.mk w)) = φ.toLinearEquiv (c • Submodule.Quotient.mk w)`. Rewrite using `[map_smul]`. Use `Representation.IntertwiningMap.isIntertwining _ _ φ.toIntertwiningMap z (Submodule.Quotient.mk w)` as an intermediate fact. Use `this.trans ?_` and prove the remaining obligations.
+
+Conclude with `hz _`. Establish `h2` using `φ.toLinearEquiv.injective h1`. Express the relevant statement in the definitionally equal form `Submodule.Quotient.mk (S.toRepresentation z w) = Submodule.Quotient.mk (c • w) at h2`. Rewrite `h2` using `[Submodule.Quotient.eq]`. Conclude with `h2`.
+-/
 theorem sub_mem_of_equiv {G V W : Type} [Group G] [AddCommGroup V] [Module ℂ V] [AddCommGroup W] [Module ℂ W]
     {ρ : Representation ℂ G V} (S T : Subrepresentation ρ) {σ : Representation ℂ G W}
     (φ : (subQuot S T).Equiv σ) (z : G) (c : ℂ) (hz : ∀ x, σ z x = c • x) (v : V)
@@ -24,6 +29,19 @@ theorem sub_mem_of_equiv {G V W : Type} [Group G] [AddCommGroup V] [Module ℂ V
   rw [Submodule.Quotient.eq] at h2
   exact h2
 
+/- English proof (translation)
+Set `q' : ℕ → Polynomial ℂ` to `fun s => if h : s < N then q ⟨s, h⟩ else 1`. Establish `key : ∀ t (ht : t ≤ N), ∀ v ∈ S ⟨t, Nat.lt_succ_of_le ht⟩, Polynomial.aeval T (∏ s ∈ Finset.range t, q' s) v = 0`. Introduce `t`. Proceed by induction on `t with`. Consider the case `zero`.
+
+Introduce `_ v hv`. Establish `: v = 0`. Establish `h0' : S ⟨0, Nat.zero_lt_succ N⟩ = ⊥` using `h0`. Rewrite `hv` using `[h0']`. Conclude with `(Submodule.mem_bot ℂ).1 hv`.
+
+Simplify using `[this]`. Consider the case `succ t ih`. Introduce `ht v hv`. Establish `htN : t < N` using `ht`. Rewrite using `[Finset.prod_range_succ, map_mul, Module.End.mul_apply]`.
+
+Establish `hq' : q' t = q ⟨t, htN⟩` using `dif_pos htN`. Rewrite using `[hq']`. Conclude with `ih htN.le _ (hq ⟨t, htN⟩ v hv)`. Use extensionality with `v`. Establish `h1 : ∏ t, q t = ∏ s ∈ Finset.range N, q' s`.
+
+Rewrite using `[Finset.prod_range (fun s => q' s)]`. Conclude with `Finset.prod_congr rfl fun i _ => by show q i = if h : (i : ℕ) < N then q ⟨i, h⟩ else 1`. Rewrite using `[dif_pos i.2]`. Rewrite using `[h1]`. Establish `hv : v ∈ S ⟨N, Nat.lt_succ_self N⟩`.
+
+Establish `: S ⟨N, Nat.lt_succ_self N⟩ = ⊤` using `hN`. Rewrite using `[this]`. Discharge the goal by the elementary cases of `trivial`. Simplify using `using key N le_rfl v hv`.
+-/
 theorem aeval_prod_eq_zero {V : Type} [AddCommGroup V] [Module ℂ V] (T : Module.End ℂ V) {N : ℕ}
     (S : Fin (N + 1) → Submodule ℂ V) (h0 : S 0 = ⊥) (hN : S (Fin.last N) = ⊤)
     (q : Fin N → Polynomial ℂ)
@@ -61,6 +79,9 @@ theorem aeval_prod_eq_zero {V : Type} [AddCommGroup V] [Module ℂ V] (T : Modul
     rw [this]; trivial
   simpa using key N le_rfl v hv
 
+/- English proof (translation)
+Use `aeval_prod_eq_zero (ρ z) (fun t => (S t).toSubmodule) (by rw [h0]; rfl) (by rw [hN]; rfl) _ fun t w hw => ?_` and prove the remaining obligations. Take `⟨W, _, _, σ, ⟨φ⟩, hσ⟩` from `hc t`. Use `sub_mem_of_equiv _ _ φ z (c t) hσ w hw` as an intermediate fact. Simplify using `using this`.
+-/
 theorem aeval_prod_eq_zero_of_steps {G V : Type} [Group G] [AddCommGroup V] [Module ℂ V]
     (ρ : Representation ℂ G V) (z : G) {N : ℕ} (S : Fin (N + 1) → Subrepresentation ρ)
     (h0 : S 0 = ⊥) (hN : S (Fin.last N) = ⊤) (c : Fin N → ℂ)
@@ -82,12 +103,18 @@ variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchim
 
 omit [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] in
 
+/- English proof (translation)
+Simplify using `[GeneralLinearGroup.scalar, Matrix.scalar_apply, Matrix.diagonal_apply]`.
+-/
 theorem scalar_entry {n : Type} [Fintype n] [DecidableEq n] (t : kˣ) (i j : n) :
     ((GeneralLinearGroup.scalar n t : GL n k) : Matrix n n k) i j = if i = j then (t : k) else 0 := by
   simp [GeneralLinearGroup.scalar, Matrix.scalar_apply, Matrix.diagonal_apply]
 
 omit [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] in
 
+/- English proof (translation)
+Use `ext`. Simplify using `[GeneralLinearGroup.scalar, Matrix.scalar_apply, Matrix.det_diagonal, Finset.prod_const]`.
+-/
 theorem det_scalar {n : Type} [Fintype n] [DecidableEq n] (t : kˣ) :
     GeneralLinearGroup.det (GeneralLinearGroup.scalar n t : GL n k) = t ^ Fintype.card n := by
   ext
@@ -95,6 +122,11 @@ theorem det_scalar {n : Type} [Fintype n] [DecidableEq n] (t : kˣ) :
 
 omit [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] [Fintype α] in
 
+/- English proof (translation)
+Rewrite using `[relParab, Subgroup.mem_pi]`. Introduce `i _`. Rewrite using `[mem_parab]`. Introduce `x y hxy`. Rewrite using `[scalar_entry, if_neg]`.
+
+Introduce and unpack `rfl`. Conclude with `lt_irrefl _ hxy`.
+-/
 theorem scalar_mem_relParab (f : ∀ i, (Σ j, c i j) ≃ m i) (t : α → kˣ) :
     (fun i => GeneralLinearGroup.scalar (m i) (t i) : Levi k m) ∈ relParab k f := by
   rw [relParab, Subgroup.mem_pi]
@@ -107,6 +139,9 @@ theorem scalar_mem_relParab (f : ∀ i, (Σ j, c i j) ≃ m i) (t : α → kˣ) 
 
 omit [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] [Fintype α] in
 
+/- English proof (translation)
+Use function extensionality and compare the values at `i j`. Use extensionality with `a b`. Express the relevant statement in the definitionally equal form `((GeneralLinearGroup.scalar (m i) (t i) : GL (m i) k) : Matrix (m i) (m i) k) (f i ⟨j, a⟩) (f i ⟨j, b⟩) = _`. Rewrite using `[scalar_entry, scalar_entry]`. Simplify using `[(f i).injective.eq_iff]`.
+-/
 theorem relProj_scalar (f : ∀ i, (Σ j, c i j) ≃ m i) (t : α → kˣ) :
     relProj k f ⟨_, scalar_mem_relParab f t⟩ =
       fun i j => GeneralLinearGroup.scalar (c i j) (t i) := by
@@ -119,6 +154,9 @@ theorem relProj_scalar (f : ∀ i, (Σ j, c i j) ≃ m i) (t : α → kˣ) :
 
 omit [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] [Fintype α] in
 
+/- English proof (translation)
+Use function extensionality and compare the values at `i`. Use extensionality with `a b`. Simplify using `[GeneralLinearGroup.scalar, Matrix.scalar_apply, mul_comm]`.
+-/
 theorem scalar_comm (t : α → kˣ) (y : Levi k m) :
     y * (fun i => GeneralLinearGroup.scalar (m i) (t i) : Levi k m) =
       (fun i => GeneralLinearGroup.scalar (m i) (t i) : Levi k m) * y := by
@@ -126,6 +164,11 @@ theorem scalar_comm (t : α → kˣ) (y : Levi k m) :
   ext a b
   simp [GeneralLinearGroup.scalar, Matrix.scalar_apply, mul_comm]
 
+/- English proof (translation)
+Use `Subtype.ext (Subtype.ext (funext fun y => ?_))` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `F.1.1 (y * _) = _`. Rewrite using `[scalar_comm]`. Use `(F.1.2 ⟨_, scalar_mem_relParab f t⟩ y).trans ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `(twist ρ (relDeltaHalf k c)) (relProj k f ⟨_, scalar_mem_relParab f t⟩) (F.1.1 y) = _`.
+
+Rewrite using `[relProj_scalar, twist_apply, hd, smul_smul]`. Both sides reduce to the same expression.
+-/
 theorem relInd_scalar (f : ∀ i, (Σ j, c i j) ≃ m i) (ρ : Representation ℂ (∀ i, Levi k (c i)) W)
     (t : α → kˣ) (d : ℂ)
     (hd : ∀ w, ρ (fun i j => GeneralLinearGroup.scalar (c i j) (t i)) w = d • w)
@@ -140,6 +183,9 @@ theorem relInd_scalar (f : ∀ i, (Σ j, c i j) ≃ m i) (ρ : Representation �
   rw [relProj_scalar, twist_apply, hd, smul_smul]
   rfl
 
+/- English proof (translation)
+Take `⟨v, rfl⟩` from `Submodule.Quotient.mk_surjective _ x`. Rewrite using `[relJac_mk, hρ, Submodule.Quotient.mk_smul, smul_smul]`.
+-/
 theorem relJac_of_scalar (f : ∀ i, (Σ j, c i j) ≃ m i) (ρ : Representation ℂ (Levi k m) W)
     (Φ : Levi k m → ℂ) (hρ : ∀ g w, ρ g w = Φ g • w) (y : ∀ i, Levi k (c i))
     (x : Jacquet ρ (relUnip k f)) :
@@ -152,6 +198,11 @@ end Gen
 section Spec
 variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
 
+/- English proof (translation)
+Proceed by induction on `w using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul a b`. Express the relevant statement in the definitionally equal form `extTensor (detRep (Fin u) χ₁) (detRep (Fin v) χ₂) (g false, g true) (a ⊗ₜ b) = _`. Rewrite using `[extTensor_tmul]`.
+
+Simplify using `only [detRep, ofChar_apply, detChar_apply]`. Rewrite using `[← smul_eq_mul, ← smul_eq_mul (a := ((χ₂ _ : ℂˣ) : ℂ)), ← TensorProduct.smul_tmul', TensorProduct.tmul_smul, smul_smul, mul_comm]`. Consider the case `add x y hx hy => rw [map_add, hx, hy, smul_add]`.
+-/
 theorem detPair_apply (χ₁ χ₂ : kˣ →* ℂˣ) (u v : ℕ) (g : Levi k (Two (Fin u) (Fin v))) (w : ℂ ⊗[ℂ] ℂ) :
     ((extTensor (detRep (Fin u) χ₁) (detRep (Fin v) χ₂)).comp (leviTwo k (Fin u) (Fin v)).symm.toMonoidHom) g w =
       ((χ₁ (GeneralLinearGroup.det (g false)) : ℂ) * (χ₂ (GeneralLinearGroup.det (g true)) : ℂ)) • w := by
@@ -166,15 +217,24 @@ theorem detPair_apply (χ₁ χ₂ : kˣ →* ℂˣ) (u v : ℕ) (g : Levi k (Tw
   | add x y hx hy => rw [map_add, hx, hy, smul_add]
 
 omit [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] in
+/- English proof (translation)
+Simplify using `[modExp, Finset.sum_filter]`.
+-/
 theorem modExp_bool_false (n : Bool → Type) [∀ a, Fintype (n a)] :
     modExp n false = Fintype.card (n true) := by
   simp [modExp, Finset.sum_filter]
 
 omit [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] in
+/- English proof (translation)
+Simplify using `[modExp, Finset.sum_filter]`.
+-/
 theorem modExp_bool_true (n : Bool → Type) [∀ a, Fintype (n a)] :
     modExp n true = -Fintype.card (n false) := by
   simp [modExp, Finset.sum_filter]
 
+/- English proof (translation)
+Use `ext`. Simplify using `[val_absPow]`.
+-/
 theorem absPow_zero' (x : kˣ) : absPow k 0 x = 1 := by
   ext; simp [val_absPow]
 
@@ -185,6 +245,9 @@ variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchim
 
 omit [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] in
 
+/- English proof (translation)
+Use function extensionality and compare the values at `j`. Consider the cases of `j`. Both sides reduce to the same expression. Conclude with `(map_one (GeneralLinearGroup.scalar m)).symm`.
+-/
 theorem leviTwo_scalar_one (ϖ : kˣ) (m : Type) [Fintype m] [DecidableEq m] :
     leviTwo k (Fin 1) m (GeneralLinearGroup.scalar (Fin 1) ϖ, 1) =
       fun j => GeneralLinearGroup.scalar (Two (Fin 1) m j) (cond j 1 ϖ) := by
@@ -193,6 +256,21 @@ theorem leviTwo_scalar_one (ϖ : kˣ) (m : Type) [Fintype m] [DecidableEq m] :
   · rfl
   · exact (map_one (GeneralLinearGroup.scalar m)).symm
 
+/- English proof (translation)
+Establish `key` using `relInd_scalar g _ (fun j => cond j 1 ϖ) _ (fun w => relJac_of_scalar f _ _ (detPair_apply χ₁ χ₂ u v) _ w) x`. Use `(congrArg (fun z => cellFunctor f g ((extTensor (detRep (Fin u) χ₁) (detRep (Fin v) χ₂)).comp (leviTwo k (Fin u) (Fin v)).symm.toMonoidHom) z x) (leviTwo_scalar_one ϖ m)).trans (key.trans ?_)` and prove the remaining obligations. Use `congr 1`. Establish `hb0 : b.1 true false = 0`. Use `b.2.2 false` as an intermediate fact.
+
+Rewrite `this` using `[Fintype.sum_bool]`. Use `this.trans (Fintype.card_fin 1)` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish `hu : b.1 false true + b.1 false false = u`. Use `b.2.1 false` as an intermediate fact.
+
+Rewrite `this` using `[Fintype.sum_bool]`. Conclude with `this.trans (Fintype.card_fin u)`. Establish `h1 : relDeltaHalf k (fun j i => Fin (b.1 i j)) (fun j i => GeneralLinearGroup.scalar (Fin (b.1 i j)) (cond j 1 ϖ)) = 1`. Rewrite using `[relDeltaHalf_apply]`. Simplify using `[Fintype.prod_bool, deltaHalf_apply, det_scalar, modExp_bool_false, modExp_bool_true, hb0, absPow_zero']`.
+
+Establish `h2 : relDeltaHalf k (fun i j => Fin (b.1 i j)) (swapBlocks k (fun i j => Fin (b.1 i j)) (fun j i => GeneralLinearGroup.scalar (Fin (b.1 i j)) (cond j 1 ϖ))) = absPow k ((b.1 false true : ℂ) / 2) ϖ`. Rewrite using `[relDeltaHalf_apply]`. Simplify using `[swapBlocks, Fintype.prod_bool, deltaHalf_apply, det_scalar, modExp_bool_false, modExp_bool_true, hb0, hb, absPow_zero']`. Establish `h3 : GeneralLinearGroup.det (relEmb k f (swapBlocks k (fun i j => Fin (b.1 i j)) (fun j i => GeneralLinearGroup.scalar (Fin (b.1 i j)) (cond j 1 ϖ))) false) = ϖ`. Simplify using `[relEmb_apply, swapBlocks, det_leviEmb, Fintype.prod_bool, det_scalar, hb]`.
+
+Establish `h4 : GeneralLinearGroup.det (relEmb k f (swapBlocks k (fun i j => Fin (b.1 i j)) (fun j i => GeneralLinearGroup.scalar (Fin (b.1 i j)) (cond j 1 ϖ))) true) = 1`. Simplify using `[relEmb_apply, swapBlocks, det_leviEmb, Fintype.prod_bool, det_scalar, hb0]`. Rewrite using `[h1, h2, h3, h4]`. Establish `hs : (1 - (u : ℂ)) / 2 = -((b.1 false true : ℂ) / 2)`. Establish `hu' : (u : ℂ) = (b.1 false true : ℂ) + 1`.
+
+Establish `hu'' : u = b.1 false true + 1` using `by omega`. Conclude with `hu''` after adjusting the coercions. Rewrite using `[hu']`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hs, absPow_neg]`.
+
+Simplify using `[mul_comm]`.
+-/
 theorem cell_scalar_fst (χ₁ χ₂ : kˣ →* ℂˣ) (u v : ℕ) (m : Type) [Fintype m] [DecidableEq m]
     (b : SizeMatrix (Two (Fin u) (Fin v)) (Two (Fin 1) m))
     (f : ∀ i, (Σ j, Fin (b.1 i j)) ≃ Two (Fin u) (Fin v) i)
@@ -235,6 +313,21 @@ theorem cell_scalar_fst (χ₁ χ₂ : kˣ →* ℂˣ) (u v : ℕ) (m : Type) [F
   rw [hs, absPow_neg]
   simp [mul_comm]
 
+/- English proof (translation)
+Establish `key` using `relInd_scalar g _ (fun j => cond j 1 ϖ) _ (fun w => relJac_of_scalar f _ _ (detPair_apply χ₁ χ₂ u v) _ w) x`. Use `(congrArg (fun z => cellFunctor f g ((extTensor (detRep (Fin u) χ₁) (detRep (Fin v) χ₂)).comp (leviTwo k (Fin u) (Fin v)).symm.toMonoidHom) z x) (leviTwo_scalar_one ϖ m)).trans (key.trans ?_)` and prove the remaining obligations. Use `congr 1`. Establish `hb0 : b.1 false false = 0`. Use `b.2.2 false` as an intermediate fact.
+
+Rewrite `this` using `[Fintype.sum_bool]`. Use `this.trans (Fintype.card_fin 1)` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish `hv : b.1 true true + b.1 true false = v`. Use `b.2.1 true` as an intermediate fact.
+
+Rewrite `this` using `[Fintype.sum_bool]`. Conclude with `this.trans (Fintype.card_fin v)`. Establish `h1 : relDeltaHalf k (fun j i => Fin (b.1 i j)) (fun j i => GeneralLinearGroup.scalar (Fin (b.1 i j)) (cond j 1 ϖ)) = 1`. Rewrite using `[relDeltaHalf_apply]`. Simplify using `[Fintype.prod_bool, deltaHalf_apply, det_scalar, modExp_bool_false, modExp_bool_true, hb0, absPow_zero']`.
+
+Establish `h2 : relDeltaHalf k (fun i j => Fin (b.1 i j)) (swapBlocks k (fun i j => Fin (b.1 i j)) (fun j i => GeneralLinearGroup.scalar (Fin (b.1 i j)) (cond j 1 ϖ))) = absPow k ((b.1 true true : ℂ) / 2) ϖ`. Rewrite using `[relDeltaHalf_apply]`. Simplify using `[swapBlocks, Fintype.prod_bool, deltaHalf_apply, det_scalar, modExp_bool_false, modExp_bool_true, hb0, hb, absPow_zero']`. Establish `h3 : GeneralLinearGroup.det (relEmb k f (swapBlocks k (fun i j => Fin (b.1 i j)) (fun j i => GeneralLinearGroup.scalar (Fin (b.1 i j)) (cond j 1 ϖ))) false) = 1`. Simplify using `[relEmb_apply, swapBlocks, det_leviEmb, Fintype.prod_bool, det_scalar, hb0]`.
+
+Establish `h4 : GeneralLinearGroup.det (relEmb k f (swapBlocks k (fun i j => Fin (b.1 i j)) (fun j i => GeneralLinearGroup.scalar (Fin (b.1 i j)) (cond j 1 ϖ))) true) = ϖ`. Simplify using `[relEmb_apply, swapBlocks, det_leviEmb, Fintype.prod_bool, det_scalar, hb]`. Rewrite using `[h1, h2, h3, h4]`. Establish `hs : (1 - (v : ℂ)) / 2 = -((b.1 true true : ℂ) / 2)`. Establish `hv' : (v : ℂ) = (b.1 true true : ℂ) + 1`.
+
+Establish `hv'' : v = b.1 true true + 1` using `by omega`. Conclude with `hv''` after adjusting the coercions. Rewrite using `[hv']`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hs, absPow_neg]`.
+
+Simplify using `[mul_comm]`.
+-/
 theorem cell_scalar_snd (χ₁ χ₂ : kˣ →* ℂˣ) (u v : ℕ) (m : Type) [Fintype m] [DecidableEq m]
     (b : SizeMatrix (Two (Fin u) (Fin v)) (Two (Fin 1) m))
     (f : ∀ i, (Σ j, Fin (b.1 i j)) ≃ Two (Fin u) (Fin v) i)
@@ -280,6 +373,33 @@ end Cells
 
 set_option maxHeartbeats 1000000 in
 
+/- English proof (translation)
+Introduce `k _ _ _ _ hG χ₁ χ₂ hχ₁ hχ₂ u v m _ _ e ϖ`. Set `c₁ : ℂ` to `(((χ₁ * absPow k ((1 - (u : ℂ)) / 2)) ϖ : ℂˣ) : ℂ)`. Set `c₂ : ℂ` to `(((χ₂ * absPow k ((1 - (v : ℂ)) / 2)) ϖ : ℂˣ) : ℂ)`. Establish `hcont : Continuous (leviTwo k (Fin u) (Fin v)).symm.toMonoidHom` using `by show Continuous fun g : Levi k (Two (Fin u) (Fin v)) => ((g false : GL (Fin u) k), (g true : GL (Fin v) k))`. Conclude with `(continuous_apply false).prodMk (continuous_apply true)`.
+
+Establish `hsm : IsSmooth ((extTensor (detRep (Fin u) χ₁) (detRep (Fin v) χ₂)).comp (leviTwo k (Fin u) (Fin v)).symm.toMonoidHom)` using `isSmooth_comp (isSmooth_extTensor ((isSmooth_ofChar_iff _).2 hχ₁.detChar) ((isSmooth_ofChar_iff _).2 hχ₂.detChar)) _ hcont`. Take `⟨N, b, hb⟩` from `hG k Bool Bool (Fin (u + v)) (Two (Fin u) (Fin v)) (Two (Fin 1) m) (two (stdSum rfl)) (two e)`. Use `Exists.elim (hb (ℂ ⊗[ℂ] ℂ) ((extTensor (detRep (Fin u) χ₁) (detRep (Fin v) χ₂)).comp (leviTwo k (Fin u) (Fin v)).symm.toMonoidHom) hsm) fun S hS => ?_` and prove the remaining obligations. Establish `h0` using `hS.2.1`. Establish `hN` using `hS.2.2.1`.
+
+Establish `hstep` using `hS.2.2.2`. Use `haveI := Fintype.ofFinite (SizeMatrix (Two (Fin u) (Fin v)) (Two (Fin 1) m))`. Set `cc : SizeMatrix (Two (Fin u) (Fin v)) (Two (Fin 1) m) → ℂ` to `fun b' => if b'.1 false false = 1 then c₁ else c₂`. Set `z : Levi k (Two (Fin 1) m)` to `leviTwo k (Fin 1) m (GeneralLinearGroup.scalar (Fin 1) ϖ, 1)`. Establish `col : ∀ b' : SizeMatrix (Two (Fin u) (Fin v)) (Two (Fin 1) m), b'.1 true false + b'.1 false false = 1`.
+
+Introduce `b'`. Use `b'.2.2 false` as an intermediate fact. Rewrite `this` using `[Fintype.sum_bool]`. Conclude with `this.trans (Fintype.card_fin 1)`. Establish `hcell : ∀ (b' : SizeMatrix (Two (Fin u) (Fin v)) (Two (Fin 1) m)) (f : ∀ i, (Σ j, Fin (b'.1 i j)) ≃ Two (Fin u) (Fin v) i) (g : ∀ j, (Σ i, Fin (b'.1 i j)) ≃ Two (Fin 1) m j) x, cellFunctor f g ((extTensor (detRep (Fin u) χ₁) (detRep (Fin v) χ₂)).comp (leviTwo k (Fin u) (Fin v)).s …`.
+
+Introduce `b' f g x`. Distinguish the cases in `h : b'.1 false false = 1`. Simplify using `only [cc, if_pos h]`. Conclude with `cell_scalar_fst χ₁ χ₂ u v m b' f g ϖ h x`. Simplify using `only [cc, if_neg h]`.
+
+Establish `h' : b'.1 true false = 1` using `by have := col b'; omega`. Conclude with `cell_scalar_snd χ₁ χ₂ u v m b' f g ϖ h' x`. Establish `hkill` using `aeval_prod_eq_zero_of_steps (jac (two e) (parInd (two (stdSum rfl)) ((extTensor (detRep (Fin u) χ₁) (detRep (Fin v) χ₂)).comp (leviTwo k (Fin u) (Fin v)).symm.toMonoidHom))) z S h0 hN (fun t => cc (b t)) fun t => ⟨_, _, _, _, hstep t (b t).nonempty_rows.some (b t).nonempty_cols.s …`. Establish `hinj : Function.Injective fun b' : SizeMatrix (Two (Fin u) (Fin v)) (Two (Fin 1) m) =>`. Use `decide (b'.1 false false = 1) := by`.
+
+Introduce `b₁ b₂ h`. Establish `r₁ : ∀ i, b₁.1 i true + b₁.1 i false = Fintype.card (Two (Fin u) (Fin v) i)` using `fun i => by`. Use `b₁.2.1 i` as an intermediate fact. Rewrite `this` using `[Fintype.sum_bool]`. Then use the resulting hypothesis. Establish `r₂ : ∀ i, b₂.1 i true + b₂.1 i false = Fintype.card (Two (Fin u) (Fin v) i)` using `fun i => by`.
+
+Use `b₂.2.1 i` as an intermediate fact. Rewrite `this` using `[Fintype.sum_bool]`. Then use the resulting hypothesis. Establish `c1` using `col b₁`. Establish `c2` using `col b₂`. Establish `h00 : b₁.1 false false = b₂.1 false false`.
+
+Simplify using `only [decide_eq_decide] at h`. Use linear arithmetic over natural numbers and integers. Establish `h10 : b₁.1 true false = b₂.1 true false` using `by omega`. Apply `Subtype.ext` to reduce the goal to its premises. Use function extensionality and compare the values at `i j`.
+
+Consider the cases of `j`. Consider the cases of `i`. Conclude with `h00`. Conclude with `h10`. Use `r₁ i` as an intermediate fact.
+
+Use `r₂ i` as an intermediate fact. Consider the cases of `i`. Use linear arithmetic over natural numbers and integers. Use linear arithmetic over natural numbers and integers. Establish `hdvd : ∏ t, (Polynomial.X - Polynomial.C (cc (b t))) ∣ (Polynomial.X - Polynomial.C c₁) * (Polynomial.X - Polynomial.C c₂)`.
+
+Set `Q : Bool → Polynomial ℂ` to `fun x => if x then Polynomial.X - Polynomial.C c₁ else Polynomial.X - Polynomial.C c₂`. Establish `e1 : ∏ t, (Polynomial.X - Polynomial.C (cc (b t))) = ∏ b' : SizeMatrix (Two (Fin u) (Fin v)) (Two (Fin 1) m), Q (decide (b'.1 false false = 1))`. Use `Fintype.prod_equiv b _ _ fun t => ?_` and prove the remaining obligations. Apply the tactic sequence `by_cases h : (b t).1 false false = 1 <;> simp [Q, cc, h]`. Rewrite using `[e1, ← Finset.prod_image (f := Q) (fun x _ y _ hxy => hinj hxy)]`.
+
+Use `(Finset.prod_dvd_prod_of_subset _ Finset.univ Q (Finset.subset_univ _)).trans ?_` and prove the remaining obligations. Rewrite using `[Fintype.prod_bool]`. Conclude with `dvd_rfl`. Conclude with `Polynomial.aeval_eq_zero_of_dvd_aeval_eq_zero hdvd hkill`.
+-/
 theorem aeval_jac₂_scalar_eq_zero : ∀ {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k], GlobalTheory.Published.GeometricLemmaFiltration → ∀ (χ₁ χ₂ : kˣ →* ℂˣ), IsSmoothChar χ₁ → IsSmoothChar χ₂ → ∀ (u v : ℕ) (m : Type) [Fintype m] [DecidableEq m] (e : Fin 1 ⊕ m ≃ Fin (u + v)) (ϖ : kˣ), Polynomial.aeval (jac₂ e (prod₂ (detRep (Fin u) χ₁) (detRep (Fin v) χ₂)) (GeneralLinearGroup.scalar (Fin 1) ϖ, 1)) ((Polynomial.X - Polynomial.C (((χ₁ * absPow k ((1 - (u : ℂ)) / 2)) ϖ : ℂˣ) : ℂ)) * (Polynomial.X - Polynomial.C (((χ₂ * absPow k ((1 - (v : ℂ)) / 2)) ϖ : ℂˣ) : ℂ))) = 0 := by
   intro k _ _ _ _ hG χ₁ χ₂ hχ₁ hχ₂ u v m _ _ e ϖ
   let c₁ : ℂ := (((χ₁ * absPow k ((1 - (u : ℂ)) / 2)) ϖ : ℂˣ) : ℂ)

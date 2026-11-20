@@ -16,6 +16,11 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 namespace GlobalTheory.FockRealVec
 
+/- English proof (translation)
+Use `⟨θ τ (infPart D c), ?_⟩` and prove the remaining obligations. Use extensionality with `i j`. Distinguish the cases in `h : i = j`. Substitute `h` using the available equality. Simplify using `[compAt]`.
+
+Simplify using `[compAt, h]`.
+-/
 theorem compAt_central {D : D7} {θ : InfFam D} (τ : D.what₂.Tau) {n : ℕ} (c : AE D) :
     ∃ s : ℂ, compAt θ τ (c • (1 : Matrix (Fin n) (Fin n) (AE D))) = s • (1 : Matrix (Fin n) (Fin n) ℂ) := by
   refine ⟨θ τ (infPart D c), ?_⟩
@@ -24,6 +29,21 @@ theorem compAt_central {D : D7} {θ : InfFam D} (τ : D.what₂.Tau) {n : ℕ} (
   · subst h; simp [compAt]
   · simp [compAt, h]
 
+/- English proof (translation)
+Introduce `D T L sc G W U N Z t p hp d hv`. Take `⟨f, hf⟩` from `hv`. Establish `hvac` using `Z.vac_is p hp`. Establish `hψ` using `hvac.1`. Establish `hV` using `hvac.2`.
+
+Establish `hθ : IsInfFam W.θ` using `hV.inf`. Establish `hf0` using `hV.theta`. Establish `hft : IsThetaFunO W.ψ (G.pS p) (G.pT p) f` using `GlobalTheory.GalLift.Vec.theta_of_thetaAt hψ hθ hf hf0`. Establish `he : infPart D d.e = 0` using `GlobalTheory.PlaceVec.idemSum_infPart d.e_is`. Establish `hfock : ∀ τ, IsFockVacAt (heisO W.ψ (G.pS p) (G.pT p)) W.θ τ (cplxO (G.cartS W.cart p τ) (G.onT W.cart p τ)) f` using `fun τ => GlobalTheory.DatumFock.isFockVacAt_of_isThetaAt hψ.1.1 hθ he (GlobalTheory.PlaceVec.infPart_cA he) hf hf0 hft (hV.fock τ)`.
+
+Establish `hr : Pair.InRange D.R.m p`. Use `(DefPair.nodes hp).2` as an intermediate fact. Unfold `Pair.InRange`. Use `revert this`. Apply the tactic sequence `cases p.big <;> simp [DefNode, Node.InRange] <;> omega`.
+
+Establish `hW` using `W.om_is p hr`. Establish `hvec : Z.vec d = W.om p (d.z, 1) f` using `FinDatum.vec_eq W hf`. Rewrite using `[hvec]`. Use `⟨hW.om_pres _ _ hft, fun τ z => ?_⟩` and prove the remaining obligations. Take `⟨c, hc⟩` from `d.z_cen`.
+
+Take `⟨s, hs⟩` from `compAt_central (θ := W.θ) τ (n := (G.pS p).rank) c`. Establish `hS : G.cartS W.cart p τ * compAt W.θ τ (Formalism.L2.Theta.mt (G.pS p) d.z) = compAt W.θ τ (Formalism.L2.Theta.mt (G.pS p) d.z) * G.cartS W.cart p τ`. Rewrite using `[hc, hs, Matrix.mul_smul, Matrix.smul_mul, Matrix.mul_one, Matrix.one_mul]`. Establish `hc1 : Formalism.L2.Theta.mt (G.pT p) (1 : GA D (G.pT p)) = (1 : AE D) • (1 : Matrix _ _ (AE D))`. Simplify using `[Formalism.L2.Theta.mt]`.
+
+Take `⟨s', hs'⟩` from `compAt_central (θ := W.θ) τ (n := (G.pT p).rank) (1 : AE D)`. Establish `hT : G.onT W.cart p τ * compAt W.θ τ (Formalism.L2.Theta.mt (G.pT p) (1 : GA D (G.pT p))) = compAt W.θ τ (Formalism.L2.Theta.mt (G.pT p) (1 : GA D (G.pT p))) * G.onT W.cart p τ`. Rewrite using `[hc1, hs', Matrix.mul_smul, Matrix.smul_mul, Matrix.mul_one, Matrix.one_mul]`. Choose the witnesses or unpack the hypotheses as in `⟨z₀, rfl⟩ : ∃ z₀ : Matrix (Fin (G.pT p).rank) (Fin (G.pS p).rank) ℂ, z = compAt W.θ τ (Formalism.L2.Theta.mt (G.pT p) (1 : GA D (G.pT p))) * z₀ * compAt W.θ τ (Formalism.L2.Theta.mt (G.pS p) d.z⁻¹) := by`. Use `⟨compAt W.θ τ (Formalism.L2.Theta.mt (G.pT p) (1 : GA D (G.pT p))⁻¹) * z * compAt W.θ τ (Formalism.L2.Theta.mt (G.pS p) d.z), ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[← Matrix.mul_assoc, ← Matrix.mul_assoc, GlobalTheory.OrientedHeis.compAt_mt_mul_inv, Matrix.one_mul, Matrix.mul_assoc, GlobalTheory.OrientedHeis.compAt_mt_mul_inv, Matrix.mul_one]`. Establish `h0` using `congrArg (W.om p (d.z, 1)) (hfock τ z₀)`. Rewrite `h0` using `[GlobalTheory.FockMove.om_annih hW hθ d.z 1 τ hS hT z₀ hft, map_zero]`. Conclude with `h0`.
+-/
 theorem vec_theta_fock : ∀ {D : D7} {T : Type} {L : LevCh D T} {sc : GlobalTheory.ChiGrid.Consts} {G : GlobalTheory.ChiGrid.GridData L sc} (W : G.Weil) {U : Set T} {N : GlobalTheory.FunObj.Std G U} (Z : GlobalTheory.FunObj.Normal W N) {t : T} {p : GlobalTheory.ChiGrid.Pair T}, GlobalTheory.FunObj.DefPair D.R.m p → ∀ d : GlobalTheory.FunObj.FinDatum G t p, Z.HasVec d → IsThetaFunO W.ψ (G.pS p) (G.pT p) (Z.vec d) ∧ ∀ τ, IsFockVacAt (heisO W.ψ (G.pS p) (G.pT p)) W.θ τ (cplxO (G.cartS W.cart p τ) (G.onT W.cart p τ)) (Z.vec d) := by
   intro D T L sc G W U N Z t p hp d hv
   obtain ⟨f, hf⟩ := hv

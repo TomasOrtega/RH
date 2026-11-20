@@ -7,6 +7,9 @@ import Development.AutomorphicArithmetic.Foundations.Convolution.IntegrableConvo
 open MeasureTheory MeasureTheory.Measure NumberField
 open GroundTheory.Automorphic GroundTheory.Automorphic.AutomorphicForm UpperTheory.ConvolutionTheory UpperTheory.ConvolutionTheory.L1 UpperTheory.ConvolutionTheory.C PositivityTheory.Rg.Tf.Geo
 
+/- English proof (translation)
+Establish `hemb : MeasurableEmbedding e.symm` using `e.symm.toHomeomorph.measurableEmbedding`. Unfold `UpperTheory.ConvolutionTheory.L1.cv`. Rewrite using `[hemb.integral_map]`. Use `integral_congr_ae (Filter.Eventually.of_forall fun y => ?_)` and prove the remaining obligations. Simplify using `[map_mul, map_inv]`.
+-/
 private theorem UpperTheory.ConvolutionTheory.L1.pairPosition_cv {G H : Type} [Group G] [Group H] [TopologicalSpace G] [TopologicalSpace H]
     [MeasurableSpace G] [BorelSpace G] [MeasurableSpace H] [BorelSpace H] (e : G ≃ₜ* H) (ν : Measure H)
     (a b : H → ℂ) (x : G) :
@@ -17,6 +20,11 @@ private theorem UpperTheory.ConvolutionTheory.L1.pairPosition_cv {G H : Type} [G
   refine integral_congr_ae (Filter.Eventually.of_forall fun y => ?_)
   simp [map_mul, map_inv]
 
+/- English proof (translation)
+Proceed by induction on `m with`. Consider the case `zero => rfl`. Consider the case `succ m ih`. Use function extensionality and compare the values at `g`. Establish `h` using `ih (Fin.tail φ)`.
+
+Simplify using `only [UpperTheory.ConvolutionTheory.L1.cvAll]`. Establish `ht : (Fin.tail fun i g => φ i (e g)) = fun i g => Fin.tail φ i (e g)` using `rfl`. Rewrite using `[ht, h]`. Conclude with `UpperTheory.ConvolutionTheory.L1.pairPosition_cv e ν _ _ g`.
+-/
 private theorem UpperTheory.ConvolutionTheory.L1.pairPosition_cvAll {G H : Type} [Group G] [Group H] [TopologicalSpace G] [TopologicalSpace H]
     [MeasurableSpace G] [BorelSpace G] [MeasurableSpace H] [BorelSpace H] (e : G ≃ₜ* H) (ν : Measure H) (m : ℕ)
     (φ : Fin (m + 1) → H → ℂ) :
@@ -31,6 +39,11 @@ private theorem UpperTheory.ConvolutionTheory.L1.pairPosition_cvAll {G H : Type}
     rw [ht, h]
     exact UpperTheory.ConvolutionTheory.L1.pairPosition_cv e ν _ _ g
 
+/- English proof (translation)
+Take `⟨K, hK, hK1⟩` from `exists_compact_mem_nhds (1 : X)`. Establish `h0 : μ K ≠ 0` using `(measure_pos_of_mem_nhds μ hK1).ne'`. Establish `ht : μ K ≠ ⊤` using `hK.measure_lt_top.ne`. Establish `h1 : μ K = ENNReal.ofReal c * μ K` using `by conv_lhs => rw [h]`. Simplify using the standard rewrite rules.
+
+Establish `h2 : ENNReal.ofReal c = 1`. Establish `h3 : ENNReal.ofReal c * μ K = 1 * μ K` using `by rw [one_mul]; exact h1.symm`. Conclude with `(ENNReal.mul_left_inj h0 ht).1 h3`. Conclude with `ENNReal.ofReal_eq_one.1 h2`.
+-/
 private theorem UpperTheory.ConvolutionTheory.L1.pairPosition_one {X : Type} [TopologicalSpace X] [Group X] [IsTopologicalGroup X]
     [LocallyCompactSpace X] [MeasurableSpace X] [BorelSpace X] (μ : Measure X) [μ.IsHaarMeasure] (c : ℝ)
     (h : μ = ENNReal.ofReal c • μ) : c = 1 := by
@@ -45,6 +58,23 @@ private theorem UpperTheory.ConvolutionTheory.L1.pairPosition_one {X : Type} [To
     exact (ENNReal.mul_left_inj h0 ht).1 h3
   exact ENNReal.ofReal_eq_one.1 h2
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ _ _ σ m hm D n νE _ νF _ b a aE aF hS mE bE mF bF w`. Take `⟨φ, hT, hC⟩` from `UpperTheory.ConvolutionTheory.L1.wordTens F E σ m D n νE νF b a aE aF hS w`. Take `⟨-, -, -, hglueA, -⟩` from `UpperTheory.ConvolutionTheory.L1.archBasic F E σ m D n`. Take `⟨-, -, -, hglue, -⟩` from `UpperTheory.ConvolutionTheory.L1.glueBasic _ _ _ _ m D n`. Use `haveI : SecondCountableTopology (GL (Fin n) (InfiniteAdeleRing F)) := (archEquiv F n).toHomeomorph.secondCountableTopology`.
+
+Use `haveI : IsHaarMeasure (νE.map (archEquiv E n).symm) := (archEquiv E n).symm.isHaarMeasure_map νE`. Use `haveI : IsHaarMeasure (νF.map (archEquiv F n).symm) := (archEquiv F n).symm.isHaarMeasure_map νF`. Take `⟨c, hc, hμ, hM, hTn⟩` from `UpperTheory.ConvolutionTheory.L1.matchInf F E σ m D n (νE.map (archEquiv E n).symm) (νF.map (archEquiv F n).symm) inferInstance inferInstance`. Establish `hmeas : νE.map (archEquiv E n).symm = Measure.map (D.glue n) (Measure.pi fun _ => νF.map (archEquiv F n).symm)`. Establish `hsymm : Continuous fun g : Fin (m + 1) → archGroup F n => fun i => (archEquiv F n).symm (g i)` using `continuous_pi fun i => (archEquiv F n).symm.continuous.comp (continuous_apply i)`.
+
+Establish `hEs : Measurable (archEquiv E n).symm` using `(archEquiv E n).symm.continuous.measurable`. Establish `hFs : Measurable (archEquiv F n).symm` using `(archEquiv F n).symm.continuous.measurable`. Rewrite using `[hS.meas, Measure.map_map hEs hglueA.measurable, ← Measure.pi_map_pi (fun _ => hFs.aemeasurable), Measure.map_map hglue.measurable hsymm.measurable]`. Use `congr 1`. Use function extensionality and compare the values at `g`.
+
+Simplify using `[UpperTheory.ConvolutionTheory.L1.glueA]`. Establish `hc1 : c = 1`. Use `UpperTheory.ConvolutionTheory.L1.pairPosition_one (νE.map (archEquiv E n).symm) c ?_` and prove the remaining obligations. Establish `h` using `hμ`. Rewrite `h` using `[← hmeas]`.
+
+Conclude with `h`. Establish `hφ : ∀ i, Continuous (GM.onInf (φ i)) ∧ HasCompactSupport (GM.onInf (φ i))` using `fun i => ⟨(φ i).continuous.comp (archEquiv F n).continuous, (φ i).hasCompactSupport.comp_homeomorph (archEquiv F n).toHomeomorph⟩`. Take `⟨h1c, h2c, h3c⟩` from `hTn (fun i => GM.onInf (φ i)) hφ`. Establish `h1 : GM.onInf (GM.word νE aE w) = D.tens n fun i => GM.onInf (φ i)`. Use function extensionality and compare the values at `g`.
+
+Use `(hT _).trans (Finset.prod_congr rfl fun i _ => ?_)` and prove the remaining obligations. Establish `hg : (archEquiv E n).symm (archEquiv E n g) = g` using `by simp`. Express the relevant statement in the definitionally equal form `(φ i) ((archEquiv F n) (D.comp n i ((archEquiv E n).symm (archEquiv E n g)))) = (φ i) ((archEquiv F n) (D.comp n i g))`. Rewrite using `[hg]`. Establish `h2 : GM.onInf (GM.word νF aF (w.map (GM.resIx F))) = D.transfer n (νF.map (archEquiv F n).symm) (D.tens n fun i => GM.onInf (φ i))`.
+
+Rewrite using `[h3c]`. Use `UpperTheory.ConvolutionTheory.L1.pairPosition_cvAll (archEquiv F n) νF m (fun i => φ i)` as an intermediate fact. Use `Eq.trans ?_ this.symm` and prove the remaining obligations. Use function extensionality and compare the values at `g`. Conclude with `hC _`.
+
+Rewrite using `[hm, h1, h2]`. Use `hM _ h1c h2c` as an intermediate fact. Rewrite `this` using `[hc1]`. Conclude with `this`.
+-/
 theorem UpperTheory.ConvolutionTheory.L1.pairPosition :
     UpperTheory.ConvolutionTheory.L1.PairPosition := by
   intro F E _ _ _ _ _ _ _ σ m hm D n νE _ νF _ b a aE aF hS mE bE mF bF w

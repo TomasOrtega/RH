@@ -18,16 +18,27 @@ def shL (G : HTGroup p) : G.C →ₗ[ℚ] G.C where
     show (G.star (q • x)).unop = q • (G.star x).unop
     rw [map_rat_smul]; rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem shL_apply (G : HTGroup p) (c : G.C) : shL G c = sh G c := rfl
 
 def phi (G : HTGroup p) (β Y : G.C) (β' : G.C) : G.C →ₗ[ℚ] G.C × G.C :=
   (LinearMap.mulRight ℚ Y - LinearMap.mulLeft ℚ Y).prod
     (LinearMap.mulLeft ℚ β ∘ₗ LinearMap.mulRight ℚ β' ∘ₗ shL G - LinearMap.id)
 
+/- English proof (translation)
+Simplify using `[phi, shL_apply, mul_assoc]`.
+-/
 theorem phi_apply (G : HTGroup p) (β Y β' c : G.C) :
     phi G β Y β' c = (c * Y - Y * c, β * sh G c * β' - c) := by
   simp [phi, shL_apply, mul_assoc]
 
+/- English proof (translation)
+Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => simp <;> rfl`. Consider the case `tmul k c`. Simplify using `only [LinearMap.lTensor_tmul, phi_apply, TensorProduct.prodRight_tmul, inC, starT_tmul, AlgHom.coe_toRingHom, RingHom.coe_coe, Algebra.TensorProduct.includeRight_apply, Algebra.TensorProduct.tmul_mul_tmul, one_mul, mul_one, TensorProduct.tmul_sub, sh]`. Consider the case `add x y hx hy`.
+
+Rewrite using `[map_add, map_add, hx, hy]`. Simplify using `only [map_add, MulOpposite.unop_add, mul_add, add_mul, Prod.mk_add_mk]`. Apply the tactic sequence `refine Prod.ext ?_ ?_ <;> dsimp only <;> abel`.
+-/
 theorem lTensor_phi (G : HTGroup p) (K : Type) [Field K] [Algebra ℚ K] (β Y β' : G.C)
     (x : K ⊗[ℚ] G.C) :
     TensorProduct.prodRight ℚ ℚ K G.C G.C ((phi G β Y β').lTensor K x) =

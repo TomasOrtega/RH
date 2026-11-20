@@ -16,15 +16,47 @@ open GlobalTheory.ChTor
 
 namespace GlobalTheory.ChTor
 
+/- English proof (translation)
+The claim follows from `(Units.mapEquiv (Scheme.ΓSpecIso (CommRingCat.of R)).commRingCatIsoToRingEquiv.symm.toMulEquiv).bijective`.
+-/
 theorem unitOn_bijective (R : Type) [CommRing R] : Function.Bijective (unitOn (R := R)) :=
   (Units.mapEquiv (Scheme.ΓSpecIso (CommRingCat.of R)).commRingCatIsoToRingEquiv.symm.toMulEquiv).bijective
 
+/- English proof (translation)
+The claim follows from `map_mul _ u v`.
+-/
 theorem unitOn_mul' {R : Type} [CommRing R] (u v : Rˣ) : unitOn (u * v) = unitOn u * unitOn v :=
   map_mul _ u v
 
+/- English proof (translation)
+The claim follows from `map_one _`.
+-/
 theorem unitOn_one' {R : Type} [CommRing R] : unitOn (1 : Rˣ) = 1 :=
   map_one _
 
+/- English proof (translation)
+Introduce `C _ _ _ A`. Establish `hW : Out.WeilSt` using `GlobalTheory.lawsFieldsSeparately.2.2.2.2.2.2.2.2.2.1`. Establish `hP : Out.CharPairSt` using `GlobalTheory.lawsFieldsSeparately.2.2.2.2.2.2.2.2.2.2.2.2.2.2.2.2.2.2.2.2.1`. Establish `hb` using `unitOn_bijective C`. Establish `hex : ∀ (k : ℕ) (z s : Pts A.A), ∃ c : Cˣ, z ^ k = 1 → s ^ k = 1 → ∀ w : Cˣ, Out.WeilIs A.A A.L (k : ℤ) z s (unitOn w) ↔ w = c`.
+
+Introduce `k z s`. Distinguish the cases in `h : z ^ k = 1 ∧ s ^ k = 1`. Take `⟨c, hc, hu⟩` from `(hW _ A k _).1 z s h.1 h.2`. Take `⟨c', rfl⟩` from `hb.2 c`. Conclude with `⟨c', fun _ _ w => ⟨fun hw => hb.1 (hu _ hw), fun hw => hw ▸ hc⟩⟩`.
+
+Conclude with `⟨1, fun h1 h2 => absurd ⟨h1, h2⟩ h⟩`. Use `choose e he using hex`. Establish `hself : ∀ (k : ℕ) (z s : Pts A.A), z ^ k = 1 → s ^ k = 1 → Out.WeilIs A.A A.L (k : ℤ) z s (unitOn (e k z s))` using `fun k z s hz hs => (he k z s hz hs _).2 rfl`. Establish `hmk : ∀ (k : ℕ) (z z' : Pts A.A), z ^ k = 1 → z' ^ k = 1 → (z * z') ^ k = 1` using `fun k z z' hz hz' => by`. Rewrite using `[mul_pow, hz, hz', _root_.one_mul]`.
+
+Establish `hl : ∀ (k : ℕ) (z z' s : Pts A.A), z ^ k = 1 → z' ^ k = 1 → s ^ k = 1 → e k (z * z') s = e k z s * e k z' s`. Introduce `k z z' s hz hz' hs`. Use `((he k _ s (hmk k z z' hz hz') hs _).1 ?_).symm` and prove the remaining obligations. Rewrite using `[unitOn_mul']`. Conclude with `(hW _ A k _).2.1 _ _ _ _ _ (hself k z s hz hs) (hself k z' s hz' hs)`.
+
+Establish `halt : ∀ (k : ℕ) (z : Pts A.A), z ^ k = 1 → e k z z = 1`. Introduce `k z hz`. Use `((he k z z hz hz _).1 ?_).symm` and prove the remaining obligations. Rewrite using `[unitOn_one']`. Conclude with `(hW _ A k _).2.2.1 z hz`.
+
+Establish `hskew : ∀ (k : ℕ) (z s : Pts A.A), z ^ k = 1 → s ^ k = 1 → e k z s = (e k s z)⁻¹`. Introduce `k z s hz hs`. Use `((he k z s hz hs _).1 ?_).symm` and prove the remaining obligations. Establish `h` using `GlobalTheory.CommPairing.weilIs_symm A.isLB (hself k s z hs hz)`. Rewrite `h` using `[show (unitOn (e k s z))⁻¹ = unitOn (e k s z)⁻¹ from (map_inv _ _).symm]`. Then use the resulting hypothesis.
+
+Establish `hr : ∀ (k : ℕ) (z z' s : Pts A.A), z ^ k = 1 → z' ^ k = 1 → s ^ k = 1 → e k s (z * z') = e k s z * e k s z'`. Introduce `k z z' s hz hz' hs`. Rewrite using `[hskew k s _ hs (hmk k z z' hz hz'), hl k z z' s hz hz' hs, hskew k s z hs hz, hskew k s z' hs hz', mul_inv]`. Use `⟨e, fun k hk => ⟨he k, fun z z' s hz hz' hs => ⟨hl k z z' s hz hz' hs, hr k z z' s hz hz' hs⟩, ?_, ?_⟩⟩` and prove the remaining obligations. Introduce `l z s hl1 hz hs`.
+
+Establish `hz' : z ^ (k * l) = 1` using `by rw [pow_mul, hz, one_pow]`. Establish `hs' : (s ^ l) ^ k = 1` using `by rw [← pow_mul, mul_comm, hs]`. Establish `hu : IsUnit ((k * l : ℕ) : Γ((Over.mk (𝟙 (Sp C)) : Over (Sp C)).left, ⊤))`. Establish `h0 : IsUnit ((k * l : ℕ) : C)`. Use `IsUnit.mk0 _ ?_` and prove the remaining obligations.
+
+Conclude with `(Nat.mul_pos hk hl1).ne'` after adjusting the coercions. Use `h0.map (Scheme.ΓSpecIso (CommRingCat.of C)).inv.hom` as an intermediate fact. Rewrite `this` using `[map_natCast]`. Then use the resulting hypothesis. Establish `h1` using `((hW _ A k _).2.2.2 l s z _ hu hs hz).2 (hself k _ z hs' hz)`. Establish `h2` using `(he (k * l) s z hs hz' _).1 (by exact_mod_cast h1)`.
+
+Rewrite using `[hskew _ z s hz' hs, hskew _ z _ hz hs', h2]`. Introduce `κ hκ`. Establish `hkC : (k : C) ≠ 0` using `by exact_mod_cast (by omega : k ≠ 0)`. Take `⟨b, ⟨hb1, hb2⟩, hbu⟩` from `hP C A k hkC (fun x => unitOn (κ x.1)) (fun x y => by`. Express the relevant statement in the definitionally equal form `unitOn (κ (x.1 * y.1)) = _`.
+
+Rewrite using `[hκ _ _ x.2 y.2, unitOn_mul'])`. Use `⟨b, ⟨hb1, fun z hz => ((he k z b hz hb1 _).1 (hb2 ⟨z, hz⟩)).symm⟩, fun s hs => hbu s ⟨hs.1, fun x => ?_⟩⟩` and prove the remaining obligations. Conclude with `(he k x.1 s x.2 hs.1 _).2 (hs.2 x.1 x.2).symm`.
+-/
 theorem exists_weil_function : ∀ (C : Type) [Field C] [IsAlgClosed C] [CharZero C] (A : Out.PolAV (Sp C)), ∃ e : ℕ → Pts A.A → Pts A.A → Cˣ, ∀ k : ℕ, 1 ≤ k → (∀ z s : Pts A.A, z ^ k = 1 → s ^ k = 1 → ∀ w : Cˣ, Out.WeilIs A.A A.L (k : ℤ) z s (unitOn w) ↔ w = e k z s) ∧ (∀ z z' s : Pts A.A, z ^ k = 1 → z' ^ k = 1 → s ^ k = 1 → e k (z * z') s = e k z s * e k z' s ∧ e k s (z * z') = e k s z * e k s z') ∧ (∀ (l : ℕ) (z s : Pts A.A), 1 ≤ l → z ^ k = 1 → s ^ (k * l) = 1 → e (k * l) z s = e k z (s ^ l)) ∧ ∀ κ : Pts A.A → Cˣ, (∀ z z', z ^ k = 1 → z' ^ k = 1 → κ (z * z') = κ z * κ z') → ∃! s : Pts A.A, s ^ k = 1 ∧ ∀ z, z ^ k = 1 → e k z s = κ z := by
   intro C _ _ _ A
   classical

@@ -10,6 +10,17 @@ namespace GlobalTheory.Cyc
 
 open Formalism.WeaklyAdmissibleFiltrations Formalism.BasicNotions Formalism.BasicNotions.Loc Formalism.MainNotions.N Formalism.MainNotions.LocalSituation GlobalTheory.Cyc
 
+/- English proof (translation)
+Use `set v : ι → V := fun j => f (b j) with hv`. Establish `hR : LinearIndependent R v` using `b.linearIndependent.map' f (LinearMap.ker_eq_bot.mpr hf)`. Establish `hF : LinearIndependent F v` using `(LinearIndependent.iff_fractionRing R F).mp hR`. Take `⟨g, hg⟩` from `LinearMap.exists_extend ((Module.Basis.span hF).coord i)`. Use `⟨g, fun x => ?_⟩` and prove the remaining obligations.
+
+Establish `hx : f x = ∑ j ∈ (b.repr x).support, algebraMap R F (b.repr x j) • v j` using `by conv_lhs => rw [← b.linearCombination_repr x]`. Rewrite using `[Finsupp.linearCombination_apply, Finsupp.sum, map_sum]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[map_smul, algebraMap_smul]`. Establish `hy : f x = ((∑ j ∈ (b.repr x).support, algebraMap R F (b.repr x j) • Module.Basis.span hF j : Submodule.span F (Set.range v)) : V)`.
+
+Rewrite using `[hx, Submodule.coe_sum]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[Submodule.coe_smul, Module.Basis.span_apply]`. Establish `h2` using `LinearMap.congr_fun hg (∑ j ∈ (b.repr x).support, algebraMap R F (b.repr x j) • Module.Basis.span hF j)`. Rewrite `h2` using `[LinearMap.comp_apply, Submodule.subtype_apply]`.
+
+Rewrite using `[hy, h2, map_sum]`. Simplify using `only [map_smul, Module.Basis.coord_apply, Module.Basis.repr_self, Finsupp.single_apply, smul_eq_mul, mul_ite, mul_one, mul_zero]`. Rewrite using `[Finset.sum_ite_eq']`. Use `split_ifs with h`. Both sides reduce to the same expression.
+
+Simplify using `only [Finsupp.mem_support_iff, not_not] at h`. Rewrite using `[h, map_zero]`.
+-/
 theorem exists_form_extending_coord {R F T V ι : Type} [CommRing R] [IsDomain R] [Field F]
     [Algebra R F] [IsFractionRing R F] [AddCommGroup T] [Module R T] [AddCommGroup V] [Module R V]
     [Module F V] [IsScalarTower R F V] (b : Module.Basis ι R T) (f : T →ₗ[R] V)
@@ -43,6 +54,11 @@ theorem exists_form_extending_coord {R F T V ι : Type} [CommRing R] [IsDomain R
   · simp only [Finsupp.mem_support_iff, not_not] at h
     rw [h, map_zero]
 
+/- English proof (translation)
+Set `e` to `(Module.finBasis L V).equivFun`. Establish `he : Continuous e.toLinearMap` using `IsModuleTopology.continuous_of_linearMap e.toLinearMap`. Set `ψ : (Fin (Module.finrank L V) → L) →ₗ[F] F` to `φ ∘ₗ (e.symm.toLinearMap.restrictScalars F)`. Establish `hψ : Continuous ψ` using `LinearMap.continuous_of_finiteDimensional ψ`. Establish `h : (φ : V → F) = ψ ∘ e.toLinearMap`.
+
+Use function extensionality and compare the values at `v`. Simplify using `[ψ]`. Rewrite using `[h]`. Conclude with `hψ.comp he`.
+-/
 theorem continuous_form_of_moduleTopology {F L V : Type} [NontriviallyNormedField F]
     [CompleteSpace F] [Field L] [Algebra F L] [FiniteDimensional F L] [TopologicalSpace L]
     [IsTopologicalRing L] [T2Space L] [ContinuousSMul F L] [AddCommGroup V] [Module L V]
@@ -63,6 +79,9 @@ variable {l : ℕ} [Fact l.Prime]
 def zCHom (l : ℕ) [Fact l.Prime] : ℤ_[l] →+* PadicComplex l :=
   (algebraMap ℚ_[l] (PadicComplex l)).comp (algebraMap ℤ_[l] ℚ_[l])
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem zCHom_apply (x : ℤ_[l]) : zCHom l x = zC x := rfl
 
 section Generic
@@ -78,17 +97,31 @@ def mulLat (R : Type) [CommRing R] [Algebra R O] (T : LocLat G F L O) (a : O) :
     map_add' := fun x y => smul_add a x y
     map_smul' := fun c x => smul_comm a (algebraMap R O c) x }
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem mulLat_apply (T : LocLat G F L O) (a : O) (x : ↥T.L.T) :
     mulLat R T a x = ⟨_, T.L.T.smul_mem a x.2⟩ := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem coe_actT (T : LocLat G F L O) (g : G) (x : ↥T.L.T) :
     (actT T.L g x).1 = T.ρ g x.1 := rfl
 
+/- English proof (translation)
+Rewrite using `[mulLat_apply, mulLat_apply]`. Conclude with `(actT T.L g).map_smul a x`.
+-/
 theorem actT_mulLat (T : LocLat G F L O) (g : G) (a : O) (x : ↥T.L.T) :
     actT T.L g (mulLat R T a x) = mulLat R T a (actT T.L g x) := by
   rw [mulLat_apply, mulLat_apply]
   exact (actT T.L g).map_smul a x
 
+/- English proof (translation)
+Set `_ : Module R ↥T.L.T` to `Module.compHom ↥T.L.T (algebraMap R O)`. Establish `: IsScalarTower R O ↥T.L.T` using `⟨fun r o x => by show (r • o) • x = algebraMap R O r • (o • x)`. Rewrite using `[Algebra.smul_def, mul_smul]⟩`. Establish `: Module.Free O ↥T.L.T` using `T.L.free`. Establish `: Module.Finite O ↥T.L.T` using `Module.Finite.iff_fg.mpr T.L.fg`.
+
+Establish `: Module.Free R ↥T.L.T` using `Module.Free.of_basis ((Module.Free.chooseBasis R O).smulTower (Module.Free.chooseBasis O ↥T.L.T))`. Establish `: Module.Finite R ↥T.L.T` using `Module.Finite.trans O ↥T.L.T`. Conclude with `⟨_, ⟨Module.finBasis R ↥T.L.T⟩⟩`.
+-/
 theorem exists_basis_lat [Nontrivial R] [Module.Free R O] [Module.Finite R O]
     (T : LocLat G F L O) :
     letI := Module.compHom ↥T.L.T (algebraMap R O)
@@ -104,6 +137,11 @@ theorem exists_basis_lat [Nontrivial R] [Module.Free R O] [Module.Finite R O]
   have : Module.Finite R ↥T.L.T := Module.Finite.trans O ↥T.L.T
   exact ⟨_, ⟨Module.finBasis R ↥T.L.T⟩⟩
 
+/- English proof (translation)
+Introduce `b i`. Set `_ : Module R ↥T.L.T` to `Module.compHom ↥T.L.T (algebraMap R O)`. Set `_ : Module R T.V` to `Module.compHom T.V (algebraMap R F)`. Establish `: IsScalarTower R F T.V` using `⟨fun r c v => by show (r • c) • v = algebraMap R F r • (c • v)`. Rewrite using `[Algebra.smul_def, mul_smul]⟩`.
+
+Set `f : ↥T.L.T →ₗ[R] T.V` to `{ toFun := fun x => x.1 map_add' := fun x y => rfl map_smul' := fun r x => by show algebraMap R O r • x.1 = algebraMap R F r • x.1`. Rewrite using `[← algebraMap_smul L (algebraMap R O r) x.1, hc, algebraMap_smul] }`. Conclude with `exists_form_extending_coord b f Subtype.val_injective i`.
+-/
 theorem exists_form_lat [IsDomain R] [Algebra R F] [IsFractionRing R F]
     (hc : ∀ c : R, algebraMap O L (algebraMap R O c) = algebraMap F L (algebraMap R F c))
     (T : LocLat G F L O) {ι : Type} :
@@ -132,6 +170,19 @@ def actLat (R : Type) [CommRing R] [Algebra R O] (T : LocLat G F L O) (g : G) :
     map_add' := map_add _
     map_smul' := fun c x => (actT T.L g).map_smul (algebraMap R O c) x }
 
+/- English proof (translation)
+Set `_ : Module R ↥T.L.T` to `Module.compHom ↥T.L.T (algebraMap R O)`. Introduce `b hM hA`. Establish `kM : ∀ g, M g = (LinearMap.toMatrix b b (actLat R T g)).map z`. Introduce `g`. Use extensionality with `i j`.
+
+Rewrite using `[hM, Matrix.map_apply, LinearMap.toMatrix_apply]`. Both sides reduce to the same expression. Establish `kA : ∀ a, A a = (LinearMap.toMatrix b b (mulLat R T a)).map z`. Introduce `a`. Use extensionality with `i j`.
+
+Rewrite using `[hA, Matrix.map_apply, LinearMap.toMatrix_apply]`. Both sides reduce to the same expression. Establish `hmul : ∀ g h, actLat R T (g * h) = actLat R T g * actLat R T h`. Introduce `g h`. Use `LinearMap.ext fun x => Subtype.ext ?_` and prove the remaining obligations.
+
+Use `show T.ρ (g * h) x.1 = T.ρ g (T.ρ h x.1)`. Rewrite using `[map_mul]`. Both sides reduce to the same expression. Establish `hone : actLat R T 1 = 1`. Use `LinearMap.ext fun x => Subtype.ext ?_` and prove the remaining obligations.
+
+Use `show T.ρ 1 x.1 = x.1`. Rewrite using `[map_one]`. Both sides reduce to the same expression. Establish `hcomm : ∀ g a, actLat R T g * mulLat R T a = mulLat R T a * actLat R T g` using `fun g a => LinearMap.ext fun x => actT_mulLat (R := R) T g a x`. Use `⟨fun g h => ?_, ?_, fun g a => ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[kM, kM, kM, hmul, LinearMap.toMatrix_mul, Matrix.map_mul]`. Rewrite using `[kM, hone, LinearMap.toMatrix_one]`. Conclude with `Matrix.map_one _ z.map_zero z.map_one`. Rewrite using `[kM, kA, ← Matrix.map_mul, ← Matrix.map_mul, ← LinearMap.toMatrix_mul, ← LinearMap.toMatrix_mul, hcomm]`.
+-/
 theorem matrices_lat {C : Type} [CommRing C] (z : R →+* C) (T : LocLat G F L O) {d : ℕ}
     (M : G → Matrix (Fin d) (Fin d) C) (A : O → Matrix (Fin d) (Fin d) C) :
     letI := Module.compHom ↥T.L.T (algebraMap R O)
@@ -165,6 +216,11 @@ theorem matrices_lat {C : Type} [CommRing C] (z : R →+* C) (T : LocLat G F L O
 
 end Generic
 
+/- English proof (translation)
+Introduce `b x i`. Set `_ : Module R ↥T.L.T` to `Module.compHom ↥T.L.T (algebraMap R O)`. Take `⟨φ, hφ⟩` from `exists_form_lat (R := R) hc T b i`. Establish `hφc : Continuous φ` using `continuous_form_of_moduleTopology (L := L) φ`. Establish `h : (fun g : G => algebraMap R F (b.repr (actT T.L g x) i)) = fun g => φ (T.ρ g x.1)`.
+
+Use function extensionality and compare the values at `g`. Rewrite using `[← hφ, coe_actT]`. Rewrite using `[h]`. Conclude with `hφc.comp (T.cont x.1)`.
+-/
 theorem continuous_coord_lat {G R F L O : Type} [Group G] [TopologicalSpace G] [CommRing R]
     [NontriviallyNormedField F] [CompleteSpace F] [Field L] [Algebra F L] [CommRing O]
     [Algebra O L] [TopologicalSpace L] [Algebra R O] [FiniteDimensional F L]
@@ -185,6 +241,11 @@ theorem continuous_coord_lat {G R F L O : Type} [Group G] [TopologicalSpace G] [
   rw [h]
   exact hφc.comp (T.cont x.1)
 
+/- English proof (translation)
+Establish `: FiniteDimensional ℚ_[l] ↥LL.1` using `LL.2`. Establish `: IsIntegralClosure ↥(OL LL) ℤ_[l] ↥LL.1` using `integralClosure.isIntegralClosure ℤ_[l] ↥LL.1`. Establish `: Module.Finite ℤ_[l] ↥(OL LL)` using `IsIntegralClosure.finite ℤ_[l] ℚ_[l] (↥LL.1) (↥(OL LL))`. Establish `: Module.IsTorsionFree ℤ_[l] ↥LL.1` using `Module.IsTorsionFree.trans_faithfulSMul ℤ_[l] ℚ_[l] _`. Establish `: Module.Free ℤ_[l] ↥(OL LL)` using `IsIntegralClosure.module_free ℤ_[l] ℚ_[l] (↥LL.1) (↥(OL LL))`.
+
+Conclude with `exists_basis_lat (R := ℤ_[l]) T`.
+-/
 theorem exists_basis_lattice {G : Type} [Group G] [TopologicalSpace G] (LL : FinExt l)
     (T : LocLat G ℚ_[l] ↥LL.1 ↥(OL LL)) :
     letI := zlMod LL T
@@ -197,6 +258,15 @@ theorem exists_basis_lattice {G : Type} [Group G] [TopologicalSpace G] (LL : Fin
     IsIntegralClosure.module_free ℤ_[l] ℚ_[l] (↥LL.1) (↥(OL LL))
   exact exists_basis_lat (R := ℤ_[l]) T
 
+/- English proof (translation)
+Introduce `l _ K LL T`. Set `_ : Module ℤ_[l] ↥T.L.T` to `zlMod LL T`. Establish `hc : ∀ c : ℤ_[l], algebraMap (↥(OL LL)) (↥LL.1) (algebraMap ℤ_[l] (↥(OL LL)) c) = algebraMap ℚ_[l] (↥LL.1) (algebraMap ℤ_[l] ℚ_[l] c)` using `fun c => rfl`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Take `⟨d, ⟨b⟩⟩` from `exists_basis_lattice (G := ↥(GK K)) LL T`.
+
+Use `⟨d, fun σ => Matrix.of fun i j => if h : σ ∈ GK K then zC (b.repr (actT T.L ⟨σ, h⟩ (b j)) i) else 0, fun a => Matrix.of fun i j => zC (b.repr (⟨_, T.L.T.smul_mem a (b j).2⟩ : ↥T.L.T) i), b, fun g i j => ?_, fun a i j => rfl⟩` and prove the remaining obligations. Use `show (if h : (g : GQ l) ∈ GK K then zC (b.repr (actT T.L ⟨g, h⟩ (b j)) i) else 0) = _`. Conclude with `dif_pos g.2`. Introduce `d M A hMA`. Take `⟨b, hM, hA⟩` from `hMA`.
+
+Establish `key` using `matrices_lat (R := ℤ_[l]) (F := ℚ_[l]) (L := ↥LL.1) (zCHom l) T (fun g : ↥(GK K) => M g) A b (fun g i j => (hM g i j).trans (zCHom_apply _).symm) (fun a i j => (hA a i j).trans (zCHom_apply _).symm)`. Use `⟨fun i j => ?_, fun σ hσ τ hτ => key.1 ⟨σ, hσ⟩ ⟨τ, hτ⟩, key.2.1, fun σ hσ a => key.2.2 ⟨σ, hσ⟩ a⟩` and prove the remaining obligations. Rewrite using `[continuousOn_iff_continuous_domRestrict]`. Establish `: FiniteDimensional ℚ_[l] ↥LL.1` using `LL.2`. Establish `h1` using `continuous_coord_lat (R := ℤ_[l]) (F := ℚ_[l]) (L := ↥LL.1) (O := ↥(OL LL)) hc T b (b j) i`.
+
+Establish `h2 : Continuous (algebraMap ℚ_[l] (PadicComplex l))` using `continuous_algebraMap _ _`. Use `(h2.comp h1).congr fun g => ?_` and prove the remaining obligations. Conclude with `((hM ⟨g.1, g.2⟩ i j).trans (zCHom_apply _).symm).symm`.
+-/
 theorem isMat_exists_and_props : ∀ (l : ℕ) [Fact l.Prime] (K LL : FinExt l) (T : LocLat ↥(GK K) ℚ_[l] ↥LL.1 ↥(OL LL)), (∃ (d : ℕ) (M : GQ l → Matrix (Fin d) (Fin d) (PadicComplex l)) (A : ↥(OL LL) → Matrix (Fin d) (Fin d) (PadicComplex l)), IsMat K LL T M A) ∧ ∀ (d : ℕ) (M : GQ l → Matrix (Fin d) (Fin d) (PadicComplex l)) (A : ↥(OL LL) → Matrix (Fin d) (Fin d) (PadicComplex l)), IsMat K LL T M A → (∀ i j, ContinuousOn (fun σ => M σ i j) (GK K)) ∧ (∀ σ ∈ GK K, ∀ τ ∈ GK K, M (σ * τ) = M σ * M τ) ∧ M 1 = 1 ∧ (∀ σ ∈ GK K, ∀ a, M σ * A a = A a * M σ) := by
   intro l _ K LL T
   classical

@@ -34,11 +34,17 @@ open GlobalTheory.IndefiniteRowSideFullHecke.PositiveSignKForm
 
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E}
 
+/- English proof (translation)
+Use `show Spec.map _ ≫ Spec.map _ = Spec.map _`. Rewrite using `[← Spec.map_comp]`. Both sides reduce to the same expression.
+-/
 theorem spMap_comp {R R' R'' : Type} [CommRing R] [CommRing R'] [CommRing R''] (f : R →+* R') (f' : R' →+* R'') :
     spMap f' ≫ spMap f = spMap (f'.comp f) := by
   show Spec.map _ ≫ Spec.map _ = Spec.map _
   rw [← Spec.map_comp]; rfl
 
+/- English proof (translation)
+Substitute `hs` using the available equality. Establish `hL : LBIso t'.PP.L (t.PP.L.pull m.cm.F)`. Take `⟨w, hw, -⟩` from `m.lin`. Conclude with `⟨w, hw⟩`. Conclude with `weilIs_grpPullback_of_comm _ _ _ _ _ m.φ _ _ t.PP.isLB t'.PP.isLB m.cart hL (Over.mk s') k x y x₀ y₀ _ hx hy`.
+-/
 theorem weilIs_iff {S S' : Scheme.{0}} {t' : SAB H S'} {t : SAB H S} {f : S' ⟶ S} (m : SABMap t' t f)
     (s' : Sp ℂ ⟶ S') (s : Sp ℂ ⟶ S) (hs : s = s' ≫ f) (k : ℤ) (x y : Over.mk s' ⟶ t'.G) (x₀ y₀ : Over.mk s ⟶ t.G)
     (c : ℂˣ) (hx : x₀.left = x.left ≫ m.φ) (hy : y₀.left = y.left ≫ m.φ) :
@@ -49,6 +55,19 @@ theorem weilIs_iff {S S' : Scheme.{0}} {t' : SAB H S'} {t : SAB H S} {f : S' ⟶
     exact ⟨w, hw⟩
   exact weilIs_grpPullback_of_comm _ _ _ _ _ m.φ _ _ t.PP.isLB t'.PP.isLB m.cart hL (Over.mk s') k x y x₀ y₀ _ hx hy
 
+/- English proof (translation)
+Take `⟨p, hp⟩` from `LiePull.exists_pushEquiv m.cart (Over.mk (spMap σ)) (FU.u i Pe) hy.symm`. Take `⟨q, hq⟩` from `LiePull.exists_pushEquiv n.cart (Over.mk (spMap σ)) (spMap (σ.comp f)) (spMap_comp f σ).symm`. Establish `hp' : ∀ z, (p.symm (FU.ex i Pe z)).left ≫ m.φ = (FU.ex i Pe z).left` using `fun z => by`. Rewrite using `[← hp, p.apply_symm_apply]`. Use `⟨fun z => q (p.symm (FU.ex i Pe z)), ⟨hP, ?_, fun z w => ?_, q.surjective.comp (p.symm.surjective.comp (FU.ex_onto i Pe hP)), fun z => ?_, fun a z => ?_, fun k a b c hk hc => ?_⟩, fun z => ⟨(p.symm (FU.ex i Pe z)).left, Over.w _, (hq _).symm, hp' z⟩⟩` and prove the remaining obligations.
+
+Establish `hpb` using `(IsPullback.of_hasPullback t.G.hom (spMap σ)).paste_horiz m.cart.1`. Set `c : (Fin g → ℂ) → (Sp ℂ ⟶ pullback t.G.hom (spMap σ))` to `fun z => pullback.lift (p.symm (FU.ex i Pe z)).left (𝟙 _) ((Over.w _).trans (Category.id_comp _).symm)`. Establish `hc` using `ThetaPoint.isHolTo_fibre hpb c (fun z => pullback.lift_snd _ _ _) (by`. Establish `e : (fun z => c z ≫ pullback.fst t.G.hom (spMap σ) ≫ m.cm.F) = fun z => (FU.ex i Pe z).left`. Use function extensionality and compare the values at `fun z => by rw [← Category.assoc, pullback.lift_fst]; exact hp' z`.
+
+Rewrite using `[e]`. Conclude with `ExpUniqFamily.isHolTo_ex FU i Pe hP)`. Establish `e : (fun z => (q (p.symm (FU.ex i Pe z))).left) = fun z => c z ≫ pullback.fst t.G.hom (spMap σ) ≫ n.φ`. Use function extensionality and compare the values at `fun z => by rw [← Category.assoc, pullback.lift_fst]; exact hq _`. Rewrite using `[e]`.
+
+Conclude with `isHolTo_comp_hom hc _`. Use `beta_reduce`. Rewrite using `[FU.ex_add i Pe hP, map_mul, map_mul]`. Conclude with `(map_eq_one_iff q q.injective).trans ((map_eq_one_iff _ p.symm.injective).trans (FU.ex_ker i Pe hP z))`. Establish `e : p.symm (FU.ex i Pe z ≫ Xo.univ.t.act.act a) = p.symm (FU.ex i Pe z) ≫ t.act.act a`.
+
+Rewrite using `[p.symm_apply_eq]`. Apply `Over.OverMorphism.ext` to reduce the goal to its premises. Rewrite using `[hp, Over.comp_left, Over.comp_left, Category.assoc, m.act, ← Category.assoc]`. Conclude with `congrArg (· ≫ _) (hp' z).symm`. Apply `Over.OverMorphism.ext` to reduce the goal to its premises.
+
+Use `beta_reduce`. Rewrite using `[FU.ex_lin i Pe hP, e, Over.comp_left, hq, hq, Over.comp_left, Category.assoc, Category.assoc]`. Conclude with `congrArg _ (n.act a)`. Conclude with `(weilIs_iff n _ _ (spMap_comp f σ).symm k _ _ _ _ c (hq _) (hq _)).1 ((weilIs_iff m _ _ hy.symm k _ _ _ _ c (hp' _).symm (hp' _).symm).2 (FU.ex_weil i Pe hP k a b c hk hc))`.
+-/
 theorem exists_isExp_of_family {D : Datum H} {l : Level H} {Xo : Moduli D l} {σ₀ : KA l →+* ℂ} {g : ℕ}
     {ty : Fin g → (E →+* ℂ)} (FU : FamilyUnif Xo σ₀ ty) (i : Fin FU.n) {Pe : (FU.Di i).La →+ (Fin g → ℂ)}
     (hP : IsPeriod (FU.Di i) ty Pe) {R K : Type} [CommRing R] [Field K] (f : R →+* K) (σ : K →+* ℂ)

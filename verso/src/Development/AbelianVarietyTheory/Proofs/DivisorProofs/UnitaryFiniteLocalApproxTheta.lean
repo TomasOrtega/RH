@@ -21,19 +21,36 @@ variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algeb
 
 def Loc (v : Pl F) (A B : Matrix (Fin d) (Fin d) (AE F E)) : Prop := ∀ u : AF F, At (evFin F v) u → u • A = u • B
 
+/- English proof (translation)
+Introduce `u hu`. Rewrite using `[← Matrix.smul_mul, hA u hu, Matrix.smul_mul, ← Matrix.mul_smul, hB u hu, Matrix.mul_smul]`.
+-/
 theorem Loc.mul {v : Pl F} {A A' B B' : Matrix (Fin d) (Fin d) (AE F E)} (hA : Loc v A A') (hB : Loc v B B') :
     Loc v (A * B) (A' * B') := by
   intro u hu
   rw [← Matrix.smul_mul, hA u hu, Matrix.smul_mul, ← Matrix.mul_smul, hB u hu, Matrix.mul_smul]
 
+/- English proof (translation)
+Introduce `u hu` and use `(h1 u hu).trans (h2 u hu)`.
+-/
 theorem Loc.trans {v : Pl F} {A B C : Matrix (Fin d) (Fin d) (AE F E)} (h1 : Loc v A B) (h2 : Loc v B C) : Loc v A C :=
   fun u hu => (h1 u hu).trans (h2 u hu)
 
+/- English proof (translation)
+Introduce `u hu` and use `(h1 u hu).symm`.
+-/
 theorem Loc.symm {v : Pl F} {A B : Matrix (Fin d) (Fin d) (AE F E)} (h1 : Loc v A B) : Loc v B A :=
   fun u hu => (h1 u hu).symm
 
+/- English proof (translation)
+Introduce `_ _` and use `rfl`.
+-/
 theorem Loc.refl (v : Pl F) (A : Matrix (Fin d) (Fin d) (AE F E)) : Loc v A A := fun _ _ => rfl
 
+/- English proof (translation)
+Establish `e1 : mat g⁻¹ = mat g⁻¹ * mat g' * mat g'⁻¹`. Rewrite using `[Matrix.mul_assoc, ← GlobalTheory.StabHaar.mat_mul g' g'⁻¹, mul_inv_cancel, GlobalTheory.StabHaar.mat_one, Matrix.mul_one]`. Establish `e2 : mat g'⁻¹ = mat g⁻¹ * mat g * mat g'⁻¹`. Rewrite using `[← GlobalTheory.StabHaar.mat_mul g⁻¹ g, inv_mul_cancel, GlobalTheory.StabHaar.mat_one, Matrix.one_mul]`. Establish `h' : Loc v (mat g⁻¹ * mat g' * mat g'⁻¹) (mat g⁻¹ * mat g * mat g'⁻¹)` using `((Loc.refl v (mat g⁻¹)).mul h.symm).mul (Loc.refl v _)`.
+
+Introduce `u hu`. Rewrite using `[e1, h' u hu, ← e2]`.
+-/
 theorem Loc.inv {v : Pl F} {g g' : UA σ W.J} (h : Loc v (mat g) (mat g')) : Loc v (mat g⁻¹) (mat g'⁻¹) := by
   have e1 : mat g⁻¹ = mat g⁻¹ * mat g' * mat g'⁻¹ := by
     rw [Matrix.mul_assoc, ← GlobalTheory.StabHaar.mat_mul g' g'⁻¹, mul_inv_cancel, GlobalTheory.StabHaar.mat_one, Matrix.mul_one]
@@ -44,12 +61,18 @@ theorem Loc.inv {v : Pl F} {g g' : UA σ W.J} (h : Loc v (mat g) (mat g')) : Loc
   intro u hu
   rw [e1, h' u hu, ← e2]
 
+/- English proof (translation)
+Introduce `u hu`. Establish `h` using `hg u (GlobalTheory.ThK.LocalOps.evFin_of_at hwv hu)`. Rewrite `h` using `[smul_sub, sub_eq_zero]`. Conclude with `h`.
+-/
 theorem loc_one_of_ne {v w : Pl F} (hwv : w ≠ v) {g : UA σ W.J} (hg : g ∈ UAt σ W (evFin F w)) : Loc v (mat g) 1 := by
   intro u hu
   have h := hg u (GlobalTheory.ThK.LocalOps.evFin_of_at hwv hu)
   rw [smul_sub, sub_eq_zero] at h
   exact h
 
+/- English proof (translation)
+The claim follows from `| [], _ => ⟨fun _ => by simp [GlobalTheory.StabHaar.mat_one]; exact fun _ _ => rfl, fun _ hv => absurd hv (by simp)⟩ | a :: l, hl => by have ih := loc_listProd h v l fun w hw => hl w (List.mem_cons_of_mem a hw) have ha := hl a List.mem_cons_self simp only [List.map_cons, List.pro …`.
+-/
 theorem loc_listProd (h : Pl F → UA σ W.J) (v : Pl F) :
     ∀ l : List (Pl F), (∀ w ∈ l, h w ∈ UAt σ W (evFin F w)) →
       (v ∉ l → Loc v (mat (l.map h).prod) 1) ∧ (l.Nodup → v ∈ l → Loc v (mat (l.map h).prod) (mat (h v)))
@@ -71,6 +94,11 @@ theorem loc_listProd (h : Pl F → UA σ W.J) (v : Pl F) :
         have := (loc_one_of_ne (Ne.symm hva) ha).mul (ih.2 hnd.2 hv')
         rwa [Matrix.one_mul] at this
 
+/- English proof (translation)
+Introduce `u hu`. Apply `hg u` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.evalV F v (sndA F u) = 0`. Establish `: sndA F u = u.2` using `rfl`. Rewrite using `[this]`.
+
+Simplify using `only at hu`. Rewrite using `[hu, map_zero]`.
+-/
 theorem uAt_fin_of_uAt {v : Pl F} {g : UA σ W.J} (hg : g ∈ UAt σ W (evFin F v)) :
     g ∈ UAt σ W (fun u : AF F => u.2) := by
   intro u hu
@@ -85,6 +113,29 @@ end GlobalTheory.FinFactor
 
 open GlobalTheory.FinFactor in
 
+/- English proof (translation)
+Introduce `hKP F E _ _ _ _ _ σ B n d X W M χX χW om r s r' s' hP hf hhf h hh`. Establish `hA` using `GlobalTheory.T.vacuum_fixed_almost_all_places hKP F E σ B n d X W M χX χW om r s r' s' hP`. Establish `hB` using `GlobalTheory.T.eventually_mem_maximal_compact F E σ d W hP.skew.lat hf`. Establish `hfin` using `Filter.eventually_cofinite.1 (hA.and hB)`. Use `⟨hfin.toFinset, fun T hST f φ hφ hφT => ?_⟩` and prove the remaining obligations.
+
+Establish `good : ∀ v ∉ T, (∀ g ∈ GlobalTheory.InertSph.KAt σ W v, Acts (evFin F v) (om (1, g)) (M.vac v) (M.vac v)) ∧ (∀ g ∈ UAt σ W (evFin F v), (∀ u : AF F, At (evFin F v) u → u • mat g = u • mat hf) → g ∈ GlobalTheory.InertSph.KAt σ W v)`. Introduce `v hv`. Establish `: v ∉ hfin.toFinset` using `fun h' => hv (hST h')`. Rewrite `this` using `[Set.Finite.mem_toFinset, Set.mem_setOf_eq, not_not]`. Conclude with `this`.
+
+Establish `h1X : ∀ v : Pl F, (1 : UA σ X.J) ∈ UAt σ X (evFin F v)` using `fun v u _ => by show u • (mat (1 : UA σ X.J) - 1) = 0`. Rewrite using `[GlobalTheory.StabHaar.mat_one, sub_self, smul_zero]`. Use `choose ψ hψSB hψA using fun v (_ : v ∈ T) => GlobalTheory.ThK.LocalOps.acts_exists hP v (1, h v) (h1X v) (hh v).1 (φ v) (hφ v)`. Set `φ₁ : ∀ v : Pl F, (Fin n × Fin d → Fv F v) → ℂ` to `fun v => if hv : v ∈ T then ψ v hv else M.vac v`. Establish `hvacSB : ∀ v, M.vac v ∈ SB (Fin n × Fin d → Fv F v)` using `fun v => (hP.good.vac v).1`.
+
+Establish `hout : ∀ v ∉ T, φ₁ v = M.vac v` using `fun v hv => by simp only [φ₁, dif_neg hv]`. Establish `hloc : ∀ v, φ₁ v ∈ SB _ ∧ Acts (evFin F v) (om (1, h v)) (φ v) (φ₁ v)`. Introduce `v`. Distinguish the cases in `hv : v ∈ T`. Simplify using `only [φ₁, dif_pos hv]`.
+
+Conclude with `⟨hψSB v hv, hψA v hv⟩`. Rewrite using `[hout v hv, hφT v hv]`. Conclude with `⟨hvacSB v, (good v hv).1 _ ((good v hv).2 _ (hh v).1 (hh v).2)⟩`. Use `⟨φ₁, hloc, hout, ?_⟩` and prove the remaining obligations. Use `set l := T.toList with hl`.
+
+Establish `hlU : ∀ w ∈ l, h w ∈ UAt σ W (evFin F w)` using `fun w _ => (hh w).1`. Use `set P := (l.map h).prod with hPdef`. Establish `hPU : P ∈ (GlobalTheory.ThK.UAtSub (F` using `F) (E := E) (R := Af F) σ W (fun u : AF F => u.2) : Subgroup (UA σ W.J)) := by`. Use `Subgroup.list_prod_mem _ (l := l.map h) fun x hx => ?_` and prove the remaining obligations. Take `⟨w, -, rfl⟩` from `List.mem_map.1 hx`.
+
+Conclude with `uAt_fin_of_uAt (hh w).1`. Establish `hfac : om (1, hf) = om (1, P) * om (1, P⁻¹ * hf)`. Rewrite using `[← map_mul, Prod.mk_mul_mk, one_mul, mul_inv_cancel_left]`. Establish `hk1 : P⁻¹ * hf ∈ UAt σ W (fun u : AF F => u.2)` using `((GlobalTheory.ThK.UAtSub (F := F) (E := E) (R := Af F) σ W (fun u : AF F => u.2) : Subgroup (UA σ W.J))).mul_mem ((GlobalTheory.ThK.UAtSub (F := F) (E := E) (R := Af F) σ W (fun u : AF F => u.2)).inv_mem hPU) hhf`. Establish `hk2 : ∀ v ∈ T, ∀ u : AF F, At (evFin F v) u → u • mat (P⁻¹ * hf) = u • (1 : Matrix (Fin d) (Fin d) (AE F E))`.
+
+Introduce `v hv`. Establish `hPv : Loc v (mat P) (mat hf)` using `((loc_listProd h v l hlU).2 (Finset.nodup_toList T) (Finset.mem_toList.2 hv)).trans (hh v).2`. Use `(Loc.inv hPv).mul (Loc.refl v (mat hf))` as an intermediate fact. Rewrite `this` using `[← GlobalTheory.StabHaar.mat_mul, ← GlobalTheory.StabHaar.mat_mul, inv_mul_cancel, GlobalTheory.StabHaar.mat_one]`. Conclude with `this`.
+
+Establish `hk3 : ∀ v ∉ T, ∀ g ∈ UAt σ W (evFin F v), (∀ u : AF F, At (evFin F v) u → u • mat g = u • mat (P⁻¹ * hf)) → Acts (evFin F v) (om (1, g)) (M.vac v) (M.vac v)`. Introduce `v hv g hg hgk`. Establish `hP1 : Loc v (mat P) (mat (1 : UA σ W.J))`. Rewrite using `[GlobalTheory.StabHaar.mat_one]`. Conclude with `(loc_listProd h v l hlU).1 (fun h' => hv (Finset.mem_toList.1 h'))`.
+
+Use `(Loc.inv hP1).mul (Loc.refl v (mat hf))` as an intermediate fact. Rewrite `this` using `[← GlobalTheory.StabHaar.mat_mul, ← GlobalTheory.StabHaar.mat_mul, inv_one, one_mul]`. Conclude with `(good v hv).1 _ ((good v hv).2 g hg ((show Loc v (mat g) (mat (P⁻¹ * hf)) from hgk).trans this))`. Rewrite using `[hfac, Module.End.mul_apply, GlobalTheory.T.pair_integral_compact_invariant F E σ B n d X W M χX χW om r s r' s' hP T (P⁻¹ * hf) hk1 hk2 hk3 f φ hφ hφT]`. Use `GlobalTheory.T.pair_local_finite_places_product F E σ B n d X W M χX χW om r s r' s' hP l (Finset.nodup_toList T) h hlU f φ φ₁ hφ (Filter.mem_of_superset T.finite_toSet.compl_mem_cofinite fun v hv => hφT v hv) (fun v hv => hloc v) (fun v hv => ?_)` and prove the remaining obligations.
+
+Establish `hvT : v ∉ T` using `fun h' => hv (Finset.mem_toList.2 h')`. Rewrite using `[hout v hvT, hφT v hvT]`.
+-/
 theorem GlobalTheory.FinFactor.om_pure_factor : GlobalTheory.ThK.KP → ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
     (σ : E →ₐ[F] E) (B : Base F E) (n d : ℕ) (X : Spc F E n) (W : Spc F E d) (M : Model σ X W) (χX χW : Chr F E)
     (om : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Rep σ X W) (r s r' s' : ℕ), IsPair B M χX χW om r s r' s' →

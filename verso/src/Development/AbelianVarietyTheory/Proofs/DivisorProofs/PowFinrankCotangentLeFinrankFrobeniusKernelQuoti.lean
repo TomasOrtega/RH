@@ -10,10 +10,16 @@ open GlobalTheory GlobalTheory.PDiv GlobalTheory.PDivGroup Coalgebra Bialgebra T
 
 namespace GlobalTheory.PDiv.FrobKerOrder
 
+/- English proof (translation)
+Rewrite using `[add_pow_prime_eq hp, h]`. Simplify using the standard rewrite rules.
+-/
 theorem add_pow_of_cast_eq_zero {A : Type*} [CommRing A] {p : ℕ} (hp : p.Prime)
     (h : (p : A) = 0) (x y : A) : (x + y) ^ p = x ^ p + y ^ p := by
   rw [add_pow_prime_eq hp, h]; simp
 
+/- English proof (translation)
+Rewrite using `[← map_natCast (algebraMap k A), CharP.cast_eq_zero, map_zero]`.
+-/
 theorem cast_eq_zero_of_algebra (p : ℕ) (k A : Type*) [CommRing k] [CharP k p] [CommRing A]
     [Algebra k A] : (p : A) = 0 := by
   rw [← map_natCast (algebraMap k A), CharP.cast_eq_zero, map_zero]
@@ -21,6 +27,11 @@ theorem cast_eq_zero_of_algebra (p : ℕ) (k A : Type*) [CommRing k] [CharP k p]
 variable (p : ℕ) [hp : Fact p.Prime] (k H : Type) [Field k] [CharP k p] [CommRing H]
   [HopfAlgebra k H]
 
+/- English proof (translation)
+Establish `hx : x - algebraMap k H (counit (R` using `k) x) ∈ augIdeal k H := by`. Simplify using `[RingHom.mem_ker]`. Establish `h0 : Ideal.Quotient.mkₐ k (frobKerIdeal p k H) ((x - algebraMap k H (counit (R` using `k) x)) ^ p) = 0 := Ideal.Quotient.eq_zero_iff_mem.2 (pow_mem_frobKerIdeal hx)`. Establish `e : x = (x - algebraMap k H (counit (R` using `k) x)) + algebraMap k H (counit (R := k) x) := by`. Expand and normalize the polynomial expressions, which then agree.
+
+Use `conv_lhs => rw [e, ← map_pow, add_pow_of_cast_eq_zero hp.out (cast_eq_zero_of_algebra p k H), map_add, h0, zero_add, map_pow, AlgHom.commutes]`.
+-/
 theorem mk_pow_eq (x : H) :
     Ideal.Quotient.mkₐ k (frobKerIdeal p k H) x ^ p =
       algebraMap k _ (counit (R := k) x) ^ p := by
@@ -34,6 +45,11 @@ theorem mk_pow_eq (x : H) :
   conv_lhs => rw [e, ← map_pow, add_pow_of_cast_eq_zero hp.out (cast_eq_zero_of_algebra p k H),
     map_add, h0, zero_add, map_pow, AlgHom.commutes]
 
+/- English proof (translation)
+Proceed by induction on `t with`. Consider the case `zero => simp [hp.out.ne_zero]`. Consider the case `add x y hx hy`. Simplify using `only [map_add]`. Rewrite using `[add_pow_of_cast_eq_zero hp.out (cast_eq_zero_of_algebra p k _), add_pow_of_cast_eq_zero hp.out (cast_eq_zero_of_algebra p k _), hx, hy, tmul_add]`.
+
+Consider the case `tmul x y`. Rewrite using `[Algebra.TensorProduct.map_tmul, Algebra.TensorProduct.tmul_pow, mk_pow_eq, LinearMap.rTensor_tmul, TensorProduct.lid_tmul, map_smul, smul_pow, ← map_pow, Algebra.algebraMap_eq_smul_one, smul_tmul]`.
+-/
 theorem map_pow_eq (t : H ⊗[k] H) :
     Algebra.TensorProduct.map (Ideal.Quotient.mkₐ k (frobKerIdeal p k H))
       (Ideal.Quotient.mkₐ k (frobKerIdeal p k H)) t ^ p =
@@ -50,6 +66,9 @@ theorem map_pow_eq (t : H ⊗[k] H) :
       LinearMap.rTensor_tmul, TensorProduct.lid_tmul, map_smul, smul_pow, ← map_pow,
       Algebra.algebraMap_eq_smul_one, smul_tmul]
 
+/- English proof (translation)
+The claim follows from `frobKerIdeal_le_augIdeal hp.out.ne_zero k H hx map_mkQ_comul_eq_zero x hx := by have h : frobKerIdeal p k H ≤ RingHom.ker ((Algebra.TensorProduct.map (Ideal.Quotient.mkₐ k (frobKerIdeal p k H)) (Ideal.Quotient.mkₐ k (frobKerIdeal p k H))).comp (comulAlgHom k H)) := by refine Idea …`.
+-/
 theorem isHopfIdeal : (frobKerIdeal p k H).IsHopfIdeal k where
   counit_eq_zero x hx := frobKerIdeal_le_augIdeal hp.out.ne_zero k H hx
   map_mkQ_comul_eq_zero x hx := by
@@ -75,11 +94,27 @@ theorem isHopfIdeal : (frobKerIdeal p k H).IsHopfIdeal k where
     exact h hx
 
 omit [CharP k p] in
+/- English proof (translation)
+Use `Ideal.span_le.2 ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨a, ha, rfl⟩`. Conclude with `Ideal.pow_le_pow_right hp.out.two_le (Ideal.pow_mem_pow ha p)`.
+-/
 theorem le_sq : frobKerIdeal p k H ≤ augIdeal k H ^ 2 := by
   refine Ideal.span_le.2 ?_
   rintro _ ⟨a, ha, rfl⟩
   exact Ideal.pow_le_pow_right hp.out.two_le (Ideal.pow_mem_pow ha p)
 
+/- English proof (translation)
+Set `e : (Fin d → Fin n) → (Fin d →₀ ℕ)` to `fun a => Finsupp.equivFunOnFinite.symm fun i => a i`. Establish `he : Function.Injective e`. Introduce `a b hab`. Use function extensionality and compare the values at `i`. Use `DFunLike.congr_fun hab i` as an intermediate fact.
+
+Conclude with `Fin.ext (by simpa [e] using this)`. Establish `hli : LinearIndependent K fun a : Fin d → Fin n => MvPolynomial.aeval (R` using `K) x (MvPolynomial.monomial (e a) 1) := by`. Rewrite using `[Fintype.linearIndependent_iff]`. Introduce `g hg a`. Establish `hmem : (∑ a, g a • MvPolynomial.monomial (e a) (1 : K)) ∈ RingHom.ker (MvPolynomial.aeval (R` using `K) x) := by`.
+
+Rewrite using `[RingHom.mem_ker, map_sum]`. Simplify `hg` using `only [map_smul]`. Establish `hr : (Set.range fun i => (MvPolynomial.X i : MvPolynomial (Fin d) K) ^ n) = (fun s => MvPolynomial.monomial s (1 : K)) '' Set.range (fun i => Finsupp.single i n)`. Rewrite using `[← Set.range_comp]`. Use `congr 1`.
+
+Use function extensionality and compare the values at `i`. Simplify using `[MvPolynomial.X_pow_eq_monomial]`. Rewrite `hmem` using `[h, hr, MvPolynomial.mem_ideal_span_monomial_image]`. Assume the negation of the conclusion as `hne`. Establish `hc : MvPolynomial.coeff (e a) (∑ a, g a • MvPolynomial.monomial (e a) (1 : K)) = g a`.
+
+Simplify using `[MvPolynomial.coeff_sum, MvPolynomial.coeff_monomial, he.eq_iff]`. Take `⟨_, ⟨i, rfl⟩, hi⟩` from `hmem (e a) (by rw [MvPolynomial.mem_support_iff, hc]; exact hne)`. Establish `h1` using `hi i`. Establish `h2` using `(a i).2`. Simplify using `[e] at h1`.
+
+Use linear arithmetic over natural numbers and integers. Simplify using `using hli.fintype_card_le_finrank`.
+-/
 theorem pow_le_finrank {n d : ℕ} {K A : Type*} [Field K] [CommRing A] [Algebra K A]
     [Module.Finite K A] (x : Fin d → A)
     (h : RingHom.ker (MvPolynomial.aeval (R := K) x) =
@@ -117,6 +152,25 @@ theorem pow_le_finrank {n d : ℕ} {K A : Type*} [Field K] [CommRing A] [Algebra
     omega
   simpa using hli.fintype_card_le_finrank
 
+/- English proof (translation)
+Use `haveI := isHopfIdeal p k H`. Use `set J := frobKerIdeal p k H with hJ`. Set `π` to `Ideal.Quotient.mkₐ k J`. Establish `hπ : Function.Surjective π` using `Ideal.Quotient.mkₐ_surjective k J`. Establish `hε : (counitAlgHom k (H ⧸ J)).comp π = counitAlgHom k H` using `rfl`.
+
+Establish `hbij : Function.Bijective (AugCot.map π hε)`. Use `⟨?_, AugCot.map_surjective π hε hπ⟩` and prove the remaining obligations. Rewrite using `[injective_iff_map_eq_zero]`. Introduce `y hy`. Take `⟨z, rfl⟩` from `(AugCot.exact_kerMap_map π hε hπ y).1 hy`.
+
+Rewrite using `[AugCot.kerMap_apply, AugCot.d_of_mem _ (AugCot.ker_le π hε z.2), Ideal.toCotangent_eq_zero]`. Conclude with `le_sq p k H (Ideal.Quotient.eq_zero_iff_mem.1 z.2)`. Rewrite using `[(LinearEquiv.ofBijective _ hbij).finrank_eq]`. Use `set ε := counitAlgHom k (H ⧸ J) with hεdef`. Set `b` to `Module.finBasis k (AugCot ε)`.
+
+Use `choose x hx using fun i => (RingHom.ker ε).toCotangent_surjective (b i)`. Establish `hsum : ∀ l : Fin (Module.finrank k (AugCot ε)) → k, AugCot.d ε (∑ i, l i • (x i : H ⧸ J)) = ∑ i, l i • b i`. Introduce `l`. Simplify using `[map_sum, hx]`. Establish `hmem : ∀ l : Fin (Module.finrank k (AugCot ε)) → k, (∑ i, l i • (x i : H ⧸ J)) ∈ RingHom.ker ε`.
+
+Introduce `l`. Use `Ideal.sum_mem _ fun i _ => ?_` and prove the remaining obligations. Rewrite using `[Algebra.smul_def]`. Conclude with `Ideal.mul_mem_left _ _ (x i).2`. Use `pow_le_finrank (fun i => (x i : H ⧸ J)) (GlobalTheory.HeightOneHopf.truncated_polynomial p k (H ⧸ J) _ _ ?_ (fun i => (x i).2) ?_ ?_).2` and prove the remaining obligations.
+
+Introduce `f hf`. Take `⟨a, rfl⟩` from `hπ f`. Rewrite using `[← map_pow]`. Conclude with `Ideal.Quotient.eq_zero_iff_mem.2 (pow_mem_frobKerIdeal (R := k) hf)`. Introduce `y hy`.
+
+Use `⟨b.repr (AugCot.d ε y), ?_⟩` and prove the remaining obligations. Establish `h1 : AugCot.d ε (y - ∑ i, b.repr (AugCot.d ε y) i • (x i : H ⧸ J)) = 0`. Rewrite using `[map_sub, hsum, b.sum_repr, sub_self]`. Rewrite `h1` using `[AugCot.d_of_mem _ (sub_mem hy (hmem _)), Ideal.toCotangent_eq_zero]`. Then use the resulting hypothesis. Introduce `l hl`.
+
+Establish `h1 : AugCot.d ε (∑ i, l i • (x i : H ⧸ J)) = 0`. Rewrite using `[AugCot.d_of_mem _ (hmem _), Ideal.toCotangent_eq_zero]`. Conclude with `hl`. Rewrite `h1` using `[hsum]`. Use function extensionality and compare the values at `i`.
+
+Conclude with `Fintype.linearIndependent_iff.1 b.linearIndependent l h1 i`.
+-/
 theorem pow_finrank_cot_le [Module.Finite k H] :
     p ^ Module.finrank k (Cot k H) ≤ Module.finrank k (H ⧸ frobKerIdeal p k H) := by
   haveI := isHopfIdeal p k H

@@ -8,6 +8,13 @@ namespace GlobalTheory.Mem.Col2.IdxEx
 
 open NumberField IsDedekindDomain Formalism.BasicNotions Formalism.HermitianLatticesTheory Formalism.L2.Col Formalism.L2.DIV GlobalTheory.QNormal
 
+/- English proof (translation)
+Use function extensionality and compare the values at `l s`. Unfold `nfMat GlobalTheory.QNF.nfMat`. Distinguish the cases in `hs : s.1 < n`. Simplify using `[hs]`. Distinguish the cases in `hls : l = s`.
+
+Substitute `hls` using the available equality. Simplify using `[hs, Loc.inX]`. Distinguish the cases in `hn : s.1 = n`. Distinguish the cases in `hl : l.1 < n`. Simplify using `[hls, hn, hl, Loc.inX]`.
+
+Simplify using `[hls, hn, hl, Loc.inX]`. Simplify using `[hs, hls, hn]`.
+-/
 theorem nfMat_eq_qnf {E : Type} [Field E] (n c : ℕ) (q : E) (e : Fin c → ℤ) (z : Fin n → E) :
     nfMat n c q e z = GlobalTheory.QNF.nfMat n c q e z := by
   funext l s
@@ -23,6 +30,9 @@ theorem nfMat_eq_qnf {E : Type} [Field E] (n c : ℕ) (q : E) (e : Fin c → ℤ
         · simp [hls, hn, hl, Loc.inX]
       · simp [hs, hls, hn]
 
+/- English proof (translation)
+Introduce `X Pr R j P hP h hh`. Take `⟨e, z, h1, h2, h3⟩` from `(GlobalTheory.QNF.nf_iff_matNF X Pr R j P hP h).1 hh`. Conclude with `⟨e, z, h1, h2, by rw [nfMat_eq_qnf]; exact h3⟩`.
+-/
 theorem nf_matrix : ∀ (X : Fields) (Pr : Primes X) (R : Ranks) (j : ℕ) (P : HeightOneSpectrum (𝓞 X.E)), P ∉ Pr.vGs → ∀ h : AutY X R j, GlobalTheory.IndefiniteRowSideFullHecke.SandwichNormalForm.NF Pr j P h → ∃ (e : Fin (cOf R j) → ℤ) (z : Fin (R.N j) → X.E), (∀ i, -(j : ℤ) ≤ e i ∧ e i ≤ 0) ∧ (fun l : Fin (R.N j + cOf R j) => if hl : l.1 < R.N j then z ⟨l.1, hl⟩ else 0) ∈ lamYat (Pr := Pr) (R := R) j P ∧ (lamYat (Pr := Pr) (R := R) j P).map (h.toLinearMap.restrictScalars (𝓞 X.E)) = (lamYat (Pr := Pr) (R := R) j P).map ((Matrix.toLin' (nfMat (R.N j) (cOf R j) (qOf P : X.E) e z)).restrictScalars (𝓞 X.E)) := by
   intro X Pr R j P hP h hh
   obtain ⟨e, z, h1, h2, h3⟩ := (GlobalTheory.QNF.nf_iff_matNF X Pr R j P hP h).1 hh

@@ -11,9 +11,21 @@ variable (E : Type) [NontriviallyNormedField E] [IsUltrametricDist E]
 
 def unitBallMaxIdeal : Ideal (unitBallSubring E) := GlobalTheory.ClosedBallValuationSubring.openBallIdeal E
 
+/- English proof (translation)
+Unfold both sides. The equivalence is reflexive.
+-/
 theorem mem_unitBallMaxIdeal {t : unitBallSubring E} :
     t ∈ unitBallMaxIdeal E ↔ ‖(t : E)‖ < 1 := Iff.rfl
 
+/- English proof (translation)
+Rewrite using `[Ideal.isMaximal_iff]`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Establish `h' : ‖((1 : E))‖ < 1` using `h`. Simplify using `at h'`.
+
+Introduce `J x _ hx hxJ`. Establish `hx1 : ¬ ‖(x : E)‖ < 1` using `hx`. Establish `hx2 : ‖(x : E)‖ ≤ 1` using `x.2`. Establish `hn : ‖(x : E)‖ = 1` using `le_antisymm hx2 (not_lt.mp hx1)`. Establish `hx0 : (x : E) ≠ 0`.
+
+Introduce `h0`. Rewrite `hn` using `[h0, norm_zero]`. Conclude with `zero_ne_one hn`. Establish `hinv : ‖(x : E)⁻¹‖ ≤ 1` using `by rw [norm_inv, hn, inv_one]`. Establish `hmem` using `J.mul_mem_left ⟨(x : E)⁻¹, hinv⟩ hxJ`.
+
+Use `hmem using 1` and compare the differences between its conclusion and the goal. Apply `Subtype.ext` to reduce the goal to its premises. Conclude with `(inv_mul_cancel₀ hx0).symm`.
+-/
 theorem unitBallMaxIdeal_isMaximal : (unitBallMaxIdeal E).IsMaximal := by
   rw [Ideal.isMaximal_iff]
   constructor
@@ -36,6 +48,37 @@ theorem unitBallMaxIdeal_isMaximal : (unitBallMaxIdeal E).IsMaximal := by
 
 end Residue
 
+/- English proof (translation)
+Introduce `i j`. Establish `hM0 : M ≠ 0`. Introduce and unpack `rfl`. Use `hM i i` as an intermediate fact. Simplify using `at this`.
+
+Take `⟨u, v, hu, hv, huv⟩` from `hb`. Use `haveI := unitBallMaxIdeal_isMaximal E`. Use `letI : Field (unitBallSubring E ⧸ unitBallMaxIdeal E) := Ideal.Quotient.field _`. Set `O` to `unitBallSubring E`. Set `π : O →+* (unitBallSubring E ⧸ unitBallMaxIdeal E)` to `Ideal.Quotient.mk _`.
+
+Set `N' : Matrix (Fin n) (Fin n) O` to `fun a b => ⟨N a b, hN a b⟩`. Set `w' : Matrix (Fin n) (Fin n) O` to `fun a b => ⟨w a b, hw a b⟩`. Establish `hNm : O.subtype.mapMatrix N' = N` using `by ext; rfl`. Establish `hwm : O.subtype.mapMatrix w' = w` using `by ext; rfl`. Establish `hinj : Function.Injective (O.subtype.mapMatrix : Matrix (Fin n) (Fin n) O →+* _)`.
+
+Introduce `a b h`. Use extensionality with `x y`. Conclude with `congrFun (congrFun h x) y`. Establish `hwN' : w' * N' = N' * w'` using `hinj (by rw [map_mul, map_mul, hNm, hwm, hwN])`. Establish `hu' : (u.coeffs : Set E) ⊆ O`.
+
+Introduce `c hc`. Rewrite `hc` using `[Finset.mem_coe, Polynomial.mem_coeffs_iff]`. Take `⟨m, -, rfl⟩` from `hc`. Conclude with `hu m`. Establish `hv' : (v.coeffs : Set E) ⊆ O`.
+
+Introduce `c hc`. Rewrite `hc` using `[Finset.mem_coe, Polynomial.mem_coeffs_iff]`. Take `⟨m, -, rfl⟩` from `hc`. Conclude with `hv m`. Establish `hNmap : N'.map O.subtype = N` using `by ext; rfl`.
+
+Establish `hbO : u.toSubring O hu' * N'.charpoly + v.toSubring O hv' * derivative N'.charpoly = 1`. Apply `Polynomial.map_injective O.subtype Subtype.val_injective` to reduce the goal to its premises. Rewrite using `[Polynomial.map_add, Polynomial.map_mul, Polynomial.map_mul, ← Polynomial.derivative_map, Polynomial.map_toSubring, Polynomial.map_toSubring, ← Matrix.charpoly_map, hNmap, Polynomial.map_one]`. Conclude with `huv`. Use `set N'' := N'.map π with hN''`.
+
+Use `set w'' := w'.map π with hw''`. Establish `hbk : (u.toSubring O hu').map π * N''.charpoly + (v.toSubring O hv').map π * derivative N''.charpoly = 1`. Use `congrArg (Polynomial.map π) hbO` as an intermediate fact. Simplify `this` using `[hN'', Polynomial.map_add, Polynomial.map_mul, Polynomial.derivative_map, Matrix.charpoly_map]`. Establish `hwk : w'' * N'' = N'' * w''`.
+
+Rewrite using `[hN'', hw'', ← Matrix.map_mul, ← Matrix.map_mul, hwN']`. Establish `hs : N''.charpoly.Separable` using `⟨_, _, hbk⟩`. Take `⟨x, hx⟩` from `GlobalTheory.RegSS.cyclicField (unitBallSubring E ⧸ unitBallMaxIdeal E) (Fin n) N'' hs`. Establish `hbij` using `(GlobalTheory.RegSS.CycAlg.cyclicAlgebra _ (Fin n) N'' x hx).2.2`. Establish `hmem : w'' ∈ Algebra.adjoin (unitBallSubring E ⧸ unitBallMaxIdeal E) {N''}` using `GlobalTheory.RegSS.mem_genAlg_of_commute hbij hwk`.
+
+Rewrite `hmem` using `[Algebra.adjoin_singleton_eq_range_aeval]`. Take `⟨f, hf⟩` from `hmem`. Establish `hpowm : O.subtype.mapMatrix (w' ^ M) = w ^ M` using `by rw [map_pow, hwm]`. Establish `hpow : w'' ^ M = 0`. Rewrite using `[hw'', ← Matrix.map_pow]`.
+
+Use extensionality with `a b`. Rewrite using `[Matrix.map_apply, Matrix.zero_apply, Ideal.Quotient.eq_zero_iff_mem, mem_unitBallMaxIdeal]`. Use `congrFun (congrFun hpowm a) b` as an intermediate fact. Rewrite `this` using `[RingHom.mapMatrix_apply, Matrix.map_apply]`. Use `show ‖(((w' ^ M) a b : O) : E)‖ < 1`.
+
+Rewrite using `[show (((w' ^ M) a b : O) : E) = (w ^ M) a b from this]`. Conclude with `hM a b`. Establish `hfM : aeval N'' (f ^ M) = 0`. Rewrite using `[map_pow]`. Simplify using `only [AlgHom.toRingHom_eq_coe, RingHom.coe_coe] at hf`.
+
+Rewrite using `[hf, hpow]`. Establish `hdvd` using `minpoly.dvd _ N'' hfM`. Establish `hsq : Squarefree (minpoly (unitBallSubring E ⧸ unitBallMaxIdeal E) N'')` using `hs.squarefree.squarefree_of_dvd (Matrix.minpoly_dvd_charpoly N'')`. Establish `hdvd'` using `(Squarefree.dvd_pow_iff_dvd hsq hM0).mp hdvd`. Establish `hf0 : aeval N'' f = 0` using `Polynomial.aeval_eq_zero_of_dvd_aeval_eq_zero hdvd' (minpoly.aeval _ _)`.
+
+Establish `hw0 : w'' = 0`. Simplify using `only [AlgHom.toRingHom_eq_coe, RingHom.coe_coe] at hf`. Rewrite using `[← hf, hf0]`. Establish `hij` using `congrFun (congrFun hw0 i) j`. Rewrite `hij` using `[hw'', Matrix.map_apply, Matrix.zero_apply, Ideal.Quotient.eq_zero_iff_mem, mem_unitBallMaxIdeal]`.
+
+Conclude with `hij`.
+-/
 theorem norm_lt_one_of_pow_of_commute (E : Type) [NontriviallyNormedField E] [IsUltrametricDist E]
     (n : ℕ) (N : Matrix (Fin n) (Fin n) E) (hN : ∀ i j, ‖N i j‖ ≤ 1)
     (hb : ∃ u v : Polynomial E, (∀ i, ‖u.coeff i‖ ≤ 1) ∧ (∀ i, ‖v.coeff i‖ ≤ 1) ∧

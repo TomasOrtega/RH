@@ -10,6 +10,9 @@ namespace Formalism.InvariantFactorPaths.MC
 
 open Formalism.GM Formalism.GM.M Formalism.GM.TM Formalism.InvariantFactorPaths.OddLevelGainBounds Formalism.InvariantFactorPaths.OddLevelGainBounds.TB Formalism.InvariantFactorPaths.PW Formalism.InvariantFactorPaths.L4 MvPolynomial Finset
 
+/- English proof (translation)
+Establish `h : (N : ℝ) ≤ 2 * (s : ℝ) + 2` using `by exact_mod_cast hN`. Use the polynomial consequences of the given equalities and inequalities.
+-/
 theorem kap_num (N s : ℕ) (Q : ℝ) (hQ : 0 ≤ Q) (hN : N ≤ 2 * s + 2) :
     (3 / 2 : ℝ) * (((N : ℝ) + 2) * Q) ≤ 3 * ((s : ℝ) + 2) * Q := by
   have h : (N : ℝ) ≤ 2 * (s : ℝ) + 2 := by exact_mod_cast hN

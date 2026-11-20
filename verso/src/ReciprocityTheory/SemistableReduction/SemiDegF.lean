@@ -13,6 +13,9 @@ def wPart (r m : ℕ) (i : Fin r) : Fin r :=
 def wVal {K : Type} [Field K] (r m : ℕ) (g : Fin r → K) (i : Fin r) : K :=
   if (i : ℕ) < m ∨ r ≤ (i : ℕ) + m then 1 else g i
 
+/- English proof (translation)
+Establish `hi` using `i.isLt`. Unfold `wPart`. Distinguish the cases in `h : (i : ℕ) < m ∨ r ≤ (i : ℕ) + m`. Rewrite using `[if_pos h, if_pos (by simp only [Fin.val_rev]; omega), Fin.rev_rev]`. Rewrite using `[if_neg h, if_neg h]`.
+-/
 theorem wPart_wPart (r m : ℕ) (i : Fin r) : wPart r m (wPart r m i) = i := by
   have hi := i.isLt
   unfold wPart
@@ -20,26 +23,47 @@ theorem wPart_wPart (r m : ℕ) (i : Fin r) : wPart r m (wPart r m i) = i := by
   · rw [if_pos h, if_pos (by simp only [Fin.val_rev]; omega), Fin.rev_rev]
   · rw [if_neg h, if_neg h]
 
+/- English proof (translation)
+Unfold `wPart`. Rewrite using `[if_pos h]`.
+-/
 theorem wPart_outer (r m : ℕ) (i : Fin r) (h : (i : ℕ) < m ∨ r ≤ (i : ℕ) + m) :
     wPart r m i = Fin.rev i := by
   unfold wPart
   rw [if_pos h]
 
+/- English proof (translation)
+Unfold `wPart`. Rewrite using `[if_neg h]`.
+-/
 theorem wPart_mid (r m : ℕ) (i : Fin r) (h : ¬ ((i : ℕ) < m ∨ r ≤ (i : ℕ) + m)) :
     wPart r m i = i := by
   unfold wPart
   rw [if_neg h]
 
+/- English proof (translation)
+Unfold `wVal`. Rewrite using `[if_pos h]`.
+-/
 theorem wVal_outer {K : Type} [Field K] (r m : ℕ) (g : Fin r → K) (i : Fin r)
     (h : (i : ℕ) < m ∨ r ≤ (i : ℕ) + m) : wVal r m g i = 1 := by
   unfold wVal
   rw [if_pos h]
 
+/- English proof (translation)
+Unfold `wVal`. Rewrite using `[if_neg h]`.
+-/
 theorem wVal_mid {K : Type} [Field K] (r m : ℕ) (g : Fin r → K) (i : Fin r)
     (h : ¬ ((i : ℕ) < m ∨ r ≤ (i : ℕ) + m)) : wVal r m g i = g i := by
   unfold wVal
   rw [if_neg h]
 
+/- English proof (translation)
+Use extensionality with `i j`. Establish `hi` using `i.isLt`. Establish `hj` using `j.isLt`. Simplify using `only [wittMat, Matrix.of_apply]`. Distinguish the cases in `h : (i : ℕ) < m ∨ r ≤ (i : ℕ) + m`.
+
+Rewrite using `[wPart_outer r m i h, wVal_outer r m g i h]`. Distinguish the cases in `hj' : j = Fin.rev i`. Substitute `hj'` using the available equality. Rewrite using `[if_pos rfl, if_pos (by simp only [Fin.val_rev]; omega)]`. Rewrite using `[if_neg hj']`.
+
+Rewrite using `[if_neg (by rintro ⟨h1, -⟩; apply hj'; ext; simp only [Fin.val_rev]; omega), if_neg (by rintro ⟨rfl, h2, h3⟩; omega)]`. Rewrite using `[wPart_mid r m i h, wVal_mid r m g i h]`. Distinguish the cases in `hij : j = i`. Substitute `hij` using the available equality. Rewrite using `[if_pos rfl, if_neg (by rintro ⟨h1, h2⟩; omega), if_pos ⟨rfl, by omega, by omega⟩]`.
+
+Rewrite using `[if_neg hij, if_neg (by rintro ⟨h1, h2⟩; omega), if_neg (by rintro ⟨h1, -⟩; exact hij h1.symm)]`.
+-/
 theorem wittMat_eq {K : Type} [Field K] (r m : ℕ) (g : Fin r → K) :
     wittMat r m g = Matrix.of fun i j => if j = wPart r m i then wVal r m g i else 0 := by
   ext i j
@@ -60,6 +84,13 @@ theorem wittMat_eq {K : Type} [Field K] (r m : ℕ) (g : Fin r → K) :
       rw [if_pos rfl, if_neg (by rintro ⟨h1, h2⟩; omega), if_pos ⟨rfl, by omega, by omega⟩]
     · rw [if_neg hij, if_neg (by rintro ⟨h1, h2⟩; omega), if_neg (by rintro ⟨h1, -⟩; exact hij h1.symm)]
 
+/- English proof (translation)
+Rewrite using `[wittMat_eq]`. Use extensionality with `i k`. Rewrite using `[Matrix.mul_apply, Finset.sum_eq_single (wPart r m i)]`. Simplify using `only [Matrix.mul_diagonal, Matrix.map_apply, Matrix.of_apply, if_pos rfl, wPart_wPart, Matrix.diagonal_apply]`. Distinguish the cases in `hik : i = k`.
+
+Substitute `hik` using the available equality. Simplify using the standard rewrite rules. Rewrite using `[if_neg (Ne.symm hik), if_neg hik, map_zero, mul_zero]`. Introduce `j _ hj`. Simplify using `only [Matrix.mul_diagonal, Matrix.map_apply, Matrix.of_apply, if_neg hj, map_zero, zero_mul]`.
+
+Introduce `h`. Conclude with `absurd (Finset.mem_univ _) h`.
+-/
 theorem wittMat_map_mul {K : Type} [Field K] (r m : ℕ) (g : Fin r → K) (σ : K →+* ℂ)
     (v : Fin r → ℂ) :
     (wittMat r m g).map σ * diagonal v * (wittMat r m g).map σ =
@@ -83,6 +114,11 @@ def adMet {K : Type} [Field K] [NumberField K] (r m : ℕ) (g : Fin r → K) (dd
   fun σ i => if (i : ℕ) < m then dd i else if r ≤ (i : ℕ) + m then (dd (Fin.rev i))⁻¹
     else ‖σ (g i)‖
 
+/- English proof (translation)
+Establish `hi` using `i.isLt`. Unfold `adMet`. Use `split_ifs with h1 h2`. Conclude with `hdd i`. Conclude with `inv_pos.mpr (hdd _)`.
+
+Conclude with `norm_pos_iff.mpr ((map_ne_zero σ).mpr (hg i (by omega) (by omega)))`.
+-/
 theorem adMet_pos {K : Type} [Field K] [NumberField K] (r m : ℕ) (g : Fin r → K)
     (dd : Fin r → ℝ) (hdd : ∀ i, 0 < dd i)
     (hg : ∀ i : Fin r, m ≤ (i : ℕ) → (i : ℕ) + m < r → g i ≠ 0) (σ : K →+* ℂ) (i : Fin r) :
@@ -94,6 +130,9 @@ theorem adMet_pos {K : Type} [Field K] [NumberField K] (r m : ℕ) (g : Fin r �
   · exact inv_pos.mpr (hdd _)
   · exact norm_pos_iff.mpr ((map_ne_zero σ).mpr (hg i (by omega) (by omega)))
 
+/- English proof (translation)
+Use function extensionality and compare the values at `i`. Unfold `adMet`. Simplify using `only [RingHom.comp_apply, Complex.norm_conj]`.
+-/
 theorem adMet_conj {K : Type} [Field K] [NumberField K] (r m : ℕ) (g : Fin r → K)
     (dd : Fin r → ℝ) (σ : K →+* ℂ) :
     adMet r m g dd ((starRingEnd ℂ).comp σ) = adMet r m g dd σ := by
@@ -101,6 +140,21 @@ theorem adMet_conj {K : Type} [Field K] [NumberField K] (r m : ℕ) (g : Fin r �
   unfold adMet
   simp only [RingHom.comp_apply, Complex.norm_conj]
 
+/- English proof (translation)
+Establish `hi` using `i.isLt`. Distinguish the cases in `h1 : (i : ℕ) < m`. Establish `ho : (i : ℕ) < m ∨ r ≤ (i : ℕ) + m` using `Or.inl h1`. Rewrite using `[wPart_outer r m i ho, wVal_outer r m g i ho, wVal_outer r m g (Fin.rev i) (by simp only [Fin.val_rev]; omega)]`. Unfold `adMet`.
+
+Simplify using `only [Fin.val_rev, Fin.rev_rev]`. Rewrite using `[if_neg (show ¬ (r - ((i : ℕ) + 1) < m) by omega), if_pos (show r ≤ r - ((i : ℕ) + 1) + m by omega), if_pos h1]`. Simplify using the standard rewrite rules. Distinguish the cases in `h2 : r ≤ (i : ℕ) + m`. Establish `ho : (i : ℕ) < m ∨ r ≤ (i : ℕ) + m` using `Or.inr h2`.
+
+Rewrite using `[wPart_outer r m i ho, wVal_outer r m g i ho, wVal_outer r m g (Fin.rev i) (by simp only [Fin.val_rev]; omega)]`. Unfold `adMet`. Simplify using `only [Fin.val_rev]`. Rewrite using `[if_pos (show r - ((i : ℕ) + 1) < m by omega), if_neg h1, if_pos h2]`. Simplify using the standard rewrite rules.
+
+Establish `hm : ¬ ((i : ℕ) < m ∨ r ≤ (i : ℕ) + m)` using `by omega`. Rewrite using `[wPart_mid r m i hm, wVal_mid r m g i hm]`. Unfold `adMet`. Rewrite using `[if_neg h1, if_neg h2]`. Establish `hr` using `hreal i (by omega) (by omega)`.
+
+Establish `hne : σ (g i) ≠ 0` using `(map_ne_zero σ).mpr (hg i (by omega) (by omega))`. Establish `hz : ((σ (g i)).re : ℂ) = σ (g i)` using `Complex.conj_eq_iff_re.mp hr`. Rewrite using `[← hz, Complex.norm_real, Real.norm_eq_abs]`. Establish `hx : (σ (g i)).re ≠ 0`. Introduce `h0`.
+
+Apply `hne` to reduce the goal to its premises. Rewrite using `[← hz, h0, Complex.ofReal_zero]`. Establish `habs : ((|(σ (g i)).re| : ℝ) : ℂ) ≠ 0` using `by exact_mod_cast abs_ne_zero.mpr hx`. Establish `hsq : ((σ (g i)).re : ℂ) * (σ (g i)).re = ((|(σ (g i)).re| : ℝ) : ℂ) * |(σ (g i)).re|`. Conclude with `(abs_mul_abs_self (σ (g i)).re).symm` after adjusting the coercions.
+
+Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem wVal_adMet {K : Type} [Field K] [NumberField K] (r m : ℕ) (g : Fin r → K)
     (dd : Fin r → ℝ) (h2m : 2 * m ≤ r)
     (hg : ∀ i : Fin r, m ≤ (i : ℕ) → (i : ℕ) + m < r → g i ≠ 0) (σ : K →+* ℂ)

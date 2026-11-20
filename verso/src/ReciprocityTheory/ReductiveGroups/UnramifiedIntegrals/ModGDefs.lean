@@ -10,6 +10,9 @@ namespace ReciprocityTheory.ChartRestriction.L1
 
 def sqD (d : ℕ) : ℂ := Complex.I * ((Real.sqrt d : ℝ) : ℂ)
 
+/- English proof (translation)
+Unfold `sqD`. Rewrite using `[mul_pow, Complex.I_sq, ← Complex.ofReal_pow, Real.sq_sqrt (Nat.cast_nonneg d)]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem sqD_sq (d : ℕ) : sqD d ^ 2 = -(d : ℂ) := by
   unfold sqD
   rw [mul_pow, Complex.I_sq, ← Complex.ofReal_pow, Real.sq_sqrt (Nat.cast_nonneg d)]
@@ -18,6 +21,9 @@ theorem sqD_sq (d : ℕ) : sqD d ^ 2 = -(d : ℂ) := by
 
 def KQ (d : ℕ) : IntermediateField ℚ ℂ := IntermediateField.adjoin ℚ {sqD d}
 
+/- English proof (translation)
+Use `⟨Polynomial.X ^ 2 + Polynomial.C (d : ℚ), Polynomial.monic_X_pow_add_C _ two_ne_zero, ?_⟩` and prove the remaining obligations. Simplify using `[sqD_sq]`.
+-/
 theorem sqD_isIntegral (d : ℕ) : IsIntegral ℚ (sqD d) := by
   refine ⟨Polynomial.X ^ 2 + Polynomial.C (d : ℚ), Polynomial.monic_X_pow_add_C _ two_ne_zero, ?_⟩
   simp [sqD_sq]

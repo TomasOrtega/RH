@@ -25,11 +25,17 @@ section Mat
 
 variable {m n : ℕ}
 
+/- English proof (translation)
+Unfold `Formalism.REAL.Jm`. Rewrite using `[Matrix.diagonal_mul_diagonal, ← Matrix.diagonal_one]`. Apply the tactic sequence `congr 1; funext a; split_ifs <;> simp`.
+-/
 theorem Jm_mul_Jm (ε : Fin n → Bool) : Formalism.REAL.Jm ε * Formalism.REAL.Jm ε = 1 := by
   unfold Formalism.REAL.Jm
   rw [Matrix.diagonal_mul_diagonal, ← Matrix.diagonal_one]
   congr 1; funext a; split_ifs <;> simp
 
+/- English proof (translation)
+Unfold `Formalism.REAL.Jm`. Rewrite using `[Matrix.diagonal_conjTranspose]`. Apply the tactic sequence `congr 1; funext a; simp only [Pi.star_apply]; split_ifs <;> simp`.
+-/
 theorem Jm_herm (ε : Fin n → Bool) : (Formalism.REAL.Jm ε)ᴴ = Formalism.REAL.Jm ε := by
   unfold Formalism.REAL.Jm
   rw [Matrix.diagonal_conjTranspose]
@@ -37,6 +43,15 @@ theorem Jm_herm (ε : Fin n → Bool) : (Formalism.REAL.Jm ε)ᴴ = Formalism.RE
 
 open scoped ComplexOrder in
 
+/- English proof (translation)
+Take `⟨hu', rfl, rfl⟩` from `h`. Establish `hu` using `(Matrix.isUnit_iff_isUnit_det _).1 hu'`. Establish `h1 : fr * fr⁻¹ = 1` using `Matrix.mul_nonsing_inv _ hu`. Establish `h2 : fr⁻¹ * fr = 1` using `Matrix.nonsing_inv_mul _ hu`. Establish `hG : frᴴ * Formalism.REAL.Jm ε * fr * (fr⁻¹ * Formalism.REAL.Jm ε * fr) = frᴴ * fr`.
+
+Combine the equalities or inequalities in the displayed calculation. Establish `hs : fr⁻¹ * Formalism.REAL.Jm ε * fr * (fr⁻¹ * Formalism.REAL.Jm ε * fr) = 1`. Combine the equalities or inequalities in the displayed calculation. Use `⟨hs, ?_, ?_⟩` and prove the remaining obligations. Establish `hGh : (frᴴ * Formalism.REAL.Jm ε * fr)ᴴ = frᴴ * Formalism.REAL.Jm ε * fr`.
+
+Simplify using `[Matrix.conjTranspose_mul, Jm_herm, Matrix.mul_assoc]`. Establish `h3` using `congrArg Matrix.conjTranspose hG`. Rewrite `h3` using `[Matrix.conjTranspose_mul, hGh, Matrix.conjTranspose_mul frᴴ fr, Matrix.conjTranspose_conjTranspose]`. Rewrite using `[h3, ← hG, Matrix.mul_assoc _ (fr⁻¹ * Formalism.REAL.Jm ε * fr), hs, Matrix.mul_one]`. Rewrite using `[hG]`.
+
+Conclude with `Matrix.PosDef.conjTranspose_mul_self _ (Matrix.mulVec_injective_iff_isUnit.2 hu')`.
+-/
 theorem isCartanInv_of_isFrameOf {G s fr : Mn n} {ε : Fin n → Bool} (h : IsFrameOf G s ε fr) : IsCartanInv G s := by
   obtain ⟨hu', rfl, rfl⟩ := h
   have hu := (Matrix.isUnit_iff_isUnit_det _).1 hu'
@@ -57,6 +72,15 @@ theorem isCartanInv_of_isFrameOf {G s fr : Mn n} {ε : Fin n → Bool} (h : IsFr
   · rw [hG]
     exact Matrix.PosDef.conjTranspose_mul_self _ (Matrix.mulVec_injective_iff_isUnit.2 hu')
 
+/- English proof (translation)
+Take `⟨hu, -, rfl⟩` from `h`. Take `⟨hu', -, rfl⟩` from `h'`. Establish `hd` using `(Matrix.isUnit_iff_isUnit_det _).1 hu`. Establish `h1 : fr * fr⁻¹ = 1` using `Matrix.mul_nonsing_inv _ hd`. Establish `h2 : gr * gr⁻¹ = 1` using `Matrix.mul_nonsing_inv _ ((Matrix.isUnit_iff_isUnit_det _).1 hu')`.
+
+Establish `e : Formalism.REAL.Jm δ * single a b (1 : ℂ) * Formalism.REAL.Jm ε = (if (δ a == ε b) then 1 else -1 : ℂ) • single a b (1 : ℂ)`. Use extensionality with `p q`. Rewrite using `[Formalism.REAL.Jm, Formalism.REAL.Jm, mul_diagonal, diagonal_mul, Matrix.smul_apply, Matrix.single_apply, smul_eq_mul]`. Distinguish the cases in `h : a = p ∧ b = q`. Take `⟨rfl, rfl⟩` from `h`.
+
+Apply the tactic sequence `cases δ a <;> cases ε b <;> simp`. Simplify using `[h]`. Unfold `cplxO unitMap`. Rewrite using `[Matrix.nonsing_inv_nonsing_inv _ hd, mul_comm _ I, ← smul_smul]`. Use `congr 1`.
+
+Combine the equalities or inequalities in the displayed calculation. Simplify using `only [Matrix.mul_assoc]`. Use `_ = _ := by rw [h1, h2, Matrix.mul_one, Matrix.mul_one, e, Matrix.mul_smul, Matrix.smul_mul]`.
+-/
 theorem cplxO_unitMap {G s fr : Mn n} {ε : Fin n → Bool} (h : IsFrameOf G s ε fr) {H t gr : Mn m} {δ : Fin m → Bool}
     (h' : IsFrameOf H t δ gr) (a : Fin m) (b : Fin n) :
     cplxO s t (unitMap fr⁻¹ gr⁻¹ a b) = ((if (δ a == ε b) then 1 else -1 : ℂ) * I) • unitMap fr⁻¹ gr⁻¹ a b := by
@@ -80,6 +104,11 @@ theorem cplxO_unitMap {G s fr : Mn n} {ε : Fin n → Bool} (h : IsFrameOf G s �
         simp only [Matrix.mul_assoc]
     _ = _ := by rw [h1, h2, Matrix.mul_one, Matrix.mul_one, e, Matrix.mul_smul, Matrix.smul_mul]
 
+/- English proof (translation)
+Establish `hd` using `(Matrix.isUnit_iff_isUnit_det _).1 hu`. Establish `h1 : fr⁻¹ * fr = 1` using `Matrix.nonsing_inv_mul _ hd`. Establish `h2 : gr⁻¹ * gr = 1` using `Matrix.nonsing_inv_mul _ ((Matrix.isUnit_iff_isUnit_det _).1 hu')`. Establish `e : gr * z * fr⁻¹ = ∑ k : Fin m × Fin n, (gr * z * fr⁻¹) k.1 k.2 • single k.1 k.2 (1 : ℂ)` using `by conv_lhs => rw [Matrix.matrix_eq_sum_single (gr * z * fr⁻¹)]`. Rewrite using `[Fintype.sum_prod_type]`.
+
+Simplify using `only [Matrix.smul_single, smul_eq_mul, mul_one]`. Unfold `unitMap`. Rewrite using `[Matrix.nonsing_inv_nonsing_inv _ hd]`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [Matrix.mul_sum, Matrix.sum_mul, Matrix.mul_smul, Matrix.smul_mul]`.
+-/
 theorem eq_sum_unitMap {fr : Mn n} {gr : Mn m} (hu : IsUnit fr) (hu' : IsUnit gr) (z : Matrix (Fin m) (Fin n) ℂ) :
     z = ∑ k : Fin m × Fin n, (gr * z * fr⁻¹) k.1 k.2 • unitMap fr⁻¹ gr⁻¹ k.1 k.2 := by
   have hd := (Matrix.isUnit_iff_isUnit_det _).1 hu
@@ -103,6 +132,15 @@ section Generic
 
 variable {ι X : Type} [Fintype ι] {A : ι → (X → ℂ) → (X → ℂ)} {P : (X → ℂ) → Prop}
 
+/- English proof (translation)
+Establish `hC : ∀ a, pureTensorL A f (MvPolynomial.C a) = a • f` using `fun a => by`. Rewrite using `[← mul_one (MvPolynomial.C a), MvPolynomial.C_mul', map_smul, pure_one]`. Establish `hm` using `pure_mem hadd hsm hA hf`. Establish `hX` using `pure_X_mul hadd hsm hA hc Aadd Asm hf`. Proceed by induction on `Q using MvPolynomial.induction_on with`.
+
+Consider the case `C a => simp [hC, Bsm _ _ hf, hv]`. Consider the case `add p q hp hq`. Rewrite using `[map_add, Badd _ _ (hm _) (hm _), hp, hq, ← map_add, ← Finset.sum_add_distrib]`. Simplify using `only [map_add, smul_add]`. Consider the case `mul_X p j hp`.
+
+Rewrite using `[mul_comm, hX, hBA _ _ (hm _), hp, ← hX, ← map_smul, ← map_add]`. Use `congr 1`. Simplify using `only [MvPolynomial.pderiv_mul, smul_add, Finset.sum_add_distrib, Finset.mul_sum, mul_smul_comm]`. Rewrite using `[add_comm]`. Use `congr 1`.
+
+Rewrite using `[Finset.sum_eq_single j]`. Simplify using the standard rewrite rules. Introduce `i _ hi`. Rewrite using `[MvPolynomial.pderiv_X_of_ne (Ne.symm hi), zero_mul, smul_zero]`. Simplify using the standard rewrite rules.
+-/
 theorem pure_deriv {B : (X → ℂ) → (X → ℂ)} {c : ι → ℂ}
     (hadd : ∀ f f', P f → P f' → P (f + f')) (hsm : ∀ (a : ℂ) f, P f → P (a • f))
     (hA : ∀ i f, P f → P (A i f)) (hc : ∀ i j f, P f → A i (A j f) = A j (A i f))
@@ -139,6 +177,9 @@ end Generic
 
 variable {D : D7} {S T : HSp D} {ψ : AddChar (AF D.host.F) ℂ} {θ : InfFam D}
 
+/- English proof (translation)
+Establish `h1` using `xi_zero_im_pos D τ`. Establish `h2 : 0 < ‖tauE D τ D.host.xi0‖` using `norm_pos_iff.2 fun h => by rw [h] at h1; simp at h1`. Establish `h3 : 0 < fockScale D τ` using `by unfold fockScale; positivity`. Conclude with `h3.ne'` after adjusting the coercions.
+-/
 theorem fockScale_ne_zero (τ : D.what₂.Tau) : (fockScale D τ : ℂ) ≠ 0 := by
   have h1 := xi_zero_im_pos D τ
   have h2 : 0 < ‖tauE D τ D.host.xi0‖ := norm_pos_iff.2 fun h => by rw [h] at h1; simp at h1
@@ -149,6 +190,11 @@ variable {τ : D.what₂.Tau} {sS : Mn S.rank} {sT : Mn T.rank}
   (hS : IsCartanInv (gramAt D S τ) sS) (hT : IsCartanInv (gramAt D T τ) sT) (z z' : Matrix (Fin T.rank) (Fin S.rank) ℂ)
 include hS hT
 
+/- English proof (translation)
+Unfold `omDir`. Simplify using `only [if_true]`. Use `⟨by rw [GlobalTheory.RealSymplForm.tr_J_J hS hT], ?_⟩` and prove the remaining obligations. Rewrite using `[← GlobalTheory.RealSymplForm.tr_J_J hS hT z, GlobalTheory.RealSymplForm.cplxO_cplxO hS.1 hT.1]`. Simplify using the standard rewrite rules.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem omDir_cplx :
     omDir S T τ (cplxO sS sT z) τ (cplxO sS sT z') = omDir S T τ z τ z' ∧
     omDir S T τ z τ (cplxO sS sT z') = -omDir S T τ (cplxO sS sT z) τ z' := by
@@ -162,6 +208,11 @@ theorem omDir_cplx :
 variable (hψ : IsStdChar D ψ (-1)) (hθ : IsInfFam θ)
 include hψ hθ
 
+/- English proof (translation)
+Establish `ht` using `fun z => theta_dRho hθ hψ τ z hf`. Establish `hc` using `fun z z' => dRho_comm hψ hθ τ z τ z' hf`. Take `⟨h1, h2⟩` from `omDir_cplx hS hT z z'`. Rewrite using `[aPlus_eq τ _ z' f, aPlus_eq τ _ z f, aPlus_smul hψ hθ _ _ _ _ (theta_add (ht _) (theta_smul _ (ht _))), aPlus_smul hψ hθ _ _ _ _ (theta_add (ht _) (theta_smul _ (ht _))), aPlus_add hψ hθ _ _ _ (ht _) (theta_smul _ (ht _)), aPlus_add hψ hθ _ _ _ (ht _) (theta_smul _ (ht _)), aPlu …`. Simplify using `only [aPlus_eq]`.
+
+Rewrite using `[hc z z', hc z (cplxO sS sT z'), hc (cplxO sS sT z) z', hc (cplxO sS sT z) (cplxO sS sT z')]`. Rewrite using `[h1, h2]`. Use `match_scalars`. Apply the tactic sequence `all_goals first | ring1 | (ring_nf; simp only [I_pow_three]; ring1)`.
+-/
 theorem aPlus_comm {f : WO S T → ℂ} (hf : IsThetaFunO ψ S T f) :
     aPlus (heisO ψ S T) θ τ (cplxO sS sT) z (aPlus (heisO ψ S T) θ τ (cplxO sS sT) z' f) =
     aPlus (heisO ψ S T) θ τ (cplxO sS sT) z' (aPlus (heisO ψ S T) θ τ (cplxO sS sT) z f) := by
@@ -178,6 +229,11 @@ theorem aPlus_comm {f : WO S T → ℂ} (hf : IsThetaFunO ψ S T f) :
   match_scalars
   all_goals first | ring1 | (ring_nf; simp only [I_pow_three]; ring1)
 
+/- English proof (translation)
+Establish `ht` using `fun z => theta_dRho hθ hψ τ z hf`. Establish `hc` using `fun z z' => dRho_comm hψ hθ τ z τ z' hf`. Take `⟨h1, h2⟩` from `omDir_cplx hS hT z z'`. Rewrite using `[aPlus_eq τ _ z' f, annih_smul hψ hθ _ _ _ _ (theta_add (ht _) (theta_smul _ (ht _))), annih_add hψ hθ _ _ _ (ht _) (theta_smul _ (ht _)), annih_smul hψ hθ _ _ _ _ (ht _)]`. Use `conv_rhs => rw [annih, aPlus_add hψ hθ _ _ _ (ht _) (theta_smul _ (ht _)), aPlus_smul hψ hθ _ _ _ _ (ht _)]`.
+
+Simplify using `only [aPlus_eq, annih]`. Rewrite using `[hc z z', hc z (cplxO sS sT z'), hc (cplxO sS sT z) z', hc (cplxO sS sT z) (cplxO sS sT z')]`. Rewrite using `[h1, h2]`. Use `match_scalars`. Apply the tactic sequence `all_goals first | ring1 | (ring_nf; simp only [I_pow_three]; ring1)`.
+-/
 theorem annih_aPlus {f : WO S T → ℂ} (hf : IsThetaFunO ψ S T f) :
     annih (heisO ψ S T) θ τ (cplxO sS sT) z (aPlus (heisO ψ S T) θ τ (cplxO sS sT) z' f) =
     aPlus (heisO ψ S T) θ τ (cplxO sS sT) z' (annih (heisO ψ S T) θ τ (cplxO sS sT) z f) +
@@ -197,6 +253,19 @@ theorem annih_aPlus {f : WO S T → ℂ} (hf : IsThetaFunO ψ S T f) :
 
 omit hS hT hψ hθ
 
+/- English proof (translation)
+Introduce `D ψ θ S T τ hψ hθ sS frS εS sT frT εT hfS hfT z`. Establish `hS` using `isCartanInv_of_isFrameOf hfS`. Establish `hT` using `isCartanInv_of_isFrameOf hfT`. Set `u : Fin T.rank × Fin S.rank → Matrix (Fin T.rank) (Fin S.rank) ℂ` to `fun k => unitMap frS⁻¹ frT⁻¹ k.1 k.2`. Set `A : Fin T.rank × Fin S.rank → (WO S T → ℂ) → (WO S T → ℂ)` to `fun k => aPlus (heisO ψ S T) θ τ (cplxO sS sT) (u k)`.
+
+Set `α : Fin T.rank × Fin S.rank → ℂ` to `fun k => if (εT k.1 == εS k.2) then (frT * z * frS⁻¹) k.1 k.2 else starRingEnd ℂ ((frT * z * frS⁻¹) k.1 k.2)`. Set `c : Fin T.rank × Fin S.rank → ℂ` to `fun k => (fockScale D τ : ℂ)⁻¹ * (-(4 * π * I) * ((omDir S T τ z τ (u k) : ℝ) + I * (omDir S T τ (cplxO sS sT z) τ (u k) : ℝ)))`. Use `⟨(1 / 2 : ℂ) • ((∑ k, c k • (MvPolynomial.pderiv k).toLinearMap) + (fockScale D τ : ℂ) • ∑ k, α k • LinearMap.mulLeft ℂ (MvPolynomial.X k)), fun f hf hv P => ?_⟩` and prove the remaining obligations. Establish `hadd : ∀ g g', IsThetaFunO ψ S T g → IsThetaFunO ψ S T g' → IsThetaFunO ψ S T (g + g')` using `fun _ _ => theta_add`. Establish `hsm : ∀ (a : ℂ) g, IsThetaFunO ψ S T g → IsThetaFunO ψ S T (a • g)` using `fun a _ => theta_smul a`.
+
+Establish `hA : ∀ k g, IsThetaFunO ψ S T g → IsThetaFunO ψ S T (A k g)` using `fun _ _ h => aPlus_theta hψ hθ _ _ _ h`. Establish `hc : ∀ i j g, IsThetaFunO ψ S T g → A i (A j g) = A j (A i g)` using `fun _ _ _ h => aPlus_comm hS hT _ _ hψ hθ h`. Establish `Aadd : ∀ i g g', IsThetaFunO ψ S T g → IsThetaFunO ψ S T g' → A i (g + g') = A i g + A i g'` using `fun _ _ _ h h' => aPlus_add hψ hθ _ _ _ h h'`. Establish `Asm : ∀ i (a : ℂ) g, IsThetaFunO ψ S T g → A i (a • g) = a • A i g` using `fun _ a _ h => aPlus_smul hψ hθ _ _ _ a h`. Establish `hm` using `pure_mem hadd hsm hA hf P`.
+
+Establish `h1` using `pure_deriv (B := annih (heisO ψ S T) θ τ (cplxO sS sT) z) (c := c) hadd hsm hA hc Aadd Asm (fun _ _ h h' => annih_add hψ hθ _ _ _ h h') (fun a _ h => annih_smul hψ hθ _ _ _ a h) (fun _ _ h => annih_aPlus hS hT _ _ hψ hθ h) hf (hv z) P`. Establish `h2 : aPlus (heisO ψ S T) θ τ (cplxO sS sT) z (pureTensorL A f P) = pureTensorL A f (∑ k, α k • (MvPolynomial.X k * P))` using `by conv_lhs => rw [eq_sum_unitMap hfS.1 hfT.1 z]`. Rewrite using `[GlobalTheory.FockSubst.aPlus_dir_sum hψ hθ τ sS sT hm, map_sum]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[GlobalTheory.FockSubst.aPlus_dir_smul hψ hθ τ sS sT hm _ _ (cplxO_unitMap hfS hfT k.1 k.2), map_smul, pure_X_mul hadd hsm hA hc Aadd Asm hf]`.
+
+Establish `h3 : ∀ g, dRho (heisO ψ S T) θ τ z g = (1 / 2 : ℂ) • (annih (heisO ψ S T) θ τ (cplxO sS sT) z g + (fockScale D τ : ℂ) • aPlus (heisO ψ S T) θ τ (cplxO sS sT) z g)` using `fun g => by`. Rewrite using `[aPlus, smul_smul, mul_inv_cancel₀ (fockScale_ne_zero τ), one_smul, annih, crea]`. Use `module`. Express the relevant statement in the definitionally equal form `dRho (heisO ψ S T) θ τ z (pureTensorL A f P) = pureTensorL A f _`. Rewrite using `[h3, h1, h2, ← map_smul, ← map_add, ← map_smul]`.
+
+Use `congr 1`. Simplify using `only [LinearMap.smul_apply, LinearMap.add_apply, LinearMap.sum_apply, LinearMap.mulLeft_apply]`. Both sides reduce to the same expression.
+-/
 theorem exists_dRho_ptAt : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ) (θ : InfFam D) (S T : HSp D) (τ : D.what₂.Tau), IsStdChar D ψ (-1) → IsInfFam θ → ∀ (sS frS : Mn S.rank) (εS : Fin S.rank → Bool) (sT frT : Mn T.rank) (εT : Fin T.rank → Bool), IsFrameOf (gramAt D S τ) sS εS frS → IsFrameOf (gramAt D T τ) sT εT frT → ∀ z : Matrix (Fin T.rank) (Fin S.rank) ℂ, ∃ L : Module.End ℂ (LPol T.rank S.rank), ∀ f, IsThetaFunO ψ S T f → IsFockVacAt (heisO ψ S T) θ τ (cplxO sS sT) f → ∀ P, dRho (heisO ψ S T) θ τ z (ptAt ψ θ S T τ sS sT frS⁻¹ frT⁻¹ f P) = ptAt ψ θ S T τ sS sT frS⁻¹ frT⁻¹ f (L P) := by
   intro D ψ θ S T τ hψ hθ sS frS εS sT frT εT hfS hfT z
   have hS := isCartanInv_of_isFrameOf hfS

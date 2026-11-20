@@ -17,16 +17,25 @@ open Formalism.IndefR.Fin
 
 variable {D : D7}
 
+/- English proof (translation)
+Establish `h` using `GlobalTheory.FinPl.ExtZeroLat.symplO_add_right S T x 0 0`. Simplify using `only [add_zero] at h`. Conclude with `left_eq_add.mp h`.
+-/
 theorem symplO_zero_r (S T : HSp D) (x : WO S T) : symplO S T x 0 = 0 := by
   have h := GlobalTheory.FinPl.ExtZeroLat.symplO_add_right S T x 0 0
   simp only [add_zero] at h
   exact left_eq_add.mp h
 
+/- English proof (translation)
+Establish `h` using `GlobalTheory.FinPl.ExtZeroLat.symplO_add_right S T x y (-y)`. Rewrite `h` using `[add_neg_cancel, symplO_zero_r]`. Take the linear combination `-h`.
+-/
 theorem symplO_neg_r (S T : HSp D) (x y : WO S T) : symplO S T x (-y) = -symplO S T x y := by
   have h := GlobalTheory.FinPl.ExtZeroLat.symplO_add_right S T x y (-y)
   rw [add_neg_cancel, symplO_zero_r] at h
   linear_combination -h
 
+/- English proof (translation)
+Introduce `h`. Use `ψ.map_add_eq_mul a (-a)` as an intermediate fact. Rewrite `this` using `[add_neg_cancel, AddChar.map_zero_eq_one, h, zero_mul]`. Conclude with `one_ne_zero this`.
+-/
 theorem psi_ne_zero' (ψ : AddChar (AF D.host.F) ℂ) (a : AF D.host.F) : ψ a ≠ 0 := by
   intro h
   have := ψ.map_add_eq_mul a (-a)
@@ -59,11 +68,19 @@ def annHalf (ψ : AddChar (AF D.host.F) ℂ) (S T : HSp D) (e : AE D) (Λ : AddS
   neg_mem' {a} ha := ⟨(halfGrp S T (cA D e)).neg_mem ha.1, fun x hx hxe => by
     rw [symplO_neg_r, AddChar.map_neg_eq_inv, ha.2 x hx hxe, inv_one]⟩
 
+/- English proof (translation)
+Use extensionality with `i j`. Rewrite using `[Matrix.zero_apply, ← h1 i j, ← h2 i j, ← mul_assoc, he, zero_mul]`.
+-/
 theorem half_inf_half {e : AE D} (he : e * cA D e = 0) (S T : HSp D) {u : WO S T}
     (h1 : IsHalf e u) (h2 : IsHalf (cA D e) u) : u = 0 := by
   ext i j
   rw [Matrix.zero_apply, ← h1 i j, ← h2 i j, ← mul_assoc, he, zero_mul]
 
+/- English proof (translation)
+Use `⟨s.map (fun a => algebraMap D.host.F (AE D) (k : D.host.F)⁻¹ * a), fun i j => ?_, ?_⟩` and prove the remaining obligations. Simplify using `only [Matrix.map_apply]`. Rewrite using `[mul_left_comm, hs i j]`. Use extensionality with `i j`. Rewrite using `[Matrix.smul_apply, Matrix.map_apply, nsmul_eq_mul, ← mul_assoc]`.
+
+Establish `h1 : (k : AE D) * algebraMap D.host.F (AE D) (k : D.host.F)⁻¹ = 1`. Rewrite using `[show (k : AE D) = algebraMap D.host.F (AE D) (k : D.host.F) by simp, ← map_mul, mul_inv_cancel₀ (Nat.cast_ne_zero.2 hk.ne'), map_one]`. Rewrite using `[h1, one_mul]`.
+-/
 theorem half_div' (S T : HSp D) {e : AE D} {k : ℕ} (hk : 0 < k) {s : WO S T} (hs : IsHalf e s) :
     ∃ t, IsHalf e t ∧ k • t = s := by
   refine ⟨s.map (fun a => algebraMap D.host.F (AE D) (k : D.host.F)⁻¹ * a), fun i j => ?_, ?_⟩
@@ -76,6 +93,11 @@ theorem half_div' (S T : HSp D) {e : AE D} {k : ℕ} (hk : 0 < k) {s : WO S T} (
         mul_inv_cancel₀ (Nat.cast_ne_zero.2 hk.ne'), map_one]
     rw [h1, one_mul]
 
+/- English proof (translation)
+Establish `hu : IsUnit (k : AE D)`. Establish `e1 : (k : AE D) = algebraMap D.host.F (AE D) (k : D.host.F)` using `by simp`. Rewrite using `[e1]`. Conclude with `(IsUnit.mk0 _ (Nat.cast_ne_zero.2 hk.ne')).map _`. Use extensionality with `i j`.
+
+Use `congrFun (congrFun h i) j` as an intermediate fact. Rewrite `this` using `[Matrix.smul_apply, nsmul_eq_mul, Matrix.zero_apply]`. Rewrite using `[Matrix.zero_apply]`. Conclude with `(hu.mul_right_eq_zero).1 this`.
+-/
 theorem nsmul_eq_zero' (S T : HSp D) {k : ℕ} (hk : 0 < k) {t : WO S T} (h : k • t = 0) : t = 0 := by
   have hu : IsUnit (k : AE D) := by
     have e1 : (k : AE D) = algebraMap D.host.F (AE D) (k : D.host.F) := by simp
@@ -87,6 +109,15 @@ theorem nsmul_eq_zero' (S T : HSp D) {k : ℕ} (hk : 0 < k) {t : WO S T} (h : k 
   rw [Matrix.zero_apply]
   exact (hu.mul_right_eq_zero).1 this
 
+/- English proof (translation)
+Set `R' : Finset W` to `R.filter (· ∈ H)`. Set `f : R' → Four.Qt k H` to `fun r => QuotientAddGroup.mk ⟨r.1, (Finset.mem_filter.1 r.2).2⟩`. Use `Finite.of_surjective f ?_` and prove the remaining obligations. Introduce `q`. Proceed by induction on `q using QuotientAddGroup.induction_on with`.
+
+Consider the case `H u`. Take `⟨r, hr, v, hv, huv⟩` from `hR u u.2`. Establish `hrH : r ∈ H`. Use `H.sub_mem u.2 (H.nsmul_mem hv k)` as an intermediate fact. Rewrite `this` using `[huv, add_sub_cancel_right]`. Then use the resulting hypothesis.
+
+Use `⟨⟨r, Finset.mem_filter.2 ⟨hr, hrH⟩⟩, ?_⟩` and prove the remaining obligations. Apply `QuotientAddGroup.eq.2` to reduce the goal to its premises. Rewrite using `[AddSubgroup.mem_addSubgroupOf]`. Use `Four.mem_smulSub.2 ⟨v, hv, ?_⟩` and prove the remaining obligations. Simplify using `only [AddSubgroup.coe_add, AddSubgroup.coe_neg]`.
+
+Rewrite using `[huv]`. Normalize the expressions using the abelian group laws.
+-/
 theorem finite_qt' {W : Type*} [AddCommGroup W] {H : AddSubgroup W} {k : ℕ} (R : Finset W)
     (hR : ∀ u ∈ H, ∃ r ∈ R, ∃ v ∈ H, u = r + k • v) : Finite (Four.Qt k H) := by
   classical
@@ -108,6 +139,9 @@ theorem finite_qt' {W : Type*} [AddCommGroup W] {H : AddSubgroup W} {k : ℕ} (R
     rw [huv]
     abel
 
+/- English proof (translation)
+Take `⟨hs, k, hk, hi, hl⟩` from `hΦ`. Use `⟨hs, k, hk, fun u hu t => hi u (h ▸ hu) t, fun t ht => ?_⟩` and prove the remaining obligations. Establish `hm : k • t ∈ L₁ ⊓ X` using `AddSubgroup.mem_inf.2 ⟨hl t ht, X.nsmul_mem (hs t ht) k⟩`. Rewrite `hm` using `[h]`. Conclude with `(AddSubgroup.mem_inf.1 hm).1`.
+-/
 theorem isSB_congr {W : Type*} [AddCommGroup W] {L₁ L₂ X : AddSubgroup W} (h : L₁ ⊓ X = L₂ ⊓ X) {Φ : W → ℂ}
     (hΦ : Four.IsSB L₁ X Φ) : Four.IsSB L₂ X Φ := by
   obtain ⟨hs, k, hk, hi, hl⟩ := hΦ
@@ -116,17 +150,64 @@ theorem isSB_congr {W : Type*} [AddCommGroup W] {L₁ L₂ X : AddSubgroup W} (h
   rw [h] at hm
   exact (AddSubgroup.mem_inf.1 hm).1
 
+/- English proof (translation)
+Take `⟨hs, k, hk, hi, hl⟩` from `h`. Conclude with `⟨hs, k, hk, fun u hu t => hi u (AddSubgroup.mem_inf.1 hu).1 (AddSubgroup.mem_inf.1 hu).2 t, hl⟩`.
+-/
 theorem isSB_of_half {e : AE D} {S T : HSp D} {Λ : AddSubgroup (WO S T)} {Φ : WO S T → ℂ} (h : IsSBHalf e Λ Φ) :
     Four.IsSB Λ (halfGrp S T e) Φ := by
   obtain ⟨hs, k, hk, hi, hl⟩ := h
   exact ⟨hs, k, hk, fun u hu t => hi u (AddSubgroup.mem_inf.1 hu).1 (AddSubgroup.mem_inf.1 hu).2 t, hl⟩
 
+/- English proof (translation)
+Take `⟨hs, k, hk, hi, hl⟩` from `h`. Conclude with `⟨hs, k, hk, fun u hu hue t => hi u (AddSubgroup.mem_inf.2 ⟨hu, hue⟩) t, hl⟩`.
+-/
 theorem half_of_isSB {e : AE D} {S T : HSp D} {Λ : AddSubgroup (WO S T)} {Φ : WO S T → ℂ}
     (h : Four.IsSB Λ (halfGrp S T e) Φ) : IsSBHalf e Λ Φ := by
   obtain ⟨hs, k, hk, hi, hl⟩ := h
   exact ⟨hs, k, hk, fun u hu hue t => hi u (AddSubgroup.mem_inf.2 ⟨hu, hue⟩) t, hl⟩
 open Classical in
 
+/- English proof (translation)
+Use `set Λ := stdHom S T with hΛ`. Use `set X := halfGrp S T E₂ with hX`. Use `set Y := halfGrp S T (cA D E₂) with hY`. Use `set A := annHalf ψ S T E₂ Λ with hA`. Use `set L' := (Λ ⊓ X) ⊔ A with hL'`.
+
+Establish `mi` using `fun {x : WO S T} {H K : AddSubgroup (WO S T)} (h : x ∈ H ⊓ K) => AddSubgroup.mem_inf.1 h`. Establish `hAY : ∀ {y}, y ∈ A → y ∈ Y` using `fun h => h.1`. Establish `hXY : ∀ {u : WO S T}, u ∈ X → u ∈ Y → u = 0` using `fun h1 h2 => half_inf_half hE S T h1 h2`. Establish `hLX : L' ⊓ X = Λ ⊓ X`. Apply `le_antisymm` to reduce the goal to its premises.
+
+Introduce `z hz`. Take `⟨hzL, hzX⟩` from `mi hz`. Take `⟨a, ha, b, hb, rfl⟩` from `AddSubgroup.mem_sup.1 hzL`. Establish `hbX : b ∈ X`. Use `X.sub_mem hzX (mi ha).2` as an intermediate fact.
+
+Rewrite `this` using `[add_sub_cancel_left]`. Then use the resulting hypothesis. Rewrite using `[hXY hbX (hAY hb), add_zero]`. Conclude with `ha`. Introduce `z hz`. Conclude with `AddSubgroup.mem_inf.2 ⟨AddSubgroup.mem_sup_left hz, (mi hz).2⟩`.
+
+Establish `hLY : L' ⊓ Y = A`. Apply `le_antisymm` to reduce the goal to its premises. Introduce `z hz`. Take `⟨hzL, hzY⟩` from `mi hz`. Take `⟨a, ha, b, hb, rfl⟩` from `AddSubgroup.mem_sup.1 hzL`.
+
+Establish `haY : a ∈ Y`. Use `Y.sub_mem hzY (hAY hb)` as an intermediate fact. Rewrite `this` using `[add_sub_cancel_right]`. Then use the resulting hypothesis. Rewrite using `[hXY (mi ha).2 haY, zero_add]`. Conclude with `hb`.
+
+Introduce `z hz`. Conclude with `AddSubgroup.mem_inf.2 ⟨AddSubgroup.mem_sup_right hz, hAY hz⟩`. Establish `hχl : ∀ t t' y : WO S T, ψ (symplO S T (t + t') y) = ψ (symplO S T t y) * ψ (symplO S T t' y)` using `fun t t' y => by`. Rewrite using `[GlobalTheory.FinPl.ExtZeroLat.symplO_add_left S T, AddChar.map_add_eq_mul]`. Establish `hχr : ∀ t y y' : WO S T, ψ (symplO S T t (y + y')) = ψ (symplO S T t y) * ψ (symplO S T t y')` using `fun t y y' => by`.
+
+Rewrite using `[GlobalTheory.FinPl.ExtZeroLat.symplO_add_right S T, AddChar.map_add_eq_mul]`. Establish `hχ0 : ∀ t y : WO S T, ψ (symplO S T t y) ≠ 0` using `fun t y => psi_ne_zero' ψ _`. Establish `hLL' : ∀ x ∈ L' ⊓ X, ∀ y ∈ L' ⊓ Y, ψ (symplO S T x y) = 1`. Introduce `x hx y hy`. Rewrite `hx` using `[hLX]`.
+
+Rewrite `hy` using `[hLY]`. Conclude with `hy.2 x (mi hx).1 (mi hx).2`. Establish `hdX' : ∀ x ∈ X, (∀ y ∈ L' ⊓ Y, ψ (symplO S T x y) = 1) → x ∈ L'`. Introduce `x hx h`. Establish `hxΛ : x ∈ Λ` using `hdd x hx fun y hy hy' => h y (by rw [hLY]; exact ⟨hy, hy'⟩)`.
+
+Conclude with `AddSubgroup.mem_sup_left (AddSubgroup.mem_inf.2 ⟨hxΛ, hx⟩)`. Establish `hdivX : ∀ k : ℕ, 0 < k → ∀ s ∈ X, ∃ t ∈ X, k • t = s` using `fun k hk s hs => by`. Take `⟨t, ht, hts⟩` from `half_div' S T hk hs`. Conclude with `⟨t, ht, hts⟩`. Establish `hdivY : ∀ k : ℕ, 0 < k → ∀ s ∈ Y, ∃ t ∈ Y, k • t = s` using `fun k hk s hs => by`.
+
+Take `⟨t, ht, hts⟩` from `half_div' S T hk hs`. Conclude with `⟨t, ht, hts⟩`. Establish `hfinX : ∀ k, 0 < k → Finite (Four.Qt k (L' ⊓ X))` using `fun k hk => by`. Rewrite using `[hLX]`. Take `⟨R, hR⟩` from `hfX k hk`.
+
+Conclude with `finite_qt' R fun u hu => by`. Take `⟨r, hr, v, hv, hve, huv⟩` from `hR u (mi hu).1 (mi hu).2`. Conclude with `⟨r, hr, v, AddSubgroup.mem_inf.2 ⟨hv, hve⟩, huv⟩`. Establish `hfinY : ∀ k, 0 < k → Finite (Four.Qt k (L' ⊓ Y))` using `fun k hk => by`. Rewrite using `[hLY]`.
+
+Take `⟨R, hR⟩` from `hfY k hk`. Conclude with `finite_qt' R fun u hu => by`. Take `⟨r, hr, v, hv, hv', huv⟩` from `hR u hu.1 hu.2`. Conclude with `⟨r, hr, v, ⟨hv, hv'⟩, huv⟩`. Establish `htf : ∀ k : ℕ, 0 < k → ∀ t : WO S T, k • t = 0 → t = 0` using `fun k hk t h => nsmul_eq_zero' S T hk h`.
+
+Establish `hSB : ∀ Φ', Four.IsSB L' X Φ' → IsSBHalf E₂ Λ Φ'` using `fun Φ' h => half_of_isSB (isSB_congr hLX h)`. Establish `htr : ∀ Φ', Four.IsSB L' X Φ' → ∀ x ∈ X, T' (fun t => Φ' (t + x)) = heisLin ψ S T x (T' Φ')` using `fun Φ' h x hx => hPM.trans Φ' (hSB Φ' h) x hx`. Establish `hmo : ∀ Φ', Four.IsSB L' X Φ' → ∀ y ∈ Y, T' (fun t => ψ (symplO S T t y) * Φ' t) = heisLin ψ S T y (T' Φ')` using `fun Φ' h y hy => hPM.modul Φ' (hSB Φ' h) y hy`. Establish `hva : T' (fun t => if t ∈ L' ∧ t ∈ X then (1 : ℂ) else 0) = f₀`. Establish `h` using `hPM.vac`.
+
+Rewrite `h` using `[one_smul]`. Rewrite using `[← h]`. Use `congr 1`. Use function extensionality and compare the values at `t`. Establish `hiff : (t ∈ L' ∧ t ∈ X) ↔ (t ∈ Λ ∧ IsHalf E₂ t)`.
+
+Prove the components needed by the constructor for the conclusion. Introduce `h'`. Use `AddSubgroup.mem_inf.2 h'` as an intermediate fact. Rewrite `this` using `[hLX]`. Conclude with `mi this`.
+
+Introduce `h'`. Establish `: t ∈ Λ ⊓ X` using `AddSubgroup.mem_inf.2 h'`. Rewrite `this` using `[← hLX]`. Conclude with `mi this`. Unfold `halfInd`.
+
+Distinguish the cases in `ht : t ∈ Λ ∧ IsHalf E₂ t`. Rewrite using `[if_pos (hiff.2 ht), if_pos ht]`. Rewrite using `[if_neg (fun h' => ht (hiff.1 h')), if_neg ht]`. Establish `hspan` using `Four.model_mem_span hχl hχr hχ0 hLL' hdX' hdivX hdivY hfinX hfinY htf T' htr hmo hva (isSB_congr hLX.symm (isSB_of_half hΦ))`. Establish `hzero : IsThetaFunO ψ S T 0`.
+
+Use `Formalism.IndefR.Eqv.thetaO_smul (0 : ℂ) hf₀` as an intermediate fact. Rewrite `this` using `[zero_smul]`. Then use the resulting hypothesis. Generalize the expression as in `T' Φ = v₀ at hspan ⊢`. Proceed by induction on `hspan using Submodule.span_induction with`. Consider the case `mem v hv`.
+
+Take `⟨a, -, y, -, rfl⟩` from `hv`. Conclude with `GlobalTheory.ThetaClosed.isThetaFunO_heisO_all hψ (GlobalTheory.ThetaClosed.isThetaFunO_heisO_all hψ hf₀ y) a`. Consider the case `zero => exact hzero`. Consider the case `add v w _ _ hv hw => exact Formalism.IndefR.Eqv.thetaO_add hv hw`. Consider the case `smul c v _ hv => exact Formalism.IndefR.Eqv.thetaO_smul c hv`.
+-/
 theorem theta_of_facts (ψ : AddChar (AF D.host.F) ℂ) (hψ : IsStdChar D ψ (-1)) (S T : HSp D)
     (E₂ : AE D) (hE : E₂ * cA D E₂ = 0)
     (hdd : ∀ x : WO S T, IsHalf E₂ x → (∀ y, IsHalf (cA D E₂) y →
@@ -246,6 +327,9 @@ theorem theta_of_facts (ψ : AddChar (AF D.host.F) ℂ) (hψ : IsStdChar D ψ (-
   | add v w _ _ hv hw => exact Formalism.IndefR.Eqv.thetaO_add hv hw
   | smul c v _ hv => exact Formalism.IndefR.Eqv.thetaO_smul c hv
 
+/- English proof (translation)
+Introduce `D ψ hψ S T Q E₂ hE f₀ T' hf₀ _ hPM Φ hΦ`. Conclude with `theta_of_facts ψ hψ S T E₂ hE.2 (GlobalTheory.T.standard_lattice_half_eq_double_annihilator D ψ hψ S T Q E₂ hE) (GlobalTheory.T.exists_finite_reps_half_standardHom_mod_nsmul D S T Q E₂ hE) (GlobalTheory.T.finite_quotient_annihilator_standardLattice_conjHalf D ψ hψ S T Q E₂ hE) f₀ …`.
+-/
 theorem theta_placeModel_std : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ), IsStdChar D ψ (-1) → ∀ (S T : HSp D) (Q : Finset (Formalism.L2.DIV.Pl D.host.E)) (E₂ : AE D), IsIdemSum E₂ Q → ∀ (f₀ : WO S T → ℂ) (T' : (WO S T → ℂ) →ₗ[ℂ] (WO S T → ℂ)), IsThetaFunO ψ S T f₀ → IsLatVac (heisO ψ S T) (stdHom S T) f₀ → IsPlaceModel ψ (symplO S T) (heisO ψ S T) E₂ (stdHom S T) 1 f₀ T' → ∀ Φ, IsSBHalf E₂ (stdHom S T) Φ → IsThetaFunO ψ S T (T' Φ) := by
   intro D ψ hψ S T Q E₂ hE f₀ T' hf₀ _ hPM Φ hΦ
   exact theta_of_facts ψ hψ S T E₂ hE.2 (GlobalTheory.T.standard_lattice_half_eq_double_annihilator D ψ hψ S T Q E₂ hE) (GlobalTheory.T.exists_finite_reps_half_standardHom_mod_nsmul D S T Q E₂ hE)

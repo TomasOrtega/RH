@@ -14,6 +14,19 @@ open scoped InnerProductSpace ENNReal
 
 namespace GlobalTheory.Amp.Side
 
+/- English proof (translation)
+Take `⟨P, ⟨⟨hP, hH⟩, -⟩, -, -, ⟨⟨h1, hm⟩, hn, hc⟩, hi, -⟩` from `h`. Establish `hd : IsUnit P.det` using `(Matrix.isUnit_iff_isUnit_det P).1 hP`. Establish `hPi : P * P⁻¹ = 1` using `mul_nonsing_inv _ hd`. Establish `hiP : P⁻¹ * P = 1` using `nonsing_inv_mul _ hd`. Establish `mem : ∀ g, g ∈ GG k r ↔ P * g * P⁻¹ ∈ UJset ε` using `uHConj _ ε _ P hd hH`.
+
+Establish `back : ∀ g : Mat k r, P⁻¹ * (P * g * P⁻¹) * P = g` using `fun g => by`. Combine the equalities or inequalities in the displayed calculation. Establish `forth : ∀ g : Mat k r, P * (P⁻¹ * g * P) * P⁻¹ = g` using `fun g => by`. Combine the equalities or inequalities in the displayed calculation. Use `⟨⟨⟨?_, ?_⟩, ?_, ?_⟩, ?_⟩` and prove the remaining obligations.
+
+Simplify `h1` using `[hiP]`. Introduce `a ha b hb`. Use `hm _ ((mem a).1 ha) _ ((mem b).1 hb)` as an intermediate fact. Establish `e : P * a * P⁻¹ * (P * b * P⁻¹) = P * (a * b) * P⁻¹`. Combine the equalities or inequalities in the displayed calculation.
+
+Simplify `this` using `only [e, back]`. Introduce `g hg v`. Use `hn _ ((mem g).1 hg) v` as an intermediate fact. Simplify `this` using `only [back]`. Introduce `v`.
+
+Establish `hcont : Continuous fun g : Mat k r => P * g * P⁻¹` using `(continuous_const.matrix_mul continuous_id).matrix_mul continuous_const`. Use `(hc v).comp hcont.continuousOn (s := GG k r) (fun g hg => (mem g).1 hg)` as an intermediate fact. Use `this.congr fun g _ => ?_` and prove the remaining obligations. Simplify using `only [Function.comp, back]`. Introduce `S hS hst`.
+
+Use `hi S hS fun g hg v hv => hst _ ((mem _).2 ?_) v hv` and prove the remaining obligations. Rewrite using `[forth]`. Conclude with `hg`.
+-/
 theorem urep_irred_of_ds {k r : ℕ} {H : Type} [NormedAddCommGroup H] [InnerProductSpace ℂ H]
     {ε : Fin (2 * r + k + 1) → Bool} {lam : Fin (2 * r + k + 1) → ℝ} {σ : Mat k r → (H →L[ℂ] H)}
     (h : IsDSHpk k r ε lam σ) : IsURepOn (GG k r) σ ∧ IsIrredOn (GG k r) σ := by
@@ -49,6 +62,13 @@ theorem urep_irred_of_ds {k r : ℕ} {H : Type} [NormedAddCommGroup H] [InnerPro
     refine hi S hS fun g hg v hv => hst _ ((mem _).2 ?_) v hv
     rw [forth]; exact hg
 
+/- English proof (translation)
+Take `⟨h1, h2, h3, h4⟩` from `h`. Use `⟨?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Establish `: ENNReal.ofReal c • μ = c.toNNReal • μ` using `rfl`. Rewrite using `[this]`. Use `infer_instance`.
+
+Introduce `h0`. Break down `Measure.ennreal_smul_eq_zero.1 h0 with h | h` into its components or cases. Conclude with `(ENNReal.ofReal_pos.2 hc).ne' h`. Conclude with `h2 h`. Rewrite using `[Measure.smul_apply, h3, smul_zero]`.
+
+Introduce `s hs`. Rewrite using `[Measure.map_smul, h4 s hs]`.
+-/
 theorem isHaarOn_smul {k r : ℕ} {S : Set (Mat k r)} {μ : Measure (Mt k r)} (h : IsHaarOn S μ) {c : ℝ}
     (hc : 0 < c) : IsHaarOn S (ENNReal.ofReal c • μ) := by
   obtain ⟨h1, h2, h3, h4⟩ := h
@@ -63,6 +83,13 @@ theorem isHaarOn_smul {k r : ℕ} {S : Set (Mat k r)} {μ : Measure (Mt k r)} (h
   · intro s hs
     rw [Measure.map_smul, h4 s hs]
 
+/- English proof (translation)
+Use `FiniteDimensional.complete ℂ Wp` as an intermediate fact. Take `⟨hnt, hu, hi⟩` from `(GlobalTheory.Amp.Schur.type_irred_and_avg k r z π hz hT).1 u hπ`. Use `⟨hz, hT, hnt, hu, hi, hG, hW, hW1, hN, hq, fun n hn => (psiChar k r z s hz n hn).2, ?_, ?_, hc, hl⟩` and prove the remaining obligations. Introduce `h hh m hm g hg`. Establish `hdet : IsUnit (Hpk k r).det` using `Matrix.isUnit_det_of_right_inverse (hpkFacts k r).2.1`.
+
+Establish `hhm : h * m ∈ GG k r` using `(uHGroup _ _ hdet).2.1 h hh.1 m hm.1`. Establish `hs : IsSmoothVec σ (σ g v)` using `((GlobalTheory.T.smooth_vectors_dense_invariant k r σ v hσ).2.2.2.1 v hv).1 g hg`. Use `hB.2.2.1 h hh m hm (σ g v) hs` as an intermediate fact. Use `show B (σ (h * m * g) v) = _`. Rewrite using `[hσ.1.2 _ hhm _ hg]`.
+
+Conclude with `this`. Conclude with `(GlobalTheory.T.diffQuotient_besselMap_tendsto k r σ z _ π B v 0 hσ hB hv (by simp [InLieHpk])).2.1`.
+-/
 theorem oneSide_of_bessel {k r : ℕ} {H : Type} [NormedAddCommGroup H] [InnerProductSpace ℂ H] [CompleteSpace H]
     {Wp : Type} [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp] [FiniteDimensional ℂ Wp]
     {σ : Mat k r → (H →L[ℂ] H)} {z : Fin (2 * r + k + 1) → ℂ} {π : Mat k r → (Wp →L[ℂ] Wp)} {u : Fin k → ℝ}
@@ -87,6 +114,17 @@ theorem oneSide_of_bessel {k r : ℕ} {H : Type} [NormedAddCommGroup H] [InnerPr
     exact this
   · exact (GlobalTheory.T.diffQuotient_besselMap_tendsto k r σ z _ π B v 0 hσ hB hv (by simp [InLieHpk])).2.1
 
+/- English proof (translation)
+Introduce `D τ w w' θ W lam A hθ hv hTT hW hA`. Take `⟨c1, c2, z1, z2, t1, t2, hG, w1, w1', w2, w2', hN, q1, q2⟩` from `hW`. Take `⟨-, hds, b1, b2, hsm, -, -, hc, l1, l2, -⟩` from `hA`. Take `⟨hu, hi⟩` from `urep_irred_of_ds hds`. Establish `hpos : 0 < (2 * D.host.v) ^ (-((D.R.rS : ℝ) * D.R.k)) * θ` using `by positivity`.
+
+Establish `hμ : W.μN = ENNReal.ofReal ((2 * D.host.v) ^ (-((D.R.rS : ℝ) * D.R.k)) * θ * 2 ^ (D.R.rS * (D.R.k + 1) + D.R.rS * (D.R.rS - 1))) • lebN D.R.k D.R.rS`. Establish `e : haarLie (Nset D.R.k D.R.rS) (kapN D θ) = kapN D θ • haarLie (Nset D.R.k D.R.rS) 1`. Unfold `haarLie`. Rewrite using `[one_smul]`. Rewrite using `[hN, e, GlobalTheory.T.haar_lie_nilpotent_eq_lebesgue, smul_smul, ENNReal.ofReal_mul hpos.le, ENNReal.ofReal_pow (by norm_num)]`.
+
+Simplify using `[kapN]`. Establish `hNH : IsHaarOn (Nset D.R.k D.R.rS) W.μN`. Rewrite using `[hμ]; exact isHaarOn_smul (GlobalTheory.T.flagUnipotentLebesgueMeasure_isHaarOn _ _) (by positivity)`. Establish `hT1 : 0 < Tz D.R.k D.R.rS W.z`. Rewrite using `[t1]`.
+
+Unfold `Tr`. Conclude with `hTT.1.pos` after adjusting the coercions. Establish `hT2 : 0 < Tz D.R.k D.R.rS W.z'`. Rewrite using `[t2]`. Unfold `Tr`.
+
+Conclude with `hTT.2.1.pos` after adjusting the coercions. Conclude with `⟨hu, hi, hμ, oneSide_of_bessel hu z1 hT1 c1 hG w1 w1' hNH q1 b1 hsm hc l1, oneSide_of_bessel hu z2 hT2 c2 hG w2 w2' hNH q2 b2 hsm hc l2⟩`.
+-/
 theorem both_sides : ∀ (D : D7) τ w w' θ (W : LocW D.R.k D.R.rS) lam (A : LocS W), 0 < θ → 0 < D.host.v → HypTT D w w' → GoodW D τ w w' θ W → GoodS D lam A → IsURepOn (GG D.R.k D.R.rS) A.σ ∧ IsIrredOn (GG D.R.k D.R.rS) A.σ ∧ W.μN = ENNReal.ofReal ((2 * D.host.v) ^ (-((D.R.rS : ℝ) * D.R.k)) * θ * 2 ^ (D.R.rS * (D.R.k + 1) + D.R.rS * (D.R.rS - 1))) • lebN D.R.k D.R.rS ∧ OneSide W.z W.π (psiS D W.z) W.μG W.μW W.μN W.νS A.Φ A.cN ∧ OneSide W.z' W.π' (psiS D W.z') W.μG W.μW' W.μN W.νS' A.Φ' A.cN := by
   intro D τ w w' θ W lam A hθ hv hTT hW hA
   obtain ⟨c1, c2, z1, z2, t1, t2, hG, w1, w1', w2, w2', hN, q1, q2⟩ := hW

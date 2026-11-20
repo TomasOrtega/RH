@@ -11,6 +11,17 @@ namespace GlobalTheory.OrbitSpan
 open MvPolynomial Formalism.BasicNotions Formalism.L2.DIV Formalism.GradedWeylDivisibility
 open scoped Classical Pointwise Matrix
 
+/- English proof (translation)
+Rewrite using `[← Subspace.forall_mem_dualAnnihilator_apply_eq_zero_iff]`. Introduce `φ hφ`. Rewrite `hφ` using `[Submodule.mem_dualAnnihilator]`. Use `set q : Polynomial K := ∑ i ∈ Finset.range (p.natDegree + 1), Polynomial.monomial i (φ (p.coeff i)) with hq`. Establish `hq0 : q = 0`.
+
+Apply `Polynomial.eq_zero_of_infinite_isRoot` to reduce the goal to its premises. Use `Set.Infinite.mono (s := Set.range (fun c : ℕ => (c : K))) ?_ (Set.infinite_range_of_injective Nat.cast_injective)` and prove the remaining obligations. Introduce and unpack `_ ⟨c, rfl⟩`. Establish `h1` using `hφ _ (h c)`. Rewrite `h1` using `[Polynomial.eval_eq_sum_range, map_sum]`.
+
+Simplify using `only [Set.mem_setOf_eq, Polynomial.IsRoot.def, hq, Polynomial.eval_finset_sum, Polynomial.eval_monomial]`. Rewrite using `[← h1]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Establish `: p.coeff i * (c : A) ^ i = ((c : K) ^ i) • p.coeff i`. Rewrite using `[Algebra.smul_def, map_pow, map_natCast, mul_comm]`.
+
+Rewrite using `[this, map_smul, smul_eq_mul, mul_comm]`. Distinguish the cases in `hk : k ≤ p.natDegree`. Use `congrArg (fun r => r.coeff k) hq0` as an intermediate fact. Simplify using `only [hq, Polynomial.finset_sum_coeff, Polynomial.coeff_monomial, Finset.sum_ite_eq', Finset.mem_range, Polynomial.coeff_zero] at this`. Rewrite `this` using `[if_pos (by omega)]`. Then use the resulting hypothesis.
+
+Rewrite using `[Polynomial.coeff_eq_zero_of_natDegree_lt (by omega), map_zero]`.
+-/
 theorem coeff_mem_of_eval_mem {K A : Type} [Field K] [CharZero K] [CommRing A] [Algebra K A] (M : Submodule K A)
     (p : Polynomial A) (h : ∀ c : ℕ, p.eval (c : A) ∈ M) (k : ℕ) : p.coeff k ∈ M := by
   rw [← Subspace.forall_mem_dualAnnihilator_apply_eq_zero_iff]
@@ -37,6 +48,15 @@ theorem coeff_mem_of_eval_mem {K A : Type} [Field K] [CharZero K] [CommRing A] [
     rwa [if_pos (by omega)] at this
   · rw [Polynomial.coeff_eq_zero_of_natDegree_lt (by omega), map_zero]
 
+/- English proof (translation)
+Proceed by induction on `f using MvPolynomial.induction_on with`. Consider the case `C x => simp [rowGen, rowAct]`. Consider the case `add f g hf hg => simp only [map_add, Polynomial.eval_add, hf, hg]`. Consider the case `mul_X f v hf`. Simplify using `only [map_mul, Polynomial.eval_mul, hf]`.
+
+Use `congr 1`. Simplify using `only [rowGen, rowAct, aeval_X, Matrix.add_apply, map_add, add_mul, Finset.sum_add_distrib, Polynomial.eval_add, Polynomial.eval_C]`. Use `congr 1`. Rewrite using `[Finset.sum_eq_single v.1]`. Simplify using the standard rewrite rules.
+
+Introduce `x _ hx`. Simplify using `[Matrix.one_apply, Ne.symm hx]`. Simplify using the standard rewrite rules. Rewrite using `[Finset.sum_eq_single a]`. Distinguish the cases in `hv : v.1 = b`.
+
+Simplify using `only [hv, if_true, Polynomial.eval_mul, Polynomial.eval_X, Polynomial.eval_C, Matrix.single_apply_same]`. Simplify using `[hv, Matrix.single, Ne.symm hv]`. Introduce `x _ hx`. Simplify using `[Matrix.single, Ne.symm hx]`. Simplify using the standard rewrite rules.
+-/
 theorem eval_rowGen {K : Type} [Field K] {r n : ℕ} (a b : Fin r) (c : K) (f : MvPolynomial (Fin r × Fin n) K) :
     (rowGen K a b f).eval (C c) = rowAct K (1 + Matrix.single b a c) f := by
   induction f using MvPolynomial.induction_on with
@@ -62,6 +82,13 @@ theorem eval_rowGen {K : Type} [Field K] {r n : ℕ} (a b : Fin r) (c : K) (f : 
         simp [Matrix.single, Ne.symm hx]
       · simp
 
+/- English proof (translation)
+Distinguish the cases in `h : a = b`. Substitute `h` using the available equality. Establish `hc : (1 + c : K) ≠ 0` using `by exact_mod_cast (by omega : 1 + c ≠ 0)`. Use `IsUnit.of_mul_eq_one (1 + Matrix.single a a (-(c : K) / (1 + c))) ?_` and prove the remaining obligations. Rewrite using `[add_mul, mul_add, mul_add, one_mul, one_mul, mul_one, Matrix.single_mul_single_same, add_assoc, ← Matrix.single_add, ← Matrix.single_add]`.
+
+Establish `: -(c : K) / (1 + c) + (c + c * (-(c : K) / (1 + c))) = 0` using `by field_simp; ring`. Rewrite using `[this]`. Simplify using the standard rewrite rules. Use `IsUnit.of_mul_eq_one (1 + Matrix.single b a (-(c : K))) ?_` and prove the remaining obligations. Rewrite using `[add_mul, mul_add, mul_add, one_mul, one_mul, mul_one, Matrix.single_mul_single_of_ne _ _ _ _ h, add_zero, add_assoc, ← Matrix.single_add]`.
+
+Simplify using the standard rewrite rules.
+-/
 theorem isUnit_elem {K : Type} [Field K] [CharZero K] {r : ℕ} (a b : Fin r) (c : ℕ) :
     IsUnit (1 + Matrix.single b a (c : K)) := by
   by_cases h : a = b
@@ -79,10 +106,18 @@ theorem isUnit_elem {K : Type} [Field K] [CharZero K] {r : ℕ} (a b : Fin r) (c
 
 def trGL {K : Type} [Field K] {r : ℕ} (g : GL (Fin r) K) : GL (Fin r) K := inside₂ K r g⁻¹
 
+/- English proof (translation)
+Simplify using `[trGL, inside₂]`.
+-/
 theorem trGL_coe {K : Type} [Field K] {r : ℕ} (g : GL (Fin r) K) :
     (trGL g : Matrix (Fin r) (Fin r) K) = (g : Matrix (Fin r) (Fin r) K)ᵀ := by
   simp [trGL, inside₂]
 
+/- English proof (translation)
+Unfold `rowDiv`. Use `coeff_mem_of_eval_mem M _ (fun c => ?_) k` and prove the remaining obligations. Establish `h1` using `eval_rowGen a b (c : K) f`. Rewrite `h1` using `[map_natCast]`. Rewrite using `[h1]`.
+
+Take `⟨u, hu⟩` from `isUnit_elem (K := K) a b c`. Rewrite using `[← hu]`. Conclude with `hst u f hf`.
+-/
 theorem rowDiv_mem_of_stable {K : Type} [Field K] [CharZero K] {r m : ℕ}
     (M : Submodule K (MvPolynomial (Fin r × Fin m) K))
     (hst : ∀ u : GL (Fin r) K, ∀ f ∈ M, rowAct K (u : Matrix (Fin r) (Fin r) K) f ∈ M)
@@ -96,6 +131,11 @@ theorem rowDiv_mem_of_stable {K : Type} [Field K] [CharZero K] {r m : ℕ}
   rw [← hu]
   exact hst u f hf
 
+/- English proof (translation)
+Unfold `applyWord`. Proceed by induction on `w with`. Consider the case `nil => rw [List.foldr_nil]`. Conclude with `hf`. Consider the case `cons x w ih => rw [List.foldr_cons]`.
+
+Conclude with `rowDiv_mem_of_stable M hst _ _ _ _ ih`.
+-/
 theorem applyWord_mem_of_stable {K : Type} [Field K] [CharZero K] {r m : ℕ}
     (M : Submodule K (MvPolynomial (Fin r × Fin m) K))
     (hst : ∀ u : GL (Fin r) K, ∀ f ∈ M, rowAct K (u : Matrix (Fin r) (Fin r) K) f ∈ M)
@@ -105,6 +145,11 @@ theorem applyWord_mem_of_stable {K : Type} [Field K] [CharZero K] {r m : ℕ}
   | nil => rw [List.foldr_nil]; exact hf
   | cons x w ih => rw [List.foldr_cons]; exact rowDiv_mem_of_stable M hst _ _ _ _ ih
 
+/- English proof (translation)
+Apply `MvPolynomial.algHom_ext` to reduce the goal to its premises. Introduce `v`. Simplify using `only [rowAct, aeval_X, Matrix.one_apply, AlgHom.id_apply]`. Rewrite using `[Finset.sum_eq_single v.1]`. Simplify using the standard rewrite rules.
+
+Introduce `b _ hb`. Simplify using `[Ne.symm hb]`. Simplify using the standard rewrite rules.
+-/
 theorem rowAct_one {K : Type} [Field K] {r m : ℕ} :
     rowAct K (n := m) (1 : Matrix (Fin r) (Fin r) K) = AlgHom.id K _ := by
   apply MvPolynomial.algHom_ext
@@ -116,6 +161,13 @@ theorem rowAct_one {K : Type} [Field K] {r m : ℕ} :
     simp [Ne.symm hb]
   · simp
 
+/- English proof (translation)
+Proceed by induction on `hf using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨g, rfl⟩` from `hx`. Use `Submodule.subset_span ⟨trGL u * g, ?_⟩` and prove the remaining obligations. Use `DFunLike.congr_fun (rowActMul K r m (u : Matrix (Fin r) (Fin r) K) (g : Matrix (Fin r) (Fin r) K)ᵀ) v` as an intermediate fact.
+
+Rewrite `this` using `[AlgHom.comp_apply]`. Use `beta_reduce`. Rewrite using `[this, Units.val_mul, trGL_coe, Matrix.transpose_mul, Matrix.transpose_transpose]`. Consider the case `zero => rw [map_zero]`. Conclude with `Submodule.zero_mem _`.
+
+Consider the case `add x y _ _ hx hy => rw [map_add]`. Conclude with `Submodule.add_mem _ hx hy`. Consider the case `smul c x _ hx => rw [map_smul]`. Conclude with `Submodule.smul_mem _ _ hx`.
+-/
 theorem orbit_stable {K : Type} [Field K] {r m : ℕ} (v : MvPolynomial (Fin r × Fin m) K) (u : GL (Fin r) K)
     (f : MvPolynomial (Fin r × Fin m) K)
     (hf : f ∈ Submodule.span K (Set.range fun g : GL (Fin r) K => rowAct K (g : Matrix (Fin r) (Fin r) K)ᵀ v)) :
@@ -134,6 +186,11 @@ theorem orbit_stable {K : Type} [Field K] {r m : ℕ} (v : MvPolynomial (Fin r �
   | add x y _ _ hx hy => rw [map_add]; exact Submodule.add_mem _ hx hy
   | smul c x _ hx => rw [map_smul]; exact Submodule.smul_mem _ _ hx
 
+/- English proof (translation)
+Rewrite using `[Formalism.L2.Col.dualWeyl_eq_weyl K hm ν hν, weyl, Submodule.span_le]`. Introduce and unpack `_ ⟨w, rfl⟩`. Generalize the expression as in `hw K hm ν = v`. Use `applyWord_mem_of_stable _ (orbit_stable v) v (Submodule.subset_span ⟨1, ?_⟩) w` and prove the remaining obligations. Use `beta_reduce`.
+
+Rewrite using `[Units.val_one, Matrix.transpose_one, rowAct_one, AlgHom.id_apply]`.
+-/
 theorem dualWeyl_le_span_orbit (K : Type) [Field K] [CharZero K] {r m : ℕ} (hm : m ≤ r) (ν : Fin m → ℕ)
     (hν : Antitone ν) :
     dualWeyl K r m ν ≤ Submodule.span K (Set.range fun g : GL (Fin r) K =>
@@ -145,6 +202,9 @@ theorem dualWeyl_le_span_orbit (K : Type) [Field K] [CharZero K] {r m : ℕ} (hm
   beta_reduce
   rw [Units.val_one, Matrix.transpose_one, rowAct_one, AlgHom.id_apply]
 
+/- English proof (translation)
+Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => exact Submodule.subset_span (by simp)`. Consider the case `insert a s ha ih`. Rewrite using `[Finset.prod_insert ha, Finset.prod_insert ha, ← Submodule.span_mul_span]`. Conclude with `Submodule.mul_mem_mul (hx a) ih`.
+-/
 theorem prod_mem_span_prod {K A ι : Type} [Field K] [CommRing A] [Algebra K A] (s : Finset ι) (S : ι → Set A)
     (x : ι → A) (hx : ∀ i, x i ∈ Submodule.span K (S i)) : ∏ i ∈ s, x i ∈ Submodule.span K (∏ i ∈ s, S i) := by
   induction s using Finset.induction_on with
@@ -153,6 +213,9 @@ theorem prod_mem_span_prod {K A ι : Type} [Field K] [CommRing A] [Algebra K A] 
     rw [Finset.prod_insert ha, Finset.prod_insert ha, ← Submodule.span_mul_span]
     exact Submodule.mul_mem_mul (hx a) ih
 
+/- English proof (translation)
+Unfold `trAct ten`. Rewrite using `[map_prod]`. Conclude with `Finset.prod_congr rfl fun t _ => (blockActTensor K K Ix n n (fun τ => (g τ : Matrix (Fin n) (Fin n) K)ᵀ)).1 t (f t)`.
+-/
 theorem trAct_ten {K : Type} [Field K] {Ix : Type} [Fintype Ix] {n : ℕ} (g : Ix → GL (Fin n) K)
     (f : Ix → MvPolynomial (Fin n × Fin n) K) :
     trAct g (ten f) = ten fun t => rowAct K (g t : Matrix (Fin n) (Fin n) K)ᵀ (f t) := by
@@ -161,6 +224,17 @@ theorem trAct_ten {K : Type} [Field K] {Ix : Type} [Fintype Ix] {n : ℕ} (g : I
   exact Finset.prod_congr rfl fun t _ =>
     (blockActTensor K K Ix n n (fun τ => (g τ : Matrix (Fin n) (Fin n) K)ᵀ)).1 t (f t)
 
+/- English proof (translation)
+Apply `le_antisymm` to reduce the goal to its premises. Rewrite using `[VV, tensorLat, Submodule.span_le]`. Introduce and unpack `_ ⟨F, hF, rfl⟩`. Establish `h1` using `prod_mem_span_prod (K := K) Finset.univ (fun t => blockEmb K t '' (Set.range fun g : GL (Fin n) K => rowAct K (g : Matrix (Fin n) (Fin n) K)ᵀ (extremal K n (lam t)))) (fun t => blockEmb K t (F t)) (fun t => by`. Use `dualWeyl_le_span_orbit K le_rfl (lam t).natW (Formalism.L2.Col.natW_anti (lam t)) (hF t)` as an intermediate fact.
+
+Conclude with `Submodule.apply_mem_span_image_of_mem_span (blockEmb K t).toLinearMap this)`. Use `Submodule.span_le.mpr ?_ h1` and prove the remaining obligations. Introduce `y hy`. Rewrite `hy` using `[Set.mem_fintype_prod]`. Take `⟨z, hz, rfl⟩` from `hy`.
+
+Use `choose w hw hw' using hz`. Use `choose g hg using hw`. Establish `hd : detTwK lam g ≠ 0` using `Finset.prod_ne_zero_iff.mpr fun t _ => Units.ne_zero _`. Establish `h2 : ∏ t, z t = (detTwK lam g)⁻¹ • actP lam g (ten fun t => extremal K n (lam t))`. Simplify using `only [actP, LinearMap.smul_apply, AlgHom.toLinearMap_apply, smul_smul, inv_mul_cancel₀ hd, one_smul, trAct_ten]`.
+
+Unfold `ten`. Conclude with `Finset.prod_congr rfl fun t _ => by rw [← hw', ← hg]`. Rewrite using `[h2]`. Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span ⟨g, rfl⟩)`. Rewrite using `[Submodule.span_le]`.
+
+Introduce and unpack `_ ⟨g, rfl⟩`. Use `polyAction_mem_VV lam g (Submodule.subset_span ⟨_, fun t => ?_, rfl⟩)` and prove the remaining obligations. Conclude with `Formalism.GradedWeylDivisibility.weylLeDual K n n le_rfl _ (Formalism.L2.Col.natW_anti (lam t)) (Submodule.subset_span ⟨[], rfl⟩)`.
+-/
 theorem VV_eq_span_orbit (K : Type) [Field K] [CharZero K] (Ix : Type) [Fintype Ix] (n : ℕ)
     (lam : Ix → DomWeight n) :
     VV K lam = Submodule.span K

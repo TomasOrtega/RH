@@ -17,6 +17,9 @@ attribute [local instance] Formalism.MainNotions.G.GAtP.ringO Formalism.MainNoti
 
 variable {p : ℕ} [Fact p.Prime] (X : Sys p)
 
+/- English proof (translation)
+Simplify using `only [mF]`. Rewrite using `[Matrix.submatrix_mul_equiv]`. Use `congr 1`. Use extensionality with `i k`. Simplify using `only [Matrix.mul_apply, Matrix.map_apply, map_sum, map_mul]`.
+-/
 theorem mF_mul (j : ℕ) (b : BX X) (A B : Matrix (Fin ((X.Pj j).m + 1)) (Fin ((X.Pj j).m + 1)) (X.G.P.Qq b.1)) :
     mF X j b A * mF X j b B = mF X j b (A * B) := by
   simp only [mF]
@@ -25,14 +28,23 @@ theorem mF_mul (j : ℕ) (b : BX X) (A B : Matrix (Fin ((X.Pj j).m + 1)) (Fin ((
   ext i k
   simp only [Matrix.mul_apply, Matrix.map_apply, map_sum, map_mul]
 
+/- English proof (translation)
+Use extensionality with `i k`. Apply the tactic sequence `by_cases h : i = k <;> simp [mF, Matrix.one_apply, h]`.
+-/
 theorem mF_one (j : ℕ) (b : BX X) : mF X j b 1 = 1 := by
   ext i k
   by_cases h : i = k <;> simp [mF, Matrix.one_apply, h]
 
+/- English proof (translation)
+Rewrite using `[mF_mul, ← Units.val_mul, inv_mul_cancel, Units.val_one, mF_one]`.
+-/
 theorem mF_inv_mul (j : ℕ) (b : BX X) (g : GL (Fin ((X.Pj j).m + 1)) (X.G.P.Qq b.1)) :
     mF X j b ((g⁻¹ : GL _ _) : Matrix _ _ (X.G.P.Qq b.1)) * mF X j b (g : Matrix _ _ (X.G.P.Qq b.1)) = 1 := by
   rw [mF_mul, ← Units.val_mul, inv_mul_cancel, Units.val_one, mF_one]
 
+/- English proof (translation)
+Introduce `h`. Use `congrArg Matrix.det (mF_inv_mul X j b g)` as an intermediate fact. Rewrite `this` using `[Matrix.det_mul, h, mul_zero, Matrix.det_one]`. Conclude with `zero_ne_one this`.
+-/
 theorem mF_det_ne (j : ℕ) (b : BX X) (g : GL (Fin ((X.Pj j).m + 1)) (X.G.P.Qq b.1)) :
     (mF X j b (g : Matrix _ _ (X.G.P.Qq b.1))).det ≠ 0 := by
   intro h
@@ -46,6 +58,9 @@ def PhiX (j : ℕ) (l : XspC (X.Pj (j + 1)) Kc →ₗ[Kc] Kc) (a : Kc) (f : MvPo
     (X.Pj j).Xsp →ₗ[X.G.Kf] Kc :=
   ((LinearMap.mulLeft Kc a).restrictScalars X.G.Kf) ∘ₗ (l.restrictScalars X.G.Kf) ∘ₗ ((delF X Kc j).flip f)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem PhiX_apply (j : ℕ) (l : XspC (X.Pj (j + 1)) Kc →ₗ[Kc] Kc) (a : Kc) (f : MvPowerSeries (X.ZA j) Kc) (G : (X.Pj j).Xsp) :
     PhiX X Kc j l a f G = a * l (delF X Kc j G f) := rfl
 
@@ -54,21 +69,33 @@ def WT (j : ℕ) : Submodule Kc (XspC (X.Pj (j + 1)) Kc) :=
     (∀ b, F b ∈ dualWeyl X.G.Kf (NJ X (j + 1)) (NJ X (j + 1)) (nuT X j b)) ∧
       z = map (algebraMap X.G.Kf Kc) (∏ b, rename (emX X (j + 1) b) (F b))}
 
+/- English proof (translation)
+Simplify using `[rowAct]`.
+-/
 private theorem prod_rowAct_lemma {K : Type} [Field K] {n : ℕ} (M : Matrix (Fin n) (Fin n) K) (d : K) :
     rowAct K M (C d : MvPolynomial (Fin n × Fin n) K) = C d := by
   simp [rowAct]
 
+/- English proof (translation)
+Use extensionality with `a t`. Simplify using `[yV, BidetPairing.rowAct_X', Matrix.mul_apply]`.
+-/
 private theorem prod_rowAct_lemma_2 {K : Type} [Field K] {n : ℕ} (M : Matrix (Fin n) (Fin n) K) :
     (yV K n).map (rowAct K M) = M.map C * yV K n := by
   ext a t
   simp [yV, BidetPairing.rowAct_X', Matrix.mul_apply]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `a i`. Simplify using `only [mulC, Matrix.mul_apply, Finset.mul_sum, Finset.sum_mul, mul_assoc]`. Conclude with `Finset.sum_comm`.
+-/
 private theorem prod_rowAct_lemma_3 {K : Type} [Field K] {n : ℕ} (A B : Matrix (Fin n) (Fin n) K)
     (y : Fin n → ℕ → K) : mulC A (mulC B y) = mulC (A * B) y := by
   funext a i
   simp only [mulC, Matrix.mul_apply, Finset.mul_sum, Finset.sum_mul, mul_assoc]
   exact Finset.sum_comm
 
+/- English proof (translation)
+Use function extensionality and compare the values at `a i`. Simplify using `[mulC, map_sum, map_mul]`.
+-/
 private theorem prod_rowAct_lemma_4 {K : Type} [Field K] {n : ℕ} (M : Matrix (Fin n) (Fin n) K)
     (y : Fin n → ℕ → K) :
     mulC (M.map (C : K →+* MvPolynomial (Fin n × Fin n) K)) (fun a i => C (y a i)) =
@@ -76,6 +103,11 @@ private theorem prod_rowAct_lemma_4 {K : Type} [Field K] {n : ℕ} (M : Matrix (
   funext a i
   simp [mulC, map_sum, map_mul]
 
+/- English proof (translation)
+Use `show (rowAct K M).toRingHom _ = _`. Rewrite using `[map_hvO]`. Simplify using `only [AlgHom.toRingHom_eq_coe, AlgHom.coe_toRingHom, prod_rowAct_lemma]`. Rewrite using `[prod_rowAct_lemma_2]`. Establish `hy : (fun a i => (C (y a i) : MvPolynomial (Fin n × Fin n) K)) = mulC (M.map (C : K →+* MvPolynomial (Fin n × Fin n) K)) (fun a i => C (mulC M⁻¹ y a i))`.
+
+Rewrite using `[prod_rowAct_lemma_4, prod_rowAct_lemma_3, Matrix.mul_nonsing_inv _ (isUnit_iff_ne_zero.mpr hM), mulC_one']`. Rewrite using `[hy, hvO_mul]`. Use `congr 1`. Rewrite using `[map_pow, RingHom.map_det, RingHom.mapMatrix_apply]`.
+-/
 private theorem prod_rowAct_lemma_5 {K : Type} [Field K] {n : ℕ} (M : Matrix (Fin n) (Fin n) K)
     (hM : M.det ≠ 0) (y : Fin n → ℕ → K) (c : ℕ) (h : Fin c → ℕ) :
     rowAct K M (hvO (fun a i => C (y a i)) (yV K n) c h) =
@@ -92,6 +124,9 @@ private theorem prod_rowAct_lemma_5 {K : Type} [Field K] {n : ℕ} (M : Matrix (
   congr 1
   rw [map_pow, RingHom.map_det, RingHom.mapMatrix_apply]
 
+/- English proof (translation)
+Use `show (rowAct K M).toRingHom _ = _`. Rewrite using `[map_hvE]`. Simplify using `only [AlgHom.toRingHom_eq_coe, AlgHom.coe_toRingHom, prod_rowAct_lemma]`. Rewrite using `[prod_rowAct_lemma_2, hvE_mul, ← Matrix.transpose_map, prod_rowAct_lemma_4]`.
+-/
 private theorem prod_rowAct_lemma_6 {K : Type} [Field K] {n : ℕ} (M : Matrix (Fin n) (Fin n) K)
     (y : Fin n → ℕ → K) (c : ℕ) (h : Fin c → ℕ) (hh : ∀ k : Fin c, h k ≤ n) :
     rowAct K M (hvE (fun a i => C (y a i)) (yV K n) c h hh) =
@@ -101,6 +136,11 @@ private theorem prod_rowAct_lemma_6 {K : Type} [Field K] {n : ℕ} (M : Matrix (
   simp only [AlgHom.toRingHom_eq_coe, AlgHom.coe_toRingHom, prod_rowAct_lemma]
   rw [prod_rowAct_lemma_2, hvE_mul, ← Matrix.transpose_map, prod_rowAct_lemma_4]
 
+/- English proof (translation)
+Unfold `srcN`. Use `split_ifs with hb`. Conclude with `⟨M.det ^ cX X j b, mulC M⁻¹ y, by rw [prod_rowAct_lemma_5 M hM, MvPolynomial.smul_eq_C_mul]⟩`. Use `⟨(M.det ^ eX X j b)⁻¹, mulC M.transpose y, ?_⟩` and prove the remaining obligations. Rewrite using `[map_mul, prod_rowAct_lemma, prod_rowAct_lemma_6, MvPolynomial.smul_eq_C_mul, ← mul_assoc, ← map_mul]`.
+
+Use `congr 2`. Establish `hd : (Matrix.of fun (a i : Fin (NJ X j)) => mulC M.transpose y a ↑i) = M.transpose * Matrix.of fun (a i : Fin (NJ X j)) => y a ↑i`. Use extensionality with `a i`. Simplify using `[mulC, Matrix.mul_apply]`. Rewrite using `[hd, Matrix.det_mul, Matrix.det_transpose, mul_pow, ← mul_assoc, inv_mul_cancel₀ (pow_ne_zero _ hM), one_mul]`.
+-/
 private theorem prod_rowAct_lemma_7 (j : ℕ) (b : BX X) (M : Matrix (Fin (NJ X j)) (Fin (NJ X j)) X.G.Kf)
     (hM : M.det ≠ 0) (y : Fin (NJ X j) → ℕ → X.G.Kf) :
     ∃ (c : X.G.Kf) (y'' : Fin (NJ X j) → ℕ → X.G.Kf),
@@ -118,6 +158,11 @@ private theorem prod_rowAct_lemma_7 (j : ℕ) (b : BX X) (M : Matrix (Fin (NJ X 
     rw [hd, Matrix.det_mul, Matrix.det_transpose, mul_pow, ← mul_assoc,
       inv_mul_cancel₀ (pow_ne_zero _ hM), one_mul]
 
+/- English proof (translation)
+Establish `key : ∀ b : BX X, ∃ (c : X.G.Kf) (y'' : Fin (NJ X j) → ℕ → X.G.Kf), rename (emX X j b) (rowAct X.G.Kf (mF X j b ((g b.1)⁻¹ : GL _ _)) (evX (fun s => x (xmX X j b s)) (HgX X X.G.Kf j b))) = c • rename (emX X j b) (srcN X j b y'')`. Introduce `b`. Rewrite using `[evX_HgX]`. Take `⟨c, y'', hc⟩` from `prod_rowAct_lemma_7 X j b _ (mF_det_ne X j b (g b.1)⁻¹) _`. Conclude with `⟨c, y'', by rw [hc, MvPolynomial.smul_eq_C_mul, map_mul, rename_C, MvPolynomial.smul_eq_C_mul]⟩`.
+
+Use `choose c y'' hc using key`. Use `⟨∏ b, c b, y'', ?_⟩` and prove the remaining obligations. Rewrite using `[Finset.prod_congr rfl (fun b _ => hc b)]`. Simplify using `only [MvPolynomial.smul_eq_C_mul, Finset.prod_mul_distrib, map_prod]`.
+-/
 theorem prod_rowAct (j : ℕ) (g : ∀ v : X.Pl, GL (Fin ((X.Pj j).m + 1)) (X.G.P.Qq v)) (x : X.FrI j → X.G.Kf) :
     ∃ (a : X.G.Kf) (x'' : ∀ b : BX X, Fin (NJ X j) → ℕ → X.G.Kf),
       ∏ b, rename (emX X j b) (rowAct X.G.Kf (mF X j b ((g b.1)⁻¹ : GL _ _))

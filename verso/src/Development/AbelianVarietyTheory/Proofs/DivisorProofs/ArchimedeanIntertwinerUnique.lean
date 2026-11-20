@@ -14,6 +14,9 @@ noncomputable section
 open scoped Classical
 namespace GlobalTheory.ArchInvForm
 
+/- English proof (translation)
+Establish `h : (2 : ℝ) • (⅟(2 : mixedEmbedding.mixedSpace F) * z) = z`. Rewrite using `[Algebra.smul_def, map_ofNat, ← mul_assoc, mul_invOf_self, one_mul]`. Establish `h2` using `congrArg (Algebra.trace ℝ (mixedEmbedding.mixedSpace F)) h`. Rewrite `h2` using `[map_smul, smul_eq_mul]`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem trace_half {F : Type} [Field F] [NumberField F] [Invertible (2 : mixedEmbedding.mixedSpace F)]
     (z : mixedEmbedding.mixedSpace F) :
     Algebra.trace ℝ (mixedEmbedding.mixedSpace F) (⅟(2 : mixedEmbedding.mixedSpace F) * z) =
@@ -24,6 +27,9 @@ theorem trace_half {F : Type} [Field F] [NumberField F] [Invertible (2 : mixedEm
   rw [map_smul, smul_eq_mul] at h2
   linarith
 
+/- English proof (translation)
+Use function extensionality and compare the values at `x`. Simplify using `only [schr, GlobalTheory.ArchUniq.schrF, hψ]`. Use `congr 3`. Rewrite using `[map_add, trace_half]`. Both sides reduce to the same expression.
+-/
 theorem schr_eq_schrF {F : Type} [Field F] [NumberField F] [Invertible (2 : mixedEmbedding.mixedSpace F)] {κ : Type} [Fintype κ]
     (ψ : AddChar (mixedEmbedding.mixedSpace F) ℂ)
     (hψ : ∀ a, ψ a = Complex.exp (-(2 * Real.pi * Complex.I) * (Algebra.trace ℝ (mixedEmbedding.mixedSpace F) a : ℝ)))
@@ -35,6 +41,13 @@ theorem schr_eq_schrF {F : Type} [Field F] [NumberField F] [Invertible (2 : mixe
   rw [map_add, trace_half]
   rfl
 
+/- English proof (translation)
+Use `letI : MeasurableSpace V := borel V`. Use `haveI : BorelSpace V := ⟨rfl⟩`. Establish `e : (fun x => (p x * u (x + a)) * starRingEnd ℂ (p x * v (x + a))) = fun x => u (x + a) * starRingEnd ℂ (v (x + a))`. Use function extensionality and compare the values at `x`. Establish `h1 : p x * starRingEnd ℂ (p x) = 1`.
+
+Rewrite using `[Complex.mul_conj, Complex.normSq_eq_norm_sq, hp x]`. Simplify using the standard rewrite rules. Rewrite using `[map_mul]`. Take the linear combination `(u (x + a) * starRingEnd ℂ (v (x + a))) * h1`. Rewrite using `[e]`.
+
+Conclude with `integral_add_right_eq_self (μ := μ) (fun x => u x * starRingEnd ℂ (v x)) a`.
+-/
 theorem int_phase_shift {V : Type} [NormedAddCommGroup V] [NormedSpace ℝ V] [FiniteDimensional ℝ V]
     (μ : @Measure V (borel V)) (hμ : @Measure.IsAddHaarMeasure V _ _ (borel V) μ)
     (u v p : V → ℂ) (hp : ∀ x, ‖p x‖ = 1) (a : V) :
@@ -51,6 +64,35 @@ theorem int_phase_shift {V : Type} [NormedAddCommGroup V] [NormedSpace ℝ V] [F
   rw [e]
   exact integral_add_right_eq_self (μ := μ) (fun x => u x * starRingEnd ℂ (v x)) a
 
+/- English proof (translation)
+Introduce `_ F _ _ _ κ _ ψ hψ T A hT`. Establish `hP` using `GlobalTheory.ArchUniq.Coord.isPairing_trP (F := F) κ`. Establish `hnorm : ∀ t, ‖ψ t‖ = 1`. Introduce `t`. Rewrite using `[hψ, show -(2 * (Real.pi : ℂ) * Complex.I) * ((Algebra.trace ℝ (mixedEmbedding.mixedSpace F) t : ℝ) : ℂ) = ((-(2 * Real.pi * Algebra.trace ℝ (mixedEmbedding.mixedSpace F) t) : ℝ) : ℂ) * Complex.I by push_cast; ring]`.
+
+Conclude with `Complex.norm_exp_ofReal_mul_I _`. Establish `hK : ∀ μ : @Measure (κ → mixedEmbedding.mixedSpace F) (borel _), @Measure.IsAddHaarMeasure _ _ _ (borel _) μ → ∀ w (f f₁ g g₁ : SInf F κ), (f₁ : _ → ℂ) = schr ψ w f → (g₁ : _ → ℂ) = schr ψ w g → @integral _ ℂ _ _ (borel _) μ (fun x => T f₁ x * starRingEnd ℂ (T g₁ x)) = @integral …`. Introduce `μ hμ w f f₁ g g₁ hf hg`. Establish `e1` using `hT w f f₁ hf`. Establish `e2` using `hT w g g₁ hg`.
+
+Establish `e : (fun x => T f₁ x * starRingEnd ℂ (T g₁ x)) = fun x => (ψ (x ⬝ᵥ (A w).2 + ⅟(2 : mixedEmbedding.mixedSpace F) * ((A w).1 ⬝ᵥ (A w).2)) * T f (x + (A w).1)) * starRingEnd ℂ (ψ (x ⬝ᵥ (A w).2 + ⅟(2 : mixedEmbedding.mixedSpace F) * ((A w).1 ⬝ᵥ (A w).2)) * T g (x + (A w).1))`. Use function extensionality and compare the values at `x`. Rewrite using `[show T f₁ x = schr ψ (A w) (T f) x from congrFun e1 x, show T g₁ x = schr ψ (A w) (T g) x from congrFun e2 x]`. Both sides reduce to the same expression. Rewrite using `[e]`.
+
+Conclude with `int_phase_shift μ hμ _ _ _ (fun x => hnorm _) _`. Establish `hmod : ∀ μ : @Measure (κ → mixedEmbedding.mixedSpace F) (borel _), @Measure.IsAddHaarMeasure _ _ _ (borel _) μ → ∀ (L : (κ → mixedEmbedding.mixedSpace F) →L[ℝ] ℝ) (f f' g g' : SInf F κ), (∀ x, f' x = Complex.exp (Complex.I * (L x : ℂ)) * f x) → (∀ x, g' x = Complex.exp (Complex.I …`. Introduce `μ hμ L f f' g g' hf hg`. Take `⟨b, hb⟩` from `GlobalTheory.ArchUniqStd.exists_right hP ((-(1 / (2 * Real.pi))) • L)`. Establish `hw : ∀ (u u' : SInf F κ), (∀ x, u' x = Complex.exp (Complex.I * (L x : ℂ)) * u x) → (u' : _ → ℂ) = schr ψ (0, b) u`.
+
+Introduce `u u' hu`. Rewrite using `[schr_eq_schrF ψ hψ]`. Use function extensionality and compare the values at `x`. Rewrite using `[hu x]`. Simplify using `only [GlobalTheory.ArchUniq.schrF]`.
+
+Rewrite using `[add_zero, hP.zero_left, zero_div, add_zero, hb, ContinuousLinearMap.smul_apply, smul_eq_mul]`. Use `congr 2`. Use `push_cast`. Clear the denominators using the available nonvanishing facts. Conclude with `hK μ hμ (0, b) f f' g g' (hw f f' hf) (hw g g' hg)`.
+
+Establish `htr : ∀ μ : @Measure (κ → mixedEmbedding.mixedSpace F) (borel _), @Measure.IsAddHaarMeasure _ _ _ (borel _) μ → ∀ (a : κ → mixedEmbedding.mixedSpace F) (f f' g g' : SInf F κ), (∀ x, f' x = f (x + a)) → (∀ x, g' x = g (x + a)) → @integral _ ℂ _ _ (borel _) μ (fun x => T f' x * sta …`. Introduce `μ hμ a f f' g g' hf hg`. Establish `hw : ∀ (u u' : SInf F κ), (∀ x, u' x = u (x + a)) → (u' : _ → ℂ) = schr ψ (a, 0) u`. Introduce `u u' hu`. Rewrite using `[schr_eq_schrF ψ hψ]`.
+
+Use function extensionality and compare the values at `x`. Simplify using `[GlobalTheory.ArchUniq.schrF, hu, hP.zero_right]`. Conclude with `hK μ hμ (a, 0) f f' g g' (hw f f' hf) (hw g g' hg)`. Use `letI mV : MeasurableSpace (κ → mixedEmbedding.mixedSpace F) := borel _`. Use `haveI : BorelSpace (κ → mixedEmbedding.mixedSpace F) := ⟨rfl⟩`.
+
+Use `set μ₀ : Measure (κ → mixedEmbedding.mixedSpace F) := Measure.addHaar with hμ₀`. Establish `hμ₀H : μ₀.IsAddHaarMeasure` using `by rw [hμ₀]; infer_instance`. Take `⟨c, hc⟩` from `GlobalTheory.T.translation_invariant_form_const_l2 _ μ₀ hμ₀H T (htr μ₀ hμ₀H) (GlobalTheory.T.translation_character_invariant_form _ μ₀ hμ₀H T (hmod μ₀ hμ₀H))`. Take `⟨Φ, hΦ⟩` from `GlobalTheory.ArchUniqStd.exists_one (V := κ → mixedEmbedding.mixedSpace F)`. Establish `hself : ∀ h : SInf F κ, ∫ x, h x * starRingEnd ℂ (h x) ∂μ₀ = ((∫ x, ‖h x‖ ^ 2 ∂μ₀ : ℝ) : ℂ)` using `fun h => GlobalTheory.WrongSignGauss.ip_self μ₀ h`.
+
+Establish `hint : Integrable (fun x => ‖Φ x‖ ^ 2) μ₀`. Use `(GlobalTheory.WrongSignGauss.integrable_ip μ₀ Φ Φ).norm.congr (Filter.Eventually.of_forall fun x => ?_)` and prove the remaining obligations. Simplify using `[norm_mul, sq]`. Establish `hn : 0 < ∫ x, ‖Φ x‖ ^ 2 ∂μ₀`. Rewrite using `[integral_pos_iff_support_of_nonneg (fun x => sq_nonneg _) hint]`.
+
+Establish `ho : IsOpen (Function.support fun x => ‖Φ x‖ ^ 2)` using `(Φ.continuous.norm.pow 2).isOpen_support`. Conclude with `ho.measure_pos μ₀ ⟨0, by simp [hΦ]⟩`. Establish `hm : 0 ≤ ∫ x, ‖T Φ x‖ ^ 2 ∂μ₀` using `integral_nonneg fun x => sq_nonneg _`. Establish `hcΦ` using `hc Φ Φ`. Express the relevant statement in the definitionally equal form `∫ x, T Φ x * starRingEnd ℂ (T Φ x) ∂μ₀ = c * ∫ x, Φ x * starRingEnd ℂ (Φ x) ∂μ₀ at hcΦ`.
+
+Rewrite `hcΦ` using `[hself, hself]`. Establish `hcc : c = (((∫ x, ‖T Φ x‖ ^ 2 ∂μ₀) / (∫ x, ‖Φ x‖ ^ 2 ∂μ₀) : ℝ) : ℂ)`. Establish `hn' : ((∫ x, ‖Φ x‖ ^ 2 ∂μ₀ : ℝ) : ℂ) ≠ 0` using `by exact_mod_cast hn.ne'`. Use `push_cast`. Rewrite using `[eq_div_iff hn', hcΦ]`.
+
+Use `⟨(∫ x, ‖T Φ x‖ ^ 2 ∂μ₀) / (∫ x, ‖Φ x‖ ^ 2 ∂μ₀), div_nonneg hm hn.le, fun μ hμ f f' => ?_⟩` and prove the remaining obligations. Use `haveI : μ.IsAddHaarMeasure := hμ`. Establish `hs : μ = Measure.addHaarScalarFactor μ μ₀ • μ₀` using `Measure.isAddLeftInvariant_eq_smul μ μ₀`. Establish `hcf` using `hc f f'`. Express the relevant statement in the definitionally equal form `∫ x, T f x * starRingEnd ℂ (T f' x) ∂μ₀ = c * ∫ x, f x * starRingEnd ℂ (f' x) ∂μ₀ at hcf`.
+
+Express the relevant statement in the definitionally equal form `∫ x, T f x * starRingEnd ℂ (T f' x) ∂μ = _ * ∫ x, f x * starRingEnd ℂ (f' x) ∂μ`. Rewrite using `[hs, integral_smul_nnreal_measure, integral_smul_nnreal_measure, hcf, ← hcc]`. Simplify using `only [NNReal.smul_def, smul_eq_mul, Complex.real_smul]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem const_of_intertwines : GlobalTheory.FunPr.Hypotheses₂ → ∀ (F : Type) [Field F] [NumberField F] [Invertible (2 : mixedEmbedding.mixedSpace F)] (κ : Type) [Fintype κ]
     (ψ : AddChar (mixedEmbedding.mixedSpace F) ℂ),
     (∀ a, ψ a = Complex.exp (-(2 * Real.pi * Complex.I) * (Algebra.trace ℝ (mixedEmbedding.mixedSpace F) a : ℝ))) →

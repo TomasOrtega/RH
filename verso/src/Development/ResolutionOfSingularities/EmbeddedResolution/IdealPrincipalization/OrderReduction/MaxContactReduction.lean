@@ -99,9 +99,15 @@ def iteratedStrictTransform (s : MarkedBlowupSequenceData p I m E) (H : X.IdealS
   | 0 => H.comap s.isoZero.hom
   | i + 1 => Blowup.strictTransform (s.map i) (s.center i) (iteratedStrictTransform s H i)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem iteratedStrictTransform_zero (s : MarkedBlowupSequenceData p I m E) (H : X.IdealSheafData) :
     iteratedStrictTransform s H 0 = H.comap s.isoZero.hom := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem iteratedStrictTransform_succ (s : MarkedBlowupSequenceData p I m E) (H : X.IdealSheafData) (i : ℕ) :
     iteratedStrictTransform s H (i + 1) =
       Blowup.strictTransform (s.map i) (s.center i) (iteratedStrictTransform s H i) := rfl
@@ -110,6 +116,9 @@ def strictTransformAtLength (s : MarkedBlowupSequenceData p I m E) (H : X.IdealS
     (s.obj s.length).IdealSheafData :=
   iteratedStrictTransform s H s.length
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem strictTransformAtLength_eq (s : MarkedBlowupSequenceData p I m E) (H : X.IdealSheafData) :
     strictTransformAtLength s H = iteratedStrictTransform s H s.length := rfl
 
@@ -188,21 +197,45 @@ def asMarkedSeq (T : MarkedIdealWithBoundary.{u}) (d : BlowupSequenceData T.sche
 def dropTrivialBoundary (T : MarkedIdealWithBoundary.{u}) : MarkedIdealWithBoundary.{u} :=
   T.withBoundary (T.boundary.filter (fun D => decide (D ≠ ⊤)))
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem dropTrivialBoundary_def (T : MarkedIdealWithBoundary.{u}) :
     dropTrivialBoundary T = T.withBoundary (T.boundary.filter (fun D => decide (D ≠ ⊤))) := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem dropTrivialBoundary_baseField (T : MarkedIdealWithBoundary.{u}) : (dropTrivialBoundary T).base = T.base := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem dropTrivialBoundary_scheme (T : MarkedIdealWithBoundary.{u}) : (dropTrivialBoundary T).scheme = T.scheme := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem dropTrivialBoundary_structureMorphism (T : MarkedIdealWithBoundary.{u}) : (dropTrivialBoundary T).structMap = T.structMap := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem dropTrivialBoundary_ideal (T : MarkedIdealWithBoundary.{u}) : (dropTrivialBoundary T).ideal = T.ideal := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem dropTrivialBoundary_mult (T : MarkedIdealWithBoundary.{u}) : (dropTrivialBoundary T).mult = T.mult := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem dropTrivialBoundary_dim (T : MarkedIdealWithBoundary.{u}) : (dropTrivialBoundary T).krullDimSucc = T.krullDimSucc := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem dropTrivialBoundary_boundary (T : MarkedIdealWithBoundary.{u}) :
     (dropTrivialBoundary T).boundary = T.boundary.filter (fun D => decide (D ≠ ⊤)) := rfl
 
@@ -224,6 +257,9 @@ def reduceOrder (hinv : ComapIsoInvariance.{u}) (T : MarkedIdealWithBoundary.{u}
   else
     emptyMarkedSeq T
 
+/- English proof (translation)
+Unfold `reduceOrder`. Rewrite using `[dif_pos hv, if_pos h]`.
+-/
 theorem reduceOrder_of_orderAtLeastLocus_eq_empty (hinv : ComapIsoInvariance.{u}) (T : MarkedIdealWithBoundary.{u})
     (resolveLower : ∀ S : MarkedIdealWithBoundary.{u}, S.krullDimSucc ≤ T.krullDimSucc → ℕ → S.SequenceOfBlowups) (hv : T.IsAdmissible)
     (h : orderAtLeastLocus T.ideal T.mult = ∅) : reduceOrder hinv T resolveLower = emptyMarkedSeq T := by

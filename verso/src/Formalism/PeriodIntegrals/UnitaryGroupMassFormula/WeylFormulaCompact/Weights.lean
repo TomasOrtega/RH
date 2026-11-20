@@ -12,11 +12,29 @@ open scoped InnerProductSpace
 def wtTorus {N : ℕ} (θ : Fin N → ℝ) : Matrix (Fin N) (Fin N) ℂ :=
   diagonal fun a => Complex.exp ((θ a : ℂ) * Complex.I)
 
+/- English proof (translation)
+Apply the tactic sequence `first | exact Bl.general_b_fact_left_variant.goal1 .. | (apply Bl.general_b_fact_left_variant.goal1 <;> assumption) | (intros; apply Bl.general_b_fact_left_variant.goal1 <;> assumption)`.
+-/
 theorem wt_char_real (f : ℝ → ℂ) (hc : Continuous f) (hm : ∀ s t, f (s + t) = f s * f t)
     (h0 : f 0 = 1) (hn : ∀ t, ‖f t‖ = 1) :
     ∃ m : ℝ, ∀ t, f t = Complex.exp (((m * t : ℝ) : ℂ) * Complex.I) := by
   first | exact Bl.general_b_fact_left_variant.goal1 .. | (apply Bl.general_b_fact_left_variant.goal1 <;> assumption) | (intros; apply Bl.general_b_fact_left_variant.goal1 <;> assumption)
 
+/- English proof (translation)
+Establish `hex : ∃ n, ∃ W₀ : Submodule ℂ H, W₀ ≤ W ∧ W₀ ≠ ⊥ ∧ (∀ i, ∀ v ∈ W₀, A i v ∈ W₀) ∧ Module.finrank ℂ W₀ = n` using `⟨_, W, le_rfl, hW, hst, rfl⟩`. Take `⟨W₀, hW₀W, hW₀, hW₀st, hW₀n⟩` from `Nat.find_spec hex`. Establish `hmin : ∀ W₁ : Submodule ℂ H, W₁ ≤ W → W₁ ≠ ⊥ → (∀ i, ∀ v ∈ W₁, A i v ∈ W₁) → Module.finrank ℂ W₀ ≤ Module.finrank ℂ W₁` using `fun W₁ h1 h2 h3 => by`. Rewrite using `[hW₀n]`. Conclude with `Nat.find_min' hex ⟨W₁, h1, h2, h3, rfl⟩`.
+
+Establish `: FiniteDimensional ℂ W₀` using `Submodule.finiteDimensional_of_le hW₀W`. Take `⟨w, hw, hw0⟩` from `(Submodule.ne_bot_iff W₀).mp hW₀`. Use `⟨w, hW₀W hw, hw0, fun i => ?_⟩` and prove the remaining obligations. Set `f : Module.End ℂ W₀` to `(A i : H →ₗ[ℂ] H).restrict (fun x hx => hW₀st i x hx)`. Establish `: Nontrivial W₀` using `Submodule.nontrivial_iff_ne_bot.mpr hW₀`.
+
+Take `⟨c, hc⟩` from `Module.End.exists_eigenvalue f`. Take `⟨v, hv⟩` from `hc.exists_hasEigenvector`. Set `E : Submodule ℂ H` to `W₀ ⊓ LinearMap.ker ((A i : H →ₗ[ℂ] H) - c • LinearMap.id)`. Establish `hmemE : ∀ x, x ∈ E ↔ x ∈ W₀ ∧ A i x = c • x`. Introduce `x`.
+
+Simplify using `[E, sub_eq_zero]`. Establish `hEst : ∀ j, ∀ x ∈ E, A j x ∈ E`. Introduce `j x hx`. Rewrite `hx`, the goal using `[hmemE]`. Conclude with `⟨hW₀st j x hx.1, by rw [hcomm i j, hx.2, map_smul]⟩`.
+
+Establish `hvE : (v : H) ∈ E`. Rewrite using `[hmemE]`. Use `⟨v.2, ?_⟩` and prove the remaining obligations. Establish `h1` using `Module.End.mem_eigenspace_iff.mp hv.1`. Establish `h2` using `congrArg Subtype.val h1`.
+
+Simplify `h2` using `[f]`. Establish `hE0 : E ≠ ⊥`. Rewrite using `[Submodule.ne_bot_iff]`. Use `⟨v, hvE, fun h => hv.2 ?_⟩` and prove the remaining obligations. Conclude with `Subtype.ext h`.
+
+Establish `hEW : E ≤ W₀` using `inf_le_left`. Establish `hEeq : E = W₀` using `Submodule.eq_of_le_of_finrank_le hEW (hmin E (hEW.trans hW₀W) hE0 hEst)`. Establish `hwE : w ∈ E` using `hEeq ▸ hw`. Conclude with `⟨c, ((hmemE w).mp hwE).2⟩`.
+-/
 theorem wt_common_eigvec {H : Type} [NormedAddCommGroup H] [InnerProductSpace ℂ H] {ι : Type}
     (A : ι → (H →L[ℂ] H)) (W : Submodule ℂ H) [FiniteDimensional ℂ W] (hW : W ≠ ⊥)
     (hst : ∀ i, ∀ v ∈ W, A i v ∈ W) (hcomm : ∀ i j, ∀ v, A i (A j v) = A j (A i v)) :
@@ -57,10 +75,20 @@ theorem wt_common_eigvec {H : Type} [NormedAddCommGroup H] [InnerProductSpace �
   have hwE : w ∈ E := hEeq ▸ hw
   exact ⟨c, ((hmemE w).mp hwE).2⟩
 
+/- English proof (translation)
+The claim follows from `(⟨(T : H →ₗ[ℂ] H), hT⟩ : H →ₗᵢ[ℂ] H).inner_map_map x y`.
+-/
 theorem wt_inner_iso {H : Type} [NormedAddCommGroup H] [InnerProductSpace ℂ H] (T : H →L[ℂ] H)
     (hT : ∀ v, ‖T v‖ = ‖v‖) (x y : H) : ⟪T x, T y⟫_ℂ = ⟪x, y⟫_ℂ :=
   (⟨(T : H →ₗ[ℂ] H), hT⟩ : H →ₗᵢ[ℂ] H).inner_map_map x y
 
+/- English proof (translation)
+Introduce `g hg v hv`. Use `⟨?_, hX g hg v hv.2⟩` and prove the remaining obligations. Use `show σ g v ∈ X'ᗮ`. Rewrite using `[Submodule.mem_orthogonal]`. Introduce `u hu`.
+
+Establish `hg' : star g ∈ Kset ε` using `Kset_star ε hg`. Establish `h1 : ⟪σ (star g) u, v⟫_ℂ = 0` using `(Submodule.mem_orthogonal X' v).mp hv.1 _ (hX' _ hg' u hu)`. Establish `h2 : σ g (σ (star g) u) = u`. Establish `h3` using `hσ.1.2 g hg (star g) hg'`. Rewrite `h3` using `[Unitary.mul_star_self_of_mem hg.1, hσ.1.1]`.
+
+Establish `h4` using `DFunLike.congr_fun h3 u`. Simplify using `using h4.symm`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem wt_perp_stable {N : ℕ} (ε : Fin N → Bool) {H : Type} [NormedAddCommGroup H] [InnerProductSpace ℂ H]
     (σ : Matrix (Fin N) (Fin N) ℂ → (H →L[ℂ] H)) (hσ : IsURepOn (Kset ε) σ) (X' X : Submodule ℂ H)
     (hX' : IsKStableOn ε σ X') (hX : IsKStableOn ε σ X) : IsKStableOn ε σ (X'ᗮ ⊓ X) := by
@@ -80,6 +108,11 @@ theorem wt_perp_stable {N : ℕ} (ε : Fin N → Bool) {H : Type} [NormedAddComm
     _ = ⟪σ (star g) u, v⟫_ℂ := wt_inner_iso (σ g) (hσ.2.1 g hg) _ _
     _ = 0 := h1
 
+/- English proof (translation)
+Establish `e3` using `sub_eq_zero.mpr h`. Rewrite `e3` using `[← sub_smul, smul_eq_zero]`. Break down `e3 with h' | h'` into its components or cases. Apply `hz` to reduce the goal to its premises. Take the linear combination `(-1/2 : ℂ) * h'`.
+
+Conclude with `hw h'`.
+-/
 theorem false_of_neg_smul_eq_smul {H : Type} [NormedAddCommGroup H] [InnerProductSpace ℂ H] (z : ℂ) (hz : z ≠ 0)
     (w : H) (hw : w ≠ 0) (h : (z * -1) • w = z • w) : False := by
   have e3 := sub_eq_zero.mpr h
@@ -88,6 +121,17 @@ theorem false_of_neg_smul_eq_smul {H : Type} [NormedAddCommGroup H] [InnerProduc
   · apply hz; linear_combination (-1/2 : ℂ) * h'
   · exact hw h'
 
+/- English proof (translation)
+Introduce `n H _ _ σ μ μ' w hw h1 h2`. Use function extensionality and compare the values at `a`. Assume the negation of the conclusion as `hne`. Establish `hd : μ a - μ' a ≠ 0` using `sub_ne_zero.mpr hne`. Establish `hT` using `PI.WeylForKInhab.diag_mem (allPos n) (Pi.single a (Real.pi / (μ a - μ' a)))`.
+
+Establish `e1` using `h1 _ hT`. Establish `e2` using `h2 _ hT`. Rewrite `e2` using `[e1]`. Establish `s : ∀ ν : Fin n → ℝ, ∑ b, ν b * (Pi.single a (Real.pi / (μ a - μ' a)) : Fin n → ℝ) b = ν a * (Real.pi / (μ a - μ' a))`. Introduce `ν`.
+
+Rewrite using `[Finset.sum_eq_single a]`. Rewrite using `[Pi.single_eq_same]`. Introduce `b _ hb`. Rewrite using `[Pi.single_eq_of_ne hb]`. Expand and normalize the polynomial expressions, which then agree.
+
+Introduce `hh`. Conclude with `absurd (Finset.mem_univ a) hh`. Rewrite `e2` using `[s, s]`. Establish `hc : (μ a - μ' a) * (Real.pi / (μ a - μ' a)) = Real.pi` using `mul_div_cancel₀ _ hd`. Establish `hxy : μ a * (Real.pi / (μ a - μ' a)) = μ' a * (Real.pi / (μ a - μ' a)) + Real.pi`.
+
+Take the linear combination `hc`. Rewrite `e2` using `[hxy, Complex.ofReal_add, add_mul, Complex.exp_add, Complex.exp_pi_mul_I]`. Conclude with `false_of_neg_smul_eq_smul _ (Complex.exp_ne_zero _) w hw e2`.
+-/
 theorem weight_unique_holds : WtUniq := by
   intro n H _ _ σ μ μ' w hw h1 h2
   funext a
@@ -111,6 +155,39 @@ theorem weight_unique_holds : WtUniq := by
   rw [hxy, Complex.ofReal_add, add_mul, Complex.exp_add, Complex.exp_pi_mul_I] at e2
   exact false_of_neg_smul_eq_smul _ (Complex.exp_ne_zero _) w hw e2
 
+/- English proof (translation)
+Introduce `N ε H _ _ σ W hσ hWf hW0 hWst`. Use `hWf` as an intermediate fact. Establish `hTK : ∀ θ : Fin N → ℝ, wtTorus θ ∈ Kset ε` using `fun θ => PI.WeylForKInhab.diag_mem ε θ`. Establish `hTadd : ∀ θ θ' : Fin N → ℝ, wtTorus (θ + θ') = wtTorus θ * wtTorus θ'`. Introduce `θ θ'`.
+
+Simplify using `only [wtTorus, diagonal_mul_diagonal]`. Use `congr 1`. Use function extensionality and compare the values at `a`. Simplify using `[add_mul, Complex.exp_add]`. Establish `hσadd : ∀ θ θ' : Fin N → ℝ, ∀ v, σ (wtTorus (θ + θ')) v = σ (wtTorus θ) (σ (wtTorus θ') v)`.
+
+Introduce `θ θ' v`. Rewrite using `[hTadd, hσ.1.2 _ (hTK θ) _ (hTK θ')]`. Both sides reduce to the same expression. Establish `hcomm : ∀ θ θ' : Fin N → ℝ, ∀ v, σ (wtTorus θ) (σ (wtTorus θ') v) = σ (wtTorus θ') (σ (wtTorus θ) v)`. Introduce `θ θ' v`.
+
+Rewrite using `[← hσadd, ← hσadd, add_comm]`. Take `⟨w, hwW, hw0, hwe⟩` from `wt_common_eigvec (fun θ => σ (wtTorus θ)) W hW0 (fun θ v hv => hWst θ v hv) hcomm`. Use `choose χ hχ using hwe`. Establish `hχ' : ∀ θ, σ (wtTorus θ) w = χ θ • w` using `hχ`. Establish `hinner : ⟪w, w⟫_ℂ ≠ 0` using `inner_self_ne_zero.mpr hw0`.
+
+Establish `hχeq : ∀ θ, χ θ = ⟪w, σ (wtTorus θ) w⟫_ℂ / ⟪w, w⟫_ℂ`. Introduce `θ`. Rewrite using `[hχ' θ, inner_smul_right, mul_div_assoc, div_self hinner, mul_one]`. Establish `hTc : Continuous (fun θ : Fin N → ℝ => wtTorus θ)`. Unfold `wtTorus`.
+
+Apply `Continuous.matrix_diagonal` to reduce the goal to its premises. Conclude with `continuous_pi fun a => by fun_prop`. Establish `hχc : Continuous χ`. Establish `h1 : Continuous (fun θ => σ (wtTorus θ) w)` using `(hσ.2.2 w).comp_continuous hTc hTK`. Establish `: χ = fun θ => ⟪w, σ (wtTorus θ) w⟫_ℂ / ⟪w, w⟫_ℂ` using `funext hχeq`.
+
+Rewrite using `[this]`. Conclude with `(continuous_const.inner h1).div_const _`. Establish `hsm : ∀ c d : ℂ, c • w = d • w → c = d` using `fun c d h => smul_left_injective ℂ hw0 h`. Establish `hχadd : ∀ θ θ', χ (θ + θ') = χ θ * χ θ'`. Introduce `θ θ'`.
+
+Apply `hsm` to reduce the goal to its premises. Rewrite using `[← hχ', hσadd, hχ' θ', map_smul, hχ' θ, smul_smul, mul_comm]`. Establish `hχ0 : χ 0 = 1`. Apply `hsm` to reduce the goal to its premises. Rewrite using `[← hχ', one_smul]`.
+
+Establish `: wtTorus (0 : Fin N → ℝ) = 1` using `by simp [wtTorus]`. Rewrite using `[this, hσ.1.1]`. Both sides reduce to the same expression. Establish `hχn : ∀ θ, ‖χ θ‖ = 1`. Introduce `θ`.
+
+Establish `h` using `hσ.2.1 _ (hTK θ) w`. Rewrite `h` using `[hχ' θ, norm_smul]`. Establish `hw' : 0 < ‖w‖` using `norm_pos_iff.mpr hw0`. Establish `h2 : (‖χ θ‖ - 1) * ‖w‖ = 0` using `by linarith`. Break down `mul_eq_zero.mp h2 with h3 | h3` into its components or cases.
+
+Combine the linear equalities and inequalities to obtain the conclusion. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hcoord : ∀ a : Fin N, ∃ m : ℝ, ∀ t, χ (Pi.single a t) = Complex.exp (((m * t : ℝ) : ℂ) * Complex.I)`. Introduce `a`. Apply `wt_char_real (fun t => χ (Pi.single a t))` to reduce the goal to its premises.
+
+Conclude with `hχc.comp ((LinearMap.single ℝ (fun _ : Fin N => ℝ) a).continuous_of_finiteDimensional)`. Introduce `s t`. Simplify using `only [Pi.single_add]`. Conclude with `hχadd _ _`. Simplify using `using hχ0`.
+
+Introduce `t`. Conclude with `hχn _`. Use `choose m hm using hcoord`. Use `⟨m, w, hwW, hw0, fun θ _ => ?_⟩` and prove the remaining obligations. Use `show σ (wtTorus θ) w = _`.
+
+Rewrite using `[hχ' θ]`. Use `congr 1`. Establish `hprod : ∀ s : Finset (Fin N), χ (∑ a ∈ s, Pi.single a (θ a)) = ∏ a ∈ s, χ (Pi.single a (θ a))`. Introduce `s`. Proceed by induction on `s using Finset.induction_on with`.
+
+Consider the case `empty => simp [hχ0]`. Consider the case `insert a s ha ih => rw [Finset.sum_insert ha, Finset.prod_insert ha, hχadd, ih]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[← Complex.exp_sum]`. Use `congr 1`.
+
+Use `push_cast`. Rewrite using `[Finset.sum_mul]`.
+-/
 theorem torus_weight_exists : TorusWt := by
   intro N ε H _ _ σ W hσ hWf hW0 hWst
   have := hWf
@@ -183,6 +260,27 @@ theorem torus_weight_exists : TorusWt := by
     _ = Complex.exp (((∑ a, m a * θ a : ℝ) : ℂ) * Complex.I) := by
         rw [← Complex.exp_sum]; congr 1; push_cast; rw [Finset.sum_mul]
 
+/- English proof (translation)
+Introduce `p H _ _ σ₁ S μ v hσ hS hSst hvS hv0 hvw`. Establish `hex : ∃ n, ∃ X : Submodule ℂ H, X ≤ S ∧ IsKStableOn (allPos p) σ₁ X ∧ (∃ x ∈ X, x ≠ 0 ∧ IsWtOn (Kset (allPos p)) σ₁ μ x) ∧ Module.finrank ℂ X = n` using `⟨_, S, le_rfl, hSst, ⟨v, hvS, hv0, hvw⟩, rfl⟩`. Take `⟨X, hXS, hXst, ⟨x, hxX, hx0, hxw⟩, hXn⟩` from `Nat.find_spec hex`. Establish `hmin : ∀ X₁ : Submodule ℂ H, X₁ ≤ S → IsKStableOn (allPos p) σ₁ X₁ → (∃ x ∈ X₁, x ≠ 0 ∧ IsWtOn (Kset (allPos p)) σ₁ μ x) → Module.finrank ℂ X ≤ Module.finrank ℂ X₁` using `fun X₁ h1 h2 h3 => by`. Rewrite using `[hXn]`.
+
+Conclude with `Nat.find_min' hex ⟨X₁, h1, h2, h3, rfl⟩`. Establish `: FiniteDimensional ℂ X` using `Submodule.finiteDimensional_of_le hXS`. Use `⟨X, hXS, hXst, ?_, x, hxX, hx0, hxw⟩` and prove the remaining obligations. Introduce `X' hX'X hX'st`. Establish `: FiniteDimensional ℂ X'` using `Submodule.finiteDimensional_of_le hX'X`.
+
+Establish `: CompleteSpace X'` using `FiniteDimensional.complete ℂ X'`. Establish `hX''st` using `wt_perp_stable (allPos p) σ₁ hσ X' X hX'st hXst`. Establish `hxsup : x ∈ X' ⊔ X'ᗮ` using `by rw [Submodule.sup_orthogonal_of_hasOrthogonalProjection]; trivial`. Take `⟨y, hy, z, hz, hyz⟩` from `Submodule.mem_sup.mp hxsup`. Establish `hzX : z ∈ X`.
+
+Establish `: z = x - y` using `by rw [← hyz]; abel`. Rewrite using `[this]`. Conclude with `X.sub_mem hxX (hX'X hy)`. Establish `hz'' : z ∈ X'ᗮ ⊓ X` using `⟨hz, hzX⟩`. Establish `hperp0 : ∀ u, u ∈ X' → u ∈ X'ᗮ → u = 0` using `fun u h1 h2 => inner_self_eq_zero.mp ((Submodule.mem_orthogonal X' u).mp h2 u h1)`.
+
+Establish `hsplit : ∀ θ : Fin p → ℝ, diagonal (fun a => Complex.exp ((θ a : ℂ) * Complex.I)) ∈ Kset (allPos p) → σ₁ (diagonal (fun a => Complex.exp ((θ a : ℂ) * Complex.I))) y = Complex.exp (((∑ a, μ a * θ a : ℝ) : ℂ) * Complex.I) • y ∧ σ₁ (diagonal (fun a => Complex.exp ((θ a : ℂ) * Comple …`. Introduce `θ hT`. Establish `hx` using `hxw θ hT`. Establish `hAy` using `hX'st _ hT y hy`. Establish `hAz` using `(hX''st _ hT z hz'').1`.
+
+Use `set A := σ₁ (diagonal (fun a => Complex.exp ((θ a : ℂ) * Complex.I))) with hA`. Use `set e := Complex.exp (((∑ a, μ a * θ a : ℝ) : ℂ) * Complex.I) with he`. Establish `hu1 : A y - e • y ∈ X'` using `X'.sub_mem hAy (X'.smul_mem e hy)`. Establish `hu2 : A z - e • z ∈ X'ᗮ` using `X'ᗮ.sub_mem hAz (X'ᗮ.smul_mem e hz)`. Establish `hsum : A y - e • y + (A z - e • z) = 0`.
+
+Rewrite `hx` using `[← hyz, map_add, smul_add]`. Rewrite using `[show A y - e • y + (A z - e • z) = (A y + A z) - (e • y + e • z) by abel, hx, sub_self]`. Establish `hneg : A y - e • y = -(A z - e • z)` using `eq_neg_of_add_eq_zero_left hsum`. Establish `h0y : A y - e • y = 0` using `hperp0 _ hu1 (by rw [hneg]; exact X'ᗮ.neg_mem hu2)`. Establish `h0z : A z - e • z = 0` using `by rw [h0y] at hneg; exact neg_eq_zero.mp hneg.symm`.
+
+Conclude with `⟨sub_eq_zero.mp h0y, sub_eq_zero.mp h0z⟩`. Establish `hwy : IsWtOn (Kset (allPos p)) σ₁ μ y` using `fun θ hT => (hsplit θ hT).1`. Establish `hwz : IsWtOn (Kset (allPos p)) σ₁ μ z` using `fun θ hT => (hsplit θ hT).2`. Distinguish the cases in `hy0 : y = 0`. Use `left`.
+
+Establish `hzx : z = x` using `by rw [← hyz, hy0, zero_add]`. Establish `hz0 : z ≠ 0` using `by rw [hzx]; exact hx0`. Establish `hle : X'ᗮ ⊓ X ≤ X` using `inf_le_right`. Establish `heq : X'ᗮ ⊓ X = X` using `Submodule.eq_of_le_of_finrank_le hle (hmin _ (hle.trans hXS) hX''st ⟨z, hz'', hz0, hwz⟩)`. Rewrite using `[Submodule.eq_bot_iff]`.
+
+Introduce `u hu`. Establish `hu' : u ∈ X'ᗮ ⊓ X` using `by rw [heq]; exact hX'X hu`. Conclude with `hperp0 u hu hu'.1`. Use `right`. Conclude with `Submodule.eq_of_le_of_finrank_le hX'X (hmin X' (hX'X.trans hXS) hX'st ⟨y, hy, hy0, hwy⟩)`.
+-/
 theorem minimal_irreducible_exists : MinIrr := by
   classical
   intro p H _ _ σ₁ S μ v hσ hS hSst hvS hv0 hvw

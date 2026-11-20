@@ -11,18 +11,30 @@ namespace GlobalTheory.CompanionTheory.Ipf.Val.SphM
 
 variable {K : Type} [Field K] [NumberField K] (v : HeightOneSpectrum (𝓞 K))
 
+/- English proof (translation)
+Simplify using `[absV, map_mul]`.
+-/
 theorem absV_mul (x y : Cv v) : absV v (x * y) = absV v x * absV v y := by
   simp [absV, map_mul]
 
+/- English proof (translation)
+Simplify using `[absV]`.
+-/
 theorem absV_nonneg (x : Cv v) : 0 ≤ absV v x := by
   simp [absV]
 
+/- English proof (translation)
+Simplify using `[absV]`.
+-/
 theorem absV_one : absV v (1 : Cv v) = 1 := by
   simp [absV]
 
 def phi0 (n c : ℕ) : Matrix (Fin n) (Fin c) (Cv v) → ℂ :=
   Set.indicator {x | ∀ i j, Valued.v (x i j) ≤ 1} 1
 
+/- English proof (translation)
+Simplify using `[linAct]`.
+-/
 theorem linAct_one_one_apply {a b : ℕ} (g : GL (Fin a) (Cv v)) (h : GL (Fin b) (Cv v))
     (Φ : Matrix (Fin b) (Fin a) (Cv v) → ℂ) (y : Matrix (Fin b) (Fin a) (Cv v)) :
     linAct v 1 1 g h Φ y =

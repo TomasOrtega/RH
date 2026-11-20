@@ -19,6 +19,17 @@ noncomputable section
 
 namespace GlobalTheory.SymTranslate
 
+/- English proof (translation)
+Introduce `K _ B _ _ L hL _ a h`. Establish `hc : ∀ x : 𝟙_ (Over (Sp K)) ⟶ B, CechPic.pull (toUnit B ≫ x).left (cls L hL) = 0` using `fun x => by`. Rewrite using `[Over.comp_left, CechPic.pull_comp, GlobalTheory.PrimitiveOverField.pic_field (CechPic.pull x.left (cls L hL))]`. Conclude with `map_zero _`. Establish `h1 : CechPic.pull (1 : B ⟶ B).left (cls L hL) = 0` using `hc _`.
+
+Establish `h2 : CechPic.pull (GrpObj.inv : B ⟶ B).left (cls L hL) = CechPic.pull ((toUnit B ≫ a ^ 2) * 𝟙 B).left (cls L hL)`. Rewrite `h` using `[lam, hc, h1, Over.id_left, CechPic.pull_id, sub_zero, add_zero]`. Conclude with `sub_left_injective h`. Establish `h3` using `congrArg (CechPic.pull (𝟙 B * (toUnit B ≫ a)⁻¹).left) h2`. Rewrite `h3` using `[← CechPic.pull_comp, ← CechPic.pull_comp, ← Over.comp_left, ← Over.comp_left]`.
+
+Establish `e1 : (𝟙 B * (toUnit B ≫ a)⁻¹) ≫ (GrpObj.inv : B ⟶ B) = (GrpObj.inv : B ⟶ B) ≫ (𝟙 B * (toUnit B ≫ a))`. Rewrite using `[← Hom.inv_def, MonObj.comp_mul, ← Category.assoc, comp_toUnit, Category.comp_id, mul_inv, inv_inv, Hom.inv_def, Category.id_comp]`. Establish `e2 : (𝟙 B * (toUnit B ≫ a)⁻¹) ≫ ((toUnit B ≫ a ^ 2) * 𝟙 B) = 𝟙 B * (toUnit B ≫ a)`. Rewrite using `[MonObj.comp_mul, ← Category.assoc, comp_toUnit, Category.comp_id, MonObj.comp_pow, sq, _root_.mul_comm (𝟙 B), _root_.mul_comm (𝟙 B), _root_.mul_assoc, mul_inv_cancel_left]`. Rewrite `h3` using `[e1, e2, Over.comp_left, CechPic.pull_comp]`.
+
+Establish `hL' : (GlobalTheory.RigidTranslate.rigTransl L a).IsLB` using `LB.isLB_linComb hL _ _`. Establish `h4 : cls _ hL' = CechPic.pull (𝟙 B * (toUnit B ≫ a)).left (cls L hL)`. Rewrite using `[CechPic.cls_linComb hL, Fin.sum_univ_two]`. Simplify using `only [Matrix.cons_val_zero, Matrix.cons_val_one, hc, smul_zero, add_zero, one_smul]`. Both sides reduce to the same expression.
+
+Conclude with `GlobalTheory.RigSymSubring.sym_of_cls hL' (by rw [h4]; exact h3)`.
+-/
 theorem sym_rigTransl_of_sq : ∀ (K : Type) [Field K] (B : Over (Sp K)) [GrpObj B] [IsCommMonObj B] (L : LB B.left) (hL : L.IsLB), (∃ t : LB.Gen (Theta B L), t.IsGen) → ∀ a : 𝟙_ (Over (Sp K)) ⟶ B, CechPic.pull (GrpObj.inv : B ⟶ B).left (cls L hL) - cls L hL = lam (cls L hL) (toUnit B ≫ a ^ 2) (𝟙 B) → Out.Sym B (GlobalTheory.RigidTranslate.rigTransl L a) := by
   intro K _ B _ _ L hL _ a h
   have hc : ∀ x : 𝟙_ (Over (Sp K)) ⟶ B, CechPic.pull (toUnit B ≫ x).left (cls L hL) = 0 := fun x => by

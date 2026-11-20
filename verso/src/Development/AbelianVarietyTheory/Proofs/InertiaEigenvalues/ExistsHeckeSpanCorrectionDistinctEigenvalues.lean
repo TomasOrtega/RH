@@ -11,6 +11,9 @@ namespace GlobalTheory.SpanRing
 
 open Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotions.N GlobalTheory.IndefiniteRowSideFullHecke.CongruenceModuleMatrices Polynomial
 
+/- English proof (translation)
+Unfold `blockPol`. Rewrite using `[← Polynomial.coe_mapRingHom, RingHom.map_det]`. Use `congr 1`. Use extensionality with `i j : 2`. Apply the tactic sequence `by_cases h : i = j <;> simp [h, Matrix.one_apply]`.
+-/
 theorem blockPol_map_ringHom {A B : Type} [CommRing A] [CommRing B] {n : ℕ} (f : A →+* B)
     (e M : Matrix (Fin n) (Fin n) A) : (blockPol e M).map f = blockPol (e.map f) (M.map f) := by
   unfold blockPol
@@ -19,6 +22,13 @@ theorem blockPol_map_ringHom {A B : Type} [CommRing A] [CommRing B] {n : ℕ} (f
   ext i j : 2
   by_cases h : i = j <;> simp [h, Matrix.one_apply]
 
+/- English proof (translation)
+Proceed by induction on `hw using Submodule.span_induction with`. Consider the case `mem y hy => obtain ⟨h, rfl⟩ := hy`. Conclude with `Submodule.subset_span ⟨h, rfl⟩`. Consider the case `zero => simp`. Consider the case `add y z _ _ hy hz`.
+
+Rewrite using `[Matrix.map_add _ (map_add _)]`. Conclude with `add_mem hy hz`. Consider the case `smul c y _ hy`. Establish `: (c • y).map (toFr A) = toFr A c • y.map (toFr A)`. Use extensionality with `i j`.
+
+Simplify using the standard rewrite rules. Rewrite using `[this]`. Conclude with `Submodule.smul_mem _ _ hy`.
+-/
 theorem map_mem_span_frac {Γ A : Type} [CommRing A] [IsDomain A] {n : ℕ}
     (σ : Γ → Matrix (Fin n) (Fin n) A) {w : Matrix (Fin n) (Fin n) A}
     (hw : w ∈ Submodule.span A (Set.range σ)) :
@@ -35,6 +45,19 @@ theorem map_mem_span_frac {Γ A : Type} [CommRing A] [IsDomain A] {n : ℕ}
     rw [this]
     exact Submodule.smul_mem _ _ hy
 
+/- English proof (translation)
+Proceed by induction on `hm using Submodule.span_induction with`. Consider the case `mem y hy`. Take `⟨h, rfl⟩` from `hy`. Conclude with `⟨1, one_ne_zero, σ h, Submodule.subset_span ⟨h, rfl⟩, by simp⟩`. Consider the case `zero => exact ⟨1, one_ne_zero, 0, zero_mem _, by simp⟩`.
+
+Consider the case `add y z _ _ hy hz`. Take `⟨d, hd, w, hw, e⟩` from `hy`. Take `⟨d', hd', w', hw', e'⟩` from `hz`. Use `⟨d * d', mul_ne_zero hd hd', d' • w + d • w', add_mem (Submodule.smul_mem _ _ hw) (Submodule.smul_mem _ _ hw'), ?_⟩` and prove the remaining obligations. Use extensionality with `i j`.
+
+Establish `h1` using `congrFun (congrFun e i) j`. Establish `h2` using `congrFun (congrFun e' i) j`. Simplify using `only [Matrix.map_apply, Matrix.smul_apply, smul_eq_mul, Matrix.add_apply, map_add, map_mul] at h1 h2 ⊢`. Rewrite using `[h1, h2]`. Expand and normalize the polynomial expressions, which then agree.
+
+Consider the case `smul c y _ hy`. Take `⟨d, hd, w, hw, e⟩` from `hy`. Take `⟨p, q, hq, rfl⟩` from `IsFractionRing.div_surjective (A := A) c`. Establish `hq0 : q ≠ 0` using `nonZeroDivisors.ne_zero hq`. Establish `hq1 : algebraMap A (FractionRing A) q ≠ 0` using `by simpa using hq0`.
+
+Use `⟨d * q, mul_ne_zero hd hq0, p • w, Submodule.smul_mem _ _ hw, ?_⟩` and prove the remaining obligations. Use extensionality with `i j`. Establish `h1` using `congrFun (congrFun e i) j`. Simplify using `only [Matrix.map_apply, Matrix.smul_apply, smul_eq_mul, map_mul] at h1 ⊢`. Rewrite using `[h1]`.
+
+Simplify using `only [toFr]`. Clear the denominators using the available nonvanishing facts.
+-/
 theorem exists_denom_span_frac {Γ A : Type} [CommRing A] [IsDomain A] {n : ℕ}
     (σ : Γ → Matrix (Fin n) (Fin n) A) {m : Matrix (Fin n) (Fin n) (FractionRing A)}
     (hm : m ∈ Submodule.span (FractionRing A) (Set.range fun g => (σ g).map (toFr A))) :
@@ -68,6 +91,31 @@ theorem exists_denom_span_frac {Γ A : Type} [CommRing A] [IsDomain A] {n : ℕ}
     simp only [toFr]
     field_simp
 
+/- English proof (translation)
+Establish `hidx : ∀ x, eB x * eB x = eB x` using `fun x => congrFun hid x`. Establish `hidK : ∀ x, (eB x).map (toFr A) * (eB x).map (toFr A) = (eB x).map (toFr A)` using `fun x => by`. Rewrite using `[← Matrix.map_mul, hidx]`. Use `choose a b hba hab hpol using fun x => GlobalTheory.T.idempotentBlockCharPoly_eq_charpoly_image ((eB x).map (toFr A)) (hidK x) (hrk x)`. Establish `hbe : ∀ x, b x * (eB x).map (toFr A) = b x` using `fun x => by`.
+
+Rewrite using `[← hab, ← Matrix.mul_assoc, hba, Matrix.one_mul]`. Establish `hea : ∀ x, (eB x).map (toFr A) * a x = a x` using `fun x => by`. Rewrite using `[← hab, Matrix.mul_assoc, hba, Matrix.mul_one]`. Establish `hpolA : ∀ x (M : Matrix (Fin n) (Fin n) A), (blockPol (eB x) (eB x * M * eB x)).map (toFr A) = (b x * M.map (toFr A) * a x).charpoly`. Introduce `x M`.
+
+Rewrite using `[blockPol_map_ringHom, Matrix.map_mul, Matrix.map_mul, hpol]`. Set `φ : (X → Matrix (Fin n) (Fin n) A) →ₗ[A] (X → Matrix (Fin t) (Fin t) (FractionRing A))` to `{ toFun := fun s x => b x * (z • s x).map (toFr A) * a x map_add' := fun s s' => by`. Use function extensionality and compare the values at `x`. Simplify using `only [Pi.add_apply, smul_add, Matrix.map_add _ (map_add (toFr A)), Matrix.mul_add, Matrix.add_mul]`. Use the proof step `map_smul' := fun c s => by`.
+
+Use function extensionality and compare the values at `x`. Establish `: (z • c • s x).map (toFr A) = c • (z • s x).map (toFr A)`. Use extensionality with `i j`. Simplify using `only [Matrix.map_apply, Matrix.smul_apply, smul_eq_mul, map_mul]`. Rewrite using `[Algebra.smul_def, mul_left_comm]`.
+
+Simplify using `only [this, Matrix.mul_smul, Matrix.smul_mul, RingHom.id_apply, Pi.smul_apply] }`. Establish `hφ : ∀ s x, φ s x = b x * (z • s x).map (toFr A) * a x` using `fun _ _ => rfl`. Take `⟨_, ⟨s, hs, rfl⟩, hsx⟩` from `GlobalTheory.T.exists_mem_submodule_all_charpoly_separable (O := A) (K := FractionRing A) t ((spanRingCornerIdealModule T rep π eB).map φ) (fun x => b x * (mat (rep x) g0).map (toFr A) * a x) (by`. Introduce `x`. Distinguish the cases in `hx : x = π`.
+
+Use `left`. Substitute `hx` using the available equality. Rewrite `hπ` using `[hpolA]`. Then use the resulting hypothesis. Use `right`. Establish `hmem : a x * b x ∈ Submodule.span (FractionRing A) (Set.range fun g => (mat (rep x) g).map (toFr A))`.
+
+Rewrite using `[hab]`. Conclude with `map_mem_span_frac _ (eval_mem_span hin x)`. Take `⟨m, hm, hms⟩` from `GlobalTheory.T.exists_mem_span_corner_charpoly_separable (mapM (toFr A) ((Units.coeHom _).comp (rep x))) (a x) (b x) (hirr x) (hba x) hmem`. Take `⟨d, hd, w, hw, hwm⟩` from `exists_denom_span_frac (mat (rep x)) hm`. Take `⟨w', hw', rfl⟩` from `exists_inRing_eval (T := T) x hw`.
+
+Take `⟨f, hf, hfx⟩` from `hsep x π hx`. Establish `hj : f - algebraMap A (X → A) (f π) ∈ T` using `T.sub_mem hf (T.algebraMap_mem _)`. Establish `hjx : f x - f π ≠ 0` using `sub_ne_zero.2 hfx`. Establish `hc : toFr A (z * (f x - f π) * d) ≠ 0` using `(map_ne_zero_iff _ (IsFractionRing.injective A (FractionRing A))).2 (mul_ne_zero (mul_ne_zero hz hjx) hd)`. Use `⟨_, ⟨fun y => (f - algebraMap A (X → A) (f π)) y • (eB y * w' y * eB y), Submodule.subset_span ⟨_, hj, by simp, w', hw', rfl⟩, rfl⟩, (toFr A (z * (f x - f π) * d))⁻¹, inv_ne_zero hc, ?_⟩` and prove the remaining obligations.
+
+Establish `h1 : (z • ((f - algebraMap A (X → A) (f π)) x • (eB x * w' x * eB x))).map (toFr A) = toFr A (z * (f x - f π) * d) • ((eB x).map (toFr A) * m * (eB x).map (toFr A))`. Establish `h2 : ∀ (c : A) (M : Matrix (Fin n) (Fin n) A), (c • M).map (toFr A) = toFr A c • M.map (toFr A)` using `fun c M => by`. Use extensionality with `i j`. Simplify using the standard rewrite rules. Rewrite using `[h2, h2, Matrix.map_mul, Matrix.map_mul, hwm]`.
+
+Simplify using `only [Matrix.mul_smul, Matrix.smul_mul, smul_smul, map_mul, mul_assoc]`. Simplify using the standard rewrite rules. Rewrite using `[hφ, h1, Matrix.mul_smul, Matrix.smul_mul, smul_smul, inv_mul_cancel₀ hc, one_smul, ← Matrix.mul_assoc, ← Matrix.mul_assoc, hbe, Matrix.mul_assoc _ _ (a x), hea]`. Conclude with `hms)`. Establish `hs'` using `(mem_spanRingCornerIdealModule_iff T rep π eB s).1 hs`.
+
+Use `⟨s, hs', fun x => ?_⟩` and prove the remaining obligations. Establish `hc` using `InMatrixCongruenceModule.corner hid hs' x`. Establish `h1 : eB x * mat (rep x) g0 * eB x + z • s x = eB x * (mat (rep x) g0 + z • s x) * eB x`. Rewrite using `[mul_add, add_mul, Matrix.mul_smul, Matrix.smul_mul, hc.1, hc.2]`. Establish `h2` using `hsx x`.
+
+Rewrite `h2` using `[hφ, ← Matrix.add_mul, ← Matrix.mul_add, ← Matrix.map_add _ (map_add (toFr A))]`. Rewrite using `[h1, hpolA, ← Nat.card_coe_set_eq, Nat.card_eq_fintype_card, Polynomial.card_rootSet_eq_natDegree h2 (IsAlgClosed.splits _), Matrix.charpoly_natDegree_eq_dim, Fintype.card_fin]`.
+-/
 theorem exists_correction_distinct_eigenvalues {Γ X A : Type} [Group Γ] [Finite X] [CommRing A]
     [IsDomain A] [CharZero A] {n t : ℕ} (T : Subalgebra A (X → A)) (rep : X → (Γ →* GL (Fin n) A))
     (π : X) (g0 : Γ) (eB : X → Matrix (Fin n) (Fin n) A) (z : A) (hz : z ≠ 0)

@@ -10,10 +10,20 @@ noncomputable section
 
 namespace GlobalTheory.Mem.R3
 
+/- English proof (translation)
+Rewrite using `[← AddChar.map_nsmul_eq_pow, card_nsmul_eq_zero', AddChar.map_zero_eq_one]`.
+-/
 theorem addChar_pow_natCard_eq_one {A L : Type} [AddGroup A] [CommMonoid L] (ψ : AddChar A L) (c : A) :
     ψ c ^ Nat.card A = 1 := by
   rw [← AddChar.map_nsmul_eq_pow, card_nsmul_eq_zero', AddChar.map_zero_eq_one]
 
+/- English proof (translation)
+Establish `hp` using `B.host.g_prime k`. Apply the tactic sequence `obtain ⟨z, hzK, hz⟩ := B.roots_Ks (B.host.g k * (B.host.g k - 1)) (by fin_cases k <;> simp)`. Establish `hne : B.host.g k * (B.host.g k - 1) ≠ 0` using `mul_ne_zero hp.ne_zero (by have := hp.two_le; omega)`. Establish `hprim : IsPrimitiveRoot z (B.host.g k * (B.host.g k - 1))`. Use `IsPrimitiveRoot.of_map_of_injective (f := B.embLL) ?_ B.embLL.injective` and prove the remaining obligations.
+
+Rewrite using `[hz]`. Conclude with `Complex.isPrimitiveRoot_exp _ hne` after adjusting the coercions. Establish `: NeZero (B.host.g k * (B.host.g k - 1))` using `⟨hne⟩`. Take `⟨j, -, hj⟩` from `hprim.eq_pow_of_pow_eq_one (ξ := x) (by rw [pow_mul, hx, one_pow])`. Rewrite using `[← hj]`.
+
+Conclude with `pow_mem hzK j`.
+-/
 theorem mem_Ks_of_pow_g (B : Base) (k : Fin 2) {x : B.LL} (hx : x ^ B.host.g k = 1) : x ∈ B.Ks := by
   have hp := B.host.g_prime k
   obtain ⟨z, hzK, hz⟩ := B.roots_Ks (B.host.g k * (B.host.g k - 1)) (by fin_cases k <;> simp)
@@ -27,6 +37,17 @@ theorem mem_Ks_of_pow_g (B : Base) (k : Fin 2) {x : B.LL} (hx : x ^ B.host.g k =
   rw [← hj]
   exact pow_mem hzK j
 
+/- English proof (translation)
+Introduce `B px I p`. Establish `hPr` using `(GlobalTheory.Mem.Col2.base_fields_primes_ok B px).2.1`. Unfold `chr0 P0 LevelP.ofLocal`. Use `erw [MonoidHom.finset_prod_apply, Units.coe_prod]`. Use `B.Ks.prod_mem fun PP _ => ?_` and prove the remaining obligations.
+
+Establish `hk : ∃ k, PP.1 ∈ (B.primes px).vG k`. Establish `h : PP.1 ∈ (B.primes px).vG 0 ∪ (B.primes px).vG 1`. Establish `h0` using `PP.2`. Unfold `Formalism.L2.Col.Primes.vGs at h0`. Use `h0` and compare the differences between its conclusion and the goal.
+
+Break down `Finset.mem_union.1 h with h | h` into its components or cases. Conclude with `⟨0, h⟩`. Conclude with `⟨1, h⟩`. Take `⟨k, hw⟩` from `hk`. Use `mem_Ks_of_pow_g B k ?_` and prove the remaining obligations.
+
+Establish `hc : Nat.card (kP PP.1) = B.host.g k`. Establish `h` using `hPr.vG_norm k PP.1 hw`. Rewrite `h` using `[Ideal.absNorm_apply, Submodule.cardQuot_apply]`. Conclude with `h`. Rewrite using `[← hc]`.
+
+Conclude with `addChar_pow_natCard_eq_one _ _`.
+-/
 theorem chr0_mem_Ks : ∀ (B : Base) (px : PreX B.toPre) (I : Col2.ColIn B px) (p : lev0 I),
     ((chr0 I p : B.LLˣ) : B.LL) ∈ B.Ks := by
   classical

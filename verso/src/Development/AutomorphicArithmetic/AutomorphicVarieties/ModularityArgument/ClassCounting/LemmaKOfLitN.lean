@@ -25,6 +25,9 @@ open Formalism.GaloisCohomology
 
 namespace UpperTheory.V.ZK
 
+/- English proof (translation)
+The claim follows from `lemmaK_of_steps hB hP hF hT sChain sPrism sPrismMul sZc LateralTheory.Fin.SRel.intersectionNumber_baseChange sTrans sCoc sThetaOf sPhi sEta LateralTheory.Fin.SStein.intersectionNumber_baseChange sClassOf sUpperOf LateralTheory.Fin.SDetect.intersectionNumber_baseChange sCount Late …`.
+-/
 theorem lemmaK (hB : BOdd) (hP : GlobalTheory.Published.PoitouTateDuality) (hF : LocalFinitenessK) (hT : LocalTateDualityK) :
     ∃ CK, LemmaK CK :=
   lemmaK_of_steps hB hP hF hT

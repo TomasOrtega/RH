@@ -6,6 +6,9 @@ open GlobalTheory.Toroidal GlobalTheory.Models GlobalTheory.LN GlobalTheory.ShFa
 
 namespace GlobalTheory.TorRef
 
+/- English proof (translation)
+Establish `key : X.presheaf.stalkSpecializes hs ≫ Scheme.stalkClosedPointTo (spMap g ≫ ξ) = Scheme.stalkClosedPointTo ξ ≫ CommRingCat.ofHom g`. Apply `Spec.map_injective` to reduce the goal to its premises. Rewrite using `[← cancel_mono (X.fromSpecStalk (ξ (closedPoint R))), Spec.map_comp, Category.assoc, Scheme.SpecMap_stalkSpecializes_fromSpecStalk, Scheme.Spec_stalkClosedPointTo_fromSpecStalk, Spec.map_comp, Category.assoc, Scheme.Spec_stalkClosedPointTo_fromSpecStalk]`. Conclude with `congrArg (fun q => q.hom a) key`.
+-/
 theorem stalkClosedPointTo_comp_spMap_specializes (X : Scheme.{0}) {R W : Type} [CommRing R] [IsLocalRing R]
     [CommRing W] [IsLocalRing W] (ξ : Sp R ⟶ X) (g : R →+* W)
     (hs : (spMap g ≫ ξ) (closedPoint W) ⤳ ξ (closedPoint R)) (a : X.presheaf.stalk (ξ (closedPoint R))) :

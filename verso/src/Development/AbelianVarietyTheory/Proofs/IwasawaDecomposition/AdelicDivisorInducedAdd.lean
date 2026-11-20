@@ -29,10 +29,16 @@ open GlobalTheory GlobalTheory.CxPts
 
 namespace GlobalTheory.CombInd.Tens
 
+/- English proof (translation)
+Rewrite using `[show a * x⁻¹ * (b * y⁻¹) * (x * y * z⁻¹) = a * b * z⁻¹ * (x⁻¹ * x) * (y⁻¹ * y) by ac_rfl]`. Simplify using the standard rewrite rules.
+-/
 theorem commGroup_coboundary_relation_identity {G : Type} [CommGroup G] (a b x y z : G) : a * b * z⁻¹ = a * x⁻¹ * (b * y⁻¹) * (x * y * z⁻¹) := by
   rw [show a * x⁻¹ * (b * y⁻¹) * (x * y * z⁻¹) = a * b * z⁻¹ * (x⁻¹ * x) * (y⁻¹ * y) by ac_rfl]
   simp
 
+/- English proof (translation)
+Rewrite using `[mul_pow, mul_pow, show x⁻¹ ^ m * r₁ * (y⁻¹ ^ m * r₂) * (x ^ m * y ^ m * z⁻¹ ^ m) = z⁻¹ ^ m * (r₁ * r₂) * (x⁻¹ ^ m * x ^ m) * (y⁻¹ ^ m * y ^ m) by ac_rfl]`. Simplify using the standard rewrite rules.
+-/
 theorem group_pow_mul_identity {G : Type} [CommGroup G] (x y z r₁ r₂ : G) (m : ℕ) :
     z⁻¹ ^ m * (r₁ * r₂) = x⁻¹ ^ m * r₁ * (y⁻¹ ^ m * r₂) * (x * y * z⁻¹) ^ m := by
   rw [mul_pow, mul_pow, show x⁻¹ ^ m * r₁ * (y⁻¹ ^ m * r₂) * (x ^ m * y ^ m * z⁻¹ ^ m) =
@@ -45,18 +51,33 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheo
   {l : Level H} {Xo : Moduli Dw l} {c : Coeff l} {O : Type} [CommRing O] {β : O →+* c.F}
   {Z : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Model Xo c β} {F : Type} [Field F] [NumberField F] {e : F ≃+* c.F} (Y : FlagCpt Z e)
 
+/- English proof (translation)
+Rewrite using `[LineTest.expo_add, ← Finset.prod_mul_distrib]`. Conclude with `Finset.prod_congr rfl fun x _ => zpow_add _ _ _`.
+-/
 theorem prod_expo_add (t : ∀ τ : E →+* ℂ, Fin (Dw.mult τ) → Y.Y.Fnˣ) (w₁ w₂ : Sym E →₀ ℤ) :
     (∏ x : Letter Dw, t x.1 x.2 ^ expo Dw (w₁ + w₂) x) =
       (∏ x : Letter Dw, t x.1 x.2 ^ expo Dw w₁ x) * ∏ x : Letter Dw, t x.1 x.2 ^ expo Dw w₂ x := by
   rw [LineTest.expo_add, ← Finset.prod_mul_distrib]
   exact Finset.prod_congr rfl fun x _ => zpow_add _ _ _
 
+/- English proof (translation)
+Use `(Base.isEqn_eqn (divOf Y (expo Dw w)) b).iff_unitAt.1 (LineTest.isEqn_divOf Y (expo Dw w) b)` as an intermediate fact. Rewrite `this` using `[div_eq_mul_inv, ← Units.val_inv_eq_inv_val, ← Units.val_mul]`. Then use the resulting hypothesis.
+-/
 theorem unitAt_prod (w : Sym E →₀ ℤ) (b : Y.Y.X) :
     UnitAt b (((∏ x : Letter Dw, (Y.gr_spec b).choose_spec.choose_spec.choose x.1 x.2 ^ expo Dw w x) *
       (eqn (divOf Y (expo Dw w)) b)⁻¹ : Y.Y.Fnˣ) : Y.Y.Fn) := by
   have := (Base.isEqn_eqn (divOf Y (expo Dw w)) b).iff_unitAt.1 (LineTest.isEqn_divOf Y (expo Dw w) b)
   rwa [div_eq_mul_inv, ← Units.val_inv_eq_inv_val, ← Units.val_mul] at this
 
+/- English proof (translation)
+Establish `hp` using `LineTest.residueCharacteristic_prime v`. Establish `U₁` using `unitAt_prod Y w₁ (below y.1)`. Establish `U₂` using `unitAt_prod Y w₂ (below y.1)`. Establish `hE : (divOf Y (expo Dw (w₁ + w₂))).IsEqn (below y.1) (eqn (divOf Y (expo Dw w₁)) (below y.1) * eqn (divOf Y (expo Dw w₂)) (below y.1))`. Rewrite using `[LineTest.expo_add, LineTest.divOf_add]`.
+
+Conclude with `(Base.isEqn_eqn _ _).add (Base.isEqn_eqn _ _)`. Establish `Uc : UnitAt (below y.1) ((eqn (divOf Y (expo Dw w₁)) (below y.1) * eqn (divOf Y (expo Dw w₂)) (below y.1) * (eqn (divOf Y (expo Dw (w₁ + w₂))) (below y.1))⁻¹ : Y.Y.Fnˣ) : Y.Y.Fn)`. Use `(Base.isEqn_eqn _ _).iff_unitAt.1 hE` as an intermediate fact. Rewrite `this` using `[div_eq_mul_inv, ← Units.val_inv_eq_inv_val, ← Units.val_mul]`. Then use the resulting hypothesis. Simplify using `only [lgOf, dif_pos hp]`.
+
+Rewrite using `[Finsupp.sum_add_index' (fun _ => by simp) (fun _ _ _ => by push_cast; ring), prod_expo_add Y _ w₁ w₂, commGroup_coboundary_relation_identity _ _ (eqn (divOf Y (expo Dw w₁)) (below y.1)) (eqn (divOf Y (expo Dw w₂)) (below y.1)) _]`. Generalize the expression as in `(∏ x : Letter Dw, (Y.gr_spec (below y.1)).choose_spec.choose_spec.choose x.1 x.2 ^ expo Dw w₁ x) * (eqn (divOf Y (expo Dw w₁)) (below y.1))⁻¹ = u₁ at U₁ ⊢`. Generalize the expression as in `(∏ x : Letter Dw, (Y.gr_spec (below y.1)).choose_spec.choose_spec.choose x.1 x.2 ^ expo Dw w₂ x) * (eqn (divOf Y (expo Dw w₂)) (below y.1))⁻¹ = u₂ at U₂ ⊢`. Generalize the expression as in `eqn (divOf Y (expo Dw w₁)) (below y.1) * eqn (divOf Y (expo Dw w₂)) (below y.1) * (eqn (divOf Y (expo Dw (w₁ + w₂))) (below y.1))⁻¹ = c at Uc ⊢`. Rewrite using `[Units.val_mul (u₁ * u₂) c, Units.val_mul u₁ u₂, SmallSec.valAt_mul (U₁.mul U₂).regAt Uc.regAt, SmallSec.valAt_mul U₁.regAt U₂.regAt, map_mul, map_mul, Real.log_mul (mul_ne_zero (ε.w.pos (SmallSec.valAt_ne_zero U₁)).ne' (ε.w.pos (SmallSec.valAt_ne_zero U₂)).ne') (ε.w.pos (SmallSe …`.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem lgOf_add (w₁ w₂ : Sym E →₀ ℤ) (v : HeightOneSpectrum (𝓞 F)) (ε : TrueGeo.Ext v) (y : AlgPt Y.Y) :
     lgOf Y (w₁ + w₂) v ε y = lgOf Y w₁ v ε y + lgOf Y w₂ v ε y +
       Real.log (ε.w (TrueGeo.valAt y.1 ((eqn (divOf Y (expo Dw w₁)) (below y.1) * eqn (divOf Y (expo Dw w₂)) (below y.1) *
@@ -90,6 +111,9 @@ theorem lgOf_add (w₁ w₂ : Sym E →₀ ℤ) (v : HeightOneSpectrum (𝓞 F))
 
 end Free
 
+/- English proof (translation)
+Rewrite using `[mul_pow, inv_pow, inv_pow]`. Clear the denominators using the available nonvanishing facts.
+-/
 theorem a3field_of_a2indep_of_a3one {K : Type} [Field K] (f g₁ g₂ r₁ r₂ : K) (h₁ : g₁ ≠ 0) (h₂ : g₂ ≠ 0) (m : ℕ) :
     f * (r₁ * r₂) = f * (g₁ * g₂) ^ m * (g₁⁻¹ ^ m * r₁) * (g₂⁻¹ ^ m * r₂) := by
   rw [mul_pow, inv_pow, inv_pow]
@@ -97,6 +121,37 @@ theorem a3field_of_a2indep_of_a3one {K : Type} [Field K] (f g₁ g₂ r₁ r₂ 
 
 set_option maxHeartbeats 1000000 in
 
+/- English proof (translation)
+Introduce `D A N j S κ s x Φ k M m R w₁ w₂ L₁ L₂ hw₁ hw₂ h₁ h₂`. Take `⟨-, r₁, hr₁, hinf₁, hv₁⟩` from `h₁`. Take `⟨-, r₂, hr₂, hinf₂, hv₂⟩` from `h₂`. Use `⟨by simp, fun i => r₁ (fun _ => (i PUnit.unit).1) * r₂ (fun _ => (i PUnit.unit).2), ?_, ?_, ?_⟩` and prove the remaining obligations. Simplify using `only [adlOf] at hr₁ hr₂ ⊢`.
+
+Rewrite using `[LineTest.expo_add, LineTest.divOf_add, nsmul_add]`. Conclude with `GlobalTheory.LineNorm.Add.presents_tens L₁.isLB L₂.isLB M.j hr₁ hr₂`. Introduce `σ y y' i f hy hi hf dsimp only [adlOf] at hinf₁ hinf₂ hf hr₁ hr₂ ⊢`. Establish `hw : ∀ a ∈ (w₁ + w₂).support, a.2.1 = some R` using `fun a ha => (Finset.mem_union.1 (Finsupp.support_add ha)).elim (hw₁ a) (hw₂ a)`. Rewrite using `[metsOf_parOf x Φ k σ hw]`.
+
+Simplify using `only [Pi.zero_apply, mul_zero, neg_zero, Real.exp_zero, one_mul]`. Establish `cA : under y ∈ (L₁.B.pull M.j).U (fun _ => (i PUnit.unit).1)` using `Set.mem_iInter.2 fun _ => (Set.mem_iInter.1 hi PUnit.unit).1`. Establish `cB : under y ∈ (L₂.B.pull M.j).U (fun _ => (i PUnit.unit).2)` using `Set.mem_iInter.2 fun _ => (Set.mem_iInter.1 hi PUnit.unit).2`. Take `⟨g₁, hg₁⟩` from `(divOf (Φ.C k) (expo S.Dw w₁)).exists_isEqn (under y)`. Take `⟨g₂, hg₂⟩` from `(divOf (Φ.C k) (expo S.Dw w₂)).exists_isEqn (under y)`.
+
+Establish `hG : (divOf (Φ.C k) (expo S.Dw (w₁ + w₂))).IsEqn (under y) (g₁ * g₂)`. Rewrite using `[LineTest.expo_add, LineTest.divOf_add]`. Conclude with `hg₁.add hg₂`. Establish `gen {Δ : (Φ.C k).Y.Dv} {g : (Φ.C k).Y.Fnˣ} (hg : Δ.IsEqn (under y) g) (p : ℕ) : (p • Δ).GeneratesAt (under y) (((g : (Φ.C k).Y.Fn))⁻¹ ^ p)`. Use `CartierDiv.isEqn_iff_generatesAt_inv.1 (hg.nsmul p)` as an intermediate fact.
+
+Rewrite `this` using `[Units.val_pow_eq_pow_val, ← inv_pow]`. Then use the resulting hypothesis. Establish `gen1 {Δ : (Φ.C k).Y.Dv} {g : (Φ.C k).Y.Fnˣ} (hg : Δ.IsEqn (under y) g) : Δ.GeneratesAt (under y) ((g : (Φ.C k).Y.Fn))⁻¹` using `CartierDiv.isEqn_iff_generatesAt_inv.1 hg`. Establish `e₁` using `hinf₁ σ y y' _ _ hy cA (gen hg₁ m).regularAt`. Establish `e₂` using `hinf₂ σ y y' _ _ hy cB (gen hg₂ m).regularAt`. Rewrite `e₁` using `[metsOf_parOf x Φ k σ hw₁]`.
+
+Rewrite `e₂` using `[metsOf_parOf x Φ k σ hw₂]`. Simplify using `only [Pi.zero_apply, mul_zero, neg_zero, Real.exp_zero, one_mul] at e₁ e₂`. Rewrite `e₁` using `[(cxSt D.what₂.LL).pn_mPow _ σ _ _ _ _ y (gen1 hg₁)]`. Rewrite `e₂` using `[(cxSt D.what₂.LL).pn_mPow _ σ _ _ _ _ y (gen1 hg₂)]`. Establish `u₁` using `(hr₁.isEqn _ _ cA).generatesAt_iff.1 (gen hg₁ m)`.
+
+Establish `u₂` using `(hr₂.isEqn _ _ cB).generatesAt_iff.1 (gen hg₂ m)`. Establish `ha : RegAt (under y) (f * ((g₁ * g₂ : (Φ.C k).Y.Fnˣ) : (Φ.C k).Y.Fn) ^ (m : ℕ))`. Use `(hG.nsmul _).regularAt_iff.1 hf` as an intermediate fact. Rewrite `this` using `[Units.val_pow_eq_pow_val]`. Then use the resulting hypothesis. Establish `h₂` using `(cxSt D.what₂.LL).pn_mul _ σ _ ((cxSt D.what₂.LL).mPow _ σ _ (m : ℕ) (metsOf x Φ k (some R) σ (expo S.Dw (w₁ + w₂)))) _ _ y ha (gen hG m).regularAt`.
+
+Establish `hcanc : f * ((g₁ * g₂ : (Φ.C k).Y.Fnˣ) : (Φ.C k).Y.Fn) ^ (m : ℕ) * (((g₁ * g₂ : (Φ.C k).Y.Fnˣ) : (Φ.C k).Y.Fn))⁻¹ ^ (m : ℕ) = f`. Rewrite using `[mul_assoc, ← mul_pow, mul_inv_cancel₀ (g₁ * g₂).ne_zero, one_pow, mul_one]`. Rewrite `h₂` using `[hcanc, (cxSt D.what₂.LL).pn_mPow _ σ _ _ _ _ y (gen1 hG)]`. Establish `hsplit : (cxSt D.what₂.LL).pn _ σ _ (metsOf x Φ k (some R) σ (expo S.Dw (w₁ + w₂))) ((cxSt D.what₂.LL).cx _ σ (((g₁ * g₂ : (Φ.C k).Y.Fnˣ) : (Φ.C k).Y.Fn))⁻¹) y = (cxSt D.what₂.LL).pn _ σ _ (metsOf x Φ k (some R) σ (expo S.Dw w₁)) ((cxSt D.what₂.LL).cx _ σ ((g₁ : (Φ.C k).Y.Fn))⁻¹) …`. Rewrite using `[Units.val_mul, mul_inv, ← (cxSt D.what₂.LL).pn_mAdd _ σ _ _ _ _ _ _ y (gen1 hg₁).regularAt (gen1 hg₂).regularAt, LineTest.expo_add]`.
+
+Conclude with `congrFun (congrFun (pn_metsOf_add x Φ k (some R) σ _ _) _) y`. Establish `hf' : f * ((r₁ (fun _ => (i PUnit.unit).1) * r₂ (fun _ => (i PUnit.unit).2) : (Φ.C k).Y.Fnˣ) : (Φ.C k).Y.Fn) = f * ((g₁ * g₂ : (Φ.C k).Y.Fnˣ) : (Φ.C k).Y.Fn) ^ (m : ℕ) * (((g₁ : (Φ.C k).Y.Fn))⁻¹ ^ (m : ℕ) * (r₁ (fun _ => (i PUnit.unit).1) : (Φ.C k).Y.Fn)) * (((g₂ : (Φ.C k).Y.Fn)) …`. Simplify using `only [Units.val_mul]`. Conclude with `a3field_of_a2indep_of_a3one _ _ _ _ _ g₁.ne_zero g₂.ne_zero _`. Rewrite using `[h₂, hsplit, hf', ratVal_mul (ha.mul u₁.regAt) u₂.regAt, ratVal_mul ha u₁.regAt, mul_pow, e₁, e₂]`.
+
+Express the relevant statement in the definitionally equal form `_ = _ * Real.exp (-((L₁.φ _).φ (i PUnit.unit).1 y' + (L₂.φ _).φ (i PUnit.unit).2 y'))`. Rewrite using `[neg_add, Real.exp_add, norm_mul, norm_mul, mul_pow, mul_pow]`. Expand and normalize the polynomial expressions, which then agree. Introduce `v e y yt i h hi dsimp only [adlOf] at hv₁ hv₂ hr₁ hr₂ ⊢`. Establish `hi₁ : ⊤ ≤ yt ⁻¹ᵁ L₁.B.U (i PUnit.unit).1` using `fun x hx => (hi hx).1`.
+
+Establish `hi₂ : ⊤ ≤ yt ⁻¹ᵁ L₂.B.U (i PUnit.unit).2` using `fun x hx => (hi hx).2`. Establish `e₁` using `hv₁ v e y yt (fun _ => (i PUnit.unit).1) h hi₁`. Establish `e₂` using `hv₂ v e y yt (fun _ => (i PUnit.unit).2) h hi₂`. Establish `q₁` using `GlobalTheory.LineNorm.Add.unitAt_quot (i := fun _ => (i PUnit.unit).1) (fun z => Base.isEqn_eqn (divOf (Φ.C k) (expo S.Dw w₁)) z) hr₁ h hi₁`. Establish `q₂` using `GlobalTheory.LineNorm.Add.unitAt_quot (i := fun _ => (i PUnit.unit).2) (fun z => Base.isEqn_eqn (divOf (Φ.C k) (expo S.Dw w₂)) z) hr₂ h hi₂`.
+
+Establish `hE : (divOf (Φ.C k) (expo S.Dw (w₁ + w₂))).IsEqn (below y.1) (eqn (divOf (Φ.C k) (expo S.Dw w₁)) (below y.1) * eqn (divOf (Φ.C k) (expo S.Dw w₂)) (below y.1))`. Rewrite using `[LineTest.expo_add, LineTest.divOf_add]`. Conclude with `(Base.isEqn_eqn _ _).add (Base.isEqn_eqn _ _)`. Establish `Uc : UnitAt (below y.1) ((eqn (divOf (Φ.C k) (expo S.Dw w₁)) (below y.1) * eqn (divOf (Φ.C k) (expo S.Dw w₂)) (below y.1) * (eqn (divOf (Φ.C k) (expo S.Dw (w₁ + w₂))) (below y.1))⁻¹ : (Φ.C k).Y.Fnˣ) : (Φ.C k).Y.Fn)`. Use `(Base.isEqn_eqn _ _).iff_unitAt.1 hE` as an intermediate fact.
+
+Rewrite `this` using `[div_eq_mul_inv, ← Units.val_inv_eq_inv_val, ← Units.val_mul]`. Then use the resulting hypothesis. Rewrite using `[lgOf_add, group_pow_mul_identity (eqn (divOf (Φ.C k) (expo S.Dw w₁)) (below y.1)) (eqn (divOf (Φ.C k) (expo S.Dw w₂)) (below y.1))]`. Simplify using `only [Pi.zero_apply, mul_zero, sub_zero] at e₁ e₂ ⊢`. Generalize the expression as in `(eqn (divOf (Φ.C k) (expo S.Dw w₁)) (below y.1))⁻¹ ^ (m : ℕ) * r₁ (fun _ => (i PUnit.unit).1) = u₁ at q₁ e₁ ⊢`. Generalize the expression as in `(eqn (divOf (Φ.C k) (expo S.Dw w₂)) (below y.1))⁻¹ ^ (m : ℕ) * r₂ (fun _ => (i PUnit.unit).2) = u₂ at q₂ e₂ ⊢`.
+
+Generalize the expression as in `eqn (divOf (Φ.C k) (expo S.Dw w₁)) (below y.1) * eqn (divOf (Φ.C k) (expo S.Dw w₂)) (below y.1) * (eqn (divOf (Φ.C k) (expo S.Dw (w₁ + w₂))) (below y.1))⁻¹ = c at Uc ⊢`. Establish `w₁p` using `(e.w.pos (SmallSec.valAt_ne_zero q₁)).ne'`. Establish `w₂p` using `(e.w.pos (SmallSec.valAt_ne_zero q₂)).ne'`. Establish `wcp` using `(e.w.pos (SmallSec.valAt_ne_zero Uc)).ne'`. Rewrite using `[Units.val_mul (u₁ * u₂) (c ^ (m : ℕ)), Units.val_mul u₁ u₂, Units.val_pow_eq_pow_val, SmallSec.valAt_mul (q₁.mul q₂).regAt (InducedPow.unitAt_pow Uc _).regAt, SmallSec.valAt_mul q₁.regAt q₂.regAt, SmallSec.valAt_pow Uc.regAt, map_mul, map_mul, map_pow, Real.log_mul (mul_ne_zero …`.
+
+Use `push_cast`. Take the linear combination `e₁ + e₂`.
+-/
 theorem induced_tens : ∀ (D : D7) (A : Amb D) (N j : ℕ) (S : Sig A N j) (κ : Lv A) (s : FinalTheorems S κ) (x : ToroidalCompactificationData s) (Φ : s.Flag) (k : s.Comp) (M : GlobalTheory.TrueGeo.Model (Φ.C k).Y) (m : ℕ+) (R : ℝ) (w₁ w₂ : Sym D.host.E →₀ ℤ) (L₁ L₂ : GlobalTheory.HermLB M.p), (∀ a ∈ w₁.support, a.2.1 = some R) → (∀ a ∈ w₂.support, a.2.1 = some R) → (adlOf (Φ.C k) (metsOf x Φ k) w₁).Induced M L₁ m 0 → (adlOf (Φ.C k) (metsOf x Φ k) w₂).Induced M L₂ m 0 → (adlOf (Φ.C k) (metsOf x Φ k) (w₁ + w₂)).Induced M (L₁.tens L₂) m 0 := by
   intro D A N j S κ s x Φ k M m R w₁ w₂ L₁ L₂ hw₁ hw₂ h₁ h₂
   classical

@@ -14,10 +14,16 @@ open scoped ENNReal
 
 namespace Formalism.L2.SG.BlockScaling
 
+/- English proof (translation)
+Unfold `Formalism.BasicNotions.Host.rdE Formalism.FourierDecayAlt.S6.rd`. Rewrite using `[Int.cast_abs, one_div]`.
+-/
 theorem rdE_eq_rd' (D : D7) : D.host.rdE = Formalism.FourierDecayAlt.S6.rd D.host.E := by
   unfold Formalism.BasicNotions.Host.rdE Formalism.FourierDecayAlt.S6.rd
   rw [Int.cast_abs, one_div]
 
+/- English proof (translation)
+The claim follows from `| [], _, _, _ => rfl | (s, t) :: l, a, b, h => by simp only [Formalism.MainNotions.BigCellDensity.bD] at h simp only [Formalism.FourierDecayAlt.D.ptScal] split_ifs at h ⊢ with ha hb hb <;> first | rfl | omega | exact scal_of_bD l _ _ (by omega)`.
+-/
 theorem scal_of_bD : ∀ (l : List (ℕ × ℂ)) (a b : ℕ), Formalism.MainNotions.BigCellDensity.bD l a = Formalism.MainNotions.BigCellDensity.bD l b →
     Formalism.FourierDecayAlt.D.ptScal l a = Formalism.FourierDecayAlt.D.ptScal l b
   | [], _, _, _ => rfl
@@ -26,6 +32,9 @@ theorem scal_of_bD : ∀ (l : List (ℕ × ℂ)) (a b : ℕ), Formalism.MainNoti
     simp only [Formalism.FourierDecayAlt.D.ptScal]
     split_ifs at h ⊢ with ha hb hb <;> first | rfl | omega | exact scal_of_bD l _ _ (by omega)
 
+/- English proof (translation)
+The claim follows from `| [], _ => rfl | (s, t) :: l, a => by by_cases ha : a < s · have hp : Formalism.FourierDecayAlt.D.ptPartner ((s, t) :: l) a = s - 1 - a := by simp [Formalism.FourierDecayAlt.D.ptPartner, ha] rw [hp] simp [Formalism.FourierDecayAlt.D.ptScal, ha, show s - 1 - a < s by omega] · have …`.
+-/
 theorem scal_partner : ∀ (l : List (ℕ × ℂ)) (a : ℕ), Formalism.FourierDecayAlt.D.ptScal l (Formalism.FourierDecayAlt.D.ptPartner l a) = Formalism.FourierDecayAlt.D.ptScal l a
   | [], _ => rfl
   | (s, t) :: l, a => by
@@ -40,6 +49,9 @@ theorem scal_partner : ∀ (l : List (ℕ × ℂ)) (a : ℕ), Formalism.FourierD
         Nat.add_sub_cancel_left]
       exact scal_partner l _
 
+/- English proof (translation)
+Establish `hb` using `(Formalism.MainNotions.BigCellDensity.root_iff γ q.1.2 q.1.1 q.2.1).2 q.2.2`. Rewrite `hb` using `[Formalism.MainNotions.BigCellDensity.blockIdx_bD, Formalism.MainNotions.BigCellDensity.blockIdx_bD]`. Unfold `Formalism.MainNotions.BigCellDensity.dPt`. Rewrite using `[Formalism.MainNotions.BigCellDensity.wPt_val, Formalism.MainNotions.BigCellDensity.wPt_val, scal_partner, scal_partner]`. Conclude with `scal_of_bD _ _ _ hb.symm`.
+-/
 theorem dPt_free {r : ℕ} (γ : Formalism.MainNotions.S.Point ℂ (r + 1)) (q : Formalism.FourierDecayAlt.C2.Lstidx (Formalism.MainNotions.BigCellDensity.wPt γ)) :
     Formalism.MainNotions.BigCellDensity.dPt γ (Formalism.MainNotions.BigCellDensity.wPt γ q.1.1) = Formalism.MainNotions.BigCellDensity.dPt γ (Formalism.MainNotions.BigCellDensity.wPt γ q.1.2) := by
   have hb := (Formalism.MainNotions.BigCellDensity.root_iff γ q.1.2 q.1.1 q.2.1).2 q.2.2
@@ -48,6 +60,15 @@ theorem dPt_free {r : ℕ} (γ : Formalism.MainNotions.S.Point ℂ (r + 1)) (q :
   rw [Formalism.MainNotions.BigCellDensity.wPt_val, Formalism.MainNotions.BigCellDensity.wPt_val, scal_partner, scal_partner]
   exact scal_of_bD _ _ _ hb.symm
 
+/- English proof (translation)
+Use `Finset.prod_nbij' (fun m : ℤ => m.toNat) (fun m : ℕ => (m : ℤ)) ?_ ?_ ?_ ?_ ?_` and prove the remaining obligations. Introduce `m hm`. Simplify using `only [Finset.mem_Ico] at hm ⊢`. Use linear arithmetic over natural numbers and integers. Introduce `m hm`.
+
+Simplify using `only [Finset.mem_Ico] at hm ⊢`. Use linear arithmetic over natural numbers and integers. Introduce `m hm`. Simplify using `only [Finset.mem_Ico] at hm`. Use linear arithmetic over natural numbers and integers.
+
+Introduce `m _`. Simplify using the standard rewrite rules. Introduce `m hm`. Simplify using `only [Finset.mem_Ico] at hm`. Establish `h1 : ((m.toNat : ℕ) : ℤ) = m` using `Int.toNat_of_nonneg (by omega)`.
+
+Rewrite using `[h1, show (s : ℤ) - m = ((s - m.toNat : ℕ) : ℤ) by omega, zpow_natCast]`.
+-/
 theorem ico_int (s : ℕ) (f : ℤ → ℝ) :
     ∏ m ∈ Finset.Ico (1 : ℤ) (s : ℤ), f m ^ ((s : ℤ) - m) = ∏ m ∈ Finset.Ico 1 s, f (m : ℤ) ^ (s - m) := by
   refine Finset.prod_nbij' (fun m : ℤ => m.toNat) (fun m : ℕ => (m : ℤ)) ?_ ?_ ?_ ?_ ?_
@@ -67,6 +88,9 @@ theorem ico_int (s : ℕ) (f : ℤ → ℝ) :
     have h1 : ((m.toNat : ℕ) : ℤ) = m := Int.toNat_of_nonneg (by omega)
     rw [h1, show (s : ℤ) - m = ((s - m.toNat : ℕ) : ℤ) by omega, zpow_natCast]
 
+/- English proof (translation)
+The claim follows from `| _, [] => rfl | o, (s, t) :: L => by simp only [Formalism.FourierDecayAlt.D.toStd, List.map_cons] rw [toStd_fst r g (o + s) L]`.
+-/
 theorem toStd_fst (r : ℕ) (g : ℝ) : ∀ (o : ℕ) (L : Formalism.FourierDecayAlt.C.LPt),
     (Formalism.FourierDecayAlt.D.toStd r g o L).map Prod.fst = L.map Prod.fst
   | _, [] => rfl
@@ -74,6 +98,9 @@ theorem toStd_fst (r : ℕ) (g : ℝ) : ∀ (o : ℕ) (L : Formalism.FourierDeca
     simp only [Formalism.FourierDecayAlt.D.toStd, List.map_cons]
     rw [toStd_fst r g (o + s) L]
 
+/- English proof (translation)
+The claim follows from `| [], _ => rfl | (t, s) :: L, i => by simp only [Formalism.L2.SG.RealObj.blkOf, Formalism.L2.SG.TriangularProducts.bi, List.map_cons] split_ifs · rfl · rw [blkOf_eq_bi L (i - s), add_comm]`.
+-/
 theorem blkOf_eq_bi {K : Type*} : ∀ (L : List (K × ℕ)) (i : ℕ),
     Formalism.L2.SG.RealObj.blkOf L i = Formalism.L2.SG.TriangularProducts.bi (L.map Prod.snd) i
   | [], _ => rfl
@@ -83,6 +110,15 @@ theorem blkOf_eq_bi {K : Type*} : ∀ (L : List (K × ℕ)) (i : ℕ),
     · rfl
     · rw [blkOf_eq_bi L (i - s), add_comm]
 
+/- English proof (translation)
+Establish `hinv : (Formalism.L2.SG.RealObj.trG Q Qi (hh⁻¹ * γ * hh'))⁻¹ = Formalism.L2.SG.RealObj.trG Q Qi ((hh⁻¹ * γ * hh')⁻¹)`. Use `Matrix.inv_eq_right_inv ?_` and prove the remaining obligations. Unfold `Formalism.L2.SG.RealObj.trG`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [Matrix.mul_assoc]`.
+
+Use `_ = 1 := by`. Rewrite using `[hQQi, Matrix.mul_one, show Formalism.MainNotions.S.uMat (hh⁻¹ * γ * hh') * Formalism.MainNotions.S.uMat (hh⁻¹ * γ * hh')⁻¹ = Formalism.MainNotions.S.uMat ((hh⁻¹ * γ * hh') * (hh⁻¹ * γ * hh')⁻¹) from rfl, mul_inv_cancel]`. Use `show Qi * 1 * Q = 1`. Rewrite using `[Matrix.mul_one, hQiQ]`. Rewrite using `[hinv]`.
+
+Unfold `Formalism.L2.SG.RealObj.trG`. Establish `e : hh'⁻¹ * (γ⁻¹ * y * γ) * hh' = (hh⁻¹ * γ * hh')⁻¹ * (hh⁻¹ * y * hh) * (hh⁻¹ * γ * hh')` using `by group`. Rewrite using `[e]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[hQQi, Matrix.mul_one, Matrix.mul_one]`.
+
+Both sides reduce to the same expression.
+-/
 theorem conj_trG {n N : ℕ} {ε : Fin n → Bool} {Q : Matrix (Fin n) (Fin N) ℂ} {Qi : Matrix (Fin N) (Fin n) ℂ}
     (hQiQ : Qi * Q = 1) (hQQi : Q * Qi = 1) (γ hh hh' y : Formalism.REAL.UJ ε) :
     (Formalism.L2.SG.RealObj.trG Q Qi (hh⁻¹ * γ * hh'))⁻¹ * Formalism.L2.SG.RealObj.trG Q Qi (hh⁻¹ * y * hh) *
@@ -113,6 +149,21 @@ theorem conj_trG {n N : ℕ} {ε : Fin n → Bool} {Q : Matrix (Fin n) (Fin N) �
 
 open Formalism.L2.SG.HidaSetting Formalism.L2.SG.LocWSOf in
 
+/- English proof (translation)
+Establish `hQiQ` using `hT.1`. Establish `hQQi` using `hT.2.1`. Establish `hcoe : ∀ a b c : Formalism.REAL.UJ (X.B.I.ε v), Formalism.MainNotions.S.uMat (a⁻¹ * b * c) = (Formalism.MainNotions.S.uMat a)⁻¹ * Formalism.MainNotions.S.uMat b * Formalism.MainNotions.S.uMat c` using `fun a b c => by`. Rewrite using `[show Formalism.MainNotions.S.uMat (a⁻¹ * b * c) = Formalism.MainNotions.S.uMat a⁻¹ * Formalism.MainNotions.S.uMat b * Formalism.MainNotions.S.uMat c from rfl, Formalism.L2.SG.RealConjugatorData.uMat_inv']`. Establish `hu : ∀ a : Formalism.REAL.UJ (X.B.I.ε v), IsUnit (Formalism.MainNotions.S.uMat a).det` using `fun a => by`.
+
+Use `Formalism.L2.SG.RealConjugatorData.uMat_mul_inv a` as an intermediate fact. Conclude with `Matrix.isUnit_det_of_right_inverse this`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Establish `h1` using `Formalism.L2.SG.QuotientSpan.inN_conj (hh := Formalism.MainNotions.S.uMat hh) hh.2 (hu hh) he hz hy.1`. Rewrite `h1` using `[← hcoe]`.
+
+Conclude with `(Formalism.L2.SG.QuotientSpan.inN_iff v hl hT _ hzW _ (hh⁻¹ * y * hh).2).1 h1`. Establish `hinv : (Formalism.L2.SG.RealObj.trG Q Qi (hh⁻¹ * γ v * hh'))⁻¹ = Formalism.L2.SG.RealObj.trG Q Qi ((hh⁻¹ * γ v * hh')⁻¹)`. Use `Matrix.inv_eq_right_inv ?_` and prove the remaining obligations. Unfold `Formalism.L2.SG.RealObj.trG`. Combine the equalities or inequalities in the displayed calculation.
+
+Simplify using `only [Matrix.mul_assoc]`. Use `_ = 1 := by`. Rewrite using `[hQQi, Matrix.mul_one, show Formalism.MainNotions.S.uMat (hh⁻¹ * γ v * hh') * Formalism.MainNotions.S.uMat (hh⁻¹ * γ v * hh')⁻¹ = Formalism.MainNotions.S.uMat ((hh⁻¹ * γ v * hh') * (hh⁻¹ * γ v * hh')⁻¹) from rfl, mul_inv_cancel]`. Use `show Qi * 1 * Q = 1`. Rewrite using `[Matrix.mul_one, hQiQ]`.
+
+Establish `hconj : (Formalism.L2.SG.RealObj.trG Q Qi (hh⁻¹ * γ v * hh'))⁻¹ * Formalism.L2.SG.RealObj.trG Q Qi (hh⁻¹ * y * hh) * Formalism.L2.SG.RealObj.trG Q Qi (hh⁻¹ * γ v * hh') = Qi * Formalism.MainNotions.S.uMat (hh'⁻¹ * ((γ v)⁻¹ * y * γ v) * hh') * Q`. Rewrite using `[hinv]`. Unfold `Formalism.L2.SG.RealObj.trG`. Establish `e : hh'⁻¹ * ((γ v)⁻¹ * y * γ v) * hh' = (hh⁻¹ * γ v * hh')⁻¹ * (hh⁻¹ * y * hh) * (hh⁻¹ * γ v * hh')` using `by group`. Rewrite using `[e]`.
+
+Combine the equalities or inequalities in the displayed calculation. Rewrite using `[hQQi, Matrix.mul_one, Matrix.mul_one]`. Both sides reduce to the same expression. Rewrite using `[hconj]`. Establish `h1` using `Formalism.L2.SG.QuotientSpan.inN_conj (hh := Formalism.MainNotions.S.uMat hh') hh'.2 (hu hh') he' hz' hy.2`.
+
+Rewrite `h1` using `[← hcoe]`. Conclude with `(Formalism.L2.SG.QuotientSpan.inN_iff v hl hT _ hzW' _ (hh'⁻¹ * ((γ v)⁻¹ * y * γ v) * hh').2).1 h1`.
+-/
 theorem rset_of_stV {D : D7} {X : HidaSetting D} (v : InfinitePlace X.B.I.F) {lam : ℂ} (hl : lam ≠ 0)
     {Q : Matrix (Fin X.B.I.n) (Fin (2 * D.R.rS + D.R.k + 1)) ℂ} {Qi : Matrix (Fin (2 * D.R.rS + D.R.k + 1)) (Fin X.B.I.n) ℂ}
     (hT : IsTranspC X v lam D.R.k D.R.rS Q Qi) (u u' : D.what₂.Word) (γ : X.B.I.Ginf) (hh hh' : Formalism.REAL.UJ (X.B.I.ε v))
@@ -195,6 +246,77 @@ variable {D : D7} (X : Formalism.L2.SG.HidaSetting.HidaSetting D) (u u' : D.what
 
 local notation "PP" => CarrierOf (carrierInOf X u u' e he hv C CA de de' l grid grid1 T hT fc χ sg ν' m₀ top A₀) Mo
 
+/- English proof (translation)
+Introduce `p w hp hw h h' hD v μRv hHaar hpin hloc`. Take `⟨hZp, -, -, hδG⟩` from `orbVec_data X u u' e he hv C CA de de' l grid grid1 T hT fc χ sg ν' m₀ top A₀ Mo sc hsc i0 i0' hFX hB hemb hbase p w hp hw h h' hD v`. Take `⟨hQ, hz, hz', -⟩` from `hFX v`. Use `set p' := Formalism.FourierDecayAlt.D.toStd (PP).S.G.r (PP).S.g 1 (Formalism.FourierDecayAlt.C.loc ((PP).S.emb ((PP).τ.symm v)) p) with hp'`. Take `⟨pN, hpN⟩ : ∃ pN : Formalism.MainNotions.S.Point ℂ (D.R.rS + 1), pN.1 = p'.map Prod.swap` from `⟨⟨p'.map Prod.swap, fun x hx => by`.
+
+Take `⟨b, hb, rfl⟩` from `List.mem_map.1 hx`. Conclude with `⟨(hloc.1 b hb).2, (hloc.1 b hb).1⟩, by`. Establish `h2` using `hloc.2`. Simplify using `only [Formalism.FourierDecayAlt.D.ptSize] at h2`. Rewrite using `[List.map_map]`.
+
+Conclude with `h2⟩, rfl⟩`. Establish `hswap : pN.1.map Prod.swap = p'`. Rewrite using `[hpN, List.map_map]`. Conclude with `List.map_id'' (fun x => Prod.swap_swap x) p'`. Establish `hZ : Formalism.QuantumDeterminants.Zhat D.R.k D.R.rS ((PP).T ((PP).τ.symm v)).base.z ((PP).T ((PP).τ.symm v)).base.z' (trG ((PP).Q v) ((PP).Qi v) ((h v)⁻¹ * (gamW X u u' w) v * h' v)) = Formalism.FourierDecayAlt.C2.monoP (Formalism.MainNotions.BigCellDensity.wPt pN) (Formalism.Ma …`.
+
+Rewrite using `[hZp, ← Formalism.MainNotions.BigCellDensity.ptMatN_mono pN, hswap]`. Establish `hw' : (hloc.2 ▸ Formalism.FourierDecayAlt.D.ptPerm p' : Equiv.Perm (Fin (D.R.rS + 1))) = Formalism.MainNotions.BigCellDensity.wPt pN`. Use `Equiv.ext fun x => Fin.ext ?_` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation. Establish `hdm : ∀ q : Formalism.FourierDecayAlt.C2.Lstidx (Formalism.MainNotions.BigCellDensity.wPt pN), ‖Formalism.MainNotions.BigCellDensity.dPt pN (Formalism.MainNotions.BigCellDensity.wPt pN q.1.1)‖ = ‖Formalism.MainNotions.BigCellDensity.dPt pN (Formalism.MainNotions.BigCellDensity.wP …` using `fun q => by rw [Formalism.L2.SG.BlockScaling.dPt_free pN q]`.
+
+Establish `hT' : Formalism.L2.SG.LocWSOf.IsTranspC X v (-(Complex.I * (((PP).S.g : ℝ) : ℂ)) / (2 * (Real.pi : ℂ))) D.R.k D.R.rS ((PP).Q v) ((PP).Qi v)` using `hQ`. Establish `hg0 : (0 : ℝ) < ((PP).S.g : ℝ)` using `by show (0 : ℝ) < ((D.host.g 0 * D.host.g 1 : ℕ) : ℝ)`. Use `push_cast`. Conclude with `mul_pos (by exact_mod_cast (Formalism.L2.SG.Pf.CarrierSz.g_pos D).1) (by exact_mod_cast (Formalism.L2.SG.Pf.CarrierSz.g_pos D).2)`. Use `set lam : ℂ := -(Complex.I * (((PP).S.g : ℝ) : ℂ)) / (2 * (Real.pi : ℂ)) with hlam`.
+
+Establish `hl : lam ≠ 0`. Use `div_ne_zero (neg_ne_zero.2 (mul_ne_zero Complex.I_ne_zero ?_)) ?_` and prove the remaining obligations. Conclude with `hg0.ne'` after adjusting the coercions. Conclude with `mul_ne_zero two_ne_zero (by exact_mod_cast Real.pi_ne_zero)`. Establish `hzW : Formalism.QuantumDeterminants.inWb D.R.k D.R.rS ((PP).Qi v *ᵥ rv X.B.I v (X.zR u))`.
+
+Establish `h1` using `((PP).T ((PP).τ.symm v)).base.z_mem`. Conclude with `hz ▸ h1`. Establish `hzW' : Formalism.QuantumDeterminants.inWb D.R.k D.R.rS ((PP).Qi v *ᵥ rv X.B.I v (X.zR u'))`. Establish `h1` using `((PP).T ((PP).τ.symm v)).base.z'_mem`. Conclude with `hz' ▸ h1`.
+
+Establish `hΦ1 : Measurable (fun s : Formalism.REAL.UJ (X.B.I.ε v) => (h v)⁻¹ * s * h v)` using `((continuous_const.mul continuous_id).mul continuous_const).measurable`. Establish `hΦ2 : Measurable (fun s : Formalism.REAL.UJ (X.B.I.ε v) => Matrix.of.symm (trG ((PP).Q v) ((PP).Qi v) s))`. Use `Continuous.measurable ?_` and prove the remaining obligations. Unfold `trG`. Conclude with `(continuous_const.matrix_mul (Units.continuous_val.comp continuous_subtype_val)).matrix_mul continuous_const`.
+
+Establish `hconc : ((μRv.map (fun s => (h v)⁻¹ * s * h v)).map (fun s => Matrix.of.symm (trG ((PP).Q v) ((PP).Qi v) s))) {x | Matrix.of x ∉ Formalism.FourierDecayAlt.C6.Rset (trG ((PP).Q v) ((PP).Qi v) ((h v)⁻¹ * (gamW X u u' w) v * h' v))} = 0`. Establish `hS : IsClosed {x : Formalism.QuantumDeterminants.Mt D.R.k D.R.rS | Matrix.of x ∈ Formalism.FourierDecayAlt.C6.Rset (trG ((PP).Q v) ((PP).Qi v) ((h v)⁻¹ * (gamW X u u' w) v * h' v))}` using `(Formalism.FourierDecayAlt.P.Dx2.OrbJ.closedR (Formalism.FourierDecayAlt.P.Dx2.Rad.isUnit_G hδG)).closed`. Rewrite using `[Measure.map_map hΦ2 hΦ1]`. Use `(Measure.map_apply (hΦ2.comp hΦ1) ?_).trans ?_` and prove the remaining obligations. Conclude with `hS.measurableSet.compl`.
+
+Use `measure_mono_null ?_ hHaar.2.2.1` and prove the remaining obligations. Introduce `y hy hyS`. Use `hy ?_` and prove the remaining obligations. Conclude with `Formalism.L2.SG.BlockScaling.rset_of_stV v hl hT' u u' (gamW X u u' w) (h v) (h' v) (fun a => hD.1 v _ (Or.inl (Or.inl ⟨a, rfl⟩))) (hD.1 v _ (Or.inr rfl)) (fun a => hD.2.1 v _ (Or.inl (Or.inl ⟨a, rfl⟩))) (hD.2.1 v _ (Or.inr rfl)) hzW hzW' y hyS`. Establish `hw1 : w.1 = (Formalism.L2.SG.DataInst.signPt D.R.rS p).map Prod.swap`.
+
+Establish `hpt` using `hp`. Unfold `ptOfL Formalism.L2.SG.DataInst.ptOfList at hpt`. Use `split_ifs at hpt with hPtL`. Rewrite using `[← Option.some_inj.mp hpt]`. Both sides reduce to the same expression.
+
+Establish `hsz : ∀ i : ℕ, Formalism.MainNotions.S.blockIdx pN.1 i = Formalism.L2.SG.RealObj.blkOf w.1 i`. Introduce `i`. Rewrite using `[Formalism.L2.SG.TriangularProducts.blockIdx_eq_bi, Formalism.L2.SG.BlockScaling.blkOf_eq_bi, hpN, hw1, List.map_map, List.map_map]`. Use `congr 1`. Establish `e1 : (Prod.snd ∘ Prod.swap : ℕ × ℂ → ℕ) = Prod.fst` using `rfl`.
+
+Establish `e2 : (Prod.snd ∘ Prod.swap : ℕ × D.host.E → ℕ) = Prod.fst` using `rfl`. Rewrite using `[e1, e2, show Formalism.L2.SG.DataInst.signPt D.R.rS p = Formalism.L2.SG.DataInst.signAux D.R.rS 1 p from rfl, Formalism.L2.SG.DataInst.sign_list_fst, hp', Formalism.L2.SG.BlockScaling.toStd_fst]`. Simplify using `[Formalism.FourierDecayAlt.C.loc]`. Set `idxE : ↥(Formalism.MainNotions.S.rootPat pN) ≃ Formalism.L2.SG.RealObj.FreeE w` to `{ toFun := fun q => ⟨q.1, by`. Establish `hq` using `q.2`.
+
+Simplify using `only [Formalism.MainNotions.S.rootPat, Finset.mem_filter, Finset.mem_univ, true_and] at hq`. Conclude with `⟨hq.1, by rw [← hsz, ← hsz]; exact hq.2⟩⟩`. Use `invFun := fun q => ⟨q.1, by`. Simplify using `only [Formalism.MainNotions.S.rootPat, Finset.mem_filter, Finset.mem_univ, true_and]`. Conclude with `⟨q.2.1, by rw [hsz, hsz]; exact q.2.2⟩⟩`.
+
+Use `left_inv := fun _ => rfl`. Use `right_inv := fun _ => rfl }`. Establish `hmap : ((μRv.map (fun s => (h v)⁻¹ * s * h v)).map (fun s => Matrix.of.symm (trG ((PP).Q v) ((PP).Qi v) s))).map (fun x => Formalism.MainNotions.S.rootCoords D.R.k D.R.rS ((PP).T ((PP).τ.symm v)).base.z' pN (Matrix.of.symm ((trG ((PP).Q v) ((PP).Qi v) ((h v)⁻¹ * (gamW X u u' w) v …`. Establish `hrd : (D.host.rdE : ℂ) ≠ 0`. Use `Formalism.L2.SG.RealFrameCoordinates.frS_mul_rd D` as an intermediate fact.
+
+Introduce `h0`. Rewrite `this` using `[h0, mul_zero]`. Conclude with `zero_ne_one this`. Use `set c : ℂ := (D.host.rdE : ℂ) * lam with hc`. Establish `hc0 : c ≠ 0` using `mul_ne_zero hrd hl`.
+
+Use `set sP : Fin (D.R.rS + 1) × Fin (D.R.rS + 1) → ℂ := fun q => c ^ (D.R.rS - q.2.val) / c ^ (D.R.rS - q.1.val) with hsP`. Establish `hsP0 : ∀ q, sP q ≠ 0` using `fun q => div_ne_zero (pow_ne_zero _ hc0) (pow_ne_zero _ hc0)`. Establish `hstm : Measurable (stCoordV X u' w (gamW X u u' w) v)`. Use `Continuous.measurable ?_` and prove the remaining obligations. Unfold `stCoordV Formalism.L2.SG.HidaSetting.hJ`.
+
+Use `fun_prop`. Establish `hGm : Measurable (fun (y' : Formalism.L2.SG.RealObj.FreeE w → ℂ) (q : ↥(Formalism.MainNotions.S.rootPat pN)) => sP q.1 * y' (idxE q))` using `measurable_pi_lambda _ fun q => measurable_const.mul (measurable_pi_apply _)`. Rewrite using `[Measure.map_map hΦ2 hΦ1]`. Use `(Measure.map_map ?_ (hΦ2.comp hΦ1)).trans ?_` and prove the remaining obligations. Use `Continuous.measurable ((Formalism.L2.SG.RootPatterns.rootCoords_cont _ _ _ _).comp ?_)` and prove the remaining obligations.
+
+Conclude with `(continuous_const.matrix_mul continuous_id).matrix_mul continuous_const`. Use `(congrArg (fun f => Measure.map f μRv) (?_ : _ = (fun (y' : Formalism.L2.SG.RealObj.FreeE w → ℂ) (q : ↥(Formalism.MainNotions.S.rootPat pN)) => sP q.1 * y' (idxE q)) ∘ stCoordV X u' w (gamW X u u' w) v)).trans ?_` and prove the remaining obligations. Use function extensionality and compare the values at `y q`. Establish `hq` using `q.2`. Simplify using `only [Formalism.MainNotions.S.rootPat, Finset.mem_filter, Finset.mem_univ, true_and] at hq`.
+
+Establish `ha : q.1.1.val < D.R.rS` using `by have := Fin.lt_def.1 hq.1; have := q.1.2.isLt; omega`. Simplify using `only [Function.comp_apply, Formalism.MainNotions.S.rootCoords, Equiv.apply_symm_apply]`. Unfold `Formalism.MainNotions.S.flagMat`. Rewrite using `[dif_pos ha]`. Use `erw [Formalism.L2.SG.BlockScaling.conj_trG hT'.1 hT'.2.1]`.
+
+Establish `hcoe : Formalism.MainNotions.S.uMat ((h' v)⁻¹ * ((gamW X u u' w v)⁻¹ * y * gamW X u u' w v) * h' v) = (Formalism.MainNotions.S.uMat (h' v))⁻¹ * Formalism.MainNotions.S.uMat ((gamW X u u' w v)⁻¹ * y * gamW X u u' w v) * Formalism.MainNotions.S.uMat (h' v)`. Rewrite using `[show Formalism.MainNotions.S.uMat ((h' v)⁻¹ * ((gamW X u u' w v)⁻¹ * y * gamW X u u' w v) * h' v) = Formalism.MainNotions.S.uMat (h' v)⁻¹ * Formalism.MainNotions.S.uMat ((gamW X u u' w v)⁻¹ * y * gamW X u u' w v) * Formalism.MainNotions.S.uMat (h' v) from rfl, Formalism.L2.SG.Re …`. Establish `hz'' : ((PP).T ((PP).τ.symm v)).base.z' = (PP).Qi v *ᵥ rv X.B.I v (X.zR u')` using `hz'`. Rewrite using `[hcoe, hz'']`. Establish `hHu : IsUnit (Formalism.MainNotions.S.uMat (h' v)).det` using `Matrix.isUnit_det_of_right_inverse (Formalism.L2.SG.RealConjugatorData.uMat_mul_inv (h' v))`.
+
+Use `erw [Formalism.L2.SG.StandardCoordinates.coord_conj v hl hT' u' _ _ (h' v).2 hHu (fun a => hD.2.1 v _ (Or.inl (Or.inl ⟨a, rfl⟩))) (hD.2.1 v _ (Or.inr rfl)) (fun a => hD.2.1 v _ (Or.inl (Or.inr ⟨a, rfl⟩))) ⟨q.1.1.val, ha⟩ q.1.2]`. Establish `hgen : stCoordV X u' w (gamW X u u' w) v y (idxE q) = c ^ (D.R.rS - q.1.1.val) / c ^ (D.R.rS - q.1.2.val) * (((PP).Qi v * Formalism.MainNotions.S.uMat ((gamW X u u' w v)⁻¹ * y * gamW X u u' w v) * (PP).Q v) *ᵥ Formalism.QuantumDeterminants.fvec D.R.k D.R.rS ((PP).Qi v *ᵥ rv X.B.I …`. Establish `h1` using `Formalism.L2.SG.StandardCoordinates.stCoordV_gen v hl hT' u' w (gamW X u u' w) y (idxE q)`. Rewrite `h1` using `[← hc]`. Conclude with `h1`.
+
+Rewrite using `[hgen]`. Simplify using `only [hsP]`. Clear the denominators using the available nonvanishing facts. Both sides reduce to the same expression. Rewrite using `[← Measure.map_map hGm hstm, hpin]`.
+
+Unfold `muStabV`. Rewrite using `[Formalism.L2.SG.PiMeasureScaling.pi_reindex_scale idxE _ ENNReal.ofReal_ne_top (fun q => sP q.1) (fun q => hsP0 _)]`. Use `congr 1`. Establish `hpos_rd : 0 < D.host.rdE`. Unfold `Formalism.BasicNotions.Host.rdE`.
+
+Conclude with `Real.rpow_pos_of_pos (abs_pos.2 (Int.cast_ne_zero.2 (NumberField.discr_ne_zero D.host.E))) _`. Establish `hk : D.host.ka = 2 * Real.pi / D.host.rdE`. Simplify using `only [Formalism.BasicNotions.Host.ka, Formalism.BasicNotions.Host.v]`. Establish `hπ` using `Real.pi_ne_zero`. Use `hpos_rd.ne'` as an intermediate fact.
+
+Apply the tactic sequence `first | (field_simp; done) | (field_simp; ring)`. Establish `hgX : (X.B.g : ℝ) = ((PP).S.g : ℝ)` using `by show (X.B.g : ℝ) = ((D.host.g 0 * D.host.g 1 : ℕ) : ℝ)`. Rewrite using `[X.g_eq]`. Use `set y : ℝ := D.host.rdE * ((PP).S.g : ℝ) / (2 * Real.pi) with hy`. Establish `hy0 : 0 < y` using `by have := Real.pi_pos; positivity`.
+
+Establish `hcy : c = ((y : ℝ) : ℂ) * (-Complex.I)`. Rewrite using `[hc, hlam, hy]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Establish `hnc : Complex.normSq c = y ^ 2`.
+
+Rewrite using `[hcy, Complex.normSq_mul, Complex.normSq_ofReal, Complex.normSq_neg, Complex.normSq_I]`. Expand and normalize the polynomial expressions, which then agree. Establish `hkap : Formalism.FourierDecayAlt.D.kapG ((PP).S.g : ℝ) (Formalism.FourierDecayAlt.S6.rd D.host.E) = y⁻¹`. Rewrite using `[← Formalism.L2.SG.BlockScaling.rdE_eq_rd', hy]`. Unfold `Formalism.FourierDecayAlt.D.kapG`.
+
+Use `Real.pi_pos` as an intermediate fact. Apply the tactic sequence `first | (field_simp; done) | (field_simp; ring)`. Use `set F : ℕ → ℝ := fun m => Formalism.FourierDecayAlt.D.kapG ((PP).S.g : ℝ) (Formalism.FourierDecayAlt.S6.rd D.host.E) ^ (1 - 2 * (m : ℤ)) / Real.pi with hF`. Establish `hF0 : ∀ m, 0 ≤ F m` using `fun m => div_nonneg (zpow_nonneg (by rw [hkap]; positivity) _) Real.pi_pos.le`. Establish `hterm : ∀ q ∈ Formalism.MainNotions.S.rootPat pN, ENNReal.ofReal (D.host.ka / X.B.g / Real.pi) * ENNReal.ofReal (Complex.normSq (sP q))⁻¹ = ENNReal.ofReal (F (q.2.val - q.1.val))`.
+
+Introduce `q hq`. Simplify using `only [Formalism.MainNotions.S.rootPat, Finset.mem_filter, Finset.mem_univ, true_and] at hq`. Establish `hab` using `Fin.lt_def.1 hq.1`. Establish `hπ` using `Real.pi_pos`. Rewrite using `[← ENNReal.ofReal_mul (by rw [hk, hgX]; positivity)]`.
+
+Use `congr 1`. Simplify using `only [hsP, map_div₀, map_pow, hnc, hF, hkap, hk, hgX]`. Establish `e : D.R.rS - q.1.val = (q.2.val - q.1.val) + (D.R.rS - q.2.val)` using `by have := q.2.isLt; omega`. Rewrite using `[e, pow_add, _root_.inv_zpow', neg_sub, zpow_sub₀ hy0.ne', zpow_one, show (2 * ((q.2.val - q.1.val : ℕ) : ℤ)) = ((2 * (q.2.val - q.1.val) : ℕ) : ℤ) by push_cast; ring, zpow_natCast, pow_mul, hy]`. Establish `h1 : (D.host.rdE * ((PP).S.g : ℝ) / (2 * Real.pi)) ≠ 0` using `hy0.ne'`.
+
+Apply the tactic sequence `first | (field_simp; done) | (field_simp; ring)`. Rewrite using `[Finset.prod_coe_sort (Formalism.MainNotions.S.rootPat pN) (fun q => ENNReal.ofReal (D.host.ka / X.B.g / Real.pi) * ENNReal.ofReal (Complex.normSq (sP q))⁻¹), Finset.prod_congr rfl hterm, ← ENNReal.ofReal_prod_of_nonneg (fun q _ => hF0 _), Formalism.L2.SG.TriangularProducts.prod_ …`. Use `congr 1`. Unfold `Formalism.FourierDecayAlt.D.bSt`. Rewrite using `[hpN, List.map_map]`.
+
+Establish `hfst : p'.map Prod.fst = (Formalism.FourierDecayAlt.C.loc ((PP).S.emb ((PP).τ.symm v)) p).map Prod.fst`. Rewrite using `[hp', Formalism.L2.SG.BlockScaling.toStd_fst]`. Establish `e1 : ((fun b : ℂ × ℕ => ∏ m ∈ Finset.Ico 1 b.2, F m ^ (b.2 - m)) ∘ Prod.swap) = (fun s => ∏ m ∈ Finset.Ico 1 s, F m ^ (s - m)) ∘ Prod.fst` using `rfl`. Rewrite using `[e1, ← List.map_map, hfst, List.map_map]`. Use `congr 1`.
+
+Use `List.map_congr_left fun a _ => ?_` and prove the remaining obligations. Simplify using `only [Function.comp_apply, hF]`. Conclude with `(Formalism.L2.SG.BlockScaling.ico_int a.1 (fun z : ℤ => Formalism.FourierDecayAlt.D.kapG ((PP).S.g : ℝ) (Formalism.FourierDecayAlt.S6.rd D.host.E) ^ (1 - 2 * z) / Real.pi)).symm`. Use `Formalism.L2.SG.ModelMeasure.mp_modelK pN ((PP).T ((PP).τ.symm v)).base hδG (Formalism.MainNotions.BigCellDensity.dPt_ne pN) hdm hZ _ hconc _ hmap` as an intermediate fact. Rewrite using `[this, ← hw']`.
+
+Both sides reduce to the same expression.
+-/
 theorem measPinAt_of (sc : ℝ) (hsc : 0 < sc) (i0 i0' : ∀ _ : InfinitePlace X.B.I.F, Fin D.R.k)
     (hFX : (PP).FromX) (hB : (PP).Base i0 i0')
     (hemb : ∀ j x, (PP).S.emb j (X.ιE x) = X.B.I.φ ((PP).τ j) x)

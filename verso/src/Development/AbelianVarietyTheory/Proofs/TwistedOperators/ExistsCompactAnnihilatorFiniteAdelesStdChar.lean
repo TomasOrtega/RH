@@ -16,6 +16,17 @@ namespace GlobalTheory.ScalarAnnih
 open IsDedekindDomain GlobalTheory.Idele
 open scoped nonZeroDivisors
 
+/- English proof (translation)
+Take `⟨N, hN, hNO⟩` from `GlobalTheory.AdLat.OpenLat.exists_nsmul_adele F O hO`. Take `⟨t, ht⟩` from `exists_idealOf_eq (GlobalTheory.StdDual.codiff_ne_zero (F := F))`. Set `c : Af F` to `algebraMap F (Af F) ((N : F)⁻¹) * (t : Af F)`. Use `⟨(fun a => c * a) '' {a : Af F | ∀ v, a v ∈ v.adicCompletionIntegers F}, (GlobalTheory.AdeleCocompact.isCompact_integral F).image (continuous_const.mul continuous_id), ?_⟩` and prove the remaining obligations. Introduce `x hx`.
+
+Establish `h1 : (N : Af F) * x ∈ adelicIdeal (GlobalTheory.StdDual.codiff F)`. Rewrite using `[GlobalTheory.SplitUnram.mem_adelicIdeal_codiff_iff hc hfin]`. Introduce `α hα`. Use `hx _ (hNO α hα)` as an intermediate fact. Rewrite `this` using `[nsmul_eq_mul, mul_assoc, mul_left_comm]`. Then use the resulting hypothesis.
+
+Establish `h2 : (t : Af F) * (((t⁻¹ : (Af F)ˣ) : Af F) * ((N : Af F) * x)) ∈ adelicIdeal (t • (1 : FractionalIdeal (𝓞 F)⁰ F))`. Rewrite using `[Units.mul_inv_cancel_left, smul_one_eq, ht]`. Conclude with `h1`. Rewrite `h2` using `[mul_mem_adelicIdeal_smul, mem_adelicIdeal]`. Use `⟨_, fun v => (mem_localIdeal_one_iff v _).1 (h2 v), ?_⟩` and prove the remaining obligations.
+
+Establish `hN0 : (N : F) ≠ 0` using `Nat.cast_ne_zero.2 hN.ne'`. Establish `e : algebraMap F (Af F) ((N : F)⁻¹) * (N : Af F) = 1`. Rewrite using `[← map_natCast (algebraMap F (Af F)) N, ← map_mul, inv_mul_cancel₀ hN0, map_one]`. Simplify using `only [c]`. Combine the equalities or inequalities in the displayed calculation.
+
+Rewrite using `[mul_assoc, Units.mul_inv_cancel_left, mul_assoc]`. Use `_ = x := by rw [e, one_mul]`.
+-/
 theorem exists_compact_annihilator_finiteAdeles_traceChar (F : Type) [Field F] [NumberField F] (ψ : AddChar (AF F) ℂ)
     (hc : Continuous ψ)
     (hfin : ∀ x : F, ψ (pairA F 0 (algebraMap F (Af F) x)) =
@@ -47,6 +58,9 @@ theorem exists_compact_annihilator_finiteAdeles_traceChar (F : Type) [Field F] [
         rw [mul_assoc, Units.mul_inv_cancel_left, mul_assoc]
     _ = x := by rw [e, one_mul]
 
+/- English proof (translation)
+Introduce `D ψ hψ O hO` and use `exists_compact_annihilator_finiteAdeles_traceChar D.host.F ψ hψ.1.1 (GlobalTheory.StdRat.stdChar_fin_rat D ψ hψ) O hO`.
+-/
 theorem exists_compact_of_annih : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ), IsStdChar D ψ (-1) →
     ∀ O ∈ nhds (0 : Af D.host.F), ∃ K : Set (Af D.host.F), IsCompact K ∧
       ∀ x : Af D.host.F, (∀ t ∈ O, ψ (pairA D.host.F 0 (t * x)) = 1) → x ∈ K :=

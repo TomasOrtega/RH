@@ -10,6 +10,9 @@ open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalC
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Geo ReciprocityTheory.ChartRestriction.G.Geo.Tor ReciprocityTheory.ChartRestriction.G.Semi GlobalTheory.CompanionTheory.Ar GroundTheory.Heights₂.Heights.LowerBoundFree
 open scoped Matrix ComplexOrder
 
+/- English proof (translation)
+Establish `key` using `IsAffineOpen.SpecMap_appLE_fromSpec x hW (isAffineOpen_top (Spec (CommRingCat.of ℂ))) h`. Rewrite `key` using `[IsAffineOpen.fromSpec_top, Scheme.isoSpec_Spec_inv]`. Simplify using `only [spMap, CommRingCat.ofHom_hom, Spec.map_comp, Category.assoc, key]`. Rewrite using `[← Spec.map_comp_assoc, Iso.inv_hom_id, Spec.map_id, Category.id_comp]`.
+-/
 private theorem spMap_appLE_comp_fromSpec {X : Scheme.{0}} {W : X.Opens} (hW : IsAffineOpen W)
     (x : Sp ℂ ⟶ X) (h : ⊤ ≤ x ⁻¹ᵁ W) :
     spMap ((x.appLE W ⊤ h ≫ (Scheme.ΓSpecIso (CommRingCat.of ℂ)).hom).hom) ≫ hW.fromSpec = x := by
@@ -19,6 +22,19 @@ private theorem spMap_appLE_comp_fromSpec {X : Scheme.{0}} {W : X.Opens} (hW : I
   simp only [spMap, CommRingCat.ofHom_hom, Spec.map_comp, Category.assoc, key]
   rw [← Spec.map_comp_assoc, Iso.inv_hom_id, Spec.map_id, Category.id_comp]
 
+/- English proof (translation)
+Introduce `X W hW n p hp h0`. Take `⟨hSo, -⟩` from `hp W 0`. Take `⟨ε, hε, hball⟩` from `Metric.isOpen_iff.1 hSo 0 ⟨Metric.mem_ball_self one_pos, h0⟩`. Take `⟨ρ, hρpos, hρ1, hρε⟩ : ∃ ρ : ℝ, 0 < ρ ∧ ρ ≤ 1 ∧ ρ ≤ ε` from `⟨min ε 1, lt_min hε one_pos, min_le_right _ _, min_le_left _ _⟩`. Establish `hmaps : ∀ z ∈ Metric.ball (0 : Fin n → ℂ) 1, (ρ : ℂ) • z ∈ {b | b ∈ Metric.ball (0 : Fin n → ℂ) 1 ∧ ⊤ ≤ (TopologicalSpace.Opens.map (p b).base).obj W}`.
+
+Introduce `z hz`. Apply `hball` to reduce the goal to its premises. Rewrite `hz`, the goal using `[Metric.mem_ball, dist_zero_right]`. Rewrite using `[norm_smul, Complex.norm_real, Real.norm_of_nonneg hρpos.le]`. Combine the equalities or inequalities in the displayed calculation.
+
+Set `φ : ∀ x : Sp ℂ ⟶ X, ⊤ ≤ x ⁻¹ᵁ W → (Γ(X, W) →+* ℂ)` to `fun x hx => (x.appLE W ⊤ hx ≫ (Scheme.ΓSpecIso (CommRingCat.of ℂ)).hom).hom`. Use `⟨ρ, fun z => if hz : ⊤ ≤ p ((ρ : ℂ) • z) ⁻¹ᵁ W then φ _ hz else φ _ h0, hρpos, hρ1, ⟨Metric.isOpen_ball, ?_⟩, ?_⟩` and prove the remaining obligations. Introduce `r`. Establish `hlin : DifferentiableOn ℂ (fun b : Fin n → ℂ => (ρ : ℂ) • b) (Metric.ball 0 1)` using `differentiableOn_id.const_smul (ρ : ℂ)`. Establish `hd` using `(hp W r).2.comp hlin hmaps`.
+
+Use `hd.congr ?_` and prove the remaining obligations. Introduce `z hz`. Establish `hzS : ⊤ ≤ p ((ρ : ℂ) • z) ⁻¹ᵁ W` using `(hmaps z hz).2`. Use `show (if hz : ⊤ ≤ p ((ρ : ℂ) • z) ⁻¹ᵁ W then φ _ hz else φ _ h0) r = valR (p ((ρ : ℂ) • z)) W r`. Rewrite using `[dif_pos hzS]`.
+
+Unfold `valR`. Rewrite using `[dif_pos hzS]`. Both sides reduce to the same expression. Introduce `z hz`. Establish `hzS : ⊤ ≤ p ((ρ : ℂ) • z) ⁻¹ᵁ W` using `(hmaps z hz).2`.
+
+Use `show spMap (if hz : ⊤ ≤ p ((ρ : ℂ) • z) ⁻¹ᵁ W then φ _ hz else φ _ h0) ≫ hW.fromSpec = _`. Rewrite using `[dif_pos hzS]`. Conclude with `spMap_appLE_comp_fromSpec hW _ hzS`.
+-/
 theorem exists_ringMaps_of_hol : ∀ (X : Scheme.{0}) (W : X.Opens) (hW : IsAffineOpen W) (n : ℕ)
     (p : (Fin n → ℂ) → (Sp ℂ ⟶ X)), IsHolTo (Metric.ball 0 1) p → ⊤ ≤ p 0 ⁻¹ᵁ W →
     ∃ (ρ : ℝ) (ψ : (Fin n → ℂ) → (Γ(X, W) →+* ℂ)), 0 < ρ ∧ ρ ≤ 1 ∧ Flat.IsHolPts (Metric.ball 0 1) ψ ∧

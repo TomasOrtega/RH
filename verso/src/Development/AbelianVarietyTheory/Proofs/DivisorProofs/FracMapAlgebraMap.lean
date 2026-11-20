@@ -15,10 +15,16 @@ variable {R R' : Type} [CommRing R] [IsDomain R] [CommRing R'] [IsDomain R']
 def fracMap (ρ : R →+* R') (hρ : Function.Injective ρ) : FractionRing R →+* FractionRing R' :=
   IsFractionRing.map (A := R) (B := R') (K := FractionRing R) (L := FractionRing R') (j := ρ) hρ
 
+/- English proof (translation)
+Simplify using `[fracMap, IsFractionRing.map]`.
+-/
 theorem fracMap_algebraMap (ρ : R →+* R') (hρ : Function.Injective ρ) (r : R) :
     fracMap ρ hρ (algebraMap R _ r) = algebraMap R' _ (ρ r) := by
   simp [fracMap, IsFractionRing.map]
 
+/- English proof (translation)
+Rewrite using `[← Spec.map_comp, ← Spec.map_comp]`. Use `congr 1`. Use extensionality with `r`. Conclude with `(fracMap_algebraMap ρ hρ r).symm`.
+-/
 theorem jK_comp_spMap (ρ : R →+* R') (hρ : Function.Injective ρ) :
     jK R' ≫ spMap ρ = spMap (fracMap ρ hρ) ≫ jK R := by
   rw [← Spec.map_comp, ← Spec.map_comp]
@@ -29,10 +35,16 @@ theorem jK_comp_spMap (ρ : R →+* R') (hρ : Function.Injective ρ) :
 def fracAut (σ : R' ≃+* R') : FractionRing R' ≃+* FractionRing R' :=
   IsFractionRing.ringEquivOfRingEquiv σ
 
+/- English proof (translation)
+The claim follows from `IsFractionRing.ringEquivOfRingEquiv_algebraMap σ x`.
+-/
 theorem fracAut_algebraMap (σ : R' ≃+* R') (x : R') :
     fracAut σ (algebraMap R' _ x) = algebraMap R' _ (σ x) :=
   IsFractionRing.ringEquivOfRingEquiv_algebraMap σ x
 
+/- English proof (translation)
+Establish `h : ((fracAut σ.1).toRingHom.comp (fracMap ρ hρ)) = fracMap ρ hρ`. Use `IsLocalization.ringHom_ext (nonZeroDivisors R) (RingHom.ext fun r => ?_)` and prove the remaining obligations. Simplify using `only [RingHom.comp_apply, RingEquiv.toRingHom_eq_coe, RingEquiv.coe_toRingHom]`. Rewrite using `[fracMap_algebraMap, fracAut_algebraMap, σ.2 r]`. Conclude with `congrArg (fun f : FractionRing R →+* FractionRing R' => f x) h`.
+-/
 theorem fracAut_fracMap {ρ : R →+* R'} (hρ : Function.Injective ρ) (σ : Gal ρ) (x : FractionRing R) :
     fracAut σ.1 (fracMap ρ hρ x) = fracMap ρ hρ x := by
   have h : ((fracAut σ.1).toRingHom.comp (fracMap ρ hρ)) = fracMap ρ hρ := by
@@ -47,11 +59,17 @@ def genMap {G' : Over (Sp R')} {G : Over (Sp R)} {ρ : R →+* R'} (hρ : Functi
     rw [Category.assoc, hβ, ← Category.assoc, pullback.condition, Category.assoc, jK_comp_spMap ρ hρ,
       Category.assoc])
 
+/- English proof (translation)
+The claim follows from `pullback.lift_fst _ _ _`.
+-/
 theorem genMap_fst {G' : Over (Sp R')} {G : Over (Sp R)} {ρ : R →+* R'} (hρ : Function.Injective ρ)
     (β : G'.left ⟶ G.left) (hβ : β ≫ G.hom = G'.hom ≫ spMap ρ) :
     genMap hρ β hβ ≫ pullback.fst _ _ = pullback.fst _ _ ≫ β :=
   pullback.lift_fst _ _ _
 
+/- English proof (translation)
+The claim follows from `pullback.lift_snd _ _ _`.
+-/
 theorem genMap_snd {G' : Over (Sp R')} {G : Over (Sp R)} {ρ : R →+* R'} (hρ : Function.Injective ρ)
     (β : G'.left ⟶ G.left) (hβ : β ≫ G.hom = G'.hom ≫ spMap ρ) :
     genMap hρ β hβ ≫ pullback.snd _ _ = pullback.snd _ _ ≫ spMap (fracMap ρ hρ) :=

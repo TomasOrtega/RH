@@ -8,6 +8,23 @@ namespace Formalism.L2.SG.LocalCountModules.UnramifiedPairingAlgebraic
 
 variable {E : Type} [CommRing E] (O : Subring E) (cj : E →+* E) {r : ℕ}
 
+/- English proof (translation)
+Use `set G := gramC cj (Z.map O.subtype) T T' with hGdef`. Use `set c := cG O cj Z T T' Y with hcdef`. Establish `hvm : Matrix.vecMul c G = fun j => (↑(Y j) : E)`. Rewrite using `[hcdef]`. Unfold `cG`.
+
+Rewrite using `[Matrix.vecMul_vecMul, Matrix.nonsing_inv_mul _ hG, Matrix.vecMul_one]`. Establish `hrel : ∀ j, (↑(Y j) : E) = ∑ i, c i * G i j`. Introduce `j`. Rewrite using `[← congrFun hvm j]`. Both sides reduce to the same expression.
+
+Rewrite using `[formC_of_rel O cj (Z.map O.subtype) T T' hG Y W c hrel, Fintype.sum_sum_type]`. Simplify using `only [hW, ZeroMemClass.coe_zero, map_zero, mul_zero, Finset.sum_const_zero, zero_add]`. Establish `hZ : ∀ j, ∑ b, (Z.map O.subtype) j b * c (Sum.inr b) = ↑(Y (Sum.inl j)) + if j = Fin.last r then T * c (Sum.inl (Fin.last r)) else 0`. Introduce `j`. Rewrite using `[hrel (Sum.inl j), Fintype.sum_sum_type]`.
+
+Simplify using `only [hGdef, gramC, Matrix.fromBlocks_apply₁₁, Matrix.fromBlocks_apply₂₁, Matrix.transpose_apply, Matrix.of_apply]`. Distinguish the cases in `hj : j = Fin.last r`. Substitute `hj` using the available equality. Simplify using `[mul_comm]`. Simplify using `[hj, mul_comm]`.
+
+Establish `hcR : (fun b => c (Sum.inr b)) = Matrix.mulVec (Z.map O.subtype)⁻¹ (fun j => (↑(Y (Sum.inl j)) : E) + if j = Fin.last r then T * c (Sum.inl (Fin.last r)) else 0)`. Establish `hv : Matrix.mulVec (Z.map O.subtype) (fun b => c (Sum.inr b)) = fun j => (↑(Y (Sum.inl j)) : E) + if j = Fin.last r then T * c (Sum.inl (Fin.last r)) else 0`. Use function extensionality and compare the values at `j`. Conclude with `hZ j`. Rewrite using `[← hv, Matrix.mulVec_mulVec, Matrix.nonsing_inv_mul _ hu, Matrix.one_mulVec]`.
+
+Establish `hcb : ∀ b, c (Sum.inr b) = Matrix.mulVec (Z.map O.subtype)⁻¹ (fun j => (↑(Y (Sum.inl j)) : E)) b + T * c (Sum.inl (Fin.last r)) * (Z.map O.subtype)⁻¹ b (Fin.last r)`. Introduce `b`. Establish `h` using `congrFun hcR b`. Rewrite using `[h]`. Simplify using `only [Matrix.mulVec, dotProduct, mul_add, Finset.sum_add_distrib, mul_ite, mul_zero, Finset.sum_ite_eq', Finset.mem_univ, if_true]`.
+
+Expand and normalize the polynomial expressions, which then agree. Simplify using `only [hcb, bRaw, lamStarC, map_sum, map_mul, hcj]`. Rewrite using `[Finset.mul_sum, ← Finset.sum_add_distrib]`. Apply `Finset.sum_congr rfl` to reduce the goal to its premises. Introduce `b _`.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem formC_LR (hcj : ∀ x, cj (cj x) = x) (Z : Matrix (Fin (r + 1)) (Fin (r + 1)) O)
     (hu : IsUnit (Z.map O.subtype).det) (T T' : E) (hG : IsUnit (gramC cj (Z.map O.subtype) T T').det)
     (Y W : Ix r → O) (hY : ∀ j, Y (Sum.inr j) = 0) (hW : ∀ j, W (Sum.inl j) = 0) :
@@ -58,6 +75,15 @@ theorem formC_LR (hcj : ∀ x, cj (cj x) = x) (Z : Matrix (Fin (r + 1)) (Fin (r 
   intro b _
   ring
 
+/- English proof (translation)
+Introduce `y y' y₂ y₂' h1 h2`. Establish `e1 : θ (Submodule.Quotient.mk (Sum.elim y 0)) = Submodule.Quotient.mk (Sum.elim y₂ 0)`. Rewrite using `[← iL_mk O cj hO Z₁ t t' y, hγ, h1, iL_mk]`. Establish `e2 : θ (Submodule.Quotient.mk (Sum.elim (0 : Fin (r + 1) → O) y')) = Submodule.Quotient.mk (Sum.elim (0 : Fin (r + 1) → O) y₂')`. Rewrite using `[← iR_mk O cj hO Z₁ t t' y', hγs, h2, iR_mk]`.
+
+Establish `key` using `hθ.1 _ _ _ _ e1 e2`. Establish `hly : lamC (Z₂.map O.subtype) (fun j => ((Sum.elim y₂ 0 : Ix r → O) (Sum.inl j) : E)) = lamC (Z₁.map O.subtype) (fun j => ((Sum.elim y 0 : Ix r → O) (Sum.inl j) : E))`. Use `hl (Submodule.Quotient.mk y)` as an intermediate fact. Rewrite `this` using `[h1, lamLQ_mk, lamLQ_mk]`. Conclude with `this`.
+
+Establish `hly' : lamStarC cj (Z₂.map O.subtype) (fun j => ((Sum.elim y₂ 0 : Ix r → O) (Sum.inr j) : E)) = lamStarC cj (Z₁.map O.subtype) (fun j => ((Sum.elim y 0 : Ix r → O) (Sum.inr j) : E))`. Simplify using `[lamStarC]`. Establish `hls' : lamStarC cj (Z₂.map O.subtype) (fun j => ((Sum.elim 0 y₂' : Ix r → O) (Sum.inr j) : E)) = lamStarC cj (Z₁.map O.subtype) (fun j => ((Sum.elim 0 y' : Ix r → O) (Sum.inr j) : E))`. Use `hls (Submodule.Quotient.mk y')` as an intermediate fact. Rewrite `this` using `[h2, lamSQ_mk, lamSQ_mk]`.
+
+Conclude with `this`. Take `⟨c1, -⟩` from `cG_transfer O cj hcj Z₁ Z₂ hu₁ hu₂ t t' hG₁ hG₂ hκ _ _ hly hly'`. Rewrite `key` using `[formC_LR O cj hcj Z₂ hu₂ t t' hG₂ _ _ (fun j => rfl) (fun j => rfl), formC_LR O cj hcj Z₁ hu₁ t t' hG₁ _ _ (fun j => rfl) (fun j => rfl), c1, hls', add_sub_add_right_eq_sub]`. Conclude with `key`.
+-/
 theorem fwd_B (hcj : ∀ x, cj (cj x) = x) (hO : ∀ x ∈ O, cj x ∈ O) (t t' : O)
     (hcT : cj (t : E) = t) (hcT' : cj (t' : E) = t') {Z₁ Z₂ : Matrix (Fin (r + 1)) (Fin (r + 1)) O}
     (hu₁ : IsUnit (Z₁.map O.subtype).det) (hu₂ : IsUnit (Z₂.map O.subtype).det)

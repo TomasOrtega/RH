@@ -28,6 +28,11 @@ open GlobalTheory GlobalTheory.CechPic GlobalTheory.Vanishing GlobalTheory.CompH
 
 namespace GlobalTheory.TwoPoint
 
+/- English proof (translation)
+Use `letI := algebraΓOfHom pX`. Use `letI := algebraΓOfHom pY`. Take `⟨hpp, A, hA⟩` from `(isProjOver_iff_isProper_and_exists_isAmpleLB pX).1 hX`. Take `⟨B, hB⟩` from `exists_isAmpleLB_of_isProjOver hY`. Establish `: IsProper (strHom F X)` using `by rw [strHom_eq (f := pX) fun _ => rfl]; exact hpp`.
+
+Conclude with `NefFieldExt.isNef_pull hN hL hA hB g`.
+-/
 theorem nef_pull (hN : GlobalTheory.Published.NefNumerics) {F E : Type} [Field F] [Field E] {X Y : Scheme.{0}} (pX : X ⟶ Sp F)
     (pY : Y ⟶ Sp E) (g : Y ⟶ X) (hX : IsProjOver pX) (hY : IsProjOver pY) (L : LB X)
     (hL : letI := algebraΓOfHom pX; IsNef F L) : letI := algebraΓOfHom pY; IsNef E (L.pull g) := by
@@ -43,6 +48,19 @@ section Descent
 open GlobalTheory.Vanishing.H0 GlobalTheory.TangentOrigin GlobalTheory.Adelic
 open ReciprocityTheory.ChartRestriction.G.DVR.FlatBC (algX)
 
+/- English proof (translation)
+Set `Z : Scheme.{0}` to `pullback p (spMap (algebraMap F ℂ))`. Set `π : Z ⟶ Y` to `pullback.fst p (spMap (algebraMap F ℂ))`. Set `q : Z ⟶ Sp ℂ` to `pullback.snd p (spMap (algebraMap F ℂ))`. Set `S : LinSys F` to `⟨Y, p, n, T, hT, 0, Fin.elim0⟩`. Use `letI := algebraΓOfHom q`.
+
+Take `⟨N, b, hb⟩ : ∃ (N : ℕ) (b : Fin N → T.Sec), ∀ t : (T.pull π).Sec, ∃ u : Fin N → ℂ, ∑ i, algebraMap ℂ Γ(Z, ⊤) (u i) • secPull (b i) π = t` from `SectionsFieldChange.exists_pullSecs_spanning F ℂ S ⟨inferInstance, hp, hc, hn⟩`. Take `⟨t, rfl⟩` from `(bijective_ofSec_top (p := q) (B := T.pull π)).2 g`. Take `⟨u, hu⟩` from `hb t`. Establish `e (c : ℂ) : algebraMap ℂ Γ(Z, ⊤) c = algX q ⊤ c`. Express the relevant statement in the definitionally equal form `q.appTop _ = _`.
+
+Rewrite using `[Scheme.Hom.appTop, Scheme.Hom.app_eq_appLE]`. Both sides reduce to the same expression. Establish `ht : t = ∑ i, algX q ⊤ (u i) • secPull (b i) π`. Rewrite using `[← hu]`. Conclude with `Finset.sum_congr rfl fun i _ => by rw [e]`.
+
+Establish `hx' : ∀ j, x j ≫ q = spMap (RingHom.id ℂ)` using `fun j => (hx j).trans (Spec.map_id (CommRingCat.of ℂ)).symm`. Establish `hv : ∀ j i, val (x j) (pIdx T π (k j)) le_top (hk' j) (ofSec q ⊤ (secPull (b i) π)) = val (x j ≫ π) (k j) le_top (hk j) (ofSec p ⊤ (b i))` using `fun j i => by`. Use `(val_ofSec (p := q) (O := ⊤) (x j) _ le_top (hk' j) _).trans (Eq.trans ?_ (val_ofSec (p := p) (O := ⊤) (x j ≫ π) _ le_top (hk j) _).symm)` and prove the remaining obligations. Conclude with `congrArg (fun g => (g ≫ (Scheme.ΓSpecIso (CommRingCat.of ℂ)).hom).hom ((b i).f (k j))) (Scheme.Hom.appLE_comp_appLE (x j) π (T.U (k j)) _ ⊤ ((chartPullPull T π).le (pIdx T π (k j))) (hk' j))`. Establish `hs : ∀ j, val (x j) (pIdx T π (k j)) le_top (hk' j) (ofSec q ⊤ t) = ∑ i, u i * val (x j ≫ π) (k j) le_top (hk j) (ofSec p ⊤ (b i))` using `fun j => by`.
+
+Rewrite using `[ht, map_sum, map_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[ofSec_smul]`. Conclude with `(H0.val_smul (O := ⊤) (x j) (hx' j) _ le_top (hk' j) _ _).trans (congrArg (u i * ·) (hv j i))`. Combine the equalities or inequalities in the displayed calculation.
+
+Rewrite using `[hs j, Finset.mul_sum]`. Conclude with `Finset.sum_congr rfl fun i _ => by ring`. Use `_ = 0 := by`. Rewrite using `[Finset.sum_comm]`. Conclude with `Finset.sum_eq_zero fun i _ => by rw [← Finset.mul_sum, h, mul_zero]`.
+-/
 theorem sum_val_pull_eq_zero {F : Type} [Field F] [Algebra F ℂ] {Y : Scheme.{0}} (p : Y ⟶ Sp F) (n : ℕ)
     [SmoothOfRelativeDimension n p] (hp : IsProjOver p) (hc : GeometricallyConnected p) (hn : 1 ≤ n) {T : LB Y}
     (hT : T.IsLB) {J : Type} [Fintype J] (x : J → (Sp ℂ ⟶ pullback p (spMap (algebraMap F ℂ))))
@@ -110,6 +128,9 @@ abbrev tensPullChart {X Y : Scheme.{0}} {K B : LB Y} (π : X ⟶ Y) (hK : K.IsLB
       tr_pull _ π x e.2.1.2 e'.2.1.2, tr_tens _ _ (π x) (mem_pull.1 e.2.2) (mem_pull.1 e'.2.2), map_mul]
     rfl
 
+/- English proof (translation)
+Set `one : (LB.triv X).Sec` to `⟨fun _ => 1, fun _ _ => by simp⟩`. Use `⟨(tensPullChart π hK hB).mul (ofSec q ⊤ one) g, fun x t h h' => ?_⟩` and prove the remaining obligations. Establish `e` using `(tensPullChart π hK hB).val_mul (ofSec q ⊤ one) g t x le_top le_top h h'`. Establish `e₁ : val x PUnit.unit le_top le_top (ofSec q ⊤ one) = 1` using `(val_ofSec (p := q) (O := ⊤) x _ le_top le_top one).trans (map_one _)`. Conclude with `e.trans ((congrArg (· * _) e₁).trans (one_mul _))`.
+-/
 theorem exists_val_eq_tens_pull {k : Type} [CommRing k] {X Y : Scheme.{0}} (q : X ⟶ Sp k) {K B : LB Y} (π : X ⟶ Y)
     (hK : K.IsLB) (hB : B.IsLB) (g : H0 q (tens (K.pull π) (B.pull π)) ⊤) :
     ∃ g' : H0 q ((tens K B).pull π) ⊤, ∀ (x : Sp ℂ ⟶ X) (t : (tens K B).ι)
@@ -136,6 +157,13 @@ def SeparatesOnSmooth : Prop :=
       ∃ s : (tens K.bundle B).Sec,
         (x₁ ∈ nonzeroLocus s ∧ x₂ ∉ nonzeroLocus s) ∨ (x₂ ∈ nonzeroLocus s ∧ x₁ ∉ nonzeroLocus s)
 
+/- English proof (translation)
+Use `letI := algebraΓOfHom q`. Introduce `K N N' B hN hN' hB m x₁ x₂ h₁ h₂ hne hNn hNb hN'n hm hpos hBc`. Establish `hc : 0 < (D + 2).choose 2` using `Nat.choose_pos (by omega)`. Establish `hBc' : cls B hB = m • cls N hN + 1 • cls N' hN'` using `by rw [hBc, one_smul]`. Take `⟨N₀, h₀, hc₀, hn₀, hb₀⟩` from `GlobalTheory.nef_big_of_cls_eq_smul_add_smul hNN ℂ X q hq N N' hN hN' m 1 hNn hNb hN'n (by omega)`.
+
+Use `hS X q D hq hD K B x₁ x₂ (hn₀.of_cls_eq hB (hBc'.trans hc₀.symm)) (hb₀.of_cls_eq hB (hBc'.trans hc₀.symm)) h₁ h₂ hne fun Z e hZ hx he hd => ?_` and prove the remaining obligations. Establish `h1` using `hpos Z e hZ hx he hd`. Establish `h2` using `GlobalTheory.mixExp_interNumRed hNN ℂ X q hq N N' B hN hN' hB m 1 Z e hNn hN'n hBc' hd`. Establish `h3 : (((D + 2).choose 2 - 1 : ℕ) : ℤ) ^ e < (m : ℤ) ^ e` using `pow_lt_pow_left₀ (by exact_mod_cast (by omega : (D + 2).choose 2 - 1 < m)) (by positivity) (by omega)`. Establish `h4 : (0 : ℤ) ≤ (m : ℤ) ^ e` using `by positivity`.
+
+Use the polynomial consequences of the given equalities and inequalities.
+-/
 theorem separate_complex (hS : SeparatesOnSmooth) (hNN : GlobalTheory.Published.NefNumerics)
     (X : Scheme.{0}) [IsIntegral X] [IsLocallyNoetherian X] (q : X ⟶ Sp ℂ) (D : ℕ)
     [SmoothOfRelativeDimension D q] (hq : IsProjOver q) (hD : 1 ≤ D) :
@@ -162,6 +190,31 @@ theorem separate_complex (hS : SeparatesOnSmooth) (hNN : GlobalTheory.Published.
   have h4 : (0 : ℤ) ≤ (m : ℤ) ^ e := by positivity
   nlinarith
 
+/- English proof (translation)
+Introduce `h`. Use `letI : Algebra F ℂ := σ.toAlgebra`. Set `π` to `pullback.fst p (spMap (algebraMap F ℂ))`. Set `q` to `pullback.snd p (spMap (algebraMap F ℂ))`. Establish `H : IsPullback π q p (spMap (algebraMap F ℂ))` using `IsPullback.of_hasPullback _ _`.
+
+Take `⟨hXi, hXn, hsm, hq, -⟩` from `BaseChangeVariety.baseChange_props F ℂ Y _ p q π D H hp hc`. Use `haveI := hXi`. Use `haveI := hXn`. Use `haveI := hsm`. Use `haveI : IsAffineHom π := MorphismProperty.of_isPullback (P := @IsAffineHom) H.flip inferInstance`.
+
+Set `zC : Fin 2 → (Sp ℂ ⟶ pullback p (spMap (algebraMap F ℂ)))` to `fun j => H.lift (z j) (𝟙 _) (by rw [hzp j, Category.id_comp])`. Establish `hz₁ : ∀ j, zC j ≫ π = z j` using `fun j => H.lift_fst _ _ _`. Establish `hz₂ : ∀ j, zC j ≫ q = 𝟙 _` using `fun j => H.lift_snd _ _ _`. Set `s₀ : Sp ℂ` to `IsLocalRing.closedPoint ℂ`. Establish `hπx : ∀ j, π (zC j s₀) = z j s₀` using `fun j => congrArg (fun g => g s₀) (hz₁ j)`.
+
+Use `letI := algebraΓOfHom q`. Establish `hNC` using `LB.isLB_pull hN π`. Establish `hA : ∀ j, AmpleAt (N₁.pull π) (zC j s₀)` using `fun j => AmplePull.ampleAt_pull Y _ π N₁ h₁ _ (by rw [hπx]; exact hzA j s₀)`. Establish `hNnC : IsNef ℂ (N.pull π)` using `nef_pull hNN p q π hp hq N hNn`. Establish `hN₂C : IsNef ℂ (N₂.pull π)` using `nef_pull hNN p q π hp hq N₂ hN₂n`.
+
+Establish `hcl : a • cls (N.pull π) hNC = cls (N₁.pull π) (LB.isLB_pull h₁ π) + cls (N₂.pull π) (LB.isLB_pull h₂ π)`. Rewrite using `[cls_pull hN, cls_pull h₁, cls_pull h₂, ← map_nsmul, hdec, map_add]`. Establish `hbig : IsBig ℂ (N.pull π)` using `isBig_of_smul_cls_eq_add_ampleAt hNN ℂ _ q hq _ _ _ hNC _ _ a (zC 0 s₀) hNnC ha hcl (hA 0) hN₂C`. Establish `hpos` using `fun j => GlobalTheory.PosThrough.one_le_interNumRed hNN ℂ _ q hq _ _ _ hNC _ _ a (zC j s₀) hNnC ha hcl (hA j) hN₂C`. Establish `hcB : cls (B.pull π) (LB.isLB_pull hB π) = m • cls (N.pull π) hNC + cls (N'.pull π) (LB.isLB_pull hN' π)`.
+
+Rewrite using `[cls_pull hB, cls_pull hN, cls_pull hN', hBc, map_add, map_nsmul]`. Establish `hpt : ∀ (W : Scheme.{0}) (y : Sp ℂ ⟶ W) (O : W.Opens), y s₀ ∈ O → ⊤ ≤ y ⁻¹ᵁ O`. Introduce `W y O hs t _`. Rewrite using `[Subsingleton.elim t s₀]`. Conclude with `hs`.
+
+Establish `hkM : ∀ j, ⊤ ≤ (zC j ≫ π) ⁻¹ᵁ (tens K.bundle B).U (k j)` using `fun j => by rw [hz₁]; exact hk j`. Establish `hk₁ : ∀ j, ⊤ ≤ zC j ⁻¹ᵁ (tens (K.bundle.pull π) (B.pull π)).U (pIdx _ π (k j).1, pIdx B π (k j).2)` using `fun j => hpt _ _ _ ⟨mem_pIdx.2 (hkM j trivial).1, mem_pIdx.2 (hkM j trivial).2⟩`. Establish `hk₂ : ∀ j, ⊤ ≤ zC j ⁻¹ᵁ ((tens K.bundle B).pull π).U (pIdx _ π (k j))` using `fun j => hpt _ _ _ (mem_pIdx.2 (hkM j trivial))`. Establish `hne : zC 0 s₀ ≠ zC 1 s₀` using `fun e => hz (by`. Rewrite using `[← hz₁, ← hz₁ 1, GlobalTheory.section_eq_of_point_eq ℂ _ q _ _ (hz₂ 0) (hz₂ 1) e])`.
+
+Take `⟨s, hs⟩` from `separate_complex hS hNN _ q D hq hD (CanonLB.baseChange H K) (N.pull π) (N'.pull π) (B.pull π) hNC _ _ m (zC 0 s₀) (zC 1 s₀) (GlobalTheory.secClosed_closedPoint ℂ _ q _ hq (hz₂ 0)) (GlobalTheory.secClosed_closedPoint ℂ _ q _ hq (hz₂ 1)) hne hNnC hbig (nef_pull hNN p q π hp hq N' …`. Take `⟨g', hg'⟩` from `exists_val_eq_tens_pull q π K.isLB hB (H0.ofSec q ⊤ s)`. Establish `key` using `sum_val_pull_eq_zero p D hp hc hD (isLB_tens K.isLB hB) zC hz₂ k hkM hk₂ c (fun g => by`. Rewrite using `[← h g]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations.
+
+Establish `hv : ∀ {y y' : Sp ℂ ⟶ Y} (_ : y = y') (hy : ⊤ ≤ y ⁻¹ᵁ (tens K.bundle B).U (k j)) (hy' : ⊤ ≤ y' ⁻¹ᵁ (tens K.bundle B).U (k j)), H0.val y (k j) le_top hy g = H0.val y' (k j) le_top hy' g`. Introduce and unpack `y _ rfl _ _`. Both sides reduce to the same expression. Conclude with `congrArg (c j * ·) (hv (hz₁ j) (hkM j) (hk j))) g'`. Rewrite `key` using `[Fin.sum_univ_two, hg' (zC 0) (k 0) (hk₁ 0) (hk₂ 0), hg' (zC 1) (k 1) (hk₁ 1) (hk₂ 1)]`.
+
+Establish `hv` using `fun j => GlobalTheory.ValNe.val_ofSec_ne_zero_iff ℂ _ q _ s (zC j) _ (hk₁ j)`. Break down `hs with ⟨h0, h1⟩ | ⟨h1, h0⟩` into its components or cases. Establish `e` using `not_not.1 (mt (hv 1).1 h1)`. Conclude with `mul_ne_zero (hc0 0) ((hv 0).2 h0) (by`. Use `key` as an intermediate fact.
+
+Use `erw [e, mul_zero, add_zero] at this`. Conclude with `this)`. Establish `e` using `not_not.1 (mt (hv 0).1 h0)`. Conclude with `mul_ne_zero (hc0 1) ((hv 1).2 h1) (by`. Use `key` as an intermediate fact.
+
+Use `erw [e, mul_zero, zero_add] at this`. Conclude with `this)`.
+-/
 theorem separate_two (hS : SeparatesOnSmooth) (hNN : GlobalTheory.Published.NefNumerics)
     (F : Type) [Field F] (σ : F →+* ℂ) (Y : Scheme.{0}) (p : Y ⟶ Sp F) (D : ℕ) [SmoothOfRelativeDimension D p]
     (hp : IsProjOver p) (hc : GeometricallyConnected p) (hD : 1 ≤ D) (K : CanonLB p D) (N N' B N₁ N₂ : LB Y)
@@ -242,6 +295,13 @@ theorem separate_two (hS : SeparatesOnSmooth) (hNN : GlobalTheory.Published.NefN
 
 open Cardinal in
 
+/- English proof (translation)
+Set `F` to `FractionRing (MvPolynomial ℝ K)`. Set `L` to `AlgebraicClosure F`. Establish `hF : #F = 𝔠`. Establish `hK : #K ≤ 𝔠` using `Cardinal.mk_le_aleph0.trans Cardinal.aleph0_le_continuum`. Rewrite using `[Cardinal.mk_fractionRing, MvPolynomial.cardinalMk_eq_max, Cardinal.mk_real, max_eq_right hK, max_eq_left Cardinal.aleph0_le_continuum]`.
+
+Establish `hL : #L = 𝔠`. Use `le_antisymm ?_ (hF ▸ Cardinal.mk_le_of_injective (algebraMap F L).injective)` and prove the remaining obligations. Use `Algebra.IsAlgebraic.cardinalMk_le_max F L` as an intermediate fact. Rewrite `this` using `[hF, max_eq_left Cardinal.aleph0_le_continuum]`. Then use the resulting hypothesis. Set `j : K →+* L` to `(algebraMap F L).comp ((algebraMap (MvPolynomial ℝ K) F).comp MvPolynomial.C)`.
+
+Establish `: CharZero L` using `(RingHom.charZero_iff j.injective).1 inferInstance`. Take `⟨e⟩` from `IsAlgClosed.ringEquiv_of_equiv_of_charZero (K := L) (L := ℂ) (hL ▸ Cardinal.aleph0_lt_continuum) (Cardinal.eq.1 (hL.trans Cardinal.mk_complex.symm))`. Conclude with `⟨e.toRingHom.comp j⟩`.
+-/
 theorem nonempty_ringHom_complex (K : Type) [Field K] [CharZero K] [Countable K] : Nonempty (K →+* ℂ) := by
   let F := FractionRing (MvPolynomial ℝ K)
   let L := AlgebraicClosure F
@@ -259,6 +319,13 @@ theorem nonempty_ringHom_complex (K : Type) [Field K] [CharZero K] [Countable K]
     (hL ▸ Cardinal.aleph0_lt_continuum) (Cardinal.eq.1 (hL.trans Cardinal.mk_complex.symm))
   exact ⟨e.toRingHom.comp j⟩
 
+/- English proof (translation)
+Take `⟨F, _, j₁, j₂, hj, hne⟩` from `GlobalTheory.exists_embeddings_agree_on_subfield_ne L Ω a ha`. Set `S : Subfield F` to `Subfield.closure (Set.range j₁ ∪ Set.range j₂)`. Establish `hS : Countable S`. Rewrite using `[← Cardinal.mk_le_aleph0_iff]`. Use `(Subfield.cardinalMk_closure_le_max _).trans (max_le ?_ le_rfl)` and prove the remaining obligations.
+
+Rewrite using `[Cardinal.mk_le_aleph0_iff]`. Conclude with `((Set.countable_range _).union (Set.countable_range _)).to_subtype`. Set `k₁ : Ω →+* S` to `j₁.codRestrict S fun x => Subfield.subset_closure (Or.inl ⟨x, rfl⟩)`. Set `k₂ : Ω →+* S` to `j₂.codRestrict S fun x => Subfield.subset_closure (Or.inr ⟨x, rfl⟩)`. Use `haveI : CharZero S := (RingHom.charZero_iff (k₁.comp (algebraMap L Ω)).injective).1 inferInstance`.
+
+Take `⟨e⟩` from `nonempty_ringHom_complex S`. Use `⟨e.comp k₁, e.comp k₂, RingHom.ext fun x => congrArg e (Subtype.ext (RingHom.congr_fun hj x)), fun h => hne ?_⟩` and prove the remaining obligations. Conclude with `congrArg Subtype.val (e.injective (RingHom.congr_fun h a))`.
+-/
 theorem exists_two_embeddings (L Ω : Type) [Field L] [Field Ω] [Algebra L Ω] [CharZero L] [Countable Ω] (a : Ω)
     (ha : a ∉ Set.range (algebraMap L Ω)) :
     ∃ i₁ i₂ : Ω →+* ℂ, i₁.comp (algebraMap L Ω) = i₂.comp (algebraMap L Ω) ∧ i₁ ≠ i₂ := by
@@ -276,6 +343,9 @@ theorem exists_two_embeddings (L Ω : Type) [Field L] [Field Ω] [Algebra L Ω] 
   refine ⟨e.comp k₁, e.comp k₂, RingHom.ext fun x => congrArg e (Subtype.ext (RingHom.congr_fun hj x)), fun h => hne ?_⟩
   exact congrArg Subtype.val (e.injective (RingHom.congr_fun h a))
 
+/- English proof (translation)
+Take `⟨s, hs⟩` from `h`. Rewrite using `[← Cardinal.mk_le_aleph0_iff]`. Use `IntermediateField.cardinalMk_adjoin_le K (s : Set Ω)` as an intermediate fact. Rewrite `this` using `[hs, Cardinal.mk_congr IntermediateField.topEquiv.toEquiv]`. Conclude with `this.trans (max_le (max_le Cardinal.mk_le_aleph0 Cardinal.mk_le_aleph0) le_rfl)`.
+-/
 theorem countable_of_fg (K Ω : Type) [Field K] [Field Ω] [Algebra K Ω] [Countable K]
     (h : (⊤ : IntermediateField K Ω).FG) : Countable Ω := by
   obtain ⟨s, hs⟩ := h
@@ -284,6 +354,15 @@ theorem countable_of_fg (K Ω : Type) [Field K] [Field Ω] [Algebra K Ω] [Count
   rw [hs, Cardinal.mk_congr IntermediateField.topEquiv.toEquiv] at this
   exact this.trans (max_le (max_le Cardinal.mk_le_aleph0 Cardinal.mk_le_aleph0) le_rfl)
 
+/- English proof (translation)
+Establish `h : ∀ e : ℕ, 1 ≤ e → (2 : ℝ) ^ (1 / (e : ℝ)) * e ≤ e + 1` using `fun e he => by`. Establish `he' : (1 : ℝ) ≤ e` using `by exact_mod_cast he`. Use `rpow_one_add_le_one_add_mul_self (s := 1) (p := 1 / (e : ℝ)) (by norm_num) (by positivity) ((div_le_one (by positivity)).2 he')` as an intermediate fact. Rewrite `this` using `[one_add_one_eq_two, mul_one]`. Combine the equalities or inequalities in the displayed calculation.
+
+Proceed by induction on `D with`. Consider the case `zero => simp`. Consider the case `succ D ih`. Rewrite using `[Finset.sum_Icc_succ_top (by omega)]`. Establish `e : (D + 1 + 2).choose 2 - 1 = ((D + 2).choose 2 - 1) + (D + 2)`.
+
+Establish `h1 : (D + 1 + 2).choose 2 = (D + 2).choose 1 + (D + 2).choose 2` using `Nat.choose_succ_succ' (D + 2) 1`. Establish `h2 : 0 < (D + 2).choose 2` using `Nat.choose_pos (by omega)`. Rewrite using `[h1, Nat.choose_one_right]`. Use linear arithmetic over natural numbers and integers. Rewrite using `[e]`.
+
+Use `h (D + 1) (by omega)` as an intermediate fact. Move the coercions through the operations in `at this ih ⊢`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem sum_rpow_le (D : ℕ) :
     ∑ e ∈ Finset.Icc 1 D, (2 : ℝ) ^ (1 / (e : ℝ)) * e ≤ (((D + 2).choose 2 - 1 : ℕ) : ℝ) := by
   have h : ∀ e : ℕ, 1 ≤ e → (2 : ℝ) ^ (1 / (e : ℝ)) * e ≤ e + 1 := fun e he => by
@@ -309,6 +388,21 @@ theorem sum_rpow_le (D : ℕ) :
 
 open GlobalTheory.Discrepancy GlobalTheory.TopForm GlobalTheory.QCoh in
 
+/- English proof (translation)
+Introduce `X _ _ q D _ hproj hD K B x₁ x₂ hnef hbig h₁ h₂ hne hZ`. Use `letI := algebraΓOfHom q`. Use `haveI := SmoothOfRelativeDimension.smooth D q`. Use `haveI : IsNormalScheme X := isNormalScheme_of_smooth q`. Use `haveI : AlgebraicGeometry.IsNoetherian X := isNoetherian_of_isProjOver hproj`.
+
+Establish `hdim` using `NadelApp.topologicalKrullDim_eq_of_smooth X q D`. Establish `hK` using `K.isLB`. Establish `hB` using `hnef.isLB`. Establish `hKB` using `isLB_tens hK hB`. Take `⟨-, H, hH⟩` from `(isProjOver_iff_isProper_and_exists_isAmpleLB q).1 hproj`.
+
+Establish `hcan : toPic (canonical q D) = cls _ hK` using `(presents_canonical q D).toPic_eq.trans ((cls_eq_iff _ _).2 (CanonLB.lbIso _ K))`. Establish `hc : (0 : ℝ) < (((D + 2).choose 2 - 1 : ℕ) : ℝ)`. Establish `h1 : (D + 2).choose 2 = (D + 1).choose 1 + (D + 1).choose 2` using `Nat.choose_succ_succ' (D + 1) 1`. Rewrite `h1` using `[Nat.choose_one_right]`. Conclude with `(by omega : 0 < (D + 2).choose 2 - 1)` after adjusting the coercions.
+
+Establish `h0 : qWeil (0 : CartierDiv X) 1 = 0` using `funext fun z => by`. Use `CartierDiv.mult_add (0 : CartierDiv X) 0 z` as an intermediate fact. Rewrite `this` using `[add_zero]`. Simplify using `[qWeil, left_eq_add.1 this]`. Establish `hlc` using `isLogCanonicalMultiple_canonical (p := q) hdim (0 : CartierDiv X) one_pos`.
+
+Rewrite `hlc` using `[h0]`. Use `h X q D hproj hdim (tens K.bundle B) 0 1 _ 1 B x₁ x₂ (fun _ => (((D + 2).choose 2 - 1 : ℕ) : ℝ)) hKB ⟨by simp, by simp, fun _ => le_rfl⟩ (kltAt_zero_of_smooth hdim) one_pos hlc one_pos hnef hbig (fun C hC => ?_) h₁ h₂ hne (fun _ _ => hc) (fun Z e a b c d => ?_) ?_` and prove the remaining obligations. Establish `e1` using `hC.interNumRed_of_cls_eq_add hH hKB (isLB_toLB (1 • canonical q D + 0)) hB (by`. Rewrite using `[cls_tens hK hB hKB, ← toPic_apply, add_zero, one_smul, hcan])`. Rewrite using `[e1]`.
+
+Simplify using the standard rewrite rules. Use `hZ Z e a b c d` as an intermediate fact. Simplify using `only [Nat.cast_one, one_pow, div_one]`. Conclude with `this` after adjusting the coercions. Rewrite using `[← Finset.sum_div, div_le_one hc]`.
+
+Conclude with `sum_rpow_le D`.
+-/
 theorem separatesOnSmooth_of_pair (h : ∀ (X : Scheme.{0}) [IsIntegral X] [IsLocallyNoetherian X] [GlobalTheory.IsNormalScheme X]
     (p : X ⟶ Sp ℂ) (n : ℕ), IsProjOver p → topologicalKrullDim X = n →
     letI := algebraΓOfHom p

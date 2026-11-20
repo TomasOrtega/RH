@@ -10,9 +10,15 @@ import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.NormSqLeDominan
 
 namespace PositivityTheory.RgBcC.RealD
 
+/- English proof (translation)
+The claim follows from `adm_least_of_zero_module (adm_least_zero_of_dirac GlobalTheory.T.n2_top_real GlobalTheory.CompanionTheory.DiracKType0.dirac_inequality_k_types GlobalTheory.T.highest_term_lemma_real)`.
+-/
 theorem adm_least_holds : AdmLeast :=
   adm_least_of_zero_module (adm_least_zero_of_dirac GlobalTheory.T.n2_top_real GlobalTheory.CompanionTheory.DiracKType0.dirac_inequality_k_types GlobalTheory.T.highest_term_lemma_real)
 
+/- English proof (translation)
+The claim follows from `multG_of GlobalTheory.T.real_compression hM adm_least_holds GlobalTheory.T.real_first_nilpotent GlobalTheory.T.cone_no_second_weights GlobalTheory.T.real_model_exists GlobalTheory.T.real_k_types_in_cone`.
+-/
 theorem multG_of_multFor (hM : MultFor) : MultG :=
   multG_of GlobalTheory.T.real_compression hM adm_least_holds GlobalTheory.T.real_first_nilpotent GlobalTheory.T.cone_no_second_weights GlobalTheory.T.real_model_exists GlobalTheory.T.real_k_types_in_cone
 

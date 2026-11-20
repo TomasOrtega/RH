@@ -61,6 +61,9 @@ def blockCo (e₀ : Matrix (Fin n₀) (Fin d) A ≃ₗ[R] (Fin n₀ × Fin d →
     simp only [ht, hx, hy, LinearEquiv.apply_symm_apply]
     ext (k | ⟨i, k⟩) <;> simp
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem blockCo_apply (e₀ : Matrix (Fin n₀) (Fin d) A ≃ₗ[R] (Fin n₀ × Fin d → R) × (Fin n₀ × Fin d → R))
     (p q : (Fin d → A) ≃ₗ[R] (Fin 2 × Fin d → R)) (u : Matrix (Fin n₀ ⊕ (Fin r₀ ⊕ Fin r₀)) (Fin d) A) :
     blockCo e₀ p q u = (Sum.elim (e₀ (top u)).1 (fun k => q (u (Sum.inr (Sum.inr k.1))) k.2),
@@ -81,6 +84,9 @@ def mulLeftE {m m' : Type} [Fintype m] [Fintype m'] [DecidableEq m] [DecidableEq
 
 end Coords
 
+/- English proof (translation)
+Unfold `GlobalTheory.TorusTheta.infScale`. Rewrite using `[map_one, map_one]`. Both sides reduce to the same expression.
+-/
 theorem infScale_one (F : Type) [Field F] [NumberField F] : GlobalTheory.TorusTheta.infScale F 1 = 1 := by
   unfold GlobalTheory.TorusTheta.infScale
   rw [map_one, map_one]
@@ -90,6 +96,51 @@ end GlobalTheory.TorusAdapted
 
 namespace GlobalTheory.TorusAdapted
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ B n d X W M χX χW om r s r' s' hP r₀ Xf Yf hWF`. Establish `hB` using `hP.base`. Take `⟨w⟩ : Nonempty (InfinitePlace F)` from `inferInstance`. Establish `hσ : ∀ x, σ (σ x) = x` using `fun x => by`. Apply `((B.emb w).1 : E →+* ℂ).injective` to reduce the goal to its premises.
+
+Rewrite using `[hB.cm.2.2.2, hB.cm.2.2.2, star_star]`. Establish `hX' : X.J.det ≠ 0` using `fun h0 => by`. Apply `GlobalTheory.RatDarboux.det_ne_zero_of_isCartan (hP.herm.cartan w)` to reduce the goal to its premises. Use `((B.emb w).1 : E →+* ℂ).map_det X.J` as an intermediate fact. Rewrite `this` using `[h0, map_zero]`.
+
+Conclude with `this.symm`. Establish `hW' : W.J.det ≠ 0` using `fun h0 => by`. Apply `GlobalTheory.RatDarboux.det_ne_zero_of_isCartan (hP.skew.cartan w)` to reduce the goal to its premises. Use `((B.emb w).1 : E →+* ℂ).map_det W.J` as an intermediate fact. Rewrite `this` using `[h0, map_zero]`.
+
+Rewrite using `[Matrix.det_smul]`. Conclude with `mul_eq_zero_of_right _ this.symm`. Establish `h2 : Module.finrank F E = 2` using `hB.cm.2.2.1`. Use `haveI : FiniteDimensional F E := Module.finite_of_finrank_eq_succ h2`. Take `⟨n₀, Z₀, Q, hn, hQP, hPQ, hG, hJ₀, hJ₀h, hZx, hZy⟩` from `GlobalTheory.T.witt_frame_extends_to_block_basis F E σ hB.cm n X.J hP.herm.herm hX' r₀ Xf Yf hWF`.
+
+Use `set P := Matrix.fromCols Z₀ (Matrix.fromCols Xf Yf) with hPdef`. Take `⟨co₀, hco₀⟩` from `GlobalTheory.RatDarboux.exists_darboux (AF F) h2 σ hσ hJ₀h hP.skew.skew hJ₀ hW'`. Take `⟨p, q, hpq, hpq', hpr, hqr⟩` from `GlobalTheory.T.quadratic_extension_symplectic_coordinates σ d W.J hσ h2 hP.skew.skew hW'`. Establish `hinc : ∀ {a b c : Type} [Fintype b] (U : Matrix a b E) (V : Matrix b c E), incM F (U * V) = incM F U * incM F V` using `fun U V => Matrix.map_mul`. Establish `h1 : incM F P * incM F Q = 1`.
+
+Rewrite using `[← hinc, hPQ]`. Conclude with `Matrix.map_one _ (map_zero _) (map_one _)`. Establish `h1' : incM F Q * incM F P = 1`. Rewrite using `[← hinc, hQP]`. Conclude with `Matrix.map_one _ (map_zero _) (map_one _)`.
+
+Set `eb` to `blockCo (R := AF F) (r₀ := r₀) co₀.e p q`. Set `mQ : Matrix (Fin n) (Fin d) (AE F E) ≃ₗ[AF F] Matrix (Fin n₀ ⊕ (Fin r₀ ⊕ Fin r₀)) (Fin d) (AE F E)` to `mulLeftE (incM F Q) (incM F P) h1 h1'`. Establish `hcard : Fintype.card ((Fin n₀ × Fin d) ⊕ (Fin r₀ × (Fin 2 × Fin d))) = Fintype.card (Fin n × Fin d)`. Simplify using `only [Fintype.card_sum, Fintype.card_prod, Fintype.card_fin]`. Rewrite using `[← hn]`.
+
+Expand and normalize the polynomial expressions, which then agree. Set `ε` to `Fintype.equivOfCardEq hcard`. Set `e` to `mQ.trans (eb.trans (LinearEquiv.prodCongr (LinearEquiv.funCongrLeft (AF F) (AF F) ε.symm) (LinearEquiv.funCongrLeft (AF F) (AF F) ε.symm)))`. Establish `he : ∀ z, e z = ((eb (incM F Q * z)).1 ∘ ε.symm, (eb (incM F Q * z)).2 ∘ ε.symm)` using `fun z => rfl`. Establish `hGinc : (incM F P)ᵀ * incM F X.J * (incM F P).map (cA σ) = Matrix.fromBlocks (incM F (Z₀ᵀ * X.J * Z₀.map σ)) 0 0 (Matrix.fromBlocks 0 1 1 0)`.
+
+Rewrite using `[show (incM F P)ᵀ * incM F X.J * (incM F P).map (cA σ) = incM F (Pᵀ * X.J * P.map σ) by rw [hinc, hinc]; rfl, hG]`. Simplify using `[incM, Matrix.fromBlocks_map]`. Establish `hform₀ : ∀ x y, symp (R` using `AF F) (cA σ) (-1) (incM F (Z₀ᵀ * X.J * Z₀.map σ)) (incM F W.J) x y = (co₀.e x).1 ⬝ᵥ (co₀.e y).2 - (co₀.e y).1 ⬝ᵥ (co₀.e x).2 := co₀.form`. Establish `hdot : ∀ f g : (Fin n₀ × Fin d) ⊕ (Fin r₀ × (Fin 2 × Fin d)) → AF F, (f ∘ ε.symm) ⬝ᵥ (g ∘ ε.symm) = f ⬝ᵥ g` using `fun f g => by`. Simplify using `only [dotProduct, Function.comp]`.
+
+Conclude with `Equiv.sum_comp ε.symm (fun k => f k * g k)`. Establish `hform : ∀ w₁ w₂, symp (R` using `AF F) (cA σ) (-1) (incM F X.J) (incM F W.J) w₁ w₂ = (e w₁).1 ⬝ᵥ (e w₂).2 - (e w₂).1 ⬝ᵥ (e w₁).2 := by`. Introduce `w₁ w₂`. Establish `e1 : symp (R` using `AF F) (cA σ) (-1) (incM F X.J) (incM F W.J) w₁ w₂ = symp (R := AF F) (cA σ) (-1) (incM F X.J) (incM F W.J) (incM F P * (incM F Q * w₁)) (incM F P * (incM F Q * w₂)) := by`. Rewrite using `[← Matrix.mul_assoc, ← Matrix.mul_assoc, h1, Matrix.one_mul, Matrix.one_mul]`.
+
+Establish `key : ∀ i, Algebra.trace (AF F) (AE F E) (-1 * ∑ j, ∑ l, (incM F Q * w₁) (Sum.inr (Sum.inl i)) j * incM F W.J j l * cA σ ((incM F Q * w₂) (Sum.inr (Sum.inr i)) l)) + Algebra.trace (AF F) (AE F E) (-1 * ∑ j, ∑ l, (incM F Q * w₁) (Sum.inr (Sum.inr i)) j * incM F W.J j l * cA σ ((in …` using `fun i => by`. Rewrite using `[neg_one_mul, neg_one_mul, map_neg, ← hpq', ← hpq]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e1, GlobalTheory.T.symplectic_form_base_change_matrix, hGinc, GlobalTheory.T.symplectic_pairing_block_reduction, hform₀, he, he, hdot, hdot, blockCo_apply, blockCo_apply]`. Simplify using `only [key, sumElim_dotProduct_sumElim, top]`.
+
+Simplify using `only [dotProduct, Fintype.sum_prod_type, Finset.sum_sub_distrib]`. Expand and normalize the polynomial expressions, which then agree. Use `⟨⟨e, hform⟩, fun j => Sum.elim (fun _ => (none : Option (Fin r₀))) (fun k => some k.1) (ε.symm j), ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `x`. Take `⟨y₀, z₀, h₀⟩` from `hco₀ (top (Q * x))`.
+
+Use `choose yq hyq using fun i => hqr ((Q * x) (Sum.inr (Sum.inr i)))`. Use `choose yp hyp using fun i => hpr ((Q * x) (Sum.inr (Sum.inl i)))`. Use `⟨Sum.elim y₀ (fun k => yq k.1 k.2) ∘ ε.symm, Sum.elim z₀ (fun k => yp k.1 k.2) ∘ ε.symm, ?_⟩` and prove the remaining obligations. Establish `ht : top (incM F (Q * x)) = (top (Q * x)).map (inclR (F` using `F) (AF F)) := rfl`. Establish `hr : ∀ r, incM F (Q * x) r = incV F ((Q * x) r)` using `fun _ => rfl`.
+
+Rewrite using `[he, ← hinc, blockCo_apply, ht, h₀]`. Simplify using `only [hr, hyq, hyp]`. Apply the tactic sequence `refine Prod.ext (funext fun j => ?_) (funext fun j => ?_) <;> simp only [Function.comp_apply] <;>`. Apply the tactic sequence `generalize ε.symm j = k' <;> rcases k' with k | ⟨i, k⟩ <;> simp`. Introduce `i`.
+
+Rewrite using `[Finset.card_filter, ← Equiv.sum_comp ε]`. Simplify using `only [Equiv.symm_apply_apply, Fintype.sum_sum_type, Fintype.sum_prod_type, Sum.elim_inl, Sum.elim_inr, Option.some.injEq, reduceCtorEq, if_false, Finset.sum_const_zero, zero_add]`. Rewrite using `[Finset.sum_eq_single i (fun b _ hb => by simp [hb]) (by simp)]`. Simplify using the standard rewrite rules. Introduce `t ht a hT a' ha' z`.
+
+Establish `hm : mat a' = ((HA.mat (AF F) σ ((1 : E) • X.J.map σ) a : GL (Fin n) (AE F E)) : Matrix (Fin n) (Fin n) (AE F E))`. Rewrite using `[show mat a' = ((a' : GL (Fin n) (AE F E)) : Matrix (Fin n) (Fin n) (AE F E)) from rfl, ha']`. Take `⟨hx, hy, h0⟩` from `GlobalTheory.T.torus_element_acts_on_frame_columns F E σ hB.cm n ((1 : E) • X.J.map σ) r₀ Xf Yf t ht a hT`. Generalize the expression as in `((HA.mat (AF F) σ ((1 : E) • X.J.map σ) a : GL (Fin n) (AE F E)) : Matrix (Fin n) (Fin n) (AE F E)) = m at hx hy h0 hm`. Establish `hc : ∀ C : Matrix (Fin n) (Fin r₀) E, Formalism.UG.cT (σ : E →+* E) C * ((1 : E) • X.J.map σ) * Z₀ = 0 → ∀ c, (Formalism.UG.cT (σ : E →+* E) C * ((1 : E) • X.J.map σ)) *ᵥ (fun k => Z₀ k c) = 0` using `fun C hC c => by`.
+
+Use function extensionality and compare the values at `i`. Conclude with `congrFun (congrFun hC i) c`. Establish `hZ : m * incM F Z₀ = incM F Z₀`. Use extensionality with `r c`. Conclude with `congrFun (h0 (fun k => Z₀ k c) (hc Xf hZx c) (hc Yf hZy c)) r`.
+
+Establish `hPc : incM F P = Matrix.fromCols (incM F Z₀) (Matrix.fromCols (incM F Xf) (incM F Yf))`. Apply the tactic sequence `ext r (c | c | c) <;> rfl`. Use `set Dm : Matrix (Fin n₀ ⊕ (Fin r₀ ⊕ Fin r₀)) (Fin n₀ ⊕ (Fin r₀ ⊕ Fin r₀)) (AE F E) := Matrix.fromBlocks 1 0 0 (Matrix.fromBlocks (Matrix.diagonal fun i => algebraMap (AF F) (AE F E) (GlobalTheory.TorusTheta.infScale F (t i))) 0 0 (Matrix.diagonal fun i => algebraMap (AF F) (AE F …`. Establish `hMP : m * incM F P = incM F P * Dm`. Rewrite using `[hPc, Matrix.mul_fromCols, Matrix.mul_fromCols, hZ, hx, hy, hDm, Matrix.fromCols_mul_fromBlocks, Matrix.fromCols_mul_fromBlocks]`.
+
+Simplify using the standard rewrite rules. Establish `hQm : incM F Q * (m * z) = Dm * (incM F Q * z)`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[← Matrix.mul_assoc (incM F P), h1, Matrix.one_mul]`. Use `_ = incM F Q * (m * incM F P) * (incM F Q * z) := by simp only [Matrix.mul_assoc]`.
+
+Use `_ = Dm * (incM F Q * z) := by rw [hMP, ← Matrix.mul_assoc (incM F Q) (incM F P) Dm, h1', Matrix.one_mul]`. Establish `hD1 : ∀ u : Matrix (Fin n₀ ⊕ (Fin r₀ ⊕ Fin r₀)) (Fin d) (AE F E), top (Dm * u) = top u` using `fun u => by`. Use extensionality with `i l`. Simplify using `[top, hDm, Matrix.mul_apply, Fintype.sum_sum_type, Matrix.one_apply]`. Establish `hD2 : ∀ (u : Matrix (Fin n₀ ⊕ (Fin r₀ ⊕ Fin r₀)) (Fin d) (AE F E)) i, (Dm * u) (Sum.inr (Sum.inl i)) = GlobalTheory.TorusTheta.infScale F (t i) • u (Sum.inr (Sum.inl i))` using `fun u i => by`.
+
+Use function extensionality and compare the values at `l`. Simplify using `[hDm, Matrix.mul_apply, Fintype.sum_sum_type, Matrix.diagonal_apply, Algebra.smul_def]`. Establish `hD3 : ∀ (u : Matrix (Fin n₀ ⊕ (Fin r₀ ⊕ Fin r₀)) (Fin d) (AE F E)) i, (Dm * u) (Sum.inr (Sum.inr i)) = GlobalTheory.TorusTheta.infScale F (t i)⁻¹ • u (Sum.inr (Sum.inr i))` using `fun u i => by`. Use function extensionality and compare the values at `l`. Simplify using `[hDm, Matrix.mul_apply, Fintype.sum_sum_type, Matrix.diagonal_apply, Algebra.smul_def]`.
+
+Rewrite using `[hm, he, he, hQm, blockCo_apply, blockCo_apply, hD1]`. Simplify using `only [hD2, hD3, map_smul]`. Apply the tactic sequence `refine Prod.ext (funext fun j => ?_) (funext fun j => ?_) <;> simp only [Function.comp_apply] <;>`. Apply the tactic sequence `generalize ε.symm j = k' <;> rcases k' with k | ⟨i, k⟩ <;> simp [infScale_one]`.
+-/
 theorem adapted_torus : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E)
     (B : Base F E) (n d : ℕ) (X : Spc F E n) (W : Spc F E d) (M : Model σ X W) (χX χW : Chr F E) (om : Rep σ X W)
     (r s r' s' : ℕ), IsPair B M χX χW om r s r' s' → ∀ (r₀ : ℕ) (Xf Yf : Matrix (Fin n) (Fin r₀) E),

@@ -551,17 +551,30 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 variable {D : D7} (X : Formalism.L2.SG.HidaSetting.HidaSetting D)
 
+/- English proof (translation)
+Unfold `hs2`. Conclude with `Finset.sum_nonneg (fun i _ => sq_nonneg _)`.
+-/
 theorem hilbert_schmidt_nonneg_alt {V V' : Type*} [NormedAddCommGroup V] [InnerProductSpace ℂ V]
     [NormedAddCommGroup V'] [InnerProductSpace ℂ V'] [FiniteDimensional ℂ V'] (A : V' →L[ℂ] V) : 0 ≤ hs2 A := by
   unfold hs2
   exact Finset.sum_nonneg (fun i _ => sq_nonneg _)
 
+/- English proof (translation)
+Unfold `DisintegrationConstant`. Use `split_ifs with h`. Conclude with `h.choose_spec.1.le`. Conclude with `le_rfl`.
+-/
 theorem cooOf_nonneg (u u' : D.what₂.Word) (sc : ℝ) : 0 ≤ DisintegrationConstant X u u' sc := by
   unfold DisintegrationConstant
   split_ifs with h
   · exact h.choose_spec.1.le
   · exact le_rfl
 
+/- English proof (translation)
+Establish `hC` using `cooOf_nonneg X u u' sc`. Establish `hf : Measurable (fun c => ENNReal.ofReal (DisintegrationConstant X u u' sc * wt X u u' c))` using `ENNReal.measurable_ofReal.comp (measurable_const.mul hm)`. Establish `key : ∀ c, ENNReal.ofReal (DisintegrationConstant X u u' sc * wt X u u' c) * ENNReal.ofReal (hilbertSchmidtSqGram X u u' sc c) = ENNReal.ofReal (DisintegrationConstant X u u' sc) * ENNReal.ofReal (wt X u u' c * hilbertSchmidtSqGram X u u' sc c)`. Introduce `c`. Establish `ho : 0 ≤ hilbertSchmidtSqGram X u u' sc c` using `hilbert_schmidt_nonneg_alt _`.
+
+Break down `le_total 0 (wt X u u' c) with hw | hw` into its components or cases. Rewrite using `[ENNReal.ofReal_mul hC, ENNReal.ofReal_mul hw, mul_assoc]`. Rewrite using `[ENNReal.ofReal_of_nonpos (mul_nonpos_of_nonneg_of_nonpos hC hw), ENNReal.ofReal_of_nonpos (mul_nonpos_of_nonpos_of_nonneg hw ho), zero_mul, mul_zero]`. Unfold `InNuX intOOe intCe nuM`. Rewrite using `[lintegral_withDensity_eq_lintegral_mul_non_measurable _ hf (ae_of_all _ (fun _ => ENNReal.ofReal_lt_top)), ← lintegral_const_mul' _ _ ENNReal.ofReal_ne_top]`.
+
+Use `congr 1`. Use function extensionality and compare the values at `c`. Conclude with `key c`.
+-/
 theorem inNuX_of_meas (u u' : D.what₂.Word) (sc : ℝ) (hm : Measurable (wt X u u')) : InNuX X u u' sc := by
   have hC := cooOf_nonneg X u u' sc
   have hf : Measurable (fun c => ENNReal.ofReal (DisintegrationConstant X u u' sc * wt X u u' c)) :=

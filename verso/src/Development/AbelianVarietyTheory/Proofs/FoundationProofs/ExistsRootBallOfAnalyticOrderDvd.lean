@@ -9,6 +9,17 @@ namespace GlobalTheory.KZ.RootDisc
 
 open Metric Filter Topology
 
+/- English proof (translation)
+Establish `hd : DifferentiableOn ℂ (fun z => deriv g z / g z) (ball c R)` using `(hg.deriv isOpen_ball).div hg hne`. Take `⟨L, hL0, hL⟩` from `hd.isExactOn_ball.with_val_at c (Complex.log (g c))`. Establish `hc : c ∈ ball c R` using `mem_ball_self hR`. Establish `hgd : ∀ z ∈ ball c R, HasDerivAt g (deriv g z) z` using `fun z hz => ((hg z hz).differentiableAt (isOpen_ball.mem_nhds hz)).hasDerivAt`. Establish `hh : ∀ z ∈ ball c R, HasDerivAt (fun w => g w * Complex.exp (-L w)) 0 z`.
+
+Introduce `z hz`. Establish `h1 : HasDerivAt (fun w => g w * Complex.exp (-L w)) (deriv g z * Complex.exp (-L z) + g z * (Complex.exp (-L z) * -(deriv g z / g z))) z` using `(hgd z hz).mul ((hL z hz).neg.cexp)`. Use `h1.congr_deriv ?_` and prove the remaining obligations. Establish `e : g z * (deriv g z / g z) = deriv g z` using `mul_div_cancel₀ _ (hne z hz)`. Take the linear combination `(-Complex.exp (-L z)) * e`.
+
+Establish `hexp : ∀ z ∈ ball c R, g z = Complex.exp (L z)`. Introduce `z hz`. Establish `hconst` using `isOpen_ball.is_const_of_deriv_eq_zero (convex_ball c R).isPreconnected (fun z hz => (hh z hz).differentiableAt.differentiableWithinAt) (fun z hz => by simpa using (hh z hz).deriv) hz hc`. Simplify using `only [hL0, Complex.exp_neg, Complex.exp_log (hne c hc)] at hconst`. Rewrite `hconst` using `[mul_inv_cancel₀ (hne c hc)]`.
+
+Use `Complex.exp_ne_zero (L z)` as an intermediate fact. Clear denominators, using `at hconst` for the nonvanishing conditions. Conclude with `hconst`. Use `⟨fun z => Complex.exp (L z / m), ?_, ?_⟩` and prove the remaining obligations. Introduce `z hz`.
+
+Conclude with `(((hL z hz).differentiableAt.div_const (m : ℂ)).cexp).differentiableWithinAt`. Introduce `z hz`. Establish `hm' : (m : ℂ) ≠ 0` using `by exact_mod_cast hm.ne'`. Rewrite using `[← Complex.exp_nat_mul, mul_div_cancel₀ _ hm', hexp z hz]`.
+-/
 theorem exists_root_of_ne_zero (g : ℂ → ℂ) (m : ℕ) (c : ℂ) (R : ℝ) (hm : 0 < m)
     (hg : DifferentiableOn ℂ g (ball c R)) (hne : ∀ z ∈ ball c R, g z ≠ 0) (hR : 0 < R) :
     ∃ s : ℂ → ℂ, DifferentiableOn ℂ s (ball c R) ∧ ∀ z ∈ ball c R, s z ^ m = g z := by
@@ -48,6 +59,33 @@ end GlobalTheory.KZ.RootDisc
 namespace GlobalTheory.KZ.RootDisc
 open Metric Filter Topology
 
+/- English proof (translation)
+Introduce `h m c R hm hR hh hord`. Use `set U := closedBall c R with hU`. Establish `hmer : MeromorphicOn h U` using `hh.meromorphicOn`. Establish `htop : ∀ u : U, meromorphicOrderAt h u ≠ ⊤`. Introduce and unpack `⟨u, hu⟩`.
+
+Take `⟨k, hk⟩` from `hord u hu`. Rewrite using `[(hh u hu).meromorphicOrderAt_eq, hk, ENat.map_coe]`. Conclude with `WithTop.coe_ne_top`. Establish `hfin : (MeromorphicOn.divisor h U).support.Finite` using `(MeromorphicOn.divisor h U).finiteSupport (isCompact_closedBall c R)`. Take `⟨g, hg, hgne, hgeq⟩` from `hmer.extract_zeros_poles htop hfin`.
+
+Use `set d := MeromorphicOn.divisor h U with hd`. Use `set S := hfin.toFinset with hS`. Establish `hdU : ∀ u ∈ U, ∃ k : ℕ, d u = ((m * k : ℕ) : ℤ)`. Introduce `u hu`. Take `⟨k, hk⟩` from `hord u hu`.
+
+Use `⟨k, ?_⟩` and prove the remaining obligations. Rewrite using `[hd, MeromorphicOn.divisor_apply hmer hu, (hh u hu).meromorphicOrderAt_eq, hk, ENat.map_coe, WithTop.untop₀_coe]`. Set `kk : ℂ → ℕ` to `fun u => (d u).toNat / m`. Establish `hkk : ∀ u ∈ U, d u = ((m * kk u : ℕ) : ℤ)`. Introduce `u hu`.
+
+Take `⟨k, hk⟩` from `hdU u hu`. Establish `: kk u = k`. Simplify using `only [kk, hk, Int.toNat_natCast]`. Conclude with `Nat.mul_div_cancel_left k hm`. Rewrite using `[this, hk]`.
+
+Establish `hSU : ∀ u ∈ S, u ∈ U`. Introduce `u hu`. Rewrite `hu` using `[hS, Set.Finite.mem_toFinset]`. Conclude with `d.supportWithinDomain hu`. Set `q : ℂ → ℂ` to `fun z => ∏ u ∈ S, (z - u) ^ kk u`.
+
+Establish `hP : ∀ z, (∏ᶠ u, (· - u) ^ d u : ℂ → ℂ) z = q z ^ m`. Introduce `z`. Rewrite using `[finprod_eq_prod_of_mulSupport_subset (s := S), Finset.prod_apply, ← Finset.prod_pow]`. Use `Finset.prod_congr rfl fun u hu => ?_` and prove the remaining obligations. Rewrite using `[hkk u (hSU u hu), zpow_natCast, mul_comm, pow_mul]`.
+
+Both sides reduce to the same expression. Introduce `u hu`. Rewrite using `[Set.Finite.coe_toFinset]`. Rewrite `hu` using `[Function.mem_mulSupport]`. Rewrite using `[Function.mem_support]`.
+
+Introduce `h0`. Apply `hu` to reduce the goal to its premises. Rewrite using `[h0, zpow_zero]`. Establish `hqd : Differentiable ℂ q`. Introduce `z`.
+
+Simplify using `only [q]`. Use `fun_prop`. Establish `hgball : DifferentiableOn ℂ g (ball c R)` using `(hg.mono ball_subset_closedBall).differentiableOn`. Take `⟨s, hs, hsm⟩` from `exists_root_of_ne_zero g m c R hm hgball (fun z hz => hgne ⟨z, ball_subset_closedBall hz⟩) hR`. Use `⟨fun z => q z * s z, hqd.differentiableOn.mul hs, ?_⟩` and prove the remaining obligations.
+
+Introduce `z hz`. Rewrite using `[mul_pow, hsm z hz]`. Establish `hzU : z ∈ U` using `ball_subset_closedBall hz`. Establish `hA` using `(mem_codiscreteWithin_iff_forall_mem_nhdsNE.1 hgeq) z hzU`. Establish `hUn : U ∈ 𝓝[≠] z` using `mem_nhdsWithin_of_mem_nhds (mem_of_superset (isOpen_ball.mem_nhds hz) ball_subset_closedBall)`.
+
+Establish `hev : h =ᶠ[𝓝[≠] z] fun w => q w ^ m * g w` using `by filter_upwards [hA, hUn] with w hw hwU`. Break down `hw with hw | hw` into its components or cases. Simplify using `only [Set.mem_setOf_eq, Pi.smul_apply', smul_eq_mul] at hw`. Rewrite using `[hw, hP]`. Conclude with `absurd hwU hw`.
+
+Establish `t1 : Tendsto h (𝓝[≠] z) (𝓝 (h z))` using `(hh z hzU).continuousAt.tendsto.mono_left nhdsWithin_le_nhds`. Establish `t2 : Tendsto (fun w => q w ^ m * g w) (𝓝[≠] z) (𝓝 (q z ^ m * g z))` using `(((hqd z).continuousAt.pow m).mul (hg z hzU).continuousAt).tendsto.mono_left nhdsWithin_le_nhds`. Conclude with `(tendsto_nhds_unique_of_eventuallyEq t2 t1 hev.symm)`.
+-/
 theorem exists_root_disc : ∀ (h : ℂ → ℂ) (m : ℕ) (c : ℂ) (R : ℝ), 0 < m → 0 < R →
     AnalyticOnNhd ℂ h (Metric.closedBall c R) →
     (∀ τ ∈ Metric.closedBall c R, ∃ k : ℕ, analyticOrderAt h τ = ((m * k : ℕ) : ℕ∞)) →

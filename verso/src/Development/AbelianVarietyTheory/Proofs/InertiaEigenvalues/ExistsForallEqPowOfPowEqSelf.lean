@@ -9,6 +9,13 @@ namespace GlobalTheory.InertiaEigenvalues.FrobPow
 
 open Polynomial
 
+/- English proof (translation)
+Establish `h1` using `Commute.geom_sum₂_mul (Commute.all y z) q`. Rewrite `h1` using `[hy, hz]`. Establish `h2 : ((∑ i ∈ Finset.range q, y ^ i * z ^ (q - 1 - i)) - 1) * (y - z) = 0`. Rewrite using `[sub_mul, h1, one_mul, sub_self]`. Break down `mul_eq_zero.1 h2 with h3 | h3` into its components or cases.
+
+It suffices to derive a contradiction. Establish `h4` using `congrArg φ h3`. Simplify using `only [map_sub, map_sum, map_mul, map_pow, map_one, map_zero, h] at h4`. Rewrite `h4` using `[geom_sum₂_self, hq, zero_mul, zero_sub, neg_eq_zero]`. Conclude with `one_ne_zero h4`.
+
+Conclude with `sub_eq_zero.1 h3`.
+-/
 theorem eq_of_pow_eq_self_of_map_eq {O k : Type} [CommRing O] [IsDomain O] [Field k]
     (φ : O →+* k) (q : ℕ) (hq : (q : k) = 0) {y z : O} (hy : y ^ q = y) (hz : z ^ q = z)
     (h : φ y = φ z) : y = z := by
@@ -24,6 +31,19 @@ theorem eq_of_pow_eq_self_of_map_eq {O k : Type} [CommRing O] [IsDomain O] [Fiel
     exact one_ne_zero h4
   · exact sub_eq_zero.1 h3
 
+/- English proof (translation)
+Establish `hl : l.Prime` using `Fact.out`. Establish `hq : 1 < l ^ n` using `Nat.one_lt_pow hn.ne' hl.one_lt`. Set `S : Set O` to `{x | x ^ l ^ n = x}`. Establish `hmon : ∀ (A : Type) [CommRing A] [Nontrivial A], (X ^ l ^ n - X : A[X]).Monic`. Introduce `A _ _`.
+
+Apply `Monic.sub_of_left (monic_X_pow _)` to reduce the goal to its premises. Rewrite using `[degree_X, degree_X_pow]`. Conclude with `hq` after adjusting the coercions. Establish `hS : S.Finite`. Use `(X ^ l ^ n - X : O[X]).roots.toFinset.finite_toSet.subset fun x hx => ?_` and prove the remaining obligations.
+
+Establish `hx' : x ^ l ^ n = x` using `hx`. Simplify using `only [Finset.mem_coe, Multiset.mem_toFinset]`. Rewrite using `[mem_roots (hmon O).ne_zero]`. Simplify using `[hx']`. Establish `hint : ∀ x ∈ S, IsIntegral ℤ x`.
+
+Introduce `x hx`. Establish `hx' : x ^ l ^ n = x` using `hx`. Conclude with `⟨X ^ l ^ n - X, hmon ℤ, by simp [hx']⟩`. Establish `hfin : Module.Finite ℤ (Algebra.adjoin ℤ S)` using `Algebra.finite_adjoin_of_finite_of_isIntegral hS hint`. Set `ι : Algebra.adjoin ℤ S →+* O` to `(Algebra.adjoin ℤ S).val.toRingHom`.
+
+Take `⟨a, ha⟩` from `GlobalTheory.exists_forall_eq_pow_of_ker_le l (Algebra.adjoin ℤ S) k (φ.comp ι) (φ.comp (τ.comp ι)) (fun x hx => hτ _ hx)`. Use `⟨a, fun x hx => ?_⟩` and prove the remaining obligations. Establish `h1 : φ (τ x) = φ x ^ l ^ a` using `ha ⟨x, Algebra.subset_adjoin hx⟩`. Use `eq_of_pow_eq_self_of_map_eq φ (l ^ n) ?_ ?_ ?_ ?_` and prove the remaining obligations. Rewrite using `[Nat.cast_pow, CharP.cast_eq_zero, zero_pow hn.ne']`.
+
+Rewrite using `[← map_pow, hx]`. Rewrite using `[← pow_mul, mul_comm, pow_mul, hx]`. Rewrite using `[h1, map_pow]`.
+-/
 theorem exists_forall_eq_pow_of_pow_eq_self (l : ℕ) [Fact l.Prime] {O k : Type} [CommRing O]
     [IsDomain O] [Field k] [CharP k l] (φ : O →+* k) (τ : O →+* O)
     (hτ : ∀ x, φ x = 0 → φ (τ x) = 0) (n : ℕ) (hn : 0 < n) :
@@ -60,6 +80,21 @@ theorem exists_forall_eq_pow_of_pow_eq_self (l : ℕ) [Fact l.Prime] {O k : Type
   · rw [← pow_mul, mul_comm, pow_mul, hx]
   · rw [h1, map_pow]
 
+/- English proof (translation)
+Establish `hl : l.Prime` using `Fact.out`. Establish `hq : 1 < l ^ n` using `Nat.one_lt_pow hn.ne' hl.one_lt`. Set `v : Valuation (Om l) NNReal` to `(PadicAlgCl.valued l).v`. Establish `hv : ∀ x : Om l, v (σ x) = v x` using `fun x => NNReal.eq (spectralNorm_eq_of_equiv σ x).symm`. Set `O : ValuationSubring (Om l)` to `v.valuationSubring`.
+
+Establish `hO : ∀ x : Om l, x ∈ O ↔ v x ≤ 1` using `fun x => Iff.rfl`. Establish `hm : ∀ x : O, IsLocalRing.residue O x = 0 ↔ v x < 1` using `fun x => by`. Rewrite using `[IsLocalRing.residue_eq_zero_iff]`. Conclude with `Valuation.mem_maximalIdeal_iff _ v`. Establish `hch : CharP (IsLocalRing.ResidueField O) l`.
+
+Use `(CharP.charP_iff_prime_eq_zero hl).2 ?_` and prove the remaining obligations. Rewrite using `[← map_natCast (IsLocalRing.residue O), hm]`. Establish `: v (l : Om l) = 1 / (l : NNReal)` using `PadicAlgCl.valuation_p l`. Rewrite using `[SubringClass.coe_natCast, this, one_div]`. Conclude with `inv_lt_one_of_one_lt₀ (by exact_mod_cast hl.one_lt)`.
+
+Set `τ : O →+* O` to `(σ : Om l →+* Om l).restrict O O (fun x hx => by`. Rewrite `hx`, the goal using `[hO]`. Conclude with `(hv x).trans_le hx)`. Establish `hτ : ∀ x : O, ((τ x : O) : Om l) = σ x` using `fun x => rfl`. Take `⟨a, ha⟩` from `exists_forall_eq_pow_of_pow_eq_self l (IsLocalRing.residue O) τ (fun x hx => by rw [hm] at hx ⊢; rw [hτ, hv]; exact hx) n hn`.
+
+Use `⟨a, fun x hx => ?_⟩` and prove the remaining obligations. Establish `hxO : x ∈ O`. Rewrite using `[hO]`. Assume the negation of the conclusion as `h`. Establish `h' : 1 < v x` using `not_le.1 h`.
+
+Establish `h2 : v x ^ 1 < v x ^ l ^ n` using `pow_lt_pow_right₀ h' hq`. Rewrite `h2` using `[← map_pow, ← map_pow, hx, pow_one]`. Conclude with `lt_irrefl _ h2`. Establish `h3` using `ha ⟨x, hxO⟩ (Subtype.ext (by simpa using hx))`. Establish `h4` using `congrArg (fun y : O => (y : Om l)) h3`.
+
+Simplify `h4` using `[hτ]`.
+-/
 theorem exists_gal_eq_pow (l : ℕ) [Fact l.Prime] (n : ℕ) (hn : 0 < n) (σ : GQ l) :
     ∃ a : ℕ, ∀ x : Om l, x ^ l ^ n = x → σ x = x ^ l ^ a := by
   have hl : l.Prime := Fact.out

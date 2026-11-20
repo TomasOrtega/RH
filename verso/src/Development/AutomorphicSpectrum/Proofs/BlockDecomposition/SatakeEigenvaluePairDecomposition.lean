@@ -13,10 +13,18 @@ noncomputable section
 
 namespace GlobalTheory.CompanionTheory.CtS.SatConv
 
+/- English proof (translation)
+Simplify using `[Multiset.esymm, Multiset.powersetCard_cons, Multiset.map_map, Multiset.sum_map_mul_left]`.
+-/
 theorem esymm_cons_succ' (a : ℂ) (s : Multiset ℂ) (n : ℕ) :
     (a ::ₘ s).esymm (n + 1) = s.esymm (n + 1) + a * s.esymm n := by
   simp [Multiset.esymm, Multiset.powersetCard_cons, Multiset.map_map, Multiset.sum_map_mul_left]
 
+/- English proof (translation)
+Proceed by induction on `s using Multiset.induction_on generalizing n with`. Consider the case `empty`. Consider the cases of `n with`. Consider the case `zero => simp [Multiset.esymm]`. Consider the case `succ n => simp [Multiset.esymm, Polynomial.coeff_one, Multiset.powersetCard_zero_right]`.
+
+Consider the case `cons a s ih`. Rewrite using `[Multiset.map_cons, Multiset.prod_cons, add_mul, one_mul, mul_assoc, Polynomial.coeff_add, Polynomial.coeff_C_mul]`. Consider the cases of `n with`. Consider the case `zero => simp [ih, Multiset.esymm]`. Consider the case `succ n => rw [Polynomial.coeff_X_mul, ih, ih, esymm_cons_succ']`.
+-/
 theorem coeff_prod_one_add (s : Multiset ℂ) (n : ℕ) :
     ((s.map fun a => (1 + Polynomial.C a * Polynomial.X : Polynomial ℂ)).prod).coeff n = s.esymm n := by
   induction s using Multiset.induction_on generalizing n with
@@ -31,11 +39,17 @@ theorem coeff_prod_one_add (s : Multiset ℂ) (n : ℕ) :
     | zero => simp [ih, Multiset.esymm]
     | succ n => rw [Polynomial.coeff_X_mul, ih, ih, esymm_cons_succ']
 
+/- English proof (translation)
+Rewrite using `[← coeff_prod_one_add, Multiset.map_add, Multiset.prod_add, Polynomial.coeff_mul]`. Simplify using `only [coeff_prod_one_add]`.
+-/
 theorem esymm_add_antidiagonal (s t : Multiset ℂ) (k : ℕ) :
     (s + t).esymm k = ∑ p ∈ Finset.HasAntidiagonal.antidiagonal k, s.esymm p.1 * t.esymm p.2 := by
   rw [← coeff_prod_one_add, Multiset.map_add, Multiset.prod_add, Polynomial.coeff_mul]
   simp only [coeff_prod_one_add]
 
+/- English proof (translation)
+Establish `h` using `Multiset.pow_smul_esymm (z : ℂ) j (B.map fun b : ℂˣ => (b : ℂ))`. Simplify using `only [smul_eq_mul, Multiset.map_map, Function.comp_def] at h`. Simplify using `only [Multiset.map_map, Function.comp_def, Units.val_mul, mul_comm _ (z : ℂ)]`. Conclude with `h.symm`.
+-/
 theorem esymm_map_mul_unit (B : Multiset ℂˣ) (z : ℂˣ) (j : ℕ) :
     ((B.map (· * z)).map fun b : ℂˣ => (b : ℂ)).esymm j =
       (z : ℂ) ^ j * (B.map fun b : ℂˣ => (b : ℂ)).esymm j := by
@@ -44,9 +58,27 @@ theorem esymm_map_mul_unit (B : Multiset ℂˣ) (z : ℂˣ) (j : ℕ) :
   simp only [Multiset.map_map, Function.comp_def, Units.val_mul, mul_comm _ (z : ℂ)]
   exact h.symm
 
+/- English proof (translation)
+Simplify using `[Multiset.esymm, Multiset.powersetCard_eq_empty k h]`.
+-/
 theorem esymm_eq_zero_of_card_lt (s : Multiset ℂ) {k : ℕ} (h : s.card < k) : s.esymm k = 0 := by
   simp [Multiset.esymm, Multiset.powersetCard_eq_empty k h]
 
+/- English proof (translation)
+Introduce `q n a b c Ba Bb hq hab hBa hBb k _`. Establish `hq' : (q : ℂ) ≠ 0` using `Nat.cast_ne_zero.2 hq`. Substitute `hab` using the available equality. Rewrite using `[pairs, Finset.sum_filter]`. Simplify using `only [satEig]`.
+
+Rewrite using `[Multiset.map_add, esymm_add_antidiagonal, Finset.mul_sum]`. Use `Finset.sum_congr rfl ?_` and prove the remaining obligations. Introduce and unpack `⟨i, j⟩ hp`. Establish `hk : i + j = k` using `by simpa using hp`. Substitute `hk` using the available equality.
+
+Simplify using `only [esymm_map_mul_unit]`. Use `split_ifs with h`. Establish `hpow : (q : ℂ) ^ ((((i + j : ℕ) : ℂ) * (((a + b : ℕ) : ℂ) - ((i + j : ℕ) : ℂ))) / 2) = (q : ℂ) ^ (((i : ℂ) * b + (j : ℂ) * a) / 2 - (i : ℂ) * j) * ((q : ℂ) ^ (((i : ℂ) * ((a : ℂ) - i)) / 2) * (q : ℂ) ^ (((j : ℂ) * ((b : ℂ) - j)) / 2))`. Rewrite using `[← Complex.cpow_add _ _ hq', ← Complex.cpow_add _ _ hq']`. Use `congr 1`.
+
+Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hpow, coef]`. Simplify using `only [Units.val_pow_eq_pow_val]`. Rewrite using `[pow_add, pow_mul, pow_mul, pow_right_comm (c : ℂ) i b, pow_right_comm (c : ℂ) j a]`.
+
+Expand and normalize the polynomial expressions, which then agree. Establish `hz : (Ba.map fun x : ℂˣ => (x : ℂ)).esymm i = 0 ∨ (Bb.map fun x : ℂˣ => (x : ℂ)).esymm j = 0`. Distinguish the cases in `hi : i ≤ a`. Use `right`. Use `esymm_eq_zero_of_card_lt _ ?_` and prove the remaining obligations.
+
+Rewrite using `[Multiset.card_map, hBb]`. Assume the negation of the conclusion as `hj`. Conclude with `h ⟨hi, by omega⟩`. Use `left`. Use `esymm_eq_zero_of_card_lt _ ?_` and prove the remaining obligations.
+
+Rewrite using `[Multiset.card_map, hBa]`. Use linear arithmetic over natural numbers and integers. Apply the tactic sequence `rcases hz with hz | hz <;> simp [hz]`.
+-/
 theorem satEig_join : ∀ (q n a b : ℕ) (c : ℂˣ) (Ba Bb : Multiset ℂˣ), q ≠ 0 → a + b = n → Ba.card = a → Bb.card = b → ∀ k ≤ n, satEig q n (Ba.map (· * c ^ b) + Bb.map (· * c ^ a)) k = ∑ p ∈ pairs a b k, coef q c a b p.1 p.2 * (satEig q a Ba p.1 * satEig q b Bb p.2) := by
   intro q n a b c Ba Bb hq hab hBa hBb k _
   have hq' : (q : ℂ) ≠ 0 := Nat.cast_ne_zero.2 hq

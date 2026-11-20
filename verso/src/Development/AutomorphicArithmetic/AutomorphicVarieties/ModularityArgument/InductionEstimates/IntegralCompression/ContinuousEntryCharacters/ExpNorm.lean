@@ -6,6 +6,21 @@ open GroundTheory.Automorphic.CuspidalSpectrum GroundTheory.Automorphic.ArchWhit
 open UpperTheory.V.Z.InvariantSubmoduleMonicPolynomial UpperTheory.V.Z.InvariantSubmoduleMonicPolynomial.E UpperTheory.V.Z.InvariantSubmoduleMonicPolynomial.EA
 open scoped ComplexConjugate Classical InnerProductSpace
 
+/- English proof (translation)
+Establish `hm : Monotone ((fun i => -ν i) ∘ Tuple.sort (fun i => -ν i))` using `Tuple.monotone_sort _`. Take `⟨τ, hτ⟩ : ∃ τ : Equiv.Perm (Fin (2 + 2)), Monotone ((fun i => -ν i) ∘ τ)` from `⟨_, hm⟩`. Take `⟨s, hs⟩ : ∃ s : Equiv.Perm (Fin (2 + 2)), s = τ * π⁻¹` from `⟨_, rfl⟩`. Establish `hanti : Antitone ((fun i => ν (s i)) ∘ π)`. Introduce `a b hab`.
+
+Use `hτ hab` as an intermediate fact. Simplify using `only [Function.comp, neg_le_neg_iff] at this`. Simplify `this` using `[hs, Equiv.Perm.mul_apply]`. Establish `h1` using `h s⁻¹ (fun i => ν (s i)) hanti`. Establish `h2 : ∑ i, ν i * ν (s (s⁻¹ i)) = ∑ i, ν i ^ 2`.
+
+Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Simplify using `[sq]`. Rewrite `h1` using `[h2]`. Establish `h3 : ∑ i, ν (s i) ^ 2 = ∑ i, ν i ^ 2` using `Equiv.sum_comp s fun i => ν i ^ 2`. Establish `h4` using `Finset.sum_mul_sq_le_sq_mul_sq Finset.univ μ fun i => ν (s i)`.
+
+Rewrite `h4` using `[h3]`. Establish `hA : 0 ≤ ∑ i, ν i ^ 2` using `Finset.sum_nonneg fun i _ => sq_nonneg _`. Establish `hB : 0 ≤ ∑ i, μ i ^ 2` using `Finset.sum_nonneg fun i _ => sq_nonneg _`. Take `⟨A, hAe⟩ : ∃ A, A = ∑ i, ν i ^ 2` from `⟨_, rfl⟩`. Take `⟨B, hBe⟩ : ∃ B, B = ∑ i, μ i ^ 2` from `⟨_, rfl⟩`.
+
+Take `⟨C, hCe⟩ : ∃ C, C = ∑ i, μ i * ν (s i)` from `⟨_, rfl⟩`. Rewrite `h1` using `[← hAe, ← hCe]`. Rewrite `h4` using `[← hAe, ← hBe, ← hCe]`. Rewrite `hA` using `[← hAe]`. Rewrite `hB` using `[← hBe]`.
+
+Rewrite using `[← hAe, ← hBe]`. Break down `hA.eq_or_lt with h0 | h0` into its components or cases. Rewrite using `[← h0]`. Conclude with `hB`. Establish `h5 : A * A ≤ B * A` using `by nlinarith`.
+
+Conclude with `le_of_mul_le_mul_right h5 h0`.
+-/
 private lemma sq_sum_le_of_dom (π : Equiv.Perm (Fin (2 + 2))) (μ ν : Fin (2 + 2) → ℤ)
     (h : ∀ (w : Equiv.Perm (Fin (2 + 2))) (y : Fin (2 + 2) → ℤ), Antitone (y ∘ π) →
       ∑ i, ν i * y (w i) ≤ ∑ i, μ i * y i) :
@@ -41,6 +56,11 @@ private lemma sq_sum_le_of_dom (π : Equiv.Perm (Fin (2 + 2))) (μ ν : Fin (2 +
   · have h5 : A * A ≤ B * A := by nlinarith
     exact le_of_mul_le_mul_right h5 h0
 
+/- English proof (translation)
+Introduce `π ψ μ h`. Take `⟨J, hJ, j₀, a, b, ν, hc, he, ha, hb, hν, hw, hg, hg'⟩` from `h`. Use `⟨J, hJ, j₀, a, b, ν, hc, he, ha, hb, hν, hw, fun j => sq_sum_le_of_dom π μ (ν j) (hg j), ?_⟩` and prove the remaining obligations. Introduce `j hj hEq`. Use `hg' j hj` as an intermediate fact.
+
+Rewrite `this` using `[hEq]`. Conclude with `lt_irrefl _ this`.
+-/
 theorem UpperTheory.V.Z.InvariantSubmoduleMonicPolynomial.EA.expNorm :
     ∀ π ψ μ, OExp π ψ μ → WExp ψ μ := by
   intro π ψ μ h

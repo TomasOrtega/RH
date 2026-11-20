@@ -24,14 +24,31 @@ namespace GlobalTheory.InertOkH
 variable {D : D7} {G : Type} [Group G] [Fintype G] {Pl0 I0 T : Type} {A3 : FamIn3 D.what₂.LL G Pl0 I0 (List ℕ) T D.R.m}
   {Ks : Type} [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL]
 
+/- English proof (translation)
+Simplify using `[CSD.csum]`.
+-/
 theorem csum_zero_left {K : Type} [Field K] [NumberField K] [StarRing K] (S : CSD K) (g : S.Cl → S.V) : S.csum 0 g = 0 := by
   simp [CSD.csum]
 
+/- English proof (translation)
+Simplify using `[CSD.csum]`.
+-/
 theorem csum_zero_right {K : Type} [Field K] [NumberField K] [StarRing K] (S : CSD K) (f : S.Cl → S.V) : S.csum f 0 = 0 := by
   simp [CSD.csum]
 
 set_option maxHeartbeats 4000000 in
 
+/- English proof (translation)
+Take `⟨tie⟩` from `hW.inert.hR t`. Establish `hrk : D.sp.X'.rank = A3.A.r + D.R.m * A3.A.t` using `R.toRealDat.B.rankR`. Establish `hpl` using `(GlobalTheory.T.heckeCharacterisation_places_of_weakCharacterisation R F hW).2.2.1 t`. Establish `key` using `GlobalTheory.T.inertHeckeOperators_rows_rational_selfAdjoint_labels R.toRealDat F.lv2 hW.base.lev hW.base.fam hW.base.models t (A3.okI t × List ℕ) (fun i => R.plI i.1) (fun i => Formalism.IndefR.Links.labIn D.sp.X'.rank i.2) (A3.heckeRI t) (fun i => Formalism.L2.Col.InertTypeOk D …`. Establish `hop : ∀ k : A3.okI t × List ℕ, A3.heckeRI t k = 0 ∨ ∃ s', Formalism.L2.Col.InertTypeOk D.sp.X'.rank s' ∧ A3.heckeRI t k = A3.heckeRI t (k.1, s')`.
+
+Introduce and unpack `⟨Q, s⟩`. Break down `hJ.R t Q s with h | ⟨s', hs', h⟩` into its components or cases. Conclude with `Or.inl h`. Conclude with `Or.inr ⟨s', hrk ▸ hs', h⟩`. Use `⟨fun k a b => ?_, fun k => ⟨k, fun f g => ?_⟩⟩` and prove the remaining obligations.
+
+Use `show LinearMap.toMatrix (A3.A.MtildeCSD t).basis (A3.A.MtildeCSD t).basis (A3.heckeRI t k) a b ∈ cmMax D.what₂.LL`. Break down `hop k with h | ⟨s', hs', h⟩` into its components or cases. Rewrite using `[h]`. Simplify using `only [map_zero]`. Conclude with `zero_mem _`.
+
+Rewrite using `[h]`. Conclude with `(key (k.1, s') hs').1 a b`. Break down `hop k with h | ⟨s', hs', h⟩` into its components or cases. Establish `h0 : (A3.rowI t).opI k = 0` using `h`. Rewrite using `[h0]`.
+
+Simplify using `only [LinearMap.zero_apply, ZeroMemClass.coe_zero, csum_zero_left, csum_zero_right]`. Establish `h1 : (A3.rowI t).opI k = A3.heckeRI t (k.1, s')` using `h`. Rewrite using `[h1]`. Conclude with `(key (k.1, s') hs').2.1 f g`.
+-/
 theorem inertHeckeOperators_rows_rational_adjointClosed (R : RealDat3 D A3 Ks) (F : Face3 D A3) (hW : R.WeakCharacterisation F) (hJ : InertJunk A3) (t : T) :
     (A3.rowI t).InertRationalAdjoint := by
   obtain ⟨tie⟩ := hW.inert.hR t
@@ -66,6 +83,17 @@ theorem inertHeckeOperators_rows_rational_adjointClosed (R : RealDat3 D A3 Ks) (
 
 set_option maxHeartbeats 4000000 in
 
+/- English proof (translation)
+Take `⟨tie⟩` from `hW.inert.hL j t`. Establish `hrk : (Vc D j).rank = A3.A.r + A3.A.t` using `R.toRealDat.B.rankL j`. Establish `hpl` using `(GlobalTheory.T.heckeCharacterisation_places_of_weakCharacterisation R F hW).2.2.1 t`. Establish `key` using `GlobalTheory.T.inertHeckeOperators_lifts_rational_selfAdjoint_labels R.toRealDat F.lv2 hW.base.lev hW.base.fam hW.base.models j t (A3.okI t × List ℕ) (fun i => R.plI i.1) (fun i => Formalism.IndefR.Links.labIn (Vc D j).rank i.2) (A3.heckeLI j t) (fun i => Formalism.L2.Col.InertTy …`. Establish `hop : ∀ k : A3.okI t × List ℕ, A3.heckeLI j t k = 0 ∨ ∃ s', Formalism.L2.Col.InertTypeOk (Vc D j).rank s' ∧ A3.heckeLI j t k = A3.heckeLI j t (k.1, s')`.
+
+Introduce and unpack `⟨Q, s⟩`. Break down `hJ.L j t Q s with h | ⟨s', hs', h⟩` into its components or cases. Conclude with `Or.inl h`. Conclude with `Or.inr ⟨s', hrk ▸ hs', h⟩`. Use `⟨fun k a b => ?_, fun k => ⟨k, fun f g => ?_⟩⟩` and prove the remaining obligations.
+
+Use `show LinearMap.toMatrix (A3.A.MtCSD j t).basis (A3.A.MtCSD j t).basis (A3.heckeLI j t k) a b ∈ cmMax D.what₂.LL`. Break down `hop k with h | ⟨s', hs', h⟩` into its components or cases. Rewrite using `[h]`. Simplify using `only [map_zero]`. Conclude with `zero_mem _`.
+
+Rewrite using `[h]`. Conclude with `(key (k.1, s') hs').1 a b`. Break down `hop k with h | ⟨s', hs', h⟩` into its components or cases. Establish `h0 : (A3.liftI j t).opI k = 0` using `h`. Rewrite using `[h0]`.
+
+Simplify using `only [LinearMap.zero_apply, ZeroMemClass.coe_zero, csum_zero_left, csum_zero_right]`. Establish `h1 : (A3.liftI j t).opI k = A3.heckeLI j t (k.1, s')` using `h`. Rewrite using `[h1]`. Conclude with `(key (k.1, s') hs').2.1 f g`.
+-/
 theorem inertHeckeOperators_lifts_rational_adjointClosed (R : RealDat3 D A3 Ks) (F : Face3 D A3) (hW : R.WeakCharacterisation F) (hJ : InertJunk A3) (j : Fin D.R.m) (t : T) :
     (A3.liftI j t).InertRationalAdjoint := by
   obtain ⟨tie⟩ := hW.inert.hL j t
@@ -98,6 +126,9 @@ theorem inertHeckeOperators_lifts_rational_adjointClosed (R : RealDat3 D A3 Ks) 
       rw [h1]
       exact (key (k.1, s') hs').2.1 f g
 
+/- English proof (translation)
+Introduce `D G _ _ Pl0 I0 T A3 Ks _ _ _ R F hW hJ`. Establish `h2` using `hecke_operators_rational_adjoint_closed_of_weak_char R F hW`. Conclude with `⟨fun t => ⟨h2.1 t, inertHeckeOperators_rows_rational_adjointClosed R F hW hJ t⟩, fun j t => ⟨h2.2 j t, inertHeckeOperators_lifts_rational_adjointClosed R F hW hJ j t⟩⟩`.
+-/
 theorem heckeOperators_rows_lifts_rational_adjointClosed : ∀ {D : D7} {G : Type} [Group G] [Fintype G] {Pl0 I0 T : Type} {A3 : FamIn3 D.what₂.LL G Pl0 I0 (List ℕ) T D.R.m} {Ks : Type} [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] (R : RealDat3 D A3 Ks) (F : Face3 D A3), R.WeakCharacterisation F → InertJunk A3 → (∀ t, (A3.A.fam.R t).OkH ∧ (A3.rowI t).InertRationalAdjoint) ∧ (∀ j t, (A3.A.fam.L j t).OkH ∧ (A3.liftI j t).InertRationalAdjoint) := by
   intro D G _ _ Pl0 I0 T A3 Ks _ _ _ R F hW hJ
   have h2 := hecke_operators_rational_adjoint_closed_of_weak_char R F hW

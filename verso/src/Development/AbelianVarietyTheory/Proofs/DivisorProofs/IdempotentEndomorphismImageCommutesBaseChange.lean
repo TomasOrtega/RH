@@ -12,15 +12,44 @@ open scoped CategoryTheory.Obj
 namespace GlobalTheory.ImgPB
 
 @[reassoc]
+/- English proof (translation)
+Rewrite using `[← Over.comp_left, tensorHom_fst, Over.comp_left]`. Use the proof step `@[reassoc]`.
+-/
 theorem tensorHom_fst_left {B : Scheme.{0}} {X Y Z W : Over B} (f : X ⟶ Y) (h : Z ⟶ W) :
     (f ⊗ₘ h).left ≫ (fst Y W).left = (fst X Z).left ≫ f.left := by
   rw [← Over.comp_left, tensorHom_fst, Over.comp_left]
 
 @[reassoc]
+/- English proof (translation)
+Rewrite using `[← Over.comp_left, tensorHom_snd, Over.comp_left]`.
+-/
 theorem tensorHom_snd_left {B : Scheme.{0}} {X Y Z W : Over B} (f : X ⟶ Y) (h : Z ⟶ W) :
     (f ⊗ₘ h).left ≫ (snd Y W).left = (snd X Z).left ≫ h.left := by
   rw [← Over.comp_left, tensorHom_snd, Over.comp_left]
 
+/- English proof (translation)
+Introduce `S' T g A G _ _ _ _ inc pr ε A' G' _ _ _ _ inc' pr' ε' ψ ψ₂ hinc hpr hip hpi hinc' hpr' hip' hpi' hψ hsq hεψ`. Establish `hε' : inc' ≫ ε' = inc'` using `by rw [← hpi', ← Category.assoc, hip', Category.id_comp]`. Establish `key : inc'.left ≫ ψ = inc'.left ≫ ψ ≫ pr.left ≫ inc.left`. Rewrite using `[← Over.comp_left, hpi, ← hεψ, ← Category.assoc, ← Over.comp_left, hε']`. Establish `hipl : inc.left ≫ pr.left = 𝟙 _` using `by rw [← Over.comp_left, hip]; rfl`.
+
+Establish `hipl' : inc'.left ≫ pr'.left = 𝟙 _` using `by rw [← Over.comp_left, hip']; rfl`. Establish `e2' : inc ≫ ε ≫ pr = 𝟙 G` using `by rw [← hpi, Category.assoc, reassoc_of% hip, hip]`. Establish `e2 : inc.left ≫ ε.left ≫ pr.left = 𝟙 _`. Rewrite using `[← Over.comp_left, ← Over.comp_left, e2']`. Both sides reduce to the same expression.
+
+Establish `e1 : pr'.left ≫ inc'.left ≫ ψ ≫ pr.left = ψ ≫ ε.left ≫ pr.left`. Rewrite using `[← Category.assoc, ← Over.comp_left, hpi', ← Category.assoc, hεψ, Category.assoc]`. Establish `hψp` using `hψ.1`. Use `⟨inc'.left ≫ ψ ≫ pr.left, (inc' ⊗ₘ inc').left ≫ ψ₂ ≫ (pr ⊗ₘ pr).left, ⟨?_, ?_⟩, ⟨?_, ?_⟩, key.trans (by simp only [Category.assoc]), ?_⟩` and prove the remaining obligations. Establish `w : (inc'.left ≫ ψ ≫ pr.left) ≫ G.hom = G'.hom ≫ g`.
+
+Rewrite using `[Category.assoc, Category.assoc, Over.w pr, hψp.w, ← Category.assoc, Over.w inc']`. Use `IsPullback.of_isLimit' ⟨w⟩ (PullbackCone.IsLimit.mk _ (fun s => hψp.lift (s.fst ≫ inc.left) s.snd (by rw [Category.assoc, Over.w inc]; exact s.condition) ≫ pr'.left) ?_ ?_ ?_)` and prove the remaining obligations. Introduce `s`. Simplify using `only [Category.assoc]`. Rewrite using `[e1, hψp.lift_fst_assoc, Category.assoc, e2, Category.comp_id]`.
+
+Introduce `s`. Rewrite using `[Category.assoc, Over.w pr', hψp.lift_snd]`. Introduce `s m hm1 hm2`. Establish `hm : m ≫ inc'.left = hψp.lift (s.fst ≫ inc.left) s.snd (by rw [Category.assoc, Over.w inc]; exact s.condition)`. Apply `hψp.hom_ext` to reduce the goal to its premises.
+
+Rewrite using `[hψp.lift_fst, ← hm1, Category.assoc, key]`. Simplify using `only [Category.assoc]`. Rewrite using `[hψp.lift_snd, Category.assoc, Over.w inc', hm2]`. Combine the equalities or inequalities in the displayed calculation. Introduce `U x y x₀ y₀ hx hy`.
+
+Establish `h1 : (x₀ ≫ inc).left = (x ≫ inc').left ≫ ψ`. Rewrite using `[Over.comp_left, hx, Over.comp_left]`. Simplify using `only [Category.assoc]`. Rewrite using `[← key]`. Establish `h2 : (y₀ ≫ inc).left = (y ≫ inc').left ≫ ψ`.
+
+Rewrite using `[Over.comp_left, hy, Over.comp_left]`. Simplify using `only [Category.assoc]`. Rewrite using `[← key]`. Establish `hm` using `hψ.2 U (x ≫ inc') (y ≫ inc') (x₀ ≫ inc) (y₀ ≫ inc) h1 h2`. Combine the equalities or inequalities in the displayed calculation.
+
+Rewrite using `[Over.comp_left, Category.assoc, hipl, Category.comp_id]`. Use `_ = ((x * y) ≫ inc').left ≫ ψ ≫ pr.left := by`. Rewrite using `[MonObj.mul_comp, MonObj.mul_comp, hm, Category.assoc]`. Use `_ = _ := by rw [Over.comp_left, Category.assoc]`. Simplify using `only [Category.assoc, tensorHom_fst_left, reassoc_of% hsq.1, tensorHom_fst_left_assoc]`.
+
+Simplify using `only [Category.assoc, tensorHom_snd_left, reassoc_of% hsq.2, tensorHom_snd_left_assoc]`. Apply `Pdiv.PullbackComparison.adelic_GL2_ext_of_local_components` to reduce the goal to its premises. Simplify using `only [Category.assoc, tensorHom_fst_left, reassoc_of% hsq.1, hsq.1, tensorHom_fst_left_assoc]`. Rewrite using `[← key]`. Simplify using `only [Category.assoc, tensorHom_snd_left, reassoc_of% hsq.2, hsq.2, tensorHom_snd_left_assoc]`.
+
+Rewrite using `[← key]`.
+-/
 theorem image_idem_pullback : ∀ (S' T : Scheme.{0}) (g : T ⟶ S') (A G : Over S') [GrpObj A] [IsCommMonObj A] [GrpObj G] [IsCommMonObj G] (inc : G ⟶ A) (pr : A ⟶ G) (ε : A ⟶ A) (A' G' : Over T) [GrpObj A'] [IsCommMonObj A'] [GrpObj G'] [IsCommMonObj G'] (inc' : G' ⟶ A') (pr' : A' ⟶ G') (ε' : A' ⟶ A') (ψ : A'.left ⟶ A.left) (ψ₂ : (G2 A').left ⟶ (G2 A).left), IsMonHom inc → IsMonHom pr → inc ≫ pr = 𝟙 G → pr ≫ inc = ε → IsMonHom inc' → IsMonHom pr' → inc' ≫ pr' = 𝟙 G' → pr' ≫ inc' = ε' → IsGrpPullback A' A g ψ → IsSquare ψ ψ₂ → ε'.left ≫ ψ = ψ ≫ ε.left → ∃ (φ : G'.left ⟶ G.left) (φ₂ : (G2 G').left ⟶ (G2 G).left), IsGrpPullback G' G g φ ∧ IsSquare φ φ₂ ∧ inc'.left ≫ ψ = φ ≫ inc.left ∧ (inc' ⊗ₘ inc').left ≫ ψ₂ = φ₂ ≫ (inc ⊗ₘ inc).left := by
   intro S' T g A G _ _ _ _ inc pr ε A' G' _ _ _ _ inc' pr' ε' ψ ψ₂ hinc hpr hip hpi hinc' hpr' hip' hpi' hψ hsq hεψ
   have hε' : inc' ≫ ε' = inc' := by rw [← hpi', ← Category.assoc, hip', Category.id_comp]

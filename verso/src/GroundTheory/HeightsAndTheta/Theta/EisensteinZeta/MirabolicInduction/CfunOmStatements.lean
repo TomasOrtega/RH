@@ -91,6 +91,9 @@ end Statements
 
 section Ties
 
+/- English proof (translation)
+Establish `h : η (τ : ℂ) ≠ 0` using `ModularForm.eta_ne_zero τ.im_pos`. Unfold `etaPeriod`. Establish `: 0 < ‖η (τ : ℂ)‖` using `norm_pos_iff.mpr h`. Use `τ.im_pos` as an intermediate fact. Check the signs of the components of the expression.
+-/
 theorem etaPeriod_pos (τ : ℍ) : 0 < etaPeriod τ := by
   have h : η (τ : ℂ) ≠ 0 := ModularForm.eta_ne_zero τ.im_pos
   unfold etaPeriod
@@ -98,25 +101,42 @@ theorem etaPeriod_pos (τ : ℍ) : 0 < etaPeriod τ := by
   have := τ.im_pos
   positivity
 
+/- English proof (translation)
+Use `⟨?_, ?_⟩` and prove the remaining obligations. Simplify using `[UpperHalfPlane.I, Complex.normSq_I]`. Simplify using `[UpperHalfPlane.I]`.
+-/
 theorem I_mem_fd : UpperHalfPlane.I ∈ 𝒟 := by
   refine ⟨?_, ?_⟩
   · simp [UpperHalfPlane.I, Complex.normSq_I]
   · simp [UpperHalfPlane.I]
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨I_mem_fd, 1, one_ne_zero, by simp [UpperHalfPlane.I]⟩`.
+-/
 theorem I_mem_latticeReducedParams :
     UpperHalfPlane.I ∈ latticeReducedParams (latticeOf Complex.I) :=
   ⟨I_mem_fd, 1, one_ne_zero, by simp [UpperHalfPlane.I]⟩
 
 instance : Fact (Nat.Prime 7) := ⟨by norm_num⟩
 
+/- English proof (translation)
+Establish `: quadraticChar (ZMod 7) 2 = 1` using `by decide`. Simplify using `[legendreCharacter, MulChar.ringHomComp_apply, this]`.
+-/
 theorem legendreCharacter_seven_two : legendreCharacter 7 2 = 1 := by
   have : quadraticChar (ZMod 7) 2 = 1 := by decide
   simp [legendreCharacter, MulChar.ringHomComp_apply, this]
 
+/- English proof (translation)
+Establish `: quadraticChar (ZMod 7) 3 = -1` using `by decide`. Simplify using `[legendreCharacter, MulChar.ringHomComp_apply, this]`.
+-/
 theorem legendreCharacter_seven_three : legendreCharacter 7 3 = -1 := by
   have : quadraticChar (ZMod 7) 3 = -1 := by decide
   simp [legendreCharacter, MulChar.ringHomComp_apply, this]
 
+/- English proof (translation)
+Introduce `h`. Establish `h3` using `legendreCharacter_seven_three`. Rewrite `h3` using `[h]`. Establish `hu : IsUnit (3 : ZMod 7)` using `by decide`. Rewrite `h3` using `[MulChar.one_apply hu]`.
+
+Evaluate the numerical expressions using `at h3`.
+-/
 theorem legendreCharacter_seven_ne_one : legendreCharacter 7 ≠ 1 := by
   intro h
   have h3 := legendreCharacter_seven_three
@@ -125,6 +145,9 @@ theorem legendreCharacter_seven_ne_one : legendreCharacter 7 ≠ 1 := by
   rw [MulChar.one_apply hu] at h3
   norm_num at h3
 
+/- English proof (translation)
+The claim follows from `DirichletCharacter.LFunction_apply_one_ne_zero legendreCharacter_seven_ne_one`.
+-/
 theorem LFunction_legendreCharacter_seven_one_ne_zero :
     DirichletCharacter.LFunction (legendreCharacter 7) 1 ≠ 0 :=
   DirichletCharacter.LFunction_apply_one_ne_zero legendreCharacter_seven_ne_one

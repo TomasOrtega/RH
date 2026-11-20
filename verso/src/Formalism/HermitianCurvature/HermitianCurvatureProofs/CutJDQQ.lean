@@ -33,6 +33,9 @@ def JDHatOpQQ : Prop :=
             MA.actA (D.parOf S v) X (trJ S T v e J) =
               (ts.map fun t => MA.actA (D.parOf S v) t.1 (trJ S T v e (B.opApply t.2 J))).sum
 
+/- English proof (translation)
+Take `⟨Cc, hCc, H⟩` from `h`. Conclude with `⟨Cc, hCc, fun E _ _ _ Wp Wq _ _ _ _ _ _ S T f χ ν' m₀ top A₀ hB v e L hFr hGa _ hL => H E Wp Wq S T f χ ν' m₀ top A₀ hB v e L hFr hGa hL⟩`.
+-/
 theorem jDHatOpQQ_of (h : JDHatOp) : JDHatOpQQ := by
   obtain ⟨Cc, hCc, H⟩ := h
   exact ⟨Cc, hCc, fun E _ _ _ Wp Wq _ _ _ _ _ _ S T f χ ν' m₀ top A₀ hB v e L hFr hGa _ hL =>
@@ -55,6 +58,35 @@ def JDecayTrQQd : Prop :=
       B.JF (T v).base (f v) ∈ Q.FFl S.G.k S.G.r (T v).base.z (T v).base.z' (T v).base.π (T v).base.π' 0 (OmP S T v) →
       MA.JDecay (D.parOf S v) L (trJ S T v e (B.JF (T v).base (f v))) (2 * S.Ntop + 2)
 
+/- English proof (translation)
+Take `⟨C2, hC2, H2⟩` from `h2`. Take `⟨C3, H3⟩` from `h3`. Take `⟨C5, H5⟩` from `h5`. Unfold `JDecayTrQQd`. Use `⟨8 * C2 + |C3| + |C5|, ?_⟩` and prove the remaining obligations.
+
+Introduce `E _ _ _ Wp Wq _ _ _ _ _ _ S T f χ ν' m₀ top A₀ hB v e L hFr hGa hQQ hL hJf`. Establish `hmono : ∀ c, c ≤ 8 * C2 + |C3| + |C5| → BuiltOW c S T f χ ν' m₀ top A₀` using `fun c hc => ⟨isBuiltPlace_mono hc hB.1, hB.2⟩`. Establish `hB2` using `hmono C2 (by linarith [abs_nonneg C3, abs_nonneg C5])`. Establish `hB3` using `hmono C3 (by linarith [le_abs_self C3, abs_nonneg C5])`. Establish `hB5` using `hmono C5 (by linarith [le_abs_self C5, abs_nonneg C3])`.
+
+Establish `hPl : Q.IsPlace (D.parOf S v) (T v).base.z (T v).base.z' (T v).base.π (T v).base.π'` using `(hB.1.2.2.2.1.2 v).2.2.2.1`. Establish `hTT : (D.parOf S v).TT = Tz S.G.k S.G.r (T v).base.z * Tz S.G.k S.G.r (T v).base.z'`. Rewrite using `[hPl.2.2.2.1, hPl.2.2.2.2.1]`. Both sides reduce to the same expression. Establish `hTTpos : 0 < (D.parOf S v).TT` using `by rw [hTT]; exact mul_pos (T v).base.T_pos (T v).base.T'_pos`.
+
+Establish `hInCC : ∀ m : ℕ, B.InCC A₀ m (f v)` using `(hB.1.2.2.2.1.2 v).2.2.2.2.1`. Take `⟨-, -, -, -, -, -, -, -, -, hCk, -, hA, -⟩` from `hB.1`. Establish `hR : (0 : ℝ) ≤ (S.G.r : ℝ)` using `Nat.cast_nonneg _`. Establish `hnE : nDim S.G.k S.G.r = 2 * (S.G.r : ℝ) + S.G.k + 1` using `by unfold nDim; push_cast; ring`. Establish `hn : (1 : ℝ) ≤ nDim S.G.k S.G.r`.
+
+Rewrite using `[hnE]`. Use `Nat.cast_nonneg (α := ℝ) S.G.k` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hA' : (8 * C2 + |C3| + |C5|) * ((S.G.r : ℝ) + 1) ^ 4 * ((S.Ntop : ℝ) * nDim S.G.k S.G.r ^ 2 + nDim S.G.k S.G.r ^ 3) ≤ A₀` using `by rw [hnE]; exact hA`. Take `⟨hK3', hK5'⟩` from `jd_arith C2 C3 C5 _ _ _ A₀ hC2 hR hn (Nat.cast_nonneg _) hA'`.
+
+Establish `hdm0 : 0 ≤ C2 * ((S.G.r : ℝ) + 1) * nDim S.G.k S.G.r`. Use `le_trans zero_le_one hn` as an intermediate fact. Check the signs of the components of the expression. Establish `hK3 : ∀ i : ℕ, i ≤ 2 * S.Ntop + 1 → ∀ o : ℝ, o ≤ C2 * nDim S.G.k S.G.r → C3 * ((S.G.r : ℝ) + 1) * nDim S.G.k S.G.r ^ 2 + 6 * (S.G.r : ℝ) * o + C2 * ((S.G.r : ℝ) + 1) * nDim S.G.k S.G.r ≤ A₀ - (i : ℝ) * (C2 * ((S.G.r : ℝ) + 1) * nDim S.G.k S.G.r)`. Introduce `i hi o ho`.
+
+Use `hK3' _ _ ?_ ho` and prove the remaining obligations. Establish `: ((i : ℕ) : ℝ) ≤ ((2 * S.Ntop + 1 : ℕ) : ℝ)` using `by exact_mod_cast hi`. Move the coercions through the operations in `at this`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hK5 : ∀ i : ℕ, i ≤ 2 * S.Ntop + 2 → C5 * ((S.G.r : ℝ) + 1) ^ 2 * nDim S.G.k S.G.r ≤ A₀ - (i : ℝ) * (C2 * ((S.G.r : ℝ) + 1) * nDim S.G.k S.G.r)`.
+
+Introduce `i hi`. Use `hK5' _ ?_` and prove the remaining obligations. Establish `: ((i : ℕ) : ℝ) ≤ ((2 * S.Ntop + 2 : ℕ) : ℝ)` using `by exact_mod_cast hi`. Move the coercions through the operations in `at this`. Combine the linear equalities and inequalities to obtain the conclusion.
+
+Set `Good : ℕ → (B.Mat S.G.k S.G.r → (Wq (S.pl v) →L[ℂ] Wp (S.pl v))) → Prop` to `fun i F => B.CkOn ⊤ (B.GV S.G.k S.G.r) F ∧ (∀ m : ℕ, B.InCC (A₀ - (i : ℝ) * (C2 * ((S.G.r : ℝ) + 1) * nDim S.G.k S.G.r)) m F) ∧ B.JF (T v).base F ∈ Q.FFl S.G.k S.G.r (T v).base.z (T v).base.z' (T v).base.π (T v).base.π' 0 (OmP S T v)`. Set `tr : (B.Mat S.G.k S.G.r → (Wq (S.pl v) →L[ℂ] Wp (S.pl v))) → M.Ty (D.parOf S v) → MA.SmQ (D.parOf S v).r (D.parOf S v).TT` to `fun F => trJ S T v e (B.JF (T v).base F)`. Establish `hStep : ∀ i, i < 2 * S.Ntop + 2 → ∀ F, Good i F → ∀ X ∈ MA.hatSet (D.parOf S v) L, ∃ ts : List (MA.A (D.parOf S v) (MA.DQ (D.parOf S v)) × (B.Mat S.G.k S.G.r → (Wq (S.pl v) →L[ℂ] Wp (S.pl v)))), (∀ t ∈ ts, t.1 ∈ Submonoid.closure (MA.bddSet (D.parOf S v) L) ∧ Good (i + 1) t.2) ∧ …`. Introduce `i hi F hF X hX`. Take `⟨hCkF, hCCF, hFF⟩` from `hF`.
+
+Take `⟨ts, hts, hid⟩` from `H2 E Wp Wq S T f χ ν' m₀ top A₀ hB2 v e L hFr hGa hQQ hL X hX`. Establish `hthr : ∀ t ∈ ts, C3 * ((S.G.r : ℝ) + 1) * nDim S.G.k S.G.r ^ 2 + 6 * (S.G.r : ℝ) * (B.opOrder t.2 : ℝ) + C2 * ((S.G.r : ℝ) + 1) * nDim S.G.k S.G.r ≤ A₀ - (i : ℝ) * (C2 * ((S.G.r : ℝ) + 1) * nDim S.G.k S.G.r)` using `fun t ht => hK3 i (by omega) _ (hts t ht).2.2.2.2`. Establish `l3 : ∀ t ∈ ts, _` using `fun t ht => H3 E Wp Wq S T f χ ν' m₀ top A₀ hB3 v t.2 (C2 * ((S.G.r : ℝ) + 1) * nDim S.G.k S.G.r) (A₀ - (i : ℝ) * (C2 * ((S.G.r : ℝ) + 1) * nDim S.G.k S.G.r)) hdm0 (hts t ht).2.1 (hts t ht).2.2.1 (hts t ht).2.2.2.1 (hthr t ht) F hCkF hCCF hFF`. Use `⟨ts.map fun t => (t.1, B.opApply t.2 F), ?_, ?_⟩` and prove the remaining obligations. Introduce `t ht`.
+
+Take `⟨t0, ht0, rfl⟩` from `List.mem_map.1 ht`. Establish `l4` using `h4 _ _ _ _ t0.2 (C2 * ((S.G.r : ℝ) + 1) * nDim S.G.k S.G.r) (A₀ - (i : ℝ) * (C2 * ((S.G.r : ℝ) + 1) * nDim S.G.k S.G.r)) hdm0 (hts t0 ht0).2.2.2.1 F hCkF hCCF`. Use `⟨(hts t0 ht0).1, l4.1, fun m => ?_, (l3 t0 ht0).1⟩` and prove the remaining obligations. Establish `e : A₀ - (i : ℝ) * (C2 * ((S.G.r : ℝ) + 1) * nDim S.G.k S.G.r) - (C2 * ((S.G.r : ℝ) + 1) * nDim S.G.k S.G.r) = A₀ - ((i + 1 : ℕ) : ℝ) * (C2 * ((S.G.r : ℝ) + 1) * nDim S.G.k S.G.r)` using `by push_cast; ring`. Rewrite using `[← e]`.
+
+Conclude with `l4.2 m`. Rewrite using `[hid (B.JF (T v).base F) hFF, List.map_map]`. Use `congr 1`. Use `List.map_congr_left fun t ht => ?_` and prove the remaining obligations. Simplify using `only [Function.comp]`.
+
+Use `congr 1`. Conclude with `trJ_congr S T v e _ _ (l3 t ht).2`. Introduce `w hw hwh π`. Establish `hG0 : Good 0 (f v)` using `⟨hCk v, fun m => by simpa using hInCC m, hJf⟩`. Establish `hmem` using `jd_word_span L Good tr (2 * S.Ntop + 2) (h1 _ L hTTpos.le hL) hStep w hw hwh (f v) hG0`.
+
+Establish `hgen : ∀ u ∈ {u | ∃ b ∈ Submonoid.closure (MA.bddSet (D.parOf S v) L), ∃ F', Good w.length F' ∧ u = MA.actA (D.parOf S v) b (tr F')}, componentwiseL2 (D.parOf S v) u`. Introduce and unpack `u ⟨b, hb, F', ⟨hCk', hCC', hFF'⟩, rfl⟩`. Establish `l5` using `H5 E Wp Wq S T f χ ν' m₀ top A₀ hB5 v e hFr (A₀ - (w.length : ℝ) * (C2 * ((S.G.r : ℝ) + 1) * nDim S.G.k S.G.r)) (hK5 _ hw) F' hCk' hCC' hFF'`. Conclude with `(componentwiseL2_iff_integrable _ _).2 (h6 _ L hTTpos hL b hb _ l5)`. Conclude with `(componentwiseL2_iff_integrable _ _).1 (componentwiseL2_of_span _ _ hgen _ hmem) π`.
+-/
 theorem jDecayTrQQd_of_leaves (h1 : JDHatBdd) (h2 : JDHatOpQQ) (h3 : JDJComm) (h4 : JDCCLower) (h5 : TransferSquareIntegrable)
     (h6 : BoundedOperatorsSquareIntegrable) : JDecayTrQQd := by
   obtain ⟨C2, hC2, H2⟩ := h2
@@ -140,9 +172,15 @@ theorem jDecayTrQQd_of_leaves (h1 : JDHatBdd) (h2 : JDHatOpQQ) (h3 : JDJComm) (h
     exact (componentwiseL2_iff_integrable _ _).2 (h6 _ L hTTpos hL b hb _ l5)
   exact (componentwiseL2_iff_integrable _ _).1 (componentwiseL2_of_span _ _ hgen _ hmem) π
 
+/- English proof (translation)
+The claim follows from `jDecayTrQQd_of_leaves hat_bounded_decay_holds h2 transfer_commutation_holds class_lower_decay_holds transfer_square_integrable_holds bounded_operators_square_integrable`.
+-/
 theorem jDecayTrQQd_of_open (h2 : JDHatOpQQ) : JDecayTrQQd :=
   jDecayTrQQd_of_leaves hat_bounded_decay_holds h2 transfer_commutation_holds class_lower_decay_holds transfer_square_integrable_holds bounded_operators_square_integrable
 
+/- English proof (translation)
+The claim follows from `jDecayTr_of_open h2 transfer_commutation_holds`.
+-/
 theorem jDecayTr_of_hatOp (h2 : JDHatOp) : JDecayTr := jDecayTr_of_open h2 transfer_commutation_holds
 
 end

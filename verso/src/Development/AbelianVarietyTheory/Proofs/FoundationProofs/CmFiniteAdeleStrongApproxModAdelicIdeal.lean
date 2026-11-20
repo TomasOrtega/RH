@@ -10,9 +10,17 @@ namespace GlobalTheory.AdelicApprox
 
 variable (D : D7)
 
+/- English proof (translation)
+Rewrite using `[← Formalism.UG.P.adelstab_incl_C, map_natCast, map_natCast]`.
+-/
 theorem levelC_natCast (n : ℕ) : Formalism.UG.P.levelafC D.host.E (n : 𝓞 ℚ) = (n : AE D) := by
   rw [← Formalism.UG.P.adelstab_incl_C, map_natCast, map_natCast]
 
+/- English proof (translation)
+Take `⟨d, hd, hx⟩` from `Formalism.UG.P.levelaf_denom x`. Take `⟨c, hc⟩` from `Ideal.mem_span_singleton'.1 (Ideal.absNorm_mem (Ideal.span {d}))`. Use `⟨Ideal.absNorm (Ideal.span {d}), Nat.pos_of_ne_zero ?_, ?_⟩` and prove the remaining obligations. Simplify `hd` using `[Ideal.absNorm_eq_zero_iff]`. Rewrite using `[← levelC_natCast, ← hc, Formalism.UG.P.levelafC_mul, mul_assoc]`.
+
+Conclude with `mul_mem (Formalism.UG.P.levelafC_mem c) hx`.
+-/
 theorem exists_denom (x : AE D) : ∃ n : ℕ, 0 < n ∧ (n : AE D) * x ∈ OhE D := by
   obtain ⟨d, hd, hx⟩ := Formalism.UG.P.levelaf_denom x
   obtain ⟨c, hc⟩ := Ideal.mem_span_singleton'.1 (Ideal.absNorm_mem (Ideal.span {d}))
@@ -21,6 +29,9 @@ theorem exists_denom (x : AE D) : ∃ n : ℕ, 0 < n ∧ (n : AE D) * x ∈ OhE 
   · rw [← levelC_natCast, ← hc, Formalism.UG.P.levelafC_mul, mul_assoc]
     exact mul_mem (Formalism.UG.P.levelafC_mem c) hx
 
+/- English proof (translation)
+Rewrite using `[← levelC_natCast]`. Take `⟨b, t, ht, h⟩` from `Formalism.UG.P.csGlob_approx Formalism.UG.P.csGlob_intAdApprox (n : 𝓞 ℚ) (Nat.cast_ne_zero.2 hn.ne') s hs`. Conclude with `⟨_, t, ht, h⟩`.
+-/
 theorem exists_approx (n : ℕ) (hn : 0 < n) (s : AE D) (hs : s ∈ OhE D) :
     ∃ r : D.host.E, ∃ w ∈ OhE D, s = inc D r + (n : AE D) * w := by
   rw [← levelC_natCast]
@@ -28,6 +39,13 @@ theorem exists_approx (n : ℕ) (hn : 0 < n) (s : AE D) (hs : s ∈ OhE D) :
     (Nat.cast_ne_zero.2 hn.ne') s hs
   exact ⟨_, t, ht, h⟩
 
+/- English proof (translation)
+Establish `hne : differentIdeal (𝓞 D.host.K) (𝓞 D.host.E) ≠ ⊥` using `differentIdeal_ne_bot`. Establish `hspec : differentIdeal (𝓞 D.host.K) (𝓞 D.host.E) = D.host.𝔟 * (D.host.conj • D.host.𝔟)` using `D.host.𝔟_spec.1`. Rewrite `hne` using `[hspec]`. Establish `hB : ((D.host.𝔟 : Ideal (𝓞 D.host.E)) : FractionalIdeal (nonZeroDivisors (𝓞 D.host.E)) D.host.E) ≠ 0`. Rewrite using `[Ne, FractionalIdeal.coeIdeal_eq_zero]; rintro h; exact hne (by rw [h]; simp)`.
+
+Rewrite using `[FractionalIdeal.mem_coe]`. Unfold `Host.AA0`. Rewrite using `[FractionalIdeal.mem_inv_iff hB]`. Introduce `y hy`. Rewrite using `[one_mul]`.
+
+Conclude with `FractionalIdeal.coeIdeal_le_one hy`.
+-/
 theorem one_mem_inverse_halfDifferent : (1 : D.host.E) ∈ (D.host.AA0 : Submodule (𝓞 D.host.E) D.host.E) := by
   have hne : differentIdeal (𝓞 D.host.K) (𝓞 D.host.E) ≠ ⊥ := differentIdeal_ne_bot
   have hspec : differentIdeal (𝓞 D.host.K) (𝓞 D.host.E) =
@@ -43,6 +61,13 @@ theorem one_mem_inverse_halfDifferent : (1 : D.host.E) ∈ (D.host.AA0 : Submodu
   rw [one_mul]
   exact FractionalIdeal.coeIdeal_le_one hy
 
+/- English proof (translation)
+Unfold `IhE at ht`. Proceed by induction on `ht using AddSubgroup.closure_induction with`. Consider the case `mem x hx`. Take `⟨c, hc, a, ha, u, hu, rfl⟩` from `hx`. Conclude with `AddSubgroup.subset_closure ⟨c, hc, a, ha, s * u, mul_mem hs hu, by ring⟩`.
+
+Consider the case `zero => rw [mul_zero]`. Conclude with `zero_mem _`. Consider the case `add x y _ _ hx hy => rw [mul_add]`. Conclude with `add_mem hx hy`. Consider the case `neg x _ hx => rw [mul_neg]`.
+
+Conclude with `neg_mem hx`.
+-/
 theorem mul_mem_IhE (cc : Ideal (𝓞 D.host.K)) (s : AE D) (hs : s ∈ OhE D) (t : AE D)
     (ht : t ∈ IhE D cc) : s * t ∈ IhE D cc := by
   unfold IhE at ht
@@ -54,11 +79,21 @@ theorem mul_mem_IhE (cc : Ideal (𝓞 D.host.K)) (s : AE D) (hs : s ∈ OhE D) (
   | add x y _ _ hx hy => rw [mul_add]; exact add_mem hx hy
   | neg x _ hx => rw [mul_neg]; exact neg_mem hx
 
+/- English proof (translation)
+Use `AddSubgroup.subset_closure ⟨_, Ideal.absNorm_mem cc, 1, one_mem_inverse_halfDifferent D, s, hs, ?_⟩` and prove the remaining obligations. Simplify using the standard rewrite rules.
+-/
 theorem absNorm_mul_mem_IhE (cc : Ideal (𝓞 D.host.K)) (s : AE D) (hs : s ∈ OhE D) :
     (Ideal.absNorm cc : AE D) * s ∈ IhE D cc := by
   refine AddSubgroup.subset_closure ⟨_, Ideal.absNorm_mem cc, 1, one_mem_inverse_halfDifferent D, s, hs, ?_⟩
   simp
 
+/- English proof (translation)
+Introduce `D cc hcc`. Use `⟨fun y m hm => ?_, exists_denom D, mul_mem_IhE D cc⟩` and prove the remaining obligations. Take `⟨k, hk, hy⟩` from `exists_denom D y`. Establish `hn : 0 < Ideal.absNorm cc` using `Nat.pos_of_ne_zero (by rwa [Ne, Ideal.absNorm_eq_zero_iff])`. Take `⟨r, w, hw, h⟩` from `exists_approx D (k * m * Ideal.absNorm cc) (Nat.mul_pos (Nat.mul_pos hk hm) hn) _ hy`.
+
+Use `⟨(k : D.host.E)⁻¹ * r, _, absNorm_mul_mem_IhE D cc (-w) (neg_mem hw), ?_⟩` and prove the remaining obligations. Establish `hu : inc D (k : D.host.E)⁻¹ * (k : AE D) = 1`. Rewrite using `[← map_natCast (inc D), ← map_mul, inv_mul_cancel₀ (Nat.cast_ne_zero.2 hk.ne'), map_one]`. Rewrite using `[map_mul]`. Move the coercions through the operations in `at h`.
+
+Take the linear combination `(-inc D (k : D.host.E)⁻¹) * h + (y - (m : AE D) * (Ideal.absNorm cc : AE D) * w) * hu`.
+-/
 theorem approx_mod_ideal : ∀ (D : D7) (cc : Ideal (𝓞 D.host.K)), cc ≠ ⊥ →
     (∀ (y : AE D) (m : ℕ), 0 < m → ∃ e : D.host.E, ∃ t ∈ IhE D cc,
       inc D e - y = (m : AE D) * t) ∧

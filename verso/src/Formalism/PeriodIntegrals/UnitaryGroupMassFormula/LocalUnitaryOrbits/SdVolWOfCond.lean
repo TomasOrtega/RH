@@ -17,16 +17,25 @@ variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algeb
   (σ : E →ₐ[F] E) {n : ℕ} (J : Matrix (Fin n) (Fin n) E) (ψ : AddChar (AF F) ℂ)
   (v : HeightOneSpectrum (𝓞 F)) (Λ : Set (Fin n → E))
 
+/- English proof (translation)
+Introduce `hs t`. Rewrite using `[← h F hs.1.1 ψ hs.2.2.1 hs.2.2.2 v t]`. Conclude with `forall₂_congr fun s _ => by rw [mul_comm]`.
+-/
 theorem condV_of_all (h : CondAllF) : CondV σ J ψ v := by
   intro hs t
   rw [← h F hs.1.1 ψ hs.2.2.1 hs.2.2.2 v t]
   exact forall₂_congr fun s _ => by rw [mul_comm]
 
+/- English proof (translation)
+Introduce `hS`. Conclude with `sdVolW_of_pi σ J ψ v Λ a (condV_of_all σ J ψ v hC) (dualW_of_perf σ J ψ v Λ a hP) (idxPiW_std σ J ψ v Λ a hS) hS`.
+-/
 theorem sdVolW_of_cond (a : ℕ) (hC : CondAllF) (hP : TrPerf σ J ψ v) : SdVolW σ J ψ v Λ a := by
   intro hS
   exact sdVolW_of_pi σ J ψ v Λ a (condV_of_all σ J ψ v hC) (dualW_of_perf σ J ψ v Λ a hP)
     (idxPiW_std σ J ψ v Λ a hS) hS
 
+/- English proof (translation)
+Introduce `hS`. Conclude with `sdVolH_of_pi σ J ψ v a (condV_of_all σ J ψ v hC) (dualH_of_perf σ J ψ v a hP) (idxPiH_std σ J ψ v a hS) hS`.
+-/
 theorem sdVolH_of_cond (a : ℕ) (hC : CondAllF) (hP : TrPerf σ J ψ v) :
     SdVolH σ J ψ v a := by
   intro hS

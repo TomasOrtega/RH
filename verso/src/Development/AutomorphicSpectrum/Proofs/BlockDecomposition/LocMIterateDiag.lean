@@ -11,15 +11,26 @@ open PositivityTheory.Rg.BcB.F (LF)
 
 namespace GlobalTheory.CompanionTheory.TailLocPow
 
+/- English proof (translation)
+Simplify using `[hint]`.
+-/
 theorem hint_fun_zero {H : Type} [Group H] (K : Subgroup H) : hint K (fun _ : H => (0 : ℂ)) = 0 := by
   simp [hint]
 
+/- English proof (translation)
+Use extensionality with `k`. Use `show (∀ x, c * u (x * k) = c * u x) ↔ (∀ x, u (x * k) = u x)`. Conclude with `forall_congr' fun x => mul_right_inj' hc`.
+-/
 theorem rStab_smul {H : Type} [Group H] (c : ℂ) (hc : c ≠ 0) (u : H → ℂ) :
     rStab (fun x => c * u x) = rStab u := by
   ext k
   show (∀ x, c * u (x * k) = c * u x) ↔ (∀ x, u (x * k) = u x)
   exact forall_congr' fun x => mul_right_inj' hc
 
+/- English proof (translation)
+Distinguish the cases in `hc : c = 0`. Substitute `hc` using the available equality. Simplify using `using hint_fun_zero K`. Establish `key : ∀ S : Subgroup H, S = rStab u → (((S ⊓ K).relIndex K : ℕ) : ℂ)⁻¹ * ∑ᶠ q : H ⧸ (S ⊓ K), c * u q.out = c * ((((rStab u ⊓ K).relIndex K : ℕ) : ℂ)⁻¹ * ∑ᶠ q : H ⧸ (rStab u ⊓ K), u q.out)`. Introduce and unpack `S rfl`.
+
+Establish `h : (∑ᶠ q : H ⧸ (rStab u ⊓ K), c * u q.out) = c * ∑ᶠ q : H ⧸ (rStab u ⊓ K), u q.out`. Simplify `(smul_finsum c (fun q : H ⧸ (rStab u ⊓ K) => u q.out)).symm` using `only [smul_eq_mul]`. Rewrite using `[h]`. Expand and normalize the polynomial expressions, which then agree. Conclude with `key _ (rStab_smul c hc u)`.
+-/
 theorem hint_smul {H : Type} [Group H] (K : Subgroup H) (c : ℂ) (u : H → ℂ) :
     hint K (fun x => c * u x) = c * hint K u := by
   by_cases hc : c = 0

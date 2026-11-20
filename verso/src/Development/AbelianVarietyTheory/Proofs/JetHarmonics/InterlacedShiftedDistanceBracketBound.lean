@@ -5,6 +5,25 @@ open Finset
 
 namespace GlobalTheory.BracketBound
 
+/- English proof (translation)
+Introduce `k r l b c Y e lam v hk hc hcb hkb hY he0 he1 hlam hgap hint hW`. Establish `hb3 : 3 ≤ b` using `by linarith`. Establish `hb0 : 0 ≤ b` using `by linarith`. Establish `h3b : 3 * b ≤ b ^ 2` using `by nlinarith`. Establish `ha0 : ∀ s, 0 ≤ |Y + e + lam s| + c` using `fun s => by positivity`.
+
+Establish `ha1 : ∀ s, |Y + e + lam s| + c ≤ |lam s + Y| + 1 + c` using `fun s => by`. Establish `h1 : |Y + e + lam s| ≤ |lam s + Y| + |e|`. Establish `: Y + e + lam s = (lam s + Y) + e` using `by ring`. Rewrite using `[this]`. Conclude with `abs_add_le _ _`.
+
+Rewrite `h1` using `[abs_of_nonneg he0]`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `ha2 : ∀ s ∈ Finset.Icc 1 (k + 2 * r + 1), |Y + e + lam s| + c ≤ 3 * b` using `fun s hs => by`. Establish `h1` using `ha1 s`. Establish `h2` using `abs_add_le (lam s) Y`.
+
+Establish `h3` using `hlam s hs`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hsplit : Finset.Icc 1 (k + 2 * r + 1) = Finset.Icc 1 (k - 1) ∪ Finset.Icc k (k + 2 * r + 1)`. Use extensionality with `x`. Simplify using `only [Finset.mem_union, Finset.mem_Icc]`.
+
+Use linear arithmetic over natural numbers and integers. Establish `hdisj : Disjoint (Finset.Icc 1 (k - 1)) (Finset.Icc k (k + 2 * r + 1))`. Rewrite using `[Finset.disjoint_left]`. Introduce `x`. Simplify using `only [Finset.mem_Icc]`.
+
+Use linear arithmetic over natural numbers and integers. Establish `hWp : 0 ≤ ∏ i ∈ Finset.Icc 1 k, |Y + 1 / 2 + v i|` using `Finset.prod_nonneg fun i _ => abs_nonneg _`. Establish `hpair` using `GlobalTheory.prod_le_of_interlacing_pairing k l c (3 * b) Y lam v (fun s => |Y + e + lam s| + c) (by linarith) (by linarith) (fun s h1 h2 => by have := hgap s h1 h2; linarith) hint hW (fun s hs => ⟨ha0 s, ha1 s, ha2 s (by rw [hsplit]; exact Finset.mem_union_left _ hs)⟩)`. Establish `hcloud` using `GlobalTheory.CloudProd.main k c (-Y) lam hk hc hgap`. Simplify using `only [sub_neg_eq_add] at hcloud`.
+
+Establish `hk0 : (0 : ℝ) ≤ k` using `Nat.cast_nonneg k`. Establish `h4 : ((2 + c) * (k : ℝ)) ^ 2 ≤ b ^ 4`. Establish `h1 : (2 + c) * (k : ℝ) ≤ b * b` using `mul_le_mul (by linarith) hkb hk0 hb0`. Combine the equalities or inequalities in the displayed calculation. Establish `hR0 : 0 ≤ ∏ s ∈ Finset.Icc 1 (k - 1), (1 + (1 + c) / max |lam s + Y| 1)` using `Finset.prod_nonneg fun s _ => by positivity`.
+
+Establish `hC : ∏ s ∈ Finset.Icc 1 (k - 1), (|Y + e + lam s| + c) ≤ b ^ 2 * b ^ 4 * ∏ i ∈ Finset.Icc 1 k, |Y + 1 / 2 + v i|`. Use `hpair.trans (mul_le_mul_of_nonneg_right ?_ hWp)` and prove the remaining obligations. Conclude with `mul_le_mul h3b (hcloud.trans h4) hR0 (by positivity)`. Establish `hN : ∏ s ∈ Finset.Icc k (k + 2 * r + 1), (|Y + e + lam s| + c) ≤ (b ^ 2) ^ (2 * r + 2)`. Combine the equalities or inequalities in the displayed calculation.
+
+Rewrite using `[Finset.prod_const, Nat.card_Icc]`. Use `congr 1`. Use linear arithmetic over natural numbers and integers. Rewrite using `[hsplit, Finset.prod_union hdisj]`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem main : ∀ (k r l : ℕ) (b c Y e : ℝ) (lam v : ℕ → ℝ), 1 ≤ k → 1 ≤ c → c + 2 ≤ b → (k : ℝ) ≤ b → |Y| ≤ b → 0 ≤ e → e ≤ 1 → (∀ s ∈ Finset.Icc 1 (k + 2 * r + 1), |lam s| ≤ b) → (∀ s : ℕ, 1 ≤ s → s + 1 ≤ k - 1 → lam (s + 1) + 2 * c ≤ lam s) → (∀ s : ℕ, 1 ≤ s → s + 1 ≤ k → (s ≠ l → lam s + 1 / 2 ≤ v s) ∧ (s + 1 ≠ l → v (s + 1) + 1 / 2 ≤ lam s)) → (∀ i ∈ Finset.Icc 1 k, 1 ≤ |Y + 1 / 2 + v i|) → ∏ s ∈ Finset.Icc 1 (k + 2 * r + 1), (|Y + e + lam s| + c) ≤ b ^ (4 * r + 10) * ∏ i ∈ Finset.Icc 1 k, |Y + 1 / 2 + v i| := by
   intro k r l b c Y e lam v hk hc hcb hkb hY he0 he1 hlam hgap hint hW
   have hb3 : 3 ≤ b := by linarith

@@ -7,15 +7,26 @@ namespace GlobalTheory.RowVand
 
 open Formalism.FourierDecayAlt Finset
 
+/- English proof (translation)
+Combine the equalities or inequalities in the displayed calculation.
+-/
 lemma prod_le_pow_of_le {s : Finset ℕ} {f : ℕ → ℝ} {B : ℝ} (h0 : ∀ i ∈ s, 0 ≤ f i)
     (h : ∀ i ∈ s, f i ≤ B) : ∏ i ∈ s, f i ≤ B ^ s.card := by
   calc ∏ i ∈ s, f i ≤ ∏ _i ∈ s, B := Finset.prod_le_prod h0 h
     _ = B ^ s.card := Finset.prod_const B
 
+/- English proof (translation)
+Combine the equalities or inequalities in the displayed calculation.
+-/
 lemma one_le_prod_of_le {s : Finset ℕ} {f : ℕ → ℝ} (h : ∀ i ∈ s, 1 ≤ f i) : 1 ≤ ∏ i ∈ s, f i := by
   calc (1 : ℝ) = ∏ _i ∈ s, (1 : ℝ) := (Finset.prod_const_one).symm
     _ ≤ ∏ i ∈ s, f i := Finset.prod_le_prod (fun _ _ => zero_le_one) h
 
+/- English proof (translation)
+Introduce `i j hi hij hj`. Proceed by induction on `j, hij using Nat.le_induction with`. Consider the case `base => exact le_rfl`. Consider the case `succ j hij ih`. Use `hc.hgap j (by omega) (by omega)` as an intermediate fact.
+
+Combine the linear relations using `[ih (by omega)]`.
+-/
 lemma b_le (c : Sz.Cfg) (hc : c.Ok) : ∀ i j, 1 ≤ i → i ≤ j → j ≤ c.m → c.b i ≤ c.b j := by
   intro i j hi hij hj
   induction j, hij using Nat.le_induction with
@@ -24,9 +35,17 @@ lemma b_le (c : Sz.Cfg) (hc : c.Ok) : ∀ i j, 1 ≤ i → i ≤ j → j ≤ c.m
     have := hc.hgap j (by omega) (by omega)
     linarith [ih (by omega)]
 
+/- English proof (translation)
+The claim follows from `le_trans hc.hb1 (b_le c hc 1 j le_rfl h1 h2)`.
+-/
 lemma one_le_b (c : Sz.Cfg) (hc : c.Ok) (j : ℕ) (h1 : 1 ≤ j) (h2 : j ≤ c.m) : 1 ≤ c.b j :=
   le_trans hc.hb1 (b_le c hc 1 j le_rfl h1 h2)
 
+/- English proof (translation)
+Establish `hi : (i : ℝ) + 1 ≤ c.k` using `by exact_mod_cast h2`. Establish `hi1 : (1 : ℝ) ≤ i` using `by exact_mod_cast h1`. Establish `hD` using `hc.hDel`. Establish `hv` using `hc.hv0`. Unfold `Sz.Cfg.v`.
+
+Prove the components needed by the constructor for the conclusion. Use the polynomial consequences of the given equalities and inequalities. Use `push_cast`. Use the polynomial consequences of the given equalities and inequalities.
+-/
 lemma v_bounds (c : Sz.Cfg) (hc : c.Ok) (i : ℕ) (h1 : 1 ≤ i) (h2 : i + 1 ≤ c.k) :
     0 ≤ c.v i ∧ c.v i ≤ c.v 1 := by
   have hi : (i : ℝ) + 1 ≤ c.k := by exact_mod_cast h2
@@ -38,6 +57,9 @@ lemma v_bounds (c : Sz.Cfg) (hc : c.Ok) (i : ℕ) (h1 : 1 ≤ i) (h2 : i + 1 ≤
   · nlinarith
   · push_cast; nlinarith
 
+/- English proof (translation)
+Establish `hk : (4 : ℝ) ≤ c.k` using `by exact_mod_cast hc.hk`. Establish `hD` using `hc.hDel`. Unfold `Sz.Cfg.v`. Use `push_cast`. Use the polynomial consequences of the given equalities and inequalities.
+-/
 lemma vlast_le (c : Sz.Cfg) (hc : c.Ok) : c.vlast ≤ c.v 1 := by
   have hk : (4 : ℝ) ≤ c.k := by exact_mod_cast hc.hk
   have hD := hc.hDel
@@ -45,12 +67,46 @@ lemma vlast_le (c : Sz.Cfg) (hc : c.Ok) : c.vlast ≤ c.v 1 := by
   push_cast
   nlinarith
 
+/- English proof (translation)
+Establish `hb : 0 < c.b 1` using `lt_of_lt_of_le one_pos hc.hb1`. Unfold `Sz.Cfg.vth at hs`. Rewrite `hs` using `[div_le_iff₀ hb]`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 lemma firstVandermondeNode_large_of_small_threshold (c : Sz.Cfg) (hc : c.Ok) (hs : c.vth ≤ 1 / 10) : 40 * c.m * c.k * c.Del ≤ c.b 1 := by
   have hb : 0 < c.b 1 := lt_of_lt_of_le one_pos hc.hb1
   unfold Sz.Cfg.vth at hs
   rw [div_le_iff₀ hb] at hs
   linarith
 
+/- English proof (translation)
+Establish `hk` using `hc.hk`. Establish `hkR : (4 : ℝ) ≤ c.k` using `by exact_mod_cast hk`. Establish `hmR : (2 : ℝ) ≤ c.m` using `by exact_mod_cast hc.hm`. Establish `hD` using `hc.hDel`. Establish `hb1` using `firstVandermondeNode_large_of_small_threshold c hc hs`.
+
+Establish `hvl` using `vlast_le c hc`. Establish `hv0` using `hc.hv0`. Establish `ha` using `hc.ha`. Apply the tactic sequence `have hde : ∀ i, 0 ≤ de i ∧ de i ≤ 1 := fun i => by rcases hw.1 i with h | h <;> rw [h] <;> norm_num`. Establish `e1 : Sz.Vand c.k (c.u de) = (∏ j ∈ Icc 2 c.k, (c.u de 1 - c.u de j)) * Sz.Vand (c.k - 1) (fun i => c.u de (i + 1))`.
+
+Use `Formalism.FourierDecayAlt.P.Sz4.vand_succ_bot (c.k - 1) (c.u de)` as an intermediate fact. Rewrite `this` using `[Nat.sub_add_cancel (by omega)]`. Then use the resulting hypothesis. Establish `e2 : Sz.Vand (c.k - 1) (fun i => c.u de (i + 1)) = Sz.Vand (c.k - 2) (fun i => c.u de (i + 1)) * ∏ i ∈ Icc 1 (c.k - 2), (c.u de (i + 1) - c.u de c.k)`. Use `Formalism.FourierDecayAlt.P.Sz4.vand_succ_top (c.k - 2) (fun i => c.u de (i + 1))` as an intermediate fact. Rewrite `this` using `[show c.k - 2 + 1 = c.k - 1 by omega]`.
+
+Rewrite using `[this]`. Use `congr 2`. Use extensionality with `i`. Use `congr 2`. Use linear arithmetic over natural numbers and integers.
+
+Establish `hu1 : c.u de 1 = c.a` using `by unfold Sz.Cfg.u; simp`. Establish `huk : c.u de c.k = c.ulast`. Unfold `Sz.Cfg.u; rw [if_neg (by omega), if_pos rfl]`. Establish `F1 : ∀ j ∈ Icc 2 c.k, 1 ≤ c.u de 1 - c.u de j`. Introduce `j hj`.
+
+Rewrite `hj` using `[mem_Icc]`. Rewrite using `[hu1]`. Distinguish the cases in `hjk : j = c.k`. Rewrite using `[hjk, huk]`. Unfold `Sz.Cfg.ulast`.
+
+Use `split_ifs with ht`. Use `(hc.htop ht).1` as an intermediate fact. Establish `hb0` using `hc.hb1`. Use the polynomial consequences of the given equalities and inequalities. Use the polynomial consequences of the given equalities and inequalities.
+
+Take `⟨i, rfl⟩ : ∃ i, j = i + 1` from `⟨j - 1, by omega⟩`. Rewrite using `[Formalism.FourierDecayAlt.P.Sz4.u_succ c de hw i (by omega) (by omega) (Or.inl (by omega))]`. Use `(v_bounds c hc i (by omega) (by omega)).2` as an intermediate fact. Use `hde i` as an intermediate fact. Use the polynomial consequences of the given equalities and inequalities.
+
+Establish `F2 : ∀ i ∈ Icc 1 (c.k - 2), 1 ≤ c.u de (i + 1) - c.u de c.k`. Introduce `i hi`. Rewrite `hi` using `[mem_Icc]`. Rewrite using `[Formalism.FourierDecayAlt.P.Sz4.u_succ c de hw i (by omega) (by omega) (Or.inl (by omega)), huk]`. Establish `hvi` using `v_bounds c hc i (by omega) (by omega)`.
+
+Establish `hdi` using `hde i`. Unfold `Sz.Cfg.ulast`. Use `split_ifs with ht`. Use `(hc.htop ht).1` as an intermediate fact. Establish `h8 : (8 : ℝ) ≤ c.m * c.k` using `by nlinarith`.
+
+Establish `h9 : 8 * c.Del ≤ c.m * c.k * c.Del` using `mul_le_mul_of_nonneg_right h8 (by linarith)`. Establish `h10 : de i * c.Del ≤ 1 * c.Del` using `mul_le_mul_of_nonneg_right hdi.2 (by linarith)`. Combine the linear relations using `[hvi.1]`. Establish `hsub` using `Formalism.FourierDecayAlt.P.Sz4.v_sub c i (c.k - 1)`. Establish `hvk : c.v (c.k - 1) = c.vlast`.
+
+Unfold `Sz.Cfg.v`. Rewrite using `[Nat.cast_sub (by omega)]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Establish `hik : (i : ℝ) + 2 ≤ ((c.k - 1 : ℕ) : ℝ) + 1`.
+
+Rewrite using `[Nat.cast_sub (by omega)]`. Establish `: ((i + 2 : ℕ) : ℝ) ≤ c.k` using `by exact_mod_cast (by omega : i + 2 ≤ c.k)`. Move the coercions through the operations in `at this ⊢`. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite `hsub` using `[hvk]`.
+
+Establish `h10 : de i * c.Del ≤ 1 * c.Del` using `mul_le_mul_of_nonneg_right hdi.2 (by linarith)`. Establish `h11 : 4 * c.Del * 1 ≤ 4 * c.Del * (((c.k - 1 : ℕ) : ℝ) - i)` using `mul_le_mul_of_nonneg_left (by linarith) (by linarith)`. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite using `[e1, e2]`. Establish `P1` using `one_le_prod_of_le F1`.
+
+Establish `P2` using `one_le_prod_of_le F2`. Combine the equalities or inequalities in the displayed calculation. Apply `mul_le_mul P1 _ (by positivity) (by linarith)` to reduce the goal to its premises. Conclude with `mul_le_mul le_rfl P2 zero_le_one hpos`.
+-/
 lemma vand_inner_le (c : Sz.Cfg) (hc : c.Ok) (hs : c.vth ≤ 1 / 10) (de : ℕ → ℝ) (hw : Sz.IsWord c.k de)
     (hpos : 0 ≤ Sz.Vand (c.k - 2) (fun i => c.u de (i + 1))) :
     Sz.Vand (c.k - 2) (fun i => c.u de (i + 1)) ≤ Sz.Vand c.k (c.u de) := by
@@ -135,6 +191,39 @@ lemma vand_inner_le (c : Sz.Cfg) (hc : c.Ok) (hs : c.vth ≤ 1 / 10) (de : ℕ �
       apply mul_le_mul P1 _ (by positivity) (by linarith)
       exact mul_le_mul le_rfl P2 zero_le_one hpos
 
+/- English proof (translation)
+Establish `hk` using `hc.hk`. Establish `hm` using `hc.hm`. Establish `hkR : (4 : ℝ) ≤ c.k` using `by exact_mod_cast hk`. Establish `hmR : (2 : ℝ) ≤ c.m` using `by exact_mod_cast hm`. Establish `hmkR : (c.m : ℝ) ≤ c.k` using `by exact_mod_cast hmk`.
+
+Establish `hD` using `hc.hDel`. Establish `hkD : 0 ≤ (c.k : ℝ) * c.Del` using `mul_nonneg (by linarith) (by linarith)`. Establish `h4 : 4 * c.k * c.Del ≤ Real.exp (2 * L)`. Establish `h1` using `firstVandermondeNode_large_of_small_threshold c hc hs`. Establish `h2` using `hbj 1 le_rfl (by omega)`.
+
+Establish `h3 : 2 * ((c.k : ℝ) * c.Del) ≤ c.m * (c.k * c.Del)` using `mul_le_mul_of_nonneg_right hmR hkD`. Combine the linear equalities and inequalities to obtain the conclusion. Take `⟨hV, hRel, hRlo, -, hVk⟩` from `Formalism.FourierDecayAlt.P.vandermondeTop c de hc hw`. Take `⟨hLam, -⟩` from `Formalism.FourierDecayAlt.P.vandermonde_lambda_lower_bound c hc`. Establish `hR : 0 < Sz.Rde (c.k - 2) de` using `lt_of_lt_of_le (Real.exp_pos _) hRlo`.
+
+Establish `hU0 : 0 ≤ Sz.Vand (c.k - 2) (fun i => c.u de (i + 1))`. Rewrite using `[hRel]`. Conclude with `(mul_pos hR hV).le`. Establish `hU` using `vand_inner_le c hc hs de hw hU0`. Establish `hU1 : 0 ≤ Sz.Vand c.k (c.u de)` using `le_trans hU0 hU`.
+
+Establish `A1 : Sz.Vand (c.k - 2) c.v ≤ Real.exp (((c.k : ℝ) - 1) / 4) * Sz.Vand c.k (c.u de)`. Establish `e : Real.exp (((c.k : ℝ) - 1) / 4) * Real.exp (-(((c.k : ℝ) - 1) / 4)) = 1`. Rewrite using `[← Real.exp_add]`. Simplify using the standard rewrite rules. Combine the equalities or inequalities in the displayed calculation.
+
+Rewrite using `[← mul_assoc, e, one_mul]`. Use `_ ≤ _ := by`. Use `mul_le_mul_of_nonneg_left (le_trans ?_ hU) (Real.exp_pos _).le` and prove the remaining obligations. Rewrite using `[hRel]`. Conclude with `mul_le_mul_of_nonneg_right hRlo hV.le`.
+
+Establish `hE : 1 ≤ Real.exp (2 * L)` using `Real.one_le_exp (by linarith)`. Establish `A2 : (4 * c.Del) ^ (c.k - 2) * ((c.k - 2).factorial : ℝ) ≤ Real.exp (2 * L) ^ c.k`. Establish `f1 : ((c.k - 2).factorial : ℝ) ≤ (c.k : ℝ) ^ (c.k - 2)`. Use `le_trans (Nat.factorial_le_pow (c.k - 2)) (Nat.pow_le_pow_left (Nat.sub_le c.k 2) (c.k - 2))` as an intermediate fact. Conclude with `this` after adjusting the coercions.
+
+Combine the equalities or inequalities in the displayed calculation. Establish `A20 : 0 ≤ (4 * c.Del) ^ (c.k - 2) * ((c.k - 2).factorial : ℝ)` using `mul_nonneg (pow_nonneg (by linarith) _) (Nat.cast_nonneg _)`. Establish `h23 : 2 * Real.exp (2 * L) ≤ Real.exp (3 * L)`. Establish `h1 : 2 ≤ Real.exp L` using `le_trans (by linarith) (Real.add_one_le_exp L)`. Rewrite using `[show 3 * L = L + 2 * L by ring, Real.exp_add]`.
+
+Conclude with `mul_le_mul_of_nonneg_right h1 (Real.exp_pos _).le`. Establish `hf : ∀ i ∈ Icc 1 (c.k - 1), ∀ j ∈ Icc 1 c.m, 0 ≤ c.v i + c.b j ∧ c.v i + c.b j ≤ Real.exp (3 * L)`. Introduce `i hi j hj`. Rewrite `hi`, `hj` using `[mem_Icc]`. Establish `h1` using `v_bounds c hc i hi.1 (by omega)`.
+
+Establish `h2` using `one_le_b c hc j hj.1 hj.2`. Establish `h3` using `hbj j hj.1 hj.2`. Establish `h5` using `hc.hv1`. Apply the tactic sequence `constructor <;> linarith [h1.1, h1.2]`. Establish `A30 : ∀ i ∈ Icc 1 (c.k - 1), 0 ≤ ∏ j ∈ Icc 1 c.m, (c.v i + c.b j)` using `fun i hi => Finset.prod_nonneg fun j hj => (hf i hi j hj).1`.
+
+Establish `A3 : ∏ i ∈ Icc 1 (c.k - 1), ∏ j ∈ Icc 1 c.m, (c.v i + c.b j) ≤ (Real.exp (3 * L) ^ c.m) ^ c.k`. Use `le_trans (prod_le_pow_of_le (B := Real.exp (3 * L) ^ c.m) A30 fun i hi => ?_) ?_` and prove the remaining obligations. Use `prod_le_pow_of_le (fun j hj => (hf i hi j hj).1) (fun j hj => (hf i hi j hj).2)` as an intermediate fact. Simplify using `using this`. Conclude with `pow_le_pow_right₀ (one_le_pow₀ (by linarith)) (by simp)`.
+
+Establish `hg : ∀ i ∈ Icc 1 c.m, ∀ j ∈ Ioc i c.m, 0 ≤ -c.b i - -c.b j ∧ -c.b i - -c.b j ≤ Real.exp (2 * L)`. Introduce `i hi j hj`. Rewrite `hi` using `[mem_Icc]`. Rewrite `hj` using `[mem_Ioc]`. Establish `h1` using `b_le c hc i j hi.1 hj.1.le hj.2`.
+
+Establish `h2` using `one_le_b c hc i hi.1 hi.2`. Establish `h3` using `hbj j (by omega) hj.2`. Apply the tactic sequence `constructor <;> linarith`. Establish `A40 : ∀ i ∈ Icc 1 c.m, 0 ≤ ∏ j ∈ Ioc i c.m, (-c.b i - -c.b j)` using `fun i hi => Finset.prod_nonneg fun j hj => (hg i hi j hj).1`. Establish `A4 : Sz.Vand c.m (fun j => -c.b j) ≤ (Real.exp (2 * L) ^ c.m) ^ c.k`.
+
+Unfold `Sz.Vand`. Use `le_trans (prod_le_pow_of_le (B := Real.exp (2 * L) ^ c.m) A40 fun i hi => ?_) ?_` and prove the remaining obligations. Conclude with `le_trans (prod_le_pow_of_le (fun j hj => (hg i hi j hj).1) (fun j hj => (hg i hi j hj).2)) (pow_le_pow_right₀ hE (by simp))`. Conclude with `pow_le_pow_right₀ (one_le_pow₀ hE) (by simpa using hmk)`. Establish `A41 : 0 ≤ Sz.Vand c.m (fun j => -c.b j)` using `Finset.prod_nonneg A40`.
+
+Establish `hexp : Real.exp (((c.k : ℝ) - 1) / 4) * Real.exp (2 * L) ^ c.k * (Real.exp (3 * L) ^ c.m) ^ c.k * (Real.exp (2 * L) ^ c.m) ^ c.k ≤ Real.exp (10 * c.k * c.m * L)`. Simplify using `only [← Real.exp_nat_mul, ← Real.exp_add]`. Use `Real.exp_le_exp.2 ?_` and prove the remaining obligations. Establish `h1 : (c.k : ℝ) * 1 ≤ c.k * L` using `mul_le_mul_of_nonneg_left hL (by linarith)`. Establish `h2 : (c.k : ℝ) * L * 2 ≤ c.k * L * c.m` using `mul_le_mul_of_nonneg_left hmR (by linarith)`.
+
+Use the polynomial consequences of the given equalities and inequalities. Rewrite using `[hLam, hVk]`. Combine the equalities or inequalities in the displayed calculation.
+-/
 lemma vand_lam_le_cfg (c : Sz.Cfg) (hc : c.Ok) (hs : c.vth ≤ 1 / 10) (hmk : c.m ≤ c.k) (L : ℝ) (hL : 1 ≤ L)
     (hbj : ∀ j, 1 ≤ j → j ≤ c.m → c.b j ≤ Real.exp (2 * L)) (de : ℕ → ℝ) (hw : Sz.IsWord c.k de) :
     Sz.Vand (c.k + c.m - 1) c.lam ≤ Real.exp (10 * c.k * c.m * L) * Sz.Vand c.k (c.u de) := by
@@ -241,6 +330,13 @@ lemma vand_lam_le_cfg (c : Sz.Cfg) (hc : c.Ok) (hs : c.vth ≤ 1 / 10) (hmk : c.
         (Real.exp (2 * L) ^ c.m) ^ c.k) * Sz.Vand c.k (c.u de) := by ring
     _ ≤ _ := mul_le_mul_of_nonneg_right hexp hU1
 
+/- English proof (translation)
+Introduce `D large₂ C' Cl Cg cb Cu cT CT C0 hH h40 u τ`. Take `⟨hS, hD, -⟩` from `hH`. Establish `hok` using `BridgeLemma.cfg_ok hD hS τ`. Establish `hsm` using `BridgeLemma.cfg_small hS h40 τ`. Unfold `StandingNumericalData at hD`.
+
+Take `⟨-, -, -, -, d5, -⟩` from `hD`. Rewrite using `[← BridgeLemma.Vand_lam D τ, ← BridgeLemma.Vand_u D u τ (d5 u τ)]`. Establish `hb : large₂.sc.b ^ 2 = Real.exp (2 * large₂.sc.L)`. Rewrite using `[← BridgeLemma.log_b large₂, two_mul, Real.exp_add, Real.exp_log (by linarith [BridgeLemma.one_lt_b large₂]), sq]`. Establish `hmk : D.R.m ≤ D.R.k` using `by have := D.R.m_add_three_le_k; omega`.
+
+Conclude with `vand_lam_le_cfg (BridgeLemma.cfgOf D τ) hok hsm.hvth hmk large₂.sc.L (BridgeLemma.one_le_L large₂) (fun j h1 h2 => hb ▸ hsm.hbj j h1 h2) _ (BridgeLemma.isWord_deOf D u)`.
+-/
 theorem vand_lamSH_le : ∀ (D : D7) (large₂ : SizeData₂ D) (C' Cl Cg cb Cu cT CT C0 : ℝ),
     Cnt.Hyp0 D large₂ C' Cl Cg cb Cu cT CT C0 → 40 ≤ Cl → ∀ u τ,
       vand (lamSH D.R (D.hc τ)) ≤ Real.exp (10 * D.R.k * D.R.m * large₂.sc.L) * vand (uS D u τ) := by

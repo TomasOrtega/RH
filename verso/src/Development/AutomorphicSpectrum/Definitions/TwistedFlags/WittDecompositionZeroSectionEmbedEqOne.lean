@@ -20,6 +20,9 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 variable {D : D7}
 
+/- English proof (translation)
+Simplify using `only [Module.Basis.equivFun_symm_apply, Matrix.mul_apply, Matrix.conjTranspose_apply, map_sum, map_smul, LinearMap.map_smulₛₗ₂, LinearMap.sum_apply, LinearMap.smul_apply, smul_eq_mul, starRingEnd_apply, Finset.sum_mul, Finset.mul_sum, HSpace.gram]`. Use `Finset.sum_congr rfl fun _ _ => Finset.sum_congr rfl fun _ _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem gram_cols (S : HSp D) {a b : ℕ} (M : Matrix (Fin S.rank) (Fin a) D.host.E) (N : Matrix (Fin S.rank) (Fin b) D.host.E)
     (i : Fin a) (l : Fin b) : (Mᴴ * S.gram * N) i l =
       S.hT (S.frame.equivFun.symm fun k => M k i) (S.frame.equivFun.symm fun k => N k l) := by
@@ -29,21 +32,36 @@ theorem gram_cols (S : HSp D) {a b : ℕ} (M : Matrix (Fin S.rank) (Fin a) D.hos
   refine Finset.sum_congr rfl fun _ _ => Finset.sum_congr rfl fun _ _ => ?_
   ring
 
+/- English proof (translation)
+Simplify using `only [frameMat, LinearMap.toMatrix_apply, Module.Basis.equivFun_symm_apply, Module.Basis.sum_repr]`.
+-/
 theorem col_frameMat (A B : HSp D) (ι : B.V →ₗ[D.host.E] A.V) (i : Fin B.rank) :
     (A.frame.equivFun.symm fun k => frameMat A B ι k i) = ι (B.frame i) := by
   simp only [frameMat, LinearMap.toMatrix_apply, Module.Basis.equivFun_symm_apply, Module.Basis.sum_repr]
 
+/- English proof (translation)
+The claim follows from `LinearMap.toMatrix_comp _ _ _ _ _`.
+-/
 theorem frameMat_comp (A B C : HSp D) (ι : B.V →ₗ[D.host.E] A.V) (κ : C.V →ₗ[D.host.E] B.V) :
     frameMat A C (ι ∘ₗ κ) = frameMat A B ι * frameMat B C κ := LinearMap.toMatrix_comp _ _ _ _ _
 
+/- English proof (translation)
+Use extensionality with `i l`. Rewrite using `[gram_cols, col_frameMat, col_frameMat, h]`. Both sides reduce to the same expression.
+-/
 theorem gram_frameMat {A B : HSp D} {ι : B.V →ₗ[D.host.E] A.V} (h : HSpace.IsIsomEmb B A ι) :
     (frameMat A B ι)ᴴ * A.gram * frameMat A B ι = B.gram := by
   ext i l
   rw [gram_cols, col_frameMat, col_frameMat, h]; rfl
 
+/- English proof (translation)
+Rewrite using `[← S.herm.eq x y, h, map_zero]`.
+-/
 theorem hT_symm_zero (S : HSp D) {x y : S.V} (h : S.hT x y = 0) : S.hT y x = 0 := by
   rw [← S.herm.eq x y, h, map_zero]
 
+/- English proof (translation)
+Take `⟨π, -, h, -⟩` from `D.T_norm D.u₀`. Use `⟨π, ?_⟩` and prove the remaining obligations. Rewrite using `[D.sp_T, ← h, mul_comm, GlobalTheory.StdFrames.conj_eq_star]`.
+-/
 theorem exists_piT (D : D7) : ∃ π : D.host.E, star π * π = (D.sp.T : D.host.E) := by
   obtain ⟨π, -, h, -⟩ := D.T_norm D.u₀
   refine ⟨π, ?_⟩
@@ -51,10 +69,19 @@ theorem exists_piT (D : D7) : ∃ π : D.host.E, star π * π = (D.sp.T : D.host
 
 def piT (D : D7) : D.host.E := (exists_piT D).choose
 
+/- English proof (translation)
+The claim follows from `(exists_piT D).choose_spec`.
+-/
 theorem star_piT_mul (D : D7) : star (piT D) * piT D = (D.sp.T : D.host.E) := (exists_piT D).choose_spec
 
+/- English proof (translation)
+The claim follows from `Nat.cast_ne_zero.2 D.sp.T_prime.ne_zero`.
+-/
 theorem T_ne_zero (D : D7) : (D.sp.T : D.host.E) ≠ 0 := Nat.cast_ne_zero.2 D.sp.T_prime.ne_zero
 
+/- English proof (translation)
+Introduce `h` and use `T_ne_zero D (by rw [← star_piT_mul, h, mul_zero])`.
+-/
 theorem piT_ne_zero (D : D7) : piT D ≠ 0 := fun h => T_ne_zero D (by rw [← star_piT_mul, h, mul_zero])
 
 @[reducible] def lineT (D : D7) (neg : Bool) : HSp D where
@@ -74,6 +101,9 @@ abbrev lineNeg (D : D7) : HSp D := lineT D true
 
 abbrev linePos (D : D7) : HSp D := lineT D false
 
+/- English proof (translation)
+Take `rfl : i = 0` from `Subsingleton.elim _ _`. Take `rfl : l = 0` from `Subsingleton.elim _ _`. Express the relevant statement in the definitionally equal form `Examples₂.diagForm 1 (fun _ => neg) _ _ = _`. Rewrite using `[Examples₂.diagForm_apply, ← star_piT_mul]`. Apply the tactic sequence `cases neg <;> simp [Module.Basis.unitsSMul_apply, Examples₂.sgn, Units.smul_def]`.
+-/
 theorem lineT_gram (neg : Bool) (i l : Fin 1) :
     (lineT D neg).gram i l = if neg then -(D.sp.T : D.host.E) else (D.sp.T : D.host.E) := by
   obtain rfl : i = 0 := Subsingleton.elim _ _
@@ -82,10 +112,27 @@ theorem lineT_gram (neg : Bool) (i l : Fin 1) :
   rw [Examples₂.diagForm_apply, ← star_piT_mul]
   cases neg <;> simp [Module.Basis.unitsSMul_apply, Examples₂.sgn, Units.smul_def]
 
+/- English proof (translation)
+The claim follows from `lineT_gram true i l`.
+-/
 theorem lineNeg_gram (i l : Fin 1) : (lineNeg D).gram i l = -(D.sp.T : D.host.E) := lineT_gram true i l
 
+/- English proof (translation)
+The claim follows from `lineT_gram false i l`.
+-/
 theorem linePos_gram (i l : Fin 1) : (linePos D).gram i l = (D.sp.T : D.host.E) := lineT_gram false i l
 
+/- English proof (translation)
+Establish `h1 : ((√(T : ℝ) : ℝ) : ℂ) * ((√(T : ℝ) : ℝ) : ℂ) = T`. Rewrite using `[← Complex.ofReal_mul, Real.mul_self_sqrt (Nat.cast_nonneg T)]`. Simplify using the standard rewrite rules. Establish `h2 : ((√(T : ℝ) : ℝ) : ℂ) ≠ 0` using `fun h => by`. Rewrite `h1` using `[h, mul_zero]`.
+
+Conclude with `hT.ne' (by exact_mod_cast h1.symm)`. Prove the components needed by the constructor for the conclusion. Use `GlobalTheory.FrameComplement.hasSignature_of_frame (by simp) (Matrix.of fun _ _ => ((√(T : ℝ) : ℝ) : ℂ)⁻¹) ?_` and prove the remaining obligations. Use extensionality with `(r | r) (s | s)`. Take `rfl : r = s` from `Subsingleton.elim _ _`.
+
+Simplify using `[Matrix.mul_apply, Formalism.UG.Jpq]`. Rewrite using `[← h1]`. Clear the denominators using the available nonvanishing facts. Conclude with `s.elim0`. Conclude with `r.elim0`.
+
+Conclude with `r.elim0`. Use `GlobalTheory.FrameComplement.hasSignature_of_frame (by simp) (Matrix.of fun _ _ => ((√(T : ℝ) : ℝ) : ℂ)⁻¹) ?_` and prove the remaining obligations. Use extensionality with `(r | r) (s | s)`. Conclude with `r.elim0`. Conclude with `r.elim0`.
+
+Conclude with `s.elim0`. Take `rfl : r = s` from `Subsingleton.elim _ _`. Simplify using `[Matrix.mul_apply, Formalism.UG.Jpq]`. Rewrite using `[← h1]`. Clear the denominators using the available nonvanishing facts.
+-/
 theorem hasSignature_nat {T : ℕ} (hT : 0 < T) :
     Formalism.UG.HasSignature (Matrix.of fun _ _ : Fin 1 => (T : ℂ)) 1 0 ∧
       Formalism.UG.HasSignature (Matrix.of fun _ _ : Fin 1 => -(T : ℂ)) 0 1 := by
@@ -112,6 +159,9 @@ theorem hasSignature_nat {T : ℕ} (hT : 0 < T) :
       simp [Matrix.mul_apply, Formalism.UG.Jpq]
       rw [← h1]; field_simp
 
+/- English proof (translation)
+Introduce `τ` and use `by have h := hasSignature_nat D.sp.T_prime.pos cases neg · have e : (lineT D false).gram.map τ = Matrix.of fun _ _ : Fin 1 => (D.sp.T : ℂ) := by ext i l; rw [Matrix.map_apply, lineT_gram]; simp show Formalism.UG.HasSignature _ 1 0 rw [e]; exact h.1 · have e : (lineT D true).gram. …`.
+-/
 theorem lineT_sigOK (neg : Bool) : (lineT D neg).SigOK := fun τ => by
   have h := hasSignature_nat D.sp.T_prime.pos
   cases neg
@@ -124,6 +174,9 @@ theorem lineT_sigOK (neg : Bool) : (lineT D neg).SigOK := fun τ => by
     show Formalism.UG.HasSignature _ 0 1
     rw [e]; exact h.2
 
+/- English proof (translation)
+Use `⟨rfl, ?_⟩` and prove the remaining obligations. Use `T_ne_zero D` as an intermediate fact. Apply the tactic sequence `cases neg <;> simp [dotProduct, Matrix.mulVec, lineT_gram, this]`.
+-/
 theorem isLineVec_lineT (neg : Bool) : IsLineVec (lineT D neg) fun _ => 1 := by
   refine ⟨rfl, ?_⟩
   have := T_ne_zero D
@@ -132,14 +185,23 @@ theorem isLineVec_lineT (neg : Bool) : IsLineVec (lineT D neg) fun _ => 1 := by
 def lineMap (neg : Bool) (S : HSp D) (v : S.V) : (lineT D neg).V →ₗ[D.host.E] S.V :=
   (lineT D neg).frame.constr D.host.E fun _ => v
 
+/- English proof (translation)
+The claim follows from `Module.Basis.constr_basis _ _ _ _`.
+-/
 theorem lineMap_frame (neg : Bool) (S : HSp D) (v : S.V) (i : Fin 1) : lineMap neg S v ((lineT D neg).frame i) = v :=
   Module.Basis.constr_basis _ _ _ _
 
+/- English proof (translation)
+Rewrite using `[lineMap, Module.Basis.constr_apply_fintype]`. Conclude with `Fin.sum_univ_one _`.
+-/
 theorem lineMap_apply (neg : Bool) (S : HSp D) (v : S.V) (a : (lineT D neg).V) :
     lineMap neg S v a = (lineT D neg).frame.repr a 0 • v := by
   rw [lineMap, Module.Basis.constr_apply_fintype]
   exact Fin.sum_univ_one _
 
+/- English proof (translation)
+Introduce `a b` and use `by have e : ∀ a : (lineT D neg).V, a = (lineT D neg).frame.repr a 0 • (lineT D neg).frame 0 := fun a => by conv_lhs => rw [← (lineT D neg).frame.sum_repr a] exact Fin.sum_univ_one _ rw [lineMap_apply, lineMap_apply] conv_rhs => rw [e a, e b] simp only [LinearMap.map_smulₛₗ₂, map_ …`.
+-/
 theorem lineMap_isom {neg : Bool} {S : HSp D} {v : S.V}
     (hv : S.hT v v = if neg then -(D.sp.T : D.host.E) else (D.sp.T : D.host.E)) :
     HSpace.IsIsomEmb (lineT D neg) S (lineMap neg S v) := fun a b => by
@@ -151,6 +213,29 @@ theorem lineMap_isom {neg : Bool} {S : HSp D} {v : S.V}
   simp only [LinearMap.map_smulₛₗ₂, map_smul, hv]
   rw [← lineT_gram neg 0 0]; rfl
 
+/- English proof (translation)
+Establish `hr : (D.sp.X D.R.m).rank = D.sp.X'.rank + 1`. Establish `h1` using `D.sp.X_rank D.R.m le_rfl`. Establish `h2` using `D.sp.X'_rank`. Establish `h3` using `D.R.two_le_m`. Establish `h4 : D.R.m * (D.R.t + 1) = D.R.m * D.R.t + D.R.m` using `by ring`.
+
+Simplify using `only [Ranks.N, Ranks.rankX', Ranks.r] at h1 h2`. Use linear arithmetic over natural numbers and integers. Take `⟨b, hb, hd, hs, a, ha, hdet⟩` from `GlobalTheory.FrameComplement.exists_complement (p := 1) (q := 0) D.sp.cm.cmUnram.2.1 D.sp.X' (D.sp.X D.R.m) D.sp.iX' D.sp.iX'_isom hr (fun τ => by have := D.sp.X'_sig τ; rwa [D.X'_posDef τ] at this) (fun τ => by have := D.sp.X_sig D.R.m τ; rw [D.X_posDef D.R.m le_rfl τ] at this; …`. Establish `hX` using `GlobalTheory.FrameComplement.gram_det_ne D.sp.X'`. Establish `hT0` using `T_ne_zero D`.
+
+Take `⟨P, -, hP⟩` from `GlobalTheory.HermAdelicNorm.congr_of_signature_of_adelic_norm D.host.F D.host.E D.sp.cm 1 (Matrix.of fun i l => (D.sp.X D.R.m).hT (b i) (b l)) (Matrix.of fun _ _ => (D.sp.T : D.host.E)) (Matrix.ext fun i l => (D.sp.X D.R.m).herm.eq _ _) (by ext i l; simp) hd (by simpa using hT0) …`. Use `(hasSignature_nat D.sp.T_prime.pos).1 using 1` and compare the differences between its conclusion and the goal. Use extensionality with `i l`. Use the proof step `simp⟩)`. Use the proof step `(by`.
+
+Establish `h2` using `(((GlobalTheory.DetNorm.isN_det (D.sp.X D.R.m)).mul ((GlobalTheory.DetNorm.isN_det D.sp.X').inv (GlobalTheory.DetNorm.star_det _))).mul (GlobalTheory.DetNorm.isN_star a⁻¹)).mul ((GlobalTheory.DetNorm.isNormFromTensorFiniteAdele_levelNormT (D := D)).inv (by simp))`. Establish `ha' : star a ≠ 0` using `star_ne_zero.2 ha`. Establish `h3 : ∀ x g u : D.host.E, x ≠ 0 → star a * a * x * g * x⁻¹ * (star a⁻¹ * a⁻¹) * u⁻¹ = g / u` using `fun x g u hx => by rw [star_inv₀, div_eq_mul_inv]; field_simp`. Rewrite `h2` using `[hdet, h3 _ _ _ hX]`. Rewrite using `[Matrix.det_unique (Matrix.of fun _ _ : Fin 1 => (D.sp.T : D.host.E))]`.
+
+Conclude with `h2)`. Set `o : OrthDec (D.sp.X D.R.m) D.sp.X' (linePos D)` to `{ iA := frameMat _ _ D.sp.iX' iB := frameMat _ _ (lineMap false _ (P 0 0 • b 0)) isoA := gram_frameMat D.sp.iX'_isom isoB := gram_frameMat (lineMap_isom (by`. Use `congrFun (congrFun hP 0) 0` as an intermediate fact. Simplify using `only [Matrix.mul_apply, Fin.sum_univ_one, Matrix.conjTranspose_apply, Matrix.of_apply] at this`. Simplify using `only [LinearMap.map_smulₛₗ₂, map_smul, smul_eq_mul, starRingEnd_apply, Bool.false_eq_true, if_false]`.
+
+Take the linear combination `this))`. Use `orth := by`. Use extensionality with `i l`. Rewrite using `[gram_cols, col_frameMat, col_frameMat, lineMap_frame]`. Establish `h0 : (D.sp.X D.R.m).hT (D.sp.iX' (D.sp.X'.frame l)) (P 0 0 • b 0) = 0`.
+
+Rewrite using `[map_smul, hb, smul_zero]`. Rewrite using `[hT_symm_zero _ h0]`. Both sides reduce to the same expression. Use `rank_add := hr.symm }`. Set `y : Fin (D.sp.X D.R.m).rank → D.host.E` to `(D.sp.X D.R.m).frame.equivFun D.sp.z`.
+
+Set `Y : Matrix (Fin (D.sp.X D.R.m).rank) (Fin 1) D.host.E` to `Matrix.of fun k _ => y k`. Establish `hY : ∀ i, ((D.sp.X D.R.m).frame.equivFun.symm fun k => Y k i) = D.sp.z` using `fun i => (D.sp.X D.R.m).frame.equivFun.symm_apply_apply _`. Establish `h1 : o.iAᴴ * (D.sp.X D.R.m).gram * Y = 0`. Use extensionality with `i l`. Rewrite using `[gram_cols, hY, col_frameMat, D.sp.z_orth]`.
+
+Both sides reduce to the same expression. Establish `h2 : Y = o.iB * (o.qB * Y)` using `by conv_lhs => rw [← Matrix.one_mul Y, ← o.iA_qA_add]`. Rewrite using `[Matrix.add_mul, Matrix.mul_assoc, OrthDec.qA, Matrix.mul_assoc _ _ Y, h1, Matrix.mul_zero, Matrix.mul_zero, zero_add, Matrix.mul_assoc]`. Establish `h3 : Yᴴ * (D.sp.X D.R.m).gram * Y = (o.qB * Y)ᴴ * (linePos D).gram * (o.qB * Y)` using `by conv_lhs => rw [h2]`. Rewrite using `[← o.isoB, Matrix.conjTranspose_mul o.iB]`.
+
+Simplify using `only [Matrix.mul_assoc]`. Establish `h4` using `congrFun (congrFun h3 0) 0`. Rewrite `h4` using `[gram_cols, hY]`. Simplify using `only [Matrix.mul_apply (M := (o.qB * Y)ᴴ * (linePos D).gram), Matrix.mul_apply (M := (o.qB * Y)ᴴ), Fin.sum_univ_one, Matrix.conjTranspose_apply, linePos_gram] at h4`. Generalize the expression as in `(o.qB * Y) 0 0 = c at h4`.
+
+Establish `hc : c ≠ 0` using `fun h => D.sp.z_anis (by rw [h4, h, mul_zero])`. Establish `hc' : star c ≠ 0` using `star_ne_zero.2 hc`. Use `⟨c⁻¹, ?_⟩` and prove the remaining obligations. Rewrite using `[h4, star_inv₀]`. Clear the denominators using the available nonvanishing facts.
+-/
 theorem exists_topScalar (D : D7) : ∃ l : D.host.E,
     star l * l * (D.sp.X D.R.m).hT D.sp.z D.sp.z = (D.sp.T : D.host.E) := by
   have hr : (D.sp.X D.R.m).rank = D.sp.X'.rank + 1 := by
@@ -237,19 +322,31 @@ def IsFrame0 (T : HSp D) {r : ℕ} (C C' : Matrix (Fin T.rank) (Fin r) D.host.E)
     Formalism.UG.cT (D.sp.cm.sig : D.host.E →+* D.host.E) B0 * T.gram * B0 = T0.gram ∧
     T.rank = 2 * r + T0.rank
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fun h => ⟨h.1.1, h.1.2, h.2⟩, fun h => ⟨⟨h.1, h.2.1⟩, h.2.2⟩⟩`.
+-/
 theorem isQuotFrame_iff {T T0 : HSp D} {r : ℕ} {C C' : Matrix (Fin T.rank) (Fin r) D.host.E}
     {B0 : Matrix (Fin T.rank) (Fin T0.rank) D.host.E} : IsQuotFrame T C C' T0 B0 ↔ 0 < r ∧ IsFrame0 T C C' T0 B0 :=
   ⟨fun h => ⟨h.1.1, h.1.2, h.2⟩, fun h => ⟨⟨h.1, h.2.1⟩, h.2.2⟩⟩
 
+/- English proof (translation)
+Use `congrArg Matrix.conjTranspose h` as an intermediate fact. Rewrite `this` using `[conjTranspose_mul, conjTranspose_mul, conjTranspose_conjTranspose, gram_conjTranspose, conjTranspose_zero, ← Matrix.mul_assoc]`. Then use the resulting hypothesis.
+-/
 theorem gram_swap_zero {a b : ℕ} {M : Matrix (Fin S.rank) (Fin a) D.host.E} {N : Matrix (Fin S.rank) (Fin b) D.host.E}
     (h : Mᴴ * S.gram * N = 0) : Nᴴ * S.gram * M = 0 := by
   have := congrArg Matrix.conjTranspose h
   rwa [conjTranspose_mul, conjTranspose_mul, conjTranspose_conjTranspose, gram_conjTranspose, conjTranspose_zero,
     ← Matrix.mul_assoc] at this
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨isIsoSub_e d, d.e'e', d.e'e, gram_swap_zero d.i₀e, gram_swap_zero d.i₀e', d.iso, by have := d.rank_add; omega⟩`.
+-/
 theorem isFrame0_hyp : IsFrame0 S d.e d.e' S₀ d.i₀ :=
   ⟨isIsoSub_e d, d.e'e', d.e'e, gram_swap_zero d.i₀e, gram_swap_zero d.i₀e', d.iso, by have := d.rank_add; omega⟩
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨d.wittDecomp_anisotropicEmbedding_inclX g, d.wittDecomp_anisotropicEmbedding_inclY g, d.wittDecomp_anisotropicEmbedding_inclAnisotropic g⟩`.
+-/
 theorem isLeviEmb_witt_embedding (g : GA D S₀) : IsLeviEmb S d.e d.e' S₀ d.i₀ g (d.emb0 g) :=
   ⟨d.wittDecomp_anisotropicEmbedding_inclX g, d.wittDecomp_anisotropicEmbedding_inclY g, d.wittDecomp_anisotropicEmbedding_inclAnisotropic g⟩
 
@@ -267,21 +364,38 @@ def scaleHyp (y : D.host.E) (hy : y ≠ 0) : HypDec S S₀ ρ where
   i₀e' := by rw [Matrix.mul_smul, d.i₀e', smul_zero]
   rank_add := d.rank_add
 
+/- English proof (translation)
+Rewrite using `[← map_mul, inv_mul_cancel₀ hy, map_one]`.
+-/
 theorem incA_mul_inv {y : D.host.E} (hy : y ≠ 0) : incA D y⁻¹ * incA D y = 1 := by
   rw [← map_mul, inv_mul_cancel₀ hy, map_one]
 
+/- English proof (translation)
+The claim follows from `rat_smul y d.e`.
+-/
 theorem scaleHyp_jX (y : D.host.E) (hy : y ≠ 0) : (scaleHyp d y hy).jX = incA D y • d.jX := rat_smul y d.e
 
+/- English proof (translation)
+Rewrite using `[HypDec.pX, HypDec.pX, ← rat_smul]`. Use `congr 1`. Express the relevant statement in the definitionally equal form `((star y)⁻¹ • d.e')ᴴ * S.gram = y⁻¹ • (d.e'ᴴ * S.gram)`. Rewrite using `[conjTranspose_smul, Matrix.smul_mul, star_inv₀, star_star]`.
+-/
 theorem scaleHyp_pX (y : D.host.E) (hy : y ≠ 0) : (scaleHyp d y hy).pX = incA D y⁻¹ • d.pX := by
   rw [HypDec.pX, HypDec.pX, ← rat_smul]
   congr 1
   change ((star y)⁻¹ • d.e')ᴴ * S.gram = y⁻¹ • (d.e'ᴴ * S.gram)
   rw [conjTranspose_smul, Matrix.smul_mul, star_inv₀, star_star]
 
+/- English proof (translation)
+Rewrite using `[blockX, blockX, scaleHyp_jX, scaleHyp_pX, Matrix.mul_smul, Matrix.smul_mul, Matrix.mul_smul, smul_smul, incA_mul_inv hy, one_smul]`.
+-/
 theorem blockX_scaleHyp (y : D.host.E) (hy : y ≠ 0) (g : GA D S) : blockX (scaleHyp d y hy) g = blockX d g := by
   rw [blockX, blockX, scaleHyp_jX, scaleHyp_pX, Matrix.mul_smul, Matrix.smul_mul, Matrix.mul_smul, smul_smul,
     incA_mul_inv hy, one_smul]
 
+/- English proof (translation)
+Use `ext1 g`. Use `(scaleHyp d y hy).ga_ext ?_ ?_ ?_` and prove the remaining obligations. Rewrite using `[HypDec.wittDecomp_anisotropicEmbedding_inclX, scaleHyp_jX, Matrix.mul_smul, d.wittDecomp_anisotropicEmbedding_inclX]`. Rewrite using `[HypDec.wittDecomp_anisotropicEmbedding_inclAnisotropic]`. Conclude with `(d.wittDecomp_anisotropicEmbedding_inclAnisotropic g).symm`.
+
+Establish `e : (scaleHyp d y hy).jY = incA D (star y)⁻¹ • d.jY` using `rat_smul _ d.e'`. Rewrite using `[HypDec.wittDecomp_anisotropicEmbedding_inclY, e, Matrix.mul_smul, d.wittDecomp_anisotropicEmbedding_inclY]`.
+-/
 theorem witt_embedding_scale_invariant (y : D.host.E) (hy : y ≠ 0) : (scaleHyp d y hy).emb0 = d.emb0 := by
   ext1 g
   refine (scaleHyp d y hy).ga_ext ?_ ?_ ?_
@@ -290,6 +404,9 @@ theorem witt_embedding_scale_invariant (y : D.host.E) (hy : y ≠ 0) : (scaleHyp
   · have e : (scaleHyp d y hy).jY = incA D (star y)⁻¹ • d.jY := rat_smul _ d.e'
     rw [HypDec.wittDecomp_anisotropicEmbedding_inclY, e, Matrix.mul_smul, d.wittDecomp_anisotropicEmbedding_inclY]
 
+/- English proof (translation)
+Establish `h1 : subOne S g ⬝ d.jX = d.jX ⬝ T` using `by rw [HypDec.subOne_mul, hX, add_sub_cancel_left]`. Establish `h2 : subOne S g ⬝ d.j0 = d.jX ⬝ b` using `by rw [HypDec.subOne_mul, h0, add_sub_cancel_left]`. Use `Subgroup.subset_closure ⟨fun i => ⟨fun j => T j i, fun j hj => hT j i hj, ?_⟩, fun x hx => ⟨_, d.mulVec_perp h1 h2 _ (d.pY_ratV hx)⟩⟩` and prove the remaining obligations. Use function extensionality and compare the values at `k`. Conclude with `congrFun (congrFun h1 k) i`.
+-/
 theorem mem_flagN_of_blocks {g : GA D S} {T : Mx D ρ ρ} {b : Mx D ρ S₀.rank} (hT : GlobalTheory.BesselChar.StrictUp T)
     (hX : mt S g ⬝ d.jX = d.jX + d.jX ⬝ T) (h0 : mt S g ⬝ d.j0 = d.j0 + d.jX ⬝ b) : g ∈ NFlag S d.e := by
   have h1 : subOne S g ⬝ d.jX = d.jX ⬝ T := by rw [HypDec.subOne_mul, hX, add_sub_cancel_left]
@@ -299,6 +416,9 @@ theorem mem_flagN_of_blocks {g : GA D S} {T : Mx D ρ ρ} {b : Mx D ρ S₀.rank
   funext k
   exact congrFun (congrFun h1 k) i
 
+/- English proof (translation)
+Introduce `g hg` and use `by obtain ⟨T, b, hT, h1, h2⟩ := exists_blocks d hg refine mem_flagN_of_blocks (scaleHyp d y hy) hT (b := incA D y⁻¹ • b) ?_ ?_ · rw [scaleHyp_jX, Matrix.mul_smul, h1, smul_add, Matrix.smul_mul] · rw [scaleHyp_jX, Matrix.smul_mul, Matrix.mul_smul, smul_smul, mul_comm, incA_mul_inv …`.
+-/
 theorem flagN_le_scaleHyp (y : D.host.E) (hy : y ≠ 0) : NFlag S d.e ≤ NFlag S (scaleHyp d y hy).e := fun g hg => by
   obtain ⟨T, b, hT, h1, h2⟩ := exists_blocks d hg
   refine mem_flagN_of_blocks (scaleHyp d y hy) hT (b := incA D y⁻¹ • b) ?_ ?_
@@ -306,6 +426,11 @@ theorem flagN_le_scaleHyp (y : D.host.E) (hy : y ≠ 0) : NFlag S d.e ≤ NFlag 
   · rw [scaleHyp_jX, Matrix.smul_mul, Matrix.mul_smul, smul_smul, mul_comm, incA_mul_inv hy, one_smul]
     exact h2
 
+/- English proof (translation)
+Use `le_antisymm ?_ (flagN_le_scaleHyp d y hy)` and prove the remaining obligations. Establish `h` using `flagN_le_scaleHyp (scaleHyp d y hy) y⁻¹ (inv_ne_zero hy)`. Establish `e : (scaleHyp (scaleHyp d y hy) y⁻¹ (inv_ne_zero hy)).e = d.e`. Express the relevant statement in the definitionally equal form `y⁻¹ • y • d.e = d.e`. Rewrite using `[smul_smul, inv_mul_cancel₀ hy, one_smul]`.
+
+Rewrite `h` using `[e]`. Then use the resulting hypothesis.
+-/
 theorem flagN_scaleHyp (y : D.host.E) (hy : y ≠ 0) : NFlag S (scaleHyp d y hy).e = NFlag S d.e := by
   refine le_antisymm ?_ (flagN_le_scaleHyp d y hy)
   have h := flagN_le_scaleHyp (scaleHyp d y hy) y⁻¹ (inv_ne_zero hy)
@@ -314,6 +439,9 @@ theorem flagN_scaleHyp (y : D.host.E) (hy : y ≠ 0) : NFlag S (scaleHyp d y hy)
     rw [smul_smul, inv_mul_cancel₀ hy, one_smul]
   rwa [e] at h
 
+/- English proof (translation)
+Take `⟨T, b, hT, h1, h2⟩` from `exists_blocks d hn`. Rewrite using `[← map_inv]`. Use `mem_flagN_of_blocks d hT (b := b ⬝ mt S₀ g⁻¹) ?_ ?_` and prove the remaining obligations. Rewrite using `[mt_mul, mt_mul, Matrix.mul_assoc, Matrix.mul_assoc, d.wittDecomp_anisotropicEmbedding_inclX, h1, Matrix.mul_add, cancel₂ (d.wittDecomp_anisotropicEmbedding_inclX g), d.wittDecomp_anisotropicEmbedding_inclX]`. Rewrite using `[mt_mul, mt_mul, Matrix.mul_assoc, Matrix.mul_assoc, d.wittDecomp_anisotropicEmbedding_inclAnisotropic, cancel₂ h2, Matrix.add_mul, Matrix.mul_add, cancel₂ (d.wittDecomp_anisotropicEmbedding_inclAnisotropic g), Matrix.mul_assoc, mt_mul_inv, Matrix.mul_one, Matrix.mul_assoc, cance …`.
+-/
 theorem conj_mem_flagN (g : GA D S₀) {n : GA D S} (hn : n ∈ NFlag S d.e) :
     d.emb0 g * n * (d.emb0 g)⁻¹ ∈ NFlag S d.e := by
   obtain ⟨T, b, hT, h1, h2⟩ := exists_blocks d hn
@@ -324,6 +452,9 @@ theorem conj_mem_flagN (g : GA D S₀) {n : GA D S} (hn : n ∈ NFlag S d.e) :
   · rw [mt_mul, mt_mul, Matrix.mul_assoc, Matrix.mul_assoc, d.wittDecomp_anisotropicEmbedding_inclAnisotropic, cancel₂ h2, Matrix.add_mul, Matrix.mul_add,
       cancel₂ (d.wittDecomp_anisotropicEmbedding_inclAnisotropic g), Matrix.mul_assoc, mt_mul_inv, Matrix.mul_one, Matrix.mul_assoc, cancel₂ (d.wittDecomp_anisotropicEmbedding_inclX g)]
 
+/- English proof (translation)
+Take `⟨T, b, -, -, h2⟩` from `exists_blocks d h`. Establish `h3 : d.p0 ⬝ (mt S (d.emb0 g) ⬝ d.j0) = d.p0 ⬝ (d.j0 + d.jX ⬝ b)` using `by rw [h2]`. Rewrite `h3` using `[d.wittDecomp_anisotropicEmbedding_inclAnisotropic, cancel₂ d.p0_j0, Matrix.one_mul, Matrix.mul_add, d.p0_j0, cancel₂ d.p0_jX, Matrix.zero_mul, add_zero]`. Conclude with `mt_injective S₀ (h3.trans (mt_one S₀).symm)`.
+-/
 theorem eq_one_of_levi_embedding_mem_flag {g : GA D S₀} (h : d.emb0 g ∈ NFlag S d.e) : g = 1 := by
   obtain ⟨T, b, -, -, h2⟩ := exists_blocks d h
   have h3 : d.p0 ⬝ (mt S (d.emb0 g) ⬝ d.j0) = d.p0 ⬝ (d.j0 + d.jX ⬝ b) := by rw [h2]
@@ -333,6 +464,11 @@ theorem eq_one_of_levi_embedding_mem_flag {g : GA D S₀} (h : d.emb0 g ∈ NFla
 
 variable (ψ : AddChar (AF D.host.F) ℂ)
 
+/- English proof (translation)
+Take `⟨T, b, -, h1, -⟩` from `exists_blocks d hn`. Establish `key : ∀ v, IsPsiUVal ψ S d.e n v → v = psiFlag ψ d n`. Introduce and unpack `v ⟨u, hu, rfl⟩`. Establish `hu' : mt S n ⬝ d.jX = d.jX ⬝ (show Mx D ρ ρ from u)` using `hu`. Rewrite using `[psiFlag, blockX, hu', cancel₂ d.pX_jX, Matrix.one_mul]`.
+
+Both sides reduce to the same expression. Establish `hex : ∃ v, IsPsiUVal ψ S d.e n v` using `⟨_, (1 : Mx D ρ ρ) + T, h1.trans (by rw [Matrix.mul_add, Matrix.mul_one]; rfl), rfl⟩`. Rewrite using `[psiU, dif_pos hex]`. Conclude with `key _ hex.choose_spec`.
+-/
 theorem psiU_eq_psiFlag {n : GA D S} (hn : n ∈ NFlag S d.e) : psiU ψ S d.e n = psiFlag ψ d n := by
   obtain ⟨T, b, -, h1, -⟩ := exists_blocks d hn
   have key : ∀ v, IsPsiUVal ψ S d.e n v → v = psiFlag ψ d n := by
@@ -344,6 +480,9 @@ theorem psiU_eq_psiFlag {n : GA D S} (hn : n ∈ NFlag S d.e) : psiU ψ S d.e n 
   rw [psiU, dif_pos hex]
   exact key _ hex.choose_spec
 
+/- English proof (translation)
+Establish `h1 : blockX d (d.emb0 g * n * (d.emb0 g)⁻¹) = blockX d n`. Rewrite using `[← map_inv, blockX, blockX, mt_mul, mt_mul, Matrix.mul_assoc, Matrix.mul_assoc, d.wittDecomp_anisotropicEmbedding_inclX, cancel₂ (d.wittDecomp_projX_anisotropicEmbedding g)]`. Establish `h2 : coefX d z (d.emb0 g * n * (d.emb0 g)⁻¹) = coefX d z n`. Rewrite using `[← map_inv, coefX, coefX, mt_mul, mt_mul, Matrix.mul_assoc, Matrix.mul_assoc, d.wittDecomp_anisotropicEmbedding_inclAnisotropic, cancel₂ (d.wittDecomp_projX_anisotropicEmbedding g), ← Matrix.mul_assoc (mt S n), ← Matrix.mul_assoc d.pX, ← Matrix.mulVec_mulVec, hg]`. Rewrite using `[psiBes, psiBes, simpleSum, simpleSum, h1, h2]`.
+-/
 theorem psiBes_conj (θ : D.host.E) (z : Fin S₀.rank → D.host.E) (g : GA D S₀) (hg : mt S₀ g⁻¹ *ᵥ ratV z = ratV z)
     (n : GA D S) : psiBes ψ d θ z (d.emb0 g * n * (d.emb0 g)⁻¹) = psiBes ψ d θ z n := by
   have h1 : blockX d (d.emb0 g * n * (d.emb0 g)⁻¹) = blockX d n := by
@@ -353,6 +492,15 @@ theorem psiBes_conj (θ : D.host.E) (z : Fin S₀.rank → D.host.E) (g : GA D S
       ← Matrix.mul_assoc (mt S n), ← Matrix.mul_assoc d.pX, ← Matrix.mulVec_mulVec, hg]
   rw [psiBes, psiBes, simpleSum, simpleSum, h1, h2]
 
+/- English proof (translation)
+Take `⟨γ, hγ⟩` from `(mem_GQ_iff S n).1 hn`. Use `replace hγ : rat γ = mt S n := hγ`. Establish `h1 : blockX d n = rat (d.qX * (γ * d.e))` using `by rw [blockX, ← hγ, rat_mul, rat_mul]; rfl`. Establish `h2 : coefX d z n = ratV ((d.qX * (γ * d.i₀)) *ᵥ z)` using `by rw [coefX, ← hγ, ratV_mulVec, rat_mul, rat_mul]; rfl`. Establish `h3 : incA D θ * simpleSum d z n ∈ (incA D).range`.
+
+Rewrite using `[simpleSum, h1, h2]`. Use `mul_mem ⟨θ, rfl⟩ (add_mem (sum_mem fun i _ => sum_mem fun j _ => ?_) (sum_mem fun i _ => mul_mem ?_ ⟨_, rfl⟩))` and prove the remaining obligations. Use `split_ifs`. Conclude with `⟨_, rfl⟩`. Conclude with `zero_mem _`.
+
+Unfold `ell split_ifs`. Conclude with `one_mem _`. Conclude with `zero_mem _`. Take `⟨x, hx⟩` from `h3`. Rewrite using `[psiBes, ← hx]`.
+
+Conclude with `hψ x`.
+-/
 theorem psiBes_rat (hψ : PsiRat ψ) (θ : D.host.E) (z : Fin S₀.rank → D.host.E) {n : GA D S} (hn : n ∈ GQ S) :
     psiBes ψ d θ z n = 1 := by
   obtain ⟨γ, hγ⟩ := (mem_GQ_iff S n).1 hn
@@ -373,6 +521,9 @@ theorem psiBes_rat (hψ : PsiRat ψ) (θ : D.host.E) (z : Fin S₀.rank → D.ho
   rw [psiBes, ← hx]
   exact hψ x
 
+/- English proof (translation)
+Introduce `x` and use `by rw [GlobalTheory.BesselChar.trace_incA] exact hψ.1.2.2.1 _`.
+-/
 theorem psiRat_of_isStdChar {s : ℤ} (hψ : IsStdChar D ψ s) : PsiRat ψ := fun x => by
   rw [GlobalTheory.BesselChar.trace_incA]
   exact hψ.1.2.2.1 _
@@ -383,9 +534,15 @@ section Zero
 
 variable {S S₀ : HSp D} (d : HypDec S S₀ 0)
 
+/- English proof (translation)
+Use extensionality with `i l`. Simplify using `[Matrix.mul_apply]`.
+-/
 theorem matrix_mul_empty_inner {a b : ℕ} (M : Mx D a 0) (N : Mx D 0 b) : M ⬝ N = 0 := by
   ext i l; simp [Matrix.mul_apply]
 
+/- English proof (translation)
+Establish `h` using `d.sum_eq_one`. Rewrite `h` using `[matrix_mul_empty_inner, matrix_mul_empty_inner d.jY, zero_add, add_zero]`. Then use the resulting hypothesis.
+-/
 theorem witt_decomposition_zero_section_embed_eq_one : d.j0 ⬝ d.p0 = 1 := by
   have h := d.sum_eq_one
   rwa [matrix_mul_empty_inner, matrix_mul_empty_inner d.jY, zero_add, add_zero] at h
@@ -402,6 +559,9 @@ def emb0Equiv : GA D S₀ ≃* GA D S where
       Matrix.one_mul, Matrix.mul_assoc, witt_decomposition_zero_section_embed_eq_one, Matrix.mul_one])
   map_mul' := map_mul d.emb0
 
+/- English proof (translation)
+Take `⟨i1, i2, i3, i4, i5, -⟩` from `GlobalTheory.Mem.AdelicGroupTop.adelic_unitary_topology D S`. Take `⟨k1, k2, k3, k4, k5, -⟩` from `GlobalTheory.Mem.AdelicGroupTop.adelic_unitary_topology D S₀`. Conclude with `MulEquiv.isHaarMeasure_map μ (emb0Equiv d) d.continuous_embed (continuous_of_mt S₀ (continuous_const.matrix_mul ((continuous_mt S).matrix_mul continuous_const)))`.
+-/
 theorem isHaar_map_levi_embedding (μ : Measure (GA D S₀)) (hμ : μ.IsHaarMeasure) : (μ.map d.emb0).IsHaarMeasure := by
   obtain ⟨i1, i2, i3, i4, i5, -⟩ := GlobalTheory.Mem.AdelicGroupTop.adelic_unitary_topology D S
   obtain ⟨k1, k2, k3, k4, k5, -⟩ := GlobalTheory.Mem.AdelicGroupTop.adelic_unitary_topology D S₀
@@ -410,6 +570,9 @@ theorem isHaar_map_levi_embedding (μ : Measure (GA D S₀)) (hμ : μ.IsHaarMea
 
 end Zero
 
+/- English proof (translation)
+Take `⟨i1, i2, i3, i4, i5, -⟩` from `GlobalTheory.Mem.AdelicGroupTop.adelic_unitary_topology D V`. Take `⟨-, 𝓕, h⟩` from `GlobalTheory.Mem.AdelicGroupFund.rightInvariant_and_exists_fundamentalDomain D V Measure.haar inferInstance`. Conclude with `⟨_, 𝓕, inferInstance, h⟩`.
+-/
 theorem exists_isQuotPair (V : HSp D) : ∃ μ 𝓕, IsQuotPair V μ 𝓕 := by
   obtain ⟨i1, i2, i3, i4, i5, -⟩ := GlobalTheory.Mem.AdelicGroupTop.adelic_unitary_topology D V
   obtain ⟨-, 𝓕, h⟩ := GlobalTheory.Mem.AdelicGroupFund.rightInvariant_and_exists_fundamentalDomain D V Measure.haar inferInstance
@@ -418,6 +581,21 @@ theorem exists_isQuotPair (V : HSp D) : ∃ μ 𝓕, IsQuotPair V μ 𝓕 := by
 def IsUPair (r : ℕ) (μ : Measure (SUp D r)) (𝓕 : Set (SUp D r)) : Prop :=
   μ.IsAddHaarMeasure ∧ IsAddFundamentalDomain (ratSU D r) 𝓕 μ ∧ μ 𝓕 = 1
 
+/- English proof (translation)
+Take `⟨i1, i2, i3, i4, i5, K, hK, hKc⟩` from `lattice_Mx D r r`. Use `haveI : BorelSpace (Mx D r r) := ⟨rfl⟩`. Set `p : Mx D r r → SUp D r` to `fun x => ⟨fun i j => if j ≤ i then 0 else x i j, fun i j h => if_pos h⟩`. Establish `hp : Continuous p` using `Continuous.subtype_mk (continuous_pi fun i => continuous_pi fun j => by split_ifs`. Conclude with `continuous_const`.
+
+Conclude with `(continuous_apply j).comp (continuous_apply i)) _`. Establish `hpx : ∀ x : SUp D r, p x.1 = x` using `fun x => Subtype.ext (funext fun i => funext fun j => by`. Express the relevant statement in the definitionally equal form `(if j ≤ i then 0 else x.1 i j) = x.1 i j`. Use `split_ifs with h`. Conclude with `(x.2 i j h).symm`.
+
+Use the proof step `rfl)`. Establish `hcl : IsClosed ((SUp D r : AddSubgroup (Mx D r r)) : Set (Mx D r r))`. Establish `: ((SUp D r : AddSubgroup (Mx D r r)) : Set (Mx D r r)) = {x | (p x).1 = x}` using `Set.ext fun x => ⟨fun h => congrArg Subtype.val (hpx ⟨x, h⟩), fun h => by`. Simplify using `only [Set.mem_ofPred_eq] at h`. Rewrite using `[← h]`.
+
+Conclude with `(p x).2⟩`. Rewrite using `[this]`. Conclude with `isClosed_eq (continuous_subtype_val.comp hp) continuous_id`. Use `haveI : LocallyCompactSpace (SUp D r) := hcl.locallyCompactSpace`. Use `haveI : SecondCountableTopology (SUp D r) := TopologicalSpace.Subtype.secondCountableTopology _`.
+
+Use `haveI : DiscreteTopology (ratSU D r) := DiscreteTopology.of_continuous_injective (f := fun γ : ratSU D r => (⟨γ.1.1, γ.2⟩ : GlobalTheory.MixModel.ratMx D r r)) ((continuous_subtype_val.comp continuous_subtype_val).subtype_mk _) fun a b h => Subtype.ext (Subtype.ext (by simpa usin …`. Use `(GlobalTheory.exists_normalise_meanSquare_of_cocompact (SUp D r) (ratSU D r) (p '' K) (hK.image hp) (fun (x : SUp D r) => ?_) (fun _ => 1) continuous_const (fun h => one_ne_zero (congrFun h 0)) (fun _ _ _ => rfl)).1` and prove the remaining obligations. Take `⟨γx, hγx, hK'⟩` from `hKc x.1`. Take `⟨γ, rfl⟩` from `mem_ratMx.1 hγx`. Use `⟨p (rat γ), ⟨fun i j => if j ≤ i then 0 else γ i j, ?_⟩, rat γ + x.1, hK', ?_⟩` and prove the remaining obligations.
+
+Use function extensionality and compare the values at `i j`. Express the relevant statement in the definitionally equal form `incA D (if j ≤ i then 0 else γ i j) = if j ≤ i then 0 else incA D (γ i j)`. Use `split_ifs`. Conclude with `map_zero _`. Both sides reduce to the same expression.
+
+Use `Subtype.ext (funext fun i => funext fun j => ?_)` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `(if j ≤ i then 0 else incA D (γ i j) + x.1 i j) = (if j ≤ i then 0 else incA D (γ i j)) + x.1 i j`. Use `split_ifs with h`. Rewrite using `[x.2 i j h, add_zero]`. Both sides reduce to the same expression.
+-/
 theorem exists_isUPair (r : ℕ) : ∃ μ 𝓕, IsUPair (D := D) r μ 𝓕 := by
   obtain ⟨i1, i2, i3, i4, i5, K, hK, hKc⟩ := lattice_Mx D r r
   haveI : BorelSpace (Mx D r r) := ⟨rfl⟩
@@ -460,6 +638,11 @@ theorem exists_isUPair (r : ℕ) : ∃ μ 𝓕, IsUPair (D := D) r μ 𝓕 := by
     · rw [x.2 i j h, add_zero]
     · rfl
 
+/- English proof (translation)
+Substitute `hρ` using the available equality. Take `⟨i1, i2, i3, i4, i5, -⟩` from `GlobalTheory.Mem.AdelicGroupTop.adelic_unitary_topology D S`. Take `⟨k1, k2, k3, k4, k5, -⟩` from `GlobalTheory.Mem.AdelicGroupTop.adelic_unitary_topology D S₀`. Establish `hc : Continuous (emb0Equiv d).symm` using `continuous_of_mt S₀ (continuous_const.matrix_mul ((continuous_mt S).matrix_mul continuous_const))`. Establish `h1 : (μ.map (emb0Equiv d).symm).IsHaarMeasure` using `MulEquiv.isHaarMeasure_map μ (emb0Equiv d).symm hc d.continuous_embed`.
+
+Take `⟨-, 𝓕, h⟩` from `GlobalTheory.Mem.AdelicGroupFund.rightInvariant_and_exists_fundamentalDomain D S₀ _ h1`. Use `⟨_, 𝓕, ⟨h1, h⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[Measure.map_map d.continuous_embed.measurable hc.measurable]`. Establish `e : (d.emb0 : GA D S₀ → GA D S) ∘ (emb0Equiv d).symm = id` using `funext (emb0Equiv d).apply_symm_apply`. Rewrite using `[e, Measure.map_id]`.
+-/
 theorem exists_pull {S S₀ : HSp D} {ρ : ℕ} (d : HypDec S S₀ ρ) (hρ : ρ = 0) (μ : Measure (GA D S)) (hμ : μ.IsHaarMeasure) :
     ∃ μ' 𝓕', IsQuotPair S₀ μ' 𝓕' ∧ μ = μ'.map d.emb0 := by
   subst hρ
@@ -475,6 +658,15 @@ theorem exists_pull {S S₀ : HSp D} {ρ : ℕ} (d : HypDec S S₀ ρ) (hρ : ρ
   have e : (d.emb0 : GA D S₀ → GA D S) ∘ (emb0Equiv d).symm = id := funext (emb0Equiv d).apply_symm_apply
   rw [e, Measure.map_id]
 
+/- English proof (translation)
+Rewrite using `[EmbRel, hι]`. Use `⟨?_, fun x hx => ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `mt S (d.emb0 (o.emb (h, 1))) ⬝ rat (d.i₀ * o.iA) = rat (d.i₀ * o.iA) ⬝ mt A h`. Rewrite using `[rat_mul, ← Matrix.mul_assoc]`. Express the relevant statement in the definitionally equal form `mt S (d.emb0 (o.emb (h, 1))) ⬝ d.j0 ⬝ o.jA = d.j0 ⬝ o.jA ⬝ mt A h`.
+
+Rewrite using `[d.wittDecomp_anisotropicEmbedding_inclAnisotropic, Matrix.mul_assoc, o.emb_jA, Matrix.mul_assoc]`. Establish `h1 : (o.qA * d.q0) *ᵥ x = 0`. Establish `e : o.qA * d.q0 = A.gram⁻¹ * ((d.i₀ * o.iA)ᴴ * S.gram)`. Rewrite using `[OrthDec.qA, HypDec.q0, conjTranspose_mul, Matrix.mul_assoc, Matrix.mul_assoc, Matrix.mul_nonsing_inv_cancel_left _ _ (gram_isUnit_det S₀), Matrix.mul_assoc]`. Rewrite using `[e, ← Matrix.mulVec_mulVec]`.
+
+Conclude with `(congrArg (A.gram⁻¹ *ᵥ ·) hx).trans (Matrix.mulVec_zero _)`. Establish `h2 : o.pA *ᵥ (d.p0 *ᵥ ratV x) = 0`. Rewrite using `[Matrix.mulVec_mulVec, OrthDec.pA, HypDec.p0, ← rat_mul, ← ratV_mulVec, h1]`. Conclude with `funext fun _ => map_zero _`. Establish `h3` using `congrArg (· *ᵥ ratV x) d.sum_eq_one`.
+
+Establish `h4` using `congrArg (· *ᵥ (d.p0 *ᵥ ratV x)) o.sum_eq_one`. Express the relevant statement in the definitionally equal form `mt S (d.emb0 (o.emb (h, 1))) *ᵥ ratV x = ratV x`. Simplify using `only [Matrix.add_mulVec, ← Matrix.mulVec_mulVec, h2, Matrix.mulVec_zero, Matrix.one_mulVec, zero_add] at h3 h4`. Simplify using `only [HypDec.unitaryMatrix_wittCoreEmbedding, OrthDec.mt_emb, mt_one, Matrix.mul_one, Matrix.add_mulVec, ← Matrix.mulVec_mulVec, h2, Matrix.mulVec_zero, zero_add, h4, h3]`.
+-/
 theorem embRel_embA {S S₀ A L : HSp D} {ρ : ℕ} (d : HypDec S S₀ ρ) (o : OrthDec S₀ A L) (ι : A.V →ₗ[D.host.E] S.V)
     (hι : frameMat S A ι = d.i₀ * o.iA) (h : GA D A) : EmbRel S A ι (embA d o h) h := by
   rw [EmbRel, hι]
@@ -501,6 +693,13 @@ theorem embRel_embA {S S₀ A L : HSp D} {ρ : ℕ} (d : HypDec S S₀ ρ) (o : 
 
 def rho (D : D7) (j : ℕ) : ℕ := (D.R.m - 1 - j) / 2
 
+/- English proof (translation)
+Establish `h1` using `D.sp.X_rank j hj.le`. Establish `h2` using `D.sp.Y_rank j hj.le`. Take `⟨a, ha⟩` from `D.R.m_even`. Establish `h4 : j * (D.R.t + 1) = j * D.R.t + j` using `by ring`. Simplify using `only [Ranks.N, Ranks.rankY, Ranks.r] at h1 h2`.
+
+Unfold `rho`. Use `split_ifs with he`. Take `⟨b, hb⟩` from `he`. Use linear arithmetic over natural numbers and integers. Rewrite `he` using `[Nat.not_even_iff_odd]`.
+
+Take `⟨b, hb⟩` from `he`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem rank_Y (j : ℕ) (hj : j < D.R.m) :
     (D.sp.Y j).rank = (D.sp.X j).rank + 2 * rho D j + (if Even j then 1 else 0) := by
   have h1 := D.sp.X_rank j hj.le
@@ -513,10 +712,19 @@ theorem rank_Y (j : ℕ) (hj : j < D.R.m) :
   · obtain ⟨b, hb⟩ := he; omega
   · rw [Nat.not_even_iff_odd] at he; obtain ⟨b, hb⟩ := he; omega
 
+/- English proof (translation)
+Unfold `rho`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem rho_eq_zero {j : ℕ} (hj : D.R.m ≤ j + 2) : rho D j = 0 := by unfold rho; omega
 
+/- English proof (translation)
+The claim follows from `GlobalTheory.DualPairCompare.embedding_xi_zero_ne_zero D`.
+-/
 theorem xi_zero_ne_zero : D.host.xi0 ≠ 0 := GlobalTheory.DualPairCompare.embedding_xi_zero_ne_zero D
 
+/- English proof (translation)
+The claim follows from `(GlobalTheory.NormalFramesLevels.even_iff_odd_c hj).1 he`.
+-/
 theorem odd_c {j : ℕ} (hj : j < D.R.m) (he : Even j) : (D.R.m - 1 - j) % 2 = 1 :=
   (GlobalTheory.NormalFramesLevels.even_iff_odd_c hj).1 he
 
@@ -538,6 +746,9 @@ def dualMat (j r : ℕ) : Matrix (Fin (D.sp.Y j).rank) (Fin r) D.host.E := fun k
 
 def srcScal (D : D7) (j : ℕ) : D.host.E := if Even j then 1 else D.host.xi0
 
+/- English proof (translation)
+Unfold `srcScal`. Use `split_ifs`. Conclude with `one_ne_zero`. Conclude with `xi_zero_ne_zero`.
+-/
 theorem srcScal_ne (j : ℕ) : srcScal D j ≠ 0 := by
   unfold srcScal; split_ifs
   · exact one_ne_zero
@@ -549,15 +760,27 @@ def srcDual (j r : ℕ) : Matrix (Fin (D.sp.Y j).rank) (Fin r) D.host.E := (star
 
 def skewDual (j r : ℕ) : Matrix (Fin (D.sp.Y j).rank) (Fin r) D.host.E := D.host.xi0⁻¹ • F.dualMat j r
 
+/- English proof (translation)
+Rewrite using `[srcMat, srcScal, if_pos he, one_smul]`.
+-/
 theorem srcMat_even {j : ℕ} (he : Even j) (r : ℕ) : F.srcMat j r = F.colMat j r := by
   rw [srcMat, srcScal, if_pos he, one_smul]
 
+/- English proof (translation)
+Rewrite using `[srcDual, srcScal, if_pos he, star_one, inv_one, one_smul]`.
+-/
 theorem srcDual_even {j : ℕ} (he : Even j) (r : ℕ) : F.srcDual j r = F.dualMat j r := by
   rw [srcDual, srcScal, if_pos he, star_one, inv_one, one_smul]
 
+/- English proof (translation)
+Rewrite using `[srcMat, srcScal, if_neg ho]`.
+-/
 theorem srcMat_odd {j : ℕ} (ho : ¬ Even j) (r : ℕ) : F.srcMat j r = D.host.xi0 • F.colMat j r := by
   rw [srcMat, srcScal, if_neg ho]
 
+/- English proof (translation)
+Rewrite using `[srcDual, srcScal, if_neg ho, GlobalTheory.DualPairCheck.star_purely_imaginary_eq_neg, inv_neg, neg_smul, skewDual]`.
+-/
 theorem srcDual_odd {j : ℕ} (ho : ¬ Even j) (r : ℕ) : F.srcDual j r = -F.skewDual j r := by
   rw [srcDual, srcScal, if_neg ho, GlobalTheory.DualPairCheck.star_purely_imaginary_eq_neg, inv_neg, neg_smul, skewDual]
 
@@ -566,6 +789,9 @@ def base (j r : ℕ) : Matrix (Fin (D.sp.Y j).rank) (Fin r) D.host.E :=
 
 def ztop : (D.sp.X D.R.m).V := F.lam • D.sp.z
 
+/- English proof (translation)
+Rewrite using `[ztop, map_smul, LinearMap.map_smulₛₗ₂, ← F.lam_norm]`. Simplify using `only [smul_eq_mul, starRingEnd_apply]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem ztop_norm : (D.sp.X D.R.m).hT F.ztop F.ztop = (D.sp.T : D.host.E) := by
   rw [ztop, map_smul, LinearMap.map_smulₛₗ₂, ← F.lam_norm]
   simp only [smul_eq_mul, starRingEnd_apply]; ring
@@ -575,6 +801,9 @@ abbrev V0 (D : D7) (j : ℕ) : HSp D := hsum (D.sp.X j) (lineNeg D)
 def embeddingLineSum (j : ℕ) : (V0 D j).V →ₗ[D.host.E] (D.sp.Y j).V :=
   LinearMap.coprod (D.sp.iXY j) (lineMap true (D.sp.Y j) (vecY j (F.z j)))
 
+/- English proof (translation)
+Use extensionality with `x`. Simplify using `[embeddingLineSum]`.
+-/
 theorem embedding_line_sum_inl (j : ℕ) : F.embeddingLineSum j ∘ₗ LinearMap.inl D.host.E _ _ = D.sp.iXY j := by
   ext x; simp [embeddingLineSum]
 
@@ -594,31 +823,49 @@ section Rel
 variable {j : ℕ} (hj : j < D.R.m)
 include hj
 
+/- English proof (translation)
+Establish `h` using `(F.aux j hj).2.2 x i (by unfold rho at hi; omega)`. Unfold `adaptedVector at h`. Rewrite `h` using `[if_pos (show i < (D.R.m - 1 - j) / 2 from hi)]`. Then use the resulting hypothesis.
+-/
 theorem hT_X_e {i : ℕ} (hi : i < rho D j) (x : (D.sp.X j).V) : (D.sp.Y j).hT (D.sp.iXY j x) (vecY j (F.e j i)) = 0 := by
   have h := (F.aux j hj).2.2 x i (by unfold rho at hi; omega)
   unfold adaptedVector at h
   rwa [if_pos (show i < (D.R.m - 1 - j) / 2 from hi)] at h
 
+/- English proof (translation)
+Unfold `rho at hi`. Establish `h` using `(F.aux j hj).2.2 x (D.R.m - 1 - j - 1 - i) (by omega)`. Unfold `adaptedVector at h`. Rewrite `h` using `[if_neg (by omega), if_neg (by omega), show D.R.m - 1 - j - 1 - (D.R.m - 1 - j - 1 - i) = i by omega]`. Then use the resulting hypothesis.
+-/
 theorem hT_X_ev {i : ℕ} (hi : i < rho D j) (x : (D.sp.X j).V) : (D.sp.Y j).hT (D.sp.iXY j x) (vecY j (F.ev j i)) = 0 := by
   unfold rho at hi
   have h := (F.aux j hj).2.2 x (D.R.m - 1 - j - 1 - i) (by omega)
   unfold adaptedVector at h
   rwa [if_neg (by omega), if_neg (by omega), show D.R.m - 1 - j - 1 - (D.R.m - 1 - j - 1 - i) = i by omega] at h
 
+/- English proof (translation)
+Establish `hc` using `odd_c hj he`. Establish `h` using `(F.aux j hj).2.2 x ((D.R.m - 1 - j) / 2) (by omega)`. Unfold `adaptedVector at h`. Rewrite `h` using `[if_neg (lt_irrefl _), if_pos ⟨hc, rfl⟩]`. Then use the resulting hypothesis.
+-/
 theorem hT_X_alt (he : Even j) (x : (D.sp.X j).V) : (D.sp.Y j).hT (D.sp.iXY j x) (vecY j (F.z j)) = 0 := by
   have hc := odd_c hj he
   have h := (F.aux j hj).2.2 x ((D.R.m - 1 - j) / 2) (by omega)
   unfold adaptedVector at h
   rwa [if_neg (lt_irrefl _), if_pos ⟨hc, rfl⟩] at h
 
+/- English proof (translation)
+The claim follows from `((F.aux j hj).2.1 (odd_c hj he)).1`.
+-/
 theorem z_norm (he : Even j) : (D.sp.Y j).hT (vecY j (F.z j)) (vecY j (F.z j)) = -(D.sp.T : D.host.E) :=
   ((F.aux j hj).2.1 (odd_c hj he)).1
 
+/- English proof (translation)
+Express the relevant statement in the definitionally equal form `(D.sp.Y j).hT (D.sp.iXY j w.1 + lineMap true (D.sp.Y j) (vecY j (F.z j)) w.2) v = 0`. Rewrite using `[map_add, LinearMap.add_apply, h1, lineMap_apply, LinearMap.map_smulₛₗ₂, h2, smul_zero, add_zero]`.
+-/
 theorem embedding_line_sum_orthogonal (he : Even j) {v : (D.sp.Y j).V} (h1 : ∀ x, (D.sp.Y j).hT (D.sp.iXY j x) v = 0)
     (h2 : (D.sp.Y j).hT (vecY j (F.z j)) v = 0) (w : (V0 D j).V) : (D.sp.Y j).hT (F.embeddingLineSum j w) v = 0 := by
   change (D.sp.Y j).hT (D.sp.iXY j w.1 + lineMap true (D.sp.Y j) (vecY j (F.z j)) w.2) v = 0
   rw [map_add, LinearMap.add_apply, h1, lineMap_apply, LinearMap.map_smulₛₗ₂, h2, smul_zero, add_zero]
 
+/- English proof (translation)
+Introduce `a b` and use `by have h1 : ∀ x c, (D.sp.Y j).hT (D.sp.iXY j x) (lineMap true (D.sp.Y j) (vecY j (F.z j)) c) = 0 := fun x c => by rw [lineMap_apply, map_smul, F.hT_X_alt hj he, smul_zero] have h2 := lineMap_isom (neg := true) (F.z_norm hj he) change (D.sp.Y j).hT (D.sp.iXY j a.1 + lineMap true …`.
+-/
 theorem embedding_line_sum_isometry (he : Even j) : HSpace.IsIsomEmb (V0 D j) (D.sp.Y j) (F.embeddingLineSum j) := fun a b => by
   have h1 : ∀ x c, (D.sp.Y j).hT (D.sp.iXY j x) (lineMap true (D.sp.Y j) (vecY j (F.z j)) c) = 0 := fun x c => by
     rw [lineMap_apply, map_smul, F.hT_X_alt hj he, smul_zero]
@@ -631,14 +878,25 @@ theorem embedding_line_sum_isometry (he : Even j) : HSpace.IsIsomEmb (V0 D j) (D
 variable {r : ℕ} (hr : r = rho D j)
 include hr
 
+/- English proof (translation)
+Substitute `hr` using the available equality. Use `Matrix.ext fun i l => (gram_cols _ _ _ i l).trans ((F.aux j hj).1 i i.2 l l.2).2.1` and prove the remaining obligations.
+-/
 theorem col_col : (F.colMat j r)ᴴ * (D.sp.Y j).gram * F.colMat j r = 0 := by
   subst hr
   refine Matrix.ext fun i l => (gram_cols _ _ _ i l).trans ((F.aux j hj).1 i i.2 l l.2).2.1
 
+/- English proof (translation)
+Substitute `hr` using the available equality. Use `Matrix.ext fun i l => (gram_cols _ _ _ i l).trans ((F.aux j hj).1 i i.2 l l.2).2.2` and prove the remaining obligations.
+-/
 theorem dual_dual : (F.dualMat j r)ᴴ * (D.sp.Y j).gram * F.dualMat j r = 0 := by
   subst hr
   refine Matrix.ext fun i l => (gram_cols _ _ _ i l).trans ((F.aux j hj).1 i i.2 l l.2).2.2
 
+/- English proof (translation)
+Substitute `hr` using the available equality. Use `Matrix.ext fun i l => (gram_cols _ _ _ i l).trans ?_` and prove the remaining obligations. Use `((D.sp.Y j).herm.eq _ _).symm.trans ?_` and prove the remaining obligations. Use `(congrArg (starRingEnd D.host.E) ((F.aux j hj).1 l l.2 i i.2).1).trans ?_` and prove the remaining obligations. Rewrite using `[Matrix.one_apply]`.
+
+Distinguish the cases in `h : i = l`. Substitute `h` using the available equality. Simplify using the standard rewrite rules. Rewrite using `[if_neg h, if_neg fun e => h (Fin.ext e.symm), map_zero]`.
+-/
 theorem dual_col : (F.dualMat j r)ᴴ * (D.sp.Y j).gram * F.colMat j r = 1 := by
   subst hr
   refine Matrix.ext fun i l => (gram_cols _ _ _ i l).trans ?_
@@ -649,6 +907,9 @@ theorem dual_col : (F.dualMat j r)ᴴ * (D.sp.Y j).gram * F.colMat j r = 1 := by
   · subst h; simp
   · rw [if_neg h, if_neg fun e => h (Fin.ext e.symm), map_zero]
 
+/- English proof (translation)
+Rewrite using `[skewDual, conjTranspose_smul, Matrix.smul_mul, Matrix.smul_mul, F.dual_col hj hr, smul_smul, star_inv₀, GlobalTheory.DualPairCheck.star_purely_imaginary_eq_neg, mul_inv_cancel₀ (neg_ne_zero.2 xi_zero_ne_zero), one_smul]`.
+-/
 theorem skewDual_spec : (-D.host.xi0) • ((F.skewDual j r)ᴴ * (D.sp.Y j).gram * F.colMat j r) = 1 := by
   rw [skewDual, conjTranspose_smul, Matrix.smul_mul, Matrix.smul_mul, F.dual_col hj hr, smul_smul, star_inv₀,
     GlobalTheory.DualPairCheck.star_purely_imaginary_eq_neg, mul_inv_cancel₀ (neg_ne_zero.2 xi_zero_ne_zero), one_smul]
@@ -728,10 +989,18 @@ def hypTop (D : D7) : HypDec (D.sp.Y D.R.m) D.sp.X' 0 where
   i₀e' := Matrix.ext fun _ l => l.elim0
   rank_add := by rw [D.sp.Y_rank D.R.m le_rfl, D.sp.X'_rank]; rfl
 
+/- English proof (translation)
+Rewrite using `[← F.embedding_line_sum_inl j]`. Conclude with `frameMat_comp _ _ _ _ _`.
+-/
 theorem frameMat_iXY (j : ℕ) : frameMat (D.sp.Y j) (D.sp.X j) (D.sp.iXY j) =
     frameMat (D.sp.Y j) (V0 D j) (F.embeddingLineSum j) * (orthogonalDecompLineSum D j).iA := by
   rw [← F.embedding_line_sum_inl j]; exact frameMat_comp _ _ _ _ _
 
+/- English proof (translation)
+Rewrite using `[vecB, Matrix.mulVec_mulVec]`. Use `Eq.trans (congrArg (· *ᵥ fun _ => (1 : D.host.E)) (frameMat_comp (D.sp.Y j) (V0 D j) (lineNeg D) (F.embeddingLineSum j) (LinearMap.inr D.host.E _ _)).symm) ?_` and prove the remaining obligations. Apply `(D.sp.Y j).frame.equivFun.symm.injective` to reduce the goal to its premises. Establish `h` using `col_frameMat (D.sp.Y j) (lineNeg D) (F.embeddingLineSum j ∘ₗ LinearMap.inr D.host.E _ _) 0`. Establish `h2 : (F.embeddingLineSum j ∘ₗ LinearMap.inr D.host.E _ _) ((lineNeg D).frame 0) = vecY j (F.z j)`.
+
+Rewrite using `[embeddingLineSum, LinearMap.coprod_inr]`. Conclude with `lineMap_frame _ _ _ _`. Use `Eq.trans (congrArg _ (funext fun k => ?_)) (h.trans h2)` and prove the remaining obligations. Simplify using `only [Matrix.mulVec, dotProduct, mul_one]`. Conclude with `Fin.sum_univ_one _`.
+-/
 theorem frameMat_alt (j : ℕ) : frameMat (D.sp.Y j) (V0 D j) (F.embeddingLineSum j) *ᵥ vecB (orthogonalDecompLineSum D j) (fun _ => 1) = F.z j := by
   rw [vecB, Matrix.mulVec_mulVec]
   refine Eq.trans (congrArg (· *ᵥ fun _ => (1 : D.host.E))
@@ -747,24 +1016,48 @@ theorem frameMat_alt (j : ℕ) : frameMat (D.sp.Y j) (V0 D j) (F.embeddingLineSu
 def besDat {j : ℕ} (hj : j < D.R.m) (he : Even j) : BesDat (D.sp.X j) (D.sp.Y j) (D.sp.iXY j) :=
   toBesDat (F.hypEven hj he rfl) (orthogonalDecompLineSum D j) (isLineVec_lineT true) one_ne_zero (D.sp.iXY j) (F.frameMat_iXY j)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem besDat_rho {j : ℕ} (hj : j < D.R.m) (he : Even j) : (F.besDat hj he).ρ = rho D j := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem besDat_e {j : ℕ} (hj : j < D.R.m) (he : Even j) : (F.besDat hj he).e = F.colMat j (rho D j) := rfl
 
+/- English proof (translation)
+The claim follows from `F.frameMat_alt j`.
+-/
 theorem besDat_alt {j : ℕ} (hj : j < D.R.m) (he : Even j) : (F.besDat hj he).z = F.z j := F.frameMat_alt j
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem besDat_c {j : ℕ} (hj : j < D.R.m) (he : Even j) (i) : (F.besDat hj he).c i = 1 := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem besDat_y {j : ℕ} (hj : j < D.R.m) (he : Even j) : ((F.besDat hj he).y : GA D (D.sp.Y j)) = 1 := rfl
 
+/- English proof (translation)
+The claim follows from `isFrame0_hyp (F.hypEven hj he hr)`.
+-/
 theorem isFrame0_even {j : ℕ} (hj : j < D.R.m) (he : Even j) {r : ℕ} (hr : r = rho D j) :
     IsFrame0 (D.sp.Y j) (F.colMat j r) (F.dualMat j r) (V0 D j) (frameMat _ _ (F.embeddingLineSum j)) :=
   isFrame0_hyp (F.hypEven hj he hr)
 
+/- English proof (translation)
+The claim follows from `isFrame0_hyp (F.hypOdd hj ho hr)`.
+-/
 theorem isFrame0_odd {j : ℕ} (hj : j < D.R.m) (ho : ¬ Even j) {r : ℕ} (hr : r = rho D j) :
     IsFrame0 (D.sp.Y j) (F.colMat j r) (F.dualMat j r) (D.sp.X j) (frameMat _ _ (D.sp.iXY j)) :=
   isFrame0_hyp (F.hypOdd hj ho hr)
 
+/- English proof (translation)
+The claim follows from `isFrame0_hyp (F.hypSrc hj ho hr)`.
+-/
 theorem isFrame_source_odd {j : ℕ} (hj : j < D.R.m) (ho : ¬ Even j) {r : ℕ} (hr : r = rho D j) :
     IsFrame0 (D.sp.Y j) (F.srcMat j r) (F.srcDual j r) (D.sp.X j) (frameMat _ _ (D.sp.iXY j)) :=
   isFrame0_hyp (F.hypSrc hj ho hr)
@@ -792,18 +1085,32 @@ section Grp
 variable {j : ℕ} (hj : j < D.R.m) (ψ : AddChar (AF D.host.F) ℂ)
 include hj
 
+/- English proof (translation)
+Rewrite using `[emb, dif_pos hj, dif_pos he]`. Both sides reduce to the same expression.
+-/
 theorem emb_even (he : Even j) (h : GA D (D.sp.X j)) : F.emb j h = (F.hypEven hj he rfl).emb0 (embeddingIntoLineSum D j h) := by
   rw [emb, dif_pos hj, dif_pos he]; rfl
 
+/- English proof (translation)
+Rewrite using `[emb, dif_pos hj, dif_neg ho]`.
+-/
 theorem emb_odd (ho : ¬ Even j) : F.emb j = (F.hypOdd hj ho rfl).emb0 := by
   rw [emb, dif_pos hj, dif_neg ho]
 
+/- English proof (translation)
+Distinguish the cases in `he : Even j`. Rewrite using `[show ⇑(F.emb j) = _ from funext (F.emb_even hj he)]`. Conclude with `(F.hypEven hj he rfl).continuous_embed.comp ((orthogonalDecompLineSum D j).continuous_emb.comp (Continuous.prodMk_left 1))`. Rewrite using `[F.emb_odd hj he]`. Conclude with `HypDec.continuous_embed _`.
+-/
 theorem continuous_emb : Continuous (F.emb j) := by
   by_cases he : Even j
   · rw [show ⇑(F.emb j) = _ from funext (F.emb_even hj he)]
     exact (F.hypEven hj he rfl).continuous_embed.comp ((orthogonalDecompLineSum D j).continuous_emb.comp (Continuous.prodMk_left 1))
   · rw [F.emb_odd hj he]; exact HypDec.continuous_embed _
 
+/- English proof (translation)
+Distinguish the cases in `he : Even j`. Introduce `a b h`. Rewrite `h` using `[F.emb_even hj he, F.emb_even hj he]`. Conclude with `(Prod.ext_iff.1 ((orthogonalDecompLineSum D j).emb_injective ((F.hypEven hj he rfl).wittDecomp_anisotropicEmbedding_injective h))).1`. Rewrite using `[F.emb_odd hj he]`.
+
+Conclude with `HypDec.wittDecomp_anisotropicEmbedding_injective _`.
+-/
 theorem emb_injective : Function.Injective (F.emb j) := by
   by_cases he : Even j
   · intro a b h
@@ -811,36 +1118,59 @@ theorem emb_injective : Function.Injective (F.emb j) := by
     exact (Prod.ext_iff.1 ((orthogonalDecompLineSum D j).emb_injective ((F.hypEven hj he rfl).wittDecomp_anisotropicEmbedding_injective h))).1
   · rw [F.emb_odd hj he]; exact HypDec.wittDecomp_anisotropicEmbedding_injective _
 
+/- English proof (translation)
+Distinguish the cases in `he : Even j`. Rewrite using `[F.emb_even hj he]`. Conclude with `HypDec.wittDecomp_anisotropicEmbedding_mem_rationalPoints _ ((orthogonalDecompLineSum D j).emb_mem_GQ hh (one_mem _))`. Rewrite using `[F.emb_odd hj he]`. Conclude with `HypDec.wittDecomp_anisotropicEmbedding_mem_rationalPoints _ hh`.
+-/
 theorem emb_mem_GQ {h : GA D (D.sp.X j)} (hh : h ∈ GQ (D.sp.X j)) : F.emb j h ∈ GQ (D.sp.Y j) := by
   by_cases he : Even j
   · rw [F.emb_even hj he]
     exact HypDec.wittDecomp_anisotropicEmbedding_mem_rationalPoints _ ((orthogonalDecompLineSum D j).emb_mem_GQ hh (one_mem _))
   · rw [F.emb_odd hj he]; exact HypDec.wittDecomp_anisotropicEmbedding_mem_rationalPoints _ hh
 
+/- English proof (translation)
+Rewrite using `[F.emb_even hj he]`. Conclude with `isLeviEmb_witt_embedding (F.hypEven hj he rfl) _`.
+-/
 theorem isLeviEmb_even (he : Even j) (h : GA D (D.sp.X j)) : IsLeviEmb (D.sp.Y j) (F.colMat j (rho D j))
     (F.dualMat j (rho D j)) (V0 D j) (frameMat _ _ (F.embeddingLineSum j)) (embeddingIntoLineSum D j h) (F.emb j h) := by
   rw [F.emb_even hj he]; exact isLeviEmb_witt_embedding (F.hypEven hj he rfl) _
 
+/- English proof (translation)
+Rewrite using `[F.emb_odd hj ho]`. Conclude with `isLeviEmb_witt_embedding (F.hypOdd hj ho rfl) _`.
+-/
 theorem isLeviEmb_odd (ho : ¬ Even j) (h : GA D (D.sp.X j)) : IsLeviEmb (D.sp.Y j) (F.colMat j (rho D j))
     (F.dualMat j (rho D j)) (D.sp.X j) (frameMat _ _ (D.sp.iXY j)) h (F.emb j h) := by
   rw [F.emb_odd hj ho]; exact isLeviEmb_witt_embedding (F.hypOdd hj ho rfl) _
 
+/- English proof (translation)
+Rewrite using `[F.emb_odd hj ho, ← witt_embedding_scale_invariant _ (srcScal D j) (srcScal_ne j)]`. Conclude with `isLeviEmb_witt_embedding (F.hypSrc hj ho rfl) _`.
+-/
 theorem isLeviEmb_source_frame_odd (ho : ¬ Even j) (h : GA D (D.sp.X j)) : IsLeviEmb (D.sp.Y j) (F.srcMat j (rho D j))
     (F.srcDual j (rho D j)) (D.sp.X j) (frameMat _ _ (D.sp.iXY j)) h (F.emb j h) := by
   rw [F.emb_odd hj ho, ← witt_embedding_scale_invariant _ (srcScal D j) (srcScal_ne j)]
   exact isLeviEmb_witt_embedding (F.hypSrc hj ho rfl) _
 
+/- English proof (translation)
+Distinguish the cases in `he : Even j`. Rewrite using `[F.srcMat_even he]`. Conclude with `flagN_scaleHyp (F.hypOdd hj he rfl) _ (srcScal_ne j)`.
+-/
 theorem grpN_alt : NFlag (D.sp.Y j) (F.srcMat j (rho D j)) = F.grpN j := by
   by_cases he : Even j
   · rw [F.srcMat_even he]
   · exact flagN_scaleHyp (F.hypOdd hj he rfl) _ (srcScal_ne j)
 
+/- English proof (translation)
+Distinguish the cases in `he : Even j`. Rewrite using `[F.emb_even hj he]`. Conclude with `conj_mem_flagN (F.hypEven hj he rfl) _ hn`. Rewrite using `[F.emb_odd hj he]`. Conclude with `conj_mem_flagN (F.hypOdd hj he rfl) _ hn`.
+-/
 theorem conj_mem_grpN (h : GA D (D.sp.X j)) {n : GA D (D.sp.Y j)} (hn : n ∈ F.grpN j) :
     F.emb j h * n * (F.emb j h)⁻¹ ∈ F.grpN j := by
   by_cases he : Even j
   · rw [F.emb_even hj he]; exact conj_mem_flagN (F.hypEven hj he rfl) _ hn
   · rw [F.emb_odd hj he]; exact conj_mem_flagN (F.hypOdd hj he rfl) _ hn
 
+/- English proof (translation)
+Distinguish the cases in `he : Even j`. Apply `F.emb_injective hj` to reduce the goal to its premises. Rewrite `hh` using `[F.emb_even hj he]`. Rewrite using `[F.emb_even hj he, eq_one_of_levi_embedding_mem_flag (F.hypEven hj he rfl) hh, map_one, map_one]`. Rewrite `hh` using `[F.emb_odd hj he]`.
+
+Conclude with `eq_one_of_levi_embedding_mem_flag (F.hypOdd hj he rfl) hh`.
+-/
 theorem eq_one_of_emb_mem {h : GA D (D.sp.X j)} (hh : F.emb j h ∈ F.grpN j) : h = 1 := by
   by_cases he : Even j
   · apply F.emb_injective hj
@@ -848,6 +1178,13 @@ theorem eq_one_of_emb_mem {h : GA D (D.sp.X j)} (hh : F.emb j h ∈ F.grpN j) : 
     rw [F.emb_even hj he, eq_one_of_levi_embedding_mem_flag (F.hypEven hj he rfl) hh, map_one, map_one]
   · rw [F.emb_odd hj he] at hh; exact eq_one_of_levi_embedding_mem_flag (F.hypOdd hj he rfl) hh
 
+/- English proof (translation)
+Use `⟨fun hg => ?_, ?_⟩` and prove the remaining obligations. Set `K : Subgroup (GA D (D.sp.Y j))` to `{ carrier := {g | ∃ n ∈ F.grpN j, ∃ h, g = n * F.emb j h} one_mem' := ⟨1, one_mem _, 1, by rw [map_one, one_mul]⟩ mul_mem' := by`. Introduce and unpack `_ _ ⟨n, hn, h, rfl⟩ ⟨n', hn', h', rfl⟩`. Conclude with `⟨_, mul_mem hn (F.conj_mem_grpN hj h hn'), h * h', by rw [map_mul]; group⟩`. Use the proof step `inv_mem' := by`.
+
+Introduce and unpack `_ ⟨n, hn, h, rfl⟩`. Conclude with `⟨_, F.conj_mem_grpN hj h⁻¹ (inv_mem hn), h⁻¹, by rw [map_inv]; group⟩ }`. Establish `: F.grpR j ≤ K` using `sup_le (fun n hn => ⟨n, hn, 1, by rw [map_one, mul_one]⟩) (by rintro _ ⟨h, rfl⟩; exact ⟨1, one_mem _, h, (one_mul _).symm⟩)`. Conclude with `this hg`. Introduce and unpack `⟨n, hn, h, rfl⟩`.
+
+Conclude with `mul_mem (Subgroup.mem_sup_left hn) (Subgroup.mem_sup_right ⟨h, rfl⟩)`.
+-/
 theorem mem_grpR {g : GA D (D.sp.Y j)} : g ∈ F.grpR j ↔ ∃ n ∈ F.grpN j, ∃ h, g = n * F.emb j h := by
   refine ⟨fun hg => ?_, ?_⟩
   · let K : Subgroup (GA D (D.sp.Y j)) :=
@@ -865,25 +1202,43 @@ theorem mem_grpR {g : GA D (D.sp.Y j)} : g ∈ F.grpR j ↔ ∃ n ∈ F.grpN j, 
   · rintro ⟨n, hn, h, rfl⟩
     exact mul_mem (Subgroup.mem_sup_left hn) (Subgroup.mem_sup_right ⟨h, rfl⟩)
 
+/- English proof (translation)
+The claim follows from `dif_pos ⟨hj, he⟩`.
+-/
 theorem psiN_even (he : Even j) : F.psiN ψ j = besChar ψ (F.besDat hj he) := dif_pos ⟨hj, he⟩
 
 omit hj in
+/- English proof (translation)
+The claim follows from `dif_neg fun h => ho h.2`.
+-/
 theorem psiN_odd (ho : ¬ Even j) : F.psiN ψ j = psiU ψ (D.sp.Y j) (F.colMat j (rho D j)) := dif_neg fun h => ho h.2
 
+/- English proof (translation)
+Rewrite using `[F.psiN_even hj ψ he]`. Conclude with `besChar_toBesDat _ _ ψ _ _ _ _ hn`.
+-/
 theorem psiN_even_eq (he : Even j) {n : GA D (D.sp.Y j)} (hn : n ∈ F.grpN j) :
     F.psiN ψ j n = psiBes ψ (F.hypEven hj he rfl) 1 (vecB (orthogonalDecompLineSum D j) fun _ => 1) n := by
   rw [F.psiN_even hj ψ he]; exact besChar_toBesDat _ _ ψ _ _ _ _ hn
 
+/- English proof (translation)
+Rewrite using `[F.psiN_odd ψ ho]`. Conclude with `psiU_eq_psiFlag (F.hypOdd hj ho rfl) ψ hn`.
+-/
 theorem psiN_odd_eq (ho : ¬ Even j) {n : GA D (D.sp.Y j)} (hn : n ∈ F.grpN j) :
     F.psiN ψ j n = psiFlag ψ (F.hypOdd hj ho rfl) n := by
   rw [F.psiN_odd ψ ho]; exact psiU_eq_psiFlag (F.hypOdd hj ho rfl) ψ hn
 
+/- English proof (translation)
+Rewrite using `[F.psiN_odd_eq hj ψ ho hn]`. Use `(psiU_eq_psiFlag (F.hypSrc hj ho rfl) ψ ((F.grpN_alt hj).ge hn)).trans ?_` and prove the remaining obligations. Rewrite using `[psiFlag, psiFlag, hypSrc, blockX_scaleHyp]`.
+-/
 theorem psiU_alt (ho : ¬ Even j) {n : GA D (D.sp.Y j)} (hn : n ∈ F.grpN j) :
     psiU ψ (D.sp.Y j) (F.srcMat j (rho D j)) n = F.psiN ψ j n := by
   rw [F.psiN_odd_eq hj ψ ho hn]
   refine (psiU_eq_psiFlag (F.hypSrc hj ho rfl) ψ ((F.grpN_alt hj).ge hn)).trans ?_
   rw [psiFlag, psiFlag, hypSrc, blockX_scaleHyp]
 
+/- English proof (translation)
+Distinguish the cases in `he : Even j`. Rewrite using `[F.psiN_even_eq hj ψ he hn, F.psiN_even_eq hj ψ he hn', F.psiN_even_eq hj ψ he (mul_mem hn hn')]`. Conclude with `psiBes_mul _ ψ _ _ hn hn'`. Rewrite using `[F.psiN_odd_eq hj ψ he hn, F.psiN_odd_eq hj ψ he hn', F.psiN_odd_eq hj ψ he (mul_mem hn hn')]`. Conclude with `psiFlag_mul _ ψ hn hn'`.
+-/
 theorem psiN_mul {n n' : GA D (D.sp.Y j)} (hn : n ∈ F.grpN j) (hn' : n' ∈ F.grpN j) :
     F.psiN ψ j (n * n') = F.psiN ψ j n * F.psiN ψ j n' := by
   by_cases he : Even j
@@ -892,12 +1247,22 @@ theorem psiN_mul {n n' : GA D (D.sp.Y j)} (hn : n ∈ F.grpN j) (hn' : n' ∈ F.
   · rw [F.psiN_odd_eq hj ψ he hn, F.psiN_odd_eq hj ψ he hn', F.psiN_odd_eq hj ψ he (mul_mem hn hn')]
     exact psiFlag_mul _ ψ hn hn'
 
+/- English proof (translation)
+Distinguish the cases in `he : Even j`. Rewrite using `[F.psiN_even_eq hj ψ he hn]`. Conclude with `psiBes_rat _ ψ (psiRat_of_isStdChar ψ hψ) _ _ hq`. Rewrite using `[F.psiN_odd_eq hj ψ he hn, psiFlag_eq]`. Conclude with `psiBes_rat _ ψ (psiRat_of_isStdChar ψ hψ) _ _ hq`.
+-/
 theorem psiN_rat {s : ℤ} (hψ : IsStdChar D ψ s) {n : GA D (D.sp.Y j)} (hn : n ∈ F.grpN j) (hq : n ∈ GQ (D.sp.Y j)) :
     F.psiN ψ j n = 1 := by
   by_cases he : Even j
   · rw [F.psiN_even_eq hj ψ he hn]; exact psiBes_rat _ ψ (psiRat_of_isStdChar ψ hψ) _ _ hq
   · rw [F.psiN_odd_eq hj ψ he hn, psiFlag_eq]; exact psiBes_rat _ ψ (psiRat_of_isStdChar ψ hψ) _ _ hq
 
+/- English proof (translation)
+Establish `hn'` using `F.conj_mem_grpN hj h hn`. Distinguish the cases in `he : Even j`. Rewrite using `[F.psiN_even_eq hj ψ he hn, F.psiN_even_eq hj ψ he hn', F.emb_even hj he]`. Use `psiBes_conj _ ψ _ _ _ ?_ n` and prove the remaining obligations. Establish `e` using `(orthogonalDecompLineSum D j).emb_jB h⁻¹ 1`.
+
+Rewrite `e` using `[mt_one, Matrix.mul_one]`. Rewrite using `[← map_inv, vecB, ratV_mulVec, Matrix.mulVec_mulVec]`. Conclude with `congrArg (· *ᵥ _) e`. Rewrite using `[F.psiN_odd_eq hj ψ he hn, F.psiN_odd_eq hj ψ he hn', F.emb_odd hj he, psiFlag_eq, psiFlag_eq]`. Use `psiBes_conj _ ψ _ _ _ ?_ n` and prove the remaining obligations.
+
+Establish `e : ratV (0 : Fin (D.sp.X j).rank → D.host.E) = 0` using `funext fun _ => map_zero _`. Rewrite using `[e, Matrix.mulVec_zero]`.
+-/
 theorem psiN_conj (h : GA D (D.sp.X j)) {n : GA D (D.sp.Y j)} (hn : n ∈ F.grpN j) :
     F.psiN ψ j (F.emb j h * n * (F.emb j h)⁻¹) = F.psiN ψ j n := by
   have hn' := F.conj_mem_grpN hj h hn
@@ -915,18 +1280,35 @@ theorem psiN_conj (h : GA D (D.sp.X j)) {n : GA D (D.sp.Y j)} (hn : n ∈ F.grpN
 
 end Grp
 
+/- English proof (translation)
+Introduce `h` and use `by by_cases he : Even j · rw [emb, dif_pos hj, dif_pos he]; exact embRel_embA _ _ _ (F.frameMat_iXY j) h · rw [F.emb_odd hj he]; exact HypDec.embRel_isometric_embedding _ h _ rfl`.
+-/
 theorem isEmbHom_emb {j : ℕ} (hj : j < D.R.m) : IsEmbHom (D.sp.iXY j) (F.emb j) := fun h => by
   by_cases he : Even j
   · rw [emb, dif_pos hj, dif_pos he]; exact embRel_embA _ _ _ (F.frameMat_iXY j) h
   · rw [F.emb_odd hj he]; exact HypDec.embRel_isometric_embedding _ h _ rfl
 
+/- English proof (translation)
+Introduce `h` and use `(orthogonalDecompLineSum D j).embRel_left _ rfl h`.
+-/
 theorem isEmbHom_embedding_into_line_sum (j : ℕ) : IsEmbHom (B := V0 D j) (LinearMap.inl D.host.E _ _) (embeddingIntoLineSum D j) :=
   fun h => (orthogonalDecompLineSum D j).embRel_left _ rfl h
 
+/- English proof (translation)
+Introduce `h` and use `(hypTop D).embRel_isometric_embedding h _ rfl`.
+-/
 theorem isEmbHom_embYm : IsEmbHom D.sp.eYm.toLinearMap (embYm D) := fun h => (hypTop D).embRel_isometric_embedding h _ rfl
 
+/- English proof (translation)
+Introduce `h` and use `F.orthTop.embRel_left _ rfl h`.
+-/
 theorem isEmbHom_embTop : IsEmbHom D.sp.iX' F.embTop := fun h => F.orthTop.embRel_left _ rfl h
 
+/- English proof (translation)
+Distinguish the cases in `hj : j < D.R.m`. Distinguish the cases in `he : Even j`. Conclude with `(F.isFrame0_even hj he rfl).1`. Conclude with `(F.isFrame0_odd hj he rfl).1`. Use `haveI : IsEmpty (Fin (rho D j)) := by rw [rho_eq_zero (by omega)]; infer_instance`.
+
+Conclude with `⟨linearIndependent_empty_type, Matrix.ext fun i => isEmptyElim i⟩`.
+-/
 theorem isIsoSub_colMat (j : ℕ) : IsIsoSub (D.sp.Y j) (F.colMat j (rho D j)) := by
   by_cases hj : j < D.R.m
   · by_cases he : Even j
@@ -946,6 +1328,9 @@ def std (D : D7) : Frames D where
   aux := GlobalTheory.NormalFramesLevels.normal_frame_level_conditions_C
   lam_norm := (exists_topScalar D).choose_spec
 
+/- English proof (translation)
+Apply the tactic sequence `refine ⟨fun i => ⟨?_, ?_⟩, ?_⟩ <;>`. Simplify using `only [std, GlobalTheory.NormalFramesLevels.eC, GlobalTheory.NormalFramesLevels.evC, GlobalTheory.NormalFramesLevels.zC, Formalism.IndefR.Seed.Frm.vecY_repr, GlobalTheory.NormalFramesLevels.normalFrameVectorSequences, Fin.is_lt, dif_pos, Fin.eta]`.
+-/
 theorem std_isBase (D : D7) : (std D).IsBase := by
   refine ⟨fun i => ⟨?_, ?_⟩, ?_⟩ <;>
     simp only [std, GlobalTheory.NormalFramesLevels.eC, GlobalTheory.NormalFramesLevels.evC, GlobalTheory.NormalFramesLevels.zC,
@@ -980,6 +1365,15 @@ structure Meas (F : Frames D) where
   tieLast : ∀ j, j + 1 = D.R.m → μY j = (μX j).map (F.emb j)
   tieTop : μY D.R.m = μX'.map (Frames.embYm D)
 
+/- English proof (translation)
+Use `choose μY fdY hY using fun j => exists_isQuotPair (D.sp.Y j)`. Establish `hX : ∀ j, ∃ μ 𝓕, IsQuotPair (D.sp.X j) μ 𝓕 ∧ (j + 1 = D.R.m → μY j = μ.map (F.emb j))` using `fun j => by`. Distinguish the cases in `h : j + 1 = D.R.m`. Establish `hj : j < D.R.m` using `by omega`. Establish `ho : ¬ Even j` using `fun he => by`.
+
+Use `D.R.m_even` as an intermediate fact. Rewrite `this` using `[← h, Nat.even_add_one]`. Conclude with `this he`. Take `⟨μ, 𝓕, h1, h2⟩` from `exists_pull (F.hypOdd hj ho rfl) (rho_eq_zero (by omega)) (μY j) (hY j).1`. Conclude with `⟨μ, 𝓕, h1, fun _ => by rw [F.emb_odd hj ho]; exact h2⟩`.
+
+Take `⟨μ, 𝓕, h1⟩` from `exists_isQuotPair (D.sp.X j)`. Conclude with `⟨μ, 𝓕, h1, fun h' => absurd h' h⟩`. Use `choose μX fdX hX1 hX2 using hX`. Take `⟨μX', fdX', h1, h2⟩` from `exists_pull (Frames.hypTop D) rfl (μY D.R.m) (hY D.R.m).1`. Use `choose μN fdN hN using fun j => GlobalTheory.Per.UnitN.exists_isUnitN D (D.sp.Y j) _ _ (F.isIsoSub_colMat j)`.
+
+Use `choose μU fdU hU using fun r => exists_isUPair (D := D) r`. Use `choose μM fdM hM using fun a b => exists_isCovolOne D a b`. Conclude with `⟨⟨μY, fdY, μX, fdX, μX', fdX', μN, fdN, μU, fdU, μM, fdM, hY, hX1, h1, hN, hU, hM, hX2, h2⟩⟩`.
+-/
 theorem nonempty_meas (F : Frames D) : Nonempty (Meas F) := by
   choose μY fdY hY using fun j => exists_isQuotPair (D.sp.Y j)
   have hX : ∀ j, ∃ μ 𝓕, IsQuotPair (D.sp.X j) μ 𝓕 ∧ (j + 1 = D.R.m → μY j = μ.map (F.emb j)) := fun j => by
@@ -1004,6 +1398,9 @@ namespace Meas
 
 variable {F : Frames D} (M : Meas F)
 
+/- English proof (translation)
+The claim follows from `M.unitN j`.
+-/
 theorem isNPair {j : ℕ} (hj : j < D.R.m) (he : Even j) : IsNPair (F.besDat hj he) (M.μN j) (M.fdN j) := M.unitN j
 
 def IsCut (j : ℕ) (β : GA D (D.sp.Y j) → ℝ) : Prop :=
@@ -1016,12 +1413,18 @@ def quotInt (j : ℕ) (β : GA D (D.sp.Y j) → ℝ) (Φ : GA D (D.sp.Y j) → �
 def cutMeas (j : ℕ) (β : GA D (D.sp.Y j) → ℝ) : Measure (GA D (D.sp.Y j)) :=
   (M.μY j).withDensity fun g => ENNReal.ofReal (β g)
 
+/- English proof (translation)
+Use `(integral_withDensity_eq_integral_smul (f := fun g => (β g).toNNReal) hβ.2.1.real_toNNReal Φ).trans ?_` and prove the remaining obligations. Use `integral_congr_ae (Filter.Eventually.of_forall fun g => ?_)` and prove the remaining obligations. Simplify using `only [NNReal.smul_def, Real.coe_toNNReal _ (hβ.1 g), Complex.real_smul]`.
+-/
 theorem integral_cutMeas {j : ℕ} {β : GA D (D.sp.Y j) → ℝ} (hβ : M.IsCut j β) (Φ : GA D (D.sp.Y j) → ℂ) :
     ∫ g, Φ g ∂(M.cutMeas j β) = M.quotInt j β Φ := by
   refine (integral_withDensity_eq_integral_smul (f := fun g => (β g).toNNReal) hβ.2.1.real_toNNReal Φ).trans ?_
   refine integral_congr_ae (Filter.Eventually.of_forall fun g => ?_)
   simp only [NNReal.smul_def, Real.coe_toNNReal _ (hβ.1 g), Complex.real_smul]
 
+/- English proof (translation)
+Use `(integrable_withDensity_iff_integrable_smul (f := fun g => (β g).toNNReal) hβ.2.1.real_toNNReal).trans ?_` and prove the remaining obligations. Simplify using `only [NNReal.smul_def, Real.coe_toNNReal _ (hβ.1 _), Complex.real_smul]`.
+-/
 theorem integrable_cutMeas {j : ℕ} {β : GA D (D.sp.Y j) → ℝ} (hβ : M.IsCut j β) (Φ : GA D (D.sp.Y j) → ℂ) :
     Integrable Φ (M.cutMeas j β) ↔ Integrable (fun g => (β g : ℂ) * Φ g) (M.μY j) := by
   refine (integrable_withDensity_iff_integrable_smul (f := fun g => (β g).toNNReal) hβ.2.1.real_toNNReal).trans ?_
@@ -1029,25 +1432,40 @@ theorem integrable_cutMeas {j : ℕ} {β : GA D (D.sp.Y j) → ℝ} (hβ : M.IsC
 
 end Meas
 
+/- English proof (translation)
+Establish `hm` using `Nat.even_iff.1 D.R.m_even`. Simplify using `only [rho, Ranks.rS, Nat.even_iff, Nat.odd_iff]`. Apply the tactic sequence `refine ⟨?_, ?_, ?_⟩ <;> intros <;> omega`.
+-/
 theorem rho_step (j : ℕ) : (Odd j → rho D (j - 1) = rho D j) ∧
     (Even j → 2 ≤ j → j + 2 ≤ D.R.m → rho D (j - 1) = rho D j + 1) ∧ rho D 0 = D.R.rS := by
   have hm := Nat.even_iff.1 D.R.m_even
   simp only [rho, Ranks.rS, Nat.even_iff, Nat.odd_iff]
   refine ⟨?_, ?_, ?_⟩ <;> intros <;> omega
 
+/- English proof (translation)
+Rewrite using `[(Frames.std_isBase D).2, D.sp.zm_norm]`.
+-/
 example (D : D7) : (D.sp.Y 0).hT (vecY 0 ((Frames.std D).z 0)) (vecY 0 ((Frames.std D).z 0)) = -(D.sp.T : D.host.E) := by
   rw [(Frames.std_isBase D).2, D.sp.zm_norm]
 
+/- English proof (translation)
+Rewrite using `[F.psiN_even_eq hj ψ he ((F.hypEven hj he rfl).nB_mem_NFlag b), psiBes_nB, map_one, one_mul]`.
+-/
 example (F : Frames D) (ψ : AddChar (AF D.host.F) ℂ) {j : ℕ} (hj : j < D.R.m) (he : Even j)
     (b : Mx D (rho D j) (Frames.V0 D j).rank) : F.psiN ψ j ((F.hypEven hj he rfl).nB b) =
       psiE ψ (ell D (rho D j) ⬝ᵥ b *ᵥ ratV (vecB (Frames.orthogonalDecompLineSum D j) fun _ => 1)) := by
   rw [F.psiN_even_eq hj ψ he ((F.hypEven hj he rfl).nB_mem_NFlag b), psiBes_nB, map_one, one_mul]
 
+/- English proof (translation)
+Rewrite using `[F.psiN_odd_eq hj ψ ho ((F.hypOdd hj ho rfl).nB_mem_NFlag b), psiFlag, blockX_of_fix _ ((F.hypOdd hj ho rfl).nB_jX b), upSum_one, psiE_zero]`.
+-/
 example (F : Frames D) (ψ : AddChar (AF D.host.F) ℂ) {j : ℕ} (hj : j < D.R.m) (ho : ¬ Even j)
     (b : Mx D (rho D j) (D.sp.X j).rank) : F.psiN ψ j ((F.hypOdd hj ho rfl).nB b) = 1 := by
   rw [F.psiN_odd_eq hj ψ ho ((F.hypOdd hj ho rfl).nB_mem_NFlag b), psiFlag,
     blockX_of_fix _ ((F.hypOdd hj ho rfl).nB_jX b), upSum_one, psiE_zero]
 
+/- English proof (translation)
+The claim follows from `nonempty_meas _`.
+-/
 example (D : D7) : Nonempty (Meas (Frames.std D)) := nonempty_meas _
 
 end GlobalTheory.CompanionTheory.Chain

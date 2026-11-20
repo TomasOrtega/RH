@@ -16,10 +16,16 @@ variable {F : Type} [Field F] [NumberField F] {κ : Type} [Fintype κ]
 def infPart (w : κ → AdeleRing (𝓞 F) F) : κ → mixedEmbedding.mixedSpace F :=
   fun i => InfiniteAdeleRing.ringEquiv_mixedSpace F (w i).1
 
+/- English proof (translation)
+Use function extensionality and compare the values at `i`. Conclude with `RingEquiv.apply_symm_apply _ _`.
+-/
 theorem infPart_infE (z : κ → mixedEmbedding.mixedSpace F) : infPart (infE F z) = z := by
   funext i
   exact RingEquiv.apply_symm_apply _ _
 
+/- English proof (translation)
+Use function extensionality and compare the values at `i`. Use `Prod.ext ?_ (h i).symm` and prove the remaining obligations. Conclude with `RingEquiv.symm_apply_apply _ _`.
+-/
 theorem infE_infPart (w : κ → AdeleRing (𝓞 F) F) (h : ∀ i, (w i).2 = 0) : infE F (infPart w) = w := by
   funext i
   refine Prod.ext ?_ (h i).symm
@@ -27,10 +33,18 @@ theorem infE_infPart (w : κ → AdeleRing (𝓞 F) F) (h : ∀ i, (w i).2 = 0) 
 
 def eInf : AdeleRing (𝓞 F) F := ((1 : InfiniteAdeleRing F), (0 : FiniteAdeleRing (𝓞 F) F))
 
+/- English proof (translation)
+Use `show (0 : FiniteAdeleRing (𝓞 F) F) * (w i).2 = 0`. Conclude with `zero_mul _`.
+-/
 theorem eInf_smul_snd (w : κ → AdeleRing (𝓞 F) F) (i : κ) : ((eInf (F := F) • w) i).2 = 0 := by
   show (0 : FiniteAdeleRing (𝓞 F) F) * (w i).2 = 0
   exact zero_mul _
 
+/- English proof (translation)
+Use function extensionality and compare the values at `i`. Use `Prod.ext ?_ ?_` and prove the remaining obligations. Use `show (1 : InfiniteAdeleRing F) * _ = _`. Conclude with `one_mul _`. Use `show (0 : FiniteAdeleRing (𝓞 F) F) * 0 = 0`.
+
+Conclude with `zero_mul _`.
+-/
 theorem eInf_smul_infE (z : κ → mixedEmbedding.mixedSpace F) : eInf (F := F) • infE F z = infE F z := by
   funext i
   refine Prod.ext ?_ ?_
@@ -39,6 +53,9 @@ theorem eInf_smul_infE (z : κ → mixedEmbedding.mixedSpace F) : eInf (F := F) 
   · show (0 : FiniteAdeleRing (𝓞 F) F) * 0 = 0
     exact zero_mul _
 
+/- English proof (translation)
+Use function extensionality and compare the values at `i`. Use `Prod.ext ?_ ?_` and prove the remaining obligations. Conclude with `map_add (InfiniteAdeleRing.ringEquiv_mixedSpace F).symm _ _`. Use `show (0 : FiniteAdeleRing (𝓞 F) F) = 0 + 0`. Conclude with `(add_zero _).symm`.
+-/
 theorem infE_add (z z' : κ → mixedEmbedding.mixedSpace F) : infE F (z + z') = infE F z + infE F z' := by
   funext i
   refine Prod.ext ?_ ?_
@@ -46,6 +63,9 @@ theorem infE_add (z z' : κ → mixedEmbedding.mixedSpace F) : infE F (z + z') =
   · show (0 : FiniteAdeleRing (𝓞 F) F) = 0 + 0
     exact (add_zero _).symm
 
+/- English proof (translation)
+Use function extensionality and compare the values at `i`. Conclude with `map_add (InfiniteAdeleRing.ringEquiv_mixedSpace F) (w i).1 (w' i).1`.
+-/
 theorem infPart_add (w w' : κ → AdeleRing (𝓞 F) F) : infPart (w + w') = infPart w + infPart w' := by
   funext i
   exact map_add (InfiniteAdeleRing.ringEquiv_mixedSpace F) (w i).1 (w' i).1
@@ -53,6 +73,11 @@ theorem infPart_add (w w' : κ → AdeleRing (𝓞 F) F) : infPart (w + w') = in
 def rAd (t : ℝ) : AdeleRing (𝓞 F) F :=
   ((InfiniteAdeleRing.ringEquiv_mixedSpace F).symm (t • (1 : mixedEmbedding.mixedSpace F)), 0)
 
+/- English proof (translation)
+Use function extensionality and compare the values at `i`. Use `Prod.ext ?_ ?_` and prove the remaining obligations. Use `show (InfiniteAdeleRing.ringEquiv_mixedSpace F).symm (t • z i) = (InfiniteAdeleRing.ringEquiv_mixedSpace F).symm (t • (1 : mixedEmbedding.mixedSpace F)) * (InfiniteAdeleRing.ringEquiv_mixedSpace F).symm (z i)`. Rewrite using `[← map_mul, smul_mul_assoc, one_mul]`. Use `show (0 : FiniteAdeleRing (𝓞 F) F) = 0 * 0`.
+
+Conclude with `(zero_mul _).symm`.
+-/
 theorem infE_smul (t : ℝ) (z : κ → mixedEmbedding.mixedSpace F) : infE F (t • z) = rAd (F := F) t • infE F z := by
   funext i
   refine Prod.ext ?_ ?_
@@ -63,6 +88,9 @@ theorem infE_smul (t : ℝ) (z : κ → mixedEmbedding.mixedSpace F) : infE F (t
   · show (0 : FiniteAdeleRing (𝓞 F) F) = 0 * 0
     exact (zero_mul _).symm
 
+/- English proof (translation)
+Use function extensionality and compare the values at `i`. Use `show InfiniteAdeleRing.ringEquiv_mixedSpace F ((InfiniteAdeleRing.ringEquiv_mixedSpace F).symm (t • (1 : mixedEmbedding.mixedSpace F)) * (w i).1) = t • InfiniteAdeleRing.ringEquiv_mixedSpace F (w i).1`. Rewrite using `[map_mul, RingEquiv.apply_symm_apply, smul_mul_assoc, one_mul]`.
+-/
 theorem infPart_smul (t : ℝ) (w : κ → AdeleRing (𝓞 F) F) : infPart (rAd (F := F) t • w) = t • infPart w := by
   funext i
   show InfiniteAdeleRing.ringEquiv_mixedSpace F
@@ -73,20 +101,32 @@ theorem infPart_smul (t : ℝ) (w : κ → AdeleRing (𝓞 F) F) : infPart (rAd 
 def infPart2 (w : (κ → AdeleRing (𝓞 F) F) × (κ → AdeleRing (𝓞 F) F)) :
     (κ → mixedEmbedding.mixedSpace F) × (κ → mixedEmbedding.mixedSpace F) := (infPart w.1, infPart w.2)
 
+/- English proof (translation)
+Simplify using `only [infPart2, mixedSpaceVecPairAsAdeles, infPart_infE]`.
+-/
 theorem archimedeanPartAdeleTuplePair_mixedSpaceVecPairAsAdeles (v : (κ → mixedEmbedding.mixedSpace F) × (κ → mixedEmbedding.mixedSpace F)) :
     infPart2 (mixedSpaceVecPairAsAdeles F v) = v := by
   simp only [infPart2, mixedSpaceVecPairAsAdeles, infPart_infE]
 
+/- English proof (translation)
+Simplify using `only [mixedSpaceVecPairAsAdeles, Prod.smul_mk, eInf_smul_infE]`.
+-/
 theorem archimedeanUnitIdempotent_smul_mixedSpaceVecPairAsAdeles (v : (κ → mixedEmbedding.mixedSpace F) × (κ → mixedEmbedding.mixedSpace F)) :
     eInf (F := F) • mixedSpaceVecPairAsAdeles F v = mixedSpaceVecPairAsAdeles F v := by
   simp only [mixedSpaceVecPairAsAdeles, Prod.smul_mk, eInf_smul_infE]
 
+/- English proof (translation)
+Use `show (infE F (infPart (eInf (F := F) • w.1)), infE F (infPart (eInf (F := F) • w.2))) = (eInf (F := F) • w.1, eInf (F := F) • w.2)`. Rewrite using `[infE_infPart _ (eInf_smul_snd w.1), infE_infPart _ (eInf_smul_snd w.2)]`.
+-/
 theorem mixedSpaceVecPair_archimedeanPart_idempotent_smul (w : (κ → AdeleRing (𝓞 F) F) × (κ → AdeleRing (𝓞 F) F)) :
     mixedSpaceVecPairAsAdeles F (infPart2 (eInf (F := F) • w)) = eInf (F := F) • w := by
   show (infE F (infPart (eInf (F := F) • w.1)), infE F (infPart (eInf (F := F) • w.2))) =
     (eInf (F := F) • w.1, eInf (F := F) • w.2)
   rw [infE_infPart _ (eInf_smul_snd w.1), infE_infPart _ (eInf_smul_snd w.2)]
 
+/- English proof (translation)
+Rewrite using `[← archimedeanUnitIdempotent_smul_mixedSpaceVecPairAsAdeles v, map_smul]`. Conclude with `mixedSpaceVecPair_archimedeanPart_idempotent_smul _`.
+-/
 theorem mixedSpaceVecPair_archimedeanPart_linearMap_apply (f : ((κ → AdeleRing (𝓞 F) F) × (κ → AdeleRing (𝓞 F) F)) →ₗ[AdeleRing (𝓞 F) F]
       ((κ → AdeleRing (𝓞 F) F) × (κ → AdeleRing (𝓞 F) F)))
     (v : (κ → mixedEmbedding.mixedSpace F) × (κ → mixedEmbedding.mixedSpace F)) :
@@ -94,22 +134,39 @@ theorem mixedSpaceVecPair_archimedeanPart_linearMap_apply (f : ((κ → AdeleRin
   rw [← archimedeanUnitIdempotent_smul_mixedSpaceVecPairAsAdeles v, map_smul]
   exact mixedSpaceVecPair_archimedeanPart_idempotent_smul _
 
+/- English proof (translation)
+Simplify using `only [mixedSpaceVecPairAsAdeles, Prod.fst_add, Prod.snd_add, infE_add, Prod.mk_add_mk]`.
+-/
 theorem mixedSpaceVecPairAsAdeles_add (v v' : (κ → mixedEmbedding.mixedSpace F) × (κ → mixedEmbedding.mixedSpace F)) :
     mixedSpaceVecPairAsAdeles F (v + v') = mixedSpaceVecPairAsAdeles F v + mixedSpaceVecPairAsAdeles F v' := by
   simp only [mixedSpaceVecPairAsAdeles, Prod.fst_add, Prod.snd_add, infE_add, Prod.mk_add_mk]
 
+/- English proof (translation)
+Simplify using `only [mixedSpaceVecPairAsAdeles, Prod.smul_fst, Prod.smul_snd, infE_smul, Prod.smul_mk]`.
+-/
 theorem mixedSpaceVecPairAsAdeles_real_smul (t : ℝ) (v : (κ → mixedEmbedding.mixedSpace F) × (κ → mixedEmbedding.mixedSpace F)) :
     mixedSpaceVecPairAsAdeles F (t • v) = rAd (F := F) t • mixedSpaceVecPairAsAdeles F v := by
   simp only [mixedSpaceVecPairAsAdeles, Prod.smul_fst, Prod.smul_snd, infE_smul, Prod.smul_mk]
 
+/- English proof (translation)
+Simplify using `only [infPart2, Prod.fst_add, Prod.snd_add, infPart_add, Prod.mk_add_mk]`.
+-/
 theorem infPart2_add (w w' : (κ → AdeleRing (𝓞 F) F) × (κ → AdeleRing (𝓞 F) F)) :
     infPart2 (w + w') = infPart2 w + infPart2 w' := by
   simp only [infPart2, Prod.fst_add, Prod.snd_add, infPart_add, Prod.mk_add_mk]
 
+/- English proof (translation)
+Simplify using `only [infPart2, Prod.smul_fst, Prod.smul_snd, infPart_smul, Prod.smul_mk]`.
+-/
 theorem infPart2_smul (t : ℝ) (w : (κ → AdeleRing (𝓞 F) F) × (κ → AdeleRing (𝓞 F) F)) :
     infPart2 (rAd (F := F) t • w) = t • infPart2 w := by
   simp only [infPart2, Prod.smul_fst, Prod.smul_snd, infPart_smul, Prod.smul_mk]
 
+/- English proof (translation)
+Use `⟨{ toFun := fun v => infPart2 (B (mixedSpaceVecPairAsAdeles F v)) invFun := fun v => infPart2 (B.symm (mixedSpaceVecPairAsAdeles F v)) map_add' := fun v v' => by simp only [mixedSpaceVecPairAsAdeles_add, map_add, infPart2_add] map_smul' := fun t v => by simp only [mixedSpaceVecPa …` and prove the remaining obligations. Rewrite using `[mixedSpaceVecPair_archimedeanPart_linearMap_apply]`. Simplify using `[archimedeanPartAdeleTuplePair_mixedSpaceVecPairAsAdeles]`. Use `right_inv := fun v => by show infPart2 (B (mixedSpaceVecPairAsAdeles F (infPart2 (B.symm.toLinearMap (mixedSpaceVecPairAsAdeles F v))))) = v`. Rewrite using `[mixedSpaceVecPair_archimedeanPart_linearMap_apply]`.
+
+Simplify using `[archimedeanPartAdeleTuplePair_mixedSpaceVecPairAsAdeles] }, fun v => ?_⟩`. Conclude with `(mixedSpaceVecPair_archimedeanPart_linearMap_apply B.toLinearMap v).symm`.
+-/
 theorem exists_infLin (B : ((κ → AdeleRing (𝓞 F) F) × (κ → AdeleRing (𝓞 F) F)) ≃ₗ[AdeleRing (𝓞 F) F]
       ((κ → AdeleRing (𝓞 F) F) × (κ → AdeleRing (𝓞 F) F))) :
     ∃ L : ((κ → mixedEmbedding.mixedSpace F) × (κ → mixedEmbedding.mixedSpace F)) ≃ₗ[ℝ]
@@ -129,6 +186,9 @@ theorem exists_infLin (B : ((κ → AdeleRing (𝓞 F) F) × (κ → AdeleRing (
               simp [archimedeanPartAdeleTuplePair_mixedSpaceVecPairAsAdeles] }, fun v => ?_⟩
   exact (mixedSpaceVecPair_archimedeanPart_linearMap_apply B.toLinearMap v).symm
 
+/- English proof (translation)
+Introduce `_ _ _ _ _ B` and use `exists_infLin B`.
+-/
 theorem infLin_main : ∀ (F : Type) [Field F] [NumberField F] (κ : Type) [Fintype κ]
     (B : ((κ → AdeleRing (𝓞 F) F) × (κ → AdeleRing (𝓞 F) F)) ≃ₗ[AdeleRing (𝓞 F) F] ((κ → AdeleRing (𝓞 F) F) × (κ → AdeleRing (𝓞 F) F))),
       ∃ L : ((κ → mixedEmbedding.mixedSpace F) × (κ → mixedEmbedding.mixedSpace F)) ≃ₗ[ℝ] ((κ → mixedEmbedding.mixedSpace F) × (κ → mixedEmbedding.mixedSpace F)),

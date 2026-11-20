@@ -24,6 +24,19 @@ def CSize.NearLayers {X : CData} (S : CSize X) (εN δ : ℝ) : Prop :=
             (T.card : ℝ) ≤ (1 + 2 * (∏ _v : InfinitePlace X.I.F, 3 * δ) ^ (1 / (Fintype.card (InfinitePlace X.I.F) : ℝ)) / laM) ^
               (cn_dim c.blocksFun (X.I.n - 2 * J) (e i) * Fintype.card (InfinitePlace X.I.F))
 
+/- English proof (translation)
+Use `⟨h.1, fun J c x hx T hT => ?_⟩` and prove the remaining obligations. Take `⟨hreg, e, β, π, h0, hr, hl⟩` from `h.2 J c x hx`. Use `set b : cn_Root c.length → ℝ := fun ρ => (1 + 12 * δ / cn_la (S.tau J c x) ρ) ^ (cn_dim c.blocksFun (X.I.n - 2 * J) ρ * X.I.f) with hb`. Establish `hb0 : ∀ ρ, 0 ≤ b ρ` using `fun ρ => by`. Use `(cn_la_mem hreg ρ).1` as an intermediate fact.
+
+Check the signs of the components of the expression. Use `set cc : ℕ → ℝ := fun i => if hi : i < Fintype.card (cn_Root c.length) then b (e ⟨i, hi⟩) else 1 with hcc`. Establish `hcc0 : ∀ i, 0 ≤ cc i` using `fun i => by`. Simplify using `only [hcc]`. Use `split_ifs`.
+
+Conclude with `hb0 _`. Evaluate the numerical expressions. Establish `key` using `Formalism.HermitianLatticeCounting.Final.S7.fibreCount X.I.GFset T (Fintype.card (cn_Root c.length)) β π cc hcc0 (fun y hy z hz => h0 y z (hT y hy) (hT z hz)) (fun y hy z hz => hr y z (hT y hy) (hT z hz)) (fun i hi T' hT' ha hd => by`. Take `⟨laM, hla, hc⟩` from `hl ⟨i, hi⟩ T' (fun γ hγ => hT γ (hT' hγ)) ha hd`. Establish `hpos` using `(cn_la_mem hreg (e ⟨i, hi⟩)).1`.
+
+Establish `h1` using `Formalism.HermitianLatticeCounting.Final.NearFarVolumeBounds.layerCount (InfinitePlace X.I.F) (cn_dim c.blocksFun (X.I.n - 2 * J) (e ⟨i, hi⟩)) δ (cn_la (S.tau J c x) (e ⟨i, hi⟩)) laM hδ hpos hla`. Use `le_trans hc (le_trans h1 ?_)` and prove the remaining obligations. Simplify using `only [hcc, dif_pos hi, hb]`. Use `pow_le_pow_right₀ ?_ (Nat.mul_le_mul_left _ (card_infinite_places_le_degree X.I))` and prove the remaining obligations. Establish `: 0 ≤ 12 * δ / cn_la (S.tau J c x) (e ⟨i, hi⟩)` using `by positivity`.
+
+Use the proof step `linarith)`. Use `le_trans key (le_of_eq ?_)` and prove the remaining obligations. Rewrite using `[Finset.prod_range]`. Establish `: ∀ i : Fin (Fintype.card (cn_Root c.length)), cc i = b (e i)` using `fun i => by simp only [hcc, dif_pos i.2]`. Rewrite using `[Finset.prod_congr rfl fun i _ => this i, Equiv.prod_comp e b]`.
+
+Both sides reduce to the same expression.
+-/
 theorem CSize.nearCount_of_layers {X : CData} (S : CSize X) {εN δ : ℝ} (hδ : 0 ≤ δ) (h : S.NearLayers εN δ) :
     S.NearCount εN δ := by
   refine ⟨h.1, fun J c x hx T hT => ?_⟩

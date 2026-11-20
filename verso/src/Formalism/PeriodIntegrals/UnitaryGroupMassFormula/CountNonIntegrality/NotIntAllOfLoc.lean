@@ -22,6 +22,11 @@ def NormAt {L : Loc.LocE F E} (g : Loc.SplitG L) {r : ℕ} (Zh : Matrix (Fin (r 
   (∃ s : 𝒪[F], (g.e (Zh a b)).1 + (g.e (Zh b a)).2 + (if a = Fin.last r ∧ b = Fin.last r then T + T' else 0) =
     (g.q : F) ^ 2 * s)
 
+/- English proof (translation)
+Unfold `Loc.Model.R`. Rewrite using `[hs]`. Simplify using `only [Subring.mem_comap, Subring.mem_map]`. Use `⟨(s1, s2), ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[RingHom.mem_eqLocus]`.
+
+Simplify using `only [RingHom.comp_apply, RingHom.coe_fst, RingHom.coe_snd]`. Conclude with `Ideal.Quotient.eq.2 hc`. Simplify using `[he]`.
+-/
 theorem mem_R_split (M : Loc.Model F E) (g : Loc.SplitG M.L) (hs : M.split = some g) (x : E) (s1 s2 : 𝒪[F])
     (he : g.e x = ((s1 : F), (s2 : F))) (hc : s1 - s2 ∈ Ideal.span {g.q}) : x ∈ M.R := by
   unfold Loc.Model.R
@@ -33,6 +38,29 @@ theorem mem_R_split (M : Loc.Model F E) (g : Loc.SplitG M.L) (hs : M.split = som
     exact Ideal.Quotient.eq.2 hc
   · simp [he]
 
+/- English proof (translation)
+Establish `hq : (g.q : F) ≠ 0`. Introduce `h0`. Establish `: g.q = 0` using `Subtype.ext h0`. Conclude with `g.q_irr.ne_zero this`. Take `⟨k, hk⟩` from `hTT`.
+
+Take `⟨⟨s1, hs1⟩, -, ⟨s3, hs3⟩⟩` from `h a b`. Take `⟨-, ⟨s2, hs2⟩, -⟩` from `h b a`. Use `set c : Prop := a = Fin.last r ∧ b = Fin.last r with hc_def`. Establish `hcs : (b = Fin.last r ∧ a = Fin.last r) ↔ c` using `and_comm`. Unfold `Loc.HermSp.ZZplusOf`.
+
+Rewrite using `[hs]`. Simplify using `only [Matrix.of_apply]`. Distinguish the cases in `hcc : c`. Establish `hcc' : b = Fin.last r ∧ a = Fin.last r` using `hcs.2 hcc`. Rewrite using `[if_pos hcc]`.
+
+Rewrite `hs1`, `hs3` using `[if_pos hcc]`. Rewrite `hs2` using `[if_pos hcc']`. Use `mem_R_split M g hs _ s1 (k - s2) ?_ ?_` and prove the remaining obligations. Rewrite using `[map_sub, AlgEquiv.apply_symm_apply, AlgEquiv.apply_symm_apply]`. Use `ext`.
+
+Simplify using `only [Prod.fst_sub]`. Clear the denominators using the available nonvanishing facts. Take the linear combination `hs1`. Simplify using `only [Prod.snd_sub]`. Use `push_cast`.
+
+Clear the denominators using the available nonvanishing facts. Take the linear combination `-hs2 + hk`. Rewrite using `[Ideal.mem_span_singleton']`. Use `⟨s3, ?_⟩` and prove the remaining obligations. Apply `Subtype.ext` to reduce the goal to its premises.
+
+Use `push_cast`. Apply `mul_left_cancel₀ hq` to reduce the goal to its premises. Take the linear combination `hs1 + hs2 - hs3 - hk`. Rewrite using `[if_neg hcc, sub_zero]`. Establish `hcc' : ¬ (b = Fin.last r ∧ a = Fin.last r)` using `fun h' => hcc (hcs.1 h')`.
+
+Rewrite `hs1` using `[if_neg hcc, add_zero]`. Rewrite `hs3` using `[if_neg hcc, add_zero]`. Rewrite `hs2` using `[if_neg hcc', add_zero]`. Use `mem_R_split M g hs _ s1 (-s2) ?_ ?_` and prove the remaining obligations. Rewrite using `[AlgEquiv.apply_symm_apply]`.
+
+Use `ext`. Simplify using `only`. Clear the denominators using the available nonvanishing facts. Take the linear combination `hs1`. Simplify using `only`.
+
+Use `push_cast`. Clear the denominators using the available nonvanishing facts. Take the linear combination `-hs2`. Rewrite using `[Ideal.mem_span_singleton']`. Use `⟨s3, ?_⟩` and prove the remaining obligations.
+
+Apply `Subtype.ext` to reduce the goal to its premises. Use `push_cast`. Apply `mul_left_cancel₀ hq` to reduce the goal to its premises. Take the linear combination `hs1 + hs2 - hs3`.
+-/
 theorem zzplus_mem (M : Loc.Model F E) (g : Loc.SplitG M.L) (hs : M.split = some g) {r : ℕ}
     (Zh : Matrix (Fin (r + 1)) (Fin (r + 1)) E) (T T' : F) (hTT : ∃ k : 𝒪[F], T - T' = (g.q : F) * k)
     (h : ∀ a b, NormAt g Zh T T' a b) (a b : Fin (r + 1)) : Loc.HermSp.ZZplusOf M Zh T T' a b ∈ M.R := by
@@ -103,6 +131,19 @@ def NormG : Prop :=
           ∀ a b, NormAt g (ZhatLoc M δ p Z) (((D.mem u).A.T : ℕ) : (D.s.atP p).Fp)
             (((D.mem u').A.T : ℕ) : (D.s.atP p).Fp) a b
 
+/- English proof (translation)
+Establish `hm` using `(hA p).2.2.2.2.2`. Rewrite `hm` using `[hs]`. Break down `hsp : (D.s.atP p).split with _ | sg` into its components or cases. Rewrite `hm` using `[hsp]`. Conclude with `hm.elim`.
+
+Rewrite `hm` using `[hsp]`. Establish `hqq : g.q = sg.q` using `hm.2`. Establish `hell : Loc.resChar p ∈ ({D.host.g 0, D.host.g 1} : Finset ℕ)` using `(D.s_split p).1 (by rw [hsp]; rfl)`. Establish `hdvd : Loc.resChar p ∣ Lat.gS D ^ 2`. Apply `Dvd.dvd.pow _ two_ne_zero` to reduce the goal to its premises.
+
+Unfold `Lat.gS`. Break down `Finset.mem_insert.1 hell with h0 | h1` into its components or cases. Rewrite using `[h0]`. Conclude with `dvd_mul_right _ _`. Rewrite using `[Finset.mem_singleton.1 h1]`.
+
+Conclude with `dvd_mul_left _ _`. Establish `hmod : (D.mem u).A.T ≡ (D.mem u').A.T [MOD Loc.resChar p]` using `Nat.ModEq.of_dvd hdvd hT`. Establish `hz : ((Loc.resChar p : ℕ) : ℤ) ∣ ((D.mem u').A.T : ℤ) - ((D.mem u).A.T : ℤ)` using `(Nat.modEq_iff_dvd).1 hmod`. Take `⟨k, hk⟩` from `hz`. Use `⟨⟨((-k : ℤ) : (D.s.atP p).Fp), intCast_mem _ (-k)⟩, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[hqq, sg.q_eq]`. Establish `hk' : (((D.mem u').A.T : ℤ) : (D.s.atP p).Fp) - (((D.mem u).A.T : ℤ) : (D.s.atP p).Fp) = (((Loc.resChar p : ℕ) : ℤ) : (D.s.atP p).Fp) * ((k : ℤ) : (D.s.atP p).Fp)`. Rewrite using `[← Int.cast_sub, hk, Int.cast_mul]`. Simplify using `only [Int.cast_natCast] at hk'`. Use `push_cast`.
+
+Take the linear combination `-hk'`.
+-/
 theorem tt_mod_q (D : Formalism.BasicNotions.D7) (δ : ∀ p : PlF D, (D.s.atP p).Fp)
     (M : ∀ p : PlF D, Loc.Model (D.s.atP p).Fp (D.s.atP p).Ep) (hA : ∀ p, Agree δ M p) (u u' : D.what₂.Word)
     (hT : (D.mem u).A.T ≡ (D.mem u').A.T [MOD (Lat.gS D) ^ 2]) (p : PlF D) (g : Loc.SplitG (M p).L)
@@ -136,11 +177,17 @@ theorem tt_mod_q (D : Formalism.BasicNotions.D7) (δ : ∀ p : PlF D, (D.s.atP p
     push_cast
     linear_combination -hk'
 
+/- English proof (translation)
+Introduce `D δ M hA u u' hT F0 what₂ hrows Λ hΛ Z F' hF' p g hs a b`. Conclude with `zzplus_mem (M p) g hs _ _ _ (tt_mod_q D δ M hA u u' hT p g hs) (hN D δ M hA u u' hT F0 what₂ hrows Λ hΛ Z F' hF' p g hs) a b`.
+-/
 theorem intG_of (hN : NormG) : IntG := by
   intro D δ M hA u u' hT F0 what₂ hrows Λ hΛ Z F' hF' p g hs a b
   exact zzplus_mem (M p) g hs _ _ _ (tt_mod_q D δ M hA u u' hT p g hs)
     (hN D δ M hA u u' hT F0 what₂ hrows Λ hΛ Z F' hF' p g hs) a b
 
+/- English proof (translation)
+The claim follows from `notIntAll_of_gen hL (intG_of hN)`.
+-/
 theorem notIntAll_of_loc (hL : LocGen) (hN : NormG) : PI.CntLocalParts.NotIntAll :=
   notIntAll_of_gen hL (intG_of hN)
 

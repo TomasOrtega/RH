@@ -12,6 +12,19 @@ open GroundTheory.Global GroundTheory.Automorphic GroundTheory.Automorphic.GJMat
 open scoped Classical ENNReal NNReal Pointwise
 open UpperTheory.ConvolutionTheory.R2
 
+/- English proof (translation)
+Introduce `F _ _ _`. Take `⟨hK, hKc⟩` from `M.kkCpt F`. Take `⟨hB, e, he⟩` from `M.borHomeo F`. Take `⟨μS, hS, hSi⟩` from `M.borHaar F`. Take `⟨μK, hμK, hp, hsupp, hl, hr⟩` from `M.cptMeas (G1 F) (M.Ks F) (hK ▸ hKc)`.
+
+Set `μ₀ : Measure (G1 F)` to `Measure.haar`. Use `haveI := M.unimod F μ₀`. Establish `hsurj : Function.Surjective (HaarSK.mulMap (M.Bor F) (M.Ks F))`. Introduce `g`. Take `⟨b, a, k, hk, rfl⟩` from `M.iwa F g`.
+
+Use `⟨(e (a, b), ⟨k, by rw [← SetLike.mem_coe, ← hK]; exact hk⟩), ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `(e (a, b) : G1 F) * k = _`. Rewrite using `[he]`. Take `⟨c, hc, hint⟩` from `HaarSK.exists_lintegral_eq μ₀ hB (hK ▸ hKc) hsurj μS μK`. Establish `hc' : (c : ℝ≥0∞) ≠ 0` using `ENNReal.coe_ne_zero.2 hc`.
+
+Set `μ : Measure (G1 F)` to `(c : ℝ≥0∞)⁻¹ • μ₀`. Use `haveI hμ : μ.IsHaarMeasure := Measure.IsHaarMeasure.smul μ₀ (ENNReal.inv_ne_zero.2 ENNReal.coe_ne_top) (ENNReal.inv_ne_top.2 hc')`. Take `⟨D, hD, hDu, -⟩` from `GlobalTheory.exists_isFundamentalDomain_subgroup (Gam F)`. Use `haveI : CompactSpace (M.Ks F) := isCompact_iff_compactSpace.1 (hK ▸ hKc)`. Use `haveI : LocallyCompactSpace (M.Bor F) := hB.locallyCompactSpace`.
+
+Use `haveI : SecondCountableTopology (M.Bor F) := TopologicalSpace.Subtype.secondCountableTopology _`. Use `haveI : SecondCountableTopology (M.Ks F) := TopologicalSpace.Subtype.secondCountableTopology _`. Use `⟨⟨μ, μK.map Subtype.val, D, hμ, M.unimod F μ, Measure.isProbabilityMeasure_map measurable_subtype_coe.aemeasurable, hK ▸ hsupp, fun k hk => hl k (by rw [← SetLike.mem_coe, ← hK]; exact hk), fun k hk => hr k (by rw [← SetLike.mem_coe, ← hK]; exact hk), fun u hu => ?_, hD, IsFundam …` and prove the remaining obligations. Establish `hm : Measurable fun p : M.Bor F × G1 F => u ((p.1 : G1 F) * p.2)` using `hu.comp ((continuous_subtype_val.comp continuous_fst).mul continuous_snd).measurable`. Establish `h1 : ∀ k : G1 F, ∫⁻ a : IdeleGroup F, ∫⁻ b, u (nU b * mD a * k) * ENNReal.ofReal ((ab a)⁻¹ ^ 2) ∂(adeleMeasure F) ∂(ideleMeasure F) = ∫⁻ s : M.Bor F, u ((s : G1 F) * k) ∂μS` using `fun k => (hSi (fun g => u (g * k)) (hu.comp (measurable_mul_const k))).symm`.
+
+Simplify using `only [h1]`. Rewrite using `[lintegral_map hm.lintegral_prod_left' measurable_subtype_coe, lintegral_smul_measure, hint u hu, smul_eq_mul, ← mul_assoc, ENNReal.inv_mul_cancel hc' ENNReal.coe_ne_top, one_mul]`. Conclude with `lintegral_lintegral_swap (hm.comp (measurable_fst.prodMk (measurable_subtype_coe.comp measurable_snd))).aemeasurable`.
+-/
 theorem UpperTheory.ConvolutionTheory.R2.measEx :
     ∀ (F : Type) [Field F] [NumberField F] [IsTotallyReal F], St.MeasEx F := by
   intro F _ _ _

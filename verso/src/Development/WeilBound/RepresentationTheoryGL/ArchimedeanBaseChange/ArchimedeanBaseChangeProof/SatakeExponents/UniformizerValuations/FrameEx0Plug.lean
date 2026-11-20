@@ -20,10 +20,16 @@ namespace PositivityTheory.Rg.BcB.F.Ex0
 
 open PositivityTheory.Rg.BcB.F
 
+/- English proof (translation)
+The claim follows from `frameEx0_of Rig.weightEx Rig.unrAE_holds (GlobalTheory.T.mu_character_exists Fok.Mu3.muExists) GlobalTheory.T.sec_ex GlobalTheory.T.uniformizer_exists GlobalTheory.T.level_exists_bis GlobalTheory.T.split_place_exists (badEx2_of h2 h3) GlobalTheory.T.compact_level_exists Positivit …`.
+-/
 theorem frameEx0_plug (h2 : PositivityTheory.Rg.Bc.ArchbcB.B.M2) (h3 : PositivityTheory.Rg.Bc.ArchbcB.B.M3) : FrameEx0 :=
   frameEx0_of Rig.weightEx Rig.unrAE_holds (GlobalTheory.T.mu_character_exists Fok.Mu3.muExists) GlobalTheory.T.sec_ex GlobalTheory.T.uniformizer_exists GlobalTheory.T.level_exists_bis
     GlobalTheory.T.split_place_exists (badEx2_of h2 h3) GlobalTheory.T.compact_level_exists PositivityTheory.Rg.BcB.G8.translation_existence_holds F0.chainEx_holds F0.archEx_holds F0.wEx_holds
 
+/- English proof (translation)
+The claim follows from `frameEx0_plug PositivityTheory.HtPt.Bc.CongruenceInertMatching.matchCongInert PositivityTheory.HtPt.Bc.SplitMuMatching.matchCtMuSplit`.
+-/
 theorem frameEx0 : FrameEx0 := frameEx0_plug PositivityTheory.HtPt.Bc.CongruenceInertMatching.matchCongInert PositivityTheory.HtPt.Bc.SplitMuMatching.matchCtMuSplit
 
 end PositivityTheory.Rg.BcB.F.Ex0

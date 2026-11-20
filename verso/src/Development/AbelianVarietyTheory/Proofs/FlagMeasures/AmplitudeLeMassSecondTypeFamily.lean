@@ -16,6 +16,9 @@ open scoped Pointwise ENNReal Classical
 
 namespace GlobalTheory.HL.AmpCancel
 
+/- English proof (translation)
+Establish `hs : ∀ i, i ∉ hfin.toFinset → ¬ p i` using `fun i hi h => hi (hfin.mem_toFinset.2 h)`. Establish `hs' : ∀ i ∈ hfin.toFinset, p i` using `fun i hi => hfin.mem_toFinset.1 hi`. Rewrite using `[tsum_eq_sum (s := hfin.toFinset) (fun i hi => if_neg (hs i hi)), tsum_eq_sum (s := hfin.toFinset) (fun i hi => if_neg (hs i hi)), Finset.sum_congr rfl (fun i hi => if_pos (hs' i hi)), Finset.sum_congr rfl (fun i hi => if_pos (hs' i hi)), ENNReal.ofReal_sum_of_nonneg (fun i _ => …`.
+-/
 theorem ofReal_tsum_ite {ι : Type} (p : ι → Prop) (f : ι → ℝ) (hf : ∀ i, 0 ≤ f i)
     (hfin : {i | p i}.Finite) :
     ENNReal.ofReal (∑' i, if p i then f i else 0) =
@@ -28,6 +31,29 @@ theorem ofReal_tsum_ite {ι : Type} (p : ι → Prop) (f : ι → ℝ) (hf : ∀
     Finset.sum_congr rfl (fun i hi => if_pos (hs' i hi)),
     ENNReal.ofReal_sum_of_nonneg (fun i _ => hf i)]
 
+/- English proof (translation)
+Establish `hk1 : 1 ≤ k` using `by omega`. Establish `hc0 : 0 ≤ (S.q : ℝ) ^ (1 - ((k : ℤ) - 2 * r - 3))` using `zpow_nonneg (Nat.cast_nonneg _) _`. Establish `hvol : ∀ K : Subgroup S.GLV, 0 ≤ invVol S.K0 K` using `fun K => div_nonneg (Nat.cast_nonneg _) (Nat.cast_nonneg _)`. Take `⟨P, hP⟩ : ∃ P : Submodule L.O S.V → Prop, P = fun Λ => S.IsTerm d Λ ∧ S.InFF β J βJ d Λ` from `⟨_, rfl⟩`. Establish `hPiff : ∀ Λ, P Λ ↔ S.IsTerm d Λ ∧ S.InFF β J βJ d Λ` using `fun Λ => by rw [hP]`.
+
+Establish `hPfin : {o : MulAction.orbitRel.Quotient S.St (Submodule L.O S.V) | P o.out}.Finite` using `(GlobalTheory.T.hermitianDoubleCoset_mass_le_and_finite L r k S hk1 d).2.subset fun o ho => ((hPiff _).1 ho).1`. Establish `hmass : S.mass d (S.InFF β J βJ d) = ENNReal.ofReal (∑' o : MulAction.orbitRel.Quotient S.St (Submodule L.O S.V), if P o.out then invVol S.K0 (S.St ⊓ MulAction.stabilizer S.GLV o.out) else 0)`. Rewrite using `[ofReal_tsum_ite (ι := MulAction.orbitRel.Quotient S.St (Submodule L.O S.V)) (fun o => P o.out) (fun o => invVol S.K0 (S.St ⊓ MulAction.stabilizer S.GLV o.out)) (fun o => hvol _) hPfin]`. Substitute `hP` using the available equality. Unfold `Frames.mass Frames.mu`.
+
+Conclude with `tsum_congr fun o => by congr`. Apply the tactic sequence `have hsum0 : 0 ≤ ∑' o : MulAction.orbitRel.Quotient S.St (Submodule L.O S.V), if P o.out then invVol S.K0 (S.St ⊓ MulAction.stabilizer S.GLV o.out) else 0 := tsum_nonneg fun o => by split_ifs <;> simp [hvol]`. Establish `hamp : S.amp d (S.InFF β J βJ d) = ∑' o : MulAction.orbitRel.Quotient S.St (Submodule L.O S.V), if P o.out then ((invVol S.K0 (S.St ⊓ MulAction.stabilizer S.GLV o.out) : ℝ) : ℂ) * S.om d o.out else 0`. Substitute `hP` using the available equality. Unfold `Frames.amp Frames.mu`.
+
+Conclude with `tsum_congr fun o => by congr`. Establish `key : ‖S.amp d (S.InFF β J βJ d)‖ ≤ 7 * (S.q : ℝ) ^ (1 - ((k : ℤ) - 2 * r - 3)) * ∑' o : MulAction.orbitRel.Quotient S.St (Submodule L.O S.V), if P o.out then invVol S.K0 (S.St ⊓ MulAction.stabilizer S.GLV o.out) else 0`. Distinguish the cases in `hJ : 1 ≤ J ∧ J ≤ r`. Establish `hj : ((⟨J - 1, by omega⟩ : Fin r) : ℕ) + 1 = J` using `by simp only; omega`. Take `⟨m, hm_inv, hm⟩` from `GlobalTheory.T.exists_symm_invariant_kernel_hermitian_frames L r k S hk ⟨J - 1, by omega⟩ β βJ d P (fun Λ => by rw [hj]; exact hPiff Λ)`.
+
+Establish `hK0 : S.K0 ≤ S.St` using `fun g hg => hg.1.1`. Establish `bound` using `GlobalTheory.HL.norm_orbit_sum_le_of_symm_kernel S.St S.K0 P (S.om d) m (24 / 7 * (S.q : ℝ) ^ (1 - ((k : ℤ) - 2 * r - 3))) hK0 (fun h hh x hx => by`. Take `⟨hT, hI⟩` from `(hPiff x).1 hx`. Establish `T` using `GlobalTheory.T.hermitianFrames_stabilizer_acts_on_terms L r k S d x hT h hh`. Establish `hlat` using `(GlobalTheory.HL.TermBasic.term_basic L r k S d x hT).1.1`.
+
+Conclude with `⟨(hPiff _).2 ⟨T.1, (T.2.2.2.2.2.2.2.2.2.1 β J βJ).2 hI⟩, T.2.1, ((GlobalTheory.T.commonStabilizer_stabilizers_commensurable_volume L r k S).1 x hlat).2.2 h hh, fun y hy => hm_inv h hh x y hx hy⟩)`. Use the proof step `(fun x hx => by`. Establish `hb` using `GlobalTheory.HL.TermBasic.term_basic L r k S d x ((hPiff x).1 hx).1`. Establish `A` using `(GlobalTheory.T.commonStabilizer_stabilizers_commensurable_volume L r k S).1 x hb.1.1`. Establish `W` using `(GlobalTheory.HL.WitIndep.witness_independence L r k S d x _ _ hb.2.1).2.2.2.2`.
+
+Take `⟨h1, h2, h3, h4⟩` from `hm x hx`. Conclude with `⟨A.1, A.2.1, W, h1, h2, h3, h4⟩)`. Use `hPfin`. Rewrite using `[hamp]`. Establish `h2 : 2 * (24 / 7 * (S.q : ℝ) ^ (1 - ((k : ℤ) - 2 * r - 3))) ≤ 7 * (S.q : ℝ) ^ (1 - ((k : ℤ) - 2 * r - 3))` using `by linarith`.
+
+Conclude with `bound.trans (mul_le_mul_of_nonneg_right h2 hsum0)`. Establish `hempty : ∀ Λ, ¬ P Λ`. Introduce `Λ hΛ`. Take `⟨hT, hTB, -, hle, ⟨y, hy, hyJ⟩, -⟩` from `(hPiff Λ).1 hΛ`. Distinguish the cases in `hJr : r < J`.
+
+Use `hTB.2.1 y hy` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish `hJ0 : J = 0` using `by omega`. Apply `hTB.1` to reduce the goal to its premises. Use `le_antisymm (GlobalTheory.HL.TermBasic.term_basic L r k S d Λ hT).2.2.1 fun z hz => ?_` and prove the remaining obligations.
+
+Use `((GlobalTheory.T.term_exponents_nonneg_and_defect_group_bound L r k S d Λ hT).2.2.2.2.2.2.2.2.2.1 z hz).1 ?_` and prove the remaining obligations. Use `hle z hz` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Rewrite using `[hamp]`. Simplify using `[hempty]`.
+
+Rewrite using `[hmass, ← ENNReal.ofReal_mul (by linarith)]`. Conclude with `ENNReal.ofReal_le_ofReal key`.
+-/
 theorem amp_le_mass {F : Type} [Field F] [ValuativeRel F] [TopologicalSpace F]
     [IsNonarchimedeanLocalField F] [CharZero F] {E : Type} [CommRing E] [Algebra F E]
     [TopologicalSpace E] (L : LocE F E) (r k : ℕ) (S : Frames L r k) (hk : 4 * r + 7 ≤ k)

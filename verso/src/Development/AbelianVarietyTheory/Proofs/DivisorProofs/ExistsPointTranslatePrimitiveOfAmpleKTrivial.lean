@@ -15,6 +15,29 @@ noncomputable section
 namespace GlobalTheory.PrimitiveNonSym
 open GlobalTheory.PrimitiveOverField GlobalTheory.CechPic GlobalTheory.AbLaw GlobalTheory.UU
 
+/- English proof (translation)
+Introduce `K _ _ B _ _ g L O hB _ hLl _ hK hΘ hO hu`. Assume the negation of the conclusion as `hno`. Use `hB.smooth` as an intermediate fact. Use `hB.proper` as an intermediate fact. Establish `hpr : IsProjBy B.hom` using `GlobalTheory.AbelianProjective.isProjBy_of_isAbelianScheme K B hB`.
+
+Establish `hproj : ∀ (R : Type) [CommRing R] (u : Spec (CommRingCat.of R) ⟶ Spec (CommRingCat.of K)) (X : Scheme.{0}) (π : X ⟶ B.left) (f : X ⟶ Spec (CommRingCat.of R)), IsPullback π f B.hom u → IsProjBy f` using `fun R _ u X π f h => GlobalTheory.StabFlat.isProjBy_baseChange hpr h`. Establish `lamO : lam (cls O hO) (fst B B) (snd B B) = 0` using `(cls_cube_two hO _ _ (LB.isLB_linComb hO _ _)).symm.trans ((cls_eq_zero_iff _).2 hu)`. Take `⟨F, hF, eF⟩` from `cls_surj (lam (cls L hLl) (fst B B) (snd B B) - CechPic.pull (snd B B).left (cls O hO))`. Establish `hpq : IsPullback (fst B B).left (snd B B).left B.hom B.hom` using `IsPullback.of_hasPullback _ _`. Establish `cst_left : ∀ x : 𝟙_ _ ⟶ B, (toUnit B ≫ x).left = B.hom ≫ x.left` using `fun x => congrArg (· ≫ x.left) ((Category.comp_id _).symm.trans (Over.w (toUnit B)))`.
+
+Establish `s₁ : ∀ x : 𝟙_ _ ⟶ B, cls _ (pull_isLB hF (lift (toUnit B ≫ x) (𝟙 B)).left) = lam (cls L hLl) (toUnit B ≫ x) (𝟙 B) - cls O hO` using `fun x => by`. Rewrite using `[cls_pull hF, eF, map_sub, pull_lam, ← pull_comp, ← Over.comp_left, lift_fst, lift_snd, Over.id_left, pull_id]`. Establish `s₂ : ∀ x : 𝟙_ _ ⟶ B, cls _ (pull_isLB hF (lift (𝟙 B) (toUnit B ≫ x)).left) = lam (cls L hLl) (toUnit B ≫ x) (𝟙 B)` using `fun x => by`. Rewrite using `[cls_pull hF, eF, map_sub, pull_lam, ← pull_comp, ← Over.comp_left, lift_fst, lift_snd, pull_const, sub_zero, lam_comm]`. Establish `total : Ac ((fst B B).left ≫ B.hom) F`.
+
+Use `(GlobalTheory.T.lineBundle_product_acyclic_of_affine_base_acyclic K _ _ _ _ _ _ _ hpq inferInstance inferInstance inferInstance inferInstance F hF).1 fun R _ t Y π f h ht => ac_of_slices hproj hpq h hF fun x hx _ => ?_` and prove the remaining obligations. Set `x' : 𝟙_ _ ⟶ B` to `Over.homMk x hx`. Use `⟨(lift (toUnit B ≫ x') (𝟙 B)).left, ?_, ?_, ac_of_primitive hB hpr (pull_isLB hF _) ?_ ?_⟩` and prove the remaining obligations. Conclude with `(congrArg CommaMorphism.left (lift_fst (toUnit B ≫ x') (𝟙 B))).trans (cst_left x')`. Conclude with `congrArg CommaMorphism.left (lift_snd (toUnit B ≫ x') (𝟙 B))`.
+
+Rewrite using `[s₁, lam_sub, lam_lam hLl hΘ, lamO, sub_zero]`. Rewrite using `[s₁, sub_ne_zero, lam_const]`. Use `fun e => hno ⟨x', (cls_eq_iff hO (LB.isLB_linComb hLl _ _)).1 (e.symm.trans ?_)⟩` and prove the remaining obligations. Use `Eq.trans ?_ (cls_linComb hLl _ _ _).symm` and prove the remaining obligations. Rewrite using `[Fin.sum_univ_two, sub_eq_add_neg]`.
+
+Conclude with `(congrArg₂ (· + ·) (one_zsmul _) (neg_one_zsmul _)).symm`. Rewrite `total` using `[hpq.w]`. Set `o : Spec (CommRingCat.of K) ⟶ B.left` to `η[B].left`. Establish `ho : o ≫ B.hom = 𝟙 _` using `Over.w η[B]`. Establish `hcl : IsClosed ({o (IsLocalRing.closedPoint K)} : Set B.left)`.
+
+Establish `: IsClosedImmersion (o ≫ B.hom)` using `by rw [ho]; infer_instance`. Establish `: IsClosedImmersion o` using `IsClosedImmersion.of_comp o B.hom`. Establish `h` using `o.isClosedEmbedding.isClosedMap {IsLocalRing.closedPoint K} (by rw [show ({IsLocalRing.closedPoint K} : Set (Spec (CommRingCat.of K))) = Set.univ from Set.eq_univ_of_forall fun z => Subsingleton.elim (α := PrimeSpectrum K) _ _]; exact isClosed_univ)`. Conclude with `(congrArg IsClosed Set.image_singleton).mp h`. Establish `all` using `(GlobalTheory.T.lineBundle_product_acyclic_of_affine_base_acyclic K _ _ _ _ _ _ _ hpq.flip inferInstance inferInstance inferInstance inferInstance F hF).2 _ hcl (fun R _ t Y π f h ht hne => ac_of_slices hproj hpq.flip h hF fun x hx hr => by`.
+
+Set `x' : 𝟙_ _ ⟶ B` to `Over.homMk x hx`. Use `⟨(lift (𝟙 B) (toUnit B ≫ x')).left, ?_, ?_, ac_of_primitive hB hpr (pull_isLB hF _) ?_ ?_⟩` and prove the remaining obligations. Conclude with `(congrArg CommaMorphism.left (lift_snd (𝟙 B) (toUnit B ≫ x'))).trans (cst_left x')`. Conclude with `congrArg CommaMorphism.left (lift_fst (𝟙 B) (toUnit B ≫ x'))`. Rewrite using `[s₂, lam_lam hLl hΘ]`.
+
+Rewrite using `[s₂]`. Introduce `e`. Establish `e₁ : x' = η[B]` using `(eq_one_of_lam_eq_zero hLl hK x' e).trans (by`. Rewrite using `[Hom.one_def, toUnit_unit, Category.id_comp])`. Establish `e₂ : x = o` using `congrArg CommaMorphism.left e₁`.
+
+Take `⟨y, hy⟩` from `hr (IsLocalRing.closedPoint K)`. Conclude with `hne y (e₂ ▸ hy)) total`. Establish `hs` using `ac_slice hproj hpq.flip hF all o ho (lift (𝟙 B) (toUnit B ≫ η[B])).left ((congrArg CommaMorphism.left (lift_snd (𝟙 B) (toUnit B ≫ η[B]))).trans (cst_left η[B])) (congrArg CommaMorphism.left (lift_fst (𝟙 B) (toUnit B ≫ η[B])))`. Establish `: CompactSpace B.left` using `QuasiCompact.compactSpace_of_compactSpace B.hom`. Establish `: Nonempty B.left` using `⟨o (IsLocalRing.closedPoint K)⟩`.
+
+Conclude with `not_ac_of_cls_eq_zero _ (pull_isLB hF _) ((s₂ _).trans (lam_one_left _ _)) hs`.
+-/
 theorem exists_point_translate_of_ample : ∀ (A : Type) [Field A] [IsAlgClosed A] (B : Over (Sp A)) [GrpObj B] [IsCommMonObj B] (g : ℕ) (L O : LB B.left), IsAbelianScheme B → SmoothOfRelativeDimension g B.hom → L.IsLB → RelAmple B L → KTriv B L → (∃ t : LB.Gen (Theta B L), t.IsGen) → O.IsLB → (∃ u : LB.Gen (abelian₂ B O), u.IsGen) → ∃ x : 𝟙_ _ ⟶ B, LBIso O (LB.LinComb L (K := Fin 2) ![((toUnit B ≫ x) * 𝟙 B).left, 𝟙 B.left] ![1, -1]) := by
   intro K _ _ B _ _ g L O hB _ hLl _ hK hΘ hO hu
   by_contra hno

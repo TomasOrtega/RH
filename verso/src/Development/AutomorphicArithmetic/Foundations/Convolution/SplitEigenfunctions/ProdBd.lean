@@ -21,6 +21,9 @@ section SlopeTestRemainingChoices
 
 variable {E : Type} [Field E] [NumberField E]
 
+/- English proof (translation)
+Use `Units.ext ?_` and prove the remaining obligations. Use extensionality with `i j`. Rewrite using `[GroundTheory.Automorphic.Reduction.scalarUnits_apply, GroundTheory.Automorphic.Reduction.coe_diagUnits]`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;> simp [Matrix.GeneralLinearGroup.scalar]`.
+-/
 private theorem scal_eq {K : Type} [Field K] [NumberField K] (u : (A K)ˣ) :
     GroundTheory.Automorphic.Reduction.scalarUnits K 2 u = Matrix.GeneralLinearGroup.scalar (Fin 2) u := by
   refine Units.ext ?_
@@ -28,6 +31,13 @@ private theorem scal_eq {K : Type} [Field K] [NumberField K] (u : (A K)ˣ) :
   rw [GroundTheory.Automorphic.Reduction.scalarUnits_apply, GroundTheory.Automorphic.Reduction.coe_diagUnits]
   fin_cases i <;> fin_cases j <;> simp [Matrix.GeneralLinearGroup.scalar]
 
+/- English proof (translation)
+Establish `hd : Module.finrank ℚ E ≠ 0` using `Module.finrank_pos.ne'`. Choose the witnesses or unpack the hypotheses as in `⟨s₀, hs₀⟩ : ∃ s₀ : {r : ℝ // 0 < r}, s₀ ^ Module.finrank ℚ E = s := by`. Use `⟨⟨s.1 ^ ((Module.finrank ℚ E : ℝ))⁻¹, Real.rpow_pos_of_pos s.2 _⟩, Subtype.ext ?_⟩` and prove the remaining obligations. Rewrite using `[Positive.val_pow]`. Conclude with `Real.rpow_inv_natCast_pow s.2.le hd`.
+
+Take `⟨y, hy⟩ : ∃ y : (A ℚ)ˣ, GroundTheory.Automorphic.Reduction.centralSection ℚ 2 s₀ = Matrix.GeneralLinearGroup.scalar (Fin 2) y` from `⟨_, (rfl : _ = GroundTheory.Automorphic.Reduction.scalarUnits ℚ 2 _).trans (scal_eq _)⟩`. Use `⟨ideleEmbedding ℚ E y, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[← hs₀, ← UpperTheory.centralSection_baseChange ℚ E 2 s₀, hy]`. Use `Units.ext ?_` and prove the remaining obligations. Use extensionality with `i j`.
+
+Apply the tactic sequence `fin_cases i <;> fin_cases j <;> simp [Matrix.GeneralLinearGroup.scalar]`. Rewrite using `[ideleNorm_ideleEmbedding, map_pow, ← hy, ← map_pow, hs₀]`.
+-/
 private theorem norm_central (s : {r : ℝ // 0 < r}) :
     ∃ z : (A E)ˣ, GroundTheory.Automorphic.Reduction.centralSection E 2 s = Matrix.GeneralLinearGroup.scalar (Fin 2) z ∧
       Matrix.GeneralLinearGroup.scalar (Fin 2) (ideleNorm ℚ E z) = GroundTheory.Automorphic.Reduction.centralSection ℚ 2 s := by
@@ -51,6 +61,15 @@ section Span
 
 variable {E : Type} [Field E] [NumberField E] [IsTotallyComplex E] {D : Dat ℚ E}
 
+/- English proof (translation)
+Take `⟨z, hz, hn⟩` from `norm_central (E := E) s`. Take `⟨ω, -, hω⟩` from `UpperTheory.ConvolutionTheory.R2.cen ℚ π`. Introduce `Φ hΦ`. Proceed by induction on `hΦ using Submodule.span_induction with`. Consider the case `mem Ψ h`.
+
+Take `⟨f, hf, ph, hph, e⟩` from `h`. Introduce `g`. Rewrite using `[e]`. Distinguish the cases in `h0 : ∀ x, f.1 x = 0`. Simplify using `[lift, h0]`.
+
+Use `push_neg at h0`. Take `⟨x, hx⟩` from `h0`. Establish `h1 : ((ω (ideleNorm ℚ E z) : ℂˣ) : ℂ) = 1`. Establish `h2` using `hω f hf (ideleNorm ℚ E z) x`. Rewrite `h2` using `[hn, hπ f hf s x]`.
+
+Conclude with `mul_right_cancel₀ hx (by rw [one_mul]; exact h2.symm)`. Rewrite using `[hz, (UpperTheory.ConvolutionTheory.R2.equiv ℚ E D W M π f hf ph).2 ω (hω f hf) z g, h1, one_mul]`. Consider the case `zero => exact fun _ => rfl`. Consider the case `add x y _ _ ix iy => exact fun g => congrArg₂ (· + ·) (ix g) (iy g)`. Consider the case `smul c x _ ix => exact fun g => congrArg (c • ·) (ix g)`.
+-/
 private theorem span_pos (W : Weil D) (M : Meas ℚ) (π : TR.CuspSub ℚ 2) (hπ : PosInv π) (s : {r : ℝ // 0 < r}) :
     ∀ Φ ∈ span W M π, ∀ g, Φ.1 (GroundTheory.Automorphic.Reduction.centralSection E 2 s * g) = Φ.1 g := by
   obtain ⟨z, hz, hn⟩ := norm_central (E := E) s
@@ -76,6 +95,17 @@ private theorem span_pos (W : Weil D) (M : Meas ℚ) (π : TR.CuspSub ℚ 2) (h�
 
 end Span
 
+/- English proof (translation)
+Introduce `E _ _ _ D W M N P π Φ hΦ φ hφ`. Establish `hS` using `UpperTheory.ConvolutionTheory.R2.H.spanCont ℚ E D W M π Φ hΦ`. Take `⟨hL, -, hd⟩` from `UpperTheory.ConvolutionTheory.RankTwoDescent.decE E P φ hφ`. Use `⟨⟨hS.1.mul hL.1, fun γ g => by rw [hS.2, hL.2], fun C hC => ?_⟩, fun hπ hP s g => ?_⟩` and prove the remaining obligations. Take `⟨c, C₀, hc, hC₀, hred⟩` from `UpperTheory.ConvolutionTheory.RankTwoDescent.redE E`.
+
+Establish `hC' : IsCompact ((gl (F` using `E) '' C₀) * C) := (hC₀.image continuous_gl).mul hC`. Take `⟨r, B, hB⟩` from `UpperTheory.ConvolutionTheory.RankTwoDescent.spanGrow E D W M N P π Φ hΦ _ hC' c hc`. Take `⟨B', hB'⟩` from `hd _ hC' c hc r`. Use `⟨B * B', fun h k hk => ?_⟩` and prove the remaining obligations. Take `⟨γ, u, b, k₀, hk₀, hg, hb⟩` from `hred h`.
+
+Establish `e : ∀ f : GL (Fin 2) (A E) → ℂ, (∀ γ g, f (ratGL E 2 γ * g) = f g) → f (gl h * k) = f (gl (nU u * mD b) * (gl k₀ * k))` using `fun f hf => by`. Rewrite using `[← mul_assoc, ← gl_mul, ← hg, gl_mul, gl_ratS, mul_assoc, hf]`. Establish `hm : gl k₀ * k ∈ (gl (F` using `E) '' C₀) * C := Set.mul_mem_mul ⟨k₀, hk₀, rfl⟩ hk`. Establish `h1` using `hB u b _ hm hb`. Establish `h2` using `hB' u b _ hm hb`.
+
+Establish `hab : ab b ^ r * (ab b)⁻¹ ^ r = 1`. Rewrite using `[← mul_pow, mul_inv_cancel₀ (hc.trans_le hb).ne', one_pow]`. Rewrite using `[e _ hS.2, e _ hL.2, norm_mul]`. Combine the equalities or inequalities in the displayed calculation. Take `⟨t, ht⟩` from `UpperTheory.V.KernelIndexFullLattice.exists_split (E := E) (a := 2) UpperTheory.V.KernelIndexFullLattice.splitEq_holds s`.
+
+Establish `h2 : φ.1 (GroundTheory.Automorphic.Reduction.centralSection E 2 s * g) = φ.1 g`. Rewrite using `[ht]`. Conclude with `hP φ hφ t g`. Use `show Φ.1 _ * φ.1 _ = Φ.1 g * φ.1 g`. Rewrite using `[span_pos W M π hπ s Φ hΦ g, h2]`.
+-/
 theorem UpperTheory.ConvolutionTheory.RankTwoDescent.prodBd :
     ProdBd := by
   intro E _ _ _ D W M N P π Φ hΦ φ hφ

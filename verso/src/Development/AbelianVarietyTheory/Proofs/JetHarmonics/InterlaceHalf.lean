@@ -5,6 +5,9 @@ open BpJoin Formalism.FourierDecayAlt Formalism.MainNotions.S.ThB
 
 namespace GlobalTheory.StdGrid
 
+/- English proof (translation)
+Establish `h1 : (-1 : ℝ) < (m : ℝ)` using `by linarith`. Establish `h2 : (-1 : ℤ) < m` using `by exact_mod_cast h1`. Establish `h3 : (0 : ℤ) ≤ m` using `by omega`. Establish `h4 : (0 : ℝ) ≤ (m : ℝ)` using `by exact_mod_cast h3`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem half_le_of_lt {x y : ℝ} (m : ℤ) (h : y - x = (m : ℝ) + 1 / 2) (hlt : x < y) : x + 1 / 2 ≤ y := by
   have h1 : (-1 : ℝ) < (m : ℝ) := by linarith
   have h2 : (-1 : ℤ) < m := by exact_mod_cast h1
@@ -12,6 +15,21 @@ theorem half_le_of_lt {x y : ℝ} (m : ℤ) (h : y - x = (m : ℝ) + 1 / 2) (hlt
   have h4 : (0 : ℝ) ≤ (m : ℝ) := by exact_mod_cast h3
   linarith
 
+/- English proof (translation)
+Establish `hb0 : 0 < b` using `by linarith`. Establish `hC : Ch ≤ |Ch|` using `le_abs_self _`. Establish `hC0 : 0 ≤ |Ch|` using `abs_nonneg _`. Establish `hr : (0 : ℝ) ≤ r` using `Nat.cast_nonneg _`. Establish `hbC : b ^ Ch ≤ b ^ |Ch|` using `Real.rpow_le_rpow_of_exponent_le hb hC`.
+
+Establish `hpow : ∀ x : ℝ, 0 ≤ x → x ≤ b ^ Ch → x ^ (2 * r) ≤ b ^ (|Ch| * ((2 * r + 2 : ℕ) : ℝ))`. Introduce `x hx hxb`. Combine the equalities or inequalities in the displayed calculation. Apply `Real.rpow_le_rpow_of_exponent_le hb` to reduce the goal to its premises. Apply `mul_le_mul_of_nonneg_left _ hC0` to reduce the goal to its premises.
+
+Use `push_cast`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hm : (0 : ℝ) ≤ ((2 * r + 2 : ℕ) : ℝ)` using `Nat.cast_nonneg _`. Use `set m : ℝ := ((2 * r + 2 : ℕ) : ℝ) with hmdef`. Establish `hk1` using `hpow ka hka.le h1`.
+
+Establish `hk2` using `hpow (1 / ka) (by positivity) (by rwa [one_div])`. Establish `hq : 0 < (1 / ka) ^ (2 * r)` using `by positivity`. Establish `hT : 0 < T`. Assume the negation of the conclusion as `hneg`. Use `push_neg at hneg`.
+
+Use `mul_nonpos_of_nonpos_of_nonneg hneg hq.le` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hTe : T = T * (1 / ka) ^ (2 * r) * ka ^ (2 * r)`. Rewrite using `[mul_assoc, ← mul_pow, one_div_mul_cancel hka.ne', one_pow, mul_one]`. Establish `hE : 0 < b ^ (|Ch| * m)` using `Real.rpow_pos_of_pos hb0 _`.
+
+Prove the components needed by the constructor for the conclusion. Establish `h5 : 1 ≤ T * b ^ (|Ch| * m)` using `h3.trans (mul_le_mul_of_nonneg_left hk2 hT.le)`. Establish `h6 : b ^ (|Ch| * m) ≤ b ^ ((2 * |Ch|) * m)`. Apply `Real.rpow_le_rpow_of_exponent_le hb` to reduce the goal to its premises. Use polynomial arithmetic with `[mul_nonneg hC0 hm]`.
+
+Establish `h7 : 1 ≤ T * b ^ ((2 * |Ch|) * m)` using `h5.trans (mul_le_mul_of_nonneg_left h6 hT.le)`. Rewrite using `[Real.rpow_neg hb0.le, inv_le_iff_one_le_mul₀ (Real.rpow_pos_of_pos hb0 _)]`. Conclude with `h7`. Establish `h5 : b ^ (Ch * m) ≤ b ^ (|Ch| * m)` using `Real.rpow_le_rpow_of_exponent_le hb (mul_le_mul_of_nonneg_right hC hm)`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem scale_bounds {Ch b ka T : ℝ} (r : ℕ) (hb : 1 ≤ b) (hka : 0 < ka) (h1 : ka ≤ b ^ Ch) (h2 : ka⁻¹ ≤ b ^ Ch)
     (h3 : 1 ≤ T * (1 / ka) ^ (2 * r)) (h4 : T * (1 / ka) ^ (2 * r) ≤ b ^ (Ch * ((2 * r + 2 : ℕ) : ℝ))) :
     b ^ (-((2 * |Ch|) * ((2 * r + 2 : ℕ) : ℝ))) ≤ T ∧ T ≤ b ^ ((2 * |Ch|) * ((2 * r + 2 : ℕ) : ℝ)) := by
@@ -55,6 +73,11 @@ theorem scale_bounds {Ch b ka T : ℝ} (r : ℕ) (hb : 1 ≤ b) (hka : 0 < ka) (
       _ ≤ b ^ (|Ch| * m) * b ^ (|Ch| * m) := mul_le_mul (h4.trans h5) hk1 (by positivity) hE.le
       _ = _ := by rw [← Real.rpow_add hb0]; congr 1; ring
 
+/- English proof (translation)
+Take `⟨a, b, ⟨l, a', b', _, hab, hI, h1, h2, _⟩, hLb⟩` from `h`. Establish `ha : a ∈ Set.Icc a' b'` using `hI ▸ (⟨le_rfl, by linarith⟩ : a ∈ Set.Icc a b)`. Establish `hb : b ∈ Set.Icc a' b'` using `hI ▸ (⟨by linarith, le_rfl⟩ : b ∈ Set.Icc a b)`. Use `⟨l, ?_⟩` and prove the remaining obligations. Establish `h3 : max (-u l) (-u' l) - min (-u l) (-u' l) = |u l - u' l|`.
+
+Rewrite using `[max_sub_min_eq_abs]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree. Combine the linear relations using `[ha.1, hb.2]`.
+-/
 theorem cut_gap {k : ℕ} {u u' : Fin k → ℝ} {L : ℝ} (hL : 0 ≤ L) (h : HasCut u u' L) : ∃ l, L ≤ |u l - u' l| := by
   obtain ⟨a, b, ⟨l, a', b', _, hab, hI, h1, h2, _⟩, hLb⟩ := h
   have ha : a ∈ Set.Icc a' b' := hI ▸ (⟨le_rfl, by linarith⟩ : a ∈ Set.Icc a b)
@@ -65,6 +88,11 @@ theorem cut_gap {k : ℕ} {u u' : Fin k → ℝ} {L : ℝ} (hL : 0 ≤ L) (h : H
     congr 1; ring
   linarith [ha.1, hb.2]
 
+/- English proof (translation)
+Take `⟨h1, h2⟩` from `hI.1 s.val (by omega)`. Take `⟨m, hm⟩` from `hl s`. Take `⟨a, ha⟩` from `hu (s.val + 1) (by simp; omega)`. Take `⟨a', ha'⟩` from `hu (s.val + 2) (by simp; omega)`. Move the coercions through the operations in `at hm`.
+
+Use `⟨half_le_of_lt (a - m - r - 1) ?_ h1, half_le_of_lt (m + r - a') ?_ h2⟩` and prove the remaining obligations. Use `push_cast`. Combine the linear equalities and inequalities to obtain the conclusion. Use `push_cast`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem interlace_half {k r : ℕ} {lam : Fin (2 * r + k + 1) → ℝ} {u : ℕ → ℝ}
     (hl : ∀ a, ∃ m : ℤ, lam a - (((2 * r + k + 1 : ℕ) : ℝ) - 1) / 2 = (m : ℝ))
     (hu : ∀ i ∈ Finset.Icc 1 k, ∃ a : ℤ, u i = (a : ℝ) + ((k : ℝ) - 1) / 2)
@@ -80,6 +108,41 @@ theorem interlace_half {k r : ℕ} {lam : Fin (2 * r + k + 1) → ℝ} {u : ℕ 
   · push_cast; linarith
   · push_cast; linarith
 
+/- English proof (translation)
+Use `⟨36, ?_⟩` and prove the remaining obligations. Introduce `Ch Cg hCg P lam ka b g hk hS hint hg`. Take `⟨⟨hanti, hhalf⟩, hI, hI', hka, hka1, hka2, hT1, hT1', hT2, hT2', hlb, hub, hub', hgap, -, ⟨bv, hbv, hshape⟩, hcase⟩` from `hS`. Establish `hr : (0 : ℝ) ≤ P.r` using `Nat.cast_nonneg _`. Set `s1 : Fin (2 * P.r + P.k + 1)` to `⟨P.k - 1, by omega⟩`.
+
+Set `s2 : Fin (2 * P.r + P.k + 1)` to `⟨P.k, by omega⟩`. Establish `h12 : s1 < s2` using `by simp only [s1, s2, Fin.mk_lt_mk]; omega`. Establish `hbelow : ∀ i : Fin P.k, lam s1 < P.u (i.val + 1)`. Introduce `i`. Distinguish the cases in `hi : i.val + 1 < P.k`.
+
+Establish `h1` using `(hI.1 i.val hi).1`. Establish `h2 : lam s1 ≤ lam ⟨i.val, by omega⟩` using `hanti.antitone (by simp only [s1, Fin.mk_le_mk]; omega)`. Conclude with `lt_of_le_of_lt h2 h1`. Establish `h1` using `hI.2 (by omega)`. Establish `he : i.val = P.k - 1` using `by have := i.isLt; omega`.
+
+Rewrite using `[he]`. Conclude with `h1`. Establish `hn1` using `(hshape s1).2 (fun h => by`. Take `⟨i, hi⟩` from `h.2`. Conclude with `absurd (hbelow i) (not_lt.2 hi.le))`.
+
+Establish `hn2` using `(hshape s2).2 (fun h => by`. Take `⟨i, hi⟩` from `h.2`. Conclude with `absurd ((hanti h12).trans (hbelow i)) (not_lt.2 hi.le))`. Establish `hd : |lam s1 - lam s2| ≤ bv`. Apply the tactic sequence `rw [abs_le]; constructor <;> linarith [hn1.1, hn1.2, hn2.1, hn2.2]`.
+
+Establish `hbvb : bv ≤ b`. Use `hlb s1` as an intermediate fact. Use `neg_abs_le (lam s1)` as an intermediate fact. Combine the linear relations using `[hn1.2]`. Establish `hmaxgap : AllGaps lam (max (Cg * ((2 * P.r + 2 : ℕ) : ℝ) ^ 3) g)` using `fun s t h => max_le (hgap s t h) (hg s t h)`.
+
+Establish `hcb` using `(hmaxgap s1 s2 h12.ne).trans (hd.trans hbvb)`. Establish `hc4 : 36 ≤ max (Cg * ((2 * P.r + 2 : ℕ) : ℝ) ^ 3) g`. Use `le_trans ?_ (le_max_left _ _)` and prove the remaining obligations. Establish `h1 : (1 : ℝ) ≤ ((2 * P.r + 2 : ℕ) : ℝ) ^ 3` using `one_le_pow₀ (by push_cast; linarith)`. Use the polynomial consequences of the given equalities and inequalities.
+
+Establish `hb1 : 1 ≤ b` using `by linarith`. Establish `hkb : (P.k : ℝ) ≤ b`. Establish `h0 : (1 : ℝ) ≤ ((2 * P.r + P.k + 1 : ℕ) : ℝ)`. Establish `: (0 : ℝ) ≤ P.k` using `Nat.cast_nonneg _`. Use `push_cast`.
+
+Combine the linear equalities and inequalities to obtain the conclusion. Establish `h1 : ((2 * P.r + P.k + 1 : ℕ) : ℝ) ≤ ((2 * P.r + P.k + 1 : ℕ) : ℝ) ^ 7` using `le_self_pow₀ h0 (by norm_num)`. Establish `h2 : (P.k : ℝ) ≤ ((2 * P.r + P.k + 1 : ℕ) : ℝ)` using `by push_cast; linarith`. Use the polynomial consequences of the given equalities and inequalities. Take `⟨hTl, hTu⟩` from `scale_bounds P.r hb1 hka hka1 hka2 hT1 hT2`.
+
+Take `⟨hTl', hTu'⟩` from `scale_bounds P.r hb1 hka hka1 hka2 hT1' hT2'`. Establish `hh` using `interlace_half hhalf (fun i hi => (hint i hi).1) hI`. Establish `hh'` using `interlace_half hhalf (fun i hi => (hint i hi).2) hI'`. Use `⟨⟨fun l hl => ⟨by linarith, by linarith, hkb, ?_, ?_, hlb, ?_, ?_, ?_, hTl, hTl'⟩, fun s hs => ⟨(hh s hs).1, (hh s hs).2, (hh' s hs).1, (hh' s hs).2⟩⟩, hTu, hTu', ?_⟩` and prove the remaining obligations. Rewrite `hl` using `[Finset.mem_Icc]`.
+
+Use `hub ⟨l - 1, by omega⟩` as an intermediate fact. Simplify `this` using `[Nat.sub_add_cancel hl.1]`. Rewrite `hl` using `[Finset.mem_Icc]`. Use `hub' ⟨l - 1, by omega⟩` as an intermediate fact. Simplify `this` using `[Nat.sub_add_cancel hl.1]`.
+
+Introduce `s t hst`. Establish `h1` using `hmaxgap s t hst.ne`. Rewrite `h1` using `[abs_of_pos (sub_pos.2 (hanti hst))]`. Combine the linear equalities and inequalities to obtain the conclusion. Conclude with `fun s hs => ⟨fun _ => (hh s hs).1, fun _ => (hh s hs).2⟩`.
+
+Conclude with `fun s hs => ⟨fun _ => (hh' s hs).1, fun _ => (hh' s hs).2⟩`. Introduce `n₀ he hne`. Establish `hL : ((30 * (P.r + 1) ^ 2 + 6 : ℕ) : ℝ) ≤ Cg * ((P.r : ℝ) + 1) ^ 2`. Establish `h1 : (1 : ℝ) ≤ ((P.r : ℝ) + 1) ^ 2` using `one_le_pow₀ (by linarith)`. Use `push_cast`.
+
+Use the polynomial consequences of the given equalities and inequalities. Break down `hcase with ⟨heq, l, hl, hsl, -⟩ | ⟨hneq, hcut⟩` into its components or cases. Establish `hall : ∀ i ∈ Finset.Icc 1 P.k, P.u i = P.u' i`. Introduce `i hi`. Rewrite `hi` using `[Finset.mem_Icc]`.
+
+Use `congrFun heq ⟨i - 1, by omega⟩` as an intermediate fact. Simplify `this` using `[Nat.sub_add_cancel hi.1]`. Use `right`. Use `⟨he hall, hall, l + 1, by omega, hl, ?_⟩` and prove the remaining obligations. Rewrite using `[he hall, ← hall (l + 1) (by simp; omega), ← hall (l + 1 + 1) (by simp; omega)]`.
+
+Simplify using `only at hsl`. Combine the linear equalities and inequalities to obtain the conclusion. Use `left`. Use `⟨hne (fun hall => hneq (funext fun i => hall _ (by simp))), ?_⟩` and prove the remaining obligations. Take `⟨l, hl⟩` from `cut_gap (le_trans (Nat.cast_nonneg _) hL) hcut`.
+
+Conclude with `⟨l.val + 1, by simp, hL.trans hl⟩`.
+-/
 theorem std_grid : ∃ Cg₀ : ℝ, ∀ (Ch Cg : ℝ), Cg₀ ≤ Cg → ∀ (P : M.Par) (lam : Fin (2 * P.r + P.k + 1) → ℝ) (ka b g : ℝ), 2 ≤ P.k → StdHyp Ch Cg P.k P.r (PI.BesselPeriodGGP.eps48 P.k P.r) lam (fun i => P.u (i.val + 1)) (fun i => P.u' (i.val + 1)) (P.T * (1 / ka) ^ (2 * P.r)) (P.T' * (1 / ka) ^ (2 * P.r)) ka b → (∀ i ∈ Finset.Icc 1 P.k, (∃ a : ℤ, P.u i = (a : ℝ) + ((P.k : ℝ) - 1) / 2) ∧ ∃ a : ℤ, P.u' i = (a : ℝ) + ((P.k : ℝ) - 1) / 2) → AllGaps lam g → StdNum (2 * |Ch|) b (max (Cg * ((2 * P.r + 2 : ℕ) : ℝ) ^ 3) g / 2) P lam ∧ P.T ≤ b ^ ((2 * |Ch|) * ((2 * P.r + 2 : ℕ) : ℝ)) ∧ P.T' ≤ b ^ ((2 * |Ch|) * ((2 * P.r + 2 : ℕ) : ℝ)) ∧ ∀ n₀ : ℕ, ((∀ i ∈ Finset.Icc 1 P.k, P.u i = P.u' i) → n₀ = 30 * (P.r + 1) ^ 2 + 6) → (¬ (∀ i ∈ Finset.Icc 1 P.k, P.u i = P.u' i) → n₀ = 0) → Cases P n₀ := by
   refine ⟨36, ?_⟩
   intro Ch Cg hCg P lam ka b g hk hS hint hg

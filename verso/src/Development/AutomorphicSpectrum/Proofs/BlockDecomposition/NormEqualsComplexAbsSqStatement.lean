@@ -12,6 +12,9 @@ open GroundTheory.Global.AdicLiesOver
 open GlobalTheory.CompanionTheory.FexTheta
 
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.CompanionTheory.FexTheta.norm_eq_normSq_embU | exact GlobalTheory.CompanionTheory.FexTheta.norm_eq_normSq_embU | (intros; apply GlobalTheory.CompanionTheory.FexTheta.norm_eq_normSq_embU <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.norm_equals_complex_abs_sq : ∀ (K : Type) [Field K] [NumberField K], Module.finrank ℚ K = 2 → IsTotallyComplex K → ∀ κ : Kˣ,
   (((Units.map (Algebra.norm ℚ : K →* ℚ) κ : ℚˣ) : ℚ) : ℝ) = ‖((embU κ : ℂˣ) : ℂ)‖ ^ 2 ∧
   ((RationalIdeles.realPart (pri (Units.map (Algebra.norm ℚ : K →* ℚ) κ)) : ℝˣ) : ℝ) = ‖((embU κ : ℂˣ) : ℂ)‖ ^ 2 := by

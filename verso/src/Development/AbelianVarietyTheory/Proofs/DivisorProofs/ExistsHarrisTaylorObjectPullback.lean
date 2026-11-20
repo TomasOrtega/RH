@@ -30,10 +30,16 @@ def OActN.pull {O : Type} [Ring O] {G : Over S} [GrpObj G] [IsCommMonObj G] (a :
   mul x y := by rw [a.mul, CategoryTheory.Functor.map_comp]
   add x y := by rw [a.add]; exact CategoryTheory.Functor.map_mul _ _ _
 
+/- English proof (translation)
+The claim follows from `PullbackComparison.pullback_map_left_fst' f (a.act c)`.
+-/
 theorem OActN.pull_left {O : Type} [Ring O] {G : Over S} [GrpObj G] [IsCommMonObj G] (a : OActN O G) (c : O) :
     ((OActN.pull f a).act c).left ≫ PullbackComparison.pφ f G = PullbackComparison.pφ f G ≫ (a.act c).left :=
   PullbackComparison.pullback_map_left_fst' f (a.act c)
 
+/- English proof (translation)
+Apply `PullbackComparison.adelic_GL2_ext_of_local_components` to reduce the goal to its premises. Rewrite using `[Category.assoc, PullbackComparison.pφ₂_fst, ← Category.assoc, ← Over.comp_left, lift_fst, ha, Category.assoc, ← Over.comp_left, lift_fst]`. Rewrite using `[Category.assoc, PullbackComparison.pφ₂_snd, ← Category.assoc, ← Over.comp_left, lift_snd, hb, Category.assoc, ← Over.comp_left, lift_snd]`.
+-/
 theorem lift_pφ₂ {G : Over S} [GrpObj G] [IsCommMonObj G] {T' : Over S'} {T : Over S} (τ : T'.left ⟶ T.left)
     (a b : T' ⟶ (Over.pullback f).obj G) (a₀ b₀ : T ⟶ G)
     (ha : a.left ≫ PullbackComparison.pφ f G = τ ≫ a₀.left) (hb : b.left ≫ PullbackComparison.pφ f G = τ ≫ b₀.left) :
@@ -72,6 +78,17 @@ def tateMoveO {p : ℕ} [Fact p.Prime] {D : Datum p} {k : Type} [Field k] {Q Q' 
     rw [Φ.apply_symm_apply, Φ.apply_symm_apply]
     exact I.isom n hn hp a b)
 
+/- English proof (translation)
+Take `⟨e₀, he₀⟩` from `GlobalTheory.LiePull.exists_pushEquiv h (Over.mk x) (x ≫ f) rfl`. Establish `one : (1 : Over.mk (x ≫ f) ⟶ G).left = (1 : Over.mk x ⟶ G').left ≫ φ`. Rewrite using `[← he₀, map_one]`. Establish `sc : spMap (epsScaleR c) ≫ spMap (algebraMap R' (DualNumber R')) = spMap (algebraMap R' (DualNumber R'))`. Use `(Spec.map_comp _ _).symm.trans (congrArg Spec.map ?_)` and prove the remaining obligations.
+
+Apply the tactic sequence `ext a <;> simp [epsScaleR, TrivSqZeroExt.algebraMap_eq_inl]`. Establish `fs : spMap (TrivSqZeroExt.fstHom R' R' R').toRingHom ≫ spMap (algebraMap R' (DualNumber R')) = 𝟙 _`. Use `(Spec.map_comp _ _).symm.trans ((congrArg Spec.map ?_).trans (Spec.map_id _))` and prove the remaining obligations. Use extensionality with `a`. Simplify using `[TrivSqZeroExt.algebraMap_eq_inl]`.
+
+Use `and_congr ?_ ?_` and prove the remaining obligations. Rewrite using `[one, he]`. Use `⟨fun E => by rw [← E]; exact (Category.assoc _ _ _).symm, fun E => h.1.hom_ext ((Category.assoc _ _ _).trans E) ?_⟩` and prove the remaining obligations. Use `((Category.assoc _ _ _).trans ?_).trans (Over.w (1 : Over.mk x ⟶ G')).symm` and prove the remaining obligations. Use `(congrArg (spMap (TrivSqZeroExt.fstHom R' R' R').toRingHom ≫ ·) (Over.w v)).trans ?_` and prove the remaining obligations.
+
+Conclude with `(Category.assoc _ _ _).symm.trans ((congrArg (· ≫ x) fs).trans (Category.id_comp _))`. Establish `E : e (v ≫ a'.act b) = e v ≫ a.act b` using `Over.OverMorphism.ext (by`. Rewrite using `[he, Over.comp_left, Over.comp_left, he, Category.assoc, hact, Category.assoc])`. Rewrite using `[← E, he, he]`. Use `⟨fun E => by rw [E]; exact Category.assoc _ _ _, fun E => h.1.hom_ext (E.trans (Category.assoc _ _ _).symm) ?_⟩` and prove the remaining obligations.
+
+Use `(Over.w (v ≫ a'.act b)).trans (Eq.symm ((Category.assoc _ _ _).trans ?_))` and prove the remaining obligations. Use `(congrArg (spMap (epsScaleR c) ≫ ·) (Over.w v)).trans ?_` and prove the remaining obligations. Conclude with `(Category.assoc _ _ _).symm.trans (congrArg (· ≫ x) sc)`.
+-/
 theorem isTanScal_push {O : Type} [Ring O] {G : Over S} {G' : Over S'} [GrpObj G] [GrpObj G']
     {φ : G'.left ⟶ G.left} (h : IsGrpPullback G' G f φ) (a : OActN O G) (a' : OActN O G')
     (hact : ∀ c, (a'.act c).left ≫ φ = φ ≫ (a.act c).left) {R' : Type} [CommRing R'] (x : Sp R' ⟶ S')
@@ -102,6 +119,11 @@ theorem isTanScal_push {O : Type} [Ring O] {G : Over S} {G' : Over S'} [GrpObj G
     refine (congrArg (spMap (epsScaleR c) ≫ ·) (Over.w v)).trans ?_
     exact (Category.assoc _ _ _).symm.trans (congrArg (· ≫ x) sc)
 
+/- English proof (translation)
+Apply `Over.OverMorphism.ext` to reduce the goal to its premises. Use `h.1.hom_ext ?_ ?_` and prove the remaining obligations. Rewrite using `[GlobalTheory.ObjPull.secPull_left]`. Simplify using `only [Over.comp_left, Category.assoc]`. Rewrite using `[hu, ← Category.assoc (Over.Hom.left _) φ, GlobalTheory.ObjPull.secPull_left, Category.assoc]`.
+
+Rewrite using `[Over.w, Over.comp_left, Category.assoc, Over.w, Over.w]`.
+-/
 theorem secPull_comp {G : Over S} {G' : Over S'} [GrpObj G] [GrpObj G'] {φ : G'.left ⟶ G.left}
     (h : IsGrpPullback G' G f φ) (u : G ⟶ G) (u' : G' ⟶ G') (hu : u'.left ≫ φ = φ ≫ u.left)
     (s : 𝟙_ (Over S) ⟶ G) : GlobalTheory.ObjPull.secPull h (s ≫ u) = GlobalTheory.ObjPull.secPull h s ≫ u' := by
@@ -118,6 +140,15 @@ section Ker
 
 variable {S S' : Scheme.{0}} (f : S' ⟶ S)
 
+/- English proof (translation)
+Set `T₀ : Over S` to `Over.mk (T.hom ≫ f)`. Set `Z : Over S'` to `Over.mk ((snd G T₀).left ≫ T.hom)`. Establish `hZ : (fst G T₀).left ≫ G.hom = Z.hom ≫ f` using `(Over.w (fst G T₀)).trans ((Over.w (snd G T₀)).symm.trans (Category.assoc _ _ _).symm)`. Set `a : Z ⟶ (Over.pullback f).obj G` to `Over.homMk (pullback.lift (fst G T₀).left Z.hom hZ) (pullback.lift_snd _ _ _)`. Set `u : Z ⟶ T` to `Over.homMk (snd G T₀).left rfl`.
+
+Establish `key : (lift (snd G T₀ ≫ GlobalTheory.ObjPull.pushEquiv (PullbackComparison.isGrpPullback f G) T x) (fst G T₀)).left = (lift a u).left ≫ ((lift (snd ((Over.pullback f).obj G) T ≫ x) (fst ((Over.pullback f).obj G) T)).left ≫ PullbackComparison.pφ₂ f G)`. Apply `PullbackComparison.adelic_GL2_ext_of_local_components` to reduce the goal to its premises. Establish `k1` using `congrArg Over.Hom.left (show lift a u ≫ lift (snd ((Over.pullback f).obj G) T ≫ x) (fst ((Over.pullback f).obj G) T) ≫ fst ((Over.pullback f).obj G) ((Over.pullback f).obj G) = u ≫ x by simp)`. Simplify using `only [Over.comp_left] at k1`. Rewrite using `[← Over.comp_left, lift_fst, Category.assoc, Category.assoc, PullbackComparison.pφ₂_fst, ← Category.assoc (Over.Hom.left (lift (snd ((Over.pullback f).obj G) T ≫ x) _)), ← Category.assoc, k1]`.
+
+Both sides reduce to the same expression. Establish `k2` using `congrArg Over.Hom.left (show lift a u ≫ lift (snd ((Over.pullback f).obj G) T ≫ x) (fst ((Over.pullback f).obj G) T) ≫ snd ((Over.pullback f).obj G) ((Over.pullback f).obj G) = a by simp)`. Simplify using `only [Over.comp_left] at k2`. Rewrite using `[← Over.comp_left, lift_snd, Category.assoc, Category.assoc, PullbackComparison.pφ₂_snd, ← Category.assoc (Over.Hom.left (lift (snd ((Over.pullback f).obj G) T ≫ x) _)), ← Category.assoc, k2]`. Conclude with `(pullback.lift_fst _ _ _).symm`.
+
+Take `⟨t, ht⟩` from `H`. Take `⟨t₁, ht₁⟩` from `gen_chartPull (chartPullIn P (fun _ : PUnit => PullbackComparison.pφ₂ f G) (fun _ => 1) (lift (snd ((Over.pullback f).obj G) T ≫ x) (fst ((Over.pullback f).obj G) T)).left) t ht`. Conclude with `gen_chartPull (chartPullSame P _ _ (fun _ : PUnit => 1) (lift a u).left (fun _ => key)) t₁ ht₁`.
+-/
 theorem gen_ker_push {G : Over S} [GrpObj G] [IsCommMonObj G] (P : LB (G2 G).left) (T : Over S')
     (x : T ⟶ (Over.pullback f).obj G)
     (H : ∃ t : ((P.pull (PullbackComparison.pφ₂ f G)).pull
@@ -153,6 +184,27 @@ theorem gen_ker_push {G : Over S} [GrpObj G] [IsCommMonObj G] (P : LB (G2 G).lef
 
 end Ker
 
+/- English proof (translation)
+Introduce `p _ D R _ b N S S' s s' o f hs`. Substitute `hs` using the available equality. Establish `h : IsGrpPullback ((Over.pullback f).obj o.A) o.A f (PullbackComparison.pφ f o.A)` using `PullbackComparison.isGrpPullback f o.A`. Establish `hact` using `OActN.pull_left f o.act`. Establish `hP` using `pull_isLB o.isLB (PullbackComparison.pφ₂ f o.A)`.
+
+Establish `hL` using `pull_isLB o.isLB (lift (𝟙 o.A) (𝟙 o.A)).left`. Establish `hL'` using `pull_isLB hP (lift (𝟙 ((Over.pullback f).obj o.A)) (𝟙 ((Over.pullback f).obj o.A))).left`. Establish `hdiag : (lift (𝟙 ((Over.pullback f).obj o.A)) (𝟙 ((Over.pullback f).obj o.A))).left ≫ PullbackComparison.pφ₂ f o.A = PullbackComparison.pφ f o.A ≫ (lift (𝟙 o.A) (𝟙 o.A)).left` using `lift_pφ₂ f _ _ _ _ _ (by simp) (by simp)`. Establish `hLi : LBIso ((o.P.pull (PullbackComparison.pφ₂ f o.A)).pull (lift (𝟙 ((Over.pullback f).obj o.A)) (𝟙 ((Over.pullback f).obj o.A))).left) ((o.P.pull (lift (𝟙 o.A) (𝟙 o.A)).left).pull (PullbackComparison.pφ f o.A))` using `LBIso.chartPull (chartPullLinComb o.P (PullbackComparison.pφ₂ f o.A) _ _ (fun _ : PUnit => 1) (PullbackComparison.pφ f o.A) (fun _ => hdiag)) (chartPullPull _ (PullbackComparison.pφ f o.A) _ rfl) (PullbackComparison.gen_refl _ hL)`. Take `⟨hab, hamp, -⟩` from `GlobalTheory.PolPull.pol_pull_of_relAmple_local GlobalTheory.AmpleLocal.relAmple_of_locally S S' o.A _ f _ _ _ hL hL' o.ab h hLi`.
+
+Establish `hrose : ∀ c : D.O, LBIso ((o.P.pull (PullbackComparison.pφ₂ f o.A)).pull (lift (fst ((Over.pullback f).obj o.A) ((Over.pullback f).obj o.A) ≫ (OActN.pull f o.act).act c) (snd ((Over.pullback f).obj o.A) ((Over.pullback f).obj o.A))).left) ((o.P.pull (PullbackComparison.pφ₂ f o.A) …` using `fun c => by`. Use `LBIso.chartPull (chartPullLinComb o.P _ _ _ (fun _ : PUnit => 1) (PullbackComparison.pφ₂ f o.A) (fun _ => ?_)) (chartPullLinComb o.P _ _ _ (fun _ : PUnit => 1) (PullbackComparison.pφ₂ f o.A) (fun _ => ?_)) (o.rosati c)` and prove the remaining obligations. Use `lift_pφ₂ f _ _ _ _ _ ?_ (PullbackComparison.pφ₂_snd f o.A).symm` and prove the remaining obligations. Rewrite using `[Over.comp_left, Over.comp_left, Category.assoc, hact, ← Category.assoc, ← PullbackComparison.pφ₂_fst, Category.assoc]`. Use `lift_pφ₂ f _ _ _ _ _ (PullbackComparison.pφ₂_fst f o.A).symm ?_` and prove the remaining obligations.
+
+Rewrite using `[Over.comp_left, Over.comp_left, Category.assoc, hact, ← Category.assoc, ← PullbackComparison.pφ₂_snd, Category.assoc]`. Take `⟨t₁, ht₁⟩` from `o.rig₁`. Take `⟨t₂, ht₂⟩` from `o.rig₂`. Use `⟨{ A := (Over.pullback f).obj o.A ab := hab act := OActN.pull f o.act P := o.P.pull (PullbackComparison.pφ₂ f o.A) isLB := hP rig₁ := gen_chartPull (chartPullLinComb o.P _ _ _ _ (PullbackComparison.pφ f o.A) (fun _ => PullbackComparison.lift_one_id f o.A)) t₁ ht₁ rig₂ := gen_char …` and prove the remaining obligations. Use symmetry as in `:= LBIso.chartPull (chartPullPull o.P _ _ rfl) (chartPullLinComb o.P _ _ _ _ (PullbackComparison.pφ₂ f o.A) (fun _ => PullbackComparison.lift_swap f o.A)) o.symm`.
+
+Use `ample := hamp o.ample`. Use `kerP := ?_`. Use `rosati := hrose`. Use `lie := ?_`. Use `lieRank := fun k _ _ x β hx i => (GlobalTheory.LiePull.lieMult_pull (𝓞 D.F) S S' o.A _ f _ (o.act.toF D) ((OActN.pull f o.act).toF D) h (fun c => hact _) k x (β.comp (b.t i)) D.m).2 (o.lieRank k (x ≫ f) β ((Category.assoc _ _ _).trans hx) i)`.
+
+Use `eta := fun y => GlobalTheory.ObjPull.secPull h (o.eta y)`. Use `eta_add := fun y z => by rw [o.eta_add, map_mul]`. Use `eta_lin := fun c y => by rw [o.eta_lin]; exact secPull_comp f h _ _ (hact c) _`. Use `eta_ker := fun y => by rw [o.eta_ker y, map_one]`. Use `geom := fun k _ _ x β hx => ?_ },`.
+
+Use the proof step `⟨{ φ := PullbackComparison.pφ f o.A φ₂ := PullbackComparison.pφ₂ f o.A cart := h sq := PullbackComparison.isSquare f o.A act := hact pol := PullbackComparison.gen_refl _ hP eta := fun y => GlobalTheory.ObjPull.secPull_left h _ }⟩⟩`. Take `⟨e, he, hk⟩` from `o.kerP`. Use `⟨e, he, fun T x H => ?_⟩` and prove the remaining obligations. Use `hk (Over.mk (T.hom ≫ f)) (GlobalTheory.ObjPull.pushEquiv h T x) (gen_ker_push f o.P T x H)` as an intermediate fact. Conclude with `(GlobalTheory.ObjPull.pushEquiv h T).injective (by rw [map_pow, this, map_one])`.
+
+Introduce `R' _ β x hx v hv`. Take `⟨e, he⟩` from `GlobalTheory.LiePull.exists_pushEquiv h (epsPtR x) (spMap (algebraMap R' (DualNumber R')) ≫ x ≫ f) (Category.assoc _ _ _).symm`. Take `⟨w₀, hw₀, hv₀⟩` from `o.lie R' β (x ≫ f) ((Category.assoc _ _ _).trans hx) (e v) ((isTanScal_push f h o.act _ hact x e he _ _ v).1 hv)`. Use `⟨fun i => e.symm (w₀ i), fun i c => (isTanScal_push f h o.act _ hact x e he _ _ _).2 (by rw [e.apply_symm_apply]; exact hw₀ i c), e.injective ?_⟩` and prove the remaining obligations. Rewrite using `[hv₀, map_list_prod, List.map_ofFn]`.
+
+Simplify using `[Function.comp_def]`. Take `⟨I, hI⟩` from `o.geom k (x ≫ f) β ((Category.assoc _ _ _).trans hx)`. Use `⟨tateMoveO (GlobalTheory.ObjPull.pushEquiv h (Over.mk x)) (fun c g => ?_) (fun n g g' z hz => ?_) I, fun y => ?_⟩` and prove the remaining obligations. Apply `Over.OverMorphism.ext show (g.left ≫ _) ≫ _ = (g.left ≫ _) ≫ _` to reduce the goal to its premises. Rewrite using `[Category.assoc, hact, Category.assoc]`.
+
+Conclude with `(GlobalTheory.weilIs_grpPullback_of_comm S S' o.A _ f _ _ _ hL hL' h hLi (Over.mk x) n g g' _ _ _ rfl rfl).2 hz`. Conclude with `(MulEquiv.eq_symm_apply _).2 ((GlobalTheory.ObjPull.pushEquiv_secPull h _ _).trans (hI y))`.
+-/
 theorem exists_objMap : ∀ (p : ℕ) [Fact p.Prime] (D : GlobalTheory.UPel.HT.Datum p) (R : Type) [CommRing R] (b : Base D R)
     (N : ℕ) (S S' : Scheme.{0}) (s : S ⟶ Sp R) (s' : S' ⟶ Sp R) (o : Obj b N s) (f : S' ⟶ S), f ≫ s = s' →
     ∃ o' : Obj b N s', Nonempty (ObjMap o' o f) := by

@@ -15,6 +15,27 @@ namespace GlobalTheory.RSThetaRes
 
 def lowSum (T s t : ℝ) : ℝ := ∑' n : ℤ, if T ^ n * t ≤ 1 then (T ^ n * t) ^ s else 0
 
+/- English proof (translation)
+Establish `hT : 1 < Real.exp L` using `Real.one_lt_exp_iff.2 hL`. Establish `hT0 : 0 < Real.exp L` using `Real.exp_pos L`. Take `⟨m, h1, h2⟩` from `exists_mem_Ico_zpow (inv_pos.2 ht) hT`. Establish `hm : ∀ n : ℤ, Real.exp L ^ n * t ≤ 1 ↔ n ≤ m`. Introduce `n`.
+
+Prove the components needed by the constructor for the conclusion. Introduce `hn`. Assume the negation of the conclusion as `hc`. Use `push_neg at hc`. Establish `h3 : Real.exp L ^ (m + 1) ≤ Real.exp L ^ n` using `zpow_le_zpow_right₀ hT.le (by omega)`.
+
+Establish `h4 : t⁻¹ < Real.exp L ^ n` using `h2.trans_le h3`. Establish `h5` using `mul_lt_mul_of_pos_right h4 ht`. Rewrite `h5` using `[inv_mul_cancel₀ ht.ne']`. Combine the linear equalities and inequalities to obtain the conclusion. Introduce `hn`.
+
+Establish `h3 : Real.exp L ^ n ≤ t⁻¹` using `(zpow_le_zpow_right₀ hT.le hn).trans h1`. Combine the equalities or inequalities in the displayed calculation. Use `⟨Real.exp L ^ m * t, ?_, (hm m).2 le_rfl, ?_⟩` and prove the remaining obligations. Establish `h3 : t⁻¹ < Real.exp L ^ m * Real.exp L` using `by rwa [zpow_add_one₀ hT0.ne'] at h2`. Establish `h4 : 1 < Real.exp L ^ m * t * Real.exp L`.
+
+Establish `h5` using `mul_lt_mul_of_pos_right h3 ht`. Rewrite `h5` using `[inv_mul_cancel₀ ht.ne']`. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite using `[Real.exp_neg]`. Combine the equalities or inequalities in the displayed calculation.
+
+Establish `hq0 : 0 ≤ Real.exp (-(s * L))` using `(Real.exp_pos _).le`. Establish `hq1 : Real.exp (-(s * L)) < 1` using `by simpa using Real.exp_lt_exp.2 (neg_lt_zero.2 (mul_pos hs hL))`. Establish `hg : Function.Injective (fun k : ℕ => m - (k : ℤ))` using `fun i j h => by simpa using h`. Rewrite using `[← hg.hasSum_iff]`. Use `(hasSum_geometric_of_lt_one hq0 hq1).mul_left ((Real.exp L ^ m * t) ^ s)` as an intermediate fact.
+
+Establish `hfun : ((fun n : ℤ => if Real.exp L ^ n * t ≤ 1 then (Real.exp L ^ n * t) ^ s else 0) ∘ fun k : ℕ => m - (k : ℤ)) = fun i : ℕ => (Real.exp L ^ m * t) ^ s * Real.exp (-(s * L)) ^ i`. Use function extensionality and compare the values at `k`. Simplify using `only [Function.comp_apply]`. Rewrite using `[if_pos ((hm _).2 (by omega)), zpow_sub₀ hT0.ne', zpow_natCast]`. Establish `hk : Real.exp L ^ m / Real.exp L ^ k * t = (Real.exp L ^ m * t) * (Real.exp L ^ k)⁻¹`.
+
+Clear the denominators using the available nonvanishing facts. Rewrite using `[hk, Real.mul_rpow (by positivity) (by positivity), Real.inv_rpow (by positivity)]`. Use `congr 1`. Rewrite using `[← Real.exp_nat_mul, ← Real.exp_mul, ← Real.exp_nat_mul, ← Real.exp_neg]`. Use `congr 1`.
+
+Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hfun]`. Conclude with `this`. Introduce `n hn`. Establish `hnm : ¬ n ≤ m` using `fun h => hn ⟨(m - n).toNat, by simp only; omega⟩`.
+
+Rewrite using `[if_neg (fun h => hnm ((hm n).1 h))]`.
+-/
 theorem hasSum_lowSum {L s t : ℝ} (hL : 0 < L) (hs : 0 < s) (ht : 0 < t) :
     ∃ u : ℝ, Real.exp (-L) < u ∧ u ≤ 1 ∧
       HasSum (fun n : ℤ => if Real.exp L ^ n * t ≤ 1 then (Real.exp L ^ n * t) ^ s else 0)
@@ -70,6 +91,15 @@ theorem hasSum_lowSum {L s t : ℝ} (hL : 0 < L) (hs : 0 < s) (ht : 0 < t) :
       have hnm : ¬ n ≤ m := fun h => hn ⟨(m - n).toNat, by simp only; omega⟩
       rw [if_neg (fun h => hnm ((hm n).1 h))]
 
+/- English proof (translation)
+Establish `hu0 : 0 < u` using `(Real.exp_pos _).trans hu`. Establish `hy0 : 0 < s * L` using `mul_pos hs hL`. Establish `hv1 : u ^ s ≤ 1` using `Real.rpow_le_one hu0.le hu1 hs.le`. Establish `hv0 : Real.exp (-(s * L)) < u ^ s`. Establish `h` using `Real.rpow_lt_rpow (Real.exp_pos _).le hu hs`.
+
+Rewrite `h` using `[← Real.exp_mul, neg_mul, mul_comm L s]`. Then use the resulting hypothesis. Establish `hD : 0 < 1 - Real.exp (-(s * L))` using `by linarith`. Establish `hDy : 1 - Real.exp (-(s * L)) ≤ s * L` using `by have := Real.add_one_le_exp (-(s * L)); linarith`. Establish `hE : Real.exp (s * L) * Real.exp (-(s * L)) = 1` using `by rw [← Real.exp_add]; simp`. Establish `hey : s * L + 1 ≤ Real.exp (s * L)` using `Real.add_one_le_exp _`.
+
+Establish `hre : s * (u ^ s * (1 - Real.exp (-(s * L)))⁻¹) = s * u ^ s / (1 - Real.exp (-(s * L)))`. Clear the denominators using the available nonvanishing facts. Rewrite using `[hre]`. Establish `hsv : s * u ^ s * L = u ^ s * (s * L)` using `by ring`. Prove the components needed by the constructor for the conclusion.
+
+Rewrite using `[div_le_div_iff₀ hL hD, hsv]`. Use polynomial arithmetic with `[mul_le_mul_of_nonneg_left hDy (Real.exp_pos (-(s * L))).le, mul_le_mul_of_nonneg_right hv0.le hy0.le]`. Rewrite using `[div_le_div_iff₀ hD hL, hsv]`. Use polynomial arithmetic with `[mul_le_mul_of_nonneg_right hv1 hy0.le]`.
+-/
 theorem lowSum_bounds {L s u : ℝ} (hL : 0 < L) (hs : 0 < s) (hu : Real.exp (-L) < u) (hu1 : u ≤ 1) :
     Real.exp (-(s * L)) / L ≤ s * (u ^ s * (1 - Real.exp (-(s * L)))⁻¹) ∧
       s * (u ^ s * (1 - Real.exp (-(s * L)))⁻¹) ≤ Real.exp (s * L) / L := by
@@ -94,6 +124,13 @@ theorem lowSum_bounds {L s u : ℝ} (hL : 0 < L) (hs : 0 < s) (hu : Real.exp (-L
   · rw [div_le_div_iff₀ hD hL, hsv]
     nlinarith [mul_le_mul_of_nonneg_right hv1 hy0.le]
 
+/- English proof (translation)
+Establish `hb : ∀ s : ℝ, 0 < s → Real.exp (-(s * L)) / L ≤ s * lowSum (Real.exp L) s t ∧ s * lowSum (Real.exp L) s t ≤ Real.exp (s * L) / L`. Introduce `s hs`. Take `⟨u, hu, hu1, hsum⟩` from `hasSum_lowSum hL hs ht`. Rewrite using `[lowSum, hsum.tsum_eq]`. Conclude with `lowSum_bounds hL hs hu hu1`.
+
+Establish `hlo : Tendsto (fun s : ℝ => Real.exp (-(s * L)) / L) (𝓝[>] 0) (𝓝 (1 / L))`. Establish `hc : Continuous fun s : ℝ => Real.exp (-(s * L)) / L` using `by fun_prop`. Simplify using `using (hc.tendsto 0).mono_left nhdsWithin_le_nhds`. Establish `hhi : Tendsto (fun s : ℝ => Real.exp (s * L) / L) (𝓝[>] 0) (𝓝 (1 / L))`. Establish `hc : Continuous fun s : ℝ => Real.exp (s * L) / L` using `by fun_prop`.
+
+Simplify using `using (hc.tendsto 0).mono_left nhdsWithin_le_nhds`. Use `tendsto_of_tendsto_of_tendsto_of_le_of_le' hlo hhi ?_ ?_` and prove the remaining obligations. Use `filter_upwards [self_mem_nhdsWithin] with s hs using (hb s hs).1`. Use `filter_upwards [self_mem_nhdsWithin] with s hs using (hb s hs).2`.
+-/
 theorem tendsto_mul_lowSum {L t : ℝ} (hL : 0 < L) (ht : 0 < t) :
     Tendsto (fun s : ℝ => s * lowSum (Real.exp L) s t) (𝓝[>] 0) (𝓝 (1 / L)) := by
   have hb : ∀ s : ℝ, 0 < s → Real.exp (-(s * L)) / L ≤ s * lowSum (Real.exp L) s t ∧
@@ -118,6 +155,51 @@ namespace GlobalTheory.RSThetaRes
 
 variable {E : Type} [Field E] [NumberField E] [IsTotallyComplex E] {a : ℕ}
 
+/- English proof (translation)
+Use `set δ : GA E a → ℝ := fun g => (ideleModule E (GeneralLinearGroup.det g) : ℝ) with hδ`. Establish `hδc : Continuous δ` using `GlobalTheory.RSTheta.continuous_absDet`. Establish `hδ0 : ∀ g, 0 < δ g` using `fun g => (ideleModule E _).2`. Establish `hδr : ∀ γ g, δ (ratGL E a γ * g) = δ g` using `fun γ g => by`. Simplify using `only [hδ, map_mul, GlobalTheory.ShortVecDecay.ideleModule_det_rat, one_mul]`.
+
+Use `set L : ℝ := (a : ℝ) * (Module.finrank ℚ E : ℝ) with hLdef`. Establish `hd0 : (0 : ℝ) < Module.finrank ℚ E` using `Nat.cast_pos.2 Module.finrank_pos`. Establish `hL : 0 < L` using `mul_pos (Nat.cast_pos.2 ha) hd0`. Establish `hTL : Real.exp 1 ^ (a * Module.finrank ℚ E) = Real.exp L`. Rewrite using `[Real.exp_one_pow, hLdef]`.
+
+Use `push_cast`. Both sides reduce to the same expression. Establish `hδz : ∀ (n : ℤ) g, δ (splitCentre E a 1 ^ n * g) = Real.exp L ^ n * δ g` using `fun n g => by`. Rewrite using `[← hTL]`. Conclude with `GlobalTheory.RSTheta.absDet_zpow_mul n g`.
+
+Establish `hT1 : 1 < Real.exp L` using `Real.one_lt_exp_iff.2 hL`. Establish `hm : MeasurableSet {g | δ g ≤ 1}` using `(isClosed_le hδc continuous_const).measurableSet`. Establish `hC0 : 0 ≤ C` using `(norm_nonneg _).trans (hC 1)`. Set `φ : (ratGL E a).range × ℤ → latticeGL E a` to `fun p => ⟨p.1 * splitCentre E a 1 ^ p.2, mul_mem (Subgroup.mem_sup_left p.1.2) (zpow_mem_latticeGL _)⟩`. Establish `hφ : Function.Bijective φ`.
+
+Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨⟨_, γ, rfl⟩, n⟩ ⟨⟨_, γ', rfl⟩, n'⟩ h`. Establish `h1 : ratGL E a γ * splitCentre E a 1 ^ n = ratGL E a γ' * splitCentre E a 1 ^ n'` using `congrArg Subtype.val h`. Establish `h2` using `congrArg (fun x => δ (x * 1)) h1`. Simplify using `only [mul_assoc, hδr, hδz] at h2`.
+
+Take `rfl : n = n'` from `zpow_right_injective₀ (one_pos.trans hT1) hT1.ne' (mul_right_cancel₀ (hδ0 1).ne' h2)`. Conclude with `Prod.ext (Subtype.ext (mul_right_cancel h1)) rfl`. Introduce and unpack `⟨g, hg⟩`. Take `⟨γ, n, rfl⟩` from `mem_latticeGL_iff.1 hg`. Conclude with `⟨⟨⟨_, γ, rfl⟩, n⟩, rfl⟩`.
+
+Use `haveI : Countable (latticeGL E a) := TopologicalSpace.separableSpace_iff_countable.1 inferInstance`. Use `haveI := GlobalTheory.CovolGL.isFiniteMeasure_quotMeasure E a μ`. Establish `hμ' : μ 𝓕' < ⊤`. Rewrite using `[← GlobalTheory.AutomorphicL2Unitary.quotMeasure_univ h𝓕']`. Conclude with `measure_lt_top _ _`.
+
+Establish `key : ∀ s : ℝ, 0 < s → IntegrableOn (fun g => F g * ((lowSum (Real.exp L) s (δ g) : ℝ) : ℂ)) 𝓕' μ ∧ ∫ g in 𝓕 ∩ {g | δ g ≤ 1}, F g * ((δ g ^ s : ℝ) : ℂ) ∂μ = ∫ g in 𝓕', F g * ((lowSum (Real.exp L) s (δ g) : ℝ) : ℂ) ∂μ`. Introduce `s hs`. Use `set f : GA E a → ℂ := {g | δ g ≤ 1}.indicator (fun g => F g * ((δ g ^ s : ℝ) : ℂ)) with hf`. Establish `hsum : ∀ g, ∑' n : ℤ, f (splitCentre E a 1 ^ n * g) = F g * ((lowSum (Real.exp L) s (δ g) : ℝ) : ℂ)`. Introduce `g`.
+
+Rewrite using `[lowSum, Complex.ofReal_tsum, ← tsum_mul_left]`. Use `tsum_congr fun n => ?_` and prove the remaining obligations. Simplify using `only [hf, Set.indicator_apply, Set.mem_setOf_eq, hδz, hinv _ (zpow_mem_latticeGL n)]`. Apply the tactic sequence `split_ifs <;> simp`. Establish `hfm : AEStronglyMeasurable f μ` using `((hF.mul (Complex.continuous_ofReal.comp (hδc.rpow_const fun g => Or.inl (hδ0 g).ne'))).aestronglyMeasurable).indicator hm`.
+
+Establish `hfin : ∫⁻ g in 𝓕', ∑' n : ℤ, ‖f (splitCentre E a 1 ^ n * g)‖ₑ ∂μ ≠ ⊤`. Take `⟨B, hB, hBle⟩` from `GlobalTheory.RSThetaLow.exists_tsum_zpow_le_low hT1 hs`. Establish `hpt : ∀ g, ∑' n : ℤ, ‖f (splitCentre E a 1 ^ n * g)‖ₑ ≤ ENNReal.ofReal C * B`. Introduce `g`. Use `le_trans ?_ (mul_le_mul_of_nonneg_left (hBle _ (hδ0 g)) zero_le)` and prove the remaining obligations.
+
+Rewrite using `[← ENNReal.tsum_mul_left]`. Use `ENNReal.tsum_le_tsum fun n => ?_` and prove the remaining obligations. Simplify using `only [hf, Set.indicator_apply, Set.mem_setOf_eq, hδz, hinv _ (zpow_mem_latticeGL n)]`. Use `split_ifs with h`. Establish `hp : 0 ≤ (Real.exp L ^ n * δ g) ^ s` using `Real.rpow_nonneg (mul_pos (zpow_pos (Real.exp_pos L) n) (hδ0 g)).le _`.
+
+Rewrite using `[← ofReal_norm_eq_enorm, ← ENNReal.ofReal_mul hC0]`. Use `ENNReal.ofReal_le_ofReal ?_` and prove the remaining obligations. Rewrite using `[norm_mul, Complex.norm_real, Real.norm_of_nonneg hp]`. Conclude with `mul_le_mul_of_nonneg_right (hC g) hp`. Simplify using the standard rewrite rules.
+
+Use `(lt_of_le_of_lt (lintegral_mono hpt) ?_).ne` and prove the remaining obligations. Rewrite using `[setLIntegral_const]`. Conclude with `ENNReal.mul_lt_top (ENNReal.mul_lt_top ENNReal.ofReal_lt_top hB.lt_top) hμ'`. Take `⟨-, hI, -, heq⟩` from `GlobalTheory.ThetaUnfold.integral_unfold μ (latticeGL E a) (ratGL E a).range (fun n : ℤ => splitCentre E a 1 ^ n) (Equiv.ofBijective φ hφ) (fun _ => rfl) h𝓕' h𝓕 f (by`. Introduce and unpack `_ ⟨γ, rfl⟩ g`.
+
+Simplify using `only [hf, Set.indicator_apply, Set.mem_setOf_eq, hδr, hinv _ (ratGL_mem_latticeGL γ)])`. Use `hfm hfin`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Conclude with `Integrable.congr hI (ae_of_all _ hsum)`. Combine the equalities or inequalities in the displayed calculation.
+
+Rewrite using `[hf, integral_indicator hm, Measure.restrict_restrict hm, Set.inter_comm]`. Use `_ = _ := by rw [← heq]; exact integral_congr_ae (.of_forall hsum)`. Establish `hlim0 : Tendsto (fun s : ℝ => ((s : ℝ) : ℂ) * ∫ g in 𝓕 ∩ {g | δ g ≤ 1}, F g * ((δ g ^ s : ℝ) : ℂ) ∂μ) (𝓝[>] 0) (𝓝 (((1 / L : ℝ) : ℂ) * ∫ g in 𝓕', F g ∂μ))`. Establish `hev : (fun s : ℝ => ((s : ℝ) : ℂ) * ∫ g in 𝓕 ∩ {g | δ g ≤ 1}, F g * ((δ g ^ s : ℝ) : ℂ) ∂μ) =ᶠ[𝓝[>] 0] fun s => ∫ g in 𝓕', F g * ((s * lowSum (Real.exp L) s (δ g) : ℝ) : ℂ) ∂μ` using `by filter_upwards [self_mem_nhdsWithin] with s hs`. Rewrite using `[(key s hs).2, ← integral_const_mul]`.
+
+Use `integral_congr_ae (.of_forall fun g => ?_)` and prove the remaining obligations. Simplify using `only`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[mul_comm, ← integral_mul_const]`.
+
+Use `Tendsto.congr' hev.symm ?_` and prove the remaining obligations. Use `tendsto_integral_filter_of_dominated_convergence (fun _ => C * (Real.exp L / L)) ?_ ?_ ?_ ?_` and prove the remaining obligations. Use `filter_upwards [self_mem_nhdsWithin] with s hs`. Use `(((key s hs).1.const_mul (s : ℂ)).aestronglyMeasurable).congr (.of_forall fun g => ?_)` and prove the remaining obligations. Simplify using `only`.
+
+Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Use `filter_upwards [self_mem_nhdsWithin, Ioo_mem_nhdsGT one_pos] with s hs hs1`. Use `.of_forall fun g => ?_` and prove the remaining obligations. Take `⟨u, hu, hu1, hsum⟩` from `hasSum_lowSum hL hs (hδ0 g)`.
+
+Establish `hb` using `lowSum_bounds hL hs hu hu1`. Rewrite `hb` using `[← hsum.tsum_eq, ← lowSum]`. Establish `hnn : 0 ≤ s * lowSum (Real.exp L) s (δ g)` using `(div_nonneg (Real.exp_pos _).le hL.le).trans hb.1`. Rewrite using `[norm_mul, Complex.norm_real, Real.norm_of_nonneg hnn]`. Use `mul_le_mul (hC g) (hb.2.trans (div_le_div_of_nonneg_right (Real.exp_le_exp.2 ?_) hL.le)) hnn hC0` and prove the remaining obligations.
+
+Use `hs1.2` as an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Conclude with `integrableOn_const hμ'.ne`. Use `.of_forall fun g => ?_` and prove the remaining obligations. Conclude with `tendsto_const_nhds.mul ((Complex.continuous_ofReal.tendsto _).comp (tendsto_mul_lowSum hL (hδ0 g)))`.
+
+Establish `hsub : Tendsto (fun x : ℝ => x - 1) (𝓝[>] 1) (𝓝[>] 0)`. Use `tendsto_nhdsWithin_iff.2 ⟨?_, ?_⟩` and prove the remaining obligations. Establish `: Tendsto (fun x : ℝ => x - 1) (𝓝 1) (𝓝 0)`. Establish `h` using `((continuous_sub_right (1 : ℝ)).tendsto (1 : ℝ))`. Rewrite `h` using `[sub_self]`. Then use the resulting hypothesis.
+
+Conclude with `this.mono_left nhdsWithin_le_nhds`. Use `filter_upwards [self_mem_nhdsWithin] with x hx`. Conclude with `sub_pos.2 (Set.mem_Ioi.1 hx)`. Conclude with `hlim0.comp hsub`.
+-/
 theorem tendsto_residue (ha : 0 < a) (μ : Measure (GA E a)) [μ.IsHaarMeasure] {𝓕 𝓕' : Set (GA E a)}
     (h𝓕 : IsFundamentalDomain (ratGL E a).range 𝓕 μ) (h𝓕' : IsFundamentalDomain (latticeGL E a) 𝓕' μ)
     {F : GA E a → ℂ} (hF : Continuous F) {C : ℝ} (hC : ∀ g, ‖F g‖ ≤ C)
@@ -249,6 +331,9 @@ end GlobalTheory.RSThetaRes
 
 namespace GlobalTheory.RSThetaRes
 
+/- English proof (translation)
+Introduce `_ _ _ _ _ ha μ _ _ _ h𝓕 h𝓕' _ hF ⟨_, hC⟩ hinv` and use `tendsto_residue ha μ h𝓕 h𝓕' hF hC hinv`.
+-/
 theorem residue_geometric : ∀ (E : Type) [Field E] [NumberField E] [IsTotallyComplex E] (a : ℕ), 0 < a → ∀ (μ : Measure (GA E a)) [μ.IsHaarMeasure] (𝓕 𝓕' : Set (GA E a)), IsFundamentalDomain (ratGL E a).range 𝓕 μ → IsFundamentalDomain (latticeGL E a) 𝓕' μ → ∀ F : GA E a → ℂ, Continuous F → (∃ C : ℝ, ∀ g, ‖F g‖ ≤ C) → (∀ γ ∈ latticeGL E a, ∀ g, F (γ * g) = F g) → Tendsto (fun x : ℝ => ((x - 1 : ℝ) : ℂ) * ∫ g in 𝓕 ∩ {g : GA E a | (ideleModule E (GeneralLinearGroup.det g) : ℝ) ≤ 1}, F g * ((((ideleModule E (GeneralLinearGroup.det g) : ℝ) ^ (x - 1 : ℝ) : ℝ)) : ℂ) ∂μ) (𝓝[>] 1) (𝓝 ((((1 : ℝ) / ((a : ℝ) * (Module.finrank ℚ E : ℝ)) : ℝ) : ℂ) * ∫ g in 𝓕', F g ∂μ)) :=
   fun _ _ _ _ _ ha μ _ _ _ h𝓕 h𝓕' _ hF ⟨_, hC⟩ hinv => tendsto_residue ha μ h𝓕 h𝓕' hF hC hinv
 

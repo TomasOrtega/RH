@@ -18,6 +18,15 @@ set_option autoImplicit false
 
 namespace GlobalTheory.MassDegree
 
+/- English proof (translation)
+Introduce `Y L φ hφ`. Set `ψ : Weight Y.str (RingHom.id ℂ) ((ProjSpace.O1 ℂ Y.N).pull Y.ι)` to `((ProjSpace.hermitianTwistingSheaf ℂ Y.N).φ (RingHom.id ℂ)).pull Y.ι Y.ι_str`. Establish `hψ : ψ.IsCInf` using `((ProjSpace.hermitianTwistingSheaf ℂ Y.N).cInf (RingHom.id ℂ)).pull Y.ι Y.ι_str`. Take `⟨P, hP0, hP⟩` from `GlobalTheory.T.exists_polynomial_chernIntegral_tens_pow Y L _ φ ψ hφ hψ`. Take `⟨Q, hQ0, hQ⟩` from `GlobalTheory.SelfInterPoly.exists_polynomial_topSelf Y L _ φ.isLB ψ.isLB`.
+
+Take `⟨m₀, hm₀⟩` from `GlobalTheory.T.twist_ample_globally_generated Y L φ.isLB`. Establish `key : ∀ m : ℕ, m₀ ≤ m → P.eval (m : ℝ) = Q.eval (m : ℝ)`. Introduce `m hm`. Take `⟨n, u, hu⟩` from `hm₀ m hm`. Rewrite using `[← hP m, ← hQ m]`.
+
+Conclude with `GlobalTheory.T.chernMass_eq_selfIntersection_of_generated Y _ (φ.tens (ψ.pow m)) (hφ.tens (hψ.zpow m)) n u hu`. Establish `hPQ : P = Q`. Use `Polynomial.eq_of_infinite_eval_eq P Q ?_` and prove the remaining obligations. Use `Set.Infinite.mono ?_ ((Set.Ici_infinite m₀).image Nat.cast_injective.injOn)` and prove the remaining obligations. Introduce and unpack `_ ⟨m, hm, rfl⟩`.
+
+Conclude with `key m hm`. Rewrite using `[← hP0, ← hQ0, hPQ]`.
+-/
 theorem chernInt_eq_topSelf : ∀ (Y : Var ℂ) (L : LB Y.X) (φ : Weight Y.str (RingHom.id ℂ) L), φ.IsCInf → Weight.chernInt φ Y.dim Set.univ (fun _ => 1) = (topSelfIntersection ℂ L Y.dim : ℝ) := by
   intro Y L φ hφ
   let ψ : Weight Y.str (RingHom.id ℂ) ((ProjSpace.O1 ℂ Y.N).pull Y.ι) :=

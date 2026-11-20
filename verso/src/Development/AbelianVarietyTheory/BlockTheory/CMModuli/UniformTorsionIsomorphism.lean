@@ -68,10 +68,16 @@ def toGen {G : Over (Spec (CommRingCat.of R))} (x : TF (R := R) F ⟶ G) :
     TFK (R := R) F ⟶ (Over.pullback (jK R)).obj G :=
   Over.homMk (pullback.lift x.left (jFK (R := R) F) (Over.w x)) (pullback.lift_snd _ _ _)
 
+/- English proof (translation)
+The claim follows from `pullback.lift_fst _ _ _`.
+-/
 lemma toGen_fst {G : Over (Spec (CommRingCat.of R))} (x : TF (R := R) F ⟶ G) :
     (toGen x).left ≫ pullback.fst G.hom (jK R) = x.left :=
   pullback.lift_fst _ _ _
 
+/- English proof (translation)
+Introduce `x y h` and use `by ext rw [← toGen_fst x, ← toGen_fst y, h]`.
+-/
 lemma toGen_injective {G : Over (Spec (CommRingCat.of R))} :
     Function.Injective (toGen (R := R) (F := F) (G := G)) := fun x y h => by
   ext
@@ -86,6 +92,9 @@ variable (F : Type) [Field F] [Algebra (FractionRing R) F]
 
 def ptA (x : TF (R := R) F ⟶ t.G) : TFK (R := R) F ⟶ u.A.A := toGen x ≫ u.U.gen.hom
 
+/- English proof (translation)
+Introduce `_ _ h` and use `toGen_injective ((cancel_mono u.U.gen.hom).1 h)`.
+-/
 lemma ptA_injective : Function.Injective (u.ptA F) := fun _ _ h =>
   toGen_injective ((cancel_mono u.U.gen.hom).1 h)
 
@@ -116,6 +125,9 @@ def TorsClause : Prop :=
   ∀ (F : Type) [Field F] [IsAlgClosed F] [Algebra (FractionRing R) F] (k : ℕ), 1 ≤ k →
     u.TorsIso F k
 
+/- English proof (translation)
+Take `⟨x, hx, -⟩` from `h.total p`. Establish `h1 : x ^ 1 = 1` using `(h.onto x).2 ⟨p, hx⟩`. Rewrite `h1` using `[pow_one]`. Conclude with `h1 ▸ hx`.
+-/
 example (h : u.TorsIso F 1) (p : QkPt Δ.D.toPre F 1) : u.ToAk F 1 p 1 := by
   obtain ⟨x, hx, -⟩ := h.total p
   have h1 : x ^ 1 = 1 := (h.onto x).2 ⟨p, hx⟩

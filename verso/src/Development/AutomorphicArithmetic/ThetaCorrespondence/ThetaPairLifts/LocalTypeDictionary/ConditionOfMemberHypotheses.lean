@@ -22,6 +22,9 @@ structure MemberHypotheses : Prop where
   m12 : GlobalTheory.Published.ZelevinskyPolynomialRing
   m13 : GlobalTheory.Published.GeometricLemma
   m14 : GlobalTheory.Published.GreenCuspidal
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨c, h1, h3, m, (StepW.and ((StepW.of_all fun _ _ _ _ _ _ _ s => s.1 : StepW Start Pinned).trans m) r).trans (StepW.of_all fun _ _ _ _ _ _ _ G Z hX Wt z a b k c d e g u v => ⟨G.1 Z hX Wt z a b c d, G.2 Z hX Wt z a b k c d e g u v⟩)⟩`.
+-/
 theorem condition_of_memberHypotheses (c : GlobalTheory.Published.DiscreteSeriesCover) (h1 : _root_.GlobalTheory.PrimIn.PublishedThetaConditionTheorems)
     (h3 : GlobalTheory.Published.HeckeLPartialContinuation) (m : MultL) (r : RowRatW) : _root_.GlobalTheory.Mem.Top.Bl.MultiplicityCoverHypotheses :=
   ⟨c, h1, h3, m,

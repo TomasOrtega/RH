@@ -12,6 +12,11 @@ open PositivityTheory.Rg.Sw G
 
 variable {m n : ℕ}
 
+/- English proof (translation)
+Unfold `D1`. Use `split_ifs with hab ha ha`. Use `(F1 ε).neg_mem ((F1 ε).sum_mem fun i _ => variable_mul_mem_first_family ε (by simp [inF1, ha]) (partial_deriv_mem_first_family ε _ hf))` and prove the remaining obligations. Conclude with `(F1 ε).sum_mem fun i _ => variable_mul_mem_first_family ε (by simp [inF1, ← hab]; simpa using ha) (partial_deriv_mem_first_family ε _ hf)`. Apply the tactic sequence `have hb : ε b = false := by cases h' : ε b <;> simp_all`.
+
+Use `(F1 ε).smul_mem _ ((F1 ε).sum_mem fun i _ => ?_)` and prove the remaining obligations. Rewrite using `[mul_assoc]`. Conclude with `variable_mul_mem_first_family ε (by simp [inF1, ha]) (variable_mul_mem_first_family ε (by simp [inF1, hb]) hf)`. Apply the tactic sequence `have hb : ε b = true := by cases h' : ε b <;> simp_all`. Conclude with `(F1 ε).smul_mem _ ((F1 ε).sum_mem fun i _ => partial_deriv_mem_first_family ε _ (partial_deriv_mem_first_family ε _ hf))`.
+-/
 theorem first_operator_mem_first_family (ε : Fin m → Bool) (c : ℝ) (a b : Fin m) {f : PX m n} (hf : f ∈ F1 ε) : D1 ε c a b f ∈ F1 ε := by
   unfold D1
   split_ifs with hab ha ha
@@ -24,6 +29,11 @@ theorem first_operator_mem_first_family (ε : Fin m → Bool) (c : ℝ) (a b : F
   · have hb : ε b = true := by cases h' : ε b <;> simp_all
     exact (F1 ε).smul_mem _ ((F1 ε).sum_mem fun i _ => partial_deriv_mem_first_family ε _ (partial_deriv_mem_first_family ε _ hf))
 
+/- English proof (translation)
+Unfold `D2`. Use `split_ifs with hab ha ha`. Conclude with `(F2 ε).sum_mem fun i _ => variable_mul_mem_second_family ε (by simp [inF1, ← hab, ha]) (partial_deriv_mem_second_family ε _ hg)`. Use `(F2 ε).neg_mem ((F2 ε).sum_mem fun i _ => variable_mul_mem_second_family ε (by simp [inF1]; simpa using ha) (partial_deriv_mem_second_family ε _ hg))` and prove the remaining obligations. Conclude with `(F2 ε).smul_mem _ ((F2 ε).sum_mem fun i _ => partial_deriv_mem_second_family ε _ (partial_deriv_mem_second_family ε _ hg))`.
+
+Apply the tactic sequence `have hb : ε b = true := by cases h' : ε b <;> simp_all`. Use `(F2 ε).smul_mem _ ((F2 ε).sum_mem fun i _ => ?_)` and prove the remaining obligations. Rewrite using `[mul_assoc]`. Conclude with `variable_mul_mem_second_family ε (by simp [inF1]; simpa using ha) (variable_mul_mem_second_family ε (by simp [inF1, hb]) hg)`.
+-/
 theorem second_operator_mem_second_family (ε : Fin m → Bool) (c : ℝ) (a b : Fin m) {g : PX m n} (hg : g ∈ F2 ε) : D2 ε c a b g ∈ F2 ε := by
   unfold D2
   split_ifs with hab ha ha
@@ -36,6 +46,11 @@ theorem second_operator_mem_second_family (ε : Fin m → Bool) (c : ℝ) (a b :
     rw [mul_assoc]
     exact variable_mul_mem_second_family ε (by simp [inF1]; simpa using ha) (variable_mul_mem_second_family ε (by simp [inF1, hb]) hg)
 
+/- English proof (translation)
+Rewrite using `[bf_eq w (p.support ∪ {t}) Finset.subset_union_left ((support_monomial_subset).trans Finset.subset_union_right)]`. Rewrite using `[Finset.sum_eq_single t]`. Simplify using `[coeff_monomial]`. Introduce `s _ hs`. Simplify using `[coeff_monomial, Ne.symm hs]`.
+
+Introduce `h`. Simplify using `[coeff_monomial]`. Use `left`. Assume the negation of the conclusion as `h'`. Conclude with `h (Finset.mem_union_left _ (MvPolynomial.mem_support_iff.mpr h'))`.
+-/
 theorem bf_mono_right (w : (Fin m × Fin n × Bool →₀ ℕ) → ℂ) (p : PX m n) (t : Fin m × Fin n × Bool →₀ ℕ) :
     bf w p (monomial t 1) = p.coeff t * w t := by
   classical
@@ -46,6 +61,11 @@ theorem bf_mono_right (w : (Fin m × Fin n × Bool →₀ ℕ) → ℂ) (p : PX 
   · intro h; simp [coeff_monomial]; left; by_contra h'; exact h (Finset.mem_union_left _
       (MvPolynomial.mem_support_iff.mpr h'))
 
+/- English proof (translation)
+Use extensionality with `s`. Rewrite using `[coeff_zero]`. Distinguish the cases in `hs : ∀ k ∈ s.support, inF1 ε k`. Establish `hu` using `partner_support_second_family ε hs`. Use `h0 (s.mapDomain pE) hu` as an intermediate fact.
+
+Rewrite `this` using `[contr_eq_bf ε c hh (monomial_mem_second_family ε hu 1), rename_monomial, mapDomain_pE_pE, bf_mono_right]`. Conclude with `(mul_eq_zero.mp this).resolve_right (by exact_mod_cast (wt_pos hc s).ne')`. Assume the negation of the conclusion as `hne`. Conclude with `hs ((mem_first_family_iff ε h).mp hh s (MvPolynomial.mem_support_iff.mpr hne))`.
+-/
 theorem nondeg (ε : Fin m → Bool) {c : ℝ} (hc : 0 < c) {h : PX m n} (hh : h ∈ F1 ε)
     (h0 : ∀ u : Fin m × Fin n × Bool →₀ ℕ, (∀ k ∈ u.support, ¬ inF1 ε k) → contr c (h * monomial u 1) = 0) : h = 0 := by
   ext s
@@ -58,6 +78,15 @@ theorem nondeg (ε : Fin m → Bool) {c : ℝ} (hc : 0 < c) {h : PX m n} (hh : h
   · by_contra hne
     exact hs ((mem_first_family_iff ε h).mp hh s (MvPolynomial.mem_support_iff.mpr hne))
 
+/- English proof (translation)
+Introduce `f hf`. Use `Submodule.span_induction (p := fun x _ => Bop ε c Λ x ∈ box ε R) ?_ ?_ ?_ ?_ hf` and prove the remaining obligations. Introduce and unpack `x ⟨s, hs, hR, rfl⟩`. Rewrite using `[Bop_mono]`. Unfold `Bm`.
+
+Rewrite using `[if_pos hs]`. Use `Submodule.sum_mem _ fun t ht => Submodule.smul_mem _ _ (Submodule.subset_span ?_)` and prove the remaining obligations. Take `⟨htF, htr⟩` from `(mem_cand ε _ t).mp ht`. Conclude with `⟨t, htF, by rw [htr]; exact hR, rfl⟩`. Simplify using the standard rewrite rules.
+
+Introduce `x y _ _ hx hy`. Rewrite using `[map_add]`. Conclude with `add_mem hx hy`. Introduce `r x _ hx`. Rewrite using `[map_smul]`.
+
+Conclude with `Submodule.smul_mem _ r hx`.
+-/
 theorem Bop_box (ε : Fin m → Bool) (c : ℝ) (Λ : PX m n →ₗ[ℂ] ℂ) (R : Set (Fin m → ℕ)) :
     ∀ f ∈ box (n := n) ε R, Bop ε c Λ f ∈ box ε R := by
   intro f hf
@@ -76,6 +105,11 @@ theorem Bop_box (ε : Fin m → Bool) (c : ℝ) (Λ : PX m n →ₗ[ℂ] ℂ) (R
 end CoreC
 
 open CoreC in
+/- English proof (translation)
+Introduce `m n ε c hc Λ hΛ`. Use `⟨Bop ε c Λ, fun R f hf => Bop_box ε c Λ R f hf, fun f hf g hg => functional_representation_by_contraction ε hc Λ hΛ hf hg, ?_⟩` and prove the remaining obligations. Introduce `a b f hf`. Establish `hB1 : Bop ε c Λ (D1 ε c a b f) ∈ F1 ε` using `representing_operator_mem_first_family ε c Λ _`. Establish `hB2 : D1 ε c a b (Bop ε c Λ f) ∈ F1 ε` using `first_operator_mem_first_family ε c a b (representing_operator_mem_first_family ε c Λ f)`.
+
+Rewrite using `[← sub_eq_zero]`. Use `nondeg ε hc (Submodule.sub_mem _ hB1 hB2) fun u hu => ?_` and prove the remaining obligations. Establish `hg : (monomial u (1 : ℂ) : PX m n) ∈ F2 ε` using `monomial_mem_second_family ε hu 1`. Rewrite using `[sub_mul, contr_sub, ← functional_representation_by_contraction ε hc Λ hΛ (first_operator_mem_first_family ε c a b hf) hg, contraction_first_operator_adjoint ε hc a b (representing_operator_mem_first_family ε c Λ f) hg, ← functional_representation_by_contraction ε hc Λ hΛ hf (sec …`.
+-/
 theorem repB : RepB := by
   intro m n ε c hc Λ hΛ
   refine ⟨Bop ε c Λ, fun R f hf => Bop_box ε c Λ R f hf, fun f hf g hg => functional_representation_by_contraction ε hc Λ hΛ hf hg, ?_⟩

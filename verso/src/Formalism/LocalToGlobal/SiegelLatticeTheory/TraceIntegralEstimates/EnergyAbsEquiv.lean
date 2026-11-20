@@ -17,6 +17,11 @@ variable {HH : Type} [NormedAddCommGroup HH] [InnerProductSpace ℂ HH] [Complet
 variable {V V' : Type} [NormedAddCommGroup V] [InnerProductSpace ℂ V] [FiniteDimensional ℂ V]
   [NormedAddCommGroup V'] [InnerProductSpace ℂ V'] [FiniteDimensional ℂ V']
 
+/- English proof (translation)
+Simplify using `only [fY]`. Repeatedly rewrite using `[smul_smul, ← Finset.sum_smul]`. Use `congr 1`. Rewrite using `[← (stdOrthonormalBasis ℂ V).sum_inner_mul_inner (W (p.2⁻¹ * p.1)) e]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem fY_linear (σ : G → (HH →L[ℂ] HH)) (w : HH) (W : G → V) (e : V) (p : G × G) :
     ∑ i, ⟪stdOrthonormalBasis ℂ V i, e⟫_ℂ • fY σ w W (stdOrthonormalBasis ℂ V i) p = fY σ w W e p := by
   simp only [fY]
@@ -26,6 +31,11 @@ theorem fY_linear (σ : G → (HH →L[ℂ] HH)) (w : HH) (W : G → V) (e : V) 
   refine Finset.sum_congr rfl fun i _ => ?_
   ring
 
+/- English proof (translation)
+Rewrite using `[Yop_apply]`. Repeatedly rewrite using `[yv_eq_integral hσ hW hinv hA hAS hAf]`. Establish `hint : ∀ i, Integrable (fun p => ⟪stdOrthonormalBasis ℂ V i, e⟫_ℂ • fY σ w W (stdOrthonormalBasis ℂ V i) p) (ν.prod (μS.restrict A))` using `fun i => (integrable_fY hσ hW hinv hA hAS hAf _).smul _`. Use `symm`. Combine the equalities or inequalities in the displayed calculation.
+
+Use `congr 1`. Use function extensionality and compare the values at `p`. Conclude with `(fY_linear σ w W e p).symm`. Use `_ = ∑ i, ∫ p, ⟪stdOrthonormalBasis ℂ V i, e⟫_ℂ • fY σ w W (stdOrthonormalBasis ℂ V i) p ∂(ν.prod (μS.restrict A)) := integral_finsetSum _ fun i _ => hint i`. Use `_ = _ := by simp_rw [integral_smul]`.
+-/
 theorem Yop_apply_integral {σ : G → (HH →L[ℂ] HH)} (hσ : IsUnitRep σ) {μ μS ν : Measure G} [SFinite ν]
     [SFinite μS] {d : ℝ} {w : HH} {S : Set G} {τ : G → (V →L[ℂ] V)} {W : G → V}
     (hW : IsWAbs μ σ d w S τ ν W) (hinv : ∀ a ∈ S, a⁻¹ ∈ S) {A : Set G} (hA : MeasurableSet A) (hAS : A ⊆ S)
@@ -47,6 +57,9 @@ theorem Yop_apply_integral {σ : G → (HH →L[ℂ] HH)} (hσ : IsUnitRep σ) {
           ∂(ν.prod (μS.restrict A)) := integral_finsetSum _ fun i _ => hint i
     _ = _ := by simp_rw [integral_smul]
 
+/- English proof (translation)
+Establish `hE` using `(MeasurableEquiv.mulRight (s0⁻¹ : G)).measurableEmbedding.restrict_map μS A`. Rewrite `hE` using `[MeasurableEquiv.coe_mulRight, hmap]`. Rewrite using `[← Measure.map_prod_map ν _ measurable_id (measurable_mul_const s0⁻¹), Measure.map_id, ← hE]`.
+-/
 theorem prod_restrict_translate {μS : Measure G} [SFinite μS] (ν : Measure G) [SFinite ν] {s0 : G}
     (hmap : μS.map (fun x => x * s0⁻¹) = μS) (A : Set G) :
     ν.prod (μS.restrict A) =
@@ -55,6 +68,15 @@ theorem prod_restrict_translate {μS : Measure G} [SFinite μS] (ν : Measure G)
   rw [MeasurableEquiv.coe_mulRight, hmap] at hE
   rw [← Measure.map_prod_map ν _ measurable_id (measurable_mul_const s0⁻¹), Measure.map_id, ← hE]
 
+/- English proof (translation)
+Take `⟨-, -, hmulS, hinvS, hsig, -, -, -, -, hright, -⟩` from `hS`. Establish `: SFinite μS` using `by have := hsig; infer_instance`. Establish `hmap : μS.map (fun x => x * s0⁻¹) = μS` using `hright _ (hinvS s0 hs0)`. Establish `hA'm : MeasurableSet ((fun v => v * s0⁻¹) ⁻¹' A)` using `measurable_mul_const s0⁻¹ hA`. Establish `hA'S : (fun v => v * s0⁻¹) ⁻¹' A ⊆ S`.
+
+Introduce `v hv`. Establish `h1` using `hmulS _ (hAS hv) s0 hs0`. Simplify `h1` using `[mul_assoc]`. Establish `hA'f : μS ((fun v => v * s0⁻¹) ⁻¹' A) < ⊤`. Rewrite using `[← Measure.map_apply (measurable_mul_const s0⁻¹) hA, hmap]`.
+
+Conclude with `hAf`. Establish `hemb : MeasurableEmbedding (Prod.map id (fun v : G => v * s0⁻¹))` using `(MeasurableEquiv.prodCongr (MeasurableEquiv.refl G) (MeasurableEquiv.mulRight s0⁻¹)).measurableEmbedding`. Rewrite using `[Yop_apply_integral hσ hW hinvS hA hAS hAf, Yop_apply_integral hσ hW hinvS hA'm hA'S hA'f, ← ContinuousLinearMap.integral_comp_comm _ (integrable_fY hσ hW hinvS hA hAS hAf e), prod_restrict_translate ν hmap A, hemb.integral_map]`. Use `congr 1`. Use function extensionality and compare the values at `p`.
+
+Simplify using `only [fY, Prod.map, id, map_smul]`. Establish `hq : (p.2 * s0⁻¹)⁻¹ * p.1 = s0 * (p.2⁻¹ * p.1)` using `by group`. Rewrite using `[hq, rep_mul_apply hσ, inv_mul_cancel_left, hW.2.2.2.1 s0 hs0, ContinuousLinearMap.adjoint_inner_right]`.
+-/
 theorem sigma_Yop {σ : G → (HH →L[ℂ] HH)} (hσ : IsUnitRep σ) {μ μS ν : Measure G} [SFinite ν] {S : Set G}
     (hS : IsHaarSub S μS) {d : ℝ} {w : HH} {τ : G → (V →L[ℂ] V)} {W : G → V}
     (hW : IsWAbs μ σ d w S τ ν W) {A : Set G} (hA : MeasurableSet A) (hAS : A ⊆ S) (hAf : μS A < ⊤)
@@ -85,6 +107,11 @@ theorem sigma_Yop {σ : G → (HH →L[ℂ] HH)} (hσ : IsUnitRep σ) {μ μS ν
   rw [hq, rep_mul_apply hσ, inv_mul_cancel_left, hW.2.2.2.1 s0 hs0,
     ContinuousLinearMap.adjoint_inner_right]
 
+/- English proof (translation)
+Use extensionality with `b`. Use `ext_inner_left ℂ fun a => ?_` and prove the remaining obligations. Rewrite using `[inner_sand]`. Use `conv_rhs => rw [ContinuousLinearMap.comp_apply, ContinuousLinearMap.comp_apply, ← ContinuousLinearMap.adjoint_inner_left, inner_sand]`. Rewrite using `[← sigma_Yop hσ hS hW hΩm hΩS hΩf hs0 a, ← sigma_Yop hσ hS' hW' hΩm' hΩS' hΩf' hs0' b]`.
+
+Establish `hmove : ∀ u : HH, σ γ (σ s0'⁻¹ u) = σ s0⁻¹ (σ (s0 * γ * s0'⁻¹) u)`. Introduce `u`. Rewrite using `[rep_mul_apply hσ, rep_mul_apply hσ, show s0⁻¹ * (s0 * γ * s0'⁻¹) = γ * s0'⁻¹ by group]`. Rewrite using `[hmove, hσ.2.2.1]`.
+-/
 theorem sand_translate {σ : G → (HH →L[ℂ] HH)} (hσ : IsUnitRep σ) {μ μS ν μS' ν' : Measure G} [SFinite ν]
     [SFinite ν'] {S S' : Set G} (hS : IsHaarSub S μS) (hS' : IsHaarSub S' μS') {d : ℝ} {w : HH}
     {τ : G → (V →L[ℂ] V)} {τ' : G → (V' →L[ℂ] V')} {W : G → V} {W' : G → V'}
@@ -106,6 +133,9 @@ theorem sand_translate {σ : G → (HH →L[ℂ] HH)} (hσ : IsUnitRep σ) {μ �
     rw [rep_mul_apply hσ, rep_mul_apply hσ, show s0⁻¹ * (s0 * γ * s0'⁻¹) = γ * s0'⁻¹ by group]
   rw [hmove, hσ.2.2.1]
 
+/- English proof (translation)
+Simplify using `only [Xop]`. Rewrite using `[hsA_smul, hsA_smul, sand_translate hσ hS hS' hW hW' hΩm hΩS hΩf hΩm' hΩS' hΩf' hs0 hs0' γ, hsA_conj (τ s0) (τ' s0') (hW.2.2.1 s0 hs0) (hW'.2.2.1 s0' hs0')]`.
+-/
 theorem hsA_Xop_translate {μ : Measure G} {σ : G → (HH →L[ℂ] HH)} {d : ℝ} {w : HH} {S S' : Set G}
     {μS ν μS' ν' : Measure G} {τ : G → (V →L[ℂ] V)} {τ' : G → (V' →L[ℂ] V')} {W : G → V} {W' : G → V'}
     [SFinite ν] [SFinite ν'] (hσ : IsUnitRep σ) (hS : IsHaarSub S μS) (hS' : IsHaarSub S' μS')

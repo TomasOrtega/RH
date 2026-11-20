@@ -5,6 +5,13 @@ noncomputable section
 open Polynomial Classical GlobalTheory.BadShare
 namespace GlobalTheory.BadShare.Indep
 
+/- English proof (translation)
+Establish `hp : ∀ n : ℕ, S (a ^ n)`. Introduce `n`. Proceed by induction on `n with`. Consider the case `zero => simpa using h1`. Consider the case `succ n ih => rw [pow_succ]`.
+
+Conclude with `hm _ _ ih ha`. Establish `hpos : 0 < orderOf a` using `orderOf_pos a`. Establish `: a⁻¹ = a ^ (orderOf a - 1)`. Rewrite using `[inv_eq_iff_mul_eq_one, ← pow_succ', Nat.sub_add_cancel hpos, pow_orderOf_eq_one]`. Rewrite using `[this]`.
+
+Conclude with `hp _`.
+-/
 lemma inv_of_mul_closed {G : Type} [Group G] [Finite G] (S : G → Prop) (h1 : S 1)
     (hm : ∀ a b, S a → S b → S (a * b)) (a : G) (ha : S a) : S a⁻¹ := by
   have hp : ∀ n : ℕ, S (a ^ n) := by
@@ -25,11 +32,21 @@ def RowUp (k : ℕ) (h : GG g N) : Prop :=
 def Corner (k : ℕ) (h : GG g N) : Prop :=
   ∀ a b : Fin N, (k ≤ (a : ℕ) ∨ k ≤ (b : ℕ)) → h.val a b = if a = b then 1 else 0
 
+/- English proof (translation)
+Introduce `a _`. Use `⟨by simp, fun b hb => ?_⟩` and prove the remaining obligations. Simplify using `[Matrix.one_apply, hb.ne']`.
+-/
 lemma rowUp_one (k : ℕ) : RowUp k (1 : GG g N) := by
   intro a _
   refine ⟨by simp, fun b hb => ?_⟩
   simp [Matrix.one_apply, hb.ne']
 
+/- English proof (translation)
+Establish `key : ∀ a b : Fin N, k ≤ (a : ℕ) → b ≤ a → (h * h').val a b = h'.val a b`. Introduce `a b ha hb`. Rewrite using `[Units.val_mul, Matrix.mul_apply, Finset.sum_eq_single a]`. Rewrite using `[(H a ha).1, one_mul]`. Introduce `c _ hc`.
+
+Break down `lt_or_gt_of_ne hc with hc | hc` into its components or cases. Rewrite using `[(H a ha).2 c hc, zero_mul]`. Rewrite using `[(H' c (le_trans ha (le_of_lt hc))).2 b (lt_of_le_of_lt hb hc), mul_zero]`. Simplify using the standard rewrite rules. Introduce `a ha`.
+
+Use `⟨by rw [key a a ha le_rfl, (H' a ha).1], fun b hb => ?_⟩` and prove the remaining obligations. Rewrite using `[key a b ha hb.le, (H' a ha).2 b hb]`.
+-/
 lemma rowUp_mul (k : ℕ) (h h' : GG g N) (H : RowUp k h) (H' : RowUp k h') : RowUp k (h * h') := by
   have key : ∀ a b : Fin N, k ≤ (a : ℕ) → b ≤ a → (h * h').val a b = h'.val a b := by
     intro a b ha hb
@@ -44,13 +61,28 @@ lemma rowUp_mul (k : ℕ) (h h' : GG g N) (H : RowUp k h) (H' : RowUp k h') : Ro
   refine ⟨by rw [key a a ha le_rfl, (H' a ha).1], fun b hb => ?_⟩
   rw [key a b ha hb.le, (H' a ha).2 b hb]
 
+/- English proof (translation)
+The claim follows from `inv_of_mul_closed (RowUp k) (rowUp_one k) (rowUp_mul k) h H`.
+-/
 lemma rowUp_inv (k : ℕ) (h : GG g N) (H : RowUp k h) : RowUp k h⁻¹ :=
   inv_of_mul_closed (RowUp k) (rowUp_one k) (rowUp_mul k) h H
 
+/- English proof (translation)
+Introduce `a b _`. Simplify using `[Matrix.one_apply]`.
+-/
 lemma corner_one (k : ℕ) : Corner k (1 : GG g N) := by
   intro a b _
   simp [Matrix.one_apply]
 
+/- English proof (translation)
+Introduce `a b hab`. Rewrite using `[Units.val_mul, Matrix.mul_apply]`. Break down `hab with ha | hb` into its components or cases. Rewrite using `[Finset.sum_eq_single a]`. Rewrite using `[H a a (Or.inl ha), H' a b (Or.inl ha)]`.
+
+Simplify using the standard rewrite rules. Introduce `c _ hc`. Rewrite using `[H a c (Or.inl ha)]`. Simplify using `[hc.symm]`. Simplify using the standard rewrite rules.
+
+Rewrite using `[Finset.sum_eq_single b]`. Rewrite using `[H a b (Or.inr hb), H' b b (Or.inr hb)]`. Simplify using the standard rewrite rules. Introduce `c _ hc`. Rewrite using `[H' c b (Or.inr hb)]`.
+
+Simplify using `[hc]`. Simplify using the standard rewrite rules.
+-/
 lemma corner_mul (k : ℕ) (h h' : GG g N) (H : Corner k h) (H' : Corner k h') : Corner k (h * h') := by
   intro a b hab
   rw [Units.val_mul, Matrix.mul_apply]
@@ -66,14 +98,23 @@ lemma corner_mul (k : ℕ) (h h' : GG g N) (H : Corner k h) (H' : Corner k h') :
       rw [H' c b (Or.inr hb)]; simp [hc]
     · simp
 
+/- English proof (translation)
+The claim follows from `inv_of_mul_closed (Corner k) (corner_one k) (corner_mul k) h H`.
+-/
 lemma corner_inv (k : ℕ) (h : GG g N) (H : Corner k h) : Corner k h⁻¹ :=
   inv_of_mul_closed (Corner k) (corner_one k) (corner_mul k) h H
 
+/- English proof (translation)
+Introduce `a ha`. Use `⟨by rw [H a a (Or.inl ha)]; simp, fun b hb => ?_⟩` and prove the remaining obligations. Rewrite using `[H a b (Or.inl ha)]`. Simplify using `[hb.ne']`.
+-/
 lemma Corner.rowUp {k : ℕ} {h : GG g N} (H : Corner k h) : RowUp k h := by
   intro a ha
   refine ⟨by rw [H a a (Or.inl ha)]; simp, fun b hb => ?_⟩
   rw [H a b (Or.inl ha)]; simp [hb.ne']
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fun H => ⟨fun a => (H a (Nat.zero_le _)).1, fun a b hb => (H a (Nat.zero_le _)).2 b hb⟩, fun H a _ => ⟨H.1 a, fun b hb => H.2 a b hb⟩⟩`.
+-/
 lemma rowUp_zero_iff (h : GG g N) : RowUp 0 h ↔ IsUp g N h :=
   ⟨fun H => ⟨fun a => (H a (Nat.zero_le _)).1, fun a b hb => (H a (Nat.zero_le _)).2 b hb⟩,
     fun H a _ => ⟨H.1 a, fun b hb => H.2 a b hb⟩⟩
@@ -90,6 +131,11 @@ def colElt (n : Fin N) (w : Fin N → ZMod g) (hw : w n = 0) : GG g N where
       rw [Matrix.vecMulVec_mul_vecMulVec]; simp [hw]
     rw [sub_mul, mul_add, mul_add, this]; simp
 
+/- English proof (translation)
+Establish `e : (h⁻¹ * colElt n w hw * h).val = 1 + (h⁻¹).val * Matrix.vecMulVec w (Pi.single n 1) * h.val`. Rewrite using `[Units.val_mul, Units.val_mul]`. Use `show (h⁻¹).val * (1 + Matrix.vecMulVec w (Pi.single n 1)) * h.val = _`. Rewrite using `[mul_add, add_mul, mul_one, Units.inv_mul]`. Rewrite using `[e, Matrix.mul_vecMulVec, Matrix.vecMulVec_mul, Matrix.add_apply, Matrix.one_apply, Matrix.vecMulVec_apply]`.
+
+Simplify using `[Matrix.mulVec, dotProduct]`.
+-/
 lemma conj_colElt (n : Fin N) (w : Fin N → ZMod g) (hw : w n = 0) (h : GG g N) (a b : Fin N) :
     (h⁻¹ * colElt n w hw * h).val a b =
       (if a = b then 1 else 0) + (∑ c, (h⁻¹).val a c * w c) * h.val n b := by
@@ -101,6 +147,27 @@ lemma conj_colElt (n : Fin N) (w : Fin N → ZMod g) (hw : w n = 0) (h : GG g N)
   rw [e, Matrix.mul_vecMulVec, Matrix.vecMulVec_mul, Matrix.add_apply, Matrix.one_apply, Matrix.vecMulVec_apply]
   simp [Matrix.mulVec, dotProduct]
 
+/- English proof (translation)
+Establish `Hi` using `rowUp_inv _ _ H`. Establish `hz : ∀ a : Fin N, n ≤ a → ∑ c, (h⁻¹).val a c * w c = 0`. Introduce `a ha`. Use `Finset.sum_eq_zero fun c _ => ?_` and prove the remaining obligations. Break down `lt_or_ge c n with hc | hc` into its components or cases.
+
+Rewrite using `[(Hi a ha).2 c (lt_of_lt_of_le hc ha), zero_mul]`. Rewrite using `[hw c hc, mul_zero]`. Establish `hn` using `H n le_rfl`. Establish `hle : ∀ a b : Fin N, b ≤ a → (∑ c, (h⁻¹).val a c * w c) * h.val n b = 0`. Introduce `a b hb`.
+
+Break down `lt_or_ge a n with hc | hc` into its components or cases. Rewrite using `[hn.2 b (lt_of_le_of_lt hb hc), mul_zero]`. Rewrite using `[hz a hc, zero_mul]`. Use `set u := h⁻¹ * colElt n w (hw n le_rfl) * h with hu`. Establish `hup : IsUp g N u`.
+
+Use `⟨fun a => ?_, fun a b hb => ?_⟩` and prove the remaining obligations. Rewrite using `[hu, conj_colElt, hle a a le_rfl]`. Simplify using the standard rewrite rules. Rewrite using `[hu, conj_colElt, hle a b hb.le]`. Simplify using `[hb.ne']`.
+
+Establish `hchi : L.chi u = L.ψ ((L.co m : ZMod g) * ∑ c, (h⁻¹).val m c * w c)`. Unfold `Lev.chi`. Use `congr 1`. Establish `hE : ∀ a b : Fin N, L.Edge a b ↔ (b : ℕ) = a + 1`. Introduce `a b`.
+
+Simplify using `[Lev.Edge, hL]`. Rewrite using `[Finset.sum_eq_single m, Finset.sum_eq_single n]`. Rewrite using `[if_pos ((hE m n).2 hmn), hu, conj_colElt, hn.1, if_neg (by intro e; rw [e] at hmn; omega)]`. Simplify using the standard rewrite rules. Introduce `b _ hb`.
+
+Rewrite using `[if_neg]`. Introduce `e`. Conclude with `hb (Fin.ext (by rw [(hE m b).1 e, hmn]))`. Simplify using the standard rewrite rules. Introduce `a _ ha`.
+
+Use `Finset.sum_eq_zero fun b _ => ?_` and prove the remaining obligations. Use `split_ifs with e`. Establish `e'` using `(hE a b).1 e`. Rewrite using `[hu, conj_colElt, if_neg (by intro e; rw [e] at e'; omega), zero_add]`. Establish `ha' : (a : ℕ) ≠ m` using `fun e => ha (Fin.ext e)`.
+
+Break down `lt_or_ge a n with hc | hc` into its components or cases. Rewrite using `[hn.2 b (by rw [Fin.lt_def] at hc ⊢; omega)]; simp`. Rewrite using `[hz a hc]`. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
+
+Simplify using the standard rewrite rules. Establish `e : colElt n w (hw n le_rfl) * h = h * u` using `by rw [hu]; group`. Rewrite using `[← Module.End.mul_apply, ← map_mul, e, map_mul, Module.End.mul_apply, hx u hup, map_smul, hchi]`.
+-/
 lemma act_colElt {M : Type} [AddCommGroup M] [Module ℂ M] (ρ : Representation ℂ (GG g N) M) (L : Lev g N)
     (hL : L.sharp = false) (x : M) (hx : ∀ u, IsUp g N u → ρ u x = L.chi u • x) (m n : Fin N) (hmn : (n : ℕ) = m + 1)
     (w : Fin N → ZMod g) (hw : ∀ c, n ≤ c → w c = 0) (h : GG g N) (H : RowUp n h) :
@@ -150,6 +217,17 @@ lemma act_colElt {M : Type} [AddCommGroup M] [Module ℂ M] (ρ : Representation
   have e : colElt n w (hw n le_rfl) * h = h * u := by rw [hu]; group
   rw [← Module.End.mul_apply, ← map_mul, e, map_mul, Module.End.mul_apply, hx u hup, map_smul, hchi]
 
+/- English proof (translation)
+Take `⟨c, hc⟩` from `Function.ne_iff.1 hd`. Take `⟨t, ht⟩` from `DFunLike.ne_iff.1 hψ`. Establish `hc' : d c ≠ 0` using `hc`. Establish `ht' : ψ t ≠ 1` using `by simpa using ht`. Establish `e` using `Equiv.sum_comp (Equiv.addRight (Pi.single c (t / d c) : Fin N → ZMod g)) (fun v : Fin N → ZMod g => ψ (∑ c, d c * v c))`.
+
+Establish `e2 : ∀ v : Fin N → ZMod g, ψ (∑ c', d c' * (Equiv.addRight (Pi.single c (t / d c) : Fin N → ZMod g) v) c') = ψ t * ψ (∑ c, d c * v c)`. Introduce `v`. Rewrite using `[← AddChar.map_add_eq_mul]`. Use `congr 1`. Simplify using `only [Equiv.coe_addRight, Pi.add_apply, mul_add, Finset.sum_add_distrib]`.
+
+Rewrite using `[add_comm]`. Use `congr 1`. Rewrite using `[Finset.sum_eq_single c]`. Simplify using the standard rewrite rules. Clear the denominators using the available nonvanishing facts.
+
+Introduce `b _ hb`. Simplify using `[hb]`. Simplify using the standard rewrite rules. Simplify using `only [e2, ← Finset.mul_sum] at e`. Establish `: (ψ t - 1) * ∑ v : Fin N → ZMod g, ψ (∑ c, d c * v c) = 0` using `by rw [sub_mul, e]; simp`.
+
+Conclude with `(mul_eq_zero.1 this).resolve_left (sub_ne_zero.2 ht')`.
+-/
 lemma sum_char (ψ : AddChar (ZMod g) ℂ) (hψ : ψ ≠ 1) (d : Fin N → ZMod g) (hd : d ≠ 0) :
     ∑ v : Fin N → ZMod g, ψ (∑ c, d c * v c) = 0 := by
   obtain ⟨c, hc⟩ := Function.ne_iff.1 hd
@@ -174,6 +252,35 @@ lemma sum_char (ψ : AddChar (ZMod g) ℂ) (hψ : ψ ≠ 1) (d : Fin N → ZMod 
   have : (ψ t - 1) * ∑ v : Fin N → ZMod g, ψ (∑ c, d c * v c) = 0 := by rw [sub_mul, e]; simp
   exact (mul_eq_zero.1 this).resolve_left (sub_ne_zero.2 ht')
 
+/- English proof (translation)
+Set `m : Fin N` to `⟨k, by omega⟩`. Set `n : Fin N` to `⟨k + 1, hk⟩`. Set `tr : (Fin N → ZMod g) → Fin N → ZMod g` to `fun v c => if c < n then v c else 0`. Establish `htr : ∀ v c, n ≤ c → tr v c = 0` using `fun v c hc => if_neg (not_lt.2 hc)`. Set `d : GG g N → Fin N → ZMod g` to `fun h c => if c < n then (L.co m : ZMod g) * ((h⁻¹).val m c - if m = c then 1 else 0) else 0`.
+
+Establish `hmn : m < n` using `by simp [m, n, Fin.lt_def]`. Establish `h1 : ∀ (v : Fin N → ZMod g) (h : GG g N), L.ψ (-((L.co m : ZMod g) * v m)) • ρ (colElt n (tr v) (htr v n le_rfl)) (φ h • ρ h x) = L.ψ (∑ c, d h c * v c) • φ h • ρ h x`. Introduce `v h`. Distinguish the cases in `h0 : φ h = 0`. Simplify using `[h0]`.
+
+Rewrite using `[map_smul, act_colElt ρ L hL x hx m n rfl (tr v) (htr v) h (hφ h h0), smul_comm (φ h), smul_smul, ← AddChar.map_add_eq_mul]`. Use `congr 2`. Establish `: v m = ∑ c, (if m = c then 1 else 0) * tr v c`. Rewrite using `[Finset.sum_eq_single m]`. Simplify using `[tr, hmn]`.
+
+Introduce `b _ hb`. Simplify using `[hb.symm]`. Simplify using the standard rewrite rules. Rewrite using `[this, neg_add_eq_sub, ← mul_sub, ← Finset.sum_sub_distrib, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun c _ => ?_` and prove the remaining obligations.
+
+Simplify using `only [d, tr]`. Apply the tactic sequence `split_ifs <;> ring`. Establish `h2 : ∀ h : GG g N, (∑ v : Fin N → ZMod g, L.ψ (∑ c, d h c * v c)) • φ h • ρ h x = (Fintype.card (Fin N → ZMod g) : ℂ) • (if RowUp k h then φ h else 0) • ρ h x`. Introduce `h`. Distinguish the cases in `h0 : φ h = 0`.
+
+Simplify using `[h0]`. Distinguish the cases in `hR : RowUp k h`. Establish `Hi` using `rowUp_inv _ _ hR m le_rfl`. Establish `: d h = 0`. Use function extensionality and compare the values at `c`.
+
+Simplify using `only [d]`. Use `split_ifs with a b`. Substitute `b` using the available equality. Rewrite using `[Hi.1]`. Simplify using the standard rewrite rules.
+
+Rewrite using `[Hi.2 c (by`. Establish `: (m : ℕ) ≠ c` using `fun e => b (Fin.ext e)`. Simplify using `only [Fin.lt_def, m, n] at a this ⊢`. Use the proof step `omega)]`. Simplify using the standard rewrite rules.
+
+Both sides reduce to the same expression. Simplify using `[this, hR]`. Rewrite using `[if_neg hR, sum_char L.ψ L.hψ]`. Simplify using the standard rewrite rules. Introduce `hd`.
+
+Apply `hR` to reduce the goal to its premises. Establish `Hi` using `rowUp_inv _ _ (hφ h h0)`. Establish `hrow : ∀ c, c < n → (h⁻¹).val m c = if m = c then 1 else 0`. Introduce `c hc`. Use `congrFun hd c` as an intermediate fact.
+
+Simplify using `only [d, if_pos hc, Pi.zero_apply] at this`. Conclude with `sub_eq_zero.1 ((mul_eq_zero.1 this).resolve_left (L.co m).ne_zero)`. Establish `: RowUp k h⁻¹`. Introduce `a ha`. Break down `ha.eq_or_lt with e | e` into its components or cases.
+
+Establish `: a = m` using `Fin.ext e.symm`. Substitute `this` using the available equality. Use `⟨by rw [hrow _ hmn]; simp, fun b hb => ?_⟩` and prove the remaining obligations. Rewrite using `[hrow _ (hb.trans hmn)]`. Simplify using `[hb.ne']`.
+
+Conclude with `Hi a e`. Simplify using `using rowUp_inv _ _ this`. Establish `h3 : ∑ v : Fin N → ZMod g, L.ψ (-((L.co m : ZMod g) * v m)) • ρ (colElt n (tr v) (htr v n le_rfl)) (∑ h, φ h • ρ h x) = 0`. Simplify using `[hs]`. Simplify using `only [map_sum, Finset.smul_sum] at h3`.
+
+Rewrite `h3` using `[Finset.sum_comm, Finset.sum_congr rfl fun h _ => ((Finset.sum_congr rfl fun v _ => h1 v h).trans (Finset.sum_smul.symm.trans (h2 h))), ← Finset.smul_sum]`. Conclude with `(smul_eq_zero.1 h3).resolve_left (Nat.cast_ne_zero.2 Fintype.card_ne_zero)`.
+-/
 lemma step {M : Type} [AddCommGroup M] [Module ℂ M] (ρ : Representation ℂ (GG g N) M) (L : Lev g N)
     (hL : L.sharp = false) (x : M) (hx : ∀ u, IsUp g N u → ρ u x = L.chi u • x) (k : ℕ) (hk : k + 1 < N)
     (φ : GG g N → ℂ) (hφ : ∀ h, φ h ≠ 0 → RowUp (k + 1) h) (hs : ∑ h, φ h • ρ h x = 0) :
@@ -247,6 +354,15 @@ lemma step {M : Type} [AddCommGroup M] [Module ℂ M] (ρ : Representation ℂ (
   rw [Finset.sum_comm, Finset.sum_congr rfl fun h _ => ((Finset.sum_congr rfl fun v _ => h1 v h).trans (Finset.sum_smul.symm.trans (h2 h))), ← Finset.smul_sum] at h3
   exact (smul_eq_zero.1 h3).resolve_left (Nat.cast_ne_zero.2 Fintype.card_ne_zero)
 
+/- English proof (translation)
+Proceed by induction on `k generalizing φ with`. Consider the case `zero`. Establish `: ∀ h, φ h • ρ h x = (if IsUp g N h then φ h * L.chi h else 0) • x`. Introduce `h`. Distinguish the cases in `h0 : φ h = 0`.
+
+Simplify using `[h0]`. Use `(rowUp_zero_iff h).1 (hφ h h0)` as an intermediate fact. Rewrite using `[if_pos this, hx h this, smul_smul]`. Simplify using `only [this, ← Finset.sum_smul] at hs`. Conclude with `(smul_eq_zero.1 hs).resolve_right hx0`.
+
+Consider the case `succ k ih`. Use `ih (by omega) (fun h => if RowUp k h then φ h else 0) (fun h hh => by by_contra e; exact hh (if_neg e)) (step ρ L hL x hx k hk φ hφ hs)` as an intermediate fact. Use `Eq.trans (Finset.sum_congr rfl fun u _ => ?_) this` and prove the remaining obligations. Use `split_ifs with a b`. Both sides reduce to the same expression.
+
+Conclude with `absurd (fun c _ => ⟨a.1 c, fun b hb => a.2 c b hb⟩) b`. Both sides reduce to the same expression.
+-/
 lemma sum_up {M : Type} [AddCommGroup M] [Module ℂ M] (ρ : Representation ℂ (GG g N) M) (L : Lev g N)
     (hL : L.sharp = false) (x : M) (hx0 : x ≠ 0) (hx : ∀ u, IsUp g N u → ρ u x = L.chi u • x) (k : ℕ) (hk : k < N)
     (φ : GG g N → ℂ) (hφ : ∀ h, φ h ≠ 0 → RowUp k h) (hs : ∑ h, φ h • ρ h x = 0) :
@@ -270,6 +386,19 @@ lemma sum_up {M : Type} [AddCommGroup M] [Module ℂ M] (ρ : Representation ℂ
     · exact absurd (fun c _ => ⟨a.1 c, fun b hb => a.2 c b hb⟩) b
     · rfl
 
+/- English proof (translation)
+Introduce `g _ N M _ _ _ ρ L hL x hx0 hx k hk φ hφ hs h₀`. Establish `hφ' : ∀ h, φ h ≠ 0 → Corner k h` using `hφ`. Distinguish the cases in `h0 : Corner k h₀`. Establish `hc : ∀ p, φ (h₀ * p) ≠ 0 → Corner k p`. Introduce `p hp`.
+
+Simplify using `using corner_mul k _ _ (corner_inv k _ h0) (hφ' _ hp)`. Establish `hs' : ∑ p, φ (h₀ * p) • ρ p x = 0`. Establish `e` using `Equiv.sum_comp (Equiv.mulLeft h₀) (fun h => φ h • ρ h x)`. Establish `e2` using `congrArg (ρ h₀⁻¹) (e.trans hs)`. Rewrite `e2` using `[map_sum, map_zero]`.
+
+Rewrite using `[← e2]`. Use `Finset.sum_congr rfl fun p _ => ?_` and prove the remaining obligations. Simplify using `only [Equiv.coe_mulLeft, map_smul]`. Rewrite using `[← Module.End.mul_apply, ← map_mul, inv_mul_cancel_left]`. Use `sum_up ρ L hL x hx0 hx k hk (fun p => φ (h₀ * p)) (fun p hp => (hc p hp).rowUp) hs'` as an intermediate fact.
+
+Rewrite using `[Finset.sum_filter]`. Use `Eq.trans (Finset.sum_congr rfl fun u _ => ?_) this` and prove the remaining obligations. Distinguish the cases in `e : φ (h₀ * u) = 0`. Simplify using `[e]`. Establish `hu : ∀ a b : Fin N, (k ≤ (a : ℕ) ∨ k ≤ (b : ℕ)) → u.val a b = if a = b then 1 else 0` using `hc u e`.
+
+Distinguish the cases in `e' : IsUp g N u`. Rewrite using `[if_pos ⟨e', hu⟩, if_pos e']`. Rewrite using `[if_neg (fun h => e' h.1), if_neg e']`. Use `Finset.sum_eq_zero fun u hu => ?_` and prove the remaining obligations. Establish `hu' : Corner k u` using `(Finset.mem_filter.1 hu).2.2`.
+
+Establish `: φ (h₀ * u) = 0`. Assume the negation of the conclusion as `e`. Apply `h0` to reduce the goal to its premises. Simplify using `using corner_mul k _ _ (hφ' _ e) (corner_inv k _ hu')`. Rewrite using `[this, zero_mul]`.
+-/
 theorem translates_independent : ∀ (g : ℕ) [Fact g.Prime] (N : ℕ), ∀ (M : Type) [AddCommGroup M] [Module ℂ M] [FiniteDimensional ℂ M] (ρ : Representation ℂ (GG g N) M), ∀ (L : Lev g N), L.sharp = false → ∀ (x : M), x ≠ 0 → (∀ u, IsUp g N u → ρ u x = L.chi u • x) → ∀ k : ℕ, k < N → ∀ φ : GG g N → ℂ, (∀ h, φ h ≠ 0 → (∀ a b : Fin N, (k ≤ (a : ℕ) ∨ k ≤ (b : ℕ)) → (h : GG g N).val a b = if a = b then 1 else 0)) → ∑ h, φ h • ρ h x = 0 → ∀ h₀ : GG g N, ∑ u ∈ Finset.univ.filter (fun u : GG g N => IsUp g N u ∧ (∀ a b : Fin N, (k ≤ (a : ℕ) ∨ k ≤ (b : ℕ)) → (u : GG g N).val a b = if a = b then 1 else 0)), φ (h₀ * u) * L.chi u = 0 := by
   intro g _ N M _ _ _ ρ L hL x hx0 hx k hk φ hφ hs h₀
   have hφ' : ∀ h, φ h ≠ 0 → Corner k h := hφ

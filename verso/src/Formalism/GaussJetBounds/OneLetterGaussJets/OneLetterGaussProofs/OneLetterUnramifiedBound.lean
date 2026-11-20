@@ -12,6 +12,15 @@ namespace Formalism.DworkPowerSeriesWeights.OddLevelGainBounds
 
 open Formalism.IncomingBounds
 
+/- English proof (translation)
+Establish `hl3 : 3 ≤ l`. Take `⟨k, hk⟩` from `hodd`. Use `hl.two_le` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Take `⟨-, hOR2⟩` from `oneLetterRadius l hl3`.
+
+Take `⟨hBc, hBw⟩` from `one_letter_exponent_weight.{u, v} K l N0 N1 hl hodd hpi K0 hK0 ζ hζ be hbe ep hep ι M hM1 sgn hsgn`. Establish `hg' : ∀ x, MvPowerSeries.subst g (genLog (K` using `K) l (id : Fin N0 × Fin N1 → _) x) = MvPowerSeries.X x := by`. Introduce `x`. Rewrite using `[← (logarithm_weight_comparison K l 2 N0 N1).2.2 x]`. Conclude with `hg x`.
+
+Establish `hsig : ∀ _ : ι, (0 : ℝ) ≤ 1 / ((l : ℝ) + 1)` using `fun _ => by positivity`. Establish `hUw` using `unipotent_weight_bound.{u, v, 0} K l hl hpi (Fin N0 × Fin N1) id g hg0 hg' U hU ι M hM1 (fun _ => 1 / ((l : ℝ) + 1)) hsig`. Establish `h` using `lemma_R_core_log_loss.{u, v} K l hl hpi ι (fun _ => 1 / ((l : ℝ) + 1)) κ a ha hκa _ _ hBc (fun n _ => hBw n) (fun n _ => hUw n)`. Use `le_of_le_of_eq h ?_` and prove the remaining obligations. Use `congr 2`.
+
+Rewrite using `[hOR2, ← Finset.sum_mul, mul_comm, Finsupp.degree_eq_sum]`. Use `push_cast`. Both sides reduce to the same expression.
+-/
 theorem one_letter_unramified_bound (K : Type u) [NormedField K] [IsUltrametricDist K] [CharZero K]
     (l N0 N1 : ℕ) (hl : l.Prime) (hodd : Odd l) (hpi : ‖(l : K)‖ < 1)
     (K0 : Subfield K) (hK0 : Unram l K0) (ζ : K) (hζ : IsPrimitiveRoot ζ (l ^ 2 - 1))
@@ -54,6 +63,13 @@ theorem one_letter_unramified_bound (K : Type u) [NormedField K] [IsUltrametricD
   push_cast
   rfl
 
+/- English proof (translation)
+Establish `hrow : oldRowLow (N1` using `N1) (fun i k : Fin N0 => if i = k then (1 : K) else 0) = fun (i : Fin N0) (b : Fin N1) => (MvPolynomial.X (i, b) : MvPolynomial (Fin N0 × Fin N1) K) := by`. Use function extensionality and compare the values at `i b`. Unfold `oldRowLow`. Rewrite using `[Finset.sum_eq_single i]`. Simplify using the standard rewrite rules.
+
+Introduce `k _ hk`. Simplify using `[Ne.symm hk]`. Introduce `h`. Conclude with `absurd (Finset.mem_univ i) h`. Establish `h` using `(monoShapeLow.{0} K N0 N1 N0 C (fun i k : Fin N0 => if i = k then (1 : K) else 0) p hp I κ (by rw [hrow]; exact hκ)).2 y.1`.
+
+Conclude with `le_trans (Finset.single_le_sum (f := fun b : Fin N1 => κ (y.1, b)) (fun _ _ => Nat.zero_le _) (Finset.mem_univ y.2)) h`.
+-/
 theorem minor_monomial_exponent_le {K : Type} [Field K] {N0 N1 C : ℕ} (p : Fin C → ℕ) (hp : ∀ c, p c ≤ N0)
     (I : ∀ c, Fin (p c) → Fin N1) (κ : Fin N0 × Fin N1 →₀ ℕ)
     (hκ : κ ∈ (minorProd (fun (i : Fin N0) (b : Fin N1) =>
@@ -76,6 +92,9 @@ theorem minor_monomial_exponent_le {K : Type} [Field K] {N0 N1 C : ℕ} (p : Fin
   exact le_trans (Finset.single_le_sum (f := fun b : Fin N1 => κ (y.1, b))
     (fun _ _ => Nat.zero_le _) (Finset.mem_univ y.2)) h
 
+/- English proof (translation)
+Break down `Nat.eq_zero_or_pos C with h | h` into its components or cases. Substitute `h` using the available equality. Simplify using the standard rewrite rules. Rewrite using `[max_eq_right h]`.
+-/
 theorem logb_max_one_const (l C : ℕ) :
     Real.logb l ((max 1 C : ℕ) : ℝ) = Real.logb l (C : ℝ) := by
   rcases Nat.eq_zero_or_pos C with h | h
@@ -84,6 +103,27 @@ theorem logb_max_one_const (l C : ℕ) :
   · rw [max_eq_right h]
 
 open OneGauss in
+/- English proof (translation)
+Introduce `l _ N0 N1 C hl3 K0 hK0 ζ hζ be hbe ep hep g hg0 hg U hU sgn hsgn p hp I n`. Establish `hlp : l.Prime` using `Fact.out`. Take `⟨K, instK, hult, hchar, φ, Y, hφ, hgauss, hgen⟩` from `residuallyGenericExists l (Fin N0 × Fin N0)`. Use `hult` as an intermediate fact. Use `hchar` as an intermediate fact.
+
+Establish `hnl : ‖(l : K)‖ = ‖(l : ℂ_[l])‖` using `by rw [← map_natCast φ, hφ]`. Establish `hl1 : ‖(l : ℂ_[l])‖ < 1`. Establish `h` using `norm_intCast_padicComplex l (l : ℤ)`. Rewrite `h` using `[Int.cast_natCast, Int.cast_natCast]`. Rewrite using `[h]`.
+
+Conclude with `Padic.norm_p_lt_one`. Establish `hl0 : 0 < ‖(l : ℂ_[l])‖` using `norm_pos_iff.2 (by exact_mod_cast hlp.ne_zero)`. Establish `hY : ∀ y, ‖Y y‖ ≤ 1`. Introduce `y`. Establish `h` using `hgauss (MvPolynomial.X y)`.
+
+Rewrite `h` using `[MvPolynomial.eval₂_X]`. Rewrite using `[h]`. Use `ciSup_le fun m => ?_` and prove the remaining obligations. Rewrite using `[MvPolynomial.coeff_X]`. Apply the tactic sequence `split_ifs <;> simp`.
+
+Take `⟨hT1, hT2, -, -⟩` from `admissibleTransfer ℂ_[l] K φ hφ l 2 N0 N1 K0 ζ be`. Establish `hcc : MvPowerSeries.constantCoeff be = 0` using `Transfer.cc_of_noLow hbe.2.2.1`. Establish `hg0' : ∀ y, MvPowerSeries.constantCoeff (MvPowerSeries.map φ (g y)) = 0` using `fun y => by`. Rewrite using `[MvPowerSeries.constantCoeff_map, hg0 y, map_zero]`. Establish `hg' : ∀ y, MvPowerSeries.subst (fun y' => MvPowerSeries.map φ (g y')) (oneLog (K` using `K) l y) = MvPowerSeries.X y := by`.
+
+Introduce `y`. Establish `h` using `congrArg (MvPowerSeries.map φ) (hg y)`. Rewrite `h` using `[MvPowerSeries.map_subst (MvPowerSeries.hasSubst_of_constantCoeff_zero hg0), map_oneLog, MvPowerSeries.map_X]`. Conclude with `h`. Establish `hR` using `one_letter_unramified_bound.{0, 0} K l N0 N1 hlp (hlp.odd_of_ne_two (by omega)) (hnl ▸ hl1) (K0.map φ) (hT1 hK0) (φ ζ) (hζ.map_of_injective φ.injective) _ (hT2 hbe) (φ ep) (by rw [hφ, hep]) (Fin N0 × Fin N1) (fun x i => frA Y i x) (fun x i => by`.
+
+Unfold `frA`. Use `split_ifs`. Conclude with `hY _`. Use the proof step `simp)`. Apply the tactic sequence `_ hg0' hg' _ (Transfer.integral_map φ hφ hU) (φ sgn) (by rcases hsgn with rfl | rfl <;> simp)`.
+
+Use `le_trans (le_ciSup (bddAbove_norm_coeff _) n) ?_` and prove the remaining obligations. Rewrite using `[← hgauss, eval₂_frameJetOne φ g hg0 U sgn ep be hcc p hp I Y]`. Unfold `jetPair`. Use `IsUltrametricDist.norm_sum_le_of_forall_le_of_nonneg (Real.rpow_nonneg hl0.le _) fun κ hκ => ?_` and prove the remaining obligations. Establish `hdeg` using `degree_plain p hp I κ hκ`.
+
+Establish `hint : ‖MvPolynomial.coeff κ (minorProd (fun (i : Fin N0) (b : Fin N1) => (MvPolynomial.X (i, b) : MvPolynomial (Fin N0 × Fin N1) K)) p hp I)‖ ≤ 1`. Use `minorProd_mem_opInt _ (fun i b m => ?_) p hp I κ` and prove the remaining obligations. Rewrite using `[MvPolynomial.coeff_X]`. Apply the tactic sequence `split_ifs <;> simp`. Rewrite using `[mul_assoc, norm_mul]`.
+
+Use `le_trans (mul_le_of_le_one_left (norm_nonneg _) hint) ?_` and prove the remaining obligations. Use `le_of_le_of_eq (hR κ (max 1 C) (le_max_left _ _) (fun y => le_trans (minor_monomial_exponent_le p hp I κ hκ y) (le_max_right _ _))) ?_` and prove the remaining obligations. Rewrite using `[hnl, hdeg, logb_max_one_const]`. Simplify using the standard rewrite rules.
+-/
 theorem one_letter_gauss_bound : OneLetterGauss7 := by
   intro l _ N0 N1 C hl3 K0 hK0 ζ hζ be hbe ep hep g hg0 hg U hU sgn hsgn p hp I n
   have hlp : l.Prime := Fact.out

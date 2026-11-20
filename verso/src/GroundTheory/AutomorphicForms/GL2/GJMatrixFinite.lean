@@ -16,6 +16,9 @@ variable {X : Type*} [AddCommGroup X]
 def cosetInd (H : AddSubgroup X) (a : X) : X → ℂ :=
   fun x ↦ by classical exact if x - a ∈ H then 1 else 0
 
+/- English proof (translation)
+Unfold `cosetInd`. Use `congr 1`.
+-/
 theorem cosetInd_apply (H : AddSubgroup X) (a x : X) [Decidable (x - a ∈ H)] :
     cosetInd H a x = if x - a ∈ H then 1 else 0 := by
   unfold cosetInd
@@ -23,6 +26,21 @@ theorem cosetInd_apply (H : AddSubgroup X) (a x : X) [Decidable (x - a ∈ H)] :
 
 variable [TopologicalSpace X] [IsTopologicalAddGroup X] {𝓗 : Set (AddSubgroup X)}
 
+/- English proof (translation)
+Establish `hloc : ∀ x : X, ∃ J ∈ 𝓗, ∀ h ∈ J, f (x + h) = f x`. Introduce `x`. Establish `h1 : ∀ᶠ h in 𝓝 (0 : X), f (x + h) = f x` using `((continuous_const_add x).tendsto' 0 x (add_zero x)).eventually (hlc.eventually_eq x)`. Take `⟨J, hJ𝓗, hJ⟩` from `hbasis _ h1`. Conclude with `⟨J, hJ𝓗, fun h hh ↦ hJ hh⟩`.
+
+Use `choose J hJ𝓗 hJ using hloc`. Take `⟨t, ht⟩` from `hcs.isCompact.elim_finite_subcover (fun x ↦ x +ᵥ (J x : Set X)) (fun x ↦ (hopen _ (hJ𝓗 x)).vadd x) (fun x _ ↦ Set.mem_iUnion.mpr ⟨x, by`. Rewrite using `[Set.mem_vadd_set_iff_neg_vadd_mem, vadd_eq_add, neg_add_cancel]`. Conclude with `zero_mem _⟩)`. Establish `hW : (⋂ x ∈ t, (J x : Set X)) ∈ 𝓝 0` using `(biInter_finset_mem t).mpr fun x _ ↦ (hopen _ (hJ𝓗 x)).mem_nhds (zero_mem _)`.
+
+Take `⟨I, hI𝓗, hI⟩` from `hbasis _ hW`. Establish `hmain : ∀ x ∈ tsupport f, ∀ h ∈ I, f (x + h) = f x`. Introduce `x hx h hh`. Take `⟨x₀, hx₀t, hxx₀⟩` from `Set.mem_iUnion₂.mp (ht hx)`. Rewrite `hxx₀` using `[Set.mem_vadd_set_iff_neg_vadd_mem, vadd_eq_add, neg_add_eq_sub, SetLike.mem_coe]`.
+
+Establish `hh' : h ∈ J x₀` using `Set.mem_iInter₂.mp (hI hh) x₀ hx₀t`. Establish `e1` using `hJ x₀ (x - x₀) hxx₀`. Establish `e2` using `hJ x₀ (x + h - x₀) (by`. Establish `: x + h - x₀ = (x - x₀) + h` using `by abel`. Rewrite using `[this]`.
+
+Conclude with `add_mem hxx₀ hh')`. Rewrite `e1`, `e2` using `[add_sub_cancel]`. Rewrite using `[e1, e2]`. Use `⟨I, hI𝓗, fun x h hh ↦ ?_⟩` and prove the remaining obligations. Distinguish the cases in `hx : x ∈ tsupport f`.
+
+Conclude with `hmain x hx h hh`. Distinguish the cases in `hxh : x + h ∈ tsupport f`. Use `hmain (x + h) hxh (-h) (neg_mem hh)` as an intermediate fact. Rewrite `this` using `[add_neg_cancel_right]`. Conclude with `this.symm`.
+
+Rewrite using `[image_eq_zero_of_notMem_tsupport hx, image_eq_zero_of_notMem_tsupport hxh]`.
+-/
 theorem exists_mem_forall_add_eq (hopen : ∀ H ∈ 𝓗, IsOpen (H : Set X))
     (hbasis : ∀ W ∈ 𝓝 (0 : X), ∃ H ∈ 𝓗, (H : Set X) ⊆ W) {f : X → ℂ}
     (hlc : IsLocallyConstant f) (hcs : HasCompactSupport f) :
@@ -64,6 +82,15 @@ theorem exists_mem_forall_add_eq (hopen : ∀ H ∈ 𝓗, IsOpen (H : Set X))
       exact this.symm
     · rw [image_eq_zero_of_notMem_tsupport hx, image_eq_zero_of_notMem_tsupport hxh]
 
+/- English proof (translation)
+Establish `: DiscreteTopology (X ⧸ H)` using `QuotientAddGroup.discreteTopology hH`. Establish `hS : ((QuotientAddGroup.mk : X → X ⧸ H) '' tsupport f).Finite` using `(hcs.isCompact.image continuous_quotient_mk').finite_of_discrete`. Establish `hmk : ∀ a x : X, x - a ∈ H ↔ (QuotientAddGroup.mk x : X ⧸ H) = QuotientAddGroup.mk a`. Introduce `a x`. Rewrite using `[QuotientAddGroup.eq, ← neg_mem_iff, neg_sub, sub_eq_neg_add]`.
+
+Establish `hinj : Set.InjOn (fun q : X ⧸ H ↦ q.out) ↑hS.toFinset` using `fun q _ q' _ h ↦ by simpa using congrArg (QuotientAddGroup.mk (s := H)) h`. Use `⟨hS.toFinset.image fun q ↦ q.out, ?_⟩` and prove the remaining obligations. Rewrite using `[Finset.sum_image hinj]`. Use function extensionality and compare the values at `x`. Rewrite using `[Finset.sum_apply]`.
+
+Simplify using `only [Pi.smul_apply, smul_eq_mul, cosetInd_apply, mul_ite, mul_one, mul_zero, hmk, QuotientAddGroup.out_eq']`. Rewrite using `[Finset.sum_ite_eq]`. Use `split_ifs with hx`. Establish `hq` using `QuotientAddGroup.out_eq' (s := H) (QuotientAddGroup.mk x)`. Rewrite `hq` using `[← hmk]`.
+
+Use `hI x (Quotient.out (QuotientAddGroup.mk x : X ⧸ H) - x) hq` as an intermediate fact. Rewrite `this` using `[add_sub_cancel]`. Conclude with `this.symm`. Conclude with `image_eq_zero_of_notMem_tsupport fun hx' ↦ hx ((Set.Finite.mem_toFinset hS).mpr ⟨x, hx', rfl⟩)`.
+-/
 theorem exists_eq_sum_cosetInd {H : AddSubgroup X} (hH : IsOpen (H : Set X)) {f : X → ℂ}
     (hcs : HasCompactSupport f) (hI : ∀ x, ∀ h ∈ H, f (x + h) = f x) :
     ∃ s : Finset X, f = ∑ a ∈ s, f a • cosetInd H a := by
@@ -95,6 +122,11 @@ theorem exists_eq_sum_cosetInd {H : AddSubgroup X} (hH : IsOpen (H : Set X)) {f 
 
 omit [IsTopologicalAddGroup X] in
 
+/- English proof (translation)
+Rewrite `hW` using `[nhds_pi, Filter.mem_pi]`. Take `⟨J, -, t, ht, hJt⟩` from `hW`. Establish `hU : (⋂ i, t i) ∈ 𝓝 (0 : X)` using `Filter.iInter_mem.mpr fun i ↦ ht i`. Take `⟨H, hH𝓗, hH⟩` from `hbasis _ hU`. Use `⟨H, hH𝓗, fun x hx ↦ hJt fun i _ ↦ ?_⟩` and prove the remaining obligations.
+
+Conclude with `Set.mem_iInter.mp (hH (((AddSubgroup.mem_pi _).mp hx) i (Set.mem_univ i))) i`.
+-/
 theorem exists_pi_subset {ι : Type*} [Finite ι]
     (hbasis : ∀ W ∈ 𝓝 (0 : X), ∃ H ∈ 𝓗, (H : Set X) ⊆ W) {W : Set (ι → X)} (hW : W ∈ 𝓝 0) :
     ∃ H ∈ 𝓗, (AddSubgroup.pi Set.univ (fun _ : ι ↦ H) : Set (ι → X)) ⊆ W := by
@@ -107,12 +139,22 @@ theorem exists_pi_subset {ι : Type*} [Finite ι]
 
 omit [TopologicalSpace X] [IsTopologicalAddGroup X] in
 
+/- English proof (translation)
+Simplify using `only [cosetInd_apply, Finset.prod_boole, AddSubgroup.mem_pi, Set.mem_univ, forall_const, Pi.sub_apply, Finset.mem_univ]`.
+-/
 theorem prod_cosetInd {ι : Type*} [Fintype ι] (H : AddSubgroup X) (a x : ι → X) :
     ∏ i, cosetInd H (a i) (x i) = cosetInd (AddSubgroup.pi Set.univ fun _ : ι ↦ H) a x := by
   classical
   simp only [cosetInd_apply, Finset.prod_boole, AddSubgroup.mem_pi, Set.mem_univ, forall_const,
     Pi.sub_apply, Finset.mem_univ]
 
+/- English proof (translation)
+Establish `hopen' : ∀ P ∈ (fun H ↦ AddSubgroup.pi Set.univ fun _ : ι ↦ H) '' 𝓗, IsOpen (P : Set (ι → X))`. Introduce and unpack `_ ⟨H, hH, rfl⟩`. Rewrite using `[AddSubgroup.coe_pi]`. Conclude with `isOpen_set_pi Set.finite_univ fun _ _ ↦ hopen H hH`. Establish `hbasis' : ∀ W ∈ 𝓝 (0 : ι → X), ∃ P ∈ (fun H ↦ AddSubgroup.pi Set.univ fun _ : ι ↦ H) '' 𝓗, (P : Set (ι → X)) ⊆ W`.
+
+Introduce `W hW`. Take `⟨H, hH, hHW⟩` from `exists_pi_subset hbasis hW`. Conclude with `⟨_, ⟨H, hH, rfl⟩, hHW⟩`. Take `⟨_, ⟨H, hH, rfl⟩, hinv⟩` from `exists_mem_forall_add_eq hopen' hbasis' hlc hcs`. Take `⟨s, hs⟩` from `exists_eq_sum_cosetInd (hopen' _ ⟨H, hH, rfl⟩) hcs hinv`.
+
+Use `⟨H, hH, s, hs.trans (Finset.sum_congr rfl fun a _ ↦ ?_)⟩` and prove the remaining obligations. Use function extensionality and compare the values at `x`. Simplify using `only [Pi.smul_apply, smul_eq_mul, prod_cosetInd]`.
+-/
 theorem exists_eq_sum_prod_cosetInd {ι : Type*} [Fintype ι]
     (hopen : ∀ H ∈ 𝓗, IsOpen (H : Set X))
     (hbasis : ∀ W ∈ 𝓝 (0 : X), ∃ H ∈ 𝓗, (H : Set X) ⊆ W) {f : (ι → X) → ℂ}
@@ -145,6 +187,9 @@ def finiteSchwartzBruhatPi : Submodule ℂ ((ι → 𝔸ᶠ[K]) → ℂ) where
   smul_mem' c _ hf := ⟨hf.1.comp (c • ·), hf.2.comp_left (smul_zero c)⟩
 
 omit [Fintype ι] in
+/- English proof (translation)
+Unfold both sides. The equivalence is reflexive.
+-/
 theorem mem_finiteSchwartzBruhatPi {f : (ι → 𝔸ᶠ[K]) → ℂ} :
     f ∈ finiteSchwartzBruhatPi K ↔ IsLocallyConstant f ∧ HasCompactSupport f :=
   Iff.rfl
@@ -164,6 +209,11 @@ variable {K}
 def finiteTensor (g : ι → 𝔸ᶠ[K] → ℂ) : (ι → 𝔸ᶠ[K]) → ℂ :=
   fun x ↦ ∏ i, g i (x i)
 
+/- English proof (translation)
+Use `⟨?_, ?_⟩` and prove the remaining obligations. Establish `: finiteTensor g = ∏ i, fun x : ι → 𝔸ᶠ[K] ↦ g i (x i)`. Use function extensionality and compare the values at `x`. Simplify using `only [finiteTensor, Finset.prod_apply]`. Rewrite using `[this]`.
+
+Conclude with `Finset.prod_induction _ IsLocallyConstant (fun _ _ ha hb ↦ ha.mul hb) (IsLocallyConstant.const 1) fun i _ ↦ (hg i).1.comp_continuous (continuous_apply i)`. Use `HasCompactSupport.intro (isCompact_univ_pi fun i ↦ (hg i).2.isCompact) fun x hx ↦ ?_` and prove the remaining obligations. Simplify using `only [Set.mem_pi, Set.mem_univ, true_implies, not_forall] at hx`. Take `⟨i, hi⟩` from `hx`. Conclude with `Finset.prod_eq_zero (Finset.mem_univ i) (image_eq_zero_of_notMem_tsupport hi)`.
+-/
 theorem finiteTensor_mem {g : ι → 𝔸ᶠ[K] → ℂ} (hg : ∀ i, g i ∈ finiteSchwartzBruhat K) :
     finiteTensor g ∈ finiteSchwartzBruhatPi K := by
   refine ⟨?_, ?_⟩
@@ -178,12 +228,22 @@ theorem finiteTensor_mem {g : ι → 𝔸ᶠ[K] → ℂ} (hg : ∀ i, g i ∈ fi
     obtain ⟨i, hi⟩ := hx
     exact Finset.prod_eq_zero (Finset.mem_univ i) (image_eq_zero_of_notMem_tsupport hi)
 
+/- English proof (translation)
+Use function extensionality and compare the values at `x`. Rewrite using `[cosetIndicator_apply, cosetInd_apply]`.
+-/
 theorem cosetIndicator_eq_cosetInd (J : (FractionalIdeal (𝓞 K)⁰ K)ˣ) (a : 𝔸ᶠ[K]) :
     cosetIndicator J a = cosetInd (idealFiniteAdeles J) a := by
   classical
   funext x
   rw [cosetIndicator_apply, cosetInd_apply]
 
+/- English proof (translation)
+Use `le_antisymm (fun f hf ↦ ?_) (Submodule.span_le.mpr ?_)` and prove the remaining obligations. Establish `hopen : ∀ H ∈ Set.range (idealFiniteAdeles (K` using `K)), IsOpen (H : Set 𝔸ᶠ[K]) := by`. Introduce and unpack `_ ⟨J, rfl⟩`. Conclude with `isOpen_idealFiniteAdeles J`. Establish `hbasis : ∀ W ∈ 𝓝 (0 : 𝔸ᶠ[K]), ∃ H ∈ Set.range (idealFiniteAdeles (K` using `K)), (H : Set 𝔸ᶠ[K]) ⊆ W := by`.
+
+Introduce `W hW`. Take `⟨J, hJ⟩` from `exists_idealFiniteAdeles_subset hW`. Conclude with `⟨_, ⟨J, rfl⟩, hJ⟩`. Take `⟨_, ⟨J, rfl⟩, s, hs⟩` from `exists_eq_sum_prod_cosetInd hopen hbasis hf.1 hf.2`. Rewrite using `[hs]`.
+
+Use `Submodule.sum_mem _ fun a _ ↦ Submodule.smul_mem _ _ (Submodule.subset_span ⟨(J, a), ?_⟩)` and prove the remaining obligations. Use function extensionality and compare the values at `x`. Simplify using `only [finiteTensor, cosetIndicator_eq_cosetInd]`. Introduce and unpack `_ ⟨p, rfl⟩`. Conclude with `finiteTensor_mem fun i ↦ cosetIndicator_mem_finiteSchwartzBruhat p.1 (p.2 i)`.
+-/
 theorem finiteSchwartzBruhatPi_eq_span :
     finiteSchwartzBruhatPi K (ι := ι) = Submodule.span ℂ (Set.range fun p :
       (FractionalIdeal (𝓞 K)⁰ K)ˣ × (ι → 𝔸ᶠ[K]) ↦ finiteTensor fun i ↦ cosetIndicator p.1 (p.2 i)) := by
@@ -204,12 +264,18 @@ theorem finiteSchwartzBruhatPi_eq_span :
   · rintro _ ⟨p, rfl⟩
     exact finiteTensor_mem fun i ↦ cosetIndicator_mem_finiteSchwartzBruhat p.1 (p.2 i)
 
+/- English proof (translation)
+The claim follows from `hf.1.continuous.integrable_of_hasCompactSupport hf.2`.
+-/
 theorem integrable_of_mem_finiteSchwartzBruhatPi {f : (ι → 𝔸ᶠ[K]) → ℂ}
     (hf : f ∈ finiteSchwartzBruhatPi K) : Integrable f (finiteMeasurePi K) :=
   hf.1.continuous.integrable_of_hasCompactSupport hf.2
 
 omit [NumberField K] in
 
+/- English proof (translation)
+Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simp`. Consider the case `insert j s hj ih`. Rewrite using `[Finset.sum_insert hj, AddChar.map_add_eq_mul, Circle.coe_mul, ih, Finset.prod_insert hj]`.
+-/
 theorem addChar_sum {G κ : Type*} [AddCommMonoid G] (χ : AddChar G Circle) (s : Finset κ)
     (a : κ → G) : (χ (∑ i ∈ s, a i) : ℂ) = ∏ i ∈ s, (χ (a i) : ℂ) := by
   classical
@@ -218,17 +284,26 @@ theorem addChar_sum {G κ : Type*} [AddCommMonoid G] (χ : AddChar G Circle) (s 
   | insert j s hj ih =>
     rw [Finset.sum_insert hj, AddChar.map_add_eq_mul, Circle.coe_mul, ih, Finset.prod_insert hj]
 
+/- English proof (translation)
+The claim follows from `continuous_subtype_val.comp (continuous_finiteAdelicChar.comp (continuous_finsetSum _ fun i _ ↦ (continuous_apply i).mul continuous_const))`.
+-/
 theorem continuous_finiteAdelicChar_sum_mul (y : ι → 𝔸ᶠ[K]) :
     Continuous fun x : ι → 𝔸ᶠ[K] ↦ (finiteAdelicChar K (∑ i, x i * y i) : ℂ) :=
   continuous_subtype_val.comp (continuous_finiteAdelicChar.comp
     (continuous_finsetSum _ fun i _ ↦ (continuous_apply i).mul continuous_const))
 
+/- English proof (translation)
+The claim follows from `hf.mono (hf.1.mul (continuous_finiteAdelicChar_sum_mul y).aestronglyMeasurable) (Eventually.of_forall fun x ↦ by rw [norm_mul, Circle.norm_coe, mul_one])`.
+-/
 theorem integrable_mul_finiteAdelicChar_sum {f : (ι → 𝔸ᶠ[K]) → ℂ}
     (hf : Integrable f (finiteMeasurePi K)) (y : ι → 𝔸ᶠ[K]) :
     Integrable (fun x ↦ f x * (finiteAdelicChar K (∑ i, x i * y i) : ℂ)) (finiteMeasurePi K) :=
   hf.mono (hf.1.mul (continuous_finiteAdelicChar_sum_mul y).aestronglyMeasurable)
     (Eventually.of_forall fun x ↦ by rw [norm_mul, Circle.norm_coe, mul_one])
 
+/- English proof (translation)
+Use function extensionality and compare the values at `y`. Simplify using `only [finiteFourierPi, Pi.add_apply, add_mul]`. Conclude with `integral_add (integrable_mul_finiteAdelicChar_sum hf y) (integrable_mul_finiteAdelicChar_sum hg y)`.
+-/
 theorem finiteFourierPi_add {f g : (ι → 𝔸ᶠ[K]) → ℂ} (hf : Integrable f (finiteMeasurePi K))
     (hg : Integrable g (finiteMeasurePi K)) :
     finiteFourierPi K (f + g) = finiteFourierPi K f + finiteFourierPi K g := by
@@ -237,16 +312,27 @@ theorem finiteFourierPi_add {f g : (ι → 𝔸ᶠ[K]) → ℂ} (hf : Integrable
   exact integral_add (integrable_mul_finiteAdelicChar_sum hf y)
     (integrable_mul_finiteAdelicChar_sum hg y)
 
+/- English proof (translation)
+Use function extensionality and compare the values at `y`. Simplify using `only [finiteFourierPi, Pi.smul_apply, smul_eq_mul, mul_assoc]`. Conclude with `integral_const_mul c _`.
+-/
 theorem finiteFourierPi_smul (c : ℂ) (f : (ι → 𝔸ᶠ[K]) → ℂ) :
     finiteFourierPi K (c • f) = c • finiteFourierPi K f := by
   funext y
   simp only [finiteFourierPi, Pi.smul_apply, smul_eq_mul, mul_assoc]
   exact integral_const_mul c _
 
+/- English proof (translation)
+Use function extensionality and compare the values at `y`. Simplify using `[finiteFourierPi]`.
+-/
 theorem finiteFourierPi_zero : finiteFourierPi K (0 : (ι → 𝔸ᶠ[K]) → ℂ) = 0 := by
   funext y
   simp [finiteFourierPi]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `y`. Establish `h` using `integral_fintype_prod_eq_prod (μ := fun _ : ι ↦ finiteAdeleMeasure K) (fun i x ↦ g i x * (finiteAdelicChar K (x * y i) : ℂ))`. Rewrite using `[finiteFourierPi, finiteTensor]`. Simplify using `only [finiteFourier]`. Rewrite using `[← h]`.
+
+Use `integral_congr_ae (Eventually.of_forall fun x ↦ ?_)` and prove the remaining obligations. Simplify using `only [finiteTensor]`. Rewrite using `[addChar_sum (finiteAdelicChar K) Finset.univ fun i ↦ x i * y i, ← Finset.prod_mul_distrib]`.
+-/
 theorem finiteFourierPi_finiteTensor (g : ι → 𝔸ᶠ[K] → ℂ) :
     finiteFourierPi K (finiteTensor g) = finiteTensor fun i ↦ finiteFourier K (g i) := by
   funext y
@@ -259,6 +345,13 @@ theorem finiteFourierPi_finiteTensor (g : ι → 𝔸ᶠ[K] → ℂ) :
   simp only [finiteTensor]
   rw [addChar_sum (finiteAdelicChar K) Finset.univ fun i ↦ x i * y i, ← Finset.prod_mul_distrib]
 
+/- English proof (translation)
+Rewrite `hf` using `[finiteSchwartzBruhatPi_eq_span]`. Proceed by induction on `hf using Submodule.span_induction with`. Consider the case `mem g hg`. Take `⟨⟨I, a⟩, rfl⟩` from `hg`. Rewrite using `[finiteFourierPi_finiteTensor]`.
+
+Conclude with `finiteTensor_mem fun i ↦ finiteFourier_mem_finiteSchwartzBruhat (cosetIndicator_mem_finiteSchwartzBruhat I (a i))`. Consider the case `zero => rw [finiteFourierPi_zero]`. Conclude with `zero_mem _`. Consider the case `add g h hg hh ihg ihh`. Rewrite `hg`, `hh` using `[← finiteSchwartzBruhatPi_eq_span]`.
+
+Rewrite using `[finiteFourierPi_add (integrable_of_mem_finiteSchwartzBruhatPi hg) (integrable_of_mem_finiteSchwartzBruhatPi hh)]`. Conclude with `add_mem ihg ihh`. Consider the case `smul c g _ ih`. Rewrite using `[finiteFourierPi_smul]`. Conclude with `Submodule.smul_mem _ c ih`.
+-/
 theorem finiteFourierPi_mem {f : (ι → 𝔸ᶠ[K]) → ℂ} (hf : f ∈ finiteSchwartzBruhatPi K) :
     finiteFourierPi K f ∈ finiteSchwartzBruhatPi K := by
   rw [finiteSchwartzBruhatPi_eq_span] at hf
@@ -278,6 +371,15 @@ theorem finiteFourierPi_mem {f : (ι → 𝔸ᶠ[K]) → ℂ} (hf : f ∈ finite
     rw [finiteFourierPi_smul]
     exact Submodule.smul_mem _ c ih
 
+/- English proof (translation)
+Rewrite `hf` using `[finiteSchwartzBruhatPi_eq_span]`. Proceed by induction on `hf using Submodule.span_induction with`. Consider the case `mem g hg`. Take `⟨⟨I, a⟩, rfl⟩` from `hg`. Rewrite using `[finiteFourierPi_finiteTensor, finiteFourierPi_finiteTensor]`.
+
+Use function extensionality and compare the values at `x`. Simplify using `only [finiteTensor, Pi.neg_apply]`. Use `Finset.prod_congr rfl fun i _ ↦ ?_` and prove the remaining obligations. Rewrite using `[finiteFourier_finiteFourier (cosetIndicator_mem_finiteSchwartzBruhat I (a i))]`. Consider the case `zero => funext x`.
+
+Simplify using `[finiteFourierPi_zero]`. Consider the case `add g h hg hh ihg ihh`. Rewrite `hg`, `hh` using `[← finiteSchwartzBruhatPi_eq_span]`. Rewrite using `[finiteFourierPi_add (integrable_of_mem_finiteSchwartzBruhatPi hg) (integrable_of_mem_finiteSchwartzBruhatPi hh), finiteFourierPi_add (integrable_of_mem_finiteSchwartzBruhatPi (finiteFourierPi_mem hg)) (integrable_of_mem_finiteSchwartzBruhatPi (finiteFourierPi_mem hh)), ihg, ihh]`. Both sides reduce to the same expression.
+
+Consider the case `smul c g _ ih`. Rewrite using `[finiteFourierPi_smul, finiteFourierPi_smul, ih]`. Both sides reduce to the same expression.
+-/
 theorem finiteFourierPi_finiteFourierPi {f : (ι → 𝔸ᶠ[K]) → ℂ}
     (hf : f ∈ finiteSchwartzBruhatPi K) :
     finiteFourierPi K (finiteFourierPi K f) = fun x ↦ f (-x) := by

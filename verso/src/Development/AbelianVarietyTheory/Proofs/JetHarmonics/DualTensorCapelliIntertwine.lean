@@ -18,6 +18,11 @@ attribute [local instance] Matrix.normedAddCommGroup Matrix.normedSpace
 
 variable {k r : ℕ}
 
+/- English proof (translation)
+Establish `h` using `Formalism.REAL.hasDerivAt_mul_exp_smul_zero 1 (-X)`. Simplify using `only [Matrix.one_mul] at h`. Establish `h2 : HasDerivAt (fun t : ℝ => NormedSpace.exp ((t : ℂ) • (-X)) j c) ((-X) j c) 0` using `hasDerivAt_pi.1 (hasDerivAt_pi.1 h j) c`. Establish `e : (fun t : ℝ => (NormedSpace.exp ((t : ℂ) • X))⁻¹ j c) = fun t : ℝ => NormedSpace.exp ((t : ℂ) • (-X)) j c`. Use function extensionality and compare the values at `t`.
+
+Rewrite using `[smul_neg, Matrix.exp_neg]`. Rewrite using `[e]`. Conclude with `h2`.
+-/
 theorem hasDerivAt_inv_exp_entry (X : Mx k r) (j c : Fin (2 * r + k + 1)) :
     HasDerivAt (fun t : ℝ => (NormedSpace.exp ((t : ℂ) • X))⁻¹ j c) (-X j c) 0 := by
   have h := Formalism.REAL.hasDerivAt_mul_exp_smul_zero 1 (-X)
@@ -31,6 +36,11 @@ theorem hasDerivAt_inv_exp_entry (X : Mx k r) (j c : Fin (2 * r + k + 1)) :
   rw [e]
   exact h2
 
+/- English proof (translation)
+Establish `hh : (Formalism.QuantumDeterminants.Hpk k r)ᴴ = Formalism.QuantumDeterminants.Hpk k r` using `Formalism.QuantumDeterminants.GBasic.Hpk_herm k r`. Establish `hs : Formalism.QuantumDeterminants.Hpk k r * Formalism.QuantumDeterminants.Hpk k r = 1` using `Formalism.QuantumDeterminants.GBasic.Hpk_sq k r`. Use `show (_ : Mx k r)ᴴ * Formalism.QuantumDeterminants.Hpk k r + Formalism.QuantumDeterminants.Hpk k r * _ = 0`. Generalize the expression as in `Formalism.QuantumDeterminants.Hpk k r = H at hh hs`. Establish `hs' : ∀ A : Mx k r, H * (H * A) = A` using `fun A => by rw [← Matrix.mul_assoc, hs, Matrix.one_mul]`.
+
+Establish `h2 : star (1 / 2 : ℂ) = 1 / 2` using `by simp`. Simplify using `only [conjTranspose_smul, conjTranspose_add, conjTranspose_neg, conjTranspose_mul, conjTranspose_conjTranspose, hh, h2, Matrix.smul_mul, Matrix.mul_smul, Matrix.add_mul, Matrix.mul_add, Matrix.neg_mul, Matrix.mul_neg, Matrix.mul_assoc, hs, hs', Matrix.mul_one]`. Use `module`.
+-/
 theorem lie_part₁ (Y : Mx k r) :
     InLieHpk k r ((1 / 2 : ℂ) • (Y + -(Formalism.QuantumDeterminants.Hpk k r * Yᴴ * Formalism.QuantumDeterminants.Hpk k r))) := by
   have hh : (Formalism.QuantumDeterminants.Hpk k r)ᴴ = Formalism.QuantumDeterminants.Hpk k r := Formalism.QuantumDeterminants.GBasic.Hpk_herm k r
@@ -44,6 +54,11 @@ theorem lie_part₁ (Y : Mx k r) :
     Matrix.neg_mul, Matrix.mul_neg, Matrix.mul_assoc, hs, hs', Matrix.mul_one]
   module
 
+/- English proof (translation)
+Establish `hh : (Formalism.QuantumDeterminants.Hpk k r)ᴴ = Formalism.QuantumDeterminants.Hpk k r` using `Formalism.QuantumDeterminants.GBasic.Hpk_herm k r`. Establish `hs : Formalism.QuantumDeterminants.Hpk k r * Formalism.QuantumDeterminants.Hpk k r = 1` using `Formalism.QuantumDeterminants.GBasic.Hpk_sq k r`. Use `show (_ : Mx k r)ᴴ * Formalism.QuantumDeterminants.Hpk k r + Formalism.QuantumDeterminants.Hpk k r * _ = 0`. Generalize the expression as in `Formalism.QuantumDeterminants.Hpk k r = H at hh hs`. Establish `hs' : ∀ A : Mx k r, H * (H * A) = A` using `fun A => by rw [← Matrix.mul_assoc, hs, Matrix.one_mul]`.
+
+Establish `h2 : star (1 / (2 * Complex.I)) = -(1 / (2 * Complex.I))` using `by simp`. Simplify using `only [conjTranspose_smul, conjTranspose_sub, conjTranspose_neg, conjTranspose_mul, conjTranspose_conjTranspose, hh, h2, Matrix.smul_mul, Matrix.mul_smul, Matrix.sub_mul, Matrix.mul_sub, Matrix.neg_mul, Matrix.mul_neg, Matrix.mul_assoc, hs, hs', Matrix.mul_one]`. Use `module`.
+-/
 theorem lie_part₂ (Y : Mx k r) :
     InLieHpk k r ((1 / (2 * Complex.I)) • (Y - -(Formalism.QuantumDeterminants.Hpk k r * Yᴴ * Formalism.QuantumDeterminants.Hpk k r))) := by
   have hh : (Formalism.QuantumDeterminants.Hpk k r)ᴴ = Formalism.QuantumDeterminants.Hpk k r := Formalism.QuantumDeterminants.GBasic.Hpk_herm k r
@@ -57,6 +72,11 @@ theorem lie_part₂ (Y : Mx k r) :
     Matrix.neg_mul, Matrix.mul_neg, Matrix.mul_assoc, hs, hs', Matrix.mul_one]
   module
 
+/- English proof (translation)
+Establish `hL` using `(GlobalTheory.cwCont_continuousOn_hasDerivAt hK k r ε (muI s) (RI s) (hI s) R.H (io s c) (hT.io_sm s c).add (hT.io_sm s c).smul ((hT.io_sm s c).cont [] (by simp)) y hy).2 X hX`. Establish `h1 : R.σ 1 = 1` using `(Formalism.FourierDecayAlt.P.MatrixMultiplicationContinuity.sigma_facts hR.2).1`. Establish `e : (fun t : ℝ => io s c ((RI s).σ (NormedSpace.exp ((t : ℂ) • X)) y)) = fun t : ℝ => ∑ j, (NormedSpace.exp ((t : ℂ) • X))⁻¹ j c • R.σ (NormedSpace.exp ((t : ℂ) • X)) (io s j y)`. Use function extensionality and compare the values at `t`. Conclude with `congrFun (hT.io_eq s _ (exp_mem hX t) y hy) c`.
+
+Rewrite `hL` using `[e]`. Apply the tactic sequence `have hR' := HasDerivAt.fun_sum (u := Finset.univ) fun j _ => (hasDerivAt_inv_exp_entry X j c).fun_smul (hasDerivAt_dsig hX ((hT.io_sm s j).mem y hy))`. Rewrite using `[hL.unique hR']`. Simplify using `only [Complex.ofReal_zero, zero_smul, NormedSpace.exp_zero, inv_one, h1, one_apply_eq_self, Finset.sum_add_distrib, Matrix.one_apply, ite_smul, one_smul, zero_smul, Finset.sum_ite_eq', Finset.mem_univ, if_true, neg_smul, Finset.sum_neg_distrib, sub_eq_add_neg]`.
+-/
 theorem io_dsig (hK : PI.KFinSmooth) {ε : Fin (2 * r + k + 1) → Bool} {mu : Fin (2 * r + k + 1) → ℝ} {R : Rep k r}
     (hR : R.IsDS ε mu) {RI : Fin (2 * r + k + 1) → Rep k r}
     {muI : Fin (2 * r + k + 1) → Fin (2 * r + k + 1) → ℝ}
@@ -87,6 +107,15 @@ namespace GlobalTheory
 
 open DualEmb
 
+/- English proof (translation)
+Introduce `hK k r ε mu R hR RI muI io pr hI hT s Y y hy c`. Establish `h1` using `lie_part₁ Y`. Establish `h2` using `lie_part₂ Y`. Establish `hY : Y = (1 / 2 : ℂ) • (Y + -(Formalism.QuantumDeterminants.Hpk k r * Yᴴ * Formalism.QuantumDeterminants.Hpk k r)) + Complex.I • ((1 / (2 * Complex.I)) • (Y - -(Formalism.QuantumDeterminants.Hpk k r * Yᴴ * Formalism.QuantumDeterminants.Hpk k r)))`. Establish `hI : Complex.I * (1 / (2 * Complex.I)) = 1 / 2`.
+
+Clear the denominators using the available nonvanishing facts. Rewrite using `[smul_smul, hI]`. Use `module`. Unfold `Rep.dC`. Generalize the expression as in `(1 / 2 : ℂ) • (Y + -(Formalism.QuantumDeterminants.Hpk k r * Yᴴ * Formalism.QuantumDeterminants.Hpk k r)) = X₁ at h1 hY ⊢`.
+
+Generalize the expression as in `(1 / (2 * Complex.I)) • (Y - -(Formalism.QuantumDeterminants.Hpk k r * Yᴴ * Formalism.QuantumDeterminants.Hpk k r)) = X₂ at h2 hY ⊢`. Establish `m1` using `DerivedAction.dsig_smooth (hI s).2 h1 hy`. Establish `m2` using `DerivedAction.dsig_smooth (hI s).2 h2 hy`. Rewrite using `[(hT.io_sm s c).add _ m1 _ ((RI s).smSub.smul_mem _ m2), (hT.io_sm s c).smul _ _ m2, io_dsig hK hR hI hT s h1 hy c, io_dsig hK hR hI hT s h2 hy c, hY]`. Simplify using `only [Matrix.add_apply, Matrix.smul_apply, smul_eq_mul, add_smul, mul_smul, Finset.sum_add_distrib, ← Finset.smul_sum, smul_sub]`.
+
+Normalize the expressions using the abelian group laws.
+-/
 theorem dualTens_io_dC : PI.KFinSmooth → ∀ (k r : ℕ) (ε : Fin (2 * r + k + 1) → Bool) (mu : Fin (2 * r + k + 1) → ℝ) (R : Rep k r), R.IsDS ε mu → ∀ (RI : Fin (2 * r + k + 1) → Rep k r) (muI : Fin (2 * r + k + 1) → Fin (2 * r + k + 1) → ℝ) (io : ∀ s, Fin (2 * r + k + 1) → (RI s).H → R.H) (pr : ∀ s, Fin (2 * r + k + 1) → R.H → (RI s).H), (∀ s, (RI s).IsDS ε (muI s)) → TensRaw dualM R RI io pr → ∀ s Y, ∀ y ∈ (RI s).sm, ∀ c, io s c ((RI s).dC Y y) = R.dC Y (io s c y) - ∑ j, Y j c • io s j y := by
   intro hK k r ε mu R hR RI muI io pr hI hT s Y y hy c
   have h1 := lie_part₁ Y

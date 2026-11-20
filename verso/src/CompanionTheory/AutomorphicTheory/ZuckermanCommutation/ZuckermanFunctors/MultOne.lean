@@ -11,32 +11,50 @@ open BranchingSupport Formalism.FourierDecayAlt.ThreeDimData
 
 variable {k r : ℕ}
 
+/- English proof (translation)
+Simplify using `[mAct]`.
+-/
 theorem mAct_apply {ι ι' : Type} [Fintype ι] {V : Type} [AddCommGroup V] [Module ℂ V] (A : Matrix ι' ι ℂ)
     (x : ι → V) (c : ι') : mAct A x c = ∑ d, A c d • x d := by
   simp [mAct]
 
+/- English proof (translation)
+Use `LinearMap.ext fun x => funext fun c => ?_` and prove the remaining obligations. Simplify using `only [LinearMap.comp_apply, mAct_apply, Matrix.mul_apply, Finset.sum_smul, Finset.smul_sum, smul_smul]`. Conclude with `Finset.sum_comm`.
+-/
 theorem mAct_mul {ι ι' ι'' : Type} [Fintype ι] [Fintype ι'] {V : Type} [AddCommGroup V] [Module ℂ V]
     (A : Matrix ι'' ι' ℂ) (B : Matrix ι' ι ℂ) : (mAct (A * B) : (ι → V) →ₗ[ℂ] _) = mAct A ∘ₗ mAct B := by
   refine LinearMap.ext fun x => funext fun c => ?_
   simp only [LinearMap.comp_apply, mAct_apply, Matrix.mul_apply, Finset.sum_smul, Finset.smul_sum, smul_smul]
   exact Finset.sum_comm
 
+/- English proof (translation)
+Use `LinearMap.ext fun x => funext fun c => ?_` and prove the remaining obligations. Simplify using `only [mAct_apply, LinearMap.smul_apply, Pi.smul_apply, Matrix.smul_apply, smul_eq_mul, Finset.smul_sum, smul_smul]`.
+-/
 theorem mAct_smul {ι ι' : Type} [Fintype ι] {V : Type} [AddCommGroup V] [Module ℂ V] (a : ℂ) (A : Matrix ι' ι ℂ) :
     (mAct (a • A) : (ι → V) →ₗ[ℂ] _) = a • mAct A := by
   refine LinearMap.ext fun x => funext fun c => ?_
   simp only [mAct_apply, LinearMap.smul_apply, Pi.smul_apply, Matrix.smul_apply, smul_eq_mul, Finset.smul_sum,
     smul_smul]
 
+/- English proof (translation)
+Use `LinearMap.ext fun x => funext fun c => ?_` and prove the remaining obligations. Simplify using `only [mAct_apply, LinearMap.sub_apply, Pi.sub_apply, Matrix.sub_apply, sub_smul, Finset.sum_sub_distrib]`.
+-/
 theorem mAct_sub {ι ι' : Type} [Fintype ι] {V : Type} [AddCommGroup V] [Module ℂ V] (A B : Matrix ι' ι ℂ) :
     (mAct (A - B) : (ι → V) →ₗ[ℂ] _) = mAct A - mAct B := by
   refine LinearMap.ext fun x => funext fun c => ?_
   simp only [mAct_apply, LinearMap.sub_apply, Pi.sub_apply, Matrix.sub_apply, sub_smul, Finset.sum_sub_distrib]
 
+/- English proof (translation)
+Use `LinearMap.ext fun x => funext fun c => ?_` and prove the remaining obligations. Simplify using `[mAct_apply, Matrix.one_apply]`.
+-/
 theorem mAct_one {ι : Type} [Fintype ι] [DecidableEq ι] {V : Type} [AddCommGroup V] [Module ℂ V] :
     (mAct (1 : Matrix ι ι ℂ) : (ι → V) →ₗ[ℂ] _) = LinearMap.id := by
   refine LinearMap.ext fun x => funext fun c => ?_
   simp [mAct_apply, Matrix.one_apply]
 
+/- English proof (translation)
+Establish `h : ∀ Z x, f (L X Z x) = L Y Z (f x)` using `fun Z x => LinearMap.congr_fun (hL k r X Y f hX hY hf Z) x`. Simplify using `only [cas, LinearMap.sum_apply, Module.End.mul_apply, map_sum, h]`.
+-/
 theorem hom_cas (hL : HomLie) {X Y : Obj k r} {f : M X →ₗ[ℂ] M Y} (hX : X.1.OK) (hY : Y.1.OK) (hf : IsHom X Y f)
     (x : M X) : f (cas X x) = cas Y (f x) := by
   have h : ∀ Z x, f (L X Z x) = L Y Z (f x) := fun Z x => LinearMap.congr_fun (hL k r X Y f hX hY hf Z) x
@@ -44,6 +62,9 @@ theorem hom_cas (hL : HomLie) {X Y : Obj k r} {f : M X →ₗ[ℂ] M Y} (hX : X.
 
 def cM (n : ℕ) : Matrix Unit (Fin n × Fin n) ℂ := fun _ p => if p.1 = p.2 then 1 else 0
 
+/- English proof (translation)
+Rewrite using `[Matrix.one_mul]`. Use extensionality with `_ ⟨c, d⟩`. Use `congrFun (congrFun h c) d` as an intermediate fact. Simplify using `only [Matrix.mul_apply, Matrix.one_apply, transpose_apply] at this`. Simplify using `only [Matrix.mul_apply, cM, Fintype.sum_prod_type, ite_mul, one_mul, zero_mul, Finset.sum_ite_eq, Finset.mem_univ, if_true, kroneckerMap_apply, this]`.
+-/
 theorem cM_mul {n : ℕ} {A B : Matrix (Fin n) (Fin n) ℂ} (h : Aᵀ * B = 1) :
     cM n * (A ⊗ₖ B) = (1 : Matrix Unit Unit ℂ) * cM n := by
   rw [Matrix.one_mul]
@@ -53,6 +74,9 @@ theorem cM_mul {n : ℕ} {A B : Matrix (Fin n) (Fin n) ℂ} (h : Aᵀ * B = 1) :
   simp only [Matrix.mul_apply, cM, Fintype.sum_prod_type, ite_mul, one_mul, zero_mul, Finset.sum_ite_eq,
     Finset.mem_univ, if_true, kroneckerMap_apply, this]
 
+/- English proof (translation)
+Use `hM k r _ _ B _ fun g hg => ?_` and prove the remaining obligations. Establish `hu : IsUnit g.det` using `(Matrix.isUnit_iff_isUnit_det _).1 (PI.UnitaryGroupMassFormula.CapelliEig.unitary_Hecke_group k r g hg).1`. Consider the cases of `b`. Conclude with `cM_mul (A := g) (B := (g⁻¹)ᵀ) (by rw [← transpose_mul, Matrix.nonsing_inv_mul g hu, transpose_one])`. Conclude with `cM_mul (A := (g⁻¹)ᵀ) (B := g) (by rw [transpose_transpose, Matrix.nonsing_inv_mul g hu])`.
+-/
 theorem cM_hom (hM : MatHom) (b : Bool) (B : URep k r) :
     IsHom ((vr k r b).tens (vr k r (!b)), B) (one B) (mAct (cM _)) := by
   refine hM k r _ _ B _ fun g hg => ?_
@@ -61,6 +85,9 @@ theorem cM_hom (hM : MatHom) (b : Bool) (B : URep k r) :
   · exact cM_mul (A := g) (B := (g⁻¹)ᵀ) (by rw [← transpose_mul, Matrix.nonsing_inv_mul g hu, transpose_one])
   · exact cM_mul (A := (g⁻¹)ᵀ) (B := g) (by rw [transpose_transpose, Matrix.nonsing_inv_mul g hu])
 
+/- English proof (translation)
+Apply the tactic sequence `constructor <;> ext ⟨c, d⟩ ⟨c', d'⟩ <;>`. Apply the tactic sequence `simp only [Matrix.sum_apply, kroneckerMap_apply, Matrix.neg_apply, transpose_apply, Matrix.smul_apply, Matrix.mul_apply, cM, Matrix.single_apply] <;>`. Apply the tactic sequence `by_cases e1 : c = d <;> by_cases e2 : c' = d' <;> simp [e1, e2, ite_and, eq_comm]`.
+-/
 theorem casimir_kronecker_sum (n : ℕ) :
     (∑ a : Fin n, ∑ b : Fin n, Matrix.single a b (1 : ℂ) ⊗ₖ (-(Matrix.single b a (1 : ℂ))ᵀ) =
       (-1 : ℂ) • ((cM n)ᵀ * cM n)) ∧
@@ -71,6 +98,9 @@ theorem casimir_kronecker_sum (n : ℕ) :
       transpose_apply, Matrix.smul_apply, Matrix.mul_apply, cM, Matrix.single_apply] <;>
     by_cases e1 : c = d <;> by_cases e2 : c' = d' <;> simp [e1, e2, ite_and, eq_comm]
 
+/- English proof (translation)
+Consider the cases of `b`. Use `Eq.trans ?_ (casimir_kronecker_sum _).1` and prove the remaining obligations. Conclude with `Finset.sum_congr rfl fun a _ => Finset.sum_congr rfl fun c _ => congrArg₂ _ (hS k r _).1 (hS k r _).2`. Use `Eq.trans ?_ (casimir_kronecker_sum _).2` and prove the remaining obligations. Conclude with `Finset.sum_congr rfl fun a _ => Finset.sum_congr rfl fun c _ => congrArg₂ _ (hS k r _).2 (hS k r _).1`.
+-/
 theorem qMat_vr (hS : StdD) (b : Bool) :
     qMat (vr k r b) (vr k r (!b)) = (-1 : ℂ) • ((cM _)ᵀ * cM _ : Matrix _ _ ℂ) := by
   cases b
@@ -83,10 +113,38 @@ theorem qMat_vr (hS : StdD) (b : Bool) :
 
 def uM (ι : Type) [DecidableEq ι] : Matrix (Unit × ι) ι ℂ := fun p d => if p.2 = d then 1 else 0
 
+/- English proof (translation)
+Use extensionality with `⟨_, c⟩ d`. Simplify using `[Matrix.mul_apply, uM, Fintype.sum_prod_type]`.
+-/
 theorem uM_int (F : FRep k r) (g : Mx k r) : uM F.ι * F.ρ g = ((triv k r).tens F).ρ g * uM F.ι := by
   ext ⟨_, c⟩ d
   simp [Matrix.mul_apply, uM, Fintype.sum_prod_type]
 
+/- English proof (translation)
+Introduce `k r b B T S Bt cB cT ct hR hB hTc hBt hne hinj hEnd hDS ⟨κ, hκ, hκ0⟩`. Establish `C` using `hC k r`. Set `Φ : (M (one T) →ₗ[ℂ] M (vr k r b, B)) → (M (one B) →ₗ[ℂ] M ((vr k r b).tens (vr k r (!b)), B))` to `fun i => on1 i ∘ₗ (mAct (uM _) ∘ₗ κ)`. Establish `Φap : ∀ i v c d, Φ i v (c, d) = i (fun _ => κ v d) c`. Introduce `i v c d`.
+
+Simplify using `only [Φ, on1, LinearMap.comp_apply, LinearMap.pi_apply, LinearMap.proj_apply]`. Use `congrFun (congrArg i (funext fun u => ?_)) c` and prove the remaining obligations. Simplify using `[LinearMap.funLeft_apply, mAct_apply, uM]`. Establish `Φhom : ∀ i, IsHom (one T) (vr k r b, B) i → IsHom (one B) ((vr k r b).tens (vr k r (!b)), B) (Φ i)`. Introduce `i hi`.
+
+Conclude with `C.comp _ ((triv k r).tens (vr k r (!b)), T) _ _ _ (C.comp _ (vr k r (!b), T) _ _ _ hκ (hM k r _ _ T _ fun g _ => uM_int _ g)) (hT k r _ _ (vr k r (!b)) _ _ i hi).1`. Establish `chom : IsHom ((vr k r b).tens (vr k r (!b)), B) (one B) (mAct (cM _))` using `cM_hom hM b B`. Establish `core : ∀ i, IsHom (one T) (vr k r b, B) i → (∀ v, mAct (cM _) (Φ i v) = 0) → i = 0`. Introduce `i hi h0`. Establish `hz : ∀ v c, (fun d => Φ i v (c, d)) = 0`.
+
+Introduce `v c`. Establish `e1` using `hom_cas hL (o1 k r) (o3 k r _ _ (o2 k r b) (o2 k r (!b))) (Φhom i hi) v`. Rewrite `e1` using `[hB, hS k r _ _ B (o2 k r b) (o2 k r (!b)), hR, qMat_vr hD, mAct_smul, mAct_mul]`. Establish `e2 : cas1 (vr k r b) (vr k r (!b)) B (Φ i v) = cT • Φ i v`. Use function extensionality and compare the values at `⟨c, d⟩`.
+
+Use `hom_cas hL (o1 k r) (o2 k r b) hi (fun _ => κ v d)` as an intermediate fact. Rewrite `this` using `[hTc]`. Simplify using `only [LinearMap.smul_apply, LinearMap.id_apply, map_smul] at this`. Use `show cas (vr k r b, B) (fun c' => Φ i v (c', d)) c = cT • Φ i v (c, d)`. Simplify using `only [Φap]`.
+
+Conclude with `(congrFun this c).symm`. Establish `e3 : cas2 (vr k r b) (vr k r (!b)) B (Φ i v) = (2 * cB - cT) • Φ i v`. Simplify using `only [LinearMap.smul_apply, LinearMap.id_apply, map_smul, LinearMap.add_apply, LinearMap.sub_apply, LinearMap.comp_apply, h0, map_zero, smul_zero, add_zero, e2] at e1`. Rewrite using `[sub_smul, two_mul, add_smul]`. Rewrite `e1` using `[eq_sub_iff_add_eq]`.
+
+Rewrite using `[e1]`. Normalize the expressions using the abelian group laws. Establish `e4 : cas (vr k r (!b), B) (fun d => Φ i v (c, d)) = (2 * cB - cT) • fun d => Φ i v (c, d)`. Use function extensionality and compare the values at `fun d => congrFun e3 (c, d)`. Use `hinj _ fun t p hp => ?_` and prove the remaining obligations.
+
+Establish `e5` using `hom_cas hL (o2 k r (!b)) (o1 k r) hp (fun d => Φ i v (c, d))`. Rewrite `e5` using `[e4, hBt, map_smul, LinearMap.smul_apply, LinearMap.id_apply, ← sub_eq_zero, ← sub_smul]`. Conclude with `(smul_eq_zero.1 e5).resolve_left (sub_ne_zero.2 (hne t).symm)`. Choose the witnesses or unpack the hypotheses as in `⟨v, hv⟩ : ∃ v, κ v ≠ 0 := by`. Assume the negation of the conclusion as `hn`.
+
+Conclude with `hκ0 (LinearMap.ext fun v => not_not.1 fun h => hn ⟨v, h⟩)`. Take `⟨d, hd⟩` from `Function.ne_iff.1 hv`. Use `hK k r T _ i hDS hi (fun _ => κ v d) (fun h => hd (congrFun h ())) (funext fun c => ?_)` and prove the remaining obligations. Rewrite using `[← Φap]`. Conclude with `congrFun (hz v c) d`.
+
+Introduce `i i' hi hi'`. Take `⟨l, hl⟩` from `hEnd _ (C.comp _ _ _ _ _ (Φhom i hi) chom)`. Take `⟨l', hl'⟩` from `hEnd _ (C.comp _ _ _ _ _ (Φhom i' hi') chom)`. Choose the witnesses or unpack the hypotheses as in `⟨α, β, hab, h0⟩ : ∃ α β : ℂ, (α ≠ 0 ∨ β ≠ 0) ∧ α * l + β * l' = 0 := by`. Distinguish the cases in `h : l = 0`.
+
+Conclude with `⟨1, 0, Or.inl one_ne_zero, by simp [h]⟩`. Conclude with `⟨l', -l, Or.inr (neg_ne_zero.2 h), by ring⟩`. Use `⟨α, β, hab, core _ (C.add _ _ _ _ (C.smul _ _ α _ hi) (C.smul _ _ β _ hi')) fun v => ?_⟩` and prove the remaining obligations. Establish `e : Φ (α • i + β • i') v = α • Φ i v + β • Φ i' v`. Use function extensionality and compare the values at `⟨c, d⟩`.
+
+Simplify using `[Φap]`. Establish `a1` using `LinearMap.congr_fun hl v`. Establish `a2` using `LinearMap.congr_fun hl' v`. Simplify using `only [LinearMap.comp_apply, LinearMap.smul_apply, LinearMap.id_apply] at a1 a2`. Rewrite using `[e, map_add, map_smul, map_smul, a1, a2, smul_smul, smul_smul, ← add_smul, h0, zero_smul]`.
+-/
 theorem multOne_of (hC : HomCat) (hM : MatHom) (hT : TensHom) (hL : HomLie) (hS : CasSplit) (hD : StdD)
     (hK : KerZero) (o1 : OKTriv) (o2 : OKVr) (o3 : OKTens) : MultOne := by
   intro k r b B T S Bt cB cT ct hR hB hTc hBt hne hinj hEnd hDS ⟨κ, hκ, hκ0⟩

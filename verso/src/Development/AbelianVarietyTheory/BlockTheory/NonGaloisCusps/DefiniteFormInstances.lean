@@ -97,12 +97,20 @@ def ClosedFamilySpectrumCondition (𝒞 : FamClass) : Prop := ClosedAbsoluteShar
 
 end Comparison₂
 
+/- English proof (translation)
+Take `⟨a, ha, h⟩` from `h`. Use `⟨a, ha, fun e he hle => ?_⟩` and prove the remaining obligations. Take `⟨K, hK⟩` from `h e he hle`. Conclude with `⟨K, fun Fm CH hc hL => hK Fm CH hc.1 hL⟩`.
+-/
 theorem ClosedAbsoluteShare.tied {𝒞 : FamClass} (h : ClosedAbsoluteShare 𝒞) : ClosedFamilySpectrumCondition 𝒞 := by
   obtain ⟨a, ha, h⟩ := h
   refine ⟨a, ha, fun e he hle => ?_⟩
   obtain ⟨K, hK⟩ := h e he hle
   exact ⟨K, fun Fm CH hc hL => hK Fm CH hc.1 hL⟩
 
+/- English proof (translation)
+Establish `hinj : Function.Injective fun p : Part A.CG => ((⟨p.a, p.π⟩ : Σ a, A.CG a), p.d)`. Introduce and unpack `⟨a, π, d⟩ ⟨a', π', d'⟩ h`. Simplify using `only [Prod.mk.injEq, Sigma.mk.injEq] at h`. Take `⟨⟨rfl, h1⟩, rfl⟩` from `h`. Rewrite using `[eq_of_heq h1]`.
+
+Unfold `IsBaseChange Formalism.MainNotions.N.IsBCV`. Rewrite using `[List.nodup_map_iff hinj]`. Simplify using `only [B.embAV_loc, B.embAV_sat, B.embAV_inf i P]`.
+-/
 theorem isBaseChange_embAV {R : Ranks} {H : Host R} {what₂ : Rows.Data R} {N : NData R H what₂} {A : NAut N}
     (B : NBC A) (i : N.Loc) (P : A.AV i) (Pa : List (Part A.CG)) :
     IsBaseChange B (N.j i) (B.embAV i P) Pa ↔ Formalism.MainNotions.N.IsBCV N A i P Pa := by
@@ -115,6 +123,9 @@ theorem isBaseChange_embAV {R : Ranks} {H : Host R} {what₂ : Rows.Data R} {N :
   rw [List.nodup_map_iff hinj]
   simp only [B.embAV_loc, B.embAV_sat, B.embAV_inf i P]
 
+/- English proof (translation)
+Establish `: Odd 3` using `by decide`. Simplify using `[Formalism.MainNotions.N.ubc, this]`.
+-/
 example (α : ℂ) : Formalism.MainNotions.N.ubc 3 {α} = {α, α⁻¹, 1} := by
   have : Odd 3 := by decide
   simp [Formalism.MainNotions.N.ubc, this]

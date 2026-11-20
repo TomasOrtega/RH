@@ -30,6 +30,11 @@ def occQOK {H : Type*} [NormedAddCommGroup H] [InnerProductSpace ℂ H] (dual : 
         (fun c => ((f' c : D) : H)) = kDiag dual σ k (fun c => ((f c : D) : H)) →
         (fun c => ((g' c : D) : H)) = kDiag dual σ k (fun c => ((g c : D) : H)) → Q f' g' = Q f g
 
+/- English proof (translation)
+Take `⟨m, hm⟩` from `exists_layer_of_mem_genSub hD.glRep hVk hx`. Establish `hf : FiniteDimensional ℂ (layer ε E V m)` using `finiteDimensional_layer hVf m`. Take `⟨Z, hZ, rfl⟩` from `exists_exp_eq_of_mem_Kset hk`. Establish `hs` using `KTypeIsomorphism.orbit_hasSum hσ hD hf (layer_kStable hD.glRep hVk m) hZ ⟨x, hm⟩`. Set `P : Submodule ℂ H` to `LinearMap.range (D.subtype ∘ₗ (layer ε E V m).subtype)`.
+
+Establish `hmem : σ (NormedSpace.exp Z) (x : H) ∈ P` using `P.closed_of_finiteDimensional.mem_of_tendsto hs (Filter.Eventually.of_forall fun t => P.sum_mem fun j _ => P.smul_mem _ ⟨_, rfl⟩)`. Take `⟨w, hw⟩` from `hmem`. Conclude with `⟨w, layer_le_genSub m w.2, hw⟩`.
+-/
 theorem occD_genSub_K {H : Type*} [NormedAddCommGroup H] [InnerProductSpace ℂ H] [CompleteSpace H]
     {ε : Fin n → Bool} {σ : Matrix (Fin n) (Fin n) ℂ → (H →L[ℂ] H)} {D : Submodule ℂ H}
     {E : Fin n → Fin n → Module.End ℂ D} (hσ : IsURepOn (UJset ε) σ) (hD : IsDerivedOn ε σ D E)
@@ -53,6 +58,17 @@ variable {ε : Fin n → Bool} {lam lam' : Fin n → ℝ} {T : S7.KType ε (lowK
   {Ψ : Matrix (Fin n) (Fin n) ℂ → (T.V →L[ℂ] T.V)} {Ψ' : Matrix (Fin n) (Fin n) ℂ → (T'.V →L[ℂ] T'.V)}
   {v₀ : T.V} {v₀' : T'.V}
 
+/- English proof (translation)
+Introduce `x hx`. Establish `hE` using `(isDerivedOn_smE (rreg_isURepOn ε)).glRep`. Establish `h1 : casimir (tensF dual (smE ε (rreg ε))) (ι x) = ((casVal lam' : ℝ) : ℂ) • ι x`. Rewrite using `[← map_smul, ← casimir_genSub hE (datumV_casimir hP' v₀') x hx]`. Simplify using `only [casimir, LinearMap.sum_apply, Module.End.mul_apply, map_sum]`.
+
+Use `sum_congr rfl fun a _ => sum_congr rfl fun b _ => ?_` and prove the remaining obligations. Rewrite using `[hι.2.2.1 a b _ (tset_genSub_E _ _ b a hx), hι.2.2.1 b a x hx]`. Establish `h2 : casimir (tensF dual (smE ε (rreg ε))) (ι x) = ((casVal lam : ℝ) : ℂ) • ι x + (n : ℂ) • ι x + (2 : ℂ) • eeF dual (smE ε (rreg ε)) (ι x)`. Establish `h3 : diagOp (casimir (smE ε (rreg ε))) (ι x) = ((casVal lam : ℝ) : ℂ) • ι x` using `funext fun c => by`. Rewrite using `[diagOp_coord, casimir_genSub hE (datumV_casimir hP v₀) _ (tset_mem.mp (hι.1 x hx) c)]`.
+
+Both sides reduce to the same expression. Rewrite using `[← h3]`. Consider the cases of `dual`. Conclude with `LinearMap.congr_fun (casimir_tensV hE) _`. Conclude with `LinearMap.congr_fun (casimir_tensVd hE) _`.
+
+Rewrite `h2` using `[h1, hlam', ← casVal_shiftF]`. Use `smul_right_injective _ (two_ne_zero (α := ℂ)) ?_` and prove the remaining obligations. Use `show (2 : ℂ) • _ = (2 : ℂ) • _`. Rewrite using `[smul_smul, ← add_right_inj (((casVal lam : ℝ) : ℂ) • ι x + (n : ℂ) • ι x), ← h2, ← add_smul, ← add_smul]`. Use `push_cast`.
+
+Both sides reduce to the same expression.
+-/
 theorem occD_eeF (dual : Bool) (hP : IsPsiFor ε lam T Ψ) (hP' : IsPsiFor ε lam' T' Ψ') (s : Fin n)
     (hlam' : lam' = shiftF dual lam s) {ι : smD ε (rreg ε) →ₗ[ℂ] (Fin n → smD ε (rreg ε))}
     (hι : IsGKEmb dual ε (rreg ε) (smE ε (rreg ε)) (genSub (smE ε (rreg ε)) (datumV ε Ψ v₀))

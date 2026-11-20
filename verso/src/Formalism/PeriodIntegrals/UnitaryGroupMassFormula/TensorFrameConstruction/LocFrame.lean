@@ -10,10 +10,20 @@ namespace PI.ScPiBuildW.Rv
 
 open PI.ScPiExists
 
+/- English proof (translation)
+Conclude with `I.cm.cmUnram.2.1 (I.φ v) a`.
+-/
 lemma phi_star (I : Formalism.MainNotions.S.AutInst) (v : InfinitePlace I.F) (a : I.E) :
     I.φ v (star a) = star (I.φ v a) := by
   exact I.cm.cmUnram.2.1 (I.φ v) a
 
+/- English proof (translation)
+Establish `hdet : IsUnit (I.P v).det` using `(Matrix.isUnit_iff_isUnit_det _).1 (I.P_unit v)`. Establish `hJm : Formalism.REAL.Jm (I.ε v) * (I.P v)⁻¹ = (I.P v)ᴴ * I.J.map (I.φ v)`. Rewrite using `[← I.P_spec v, Matrix.mul_assoc, Matrix.mul_nonsing_inv _ hdet, Matrix.mul_one]`. Establish `hPP : ((I.P v)⁻¹)ᴴ * (I.P v)ᴴ = 1`. Rewrite using `[← Matrix.conjTranspose_mul, Matrix.mul_nonsing_inv _ hdet, Matrix.conjTranspose_one]`.
+
+Use `set u : Fin I.n → ℂ := fun i => I.φ v (x i)`. Use `set w : Fin I.n → ℂ := fun i => I.φ v (y i)`. Establish `key : hJ (I.ε v) (rv I v x) (rv I v y) = star u ⬝ᵥ (I.J.map (I.φ v) *ᵥ w)`. Unfold `hJ rv`. Rewrite using `[Matrix.mulVec_mulVec, hJm, ← Matrix.mulVec_mulVec, Matrix.star_mulVec, ← Matrix.dotProduct_mulVec, Matrix.mulVec_mulVec, hPP, Matrix.one_mulVec]`.
+
+Rewrite using `[key]`. Simplify using `only [u, w, Formalism.UG.hform, dotProduct, Matrix.mulVec, Matrix.map_apply, map_sum, map_mul, Pi.star_apply, Finset.mul_sum, starRingEnd_apply, phi_star, mul_assoc]`.
+-/
 lemma hJ_rv (I : Formalism.MainNotions.S.AutInst) (v : InfinitePlace I.F) (x y : Fin I.n → I.E) :
     hJ (I.ε v) (rv I v x) (rv I v y) = I.φ v (Formalism.UG.hform (starRingEnd I.E) I.J x y) := by
   have hdet : IsUnit (I.P v).det := (Matrix.isUnit_iff_isUnit_det _).1 (I.P_unit v)
@@ -31,6 +41,9 @@ lemma hJ_rv (I : Formalism.MainNotions.S.AutInst) (v : InfinitePlace I.F) (x y :
   simp only [u, w, Formalism.UG.hform, dotProduct, Matrix.mulVec, Matrix.map_apply, map_sum, map_mul,
     Pi.star_apply, Finset.mul_sum, starRingEnd_apply, phi_star, mul_assoc]
 
+/- English proof (translation)
+Apply the tactic sequence `split_ifs <;> simp`.
+-/
 lemma phi_ite (I : Formalism.MainNotions.S.AutInst) (v : InfinitePlace I.F) {r : ℕ} (a b : Fin r) :
     I.φ v (if a = b then (1 : I.E) else 0) = if a = b then 1 else 0 := by
   split_ifs <;> simp
@@ -66,9 +79,21 @@ variable (I : Formalism.MainNotions.S.AutInst) {r k : ℕ} (e f : Fin r → Fin 
       ∀ a, (∀ c, hJ (I.ε v) (rv I v (e c)) (w a) = 0 ∧ hJ (I.ε v) (rv I v (f c)) (w a) = 0) ∧
         hJ (I.ε v) (rv I v z) (w a) = 0)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] lemma locFrame_e : (locFrame I e f z hn hF hz v w hw).e = fun a => rv I v (e a) := rfl
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] lemma locFrame_f : (locFrame I e f z hn hF hz v w hw).f = fun a => rv I v (f a) := rfl
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] lemma locFrame_z : (locFrame I e f z hn hF hz v w hw).z = rv I v z := rfl
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] lemma locFrame_w : (locFrame I e f z hn hF hz v w hw).w = w := rfl
 
 end Simp

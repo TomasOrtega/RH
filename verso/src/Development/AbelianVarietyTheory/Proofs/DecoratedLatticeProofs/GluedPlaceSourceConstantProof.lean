@@ -20,10 +20,18 @@ section Det
 variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
   {n' : Type} [Fintype n'] [DecidableEq n']
 
+/- English proof (translation)
+Rewrite using `[Module.length_eq_one_iff]`. Conclude with `isSimpleModule_iff_isCoatom.2 (Ideal.isMaximal_def.1 (maximalIdeal.isMaximal _))`.
+-/
 theorem length_residue : Module.length 𝒪[k] 𝓀[k] = 1 := by
   rw [Module.length_eq_one_iff]
   exact isSimpleModule_iff_isCoatom.2 (Ideal.isMaximal_def.1 (maximalIdeal.isMaximal _))
 
+/- English proof (translation)
+Introduce `a`. Choose the witnesses or unpack the hypotheses as in `⟨x, hx⟩ : ∃ x, P.fn x ≠ 0 := by`. Assume the negation of the conclusion as `h`. Use `push_neg at h`. Conclude with `P.fn_ne (LinearMap.ext h)`.
+
+Take `⟨s, hs⟩` from `residue_surjective (R := 𝒪[k]) (a * (P.fn x)⁻¹)`. Use `⟨s • x, ?_⟩` and prove the remaining obligations. Rewrite using `[map_smul, Algebra.smul_def, ResidueField.algebraMap_eq, hs, mul_assoc, inv_mul_cancel₀ hx, mul_one]`.
+-/
 theorem fn_surjective (P : Pair k n') : Function.Surjective P.fn := by
   intro a
   obtain ⟨x, hx⟩ : ∃ x, P.fn x ≠ 0 := by
@@ -36,6 +44,29 @@ theorem fn_surjective (P : Pair k n') : Function.Surjective P.fn := by
 
 set_option synthInstance.maxHeartbeats 200000 in
 
+/- English proof (translation)
+Establish `hmem : ∀ x ∈ P.lat, g⁻¹ • x ∈ P.ker` using `fun x hx => mem_smul_iff.1 (hg ▸ hx)`. Set `F : (n' → k) →ₗ[𝒪[k]] (n' → k)` to `(Matrix.toLin' (g⁻¹ : GL n' k).val).restrictScalars 𝒪[k]`. Establish `hF : ∀ x, F x = g⁻¹ • x` using `fun x => rfl`. Establish `hFm : ∀ x ∈ P.lat, F x ∈ P.lat` using `fun x hx => P.ker_le (by rw [hF]; exact hmem x hx)`. Set `f : P.lat →ₗ[𝒪[k]] P.lat` to `F.restrict hFm`.
+
+Establish `hr : LinearMap.range f = LinearMap.ker P.fn`. Use extensionality with `x`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨y, rfl⟩`. Conclude with `(Pair.mem_ker.1 (hmem y y.2)).2`.
+
+Introduce `hx`. Establish `h1 : (x : n' → k) ∈ P.ker` using `Pair.mem_ker.2 ⟨x.2, hx⟩`. Establish `h2 : g • (x : n' → k) ∈ g • P.ker` using `mem_smul_iff.2 (by rwa [inv_smul_smul])`. Rewrite `h2` using `[hg]`. Use `⟨⟨_, h2⟩, Subtype.ext ?_⟩` and prove the remaining obligations.
+
+Express the relevant statement in the definitionally equal form `F (g • (x : n' → k)) = x`. Rewrite using `[hF, inv_smul_smul]`. Establish `hlen : IsDiscreteValuationRing.addVal 𝒪[k] (LinearMap.det f) = 1`. Rewrite using `[← GlobalTheory.length_quotient_range_eq_addVal_det, hr, (P.fn.quotKerEquivOfSurjective (fn_surjective P)).length_eq, length_residue]`. Establish `hdetmap : algebraMap 𝒪[k] k (LinearMap.det f) = ((g⁻¹ : GL n' k) : Matrix n' n' k).det`.
+
+Set `b` to `Module.finBasis 𝒪[k] P.lat`. Set `bK` to `b.extendOfIsLattice k`. Establish `hbK : ∀ i, bK i = (b i : n' → k)` using `Module.Basis.extendOfIsLattice_apply k b`. Rewrite using `[← LinearMap.det_toMatrix b f, RingHom.map_det, ← LinearMap.det_toLin' ((g⁻¹ : GL n' k) : Matrix n' n' k), ← LinearMap.det_toMatrix bK]`. Use `congrArg Matrix.det ?_` and prove the remaining obligations.
+
+Use extensionality with `i j`. Simplify using `only [RingHom.mapMatrix_apply, Matrix.map_apply, LinearMap.toMatrix_apply]`. Establish `e1 : Matrix.toLin' (g⁻¹ : GL n' k).val (bK j) = ((f (b j) : P.lat) : n' → k)` using `by rw [hbK]; rfl`. Establish `e2 : ((f (b j) : P.lat) : n' → k) = ∑ l, algebraMap 𝒪[k] k (b.repr (f (b j)) l) • bK l`. Establish `h` using `congrArg Subtype.val (b.sum_repr (f (b j)))`.
+
+Rewrite using `[← h, Submodule.coe_sum]`. Use `Finset.sum_congr rfl fun l _ => ?_` and prove the remaining obligations. Rewrite using `[Submodule.coe_smul, hbK, algebraMap_smul]`. Rewrite using `[e1, e2, bK.repr_sum_self]`. Take `⟨u, hu⟩` from `(IsDiscreteValuationRing.addVal_eq_iff_associated _ _).1 (hlen.trans (IsDiscreteValuationRing.addVal_uniformizer q.2).symm)`.
+
+Establish `hdg : ((Matrix.GeneralLinearGroup.det g : kˣ) : k) * (q.unit : k) = ((u : 𝒪[k]) : k)`. Establish `h1` using `congrArg (algebraMap 𝒪[k] k) hu`. Rewrite `h1` using `[map_mul, hdetmap]`. Establish `h2 : ((g⁻¹ : GL n' k) : Matrix n' n' k).det = ((Matrix.GeneralLinearGroup.det g : kˣ) : k)⁻¹`. Rewrite using `[← Matrix.GeneralLinearGroup.val_det_apply, map_inv, Units.val_inv_eq_inv_val]`.
+
+Rewrite `h1` using `[h2]`. Establish `h3 : (q.unit : k) = algebraMap 𝒪[k] k q.1` using `rfl`. Rewrite using `[h3, ← h1, ← mul_assoc, mul_inv_cancel₀ (Units.ne_zero _), one_mul]`. Both sides reduce to the same expression. Rewrite using `[hdg]`.
+
+Establish `h1 : valuation k ((u : 𝒪[k]) : k) ≤ 1` using `(u : 𝒪[k]).2`. Establish `h2 : valuation k (((u⁻¹ : 𝒪[k]ˣ) : 𝒪[k]) : k) ≤ 1` using `((u⁻¹ : 𝒪[k]ˣ) : 𝒪[k]).2`. Establish `h3 : valuation k ((u : 𝒪[k]) : k) * valuation k (((u⁻¹ : 𝒪[k]ˣ) : 𝒪[k]) : k) = 1`. Rewrite using `[← map_mul]`. Establish `: ((u : 𝒪[k]) : k) * (((u⁻¹ : 𝒪[k]ˣ) : 𝒪[k]) : k) = 1`.
+
+Rewrite using `[← Subring.coe_mul, Units.mul_inv]`. Both sides reduce to the same expression. Rewrite using `[this, map_one]`. Use `le_antisymm h1 ?_` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem valuation_det_mul_unif (q : Unif k) (P : Pair k n') (g : GL n' k) (hg : g • P.ker = P.lat) :
     valuation k (((Matrix.GeneralLinearGroup.det g : kˣ) : k) * (q.unit : k)) = 1 := by
   classical
@@ -110,6 +141,9 @@ open GlobalTheory.FinPl GlobalTheory.FinPl.SrcGl GlobalTheory.FinPl.SrcTheta
 
 variable {D : D7}
 
+/- English proof (translation)
+Set `e : (n → k) ≃ₗ[k] (Fin S.rank → k)` to `LinearEquiv.ofLinear (Matrix.toLin' β.b) (Matrix.toLin' β.b') (by rw [← Matrix.toLin'_mul, β.bb', Matrix.toLin'_one]) (by rw [← Matrix.toLin'_mul, β.b'b, Matrix.toLin'_one])`. Use `e.finrank_eq` as an intermediate fact. Rewrite `this` using `[Module.finrank_fin_fun, Module.finrank_fintype_fun_eq_card]`. Conclude with `this.symm`.
+-/
 theorem Frame.rank_eq {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
     {p : SplitPt D k} {S : HSp D} {n : Type} [Fintype n] [DecidableEq n] (β : Frame p S n) :
     S.rank = Fintype.card n := by
@@ -119,6 +153,9 @@ theorem Frame.rank_eq {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k]
   rw [Module.finrank_fin_fun, Module.finrank_fintype_fun_eq_card] at this
   exact this.symm
 
+/- English proof (translation)
+Simplify using `only [chrPow, ← Circle.coe_mul, ← _root_.zpow_add, neg_add_cancel, zpow_zero, Circle.coe_one]`.
+-/
 theorem chrPow_neg_one_mul (χ : (AE D)ˣ →* Circle) (a : (AE D)ˣ) : chrPow χ a (-1) * chrPow χ a 1 = 1 := by
   simp only [chrPow, ← Circle.coe_mul, ← _root_.zpow_add, neg_add_cancel, zpow_zero, Circle.coe_one]
 
@@ -128,6 +165,17 @@ namespace GlobalTheory.FinPl.SrcExact
 
 open GlobalTheory.FinPl GlobalTheory.FinPl.SrcGl GlobalTheory.FinPl.SrcTheta
 
+/- English proof (translation)
+Take `⟨lS, lT, hlS, -, hq, -, hEq⟩` from `hLin k p q ψ S T χS χT om hW`. Take `⟨_, _, -, -, hlin⟩` from `GlobalTheory.T.splitPlace_linearModel_latticeVacuum_base D k p ψ S T χS χT om hW`. Use `⟨lS, hlS, hq, fun LS LT f₀ hLS hLT hvac => ?_⟩` and prove the remaining obligations. Take `⟨hex, hth, -⟩` from `GlobalTheory.T.splitPlace_baseVacuum_datum_exists_unique D k p n (n' ⊕ Fin 1) ψ hW.std S T α₀ β LS LT hLS hLT f₀ hvac`. Take `⟨G, hG, hGP⟩` from `exists_linear_of_rel (SB (Matrix n (n' ⊕ Fin 1) k)) (Over ψ α₀ β LS LT f₀) hex (fun c x y x' y' h h' => (hlin n _ α₀ β LS LT f₀ x y h).2.2 c x' y' h')`.
+
+Establish `hGt : ∀ Φ, IsThetaFunO ψ S T (G Φ)` using `fun Φ => (hG Φ).elim fun x hx => (hth _ _ hx).1`. Establish `hGf : ∀ Φ f, Over ψ α₀ β LS LT f₀ Φ f → G Φ = f` using `fun Φ f h => (hex Φ h.2.2.2.1).unique (hGP Φ h.2.2.2.1) h`. Set `θ : CA A →ₗ[ℂ] (Matrix n (n' ⊕ Fin 1) k → ℂ) →ₗ[ℂ] (GA D T → WO L T → ℂ)` to `LinearMap.mk₂ ℂ (fun v Φ => liftA o om vA v (G Φ)) (fun v v' Φ => liftA_add_left o hA vA hW v.2 v'.2 (hGt Φ)) (fun c v Φ => liftA_smul_left o vA c v (G Φ)) (fun v Φ Φ' => by rw [map_add]; exact liftA_add_right o hA vA hW v.2 (hGt Φ) (hGt Φ')) (fun c v Φ => by rw [map_smul]; exact …`. Establish `hθ : ∀ (v : CA A) Φ, θ v Φ = liftA o om vA v (G Φ)` using `fun _ _ => rfl`. Use `⟨θ, fun v Φ f h => by rw [hθ, hGf Φ f h], fun g v Φ hΦ => ?_⟩` and prove the remaining obligations.
+
+Establish `h1` using `hEq n _ α₀ β LS LT f₀ Φ _ (hGP Φ hΦ) (blk g) 1`. Establish `hdet : Matrix.GeneralLinearGroup.det (blk g) = Matrix.GeneralLinearGroup.det g`. Use `ext`. Simplify using `[Matrix.GeneralLinearGroup.val_det_apply]`. Establish `hemb : α₀.gl (blk g) = o.emb (α.gl g, 1)`.
+
+Rewrite using `[Comm.emb_gl hsum]`. Use `congr 1`. Establish `hfun : (fun x : Matrix n (n' ⊕ Fin 1) k => (lS (Matrix.GeneralLinearGroup.det (blk g)) : ℂ) * (lT (Matrix.GeneralLinearGroup.det (1 : GL n k)) : ℂ) * Φ (((1 : GL n k)⁻¹ : GL n k).val * x * (blk g).val)) = (lS (Matrix.GeneralLinearGroup.det g) : ℂ) • fun x => Φ (x * (blk g).val)`. Use function extensionality and compare the values at `x`. Simplify using `only [hdet, map_one, Units.val_one, mul_one, inv_one, Matrix.one_mul, Pi.smul_apply, smul_eq_mul]`.
+
+Rewrite `h1` using `[hfun, hemb, map_one]`. Establish `h2 : θ (caRep α g v) ((lS (Matrix.GeneralLinearGroup.det g) : ℂ) • fun x => Φ (x * (blk g).val)) = θ v Φ`. Rewrite using `[hθ, hθ, hGf _ _ h1]`. Conclude with `liftA_equiv o vA hW v.2 (hGt Φ) (α.gl g)`. Rewrite using `[← h2, map_smul, inv_smul_smul₀ (Units.ne_zero _)]`.
+-/
 theorem exists_theta_exact {D : D7} (hLin : LinExact D) (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k]
     [IsNonarchimedeanLocalField k] (p : SplitPt D k) (n n' : Type) [Fintype n] [DecidableEq n] [Fintype n']
     [DecidableEq n'] (q : Unif k) (ψ : AddChar (AF D.host.F) ℂ) (S A L T : HSp D) (o : OrthDec S A L)
@@ -182,6 +230,33 @@ end GlobalTheory.FinPl.SrcExact
 
 open GlobalTheory.FinPl GlobalTheory.FinPl.SrcGl GlobalTheory.FinPl.SrcExact in
 
+/- English proof (translation)
+Introduce `D k _ _ _ _ p n n' _ _ _ _ q χ₀ hχ`. Establish `hQ : (0 : ℝ) < resCard k`. Establish `: 0 < resCard k` using `Nat.card_pos`. Conclude with `this` after adjusting the coercions. Use `⟨((resCard k : ℝ) ^ Fintype.card n)⁻¹ * (resCard k : ℝ) ^ ((Fintype.card n : ℝ) / 2), 1, mul_pos (inv_pos.2 (pow_pos hQ _)) (Real.rpow_pos_of_pos hQ _), ?_⟩` and prove the remaining obligations.
+
+Introduce `ψ S A L T o ζ hL hA vA χS χT om hW _ hT α α₀ β hsum P Λ _ LS LT f₀ Ξ Ξ' hΞ hΞ' φ hφ`. Use `set χ := resChar χ₀ hχ q with hχχ`. Take `⟨lS, hlS, hq, hθ⟩` from `exists_theta_exact (GlobalTheory.T.linearModel_splitPlace_characterEquivariance D) k p n n' q ψ S A L T o hA vA χS χT om hW α α₀ β hsum`. Establish `hdet : ∀ L' : Submodule 𝒪[k] (n' → k), L'.IsLattice k → ∀ g ∈ latStab L', ((lS (Matrix.GeneralLinearGroup.det g) : ℂˣ) : ℂ) = 1` using `fun L' hL' g hg => by`. Rewrite using `[GlobalTheory.T.unramifiedCharacter_det_latticeStabilizer_eq_one k n' L' hL' g hg lS (hlS hT), Units.val_one]`.
+
+Establish `hsb` using `GlobalTheory.T.schwartzBruhat_tensor_indicator_character_facts k n n'`. Establish `hinv : ∀ (θ : CA A →ₗ[ℂ] (Matrix n (n' ⊕ Fin 1) k → ℂ) →ₗ[ℂ] (GA D T → WO L T → ℂ)), (∀ (g : GL n' k) (v : CA A) (Φ : Matrix n (n' ⊕ Fin 1) k → ℂ), Φ ∈ SB (Matrix n (n' ⊕ Fin 1) k) → θ (caRep α g v) (fun x => Φ (x * (blk g).val)) = ((lS (Matrix.GeneralLinearGroup.det g) : ℂˣ) : ℂ …`. Introduce `θ hθe a ha L' hL' g hg v Ψ hΨ`. Simplify using `only [LinearMap.compl₂_apply, tensL_apply]`. Use `hθe g v _ (hsb.1 Ψ a hΨ ha)` as an intermediate fact.
+
+Rewrite `this` using `[hdet L' hL' g hg, inv_one, one_smul]`. Use `Eq.trans (congrArg _ ?_) this` and prove the remaining obligations. Use function extensionality and compare the values at `x`. Conclude with `(tensCol_mul_blk Ψ a g x).symm`. Take `⟨P', hP'⟩` from `exists_lat_eq P`.
+
+Take `⟨g, hg⟩` from `MulAction.exists_smul_eq (GL n' k) P' P`. Establish `hc : ((resCard k : ℂ) ^ Fintype.card n)⁻¹ * ((lS (Matrix.GeneralLinearGroup.det g) : ℂˣ) : ℂ) = ((((resCard k : ℝ) ^ Fintype.card n)⁻¹ * (resCard k : ℝ) ^ ((Fintype.card n : ℝ) / 2) : ℝ) : ℂ) * chrPow χT (p.idele q.unit) 1`. Establish `hv` using `valuation_det_mul_unif q P g (by rw [← hP', ← Pair.smul_lat, hg])`. Establish `h1 : lS (Matrix.GeneralLinearGroup.det g * q.unit) = 1` using `hlS hT _ (by rw [Units.val_mul]; exact hv)`. Rewrite `h1` using `[map_mul]`.
+
+Establish `h2 : ((lS (Matrix.GeneralLinearGroup.det g) : ℂˣ) : ℂ) * (lS q.unit : ℂ) = 1`. Rewrite using `[← Units.val_mul, h1, Units.val_one]`. Rewrite `h2` using `[hq, Frame.rank_eq β]`. Establish `h3 : (resCard k : ℝ) ^ (-(Fintype.card n : ℝ) / 2) * (resCard k : ℝ) ^ ((Fintype.card n : ℝ) / 2) = 1`. Rewrite using `[← Real.rpow_add hQ, neg_div, neg_add_cancel, Real.rpow_zero]`.
+
+Establish `h4` using `chrPow_neg_one_mul χT (p.idele q.unit)`. Establish `hyz : ((((resCard k : ℝ) ^ (-(Fintype.card n : ℝ) / 2) : ℝ) : ℂ) * chrPow χT (p.idele q.unit) (-1)) * ((((resCard k : ℝ) ^ ((Fintype.card n : ℝ) / 2) : ℝ) : ℂ) * chrPow χT (p.idele q.unit) 1) = 1`. Rewrite using `[mul_mul_mul_comm, ← Complex.ofReal_mul, h3, Complex.ofReal_one, one_mul, h4]`. Establish `h5 : ((lS (Matrix.GeneralLinearGroup.det g) : ℂˣ) : ℂ) = (((resCard k : ℝ) ^ ((Fintype.card n : ℝ) / 2) : ℝ) : ℂ) * chrPow χT (p.idele q.unit) 1`. Combine the equalities or inequalities in the displayed calculation.
+
+Rewrite using `[hyz, mul_one]`. Use `_ = _ := by rw [← mul_assoc, h2, one_mul]`. Rewrite using `[h5, Complex.ofReal_mul, Complex.ofReal_inv, Complex.ofReal_pow, Complex.ofReal_natCast]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[← hc]`.
+
+Take `⟨θ, hθv, hθe⟩` from `hθ LS LT f₀ hΞ.1 hΞ.2.1 hΞ.2.2.1`. Take `⟨hram, heq⟩` from `toCA_ram hφ`. Use `set φc := toCA φ hφ.2.2 with hφc`. Establish `hχ1 : χ ≠ 1` using `hχχ ▸ resChar_ne_one hχ q`. Rewrite using `[show liftA o om vA (φ P) Ξ = θ (φc P) _ from (hθv (φc P) _ _ hΞ).symm, ((GlobalTheory.T.gluedLattice_finite_expansions_localField k n n' q χ hχ1 Λ).1 P).1]`.
+
+Establish `e0 : θ (φc P) (tensCol (latInd P.ker Λ) (vecInd Λ)) = 0` using `GlobalTheory.LastSteps.lift_latInd P hram heq (hinv θ hθe _ (hsb.2.1 Λ inferInstance) P.ker inferInstance) Λ`. Establish `e1 : ∀ Q ∈ withLat Λ, θ (φc P) (tensCol (latInd P.ker Q.ker + GlobalTheory.IndefiniteRowSideFullHecke.AppendedVectorData.mainDatum q χ 1 P Q) (charInd χ Q)) = ((lS (Matrix.GeneralLinearGroup.det g) : ℂˣ) : ℂ) • liftA o om vA (FFStar q χ φ P) (Ξ' Q)`. Introduce `Q hQ`. Establish `hI` using `hinv θ hθe _ (hsb.2.2 χ Q) P.ker inferInstance`. Establish `a0 : θ (φc P) (tensCol (latInd P.ker Q.ker) (charInd χ Q)) = 0` using `GlobalTheory.LastSteps.lift_latInd P hram heq hI Q.ker`.
+
+Establish `a1` using `GlobalTheory.LastSteps.lift_mainDatum q χ 1 heq hI Q rfl hP'`. Simplify using `only [LinearMap.compl₂_apply, tensL_apply, map_one, Module.End.one_apply] at a1`. Establish `a2` using `hθe g⁻¹ (FFStar q χ φc P) _ (hΞ' Q hQ).2.2.2.1`. Establish `b1 : caRep α g⁻¹ (FFStar q χ φc P) = FFStar q χ φc P'`. Rewrite using `[← hg, FFStar_mem_EqForm q χ heq g P', ← Module.End.mul_apply, ← map_mul, inv_mul_cancel, map_one, Module.End.one_apply]`.
+
+Establish `b2 : (fun x => tensCol (phiOne P Q) (charInd χ Q) (x * (blk g⁻¹).val)) = tensCol (phiOne P' Q) (charInd χ Q)`. Use function extensionality and compare the values at `x`. Rewrite using `[tensCol_mul_blk]`. Use `congr 1`. Use function extensionality and compare the values at `x₀`.
+
+Rewrite using `[← hg, phiOne_smul_left, Matrix.mul_assoc, ← Units.val_mul, inv_mul_cancel, Units.val_one, Matrix.mul_one]`. Rewrite `a2` using `[b1, b2, hθv _ _ _ (hΞ' Q hQ), coe_FFStar]`. Rewrite using `[tensCol_add, map_add, a0, zero_add, a1, a2, map_inv, map_inv, Units.val_inv_eq_inv_val, inv_inv]`. Both sides reduce to the same expression. Rewrite using `[map_smul, map_add, map_sum, e0, zero_add, Finset.sum_congr rfl e1, ← Finset.smul_sum, smul_smul]`.
+-/
 theorem GlobalTheory.FinPl.sourceExact : ∀ D : D7, GlobalTheory.FinPl.SourceExact D := by
   intro D k _ _ _ _ p n n' _ _ _ _ q χ₀ hχ
   have hQ : (0 : ℝ) < resCard k := by

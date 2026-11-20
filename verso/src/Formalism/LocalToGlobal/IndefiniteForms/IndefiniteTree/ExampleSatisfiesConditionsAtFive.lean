@@ -366,10 +366,16 @@ def ONwith {Bs : DefBase K} {Df : DefSide Bs} (S : IndefData Df) (N : IndefNum B
   (∀ w ∈ S.Tw, ∀ j, 0 ≤ err w j) ∧
   ∀ j, ∑ w ∈ S.Tw, lw w * ((ramw w : ℝ) * err w j + (ramw w : ℝ) * N.J0 (S.μ w) w j) ≤ N.E1 j
 
+/- English proof (translation)
+Conclude with `Iff.rfl`.
+-/
 theorem on_iff_with {Bs : DefBase K} {Df : DefSide Bs} (S : IndefData Df) (N : IndefNum Bs) :
     S.ON N ↔ ONwith S N S.err0 := by
   exact Iff.rfl
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨R.D_pos, R.dW_eq wf⟩`.
+-/
 theorem rankRows_of {Bs : DefBase K} {Df : DefSide Bs} (R : IndefRows Df) (wf : Df.WF) :
     RankRows R.toIndefData := ⟨R.D_pos, R.dW_eq wf⟩
 
@@ -377,11 +383,19 @@ section Proof
 
 variable {Bs : DefBase K} {Df : DefSide Bs} {S : IndefData Df} {P : Type} [Group P] [Finite P] {c : OnConst}
 
+/- English proof (translation)
+Establish `h : (1 : ℤ) ≤ ramw v` using `one_le_ramw v`. Establish `h' : (0 : ℤ) < ramw v` using `by omega`. Conclude with `h'` after adjusting the coercions.
+-/
 theorem ramw_pos (v : HeightOneSpectrum (𝓞 K)) : (0 : ℝ) < (ramw v : ℝ) := by
   have h : (1 : ℤ) ≤ ramw v := one_le_ramw v
   have h' : (0 : ℤ) < ramw v := by omega
   exact_mod_cast h'
 
+/- English proof (translation)
+Establish `hne : U.index ≠ 0` using `by first`. Consider the case `exact Subgroup.index_ne_zero_of_finite`. Consider the case `exact Subgroup.FiniteIndex.index_ne_zero`. Consider the case `(have h := U.card_mul_index`. Establish `hP : 0 < Nat.card P` using `Nat.card_pos`.
+
+Introduce `h0`. Rewrite `h` using `[h0, mul_zero]`. Use the proof step `omega)`. Conclude with `Nat.pos_of_ne_zero hne` after adjusting the coercions.
+-/
 theorem index_pos (U : Subgroup P) : (0 : ℝ) < (U.index : ℝ) := by
   have hne : U.index ≠ 0 := by
     first
@@ -394,10 +408,16 @@ theorem index_pos (U : Subgroup P) : (0 : ℝ) < (U.index : ℝ) := by
        omega)
   exact_mod_cast Nat.pos_of_ne_zero hne
 
+/- English proof (translation)
+Establish `h : 0 < Nat.card U` using `Nat.card_pos`. Conclude with `h` after adjusting the coercions.
+-/
 theorem card_pos (U : Subgroup P) : (0 : ℝ) < (Nat.card U : ℝ) := by
   have h : 0 < Nat.card U := Nat.card_pos
   exact_mod_cast h
 
+/- English proof (translation)
+Unfold `matLat`. Rewrite using `[Matrix.mulVecLin_one]`. Use `first`. Consider the case `exact Submodule.map_id L`. Consider the case `(ext x; simp)`.
+-/
 theorem matLat_one' {d : ℕ} (L : Submodule (𝓞 K) (Fin d → K)) :
     matLat (1 : Matrix (Fin d) (Fin d) K) L = L := by
   unfold matLat
@@ -406,6 +426,13 @@ theorem matLat_one' {d : ℕ} (L : Submodule (𝓞 K) (Fin d → K)) :
   | exact Submodule.map_id L
   | (ext x; simp)
 
+/- English proof (translation)
+Establish `key` using `local_conditions_weighted_at_place K (Fin (O.nZ j) → K) v P (O.ρ j) O.U O.ψ hMk (O.V₀ j) (O.e j) (hProj j).1 (hProj j).2 (O.Ms j) (O.Th1 v j) (O.Th v j) (O.ThK v j) (O.Th0 v j) (O.ThJ v j) (O.X₃ v j) (hSup j).1 h0.1 hSp.1 hSp.2 h0.2.1 hS.1 hD.1 hD.2.1 (hSup j).2 hS.2.1 (O.σ v j) …`. Rewrite `key` using `[Module.finrank_fin_fun]`. Establish `hr : (ramw v : ℝ) ≠ 0` using `(ramw_pos v).ne'`. Establish `hi : (O.U.index : ℝ) ≠ 0` using `(index_pos O.U).ne'`. Establish `e : (ramw v : ℝ) * ((O.e0 v j + O.vU0 v) * (S.dW j : ℝ) + (O.r v j / (ramw v : ℝ) + (O.nZ j : ℝ) * O.vU0 v) / (O.U.index : ℝ) + O.ε0 v j) = ((O.E v j : ℝ) - (vw v (O.σ v j) : ℝ) + (vw v ((Nat.card O.U : ℕ) : K) : ℝ)) * (S.dW j : ℝ) + (O.r v j + (O.nZ j : ℝ) * (vw v ((Nat.card O.U …`.
+
+Unfold `OnObj.e0 OnObj.vU0`. Clear the denominators using the available nonvanishing facts. Apply the tactic sequence `try ring`. Use `first`. Consider the case `(rw [e]; exact key)`.
+
+Consider the case `linarith [key, e]`.
+-/
 theorem local_bound (O : OnObj S P c) (v : HeightOneSpectrum (𝓞 K)) (j : Bs.J) (t : Bs.Tup)
     (hMk : LeafMackey O) (hSup : LeafSup O) (hProj : LeafProj O)
     (hC : Function.Injective (O.φ j) ∧ LinearMap.range (O.φ j) = O.Zg j ∧
@@ -451,10 +478,20 @@ theorem local_bound (O : OnObj S P c) (v : HeightOneSpectrum (𝓞 K)) (j : Bs.J
   | (rw [e]; exact key)
   | linarith [key, e]
 
+/- English proof (translation)
+Unfold `OnObj.L OnObj.b`. Conclude with `Real.log_exp _`.
+-/
 theorem L_eq (O : OnObj S P c) : O.L = O.xe := by
   unfold OnObj.L OnObj.b
   exact Real.log_exp _
 
+/- English proof (translation)
+Take `⟨-, hk, -, hf, -⟩` from `hPg`. Establish `h1 : 1 ≤ O.f * O.k` using `by nlinarith`. Establish `h8 : 8 ≤ O.f * O.k` using `by nlinarith`. Establish `h3 : O.f * O.k ≤ (O.f * O.k) ^ 3` using `by first`. Consider the case `exact le_self_pow₀ h1 (by norm_num)`.
+
+Consider the case `exact le_self_pow h1 (by norm_num)`. Consider the case `nlinarith [mul_le_mul h1 h1 zero_le_one (by linarith)]`. Establish `hpos : 0 < 4 * (O.f * O.k) ^ 3` using `by linarith`. Unfold `OnObj.y`. Prove the components needed by the constructor for the conclusion.
+
+Conclude with `div_nonneg zero_le_one hpos.le`. Rewrite using `[div_le_div_iff₀ hpos (by norm_num)]`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem y_bounds (O : OnObj S P c) (hPg : LeafPage O) : 0 ≤ O.y ∧ O.y ≤ 1 / 8 := by
   obtain ⟨-, hk, -, hf, -⟩ := hPg
   have h1 : 1 ≤ O.f * O.k := by nlinarith
@@ -471,6 +508,9 @@ theorem y_bounds (O : OnObj S P c) (hPg : LeafPage O) : 0 ≤ O.y ∧ O.y ≤ 1 
   · rw [div_le_div_iff₀ hpos (by norm_num)]
     linarith
 
+/- English proof (translation)
+Take `⟨-, -, -, hr, -⟩` from `hT0`. Unfold `OnObj.r`. Use `split_ifs`. Conclude with `(hr v j).2`. Conclude with `(hr v j).1`.
+-/
 theorem r_nonneg (O : OnObj S P c) (hT0 : LatticeIndexBoundAtPairs O) (v : HeightOneSpectrum (𝓞 K)) (j : Bs.J) : 0 ≤ O.r v j := by
   obtain ⟨-, -, -, hr, -⟩ := hT0
   unfold OnObj.r
@@ -478,6 +518,25 @@ theorem r_nonneg (O : OnObj S P c) (hT0 : LatticeIndexBoundAtPairs O) (v : Heigh
   · exact (hr v j).2
   · exact (hr v j).1
 
+/- English proof (translation)
+Take `⟨hC, hk, hm, hf, hT, hSc, heta, hbp, hvd, -⟩` from `hPg`. Establish `hwt : 0 ≤ O.wt j` using `(hSz.1 j).1`. Establish `hSe : 0 ≤ O.Se`. Unfold `OnObj.Se`. Combine the linear equalities and inequalities to obtain the conclusion.
+
+Establish `hfSe : 0 ≤ O.f * O.Se` using `mul_nonneg (by linarith) hSe`. Establish `hsB : 0 ≤ O.sB j`. Unfold `OnObj.sB`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hsC : 0 ≤ O.sC j`.
+
+Unfold `OnObj.sC`. Conclude with `mul_nonneg (mul_nonneg (mul_nonneg (by linarith) (by linarith)) (by linarith)) (by linarith)`. Establish `hβ : ∀ l, 0 ≤ O.β l`. Introduce `l`. Unfold `OnObj.β`.
+
+Use `split_ifs`. Conclude with `mul_nonneg (mul_nonneg (by linarith) (by linarith)) hbp`. Conclude with `le_rfl`. Establish `hA1 : 0 ≤ O.A1 j`. Unfold `OnObj.A1`.
+
+Conclude with `mul_nonneg (by linarith) (add_nonneg (mul_nonneg (mul_nonneg (Real.log_nonneg hk) (by linarith)) hwt) (mul_nonneg (mul_nonneg (by linarith) (by linarith)) hSe))`. Establish `hAkw : 0 ≤ O.Akw j`. Unfold `OnObj.Akw`. Conclude with `mul_nonneg (mul_nonneg (by linarith) (by linarith)) hwt`. Unfold `OnObj.errP`.
+
+Use `split_ifs`. Use polynomial arithmetic with `[sq_nonneg O.rr]`. Combine the linear equalities and inequalities to obtain the conclusion. Use polynomial arithmetic with `[hβ l]`. Unfold `errGood`.
+
+Establish `hl : (0 : ℝ) ≤ (l : ℝ)` using `Nat.cast_nonneg l`. Distinguish the cases in `hY : (l : ℝ) ≤ O.Y`. Rewrite using `[if_pos hY]`. Establish `e1 : 0 ≤ O.A1 j / (l : ℝ)` using `div_nonneg hA1 hl`. Establish `e2 : 0 ≤ O.Akw j * O.th l` using `mul_nonneg hAkw (hth l).1`.
+
+Establish `e3 : 0 ≤ O.T * O.ad l` using `mul_nonneg hT (hth l).2`. Establish `e4 : 0 ≤ (if O.X2 < (l : ℝ) then O.Akw j / (l : ℝ) ^ 2 else 0)` using `by split_ifs`. Conclude with `div_nonneg hAkw (by positivity)`. Conclude with `le_rfl`. Combine the linear equalities and inequalities to obtain the conclusion.
+
+Rewrite using `[if_neg hY]`.
+-/
 theorem errorTerm_nonneg (O : OnObj S P c) (hPg : LeafPage O) (hSz : LeafSizes O) (hth : ∀ l, 0 ≤ O.th l ∧ 0 ≤ O.ad l)
     (j : Bs.J) (l : ℕ) : 0 ≤ O.errP j l := by
   obtain ⟨hC, hk, hm, hf, hT, hSc, heta, hbp, hvd, -⟩ := hPg
@@ -526,6 +585,33 @@ theorem errorTerm_nonneg (O : OnObj S P c) (hPg : LeafPage O) (hSz : LeafSizes O
 
 set_option maxHeartbeats 800000 in
 
+/- English proof (translation)
+Take `⟨hC, hk, hm, hf, hT, hSc, heta, hbp, hvd, hNc, pg1, pg2, pq1, pdd, h12, hqd, hqg1, hqg2, hdg1, hdg2, hg1s, hg2s, hq1s, hdds, hx⟩` from `hPg`. Take `⟨hwt, hY1, hlY, hYmb, hkSe, hkX, hlk, hL1⟩` from `hSz`. Take `⟨hCb1, hCb2, hB⟩` from `hBad`. Take `⟨hBq, hBs, hBg⟩` from `hB j`. Establish `hg1 : O.g1 ∉ insert O.g2 (insert O.q1 (insert O.dd O.sm))`.
+
+Simplify using `only [Finset.mem_insert, not_or]`. Conclude with `⟨h12, Ne.symm hqg1, Ne.symm hdg1, hg1s⟩`. Establish `hg2 : O.g2 ∉ insert O.q1 (insert O.dd O.sm)`. Simplify using `only [Finset.mem_insert, not_or]`. Conclude with `⟨Ne.symm hqg2, Ne.symm hdg2, hg2s⟩`.
+
+Establish `hq : O.q1 ∉ insert O.dd O.sm`. Simplify using `only [Finset.mem_insert, not_or]`. Conclude with `⟨hqd, hq1s⟩`. Establish `eg1 : O.errP j O.g1 = 4 * O.T + 4 * O.f * O.rr ^ 2`. Unfold `OnObj.errP`.
+
+Rewrite using `[if_pos (Or.inl rfl : O.g1 = O.g1 ∨ O.g1 = O.g2)]`. Establish `eg2 : O.errP j O.g2 = 4 * O.T + 4 * O.f * O.rr ^ 2`. Unfold `OnObj.errP`. Rewrite using `[if_pos (Or.inr rfl : O.g2 = O.g1 ∨ O.g2 = O.g2)]`. Establish `eq1 : O.errP j O.q1 = 2 * (O.sB j + O.T + 1)`.
+
+Unfold `OnObj.errP`. Rewrite using `[if_neg (show ¬(O.q1 = O.g1 ∨ O.q1 = O.g2) from fun h => h.elim hqg1 hqg2), if_neg hq1s, if_pos (Or.inl rfl : O.q1 = O.q1 ∨ O.q1 = O.dd)]`. Unfold `OnObj.β`. Rewrite using `[if_neg hqd]`. Expand and normalize the polynomial expressions, which then agree.
+
+Establish `edd : O.errP j O.dd = 2 * (O.sB j + O.T + 1) + 4 * (O.f * O.k * O.bp)`. Unfold `OnObj.errP`. Rewrite using `[if_neg (show ¬(O.dd = O.g1 ∨ O.dd = O.g2) from fun h => h.elim hdg1 hdg2), if_neg hdds, if_pos (Or.inr rfl : O.dd = O.q1 ∨ O.dd = O.dd)]`. Unfold `OnObj.β`. Rewrite using `[if_pos rfl]`.
+
+Establish `es : ∀ p ∈ O.sm, O.errP j p = 2 * O.sC j + 2 * O.T + 2`. Introduce `p hp`. Unfold `OnObj.errP`. Rewrite using `[if_neg (show ¬(p = O.g1 ∨ p = O.g2) by rintro (rfl | rfl); exacts [hg1s hp, hg2s hp]), if_pos hp]`. Establish `hsm : ∑ p ∈ O.sm, Real.log (p : ℝ) * O.errP j p = (∑ p ∈ O.sm, Real.log (p : ℝ)) * (2 * O.sC j + 2 * O.T + 2)`.
+
+Rewrite using `[Finset.sum_mul]`. Conclude with `Finset.sum_congr rfl (fun p hp => by rw [es p hp])`. Unfold `OnObj.Bad`. Rewrite using `[Finset.sum_insert hg1, Finset.sum_insert hg2, Finset.sum_insert hq, Finset.sum_insert hdds, hsm, eg1, eg2, eq1, edd]`. Establish `hg1p : (0 : ℝ) < O.g1` using `by exact_mod_cast pg1.pos`.
+
+Establish `hg2p : (0 : ℝ) < O.g2` using `by exact_mod_cast pg2.pos`. Establish `hq1p : (0 : ℝ) < O.q1` using `by exact_mod_cast pq1.pos`. Establish `hddp : (0 : ℝ) < O.dd` using `by exact_mod_cast pdd.pos`. Establish `lg : Real.log ((O.g1 * O.g2 : ℕ) : ℝ) = Real.log (O.g1 : ℝ) + Real.log (O.g2 : ℝ)`. Use `push_cast`.
+
+Conclude with `Real.log_mul hg1p.ne' hg2p.ne'`. Establish `lq : Real.log ((O.q1 * O.dd : ℕ) : ℝ) = Real.log (O.q1 : ℝ) + Real.log (O.dd : ℝ)`. Use `push_cast`. Conclude with `Real.log_mul hq1p.ne' hddp.ne'`. Rewrite `hBg` using `[lg]`.
+
+Rewrite `hBq` using `[lq]`. Establish `hlq : 0 ≤ Real.log (O.q1 : ℝ)` using `Real.log_nonneg (by exact_mod_cast pq1.one_lt.le)`. Establish `hb : 0 < O.b`. Unfold `OnObj.b`. Conclude with `Real.exp_pos _`.
+
+Establish `hfmb : 0 ≤ O.f * O.m * O.b` using `mul_nonneg (mul_nonneg (by linarith) (by linarith)) hb.le`. Establish `hfm : 1 ≤ O.f * O.m` using `one_le_mul_of_one_le_of_one_le (by linarith) hm`. Establish `hfmL : 1 ≤ O.f * O.m * O.L` using `one_le_mul_of_one_le_of_one_le hfm hL1`. Establish `h1 : O.Cb1 * (O.f * O.m * O.b) ≤ O.Cb1 * (O.f * O.m * O.b * O.L)` using `mul_le_mul_of_nonneg_left (le_mul_of_one_le_right hfmb hL1) hCb1`. Establish `h2 : O.b ≤ O.f * O.m * O.b * O.L`.
+
+Combine the equalities or inequalities in the displayed calculation. Establish `hBn : 0 ≤ O.f * O.k * O.bp` using `mul_nonneg (mul_nonneg (by linarith) (by linarith)) hbp`. Unfold `OnObj.Cb`. Combine the linear relations using `[mul_nonneg hBn hlq, hBg, hBq, hBs, h1, h2]`.
+-/
 theorem bad_sum (O : OnObj S P c) (hPg : LeafPage O) (hSz : LeafSizes O) (hX : LeafX O) (hBad : LeafBad O) (j : Bs.J) :
     ∑ p ∈ O.Bad, Real.log (p : ℝ) * O.errP j p ≤ O.Cb * (O.f * O.m * O.b * O.L) := by
   obtain ⟨hC, hk, hm, hf, hT, hSc, heta, hbp, hvd, hNc, pg1, pg2, pq1, pdd, h12, hqd, hqg1, hqg2, hdg1, hdg2,
@@ -600,6 +686,91 @@ theorem bad_sum (O : OnObj S P c) (hPg : LeafPage O) (hSz : LeafSizes O) (hX : L
   unfold OnObj.Cb
   linarith [mul_nonneg hBn hlq, hBg, hBq, hBs, h1, h2]
 
+/- English proof (translation)
+Take `⟨hDpos, hdW⟩` from `hRk`. Establish `hPg'` using `hPg`. Take `⟨hC1, hk1, hm1, hf8, hTn, hSc, heta, hbp, hvd, hNc, -⟩` from `hPg'`. Take `⟨hw, hY1, hlY, hYb, hkS, hkX, hlk, hL1⟩` from `hSz`. Establish `hSz' : LeafSizes O` using `⟨hw, hY1, hlY, hYb, hkS, hkX, hlk, hL1⟩`.
+
+Take `⟨hth, hsth, hsad, hgood⟩` from `hG`. Establish `hδ` using `index_pos O.U`. Establish `hcard` using `card_pos O.U`. Establish `hDr : (0 : ℝ) < (S.D : ℝ)` using `by exact_mod_cast hDpos`. Establish `hb0 : 0 < O.b` using `Real.exp_pos _`.
+
+Establish `hLxe : O.L = O.xe` using `L_eq O`. Establish `hSe : 0 ≤ O.Se` using `by unfold OnObj.Se; linarith`. Establish `hloc1 : ∀ w ∈ S.Tw, ∀ j, (idx w (S.M j) (matLat (S.θ j (S.μ w)) (Df.Tl j (S.μ w))) : ℝ) ≤ (ramw w : ℝ) * ((O.e0 w j + O.vU0 w) * (S.dW j : ℝ) + (O.r w j / (ramw w : ℝ) + (O.nZ j : ℝ) * O.vU0 w) / (O.U.index : ℝ) + O.ε0 w j)` using `fun w hw j => local_bound O w j (S.μ w) hMk hSup hProj (hC.1 j) (hC.2 w hw j).1 ((hSp w hw).1 j) ((hS w hw).1 j) ((hT0.1 w hw).1 j) ((hD w hw).1 j) ((hJ w hw).1 j) ((hI w hw).1 j).1 ((hI w hw).1 j).2 ((h2 w hw).1 j) ((h1.1 w hw).1 j).2`. Establish `hloc2 : ∀ w ∈ S.Tw, ∀ j, (idx (conjPl w) (S.M j) (matLat (S.θ j (S.μ w)) (Df.Tl j (S.μ w))) : ℝ) ≤ (ramw (conjPl w) : ℝ) * ((O.e0 (conjPl w) j + O.vU0 (conjPl w)) * (S.dW j : ℝ) + (O.r (conjPl w) j / (ramw (conjPl w) : ℝ) + (O.nZ j : ℝ) * O.vU0 (conjPl w)) / (O.U.index : ℝ) + O.ε …` using `fun w hw j => local_bound O (conjPl w) j (S.μ w) hMk hSup hProj (hC.1 j) (hC.2 w hw j).2 ((hSp w hw).2 j) ((hS w hw).2 j) ((hT0.1 w hw).2 j) ((hD w hw).2 j) ((hJ w hw).2 j) ((hI w hw).2 j).1 ((hI w hw).2 j).2 ((h2 w hw).2 j) ((h1.1 w hw).2 j).2`. Establish `hy` using `y_bounds O hPg`.
+
+Establish `hsh : ∀ j, (O.nZ j : ℝ) / (O.U.index : ℝ) ≤ 3 * (S.D : ℝ)`. Introduce `j`. Take `⟨ep, hep, hs1⟩` from `hSh j`. Take `⟨del, hdel0, hdel1, hs3⟩` from `hBS j`. Establish `hnz : (0 : ℝ) ≤ (O.nZ j : ℝ)` using `Nat.cast_nonneg _`.
+
+Establish `hs1' : (1 - O.y) * (O.nZ j : ℝ) ≤ (Nat.card O.U : ℝ) * O.d0 j` using `le_trans (mul_le_mul_of_nonneg_right (by linarith) hnz) hs1`. Establish `hd0 : 0 ≤ O.d0 j` using `by unfold OnObj.d0; exact Nat.cast_nonneg _`. Use `share_numeric (O.nZ j : ℝ) (O.d0 j) (S.D : ℝ) (Nat.card O.U : ℝ) (O.U.index : ℝ) O.y O.y del hcard hδ hnz hd0 hy.1 le_rfl hy.2 hdel0 hdel1 hs1' hIU hs3` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hv : ∀ w ∈ S.Tw, 0 ≤ O.vU0 w ∧ O.vU0 (conjPl w) = O.vU0 w ∧ 4 * O.vU0 w ≤ O.gq w`.
+
+Introduce `w hw`. Establish `hρ` using `ramw_pos w`. Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Unfold `OnObj.vU0`. Conclude with `div_nonneg (by exact_mod_cast Formalism.DivisionValues.PlaceSumConjugation.vw_nat_nonneg _ w) hρ.le`.
+
+Unfold `OnObj.vU0`. Rewrite using `[Formalism.DivisionValues.PlaceSumConjugation.vw_conj_nat, (ramified_basic_bound K w).2.2.2.1]`. Establish `h` using `hUn.2 w hw`. Establish `hv' : O.vU0 w = (if plc w = O.g1 ∨ plc w = O.g2 then O.f * O.rr * (O.rr - 1) / 2 else 0)`. Unfold `OnObj.vU0`.
+
+Rewrite using `[h]`. Clear the denominators using the available nonvanishing facts. Rewrite using `[hv']`. Unfold `OnObj.gq`. Establish `hr` using `hUn.1`.
+
+Use `split_ifs`. Use polynomial arithmetic with `[mul_nonneg (by linarith : (0 : ℝ) ≤ O.f) (by linarith : (0 : ℝ) ≤ O.rr)]`. Evaluate the numerical expressions. Establish `hdep : ∀ w ∈ S.Tw, ∀ j, O.e0 w j + O.e0 (conjPl w) j - 2 * N.F0 w j + 2 * O.gq w ≤ O.errl w j`. Introduce `w hw j`.
+
+Establish `dc` using `depth_cases (O.e0 w j) (O.e0 (conjPl w) j) (N.F0 w j)`. Unfold `OnObj.errl OnObj.errP`. Distinguish the cases in `hl : plc w = O.g1 ∨ plc w = O.g2`. Rewrite using `[if_pos hl]`. Establish `hg : O.gq w = 2 * O.f * O.rr ^ 2` using `if_pos hl`.
+
+Take `⟨a, b, c⟩` from `hL w hw hl j`. Use `dc.2.2.2.2 O.T (O.nn w j) (O.nn (conjPl w) j) (O.gq w) a b c` as an intermediate fact. Rewrite `this`, the goal using `[hg]`. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite using `[if_neg hl]`.
+
+Establish `hg : O.gq w = 0` using `if_neg hl`. Rewrite using `[hg]`. Distinguish the cases in `h2' : plc w ∈ O.sm`. Rewrite using `[if_pos h2']`. Take `⟨a, b, c⟩` from `h2p w hw h2' j`.
+
+Use `dc.2.2.2.1 (O.sC j) O.T a b c` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite using `[if_neg h2']`. Distinguish the cases in `hr : plc w = O.q1 ∨ plc w = O.dd`. Rewrite using `[if_pos hr]`.
+
+Take `⟨a, b, cq, cd⟩` from `hR w hw hr j`. Establish `hβ : -(2 * O.β (plc w)) ≤ N.F0 w j ∧ N.F0 w j ≤ 0`. Unfold `OnObj.β`. Use `split_ifs with hd`. Conclude with `cd hd`.
+
+Rewrite using `[cq (hr.resolve_right hd)]`. Evaluate the numerical expressions. Use `dc.2.2.1 (O.sB j) O.T (O.β (plc w)) a b hβ.1 hβ.2` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite using `[if_neg hr]`.
+
+Establish `hng : ¬ (plc w ∈ O.sm ∨ plc w = O.q1 ∨ plc w = O.dd ∨ plc w = O.g1 ∨ plc w = O.g2)`. Introduce and unpack `(h | h | h | h | h)`. Use `exacts [h2' h, hr (Or.inl h), hr (Or.inr h), hl (Or.inl h), hl (Or.inr h)]`. Establish `hgg` using `hgood w hw hng j`. Unfold `errGood`.
+
+Distinguish the cases in `hy' : (plc w : ℝ) ≤ O.Y`. Rewrite using `[if_pos hy']`. Take `⟨a, b⟩` from `hgg.1 hy'`. Use `dc.1 (O.aE j (plc w)) a b` as an intermediate fact. Use `show _ ≤ 2 * O.aE j (plc w) + 2`.
+
+Combine the linear equalities and inequalities to obtain the conclusion. Rewrite using `[if_neg hy']`. Take `⟨a, b, c⟩` from `hgg.2 (lt_of_not_ge hy')`. Use `dc.2.1 a b c` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
+
+Establish `hDS : DepthSums O.T (O.C / O.k) (O.C * (O.m * O.b)) O.th O.ad` using `⟨hsth, hsad⟩`. Set `EA : Bs.J → ℝ` to `fun j => 2 * (O.C * (Real.log O.k * O.m * O.wt j + O.f * O.k * O.Se) * Real.log O.Y + O.C * O.k * O.wt j * (O.C / O.k) + O.C * (O.m * O.b) + 2.04 * (O.C * O.k * O.wt j) / O.X2 + Real.log 4 * O.Y) + ∑ p ∈ O.Bad, Real.log (p : ℝ) * O.errP j p`. Establish `hEA : ∀ j, ∑ w ∈ S.Tw, lw w * ((ramw w : ℝ) * O.errl w j) ≤ EA j`. Introduce `j`. Establish `hlk0 : 0 ≤ Real.log O.k` using `Real.log_nonneg hk1`.
+
+Establish `hw0` using `(hw j).1`. Establish `hA1 : 0 ≤ O.C * (Real.log O.k * O.m * O.wt j + O.f * O.k * O.Se)`. Establish `: 0 ≤ Real.log O.k * O.m * O.wt j` using `by positivity`. Establish `: 0 ≤ O.f * O.k * O.Se` using `by positivity`. Check the signs of the components of the expression.
+
+Establish `hA2 : 0 ≤ O.C * O.k * O.wt j` using `by positivity`. Use `local_sum_exact K S.Tw O.Bad (O.errP j) (errorTerm_nonneg O hPg hSz' hth j) O.Y O.X2 _ _ _ O.T (O.C / O.k) (O.C * (O.m * O.b)) O.th O.ad hY1 (by linarith) hA1 hA2 hA2 hTn (fun p => (hth p).1) (fun p => (hth p).2) hDS (fun w => O.errl w j) ?_` and prove the remaining obligations. Introduce `w _`. Unfold `OnObj.errl`. Use `split_ifs with hB`.
+
+Conclude with `le_rfl`. Establish `hB' : ¬ (plc w = O.g1 ∨ plc w = O.g2) ∧ plc w ∉ O.sm ∧ ¬ (plc w = O.q1 ∨ plc w = O.dd)`. Establish `e : O.Bad = insert O.g1 (insert O.g2 (insert O.q1 (insert O.dd O.sm)))` using `rfl`. Rewrite `hB` using `[e]`. Simplify using `only [Finset.mem_insert, not_or] at hB`.
+
+Take `⟨a, b, c, d, f⟩` from `hB`. Conclude with `⟨by rintro (h | h); exacts [a h, b h], f, by rintro (h | h); exacts [c h, d h]⟩`. Unfold `OnObj.errP`. Rewrite using `[if_neg hB'.1, if_neg hB'.2.1, if_neg hB'.2.2]`. Conclude with `le_rfl`.
+
+Establish `hRb : ∀ j, ∀ S' : Finset (HeightOneSpectrum (𝓞 K)), ∑ w ∈ S', lw w * ((ramw w : ℝ) * (O.r w j / (ramw w : ℝ))) ≤ O.Rb j`. Introduce `j S'`. Take `⟨-, hde0, hde1, hr0, hbud⟩` from `hT0`. Establish `e : ∑ w ∈ S', lw w * ((ramw w : ℝ) * (O.r w j / (ramw w : ℝ))) = ∑ w ∈ S', lw w * O.r w j` using `Finset.sum_congr rfl fun w _ => by rw [mul_div_cancel₀ _ (ramw_pos w).ne']`. Rewrite using `[e]`.
+
+Establish `s1 : ∑ w ∈ S', lw w * O.r w j ≤ ∑ w ∈ S', lw w * O.r1 w j + ∑ w ∈ S', lw w * O.r2 w j`. Rewrite using `[← Finset.sum_add_distrib]`. Use `Finset.sum_le_sum fun w _ => ?_` and prove the remaining obligations. Establish `hl` using `lw_nonneg' w`. Take `⟨a, b⟩` from `hr0 w j`.
+
+Rewrite using `[← mul_add]`. Use `mul_le_mul_of_nonneg_left ?_ hl` and prove the remaining obligations. Unfold `OnObj.r`. Apply the tactic sequence `split_ifs <;> linarith`. Take `⟨b1, b2⟩` from `hbud j S'`.
+
+Establish `hB : 0 ≤ (O.nZ j : ℝ) * (O.f * O.m * O.b)`. Establish `: 0 ≤ O.f * O.m * O.b` using `by positivity`. Check the signs of the components of the expression. Establish `hde : (O.nZ j : ℝ) * (O.f * O.m * O.b * O.de2) ≤ (O.nZ j : ℝ) * (O.f * O.m * O.b)`. Establish `e2 : (O.nZ j : ℝ) * (O.f * O.m * O.b * O.de2) = ((O.nZ j : ℝ) * (O.f * O.m * O.b)) * O.de2` using `by ring`.
+
+Rewrite using `[e2]`. Conclude with `mul_le_of_le_one_right hB hde1`. Unfold `OnObj.Rb`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hEJ : ∀ j, ∑ w ∈ S.Tw, lw w * ((ramw w : ℝ) * N.J0 (S.μ w) w j) ≤ O.EJ`.
+
+Introduce `j`. Establish `e : ∑ w ∈ S.Tw, lw w * ((ramw w : ℝ) * N.J0 (S.μ w) w j) ≤ ∑ w ∈ S.Tw, lw w * ((ramw w : ℝ) * O.Jp j (plc w))` using `Finset.sum_le_sum fun w hw => mul_le_mul_of_nonneg_left (mul_le_mul_of_nonneg_left (hJE w hw j) (ramw_pos w).le) (lw_nonneg' w)`. Use `le_trans e (le_trans (place_sum K S.Tw (O.Jp j) (hJS j).1) (le_trans (le_of_eq ?_) ((hJS j).2 (S.Tw.image plc) ?_)))` and prove the remaining obligations. Conclude with `Finset.sum_congr rfl fun p _ => mul_comm _ _`. Introduce `p hp`.
+
+Take `⟨w, _, rfl⟩` from `Finset.mem_image.mp hp`. Conclude with `(ramified_basic_bound K w).1`. Establish `X` using `local_conditions_global_form K S.D hDpos Bs.Tup S.μ Bs.J S.dW hdW S.M (fun j t => matLat (S.θ j t) (Df.Tl j t)) (fun j _ => (1 : Matrix (Fin (S.dW j)) (Fin (S.dW j)) K)) S.Tw O.e0 (fun v j => O.r v j / (ramw v : ℝ)) O.ε0 N.F0 O.errl (fun w j => (ramw w : ℝ) * N.J0 (S.μ w) w j) O. …`. Take `⟨c1, c2, -⟩` from `X`. Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations.
+
+Introduce `w hw`. Establish `h` using `c1 w hw`. Simplify using `only [matLat_one'] at h`. Rewrite `h` using `[(ramified_basic_bound K w).2.2.2.2]`. Simplify using `only [IndefData.Iw]`.
+
+Conclude with `h`. Introduce `w hw j`. Unfold `OnObj.errOn`. Use `errorTerm_nonneg O hPg hSz' hth j (plc w)` as an intermediate fact. Establish `h0` using `r_nonneg O hT0 w j`.
+
+Establish `h0'` using `r_nonneg O hT0 (conjPl w) j`. Use `ramw_pos w` as an intermediate fact. Use `ramw_pos (conjPl w)` as an intermediate fact. Establish `: 0 ≤ (O.r w j / (ramw w : ℝ) + O.r (conjPl w) j / (ramw (conjPl w) : ℝ)) / ((O.U.index : ℝ) * (S.D : ℝ))` using `by positivity`. Unfold `OnObj.errl`.
+
+Combine the linear equalities and inequalities to obtain the conclusion. Introduce `j`. Establish `h` using `c2 j`. Simplify using `only [EA] at h`. Establish `hCE : 4 * O.C ^ 2 + 25 * O.C + O.Cb + 44 ≤ CE` using `hCE`.
+
+Establish `hE1` using `tE1`. Establish `b1` using `budget_numeric (O.nZ j : ℝ) (O.U.index : ℝ) (S.D : ℝ) (O.f * O.m * O.b) hδ hDr (mul_nonneg (mul_nonneg (by linarith) (by linarith)) hb0.le) (hsh j)`. Establish `hCb0' : 0 ≤ O.Cb` using `by unfold OnObj.Cb; linarith [hBad.1, hBad.2.1]`. Establish `hbad` using `bad_sum O hPg hSz' hX hBad j`. Establish `b2` using `absorb_local_conditions_exact O.C O.Cb O.L O.xe O.f O.m O.b O.k (O.wt j) O.Se O.Y O.X2 (∑ p ∈ O.Bad, Real.log (p : ℝ) * O.errP j p) hC1 hCb0' hL1 (le_of_eq hLxe) (by linarith) hm1 hb0 hk1 hlk (hw j).1 (hw j).2 hSe hkS hY1 hlY hYb hkX hbad`.
+
+Establish `hxe1 : 1 ≤ O.xe` using `by rw [← hLxe]; exact hL1`. Establish `hEJb : O.EJ ≤ 32 * O.xe * (O.f * O.m * O.b * O.L)`. Unfold `OnObj.EJ`. Rewrite using `[hLxe]`. Establish `hmb : 0 ≤ O.m * O.b` using `mul_nonneg (by linarith) hb0.le`.
+
+Establish `hx2 : 1 ≤ O.xe ^ 2` using `one_le_pow₀ hxe1`. Establish `hmbx : 0 ≤ O.m * O.b * O.xe ^ 2` using `mul_nonneg hmb (sq_nonneg _)`. Establish `t1 : (O.T2 : ℝ) * (O.m * O.b * O.xe ^ 2) ≤ O.f * (O.m * O.b * O.xe ^ 2)` using `mul_le_mul_of_nonneg_right hX.2 hmbx`. Establish `t2a : O.m * O.b ≤ O.m * O.b * O.xe ^ 2` using `le_mul_of_one_le_right hmb hx2`. Establish `t2b : O.m * O.b * O.xe ^ 2 ≤ O.f * (O.m * O.b * O.xe ^ 2)` using `le_mul_of_one_le_left hmbx (by linarith)`.
+
+Establish `e : 32 * O.xe * (O.f * O.m * O.b * O.xe) = 32 * (O.f * (O.m * O.b * O.xe ^ 2))` using `by ring`. Establish `e2 : 30 * (O.T2 : ℝ) * O.m * O.b * O.xe ^ 2 = 30 * ((O.T2 : ℝ) * (O.m * O.b * O.xe ^ 2))` using `by ring`. Establish `e3 : 2 * O.m * O.b = 2 * (O.m * O.b)` using `by ring`. Rewrite using `[e, e2, e3]`. Combine the linear equalities and inequalities to obtain the conclusion.
+
+Establish `eR : 2 * O.Rb j / ((O.U.index : ℝ) * (S.D : ℝ)) = 2 * (2 * ((O.nZ j : ℝ) * (O.f * O.m * O.b))) / ((O.U.index : ℝ) * (S.D : ℝ))` using `rfl`. Establish `hB0 : 0 ≤ O.f * O.m * O.b * O.L` using `mul_nonneg (mul_nonneg (mul_nonneg (by linarith) (by linarith)) hb0.le) (by linarith)`. Establish `hxe0 : 0 ≤ O.xe` using `by linarith`. Establish `hCb0 : 0 ≤ O.Cb` using `by unfold OnObj.Cb; linarith [hBad.1, hBad.2.1]`. Establish `hfin : (4 * O.C ^ 2 + 25 * O.C + O.Cb + 12) * O.xe * (O.f * O.m * O.b * O.L) + 32 * O.xe * (O.f * O.m * O.b * O.L) ≤ CE * O.E1u`.
+
+Unfold `OnObj.E1u OnObj.B0`. Establish `h1' : 0 ≤ (CE - (4 * O.C ^ 2 + 25 * O.C + O.Cb + 44)) * (O.xe * (O.f * O.m * O.b * O.L))` using `mul_nonneg (by linarith) (mul_nonneg hxe0 hB0)`. Establish `hCE0 : 0 ≤ CE` using `by linarith [sq_nonneg O.C]`. Establish `h2' : 0 ≤ CE * (O.xe * O.Nc)` using `mul_nonneg hCE0 (mul_nonneg hxe0 hNc)`. Establish `e : CE * (O.xe * (O.f * O.m * O.b * O.L + O.Nc)) - ((4 * O.C ^ 2 + 25 * O.C + O.Cb + 12) * O.xe * (O.f * O.m * O.b * O.L) + 32 * O.xe * (O.f * O.m * O.b * O.L)) = (CE - (4 * O.C ^ 2 + 25 * O.C + O.Cb + 44)) * (O.xe * (O.f * O.m * O.b * O.L)) + CE * (O.xe * O.Nc)` using `by ring`.
+
+Combine the linear equalities and inequalities to obtain the conclusion. Rewrite using `[hE1 j]`. Establish `e3 : ∑ w ∈ S.Tw, lw w * ((ramw w : ℝ) * O.errOn w j + (ramw w : ℝ) * N.J0 (S.μ w) w j) = ∑ w ∈ S.Tw, lw w * ((ramw w : ℝ) * (O.errl w j + (O.r w j / (ramw w : ℝ) + O.r (conjPl w) j / (ramw (conjPl w) : ℝ)) / ((O.U.index : ℝ) * (S.D : ℝ))) + (ramw w : ℝ) * N.J0 (S.μ w) w j)` using `rfl`. Rewrite using `[e3]`. Unfold `OnObj.Rb at h`.
+
+Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem on_core (N : IndefNum Bs) (O : OnObj S P c) (CE : ℝ) (hRk : RankRows S)
     (hMk : LeafMackey O) (hSup : LeafSup O) (hProj : LeafProj O) (hC : TieCoord O)
     (hSp : LeafSpan O) (hS : LeafLemmaS O) (hT0 : LatticeIndexBoundAtPairs O) (hD : LeafData O) (hJ : LeafRankJ O)
@@ -870,6 +1041,11 @@ theorem on_core (N : IndefNum Bs) (O : OnObj S P c) (CE : ℝ) (hRk : RankRows S
     unfold OnObj.Rb at h
     linarith
 
+/- English proof (translation)
+Take `⟨c1, c2, c3⟩` from `on_core N O CE hRk hMk hSup hProj hC hSp hS hT0 hD hJ hI h2 h1 hSh hIU hBS hUn hG hR h2p hL hPg hSz hX hBad hJS hJE hCE tE1`. Rewrite using `[on_iff_with]`. Use `⟨fun w hw => ?_, fun w hw j => ?_, fun j => ?_⟩` and prove the remaining obligations. Simplify using `only [tErr w hw]`. Conclude with `c1 w hw`.
+
+Rewrite using `[tErr w hw j]`. Conclude with `c2 w hw j`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem on_of_leaves (N : IndefNum Bs) (O : OnObj S P c) (CE : ℝ) (hRk : RankRows S)
     (hMk : LeafMackey O) (hSup : LeafSup O) (hProj : LeafProj O) (hC : TieCoord O)
     (hSp : LeafSpan O) (hS : LeafLemmaS O) (hT0 : LatticeIndexBoundAtPairs O) (hD : LeafData O) (hJ : LeafRankJ O)
@@ -891,6 +1067,9 @@ theorem on_of_leaves (N : IndefNum Bs) (O : OnObj S P c) (CE : ℝ) (hRk : RankR
             Finset.sum_congr rfl (fun w hw => by rw [tErr w hw j])
         _ ≤ N.E1 j := c3 j
 
+/- English proof (translation)
+Conclude with `on_core N O CE hRk hMk hSup hProj hC hSp hS hT0 hD hJ hI h2 h1 hSh hIU hBS hUn hG hR h2p hL hPg hSz hX hBad hJS hJE hCE tE1`.
+-/
 theorem on_built (N : IndefNum Bs) (O : OnObj S P c) (CE : ℝ) (hRk : RankRows S)
     (hMk : LeafMackey O) (hSup : LeafSup O) (hProj : LeafProj O) (hC : TieCoord O)
     (hSp : LeafSpan O) (hS : LeafLemmaS O) (hT0 : LatticeIndexBoundAtPairs O) (hD : LeafData O) (hJ : LeafRankJ O)
@@ -903,6 +1082,9 @@ theorem on_built (N : IndefNum Bs) (O : OnObj S P c) (CE : ℝ) (hRk : RankRows 
   exact on_core N O CE hRk hMk hSup hProj hC hSp hS hT0 hD hJ hI h2 h1 hSh hIU hBS hUn hG hR h2p hL
     hPg hSz hX hBad hJS hJE hCE tE1
 
+/- English proof (translation)
+Conclude with `on_of_leaves N O CE (rankRows_of R wf) hMk hSup hProj hC hSp hS hT0 hD hJ hI h2 h1 hSh hIU hBS hUn hG hR h2p hL hPg hSz hX hBad hJS hJE hCE tE1 tErr`.
+-/
 theorem on_of_rows (N : IndefNum Bs) (R : IndefRows Df) (wf : Df.WF) (O : OnObj R.toIndefData P c) (CE : ℝ)
     (hMk : LeafMackey O) (hSup : LeafSup O) (hProj : LeafProj O) (hC : TieCoord O)
     (hSp : LeafSpan O) (hS : LeafLemmaS O) (hT0 : LatticeIndexBoundAtPairs O) (hD : LeafData O) (hJ : LeafRankJ O)
@@ -914,6 +1096,9 @@ theorem on_of_rows (N : IndefNum Bs) (R : IndefRows Df) (wf : Df.WF) (O : OnObj 
   exact on_of_leaves N O CE (rankRows_of R wf) hMk hSup hProj hC hSp hS hT0 hD hJ hI h2 h1 hSh hIU hBS hUn
     hG hR h2p hL hPg hSz hX hBad hJS hJE hCE tE1 tErr
 
+/- English proof (translation)
+Establish `tE1 : ErrorConstantMatchesDefinition (Z.num Cp CH) O Cp`. Introduce `j`. Use `show Cp * Z.E1u = Cp * O.E1u`. Rewrite using `[hE]`. Conclude with `on_of_rows (Z.num Cp CH) R wf O Cp hMk hSup hProj hC hSp hS hT0 hD hJ hI h2 h1 hSh hIU hBS hUn hG hR h2p hL hPg hSz hX hBad hJS hJE hCE tE1 tErr`.
+-/
 theorem on_of_scale (Z : IndefScale Bs) (Cp CH : ℝ) (R : IndefRows Df) (wf : Df.WF) (O : OnObj R.toIndefData P c)
     (hMk : LeafMackey O) (hSup : LeafSup O) (hProj : LeafProj O) (hC : TieCoord O)
     (hSp : LeafSpan O) (hS : LeafLemmaS O) (hT0 : LatticeIndexBoundAtPairs O) (hD : LeafData O) (hJ : LeafRankJ O)
@@ -949,6 +1134,9 @@ def side_of_leaves (Z : IndefScale Bs) (Cp CH : ℝ) (R : IndefRows Df) (wf : Df
 
 end Proof
 
+/- English proof (translation)
+Use `⟨c.CE, rfl, ?_⟩` and prove the remaining obligations. Introduce `K₁ _ _ _ Bs Df R wf N P _ _ O hMk hSup hProj hC hSp hS hT0 hD hJ hI h2 h1 hSh hIU hBS hUn hG hR h2p hL hPg hSz hX hBad hJS hJE tE1 tErr`. Conclude with `on_of_rows N R wf O c.CE hMk hSup hProj hC hSp hS hT0 hD hJ hI h2 h1 hSh hIU hBS hUn hG hR h2p hL hPg hSz hX hBad hJS hJE le_rfl tE1 tErr`.
+-/
 theorem on_family (c : OnConst) : ∃ CE : ℝ, CE = c.CE ∧
     ∀ (K₁ : Type) [Field K₁] [NumberField K₁] [StarRing K₁] (Bs : DefBase K₁) (Df : DefSide Bs) (R : IndefRows Df),
       Df.WF → ∀ (N : IndefNum Bs) (P : Type) [Group P] [Finite P] (O : OnObj R.toIndefData P c),
@@ -970,12 +1158,20 @@ variable (K)
 def stdLat (n : ℕ) : Submodule (𝓞 K) (Fin n → K) :=
   Submodule.span (𝓞 K) (Set.range (Pi.basisFun K (Fin n)))
 
+/- English proof (translation)
+Use `⟨Submodule.fg_span (Set.finite_range _), ?_⟩` and prove the remaining obligations. Unfold `stdLat`. Rewrite using `[Submodule.span_span_of_tower]`. Conclude with `(Pi.basisFun K (Fin n)).span_eq`.
+-/
 theorem stdLat_isLatIn (n : ℕ) : IsLatIn ⊤ (stdLat K n) := by
   refine ⟨Submodule.fg_span (Set.finite_range _), ?_⟩
   unfold stdLat
   rw [Submodule.span_span_of_tower]
   exact (Pi.basisFun K (Fin n)).span_eq
 
+/- English proof (translation)
+Unfold `eig`. Use `eq_top_iff.mpr (fun x _ => ?_)` and prove the remaining obligations. Rewrite using `[Submodule.mem_iInf]`. Introduce `u`. Rewrite using `[LinearMap.mem_ker]`.
+
+Simplify using the standard rewrite rules.
+-/
 theorem eig_triv (n : ℕ) : eig (1 : Representation K Unit (Fin n → K)) ⊤ (fun _ => (1 : 𝓞 K)) = ⊤ := by
   unfold eig
   refine eq_top_iff.mpr (fun x _ => ?_)
@@ -984,21 +1180,43 @@ theorem eig_triv (n : ℕ) : eig (1 : Representation K Unit (Fin n → K)) ⊤ (
   rw [LinearMap.mem_ker]
   simp
 
+/- English proof (translation)
+Use `first`. Consider the case `exact Submodule.map_id A`. Consider the case `(ext x; simp)`.
+-/
 theorem map_id' {n : ℕ} (A : Submodule (𝓞 K) (Fin n → K)) :
     A.map ((LinearMap.id : (Fin n → K) →ₗ[K] (Fin n → K)).restrictScalars (𝓞 K)) = A := by
   first
   | exact Submodule.map_id A
   | (ext x; simp)
 
+/- English proof (translation)
+Unfold `cut`. Simplify using the standard rewrite rules.
+-/
 theorem cut_top' {n : ℕ} (A : Submodule (𝓞 K) (Fin n → K)) : cut (⊤ : Submodule K (Fin n → K)) A = A := by
   unfold cut
   simp
 
+/- English proof (translation)
+Unfold `sc`. Rewrite using `[one_smul]`. Conclude with `map_id' K A`.
+-/
 theorem sc_one' {n : ℕ} (A : Submodule (𝓞 K) (Fin n → K)) : sc (1 : K) A = A := by
   unfold sc
   rw [one_smul]
   exact map_id' K A
 
+/- English proof (translation)
+Establish `hpZ : Prime (p : ℤ)` using `Nat.prime_iff_prime_int.mp hp`. Use `haveI hmax : (Ideal.span {(p : ℤ)}).IsMaximal := PrincipalIdealRing.isMaximal_of_irreducible hpZ.irreducible`. Establish `hker : RingHom.ker (algebraMap ℤ (𝓞 K)) ≤ Ideal.span {(p : ℤ)}`. Introduce `x hx`. Rewrite `hx` using `[RingHom.mem_ker]`.
+
+Establish `hx0 : x = 0` using `(algebraMap ℤ (𝓞 K)).injective_int (by rw [hx, map_zero])`. Rewrite using `[hx0]`. Conclude with `Ideal.zero_mem _`. Take `⟨Q, hQmax, hQ⟩` from `Ideal.exists_ideal_over_maximal_of_isIntegral (Ideal.span {(p : ℤ)}) hker`. Establish `hpQ : ((p : ℕ) : 𝓞 K) ∈ Q`.
+
+Establish `h1 : (p : ℤ) ∈ Q.comap (algebraMap ℤ (𝓞 K))`. Rewrite using `[hQ]`. Conclude with `Ideal.mem_span_singleton_self _`. Rewrite `h1` using `[Ideal.mem_comap]`. Simplify using `using h1`.
+
+Establish `hQne : Q ≠ ⊥`. Introduce `h0`. Rewrite `hpQ` using `[h0, Ideal.mem_bot]`. Conclude with `hp.ne_zero (by exact_mod_cast hpQ)`. Use `⟨⟨Q, hQmax.isPrime, hQne⟩, ?_⟩` and prove the remaining obligations.
+
+Use `haveI : Nontrivial (𝓞 K ⧸ Q) := by first`. Consider the case `exact Ideal.Quotient.nontrivial_iff.mpr hQmax.ne_top`. Consider the case `exact Ideal.Quotient.nontrivial hQmax.ne_top`. Consider the case `exact (Ideal.Quotient.field Q).toNontrivial`. Use `haveI : CharP (𝓞 K ⧸ Q) p := by`.
+
+Rewrite using `[CharP.charP_iff_prime_eq_zero hp]`. Establish `h2` using `(Ideal.Quotient.eq_zero_iff_mem).mpr hpQ`. Simplify using `using h2`. Conclude with `ringChar.eq (𝓞 K ⧸ Q) p`.
+-/
 private theorem exists_place_lemma (p : ℕ) (hp : p.Prime) : ∃ w : HeightOneSpectrum (𝓞 K), plc w = p := by
   have hpZ : Prime (p : ℤ) := Nat.prime_iff_prime_int.mp hp
   haveI hmax : (Ideal.span {(p : ℤ)}).IsMaximal :=
@@ -1032,6 +1250,9 @@ private theorem exists_place_lemma (p : ℕ) (hp : p.Prime) : ∃ w : HeightOneS
     simpa using h2
   exact ringChar.eq (𝓞 K ⧸ Q) p
 
+/- English proof (translation)
+Conclude with `exists_place_lemma K 3 Nat.prime_three`.
+-/
 theorem exists_place3 : ∃ w : HeightOneSpectrum (𝓞 K), plc w = 3 := by
   exact exists_place_lemma K 3 Nat.prime_three
 
@@ -1145,63 +1366,107 @@ abbrev exampleObject (v0 : InfinitePlace K) (Tw0 : Finset (HeightOneSpectrum (�
 
 variable {K} (v0 : InfinitePlace K) (Tw0 : Finset (HeightOneSpectrum (𝓞 K)))
 
+/- English proof (translation)
+Unfold `vw`. Simplify using `only [FractionalIdeal.spanSingleton_one]`. Conclude with `FractionalIdeal.count_one K v`.
+-/
 theorem toy_vw_one (v : HeightOneSpectrum (𝓞 K)) : vw v (1 : K) = 0 := by
   unfold vw
   simp only [FractionalIdeal.spanSingleton_one]
   exact FractionalIdeal.count_one K v
 
+/- English proof (translation)
+Simplify using the standard rewrite rules.
+-/
 theorem toy_card : Nat.card (⊤ : Subgroup Unit) = 1 := by
   simp
 
+/- English proof (translation)
+Conclude with `eig_triv K 1`.
+-/
 theorem example_eigenspace_eq_top (j : Unit) :
     eig ((exampleObject K v0 Tw0).ρ j) (exampleObject K v0 Tw0).U (exampleObject K v0 Tw0).ψ = ⊤ := by
   exact eig_triv K 1
 
+/- English proof (translation)
+Unfold `OnObj.Zg`. Rewrite using `[example_eigenspace_eq_top]`. Conclude with `top_inf_eq _`.
+-/
 theorem example_Zg_eq_top (j : Unit) : (exampleObject K v0 Tw0).Zg j = ⊤ := by
   unfold OnObj.Zg
   rw [example_eigenspace_eq_top]
   exact top_inf_eq _
 
+/- English proof (translation)
+Use `show (300 : ℝ) ^ (1 : ℝ) = 300`. Conclude with `Real.rpow_one 300`.
+-/
 theorem example_xe_eq : (exampleObject K v0 Tw0).xe = 300 := by
   show (300 : ℝ) ^ (1 : ℝ) = 300
   exact Real.rpow_one 300
 
+/- English proof (translation)
+Unfold `OnObj.b`. Rewrite using `[example_xe_eq]`.
+-/
 theorem example_b_eq_exp : (exampleObject K v0 Tw0).b = Real.exp 300 := by
   unfold OnObj.b
   rw [example_xe_eq]
 
+/- English proof (translation)
+Rewrite using `[L_eq, example_xe_eq]`.
+-/
 theorem example_L_eq : (exampleObject K v0 Tw0).L = 300 := by
   rw [L_eq, example_xe_eq]
 
+/- English proof (translation)
+Rewrite using `[example_b_eq_exp]`. Use `Real.add_one_le_exp (300 : ℝ)` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem example_b_ge : (301 : ℝ) ≤ (exampleObject K v0 Tw0).b := by
   rw [example_b_eq_exp]
   have := Real.add_one_le_exp (300 : ℝ)
   linarith
 
+/- English proof (translation)
+Unfold `OnObj.r`. Apply the tactic sequence `split_ifs <;> rfl`.
+-/
 theorem example_r_eq_zero (v : HeightOneSpectrum (𝓞 K)) (j : Unit) : (exampleObject K v0 Tw0).r v j = 0 := by
   unfold OnObj.r
   split_ifs <;> rfl
 
+/- English proof (translation)
+Use `show (((0 : ℕ) : ℝ) - (vw v (1 : K) : ℝ)) / (ramw v : ℝ) = 0`. Rewrite using `[toy_vw_one]`. Simplify using the standard rewrite rules.
+-/
 theorem example_ramification_zero (v : HeightOneSpectrum (𝓞 K)) (j : Unit) : (exampleObject K v0 Tw0).e0 v j = 0 := by
   show (((0 : ℕ) : ℝ) - (vw v (1 : K) : ℝ)) / (ramw v : ℝ) = 0
   rw [toy_vw_one]
   simp
 
+/- English proof (translation)
+Use `show (1 : ℝ) / (4 * ((8 : ℝ) * 1) ^ 3) = 1 / 2048`. Evaluate the numerical expressions.
+-/
 theorem example_y_eq : (exampleObject K v0 Tw0).y = 1 / 2048 := by
   show (1 : ℝ) / (4 * ((8 : ℝ) * 1) ^ 3) = 1 / 2048
   norm_num
 
+/- English proof (translation)
+Unfold `OnObj.d0`. Rewrite using `[example_eigenspace_eq_top, finrank_top, Module.finrank_fin_fun]`. Use `show ((1 : ℕ) : ℝ) = 1`. Evaluate the numerical expressions.
+-/
 theorem example_depth_zero_eq_one (j : Unit) : (exampleObject K v0 Tw0).d0 j = 1 := by
   unfold OnObj.d0
   rw [example_eigenspace_eq_top, finrank_top, Module.finrank_fin_fun]
   show ((1 : ℕ) : ℝ) = 1
   norm_num
 
+/- English proof (translation)
+Use `show (1 : ℝ) * (Real.log 1 * 1 * 0 + 8 * 1 * (0 + 0)) / ((3 : ℕ) : ℝ) + 1 * 1 * 0 * 0 + 0 * 0 + (if (1 : ℝ) < ((3 : ℕ) : ℝ) then 1 * 1 * 0 / ((3 : ℕ) : ℝ) ^ 2 else 0) = 0`. Simplify using the standard rewrite rules.
+-/
 theorem example_aE_at_three_eq_zero : (exampleObject K v0 Tw0).aE () 3 = 0 := by
   show (1 : ℝ) * (Real.log 1 * 1 * 0 + 8 * 1 * (0 + 0)) / ((3 : ℕ) : ℝ) + 1 * 1 * 0 * 0 + 0 * 0 +
     (if (1 : ℝ) < ((3 : ℕ) : ℝ) then 1 * 1 * 0 / ((3 : ℕ) : ℝ) ^ 2 else 0) = 0
   simp
 
+/- English proof (translation)
+Unfold `OnObj.errP`. Rewrite using `[if_neg (show ¬((3 : ℕ) = (exampleObject K v0 Tw0).g1 ∨ (3 : ℕ) = (exampleObject K v0 Tw0).g2) from (by decide : ¬((3 : ℕ) = 5 ∨ (3 : ℕ) = 7))), if_neg (show (3 : ℕ) ∉ (exampleObject K v0 Tw0).sm from (by decide : (3 : ℕ) ∉ ({2} : Finset ℕ))), if_neg (show ¬((3 : ℕ) = (exampleObj …`. Establish `hY3 : ((3 : ℕ) : ℝ) ≤ (exampleObject K v0 Tw0).Y` using `by show ((3 : ℕ) : ℝ) ≤ 1 * 3`. Evaluate the numerical expressions. Unfold `errGood`.
+
+Rewrite using `[if_pos hY3]`. Establish `h` using `example_aE_at_three_eq_zero v0 Tw0`. Unfold `OnObj.aE at h`. Rewrite using `[h]`. Evaluate the numerical expressions.
+-/
 theorem example_error_at_three_eq_two : (exampleObject K v0 Tw0).errP () 3 = 2 := by
   unfold OnObj.errP
   rw [if_neg (show ¬((3 : ℕ) = (exampleObject K v0 Tw0).g1 ∨ (3 : ℕ) = (exampleObject K v0 Tw0).g2) from
@@ -1219,24 +1484,39 @@ theorem example_error_at_three_eq_two : (exampleObject K v0 Tw0).errP () 3 = 2 :
   rw [h]
   norm_num
 
+/- English proof (translation)
+Consider the cases of `j`. Unfold `OnObj.errOn OnObj.errl`. Rewrite using `[hw, example_r_eq_zero, example_r_eq_zero, example_error_at_three_eq_two]`. Simplify using the standard rewrite rules.
+-/
 theorem example_errOn_eq_two (w : HeightOneSpectrum (𝓞 K)) (hw : plc w = 3) (j : Unit) : (exampleObject K v0 Tw0).errOn w j = 2 := by
   cases j
   unfold OnObj.errOn OnObj.errl
   rw [hw, example_r_eq_zero, example_r_eq_zero, example_error_at_three_eq_two]
   simp
 
+/- English proof (translation)
+Conclude with `⟨rfl, fun _ _ _ _ => (one_mul 1).symm, fun h hh => absurd (Subgroup.mem_top h) hh⟩`.
+-/
 theorem example_mackey_condition : LeafMackey (exampleObject K v0 Tw0) := by
   exact ⟨rfl, fun _ _ _ _ => (one_mul 1).symm, fun h hh => absurd (Subgroup.mem_top h) hh⟩
 
+/- English proof (translation)
+Introduce `j`. Use `⟨stdLat_isLatIn K 1, fun g => le_of_eq ?_⟩` and prove the remaining obligations. Conclude with `map_id' K _`.
+-/
 theorem example_sup_condition : LeafSup (exampleObject K v0 Tw0) := by
   intro j
   refine ⟨stdLat_isLatIn K 1, fun g => le_of_eq ?_⟩
   exact map_id' K _
 
+/- English proof (translation)
+Introduce `j`. Conclude with `⟨LinearMap.id_comp _, LinearMap.range_id⟩`.
+-/
 theorem example_projection_condition : LeafProj (exampleObject K v0 Tw0) := by
   intro j
   exact ⟨LinearMap.id_comp _, LinearMap.range_id⟩
 
+/- English proof (translation)
+Unfold `OnObj.TjId OnObj.ImageLattice`. Establish `h1 : ∀ A : Submodule (𝓞 K) (Fin 1 → K), A.map ((LinearMap.id : (Fin 1 → K) →ₗ[K] (Fin 1 → K)).restrictScalars (𝓞 K)) = A` using `fun A => map_id' K A`. Use `show (matLat (1 : Matrix (Fin 1) (Fin 1) K) (stdLat K 1)).map ((LinearMap.id : (Fin 1 → K) →ₗ[K] (Fin 1 → K)).restrictScalars (𝓞 K)) = (((stdLat K 1).map ((LinearMap.id : (Fin 1 → K) →ₗ[K] (Fin 1 → K)).restrictScalars (𝓞 K))).map ((LinearMap.id : (Fin 1 → K) →ₗ[K] (Fin 1 → K)).re …`. Simplify using `only [matLat_one', h1]`.
+-/
 theorem example_T_identity (w : HeightOneSpectrum (𝓞 K)) (t : Bool) (j : Unit) : (exampleObject K v0 Tw0).TjId j w t := by
   unfold OnObj.TjId OnObj.ImageLattice
   have h1 : ∀ A : Submodule (𝓞 K) (Fin 1 → K),
@@ -1248,6 +1528,9 @@ theorem example_T_identity (w : HeightOneSpectrum (𝓞 K)) (t : Bool) (j : Unit
       ((LinearMap.id : (Fin 1 → K) →ₗ[K] (Fin 1 → K)).restrictScalars (𝓞 K))
   simp only [matLat_one', h1]
 
+/- English proof (translation)
+Use `⟨fun j => ⟨fun _ _ h => h, ?_, ?_⟩, fun w _ j => ⟨example_T_identity v0 Tw0 _ _ j, example_T_identity v0 Tw0 _ _ j⟩⟩` and prove the remaining obligations. Rewrite using `[example_Zg_eq_top]`. Conclude with `LinearMap.range_id`. Rewrite using `[example_Zg_eq_top, cut_top']`. Conclude with `map_id' K _`.
+-/
 theorem example_coordinate_compatibility : TieCoord (exampleObject K v0 Tw0) := by
   refine ⟨fun j => ⟨fun _ _ h => h, ?_, ?_⟩, fun w _ j => ⟨example_T_identity v0 Tw0 _ _ j, example_T_identity v0 Tw0 _ _ j⟩⟩
   · rw [example_Zg_eq_top]
@@ -1255,13 +1538,22 @@ theorem example_coordinate_compatibility : TieCoord (exampleObject K v0 Tw0) := 
   · rw [example_Zg_eq_top, cut_top']
     exact map_id' K _
 
+/- English proof (translation)
+Conclude with `⟨Nat.one_pos, fun _ => rfl⟩`.
+-/
 theorem example_row_rank_condition : RankRows (exampleIndefiniteData K v0 Tw0 0) := by
   exact ⟨Nat.one_pos, fun _ => rfl⟩
 
+/- English proof (translation)
+Introduce `w _`. Conclude with `⟨fun _ => ⟨stdLat_isLatIn K 1, stdLat_isLatIn K 1⟩, fun _ => ⟨stdLat_isLatIn K 1, stdLat_isLatIn K 1⟩⟩`.
+-/
 theorem example_span_condition : LeafSpan (exampleObject K v0 Tw0) := by
   intro w _
   exact ⟨fun _ => ⟨stdLat_isLatIn K 1, stdLat_isLatIn K 1⟩, fun _ => ⟨stdLat_isLatIn K 1, stdLat_isLatIn K 1⟩⟩
 
+/- English proof (translation)
+Establish `key : ∀ (v : HeightOneSpectrum (𝓞 K)) (j : Unit), (exampleObject K v0 Tw0).Th v j ≤ (exampleObject K v0 Tw0).Ms j ∧ (∀ g : Unit, ((exampleObject K v0 Tw0).Th v j).map (((exampleObject K v0 Tw0).ρ j g).restrictScalars (𝓞 K)) ≤ (exampleObject K v0 Tw0).Th v j) ∧ (exampleObject K v0 …` using `fun v j => ⟨le_rfl, fun g => le_of_eq (map_id' K _), one_ne_zero, le_of_eq (sc_one' K _).symm⟩`. Introduce `w _`. Conclude with `⟨key w, key (conjPl w)⟩`.
+-/
 theorem example_stable_lattice_condition : LeafLemmaS (exampleObject K v0 Tw0) := by
   have key : ∀ (v : HeightOneSpectrum (𝓞 K)) (j : Unit), (exampleObject K v0 Tw0).Th v j ≤ (exampleObject K v0 Tw0).Ms j ∧
       (∀ g : Unit, ((exampleObject K v0 Tw0).Th v j).map (((exampleObject K v0 Tw0).ρ j g).restrictScalars (𝓞 K)) ≤
@@ -1271,6 +1563,13 @@ theorem example_stable_lattice_condition : LeafLemmaS (exampleObject K v0 Tw0) :
   intro w _
   exact ⟨key w, key (conjPl w)⟩
 
+/- English proof (translation)
+Establish `h : ∀ (v : HeightOneSpectrum (𝓞 K)) (j : Unit), IsLatIn ⊤ ((exampleObject K v0 Tw0).Th1 v j) ∧ (exampleObject K v0 Tw0).Th1 v j ≤ (exampleObject K v0 Tw0).Th v j ∧ (exampleObject K v0 Tw0).a v j ≠ 0 ∧ vw v ((exampleObject K v0 Tw0).a v j) = ((exampleObject K v0 Tw0).E v j : ℤ) ∧ …`. Introduce `v j`. Use `⟨stdLat_isLatIn K 1, le_rfl, one_ne_zero, toy_vw_one v, fun W => ?_⟩` and prove the remaining obligations. Rewrite using `[example_r_eq_zero]`. Use `show (lix v (cut W (stdLat K 1)) (cut W (stdLat K 1)) : ℝ) ≤ ((0 : ℕ) : ℝ) * (finrank K W : ℝ) + 0`.
+
+Simplify using `[lix, Formalism.HermitianLatticesTheory.lidx]`. Establish `hb` using `example_b_ge v0 Tw0`. Use `⟨fun w _ => ⟨h w, h (conjPl w)⟩, by norm_num, le_rfl, fun _ _ => ⟨le_rfl, le_rfl⟩, fun _ S' => ?_⟩` and prove the remaining obligations. Use `show ∑ v ∈ S', lw v * (0 : ℝ) ≤ ((1 : ℕ) : ℝ) * (8 * 1 * (exampleObject K v0 Tw0).b * 1) ∧ ∑ v ∈ S', lw v * (0 : ℝ) ≤ ((1 : ℕ) : ℝ) * (8 * 1 * (exampleObject K v0 Tw0).b * 1)`. Simplify using `only [mul_zero, Finset.sum_const_zero, Nat.cast_one]`.
+
+Apply the tactic sequence `constructor <;> linarith`.
+-/
 theorem example_theorem_zero_condition : LatticeIndexBoundAtPairs (exampleObject K v0 Tw0) := by
   have h : ∀ (v : HeightOneSpectrum (𝓞 K)) (j : Unit),
       IsLatIn ⊤ ((exampleObject K v0 Tw0).Th1 v j) ∧ (exampleObject K v0 Tw0).Th1 v j ≤ (exampleObject K v0 Tw0).Th v j ∧
@@ -1290,6 +1589,11 @@ theorem example_theorem_zero_condition : LatticeIndexBoundAtPairs (exampleObject
   simp only [mul_zero, Finset.sum_const_zero, Nat.cast_one]
   constructor <;> linarith
 
+/- English proof (translation)
+Establish `key : ∀ (v : HeightOneSpectrum (𝓞 K)) (j : Unit), ((exampleObject K v0 Tw0).Th0 v j).FG ∧ (exampleObject K v0 Tw0).Th0 v j ≤ (eig ((exampleObject K v0 Tw0).ρ j) (exampleObject K v0 Tw0).U (exampleObject K v0 Tw0).ψ).restrictScalars (𝓞 K) ∧ sc ((Nat.card (exampleObject K v0 Tw0).U …`. Introduce `v j`. Use `⟨Submodule.fg_span (Set.finite_range _), ?_, le_of_eq ?_⟩` and prove the remaining obligations. Rewrite using `[example_eigenspace_eq_top, Submodule.restrictScalars_top]`. Conclude with `le_top`.
+
+Rewrite using `[example_eigenspace_eq_top, cut_top', show (exampleObject K v0 Tw0).U = ⊤ from rfl, toy_card, Nat.cast_one, sc_one']`. Introduce `w _`. Conclude with `⟨key w, key (conjPl w)⟩`.
+-/
 theorem example_lattice_condition : LeafData (exampleObject K v0 Tw0) := by
   have key : ∀ (v : HeightOneSpectrum (𝓞 K)) (j : Unit), ((exampleObject K v0 Tw0).Th0 v j).FG ∧
       (exampleObject K v0 Tw0).Th0 v j ≤
@@ -1304,6 +1608,11 @@ theorem example_lattice_condition : LeafData (exampleObject K v0 Tw0) := by
   intro w _
   exact ⟨key w, key (conjPl w)⟩
 
+/- English proof (translation)
+Establish `key : ∀ (v : HeightOneSpectrum (𝓞 K)) (j : Unit), IsLatIn ((exampleObject K v0 Tw0).Zg j) (((exampleObject K v0 Tw0).Th0 v j).map (((exampleObject K v0 Tw0).e j).restrictScalars (𝓞 K))) ∧ IsLatIn ((exampleObject K v0 Tw0).Zg j) ((exampleObject K v0 Tw0).eJ v j) ∧ (exampleObject K …`. Introduce `v j`. Rewrite using `[example_Zg_eq_top, show ((exampleObject K v0 Tw0).Th0 v j).map (((exampleObject K v0 Tw0).e j).restrictScalars (𝓞 K)) = stdLat K 1 from map_id' K _, show (exampleObject K v0 Tw0).eJ v j = stdLat K 1 from map_id' K _]`. Conclude with `⟨stdLat_isLatIn K 1, stdLat_isLatIn K 1, le_rfl⟩`. Introduce `w _`.
+
+Conclude with `⟨key w, key (conjPl w)⟩`.
+-/
 theorem example_rank_condition : LeafRankJ (exampleObject K v0 Tw0) := by
   have key : ∀ (v : HeightOneSpectrum (𝓞 K)) (j : Unit),
       IsLatIn ((exampleObject K v0 Tw0).Zg j) (((exampleObject K v0 Tw0).Th0 v j).map (((exampleObject K v0 Tw0).e j).restrictScalars (𝓞 K))) ∧
@@ -1316,11 +1625,19 @@ theorem example_rank_condition : LeafRankJ (exampleObject K v0 Tw0) := by
   intro w _
   exact ⟨key w, key (conjPl w)⟩
 
+/- English proof (translation)
+Introduce `w _`. Conclude with `⟨fun j => ⟨rfl, fun x _ => by rw [LinearMap.mem_ker]; exact sub_self x⟩, fun j => ⟨rfl, fun x _ => by rw [LinearMap.mem_ker]; exact sub_self x⟩⟩`.
+-/
 theorem example_identity_condition : LeafIdentity (exampleObject K v0 Tw0) := by
   intro w _
   exact ⟨fun j => ⟨rfl, fun x _ => by rw [LinearMap.mem_ker]; exact sub_self x⟩,
     fun j => ⟨rfl, fun x _ => by rw [LinearMap.mem_ker]; exact sub_self x⟩⟩
 
+/- English proof (translation)
+Establish `key : ∀ (v : HeightOneSpectrum (𝓞 K)) (j : Unit), IsLatIn ((exampleObject K v0 Tw0).Zg j) ((exampleObject K v0 Tw0).X₃ v j) ∧ IsLatIn ((exampleObject K v0 Tw0).Zg j) ((exampleObject K v0 Tw0).Im v j) ∧ Formalism.HermitianLatticesTheory.localization₂ v.asIdeal ((exampleObject K v0 …`. Introduce `v j`. Establish `hIm : (exampleObject K v0 Tw0).Im v j = stdLat K 1`. Unfold `OnObj.Im`. Rewrite using `[show ((exampleObject K v0 Tw0).Mt v j).map (((exampleObject K v0 Tw0).θ' v j).restrictScalars (𝓞 K)) = stdLat K 1 from map_id' K _]`.
+
+Conclude with `map_id' K _`. Rewrite using `[example_Zg_eq_top, hIm]`. Conclude with `⟨stdLat_isLatIn K 1, stdLat_isLatIn K 1, le_rfl⟩`. Introduce `w _`. Conclude with `⟨key w, key (conjPl w)⟩`.
+-/
 theorem example_second_twist_condition : LeafTW2 (exampleObject K v0 Tw0) := by
   have key : ∀ (v : HeightOneSpectrum (𝓞 K)) (j : Unit), IsLatIn ((exampleObject K v0 Tw0).Zg j) ((exampleObject K v0 Tw0).X₃ v j) ∧
       IsLatIn ((exampleObject K v0 Tw0).Zg j) ((exampleObject K v0 Tw0).Im v j) ∧
@@ -1336,6 +1653,11 @@ theorem example_second_twist_condition : LeafTW2 (exampleObject K v0 Tw0) := by
   intro w _
   exact ⟨key w, key (conjPl w)⟩
 
+/- English proof (translation)
+Establish `hz : ∀ (v : HeightOneSpectrum (𝓞 K)) (j : Unit), (lix v (cut ((exampleObject K v0 Tw0).Zg j) ((exampleObject K v0 Tw0).Ms j)) ((exampleObject K v0 Tw0).X₃ v j) : ℝ) ≤ (lix v (cut ((exampleObject K v0 Tw0).Zg j) ((exampleObject K v0 Tw0).Ms j)) ((exampleObject K v0 Tw0).eJ v j) : …`. Introduce `v j`. Rewrite using `[show (exampleObject K v0 Tw0).eJ v j = stdLat K 1 from map_id' K _]`. Use `show _ ≤ _ + (ramw v : ℝ) * 0`. Rewrite using `[mul_zero, add_zero]`.
+
+Use `⟨fun w _ => ⟨fun j => ⟨le_rfl, hz w j⟩, fun j => ⟨le_rfl, hz (conjPl w) j⟩⟩, fun w _ => ?_⟩` and prove the remaining obligations. Use `show ∑ j : Unit, ((0 : ℝ) + 0) ≤ 2 / ((plc w : ℕ) : ℝ) ^ 2`. Simplify using `only [add_zero, Finset.sum_const_zero]`. Check the signs of the components of the expression.
+-/
 theorem example_first_twist_condition : LeafTW1 (exampleObject K v0 Tw0) := by
   have hz : ∀ (v : HeightOneSpectrum (𝓞 K)) (j : Unit),
       (lix v (cut ((exampleObject K v0 Tw0).Zg j) ((exampleObject K v0 Tw0).Ms j)) ((exampleObject K v0 Tw0).X₃ v j) : ℝ) ≤
@@ -1350,6 +1672,11 @@ theorem example_first_twist_condition : LeafTW1 (exampleObject K v0 Tw0) := by
   simp only [add_zero, Finset.sum_const_zero]
   positivity
 
+/- English proof (translation)
+Introduce `j`. Use `⟨0, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[example_y_eq]`. Evaluate the numerical expressions. Rewrite using `[example_depth_zero_eq_one, show (exampleObject K v0 Tw0).U = ⊤ from rfl, toy_card] show (1 - 0) * ((1 : ℕ) : ℝ) ≤ ((1 : ℕ) : ℝ) * 1`.
+
+Evaluate the numerical expressions.
+-/
 theorem example_share_condition : LeafShareI (exampleObject K v0 Tw0) := by
   intro j
   refine ⟨0, ?_, ?_⟩
@@ -1359,11 +1686,17 @@ theorem example_share_condition : LeafShareI (exampleObject K v0 Tw0) := by
     show (1 - 0) * ((1 : ℕ) : ℝ) ≤ ((1 : ℕ) : ℝ) * 1
     norm_num
 
+/- English proof (translation)
+Unfold `LeafIndexU`. Rewrite using `[example_y_eq, show (exampleObject K v0 Tw0).U = ⊤ from rfl, toy_card, Subgroup.index_top]`. Evaluate the numerical expressions.
+-/
 theorem example_index_condition : LeafIndexU (exampleObject K v0 Tw0) := by
   unfold LeafIndexU
   rw [example_y_eq, show (exampleObject K v0 Tw0).U = ⊤ from rfl, toy_card, Subgroup.index_top]
   norm_num
 
+/- English proof (translation)
+Introduce `j`. Use `⟨0, le_rfl, by norm_num, ?_⟩` and prove the remaining obligations. Rewrite using `[example_depth_zero_eq_one]`. Use `show (1 - 0) * (1 : ℝ) ≤ ((1 : ℕ) : ℝ)`. Evaluate the numerical expressions.
+-/
 theorem example_bad_share_condition : LeafBadShare (exampleObject K v0 Tw0) := by
   intro j
   refine ⟨0, le_rfl, by norm_num, ?_⟩
@@ -1371,6 +1704,11 @@ theorem example_bad_share_condition : LeafBadShare (exampleObject K v0 Tw0) := b
   show (1 - 0) * (1 : ℝ) ≤ ((1 : ℕ) : ℝ)
   norm_num
 
+/- English proof (translation)
+Use `⟨le_rfl, fun w _ => ?_⟩` and prove the remaining obligations. Rewrite using `[show (exampleObject K v0 Tw0).U = ⊤ from rfl, toy_card, Nat.cast_one, toy_vw_one]`. Use `split_ifs`. Use `show ((0 : ℤ) : ℝ) = (ramw w : ℝ) * (8 * 1 * (1 - 1) / 2)`. Evaluate the numerical expressions.
+
+Evaluate the numerical expressions.
+-/
 theorem example_unipotent_condition : LeafUnip (exampleObject K v0 Tw0) := by
   refine ⟨le_rfl, fun w _ => ?_⟩
   rw [show (exampleObject K v0 Tw0).U = ⊤ from rfl, toy_card, Nat.cast_one, toy_vw_one]
@@ -1382,6 +1720,15 @@ theorem example_unipotent_condition : LeafUnip (exampleObject K v0 Tw0) := by
 variable (h3 : ∀ w ∈ Tw0, plc w = 3)
 include h3
 
+/- English proof (translation)
+Establish `hY : (exampleObject K v0 Tw0).Y = 3` using `by show (1 : ℝ) * 3 = 3`. Evaluate the numerical expressions. Use `⟨fun _ => ⟨le_rfl, le_rfl⟩, fun Q _ => ?_, fun Q _ => ?_, ?_⟩` and prove the remaining obligations. Use `show ∑ p ∈ Q, (0 : ℝ) * Real.log (p : ℝ) ≤ 1 / 1`. Simplify using the standard rewrite rules.
+
+Use `show (0 : ℝ) * ∑ p ∈ Q, (0 : ℝ) * Real.log (p : ℝ) ≤ 1 * (1 * (exampleObject K v0 Tw0).b)`. Rewrite using `[zero_mul]`. Combine the linear relations using `[example_b_ge v0 Tw0]`. Introduce `w hw _ j`. Consider the cases of `j`.
+
+Establish `hp` using `h3 w hw`. Establish `hF0 : (exampleConstants K v0 F E).F0 w () = F` using `by show (if plc w = 3 then F else 0) = F`. Rewrite using `[if_pos hp]`. Use `⟨fun _ => ?_, fun hlt => ?_⟩` and prove the remaining obligations. Rewrite using `[example_ramification_zero, example_ramification_zero, hF0, hp, example_aE_at_three_eq_zero]`.
+
+Apply the tactic sequence `constructor <;> linarith`. It suffices to derive a contradiction. Rewrite `hlt` using `[hY, hp]`. Evaluate the numerical expressions using `at hlt`.
+-/
 theorem example_depth_condition_good (F E : ℝ) (hF : -1 ≤ F) : LeafDepthGood (exampleConstants K v0 F E) (exampleObject K v0 Tw0) := by
   have hY : (exampleObject K v0 Tw0).Y = 3 := by
     show (1 : ℝ) * 3 = 3
@@ -1405,6 +1752,9 @@ theorem example_depth_condition_good (F E : ℝ) (hF : -1 ≤ F) : LeafDepthGood
       rw [hY, hp] at hlt
       norm_num at hlt
 
+/- English proof (translation)
+Introduce `w hw hq j`. It suffices to derive a contradiction. Establish `h : plc w = 11 ∨ plc w = 13` using `hq`. Rewrite `h` using `[h3 w hw]`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem example_depth_condition_ramified (F E : ℝ) : LeafDepthRam (exampleConstants K v0 F E) (exampleObject K v0 Tw0) := by
   intro w hw hq j
   exfalso
@@ -1412,6 +1762,9 @@ theorem example_depth_condition_ramified (F E : ℝ) : LeafDepthRam (exampleCons
   rw [h3 w hw] at h
   omega
 
+/- English proof (translation)
+Introduce `w hw hs j`. It suffices to derive a contradiction. Establish `h : plc w ∈ ({2} : Finset ℕ)` using `hs`. Rewrite `h` using `[h3 w hw, Finset.mem_singleton]`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem example_depth_condition_dyadic (F E : ℝ) : LeafDepth2 (exampleConstants K v0 F E) (exampleObject K v0 Tw0) := by
   intro w hw hs j
   exfalso
@@ -1419,6 +1772,9 @@ theorem example_depth_condition_dyadic (F E : ℝ) : LeafDepth2 (exampleConstant
   rw [h3 w hw, Finset.mem_singleton] at h
   omega
 
+/- English proof (translation)
+Introduce `w hw hg j`. It suffices to derive a contradiction. Establish `h : plc w = 5 ∨ plc w = 7` using `hg`. Rewrite `h` using `[h3 w hw]`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem example_depth_condition_level (F E : ℝ) : LeafDepthLevel (exampleConstants K v0 F E) (exampleObject K v0 Tw0) := by
   intro w hw hg j
   exfalso
@@ -1428,10 +1784,24 @@ theorem example_depth_condition_level (F E : ℝ) : LeafDepthLevel (exampleConst
 
 omit h3
 
+/- English proof (translation)
+Unfold `LeafPage`. Evaluate the numerical expressions using `[exampleObject, exampleC, OnObj.C]`.
+-/
 theorem example_numerical_condition : LeafPage (exampleObject K v0 Tw0) := by
   unfold LeafPage
   norm_num [exampleObject, exampleC, OnObj.C]
 
+/- English proof (translation)
+Establish `hY : (exampleObject K v0 Tw0).Y = 3` using `by show (1 : ℝ) * 3 = 3`. Evaluate the numerical expressions. Establish `hb` using `example_b_ge v0 Tw0`. Use `⟨fun j => ⟨le_rfl, ?_⟩, ?_, ?_, ?_, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Use `show (0 : ℝ) ≤ 2 * 8 * (exampleObject K v0 Tw0).b`.
+
+Combine the linear equalities and inequalities to obtain the conclusion. Rewrite using `[hY]`. Evaluate the numerical expressions. Rewrite using `[hY, example_L_eq]`. Use `Real.log_le_sub_one_of_pos (by norm_num : (0 : ℝ) < 3)` as an intermediate fact.
+
+Combine the linear equalities and inequalities to obtain the conclusion. Rewrite using `[hY] show (3 : ℝ) ≤ 1 * (exampleObject K v0 Tw0).b`. Combine the linear equalities and inequalities to obtain the conclusion. Use `show (1 : ℝ) * (0 + 0) * (exampleObject K v0 Tw0).L ≤ 1 * (exampleObject K v0 Tw0).b`. Rewrite using `[example_L_eq]`.
+
+Combine the linear equalities and inequalities to obtain the conclusion. Use `show (1 : ℝ) ≤ 1`. Conclude with `le_rfl`. Use `show Real.log 1 ≤ (exampleObject K v0 Tw0).L`. Rewrite using `[Real.log_one, example_L_eq]`.
+
+Evaluate the numerical expressions. Rewrite using `[example_L_eq]`. Evaluate the numerical expressions.
+-/
 theorem example_size_condition₂ : LeafSizes (exampleObject K v0 Tw0) := by
   have hY : (exampleObject K v0 Tw0).Y = 3 := by
     show (1 : ℝ) * 3 = 3
@@ -1459,6 +1829,11 @@ theorem example_size_condition₂ : LeafSizes (exampleObject K v0 Tw0) := by
   · rw [example_L_eq]
     norm_num
 
+/- English proof (translation)
+Use `⟨?_, ?_⟩` and prove the remaining obligations. Rewrite using `[example_xe_eq] show Real.log 300 ≤ 300`. Use `Real.log_le_sub_one_of_pos (by norm_num : (0 : ℝ) < 300)` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Use `show ((0 : ℕ) : ℝ) ≤ 8`.
+
+Evaluate the numerical expressions.
+-/
 theorem example_size_condition : LeafX (exampleObject K v0 Tw0) := by
   refine ⟨?_, ?_⟩
   · rw [example_xe_eq]
@@ -1468,6 +1843,17 @@ theorem example_size_condition : LeafX (exampleObject K v0 Tw0) := by
   · show ((0 : ℕ) : ℝ) ≤ 8
     norm_num
 
+/- English proof (translation)
+Establish `hb` using `example_b_ge v0 Tw0`. Use `⟨?_, ?_, fun j => ⟨?_, ?_, ?_⟩⟩` and prove the remaining obligations. Use `show (0 : ℝ) ≤ 2 * Real.log 143`. Use `Real.log_nonneg (by norm_num : (1 : ℝ) ≤ 143)` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
+
+Use `show (0 : ℝ) ≤ 1`. Evaluate the numerical expressions. Use `show (2 * ((0 : ℝ) + 8 * (0 + 0) + 0 + 1) + 4 * (8 * 1 * 0)) * Real.log ((11 * 13 : ℕ) : ℝ) ≤ 2 * Real.log 143 * (8 * 1 * (exampleObject K v0 Tw0).b)`. Establish `h143 : ((11 * 13 : ℕ) : ℝ) = 143` using `by norm_num`. Rewrite using `[h143]`.
+
+Use `Real.log_nonneg (by norm_num : (1 : ℝ) ≤ 143)` as an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Use `show (∑ p ∈ ({2} : Finset ℕ), Real.log (p : ℝ)) * (2 * (1 * 1 * (2 + 0) * (0 + 8 * (0 + 0))) + 2 * 0 + 2) ≤ 1 * (8 * 1 * (exampleObject K v0 Tw0).b * (exampleObject K v0 Tw0).L)`. Rewrite using `[Finset.sum_singleton, example_L_eq]`. Use `Real.log_le_sub_one_of_pos (by norm_num : (0 : ℝ) < 2)` as an intermediate fact.
+
+Use `push_cast`. Use the polynomial consequences of the given equalities and inequalities. Use `show (4 * (0 : ℝ) + 4 * 8 * 1 ^ 2) * Real.log ((5 * 7 : ℕ) : ℝ) ≤ 4 * (exampleObject K v0 Tw0).b`. Establish `h35 : ((5 * 7 : ℕ) : ℝ) = 35` using `by norm_num`. Rewrite using `[h35]`.
+
+Use `Real.log_le_sub_one_of_pos (by norm_num : (0 : ℝ) < 35)` as an intermediate fact. Use the polynomial consequences of the given equalities and inequalities.
+-/
 theorem example_bad_primes_condition : LeafBad (exampleObject K v0 Tw0) := by
   have hb := example_b_ge v0 Tw0
   refine ⟨?_, ?_, fun j => ⟨?_, ?_, ?_⟩⟩
@@ -1494,6 +1880,9 @@ theorem example_bad_primes_condition : LeafBad (exampleObject K v0 Tw0) := by
     have := Real.log_le_sub_one_of_pos (by norm_num : (0 : ℝ) < 35)
     nlinarith
 
+/- English proof (translation)
+Introduce `j`. Use `⟨fun _ => le_rfl, fun Q _ => ?_⟩` and prove the remaining obligations. Use `show ∑ p ∈ Q, (0 : ℝ) * Real.log (p : ℝ) ≤ 30 * ((0 : ℕ) : ℝ) * 1 * (exampleObject K v0 Tw0).b * (exampleObject K v0 Tw0).xe ^ 2 + 2 * 1 * (exampleObject K v0 Tw0).b`. Simplify using `only [zero_mul, Finset.sum_const_zero, Nat.cast_zero, mul_zero, zero_add]`. Combine the linear relations using `[example_b_ge v0 Tw0]`.
+-/
 theorem example_j_sum_condition : LeafJSum (exampleObject K v0 Tw0) := by
   intro j
   refine ⟨fun _ => le_rfl, fun Q _ => ?_⟩
@@ -1502,13 +1891,22 @@ theorem example_j_sum_condition : LeafJSum (exampleObject K v0 Tw0) := by
   simp only [zero_mul, Finset.sum_const_zero, Nat.cast_zero, mul_zero, zero_add]
   linarith [example_b_ge v0 Tw0]
 
+/- English proof (translation)
+Conclude with `fun _ _ _ => le_rfl`.
+-/
 theorem example_j_exponent_condition (F E : ℝ) : LeafJExp (exampleConstants K v0 F E) (exampleObject K v0 Tw0) := by
   exact fun _ _ _ => le_rfl
 
+/- English proof (translation)
+Conclude with `fun _ => rfl`.
+-/
 theorem example_error_constant_matches (F : ℝ) :
     ErrorConstantMatchesDefinition (exampleConstants K v0 F (exampleC.CE * (exampleObject K v0 Tw0).E1u)) (exampleObject K v0 Tw0) exampleC.CE := by
   exact fun _ => rfl
 
+/- English proof (translation)
+Conclude with `on_built (exampleConstants K v0 1 (exampleC.CE * (exampleObject K v0 Tw0).E1u)) (exampleObject K v0 Tw0) exampleC.CE (example_row_rank_condition v0 Tw0) (example_mackey_condition v0 Tw0) (example_sup_condition v0 Tw0) (example_projection_condition v0 Tw0) (example_coordinate_comp …`.
+-/
 theorem example_ON (h3 : ∀ w ∈ Tw0, plc w = 3) :
     ({ exampleIndefiniteData K v0 Tw0 0 with err0 := (exampleObject K v0 Tw0).errOn } : IndefData (exampleDf K v0)).ON
       (exampleConstants K v0 1 (exampleC.CE * (exampleObject K v0 Tw0).E1u)) := by
@@ -1520,6 +1918,9 @@ theorem example_ON (h3 : ∀ w ∈ Tw0, plc w = 3) :
     (example_depth_condition_level v0 Tw0 h3 1 _) (example_numerical_condition v0 Tw0) (example_size_condition₂ v0 Tw0) (example_size_condition v0 Tw0) (example_bad_primes_condition v0 Tw0)
     (example_j_sum_condition v0 Tw0) (example_j_exponent_condition v0 Tw0 1 _) le_rfl (example_error_constant_matches v0 Tw0 1)
 
+/- English proof (translation)
+Use `⟨example_errOn_eq_two v0 Tw0 w hw (), ?_, ?_, rfl⟩` and prove the remaining obligations. Use `show (if plc w = 3 then (1 : ℝ) else 0) = 1`. Rewrite using `[if_pos hw]`. Rewrite using `[hw] show ((3 : ℕ) : ℝ) ≤ 1 * 3`. Evaluate the numerical expressions.
+-/
 theorem example_nondegenerate_at_three (w : HeightOneSpectrum (𝓞 K)) (hw : plc w = 3) :
     (exampleObject K v0 Tw0).errOn w () = 2 ∧ (exampleConstants K v0 1 0).F0 w () = 1 ∧ ((plc w : ℝ) ≤ (exampleObject K v0 Tw0).Y) ∧
       (exampleObject K v0 Tw0).Bad = {5, 7, 11, 13, 2} := by
@@ -1530,6 +1931,11 @@ theorem example_nondegenerate_at_three (w : HeightOneSpectrum (𝓞 K)) (hw : pl
     show ((3 : ℕ) : ℝ) ≤ 1 * 3
     norm_num
 
+/- English proof (translation)
+Introduce `h`. Establish `h3` using `h.2.2 ()`. Establish `he : (exampleObject K v0 {w0}).errOn w0 () = 2` using `example_errOn_eq_two v0 {w0} w0 h3w ()`. Express the relevant statement in the definitionally equal form `∑ w ∈ ({w0} : Finset (HeightOneSpectrum (𝓞 K))), lw w * ((ramw w : ℝ) * (exampleObject K v0 {w0}).errOn w () + (ramw w : ℝ) * 0) ≤ E at h3`. Rewrite `h3` using `[Finset.sum_singleton, he]`.
+
+Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem example_fails_at_three (w0 : HeightOneSpectrum (𝓞 K)) (h3w : plc w0 = 3) (E : ℝ) (hE : E < 2 * (lw w0 * (ramw w0 : ℝ))) :
     ¬ ({ exampleIndefiniteData K v0 {w0} 0 with err0 := (exampleObject K v0 {w0}).errOn } : IndefData (exampleDf K v0)).ON (exampleConstants K v0 1 E) := by
   intro h
@@ -1540,6 +1946,17 @@ theorem example_fails_at_three (w0 : HeightOneSpectrum (𝓞 K)) (h3w : plc w0 =
   rw [Finset.sum_singleton, he] at h3
   linarith
 
+/- English proof (translation)
+Establish `hY : ((plc w0 : ℕ) : ℝ) ≤ (exampleObject K v0 {w0}).Y`. Rewrite using `[h3w]`. Use `show ((3 : ℕ) : ℝ) ≤ 1 * 3`. Evaluate the numerical expressions. Establish `hF : (exampleConstants K v0 (-10) E).F0 w0 () = -10` using `by show (if plc w0 = 3 then (-10 : ℝ) else 0) = -10`.
+
+Rewrite using `[if_pos h3w]`. Use `⟨fun h => ?_, fun h => ?_⟩` and prove the remaining obligations. Establish `hn : ¬ (plc w0 ∈ (exampleObject K v0 {w0}).sm ∨ plc w0 = (exampleObject K v0 {w0}).q1 ∨ plc w0 = (exampleObject K v0 {w0}).dd ∨ plc w0 = (exampleObject K v0 {w0}).g1 ∨ plc w0 = (exampleObject K v0 {w0}).g2)`. Rewrite using `[h3w]`. Conclude with `(by decide : ¬ ((3 : ℕ) ∈ ({2} : Finset ℕ) ∨ (3 : ℕ) = 11 ∨ (3 : ℕ) = 13 ∨ (3 : ℕ) = 5 ∨ (3 : ℕ) = 7))`.
+
+Establish `h1` using `((h.2.2.2 w0 (Finset.mem_singleton_self w0) hn ()).1 hY).1`. Rewrite `h1` using `[example_ramification_zero, h3w, example_aE_at_three_eq_zero, hF]`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `h1` using `h.1 w0 (Finset.mem_singleton_self w0)`. Establish `he : (exampleObject K v0 {w0}).errOn w0 () = 2` using `example_errOn_eq_two v0 {w0} w0 h3w ()`.
+
+Establish `hI : ∀ w : HeightOneSpectrum (𝓞 K), (idx w (stdLat K 1) (matLat (1 : Matrix (Fin 1) (Fin 1) K) (stdLat K 1)) : ℝ) = 0`. Introduce `w`. Rewrite using `[matLat_one']`. Unfold `idx Formalism.HermitianLatticesTheory.lidx`. Simplify using the standard rewrite rules.
+
+Express the relevant statement in the definitionally equal form `∑ j : Unit, ((idx w0 (stdLat K 1) (matLat (1 : Matrix (Fin 1) (Fin 1) K) (stdLat K 1)) : ℝ) + (idx (conjPl w0) (stdLat K 1) (matLat (1 : Matrix (Fin 1) (Fin 1) K) (stdLat K 1)) : ℝ)) ≤ (∑ j : Unit, (2 * ((ramw w0 : ℝ) * (exampleConstants K v0 (-10) E).F0 w0 j) + (ramw w0 : ℝ) * ( …`. Simplify using `only [Fintype.univ_unit, Finset.sum_singleton, hI, hF, he, h3w] at h1`. Establish `hr` using `ramw_pos w0`. Move the coercions through the operations in `at h1`. Use the polynomial consequences of the given equalities and inequalities.
+-/
 theorem example_negative_content_fails (w0 : HeightOneSpectrum (𝓞 K)) (h3w : plc w0 = 3) (E : ℝ) :
     ¬ LeafDepthGood (exampleConstants K v0 (-10) E) (exampleObject K v0 {w0}) ∧
     ¬ ({ exampleIndefiniteData K v0 {w0} 0 with err0 := (exampleObject K v0 {w0}).errOn } : IndefData (exampleDf K v0)).ON (exampleConstants K v0 (-10) E) := by
@@ -1574,6 +1991,13 @@ theorem example_negative_content_fails (w0 : HeightOneSpectrum (𝓞 K)) (h3w : 
     push_cast at h1
     nlinarith
 
+/- English proof (translation)
+Introduce `h`. Establish `hn : ¬ (plc w0 ∈ (exampleObject K v0 {w0}).sm ∨ plc w0 = (exampleObject K v0 {w0}).q1 ∨ plc w0 = (exampleObject K v0 {w0}).dd ∨ plc w0 = (exampleObject K v0 {w0}).g1 ∨ plc w0 = (exampleObject K v0 {w0}).g2)`. Rewrite using `[h3w]`. Conclude with `(by decide : ¬ ((3 : ℕ) ∈ ({2} : Finset ℕ) ∨ (3 : ℕ) = 11 ∨ (3 : ℕ) = 13 ∨ (3 : ℕ) = 5 ∨ (3 : ℕ) = 7))`. Establish `hY : ((plc w0 : ℕ) : ℝ) ≤ (exampleObject K v0 {w0}).Y`.
+
+Rewrite using `[h3w]`. Use `show ((3 : ℕ) : ℝ) ≤ 1 * 3`. Evaluate the numerical expressions. Establish `h1` using `((h.2.2.2 w0 (Finset.mem_singleton_self w0) hn ()).1 hY).1`. Rewrite `h1` using `[example_ramification_zero, h3w, example_aE_at_three_eq_zero]`.
+
+Establish `hF : (exampleConstants K v0 (-10) E).F0 w0 () = -10` using `by show (if plc w0 = 3 then (-10 : ℝ) else 0) = -10`. Rewrite using `[if_pos h3w]`. Rewrite `h1` using `[hF]`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem depth_free_fails (w0 : HeightOneSpectrum (𝓞 K)) (h3w : plc w0 = 3) (E : ℝ) :
     ¬ LeafDepthGood (exampleConstants K v0 (-10) E) (exampleObject K v0 {w0}) := by
   intro h
@@ -1593,6 +2017,11 @@ theorem depth_free_fails (w0 : HeightOneSpectrum (𝓞 K)) (h3w : plc w0 = 3) (E
   rw [hF] at h1
   linarith
 
+/- English proof (translation)
+Unfold `lw`. Establish `h1 : Ideal.absNorm w.asIdeal ≠ 1` using `fun h => w.isPrime.ne_top (Ideal.absNorm_eq_one_iff.mp h)`. Establish `h0 : Ideal.absNorm w.asIdeal ≠ 0` using `fun h => w.ne_bot (Ideal.absNorm_eq_zero_iff.mp h)`. Establish `h2 : (1 : ℝ) < (Ideal.absNorm w.asIdeal : ℝ)`. Establish `h3 : 1 < Ideal.absNorm w.asIdeal` using `by omega`.
+
+Conclude with `h3` after adjusting the coercions. Apply `div_pos (Real.log_pos h2)` to reduce the goal to its premises. Establish `h4 : 0 < finrank ℚ K` using `Module.finrank_pos`. Conclude with `h4` after adjusting the coercions.
+-/
 theorem lw_pos (w : HeightOneSpectrum (𝓞 K)) : 0 < lw w := by
   unfold lw
   have h1 : Ideal.absNorm w.asIdeal ≠ 1 := fun h => w.isPrime.ne_top (Ideal.absNorm_eq_one_iff.mp h)
@@ -1604,6 +2033,11 @@ theorem lw_pos (w : HeightOneSpectrum (𝓞 K)) : 0 < lw w := by
   have h4 : 0 < finrank ℚ K := Module.finrank_pos
   exact_mod_cast h4
 
+/- English proof (translation)
+Introduce `h`. Establish `h1` using `(h.2.2.2.2 () {w0}).1`. Rewrite `h1` using `[Finset.sum_singleton]`. Establish `hl` using `lw_pos w0`. Express the relevant statement in the definitionally equal form `lw w0 * ((8 * Real.exp 300 + 1) / lw w0) ≤ ((1 : ℕ) : ℝ) * (8 * 1 * Real.exp ((300 : ℝ) ^ (1 : ℝ)) * 1) at h1`.
+
+Establish `e : lw w0 * ((8 * Real.exp 300 + 1) / lw w0) = 8 * Real.exp 300 + 1`. Clear the denominators using the available nonvanishing facts. Rewrite `h1` using `[e, Real.rpow_one]`. Move the coercions through the operations in `at h1`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem theorem_zero_condition_not_automatic (w0 : HeightOneSpectrum (𝓞 K)) :
     ¬ LatticeIndexBoundAtPairs ({ exampleObject K v0 {w0} with r1 := fun _ _ => (8 * Real.exp 300 + 1) / lw w0 } : OnObj (exampleIndefiniteData K v0 {w0} 0) Unit exampleC) := by
   intro h
@@ -1617,6 +2051,9 @@ theorem theorem_zero_condition_not_automatic (w0 : HeightOneSpectrum (𝓞 K)) :
   push_cast at h1
   linarith
 
+/- English proof (translation)
+Use `⟨mul_nonneg (lw_pos w0).le (ramw_pos w0).le, example_fails_at_three v0 w0 h3w _ ?_⟩` and prove the remaining obligations. Use `mul_pos (lw_pos w0) (ramw_pos w0)` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem example_fails_at_three_nonneg_error (w0 : HeightOneSpectrum (𝓞 K)) (h3w : plc w0 = 3) :
     0 ≤ lw w0 * (ramw w0 : ℝ) ∧
     ¬ ({ exampleIndefiniteData K v0 {w0} 0 with err0 := (exampleObject K v0 {w0}).errOn } : IndefData (exampleDf K v0)).ON
@@ -1625,6 +2062,9 @@ theorem example_fails_at_three_nonneg_error (w0 : HeightOneSpectrum (𝓞 K)) (h
   have := mul_pos (lw_pos w0) (ramw_pos w0)
   linarith
 
+/- English proof (translation)
+Conclude with `exists_place_lemma K p hp`.
+-/
 theorem exists_place_prime (p : ℕ) (hp : p.Prime) : ∃ w : HeightOneSpectrum (𝓞 K), plc w = p := by
   exact exists_place_lemma K p hp
 
@@ -1633,6 +2073,11 @@ section Level
 variable (h5 : ∀ w ∈ Tw0, plc w = 5)
 include h5
 
+/- English proof (translation)
+Use `⟨fun _ => ⟨le_rfl, le_rfl⟩, fun Q _ => ?_, fun Q _ => ?_, ?_⟩` and prove the remaining obligations. Use `show ∑ p ∈ Q, (0 : ℝ) * Real.log (p : ℝ) ≤ 1 / 1`. Simplify using the standard rewrite rules. Use `show (0 : ℝ) * ∑ p ∈ Q, (0 : ℝ) * Real.log (p : ℝ) ≤ 1 * (1 * (exampleObject K v0 Tw0).b)`. Rewrite using `[zero_mul]`.
+
+Combine the linear relations using `[example_b_ge v0 Tw0]`. Introduce `w hw hn j`. It suffices to derive a contradiction. Conclude with `hn (Or.inr (Or.inr (Or.inr (Or.inl (h5 w hw)))))`.
+-/
 theorem example_good_depth_condition (F E : ℝ) : LeafDepthGood (exampleConstants K v0 F E) (exampleObject K v0 Tw0) := by
   refine ⟨fun _ => ⟨le_rfl, le_rfl⟩, fun Q _ => ?_, fun Q _ => ?_, ?_⟩
   · show ∑ p ∈ Q, (0 : ℝ) * Real.log (p : ℝ) ≤ 1 / 1
@@ -1644,6 +2089,9 @@ theorem example_good_depth_condition (F E : ℝ) : LeafDepthGood (exampleConstan
     exfalso
     exact hn (Or.inr (Or.inr (Or.inr (Or.inl (h5 w hw)))))
 
+/- English proof (translation)
+Introduce `w hw hq j`. It suffices to derive a contradiction. Establish `h : plc w = 11 ∨ plc w = 13` using `hq`. Rewrite `h` using `[h5 w hw]`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem example_ramified_depth_condition (F E : ℝ) : LeafDepthRam (exampleConstants K v0 F E) (exampleObject K v0 Tw0) := by
   intro w hw hq j
   exfalso
@@ -1651,6 +2099,9 @@ theorem example_ramified_depth_condition (F E : ℝ) : LeafDepthRam (exampleCons
   rw [h5 w hw] at h
   omega
 
+/- English proof (translation)
+Introduce `w hw hs j`. It suffices to derive a contradiction. Establish `h : plc w ∈ ({2} : Finset ℕ)` using `hs`. Rewrite `h` using `[h5 w hw, Finset.mem_singleton]`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem example_depth_two_condition (F E : ℝ) : LeafDepth2 (exampleConstants K v0 F E) (exampleObject K v0 Tw0) := by
   intro w hw hs j
   exfalso
@@ -1658,6 +2109,13 @@ theorem example_depth_two_condition (F E : ℝ) : LeafDepth2 (exampleConstants K
   rw [h5 w hw, Finset.mem_singleton] at h
   omega
 
+/- English proof (translation)
+Introduce `w hw _ j`. Establish `hnn : ∀ v, (exampleObject K v0 Tw0).nn v j = 0`. Introduce `v`. Use `show ((vw v (1 : K) : ℤ) : ℝ) / (ramw v : ℝ) = 0`. Rewrite using `[toy_vw_one]`.
+
+Simplify using the standard rewrite rules. Establish `hF0 : (exampleConstants K v0 F E).F0 w j = 0` using `by show (if plc w = 3 then F else 0) = 0`. Rewrite using `[if_neg (by rw [h5 w hw]; norm_num)]`. Rewrite using `[example_ramification_zero, example_ramification_zero, hnn, hnn, hF0]`. Use `show (0 : ℝ) ≤ 2 * 0 - 0 ∧ (0 : ℝ) ≤ 2 * 0 - 0 ∧ (0 : ℝ) + 0 = -(2 * 0)`.
+
+Evaluate the numerical expressions.
+-/
 theorem example_level_depth_condition (F E : ℝ) : LeafDepthLevel (exampleConstants K v0 F E) (exampleObject K v0 Tw0) := by
   intro w hw _ j
   have hnn : ∀ v, (exampleObject K v0 Tw0).nn v j = 0 := by
@@ -1672,6 +2130,9 @@ theorem example_level_depth_condition (F E : ℝ) : LeafDepthLevel (exampleConst
   show (0 : ℝ) ≤ 2 * 0 - 0 ∧ (0 : ℝ) ≤ 2 * 0 - 0 ∧ (0 : ℝ) + 0 = -(2 * 0)
   norm_num
 
+/- English proof (translation)
+Conclude with `on_built (exampleConstants K v0 1 (exampleC.CE * (exampleObject K v0 Tw0).E1u)) (exampleObject K v0 Tw0) exampleC.CE (example_row_rank_condition v0 Tw0) (example_mackey_condition v0 Tw0) (example_sup_condition v0 Tw0) (example_projection_condition v0 Tw0) (example_coordinate_comp …`.
+-/
 theorem example_satisfies_conditions_at_five :
     ({ exampleIndefiniteData K v0 Tw0 0 with err0 := (exampleObject K v0 Tw0).errOn } : IndefData (exampleDf K v0)).ON
       (exampleConstants K v0 1 (exampleC.CE * (exampleObject K v0 Tw0).E1u)) := by
@@ -1685,6 +2146,11 @@ theorem example_satisfies_conditions_at_five :
 
 end Level
 
+/- English proof (translation)
+Consider the cases of `j`. Establish `he : (exampleObject K v0 Tw0).errP () 5 = 32`. Unfold `OnObj.errP`. Rewrite using `[if_pos (show (5 : ℕ) = (exampleObject K v0 Tw0).g1 ∨ (5 : ℕ) = (exampleObject K v0 Tw0).g2 from Or.inl rfl)]`. Use `show 4 * (0 : ℝ) + 4 * 8 * 1 ^ 2 = 32`.
+
+Evaluate the numerical expressions. Unfold `OnObj.errOn OnObj.errl`. Rewrite using `[hw, example_r_eq_zero, example_r_eq_zero, he]`. Simplify using the standard rewrite rules.
+-/
 theorem example_error_at_five (w : HeightOneSpectrum (𝓞 K)) (hw : plc w = 5) (j : Unit) : (exampleObject K v0 Tw0).errOn w j = 32 := by
   cases j
   have he : (exampleObject K v0 Tw0).errP () 5 = 32 := by

@@ -68,11 +68,17 @@ def Gal : Prop :=
 def GalFull : Prop :=
   ∀ i : N.Loc, GalRepFull N A i ∧ ClozelPurity N A ∧ ExistsGaloisRepresentationOfHeckeCharacter N A i
 
+/- English proof (translation)
+Introduce `i` and use `⟨fun a π ha hc hr => let ⟨⟨r, h₁, _⟩, h₂⟩ := (h i).1 a π ha hc hr ⟨⟨r, h₁⟩, fun w _ => h₂ w⟩, (h i).2⟩`.
+-/
 theorem GalFull.gal (h : GalFull N A) : Gal N A := fun i =>
   ⟨fun a π ha hc hr =>
     let ⟨⟨r, h₁, _⟩, h₂⟩ := (h i).1 a π ha hc hr
     ⟨⟨r, h₁⟩, fun w _ => h₂ w⟩, (h i).2⟩
 
+/- English proof (translation)
+Use `(A.wdOf_unrL i r w hw h.1 (h.2.2.2.1 w hw)).1 ?_` and prove the remaining obligations. Rewrite using `[h.2.2.1 w]`. Conclude with `(A.unr_tw _ _).2 hu`.
+-/
 theorem IsGalRep.crys {i : N.Loc} {a : ℕ} {π : A.CG a} {r : Rep N i a} (h : IsGalRep N A i π r)
     (w : PlE H) (hw : w ∈ placesOver H.E (N.l i)) (hu : A.unr (A.locG π w)) : A.IsCrysW i r w := by
   refine (A.wdOf_unrL i r w hw h.1 (h.2.2.2.1 w hw)).1 ?_

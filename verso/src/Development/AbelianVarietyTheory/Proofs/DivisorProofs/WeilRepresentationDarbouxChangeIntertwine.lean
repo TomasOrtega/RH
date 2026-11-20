@@ -23,6 +23,9 @@ section Adelic
 
 variable {F : Type} [Field F] [NumberField F]
 
+/- English proof (translation)
+Introduce `g hg`. Take `⟨T, hT⟩` from `hl g hg`. Conclude with `⟨T, fun f => (h _ (Submodule.subset_span ⟨f, g, hg, rfl⟩)).symm.trans (hT f)⟩`.
+-/
 theorem adm_of_eqOn_schA {κ : Type} [Fintype κ] {l l' : ((κ → AF F) → ℂ) →ₗ[ℂ] ℂ}
     (h : ∀ φ ∈ schA F κ, l φ = l' φ) (hl : l ∈ (adeleClass F).adm κ) : l' ∈ (adeleClass F).adm κ := by
   intro g hg
@@ -34,11 +37,25 @@ variable {ψ : AddChar (AF F) ℂ} {W : Type} [AddCommGroup W] [Module (AF F) W]
   {s : (κ → AF F) × (κ → AF F) → (κ' → AF F) × (κ' → AF F)}
   {S : ((κ → AF F) → ℂ) →ₗ[ℂ] ((κ' → AF F) → ℂ)} {S' : ((κ' → AF F) → ℂ) →ₗ[ℂ] ((κ → AF F) → ℂ)}
 
+/- English proof (translation)
+Simplify using `only [Darboux.rho]`. Rewrite using `[hS.Heisenberg₂ _ _ hφ, hs]`.
+-/
 theorem IsOp.rho_eq (hs : ∀ w, s (d.e w) = d'.e w) (hS : IsOp ψ s S S') (w : W) {φ : (κ → AF F) → ℂ}
     (hφ : φ ∈ schA F κ) : S (d.rho ψ w φ) = d'.rho ψ w (S φ) := by
   simp only [Darboux.rho]
   rw [hS.Heisenberg₂ _ _ hφ, hs]
 
+/- English proof (translation)
+Establish `hmem : ∀ (κ₀ : Type) [Fintype κ₀] (p : (κ₀ → AF F) × (κ₀ → AF F)) (φ : (κ₀ → AF F) → ℂ), φ ∈ schA F κ₀ → schr ψ p φ ∈ schA F κ₀` using `fun κ₀ _ p φ hφ => GlobalTheory.SchrKeepsSchA.schr_mem_schA F ψ hψ κ₀ p φ hφ`. Establish `hrho' : ∀ w, ∀ φ ∈ schA F κ', S' (d'.rho ψ w φ) = d.rho ψ w (S' φ)` using `fun w φ hφ => by`. Establish `h1` using `IsOp.rho_eq hs hS w (hS.pres' φ hφ)`. Rewrite `h1` using `[hS.right φ hφ]`. Establish `hm : d.rho ψ w (S' φ) ∈ schA F κ` using `hmem _ _ _ (hS.pres' φ hφ)`.
+
+Rewrite using `[← h1, hS.left _ hm]`. Use `⟨⟨fun g φ hφ => ?_, fun g w φ hφ => ?_, fun g l hl => ?_⟩, fun μ' hμ' g φ hφ => ?_, fun l hl φ hφ => ?_⟩` and prove the remaining obligations. Rewrite using `[hom g φ hφ]`. Conclude with `hS.pres _ (h.pres g _ (hS.pres' φ hφ))`. Establish `hw : d'.rho ψ w φ ∈ schA F κ'` using `hmem _ _ _ hφ`.
+
+Rewrite using `[hom g _ hw, hrho' w φ hφ, h.impl g w _ (hS.pres' φ hφ), IsOp.rho_eq hs hS _ (h.pres g _ (hS.pres' φ hφ)), hom g φ hφ]`. Establish `h2` using `hS.adm' _ (h.adm g _ (hS.adm l hl))`. Use `adm_of_eqOn_schA (fun φ hφ => ?_) h2` and prove the remaining obligations. Simplify using `only [LinearMap.coe_comp, Function.comp_apply]`. Rewrite using `[hom g φ hφ]`.
+
+Use `letI : MeasurableSpace (κ → AF F) := borel _ haveI : BorelSpace (κ → AF F) := ⟨rfl⟩`. Take `⟨c, -, -, hc⟩` from `hS.norm Measure.addHaar μ' inferInstance hμ'`. Rewrite using `[hom g φ hφ, hc _ (h.pres g _ (hS.pres' φ hφ)), h.unit Measure.addHaar inferInstance g _ (hS.pres' φ hφ), ← hc _ (hS.pres' φ hφ), hS.right φ hφ]`. Use `(h.cont (l ∘ₗ S) (hS.adm l hl) (S' φ) (hS.pres' φ hφ)).congr fun g => ?_` and prove the remaining obligations. Simplify using `only [LinearMap.coe_comp, Function.comp_apply]`.
+
+Rewrite using `[hom g φ hφ]`.
+-/
 theorem isUSplitting_of_isOp (hψ : IsStd ψ) (hs : ∀ w, s (d.e w) = d'.e w) (hS : IsOp ψ s S S')
     {G : Type} [Group G] [TopologicalSpace G] {act : G → W → W}
     {om : G →* Module.End ℂ ((κ → AF F) → ℂ)} {om' : G →* Module.End ℂ ((κ' → AF F) → ℂ)}
@@ -71,6 +88,11 @@ theorem isUSplitting_of_isOp (hψ : IsStd ψ) (hs : ∀ w, s (d.e w) = d'.e w) (
     simp only [LinearMap.coe_comp, Function.comp_apply]
     rw [hom g φ hφ]
 
+/- English proof (translation)
+Introduce `l hl hinv p t hpt φ hφ`. Establish `key` using `h (l ∘ₗ S) (hS.adm l hl) (fun z φ' hφ' => by`. Simplify using `only [LinearMap.coe_comp, Function.comp_apply]`. Rewrite using `[IsOp.rho_eq hs hS _ hφ']`. Conclude with `hinv z _ (hS.pres _ hφ')) p t hpt (S' φ) (hS.pres' φ hφ)`.
+
+Simplify using `only [LinearMap.coe_comp, Function.comp_apply, hS.right φ hφ] at key`. Rewrite using `[hom p φ hφ]`. Conclude with `key`.
+-/
 theorem siegelRule_of_isOp {E' : Type} [CommRing E'] [Algebra (AF F) E'] {c : E' →ₐ[AF F] E'} {α β : Type} [Fintype α]
     [DecidableEq α] [Fintype β] [DecidableEq β] {ξ : E'} {JA : Matrix α α E'} {JB : Matrix β β E'}
     {d : Darboux (symp c ξ JA JB) κ} {d' : Darboux (symp c ξ JA JB) κ'} (hs : ∀ w, s (d.e w) = d'.e w)

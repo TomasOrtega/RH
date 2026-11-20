@@ -11,6 +11,15 @@ attribute [local instance] Matrix.normedAddCommGroup Matrix.normedSpace
 variable {k r : ℕ} {Wp Wq : Type} [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp]
   [NormedAddCommGroup Wq] [InnerProductSpace ℂ Wq]
 
+/- English proof (translation)
+Establish `ha` using `Formalism.FourierDecayAlt.P.B5.inSS_left D hq`. Establish `hb` using `Formalism.FourierDecayAlt.P.B5.inSS_right D hq`. Establish `himg : B.sgs q ⁻¹' tsupport F ⊆ (fun g => (Matrix.of q.1.2 * Matrix.of q.1.1 : B.Mat k r) * g * (Matrix.of q.2.2 * Matrix.of q.2.1 : B.Mat k r)⁻¹) '' tsupport F`. Introduce `x hx`. Use `⟨B.sgs q x, hx, ?_⟩` and prove the remaining obligations.
+
+Simplify using `only`. Rewrite using `[Formalism.FourierDecayAlt.P.B5.sgs_eq]`. Establish `key : ∀ (a b y : B.Mat k r), a * a⁻¹ = 1 → b * b⁻¹ = 1 → a * (a⁻¹ * y * b) * b⁻¹ = y`. Introduce `a b y ha hb`. Rewrite using `[Matrix.mul_assoc, Matrix.mul_assoc, hb, Matrix.mul_one, ← Matrix.mul_assoc, ha, Matrix.one_mul]`.
+
+Conclude with `key _ _ x (Formalism.FourierDecayAlt.P.FiniteSumLocalExpansion.gv_inv ha).1 (Formalism.FourierDecayAlt.P.FiniteSumLocalExpansion.gv_inv hb).1`. Establish `hcK : IsCompact ((fun g => (Matrix.of q.1.2 * Matrix.of q.1.1 : B.Mat k r) * g * (Matrix.of q.2.2 * Matrix.of q.2.1 : B.Mat k r)⁻¹) '' tsupport F)` using `hF.image ((continuous_const.matrix_mul continuous_id).matrix_mul continuous_const)`. Use `hcK.of_isClosed_subset isClosed_closure (closure_minimal (fun x hx => himg (subset_tsupport _ ?_)) hcK.isClosed)` and prove the remaining obligations. Introduce `h0`. Apply `hx` to reduce the goal to its premises.
+
+Use `show B.rho D q F x = 0`. Unfold `B.rho`. Rewrite using `[h0]`. Simplify using the standard rewrite rules.
+-/
 theorem hasCompactSupport_rho (D : B.RealPlaceData k r Wp Wq) {q : B.SS k r} (hq : D.inSS q)
     {F : B.Mat k r → (Wq →L[ℂ] Wp)} (hF : HasCompactSupport F) : HasCompactSupport (B.rho D q F) := by
   have ha := Formalism.FourierDecayAlt.P.B5.inSS_left D hq
@@ -41,6 +50,11 @@ variable [FiniteDimensional ℂ Wq]
 noncomputable def II (D : B.RealPlaceData k r Wp Wq) (X Y : B.Mat k r → (Wq →L[ℂ] Wp)) : ℂ :=
   ∫ x : Mt k r, B.hsInner (X (Matrix.of x)) (Y (Matrix.of x)) ∂D.μG
 
+/- English proof (translation)
+Unfold `II`. Rewrite using `[← integral_conj]`. Use `congr 1`. Use function extensionality and compare the values at `x`. Unfold `B.hsInner`.
+
+Rewrite using `[inner_conj_symm]`.
+-/
 theorem ii_swap (D : B.RealPlaceData k r Wp Wq) (X Y : B.Mat k r → (Wq →L[ℂ] Wp)) : II D X Y = conj (II D Y X) := by
   unfold II
   rw [← integral_conj]
@@ -57,6 +71,17 @@ open Formalism.FourierDecayAlt.P.CutMP.JA.FFS.AC
 
 attribute [local instance] Matrix.normedAddCommGroup Matrix.normedSpace
 
+/- English proof (translation)
+Introduce `hU hF k r Wp Wq _ _ _ _ _ _ D Θ hs hc f hf hfc hfs p hp φ hφ hφc hφs`. Take `⟨p', hp', hUp⟩` from `hU k r Wp Wq D p hp`. Establish `hU' : ∀ X Y, II D (B.rho D p X) Y = II D X (B.rho D p' Y)` using `hUp`. Establish `hF' : ∀ F F' : B.Mat k r → (Wq →L[ℂ] Wp), B.CkOn ⊤ (B.GV k r) F → HasCompactSupport F → B.SuppIn (B.GPos D) F → B.CkOn ⊤ (B.GV k r) F' → HasCompactSupport F' → B.SuppIn (B.GPos D) F' → II D (B.opApply Θ F) F' = II D F (B.opAdj Θ F')` using `hF k r Wp Wq D Θ hs hc`. Establish `hcomm : II D (B.opApply Θ (B.rho D p' φ)) f = II D (B.rho D p' (B.opApply Θ φ)) f`.
+
+Unfold `II`. Use `integral_congr_ae ?_` and prove the remaining obligations. Use `filter_upwards [Formalism.FourierDecayAlt.P.B5.haar_ae D.haarG] with x hx`. Distinguish the cases in `hxp : Matrix.of x ∈ B.GPos D`. Rewrite using `[hc p' hp' φ (Formalism.FourierDecayAlt.P.B5.ckOn_mono le_top hφ) _ hxp]`.
+
+Establish `h0 : f (Matrix.of x) = 0`. Assume the negation of the conclusion as `hne`. Conclude with `hxp (hfs (subset_closure ⟨hx, hne⟩))`. Simplify using `only [h0, Formalism.FourierDecayAlt.P.B5.hs_zero_right]`. Use `show II D (B.opAdj Θ (B.rho D p f)) φ = II D (B.rho D p (B.opAdj Θ f)) φ`.
+
+Combine the equalities or inequalities in the displayed calculation. Rewrite using `[hF' φ (B.rho D p f) hφ hφc hφs (Formalism.FourierDecayAlt.P.B5.ckOn_rho D hp hf) (hasCompactSupport_rho D hp hfc) (suppIn_rho D hp hfs)]`. Use `_ = II D (B.rho D p f) (B.opApply Θ φ) := (ii_swap D _ _).symm`. Use `_ = II D f (B.rho D p' (B.opApply Θ φ)) := hU' _ _`. Use `_ = conj (II D (B.rho D p' (B.opApply Θ φ)) f) := ii_swap D _ _`.
+
+Use `_ = conj (II D (B.opApply Θ (B.rho D p' φ)) f) := by rw [hcomm]`. Use `_ = conj (II D (B.rho D p' φ) (B.opAdj Θ f)) := by`. Rewrite using `[hF' (B.rho D p' φ) f (Formalism.FourierDecayAlt.P.B5.ckOn_rho D hp' hφ) (hasCompactSupport_rho D hp' hφc) (suppIn_rho D hp' hφs) hf hfc hfs]`. Use `_ = II D (B.opAdj Θ f) (B.rho D p' φ) := (ii_swap D _ _).symm`. Use `_ = II D (B.rho D p (B.opAdj Θ f)) φ := (hU' _ _).symm`.
+-/
 theorem hermitian_curvature_adjoint_integral : AdjIntAsm := by
   intro hU hF k r Wp Wq _ _ _ _ _ _ D Θ hs hc f hf hfc hfs p hp φ hφ hφc hφs
   obtain ⟨p', hp', hUp⟩ := hU k r Wp Wq D p hp

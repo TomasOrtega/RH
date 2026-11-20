@@ -310,6 +310,9 @@ variable {D A3} {P0 : Subgroup G} {ψ0 : P0 →* D.what₂.LLˣ} {Ps : Subgroup 
   {X0 : Formalism.BasicNotions.BaseLevelRowSide D} {Dc : DefCols (A3.side3 Ps ψs Zs)} {Sp : SPer Dc} {C : ColData Dc Sp S1}
   {NuC : ∀ u, Submodule (𝓞 D.what₂.LL) (Fin (Dc.a u) → D.what₂.LL)} {I : DivisionCompatibilityDataThreeSided D A3 P0 ψ0 Ps ψs Zs S0 S1 X0 Dc}
 
+/- English proof (translation)
+The claim follows from `H.ranks grp := H.grp tup := H.tup mu1 := H.mu1 sharp := ⟨H.sharp.forms, H.sharp.Mtilde, H.sharp.iota⟩ base := ⟨H.base.forms, H.base.Mtilde, H.base.iota⟩ mt := ⟨H.mt.forms, H.mt.lat⟩ th := ⟨H.th.li, H.th.span, H.th.lat⟩ cols := ⟨H.cols.wU_bij, H.cols.Nu⟩`.
+-/
 theorem DivTied3.toDef (H : DivTied3 D A3 P0 ψ0 Ps ψs Zs S0 S1 X0 C NuC I) : DivDef3 D A3 P0 ψ0 Ps ψs Zs S0 S1 X0 C NuC I where
   ranks := H.ranks
   grp := H.grp
@@ -321,6 +324,9 @@ theorem DivTied3.toDef (H : DivTied3 D A3 P0 ψ0 Ps ψs Zs S0 S1 X0 C NuC I) : D
   th := ⟨H.th.li, H.th.span, H.th.lat⟩
   cols := ⟨H.cols.wU_bij, H.cols.Nu⟩
 
+/- English proof (translation)
+The claim follows from `H.sharp.RR baseRR := H.base.RR divisionRows_rationalLift := H.mt.Z0 thTheta := H.th.theta num := H.num colsBk := H.cols.Bk`.
+-/
 theorem DivTied3.toRows (H : DivTied3 D A3 P0 ψ0 Ps ψs Zs S0 S1 X0 C NuC I) : DivRows3 D A3 P0 ψ0 Ps ψs Zs S0 S1 X0 C NuC I where
   sharpRR := H.sharp.RR
   baseRR := H.base.RR
@@ -329,6 +335,9 @@ theorem DivTied3.toRows (H : DivTied3 D A3 P0 ψ0 Ps ψs Zs S0 S1 X0 C NuC I) : 
   num := H.num
   colsBk := H.cols.Bk
 
+/- English proof (translation)
+The claim follows from `hD.ranks grp := hD.grp tup := hD.tup mu1 := hD.mu1 sharp := ⟨hR.sharpRR, hD.sharp.forms, hD.sharp.Mtilde, hD.sharp.iota⟩ base := ⟨hR.baseRR, hD.base.forms, hD.base.Mtilde, hD.base.iota⟩ mt := ⟨hD.mt.forms, hD.mt.lat, hR.divisionRows_rationalLift⟩ th := ⟨hD.th.li, hD.th.span, hD.t …`.
+-/
 theorem DivTied3.ofSplit (hD : DivDef3 D A3 P0 ψ0 Ps ψs Zs S0 S1 X0 C NuC I) (hR : DivRows3 D A3 P0 ψ0 Ps ψs Zs S0 S1 X0 C NuC I) :
     DivTied3 D A3 P0 ψ0 Ps ψs Zs S0 S1 X0 C NuC I where
   ranks := hD.ranks

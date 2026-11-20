@@ -18,6 +18,17 @@ open GlobalTheory.PrincCore
 
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
+/- English proof (translation)
+Establish `hM0 : M ≠ 0` using `by omega`. Assume the negation of the conclusion as `hne`. Establish `hx : (⟨(u - 1) / M, hint⟩ : 𝓞 E) ≠ 0`. Introduce `h`. Establish `: (u - 1) / (M : E) = 0` using `congrArg Subtype.val h`.
+
+Rewrite `this` using `[div_eq_zero_iff]`. Break down `this with h | h` into its components or cases. Conclude with `hne (sub_eq_zero.mp h)`. Conclude with `hM0 (Nat.cast_eq_zero.mp h)`. Take `⟨σ, hσ⟩` from `NumberField.exists_conjugate_one_le_norm hx`.
+
+Establish `hσ' : 1 ≤ ‖σ ((u - 1) / M)‖` using `hσ`. Establish `h1 : ‖σ u‖ = 1`. Use `congrArg (fun z => ‖σ z‖) hc` as an intermediate fact. Simplify using `only [map_mul, IsCMField.complexEmbedding_complexConj, norm_mul, map_one, norm_one, Complex.norm_conj] at this`. Use polynomial arithmetic with `[norm_nonneg (σ u)]`.
+
+Rewrite `hσ'` using `[map_div₀, map_sub, map_one, map_natCast, norm_div, Complex.norm_natCast]`. Establish `hM3 : (3 : ℝ) ≤ M` using `by exact_mod_cast hM`. Establish `h2 : ‖σ u - 1‖ ≤ 2`. Use `norm_sub_le (σ u) 1` as an intermediate fact. Rewrite `this` using `[h1, norm_one]`.
+
+Combine the linear equalities and inequalities to obtain the conclusion. Rewrite `hσ'` using `[le_div_iff₀ (by linarith)]`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem eq_one_of_norm_one {E : Type} [Field E] [NumberField E] [IsCMField E] {M : ℕ} (hM : 3 ≤ M) (u : E)
     (hint : IsIntegral ℤ ((u - 1) / M)) (hc : u * IsCMField.complexConj E u = 1) : u = 1 := by
   have hM0 : M ≠ 0 := by omega
@@ -47,6 +58,51 @@ theorem eq_one_of_norm_one {E : Type} [Field E] [NumberField E] [IsCMField E] {M
 
 set_option maxHeartbeats 800000 in
 
+/- English proof (translation)
+Substitute `hr` using the available equality. Take `⟨-, -, ⟨x0, hx0, heq⟩, -, -, hfib⟩` from `hD`. Take `⟨hdom, g, hg⟩` from `hx0 k`. Take `⟨-, hrat, -, hsur⟩` from `(GlobalTheory.T.adelicUnitary_exists_with_prescribed_parts D V).2 (X k).Ψ (th k) (X k).cmType (hth k)`. Establish `hact : ∀ h, ∀ τ, mat (rmul (x0 k) (archMat V th rfl x0 h k)) τ = archM V (th k τ) h * mat (x0 k) τ`.
+
+Introduce `h τ`. Use `show mat (x0 k) τ * ((mat (x0 k) τ)⁻¹ * Matrix.reindex (finCongr rfl) (finCongr rfl) (archM V (th k τ) h) * mat (x0 k) τ) = _`. Rewrite using `[← Matrix.mul_assoc, ← Matrix.mul_assoc, Matrix.mul_nonsing_inv _ (isUnit_iff_ne_zero.2 (hdom τ).1), Matrix.one_mul]`. Both sides reduce to the same expression. Establish `key : ∀ h ∈ GinfC V, ∃ γ'' ∈ (X k).Γ, dict (g * h) = ⟨k, lact γ'' (rmul (x0 k) (archMat V th rfl x0 h k))⟩`.
+
+Use `heq g` as an intermediate fact. Rewrite `this` using `[hg]`. Conclude with `this`. Establish `hun : ∀ τ : (X k).Ψ, ((γ'.1.map τ.1).map (starRingEnd ℂ))ᵀ * V.gram.map τ.1 * γ'.1.map τ.1 = V.gram.map τ.1`. Introduce `τ`.
+
+Use `unitary_of_first_minor hr0 τ.1 (X k).Gm (X k).Gm_herm _ (mat (x0 k) τ) ?_ ?_ ?_ _ ?_` and prove the remaining obligations. Use extensionality with `a b`. Simplify using `only [Matrix.conjTranspose_apply, Matrix.map_apply, HSpace.gram]`. Rewrite using `[← V.herm.eq (V.frame b) (V.frame a)]`. Conclude with `(IsCMField.complexEmbedding_complexConj D.host.E τ.1 _).symm`.
+
+Rewrite using `[← RingHom.mapMatrix_apply, ← RingHom.map_det]`. Conclude with `(map_ne_zero_iff _ τ.1.injective).2 (gram_det_ne V)`. Introduce `w hw`. Take `⟨h, hh, hw'⟩` from `hsur (Function.update (fun _ => 1) τ w) (by`. Introduce `τ'`.
+
+Distinguish the cases in `e : τ' = τ`. Substitute `e` using the available equality. Simplify using `using hw`. Simplify using `[Function.update_of_ne e])`. Take `⟨γ'', h1, h2⟩` from `key h hh`.
+
+Establish `h3` using `hmu (g * h)`. Rewrite `h3` using `[h2]`. Establish `h4` using `h3 τ ⟨1, by omega⟩`. Rewrite `h4` using `[ReciprocityTheory.ChartRestriction.G.AR.Up.PairUnfoldPf.dmin_lact (X k) h1]`. Unfold `dmin at h4`.
+
+Rewrite `h4` using `[hact, hw', Function.update_self]`. Conclude with `h4`. Establish `hcc : (γ'.1.map τ.1).map (starRingEnd ℂ) = (γ'.1.map cc).map τ.1`. Use extensionality with `a b`. Conclude with `(IsCMField.complexEmbedding_complexConj D.host.E τ.1 _).symm`.
+
+Rewrite using `[hcc, ← Matrix.transpose_map, ← Matrix.map_mul, ← Matrix.map_mul, ReciprocityTheory.ChartRestriction.G.AR.Up.PairUnfoldPf.gramE (X k) hγ']`. Take `⟨h, hh, hw⟩` from `hsur _ hun`. Take `⟨γ'', h1, h2⟩` from `key h hh`. Take `⟨γ₀, hγ₀, κ, hκ, hdc⟩` from `hfib g (g * h) (by`. Rewrite using `[hg]`.
+
+Use `⟨γ'' * γ', mul_mem h1 hγ', ?_⟩` and prove the remaining obligations. Rewrite using `[h2]`. Use `congr 1`. Use function extensionality and compare the values at `τ`. Use `show γ''.1.map τ.1 * mat (rmul (x0 k) (archMat V th rfl x0 h k)) τ = (γ'' * γ').1.map τ.1 * mat (x0 k) τ`.
+
+Rewrite using `[hact, hw, Units.val_mul, Matrix.map_mul, Matrix.mul_assoc])`. Take `⟨δ, hδ1, hδ2⟩` from `hrat γ₀ hγ₀`. Take `⟨hκ1, hκ2⟩` from `(hK κ⁻¹).1 (inv_mem hκ)`. Establish `hfin : finHom V γ₀ * finHom V g = finHom V g * finHom V κ⁻¹`. Establish `h0 : finHom V h = 1` using `hh`.
+
+Establish `: γ₀ * g = g * h * κ⁻¹` using `by rw [hdc]; group`. Rewrite using `[← map_mul, this, map_mul, map_mul, h0, mul_one]`. Establish `hinf : infHom V γ₀ * infHom V g = infHom V g * infHom V h`. Establish `h0 : infHom V κ⁻¹ = 1` using `hκ1`. Establish `: γ₀ * g = g * h * κ⁻¹` using `by rw [hdc]; group`.
+
+Rewrite using `[← map_mul, this, map_mul, map_mul, h0, mul_one]`. Set `f : V.V →ₗ[𝓞 D.host.E] (Fin V.rank → D.host.E)` to `V.frame.equivFun.toLinearMap.restrictScalars _`. Establish `hhat : latHat V = GlobalTheory.AdLat.hat D.host.F (V.L0.map f : Set (Fin V.rank → D.host.E))`. Unfold `latHat GlobalTheory.AdLat.hat`. Use `congr 1`.
+
+Use extensionality with `z`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨a, ha, x, hx, rfl⟩`. Conclude with `⟨a, ha, f x, ⟨x, hx, rfl⟩, rfl⟩`. Introduce and unpack `⟨a, ha, _, ⟨x, hx, rfl⟩, rfl⟩`.
+
+Conclude with `⟨a, ha, x, hx, rfl⟩`. Establish `hspan : Submodule.span D.host.E (V.L0.map f : Set (Fin V.rank → D.host.E)) = ⊤`. Establish `: (V.L0.map f : Set (Fin V.rank → D.host.E)) = V.frame.equivFun.toLinearMap '' (V.L0 : Set V.V)` using `rfl`. Rewrite using `[this, ← Submodule.map_span, V.standardTuple_isLattice.span_eq_top, Submodule.map_top, LinearEquiv.range]`. Rewrite `hκ2` using `[hhat]`.
+
+Take `⟨Λ', g1, g2, g3⟩` from `exists_lattice_congr D.host.F D.host.E V.rank M (by omega) (V.L0.map f) (V.standardTuple_isLattice.fg.map f) hspan (finHom V g) (finHom V κ⁻¹).1 δ.1 hκ2 (by`. Rewrite using `[← hδ2, ← Units.val_mul, hfin, Units.val_mul])`. Choose the witnesses or unpack the hypotheses as in `⟨τ⟩ : Nonempty (X k).Ψ := by`. Take `⟨τ⟩ : Nonempty (D.host.E →+* ℂ)` from `inferInstance`. Distinguish the cases in `e : τ ∈ (X k).Ψ`.
+
+Conclude with `⟨⟨τ, e⟩⟩`. Conclude with `⟨⟨_, not_not.1 (fun e' => e (((X k).cmType τ).2 e'))⟩⟩`. Establish `hm : ∀ a b, archM V (th k τ) (a * b) = archM V (th k τ) a * archM V (th k τ) b`. Introduce `a b`. Unfold `archM`.
+
+Rewrite using `[map_mul, Units.val_mul, Matrix.map_mul]`. Establish `h1' : archM V (th k τ) 1 = 1`. Unfold `archM`. Rewrite using `[map_one, Units.val_one, Matrix.map_one _ (map_zero _) (map_one _)]`. Establish `hg0 : (archM V (th k τ) g).det ≠ 0`.
+
+Use `congrArg Matrix.det (hm g⁻¹ g)` as an intermediate fact. Rewrite `this` using `[inv_mul_cancel, h1', Matrix.det_one, Matrix.det_mul]`. Conclude with `right_ne_zero_of_mul_eq_one this.symm`. Establish `hconj : δ.1.map τ.1 * archM V (th k τ) g = archM V (th k τ) g * γ'.1.map τ.1`. Rewrite using `[← hw τ, ← hδ1 τ, ← hm, ← hm]`.
+
+Unfold `archM`. Rewrite using `[map_mul, map_mul, hinf]`. Establish `hdd : γ'.1.det = δ.1.det`. Use `congrArg Matrix.det hconj` as an intermediate fact. Rewrite `this` using `[Matrix.det_mul, Matrix.det_mul, mul_comm, ← RingHom.mapMatrix_apply, ← RingHom.mapMatrix_apply, ← RingHom.map_det, ← RingHom.map_det]`.
+
+Conclude with `τ.1.injective (mul_left_cancel₀ hg0 this).symm`. Use `eq_one_of_norm_one hM _ ?_ (GlobalTheory.CongruenceDet.det_mul_conj (X k).Gm _ (X k).Gm_det ((X k).Γ_stab γ' hγ').1)` and prove the remaining obligations. Rewrite using `[hdd]`. Use `isIntegral_trans (A := 𝓞 D.host.E) _ (GlobalTheory.CongruenceDet.isIntegral_det_sub_one (by omega) Λ' _ g1 g2 fun v hv => ?_)` and prove the remaining obligations. Take `⟨y, hy, e⟩` from `g3 v hv`.
+
+Conclude with `⟨y, hy, by rw [← Nat.cast_smul_eq_nsmul D.host.E, ← e, add_sub_cancel]⟩`.
+-/
 theorem det_eq_one {D : D7} (V : HSp D) {r : ℕ} (hr : V.rank = r) (hr0 : 0 < r) {Comp : Type}
     (X : Comp → Data D.host.E r) (dict : GA D V → Σ c, Frame (X c).Ψ r)
     (Kf : Subgroup (GA D V)) (th : ∀ c, (X c).Ψ → (Ainf D.host.F ⊗[D.host.F] D.host.E →+* ℂ))
@@ -176,6 +232,17 @@ theorem det_eq_one {D : D7} (V : HSp D) {r : ℕ} (hr : V.rank = r) (hr0 : 0 < r
 open Module GlobalTheory.AllWt GlobalTheory.FlatLine GlobalTheory.CompHt GlobalTheory.FlatCore in
 set_option maxHeartbeats 1000000 in
 
+/- English proof (translation)
+Introduce `D j H Dw l Xo c U dict h hF hg`. Establish `hr : 1 ≤ D.R.r` using `by unfold Ranks.r; have := D.R.two_le_m; omega`. Use `⟨⟨?_, h.levA, hg, h.unf, hF, h.xiAbs, h.chiTriv, fun σ hσ k γ hγ => ?_, fun σ hσ a n ha hp hn => ?_, GlobalTheory.RankOneDatum.exists_datum_of_rt D H h.host.2.1 h.host.2.2.1⟩, GlobalTheory.FlatRow.isHostField D H h.host.1⟩` and prove the remaining obligations. Establish `e : D.R.r = Dw.p + Dw.q` using `(h.unf c.F.val.toRingHom rfl).1`. Use linear arithmetic over natural numbers and integers.
+
+Take `⟨Kf, th, hrk, hK, hth, hD, hu⟩` from `h.dictU σ hσ`. Conclude with `det_eq_one _ hrk hr (U σ).X (dict σ) Kf th hth hD hu l.M l.three_le hK k γ hγ`. Take `⟨hrk, hM⟩` from `h.modelW σ hσ`. Take `⟨Kf, th, hrk', hK, hth, hD, hu⟩` from `h.dictU σ hσ`. Establish `key` using `GlobalTheory.Dict.holSub0_le_span_cusp GlobalTheory.chartIndependence_unconditional D.host.E H Dw l Xo c D.R.r (fun s => Formalism.L2.PjFree.Unf.ofPj (U s)) hr h.levA (fun s hs => (Formalism.L2.PjFree.isUnf_ofPj _).2 (h.unf s hs)) σ hσ (fun k k' => ⟨(hM k).1.trans (hM k').1.symm, …`.
+
+Establish `hc : ∀ x ∈ ((U σ).X k).Λ, ∃ y ∈ ((U σ).X k).Λ, Matrix.mulVec (γ : Matrix (Fin D.R.r) (Fin D.R.r) D.host.E) x - x = (l.M : D.host.E) • y`. Introduce `x hx`. Take `⟨y, hy, e⟩` from `hc0 x hx`. Conclude with `⟨y, hy, by rw [e, add_sub_cancel_left, Nat.cast_smul_eq_nsmul]⟩`. Take `⟨γ', hγ', u, m, hm, hum, he⟩` from `GlobalTheory.unf_group_contains_congruence_upto_rootsOfUnity _ _ _ _ _ _ σ _ (Formalism.L2.PjFree.Unf.ofPj (U σ)) (h.unf σ hσ) h.levA hr k γ hγ hc`.
+
+Establish `h1` using `root_eq_one _ hrk' hr (U σ).X (dict σ) (fun _ => 1) Kf th hth hD ⟨fun _ _ => (one_mul _).symm, fun _ => norm_one, fun _ _ => rfl, hu⟩ _ l.three_le hK k γ γ' hγ' hc u m hm hum he`. Rewrite `he` using `[h1, one_smul]`. Conclude with `Units.ext he ▸ hγ')`. Use `a n ha (fun τ _ h0 => hp τ _ (by omega)) hn (fun k => h.chiTriv σ hσ a n ha k)`. Introduce `P hP`.
+
+Conclude with `key ⟨hP.1, hP.2⟩`.
+-/
 theorem laws_of_level : ∀ (D : D7) (j : ℕ) (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host D.host.E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l) (U : ∀ σ : c.F →+* ℂ, Unf Xo c σ D.R.r) (dict : ∀ σ : c.F →+* ℂ, Formalism.L2.Theta.GA D (D.sp.W j) → Σ k, Frame ((U σ).X k).Ψ D.R.r), GlobalTheory.LevGeo.Laws D j Xo c U dict → FnAlgClosed Xo c → (∀ p : ℕ, p.Prime → l.GoodAt p) → GlobalTheory.FlatCore.Laws U (xiR D) ∧ GlobalTheory.IndefiniteRowSideFullHecke.EigenvectorLieDegree.IsHostField H := by
   intro D j H Dw l Xo c U dict h hF hg
   have hr : 1 ≤ D.R.r := by unfold Ranks.r; have := D.R.two_le_m; omega

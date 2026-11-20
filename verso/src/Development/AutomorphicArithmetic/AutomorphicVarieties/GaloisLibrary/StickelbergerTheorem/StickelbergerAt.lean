@@ -11,12 +11,18 @@ section Act
 
 variable (K : Type) [Field K] [NumberField K]
 
+/- English proof (translation)
+Take `⟨I, rfl⟩` from `ClassGroup.mk0_surjective c`. Rewrite using `[class_map_mk0]`. Use `congr 1`. Conclude with `Subtype.ext (Ideal.map_id I.1)`.
+-/
 theorem clMap_refl (c : ClassGroup (𝓞 K)) : clMap (RingEquiv.refl K) c = c := by
   obtain ⟨I, rfl⟩ := ClassGroup.mk0_surjective c
   rw [class_map_mk0]
   congr 1
   exact Subtype.ext (Ideal.map_id I.1)
 
+/- English proof (translation)
+Take `⟨I, rfl⟩` from `ClassGroup.mk0_surjective c`. Rewrite using `[class_map_mk0, class_map_mk0, class_map_mk0]`. Use `congr 1`. Conclude with `Subtype.ext (Ideal.map_map (I := I.1) (RingOfIntegers.mapRingEquiv τ).toRingHom (RingOfIntegers.mapRingEquiv τ').toRingHom).symm`.
+-/
 theorem clMap_trans {K K' K'' : Type} [Field K] [NumberField K] [Field K'] [NumberField K'] [Field K''] [NumberField K'']
     (τ : K ≃+* K') (τ' : K' ≃+* K'') (c : ClassGroup (𝓞 K)) : clMap (τ.trans τ') c = clMap τ' (clMap τ c) := by
   obtain ⟨I, rfl⟩ := ClassGroup.mk0_surjective c
@@ -30,6 +36,9 @@ def clRep : Representation ℤ Gal(K/ℚ) (Additive (ClassGroup (𝓞 K))) where
   map_one' := LinearMap.ext fun c => congrArg Additive.ofMul (clMap_refl K c.toMul)
   map_mul' σ τ := LinearMap.ext fun c => congrArg Additive.ofMul (clMap_trans τ.toRingEquiv σ.toRingEquiv c.toMul)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem clRep_apply (σ : Gal(K/ℚ)) (c : ClassGroup (𝓞 K)) :
     clRep K σ (Additive.ofMul c) = Additive.ofMul (clMap σ.toRingEquiv c) := rfl
 
@@ -42,11 +51,17 @@ variable (M : ℕ) [NeZero M] (K : Type) [Field K] [NumberField K] [IsCyclotomic
 
 def sg : (ZMod M)ˣ ≃* Gal(K/ℚ) := (IsCyclotomicExtension.Rat.galEquivZMod M K).symm
 
+/- English proof (translation)
+Rewrite using `[IsCyclotomicExtension.Rat.galEquivZMod_apply_of_pow_eq M K _ hx, sg, MulEquiv.apply_symm_apply]`.
+-/
 theorem sg_apply (b : (ZMod M)ˣ) {x : K} (hx : x ^ M = 1) : sg M K b x = x ^ (b : ZMod M).val := by
   rw [IsCyclotomicExtension.Rat.galEquivZMod_apply_of_pow_eq M K _ hx, sg, MulEquiv.apply_symm_apply]
 
 def sgO (b : (ZMod M)ˣ) : 𝓞 K ≃+* 𝓞 K := RingOfIntegers.mapRingEquiv (sg M K b).toRingEquiv
 
+/- English proof (translation)
+Apply `Subtype.ext` to reduce the goal to its premises. Conclude with `sg_apply M K b (x := x.1) (congrArg Subtype.val hx)`.
+-/
 theorem sgO_apply (b : (ZMod M)ˣ) {x : 𝓞 K} (hx : x ^ M = 1) : sgO M K b x = x ^ (b : ZMod M).val := by
   apply Subtype.ext
   exact sg_apply M K b (x := x.1) (congrArg Subtype.val hx)
@@ -56,8 +71,14 @@ def theta : MonoidAlgebra ℚ Gal(K/ℚ) :=
 
 def conjI (P : Ideal (𝓞 K)) (b : (ZMod M)ˣ) : Ideal (𝓞 K) := P.comap (sgO M K b)
 
+/- English proof (translation)
+Unfold both sides. The equivalence is reflexive.
+-/
 theorem mem_conjI (P : Ideal (𝓞 K)) (b : (ZMod M)ˣ) (x : 𝓞 K) : x ∈ conjI M K P b ↔ sgO M K b x ∈ P := Iff.rfl
 
+/- English proof (translation)
+The claim follows from `Ideal.map_symm (sgO M K b)`.
+-/
 theorem idMap_inv (I : nonZeroDivisors (Ideal (𝓞 K))) (b : (ZMod M)ˣ) :
     (idMap (sg M K b)⁻¹.toRingEquiv I).1 = conjI M K I.1 b :=
   Ideal.map_symm (sgO M K b)

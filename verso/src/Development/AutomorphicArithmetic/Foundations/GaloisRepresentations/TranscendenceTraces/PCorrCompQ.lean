@@ -3,6 +3,15 @@ import Development.AutomorphicArithmetic.Foundations.GaloisRepresentations.Trans
 
 open CategoryTheory Limits AlgebraicGeometry Opposite CochainComplex CochainComplex.HomComplex GlobalTheory.EtC UpperTheory.Gal.TranscendenceTraces
 
+/- English proof (translation)
+Introduce `hC hBC hWC hTB hTC S Y X c d`. Use `haveI := c.fin`. Use `haveI := d.fin`. Establish `pb` using `IsPullback.of_hasPullback d.p c.f`. Establish `hbw` using `hBC _ _ d.p c.f d.w pb d.wt`.
+
+Establish `hw` using `hWC (pullback.snd d.p c.f) c.p (Wt.comap (pullback.fst d.p c.f) d.w) c.w hbw c.wt`. Set `e : Corr S X` to `⟨pullback d.p c.f, pullback.snd d.p c.f ≫ c.p, pullback.fst d.p c.f ≫ d.f, Wt.mul (pullback.snd d.p c.f) (Wt.comap (pullback.fst d.p c.f) d.w) c.w, inferInstance, hw⟩`. Use `⟨e, pullback.fst d.p c.f, pullback.snd d.p c.f, pb, rfl, rfl, rfl, ?_, ?_⟩` and prove the remaining obligations. Conclude with `hC c d e _ _ pb rfl rfl rfl`. Introduce `l _ n i hl hl2`.
+
+Establish `hpull : pullHQ l (sch.map (pullback.fst d.p c.f ≫ d.f)) n i = pullHQ l (sch.map (pullback.fst d.p c.f)) n i ∘ₗ pullHQ l (sch.map d.f) n i`. Simplify using `only [pullHQ, Functor.map_comp, pullHl_comp, LinearMap.baseChange_comp]`. Establish `key` using `hTB l n i _ _ d.p c.f d.w pb d.wt hl2`. Use `show trHQ l (pullback.snd d.p c.f ≫ c.p) _ n i ∘ₗ pullHQ l (sch.map (pullback.fst d.p c.f ≫ d.f)) n i = (trHQ l c.p c.w n i ∘ₗ pullHQ l (sch.map c.f) n i) ∘ₗ (trHQ l d.p d.w n i ∘ₗ pullHQ l (sch.map d.f) n i)`. Rewrite using `[hTC l n i _ _ _ _ hbw c.wt hl, hpull]`.
+
+Use `LinearMap.ext fun v => ?_` and prove the remaining obligations. Simplify using `only [LinearMap.comp_apply]`. Conclude with `congrArg (trHQ l c.p c.w n i) (LinearMap.congr_fun key _).symm`.
+-/
 theorem UpperTheory.Gal.TranscendenceTraces.corrCompQ_of :
     CycComp → WtBC → WtComp → TrBCQ → TrCompQ → CorrCompQ := by
   intro hC hBC hWC hTB hTC S Y X c d

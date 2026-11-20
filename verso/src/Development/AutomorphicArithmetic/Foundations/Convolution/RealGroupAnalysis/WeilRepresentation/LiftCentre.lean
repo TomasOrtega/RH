@@ -10,6 +10,11 @@ section Fund
 
 variable {F : Type} [Field F] [NumberField F]
 
+/- English proof (translation)
+Use `haveI := M.haar`. Establish `hinv : ∀ (g : Gam F) x, u (g • x) = u x`. Introduce and unpack `⟨_, γ, rfl⟩ x`. Simplify `hu γ x` using `[Subgroup.smul_def]`. Establish `hpre : e ⁻¹' (e '' M.D) = M.D` using `Set.preimage_image_eq _ e.injective`.
+
+Establish `h3` using `hm.setIntegral_preimage_emb hemb u (e '' M.D)`. Rewrite `h3` using `[hpre]`. Rewrite using `[h3]`. Conclude with `hfd.setIntegral_eq M.fund hinv`.
+-/
 private theorem int_comp (M : Meas F) (e : G1 F ≃ G1 F) (hm : MeasurePreserving e M.μ M.μ)
     (hemb : MeasurableEmbedding e) (hfd : IsFundamentalDomain (Gam F) (e '' M.D) M.μ) (u : G1 F → ℂ)
     (hu : ∀ γ g, u (ratS F γ * g) = u g) : ∫ g in M.D, u (e g) ∂M.μ = ∫ g in M.D, u g ∂M.μ := by
@@ -23,6 +28,11 @@ private theorem int_comp (M : Meas F) (e : G1 F ≃ G1 F) (hm : MeasurePreservin
   rw [h3]
   exact hfd.setIntegral_eq M.fund hinv
 
+/- English proof (translation)
+Use `haveI := M.haar`. Use `haveI := M.right`. Establish `hfd : IsFundamentalDomain (Gam F) ((Equiv.mulRight k) '' M.D) M.μ`. Use `M.fund.image_of_equiv (Equiv.mulRight k) ?_ (Equiv.refl _) ?_` and prove the remaining obligations. Conclude with `(measurePreserving_mul_right M.μ k⁻¹).quasiMeasurePreserving`.
+
+Introduce `g x`. Simplify using `[Subgroup.smul_def, mul_assoc]`. Conclude with `int_comp M (Equiv.mulRight k) (measurePreserving_mul_right M.μ k) (MeasurableEquiv.mulRight k).measurableEmbedding hfd u hu`.
+-/
 private theorem int_right (M : Meas F) (u : G1 F → ℂ) (hu : ∀ γ g, u (ratS F γ * g) = u g) (k : G1 F) :
     ∫ g in M.D, u (g * k) ∂M.μ = ∫ g in M.D, u g ∂M.μ := by
   haveI := M.haar
@@ -35,6 +45,13 @@ private theorem int_right (M : Meas F) (u : G1 F → ℂ) (hu : ∀ γ g, u (rat
   exact int_comp M (Equiv.mulRight k) (measurePreserving_mul_right M.μ k)
     (MeasurableEquiv.mulRight k).measurableEmbedding hfd u hu
 
+/- English proof (translation)
+Use `haveI := M.haar`. Use `set t := IdeleGroup.diagonal F c with ht`. Establish `hti : t⁻¹ = IdeleGroup.diagonal F c⁻¹` using `by rw [ht, map_inv]`. Establish `l1 : ∀ g, cD t⁻¹ (cD t g) = g` using `fun g => by rw [← cD_mul_left, inv_mul_cancel, cD_one_left]`. Establish `l2 : ∀ g, cD t (cD t⁻¹ g) = g` using `fun g => by rw [← cD_mul_left, mul_inv_cancel, cD_one_left]`.
+
+Set `e : G1 F ≃ₜ G1 F` to `{ toFun := cD t, invFun := cD t⁻¹, left_inv := l1, right_inv := l2, continuous_toFun := UpperTheory.ConvolutionTheory.R2.M.continuous_cD t, continuous_invFun := UpperTheory.ConvolutionTheory.R2.M.continuous_cD t⁻¹ }`. Set `eG : Gam F ≃ Gam F` to `{ toFun := fun g => ⟨cD t⁻¹ g.1, hti ▸ cD_diagonal_mem c⁻¹ g.2⟩ invFun := fun g => ⟨cD t g.1, cD_diagonal_mem c g.2⟩ left_inv := fun g => Subtype.ext (l2 g.1) right_inv := fun g => Subtype.ext (l1 g.1) }`. Establish `hfd : IsFundamentalDomain (Gam F) (e.toEquiv '' M.D) M.μ`. Use `M.fund.image_of_equiv e.toEquiv ?_ eG ?_` and prove the remaining obligations. Conclude with `(UpperTheory.ConvolutionTheory.R2.M.cdMeas F M t⁻¹).quasiMeasurePreserving`.
+
+Introduce `g x`. Express the relevant statement in the definitionally equal form `cD t (cD t⁻¹ g.1 * x) = g.1 * cD t x`. Rewrite using `[cD_mul, l2]`. Conclude with `int_comp M e.toEquiv (UpperTheory.ConvolutionTheory.R2.M.cdMeas F M t) e.measurableEmbedding hfd u hu`.
+-/
 private theorem int_cD (M : Meas F) (u : G1 F → ℂ) (hu : ∀ γ g, u (ratS F γ * g) = u g) (c : Fˣ) :
     ∫ g in M.D, u (cD (IdeleGroup.diagonal F c) g) ∂M.μ = ∫ g in M.D, u g ∂M.μ := by
   haveI := M.haar
@@ -64,13 +81,24 @@ section Main
 
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
 
+/- English proof (translation)
+Simplify using `only [nu, map_mul]`.
+-/
 private theorem nu_mul (x y : GL (Fin 2) (A E)) : nu F (x * y) = nu F x * nu F y := by
   simp only [nu, map_mul]
 
+/- English proof (translation)
+Rewrite using `[nu, det_scalar, map_pow]`.
+-/
 private theorem nu_scalar (z : (A E)ˣ) :
     nu F (Matrix.GeneralLinearGroup.scalar (Fin 2) z) = ideleNorm F E z ^ 2 := by
   rw [nu, det_scalar, map_pow]
 
+/- English proof (translation)
+Establish `hX : ∀ i j, ((Matrix.GeneralLinearGroup.scalar (Fin 2) w).val * D.herm v * ((Matrix.GeneralLinearGroup.scalar (Fin 2) w).val.map D.bar)ᵀ) i j = am E a * D.herm v i j`. Introduce `i j`. Rewrite using `[ha]`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;>`. Apply the tactic sequence `simp [Matrix.mul_apply, Fin.sum_univ_two, Matrix.GeneralLinearGroup.scalar, Matrix.scalar_apply, Matrix.diagonal_apply] <;> ring`.
+
+Use function extensionality and compare the values at `i`. Unfold `Dat.act Dat.unherm`. Simplify using `only [hX]`. Apply the tactic sequence `fin_cases i <;> simp [D.co_am_mul, Dat.herm]`.
+-/
 private theorem act_scalar (D : Dat F E) (w : (A E)ˣ) (a : A F) (ha : am E a = w * D.bar w) (v : V4 F) :
     D.act (Matrix.GeneralLinearGroup.scalar (Fin 2) w) v = fun i => a * v i := by
   have hX : ∀ i j, ((Matrix.GeneralLinearGroup.scalar (Fin 2) w).val * D.herm v *
@@ -90,12 +118,24 @@ variable [IsTotallyReal F] [IsTotallyComplex E] {D : Dat F E}
 private noncomputable def U (W : Weil D) (f : GL (Fin 2) (A F) → ℂ) (φ : S4 F) (h : GL (Fin 2) (A E)) (g : G1 F) : ℂ :=
   f (gl g * dM (nu F h)) * Th (W.Om g (W.L h φ)).1
 
+/- English proof (translation)
+Unfold `U`. Rewrite using `[gl_mul, gl_ratS, mul_assoc, hl, map_mul, Module.End.mul_apply, W.th_Om]`.
+-/
 private theorem U_inv (W : Weil D) {f : GL (Fin 2) (A F) → ℂ} (hl : ∀ γ g, f (ratGL F 2 γ * g) = f g) (φ : S4 F)
     (h : GL (Fin 2) (A E)) (γ : Matrix.SpecialLinearGroup (Fin 2) F) (g : G1 F) :
     U W f φ h (ratS F γ * g) = U W f φ h g := by
   unfold U
   rw [gl_mul, gl_ratS, mul_assoc, hl, map_mul, Module.End.mul_apply, W.th_Om]
 
+/- English proof (translation)
+Take `⟨c, hc⟩ : ∃ c : Fˣ, nu F (ratGL E 2 γ) = IdeleGroup.diagonal F c` from `⟨_, by rw [nu, det_ratGL, ideleNorm_diagonal]⟩`. Take `⟨γ', hγ'⟩` from `exists_ratGL_dM c`. Establish `key : ∀ g, f (gl g * dM (nu F (ratGL E 2 γ * h))) * Th (W.Om g (W.L (ratGL E 2 γ * h) φ)).1 = U W f φ h (cD (IdeleGroup.diagonal F c⁻¹) g)`. Introduce `g`. Use `set t := IdeleGroup.diagonal F c with ht`.
+
+Establish `hti : IdeleGroup.diagonal F c⁻¹ = t⁻¹` using `by rw [ht, map_inv]`. Rewrite using `[hti]`. Establish `hx : cD t (cD t⁻¹ g) = g` using `by rw [← cD_mul_left, mul_inv_cancel, cD_one_left]`. Establish `e1 : gl g * dM (t * nu F h) = ratGL F 2 γ' * (gl (cD t⁻¹ g) * dM (nu F h))`. Rewrite using `[hγ', ← mul_assoc, dM_mul_gl t, hx, dM_mul, mul_assoc]`.
+
+Establish `e2 : W.Om g (W.L (ratGL E 2 γ * h) φ) = W.L (ratGL E 2 γ) (W.Om (cD t⁻¹ g) (W.L h φ))`. Use `LinearMap.congr_fun (W.comm (ratGL E 2 γ) (cD t⁻¹ g)) (W.L h φ)` as an intermediate fact. Rewrite `this` using `[hc, hx]`. Rewrite using `[map_mul, Module.End.mul_apply]`. Conclude with `this.symm`.
+
+Rewrite using `[nu_mul, hc, e1, hl, e2, W.th_L]`. Both sides reduce to the same expression. Unfold `lift`. Repeatedly rewrite using `[key]`. Conclude with `int_cD M (U W f φ h) (U_inv W hl φ h) c⁻¹`.
+-/
 private theorem lift_left (W : Weil D) (M : Meas F) {f : GL (Fin 2) (A F) → ℂ}
     (hl : ∀ γ g, f (ratGL F 2 γ * g) = f g) (φ : S4 F) (γ : GL (Fin 2) E) (h : GL (Fin 2) (A E)) :
     lift W M f φ (ratGL E 2 γ * h) = lift W M f φ h := by
@@ -122,6 +162,11 @@ private theorem lift_left (W : Weil D) (M : Meas F) {f : GL (Fin 2) (A F) → �
   simp_rw [key]
   exact int_cD M (U W f φ h) (U_inv W hl φ h) c⁻¹
 
+/- English proof (translation)
+Use `LinearMap.ext fun φ => Subtype.ext (funext fun v => ?_)` and prove the remaining obligations. Establish `hz : am E (((ideleNorm F E z)⁻¹ : (A F)ˣ) : A F) = ((z⁻¹ : (A E)ˣ) : A E) * D.bar ((z⁻¹ : (A E)ˣ) : A E)`. Rewrite using `[← map_inv, D.am_ideleNorm]`. Establish `hη : W.η.1 (ideleNorm F E z)⁻¹ = 1`. Rewrite using `[← map_inv]`.
+
+Conclude with `W.η_norm z⁻¹`. Rewrite using `[W.L_apply, W.Om_m, ← map_inv, act_scalar D z⁻¹ _ hz, nu_scalar, hη, ab_pow, ab_inv]`. Simplify using the standard rewrite rules.
+-/
 private theorem L_scalar (W : Weil D) (z : (A E)ˣ) :
     W.L (Matrix.GeneralLinearGroup.scalar (Fin 2) z) = W.Om (mD (ideleNorm F E z)⁻¹) := by
   refine LinearMap.ext fun φ => Subtype.ext (funext fun v => ?_)
@@ -133,6 +178,15 @@ private theorem L_scalar (W : Weil D) (z : (A E)ˣ) :
   rw [W.L_apply, W.Om_m, ← map_inv, act_scalar D z⁻¹ _ hz, nu_scalar, hη, ab_pow, ab_inv]
   simp
 
+/- English proof (translation)
+Use `set n := ideleNorm F E z with hn`. Establish `key : ∀ g, f (gl g * dM (nu F (Matrix.GeneralLinearGroup.scalar (Fin 2) z * h))) * Th (W.Om g (W.L (Matrix.GeneralLinearGroup.scalar (Fin 2) z * h) φ)).1 = ((ω n : ℂˣ) : ℂ) * U W f φ h (g * mD n⁻¹)`. Introduce `g`. Establish `e0 : dM (n ^ 2) = gl (mD n⁻¹) * Matrix.GeneralLinearGroup.scalar (Fin 2) n`. Rewrite using `[← gl_mD_mul_dM_sq n, mD_inv, gl_inv, inv_mul_cancel_left]`.
+
+Establish `e1 : gl g * dM (n ^ 2 * nu F h) = Matrix.GeneralLinearGroup.scalar (Fin 2) n * (gl (g * mD n⁻¹) * dM (nu F h))`. Rewrite using `[dM_mul, e0, mul_assoc (gl _) _ (dM _), UpperTheory.ConvolutionTheory.R2.scalar_comm n (dM _), UpperTheory.ConvolutionTheory.R2.scalar_comm n (gl _ * dM _), gl_mul]`. Simplify using `only [mul_assoc]`. Establish `e2 : W.Om g (W.L (Matrix.GeneralLinearGroup.scalar (Fin 2) z * h) φ) = W.Om (g * mD n⁻¹) (W.L h φ)`. Rewrite using `[map_mul, L_scalar, map_mul, Module.End.mul_apply, Module.End.mul_apply]`.
+
+Rewrite using `[nu_mul, nu_scalar, e1, hω, e2, U, mul_assoc]`. Unfold `lift`. Repeatedly rewrite using `[key]`. Rewrite using `[integral_const_mul]`. Use `congr 1`.
+
+Conclude with `int_right M (U W f φ h) (U_inv W hl φ h) _`.
+-/
 private theorem lift_centre (W : Weil D) (M : Meas F) {f : GL (Fin 2) (A F) → ℂ}
     (hl : ∀ γ g, f (ratGL F 2 γ * g) = f g) (φ : S4 F) (ω : (A F)ˣ →* ℂˣ)
     (hω : ∀ s g, f (Matrix.GeneralLinearGroup.scalar (Fin 2) s * g) = ((ω s : ℂˣ) : ℂ) * f g)
@@ -161,6 +215,9 @@ private theorem lift_centre (W : Weil D) (M : Meas F) {f : GL (Fin 2) (A F) → 
 
 end Main
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ _ _ D W M π f hf φ`. Establish `hl : ∀ γ g, f.1 (ratGL F 2 γ * g) = f.1 g` using `(π.cusp f hf).1.left`. Conclude with `⟨fun γ h => lift_left W M hl φ γ h, fun ω hω z h => lift_centre W M hl φ ω hω z h⟩`.
+-/
 theorem UpperTheory.ConvolutionTheory.R2.equiv :
     ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] [IsTotallyReal F] [IsTotallyComplex E] (D : Dat F E) (W : Weil D) (M : Meas F) (π : TR.CuspSub F 2), St.Equiv W M π := by
   intro F E _ _ _ _ _ _ _ D W M π f hf φ

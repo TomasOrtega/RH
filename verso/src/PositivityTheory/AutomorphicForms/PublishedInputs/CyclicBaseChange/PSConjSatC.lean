@@ -14,6 +14,11 @@ open NumberField IsDedekindDomain GlobalTheory.CuspRep
 
 namespace UpperTheory.CBC.SConjSatCAux
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Take `⟨x, hx⟩` from `hB.exists_vec`. Establish `h1` using `hx.map T.toLinearMap hf ((map_ne_zero_iff T T.injective).2 hx.1)`. Conclude with `(Submodule.ne_bot_iff _).2 ⟨_, h1.2.1, h1.1⟩`. Introduce `y hy h0`.
+
+Take `⟨x, rfl⟩` from `T.surjective y`. Use `(hB.2 x (GlobalTheory.LGrp.mem_fixed.2 fun k hk => T.injective ?_) fun e => h0 (by rw [e, map_zero])).map T.toLinearMap hf h0` and prove the remaining obligations. Conclude with `(hf k x).trans (GlobalTheory.LGrp.mem_fixed.1 hy k hk)`.
+-/
 theorem hasSatGL_of_linEquiv {E : Type} [Field E] [NumberField E] {w : HeightOneSpectrum (𝓞 E)} {n : ℕ}
     {V W : Type} [AddCommGroup V] [Module ℂ V] [AddCommGroup W] [Module ℂ W]
     {ρ : Representation ℂ (GL (Fin n) (w.adicCompletion E)) V} {ρ' : Representation ℂ (GL (Fin n) (w.adicCompletion E)) W}
@@ -29,6 +34,11 @@ theorem hasSatGL_of_linEquiv {E : Type} [Field E] [NumberField E] {w : HeightOne
       T.toLinearMap hf h0
     exact (hf k x).trans (GlobalTheory.LGrp.mem_fixed.1 hy k hk)
 
+/- English proof (translation)
+Use `(eq_conjSrc ((GlobalTheory.Mem.Chr.conjPl_iff_comap _ _ _).2 ?_)).symm` and prove the remaining obligations. Rewrite using `[(GlobalTheory.Mem.Chr.conjPl_iff_comap _ _ _).1 (conjPl_conjSrc c.symm w)]`. Use extensionality with `x`. Rewrite using `[Ideal.mem_comap, Ideal.mem_comap]`. Establish `e : (RingOfIntegers.mapRingEquiv c.symm) ((RingOfIntegers.mapRingEquiv c) x) = x`.
+
+Use `ext`. Simplify using the standard rewrite rules. Rewrite using `[e]`.
+-/
 theorem conjSrc_conjSrc_symm {E : Type} [Field E] [NumberField E] (c : E ≃+* E) (w : HeightOneSpectrum (𝓞 E)) :
     conjSrc c (conjSrc c.symm w) = w := by
   refine (eq_conjSrc ((GlobalTheory.Mem.Chr.conjPl_iff_comap _ _ _).2 ?_)).symm
@@ -42,6 +52,17 @@ theorem conjSrc_conjSrc_symm {E : Type} [Field E] [NumberField E] (c : E ≃+* E
 
 variable {M : Type} [Field M] [NumberField M] [IsTotallyComplex M]
 
+/- English proof (translation)
+Set `f : Af M →+ Cinf M` to `{ toFun := fun y => pInf M (s (sFin M y)) map_zero' := by simp map_add' := fun a b => by simp [map_add] }`. Establish `hf : Continuous f`. Establish `h1 : Continuous fun y : Af M => (sFin M y : Ad M)` using `(continuous_const.prodMk continuous_id : Continuous fun y : Af M => ((0 : InfiniteAdeleRing M), y))`. Use `show Continuous fun y : Af M => pInf M (s (sFin M y))`. Conclude with `(GlobalTheory.CuspRep.ContAut.continuous_pInf (E := M)).comp (hs.comp h1)`.
+
+Establish `hint : ∀ z ∈ GlobalTheory.SchADecomp.intA M, f z = 0`. Introduce `z hz`. Use function extensionality and compare the values at `τ`. Take `⟨C, hC⟩` from `(GlobalTheory.SchADecomp.isCompact_intA (F := M)).exists_bound_of_continuousOn ((continuous_apply τ).comp hf).continuousOn`. Assume the negation of the conclusion as `h0`.
+
+Establish `hpos : 0 < ‖f z τ‖` using `norm_pos_iff.2 h0`. Take `⟨m, hm⟩` from `exists_nat_gt (C / ‖f z τ‖)`. Establish `h2` using `hC (m • z) (AddSubgroup.nsmul_mem _ hz m)`. Rewrite `h2` using `[Function.comp_apply, map_nsmul, Pi.smul_apply, nsmul_eq_mul, norm_mul, Complex.norm_natCast]`. Rewrite `hm` using `[div_lt_iff₀ hpos]`.
+
+Combine the linear equalities and inequalities to obtain the conclusion. Take `⟨N, hN, hNy⟩` from `GlobalTheory.WeilM.exists_nat_mul_integral_of_isCompact M (κ := Unit) (isCompact_singleton (x := fun _ : Unit => y))`. Establish `hmem : (N : Af M) * y ∈ GlobalTheory.SchADecomp.intA M` using `fun v => hNy _ (Set.mem_singleton _) () v`. Establish `h3` using `hint _ hmem`. Rewrite `h3` using `[← nsmul_eq_mul, map_nsmul]`.
+
+Use `show f y = 0`. Use function extensionality and compare the values at `τ`. Establish `h4` using `congrFun h3 τ`. Rewrite `h4` using `[Pi.smul_apply, Pi.zero_apply, nsmul_eq_mul]`. Conclude with `(mul_eq_zero.1 h4).resolve_left (by exact_mod_cast hN.ne')`.
+-/
 theorem pInf_s_sFin (s : Ad M ≃+* Ad M) (hs : Continuous s) (y : Af M) : pInf M (s (sFin M y)) = 0 := by
   let f : Af M →+ Cinf M :=
     { toFun := fun y => pInf M (s (sFin M y))
@@ -75,6 +96,9 @@ theorem pInf_s_sFin (s : Ad M ≃+* Ad M) (hs : Continuous s) (y : Af M) : pInf 
   rw [Pi.smul_apply, Pi.zero_apply, nsmul_eq_mul] at h4
   exact (mul_eq_zero.1 h4).resolve_left (by exact_mod_cast hN.ne')
 
+/- English proof (translation)
+Use `ad_ext ?_ ?_` and prove the remaining obligations. Rewrite using `[pInf_s_sFin s hs.1]`. Conclude with `(map_zero (infEq M).symm).symm`. Conclude with `hs.2.2 _`.
+-/
 theorem s_sFin (σ : M ≃+* M) (s : Ad M ≃+* Ad M) (hs : IsGalAd σ s) (y : Af M) :
     s (sFin M y) = sFin M (conjFin σ y) := by
   refine ad_ext ?_ ?_
@@ -82,6 +106,11 @@ theorem s_sFin (σ : M ≃+* M) (s : Ad M ≃+* Ad M) (hs : IsGalAd σ s) (y : A
     exact (map_zero (infEq M).symm).symm
   · exact hs.2.2 _
 
+/- English proof (translation)
+Use extensionality with `i j`. Express the relevant statement in the definitionally equal form `s ((1 : Matrix (Fin n) (Fin n) (Ad M)) i j - sFin M ((1 : Matrix (Fin n) (Fin n) (Af M)) i j) + sFin M (k.1 i j)) = (1 : Matrix (Fin n) (Fin n) (Ad M)) i j - sFin M ((1 : Matrix (Fin n) (Fin n) (Af M)) i j) + sFin M (conjFin σ (k.1 i j))`. Establish `e1 : s ((1 : Matrix (Fin n) (Fin n) (Ad M)) i j) = (1 : Matrix (Fin n) (Fin n) (Ad M)) i j`. Apply the tactic sequence `by_cases h : i = j <;> simp [Matrix.one_apply, h]`. Establish `e2 : conjFin σ ((1 : Matrix (Fin n) (Fin n) (Af M)) i j) = (1 : Matrix (Fin n) (Fin n) (Af M)) i j`.
+
+Apply the tactic sequence `by_cases h : i = j <;> simp [Matrix.one_apply, h]`. Rewrite using `[map_add, map_sub, e1, s_sFin σ s hs, s_sFin σ s hs, e2]`.
+-/
 theorem map_finGL (σ : M ≃+* M) (s : Ad M ≃+* Ad M) (hs : IsGalAd σ s) {n : ℕ} (k : GL (Fin n) (Af M)) :
     Matrix.GeneralLinearGroup.map s.toRingHom (finGL M n k) =
       finGL M n (Matrix.GeneralLinearGroup.map (conjFin σ) k) := by
@@ -95,6 +124,31 @@ theorem map_finGL (σ : M ≃+* M) (s : Ad M ≃+* Ad M) (hs : IsGalAd σ s) {n 
     by_cases h : i = j <;> simp [Matrix.one_apply, h]
   rw [map_add, map_sub, e1, s_sFin σ s hs, s_sFin σ s hs, e2]
 
+/- English proof (translation)
+Use `set S : GA M n →* GA M n := Matrix.GeneralLinearGroup.map s.toRingHom with hS`. Establish `hSs : ∀ g, S (Matrix.GeneralLinearGroup.map s.symm.toRingHom g) = g` using `fun g => by`. Use extensionality with `i j`. Conclude with `s.apply_symm_apply _`. Establish `hfwd : ∀ φ : Sm M n, φ ∈ P.V → ∃ ψ : Sm M n, ψ ∈ P'.V ∧ (fun g => φ.1 (S g)) = ψ.1` using `fun φ hφ => by`.
+
+Establish `h : (fun g => φ.1 (S g)) ∈ (Cusp.cx P').space` using `hsp ▸ ⟨φ.1, ⟨φ, hφ, rfl⟩, rfl⟩`. Take `⟨ψ, hψ, e⟩` from `h`. Conclude with `⟨ψ, hψ, e⟩`. Establish `hbwd : ∀ ψ : Sm M n, ψ ∈ P'.V → ∃ φ : Sm M n, φ ∈ P.V ∧ ψ.1 = fun g => φ.1 (S g)` using `fun ψ hψ => by`. Establish `h : ψ.1 ∈ (Cusp.cx P').space` using `⟨ψ, hψ, rfl⟩`.
+
+Rewrite `h` using `[hsp]`. Take `⟨f, ⟨φ, hφ, rfl⟩, e⟩` from `h`. Conclude with `⟨φ, hφ, e.symm⟩`. Establish `hT : ∀ φ : P.V, ∃ h : (fun g => φ.1.1 (S g)) ∈ Sm M n, (⟨_, h⟩ : Sm M n) ∈ P'.V` using `fun φ => by`. Take `⟨ψ, hψ, e⟩` from `hfwd φ.1 φ.2`.
+
+Establish `h : (fun g => φ.1.1 (S g)) ∈ Sm M n` using `by rw [e]; exact ψ.2`. Use `⟨h, ?_⟩` and prove the remaining obligations. Establish `e2 : (⟨_, h⟩ : Sm M n) = ψ` using `Subtype.ext e`. Rewrite using `[e2]`. Conclude with `hψ`.
+
+Set `T : P.V →ₗ[ℂ] P'.V` to `{ toFun := fun φ => ⟨⟨_, (hT φ).1⟩, (hT φ).2⟩ map_add' := fun _ _ => rfl map_smul' := fun _ _ => rfl }`. Establish `hTinj : Function.Injective T` using `fun φ φ' e => by`. Establish `e1 : (fun g => φ.1.1 (S g)) = fun g => φ'.1.1 (S g)` using `congrArg (fun x : P'.V => x.1.1) e`. Use `Subtype.ext (Subtype.ext (funext fun g => ?_))` and prove the remaining obligations. Use `congrFun e1 (Matrix.GeneralLinearGroup.map s.symm.toRingHom g)` as an intermediate fact.
+
+Simplify `this` using `only [hSs]`. Establish `hTsurj : Function.Surjective T` using `fun ψ => by`. Take `⟨φ, hφ, e⟩` from `hbwd ψ.1 ψ.2`. Conclude with `⟨⟨φ, hφ⟩, Subtype.ext (Subtype.ext e.symm)⟩`. Set `TE : P.V ≃ₗ[ℂ] P'.V` to `LinearEquiv.ofBijective T ⟨hTinj, hTsurj⟩`.
+
+Establish `hinter : ∀ (k : GL (Fin n) ((conjSrc σ v).adicCompletion M)) (y : P.V), T (P.locRep v (Matrix.GeneralLinearGroup.map (conjLoc σ v) k) y) = P'.locRep (conjSrc σ v) k (T y)`. Introduce `k y`. Apply `Subtype.ext` to reduce the goal to its premises. Apply `Subtype.ext` to reduce the goal to its premises. Use function extensionality and compare the values at `g`.
+
+Rewrite using `[CuspSub.locRep_eq, CuspSub.locRep_eq]`. Express the relevant statement in the definitionally equal form `y.1.1 (S g * finGL M n (locGL M n v (Matrix.GeneralLinearGroup.map (conjLoc σ v) k))) = y.1.1 (S (g * finGL M n (locGL M n (conjSrc σ v) k)))`. Rewrite using `[map_mul, hS, map_finGL σ s hs, GlobalTheory.ConjPairLoc.conjFin_locGL]`. Set `ψ : (conjSrc σ v).adicCompletion M ≃+* v.adicCompletion M` to `RingEquiv.ofBijective (conjLoc σ v) ⟨(conjLoc σ v).injective, GlobalTheory.CuspRep.ParLaws.conjLoc_surjective σ v⟩`. Set `ψ₀ : Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.Fv M v ≃+* (conjSrc σ v).adicCompletion M` to `ψ.symm`.
+
+Establish `h3 : ∀ a : Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.Fv M v, Valued.v (ψ₀ a) = Valued.v a` using `fun a => by`. Use `(conjLoc_spec σ v).2.2 (ψ₀ a)` as an intermediate fact. Establish `e : conjLoc σ v (ψ₀ a) = a` using `ψ.apply_symm_apply a`. Rewrite `this` using `[e]`. Conclude with `this.symm`.
+
+Establish `hq : Formalism.UG.qV M (conjSrc σ v) = Formalism.UG.qV M v` using `GlobalTheory.UnrEuler.ConjFac.absNorm_conjSrc σ v`. Establish `hk : ∀ k, (GlobalTheory.LFun.SplitTie.glEquiv n ψ₀).symm k = Matrix.GeneralLinearGroup.map (conjLoc σ v) k` using `fun k => by ext i j; rfl`. Establish `hK` using `GlobalTheory.LFun.SplitTie.mem_KGL_iff (n := n) h3`. Set `ρ''` to `(P.locRep v).comp (GlobalTheory.LFun.SplitTie.glEquiv n ψ₀).symm.toMonoidHom`. Establish `hfix : ∀ x, x ∈ GlobalTheory.PRep.fixed ρ'' (GlobalTheory.LFun.KGL (conjSrc σ v) n) ↔ x ∈ GlobalTheory.PRep.fixed (P.locRep v) (GlobalTheory.LFun.KGL v n)` using `fun x => GlobalTheory.LFun.mem_fixed_comp_symm _ hK`.
+
+Establish `hB'' : GlobalTheory.LFun.HasSatGL (conjSrc σ v) ρ'' B`. Use `⟨?_, fun x hx h0 => (GlobalTheory.LFun.SplitTie.isSatVecGL_comp_symm h3 hq _ x B).2 (hB.2 x ((hfix x).1 hx) h0)⟩` and prove the remaining obligations. Take `⟨x, hx⟩` from `hB.exists_vec`. Conclude with `(Submodule.ne_bot_iff _).2 ⟨x, (hfix x).2 hx.2.1, hx.1⟩`. Use `hasSatGL_of_linEquiv TE (fun k y => ?_) hB''` and prove the remaining obligations.
+
+Express the relevant statement in the definitionally equal form `T (P.locRep v ((GlobalTheory.LFun.SplitTie.glEquiv n ψ₀).symm k) y) = _`. Rewrite using `[hk]`. Conclude with `hinter k y`.
+-/
 theorem main (σ : M ≃+* M) (s : Ad M ≃+* Ad M) (hs : IsGalAd σ s) {n : ℕ} (P P' : CuspSub M n)
     (hsp : (Cusp.cx P').space =
       (fun f : GA M n → ℂ => fun g => f (Matrix.GeneralLinearGroup.map s.toRingHom g)) '' (Cusp.cx P).space)
@@ -170,6 +224,11 @@ theorem main (σ : M ≃+* M) (s : Ad M ≃+* Ad M) (hs : IsGalAd σ s) {n : ℕ
 end UpperTheory.CBC.SConjSatCAux
 
 open UpperTheory.CBC in
+/- English proof (translation)
+Introduce `K M _ _ _ _ _ _ σ s hs n P P' hsp`. Establish `hc : ∀ x : K, σ.toRingEquiv.symm (algebraMap K M x) = algebraMap K M x` using `fun x => σ.symm.commutes x`. Use `⟨conjSrc σ.toRingEquiv.symm, conjSrc_injective _, fun w => GlobalTheory.DefU.ClassFin.under_conjSrc _ hc w, fun w => GlobalTheory.UnrEuler.ConjFac.absNorm_conjSrc _ w, Filter.Eventually.of_forall fun w B hB => ?_⟩` and prove the remaining obligations. Establish `h` using `UpperTheory.CBC.SConjSatCAux.main σ.toRingEquiv s hs P P' hsp (conjSrc σ.toRingEquiv.symm w) ((CG.hasSat_mk _ _ _).1 hB)`. Rewrite `h` using `[UpperTheory.CBC.SConjSatCAux.conjSrc_conjSrc_symm]`.
+
+Conclude with `(CG.hasSat_mk _ _ _).2 h`.
+-/
 theorem UpperTheory.CBC.SConjSatC_holds : UpperTheory.CBC.SConjSatC := by
   intro K M _ _ _ _ _ _ σ s hs n P P' hsp
   have hc : ∀ x : K, σ.toRingEquiv.symm (algebraMap K M x) = algebraMap K M x := fun x => σ.symm.commutes x

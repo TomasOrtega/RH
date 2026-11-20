@@ -15,6 +15,9 @@ open GlobalTheory.Points
 
 open GlobalTheory.ZH.RatModel in
 
+/- English proof (translation)
+Use `(valR_comp 𝔗.X₂.M.pt 𝔗.p U a).symm.trans ?_` and prove the remaining obligations. Rewrite using `[𝔗.p_pt]`. Conclude with `valR_spMap_comp _ X₁.M.pt U (X₁.M.top_le_preimage_pt hU) a`.
+-/
 theorem Tower.valF_app_p {g n : ℕ} {F : SFam g n (zetaAway n)} {W : Matrix (Fin 8) (Fin 8) ℤ} {Z : Scheme.{0}} {i : F.X ⟶ Z}
     {X₁ : Setup F W i} {act : Matrix (Fin 8) (Fin 8) ℤ → (X₁.ρ.P.A ⟶ X₁.ρ.P.A)} (𝔗 : Tower X₁ act)
     {U : X₁.M.Z.Opens} (hU : (U : Set X₁.M.Z).Nonempty) (a : Γ(X₁.M.Z, U)) :
@@ -23,6 +26,9 @@ theorem Tower.valF_app_p {g n : ℕ} {F : SFam g n (zetaAway n)} {W : Matrix (Fi
   rw [𝔗.p_pt]
   exact valR_spMap_comp _ X₁.M.pt U (X₁.M.top_le_preimage_pt hU) a
 
+/- English proof (translation)
+Take `⟨U, hz, f, rfl⟩` from `X₁.M.Z.presheaf.germ_exist x`. Rewrite using `[Scheme.Hom.germ_stalkMap_apply, RatModel.stalkHom_germ hz f]`. Conclude with `(RatModel.stalkHom_germ (M := 𝔗.X₂.M) (U := 𝔗.p ⁻¹ᵁ U) hz _).trans (𝔗.valF_app_p ⟨_, hz⟩ f)`.
+-/
 theorem Tower.stalkHom_stalkMap_p {g n : ℕ} {F : SFam g n (zetaAway n)} {W : Matrix (Fin 8) (Fin 8) ℤ} {Z : Scheme.{0}}
     {i : F.X ⟶ Z} {X₁ : Setup F W i} {act : Matrix (Fin 8) (Fin 8) ℤ → (X₁.ρ.P.A ⟶ X₁.ρ.P.A)} (𝔗 : Tower X₁ act)
     (z₂ : 𝔗.X₂.M.Z) (x : X₁.M.Z.presheaf.stalk (𝔗.p z₂)) :
@@ -31,6 +37,11 @@ theorem Tower.stalkHom_stalkMap_p {g n : ℕ} {F : SFam g n (zetaAway n)} {W : M
   rw [Scheme.Hom.germ_stalkMap_apply, RatModel.stalkHom_germ hz f]
   exact (RatModel.stalkHom_germ (M := 𝔗.X₂.M) (U := 𝔗.p ⁻¹ᵁ U) hz _).trans (𝔗.valF_app_p ⟨_, hz⟩ f)
 
+/- English proof (translation)
+Take `⟨U, a, hz, rfl⟩` from `hx`. Establish `h1 : Set.range y ⊆ (𝔗.p ⁻¹ᵁ U : 𝔗.X₂.M.Z.Opens)`. Rewrite using `[RatModel.range_eq_singleton y w, Set.singleton_subset_iff]`. Conclude with `hz`. Rewrite using `[← 𝔗.valF_app_p ⟨_, hz⟩ a, RatModel.val_valF h1, RatModel.val_valF (U := U) (by rintro _ ⟨w', rfl⟩; exact h1 ⟨w', rfl⟩)]`.
+
+Conclude with `valR_comp y 𝔗.p U a`.
+-/
 theorem Tower.val_comp_p {g n : ℕ} {F : SFam g n (zetaAway n)} {W : Matrix (Fin 8) (Fin 8) ℤ} {Z : Scheme.{0}}
     {i : F.X ⟶ Z} {X₁ : Setup F W i} {act : Matrix (Fin 8) (Fin 8) ℤ → (X₁.ρ.P.A ⟶ X₁.ρ.P.A)} (𝔗 : Tower X₁ act)
     {K : Type} [Field K] (y : Sp K ⟶ 𝔗.X₂.M.Z) (w : Sp K) {x : X₁.Ω₁} (hx : x ∈ X₁.M.O (𝔗.p (y w))) :
@@ -43,6 +54,11 @@ theorem Tower.val_comp_p {g n : ℕ} {F : SFam g n (zetaAway n)} {W : Matrix (Fi
     RatModel.val_valF (U := U) (by rintro _ ⟨w', rfl⟩; exact h1 ⟨w', rfl⟩)]
   exact valR_comp y 𝔗.p U a
 
+/- English proof (translation)
+Take `⟨U, g, hz, rfl⟩` from `hx`. Establish `h1 : Set.range y ⊆ U`. Rewrite using `[RatModel.range_eq_singleton y w, Set.singleton_subset_iff]`. Conclude with `hz`. Rewrite using `[RatModel.val_valF h1, RatModel.val_valF (by rintro _ ⟨w', rfl⟩; exact h1 ⟨_, rfl⟩)]`.
+
+Conclude with `valR_spMap_comp σ y U ((top_le_preimage_iff _ _).2 h1) g`.
+-/
 theorem RatModel.val_spMap_comp_field {o Ω : Type} [CommRing o] [Field Ω] [Algebra o Ω] {M : RatModel o Ω} {K K' : Type} [Field K]
     [Field K'] (σ : K →+* K') (y : Sp K ⟶ M.Z) (w : Sp K) {x : Ω} (hx : x ∈ M.O (y w)) :
     M.val (spMap σ ≫ y) x = σ (M.val y x) := by
@@ -53,6 +69,15 @@ theorem RatModel.val_spMap_comp_field {o Ω : Type} [CommRing o] [Field Ω] [Alg
   rw [RatModel.val_valF h1, RatModel.val_valF (by rintro _ ⟨w', rfl⟩; exact h1 ⟨_, rfl⟩)]
   exact valR_spMap_comp σ y U ((top_le_preimage_iff _ _).2 h1) g
 
+/- English proof (translation)
+Introduce `g n F W Z i X₁ act 𝔗 z₁ z₂ hz V V' _ _ _ _ ev io ev₂ f hf hio hext hreg a`. Substitute `hz` using the available equality. Establish `e1 : ev₂.comp (𝔗.p.stalkMap z₂).hom = io.comp ev` using `RingHom.ext fun x => hext.2 x _ (𝔗.stalkHom_stalkMap_p z₂ x)`. Establish `e2 : jK V' ≫ spMap io = spMap f ≫ jK V`. Simplify using `only [jK, spMap, ← Spec.map_comp, ← CommRingCat.ofHom_comp]`.
+
+Use `congr 2`. Use extensionality with `v`. Conclude with `(hf v).symm`. Establish `h1 : (jK V' ≫ spMap ev₂ ≫ 𝔗.X₂.M.Z.fromSpecStalk z₂) ≫ 𝔗.p = spMap f ≫ (jK V ≫ spMap ev ≫ X₁.M.Z.fromSpecStalk (𝔗.p z₂))`. Establish `e3 : spMap ev₂ ≫ Spec.map (𝔗.p.stalkMap z₂) = spMap io ≫ spMap ev` using `by show Spec.map (CommRingCat.ofHom ev₂) ≫ Spec.map (CommRingCat.ofHom (𝔗.p.stalkMap z₂).hom) = _`.
+
+Rewrite using `[← Spec.map_comp, ← CommRingCat.ofHom_comp, e1, CommRingCat.ofHom_comp, Spec.map_comp]`. Rewrite using `[Category.assoc, Category.assoc, ← Scheme.SpecMap_stalkMap_fromSpecStalk, ← Category.assoc (spMap ev₂), e3, Category.assoc, ← Category.assoc (jK V'), e2]`. Simplify using `only [Category.assoc]`. Establish `hmem` using `hreg a a.2`. Establish `hp : 𝔗.p ((jK V' ≫ spMap ev₂ ≫ 𝔗.X₂.M.Z.fromSpecStalk z₂) (closedPoint (FractionRing V'))) = (jK V ≫ spMap ev ≫ X₁.M.Z.fromSpecStalk (𝔗.p z₂)) (closedPoint (FractionRing V))`.
+
+Establish `e` using `congrArg (fun q : Sp (FractionRing V') ⟶ X₁.M.Z => q (closedPoint (FractionRing V'))) h1`. Use `e.trans ?_` and prove the remaining obligations. Use `show (jK V ≫ spMap ev ≫ X₁.M.Z.fromSpecStalk (𝔗.p z₂)) ((spMap f) (closedPoint (FractionRing V'))) = _`. Rewrite using `[Subsingleton.elim ((spMap f) (closedPoint (FractionRing V'))) (closedPoint (FractionRing V))]`. Rewrite using `[𝔗.om_eq, ← 𝔗.val_comp_p (K := FractionRing V') _ (closedPoint (FractionRing V')) (hp ▸ hmem), h1, RatModel.val_spMap_comp_field (K := FractionRing V) f _ (closedPoint (FractionRing V)) hmem]`.
+-/
 theorem Tower.val_om_ext : ∀ {g n : ℕ} {F : SFam g n (zetaAway n)} {W : Matrix (Fin 8) (Fin 8) ℤ} {Z : Scheme.{0}} {i : F.X ⟶ Z} {X₁ : Setup F W i} {act : Matrix (Fin 8) (Fin 8) ℤ → (X₁.ρ.P.A ⟶ X₁.ρ.P.A)} (𝔗 : Tower X₁ act) {z₁ : X₁.M.Z} {z₂ : 𝔗.X₂.M.Z}, 𝔗.p z₂ = z₁ → ∀ {V V' : Type} [CommRing V] [IsDomain V] [CommRing V'] [IsDomain V'] (ev : X₁.M.Z.presheaf.stalk z₁ →+* V) (io : V →+* V') (ev₂ : 𝔗.X₂.M.Z.presheaf.stalk z₂ →+* V') (f : FractionRing V →+* FractionRing V'), (∀ v, f (algebraMap V (FractionRing V) v) = algebraMap V' (FractionRing V') (io v)) → Function.Injective io → 𝔗.Ext ev io ev₂ → RegAt X₁ z₁ ev → ∀ a : X₁.S.R, 𝔗.X₂.M.val (jK V' ≫ spMap ev₂ ≫ 𝔗.X₂.M.Z.fromSpecStalk z₂) (𝔗.om a) = f (X₁.M.val (jK V ≫ spMap ev ≫ X₁.M.Z.fromSpecStalk z₁) a) := by
   intro g n F W Z i X₁ act 𝔗 z₁ z₂ hz V V' _ _ _ _ ev io ev₂ f hf hio hext hreg a
   subst hz

@@ -8,6 +8,15 @@ open GlobalTheory.PRep GlobalTheory.SmGL GlobalTheory.SplitWeil GlobalTheory.Gal
 attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField
 open UpperTheory.Gal.ToralGalois.R2
 
+/- English proof (translation)
+Introduce `hSI M Ω _ _ _ _ _ A u h n T ξ hξ hsup`. Use `haveI : CharZero (u.adicCompletion M) := charZero_of_injective_algebraMap (algebraMap M _).injective`. Establish `hsupx : HasSupport (IrrGL.of T.ρ T.smooth T.irred).rep (chars ξ hξ)` using `hsup.of_equiv (IrrGL.equivOf T.ρ T.smooth T.irred)`. Establish `hnu` using `GlobalTheory.RoadU.TwistSupp.supp_nu_chars (u.adicCompletion M) (IrrGL.of T.ρ T.smooth T.irred) n ξ (fun j => ξ j * absPow _ (((1 - (n : ℝ)) / 2 : ℝ) : ℂ)) hξ (fun j => (hξ j).mul (GlobalTheory.LocGL.isSmoothChar_absPow _)) (((1 - (n : ℝ)) / 2 : ℝ) : ℂ) (fun _ => rfl)`. Use `⟨fun hun => ⟨_, hnu.1.1 hsupx, fun y hy => ?_, hnu.2.1 hun⟩, fun rc hrc a ha t => ?_⟩` and prove the remaining obligations.
+
+Take `⟨j, -, rfl⟩` from `Multiset.mem_map.1 hy`. Both sides reduce to the same expression. Establish `hSI'` using `hSI M Ω A u h rc hrc _ _ hsupx t`. Take `⟨a₀, ha₀, L⟩` from `hrc`. Take `rfl : a₀ = a` from `(UpperTheory.Zero.LLC.artEx M Ω A u h).unique ha₀ ha`.
+
+Establish `e : algNorm T = (IrrGL.of T.ρ T.smooth T.irred).nu (((1 - (n : ℝ)) / 2 : ℝ) : ℂ)` using `rfl`. Establish `h1 : ∀ j, (rc (IrrGL.ofChar (ξ j) (hξ j))).inePol (t : G M Ω) = X - C ((ξ j (a₀ (ineIncl h t)) : ℂˣ) : ℂ)`. Introduce `j`. Rewrite using `[WD.inePol_of_mem_Ine _ t.2, L.one, WD.lpOfChar, WD.charPol_mk, WDRep.ofChars_ρ, charpoly_diagEnd]`. Simplify using the standard rewrite rules.
+
+Rewrite using `[← WD.inePol_of_mem_Ine _ t.2, e, L.nu, GlobalTheory.RoadU.DepthZeroRec.inePol_lpTw_of_mem_Ine _ _ t.2, hSI', chars, Multiset.map_map]`. Conclude with `congrArg Multiset.prod (Multiset.map_congr rfl fun j _ => h1 j)`.
+-/
 theorem UpperTheory.Gal.ToralGalois.R2.recChars :
     UpperTheory.Gal.InertialTypesAlt.SuppIne → RecChars := by
   intro hSI M Ω _ _ _ _ _ A u h n T ξ hξ hsup

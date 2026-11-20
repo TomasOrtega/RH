@@ -9,6 +9,23 @@ import Development.AutomorphicArithmetic.TwistedTraces.PrjEigInOfEigenvectorPrj
 open MeasureTheory NumberField GroundTheory.Automorphic GroundTheory.Automorphic.Reduction GroundTheory.Automorphic.RightCosetSpace
 open GroundTheory.Automorphic.AutomorphicForm GroundTheory.Automorphic.CuspidalSpectrum UpperTheory.ConvolutionTheory.C
 
+/- English proof (translation)
+Introduce `H _ _ _ W A hW hA hinv hK η hη`. Establish `hsa : IsSelfAdjoint A` using `isSelfAdjoint_of_nonneg hA`. Take `⟨hfin, hfd⟩` from `UpperTheory.eigIn_finite_above_of_isCompactOperator H W A hW hsa hinv hK η hη`. Take `⟨s, b, hb⟩` from `UpperTheory.exists_hilbertBasis_prj_eigenvectors_of_isCompactOperator H W A hW hsa hinv hK`. Establish `hS : ∀ x, x ∈ hfin.toFinset ↔ η < x ∧ eigIn W A x ≠ ⊥` using `fun x => by simp`.
+
+Use `⟨hfin.toFinset, hS, fun x hx => hfd x ((hS x).1 hx).1, fun φ c T hφ hc hφc hT => ?_⟩` and prove the remaining obligations. Rewrite using `[UpperTheory.trOn_sub_sum_eq_trace_comp_compression H W (eigIn W A) hfin.toFinset (fun x => (φ x : ℂ)) (cfc φ A) T (fun x => inf_le_left) hT]`. Establish `hmem : ∀ v, prj W v ∈ W` using `fun v => by`. Establish `h : prj W v ∈ W.topologicalClosure` using `Submodule.starProjection_apply_mem _ v`. Rewrite `h` using `[hW.submodule_topologicalClosure_eq]`. Then use the resulting hypothesis.
+
+Establish `hPP : ∀ v, prj W (prj W v) = prj W v` using `fun v => Submodule.starProjection_eq_self_iff.2 (Submodule.starProjection_apply_mem _ v)`. Use `UpperTheory.norm_trace_comp_le_mul_traceNorm H s b _ _ c hc hT fun i => ?_` and prove the remaining obligations. Take `⟨μ, hμ⟩` from `hb i`. Establish `hF` using `UpperTheory.cfc_apply_of_eigenvector H A hsa φ hφ μ _ hμ`. Establish `hD : (prj W ∘L cfc φ A ∘L prj W - ∑ x ∈ hfin.toFinset, (φ x : ℂ) • prj (eigIn W A x)) (b i) = (if μ ∈ hfin.toFinset then 0 else (φ μ : ℂ)) • prj W (b i)`.
+
+Simplify using `only [ContinuousLinearMap.sub_apply, ContinuousLinearMap.comp_apply, ContinuousLinearMap.sum_apply, ContinuousLinearMap.smul_apply, hF, map_smul, hPP, UpperTheory.prj_eigIn_of_eigenvector_prj H W A hW hsa (b i) μ _ hμ, smul_ite, smul_zero, Finset.sum_ite_eq']`. Apply the tactic sequence `split_ifs <;> simp`. Rewrite using `[hD]`. Distinguish the cases in `h0 : prj W (b i) = 0`. Conclude with `⟨0, by simpa using hc, by simp [h0]⟩`.
+
+Use `⟨if μ ∈ hfin.toFinset then 0 else (φ μ : ℂ), ?_, by simp only [map_smul, ContinuousLinearMap.comp_apply, hPP]⟩` and prove the remaining obligations. Use `split_ifs with hm`. Simplify using `using hc`. Establish `hne : eigIn W A μ ≠ ⊥`. Rewrite using `[Submodule.ne_bot_iff]`.
+
+Conclude with `⟨_, ⟨hmem _, Module.End.mem_eigenspace_iff.2 hμ⟩, h0⟩`. Establish `hle : μ ≤ η` using `not_lt.1 fun h => hm ((hS μ).2 ⟨h, hne⟩)`. Establish `hge : 0 ≤ μ`. Establish `h1` using `((ContinuousLinearMap.nonneg_iff_isPositive A).1 hA).re_inner_nonneg_right (prj W (b i))`. Rewrite `h1` using `[hμ, inner_smul_right, inner_self_eq_norm_sq_to_K]`.
+
+Establish `h2 : 0 < ‖prj W (b i)‖ ^ 2` using `by positivity`. Establish `h3 : 0 ≤ μ * ‖prj W (b i)‖ ^ 2`. Establish `: RCLike.re ((μ : ℂ) * ((‖prj W (b i)‖ : ℝ) : ℂ) ^ 2) = μ * ‖prj W (b i)‖ ^ 2`. Rewrite using `[← Complex.ofReal_pow, ← Complex.ofReal_mul]`. Both sides reduce to the same expression.
+
+Rewrite using `[← this]`. Conclude with `h1`. Conclude with `nonneg_of_mul_nonneg_left h3 h2`. Rewrite using `[Complex.norm_real, Real.norm_eq_abs]`. Conclude with `hφc μ ⟨hge, hle⟩`.
+-/
 theorem UpperTheory.ConvolutionTheory.C.eigSplit :
     UpperTheory.ConvolutionTheory.C.EigSplit := by
   intro H _ _ _ W A hW hA hinv hK η hη

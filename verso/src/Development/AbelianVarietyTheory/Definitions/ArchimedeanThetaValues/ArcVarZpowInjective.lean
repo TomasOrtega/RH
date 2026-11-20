@@ -13,6 +13,9 @@ open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalC
 open Matrix in
 variable {K : Type} [CommRing K] [IsDomain K] {X : Type} [AddCommGroup X] [Module.Free ℤ X]
   [Module.Finite ℤ X] in
+/- English proof (translation)
+Use `⟨∏ i, (q i).den, Finset.prod_pos fun i _ => (q i).pos, fun i => (q i).num * ∏ j ∈ Finset.univ.erase i, ((q j).den : ℤ), fun i => ?_⟩` and prove the remaining obligations. Rewrite using `[← Finset.mul_prod_erase Finset.univ (fun j => (q j).den) (Finset.mem_univ i)]`. Use `push_cast`. Rewrite using `[← Rat.mul_den_eq_num (q i)]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 private lemma exists_pos_nat_mul_eq_int {Idx : Type} [Fintype Idx] (q : Idx → ℚ) :
     ∃ N : ℕ, 0 < N ∧ ∃ w : Idx → ℤ, ∀ i, (w i : ℚ) = N * q i := by
   classical
@@ -28,6 +31,57 @@ open Matrix in
 variable {K : Type} [CommRing K] [IsDomain K] {X : Type} [AddCommGroup X] [Module.Free ℤ X]
   [Module.Finite ℤ X] in
 
+/- English proof (translation)
+Use `set b := Module.Free.chooseBasis ℤ X`. Use `set Idx := Module.Free.ChooseBasisIndex ℤ X`. Set `A : Matrix Idx Idx ℤ` to `fun i j => be (b i) (b j)`. Establish `hQ : ∀ y, be y y = b.repr y ⬝ᵥ A *ᵥ b.repr y`. Introduce `y`.
+
+Establish `h` using `congrArg (fun B : LinearMap.BilinForm ℤ X => B y y) (Matrix.toBilin_toMatrix b be)`. Simplify using `only [Matrix.toBilin_apply, LinearMap.BilinForm.toMatrix_apply] at h`. Rewrite using `[← h]`. Simplify using `only [A, dotProduct, Matrix.mulVec, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations.
+
+Expand and normalize the polynomial expressions, which then agree. Establish `hpos : ∀ w : Idx → ℤ, w ≠ 0 → 0 < w ⬝ᵥ A *ᵥ w`. Introduce `w hw`. Establish `h` using `hp (b.equivFun.symm w) (b.equivFun.symm.map_ne_zero_iff.mpr hw)`. Rewrite `h` using `[hQ, ← Module.Basis.equivFun_apply, LinearEquiv.apply_symm_apply]`. Then use the resulting hypothesis.
+
+Set `AR : Matrix Idx Idx ℝ` to `A.map (Int.cast : ℤ → ℝ)`. Establish `hcastR : ∀ w : Idx → ℤ, (fun i => (w i : ℝ)) ⬝ᵥ AR *ᵥ (fun i => (w i : ℝ)) = ((w ⬝ᵥ A *ᵥ w : ℤ) : ℝ)`. Introduce `w`. Simplify using `[AR, dotProduct, Matrix.mulVec]`. Establish `hnn : ∀ v : Idx → ℝ, 0 ≤ v ⬝ᵥ AR *ᵥ v`.
+
+Introduce `v`. Establish `hd : DenseRange (Pi.map fun _ : Idx => (Rat.cast : ℚ → ℝ))` using `DenseRange.piMap fun _ => Rat.denseRange_cast`. Use `hd.induction_on (p := fun v => 0 ≤ v ⬝ᵥ AR *ᵥ v) v (isClosed_le continuous_const (by fun_prop)) fun q => ?_` and prove the remaining obligations. Take `⟨N, hN, w, hw⟩` from `exists_pos_nat_mul_eq_int q`. Establish `hwv : (fun i => (w i : ℝ)) = (N : ℝ) • Pi.map (fun _ : Idx => (Rat.cast : ℚ → ℝ)) q`.
+
+Use function extensionality and compare the values at `i`. Use `congrArg (Rat.cast : ℚ → ℝ) (hw i)` as an intermediate fact. Move the coercions through the operations in `at this`. Simplify using `using this`. Establish `h1 : 0 ≤ (fun i => (w i : ℝ)) ⬝ᵥ AR *ᵥ (fun i => (w i : ℝ))`.
+
+Rewrite using `[hcastR]`. Distinguish the cases in `hw0 : w = 0`. Simplify using `[hw0]`. Conclude with `(hpos w hw0).le` after adjusting the coercions. Rewrite `h1` using `[hwv, Matrix.mulVec_smul, dotProduct_smul, smul_dotProduct, smul_eq_mul, smul_eq_mul]`.
+
+Establish `hN' : (0 : ℝ) < N` using `by exact_mod_cast hN`. Conclude with `(mul_nonneg_iff_of_pos_left hN').mp ((mul_nonneg_iff_of_pos_left hN').mp h1)`. Establish `hdetA : A.det ≠ 0`. Introduce `h0`. Set `AQ : Matrix Idx Idx ℚ` to `A.map (Int.cast : ℤ → ℚ)`.
+
+Establish `hQdet : AQ.det = 0`. Establish `h2 : ((A.det : ℤ) : ℚ) = AQ.det` using `(Int.castRingHom ℚ).map_det A`. Rewrite using `[← h2, h0, Int.cast_zero]`. Take `⟨v, hv0, hv⟩` from `Matrix.exists_mulVec_eq_zero_iff.mpr hQdet`. Take `⟨N, hN, w, hw⟩` from `exists_pos_nat_mul_eq_int v`.
+
+Establish `hN0 : (N : ℚ) ≠ 0` using `by exact_mod_cast hN.ne'`. Establish `hw0 : w ≠ 0`. Introduce `hw0`. Apply `hv0` to reduce the goal to its premises. Use function extensionality and compare the values at `i`.
+
+Establish `h` using `hw i`. Simplify using `only [hw0, Pi.zero_apply, Int.cast_zero] at h`. Simplify using `using (mul_eq_zero.mp h.symm).resolve_left hN0`. Establish `hwv : (fun i => (w i : ℚ)) = (N : ℚ) • v` using `funext fun i => by simp [hw i]`. Establish `hzero : ((w ⬝ᵥ A *ᵥ w : ℤ) : ℚ) = 0`.
+
+Establish `h3 : ((w ⬝ᵥ A *ᵥ w : ℤ) : ℚ) = (fun i => (w i : ℚ)) ⬝ᵥ AQ *ᵥ (fun i => (w i : ℚ))`. Simplify using `[AQ, dotProduct, Matrix.mulVec]`. Rewrite using `[h3, hwv, Matrix.mulVec_smul, hv]`. Simplify using the standard rewrite rules. Establish `h4` using `hpos w hw0`.
+
+Establish `h5 : (w ⬝ᵥ A *ᵥ w) = 0` using `by exact_mod_cast hzero`. Use linear arithmetic over natural numbers and integers. Establish `hherm : AR.IsHermitian`. Use extensionality with `i j`. Simplify using `only [Matrix.conjTranspose_apply, star_trivial]`.
+
+Use `show ((be (b j) (b i) : ℤ) : ℝ) = ((be (b i) (b j) : ℤ) : ℝ)`. Rewrite using `[hs]`. Establish `hpsd : AR.PosSemidef` using `Matrix.PosSemidef.of_dotProduct_mulVec_nonneg hherm fun x => by simpa using hnn x`. Establish `hdetR : AR.det ≠ 0`. Establish `h2 : ((A.det : ℤ) : ℝ) = AR.det` using `(Int.castRingHom ℝ).map_det A`.
+
+Rewrite using `[← h2]`. Conclude with `hdetA` after adjusting the coercions. Establish `hpd : AR.PosDef` using `hpsd.posDef_iff_det_ne_zero.mpr hdetR`. Establish `hposR : ∀ v : Idx → ℝ, v ≠ 0 → 0 < v ⬝ᵥ AR *ᵥ v` using `fun v hv => by`. Simplify using `using hpd.dotProduct_mulVec_pos hv`.
+
+Establish `hcont : Continuous fun v : Idx → ℝ => v ⬝ᵥ AR *ᵥ v` using `by fun_prop`. Choose the witnesses or unpack the hypotheses as in `⟨m, hm, hmv⟩ : ∃ m : ℝ, 0 < m ∧ ∀ v : Idx → ℝ, m * ‖v‖ ^ 2 ≤ v ⬝ᵥ AR *ᵥ v := by`. Distinguish the cases in `hS : (Metric.sphere (0 : Idx → ℝ) 1).Nonempty`. Take `⟨v0, hv0, hmin⟩` from `(isCompact_sphere (0 : Idx → ℝ) 1).exists_isMinOn hS hcont.continuousOn`. Establish `hv0' : v0 ≠ 0` using `by rintro rfl; simp at hv0`.
+
+Use `⟨_, hposR v0 hv0', fun v => ?_⟩` and prove the remaining obligations. Distinguish the cases in `hv : v = 0`. Simplify using `[hv]`. Establish `hnv : 0 < ‖v‖` using `norm_pos_iff.mpr hv`. Establish `hu : ‖v‖⁻¹ • v ∈ Metric.sphere (0 : Idx → ℝ) 1`.
+
+Simplify using `[norm_smul, hnv.ne']`. Establish `h1` using `isMinOn_iff.mp hmin _ hu`. Simplify using `only [Matrix.mulVec_smul, dotProduct_smul, smul_dotProduct, smul_eq_mul] at h1`. Combine the equalities or inequalities in the displayed calculation. Use `⟨1, one_pos, fun v => ?_⟩` and prove the remaining obligations.
+
+Establish `hv : v = 0`. Assume the negation of the conclusion as `hv`. Conclude with `hS ⟨‖v‖⁻¹ • v, by simp [norm_smul, (norm_pos_iff.mpr hv).ne']⟩`. Simplify using `[hv]`. Use `set R : ℕ := ⌈(C : ℝ) / m⌉₊ + 1 with hR`.
+
+Establish `hbound : ∀ c : Idx → ℤ, c ⬝ᵥ A *ᵥ c ≤ C → ∀ i, |c i| ≤ R`. Introduce `c hc i`. Establish `h1 : m * ‖(fun j => (c j : ℝ))‖ ^ 2 ≤ C`. Establish `h0` using `hmv (fun j => (c j : ℝ))`. Rewrite `h0` using `[hcastR c]`.
+
+Conclude with `h0.trans (by exact_mod_cast hc)`. Establish `h2 : |(c i : ℝ)| ≤ ‖(fun j => (c j : ℝ))‖`. Simplify `norm_le_pi_norm (fun j => (c j : ℝ)) i` using `[Real.norm_eq_abs]`. Establish `h6` using `Nat.le_ceil ((C : ℝ) / m)`. Establish `h7 : (0 : ℝ) ≤ ⌈(C : ℝ) / m⌉₊` using `Nat.cast_nonneg _`.
+
+Establish `h3 : (|c i| : ℝ) ≤ R`. Rewrite using `[hR]`. Use `push_cast`. Break down `le_or_gt |(c i : ℝ)| 1 with h | h` into its components or cases. Combine the linear equalities and inequalities to obtain the conclusion.
+
+Establish `h4 : |(c i : ℝ)| ≤ ‖(fun j => (c j : ℝ))‖ ^ 2` using `by nlinarith`. Establish `h5 : ‖(fun j => (c j : ℝ))‖ ^ 2 ≤ (C : ℝ) / m`. Rewrite using `[le_div_iff₀ hm]`. Combine the linear equalities and inequalities to obtain the conclusion. Combine the linear equalities and inequalities to obtain the conclusion.
+
+Conclude with `h3` after adjusting the coercions. Establish `hT : (Set.pi Set.univ fun _ : Idx => Set.Icc (-(R : ℤ)) R).Finite` using `Set.Finite.pi fun _ => Set.finite_Icc _ _`. Use `(hT.image b.equivFun.symm).subset fun y hy => ?_` and prove the remaining obligations. Use `⟨b.equivFun y, fun i _ => ?_, b.equivFun.symm_apply_apply y⟩` and prove the remaining obligations. Establish `h` using `hbound (b.equivFun y) (by rw [Module.Basis.equivFun_apply, ← hQ]; exact hy) i`.
+
+Conclude with `abs_le.mp h`.
+-/
 theorem _root_.GlobalTheory.ToricData.finite_form_le (be : LinearMap.BilinForm ℤ X) (hs : ∀ y z, be y z = be z y)
     (hp : ∀ y, y ≠ 0 → 0 < be y y) (C : ℤ) : {y | be y y ≤ C}.Finite := by
   classical
@@ -175,9 +229,17 @@ def arcExp (k : Type) [Field k] (be : LinearMap.BilinForm ℤ X) (y : X) : (Frac
 
 variable (k : Type) [Field k] (be : LinearMap.BilinForm ℤ X)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem arcVar_val :
     (arcVar k : FractionRing (PowerSeries k)) = algebraMap (PowerSeries k) _ PowerSeries.X := rfl
 
+/- English proof (translation)
+Rewrite using `[injective_zpow_iff_not_isOfFinOrder, isOfFinOrder_iff_pow_eq_one]`. Introduce and unpack `⟨n, hn, h⟩`. Establish `h1 : (PowerSeries.X : PowerSeries k) ^ n = 1` using `IsFractionRing.injective (PowerSeries k) (FractionRing (PowerSeries k)) (by`. Rewrite using `[map_pow, map_one, ← arcVar_val, ← Units.val_pow_eq_pow_val, h, Units.val_one])`. Establish `h2` using `congrArg PowerSeries.constantCoeff h1`.
+
+Simplify using `[hn.ne'] at h2`.
+-/
 theorem arcVar_zpow_injective : Function.Injective fun n : ℤ => arcVar k ^ n := by
   rw [injective_zpow_iff_not_isOfFinOrder, isOfFinOrder_iff_pow_eq_one]
   rintro ⟨n, hn, h⟩
@@ -189,21 +251,35 @@ theorem arcVar_zpow_injective : Function.Injective fun n : ℤ => arcVar k ^ n :
 
 omit [Module.Free ℤ X] [Module.Finite ℤ X] in
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem arcExp_eq (y : X) : arcExp k be y = arcVar k ^ (be y y / 2) := rfl
 
 omit [Module.Free ℤ X] [Module.Finite ℤ X] in
 
+/- English proof (translation)
+The claim follows from `Units.val_zpow_eq_zpow_val _ _`.
+-/
 theorem arcExp_val (y : X) : (arcExp k be y : FractionRing (PowerSeries k)) =
     algebraMap (PowerSeries k) (FractionRing (PowerSeries k)) PowerSeries.X ^ (be y y / 2) :=
   Units.val_zpow_eq_zpow_val _ _
 
 omit [Module.Free ℤ X] [Module.Finite ℤ X] in
 
+/- English proof (translation)
+Simplify using `only [arcExp_eq, map_neg, LinearMap.neg_apply, neg_neg]`.
+-/
 theorem arcExp_neg (y : X) : arcExp k be (-y) = arcExp k be y := by
   simp only [arcExp_eq, map_neg, LinearMap.neg_apply, neg_neg]
 
 omit [Module.Free ℤ X] [Module.Finite ℤ X] in
 
+/- English proof (translation)
+Rewrite using `[polar, arcExp_eq, arcExp_eq, arcExp_eq, ← zpow_neg, ← zpow_neg, ← zpow_add, ← zpow_add]`. Use `congr 1`. Establish `h1` using `he y`. Establish `h2` using `he z`. Simplify using `only [map_add, LinearMap.add_apply, hs z y]`.
+
+Use linear arithmetic over natural numbers and integers.
+-/
 theorem polar_arcExp (hs : ∀ y z, be y z = be z y) (he : ∀ y, (2 : ℤ) ∣ be y y) (y z : X) :
     polar (arcExp k be) y z = arcVar k ^ (be y z) := by
   rw [polar, arcExp_eq, arcExp_eq, arcExp_eq, ← zpow_neg, ← zpow_neg, ← zpow_add, ← zpow_add]
@@ -213,6 +289,15 @@ theorem polar_arcExp (hs : ∀ y z, be y z = be z y) (he : ∀ y, (2 : ℤ) ∣ 
   simp only [map_add, LinearMap.add_apply, hs z y]
   omega
 
+/- English proof (translation)
+Rewrite using `[psiIn_iff, Ideal.span_singleton_pow]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨r, hr, h⟩`. Take `⟨s, rfl⟩` from `Ideal.mem_span_singleton.1 hr`. Assume the negation of the conclusion as `hlt`.
+
+Take `⟨m, hm⟩ : ∃ m : ℕ, (n : ℤ) = be y y / 2 + (m + 1 : ℕ)` from `⟨((n : ℤ) - be y y / 2 - 1).toNat, by omega⟩`. Establish `hX` using `(arcVar k).ne_zero`. Rewrite `hX` using `[arcVar_val]`. Establish `h1 : (PowerSeries.X : PowerSeries k) ^ (m + 1) * s = 1` using `IsFractionRing.injective (PowerSeries k) (FractionRing (PowerSeries k)) (by`. Rewrite `h` using `[arcExp_val, map_mul, map_pow, ← zpow_natCast, hm, zpow_add₀ hX, _root_.mul_assoc, zpow_natCast]`.
+
+Rewrite using `[map_mul, map_pow, map_one]`. Conclude with `(mul_left_cancel₀ (zpow_ne_zero _ hX) ((_root_.mul_one _).trans h)).symm)`. Establish `h2` using `congrArg PowerSeries.constantCoeff h1`. Simplify using `at h2`. Introduce `h`.
+
+Take `⟨m, hm⟩ : ∃ m : ℕ, be y y / 2 = (n + m : ℕ)` from `⟨(be y y / 2 - n).toNat, by omega⟩`. Use `⟨PowerSeries.X ^ (n + m), Ideal.mem_span_singleton.2 (pow_dvd_pow _ (Nat.le_add_right _ _)), ?_⟩` and prove the remaining obligations. Rewrite using `[arcExp_val, hm, zpow_natCast, map_pow]`.
+-/
 theorem psiIn_arcExp_iff (y : X) (n : ℕ) :
     (toricPre _ X (arcExp k be)).PsiIn y (Ideal.span {(PowerSeries.X : PowerSeries k)} ^ n) ↔
       (n : ℤ) ≤ be y y / 2 := by
@@ -259,6 +344,9 @@ variable (hs : ∀ y z, be y z = be z y) (hp : ∀ y, y ≠ 0 → 0 < be y y) (h
 instance (O : Type) [Ring O] [Module O X] : Module O (arcData k be hs hp he).toPre.X :=
   inferInstanceAs (Module O X)
 
+/- English proof (translation)
+The claim follows from `(tau_isConst (arcExp k be) y z).of_eq (congrArg unitOn (polar_arcExp k be hs he y z))`.
+-/
 theorem arcData_tau_isConst (y z : X) :
     IsConst ((arcData k be hs hp he).toPre.tau y z) (unitOn (arcVar k ^ (be y z))) :=
   (tau_isConst (arcExp k be) y z).of_eq (congrArg unitOn (polar_arcExp k be hs he y z))
@@ -271,6 +359,9 @@ end ThetaShiftProofs
 
 section Base
 
+/- English proof (translation)
+The claim follows from `(Category.comp_id _).symm.trans (Over.w x)`.
+-/
 theorem left_eq_hom {S : Scheme.{0}} {T : Over S} (x : T ⟶ (zeroPolAV S).A) : x.left = T.hom :=
   (Category.comp_id _).symm.trans (Over.w x)
 
@@ -284,10 +375,16 @@ def baseIso {K' : Type} [CommRing K'] [IsDomain K'] (f : K →+* K') (q' : X →
 
 variable {K' : Type} [CommRing K'] [IsDomain K']
 
+/- English proof (translation)
+The claim follows from `congrArg (· ≫ spMap f) (left_eq_hom x)`.
+-/
 theorem left_baseMap (f : K →+* K') (q' : X → (FractionRing K')ˣ) {T : Over (Sp K')}
     (x : T ⟶ (toricPre K' X q').P.A) : x.left ≫ baseMap q f q' = T.hom ≫ spMap f :=
   congrArg (· ≫ spMap f) (left_eq_hom x)
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨(IsPullback.of_vert_isIso ⟨(Category.comp_id _).trans (Category.id_comp _).symm⟩ : IsPullback (spMap f) (𝟙 _) (𝟙 _) (spMap f)), fun _ _ _ _ _ _ _ => (left_eq_hom _).trans (left_baseMap q f q' _).symm⟩`.
+-/
 theorem baseMap_pb {K' : Type} [CommRing K'] [IsDomain K'] (f : K →+* K') (q' : X → (FractionRing K')ˣ) :
     IsGrpPullback (toricPre K' X q').P.A (toricPre K X q).P.A (spMap f) (baseMap q f q') :=
   ⟨(IsPullback.of_vert_isIso ⟨(Category.comp_id _).trans (Category.id_comp _).symm⟩ :
@@ -296,12 +393,18 @@ theorem baseMap_pb {K' : Type} [CommRing K'] [IsDomain K'] (f : K →+* K') (q' 
 
 variable (f : K →+* K') (q' : X → (FractionRing K')ˣ)
 
+/- English proof (translation)
+The claim follows from `(left_baseMap q f q' η[(toricPre K' X q').P.A]).trans ((Category.id_comp _).trans ((Category.comp_id _).symm.trans (congrArg (spMap f ≫ ·) (left_eq_hom η[(toricPre K X q).P.A]).symm)))`.
+-/
 theorem eSec_baseMap :
     eSec (toricPre K' X q').P.A ≫ baseMap q f q' = spMap f ≫ eSec (toricPre K X q).P.A :=
   (left_baseMap q f q' η[(toricPre K' X q').P.A]).trans
     ((Category.id_comp _).trans ((Category.comp_id _).symm.trans
       (congrArg (spMap f ≫ ·) (left_eq_hom η[(toricPre K X q).P.A]).symm)))
 
+/- English proof (translation)
+The claim follows from `(left_baseMap q f q' g').trans ((Category.id_comp _).trans ((Category.comp_id _).symm.trans (congrArg (spMap f ≫ ·) (left_eq_hom g).symm)))`.
+-/
 theorem end_baseMap (g' : (toricPre K' X q').P.A ⟶ (toricPre K' X q').P.A)
     (g : (toricPre K X q).P.A ⟶ (toricPre K X q).P.A) :
     g'.left ≫ baseMap q f q' = baseMap q f q' ≫ g.left :=
@@ -309,10 +412,18 @@ theorem end_baseMap (g' : (toricPre K' X q').P.A ⟶ (toricPre K' X q').P.A)
     ((Category.id_comp _).trans ((Category.comp_id _).symm.trans
       (congrArg (spMap f ≫ ·) (left_eq_hom g).symm)))
 
+/- English proof (translation)
+The claim follows from `end_baseMap q f q' ((toricPre K' X q').c y') ((toricPre K X q).c y)`.
+-/
 theorem c_baseMap (y' y : X) :
     ((toricPre K' X q').c y').left ≫ baseMap q f q' = spMap f ≫ ((toricPre K X q).c y).left :=
   end_baseMap q f q' ((toricPre K' X q').c y') ((toricPre K X q).c y)
 
+/- English proof (translation)
+Introduce `i j`. Establish `hg : (LB.div ((toricPre K X q).P.L.pull (baseMap q f q')) (toricPre K' X q').P.L).g i j = 1`. Simplify using `only [LB.div]`. Use `erw [linComb_triv_g]`. Repeat the step `erw [map_one]` while it applies.
+
+Use `erw [inv_one, _root_.one_mul]`. Apply the tactic sequence `all_goals rfl`. Rewrite using `[hg, _root_.one_mul]`. Conclude with `(map_one _).trans (map_one _).symm`.
+-/
 theorem baseIso_isGen : (baseIso q f q').IsGen := by
   intro i j
   have hg : (LB.div ((toricPre K X q).P.L.pull (baseMap q f q')) (toricPre K' X q').P.L).g i j = 1 := by
@@ -324,6 +435,13 @@ theorem baseIso_isGen : (baseIso q f q').IsGen := by
   rw [hg, _root_.one_mul]
   exact (map_one _).trans (map_one _).symm
 
+/- English proof (translation)
+Introduce `p`. Establish `h1 : (rigPullOf (baseMap q f q') (spMap f) he (toricPre K X q).P.L (toricPre K X q).rig).s p.1 = 1`. Simplify using `only [rigPullOf]`. Use `erw [cg_isConst, gv]`. Repeat the step `erw [map_one]` while it applies.
+
+Apply the tactic sequence `all_goals rfl`. Establish `h2 : (toricPre K' X q').rig.s p.2 = 1` using `map_one (res _)`. Establish `h3 : (LB.linCombIso (baseIso q f q') (K` using `PUnit) (fun _ => eSec (toricPre K' X q').P.A) (fun _ => 1)).s p = 1 := by`. Simplify using `only [LB.linCombIso, baseIso]`. Use `Finset.prod_eq_one fun _ _ => ?_` and prove the remaining obligations.
+
+Repeat the step `erw [map_one]` while it applies. Conclude with `one_zpow _`. Rewrite using `[h1, h2, h3, map_one, map_one]`. Conclude with `(_root_.mul_one _).symm`.
+-/
 theorem baseIso_rig (he : eSec (toricPre K' X q').P.A ≫ baseMap q f q' = spMap f ≫ eSec (toricPre K X q).P.A) :
     LB.Gen.Maps (LB.linCombIso (baseIso q f q') (K := PUnit) (fun _ => eSec (toricPre K' X q').P.A) (fun _ => 1))
       (toricPre K' X q').rig
@@ -344,6 +462,11 @@ theorem baseIso_rig (he : eSec (toricPre K' X q').P.A ≫ baseMap q f q' = spMap
   rw [h1, h2, h3, map_one, map_one]
   exact (_root_.mul_one _).symm
 
+/- English proof (translation)
+Substitute `hV` using the available equality. Establish `h : (⊤ : (Sp F).Opens) ≤ (𝟙 (Sp F) : Sp F ⟶ Sp F) ⁻¹ᵁ ⊤` using `le_rfl`. Rewrite using `[valF, dif_pos h, gv, res_self]`. Establish `e : Scheme.Hom.appLE (𝟙 (Sp F)) ⊤ ⊤ h = 𝟙 _`. Rewrite using `[Scheme.Hom.appLE, Scheme.Hom.id_app]`.
+
+Use `erw [Category.id_comp]`. Conclude with `(Sp F).presheaf.map_id _`. Rewrite using `[e]`. Conclude with `(Scheme.ΓSpecIso (CommRingCat.of F)).inv_hom_id_apply (a : F)`.
+-/
 theorem valF_gv_unitOn {F : Type} [Field F] {V : (Sp F).Opens} (hV : V = ⊤) (a : Fˣ) :
     valF (𝟙 (Sp F)) V (gv (unitOn a) V).val = a := by
   subst hV
@@ -356,10 +479,18 @@ theorem valF_gv_unitOn {F : Type} [Field F] {V : (Sp F).Opens} (hV : V = ⊤) (a
   rw [e]
   exact (Scheme.ΓSpecIso (CommRingCat.of F)).inv_hom_id_apply (a : F)
 
+/- English proof (translation)
+Rewrite using `[valF, dif_pos h, map_one, map_one]`.
+-/
 theorem valF_one {F : Type} [Field F] {Y : Scheme.{0}} (x : Sp F ⟶ Y) {U : Y.Opens} (h : ⊤ ≤ x ⁻¹ᵁ U) :
     valF x U 1 = 1 := by
   rw [valF, dif_pos h, map_one, map_one]
 
+/- English proof (translation)
+Establish `hc : ∀ (j : J → (toricPre K' X q').P.L.ι) (j₀ : J → (toricPre K X q).P.L.ι) (i : J), ⊤ ≤ pt i ⁻¹ᵁ (LB.div ((toricPre K X q).P.L.pull (baseMap q f q')) (toricPre K' X q').P.L).U (fun _ => j₀ i, j i)` using `fun j j₀ i _ _ => ⟨Set.mem_iInter.2 fun _ => trivial, trivial⟩`. Establish `key : ∀ (j : J → (toricPre K' X q').P.L.ι) (j₀ : J → (toricPre K X q).P.L.ι), (valF (𝟙 (Sp F)) _ (t.s j).val = x * (∏ i, valF (pt i) _ ((baseIso q f q').s (fun _ => j₀ i, j i)).val ^ (-ε i)) * valF (𝟙 (Sp F)) _ (t₀.s j₀).val) ↔ (a : F) = x * a₀`. Introduce `j j₀`. Establish `e₁ : valF (𝟙 (Sp F)) _ (t.s j).val = a` using `by rw [ht j]; exact valF_gv_unitOn (wchart_triv _ _) a`. Establish `e₂ : valF (𝟙 (Sp F)) _ (t₀.s j₀).val = a₀` using `by rw [ht₀ j₀]; exact valF_gv_unitOn (wchart_triv _ _) a₀`.
+
+Establish `e₃ : ∀ i, valF (pt i) _ ((baseIso q f q').s (fun _ => j₀ i, j i)).val = 1` using `fun i => valF_one _ (hc j j₀ i)`. Simplify using `only [e₁, e₂, e₃, one_zpow, Finset.prod_const_one, _root_.mul_one]`. Conclude with `and_congr_right fun _ => ⟨fun h => (key (fun _ => PUnit.unit) (fun _ => PUnit.unit)).1 (h _ _ (hc _ _)), fun h j j₀ _ => (key j j₀).2 h⟩`.
+-/
 theorem genRel_baseIso_iff {F : Type} [Field F] {J : Type} [Fintype J]
     {pt : J → (Sp F ⟶ (toricPre K' X q').P.A.left)} {pt₀ : J → (Sp F ⟶ (toricPre K X q).P.A.left)} {ε : J → ℤ}
     {t : LB.Gen (LB.LinComb (toricPre K' X q').P.L pt ε)} {t₀ : LB.Gen (LB.LinComb (toricPre K X q).P.L pt₀ ε)}
@@ -384,6 +515,9 @@ theorem genRel_baseIso_iff {F : Type} [Field F] {J : Type} [Fintype J]
 
 variable (F : Type) [Field F] [Algebra (FractionRing K') F] [Algebra (FractionRing K) F]
 
+/- English proof (translation)
+Express the relevant statement in the definitionally equal form `(Spec.map _ ≫ Spec.map _) ≫ Spec.map _ = Spec.map _ ≫ Spec.map _`. Rewrite using `[← Spec.map_comp, ← Spec.map_comp, ← Spec.map_comp]`. Use `congr 1`. Use extensionality with `x`. Conclude with `(hF x).symm`.
+-/
 theorem jFK_spMap
     (hF : ∀ x, algebraMap (FractionRing K) F (algebraMap K _ x) = algebraMap (FractionRing K') F (algebraMap K' _ (f x))) :
     (TF (R := K') F).hom ≫ spMap f = (TF (R := K) F).hom := by
@@ -393,6 +527,9 @@ theorem jFK_spMap
   ext x
   exact (hF x).symm
 
+/- English proof (translation)
+The claim follows from `(left_baseMap q f q' b').trans ((jFK_spMap f F hF).trans (left_eq_hom b).symm)`.
+-/
 theorem pointF_baseMap
     (hF : ∀ x, algebraMap (FractionRing K) F (algebraMap K _ x) = algebraMap (FractionRing K') F (algebraMap K' _ (f x)))
     (b' : TF (R := K') F ⟶ (toricPre K' X q').P.A) (b : TF (R := K) F ⟶ (toricPre K X q).P.A) :
@@ -401,11 +538,17 @@ theorem pointF_baseMap
 
 omit [Algebra (FractionRing K') F] in
 
+/- English proof (translation)
+The claim follows from `(isConst_pullGen (psi_isConst q y) _).of_eq (pullTop_unitOn _ _)`.
+-/
 theorem psiF_isConst (y : X) :
     IsConst (LB.pullGen _ _ _ ((toricPre K X q).psi y) (jFK (R := K) F))
       (unitOn (Units.map (algebraMap (FractionRing K) F).toMonoidHom (q y))) :=
   (isConst_pullGen (psi_isConst q y) _).of_eq (pullTop_unitOn _ _)
 
+/- English proof (translation)
+Use `(genRel_baseIso_iff q f q' (psiF_isConst q' F y') (psiF_isConst q F y) x).trans (and_iff_right fun _ => ?_)` and prove the remaining obligations. Conclude with `pointF_baseMap q f q' F hF ((Over.homMk (jFK (R := K') F) rfl : TF (R := K') F ⟶ TK K') ≫ toUnit (TK K') ≫ (toricPre K' X q').c y') ((Over.homMk (jFK (R := K) F) rfl : TF (R := K) F ⟶ TK K) ≫ toUnit (TK K) ≫ (toricPre K X q).c y)`.
+-/
 theorem genRel_psi_iff
     (hF : ∀ x, algebraMap (FractionRing K) F (algebraMap K _ x) = algebraMap (FractionRing K') F (algebraMap K' _ (f x)))
     (y' y : X) (x : F) :
@@ -417,6 +560,9 @@ theorem genRel_psi_iff
     ((Over.homMk (jFK (R := K') F) rfl : TF (R := K') F ⟶ TK K') ≫ toUnit (TK K') ≫ (toricPre K' X q').c y')
     ((Over.homMk (jFK (R := K) F) rfl : TF (R := K) F ⟶ TK K) ≫ toUnit (TK K) ≫ (toricPre K X q).c y)
 
+/- English proof (translation)
+Use `(genRel_baseIso_iff q f q' (pt_isConst q' F t' χ') (pt_isConst q F t χ) x).trans (and_iff_right fun i => ?_)` and prove the remaining obligations. Apply the tactic sequence `fin_cases i <;> exact pointF_baseMap q f q' F hF _ _`.
+-/
 theorem genRel_pt_iff
     (hF : ∀ x, algebraMap (FractionRing K) F (algebraMap K _ x) = algebraMap (FractionRing K') F (algebraMap K' _ (f x)))
     (t' t : Multiplicative X →* Fˣ) (χ' χ : X) (x : F) :
@@ -427,6 +573,9 @@ theorem genRel_pt_iff
 
 end Base
 
+/- English proof (translation)
+The claim follows from `(genRel_psi_iff _ _ _ F hF y' y _).2 (by rw [arcExp_val, map_zpow₀, h, hu, Units.val_one, map_one, _root_.mul_one])`.
+-/
 theorem genRel_arcData_psi (k : Type) [Field k] (be : LinearMap.BilinForm ℤ X) (hs : ∀ y z, be y z = be z y)
     (hp : ∀ y, y ≠ 0 → 0 < be y y) (he : ∀ y, (2 : ℤ) ∣ be y y)
     (F : Type) [Field F] [Algebra (FractionRing (PowerSeries k)) F] [Algebra (FractionRing k) F] (u : F)
@@ -444,8 +593,14 @@ section Examples
 
 def twoMul : LinearMap.BilinForm ℤ ℤ := (2 : ℤ) • LinearMap.mul ℤ ℤ
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem twoMul_apply (a b : ℤ) : twoMul a b = 2 * (a * b) := rfl
 
+/- English proof (translation)
+Rewrite using `[arcExp_eq, twoMul_apply, Int.mul_ediv_cancel_left _ two_ne_zero, sq]`.
+-/
 theorem arcExp_twoMul (k : Type) [Field k] (n : ℤ) : arcExp k twoMul n = arcVar k ^ (n ^ 2) := by
   rw [arcExp_eq, twoMul_apply, Int.mul_ediv_cancel_left _ two_ne_zero, sq]
 
@@ -454,9 +609,15 @@ def arcDataInt (k : Type) [Field k] : DegData (PowerSeries k) (Ideal.span {Power
     (fun a ha => by rw [twoMul_apply]; exact mul_pos two_pos (mul_self_pos.2 ha))
     (fun a => ⟨a * a, twoMul_apply a a⟩)
 
+/- English proof (translation)
+The claim follows from `(congrArg (toricPre _ ℤ) (funext (arcExp_twoMul ℚ))).trans toricPre_tate`.
+-/
 example : (arcDataInt ℚ).toPre = tatePre :=
   (congrArg (toricPre _ ℤ) (funext (arcExp_twoMul ℚ))).trans toricPre_tate
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨(psiIn_arcExp_iff k twoMul 2 4).2 (by decide), fun h => absurd ((psiIn_arcExp_iff k twoMul 2 5).1 h) (by decide), fun h => absurd ((psiIn_arcExp_iff k twoMul 0 1).1 h) (by decide)⟩`.
+-/
 example (k : Type) [Field k] :
     (arcDataInt k).toPre.PsiIn (2 : ℤ) (Ideal.span {PowerSeries.X} ^ 4) ∧
       ¬ (arcDataInt k).toPre.PsiIn (2 : ℤ) (Ideal.span {PowerSeries.X} ^ 5) ∧
@@ -464,6 +625,9 @@ example (k : Type) [Field k] :
   ⟨(psiIn_arcExp_iff k twoMul 2 4).2 (by decide), fun h => absurd ((psiIn_arcExp_iff k twoMul 2 5).1 h) (by decide),
     fun h => absurd ((psiIn_arcExp_iff k twoMul 0 1).1 h) (by decide)⟩
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨arcData_tau_isConst k twoMul _ _ _ 1 1, arcData_tau_isConst k twoMul _ _ _ 1 (-1), fun h => absurd (arcVar_zpow_injective k h) (by decide)⟩`.
+-/
 example (k : Type) [Field k] :
     IsConst ((arcDataInt k).toPre.tau (1 : ℤ) (1 : ℤ)) (unitOn (arcVar k ^ (2 : ℤ))) ∧
       IsConst ((arcDataInt k).toPre.tau (1 : ℤ) (-1 : ℤ)) (unitOn (arcVar k ^ (-2 : ℤ))) ∧
@@ -471,6 +635,9 @@ example (k : Type) [Field k] :
   ⟨arcData_tau_isConst k twoMul _ _ _ 1 1, arcData_tau_isConst k twoMul _ _ _ 1 (-1),
     fun h => absurd (arcVar_zpow_injective k h) (by decide)⟩
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨arcOAct k twoMul _ _ _ ℤ fun a y z => by rw [twoMul_apply, twoMul_apply, star_trivial, smul_eq_mul, smul_eq_mul] ring, fun _ => end_baseMap _ _ _ _ _⟩`.
+-/
 example (k : Type) [Field k] (h) : ∃ o : (arcDataInt k).toPre.OAct ℤ, ∀ x,
     (o.onB.act x).left ≫ baseMap (fun _ : ℤ => 1) (PowerSeries.C (R := k)) (arcExp k twoMul) =
       baseMap (fun _ : ℤ => 1) (PowerSeries.C (R := k)) (arcExp k twoMul) ≫
@@ -480,6 +647,9 @@ example (k : Type) [Field k] (h) : ∃ o : (arcDataInt k).toPre.OAct ℤ, ∀ x,
       ring,
     fun _ => end_baseMap _ _ _ _ _⟩
 
+/- English proof (translation)
+Rewrite using `[genRel_pt_iff q f q' F hF, eq_comm, mul_eq_right₀ (Units.ne_zero _)]`.
+-/
 example {K' : Type} [CommRing K'] [IsDomain K'] (q : X → (FractionRing K)ˣ) (f : K →+* K')
     (q' : X → (FractionRing K')ˣ) (F : Type) [Field F] [Algebra (FractionRing K') F] [Algebra (FractionRing K) F]
     (hF : ∀ x, algebraMap (FractionRing K) F (algebraMap K _ x) = algebraMap (FractionRing K') F (algebraMap K' _ (f x)))

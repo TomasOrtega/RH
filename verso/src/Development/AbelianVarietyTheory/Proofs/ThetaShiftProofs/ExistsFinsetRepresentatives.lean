@@ -13,6 +13,13 @@ namespace GlobalTheory.FieldBaseChange
 
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Out ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Geo.Tor ReciprocityTheory.ChartRestriction.G.DVR
 
+/- English proof (translation)
+Set `b` to `Module.Free.chooseBasis ℤ X`. Establish `hk' : (0 : ℤ) < k` using `by exact_mod_cast hk`. Use `⟨Finset.univ.image fun r : _ → Fin k => ∑ i, ((r i : ℕ) : ℤ) • b i, fun β => ⟨∑ i, (b.repr β i % k) • b i, Finset.mem_image.2 ⟨fun i => ⟨(b.repr β i % k).toNat, ?_⟩, Finset.mem_univ _, Finset.sum_congr rfl fun i _ => ?_⟩, ∑ i, (b.repr β i / k) • b i, ?_⟩⟩` and prove the remaining obligations. Use `Int.emod_lt_of_pos (b.repr β i) hk'` as an intermediate fact. Use `Int.emod_nonneg (b.repr β i) hk'.ne'` as an intermediate fact.
+
+Use linear arithmetic over natural numbers and integers. Use `show (((b.repr β i % k).toNat : ℕ) : ℤ) • b i = _`. Rewrite using `[Int.toNat_of_nonneg (Int.emod_nonneg _ hk'.ne')]`. Use `conv_lhs => rw [← b.sum_repr β]`. Rewrite using `[Finset.smul_sum, ← Finset.sum_add_distrib]`.
+
+Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[← natCast_zsmul, smul_smul, ← add_smul, Int.emod_add_mul_ediv]`.
+-/
 theorem exists_finset_representatives (X : Type) [AddCommGroup X] [Module.Free ℤ X] [Module.Finite ℤ X]
     {k : ℕ} (hk : 1 ≤ k) : ∃ T : Finset X, ∀ β, ∃ α ∈ T, ∃ mu, β = α + k • mu := by
   classical
@@ -54,9 +61,19 @@ def IsShift (k : ℕ) (mu α : D.X) (Θ : FamTerm D F k α →ₗ[F] FamTerm D F
     Good D.P.L z J → sval (Θ s) ρ.left z J =
       sval s (ρ.left ≫ (DegPre.trF D F mu).left) z J * (shiftVal D F k mu α ρ z J).val
 
+/- English proof (translation)
+The claim follows from `congrArg (fun q => q.left) (lift_fst _ _ : DegPre.trF D F mu ≫ fst _ _ = _)`.
+-/
 theorem trF_famBase (mu : D.X) : (DegPre.trF D F mu).left ≫ famBase D F = famBase D F :=
   congrArg (fun q => q.left) (lift_fst _ _ : DegPre.trF D F mu ≫ fst _ _ = _)
 
+/- English proof (translation)
+Establish `hL` using `D.P.isLB`. Take `⟨⟨v, hv, hc⟩, hu⟩` from `gen_fe (D := D) (F := F) hG k mu α`. Establish `tr : ∀ σ : FamTerm D F k α, ∃ t : FamTerm D F k (α + k • mu), ∀ (Z : Scheme.{0}) (r : Z ⟶ (DegPre.BF D F).left) (z : Z) (J), Good D.P.L z J → sval t r z J = sval σ (r ≫ (DegPre.trF D F mu).left) z J * (val v r z J).val` using `fun σ => by`. Take `⟨t, ht⟩` from `exists_sec hL (fun U _ h => by`. Rewrite using `[Fintype.prod_sum_type]`.
+
+Simplify using `only [DegPre.deltaφ, DegPre.deltaε, Fintype.prod_sum_type, Sum.elim_inl, Sum.elim_inr, zpow_neg, Finset.prod_inv_distrib]`. Apply the tactic sequence `try (apply Additive.ofMul.injective; simp only [ofMul_mul, ofMul_inv]; abel))`. Use the proof step `(φ' := DegPre.famφ D F (α + k • mu)) (ε' := DegPre.famε k) (pullMulSec σ (DegPre.trF D F mu).left v hv)`. Conclude with `⟨t, fun Z r z J hJ => (ht Z r z J hJ).trans (sval_pullMulSec _ _ _ hv r z hJ)⟩`. Use `choose t ht using tr`.
+
+Use `⟨{ toFun := t map_add' := fun a b => sec_ext' hL fun y J hJ => ?_ map_smul' := fun c a => sec_ext' hL fun y J hJ => ?_ }, fun s T ρ z J hJ => ?_⟩` and prove the remaining obligations. Rewrite using `[sval_add' hJ, ht _ _ _ y J hJ, ht _ _ _ y J hJ, ht _ _ _ y J hJ, sval_add' hJ, add_mul]`. Rewrite using `[sval_smul' hJ, ht _ _ _ y J hJ, ht _ _ _ y J hJ, sval_smul' hJ, Category.assoc, trF_famBase, _root_.mul_assoc]`. Both sides reduce to the same expression. Conclude with `(ht s _ _ z J hJ).trans (congrArg (fun u : (T.left.presheaf.stalk z)ˣ => _ * u.val) (hu v hv hc T ρ z J hJ))`.
+-/
 theorem exists_isShift (hG : GlobalFnsSt) (k : ℕ) (mu α : D.X) : ∃ Θ, IsShift D F k mu α Θ := by
   have hL := D.P.isLB
   obtain ⟨⟨v, hv, hc⟩, hu⟩ := gen_fe (D := D) (F := F) hG k mu α
@@ -83,6 +100,13 @@ theorem exists_isShift (hG : GlobalFnsSt) (k : ℕ) (mu α : D.X) : ∃ Θ, IsSh
 
 variable {D F}
 
+/- English proof (translation)
+Establish `hL` using `D.P.isLB`. Prove the components needed by the constructor for the conclusion. Introduce `H mu α`. Take `⟨⟨v, hv, hc⟩, hu⟩` from `gen_fe (D := D) (F := F) hG k mu α`. Use `sec_ext' hL fun y J hJ => ?_` and prove the remaining obligations.
+
+Use `((secRel_iff hL _ _ _ _ _ _ _ _ _ v).1 (H mu α v hv hc) _ (𝟙 _) y J hJ).trans ?_` and prove the remaining obligations. Conclude with `(congrArg (fun u : ((DegPre.BF D F).left.presheaf.stalk y)ˣ => _ * u.val) (hu v hv hc _ (𝟙 _) y J hJ)).trans (hΘ mu α (s α) _ (𝟙 _) y J hJ).symm`. Introduce `H mu α u hu hc`. Use `(secRel_iff hL _ _ _ _ _ _ _ _ _ u).2 fun y J hJ => ?_` and prove the remaining obligations. Use `(congrArg (fun t => sval t (𝟙 _) y J) (H mu α)).trans ((hΘ mu α (s α) _ (𝟙 _) y J hJ).trans ?_)` and prove the remaining obligations.
+
+Conclude with `(congrArg (fun u : ((DegPre.BF D F).left.presheaf.stalk y)ˣ => _ * u.val) ((gen_fe (D := D) (F := F) hG k mu α).2 u hu hc _ (𝟙 _) y J hJ)).symm`.
+-/
 theorem famFE_iff (hG : GlobalFnsSt) {k : ℕ}
     {Θ : ∀ mu α, FamTerm D F k α →ₗ[F] FamTerm D F k (α + k • mu)} (hΘ : ∀ mu α, IsShift D F k mu α (Θ mu α))
     (s : ∀ α, FamTerm D F k α) : DegPre.FamFE D F k s ↔ ∀ mu α, s (α + k • mu) = Θ mu α (s α) := by
@@ -108,6 +132,9 @@ variable {R : Type} [CommRing R] [IsDomain R] (D : DegPre R) (E F : Type) [Field
   [Field E] [Algebra (FractionRing R) E] [Algebra E F]
   [IsScalarTower (FractionRing R) E F]
 
+/- English proof (translation)
+Rewrite using `[jFK, jFK, ← Spec.map_comp, ← CommRingCat.ofHom_comp, ← IsScalarTower.algebraMap_eq]`.
+-/
 theorem specMap_jFK : Spec.map (CommRingCat.ofHom (algebraMap E F)) ≫ jFK (R := R) E = jFK (R := R) F := by
   rw [jFK, jFK, ← Spec.map_comp, ← CommRingCat.ofHom_comp, ← IsScalarTower.algebraMap_eq]
 
@@ -118,10 +145,21 @@ def baseMap : TF (R := R) F ⟶ TF (R := R) E :=
 
 def famMap : DegPre.BF D F ⟶ DegPre.BF D E := lift (fst _ _ ≫ baseMap (R := R) E F) (snd _ _)
 
+/- English proof (translation)
+The claim follows from `lift_fst _ _`.
+-/
 theorem famMap_fst : famMap D E F ≫ fst _ _ = fst _ _ ≫ baseMap (R := R) E F := lift_fst _ _
 
+/- English proof (translation)
+The claim follows from `lift_snd _ _`.
+-/
 theorem famMap_snd : famMap D E F ≫ DegPre.prB D _ = DegPre.prB D F := lift_snd _ _
 
+/- English proof (translation)
+Establish `h₁ : IsPullback (snd (TF (R` using `R) E) D.P.A).left (famBase D E) D.P.A.hom (TF (R := R) E).hom := (IsPullback.of_hasPullback _ _).flip`. Establish `h₂ : IsPullback (snd (TF (R` using `R) F) D.P.A).left (famBase D F) D.P.A.hom (TF (R := R) F).hom := (IsPullback.of_hasPullback _ _).flip`. Use `IsPullback.of_right ?_ (congrArg (fun q => q.left) (famMap_fst D E F)) h₁` and prove the remaining obligations. Establish `e₁ : (famMap D E F).left ≫ (snd (TF (R` using `R) E) D.P.A).left = (snd (TF (R := R) F) D.P.A).left := congrArg (fun q => q.left) (famMap_snd D E F)`. Establish `e₂ : Spec.map (CommRingCat.ofHom (algebraMap E F)) ≫ (TF (R` using `R) E).hom = (TF (R := R) F).hom := Over.w (baseMap (R := R) E F)`.
+
+Rewrite using `[e₁, e₂]`. Conclude with `h₂`.
+-/
 theorem isPullback_famMap : IsPullback (famMap D E F).left (famBase D F) (famBase D E)
     (Spec.map (CommRingCat.ofHom (algebraMap E F))) := by
   have h₁ : IsPullback (snd (TF (R := R) E) D.P.A).left (famBase D E)
@@ -136,6 +174,11 @@ theorem isPullback_famMap : IsPullback (famMap D E F).left (famBase D F) (famBas
   rw [e₁, e₂]
   exact h₂
 
+/- English proof (translation)
+Use `fin_cases i`. Conclude with `congrArg (fun q => q.left) (famMap_snd D E F).symm`. Use `congrArg (fun q => q.left) (Eq.symm ((MonObj.comp_mul (famMap D E F) (DegPre.prB D _) (cP D _ α)).trans ?_))` and prove the remaining obligations. Rewrite using `[comp_cP, famMap_snd]`. Both sides reduce to the same expression.
+
+Conclude with `congrArg (fun q => q.left) (comp_cP D (famMap D E F) α).symm`. Conclude with `congrArg (fun q : DegPre.BF D F ⟶ D.P.A => q.left) (MonObj.comp_one (M := D.P.A) (famMap D E F)).symm`.
+-/
 theorem famφ_famMap (α : D.X) (i : Fin 4) :
     DegPre.famφ D F α i = (famMap D E F).left ≫ DegPre.famφ D E α i := by
   fin_cases i
@@ -145,6 +188,11 @@ theorem famφ_famMap (α : D.X) (i : Fin 4) :
   · exact congrArg (fun q => q.left) (comp_cP D (famMap D E F) α).symm
   · exact congrArg (fun q : DegPre.BF D F ⟶ D.P.A => q.left) (MonObj.comp_one (M := D.P.A) (famMap D E F)).symm
 
+/- English proof (translation)
+Apply `CartesianMonoidalCategory.hom_ext` to reduce the goal to its premises. Rewrite using `[Category.assoc, Category.assoc, famMap_fst, DegPre.trF, DegPre.trF, lift_fst, lift_fst_assoc, famMap_fst]`. Rewrite using `[Category.assoc, Category.assoc, famMap_snd, DegPre.trF, DegPre.trF, lift_snd, lift_snd]`. Use `Eq.symm ((MonObj.comp_mul (famMap D E F) (DegPre.prB D _) (cP D _ mu)).trans ?_)` and prove the remaining obligations. Rewrite using `[comp_cP, famMap_snd]`.
+
+Both sides reduce to the same expression.
+-/
 theorem trF_famMap (mu : D.X) :
     DegPre.trF D F mu ≫ famMap D E F = famMap D E F ≫ DegPre.trF D E mu := by
   apply CartesianMonoidalCategory.hom_ext
@@ -153,6 +201,11 @@ theorem trF_famMap (mu : D.X) :
     refine Eq.symm ((MonObj.comp_mul (famMap D E F) (DegPre.prB D _) (cP D _ mu)).trans ?_)
     rw [comp_cP, famMap_snd]; rfl
 
+/- English proof (translation)
+Use `congrArg₂ (· * ·) ?_ ?_` and prove the remaining obligations. Simplify using `only [uVal, comp_cP, Category.assoc, famMap_snd]`. Use `(val_pull hJ _ _ _).trans (Eq.trans ?_ (val_pull hJ _ _ _).symm)` and prove the remaining obligations. Use `congr 1`. Rewrite using `[Category.assoc, famMap_fst, ← specMap_jFK (R := R) E F]`.
+
+Simplify using `only [Over.comp_left, Category.assoc]`. Both sides reduce to the same expression.
+-/
 theorem shiftVal_famMap (k : ℕ) (mu α : D.X) {T : Over (Spec (CommRingCat.of R))} (ρ : T ⟶ DegPre.BF D F)
     (z : T.left) {J : (T.left ⟶ D.P.A.left) → D.P.L.ι} (hJ : Good D.P.L z J) :
     shiftVal D E k mu α (ρ ≫ famMap D E F) z J = shiftVal D F k mu α ρ z J := by
@@ -176,10 +229,16 @@ def termPull (k : ℕ) (α : D.X) :
     FamTerm D E k α →ₛₗ[algebraMap E F] FamTerm D F k α :=
   pullOver D.P.L (DegPre.famε k) (isPullback_famMap D E F).w (famφ_famMap D E F α)
 
+/- English proof (translation)
+The claim follows from `isExtension_pullOver (isPullback_famMap D E F) D.P.isLB _ _`.
+-/
 theorem isExtension_termPull (k : ℕ) (α : D.X) : IsExtension (termPull D E F k α) :=
   isExtension_pullOver (isPullback_famMap D E F) D.P.isLB _ _
 
 variable {D E F} in
+/- English proof (translation)
+Use `sec_ext' D.P.isLB fun y J hJ => ?_` and prove the remaining obligations. Use `(hΘ' _ _ (𝟙 _) y J hJ).trans (Eq.trans ?_ ((sval_pullOver _ _ _ _ hJ).trans (hΘ s _ (𝟙 _ ≫ famMap D E F) y J hJ)).symm)` and prove the remaining obligations. Use `congrArg₂ (· * ·) ((sval_pullOver _ _ _ _ hJ).trans ?_) (congrArg Units.val (shiftVal_famMap D E F k mu α _ y hJ).symm)` and prove the remaining obligations. Use `congr 1`. Rewrite using `[← Over.comp_left, ← Over.comp_left, ← Over.comp_left, Category.assoc, Category.assoc, trF_famMap]`.
+-/
 theorem shift_termPull {k : ℕ} {mu α : D.X} {Θ Θ'} (hΘ : IsShift D E k mu α Θ)
     (hΘ' : IsShift D F k mu α Θ') (s : FamTerm D E k α) :
     Θ' (termPull D E F k α s) = termPull D E F k _ (Θ s) := by
@@ -204,6 +263,11 @@ def famPull (hG : GlobalFnsSt) (k : ℕ) :
   map_smul' c s := fam_ext fun α j => congrArg (fun q => LB.Sec.f q j)
     (map_smulₛₗ (termPull D E F k α) c (famProj D _ k α s))
 
+/- English proof (translation)
+Take `⟨T, hT⟩` from `exists_finset_representatives D.X hk`. Use `choose Θ hΘ using exists_isShift D E hG k`. Use `choose Θ' hΘ' using exists_isShift D F hG k`. Use `IsExtension.of_proj _ (termPull D E F k) (isExtension_termPull D E F k) (famProj D _ k) (famProj D F k) (fun _ _ => rfl) (fun x hx => fam_ext fun α j => congrArg (fun q => LB.Sec.f q j) (hx α)) T (fun v hv => fam_ext fun β j => ?_) fun ℓ Λ hΛ x => ⟨⟨fun α => Λ α (x.s α), ?_⟩, fun …` and prove the remaining obligations. Take `⟨α, hα, mu, rfl⟩` from `hT β`.
+
+Establish `e : Θ mu α (v.s α) = 0` using `(congrArg (Θ mu α) (hv α hα)).trans (map_zero _)`. Conclude with `congrArg (fun q => LB.Sec.f q j) (((famFE_iff hG hΘ v.s).1 v.fe mu α).trans e)`. Use `(famFE_iff hG hΘ _).2 fun mu α => ?_` and prove the remaining obligations. Conclude with `(congrArg (Λ _) ((famFE_iff hG hΘ' x.s).1 x.fe mu α)).trans (IsCoord.natural (isExtension_termPull D E F k α).span (hΛ α) (hΛ _) (Θ mu α) (Θ' mu α) (shift_termPull (hΘ mu α) (hΘ' mu α)) _)`.
+-/
 theorem isExtension_famPull (hG : GlobalFnsSt) {k : ℕ} (hk : 1 ≤ k) : IsExtension (famPull D E F hG k) := by
   obtain ⟨T, hT⟩ := exists_finset_representatives D.X hk
   choose Θ hΘ using exists_isShift D E hG k

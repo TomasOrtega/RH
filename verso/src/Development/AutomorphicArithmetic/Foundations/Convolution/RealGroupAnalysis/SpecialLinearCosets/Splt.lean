@@ -7,6 +7,13 @@ open Neutral.B1 Formalism.L2.Host Formalism.ConjugateSelfDual GlobalTheory.CuspR
 open UpperTheory.ConvolutionTheory.R2 UpperTheory.ConvolutionTheory.R2.H UpperTheory.ConvolutionTheory.R2.I
 open scoped Classical
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ D v w i hc hal`. Take `⟨θ, hsq, hne, hk⟩` from `UpperTheory.ConvolutionTheory.R2.I.place F E D v w i hc hal`. Take `⟨-, -, -, -, hlc, -⟩` from `UpperTheory.ConvolutionTheory.R2.H.sgLaws E w`. Establish `hone : ∀ a b : Fin 2, i ((1 : Matrix (Fin 2) (Fin 2) (Kv v)) a b) = (1 : Matrix (Fin 2) (Fin 2) (Kv w)) a b`. Introduce `a b`.
+
+Rewrite using `[Matrix.one_apply, Matrix.one_apply]`. Apply the tactic sequence `split_ifs <;> simp`. Use `⟨θ, hsq, hne, ?_, ?_⟩` and prove the remaining obligations. Introduce `x a b`. Establish `e : (Matrix.GeneralLinearGroup.map i.toRingHom x).val a b = i (x.val a b)` using `rfl`.
+
+Express the relevant statement in the definitionally equal form `(lc w (Matrix.GeneralLinearGroup.map i.toRingHom x)).val a b = _`. Rewrite using `[hlc, e, ← hone, ← map_sub, hk]`. Introduce `x`. Conclude with `⟨locGL E 2 w (Matrix.GeneralLinearGroup.map i.toRingHom x), rfl⟩`.
+-/
 theorem UpperTheory.ConvolutionTheory.R2.I.splt :
     ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (D : Dat F E) (v : P F) (w : P E) (i : Kv v ≃+* Kv w), Continuous i →
       (∀ x : F, i (algebraMap F _ x) = algebraMap E _ (algebraMap F E x)) →

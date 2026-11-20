@@ -15,6 +15,17 @@ attribute [local instance] Matrix.normedAddCommGroup Matrix.normedSpace
 variable {k n : ℕ} {Wp Wq : Type} [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp] [NormedAddCommGroup Wq]
   [InnerProductSpace ℂ Wq]
 
+/- English proof (translation)
+Use `set l : Fin (n + 2) := ⟨i, by omega⟩ with hl`. Establish `hc : 0 < ‖c0‖` using `norm_pos_iff.mpr hc0`. Take `⟨χD, ⟨hχs, -, -⟩, hχ1, hχsupp⟩` from `Formalism.FourierDecayAlt.P.JCTx6.Pos.bump_exists hc0`. Establish `hDc : Continuous (fun g : B.Mat k n => Dmin k n z z' g l)` using `(Formalism.FourierDecayAlt.P.JCx1.contDiff_Dmin z z' l).continuous`. Use `⟨fun g => χD (Dmin k n z z' g l) • H g, ?_, ?_, ?_⟩` and prove the remaining obligations.
+
+Introduce `g0 hg0`. Distinguish the cases in `hmem : Dmin k n z z' g0 l ∈ tsupport χD`. Establish `hne : Dmin k n z z' g0 l ≠ 0`. Introduce `h0`. Use `(hχsupp _ hmem).1` as an intermediate fact.
+
+Rewrite `this` using `[h0, norm_zero]`. Combine the linear equalities and inequalities to obtain the conclusion. Take `⟨U, f', hU, hgU, hf', he⟩` from `hL g0 hg0 hne`. Use `⟨U, fun g => χD (Dmin k n z z' g l) • f' g, hU, hgU, ?_, fun g hg hgG => ?_⟩` and prove the remaining obligations. Conclude with `((hχs.comp (Formalism.FourierDecayAlt.P.JCx1.contDiff_Dmin z z' l)).contDiffOn).smul hf'`.
+
+Use `show χD (Dmin k n z z' g l) • H g = χD (Dmin k n z z' g l) • f' g`. Rewrite using `[he g hg hgG]`. Use `⟨(fun g => Dmin k n z z' g l) ⁻¹' (tsupport χD)ᶜ, fun _ => 0, (isClosed_tsupport χD).isOpen_compl.preimage hDc, hmem, contDiffOn_const, fun g hg _ => ?_⟩ show χD (Dmin k n z z' g l) • H g = 0` and prove the remaining obligations. Rewrite using `[image_eq_zero_of_notMem_tsupport hg, zero_smul]`. Introduce `g hg hgC show χD (Dmin k n z z' g l) • H g = 0`.
+
+Rewrite using `[hS g hg hgC, smul_zero]`. Introduce `g _ hd show χD (Dmin k n z z' g l) • H g = H g`. Rewrite using `[hχ1 _ (le_of_lt hd), one_smul]`.
+-/
 theorem cutoff_exists {H : B.Mat k n → (Wq →L[ℂ] Wp)} (z z' : Fin (2 * n + k + 1) → ℂ) (i : ℕ) (hi : i ≤ n)
     (hL : ∀ g ∈ B.GV k n, Dmin k n z z' g ⟨i, by omega⟩ ≠ 0 → CapelliWordSumExpansion.Loc ⊤ H g) {Cs : Set (B.Mat k n)}
     (hS : ∀ g ∈ B.GV k n, g ∉ Cs → H g = 0) {c0 : ℂ} (hc0 : c0 ≠ 0) :

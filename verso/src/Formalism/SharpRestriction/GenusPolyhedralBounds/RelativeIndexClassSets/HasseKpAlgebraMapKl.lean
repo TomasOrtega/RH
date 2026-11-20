@@ -15,12 +15,21 @@ def IsTay (τ : A →+* MvPowerSeries σ A) : Prop := ∀ x, constantCoeff (τ x
 def co (τ : A →+* MvPowerSeries σ A) (β : σ →₀ ℕ) : A →+ A :=
   (coeff β : MvPowerSeries σ A →ₗ[A] A).toAddMonoidHom.comp τ.toAddMonoidHom
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem co_apply (τ : A →+* MvPowerSeries σ A) (β : σ →₀ ℕ) (x : A) : co τ β x = coeff β (τ x) := rfl
 
+/- English proof (translation)
+Rewrite using `[co_apply, MvPowerSeries.coeff_zero_eq_constantCoeff_apply]`. Conclude with `h x`.
+-/
 theorem co_zero {τ : A →+* MvPowerSeries σ A} (h : IsTay τ) (x : A) : co τ 0 x = x := by
   rw [co_apply, MvPowerSeries.coeff_zero_eq_constantCoeff_apply]
   exact h x
 
+/- English proof (translation)
+Simplify using `only [co_apply, map_mul, MvPowerSeries.coeff_mul]`.
+-/
 theorem co_mul [DecidableEq σ] (τ : A →+* MvPowerSeries σ A) (β : σ →₀ ℕ) (x y : A) :
     co τ β (x * y) = ∑ q ∈ antidiagonal β, co τ q.1 x * co τ q.2 y := by
   simp only [co_apply, map_mul, MvPowerSeries.coeff_mul]
@@ -30,8 +39,14 @@ def cw (d : A →+ A) : MvPowerSeries σ A →+ MvPowerSeries σ A where
   map_zero' := by ext n; exact map_zero d
   map_add' f g := by ext n; exact map_add d _ _
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem coeff_cw (d : A →+ A) (f : MvPowerSeries σ A) (n : σ →₀ ℕ) : coeff n (cw d f) = d (coeff n f) := rfl
 
+/- English proof (translation)
+Use extensionality with `n`. Rewrite using `[mul_comm g (cw d f)]`. Simplify using `only [coeff_cw, MvPowerSeries.coeff_mul, map_add, map_sum, hd, ← Finset.sum_add_distrib]`. Conclude with `Finset.sum_congr rfl fun q _ => by ring`.
+-/
 theorem cw_mul (d : A →+ A) (hd : ∀ x y, d (x * y) = x * d y + y * d x) (f g : MvPowerSeries σ A) :
     cw d (f * g) = f * cw d g + g * cw d f := by
   classical
@@ -42,16 +57,25 @@ theorem cw_mul (d : A →+ A) (hd : ∀ x y, d (x * y) = x * d y + y * d x) (f g
 
 def dv (τ : A →+* MvPowerSeries σ A) (p : σ) : A →+ A := co τ (Finsupp.single p 1)
 
+/- English proof (translation)
+Rewrite using `[← MvPowerSeries.coeff_zero_eq_constantCoeff_apply, MvPowerSeries.coeff_pderiv]`. Simplify using `[dv, co_apply]`.
+-/
 theorem dv_eq (τ : A →+* MvPowerSeries σ A) (p : σ) (x : A) : dv τ p x = constantCoeff (pderiv A p (τ x)) := by
   rw [← MvPowerSeries.coeff_zero_eq_constantCoeff_apply, MvPowerSeries.coeff_pderiv]
   simp [dv, co_apply]
 
+/- English proof (translation)
+Simplify using `only [dv_eq, map_mul, Derivation.leibniz, map_add, smul_eq_mul, h x, h y]`.
+-/
 theorem dv_mul {τ : A →+* MvPowerSeries σ A} (h : IsTay τ) (p : σ) (x y : A) :
     dv τ p (x * y) = x * dv τ p y + y * dv τ p x := by
   simp only [dv_eq, map_mul, Derivation.leibniz, map_add, smul_eq_mul, h x, h y]
 
 def IterAt (τ : A →+* MvPowerSeries σ A) (p : σ) (x : A) : Prop := pderiv A p (τ x) = cw (dv τ p) (τ x)
 
+/- English proof (translation)
+Unfold `IterAt`. Rewrite using `[MvPowerSeries.ext_iff]`. Use `forall_congr' fun β => ?_` and prove the remaining obligations. Rewrite using `[MvPowerSeries.coeff_pderiv, coeff_cw, co_apply, co_apply, nsmul_eq_mul, Nat.cast_succ]`. Apply the tactic sequence `constructor <;> intro hh <;> linear_combination hh`.
+-/
 theorem iterAt_iff (τ : A →+* MvPowerSeries σ A) (p : σ) (x : A) :
     IterAt τ p x ↔ ∀ β : σ →₀ ℕ, (β p + 1) • co τ (β + Finsupp.single p 1) x = dv τ p (co τ β x) := by
   unfold IterAt
@@ -60,16 +84,25 @@ theorem iterAt_iff (τ : A →+* MvPowerSeries σ A) (p : σ) (x : A) :
   rw [MvPowerSeries.coeff_pderiv, coeff_cw, co_apply, co_apply, nsmul_eq_mul, Nat.cast_succ]
   constructor <;> intro hh <;> linear_combination hh
 
+/- English proof (translation)
+Unfold `IterAt at hx hy ⊢`. Simplify using `only [map_add, hx, hy]`.
+-/
 theorem IterAt.add {τ : A →+* MvPowerSeries σ A} {p : σ} {x y : A} (hx : IterAt τ p x) (hy : IterAt τ p y) :
     IterAt τ p (x + y) := by
   unfold IterAt at hx hy ⊢
   simp only [map_add, hx, hy]
 
+/- English proof (translation)
+Unfold `IterAt at hx hy ⊢`. Rewrite using `[map_mul, Derivation.leibniz, hx, hy, smul_eq_mul, smul_eq_mul, cw_mul _ (dv_mul h p)]`.
+-/
 theorem IterAt.mul {τ : A →+* MvPowerSeries σ A} (h : IsTay τ) {p : σ} {x y : A} (hx : IterAt τ p x)
     (hy : IterAt τ p y) : IterAt τ p (x * y) := by
   unfold IterAt at hx hy ⊢
   rw [map_mul, Derivation.leibniz, hx, hy, smul_eq_mul, smul_eq_mul, cw_mul _ (dv_mul h p)]
 
+/- English proof (translation)
+Unfold `IterAt at hs hsy ⊢`. Establish `hu' : IsUnit (τ s)` using `hu.map τ`. Rewrite `hsy` using `[map_mul, Derivation.leibniz, cw_mul _ (dv_mul h p), hs, smul_eq_mul, smul_eq_mul]`. Conclude with `hu'.mul_left_cancel (add_right_cancel hsy)`.
+-/
 theorem IterAt.of_mul {τ : A →+* MvPowerSeries σ A} (h : IsTay τ) {p : σ} {s y : A} (hs : IterAt τ p s)
     (hsy : IterAt τ p (s * y)) (hu : IsUnit s) : IterAt τ p y := by
   unfold IterAt at hs hsy ⊢
@@ -79,18 +112,32 @@ theorem IterAt.of_mul {τ : A →+* MvPowerSeries σ A} (h : IsTay τ) {p : σ} 
 
 def IsCst (τ : A →+* MvPowerSeries σ A) (c : A) : Prop := τ c = C c
 
+/- English proof (translation)
+Rewrite using `[co_apply, show τ c = C c from hc, MvPowerSeries.coeff_C, if_neg hβ]`.
+-/
 theorem IsCst.co {τ : A →+* MvPowerSeries σ A} {c : A} (hc : IsCst τ c) {β : σ →₀ ℕ} (hβ : β ≠ 0) :
     Tay.co τ β c = 0 := by
   classical
   rw [co_apply, show τ c = C c from hc, MvPowerSeries.coeff_C, if_neg hβ]
 
+/- English proof (translation)
+Rewrite using `[co_apply, co_apply, map_mul, show τ c = C c from hc, MvPowerSeries.coeff_C_mul]`.
+-/
 theorem IsCst.co_mul {τ : A →+* MvPowerSeries σ A} {c : A} (hc : IsCst τ c) (β : σ →₀ ℕ) (x : A) :
     Tay.co τ β (c * x) = c * Tay.co τ β x := by
   classical
   rw [co_apply, co_apply, map_mul, show τ c = C c from hc, MvPowerSeries.coeff_C_mul]
 
+/- English proof (translation)
+The claim follows from `hc.co (Finsupp.single_ne_zero.mpr one_ne_zero)`.
+-/
 theorem IsCst.dv {τ : A →+* MvPowerSeries σ A} {c : A} (hc : IsCst τ c) (p : σ) : Tay.dv τ p c = 0 := hc.co (Finsupp.single_ne_zero.mpr one_ne_zero)
 
+/- English proof (translation)
+Unfold `IterAt`. Rewrite using `[show τ c = C c from hc]`. Use extensionality with `n`. Rewrite using `[MvPowerSeries.coeff_pderiv, coeff_cw, MvPowerSeries.coeff_C, MvPowerSeries.coeff_C, if_neg (fun h0 => by have := DFunLike.congr_fun h0 p; simp at this), zero_mul]`. Use `split_ifs`.
+
+Conclude with `(hc.dv p).symm`. Conclude with `(map_zero _).symm`.
+-/
 theorem IsCst.iterAt {τ : A →+* MvPowerSeries σ A} {c : A} (hc : IsCst τ c) (p : σ) : IterAt τ p c := by
   classical
   unfold IterAt
@@ -105,6 +152,9 @@ theorem IsCst.iterAt {τ : A →+* MvPowerSeries σ A} {c : A} (hc : IsCst τ c)
 section Loc
 variable (M : Submonoid A) (B : Type*) [CommRing B] [Algebra A B] [IsLocalization M B]
 
+/- English proof (translation)
+Rewrite using `[RingHom.comp_apply, MvPowerSeries.isUnit_iff_constantCoeff, MvPowerSeries.constantCoeff_map, h y]`. Conclude with `IsLocalization.map_units B y`.
+-/
 theorem loc_isUnit {τ : A →+* MvPowerSeries σ A} (h : IsTay τ) (y : M) :
     IsUnit (((MvPowerSeries.map (algebraMap A B)).comp τ) y) := by
   rw [RingHom.comp_apply, MvPowerSeries.isUnit_iff_constantCoeff, MvPowerSeries.constantCoeff_map, h y]
@@ -113,10 +163,18 @@ theorem loc_isUnit {τ : A →+* MvPowerSeries σ A} (h : IsTay τ) (y : M) :
 def loc (τ : A →+* MvPowerSeries σ A) (h : IsTay τ) : B →+* MvPowerSeries σ B :=
   IsLocalization.lift (M := M) (g := (MvPowerSeries.map (algebraMap A B)).comp τ) (loc_isUnit M B h)
 
+/- English proof (translation)
+Conclude with `IsLocalization.lift_eq (loc_isUnit M B h) a`.
+-/
 theorem loc_algebraMap (τ : A →+* MvPowerSeries σ A) (h : IsTay τ) (a : A) :
     loc M B τ h (algebraMap A B a) = MvPowerSeries.map (algebraMap A B) (τ a) := by
   exact IsLocalization.lift_eq (loc_isUnit M B h) a
 
+/- English proof (translation)
+Introduce `b`. Establish `key : (MvPowerSeries.constantCoeff : MvPowerSeries σ B →+* B).comp (loc M B τ h) = RingHom.id B`. Apply `IsLocalization.ringHom_ext M` to reduce the goal to its premises. Use extensionality with `a`. Simplify using `only [RingHom.comp_apply, loc_algebraMap, MvPowerSeries.constantCoeff_map, RingHom.id_apply, h a]`.
+
+Conclude with `RingHom.congr_fun key b`.
+-/
 theorem loc_isTay (τ : A →+* MvPowerSeries σ A) (h : IsTay τ) : IsTay (loc M B τ h) := by
   intro b
   have key : (MvPowerSeries.constantCoeff : MvPowerSeries σ B →+* B).comp (loc M B τ h) = RingHom.id B := by
@@ -125,24 +183,41 @@ theorem loc_isTay (τ : A →+* MvPowerSeries σ A) (h : IsTay τ) : IsTay (loc 
     simp only [RingHom.comp_apply, loc_algebraMap, MvPowerSeries.constantCoeff_map, RingHom.id_apply, h a]
   exact RingHom.congr_fun key b
 
+/- English proof (translation)
+Rewrite using `[co_apply, co_apply, loc_algebraMap, MvPowerSeries.coeff_map]`.
+-/
 theorem loc_co (τ : A →+* MvPowerSeries σ A) (h : IsTay τ) (β : σ →₀ ℕ) (a : A) :
     co (loc M B τ h) β (algebraMap A B a) = algebraMap A B (co τ β a) := by
   rw [co_apply, co_apply, loc_algebraMap, MvPowerSeries.coeff_map]
 
+/- English proof (translation)
+The claim follows from `loc_co M B τ h (Finsupp.single p 1) a`.
+-/
 theorem loc_dv (τ : A →+* MvPowerSeries σ A) (h : IsTay τ) (p : σ) (a : A) :
     dv (loc M B τ h) p (algebraMap A B a) = algebraMap A B (dv τ p a) := loc_co M B τ h (Finsupp.single p 1) a
 
+/- English proof (translation)
+Use `show loc M B τ h (algebraMap A B c) = C (algebraMap A B c)`. Rewrite using `[loc_algebraMap, show τ c = C c from hc, MvPowerSeries.map_C]`.
+-/
 theorem loc_isCst (τ : A →+* MvPowerSeries σ A) (h : IsTay τ) {c : A} (hc : IsCst τ c) :
     IsCst (loc M B τ h) (algebraMap A B c) := by
   show loc M B τ h (algebraMap A B c) = C (algebraMap A B c)
   rw [loc_algebraMap, show τ c = C c from hc, MvPowerSeries.map_C]
 
+/- English proof (translation)
+Rewrite `ha`, the goal using `[iterAt_iff]`. Introduce `β`. Rewrite using `[loc_co, loc_co, loc_dv, ← ha β, map_nsmul]`.
+-/
 theorem loc_iterAt_algebraMap (τ : A →+* MvPowerSeries σ A) (h : IsTay τ) {p : σ} {a : A} (ha : IterAt τ p a) :
     IterAt (loc M B τ h) p (algebraMap A B a) := by
   rw [iterAt_iff] at ha ⊢
   intro β
   rw [loc_co, loc_co, loc_dv, ← ha β, map_nsmul]
 
+/- English proof (translation)
+Take `⟨⟨x, y⟩, hxy⟩` from `IsLocalization.surj M b`. Simplify using `only at hxy`. Establish `hy` using `loc_iterAt_algebraMap M B τ h (ha (y : A))`. Establish `hx` using `loc_iterAt_algebraMap M B τ h (ha x)`. Use `IterAt.of_mul (loc_isTay M B τ h) hy ?_ (IsLocalization.map_units B y)` and prove the remaining obligations.
+
+Rewrite using `[mul_comm, hxy]`. Conclude with `hx`.
+-/
 theorem loc_iterAt (τ : A →+* MvPowerSeries σ A) (h : IsTay τ) {p : σ} (ha : ∀ a, IterAt τ p a) (b : B) :
     IterAt (loc M B τ h) p b := by
   obtain ⟨⟨x, y⟩, hxy⟩ := IsLocalization.surj M b
@@ -169,20 +244,32 @@ def der (τ : A →+* MvPowerSeries σ A) (h : IsTay τ) (hR : ∀ r : R, IsCst 
     simp only [smul_eq_mul]
     exact dv_mul h p x y
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem hs_apply (τ : A →+* MvPowerSeries σ A) (hR : ∀ r : R, IsCst τ (algebraMap R A r)) (β : σ →₀ ℕ) (x : A) :
     hs R τ hR β x = co τ β x := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem der_apply (τ : A →+* MvPowerSeries σ A) (h : IsTay τ) (hR : ∀ r : R, IsCst τ (algebraMap R A r)) (p : σ)
     (x : A) : der R τ h hR p x = dv τ p x := rfl
 
 end Lin
 
+/- English proof (translation)
+Use extensionality with `n`. Rewrite using `[coeff_cw, MvPowerSeries.coeff_C, MvPowerSeries.coeff_C]`. Apply the tactic sequence `split_ifs <;> simp`.
+-/
 theorem cw_C (d : A →+ A) (a : A) : cw d (C a : MvPowerSeries σ A) = C (d a) := by
   classical
   ext n
   rw [coeff_cw, MvPowerSeries.coeff_C, MvPowerSeries.coeff_C]
   split_ifs <;> simp
 
+/- English proof (translation)
+Use extensionality with `n`. Rewrite using `[coeff_cw, MvPowerSeries.coeff_X]`. Apply the tactic sequence `split_ifs <;> simp [h1]`.
+-/
 theorem cw_X (d : A →+ A) (h1 : d 1 = 0) (q : σ) : cw d (X q : MvPowerSeries σ A) = 0 := by
   classical
   ext n
@@ -196,12 +283,23 @@ def pol : MvPolynomial σ R →+* MvPowerSeries σ (MvPolynomial σ R) :=
   MvPolynomial.eval₂Hom ((C : MvPolynomial σ R →+* MvPowerSeries σ (MvPolynomial σ R)).comp MvPolynomial.C)
     (fun p => C (MvPolynomial.X p) + X p)
 
+/- English proof (translation)
+Conclude with `MvPolynomial.eval₂Hom_C _ _ r`.
+-/
 theorem pol_C (r : R) : pol σ R (MvPolynomial.C r) = C (MvPolynomial.C r) := by
   exact MvPolynomial.eval₂Hom_C _ _ r
 
+/- English proof (translation)
+Conclude with `MvPolynomial.eval₂_X _ _ p`.
+-/
 theorem pol_X (p : σ) : pol σ R (MvPolynomial.X p) = C (MvPolynomial.X p) + X p := by
   exact MvPolynomial.eval₂_X _ _ p
 
+/- English proof (translation)
+Introduce `x`. Establish `key : (MvPowerSeries.constantCoeff : MvPowerSeries σ (MvPolynomial σ R) →+* _).comp (pol σ R) = RingHom.id _`. Apply `MvPolynomial.ringHom_ext` to reduce the goal to its premises. Introduce `r`. Simplify using `[pol_C]`.
+
+Introduce `p`. Simplify using `[pol_X]`. Conclude with `RingHom.congr_fun key x`.
+-/
 theorem pol_isTay : IsTay (pol σ R) := by
   intro x
   have key : (MvPowerSeries.constantCoeff : MvPowerSeries σ (MvPolynomial σ R) →+* _).comp (pol σ R) = RingHom.id _ := by
@@ -210,11 +308,19 @@ theorem pol_isTay : IsTay (pol σ R) := by
     · intro p; simp [pol_X]
   exact RingHom.congr_fun key x
 
+/- English proof (translation)
+Unfold `IsCst`. Rewrite using `[MvPolynomial.algebraMap_eq]`. Conclude with `pol_C σ R r`.
+-/
 theorem pol_isCst (r : R) : IsCst (pol σ R) (algebraMap R (MvPolynomial σ R) r) := by
   unfold IsCst
   rw [MvPolynomial.algebraMap_eq]
   exact pol_C σ R r
 
+/- English proof (translation)
+Rewrite using `[dv, co_apply, pol_X, map_add, MvPowerSeries.coeff_C, MvPowerSeries.coeff_X, if_neg (Finsupp.single_ne_zero.mpr one_ne_zero), zero_add]`. Distinguish the cases in `hpq : p = q`. Substitute `hpq` using the available equality. Simplify using the standard rewrite rules. Rewrite using `[if_neg hpq, if_neg]`.
+
+Conclude with `fun h => hpq (Finsupp.single_left_injective one_ne_zero h)`.
+-/
 theorem pol_dv_X [DecidableEq σ] (p q : σ) : dv (pol σ R) p (MvPolynomial.X q) = if p = q then 1 else 0 := by
   rw [dv, co_apply, pol_X, map_add, MvPowerSeries.coeff_C, MvPowerSeries.coeff_X,
     if_neg (Finsupp.single_ne_zero.mpr one_ne_zero), zero_add]
@@ -222,6 +328,19 @@ theorem pol_dv_X [DecidableEq σ] (p q : σ) : dv (pol σ R) p (MvPolynomial.X q
   · subst hpq; simp
   · rw [if_neg hpq, if_neg]; exact fun h => hpq (Finsupp.single_left_injective one_ne_zero h)
 
+/- English proof (translation)
+Establish `h1 : dv (pol σ R) p 1 = 0`. Rewrite using `[dv, co_apply, map_one, MvPowerSeries.coeff_one, if_neg (Finsupp.single_ne_zero.mpr one_ne_zero)]`. Establish `key : ∀ (n : σ) (γ : σ →₀ ℕ), co (pol σ R) γ (MvPolynomial.X n) = (if γ = 0 then MvPolynomial.X n else 0) + (if γ = Finsupp.single n 1 then 1 else 0)`. Introduce `n γ`. Rewrite using `[co_apply, pol_X, map_add, MvPowerSeries.coeff_C, MvPowerSeries.coeff_X]`.
+
+Establish `hX : ∀ n, IterAt (pol σ R) p (MvPolynomial.X n)`. Introduce `n`. Rewrite using `[iterAt_iff]`. Introduce `β`. Distinguish the cases in `hb : β = 0`.
+
+Substitute `hb` using the available equality. Apply the tactic sequence `simp only [co_zero (pol_isTay σ R), zero_add, Finsupp.coe_zero, Pi.zero_apply, one_smul] <;> rfl`. Establish `hne0 : β + Finsupp.single p 1 ≠ 0` using `fun h => by`. Use `DFunLike.congr_fun h p` as an intermediate fact. Simplify using `at this`.
+
+Establish `hne : β + Finsupp.single p 1 ≠ Finsupp.single n 1`. Introduce `h`. Distinguish the cases in `hpn : p = n`. Substitute `hpn` using the available equality. Conclude with `hb (add_right_cancel (h.trans (zero_add _).symm))`.
+
+Use `DFunLike.congr_fun h p` as an intermediate fact. Simplify using `[Finsupp.single_apply, hpn, Ne.symm hpn] at this`. Rewrite using `[key, key, if_neg hne0, if_neg hne, if_neg hb, add_zero, smul_zero, zero_add]`. Use `split_ifs`. Conclude with `h1.symm`.
+
+Conclude with `(map_zero _).symm`. Use `MvPolynomial.induction_on x (fun a => ?_) (fun f g hf hg => ?_) (fun f n hf => ?_)` and prove the remaining obligations. Conclude with `IsCst.iterAt (τ := pol σ R) (pol_C σ R a) p`. Conclude with `hf.add hg`. Conclude with `hf.mul (pol_isTay σ R) (hX n)`.
+-/
 theorem pol_iterAt (p : σ) (x : MvPolynomial σ R) : IterAt (pol σ R) p x := by
   classical
   have h1 : dv (pol σ R) p 1 = 0 := by
@@ -254,6 +373,11 @@ theorem pol_iterAt (p : σ) (x : MvPolynomial σ R) : IterAt (pol σ R) p x := b
   · exact hf.add hg
   · exact hf.mul (pol_isTay σ R) (hX n)
 
+/- English proof (translation)
+Apply `MvPolynomial.derivation_ext` to reduce the goal to its premises. Introduce `i`. Rewrite using `[der_apply, pol_dv_X, MvPolynomial.pderiv_X]`. Distinguish the cases in `h : p = i`. Substitute `h` using the available equality.
+
+Simplify using the standard rewrite rules. Simplify using `[h, Pi.single_apply, Ne.symm h]`.
+-/
 theorem pol_der (p : σ) : der R (pol σ R) (pol_isTay σ R) (pol_isCst σ R) p = MvPolynomial.pderiv p := by
   classical
   apply MvPolynomial.derivation_ext
@@ -280,6 +404,9 @@ def tens (τ : K →+* MvPowerSeries σ K) (hR : ∀ r : R, IsCst τ (algebraMap
       (Algebra.TensorProduct.includeRight : V →ₐ[R] K ⊗[R] V))
     (fun _ _ => Commute.all _ _)
 
+/- English proof (translation)
+Use `first`. Consider the case `(rw [tens, Algebra.TensorProduct.lift_tmul]; rfl)`. Consider the case `simp [tens, alg, MvPowerSeries.algebraMap_apply]`.
+-/
 theorem tens_tmul (τ : K →+* MvPowerSeries σ K) (hR : ∀ r : R, IsCst τ (algebraMap R K r)) (k : K) (v : V) :
     tens R V τ hR (k ⊗ₜ v) =
       MvPowerSeries.map (Algebra.TensorProduct.includeLeft : K →ₐ[R] K ⊗[R] V).toRingHom (τ k) * C (1 ⊗ₜ v) := by
@@ -287,12 +414,20 @@ theorem tens_tmul (τ : K →+* MvPowerSeries σ K) (hR : ∀ r : R, IsCst τ (a
     | (rw [tens, Algebra.TensorProduct.lift_tmul]; rfl)
     | simp [tens, alg, MvPowerSeries.algebraMap_apply]
 
+/- English proof (translation)
+Use `show MvPowerSeries.coeff β (tens R V τ hR (k ⊗ₜ v)) = _`. Rewrite using `[tens_tmul, MvPowerSeries.coeff_mul_C, MvPowerSeries.coeff_map]`. Simplify using `[co_apply, Algebra.TensorProduct.tmul_mul_tmul]`.
+-/
 theorem tens_co_tmul (τ : K →+* MvPowerSeries σ K) (hR : ∀ r : R, IsCst τ (algebraMap R K r)) (β : σ →₀ ℕ)
     (k : K) (v : V) : co (tens R V τ hR).toRingHom β (k ⊗ₜ v) = co τ β k ⊗ₜ v := by
   show MvPowerSeries.coeff β (tens R V τ hR (k ⊗ₜ v)) = _
   rw [tens_tmul, MvPowerSeries.coeff_mul_C, MvPowerSeries.coeff_map]
   simp [co_apply, Algebra.TensorProduct.tmul_mul_tmul]
 
+/- English proof (translation)
+Introduce `x`. Rewrite using `[← MvPowerSeries.coeff_zero_eq_constantCoeff_apply, ← co_apply]`. Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul k v => rw [tens_co_tmul, co_zero h]`.
+
+Consider the case `add x y hx hy => rw [map_add, hx, hy]`.
+-/
 theorem tens_isTay (τ : K →+* MvPowerSeries σ K) (h : IsTay τ) (hR : ∀ r : R, IsCst τ (algebraMap R K r)) :
     IsTay (tens R V τ hR).toRingHom := by
   intro x
@@ -302,21 +437,35 @@ theorem tens_isTay (τ : K →+* MvPowerSeries σ K) (h : IsTay τ) (hR : ∀ r 
   | tmul k v => rw [tens_co_tmul, co_zero h]
   | add x y hx hy => rw [map_add, hx, hy]
 
+/- English proof (translation)
+Use `show tens R V τ hR ((1 : K) ⊗ₜ v) = C ((1 : K) ⊗ₜ v)`. Rewrite using `[tens_tmul, map_one, map_one, one_mul]`.
+-/
 theorem tens_isCst_right (τ : K →+* MvPowerSeries σ K) (hR : ∀ r : R, IsCst τ (algebraMap R K r)) (v : V) :
     IsCst (tens R V τ hR).toRingHom ((1 : K) ⊗ₜ[R] v) := by
   show tens R V τ hR ((1 : K) ⊗ₜ v) = C ((1 : K) ⊗ₜ v)
   rw [tens_tmul, map_one, map_one, one_mul]
 
+/- English proof (translation)
+Use `show tens R V τ hR (c ⊗ₜ (1 : V)) = C (c ⊗ₜ (1 : V))`. Apply the tactic sequence `rw [tens_tmul, show τ c = C c from hc, MvPowerSeries.map_C, ← Algebra.TensorProduct.one_def, map_one, mul_one] <;> rfl`.
+-/
 theorem tens_isCst_left (τ : K →+* MvPowerSeries σ K) (hR : ∀ r : R, IsCst τ (algebraMap R K r)) {c : K}
     (hc : IsCst τ c) : IsCst (tens R V τ hR).toRingHom (c ⊗ₜ[R] (1 : V)) := by
   show tens R V τ hR (c ⊗ₜ (1 : V)) = C (c ⊗ₜ (1 : V))
   rw [tens_tmul, show τ c = C c from hc, MvPowerSeries.map_C, ← Algebra.TensorProduct.one_def, map_one, mul_one] <;> rfl
 
+/- English proof (translation)
+Rewrite using `[Algebra.TensorProduct.algebraMap_apply]`. Conclude with `tens_isCst_left R V τ hR (hR r)`.
+-/
 theorem tens_isCst_algebraMap (τ : K →+* MvPowerSeries σ K) (hR : ∀ r : R, IsCst τ (algebraMap R K r)) (r : R) :
     IsCst (tens R V τ hR).toRingHom (algebraMap R (K ⊗[R] V) r) := by
   rw [Algebra.TensorProduct.algebraMap_apply]
   exact tens_isCst_left R V τ hR (hR r)
 
+/- English proof (translation)
+Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => unfold IterAt`. Simplify using `only [map_zero]`. Consider the case `tmul k v`. Rewrite using `[iterAt_iff]`.
+
+Introduce `β`. Establish `hk` using `(iterAt_iff τ p k).mp (hi k) β`. Establish `e : ∀ a : K, a ⊗ₜ[R] v = (TensorProduct.mk R K V).flip v a` using `fun _ => rfl`. Apply the tactic sequence `rw [tens_co_tmul, tens_co_tmul, dv, tens_co_tmul, e, e, ← map_nsmul, hk] <;> rfl`. Consider the case `add x y hx hy => exact hx.add hy`.
+-/
 theorem tens_iterAt (τ : K →+* MvPowerSeries σ K) (h : IsTay τ) (hR : ∀ r : R, IsCst τ (algebraMap R K r)) {p : σ}
     (hi : ∀ k, IterAt τ p k) (x : K ⊗[R] V) : IterAt (tens R V τ hR).toRingHom p x := by
   induction x using TensorProduct.induction_on with
@@ -334,9 +483,17 @@ end Tens
 section Iter
 variable {τ : A →+* MvPowerSeries σ A}
 
+/- English proof (translation)
+The claim follows from `((iterAt_iff τ p x).mp (hi p x) β).symm`.
+-/
 theorem dv_co (hi : ∀ p x, IterAt τ p x) (p : σ) (β : σ →₀ ℕ) (x : A) :
     dv τ p (co τ β x) = (β p + 1) • co τ (β + Finsupp.single p 1) x := ((iterAt_iff τ p x).mp (hi p x) β).symm
 
+/- English proof (translation)
+Establish `hsym : (Finsupp.single q 1) p = (Finsupp.single p 1) q`. Distinguish the cases in `h : p = q`. Substitute `h` using the available equality. Both sides reduce to the same expression. Simplify using `[Finsupp.single_apply, h, Ne.symm h]`.
+
+Express the relevant statement in the definitionally equal form `dv τ p (co τ (Finsupp.single q 1) x) = dv τ q (co τ (Finsupp.single p 1) x)`. Rewrite using `[dv_co hi p (Finsupp.single q 1) x, dv_co hi q (Finsupp.single p 1) x, add_comm (Finsupp.single q 1), hsym]`.
+-/
 theorem dv_comm (hi : ∀ p x, IterAt τ p x) (p q : σ) (x : A) : dv τ p (dv τ q x) = dv τ q (dv τ p x) := by
   have hsym : (Finsupp.single q 1) p = (Finsupp.single p 1) q := by
     by_cases h : p = q
@@ -345,6 +502,11 @@ theorem dv_comm (hi : ∀ p x, IterAt τ p x) (p q : σ) (x : A) : dv τ p (dv �
   change dv τ p (co τ (Finsupp.single q 1) x) = dv τ q (co τ (Finsupp.single p 1) x)
   rw [dv_co hi p (Finsupp.single q 1) x, dv_co hi q (Finsupp.single p 1) x, add_comm (Finsupp.single q 1), hsym]
 
+/- English proof (translation)
+Proceed by induction on `n with`. Consider the case `zero => simp`. Consider the case `succ n ih`. Rewrite using `[Function.iterate_succ_apply', ih, map_nsmul, dv_co hi, smul_smul, add_assoc, ← Finsupp.single_add]`. Use `congr 1`.
+
+Rewrite using `[Nat.ascFactorial_succ, Finsupp.add_apply, Finsupp.single_eq_same]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem dv_iterate_co (hi : ∀ p x, IterAt τ p x) (p : σ) (n : ℕ) (β : σ →₀ ℕ) (x : A) :
     (dv τ p)^[n] (co τ β x) = ((β p + 1).ascFactorial n) • co τ (β + Finsupp.single p n) x := by
   induction n with
@@ -355,6 +517,9 @@ theorem dv_iterate_co (hi : ∀ p x, IterAt τ p x) (p : σ) (n : ℕ) (β : σ 
     rw [Nat.ascFactorial_succ, Finsupp.add_apply, Finsupp.single_eq_same]
     ring
 
+/- English proof (translation)
+Establish `hs' : τ s = C s` using `hs`. Establish `hsy' : τ (s * y) = C (s * y)` using `hsy`. Simplify using `only [map_mul, hs'] at hsy'`. Conclude with `(hu.map (C : A →+* MvPowerSeries σ A)).mul_left_cancel hsy'`.
+-/
 theorem IsCst.of_mul {s y : A} (hs : IsCst τ s) (hsy : IsCst τ (s * y)) (hu : IsUnit s) : IsCst τ y := by
   have hs' : τ s = C s := hs
   have hsy' : τ (s * y) = C (s * y) := hsy
@@ -363,9 +528,15 @@ theorem IsCst.of_mul {s y : A} (hs : IsCst τ s) (hsy : IsCst τ (s * y)) (hu : 
 
 variable (R : Type*) [CommRing R] [Algebra R A]
 
+/- English proof (translation)
+The claim follows from `LinearMap.ext fun x => dv_comm hi p q x`.
+-/
 theorem hs_commute (hi : ∀ p x, IterAt τ p x) (hR : ∀ r : R, IsCst τ (algebraMap R A r)) (p q : σ) :
     Commute (hs R τ hR (Finsupp.single p 1)) (hs R τ hR (Finsupp.single q 1)) := LinearMap.ext fun x => dv_comm hi p q x
 
+/- English proof (translation)
+Introduce `p _ q _ _` and use `(hs_commute R hi hR p q).pow_pow _ _`.
+-/
 theorem itD_pairwise (hi : ∀ p x, IterAt τ p x) (hR : ∀ r : R, IsCst τ (algebraMap R A r)) (s : Finset σ)
     (β : σ →₀ ℕ) : (s : Set σ).Pairwise (Function.onFun Commute fun p => hs R τ hR (Finsupp.single p 1) ^ β p) := fun p _ q _ _ => (hs_commute R hi hR p q).pow_pow _ _
 
@@ -373,10 +544,16 @@ def itD (hi : ∀ p x, IterAt τ p x) (hR : ∀ r : R, IsCst τ (algebraMap R A 
     Module.End R A :=
   s.noncommProd (fun p => hs R τ hR (Finsupp.single p 1) ^ β p) (itD_pairwise R hi hR s β)
 
+/- English proof (translation)
+Rewrite using `[itD, Finset.noncommProd_empty]`.
+-/
 theorem itD_empty (hi : ∀ p x, IterAt τ p x) (hR : ∀ r : R, IsCst τ (algebraMap R A r)) (β : σ →₀ ℕ) :
     itD R hi hR ∅ β = 1 := by
   rw [itD, Finset.noncommProd_empty]
 
+/- English proof (translation)
+Unfold `itD`. Use `first`. Consider the case `exact Finset.noncommProd_insert_of_notMem _ _ _ _ ha`. Consider the case `exact Finset.noncommProd_insert_of_not_mem _ _ _ _ ha`.
+-/
 theorem itD_insert [DecidableEq σ] (hi : ∀ p x, IterAt τ p x) (hR : ∀ r : R, IsCst τ (algebraMap R A r))
     {s : Finset σ} {a : σ} (ha : a ∉ s) (β : σ →₀ ℕ) :
     itD R hi hR (insert a s) β = hs R τ hR (Finsupp.single a 1) ^ β a * itD R hi hR s β := by
@@ -385,6 +562,17 @@ theorem itD_insert [DecidableEq σ] (hi : ∀ p x, IterAt τ p x) (hR : ∀ r : 
     | exact Finset.noncommProd_insert_of_notMem _ _ _ _ ha
     | exact Finset.noncommProd_insert_of_not_mem _ _ _ _ ha
 
+/- English proof (translation)
+Use `Finset.induction_on s ?_ ?_` and prove the remaining obligations. Simplify using `[itD_empty]`. Introduce `a s ha ih`. Establish `hS : (∑ p ∈ s, Finsupp.single p (β p)) a = 0`. Rewrite using `[Finsupp.finset_sum_apply]`.
+
+Conclude with `Finset.sum_eq_zero fun p hp => by`. Rewrite using `[Finsupp.single_apply, if_neg]`. Introduce and unpack `rfl`. Conclude with `ha hp`. Establish `hpow : ∀ (n : ℕ) (y : A), ((hs R τ hR (Finsupp.single a 1)) ^ n) y = (dv τ a)^[n] y`.
+
+Introduce `n y`. Use `first`. Consider the case `(rw [Module.End.pow_apply]; rfl)`. Consider the case `(rw [LinearMap.pow_apply]; rfl)`. Consider the case `(induction n generalizing y with`.
+
+Consider the case `zero => rfl`. Consider the case `succ n ih2 => rw [pow_succ, Function.iterate_succ_apply, ← ih2]`. Use the proof step `rfl)`. Rewrite using `[itD_insert R hi hR ha]`. Apply the tactic sequence `first | rw [Module.End.mul_apply] | rw [LinearMap.mul_apply]`.
+
+Rewrite using `[ih, map_nsmul, hpow, dv_iterate_co hi, smul_smul, Finset.prod_insert ha, Finset.sum_insert ha, Finsupp.add_apply, hS, add_zero, show γ + ∑ p ∈ s, Finsupp.single p (β p) + Finsupp.single a (β a) = γ + (Finsupp.single a (β a) + ∑ p ∈ s, Finsupp.single p (β p)) by abel, mul_comm]`.
+-/
 theorem itD_co (hi : ∀ p x, IterAt τ p x) (hR : ∀ r : R, IsCst τ (algebraMap R A r)) (s : Finset σ)
     (β γ : σ →₀ ℕ) (x : A) : itD R hi hR s β (co τ γ x) =
       (∏ p ∈ s, (γ p + 1).ascFactorial (β p)) • co τ (γ + ∑ p ∈ s, Finsupp.single p (β p)) x := by
@@ -411,6 +599,13 @@ theorem itD_co (hi : ∀ p x, IterAt τ p x) (hR : ∀ r : R, IsCst τ (algebraM
       show γ + ∑ p ∈ s, Finsupp.single p (β p) + Finsupp.single a (β a) =
         γ + (Finsupp.single a (β a) + ∑ p ∈ s, Finsupp.single p (β p)) by abel, mul_comm]
 
+/- English proof (translation)
+Establish `hsum : ∑ p ∈ s, Finsupp.single p (β p) = β`. Use extensionality with `q`. Rewrite using `[Finsupp.finset_sum_apply]`. Simplify using `only [Finsupp.single_apply, Finset.sum_ite_eq', Finset.sum_ite_eq]`. Use `split_ifs with hq`.
+
+Both sides reduce to the same expression. Assume the negation of the conclusion as `hne`. Conclude with `hq (hs (Finsupp.mem_support_iff.mpr fun h' => hne h'.symm))`. Establish `key` using `itD_co R hi hR s β 0 x`. Simplify using `only [co_zero h, zero_add, hsum] at key`.
+
+Rewrite using `[key]`. Use `congr 1`. Conclude with `Finset.prod_congr rfl fun p _ => by simp [Nat.one_ascFactorial]`.
+-/
 theorem itD_apply (h : IsTay τ) (hi : ∀ p x, IterAt τ p x) (hR : ∀ r : R, IsCst τ (algebraMap R A r))
     (s : Finset σ) (β : σ →₀ ℕ) (hs : β.support ⊆ s) (x : A) :
     itD R hi hR s β x = (∏ p ∈ s, (β p).factorial) • co τ β x := by
@@ -444,18 +639,33 @@ variable (X : PJ D B P j) (la : HeightOneSpectrum (𝓞 B.KO)) (N : ℕ)
 
 def tayPol : Pol X la N →+* MvPowerSeries (Idx D j N) (Pol X la N) := Tay.pol (Idx D j N) (X.Ol la)
 
+/- English proof (translation)
+The claim follows from `Tay.pol_isTay (Idx D j N) (X.Ol la)`.
+-/
 theorem tayPol_isTay : Tay.IsTay (tayPol X la N) := Tay.pol_isTay (Idx D j N) (X.Ol la)
 
+/- English proof (translation)
+The claim follows from `Tay.pol_iterAt (Idx D j N) (X.Ol la) p x`.
+-/
 theorem tayPol_iterAt (p : Idx D j N) (x : Pol X la N) : Tay.IterAt (tayPol X la N) p x := Tay.pol_iterAt (Idx D j N) (X.Ol la) p x
 
 def tayOp : Op X la N →+* MvPowerSeries (Idx D j N) (Op X la N) :=
   Tay.loc (gI X la N).primeCompl (Op X la N) (tayPol X la N) (tayPol_isTay X la N)
 
+/- English proof (translation)
+The claim follows from `Tay.loc_isTay (gI X la N).primeCompl (Op X la N) (tayPol X la N) (tayPol_isTay X la N)`.
+-/
 theorem tayOp_isTay : Tay.IsTay (tayOp X la N) := Tay.loc_isTay (gI X la N).primeCompl (Op X la N) (tayPol X la N) (tayPol_isTay X la N)
 
+/- English proof (translation)
+The claim follows from `Tay.loc_iterAt (gI X la N).primeCompl (Op X la N) (tayPol X la N) (tayPol_isTay X la N) (tayPol_iterAt X la N p) x`.
+-/
 theorem tayOp_iterAt (p : Idx D j N) (x : Op X la N) : Tay.IterAt (tayOp X la N) p x := Tay.loc_iterAt (gI X la N).primeCompl (Op X la N) (tayPol X la N) (tayPol_isTay X la N)
     (tayPol_iterAt X la N p) x
 
+/- English proof (translation)
+Apply the tactic sequence `have e : algebraMap (X.Ol la) (Op X la N) a = algebraMap (Pol X la N) (Op X la N) (algebraMap (X.Ol la) (Pol X la N) a) := by first | exact IsScalarTower.algebraMap_apply _ _ _ _ | rfl`. Rewrite using `[e]`. Conclude with `Tay.loc_isCst (gI X la N).primeCompl (Op X la N) (tayPol X la N) (tayPol_isTay X la N) (Tay.pol_isCst (Idx D j N) (X.Ol la) a)`.
+-/
 theorem tayOp_isCst (a : X.Ol la) : Tay.IsCst (tayOp X la N) (algebraMap (X.Ol la) (Op X la N) a) := by
   have e : algebraMap (X.Ol la) (Op X la N) a = algebraMap (Pol X la N) (Op X la N) (algebraMap (X.Ol la) (Pol X la N) a) := by
     first | exact IsScalarTower.algebraMap_apply _ _ _ _ | rfl
@@ -466,11 +676,20 @@ theorem tayOp_isCst (a : X.Ol la) : Tay.IsCst (tayOp X la N) (algebraMap (X.Ol l
 def tayKp : Kp X la N →+* MvPowerSeries (Idx D j N) (Kp X la N) :=
   Tay.loc (nonZeroDivisors (Op X la N)) (Kp X la N) (tayOp X la N) (tayOp_isTay X la N)
 
+/- English proof (translation)
+The claim follows from `Tay.loc_isTay (nonZeroDivisors (Op X la N)) (Kp X la N) (tayOp X la N) (tayOp_isTay X la N)`.
+-/
 theorem tayKp_isTay : Tay.IsTay (tayKp X la N) := Tay.loc_isTay (nonZeroDivisors (Op X la N)) (Kp X la N) (tayOp X la N) (tayOp_isTay X la N)
 
+/- English proof (translation)
+The claim follows from `Tay.loc_iterAt (nonZeroDivisors (Op X la N)) (Kp X la N) (tayOp X la N) (tayOp_isTay X la N) (tayOp_iterAt X la N p) x`.
+-/
 theorem tayKp_iterAt (p : Idx D j N) (x : Kp X la N) : Tay.IterAt (tayKp X la N) p x := Tay.loc_iterAt (nonZeroDivisors (Op X la N)) (Kp X la N) (tayOp X la N) (tayOp_isTay X la N)
     (tayOp_iterAt X la N p) x
 
+/- English proof (translation)
+Apply the tactic sequence `have e : algebraMap (X.Ol la) (Kp X la N) a = algebraMap (Op X la N) (Kp X la N) (algebraMap (X.Ol la) (Op X la N) a) := by first | exact IsScalarTower.algebraMap_apply _ _ _ _ | rfl`. Rewrite using `[e]`. Conclude with `Tay.loc_isCst (nonZeroDivisors (Op X la N)) (Kp X la N) (tayOp X la N) (tayOp_isTay X la N) (tayOp_isCst X la N a)`.
+-/
 theorem tayKp_isCst_Ol (a : X.Ol la) : Tay.IsCst (tayKp X la N) (algebraMap (X.Ol la) (Kp X la N) a) := by
   have e : algebraMap (X.Ol la) (Kp X la N) a = algebraMap (Op X la N) (Kp X la N) (algebraMap (X.Ol la) (Op X la N) a) := by
     first | exact IsScalarTower.algebraMap_apply _ _ _ _ | rfl
@@ -478,6 +697,11 @@ theorem tayKp_isCst_Ol (a : X.Ol la) : Tay.IsCst (tayKp X la N) (algebraMap (X.O
   exact Tay.loc_isCst (nonZeroDivisors (Op X la N)) (Kp X la N) (tayOp X la N) (tayOp_isTay X la N)
     (tayOp_isCst X la N a)
 
+/- English proof (translation)
+Establish `key : (tayKp X la N).comp (algebraMap (X.Kl la) (Kp X la N)) = (MvPowerSeries.C : Kp X la N →+* MvPowerSeries (Idx D j N) (Kp X la N)).comp (algebraMap (X.Kl la) (Kp X la N))`. Apply `IsLocalization.ringHom_ext (nonZeroDivisors (X.Ol la))` to reduce the goal to its premises. Use `RingHom.ext fun a => ?_` and prove the remaining obligations. Simplify using `only [RingHom.comp_apply]`. Apply the tactic sequence `have e : algebraMap (X.Kl la) (Kp X la N) (algebraMap (X.Ol la) (X.Kl la) a) = algebraMap (X.Ol la) (Kp X la N) a := by first | exact IsFractionRing.lift_algebraMap _ _ | exact (IsScalarTower.algebraMap_apply _ _ _ _).symm`.
+
+Rewrite using `[e]`. Conclude with `tayKp_isCst_Ol X la N a`. Conclude with `RingHom.congr_fun key c`.
+-/
 theorem tayKp_isCst (c : X.Kl la) : Tay.IsCst (tayKp X la N) (algebraMap (X.Kl la) (Kp X la N) c) := by
   have key : (tayKp X la N).comp (algebraMap (X.Kl la) (Kp X la N)) =
       (MvPowerSeries.C : Kp X la N →+* MvPowerSeries (Idx D j N) (Kp X la N)).comp (algebraMap (X.Kl la) (Kp X la N)) := by
@@ -493,13 +717,25 @@ theorem tayKp_isCst (c : X.Kl la) : Tay.IsCst (tayKp X la N) (algebraMap (X.Kl l
 def tayRp : Rp X la N →+* MvPowerSeries (Idx D j N) (Rp X la N) :=
   (Tay.tens (X.Kl la) (X.Vl la) (tayKp X la N) (tayKp_isCst X la N)).toRingHom
 
+/- English proof (translation)
+The claim follows from `Tay.tens_isTay (X.Kl la) (X.Vl la) (tayKp X la N) (tayKp_isTay X la N) (tayKp_isCst X la N)`.
+-/
 theorem tayRp_isTay : Tay.IsTay (tayRp X la N) := Tay.tens_isTay (X.Kl la) (X.Vl la) (tayKp X la N) (tayKp_isTay X la N) (tayKp_isCst X la N)
 
+/- English proof (translation)
+The claim follows from `Tay.tens_iterAt (X.Kl la) (X.Vl la) (tayKp X la N) (tayKp_isTay X la N) (tayKp_isCst X la N) (tayKp_iterAt X la N p) x`.
+-/
 theorem tayRp_iterAt (p : Idx D j N) (x : Rp X la N) : Tay.IterAt (tayRp X la N) p x := Tay.tens_iterAt (X.Kl la) (X.Vl la) (tayKp X la N) (tayKp_isTay X la N) (tayKp_isCst X la N)
     (tayKp_iterAt X la N p) x
 
+/- English proof (translation)
+The claim follows from `Tay.tens_isCst_algebraMap (X.Kl la) (X.Vl la) (tayKp X la N) (tayKp_isCst X la N) c`.
+-/
 theorem tayRp_isCst (c : X.Kl la) : Tay.IsCst (tayRp X la N) (algebraMap (X.Kl la) (Rp X la N) c) := Tay.tens_isCst_algebraMap (X.Kl la) (X.Vl la) (tayKp X la N) (tayKp_isCst X la N) c
 
+/- English proof (translation)
+The claim follows from `Tay.tens_isCst_right (X.Kl la) (X.Vl la) (tayKp X la N) (tayKp_isCst X la N) v`.
+-/
 theorem tayRp_isCst_bcV (v : X.Vl la) : Tay.IsCst (tayRp X la N) (bcV X la N v) := Tay.tens_isCst_right (X.Kl la) (X.Vl la) (tayKp X la N) (tayKp_isCst X la N) v
 
 end
@@ -512,11 +748,20 @@ abbrev Lc : Type := Localization.Away (sec X la w 0)
 def tayLc : Lc X la w →+* MvPowerSeries (Idx D j N) (Lc X la w) :=
   Tay.loc (Submonoid.powers (sec X la w 0)) (Lc X la w) (tayRp X la N) (tayRp_isTay X la N)
 
+/- English proof (translation)
+The claim follows from `Tay.loc_isTay (Submonoid.powers (sec X la w 0)) (Lc X la w) (tayRp X la N) (tayRp_isTay X la N)`.
+-/
 theorem tayLc_isTay : Tay.IsTay (tayLc X la w) := Tay.loc_isTay (Submonoid.powers (sec X la w 0)) (Lc X la w) (tayRp X la N) (tayRp_isTay X la N)
 
+/- English proof (translation)
+The claim follows from `Tay.loc_iterAt (Submonoid.powers (sec X la w 0)) (Lc X la w) (tayRp X la N) (tayRp_isTay X la N) (tayRp_iterAt X la N p) x`.
+-/
 theorem tayLc_iterAt (p : Idx D j N) (x : Lc X la w) : Tay.IterAt (tayLc X la w) p x := Tay.loc_iterAt (Submonoid.powers (sec X la w 0)) (Lc X la w) (tayRp X la N) (tayRp_isTay X la N)
     (tayRp_iterAt X la N p) x
 
+/- English proof (translation)
+Apply the tactic sequence `have e : algebraMap (X.Kl la) (Lc X la w) c = algebraMap (Rp X la N) (Lc X la w) (algebraMap (X.Kl la) (Rp X la N) c) := by first | exact IsScalarTower.algebraMap_apply _ _ _ _ | rfl`. Rewrite using `[e]`. Conclude with `Tay.loc_isCst (Submonoid.powers (sec X la w 0)) (Lc X la w) (tayRp X la N) (tayRp_isTay X la N) (tayRp_isCst X la N c)`.
+-/
 theorem tayLc_isCst (c : X.Kl la) : Tay.IsCst (tayLc X la w) (algebraMap (X.Kl la) (Lc X la w) c) := by
   have e : algebraMap (X.Kl la) (Lc X la w) c = algebraMap (Rp X la N) (Lc X la w) (algebraMap (X.Kl la) (Rp X la N) c) := by
     first | exact IsScalarTower.algebraMap_apply _ _ _ _ | rfl
@@ -524,6 +769,9 @@ theorem tayLc_isCst (c : X.Kl la) : Tay.IsCst (tayLc X la w) (algebraMap (X.Kl l
   exact Tay.loc_isCst (Submonoid.powers (sec X la w 0)) (Lc X la w) (tayRp X la N) (tayRp_isTay X la N)
     (tayRp_isCst X la N c)
 
+/- English proof (translation)
+The claim follows from `Tay.loc_isCst (Submonoid.powers (sec X la w 0)) (Lc X la w) (tayRp X la N) (tayRp_isTay X la N) (tayRp_isCst_bcV X la N v)`.
+-/
 theorem tayLc_isCst_bcV (v : X.Vl la) : Tay.IsCst (tayLc X la w) (algebraMap (Rp X la N) (Lc X la w) (bcV X la N v)) := Tay.loc_isCst (Submonoid.powers (sec X la w 0)) (Lc X la w) (tayRp X la N) (tayRp_isTay X la N)
     (tayRp_isCst_bcV X la N v)
 
@@ -552,26 +800,49 @@ def hasseRp (β : Idx D j N →₀ ℕ) : Rp X la N →ₗ[X.Kl la] Rp X la N :=
 
 variable {N}
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem hasseOp_single (p : Idx D j N) (x : Op X la N) : hasseOp X la N (Finsupp.single p 1) x = pdOp X la N p x := rfl
 
+/- English proof (translation)
+The claim follows from `Tay.co_zero (tayOp_isTay X la N) x`.
+-/
 theorem hasseOp_zero (x : Op X la N) : hasseOp X la N 0 x = x := Tay.co_zero (tayOp_isTay X la N) x
 
+/- English proof (translation)
+The claim follows from `Tay.co_mul (tayOp X la N) β x y`.
+-/
 theorem hasseOp_mul (β : Idx D j N →₀ ℕ) (x y : Op X la N) : hasseOp X la N β (x * y) =
     ∑ q ∈ antidiagonal β, hasseOp X la N q.1 x * hasseOp X la N q.2 y := Tay.co_mul (tayOp X la N) β x y
 
+/- English proof (translation)
+The claim follows from `Tay.dv_co (tayOp_iterAt X la N) p β x`.
+-/
 theorem pdOp_hasseOp (p : Idx D j N) (β : Idx D j N →₀ ℕ) (x : Op X la N) :
     pdOp X la N p (hasseOp X la N β x) = (β p + 1) • hasseOp X la N (β + Finsupp.single p 1) x := Tay.dv_co (tayOp_iterAt X la N) p β x
 
+/- English proof (translation)
+Rewrite using `[pdOp, Tay.der_apply, tayOp, Tay.loc_dv]`. Conclude with `congrArg _ (DFunLike.congr_fun (Tay.pol_der (Idx D j N) (X.Ol la) p) f)`.
+-/
 theorem pdOp_algebraMap (p : Idx D j N) (f : Pol X la N) :
     pdOp X la N p (algebraMap (Pol X la N) (Op X la N) f) =
       algebraMap (Pol X la N) (Op X la N) (MvPolynomial.pderiv p f) := by
   rw [pdOp, Tay.der_apply, tayOp, Tay.loc_dv]
   exact congrArg _ (DFunLike.congr_fun (Tay.pol_der (Idx D j N) (X.Ol la) p) f)
 
+/- English proof (translation)
+Use `show tayOp X la N (algebraMap (Pol X la N) (Op X la N) (MvPolynomial.X q)) = _`. Apply the tactic sequence `rw [tayOp, Tay.loc_algebraMap, tayPol, Tay.pol_X, map_add, MvPowerSeries.map_C, MvPowerSeries.map_X] <;> rfl`.
+-/
 theorem tayOp_Tv (q : Idx D j N) : tayOp X la N (Tv X la N q) = MvPowerSeries.C (Tv X la N q) + MvPowerSeries.X q := by
   show tayOp X la N (algebraMap (Pol X la N) (Op X la N) (MvPolynomial.X q)) = _
   rw [tayOp, Tay.loc_algebraMap, tayPol, Tay.pol_X, map_add, MvPowerSeries.map_C, MvPowerSeries.map_X] <;> rfl
 
+/- English proof (translation)
+Rewrite using `[hasseOp, Tay.hs_apply, Tay.co_apply, tayOp_Tv, map_add, MvPowerSeries.coeff_C, MvPowerSeries.coeff_X]`. Distinguish the cases in `h0 : β = 0`. Substitute `h0` using the available equality. Establish `h1 : (0 : Idx D j N →₀ ℕ) ≠ Finsupp.single q 1` using `fun h => Finsupp.single_ne_zero.mpr one_ne_zero h.symm`. Simplify using `[h1]`.
+
+Simplify using `[h0]`.
+-/
 theorem hasseOp_Tv (β : Idx D j N →₀ ℕ) (q : Idx D j N) : hasseOp X la N β (Tv X la N q) =
     if β = 0 then Tv X la N q else if β = Finsupp.single q 1 then 1 else 0 := by
   rw [hasseOp, Tay.hs_apply, Tay.co_apply, tayOp_Tv, map_add, MvPowerSeries.coeff_C, MvPowerSeries.coeff_X]
@@ -581,51 +852,102 @@ theorem hasseOp_Tv (β : Idx D j N →₀ ℕ) (q : Idx D j N) : hasseOp X la N 
     simp [h1]
   · simp [h0]
 
+/- English proof (translation)
+Rewrite using `[← hasseOp_single, hasseOp_Tv, if_neg (Finsupp.single_ne_zero.mpr one_ne_zero)]`. Distinguish the cases in `h : p = q`. Substitute `h` using the available equality. Simplify using the standard rewrite rules. Rewrite using `[if_neg h, if_neg]`.
+
+Conclude with `fun h' => h (Finsupp.single_left_injective one_ne_zero h')`.
+-/
 theorem pdOp_Tv (p q : Idx D j N) : pdOp X la N p (Tv X la N q) = if p = q then 1 else 0 := by
   rw [← hasseOp_single, hasseOp_Tv, if_neg (Finsupp.single_ne_zero.mpr one_ne_zero)]
   by_cases h : p = q
   · subst h; simp
   · rw [if_neg h, if_neg]; exact fun h' => h (Finsupp.single_left_injective one_ne_zero h')
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem hasseKp_single (p : Idx D j N) (x : Kp X la N) : hasseKp X la N (Finsupp.single p 1) x = pdKp X la N p x := rfl
 
+/- English proof (translation)
+The claim follows from `Tay.co_zero (tayKp_isTay X la N) x`.
+-/
 theorem hasseKp_zero (x : Kp X la N) : hasseKp X la N 0 x = x := Tay.co_zero (tayKp_isTay X la N) x
 
+/- English proof (translation)
+The claim follows from `Tay.co_mul (tayKp X la N) β x y`.
+-/
 theorem hasseKp_mul (β : Idx D j N →₀ ℕ) (x y : Kp X la N) : hasseKp X la N β (x * y) =
     ∑ q ∈ antidiagonal β, hasseKp X la N q.1 x * hasseKp X la N q.2 y := Tay.co_mul (tayKp X la N) β x y
 
+/- English proof (translation)
+The claim follows from `Tay.dv_co (tayKp_iterAt X la N) p β x`.
+-/
 theorem pdKp_hasseKp (p : Idx D j N) (β : Idx D j N →₀ ℕ) (x : Kp X la N) :
     pdKp X la N p (hasseKp X la N β x) = (β p + 1) • hasseKp X la N (β + Finsupp.single p 1) x := Tay.dv_co (tayKp_iterAt X la N) p β x
 
+/- English proof (translation)
+The claim follows from `Tay.loc_co (nonZeroDivisors (Op X la N)) (Kp X la N) (tayOp X la N) (tayOp_isTay X la N) β x`.
+-/
 theorem hasseKp_algebraMap (β : Idx D j N →₀ ℕ) (x : Op X la N) :
     hasseKp X la N β (algebraMap (Op X la N) (Kp X la N) x) =
       algebraMap (Op X la N) (Kp X la N) (hasseOp X la N β x) := Tay.loc_co (nonZeroDivisors (Op X la N)) (Kp X la N) (tayOp X la N) (tayOp_isTay X la N) β x
 
+/- English proof (translation)
+The claim follows from `Tay.loc_dv (nonZeroDivisors (Op X la N)) (Kp X la N) (tayOp X la N) (tayOp_isTay X la N) p x`.
+-/
 theorem pdKp_algebraMap (p : Idx D j N) (x : Op X la N) :
     pdKp X la N p (algebraMap (Op X la N) (Kp X la N) x) = algebraMap (Op X la N) (Kp X la N) (pdOp X la N p x) := Tay.loc_dv (nonZeroDivisors (Op X la N)) (Kp X la N) (tayOp X la N) (tayOp_isTay X la N) p x
 
+/- English proof (translation)
+The claim follows from `(tayKp_isCst X la N c).co hβ`.
+-/
 theorem hasseKp_algebraMap_Kl {β : Idx D j N →₀ ℕ} (hβ : β ≠ 0) (c : X.Kl la) :
     hasseKp X la N β (algebraMap (X.Kl la) (Kp X la N) c) = 0 := (tayKp_isCst X la N c).co hβ
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem hasseRp_single (p : Idx D j N) (x : Rp X la N) : hasseRp X la N (Finsupp.single p 1) x = pdRp X la N p x := rfl
 
+/- English proof (translation)
+The claim follows from `Tay.co_zero (tayRp_isTay X la N) x`.
+-/
 theorem hasseRp_zero (x : Rp X la N) : hasseRp X la N 0 x = x := Tay.co_zero (tayRp_isTay X la N) x
 
+/- English proof (translation)
+The claim follows from `Tay.co_mul (tayRp X la N) β x y`.
+-/
 theorem hasseRp_mul (β : Idx D j N →₀ ℕ) (x y : Rp X la N) : hasseRp X la N β (x * y) =
     ∑ q ∈ antidiagonal β, hasseRp X la N q.1 x * hasseRp X la N q.2 y := Tay.co_mul (tayRp X la N) β x y
 
+/- English proof (translation)
+The claim follows from `Tay.dv_co (tayRp_iterAt X la N) p β x`.
+-/
 theorem pdRp_hasseRp (p : Idx D j N) (β : Idx D j N →₀ ℕ) (x : Rp X la N) :
     pdRp X la N p (hasseRp X la N β x) = (β p + 1) • hasseRp X la N (β + Finsupp.single p 1) x := Tay.dv_co (tayRp_iterAt X la N) p β x
 
+/- English proof (translation)
+The claim follows from `Tay.tens_co_tmul (X.Kl la) (X.Vl la) (tayKp X la N) (tayKp_isCst X la N) β k v`.
+-/
 theorem hasseRp_tmul (β : Idx D j N →₀ ℕ) (k : Kp X la N) (v : X.Vl la) :
     hasseRp X la N β (k ⊗ₜ[X.Kl la] v : Kp X la N ⊗[X.Kl la] X.Vl la) =
       (hasseKp X la N β k ⊗ₜ[X.Kl la] v : Kp X la N ⊗[X.Kl la] X.Vl la) := Tay.tens_co_tmul (X.Kl la) (X.Vl la) (tayKp X la N) (tayKp_isCst X la N) β k v
 
+/- English proof (translation)
+Use `TensorProduct.ext' fun k v => ?_` and prove the remaining obligations. Conclude with `hasseRp_tmul X la β k v`.
+-/
 theorem hasseRp_eq_rTensor (β : Idx D j N →₀ ℕ) :
     hasseRp X la N β = LinearMap.rTensor (X.Vl la) (hasseKp X la N β) := by
   refine TensorProduct.ext' fun k v => ?_
   exact hasseRp_tmul X la β k v
 
+/- English proof (translation)
+Establish `e : k • bcV X la N v = (k ⊗ₜ[X.Kl la] v : Kp X la N ⊗[X.Kl la] X.Vl la)` using `by first`. Consider the case `(rw [Algebra.smul_def]; show (k ⊗ₜ[X.Kl la] (1 : X.Vl la)) * ((1 : Kp X la N) ⊗ₜ[X.Kl la] v) = _; simp)`. Consider the case `(show k • ((1 : Kp X la N) ⊗ₜ[X.Kl la] v) = _; rw [TensorProduct.smul_tmul', smul_eq_mul, mul_one])`. Consider the case `rfl`. Rewrite using `[e]`.
+
+Use `(hasseRp_tmul X la β k v).trans ?_` and prove the remaining obligations. Use `first`. Consider the case `(rw [Algebra.smul_def]; show _ = (hasseKp X la N β k ⊗ₜ[X.Kl la] (1 : X.Vl la)) * ((1 : Kp X la N) ⊗ₜ[X.Kl la] v); simp)`. Consider the case `(show _ = hasseKp X la N β k • ((1 : Kp X la N) ⊗ₜ[X.Kl la] v); rw [TensorProduct.smul_tmul', smul_eq_mul, mul_one])`. Consider the case `exact e.symm.trans rfl`.
+
+Consider the case `rfl`.
+-/
 theorem hasseRp_smul_bcV (β : Idx D j N →₀ ℕ) (k : Kp X la N) (v : X.Vl la) :
     hasseRp X la N β (k • bcV X la N v) = hasseKp X la N β k • bcV X la N v := by
   have e : k • bcV X la N v = (k ⊗ₜ[X.Kl la] v : Kp X la N ⊗[X.Kl la] X.Vl la) := by
@@ -641,6 +963,9 @@ theorem hasseRp_smul_bcV (β : Idx D j N →₀ ℕ) (k : Kp X la N) (v : X.Vl l
     | exact e.symm.trans rfl
     | rfl
 
+/- English proof (translation)
+Use `first`. Consider the case `exact hasseRp_tmul X la β k 1`. Consider the case `(show hasseRp X la N β (k ⊗ₜ[X.Kl la] (1 : X.Vl la) : Kp X la N ⊗[X.Kl la] X.Vl la) = (hasseKp X la N β k ⊗ₜ[X.Kl la] (1 : X.Vl la) : Kp X la N ⊗[X.Kl la] X.Vl la)`. Conclude with `hasseRp_tmul X la β k 1)`.
+-/
 theorem hasseRp_algebraMap (β : Idx D j N →₀ ℕ) (k : Kp X la N) :
     hasseRp X la N β (algebraMap (Kp X la N) (Rp X la N) k) =
       algebraMap (Kp X la N) (Rp X la N) (hasseKp X la N β k) := by
@@ -650,27 +975,48 @@ theorem hasseRp_algebraMap (β : Idx D j N →₀ ℕ) (k : Kp X la N) :
         (hasseKp X la N β k ⊗ₜ[X.Kl la] (1 : X.Vl la) : Kp X la N ⊗[X.Kl la] X.Vl la)
        exact hasseRp_tmul X la β k 1)
 
+/- English proof (translation)
+Rewrite using `[Algebra.smul_def, hasseRp_mul]`. Use `Finset.sum_congr rfl fun q _ => ?_` and prove the remaining obligations. Rewrite using `[hasseRp_algebraMap, ← Algebra.smul_def]`.
+-/
 theorem hasseRp_smul (β : Idx D j N →₀ ℕ) (k : Kp X la N) (x : Rp X la N) : hasseRp X la N β (k • x) =
     ∑ q ∈ antidiagonal β, hasseKp X la N q.1 k • hasseRp X la N q.2 x := by
   rw [Algebra.smul_def, hasseRp_mul]
   refine Finset.sum_congr rfl fun q _ => ?_
   rw [hasseRp_algebraMap, ← Algebra.smul_def]
 
+/- English proof (translation)
+The claim follows from `(tayRp_isCst_bcV X la N v).co hβ`.
+-/
 theorem hasseRp_bcV {β : Idx D j N →₀ ℕ} (hβ : β ≠ 0) (v : X.Vl la) : hasseRp X la N β (bcV X la N v) = 0 := (tayRp_isCst_bcV X la N v).co hβ
 
+/- English proof (translation)
+Rewrite using `[show emb X la N F = bcV X la N ((1 : X.Kl la) ⊗ₜ[B.KO] F) from rfl]`. Conclude with `hasseRp_bcV X la hβ _`.
+-/
 theorem hasseRp_emb {β : Idx D j N →₀ ℕ} (hβ : β ≠ 0) (F : X.Forms) : hasseRp X la N β (emb X la N F) = 0 := by
   rw [show emb X la N F = bcV X la N ((1 : X.Kl la) ⊗ₜ[B.KO] F) from rfl]
   exact hasseRp_bcV X la hβ _
 
+/- English proof (translation)
+The claim follows from `(tayRp_isCst_bcV X la N v).co_mul β x`.
+-/
 theorem hasseRp_bcV_mul (β : Idx D j N →₀ ℕ) (v : X.Vl la) (x : Rp X la N) :
     hasseRp X la N β (bcV X la N v * x) = bcV X la N v * hasseRp X la N β x := (tayRp_isCst_bcV X la N v).co_mul β x
 
+/- English proof (translation)
+The claim follows from `(tayRp_isCst_bcV X la N v).dv p`.
+-/
 theorem pdRp_bcV (p : Idx D j N) (v : X.Vl la) : pdRp X la N p (bcV X la N v) = 0 := (tayRp_isCst_bcV X la N v).dv p
 
+/- English proof (translation)
+Rewrite using `[show emb X la N F = bcV X la N ((1 : X.Kl la) ⊗ₜ[B.KO] F) from rfl]`. Conclude with `pdRp_bcV X la p _`.
+-/
 theorem pdRp_emb (p : Idx D j N) (F : X.Forms) : pdRp X la N p (emb X la N F) = 0 := by
   rw [show emb X la N F = bcV X la N ((1 : X.Kl la) ⊗ₜ[B.KO] F) from rfl]
   exact pdRp_bcV X la p _
 
+/- English proof (translation)
+The claim follows from `hasseRp_algebraMap X la (Finsupp.single p 1) k`.
+-/
 theorem pdRp_algebraMap (p : Idx D j N) (k : Kp X la N) :
     pdRp X la N p (algebraMap (Kp X la N) (Rp X la N) k) = algebraMap (Kp X la N) (Rp X la N) (pdKp X la N p k) := hasseRp_algebraMap X la (Finsupp.single p 1) k
 
@@ -679,22 +1025,38 @@ end
 section
 variable (X : PJ D B P j) (la : HeightOneSpectrum (𝓞 B.KO)) {N : ℕ}
 
+/- English proof (translation)
+Rewrite using `[show emb X la N F = bcV X la N ((1 : X.Kl la) ⊗ₜ[B.KO] F) from rfl]`. Conclude with `tayRp_isCst_bcV X la N _`.
+-/
 theorem tayRp_isCst_emb (F : X.Forms) : Tay.IsCst (tayRp X la N) (emb X la N F) := by
   rw [show emb X la N F = bcV X la N ((1 : X.Kl la) ⊗ₜ[B.KO] F) from rfl]
   exact tayRp_isCst_bcV X la N _
 
+/- English proof (translation)
+Rewrite using `[← algebraMap_smul (Kp X la N) a x, hasseRp_smul]`. Use `Finset.sum_congr rfl fun q _ => ?_` and prove the remaining obligations. Rewrite using `[hasseKp_algebraMap, algebraMap_smul]`.
+-/
 theorem hasseRp_smul_Op (β : Idx D j N →₀ ℕ) (a : Op X la N) (x : Rp X la N) : hasseRp X la N β (a • x) =
     ∑ q ∈ antidiagonal β, hasseOp X la N q.1 a • hasseRp X la N q.2 x := by
   rw [← algebraMap_smul (Kp X la N) a x, hasseRp_smul]
   refine Finset.sum_congr rfl fun q _ => ?_
   rw [hasseKp_algebraMap, algebraMap_smul]
 
+/- English proof (translation)
+Use `split_ifs with h`. Substitute `h` using the available equality. Conclude with `hasseRp_zero X la t`. Conclude with `ht.co h`.
+-/
 theorem hasseRp_of_isCst {t : Rp X la N} (ht : Tay.IsCst (tayRp X la N) t) (β : Idx D j N →₀ ℕ) :
     hasseRp X la N β t = if β = 0 then t else 0 := by
   split_ifs with h
   · subst h; exact hasseRp_zero X la t
   · exact ht.co h
 
+/- English proof (translation)
+Proceed by induction on `hx using Submodule.span_induction generalizing β with`. Consider the case `mem t ht`. Rewrite using `[hasseRp_of_isCst X la (hT t ht)]`. Use `split_ifs`. Conclude with `Submodule.subset_span ht`.
+
+Conclude with `zero_mem _`. Consider the case `zero => rw [map_zero]`. Conclude with `zero_mem _`. Consider the case `add x y _ _ hx hy => rw [map_add]`. Conclude with `add_mem (hx β) (hy β)`.
+
+Consider the case `smul k x _ hx`. Rewrite using `[hasseRp_smul]`. Conclude with `Submodule.sum_mem _ fun q _ => Submodule.smul_mem _ _ (hx q.2)`.
+-/
 theorem hasseRp_mem_span_Kp {T : Set (Rp X la N)} (hT : ∀ t ∈ T, Tay.IsCst (tayRp X la N) t) {x : Rp X la N}
     (hx : x ∈ Submodule.span (Kp X la N) T) (β : Idx D j N →₀ ℕ) :
     hasseRp X la N β x ∈ Submodule.span (Kp X la N) T := by
@@ -710,6 +1072,13 @@ theorem hasseRp_mem_span_Kp {T : Set (Rp X la N)} (hT : ∀ t ∈ T, Tay.IsCst (
     rw [hasseRp_smul]
     exact Submodule.sum_mem _ fun q _ => Submodule.smul_mem _ _ (hx q.2)
 
+/- English proof (translation)
+Proceed by induction on `hx using Submodule.span_induction generalizing β with`. Consider the case `mem t ht`. Rewrite using `[hasseRp_of_isCst X la (hT t ht)]`. Use `split_ifs`. Conclude with `Submodule.subset_span ht`.
+
+Conclude with `zero_mem _`. Consider the case `zero => rw [map_zero]`. Conclude with `zero_mem _`. Consider the case `add x y _ _ hx hy => rw [map_add]`. Conclude with `add_mem (hx β) (hy β)`.
+
+Consider the case `smul k x _ hx`. Rewrite using `[hasseRp_smul_Op]`. Conclude with `Submodule.sum_mem _ fun q _ => Submodule.smul_mem _ _ (hx q.2)`.
+-/
 theorem hasseRp_mem_span_Op {T : Set (Rp X la N)} (hT : ∀ t ∈ T, Tay.IsCst (tayRp X la N) t) {x : Rp X la N}
     (hx : x ∈ Submodule.span (Op X la N) T) (β : Idx D j N →₀ ℕ) :
     hasseRp X la N β x ∈ Submodule.span (Op X la N) T := by
@@ -725,6 +1094,9 @@ theorem hasseRp_mem_span_Op {T : Set (Rp X la N)} (hT : ∀ t ∈ T, Tay.IsCst (
     rw [hasseRp_smul_Op]
     exact Submodule.sum_mem _ fun q _ => Submodule.smul_mem _ _ (hx q.2)
 
+/- English proof (translation)
+Establish `hT : ∀ t ∈ Set.range (fun F : B.Cusp j u => emb X la N (X.inc u F)), Tay.IsCst (tayRp X la N) t`. Introduce and unpack `t ⟨F, rfl⟩`. Conclude with `tayRp_isCst_emb X la _`. Conclude with `hasseRp_mem_span_Kp X la hT hx β`.
+-/
 theorem hasseRp_mem_Vw {u : WeightFamilies.Wt D j} {x : Rp X la N} (hx : x ∈ Vw X la N u) (β : Idx D j N →₀ ℕ) :
     hasseRp X la N β x ∈ Vw X la N u := by
   have hT : ∀ t ∈ Set.range (fun F : B.Cusp j u => emb X la N (X.inc u F)), Tay.IsCst (tayRp X la N) t := by
@@ -737,6 +1109,9 @@ end
 section
 variable (X : PJ D B P j) (la : HeightOneSpectrum (𝓞 B.KO)) {N : ℕ} {wL : WeightFamilies.Wt D j} (w : Fin N → B.Cusp j wL)
 
+/- English proof (translation)
+Use `show hasseRp X la N β (∑ k, algebraMap (Op X la N) (Kp X la N) (Tv X la N (i, k)) • emb X la N (X.inc wL (w k))) = _`. Rewrite using `[map_sum]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[show emb X la N (X.inc wL (w k)) = bcV X la N ((1 : X.Kl la) ⊗ₜ[B.KO] (X.inc wL (w k))) from rfl, hasseRp_smul_bcV, hasseKp_algebraMap]`.
+-/
 theorem hasseRp_sec (β : Idx D j N →₀ ℕ) (i : Fin (WeightFamilies.dimY D j + 1)) : hasseRp X la N β (sec X la w i) =
     ∑ k, algebraMap (Op X la N) (Kp X la N) (hasseOp X la N β (Tv X la N (i, k))) • emb X la N (X.inc wL (w k)) := by
   show hasseRp X la N β (∑ k, algebraMap (Op X la N) (Kp X la N) (Tv X la N (i, k)) • emb X la N (X.inc wL (w k))) = _
@@ -744,6 +1119,13 @@ theorem hasseRp_sec (β : Idx D j N →₀ ℕ) (i : Fin (WeightFamilies.dimY D 
   refine Finset.sum_congr rfl fun k _ => ?_
   rw [show emb X la N (X.inc wL (w k)) = bcV X la N ((1 : X.Kl la) ⊗ₜ[B.KO] (X.inc wL (w k))) from rfl, hasseRp_smul_bcV, hasseKp_algebraMap]
 
+/- English proof (translation)
+Rewrite using `[← hasseRp_single, hasseRp_sec]`. Simplify using `only [hasseOp_single, pdOp_Tv]`. Take `⟨i', k'⟩` from `p`. Distinguish the cases in `hi : i' = i`. Substitute `hi` using the available equality.
+
+Rewrite using `[Finset.sum_eq_single k']`. Simplify using the standard rewrite rules. Introduce `b _ hb`. Simplify using `[Prod.ext_iff, Ne.symm hb]`. Introduce `h`.
+
+Conclude with `absurd (Finset.mem_univ _) h`. Simplify using `[Prod.ext_iff, hi]`.
+-/
 theorem pdRp_sec (p : Idx D j N) (i : Fin (WeightFamilies.dimY D j + 1)) :
     pdRp X la N p (sec X la w i) = if p.1 = i then emb X la N (X.inc wL (w p.2)) else 0 := by
   rw [← hasseRp_single, hasseRp_sec]
@@ -757,6 +1139,9 @@ theorem pdRp_sec (p : Idx D j N) (i : Fin (WeightFamilies.dimY D j + 1)) :
     · intro h; exact absurd (Finset.mem_univ _) h
   · simp [Prod.ext_iff, hi]
 
+/- English proof (translation)
+Rewrite using `[hasseRp_sec]`. Use `Finset.sum_eq_zero fun k _ => ?_` and prove the remaining obligations. Rewrite using `[hasseOp_Tv, if_neg h0, if_neg (h1 _), map_zero, zero_smul]`.
+-/
 theorem hasseRp_sec_eq_zero {β : Idx D j N →₀ ℕ} (h0 : β ≠ 0) (h1 : ∀ p, β ≠ Finsupp.single p 1)
     (i : Fin (WeightFamilies.dimY D j + 1)) : hasseRp X la N β (sec X la w i) = 0 := by
   rw [hasseRp_sec]
@@ -769,49 +1154,91 @@ def pdLc (p : Idx D j N) : Derivation (X.Kl la) (Lc X la w) (Lc X la w) :=
 def hasse (β : Idx D j N →₀ ℕ) : Lc X la w →ₗ[X.Kl la] Lc X la w :=
   Tay.hs (X.Kl la) (tayLc X la w) (tayLc_isCst X la w) β
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem hasse_single (p : Idx D j N) (x : Lc X la w) : hasse X la w (Finsupp.single p 1) x = pdLc X la w p x := rfl
 
+/- English proof (translation)
+The claim follows from `Tay.co_zero (tayLc_isTay X la w) x`.
+-/
 theorem hasse_zero (x : Lc X la w) : hasse X la w 0 x = x := Tay.co_zero (tayLc_isTay X la w) x
 
+/- English proof (translation)
+The claim follows from `LinearMap.ext (hasse_zero X la w)`.
+-/
 theorem hasse_zero' : hasse X la w 0 = LinearMap.id := LinearMap.ext (hasse_zero X la w)
 
+/- English proof (translation)
+The claim follows from `Tay.co_mul (tayLc X la w) β x y`.
+-/
 theorem hasse_mul (β : Idx D j N →₀ ℕ) (x y : Lc X la w) : hasse X la w β (x * y) =
     ∑ q ∈ antidiagonal β, hasse X la w q.1 x * hasse X la w q.2 y := Tay.co_mul (tayLc X la w) β x y
 
+/- English proof (translation)
+The claim follows from `Tay.dv_co (tayLc_iterAt X la w) p β x`.
+-/
 theorem pdLc_hasse (p : Idx D j N) (β : Idx D j N →₀ ℕ) (x : Lc X la w) :
     pdLc X la w p (hasse X la w β x) = (β p + 1) • hasse X la w (β + Finsupp.single p 1) x := Tay.dv_co (tayLc_iterAt X la w) p β x
 
+/- English proof (translation)
+The claim follows from `Tay.dv_comm (tayLc_iterAt X la w) p q x`.
+-/
 theorem pdLc_comm (p q : Idx D j N) (x : Lc X la w) :
     pdLc X la w p (pdLc X la w q x) = pdLc X la w q (pdLc X la w p x) := Tay.dv_comm (tayLc_iterAt X la w) p q x
 
+/- English proof (translation)
+The claim follows from `Tay.loc_co (Submonoid.powers (sec X la w 0)) (Lc X la w) (tayRp X la N) (tayRp_isTay X la N) β x`.
+-/
 theorem hasse_algebraMap (β : Idx D j N →₀ ℕ) (x : Rp X la N) :
     hasse X la w β (algebraMap (Rp X la N) (Lc X la w) x) = algebraMap (Rp X la N) (Lc X la w) (hasseRp X la N β x) := Tay.loc_co (Submonoid.powers (sec X la w 0)) (Lc X la w) (tayRp X la N) (tayRp_isTay X la N) β x
 
+/- English proof (translation)
+The claim follows from `Tay.loc_dv (Submonoid.powers (sec X la w 0)) (Lc X la w) (tayRp X la N) (tayRp_isTay X la N) p x`.
+-/
 theorem pdLc_algebraMap (p : Idx D j N) (x : Rp X la N) :
     pdLc X la w p (algebraMap (Rp X la N) (Lc X la w) x) = algebraMap (Rp X la N) (Lc X la w) (pdRp X la N p x) := Tay.loc_dv (Submonoid.powers (sec X la w 0)) (Lc X la w) (tayRp X la N) (tayRp_isTay X la N) p x
 
+/- English proof (translation)
+Rewrite using `[hasse_algebraMap, hasseRp_bcV X la hβ, map_zero]`.
+-/
 theorem hasse_bcV {β : Idx D j N →₀ ℕ} (hβ : β ≠ 0) (v : X.Vl la) :
     hasse X la w β (algebraMap (Rp X la N) (Lc X la w) (bcV X la N v)) = 0 := by
   rw [hasse_algebraMap, hasseRp_bcV X la hβ, map_zero]
 
+/- English proof (translation)
+Rewrite using `[hasse_algebraMap, hasseRp_emb X la hβ, map_zero]`.
+-/
 theorem hasse_emb {β : Idx D j N →₀ ℕ} (hβ : β ≠ 0) (F : X.Forms) :
     hasse X la w β (algebraMap (Rp X la N) (Lc X la w) (emb X la N F)) = 0 := by
   rw [hasse_algebraMap, hasseRp_emb X la hβ, map_zero]
 
+/- English proof (translation)
+Rewrite using `[pdLc_algebraMap, pdRp_emb, map_zero]`.
+-/
 theorem pdLc_emb (p : Idx D j N) (F : X.Forms) :
     pdLc X la w p (algebraMap (Rp X la N) (Lc X la w) (emb X la N F)) = 0 := by
   rw [pdLc_algebraMap, pdRp_emb, map_zero]
 
+/- English proof (translation)
+The claim follows from `(tayLc_isCst_bcV X la w v).co_mul β x`.
+-/
 theorem hasse_bcV_mul (β : Idx D j N →₀ ℕ) (v : X.Vl la) (x : Lc X la w) :
     hasse X la w β (algebraMap (Rp X la N) (Lc X la w) (bcV X la N v) * x) =
       algebraMap (Rp X la N) (Lc X la w) (bcV X la N v) * hasse X la w β x := (tayLc_isCst_bcV X la w v).co_mul β x
 
+/- English proof (translation)
+Rewrite using `[hasse_algebraMap, IsScalarTower.algebraMap_apply (Op X la N) (Kp X la N) (Rp X la N) x, hasseRp_algebraMap, hasseKp_algebraMap, ← IsScalarTower.algebraMap_apply (Op X la N) (Kp X la N) (Rp X la N)]`.
+-/
 theorem hasse_algebraMap_Op (β : Idx D j N →₀ ℕ) (x : Op X la N) :
     hasse X la w β (algebraMap (Rp X la N) (Lc X la w) (algebraMap (Op X la N) (Rp X la N) x)) =
       algebraMap (Rp X la N) (Lc X la w) (algebraMap (Op X la N) (Rp X la N) (hasseOp X la N β x)) := by
   rw [hasse_algebraMap, IsScalarTower.algebraMap_apply (Op X la N) (Kp X la N) (Rp X la N) x,
     hasseRp_algebraMap, hasseKp_algebraMap, ← IsScalarTower.algebraMap_apply (Op X la N) (Kp X la N) (Rp X la N)]
 
+/- English proof (translation)
+Establish `key` using `congrArg (fun z => hasse X la w β z) h`. Simplify using `only [hasse_mul, hasse_algebraMap] at key`. Conclude with `key`.
+-/
 theorem hasse_of_mul_eq (β : Idx D j N →₀ ℕ) {s x : Rp X la N} {y : Lc X la w}
     (h : algebraMap (Rp X la N) (Lc X la w) s * y = algebraMap (Rp X la N) (Lc X la w) x) :
     ∑ q ∈ antidiagonal β, algebraMap (Rp X la N) (Lc X la w) (hasseRp X la N q.1 s) * hasse X la w q.2 y =
@@ -829,6 +1256,9 @@ def hasseV (β : Idx D j N →₀ ℕ) :
   letI := Lc.algVl X la w
   Tay.hs (X.Vl la) (tayLc X la w) (tayLc_isCst_bcV X la w) β
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem hasseV_apply (β : Idx D j N →₀ ℕ) (x : Lc X la w) :
     letI := Lc.algVl X la w
     hasseV X la w β x = hasse X la w β x := rfl
@@ -836,20 +1266,32 @@ theorem hasseV_apply (β : Idx D j N →₀ ℕ) (x : Lc X la w) :
 def iterPd (β : Idx D j N →₀ ℕ) : Module.End (X.Kl la) (Lc X la w) :=
   Tay.itD (X.Kl la) (tayLc_iterAt X la w) (tayLc_isCst X la w) Finset.univ β
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem iterPd_eq (β : Idx D j N →₀ ℕ) : iterPd X la w β =
     Finset.univ.noncommProd (fun p => ((pdLc X la w p : Lc X la w →ₗ[X.Kl la] Lc X la w) :
       Module.End (X.Kl la) (Lc X la w)) ^ β p)
       (fun p _ q _ _ => Commute.pow_pow (LinearMap.ext fun x => pdLc_comm X la w p q x) _ _) := rfl
 
+/- English proof (translation)
+The claim follows from `Tay.itD_apply (X.Kl la) (tayLc_isTay X la w) (tayLc_iterAt X la w) (tayLc_isCst X la w) Finset.univ β (Finset.subset_univ _) x`.
+-/
 theorem iterPd_apply (β : Idx D j N →₀ ℕ) (x : Lc X la w) :
     iterPd X la w β x = (∏ p, (β p).factorial) • hasse X la w β x := Tay.itD_apply (X.Kl la) (tayLc_isTay X la w) (tayLc_iterAt X la w) (tayLc_isCst X la w)
     Finset.univ β (Finset.subset_univ _) x
 
+/- English proof (translation)
+Use `first`. Consider the case `infer_instance`. Consider the case `exact charZero_of_injective_algebraMap (algebraMap B.KO (X.Kl la)).injective`.
+-/
 theorem Kl_charZero : CharZero (X.Kl la) := by
   first
     | infer_instance
     | exact charZero_of_injective_algebraMap (algebraMap B.KO (X.Kl la)).injective
 
+/- English proof (translation)
+Use `haveI := Kl_charZero X la`. Rewrite using `[iterPd_apply, ← Nat.cast_smul_eq_nsmul (X.Kl la), smul_smul, inv_mul_cancel₀, one_smul]`. Conclude with `Nat.cast_ne_zero.mpr (Finset.prod_ne_zero_iff.mpr fun p _ => Nat.factorial_ne_zero (β p))`.
+-/
 theorem hasse_eq (β : Idx D j N →₀ ℕ) (x : Lc X la w) :
     hasse X la w β x = ((∏ p, (β p).factorial : ℕ) : X.Kl la)⁻¹ • iterPd X la w β x := by
   haveI := Kl_charZero X la
@@ -861,6 +1303,9 @@ end
 section
 variable (X : PJ D B P j) (la : HeightOneSpectrum (𝓞 B.KO)) {N : ℕ} {wL : WeightFamilies.Wt D j} (w : Fin N → B.Cusp j wL)
 
+/- English proof (translation)
+Establish `h1 : algebraMap (Rp X la N) (Lc X la w) s * IsLocalization.mk' (Lc X la w) x s = algebraMap (Rp X la N) (Lc X la w) x` using `IsLocalization.mk'_spec' _ _ _`. Establish `h2` using `congrArg (fun z => pdLc X la w p z) h1`. Simplify using `only [Derivation.leibniz, pdLc_algebraMap, smul_eq_mul] at h2`. Simplify using `only [map_mul, map_sub, Submonoid.coe_mul]`. Take the linear combination `(algebraMap (Rp X la N) (Lc X la w) s) * h2 - (algebraMap (Rp X la N) (Lc X la w) (pdRp X la N p s)) * h1`.
+-/
 theorem pdLc_mk' (p : Idx D j N) (x : Rp X la N) (s : Submonoid.powers (sec X la w 0)) :
     algebraMap (Rp X la N) (Lc X la w) (s * s) * pdLc X la w p (IsLocalization.mk' (Lc X la w) x s) =
       algebraMap (Rp X la N) (Lc X la w) (s * pdRp X la N p x - x * pdRp X la N p s) := by

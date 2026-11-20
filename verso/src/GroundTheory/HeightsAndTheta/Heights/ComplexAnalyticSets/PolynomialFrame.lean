@@ -9,6 +9,11 @@ noncomputable section
 
 namespace PolynomialFrame
 
+/- English proof (translation)
+Combine the equalities or inequalities in the displayed calculation. Rewrite using `[← mul_assoc, ← pow_add, Nat.sub_add_cancel hm]`. Use `_ = s ^ (d - m.degree) * ∏ i ∈ m.support, (s * a i + b i) ^ m i := by`. Use `congr 1`. Rewrite using `[Finsupp.degree_apply, ← Finset.prod_pow_eq_pow_sum, ← Finset.prod_mul_distrib]`.
+
+Use `Finset.prod_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[← mul_pow]`. Use `congr 1`. Clear the denominators using the available nonvanishing facts.
+-/
 theorem pow_mul_prod {k : ℕ} {s : ℂ} (hs : s ≠ 0) (a b : Fin k → ℂ) (m : Fin k →₀ ℕ) {d : ℕ}
     (hm : m.degree ≤ d) :
     s ^ d * ∏ i ∈ m.support, (a i + s⁻¹ * b i) ^ m i =
@@ -24,6 +29,19 @@ theorem pow_mul_prod {k : ℕ} {s : ℂ} (hs : s ≠ 0) (a b : Fin k → ℂ) (m
         congr 1
         field_simp
 
+/- English proof (translation)
+Use `by_contra! h`. Use `set d := P.totalDegree with hd`. Establish `hdeg : ∀ m ∈ P.support, m.degree ≤ d` using `fun m hm => le_totalDegree hm`. Use `set H : ℂ → ℂ := fun s => ∑ m ∈ P.support, coeff m P * (s ^ (d - m.degree) * ∏ i ∈ m.support, (s * w i + v i) ^ m i) with hH`. Establish `hHc : Continuous H`.
+
+Simplify using `only [hH]`. Use `fun_prop`. Establish `hzero : ∀ s : ℂ, s ≠ 0 → H s = 0`. Introduce `s hs`. Establish `h1` using `h s⁻¹`.
+
+Rewrite `h1` using `[eval_eq]`. Establish `: H s = s ^ d * ∑ m ∈ P.support, coeff m P * ∏ i ∈ m.support, ((w + s⁻¹ • v) i) ^ m i`. Rewrite using `[Finset.mul_sum]`. Use `Finset.sum_congr rfl fun m hm => ?_` and prove the remaining obligations. Simplify using `only [Pi.add_apply, Pi.smul_apply, smul_eq_mul]`.
+
+Rewrite using `[mul_left_comm (s ^ d), pow_mul_prod hs w v m (hdeg m hm)]`. Rewrite using `[this, h1, mul_zero]`. Establish `h0 : H 0 = 0`. Establish `h1 : Tendsto H (𝓝[≠] 0) (𝓝 (H 0))` using `hHc.continuousAt.tendsto.mono_left nhdsWithin_le_nhds`. Establish `h2 : Tendsto H (𝓝[≠] 0) (𝓝 0)` using `tendsto_const_nhds.congr' (eventually_nhdsWithin_of_forall fun s hs => (hzero s hs).symm)`.
+
+Conclude with `tendsto_nhds_unique h1 h2`. Apply `hv` to reduce the goal to its premises. Rewrite using `[homogeneousComponent_apply, map_sum, ← h0, Finset.sum_filter]`. Use `Finset.sum_congr rfl fun m hm => ?_` and prove the remaining obligations. Rewrite using `[eval_monomial, Finsupp.prod]`.
+
+Use `split_ifs with hmd`. Rewrite using `[hmd, Nat.sub_self, pow_zero, one_mul]`. Simplify using the standard rewrite rules. Establish `: d - m.degree ≠ 0` using `by have := hdeg m hm; omega`. Rewrite using `[zero_pow this, zero_mul, mul_zero]`.
+-/
 theorem exists_eval_line_ne_zero {k : ℕ} (P : MvPolynomial (Fin k) ℂ) (v : Fin k → ℂ)
     (hv : eval v (homogeneousComponent P.totalDegree P) ≠ 0) (w : Fin k → ℂ) :
     ∃ t : ℂ, eval (w + t • v) P ≠ 0 := by
@@ -60,6 +78,11 @@ theorem exists_eval_line_ne_zero {k : ℕ} (P : MvPolynomial (Fin k) ℂ) (v : F
   · have : d - m.degree ≠ 0 := by have := hdeg m hm; omega
     rw [zero_pow this, zero_mul, mul_zero]
 
+/- English proof (translation)
+Establish `hne : P.support.Nonempty` using `Finset.nonempty_iff_ne_empty.mpr (mt support_eq_empty.mp hP)`. Take `⟨m, hm, hmax⟩` from `Finset.exists_mem_eq_sup P.support hne (fun s => s.sum fun _ e => e)`. Introduce `h0`. Establish `h1` using `congrArg (coeff m) h0`. Rewrite `h1` using `[coeff_homogeneousComponent, coeff_zero, if_pos]`.
+
+Conclude with `(mem_support_iff.mp hm) h1`. Rewrite using `[totalDegree, hmax]`. Both sides reduce to the same expression.
+-/
 theorem homogeneousComponent_totalDegree_ne_zero {k : ℕ} {P : MvPolynomial (Fin k) ℂ} (hP : P ≠ 0) :
     homogeneousComponent P.totalDegree P ≠ 0 := by
   have hne : P.support.Nonempty := Finset.nonempty_iff_ne_empty.mpr (mt support_eq_empty.mp hP)
@@ -75,6 +98,15 @@ end PolynomialFrame
 
 open PolynomialFrame in
 
+/- English proof (translation)
+Use `set Pd := homogeneousComponent P.totalDegree P`. Establish `hPd : Pd ≠ 0` using `homogeneousComponent_totalDegree_ne_zero hP`. Use `set F : MvPolynomial (Fin k × Fin k) ℂ := (Matrix.mvPolynomialX (Fin k) (Fin k) ℂ).det * ∏ i, rename (fun j => (j, i)) Pd`. Establish `hF : F ≠ 0`. Use `mul_ne_zero (Matrix.det_mvPolynomialX_ne_zero _ _) (Finset.prod_ne_zero_iff.mpr fun i _ => ?_)` and prove the remaining obligations.
+
+Establish `hinj : Function.Injective (fun j : Fin k => (j, i))` using `fun a b h => (Prod.ext_iff.mp h).1`. Introduce `h`. Conclude with `hPd (rename_injective _ hinj (by rw [h, map_zero]))`. Take `⟨s, hs⟩ : ∃ s : Fin k × Fin k → ℂ, eval s F ≠ 0` from `by by_contra! hs`. Conclude with `hF (MvPolynomial.funext fun x => by rw [hs x, map_zero])`.
+
+Use `⟨Matrix.of fun i j => s (i, j), ?_, fun i w => exists_eval_line_ne_zero P _ ?_ w⟩` and prove the remaining obligations. Establish `h` using `hs`. Rewrite `h` using `[map_mul, Matrix.eval_det_mvPolynomialX]`. Conclude with `left_ne_zero_of_mul h`. Establish `h : eval s F ≠ 0` using `hs`.
+
+Rewrite `h` using `[map_mul, map_prod]`. Establish `h2` using `(Finset.prod_ne_zero_iff.mp (right_ne_zero_of_mul h)) i (Finset.mem_univ i)`. Rewrite `h2` using `[eval_rename]`. Conclude with `h2`.
+-/
 theorem exists_frame_lines_not_in_zeroSet {k : ℕ} {P : MvPolynomial (Fin k) ℂ} (hP : P ≠ 0) :
     ∃ M : Matrix (Fin k) (Fin k) ℂ, M.det ≠ 0 ∧
       ∀ (i : Fin k) (w : Fin k → ℂ), ∃ t : ℂ, eval (w + t • fun j => M j i) P ≠ 0 := by

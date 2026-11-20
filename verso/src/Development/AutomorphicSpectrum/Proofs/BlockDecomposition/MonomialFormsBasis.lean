@@ -15,6 +15,9 @@ def topEquiv : (⊤ : AddSubmonoid (Gam n d)) ≃ Gam n d := Equiv.Set.univ _
 def lrBasis : Module.Basis (Gam n d) K (Lr K n d) :=
   (Module.Basis.ofRepr (AddMonoidAlgebra.coeffLinearEquiv K)).reindex topEquiv
 
+/- English proof (translation)
+Rewrite using `[lrBasis, Module.Basis.reindex_apply, Module.Basis.coe_ofRepr]`. Both sides reduce to the same expression.
+-/
 theorem lrBasis_apply (g : Gam n d) : lrBasis (K := K) g = monL K g := by
   rw [lrBasis, Module.Basis.reindex_apply, Module.Basis.coe_ofRepr]
   rfl
@@ -31,6 +34,11 @@ def setEquiv (a : ℕ) : {D : Finset (E n d) // D.card = a} ≃ Set.powersetCard
     ext x
     simp
 
+/- English proof (translation)
+Use `⟨((bΩ.reindex finSumFinEquiv).exteriorPower a).reindex (setEquiv a).symm, fun D => ?_⟩` and prove the remaining obligations. Rewrite using `[Module.Basis.reindex_apply, exteriorPower.basis_apply]`. Simplify using `only [Equiv.symm_symm]`. Unfold `exteriorPower.ιMulti_family wedge`. Use `congr 1`.
+
+Use function extensionality and compare the values at `i`. Simplify using `only [Function.comp_apply, Module.Basis.reindex_apply, h]`. Both sides reduce to the same expression.
+-/
 theorem wedge_basis (bΩ : Module.Basis (E n d) (Lr K n d) Ω[Lr K n d⁄K]) (h : ∀ e, bΩ e = dl e) (a : ℕ) :
     ∃ c : Module.Basis {D : Finset (E n d) // D.card = a} (Lr K n d) (Om K (Lr K n d) a),
       ∀ D, c D = wedge (K := K) (enumD D) := by
@@ -43,6 +51,11 @@ theorem wedge_basis (bΩ : Module.Basis (E n d) (Lr K n d) Ω[Lr K n d⁄K]) (h 
   simp only [Function.comp_apply, Module.Basis.reindex_apply, h]
   rfl
 
+/- English proof (translation)
+Introduce `K _ n d a`. Take `⟨bΩ, h⟩` from `GlobalTheory.CompanionTheory.SurjectionOntoH4.OmBasis.exists_basis_dl (K := K) (n := n) (d := d)`. Take `⟨c, hc⟩` from `wedge_basis bΩ h a`. Use `⟨lrBasis.smulTower c, fun p => ?_⟩` and prove the remaining obligations. Rewrite using `[Module.Basis.smulTower_apply, lrBasis_apply, hc]`.
+
+Both sides reduce to the same expression.
+-/
 theorem monW_basis : ∀ {K : Type} [Field K] {n d : ℕ} (a : ℕ), ∃ b : Module.Basis (Gam n d × {D : Finset (E n d) // D.card = a}) K (Om K (Lr K n d) a), ∀ p, b p = monW K p.1 p.2 := by
   intro K _ n d a
   obtain ⟨bΩ, h⟩ := GlobalTheory.CompanionTheory.SurjectionOntoH4.OmBasis.exists_basis_dl (K := K) (n := n) (d := d)

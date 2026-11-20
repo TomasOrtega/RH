@@ -13,6 +13,11 @@ section Ext
 variable {F E : Type} [Field F] [NumberField F] [Field E] [Algebra F E]
   {σ : E →ₐ[F] E} {M : ℕ} {J : Matrix (Fin M) (Fin M) E} [FiniteDimensional F E]
 
+/- English proof (translation)
+Establish `h : (FixXp (Af F) σ J P : Set (HA (Af F) σ J)) = ⋂ v, ⋂ (_ : InXperp (Af F) σ J P v), {g | lin (Af F) σ J g v = v}`. Use extensionality with `g`. Simplify using `only [Set.mem_iInter, Set.mem_ofPred_eq, SetLike.mem_coe]`. Conclude with `Iff.rfl`. Rewrite using `[h]`.
+
+Conclude with `isClosed_iInter fun v => isClosed_iInter fun _ => isClosed_eq (ExC.continuous_lin _) continuous_const`.
+-/
 theorem isClosed_FixXp {r : ℕ} (P : Frame E M r) :
     IsClosed (FixXp (Af F) σ J P : Set (HA (Af F) σ J)) := by
   have h : (FixXp (Af F) σ J P : Set (HA (Af F) σ J)) =
@@ -24,6 +29,19 @@ theorem isClosed_FixXp {r : ℕ} (P : Frame E M r) :
   exact isClosed_iInter fun v => isClosed_iInter fun _ =>
     isClosed_eq (ExC.continuous_lin _) continuous_const
 
+/- English proof (translation)
+Introduce `hJ hinv r P T hP`. Take `⟨sH, csH, cyH, hs1, hdec, hyH, hZN1, hcent, hmul, hZnorm, hconj, hZconj⟩` from `hH hJ hinv r P T hP`. Take `⟨A, Lev, hAN, hAcl, cLev, hLev, hAN1, hN1norm, hAcomm⟩` from `hL hJ hinv r P T hP`. Establish `hmemW : ∀ m : LevelUnipotentSubgroup (Af F) σ J P, ∀ a, yH (Af F) σ J P m a ∈ Wp (Af F) σ J P`. Introduce `m a`.
+
+Take `⟨y, hy, -⟩` from `hdec m m.2`. Rewrite using `[← hy a]`. Conclude with `(y a).2`. Set `yQ : LevelUnipotentSubgroup (Af F) σ J P → (Fin r → Wp (Af F) σ J P)` to `fun m a => ⟨yH (Af F) σ J P m a, hmemW m a⟩`. Establish `H : CoordHyp (Nsub (Af F) σ J P) A (LevelUnipotentSubgroup (Af F) σ J P) (Zsub (Af F) σ J P) Lev sH yQ` using `{ hAN := hAN coordinate_level_le := inf_le_left hZN1 := hZN1 cLev := cLev csH := csH cyQ := continuous_pi fun a => Continuous.subtype_mk ((continuous_apply a).comp (cyH.comp continuous_subtype_val)) _ lev_mem := fun n hn => (hLev n hn).1 lev_rest := fun n hn => (hLev n hn).2 triv …`.
+
+Take `⟨y, hy, hz⟩` from `hdec m m.2`. Establish `: yQ m = y` using `funext fun a => Subtype.ext (hy a).symm`. Rewrite using `[this]`. Conclude with `hz`. Use `yQ_sH := fun y z hz => funext fun a => Subtype.ext (hyH y z hz a)`.
+
+Use `cent := hcent`. Use `mul := hmul }`. Use `⟨A, Zsub (Af F) σ J P, cHomeo H, hAcl, ?_, fun n0 => coord_skew H n0, ?_⟩` and prove the remaining obligations. Use `show IsClosed ((Nsub (Af F) σ J P ⊓ FixXp (Af F) σ J P : Subgroup (HA (Af F) σ J)) : Set (HA (Af F) σ J))`. Rewrite using `[Subgroup.coe_inf]`.
+
+Conclude with `(ExC.isClosed_Nsub hJ hinv P T hP).inter (isClosed_FixXp P)`. Introduce `h hh u y z`. Take `⟨y', hy', hc⟩` from `hconj h hh y`. Use `⟨y', hy', ?_⟩` and prove the remaining obligations. Rewrite using `[cHomeo_apply, cHomeo_apply]`.
+
+Establish `hu : h * (u : HA (Af F) σ J) * h⁻¹ = u` using `by rw [hAcomm h hh u u.2]; group`. Establish `hz : h * (z : HA (Af F) σ J) * h⁻¹ = z` using `hZconj h hh z z.2`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem ncoord_of_parts (hH : HeisP F E σ M J) (hL : LevP F E σ M J) : NCoord F E σ M J := by
   intro hJ hinv r P T hP
   obtain ⟨sH, csH, cyH, hs1, hdec, hyH, hZN1, hcent, hmul, hZnorm, hconj, hZconj⟩ :=
@@ -72,11 +90,17 @@ theorem ncoord_of_parts (hH : HeisP F E σ M J) (hL : LevP F E σ M J) : NCoord 
 
 end Ext
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ hσ M J hJ`. Establish `: FiniteDimensional F E` using `Module.finite_of_finrank_pos (by rw [hσ.2.2.1]; norm_num)`. Conclude with `ncoord_of_parts (hH F E σ hσ M J hJ) (hL F E σ hσ M J hJ)`.
+-/
 theorem ncoordAll_of (hH : HeisPAll) (hL : LevPAll) : NCoordAll := by
   intro F E _ _ _ _ _ σ hσ M J hJ
   have : FiniteDimensional F E := Module.finite_of_finrank_pos (by rw [hσ.2.2.1]; norm_num)
   exact ncoord_of_parts (hH F E σ hσ M J hJ) (hL F E σ hσ M J hJ)
 
+/- English proof (translation)
+The claim follows from `levelSAll_of_parts hS (ncoordAll_of hH hL) hV hA`.
+-/
 theorem levelSAll_of_semiNHS_heis_lev (hS : PI.LevelKSplit.W.ExS.SemiNHSAll) (hH : HeisPAll) (hL : LevPAll)
     (hV : PI.LevelKSplit.W.CD.ModVAll) (hA : NCAsmAll) : PI.LevelKSplit.LevelSAll :=
   levelSAll_of_parts hS (ncoordAll_of hH hL) hV hA

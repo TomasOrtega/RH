@@ -28,11 +28,17 @@ def extendByOne (γ : (D.sp.X 0).V ≃ₗ[D.host.E] (D.sp.X 0).V) : SumWLine D �
 def intersectFirstSummand (𝓛 : Submodule (𝓞 D.host.E) (SumWLine D)) : Submodule (𝓞 D.host.E) (D.sp.X 0).V :=
   𝓛.comap ((LinearMap.inl D.host.E (D.sp.X 0).V D.host.E).restrictScalars (𝓞 D.host.E))
 
+/- English proof (translation)
+Apply `LinearEquiv.ext` to reduce the goal to its premises. Introduce and unpack `⟨w, c⟩`. Both sides reduce to the same expression.
+-/
 theorem extendByOne_one : extendByOne D 1 = 1 := by
   apply LinearEquiv.ext
   rintro ⟨w, c⟩
   rfl
 
+/- English proof (translation)
+Apply `LinearEquiv.ext` to reduce the goal to its premises. Introduce and unpack `⟨w, c⟩`. Both sides reduce to the same expression.
+-/
 theorem extendByOne_mul (a b : (D.sp.X 0).V ≃ₗ[D.host.E] (D.sp.X 0).V) :
     extendByOne D (a * b) = extendByOne D a * extendByOne D b := by
   apply LinearEquiv.ext
@@ -53,6 +59,9 @@ theorem extendByOne_mul (a b : (D.sp.X 0).V ≃ₗ[D.host.E] (D.sp.X 0).V) :
   one_smul M := gmap_one M
   mul_smul a b M := gmap_mul a.1 b.1 M
 
+/- English proof (translation)
+Use extensionality with `w`. Rewrite using `[isomAct_mem_gmap]`. Unfold `intersectFirstSummand`. Rewrite using `[Submodule.mem_comap, Submodule.mem_comap, isomAct_mem_gmap]`. Both sides reduce to the same expression.
+-/
 theorem partInW_gmap_extendByOne (γ : (D.sp.X 0).V ≃ₗ[D.host.E] (D.sp.X 0).V) (𝓛 : Submodule (𝓞 D.host.E) (SumWLine D)) :
     intersectFirstSummand D (gmap (extendByOne D γ) 𝓛) = gmap γ (intersectFirstSummand D 𝓛) := by
   ext w
@@ -61,12 +70,22 @@ theorem partInW_gmap_extendByOne (γ : (D.sp.X 0).V ≃ₗ[D.host.E] (D.sp.X 0).
   rw [Submodule.mem_comap, Submodule.mem_comap, isomAct_mem_gmap]
   rfl
 
+/- English proof (translation)
+Establish `h1 : (VS D).hT D.sp.zm (D.sp.iXY 0 w) = 0`. Rewrite using `[← (VS D).herm.eq (D.sp.iXY 0 w) D.sp.zm, D.sp.zm_orth w, map_zero]`. Unfold `D7.zmOf`. Rewrite using `[LinearMap.map_smulₛₗ, LinearMap.smul_apply, h1, smul_zero]`.
+-/
 theorem z_orth_embedding (u : D.what₂.Word) (w : (D.sp.X 0).V) : (VS D).hT (D.zmOf u) (D.sp.iXY 0 w) = 0 := by
   have h1 : (VS D).hT D.sp.zm (D.sp.iXY 0 w) = 0 := by
     rw [← (VS D).herm.eq (D.sp.iXY 0 w) D.sp.zm, D.sp.zm_orth w, map_zero]
   unfold D7.zmOf
   rw [LinearMap.map_smulₛₗ, LinearMap.smul_apply, h1, smul_zero]
 
+/- English proof (translation)
+Use extensionality with `w`. Unfold `intersectFirstSummand latticeWithZ L0X L0sub`. Simplify using `only [Submodule.mem_comap, Submodule.mem_inf, LinearMap.restrictScalars_apply]`. Establish `e : embedWithZ D F0 (LinearMap.inl D.host.E (D.sp.X 0).V D.host.E w) = D.sp.iXY 0 w`. Simplify using `[embedWithZ]`.
+
+Rewrite using `[e]`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Use `⟨h, ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `(VS D).hT F0.z (D.sp.iXY 0 w) = 0`.
+
+Rewrite using `[hz]`. Conclude with `z_orth_embedding D u w`. Conclude with `fun h => h.1`.
+-/
 theorem partInW_latticeWithZ (u : D.what₂.Word) {T : D.host.E} (F0 : FlagG (VS D) D.R.rS T) (hz : F0.z = D.zmOf u) (Λ : LatV D) :
     intersectFirstSummand D (latticeWithZ D F0 Λ) = L0X D Λ (lf D F0) := by
   ext w
@@ -117,11 +136,39 @@ def OrthLatticesOneGenus (D : D7) (u : D.what₂.Word) : Prop :=
   ForPrimeFlagLattice D u fun F0 Λ => ∀ Λ' : LatV D, IsRowLat D F0 Λ' →
     L0X D Λ' (lf D F0) ∈ genus (D.sp.X 0).hT (L0X D Λ (lf D F0))
 
+/- English proof (translation)
+Use `⟨(isom (VS D).hT).one_mem, fun j => ?_, rfl⟩` and prove the remaining obligations. Use extensionality with `x`. Simplify using the standard rewrite rules.
+-/
 theorem one_mem_flag_stabilizer (D : D7) {T : D.host.E} (F0 : FlagG (VS D) D.R.rS T) : (1 : (VS D).V ≃ₗ[D.host.E] (VS D).V) ∈ stabF D F0 := by
   refine ⟨(isom (VS D).hT).one_mem, fun j => ?_, rfl⟩
   ext x
   simp
 
+/- English proof (translation)
+Introduce `hT hT3 hsp F0 he hz Λ hΛ s hs`. Use `⟨fun Λ' hΛ' => h5 hT hT3 hsp F0 he hz Λ hΛ Λ' (hs.1 Λ' hΛ'), fun M hM => ?_⟩` and prove the remaining obligations. Establish `g1` using `h1 hT hT3 hsp F0 he hz`. Establish `g2` using `h2 hT hT3 hsp F0 he hz`. Establish `g3` using `h3 hT hT3 hsp F0 he hz`.
+
+Take `⟨g4f, g4c⟩` from `h4 hT hT3 hsp F0 he hz Λ hΛ M hM`. Use `letI := unitaryActOnLatticesWLine D`. Use `letI := unitaryActOnLatticesW D`. Establish `hinj : Set.InjOn (latticeWithZ D F0) (s : Set (LatV D))`. Introduce `Λ₁ hΛ₁ Λ₂ hΛ₂ heq`.
+
+Rewrite `hΛ₁`, `hΛ₂` using `[Finset.mem_coe]`. Take `⟨σ, hσ, hσe⟩` from `(g1 Λ₁ Λ₂ (hs.1 _ hΛ₁) (hs.1 _ hΛ₂)).2 ⟨1, (isom (D.sp.X 0).hT).one_mem, by rw [extendByOne_one, gmap_one, heq]⟩`. Take `⟨Λ₀, _, huniq⟩` from `hs.2 Λ₂ (hs.1 _ hΛ₂)`. Conclude with `(huniq Λ₁ ⟨hΛ₁, σ, hσ, hσe⟩).trans (huniq Λ₂ ⟨hΛ₂, 1, one_mem_flag_stabilizer D F0, gmap_one _⟩).symm`. Establish `hAfin : Finite (MulAction.stabilizer (isom (D.sp.X 0).hT) M)`.
+
+Establish `hf` using `final_autFinite D.host.E (D.sp.X 0).V (D.sp.X 0).hT (D.sp.X 0).herm (trace_inner_self_pos _ hpos) M hM.1`. Use `hf.to_subtype` as an intermediate fact. Conclude with `Finite.of_injective (fun γ : MulAction.stabilizer (isom (D.sp.X 0).hT) M => (⟨γ.1.1, γ.1.2, γ.2⟩ : {g : (D.sp.X 0).V ≃ₗ[D.host.E] (D.sp.X 0).V | g ∈ isom (D.sp.X 0).hT ∧ gmap g M = M})) (fun a b hab => Subtype.ext (Subtype.ext (congrArg (fun x => x.1) hab)))`. Establish `key` using `sum_fibre_inv_card_stabilizer (Γ := isom (D.sp.X 0).hT) (intersectFirstSummand D) (fun γ x => partInW_gmap_extendByOne D γ.1 x) {𝓛 | ∃ Λ', IsRowLat D F0 Λ' ∧ latticeWithZ D F0 Λ' = 𝓛} (by`. Introduce and unpack `γ _ ⟨Λ₁, hΛ₁, rfl⟩`.
+
+Take `⟨Λ₂, hΛ₂, e⟩` from `g3 γ.1 γ.2 Λ₁ hΛ₁`. Conclude with `⟨Λ₂, hΛ₂, e⟩)`. Use the proof step `(s.image (latticeWithZ D F0))`. Use the proof step `(by`. Introduce `x hx`.
+
+Take `⟨Λ₁, hΛ₁, rfl⟩` from `Finset.mem_image.1 hx`. Conclude with `⟨Λ₁, hs.1 _ hΛ₁, rfl⟩)`. Use the proof step `(by`. Introduce and unpack `_ ⟨Λ₂, hΛ₂, rfl⟩`. Take `⟨Λ₀, ⟨hΛ₀, σ, hσ, hσe⟩, huniq⟩` from `hs.2 Λ₂ hΛ₂`.
+
+Take `⟨γ, hγ, hγe⟩` from `(g1 Λ₀ Λ₂ (hs.1 _ hΛ₀) hΛ₂).1 ⟨σ, hσ, hσe⟩`. Use `⟨latticeWithZ D F0 Λ₀, ⟨Finset.mem_image_of_mem _ hΛ₀, ⟨γ, hγ⟩, hγe⟩, ?_⟩` and prove the remaining obligations. Introduce and unpack `y ⟨hy, γ', hγ'⟩`. Take `⟨Λ₁, hΛ₁, rfl⟩` from `Finset.mem_image.1 hy`. Take `⟨σ', hσ', hσe'⟩` from `(g1 Λ₁ Λ₂ (hs.1 _ hΛ₁) hΛ₂).2 ⟨γ'.1, γ'.2, hγ'⟩`.
+
+Rewrite using `[huniq Λ₁ ⟨hΛ₁, σ', hσ', hσe'⟩])`. Use `M hAfin g4f`. Rewrite `key` using `[Finset.filter_image, Finset.sum_image (fun a ha b hb => hinj (Finset.mem_filter.1 ha).1 (Finset.mem_filter.1 hb).1)]`. Establish `hcardM : Nat.card (MulAction.stabilizer (isom (D.sp.X 0).hT) M) = Nat.card (Formalism.ThetaLiftIndependence.autL (D.sp.X 0).hT M)` using `Nat.card_congr { toFun := fun γ => ⟨γ.1.1, γ.1.2, γ.2⟩ invFun := fun g => ⟨⟨g.1, g.2.1⟩, g.2.2⟩ left_inv := fun _ => rfl right_inv := fun _ => rfl }`. Establish `hT1 : 1 ≤ Tu D u` using `by omega`.
+
+Rewrite `key` using `[g4c, hcardM]`. Establish `hfilt : s.filter (fun Λ' => ∃ g ∈ isom (D.sp.X 0).hT, gmap g M = L0X D Λ' (lf D F0)) = s.filter (fun Λ' => ∃ γ : isom (D.sp.X 0).hT, γ • M = intersectFirstSummand D (latticeWithZ D F0 Λ'))`. Use `Finset.filter_congr fun Λ' _ => ?_` and prove the remaining obligations. Rewrite using `[partInW_latticeWithZ D u F0 hz]`. Prove the components needed by the constructor for the conclusion.
+
+Introduce and unpack `⟨g, hg, e⟩`. Conclude with `⟨⟨g, hg⟩, e⟩`. Introduce and unpack `⟨g, e⟩`. Conclude with `⟨g.1, g.2, e⟩`. Rewrite using `[hfilt]`.
+
+Combine the equalities or inequalities in the displayed calculation. Use `Finset.sum_congr rfl fun Λ' hΛ' => ?_` and prove the remaining obligations. Unfold `wRow`. Rewrite using `[g2 Λ' (hs.1 _ (Finset.mem_filter.1 hΛ').1)]`. Both sides reduce to the same expression.
+
+Use `_ = _ := by`. Rewrite using `[key, div_eq_mul_inv]`. Move the coercions through the operations in `[Nat.cast_sub hT1]`. Both sides reduce to the same expression.
+-/
 theorem fibres_of_gluing_facts (D : D7) (u : D.what₂.Word) (hpos : IsPosDef (D.sp.X 0).hT)
     (h1 : LatticeClassesIff D u) (h2 : CardAutEqCardIsometryStabilizer D u) (h3 : IsometriesTransportLattices D u) (h4 : GluingCount D u)
     (h5 : OrthLatticesOneGenus D u) : FibresOrthLatticeOneGenus D u := by
@@ -198,6 +245,9 @@ theorem fibres_of_gluing_facts (D : D7) (u : D.what₂.Word) (hpos : IsPosDef (D
         push_cast [Nat.cast_sub hT1]
         rfl
 
+/- English proof (translation)
+The claim follows from `gluing_mass_of_fibre_structure D u hpos hlat (fibres_of_gluing_facts D u hpos h1 h2 h3 h4 h5)`.
+-/
 theorem gluing_mass_of_gluing_facts (D : D7) (u : D.what₂.Word) (hpos : IsPosDef (D.sp.X 0).hT)
     (hlat : ForPrimeFlagLattice D u fun F0 Λ => Submodule.IsLattice D.host.E (L0X D Λ (lf D F0)))
     (h1 : LatticeClassesIff D u) (h2 : CardAutEqCardIsometryStabilizer D u) (h3 : IsometriesTransportLattices D u) (h4 : GluingCount D u)

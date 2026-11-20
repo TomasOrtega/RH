@@ -10,6 +10,11 @@ open scoped Pointwise
 
 namespace GlobalTheory.CompanionTheory.TorusCh
 
+/- English proof (translation)
+Establish `hm : ∀ v : InfinitePlace E, v.mult = 2` using `fun v => InfinitePlace.mult_isComplex ⟨v, IsTotallyComplex.isComplex v⟩`. Establish `hinf : ∀ w : InfinitePlace E, ‖(s : Ad E).1 w‖ ≠ 0` using `fun w => norm_ne_zero_iff.2 (GroundTheory.Global.IdeleGroup.infinite_ne_zero s w)`. Establish `hfin : ∀ v : HeightOneSpectrum (𝓞 E), 0 < ‖(s : Ad E).2 v‖` using `fun v => norm_pos_iff.2 (GroundTheory.Global.IdeleGroup.finite_ne_zero s v)`. Establish `hA : (∏ w : InfinitePlace E, ‖(s : Ad E).1 w‖ ^ w.mult) ≠ 0` using `Finset.prod_ne_zero_iff.2 fun w _ => pow_ne_zero _ (hinf w)`. Establish `hB : (∏ᶠ v : HeightOneSpectrum (𝓞 E), ‖(s : Ad E).2 v‖) ≠ 0` using `(GroundTheory.Global.IdeleGroup.finiteModule_pos s).ne'`.
+
+Establish `e : (GroundTheory.Global.IdeleGroup.ideleModule E s : ℝ) = (∏ w : InfinitePlace E, ‖(s : Ad E).1 w‖ ^ w.mult) * ∏ᶠ v : HeightOneSpectrum (𝓞 E), ‖(s : Ad E).2 v‖` using `GroundTheory.Global.IdeleGroup.ideleModule_eq s`. Rewrite using `[e, Real.log_mul hA hB, Real.log_prod (fun w _ => pow_ne_zero _ (hinf w)), Real.log_finprod hfin]`. Unfold `logAbs`. Simplify using `only [GlobalTheory.CompanionTheory.TorNorm.norm_cV, hm]`. Both sides reduce to the same expression.
+-/
 theorem logAbs_eq_log_ideleModule (E : Type) [Field E] [NumberField E] [IsCMField E] (s : (Ad E)ˣ) :
     logAbs (s : Ad E) = Real.log (GroundTheory.Global.IdeleGroup.ideleModule E s : ℝ) := by
   have hm : ∀ v : InfinitePlace E, v.mult = 2 := fun v =>

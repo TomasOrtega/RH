@@ -12,6 +12,21 @@ noncomputable section
 
 namespace GlobalTheory.FourCopies
 
+/- English proof (translation)
+Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => exact ⟨0, Fin.elim0, fun i => i.elim0, fun i => i.elim0, by simp⟩`. Consider the case `insert x s _ ih`. Take `⟨n, v, h0, ho, hs⟩` from `ih`. Use `set p : V := ∑ i, (h (v i) x / h (v i) (v i)) • v i with hp`.
+
+Establish `hpm : p ∈ Submodule.span K (Set.range v)` using `sum_mem fun i _ => Submodule.smul_mem _ _ (Submodule.subset_span ⟨i, rfl⟩)`. Establish `hx : ∀ j, h (v j) (x - p) = 0`. Introduce `j`. Establish `hj : h (v j) (v j) ≠ 0` using `fun e => h0 j (hdef _ e)`. Rewrite using `[map_sub, hp, map_sum, Finset.sum_eq_single j]`.
+
+Rewrite using `[map_smul, smul_eq_mul, div_mul_cancel₀ _ hj, sub_self]`. Introduce `i _ hij`. Rewrite using `[map_smul, ho i j hij, smul_zero]`. Simplify using the standard rewrite rules. Distinguish the cases in `hz : x - p = 0`.
+
+Use `⟨n, v, h0, ho, fun y hy => ?_⟩` and prove the remaining obligations. Break down `Finset.mem_insert.1 hy with rfl | hy` into its components or cases. Rewrite using `[sub_eq_zero.1 hz]`. Conclude with `hpm`. Conclude with `hs y hy`.
+
+Establish `hle : Submodule.span K (Set.range v) ≤ Submodule.span K (Set.range (Fin.cons (x - p) v : Fin (n + 1) → V))` using `Submodule.span_mono (by rintro _ ⟨i, rfl⟩; exact ⟨i.succ, by simp⟩)`. Use `⟨n + 1, Fin.cons (x - p) v, fun i => ?_, fun i j hij => ?_, fun y hy => ?_⟩` and prove the remaining obligations. Use `Fin.cases ?_ (fun i => ?_) i` and prove the remaining obligations. Simplify using `using hz`. Simplify using `using h0 i`.
+
+Use `revert hij`. Apply the tactic sequence `refine Fin.cases ?_ (fun i => ?_) i <;> refine Fin.cases ?_ (fun j => ?_) j <;> intro hij`. Conclude with `absurd rfl hij`. Conclude with `hx j`. Conclude with `hsym _ _ (hx i)`.
+
+Conclude with `ho i j (fun e => hij (by rw [e]))`. Break down `Finset.mem_insert.1 hy with rfl | hy` into its components or cases. Use `add_mem (Submodule.subset_span (Set.mem_range_self 0)) (hle hpm)` as an intermediate fact. Rewrite `this` using `[Fin.cons_zero, sub_add_cancel]`. Then use the resulting hypothesis. Conclude with `hle (hs y hy)`.
+-/
 theorem exists_orthogonal_family {K V : Type} [Field K] [AddCommGroup V] [Module K V] (h : V → V →ₗ[K] K)
     (hsym : ∀ x y, h y x = 0 → h x y = 0) (hdef : ∀ x, h x x = 0 → x = 0) (s : Finset V) :
     ∃ (n : ℕ) (v : Fin n → V), (∀ i, v i ≠ 0) ∧ (∀ i j, i ≠ j → h (v j) (v i) = 0) ∧
@@ -54,6 +69,13 @@ theorem exists_orthogonal_family {K V : Type} [Field K] [AddCommGroup V] [Module
           rwa [Fin.cons_zero, sub_add_cancel] at this
         · exact hle (hs y hy)
 
+/- English proof (translation)
+Take `⟨p, q, r, s, h⟩` from `Nat.sum_four_squares (a.num.natAbs * a.den)`. Establish `hn : (0 : ℚ) < a.num` using `by exact_mod_cast Rat.num_pos.2 ha`. Establish `h1 : ((a.num.natAbs : ℕ) : ℚ) = a.num`. Rewrite using `[Nat.cast_natAbs, abs_of_pos (Rat.num_pos.2 ha)]`. Establish `h2 : (p : ℚ) ^ 2 + q ^ 2 + r ^ 2 + s ^ 2 = a.num * a.den`.
+
+Rewrite using `[← h1]`. Conclude with `h` after adjusting the coercions. Establish `h3 : a * a.den = a.num` using `Rat.mul_den_eq_num a`. Choose the witnesses or unpack the hypotheses as in `⟨p, q, r, s, h⟩ : ∃ p q r s : ℚ, a * (p ^ 2 + q ^ 2 + r ^ 2 + s ^ 2) = 1 := by`. Use `⟨p / a.num, q / a.num, r / a.num, s / a.num, ?_⟩` and prove the remaining obligations.
+
+Simplify using `only [div_pow, ← add_div, h2]`. Clear the denominators using the available nonvanishing facts. Take the linear combination `h3`. Apply the tactic sequence `refine ⟨![![p, q, r, s], ![-q, p, -s, r], ![-r, s, p, -q], ![-s, -r, q, p]], fun j j' => ?_, fun j j' => ?_⟩ <;> fin_cases j <;> fin_cases j' <;> simp [Fin.sum_univ_four] <;> first | linear_combination h | (right; ring)`.
+-/
 theorem exists_similitude (a : ℚ) (ha : 0 < a) :
     ∃ A : Fin 4 → Fin 4 → ℚ, (∀ j j', a * ∑ k, A j k * A j' k = if j = j' then 1 else 0) ∧
       ∀ k k', a * ∑ j, A j k * A j k' = if k = k' then 1 else 0 := by
@@ -75,9 +97,23 @@ theorem exists_similitude (a : ℚ) (ha : 0 < a) :
 
 variable (D : D7)
 
+/- English proof (translation)
+Apply the tactic sequence `apply _root_.GlobalTheory.RationalOfReal.rat_of_real <;> assumption`.
+-/
 theorem exists_rat_of_real (x : D.host.K) (hx : (D.host.φ₀ (x : D.host.E)).im = 0) : ∃ a : ℚ, x = (a : D.host.K) :=
   by apply _root_.GlobalTheory.RationalOfReal.rat_of_real <;> assumption
 
+/- English proof (translation)
+Establish `hc : ∀ (φ : D.host.E →+* ℂ) (z : D.host.E), φ (D.host.conj z) = starRingEnd ℂ (φ z)` using `fun φ z => D.host.conjE_apply φ z`. Establish `h : D.host.φ₀ ((hYY D x x : D.host.K) : D.host.E) = ((∑ τ, ∑ i, ∑ j, Complex.normSq (embT D τ (x i j)) : ℝ) : ℂ)`. Unfold `hYY`. Rewrite using `[← (GlobalTheory.InducedType.induced_type D).1.2]`. Simplify using `only [map_sum, map_mul, hc, Complex.mul_conj]`.
+
+Use `push_cast`. Both sides reduce to the same expression. Take `⟨a, ha⟩` from `exists_rat_of_real D (hYY D x x) (by rw [h, Complex.ofReal_im])`. Use `⟨a, ?_, ha⟩` and prove the remaining obligations. Choose the witnesses or unpack the hypotheses as in `⟨i, j, hij⟩ : ∃ i j, x i j ≠ 0 := by`.
+
+Assume the negation of the conclusion as `hh`. Use `push Not at hh`. Conclude with `hx (Matrix.ext hh)`. Establish `hpos : 0 < ∑ τ, ∑ i, ∑ j, Complex.normSq (embT D τ (x i j))`. Establish `nn` using `fun τ i j => Complex.normSq_nonneg (embT D τ (x i j))`.
+
+Use `Finset.sum_pos' (fun τ _ => Finset.sum_nonneg fun i _ => Finset.sum_nonneg fun j _ => nn τ i j) ⟨D.eTau.symm 1, Finset.mem_univ _, ?_⟩` and prove the remaining obligations. Use `Finset.sum_pos' (fun i _ => Finset.sum_nonneg fun j _ => nn _ i j) ⟨i, Finset.mem_univ _, ?_⟩` and prove the remaining obligations. Use `Finset.sum_pos' (fun j _ => nn _ i j) ⟨j, Finset.mem_univ _, ?_⟩` and prove the remaining obligations. Conclude with `Complex.normSq_pos.2 ((map_ne_zero _).2 hij)`. Rewrite `h` using `[ha]`.
+
+Establish `h' : ((a : ℝ) : ℂ) = ((∑ τ, ∑ i, ∑ j, Complex.normSq (embT D τ (x i j)) : ℝ) : ℂ)`. Rewrite using `[← h]`. Simplify using the standard rewrite rules. Rewrite `hpos` using `[← Complex.ofReal_injective h']`. Conclude with `hpos` after adjusting the coercions.
+-/
 theorem exists_rat_pos {N N' : ℕ} (x : Matrix (Fin N') (Fin N) D.host.E) (hx : x ≠ 0) :
     ∃ a : ℚ, 0 < a ∧ hYY D x x = (a : D.host.K) := by
   have hc : ∀ (φ : D.host.E →+* ℂ) (z : D.host.E), φ (D.host.conj z) = starRingEnd ℂ (φ z) :=
@@ -121,9 +157,17 @@ def blocks {N N' : ℕ} (c : Fin 4 → ℚ) :
     funext i j
     exact mul_smul_comm a _ (v i (cols N j).2)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem blocks_apply {N N' : ℕ} (c : Fin 4 → ℚ) (v : Matrix (Fin N') (Fin N) D.host.E) (i j) :
     blocks D c v i j = (c (cols N j).1 : D.host.E) * v i (cols N j).2 := rfl
 
+/- English proof (translation)
+Unfold `hYY`. Rewrite using `[← smul_eq_mul ((∑ k, c k * c' k : ℚ) : D.host.K), ← map_smul, Finset.smul_sum]`. Use `congr 1`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[← (cols N).symm.sum_comp, Fintype.sum_prod_type, Algebra.smul_def, map_ratCast]`.
+
+Simplify using `only [blocks_apply, Equiv.apply_symm_apply, map_mul, map_ratCast]`. Use `push_cast`. Rewrite using `[Finset.sum_mul_sum]`. Use `Finset.sum_congr rfl fun k _ => Finset.sum_congr rfl fun j _ => by ring` and prove the remaining obligations.
+-/
 theorem hYY_blocks {N N' : ℕ} (c c' : Fin 4 → ℚ) (v w : Matrix (Fin N') (Fin N) D.host.E) :
     hYY D (blocks D c v) (blocks D c' w) = ((∑ k, c k * c' k : ℚ) : D.host.K) * hYY D v w := by
   unfold hYY
@@ -136,6 +180,31 @@ theorem hYY_blocks {N N' : ℕ} (c c' : Fin 4 → ℚ) (v w : Matrix (Fin N') (F
   rw [Finset.sum_mul_sum]
   refine Finset.sum_congr rfl fun k _ => Finset.sum_congr rfl fun j _ => by ring
 
+/- English proof (translation)
+Introduce `D N N'`. Take `⟨s, hs⟩ : (⊤ : Submodule D.host.K (Matrix (Fin N') (Fin N) D.host.E)).FG` from `Module.Finite.fg_top`. Take `⟨n, v, h0, ho, hsp⟩` from `exists_orthogonal_family (hYYLeft D (N := N) (N' := N')) (fun x y e => by`. Establish `h1` using `hYY_herm D (GlobalTheory.InducedType.induced_type D).1.2 x y`. Express the relevant statement in the definitionally equal form `hYY D x y = 0 at e`.
+
+Express the relevant statement in the definitionally equal form `hYY D y x = 0`. Rewrite `h1` using `[e]`. Simplify using `using h1)`. Use the proof step `(fun x e => by`. Assume the negation of the conclusion as `hx`.
+
+Take `⟨a, ha, h1⟩` from `exists_rat_pos D x hx`. Express the relevant statement in the definitionally equal form `hYY D x x = 0 at e`. Rewrite `h1` using `[e]`. Conclude with `ha.ne' (by exact_mod_cast h1.symm)) s`. Establish `htop : ∀ x, x ∈ Submodule.span D.host.K (Set.range v)` using `fun x => (Submodule.span_le.2 (fun y hy => hsp y hy) : Submodule.span D.host.K (s : Set _) ≤ _) (by rw [hs]; trivial)`.
+
+Use `choose a ha hav using fun i => exists_rat_pos D (v i) (h0 i)`. Use `choose A hA hA' using fun i => exists_similitude (a i) (ha i)`. Set `e : Fin (n * 4) ≃ Fin n × Fin 4` to `finProdFinEquiv.symm`. Use `⟨3 * N, n * 4, fun l => blocks D (A (e l).1 (e l).2) (v (e l).1), fun l l' => ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[hYY_blocks]`.
+
+Distinguish the cases in `hi : (e l).1 = (e l').1`. Rewrite using `[← hi, hav, ← Rat.cast_mul, mul_comm, hA]`. Establish `: (e l).2 = (e l').2 ↔ l = l'` using `⟨fun h => e.injective (Prod.ext hi h), fun h => by rw [h]⟩`. Simplify using `only [this]`. Apply the tactic sequence `split_ifs <;> simp`.
+
+Establish `: l ≠ l'` using `fun h => hi (by rw [h])`. Rewrite using `[if_neg this, show hYY D (v (e l).1) (v (e l').1) = 0 from ho _ _ hi, mul_zero]`. Use `set W := Submodule.span D.host.K (Set.range fun l => blocks D (A (e l).1 (e l).2) (v (e l).1)) with hW`. Establish `hb : ∀ i j, blocks D (A i j) (v i) ∈ W` using `fun i j => Submodule.subset_span ⟨e.symm (i, j), by simp only [Equiv.apply_symm_apply]⟩`. Establish `h1 : ∀ (k : Fin 4) i, blocks D (fun k' => if k = k' then 1 else 0) (v i) ∈ W`.
+
+Introduce `k i`. Establish `: blocks D (fun k' => if k = k' then 1 else 0) (v i) = ∑ j, ((a i * A i j k : ℚ) : D.host.K) • blocks D (A i j) (v i)`. Use function extensionality and compare the values at `s t`. Simplify using `only [Matrix.sum_apply, Matrix.smul_apply, blocks_apply, Algebra.smul_def, map_ratCast]`. Rewrite using `[← hA' i]`.
+
+Use `push_cast`. Rewrite using `[Finset.mul_sum, Finset.sum_mul]`. Conclude with `Finset.sum_congr rfl fun j _ => by ring`. Rewrite using `[this]`. Conclude with `sum_mem fun j _ => W.smul_mem _ (hb i j)`.
+
+Establish `h2 : ∀ (k : Fin 4) x, blocks D (fun k' => if k = k' then 1 else 0) x ∈ W`. Introduce `k x`. Establish `: Submodule.span D.host.K (Set.range v) ≤ W.comap (blocks D fun k' => if k = k' then 1 else 0)` using `Submodule.span_le.2 (by rintro _ ⟨i, rfl⟩; exact h1 k i)`. Conclude with `this (htop x)`. Rewrite using `[eq_top_iff]`.
+
+Introduce `x _`. Establish `: x = ∑ k : Fin 4, blocks D (fun k' => if k = k' then 1 else 0) (Matrix.of fun i j => x i ((cols N).symm (k, j)))`. Use function extensionality and compare the values at `s t`. Simplify using `only [Matrix.sum_apply, blocks_apply, Matrix.of_apply]`. Rewrite using `[Finset.sum_eq_single (cols N t).1]`.
+
+Simplify using the standard rewrite rules. Introduce `k _ hk`. Simplify using `[hk]`. Simplify using the standard rewrite rules. Rewrite using `[this]`.
+
+Conclude with `sum_mem fun k _ => h2 k _`.
+-/
 theorem exists_onB_four : ∀ (D : D7) (N N' : ℕ), ∃ (m r : ℕ) (b : Fin r → Matrix (Fin N') (Fin (N + m)) D.host.E), OnB D b := by
   intro D N N'
   obtain ⟨s, hs⟩ : (⊤ : Submodule D.host.K (Matrix (Fin N') (Fin N) D.host.E)).FG := Module.Finite.fg_top

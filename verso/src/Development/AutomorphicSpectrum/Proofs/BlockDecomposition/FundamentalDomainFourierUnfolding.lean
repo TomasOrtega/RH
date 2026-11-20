@@ -4,6 +4,11 @@ open scoped Pointwise
 
 namespace GlobalTheory.CompanionTheory.UnfoldAbs
 
+/- English proof (translation)
+Establish `hbd : ∀ q b, ‖G q b‖ ≤ M` using `fun q b => ((hb b).1.le_tsum q (fun _ _ => norm_nonneg _)).trans (hb b).2`. Establish `hint : ∀ q, Integrable (G q) μ` using `fun q => Integrable.of_bound (hm q) M (ae_of_all _ (hbd q))`. Use `hasSum_integral_of_summable_integral_norm hint ?_` and prove the remaining obligations. Use `summable_of_sum_le (c := ∫ _, M ∂μ) (fun q => integral_nonneg fun _ => norm_nonneg _) ?_` and prove the remaining obligations. Introduce `s`.
+
+Rewrite using `[← integral_finset_sum s (fun q _ => (hint q).norm)]`. Conclude with `integral_mono (integrable_finset_sum _ fun q _ => (hint q).norm) (integrable_const _) (fun b => ((hb b).1.sum_le_tsum s (fun _ _ => norm_nonneg _)).trans (hb b).2)`.
+-/
 theorem hasSum_integral_of_norm_bound {A Z : Type} [MeasurableSpace A] (μ : Measure A)
     [IsFiniteMeasure μ] [Countable Z] (G : Z → A → ℂ)
     (hm : ∀ q, AEStronglyMeasurable (G q) μ) (M : ℝ)
@@ -21,6 +26,15 @@ theorem hasSum_integral_of_norm_bound {A Z : Type} [MeasurableSpace A] (μ : Mea
   exact integral_mono (integrable_finset_sum _ fun q _ => (hint q).norm) (integrable_const _)
     (fun b => ((hb b).1.sum_le_tsum s (fun _ _ => norm_nonneg _)).trans (hb b).2)
 
+/- English proof (translation)
+Establish `h2 : IsAddFundamentalDomain Λ (ν +ᵥ 𝓖) lam` using `h𝓖.vadd_of_comm ν`. Establish `e1 : ∫ b in 𝓖, Ψ b ∂lam = ∫ b in (ν +ᵥ 𝓖), Ψ b ∂lam` using `h𝓖.setIntegral_eq h2 (fun g x => hΛ g x)`. Establish `hpre : (fun x => ν + x) ⁻¹' (ν +ᵥ 𝓖) = 𝓖`. Use extensionality with `x`. Simplify using `[Set.mem_vadd_set_iff_neg_vadd_mem]`.
+
+Establish `e2 : ∫ b in (ν +ᵥ 𝓖), Ψ b ∂lam = ∫ b in 𝓖, Ψ (ν + b) ∂lam`. Use `(measurePreserving_add_left lam ν).setIntegral_preimage_emb (MeasurableEquiv.addLeft ν).measurableEmbedding Ψ (ν +ᵥ 𝓖)` as an intermediate fact. Rewrite `this` using `[hpre]`. Conclude with `this.symm`. Establish `e3 : ∫ b in 𝓖, Ψ (ν + b) ∂lam = z * ∫ b in 𝓖, Ψ b ∂lam`.
+
+Repeatedly rewrite using `[hν]`. Conclude with `integral_const_mul _ _`. Establish `e4 : (1 - z) * ∫ b in 𝓖, Ψ b ∂lam = 0`. Establish `: ∫ b in 𝓖, Ψ b ∂lam = z * ∫ b in 𝓖, Ψ b ∂lam` using `by rw [← e3, ← e2, ← e1]`. Take the linear combination `this`.
+
+Conclude with `(mul_eq_zero.mp e4).resolve_left (sub_ne_zero.mpr (Ne.symm hz))`.
+-/
 theorem setIntegral_eq_zero_of_translate {A : Type} [AddCommGroup A] [MeasurableSpace A]
     [MeasurableAdd A] (lam : Measure A) [lam.IsAddLeftInvariant] (Λ : AddSubgroup A)
     [Countable Λ] (𝓖 : Set A) (h𝓖 : IsAddFundamentalDomain Λ 𝓖 lam) (Ψ : A → ℂ) (ν : A) (z : ℂ)
@@ -45,6 +59,13 @@ theorem setIntegral_eq_zero_of_translate {A : Type} [AddCommGroup A] [Measurable
     linear_combination this
   exact (mul_eq_zero.mp e4).resolve_left (sub_ne_zero.mpr (Ne.symm hz))
 
+/- English proof (translation)
+Use `⟨hm, ?_⟩` and prove the remaining obligations. Rewrite using `[hasFiniteIntegral_iff_enorm]`. Establish `e : ∫⁻ b, ‖F0 b‖ₑ ∂lam = ∑' l : Λ, ∫⁻ b in 𝓖, ‖F0 ((l : A) + b)‖ₑ ∂lam` using `h𝓖.lintegral_eq_tsum'' _`. Establish `hmeas : ∀ l : Λ, AEMeasurable (fun b => ‖F0 ((l : A) + b)‖ₑ) (lam.restrict 𝓖)` using `fun l => ((hm.comp_measurePreserving (measurePreserving_add_left lam (l : A))).enorm).restrict`. Rewrite using `[e, ← lintegral_tsum hmeas]`.
+
+Combine the equalities or inequalities in the displayed calculation. Use `lintegral_mono (fun b => ?_)` and prove the remaining obligations. Repeatedly rewrite using `[← ofReal_norm_eq_enorm]`. Rewrite using `[← ENNReal.ofReal_tsum_of_nonneg (fun _ => norm_nonneg _) (hb b).1]`. Conclude with `ENNReal.ofReal_le_ofReal (hb b).2`.
+
+Use `_ < ⊤ := by simp [h1]`.
+-/
 theorem integrable_of_lattice_bound {A : Type} [AddCommGroup A] [MeasurableSpace A]
     [MeasurableAdd A] (lam : Measure A) [lam.IsAddLeftInvariant] (Λ : AddSubgroup A)
     [Countable Λ] (𝓖 : Set A) (h𝓖 : IsAddFundamentalDomain Λ 𝓖 lam) (h1 : lam 𝓖 = 1)
@@ -66,6 +87,27 @@ theorem integrable_of_lattice_bound {A : Type} [AddCommGroup A] [MeasurableSpace
         exact ENNReal.ofReal_le_ofReal (hb b).2
     _ < ⊤ := by simp [h1]
 
+/- English proof (translation)
+Introduce `A X Y _ _ _ lam _ Λ _ 𝓖 h𝓖 h1 _ c y0 F F0 ch hF hch hnorm hmul hΛ M hb τ hτ hcτ e he hfib hF0 hν`. Use `haveI : IsFiniteMeasure (lam.restrict 𝓖) := ⟨by simp [h1]⟩`. Establish `hsub : ∀ {Z : Type} (j : Z → X), Function.Injective j → ∀ b, Summable (fun z => ‖F (j z) b‖) ∧ ∑' z, ‖F (j z) b‖ ≤ M`. Introduce `Z j hj b`. Use `⟨(hb b).1.comp_injective hj, ?_⟩` and prove the remaining obligations.
+
+Conclude with `(tsum_comp_le_tsum_of_inj (hb b).1 (fun _ => norm_nonneg _) hj).trans (hb b).2`. Establish `key : ∀ {Z : Type} [Countable Z] (j : Z → X), Function.Injective j → HasSum (fun z => ∫ b in 𝓖, F (j z) b * ch b ∂lam) (∫ b in 𝓖, (∑' z, F (j z) b) * ch b ∂lam)`. Introduce `Z _ j hj`. Use `hasSum_integral_of_norm_bound (lam.restrict 𝓖) (fun z b => F (j z) b * ch b) (fun z => ((hF (j z)).mul hch).restrict) M (fun b => by` as an intermediate fact. Simplify `hsub j hj b)` using `[hnorm]`.
+
+Simplify `this` using `only [tsum_mul_right]`. Establish `hF0e : F0 = F (e 0)`. Use function extensionality and compare the values at `b`. Use `hF0 0 b` as an intermediate fact. Simplify using `using this.symm`.
+
+Establish `hint0 : Integrable F0 lam`. Use `integrable_of_lattice_bound lam Λ 𝓖 h𝓖 h1 F0 (hF0e ▸ hF (e 0)) M (fun b => ?_)` and prove the remaining obligations. Simplify `hsub e he b` using `only [hF0]`. Use `⟨hint0, ?_⟩` and prove the remaining obligations. Establish `hT` using `key (Z := X) id Function.injective_id`.
+
+Simplify using `only [id] at hT`. Establish `hsig` using `(Equiv.sigmaFiberEquiv c).hasSum_iff.mpr hT`. Establish `hg : HasSum (fun y => ∫ b in 𝓖, (∑' z : {x // c x = y}, F z b) * ch b ∂lam) (∫ b in 𝓖, (∑' q, F q b) * ch b ∂lam)` using `hsig.sigma (fun y => key (Z := {x // c x = y}) Subtype.val Subtype.val_injective)`. Establish `hzero : ∀ y, y ≠ y0 → ∫ b in 𝓖, (∑' z : {x // c x = y}, F z b) * ch b ∂lam = 0`. Introduce `y hy`.
+
+Take `⟨ν, hν1, hνq⟩` from `hν y hy`. Use `setIntegral_eq_zero_of_translate lam Λ 𝓖 h𝓖 _ ν (ch ν) hν1 (fun l b => ?_) (fun b => ?_)` and prove the remaining obligations. Establish `hs : ∑' z : {x // c x = y}, F z ((l : A) + b) = ∑' z : {x // c x = y}, F z b`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[hs, hmul, hΛ, one_mul]`.
+
+Establish `hs : ∑' z : {x // c x = y}, F z (ν + b) = ∑' z : {x // c x = y}, F z b` using `tsum_congr fun z => hνq z z.2 b`. Rewrite using `[hs, hmul]`. Expand and normalize the polynomial expressions, which then agree. Establish `hT'` using `hg.unique (hasSum_single y0 (fun y hy => hzero y hy))`. Rewrite using `[hT']`.
+
+Set `ee : Λ ≃ {x // c x = y0}` to `Equiv.ofBijective (fun l => ⟨e l, (hfib _).2 ⟨l, rfl⟩⟩) ⟨fun a b h => he (congrArg Subtype.val h), fun q => by`. Take `⟨l, hl⟩` from `(hfib q).1 q.2`. Conclude with `⟨l, Subtype.ext hl⟩⟩`. Establish `hsum : ∀ b, ∑' z : {x // c x = y0}, F z b = ∑' l : Λ, F (e l) b` using `fun b => (ee.tsum_eq (fun z => F z b)).symm`. Repeatedly rewrite using `[hsum]`.
+
+Rewrite using `[← (key e he).tsum_eq]`. Establish `hint1 : Integrable (fun b => F0 b * ch b) lam` using `hint0.mono (hint0.aestronglyMeasurable.mul hch) (ae_of_all _ fun b => by simp [hnorm])`. Rewrite using `[h𝓖.integral_eq_tsum'' _ hint1]`. Use `tsum_congr fun l => ?_` and prove the remaining obligations. Use `integral_congr_ae (ae_of_all _ fun b => ?_)` and prove the remaining obligations.
+
+Express the relevant statement in the definitionally equal form `F (e l) b * ch b = F0 ((l : A) + b) * ch ((l : A) + b)`. Rewrite using `[hF0, hmul, hΛ, one_mul]`.
+-/
 theorem unfold_abs : ∀ {A X Y : Type} [AddCommGroup A] [MeasurableSpace A] [MeasurableAdd A]
     (lam : Measure A) [lam.IsAddLeftInvariant] (Λ : AddSubgroup A) [Countable Λ] (𝓖 : Set A)
     (_ : IsAddFundamentalDomain Λ 𝓖 lam) (_ : lam 𝓖 = 1) [Countable X] (c : X → Y) (y0 : Y)

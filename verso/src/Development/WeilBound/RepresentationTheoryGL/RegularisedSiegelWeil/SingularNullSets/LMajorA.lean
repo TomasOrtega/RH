@@ -9,6 +9,29 @@ namespace PositivityTheory.Rg.Rsw.L.LMajor
 open Metric
 open scoped ContDiff
 
+/- English proof (translation)
+Use `set e : V ≃L[ℝ] EuclideanSpace ℝ (Fin (Module.finrank ℝ V)) := toEuclidean with he`. Use `set q : V → ℝ := fun y => ‖e y‖ ^ 2 with hqdef`. Establish `hqy : ∀ y, q y = ‖e y‖ ^ 2` using `fun y => rfl`. Establish `hq0 : ∀ y, 0 ≤ q y` using `fun y => by rw [hqy]; positivity`. Establish `hq : q.HasTemperateGrowth` using `(Function.hasTemperateGrowth_norm_sq (EuclideanSpace ℝ (Fin (Module.finrank ℝ V)))).comp e.hasTemperateGrowth`.
+
+Establish `hq_upper : ∃ (k : ℕ) (C : ℝ), ∀ y, ‖y‖ ≤ C * (1 + ‖q y‖) ^ k`. Use `⟨1, ‖(e.symm : EuclideanSpace ℝ (Fin (Module.finrank ℝ V)) →L[ℝ] V)‖, fun y => ?_⟩` and prove the remaining obligations. Establish `h1 : ‖y‖ ≤ ‖(e.symm : EuclideanSpace ℝ (Fin (Module.finrank ℝ V)) →L[ℝ] V)‖ * ‖e y‖`. Use `(e.symm : EuclideanSpace ℝ (Fin (Module.finrank ℝ V)) →L[ℝ] V).le_opNorm (e y)` as an intermediate fact. Simplify using `using this`.
+
+Establish `h2 : ‖e y‖ ≤ 1 + ‖q y‖`. Rewrite using `[Real.norm_of_nonneg (hq0 y), hqy]`. Use polynomial arithmetic with `[sq_nonneg (‖e y‖ - 1), norm_nonneg (e y)]`. Rewrite using `[pow_one]`. Conclude with `h1.trans (mul_le_mul_of_nonneg_left h2 (norm_nonneg _))`.
+
+Establish `hqA : ∀ y, q y ≤ ‖(e : V →L[ℝ] EuclideanSpace ℝ (Fin (Module.finrank ℝ V)))‖ ^ 2 * ‖y‖ ^ 2`. Introduce `y`. Rewrite using `[hqy, ← mul_pow]`. Use `(e : V →L[ℝ] EuclideanSpace ℝ (Fin (Module.finrank ℝ V))).le_opNorm y` as an intermediate fact. Conclude with `pow_le_pow_left₀ (norm_nonneg _) (by simpa using this) 2`.
+
+Take `⟨b, hb0, hbs, hbε⟩` from `lmajASeq f q hq0 _ (sq_nonneg _) hqA`. Take `⟨h, hh0, hhb⟩` from `lmajASeqSchwartz b hb0 hbs`. Use `set F₀ : SchwartzMap V ℂ := SchwartzMap.compCLM ℝ hq hq_upper h with hF₀`. Establish `hF : ∀ y, F₀ y = h (q y)` using `fun y => rfl`. Use `⟨F₀, fun y => by rw [hF]; exact hh0 _, fun ε hε => ?_⟩` and prove the remaining obligations.
+
+Take `⟨N, hN⟩` from `hbε ε hε`. Set `β : ContDiffBump (0 : EuclideanSpace ℝ (Fin (Module.finrank ℝ V)))` to `⟨(N : ℝ) + 1, (N : ℝ) + 2, by positivity, by linarith⟩`. Use `set c : V → ℂ := fun y => ((β (e y) : ℝ) : ℂ) with hc`. Establish `hcd : ContDiff ℝ ∞ c` using `Complex.ofRealCLM.contDiff.comp ((β.contDiff).comp e.contDiff)`. Establish `hcs : HasCompactSupport c` using `(β.hasCompactSupport.comp_homeomorph e.toHomeomorph).comp_left Complex.ofReal_zero`.
+
+Use `⟨c, hcs.hasTemperateGrowth hcd, hcs, fun i y => ?_⟩` and prove the remaining obligations. Establish `hF0 : 0 ≤ (F₀ y).re` using `by rw [hF]; exact (hh0 _).1`. Distinguish the cases in `hy : ‖e y‖ ≤ (N : ℝ) + 1`. Establish `hβ : β (e y) = 1` using `β.one_of_mem_closedBall (by rw [mem_closedBall, dist_zero_right]; exact hy)`. Establish `hc1 : c y = 1` using `by simp [hc, hβ]`.
+
+Rewrite using `[hc1, sub_self, norm_zero, mul_zero]`. Conclude with `mul_nonneg hε.le hF0`. Use `push Not at hy`. Establish `hqN : (N : ℝ) ≤ q y`. Rewrite using `[hqy]`.
+
+Establish `hN0 : (0 : ℝ) ≤ N` using `Nat.cast_nonneg N`. Use the polynomial consequences of the given equalities and inequalities. Establish `h1c : ‖1 - c y‖ ≤ 1`. Establish `: (1 : ℂ) - c y = ((1 - β (e y) : ℝ) : ℂ)` using `by simp [hc]`. Rewrite using `[this, Complex.norm_real, Real.norm_eq_abs, abs_le]`.
+
+Apply the tactic sequence `constructor <;> linarith [β.nonneg (x := e y), β.le_one (x := e y)]`. Establish `hqn : |q y - (⌊q y⌋₊ : ℝ)| ≤ 1`. Establish `h1` using `Nat.floor_le (hq0 y)`. Establish `h2` using `Nat.lt_floor_add_one (q y)`. Apply the tactic sequence `rw [abs_le]; constructor <;> linarith`.
+
+Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem schMajor {V : Type} [NormedAddCommGroup V] [NormedSpace ℝ V] [FiniteDimensional ℝ V] {k : ℕ}
     (f : Fin k → SchwartzMap V ℂ) :
     ∃ F₀ : SchwartzMap V ℂ, (∀ y, 0 ≤ (F₀ y).re ∧ (F₀ y).im = 0) ∧

@@ -10,11 +10,19 @@ namespace GlobalTheory.CompanionTheory.Ar.PB.FMX.Frm
 
 variable {Ψ : Type} {p q : ℕ} {Ω : Type} [Field Ω] {n : Ψ ⊕ Ψ → ℕ}
 
+/- English proof (translation)
+Break down `h : (blockEquiv p q).symm b with a | a` into its components or cases. Conclude with `Or.inl ⟨a, (blockEquiv p q).symm.injective (h.trans (BlockEmbeddings.blockEquiv_symm_omEmb a).symm)⟩`. Conclude with `Or.inr ⟨a, (blockEquiv p q).symm.injective (h.trans (BlockEmbeddings.blockEquiv_symm_wEmb a).symm)⟩`.
+-/
 theorem pos_cover (b : Fin (p + q)) : (∃ a, b = omEmb p q a) ∨ ∃ a, b = wEmb p q a := by
   rcases h : (blockEquiv p q).symm b with a | a
   · exact Or.inl ⟨a, (blockEquiv p q).symm.injective (h.trans (BlockEmbeddings.blockEquiv_symm_omEmb a).symm)⟩
   · exact Or.inr ⟨a, (blockEquiv p q).symm.injective (h.trans (BlockEmbeddings.blockEquiv_symm_wEmb a).symm)⟩
 
+/- English proof (translation)
+Establish `hi` using `(BlockEmbeddings.posOf_strictMono (p := p) (q := q) s).injective`. Simplify using `only [aExt]`. Rewrite using `[Finset.sum_eq_single l]`. Rewrite using `[if_pos rfl]`. Introduce `b _ hb`.
+
+Rewrite using `[if_neg fun e => hb (hi e)]`. Introduce `h`. Conclude with `absurd (Finset.mem_univ _) h`.
+-/
 theorem aExt_posOf (C : ∀ s, Matrix (Fin (n s)) (Fin (rk Ψ p q s)) Ω) (s : Ψ ⊕ Ψ) (j : Fin (n s))
     (l : Fin (rk Ψ p q s)) : aExt C s j (posOf p q s l) = C s j l := by
   have hi := (BlockEmbeddings.posOf_strictMono (p := p) (q := q) s).injective
@@ -26,10 +34,16 @@ theorem aExt_posOf (C : ∀ s, Matrix (Fin (n s)) (Fin (rk Ψ p q s)) Ω) (s : �
   · intro h
     exact absurd (Finset.mem_univ _) h
 
+/- English proof (translation)
+The claim follows from `Finset.sum_eq_zero fun l _ => if_neg fun e => hb ⟨l, e⟩`.
+-/
 theorem aExt_off (C : ∀ s, Matrix (Fin (n s)) (Fin (rk Ψ p q s)) Ω) (s : Ψ ⊕ Ψ) (j : Fin (n s))
     (b : Fin (p + q)) (hb : ¬ ∃ l, posOf p q s l = b) : aExt C s j b = 0 :=
   Finset.sum_eq_zero fun l _ => if_neg fun e => hb ⟨l, e⟩
 
+/- English proof (translation)
+Break down `hs with rfl | rfl` into its components or cases. Conclude with `BlockEmbeddings.blocks_wEmb _ _ l l'`. Conclude with `BlockEmbeddings.blocks_omEmb _ _ l l'`.
+-/
 theorem tMat_posOf (Ts : ∀ s, Matrix (Fin (rk Ψ p q s)) (Fin (rk Ψ p q s)) Ω) (τ : Ψ) (s : Ψ ⊕ Ψ)
     (hs : s = .inl τ ∨ s = .inr τ) (l l' : Fin (rk Ψ p q s)) :
     tMat Ts τ (posOf p q s l) (posOf p q s l') = Ts s l l' := by
@@ -37,6 +51,9 @@ theorem tMat_posOf (Ts : ∀ s, Matrix (Fin (rk Ψ p q s)) (Fin (rk Ψ p q s)) �
   · exact BlockEmbeddings.blocks_wEmb _ _ l l'
   · exact BlockEmbeddings.blocks_omEmb _ _ l l'
 
+/- English proof (translation)
+Rewrite using `[Matrix.submatrix_apply, BlockEmbeddings.blockEquiv_symm_wEmb, BlockEmbeddings.blockEquiv_symm_omEmb, Matrix.fromBlocks_apply₂₁]`. Both sides reduce to the same expression.
+-/
 theorem blocks_wEmb_omEmb {R : Type} [Zero R] (X : Matrix (Fin q) (Fin q) R) (Y : Matrix (Fin p) (Fin p) R)
     (a : Fin p) (b : Fin q) :
     (Matrix.fromBlocks X 0 0 Y).submatrix (blockEquiv p q).symm (blockEquiv p q).symm (wEmb p q a) (omEmb p q b) =
@@ -44,6 +61,9 @@ theorem blocks_wEmb_omEmb {R : Type} [Zero R] (X : Matrix (Fin q) (Fin q) R) (Y 
   rw [Matrix.submatrix_apply, BlockEmbeddings.blockEquiv_symm_wEmb, BlockEmbeddings.blockEquiv_symm_omEmb, Matrix.fromBlocks_apply₂₁]
   rfl
 
+/- English proof (translation)
+Rewrite using `[Matrix.submatrix_apply, BlockEmbeddings.blockEquiv_symm_wEmb, BlockEmbeddings.blockEquiv_symm_omEmb, Matrix.fromBlocks_apply₁₂]`. Both sides reduce to the same expression.
+-/
 theorem blocks_omEmb_wEmb {R : Type} [Zero R] (X : Matrix (Fin q) (Fin q) R) (Y : Matrix (Fin p) (Fin p) R)
     (a : Fin q) (b : Fin p) :
     (Matrix.fromBlocks X 0 0 Y).submatrix (blockEquiv p q).symm (blockEquiv p q).symm (omEmb p q a) (wEmb p q b) =
@@ -51,6 +71,11 @@ theorem blocks_omEmb_wEmb {R : Type} [Zero R] (X : Matrix (Fin q) (Fin q) R) (Y 
   rw [Matrix.submatrix_apply, BlockEmbeddings.blockEquiv_symm_wEmb, BlockEmbeddings.blockEquiv_symm_omEmb, Matrix.fromBlocks_apply₁₂]
   rfl
 
+/- English proof (translation)
+Break down `hs with rfl | rfl` into its components or cases. Break down `pos_cover b with ⟨a, rfl⟩ | ⟨a, rfl⟩` into its components or cases. Conclude with `blocks_wEmb_omEmb _ _ l a`. Conclude with `absurd ⟨a, rfl⟩ hb`. Break down `pos_cover b with ⟨a, rfl⟩ | ⟨a, rfl⟩` into its components or cases.
+
+Conclude with `absurd ⟨a, rfl⟩ hb`. Conclude with `blocks_omEmb_wEmb _ _ l a`.
+-/
 theorem tMat_off (Ts : ∀ s, Matrix (Fin (rk Ψ p q s)) (Fin (rk Ψ p q s)) Ω) (τ : Ψ) (s : Ψ ⊕ Ψ)
     (hs : s = .inl τ ∨ s = .inr τ) (l : Fin (rk Ψ p q s)) (b : Fin (p + q))
     (hb : ¬ ∃ l', posOf p q s l' = b) : tMat Ts τ (posOf p q s l) b = 0 := by
@@ -62,6 +87,13 @@ theorem tMat_off (Ts : ∀ s, Matrix (Fin (rk Ψ p q s)) (Fin (rk Ψ p q s)) Ω)
     · exact absurd ⟨a, rfl⟩ hb
     · exact blocks_omEmb_wEmb _ _ l a
 
+/- English proof (translation)
+Use extensionality with `j b`. Rewrite using `[Matrix.mul_apply, Matrix.smul_apply, smul_eq_mul]`. Establish `h1` using `BlockEmbeddings.sum_aExt_mul A (RingHom.id Ω) s j (fun a => tMat Ts τ a b)`. Simplify using `only [RingHom.id_apply] at h1`. Rewrite using `[h1]`.
+
+Distinguish the cases in `hb : ∃ l', posOf p q s l' = b`. Take `⟨l', rfl⟩` from `hb`. Establish `h2` using `congrFun (congrFun (hAT s) j) l'`. Rewrite `h2` using `[Matrix.mul_apply, Matrix.smul_apply, smul_eq_mul]`. Rewrite using `[aExt_posOf, ← h2]`.
+
+Conclude with `Finset.sum_congr rfl fun l _ => by rw [tMat_posOf Ts τ s hs]`. Rewrite using `[aExt_off C s j b hb, mul_zero]`. Conclude with `Finset.sum_eq_zero fun l _ => by rw [tMat_off Ts τ s hs l b hb, mul_zero]`.
+-/
 theorem aExt_mul_tMat (A C : ∀ s, Matrix (Fin (n s)) (Fin (rk Ψ p q s)) Ω)
     (Ts : ∀ s, Matrix (Fin (rk Ψ p q s)) (Fin (rk Ψ p q s)) Ω) (x : Ω) (m : Ψ ⊕ Ψ → ℕ)
     (hAT : ∀ s, A s * Ts s = (x ^ m s) • C s) (τ : Ψ) (s : Ψ ⊕ Ψ) (hs : s = .inl τ ∨ s = .inr τ) :
@@ -80,6 +112,9 @@ theorem aExt_mul_tMat (A C : ∀ s, Matrix (Fin (n s)) (Fin (rk Ψ p q s)) Ω)
   · rw [aExt_off C s j b hb, mul_zero]
     exact Finset.sum_eq_zero fun l _ => by rw [tMat_off Ts τ s hs l b hb, mul_zero]
 
+/- English proof (translation)
+Rewrite using `[BlockEmbeddings.det_mul_cols _ _ S hS]`. Both sides reduce to the same expression.
+-/
 theorem sum_cMin_minorIJ (C : ∀ s, Matrix (Fin (n s)) (Fin (rk Ψ p q s)) Ω) (t : StepIx Ψ p q)
     (J : Fin ((t.2 : ℕ) + 1) → Fin (n t.1)) (G : Matrix (Fin (p + q)) (Fin (p + q)) Ω)
     (S : Finset (Fin (p + q))) (hS : S.card = (t.2 : ℕ) + 1) :
@@ -88,6 +123,9 @@ theorem sum_cMin_minorIJ (C : ∀ s, Matrix (Fin (n s)) (Fin (rk Ψ p q s)) Ω) 
   rw [BlockEmbeddings.det_mul_cols _ _ S hS]
   rfl
 
+/- English proof (translation)
+Rewrite using `[sum_cMin_minorIJ A t J _ S hS, sum_cMin_minorIJ C t J _ S hS]`. Establish `hm : (aExt A t.1).submatrix J id * (tMat Ts τ * h).submatrix id (S.orderEmbOfFin hS) = (x ^ m t.1) • ((aExt C t.1).submatrix J id * h.submatrix id (S.orderEmbOfFin hS))`. Rewrite using `[← Matrix.submatrix_mul _ _ _ _ _ Function.bijective_id, ← Matrix.submatrix_mul _ _ _ _ _ Function.bijective_id, ← Matrix.mul_assoc, aExt_mul_tMat A C Ts x m hAT τ t.1 hs, Matrix.smul_mul]`. Both sides reduce to the same expression. Rewrite using `[hm, Matrix.det_smul, Fintype.card_fin, pow_mul]`.
+-/
 theorem sum_cMin_tMat_mul (A C : ∀ s, Matrix (Fin (n s)) (Fin (rk Ψ p q s)) Ω)
     (Ts : ∀ s, Matrix (Fin (rk Ψ p q s)) (Fin (rk Ψ p q s)) Ω) (x : Ω) (m : Ψ ⊕ Ψ → ℕ)
     (hAT : ∀ s, A s * Ts s = (x ^ m s) • C s) (τ : Ψ) (t : StepIx Ψ p q) (hs : t.1 = .inl τ ∨ t.1 = .inr τ)

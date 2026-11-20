@@ -7,6 +7,9 @@ open GroundTheory.Automorphic.AutomorphicForm GroundTheory.Automorphic.CuspidalS
 open GroundTheory.Global GroundTheory.Global.SemiLocal GroundTheory.Automorphic.Spherical
 open UpperTheory.ConvolutionTheory UpperTheory.ConvolutionTheory.GM
 
+/- English proof (translation)
+Set `K₀ : TopologicalSpace.PositiveCompacts G` to `⟨⟨K, hc⟩, by show (interior K).Nonempty`. Rewrite using `[ho.interior_eq]`. Conclude with `⟨1, h1⟩⟩`. Conclude with `⟨Measure.haarMeasure K₀, inferInstance, Measure.haarMeasure_self (K₀ := K₀)⟩`.
+-/
 private theorem haar_ex {G : Type*} [Group G] [TopologicalSpace G] [IsTopologicalGroup G] [LocallyCompactSpace G]
     [MeasurableSpace G] [BorelSpace G] {K : Set G} (hc : IsCompact K) (ho : IsOpen K) (h1 : (1 : G) ∈ K) :
     ∃ m : Measure G, m.IsHaarMeasure ∧ m K = 1 := by
@@ -15,6 +18,11 @@ private theorem haar_ex {G : Type*} [Group G] [TopologicalSpace G] [IsTopologica
     rw [ho.interior_eq]; exact ⟨1, h1⟩⟩
   exact ⟨Measure.haarMeasure K₀, inferInstance, Measure.haarMeasure_self (K₀ := K₀)⟩
 
+/- English proof (translation)
+Establish `e` using `Measure.isMulLeftInvariant_eq_smul m m'`. Establish `e2 : m K = (Measure.haarScalarFactor m m' • m') K` using `by rw [← e]`. Rewrite `e2` using `[h, Measure.smul_apply, h', ENNReal.smul_def, smul_eq_mul, mul_one]`. Establish `e3 : Measure.haarScalarFactor m m' = 1` using `by exact_mod_cast e2.symm`. Rewrite `e` using `[e3, one_smul]`.
+
+Conclude with `e`.
+-/
 private theorem haar_uniq {G : Type*} [Group G] [TopologicalSpace G] [IsTopologicalGroup G] [LocallyCompactSpace G]
     [SecondCountableTopology G] [MeasurableSpace G] [BorelSpace G] {K : Set G} {m m' : Measure G}
     (hm : m.IsHaarMeasure) (hm' : m'.IsHaarMeasure) (h : m K = 1) (h' : m' K = 1) : m = m' := by
@@ -25,6 +33,9 @@ private theorem haar_uniq {G : Type*} [Group G] [TopologicalSpace G] [IsTopologi
   rw [e3, one_smul] at e
   exact e
 
+/- English proof (translation)
+Use `haveI : LocallyCompactSpace (Matrix (Fin n) (Fin n) R) := inferInstanceAs (LocallyCompactSpace (Fin n → Fin n → R))`. Use `haveI : SecondCountableTopology (Matrix (Fin n) (Fin n) R) := inferInstanceAs (SecondCountableTopology (Fin n → Fin n → R))`. Use `haveI : SecondCountableTopology (Matrix (Fin n) (Fin n) R)ᵐᵒᵖ := MulOpposite.opHomeomorph.symm.isEmbedding.secondCountableTopology`. Conclude with `⟨inferInstance, Units.isEmbedding_embedProduct.secondCountableTopology⟩`.
+-/
 private theorem gl_top (R : Type*) [CommRing R] [TopologicalSpace R] [IsTopologicalRing R] [T2Space R]
     [LocallyCompactSpace R] [SecondCountableTopology R] (n : ℕ) :
     LocallyCompactSpace (GL (Fin n) R) ∧ SecondCountableTopology (GL (Fin n) R) := by
@@ -35,6 +46,19 @@ private theorem gl_top (R : Type*) [CommRing R] [TopologicalSpace R] [IsTopologi
     MulOpposite.opHomeomorph.symm.isEmbedding.secondCountableTopology
   exact ⟨inferInstance, Units.isEmbedding_embedProduct.secondCountableTopology⟩
 
+/- English proof (translation)
+Set `S : Subring (Matrix (Fin n) (Fin n) R)` to `(RingHom.mapMatrix O.subtype).range`. Establish `hS : ∀ A : Matrix (Fin n) (Fin n) R, A ∈ S ↔ ∀ i j, A i j ∈ O`. Introduce `A`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨B, rfl⟩ i j`.
+
+Conclude with `(B i j).2`. Introduce `h`. Conclude with `⟨Matrix.of fun i j => ⟨A i j, h i j⟩, rfl⟩`. Prove the components needed by the constructor for the conclusion. Establish `e : {g : GL (Fin n) R | (∀ i j, g i j ∈ O) ∧ ∀ i j, (g⁻¹ : GL (Fin n) R) i j ∈ O} = (S.toSubmonoid.units : Set (GL (Fin n) R))`.
+
+Use extensionality with `g`. Rewrite using `[SetLike.mem_coe, Submonoid.mem_units_iff, Subring.mem_toSubmonoid, Subring.mem_toSubmonoid, hS, hS]`. Both sides reduce to the same expression. Rewrite using `[e]`. Apply `Submonoid.units_isCompact` to reduce the goal to its premises.
+
+Establish `: (S.toSubmonoid : Set (Matrix (Fin n) (Fin n) R)) = Set.pi Set.univ fun _ => Set.pi Set.univ fun _ => (O : Set R)`. Use extensionality with `A`. Express the relevant statement in the definitionally equal form `A ∈ S ↔ ∀ i ∈ Set.univ, ∀ j ∈ Set.univ, A i j ∈ (O : Set R)`. Rewrite using `[hS]`. Simplify using the standard rewrite rules.
+
+Rewrite using `[this]`. Conclude with `isCompact_univ_pi fun _ => isCompact_univ_pi fun _ => hc`. Simplify using `only [Set.setOf_and, Set.setOf_forall]`. Use `IsOpen.inter ?_ ?_` and prove the remaining obligations. Conclude with `isOpen_iInter_of_finite fun i => isOpen_iInter_of_finite fun j => ho.preimage (Units.continuous_val.matrix_elem i j)`.
+
+Conclude with `isOpen_iInter_of_finite fun i => isOpen_iInter_of_finite fun j => ho.preimage ((Units.continuous_val.matrix_elem i j).comp continuous_inv)`.
+-/
 private theorem gl_int {R : Type*} [CommRing R] [TopologicalSpace R] [IsTopologicalRing R] [T2Space R] (n : ℕ)
     (O : Subring R) (hc : IsCompact (O : Set R)) (ho : IsOpen (O : Set R)) :
     IsCompact {g : GL (Fin n) R | (∀ i j, g i j ∈ O) ∧ ∀ i j, (g⁻¹ : GL (Fin n) R) i j ∈ O} ∧
@@ -71,6 +95,15 @@ private theorem gl_int {R : Type*} [CommRing R] [TopologicalSpace R] [IsTopologi
         ho.preimage ((Units.continuous_val.matrix_elem i j).comp continuous_inv)
 
 open ValuativeRel in
+/- English proof (translation)
+Set `O : Subring (CompletionsOver E v)` to `⨅ w : PlacesOver E v, (𝒪[w.1.adicCompletion E]).comap (Pi.evalRingHom (fun w : PlacesOver E v => w.1.adicCompletion E) w)`. Establish `hO : (O : Set (CompletionsOver E v)) = Set.pi Set.univ fun w : PlacesOver E v => (𝒪[w.1.adicCompletion E] : Set (w.1.adicCompletion E))`. Use extensionality with `x`. Simplify using `[O, Subring.mem_iInf]`. Establish `hc : IsCompact (O : Set (CompletionsOver E v))`.
+
+Rewrite using `[hO]`. Conclude with `isCompact_univ_pi fun w => isCompact_iff_compactSpace.mpr (inferInstanceAs (CompactSpace 𝒪[w.1.adicCompletion E]))`. Establish `ho : IsOpen (O : Set (CompletionsOver E v))`. Rewrite using `[hO]`. Conclude with `isOpen_set_pi Set.finite_univ fun w _ => Valuation.isOpen_integer`.
+
+Establish `e : unitSet E n v = {g : GL (Fin n) (CompletionsOver E v) | (∀ i j, g i j ∈ O) ∧ ∀ i j, (g⁻¹ : GL (Fin n) (CompletionsOver E v)) i j ∈ O}`. Use extensionality with `g`. Simplify using `only [unitSet, Set.mem_setOf_eq, GLnLocal.mem_integralGL_iff, ← map_inv, O, Subring.mem_iInf, Subring.mem_comap]`. Conclude with `⟨fun h => ⟨fun i j w => (h w).1 i j, fun i j w => (h w).2 i j⟩, fun h w => ⟨fun i j => h.1 i j w, fun i j => h.2 i j w⟩⟩`. Use `⟨e ▸ (gl_int n O hc ho).1, e ▸ (gl_int n O hc ho).2, fun w => ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[map_one]`. Conclude with `one_mem _`.
+-/
 private theorem unitSet_top {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (n : ℕ) (v : Pl F) :
     IsCompact (unitSet E n v) ∧ IsOpen (unitSet E n v) ∧ (1 : GL (Fin n) (CompletionsOver E v)) ∈ unitSet E n v := by
   let O : Subring (CompletionsOver E v) :=
@@ -96,6 +129,13 @@ private theorem unitSet_top {F E : Type} [Field F] [NumberField F] [Field E] [Nu
   rw [map_one]
   exact one_mem _
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ n v`. Take `⟨lE, sE⟩` from `gl_top (CompletionsOver E v) n`. Take `⟨lF, sF⟩` from `gl_top (v.adicCompletion F) n`. Take `⟨hc, ho, h1⟩` from `unitSet_top (E := E) n v`. Prove the components needed by the constructor for the conclusion.
+
+Use `borelize (GL (Fin n) (CompletionsOver E v)) borelize (GL (Fin n) (v.adicCompletion F))`. Take `⟨mE, hE, hE1⟩` from `haar_ex hc ho h1`. Take `⟨mF, hF, hF1⟩` from `haar_ex (GLnLocal.isCompact_integralGL (v.adicCompletion F) n) (GLnLocal.isOpen_integralGL (v.adicCompletion F) n) (one_mem _)`. Conclude with `⟨inferInstance, inferInstance, inferInstance, inferInstance, mE, mF, hE, hF, hE1, hF1⟩`. Introduce `aE bE aF bF mE mF hE hF hE1 hF1 c φ f hM aE' bE' aF' bF' mE' mF' hE' hF' hE1' hF1'`.
+
+Take `rfl : aE = aE'` from `bE.measurable_eq.trans bE'.measurable_eq.symm`. Take `rfl : aF = aF'` from `bF.measurable_eq.trans bF'.measurable_eq.symm`. Take `rfl : mE = mE'` from `haar_uniq hE hE' hE1 hE1'`. Take `rfl : mF = mF'` from `haar_uniq hF hF' hF1 hF1'`. Conclude with `hM`.
+-/
 theorem UpperTheory.ConvolutionTheory.GM.matchOne :
     ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E ≃ₐ[F] E) (n : ℕ) (v : Pl F),
     (∃ (_ : MeasurableSpace (GL (Fin n) (CompletionsOver E v))) (_ : BorelSpace (GL (Fin n) (CompletionsOver E v)))

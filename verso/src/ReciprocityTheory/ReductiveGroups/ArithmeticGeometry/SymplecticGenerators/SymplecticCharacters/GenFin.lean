@@ -6,6 +6,11 @@ namespace ReciprocityTheory.ChartRestriction.G.Key.Chi
 
 variable {g : ℕ}
 
+/- English proof (translation)
+Establish `h` using `SymplecticGroup.transpose_mem hA`. Rewrite `h` using `[SymplecticGroup.mem_iff, Matrix.transpose_transpose]`. Rewrite using `[← h]`. Simplify using `only [Matrix.mul_apply, Fintype.sum_sum_type, Matrix.transpose_apply]`. Simplify using `[Matrix.J, Matrix.fromBlocks, Matrix.one_apply, Finset.sum_sub_distrib, sub_eq_add_neg]`.
+
+Rewrite using `[Finset.sum_add_distrib, Finset.sum_neg_distrib]`.
+-/
 private theorem symplectic_sum_pair_eq_J {A : Matrix (Fin g ⊕ Fin g) (Fin g ⊕ Fin g) ℤ}
     (hA : A ∈ symplecticGroup (Fin g) ℤ) (p q : Fin g ⊕ Fin g) :
     ∑ b, (A (Sum.inr b) p * A (Sum.inl b) q - A (Sum.inl b) p * A (Sum.inr b) q) =
@@ -17,6 +22,9 @@ private theorem symplectic_sum_pair_eq_J {A : Matrix (Fin g ⊕ Fin g) (Fin g �
   simp [Matrix.J, Matrix.fromBlocks, Matrix.one_apply, Finset.sum_sub_distrib, sub_eq_add_neg]
   rw [Finset.sum_add_distrib, Finset.sum_neg_distrib]
 
+/- English proof (translation)
+Establish `h` using `symplectic_sum_pair_eq_J hA (Sum.inr i) (Sum.inl m)`. Take `⟨-, h2⟩` from `hF i hi`. Simplify `h` using `[h2, Matrix.one_apply, Matrix.J, Matrix.fromBlocks, Ne.symm hm]`.
+-/
 private theorem symplectic_inl_inl_eq_zero_of_colsFixed {k : ℕ} {A : Matrix (Fin g ⊕ Fin g) (Fin g ⊕ Fin g) ℤ}
     (hA : A ∈ symplecticGroup (Fin g) ℤ) (hF : ColsFixed k A) {i m : Fin g} (hi : (i : ℕ) < k)
     (hm : m ≠ i) : A (Sum.inl i) (Sum.inl m) = 0 := by
@@ -24,6 +32,37 @@ private theorem symplectic_inl_inl_eq_zero_of_colsFixed {k : ℕ} {A : Matrix (F
   obtain ⟨-, h2⟩ := hF i hi
   simpa [h2, Matrix.one_apply, Matrix.J, Matrix.fromBlocks, Ne.symm hm] using h
 
+/- English proof (translation)
+Proceed by induction on `n using Nat.strong_induction_on with`. Consider the case `_ n ih`. Introduce `M hM hF hbot hsum`. Distinguish the cases in `hone : ∀ i j, M (Sum.inl i) (Sum.inl k) ≠ 0 → M (Sum.inl j) (Sum.inl k) ≠ 0 → i = j`. Conclude with `⟨1, (spH g).one_mem, colsFixed_one _, by simpa using hbot, by simpa using hone⟩`.
+
+Use `push_neg at hone`. Take `⟨a, b, ha, hb, hab⟩` from `hone`. Use `wlog hle : (M (Sum.inl b) (Sum.inl k)).natAbs ≤ (M (Sum.inl a) (Sum.inl k)).natAbs generalizing a b`. Conclude with `this b a hb ha (Ne.symm hab) (by omega)`. Establish `hak : (k : ℕ) ≤ a`.
+
+Assume the negation of the conclusion as `hlt`. Use `push_neg at hlt`. Conclude with `ha (symplectic_inl_inl_eq_zero_of_colsFixed hM hF hlt (fun h => by subst h; exact lt_irrefl _ hlt))`. Establish `hbk : (k : ℕ) ≤ b`. Assume the negation of the conclusion as `hlt`.
+
+Use `push_neg at hlt`. Conclude with `hb (symplectic_inl_inl_eq_zero_of_colsFixed hM hF hlt (fun h => by subst h; exact lt_irrefl _ hlt))`. Set `t : ℤ` to `M (Sum.inl a) (Sum.inl k) / M (Sum.inl b) (Sum.inl k)`. Set `E : Matrix (Fin g) (Fin g) ℤ` to `Matrix.of fun c u => (if c = u then (1 : ℤ) else 0) - if c = a ∧ u = b then t else 0`. Set `E' : Matrix (Fin g) (Fin g) ℤ` to `Matrix.of fun c u => (if c = u then (1 : ℤ) else 0) + if c = a ∧ u = b then t else 0`.
+
+Establish `hEE' : E * E' = 1`. Use extensionality with `c d`. Simplify using `[E, E', Matrix.mul_apply, Matrix.one_apply, sub_mul, mul_add, Finset.sum_add_distrib, Finset.sum_sub_distrib, ite_and]`. Apply the tactic sequence `split_ifs <;> simp_all`. Establish `hE'E : E' * E = 1`.
+
+Use extensionality with `c d`. Simplify using `[E, E', Matrix.mul_apply, Matrix.one_apply, add_mul, mul_sub, Finset.sum_add_distrib, Finset.sum_sub_distrib, ite_and]`. Apply the tactic sequence `split_ifs <;> simp_all`. Set `U : (Matrix (Fin g) (Fin g) ℤ)ˣ` to `⟨E, E', hEE', hE'E⟩`. Establish `hO1 : spDiag U ∈ spH g` using `spDiag_mem U`.
+
+Establish `hF1 : ColsFixed k (spDiag U)`. Introduce `i hi`. Establish `hia : i ≠ a` using `fun h => by subst h; omega`. Establish `hib : i ≠ b` using `fun h => by subst h; omega`. Establish `e1 : ∀ c : Fin g, (i = c ↔ c = i)` using `fun c => eq_comm`.
+
+Apply the tactic sequence `constructor <;> intro r <;> rcases r with c | c <;>`. Simplify using `[spDiag, U, E, E', Matrix.fromBlocks, Matrix.one_apply, hia, hib, e1]`. Establish `hnew : ∀ c, (spDiag U * M) (Sum.inl c) (Sum.inl k) = M (Sum.inl c) (Sum.inl k) - if c = a then t * M (Sum.inl b) (Sum.inl k) else 0`. Introduce `c`. Rewrite using `[Matrix.mul_apply, Fintype.sum_sum_type]`.
+
+Simplify using `[spDiag, U, E, Matrix.fromBlocks, hbot, sub_mul, Finset.sum_sub_distrib, ite_and]`. Establish `hbot1 : ∀ j, (spDiag U * M) (Sum.inr j) (Sum.inl k) = 0`. Introduce `j`. Rewrite using `[Matrix.mul_apply, Fintype.sum_sum_type]`. Simplify using `[spDiag, Matrix.fromBlocks, hbot]`.
+
+Establish `hkey : (M (Sum.inl a) (Sum.inl k) - t * M (Sum.inl b) (Sum.inl k)).natAbs < (M (Sum.inl a) (Sum.inl k)).natAbs`. Establish `he : M (Sum.inl a) (Sum.inl k) - t * M (Sum.inl b) (Sum.inl k) = M (Sum.inl a) (Sum.inl k) % M (Sum.inl b) (Sum.inl k)`. Rewrite using `[Int.emod_def]`. Expand and normalize the polynomial expressions, which then agree. Establish `h1` using `Int.natAbs_lt_natAbs_of_nonneg_of_lt (Int.emod_nonneg (M (Sum.inl a) (Sum.inl k)) hb) (Int.emod_lt (M (Sum.inl a) (Sum.inl k)) hb)`.
+
+Establish `h2 : (M (Sum.inl a) (Sum.inl k) % M (Sum.inl b) (Sum.inl k)).natAbs < (M (Sum.inl b) (Sum.inl k)).natAbs`. Simplify using `only [Int.natCast_natAbs] at h1`. Rewrite `h1` using `[Int.natAbs_abs]`. Then use the resulting hypothesis. Rewrite using `[he]`. Use linear arithmetic over natural numbers and integers.
+
+Establish `hlt : ∑ j, ((spDiag U * M) (Sum.inl j) (Sum.inl k)).natAbs < n`. Rewrite using `[← hsum]`. Apply `Finset.sum_lt_sum` to reduce the goal to its premises. Introduce `j _`. Rewrite using `[hnew]`.
+
+Distinguish the cases in `hja : j = a`. Substitute `hja` using the available equality. Simplify using `only [if_true]`. Conclude with `hkey.le`. Simplify using `[hja]`.
+
+Conclude with `⟨a, Finset.mem_univ _, by rw [hnew]; simpa using hkey⟩`. Establish `hM1 : spDiag U * M ∈ symplecticGroup (Fin g) ℤ` using `(symplecticGroup (Fin g) ℤ).mul_mem (spH_le g hO1) hM`. Take `⟨O2, hO2, hF2, hb2, hone2⟩` from `ih _ hlt (spDiag U * M) hM1 (colsFixed_mul hF1 hF) hbot1 rfl`. Use `⟨O2 * spDiag U, (spH g).mul_mem hO2 hO1, colsFixed_mul hF2 hF1, ?_, ?_⟩` and prove the remaining obligations. Simplify `hb2` using `[Matrix.mul_assoc]`.
+
+Simplify `hone2` using `[Matrix.mul_assoc]`.
+-/
 theorem phase2 (k : Fin g) (n : ℕ) : ∀ M ∈ symplecticGroup (Fin g) ℤ, ColsFixed k M →
     (∀ j, M (Sum.inr j) (Sum.inl k) = 0) → ∑ j, (M (Sum.inl j) (Sum.inl k)).natAbs = n →
     ∃ O ∈ spH g, ColsFixed k O ∧ (∀ j, (O * M) (Sum.inr j) (Sum.inl k) = 0) ∧
@@ -111,6 +150,17 @@ theorem phase2 (k : Fin g) (n : ℕ) : ∀ M ∈ symplecticGroup (Fin g) ℤ, Co
   · simpa [Matrix.mul_assoc] using hb2
   · simpa [Matrix.mul_assoc] using hone2
 
+/- English proof (translation)
+Set `P : Matrix (Fin g) (Fin g) ℤ` to `Matrix.of fun a b => if Equiv.swap j k a = b then 1 else 0`. Establish `hP : P * P = 1`. Use extensionality with `a b`. Simplify using `only [P, Matrix.mul_apply, Matrix.of_apply, Matrix.one_apply]`. Rewrite using `[Finset.sum_eq_single (Equiv.swap j k a)]`.
+
+Simplify using `[Equiv.swap_apply_self, eq_comm]`. Introduce `c _ hc`. Simplify using `[Ne.symm hc]`. Simplify using the standard rewrite rules. Set `U : (Matrix (Fin g) (Fin g) ℤ)ˣ` to `⟨P, P, hP, hP⟩`.
+
+Use `⟨spDiag U, spDiag_mem U, fun i hi => ?_, fun r => ?_⟩` and prove the remaining obligations. Establish `hik : i ≠ k` using `fun h => by subst h; exact lt_irrefl _ hi`. Establish `hij : i ≠ j` using `fun h => by subst h; omega`. Establish `hsw : Equiv.swap j k i = i` using `Equiv.swap_apply_of_ne_of_ne hij hik`. Apply the tactic sequence `constructor <;> intro r <;> rcases r with a | a`.
+
+Establish `h1 : (Equiv.swap j k a = i) ↔ (a = i)` using `by rw [Equiv.swap_apply_eq_iff, hsw]`. Simplify using `[spDiag, U, P, Matrix.one_apply, Matrix.fromBlocks, h1]`. Simplify using `[spDiag, U, P, Matrix.one_apply, Matrix.fromBlocks]`. Simplify using `[spDiag, U, P, Matrix.one_apply, Matrix.fromBlocks]`. Establish `h1 : (i = a) ↔ (a = i)` using `eq_comm`.
+
+Simplify using `[spDiag, U, P, Matrix.one_apply, Matrix.fromBlocks, Matrix.transpose_apply, hsw, h1]`. Rewrite using `[Matrix.mul_apply, Fintype.sum_sum_type]`. Apply the tactic sequence `rcases r with a | a <;>`. Apply the tactic sequence `simp [spDiag, U, P, hsupp, Matrix.one_apply, Matrix.fromBlocks, Equiv.swap_apply_eq_iff] <;>`. Apply the tactic sequence `try (split_ifs <;> simp_all)`.
+-/
 theorem move_col (k j : Fin g) (hjk : (k : ℕ) ≤ j) (hne : j ≠ k) (s : ℤ)
     (M : Matrix (Fin g ⊕ Fin g) (Fin g ⊕ Fin g) ℤ)
     (hsupp : ∀ r, M r (Sum.inl k) = if r = Sum.inl j then s else 0) :
@@ -142,6 +192,15 @@ theorem move_col (k j : Fin g) (hjk : (k : ℕ) ≤ j) (hne : j ≠ k) (s : ℤ)
       simp [spDiag, U, P, hsupp, Matrix.one_apply, Matrix.fromBlocks, Equiv.swap_apply_eq_iff] <;>
       try (split_ifs <;> simp_all)
 
+/- English proof (translation)
+Break down `hs with rfl | rfl` into its components or cases. Use `⟨1, (spH g).one_mem, colsFixed_one _, fun r => ?_⟩` and prove the remaining obligations. Rewrite using `[Matrix.one_mul, hsupp r, Matrix.one_apply]`. Set `D : Matrix (Fin g) (Fin g) ℤ` to `Matrix.diagonal fun i => if i = k then -1 else 1`. Establish `hD : D * D = 1`.
+
+Simplify using `only [D, Matrix.diagonal_mul_diagonal, ← Matrix.diagonal_one]`. Use `congr 1`. Use function extensionality and compare the values at `i`. Apply the tactic sequence `split_ifs <;> norm_num`. Set `U : (Matrix (Fin g) (Fin g) ℤ)ˣ` to `⟨D, D, hD, hD⟩`.
+
+Use `⟨spDiag U, spDiag_mem U, fun i hi => ?_, fun r => ?_⟩` and prove the remaining obligations. Establish `hik : i ≠ k` using `fun h => by subst h; exact lt_irrefl _ hi`. Apply the tactic sequence `constructor <;> intro r <;> rcases r with a | a <;>`. Apply the tactic sequence `simp [spDiag, U, D, Matrix.one_apply, Matrix.diagonal_apply, Matrix.fromBlocks] <;>`. Apply the tactic sequence `split_ifs <;> simp_all`.
+
+Rewrite using `[Matrix.mul_apply, Fintype.sum_sum_type]`. Apply the tactic sequence `rcases r with a | a <;>`. Apply the tactic sequence `simp [spDiag, U, D, hsupp, Matrix.one_apply, Matrix.diagonal_apply, Matrix.fromBlocks] <;>`. Apply the tactic sequence `split_ifs <;> simp_all`.
+-/
 theorem sign_col (k : Fin g) (s : ℤ) (hs : s = 1 ∨ s = -1)
     (M : Matrix (Fin g ⊕ Fin g) (Fin g ⊕ Fin g) ℤ)
     (hsupp : ∀ r, M r (Sum.inl k) = if r = Sum.inl k then s else 0) :
@@ -168,6 +227,23 @@ theorem sign_col (k : Fin g) (s : ℤ) (hs : s = 1 ∨ s = -1)
         simp [spDiag, U, D, hsupp, Matrix.one_apply, Matrix.diagonal_apply, Matrix.fromBlocks] <;>
         split_ifs <;> simp_all
 
+/- English proof (translation)
+Take `⟨O1, hO1, hF1, hb1⟩` from `phase1 k _ M hM hF rfl`. Establish `hM1 : O1 * M ∈ symplecticGroup (Fin g) ℤ` using `(symplecticGroup (Fin g) ℤ).mul_mem (spH_le g hO1) hM`. Take `⟨O2, hO2, hF2, hb2, hone2⟩` from `phase2 k _ (O1 * M) hM1 (colsFixed_mul hF1 hF) hb1 rfl`. Establish `hA : O2 * (O1 * M) ∈ symplecticGroup (Fin g) ℤ` using `(symplecticGroup (Fin g) ℤ).mul_mem (spH_le g hO2) hM1`. Establish `hFA : ColsFixed k (O2 * (O1 * M))` using `colsFixed_mul hF2 (colsFixed_mul hF1 hF)`.
+
+Establish `hid` using `symplectic_sum_pair_eq_J hA (Sum.inl k) (Sum.inr k)`. Simplify using `only [hb2, zero_mul, zero_sub] at hid`. Simplify using `[Matrix.J, Matrix.fromBlocks, Finset.sum_neg_distrib] at hid`. Choose the witnesses or unpack the hypotheses as in `⟨j, hj⟩ : ∃ j, (O2 * (O1 * M)) (Sum.inl j) (Sum.inl k) ≠ 0 := by`. Assume the negation of the conclusion as `hcon`.
+
+Use `push_neg at hcon`. Simplify using `[hcon] at hid`. Establish `hz : ∀ c, c ≠ j → (O2 * (O1 * M)) (Sum.inl c) (Sum.inl k) = 0`. Introduce `c hc`. Assume the negation of the conclusion as `h`.
+
+Conclude with `hc (hone2 c j h hj)`. Establish `hsupp : ∀ r, (O2 * (O1 * M)) r (Sum.inl k) = if r = Sum.inl j then (O2 * (O1 * M)) (Sum.inl j) (Sum.inl k) else 0`. Introduce `r`. Break down `r with c | c` into its components or cases. Distinguish the cases in `hc : c = j`.
+
+Substitute `hc` using the available equality. Simplify using the standard rewrite rules. Simplify using `[hc, hz c hc]`. Simplify using `[hb2]`. Rewrite `hid` using `[Finset.sum_eq_single j (fun c _ hc => by rw [hz c hc, zero_mul]) (by simp)]`.
+
+Establish `hs` using `Int.eq_one_or_neg_one_of_mul_eq_one hid`. Establish `hjk : (k : ℕ) ≤ j`. Assume the negation of the conclusion as `hlt`. Use `push_neg at hlt`. Conclude with `hj (symplectic_inl_inl_eq_zero_of_colsFixed hA hFA hlt (fun h => by subst h; exact lt_irrefl _ hlt))`.
+
+Break down `eq_or_ne j k with hjk' | hjk'` into its components or cases. Rewrite `hsupp`, `hs` using `[hjk']`. Take `⟨O3, hO3, hF3, h3⟩` from `sign_col k _ hs _ hsupp`. Use `⟨O3 * O2 * O1, (spH g).mul_mem ((spH g).mul_mem hO3 hO2) hO1, colsFixed_mul (colsFixed_mul hF3 hF2) hF1, fun r => ?_⟩` and prove the remaining obligations. Simplify `h3 r` using `[Matrix.mul_assoc]`.
+
+Take `⟨O3, hO3, hF3, h3⟩` from `move_col k j hjk hjk' _ _ hsupp`. Take `⟨O4, hO4, hF4, h4⟩` from `sign_col k _ hs _ h3`. Use `⟨O4 * O3 * O2 * O1, (spH g).mul_mem ((spH g).mul_mem ((spH g).mul_mem hO4 hO3) hO2) hO1, colsFixed_mul (colsFixed_mul (colsFixed_mul hF4 hF3) hF2) hF1, fun r => ?_⟩` and prove the remaining obligations. Simplify `h4 r` using `[Matrix.mul_assoc]`.
+-/
 theorem col_inl_step (k : Fin g) (M : Matrix (Fin g ⊕ Fin g) (Fin g ⊕ Fin g) ℤ)
     (hM : M ∈ symplecticGroup (Fin g) ℤ) (hF : ColsFixed k M) :
     ∃ O ∈ spH g, ColsFixed k O ∧ ∀ r,

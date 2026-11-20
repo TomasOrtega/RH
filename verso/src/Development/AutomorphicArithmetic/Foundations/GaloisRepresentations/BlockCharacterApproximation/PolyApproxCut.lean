@@ -17,6 +17,13 @@ def PolyApproxAt (ε : ℝ) (θ : J → k) (S : Set (J → k)) : Prop :=
 
 omit [IsUltrametricDist k] in
 
+/- English proof (translation)
+Take `⟨s, c, hs, hc⟩` from `h`. Use `⟨s.image (· ∘ f), fun z => ∑ η ∈ s.filter (fun η => η ∘ f = z), c η, ?_, fun P => ?_⟩` and prove the remaining obligations. Rewrite using `[Finset.coe_image]`. Conclude with `Set.image_mono hs`. Use `hc (MvPolynomial.rename f P) using 2` and compare the differences between its conclusion and the goal.
+
+Rewrite using `[MvPolynomial.aeval_rename]`. Use `congr 1`. Rewrite using `[← Finset.sum_fiberwise_of_maps_to (g := (· ∘ f)) (t := s.image (· ∘ f)) fun η hη => Finset.mem_image_of_mem _ hη]`. Use `Finset.sum_congr rfl fun z _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_mul]`.
+
+Use `Finset.sum_congr rfl fun η hη => ?_` and prove the remaining obligations. Rewrite using `[MvPolynomial.aeval_rename, (Finset.mem_filter.1 hη).2]`.
+-/
 theorem PolyApproxAt.comp {ε : ℝ} {θ : J → k} {S : Set (J → k)} (h : PolyApproxAt ε θ S) {J' : Type} (f : J' → J) :
     PolyApproxAt ε (θ ∘ f) ((· ∘ f) '' S) := by
   classical

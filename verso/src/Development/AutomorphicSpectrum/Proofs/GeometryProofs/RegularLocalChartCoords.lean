@@ -18,6 +18,11 @@ open MvPolynomial
 
 namespace GlobalTheory.CompanionTheory.Ar.ChartParams
 
+/- English proof (translation)
+Introduce `f hf`. Establish `h1` using `hv (ReciprocityTheory.AnForm.R.renC σ f) (Ideal.mem_map_of_mem _ hf)`. Establish `h2` using `ReciprocityTheory.AnForm.R.eval_renC (fun q => v (Fintype.equivFin σ q)) f`. Establish `h3 : ReciprocityTheory.AnForm.R.renPt (fun q => v (Fintype.equivFin σ q)) = v`. Use function extensionality and compare the values at `j`.
+
+Simplify using `[ReciprocityTheory.AnForm.R.renPt]`. Rewrite `h2` using `[h3, h1]`. Conclude with `h2.symm`.
+-/
 theorem eval_unren_eq_zero {σ : Type} [Fintype σ] (Q : Ideal (MvPolynomial σ ℂ))
     (v : Fin (Fintype.card σ) → ℂ)
     (hv : v ∈ ReciprocityTheory.AnForm.R.zeroSet (Q.map (ReciprocityTheory.AnForm.R.renR σ : MvPolynomial σ ℂ →+* _))) :
@@ -30,6 +35,11 @@ theorem eval_unren_eq_zero {σ : Type} [Fintype σ] (Q : Ideal (MvPolynomial σ 
   rw [h3, h1] at h2
   exact h2.symm
 
+/- English proof (translation)
+Introduce `t ht q`. Establish `hmem : (ε : ℂ) • t ∈ V`. Apply `hεV` to reduce the goal to its premises. Rewrite `ht`, the goal using `[mem_ball_zero_iff]`. Rewrite using `[norm_smul]`.
+
+Simplify using `only [Complex.norm_real, Real.norm_eq_abs, abs_of_pos hε]`. Use the polynomial consequences of the given equalities and inequalities. Establish `h1 : AnalyticAt ℂ (fun s : Fin n → ℂ => (ε : ℂ) • s) t` using `((ε : ℂ) • ContinuousLinearMap.id ℂ (Fin n → ℂ)).analyticAt t`. Establish `h2 : AnalyticAt ℂ (fun s => g ((ε : ℂ) • s)) t` using `AnalyticAt.comp (f := fun s : Fin n → ℂ => (ε : ℂ) • s) (hg _ hmem) h1`. Conclude with `(analyticAt_pi_iff (f := fun l s => g ((ε : ℂ) • s) l)).mp h2 (e q)`.
+-/
 theorem analyticOnNhd_rescale {σ : Type} {n m : ℕ} (e : σ ≃ Fin m) (g : (Fin n → ℂ) → Fin m → ℂ)
     (V : Set (Fin n → ℂ)) (hg : AnalyticOnNhd ℂ g V) (ε : ℝ) (hεV : Metric.ball 0 ε ⊆ V) (hε : 0 < ε) :
     ∀ t ∈ Metric.ball (0 : Fin n → ℂ) 1, ∀ q, AnalyticAt ℂ (fun s => g ((ε : ℂ) • s) (e q)) t := by
@@ -46,6 +56,15 @@ theorem analyticOnNhd_rescale {σ : Type} {n m : ℕ} (e : σ ≃ Fin m) (g : (F
     AnalyticAt.comp (f := fun s : Fin n → ℂ => (ε : ℂ) • s) (hg _ hmem) h1
   exact (analyticAt_pi_iff (f := fun l s => g ((ε : ℂ) • s) l)).mp h2 (e q)
 
+/- English proof (translation)
+Set `R : (σ → ℂ) → Fin n → ℂ` to `fun y i => eval (fun j => y (e.symm j)) (r i)`. Establish `hR : DifferentiableAt ℂ R (gm t)`. Establish `han : AnalyticAt ℂ R (gm t)`. Rewrite using `[analyticAt_pi_iff]`. Introduce `i`.
+
+Use `ReciprocityTheory.AnForm.R.analyticAt_eval_of_pi (f := fun (y : σ → ℂ) (j : Fin m) => y (e.symm j)) (fun l => ?_) (r i)` and prove the remaining obligations. Conclude with `(ContinuousLinearMap.proj (R := ℂ) (φ := fun _ : σ => ℂ) (e.symm l)).analyticAt _`. Conclude with `han.differentiableAt`. Establish `hc : HasFDerivAt (R ∘ gm) ((fderiv ℂ R (gm t)).comp (fderiv ℂ gm t)) t` using `hR.hasFDerivAt.comp t hgm.hasFDerivAt`. Establish `hs : HasFDerivAt (R ∘ gm) (ε • ContinuousLinearMap.id ℂ (Fin n → ℂ)) t`.
+
+Establish `h0 : HasFDerivAt (fun s : Fin n → ℂ => ε • s) (ε • ContinuousLinearMap.id ℂ (Fin n → ℂ)) t` using `(hasFDerivAt_id t).const_smul ε`. Conclude with `h0.congr_of_eventuallyEq hr`. Establish `heq` using `hc.unique hs`. Establish `h1` using `congrArg (fun L => L v) heq`. Simplify using `only [ContinuousLinearMap.comp_apply, hv, map_zero, ContinuousLinearMap.smul_apply, ContinuousLinearMap.id_apply] at h1`.
+
+Conclude with `(smul_eq_zero.mp h1.symm).resolve_left hε`.
+-/
 theorem eq_zero_of_fderiv_eq_zero {σ : Type} [Fintype σ] {n m : ℕ} (e : σ ≃ Fin m)
     (r : Fin n → MvPolynomial (Fin m) ℂ) (gm : (Fin n → ℂ) → σ → ℂ) (ε : ℂ) (hε : ε ≠ 0)
     (t : Fin n → ℂ) (hgm : DifferentiableAt ℂ gm t)
@@ -73,6 +92,55 @@ theorem eq_zero_of_fderiv_eq_zero {σ : Type} [Fintype σ] {n m : ℕ} (e : σ �
     ContinuousLinearMap.id_apply] at h1
   exact (smul_eq_zero.mp h1.symm).resolve_left hε
 
+/- English proof (translation)
+Introduce `K _ J _ P hP n Bd c w hw hwc a r h _ hdim haN hspan hr0 hh0 hbd`. Use `set I := Cmp.SncRes.ideal (pC P) c with hI`. Use `set p := ReciprocityTheory.AnForm.R.renPt (ReciprocityTheory.AnForm.R.affCoord c w) with hp`. Establish `hcone : ∀ z, z ∈ mcPts P → (∀ k, z ⟨k, c k⟩ ≠ 0) → ReciprocityTheory.AnForm.R.renPt (ReciprocityTheory.AnForm.R.affCoord c z) ∈ ReciprocityTheory.AnForm.R.zeroSet I`. Introduce `z hz hzc`.
+
+Establish `h1` using `(ReciprocityTheory.AnForm.R.mem_conePts_iff_chartIdeal hP c z hzc).1 ((mem_mcPts_iff_conePts_pC P z).1 hz)`. Conclude with `ReciprocityTheory.AnForm.R.renPt_zero _ _ h1`. Establish `hpz : p ∈ ReciprocityTheory.AnForm.R.zeroSet I` using `hcone w hw hwc`. Take `⟨U, V, g, hU, hpU, hV, hg, hbij, hrg⟩` from `ReciprocityTheory.AnForm.R.exists_holo_coords I p n hdim r hspan`. Establish `hsolve : ∀ v ∈ U ∩ ReciprocityTheory.AnForm.R.zeroSet I, ReciprocityTheory.AnForm.R.evalFam r v ∈ V ∧ g (ReciprocityTheory.AnForm.R.evalFam r v) = v`.
+
+Introduce `v hv`. Take `⟨u, hu, rfl⟩` from `hbij.surjOn hv`. Rewrite using `[hrg u hu]`. Conclude with `⟨hu, rfl⟩`. Establish `hr0' : ReciprocityTheory.AnForm.R.evalFam r p = 0` using `funext hr0`.
+
+Take `⟨h0V, hg0⟩` from `hsolve p ⟨hpU, hpz⟩`. Rewrite `h0V`, `hg0` using `[hr0']`. Establish `hcont0 : ContinuousAt g 0` using `(hg 0 h0V).continuousAt`. Establish `hnear : ∀ᶠ u in nhds (0 : Fin n → ℂ), u ∈ V ∧ eval (g u) h ≠ 0`. Establish `hVn : ∀ᶠ u in nhds (0 : Fin n → ℂ), u ∈ V` using `hV.mem_nhds h0V`.
+
+Use `hVn.and ?_` and prove the remaining obligations. Establish `hc : ContinuousAt (fun u => eval (g u) h) 0` using `(MvPolynomial.continuous_eval h).continuousAt.comp hcont0`. Use `hc.eventually_ne ?_` and prove the remaining obligations. Rewrite using `[hg0]`. Conclude with `hh0`.
+
+Take `⟨ε, hε, hball⟩` from `Metric.eventually_nhds_iff_ball.1 hnear`. Establish `hεV : Metric.ball (0 : Fin n → ℂ) ε ⊆ V` using `fun u hu => (hball u hu).1`. Establish `hεc : (ε : ℂ) ≠ 0` using `by exact_mod_cast hε.ne'`. Establish `hsc : ∀ t ∈ Metric.ball (0 : Fin n → ℂ) 1, (ε : ℂ) • t ∈ Metric.ball (0 : Fin n → ℂ) ε`. Introduce `t ht`.
+
+Rewrite `ht`, the goal using `[mem_ball_zero_iff]`. Rewrite using `[norm_smul]`. Simplify using `only [Complex.norm_real, Real.norm_eq_abs, abs_of_pos hε]`. Use the polynomial consequences of the given equalities and inequalities. Set `e` to `Fintype.equivFin (Σ k, J k)`.
+
+Set `gm : (Fin n → ℂ) → (Σ k, J k) → ℂ` to `fun t q => g ((ε : ℂ) • t) (e q)`. Establish `hzs : ∀ t ∈ Metric.ball (0 : Fin n → ℂ) 1, g ((ε : ℂ) • t) ∈ ReciprocityTheory.AnForm.R.zeroSet I` using `fun t ht => (hbij.mapsTo (hεV (hsc t ht))).2`. Establish `hchart : ∀ t ∈ Metric.ball (0 : Fin n → ℂ) 1, gm t ∈ ReciprocityTheory.AnForm.R.conePts (pC P) ∧ ∀ k, gm t ⟨k, c k⟩ = 1`. Introduce `t ht`. Establish `h1` using `ReciprocityTheory.AnForm.R.conePts_of_chartIdeal hP c (gm t) (eval_unren_eq_zero _ _ (hzs t ht))`.
+
+Conclude with `⟨h1.1, h1.2.1⟩`. Establish `hcoord : ∀ t ∈ Metric.ball (0 : Fin n → ℂ) 1, ReciprocityTheory.AnForm.R.evalFam r (g ((ε : ℂ) • t)) = (ε : ℂ) • t` using `fun t ht => hrg _ (hεV (hsc t ht))`. Establish `han : AnalyticOnNhd ℂ gm (Metric.ball 0 1)` using `fun t ht => AnalyticAt.pi (f := fun q s => g ((ε : ℂ) • s) (e q)) (analyticOnNhd_rescale e g V hg ε hεV hε t ht)`. Use `⟨SncChart.mk gm a haN han ?_ ?_ ?_ ?_, {z | (∀ k, z ⟨k, c k⟩ ≠ 0) ∧ ReciprocityTheory.AnForm.R.renPt (ReciprocityTheory.AnForm.R.affCoord c z) ∈ U ∧ ‖ReciprocityTheory.AnForm.R.evalFam r (ReciprocityTheory.AnForm.R.renPt (ReciprocityTheory.AnForm.R.affCoord c z))‖ < ε / 2}, ?_, ⟨ …` and prove the remaining obligations. Conclude with `fun t ht => (mem_mcPts_iff_conePts_pC P _).2 (hchart t ht).1`.
+
+Introduce `t ht v ⟨c', hc'⟩`. Establish `hdiff : DifferentiableAt ℂ gm t` using `(han t ht).differentiableAt`. Establish `hcomp : ∀ k, c' k = 0`. Introduce `k`. Establish `h1` using `congrFun hc' ⟨k, c k⟩`.
+
+Establish `h2 : (fun s => gm s ⟨k, c k⟩) =ᶠ[nhds t] fun _ => (1 : ℂ)` using `by filter_upwards [Metric.isOpen_ball.mem_nhds ht] with s hs using (hchart s hs).2 k`. Establish `h3 : HasFDerivAt (fun s => gm s ⟨k, c k⟩) ((ContinuousLinearMap.proj (R` using `ℂ) (φ := fun _ : (Σ k, J k) => ℂ) ⟨k, c k⟩).comp (fderiv ℂ gm t)) t := (hasFDerivAt_pi'.1 hdiff.hasFDerivAt) ⟨k, c k⟩`. Establish `h4` using `h3.unique ((hasFDerivAt_const (1 : ℂ) t).congr_of_eventuallyEq h2)`. Establish `h5` using `congrArg (fun L => L v) h4`. Simplify using `only [ContinuousLinearMap.comp_apply, ContinuousLinearMap.proj_apply, ContinuousLinearMap.zero_apply] at h5`.
+
+Rewrite `h5` using `[h1]`. Simplify `h5` using `[torusSmul, (hchart t ht).2 k]`. Establish `hzero : fderiv ℂ gm t v = 0`. Rewrite using `[hc']`. Use function extensionality and compare the values at `q`.
+
+Simplify using `[torusSmul, hcomp q.1]`. Use `eq_zero_of_fderiv_eq_zero e r gm (ε : ℂ) hεc t hdiff ?_ v hzero` and prove the remaining obligations. Use `filter_upwards [Metric.isOpen_ball.mem_nhds ht] with s hs`. Establish `: (fun j => gm s (e.symm j)) = g ((ε : ℂ) • s)`. Use function extensionality and compare the values at `j`.
+
+Simplify using `[gm]`. Rewrite using `[this]`. Conclude with `hcoord s hs`. Introduce `t ht t' ht' c' hc' he`. Establish `hone : ∀ k, c' k = 1`.
+
+Introduce `k`. Establish `h1` using `congrFun he ⟨k, c k⟩`. Simplify `h1.symm` using `[torusSmul, (hchart t ht).2 k, (hchart t' ht').2 k]`. Establish `hgg : g ((ε : ℂ) • t) = g ((ε : ℂ) • t')`. Use function extensionality and compare the values at `j`.
+
+Establish `h1` using `congrFun he (e.symm j)`. Simplify `h1` using `[gm, torusSmul, hone]`. Establish `h2` using `(hcoord t ht).symm.trans ((congrArg _ hgg).trans (hcoord t' ht'))`. Conclude with `smul_right_injective _ hεc h2`. Introduce `t ht`.
+
+Establish `h1` using `hbd (g ((ε : ℂ) • t)) (hzs t ht) (hball _ (hsc t ht)).2`. Use `h1.trans ?_` and prove the remaining obligations. Establish `h2 : ∀ i, eval (g ((ε : ℂ) • t)) (r i) = (ε : ℂ) * t i` using `fun i => congrFun (hcoord t ht) i`. Simplify using `only [h2, mul_eq_zero, hεc, false_or]`. Establish `hA : IsOpen {z : (Σ k, J k) → ℂ | ∀ k, z ⟨k, c k⟩ ≠ 0}`.
+
+Establish `: {z : (Σ k, J k) → ℂ | ∀ k, z ⟨k, c k⟩ ≠ 0} = ⋂ k, {z | z ⟨k, c k⟩ ≠ 0}`. Use extensionality with `z`. Simplify using the standard rewrite rules. Rewrite using `[this]`. Conclude with `isOpen_iInter_of_finite fun k => isOpen_ne_fun (continuous_apply _) continuous_const`.
+
+Establish `hf : ContinuousOn (fun z : (Σ k, J k) → ℂ => ReciprocityTheory.AnForm.R.renPt (ReciprocityTheory.AnForm.R.affCoord c z)) {z : (Σ k, J k) → ℂ | ∀ k, z ⟨k, c k⟩ ≠ 0}`. Use `continuousOn_pi.2 fun j => ?_` and prove the remaining obligations. Simplify using `only [ReciprocityTheory.AnForm.R.renPt, ReciprocityTheory.AnForm.R.affCoord, Function.comp_apply]`. Conclude with `(continuous_apply _).continuousOn.div (continuous_apply _).continuousOn fun z hz => hz _`. Establish `hev : Continuous (ReciprocityTheory.AnForm.R.evalFam r)` using `continuous_pi fun l => MvPolynomial.continuous_eval (p := r l)`.
+
+Establish `hT : IsOpen (U ∩ ReciprocityTheory.AnForm.R.evalFam r ⁻¹' {u | ‖u‖ < ε / 2})` using `hU.inter (isOpen_lt continuous_norm continuous_const |>.preimage hev)`. Use `hf.isOpen_inter_preimage hA hT` as an intermediate fact. Conclude with `this`. Use `show ‖ReciprocityTheory.AnForm.R.evalFam r p‖ < ε / 2`. Rewrite using `[hr0', norm_zero]`.
+
+Check the signs of the components of the expression. Introduce and unpack `z ⟨⟨hzc, hzU, hzn⟩, hzm⟩`. Take `⟨hv1, hv2⟩` from `hsolve _ ⟨hzU, hcone z hzm hzc⟩`. Use `set v := ReciprocityTheory.AnForm.R.renPt (ReciprocityTheory.AnForm.R.affCoord c z) with hv`. Use `set u := ReciprocityTheory.AnForm.R.evalFam r v with hu`.
+
+Use `⟨(ε : ℂ)⁻¹ • u, ?_, fun k => z ⟨k, c k⟩, hzc, ?_⟩` and prove the remaining obligations. Rewrite using `[norm_smul, norm_inv, Complex.norm_real, Real.norm_eq_abs, abs_of_pos hε]`. Rewrite using `[inv_mul_le_iff₀ hε]`. Combine the linear equalities and inequalities to obtain the conclusion. Use function extensionality and compare the values at `q show z q = z ⟨q.1, c q.1⟩ * g ((ε : ℂ) • (ε : ℂ)⁻¹ • u) (e q)`.
+
+Rewrite using `[smul_inv_smul₀ hεc, hv2]`. Establish `hvq : v (e q) = ReciprocityTheory.AnForm.R.affCoord c z q` using `by show ReciprocityTheory.AnForm.R.affCoord c z (e.symm (e q)) = _`. Rewrite using `[Equiv.symm_apply_apply]`. Rewrite using `[hvq]`. Simplify using `only [ReciprocityTheory.AnForm.R.affCoord]`.
+
+Rewrite using `[mul_div_cancel₀ _ (hzc q.1)]`.
+-/
 theorem sncChart_of_regular_parameters : ∀ (K : Type) [Fintype K] (J : K → Type) [∀ k, Fintype (J k)] (P : Ideal (MRing J))
     (hP : ReciprocityTheory.AnForm.R.IsMultiHomogIdeal (pC P)) (n : ℕ) (Bd : Set ((Σ k, J k) → ℂ)) (c : (k : K) → J k)
     (w : (Σ k, J k) → ℂ), w ∈ mcPts P → (∀ k, w ⟨k, c k⟩ ≠ 0) →

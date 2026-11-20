@@ -9,12 +9,18 @@ namespace CompanionTheory.PlaceDict
 
 variable {E Ω : Type} [Field E] [NumberField E] [Field Ω] [Algebra E Ω]
 
+/- English proof (translation)
+Establish `h : IsIntegral A (b : Ω)` using `b.isIntegral_coe.tower_top`. Take `⟨y, hy⟩` from `IsIntegrallyClosed.isIntegral_iff.1 h`. Rewrite using `[← hy]`. Conclude with `y.2`.
+-/
 theorem int_mem (A : ValuationSubring Ω) (b : 𝓞 Ω) : (b : Ω) ∈ A := by
   have h : IsIntegral A (b : Ω) := b.isIntegral_coe.tower_top
   obtain ⟨y, hy⟩ := IsIntegrallyClosed.isIntegral_iff.1 h
   rw [← hy]
   exact y.2
 
+/- English proof (translation)
+The claim follows from `(A.valuation_le_one_iff _).2 (int_mem A b)`.
+-/
 theorem int_le (A : ValuationSubring Ω) (b : 𝓞 Ω) : A.valuation (b : Ω) ≤ 1 :=
   (A.valuation_le_one_iff _).2 (int_mem A b)
 
@@ -29,6 +35,9 @@ def cen (A : ValuationSubring Ω) : Ideal (𝓞 Ω) where
     rw [map_mul]
     exact mul_lt_one_of_nonneg_of_lt_one_right (int_le A c) zero_le hb
 
+/- English proof (translation)
+Unfold both sides. The equivalence is reflexive.
+-/
 theorem mem_cen {A : ValuationSubring Ω} {b : 𝓞 Ω} : b ∈ cen A ↔ A.valuation (b : Ω) < 1 := Iff.rfl
 
 instance cen_prime (A : ValuationSubring Ω) : (cen A).IsPrime where
@@ -42,11 +51,23 @@ instance cen_prime (A : ValuationSubring Ω) : (cen A).IsPrime where
       le_antisymm (int_le A a) hn.1, le_antisymm (int_le A b) hn.2, one_mul] at h
     exact lt_irrefl _ h
 
+/- English proof (translation)
+The claim follows from `le_antisymm (int_le A s) (not_lt.1 h)`.
+-/
 theorem val_eq_one {A : ValuationSubring Ω} {s : 𝓞 Ω} (h : s ∉ cen A) : A.valuation (s : Ω) = 1 :=
   le_antisymm (int_le A s) (not_lt.1 h)
 
 variable (E) in
 
+/- English proof (translation)
+Take `⟨F, hF, y, rfl⟩ : ∃ F : IntermediateField E Ω, FiniteDimensional E F ∧ ∃ y : F, algebraMap F Ω y = x` from `⟨E⟮x⟯, adjoin.finiteDimensional (Algebra.IsIntegral.isIntegral _), ⟨x, mem_adjoin_simple_self E x⟩, rfl⟩`. Establish `: NumberField F` using `NumberField.of_module_finite E _`. Set `i : 𝓞 F →+* 𝓞 Ω` to `algebraMap _ _`. Establish `hi : ∀ n : 𝓞 F, ((i n : 𝓞 Ω) : Ω) = algebraMap F Ω (algebraMap (𝓞 F) F n)` using `fun _ => rfl`. Distinguish the cases in `hP : (cen A).comap i = ⊥`.
+
+Take `⟨n, d, hd, e⟩` from `IsFractionRing.div_surjective (A := 𝓞 F) y`. Establish `hd0` using `nonZeroDivisors.ne_zero hd`. Use `⟨i n, i d, fun h => hd0 ((Submodule.mem_bot _).1 (hP ▸ (Ideal.mem_comap.2 h))), ?_⟩` and prove the remaining obligations. Establish `hd' : algebraMap (𝓞 F) F d ≠ 0` using `by simpa using hd0`. Rewrite using `[hi, hi, ← map_mul, ← e, div_mul_cancel₀ _ hd']`.
+
+Set `v : HeightOneSpectrum (𝓞 F)` to `⟨(cen A).comap i, inferInstance, hP⟩`. Take `⟨n, d, h | h⟩` from `v.exists_primeCompl_mul_eq_or_mul_eq (K := F) y`. Use `⟨i n, i d, d.2, ?_⟩` and prove the remaining obligations. Rewrite using `[hi, hi, ← map_mul, h]`. Establish `e : algebraMap F Ω y * (i n : 𝓞 Ω) = (i d : 𝓞 Ω)`.
+
+Rewrite using `[hi, hi, ← map_mul, h]`. Use `⟨i d, i n, fun hn => ?_, e⟩` and prove the remaining obligations. Establish `h1 : A.valuation ((i d : 𝓞 Ω) : Ω) = 1` using `val_eq_one d.2`. Rewrite `h1` using `[← e, map_mul]`. Conclude with `absurd h1 (mul_lt_one_of_nonneg_of_lt_one_right ((A.valuation_le_one_iff _).2 hx) zero_le hn).ne`.
+-/
 theorem frac [Algebra.IsAlgebraic E Ω] (A : ValuationSubring Ω) {x : Ω} (hx : x ∈ A) :
     ∃ b s : 𝓞 Ω, s ∉ cen A ∧ x * s = b := by
   obtain ⟨F, hF, y, rfl⟩ : ∃ F : IntermediateField E Ω, FiniteDimensional E F ∧ ∃ y : F, algebraMap F Ω y = x :=
@@ -71,8 +92,14 @@ theorem frac [Algebra.IsAlgebraic E Ω] (A : ValuationSubring Ω) {x : Ω} (hx :
       rw [← e, map_mul] at h1
       exact absurd h1 (mul_lt_one_of_nonneg_of_lt_one_right ((A.valuation_le_one_iff _).2 hx) zero_le hn).ne
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem coe_smul (g : Ω ≃ₐ[E] Ω) (b : 𝓞 Ω) : ((g • b : 𝓞 Ω) : Ω) = g b := rfl
 
+/- English proof (translation)
+Take `⟨b, s, hs, e⟩` from `frac E A hx`. Establish `h1` using `val_eq_one fun h => hs (hg s h)`. Establish `h2` using `int_le A (g • b)`. Rewrite `h2` using `[coe_smul, ← e, map_mul, map_mul, ← coe_smul g s, h1, mul_one]`. Conclude with `(A.valuation_le_one_iff _).1 h2`.
+-/
 theorem map_mem [Algebra.IsAlgebraic E Ω] (A : ValuationSubring Ω) (g : Ω ≃ₐ[E] Ω)
     (hg : ∀ b : 𝓞 Ω, g • b ∈ cen A → b ∈ cen A) {x : Ω} (hx : x ∈ A) : g x ∈ A := by
   obtain ⟨b, s, hs, e⟩ := frac E A hx
@@ -81,6 +108,17 @@ theorem map_mem [Algebra.IsAlgebraic E Ω] (A : ValuationSubring Ω) (g : Ω ≃
   rw [coe_smul, ← e, map_mul, map_mul, ← coe_smul g s, h1, mul_one] at h2
   exact (A.valuation_le_one_iff _).1 h2
 
+/- English proof (translation)
+Establish `hiff : ∀ b : 𝓞 Ω, g • b ∈ cen A ↔ b ∈ cen A` using `fun b => by`. Rewrite using `[← (cen_prime A).pow_mem_iff_mem (r := b) q (Nat.pos_of_ne_zero hq)]`. Conclude with `⟨fun h => by simpa using (cen A).sub_mem h (hg b), fun h => by simpa using (cen A).add_mem (hg b) h⟩`. Use `⟨?_, fun x hx => ?_⟩` and prove the remaining obligations. Rewrite using `[MulAction.mem_stabilizer_iff]`.
+
+Use extensionality with `x`. Rewrite using `[ValuationSubring.mem_pointwise_smul_iff_inv_smul_mem]`. Use `⟨fun h => ?_, fun h => map_mem A g⁻¹ (fun b hb => ?_) h⟩` and prove the remaining obligations. Simplify using `using map_mem A g (fun b => (hiff b).1) h`. Simplify using `using (hiff _).2 hb`.
+
+Take `⟨b, s, hs, e⟩` from `frac E A hx`. Establish `h1` using `val_eq_one fun h => hs ((hiff s).1 h)`. Establish `h2` using `val_eq_one hs`. Establish `key : (g x - x ^ q) * (((g • s : 𝓞 Ω) : Ω) * (s : Ω) ^ q) = (((g • b - b ^ q) * s ^ q - b ^ q * (g • s - s ^ q) : 𝓞 Ω) : Ω)`. Establish `e1 : g x * g s = g b` using `by rw [← map_mul, e]`.
+
+Use `show (g x - x ^ q) * (g s * (s : Ω) ^ q) = (g b - (b : Ω) ^ q) * (s : Ω) ^ q - (b : Ω) ^ q * (g s - (s : Ω) ^ q)`. Rewrite using `[← e1, ← e]`. Expand and normalize the polynomial expressions, which then agree. Establish `h3 : ((g • b - b ^ q) * s ^ q - b ^ q * (g • s - s ^ q) : 𝓞 Ω) ∈ cen A` using `(cen A).sub_mem ((cen A).mul_mem_right _ (hg b)) ((cen A).mul_mem_left _ (hg s))`. Rewrite `h3` using `[mem_cen, ← key, map_mul, map_mul, map_pow, h1, h2, one_pow, one_mul, mul_one]`.
+
+Conclude with `(A.mem_nonunits_iff).2 h3`.
+-/
 theorem of_cong [Algebra.IsAlgebraic E Ω] (A : ValuationSubring Ω) (g : Ω ≃ₐ[E] Ω) {q : ℕ} (hq : q ≠ 0)
     (hg : ∀ b : 𝓞 Ω, g • b - b ^ q ∈ cen A) :
     g ∈ A.decompositionSubgroup E ∧ ∀ x ∈ A, g x - x ^ q ∈ A.nonunits := by
@@ -108,10 +146,38 @@ theorem of_cong [Algebra.IsAlgebraic E Ω] (A : ValuationSubring Ω) (g : Ω ≃
     rw [mem_cen, ← key, map_mul, map_mul, map_pow, h1, h2, one_pow, one_mul, mul_one] at h3
     exact (A.mem_nonunits_iff).2 h3
 
+/- English proof (translation)
+Take `⟨A, -, hA⟩` from `Ideal.image_subset_nonunits_valuationSubring (A := (integralClosure ℤ Ω).toSubring) Q hQ.ne_top`. Conclude with `⟨A, (hQ.eq_of_le (cen_prime A).ne_top fun b hb => (A.mem_nonunits_iff).1 (hA ⟨b, hb, rfl⟩)).symm⟩`.
+-/
 theorem exists_cen (Q : Ideal (𝓞 Ω)) [hQ : Q.IsMaximal] : ∃ A : ValuationSubring Ω, cen A = Q := by
   obtain ⟨A, -, hA⟩ := Ideal.image_subset_nonunits_valuationSubring (A := (integralClosure ℤ Ω).toSubring) Q hQ.ne_top
   exact ⟨A, (hQ.eq_of_le (cen_prime A).ne_top fun b hb => (A.mem_nonunits_iff).1 (hA ⟨b, hb, rfl⟩)).symm⟩
 
+/- English proof (translation)
+Set `G` to `L.fixingSubgroup`. Set `_ : TopologicalSpace (𝓞 Ω)` to `⊥`. Establish `: DiscreteTopology (𝓞 Ω)` using `⟨rfl⟩`. Establish `: CompactSpace G` using `isCompact_iff_compactSpace.mp (InfiniteGalois.fixingSubgroup_isClosed L).isCompact`. Establish `hfix : ∀ (g : G) (a : 𝓞 L), g • algebraMap (𝓞 L) (𝓞 Ω) a = algebraMap (𝓞 L) (𝓞 Ω) a` using `fun g a => RingOfIntegers.ext ((mem_fixingSubgroup_iff _ _).1 g.2 _ (a : L).2)`.
+
+Establish `: SMulCommClass G (𝓞 L) (𝓞 Ω)` using `⟨fun g a b => by`. Rewrite using `[Algebra.smul_def, Algebra.smul_def, smul_mul', hfix]⟩`. Establish `hopen : ∀ b : 𝓞 Ω, IsOpen (MulAction.stabilizer (Ω ≃ₐ[E] Ω) b : Set (Ω ≃ₐ[E] Ω))` using `fun b => by`. Establish `: FiniteDimensional E E⟮(b : Ω)⟯` using `adjoin.finiteDimensional (Algebra.IsIntegral.isIntegral _)`. Conclude with `Subgroup.isOpen_mono (H₁ := (E⟮(b : Ω)⟯).fixingSubgroup) (fun σ hσ => RingOfIntegers.ext ((mem_fixingSubgroup_iff _ _).1 hσ _ (mem_adjoin_simple_self E _))) (E⟮(b : Ω)⟯).fixingSubgroup_isOpen`.
+
+Establish `: ContinuousSMul G (𝓞 Ω)` using `continuousSMul_iff_stabilizer_isOpen.2 fun b => (hopen b).preimage continuous_subtype_val`. Establish `: Algebra.IsInvariant (𝓞 L) (𝓞 Ω) G` using `⟨fun b hb => by`. Establish `hmem : (b : Ω) ∈ fixedField L.fixingSubgroup`. Rewrite using `[mem_fixedField_iff]`. Introduce `f hf`.
+
+Conclude with `congrArg (fun c : 𝓞 Ω => (c : Ω)) (hb ⟨f, hf⟩)`. Rewrite `hmem` using `[InfiniteGalois.fixedField_fixingSubgroup]`. Establish `hint : IsIntegral ℤ (⟨b, hmem⟩ : L)` using `(isIntegral_algHom_iff (IsScalarTower.toAlgHom ℤ L Ω) (algebraMap L Ω).injective).1 b.isIntegral_coe`. Conclude with `⟨⟨⟨b, hmem⟩, hint⟩, RingOfIntegers.ext rfl⟩⟩`. Take `⟨g, hg⟩` from `AlgEquiv.restrictNormalHom_surjective (F := E) (K₁ := L) (E := Ω) τ`.
+
+Establish `hgL : ∀ x : 𝓞 L, g • algebraMap (𝓞 L) (𝓞 Ω) x = algebraMap (𝓞 L) (𝓞 Ω) (τ • x)` using `fun x => RingOfIntegers.ext (by`. Rewrite using `[← hg]`. Conclude with `(AlgEquiv.restrictNormal_commutes g L x).symm)`. Set `_ : Field (𝓞 Ω ⧸ Q)` to `Ideal.Quotient.field Q`. Establish `hunder : Q.under (𝓞 L) = (g⁻¹ • Q).under (𝓞 L)`.
+
+Use extensionality with `x`. Rewrite using `[Ideal.mem_comap, Ideal.mem_comap, Ideal.mem_inv_pointwise_smul_iff, hgL, ← Ideal.Quotient.eq_zero_iff_mem (I := Q), ← Ideal.Quotient.eq_zero_iff_mem (I := Q), hτ, map_eq_zero θ]`. Take `⟨h, hh⟩` from `Algebra.IsInvariant.exists_smul_of_under_eq_of_profinite (A := 𝓞 L) (G := G) Q (g⁻¹ • Q) hunder`. Use `set g' : Ω ≃ₐ[E] Ω := g * h with hg'`. Establish `hst : g' • Q = Q`.
+
+Rewrite using `[hg', mul_smul]`. Conclude with `(congrArg (g • ·) (show (h : Ω ≃ₐ[E] Ω) • Q = g⁻¹ • Q from hh.symm)).trans (smul_inv_smul g Q)`. Establish `hmem : ∀ b : 𝓞 Ω, g'⁻¹ • b ∈ Q ↔ b ∈ Q` using `fun b => by`. Rewrite using `[← Ideal.mem_pointwise_smul_iff_inv_smul_mem, hst]`. Set `u : 𝓞 Ω ⧸ Q →+* 𝓞 Ω ⧸ Q` to `Ideal.quotientMap Q (MulSemiringAction.toRingHom _ _ g'⁻¹) fun b hb => (hmem b).2 hb`.
+
+Establish `hu : ∀ b : 𝓞 Ω, u (Ideal.Quotient.mk Q b) = Ideal.Quotient.mk Q (g'⁻¹ • b)` using `fun _ => rfl`. Establish `hg'L : ∀ x : 𝓞 L, g'⁻¹ • algebraMap (𝓞 L) (𝓞 Ω) (τ • x) = algebraMap (𝓞 L) (𝓞 Ω) x` using `fun x => by`. Rewrite using `[inv_smul_eq_iff, hg', mul_smul, ← hgL]`. Conclude with `congrArg (g • ·) (hfix h x).symm`. Establish `: Algebra.IsIntegral (𝓞 L) (𝓞 Ω)` using `⟨fun b => (RingOfIntegers.isIntegral b).tower_top⟩`.
+
+Set `ψ : (𝓞 Ω ⧸ Q) →ₐ[𝓞 L ⧸ Q.under (𝓞 L)] (𝓞 Ω ⧸ Q)` to `{ θ.comp u with commutes' := fun c => by`. Take `⟨x, rfl⟩` from `Ideal.Quotient.mk_surjective c`. Take `⟨y, rfl⟩ : ∃ y, τ • y = x` from `⟨τ⁻¹ • x, smul_inv_smul τ x⟩`. Use `show θ (u (Ideal.Quotient.mk Q (algebraMap (𝓞 L) (𝓞 Ω) (τ • y)))) = Ideal.Quotient.mk Q (algebraMap (𝓞 L) (𝓞 Ω) (τ • y))`. Rewrite using `[hu, hg'L, hτ] }`.
+
+Establish `hmax : (Q.under (𝓞 L)).IsMaximal` using `Ideal.isMaximal_comap_of_isIntegral_of_isMaximal Q`. Set `_ : Field (𝓞 L ⧸ Q.under (𝓞 L))` to `Ideal.Quotient.field _`. Establish `hbij : Function.Bijective ψ` using `Algebra.IsAlgebraic.algHom_bijective ψ`. Take `⟨k, hk⟩` from `Ideal.Quotient.stabilizerHom_surjective_of_profinite (G := G) (Q.under (𝓞 L)) Q (AlgEquiv.ofBijective ψ hbij)`. Use `⟨((k : G) : Ω ≃ₐ[E] Ω) * g', ?_, fun b => ?_⟩` and prove the remaining obligations.
+
+Establish `hker : ∀ s : G, AlgEquiv.restrictNormalHom L (s : Ω ≃ₐ[E] Ω) = 1` using `fun s => by`. Rewrite using `[← MonoidHom.mem_ker, restrictNormalHom_ker]`. Conclude with `s.2`. Rewrite using `[hg', map_mul, map_mul, hker, hker, hg, one_mul, mul_one]`. Establish `e` using `DFunLike.congr_fun hk (Ideal.Quotient.mk Q (g' • b))`.
+
+Rewrite using `[mul_smul]`. Use `(show _ = ψ (Ideal.Quotient.mk Q (g' • b)) from e).trans ?_` and prove the remaining obligations. Use `show θ (u _) = _`. Rewrite using `[hu, inv_smul_smul]`.
+-/
 theorem lift [IsGalois E Ω] (L : IntermediateField E Ω) [FiniteDimensional E L] [Normal E L] (Q : Ideal (𝓞 Ω))
     [hQ : Q.IsMaximal] (τ : L ≃ₐ[E] L) (θ : 𝓞 Ω ⧸ Q →+* 𝓞 Ω ⧸ Q)
     (hτ : ∀ x : 𝓞 L, Ideal.Quotient.mk Q (algebraMap (𝓞 L) (𝓞 Ω) (τ • x)) =

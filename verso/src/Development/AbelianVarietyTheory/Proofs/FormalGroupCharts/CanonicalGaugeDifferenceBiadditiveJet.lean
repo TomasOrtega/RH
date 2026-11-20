@@ -18,45 +18,75 @@ variable {R k : Type} [CommRing R] [CommRing k] {d : ℕ} (β : R →+* k)
 
 def mapPt {n : ℕ} (a : Pt R n d) : Pt k n d := fun i => MvPowerSeries.map β (a i)
 
+/- English proof (translation)
+The claim follows from `MvPowerSeries.map_subst (gt_hasSubst a ha) f`.
+-/
 theorem map_ev {m n : ℕ} (a : Fin m → Pt R n d) (ha : ∀ j, GP (a j)) (f : PS R m d) :
     MvPowerSeries.map β (ev a f) = ev (fun j => mapPt β (a j)) (MvPowerSeries.map β f) :=
   MvPowerSeries.map_subst (gt_hasSubst a ha) f
 
+/- English proof (translation)
+Rewrite using `[map_ev β _ (single_point_zero_constant ha)]`. Use `congr 1`. Use function extensionality and compare the values at `j`. Use `fin_cases j`. Both sides reduce to the same expression.
+-/
 theorem map_ev1 {n : ℕ} (a : Pt R n d) (ha : GP a) (f : PS R 1 d) :
     MvPowerSeries.map β (ev ![a] f) = ev ![mapPt β a] (MvPowerSeries.map β f) := by
   rw [map_ev β _ (single_point_zero_constant ha)]
   congr 1
   funext j; fin_cases j; rfl
 
+/- English proof (translation)
+Rewrite using `[map_ev β _ (pair_points_zero_constant ha hb)]`. Use `congr 1`. Apply the tactic sequence `funext j; fin_cases j <;> rfl`.
+-/
 theorem map_ev2 {n : ℕ} (a b : Pt R n d) (ha : GP a) (hb : GP b) (f : PS R 2 d) :
     MvPowerSeries.map β (ev ![a, b] f) = ev ![mapPt β a, mapPt β b] (MvPowerSeries.map β f) := by
   rw [map_ev β _ (pair_points_zero_constant ha hb)]
   congr 1
   funext j; fin_cases j <;> rfl
 
+/- English proof (translation)
+Rewrite using `[map_ev β _ (triple_points_zero_constant ha hb hc)]`. Use `congr 1`. Apply the tactic sequence `funext j; fin_cases j <;> rfl`.
+-/
 theorem map_ev3 {n : ℕ} (a b c : Pt R n d) (ha : GP a) (hb : GP b) (hc : GP c) (f : PS R 3 d) :
     MvPowerSeries.map β (ev ![a, b, c] f) = ev ![mapPt β a, mapPt β b, mapPt β c] (MvPowerSeries.map β f) := by
   rw [map_ev β _ (triple_points_zero_constant ha hb hc)]
   congr 1
   funext j; fin_cases j <;> rfl
 
+/- English proof (translation)
+Introduce `i` and use `by simp [mapPt, MvPowerSeries.constantCoeff_map, ha i]`.
+-/
 theorem constantCoeff_mapPt_eq_zero {n : ℕ} (a : Pt R n d) (ha : GP a) : GP (mapPt β a) := fun i => by
   simp [mapPt, MvPowerSeries.constantCoeff_map, ha i]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `i`. Simplify using `[mapPt, pt]`.
+-/
 theorem mapPt_pt {n : ℕ} (j : Fin n) : mapPt β (pt R d j) = pt k d j := by
   funext i; simp [mapPt, pt]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `i`. Simplify using `[mapPt]`.
+-/
 theorem mapPt_zero {n : ℕ} : mapPt β (0 : Pt R n d) = 0 := by
   funext i; simp [mapPt]
 
+/- English proof (translation)
+The claim follows from `funext fun i => map_ev1 β a ha (φ i)`.
+-/
 theorem mapPt_comp1 {n : ℕ} (φ : Pt R 1 d) (a : Pt R n d) (ha : GP a) :
     mapPt β (comp1 φ a) = comp1 (mapPt β φ) (mapPt β a) :=
   funext fun i => map_ev1 β a ha (φ i)
 
+/- English proof (translation)
+The claim follows from `funext fun i => map_ev2 β a b ha hb (F i)`.
+-/
 theorem mapPt_addOf {n : ℕ} (F : Fin d → PS R 2 d) (a b : Pt R n d) (ha : GP a) (hb : GP b) :
     mapPt β (addOf F a b) = addOf (mapPt β F) (mapPt β a) (mapPt β b) :=
   funext fun i => map_ev2 β a b ha hb (F i)
 
+/- English proof (translation)
+Introduce `e he` and use `by rw [MvPowerSeries.coeff_map, MvPowerSeries.coeff_map, h e he]`.
+-/
 theorem jeq_map {σ : Type} {m : ℕ} {f g : MvPowerSeries σ R} (h : JEq m f g) :
     JEq m (MvPowerSeries.map β f) (MvPowerSeries.map β g) := fun e he => by
   rw [MvPowerSeries.coeff_map, MvPowerSeries.coeff_map, h e he]
@@ -66,16 +96,31 @@ end Map
 section Ring
 variable {k : Type} [CommRing k] {d : ℕ}
 
+/- English proof (translation)
+Introduce `x hx` and use `by have := congrArg (MvPowerSeries.coeff x) e rw [map_sub, map_sub, h x hx, sub_self] at this exact sub_eq_zero.1 this`.
+-/
 theorem jeq_of_sub {σ : Type} {m : ℕ} {f g u v : MvPowerSeries σ k} (h : JEq m f g) (e : u - v = f - g) :
     JEq m u v := fun x hx => by
   have := congrArg (MvPowerSeries.coeff x) e
   rw [map_sub, map_sub, h x hx, sub_self] at this
   exact sub_eq_zero.1 this
 
+/- English proof (translation)
+The claim follows from `jeq_of_sub (f := g) (g := f) (fun x hx => (h x hx).symm) e`.
+-/
 theorem jeq_of_sub' {σ : Type} {m : ℕ} {f g u v : MvPowerSeries σ k} (h : JEq m f g) (e : u - v = g - f) :
     JEq m u v :=
   jeq_of_sub (f := g) (g := f) (fun x hx => (h x hx).symm) e
 
+/- English proof (translation)
+Establish `hφ : GP φ` using `hinv.1`. Establish `hp : ∀ {n : ℕ} (j : Fin n), GP (pt k (n` using `n) d j) := fun j => gp_pt j`. Establish `hcφ : ∀ {n : ℕ} (a : Pt k n d), GP a → GP (comp1 φ a)` using `fun a ha => gp_comp1 φ a hφ ha`. Establish `hAd : GP (addOf F (comp1 φ (pt k (n` using `2) d 0)) (comp1 φ (pt k (n := 2) d 1))) := gp_addOf _ hBF _ _ (hcφ _ (hp 0)) (hcφ _ (hp 1))`. Establish `e : addOf F' a b = comp1 φi (addOf F (comp1 φ a) (comp1 φ b))`.
+
+Use function extensionality and compare the values at `i`. Express the relevant statement in the definitionally equal form `ev ![a, b] (F' i) = ev ![addOf F (comp1 φ a) (comp1 φ b)] (φi i)`. Rewrite using `[hF i]`. Express the relevant statement in the definitionally equal form `ev ![a, b] (ev ![addOf F (comp1 φ (pt k (n := 2) d 0)) (comp1 φ (pt k (n := 2) d 1))] (φi i)) = _`. Rewrite using `[gt_ev_ev' ![a, b] _ (pair_points_zero_constant ha hb) (single_point_zero_constant hAd)]`.
+
+Use `congr 1`. Use function extensionality and compare the values at `j`. Use `fin_cases j`. Express the relevant statement in the definitionally equal form `evP ![a, b] (addOf F (comp1 φ (pt k d 0)) (comp1 φ (pt k d 1))) = _`. Rewrite using `[evP_addOf _ (pair_points_zero_constant ha hb) _ _ _ (hcφ _ (hp 0)) (hcφ _ (hp 1)), evP_comp1 _ (pair_points_zero_constant ha hb) φ _ (hp 0), evP_comp1 _ (pair_points_zero_constant ha hb) φ _ (hp 1), evP_pt _ (pair_points_zero_constant ha hb), evP_pt _ (pair_points_zero_constant …`.
+
+Both sides reduce to the same expression. Rewrite using `[e, gt_comp_inv hinv _ (gp_addOf _ hBF _ _ (hcφ _ ha) (hcφ _ hb))]`.
+-/
 theorem coordinateChange_comp1_transported_addOf {n : ℕ} {φ φi : Pt k 1 d} (hinv : IsInvPair φ φi) (F F' : Fin d → PS k 2 d) (hBF : GP F)
     (hF : ∀ i, F' i = transF F φ φi i) (a b : Pt k n d) (ha : GP a) (hb : GP b) :
     comp1 φ (addOf F' a b) = addOf F (comp1 φ a) (comp1 φ b) := by
@@ -101,6 +146,9 @@ theorem coordinateChange_comp1_transported_addOf {n : ℕ} {φ φi : Pt k 1 d} (
     rfl
   rw [e, gt_comp_inv hinv _ (gp_addOf _ hBF _ _ (hcφ _ ha) (hcφ _ hb))]
 
+/- English proof (translation)
+Establish `hφ : GP φ` using `hinv.1`. Rewrite using `[hA, gt_comp1_comp1 φi _ (gp_comp1 _ φ hAa hφ) x hx, gt_comp1_comp1 A φ hφ x hx, gt_comp_inv hinv _ (gp_comp1 _ _ hAa (gp_comp1 _ _ hφ hx))]`.
+-/
 theorem coordinateChange_comp1_intertwines_action {n : ℕ} {φ φi : Pt k 1 d} (hinv : IsInvPair φ φi) (A A' : Pt k 1 d) (hAa : GP A)
     (hA : A' = comp1 φi (comp1 A φ)) (x : Pt k n d) (hx : GP x) :
     comp1 φ (comp1 A' x) = comp1 A (comp1 φ x) := by
@@ -108,10 +156,16 @@ theorem coordinateChange_comp1_intertwines_action {n : ℕ} {φ φi : Pt k 1 d} 
   rw [hA, gt_comp1_comp1 φi _ (gp_comp1 _ φ hAa hφ) x hx, gt_comp1_comp1 A φ hφ x hx,
     gt_comp_inv hinv _ (gp_comp1 _ _ hAa (gp_comp1 _ _ hφ hx))]
 
+/- English proof (translation)
+Rewrite using `[gt_ev_ev' V _ hV (pair_points_zero_constant ha hb), eval_pair_points]`.
+-/
 theorem germEv_germEv_two_points {m n : ℕ} (V : Fin m → Pt k n d) (hV : ∀ j, GP (V j)) (a b : Pt k m d) (ha : GP a) (hb : GP b)
     (f : PS k 2 d) : ev V (ev ![a, b] f) = ev ![evP V a, evP V b] f := by
   rw [gt_ev_ev' V _ hV (pair_points_zero_constant ha hb), eval_pair_points]
 
+/- English proof (translation)
+Rewrite using `[germEv_germEv_two_points _ (pair_points_zero_constant ha hb) _ _ (gp_comp1 _ _ hφ (gp_pt 0)) (gp_comp1 _ _ hφ (gp_pt 1)), evP_comp1 _ (pair_points_zero_constant ha hb) φ _ (gp_pt 0), evP_comp1 _ (pair_points_zero_constant ha hb) φ _ (gp_pt 1), evP_pt _ (pair_points_zero_constant …`. Both sides reduce to the same expression.
+-/
 theorem ev_trans {n : ℕ} (φ : Pt k 1 d) (hφ : GP φ) (h : PS k 2 d) (a b : Pt k n d) (ha : GP a) (hb : GP b) :
     ev ![a, b] (ev ![comp1 φ (pt k (n := 2) d 0), comp1 φ (pt k (n := 2) d 1)] h) =
       ev ![comp1 φ a, comp1 φ b] h := by
@@ -120,6 +174,9 @@ theorem ev_trans {n : ℕ} (φ : Pt k 1 d) (hφ : GP φ) (h : PS k 2 d) (a b : P
     evP_comp1 _ (pair_points_zero_constant ha hb) φ _ (gp_pt 1), evP_pt _ (pair_points_zero_constant ha hb), evP_pt _ (pair_points_zero_constant ha hb)]
   rfl
 
+/- English proof (translation)
+Rewrite using `[gt_ev_sub _ (pair_points_zero_constant ha hb), gt_ev_sub _ (pair_points_zero_constant ha hb), ev_trans φ hφ h a b ha hb]`.
+-/
 theorem ev_diff {n : ℕ} (φ : Pt k 1 d) (hφ : GP φ) (h h' lam : PS k 2 d) (a b : Pt k n d) (ha : GP a) (hb : GP b) :
     ev ![a, b] (h' - ev ![comp1 φ (pt k (n := 2) d 0), comp1 φ (pt k (n := 2) d 1)] h - lam) =
       ev ![a, b] h' - ev ![comp1 φ a, comp1 φ b] h - ev ![a, b] lam := by
@@ -127,6 +184,11 @@ theorem ev_diff {n : ℕ} (φ : Pt k 1 d) (hφ : GP φ) (h h' lam : PS k 2 d) (a
 
 variable [Algebra ℚ k]
 
+/- English proof (translation)
+Unfold `FB.expS`. Use extensionality with `e`. Rewrite using `[PowerSeries.coeff_subst (PowerSeries.HasSubst.of_constantCoeff_zero (by simp)), finsum_eq_single _ 0]`. Simplify using the standard rewrite rules. Introduce `n hn`.
+
+Simplify using `[hn]`.
+-/
 theorem expS_zero {n : ℕ} : FB.expS k (0 : PS k n d) = 1 := by
   unfold FB.expS
   ext e
@@ -135,6 +197,9 @@ theorem expS_zero {n : ℕ} : FB.expS k (0 : PS k n d) = 1 := by
   · intro n hn
     simp [hn]
 
+/- English proof (translation)
+Rewrite `h` using `[← gt_expS_add _ _ hA hB, ← gt_expS_add _ _ hC hD]`. Conclude with `((GlobalTheory.ChartCmp.jeq_expS_iff_and_exists_log k n d m).1 _ _ (by simp [hA, hB]) (by simp [hC, hD])).2 h`.
+-/
 theorem jeq_log {n m : ℕ} {A B C D : PS k n d} (hA : constantCoeff A = 0) (hB : constantCoeff B = 0)
     (hC : constantCoeff C = 0) (hD : constantCoeff D = 0)
     (h : JEq m (FB.expS k A * FB.expS k B) (FB.expS k C * FB.expS k D)) : JEq m (A + B) (C + D) := by
@@ -143,6 +208,59 @@ theorem jeq_log {n m : ℕ} {A B C D : PS k n d} (hA : constantCoeff A = 0) (hB 
 
 end Ring
 
+/- English proof (translation)
+Use `set β := algebraMap R k with hβ`. Express the relevant statement in the definitionally equal form `Biadd m B' k (h' - ev (n := 2) ![comp1 (mapPt β φ) (pt k (n := 2) d 0), comp1 (mapPt β φ) (pt k (n := 2) d 1)] h - lam)`. Establish `hε' : MvPowerSeries.map β ε = FB.expS k lam` using `hε.symm`. Establish `hφ : GP φ` using `J.inv.1`. Establish `hψ : GP (mapPt β φ)` using `constantCoeff_mapPt_eq_zero β φ hφ`.
+
+Establish `fk : B.FK k = mapPt β B.G.F` using `rfl`. Establish `fk' : B'.FK k = mapPt β B'.G.F` using `rfl`. Establish `ak : ∀ a, B.actK k a = mapPt β (B.A.act a)` using `fun a => rfl`. Establish `ak' : ∀ a, B'.actK k a = mapPt β (B'.A.act a)` using `fun a => rfl`. Establish `hF : GP B.G.F` using `B.G.const`.
+
+Establish `hF' : GP B'.G.F` using `B'.G.const`. Establish `hFk` using `constantCoeff_mapPt_eq_zero β _ hF`. Establish `hFk'` using `constantCoeff_mapPt_eq_zero β _ hF'`. Establish `hr : ∀ {n : ℕ} (j : Fin n), GP (pt R (n` using `n) d j) := fun j => gp_pt j`. Establish `hp : ∀ {n : ℕ} (j : Fin n), GP (pt k (n` using `n) d j) := fun j => gp_pt j`.
+
+Establish `hcr : ∀ {n : ℕ} (a : Pt R n d), GP a → GP (comp1 φ a)` using `fun a ha => gp_comp1 φ a hφ ha`. Establish `hc : ∀ {n : ℕ} (a : Pt k n d), GP a → GP (comp1 (mapPt β φ) a)` using `fun a ha => gp_comp1 _ a hψ ha`. Establish `hz0 : ∀ {n : ℕ}, GP (0 : Pt k n d)` using `gp_zero₂`. Establish `hh0 : constantCoeff h = 0`. Use `congrArg constantCoeff hh.ax0` as an intermediate fact.
+
+Rewrite `this` using `[gt_const_ev_eq _ (pair_points_zero_constant hz0 (hp 0)), map_zero]`. Then use the resulting hypothesis. Establish `hh0' : constantCoeff h' = 0`. Use `congrArg constantCoeff hh'.ax0` as an intermediate fact. Rewrite `this` using `[gt_const_ev_eq _ (pair_points_zero_constant hz0 (hp 0)), map_zero]`. Then use the resulting hypothesis. Establish `cW : ∀ {n : ℕ} (a b : Pt k n d), GP a → GP b → ∀ f : PS k 2 d, constantCoeff f = 0 → constantCoeff (ev ![a, b] f) = 0` using `fun a b ha hb f hf => gt_const_ev _ (pair_points_zero_constant ha hb) f hf`.
+
+Establish `Gl : ∀ i j : Fin 3, comp1 (mapPt β φ) (addOf (mapPt β B'.G.F) (pt k d i) (pt k d j)) = addOf (mapPt β B.G.F) (comp1 (mapPt β φ) (pt k d i)) (comp1 (mapPt β φ) (pt k d j))`. Introduce `i j`. Use `congrArg (mapPt β) (coordinateChange_comp1_transported_addOf J.inv B.G.F B'.G.F hF J.law (pt R d i) (pt R d j) (hr i) (hr j))` as an intermediate fact. Rewrite `this` using `[mapPt_comp1 β _ _ (gp_addOf _ hF' _ _ (hr i) (hr j)), mapPt_addOf β _ _ _ (hr i) (hr j), mapPt_addOf β _ _ _ (hcr _ (hr i)) (hcr _ (hr j)), mapPt_comp1 β _ _ (hr i), mapPt_comp1 β _ _ (hr j), mapPt_pt, mapPt_pt]`. Then use the resulting hypothesis. Establish `Ha : ∀ (a : O) (i : Fin 2), comp1 (mapPt β φ) (comp1 (mapPt β (B'.A.act a)) (pt k d i)) = comp1 (mapPt β (B.A.act a)) (comp1 (mapPt β φ) (pt k d i))`.
+
+Introduce `a i`. Use `congrArg (mapPt β) (coordinateChange_comp1_intertwines_action J.inv (B.A.act a) (B'.A.act a) (B.A.const a) (J.act a) (pt R d i) (hr i))` as an intermediate fact. Rewrite `this` using `[mapPt_comp1 β _ _ (gp_comp1 _ _ (B'.A.const a) (hr i)), mapPt_comp1 β _ _ (hr i), mapPt_comp1 β _ _ (hcr _ (hr i)), mapPt_comp1 β _ _ (hr i), mapPt_pt]`. Then use the resulting hypothesis. Take `⟨-, hx0, hx1⟩` from `GlobalTheory.ChartCmp.jRel_axes R d O m B B' φ φi ε J`. Use `⟨?ax0, ?ax1, ?ph1, ?ph2, ?sy, ?ad⟩` and prove the remaining obligations.
+
+Establish `e` using `jeq_map β hx0`. Rewrite `e` using `[map_ev2 β _ _ gp_zero₂ (hr 0), mapPt_zero, mapPt_pt, hε', map_one, gt_ev_expS _ (pair_points_zero_constant hz0 (hp 0)) _ hlam0, ← expS_zero]`. Establish `e'` using `((GlobalTheory.ChartCmp.jeq_expS_iff_and_exists_log k 1 d m).1 _ _ (cW _ _ hz0 (hp 0) _ hlam0) (map_zero _)).2 e`. Establish `t` using `congrArg (ev ![mapPt β φ]) hh.ax0`. Rewrite `t` using `[germEv_germEv_two_points _ (single_point_zero_constant hψ) _ _ hz0 (hp 0), evP_zero _ (single_point_zero_constant hψ), evP_pt _ (single_point_zero_constant hψ), gt_ev_zero _ (single_point_zero_constant hψ)]`.
+
+Rewrite using `[ev_diff _ hψ _ _ _ _ _ hz0 (hp 0), hh'.ax0, gt_comp1_zero _ hψ, gt_comp1_pt_right]`. Use `jeq_of_sub' e' ?_` and prove the remaining obligations. Use `erw [t]`. Expand and normalize the polynomial expressions, which then agree. Establish `e` using `jeq_map β hx1`.
+
+Rewrite `e` using `[map_ev2 β _ _ (hr 0) gp_zero₂, mapPt_zero, mapPt_pt, hε', map_one, gt_ev_expS _ (pair_points_zero_constant (hp 0) hz0) _ hlam0, ← expS_zero]`. Establish `e'` using `((GlobalTheory.ChartCmp.jeq_expS_iff_and_exists_log k 1 d m).1 _ _ (cW _ _ (hp 0) hz0 _ hlam0) (map_zero _)).2 e`. Establish `t` using `congrArg (ev ![mapPt β φ]) hh.ax1`. Rewrite `t` using `[germEv_germEv_two_points _ (single_point_zero_constant hψ) _ _ (hp 0) hz0, evP_zero _ (single_point_zero_constant hψ), evP_pt _ (single_point_zero_constant hψ), gt_ev_zero _ (single_point_zero_constant hψ)]`. Rewrite using `[ev_diff _ hψ _ _ _ _ _ (hp 0) hz0, hh'.ax1, gt_comp1_zero _ hψ, gt_comp1_pt_right]`.
+
+Use `jeq_of_sub' e' ?_` and prove the remaining obligations. Use `erw [t]`. Expand and normalize the polynomial expressions, which then agree. Establish `hq0` using `hp (n := 3) 0`. Establish `hq1` using `hp (n := 3) 1`.
+
+Establish `hq2` using `hp (n := 3) 2`. Establish `hV` using `triple_points_zero_constant (hc _ hq0) (hc _ hq1) (hc _ hq2)`. Establish `hA` using `gp_addOf _ hFk _ _ hq0 hq1`. Establish `hA'` using `gp_addOf _ hFk' _ _ hq0 hq1`. Establish `hA''` using `gp_addOf _ hFk _ _ (hc _ hq0) (hc _ hq1)`.
+
+Establish `e1 : MvPowerSeries.map β B.ph1 = _` using `hh.ph1`. Establish `e2 : MvPowerSeries.map β B'.ph1 = _` using `hh'.ph1`. Rewrite `e1` using `[fk]`. Rewrite `e2` using `[fk']`. Establish `e` using `jeq_map β J.ph1`.
+
+Rewrite `e` using `[map_mul, map_mul, map_mul, map_ev2 β _ _ (gp_addOf _ hF' _ _ (hr 0) (hr 1)) (hr 2), map_ev2 β _ _ (hr 0) (hr 2), map_ev2 β _ _ (hr 1) (hr 2), map_ev3 β _ _ _ (hcr _ (hr 0)) (hcr _ (hr 1)) (hcr _ (hr 2)), mapPt_addOf β _ _ _ (hr 0) (hr 1), mapPt_comp1 β _ _ (hr 0), mapPt_comp1 β …`. Simplify using `only [Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.cons_val_two, Matrix.head_cons, Matrix.tail_cons] at e`. Establish `e'` using `jeq_log (by simp [cW _ _ hq0 hq2 _ hh0', cW _ _ hq1 hq2 _ hh0', cW _ _ hA' hq2 _ hh0']) (cW _ _ hA' hq2 _ hlam0) (by simp [cW _ _ (hc _ hq0) (hc _ hq2) _ hh0, cW _ _ (hc _ hq1) (hc _ hq2) _ hh0, cW _ _ hA'' (hc _ hq2) _ hh0]) (by simp [cW _ _ hq0 hq2 _ hlam0, cW _ _ hq1 hq2 _ hla …`. Rewrite using `[fk', ev_diff _ hψ _ _ _ _ _ hA' hq2, ev_diff _ hψ _ _ _ _ _ hq0 hq2, ev_diff _ hψ _ _ _ _ _ hq1 hq2, Gl]`. Use `jeq_of_sub' e' ?_` and prove the remaining obligations.
+
+Expand and normalize the polynomial expressions, which then agree. Establish `hq0` using `hp (n := 3) 0`. Establish `hq1` using `hp (n := 3) 1`. Establish `hq2` using `hp (n := 3) 2`. Establish `hV` using `triple_points_zero_constant (hc _ hq0) (hc _ hq1) (hc _ hq2)`.
+
+Establish `hA` using `gp_addOf _ hFk _ _ hq1 hq2`. Establish `hA'` using `gp_addOf _ hFk' _ _ hq1 hq2`. Establish `hA''` using `gp_addOf _ hFk _ _ (hc _ hq1) (hc _ hq2)`. Establish `e1 : MvPowerSeries.map β B.ph2 = _` using `hh.ph2`. Establish `e2 : MvPowerSeries.map β B'.ph2 = _` using `hh'.ph2`.
+
+Rewrite `e1` using `[fk]`. Rewrite `e2` using `[fk']`. Establish `e` using `jeq_map β J.ph2`. Rewrite `e` using `[map_mul, map_mul, map_mul, map_ev2 β _ _ (hr 0) (gp_addOf _ hF' _ _ (hr 1) (hr 2)), map_ev2 β _ _ (hr 0) (hr 1), map_ev2 β _ _ (hr 0) (hr 2), map_ev3 β _ _ _ (hcr _ (hr 0)) (hcr _ (hr 1)) (hcr _ (hr 2)), mapPt_addOf β _ _ _ (hr 1) (hr 2), mapPt_comp1 β _ _ (hr 0), mapPt_comp1 β …`. Simplify using `only [Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.cons_val_two, Matrix.head_cons, Matrix.tail_cons] at e`.
+
+Establish `e'` using `jeq_log (by simp [cW _ _ hq0 hq1 _ hh0', cW _ _ hq0 hq2 _ hh0', cW _ _ hq0 hA' _ hh0']) (cW _ _ hq0 hA' _ hlam0) (by simp [cW _ _ (hc _ hq0) (hc _ hq1) _ hh0, cW _ _ (hc _ hq0) (hc _ hq2) _ hh0, cW _ _ (hc _ hq0) hA'' _ hh0]) (by simp [cW _ _ hq0 hq1 _ hlam0, cW _ _ hq0 hq2 _ hla …`. Rewrite using `[fk', ev_diff _ hψ _ _ _ _ _ hq0 hA', ev_diff _ hψ _ _ _ _ _ hq0 hq1, ev_diff _ hψ _ _ _ _ _ hq0 hq2, Gl]`. Use `jeq_of_sub' e' ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree. Establish `hq0` using `hp (n := 2) 0`.
+
+Establish `hq1` using `hp (n := 2) 1`. Establish `hV` using `pair_points_zero_constant (hc _ hq0) (hc _ hq1)`. Establish `e1 : MvPowerSeries.map β B.sy = _` using `hh.sy`. Establish `e2 : MvPowerSeries.map β B'.sy = _` using `hh'.sy`. Establish `e` using `jeq_map β J.sy`.
+
+Rewrite `e` using `[map_mul, map_mul, map_ev2 β _ _ (hr 1) (hr 0), map_ev2 β _ _ (hcr _ (hr 0)) (hcr _ (hr 1)), mapPt_comp1 β _ _ (hr 0), mapPt_comp1 β _ _ (hr 1), mapPt_pt, mapPt_pt, hε', e1, e2, gt_ev_expS _ (pair_points_zero_constant hq1 hq0) _ hlam0, gt_ev_expS _ hV _ (by simp [cW _ _ hq1 hq0 _ …`. Simplify using `only [Matrix.cons_val_zero, Matrix.cons_val_one] at e`. Establish `e'` using `jeq_log (by simp [cW _ _ hq1 hq0 _ hh0', hh0']) hlam0 (by simp [cW _ _ (hc _ hq0) (hc _ hq1) _ hh0, cW _ _ (hc _ hq1) (hc _ hq0) _ hh0]) (cW _ _ hq1 hq0 _ hlam0) e`. Rewrite using `[ev_diff _ hψ _ _ _ _ _ hq1 hq0]`. Use `jeq_of_sub e' ?_` and prove the remaining obligations.
+
+Expand and normalize the polynomial expressions, which then agree. Introduce `a`. Establish `hq0` using `hp (n := 2) 0`. Establish `hq1` using `hp (n := 2) 1`. Establish `hV` using `pair_points_zero_constant (hc _ hq0) (hc _ hq1)`.
+
+Establish `hB'a : GP (B'.A.act a)` using `B'.A.const a`. Establish `hB's : GP (B'.A.act (star a))` using `B'.A.const (star a)`. Establish `hBa` using `constantCoeff_mapPt_eq_zero β _ (show GP (B.A.act a) from B.A.const a)`. Establish `hBs` using `constantCoeff_mapPt_eq_zero β _ (show GP (B.A.act (star a)) from B.A.const (star a))`. Establish `hx0` using `gp_comp1 _ _ (constantCoeff_mapPt_eq_zero β _ hB'a) hq0`.
+
+Establish `hx1` using `gp_comp1 _ _ (constantCoeff_mapPt_eq_zero β _ hB's) hq1`. Establish `hy0` using `gp_comp1 _ _ hBa hq0`. Establish `hy1` using `gp_comp1 _ _ hBs hq1`. Establish `hw0` using `gp_comp1 _ _ hBa (hc _ hq0)`. Establish `hw1` using `gp_comp1 _ _ hBs (hc _ hq1)`.
+
+Establish `e1 : MvPowerSeries.map β (B.ad a) = _` using `hh.ad a`. Establish `e2 : MvPowerSeries.map β (B'.ad a) = _` using `hh'.ad a`. Rewrite `e1` using `[ak, ak]`. Rewrite `e2` using `[ak', ak']`. Establish `e` using `jeq_map β (J.ad a)`.
+
+Rewrite `e` using `[map_mul, map_mul, map_ev2 β _ _ (hr 0) (gp_comp1 _ _ hB's (hr 1)), map_ev2 β _ _ (gp_comp1 _ _ hB'a (hr 0)) (hr 1), map_ev2 β _ _ (hcr _ (hr 0)) (hcr _ (hr 1)), mapPt_comp1 β φ _ (hr 0), mapPt_comp1 β φ _ (hr 1), mapPt_comp1 β _ _ (hr 0), mapPt_comp1 β _ _ (hr 1), mapPt_pt, mapP …`. Simplify using `only [Matrix.cons_val_zero, Matrix.cons_val_one] at e`. Establish `e'` using `jeq_log (by simp [cW _ _ hx0 hq1 _ hh0', cW _ _ hq0 hx1 _ hh0']) (cW _ _ hq0 hx1 _ hlam0) (by simp [cW _ _ hw0 (hc _ hq1) _ hh0, cW _ _ (hc _ hq0) hw1 _ hh0]) (cW _ _ hx0 hq1 _ hlam0) e`. Rewrite using `[ak', ak', ev_diff _ hψ _ _ _ _ _ hx0 hq1, ev_diff _ hψ _ _ _ _ _ hq0 hx1, Ha, Ha]`. Use `jeq_of_sub e' ?_` and prove the remaining obligations.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem biadd_gauge_diff (R : Type) [CommRing R] (d : ℕ) (O : Type) [CommRing O] [StarRing O] (m : ℕ)
     (B B' : FB R d O) (φ φi : Pt R 1 d) (ε : PS R 2 d) (J : JRel m B B' φ φi ε)
     (k : Type) [CommRing k] [Algebra ℚ k] [Algebra R k] (h h' lam : PS k 2 d)

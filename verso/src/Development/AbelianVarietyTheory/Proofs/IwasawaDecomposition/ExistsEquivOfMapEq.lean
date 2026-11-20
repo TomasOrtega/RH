@@ -15,6 +15,13 @@ namespace Unram
 variable {V V' : Type*} [AddCommGroup V] [Module ℂ V] [FiniteDimensional ℂ V]
   [AddCommGroup V'] [Module ℂ V'] [FiniteDimensional ℂ V']
 
+/- English proof (translation)
+Take `⟨s, hs, hspan, hli⟩` from `exists_linearIndependent ℂ (⋃ α, (f.eigenspace α : Set V))`. Establish `htop : ⊤ ≤ Submodule.span ℂ (Set.range ((↑) : s → V))`. Rewrite using `[Subtype.range_coe, hspan, Submodule.span_iUnion, ← hf.iSup_eigenspace_eq_top]`. Simplify using the standard rewrite rules. Set `b0 : Basis s ℂ V` to `Basis.mk hli htop`.
+
+Set `b` to `b0.reindex (b0.indexEquiv (finBasis ℂ V))`. Establish `hb : ∀ i, ∃ α : ℂ, f (b i) = α • b i`. Introduce `i`. Establish `: b i ∈ s`. Simplify using `only [b, b0, Basis.reindex_apply, Basis.mk_apply]`.
+
+Conclude with `Subtype.prop _`. Take `⟨α, hα⟩` from `Set.mem_iUnion.mp (hs this)`. Conclude with `⟨α, End.mem_eigenspace_iff.mp hα⟩`. Use `choose c hc using hb`. Conclude with `⟨b, c, hc⟩`.
+-/
 theorem exists_eigenbasis {f : End ℂ V} (hf : f.IsSemisimple) :
     ∃ (b : Basis (Fin (finrank ℂ V)) ℂ V) (c : Fin (finrank ℂ V) → ℂ), ∀ i, f (b i) = c i • b i := by
   obtain ⟨s, hs, hspan, hli⟩ := exists_linearIndependent ℂ (⋃ α, (f.eigenspace α : Set V))
@@ -33,6 +40,15 @@ theorem exists_eigenbasis {f : End ℂ V} (hf : f.IsSemisimple) :
   choose c hc using hb
   exact ⟨b, c, hc⟩
 
+/- English proof (translation)
+Establish `hc : (c : ℂ) ≠ 0` using `c.ne_zero`. Establish `hinv : a.ρ (frob h)⁻¹ v = (c : ℂ)⁻¹ • v`. Use `congrArg (a.ρ (frob h)⁻¹) hv` as an intermediate fact. Rewrite `this` using `[← End.mul_apply, ← map_mul, inv_mul_cancel, map_one, End.one_apply, map_smul]`. Rewrite using `[eq_inv_smul_iff₀ hc, ← this]`.
+
+Establish `hk : ∀ k : ℤ, a.ρ (frob h ^ k) v = (c : ℂ) ^ k • v`. Introduce `k`. Proceed by induction on `k using Int.induction_on with`. Consider the case `zero => simp`. Consider the case `succ k ih`.
+
+Rewrite using `[zpow_add_one, map_mul, End.mul_apply, hv, map_smul, ih, smul_smul, zpow_add_one₀ hc, mul_comm]`. Consider the case `pred k ih`. Rewrite using `[zpow_sub_one, map_mul, End.mul_apply, hinv, map_smul, ih, smul_smul, zpow_sub_one₀ hc, mul_comm]`. Take `⟨τ, hτ⟩` from `exists_eq_zpow_mul (deg_frob (h := h)) σ`. Use `conv_lhs => rw [hτ]`.
+
+Rewrite using `[map_mul, ha.2, mul_one, hk]`.
+-/
 theorem apply_of_eigen {a : WDRep h V} (ha : a.Unr) {v : V} {c : ℂˣ}
     (hv : a.ρ (frob h) v = (c : ℂ) • v) (σ : Weil h) : a.ρ σ v = (c : ℂ) ^ deg σ • v := by
   have hc : (c : ℂ) ≠ 0 := c.ne_zero
@@ -54,6 +70,11 @@ theorem apply_of_eigen {a : WDRep h V} (ha : a.Unr) {v : V} {c : ℂˣ}
   conv_lhs => rw [hτ]
   rw [map_mul, ha.2, mul_one, hk]
 
+/- English proof (translation)
+Use `WD.sound ⟨b.equivFun, fun σ v => ?_, fun v => by simp [ha.1]⟩` and prove the remaining obligations. Establish `: b.equivFun.toLinearMap ∘ₗ a.ρ σ = (WDRep.diag h c).ρ σ ∘ₗ b.equivFun.toLinearMap`. Use `b.ext fun i => funext fun j => ?_` and prove the remaining obligations. Distinguish the cases in `hij : i = j`. Substitute `hij` using the available equality.
+
+Simplify using `[apply_of_eigen ha (hb i)]`. Simplify using `[apply_of_eigen ha (hb i), hij]`. Conclude with `LinearMap.congr_fun this v`.
+-/
 theorem mk_eq_diag {ι : Type*} [Finite ι] {a : WDRep h V} (ha : a.Unr) (b : Basis ι ℂ V)
     (c : ι → ℂˣ) (hb : ∀ i, a.ρ (frob h) (b i) = (c i : ℂ) • b i) :
     WD.mk a = WD.mk (WDRep.diag h c) := by
@@ -66,6 +87,11 @@ theorem mk_eq_diag {ι : Type*} [Finite ι] {a : WDRep h V} (ha : a.Unr) (b : Ba
     · simp [apply_of_eigen ha (hb i), hij]
   exact LinearMap.congr_fun this v
 
+/- English proof (translation)
+Proceed by induction on `x using WD.ind with`. Consider the case `hP n a`. Take `⟨b, c, hc⟩` from `exists_eigenbasis (a.semisimple (frob h))`. Establish `h0 : ∀ i, c i ≠ 0`. Introduce `i hi`.
+
+Use `congrArg (a.ρ (frob h)⁻¹) (hc i)` as an intermediate fact. Rewrite `this` using `[← End.mul_apply, ← map_mul, inv_mul_cancel, map_one, End.one_apply, hi, zero_smul, map_zero]`. Conclude with `b.ne_zero i this`. Conclude with `⟨_, fun i => Units.mk0 (c i) (h0 i), mk_eq_diag ((WD.unr_mk a).mp hx) b _ hc⟩`.
+-/
 theorem exists_diag {x : WD h} (hx : x.unr) :
     ∃ (n : ℕ) (c : Fin n → ℂˣ), x = WD.mk (WDRep.diag h c) := by
   induction x using WD.ind with
@@ -79,6 +105,11 @@ theorem exists_diag {x : WD h} (hx : x.unr) :
       exact b.ne_zero i this
     exact ⟨_, fun i => Units.mk0 (c i) (h0 i), mk_eq_diag ((WD.unr_mk a).mp hx) b _ hc⟩
 
+/- English proof (translation)
+Establish `: ∀ z, Nonempty ({i // c i = z} ≃ {k // d k = z})`. Introduce `z`. Rewrite using `[← Fintype.card_eq, Fintype.card_subtype, Fintype.card_subtype]`. Use `congrArg (Multiset.count z) hcd` as an intermediate fact. Rewrite `this` using `[Multiset.count_map, Multiset.count_map]`.
+
+Simplify using `only [Finset.card, Finset.filter_val]`. Simplify `this` using `only [eq_comm]`. Conclude with `⟨Equiv.ofFiberEquiv fun z => (this z).some, Equiv.ofFiberEquiv_map _⟩`.
+-/
 theorem exists_equiv_of_map_eq {ι κ α : Type*} [Fintype ι] [Fintype κ] {c : ι → α} {d : κ → α}
     (hcd : Finset.univ.val.map c = Finset.univ.val.map d) : ∃ e : ι ≃ κ, ∀ i, d (e i) = c i := by
   classical
@@ -91,6 +122,9 @@ theorem exists_equiv_of_map_eq {ι κ α : Type*} [Fintype ι] [Fintype κ] {c :
     simpa only [eq_comm] using this
   exact ⟨Equiv.ofFiberEquiv fun z => (this z).some, Equiv.ofFiberEquiv_map _⟩
 
+/- English proof (translation)
+Take `⟨e, he⟩` from `exists_equiv_of_map_eq hcd.symm`. Use `WD.sound ⟨LinearEquiv.funCongrLeft ℂ ℂ e, fun σ v => funext fun k => ?_, fun v => by simp⟩` and prove the remaining obligations. Simplify using `[he]`.
+-/
 theorem diag_eq_diag {ι κ : Type*} [Fintype ι] [Fintype κ] {c : ι → ℂˣ} {d : κ → ℂˣ}
     (hcd : (Finset.univ.val.map fun i => (c i : ℂ)) = Finset.univ.val.map fun k => (d k : ℂ)) :
     WD.mk (WDRep.diag h c) = WD.mk (WDRep.diag h d) := by
@@ -98,6 +132,9 @@ theorem diag_eq_diag {ι κ : Type*} [Fintype ι] [Fintype κ] {c : ι → ℂˣ
   refine WD.sound ⟨LinearEquiv.funCongrLeft ℂ ℂ e, fun σ v => funext fun k => ?_, fun v => by simp⟩
   simp [he]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `j`. Distinguish the cases in `hj : j = i`. Substitute `hj` using the available equality. Simplify using the standard rewrite rules. Simplify using `[hj]`.
+-/
 theorem diag_frob_basisFun {ι : Type*} [Finite ι] (c : ι → ℂˣ) (i : ι) :
     (WDRep.diag h c).ρ (frob h) (Pi.basisFun ℂ ι i) = (c i : ℂ) • Pi.basisFun ℂ ι i := by
   classical
@@ -112,6 +149,11 @@ namespace WD
 
 open Unram
 
+/- English proof (translation)
+Use `⟨(unr_mk _).mpr (WDRep.unr_diag _), ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[lpUnr, frobEig_diag] conv_rhs => rw [← Multiset.map_univ_coe m]`. Use `Multiset.map_congr rfl fun i _ => coe_unitOf fun h0 => hm ?_` and prove the remaining obligations. Rewrite using `[← h0]`. Conclude with `Multiset.coe_mem`.
+
+Simplify using `[lpUnr]`.
+-/
 theorem lpUnr_spec (m : Multiset ℂ) (hm : (0 : ℂ) ∉ m) :
     unr (lpUnr h m) ∧ frobEig (lpUnr h m) = m ∧ lpDim (lpUnr h m) = Multiset.card m := by
   classical
@@ -122,6 +164,11 @@ theorem lpUnr_spec (m : Multiset ℂ) (hm : (0 : ℂ) ∉ m) :
     rw [← h0]; exact Multiset.coe_mem
   · simp [lpUnr]
 
+/- English proof (translation)
+Proceed by induction on `a using ind with`. Consider the case `hP n a`. Proceed by induction on `b using ind with`. Consider the case `hP m b`. Simplify using `only [lpSum_mk, unr_mk, WDRep.Unr, WDRep.sum_N, WDRep.sum_ρ]`.
+
+Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨h1, h2⟩`. Conclude with `⟨⟨LinearMap.ext fun v => congrArg Prod.fst (LinearMap.congr_fun h1 (v, 0)), fun σ => LinearMap.ext fun v => congrArg Prod.fst (LinearMap.congr_fun (h2 σ) (v, 0))⟩, LinearMap.ext fun v => congrArg Prod.snd (LinearMap.congr_fun h1 (0, v)), fun σ => LinearMap.ext fun v => congrArg P …`. Introduce and unpack `⟨⟨h1, h2⟩, h3, h4⟩`. Conclude with `⟨by rw [h1, h3, LinearMap.prodMap_zero], fun σ => by rw [h2, h4]; exact LinearMap.prodMap_one⟩`.
+-/
 theorem unr_sum (a b : WD h) : unr (lpSum a b) ↔ unr a ∧ unr b := by
   induction a using ind with
   | hP n a =>
@@ -138,10 +185,18 @@ theorem unr_sum (a b : WD h) : unr (lpSum a b) ↔ unr a ∧ unr b := by
       exact ⟨by rw [h1, h3, LinearMap.prodMap_zero],
         fun σ => by rw [h2, h4]; exact LinearMap.prodMap_one⟩
 
+/- English proof (translation)
+Proceed by induction on `a using ind with`. Consider the case `hP n a => simp [WDRep.Unr]`.
+-/
 theorem unr_tw (a : WD h) (s : ℝ) : unr (lpTw a s) ↔ unr a := by
   induction a using ind with
   | hP n a => simp [WDRep.Unr]
 
+/- English proof (translation)
+Proceed by induction on `a using ind with`. Consider the case `hP n a`. Proceed by induction on `χ using ind with`. Consider the case `hP m b`. Rewrite `ha`, `hχ` using `[unr_mk]`.
+
+Rewrite using `[lpChar_mk, unr_mk]`. Conclude with `⟨by simp [ha.1, hχ.1], fun σ => by`. Rewrite using `[WDRep.tensor_ρ, ha.2, hχ.2, TensorProduct.map_one]⟩`.
+-/
 theorem unr_lpChar (a χ : WD h) (ha : unr a) (hχ : unr χ) : unr (lpChar a χ) := by
   induction a using ind with
   | hP n a =>
@@ -152,6 +207,9 @@ theorem unr_lpChar (a χ : WD h) (ha : unr a) (hχ : unr χ) : unr (lpChar a χ)
     exact ⟨by simp [ha.1, hχ.1], fun σ => by
       rw [WDRep.tensor_ρ, ha.2, hχ.2, TensorProduct.map_one]⟩
 
+/- English proof (translation)
+Proceed by induction on `a using ind with`. Consider the case `hP n a`. Proceed by induction on `b using ind with`. Consider the case `hP m b`. Rewrite using `[lpSum_mk, frobEig_mk, frobEig_mk, frobEig_mk, WDRep.sum_ρ, LinearMap.charpoly_prodMap, roots_mul (mul_ne_zero (LinearMap.charpoly_monic _).ne_zero (LinearMap.charpoly_monic _).ne_zero)]`.
+-/
 theorem frobEig_lpSum (a b : WD h) : frobEig (lpSum a b) = frobEig a + frobEig b := by
   induction a using ind with
   | hP n a =>
@@ -161,6 +219,9 @@ theorem frobEig_lpSum (a b : WD h) : frobEig (lpSum a b) = frobEig a + frobEig b
       roots_mul (mul_ne_zero (LinearMap.charpoly_monic _).ne_zero
         (LinearMap.charpoly_monic _).ne_zero)]
 
+/- English proof (translation)
+Take `⟨n, c, rfl⟩` from `exists_diag ha`. Establish `: mk ((WDRep.diag h c).tw s) = mk (WDRep.diag h fun i => c i * qPow w s)` using `sound ⟨.refl _ _, fun σ v => funext fun i => by simp [mul_zpow]; ring, fun v => rfl⟩`. Rewrite using `[lpTw_mk, this, frobEig_diag, frobEig_diag, Multiset.map_map]`. Simplify using the standard rewrite rules.
+-/
 theorem frobEig_tw (a : WD h) (s : ℝ) (ha : unr a) :
     frobEig (lpTw a s) = (frobEig a).map (· * ((normV w : ℕ) : ℂ) ^ ((s : ℝ) : ℂ)) := by
   obtain ⟨n, c, rfl⟩ := exists_diag ha
@@ -169,6 +230,9 @@ theorem frobEig_tw (a : WD h) (s : ℝ) (ha : unr a) :
   rw [lpTw_mk, this, frobEig_diag, frobEig_diag, Multiset.map_map]
   simp
 
+/- English proof (translation)
+Establish `hu` using `unr_lpChar _ _ ((unr_mk _).mpr (WDRep.unr_diag (h := h) c)) ((unr_mk _).mpr (WDRep.unr_diag (h := h) d))`. Rewrite `hu`, the goal using `[lpChar_mk]`. Use `mk_eq_diag ((unr_mk _).mp hu) ((Pi.basisFun ℂ ι).tensorProduct (Pi.basisFun ℂ κ)) _ ?_` and prove the remaining obligations. Introduce and unpack `⟨i, k⟩`. Rewrite using `[Basis.tensorProduct_apply, WDRep.tensor_ρ, TensorProduct.map_tmul, diag_frob_basisFun, diag_frob_basisFun, TensorProduct.smul_tmul_smul, Units.val_mul]`.
+-/
 theorem lpChar_diag {ι κ : Type*} [Finite ι] [Finite κ] (c : ι → ℂˣ) (d : κ → ℂˣ) :
     lpChar (mk (WDRep.diag h c)) (mk (WDRep.diag h d)) =
       mk (WDRep.diag h fun p : ι × κ => c p.1 * d p.2) := by
@@ -181,6 +245,13 @@ theorem lpChar_diag {ι κ : Type*} [Finite ι] [Finite κ] (c : ι → ℂˣ) (
   rw [Basis.tensorProduct_apply, WDRep.tensor_ρ, TensorProduct.map_tmul, diag_frob_basisFun,
     diag_frob_basisFun, TensorProduct.smul_tmul_smul, Units.val_mul]
 
+/- English proof (translation)
+Take `⟨n, c, rfl⟩` from `exists_diag ha`. Take `⟨m, d, rfl⟩` from `exists_diag hχ`. Establish `h0 : z ≠ 0`. Introduce and unpack `rfl`. Rewrite `hz` using `[frobEig_diag]`.
+
+Take `⟨i, -, hi⟩` from `Multiset.mem_map.mp (hz ▸ Multiset.mem_singleton_self (0 : ℂ))`. Conclude with `(d i).ne_zero hi`. Establish `e : mk (WDRep.diag h d) = mk (WDRep.diag h fun _ : Unit => Units.mk0 z h0)` using `diag_eq_diag (by rw [← frobEig_diag (h := h), hz]; simp)`. Rewrite using `[e, lpChar_diag, frobEig_diag, frobEig_diag, Multiset.map_map, ← Finset.map_univ_equiv (Equiv.prodPUnit (Fin n)).symm]`. Rewrite using `[Finset.map_val, Multiset.map_map]`.
+
+Both sides reduce to the same expression.
+-/
 theorem frobEig_char (a χ : WD h) (z : ℂ) (ha : unr a) (hχ : unr χ) (hz : frobEig χ = {z}) :
     frobEig (lpChar a χ) = (frobEig a).map (· * z) := by
   obtain ⟨n, c, rfl⟩ := exists_diag ha
@@ -197,16 +268,28 @@ theorem frobEig_char (a χ : WD h) (z : ℂ) (ha : unr a) (hχ : unr χ) (hz : f
   rw [Finset.map_val, Multiset.map_map]
   rfl
 
+/- English proof (translation)
+The claim follows from `(unr_mk _).mpr (WDRep.unr_diag _)`.
+-/
 theorem lpZero_unr : unr (lpZero h) := (unr_mk _).mpr (WDRep.unr_diag _)
 
+/- English proof (translation)
+Rewrite using `[lpZero, frobEig_diag]`. Simplify using the standard rewrite rules.
+-/
 theorem frobEig_zero : frobEig (lpZero h) = 0 := by
   rw [lpZero, frobEig_diag]; simp
 
+/- English proof (translation)
+Take `⟨n, c, rfl⟩` from `exists_diag ha`. Rewrite using `[frobEig_diag]`. Simplify using the standard rewrite rules.
+-/
 theorem frobEig_ne_zero (a : WD h) (ha : unr a) : (0 : ℂ) ∉ frobEig a := by
   obtain ⟨n, c, rfl⟩ := exists_diag ha
   rw [frobEig_diag]
   simp
 
+/- English proof (translation)
+Establish `h1` using `(lpUnr_spec (h := h) _ (frobEig_ne_zero a ha)).2.1`. Take `⟨n, c, hc⟩` from `exists_diag ha`. Rewrite `h1`, the goal using `[lpUnr]`. Use `hc.trans (diag_eq_diag ?_)` and prove the remaining obligations. Rewrite using `[← frobEig_diag (h := h), ← frobEig_diag (h := h), h1, hc]`.
+-/
 theorem unr_eq_lpUnr (a : WD h) (ha : unr a) : a = lpUnr h (frobEig a) := by
   classical
   have h1 := (lpUnr_spec (h := h) _ (frobEig_ne_zero a ha)).2.1
@@ -215,15 +298,28 @@ theorem unr_eq_lpUnr (a : WD h) (ha : unr a) : a = lpUnr h (frobEig a) := by
   refine hc.trans (diag_eq_diag ?_)
   rw [← frobEig_diag (h := h), ← frobEig_diag (h := h), h1, hc]
 
+/- English proof (translation)
+Proceed by induction on `a using ind with`. Consider the case `hP n a => exact (monodromyZero_ofWeilDeligneRepClass_iff a).mpr ((unr_mk a).mp ha).1`.
+-/
 theorem unr_mono0 (a : WD h) (ha : unr a) : mono0 a := by
   induction a using ind with
   | hP n a => exact (monodromyZero_ofWeilDeligneRepClass_iff a).mpr ((unr_mk a).mp ha).1
 
+/- English proof (translation)
+Take `⟨n, c, rfl⟩` from `exists_diag ha`. Rewrite using `[tempered_mk, tempered_diag_iff, frobEig_diag]`. Simplify using the standard rewrite rules.
+-/
 theorem tempered_unr (a : WD h) (ha : unr a) : tempered a ↔ ∀ α ∈ frobEig a, ‖α‖ = 1 := by
   obtain ⟨n, c, rfl⟩ := exists_diag ha
   rw [tempered_mk, tempered_diag_iff, frobEig_diag]
   simp
 
+/- English proof (translation)
+Proceed by induction on `a using ind with`. Consider the case `hP n a`. Rewrite using `[unr_mk, monodromyZero_ofWeilDeligneRepClass_iff, lpDim_mk]`. Use `and_congr Iff.rfl ⟨fun h1 σ hσ => ?_, fun h1 σ => ?_⟩` and prove the remaining obligations. Rewrite using `[inePol_of_mem_Ine _ hσ, charPol_mk, h1, LinearMap.charpoly_one]`.
+
+Establish `h2` using `h1 σ σ.2`. Rewrite `h2` using `[inePol_of_mem_Ine _ σ.2, charPol_mk]`. Establish `h3` using `LinearMap.aeval_self_charpoly (a.ρ (ineIncl h σ))`. Use `erw [h2] at h3`. Rewrite `h3` using `[map_pow, map_sub, aeval_X, map_one]`.
+
+Establish `h4 : End.IsSemisimple (a.ρ (ineIncl h σ) - algebraMap ℂ (End ℂ (Fin n → ℂ)) 1)` using `End.isSemisimple_sub_algebraMap_iff.mpr (a.semisimple _)`. Rewrite `h4` using `[map_one]`. Conclude with `sub_eq_zero.mp (End.eq_zero_of_isNilpotent_isSemisimple ⟨_, h3⟩ h4)`.
+-/
 theorem unr_iff_ine (a : WD h) :
     unr a ↔ mono0 a ∧ ∀ σ ∈ Ine (F := E) A, inePol a σ = (X - 1) ^ lpDim a := by
   induction a using ind with
@@ -243,6 +339,9 @@ theorem unr_iff_ine (a : WD h) :
 
 variable (h) in
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨lpUnr_spec, unr_sum, unr_tw, fun a χ _ => unr_lpChar a χ, fun a b _ _ => frobEig_lpSum a b, frobEig_tw, fun a χ c ha hχ _ => frobEig_char a χ c ha hχ, lpZero_unr, frobEig_zero, unr_eq_lpUnr, unr_mono0, frobEig_ne_zero, fun a _ => card_eig a _, tempered_unr, unr_iff_ine⟩`.
+-/
 theorem unramified_laws :
     (∀ m : Multiset ℂ, (0 : ℂ) ∉ m → unr (lpUnr h m) ∧ frobEig (lpUnr h m) = m ∧
       lpDim (lpUnr h m) = Multiset.card m) ∧

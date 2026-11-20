@@ -8,6 +8,11 @@ namespace GlobalTheory.SymChain.ExchangeCol
 section SlopeTestRemainingChoices
 variable {k : Type} [Field k] {ι ι' n n' : Type} [Fintype n] [DecidableEq n] [Fintype n'] [DecidableEq n'] {c c' : ℕ}
 
+/- English proof (translation)
+Establish `e : ((typeFrame ϖ o).bas⁻¹).val = fromBlocks 1 0 0 (diagonal fun i : Fin c => ((ϖ : k) ^ (i.val + 1))⁻¹)`. Use `Units.inv_eq_of_mul_eq_one_right ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `fromBlocks 1 0 0 (diagonal _) * _ = _`. Simplify using `[fromBlocks_multiply, diagonal_mul_diagonal]`. Establish `e' : (typeFrame ϖ o').bas.val = fromBlocks 1 0 0 (diagonal fun i : Fin c' => (ϖ : k) ^ (i.val + 1))` using `rfl`.
+
+Unfold `LatFrame.coords`. Rewrite using `[e, e', ← diagonal_one, ← diagonal_one, fromBlocks_diagonal, fromBlocks_diagonal, submatrix_apply, mul_diagonal, diagonal_mul]`. Both sides reduce to the same expression.
+-/
 theorem coords_typeFrame_apply (ϖ : kˣ) (o : ι ≃ n ⊕ Fin c) (o' : ι' ≃ n' ⊕ Fin c')
     (x : Matrix (n ⊕ Fin c) (n' ⊕ Fin c') k) (a : ι) (b : ι') :
     (typeFrame ϖ o).coords (typeFrame ϖ o') x a b =
@@ -25,6 +30,9 @@ theorem coords_typeFrame_apply (ϖ : kˣ) (o : ι ≃ n ⊕ Fin c) (o' : ι' ≃
     mul_diagonal, diagonal_mul]
   rfl
 
+/- English proof (translation)
+Unfold `LatFrame.coords`. Rewrite using `[Matrix.mul_add, Matrix.add_mul]`. Both sides reduce to the same expression.
+-/
 theorem coords_add (F : LatFrame k ι (n ⊕ Fin c)) (F' : LatFrame k ι' (n' ⊕ Fin c'))
     (x y : Matrix (n ⊕ Fin c) (n' ⊕ Fin c') k) :
     F.coords F' (x + y) = F.coords F' x + F.coords F' y := by
@@ -34,6 +42,25 @@ theorem coords_add (F : LatFrame k ι (n ⊕ Fin c)) (F' : LatFrame k ι' (n' �
 
 end SlopeTestRemainingChoices
 
+/- English proof (translation)
+Establish `H1 : j + 1 + c = s + 1` using `by omega`. Establish `H2 : j + (c + 1) = s + 1` using `by omega`. Establish `hPhi : ∀ z, (S.T t).Phi j c H z = (S.P.iter t S.μ S.tame j).Phi t (S.μ (j + 1)) (((typeFrame S.ϖ (stdOrd (Fin κ) t (j + 1) c H1)).coords (typeFrame S.ϖ (stdOrd (Fin κ) t j (c + 1) H2)) z).submatrix (ixSucc _ t j) id)` using `fun _ => rfl`. Use `split_ifs with hw`. Rewrite using `[hPhi, hPhi, coords_add, Matrix.submatrix_add, Pi.add_apply, Pi.add_apply]`.
+
+Use `(S.P.iter t S.μ S.tame j).Phi_add (S.tame _) _ fun a b => ?_` and prove the remaining obligations. Rewrite using `[submatrix_apply, coords_typeFrame_apply, of_apply]`. Use `split_ifs with hb`. Rewrite using `[hb]`. Break down `stdOrd (Fin κ) t (j + 1) c H1 (ixSucc _ t j a) with r | r` into its components or cases.
+
+Simplify `hw r` using `[mul_comm]`. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Assume the negation of the conclusion as `h`. Rewrite `h` using `[← Ne, hPhi, TypeDatum.Phi_ne_zero_iff]`.
+
+Take `⟨⟨g, hg, e⟩, hb⟩` from `h`. Use `hw fun r => ?_` and prove the remaining obligations. Take `⟨a, ha⟩` from `((ixSucc _ t j).trans (stdOrd (Fin κ) t (j + 1) c H1)).surjective (.inl r)`. Simplify using `only [Equiv.trans_apply] at ha`. Establish `hq : q.succ.val < s + 1` using `by have := q.succ.2; omega`.
+
+Establish `hcol : stdOrd (Fin κ) t j (c + 1) H2 (.inl (.inr ⟨q.succ.val, hq⟩)) = .inr q.succ` using `standardOrderExtendedBasis_apply_low_block (Fin κ) t j (c + 1) H2 q.succ`. Establish `key : (((typeFrame S.ϖ (stdOrd (Fin κ) t (j + 1) c H1)).coords (typeFrame S.ϖ (stdOrd (Fin κ) t j (c + 1) H2)) (x + Matrix.of fun r s' => if s' = Sum.inr q.succ then Sum.elim w 0 r else 0)).submatrix (ixSucc _ t j) id) a (.inl (.inr ⟨q.succ.val, hq⟩)) = ((S.ϖ ^ (q.val + 2) : kˣ) …`. Rewrite using `[submatrix_apply, coords_typeFrame_apply, id, ha, hcol]`. Simplify using `[hx, mul_comm]`. Rewrite using `[← key]`.
+
+Break down `a with a | a` into its components or cases. Establish `hne : ¬ FreeIx S.ρ a (.inl (.inr ⟨q.succ.val, hq⟩)) ∧ a ≠ .inl (.inr ⟨q.succ.val, hq⟩)`. Break down `a with (a | a) | a` into its components or cases. Simplify using `only [FreeIx, FreeTop, Fin.val_succ]`. Conclude with `⟨by omega, by simp⟩`.
+
+Establish `hac : c ≤ a.val`. Assume the negation of the conclusion as `hlt`. Use `standardOrderExtendedBasis_apply_low_block (Fin κ) t (j + 1) c H1 ⟨a.val, by omega⟩` as an intermediate fact. Conclude with `Sum.inr_ne_inl (this.symm.trans ha)`. Simplify using `only [FreeIx, FreeTop, Fin.lt_def, Fin.val_succ, ne_eq, Sum.inl.injEq, Sum.inr.injEq, Fin.ext_iff]`.
+
+Use linear arithmetic over natural numbers and integers. Simplify using `[FreeIx]`. Use `((hP j g).1 hg).2 a _ hne.1` as an intermediate fact. Rewrite `this` using `[e, Matrix.one_apply_ne hne.2, sub_zero]`. Conclude with `this`.
+
+Conclude with `hb a _`.
+-/
 theorem phi_add_col (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
     (s κ : ℕ) (S : SymData k s κ) (t : Type) [Fintype t] [DecidableEq t] (hP : S.Pattern t)
     (j c : ℕ) (H : j + c = s) (q : Fin c) (hρ : q.val + 1 ≤ S.ρ) (hc : q.val + 2 ≤ c)

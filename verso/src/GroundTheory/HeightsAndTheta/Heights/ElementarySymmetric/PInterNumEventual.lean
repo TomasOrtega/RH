@@ -18,6 +18,11 @@ namespace InterNumEventual
 
 def ind {n : ℕ} (T : Finset (Fin n)) : Fin n → ℕ := fun i => if i ∈ T then 1 else 0
 
+/- English proof (translation)
+Establish `h1 : ∏ i, (1 - (0 : ℚ) ^ e i) = ∏ i ∈ Finset.univ, (1 + -(0 : ℚ) ^ e i)`. Simplify using `only [sub_eq_add_neg]`. Rewrite using `[h1, Finset.prod_add, Finset.powerset_univ]`. Use `Finset.sum_congr rfl fun T _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.prod_const_one, one_mul, Finset.prod_neg, Finset.card_univ_sdiff, Fintype.card_fin, ← Finset.prod_mul_prod_compl T, Finset.compl_eq_univ_sdiff]`.
+
+Use `congr 1`. Rewrite using `[Finset.prod_eq_one (fun i hi => by simp [ind, hi]), one_mul]`. Conclude with `Finset.prod_congr rfl fun i hi => by`. Rewrite `hi` using `[Finset.mem_sdiff]`. Simplify using `[ind, hi.2]`.
+-/
 theorem sum_sign_prod_ind {n : ℕ} (e : Fin n → ℕ) :
     ∑ T : Finset (Fin n), (-1 : ℚ) ^ (n - T.card) * ∏ i, ((ind T i : ℕ) : ℚ) ^ e i =
       ∏ i, (1 - (0 : ℚ) ^ e i) := by
@@ -33,6 +38,15 @@ theorem sum_sign_prod_ind {n : ℕ} (e : Fin n → ℕ) :
     rw [Finset.mem_sdiff] at hi
     simp [ind, hi.2]
 
+/- English proof (translation)
+Simplify using `only [MvPolynomial.eval_eq', Finset.mul_sum]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun d hd => ?_` and prove the remaining obligations. Use `trans ∑ T : Finset (Fin n), Q.coeff d * c ^ d (Fin.last n) * ((-1 : ℚ) ^ (n - T.card) * ∏ i : Fin n, ((ind T i : ℕ) : ℚ) ^ d i.castSucc)`. Use `Finset.sum_congr rfl fun T _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[Fin.prod_univ_castSucc]`. Simplify using `only [Fin.snoc_castSucc, Fin.snoc_last]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[← Finset.mul_sum, sum_sign_prod_ind]`. Distinguish the cases in `h0 : ∃ i : Fin n, d i.castSucc = 0`.
+
+Take `⟨i, hi⟩` from `h0`. Rewrite using `[Finset.prod_eq_zero (Finset.mem_univ i) (by rw [hi, pow_zero, sub_self])]`. Expand and normalize the polynomial expressions, which then agree. Use `push Not at h0`. Establish `hdeg` using `(le_totalDegree hd).trans hQ`.
+
+Rewrite `hdeg` using `[Finsupp.sum_fintype _ _ (fun _ => rfl), Fin.sum_univ_castSucc]`. Establish `hge : n ≤ ∑ i : Fin n, d i.castSucc`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[show d (Fin.last n) = 0 by omega, pow_zero, mul_one]`.
+-/
 theorem mixed_eval {n : ℕ} (Q : MvPolynomial (Fin (n + 1)) ℚ) (hQ : Q.totalDegree ≤ n) (c : ℚ) :
     ∑ T : Finset (Fin n), (-1 : ℚ) ^ (n - T.card) *
         eval (Fin.snoc (α := fun _ => ℚ) (fun j => ((ind T j : ℕ) : ℚ)) c) Q =
@@ -62,6 +76,9 @@ theorem mixed_eval {n : ℕ} (Q : MvPolynomial (Fin (n + 1)) ℚ) (hQ : Q.totalD
 
 variable {k : Type u} [Field k] {Ω : Type w} [Field Ω] [Algebra k Ω] {N : ℕ} {x : Fin (N + 1) → Ω}
 
+/- English proof (translation)
+The claim follows from `| [], F => by simp | a :: l, F => by rw [List.foldl_cons, foldl_twist_sub L I l, SubSystem.twist_sub_eq_mul_of_line, List.map_cons, List.prod_cons] ring`.
+-/
 theorem foldl_twist_sub {n : ℕ} (L : Fin n → SubSystem k x Ω) (I : Chart x) :
     ∀ (l : List (Fin n)) (F : SubSystem k x Ω),
       (l.foldl (fun F i => F.twist (L i)) F).sub I = F.sub I * (l.map fun i => (L i).sub I).prod
@@ -71,6 +88,11 @@ theorem foldl_twist_sub {n : ℕ} (L : Fin n → SubSystem k x Ω) (I : Chart x)
       List.prod_cons]
     ring
 
+/- English proof (translation)
+Unfold `tensorSub`. Rewrite using `[foldl_twist_sub, Fin.prod_univ_def]`. Use `congr 1`. Proceed by induction on `List.finRange n with`. Consider the case `nil => simp`.
+
+Consider the case `cons a l ih => by_cases ha : a ∈ T <;> simp [ha, ind, ih]`.
+-/
 theorem tensorSub_sub {n : ℕ} (L : Fin n → SubSystem k x Ω) (T : Finset (Fin n)) (I : Chart x) :
     (tensorSub L T).sub I = (twistSys k x 0).sub I * ∏ i, (L i).sub I ^ ind T i := by
   unfold tensorSub
@@ -80,6 +102,9 @@ theorem tensorSub_sub {n : ℕ} (L : Fin n → SubSystem k x Ω) (T : Finset (Fi
   | nil => simp
   | cons a l ih => by_cases ha : a ∈ T <;> simp [ha, ind, ih]
 
+/- English proof (translation)
+The claim follows from `SubSystem.ext_sub fun I => by rw [tensorSub_sub, SnapperSections.twistPows_sub]`.
+-/
 theorem tensorSub_eq_twistPows {n : ℕ} (L : Fin n → SubSystem k x Ω) (T : Finset (Fin n)) :
     tensorSub L T = (twistSys k x 0).twistPows n L (ind T) :=
   SubSystem.ext_sub fun I => by rw [tensorSub_sub, SnapperSections.twistPows_sub]
@@ -88,6 +113,19 @@ end InterNumEventual
 
 open InterNumEventual in
 
+/- English proof (translation)
+Establish `hR : RestrLenEuler.Statement.{u, w}` using `RestrLenEuler.proof`. Introduce `k _ Ω _ _ N x n pp L hW`. Use `hW.isPrime` as an intermediate fact. Take `⟨Q, hQ, hev⟩` from `pieceChar_isNumPolyLT hH hS SnapperDiffPoly.proof L (n + 1) pp hW.isPrime hW.homog hW.le hW.dim.le 0`. Establish `hQn : Q.totalDegree ≤ n`.
+
+Break down `hQ with h | h` into its components or cases. Rewrite using `[h, totalDegree_zero]`. Conclude with `Nat.zero_le _`. Use linear arithmetic over natural numbers and integers. Establish `hall : ∀ᶠ c : ℕ in atTop, ∀ T : Finset (Fin n), restrLen pp ((tensorSub (fun i => (L i).toSubSystem) T).twist (twistSys k x (c : ℤ))) = pieceChar k pp 0 L (ind T) c`.
+
+Use `Filter.eventually_all.mpr fun T => ?_` and prove the remaining obligations. Use `filter_upwards [tendsto_natCast_atTop_atTop.eventually (hR k Ω N x pp hW.homog hW.le n L (ind T))] with c hc`. Rewrite using `[tensorSub_eq_twistPows]`. Conclude with `hc`. Establish `hval : ∀ c : ℕ, (∀ T : Finset (Fin n), restrLen pp ((tensorSub (fun i => (L i).toSubSystem) T).twist (twistSys k x (c : ℤ))) = pieceChar k pp 0 L (ind T) c) → (interSum pp (fun i => (L i).toSubSystem) c : ℚ) = ∑ d ∈ Q.support, Q.coeff d * ∏ i : Fin n, (1 - (0 : ℚ) ^ d i.castSucc)`.
+
+Introduce `c hc`. Rewrite using `[← mixed_eval Q hQn (c : ℚ)]`. Unfold `interSum`. Use `push_cast`. Use `Finset.sum_congr rfl fun T _ => ?_` and prove the remaining obligations.
+
+Establish `hT` using `hev (ind T) (c : ℤ)`. Simplify using `only at hT`. Rewrite using `[hc T, hT, Int.cast_natCast]`. Take `⟨c₀, hc₀⟩` from `hall.exists`. Use `⟨interSum pp (fun i => (L i).toSubSystem) c₀, hall.mono fun c hc => ?_⟩` and prove the remaining obligations.
+
+Conclude with `(hval c hc).trans (hval c₀ hc₀).symm` after adjusting the coercions.
+-/
 theorem InterNumEventual.proof (hH : SnapperHyperplane.Statement.{u, w})
     (hS : SnapperSection.Statement.{u, w}) : InterNumEventual.Statement.{u, w} := by
   have hR : RestrLenEuler.Statement.{u, w} := RestrLenEuler.proof

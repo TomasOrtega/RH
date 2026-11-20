@@ -5,6 +5,15 @@ open NumberField IsDedekindDomain Representation Formalism.ConjugateSelfDual Rec
 
 namespace GlobalTheory.CompanionTheory.PoitouTateGlue
 
+/- English proof (translation)
+Take `⟨δ₁, δ₂, -, -, -, -, hex, -⟩` from `h`. Establish `key : ∀ z x, sumPair S Av μ j ρ hρ (loc1 S Av (twDual μ ρ) z) x = GlobalTheory.Published.PoitouTate.tr1 S Av μ j ρ hρ x z`. Introduce `z x`. Simplify using `[sumPair, GlobalTheory.Published.PoitouTate.tr1, loc1, LinearMap.sum_apply]`. Use extensionality with `x`.
+
+Rewrite using `[Submodule.mem_iInf]`. Prove the components needed by the constructor for the conclusion. Introduce `hx y`. Rewrite using `[Submodule.mem_iInf]`. Introduce and unpack `⟨z, rfl⟩`.
+
+Rewrite using `[LinearMap.mem_ker, key, (hex x).mpr (LinearMap.mem_range.mp hx)]`. Simplify using the standard rewrite rules. Introduce `hx`. Take `⟨y, hy⟩` from `(hex x).mp (LinearMap.ext fun z => by`. Establish `hz` using `(Submodule.mem_iInf _).mp (hx (loc1 S Av (twDual μ ρ) z)) ⟨z, rfl⟩`.
+
+Rewrite `hz` using `[LinearMap.mem_ker, key]`. Simplify using `using hz)`. Conclude with `⟨y, hy⟩`.
+-/
 theorem range_localization_eq_annihilator (F Ω : Type) [Field F] [NumberField F] [Field Ω] [Algebra F Ω]
     [IsAlgClosure F Ω] (l : ℕ) [Fact l.Prime] (r : ℕ) (M : Type) [AddCommGroup M]
     [Module (ZMod (l ^ r)) M] [Finite M] [TopologicalSpace M] [DiscreteTopology M]

@@ -15,10 +15,16 @@ variable {F : Type} [Field F] {V : Type} [AddCommGroup V] [Module F V]
 def crd (bV : Module.Basis (Fin d) F V) (r : Fin d) : V ⊗[F] B →ₗ[F] B :=
   (TensorProduct.lid F B).toLinearMap ∘ₗ TensorProduct.map (bV.coord r) LinearMap.id
 
+/- English proof (translation)
+Simplify using `[crd]`.
+-/
 theorem crd_tmul (bV : Module.Basis (Fin d) F V) (r : Fin d) (v : V) (x : B) :
     crd bV r (v ⊗ₜ[F] x) = bV.coord r v • x := by
   simp [crd]
 
+/- English proof (translation)
+Proceed by induction on `z using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul v x => simp [crd_tmul, mul_smul_comm]`. Consider the case `add x y hx hy => simp only [map_add, hx, hy, mul_add]`.
+-/
 theorem crd_mulLeft (bV : Module.Basis (Fin d) F V) (r : Fin d) (β : B) (z : V ⊗[F] B) :
     crd bV r (AlgebraTensorModule.map (LinearMap.id : V →ₗ[F] V) (LinearMap.mulLeft F β) z) =
       β * crd bV r z := by
@@ -27,6 +33,11 @@ theorem crd_mulLeft (bV : Module.Basis (Fin d) F V) (r : Fin d) (β : B) (z : V 
   | tmul v x => simp [crd_tmul, mul_smul_comm]
   | add x y hx hy => simp only [map_add, hx, hy, mul_add]
 
+/- English proof (translation)
+Proceed by induction on `z using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul v x`. Establish `h` using `congrFun (LinearMap.toMatrix_mulVec_repr bV bV f v) r`. Simplify using `only [Matrix.mulVec, dotProduct] at h`.
+
+Simplify using `only [AlgebraTensorModule.map_tmul, crd_tmul, Module.Basis.coord_apply, map_smul, smul_smul]`. Rewrite using `[← Finset.sum_smul, ← h]`. Consider the case `add x y hx hy => simp only [map_add, hx, hy, smul_add, Finset.sum_add_distrib]`.
+-/
 theorem crd_map (bV : Module.Basis (Fin d) F V) (r : Fin d) (f : V →ₗ[F] V) (σ : B →ₗ[F] B)
     (z : V ⊗[F] B) :
     crd bV r (AlgebraTensorModule.map f σ z) =
@@ -40,6 +51,9 @@ theorem crd_map (bV : Module.Basis (Fin d) F V) (r : Fin d) (f : V →ₗ[F] V) 
     rw [← Finset.sum_smul, ← h]
   | add x y hx hy => simp only [map_add, hx, hy, smul_add, Finset.sum_add_distrib]
 
+/- English proof (translation)
+Rewrite using `[crd_tmul, Module.Basis.coord_apply, Module.Basis.repr_self]`. Distinguish the cases in `h : r = j`. Substitute `h` using the available equality. Simplify using the standard rewrite rules. Rewrite using `[Finsupp.single_apply, if_neg (Ne.symm h), if_neg h, zero_smul]`.
+-/
 theorem crd_basis (bV : Module.Basis (Fin d) F V) (r j : Fin d) :
     crd bV r ((bV j) ⊗ₜ[F] (1 : B)) = if r = j then 1 else 0 := by
   rw [crd_tmul, Module.Basis.coord_apply, Module.Basis.repr_self]
@@ -54,11 +68,17 @@ namespace GlobalTheory.CrisCoord
 variable {l : ℕ} [Fact l.Prime] {V : Type} [AddCommGroup V] [Module ℚ_[l] V] [Module ℤ_[l] V]
   [IsScalarTower ℤ_[l] ℚ_[l] V] {d : ℕ}
 
+/- English proof (translation)
+Rewrite using `[← LinearIndependent.iff_fractionRing ℤ_[l] ℚ_[l]]`. Conclude with `b.linearIndependent.map' T.subtype (Submodule.ker_subtype T)`.
+-/
 theorem linIndep_lat (T : Submodule ℤ_[l] V) (b : Module.Basis (Fin d) ℤ_[l] T) :
     LinearIndependent ℚ_[l] (fun i => (b i : V)) := by
   rw [← LinearIndependent.iff_fractionRing ℤ_[l] ℚ_[l]]
   exact b.linearIndependent.map' T.subtype (Submodule.ker_subtype T)
 
+/- English proof (translation)
+Establish `h` using `congrArg T.subtype (b.sum_repr w)`. Rewrite `h` using `[map_sum]`. Simplify using `only [map_smul, Submodule.subtype_apply] at h`. Simplify using `only [algebraMap_smul]`. Conclude with `h.symm`.
+-/
 theorem sum_lat (T : Submodule ℤ_[l] V) (b : Module.Basis (Fin d) ℤ_[l] T) (w : T) :
     (w : V) = ∑ i, (algebraMap ℤ_[l] ℚ_[l] (b.repr w i)) • (b i : V) := by
   have h := congrArg T.subtype (b.sum_repr w)
@@ -67,6 +87,9 @@ theorem sum_lat (T : Submodule ℤ_[l] V) (b : Module.Basis (Fin d) ℤ_[l] T) (
   simp only [algebraMap_smul]
   exact h.symm
 
+/- English proof (translation)
+Rewrite using `[← hT]`. Use `Submodule.span_le.mpr fun x hx => ?_` and prove the remaining obligations. Rewrite using `[show x = ((⟨x, hx⟩ : T) : V) from rfl, sum_lat T b]`. Conclude with `Submodule.sum_mem _ fun i _ => Submodule.smul_mem _ _ (Submodule.subset_span ⟨i, rfl⟩)`.
+-/
 theorem span_lat (T : Submodule ℤ_[l] V) (hT : Submodule.span ℚ_[l] (T : Set V) = ⊤)
     (b : Module.Basis (Fin d) ℤ_[l] T) : ⊤ ≤ Submodule.span ℚ_[l] (Set.range fun i => (b i : V)) := by
   rw [← hT]
@@ -78,10 +101,16 @@ def bVL (T : Submodule ℤ_[l] V) (hT : Submodule.span ℚ_[l] (T : Set V) = ⊤
     (b : Module.Basis (Fin d) ℤ_[l] T) : Module.Basis (Fin d) ℚ_[l] V :=
   Module.Basis.mk (linIndep_lat T b) (span_lat T hT b)
 
+/- English proof (translation)
+Simplify using `[bVL]`.
+-/
 theorem bVL_apply (T : Submodule ℤ_[l] V) (hT : Submodule.span ℚ_[l] (T : Set V) = ⊤)
     (b : Module.Basis (Fin d) ℤ_[l] T) (i : Fin d) : bVL T hT b i = (b i : V) := by
   simp [bVL]
 
+/- English proof (translation)
+Establish `h : (w : V) = ∑ i, (algebraMap ℤ_[l] ℚ_[l] (b.repr w i)) • bVL T hT b i`. Simplify using `only [bVL_apply]`. Conclude with `sum_lat T b w`. Rewrite using `[h, Module.Basis.repr_sum_self]`.
+-/
 theorem repr_lat (T : Submodule ℤ_[l] V) (hT : Submodule.span ℚ_[l] (T : Set V) = ⊤)
     (b : Module.Basis (Fin d) ℤ_[l] T) (w : T) (r : Fin d) :
     (bVL T hT b).repr (w : V) r = algebraMap ℤ_[l] ℚ_[l] (b.repr w r) := by
@@ -93,6 +122,9 @@ end GlobalTheory.CrisCoord
 
 namespace GlobalTheory.CrisCoord
 
+/- English proof (translation)
+Rewrite using `[LinearMap.toMatrix_apply, LinearMap.toMatrix_apply, bVL_apply, ← repr_lat L.T L.span b]`. Both sides reduce to the same expression.
+-/
 theorem toMatrix_lat {l : ℕ} [Fact l.Prime] {G : Type} [Group G] {V : Type} [AddCommGroup V]
     [Module ℚ_[l] V] [Module ℤ_[l] V] [IsScalarTower ℤ_[l] ℚ_[l] V] {ρ : Representation ℚ_[l] G V}
     (L : Lattice (O := ℤ_[l]) ρ) {d : ℕ} (b : Module.Basis (Fin d) ℤ_[l] L.T) (g : G) (r s : Fin d) :
@@ -101,6 +133,21 @@ theorem toMatrix_lat {l : ℕ} [Fact l.Prime] {G : Type} [Group G] {V : Type} [A
   rw [LinearMap.toMatrix_apply, LinearMap.toMatrix_apply, bVL_apply, ← repr_lat L.T L.span b]
   rfl
 
+/- English proof (translation)
+Introduce `l _ K P AI T V _ _ _ _ _ ρ L hC d b j`. Take `⟨m, β, δ, hδ, hy⟩` from `GlobalTheory.T.dcris_span_tensorBcris_rat l P AI T K V ρ hC ((bVL L.T L.span b j) ⊗ₜ[ℚ_[l]] (1 : P.R.B))`. Use `⟨m, fun i => T.eB (β i), fun i r => T.eB (crd (bVL L.T L.span b) r (δ i)), ?_, ?_⟩` and prove the remaining obligations. Introduce `i g`. Establish `hinv : actVB (P.PD K) ρ g (δ i) = δ i`.
+
+Establish `h` using `hδ i`. Simplify using `only [Dcris, Submodule.mem_iInf, LinearMap.mem_ker, LinearMap.sub_apply, LinearMap.id_apply, sub_eq_zero] at h`. Conclude with `h g`. Use function extensionality and compare the values at `r`. Establish `key` using `congrArg (fun z => T.eB (crd (bVL L.T L.span b) r z)) hinv`.
+
+Use `beta_reduce`. Rewrite using `[← key, actVB, crd_map]`. Simplify using `only [Matrix.mulVec, dotProduct, Matrix.map_apply, map_sum]`. Use `Finset.sum_congr rfl fun s _ => ?_` and prove the remaining obligations. Rewrite using `[toMatrix_lat, Algebra.smul_def, map_mul, PadicInt.algebraMap_apply, T.zB]`.
+
+Use `congr 1`. Simplify using `only [LinearMap.restrictScalars_apply, AlgHom.toLinearMap_apply, AlgEquiv.toAlgHom_eq_coe, AlgHom.coe_coe]`. Rewrite using `[← T.actB]`. Use `congr 1`. Conclude with `(P.PD_actB K g _).symm`.
+
+Use function extensionality and compare the values at `r`. Establish `key` using `congrArg (fun z => T.eB (crd (bVL L.T L.span b) r z)) hy`. Simplify using `only [map_sum, crd_mulLeft, crd_basis, map_mul] at key`. Use `beta_reduce`. Rewrite using `[Finset.sum_apply]`.
+
+Simplify using `only [Pi.smul_apply, smul_eq_mul]`. Rewrite using `[← key]`. Distinguish the cases in `h : r = j`. Substitute `h` using the available equality. Simplify using the standard rewrite rules.
+
+Simplify using `[h]`.
+-/
 theorem lattice_basis_span_invariants : ∀ (l : ℕ) [Fact l.Prime] (K : FinExt l) (P : LocPrime l) (AI : LocAinf l P), LocTied l P AI → ∀ (V : Type) [AddCommGroup V] [Module ℚ_[l] V] [Module ℤ_[l] V] [IsScalarTower ℤ_[l] ℚ_[l] V] [FiniteDimensional ℚ_[l] V] (ρ : Representation ℚ_[l] ↥(GK K) V) (L : Lattice (O := ℤ_[l]) ρ), IsCrys (P.PD K) ρ → ∀ (d : ℕ) (b : Module.Basis (Fin d) ℤ_[l] ↥L.T), ∀ j : Fin d, ∃ (m : ℕ) (c : Fin m → Per.Bcris l) (v : Fin m → Fin d → Per.Bcris l), (∀ i (g : ↥(GK K)), ((LinearMap.toMatrix b b (actT L g)).map (Per.zB l)).mulVec (fun r => Per.σB (g : GQ l) (v i r)) = v i) ∧ (Pi.single j 1 : Fin d → Per.Bcris l) = ∑ i, c i • v i := by
   intro l _ K P AI T V _ _ _ _ _ ρ L hC d b j
   obtain ⟨m, β, δ, hδ, hy⟩ :=

@@ -10,6 +10,9 @@ open CategoryTheory Limits AlgebraicGeometry Opposite CochainComplex CochainComp
 noncomputable section
 namespace GlobalTheory.EtC.RedChern
 
+/- English proof (translation)
+Use `ext`. Simplify using `[Scheme.Hom.comp_appTop]`. Both sides reduce to the same expression.
+-/
 private theorem unitsMap_comp_appTop {W V U : Scheme.{0}} (k : W ⟶ V) (g : V ⟶ U) (u : (Γ(U, ⊤))ˣ) :
     Units.map (k ≫ g).appTop.hom.toMonoidHom u =
       Units.map k.appTop.hom.toMonoidHom (Units.map g.appTop.hom.toMonoidHom u) := by
@@ -17,10 +20,24 @@ private theorem unitsMap_comp_appTop {W V U : Scheme.{0}} (k : W ⟶ V) (g : V �
   simp [Scheme.Hom.comp_appTop]
   rfl
 
+/- English proof (translation)
+Simplify using `using h.map g.appTop.hom`.
+-/
 private theorem isUnit_natCast_appTop {V U : Scheme.{0}} (g : V ⟶ U) (Q : ℕ) (h : IsUnit (Q : Γ(U, ⊤))) :
     IsUnit (Q : Γ(V, ⊤)) := by
   simpa using h.map g.appTop.hom
 
+/- English proof (translation)
+Introduce `Q q _ hqQ U u hQ`. Set `S : Sieve U` to `{ arrows := fun V g => ∃ v : (Γ(V, ⊤))ˣ, v ^ Q = Units.map g.appTop.hom.toMonoidHom u downward_closed := by`. Introduce and unpack `V W g ⟨v, hv⟩ k`. Use `⟨Units.map k.appTop.hom.toMonoidHom v, ?_⟩` and prove the remaining obligations. Rewrite using `[← map_pow, hv, unitsMap_comp_appTop] }`.
+
+Establish `hS : S ∈ Scheme.etaleTopology U`. Take `⟨S₀, hS₀, hP⟩` from `(GlobalTheory.T.etaleLocal_primitiveRoot_and_roots_of_unity Q U).2.2.2 hQ u`. Conclude with `GrothendieckTopology.superset_covering _ (fun V g hg => hP V g hg) hS₀`. Set `s : ∀ (V : Scheme.{0}) (g : V ⟶ U), S.arrows g → Sec ((res _ (tw q 1)).X 0) V` to `fun V g hg => defect Q q V hg.choose`. Establish `hcompat : ∀ (V W : Scheme.{0}) (g : V ⟶ U) (k : W ⟶ V) (hg : S.arrows g), Sec.res k (s V g hg) = s W (k ≫ g) (S.downward_closed hg k)`.
+
+Introduce `V W g k hg`. Establish `hQV : IsUnit (Q : Γ(V, ⊤))` using `isUnit_natCast_appTop g Q hQ`. Establish `hQW : IsUnit (Q : Γ(W, ⊤))` using `isUnit_natCast_appTop k Q hQV`. Express the relevant statement in the definitionally equal form `Sec.res k (defect Q q V hg.choose) = defect Q q W (S.downward_closed hg k).choose`. Rewrite using `[GlobalTheory.T.kummerReductionChernDefect_restriction Q q hqQ W V k hg.choose hQV]`.
+
+Use `GlobalTheory.T.kummerReductionChernDefect_eq_of_pow_eq Q q hqQ W _ _ hQW ?_` and prove the remaining obligations. Rewrite using `[(S.downward_closed hg k).choose_spec, ← map_pow, hg.choose_spec, unitsMap_comp_appTop]`. Take `⟨a, ha⟩` from `(GlobalTheory.T.etaleSheafSections_ext_and_glue _ _ U).2 S hS s hcompat`. Establish `hex : ∃ a : Sec ((res _ (tw q 1)).X 0) U, ∀ (V : Scheme.{0}) (g : V ⟶ U) (v : (Γ(V, ⊤))ˣ), v ^ Q = Units.map g.appTop.hom.toMonoidHom u → Sec.res g a = defect Q q V v`. Use `⟨a, fun V g v hv => ?_⟩` and prove the remaining obligations.
+
+Establish `hg : S.arrows g` using `⟨v, hv⟩`. Rewrite using `[ha V g hg]`. Conclude with `GlobalTheory.T.kummerReductionChernDefect_eq_of_pow_eq Q q hqQ V _ _ (isUnit_natCast_appTop g Q hQ) (hg.choose_spec.trans hv.symm)`. Introduce `V g v hv`. Conclude with `pick_spec hex V g v hv`.
+-/
 theorem res_defectSec : ∀ (Q q : ℕ) [NeZero Q], q ∣ Q → ∀ (U : Scheme.{0}) (u : (Γ(U, ⊤))ˣ), IsUnit (Q : Γ(U, ⊤)) →
     ∀ (V : Scheme.{0}) (g : V ⟶ U) (v : (Γ(V, ⊤))ˣ), v ^ Q = Units.map g.appTop.hom.toMonoidHom u →
       Sec.res g (GlobalTheory.EtC.RedChern.defectSec Q q U u) = GlobalTheory.EtC.RedChern.defect Q q V v := by

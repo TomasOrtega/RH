@@ -11,6 +11,11 @@ open NumberField IsDedekindDomain Formalism.L2.Host GlobalTheory.CuspRep UpperTh
 
 namespace GlobalTheory.QuadLiftBridge
 
+/- English proof (translation)
+Introduce `hAC hJS K M _ _ _ _ _ _ _ h2 a ha π ⟨w, hw, B, hB⟩`. Use `haveI : Algebra.IsQuadraticExtension K M := ⟨h2⟩`. Use `haveI : IsGalois K M := inferInstance`. Use `hAC K M (h2 ▸ Nat.prime_two) a ha π fun η hη hST => ?_` and prove the remaining obligations. Establish `hsm : CG.mk π = (CG.mk π).twist η`.
+
+Use `JacquetShalikaRigidity.strong_multiplicity_one hJS ha _ _ (hST.mono fun v ⟨hu, B', h1, h3⟩ => ⟨B', h1, ?_⟩)` and prove the remaining obligations. Use `h1.twist hu` as an intermediate fact. Rewrite `this` using `[h3]`. Then use the resulting hypothesis. Conclude with `GlobalTheory.T.cuspidal_twist_ramified_char_ne_self K a ha (CG.mk π) η _ B hB (GlobalTheory.T.quadratic_norm_hecke_char_ramified_below_ramified_prime K M h2 η hη w hw) hsm.symm`.
+-/
 theorem quadLift : ArthurClozelStrongTC → JacquetShalikaRigidity → GlobalTheory.GalCut.QuadLift := by
   intro hAC hJS K M _ _ _ _ _ _ _ h2 a ha π ⟨w, hw, B, hB⟩
   haveI : Algebra.IsQuadraticExtension K M := ⟨h2⟩

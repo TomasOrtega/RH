@@ -69,6 +69,21 @@ end GlobalTheory.EtC.HomInj
 
 namespace GlobalTheory.EtC.HomInj
 
+/- English proof (translation)
+Apply `Module.Baer.injective` to reduce the goal to its premises. Introduce `I g`. Set `m : (presheafToSheaf Scheme.etaleTopology _).obj (idealFree R P I) ⟶ (free R).obj P` to `(presheafToSheaf Scheme.etaleTopology _).map (idealIncl R P I)`. Set `ψ' : (presheafToSheaf Scheme.etaleTopology _).obj (idealFree R P I) ⟶ J` to `((sheafificationAdjunction Scheme.etaleTopology _).homEquiv _ _).symm (famHom R P I J g)`. Use `haveI : Mono m := inferInstanceAs (Mono ((presheafToSheaf Scheme.etaleTopology _).map (idealIncl R P I)))`.
+
+Set `f` to `Injective.factorThru ψ' m`. Use `⟨LinearMap.toSpanSingleton _ _ f, fun a ha => ?_⟩` and prove the remaining obligations. Rewrite using `[LinearMap.toSpanSingleton_apply]`. Establish `hm : m ≫ f = ψ'` using `Injective.comp_factorThru ψ' m`. Establish `hψ : toSheafify Scheme.etaleTopology (idealFree R P I) ≫ ψ'.hom = famHom R P I J g`.
+
+Use `((sheafificationAdjunction Scheme.etaleTopology _).homEquiv _ _).apply_symm_apply (famHom R P I J g)` as an intermediate fact. Rewrite `this` using `[Adjunction.homEquiv_unit]`. Simplify using `using this`. Establish `h3 : idealIncl R P I ≫ toSheafify Scheme.etaleTopology ((freeP R).obj P) ≫ f.hom = famHom R P I J g`. Establish `e` using `toSheafify_naturality Scheme.etaleTopology (idealIncl R P I)`.
+
+Combine the equalities or inequalities in the displayed calculation. Rewrite using `[e]`. Use `_ = toSheafify Scheme.etaleTopology (idealFree R P I) ≫ (m ≫ f).hom := Category.assoc (toSheafify Scheme.etaleTopology (idealFree R P I)) (sheafifyMap Scheme.etaleTopology (idealIncl R P I)) f.hom`. Use `_ = famHom R P I J g := by rw [hm, hψ]`. Apply `Sheaf.hom_ext` to reduce the goal to its premises.
+
+Apply `sheafify_hom_ext _ _ _ J.cond` to reduce the goal to its premises. Use extensionality with `U : 2`. Apply `ModuleCat.free_hom_ext` to reduce the goal to its premises. Introduce `x`. Establish `h4` using `congrArg (fun φ => (φ.app U).hom (Finsupp.single x ⟨a, ha⟩)) h3`.
+
+Establish `e1 : ((idealIncl R P I).app U).hom (Finsupp.single x (⟨a, ha⟩ : I)) = a • ModuleCat.freeMk (R` using `ULift.{1} R) x := by`. Express the relevant statement in the definitionally equal form `Finsupp.mapRange I.subtype (map_zero _) (Finsupp.single x (⟨a, ha⟩ : I)) = _`. Rewrite using `[Finsupp.mapRange_single]`. Express the relevant statement in the definitionally equal form `_ = a • Finsupp.single x (1 : ULift.{1} R)`. Rewrite using `[Finsupp.smul_single, smul_eq_mul, mul_one]`.
+
+Both sides reduce to the same expression. Express the relevant statement in the definitionally equal form `((toSheafify Scheme.etaleTopology ((freeP R).obj P) ≫ f.hom).app U).hom (((idealIncl R P I).app U).hom (Finsupp.single x ⟨a, ha⟩)) = Finsupp.lsum ℕ (evalAt R P I J g U) (Finsupp.single x ⟨a, ha⟩) at h4`. Rewrite `h4` using `[e1]`. Use `erw [LinearMap.map_smul, Finsupp.lsum_single] at h4`. Conclude with `h4`.
+-/
 theorem hom_free_injective (R : Type) [CommRing R] (J : Shv R) [Injective J] (P : PSh) :
     Module.Injective (ULift.{1} R) ((free R).obj P ⟶ J) := by
   apply Module.Baer.injective

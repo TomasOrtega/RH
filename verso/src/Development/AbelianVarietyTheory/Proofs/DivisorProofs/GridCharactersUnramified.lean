@@ -7,6 +7,9 @@ open GlobalTheory.ChiGrid GlobalTheory.SqTop
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 namespace GlobalTheory.GridUnr
 
+/- English proof (translation)
+Introduce `D T Lc sc G μ₀ hμ t v e he hv i`. Establish `h1 : 1 ≤ D.R.m - (i : ℕ)` using `by have := i.2; omega`. Establish `h2 : D.R.m - (i : ℕ) ≤ D.R.m` using `Nat.sub_le _ _`. Use `⟨GlobalTheory.UnramOver.unramAt_of_unrAt D _ _ (G.ch.chi_eq _ h1 h2) v e he fun P hP => ?_, GlobalTheory.UnramOver.unramAt_of_unrAt D _ _ hμ.eta v e he fun P _ => Lc.C.isEta.unr P⟩` and prove the remaining obligations. Conclude with `G.ch.unr _ h1 h2 P (by rw [hP]; exact hv)`.
+-/
 theorem chi_eta_unramAt : ∀ {D : D7} {T : Type} {Lc : LevCh D T} {sc : Consts} (G : GridData Lc sc) (μ₀ : T), Lc.Is μ₀ → ∀ (t : T) (v : HeightOneSpectrum (𝓞 D.host.F)) (e : AF D.host.F), IsPlaceIdem D v e → v ∉ G.pl.S0 → ∀ i : Fin D.R.m, GlobalTheory.WeilParts.UnramAt e (G.ch.chi (D.R.m - i)) ∧ GlobalTheory.WeilParts.UnramAt e Lc.eta := by
   intro D T Lc sc G μ₀ hμ t v e he hv i
   have h1 : 1 ≤ D.R.m - (i : ℕ) := by have := i.2; omega

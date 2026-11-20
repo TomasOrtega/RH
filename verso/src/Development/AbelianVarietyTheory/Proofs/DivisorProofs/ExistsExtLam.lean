@@ -13,6 +13,15 @@ open GlobalTheory.Mum
 
 namespace GlobalTheory.MumExt
 
+/- English proof (translation)
+Introduce `R _ _ _ G _ _ hG L hL`. Use `haveI := hG.smooth`. Use `haveI := hG.separated`. Use `haveI := hG.quasiCompact`. Use `haveI : GeometricallyIntegral G.hom := GlobalTheory.forall_geometricallyIntegral_of_smooth_of_geometricallyConnected _ _ _ hG.smooth hG.geomConnected`.
+
+Take `⟨L', hL', hb⟩` from `GlobalTheory.T.lineBundle_generic_fibre_extends_over_dvr R G L hL`. Use `⟨abelian₂ G L', DVR.linComb_isLB _ hL' _ _, fun κ₂ hκ => ?_⟩` and prove the remaining obligations. Establish `h` using `isGrpPullback_pullback G (jK R)`. Set `V` to `lift (pushPt h.1.w (fst ((Over.pullback (jK R)).obj G) ((Over.pullback (jK R)).obj G))) (pushPt h.1.w (snd ((Over.pullback (jK R)).obj G) ((Over.pullback (jK R)).obj G)))`. Establish `hV : V.left = κ₂`.
+
+Apply `pullback.hom_ext` to reduce the goal to its premises. Use `show (V ≫ fst G G).left = κ₂ ≫ (fst G G).left`. Rewrite using `[hκ.1, lift_fst]`. Both sides reduce to the same expression. Use `show (V ≫ snd G G).left = κ₂ ≫ (snd G G).left`.
+
+Rewrite using `[hκ.2, lift_snd]`. Both sides reduce to the same expression. Apply the tactic sequence `have c := GlobalTheory.SymSpread.lbIso_cube h hL' hL hb (x2 G) (x2 _) V (fun i => by fin_cases i <;> simp [x2, V])`. Rewrite `c` using `[hV]`. Conclude with `c`.
+-/
 theorem exists_extLam : ∀ (R : Type) [CommRing R] [IsDomain R] [IsDiscreteValuationRing R], ∀ (G : Over (Sp R)) [GrpObj G] [IsCommMonObj G], IsSemiAbelian G → ∀ L : LB ((Over.pullback (jK R)).obj G).left, L.IsLB → ∃ PP : LB (G2 G).left, ExtLam G L PP := by
   intro R _ _ _ G _ _ hG L hL
   haveI := hG.smooth

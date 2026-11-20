@@ -28,6 +28,23 @@ noncomputable section
 
 namespace GlobalTheory.SplitDetStab
 
+/- English proof (translation)
+Use `haveI : Nonempty (Fin n) := ⟨⟨0, hn⟩⟩`. Take `⟨⟨i, j⟩, -, hij⟩` from `Finset.exists_max_image (Finset.univ : Finset (Fin n × Fin n)) (fun p => O.valuation (D p.1 p.2)) Finset.univ_nonempty`. Establish `h0 : D i j ≠ 0`. Introduce `h`. Establish `hD : D = 0`.
+
+Use extensionality with `k l`. Use `hij (k, l) (Finset.mem_univ _)` as an intermediate fact. Simplify using `only [h, map_zero, le_zero_iff] at this`. Simplify using `using this`. Rewrite `hCD` using `[hD, Matrix.mul_zero]`.
+
+Conclude with `zero_ne_one hCD`. Establish `hint : ∀ k l, (D i j)⁻¹ * D k l ∈ O` using `fun k l => by`. Rewrite using `[← O.valuation_le_one_iff, map_mul, map_inv₀]`. Conclude with `inv_mul_le_one_of_le₀ (hij (k, l) (Finset.mem_univ _)) zero_le`. Use `set x : Fin n → K := fun k => (D i j)⁻¹ * D k j with hx`.
+
+Establish `hl : (Pi.single i 1 : Fin n → K) ⬝ᵥ x = 1`. Rewrite using `[single_dotProduct, one_mul, hx]`. Conclude with `inv_mul_cancel₀ h0`. Use `⟨Matrix.vecMulVec x (Pi.single i 1), ?_, fun c => ?_, fun k l => ?_, fun k l => ?_⟩` and prove the remaining obligations. Rewrite using `[Matrix.vecMulVec_mul_vecMulVec, hl, one_smul]`.
+
+Rewrite using `[← Matrix.smul_vecMulVec, Matrix.vecMulVec_eq Unit, Matrix.det_one_add_replicateCol_mul_replicateRow, dotProduct_smul, hl, smul_eq_mul, mul_one]`. Rewrite using `[Matrix.vecMulVec_apply]`. Distinguish the cases in `e : l = i`. Substitute `e` using the available equality. Simplify using `using hint k j`.
+
+Simplify using `[e]`. Rewrite using `[Matrix.mul_vecMulVec, Matrix.vecMulVec_mul, Matrix.vecMulVec_apply]`. Establish `e1 : (C *ᵥ x) k = (D i j)⁻¹ * (1 : Matrix (Fin n) (Fin n) K) k j`. Rewrite using `[← hCD, Matrix.mul_apply, Finset.mul_sum]`. Simplify using `only [Matrix.mulVec, dotProduct, hx]`.
+
+Conclude with `Finset.sum_congr rfl fun _ _ => by ring`. Rewrite using `[e1, Matrix.single_vecMul]`. Distinguish the cases in `e : k = j`. Substitute `e` using the available equality. Simplify using `using hint i l`.
+
+Simplify using `[Matrix.one_apply, e]`.
+-/
 theorem exists_idem {K : Type} [Field K] (O : ValuationSubring K) {n : ℕ} (hn : 0 < n) (C D : Matrix (Fin n) (Fin n) K)
     (hCD : C * D = 1) : ∃ P : Matrix (Fin n) (Fin n) K, P * P = P ∧ (∀ c : K, (1 + c • P).det = 1 + c) ∧
       (∀ i j, P i j ∈ O) ∧ ∀ i j, (C * P * D) i j ∈ O := by
@@ -67,6 +84,9 @@ theorem exists_idem {K : Type} [Field K] (O : ValuationSubring K) {n : ℕ} (hn 
     · subst e; simpa using hint i l
     · simp [Matrix.one_apply, e]
 
+/- English proof (translation)
+Establish `e : (b⁻¹ : GL (Fin n) K).val *ᵥ ((1 + c • Q) *ᵥ y) = (b⁻¹ : GL (Fin n) K).val *ᵥ y + c • (((b⁻¹ : GL (Fin n) K).val * Q * b.val) *ᵥ ((b⁻¹ : GL (Fin n) K).val *ᵥ y))`. Rewrite using `[Matrix.add_mulVec, Matrix.one_mulVec, Matrix.mulVec_add, Matrix.smul_mulVec, Matrix.mulVec_smul, Matrix.mulVec_mulVec, Matrix.mulVec_mulVec, Matrix.mul_assoc _ b.val, Units.mul_inv, Matrix.mul_one]`. Rewrite using `[e]`. Conclude with `add_mem (hy i) (mul_mem hc (sum_mem (t := Finset.univ) fun j _ => mul_mem (hQ i j) (hy j)))`.
+-/
 theorem keep {K : Type} [Field K] (O : ValuationSubring K) {n : ℕ} (b : GL (Fin n) K) (Q : Matrix (Fin n) (Fin n) K)
     (hQ : ∀ i j, ((b⁻¹ : GL (Fin n) K).val * Q * b.val) i j ∈ O) {c : K} (hc : c ∈ O) (y : Fin n → K)
     (hy : ∀ i, ((b⁻¹ : GL (Fin n) K).val *ᵥ y) i ∈ O) (i : Fin n) :
@@ -80,6 +100,11 @@ theorem keep {K : Type} [Field K] (O : ValuationSubring K) {n : ℕ} (b : GL (Fi
 
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
 
+/- English proof (translation)
+Rewrite `hz`, the goal using `[GlobalTheory.SplitDictHerm.mem_latAt_iff_bases h W τ hb₁ hb₂]`. Establish `e : ∀ ρ : E →ₐ[F] Fv F v, (fun j => piW ρ ((M *ᵥ z) j)) = M.map (piW ρ) *ᵥ fun j => piW ρ (z j)` using `fun ρ => funext fun j => RingHom.map_mulVec (piW ρ) M z j`. Use `⟨fun u hu => ?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[← Matrix.mulVec_smul, hz.1 u hu, Matrix.mulVec_zero]`. Rewrite using `[e, h₁]`.
+
+Conclude with `keep _ b₁ Q₁ hQ₁ hc₁ _ hz.2.1`. Rewrite using `[e, h₂]`. Conclude with `keep _ b₂ Q₂ hQ₂ hc₂ _ hz.2.2`.
+-/
 theorem mulVec_mem {σ : E →ₐ[F] E} (h : IsCMExt F E σ) {d : ℕ} (W : Spc F E d) {v : Pl F}
     (τ : E →ₐ[F] Fv F v) {b₁ b₂ : GL (Fin d) (Fv F v)} (hb₁ : IsSplitBasis τ W.L b₁)
     (hb₂ : IsSplitBasis (τ.comp σ) W.L b₂) (M : Matrix (Fin d) (Fin d) (AE F E))
@@ -97,6 +122,29 @@ theorem mulVec_mem {σ : E →ₐ[F] E} (h : IsCMExt F E σ) {d : ℕ} (W : Spc 
   · rw [e, h₁]; exact keep _ b₁ Q₁ hQ₁ hc₁ _ hz.2.1
   · rw [e, h₂]; exact keep _ b₂ Q₂ hQ₂ hc₂ _ hz.2.2
 
+/- English proof (translation)
+Introduce `_ F E _ _ _ _ _ σ B a a' G X om om' hT u hu`. Establish `hcm : IsCMExt F E σ` using `hT.base.cm`. Take `⟨w⟩ : Nonempty (InfinitePlace F)` from `inferInstance`. Establish `skew : ∀ i j, σ (G.W.J j i) = algebraMap F E (-1) * G.W.J i j` using `fun i j => by`. Rewrite using `[map_neg, map_one, neg_one_mul]`.
+
+Conclude with `hT.geo.hW.skew i j`. Establish `hJ : IsUnit (G.W.J.map B.τ₁).det` using `GlobalTheory.SplitUnitLift.isUnit_det_of_cartan G.W.J B.τ₁ (B.emb w).1 Complex.I Complex.I_ne_zero (G.W.θ w) (hT.geo.hW.cartan w)`. Use `haveI := hT.geo.hW.lat`. Take `⟨b₁, hb₁⟩` from `exists_isSplitBasis B.τ₁ G.W.L hcm`. Take `⟨b₂, hb₂⟩` from `exists_isSplitBasis (B.τ₁.comp σ) G.W.L hcm`.
+
+Establish `hn : 0 < a + a'` using `by have := hT.geo.aBig; omega`. Use `haveI : (Valued.v : Valuation (Fv F B.v₁) (WithZero (Multiplicative ℤ))).Compatible := Valuation.Compatible.ofValuation _`. Establish `he` using `ValuativeRel.isEquiv (ValuativeRel.valuation (Fv F B.v₁)) (Valued.v : Valuation (Fv F B.v₁) (WithZero (Multiplicative ℤ)))`. Establish `hu1 : Valued.v (u : Fv F B.v₁) = 1` using `he.eq_one_iff_eq_one.1 hu`. Establish `hc : (u : Fv F B.v₁) - 1 ∈ B.v₁.adicCompletionIntegers F` using `sub_mem (by rw [HeightOneSpectrum.mem_adicCompletionIntegers, hu1]) (one_mem _)`.
+
+Establish `hc' : (u : Fv F B.v₁)⁻¹ - 1 ∈ B.v₁.adicCompletionIntegers F` using `sub_mem (by rw [HeightOneSpectrum.mem_adicCompletionIntegers, map_inv₀, hu1, inv_one]) (one_mem _)`. Use `set J := G.W.J.map B.τ₁ with hJdef`. Establish `hJ1 : J * J⁻¹ = 1` using `Matrix.mul_nonsing_inv _ hJ`. Establish `hJ2 : J⁻¹ * J = 1` using `Matrix.nonsing_inv_mul _ hJ`. Take `⟨P, hPP, hdet, hP1, hP2⟩` from `exists_idem (B.v₁.adicCompletionIntegers F) hn ((J * b₂.val)ᵀ * b₁.val) ((b₁⁻¹ : GL _ _).val * ((b₂⁻¹ : GL _ _).val * J⁻¹)ᵀ) (by`.
+
+Rewrite using `[Matrix.mul_assoc, ← Matrix.mul_assoc b₁.val, Units.mul_inv, Matrix.one_mul, ← Matrix.transpose_mul, Matrix.mul_assoc, ← Matrix.mul_assoc J⁻¹, hJ2, Matrix.one_mul, Units.inv_mul, Matrix.transpose_one])`. Use `set Q := b₁.val * P * (b₁⁻¹ : GL _ _).val with hQdef`. Establish `hQQ : Q * Q = Q`. Rewrite using `[hQdef]`. Simplify using `only [Matrix.mul_assoc]`.
+
+Rewrite using `[← Matrix.mul_assoc (b₁⁻¹ : GL _ _).val, Units.inv_mul, Matrix.one_mul, ← Matrix.mul_assoc P, hPP]`. Establish `hmul : ∀ c c' : Fv F B.v₁, c * c' = 1 → (1 + (c - 1) • Q) * (1 + (c' - 1) • Q) = 1` using `fun c c' e => by`. Rewrite using `[Matrix.add_mul, Matrix.one_mul, Matrix.mul_add, Matrix.mul_one, Matrix.smul_mul, Matrix.mul_smul, hQQ, smul_smul, add_assoc, ← add_smul, ← add_smul, show c' - 1 + (c - 1 + (c - 1) * (c' - 1)) = 0 by linear_combination e, zero_smul, add_zero]`. Set `g : GL (Fin (a + a')) (Fv F B.v₁)` to `⟨1 + ((u : Fv F B.v₁) - 1) • Q, 1 + ((u : Fv F B.v₁)⁻¹ - 1) • Q, hmul _ _ (mul_inv_cancel₀ u.ne_zero), hmul _ _ (inv_mul_cancel₀ u.ne_zero)⟩`. Establish `hQ₁ : ∀ i j, ((b₁⁻¹ : GL _ _).val * Q * b₁.val) i j ∈ B.v₁.adicCompletionIntegers F`.
+
+Rewrite using `[hQdef]`. Simplify using `only [Matrix.mul_assoc]`. Rewrite using `[Units.inv_mul, Matrix.mul_one, ← Matrix.mul_assoc, Units.inv_mul, Matrix.one_mul]`. Conclude with `hP1`. Establish `hQ₂ : ∀ i j, ((b₂⁻¹ : GL _ _).val * (J⁻¹ * Qᵀ * J) * b₂.val) i j ∈ B.v₁.adicCompletionIntegers F`.
+
+Introduce `i j`. Use `hP2 j i` as an intermediate fact. Establish `e : (b₂⁻¹ : GL _ _).val * (J⁻¹ * Qᵀ * J) * b₂.val = ((J * b₂.val)ᵀ * b₁.val * P * ((b₁⁻¹ : GL _ _).val * ((b₂⁻¹ : GL _ _).val * J⁻¹)ᵀ))ᵀ`. Simplify using `only [hQdef, Matrix.transpose_mul, Matrix.transpose_transpose, Matrix.mul_assoc]`. Rewrite using `[e]`.
+
+Conclude with `this`. Establish `hconj : ∀ c : Fv F B.v₁, J⁻¹ * (1 + c • Q)ᵀ * J = 1 + c • (J⁻¹ * Qᵀ * J)` using `fun c => by`. Rewrite using `[Matrix.transpose_add, Matrix.transpose_one, Matrix.transpose_smul, Matrix.mul_add, Matrix.add_mul, Matrix.mul_one, hJ2, Matrix.mul_smul, Matrix.smul_mul]`. Use `⟨GlobalTheory.SplitUnitLift.liftU hcm B.τ₁ G.W.J (-1) skew hJ g, ⟨GlobalTheory.SplitUnitLift.liftU_mem_UAt hcm B.τ₁ G.W (-1) skew hJ g, fun z hz => ⟨?_, ?_⟩⟩, ?_⟩` and prove the remaining obligations. Conclude with `mulVec_mem hcm G.W B.τ₁ hb₁ hb₂ _ Q _ hc hc' hQ₁ hQ₂ (GlobalTheory.SplitUnitLift.liftU_piW hcm B.τ₁ G.W.J (-1) skew hJ g) ((GlobalTheory.SplitUnitLift.liftU_piW_comp hcm B.τ₁ G.W.J (-1) skew hJ g).trans (hconj _)) hz`.
+
+Rewrite using `[← map_inv]`. Conclude with `mulVec_mem hcm G.W B.τ₁ hb₁ hb₂ _ Q _ hc' hc hQ₁ hQ₂ (GlobalTheory.SplitUnitLift.liftU_piW hcm B.τ₁ G.W.J (-1) skew hJ g⁻¹) ((GlobalTheory.SplitUnitLift.liftU_piW_comp hcm B.τ₁ G.W.J (-1) skew hJ g⁻¹).trans (hconj _)) hz`. Use `Units.ext ?_` and prove the remaining obligations. Rewrite using `[Matrix.GeneralLinearGroup.val_det_apply, GlobalTheory.LocalUnitSubgroupClosure.cmpGL_val, GlobalTheory.SplitUnitLift.liftU_piW]`. Use `show (1 + ((u : Fv F B.v₁) - 1) • Q).det = u`.
+
+Establish `e : 1 + ((u : Fv F B.v₁) - 1) • Q = b₁.val * (1 + ((u : Fv F B.v₁) - 1) • P) * (b₁⁻¹ : GL _ _).val`. Rewrite using `[Matrix.mul_add, Matrix.add_mul, Matrix.mul_one, Units.mul_inv, Matrix.mul_smul, Matrix.smul_mul]`. Rewrite using `[e, Matrix.det_units_conj, hdet, add_sub_cancel]`.
+-/
 theorem exists_mem_KAt_det_eq : GlobalTheory.FunPr.Hypotheses₂ → ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E)
     (B : Base F E) (a a' : ℕ) (G : Geo σ a a') (X : Chars F E) (om : Rep σ G.V G.W) (om' : Rep σ G.V' G.W),
     IsTriple B G X om om' → ∀ u : (Fv F B.v₁)ˣ, ValuativeRel.valuation (Fv F B.v₁) (u : Fv F B.v₁) = 1 →

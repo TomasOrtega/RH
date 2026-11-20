@@ -12,51 +12,90 @@ namespace TorsAvgDescends
 
 open RigSymForm
 
+/- English proof (translation)
+Use function extensionality and compare the values at `i`. Simplify using `[intVec]`.
+-/
 lemma intVec_add {g : ℕ} (u v : Fin g → ℤ) : intVec (u + v) = intVec u + intVec v := by
   funext i; simp [intVec]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `i`. Simplify using `[intVec]`.
+-/
 lemma intVec_zero {g : ℕ} : intVec (0 : Fin g → ℤ) = 0 := by
   funext i; simp [intVec]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `i`. Simplify using `[intVec]`.
+-/
 lemma intVec_smul {g : ℕ} (m : ℕ) (u : Fin g → ℤ) : intVec ((m : ℤ) • u) = (m : ℂ) • intVec u := by
   funext i; simp [intVec]
 
+/- English proof (translation)
+Simplify using `[intVec, dotProduct]`.
+-/
 lemma intVec_dot {g : ℕ} (u v : Fin g → ℤ) : intVec u ⬝ᵥ intVec v = ((u ⬝ᵥ v : ℤ) : ℂ) := by
   simp [intVec, dotProduct]
 
 variable (P : RigSymForm ℂ)
 
+/- English proof (translation)
+Simplify using `only [latVec, intVec_add, mulVec_add]`. Normalize the expressions using the abelian group laws.
+-/
 lemma latVec_add (u₁ v₁ u₂ v₂ : Fin P.g → ℤ) :
     P.latVec (u₁ + u₂) (v₁ + v₂) = P.latVec u₁ v₁ + P.latVec u₂ v₂ := by
   simp only [latVec, intVec_add, mulVec_add]; abel
 
+/- English proof (translation)
+Simplify using `only [latVec, intVec_smul, mulVec_smul, smul_add]`.
+-/
 lemma latVec_smul (m : ℕ) (u v : Fin P.g → ℤ) :
     P.latVec ((m : ℤ) • u) ((m : ℤ) • v) = (m : ℂ) • P.latVec u v := by
   simp only [latVec, intVec_smul, mulVec_smul, smul_add]
 
+/- English proof (translation)
+Simplify using `[latVec, intVec_zero]`.
+-/
 lemma latVec_zero_left (v : Fin P.g → ℤ) : P.latVec 0 v = intVec v := by
   simp [latVec, intVec_zero]
 
+/- English proof (translation)
+Simplify using `[latVec, intVec_zero]`.
+-/
 lemma latVec_zero_right (u : Fin P.g → ℤ) : P.latVec u 0 = P.pt.τ *ᵥ intVec u := by
   simp [latVec, intVec_zero]
 
+/- English proof (translation)
+Simplify using `[autL, autFactor, intVec_zero]`.
+-/
 lemma autL_zero_left (N : ℕ) (v : Fin P.g → ℤ) (w : Fin P.g → ℂ) :
     P.autL N 0 v w = perFactor P.ch N v := by
   simp [autL, autFactor, intVec_zero]
 
+/- English proof (translation)
+Simplify using `[autL, perFactor, intVec_zero]`.
+-/
 lemma autL_zero_right (N : ℕ) (u : Fin P.g → ℤ) (w : Fin P.g → ℂ) :
     P.autL N u 0 w = autFactor P.pt P.ch N u w := by
   simp [autL, perFactor, intVec_zero]
 
+/- English proof (translation)
+Unfold `autL perFactor autFactor`. Conclude with `mul_ne_zero (Complex.exp_ne_zero _) (Complex.exp_ne_zero _)`.
+-/
 lemma autL_ne_zero (N : ℕ) (u v : Fin P.g → ℤ) (w : Fin P.g → ℂ) : P.autL N u v w ≠ 0 := by
   unfold autL perFactor autFactor
   exact mul_ne_zero (Complex.exp_ne_zero _) (Complex.exp_ne_zero _)
 
+/- English proof (translation)
+Unfold `autL autFactor`. Simplify using `only [dotProduct]`. Use `fun_prop`.
+-/
 lemma autL_differentiable (N : ℕ) (u v : Fin P.g → ℤ) : Differentiable ℂ (P.autL N u v) := by
   unfold autL autFactor
   simp only [dotProduct]
   fun_prop
 
+/- English proof (translation)
+Take `⟨-, h1, h2⟩` from `hf`. Rewrite using `[latVec, show w + (intVec v + P.pt.τ *ᵥ intVec u) = (w + P.pt.τ *ᵥ intVec u) + intVec v by abel, h1, h2, autL]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 lemma section_latVec {n : ℕ} {f : P.Fn} (hf : f ∈ thetaSec P.pt P.ch n) (u v : Fin P.g → ℤ)
     (w : Fin P.g → ℂ) : f (w + P.latVec u v) = P.autL n u v w * f w := by
   obtain ⟨-, h1, h2⟩ := hf
@@ -64,6 +103,11 @@ lemma section_latVec {n : ℕ} {f : P.Fn} (hf : f ∈ thetaSec P.pt P.ch n) (u v
     h1, h2, autL]
   ring
 
+/- English proof (translation)
+Establish `hsym : intVec u₂ ⬝ᵥ P.pt.τ *ᵥ intVec u₁ = intVec u₁ ⬝ᵥ P.pt.τ *ᵥ intVec u₂`. Rewrite using `[dotProduct_mulVec, dotProduct_comm, ← mulVec_transpose, P.pt.isSymm.eq]`. Unfold `autL perFactor autFactor latVec`. Simplify using `only [← Complex.exp_add, mul_assoc]`. Rewrite using `[Complex.exp_eq_exp_iff_exists_int]`.
+
+Use `⟨N * (u₁ ⬝ᵥ v₂), ?_⟩` and prove the remaining obligations. Simplify using `only [intVec_add, mulVec_add, dotProduct_add, add_dotProduct, hsym, intVec_dot]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+-/
 lemma autL_cocycle (N : ℕ) (u₁ v₁ u₂ v₂ : Fin P.g → ℤ) (w : Fin P.g → ℂ) :
     P.autL N (u₁ + u₂) (v₁ + v₂) w = P.autL N u₁ v₁ (w + P.latVec u₂ v₂) * P.autL N u₂ v₂ w := by
   have hsym : intVec u₂ ⬝ᵥ P.pt.τ *ᵥ intVec u₁ = intVec u₁ ⬝ᵥ P.pt.τ *ᵥ intVec u₂ := by
@@ -76,6 +120,17 @@ lemma autL_cocycle (N : ℕ) (u₁ v₁ u₂ v₂ : Fin P.g → ℤ) (w : Fin P.
   push_cast
   ring
 
+/- English proof (translation)
+Take `⟨j, hj⟩` from `Int.even_mul_pred_self (m : ℤ)`. Establish `hjC : (m : ℂ) * ((m : ℂ) - 1) = (j : ℂ) + j` using `by exact_mod_cast hj`. Take `⟨A, hAd⟩ : ∃ A : ℤ, A = ∑ i, ((P.ch.ε i : ℕ) : ℤ) * l i` from `⟨_, rfl⟩`. Take `⟨B, hBd⟩ : ∃ B : ℤ, B = ∑ i, k i * ((P.ch.ε' i : ℕ) : ℤ)` from `⟨_, rfl⟩`. Establish `hA : P.ch.a ⬝ᵥ intVec l = (A : ℂ) / 2`.
+
+Substitute `hAd` using the available equality. Simplify using `only [dotProduct, HalfChar.a, intVec]`. Use `push_cast`. Rewrite using `[Finset.sum_div]; exact Finset.sum_congr rfl fun i _ => by ring`. Establish `hB : intVec k ⬝ᵥ P.ch.b = (B : ℂ) / 2`.
+
+Substitute `hBd` using the available equality. Simplify using `only [dotProduct, HalfChar.b, intVec]`. Use `push_cast`. Rewrite using `[Finset.sum_div]; exact Finset.sum_congr rfl fun i _ => by ring`. Unfold `autL perFactor autFactor`.
+
+Simplify using `only [← Complex.exp_add]`. Rewrite using `[Complex.exp_eq_exp_iff_exists_int]`. Use `⟨N * j * (B - A), ?_⟩` and prove the remaining obligations. Simplify using `only [intVec_smul, mulVec_smul, dotProduct_add, smul_dotProduct, dotProduct_smul, smul_eq_mul, hA, hB]`. Use `push_cast`.
+
+Take the linear combination `((Real.pi : ℂ) * I * N * ((B : ℂ) - A)) * hjC`.
+-/
 lemma autL_mul (N m : ℕ) (k l : Fin P.g → ℤ) (y : Fin P.g → ℂ) :
     P.autL N ((m : ℤ) • k) ((m : ℤ) • l) ((m : ℂ) • y) = P.autL (N * m ^ 2) k l y := by
   obtain ⟨j, hj⟩ := Int.even_mul_pred_self (m : ℤ)
@@ -100,10 +155,16 @@ lemma autL_mul (N m : ℕ) (k l : Fin P.g → ℤ) (y : Fin P.g → ℂ) :
 def term (N m : ℕ) (F : P.Fn) (u v : Fin P.g → ℤ) (z : Fin P.g → ℂ) : ℂ :=
   (P.autL N u v ((m : ℂ) • z))⁻¹ * F (z + (m : ℂ)⁻¹ • P.latVec u v)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 lemma torsAvg_eq (N m : ℕ) (F : P.Fn) (z : Fin P.g → ℂ) :
     P.torsAvg N m F z = ((m : ℂ) ^ (2 * P.g))⁻¹ *
       ∑ u : Fin P.g → Fin m, ∑ v : Fin P.g → Fin m, term P N m F (torsIdx u) (torsIdx v) z := rfl
 
+/- English proof (translation)
+Establish `h0` using `autL_differentiable P N u v`. Establish `h1 : Differentiable ℂ (fun z : Fin P.g → ℂ => P.autL N u v ((m : ℂ) • z))` using `by fun_prop`. Establish `h2 : Differentiable ℂ (fun z : Fin P.g → ℂ => F (z + (m : ℂ)⁻¹ • P.latVec u v))` using `by fun_prop`. Conclude with `(h1.inv fun z => autL_ne_zero P N u v _).mul h2`.
+-/
 lemma term_differentiable (N m : ℕ) {F : (Fin P.g → ℂ) → ℂ} (hF : Differentiable ℂ F) (u v : Fin P.g → ℤ) :
     Differentiable ℂ (term P N m F u v) := by
   have h0 := autL_differentiable P N u v
@@ -111,6 +172,11 @@ lemma term_differentiable (N m : ℕ) {F : (Fin P.g → ℂ) → ℂ} (hF : Diff
   have h2 : Differentiable ℂ (fun z : Fin P.g → ℂ => F (z + (m : ℂ)⁻¹ • P.latVec u v)) := by fun_prop
   exact (h1.inv fun z => autL_ne_zero P N u v _).mul h2
 
+/- English proof (translation)
+Unfold `term`. Establish `e1 : (m : ℂ) • z + P.latVec u v = (m : ℂ) • (z + (m : ℂ)⁻¹ • P.latVec u v)`. Rewrite using `[smul_add, smul_inv_smul₀ hm]`. Establish `e2 : z + (m : ℂ)⁻¹ • P.latVec (u + (m : ℤ) • k) (v + (m : ℤ) • l) = (z + (m : ℂ)⁻¹ • P.latVec u v) + P.latVec k l`. Rewrite using `[latVec_add, latVec_smul, smul_add, inv_smul_smul₀ hm, add_assoc]`.
+
+Rewrite using `[e2, add_comm u, add_comm v, autL_cocycle, e1, autL_mul, section_latVec P hF]`. Establish `h1` using `autL_ne_zero P (N * m ^ 2) k l (z + (m : ℂ)⁻¹ • P.latVec u v)`. Rewrite using `[mul_inv, mul_assoc, mul_left_comm, inv_mul_cancel_left₀ h1]`.
+-/
 lemma term_periodic {N m : ℕ} (hm : (m : ℂ) ≠ 0) {F : P.Fn}
     (hF : F ∈ thetaSec P.pt P.ch (N * m ^ 2)) (u v k l : Fin P.g → ℤ) (z : Fin P.g → ℂ) :
     term P N m F (u + (m : ℤ) • k) (v + (m : ℤ) • l) z = term P N m F u v z := by
@@ -124,6 +190,11 @@ lemma term_periodic {N m : ℕ} (hm : (m : ℂ) ≠ 0) {F : P.Fn}
   have h1 := autL_ne_zero P (N * m ^ 2) k l (z + (m : ℂ)⁻¹ • P.latVec u v)
   rw [mul_inv, mul_assoc, mul_left_comm, inv_mul_cancel_left₀ h1]
 
+/- English proof (translation)
+Unfold `term`. Establish `e1 : (m : ℂ) • (z + (m : ℂ)⁻¹ • P.latVec u₀ v₀) = (m : ℂ) • z + P.latVec u₀ v₀`. Rewrite using `[smul_add, smul_inv_smul₀ hm]`. Establish `e2 : z + (m : ℂ)⁻¹ • P.latVec u₀ v₀ + (m : ℂ)⁻¹ • P.latVec u v = z + (m : ℂ)⁻¹ • P.latVec (u + u₀) (v + v₀)`. Rewrite using `[latVec_add, smul_add]`.
+
+Normalize the expressions using the abelian group laws. Rewrite using `[e1, e2, autL_cocycle P N u v u₀ v₀ ((m : ℂ) • z)]`. Establish `h1` using `autL_ne_zero P N u v ((m : ℂ) • z + P.latVec u₀ v₀)`. Establish `h2` using `autL_ne_zero P N u₀ v₀ ((m : ℂ) • z)`. Clear the denominators using the available nonvanishing facts.
+-/
 lemma term_shift {N m : ℕ} (hm : (m : ℂ) ≠ 0) (F : P.Fn) (u v u₀ v₀ : Fin P.g → ℤ)
     (z : Fin P.g → ℂ) :
     term P N m F u v (z + (m : ℂ)⁻¹ • P.latVec u₀ v₀) =
@@ -139,6 +210,19 @@ lemma term_shift {N m : ℕ} (hm : (m : ℂ) ≠ 0) (F : P.Fn) (u v u₀ v₀ : 
   have h2 := autL_ne_zero P N u₀ v₀ ((m : ℂ) • z)
   field_simp
 
+/- English proof (translation)
+Establish `hm' : (0 : ℤ) < m` using `by exact_mod_cast hm`. Set `r : (Fin g → ℤ) → (Fin g → Fin m)` to `fun x i => ⟨(x i % m).toNat, by`. Use `Int.emod_lt_of_pos (x i) hm'` as an intermediate fact. Use `Int.emod_nonneg (x i) hm'.ne'` as an intermediate fact. Use the proof step `omega⟩`.
+
+Establish `hr : ∀ x, H x = H (torsIdx (r x))`. Introduce `x`. Establish `: x = torsIdx (r x) + (m : ℤ) • fun i => x i / m`. Use function extensionality and compare the values at `i`. Simplify using `only [Pi.add_apply, Pi.smul_apply, smul_eq_mul, torsIdx, r]`.
+
+Rewrite using `[Int.toNat_of_nonneg (Int.emod_nonneg _ hm'.ne'), Int.emod_add_mul_ediv]`. Use `conv_lhs => rw [this]`. Conclude with `hH _ _`. Establish `hinj : Function.Injective (fun u : Fin g → Fin m => r (torsIdx u + s))`. Introduce `u u' h`.
+
+Use function extensionality and compare the values at `i`. Establish `h1` using `congrArg Fin.val (congrFun h i)`. Simplify using `only [r, Pi.add_apply, torsIdx] at h1`. Establish `e : (((u i : ℕ) : ℤ) + s i) % (m : ℤ) = (((u' i : ℕ) : ℤ) + s i) % m`. Use `Int.emod_nonneg (((u i : ℕ) : ℤ) + s i) hm'.ne'` as an intermediate fact.
+
+Use `Int.emod_nonneg (((u' i : ℕ) : ℤ) + s i) hm'.ne'` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish `e2 : ((u i : ℕ) : ℤ) ≡ ((u' i : ℕ) : ℤ) [ZMOD m]` using `Int.ModEq.add_right_cancel' (s i) e`. Unfold `Int.ModEq at e2`. Rewrite `e2` using `[Int.emod_eq_of_lt (by positivity) (by exact_mod_cast (u i).isLt), Int.emod_eq_of_lt (by positivity) (by exact_mod_cast (u' i).isLt)]`.
+
+Conclude with `Fin.ext (by exact_mod_cast e2)`. Conclude with `Fintype.sum_bijective _ (Finite.injective_iff_bijective.mp hinj) _ _ fun u => hr _`.
+-/
 lemma sum_shift {g m : ℕ} (hm : 0 < m) (H : (Fin g → ℤ) → ℂ)
     (hH : ∀ x k, H (x + (m : ℤ) • k) = H x) (s : Fin g → ℤ) :
     ∑ u : Fin g → Fin m, H (torsIdx u + s) = ∑ u : Fin g → Fin m, H (torsIdx u) := by
@@ -173,6 +257,19 @@ end TorsAvgDescends
 
 open TorsAvgDescends RigSymForm
 
+/- English proof (translation)
+Introduce `P m hm N F hF`. Establish `hF'` using `P.S_le _ F hF`. Establish `hmC : (m : ℂ) ≠ 0` using `by exact_mod_cast (by omega : m ≠ 0)`. Establish `hS : P.S N = thetaSec P.pt P.ch N` using `by rw [← P.span_eq N, Submodule.span_eq]`. Establish `hinv : ∀ u₀ v₀ z, P.torsAvg N m F (z + (m : ℂ)⁻¹ • P.latVec u₀ v₀) = P.autL N u₀ v₀ ((m : ℂ) • z) * P.torsAvg N m F z`.
+
+Introduce `u₀ v₀ z`. Establish `inner : ∀ x : Fin P.g → ℤ, ∑ v : Fin P.g → Fin m, term P N m F x (torsIdx v + v₀) z = ∑ v : Fin P.g → Fin m, term P N m F x (torsIdx v) z` using `fun x => sum_shift hm (fun y => term P N m F x y z) (fun y k => by`. Use `term_periodic P hmC hF' x y 0 k z` as an intermediate fact. Rewrite using `[smul_zero, add_zero] at this) v₀` and apply the resulting hypothesis. Establish `outer` using `sum_shift hm (fun x => ∑ v : Fin P.g → Fin m, term P N m F x (torsIdx v) z) (fun x k => Finset.sum_congr rfl fun v _ => by`.
+
+Use `term_periodic P hmC hF' x (torsIdx v) k 0 z` as an intermediate fact. Rewrite using `[smul_zero, add_zero] at this) u₀` and apply the resulting hypothesis. Establish `hsum : ∑ u : Fin P.g → Fin m, ∑ v : Fin P.g → Fin m, term P N m F (torsIdx u + u₀) (torsIdx v + v₀) z = ∑ u : Fin P.g → Fin m, ∑ v : Fin P.g → Fin m, term P N m F (torsIdx u) (torsIdx v) z` using `(Finset.sum_congr rfl fun u _ => inner _).trans outer`. Rewrite using `[torsAvg_eq, torsAvg_eq]`. Simplify using `only [term_shift P hmC, ← Finset.mul_sum]`.
+
+Rewrite using `[hsum]`. Expand and normalize the polynomial expressions, which then agree. Establish `hd : Differentiable ℂ (P.torsAvg N m F)`. Rewrite using `[show P.torsAvg N m F = fun z => ((m : ℂ) ^ (2 * P.g))⁻¹ * ∑ u : Fin P.g → Fin m, ∑ v : Fin P.g → Fin m, term P N m F (torsIdx u) (torsIdx v) z from funext (torsAvg_eq P N m F)]`. Conclude with `(Differentiable.fun_sum fun u _ => Differentiable.fun_sum fun v _ => term_differentiable P N m hF'.1 _ _).const_mul _`.
+
+Use `⟨fun w => P.torsAvg N m F ((m : ℂ)⁻¹ • w), ?_, fun z => by simp only [inv_smul_smul₀ hmC]⟩` and prove the remaining obligations. Rewrite using `[hS]`. Establish `hd' : Differentiable ℂ (fun w : Fin P.g → ℂ => P.torsAvg N m F ((m : ℂ)⁻¹ • w))` using `hd.comp (differentiable_id.const_smul ((m : ℂ)⁻¹))`. Use `⟨hd', fun v w => ?_, fun u w => ?_⟩` and prove the remaining obligations. Use `hinv 0 v ((m : ℂ)⁻¹ • w)` as an intermediate fact.
+
+Rewrite `this` using `[smul_inv_smul₀ hmC, autL_zero_left, latVec_zero_left]`. Simplify `this` using `only [smul_add]`. Use `hinv u 0 ((m : ℂ)⁻¹ • w)` as an intermediate fact. Rewrite `this` using `[smul_inv_smul₀ hmC, autL_zero_right, latVec_zero_right]`. Simplify `this` using `only [smul_add]`.
+-/
 theorem TorsAvgDescends.proof : TorsAvgDescends.Statement := by
   intro P m hm N F hF
   have hF' := P.S_le _ F hF

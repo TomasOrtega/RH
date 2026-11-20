@@ -15,6 +15,19 @@ attribute [local instance] Over.cartesianMonoidalCategory
 
 namespace GlobalTheory.Poinc.Arith
 
+/- English proof (translation)
+Introduce `o _ ζ g n F Z i φ J d hV X _ _ _ m ga δ M hcone hδ b hb T W _ _ σ c e' x s hσ hcomm hs hβ`. Take `⟨a, ha, hid⟩` from `hV T (spMap σ ≫ x) hcomm`. Rewrite `hid` using `[GlobalTheory.TraitOrder.idlAlong_comp]`. Establish `hlin : φ.LinearOn δ`. Use `hcone.linearOn_smul M` as an intermediate fact.
+
+Rewrite using `[show δ = fun k => (M : ℤ) • ga k from funext hδ]` and apply the resulting hypothesis. Establish `hev : φ.evalZ T.β = ∑ k, (c k : ℝ) * φ.evalZ (δ k)`. Use `InvFun.LinearOn.eval_eq_sum (X := X) hlin (r := e'.symm.toIntLinearEquiv.toLinearMap) e'.symm.surjective (fun k => Nat.cast_nonneg _) ?_` and prove the remaining obligations. Introduce `u v`. Simplify using `[hβ]`.
+
+Establish `haN : a = ∑ k, c k * b k`. Establish `: (a : ℝ) = ∑ k, (c k : ℝ) * b k`. Rewrite using `[ha, hev, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[hb k]`.
+
+Expand and normalize the polynomial expressions, which then agree. Conclude with `this` after adjusting the coercions. Establish `hassoc : Associated (∏ k, σ (s k) ^ b k) (T.ϖ ^ a)`. Rewrite using `[haN, ← Finset.prod_pow_eq_pow_sum]`. Use `Associated.prod _ _ _ fun k _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[pow_mul]`. Conclude with `(hs k).pow_pow`. Establish `hmap : (idlAlong J x).map σ = (Ideal.span {∏ k, s k ^ b k}).map σ`. Rewrite using `[hid, Ideal.map_span, Set.image_singleton, map_prod]`. Simplify using `only [map_pow]`.
+
+Conclude with `(Ideal.span_singleton_eq_span_singleton.2 hassoc).symm`. Rewrite using `[← Ideal.comap_map_of_bijective σ hσ (I := idlAlong J x), hmap, Ideal.comap_map_of_bijective σ hσ]`.
+-/
 theorem idlAlong_monomial : ∀ {o : Type} [CommRing o] {ζ : o} {g n : ℕ} (F : SFam g n ζ) (Z : Scheme.{0}) (i : F.X ⟶ Z) (φ : InvFun ℤ)
     (J : Z.IdealSheafData) (d : ℕ), ValOn F i φ J d →
     ∀ (X : Type) [AddCommGroup X] [Module.Free ℤ X] [Module.Finite ℤ X] (m : ℕ) (ga δ : Fin m → LinearMap.BilinForm ℤ X)

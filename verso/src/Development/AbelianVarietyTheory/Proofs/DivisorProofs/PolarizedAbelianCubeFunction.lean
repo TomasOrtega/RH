@@ -28,6 +28,9 @@ def HasGen (F : ∀ (U : Type) [CommGroup U], ((T.left ⟶ X) → U) → U)
 
 variable {M T}
 
+/- English proof (translation)
+Take `⟨K, _, φ, ε, t, ht, hF, hv⟩` from `h`. Take `⟨K', _, φ', ε', t', ht', hF', hv'⟩` from `h'`. Use `⟨K ⊕ K', inferInstance, _, _, LB.mulGen M _ _ _ _ t t', DVR.mulGen_isGen _ _ _ _ _ _ _ ht ht', fun U _ h => ?_, fun T' σ p J hJ => ?_⟩` and prove the remaining obligations. Conclude with `(Fintype.prod_sum_type _).trans (congrArg₂ (· * ·) (hF U h) (hF' U h))`. Rewrite using `[val_mul hJ, hv _ _ _ _ hJ, hv' _ _ _ _ hJ]`.
+-/
 theorem HasGen.mul {F F' : ∀ (U : Type) [CommGroup U], ((T.left ⟶ X) → U) → U}
     {f f' : ∀ (T' : Over S) (_ : T' ⟶ T) (p : T'.left) (_ : (T'.left ⟶ X) → M.ι), (T'.left.presheaf.stalk p)ˣ}
     (h : HasGen M T F f) (h' : HasGen M T F' f') :
@@ -39,6 +42,9 @@ theorem HasGen.mul {F F' : ∀ (U : Type) [CommGroup U], ((T.left ⟶ X) → U) 
   · exact (Fintype.prod_sum_type _).trans (congrArg₂ (· * ·) (hF U h) (hF' U h))
   · rw [val_mul hJ, hv _ _ _ _ hJ, hv' _ _ _ _ hJ]
 
+/- English proof (translation)
+Take `⟨K, _, φ, ε, t, ht, hF, hv⟩` from `h`. Use `⟨K, inferInstance, _, _, LB.invGen M _ _ t, DVR.invGen_isGen _ _ _ _ ht, fun U _ h => ?_, fun T' σ p J hJ => ?_⟩` and prove the remaining obligations. Simplify using `only [zpow_neg, Finset.prod_inv_distrib, hF]`. Rewrite using `[val_inv, hv _ _ _ _ hJ]`.
+-/
 theorem HasGen.inv {F : ∀ (U : Type) [CommGroup U], ((T.left ⟶ X) → U) → U}
     {f : ∀ (T' : Over S) (_ : T' ⟶ T) (p : T'.left) (_ : (T'.left ⟶ X) → M.ι), (T'.left.presheaf.stalk p)ˣ}
     (h : HasGen M T F f) :
@@ -49,6 +55,9 @@ theorem HasGen.inv {F : ∀ (U : Type) [CommGroup U], ((T.left ⟶ X) → U) →
   · simp only [zpow_neg, Finset.prod_inv_distrib, hF]
   · rw [val_inv, hv _ _ _ _ hJ]
 
+/- English proof (translation)
+Take `⟨K, _, φ, ε, t, ht, hF, hv⟩` from `h`. Take `⟨u, -, vu⟩` from `exists_gen hM (K' := PEmpty) (φ' := PEmpty.elim) (ε' := PEmpty.elim) (fun U _ h => ((hF U h).trans (hF1 U h)).trans (Fintype.prod_empty _).symm) t ht`. Establish `le : (⊤ : T.left.Opens) ≤ LB.wchart M (PEmpty.elim : PEmpty → (T.left ⟶ X)) PEmpty.elim` using `fun _ _ => Set.mem_iInter.2 fun k => k.elim`. Use `⟨res le (u.s PEmpty.elim), fun T' σ z J hJ => (gm_res σ.left z le trivial _).trans ((val_of u σ.left z J PEmpty.elim fun k => k.elim).symm.trans ?_)⟩` and prove the remaining obligations. Rewrite using `[vu _ _ z J hJ, hv _ _ _ _ hJ]`.
+-/
 theorem HasGen.exists_unit (hM : M.IsLB) {F : ∀ (U : Type) [CommGroup U], ((T.left ⟶ X) → U) → U}
     {f : ∀ (T' : Over S) (_ : T' ⟶ T) (p : T'.left) (_ : (T'.left ⟶ X) → M.ι), (T'.left.presheaf.stalk p)ˣ}
     (h : HasGen M T F f) (hF1 : ∀ (U : Type) [CommGroup U] (h : (T.left ⟶ X) → U), F U h = 1) :
@@ -63,6 +72,9 @@ theorem HasGen.exists_unit (hM : M.IsLB) {F : ∀ (U : Type) [CommGroup U], ((T.
     ((val_of u σ.left z J PEmpty.elim fun k => k.elim).symm.trans ?_)⟩
   rw [vu _ _ z J hJ, hv _ _ _ _ hJ]
 
+/- English proof (translation)
+Introduce and unpack `_ ⟨z, rfl⟩`. Establish `: z ∈ ψ ⁻¹ᵁ V` using `h ▸ trivial`. Conclude with `⟨⟨ψ z, this⟩, rfl⟩`.
+-/
 theorem range_subset_of_preimage {Z : Scheme.{0}} {V : X.Opens} {ψ : Z ⟶ X} (h : ψ ⁻¹ᵁ V = ⊤) :
     Set.range ψ ⊆ Set.range V.ι := by
   rintro _ ⟨z, rfl⟩
@@ -75,6 +87,11 @@ def genVal {V : X.Opens} (g : LB.Gen (M.pull V.ι)) {Z : Scheme.{0}} (p : Z) (J 
     (Z.presheaf.stalk p)ˣ :=
   if h : ψ ⁻¹ᵁ V = ⊤ then val g (IsOpenImmersion.lift V.ι ψ (range_subset_of_preimage h)) p J else 1
 
+/- English proof (translation)
+Establish `h : (r ≫ V.ι) ⁻¹ᵁ V = ⊤`. Rewrite using `[Scheme.Hom.comp_preimage, Scheme.Opens.ι_preimage_self]`. Both sides reduce to the same expression. Rewrite using `[genVal, dif_pos h]`. Use `congr 1`.
+
+Rewrite using `[← cancel_mono V.ι, IsOpenImmersion.lift_fac]`.
+-/
 theorem genVal_comp {V : X.Opens} (g : LB.Gen (M.pull V.ι)) {Z : Scheme.{0}} (p : Z) (J : (Z ⟶ X) → M.ι)
     (r : Z ⟶ V.toScheme) : genVal g p J (r ≫ V.ι) = val g r p J := by
   have h : (r ≫ V.ι) ⁻¹ᵁ V = ⊤ := by
@@ -83,6 +100,9 @@ theorem genVal_comp {V : X.Opens} (g : LB.Gen (M.pull V.ι)) {Z : Scheme.{0}} (p
   congr 1
   rw [← cancel_mono V.ι, IsOpenImmersion.lift_fac]
 
+/- English proof (translation)
+Take `⟨r, rfl⟩ : ∃ r : T.left ⟶ V.toScheme, r ≫ V.ι = ψ` from `⟨_, IsOpenImmersion.lift_fac V.ι ψ (range_subset_of_preimage hψ)⟩`. Use `⟨PUnit, inferInstance, _, _, LB.pullGen M _ _ g r, DVR.pullGen_isGen _ _ _ _ hg _, fun U _ h => by simp, fun T' σ p J hJ => ?_⟩` and prove the remaining obligations. Conclude with `(val_pull hJ _ _ _).trans ((genVal_comp g p J _).symm.trans (congrArg (genVal g p J) (Category.assoc _ _ _)))`.
+-/
 theorem hasGen_genVal {V : X.Opens} (g : LB.Gen (M.pull V.ι)) (hg : g.IsGen) (ψ : T.left ⟶ X) (hψ : ψ ⁻¹ᵁ V = ⊤) :
     HasGen M T (fun _ _ h => h ψ) (fun _ σ p J => genVal g p J (σ.left ≫ ψ)) := by
   obtain ⟨r, rfl⟩ : ∃ r : T.left ⟶ V.toScheme, r ≫ V.ι = ψ :=
@@ -97,6 +117,9 @@ section Cube
 
 variable {S : Scheme.{0}} {A : Over S} [GrpObj A] [IsCommMonObj A] {L : RigLB A} (c : CubicalStr A L)
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨thK, inferInstance, _, _, LB.pullGen L.L (thφ A (x3 A)) thε c.t (lift x (lift x' y)).left, DVR.pullGen_isGen _ _ _ _ c.isGen _, fun _ _ h => prod_cub x x' y h, fun _ σ _ _ hJ => val_cub c σ hJ x x' y⟩`.
+-/
 theorem hasGen_cub {T : Over S} (x x' y : T ⟶ A) :
     HasGen L.L T (fun _ _ h => h (x * x' * y).left * (h (x * x').left)⁻¹ * (h (x * y).left)⁻¹ * (h (x' * y).left)⁻¹ *
         h x.left * h x'.left * h y.left * (h (1 : T ⟶ A).left)⁻¹)
@@ -110,6 +133,11 @@ def diff₂ {G U : Type} [Mul G] [CommGroup U] (h : G → U) (z b d : G) : U :=
 def cubeVal {G U : Type} [Mul G] [CommGroup U] (θ : G → G → G → U) (h : G → U) (z a b d : G) : U :=
   θ (z * a) b d * (θ z b d)⁻¹ * (diff₂ h (z * a) b d)⁻¹ * diff₂ h z b d
 
+/- English proof (translation)
+Proceed by induction on `k with`. Consider the case `zero => simp`. Consider the case `succ k ih`. Rewrite using `[Finset.prod_range_succ, ih, diff₂, pow_succ b, ← _root_.mul_assoc z]`. Apply `Additive.ofMul.injective` to reduce the goal to its premises.
+
+Simplify using `only [ofMul_mul, ofMul_inv]`. Normalize the expressions using the abelian group laws.
+-/
 theorem prod_diff₂ {G U : Type} [CommGroup G] [CommGroup U] (h : G → U) (z b d : G) (k : ℕ) :
     ∏ i ∈ Finset.range k, diff₂ h (z * b ^ i) b d =
       h (z * b ^ k * d) * (h (z * b ^ k))⁻¹ * (h (z * d))⁻¹ * h z := by
@@ -121,6 +149,11 @@ theorem prod_diff₂ {G U : Type} [CommGroup G] [CommGroup U] (h : G → U) (z b
     simp only [ofMul_mul, ofMul_inv]
     abel
 
+/- English proof (translation)
+Establish `e` using `hθ.N_split k z b d`. Rewrite `e` using `[hb, hθ.face₂, _root_.one_mul]`. Establish `e'` using `prod_diff₂ h z b d k`. Rewrite `e'` using `[hb, _root_.mul_one]`. Simplify using `only [cubeVal, Finset.prod_mul_distrib, Finset.prod_inv_distrib, Finset.prod_const, Finset.card_range]`.
+
+Rewrite using `[e', ← e, cubN]`. Apply `Additive.ofMul.injective` to reduce the goal to its premises. Simplify using `only [ofMul_mul, ofMul_inv, ofMul_pow, mul_pow]`. Use `module`.
+-/
 theorem prod_cubeVal {G U : Type} [CommGroup G] [CommGroup U] {θ : G → G → G → U} (hθ : IsCub θ) (h : G → U)
     (z b d : G) (k : ℕ) (hb : b ^ k = 1) :
     ∏ i ∈ Finset.range k, cubeVal θ h z (b ^ i) b d = cubN θ k 1 b d * ((θ z b d)⁻¹ * diff₂ h z b d) ^ k := by
@@ -134,6 +167,9 @@ theorem prod_cubeVal {G U : Type} [CommGroup G] [CommGroup U] {θ : G → G → 
   simp only [ofMul_mul, ofMul_inv, ofMul_pow, mul_pow]
   module
 
+/- English proof (translation)
+Establish `d : diff₂ h z y x = diff₂ h z x y`. Rewrite using `[diff₂, diff₂, mul_right_comm z y x, mul_right_comm (h _)]`. Rewrite using `[prod_cubeVal hθ h z y x k hy, prod_cubeVal hθ h z x y k hx, hθ.s12 z y x, d, mul_div_mul_right_eq_div, div_eq_mul_inv]`.
+-/
 theorem cubeVal_quot {G U : Type} [CommGroup G] [CommGroup U] {θ : G → G → G → U} (hθ : IsCub θ) (h : G → U)
     (z x y : G) (k : ℕ) (hx : x ^ k = 1) (hy : y ^ k = 1) :
     (∏ i ∈ Finset.range k, cubeVal θ h z (y ^ i) y x) / ∏ i ∈ Finset.range k, cubeVal θ h z (x ^ i) x y =
@@ -147,6 +183,9 @@ variable {V : A.left.Opens} (g : LB.Gen (L.L.pull V.ι)) (hg : g.IsGen)
 
 omit [IsCommMonObj A] in
 include hg in
+/- English proof (translation)
+Use `(((hasGen_genVal g hg _ h₃).mul (hasGen_genVal g hg _ h₁).inv).mul (hasGen_genVal g hg _ h₂).inv).mul (hasGen_genVal g hg _ h₀)` as an intermediate fact. Simplify `this` using `only [diff₂, ← Over.comp_left, MonObj.comp_mul]`.
+-/
 theorem hasGen_diff₂ {T : Over S} (z b d : T ⟶ A) (h₀ : InOpen V z) (h₁ : InOpen V (z * b)) (h₂ : InOpen V (z * d))
     (h₃ : InOpen V (z * b * d)) :
     HasGen L.L T (fun _ _ h => diff₂ (fun q : T ⟶ A => h q.left) z b d)
@@ -156,6 +195,11 @@ theorem hasGen_diff₂ {T : Over S} (z b d : T ⟶ A) (h₀ : InOpen V z) (h₁ 
   simpa only [diff₂, ← Over.comp_left, MonObj.comp_mul] using this
 
 include hg in
+/- English proof (translation)
+Establish `D₁` using `hasGen_diff₂ g hg (z * a) b d (by simpa using h 1 0 0) (by simpa using h 1 1 0) (by simpa using h 1 0 1) (by simpa using h 1 1 1)`. Establish `D₀` using `hasGen_diff₂ g hg z b d (by simpa using h 0 0 0) (by simpa using h 0 1 0) (by simpa using h 0 0 1) (by simpa using h 0 1 1)`. Take `⟨w, hw⟩` from `((((hasGen_cub c (z * a) b d).mul (hasGen_cub c z b d).inv).mul D₁.inv).mul D₀).exists_unit L.isLB (fun U _ h => by`. Apply `Additive.ofMul.injective` to reduce the goal to its premises. Simplify using `only [diff₂, ofMul_mul, ofMul_inv, ofMul_one]`.
+
+Use the proof step `abel)`. Use `⟨w, fun T' σ p J hJ => ?_⟩` and prove the remaining obligations. Rewrite using `[hw T' σ p J hJ, cubeVal, MonObj.comp_mul]`.
+-/
 theorem exists_cube_unit {T : Over S} (z a b d : T ⟶ A) (h : CubeIn V z a b d) :
     ∃ w : Γ(T.left, ⊤)ˣ, ∀ (T' : Over S) (σ : T' ⟶ T) (p : T'.left) (J : (T'.left ⟶ A.left) → L.L.ι), Good L.L p J →
       gm σ.left p ⊤ w = cubeVal (cubV c p J) (fun q : T' ⟶ A => genVal g p J q.left)
@@ -179,14 +223,41 @@ section Main
 def unitOf {R : Type} [CommRing R] : Γ(Sp R, ⊤)ˣ →* Rˣ :=
   Units.map (Scheme.ΓSpecIso (CommRingCat.of R)).hom.hom.toMonoidHom
 
+/- English proof (translation)
+The claim follows from `Units.ext ((Scheme.ΓSpecIso (CommRingCat.of R)).hom_inv_id_apply w.val)`.
+-/
 theorem unitOn_unitOf {R : Type} [CommRing R] (w : Γ(Sp R, ⊤)ˣ) : unitOn (unitOf w) = w :=
   Units.ext ((Scheme.ΓSpecIso (CommRingCat.of R)).hom_inv_id_apply w.val)
 
+/- English proof (translation)
+Establish `e` using `congrArg (fun q => q.hom w.val) (Scheme.ΓSpecIso_naturality (CommRingCat.ofHom φ))`. Conclude with `e`.
+-/
 theorem unitOf_pull {R R' : Type} [CommRing R] [CommRing R'] (φ : R →+* R') (w : Γ(Sp R, ⊤)ˣ) :
     (unitOf (pullU (spMap φ) ⊤ w) : R') = φ (unitOf w : R) := by
   have e := congrArg (fun q => q.hom w.val) (Scheme.ΓSpecIso_naturality (CommRingCat.ofHom φ))
   exact e
 
+/- English proof (translation)
+Introduce and unpack `V ⟨g, hg⟩`. Use `A.isAb.comm` as an intermediate fact. Establish `hC : Out.CubeSt` using `GlobalTheory.lawsFieldsSeparately.2.2.2.2.2.2.1`. Establish `hG : Out.GlobalFnsSt` using `GlobalTheory.lawsFieldsSeparately.2.2.2.2.2.2.2.2.2.2.2.2.2.2.2.1`. Take `⟨r, hr⟩` from `A.rigid`.
+
+Take `⟨⟨c⟩, -⟩` from `hC _ A ⟨A.L, r, A.isLB, hr⟩ rfl`. Use `choose w hw using fun (T : Over (Sp C)) (z a b d : T ⟶ A.A) (h : CubeIn V z a b d) => exists_cube_unit c g hg z a b d h`. Use `⟨fun S _ t z a b d => if h : CubeIn V z a b d then unitOf (w _ z a b d h) else 1, ?_, ?_⟩` and prove the remaining obligations. Introduce `S S' _ _ φ t t' z a b d z' a' b' d' hz ha hb hd h`. Establish `ht : spMap φ ≫ t = t'`.
+
+Establish `e₁ : z.left ≫ A.A.hom = t` using `Over.w z`. Establish `e₂ : z'.left ≫ A.A.hom = t'` using `Over.w z'`. Rewrite using `[← e₁, ← e₂, hz]`. Both sides reduce to the same expression. Set `σ : (Over.mk t' : Over (Sp C)) ⟶ Over.mk t` to `Over.homMk (spMap φ) ht`.
+
+Take `rfl : z' = σ ≫ z` from `Over.OverMorphism.ext hz`. Take `rfl : a' = σ ≫ a` from `Over.OverMorphism.ext ha`. Take `rfl : b' = σ ≫ b` from `Over.OverMorphism.ext hb`. Take `rfl : d' = σ ≫ d` from `Over.OverMorphism.ext hd`. Establish `h' : CubeIn V (σ ≫ z) (σ ≫ a) (σ ≫ b) (σ ≫ d)` using `fun i j k hi hj hk => by`.
+
+Simplify `(h i j k hi hj hk).comp σ` using `only [MonObj.comp_mul, MonObj.comp_pow]`. Establish `e : w _ _ _ _ _ h' = pullU (spMap φ) ⊤ (w _ z a b d h)` using `Geo.Tor.unit_ext fun p _ => by choose J hJ using fun ψ : Sp S' ⟶ A.A.left => exists_chart A.isLB (ψ p)`. Establish `e₁` using `hw _ _ _ _ _ h' _ (𝟙 _) p J hJ`. Establish `e₂` using `hw _ _ _ _ _ h _ σ p J hJ`. Simplify using `only [Category.id_comp] at e₁`.
+
+Use `e₁.trans (e₂.symm.trans ?_)` and prove the remaining obligations. Conclude with `((gm_pull (𝟙 _) (spMap φ) p ⊤ trivial _).trans (by rw [Category.id_comp]; rfl)).symm`. Simplify using `only [dif_pos h, dif_pos h']`. Rewrite using `[e]`. Conclude with `unitOf_pull φ _`.
+
+Introduce `N hN x y z hx hy hV`. Establish `h₁ : ∀ i : ℕ, CubeIn V z (y ^ i) y x` using `fun i j k l _ _ _ => by`. Use `hV l (i * j + k)` as an intermediate fact. Rewrite `this` using `[pow_add, pow_mul, mul_right_comm z, ← _root_.mul_assoc]`. Then use the resulting hypothesis. Establish `h₂ : ∀ i : ℕ, CubeIn V z (x ^ i) x y` using `fun i j k l _ _ _ => by`.
+
+Use `hV (i * j + k) l` as an intermediate fact. Rewrite `this` using `[pow_add, pow_mul, ← _root_.mul_assoc]`. Then use the resulting hypothesis. Simplify using `only [dif_pos (h₁ _), dif_pos (h₂ _)]`. Take `⟨u, hu⟩` from `exists_weil c hx hy`. Rewrite using `[← map_prod, ← map_prod, ← map_div]`.
+
+Use `((HTLat.weilIs_iff hN hx hy _).1 ?_).symm` and prove the remaining obligations. Rewrite using `[unitOn_unitOf]`. Use `(Geo.Tor.weilIs_iff c hG A.isAb hx hy hu _).2 (Geo.Tor.unit_ext fun p _ => ?_)` and prove the remaining obligations. Use `choose J hJ using fun ψ : Sp C ⟶ A.A.left => exists_chart A.isLB (ψ p)`. Establish `e₁` using `hu _ (𝟙 _) p J hJ`.
+
+Establish `e₂` using `fun a b d h => hw _ z a b d h _ (𝟙 _) p J hJ`. Simplify using `only [Category.id_comp] at e₁ e₂`. Use `Eq.trans ?_ ((cubeVal_quot (isCub_cubV c (T := Over.mk (𝟙 (Sp C))) (z := p) (J := J) hJ) (fun q => genVal g p J q.left) z x y N hx hy).trans e₁.symm)` and prove the remaining obligations. Rewrite using `[map_div, map_prod, map_prod]`. Conclude with `congrArg₂ (· / ·) (Finset.prod_congr rfl fun i _ => e₂ _ _ _ _) (Finset.prod_congr rfl fun i _ => e₂ _ _ _ _)`.
+-/
 theorem hasCubeFn (C : Type) [Field C] [IsAlgClosed C] [CharZero C] (A : Out.PolAV (Sp C)) : HasCubeFn A := by
   classical
   rintro V ⟨g, hg⟩

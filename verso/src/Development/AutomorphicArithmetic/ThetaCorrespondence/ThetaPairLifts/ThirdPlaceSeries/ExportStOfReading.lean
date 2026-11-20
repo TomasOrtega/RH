@@ -8,6 +8,9 @@ set_option synthInstance.maxHeartbeats 200000
 section
 open GlobalTheory.BigTop GlobalTheory.BigOn GlobalTheory.BigOn.Exp
 namespace GlobalTheory.BigOn
+/- English proof (translation)
+The claim follows from `_root_.GlobalTheory.T.exportSt_of_discrete_series_cover`.
+-/
 theorem exportSt_of_reading_alt :
     GlobalTheory.Published.CuspRapidDecay → GlobalTheory.Published.GlobalArtinReciprocity → GlobalTheory.Published.RayClassFieldSt →
       GlobalTheory.Published.DiscreteSeriesCover → GlobalTheory.Published.CasselmanWallach →

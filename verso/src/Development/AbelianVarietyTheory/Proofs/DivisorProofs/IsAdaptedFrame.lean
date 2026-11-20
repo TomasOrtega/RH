@@ -24,6 +24,9 @@ def indOp (q : T →ₗ[ℂ] P) (L : Module.End ℂ T) : Module.End ℂ P :=
         (q.quotKerEquivOfSurjective h.1).symm.toLinearMap
   else 0
 
+/- English proof (translation)
+Establish `e : (q.quotKerEquivOfSurjective hq).symm (q t) = Submodule.Quotient.mk t` using `(LinearEquiv.symm_apply_eq _).2 (by simp)`. Rewrite using `[indOp, dif_pos ⟨hq, hL⟩, LinearMap.comp_apply, LinearMap.comp_apply]`. Simplify using `only [LinearEquiv.coe_coe]`. Rewrite using `[e]`. Both sides reduce to the same expression.
+-/
 theorem indOp_apply {q : T →ₗ[ℂ] P} {L : Module.End ℂ T} (hq : Function.Surjective q) (hL : Keeps q L) (t : T) :
     indOp q L (q t) = q (L t) := by
   have e : (q.quotKerEquivOfSurjective hq).symm (q t) = Submodule.Quotient.mk t :=
@@ -33,23 +36,38 @@ theorem indOp_apply {q : T →ₗ[ℂ] P} {L : Module.End ℂ T} (hq : Function.
   rw [e]
   rfl
 
+/- English proof (translation)
+Use extensionality with `x`. Take `⟨t, rfl⟩` from `hq x`. Rewrite using `[indOp_apply hq hL, h]`.
+-/
 theorem indOp_eq {q : T →ₗ[ℂ] P} {L : Module.End ℂ T} (hq : Function.Surjective q) (hL : Keeps q L)
     (M : Module.End ℂ P) (h : ∀ t, M (q t) = q (L t)) : indOp q L = M := by
   ext x
   obtain ⟨t, rfl⟩ := hq x
   rw [indOp_apply hq hL, h]
 
+/- English proof (translation)
+Introduce `t ht` and use `h _ (h' t ht)`.
+-/
 theorem keeps_mul {q : T →ₗ[ℂ] P} {L L' : Module.End ℂ T} (h : Keeps q L) (h' : Keeps q L') : Keeps q (L * L') :=
   fun t ht => h _ (h' t ht)
 
+/- English proof (translation)
+Introduce `t ht` and use `by simp [h t ht, h' t ht]`.
+-/
 theorem keeps_sub {q : T →ₗ[ℂ] P} {L L' : Module.End ℂ T} (h : Keeps q L) (h' : Keeps q L') : Keeps q (L - L') :=
   fun t ht => by simp [h t ht, h' t ht]
 
+/- English proof (translation)
+The claim follows from `indOp_eq hq (keeps_mul h h') _ fun t => by rw [Module.End.mul_apply, indOp_apply hq h', indOp_apply hq h]; rfl`.
+-/
 theorem indOp_mul {q : T →ₗ[ℂ] P} {L L' : Module.End ℂ T} (hq : Function.Surjective q) (h : Keeps q L)
     (h' : Keeps q L') : indOp q (L * L') = indOp q L * indOp q L' :=
   indOp_eq hq (keeps_mul h h') _ fun t => by
     rw [Module.End.mul_apply, indOp_apply hq h', indOp_apply hq h]; rfl
 
+/- English proof (translation)
+The claim follows from `indOp_eq hq (keeps_sub h h') _ fun t => by rw [LinearMap.sub_apply, indOp_apply hq h', indOp_apply hq h, LinearMap.sub_apply, map_sub]`.
+-/
 theorem indOp_sub {q : T →ₗ[ℂ] P} {L L' : Module.End ℂ T} (hq : Function.Surjective q) (h : Keeps q L)
     (h' : Keeps q L') : indOp q (L - L') = indOp q L - indOp q L' :=
   indOp_eq hq (keeps_sub h h') _ fun t => by
@@ -61,6 +79,11 @@ section Place
 
 variable {ι : Type} [Fintype ι] [DecidableEq ι] {V : ι → Type} [∀ i, AddCommGroup (V i)] [∀ i, Module ℂ (V i)]
 
+/- English proof (translation)
+Unfold `atPl`. Rewrite using `[← PiTensorProduct.map_mul]`. Use `congr 1`. Use function extensionality and compare the values at `i`. Distinguish the cases in `h : i = w`.
+
+Substitute `h` using the available equality. Simplify using the standard rewrite rules. Simplify using `only [Function.update_of_ne h]`. Apply the tactic sequence `first | rfl | simp [Module.End.mul_eq_comp]`.
+-/
 theorem atPl_mul (w : ι) (L L' : Module.End ℂ (V w)) : atPl w (L * L') = atPl w L * atPl w L' := by
   unfold atPl
   rw [← PiTensorProduct.map_mul]
@@ -70,6 +93,13 @@ theorem atPl_mul (w : ι) (L L' : Module.End ℂ (V w)) : atPl w (L * L') = atPl
   · subst h; simp
   · simp only [Function.update_of_ne h]; first | rfl | simp [Module.End.mul_eq_comp]
 
+/- English proof (translation)
+Unfold `atPl`. Rewrite using `[← PiTensorProduct.map_mul, ← PiTensorProduct.map_mul]`. Use `congr 1`. Use function extensionality and compare the values at `i`. Distinguish the cases in `h : i = w`.
+
+Substitute `h` using the available equality. Simplify using `only [Function.update_self, Function.update_of_ne hw]`. Apply the tactic sequence `first | rfl | simp [Module.End.mul_eq_comp]`. Distinguish the cases in `h' : i = w'`. Substitute `h'` using the available equality.
+
+Simplify using `only [Function.update_self, Function.update_of_ne h]`. Apply the tactic sequence `first | rfl | simp [Module.End.mul_eq_comp]`. Simplify using `only [Function.update_of_ne h, Function.update_of_ne h']`.
+-/
 theorem atPl_comm {w w' : ι} (hw : w ≠ w') (L : Module.End ℂ (V w)) (L' : Module.End ℂ (V w')) :
     atPl w L * atPl w' L' = atPl w' L' * atPl w L := by
   unfold atPl
@@ -103,12 +133,18 @@ def fockOp (q : Tens F p₁ q₁ r s →ₗ[ℂ] P) (w : InfinitePlace F) : Mat 
           LinearMap.smul_apply, map_smul] }
   else 0
 
+/- English proof (translation)
+Rewrite using `[fockOp, dif_pos ⟨hq, hK⟩]`. Both sides reduce to the same expression.
+-/
 theorem fockOp_eq {q : Tens F p₁ q₁ r s →ₗ[ℂ] P} {w : InfinitePlace F} (hq : Function.Surjective q)
     (hK : ∀ Y, Keeps q (atPl w (fockAct2 p₁ q₁ r s Y))) (Y : Mat r s) :
     fockOp q w Y = indOp q (atPl w (fockAct2 p₁ q₁ r s Y)) := by
   rw [fockOp, dif_pos ⟨hq, hK⟩]
   rfl
 
+/- English proof (translation)
+Rewrite using `[fockOp_eq hq hK, indOp_apply hq (hK Y)]`.
+-/
 theorem fockOp_apply {q : Tens F p₁ q₁ r s →ₗ[ℂ] P} {w : InfinitePlace F} (hq : Function.Surjective q)
     (hK : ∀ Y, Keeps q (atPl w (fockAct2 p₁ q₁ r s Y))) (Y : Mat r s) (t : Tens F p₁ q₁ r s) :
     fockOp q w Y (q t) = q (atPl w (fockAct2 p₁ q₁ r s Y) t) := by
@@ -121,6 +157,9 @@ def negT : Mat r s →ₗ[ℂ] Mat r s where
   map_add' Y Z := by rw [Matrix.transpose_add, neg_add]
   map_smul' c Y := by rw [Matrix.transpose_smul, RingHom.id_apply, smul_neg]
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem negT_apply (Y : Mat r s) : negT r s Y = -Yᵀ := rfl
 
 def twAct (ε : Bool) (q : Tens F p₁ q₁ r s →ₗ[ℂ] P) (w : InfinitePlace F) : Mat r s →ₗ[ℂ] Module.End ℂ P :=
@@ -154,10 +193,16 @@ section Laws
 
 variable {F : Type} [Field F] [NumberField F] {P : Type} [AddCommGroup P] [Module ℂ P] {p₁ q₁ r s : ℕ}
 
+/- English proof (translation)
+Simplify using `only [Main.atPl_eq, MultilinearMap.map_update_sub]`.
+-/
 theorem atPl_sub {ι : Type} [Fintype ι] [DecidableEq ι] {V : ι → Type} [∀ i, AddCommGroup (V i)] [∀ i, Module ℂ (V i)]
     (w : ι) (L L' : Module.End ℂ (V w)) : atPl w (L - L') = atPl w L - atPl w L' := by
   simp only [Main.atPl_eq, MultilinearMap.map_update_sub]
 
+/- English proof (translation)
+Rewrite using `[fockOp_eq hq hK, fockOp_eq hq hK, fockOp_eq hq hK, (GlobalTheory.FockPair.pair_lie_commute p₁ q₁ r s).2.1 Y Z, atPl_sub, atPl_mul, atPl_mul, indOp_sub hq (keeps_mul (hK Y) (hK Z)) (keeps_mul (hK Z) (hK Y)), indOp_mul hq (hK Y) (hK Z), indOp_mul hq (hK Z) (hK Y)]`.
+-/
 theorem fockOp_lie {q : Tens F p₁ q₁ r s →ₗ[ℂ] P} {w : InfinitePlace F} (hq : Function.Surjective q)
     (hK : ∀ Y, Keeps q (atPl w (fockAct2 p₁ q₁ r s Y))) (Y Z : Mat r s) :
     fockOp q w (Y * Z - Z * Y) = fockOp q w Y * fockOp q w Z - fockOp q w Z * fockOp q w Y := by
@@ -165,27 +210,48 @@ theorem fockOp_lie {q : Tens F p₁ q₁ r s →ₗ[ℂ] P} {w : InfinitePlace F
     atPl_sub, atPl_mul, atPl_mul, indOp_sub hq (keeps_mul (hK Y) (hK Z)) (keeps_mul (hK Z) (hK Y)),
     indOp_mul hq (hK Y) (hK Z), indOp_mul hq (hK Z) (hK Y)]
 
+/- English proof (translation)
+Rewrite using `[fockOp_eq hq (hK w), fockOp_eq hq (hK w'), ← indOp_mul hq (hK w Y) (hK w' Z), ← indOp_mul hq (hK w' Z) (hK w Y), atPl_comm hw]`.
+-/
 theorem fockOp_comm {q : Tens F p₁ q₁ r s →ₗ[ℂ] P} (hq : Function.Surjective q)
     (hK : ∀ w Y, Keeps q (atPl w (fockAct2 p₁ q₁ r s Y))) {w w' : InfinitePlace F} (hw : w ≠ w') (Y Z : Mat r s) :
     fockOp q w Y * fockOp q w' Z = fockOp q w' Z * fockOp q w Y := by
   rw [fockOp_eq hq (hK w), fockOp_eq hq (hK w'), ← indOp_mul hq (hK w Y) (hK w' Z),
     ← indOp_mul hq (hK w' Z) (hK w Y), atPl_comm hw]
 
+/- English proof (translation)
+Simplify using `[negT_apply]`.
+-/
 theorem negT_negT (Y : Mat r s) : negT r s (negT r s Y) = Y := by
   simp [negT_apply]
 
+/- English proof (translation)
+Simplify using `only [negT_apply, Matrix.transpose_sub, Matrix.transpose_mul, neg_mul_neg, neg_sub]`.
+-/
 theorem negT_lie (Y Z : Mat r s) : negT r s (Y * Z - Z * Y) = negT r s Y * negT r s Z - negT r s Z * negT r s Y := by
   simp only [negT_apply, Matrix.transpose_sub, Matrix.transpose_mul, neg_mul_neg, neg_sub]
 
+/- English proof (translation)
+Apply the tactic sequence `rcases a with a | a <;> rcases b with b | b <;> simp_all [sameBlock]`.
+-/
 theorem sameBlock_symm {a b : Ix r s} (h : sameBlock a b) : sameBlock b a := by
   rcases a with a | a <;> rcases b with b | b <;> simp_all [sameBlock]
 
+/- English proof (translation)
+Introduce `a b hab` and use `by rw [negT_apply, Matrix.neg_apply, Matrix.transpose_apply, hY b a fun h => hab (sameBlock_symm h), neg_zero]`.
+-/
 theorem isKC_negT {Y : Mat r s} (hY : IsKC Y) : IsKC (negT r s Y) := fun a b hab => by
   rw [negT_apply, Matrix.neg_apply, Matrix.transpose_apply, hY b a fun h => hab (sameBlock_symm h), neg_zero]
 
+/- English proof (translation)
+Rewrite using `[negT_apply, Eab, Eab, Matrix.transpose_single]`.
+-/
 theorem negT_Eab (a b : Ix r s) : negT r s (Eab a b) = -Eab b a := by
   rw [negT_apply, Eab, Eab, Matrix.transpose_single]
 
+/- English proof (translation)
+Consider the cases of `ε`. Simplify using `only [twAct, Bool.false_eq_true, if_false, LinearMap.comp_apply]`. Rewrite using `[negT_lie, fockOp_lie hq hK]`. Simplify using `only [twAct, if_true]`. Conclude with `fockOp_lie hq hK Y Z`.
+-/
 theorem twAct_lie {q : Tens F p₁ q₁ r s →ₗ[ℂ] P} {w : InfinitePlace F} (hq : Function.Surjective q)
     (hK : ∀ Y, Keeps q (atPl w (fockAct2 p₁ q₁ r s Y))) (ε : Bool) (Y Z : Mat r s) :
     twAct ε q w (Y * Z - Z * Y) = twAct ε q w Y * twAct ε q w Z - twAct ε q w Z * twAct ε q w Y := by
@@ -195,6 +261,9 @@ theorem twAct_lie {q : Tens F p₁ q₁ r s →ₗ[ℂ] P} {w : InfinitePlace F}
   · simp only [twAct, if_true]
     exact fockOp_lie hq hK Y Z
 
+/- English proof (translation)
+Consider the cases of `ε`. Simplify using `only [twAct, Bool.false_eq_true, if_false, LinearMap.comp_apply]`. Conclude with `fockOp_comm hq hK hw _ _`. Simplify using `only [twAct, if_true]`. Conclude with `fockOp_comm hq hK hw _ _`.
+-/
 theorem twAct_comm {q : Tens F p₁ q₁ r s →ₗ[ℂ] P} (hq : Function.Surjective q)
     (hK : ∀ w Y, Keeps q (atPl w (fockAct2 p₁ q₁ r s Y))) (ε : Bool) {w w' : InfinitePlace F} (hw : w ≠ w')
     (Y Z : Mat r s) : twAct ε q w Y * twAct ε q w' Z = twAct ε q w' Z * twAct ε q w Y := by

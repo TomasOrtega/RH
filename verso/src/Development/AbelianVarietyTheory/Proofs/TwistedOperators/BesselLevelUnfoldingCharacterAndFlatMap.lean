@@ -13,6 +13,19 @@ noncomputable section
 
 namespace GlobalTheory.Asc.FromBes
 
+/- English proof (translation)
+Establish `hC` using `GlobalTheory.T.flag_unipotent_bessel_character_laws D ψ hψ.1 B.V B.V₀ B.A B.L ρ B.d B.o B.ζ 1`. Use `set z := vecB B.o B.ζ with hz`. Use `⟨?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Conclude with `continuous_star.comp ((hC.1 z).comp continuous_subtype_val)`. Introduce `γ hγ hγN n hn`.
+
+Rewrite using `[psiBes_mul B.d ψ 1 z hγN hn, hC.2.1 z γ hγ, one_mul]`. Introduce `c n hn`. Rewrite using `[psiBes_mul B.d ψ 1 z (B.d.nC_mem_NFlag c) hn, psiBes_nC, one_mul, GlobalTheory.Unf.CutChar.psi_qS_eq_one D ψ hψ B.V B.V₀ ρ B.d W x₀ hx₀ c, star_one, one_mul]`. Introduce `j a haj hai _`. Take `⟨s, hs⟩` from `GlobalTheory.Unf.CutChar.exists_psiE_ne_one D ψ hψ`.
+
+Establish `key : ∃ v : GlobalTheory.IndefiniteRowSideFullHecke.TransvectionAction.VA B.V, GlobalTheory.IndefiniteRowSideFullHecke.TransvectionAction.form B.V (GlobalTheory.IndefiniteRowSideFullHecke.TransvectionAction.vecX B.d (GlobalTheory.IndefiniteRowSideFullHecke.TransvectionAction.ratV …`. Break down `lt_or_eq_of_le (Nat.succ_le_of_lt j.2) with h | h` into its components or cases. Conclude with `GlobalTheory.T.exists_transvection_fixing_first_vectors_sum D B.V B.V₀ ρ B.d z j a haj hai h s`. Conclude with `GlobalTheory.T.exists_transvection_fixing_isotropic_last_sum D B.V B.V₀ ρ B.d z (GlobalTheory.Unf.CutChar.vecB_norm_ne D B.V₀ B.A B.L B.o B.ζ B.line) j a haj hai h s`. Take `⟨v, hv0, hvT, hv⟩` from `key`.
+
+Take `⟨u, hu⟩` from `GlobalTheory.T.transvection_isUnitaryAdelic D B.V B.V₀ ρ B.d (GlobalTheory.IndefiniteRowSideFullHecke.TransvectionAction.ratVec a) v hv0`. Take `⟨hfix, hus⟩` from `hv u hu`. Establish `huN : u ∈ Nfix B.d j` using `⟨GlobalTheory.T.transvection_strictUpper_mem_flagUnipotentRadical D B.V B.V₀ ρ B.d (GlobalTheory.IndefiniteRowSideFullHecke.TransvectionAction.ratVec a) v hvT u hu, Subgroup.mem_iInf.2 hfix⟩`. Establish `hval : psiBes ψ B.d 1 z u = psiE ψ s`. Rewrite using `[psiBes, hus, map_one, one_mul]`.
+
+Use `⟨v, u, star (psiE ψ s), hv0, hu, huN, ?_, ?_⟩` and prove the remaining obligations. Introduce `h1`. Apply `hs` to reduce the goal to its premises. Use `congrArg star h1` as an intermediate fact. Rewrite `this` using `[star_star, star_one]`. Then use the resulting hypothesis.
+
+Introduce `n hn n' hn'`. Establish `huF : u ∈ flagN B.d` using `huN.1`. Rewrite using `[psiBes_mul B.d ψ 1 z (mul_mem hn huF) hn', psiBes_mul B.d ψ 1 z hn huF, hval, psiBes_mul B.d ψ 1 z hn hn']`. Simplify using `only [star_mul']`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem conjBessel_isTh (D : D7) (ψ : AddChar (AF D.host.F) ℂ) (hψ : IsStdChar D ψ (-1)) (ρ : ℕ) (B : BesL D ρ) (W : HSp D)
     (x₀ : Matrix (Fin W.rank) (Fin ρ) D.host.E) (hx₀ : gramQ W x₀ = 0) :
     IsTh ψ B.d W x₀ fun n => star (psiBes ψ B.d 1 (vecB B.o B.ζ) n) := by
@@ -50,6 +63,13 @@ theorem conjBessel_isTh (D : D7) (ψ : AddChar (AF D.host.F) ℂ) (hψ : IsStdCh
       simp only [star_mul']
       ring
 
+/- English proof (translation)
+Establish `hψ : IsStdChar D ψ (-1)` using `s.weil.std`. Establish `hf : ∀ x, IsThetaFunO ψ B.V₀ J.W (B.d.mixS J.W ψ s.vS.μ s.vS.𝓕 Ψ x)` using `fun x => (GlobalTheory.T.mixedCoordinates_of_thetaFunction_are_thetaFunctions D ψ hψ).1 B.V B.V₀ J.W ρ B.d s.vS.μ s.vS.𝓕 s.vS.covol Ψ hΨ x`. Unfold `fl flBF flatS flatAt`. Use `congr 1`. Use function extensionality and compare the values at `u`.
+
+Simplify using `only [flFun, flatFun, evalAt, HypDec.mixT]`. Establish `hu : ∀ b, star (psiBes ψ B.d 1 (vecB B.o B.ζ) (B.d.nB b * B.d.levi u.1)) = star (psiUni ψ u.1) * star (psiBes ψ B.d 1 (vecB B.o B.ζ) (B.d.nB b))`. Introduce `b`. Rewrite using `[psiBes_mul B.d ψ 1 _ (B.d.nB_mem_NFlag b) (B.d.levi_mem_NFlag (mem_UX.1 u.2)), psiBes_levi, star_mul', mul_comm]`. Repeatedly rewrite using `[hu, mul_assoc]`.
+
+Rewrite using `[integral_const_mul]`. Use `congr 1`. Use `congr 1`. Use function extensionality and compare the values at `b`. Conclude with `GlobalTheory.Unf.StepFour.integrand_eq hψ B.d J.d _ _ (hf _) b`.
+-/
 theorem fl_eq_flBF (D : D7) (ψ : AddChar (AF D.host.F) ℂ) (ρ : ℕ) (B : BesL D ρ) (J : JacL D ρ) (s : StBF ψ B J)
     (Ψ : WO B.V J.W → ℂ) (hΨ : IsThetaFunO ψ B.V J.W Ψ) :
     fl ψ B.d J.W s.vS s.vT s.vU (fun n => star (psiBes ψ B.d 1 (vecB B.o B.ζ) n)) (xZero J.d) Ψ = flBF s Ψ 0 := by
@@ -72,6 +92,9 @@ theorem fl_eq_flBF (D : D7) (ψ : AddChar (AF D.host.F) ℂ) (ρ : ℕ) (B : Bes
   funext b
   exact GlobalTheory.Unf.StepFour.integrand_eq hψ B.d J.d _ _ (hf _) b
 
+/- English proof (translation)
+Introduce `D ψ ρ B J s`. Conclude with `⟨conjBessel_isTh D ψ s.weil.std ρ B J.W J.d.e (gramQ_e J.d), fun Ψ hΨ => fl_eq_flBF D ψ ρ B J s Ψ hΨ⟩`.
+-/
 theorem isTh_and_fl : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ) (ρ : ℕ) (B : BesL D ρ) (J : JacL D ρ) (s : StBF ψ B J), IsTh ψ B.d J.W J.d.e (fun n => star (psiBes ψ B.d 1 (vecB B.o B.ζ) n)) ∧ ∀ Ψ, IsThetaFunO ψ B.V J.W Ψ → fl ψ B.d J.W s.vS s.vT s.vU (fun n => star (psiBes ψ B.d 1 (vecB B.o B.ζ) n)) (xZero J.d) Ψ = flBF s Ψ 0 := by
   intro D ψ ρ B J s
   exact ⟨conjBessel_isTh D ψ s.weil.std ρ B J.W J.d.e (gramQ_e J.d), fun Ψ hΨ => fl_eq_flBF D ψ ρ B J s Ψ hΨ⟩

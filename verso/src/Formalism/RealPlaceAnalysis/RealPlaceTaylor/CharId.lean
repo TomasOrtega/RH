@@ -13,6 +13,9 @@ def CharId_M {V : Type} [AddCommGroup V] [Module ℂ V] {n : ℕ}
   map_add' y z := by funext a; simp [Finset.sum_add_distrib]
   map_smul' c y := by funext a; simp [Finset.smul_sum]
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem CharId_M_apply {V : Type} [AddCommGroup V] [Module ℂ V] {n : ℕ}
     (E : Fin n → Fin n → Module.End ℂ V) (y : Fin n → V) (a : Fin n) :
     CharId_M E y a = ∑ b, E a b (y b) := rfl
@@ -25,10 +28,22 @@ def twistedAction {V : Type} [AddCommGroup V] [Module ℂ V] {n : ℕ}
   map_smul' r y := by
     funext x; by_cases h : x = d <;> simp [h, smul_sub]
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem CharId_T_apply {V : Type} [AddCommGroup V] [Module ℂ V] {n : ℕ}
     (E : Fin n → Fin n → Module.End ℂ V) (c d : Fin n) (y : Fin n → V) (x : Fin n) :
     twistedAction E c d y x = E c d (y x) - if x = d then y c else 0 := rfl
 
+/- English proof (translation)
+Apply `LinearMap.ext` to reduce the goal to its premises. Introduce `y`. Use function extensionality and compare the values at `x`. Simplify using `only [Module.End.mul_apply, CharId_T_apply, CharId_M_apply, map_sum, map_sub]`. Establish `key : ∀ b, E c d (E x b (y b)) = E x b (E c d (y b)) + ((if d = x then E c b (y b) else 0) - (if b = c then E x d (y b) else 0))`.
+
+Introduce `b`. Establish `h` using `LinearMap.congr_fun (hE c d x b) (y b)`. Simplify using `only [LinearMap.sub_apply, Module.End.mul_apply] at h`. Rewrite using `[← sub_eq_iff_eq_add', h]`. Apply the tactic sequence `split_ifs <;> simp`.
+
+Establish `hb : ∀ b, E x b (if b = d then y c else 0) = if b = d then E x b (y c) else 0`. Introduce `b`. Apply the tactic sequence `split_ifs <;> simp`. Simplify using `only [key, hb, Finset.sum_add_distrib, Finset.sum_sub_distrib]`. Distinguish the cases in `hxd : x = d`.
+
+Substitute `hxd` using the available equality. Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws. Simplify using `[hxd, Ne.symm hxd]`. Normalize the expressions using the abelian group laws.
+-/
 theorem CharId_comm {V : Type} [AddCommGroup V] [Module ℂ V] {n : ℕ}
     (E : Fin n → Fin n → Module.End ℂ V) (hE : GlRel E) (c d : Fin n) :
     twistedAction E c d * CharId_M E = CharId_M E * twistedAction E c d := by
@@ -54,6 +69,13 @@ theorem CharId_comm {V : Type} [AddCommGroup V] [Module ℂ V] {n : ℕ}
   · simp [hxd, Ne.symm hxd]
     abel
 
+/- English proof (translation)
+Proceed by induction on `k generalizing y with`. Consider the case `zero`. Establish `h0 : ∀ b, epow E 0 a b (y b) = if a = b then y b else 0`. Introduce `b`. Simplify using `only [epow]`.
+
+Apply the tactic sequence `split_ifs <;> simp`. Simplify using `[h0]`. Consider the case `succ k ih`. Rewrite using `[pow_succ, Module.End.mul_apply, ih]`. Simplify using `only [epow, CharId_M_apply, map_sum, LinearMap.sum_apply, Module.End.mul_apply]`.
+
+Conclude with `Finset.sum_comm`.
+-/
 theorem CharId_Mpow {V : Type} [AddCommGroup V] [Module ℂ V] {n : ℕ}
     (E : Fin n → Fin n → Module.End ℂ V) (k : ℕ) (y : Fin n → V) (a : Fin n) :
     (CharId_M E ^ k) y a = ∑ b, epow E k a b (y b) := by
@@ -75,14 +97,23 @@ def CharId_F {V : Type} [AddCommGroup V] [Module ℂ V] {n : ℕ}
   sInf {W | (∀ t : Fin n, j ≤ (t : ℕ) → Pi.single t v ∈ W) ∧
     ∀ c d, ∀ y ∈ W, twistedAction E c d y ∈ W}
 
+/- English proof (translation)
+The claim follows from `Submodule.mem_sInf.2 fun _ hW => hW.1 t ht`.
+-/
 theorem CharId_F_gen {V : Type} [AddCommGroup V] [Module ℂ V] {n : ℕ}
     (E : Fin n → Fin n → Module.End ℂ V) (v : V) (j : ℕ) (t : Fin n) (ht : j ≤ (t : ℕ)) :
     Pi.single t v ∈ CharId_F E v j := Submodule.mem_sInf.2 fun _ hW => hW.1 t ht
 
+/- English proof (translation)
+The claim follows from `Submodule.mem_sInf.2 fun W hW => hW.2 c d y (Submodule.mem_sInf.1 hy W hW)`.
+-/
 theorem twistedAction_mem_tailSubmodule {V : Type} [AddCommGroup V] [Module ℂ V] {n : ℕ}
     (E : Fin n → Fin n → Module.End ℂ V) (v : V) (j : ℕ) (c d : Fin n) (y : Fin n → V)
     (hy : y ∈ CharId_F E v j) : twistedAction E c d y ∈ CharId_F E v j := Submodule.mem_sInf.2 fun W hW => hW.2 c d y (Submodule.mem_sInf.1 hy W hW)
 
+/- English proof (translation)
+Establish `hc : Commute (twistedAction E c d) (CharId_M E)` using `CharId_comm E hE c d`. Rewrite using `[aeval_eq_sum_range, Finset.mul_sum, Finset.sum_mul]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[mul_smul_comm, smul_mul_assoc, (hc.pow_right i).eq]`.
+-/
 theorem CharId_aeval_comm {V : Type} [AddCommGroup V] [Module ℂ V] {n : ℕ}
     (E : Fin n → Fin n → Module.End ℂ V) (hE : GlRel E) (q : ℂ[X]) (c d : Fin n) :
     twistedAction E c d * aeval (CharId_M E) q = aeval (CharId_M E) q * twistedAction E c d := by
@@ -91,6 +122,11 @@ theorem CharId_aeval_comm {V : Type} [AddCommGroup V] [Module ℂ V] {n : ℕ}
   refine Finset.sum_congr rfl fun i _ => ?_
   rw [mul_smul_comm, smul_mul_assoc, (hc.pow_right i).eq]
 
+/- English proof (translation)
+Introduce `y hy`. Establish `hW : LinearMap.ker (aeval (CharId_M E) q) ∈ {W : Submodule ℂ (Fin n → V) | (∀ t : Fin n, j ≤ (t : ℕ) → Pi.single t v ∈ W) ∧ ∀ c d, ∀ y ∈ W, twistedAction E c d y ∈ W}`. Use `⟨fun t ht => LinearMap.mem_ker.2 (hgen t ht), fun c d z hz => ?_⟩` and prove the remaining obligations. Rewrite `hz`, the goal using `[LinearMap.mem_ker]`. Rewrite using `[← Module.End.mul_apply, ← CharId_aeval_comm E hE q c d, Module.End.mul_apply, hz, map_zero]`.
+
+Conclude with `LinearMap.mem_ker.1 (Submodule.mem_sInf.1 hy _ hW)`.
+-/
 theorem CharId_ker {V : Type} [AddCommGroup V] [Module ℂ V] {n : ℕ}
     (E : Fin n → Fin n → Module.End ℂ V) (hE : GlRel E) (v : V) (j : ℕ) (q : ℂ[X])
     (hgen : ∀ t : Fin n, j ≤ (t : ℕ) → aeval (CharId_M E) q (Pi.single t v) = 0) :
@@ -103,6 +139,11 @@ theorem CharId_ker {V : Type} [AddCommGroup V] [Module ℂ V] {n : ℕ}
     rw [← Module.End.mul_apply, ← CharId_aeval_comm E hE q c d, Module.End.mul_apply, hz, map_zero]
   exact LinearMap.mem_ker.1 (Submodule.mem_sInf.1 hy _ hW)
 
+/- English proof (translation)
+Establish `ht` using `t.isLt`. Establish `hI : univ.filter (fun a : Fin n => t < a) = Finset.Ioi t`. Use extensionality with `a`. Simplify using the standard rewrite rules. Establish `h : (univ.filter (fun a : Fin n => t < a)).card = n - 1 - t`.
+
+Rewrite using `[hI, Fin.card_Ioi]`. Rewrite using `[h, Nat.cast_sub (by omega), Nat.cast_sub (by omega)]`. Simplify using the standard rewrite rules.
+-/
 theorem CharId_card {n : ℕ} (t : Fin n) :
     (((univ.filter (fun a : Fin n => t < a)).card : ℕ) : ℂ) = (n : ℂ) - 1 - ((t : ℕ) : ℂ) := by
   have ht := t.isLt
@@ -114,6 +155,9 @@ theorem CharId_card {n : ℕ} (t : Fin n) :
   rw [h, Nat.cast_sub (by omega), Nat.cast_sub (by omega)]
   simp
 
+/- English proof (translation)
+Rewrite using `[CharId_T_apply]`. Distinguish the cases in `hxa : x = a`. Substitute `hxa` using the available equality. Simplify using `[ne_of_gt hta]`. Simplify using `[Pi.single_apply, hxa]`.
+-/
 private theorem twistedAction_single_of_lt {V : Type} [AddCommGroup V] [Module ℂ V] {n : ℕ}
     (E : Fin n → Fin n → Module.End ℂ V) (v : V) (x t a : Fin n) (hta : t < a) :
     twistedAction E a t (Pi.single a v) x = (if x = a then E x t v else 0) - (if x = t then v else 0) := by
@@ -123,6 +167,13 @@ private theorem twistedAction_single_of_lt {V : Type} [AddCommGroup V] [Module �
     simp [ne_of_gt hta]
   · simp [Pi.single_apply, hxa]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `x`. Rewrite using `[Finset.sum_apply, Finset.sum_congr rfl (fun a ha => twistedAction_single_of_lt E v x t a (Finset.mem_filter.1 ha).2), Finset.sum_sub_distrib, Finset.sum_ite_eq, Finset.sum_const]`. Establish `hs : ∑ c, E x c ((Pi.single t v : Fin n → V) c) = E x t v`. Rewrite using `[Finset.sum_eq_single t]`. Simplify using the standard rewrite rules.
+
+Introduce `c _ hc`. Simplify using `[Pi.single_apply, hc]`. Simplify using the standard rewrite rules. Simplify using `only [LinearMap.sub_apply, Module.algebraMap_end_apply, Pi.sub_apply, Pi.smul_apply, CharId_M_apply, hs, Finset.mem_filter, Finset.mem_univ, true_and]`. Break down `lt_trichotomy x t with h | h | h` into its components or cases.
+
+Simplify using `[h.ne, not_lt.2 h.le, hv.2 x t h]`. Substitute `h` using the available equality. Rewrite using `[← Nat.cast_smul_eq_nsmul ℂ, CharId_card]`. Simplify using `[hv.1 x, lsh, add_smul, sub_smul]`. Simplify using `[h.ne', h, Pi.single_apply]`.
+-/
 theorem CharId_sub_lsh_apply_single {V : Type} [AddCommGroup V] [Module ℂ V] {n : ℕ}
     (E : Fin n → Fin n → Module.End ℂ V) (ν : Fin n → ℂ) (v : V) (hv : IsHW E ν v) (t : Fin n) :
     (CharId_M E - algebraMap ℂ (Module.End ℂ (Fin n → V)) (lsh ν t)) (Pi.single t v) =
@@ -146,6 +197,17 @@ theorem CharId_sub_lsh_apply_single {V : Type} [AddCommGroup V] [Module ℂ V] {
     simp [hv.1 x, lsh, add_smul, sub_smul]
   · simp [h.ne', h, Pi.single_apply]
 
+/- English proof (translation)
+Introduce `k`. Proceed by induction on `k with`. Consider the case `zero`. Introduce `j hj q _ y hy`. Conclude with `CharId_ker E hE v j q (fun t ht => absurd t.isLt (by omega)) y hy`.
+
+Consider the case `succ k ih`. Introduce `j hj q hq y hy`. Use `CharId_ker E hE v j q (fun t ht => ?_) y hy` and prove the remaining obligations. Establish `hsub : insert t (univ.filter (fun s : Fin n => t.1 + 1 ≤ (s : ℕ))) ⊆ univ.filter (fun s : Fin n => j ≤ (s : ℕ))`. Introduce `s hs`.
+
+Simplify using `only [Finset.mem_insert, Finset.mem_filter, Finset.mem_univ, true_and] at hs ⊢`. Apply the tactic sequence `rcases hs with rfl | hs <;> omega`. Establish `htn : t ∉ univ.filter (fun s : Fin n => t.1 + 1 ≤ (s : ℕ))` using `by simp`. Establish `hdvd` using `Finset.prod_dvd_prod_of_subset _ _ (fun s => X - C (lsh ν s)) hsub`. Rewrite `hdvd` using `[Finset.prod_insert htn]`.
+
+Take `⟨w, hw⟩` from `hdvd.trans hq`. Establish `hq' : q = ((∏ s ∈ univ.filter (fun s : Fin n => t.1 + 1 ≤ (s : ℕ)), (X - C (lsh ν s))) * w) * (X - C (lsh ν t))`. Rewrite using `[hw]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hq', map_mul, Module.End.mul_apply, map_sub, aeval_X, aeval_C, CharId_sub_lsh_apply_single E ν v hv t]`.
+
+Use `ih (t.1 + 1) (by omega) _ (dvd_mul_right _ _) _ ?_` and prove the remaining obligations. Use `Submodule.sum_mem _ fun a ha => twistedAction_mem_tailSubmodule E v _ a t _ (CharId_F_gen E v _ a ?_)` and prove the remaining obligations. Establish `h` using `(Finset.mem_filter.1 ha).2`. Conclude with `h`.
+-/
 theorem CharId_kill {V : Type} [AddCommGroup V] [Module ℂ V] {n : ℕ}
     (E : Fin n → Fin n → Module.End ℂ V) (hE : GlRel E) (ν : Fin n → ℂ) (v : V)
     (hv : IsHW E ν v) :
@@ -178,6 +240,9 @@ theorem CharId_kill {V : Type} [AddCommGroup V] [Module ℂ V] {n : ℕ}
     have h := (Finset.mem_filter.1 ha).2
     exact h
 
+/- English proof (translation)
+Rewrite using `[Finset.sum_eq_single b]`. Simplify using the standard rewrite rules. Introduce `c _ hc`. Simplify using `[Pi.single_apply, hc]`. Simplify using the standard rewrite rules.
+-/
 theorem CharId_single {V : Type} [AddCommGroup V] [Module ℂ V] {n : ℕ}
     (f : Fin n → Module.End ℂ V) (b : Fin n) (v : V) :
     ∑ c, f c ((Pi.single b v : Fin n → V) c) = f b v := by
@@ -187,6 +252,11 @@ theorem CharId_single {V : Type} [AddCommGroup V] [Module ℂ V] {n : ℕ}
     simp [Pi.single_apply, hc]
   · simp
 
+/- English proof (translation)
+Establish `hy : (Pi.single b v : Fin n → V) ∈ CharId_F E v 0` using `CharId_F_gen E v 0 b (Nat.zero_le _)`. Establish `hk` using `CharId_kill E hE ν v hv n 0 (by omega) (∏ s : Fin n, (X - C (lsh ν s))) (by simp) _ hy`. Establish `hdeg : (∏ s : Fin n, (X - C (lsh ν s))).natDegree < n + 1`. Rewrite using `[natDegree_finset_prod_X_sub_C_eq_card]`. Simplify using the standard rewrite rules.
+
+Rewrite `hk` using `[aeval_eq_sum_range' hdeg]`. Establish `h` using `congrFun hk a`. Simplify `h` using `[LinearMap.sum_apply, Finset.sum_apply, CharId_Mpow, CharId_single]`.
+-/
 theorem CharId_on_v {V : Type} [AddCommGroup V] [Module ℂ V] {n : ℕ}
     (E : Fin n → Fin n → Module.End ℂ V) (hE : GlRel E) (ν : Fin n → ℂ) (v : V)
     (hv : IsHW E ν v) (a b : Fin n) :
@@ -206,12 +276,20 @@ def CharId_P {V : Type} [AddCommGroup V] [Module ℂ V] {n : ℕ}
   ∑ i ∈ range (n + 1),
     (∏ s : Fin n, (Polynomial.X - Polynomial.C (lsh ν s))).coeff i • epow E i a b
 
+/- English proof (translation)
+Simplify using `[CharId_P]`.
+-/
 theorem CharId_P_apply {V : Type} [AddCommGroup V] [Module ℂ V] {n : ℕ}
     (E : Fin n → Fin n → Module.End ℂ V) (ν : Fin n → ℂ) (a b : Fin n) (x : V) :
     CharId_P E ν a b x = ∑ i ∈ range (n + 1),
       (∏ s : Fin n, (Polynomial.X - Polynomial.C (lsh ν s))).coeff i • epow E i a b x := by
   simp [CharId_P]
 
+/- English proof (translation)
+Unfold `CharId_P`. Rewrite using `[Finset.mul_sum, Finset.sum_mul, ← Finset.sum_sub_distrib]`. Establish `h : ∀ i ∈ range (n + 1), E c d * ((∏ s : Fin n, (X - C (lsh ν s))).coeff i • epow E i a b) - ((∏ s : Fin n, (X - C (lsh ν s))).coeff i • epow E i a b) * E c d = (if d = a then (∏ s : Fin n, (X - C (lsh ν s))).coeff i • epow E i c b else 0) - (if b = c then (∏ s : Fin n, (X - C (l …`. Introduce `i _`. Rewrite using `[mul_smul_comm, smul_mul_assoc, ← smul_sub, generatorPowCovariance_holds _ n E hE i a b c d]`.
+
+Apply the tactic sequence `split_ifs <;> simp [smul_sub]`. Rewrite using `[Finset.sum_congr rfl h, Finset.sum_sub_distrib]`. Apply the tactic sequence `split_ifs <;> simp [smul_sub]`.
+-/
 theorem CharId_P_commutator {V : Type} [AddCommGroup V] [Module ℂ V] {n : ℕ}
     (E : Fin n → Fin n → Module.End ℂ V) (hE : GlRel E) (ν : Fin n → ℂ) (a b c d : Fin n) :
     E c d * CharId_P E ν a b - CharId_P E ν a b * E c d =
@@ -229,6 +307,15 @@ theorem CharId_P_commutator {V : Type} [AddCommGroup V] [Module ℂ V] {n : ℕ}
   rw [Finset.sum_congr rfl h, Finset.sum_sub_distrib]
   split_ifs <;> simp [smul_sub]
 
+/- English proof (translation)
+Introduce `V _ _ n E ν v hE hv x hx a b`. Set `W : Submodule ℂ V` to `⨅ (a : Fin n) (b : Fin n), LinearMap.ker (CharId_P E ν a b)`. Establish `hW : W ∈ {W : Submodule ℂ V | v ∈ W ∧ ∀ a b, ∀ x ∈ W, E a b x ∈ W}`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Simplify using `only [W, Submodule.mem_iInf, LinearMap.mem_ker]`.
+
+Introduce `a b`. Rewrite using `[CharId_P_apply]`. Conclude with `CharId_on_v E hE ν v hv a b`. Introduce `c d y hy`. Simplify using `only [W, Submodule.mem_iInf, LinearMap.mem_ker] at hy ⊢`.
+
+Introduce `a b`. Establish `h` using `LinearMap.congr_fun (CharId_P_commutator E hE ν a b c d) y`. Simplify using `only [LinearMap.sub_apply, Module.End.mul_apply, hy a b, map_zero, zero_sub] at h`. Apply the tactic sequence `split_ifs at h <;> simp_all`. Establish `hxW : x ∈ W` using `Submodule.mem_sInf.1 hx W hW`.
+
+Simplify using `only [W, Submodule.mem_iInf, LinearMap.mem_ker] at hxW`. Rewrite using `[← CharId_P_apply]`. Conclude with `hxW a b`.
+-/
 theorem characteristicIdentity_holds : CharId := by
   intro V _ _ n E ν v hE hv x hx a b
   let W : Submodule ℂ V := ⨅ (a : Fin n) (b : Fin n), LinearMap.ker (CharId_P E ν a b)

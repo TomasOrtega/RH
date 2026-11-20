@@ -9,6 +9,9 @@ noncomputable section
 
 namespace GlobalTheory.CompanionTheory.Ar.Sl.Transl
 
+/- English proof (translation)
+Use `(gm_pull r (spMap f) z ⊤ trivial (unitOn u)).symm.trans (congrArg (gm r z ⊤) ?_)` and prove the remaining obligations. Apply `Units.ext` to reduce the goal to its premises. Conclude with `(congrArg (fun q => q.hom u.val) (Scheme.ΓSpecIso_inv_naturality (CommRingCat.ofHom f))).symm`.
+-/
 theorem gm_comp_spMap_unitOn {R R' : Type} [CommRing R] [CommRing R'] (f : R →+* R') (u : Rˣ) {Z : Scheme.{0}}
     (r : Z ⟶ Sp R') (z : Z) :
     gm (r ≫ spMap f) z ⊤ (unitOn u) = gm r z ⊤ (unitOn (Units.map f.toMonoidHom u)) := by
@@ -19,10 +22,20 @@ theorem gm_comp_spMap_unitOn {R R' : Type} [CommRing R] [CommRing R'] (f : R →
 def FG.scaled {X Y : Scheme.{0}} {M : LB X} (hM : M.IsLB) (a : FG M Y) (c : Γ(Y, ⊤)ˣ) : FG M Y :=
   ⟨a.K, a.φ, a.ε, scaleGen a.t c, scaleGen_isGen hM a.t a.ht c⟩
 
+/- English proof (translation)
+The claim follows from `(map_mul _ _ _).trans (congrArg₂ (· * ·) (gm_res r z _ (hJ.mem a.φ r) _) rfl)`.
+-/
 theorem FG.v_scaled {X Y Z : Scheme.{0}} {M : LB X} (hM : M.IsLB) (a : FG M Y) (c : Γ(Y, ⊤)ˣ) (r : Z ⟶ Y) {z : Z}
     {J : (Z ⟶ X) → M.ι} (hJ : Good M z J) : (a.scaled hM c).v r z J = gm r z ⊤ c * a.v r z J :=
   (map_mul _ _ _).trans (congrArg₂ (· * ·) (gm_res r z _ (hJ.mem a.φ r) _) rfl)
 
+/- English proof (translation)
+Set `P : Polynomial K` to `Polynomial.X ^ n - Polynomial.C (c : K)`. Establish `hdeg : P.degree ≠ 0`. Rewrite using `[Polynomial.degree_X_pow_sub_C (by omega)]`. Conclude with `(by omega : n ≠ 0)` after adjusting the coercions. Establish `: FiniteDimensional ℚ P.SplittingField` using `Module.Finite.trans K _`.
+
+Take `⟨ρ, hρ⟩` from `(Polynomial.IsSplittingField.splits P.SplittingField P).exists_eval_eq_zero (by rwa [Polynomial.degree_map])`. Establish `hρn : ρ ^ n = algebraMap K P.SplittingField (c : K)`. Simplify `hρ` using `[P, sub_eq_zero, Polynomial.eval_map]`. Establish `hρ0 : ρ ≠ 0`. Introduce and unpack `rfl`.
+
+Rewrite `hρn` using `[zero_pow (by omega)]`. Conclude with `(map_ne_zero _).2 c.ne_zero hρn.symm`. Use `⟨P.SplittingField, inferInstance, NumberField.mk, inferInstance, Units.mk0 ρ hρ0, Units.ext ?_⟩` and prove the remaining obligations. Simplify using `using hρn`.
+-/
 theorem exists_root_in_ext (K : Type) [Field K] [NumberField K] (n : ℕ) (hn : 1 ≤ n) (c : Kˣ) :
     ∃ (K' : Type) (_ : Field K') (_ : NumberField K') (_ : Algebra K K') (u : K'ˣ),
       u ^ n = Units.map (algebraMap K K').toMonoidHom c := by
@@ -42,6 +55,19 @@ theorem exists_root_in_ext (K : Type) [Field K] [NumberField K] (n : ℕ) (hn : 
   refine ⟨P.SplittingField, inferInstance, NumberField.mk, inferInstance, Units.mk0 ρ hρ0, Units.ext ?_⟩
   simpa using hρn
 
+/- English proof (translation)
+Take `⟨z₀⟩ : Nonempty (Sp K)` from `inferInstance`. Use `choose d hd using fun χ : Sp K ⟶ X => exists_chart hM (χ z₀)`. Establish `hJ₀ : Good M z₀ d` using `hd`. Take `⟨t₀, ht₀, -⟩` from `GlobalTheory.ThetaInValues.exists_gen_of_value hM (fun _ : PUnit => xl) (fun _ => (1 : ℤ)) hJ₀ (1 : Kˣ)`. Set `e₀ : FG M (Sp K)` to `⟨PUnit, _, _, t₀, ht₀⟩`.
+
+Establish `hs₀ : ∀ (U : Type) [CommGroup U] (h : (Sp K ⟶ X) → U), e₀.sum U h = h xl`. Introduce `U _ h`. Use `show ∏ _k : PUnit, h xl ^ (1 : ℤ) = _`. Simplify using the standard rewrite rules. Establish `hg : ∀ (U : Type) [CommGroup U] (h : (Sp K ⟶ X) → U), ((e₀.pow n).mul A).sum U h = 1`.
+
+Introduce `U _ h`. Rewrite using `[FG.sum_mul, FG.sum_pow, hs₀, hA]`. Conclude with `_root_.mul_inv_cancel _`. Take `⟨c, hc⟩` from `FG.exists_unit hM _ hg`. Set `c₀ : Kˣ` to `Units.map (Scheme.ΓSpecIso (CommRingCat.of K)).hom.hom.toMonoidHom c`.
+
+Establish `hcc : unitOn c₀ = c`. Apply `Units.ext` to reduce the goal to its premises. Conclude with `Iso.hom_inv_id_apply (Scheme.ΓSpecIso (CommRingCat.of K)) c.val`. Take `⟨K', iF, iN, iA, u, hu⟩` from `exists_root_in_ext K n hn c₀⁻¹`. Use `⟨K', iF, iN, iA, (e₀.pull (spMap (algebraMap K K'))).scaled hM (unitOn u), ?_, ?_⟩` and prove the remaining obligations.
+
+Introduce `U _ h`. Conclude with `hs₀ U fun q => h (spMap (algebraMap K K') ≫ q)`. Introduce `Z r z J hJ`. Establish `key : unitOn u ^ n * unitOn (Units.map (algebraMap K K').toMonoidHom c₀) = 1`. Establish `e1 : unitOn u ^ n = unitOn (u ^ n)` using `(map_pow _ _ _).symm`.
+
+Establish `e2 : ∀ a b : K'ˣ, unitOn a * unitOn b = unitOn (a * b)` using `fun a b => (map_mul _ _ _).symm`. Rewrite using `[e1, e2, hu, ← map_mul, inv_mul_cancel, map_one]`. Conclude with `map_one _`. Rewrite using `[FG.v_scaled hM _ _ r hJ, FG.v_pull hJ, _root_.mul_pow, _root_.mul_assoc, ← FG.v_pow hJ, ← FG.v_mul hJ, hc Z _ z J hJ, ← hcc, gm_comp_spMap_unitOn, ← map_pow, ← map_mul, key, map_one]`.
+-/
 theorem exists_gen_normalised {X : Scheme.{0}} {M : LB X} (hM : M.IsLB) {K : Type} [Field K] [NumberField K] (n : ℕ)
     (hn : 1 ≤ n) (xl : Sp K ⟶ X) (A : FG M (Sp K))
     (hA : ∀ (U : Type) [CommGroup U] (h : (Sp K ⟶ X) → U), A.sum U h = (h xl ^ n)⁻¹) :

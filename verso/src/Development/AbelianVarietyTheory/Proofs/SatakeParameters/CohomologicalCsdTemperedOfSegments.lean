@@ -13,6 +13,11 @@ attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalDat
 
 namespace GlobalTheory.Published
 
+/- English proof (translation)
+Introduce `L _ _ _ n hn π hcsd hcoh y σ hloc`. Use `haveI : CharZero (y.adicCompletion L) := charZero_of_injective_algebraMap (algebraMap L (y.adicCompletion L)).injective`. Establish `ht` using `hCar L n hn π hcsd hcoh y σ hloc`. Take `⟨h, δ, hd, hδ, he⟩` from `(hJac (y.adicCompletion L) n (by omega) σ.V σ.ρ σ.smooth σ.irred).1 ht`. Use `⟨h, δ, hd, fun i => ⟨?_, ?_⟩, he⟩` and prove the remaining obligations.
+
+Use `(hBer (y.adicCompletion L) (δ i) (hδ i).1).1 ⟨1, isSmoothChar_one, ?_⟩` and prove the remaining obligations. Rewrite using `[IrrGL.tw_one]`. Conclude with `(hδ i).2`. Conclude with `GlobalTheory.T.unitarisable_of_square_integrable _ (δ i).1 _ (δ i).rep (δ i).2.rep.smooth (δ i).2.rep.irr (hδ i).2`.
+-/
 theorem cohomologicalCsdTempered_of_caraianiTempered (hCar : CaraianiTempered) (hJac : TemperedProductOfSquareIntegrable)
     (hBer : EssSquareIntegrableSegments) : CohomologicalCsdTempered := by
   intro L _ _ _ n hn π hcsd hcoh y σ hloc

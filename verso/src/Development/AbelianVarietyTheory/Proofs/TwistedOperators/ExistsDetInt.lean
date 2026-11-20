@@ -29,19 +29,36 @@ def adjDatum (S T : HSp D) (βS : GL (Fin S.rank) (Lev.EAf D)) (βT : GL (Fin T.
       omegaQ Q T.rank ξ (-1) (fun PP => redM PP (frMapAdj S T βS βT x))
   else 0
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem finE_val (V : HSp D) (g : GA D V) :
     (finE V g).val = (Formalism.L2.Theta.mt V g).map (toEAf D) := rfl
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨Subgroup.one_mem _, by rw [map_one]; exact Subgroup.one_mem _⟩`.
+-/
 theorem Stab.one (V : HSp D) (β : GL (Fin V.rank) (Lev.EAf D)) : Stab V β 1 :=
   ⟨Subgroup.one_mem _, by rw [map_one]; exact Subgroup.one_mem _⟩
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨Subgroup.mul_mem _ h.1 h'.1, by rw [map_mul]; exact Subgroup.mul_mem _ h.2 h'.2⟩`.
+-/
 theorem Stab.mul {V : HSp D} {β : GL (Fin V.rank) (Lev.EAf D)} {g g' : GA D V} (h : Stab V β g) (h' : Stab V β g') :
     Stab V β (g * g') :=
   ⟨Subgroup.mul_mem _ h.1 h'.1, by rw [map_mul]; exact Subgroup.mul_mem _ h.2 h'.2⟩
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨Subgroup.inv_mem _ h.1, by rw [map_inv]; exact Subgroup.inv_mem _ h.2⟩`.
+-/
 theorem Stab.inv {V : HSp D} {β : GL (Fin V.rank) (Lev.EAf D)} {g : GA D V} (h : Stab V β g) : Stab V β g⁻¹ :=
   ⟨Subgroup.inv_mem _ h.1, by rw [map_inv]; exact Subgroup.inv_mem _ h.2⟩
 
+/- English proof (translation)
+Take `⟨y, rfl⟩` from `hx`. Establish `e : frGL β y * β = β * intGL F E n y` using `by simp [frGL]`. Establish `key : ∀ (z : GL (Fin n) (Formalism.L2.Herm.intAf F E)) (w : Fin n → E ⊗[F] Formalism.L2.Herm.Af F), (∀ i, w i ∈ Formalism.L2.Herm.intAf F E) → ∀ i, (intGL F E n z).val.mulVec w i ∈ Formalism.L2.Herm.intAf F E` using `fun z w hw i => by show ∑ j, ((z.val i j : Formalism.L2.Herm.intAf F E) : E ⊗[F] Formalism.L2.Herm.Af F) * w j ∈ _`. Conclude with `Subring.sum_mem _ fun j _ => Subring.mul_mem _ (z.val i j).2 (hw j)`. Introduce `w`.
+
+Rewrite using `[hβ w, e, mul_inv_rev, Units.val_mul, ← Matrix.mulVec_mulVec, ← map_inv]`. Use `⟨fun h => key _ _ h, fun h => ?_⟩` and prove the remaining obligations. Use `key y _ h` as an intermediate fact. Rewrite `this` using `[Matrix.mulVec_mulVec, ← Units.val_mul, ← map_mul, mul_inv_cancel, map_one, Units.val_one, Matrix.one_mulVec]`. Then use the resulting hypothesis.
+-/
 theorem isFrame_mul {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {n : ℕ}
     {β x : GL (Fin n) (E ⊗[F] Formalism.L2.Herm.Af F)} {Λ : Submodule (𝓞 E) (Fin n → E)}
     (hβ : IsFrame β Λ) (hx : x ∈ St β) : IsFrame (x * β) Λ := by
@@ -59,6 +76,11 @@ theorem isFrame_mul {F E : Type} [Field F] [NumberField F] [Field E] [NumberFiel
   rwa [Matrix.mulVec_mulVec, ← Units.val_mul, ← map_mul, mul_inv_cancel, map_one, Units.val_one,
     Matrix.one_mulVec] at this
 
+/- English proof (translation)
+Establish `key : ∀ (g : GA D S) (h : GA D T), finE S g ∈ St βS → finE T h ∈ St βT → ∀ u, u ∈ latO S T (ΛS : Set (Fin S.rank → D.host.E)) (ΛT : Set (Fin T.rank → D.host.E)) (fun _ => True) → actO S T g h u ∈ latO S T (ΛS : Set (Fin S.rank → D.host.E)) (ΛT : Set (Fin T.rank → D.host.E)) (fun …` using `fun g h hg hh u hu => GlobalTheory.AdelicLatMove.actO_mem_latO S T g h ΛS ΛS ΛT ΛT βS _ βT _ hS (isFrame_mul hS hg) hT (isFrame_mul hT hh) rfl rfl u hu`. Use `⟨key g h hg hh u, fun hu => ?_⟩` and prove the remaining obligations. Use `key g⁻¹ h⁻¹ (by rw [map_inv]; exact inv_mem hg) (by rw [map_inv]; exact inv_mem hh) _ hu` as an intermediate fact. Establish `e` using `GlobalTheory.AdelicLatMove.actO_actO_inv S T g⁻¹ h⁻¹ u`. Rewrite `e` using `[inv_inv, inv_inv]`.
+
+Rewrite `this` using `[e]`. Then use the resulting hypothesis.
+-/
 theorem mem_latO_iff {S T : HSp D} {ΛS : Submodule (𝓞 D.host.E) (Fin S.rank → D.host.E)}
     {ΛT : Submodule (𝓞 D.host.E) (Fin T.rank → D.host.E)} {βS : GL (Fin S.rank) (Lev.EAf D)}
     {βT : GL (Fin T.rank) (Lev.EAf D)} (hS : IsFrame βS ΛS) (hT : IsFrame βT ΛT) {g : GA D S} {h : GA D T}
@@ -76,6 +98,13 @@ theorem mem_latO_iff {S T : HSp D} {ΛS : Submodule (𝓞 D.host.E) (Fin S.rank 
   rw [inv_inv, inv_inv] at e
   rwa [e] at this
 
+/- English proof (translation)
+Take `⟨y, hy⟩` from `hg`. Use `⟨y.val.det, ?_, fun PP => ?_⟩` and prove the remaining obligations. Establish `h1 : toEAf D (Formalism.L2.Theta.mt V g).det = (finE V g).val.det`. Rewrite using `[finE_val, RingHom.map_det]`. Both sides reduce to the same expression.
+
+Establish `h2 : (Matrix.GeneralLinearGroup.det (frGL β y)) = Matrix.GeneralLinearGroup.det (intGL _ _ _ y)`. Simplify using `[frGL]`. Establish `h3` using `congrArg Units.val h2`. Rewrite using `[h1, ← hy]`. Use `Eq.trans ?_ h3.symm` and prove the remaining obligations.
+
+Conclude with `(Formalism.L2.Herm.intAf D.host.F D.host.E).subtype.map_det y.val`. Rewrite using `[← hy, redFn_frGL]`. Conclude with `((resS D.host.F PP).map_det y.val).symm`.
+-/
 theorem exists_det_int {V : HSp D} {β : GL (Fin V.rank) (Lev.EAf D)} {g : GA D V} (hg : finE V g ∈ St β) :
     ∃ a : Formalism.L2.Herm.intAf D.host.F D.host.E, (a : Lev.EAf D) = toEAf D (Formalism.L2.Theta.mt V g).det ∧
       ∀ PP : Pl D.host.E, ((Matrix.GeneralLinearGroup.det (redFn β PP (finE V g)) : (kP PP)ˣ) : kP PP) =
@@ -102,6 +131,9 @@ def detAt (e : AE D) (he : e * e = e) (V : HSp D) : GA D V →* (AE D)ˣ :=
         linear_combination (-(Formalism.L2.Theta.mt V g).det * (Formalism.L2.Theta.mt V g').det + (Formalism.L2.Theta.mt V g).det
           + (Formalism.L2.Theta.mt V g').det - 1) * he }
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem isDetAt_detAt (e : AE D) (he : e * e = e) (V : HSp D) (g : GA D V) : IsDetAt e V g (detAt e he V g) := rfl
 
 end GlobalTheory.VecInv

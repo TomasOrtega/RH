@@ -15,6 +15,19 @@ open GlobalTheory.FlatModel
 attribute [local instance] Over.cartesianMonoidalCategory
 attribute [local instance] algPadicInt algPadicField towerPadic factPadic GlobalTheory.PadicComplexHost.isAdicComplete
 
+/- English proof (translation)
+Introduce `S S' G' _ G _ f φ h T w`. Establish `uniq : ∀ a b : T ⟶ G', a.left ≫ φ = b.left ≫ φ → a = b`. Introduce `a b e`. Use `ext`. Conclude with `h.1.hom_ext e (by rw [Over.w a, Over.w b])`.
+
+Set `push : (T ⟶ G') → (Over.mk (T.hom ≫ f) ⟶ G)` to `fun x => Over.homMk (x.left ≫ φ) (by`. Simplify using `only [Over.mk_hom, Category.assoc]`. Rewrite using `[h.1.w, ← Category.assoc, Over.w x])`. Establish `push_left : ∀ x : T ⟶ G', (push x).left = x.left ≫ φ` using `fun x => rfl`. Establish `hmul : ∀ x y : T ⟶ G', push (x * y) = push x * push y`.
+
+Introduce `x y`. Use `ext`. Conclude with `(h.2 T x y (push x) (push y) rfl rfl).symm`. Establish `hone : push 1 = 1`. Establish `e : push 1 * push 1 = push 1` using `by rw [← hmul, _root_.mul_one]`.
+
+Simplify using `using e`. Establish `hpow : ∀ (x : T ⟶ G') (k : ℕ), push (x ^ k) = push x ^ k`. Introduce `x k`. Proceed by induction on `k with`. Consider the case `zero => simpa using hone`.
+
+Consider the case `succ k ih => rw [pow_succ, pow_succ, hmul, ih]`. Set `σ : T ⟶ G'` to `Over.homMk (h.1.lift w.left T.hom (by simpa using Over.w w)) (h.1.lift_snd _ _ _)`. Establish `hσ : σ.left ≫ φ = w.left` using `h.1.lift_fst _ _ _`. Establish `hpσ : push σ = w` using `by ext; exact hσ`. Use `⟨σ, hσ, fun k hk => uniq _ _ ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[← push_left, ← push_left, hpow, hpσ, hk, hone]`.
+-/
 theorem GlobalTheory.grpPullback_lift_torsion : ∀ (S S' : Scheme.{0}) (G' : Over S') [GrpObj G'] (G : Over S) [GrpObj G] (f : S' ⟶ S) (φ : G'.left ⟶ G.left),
     IsGrpPullback G' G f φ → ∀ (T : Over S') (w : Over.mk (T.hom ≫ f) ⟶ G),
       ∃ σ : T ⟶ G', σ.left ≫ φ = w.left ∧ ∀ k : ℕ, w ^ k = 1 → σ ^ k = 1 := by

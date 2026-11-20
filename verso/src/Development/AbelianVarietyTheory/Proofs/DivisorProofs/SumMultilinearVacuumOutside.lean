@@ -9,6 +9,21 @@ noncomputable section
 
 namespace GlobalTheory.PureTensor
 
+/- English proof (translation)
+Establish `key : ∀ S : Finset ι, S ⊆ T → ∀ y (z : ∀ v, X v), ∑ j, f j y * (∏ v ∈ T \ S, φ j v (z v)) * ∏ v ∈ S, L v (φ j v) = 0`. Introduce `S`. Proceed by induction on `S using Finset.induction_on with`. Consider the case `empty => intro _ y z`. Simplify using `using h y z`.
+
+Consider the case `@insert a S ha ih`. Introduce `hS y z`. Establish `haT : a ∈ T` using `hS (Finset.mem_insert_self a S)`. Establish `ih'` using `ih ((Finset.subset_insert a S).trans hS)`. Use `set c : Fin m → ℂ := fun j => f j y * (∏ v ∈ T \ insert a S, φ j v (z v)) * ∏ v ∈ S, L v (φ j v) with hc`.
+
+Establish `hsplit : T \ S = insert a (T \ insert a S)`. Rewrite using `[Finset.sdiff_insert, Finset.insert_erase (Finset.mem_sdiff.2 ⟨haT, ha⟩)]`. Establish `hnot : a ∉ T \ insert a S` using `by simp`. Establish `hg : (∑ j, c j • φ j a) = 0`. Use function extensionality and compare the values at `t`.
+
+Use `ih' y (Function.update z a t)` as an intermediate fact. Rewrite using `[Finset.sum_apply]`. Simplify using `only [Pi.smul_apply, smul_eq_mul, Pi.zero_apply]`. Rewrite using `[← this]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[hsplit, Finset.prod_insert hnot, Function.update_self]`. Establish `: ∏ v ∈ T \ insert a S, φ j v (Function.update z a t v) = ∏ v ∈ T \ insert a S, φ j v (z v)`. Use `Finset.prod_congr rfl fun v hv => ?_` and prove the remaining obligations. Establish `hva : v ≠ a` using `by rintro rfl; exact hnot hv`. Rewrite using `[Function.update_of_ne hva]`.
+
+Rewrite using `[this, hc]`. Expand and normalize the polynomial expressions, which then agree. Establish `hL` using `congrArg (L a) hg`. Rewrite `hL` using `[map_sum, map_zero]`. Simplify using `only [map_smul, smul_eq_mul] at hL`.
+
+Rewrite using `[← hL]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.prod_insert ha, hc]`. Expand and normalize the polynomial expressions, which then agree. Simplify using `using key T le_rfl y z₀`.
+-/
 theorem sum_prod_functionals {ι Y : Type} [DecidableEq ι] {X : ι → Type} (T : Finset ι) {m : ℕ}
     (f : Fin m → Y → ℂ) (φ : Fin m → ∀ v, X v → ℂ) (L : ∀ v, (X v → ℂ) →ₗ[ℂ] ℂ) (z₀ : ∀ v, X v)
     (h : ∀ y (z : ∀ v, X v), ∑ j, f j y * ∏ v ∈ T, φ j v (z v) = 0) (y : Y) :
@@ -47,6 +62,15 @@ theorem sum_prod_functionals {ι Y : Type} [DecidableEq ι] {X : ι → Type} (T
       rw [Finset.prod_insert ha, hc]; ring
   simpa using key T le_rfl y z₀
 
+/- English proof (translation)
+Set `b : ∀ v : T, Module.Basis (Module.Free.ChooseBasisIndex ℂ (P v)) ℂ (P v)` to `fun v => Module.Free.chooseBasis ℂ (P v)`. Set `B` to `Basis.piTensorProduct b`. Apply `(TensorProduct.equivFinsuppOfBasisRight B).injective` to reduce the goal to its premises. Rewrite using `[map_zero]`. Use extensionality with `k`.
+
+Rewrite using `[map_sum, Finsupp.finset_sum_apply, Finsupp.zero_apply]`. Simplify using `only [TensorProduct.equivFinsuppOfBasisRight_apply_tmul_apply, B, Basis.piTensorProduct_repr_tprod_apply]`. Set `L : ∀ v, (X v → ℂ) →ₗ[ℂ] ℂ` to `fun v => if hv : v ∈ T then ((b ⟨v, hv⟩).coord (k ⟨v, hv⟩)).comp (q v) else 0`. Establish `hc : ∀ j, (∏ v : T, (b v).repr (q v (φ j v)) (k v)) = ∏ v ∈ T, L v (φ j v)`. Introduce `j`.
+
+Rewrite using `[← Finset.prod_coe_sort T (fun v => L v (φ j v))]`. Use `Finset.prod_congr rfl fun v _ => ?_` and prove the remaining obligations. Simplify using `[L, v.2, Module.Basis.coord_apply]`. Establish `hzero : ∑ j, (∏ v ∈ T, L v (φ j v)) • f j = 0`. Use `hev _ fun y => ?_` and prove the remaining obligations.
+
+Rewrite using `[map_sum]`. Simplify using `only [map_smul, smul_eq_mul]`. Rewrite using `[← h L y]`. Conclude with `Finset.sum_congr rfl fun j _ => mul_comm _ _`. Repeatedly rewrite using `[hc, ← map_smul, ← map_sum, hzero, map_zero]`.
+-/
 theorem tensor_eq_zero {ι Y V P₀ : Type} {X : ι → Type} {P : ι → Type}
     [AddCommGroup V] [Module ℂ V] [AddCommGroup P₀] [Module ℂ P₀] [∀ v, AddCommGroup (P v)] [∀ v, Module ℂ (P v)]
     (ev : Y → V →ₗ[ℂ] ℂ) (hev : ∀ g : V, (∀ y, ev y g = 0) → g = 0) (T : Finset ι) {m : ℕ}
@@ -78,6 +102,33 @@ theorem tensor_eq_zero {ι Y V P₀ : Type} {X : ι → Type} {P : ι → Type}
     exact Finset.sum_congr rfl fun j _ => mul_comm _ _
   simp_rw [hc, ← map_smul, ← map_sum, hzero, map_zero]
 
+/- English proof (translation)
+Set `std : Pl F → Prop` to `fun v => M.vac v = Set.indicator {x | ∀ i, x i ∈ v.adicCompletionIntegers F} 1`. Establish `hfin : {v | ¬ std v}.Finite` using `Filter.eventually_cofinite.1 hM.std`. Establish `hne : ∀ v, ∃ t, M.vac v t ≠ 0` using `fun v => by`. Establish `h0` using `(hM.vac v).2.1`. Assume the negation of the conclusion as `hc`.
+
+Use `push_neg at hc`. Conclude with `h0 (funext hc)`. Set `w : ∀ v : Pl F, Fin n × Fin d → Fv F v` to `fun v => if std v then 0 else (hne v).choose`. Establish `hstd0 : ∀ v, std v → M.vac v 0 = 1`. Introduce `v hv`.
+
+Rewrite using `[hv, Set.indicator_of_mem (by simp)]`. Both sides reduce to the same expression. Establish `hw : ∀ v, M.vac v (w v) ≠ 0`. Introduce `v`. Distinguish the cases in `hv : std v`.
+
+Simplify using `only [w, if_pos hv, hstd0 v hv]`. Conclude with `one_ne_zero`. Simplify using `only [w, if_neg hv]`. Conclude with `(hne v).choose_spec`. Set `a : ∀ v : Pl F, Fin n × Fin d → Fv F v` to `fun v => if v ∈ T then z v else w v`.
+
+Establish `ha0 : ∀ v, v ∉ T → std v → a v = 0`. Introduce `v hvT hv`. Simplify using `only [a, if_neg hvT, w, if_pos hv]`. Establish `hint : ∀ i, ∀ᶠ v in Filter.cofinite, a v i ∈ v.adicCompletionIntegers F`. Introduce `i`.
+
+Use `Filter.eventually_cofinite.2 ((hfin.union T.finite_toSet).subset ?_)` and prove the remaining obligations. Introduce `v hv`. Assume the negation of the conclusion as `hc`. Simplify using `only [Set.mem_union, Set.mem_setOf_eq, not_or, not_not, Finset.mem_coe] at hc`. Apply `hv` to reduce the goal to its premises.
+
+Rewrite using `[ha0 v hc.2 hc.1]`. Conclude with `zero_mem _`. Set `xf : Fin n × Fin d → Af F` to `fun i => ⟨fun v => a v i, hint i⟩`. Set `x : Fin n × Fin d → AF F` to `fun i => ((InfiniteAdeleRing.ringEquiv_mixedSpace F).symm (y i), xf i)`. Establish `hxI : (fun i => evI F (x i)) = y` using `by funext i; simp [evI, x]`.
+
+Establish `hxv : ∀ v, (fun i => evFin F v (x i)) = a v` using `by intro v; funext i; rfl`. Set `S : Finset (Pl F)` to `T ∪ hfin.toFinset`. Set `c : ℂ` to `∏ v ∈ S \ T, M.vac v (w v)`. Establish `hc0 : c ≠ 0` using `Finset.prod_ne_zero_iff.2 fun v _ => hw v`. Establish `hpure : ∀ j, pure (f j) (φ j) x = f j y * (c * ∏ v ∈ T, φ j v (z v))`.
+
+Introduce `j`. Simplify using `only [GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.pure, hxI, hxv]`. Use `congr 1`. Establish `hsupp : Function.mulSupport (fun v => φ j v (a v)) ⊆ (S : Set (Pl F))`. Introduce `v hv`.
+
+Assume the negation of the conclusion as `hvS`. Simplify using `only [S, Finset.coe_union, Set.Finite.coe_toFinset, Set.mem_union, Finset.mem_coe, Set.mem_setOf_eq, not_or, not_not] at hvS`. Apply `hv` to reduce the goal to its premises. Simplify using `only [hT j v hvS.1, ha0 v hvS.1 hvS.2, hstd0 v hvS.2]`. Rewrite using `[finprod_eq_prod_of_mulSupport_subset _ hsupp, ← Finset.prod_sdiff (Finset.subset_union_left (s₂ := hfin.toFinset))]`.
+
+Use `congr 1`. Use `Finset.prod_congr rfl fun v hv => ?_` and prove the remaining obligations. Establish `hvT : v ∉ T` using `(Finset.mem_sdiff.1 hv).2`. Simplify using `only [a, if_neg hvT, hT j v hvT]`. Use `Finset.prod_congr rfl fun v hv => ?_` and prove the remaining obligations.
+
+Simplify using `only [a, if_pos hv]`. Establish `hp` using `congrFun hsum x`. Rewrite `hp` using `[Finset.sum_apply, Pi.zero_apply]`. Simplify using `only [hpure] at hp`. Establish `: c * ∑ j, f j y * ∏ v ∈ T, φ j v (z v) = 0`.
+
+Rewrite using `[Finset.mul_sum, ← hp]`. Conclude with `Finset.sum_congr rfl fun j _ => by ring`. Conclude with `(mul_eq_zero.1 this).resolve_left hc0`.
+-/
 theorem sum_zero_of_pure {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
     {σ : E →ₐ[F] E} {n d : ℕ} {Y : Spc F E n} {W : Spc F E d} (M : Model σ Y W) (ψ : AddChar (AF F) ℂ)
     (hM : M.IsGood ψ) (T : Finset (Pl F)) {m : ℕ} (f : Fin m → SInf F (Fin n × Fin d))
@@ -149,6 +200,9 @@ theorem sum_zero_of_pure {F E : Type} [Field F] [NumberField F] [Field E] [Numbe
     exact Finset.sum_congr rfl fun j _ => by ring
   exact (mul_eq_zero.1 this).resolve_left hc0
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ n d Y W M ψ hM T m f φ hT hsum P₀ _ _ P _ _ q₀ q`. Set `ev : (Fin n × Fin d → mixedEmbedding.mixedSpace F) → SInf F (Fin n × Fin d) →ₗ[ℂ] ℂ` to `fun y => { toFun := fun g => g y, map_add' := fun _ _ => rfl, map_smul' := fun _ _ => rfl }`. Use `tensor_eq_zero ev (fun g hg => SchwartzMap.ext fun y => hg y) T f φ (fun L y => ?_) q₀ q` and prove the remaining obligations. Conclude with `sum_prod_functionals T (fun j y => f j y) φ L (fun _ _ => 0) (sum_zero_of_pure M ψ hM T f φ hT hsum) y`.
+-/
 theorem pure_sum_tensor_eq_zero : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (n d : ℕ) (Y : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Spc F E n) (W : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Spc F E d) (M : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Model σ Y W) (ψ : AddChar (AF F) ℂ), M.IsGood ψ → ∀ (T : Finset (Pl F)) (m : ℕ) (f : Fin m → SInf F (Fin n × Fin d)) (φ : Fin m → ∀ v : Pl F, (Fin n × Fin d → Fv F v) → ℂ), (∀ j, ∀ v ∉ T, φ j v = M.vac v) → ∑ j, GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.pure (f j) (φ j) = 0 → ∀ (P₀ : Type) [AddCommGroup P₀] [Module ℂ P₀] (P : Pl F → Type) [∀ v, AddCommGroup (P v)] [∀ v, Module ℂ (P v)] (q₀ : SInf F (Fin n × Fin d) →ₗ[ℂ] P₀) (q : ∀ v, ((Fin n × Fin d → Fv F v) → ℂ) →ₗ[ℂ] P v), ∑ j, q₀ (f j) ⊗ₜ[ℂ] PiTensorProduct.tprod ℂ (fun v : T => q v (φ j v)) = 0 := by
   intro F E _ _ _ _ _ σ n d Y W M ψ hM T m f φ hT hsum P₀ _ _ P _ _ q₀ q
   classical

@@ -13,6 +13,9 @@ noncomputable section
 
 namespace GlobalTheory.CompanionTheory.ThetaAvg
 
+/- English proof (translation)
+The claim follows from `_root_.UpperTheory.Reformulated.B.Qo7.eq_zero_of_orth μ S h1 hmul hstar hsep f hf`.
+-/
 theorem eq_zero_of_orth {K : Type} [TopologicalSpace K] [CompactSpace K] [MeasurableSpace K] [BorelSpace K]
     (μ : Measure K) [IsFiniteMeasure μ] [μ.IsOpenPosMeasure] (S : Set C(K, ℂ)) (h1 : 1 ∈ S)
     (hmul : ∀ a ∈ S, ∀ b ∈ S, a * b ∈ S) (hstar : ∀ a ∈ S, star a ∈ S)
@@ -22,6 +25,37 @@ theorem eq_zero_of_orth {K : Type} [TopologicalSpace K] [CompactSpace K] [Measur
 def IsPer {G : Type} [AddCommGroup G] [TopologicalSpace G] (Γ : AddSubgroup G) (f : G → ℂ) : Prop :=
   Continuous f ∧ ∀ γ ∈ Γ, ∀ x, f (x + γ) = f x
 
+/- English proof (translation)
+Use `haveI : CompactSpace (G ⧸ Γ) := ⟨by`. Use `hD.image (QuotientAddGroup.continuous_mk (N := Γ))` and compare the differences between its conclusion and the goal. Use `(Set.eq_univ_of_forall fun q => ?_).symm` and prove the remaining obligations. Proceed by induction on `q using QuotientAddGroup.induction_on with`. Consider the case `H x`.
+
+Take `⟨γ, hγ, hx⟩` from `hDΓ x`. Conclude with `⟨x - γ, hx, QuotientAddGroup.eq.mpr (by simpa using hγ)⟩⟩`. Use `letI : MeasurableSpace (G ⧸ Γ) := borel _`. Use `haveI : BorelSpace (G ⧸ Γ) := ⟨rfl⟩`. Set `μ : Measure (G ⧸ Γ)` to `Measure.addHaarMeasure ⊤`.
+
+Establish `hμ : μ Set.univ = 1` using `by simpa using Measure.addHaarMeasure_self (K₀ := (⊤ : TopologicalSpace.PositiveCompacts (G ⧸ Γ)))`. Use `haveI : IsProbabilityMeasure μ := ⟨hμ⟩`. Establish `hint : ∀ h : C(G ⧸ Γ, ℂ), Integrable h μ` using `fun h => h.continuous.integrable_of_hasCompactSupport (HasCompactSupport.of_compactSpace _)`. Set `I : C(G ⧸ Γ, ℂ) →ₗ[ℂ] ℂ` to `{ toFun := fun h => ∫ x, h x ∂μ map_add' := fun a b => by`. Rewrite using `[← integral_add (hint a) (hint b)]`.
+
+Simplify using the standard rewrite rules. Use the proof step `map_smul' := fun c a => by`. Simplify using `[integral_const_mul] }`. Set `π : C(G ⧸ Γ, ℂ) →ₗ[ℂ] (G → ℂ)` to `{ toFun := fun h x => h (x : G ⧸ Γ) map_add' := fun _ _ => rfl map_smul' := fun _ _ => rfl }`. Establish `hπ : Function.Injective π` using `fun a b h => by`.
+
+Use extensionality with `q`. Proceed by induction on `q using QuotientAddGroup.induction_on with`. Consider the case `H x => exact congrFun h x`. Take `⟨r, hr⟩` from `π.exists_leftInverse_of_injective (LinearMap.ker_eq_bot.mpr hπ)`. Establish `hM : ∀ h : C(G ⧸ Γ, ℂ), (I ∘ₗ r) (fun x => h (x : G ⧸ Γ)) = ∫ x, h x ∂μ` using `fun h => congrArg I (LinearMap.congr_fun hr h)`.
+
+Establish `hlift : ∀ f, IsPer Γ f → ∃ h : C(G ⧸ Γ, ℂ), f = fun x : G => h (x : G ⧸ Γ)` using `fun f hf => by`. Establish `hw : ∀ a b : G, (QuotientAddGroup.leftRel Γ) a b → f a = f b` using `fun a b hab => by`. Rewrite `hab` using `[QuotientAddGroup.leftRel_apply]`. Rewrite using `[← hf.2 _ hab a, add_neg_cancel_left]`. Conclude with `⟨⟨Quotient.lift f hw, hf.1.quotient_lift hw⟩, rfl⟩`.
+
+Use `⟨I ∘ₗ r, fun f hf B hB => ?_, fun f hf y => ?_, fun σ hσ hs hσΓ f hf => ?_, fun S hS h1 hmul hstar hsep f hf h0 => ?_⟩` and prove the remaining obligations. Establish `hB' : ∀ x, ‖f x‖ ≤ B` using `fun x => by`. Take `⟨γ, hγ, hx⟩` from `hDΓ x`. Use `hB _ hx` as an intermediate fact. Rewrite `this` using `[← hf.2 γ hγ, sub_add_cancel]`. Then use the resulting hypothesis.
+
+Take `⟨h, rfl⟩` from `hlift f hf`. Rewrite using `[hM]`. Use `norm_integral_le_of_norm_le_const (μ := μ) (f := h) (C := B) (Filter.Eventually.of_forall fun q => by` as an intermediate fact. Proceed by induction on `q using QuotientAddGroup.induction_on with`. Consider the case `H x => exact hB' x)`.
+
+Simplify using `using this`. Take `⟨h, rfl⟩` from `hlift f hf`. Rewrite using `[hM, ← integral_add_right_eq_self (μ := μ) h (y : G ⧸ Γ)]`. Conclude with `hM (h.comp ⟨fun q => q + (y : G ⧸ Γ), by fun_prop⟩)`. Take `⟨h, rfl⟩` from `hlift f hf`.
+
+Set `τ : G ⧸ Γ →+ G ⧸ Γ` to `QuotientAddGroup.map Γ Γ σ hσΓ`. Establish `hτ : Continuous τ` using `(QuotientAddGroup.isQuotientMap_mk Γ).continuous_iff.mpr (QuotientAddGroup.continuous_mk.comp hσ)`. Establish `hτs : Function.Surjective τ` using `fun q => by`. Proceed by induction on `q using QuotientAddGroup.induction_on with`. Consider the case `H x`.
+
+Take `⟨z, rfl⟩` from `hs x`. Conclude with `⟨z, rfl⟩`. Establish `hp : MeasurePreserving τ μ μ` using `AddMonoidHom.measurePreserving hτ hτs rfl`. Rewrite using `[hM]`. Use `(hM (h.comp ⟨τ, hτ⟩)).trans ?_` and prove the remaining obligations.
+
+Use `conv_rhs => rw [← hp.map_eq]`. Rewrite using `[integral_map hτ.measurable.aemeasurable h.continuous.aestronglyMeasurable]`. Both sides reduce to the same expression. Take `⟨h, rfl⟩` from `hlift f hf`. Use `eq_zero_of_orth μ (π ⁻¹' S) h1 (fun a ha b hb => hmul _ ha _ hb) (fun a ha => hstar _ ha) ?_ h ?_` as an intermediate fact.
+
+Rewrite using `[this]`. Both sides reduce to the same expression. Introduce `p q hpq`. Proceed by induction on `p using QuotientAddGroup.induction_on with`. Consider the case `H x`.
+
+Proceed by induction on `q using QuotientAddGroup.induction_on with`. Consider the case `H y`. Assume the negation of the conclusion as `hc`. Use `push Not at hc`. Use `hpq (QuotientAddGroup.eq.mpr (hsep x y fun a ha => ?_))` and prove the remaining obligations.
+
+Take `⟨a', rfl⟩` from `hlift a (hS a ha)`. Conclude with `hc a' ha`. Introduce `a ha`. Conclude with `(hM (a * h)).symm.trans (h0 _ ha)`.
+-/
 theorem exists_mean {G : Type} [AddCommGroup G] [TopologicalSpace G] [IsTopologicalAddGroup G] (Γ : AddSubgroup G)
     (hΓ : IsClosed (Γ : Set G)) {D : Set G} (hD : IsCompact D) (hDΓ : ∀ x, ∃ γ ∈ Γ, x - γ ∈ D) :
     ∃ M : (G → ℂ) →ₗ[ℂ] ℂ,
@@ -115,6 +149,11 @@ theorem exists_mean {G : Type} [AddCommGroup G] [TopologicalSpace G] [IsTopologi
     · intro a ha
       exact (hM (a * h)).symm.trans (h0 _ ha)
 
+/- English proof (translation)
+Establish `hU : IsClopen (h ⁻¹' {1})` using `hh.1.isClopen_fiber 1`. Establish `hUc : IsCompact (h ⁻¹' {1})` using `hh.2.isCompact.of_isClosed_subset hU.1 fun x hx => subset_tsupport _ (by rw [Function.mem_support, show h x = 1 from hx]; exact one_ne_zero)`. Establish `hc : IsCompact (K + h ⁻¹' {1})` using `hK.add hUc`. Establish `hV : IsClopen (K + h ⁻¹' {1})` using `⟨hc.isClosed, hU.2.add_left⟩`. Use `⟨(K + h ⁻¹' {1}).indicator 1, ⟨(LocallyConstant.indicator (1 : LocallyConstant X ℂ) hV).isLocallyConstant, HasCompactSupport.intro hc fun x hx => Set.indicator_of_notMem hx _⟩, fun x hx => ?_⟩` and prove the remaining obligations.
+
+Conclude with `Set.indicator_of_mem (show x ∈ K + h ⁻¹' {1} from ⟨x, hx, 0, h0, add_zero x⟩) _`.
+-/
 theorem exists_SB_one {X : Type} [AddCommGroup X] [TopologicalSpace X] [IsTopologicalAddGroup X] [T2Space X]
     {h : X → ℂ} (hh : h ∈ SB X) (h0 : h 0 = 1) {K : Set X} (hK : IsCompact K) : ∃ g ∈ SB X, ∀ x ∈ K, g x = 1 := by
   have hU : IsClopen (h ⁻¹' {1}) := hh.1.isClopen_fiber 1
@@ -130,20 +169,46 @@ section Est
 
 variable (F : Type) [Field F] [NumberField F] {κ : Type} [Fintype κ]
 
+/- English proof (translation)
+Use `Continuous.prodMk (continuous_pi fun v => ?_) (continuous_pi fun v => ?_)` and prove the remaining obligations. Conclude with `(InfinitePlace.Completion.isometry_extensionEmbeddingOfIsReal v.2).continuous.comp (continuous_apply _)`. Conclude with `(InfinitePlace.Completion.isometry_extensionEmbedding v.1).continuous.comp (continuous_apply _)`.
+-/
 theorem continuous_toMixed : Continuous (InfiniteAdeleRing.ringEquiv_mixedSpace F) := by
   refine Continuous.prodMk (continuous_pi fun v => ?_) (continuous_pi fun v => ?_)
   · exact (InfinitePlace.Completion.isometry_extensionEmbeddingOfIsReal v.2).continuous.comp (continuous_apply _)
   · exact (InfinitePlace.Completion.isometry_extensionEmbedding v.1).continuous.comp (continuous_apply _)
 
 omit [Fintype κ] in
+/- English proof (translation)
+The claim follows from `continuous_pi fun i => (continuous_toMixed F).comp (continuous_fst.comp (continuous_apply i))`.
+-/
 theorem continuous_infPart : Continuous fun (x : κ → AdeleRing (𝓞 F) F) (i : κ) =>
     InfiniteAdeleRing.ringEquiv_mixedSpace F (x i).1 :=
   continuous_pi fun i => (continuous_toMixed F).comp (continuous_fst.comp (continuous_apply i))
 
 omit [Fintype κ] in
+/- English proof (translation)
+The claim follows from `continuous_pi fun i => continuous_snd.comp (continuous_apply i)`.
+-/
 theorem continuous_finPart : Continuous fun (x : κ → AdeleRing (𝓞 F) F) (i : κ) => (x i).2 :=
   continuous_pi fun i => continuous_snd.comp (continuous_apply i)
 
+/- English proof (translation)
+Establish `hK : IsCompact (tsupport g + -((fun (x : κ → AdeleRing (𝓞 F) F) (i : κ) => (x i).2) '' D))` using `hg.2.isCompact.add (hD.image (continuous_finPart F)).neg`. Take `⟨g', hg', h1⟩` from `exists_SB_one (ThetaAdm.indicator_mem_SB F (κ := κ)) (Set.indicator_of_mem (Set.mem_univ_pi.mpr fun i => SetLike.mem_coe.mpr (zero_mem _)) _) hK`. Take `⟨k, hk⟩` from `ThetaAdm.summable_weight F hg'`. Take `⟨R, hR⟩` from `hD.exists_bound_of_continuousOn (continuous_infPart F (κ := κ)).continuousOn`. Take `⟨C, hC⟩` from `hg.1.continuous.bounded_above_of_compact_support hg.2`.
+
+Establish `hC0 : 0 ≤ C` using `(norm_nonneg _).trans (hC 0)`. Use `⟨Finset.Iic (k, 0), _, hk.mul_left (2 ^ k * (1 + |R|) ^ k * C), fun ξ => by positivity, fun f x hx ξ => ?_⟩` and prove the remaining obligations. Use `set p := ((Finset.Iic (k, 0)).sup (schwartzSeminormFamily ℂ (κ → mixedEmbedding.mixedSpace F) ℂ)) f`. Establish `hp : 0 ≤ p` using `apply_nonneg _ _`. Use `set a : κ → mixedEmbedding.mixedSpace F := fun i => mixedEmbedding F (ξ i)`.
+
+Use `set b : κ → mixedEmbedding.mixedSpace F := fun i => InfiniteAdeleRing.ringEquiv_mixedSpace F (x i).1`. Use `set c : κ → FiniteAdeleRing (𝓞 F) F := fun i => algebraMap F (FiniteAdeleRing (𝓞 F) F) (ξ i)`. Use `set d : κ → FiniteAdeleRing (𝓞 F) F := fun i => (x i).2`. Establish `e : pureA F f g ((fun i => algebraMap F (AdeleRing (𝓞 F) F) (ξ i)) + x) = f (a + b) * g (c + d)`. Unfold `pureA`.
+
+Use `congr 2`. Use function extensionality and compare the values at `i`. Use `(map_add (InfiniteAdeleRing.ringEquiv_mixedSpace F) (algebraMap F _ (ξ i)) (x i).1).trans ?_` and prove the remaining obligations. Rewrite using `[← InfiniteAdeleRing.mixedEmbedding_eq_algebraMap_comp F]`. Both sides reduce to the same expression.
+
+Rewrite using `[e]`. Distinguish the cases in `h0 : g (c + d) = 0`. Rewrite using `[h0, mul_zero, norm_zero]`. Check the signs of the components of the expression. Establish `hc : g' c = 1` using `h1 c ⟨c + d, subset_tsupport _ h0, -d, by simpa using ⟨x, hx, rfl⟩, by simp⟩`.
+
+Establish `h2 : (1 + ‖a + b‖) ^ k * ‖f (a + b)‖ ≤ 2 ^ k * p`. Use `SchwartzMap.one_add_le_sup_seminorm_apply (𝕜 := ℂ) (m := (k, 0)) (k := k) (n := 0) le_rfl le_rfl f (a + b)` as an intermediate fact. Rewrite `this` using `[norm_iteratedFDeriv_zero]`. Conclude with `this`. Establish `h3 : 1 + ‖a‖ ≤ (1 + |R|) * (1 + ‖a + b‖)`.
+
+Use `norm_sub_le (a + b) b` as an intermediate fact. Rewrite `this` using `[add_sub_cancel_right]`. Establish `h4 : ‖b‖ ≤ |R|` using `(hR x hx).trans (le_abs_self R)`. Use polynomial arithmetic with `[mul_nonneg (abs_nonneg R) (norm_nonneg (a + b))]`. Establish `h4` using `pow_le_pow_left₀ (by positivity) h3 k`.
+
+Rewrite using `[hc, norm_one, one_mul, norm_mul, mul_right_comm _ _ p, ← div_eq_mul_inv, le_div_iff₀ (by positivity)]`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem exists_majorant {g : (κ → FiniteAdeleRing (𝓞 F) F) → ℂ} (hg : g ∈ SB (κ → FiniteAdeleRing (𝓞 F) F))
     {D : Set (κ → AdeleRing (𝓞 F) F)} (hD : IsCompact D) :
     ∃ (s : Finset (ℕ × ℕ)) (u : (κ → F) → ℝ), Summable u ∧ (∀ ξ, 0 ≤ u ξ) ∧
@@ -195,10 +260,16 @@ theorem exists_majorant {g : (κ → FiniteAdeleRing (𝓞 F) F) → ℂ} (hg : 
 
 variable {F} [Invertible (2 : AdeleRing (𝓞 F) F)] {ψ : AddChar (AdeleRing (𝓞 F) F) ℂ}
 
+/- English proof (translation)
+Rewrite using `[schr, norm_mul, hψ, one_mul]`.
+-/
 theorem norm_schr (hψ : ∀ x, ‖ψ x‖ = 1) (w : (κ → AdeleRing (𝓞 F) F) × (κ → AdeleRing (𝓞 F) F))
     (Φ : (κ → AdeleRing (𝓞 F) F) → ℂ) (x : κ → AdeleRing (𝓞 F) F) : ‖schr ψ w Φ x‖ = ‖Φ (x + w.1)‖ := by
   rw [schr, norm_mul, hψ, one_mul]
 
+/- English proof (translation)
+Take `⟨s, u, hu, hu0, h⟩` from `exists_majorant F hg (hD.image continuous_fst)`. Use `⟨s, ∑' ξ, u ξ, tsum_nonneg hu0, fun f w hw => ?_⟩` and prove the remaining obligations. Use `tsum_of_norm_bounded (hu.hasSum.mul_right _) fun ξ => ?_` and prove the remaining obligations. Rewrite using `[norm_schr hψ]`. Conclude with `h f _ ⟨w, hw, rfl⟩ ξ`.
+-/
 theorem theta_bound (hψ : ∀ x, ‖ψ x‖ = 1) {g : (κ → FiniteAdeleRing (𝓞 F) F) → ℂ}
     (hg : g ∈ SB (κ → FiniteAdeleRing (𝓞 F) F)) {D : Set ((κ → AdeleRing (𝓞 F) F) × (κ → AdeleRing (𝓞 F) F))}
     (hD : IsCompact D) : ∃ (s : Finset (ℕ × ℕ)) (C : ℝ), 0 ≤ C ∧
@@ -210,6 +281,11 @@ theorem theta_bound (hψ : ∀ x, ‖ψ x‖ = 1) {g : (κ → FiniteAdeleRing (
   rw [norm_schr hψ]
   exact h f _ ⟨w, hw, rfl⟩ ξ
 
+/- English proof (translation)
+Use `continuous_iff_continuousAt.mpr fun w₀ => ?_` and prove the remaining obligations. Take `⟨D, hD, hw₀⟩` from `exists_compact_mem_nhds w₀`. Take `⟨s, u, hu, -, h⟩` from `exists_majorant F hg (hD.image continuous_fst)`. Establish `hp : Continuous (pureA F f g)` using `(f.continuous.comp (continuous_infPart F)).mul (hg.1.continuous.comp (continuous_finPart F))`. Use `ContinuousOn.continuousAt (continuousOn_tsum (fun ξ => Continuous.continuousOn ?_) (hu.mul_right _) fun ξ w hw => (norm_schr hψ _ _ _).le.trans (h f _ ⟨w, hw, rfl⟩ ξ)) hw₀` and prove the remaining obligations.
+
+Unfold `schr`. Use `(hc.comp ?_).mul (hp.comp (continuous_const.add continuous_fst))` and prove the remaining obligations. Conclude with `(continuous_const.dotProduct continuous_snd).add (continuous_const.mul (continuous_fst.dotProduct continuous_snd))`.
+-/
 theorem theta_continuous_pure [LocallyCompactSpace (AdeleRing (𝓞 F) F)] (hc : Continuous ψ) (hψ : ∀ x, ‖ψ x‖ = 1)
     {g : (κ → FiniteAdeleRing (𝓞 F) F) → ℂ} (hg : g ∈ SB (κ → FiniteAdeleRing (𝓞 F) F))
     (f : SchwartzMap (κ → mixedEmbedding.mixedSpace F) ℂ) :
@@ -239,23 +315,40 @@ def omL (R : Type) [CommRing R] (κ : Type) [Fintype κ] :
     (fun _ _ _ => by simp only [Prod.fst_add, Prod.snd_add, add_dotProduct, dotProduct_add]; ring)
     (fun _ _ _ => by simp only [Prod.smul_fst, Prod.smul_snd, smul_dotProduct, dotProduct_smul, smul_eq_mul]; ring)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem omL_apply (w w' : (κ → R) × (κ → R)) : omL R κ w w' = w.1 ⬝ᵥ w'.2 - w'.1 ⬝ᵥ w.2 := rfl
 
 def emb (R : Type) [CommRing R] [Algebra F R] : ((κ → F) × (κ → F)) →ₗ[F] ((κ → R) × (κ → R)) :=
   ((Algebra.linearMap F R).compLeft κ).prodMap ((Algebra.linearMap F R).compLeft κ)
 
 omit [Fintype κ] in
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem emb_apply (w : (κ → F) × (κ → F)) :
     emb R w = (fun i => algebraMap F R (w.1 i), fun i => algebraMap F R (w.2 i)) := rfl
 
+/- English proof (translation)
+Simplify using `[omL_apply, emb_apply, dotProduct]`.
+-/
 theorem omL_emb (u v : (κ → F) × (κ → F)) : omL R κ (emb R u) (emb R v) = algebraMap F R (omL F κ u v) := by
   simp [omL_apply, emb_apply, dotProduct]
 
 omit [Fintype κ] in
+/- English proof (translation)
+Simplify using `[map_sum, algebraMap_smul]`.
+-/
 theorem emb_sum {ι : Type} [Fintype ι] (c : ι → F) (b : ι → (κ → F) × (κ → F)) :
     emb R (∑ i, c i • b i) = ∑ i, algebraMap F R (c i) • emb R (b i) := by
   simp [map_sum, algebraMap_smul]
 
+/- English proof (translation)
+Use `⟨(fun i => -φ (0, Pi.single i 1), fun i => φ (Pi.single i 1, 0)), fun v => ?_⟩` and prove the remaining obligations. Establish `e : v = ∑ i, v.1 i • ((Pi.single i 1, 0) : (κ → F) × (κ → F)) + ∑ i, v.2 i • ((0, Pi.single i 1) : (κ → F) × (κ → F))`. Apply the tactic sequence `ext j <;> simp [Prod.fst_sum, Prod.snd_sum, Finset.sum_apply, Pi.single_apply]`. Use `conv_rhs => rw [e, map_add, map_sum, map_sum]`. Simplify using `only [map_smul, smul_eq_mul, omL_apply, dotProduct, neg_mul, Finset.sum_neg_distrib, sub_neg_eq_add]`.
+
+Use `congr 1`. Conclude with `Finset.sum_congr rfl fun _ _ => mul_comm _ _`.
+-/
 theorem exists_omL_eq (φ : ((κ → F) × (κ → F)) →ₗ[F] F) : ∃ w, ∀ v, omL F κ v w = φ v := by
   refine ⟨(fun i => -φ (0, Pi.single i 1), fun i => φ (Pi.single i 1, 0)), fun v => ?_⟩
   have e : v = ∑ i, v.1 i • ((Pi.single i 1, 0) : (κ → F) × (κ → F)) + ∑ i, v.2 i • ((0, Pi.single i 1) : (κ → F) × (κ → F)) := by
@@ -267,6 +360,9 @@ theorem exists_omL_eq (φ : ((κ → F) × (κ → F)) →ₗ[F] F) : ∃ w, ∀
 
 variable [Invertible (2 : R)] (ψ : AddChar R ℂ)
 
+/- English proof (translation)
+Use function extensionality and compare the values at `x`. Simplify using `only [schr, Pi.smul_apply, smul_eq_mul, omL_apply, Prod.fst_add, Prod.snd_add, add_assoc x, ← mul_assoc, ← AddChar.map_add_eq_mul, add_dotProduct, dotProduct_add]`. Use `congr 2`. Take the linear combination `(-(w.1 ⬝ᵥ w'.2)) * invOf_two_add_invOf_two (R := R)`.
+-/
 theorem schr_schr (w w' : (κ → R) × (κ → R)) (φ : (κ → R) → ℂ) :
     schr ψ w (schr ψ w' φ) = ψ (⅟(2 : R) * omL R κ w w') • schr ψ (w + w') φ := by
   funext x
@@ -275,6 +371,9 @@ theorem schr_schr (w w' : (κ → R) × (κ → R)) (φ : (κ → R) → ℂ) :
   congr 2
   linear_combination (-(w.1 ⬝ᵥ w'.2)) * invOf_two_add_invOf_two (R := R)
 
+/- English proof (translation)
+Rewrite using `[schr_schr, schr_schr, smul_smul, ← AddChar.map_add_eq_mul, add_comm w' w]`. Use `congr 2`. Simplify using `only [omL_apply]`. Take the linear combination `(w.1 ⬝ᵥ w'.2 - w'.1 ⬝ᵥ w.2) * invOf_two_add_invOf_two (R := R)`.
+-/
 theorem schr_comm (w w' : (κ → R) × (κ → R)) (φ : (κ → R) → ℂ) :
     schr ψ w (schr ψ w' φ) = ψ (omL R κ w w') • schr ψ w' (schr ψ w φ) := by
   rw [schr_schr, schr_schr, smul_smul, ← AddChar.map_add_eq_mul, add_comm w' w]
@@ -287,11 +386,61 @@ def schrLin (w : (κ → R) × (κ → R)) : ((κ → R) → ℂ) →ₗ[ℂ] ((
   map_add' _ _ := by funext x; simp [schr, mul_add]
   map_smul' _ _ := by funext x; simp [schr, mul_left_comm]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `x`. Simplify using `[schr]`.
+-/
 theorem schr_zero (φ : (κ → R) → ℂ) : schr ψ 0 φ = φ := by
   funext x; simp [schr]
 
 end Alg
 
+/- English proof (translation)
+Set `n` to `Module.finrank F L`. Set `b : Module.Basis (Fin n) F L` to `Module.finBasis F L`. Set `β : (Fin n → A) →ₗ[A] ((κ → A) × (κ → A))` to `Fintype.linearCombination A fun i => emb A (b i : (κ → F) × (κ → F))`. Establish `hβ : ∀ t, β t = ∑ i, t i • emb A (b i : (κ → F) × (κ → F))` using `fun t => rfl`. Use `clear_value β`.
+
+Establish `hβc : Continuous β`. Rewrite using `[show ⇑β = fun t => ∑ i, t i • emb A (b i : (κ → F) × (κ → F)) from funext hβ]`. Use `fun_prop`. Establish `hβom : ∀ t w, omL A κ (β t) (emb A w) = ∑ i, t i * algebraMap F A (omL F κ (b i) w)` using `fun t w => by`. Simplify using `only [hβ, map_sum, map_smul, LinearMap.sum_apply, LinearMap.smul_apply, omL_emb, smul_eq_mul]`.
+
+Establish `hiso : ∀ t t', omL A κ (β t) (β t') = 0` using `fun t t' => by`. Rewrite using `[hβ t', map_sum]`. Use `Finset.sum_eq_zero fun j _ => ?_` and prove the remaining obligations. Rewrite using `[map_smul, hβom, Finset.sum_eq_zero, smul_zero]`. Introduce `i _`.
+
+Rewrite using `[omL_apply, hL _ (b i).2 _ (b j).2, sub_self, map_zero, mul_zero]`. Establish `hadd : ∀ t t' Φ, schr ψ (β t) (schr ψ (β t') Φ) = schr ψ (β (t + t')) Φ` using `fun t t' Φ => by`. Rewrite using `[schr_schr, hiso, mul_zero, AddChar.map_zero_eq_one, one_smul, map_add]`. Establish `hβL : ∀ w : L, emb A (w : (κ → F) × (κ → F)) = β fun i => algebraMap F A (b.repr w i)` using `fun w => by`. Rewrite using `[hβ, ← emb_sum]`.
+
+Use `congrArg (emb A) ?_` and prove the remaining obligations. Establish `h` using `congrArg L.subtype (b.sum_repr w)`. Rewrite `h` using `[map_sum]`. Simplify using `only [map_smul, Submodule.subtype_apply] at h`. Conclude with `h.symm`.
+
+Set `Γ : AddSubgroup (Fin n → A)` to `AddSubgroup.pi Set.univ fun _ => (algebraMap F A).range.toAddSubgroup`. Establish `hΓ : ∀ γ, γ ∈ Γ ↔ ∃ c : Fin n → F, γ = fun i => algebraMap F A (c i)` using `fun γ => by`. Prove the components needed by the constructor for the conclusion. Introduce `h choose c hc using fun i => h i trivial`. Conclude with `⟨c, funext fun i => (hc i).symm⟩`.
+
+Introduce and unpack `⟨c, rfl⟩ i _`. Conclude with `⟨c i, rfl⟩`. Take `⟨M, hMb, hMt, hMσ, hM0⟩` from `exists_mean Γ (isClosed_set_pi fun _ _ => hcl) (isCompact_univ_pi fun _ : Fin n => hD₀) (fun x => by choose c hc using fun i => hD₀' (x i)`. Conclude with `⟨_, (hΓ _).mpr ⟨c, rfl⟩, fun i _ => hc i⟩)`. Set `fn : ((κ → A) → ℂ) →ₗ[ℂ] ((Fin n → A) → ℂ)` to `LinearMap.pi fun t => θ ∘ₗ schrLin ψ (β t)`.
+
+Establish `hfn : ∀ Φ t, fn Φ t = θ (schr ψ (β t) Φ)` using `fun Φ t => rfl`. Use `clear_value fn`. Establish `hper : ∀ Φ ∈ Sp, IsPer Γ (fn Φ)` using `fun Φ hΦ => by`. Prove the components needed by the constructor for the conclusion. Rewrite using `[funext (hfn Φ)]`.
+
+Conclude with `(hcont Φ hΦ).comp hβc`. Introduce `γ hγ t`. Take `⟨c, rfl⟩` from `(hΓ γ).mp hγ`. Rewrite using `[hfn, hfn, add_comm, ← hadd, hβ, ← emb_sum]`. Conclude with `hrat _ _ (hpres _ _ hΦ)`.
+
+Use `⟨M ∘ₗ fn, ⟨_, (isCompact_univ_pi fun _ : Fin n => hD₀).image hβc, fun Φ hΦ B hB => hMb _ (hper _ hΦ) _ fun t ht => ?_⟩, fun h0 Φ₀ hΦ₀ => ?_, fun y hy Φ hΦ => ?_, fun s sA T a hsA hs hT hTs hTθ Φ hΦ => ?_⟩` and prove the remaining obligations. Rewrite using `[hfn]`. Conclude with `hB _ ⟨t, ht, rfl⟩`. Use `hM0 (Set.range fun (c : Fin n → F) (t : Fin n → A) => ψ (∑ i, t i * algebraMap F A (c i))) ?_ ⟨0, by funext t; simp⟩ ?_ ?_ ?_ _ (hper _ hΦ₀) ?_` as an intermediate fact. Establish `h1` using `congrFun this 0`.
+
+Rewrite `h1` using `[hfn, map_zero, schr_zero]`. Then use the resulting hypothesis. Introduce and unpack `_ ⟨c, rfl⟩`. Use `⟨hc.comp (by fun_prop), fun γ hγ t => ?_⟩` and prove the remaining obligations. Take `⟨c', rfl⟩` from `(hΓ γ).mp hγ`. Simplify using `only [Pi.add_apply, add_mul, Finset.sum_add_distrib, ← map_mul, ← map_sum, AddChar.map_add_eq_mul, htriv, mul_one]`.
+
+Introduce and unpack `_ ⟨c, rfl⟩ _ ⟨c', rfl⟩`. Use `⟨c + c', funext fun t => ?_⟩` and prove the remaining obligations. Simplify using `only [Pi.add_apply, map_add, mul_add, Finset.sum_add_distrib, AddChar.map_add_eq_mul, Pi.mul_apply]`. Introduce and unpack `_ ⟨c, rfl⟩`. Use `⟨-c, funext fun t => ?_⟩` and prove the remaining obligations.
+
+Simplify using `only [Pi.neg_apply, map_neg, mul_neg, Finset.sum_neg_distrib, AddChar.map_neg_eq_inv, Pi.star_apply]`. Conclude with `Complex.inv_eq_conj (hψ _)`. Introduce `x y hxy i _`. Take `⟨c, hc'⟩` from `hann ((-x + y) i) fun a => by`. Establish `h1` using `hxy _ ⟨Pi.single i a, rfl⟩`.
+
+Simplify using `only [Pi.single_apply, apply_ite (algebraMap F A), map_zero, mul_ite, mul_zero, Finset.sum_ite_eq', Finset.mem_univ, if_true] at h1`. Rewrite using `[Pi.add_apply, Pi.neg_apply, add_mul, neg_mul, AddChar.map_add_eq_mul, AddChar.map_neg_eq_inv, h1]`. Conclude with `inv_mul_cancel₀ (norm_ne_zero_iff.mp (by rw [hψ]; exact one_ne_zero))`. Conclude with `⟨c, hc'.symm⟩`. Introduce and unpack `_ ⟨c, rfl⟩`.
+
+Take `⟨φ, hφ⟩` from `LinearMap.exists_extend (b.constr F c)`. Take `⟨w, hw⟩` from `exists_omL_eq φ`. Establish `hwc : ∀ i, omL F κ (b i) w = c i` using `fun i => by`. Rewrite using `[hw]`. Simplify using `using LinearMap.congr_fun hφ (b i)`.
+
+Use `Eq.trans ?_ (h0 _ (hpres (emb A w) _ hΦ₀))` and prove the remaining obligations. Use `congrArg M (funext fun t => ?_)` and prove the remaining obligations. Rewrite using `[Pi.mul_apply, hfn, hfn, schr_comm, hβom, map_smul, hrat _ _ (hpres _ _ hΦ₀)]`. Simplify using `only [hwc, smul_eq_mul]`. Choose the witnesses or unpack the hypotheses as in `⟨t₀, rfl⟩ : y ∈ LinearMap.range β := by`.
+
+Use `Submodule.span_le.mpr ?_ hy` and prove the remaining obligations. Introduce and unpack `_ ⟨w, hw, rfl⟩`. Conclude with `⟨_, (hβL ⟨w, hw⟩).symm⟩`. Use `Eq.trans ?_ (hMt _ (hper _ hΦ) t₀)` and prove the remaining obligations. Use `congrArg M (funext fun t => ?_)` and prove the remaining obligations.
+
+Rewrite using `[hfn, hfn, hadd]`. Establish `hmap : L.map (s : _ →ₗ[F] _) = L`. Use extensionality with `w`. Rewrite using `[Submodule.mem_map_equiv, ← hs, LinearEquiv.apply_symm_apply]`. Set `sL : L ≃ₗ[F] L` to `s.ofSubmodules L L hmap`.
+
+Set `S : Matrix (Fin n) (Fin n) A` to `(LinearMap.toMatrix b b (sL : L →ₗ[F] L)).map (algebraMap F A)`. Set `S' : Matrix (Fin n) (Fin n) A` to `(LinearMap.toMatrix b b (sL.symm : L →ₗ[F] L)).map (algebraMap F A)`. Establish `hSS : S * S' = 1`. Rewrite using `[← Matrix.map_mul, ← LinearMap.toMatrix_comp, LinearEquiv.comp_symm, LinearMap.toMatrix_id, Matrix.map_one _ (map_zero _) (map_one _)]`. Establish `hS : ∀ t, β (S *ᵥ t) = sA (β t)` using `fun t => by`.
+
+Establish `h1 : ∀ j, sA (emb A (b j : (κ → F) × (κ → F))) = β fun i => S i j` using `fun j => by`. Use `(hsA _).trans ((hβL (sL (b j))).trans ?_)` and prove the remaining obligations. Simplify using `[S, LinearMap.toMatrix_apply]`. Rewrite using `[hβ t, map_sum]`. Simplify using `only [map_smul sA, h1, ← map_smul β, ← map_sum β]`.
+
+Use `congrArg β (funext fun i => ?_)` and prove the remaining obligations. Simplify using `[Matrix.mulVec, dotProduct, Finset.sum_apply, mul_comm]`. Establish `h2` using `hMσ (Matrix.mulVecLin S).toAddMonoidHom (continuous_const.matrix_mulVec continuous_id) (fun t => ⟨S' *ᵥ t, by simp [hSS]⟩) (fun γ hγ => by`. Take `⟨c, rfl⟩` from `(hΓ γ).mp hγ`. Use `(hΓ _).mpr ⟨LinearMap.toMatrix b b (sL : L →ₗ[F] L) *ᵥ c, funext fun i => ?_⟩` and prove the remaining obligations.
+
+Simplify using `[S, Matrix.mulVec, dotProduct]) _ (hper _ (hT _ hΦ))`. Use `h2.symm.trans ?_` and prove the remaining obligations. Rewrite using `[LinearMap.comp_apply, ← smul_eq_mul, ← map_smul]`. Use `congrArg M (funext fun t => ?_)` and prove the remaining obligations. Rewrite using `[Pi.smul_apply, hfn, hfn, smul_eq_mul, ← hTθ _ (hpres _ _ hΦ), hTs _ _ hΦ, ← hS]`.
+
+Both sides reduce to the same expression.
+-/
 theorem exists_avg {F : Type} [Field F] {A : Type} [CommRing A] [Algebra F A] {κ : Type} [Fintype κ]
     [Invertible (2 : A)] [TopologicalSpace A] [IsTopologicalRing A] {ψ : AddChar A ℂ} (hc : Continuous ψ)
     (hψ : ∀ x, ‖ψ x‖ = 1) (htriv : ∀ a : F, ψ (algebraMap F A a) = 1)
@@ -432,6 +581,21 @@ theorem exists_avg {F : Type} [Field F] {A : Type} [CommRing A] [Algebra F A] {�
     rw [Pi.smul_apply, hfn, hfn, smul_eq_mul, ← hTθ _ (hpres _ _ hΦ), hTs _ _ hΦ, ← hS]
     rfl
 
+/- English proof (translation)
+Introduce `F _ _ _ _ κ _ ψ hc hne htriv L hL`. Take `⟨-, ⟨θ, -, hθ⟩, Φ₀, hΦ₀, hΦ₀'⟩` from `ThetaAdm.theta_adm F κ`. Take `⟨hpres, hrat⟩` from `AdelicHeis.schr_mem_and_thetaSum F κ ψ hc hne htriv`. Take `⟨hψ, hann⟩` from `AdeleAnn.unitary_and_annihilator_eq F ψ hc hne htriv`. Take `⟨C₀, hC₀, hC₀'⟩` from `GroundTheory.Global.exists_isCompact_forall_exists_sub_mem F`.
+
+Establish `hD₀ : IsCompact (C₀ ×ˢ (GroundTheory.Global.integralFiniteAdeles (𝓞 F) F : Set (FiniteAdeleRing (𝓞 F) F)) : Set (AdeleRing (𝓞 F) F))` using `hC₀.prod (GroundTheory.Global.isCompact_integralFiniteAdeles F)`. Establish `hpure : ∀ (f : SchwartzMap (κ → mixedEmbedding.mixedSpace F) ℂ), ∀ g ∈ SB (κ → FiniteAdeleRing (𝓞 F) F), pureA F f g ∈ schA F κ` using `fun f g hg => Submodule.subset_span ⟨f, g, hg, rfl⟩`. Establish `hcont : ∀ Φ ∈ schA F κ, Continuous fun w => θ (schrLin ψ w Φ)` using `fun Φ hΦ => by`. Proceed by induction on `hΦ using Submodule.span_induction with`. Consider the case `mem x hx`.
+
+Take `⟨f, g, hg, rfl⟩` from `hx`. Conclude with `(theta_continuous_pure hc hψ hg f).congr fun w => (hθ _ (hpres w _ (hpure f g hg))).symm`. Consider the case `zero => simp only [map_zero]`. Conclude with `continuous_const`. Consider the case `add x y _ _ hx hy => simp only [map_add]`.
+
+Conclude with `hx.add hy`. Consider the case `smul c x _ hx => simp only [map_smul]`. Conclude with `hx.const_smul c`. Take `⟨l, ⟨D, hD, hb⟩, h0, hinv, heig⟩` from `exists_avg hc hψ htriv hann (GroundTheory.Global.isClosed_principalSubgroup F) hD₀ hC₀' (schA F κ) θ hpres (fun w Φ hΦ => by rw [hθ _ (hpres _ _ hΦ), hθ _ hΦ]; exact hrat w Φ) hcont L fun w hw => (hL w).mp hw`. Use `⟨l, fun g hg => ?_, ?_, hinv, fun s sA T a hsA hs hT hTs hTθ => heig s sA T a hsA hs hT hTs fun Φ hΦ => ?_⟩` and prove the remaining obligations.
+
+Use `⟨SchwartzMap.mkCLMtoNormedSpace (σ := RingHom.id ℂ) (fun f => l (pureA F f g)) (fun f f' => ?_) (fun c f => ?_) ?_, fun f => rfl⟩` and prove the remaining obligations. Rewrite using `[← map_add]`. Use `congrArg l (funext fun x => ?_)` and prove the remaining obligations. Simplify using `[pureA, add_mul]`. Rewrite using `[← map_smul]`.
+
+Use `congrArg l (funext fun x => ?_)` and prove the remaining obligations. Simplify using `[pureA, mul_assoc]`. Take `⟨s, C, hC, h⟩` from `theta_bound hψ hg hD`. Use `⟨s, C, hC, fun f => hb _ (hpure f g hg) _ fun w hw => ?_⟩` and prove the remaining obligations. Rewrite using `[hθ _ (hpres _ _ (hpure f g hg))]`.
+
+Conclude with `h f w hw`. Assume the negation of the conclusion as `h1 push Not at h1`. Conclude with `hΦ₀' ((hθ _ hΦ₀).symm.trans (h0 h1 _ hΦ₀))`. Rewrite using `[hθ _ (hT _ hΦ), hθ _ hΦ, hTθ _ hΦ]`.
+-/
 theorem theta_mean : ∀ (F : Type) [Field F] [NumberField F] [LocallyCompactSpace (AdeleRing (𝓞 F) F)] [Invertible (2 : AdeleRing (𝓞 F) F)] (κ : Type) [Fintype κ] (ψ : AddChar (AdeleRing (𝓞 F) F) ℂ), Continuous ψ → ψ ≠ 1 → (∀ a : F, ψ (algebraMap F (AdeleRing (𝓞 F) F) a) = 1) → ∀ L : Submodule F ((κ → F) × (κ → F)), (∀ w, w ∈ L ↔ ∀ w' ∈ L, w.1 ⬝ᵥ w'.2 = w'.1 ⬝ᵥ w.2) → ∃ l ∈ (adeleClass F).adm κ, (∃ Φ ∈ schA F κ, l Φ ≠ 0) ∧ (∀ y ∈ Submodule.span (AdeleRing (𝓞 F) F) ((fun w : (κ → F) × (κ → F) => ((fun i => algebraMap F (AdeleRing (𝓞 F) F) (w.1 i), fun i => algebraMap F (AdeleRing (𝓞 F) F) (w.2 i)) : (κ → AdeleRing (𝓞 F) F) × (κ → AdeleRing (𝓞 F) F))) '' L), ∀ Φ ∈ schA F κ, l (schr ψ y Φ) = l Φ) ∧ ∀ (s : ((κ → F) × (κ → F)) ≃ₗ[F] ((κ → F) × (κ → F))) (sA : ((κ → AdeleRing (𝓞 F) F) × (κ → AdeleRing (𝓞 F) F)) →ₗ[AdeleRing (𝓞 F) F] ((κ → AdeleRing (𝓞 F) F) × (κ → AdeleRing (𝓞 F) F))) (T : Module.End ℂ ((κ → AdeleRing (𝓞 F) F) → ℂ)) (a : ℂ), (∀ w, sA (fun i => algebraMap F (AdeleRing (𝓞 F) F) (w.1 i), fun i => algebraMap F (AdeleRing (𝓞 F) F) (w.2 i)) = (fun i => algebraMap F (AdeleRing (𝓞 F) F) ((s w).1 i), fun i => algebraMap F (AdeleRing (𝓞 F) F) ((s w).2 i))) → (∀ w, s w ∈ L ↔ w ∈ L) → (∀ Φ ∈ schA F κ, T Φ ∈ schA F κ) → (∀ w, ∀ Φ ∈ schA F κ, T (schr ψ w Φ) = schr ψ (sA w) (T Φ)) → (∀ Φ ∈ schA F κ, thetaSum F (T Φ) = a * thetaSum F Φ) → ∀ Φ ∈ schA F κ, l (T Φ) = a * l Φ := by
   intro F _ _ _ _ κ _ ψ hc hne htriv L hL
   obtain ⟨-, ⟨θ, -, hθ⟩, Φ₀, hΦ₀, hΦ₀'⟩ := ThetaAdm.theta_adm F κ

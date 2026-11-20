@@ -17,6 +17,9 @@ open NumberField IsDedekindDomain Matrix
 open Formalism.BasicNotions Formalism.HermitianLatticesTheory Formalism.L2.Col Formalism.L2.DIV Formalism.L2.Forms GlobalTheory.Mem GlobalTheory.Mem.Col2
 open Formalism.MainNotions.product_first_zeroth_parts (Ow)
 
+/- English proof (translation)
+Rewrite using `[GlobalTheory.LvT.Inh.mem_valO_of_below (X.emb (tauAt hPr u w P)) w (pullW (tauAt hPr u w P) w) (fun _ => Iff.rfl), GlobalTheory.LvT.Inh.mem_valO]`. Distinguish the cases in `h : s = true`. Rewrite using `[if_pos h, show pullW _ w = P.1 from seesP_tauAt hPr u hX (hs.1 h) P]`. Rewrite using `[if_neg h, show pullW _ w = conjPrime₂ P.1 from seesPbar_tauAt hPr u hX hw (mt hs.2 h) P, GlobalTheory.CharVal.valuation_conjP, star_star]`.
+-/
 theorem val_tauAt {X : Fields} {Pr : Primes X} (hPr : Pr.Ok) (u : Pr.Word) (hX : X.AbelianUnramifiedExtensionConditions) {w : HeightOneSpectrum (𝓞 X.K)}
     (hw : ((Pr.T u : ℕ) : 𝓞 X.K) ∈ w.asIdeal) (P : Pr.vT u) (s : Bool) (hs : s = true ↔ seenC Pr u w) (x : X.E) :
     X.emb (tauAt hPr u w P) (if s then x else star x) ∈ GlobalTheory.LvT.Inh.valO w ↔ P.1.valuation X.E x ≤ 1 := by
@@ -56,6 +59,11 @@ def ofOk (I : ChainIn B.fields.E B.fields.K B.fields.Tau B.R) (J : AtIn I) (Q : 
   lf := (laws_all I J _ _ _ (base_fOk B) hI hJ Q hQ (assemble B C W V S N G).what₂.places).2
   hT := hT
 
+/- English proof (translation)
+Introduce `w hw P x`. Establish `h1` using `GlobalTheory.LvT.Inh.resChar_mem_plEq (assemble B C W V S N G) w`. Rewrite `h1` using `[show (assemble B C W V S N G).what₂.places.resChar w = B.T u from hw.trans eT]`. Use `(GlobalTheory.LvT.Inh.mem_Ow_iff_valO (assemble B C W V S N G) w _).trans ?_` and prove the remaining obligations. Establish `h2` using `val_tauAt (GlobalTheory.BasePrimes.primes_ok B X).1 u (GlobalTheory.Mem.FieldsLaws.fields_satisfy_definite_laws B).1 h1 ⟨P.1, eS P.1 P.2⟩ _ (eF w) x`.
+
+Conclude with `(iff_of_eq (congrArg (fun τ => B.fields.emb τ (if Z.seenP w then x else star x) ∈ GlobalTheory.LvT.Inh.valO w) (eZ w P))).trans h2`.
+-/
 theorem sees_ofOk (X : PreX B.toPre) (I : ChainIn B.fields.E B.fields.K B.fields.Tau B.R) (J : AtIn I) (Q : PerIn I)
     (Z : FmIn J (assemble B C W V S N G).what₂.places) (hI : I.Ok) (hJ : J.Ok) (hQ : Q.Ok) (hT : Q.Over J)
     (eT : J.T = B.T u) (eS : ∀ P ∈ J.ST, P ∈ (B.primes X).vT u)

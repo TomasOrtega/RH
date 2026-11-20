@@ -12,6 +12,9 @@ open NumberField MeasureTheory Filter Topology Formalism.MainNotions.GlobalTheor
 open GlobalTheory.Doubling (absE)
 
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.EisMidHt.ht_adVec_lower_bound | exact GlobalTheory.EisMidHt.ht_adVec_lower_bound | (intros; apply GlobalTheory.EisMidHt.ht_adVec_lower_bound <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.lattice_height_uniform_lower_bound : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (n : ℕ)
     (L : Submodule (𝓞 E) (Fin n → E)) (a : GL (Fin n) (AF F ⊗[F] E)), IsCMExt F E σ → Submodule.IsLattice E L →
       ∃ δ : ℝ, 0 < δ ∧ (∀ y : Fin n → E, y ≠ 0 → δ ≤ GlobalTheory.EisMidHt.ht L a (GlobalTheory.EisMidHt.adVec F y)) ∧

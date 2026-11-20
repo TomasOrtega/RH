@@ -11,6 +11,13 @@ namespace CompanionTheory.PfDual
 
 set_option maxHeartbeats 1000000 in
 
+/- English proof (translation)
+Introduce `k _ _ A _ hA M hM hadd hn κ _ _ D hD hc`. Establish `: IsCommMonObj A` using `hA.comm`. Establish `hp : IsProjBy A.hom` using `GlobalTheory.T.isProjectiveOverRingByCharts_abelian_variety k A hA`. Use `GlobalTheory.T.cechComplex_acyclic_primitive_nontrivial_algClosed k A hA hp M hM ?_ hn κ D hD hc` and prove the remaining obligations. Establish `hlam : (abelian₂ A M).IsLB` using `LB.isLB_linComb hM _ _`.
+
+Use `(GlobalTheory.CechPic.cls_eq_zero_iff hlam).1 ?_` and prove the remaining obligations. Use `(GlobalTheory.CechPic.cls_cube_two hM (fst A A) (snd A A) hlam).trans ?_` and prove the remaining obligations. Establish `h1` using `hadd (A ⊗ A) (fst A A) (snd A A)`. Establish `h0` using `hadd (A ⊗ A) 1 1`. Rewrite `h0` using `[_root_.mul_one]`.
+
+Establish `h0' : GlobalTheory.CechPic.pull (1 : A ⊗ A ⟶ A).left (cls M hM) = 0`. Conclude with `add_left_cancel (h0.symm.trans (add_zero _).symm)`. Simplify using `only [GlobalTheory.CechPic.lam, h1, h0']`. Normalize the expressions using the abelian group laws.
+-/
 theorem addAcyclic_pf : ∀ (k : Type) [Field k] [IsAlgClosed k] (A : Over (Sp k)) [GrpObj A], IsAbelianScheme A → ∀ M : LB A.left, ∀ hM : M.IsLB, (∀ (Y : Over (Sp k)) (a a' : Y ⟶ A), GlobalTheory.CechPic.pull (a * a').left (cls M hM) = GlobalTheory.CechPic.pull a.left (cls M hM) + GlobalTheory.CechPic.pull a'.left (cls M hM)) → ¬ Triv M → ∀ (κ : Type) [LinearOrder κ] [Fintype κ] (D : κ → A.left.Opens), (∀ i, IsAffineOpen (D i)) → ⨆ i, D i = ⊤ → (cechLB A.hom M D).Acyclic := by
   intro k _ _ A _ hA M hM hadd hn κ _ _ D hD hc
   have : IsCommMonObj A := hA.comm

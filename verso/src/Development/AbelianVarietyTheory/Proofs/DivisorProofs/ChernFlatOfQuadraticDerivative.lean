@@ -8,6 +8,23 @@ noncomputable section
 
 namespace GlobalTheory.ThetaMetDdc
 
+/- English proof (translation)
+Introduce `g E _ _ B τ hτ hflat hquad hreQ hdc`. Unfold `ChernIsFlat`. Introduce `P hP v w`. Establish `hS : IsOpen (cov B g)` using `hτ.1.prod isOpen_univ`. Establish `h1 : (∞ : WithTop ℕ∞) ≠ 0` using `by simp`.
+
+Establish `h2 : minSmoothness ℝ 2 ≤ ∞` using `by simp [minSmoothness]; exact WithTop.coe_le_coe.2 le_top`. Establish `hR : ContDiffAt ℝ ∞ (reQuad τ) P` using `hreQ.contDiffAt (hS.mem_nhds hP)`. Establish `hF : ContDiffAt ℝ ∞ (flat τ) P` using `hflat.contDiffAt (hS.mem_nhds hP)`. Establish `hRd : DifferentiableAt ℝ (fderiv ℝ (reQuad τ)) P` using `(hR.fderiv_right (m := 1) (WithTop.coe_le_coe.2 le_top)).differentiableAt one_ne_zero`. Establish `hFd : DifferentiableAt ℝ (fderiv ℝ (flat τ)) P` using `(hF.fderiv_right (m := 1) (WithTop.coe_le_coe.2 le_top)).differentiableAt one_ne_zero`.
+
+Establish `hFa : DifferentiableAt ℝ (flat τ) P` using `hF.differentiableAt h1`. Establish `hsR` using `hR.isSymmSndFDerivAt h2`. Establish `hsF` using `hF.isSymmSndFDerivAt h2`. Establish `hdq : ∀ Q ∈ cov B g, fderiv ℝ (fun Q => -2 * π * quad τ Q) Q = (-2 * π) • fderiv ℝ (quad τ) Q` using `fun Q hQ => fderiv_const_mul ((hquad.contDiffAt (hS.mem_nhds hQ)).differentiableAt h1) _`. Establish `hev : ∀ v : Pt E g, (fun Q => fderiv ℝ (fun Q => -2 * π * quad τ Q) Q (Complex.I • v)) =ᶠ[nhds P] fun Q => -2 * π * (fderiv ℝ (reQuad τ) Q v + 2 * ∑ i, flat τ Q (Sum.inl i) * fderiv ℝ (flat τ) Q v (Sum.inr i))`.
+
+Introduce `v`. Use `filter_upwards [hS.mem_nhds hP] with Q hQ`. Rewrite using `[hdq Q hQ, ContinuousLinearMap.smul_apply, hdc Q hQ v, smul_eq_mul]`. Both sides reduce to the same expression. Establish `key : ∀ v w : Pt E g, fderiv ℝ (fun Q => -2 * π * (fderiv ℝ (reQuad τ) Q v + 2 * ∑ i, flat τ Q (Sum.inl i) * fderiv ℝ (flat τ) Q v (Sum.inr i))) P w = -2 * π * (fderiv ℝ (fderiv ℝ (reQuad τ)) P w v + 2 * ∑ i, (flat τ P (Sum.inl i) * fderiv ℝ (fderiv ℝ (flat τ)) P w v (Sum.inr i) …`.
+
+Introduce `v w`. Establish `e1 : HasFDerivAt (fun Q => fderiv ℝ (reQuad τ) Q v) ((ContinuousLinearMap.apply ℝ ℝ v).comp (fderiv ℝ (fderiv ℝ (reQuad τ)) P)) P` using `(ContinuousLinearMap.apply ℝ ℝ v).hasFDerivAt.comp P hRd.hasFDerivAt`. Establish `e2 : ∀ i, HasFDerivAt (fun Q => flat τ Q (Sum.inl i)) ((ContinuousLinearMap.proj (R` using `ℝ) (φ := fun _ : Fin g ⊕ Fin g => ℝ) (Sum.inl i)).comp (fderiv ℝ (flat τ) P)) P := fun i => (ContinuousLinearMap.proj (R := ℝ) (φ := fun _ : Fin g ⊕ Fin g => ℝ) (Sum.inl i)).hasFDerivAt.comp P hFa.hasFDerivAt`. Establish `e3 : ∀ i, HasFDerivAt (fun Q => fderiv ℝ (flat τ) Q v (Sum.inr i)) (((ContinuousLinearMap.proj (R` using `ℝ) (φ := fun _ : Fin g ⊕ Fin g => ℝ) (Sum.inr i)).comp (ContinuousLinearMap.apply ℝ (Fl g) v)).comp (fderiv ℝ (fderiv ℝ (flat τ)) P)) P := fun i => ((ContinuousLinearMap.proj (R := ℝ) (φ := fun _ : Fin g ⊕ Fin g => ℝ) (Sum.inr i)).comp (ContinuousLinearMap.apply ℝ (Fl g) v)).hasF …`. Establish `hD` using `((e1.fun_add ((HasFDerivAt.fun_sum (u := Finset.univ) fun i _ => (e2 i).fun_mul (e3 i)).const_mul 2)).const_mul (-2 * π))`.
+
+Establish `e : fderiv ℝ (fun Q => -2 * π * (fderiv ℝ (reQuad τ) Q v + 2 * ∑ i, flat τ Q (Sum.inl i) * fderiv ℝ (flat τ) Q v (Sum.inr i))) P = _` using `hD.fderiv`. Rewrite using `[e]`. Use `clear hev hdq hsR hsF hdc hquad hreQ hflat e e1 e2 e3 hD`. Simplify using `only [ContinuousLinearMap.smul_apply, ContinuousLinearMap.add_apply, ContinuousLinearMap.sum_apply, ContinuousLinearMap.comp_apply, ContinuousLinearMap.apply_apply, ContinuousLinearMap.proj_apply, smul_eq_mul]`. Establish `hom : om0 τ P ![v, w] = riem (dflat τ P v) (dflat τ P w)` using `rfl`.
+
+Simplify using `only [ddc, Real.log_exp]`. Rewrite using `[(hev v).fderiv_eq, (hev w).fderiv_eq, key v w, key w v, hom, hsR w v]`. Simplify using `only [hsF w v, riem, dflat]`. Establish `aux : ∀ a s t : ℝ, -(1 / (4 * π) * (-2 * π * (a + 2 * s) - -2 * π * (a + 2 * t))) = s - t`. Introduce `a s t`.
+
+Establish `hπ : π ≠ 0` using `Real.pi_ne_zero`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[aux, ← Finset.sum_sub_distrib]`. Conclude with `Finset.sum_congr rfl fun i _ => by ring`.
+-/
 theorem chernIsFlat_exp_quad :
     ∀ {g : ℕ} {E : Type} [NormedAddCommGroup E] [NormedSpace ℂ E] {B : Set E}
       {τ : E → Matrix (Fin g) (Fin g) ℂ}, IsPeriodMap B τ → ContDiffOn ℝ ∞ (flat τ) (cov B g) →

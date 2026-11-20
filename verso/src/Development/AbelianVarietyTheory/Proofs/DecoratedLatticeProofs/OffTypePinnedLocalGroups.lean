@@ -32,6 +32,15 @@ namespace GlobalTheory.Core.Mi.MemMatch
 
 open GlobalTheory.LocMod GlobalTheory.LocGrp in
 
+/- English proof (translation)
+Take `⟨rfl, h0, hX, hz, hY⟩` from `hF`. Establish `eA : Formalism.L2.Theta.mt B.V (B.d.emb0 (B.o.emb (h, 1))) ⬝ (B.d.j0 ⬝ B.o.jA) = B.d.j0 ⬝ B.o.jA ⬝ Formalism.L2.Theta.mt B.A h`. Rewrite using `[cancel₂ (B.d.wittDecomp_anisotropicEmbedding_inclAnisotropic _), Matrix.mul_assoc, B.o.emb_jA, Matrix.mul_assoc]`. Establish `eB : Formalism.L2.Theta.mt B.V (B.d.emb0 (B.o.emb (h, 1))) ⬝ (B.d.j0 ⬝ B.o.jB) = B.d.j0 ⬝ B.o.jB`. Rewrite using `[cancel₂ (B.d.wittDecomp_anisotropicEmbedding_inclAnisotropic _), Matrix.mul_assoc, B.o.emb_jB, GlobalTheory.MixModel.mt_one, Matrix.mul_one]`.
+
+Establish `rA : B.d.j0 ⬝ B.o.jA = rat (B.d.i₀ * B.o.iA)` using `(rat_mul _ _).symm`. Establish `rB : B.d.j0 ⬝ B.o.jB = rat (B.d.i₀ * B.o.iB)` using `(rat_mul _ _).symm`. Rewrite `eA` using `[rA]`. Rewrite `eB` using `[rB]`. Use `⟨suppAt_wittLeviEmbedding B.d (suppAt_emb B.o hh.1), eq_embX F _ g₀ ((rat (B.d.i₀ * B.o.iA)).map p.π * FA.β) h0 (intertwine p eA hh) fun j => ?_⟩` and prove the remaining obligations.
+
+Break down `lt_trichotomy j.val ρ with hj | hj | hj` into its components or cases. Conclude with `fix_col (map_fix p (B.d.wittDecomp_anisotropicEmbedding_inclX _)) _ ⟨j.val, hj⟩ (hX _ j rfl)`. Use `fix_vec (map_fix p eB) s (Witness.prH p ∘ B.ζ) fun r => (hz j hj r).trans (congrArg (s * ·) ?_)` and prove the remaining obligations. Rewrite using `[vecB, Matrix.mulVec_mulVec]`. Conclude with `RingHom.map_mulVec (Witness.prH p) _ _ r`.
+
+Conclude with `fix_col (map_fix p (B.d.wittDecomp_anisotropicEmbedding_inclY _)) _ ⟨2 * ρ - j.val, by omega⟩ (hY _ j (by simp only; omega))`.
+-/
 theorem isLoc_embA {D : D7} {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
     (p : Place D k) {n : Type} [Fintype n] [DecidableEq n] {c ρ : ℕ} (B : BesLev D ρ) (s : k) (FA : Frame k B.A.rank n)
     (F : Frame k B.V.rank (n ⊕ Fin c)) (hF : p.IsBesFrame B s FA F) {h : GA D B.A} {g₀ : GL n k} (hh : p.IsLoc FA h g₀) :
@@ -54,6 +63,9 @@ theorem isLoc_embA {D : D7} {k : Type} [Field k] [ValuativeRel k] [TopologicalSp
     exact RingHom.map_mulVec (Witness.prH p) _ _ r
   · exact fix_col (map_fix p (B.d.wittDecomp_anisotropicEmbedding_inclY _)) _ ⟨2 * ρ - j.val, by omega⟩ (hY _ j (by simp only; omega))
 
+/- English proof (translation)
+Take `⟨hf, hl⟩` from `h`. Express the relevant statement in the definitionally equal form `finE V κ ∈ lev _ _ _ _ at hl`. Rewrite `hl` using `[mem_lev, mem_parLev]`. Conclude with `⟨hf, hl.1.2.1⟩`.
+-/
 theorem st_of_levS {D : D7} {V : HSp D} {β : GL (Fin V.rank) (Lev.EAf D)} {L : LevDat D.host.E ℂ V.rank} {κ : GA D V}
     (h : κ ∈ levS V β L) : κ ∈ GfC V ∧ finE V κ ∈ St β := by
   obtain ⟨hf, hl⟩ := h
@@ -63,6 +75,19 @@ theorem st_of_levS {D : D7} {V : HSp D} {β : GL (Fin V.rank) (Lev.EAf D)} {L : 
 
 open GlobalTheory.LocMod in
 
+/- English proof (translation)
+Take `⟨x, hx⟩` from `hg`. Establish `hc : 0 + ((G PP).s + 1) = (G PP).s + 1` using `zero_add _`. Establish `hF` using `(G PP).bes 0 D.R.rS h0 _ hc`. Establish `hρ : (G PP).S.ρ = D.R.rS`. Establish `h1` using `hF.1`.
+
+Establish `h2` using `(G PP).S.odd`. Use linear arithmetic over natural numbers and integers. Take `⟨a, b, γ, ha, hb, hab⟩` from `GlobalTheory.T.type_frame_conjugation_decomposition (G PP).k (G PP).s D.R.k (G PP).S (Fin D.R.t) hc x`. Rewrite `ha` using `[hρ]`. Take `⟨n, hn⟩` from `Witness.exists_isLoc (ofSplit (G PP).q) ((G PP).FY 0 _ hc) ((GlobalTheory.StepData.typeFrame (G PP).S.ϖ (GlobalTheory.StepData.stdOrd (Fin D.R.k) (Fin D.R.t) 0 ((G PP).s + 1) hc)).conj (GlobalTheory.StepData.reGL (GlobalTheory.StepData.ixZero (Fin D.R.k ⊕ Fin ((G PP).s + 1)) (Fin …`.
+
+Take `⟨h, hh⟩` from `Witness.exists_isLoc (ofSplit (G PP).q) ((G PP).FX 0 (by omega)) γ`. Establish `he` using `isLoc_embA (ofSplit (G PP).q) (d.B 0 D.R.rS h0) _ _ _ hF hh`. Rewrite `he` using `[← hb]`. Establish `hJ : ∀ y : (G PP).S.P.J, (GlobalTheory.StepData.typeFrame (G PP).S.ϖ (GlobalTheory.StepData.stdOrd (Fin D.R.k) (Fin D.R.t) 0 ((G PP).s + 1) hc)).conj (GlobalTheory.StepData.reGL (GlobalTheory.StepData.ixZero (Fin D.R.k ⊕ Fin ((G PP).s + 1)) (Fin D.R.t)) y.1) ∈ (((G PP).S.T (Fin D …`. Introduce `y`.
+
+Use `GlobalTheory.StepData.Level.mem_map.2 ?_` and prove the remaining obligations. Rewrite using `[MulEquiv.symm_apply_apply]`. Express the relevant statement in the definitionally equal form `(GlobalTheory.StepData.reGL (GlobalTheory.StepData.ixZero _ _)).symm _ ∈ (G PP).S.P.J`. Rewrite using `[MulEquiv.symm_apply_apply]`. Conclude with `y.2`.
+
+Establish `hLev` using `GlobalTheory.T.pinned_local_groups_have_level D u d τ cG G hB hG PP`. Establish `l1` using `hLev 0 _ hc _ _ hn (hJ a)`. Establish `l2` using `hLev 0 _ hc _ _ he (hJ b)`. Establish `hm` using `GlobalTheory.LocGrp.isLoc_mul (ofSplit (G PP).q) hn he`. Rewrite `hm` using `[← map_mul, ← map_mul]`.
+
+Establish `l3` using `hLev 0 _ hc _ _ hm (hJ (a * b))`. Use `⟨n, GlobalTheory.LocGrp.mem_flagN_of_mem_N (ofSplit (G PP).q) (d.B 0 D.R.rS h0) _ _ _ hF n _ ha hn, h, GlobalTheory.WeilProduct.mem_GfC_of_suppAt (G PP).q.split hh.1, l1, l2, ?_⟩` and prove the remaining obligations. Conclude with `GlobalTheory.T.reduction_unique_of_maximal D u d τ PP.1 (G PP) x (a * b) g _ hx (GlobalTheory.T.level_zero_type_frame_locality D u d τ PP.1 (G PP) hr hc (a * b) _ hm (st_of_levS l3).2) hab`.
+-/
 theorem local_gen {D : D7} {u : D.what₂.Word} (d : GlobalTheory.SeeSaw.Dat D u)
     (τ : ∀ j h, Matrix (Fin (d.bes j 0 h).L.rank) (Fin d.Lz.rank) D.host.E) (cG) (G : ∀ PP : d.c.Pg, GAt d τ PP.1)
     (hB : d.Base) (hG : PinGBy G cG) (h0 : 0 + 2 * D.R.rS + 2 = D.R.m) (hr : D.R.r ≤ (d.st 0).V.rank) (PP : d.c.Pg)
@@ -107,6 +132,9 @@ theorem local_gen {D : D7} {u : D.what₂.Word} (d : GlobalTheory.SeeSaw.Dat D u
   exact GlobalTheory.T.reduction_unique_of_maximal D u d τ PP.1 (G PP) x (a * b) g _ hx
     (GlobalTheory.T.level_zero_type_frame_locality D u d τ PP.1 (G PP) hr hc (a * b) _ hm (st_of_levS l3).2) hab
 
+/- English proof (translation)
+Consider the cases of `h`. Conclude with `⟨rfl, rfl⟩`.
+-/
 theorem eq_of_lev_eq {D : D7} {ρ : ℕ} {V A V₀ V₀' L L' : HSp D} {d : HypDec V V₀ ρ} {d' : HypDec V V₀' ρ} {o : OrthDec V₀ A L}
     {o' : OrthDec V₀' A L'} {ζ ζ' l l' c c' vA vA' vN vN'}
     (h : (⟨V, V₀, A, L, d, o, ζ, l, c, vA, vN⟩ : BesLev D ρ) = ⟨V, V₀', A, L', d', o', ζ', l', c', vA', vN'⟩) :
@@ -114,6 +142,13 @@ theorem eq_of_lev_eq {D : D7} {ρ : ℕ} {V A V₀ V₀' L L' : HSp D} {d : HypD
   cases h
   exact ⟨rfl, rfl⟩
 
+/- English proof (translation)
+Establish `key : ∀ (I : AutInst) (hI : I = Formalism.L2.SG.InstExistsPf.instOf D), (castGA hI.symm (Formalism.IndefR.RationalEmbedding.iota D κ)).2 ∈ I.Kset ↔ finE (D.sp.Y 0) κ ∈ St β`. Introduce `I hI`. Substitute `hI` using the available equality. Establish `hL : (Formalism.L2.SG.InstExistsPf.instOf D).L = Formalism.L2.Herm.crdLat (D.sp.Y 0) (D.sp.Y 0).L0` using `Formalism.L2.SG.InstExistsPf.Lv_eq_map D`. Establish `e` using `Formalism.L2.SG.EvalTIota.finE_brg_i (Formalism.IndefR.RationalEmbedding.iota D κ)`.
+
+Establish `e2 : Lev.finE (D.sp.Y 0) κ = ((Formalism.IndefR.RationalEmbedding.iota D κ).2.1 : GL (Fin (D.sp.Y 0).rank) (Lev.EAf D))` using `(congrArg (Lev.finE (D.sp.Y 0)) ((Formalism.IndefR.RationalEmbedding.iota D).symm_apply_apply κ)).symm.trans e`. Establish `hx` using `GlobalTheory.FlagBasis.kset_iff (Formalism.L2.SG.InstExistsPf.instOf D) (β := β) (hL ▸ hβ) (Formalism.IndefR.RationalEmbedding.iota D κ).2`. Generalize the expression as in `Lev.finE (D.sp.Y 0) κ = y at e2 ⊢`. Substitute `e2` using the available equality. Conclude with `hx`.
+
+Conclude with `key X.B.I h`.
+-/
 theorem kset_iff_st {D : D7} (X : Formalism.L2.SG.HidaSetting.HidaSetting D) (h : X.B.I = Formalism.L2.SG.InstExistsPf.instOf D)
     {β : GL (Fin (D.sp.Y 0).rank) (Lev.EAf D)} (hβ : IsFrame β (Formalism.L2.Herm.crdLat (D.sp.Y 0) (D.sp.Y 0).L0))
     (κ : GA D (D.sp.Y 0)) : (iotaX X h κ).2 ∈ X.B.I.Kset ↔ finE (D.sp.Y 0) κ ∈ St β := by
@@ -132,12 +167,18 @@ theorem kset_iff_st {D : D7} (X : Formalism.L2.SG.HidaSetting.HidaSetting D) (h 
     exact hx
   exact key X.B.I h
 
+/- English proof (translation)
+Rewrite using `[map_mul, map_mul, map_inv, ContinuousMulEquiv.apply_symm_apply]`. Both sides reduce to the same expression.
+-/
 theorem iotaX_conj {D : D7} (X : Formalism.L2.SG.HidaSetting.HidaSetting D) (h : X.B.I = Formalism.L2.SG.InstExistsPf.instOf D) (x : X.B.I.Gf)
     (y : GA D (D.sp.Y 0)) :
     (iotaX X h (((iotaX X h).symm (1, x))⁻¹ * y * (iotaX X h).symm (1, x))).2 = x⁻¹ * (iotaX X h y).2 * x := by
   rw [map_mul, map_mul, map_inv, ContinuousMulEquiv.apply_symm_apply]
   rfl
 
+/- English proof (translation)
+Use `MassDataMassesW.NLev.nLevel_holds X u _ ((B.tieN n).1 hn).2 ?_` and prove the remaining obligations. Use `MassDataMassesW.NLev.Kset_mul (MassDataMassesW.NLev.Kset_mul (X.xu_K u) hK) (MassDataMassesW.NLev.Kset_inv (X.xu_K u))` as an intermediate fact. Rewrite `this` using `[← mul_assoc, ← mul_assoc, mul_inv_cancel, one_mul, mul_assoc, mul_inv_cancel, mul_one]`. Then use the resulting hypothesis.
+-/
 theorem flag_mem_K_two {D : D7} {X : Formalism.L2.SG.HidaSetting.HidaSetting D} {h : X.B.I = Formalism.L2.SG.InstExistsPf.instOf D} {u : D.what₂.Word}
     {ψ : AddChar (AF D.host.F) ℂ} {A : HSp D} (B : SBes X h u ψ A) {n : GA D (D.sp.Y 0)} (hn : n ∈ flagN B.d)
     (hK : (X.xu u)⁻¹ * (iotaX X h n).2 * X.xu u ∈ X.B.I.Kset) : (X.xu u)⁻¹ * (iotaX X h n).2 * X.xu u ∈ X.K2 := by
@@ -145,6 +186,11 @@ theorem flag_mem_K_two {D : D7} {X : Formalism.L2.SG.HidaSetting.HidaSetting D} 
   have := MassDataMassesW.NLev.Kset_mul (MassDataMassesW.NLev.Kset_mul (X.xu_K u) hK) (MassDataMassesW.NLev.Kset_inv (X.xu_K u))
   rwa [← mul_assoc, ← mul_assoc, mul_inv_cancel, one_mul, mul_assoc, mul_inv_cancel, mul_one] at this
 
+/- English proof (translation)
+Set `φ : GA D (D.sp.X 0) → Formalism.UG.UPts (Formalism.L2.Forms.sigD D) (Formalism.L2.Forms.gramN D 0 (Nat.zero_le _)) (FiniteAdeleRing (𝓞 D.host.F) D.host.F)` to `fun a => ⟨GlobalTheory.AdForm.Model.finGL (D.sp.X 0) (Formalism.L2.Forms.rankN D 0 (Nat.zero_le _)) a, GlobalTheory.AdForm.Model.finGL_mem (D.sp.X 0) (Formalism.L2.Forms.rankN D 0 (Nat.zero_le _)) a⟩`. Establish `hmul : ∀ a b, φ (a * b) = φ a * φ b` using `fun a b => Subtype.ext (Units.ext (unitaryAdelicPointFiniteMatrix_base_space_mul a b))`. Establish `e0 : φ a₀ = (S.tr u).h0` using `Subtype.ext (Units.ext ha₀.2)`. Establish `e1 : (S.tr u).h0⁻¹ * φ (a₀ * h * a₀⁻¹) * (S.tr u).h0 = φ h`. Rewrite using `[← e0, mul_assoc, ← hmul, inv_mul_cancel_right, hmul, inv_mul_cancel_left]`.
+
+Establish `hU` using `(hX h hf (φ h) rfl).1.2 hl`. Establish `hR` using `GlobalTheory.T.secondModel_finitePart_frameActionMatrix D S.X S.inst u d.c.ψ B (F₀ u) (S.tr u) hE hA (a₀ * h * a₀⁻¹)`. Use `((S.lev u).2 (B.toH (a₀ * h * a₀⁻¹)).2 (φ (a₀ * h * a₀⁻¹)) hR).1.2 (by rw [e1]; exact hU)` as an intermediate fact. Conclude with `this`.
+-/
 theorem column_mem_K_two {D : D7} {u : D.what₂.Word} {F₀ : ∀ u, Formalism.L2.Forms.Forms0 D u} (S : STrue D F₀) (d : GlobalTheory.SeeSaw.Dat D u)
     (h0 : 0 + 2 * D.R.rS + 2 = D.R.m) (hE : IdE S.X) (hX : LevX (F₀ u) d h0) (B : SBes S.X S.inst u d.c.ψ (D.sp.X 0))
     (hA : B.Adapted (S.tr u).wt) {a₀ : GA D (D.sp.X 0)} (ha₀ : IsTransportAdelicCorrection (S.tr u) a₀) {h : GA D (D.sp.X 0)}
@@ -164,6 +210,11 @@ theorem column_mem_K_two {D : D7} {u : D.what₂.Word} {F₀ : ∀ u, Formalism.
   have := ((S.lev u).2 (B.toH (a₀ * h * a₀⁻¹)).2 (φ (a₀ * h * a₀⁻¹)) hR).1.2 (by rw [e1]; exact hU)
   exact this
 
+/- English proof (translation)
+Take `rfl : r = n` from `le_antisymm hr hn`. Establish `h' : ∀ g : GL (Fin r) K, GlobalTheory.SymRes.IsPat ρ κ g → m * g * m⁻¹ ∈ unipSym K r ρ κ` using `fun g hg => by`. Take `⟨y, hy, hy'⟩` from `h g hg`. Rewrite `hy` using `[GlobalTheory.SeeConjRead.restrictedBlock_self_apply]`. Conclude with `hy ▸ hy'`.
+
+Rewrite using `[GlobalTheory.SeeConjRead.restrictedBlock_self_apply]`. Conclude with `⟨GlobalTheory.T.conjugate_symmetric_unipotent_pattern K r ρ κ e m h' y, h' y⟩`.
+-/
 theorem conj_mem_iff_isPat {K : Type} [CommRing K] [Finite K] {r n ρ κ : ℕ} (hr : r ≤ n) (hn : n ≤ r) (e : r = κ + (2 * ρ + 1))
     (m : GL (Fin n) K) (h : ∀ g : GL (Fin r) K, GlobalTheory.SymRes.IsPat ρ κ g → ∃ y, upperLeftBlock hr y = g ∧ m * y * m⁻¹ ∈ unipSym K n ρ κ)
     (y : GL (Fin n) K) : m * y * m⁻¹ ∈ unipSym K n ρ κ ↔ GlobalTheory.SymRes.IsPat ρ κ (upperLeftBlock hr y) := by
@@ -175,16 +226,41 @@ theorem conj_mem_iff_isPat {K : Type} [CommRing K] [Finite K] {r n ρ κ : ℕ} 
   rw [GlobalTheory.SeeConjRead.restrictedBlock_self_apply]
   exact ⟨GlobalTheory.T.conjugate_symmetric_unipotent_pattern K r ρ κ e m h' y, h' y⟩
 
+/- English proof (translation)
+Use `group`.
+-/
 theorem block_frame_conjugation_identity {G : Type} [Group G] (x e t n : G) : x⁻¹ * e * t * (t⁻¹ * n * t) * (x⁻¹ * e * t)⁻¹ = x⁻¹ * (e * n * e⁻¹) * x := by
   group
 
+/- English proof (translation)
+Rewrite using `[mul_assoc b a, ← Subgroup.mem_center_iff.1 ha h]`. Use `group`.
+-/
 theorem conj_central_mul_cancel {G : Type} [Group G] (b a h : G) (ha : a ∈ Subgroup.center G) : b * a * h * (b * a)⁻¹ = b * h * b⁻¹ := by
   rw [mul_assoc b a, ← Subgroup.mem_center_iff.1 ha h]; group
 
+/- English proof (translation)
+Use `group`.
+-/
 theorem mul_aux {G : Type} [Group G] (t x y : G) : t⁻¹ * (x * y) * t = (t⁻¹ * x * t) * (t⁻¹ * y * t) := by group
 
+/- English proof (translation)
+Use `group`.
+-/
 theorem conj_mul_distrib {G : Type} [Group G] (t x y : G) : t * (x * y) * t⁻¹ = (t * x * t⁻¹) * (t * y * t⁻¹) := by group
 
+/- English proof (translation)
+Take `⟨eN, eA⟩` from `eq_of_lev_eq hBl`. Establish `H : ∃ n : GA D (D.sp.Y 0), n ∈ flagN B.d ∧ ∃ h ∈ GfC (D.sp.X 0), t₀⁻¹ * n * t₀ ∈ levS (D.sp.Y 0) d.bot.β d.bot.L ∧ t₀⁻¹ * embA B.d B.o h * t₀ ∈ levS (D.sp.Y 0) d.bot.β d.bot.L ∧ upperLeftBlock hr (redFn d.bot.β PP.1 (finE (D.sp.Y 0) (t₀⁻¹ * (n * embA B.d B.o h) * t₀))) = g`. Rewrite using `[eN, eA]`. Substitute `ht₀` using the available equality. Conclude with `local_gen d τ cG G hB hG h0 hr PP g hg`.
+
+Take `⟨n, hnB, h, hh, l1, l2, hg'⟩` from `H`. Establish `k2` using `column_mem_K_two S d h0 hE hX B hA ha₀ hh (by rw [eA] at l2; subst ht₀; exact l2)`. Establish `s1` using `st_of_levS l1`. Establish `s2` using `st_of_levS l2`. Establish `c1 : t * (t₀⁻¹ * n * t₀) * t⁻¹ = ((iotaX S.X S.inst).symm (1, S.X.xu u))⁻¹ * (embA B.d B.o (a₀ * a) * n * (embA B.d B.o (a₀ * a))⁻¹) * (iotaX S.X S.inst).symm (1, S.X.xu u)`.
+
+Rewrite using `[ht']`. Conclude with `block_frame_conjugation_identity _ _ _ _`. Establish `c2 : t * (t₀⁻¹ * embA B.d B.o h * t₀) * t⁻¹ = ((iotaX S.X S.inst).symm (1, S.X.xu u))⁻¹ * embA B.d B.o (a₀ * h * a₀⁻¹) * (iotaX S.X S.inst).symm (1, S.X.xu u)`. Rewrite using `[← conj_central_mul_cancel a₀ a h haz, map_mul (embA B.d B.o) _ (a₀ * a)⁻¹, map_mul (embA B.d B.o) (a₀ * a) h, map_inv, ht']`. Conclude with `block_frame_conjugation_identity _ _ _ _`.
+
+Establish `k1 : (iotaX S.X S.inst (t * (t₀⁻¹ * n * t₀) * t⁻¹)).2 ∈ S.X.K2`. Use `hmove _ s1.1 s1.2` as an intermediate fact. Rewrite `this`, the goal using `[c1, iotaX_conj]`. Conclude with `flag_mem_K_two B (GlobalTheory.MixPer.witt_anisotropic_group_normalizes_flag_unipotent D _ _ _ B.d n hnB (B.o.emb (a₀ * a, 1))) this`. Establish `k2' : (iotaX S.X S.inst (t * (t₀⁻¹ * embA B.d B.o h * t₀) * t⁻¹)).2 ∈ S.X.K2`.
+
+Rewrite using `[c2, iotaX_conj]`. Conclude with `k2`. Establish `e3 : t₀⁻¹ * (n * embA B.d B.o h) * t₀ = (t₀⁻¹ * n * t₀) * (t₀⁻¹ * embA B.d B.o h * t₀)` using `mul_aux _ _ _`. Use `⟨_, ?_, ?_, hg', ?_⟩` and prove the remaining obligations. Rewrite using `[e3]`.
+
+Conclude with `mul_mem s1.1 s2.1`. Rewrite using `[e3, map_mul]`. Conclude with `mul_mem s1.2 s2.2`. Rewrite using `[e3, conj_mul_distrib, map_mul]`. Conclude with `S.Y.hK.2.1 _ k1 _ k2'`.
+-/
 theorem generator_mem_K_two {D : D7} {u : D.what₂.Word} {F₀ : ∀ u, Formalism.L2.Forms.Forms0 D u} (S : STrue D F₀) (d : GlobalTheory.SeeSaw.Dat D u)
     (τ : ∀ j h, Matrix (Fin (d.bes j 0 h).L.rank) (Fin d.Lz.rank) D.host.E) (cG) (G : ∀ PP : d.c.Pg, GlobalTheory.LocMod.GAt d τ PP.1)
     (h0 : 0 + 2 * D.R.rS + 2 = D.R.m) (hE : IdE S.X) (hB : d.Base)
@@ -227,6 +303,25 @@ theorem generator_mem_K_two {D : D7} {u : D.what₂.Word} {F₀ : ∀ u, Formali
   · rw [e3, conj_mul_distrib, map_mul]
     exact S.Y.hK.2.1 _ k1 _ k2'
 
+/- English proof (translation)
+Establish `hm : 0 < D.R.m` using `by have := D.R.two_le_m; omega`. Establish `hrk : (D.sp.Y 0).rank = D.R.rankY 0` using `(hB.st 0 hm).rank`. Establish `hn : (D.sp.Y 0).rank ≤ D.R.r` using `by rw [hrk]; simp [Formalism.BasicNotions.Ranks.rankY]`. Establish `hre : D.R.r = D.R.k + (2 * D.R.rS + 1)` using `by unfold Ranks.r; omega`. Take `⟨N, hN, -⟩` from `(hB.st 0 hm).base`.
+
+Take `⟨-, ψ0, hψ, -⟩` from `GlobalTheory.Core.Mi.PinModel.exists_isSymLev (D := D) d.c.Pg`. Take `⟨β₀, hβ₀, hK⟩` from `GlobalTheory.SeeConjRead.read_fin S.X S.inst d.c.Pg hT (GlobalTheory.T.genusTypePlaceSet_not_conjugatePlaces _ hT hB.com.split) ψ0 hψ`. Establish `hx : (iotaX S.X S.inst).symm (1, S.X.xu u) ∈ GfC (D.sp.Y 0)`. Rewrite using `[← GlobalTheory.SeeConjRead.iotaX_fst_eq_one_iff S.X S.inst, ContinuousMulEquiv.apply_symm_apply]`. Establish `htf : t ∈ GfC (D.sp.Y 0)` using `ht ▸ mul_mem (mul_mem (inv_mem hx) (GlobalTheory.Core.Mi.CenAct.embA_mem_GfC B.d B.o (mul_mem ha₀.1 haf))) (hB.t 0)`.
+
+Establish `hfin : ∀ y, finE (D.sp.Y 0) (t * y * t⁻¹) = finE (D.sp.Y 0) t * finE (D.sp.Y 0) y * (finE (D.sp.Y 0) t)⁻¹` using `fun y => by`. Rewrite using `[map_mul, map_mul, map_inv]`. Establish `hmove : ∀ y ∈ GfC (D.sp.Y 0), finE (D.sp.Y 0) y ∈ St d.bot.β → (iotaX S.X S.inst (t * y * t⁻¹)).2 ∈ S.X.B.I.Kset` using `fun y hy hs => hSt _ (mul_mem (mul_mem htf hy) (inv_mem htf)) (by rw [hfin]; exact (GlobalTheory.FrameConj.conj_mem_St_iff _ _ _).2 hs)`. Establish `hc : ∀ T β y : GL (Fin (D.sp.Y 0).rank) (Lev.EAf D), y ∈ St (T⁻¹ * β) ↔ T * y * T⁻¹ ∈ St β` using `fun T β y => by`. Rewrite using `[← GlobalTheory.FrameConj.conj_mem_St_iff T, mul_inv_cancel_left]`.
+
+Establish `hc' : ∀ (T β y : GL (Fin (D.sp.Y 0).rank) (Lev.EAf D)) (PP), redFn (T⁻¹ * β) PP y = redFn β PP (T * y * T⁻¹)` using `fun T β y PP => by rw [← GlobalTheory.FrameConj.redFn_conj T, mul_inv_cancel_left]`. Establish `hto : ∀ y ∈ GfC (D.sp.Y 0), finE (D.sp.Y 0) y ∈ St d.bot.β → finE (D.sp.Y 0) y ∈ St ((finE (D.sp.Y 0) t)⁻¹ * β₀)` using `fun y hy hs => by`. Rewrite using `[hc, ← hfin]`. Conclude with `(kset_iff_st S.X S.inst hβ₀ _).1 (hmove y hy hs)`. Establish `hloc : ∀ PP : d.c.Pg, ∀ y ∈ GfC (D.sp.Y 0), finE (D.sp.Y 0) y ∈ St d.bot.β → (redFn β₀ PP.1 (finE (D.sp.Y 0) (t * y * t⁻¹)) ∈ unipSym (kP PP.1) (D.sp.Y 0).rank D.R.rS D.R.k ↔ ∃ x, (G PP).Red x (upperLeftBlock hr (redFn d.bot.β PP.1 (finE (D.sp.Y 0) y))))`.
+
+Introduce `PP`. Use `haveI : Finite (kP PP.1) := Ideal.finiteQuotientOfFreeOfNeBot _ PP.1.ne_bot`. Take `⟨m, hmm⟩` from `GlobalTheory.T.splitPlaceReductions_conj_of_nestedFrameStabilisers D (D.sp.Y 0) d.bot.β ((finE (D.sp.Y 0) t)⁻¹ * β₀) _ N hN _ PP.1 (G PP).idem hto`. Establish `hred : ∀ y ∈ GfC (D.sp.Y 0), finE (D.sp.Y 0) y ∈ St d.bot.β → redFn β₀ PP.1 (finE (D.sp.Y 0) (t * y * t⁻¹)) = m * redFn d.bot.β PP.1 (finE (D.sp.Y 0) y) * m⁻¹` using `fun y hy hs => by`. Rewrite using `[hfin, ← hc', hmm _ hs (hto y hy hs)]`.
+
+Introduce `y hy hs`. Rewrite using `[hred y hy hs, GlobalTheory.T.exists_reduction_iff_pattern D u d τ PP.1 (G PP)]`. Use `conj_mem_iff_isPat hr hn hre m (fun g hg => ?_) _` and prove the remaining obligations. Take `⟨w, hw, hws, hwg, hwK⟩` from `generator_mem_K_two S d τ cG G h0 hE hB hG hX B hBl hA a₀ ha₀ a haz _ rfl t ht hmove hr PP g ((GlobalTheory.T.exists_reduction_iff_pattern D u d τ PP.1 (G PP) g).2 hg)`. Use `⟨_, hwg, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[← hred w hw hws]`. Conclude with `((hK _).1.1 hwK).2 PP.1 PP.2`. Take `⟨y, rfl⟩ : ∃ y, κ = t * y * t⁻¹` from `⟨t⁻¹ * κ * t, by group⟩`. Establish `hy : y ∈ GfC (D.sp.Y 0)` using `(GlobalTheory.FrameConj.conj_mem_iff _ htf y).1 hκ`. Establish `hs : finE (D.sp.Y 0) y ∈ St d.bot.β`.
+
+Rewrite `hκS` using `[hfin]`. Conclude with `(GlobalTheory.FrameConj.conj_mem_St_iff _ _ _).1 hκS`. Rewrite using `[(hK _).1, hG.grp]`. Establish `e5 : ∀ PP, redFn (finE (D.sp.Y 0) t * d.bot.β) PP (finE (D.sp.Y 0) (t * y * t⁻¹)) = redFn d.bot.β PP (finE (D.sp.Y 0) y)` using `fun PP => by rw [hfin, GlobalTheory.FrameConj.redFn_conj]`. Simplify using `only [e5]`.
+
+Conclude with `⟨fun h PP => (hloc PP y hy hs).1 (h.2 PP.1 PP.2), fun h => ⟨(kset_iff_st S.X S.inst hβ₀ _).1 (hmove y hy hs), fun PP hPP => (hloc ⟨PP, hPP⟩ y hy hs).2 (h ⟨PP, hPP⟩)⟩⟩`.
+-/
 theorem mem_iff {D : D7} {u : D.what₂.Word} {F₀ : ∀ u, Formalism.L2.Forms.Forms0 D u} (S : STrue D F₀) (d : GlobalTheory.SeeSaw.Dat D u)
     (τ : ∀ j h, Matrix (Fin (d.bes j 0 h).L.rank) (Fin d.Lz.rank) D.host.E) (cG) (G : ∀ PP : d.c.Pg, GlobalTheory.LocMod.GAt d τ PP.1)
     (h0 : 0 + 2 * D.R.rS + 2 = D.R.m) (hE : IdE S.X) (hB : d.Base) (hT : GlobalTheory.Core.Mi.IsTypePlaces d.c.Pg)
@@ -297,11 +392,17 @@ end GlobalTheory.Core.Mi.MemMatch
 
 namespace GlobalTheory.Core.Mi
 
+/- English proof (translation)
+Introduce `D u F₀ S d k _ _ _ _ ι o G h0 hE hB hT _ hG hX B hBl hA a₀ ha₀ a haf haz hSt hr κ hκ hκS`. Conclude with `MemMatch.mem_iff S d o.τ o.cG G h0 hE hB hT hG hX B hBl hA a₀ ha₀ a haf haz _ rfl (fun y hy hs => ((hSt y).1 ⟨hy, hs⟩).2) hr κ hκ hκS`.
+-/
 theorem memMatch_noLat : ∀ (D : D7) (u : D.what₂.Word) (F₀ : ∀ u, Formalism.L2.Forms.Forms0 D u) (S : STrue D F₀) (d : GlobalTheory.SeeSaw.Dat D u) (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] (ι : Type) (o : GlobalTheory.FinPl.OffDat d k ι) (G : ∀ PP : d.c.Pg, GlobalTheory.LocMod.GAt d o.τ PP.1) (h0 : 0 + 2 * D.R.rS + 2 = D.R.m), GlobalTheory.Core.Mi.IdE S.X → d.Base → IsTypePlaces d.c.Pg → GlobalTheory.FinPl.PinOff o → GlobalTheory.LocMod.PinGBy G o.cG → LevX (F₀ u) d h0 → ∀ (B : SBes S.X S.inst u d.c.ψ (D.sp.X 0)), B.lev = d.B 0 D.R.rS h0 → B.Adapted (S.tr u).wt → ∀ a₀ : GA D (D.sp.X 0), IsTransportAdelicCorrection (S.tr u) a₀ → ∀ a ∈ GfC (D.sp.X 0), a ∈ Subgroup.center (GA D (D.sp.X 0)) → (∀ κ : GA D (D.sp.Y 0), (κ ∈ GfC (D.sp.Y 0) ∧ finE (D.sp.Y 0) κ ∈ St (finE (D.sp.Y 0) (((iotaX S.X S.inst).symm (1, S.X.xu u))⁻¹ * embA B.d B.o (a₀ * a) * (show GA D (D.sp.Y 0) from d.t 0)) * d.bot.β)) ↔ ((iotaX S.X S.inst κ).1 = 1 ∧ (iotaX S.X S.inst κ).2 ∈ S.X.B.I.Kset)) → ∀ (hr : D.R.r ≤ (D.sp.Y 0).rank) (κ : GA D (D.sp.Y 0)), κ ∈ GfC (D.sp.Y 0) → finE (D.sp.Y 0) κ ∈ St (finE (D.sp.Y 0) (((iotaX S.X S.inst).symm (1, S.X.xu u))⁻¹ * embA B.d B.o (a₀ * a) * (show GA D (D.sp.Y 0) from d.t 0)) * d.bot.β) → ((iotaX S.X S.inst κ).2 ∈ S.X.K2 ↔ (fun PP : d.c.Pg => upperLeftBlock hr (redFn (finE (D.sp.Y 0) (((iotaX S.X S.inst).symm (1, S.X.xu u))⁻¹ * embA B.d B.o (a₀ * a) * (show GA D (D.sp.Y 0) from d.t 0)) * d.bot.β) PP.1 (finE (D.sp.Y 0) κ))) ∈ d.c.P.H) := by
   intro D u F₀ S d k _ _ _ _ ι o G h0 hE hB hT _ hG hX B hBl hA a₀ ha₀ a haf haz hSt hr κ hκ hκS
   exact MemMatch.mem_iff S d o.τ o.cG G h0 hE hB hT hG hX B hBl hA a₀ ha₀ a haf haz _ rfl
     (fun y hy hs => ((hSt y).1 ⟨hy, hs⟩).2) hr κ hκ hκS
 
+/- English proof (translation)
+Introduce `D u F₀ S d k _ _ _ _ ι o G h0 hE hB hT hO hG _`. Conclude with `memMatch_noLat D u F₀ S d k ι o G h0 hE hB hT hO hG`.
+-/
 theorem memMatch : ∀ (D : D7) (u : D.what₂.Word) (F₀ : ∀ u, Formalism.L2.Forms.Forms0 D u) (S : STrue D F₀) (d : GlobalTheory.SeeSaw.Dat D u) (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] (ι : Type) (o : GlobalTheory.FinPl.OffDat d k ι) (G : ∀ PP : d.c.Pg, GlobalTheory.LocMod.GAt d o.τ PP.1) (h0 : 0 + 2 * D.R.rS + 2 = D.R.m), GlobalTheory.Core.Mi.IdE S.X → d.Base → IsTypePlaces d.c.Pg → GlobalTheory.FinPl.PinOff o → GlobalTheory.LocMod.PinGBy G o.cG → (∀ z, z ∈ (d.x 0).L ↔ z ∈ (F₀ u).cls0.lev.Lb.map ((LinearEquiv.funCongrLeft D.host.E D.host.E (finCongr (Formalism.L2.Forms.rankN D 0 (Nat.zero_le _)))).toLinearMap.restrictScalars (𝓞 D.host.E))) → LevX (F₀ u) d h0 → ∀ (B : SBes S.X S.inst u d.c.ψ (D.sp.X 0)), B.lev = d.B 0 D.R.rS h0 → B.Adapted (S.tr u).wt → ∀ a₀ : GA D (D.sp.X 0), IsTransportAdelicCorrection (S.tr u) a₀ → ∀ a ∈ GfC (D.sp.X 0), a ∈ Subgroup.center (GA D (D.sp.X 0)) → (∀ κ : GA D (D.sp.Y 0), (κ ∈ GfC (D.sp.Y 0) ∧ finE (D.sp.Y 0) κ ∈ St (finE (D.sp.Y 0) (((iotaX S.X S.inst).symm (1, S.X.xu u))⁻¹ * embA B.d B.o (a₀ * a) * (show GA D (D.sp.Y 0) from d.t 0)) * d.bot.β)) ↔ ((iotaX S.X S.inst κ).1 = 1 ∧ (iotaX S.X S.inst κ).2 ∈ S.X.B.I.Kset)) → ∀ (hr : D.R.r ≤ (D.sp.Y 0).rank) (κ : GA D (D.sp.Y 0)), κ ∈ GfC (D.sp.Y 0) → finE (D.sp.Y 0) κ ∈ St (finE (D.sp.Y 0) (((iotaX S.X S.inst).symm (1, S.X.xu u))⁻¹ * embA B.d B.o (a₀ * a) * (show GA D (D.sp.Y 0) from d.t 0)) * d.bot.β) → ((iotaX S.X S.inst κ).2 ∈ S.X.K2 ↔ (fun PP : d.c.Pg => upperLeftBlock hr (redFn (finE (D.sp.Y 0) (((iotaX S.X S.inst).symm (1, S.X.xu u))⁻¹ * embA B.d B.o (a₀ * a) * (show GA D (D.sp.Y 0) from d.t 0)) * d.bot.β) PP.1 (finE (D.sp.Y 0) κ))) ∈ d.c.P.H) := by
   intro D u F₀ S d k _ _ _ _ ι o G h0 hE hB hT hO hG _
   exact memMatch_noLat D u F₀ S d k ι o G h0 hE hB hT hO hG

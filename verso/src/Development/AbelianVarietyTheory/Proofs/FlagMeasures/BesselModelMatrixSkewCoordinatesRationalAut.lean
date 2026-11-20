@@ -13,6 +13,13 @@ open GlobalTheory.DegVol.RefCov
 
 namespace GlobalTheory.DegVol.RefCovSkew
 
+/- English proof (translation)
+Establish `ha` using `a.2`. Establish `ht : WeylGroupFacts.tau k r (esI k r a) = eI k r a`. Establish `h1 : (esI k r a).val < r ∨ r + k < (esI k r a).val` using `Or.inr (by simp only [esI]; omega)`. Apply `Fin.ext` to reduce the goal to its premises. Unfold `WeylGroupFacts.tau`.
+
+Simplify using `only`. Rewrite using `[if_pos h1]`. Simplify using `only [esI, eI]`. Use linear arithmetic over natural numbers and integers. Establish `hs : WeylGroupFacts.sgn k r (esI k r a) = 1` using `if_neg (by simp only [esI]; omega)`.
+
+Unfold `herm bvec`. Rewrite using `[← Pi.single_star, star_one, single_one_dotProduct]`. Simplify using `only [mulVec, dotProduct, WeylGroupFacts.hpk_row, ht, hs]`. Simplify using the standard rewrite rules.
+-/
 theorem herm_esI {k r : ℕ} (u : Fin (2 * r + k + 1) → ℂ) (a : Fin r) :
     herm (Hpk k r) u (bvec (esI k r a)) = u (eI k r a) := by
   have ha := a.2
@@ -25,10 +32,38 @@ theorem herm_esI {k r : ℕ} (u : Fin (2 * r + k + 1) → ℂ) (a : Fin r) :
   simp only [mulVec, dotProduct, WeylGroupFacts.hpk_row, ht, hs]
   simp
 
+/- English proof (translation)
+Simplify using `[Finset.sum_apply, Rad.bvec_apply, Rad.eI_inj]`.
+-/
 theorem sum_eI_apply {k r : ℕ} (c : Fin r → ℂ) (a : Fin r) :
     (∑ b, c b • bvec (eI k r b)) (eI k r a) = c a := by
   simp [Finset.sum_apply, Rad.bvec_apply, Rad.eI_inj]
 
+/- English proof (translation)
+Introduce `K V _ _ _ _ _ _ _ _ H r N k σ ρ β Φ z z' g hρ hF s q hq hq1 hq2`. Take `⟨hr, -, -, -, -, he, hi, -⟩` from `hF`. Establish `he1 : ∀ a : Fin r, Φ (N.F.e a.castSucc) = ((ρ ^ (r - a.val) : ℝ) : ℂ) • bvec (eI k r a)` using `fun a => (he a).1`. Establish `ht : ∀ n : ℕ, ((ρ ^ n : ℝ) : ℂ) ≠ 0` using `fun n => by`. Conclude with `(pow_pos hρ n).ne'` after adjusting the coercions.
+
+Use `set S : Matrix (Fin r) (Fin r) ℂ := skewM (Swap.extS r N.j q.2.2).1 (Swap.extS r N.j q.2.2).2 with hSdef`. Establish `hM : crd k r N.j β q = pEl k r 0 S`. Rewrite using `[RefCovTop.crd_of_zero β q hq1, Swap.pTop_eq, pOf, hq2, map_zero]`. Establish `hS0 : ∀ a b : Fin r, ¬ N.j ≤ a.val → S a b = 0` using `fun a b ha => Swap.skew_ext_zero q.2.2 a b ha`. Establish `hcol : ∀ b : Fin r, pEl k r 0 S *ᵥ bvec (esI k r b) = bvec (esI k r b) + ∑ a, S a b • bvec (eI k r a)`.
+
+Introduce `b`. Rewrite using `[((Rad.radical k r).1 0 S).2.2.1 b]`. Simplify using `[herm]`. Establish `hsb : ∀ b : Fin r, N.j ≤ b.val → Φ (s (N.ist b)) = (((ρ ^ (r - b.val))⁻¹ : ℝ) : ℂ) • (bvec (esI k r b) + ∑ a, S a b • bvec (eI k r a))`. Introduce `b hb`.
+
+Rewrite using `[← hq, hM, hi b hb, mulVec_smul, hcol]`. Establish `hB : ∀ a b : Fin r, N.j ≤ a.val → N.j ≤ b.val → σ (H.B (s (N.ist b)) (N.ist a)) = (((ρ ^ (r - a.val))⁻¹ : ℝ) : ℂ) * ((((ρ ^ (r - b.val))⁻¹ : ℝ) : ℂ) * S a b)`. Introduce `a b ha hb`. Rewrite using `[← hr.2.2.1, hsb b hb, hi a ha, RealMat.herm_smul_right, herm_esI, Pi.smul_apply, Pi.add_apply, sum_eI_apply, Rad.bvec_apply, if_neg (Rad.eI_ne_esI a b), zero_add, smul_eq_mul, Complex.star_def, Complex.conj_ofReal]`. Use `⟨fun b hb => ?_, fun p => ?_, fun a => ?_⟩` and prove the remaining obligations.
+
+Establish `hΦy : Φ (s (N.ist b) - N.ist b) = ∑ a, ((((ρ ^ (r - b.val))⁻¹ : ℝ) : ℂ) * S a b) • bvec (eI k r a)`. Rewrite using `[RealMat.phi_sub hr, hsb b hb, hi b hb, smul_add, add_sub_cancel_left, Finset.smul_sum]`. Repeatedly rewrite using `[smul_smul]`. Establish `hproj : NFGeom.proj N (s (N.ist b) - N.ist b) = s (N.ist b) - N.ist b`. Apply `RealMat.phi_inj hr` to reduce the goal to its premises.
+
+Rewrite using `[NFGeom.proj_apply, RealMat.phi_sum hr, hΦy, Finset.sum_filter]`. Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Use `split_ifs with ha`. Rewrite using `[hr.2.1, he1, ← hr.2.2.1, hΦy, hi a ha, RealMat.herm_smul_right, herm_esI, sum_eI_apply, smul_smul]`. Use `congr 1`.
+
+Rewrite using `[Complex.star_def, Complex.conj_ofReal, Complex.ofReal_inv, mul_comm, ← mul_assoc, mul_inv_cancel₀ (ht _), one_mul]`. Rewrite using `[hS0 a b ha, mul_zero, zero_smul]`. Rewrite using `[← hproj]`. Conclude with `NFGeom.proj_mem N _`. Take `⟨⟨⟨a, b⟩, hab⟩, ha⟩` from `p`.
+
+Establish `hab' : a < b` using `hab`. Establish `ha' : N.j ≤ a.val` using `ha`. Establish `hb : N.j ≤ b.val` using `le_trans ha' (le_of_lt hab')`. Simplify using `only`. Rewrite using `[hB a b ha' hb]`.
+
+Establish `hSab : S a b = q.2.2.1 ⟨⟨(a, b), hab⟩, ha⟩`. Simplify using `[hSdef, skewM, hab', Swap.extS, Swap.extZ, ha']`. Rewrite using `[hSab, pow_add, Complex.ofReal_mul, Complex.ofReal_inv, Complex.ofReal_inv]`. Establish `h1` using `ht (r - a.val)`. Establish `h2` using `ht (r - b.val)`.
+
+Clear the denominators using the available nonvanishing facts. Take `⟨a, ha⟩` from `a`. Simplify using `only`. Rewrite using `[hB a a ha ha]`. Establish `hSaa : S a a = ((q.2.2.2 ⟨a, ha⟩ : ℝ) : ℂ) * Complex.I`.
+
+Simplify using `[hSdef, skewM, Swap.extS, Swap.extZ, ha]`. Rewrite using `[hSaa]`. Establish `e : ((((ρ ^ (r - a.val))⁻¹ : ℝ) : ℂ) * ((((ρ ^ (r - a.val))⁻¹ : ℝ) : ℂ) * (((q.2.2.2 ⟨a, ha⟩ : ℝ) : ℂ) * Complex.I))) = (((ρ ^ (r - a.val))⁻¹ * ((ρ ^ (r - a.val))⁻¹ * q.2.2.2 ⟨a, ha⟩) : ℝ) : ℂ) * Complex.I` using `by push_cast; ring`. Rewrite using `[e, Complex.mul_I_im, Complex.ofReal_re, two_mul, pow_add]`. Establish `h1 : ρ ^ (r - a.val) ≠ 0` using `(pow_pos hρ _).ne'`.
+
+Clear the denominators using the available nonvanishing facts.
+-/
 theorem coords_skew : ∀ (K V : Type) [Field K] [NumberField K] [StarRing K] [AddCommGroup V] [Module K V] [FiniteDimensional K V] [Module (𝓞 K) V] [IsScalarTower (𝓞 K) K V] (H : HermSpace K V) (r : ℕ) (N : NF H r) (k : ℕ) (σ : K →+* ℂ) (ρ : ℝ) (β : Fin r → ℕ) (Φ : V → Fin (2 * r + k + 1) → ℂ) (z z' : Fin (2 * r + k + 1) → ℂ) (g : Mat k r), 0 < ρ → IsFrameOf N k σ ρ β Φ z z' g → ∀ (s : V ≃ₗ[K] V) (q : (UTin β → ℂ) × PTop k r N.j), (∀ x, crd k r N.j β q *ᵥ Φ x = Φ (s x)) → q.1 = 0 → q.2.1 = 0 → (∀ b : Fin r, N.j ≤ b.val → s (N.ist b) - N.ist b ∈ II N.F N.F') ∧ (∀ p : {p : UT r // N.j ≤ p.1.1.val}, q.2.2.1 p = ((ρ ^ ((r - p.1.1.1.val) + (r - p.1.1.2.val)) : ℝ) : ℂ) * σ (H.B (s (N.ist p.1.1.2)) (N.ist p.1.1.1))) ∧ ∀ a : {a : Fin r // N.j ≤ a.val}, q.2.2.2 a = ρ ^ (2 * (r - a.1.val)) * (σ (H.B (s (N.ist a.1)) (N.ist a.1))).im := by
   intro K V _ _ _ _ _ _ _ _ H r N k σ ρ β Φ z z' g hρ hF s q hq hq1 hq2
   obtain ⟨hr, -, -, -, -, he, hi, -⟩ := hF

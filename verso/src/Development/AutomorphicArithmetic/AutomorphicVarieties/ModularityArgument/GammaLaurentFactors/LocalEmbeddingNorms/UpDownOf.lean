@@ -13,6 +13,11 @@ attribute [-instance] Formalism.DoubleCosetMeasures.instMeasGL
 
 namespace UpperTheory.V.Z.Gam
 
+/- English proof (translation)
+Rewrite using `[Multiset.count_map, Multiset.filter_filter]`. Use `congr 1`. Use `Multiset.filter_congr fun y _ => ⟨fun h => ?_, fun h => ⟨?_, t, h⟩⟩` and prove the remaining obligations. Establish `: t ∈ {t' | E t t'}` using `hE t`. Rewrite `this` using `[h.1]`.
+
+Conclude with `this`. Conclude with `Set.ext fun t' => (hR y t h t').symm`.
+-/
 private theorem count_cls {Y T : Type*} (E : T → T → Prop) (hE : ∀ t, E t t) (R : Y → T → Prop)
     (hR : ∀ y t, R y t → ∀ t', R y t' ↔ E t t') (s : Multiset Y) (t : T) :
     ((s.filter fun y => ∃ t, R y t).map fun y => {t | R y t}).count {t' | E t t'} = (s.filter fun y => R y t).card := by
@@ -24,6 +29,9 @@ private theorem count_cls {Y T : Type*} (E : T → T → Prop) (hE : ∀ t, E t 
     exact this
   · exact Set.ext fun t' => (hR y t h t').symm
 
+/- English proof (translation)
+Rewrite using `[Multiset.count_eq_zero]`. Introduce `h`. Take `⟨y, hy, rfl⟩` from `Multiset.mem_map.1 h`. Take `⟨t, ht⟩` from `(Multiset.mem_filter.1 hy).2`. Conclude with `hS ⟨t, Set.ext fun t' => hR y t ht t'⟩`.
+-/
 private theorem count_ncls {Y T : Type*} (E : T → T → Prop) (R : Y → T → Prop)
     (hR : ∀ y t, R y t → ∀ t', R y t' ↔ E t t') (s : Multiset Y) (S : Set T) (hS : ¬ ∃ t, S = {t' | E t t'}) :
     ((s.filter fun y => ∃ t, R y t).map fun y => {t | R y t}).count S = 0 := by
@@ -33,6 +41,13 @@ private theorem count_ncls {Y T : Type*} (E : T → T → Prop) (R : Y → T →
   obtain ⟨t, ht⟩ := (Multiset.mem_filter.1 hy).2
   exact hS ⟨t, Set.ext fun t' => hR y t ht t'⟩
 
+/- English proof (translation)
+Establish `key : F • ((s.filter fun y => ∃ t, R y t).map fun y => {t | R y t}) = ∑ i, f i • (((s' i).filter fun y => ∃ t, R' i y t).map fun y => {t | R' i y t})`. Use extensionality with `S`. Rewrite using `[Multiset.count_sum']`. Simplify using `only [Multiset.count_nsmul]`. Distinguish the cases in `hS : ∃ t, S = {t' | E t t'}`.
+
+Take `⟨t, rfl⟩` from `hS`. Rewrite using `[count_cls E hE R hR, h t]`. Conclude with `Finset.sum_congr rfl fun i _ => by rw [count_cls E hE (R' i) (hR' i)]`. Rewrite using `[count_ncls E R hR s S hS, mul_zero]`. Conclude with `(Finset.sum_eq_zero fun i _ => by rw [count_ncls E (R' i) (hR' i) _ S hS, mul_zero]).symm`.
+
+Use `congrArg Multiset.card key` as an intermediate fact. Simplify `this` using `[Multiset.card_sum, Multiset.card_nsmul]`.
+-/
 private theorem total {Y T ι : Type*} [Fintype ι] {Y' : ι → Type*} (E : T → T → Prop) (hE : ∀ t, E t t)
     (R : Y → T → Prop) (hR : ∀ y t, R y t → ∀ t', R y t' ↔ E t t')
     (R' : ∀ i, Y' i → T → Prop) (hR' : ∀ i y t, R' i y t → ∀ t', R' i y t' ↔ E t t')
@@ -53,9 +68,17 @@ private theorem total {Y T ι : Type*} [Fintype ι] {Y' : ι → Type*} (E : T �
   have := congrArg Multiset.card key
   simpa [Multiset.card_sum, Multiset.card_nsmul] using this
 
+/- English proof (translation)
+Simplify using `using Multiset.card_nsmul_le_sum (a := 1) h`.
+-/
 private theorem card_le_sum {s : Multiset ℕ} (h : ∀ y ∈ s, 0 < y) : s.card ≤ s.sum := by
   simpa using Multiset.card_nsmul_le_sum (a := 1) h
 
+/- English proof (translation)
+Proceed by induction on `s using Multiset.induction_on with`. Consider the case `empty => simp`. Consider the case `cons y s ih`. Simplify using `only [Multiset.filter_cons, Multiset.card_add, Finset.sum_add_distrib, ih, mul_add]`. Use `congr 1`.
+
+Distinguish the cases in `hB : B y`. Rewrite using `[← h1 y hB, Finset.card_filter, if_pos hB, Multiset.card_singleton, mul_one]`. Apply the tactic sequence `exact Finset.sum_congr rfl fun j _ => by split_ifs <;> simp`. Rewrite using `[if_neg hB]`. Conclude with `Finset.sum_eq_zero fun j _ => by rw [if_neg fun hA => hB (h2 y j hA)]; simp`.
+-/
 private theorem sum_card_filter {Y : Type*} (s : Multiset Y) (d F : ℕ) (A : Y → ℕ → Prop) (B : Y → Prop)
     (h1 : ∀ y, B y → ((Finset.range d).filter (A y)).card = F) (h2 : ∀ y j, A y j → B y) :
     ∑ j ∈ Finset.range d, (s.filter fun y => A y j).card = F * (s.filter B).card := by
@@ -70,12 +93,20 @@ private theorem sum_card_filter {Y : Type*} (s : Multiset Y) (d F : ℕ) (A : Y 
     · rw [if_neg hB]
       exact Finset.sum_eq_zero fun j _ => by rw [if_neg fun hA => hB (h2 y j hA)]; simp
 
+/- English proof (translation)
+Use `ext1 x`. Use `show (η ^ j).1 _ = η.1 _ ^ j`. Rewrite using `[SubgroupClass.coe_pow, MonoidHom.pow_apply]`.
+-/
 private theorem loc_pow {K : Type} [Field K] [NumberField K] (η : HChar K) (j : ℕ) (v : HeightOneSpectrum (𝓞 K)) :
     (η ^ j).loc v = η.loc v ^ j := by
   ext1 x
   show (η ^ j).1 _ = η.1 _ ^ j
   rw [SubgroupClass.coe_pow, MonoidHom.pow_apply]
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce `h'`. Use `isUnram_mul (isUnram_inv h) h'` as an intermediate fact. Rewrite `this` using `[show (ζ * a)⁻¹ * (ζ * b) = a⁻¹ * b by rw [mul_inv_rev, mul_assoc, inv_mul_cancel_left]]`. Then use the resulting hypothesis. Introduce `h'`.
+
+Use `isUnram_mul h h'` as an intermediate fact. Rewrite `this` using `[mul_assoc, mul_inv_cancel_left]`. Then use the resulting hypothesis.
+-/
 private theorem cls_iff {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
     {ζ a b : kˣ →* ℂˣ} (h : IsUnram (ζ * a)) : IsUnram (ζ * b) ↔ IsUnram (a⁻¹ * b) := by
   constructor
@@ -86,6 +117,9 @@ private theorem cls_iff {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace 
     have := isUnram_mul h h'
     rwa [mul_assoc, mul_inv_cancel_left] at this
 
+/- English proof (translation)
+The claim follows from `Multiset.filter_eq_self.1 (Multiset.eq_of_le_of_card_le (Multiset.filter_le p s) h)`.
+-/
 private theorem all_of_le {Y : Type*} {s : Multiset Y} {p : Y → Prop} (h : s.card ≤ (s.filter p).card) :
     ∀ y ∈ s, p y :=
   Multiset.filter_eq_self.1 (Multiset.eq_of_le_of_card_le (Multiset.filter_le p s) h)
@@ -93,6 +127,39 @@ private theorem all_of_le {Y : Type*} {s : Multiset Y} {p : Y → Prop} (h : s.c
 end UpperTheory.V.Z.Gam
 
 open UpperTheory.V.Z.Gam in
+/- English proof (translation)
+Introduce `hS hN hM K L _ _ _ _ _ _ _ _ hp n hn π P hBC v`. Take `⟨η, hη, hloc⟩` from `hN K L hp`. Establish `hSK` using `hS K n (by omega) π v`. Establish `hSL` using `fun w : PlacesOver L v => hS L n (by omega) P w.1`. Take `⟨s, hs⟩` from `hSK.1`.
+
+Use `choose s' hs' using fun w => (hSL w).1`. Take `⟨w₀⟩ : Nonempty (PlacesOver L v)` from `⟨(placesOverEquiv L v).symm (Classical.choice (Ideal.nonempty_primesOver v.asIdeal))⟩`. Establish `hf : ∀ w : PlacesOver L v, 0 < fdeg w` using `fun w => Ideal.inertiaDeg'_pos _ _`. Establish `hcs : s.card ≤ n`. Take `⟨-, h1, h2⟩` from `hSK.2.2.1 s hs`.
+
+Rewrite using `[← h1, ← Multiset.card_map Sigma.fst s]`. Conclude with `card_le_sum fun d hd => by obtain ⟨y, hy, rfl⟩ := Multiset.mem_map.1 hd; exact h2 y hy`. Establish `hcs' : ∀ w, (s' w).card ≤ n` using `fun w => by`. Take `⟨-, h1, h2⟩` from `(hSL w).2.2.1 _ (hs' w)`. Rewrite using `[← h1, ← Multiset.card_map Sigma.fst (s' w)]`.
+
+Conclude with `card_le_sum fun d hd => by obtain ⟨y, hy, rfl⟩ := Multiset.mem_map.1 hd; exact h2 y hy`. Establish `key` using `total (T := {θ : (v.adicCompletion K)ˣ →* ℂˣ // IsSmoothChar θ}) (fun a b => IsUnram ((a.1⁻¹ * b.1).comp (nm w₀))) (fun a x _ => by simp) (fun y t => ∃ ξ hξ, y = IrrGL.ofChar ξ hξ ∧ IsUnram ((ξ * t.1).comp (nm w₀))) (by`. Introduce and unpack `y t ⟨ξ, hξ, rfl, h⟩ t'`. Use `Iff.trans ⟨?_, fun h' => ⟨ξ, hξ, rfl, h'⟩⟩ (cls_iff (ζ := ξ.comp (nm w₀)) (a := t.1.comp (nm w₀)) (b := t'.1.comp (nm w₀)) h)` and prove the remaining obligations. Introduce and unpack `⟨ξ', hξ', e, h'⟩`.
+
+Take `rfl` from `IrrGL.ofChar_inj.1 e`. Conclude with `h')`. Use the proof step `(fun (w : PlacesOver L v) y t => ∃ ζ hζ, y = IrrGL.ofChar ζ hζ ∧ IsUnram (ζ * t.1.comp (nm w)))`. Use the proof step `(by`. Introduce and unpack `w y t ⟨ζ, hζ, rfl, h⟩ t'`.
+
+Use `Iff.trans ⟨?_, fun h' => ⟨ζ, hζ, rfl, h'⟩⟩ ((cls_iff (b := t'.1.comp (nm w)) h).trans ⟨(hloc v w).2.1 w₀ (t.1⁻¹ * t'.1), (hloc v w₀).2.1 w (t.1⁻¹ * t'.1)⟩)` and prove the remaining obligations. Introduce and unpack `⟨ξ', hξ', e, h'⟩`. Take `rfl` from `IrrGL.ofChar_inj.1 e`. Conclude with `h')`. Use `s s' (∑ w : PlacesOver L v, fdeg w) (fun w => fdeg w) (fun t => by`.
+
+Use `Eq.trans ?_ (hM K L hp n hn π P hBC η hη v s s' hs hs' t.1 t.2)` and prove the remaining obligations. Use `symm`. Use `sum_card_filter s _ _ (fun y j => ∃ ξ hξ, y = IrrGL.ofChar ξ hξ ∧ IsUnram (ξ * (t.1 * (η ^ j).loc v))) _ ?_ ?_` and prove the remaining obligations. Introduce and unpack `y ⟨ξ, hξ, rfl, h⟩`. Rewrite using `[← ((hloc v w₀).2.2 (ξ * t.1) (hξ.mul t.2)).2.2 h]`.
+
+Use `congr 1`. Use `Finset.filter_congr fun j _ => ⟨?_, fun h' => ⟨ξ, hξ, rfl, by rwa [← mul_assoc]⟩⟩` and prove the remaining obligations. Introduce and unpack `⟨ξ', hξ', e, h'⟩`. Take `rfl` from `IrrGL.ofChar_inj.1 e`. Rewrite using `[mul_assoc]` and apply the resulting hypothesis.
+
+Introduce and unpack `y j ⟨ξ, hξ, rfl, h⟩`. Use `⟨ξ, hξ, rfl, fun x hx => ?_⟩` and prove the remaining obligations. Establish `h1` using `((hloc v w₀).2.2 _ (isSmoothChar_of_isUnram h)).2.1 h x hx`. Establish `h2 : η.loc v (nm w₀ x) = 1` using `DFunLike.congr_fun (hloc v w₀).1 x`. Simplify `h1)` using `[loc_pow, h2]`.
+
+Prove the components needed by the constructor for the conclusion. Introduce `hT w`. Establish `h1` using `(hSK.2.2.1 s hs).1.1 hT`. Establish `hn' : s.card = n`. Rewrite using `[← (hSK.2.2.1 s hs).2.1, Multiset.map_congr rfl h1]`.
+
+Simplify using the standard rewrite rules. Rewrite using `[Multiset.filter_eq_self.2 fun y hy => by`. Take `⟨ξ, hξ, rfl⟩` from `GlobalTheory.LocGL.TemperedTests.exists_eq_ofChar y (h1 y hy)`. Conclude with `⟨⟨ξ⁻¹, hξ.inv⟩, ξ, hξ, rfl, fun x _ => by simp⟩, hn', Finset.sum_mul] at key`. Establish `h2` using `(Finset.sum_eq_sum_iff_of_le fun w _ => Nat.mul_le_mul_left _ ((Multiset.card_le_card (Multiset.filter_le _ _)).trans (hcs' w))).1 key.symm w (Finset.mem_univ w)`.
+
+Establish `h3` using `all_of_le ((hcs' w).trans (Nat.eq_of_mul_eq_mul_left (hf w) h2).ge)`. Use `⟨((hSL w).2.2.1 _ (hs' w)).1.2 fun y hy => ?_, fun r hr ζ hζ hm => ?_⟩` and prove the remaining obligations. Take `⟨t, ζ, hζ, rfl, -⟩` from `h3 y hy`. Both sides reduce to the same expression. Take `rfl` from `(hSL w).2.1 _ _ (hs' w) hr`.
+
+Take `⟨t, ζ', hζ', e, h⟩` from `h3 _ hm`. Take `rfl` from `IrrGL.ofChar_inj.1 e`. Conclude with `⟨t.1, t.2, h⟩`. Introduce `hT`. Establish `h1` using `fun w => ((hSL w).2.2.1 _ (hs' w)).1.1 (hT w).1`.
+
+Establish `hn' : ∀ w, (s' w).card = n` using `fun w => by`. Rewrite using `[← ((hSL w).2.2.1 _ (hs' w)).2.1, Multiset.map_congr rfl (h1 w)]`. Simplify using the standard rewrite rules. Use `replace key := key.trans (Finset.sum_congr (g := fun w : PlacesOver L v => fdeg w * n) rfl fun w _ => by`. Rewrite using `[Multiset.filter_eq_self.2 fun y hy => by`.
+
+Take `⟨ζ, hζ, rfl⟩` from `GlobalTheory.LocGL.TemperedTests.exists_eq_ofChar y (h1 w y hy)`. Take `⟨χ, hχ, h⟩` from `(hT w).2 _ (hs' w) ζ hζ hy`. Conclude with `⟨⟨χ, hχ⟩, ζ, hζ, rfl, h⟩, hn' w])`. Rewrite `key` using `[← Finset.sum_mul]`. Establish `hF : 0 < ∑ w : PlacesOver L v, fdeg w` using `Finset.sum_pos (fun w _ => hf w) ⟨w₀, Finset.mem_univ _⟩`.
+
+Establish `h3` using `all_of_le (hcs.trans (Nat.eq_of_mul_eq_mul_left hF key).ge)`. Use `(hSK.2.2.1 s hs).1.2 fun y hy => ?_` and prove the remaining obligations. Take `⟨t, ζ, hζ, rfl, -⟩` from `h3 y hy`. Both sides reduce to the same expression.
+-/
 theorem UpperTheory.V.Z.Gam.upDownOf :
     UpperTheory.V.Z.Gam.UpDownOf := by
   intro hS hN hM K L _ _ _ _ _ _ _ _ hp n hn π P hBC v

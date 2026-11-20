@@ -13,6 +13,11 @@ set_option autoImplicit false
 
 namespace GlobalTheory.Discrepancy
 
+/- English proof (translation)
+Introduce `k _ X Y _ _ p s _ hbij hprop E' E hOver z hz`. Take `⟨w, hw, hwt⟩` from `GlobalTheory.T.divisor_center_proper_lift k X Y p s hbij hprop E' E hOver z (hz.through specializes_rfl)`. Substitute `hw` using the available equality. Use `⟨w, rfl, fun f => ⟨fun hf => ?_, hwt f⟩⟩` and prove the remaining obligations. Take `⟨g, rfl⟩` from `hbij.2 f`.
+
+Take `⟨a, rfl⟩` from `(hz g).1 ((hOver g).2 hf)`. Conclude with `⟨s.stalkMap w a, (GlobalTheory.functionFieldMap_algebraMap s w a).symm⟩`.
+-/
 theorem DivOver.isAt_lift : ∀ (k : Type) [Field k] (X Y : Scheme.{0}) [IsIntegral X] [IsIntegral Y]
     (p : X ⟶ Sp k) (s : Y ⟶ X) [IsDominant s], Function.Bijective (functionFieldMap s) →
     IsProper s → ∀ (E' : DivOver (s ≫ p)) (E : DivOver p), DivOver.Over s E' E →

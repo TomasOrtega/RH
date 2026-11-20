@@ -11,14 +11,23 @@ open scoped TensorProduct
 
 def rSD (R : Ranks) : ℕ := R.m / 2 - 1
 
+/- English proof (translation)
+Unfold `rSym rSD Ranks.r`. Take `⟨j, hj⟩` from `R.m_even`. Use `R.two_le_m` as an intermediate fact. Use linear arithmetic over natural numbers and integers.
+-/
 theorem rSym_rSD (R : Ranks) : rSym R.k (rSD R) = R.r := by
   unfold rSym rSD Ranks.r
   obtain ⟨j, hj⟩ := R.m_even
   have := R.two_le_m
   omega
 
+/- English proof (translation)
+Use linear arithmetic over natural numbers and integers.
+-/
 theorem le_of_succ_m {R : Ranks} {i : ℕ} (h : i + 1 ≤ R.m) : i ≤ R.m := by omega
 
+/- English proof (translation)
+Use `R.two_le_m` as an intermediate fact. Use linear arithmetic over natural numbers and integers.
+-/
 theorem succ_pred_m (R : Ranks) : R.m - 1 + 1 ≤ R.m := by
   have := R.two_le_m
   omega
@@ -140,6 +149,9 @@ structure FormsTiedSym (D : D7) (u : D.what₂.Word) (Ch : ℕ → Type) (chOf :
 
 attribute [instance] FormsTiedSym.YbFin FormsTiedSym.YbAct
 
+/- English proof (translation)
+Unfold `Ranks.N`. Conclude with `Nat.le_add_right _ _`.
+-/
 theorem k_le_N (R : Ranks) (i : ℕ) : R.k ≤ R.N i := by
   unfold Ranks.N
   exact Nat.le_add_right _ _

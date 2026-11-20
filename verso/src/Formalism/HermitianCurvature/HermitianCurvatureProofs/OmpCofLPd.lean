@@ -12,6 +12,11 @@ open Formalism.REAL Formalism.QuantumDeterminants Formalism.FourierDecayAlt Form
 
 variable {k r : ℕ}
 
+/- English proof (translation)
+Establish `e : (fun g => star (adjugate (Zhat k r z z' g) a b)) = fun g => (fun _ => ((-1 : ℂ) ^ ((b : ℕ) + (a : ℕ)))) g * (((Zhat k r z z' g).submatrix b.succAbove a.succAbove)ᴴ).det`. Use function extensionality and compare the values at `g`. Rewrite using `[adjugate_fin_succ_eq_det_submatrix, star_mul', det_conjTranspose, star_pow, star_neg, star_one]`. Rewrite using `[e]`. Use `pd_mul (pd_const (N := 2 * r + k + 1) ((-1 : ℂ) ^ ((b : ℕ) + (a : ℕ))) 0) (pd_det (l := r) (fun g => ((Zhat k r z z' g).submatrix b.succAbove a.succAbove)ᴴ) fun c d => by` as an intermediate fact.
+
+Simplify `zhat_star_pd k r z z' _ _)` using `[conjTranspose_apply]`. Simplify using `using this`.
+-/
 theorem omp_adj_pd (z z' : Fin (2 * r + k + 1) → ℂ) (a b : Fin (r + 1)) :
     U.IsPolyDeg r (fun g => star (adjugate (Zhat k r z z' g) a b)) := by
   have e : (fun g => star (adjugate (Zhat k r z z' g) a b)) = fun g =>
@@ -25,6 +30,9 @@ theorem omp_adj_pd (z z' : Fin (2 * r + k + 1) → ℂ) (a b : Fin (r + 1)) :
       simpa [conjTranspose_apply] using zhat_star_pd k r z z' _ _)
   simpa using this
 
+/- English proof (translation)
+Unfold `D.cofL`. Simplify using `only [Finset.sum_apply, Pi.smul_apply, smul_eq_mul]`. Conclude with `pd_sum _ fun a _ => pd_mono (show r + 0 ≤ r by omega) (pd_mul (omp_adj_pd Bs.z Bs.z' (Fin.last r) a) (pd_const _ 0))`.
+-/
 theorem omp_cofL_pd {Wp Wq : Type} [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp] [NormedAddCommGroup Wq]
     [InnerProductSpace ℂ Wq] (Bs : B.RealPlaceData k r Wp Wq) (s : Fin (2 * r + k + 1)) :
     U.IsPolyDeg r (fun g => D.cofL Bs g s) := by
@@ -32,12 +40,18 @@ theorem omp_cofL_pd {Wp Wq : Type} [NormedAddCommGroup Wp] [InnerProductSpace �
   simp only [Finset.sum_apply, Pi.smul_apply, smul_eq_mul]
   exact pd_sum _ fun a _ => pd_mono (show r + 0 ≤ r by omega) (pd_mul (omp_adj_pd Bs.z Bs.z' (Fin.last r) a) (pd_const _ 0))
 
+/- English proof (translation)
+Simplify using `only [Matrix.mul_apply, conjTranspose_apply]`. Use `pd_sum _ fun u _ => pd_mono (show 1 + 0 ≤ 1 by omega) (pd_mul ?_ (pd_const _ 0))` and prove the remaining obligations. Apply the tactic sequence `exact pd_sum _ fun t _ => pd_mono (show 0 + 1 ≤ 1 by omega) (pd_mul (pd_const _ 0) (pd_star_entry _ _))`.
+-/
 theorem omp_inv_pd (q s : Fin (2 * r + k + 1)) :
     U.IsPolyDeg 1 (fun g : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ => (Hpk k r * gᴴ * Hpk k r) q s) := by
   simp only [Matrix.mul_apply, conjTranspose_apply]
   refine pd_sum _ fun u _ => pd_mono (show 1 + 0 ≤ 1 by omega) (pd_mul ?_ (pd_const _ 0))
   exact pd_sum _ fun t _ => pd_mono (show 0 + 1 ≤ 1 by omega) (pd_mul (pd_const _ 0) (pd_star_entry _ _))
 
+/- English proof (translation)
+Unfold `omC herm`. Simplify using `only [dotProduct, mulVec]`. Use `pd_sum _ fun i _ => pd_mono (show 0 + (r + 1) ≤ r + 1 by omega) (pd_mul (pd_const _ 0) ?_)` and prove the remaining obligations. Use `pd_sum _ fun q _ => pd_mono (show 0 + (r + 1) ≤ r + 1 by omega) (pd_mul (pd_const _ 0) ?_)` and prove the remaining obligations. Conclude with `pd_sum _ fun s _ => pd_mono (show 1 + r ≤ r + 1 by omega) (pd_mul (omp_inv_pd q s) (omp_cofL_pd Bs s))`.
+-/
 theorem omp_poly {Wp Wq : Type} [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp] [NormedAddCommGroup Wq]
     [InnerProductSpace ℂ Wq] [FiniteDimensional ℂ Wq] (Bs : B.RealPlaceData k r Wp Wq)
     (B0 : Fin k → Fin (2 * r + k + 1) → ℂ) (j : Fin k) :

@@ -10,6 +10,9 @@ open GlobalTheory.JR Matrix MeasureTheory Filter Topology
 
 namespace GlobalTheory.JR
 
+/- English proof (translation)
+Introduce `hW r`. Proceed by induction on `r with`. Consider the case `zero => exact GlobalTheory.T.jacquetRallisUnitMatch_sizeOne`. Consider the case `succ r ih => exact GlobalTheory.T.jacquetRallisUnitMatch_succ (GlobalTheory.T.weilRepresentationEtale_of_quadraticField hW) GlobalTheory.T.weilConstantStandardHermitian_eq_one r (GlobalTheory.T.jacquetRallis_fourier_matching_of_weil_field hW (r + 1)) ih`.
+-/
 theorem unitMatch_of_weilField : WeilField → ∀ r, UnitMatch r := by
   intro hW r
   induction r with

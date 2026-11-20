@@ -12,15 +12,28 @@ namespace GlobalTheory.JR.Et
 
 variable {F E : Type} [NontriviallyNormedField F] [NontriviallyNormedField E] [NormedAlgebra F E] [StarRing E]
 
+/- English proof (translation)
+Unfold `psiK`. Rewrite using `[map_add, AddChar.map_add_eq_mul]`.
+-/
 theorem psiK_add (A : Et F E) (ψ : AddChar F ℂ) (u v : A.K) :
     A.psiK ψ (u + v) = A.psiK ψ u * A.psiK ψ v := by
   unfold psiK
   rw [map_add, AddChar.map_add_eq_mul]
 
+/- English proof (translation)
+Establish `h1 : Continuous (Algebra.trace F A.K)` using `IsModuleTopology.continuous_of_linearMap _`. Conclude with `(DualLattice.stdChar_continuous hψ).comp h1`.
+-/
 theorem psiK_continuous (A : Et F E) {ψ : AddChar F ℂ} (hψ : IsStdChar ψ) : Continuous (A.psiK ψ) := by
   have h1 : Continuous (Algebra.trace F A.K) := IsModuleTopology.continuous_of_linearMap _
   exact (DualLattice.stdChar_continuous hψ).comp h1
 
+/- English proof (translation)
+Take `⟨⟨b⟩, -⟩` from `GlobalTheory.JR.Et.quadratic_structure F E A`. Establish `: A.NL = fun y => (Algebra.leftMulMatrix b y).det`. Use function extensionality and compare the values at `y`. Conclude with `Algebra.norm_eq_matrix_det b y`. Rewrite using `[this]`.
+
+Use `Continuous.matrix_det ?_` and prove the remaining obligations. Use `continuous_pi fun i => continuous_pi fun j => ?_` and prove the remaining obligations. Establish `hlin : Continuous (((b.coord i).comp (LinearMap.mulRight A.K (b j))).restrictScalars F)` using `IsModuleTopology.continuous_of_linearMap _`. Use `hlin using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `y`.
+
+Simplify using `[Algebra.leftMulMatrix_eq_repr_mul]`.
+-/
 theorem NL_continuous [Unram F E] (A : Et F E) : Continuous A.NL := by
   obtain ⟨⟨b⟩, -⟩ := GlobalTheory.JR.Et.quadratic_structure F E A
   have : A.NL = fun y => (Algebra.leftMulMatrix b y).det := by
@@ -38,6 +51,35 @@ end GlobalTheory.JR.Et
 
 namespace GlobalTheory.JR.Et
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ A ψ hψ μK _ μ _ φ hφ x a c hc`. Take `⟨-, -, -, -, -, -, -, -, -, hOpen, hCpt, R, hR⟩` from `GlobalTheory.T.etaleHermitianPair_structure_facts F E A`. Use `set M : Set A.K := {z : A.K | c • z ∈ A.OK} with hMdef`. Establish `hOKclosed : IsClosed A.OK`. Establish `: IsOpen ((R.toAddSubgroup : AddSubgroup A.K) : Set A.K)`.
+
+Express the relevant statement in the definitionally equal form `IsOpen (R : Set A.K)`. Rewrite using `[hR]`. Conclude with `hOpen`. Establish `h2` using `AddSubgroup.isClosed_of_isOpen _ this`. Express the relevant statement in the definitionally equal form `IsClosed (R : Set A.K) at h2`.
+
+Rewrite `h2` using `[hR]`. Then use the resulting hypothesis. Establish `hsm : Continuous fun z : A.K => c • z` using `continuous_const_smul c`. Establish `hMopen : IsOpen M` using `hOpen.preimage hsm`. Establish `hMclosed : IsClosed M` using `hOKclosed.preimage hsm`. Establish `hMcpt : IsCompact M`.
+
+Establish `: M = (fun w : A.K => c⁻¹ • w) '' A.OK`. Use extensionality with `z`. Prove the components needed by the constructor for the conclusion. Introduce `hz`. Conclude with `⟨c • z, hz, by simp [smul_smul, inv_mul_cancel₀ hc]⟩`.
+
+Introduce and unpack `⟨w, hw, rfl⟩`. Express the relevant statement in the definitionally equal form `c • c⁻¹ • w ∈ A.OK`. Simplify `hw` using `[smul_smul, mul_inv_cancel₀ hc]`. Rewrite using `[this]`. Conclude with `hCpt.image (continuous_const_smul _)`.
+
+Establish `hMmeas : MeasurableSet M` using `hMopen.measurableSet`. Set `g : A.K → A.L → ℂ` to `fun z y => φ y * A.psiK ψ (z * (x * A.NL y - a))`. Set `f : A.K → A.L → ℂ` to `fun z y => M.indicator (fun _ => (1 : ℂ)) z * g z y`. Establish `hpt : ∀ z y, φ y * A.psiK ψ (z * x * A.NL y) * A.psiK ψ (-(a * z)) = g z y`. Introduce `z y`.
+
+Simplify using `only [g]`. Rewrite using `[mul_assoc, ← psiK_add]`. Use `congr 2`. Expand and normalize the polynomial expressions, which then agree. Establish `hL : ∀ z, (∫ y, φ y * A.psiK ψ (z * x * A.NL y) ∂μ) * A.psiK ψ (-(a * z)) = ∫ y, g z y ∂μ`.
+
+Introduce `z`. Rewrite using `[← integral_mul_const]`. Conclude with `integral_congr_ae (Eventually.of_forall fun y => hpt z y)`. Establish `hind : ∀ (h : A.K → ℂ) z, M.indicator (fun _ => (1 : ℂ)) z * h z = M.indicator h z`. Introduce `h z`.
+
+Apply the tactic sequence `by_cases hz : z ∈ M <;> simp [hz]`. Establish `hcontI : Continuous (M.indicator (fun _ : A.K => (1 : ℂ)))` using `IsClopen.continuous_indicator ⟨hMclosed, hMopen⟩ continuous_const`. Establish `hφc : Continuous φ` using `hφ.1.continuous`. Establish `hcont : Continuous (Function.uncurry f)`. Establish `hN` using `A.NL_continuous`.
+
+Establish `hP` using `A.psiK_continuous hψ`. Use `(hcontI.comp continuous_fst).mul ((hφc.comp continuous_snd).mul (hP.comp ?_))` and prove the remaining obligations. Conclude with `continuous_fst.mul (((continuous_const.mul (hN.comp continuous_snd))).sub continuous_const)`. Establish `hsupp : HasCompactSupport (Function.uncurry f)`. Establish `hsub : Function.support (Function.uncurry f) ⊆ M ×ˢ tsupport φ`.
+
+Introduce and unpack `⟨z, y⟩ hzy`. Simplify using `only [Function.mem_support, Function.uncurry_apply_pair, f, g] at hzy`. Use `⟨?_, subset_tsupport _ ?_⟩` and prove the remaining obligations. Assume the negation of the conclusion as `hz`. Conclude with `hzy (by simp [hz])`.
+
+Introduce `h0`. Conclude with `hzy (by simp [h0])`. Conclude with `IsCompact.of_isClosed_subset (hMcpt.prod hφ.2) (isClosed_tsupport _) (closure_minimal hsub (hMclosed.prod (isClosed_tsupport _)))`. Establish `hswap` using `integral_integral_swap_of_hasCompactSupport hcont hsupp (μ := μK) (ν := μ)`. Combine the equalities or inequalities in the displayed calculation.
+
+Use `congr 1 with z`. Rewrite using `[← hind, ← integral_const_mul]`. Use `_ = ∫ y, ∫ z, f z y ∂μK ∂μ := hswap`. Use `_ = ∫ y, φ y * ∫ z in M, A.psiK ψ (z * (x * A.NL y - a)) ∂μK ∂μ := by`. Use `congr 1 with y`.
+
+Rewrite using `[← integral_const_mul, ← integral_indicator hMmeas]`. Use `congr 1 with z`. Rewrite using `[← hind]`.
+-/
 theorem whittaker_swap : ∀ (F E : Type) [NontriviallyNormedField F] [NontriviallyNormedField E] [NormedAlgebra F E] [StarRing E] [Unram F E] (A : Et F E) (ψ : AddChar F ℂ), IsStdChar ψ → ∀ (μK : Measure A.K), μK.IsAddHaarMeasure → ∀ (μ : Measure A.L), μ.IsAddHaarMeasure → ∀ φ : A.L → ℂ, IsTest φ → ∀ (x a : A.K) (c : F), c ≠ 0 → ∫ z in {z : A.K | c • z ∈ A.OK}, (∫ y, φ y * A.psiK ψ (z * x * A.NL y) ∂μ) * A.psiK ψ (-(a * z)) ∂μK = ∫ y, φ y * ∫ z in {z : A.K | c • z ∈ A.OK}, A.psiK ψ (z * (x * A.NL y - a)) ∂μK ∂μ := by
   intro F E _ _ _ _ _ A ψ hψ μK _ μ _ φ hφ x a c hc
   obtain ⟨-, -, -, -, -, -, -, -, -, hOpen, hCpt, R, hR⟩ := GlobalTheory.T.etaleHermitianPair_structure_facts F E A

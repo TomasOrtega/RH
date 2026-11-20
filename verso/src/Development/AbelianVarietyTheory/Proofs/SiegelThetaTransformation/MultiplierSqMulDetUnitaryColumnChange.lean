@@ -19,6 +19,9 @@ open scoped ComplexConjugate Real
 
 namespace GlobalTheory.Phase.Mult
 
+/- English proof (translation)
+Unfold `thS`. Rewrite using `[← tsum_mul_left]`. Use `congr 1`. Use function extensionality and compare the values at `x`. Simplify using `only [Pi.smul_apply, smul_eq_mul, mul_assoc]`.
+-/
 theorem thS_smul' {κ ι : Type} [Fintype κ] [Fintype ι] (c : ℂ) (φ : Matrix κ ι ℚ → ℂ) (τ : Matrix ι ι ℂ)
     (ζ : κ → ι → ℂ) : thS (c • φ) τ ζ = c * thS φ τ ζ := by
   unfold thS
@@ -27,6 +30,11 @@ theorem thS_smul' {κ ι : Type} [Fintype κ] [Fintype ι] (c : ℂ) (φ : Matri
   funext x
   simp only [Pi.smul_apply, smul_eq_mul, mul_assoc]
 
+/- English proof (translation)
+Take `⟨R, hR, h1, h2⟩` from `h`. Use `⟨R, hR, fun x hx => h1 x ?_, fun x y hy => ?_⟩` and prove the remaining obligations. Introduce `h0`. Apply `hx` to reduce the goal to its premises. Simplify using `[h0]`.
+
+Simplify using `only [Pi.smul_apply, smul_eq_mul]`. Rewrite using `[h2 x y hy]`.
+-/
 theorem isSB_smul' {κ ι : Type} [Fintype κ] [Fintype ι] (c : ℂ) {φ : Matrix κ ι ℚ → ℂ} (h : IsSB φ) :
     IsSB (c • φ) := by
   obtain ⟨R, hR, h1, h2⟩ := h
@@ -37,6 +45,11 @@ theorem isSB_smul' {κ ι : Type} [Fintype κ] [Fintype ι] (c : ℂ) {φ : Matr
   · simp only [Pi.smul_apply, smul_eq_mul]
     rw [h2 x y hy]
 
+/- English proof (translation)
+Simplify using `only [dotProduct, mulVec, blk, Matrix.of_apply, Fintype.sum_prod_type]`. Use `Finset.sum_congr rfl fun k _ => Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Use `congr 1`. Rewrite using `[Finset.sum_eq_single k]`. Simplify using the standard rewrite rules.
+
+Introduce `b _ hb`. Simplify using `[Ne.symm hb]`. Simplify using the standard rewrite rules.
+-/
 theorem quad_blk {n g : ℕ} (M : Matrix (Fin g) (Fin g) ℂ) (ζ : Fin n × Fin g → ℂ) :
     ζ ⬝ᵥ blk n M *ᵥ ζ = ∑ k, (fun i => ζ (k, i)) ⬝ᵥ M *ᵥ fun i => ζ (k, i) := by
   simp only [dotProduct, mulVec, blk, Matrix.of_apply, Fintype.sum_prod_type]
@@ -48,6 +61,39 @@ theorem quad_blk {n g : ℕ} (M : Matrix (Fin g) (Fin g) ℂ) (ζ : Fin n × Fin
     simp [Ne.symm hb]
   · simp
 
+/- English proof (translation)
+Use `set B := blk n τ with hB`. Use `set D := spDen s B with hD`. Establish `hDu : IsUnit D.det` using `isUnit_iff_ne_zero.mpr (left_ne_zero_of_mul_eq_one hd)`. Establish `hsb : IsSB φ`. Take `⟨A, ε, hv⟩` from `hφ.1`.
+
+Conclude with `hv.sb`. Establish `hsb' : IsSB φ'`. Take `⟨A, ε, hv⟩` from `hφ'.1`. Conclude with `hv.sb`. Take `⟨hpvd, -, hsbd, -, hτB⟩` from `GlobalTheory.T.doubledRowTestFunction_properties n g φ`.
+
+Take `⟨hpvd', hned', hsbd', -, hτB'⟩` from `GlobalTheory.T.doubledRowTestFunction_properties n g φ'`. Take `⟨hBs, hthS, hImB⟩` from `hτB τ hτ`. Take `⟨-, hthS', -⟩` from `hτB' τ hτ`. Establish `hrel : ∀ ζ : Fin n × Fin g → ℂ, thS φ' τ (fun k i => (ζ ᵥ* D⁻¹) (k, i)) = t * cexp (π * I * (ζ ⬝ᵥ (D⁻¹ * qm s.toBlocks₂₁) *ᵥ ζ)) * thS φ τ (fun k i => ζ (k, i))`. Introduce `ζ`.
+
+Establish `h1` using `H ζ (ζ ᵥ* D⁻¹) rfl`. Establish `hq : ∀ v : Fin n × Fin g → ℂ, ∑ k, (fun i => v (k, i)) ⬝ᵥ (τ.map fun z => (z.im : ℂ))⁻¹ *ᵥ (fun i => v (k, i)) = v ⬝ᵥ (B.map fun z => (z.im : ℂ))⁻¹ *ᵥ v`. Introduce `v`. Rewrite using `[hImB, quad_blk]`. Rewrite `h1` using `[hq ζ, hq (ζ ᵥ* D⁻¹)]`.
+
+Establish `hc` using `canon_exponent_invariant (Fin n × Fin g) s hs B hBs ζ`. Rewrite `hc` using `[hfix]`. Use `set a := ζ ⬝ᵥ (B.map fun z => (z.im : ℂ))⁻¹ *ᵥ ζ`. Use `set a' := (ζ ᵥ* D⁻¹) ⬝ᵥ (B.map fun z => (z.im : ℂ))⁻¹ *ᵥ (ζ ᵥ* D⁻¹)`. Use `set e := ζ ⬝ᵥ (D⁻¹ * qm s.toBlocks₂₁) *ᵥ ζ`.
+
+Establish `ha' : a' = a - 2 * I * e` using `by rw [← hc]; ring`. Establish `hexp : cexp (π / 2 * a') = cexp (π / 2 * a) * cexp (-(π * I * e))`. Rewrite using `[← Complex.exp_add, ha']`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree.
+
+Rewrite `h1` using `[hexp]`. Establish `hne : cexp (π / 2 * a) ≠ 0` using `Complex.exp_ne_zero _`. Establish `h2 : cexp (-(π * I * e)) * thS φ' τ (fun k i => (ζ ᵥ* D⁻¹) (k, i)) = t * thS φ τ (fun k i => ζ (k, i))`. Apply `mul_left_cancel₀ hne` to reduce the goal to its premises. Rewrite using `[← mul_assoc, h1]`.
+
+Expand and normalize the polynomial expressions, which then agree. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[← mul_assoc, ← Complex.exp_add, add_neg_cancel, Complex.exp_zero, one_mul]`. Use `_ = t * cexp (π * I * e) * thS φ τ (fun k i => ζ (k, i)) := by`. Rewrite using `[h2]`.
+
+Expand and normalize the polynomial expressions, which then agree. Establish `hdup : ∀ Z : Fin 2 → Fin n × Fin g → ℂ, thS (dup φ') B (fun k => Z k ᵥ* D⁻¹) = t ^ 2 * cexp (π * I * ∑ k, Z k ⬝ᵥ (D⁻¹ * qm s.toBlocks₂₁) *ᵥ Z k) * thS (dup φ) B Z`. Introduce `Z`. Rewrite using `[hthS' hsb', hthS hsb, hrel (Z 0), hrel (Z 1), Fin.sum_univ_two, mul_add, Complex.exp_add]`. Expand and normalize the polynomial expressions, which then agree.
+
+Establish `heven : Even (Fintype.card (Fin 2))`. Rewrite using `[Fintype.card_fin]`. Conclude with `even_two`. Take `⟨ω, hω⟩` from `exists_weil_of_symplectic (Fin 2) (Fin n × Fin g) s heven hs`. Take `⟨hsbω, hTω, -⟩` from `hω (dup φ) (hsbd hsb)`.
+
+Establish `hT : ∀ Z : Fin 2 → Fin n × Fin g → ℂ, cexp (π * I * ∑ k, Z k ⬝ᵥ (D⁻¹ * qm s.toBlocks₂₁) *ᵥ Z k) * thS (dup φ) B Z = d * thS (ω (dup φ)) B (fun k => Z k ᵥ* D⁻¹)`. Introduce `Z`. Establish `h1` using `hTω B hBs Z`. Rewrite `h1` using `[hfix, Fintype.card_fin]`. Rewrite using `[h1]`.
+
+Combine the equalities or inequalities in the displayed calculation. Establish `hall : ∀ W : Fin 2 → Fin n × Fin g → ℂ, thS (dup φ') B W = thS ((t ^ 2 * d) • ω (dup φ)) B W`. Introduce `W`. Establish `hW : W = fun k => (W k ᵥ* D) ᵥ* D⁻¹`. Use function extensionality and compare the values at `k`.
+
+Rewrite using `[Matrix.vecMul_vecMul, Matrix.mul_nonsing_inv _ hDu, Matrix.vecMul_one]`. Rewrite using `[thS_smul', hW, hdup, mul_assoc, hT, ← hW]`. Expand and normalize the polynomial expressions, which then agree. Establish `heq` using `eq_of_thS_eq (Fin 2) (Fin n × Fin g) (dup φ') ((t ^ 2 * d) • ω (dup φ)) (hsbd' hsb') (isSB_smul' _ hsbω) B hBs hall`. Establish `hpvω : PV (ω (dup φ))` using `GlobalTheory.T.rootOfUnityPhaseVacuum_siegelThetaTransform (Fin 2) (Fin n × Fin g) heven s hs (dup φ) (ω (dup φ)) hsbω hTω (hpvd hφ)`.
+
+Take `⟨x, hx⟩` from `Function.ne_iff.mp (hned' h0)`. Establish `hxe : dup φ' x = (t ^ 2 * d) * ω (dup φ) x`. Rewrite using `[heq]`. Both sides reduce to the same expression. Establish `hb0 : ω (dup φ) x ≠ 0`.
+
+Introduce `hz`. Apply `hx` to reduce the goal to its premises. Rewrite using `[hxe, hz, mul_zero]`. Both sides reduce to the same expression. Establish `hph : Ph (t ^ 2 * d)` using `GlobalTheory.Phase.Calc.ph_cancel hb0 (hpvω.2 x) (hxe ▸ (hpvd' hφ').2 x)`.
+
+Use `GlobalTheory.Phase.Calc.isMu_of_ph hph ?_` and prove the remaining obligations. Rewrite using `[norm_mul, norm_pow, ht, hd1]`. Evaluate the numerical expressions.
+-/
 theorem isMu_of_fixed {n g : ℕ} {τ : Matrix (Fin g) (Fin g) ℂ} (hτ : τ ∈ Siegel (Fin g))
     {s : Matrix ((Fin n × Fin g) ⊕ (Fin n × Fin g)) ((Fin n × Fin g) ⊕ (Fin n × Fin g)) ℚ}
     (hs : s ∈ Matrix.symplecticGroup (Fin n × Fin g) ℚ) (hfix : spAct s (blk n τ) = blk n τ)
@@ -172,6 +218,13 @@ open GlobalTheory.Dict GlobalTheory.Phase GlobalTheory.IndefiniteRowSideFullHeck
 
 namespace GlobalTheory.Phase.Mult
 
+/- English proof (translation)
+Distinguish the cases in `hP : IsUnit (perMat X bas idx Sum.inl x).det`. Conclude with `Matrix.isUnit_nonsing_inv_det _ hP`. Establish `h0 : ThFr.hMat X bas idx x = 0` using `Matrix.nonsing_inv_apply_not_isUnit _ hP`. Establish `ht : tauMat X bas idx x = 0`. Rewrite using `[ThFr.tauMat, h0, Matrix.zero_mul]`.
+
+Rewrite `h` using `[ht]`. Break down `Nat.eq_zero_or_pos g with rfl | hg` into its components or cases. Rewrite using `[Matrix.det_fin_zero]`. Conclude with `isUnit_one`. It suffices to derive a contradiction.
+
+Establish `hx : Finsupp.single (⟨0, hg⟩ : Fin g) (1 : ℝ) ≠ 0` using `Finsupp.single_ne_zero.mpr one_ne_zero`. Use `h.2.2 hx` as an intermediate fact. Simplify using `at this`.
+-/
 theorem isUnit_hMat_of_siegel {E : Type} [Field E] [NumberField E] [IsCMField E] {r g : ℕ} (X : Data E r)
     (bas : (Fin g ⊕ Fin g → ℤ) ≃ₗ[ℤ] X.Λ) (idx : Fin g ≃ X.Ψ × Fin r) (x : Frame X.Ψ r)
     (h : tauMat X bas idx x ∈ Siegel (Fin g)) : IsUnit (ThFr.hMat X bas idx x).det := by
@@ -189,6 +242,13 @@ theorem isUnit_hMat_of_siegel {E : Type} [Field E] [NumberField E] [IsCMField E]
       have := h.2.2 hx
       simp at this
 
+/- English proof (translation)
+Establish `h1 : cc h.det * h.det = 1`. Use `congrArg Matrix.det hu` as an intermediate fact. Rewrite `this` using `[Matrix.det_mul, Matrix.det_one, ccT, Matrix.det_transpose]`. Establish `hm : (h.map cc).det = cc h.det`. Use `(IsCMField.complexConj E).toRingHom.map_det h` as an intermediate fact.
+
+Rewrite `this` using `[RingHom.mapMatrix_apply]`. Conclude with `this.symm`. Rewrite `this` using `[hm]`. Then use the resulting hypothesis. Establish `h2 : conj (σ h.det) * σ h.det = 1`. Rewrite using `[← IsCMField.complexEmbedding_complexConj, ← map_mul]`.
+
+Establish `: IsCMField.complexConj E h.det * h.det = 1` using `h1`. Rewrite using `[this, map_one]`. Establish `h3` using `congrArg (‖·‖) h2`. Simplify using `only [norm_mul, Complex.norm_conj, norm_one] at h3`. Use polynomial arithmetic with `[norm_nonneg (σ h.det)]`.
+-/
 theorem norm_det_unitary {E : Type} [Field E] [NumberField E] [IsCMField E] {n : ℕ}
     {h : Matrix (Fin n) (Fin n) E} (hu : ccT h * h = 1) (σ : E →+* ℂ) : ‖σ h.det‖ = 1 := by
   have h1 : cc h.det * h.det = 1 := by
@@ -207,6 +267,25 @@ theorem norm_det_unitary {E : Type} [Field E] [NumberField E] [IsCMField E] {n :
   simp only [norm_mul, Complex.norm_conj, norm_one] at h3
   nlinarith [norm_nonneg (σ h.det)]
 
+/- English proof (translation)
+Introduce `E _ _ _ r X g bas idx n hS hn w hw hwc h hu Λ hΛ Λ' hΛ' L hL v hv x hx t ht H`. Take `⟨u, hu1, hU⟩` from `GlobalTheory.T.heisenbergVacuum_projection_rootOfUnity_phases E r X g bas idx n hS hn w hw hwc L hL v hv`. Take `⟨s, hs, hsx⟩` from `GlobalTheory.T.exists_rational_symplectic_unitary_columns E r X g bas idx n hS hn h hu`. Take `⟨hτ, hfix, hdet, hvec⟩` from `hsx x hx`. Take `⟨-, hpv, -⟩` from `hU Λ hΛ`.
+
+Take `⟨hvac', hpv', -⟩` from `hU Λ' hΛ'`. Establish `hMu : IsUnit (hMat X bas idx x).det` using `isUnit_hMat_of_siegel X bas idx x hτ`. Establish `hd1 : ‖∏ i : Fin g, rowType X (idx i) h.det‖ = 1`. Rewrite using `[norm_prod]`. Conclude with `Finset.prod_eq_one fun i _ => norm_det_unitary hu _`.
+
+Establish `hψ'0 : u • unitv (projA X bas w (tens Λ' L) v) ≠ 0`. Introduce `h0`. Establish `hu0 : u ≠ 0`. Introduce `h`. Rewrite `hu1` using `[h, norm_zero]`.
+
+Conclude with `zero_ne_one hu1`. Establish `hz : unitv (projA X bas w (tens Λ' L) v) = 0`. Use function extensionality and compare the values at `y`. Use `congrFun h0 y` as an intermediate fact. Simplify `this` using `[hu0]`.
+
+Establish `h1 : ip (unitv (projA X bas w (tens Λ' L) v)) (unitv (projA X bas w (tens Λ' L) v)) = 1` using `hvac'.2.1`. Rewrite `h1` using `[hz]`. Simplify using `[GlobalTheory.SW.ip, GlobalTheory.SW.haar, GlobalTheory.SW.haarAt] at h1`. Use `isMu_of_fixed hτ hs hfix hdet hd1 ht hpv hpv' hψ'0 ?_` and prove the remaining obligations. Introduce `ζ ζ' hζ'`.
+
+Take `⟨z, hz⟩ : ∃ z : Fin n → Fin g → ℂ, ∀ k, hMat X bas idx x *ᵥ z k = fun i => ζ (k, i)` from `⟨fun k => (hMat X bas idx x)⁻¹ *ᵥ fun i => ζ (k, i), fun k => by`. Rewrite using `[Matrix.mulVec_mulVec, Matrix.mul_nonsing_inv _ hMu, Matrix.one_mulVec]⟩`. Establish `hζ : (fun p : Fin n × Fin g => (hMat X bas idx x *ᵥ z p.1) p.2) = ζ`. Use function extensionality and compare the values at `p`. Rewrite using `[hz p.1]`.
+
+Establish `hz' : ∀ k, hMat X bas idx x *ᵥ Dict.hAct X idx h z k = fun i => ζ' (k, i)`. Introduce `k`. Use function extensionality and compare the values at `i`. Use `congrFun (hvec z) (k, i)` as an intermediate fact. Rewrite `this` using `[hζ, ← hζ']`.
+
+Conclude with `this.symm`. Establish `H1` using `H z`. Simplify using `only [GlobalTheory.SW.thA, hz, hz', imInv_eq] at H1`. Rewrite using `[thS_smul', thS_smul']`. Establish `hne` using `pow_ne_zero (n / 2) hMu.ne_zero`.
+
+Establish `H2` using `mul_left_cancel₀ hne (by rw [← _root_.mul_assoc, H1]; ring : (hMat X bas idx x).det ^ (n / 2) * (cexp (Real.pi / 2 * ∑ k, (fun i => ζ' (k, i)) ⬝ᵥ ((tauMat X bas idx x).map fun z => (z.im : ℂ))⁻¹ *ᵥ (fun i => ζ' (k, i))) * thS (unitv (projA X bas w (tens Λ' L) v)) (tauMat X bas id …`. Take the linear combination `u * H2`.
+-/
 theorem isMu_multiplier_sq_mul_det : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (r : ℕ) (X : Data E r) (g : ℕ) (bas : (Fin g ⊕ Fin g → ℤ) ≃ₗ[ℤ] X.Λ) (idx : Fin g ≃ X.Ψ × Fin r) (n : ℕ), IsSympl X bas → Even n → ∀ w : E, IsIntegral ℤ w → w + cc w = 1 → ∀ h : Matrix (Fin n) (Fin n) E, ccT h * h = 1 → ∀ Λ ∈ Vset E n 1, ∀ Λ' ∈ Vset E n 1, ∀ L : Lt E r, SelfD X L → ∀ v : TF n g, IsVac X bas w (tens (stdL E n) L) v → ∀ x ∈ X.dom, ∀ t : ℂ, ‖t‖ = 1 → (∀ z : Fin n → Fin g → ℂ, thA X bas idx (unitv (projA X bas w (tens Λ' L) v)) x (Dict.hAct X idx h z) = t * thA X bas idx (unitv (projA X bas w (tens Λ L) v)) x z) → IsMu (t ^ 2 * ∏ i : Fin g, rowType X (idx i) h.det) := by
   intro E _ _ _ r X g bas idx n hS hn w hw hwc h hu Λ hΛ Λ' hΛ' L hL v hv x hx t ht H
   obtain ⟨u, hu1, hU⟩ := GlobalTheory.T.heisenbergVacuum_projection_rootOfUnity_phases E r X g bas idx n hS hn w hw hwc L hL v hv

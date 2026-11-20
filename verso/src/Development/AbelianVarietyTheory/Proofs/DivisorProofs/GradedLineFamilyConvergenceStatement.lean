@@ -11,5 +11,8 @@ open scoped Classical
 open GlobalTheory.CovTestDR GlobalTheory.VdmRec GlobalTheory.MetFam GlobalTheory.ShFam GlobalTheory.Toroidal GlobalTheory.CxPts
 open scoped ComplexOrder
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.MetFam.lFam_grLB | exact GlobalTheory.MetFam.lFam_grLB | (intros; apply GlobalTheory.MetFam.lFam_grLB <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.graded_line_family_convergence : ∀ (k : Type) [CommRing k] (X : Scheme.{0}) (p : X ⟶ Sp k) (E : X.Modules) (r : ℕ) (t : ℝ → ℝ) (h : ℝ → VMetric p E r) (h₀ : VMetric p E r) (H : ∀ R, (h R).IsCInf) (H₀ : h₀.IsCInf), VFam t h h₀ → ∀ (fl : Vert.Flag E r) (i : Fin r), LFam t (fun R => VMetric.grLB fl i (H R)) (VMetric.grLB fl i H₀) := by
   first | exact @GlobalTheory.MetFam.lFam_grLB | exact GlobalTheory.MetFam.lFam_grLB | (intros; apply GlobalTheory.MetFam.lFam_grLB <;> assumption)

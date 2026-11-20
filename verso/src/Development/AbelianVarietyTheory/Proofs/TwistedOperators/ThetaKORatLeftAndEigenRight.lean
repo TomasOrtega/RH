@@ -10,6 +10,11 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Introduce `D ψ S T χS χT om hω f hf`. Use `⟨fun γ hγ γ' hγ' g h => ?_, fun k k' c hc g h => ?_⟩` and prove the remaining obligations. Establish `hprod : ((γ * g, γ' * h) : GA D S × GA D T) = (γ, γ') * (g, h)` using `rfl`. Unfold `thetaKO`. Rewrite using `[hprod, map_mul, Module.End.mul_apply]`.
+
+Conclude with `hω.om_aut γ hγ γ' hγ' _ (hω.om_pres (g, h) f hf)`. Establish `hprod : ((g * k, h * k') : GA D S × GA D T) = (g, h) * (k, k')` using `rfl`. Unfold `thetaKO`. Rewrite using `[hprod, map_mul, Module.End.mul_apply, hc, map_smul, Pi.smul_apply, smul_eq_mul]`.
+-/
 theorem thetaKO_rat_left_and_eigen_right : ∀ {D : D7} (ψ : AddChar (AF D.host.F) ℂ) (S T : HSp D) (χS χT : (AE D)ˣ →* Circle) (om : GA D S × GA D T →* Module.End ℂ (WO S T → ℂ)), IsWeilDatumO ψ S T χS χT om → ∀ f, IsThetaFunO ψ S T f → (∀ γ ∈ GQ S, ∀ γ' ∈ GQ T, ∀ g h, thetaKO om (γ * g) (γ' * h) f = thetaKO om g h f) ∧ ∀ k k' (c : ℂ), om (k, k') f = c • f → ∀ g h, thetaKO om (g * k) (h * k') f = c * thetaKO om g h f := by
   intro D ψ S T χS χT om hω f hf
   refine ⟨fun γ hγ γ' hγ' g h => ?_, fun k k' c hc g h => ?_⟩

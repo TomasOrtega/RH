@@ -18,6 +18,9 @@ variable {m n : ℕ} {ε : Fin m → Bool} {c t : ℝ} {p q : ℕ} {e : ℤ} {sL
   {ρ : GR n → PX m n →ₗ[ℂ] PX m n} {G : Type} [Group G] [TopologicalSpace G] {Pp Γ : Subgroup G} {ι : GR n →* G}
   {s₀ : ℂ} {Ht : G → ℝ≥0} {sec I : PX m n →ₗ[ℂ] (G → ℂ)}
 
+/- English proof (translation)
+Establish `hN : NullSec ε c (Q - Q')` using `(hS m n ε c t p q e sL ρ hL (Q - Q')).2 (fun y => by simp [map_sub, h y])`. Establish `h0` using `hLC m n ε c hL.cpos ((LinearMap.proj g).comp I) (fun a b P => by simpa using hD.Iinv g a b P) (Q - Q') hN`. Simplify using `[map_sub, sub_eq_zero] at h0`. Conclude with `h0`.
+-/
 theorem I_eq_of_sL' (hS : SecZero) (hLC : LC) (hL : LocData ε c t p q e sL ρ) (hD : GlobCore ε c sL ρ G Pp Γ ι s₀ Ht sec I)
     {Q Q' : PX m n} (h : ∀ y, sL Q y = sL Q' y) (g : G) : I Q g = I Q' g := by
   have hN : NullSec ε c (Q - Q') :=
@@ -27,6 +30,11 @@ theorem I_eq_of_sL' (hS : SecZero) (hLC : LC) (hL : LocData ε c t p q e sL ρ) 
   simp [map_sub, sub_eq_zero] at h0
   exact h0
 
+/- English proof (translation)
+Take `⟨x', y, S, r, -, hx, hsec⟩` from `hD.split x`. Establish `key : ∀ P' : PX m n, sec P' x = S * sL P' y`. Introduce `P'`. Use `(hsec y).2 P'` as an intermediate fact. Rewrite `this` using `[← hx]`.
+
+Conclude with `this`. Simplify using `only [hz, key, hP, Finset.mul_sum]`. Use `Finset.sum_congr rfl (fun j _ => ?_)` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem hz_comb' (hD : GlobCore ε c sL ρ G Pp Γ ι s₀ Ht sec I) {N : ℕ} {P : PX m n} {QQ : Fin N → PX m n} {cc : Fin N → ℂ}
     (hP : ∀ y, sL P y = ∑ j, cc j * sL (QQ j) y) (z : ℂ) (x : G) :
     hz Ht sec s₀ z P x = ∑ j, cc j * hz Ht sec s₀ z (QQ j) x := by
@@ -42,11 +50,17 @@ theorem hz_comb' (hD : GlobCore ε c sL ρ G Pp Γ ι s₀ Ht sec I) {N : ℕ} {
 
 end
 
+/- English proof (translation)
+Simplify using `only [Matrix.mul_apply, Finset.mul_sum, Finset.sum_mul, mul_assoc]`. Conclude with `Finset.sum_comm`.
+-/
 theorem mulVec_sum' {N : ℕ} (A B : Matrix (Fin N) (Fin N) ℂ) (v : Fin N → ℂ) (j : Fin N) :
     ∑ i, A j i * ∑ l, B i l * v l = ∑ l, (A * B) j l * v l := by
   simp only [Matrix.mul_apply, Finset.mul_sum, Finset.sum_mul, mul_assoc]
   exact Finset.sum_comm
 
+/- English proof (translation)
+Break down `(hf.analyticAt z).eventually_eq_zero_or_eventually_ne_zero with h | h` into its components or cases. It suffices to derive a contradiction. Establish `hA : AnalyticOnNhd ℂ f Set.univ` using `fun w _ => hf.analyticAt w`. Conclude with `ha (hA.eqOn_zero_of_preconnected_of_eventuallyEq_zero isPreconnected_univ (Set.mem_univ z) h (Set.mem_univ a))`. Conclude with `h`.
+-/
 private theorem ev_ne_lemma {f : ℂ → ℂ} (hf : Differentiable ℂ f) {a : ℂ} (ha : f a ≠ 0) (z : ℂ) :
     ∀ᶠ w in 𝓝[≠] z, f w ≠ 0 := by
   rcases (hf.analyticAt z).eventually_eq_zero_or_eventually_ne_zero with h | h
@@ -56,6 +70,11 @@ private theorem ev_ne_lemma {f : ℂ → ℂ} (hf : Differentiable ℂ f) {a : �
       (Set.mem_univ z) h (Set.mem_univ a))
   · exact h
 
+/- English proof (translation)
+Use `⟨hU, fun z hz => (hF z hz).congr ?_, σ, fun z hz => ?_⟩` and prove the remaining obligations. Use `filter_upwards [hev z] with w hw split_ifs with h1`. Conclude with `(hw h1).symm`. Both sides reduce to the same expression. Establish `: σ < z.re` using `hz`.
+
+Simplify using `[this]`.
+-/
 private theorem merExt_lemma_2 {h F : ℂ → ℂ} {U : Set ℂ} {σ : ℝ} (hU : IsRightDomain U)
     (hF : MeromorphicOn F U) (hev : ∀ z, ∀ᶠ w in 𝓝[≠] z, σ < w.re → h w = F w) :
     IsMerExt h U (fun z => if σ < z.re then h z else F z) := by
@@ -67,6 +86,9 @@ private theorem merExt_lemma_2 {h F : ℂ → ℂ} {U : Set ℂ} {σ : ℝ} (hU 
   · have : σ < z.re := hz
     simp [this]
 
+/- English proof (translation)
+Establish `e : (fun w => (A w).det) = fun w => ∑ σ : Equiv.Perm (Fin N), ((Equiv.Perm.sign σ : ℤ) : ℂ) * ∏ i, A w (σ i) i` using `funext fun w => Matrix.det_apply' _`. Rewrite using `[e]`. Use `fun_prop`.
+-/
 private theorem diffDet_lemma_3 {N : ℕ} {A : ℂ → Matrix (Fin N) (Fin N) ℂ}
     (h : ∀ i j, Differentiable ℂ fun w => A w i j) :
     Differentiable ℂ fun w => (A w).det := by
@@ -75,6 +97,11 @@ private theorem diffDet_lemma_3 {N : ℕ} {A : ℂ → Matrix (Fin N) (Fin N) �
   rw [e]
   fun_prop
 
+/- English proof (translation)
+Simplify using `only [Matrix.adjugate_apply]`. Apply `diffDet_lemma_3` to reduce the goal to its premises. Introduce `k l`. Simplify using `only [Matrix.updateRow_apply]`. Use `split_ifs`.
+
+Conclude with `differentiable_const _`. Conclude with `h k l`.
+-/
 private theorem diffAdj_lemma_4 {N : ℕ} {A : ℂ → Matrix (Fin N) (Fin N) ℂ}
     (h : ∀ i j, Differentiable ℂ fun w => A w i j) (i j : Fin N) :
     Differentiable ℂ fun w => (A w).adjugate i j := by
@@ -86,6 +113,61 @@ private theorem diffAdj_lemma_4 {N : ℕ} {A : ℂ → Matrix (Fin N) (Fin N) �
   · exact differentiable_const _
   · exact h k l
 
+/- English proof (translation)
+Introduce `m n ε c t p q e sL ρ hL G _ _ _ _ _ _ Pp Γ ι s₀ Ht sec I hD hV P g`. Use `show HolValueAt (fun z => GlobalTheory.Eis.cosetSum Pp Γ (hz Ht sec s₀ z P) g) s₀ (I P g)`. Use `letI : MeasurableSpace (KR n) := borel (KR n)`. Use `haveI : BorelSpace (KR n) := ⟨rfl⟩`. Take `⟨W, hWfin, hPW, hWst, -⟩` from `hL.kfin P`.
+
+Take `⟨ν, κ, hν, hκ, hrep, hproj⟩` from `hP m n ε c t p q e sL ρ hL W hWfin hWst`. Use `haveI := hν`. Take `⟨N, yy, QQ, cc, M, hQW, hPsum, hM0, hMd, hF0, hMrel⟩` from `hB m n ε c t p q e sL ρ hL W hWfin hWst ν κ hν hκ hrep hproj P hPW`. Take `⟨σF, -, hFsum, hFrel⟩` from `hFar m n ε c t p q e sL ρ hL G Pp Γ ι s₀ Ht sec I hD`. Take `⟨U, d, E, σE, hUo, hUr, hs₀U, hd0, hEd, hEc, -, hEfar⟩` from `hD.eis`.
+
+Take `⟨r, Fv, hr, hFvc, hFvd, hFv0, hFvh⟩` from `hV`. Establish `hdd : Differentiable ℂ fun z => d.eval z` using `Polynomial.differentiable d`. Choose the witnesses or unpack the hypotheses as in `⟨a, ha⟩ : ∃ a, d.eval a ≠ 0 := by`. Assume the negation of the conclusion as `hc`. Use `push_neg at hc`.
+
+Conclude with `hd0 (Polynomial.funext fun x => by simpa using hc x)`. Establish `hMdiff : ∀ i j, Differentiable ℂ fun z => M (z - s₀) i j` using `fun i j => (hMd i j).comp (differentiable_id.sub_const s₀)`. Establish `hDt : Differentiable ℂ fun z => (M (z - s₀)).det` using `diffDet_lemma_3 hMdiff`. Establish `hadj : ∀ j i, Differentiable ℂ fun z => (M (z - s₀)).adjugate j i` using `diffAdj_lemma_4 hMdiff`. Establish `hιc : ∀ i, Continuous fun y : KR n × ℂ => g * ι (↑y.1 * yy i)` using `fun i => continuous_const.mul (hD.ιcont.comp ((continuous_subtype_val.comp continuous_fst).mul continuous_const))`.
+
+Take `⟨Ψ, hΨ⟩ : ∃ Ψ : Fin N → ℂ → ℂ, ∀ i z, Ψ i z = ∫ k, κ k * E z (g * ι (↑k * yy i)) ∂ν` from `⟨_, fun _ _ => rfl⟩`. Take `⟨Λ, hΛ⟩ : ∃ Λ : Fin N → ℂ → ℂ, ∀ i z, Λ i z = ∫ k, κ k * Fv z (g * ι (↑k * yy i)) ∂ν` from `⟨_, fun _ _ => rfl⟩`. Establish `hΨU : ∀ i, DifferentiableOn ℂ (Ψ i) U`. Introduce `i`. Establish `hc : ContinuousOn (fun y : KR n × ℂ => κ y.1 * E y.2 (g * ι (↑y.1 * yy i))) (Set.univ ×ˢ U)`.
+
+Use `(hκ.comp continuous_fst).continuousOn.mul ?_` and prove the remaining obligations. Conclude with `hEc.comp (continuous_snd.prodMk (hιc i)).continuousOn (fun y hy => ⟨hy.2, Set.mem_univ _⟩)`. Use `(hH (KR n) ν Set.univ isCompact_univ (by simp) U (fun k z => κ k * E z (g * ι (↑k * yy i))) hUo hc (fun k _ => (hEd _).const_mul (κ k))).1` as an intermediate fact. Use `this using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `z`.
+
+Conclude with `hΨ i z`. Establish `hΛB : ∀ i, DifferentiableOn ℂ (Λ i) (Metric.ball s₀ r)`. Introduce `i`. Establish `hc : ContinuousOn (fun y : KR n × ℂ => κ y.1 * Fv y.2 (g * ι (↑y.1 * yy i))) (Set.univ ×ˢ Metric.ball s₀ r)`. Use `(hκ.comp continuous_fst).continuousOn.mul ?_` and prove the remaining obligations.
+
+Conclude with `hFvc.comp (continuous_snd.prodMk (hιc i)).continuousOn (fun y hy => ⟨hy.2, Set.mem_univ _⟩)`. Use `(hH (KR n) ν Set.univ isCompact_univ (by simp) (Metric.ball s₀ r) (fun k z => κ k * Fv z (g * ι (↑k * yy i))) Metric.isOpen_ball hc (fun k _ => (hFvd _).const_mul (κ k))).1` as an intermediate fact. Use `this using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `z`. Conclude with `hΛ i z`.
+
+Establish `key : ∀ w ∈ Metric.ball s₀ r, w ∈ U → d.eval w ≠ 0 → ∀ x, Fv w x = E w x / d.eval w`. Introduce `w hwB hwU hdw x`. Establish `hev : ∀ z, ∀ᶠ v in 𝓝[≠] z, σE < v.re → GlobalTheory.Eis.cosetSum Pp Γ (hz Ht sec s₀ v 1) x = E v x / d.eval v` using `fun z => (ev_ne_lemma hdd ha z).mono fun v hv hre => by`. Rewrite using `[(hEfar v hre).2 x, mul_div_cancel_left₀ _ hv]`. Both sides reduce to the same expression.
+
+Establish `hmer : MeromorphicOn (fun z => E z x / d.eval z) U` using `fun z hz => ((hEd x).analyticAt (hUo.mem_nhds hz)).meromorphicAt.div (hdd.analyticAt z).meromorphicAt`. Establish `hext` using `(merExt_lemma_2 hUr hmer hev).isExtAt hwU`. Establish `h1` using `hext.holValueAt_iff.1 (hFvh x w hwB)`. Establish `h2 : Tendsto (fun z => E z x / d.eval z) (𝓝[≠] w) (𝓝 (E w x / d.eval w))` using `(((hEd x).continuousOn.continuousAt (hUo.mem_nhds hwU)).div hdd.continuous.continuousAt hdw).tendsto.mono_left nhdsWithin_le_nhds`. Use `tendsto_nhds_unique h1 (h2.congr' ?_)` and prove the remaining obligations.
+
+Use `filter_upwards [hev w] with v hv`. Use `split_ifs with hh`. Conclude with `(hv hh).symm`. Both sides reduce to the same expression. Establish `hΛ0 : ∀ j, Λ j s₀ = I (QQ j) g`.
+
+Introduce `j`. Rewrite using `[hΛ]`. Simplify using `only [hFv0]`. Conclude with `hT m n ε c t p q e sL ρ hL G Pp Γ ι s₀ Ht sec I hD W hWfin hWst ν κ hν hκ hrep hproj g (yy j) (QQ j) (hQW j) (hF0 j)`. Establish `hIP : ∑ j, cc j * I (QQ j) g = I P g`.
+
+Establish `hs : ∀ y, sL P y = sL (∑ j, cc j • QQ j) y` using `fun y => by`. Rewrite using `[hPsum y]`. Simplify using `[map_sum, Finset.sum_apply]`. Rewrite using `[I_eq_of_sL' hS hLC hL hD hs g]`. Simplify using `[map_sum, Finset.sum_apply]`.
+
+Take `⟨NumL, hNumL⟩ : ∃ F : ℂ → ℂ, ∀ z, F z = ∑ j, cc j * ∑ i, (M (z - s₀)).adjugate j i * Λ i z` from `⟨_, fun _ => rfl⟩`. Take `⟨Num, hNum⟩ : ∃ F : ℂ → ℂ, ∀ z, F z = ∑ j, cc j * ∑ i, (M (z - s₀)).adjugate j i * Ψ i z` from `⟨_, fun _ => rfl⟩`. Establish `hNumU : DifferentiableOn ℂ Num U`. Rewrite using `[show Num = fun z => ∑ j, cc j * ∑ i, (M (z - s₀)).adjugate j i * Ψ i z from funext hNum]`. Conclude with `DifferentiableOn.fun_sum fun j _ => (DifferentiableOn.fun_sum fun i _ => (hadj j i).differentiableOn.mul (hΨU i)).const_mul (cc j)`.
+
+Establish `hNumLB : DifferentiableOn ℂ NumL (Metric.ball s₀ r)`. Rewrite using `[show NumL = fun z => ∑ j, cc j * ∑ i, (M (z - s₀)).adjugate j i * Λ i z from funext hNumL]`. Conclude with `DifferentiableOn.fun_sum fun j _ => (DifferentiableOn.fun_sum fun i _ => (hadj j i).differentiableOn.mul (hΛB i)).const_mul (cc j)`. Establish `hval : NumL s₀ / (M (s₀ - s₀)).det = I P g`. Rewrite using `[hNumL, ← hIP]`.
+
+Simplify using `[hM0, Matrix.adjugate_one, Matrix.one_apply, hΛ0]`. Establish `hΩc : ContinuousAt (fun z => NumL z / (M (z - s₀)).det) s₀` using `(hNumLB.continuousOn.continuousAt (Metric.ball_mem_nhds s₀ hr)).div hDt.continuous.continuousAt (by simp [hM0])`. Establish `hformΩ : ∀ᶠ w in 𝓝[≠] s₀, Num w / (d.eval w * (M (w - s₀)).det) = NumL w / (M (w - s₀)).det` using `by filter_upwards [ev_ne_lemma hdd ha s₀, nhdsWithin_le_nhds (Filter.inter_mem (Metric.ball_mem_nhds s₀ hr) (hUo.mem_nhds hs₀U))] with w hdw hw`. Establish `hΨw : ∀ i, Ψ i w = d.eval w * Λ i w`. Introduce `i`.
+
+Rewrite using `[hΨ, hΛ, ← integral_const_mul]`. Use `congr 1`. Use function extensionality and compare the values at `k`. Rewrite using `[key w hw.1 hw.2 hdw]`. Clear the denominators using the available nonvanishing facts.
+
+Establish `: Num w = d.eval w * NumL w`. Rewrite using `[hNum, hNumL]`. Simplify using `only [hΨw, Finset.mul_sum]`. Conclude with `Finset.sum_congr rfl fun j _ => Finset.sum_congr rfl fun i _ => by ring`. Rewrite using `[this, mul_div_mul_left _ _ hdw]`.
+
+Establish `hfar : ∀ w, max σF σE < w.re → d.eval w ≠ 0 → (M (w - s₀)).det ≠ 0 → GlobalTheory.Eis.cosetSum Pp Γ (hz Ht sec s₀ w P) g = Num w / (d.eval w * (M (w - s₀)).det)`. Introduce `w hw hdw hDw`. Establish `hwF : σF < w.re` using `lt_of_le_of_lt (le_max_left _ _) hw`. Establish `hwE : σE < w.re` using `lt_of_le_of_lt (le_max_right _ _) hw`. Establish `hsplit : GlobalTheory.Eis.cosetSum Pp Γ (hz Ht sec s₀ w P) g = ∑ j, cc j * GlobalTheory.Eis.cosetSum Pp Γ (hz Ht sec s₀ w (QQ j)) g`.
+
+Combine the equalities or inequalities in the displayed calculation. Establish `hΦ : ∀ i, ∫ k, κ k * GlobalTheory.Eis.cosetSum Pp Γ (hz Ht sec s₀ w 1) (g * ι (↑k * yy i)) ∂ν = ∑ l, M (w - s₀) i l * GlobalTheory.Eis.cosetSum Pp Γ (hz Ht sec s₀ w (QQ l)) g` using `fun i => hFrel ν κ N yy QQ M hν hκ hMrel w hwF g i`. Establish `hΨd : ∀ i, Ψ i w = d.eval w * ∫ k, κ k * GlobalTheory.Eis.cosetSum Pp Γ (hz Ht sec s₀ w 1) (g * ι (↑k * yy i)) ∂ν`. Introduce `i`. Rewrite using `[hΨ, ← integral_const_mul]`.
+
+Use `congr 1`. Use function extensionality and compare the values at `k`. Rewrite using `[(hEfar w hwE).2]`. Conclude with `mul_left_comm _ _ _`. Establish `hinner : ∀ j, ∑ i, (M (w - s₀)).adjugate j i * Ψ i w = d.eval w * ((M (w - s₀)).det * GlobalTheory.Eis.cosetSum Pp Γ (hz Ht sec s₀ w (QQ j)) g)`.
+
+Introduce `j`. Simplify using `only [hΨd, hΦ]`. Establish `: ∑ i, (M (w - s₀)).adjugate j i * (d.eval w * ∑ l, M (w - s₀) i l * GlobalTheory.Eis.cosetSum Pp Γ (hz Ht sec s₀ w (QQ l)) g) = d.eval w * ∑ i, (M (w - s₀)).adjugate j i * ∑ l, M (w - s₀) i l * GlobalTheory.Eis.cosetSum Pp Γ (hz Ht sec s₀ w (QQ l)) g`. Rewrite using `[Finset.mul_sum]`. Conclude with `Finset.sum_congr rfl fun i _ => by ring`.
+
+Rewrite using `[this, mulVec_sum', Matrix.adjugate_mul]`. Simplify using `[Matrix.smul_apply, Matrix.one_apply]`. Rewrite using `[hsplit, hNum]`. Establish `hsum : ∑ j, cc j * ∑ i, (M (w - s₀)).adjugate j i * Ψ i w = (d.eval w * (M (w - s₀)).det) * ∑ j, cc j * GlobalTheory.Eis.cosetSum Pp Γ (hz Ht sec s₀ w (QQ j)) g`. Rewrite using `[Finset.mul_sum]`.
+
+Conclude with `Finset.sum_congr rfl fun j _ => by rw [hinner]; ring`. Rewrite using `[hsum, mul_div_cancel_left₀ _ (mul_ne_zero hdw hDw)]`. Establish `hmerF : MeromorphicOn (fun z => Num z / (d.eval z * (M (z - s₀)).det)) U` using `fun z hz => (hNumU.analyticAt (hUo.mem_nhds hz)).meromorphicAt.div ((hdd.mul hDt).analyticAt z).meromorphicAt`. Establish `hevm : ∀ z, ∀ᶠ w in 𝓝[≠] z, max σF σE < w.re → GlobalTheory.Eis.cosetSum Pp Γ (hz Ht sec s₀ w P) g = Num w / (d.eval w * (M (w - s₀)).det)`. Introduce `z`.
+
+Use `filter_upwards [ev_ne_lemma hdd ha z, ev_ne_lemma hDt (a := s₀) (by simp [hM0]) z] with w h1 h2 h3`. Conclude with `hfar w h3 h1 h2`. Establish `hext` using `(merExt_lemma_2 hUr hmerF hevm).isExtAt hs₀U`. Use `hext.holValueAt_iff.2 ?_` and prove the remaining obligations. Establish `hΩt : Tendsto (fun z => NumL z / (M (z - s₀)).det) (𝓝[≠] s₀) (𝓝 (I P g))`.
+
+Rewrite using `[← hval]`. Conclude with `hΩc.tendsto.mono_left nhdsWithin_le_nhds`. Use `hΩt.congr' ?_` and prove the remaining obligations. Use `filter_upwards [hformΩ, hevm s₀] with w h1 h2`. Use `split_ifs with hh`.
+
+Rewrite using `[h2 hh, h1]`. Rewrite using `[h1]`.
+-/
 theorem genCore_of (hP : ProjOp) (hT : TSGenC) (hB : Basis) (hFar : FarRightC) (hS : SecZero) (hLC : LC)
     (hH : HolParam) (hG : Glue) : GenCore := by
   intro m n ε c t p q e sL ρ hL G _ _ _ _ _ _ Pp Γ ι s₀ Ht sec I hD hV P g

@@ -17,6 +17,9 @@ attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalDat
 namespace GlobalTheory
 namespace NormLeFrob
 
+/- English proof (translation)
+Establish `h1 : IsIntegral ℤ (algebraMap E Ω (x : E))` using `(x.2).map (IsScalarTower.toAlgHom ℤ E Ω)`. Establish `h2 : IsIntegral A (algebraMap E Ω (x : E))` using `h1.tower_top`. Take `⟨y, hy⟩` from `IsIntegrallyClosed.isIntegral_iff.mp h2`. Rewrite using `[← hy]`. Conclude with `A.valuation_le_one y`.
+-/
 theorem valuation_algebraMap_le_one {E Ω : Type} [Field E] [NumberField E] [Field Ω] [Algebra E Ω]
     (A : ValuationSubring Ω) (x : 𝓞 E) :
     A.valuation (algebraMap E Ω (x : E)) ≤ 1 := by
@@ -35,6 +38,9 @@ noncomputable def toResidue {E Ω : Type} [Field E] [NumberField E] [Field Ω] [
       map_zero' := by ext; simp
       map_add' := by intro a b; ext; simp }
 
+/- English proof (translation)
+Rewrite using `[← hw x]`. Simplify using `only [toResidue, RingHom.coe_comp, Function.comp_apply, RingHom.coe_mk, MonoidHom.coe_mk, OneHom.coe_mk, IsLocalRing.residue_eq_zero_iff, ValuationSubring.valuation_lt_one_iff]`.
+-/
 theorem toResidue_eq_zero_iff {E Ω : Type} [Field E] [NumberField E] [Field Ω] [Algebra E Ω]
     (A : ValuationSubring Ω) (w : HeightOneSpectrum (𝓞 E)) (hw : IsPlaceOver A w) (x : 𝓞 E) :
     toResidue A x = 0 ↔ x ∈ w.asIdeal := by
@@ -42,6 +48,13 @@ theorem toResidue_eq_zero_iff {E Ω : Type} [Field E] [NumberField E] [Field Ω]
   simp only [toResidue, RingHom.coe_comp, Function.comp_apply, RingHom.coe_mk, MonoidHom.coe_mk,
     OneHom.coe_mk, IsLocalRing.residue_eq_zero_iff, ValuationSubring.valuation_lt_one_iff]
 
+/- English proof (translation)
+Establish `hx` using `valuation_algebraMap_le_one A x`. Establish `h` using `hσ.2 _ hx`. Rewrite `h` using `[AlgEquiv.commutes]`. Establish `hmem : (⟨algebraMap E Ω (x : E), (A.valuation_le_one_iff _).mp hx⟩ : A) ^ q - ⟨algebraMap E Ω (x : E), (A.valuation_le_one_iff _).mp hx⟩ ∈ IsLocalRing.maximalIdeal A`. Rewrite using `[ValuationSubring.valuation_lt_one_iff]`.
+
+Rewrite using `[← Valuation.map_neg]`. Use `h using 2` and compare the differences between its conclusion and the goal. Simplify using the standard rewrite rules. Rewrite `hmem` using `[← IsLocalRing.residue_eq_zero_iff]`. Simplify using `only [IsRoot, eval_sub, eval_pow, eval_X]`.
+
+Establish `e : toResidue A x = IsLocalRing.residue A ⟨algebraMap E Ω (x : E), (A.valuation_le_one_iff _).mp hx⟩` using `rfl`. Rewrite using `[e, ← map_pow, ← map_sub]`. Conclude with `hmem`.
+-/
 theorem toResidue_isRoot {E Ω : Type} [Field E] [NumberField E] [Field Ω] [Algebra E Ω]
     (A : ValuationSubring Ω) (q : ℕ) (σ : G E Ω) (hσ : IsFrob A q σ) (x : 𝓞 E) :
     (X ^ q - X : (IsLocalRing.ResidueField A)[X]).IsRoot (toResidue A x) := by
@@ -61,6 +74,15 @@ theorem toResidue_isRoot {E Ω : Type} [Field E] [NumberField E] [Field Ω] [Alg
   rw [e, ← map_pow, ← map_sub]
   exact hmem
 
+/- English proof (translation)
+Introduce `E Ω _ _ _ _ A w hw q hq σ hσ`. Use `set k := IsLocalRing.ResidueField A`. Use `set P : k[X] := X ^ q - X with hP`. Establish `hP0 : P ≠ 0` using `FiniteField.X_pow_card_sub_X_ne_zero k hq`. Set `f : 𝓞 E ⧸ w.asIdeal →+* k` to `Ideal.Quotient.lift w.asIdeal (toResidue A) (fun x hx => (toResidue_eq_zero_iff A w hw x).mpr hx)`.
+
+Establish `hf : Function.Injective f`. Rewrite using `[injective_iff_map_eq_zero]`. Introduce `a ha`. Take `⟨x, rfl⟩` from `Ideal.Quotient.mk_surjective a`. Rewrite using `[Ideal.Quotient.eq_zero_iff_mem]`.
+
+Conclude with `(toResidue_eq_zero_iff A w hw x).mp ha`. Set `g : 𝓞 E ⧸ w.asIdeal → {y : k // y ∈ P.roots.toFinset}` to `fun a => ⟨f a, by`. Take `⟨x, rfl⟩` from `Ideal.Quotient.mk_surjective a`. Rewrite using `[Multiset.mem_toFinset, mem_roots hP0]`. Conclude with `toResidue_isRoot A q σ hσ x⟩`.
+
+Establish `hg : Function.Injective g` using `fun a b h => hf (congrArg Subtype.val h)`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem normV_le_of_isFrob : ∀ (E Ω : Type) [Field E] [NumberField E] [Field Ω] [Algebra E Ω] (A : ValuationSubring Ω) (w : HeightOneSpectrum (𝓞 E)), IsPlaceOver A w → ∀ q : ℕ, 1 < q → ∀ σ : G E Ω, IsFrob A q σ → normV w ≤ q := by
   intro E Ω _ _ _ _ A w hw q hq σ hσ
   classical

@@ -32,16 +32,49 @@ import Formalism.HermitianLattices.HermitianLatticesProofs.UnimodUnramUnique
 
 namespace Formalism.HermitianLatticesTheory
 
+/- English proof (translation)
+The claim follows from `Formalism.HermitianLatticesTheory.dualBasic`.
+-/
 theorem final_dualBasic : DualBasic := Formalism.HermitianLatticesTheory.dualBasic
+/- English proof (translation)
+The claim follows from `Formalism.HermitianLatticesTheory.isomAct`.
+-/
 theorem final_isomAct : IsomAct := Formalism.HermitianLatticesTheory.isomAct
+/- English proof (translation)
+The claim follows from `Formalism.HermitianLatticesTheory.locDual`.
+-/
 theorem final_locDual : LocDual := Formalism.HermitianLatticesTheory.locDual
+/- English proof (translation)
+The claim follows from `Formalism.HermitianLatticesTheory.genusBasic`.
+-/
 theorem final_genusBasic : GenusBasic := Formalism.HermitianLatticesTheory.genusBasic
+/- English proof (translation)
+The claim follows from `Formalism.HermitianLatticesTheory.finIntermediate`.
+-/
 theorem final_finIntermediate : FinIntermediate := Formalism.HermitianLatticesTheory.finIntermediate
+/- English proof (translation)
+The claim follows from `Formalism.HermitianLatticesTheory.shortVectors`.
+-/
 theorem final_shortVectors : ShortVectors := Formalism.HermitianLatticesTheory.shortVectors
+/- English proof (translation)
+The claim follows from `Formalism.HermitianLatticesTheory.isomOfTrace`.
+-/
 theorem final_isomOfTrace : IsomOfTrace := Formalism.HermitianLatticesTheory.isomOfTrace
+/- English proof (translation)
+The claim follows from `Formalism.HermitianLatticesTheory.traceReal`.
+-/
 theorem final_traceReal : TraceReal := Formalism.HermitianLatticesTheory.traceReal
+/- English proof (translation)
+The claim follows from `Formalism.HermitianLatticesTheory.autFinite`.
+-/
 theorem final_autFinite : AutFinite := Formalism.HermitianLatticesTheory.autFinite
+/- English proof (translation)
+The claim follows from `Formalism.HermitianLatticesTheory.genusCovol`.
+-/
 theorem final_genusCovol : GenusCovol := Formalism.HermitianLatticesTheory.genusCovol
+/- English proof (translation)
+The claim follows from `Formalism.HermitianLatticesTheory.classSetFinite`.
+-/
 theorem final_classSetFinite : ClassSetFinite := Formalism.HermitianLatticesTheory.classSetFinite
 
 end Formalism.HermitianLatticesTheory

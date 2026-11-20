@@ -16,6 +16,11 @@ attribute [local instance] algPadicInt algPadicField towerPadic factPadic Global
 
 namespace GlobalTheory.FinPartAt
 
+/- English proof (translation)
+Establish `h1 : (1 : Over.mk (T.hom ≫ f) ⟶ G).left = (1 : T ⟶ G').left ≫ π`. Set `e : Over.mk (T.hom ≫ f) ⟶ G` to `Over.homMk ((1 : T ⟶ G').left ≫ π) (by show ((1 : T ⟶ G').left ≫ π) ≫ G.hom = T.hom ≫ f`. Rewrite using `[Category.assoc, hg.1.w, ← Category.assoc, Over.w])`. Establish `he : e * e = e` using `Over.OverMorphism.ext ((hg.2 T 1 1 e e rfl rfl).trans (by rw [_root_.mul_one]; rfl))`. Establish `he1 : e = 1` using `mul_eq_left.1 he`.
+
+Conclude with `(congrArg (fun z => z.left) he1).symm`. Proceed by induction on `n with`. Consider the case `zero => simpa using h1`. Consider the case `succ n ih => rw [pow_succ, pow_succ]`. Conclude with `hg.2 T _ _ _ _ ih h`.
+-/
 theorem push_pow {S' S₀ : Scheme.{0}} {G' : Over S'} [GrpObj G'] {G : Over S₀} [GrpObj G] {f : S' ⟶ S₀}
     {π : G'.left ⟶ G.left} (hg : IsGrpPullback G' G f π) {T : Over S'} (x : T ⟶ G')
     (x₀ : Over.mk (T.hom ≫ f) ⟶ G) (h : x₀.left = x.left ≫ π) (n : ℕ) :
@@ -31,10 +36,38 @@ theorem push_pow {S' S₀ : Scheme.{0}} {G' : Over S'} [GrpObj G'] {G : Over S�
   | zero => simpa using h1
   | succ n ih => rw [pow_succ, pow_succ]; exact hg.2 T _ _ _ _ ih h
 
+/- English proof (translation)
+Use `congrArg (fun z => (Spec.preimage z).hom) h` as an intermediate fact. Simplify using `using this`.
+-/
 theorem spMap_inj {A B : Type} [CommRing A] [CommRing B] {f g : A →+* B} (h : spMap f = spMap g) : f = g := by
   have := congrArg (fun z => (Spec.preimage z).hom) h
   simpa using this
 
+/- English proof (translation)
+Introduce `E _ _ _ H X t R _ ξ q P' O _ x0 hu G' _ π hg h S _ hS y hy`. Take `⟨s0, hs0⟩` from `hy`. Set `o : O →+* S` to `(Spec.preimage (y ≫ (torsion G' q).hom)).hom`. Establish `ho : spMap o = y ≫ (torsion G' q).hom` using `Spec.map_preimage _`. Set `φ : R →+* S` to `o.comp x0`.
+
+Establish `hu' : IsUnit (φ P'.f)` using `hu.map o`. Establish `hw : (y ≫ (torsion.ι G' q).left ≫ π) ≫ t.G.hom = spMap φ ≫ ξ`. Rewrite using `[Category.assoc, Category.assoc, hg.1.w, ← Category.assoc (torsion.ι G' q).left, Over.w (torsion.ι G' q), ← Category.assoc, ← ho, GlobalTheory.HTMap.spc_assoc]`. Set `w : Over.mk (spMap φ ≫ ξ) ⟶ t.G` to `GlobalTheory.HTMap.mkPt _ hw`. Set `T : Over (Sp O)` to `Over.mk (y ≫ (torsion G' q).hom)`.
+
+Set `yt : T ⟶ torsion G' q` to `Over.homMk y rfl`. Set `x : T ⟶ G'` to `yt ≫ torsion.ι G' q`. Establish `hx : x ^ q = 1` using `by show (yt ≫ torsion.ι G' q) ^ q = 1`. Rewrite using `[← MonObj.comp_pow, GlobalTheory.KernelNoTorsion.torsionι_pow, MonObj.comp_one]`. Set `x₀ : Over.mk (T.hom ≫ (spMap x0 ≫ ξ)) ⟶ t.G` to `Over.homMk (x.left ≫ π) (by show (x.left ≫ π) ≫ t.G.hom = T.hom ≫ spMap x0 ≫ ξ`.
+
+Rewrite using `[Category.assoc, hg.1.w, ← Category.assoc, Over.w x])`. Establish `hx₀ : x₀ ^ q = 1`. Use `Over.OverMorphism.ext ?_` and prove the remaining obligations. Rewrite using `[push_pow hg x x₀ rfl q, hx]`. Use `push_pow hg x x₀ rfl 0` as an intermediate fact.
+
+Simplify using `only [pow_zero] at this`. Conclude with `this.symm`. Establish `hwq : w ^ q = 1` using `GlobalTheory.HTMap.tors_of (g := 𝟙 _) (w := x₀) (by`. Rewrite using `[Category.id_comp]`. Use `show y ≫ (torsion.ι G' q).left ≫ π = (y ≫ (torsion.ι G' q).left) ≫ π`.
+
+Rewrite using `[Category.assoc]) hx₀`. Choose the witnesses or unpack the hypotheses as in `⟨β0, hβ0⟩ : ∃ β, P'.At φ w.left β := by`. Use `GlobalTheory.HTMap.FP.at_open hu' rfl w hwq fun 𝔪 h𝔪 => ?_` and prove the remaining obligations. Take `rfl` from `IsLocalRing.eq_maximalIdeal h𝔪`. Set `gm : Bt P' x0 hu →+* IsLocalRing.ResidueField S` to `(Spec.preimage s0).hom`.
+
+Establish `hgm : spMap gm = s0` using `Spec.map_preimage _`. Establish `e1 : spMap (gm.comp (algebraMap O (Bt P' x0 hu))) = spMap ((IsLocalRing.residue S).comp o)`. Rewrite using `[← GlobalTheory.HTMap.spc (algebraMap O (Bt P' x0 hu)) gm, hgm, ← GlobalTheory.HTMap.spc o (IsLocalRing.residue S), ho]`. Use `show s0 ≫ (Hs P' x0 hu).hom = _`. Rewrite using `[← Over.w (jH P' x0 hu hg.1 h), ← Category.assoc, hs0, Category.assoc]`.
+
+Establish `e2` using `spMap_inj e1`. Use `⟨gm.comp (inB P' x0 hu), ?_, ?_⟩` and prove the remaining obligations. Use `show (gm.comp (inB P' x0 hu)).comp P'.str = (IsLocalRing.residue S).comp φ`. Rewrite using `[RingHom.comp_assoc, inB_str, ← RingHom.comp_assoc, e2]`. Both sides reduce to the same expression.
+
+Use `show spMap (gm.comp (inB P' x0 hu)) ≫ P'.u.left = spMap (IsLocalRing.residue S) ≫ y ≫ (torsion.ι G' q).left ≫ π`. Rewrite using `[← GlobalTheory.HTMap.spc_assoc, hgm, ← aH_left_π P' x0 hu hg.1, ← jH_ι P' x0 hu hg.1 h, Over.comp_left, ← Category.assoc, ← Category.assoc, hs0, Category.assoc, Category.assoc]`. Use `letI : Algebra O S := o.toAlgebra`. Establish `hβ : β0.comp P'.str = (algebraMap O S).comp x0` using `hβ0.1`. Use `⟨(ptOf P' x0 hu β0 hβ).left, ?_⟩` and prove the remaining obligations.
+
+Set `b : T ⟶ torsion G' q` to `Over.homMk ((ptOf P' x0 hu β0 hβ).left ≫ (jH P' x0 hu hg.1 h).left) (by show ((ptOf P' x0 hu β0 hβ).left ≫ (jH P' x0 hu hg.1 h).left) ≫ (torsion G' q).hom = y ≫ (torsion G' q).hom`. Rewrite using `[Category.assoc, Over.w (jH P' x0 hu hg.1 h), Over.w (ptOf P' x0 hu β0 hβ)]`. Conclude with `ho)`. Establish `hb : b = yt`. Use `GlobalTheory.KernelNoTorsion.torsion_hom_ext (Over.OverMorphism.ext (hg.1.hom_ext ?_ ?_))` and prove the remaining obligations.
+
+Establish `e1 : (b ≫ torsion.ι G' q).left = (ptOf P' x0 hu β0 hβ ≫ aH P' x0 hu hg.1).left` using `by show (ptOf P' x0 hu β0 hβ).left ≫ (jH P' x0 hu hg.1 h).left ≫ (torsion.ι G' q).left = _`. Rewrite using `[← Over.comp_left, jH_ι]`. Both sides reduce to the same expression. Rewrite using `[e1, ptOf_aH_π, hβ0.2]`. Use `show y ≫ (torsion.ι G' q).left ≫ π = (y ≫ (torsion.ι G' q).left) ≫ π`.
+
+Rewrite using `[Category.assoc]`. Rewrite using `[Over.w (b ≫ torsion.ι G' q), Over.w (yt ≫ torsion.ι G' q)]`. Conclude with `congrArg (fun z => z.left) hb`.
+-/
 theorem lift_of_residue : ∀ {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {X : Scheme.{0}} {t : SAB H X} {R : Type} [CommRing R] {ξ : Sp R ⟶ X} {q : ℕ} (P' : GlobalTheory.HTMap.FP t ξ q) {O : Type} [CommRing O] (x0 : R →+* O) (hu : IsUnit (x0 P'.f)) {G' : Over (Sp O)} [GrpObj G'] {π : G'.left ⟶ t.G.left} (hg : IsGrpPullback G' t.G (spMap x0 ≫ ξ) π) (h : aH P' x0 hu hg.1 ^ q = 1) (S : Type) [CommRing S] [hS : IsLocalRing S] (y : Sp S ⟶ (torsion G' q).left), (∃ s : Sp (IsLocalRing.ResidueField S) ⟶ (Hs P' x0 hu).left, s ≫ (jH P' x0 hu hg.1 h).left = spMap (IsLocalRing.residue S) ≫ y) → ∃ s : Sp S ⟶ (Hs P' x0 hu).left, s ≫ (jH P' x0 hu hg.1 h).left = y := by
   intro E _ _ _ H X t R _ ξ q P' O _ x0 hu G' _ π hg h S _ hS y hy
   obtain ⟨s0, hs0⟩ := hy

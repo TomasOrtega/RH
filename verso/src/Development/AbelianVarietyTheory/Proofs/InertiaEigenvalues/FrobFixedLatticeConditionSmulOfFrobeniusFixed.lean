@@ -7,6 +7,17 @@ open scoped Formalism.Per
 
 namespace GlobalTheory.PMon.ResR
 
+/- English proof (translation)
+Introduce `l _ P r n _ _ U x y a e he h`. Take `⟨h1, h2⟩` from `h`. Establish `hsm : ∀ i, (e • a) i = algebraMap ↥(MaximalUnramifiedExtension l) P.R.B e * a i` using `fun i => by`. Rewrite using `[Pi.smul_apply, Algebra.smul_def]`. Establish `hev : ∀ (m : ℕ) (b : P.R.B), ev P m (algebraMap ↥(MaximalUnramifiedExtension l) P.R.B e * b) = kd P (fr l m e) * ev P m b`.
+
+Introduce `m b`. Rewrite using `[← evHom_apply, map_mul, evHom_apply, evHom_apply, ev_kur]`. Use `⟨fun i => ?_, fun m => ?_⟩` and prove the remaining obligations. Rewrite using `[hsm]`. Establish `key : ∀ k : ℕ, P.φB^[k] (algebraMap ↥(MaximalUnramifiedExtension l) P.R.B e * a i) = algebraMap ↥(MaximalUnramifiedExtension l) P.R.B (fr l k e) * P.φB^[k] (a i)`.
+
+Introduce `k`. Proceed by induction on `k with`. Consider the case `zero => rfl`. Consider the case `succ k ih => rw [Function.iterate_succ_apply', ih, map_mul, Function.iterate_succ_apply', phiB_algebraMap, add_comm, fr_add, fr_one]`. Rewrite using `[key, he, h1]`.
+
+Take `⟨w, hw, hw'⟩` from `h2 m`. Use `⟨fun i => kd P (fr l m e) * w i, fun i => Fil_mul_left (kd_mem_Fil P _) (hw i), ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `i`. Rewrite using `[hsm, hev]`. Use `congrFun hw' i` as an intermediate fact.
+
+Rewrite using `[this]`. Simplify using `only [Matrix.mulVec, dotProduct, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun j _ => by ring` and prove the remaining obligations.
+-/
 theorem latC_smul_of_fr_fixed : ∀ (l : ℕ) [Fact l.Prime] (P : LocPrime l) (r : ℕ) (n : Type) [Fintype n] [DecidableEq n] (U : Fin r → GL n P.R.BdR) (x y : Fin r × n) (a : n → P.R.B) (e : ↥(MaximalUnramifiedExtension l)), fr l r e = e → LatC P U x y a → LatC P U x y (e • a) := by
   intro l _ P r n _ _ U x y a e he h
   obtain ⟨h1, h2⟩ := h

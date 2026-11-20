@@ -4,12 +4,30 @@ open ReciprocityTheory.PGsh ReciprocityTheory.ChartRestriction.G.Sh
 
 namespace GlobalTheory.FlowProgramme
 
+/- English proof (translation)
+Rewrite using `[Finset.sum_comm, Finset.sum_comm (s := Finset.univ)]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Conclude with `Equiv.sum_comp (Equiv.subRight (i : ZMod d)) (fun a => x a i)`.
+-/
 lemma sum_shift (d : ℕ) [NeZero d] (x : ZMod d → ℕ → ℝ) (s : Finset ℕ) :
     ∑ a : ZMod d, ∑ i ∈ s, x (a - i) i = ∑ a, ∑ i ∈ s, x a i := by
   rw [Finset.sum_comm, Finset.sum_comm (s := Finset.univ)]
   refine Finset.sum_congr rfl fun i _ => ?_
   exact Equiv.sum_comp (Equiv.subRight (i : ZMod d)) (fun a => x a i)
 
+/- English proof (translation)
+Take `⟨h0, h1, h2⟩` from `hx`. Establish `hl' : (2 : ℝ) ≤ l` using `by exact_mod_cast hl`. Establish `hl1 : (1 : ℝ) ≤ l` using `by linarith`. Establish `hs` using `Finset.sum_le_sum (s := Finset.univ) fun a _ => h2 a`. Rewrite `hs` using `[Finset.sum_add_distrib, sum_shift]`.
+
+Establish `hT : 0 ≤ ∑ a, ∑ i ∈ Finset.range d, x a i` using `Finset.sum_nonneg fun a _ => Finset.sum_nonneg fun i _ => h0 a i`. Prove the components needed by the constructor for the conclusion. Establish `: (l : ℝ) * ∑ a, ∑ i ∈ Finset.range d, x a i ≤ ∑ a, ∑ i ∈ Finset.range d, (l : ℝ) ^ i * x a i`. Rewrite using `[Finset.mul_sum]`. Use `Finset.sum_le_sum fun a _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[Finset.mul_sum]`. Use `Finset.sum_le_sum fun i _ => ?_` and prove the remaining obligations. Distinguish the cases in `h : x a i = 0`. Simplify using `[h]`. Establish `hi : i ≠ 0`.
+
+Introduce and unpack `rfl`. Conclude with `absurd (h1 a 0 h).1 (by decide)`. Conclude with `mul_le_mul_of_nonneg_right (le_self_pow₀ hl1 hi) (h0 a i)`. Combine the linear equalities and inequalities to obtain the conclusion. Introduce `i₀`.
+
+Establish `hp : (0 : ℝ) < (l : ℝ) ^ i₀` using `by positivity`. Rewrite using `[le_inv_mul_iff₀ hp]`. Establish `: (l : ℝ) ^ i₀ * ∑ a, ∑ i ∈ Finset.Ico i₀ d, x a i ≤ ∑ a, ∑ i ∈ Finset.range d, (l : ℝ) ^ i * x a i`. Rewrite using `[Finset.mul_sum]`. Use `Finset.sum_le_sum fun a _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[Finset.mul_sum]`. Combine the equalities or inequalities in the displayed calculation. Use `Finset.sum_le_sum_of_subset_of_nonneg ?_ fun i _ _ => mul_nonneg (by positivity) (h0 a i)` and prove the remaining obligations. Introduce `i hi`. Conclude with `Finset.mem_range.2 (Finset.mem_Ico.1 hi).2`.
+
+Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 lemma duality (l d : ℕ) [NeZero d] (X : ZMod d → ℝ) (hl : 2 ≤ l) (x : ZMod d → ℕ → ℝ)
     (hx : ((∀ a i, 0 ≤ x a i) ∧ (∀ a i, x a i ≠ 0 → Odd i ∧ i < d) ∧ ∀ a, ∑ i ∈ Finset.range d, (l : ℝ) ^ i * x a i + ∑ i ∈ Finset.range d, x (a - i) i ≤ X a)) :
     ((l : ℝ) + 1) * ∑ a, ∑ i ∈ Finset.range d, x a i ≤ ∑ a, X a ∧
@@ -54,6 +72,13 @@ lemma duality (l d : ℕ) [NeZero d] (X : ZMod d → ℝ) (hl : 2 ≤ l) (x : ZM
             exact Finset.mem_range.2 (Finset.mem_Ico.1 hi).2
     linarith
 
+/- English proof (translation)
+Take `⟨a₀, h₀⟩` from `Finite.exists_min y`. Take `⟨a₁, h₁⟩` from `Finite.exists_max y`. Use `le_trans ?_ (h₀ a)` and prove the remaining obligations. Establish `e0` using `hy a₀`. Establish `e1` using `hy a₁`.
+
+Establish `f0` using `h₁ (a₀ - 1)`. Establish `f1` using `h₀ (a₁ - 1)`. Establish `g` using `hX a₁ a₀`. Establish `k : l * y (a₀ - 1) ≤ l * y a₁` using `mul_le_mul_of_nonneg_left f0 (by linarith)`. Establish `k2 : 0 ≤ (l * l - 1) * y a₀` using `by rw [← e0] at g; nlinarith`.
+
+Establish `k3 : 0 < l * l - 1` using `by nlinarith`. Conclude with `(mul_nonneg_iff_of_pos_left k3).1 k2`.
+-/
 lemma cyclic_nonneg (l : ℝ) (d : ℕ) [NeZero d] (X y : ZMod d → ℝ) (hl : 2 ≤ l)
     (hX : ∀ a b, X a ≤ l * X b) (hy : ∀ a, l * y a + y (a - 1) = X a) (a : ZMod d) :
     0 ≤ y a := by
@@ -70,6 +95,13 @@ lemma cyclic_nonneg (l : ℝ) (d : ℕ) [NeZero d] (X y : ZMod d → ℝ) (hl : 
   have k3 : 0 < l * l - 1 := by nlinarith
   exact (mul_nonneg_iff_of_pos_left k3).1 k2
 
+/- English proof (translation)
+Set `T : (ZMod d → ℝ) →ₗ[ℝ] (ZMod d → ℝ)` to `{ toFun := fun y a => l * y a + y (a - 1) map_add' := fun y z => by ext a; simp; ring map_smul' := fun c y => by ext a; simp; ring }`. Establish `hinj : Function.Injective T`. Rewrite using `[injective_iff_map_eq_zero]`. Introduce `y hy`. Establish `hy' : ∀ a, l * y a + y (a - 1) = 0` using `fun a => congrFun hy a`.
+
+Use extensionality with `a`. Establish `h1` using `cyclic_nonneg l d (fun _ => 0) y hl (by simp) hy' a`. Establish `h2` using `cyclic_nonneg l d (fun _ => 0) (fun a => - y a) hl (by simp) (fun a => by have := hy' a; linarith) a`. Simplify using `only [Pi.zero_apply]`. Combine the linear equalities and inequalities to obtain the conclusion.
+
+Take `⟨y, hy⟩` from `LinearMap.injective_iff_surjective.1 hinj X`. Conclude with `⟨y, fun a => congrFun hy a⟩`.
+-/
 lemma cyclic_solvable (l : ℝ) (d : ℕ) [NeZero d] (X : ZMod d → ℝ) (hl : 2 ≤ l) :
     ∃ y : ZMod d → ℝ, ∀ a, l * y a + y (a - 1) = X a := by
   let T : (ZMod d → ℝ) →ₗ[ℝ] (ZMod d → ℝ) :=
@@ -89,6 +121,15 @@ lemma cyclic_solvable (l : ℝ) (d : ℕ) [NeZero d] (X : ZMod d → ℝ) (hl : 
   obtain ⟨y, hy⟩ := LinearMap.injective_iff_surjective.1 hinj X
   exact ⟨y, fun a => congrFun hy a⟩
 
+/- English proof (translation)
+Establish `hl' : (2 : ℝ) ≤ l` using `by exact_mod_cast hl`. Take `⟨y, hy⟩` from `cyclic_solvable l d X hl'`. Establish `hpos` using `cyclic_nonneg l d X y hl' hX hy`. Establish `h1 : 1 ∈ Finset.range d` using `Finset.mem_range.2 (by omega)`. Use `⟨fun a i => if i = 1 then y a else 0, ⟨?_, ?_, ?_⟩, ?_⟩` and prove the remaining obligations.
+
+Introduce `a i dsimp only split_ifs`. Conclude with `hpos a`. Conclude with `le_rfl`. Introduce `a i h dsimp only at h split_ifs at h with hi`. Substitute `hi` using the available equality.
+
+Conclude with `⟨odd_one, by omega⟩`. Conclude with `absurd rfl h`. Introduce `a`. Simplify using `only [mul_ite, mul_zero, Finset.sum_ite_eq', h1, if_true, pow_one, Nat.cast_one]`. Conclude with `(hy a).le`.
+
+Simplify using `only [Finset.sum_ite_eq', h1, if_true]`. Establish `: ∑ a, y (a - 1) = ∑ a, y a` using `Equiv.sum_comp (Equiv.subRight (1 : ZMod d)) y`. Rewrite using `[← Finset.sum_congr rfl fun a _ => hy a, Finset.sum_add_distrib, this, ← Finset.mul_sum]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 lemma balanced (l d : ℕ) [NeZero d] (X : ZMod d → ℝ) (hl : 2 ≤ l) (hd : 2 ≤ d)
     (hX : ∀ a b, X a ≤ l * X b) :
     ∃ x : ZMod d → ℕ → ℝ, ((∀ a i, 0 ≤ x a i) ∧ (∀ a i, x a i ≠ 0 → Odd i ∧ i < d) ∧ ∀ a, ∑ i ∈ Finset.range d, (l : ℝ) ^ i * x a i + ∑ i ∈ Finset.range d, x (a - i) i ≤ X a) ∧
@@ -117,6 +158,21 @@ lemma balanced (l d : ℕ) [NeZero d] (X : ZMod d → ℝ) (hl : 2 ≤ l) (hd : 
     rw [← Finset.sum_congr rfl fun a _ => hy a, Finset.sum_add_distrib, this, ← Finset.mul_sum]
     ring
 
+/- English proof (translation)
+Establish `hl' : (2 : ℝ) ≤ l` using `by exact_mod_cast hl`. Establish `hl1 : (1 : ℝ) ≤ l` using `by linarith`. Set `S : Set (ZMod d → ℕ → ℝ)` to `{x | ((∀ a i, 0 ≤ x a i) ∧ (∀ a i, x a i ≠ 0 → Odd i ∧ i < d) ∧ ∀ a, ∑ i ∈ Finset.range d, (l : ℝ) ^ i * x a i + ∑ i ∈ Finset.range d, x (a - i) i ≤ X a)}`. Establish `hclosed : IsClosed S`. Simplify using `only [S, Set.setOf_and, Set.setOf_forall]`.
+
+Use `IsClosed.inter ?_ (IsClosed.inter ?_ ?_)` and prove the remaining obligations. Conclude with `isClosed_iInter fun a => isClosed_iInter fun i => isClosed_le continuous_const (by fun_prop)`. Use `isClosed_iInter fun a => isClosed_iInter fun i => ?_` and prove the remaining obligations. Distinguish the cases in `h : Odd i ∧ i < d`. Use `isClosed_univ` and compare the differences between its conclusion and the goal.
+
+Use extensionality with `x`. Simplify using `[h]`. Establish `hc : IsClosed {x : ZMod d → ℕ → ℝ | x a i = 0}` using `isClosed_eq (by fun_prop) continuous_const`. Use `hc` and compare the differences between its conclusion and the goal. The claim follows by propositional logic.
+
+Conclude with `isClosed_iInter fun a => isClosed_le (by fun_prop) continuous_const`. Establish `hK : IsCompact (Set.pi Set.univ fun a : ZMod d => Set.pi Set.univ fun _ : ℕ => Set.Icc (0 : ℝ) (X a))` using `isCompact_univ_pi fun a => isCompact_univ_pi fun _ => isCompact_Icc`. Establish `hS : IsCompact S`. Use `hK.of_isClosed_subset hclosed ?_` and prove the remaining obligations. Introduce and unpack `x ⟨h0, h1, h2⟩ a - i -`.
+
+Use `⟨h0 a i, ?_⟩` and prove the remaining obligations. Distinguish the cases in `h : x a i = 0`. Rewrite using `[h]`. Conclude with `hX a`. Establish `hi` using `Finset.mem_range.2 (h1 a i h).2`.
+
+Establish `e1 : (l : ℝ) ^ i * x a i ≤ ∑ i ∈ Finset.range d, (l : ℝ) ^ i * x a i` using `Finset.single_le_sum (f := fun i => (l : ℝ) ^ i * x a i) (fun j _ => mul_nonneg (by positivity) (h0 a j)) hi`. Establish `e2 : 0 ≤ ∑ i ∈ Finset.range d, x (a - i) i` using `Finset.sum_nonneg fun j _ => h0 _ j`. Establish `e3 : x a i ≤ (l : ℝ) ^ i * x a i` using `le_mul_of_one_le_left (h0 a i) (one_le_pow₀ hl1)`. Use `h2 a` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
+
+Establish `hne : S.Nonempty` using `⟨fun _ _ => 0, fun _ _ => le_rfl, fun _ _ h => absurd rfl h, fun a => by simpa using hX a⟩`. Take `⟨x, hx, hmax⟩` from `hS.exists_isMaxOn hne (f := fun x => ∑ a, ∑ i ∈ Finset.range d, x a i) (Continuous.continuousOn (by fun_prop))`. Conclude with `⟨x, hx, fun x' hx' => hmax hx'⟩`.
+-/
 lemma optimum (l d : ℕ) [NeZero d] (X : ZMod d → ℝ) (hl : 2 ≤ l) (hX : ∀ a, 0 ≤ X a) :
     ∃ x : ZMod d → ℕ → ℝ, ((∀ a i, 0 ≤ x a i) ∧ (∀ a i, x a i ≠ 0 → Odd i ∧ i < d) ∧ ∀ a, ∑ i ∈ Finset.range d, (l : ℝ) ^ i * x a i + ∑ i ∈ Finset.range d, x (a - i) i ≤ X a) ∧ ∀ x' : ZMod d → ℕ → ℝ, ((∀ a i, 0 ≤ x' a i) ∧ (∀ a i, x' a i ≠ 0 → Odd i ∧ i < d) ∧ ∀ a, ∑ i ∈ Finset.range d, (l : ℝ) ^ i * x' a i + ∑ i ∈ Finset.range d, x' (a - i) i ≤ X a) →
       ∑ a, ∑ i ∈ Finset.range d, x' a i ≤ ∑ a, ∑ i ∈ Finset.range d, x a i := by
@@ -161,6 +217,9 @@ lemma optimum (l d : ℕ) [NeZero d] (X : ZMod d → ℝ) (hl : 2 ≤ l) (hX : �
     (f := fun x => ∑ a, ∑ i ∈ Finset.range d, x a i) (Continuous.continuousOn (by fun_prop))
   exact ⟨x, hx, fun x' hx' => hmax hx'⟩
 
+/- English proof (translation)
+Introduce `l d _ X hl hX`. Conclude with `⟨duality l d X hl, balanced l d X hl, optimum l d X hl hX⟩`.
+-/
 theorem main :
   (∀ (l d : ℕ) [NeZero d] (X : ZMod d → ℝ), 2 ≤ l → (∀ a, 0 ≤ X a) →
     (∀ x : ZMod d → ℕ → ℝ, ((∀ a i, 0 ≤ x a i) ∧ (∀ a i, x a i ≠ 0 → Odd i ∧ i < d) ∧ ∀ a, ∑ i ∈ Finset.range d, (l : ℝ) ^ i * x a i + ∑ i ∈ Finset.range d, x (a - i) i ≤ X a) → ((l : ℝ) + 1) * ∑ a, ∑ i ∈ Finset.range d, x a i ≤ ∑ a, X a ∧

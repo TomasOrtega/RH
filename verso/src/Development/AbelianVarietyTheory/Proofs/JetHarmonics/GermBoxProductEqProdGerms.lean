@@ -23,11 +23,19 @@ section General
 
 variable {X X' Y Y₀ Y₁ Z : Scheme.{0}} {M : LB X}
 
+/- English proof (translation)
+Rewrite using `[← gs_pull r β z U h, gs_eq β _ U h, gs_eq r z _ h]`. Conclude with `Scheme.Hom.germ_stalkMap_apply r (β ⁻¹ᵁ U) z h _`.
+-/
 theorem gs_stalkMap (r : Z ⟶ X') (β : X' ⟶ X) (z : Z) (U : X.Opens) (h : β (r z) ∈ U) (a : Γ(X, U)) :
     (r.stalkMap z).hom (gs β (r z) U a) = gs (r ≫ β) z U a := by
   rw [← gs_pull r β z U h, gs_eq β _ U h, gs_eq r z _ h]
   exact Scheme.Hom.germ_stalkMap_apply r (β ⁻¹ᵁ U) z h _
 
+/- English proof (translation)
+Establish `m₀ : (z ≫ g) (r y) ∈ M.U (J (r ≫ z ≫ g))` using `hJ (r ≫ z ≫ g)`. Take `⟨J₀, hJ₀, e⟩` from `exists_good M hM (r y) (fun _ : PUnit => z ≫ g) (fun _ => J (r ≫ z ≫ g)) (fun _ _ _ => rfl) (fun _ => m₀)`. Establish `e' : J₀ (z ≫ g) = J (r ≫ z ≫ g)` using `e PUnit.unit`. Establish `h` using `congrArg (r.stalkMap y).hom (H (r y) J₀ hJ₀)`. Establish `m₁ : z (r y) ∈ LB.wchart M (fun _ : Fin 1 => g) (fun _ => J (r ≫ z ≫ g))` using `Set.mem_iInter.2 fun _ => m₀`.
+
+Establish `m₂ : s (r y) ∈ LB.wchart M (fun _ : Fin 1 => x) (fun _ => J (r ≫ z ≫ g))` using `Set.mem_iInter.2 fun _ => (show (s ≫ x) (r y) ∈ M.U (J (r ≫ z ≫ g)) from hzg ▸ m₀)`. Rewrite `h` using `[sval_of σ z _ J₀ (fun _ => J (r ≫ z ≫ g)) (fun _ => e'), val_of τ s _ J₀ (fun _ => J (r ≫ z ≫ g)) (fun _ => by rw [← hzg]; exact e'), map_mul, gs_stalkMap r (𝟙 Y) y ⊤ trivial, Category.comp_id, Units.val_pow_eq_pow_val, map_pow]`. Rewrite using `[sval_of σ (r ≫ z) y J (fun _ => J (r ≫ z ≫ g)) (fun _ => by rw [Category.assoc]), val_of τ (r ≫ s) y J (fun _ => J (r ≫ z ≫ g)) (fun _ => by rw [Category.assoc, ← hzg]), Units.val_pow_eq_pow_val]`. Use `(gs_stalkMap r z y _ m₁ _).symm.trans (h.trans (congrArg (fun u => gs r y ⊤ a * u ^ q) ?_))` and prove the remaining obligations. Conclude with `(congrArg (r.stalkMap y).hom (gs_unit s _ _ m₂ _).symm).trans ((gs_stalkMap r s y _ m₂ _).trans (gs_unit (r ≫ s) y _ m₂ _))`.
+-/
 theorem sval_along (hM : M.IsLB) (g : Y₁ ⟶ X) (z : Y ⟶ Y₁) (x : Y₀ ⟶ X) (s : Y ⟶ Y₀) (hzg : z ≫ g = s ≫ x) (q : ℕ)
     (σ : LB.Sec (LB.LinComb M (K := Fin 1) (fun _ => g) (fun _ => (q : ℤ))))
     (τ : LB.Gen (LB.LinComb M (K := Fin 1) (fun _ => x) (fun _ => (1 : ℤ)))) (a : Γ(Y, ⊤))
@@ -52,6 +60,9 @@ theorem sval_along (hM : M.IsLB) (g : Y₁ ⟶ X) (z : Y ⟶ Y₁) (x : Y₀ ⟶
   exact (congrArg (r.stalkMap y).hom (gs_unit s _ _ m₂ _).symm).trans
     ((gs_stalkMap r s y _ m₂ _).trans (gs_unit (r ≫ s) y _ m₂ _))
 
+/- English proof (translation)
+Establish `e : (spMap φ).appTop.hom (toΓ A a) = toΓ B (φ a)` using `(congrArg (fun q => q.hom a) (Scheme.ΓSpecIso_inv_naturality (CommRingCat.ofHom φ))).symm`. Rewrite using `[← e]`. Conclude with `((gs_pull (𝟙 _) (spMap φ) y ⊤ trivial _).trans (by rw [Category.id_comp])).symm`.
+-/
 theorem gs_spMap {A B : Type} [CommRing A] [CommRing B] (φ : A →+* B) (y : Sp B) (a : A) :
     gs (spMap φ) y ⊤ (toΓ A a) = gs (𝟙 (Sp B)) y ⊤ (toΓ B (φ a)) := by
   have e : (spMap φ).appTop.hom (toΓ A a) = toΓ B (φ a) :=
@@ -61,6 +72,11 @@ theorem gs_spMap {A B : Type} [CommRing A] [CommRing B] (φ : A →+* B) (y : Sp
 
 end General
 
+/- English proof (translation)
+Establish `hp : ∀ (S : Finset (Fin n)) (g : Fin n → PS F n d), psJet m (∏ i ∈ S, g i) = ∏ i ∈ S, psJet m (g i)`. Introduce `S g`. Proceed by induction on `S using Finset.induction_on with`. Consider the case `empty => rw [Finset.prod_empty, Finset.prod_empty, FBIdJet.psJet_one]`. Consider the case `insert a S ha ih => rw [Finset.prod_insert ha, Finset.prod_insert ha, FBIdJet.psJet_mul, ih]`.
+
+Rewrite using `[boxSer, hp]`. Use `Finset.prod_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[MvPowerSeries.rename_eq_subst, FBIdJet.psJet_subst m _ (fun p => by simp)]`. Use `DFunLike.congr_fun (GermD.jet_hom_ext fun p => ?_) _` and prove the remaining obligations. Rewrite using `[jetCopy, GermD.jetMap_mk, GermD.jetMap_mk, MvPolynomial.aeval_X, MvPolynomial.aeval_X, Function.comp_apply, ← MvPolynomial.coe_X, FBIdJet.psTrunc_eq, FBIdJet.mk_trunc_coe]`.
+-/
 theorem psJet_boxSer {F : Type} [CommRing F] {n d : ℕ} (m : ℕ) (f : Fin n → PS F 1 d) :
     psJet m (boxSer f) = ∏ i, jetCopy (S := F) d m i (psJet m (f i)) := by
   have hp : ∀ (S : Finset (Fin n)) (g : Fin n → PS F n d), psJet m (∏ i ∈ S, g i) = ∏ i ∈ S, psJet m (g i) := by
@@ -75,6 +91,11 @@ theorem psJet_boxSer {F : Type} [CommRing F] {n d : ℕ} (m : ℕ) (f : Fin n �
   rw [jetCopy, GermD.jetMap_mk, GermD.jetMap_mk, MvPolynomial.aeval_X, MvPolynomial.aeval_X, Function.comp_apply,
     ← MvPolynomial.coe_X, FBIdJet.psTrunc_eq, FBIdJet.mk_trunc_coe]
 
+/- English proof (translation)
+Set `T : Over (TK V).left` to `Over.mk (a ≫ (TFK (R := V) F).hom)`. Set `u : T ⟶ TFK (R` to `V) F := Over.homMk a rfl`. Set `w : T ⟶ (Over.pullback (jK V)).obj G` to `Over.homMk (pullback.lift b (a ≫ (TFK (R := V) F).hom) (by rw [h, Category.assoc])) (pullback.lift_snd _ _ _)`. Use `⟨(lift u w).left, congrArg (fun q => q.left) (lift_fst u w), ?_⟩` and prove the remaining obligations. Establish `e : (lift u w).left ≫ (snd (TFK (R` using `V) F) ((Over.pullback (jK V)).obj G)).left = w.left := congrArg (fun q => q.left) (lift_snd u w)`.
+
+Conclude with `(Category.assoc _ _ _).symm.trans ((congrArg (· ≫ _) e).trans (pullback.lift_fst _ _ _))`.
+-/
 theorem exists_lift {V : Type} [CommRing V] [IsDomain V] (G : Over (Sp V)) (F : Type) [Field F]
     [Algebra (FractionRing V) F] {Y : Scheme.{0}} (a : Y ⟶ (TFK (R := V) F).left) (b : Y ⟶ G.left)
     (h : b ≫ G.hom = a ≫ (TFK (R := V) F).hom ≫ jK V) :
@@ -97,6 +118,23 @@ open GlobalTheory.BoxFamily FrameN BoxGerm
 
 set_option maxHeartbeats 1000000 in
 
+/- English proof (translation)
+Introduce `h₁ h₂ h₄ hT E _ _ _ H V _ _ _ _ t P d FT act ph1 ph2 sy ad tg xT eT wPT hch hfr hpr τ₁ g₁ el n D' A' G' _ _ pD pA pG U' PU F _ _ _ _ q hq σ s f σ' S hσ hS hE' m`. Establish `hM : P.U.LG.L.IsLB` using `P.U.LG.isLB`. Establish `hM' : U'.LG.L.IsLB` using `U'.LG.isLB`. Take `⟨τ, hτ, hv₀⟩` from `exists_boxPull_gen (pr := fun i => (pG.pr i).left) PU.wL PU.wL_gen hM hM' (K := Fin 1) (φ' := fun _ => (zV pG xT m).left) (φ := fun _ _ => (xT m).left) (ε := fun _ => 1) (cpy V n d m) (fun i _ => zV_pr pG xT m i) (fun _ => τ₁ m) (fun _ => g₁ m)`. Establish `hv : ∀ (Z : Scheme.{0}) (r : Z ⟶ Sp (Jet V (Fin n × Fin d) m)) (y : Z) (J J'), Good P.U.LG.L y J → Good U'.LG.L y J' → om PU.wL y J J' (r ≫ (zV pG xT m).left) * val τ r y J' = ∏ i, val (τ₁ m) (r ≫ cpy V n d m i) y J`.
+
+Introduce `Z r y J J' hJ hJ'`. Use `hv₀ Z r y J J' hJ hJ'` as an intermediate fact. Rewrite `this` using `[Fin.prod_univ_one, zpow_one]`. Then use the resulting hypothesis. Take `⟨z, h₀, hzg⟩` from `exists_lift G' F (spMap (algebraMap F (Jet F (Fin n × Fin d) m))) (spMap (jetCoef (algebraMap V F) (Fin n × Fin d) m) ≫ (zV pG xT m).left) (by`. Rewrite using `[Category.assoc _ (zV pG xT m).left, Over.w (zV pG xT m)]`.
+
+Use `symm`. Use `show spMap _ ≫ spMap (algebraMap (FractionRing V) F) ≫ spMap (algebraMap V (FractionRing V)) = spMap _ ≫ spMap (algebraMap V (Jet V (Fin n × Fin d) m)) ≫ 𝟙 _`. Simplify using `only [spMap, Category.comp_id, ← Spec.map_comp, ← CommRingCat.ofHom_comp]`. Rewrite using `[JetTr.jetCoef_alg, ← IsScalarTower.algebraMap_eq])`. Establish `hp : ∀ i, z ≫ UnifPre.gFK (R` using `V) (G := G') F ≫ (pG.pr i).left = jptN xT F n m i := fun i => by`.
+
+Rewrite using `[← Category.assoc, hzg, Category.assoc, zV_pr, ← Category.assoc, coef_cpy, jptN]`. Use `choose zi hz₀ hz₁ hz₂ using fun i => (hσ i).2 m`. Establish `hc : ∀ i, cpy F n d m i ≫ spMap (jetCoef (algebraMap V F) (Fin 1 × Fin d) m) = jcN V F d n m i` using `fun i => by`. Rewrite using `[jcN]`. Simplify using `only [spMap, ← Spec.map_comp, ← CommRingCat.ofHom_comp]`.
+
+Establish `main` using `GlobalTheory.BoxSectionValues.main h₁ h₂ h₄ hT V n P.D D' P.A A' t.G G' pD pA pG U' P.U PU F q hq σ s σ' S (fun i => (hσ i).1) hS hE' _ z (fun i => cpy F n d m i ≫ zi i) (fun i => by rw [hp, Category.assoc, hz₁, ← Category.assoc, hc, jptN]) (fun i => by`. Rewrite using `[h₀, Category.assoc, hz₀]`. Simplify using `only [spMap, ← Spec.map_comp, ← CommRingCat.ofHom_comp]`. Rewrite using `[AlgHom.comp_algebraMap])`. Establish `core` using `core_iff (pr := fun i => (pG.pr i).left) hM hM' PU.wL PU.wL_gen (τ₁ m) (g₁ m) (cpy V n d m) (zV_pr pG xT m) τ hτ hv (spMap (jetCoef (algebraMap V F) (Fin n × Fin d) m)) (UnifPre.gFK (R := V) (G := G') F) z hzg q (genCast (congrArg RigLB.L P.bundle).symm _ _ (GeneratorPullback.fin …`.
+
+Rewrite using `[coef_cpy]`. Use `val_along hM _ _ _ _ (el m) (jcN V F d n m i) y J hJ` as an intermediate fact. Rewrite `this` using `[Category.comp_id]`. Conclude with `congrArg (· ^ q) this.symm)) σ' (toΓ _ (psJet m (boxSer f)))`. Take `⟨a, b, k₂, k₃, k₄⟩` from `core.2 fun y J' hJ' => by`.
+
+Take `⟨J, hJ⟩` from `exists_good_at hM y`. Establish `e₁ : (om PU.wL y J J' (z ≫ UnifPre.gFK (R` using `V) (G := G') F) ^ q).val * sval σ' z y J' = ∏ i, sval (σ i) (cpy F n d m i ≫ zi i) y J := main y J J' hJ hJ'`. Establish `e₂ : ∀ i, sval (σ i) (cpy F n d m i ≫ zi i) y J = gs (𝟙 _) y ⊤ (toΓ _ (jetCopy (S` using `F) d m i (psJet m (f i)))) * (val (τ₁ m) (spMap (jetCoef (algebraMap V F) (Fin n × Fin d) m) ≫ cpy V n d m i) y J ^ q).val := fun i => by`. Rewrite using `[sval_along hM _ (zi i) _ _ (hz₁ i) q (σ i) (τ₁ m) _ (hz₂ i) (cpy F n d m i) y J hJ, hc, coef_cpy, gs_spMap]`. Both sides reduce to the same expression.
+
+Establish `e₃` using `hv _ (spMap (jetCoef (algebraMap V F) (Fin n × Fin d) m)) y J J' hJ hJ'`. Rewrite `e₃` using `[← hzg]`. Rewrite `e₁` using `[Finset.prod_congr rfl fun i _ => e₂ i, Finset.prod_mul_distrib, ← Units.coe_prod, Finset.prod_pow, ← e₃, mul_pow, Units.val_mul, mul_left_comm, ← gs_prod _ y ⊤ trivial, ← map_prod, ← psJet_boxSer]`. Conclude with `(Units.mul_right_inj _).1 e₁`. Conclude with `⟨z, a, b, h₀, hp, k₂, (corr_genCast _ _ _).2 k₃, k₄⟩`.
+-/
 theorem boxGermSt_holds : Laws → Laws2 → Laws4 → TwistBaseChangeStatement → BoxGermSt := by
   intro h₁ h₂ h₄ hT E _ _ _ H V _ _ _ _ t P d FT act ph1 ph2 sy ad tg xT eT wPT hch hfr hpr τ₁ g₁ el n D' A' G' _ _
     pD pA pG U' PU F _ _ _ _ q hq σ s f σ' S hσ hS hE' m

@@ -28,6 +28,9 @@ def frobFun (hℓ : ∀ (p : parab k (stdBlocks n h)) (v : σ'.V),
       show ℓ (σ'.ρ (x * g) v) = ℓ (σ'.ρ x v)
       rw [map_mul, Module.End.mul_apply, hg'])⟩
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem frobFun_apply (hℓ : ∀ (p : parab k (stdBlocks n h)) (v : σ'.V),
       ℓ (σ'.ρ p v) = ρ (leviProj k (stdBlocks n h) p) (ℓ v)) (v : σ'.V) (g : GL (Fin N) k) :
     (frobFun hℓ v).1.1 g = ℓ (σ'.ρ g v) := rfl
@@ -51,6 +54,9 @@ def frobMap (hℓ : ∀ (p : parab k (stdBlocks n h)) (v : σ'.V),
 end SliceFrobeniusReciprocity
 
 open SliceFrobeniusReciprocity in
+/- English proof (translation)
+Introduce `k _ _ _ _ N c n h σ' W _ _ ρ ℓ hℓ0 hℓ`. Use `⟨frobMap hℓ, fun h0 => hℓ0 (LinearMap.ext fun v => ?_)⟩` and prove the remaining obligations. Establish `h1` using `congrArg (fun f : _ →ₗ[ℂ] _ => (f v).1.1 1) h0`. Simplify `h1` using `[frobMap, frobFun_apply]`.
+-/
 theorem frobRecip_holds : PositivityTheory.RSHS.LS.FrobRecip := by
   intro k _ _ _ _ N c n h σ' W _ _ ρ ℓ hℓ0 hℓ
   refine ⟨frobMap hℓ, fun h0 => hℓ0 (LinearMap.ext fun v => ?_)⟩

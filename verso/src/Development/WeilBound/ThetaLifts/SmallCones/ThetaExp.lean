@@ -52,32 +52,65 @@ structure Ext : Prop where
   vol : FinVolU
   fin : SoFin
 
+/- English proof (translation)
+The claim follows from `thetaExp_of slice_of`.
+-/
 theorem thetaExp : ThetaExp := thetaExp_of slice_of
 
+/- English proof (translation)
+The claim follows from `evUniq_of thetaExp`.
+-/
 theorem evUniq : EvUniq := evUniq_of thetaExp
 
+/- English proof (translation)
+The claim follows from `ctKernel_of thetaExp evUniq slice_of evAdm_of h.mixW h.mixX h.basic h.pair low_of unipEx_of h.top h.eps`.
+-/
 theorem Ext.kernel (h : Ext) : CTKernel :=
   ctKernel_of thetaExp evUniq slice_of evAdm_of h.mixW h.mixX h.basic h.pair low_of unipEx_of h.top h.eps
 
+/- English proof (translation)
+The claim follows from `ctFub_of unipEx_of h.basic h.top h.eps`.
+-/
 theorem Ext.fub (h : Ext) : CTFub := ctFub_of unipEx_of h.basic h.top h.eps
 
+/- English proof (translation)
+The claim follows from `Ker.mixAB_of h.mixW h.mixX h.evZero h.pair thetaExp evUniq`.
+-/
 theorem Ext.mixAB (h : Ext) : MixAB := Ker.mixAB_of h.mixW h.mixX h.evZero h.pair thetaExp evUniq
 
+/- English proof (translation)
+The claim follows from `coneA_of unfold_of unipEx_of stabDec_of h.basic h.top h.eps evAdm_of h.mixAB (lineInt_of slice_of schInt tateAbs) h.dom`.
+-/
 theorem Ext.coneA (h : Ext) : ConeA :=
   coneA_of unfold_of unipEx_of stabDec_of h.basic h.top h.eps evAdm_of h.mixAB (lineInt_of slice_of schInt tateAbs) h.dom
 
+/- English proof (translation)
+The claim follows from `coneB_of unfold_of unipEx_of stabDec_of h.basic h.top h.eps evAdm_of h.mixAB (lineInt_of slice_of schInt tateAbs) h.semi h.vol h.fin soStab_of (soEv_of linEx_of low_of)`.
+-/
 theorem Ext.coneB (h : Ext) : ConeB :=
   coneB_of unfold_of unipEx_of stabDec_of h.basic h.top h.eps evAdm_of h.mixAB (lineInt_of slice_of schInt tateAbs) h.semi h.vol h.fin soStab_of
     (soEv_of linEx_of low_of)
 
+/- English proof (translation)
+The claim follows from `genAniso_of h.kernel h.fub h.mixW h.weil h.basic witt_of h.top h.eps`.
+-/
 theorem Ext.genAniso (h : Ext) : GenAniso := genAniso_of h.kernel h.fub h.mixW h.weil h.basic witt_of h.top h.eps
 
+/- English proof (translation)
+The claim follows from `genBig_of h.kernel h.fub h.coneA h.mixW h.weil h.basic witt_of h.top h.eps`.
+-/
 theorem Ext.genBig (h : Ext) : GenBig := genBig_of h.kernel h.fub h.coneA h.mixW h.weil h.basic witt_of h.top h.eps
 
+/- English proof (translation)
+The claim follows from `genSmall_of h.kernel h.fub h.coneB (Ker.twoExp_of thetaExp) h.mixAB h.mixW h.evCone witt_of stabDec_of unipEx_of h.basic h.top h.eps h.decay h.vol h.fin soStab_of (soZeroA'_of linEx_of h.mixX thetaExp evUniq) (soEv_of linEx_of low_of)`.
+-/
 theorem Ext.genSmall (h : Ext) : GenSmall :=
   genSmall_of h.kernel h.fub h.coneB (Ker.twoExp_of thetaExp) h.mixAB h.mixW h.evCone witt_of stabDec_of unipEx_of h.basic h.top h.eps
     h.decay h.vol h.fin soStab_of (soZeroA'_of linEx_of h.mixX thetaExp evUniq) (soEv_of linEx_of low_of)
 
+/- English proof (translation)
+The claim follows from `have k := kFinData_of h.stab have i := iwaEx_of h.stab ⟨h.kernel, splitEx_of h.genBig h.genSmall h.genAniso k h.stab i h.pair h.plane h.evCone h.evZero unipEx_of low_of h.triple, ctBigZero_of h.genBig h.genAniso k h.stab i h.pair h.plane h.evCone unipEx_of h.triple, ctSmallZero_o …`.
+-/
 theorem ct_all (h : Ext) : CTKernel ∧ SplitEx ∧ CTBigZero ∧ CTSmallZero ∧ CTBigCone ∧ CTSmallCone :=
   have k := kFinData_of h.stab
   have i := iwaEx_of h.stab

@@ -19,6 +19,23 @@ open GlobalTheory.PlaceInt
 
 namespace GlobalTheory.CoverPoint
 
+/- English proof (translation)
+Take `⟨_, ⟨U, hU, rfl⟩, hpt, -⟩` from `X.isBasis_affineOpens.exists_subset_of_mem_open (Set.mem_univ (p (IsLocalRing.closedPoint k))) isOpen_univ`. Establish `hU : IsAffineOpen U` using `hU`. Choose the witnesses or unpack the hypotheses as in `⟨f, hf⟩ : ∃ f : Γ(X, U) ⟶ CommRingCat.of k, Spec.map f ≫ hU.fromSpec = p := by`. Use `⟨Spec.preimage (IsOpenImmersion.lift hU.fromSpec p ?_), ?_⟩` and prove the remaining obligations. Introduce and unpack `_ ⟨y, rfl⟩`.
+
+Rewrite using `[hU.range_fromSpec, Subsingleton.elim (α := PrimeSpectrum k) y (IsLocalRing.closedPoint k)]`. Conclude with `hpt`. Rewrite using `[Spec.map_preimage]`. Conclude with `IsOpenImmersion.lift_fac _ _ _`. Take `⟨g, hg⟩ : ∃ g : CommRingCat.of R ⟶ Γ(X, U), Spec.map g = hU.fromSpec ≫ s` from `⟨Spec.preimage _, Spec.map_preimage _⟩`.
+
+Establish `hgf : g ≫ f = CommRingCat.ofHom ((algebraMap F k).comp ρ)` using `Spec.map_injective (by`. Rewrite using `[Spec.map_comp, hg, ← Category.assoc, hf]`. Conclude with `hp)`. Establish `hV : ∀ r : R, f.hom (g.hom r) = algebraMap F k (ρ r)` using `fun r => congrArg (fun q => q.hom r) hgf`. Establish `hft : g.hom.FiniteType`.
+
+Establish `: LocallyOfFiniteType (Spec.map g)` using `by rw [hg]; infer_instance`. Conclude with `HasRingHomProperty.Spec_iff.1 this`. Set `_ : Algebra R Γ(X, U)` to `g.hom.toAlgebra`. Take `⟨t, ht⟩` from `(show Algebra.FiniteType R Γ(X, U) from hft).out`. Set `S : Set k` to `(t.image f.hom : Finset k)`.
+
+Set `K` to `IntermediateField.adjoin F S`. Use `⟨K, IntermediateField.finiteDimensional_adjoin fun x _ => (Algebra.IsAlgebraic.isAlgebraic x).isIntegral, ?_⟩` and prove the remaining obligations. Establish `hr : ∀ a, f.hom a ∈ K` using `fun a => by`. Establish `ha : a ∈ Algebra.adjoin R (t : Set Γ(X, U))` using `ht ▸ Algebra.mem_top`. Proceed by induction on `ha using Algebra.adjoin_induction with`.
+
+Consider the case `mem x hx => exact IntermediateField.subset_adjoin F S (Finset.mem_image_of_mem _ hx)`. Consider the case `algebraMap r => exact (hV r).symm ▸ K.algebraMap_mem _`. Consider the case `add x y _ _ hx hy => rw [map_add]`. Conclude with `add_mem hx hy`. Consider the case `mul x y _ _ hx hy => rw [map_mul]`.
+
+Conclude with `mul_mem hx hy`. Set `f' : Γ(X, U) ⟶ CommRingCat.of K` to `CommRingCat.ofHom (f.hom.codRestrict K hr)`. Use `⟨Spec.map f' ≫ hU.fromSpec, ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `Spec.map _ ≫ Spec.map f' ≫ hU.fromSpec = _`. Rewrite using `[← hf, ← Spec.map_comp_assoc]`.
+
+Both sides reduce to the same expression.
+-/
 theorem exists_finite_subfield {R F k : Type} [CommRing R] [Field F] [Field k] [Algebra F k] [Algebra.IsAlgebraic F k]
     {X : Scheme.{0}} (s : X ⟶ Sp R) [LocallyOfFiniteType s] (ρ : R →+* F) (p : Sp k ⟶ X)
     (hp : p ≫ s = spMap ((algebraMap F k).comp ρ)) :
@@ -63,10 +80,16 @@ theorem exists_finite_subfield {R F k : Type} [CommRing R] [Field F] [Field k] [
   rw [← hf, ← Spec.map_comp_assoc]
   rfl
 
+/- English proof (translation)
+Simplify using `only [spMap, ← Spec.map_comp]`. Both sides reduce to the same expression.
+-/
 theorem spMap_comp' {A B C : Type} [CommRing A] [CommRing B] [CommRing C] (f : A →+* B) (g : B →+* C) :
     spMap g ≫ spMap f = spMap (g.comp f) := by
   simp only [spMap, ← Spec.map_comp]; rfl
 
+/- English proof (translation)
+Establish `h1 : Flat (spMap f)`. Set `_` to `f.toAlgebra`. Conclude with `HasRingHomProperty.Spec_iff.2 (show (algebraMap K k).Flat from RingHom.flat_algebraMap_iff.2 inferInstance)`. Establish `h2 : Surjective (spMap f)` using `⟨fun x => ⟨IsLocalRing.closedPoint k, Subsingleton.elim (α := PrimeSpectrum K) _ _⟩⟩`. Conclude with `Flat.epi_of_flat_of_surjective _`.
+-/
 theorem epi_spMap {K k : Type} [Field K] [Field k] (f : K →+* k) : Epi (spMap f) := by
   have h1 : Flat (spMap f) := by
     let _ := f.toAlgebra
@@ -75,6 +98,23 @@ theorem epi_spMap {K k : Type} [Field K] [Field k] (f : K →+* k) : Epi (spMap 
   have h2 : Surjective (spMap f) := ⟨fun x => ⟨IsLocalRing.closedPoint k, Subsingleton.elim (α := PrimeSpectrum K) _ _⟩⟩
   exact Flat.epi_of_flat_of_surjective _
 
+/- English proof (translation)
+Introduce `E _ _ _ H Dw l Xo c n d hd T io y hT`. Establish `hL : Laws` using `GlobalTheory.firstFiveLaws.1`. Set `j : d.c₂.F →+* c.F` to `d.eF.symm.toAlgHom.toRingHom`. Establish `hj : ∀ a : c.F, j (d.eF a) = a` using `fun a => d.eF.symm_apply_apply a`. Set `k` to `AlgebraicClosure T.Fr`.
+
+Establish `key : ∃ p : Sp k ⟶ d.Xo₂.X, p ≫ d.r = spMap (algebraMap T.Fr k) ≫ xOf y ∧ p ≫ d.Xo₂.s = spMap ((algebraMap T.Fr k).comp ((io.comp j).comp (IntermediateField.inclusion d.c₂.le).toRingHom))`. Use `letI := io.toAlgebra`. Use `letI : Algebra c.F k := ((algebraMap T.Fr k).comp io).toAlgebra`. Use `letI : Algebra d.c₂.F k := ((algebraMap T.Fr k).comp (io.comp j)).toAlgebra`. Set `ψ : T.Fr →ₐ[c.F] k` to `{ algebraMap T.Fr k with commutes' := fun _ => rfl }`.
+
+Take `⟨z, hz⟩` from `GlobalTheory.FramedBaseChange.exists_frMap hL E H Dw l Xo c T.Fr k ψ y.1`. Take `⟨z₂, hz₂⟩` from `hd.2.2.2.2.2.2.1 k (fun a => by`. Express the relevant statement in the definitionally equal form `algebraMap T.Fr k (io (j (d.eF a))) = algebraMap T.Fr k (io a)`. Rewrite using `[hj]) z`. Conclude with `⟨z₂.x, hz₂.1.trans hz.1, z₂.x_over⟩`.
+
+Take `⟨p, hp1, hp2⟩` from `key`. Use `haveI := d.Xo₂.smooth`. Use `haveI : Smooth d.Xo₂.s := SmoothOfRelativeDimension.smooth Dw.dim _`. Take `⟨K, hK, q, hq⟩` from `exists_finite_subfield d.Xo₂.s _ p hp2`. Use `haveI := epi_spMap (algebraMap K k)`.
+
+Establish `hKk : (algebraMap K k).comp (algebraMap T.Fr K) = algebraMap T.Fr k` using `rfl`. Establish `hq1 : q ≫ d.r = spMap (algebraMap T.Fr K) ≫ xOf y`. Rewrite using `[← cancel_epi (spMap (algebraMap K k)), ← Category.assoc, hq, hp1, ← Category.assoc, spMap_comp', hKk]`. Establish `hq2 : q ≫ d.Xo₂.s = spMap ((algebraMap T.Fr K).comp ((io.comp j).comp (IntermediateField.inclusion d.c₂.le).toRingHom))`. Rewrite using `[← cancel_epi (spMap (algebraMap K k)), ← Category.assoc, hq, hp2, spMap_comp']`.
+
+Both sides reduce to the same expression. Take `⟨T', iT, e, ψ, φ, he, hv, hψ, -, hfin⟩` from `GlobalTheory.PlaceExtField.exists_cdvr_finite_extension T K`. Establish `hψ' : ψ.toRingHom.comp (algebraMap T.Fr K) = iT` using `RingHom.ext hψ`. Take `⟨⟨y', hy'⟩, hx⟩` from `GlobalTheory.T.exists_integralFramedPoint_baseChange_cdvr_transitive E H Dw l Xo c T T' io y iT e he hv`. Establish `hx'` using `(hx y' hy').1`.
+
+Set `io₂ : d.c₂.F →+* T'.Fr` to `iT.comp (io.comp j)`. Establish `hio : ∀ a : c.F, io₂ (d.eF a) = iT (io a)` using `fun a => by`. Express the relevant statement in the definitionally equal form `iT (io (j (d.eF a))) = _`. Rewrite using `[hj]`. Use `letI := (iT.comp io).toAlgebra`.
+
+Use `letI := io₂.toAlgebra`. Take `⟨y₂, -, hy₂⟩` from `(GlobalTheory.frames_lift_to_cover hL E H Dw l Xo c n d).1 T'.Fr hio y'.1 (spMap ψ.toRingHom ≫ q) (by rw [Category.assoc, hq1, ← Category.assoc, spMap_comp', hψ']; exact hx'.symm) (by rw [Category.assoc, hq2, spMap_comp', ← RingHom.comp_assoc, hψ']; rfl)`. Conclude with `⟨T', iT, e, y', io₂, ⟨y₂, GlobalTheory.Frames.allTest_of_secBaseChange hL.secBaseChange E H Dw d.l₂ d.Xo₂ d.c₂ _ y₂, GlobalTheory.T.integral_of_framed_point_over_integral E H Dw l Xo c n d T' (iT.comp io) io₂ y' hio y₂ hy₂⟩, hy', hfin hT, hio, hy₂⟩`.
+-/
 theorem exists_ext_lift_to_cover : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l) (n : ℕ) (d : DeltaDat Xo c n), d.IsLev → ∀ (T : CDVR) (io : c.F →+* T.Fr) (y : IntFr Xo c T io), T.FinRes → ∃ (T' : CDVR) (iT : T.Fr →+* T'.Fr) (e : ℕ) (y' : IntFr Xo c T' (iT.comp io)) (io₂ : d.c₂.F →+* T'.Fr) (y₂ : IntFr d.Xo₂ d.c₂ T' io₂), IsExt y iT e y' ∧ T'.FinRes ∧ (∀ a : c.F, io₂ (d.eF a) = iT (io a)) ∧ (letI := (iT.comp io).toAlgebra; letI := io₂.toAlgebra; FrOver d y₂.1 y'.1) := by
   intro E _ _ _ H Dw l Xo c n d hd T io y hT
   have hL : Laws := GlobalTheory.firstFiveLaws.1

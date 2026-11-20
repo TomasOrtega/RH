@@ -1,6 +1,11 @@
 import Mathlib
 
 open MeasureTheory in
+/- English proof (translation)
+Introduce `ι _ α _ μ _ g hg c _ hc h`. Establish `hs : ∀ i, SigmaFinite ((μ i).map (g i))`. Introduce `i`. Rewrite using `[h i, ← ENNReal.coe_toNNReal (hc i)]`. Conclude with `(inferInstance : SigmaFinite ((c i).toNNReal • μ i))`.
+
+Rewrite using `[Measure.pi_map_pi (fun i => (hg i).aemeasurable)]`. Use `Measure.pi_eq fun s _ => ?_` and prove the remaining obligations. Simplify using `only [h, Measure.smul_apply, smul_eq_mul, Measure.pi_pi, Finset.prod_mul_distrib]`.
+-/
 theorem UpperTheory.Reformulated.B.MapPiScale.map_pi_scale :
     ∀ {ι : Type} [inst : Fintype ι] {α : ι → Type}
     [inst_1 : (i : ι) → MeasurableSpace (α i)] (μ : (i : ι) → MeasureTheory.Measure (α i))

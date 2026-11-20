@@ -10,6 +10,23 @@ open GlobalTheory.FinPl (Lat idAt idOff intAt grpAt grpOff MxAt latV latA InK Mo
 open scoped nonZeroDivisors ContDiff
 open GlobalTheory.AscFin
 
+/- English proof (translation)
+Introduce `D _ T L μ0 _ sc G W M _ F hF σ h h' v hv i a ha`. Take `⟨hc, he, -⟩` from `hF.hJ (σ + 1) h`. Take `⟨hc', he', -⟩` from `hF.hB σ h'`. Establish `hz` using `hF.zB' σ h'`. Establish `hζ` using `hF.ζ (σ + 1)`.
+
+Establish `hrat : ∀ {m n : ℕ} (N : Matrix (Fin m) (Fin n) D.host.E) (z : Fin n → D.host.E), GlobalTheory.MixModel.rat N *ᵥ ratV z = ratV (N *ᵥ z)`. Introduce `m n N z`. Use function extensionality and compare the values at `k`. Simplify using `[GlobalTheory.MixModel.rat, ratV, Matrix.mulVec, dotProduct, map_sum, map_mul]`. Use `set t := a * incA D ((-D.host.xi0) ^ (i.1 + 1)) with ht`.
+
+Establish `hL : FinPl.colMul (F.dJ (σ + 1) h).jX i a = fun k => t * incA D ((G.colDec (2 * (σ + 1) + 1) (by omega) (by omega)).a k ⟨i.1, by omega⟩)`. Use function extensionality and compare the values at `k`. Simplify using `only [FinPl.colMul, HypDec.jX, GlobalTheory.MixModel.rat, he, colsOf, Matrix.map_apply, map_mul, ht]`. Rewrite using `[← mul_assoc]`. Both sides reduce to the same expression.
+
+Establish `hR : FinPl.colMul (xFB F σ h') i a = fun k => t * incA D ((G.colDec (2 * σ + 2) (by omega) h').a k ⟨i.1, by omega⟩)`. Use function extensionality and compare the values at `k`. Proceed by induction on `i using Fin.lastCases with`. Consider the case `last`. Establish `e1 : (F.dB σ h').i₀ *ᵥ vecB (F.oB σ h') (F.ζ (σ + 1)) = (-D.host.xi0) ^ (σ + 1) • fun i => (G.colDec (2 * σ + 2) (by omega) h').a i ⟨σ, by omega⟩`.
+
+Rewrite using `[vecB, hζ, Matrix.mulVec_smul, Matrix.mulVec_smul, Matrix.mulVec_mulVec, hz]`. Simplify using `only [FinPl.colMul, xFB, xLast, Matrix.of_apply, Fin.snoc_last, HypDec.j0, hrat, e1, ratV, Pi.smul_apply, smul_eq_mul, map_mul, ht, Fin.val_last]`. Rewrite using `[← mul_assoc]`. Consider the case `cast j`. Simplify using `only [FinPl.colMul, xFB, xLast, Matrix.of_apply, Fin.snoc_castSucc, HypDec.jX, GlobalTheory.MixModel.rat, he', colsOf, Matrix.map_apply, map_mul, ht, Fin.coe_castSucc]`.
+
+Rewrite using `[← mul_assoc]`. Both sides reduce to the same expression. Rewrite using `[hL, hR]`. Establish `hΛ3 : G.Λ (.grid (2 * σ + 3) 0) = (G.colDec (2 * (σ + 1) + 1) (by omega) (by omega)).lat (G.Λ (.core (2 * (σ + 1) + 1))) (stairId (G.pl.stA sc) (G.pl.stAbar sc) (2 * (σ + 1) + 1 - 1))` using `G.sp.colLat _ _ _`. Establish `hΛ2 : G.Λ (.grid (2 * σ + 2) 0) = (G.colDec (2 * σ + 2) (by omega) h').lat (G.Λ (.core (2 * σ + 2))) (stairId (G.pl.stA sc) (G.pl.stAbar sc) (2 * σ + 2 - 1))` using `G.sp.colLat _ _ _`.
+
+Rewrite using `[hΛ3, hΛ2, (GlobalTheory.T.embedding_column_lattice_iff _ (neg_ne_zero.2 one_ne_zero) _ _ _ v t).1, (GlobalTheory.T.embedding_column_lattice_iff _ (neg_ne_zero.2 one_ne_zero) _ _ _ v t).2]`. Establish `hst : stairId (G.pl.stA sc) (G.pl.stAbar sc) (2 * (σ + 1) + 1 - 1) ⟨i.1, by omega⟩ = D.host.AA * stairId (G.pl.stA sc) (G.pl.stAbar sc) (2 * σ + 2 - 1) ⟨i.1, by omega⟩ * ((G.pl.modulBar sc : Ideal (𝓞 D.host.E)) : GlobalTheory.SeeSaw.FI D)⁻¹`. Establish `e : 2 * (σ + 1) + 1 - 1 - i.1 = (2 * σ + 2 - 1 - i.1) + 1` using `by have := i.2; omega`. Simplify using `only [stairId, e, Places.stA]`. Expand and normalize the polynomial expressions, which then agree.
+
+Rewrite using `[hst, GlobalTheory.T.fractionalIdealCompletion_div_conjModulus_off_badPlaces G.pl sc hv]`.
+-/
 theorem GlobalTheory.ColsFB.cols_fb : OnStd fun {D} _ _ {sc} {G} W F => ∀ σ (h : 2 * (σ + 1) + 2 ≤ D.R.m) (h' : 2 * σ + 2 ≤ D.R.m), ∀ v ∉ G.pl.S0, ColsAt (F.dJ (σ + 1) h) (xFB F σ h') (G.Λ (.grid (2 * σ + 3) 0)) (G.Λ (.grid (2 * σ + 2) 0)) v := by
   intro D _ T L μ0 _ sc G W M _ F hF σ h h' v hv i a ha
   obtain ⟨hc, he, -⟩ := hF.hJ (σ + 1) h

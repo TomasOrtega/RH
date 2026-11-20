@@ -16,6 +16,19 @@ open GlobalTheory.WeilM GlobalTheory.AdelicU GlobalTheory.LFun ValuativeRel
 open scoped GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels
 noncomputable section
 namespace GlobalTheory.RegAt
+/- English proof (translation)
+Introduce `_ hK _ _ _`. Take `⟨CF0, hH⟩` from `standing_all`. Use `⟨CF0, fun ε CF hCF => ?_⟩` and prove the remaining obligations. Take `⟨x₀, hx⟩` from `hH ε CF hCF`. Use `⟨x₀, fun D large₂ he hx0 Γ _ _ Pl0 T A Ks _ _ _ R F hS => ?_⟩` and prove the remaining obligations.
+
+Establish `hst` using `hx D large₂ he hx0 Γ Pl0 T A Ks R F hS`. Introduce `G W _ B ρ _ t i j M hM Θ Θ' hΘ g g₁ P`. Establish `hL : R.toLevCh.Is A.μ0` using `hS.core.lev`. Take `⟨e, Bs, Γ', X, om, om', h, hTr, hv, hvP⟩` from `squareTriple_avoid hL W t i j (hst G t) P M hM`. Take `⟨z, Φ, a, C₀, hz, hΦ, hid, hsupp⟩` from `translates_kerSmall_le_theta_at hL W B ρ t i j M hM Θ Θ' hΘ g₁ e Bs Γ' X om om' h hTr hv`.
+
+Establish `dec` using `(hK.1 D.host.F D.host.E D.sp.cm.sig Bs _ _ Γ' X om om' hTr).1`. Take `⟨C, k, hC⟩` from `(dec.2 Φ hΦ).1 0`. Establish `hbd : ∀ u, ‖translates z (kerSmall W Θ' g g₁) u‖ ≤ |C₀| * |C| * (2 * GlobalTheory.Grow.quotHeight _ g * GlobalTheory.Grow.height _ g₁) ^ k`. Introduce `u`. Take `⟨γ, hγ, hle⟩` from `GlobalTheory.Grow.exists_height_le_two_mul_quotHeight _ g`.
+
+Establish `e1 : translates z (kerSmall W Θ' g g₁) u = translates z (kerSmall W Θ' (γ * g) g₁) u`. Simplify using `only [translates, GlobalTheory.ZConvLeft.kerSmall_rat_left hL W B ρ t i j Θ Θ' hΘ g₁ γ hγ]`. Rewrite using `[e1]`. Establish `h1` using `hC (a u) (GlobalTheory.IndefiniteRowSideFullHecke.UnitaryConjugation.blkU _ _ e h.JWW (γ * g, g₁))`. Rewrite `h1` using `[pow_zero, mul_one]`.
+
+Establish `h2` using `GlobalTheory.BlockHeight.ht_blkU_le _ _ e h.JWW (γ * g) g₁`. Establish `h3 : (0 : ℝ) ≤ (GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.ht (GlobalTheory.IndefiniteRowSideFullHecke.UnitaryConjugation.blkU _ _ e h.JWW (γ * g, g₁)) : ℝ)` using `NNReal.coe_nonneg _`. Establish `h4 : (GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.ht (GlobalTheory.IndefiniteRowSideFullHecke.UnitaryConjugation.blkU _ _ e h.JWW (γ * g, g₁)) : ℝ) ≤ 2 * GlobalTheory.Grow.quotHeight _ g * GlobalTheory.Grow.height _ g₁` using `h2.trans (mul_le_mul_of_nonneg_right hle (GlobalTheory.Grow.height_pos _ _).le)`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[← mul_assoc]`.
+
+Conclude with `mul_le_mul_of_nonneg_left (pow_le_pow_left₀ h3 h4 k) (mul_nonneg (abs_nonneg C₀) (abs_nonneg C))`. Establish `hWl` using `(hM.vtx (.grid i j) ⟨i.2.le, j.2.le⟩).haar_fund`. Use `haveI : IsFiniteMeasure ((M.ν (.grid i j)).restrict (M.fd (.grid i j))) := isFiniteMeasure_restrict.2 (GlobalTheory.CuspDecay.measure_lt_top GlobalTheory.Mem.VolFin.finVol _ _ _ hWl.1 hWl.2).ne`. Establish `hcont` using `GlobalTheory.SmallRoute.continuous_translates_kerSmall hL W B ρ t i j Θ Θ' hΘ g₁ z`. Conclude with `⟨Bs.v₁, hvP, z, hz, Integrable.of_bound ((hcont.comp (continuous_const.prodMk continuous_id)).aestronglyMeasurable) _ (.of_forall hbd), hsupp⟩`.
+-/
 theorem exists_regulariser_at_place : _root_.GlobalTheory.FunPr.ThetaLocalInputs → GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.ThetaIntegralsAgree → GlobalTheory.SquareSt.WeilConvergence → GlobalTheory.SquareSt.LocalMatching → GlobalTheory.SquareSt.ThetaIntegralsAgree → BigR fun {D} _ _ _ _ T _ _ _ _ _ R sc => ∀ (G : GridData R.toLevCh sc) (W : G.Weil), W.Over R → ∀ (B : Frames G)
   (ρ : RealMatch W), ρ.Over R → ∀ (t : T) (i j : Fin D.R.m) (M : Vol G), M.Is t → ∀ Θ Θ', IsMatched B t ρ i j Θ Θ' → ∀ g g₁
   (P : Finset (HeightOneSpectrum (𝓞 D.host.F))), ∃ v ∉ P, ∃ w : GA D (G.V (.grid i j)) →₀ ℂ, zdeg w ≠ 0 ∧
@@ -77,6 +90,9 @@ open GlobalTheory.RowEx
 open MeasureTheory GlobalTheory.SplitFlip GlobalTheory.SplitWeil GlobalTheory.StdFrames
 attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField borelKw borelSpaceKw
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @_root_.GlobalTheory.RegAt.exists_regulariser_at_place | exact _root_.GlobalTheory.RegAt.exists_regulariser_at_place | (intros; apply _root_.GlobalTheory.RegAt.exists_regulariser_at_place <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.exists_regulariser_local : _root_.GlobalTheory.FunPr.ThetaLocalInputs → GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.ThetaIntegralsAgree → GlobalTheory.SquareSt.WeilConvergence → GlobalTheory.SquareSt.LocalMatching → GlobalTheory.SquareSt.ThetaIntegralsAgree → BigR fun {D} _ _ _ _ T _ _ _ _ _ R sc => ∀ (G : GridData R.toLevCh sc) (W : G.Weil), W.Over R → ∀ (B : Frames G)
   (ρ : RealMatch W), ρ.Over R → ∀ (t : T) (i j : Fin D.R.m) (M : Vol G), M.Is t → ∀ Θ Θ', IsMatched B t ρ i j Θ Θ' → ∀ g g₁
   (P : Finset (HeightOneSpectrum (𝓞 D.host.F))), ∃ v ∉ P, ∃ w : GA D (G.V (.grid i j)) →₀ ℂ, zdeg w ≠ 0 ∧

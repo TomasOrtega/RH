@@ -7,6 +7,27 @@ open GlobalTheory GlobalTheory.CM
 
 namespace GlobalTheory.CM
 
+/- English proof (translation)
+Introduce `O R K La I _ _ _ _ _ _ _ _ τ₀ h ev dv n x y hh hev hspan i t`. Establish `hsum : ∀ b, ∑ j, (Pi.single i t : I → K) j * dv b j = t * dv b i`. Introduce `b`. Rewrite using `[Finset.sum_eq_single i]`. Simplify using the standard rewrite rules.
+
+Introduce `j _ hj`. Simplify using `[Pi.single_eq_of_ne hj]`. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Introduce `hm b`.
+
+Rewrite using `[← hsum b]`. Generalize the expression as in `(Pi.single i t : I → K) = v at hm`. Proceed by induction on `hm using Submodule.span_induction with`. Consider the case `mem v hv`. Take `⟨a, rfl⟩` from `hv`.
+
+Conclude with `⟨_, hh a b⟩`. Consider the case `zero => simp`. Consider the case `add u w _ _ hu hw`. Simplify using `only [Pi.add_apply, add_mul, Finset.sum_add_distrib]`. Conclude with `add_mem hu hw`.
+
+Consider the case `smul r u _ hu`. Establish `: ∑ j, (r • u) j * dv b j = algebraMap R K r * ∑ j, u j * dv b j`. Rewrite using `[Finset.mul_sum]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[Pi.smul_apply, Algebra.smul_def, _root_.mul_assoc]`.
+
+Rewrite using `[this]`. Conclude with `mul_mem ⟨r, rfl⟩ hu`. Introduce `hb`. Establish `key : ∀ v : I → K, v = ∑ m, (∑ j, v j * dv (y m) j) • ev (x m)`. Introduce `v`.
+
+Establish `hv : v ∈ Submodule.span K (Set.range ev)` using `hspan ▸ Submodule.mem_top`. Proceed by induction on `hv using Submodule.span_induction with`. Consider the case `mem v hv`. Take `⟨a, rfl⟩` from `hv`. Simplify using `only [← hh]`.
+
+Conclude with `hev a`. Consider the case `zero => simp`. Consider the case `add u w _ _ hu hw`. Simplify using `only [Pi.add_apply, add_mul, Finset.sum_add_distrib, add_smul]`. Rewrite using `[← hu, ← hw]`.
+
+Consider the case `smul r u _ hu`. Simplify using `only [Pi.smul_apply, smul_eq_mul, _root_.mul_assoc, ← Finset.mul_sum, mul_smul, ← Finset.smul_sum]`. Rewrite using `[← hu]`. Rewrite using `[key (Pi.single i t)]`. Use `Submodule.sum_mem _ fun m _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[hsum]`. Take `⟨r, hr⟩` from `hb (y m)`. Rewrite using `[← hr, algebraMap_smul]`. Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span ⟨_, rfl⟩)`.
+-/
 theorem single_mem_span_iff_of_selfDual : ∀ (O R K La I : Type) [CommRing O] [CommRing R] [Field K] [Algebra R K] [AddCommGroup La] [Module O La] [Fintype I] [DecidableEq I] (τ₀ : O →+* R) (h : La → La → O) (ev dv : La → I → K) (n : ℕ) (x y : Fin n → La), (∀ a b, algebraMap R K (τ₀ (h a b)) = ∑ i, ev a i * dv b i) → (∀ a, ev a = ∑ m, algebraMap R K (τ₀ (h a (y m))) • ev (x m)) → Submodule.span K (Set.range ev) = ⊤ → ∀ (i : I) (t : K), Pi.single i t ∈ Submodule.span R (Set.range ev) ↔ ∀ b, t * dv b i ∈ (algebraMap R K).range := by
   intro O R K La I _ _ _ _ _ _ _ _ τ₀ h ev dv n x y hh hev hspan i t
   have hsum : ∀ b, ∑ j, (Pi.single i t : I → K) j * dv b j = t * dv b i := by

@@ -16,6 +16,11 @@ open scoped NNReal ENNReal Matrix
 
 namespace GlobalTheory.CompanionTheory.NullFr
 
+/- English proof (translation)
+Establish `h1 : (ν.map φ) (φ '' B) = ν B`. Establish `h2` using `φ.toMeasurableEquiv.map_apply (μ := ν) (φ '' B)`. Establish `h3 : (φ.toMeasurableEquiv : Z → Z) ⁻¹' (φ '' B) = B`. Use extensionality with `x`. Simplify using the standard rewrite rules.
+
+Rewrite `h2` using `[h3]`. Conclude with `h2`. Rewrite `h1` using `[h]`. Rewrite using `[← h1, Measure.smul_apply, ENNReal.smul_def, smul_eq_mul]`.
+-/
 theorem scale_image {Z : Type} [TopologicalSpace Z] [MeasurableSpace Z] [BorelSpace Z] (ν : Measure Z) (φ : Z ≃ₜ Z) (s : ℝ≥0)
     (h : ν.map φ = s • ν) (B : Set Z) : (s : ℝ≥0∞) * ν (φ '' B) = ν B := by
   have h1 : (ν.map φ) (φ '' B) = ν B := by
@@ -56,6 +61,17 @@ section
 variable {A : Type} [CommRing A] [TopologicalSpace A] [IsTopologicalRing A] {a r t : ℕ}
   [MeasurableSpace (Fx A a r)] [MeasurableSpace (Fx A a t)] [BorelSpace (Fx A a r × Fx A a t)]
 
+/- English proof (translation)
+Take `⟨g, hg, hdet⟩` from `GlobalTheory.CompanionTheory.NullFr.exists_GL_gU i c₀ hc₀`. Establish `h1 : e • (g.1 - 1) = g.1 - 1`. Rewrite using `[hg]`. Use extensionality with `k j`. Simplify using `only [gU, add_sub_cancel_left, Matrix.smul_apply, Matrix.of_apply, smul_eq_mul]`.
+
+Apply the tactic sequence `split_ifs <;> simp [hce]`. Establish `h2 : e • yU i y₀ = (yU i y₀ : Fx A r t)`. Use extensionality with `l j`. Simplify using `only [yU, Matrix.smul_apply, Matrix.of_apply, smul_eq_mul]`. Apply the tactic sequence `split_ifs <;> simp [hye]`.
+
+Establish `c1 : ν.map (colH (a` using `a) (r := r) g) = ν := by`. Use `cov g h1` as an intermediate fact. Rewrite `this` using `[hdet, map_one, inv_one, one_pow, one_smul]`. Conclude with `this`. Establish `c2 : ν.map (shH (a` using `a) (yU i y₀ : Fx A r t)) = ν := invS _ h2`.
+
+Use `⟨(colH g).trans (shH (yU i y₀)), ?_, fun w => ?_⟩` and prove the remaining obligations. Establish `m1 : Measurable (colH (a` using `a) (r := r) g) := (colH g).continuous.measurable`. Establish `m2 : Measurable (shH (a` using `a) (yU i y₀ : Fx A r t)) := (shH _).continuous.measurable`. Establish `: (((colH (a` using `a) (r := r) g).trans (shH (yU i y₀)) : _ ≃ₜ _) : _ → _) = shH (yU i y₀) ∘ colH g := rfl`. Rewrite using `[this, ← Measure.map_map m2 m1, c1, c2]`.
+
+Use `show (w.1, w.2 * g.1 + w.1 * yU i y₀) = _`. Rewrite using `[hg]`.
+-/
 theorem exists_strictHenselian_absolutely_closed_local_ring (md : Aˣ →* ℝ≥0) (e : A) (ν : Measure (Fx A a r × Fx A a t))
     (invS : ∀ y : Fx A r t, e • y = y → ν.map (fun z : Fx A a r × Fx A a t => (z.1, z.2 + z.1 * y)) = ν)
     (cov : ∀ g : GL (Fin t) A, e • (g.1 - 1) = g.1 - 1 → ν.map (fun z : Fx A a r × Fx A a t => (z.1, z.2 * g.1)) =
@@ -92,6 +108,71 @@ variable {A : Type} [CommRing A] [TopologicalSpace A] [IsTopologicalRing A] [Loc
   [SecondCountableTopology A] [MeasurableSpace A] [BorelSpace A] {a r t : ℕ}
   [MeasurableSpace (Fx A a r)] [MeasurableSpace (Fx A a t)] [BorelSpace (Fx A a r × Fx A a t)]
 
+/- English proof (translation)
+Establish `h0C : (0 : A) ∈ C` using `mem_of_mem_nhds hC0`. Use `set B := Piece e f P i C with hB`. Establish `hBfin : ν B < ∞` using `GlobalTheory.CompanionTheory.NullFr.piece_measure_lt_top e f P i C hC h0C ν hfin`. Set `C₂ : Set A` to `(fun q : A × (Fin t → A) × (Fin t → A) => q.1 - ∑ k, q.2.1 k * q.2.2 k) '' (C ×ˢ (Set.pi Set.univ fun _ => C) ×ˢ (Set.pi Set.univ fun _ => C))`. Establish `hC₂ : IsCompact C₂` using `(hC.prod ((isCompact_univ_pi fun _ => hC).prod (isCompact_univ_pi fun _ => hC))).image (by fun_prop)`.
+
+Take `⟨κ₁, V₁, hV₁, hn₁⟩` from `GlobalTheory.CompanionTheory.NullFr.Packing.net md hmd f hf.idem C C hC hC0`. Take `⟨κ₂, V₂, hV₂, hn₂⟩` from `GlobalTheory.CompanionTheory.NullFr.Packing.net md hmd f hf.idem C₂ C hC₂ hC0`. Set `Ti` to `{k : Fin t // k ≠ i}`. Establish `hT : Fintype.card Ti + 1 = t`. Use `Fintype.card_subtype_compl (fun k : Fin t => k = i)` as an intermediate fact.
+
+Establish `h1 : Fintype.card {k : Fin t // k = i} = 1` using `by simp`. Establish `h2 : 0 < t` using `i.pos`. Simplify using `only [Fintype.card_fin, h1] at this`. Express the relevant statement in the definitionally equal form `Fintype.card {k : Fin t // ¬ k = i} + 1 = t`. Use linear arithmetic over natural numbers and integers.
+
+Set `κ : ℝ≥0` to `κ₁ ^ Fintype.card Ti * κ₂ ^ r`. Take `⟨u, hu, huV, hε⟩` from `GlobalTheory.CompanionTheory.NullFr.exists_unit_small_module md hmd f hf hnd (1 / (κ + 1)) (by positivity) (V₁ ∩ V₂) (Filter.inter_mem hV₁ hV₂)`. Take `⟨N₁, hN₁, hcard₁, hcov₁⟩` from `hn₁ u hu huV.1`. Take `⟨N₂, hN₂, hcard₂, hcov₂⟩` from `hn₂ u hu huV.2`. Set `ext : (Ti → A) → Fin t → A` to `fun c' k => if h : k ≠ i then c' ⟨k, h⟩ else 0`.
+
+Establish `ext_i : ∀ c', ext c' i = 0` using `fun c' => by simp [ext]`. Establish `ext_ne : ∀ c' (k : Ti), ext c' k.1 = c' k` using `fun c' k => by simp [ext, k.2]`. Establish `eq_of_f : ∀ p : A, f * p = p → e * p = p` using `fun p hp => by`. Rewrite using `[← hp, ← mul_assoc, mul_comm e f, hfe]`. Set `Q : Finset ((Ti → A) × (Fin r → A))` to `Fintype.piFinset (fun _ => N₁) ×ˢ Fintype.piFinset (fun _ => N₂)`.
+
+Establish `hTq : ∀ q ∈ Q, ∃ φ : (Fx A a r × Fx A a t) ≃ₜ (Fx A a r × Fx A a t), ν.map φ = ν ∧ ∀ w, φ w = (w.1, w.2 * gU i (ext q.1) + w.1 * yU i q.2)`. Introduce `q hq`. Take `⟨h1, h2⟩` from `Finset.mem_product.1 hq`. Rewrite `h1`, `h2` using `[Fintype.mem_piFinset]`. Use `exists_strictHenselian_absolutely_closed_local_ring md e ν invS cov i _ _ (ext_i _) (fun k => ?_) (fun l => eq_of_f _ (hN₂ _ (h2 l)).1)` and prove the remaining obligations.
+
+Distinguish the cases in `h : k = i`. Substitute `h` using the available equality. Simplify using `[ext_i]`. Use `ext_ne q.1 ⟨k, h⟩` as an intermediate fact. Simplify using `only at this`.
+
+Rewrite using `[this]`. Conclude with `eq_of_f _ (hN₁ _ (h1 _)).1`. Use `haveI : Nonempty ((Fx A a r × Fx A a t) ≃ₜ (Fx A a r × Fx A a t)) := ⟨Homeomorph.refl _⟩`. Use `choose! T hT1 hT2 using hTq`. Take `⟨gd, hgd, hdetd⟩` from `GlobalTheory.CompanionTheory.NullFr.exists_gl_gD i u`.
+
+Establish `hue : e * ((u : A) - 1) = (u : A) - 1`. Establish `h1 : (u : A) - 1 = f * u - f` using `by linear_combination hu`. Rewrite using `[h1]`. Establish `h2 : e * (f * u - f) = (f * e) * u - f * e` using `by ring`. Rewrite using `[h2, hfe]`.
+
+Establish `hgde : e • (gd.1 - 1) = gd.1 - 1`. Rewrite using `[hgd]`. Use extensionality with `k j`. Simplify using `only [gD, Matrix.smul_apply, Matrix.sub_apply, smul_eq_mul, Matrix.diagonal_apply, Matrix.one_apply]`. Distinguish the cases in `hkj : k = j`.
+
+Substitute `hkj` using the available equality. Distinguish the cases in `hki : k = i`. Substitute `hki` using the available equality. Simplify using `using hue`. Simplify using `[hki]`.
+
+Simplify using `[hkj]`. Set `Dh : (Fx A a r × Fx A a t) ≃ₜ (Fx A a r × Fx A a t)` to `colH gd`. Establish `hmapD : ν.map Dh = ((md u)⁻¹ ^ (r + t) : ℝ≥0) • ν`. Use `cov gd hgde` as an intermediate fact. Rewrite `this` using `[hdetd]`.
+
+Conclude with `this`. Establish `hDB` using `scale_image ν Dh _ hmapD B`. Establish `hcover : B ⊆ ⋃ q ∈ Q, T q '' (Dh '' B)`. Introduce and unpack `z ⟨hadm, hx, hy, hv, hv', c, hci, hc, hcv⟩`. Establish `hpick : ∀ k : Ti, ∃ p ∈ N₁, ∃ w ∈ C, f * w = w ∧ c k.1 = p + u * w` using `fun k => hcov₁ (c k.1) (hc k.1).2 (hc k.1).1`.
+
+Use `choose p hpN w hwC hwf hpw using hpick`. Establish `hc₀f : ∀ k, f * ext p k = ext p k` using `fun k => by`. Distinguish the cases in `h : k = i`. Substitute `h` using the available equality. Simplify using `[ext_i]`.
+
+Use `ext_ne p ⟨k, h⟩` as an intermediate fact. Simplify using `only at this`. Rewrite using `[this]`. Conclude with `(hN₁ _ (hpN _)).1`. Establish `hc₀C : ∀ k, ext p k ∈ C` using `fun k => by`.
+
+Distinguish the cases in `h : k = i`. Substitute `h` using the available equality. Simplify `h0C` using `[ext_i]`. Use `ext_ne p ⟨k, h⟩` as an intermediate fact. Simplify using `only at this`.
+
+Rewrite using `[this]`. Conclude with `(hN₁ _ (hpN _)).2`. Establish `hc₁ : ∀ k, f * ext w k = ext w k ∧ ext w k ∈ C` using `fun k => by`. Distinguish the cases in `h : k = i`. Substitute `h` using the available equality.
+
+Simplify `h0C` using `[ext_i]`. Use `ext_ne w ⟨k, h⟩` as an intermediate fact. Simplify using `only at this`. Rewrite using `[this]`. Conclude with `⟨hwf _, hwC _⟩`.
+
+Establish `hcc : ∀ k, c k = ext p k + u * ext w k` using `fun k => by`. Distinguish the cases in `h : k = i`. Substitute `h` using the available equality. Simplify using `[ext_i, hci]`. Establish `h1` using `ext_ne w ⟨k, h⟩`.
+
+Establish `h2` using `ext_ne p ⟨k, h⟩`. Simplify using `only at h1 h2`. Rewrite using `[h1, h2]`. Conclude with `hpw ⟨k, h⟩`. Establish `hterm : ∀ l, f * yc P z l i - ∑ k, ext p k * yc P z l k ∈ C₂` using `fun l => by`.
+
+Use `⟨(f * yc P z l i, ext p, fun k => f * yc P z l k), ⟨(hy l i).1, fun k _ => hc₀C k, fun k _ => (hy l k).1⟩, ?_⟩` and prove the remaining obligations. Simplify using `only`. Use `congr 1`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[← mul_assoc, mul_comm (ext p k) f, hc₀f]`.
+
+Establish `hfterm : ∀ l, f * (f * yc P z l i - ∑ k, ext p k * yc P z l k) = f * yc P z l i - ∑ k, ext p k * yc P z l k` using `fun l => by`. Rewrite using `[mul_sub, ← mul_assoc, hf.idem, Finset.mul_sum]`. Use `congr 1`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[← mul_assoc, hc₀f]`.
+
+Establish `hpick2 : ∀ l, ∃ q ∈ N₂, ∃ w ∈ C, f * w = w ∧ f * yc P z l i - ∑ k, ext p k * yc P z l k = q + u * w` using `fun l => hcov₂ _ (hterm l) (hfterm l)`. Use `choose y₀ hyN y₁ hy₁C hy₁f hyy using hpick2`. Take `⟨w', hw', hz'⟩` from `GlobalTheory.CompanionTheory.NullFr.CoverStep.point_eq_translate e f he hfe hf.idem P i C z hadm hx hy hv hv' c hci (fun k => (hc k).1) hcv u hu (ext p) (ext w) (ext_i _) hc₀f (ext_i _) hc₁ hcc y₀ y₁ (fun l => (hN₂ _ (hyN l)).1) (fun l => ⟨hy₁f l, hy₁C l⟩) hyy`. Establish `hq : (p, y₀) ∈ Q` using `Finset.mem_product.2 ⟨Fintype.mem_piFinset.2 hpN, Fintype.mem_piFinset.2 hyN⟩`. Use `Set.mem_biUnion hq ⟨Dh w', ⟨w', hw', rfl⟩, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[hT2 _ hq, hz']`. Use `show ((w'.1, (w'.2 * gd.1) * gU i (ext p) + w'.1 * yU i y₀) : Fx A a r × Fx A a t) = _`. Rewrite using `[hgd]`. Use `set m : ℝ≥0 := md u with hm`. Establish `hm0 : m ≠ 0`.
+
+Introduce `h`. Establish `h1 : md u * md u⁻¹ = 1` using `by rw [← map_mul, mul_inv_cancel, map_one]`. Rewrite `h1` using `[← hm, h, zero_mul]`. Conclude with `zero_ne_one h1`. Establish `hDval : ν (Dh '' B) = ((m ^ (r + t) : ℝ≥0) : ℝ≥0∞) * ν B`.
+
+Rewrite using `[← hDB, ← mul_assoc, ← ENNReal.coe_mul, ← mul_pow, mul_inv_cancel₀ hm0, one_pow, ENNReal.coe_one, one_mul]`. Establish `hTval : ∀ q ∈ Q, ν (T q '' (Dh '' B)) = ν (Dh '' B)` using `fun q hq => by`. Use `scale_image ν (T q) 1 (by rw [hT1 q hq, one_smul]) (Dh '' B)` as an intermediate fact. Simplify using `using this`. Establish `hle : ν B ≤ (Q.card : ℝ≥0∞) * ν (Dh '' B)`.
+
+Combine the equalities or inequalities in the displayed calculation. Establish `hcardQ : (Q.card : ℝ≥0) = (N₁.card : ℝ≥0) ^ Fintype.card Ti * (N₂.card : ℝ≥0) ^ r`. Simplify using `[Q, Finset.card_product, Fintype.card_piFinset]`. Establish `hρ : (Q.card : ℝ≥0) * m ^ (r + t) ≤ κ * m`. Establish `h1 : r + t = Fintype.card Ti + r + 1` using `by omega`.
+
+Rewrite using `[hcardQ, h1, pow_succ, pow_add]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[mul_pow, mul_pow]`. Expand and normalize the polynomial expressions, which then agree. Use `_ ≤ κ * m := by`.
+
+Use `mul_le_mul_left ?_ m` and prove the remaining obligations. Conclude with `mul_le_mul' (pow_le_pow_left' hcard₁ _) (pow_le_pow_left' hcard₂ _)`. Establish `hlt : κ * m < 1`. Establish `h1 : m * (κ + 1) < 1`. Use `(lt_div_iff₀ (by positivity : 0 < κ + 1)).1 hε` as an intermediate fact.
+
+Simplify using `using this`. Combine the equalities or inequalities in the displayed calculation. Use `set ρ : ℝ≥0 := (Q.card : ℝ≥0) * m ^ (r + t) with hρdef`. Establish `hρ1 : ρ < 1` using `lt_of_le_of_lt hρ hlt`. Establish `hle2 : ν B ≤ (ρ : ℝ≥0∞) * ν B`.
+
+Combine the equalities or inequalities in the displayed calculation. Rewrite using `[hDval, ← mul_assoc, hρdef, ENNReal.coe_mul, ENNReal.coe_natCast]`. Take `⟨b, hb⟩ : ∃ b : ℝ≥0, (b : ℝ≥0∞) = ν B` from `⟨(ν B).toNNReal, ENNReal.coe_toNNReal hBfin.ne⟩`. Rewrite `hle2`, the goal using `[← hb]`. Establish `hb2 : b ≤ ρ * b` using `by exact_mod_cast hle2`.
+
+Assume the negation of the conclusion as `h0`. Establish `hb0 : 0 < b` using `pos_iff_ne_zero.2 fun h => h0 (by simp [h])`. Conclude with `absurd hb2 (not_le.2 (mul_lt_of_lt_one_left hb0 hρ1))`.
+-/
 theorem piece_null (md : Aˣ →* ℝ≥0) (hmd : IsHaarMod md) (e f : A) (he : e * e = e) (hfe : f * e = f) (hf : IsFieldIdem f)
     (hnd : NonDiscreteAt f) (P : Fx A a r → Fx A r a) (ν : Measure (Fx A a r × Fx A a t)) (hfin : IsFiniteMeasureOnCompacts ν)
     (invS : ∀ y : Fx A r t, e • y = y → ν.map (fun z : Fx A a r × Fx A a t => (z.1, z.2 + z.1 * y)) = ν)
@@ -265,6 +346,17 @@ variable {A : Type} [CommRing A] [TopologicalSpace A] [IsTopologicalRing A] [Loc
   [SecondCountableTopology A] [MeasurableSpace A] [BorelSpace A] {a r t : ℕ}
   [MeasurableSpace (Fx A a r)] [MeasurableSpace (Fx A a t)] [BorelSpace (Fx A a r × Fx A a t)]
 
+/- English proof (translation)
+Establish `hfe : ∀ j, f j * e = f j` using `fun j => by`. Rewrite using `[← hd.sum, Finset.mul_sum, Finset.sum_eq_single j (fun b _ hb => hd.orth j b hb.symm) (by simp), (hd.field j).idem]`. Establish `he : e * e = e` using `by nth_rw 1 [← hd.sum]`. Rewrite using `[Finset.sum_mul, Finset.sum_congr rfl fun j _ => hfe j, hd.sum]`. Set `K : CompactExhaustion A` to `default`.
+
+Take `⟨n₀, hn₀⟩` from `K.exists_mem_nhds (0 : A)`. Establish `ev : ∀ x : A, ∀ᶠ n in atTop, x ∈ K (n + n₀)` using `fun x => by`. Take `⟨m, hm⟩` from `K.exists_mem x`. Conclude with `eventually_atTop.2 ⟨m, fun n hn => K.subset (by omega) hm⟩`. Establish `hsub : {z | ¬ ∃ M : Fx A t a, M * vc P z = e • (1 : Fx A t t)} ⊆ (admitted e P)ᶜ ∪ ⋃ j, ⋃ i, ⋃ n, Piece e (f j) P i (K (n + n₀))`.
+
+Introduce `z hz`. Distinguish the cases in `hadm : z ∈ admitted e P`. Use `right`. Take `⟨j, i, c, hci, hcf, hcv⟩` from `GlobalTheory.CompanionTheory.NullFr.Coeff.exists_dependent_column e f hd (vc P z) hz`. Establish `hall : ∀ᶠ n in atTop, (∀ p q, z.1 p q ∈ K (n + n₀)) ∧ (∀ l k, f j * yc P z l k ∈ K (n + n₀) ∧ (1 - f j) * yc P z l k ∈ K (n + n₀)) ∧ (∀ p k, vc P z p k ∈ K (n + n₀)) ∧ (∀ p, (1 - f j) * vc P z p i ∈ K (n + n₀)) ∧ ∀ k, c k ∈ K (n + n₀)`.
+
+Use `(eventually_all.2 fun p => eventually_all.2 fun q => ev _).and ((eventually_all.2 fun l => eventually_all.2 fun k => (ev _).and (ev _)).and ((eventually_all.2 fun p => eventually_all.2 fun k => ev _).and ((eventually_all.2 fun p => ev _).and (eventually_all.2 fun k => ev _))))` and prove the remaining obligations. Take `⟨n, h1, h2, h3, h4, h5⟩` from `hall.exists`. Simplify using `only [Set.mem_union, Set.mem_iUnion]`. Conclude with `⟨j, i, n, hadm, h1, h2, fun p k _ => h3 p k, h4, c, hci, fun k => ⟨hcf k, h5 k⟩, hcv⟩`. Conclude with `Or.inl hadm`.
+
+Use `measure_mono_null hsub (measure_union_null supp ?_)` and prove the remaining obligations. Use `measure_iUnion_null fun j => measure_iUnion_null fun i => measure_iUnion_null fun n => ?_` and prove the remaining obligations. Conclude with `piece_null md hmd e (f j) he (hfe j) (hd.field j) (hnd j) P ν hfin invS cov i _ (K.isCompact _) (Filter.mem_of_superset hn₀ (K.subset (by omega)))`.
+-/
 theorem frames_null {ι : Type} [Fintype ι] (md : Aˣ →* ℝ≥0) (hmd : IsHaarMod md) (e : A) (f : ι → A) (hd : IsFieldDec e f)
     (hnd : ∀ j, NonDiscreteAt (f j)) (P : Fx A a r → Fx A r a) (ν : Measure (Fx A a r × Fx A a t))
     (hfin : IsFiniteMeasureOnCompacts ν)
@@ -318,6 +410,25 @@ namespace GlobalTheory.CompanionTheory.NullFr
 
 set_option maxHeartbeats 1600000 in
 
+/- English proof (translation)
+Introduce `hI D r t V b₀ hb S e he ν hν`. Use `haveI : IsTopologicalRing (AE D) := GlobalTheory.Doubling.isTopologicalRing_tens`. Use `haveI := GlobalTheory.AdelicUnitaryTop.t2Space_adeleRing_numberField D.host.F`. Use `haveI := GlobalTheory.AdelicUnitaryTop.secondCountable_adele D.host.F`. Take `⟨eh⟩` from `GlobalTheory.AdelicUnitaryTop.nonempty_homeomorph (F := D.host.F) (E := D.host.E) (AF D.host.F)`.
+
+Use `haveI : LocallyCompactSpace (AE D) := eh.isClosedEmbedding.locallyCompactSpace`. Use `haveI : SecondCountableTopology (AE D) := eh.secondCountableTopology`. Use `haveI : T2Space (AE D) := eh.isEmbedding.t2Space`. Use `haveI : BorelSpace (AE D) := ⟨rfl⟩`. Use `haveI b1 : BorelSpace (Mx D V.rank r) := @BorelSpace.mk _ _ (measMx _ _) rfl`.
+
+Use `haveI b2 : BorelSpace (Mx D V.rank t) := @BorelSpace.mk _ _ (measMx _ _) rfl`. Use `haveI s1 : SecondCountableTopology (Mx D V.rank r) := inferInstanceAs (SecondCountableTopology (Fin V.rank → Fin r → AE D))`. Use `haveI s2 : SecondCountableTopology (Mx D V.rank t) := inferInstanceAs (SecondCountableTopology (Fin V.rank → Fin t → AE D))`. Use `haveI b3 : BorelSpace (Mx D V.rank r × Mx D V.rank t) := Prod.borelSpace`. Take `⟨ι, _, f, hd, hnd⟩` from `GlobalTheory.CompanionTheory.NullFr.FieldDec.exists_isFieldDec D S e he`.
+
+Establish `hmd : IsHaarMod (absA D)` using `fun h hh u => GlobalTheory.AdeleUnitModule.map_mul_eq_absE_inv_smul _ _ D.sp.cm.sig (isCMExt_host D) h hh u`. Set `P : Mx D V.rank r → Mx D r V.rank` to `fun x => mm (rat b₀.1⁻¹) (mm (adj x) (gA V))`. Establish `hyv : ∀ z : Mx D V.rank r × Mx D V.rank t, yc P z = yv V b₀ z` using `fun z => by`. Simplify using `only [yc, P, yv, ip, mm, Matrix.mul_assoc]`. Establish `hinv : mm (rat b₀.1⁻¹) (rat b₀.1) = (1 : Mx D r r)`.
+
+Establish `h1 : b₀.1⁻¹ * b₀.1 = 1` using `Matrix.nonsing_inv_mul _ (isUnit_iff_ne_zero.2 hb)`. Establish `h2 : (b₀.1⁻¹ * b₀.1).map (incA D) = (rat b₀.1⁻¹ : Mx D r r) * rat b₀.1` using `Matrix.map_mul`. Establish `h3 : ((1 : Matrix (Fin r) (Fin r) D.host.E)).map (incA D) = (1 : Mx D r r)` using `Matrix.map_one _ (map_zero _) (map_one _)`. Rewrite `h2` using `[h1, h3]`. Conclude with `h2.symm`.
+
+Establish `hsupp : ν (admitted e P)ᶜ = 0`. Use `measure_mono_null ?_ hν.supp` and prove the remaining obligations. Introduce and unpack `z hz ⟨g1, g2, g3, -⟩`. Use `hz ⟨g1, g2, ?_⟩` and prove the remaining obligations. Use `show mm (mm (rat b₀.1⁻¹) (mm (adj z.1) (gA V))) z.1 = _`.
+
+Establish `h4 : mm (mm (rat b₀.1⁻¹) (mm (adj z.1) (gA V))) z.1 = mm (rat b₀.1⁻¹) (ip V z.1 z.1)`. Simplify using `only [ip, mm, Matrix.mul_assoc]`. Rewrite using `[h4, g3]`. Simplify using `only [mm, Matrix.mul_smul] at hinv ⊢`. Rewrite using `[hinv]`.
+
+Establish `key` using `frames_null (absA D) hmd e f hd hnd P ν hν.fin hν.invS hν.cov hsupp`. Use `measure_mono_null ?_ (measure_union_null hν.supp key)` and prove the remaining obligations. Introduce `z hz`. Distinguish the cases in `hg : e • z.1 = z.1 ∧ e • z.2 = z.2 ∧ ip V z.1 z.1 = e • rat b₀.1 ∧ qv V b₀ z = 0`. Use `right`.
+
+Introduce and unpack `⟨M, hM⟩`. Use `hz (GlobalTheory.CompanionTheory.NullFr.free_of_leftInv_orth V b₀ hb e z hg.1 hg.2.1 hg.2.2.1 M ?_)` and prove the remaining obligations. Rewrite using `[← hyv]`. Conclude with `hM`. Conclude with `Or.inl hg`.
+-/
 theorem nullSing_of_idemEx : IdemEx → NullSing := by
   intro hI D r t V b₀ hb S e he ν hν
   haveI : IsTopologicalRing (AE D) := GlobalTheory.Doubling.isTopologicalRing_tens

@@ -9,11 +9,19 @@ namespace GlobalTheory.LFun.UnitaryParam
 open NumberField IsDedekindDomain Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes Formalism.UG GlobalTheory.PRep GlobalTheory.AdelicU GlobalTheory.LFun
 open GlobalTheory.LFun.ConjPlace
 
+/- English proof (translation)
+Simplify using `only [Multiset.esymm, Multiset.powersetCard_map, map_multiset_sum, map_multiset_prod, Multiset.map_map, Function.comp_def]`.
+-/
 theorem esymm_map_conj (s : Multiset ℂ) (j : ℕ) :
     (s.map (starRingEnd ℂ)).esymm j = starRingEnd ℂ (s.esymm j) := by
   simp only [Multiset.esymm, Multiset.powersetCard_map, map_multiset_sum, map_multiset_prod, Multiset.map_map,
     Function.comp_def]
 
+/- English proof (translation)
+Establish `h : ((q : ℂ)).arg ≠ Real.pi` using `by rw [Complex.natCast_arg]; exact Real.pi_ne_zero.symm`. Establish `h2` using `Complex.conj_cpow (q : ℂ) (((j : ℂ) * ((n : ℂ) - j)) / 2) h`. Rewrite using `[satEig, satEig, map_mul, ← esymm_map_conj, Multiset.map_map, Multiset.map_map]`. Use `congr 1`. Rewrite `h2` using `[map_natCast, map_div₀, map_mul, map_sub, map_natCast, map_natCast, map_ofNat]`.
+
+Conclude with `h2`.
+-/
 theorem satEig_map_star (q n : ℕ) (B : Multiset ℂˣ) (j : ℕ) :
     satEig q n (B.map star) j = starRingEnd ℂ (satEig q n B j) := by
   have h : ((q : ℂ)).arg ≠ Real.pi := by rw [Complex.natCast_arg]; exact Real.pi_ne_zero.symm
@@ -28,6 +36,15 @@ section General
 variable {G V : Type} [Group G] [AddCommGroup V] [Module ℂ V] {ρ : Representation ℂ G V} {K : Subgroup G}
   {h : G → ℂ} {x : V}
 
+/- English proof (translation)
+Establish `hf` using `GlobalTheory.LGrp.mem_fixed.1 hx`. Establish `bi : ∀ a ∈ K, ∀ b ∈ K, ∀ t, β (ρ (a * t * b) x) x = β (ρ t x) x` using `fun a ha b hb t => by`. Rewrite using `[map_mul, map_mul, Module.End.mul_apply, Module.End.mul_apply, hf b hb]`. Conclude with `(congrArg (β _) (hf a ha).symm).trans (hi a _ _)`. Establish `inv : ∀ t, β (ρ t⁻¹ x) x = starRingEnd ℂ (β (ρ t x) x)` using `fun t => by`.
+
+Rewrite using `[← hβ, ← hi t]`. Simplify using the standard rewrite rules. Establish `e1` using `(β.flip x).toAddMonoidHom.map_finsum (finite_heckeVec hK hh (ρ.comp θ) x)`. Establish `e2` using `((starRingEnd ℂ).toAddMonoidHom.comp (β.flip x).toAddMonoidHom).map_finsum (finite_heckeVec hK hh ρ x)`. Use `e1.trans (Eq.trans (finsum_congr fun c => ?_) e2.symm)` and prove the remaining obligations.
+
+Express the relevant statement in the definitionally equal form `β (h c.out • ρ (θ c.out) x) x = starRingEnd ℂ (β (h c.out • ρ c.out x) x)`. Rewrite using `[map_smul, map_smul, LinearMap.smul_apply, LinearMap.smul_apply, smul_eq_mul, smul_eq_mul, map_mul, hr]`. Distinguish the cases in `h0 : h c.out = 0`. Simplify using `[h0]`. Take `⟨a, ha, b, hb, t, htt, e⟩` from `ht _ h0`.
+
+Use `congr 1`. Rewrite using `[e, map_mul θ, map_mul θ, bi _ (hθ a ha) _ (hθ b hb), bi _ ha _ hb, htt, inv]`.
+-/
 theorem form_heckeVec_comp (hK : IsCommensurated K) (hh : h ∈ Hecke ℂ K) (hx : x ∈ fixed ρ K)
     (β : V →ₗ[ℂ] V →ₛₗ[starRingEnd ℂ] ℂ) (hβ : ∀ v w, β w v = starRingEnd ℂ (β v w))
     (hi : ∀ g v w, β (ρ g v) (ρ g w) = β v w) (θ : G →* G) (hθ : ∀ k ∈ K, θ k ∈ K)
@@ -53,6 +70,15 @@ theorem form_heckeVec_comp (hK : IsCommensurated K) (hh : h ∈ Hecke ℂ K) (hx
 
 end General
 
+/- English proof (translation)
+Take `⟨β, hβ, hpos, hi⟩` from `hU`. Set `c` to `RingEquiv.refl (w.adicCompletion E)`. Establish `hc : ∀ a, Valued.v (c a) = Valued.v a` using `fun _ => rfl`. Establish `hx'` using `isSatVecGL_invT c hc rfl hx`. Establish `hK` using `mem_iff_invT (n := n) c (map_mem_Ov_iff c hc)`.
+
+Take `⟨p, hp⟩` from `exists_isUnifV w`. Take `⟨ϖ, rfl⟩ : ∃ ϖ : (w.adicCompletion E)ˣ, ϖ = p` from `⟨Units.mk0 p fun e => by simp [IsUnifV, e] at hp, rfl⟩`. Establish `hne : β x x ≠ 0` using `fun h0 => by simpa [h0] using hpos x hx.1`. Use `eq_of_satEig_eq (qV_ne_zero w) (by simpa using hx.2.2.1) hx'.2.2.1 fun j hj => ?_` and prove the remaining obligations. Apply the tactic sequence `have key := form_heckeVec_comp (Final.GLintComm E w n) (Tj_mem_hecke hp j) hx.2.1 β hβ hi (invT c n).symm.toMonoidHom (fun k hk => (hK _).2 (by simpa using hk)) (fun g => by rw [Tj_apply]; split_ifs <;> simp) (fun g hg => by`.
+
+Rewrite `hg` using `[Tj_apply]`. Choose the witnesses or unpack the hypotheses as in `⟨a, ha, b, hb, e⟩ : ∃ a ∈ GLint (Fin n) (Ov E w), ∃ b ∈ GLint (Fin n) (Ov E w), g = a * dGL n ϖ j * b := by`. Assume the negation of the conclusion as `hn`. Conclude with `hg (if_neg hn)`. Conclude with `⟨a, ha, b, hb, _, (invT c n).symm_apply_eq.2 (invT_dGL c ϖ j).symm, e⟩)`.
+
+Rewrite `key` using `[hx'.2.2.2 _ hp j hj, hx.2.2.2 _ hp j hj, map_smul, map_smul, LinearMap.smul_apply, LinearMap.smul_apply, smul_eq_mul, smul_eq_mul, map_mul, ← hβ]`. Rewrite using `[satEig_map_star]`. Conclude with `(mul_right_cancel₀ hne key).symm`.
+-/
 theorem map_star_eq_map_inv (E : Type) [Field E] [NumberField E] (w : HeightOneSpectrum (𝓞 E)) (n : ℕ) (V : Type)
     [AddCommGroup V] [Module ℂ V] (ρ : Representation ℂ (GL (Fin n) (w.adicCompletion E)) V) (x : V)
     (B : Multiset ℂˣ) (hU : GlobalTheory.LGrp.IsUnitarisable ρ) (hx : IsSatVecGL w ρ x B) :

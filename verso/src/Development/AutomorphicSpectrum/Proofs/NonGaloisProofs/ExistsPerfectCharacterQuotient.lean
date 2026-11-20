@@ -9,6 +9,25 @@ open NumberField IsDedekindDomain Formalism Formalism.ConjugateSelfDual Formalis
 
 namespace GlobalTheory.CompanionTheory.LocDual.GenChar
 
+/- English proof (translation)
+Take `⟨c, hc⟩` from `CharacterModule.exists_character_apply_ne_zero_of_ne_zero hq`. Set `c' : A →+ AddCircle (1 : ℚ)` to `c`. Establish `hc' : c' q ≠ 0` using `hc`. Establish `hN : (N : ℚ) ≠ 0` using `Nat.cast_ne_zero.2 (NeZero.ne N)`. Set `g : ℤ →+ AddCircle (1 : ℚ)` to `(QuotientAddGroup.mk' (AddSubgroup.zmultiples (1 : ℚ))).comp ((AddMonoidHom.mulRight ((N : ℚ)⁻¹)).comp (Int.castAddHom ℚ))`.
+
+Establish `hg : ∀ z : ℤ, g z = QuotientAddGroup.mk ((z : ℚ) * (N : ℚ)⁻¹)` using `fun z => rfl`. Establish `hgN : g N = 0`. Rewrite using `[hg, Int.cast_natCast, mul_inv_cancel₀ hN]`. Conclude with `(QuotientAddGroup.eq_zero_iff _).2 (AddSubgroup.mem_zmultiples _)`. Set `ι : ZMod N →+ AddCircle (1 : ℚ)` to `ZMod.lift N ⟨g, hgN⟩`.
+
+Establish `hι : ∀ z : ℤ, ι z = g z` using `fun z => ZMod.lift_coe N ⟨g, hgN⟩ z`. Establish `hinj : Function.Injective ι`. Use `(injective_iff_map_eq_zero ι).2 fun m hm => ?_` and prove the remaining obligations. Take `⟨z, rfl⟩` from `ZMod.intCast_surjective m`. Rewrite `hm` using `[hι, hg]`.
+
+Take `⟨k, hk⟩` from `AddSubgroup.mem_zmultiples_iff.1 ((QuotientAddGroup.eq_zero_iff _).1 hm)`. Rewrite using `[ZMod.intCast_zmod_eq_zero_iff_dvd]`. Use `⟨k, ?_⟩` and prove the remaining obligations. Rewrite `hk` using `[zsmul_eq_mul, mul_one]`. Establish `h2 : (z : ℚ) = (N : ℚ) * k`.
+
+Clear denominators, using `at hk` for the nonvanishing conditions. Combine the linear equalities and inequalities to obtain the conclusion. Conclude with `h2` after adjusting the coercions. Establish `hmem : ∀ a : A, c' a ∈ ι.range`. Introduce `a`.
+
+Take `⟨r, hr⟩` from `QuotientAddGroup.mk_surjective (c' a)`. Establish `h1 : N • c' a = 0` using `by rw [← map_nsmul, hA, map_zero]`. Establish `h0 : (N • r : ℚ) ∈ AddSubgroup.zmultiples (1 : ℚ)`. Rewrite using `[← QuotientAddGroup.eq_zero_iff, QuotientAddGroup.mk_nsmul, hr]`. Conclude with `h1`.
+
+Take `⟨k, hk⟩` from `AddSubgroup.mem_zmultiples_iff.1 h0`. Use `AddMonoidHom.mem_range.2 ⟨(k : ZMod N), ?_⟩` and prove the remaining obligations. Rewrite using `[hι, hg, ← hr]`. Use `congr 1`. Rewrite `hk` using `[zsmul_eq_mul, mul_one, nsmul_eq_mul]`.
+
+Rewrite using `[hk]`. Clear the denominators using the available nonvanishing facts. Use `⟨(AddMonoidHom.ofInjective hinj).symm.toAddMonoidHom.comp (AddMonoidHom.codRestrict c' ι.range hmem), ?_⟩` and prove the remaining obligations. Introduce `h0`. Apply `hc'` to reduce the goal to its premises.
+
+Establish `h1 : AddMonoidHom.codRestrict c' ι.range hmem q = 0`. Establish `h3` using `congrArg (AddMonoidHom.ofInjective hinj) h0`. Simplify using `using h3`. Establish `h2` using `congrArg Subtype.val h1`. Simplify using `using h2`.
+-/
 theorem exists_addHom_zmod_ne_zero {N : ℕ} [NeZero N] {A : Type} [AddCommGroup A]
     (hA : ∀ a : A, N • a = 0) {q : A} (hq : q ≠ 0) : ∃ f : A →+ ZMod N, f q ≠ 0 := by
   obtain ⟨c, hc⟩ := CharacterModule.exists_character_apply_ne_zero_of_ne_zero hq
@@ -60,6 +79,13 @@ theorem exists_addHom_zmod_ne_zero {N : ℕ} [NeZero N] {A : Type} [AddCommGroup
   have h2 := congrArg Subtype.val h1
   simpa using h2
 
+/- English proof (translation)
+Take `⟨y, rfl⟩` from `Ideal.Quotient.mk_surjective x`. Establish `hy : y ≠ 0`. Introduce and unpack `rfl`. Conclude with `hx (map_zero _)`. Take `⟨n, u, hu⟩` from `IsDiscreteValuationRing.eq_unit_mul_pow_irreducible hy hϖ`.
+
+Establish `hn : n ≤ s`. Assume the negation of the conclusion as `hlt`. Apply `hx` to reduce the goal to its premises. Rewrite using `[Ideal.Quotient.eq_zero_iff_mem, Ideal.mem_span_singleton, hu]`. Conclude with `Dvd.dvd.mul_left (pow_dvd_pow ϖ (Nat.succ_le_of_lt (not_le.1 hlt))) _`.
+
+Use `⟨Ideal.Quotient.mk _ (↑u⁻¹ * ϖ ^ (s - n)), ?_⟩` and prove the remaining obligations. Rewrite using `[← map_mul, hu]`. Use `congr 1`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem exists_mul_eq_socle {O : Type} [CommRing O] [IsDomain O] [IsDiscreteValuationRing O]
     {ϖ : O} (hϖ : Irreducible ϖ) (s : ℕ) {x : O ⧸ Ideal.span {ϖ ^ (s + 1)}} (hx : x ≠ 0) :
     ∃ o, o * x = Ideal.Quotient.mk (Ideal.span {ϖ ^ (s + 1)}) (ϖ ^ s) := by
@@ -79,12 +105,32 @@ theorem exists_mul_eq_socle {O : Type} [CommRing O] [IsDomain O] [IsDiscreteValu
   calc ↑u⁻¹ * ϖ ^ (s - n) * (↑u * ϖ ^ n) = (↑u⁻¹ * ↑u) * (ϖ ^ (s - n) * ϖ ^ n) := by ring
     _ = ϖ ^ s := by rw [Units.inv_mul, one_mul, ← pow_add, Nat.sub_add_cancel hn]
 
+/- English proof (translation)
+Rewrite using `[Ne, Ideal.Quotient.eq_zero_iff_mem, Ideal.mem_span_singleton, pow_dvd_pow_iff hϖ.ne_zero hϖ.not_isUnit]`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem socle_ne_zero {O : Type} [CommRing O] [IsDomain O] {ϖ : O} (hϖ : Irreducible ϖ) (s : ℕ) :
     Ideal.Quotient.mk (Ideal.span {ϖ ^ (s + 1)}) (ϖ ^ s) ≠ 0 := by
   rw [Ne, Ideal.Quotient.eq_zero_iff_mem, Ideal.mem_span_singleton,
     pow_dvd_pow_iff hϖ.ne_zero hϖ.not_isUnit]
   omega
 
+/- English proof (translation)
+Introduce `O _ _ _ ϖ hϖ r N hN hfin hNmem`. Use `haveI : NeZero N := ⟨by omega⟩`. Establish `htors : ∀ a : O ⧸ Ideal.span {ϖ ^ r}, N • a = 0`. Introduce `a`. Establish `hN0 : ((N : O ⧸ Ideal.span {ϖ ^ r})) = 0`.
+
+Rewrite using `[← map_natCast (Ideal.Quotient.mk (Ideal.span {ϖ ^ r}))]`. Conclude with `Ideal.Quotient.eq_zero_iff_mem.2 hNmem`. Rewrite using `[nsmul_eq_mul, hN0, zero_mul]`. Establish `key : ∃ ψ₀ : (O ⧸ Ideal.span {ϖ ^ r}) →+ ZMod N, ∀ x, (∀ o, ψ₀ (o * x) = 0) → x = 0`. Consider the cases of `r with`.
+
+Consider the case `zero`. Use `⟨0, fun x _ => ?_⟩` and prove the remaining obligations. Take `⟨y, rfl⟩` from `Ideal.Quotient.mk_surjective x`. Rewrite using `[Ideal.Quotient.eq_zero_iff_mem, pow_zero, Ideal.span_singleton_one]`. Conclude with `Submodule.mem_top`.
+
+Consider the case `succ s`. Take `⟨ψ₀, hψ₀⟩` from `exists_addHom_zmod_ne_zero htors (socle_ne_zero hϖ s)`. Use `⟨ψ₀, fun x hx => ?_⟩` and prove the remaining obligations. Assume the negation of the conclusion as `hne`. Take `⟨o, ho⟩` from `exists_mul_eq_socle hϖ s hne`.
+
+Establish `h5` using `hx o`. Rewrite `h5` using `[ho]`. Conclude with `hψ₀ h5`. Take `⟨ψ₀, hψ₀⟩` from `key`. Use `⟨ψ₀, hψ₀, ?_⟩` and prove the remaining obligations.
+
+Set `Φ : (O ⧸ Ideal.span {ϖ ^ r}) → ((O ⧸ Ideal.span {ϖ ^ r}) →+ ZMod N)` to `fun o => ψ₀.comp (AddMonoidHom.mulLeft o)`. Establish `hinj : Function.Injective Φ`. Introduce `a b hab`. Establish `h0 : ∀ x, ψ₀ ((a - b) * x) = 0`. Introduce `x`.
+
+Establish `h6 : ψ₀ (a * x) = ψ₀ (b * x)` using `DFunLike.congr_fun hab x`. Rewrite using `[sub_mul, map_sub, h6, sub_self]`. Establish `h7 : a - b = 0` using `hψ₀ (a - b) (fun o => by rw [mul_comm]; exact h0 o)`. Conclude with `sub_eq_zero.1 h7`. Use `haveI : Finite ((O ⧸ Ideal.span {ϖ ^ r}) →+ ZMod N) := Finite.of_injective (fun f : (O ⧸ Ideal.span {ϖ ^ r}) →+ ZMod N => (f : (O ⧸ Ideal.span {ϖ ^ r}) → ZMod N)) DFunLike.coe_injective`.
+
+Establish `hbij` using `hinj.bijective_of_nat_card_le (GlobalTheory.natCard_addMonoidHom_zmod_le N _)`. Introduce `ψ`. Take `⟨o, ho⟩` from `hbij.2 ψ`. Conclude with `⟨o, fun x => by rw [← ho]; rfl⟩`.
+-/
 theorem exists_generating_character : ∀ (O : Type) [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] (ϖ : O), Irreducible ϖ → ∀ (r N : ℕ), 0 < N → Finite (O ⧸ Ideal.span {ϖ ^ r}) → ((N : O) ∈ Ideal.span {ϖ ^ r}) → ∃ ψ₀ : (O ⧸ Ideal.span {ϖ ^ r}) →+ ZMod N, (∀ x, (∀ o, ψ₀ (o * x) = 0) → x = 0) ∧ ∀ ψ : (O ⧸ Ideal.span {ϖ ^ r}) →+ ZMod N, ∃ o, ∀ x, ψ x = ψ₀ (o * x) := by
   intro O _ _ _ ϖ hϖ r N hN hfin hNmem
   haveI : NeZero N := ⟨by omega⟩

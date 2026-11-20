@@ -22,6 +22,15 @@ open scoped Classical
 
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E}
 
+/- English proof (translation)
+Establish `hB` using `hT.base`. Establish `hfix` using `(GlobalTheory.T.unramified_vacuum_fixed_by_stabilizer B G X om om' hT v hv).2 K hK`. Establish `hSB` using `(hT.geo.hM'.vac v).1`. Establish `h𝔟` using `(GlobalTheory.T.adapted_plane_hermitian_ideal_coprime F E σ B H G.V' G₁.V' 0 (b + 1) _ _ hB hT.geo.hV' hC.hH (by omega) (by omega)).1`. Establish `h𝔠` using `(GlobalTheory.T.adapted_plane_skew_ideal_coprime F E σ B H' G.W G₁.W a (a + b + 1) _ _ hB hT.geo.hW hC.hH' (by omega) (by omega)).1`.
+
+Establish `hunr : ∀ w ∈ aboveF (L` using `E) F v, UnrAt X.ν w := fun w hw => by`. Establish `hw' : w ∉ above E (X.T : Set (Pl F))` using `fun h => hv (by`. Establish `h1 : w.under (𝓞 F) ∈ (X.T : Set (Pl F))` using `h`. Rewrite using `[GlobalTheory.LFun.mem_aboveF.1 hw] at h1)` and apply the resulting hypothesis. Rewrite using `[Chars.ν, div_eq_mul_inv]`.
+
+Conclude with `(hT.chars.unrα w hw').mul (hT.chars.unrβ w hw').inv`. Establish `htate` using `GlobalTheory.T.local_zeta_integral_unramified X.ν v hunr μ hμ _ (mul_ne_zero (inv_ne_zero h𝔟) (conjI_ne_zero σ h𝔠)) ((a - (b + 2)) / 2 + 1) (by omega)`. Use function extensionality and compare the values at `y`. Rewrite using `[coneFin_of_fixed hμK hSB hfix y]`. Establish `e1 : ∀ l : idelesAt E (evFin F v), ev' v (locOp v (G.M'.co.rho B.ψ (partFin v (shiftB σ H H' l.1))) (G.M'.vac v)) y * (X.ν l.1 : ℂ) * ((absE F E l.1 : ℝ) : ℂ) ^ ((a - (b + 2)) / 2 + 1) = G₁.M'.vac v y * (if compFin F E v (l.1 : AE F E) ∈ locId v (H.𝔟⁻¹ * conjI σ H'.𝔟) then (X.ν l …` using `fun l => by`.
+
+Rewrite using `[GlobalTheory.T.config_b_evaluation_infinite_part B G G₁ H H' hB hT.geo hG₁ hC e' he' ei' ev' hei hev hpure v l.1 l.2]`. Apply the tactic sequence `split_ifs <;> simp [mul_assoc]`. Rewrite using `[integral_congr_ae (Eventually.of_forall e1), integral_const_mul, htate, Pi.smul_apply, smul_eq_mul, mul_comm]`.
+-/
 theorem coneFin_vac (B : Base F E) {a b : ℕ} {G : Geo σ a (b + 2)} {G₁ : Geo σ a b}
     {H : Plane E (b + 2) b} {H' : Plane E (a + (b + 2)) (a + b)} (hC : CfgB B G G₁ H H') {X : Chars F E}
     {om : Rep σ G.V G.W} {om' : Rep σ G.V' G.W} (hT : IsTriple B G X om om') (hG₁ : G₁.IsGood B)

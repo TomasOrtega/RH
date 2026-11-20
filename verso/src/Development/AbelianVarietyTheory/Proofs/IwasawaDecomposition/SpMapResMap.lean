@@ -11,6 +11,9 @@ namespace GlobalTheory.FlagGen
 def resMap {A : Type} [CommRing A] (x : Sp A) : A →+* (Sp A).residueField x :=
   (Spec.preimage ((Sp A).fromSpecResidueField x)).hom
 
+/- English proof (translation)
+The claim follows from `Spec.map_preimage _`.
+-/
 theorem spMap_resMap {A : Type} [CommRing A] (x : Sp A) : spMap (resMap x) = (Sp A).fromSpecResidueField x :=
   Spec.map_preimage _
 

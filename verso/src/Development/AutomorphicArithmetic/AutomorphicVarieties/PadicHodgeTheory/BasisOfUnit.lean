@@ -7,6 +7,17 @@ namespace UpperTheory.V.Loc.R0
 variable {Q E F B H : Type} [Field Q] [Field E] [Algebra Q E] [Field F] [Algebra Q F]
   [CommRing B] [Algebra Q B] [Algebra F B] [IsScalarTower Q F B]
 
+/- English proof (translation)
+Set `b` to `Module.finBasis Q E`. Set `φ : Fin (finrank Q E) → E ⊗[Q] B →ₗ[Q] B` to `fun i => (TensorProduct.lid Q B).toLinearMap ∘ₗ (b.coord i).rTensor B`. Establish `h1 : ∀ y : E ⊗[Q] B, ∑ i, b i ⊗ₜ[Q] φ i y = y`. Introduce `y`. Proceed by induction on `y using TensorProduct.induction_on with`.
+
+Consider the case `zero => simp`. Consider the case `tmul e c => conv_rhs => rw [← b.sum_repr e, sum_tmul]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Simplify using `[φ, smul_tmul]`. Consider the case `add x y hx hy => simp only [map_add, tmul_add, Finset.sum_add_distrib, hx, hy]`.
+
+Establish `h2 : ∀ g i (y : E ⊗[Q] B), φ i ((a g).toLinearMap.lTensor E y) = a g (φ i y)`. Introduce `g i y`. Proceed by induction on `y using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul e c => simp [φ]`.
+
+Consider the case `add x y hx hy => simp only [map_add, hx, hy]`. Use `choose c hc using fun i => ha (φ i z) fun g => by rw [← h2, hz]`. Use `⟨∑ i, b i ⊗ₜ[Q] c i, ?_⟩` and prove the remaining obligations. Rewrite using `[← h1 z, map_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[← hc]`. Both sides reduce to the same expression.
+-/
 theorem inv_tensor [FiniteDimensional Q E] (a : H → B ≃ₐ[Q] B)
     (ha : ∀ b, (∀ g, a g b = b) → ∃ c : F, algebraMap F B c = b) (z : E ⊗[Q] B)
     (hz : ∀ g, (a g).toLinearMap.lTensor E z = z) :
@@ -36,6 +47,19 @@ theorem inv_tensor [FiniteDimensional Q E] (a : H → B ≃ₐ[Q] B)
   rw [← hc]
   rfl
 
+/- English proof (translation)
+Set `j` to `(IsScalarTower.toAlgHom Q F B).toLinearMap.lTensor E`. Establish `hj : Function.Injective j` using `Module.Flat.lTensor_preserves_injective_linearMap _ (algebraMap F B).injective`. Establish `h1 : ∀ c z, S c z = j c * z`. Introduce `c z`. Proceed by induction on `c using TensorProduct.induction_on with`.
+
+Consider the case `zero => simp`. Consider the case `add c c' hc hc' => simp only [map_add, LinearMap.add_apply, hc, hc', add_mul]`. Consider the case `tmul e f`. Proceed by induction on `z using TensorProduct.induction_on with`. Consider the case `zero => simp`.
+
+Consider the case `add z z' hz hz' => simp only [map_add, hz, hz', mul_add]`. Consider the case `tmul v b => simp [hS, j, Algebra.smul_def]`. Establish `h2 : ∀ g z w, T g (z * w) = (a g).toLinearMap.lTensor E z * T g w`. Introduce `g z w`. Proceed by induction on `z using TensorProduct.induction_on with`.
+
+Consider the case `zero => simp`. Consider the case `add c c' hc hc' => simp only [map_add, hc, hc', add_mul]`. Consider the case `tmul e f`. Proceed by induction on `w using TensorProduct.induction_on with`. Consider the case `zero => simp`.
+
+Consider the case `add z z' hz hz' => simp only [map_add, hz, hz', mul_add]`. Consider the case `tmul v b => simp [hT, mul_left_comm]`. Take `⟨z, rfl⟩ : ∃ z, y = z * x` from `⟨y * ↑hu.unit⁻¹, by simp [mul_assoc]⟩`. Take `⟨c, hc⟩` from `inv_tensor a ha z fun g => hu.mul_right_cancel (by`. Use `hy g` as an intermediate fact.
+
+Rewrite using `[h2, hx] at this)` and apply the resulting hypothesis. Use `⟨c, by simp only [h1]; rw [← hc], fun c' hc' => hj ?_⟩` and prove the remaining obligations. Simplify using `only [h1] at hc'`. Rewrite using `[← hu.mul_right_cancel hc']`. Conclude with `hc.symm`.
+-/
 theorem basis_of_unit [FiniteDimensional Q E] [Nontrivial B] (a : H → B ≃ₐ[Q] B)
     (ha : ∀ b, (∀ g, a g b = b) → ∃ c : F, algebraMap F B c = b) (κ : H → E)
     (T : H → E ⊗[Q] B →ₗ[E] E ⊗[Q] B) (hT : ∀ g v b, T g (v ⊗ₜ[Q] b) = (κ g * v) ⊗ₜ[Q] a g b)
@@ -75,6 +99,13 @@ theorem basis_of_unit [FiniteDimensional Q E] [Nontrivial B] (a : H → B ≃ₐ
   rw [← hu.mul_right_cancel hc']
   exact hc.symm
 
+/- English proof (translation)
+Take `⟨x, -, hx⟩` from `finrank_eq_one_iff'.1 hD`. Use `choose e he using fun i => hx ⟨d i, hd i⟩`. Establish `h1 : ∀ c (z : E ⊗[Q] B), AlgebraTensorModule.map (LinearMap.id : E →ₗ[E] E) (LinearMap.mulLeft Q c) z = ((1 : E) ⊗ₜ[Q] c) * z`. Introduce `c z`. Proceed by induction on `z using TensorProduct.induction_on with`.
+
+Consider the case `zero => simp`. Consider the case `add z z' hz hz' => simp only [map_add, hz, hz', mul_add]`. Consider the case `tmul v b => simp`. Use `⟨x, x.2, IsUnit.of_mul_eq_one (∑ i, e i • ((1 : E) ⊗ₜ[Q] b i)) ?_⟩` and prove the remaining obligations. Rewrite using `[h, Finset.mul_sum]`.
+
+Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Establish `: d i = e i • (x : E ⊗[Q] B)` using `(congrArg Subtype.val (he i)).symm`. Rewrite using `[h1, this, mul_smul_comm, mul_smul_comm, mul_comm]`.
+-/
 theorem unit_of_span (D : Submodule E (E ⊗[Q] B)) (hD : finrank E D = 1) {m : ℕ} (b : Fin m → B)
     (d : Fin m → E ⊗[Q] B) (hd : ∀ i, d i ∈ D)
     (h : (1 : E ⊗[Q] B) = ∑ i, AlgebraTensorModule.map (LinearMap.id : E →ₗ[E] E) (LinearMap.mulLeft Q (b i)) (d i)) :

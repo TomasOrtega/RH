@@ -13,6 +13,11 @@ noncomputable section
 
 namespace BCMultProof
 
+/- English proof (translation)
+Set `_` to `φ.toAlgebra`. Establish `: Module.Flat A L` using `hflat`. Establish `: IsLocalHom (algebraMap A L)` using `‹IsLocalHom φ›`. Establish `key` using `IsLocalRing.length_baseChange A L (A ⧸ J)`. Rewrite `key` using `[← (Algebra.TensorProduct.quotIdealMapEquivTensorQuot L J).toLinearEquiv.length_eq, RingHom.algebraMap_toAlgebra, hmax]`.
+
+Establish `h1 : Module.length L (L ⧸ maximalIdeal L) = 1` using `Module.length_eq_one_iff.mpr (isSimpleModule_iff_quot_maximal.mpr ⟨_, inferInstance, ⟨LinearEquiv.refl _ _⟩⟩)`. Rewrite `key` using `[h1, mul_one]`. Conclude with `key`.
+-/
 theorem length_quot_map_of_flat {A L : Type*} [CommRing A] [IsLocalRing A] [CommRing L]
     [IsLocalRing L] (φ : A →+* L) [IsLocalHom φ] (hflat : φ.Flat)
     (hmax : (maximalIdeal A).map φ = maximalIdeal L) (J : Ideal A) :
@@ -33,6 +38,9 @@ variable {K : Type} [Fintype K] [DecidableEq K] {ι : K → Type} [∀ k, Fintyp
 
 omit [DecidableEq K] in
 
+/- English proof (translation)
+The claim follows from `ReciprocityTheory.AnForm.R.BaseChangeC.flat_mvPolynomial_rat_complex (σ := Σ k, ι k)`.
+-/
 theorem flat_map : (MvPolynomial.map (algebraMap ℚ ℂ) : MRing ι ℚ →+* MRing ι ℂ).Flat :=
   ReciprocityTheory.AnForm.R.BaseChangeC.flat_mvPolynomial_rat_complex (σ := Σ k, ι k)
 
@@ -40,6 +48,27 @@ end BCMultProof
 
 open BCMultProof BaseChange
 
+/- English proof (translation)
+Introduce `K _ _ ι _ P0 e s a W Wa hP hs hsP hW hWa`. Use `hP.1.isPrime` as an intermediate fact. Establish `: W.IsPrime` using `hW.1.1.1`. Establish `: Wa.IsPrime` using `hWa.1.1`. Establish `hWc : Wa.comap (MvPolynomial.map (algebraMap ℚ ℂ)) = W` using `ReciprocityTheory.AnForm.R.comap_of_mem_minimalPrimes_extC W Wa hWa`.
+
+Establish `hrel : NumbersDVR.IsRelevant Wa` using `isRelevant_of_comap hW.2 hWc`. Establish `hext : (P0 ⊔ Ideal.span {s}).map (MvPolynomial.map (algebraMap ℚ ℂ)) = extC P0 ⊔ Ideal.span {sC s}`. Rewrite using `[Ideal.map_sup, Ideal.map_span, Set.image_singleton]`. Both sides reduce to the same expression. Establish `hWaMin : Wa ∈ (extC P0 ⊔ Ideal.span {sC s}).minimalPrimes`.
+
+Rewrite using `[← hext]`. Use `⟨⟨‹Wa.IsPrime›, (Ideal.map_mono hW.1.1.2).trans hWa.1.2⟩, fun Q hQ hQWa => ?_⟩` and prove the remaining obligations. Establish `: Q.IsPrime` using `hQ.1`. Establish `hle : Q.comap (MvPolynomial.map (algebraMap ℚ ℂ)) ≤ W` using `hWc ▸ Ideal.comap_mono hQWa`. Establish `hge : W ≤ Q.comap (MvPolynomial.map (algebraMap ℚ ℂ))` using `hW.1.2 ⟨Ideal.IsPrime.comap _, Ideal.map_le_iff_le_comap.mp hQ.2⟩ hle`.
+
+Conclude with `hWa.2 ⟨this, Ideal.map_le_iff_le_comap.mpr hge⟩ hQWa`. Establish `hcomp : (Localization.localRingHom W Wa (MvPolynomial.map (algebraMap ℚ ℂ)) hWc.symm).comp (algebraMap (MRing ι ℚ) (Localization.AtPrime W)) = (algebraMap (MRing ι ℂ) (Localization.AtPrime Wa)).comp (MvPolynomial.map (algebraMap ℚ ℂ))` using `RingHom.ext fun z => Localization.localRingHom_to_map _ _ _ hWc.symm z`. Establish `hmaxL : (maximalIdeal (Localization.AtPrime W)).map (Localization.localRingHom W Wa (MvPolynomial.map (algebraMap ℚ ℂ)) hWc.symm) = maximalIdeal (Localization.AtPrime Wa)`. Rewrite using `[← IsLocalization.AtPrime.map_eq_maximalIdeal W (Localization.AtPrime W), Ideal.map_map, hcomp, ← Ideal.map_map]`. Conclude with `map_eq_maximalIdeal_of_isRadical (ReciprocityTheory.AnForm.R.extC_isRadical W) hWa`.
+
+Establish `hflat` using `length_quot_map_of_flat (Localization.localRingHom W Wa (MvPolynomial.map (algebraMap ℚ ℂ)) hWc.symm) (RingHom.Flat.localRingHom flat_map Wa W hWc.symm) hmaxL ((P0 ⊔ Ideal.span {s}).map (algebraMap (MRing ι ℚ) (Localization.AtPrime W)))`. Establish `hJ : ((P0 ⊔ Ideal.span {s}).map (algebraMap (MRing ι ℚ) (Localization.AtPrime W))).map (Localization.localRingHom W Wa (MvPolynomial.map (algebraMap ℚ ℂ)) hWc.symm) = (extC P0 ⊔ Ideal.span {sC s}).map (algebraMap (MRing ι ℂ) (Localization.AtPrime Wa))`. Rewrite using `[Ideal.map_map, hcomp, ← Ideal.map_map, hext]`. Establish `h1 : NumbersDVR.multAt (P0 ⊔ Ideal.span {s}) W = NumbersDVR.multAt (extC P0 ⊔ Ideal.span {sC s}) Wa`. Unfold `NumbersDVR.multAt`.
+
+Rewrite using `[ObjectsChow.VerticalPartMultiplicity.length_localizedModule_quotient, ObjectsChow.VerticalPartMultiplicity.length_localizedModule_quotient, ← hJ, hflat]`. Establish `h2 : NumbersDVR.multAt (extC P0 ⊔ Ideal.span {sC s}) Wa = ∑ᶠ Z ∈ (extC P0).minimalPrimes, NumbersDVR.multAt (Z ⊔ Ideal.span {sC s}) Wa` using `ReducedCutLength.intersectionNumber_baseChange (MRing ι ℂ) (extC P0) (sC s) Wa (ReciprocityTheory.AnForm.R.extC_isRadical P0) (fun _ hZ => sC_not_mem (comap_extC hZ) hsP) hWaMin`. Establish `hfin : NumbersDVR.multAt (extC P0 ⊔ Ideal.span {sC s}) Wa ≠ ⊤` using `NumbersDVR.length_localizedQuot_ne_top _ Wa hWaMin`. Establish `hterm : ∀ Z ∈ (extC P0).minimalPrimes, NumbersDVR.divCycle Z (sC s) Wa = ((NumbersDVR.multAt (Z ⊔ Ideal.span {sC s}) Wa).toNat : ℤ)`. Introduce `Z hZ`.
+
+Unfold `NumbersDVR.divCycle`. Distinguish the cases in `hZW : Z ⊔ Ideal.span {sC s} ≤ Wa`. Establish `hm : Wa ∈ (Z ⊔ Ideal.span {sC s}).minimalPrimes` using `⟨⟨‹Wa.IsPrime›, hZW⟩, fun Q hQ hQW => hWaMin.2 ⟨hQ.1, (sup_le_sup_right hZ.1.2 _).trans hQ.2⟩ hQW⟩`. Rewrite using `[dif_pos ⟨hm, hrel⟩]`. Rewrite using `[dif_neg (fun h => hZW h.1.1.2)]`.
+
+Unfold `NumbersDVR.multAt`. Rewrite using `[Module.length_eq_zero_iff.mpr (NumbersDVR.localizedQuot_subsingleton_of_not_le _ Wa hZW)]`. Both sides reduce to the same expression. Establish `hL : NumbersDVR.divCycle P0 s W = ((NumbersDVR.multAt (P0 ⊔ Ideal.span {s}) W).toNat : ℤ)`. Unfold `NumbersDVR.divCycle`.
+
+Rewrite using `[dif_pos (show W ∈ (P0 ⊔ Ideal.span {s}).minimalPrimes ∧ NumbersDVR.IsRelevant W from hW)]`. Establish `hM : (extC P0).minimalPrimes.Finite` using `Ideal.finite_minimalPrimes_of_isNoetherianRing _ _`. Rewrite using `[hL, finsum_mem_congr rfl hterm, h1, h2]`. Rewrite `hfin` using `[h2]`. Rewrite `hfin`, the goal using `[finsum_mem_eq_finite_toFinset_sum _ hM]`.
+
+Rewrite using `[ENat.toNat_sum fun Z hZ hZt => hfin (top_unique (hZt ▸ Finset.single_le_sum (fun _ _ => zero_le) hZ)), Nat.cast_sum, finsum_mem_eq_finite_toFinset_sum _ hM]`.
+-/
 theorem BCMult.intersectionNumber_baseChange : BCMult.Statement := by
   intro K _ _ ι _ P0 e s a W Wa hP hs hsP hW hWa
   classical

@@ -17,6 +17,35 @@ namespace GlobalTheory.RowModCanon
 open MeasureTheory Formalism.BasicNotions.TH Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes Formalism.MainNotions.StandardLattice Formalism.MainNotions.S Formalism.L2.Theta Formalism.L2.DIV Formalism.IndefR Formalism.IndefR.Lev
   Formalism.IndefR.Links Formalism.IndefR.RecTie
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Introduce `hH hC hL D P X hA j j' hj`. Substitute `hj` using the available equality. Establish `hmod` using `X.given.core.models`. Establish `hθ` using `hmod.inf`. Establish `hν` using `hmod.νW j`.
+
+Establish `hHaar : (X.R.νW j).IsHaarMeasure` using `hν.1.1`. Establish `hFD` using `hν.2`. Establish `hSig : (Wc D j).SigOK` using `D.sp.W_sig _`. Establish `hSA : SchurAll D` using `fun V _ S θ M J χ μ 𝓕 => (GlobalTheory.MultFinite.hcFinite_and_schurMult hH hC D θ V S M J χ μ 𝓕).2`. Establish `hHA : HCAll D` using `fun V _ S θ M J χ => (GlobalTheory.MultFinite.hcFinite_and_schurMult hH hC D θ V S M J χ 0 ∅).1`.
+
+Establish `hStd : GlobalTheory.Mem.R3.StdFrame hA.hF (X.PW j)` using `hA.stdW j`. Establish `hcc` using `GlobalTheory.T.unitary_congruence_conj_contains_congruence D.host.E D.R.r`. Take `⟨hlin, hherm, hpos⟩` from `GlobalTheory.FinTypesRows.minf_sesq (M := X.R.MW j (sg0 D X.A)) (θ := X.R.θ) (X.R.νW j) (X.R.fdW j) (X.PW j) hSA hSig hθ hHaar hFD`. Establish `hT` using `X.recR.tied.lift`. Establish `hLev` using `GlobalTheory.FinTypesRows.levOK_levS (X.PW j) hStd (X.R.βW j) (X.R.datWp j (X.R.levL X.F false (sg0 D X.A)))`.
+
+Use `set c : ℝ := (∏ ρ, ((Mult.dimK _ _ (kapAt (Wc D j) (sg0 D X.A) ρ) : ℚ) : ℝ)) * (RealDat.nP X.F false)⁻¹ with hcdef`. Establish `hc : 0 < c` using `mul_pos (Finset.prod_pos fun ρ _ => by exact_mod_cast GlobalTheory.Mem.EasyInputs.dimOK D j (sg0 D X.A) ρ) (inv_pos.2 (RealDat.nP_pos false))`. Establish `hSm` using `GlobalTheory.Mem.EasyInputs.smAll D (Wc D j) _ (X.R.MW j (sg0 D X.A))`. Establish `hex : ∀ x ∈ principalLevelFrame.Minf X.R.θ (X.PW j) (X.R.MW j (sg0 D X.A)), ∀ y ∈ principalLevelFrame.Minf X.R.θ (X.PW j) (X.R.MW j (sg0 D X.A)), ∃ b, Mult.IsMultIP (X.R.MW j (sg0 D X.A)) (X.R.νW j) (X.R.fdW j) x y b`. Introduce `x hx y hy`.
+
+Take `⟨N, -, hx', hy'⟩` from `GlobalTheory.FinTypesRows.exists_common (X.PW j) hx hy`. Conclude with `hSA _ hSig _ X.R.θ _ _ _ _ _ hθ hHaar hFD x hx' y hy'`. Set `φ : D.what₂.Mj (j.1 + 1) →ₗ[ℂ] Mult.MMap (X.R.MW j (sg0 D X.A))` to `(PiTensorProduct.lift : Mult.MMap (X.R.MW j (sg0 D X.A)) ≃ₗ[ℂ] _).symm.toLinearMap ∘ₗ (Submodule.subtype ((toLiftReal X.R X.F X.tupT X.hm X.hTop X.hinj).Wc j)) ∘ₗ (X.IL.jMj j).toLinearMap`. Establish `hφ : ∀ y, PiTensorProduct.lift (φ y) = (X.IL.jMj j y).1`. Introduce `y`.
+
+Conclude with `LinearEquiv.apply_symm_apply _ _`. Establish `hgood : ∀ y, φ y ∈ Mult.goodPart X.R.θ (X.R.MW j (sg0 D X.A)) (levS _ (X.R.βW j) (X.R.datWp j (X.R.levL X.F false (sg0 D X.A)))) (levChi _ (X.R.βW j) (X.R.datWp j (X.R.levL X.F false (sg0 D X.A)))) (X.R.eWf j (sg0 D X.A))`. Introduce `y`. Take `⟨a, ha, hay⟩` from `(X.IL.jMj j y).2`. Establish `: φ y = a` using `by show PiTensorProduct.lift.symm (X.IL.jMj j y).1 = a`.
+
+Rewrite using `[← hay]`. Conclude with `LinearEquiv.symm_apply_apply _ _`. Rewrite using `[this]`. Conclude with `ha`. Establish `hmem : ∀ y, φ y ∈ principalLevelFrame.Minf X.R.θ (X.PW j) (X.R.MW j (sg0 D X.A))` using `fun y => principalLevelFrame.mult_le_Minf hLev (Mult.goodPart_le _ _ _ _ _ (hgood y))`.
+
+Use `⟨{ A := Mult.MMap (X.R.MW j (sg0 D X.A)) ρ := principalLevelFrame.actM (X.PW j) (X.R.MW j (sg0 D X.A)) C := principalLevelFrame.Minf X.R.θ (X.PW j) (X.R.MW j (sg0 D X.A)) B := fun x y => (c : ℂ) * Mult.ipM (X.R.MW j (sg0 D X.A)) (X.R.νW j) (X.R.fdW j) x y lin := fun x hx y hy z h …` and prove the remaining obligations. Rewrite using `[hlin x hx y hy z hz c']`. Expand and normalize the polynomial expressions, which then agree. Use `herm := fun x hx y hy => by`. Rewrite using `[map_mul, Complex.conj_ofReal, ← hherm x hx y hy]`.
+
+Use `pos := fun x hx hx0 => by`. Rewrite using `[Complex.re_ofReal_mul]`. Conclude with `mul_pos hc (hpos x hx hx0)`. Use `stab := fun h x hx => GlobalTheory.FinTypesRows.minf_stable (X.PW j) hcc h hx`. Use `inv := fun h x hx y hy => by`.
+
+Rewrite using `[GlobalTheory.T.schur_pairing_invariant_under_standard_group D (Wc D j) _ X.R.θ (X.R.MW j (sg0 D X.A)) D.R.r (X.PW j) (X.R.νW j) (X.R.fdW j) hSA hSig hθ hHaar hFD h x hx y hy]`. Use `smooth := fun x hx => GlobalTheory.FinTypesRows.minf_smooth (X.PW j) hx`. Use `adm := fun N hN => GlobalTheory.FinTypesRows.minf_adm (X.PW j) hHA hSig hθ (GlobalTheory.FinTypesRows.levN_open (X.PW j) hStd) N hN`. Use `φ := φ`. Use `φ_mem := hmem`.
+
+Use `φ_inner := fun x y => by beta_reduce`. Rewrite using `[hT.mj j x y]`. Express the relevant statement in the definitionally equal form `(∏ τ, ((Mult.dimK _ _ (kapAt (Wc D j) (sg0 D X.A) τ) : ℚ) : ℂ)) * Mult.ipM (X.R.MW j (sg0 D X.A)) (ENNReal.ofReal (RealDat.nP X.F false)⁻¹ • X.R.νW j) (X.R.fdW j) (φ x) (φ y) = _`. Rewrite using `[ipM_smul_measure _ hSm _ _ (inv_nonneg.2 (RealDat.nP_pos false).le) _ _ (hex _ (hmem x) _ (hmem y)), hcdef]`. Use `push_cast`.
+
+Expand and normalize the polynomial expressions, which then agree. Use `isot := fun σ y => by`. Rewrite using `[hT.isot j σ y, X.recR.prtWE j σ, principalLevelFrame.isotIn_iso _ _ (hA.rep_iso σ)]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨a, ha, hay⟩`.
+
+Establish `e : φ y = a` using `by show PiTensorProduct.lift.symm (X.IL.jMj j y).1 = a`. Rewrite using `[← hay]`. Conclude with `LinearEquiv.symm_apply_apply _ _`. Rewrite using `[e]`. Conclude with `(Submodule.mem_inf.1 ha).2`.
+
+Introduce `h`. Conclude with `⟨φ y, Submodule.mem_inf.2 ⟨hgood y, h⟩, hφ y⟩ }, LinearMap.id, c, Function.injective_id, hc, Submodule.map_id _, fun h x => rfl, fun x _ y _ => rfl,`. Use `fun y => hφ y⟩`.
+-/
 theorem main_alt_alt : GlobalTheory.Published.HarishChandraFinite → GlobalTheory.Published.CuspRapidDecay → ∀ (hL : _root_.UpperTheory.Zero.LLC.RecTExists) (D : D7)
     (P : _root_.GlobalTheory.NPin.CharacterChoiceData hL D), ∀ (X : GlobalTheory.NJoin.RealAt D P.cf P.C P.tp) (_ : GlobalTheory.NJoin.Agree X P.M P.rep), ∀ (j : Fin D.R.m) (j' : ℕ)
     (hj : j.1 + 1 = j'), ∃ Y : RowMod D P.rep j', GlobalTheory.NJoin.IsCanon X j hj Y := by

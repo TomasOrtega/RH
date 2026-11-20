@@ -10,6 +10,9 @@ open CategoryTheory AlgebraicGeometry ReciprocityTheory.ChartRestriction.G Recip
 open scoped Classical
 open Formalism.BasicNotions.DV Formalism.MainNotions.WeightThresholdDefs GlobalTheory.FlagAr GlobalTheory.ShFam.Pad GlobalTheory.VB
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.FlagEx.main | exact GlobalTheory.FlagEx.main | (intros; apply GlobalTheory.FlagEx.main <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.exists_normal_isFlagBundle_isArithVar : ∀ (k : Type) [CommRing k] (B : Scheme.{0}) [IsIntegral B] (q : B ⟶ Sp k) (d : ℕ), IsArithVar q d →
     ReciprocityTheory.ChartRestriction.G.Geo.Tor.IsNormalScheme B → ∀ (ι : Type) [Fintype ι] (E : ι → B.Modules) (r : ι → ℕ),
     (∀ a, GlobalTheory.VB.IsVB (E a) (r a)) →

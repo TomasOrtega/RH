@@ -12,6 +12,11 @@ section Asm
 
 variable {L : Type} [Field L] [Valued L (WithZero (Multiplicative ℤ))]
 
+/- English proof (translation)
+Unfold `ordL`. Use `split_ifs with h`. Rewrite using `[h]`. Simplify using the standard rewrite rules. Use `congr 1 conv_rhs => rw [← WithZero.coe_unzero h]`.
+
+Both sides reduce to the same expression.
+-/
 theorem asm_ordL_eq (x : L) : ordL x = -WithZero.log (Valued.v x : WithZero (Multiplicative ℤ)) := by
   unfold ordL
   split_ifs with h
@@ -20,16 +25,27 @@ theorem asm_ordL_eq (x : L) : ordL x = -WithZero.log (Valued.v x : WithZero (Mul
     conv_rhs => rw [← WithZero.coe_unzero h]
     rfl
 
+/- English proof (translation)
+Establish `hx' : (Valued.v x : WithZero (Multiplicative ℤ)) ≠ 0` using `by simpa using hx`. Establish `hy' : (Valued.v y : WithZero (Multiplicative ℤ)) ≠ 0` using `by simpa using hy`. Rewrite using `[asm_ordL_eq, asm_ordL_eq, asm_ordL_eq, map_mul, WithZero.log_mul hx' hy']`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem asm_ordL_mul {x y : L} (hx : x ≠ 0) (hy : y ≠ 0) : ordL (x * y) = ordL x + ordL y := by
   have hx' : (Valued.v x : WithZero (Multiplicative ℤ)) ≠ 0 := by simpa using hx
   have hy' : (Valued.v y : WithZero (Multiplicative ℤ)) ≠ 0 := by simpa using hy
   rw [asm_ordL_eq, asm_ordL_eq, asm_ordL_eq, map_mul, WithZero.log_mul hx' hy']
   ring
 
+/- English proof (translation)
+Rewrite using `[asm_ordL_eq, asm_ordL_eq, map_pow, WithZero.log_pow]`. Simplify using the standard rewrite rules.
+-/
 theorem asm_ordL_pow (x : L) (n : ℕ) : ordL (x ^ n) = n * ordL x := by
   rw [asm_ordL_eq, asm_ordL_eq, map_pow, WithZero.log_pow]
   simp
 
+/- English proof (translation)
+Establish `hx' : (Valued.v x : WithZero (Multiplicative ℤ)) ≤ 1` using `hx`. Establish `hy' : (Valued.v y : WithZero (Multiplicative ℤ)) ≤ 1` using `hy`. Establish `h1 : (Valued.v x : WithZero (Multiplicative ℤ)) * Valued.v y = 1` using `by rw [← map_mul, h, map_one]`. Establish `h2 : (Valued.v x : WithZero (Multiplicative ℤ)) = 1`. Use `le_antisymm hx' ?_` and prove the remaining obligations.
+
+Combine the equalities or inequalities in the displayed calculation. Rewrite using `[asm_ordL_eq, h2]`. Simplify using the standard rewrite rules.
+-/
 theorem asm_ordL_unit {x y : L} (hx : x ∈ intL L) (hy : y ∈ intL L) (h : x * y = 1) : ordL x = 0 := by
   have hx' : (Valued.v x : WithZero (Multiplicative ℤ)) ≤ 1 := hx
   have hy' : (Valued.v y : WithZero (Multiplicative ℤ)) ≤ 1 := hy
@@ -46,10 +62,16 @@ variable {c : L →+* L} {m : ℕ}
 def asmT (p : GL (Fin m ⊕ Fin m) L) : Matrix (Fin m) (Fin m) L :=
   (p : Matrix (Fin m ⊕ Fin m) (Fin m ⊕ Fin m) L).toBlocks₁₁
 
+/- English proof (translation)
+The claim follows from `GlobalTheory.LGrp.mem_blockQ_two.1 hp.2`.
+-/
 theorem asm_low {p : GL (Fin m ⊕ Fin m) L} (hp : p ∈ PW L c m) :
     (p : Matrix (Fin m ⊕ Fin m) (Fin m ⊕ Fin m) L).toBlocks₂₁ = 0 :=
   GlobalTheory.LGrp.mem_blockQ_two.1 hp.2
 
+/- English proof (translation)
+Unfold `asmT`. Rewrite using `[Units.val_mul]`. Use `conv_lhs => rw [← fromBlocks_toBlocks (a : Matrix (Fin m ⊕ Fin m) (Fin m ⊕ Fin m) L), ← fromBlocks_toBlocks (b : Matrix (Fin m ⊕ Fin m) (Fin m ⊕ Fin m) L), fromBlocks_multiply, toBlocks_fromBlocks₁₁, asm_low hb, Matrix.mul_zero, add_zero]`.
+-/
 theorem asmT_mul (a : GL (Fin m ⊕ Fin m) L) {b : GL (Fin m ⊕ Fin m) L} (hb : b ∈ PW L c m) :
     asmT (a * b) = asmT a * asmT b := by
   unfold asmT
@@ -58,17 +80,31 @@ theorem asmT_mul (a : GL (Fin m ⊕ Fin m) L) {b : GL (Fin m ⊕ Fin m) L} (hb :
     ← fromBlocks_toBlocks (b : Matrix (Fin m ⊕ Fin m) (Fin m ⊕ Fin m) L), fromBlocks_multiply, toBlocks_fromBlocks₁₁,
     asm_low hb, Matrix.mul_zero, add_zero]
 
+/- English proof (translation)
+Unfold `asmT`. Rewrite using `[Units.val_one, ← fromBlocks_one, toBlocks_fromBlocks₁₁]`.
+-/
 theorem asmT_one : asmT (1 : GL (Fin m ⊕ Fin m) L) = 1 := by
   unfold asmT
   rw [Units.val_one, ← fromBlocks_one, toBlocks_fromBlocks₁₁]
 
+/- English proof (translation)
+Rewrite using `[← det_mul, ← asmT_mul p (inv_mem hp), mul_inv_cancel, asmT_one, det_one]`.
+-/
 theorem asmT_det_mul_inv {p : GL (Fin m ⊕ Fin m) L} (hp : p ∈ PW L c m) :
     (asmT p).det * (asmT p⁻¹).det = 1 := by
   rw [← det_mul, ← asmT_mul p (inv_mem hp), mul_inv_cancel, asmT_one, det_one]
 
+/- English proof (translation)
+The claim follows from `left_ne_zero_of_mul_eq_one (asmT_det_mul_inv hp)`.
+-/
 theorem asmT_det_ne {p : GL (Fin m ⊕ Fin m) L} (hp : p ∈ PW L c m) : (asmT p).det ≠ 0 :=
   left_ne_zero_of_mul_eq_one (asmT_det_mul_inv hp)
 
+/- English proof (translation)
+Take `⟨g, rfl⟩` from `hk`. Establish `e : asmT (Matrix.GeneralLinearGroup.map (intL L).subtype g) = (intL L).subtype.mapMatrix (g : Matrix (Fin m ⊕ Fin m) (Fin m ⊕ Fin m) (intL L)).toBlocks₁₁`. Use extensionality with `i j`. Both sides reduce to the same expression. Rewrite using `[e, ← RingHom.map_det]`.
+
+Conclude with `Subtype.property _`.
+-/
 theorem asmT_det_int {k : GL (Fin m ⊕ Fin m) L} (hk : k ∈ IntGL L m) : (asmT k).det ∈ intL L := by
   obtain ⟨g, rfl⟩ := hk
   have e : asmT (Matrix.GeneralLinearGroup.map (intL L).subtype g) =
@@ -77,13 +113,22 @@ theorem asmT_det_int {k : GL (Fin m ⊕ Fin m) L} (hk : k ∈ IntGL L m) : (asmT
   rw [e, ← RingHom.map_det]
   exact Subtype.property _
 
+/- English proof (translation)
+The claim follows from `asm_ordL_unit (asmT_det_int hk.2.2) (asmT_det_int (inv_mem hk.2.2)) (asmT_det_mul_inv hk.1)`.
+-/
 theorem asm_ord_K {k : GL (Fin m ⊕ Fin m) L} (hk : k ∈ KPW L c m) : ordL (asmT k).det = 0 :=
   asm_ordL_unit (asmT_det_int hk.2.2) (asmT_det_int (inv_mem hk.2.2)) (asmT_det_mul_inv hk.1)
 
+/- English proof (translation)
+Rewrite using `[asmT_mul a hb, det_mul, asm_ordL_mul (asmT_det_ne ha) (asmT_det_ne hb)]`.
+-/
 theorem asm_ord_mul {a b : GL (Fin m ⊕ Fin m) L} (ha : a ∈ PW L c m) (hb : b ∈ PW L c m) :
     ordL (asmT (a * b)).det = ordL (asmT a).det + ordL (asmT b).det := by
   rw [asmT_mul a hb, det_mul, asm_ordL_mul (asmT_det_ne ha) (asmT_det_ne hb)]
 
+/- English proof (translation)
+Establish `e : asmT (zW L m x) = (x : L) • (1 : Matrix (Fin m) (Fin m) L)` using `toBlocks_fromBlocks₁₁ _ _ _ _`. Establish `o : ordL ϖ = 1`. Rewrite using `[asm_ordL_eq, h.2.2.2.1]`. Both sides reduce to the same expression. Rewrite using `[e, det_smul, det_one, mul_one, Fintype.card_fin, asm_ordL_pow, hx, o, mul_one]`.
+-/
 theorem ord_det_uniformizer_image_eq {ϖ : L} {q : ℕ} (h : IsUnramInv ϖ c q) (x : Lˣ) (hx : (x : L) = ϖ) :
     ordL (asmT (zW L m x)).det = m := by
   have e : asmT (zW L m x) = (x : L) • (1 : Matrix (Fin m) (Fin m) L) := toBlocks_fromBlocks₁₁ _ _ _ _
@@ -94,9 +139,15 @@ theorem ord_det_uniformizer_image_eq {ϖ : L} {q : ℕ} (h : IsUnramInv ϖ c q) 
 
 end Asm
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem asm_smul {G : Type} [Group G] (K : Subgroup G) (p : G) :
     MulAut.conj p • K = K.map (MulAut.conj p).toMonoidHom := rfl
 
+/- English proof (translation)
+Establish `h` using `Subgroup.relIndex_map_map_of_injective (f := (MulAut.conj p⁻¹).toMonoidHom) K (K.map (MulAut.conj p).toMonoidHom) (MulAut.conj p⁻¹).injective`. Establish `e : (K.map (MulAut.conj p).toMonoidHom).map (MulAut.conj p⁻¹).toMonoidHom = K`. Rewrite using `[← asm_smul, ← asm_smul, ← mul_smul, ← map_mul, inv_mul_cancel, map_one, one_smul]`. Rewrite `h` using `[e]`. Conclude with `h.symm`.
+-/
 theorem asm_relIndex {G : Type} [Group G] (K : Subgroup G) (p : G) :
     K.relIndex (K.map (MulAut.conj p).toMonoidHom) = (K.map (MulAut.conj p⁻¹).toMonoidHom).relIndex K := by
   have h := Subgroup.relIndex_map_map_of_injective (f := (MulAut.conj p⁻¹).toMonoidHom) K
@@ -106,9 +157,25 @@ theorem asm_relIndex {G : Type} [Group G] (K : Subgroup G) (p : G) :
   rw [e] at h
   exact h.symm
 
+/- English proof (translation)
+The claim follows from `Subgroup.conj_smul_eq_self_of_mem hk`.
+-/
 theorem asm_conj_self {G : Type} [Group G] (K : Subgroup G) {k : G} (hk : k ∈ K) : MulAut.conj k • K = K :=
   Subgroup.conj_smul_eq_self_of_mem hk
 
+/- English proof (translation)
+Introduce `L _ _ ϖ c q hU m p hp`. Establish `hq : (0 : ℝ) < q`. Use `hU.2.2.2.2.2.1` as an intermediate fact. Conclude with `(by omega : 0 < q)` after adjusting the coercions. Take `⟨hmul, hpos, -, -⟩` from `GlobalTheory.T.haarInvVolume_conj_modular_character (PW L c m) (KPW L c m) inf_le_left (fun h hh => ⟨(h1 L ϖ c q hU m h hh).2, (h1 L ϖ c q hU m h hh).1⟩)`.
+
+Establish `key` using `h3 L ϖ c q hU m (fun a => GlobalTheory.HL.invVol (KPW L c m) (MulAut.conj a • KPW L c m) * (q : ℝ) ^ (-(2 * (m : ℤ) * ordL (asmT a).det))) (fun a ha b hb => by`. Rewrite using `[hmul a ha b hb, asm_ord_mul ha hb, mul_add, neg_add, zpow_add₀ hq.ne']`. Use the proof step `ring)`. Use the proof step `(fun a ha => mul_pos (hpos a ha) (zpow_pos hq _))`. Use the proof step `(fun k hk => by`.
+
+Rewrite using `[asm_conj_self _ hk, asm_ord_K hk, GlobalTheory.HL.invVol, Subgroup.relIndex_self]`. Use the proof step `simp)`. Use the proof step `(fun x hx => by`. Take `⟨hle, hi⟩` from `h2 L ϖ c q hU m x hx`. Rewrite using `[ord_det_uniformizer_image_eq hU x hx, asm_smul, GlobalTheory.HL.invVol, hi, Subgroup.relIndex_eq_one.2 hle, Nat.cast_one, div_one, Nat.cast_pow, ← zpow_natCast, ← zpow_add₀ hq.ne']`.
+
+Use `push_cast`. Rewrite using `[add_neg_cancel, zpow_zero])`. Use `p hp`. Establish `hb` using `(h1 L ϖ c q hU m p hp).2`. Rewrite `hb` using `[asm_relIndex]`.
+
+Establish `hb' : ((((KPW L c m).map (MulAut.conj p⁻¹).toMonoidHom).relIndex (KPW L c m) : ℕ) : ℝ) ≠ 0`. Conclude with `hb` after adjusting the coercions. Simplify using `only [asm_smul, GlobalTheory.HL.invVol, asm_relIndex] at key`. Rewrite `key` using `[div_mul_eq_mul_div, div_eq_one_iff_eq hb']`. Rewrite using `[← key, mul_comm]`.
+
+Both sides reduce to the same expression.
+-/
 theorem locMod_of (h1 : LocCommSt) (h2 : ZCountSt) (h3 : GenSt) : LocModSt := by
   intro L _ _ ϖ c q hU m p hp
   have hq : (0 : ℝ) < q := by

@@ -16,15 +16,36 @@ namespace GlobalTheory.Mum.SelfPull
 open GlobalTheory.ArcPull GlobalTheory.ArcQ
 open GlobalTheory.PsiEvenPull (proj)
 
+/- English proof (translation)
+Substitute `e` using the available equality. Conclude with `⟨h, rfl, rfl⟩`.
+-/
 theorem exists_cast {R₀ R₁ : Type} [CommRing R₀] [IsDomain R₀] [CommRing R₁] [IsDomain R₁] {f₀ f₁ : R₀ →+* R₁}
     {D₀ : DegPre R₀} {D₁ : DegPre R₁} (e : f₀ = f₁) (h : IsPullDeg f₀ D₀ D₁) :
     ∃ h' : IsPullDeg f₁ D₀ D₁, proj h' = proj h ∧ h'.xe = h.xe := by
   subst e; exact ⟨h, rfl, rfl⟩
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem proj_def {R₀ R₁ : Type} [CommRing R₀] [IsDomain R₀] [CommRing R₁] [IsDomain R₁] {f : R₀ →+* R₁}
     {D₀ : DegPre R₀} {D₁ : DegPre R₁} (h : IsPullDeg f D₀ D₁) :
     proj h = h.e.hom.left ≫ pullback.fst D₀.P.A.hom (specOf f) := rfl
 
+/- English proof (translation)
+Establish `p₁ : IsGrpPullback D.P.A D₀.P.A (spMap α) (proj h₁)` using `pull_grp h₁`. Establish `sc : spMap β ≫ spMap α = spMap (β.comp α)` using `(spMap_comp α β).symm`. Establish `p : IsGrpPullback D.P.A D₀.P.A (spMap β ≫ spMap α) (proj h)` using `(pull_grp h).congr sc.symm rfl`. Take `⟨Φ, e₁, e₂⟩ : ∃ Φ : D.P.A.left ⟶ D.P.A.left, Φ ≫ proj h₁ = proj h ∧ Φ ≫ D.P.A.hom = D.P.A.hom ≫ spMap β` from `⟨p₁.1.lift (proj h) (D.P.A.hom ≫ spMap β) (p.1.w.trans (Category.assoc _ _ _).symm), p₁.1.lift_fst _ _ _, p₁.1.lift_snd _ _ _⟩`. Establish `gp : IsGrpPullback D.P.A D.P.A (spMap β) Φ` using `IsGrpPullback.cancel p₁ (p.congr rfl e₁.symm) e₂`.
+
+Take `⟨w, hw, hr, T⟩` from `FieldPull.exists_cancel_of_eq e₁ D₀.P.isLB D.P.isLB D.P.isLB h₁.w h.w ((isGen_iff _).1 h₁.w_gen) ((isGen_iff _).1 h.w_gen) sc (cubeMapOf gp).e_comm (FieldPull.pmaps_rig h₁) (FieldPull.pmaps_rig h)`. Set `xe : D.X ≃+ D.X` to `h.xe.trans h₁.xe.symm`. Establish `hxe : ∀ x, h₁.xe (xe x) = h.xe x` using `fun x => h₁.xe.apply_symm_apply _`. Establish `hc : ∀ x, (D.c x).left ≫ Φ = spMap β ≫ (D.c (xe x)).left` using `fun x => by`. Apply `p₁.1.hom_ext` to reduce the goal to its premises.
+
+Rewrite using `[Category.assoc, e₁, Category.assoc, h₁.c_pr, hxe]`. Conclude with `(h.c_pr x).trans ((congrArg (· ≫ _) sc.symm).trans (Category.assoc _ _ _))`. Rewrite using `[Category.assoc, e₂, ← Category.assoc, Over.w, Category.assoc, Over.w]`. Conclude with `(Category.id_comp _).trans (Category.comp_id _).symm`. Take `⟨ψW⟩` from `GlobalTheory.PullDegUniq.nonempty_psiOn_pull h₁`.
+
+Take `⟨s, hs⟩` from `GlobalTheory.PullDegUniq.exists_generic_section h₁`. Take `⟨hD, hD₁, hD₂, -⟩` from `GalMul.exists_isPullDeg_of_val hβ D D ψW s hs gp w hw hr xe hc (fun x z J₁ J hJ₁ hJ => by`. Take `⟨J₀, hJ₀⟩` from `DegPull.exists_good' D₀.P.isLB z`. Establish `sβ : jK R₁ ≫ spMap β = genMap hβ ≫ jK R₁` using `(Category.id_comp _).symm.trans (fracMap_sq hβ)`. Establish `sα : jK R₁ ≫ spMap α = genMap hα ≫ jK R₀` using `(Category.id_comp _).symm.trans (fracMap_sq hα)`.
+
+Establish `q₁ : genMap hβ ≫ jK R₁ ≫ spMap α = (genMap hβ ≫ genMap hα) ≫ jK R₀` using `(congrArg (_ ≫ ·) sα).trans (Category.assoc _ _ _).symm`. Establish `q : 𝟙 (TK R₁).left ≫ jK R₁ ≫ spMap (β.comp α) = (genMap hβ ≫ genMap hα) ≫ jK R₀` using `(Category.id_comp _).trans ((congrArg (_ ≫ ·) sc.symm).trans ((Category.assoc _ _ _).symm.trans ((congrArg (· ≫ _) sβ).trans ((Category.assoc _ _ _).trans q₁))))`. Establish `v` using `psi_val h _ _ q hJ₀ hJ x`. Establish `v₁` using `psi_val h₁ _ _ q₁ hJ₀ hJ₁ (xe x)`. Establish `hx : D.xK x ≫ Φ = genMap hβ ≫ D.xK (xe x)` using `by show (jK R₁ ≫ (D.c x).left) ≫ Φ = genMap hβ ≫ jK R₁ ≫ (D.c (xe x)).left`.
+
+Rewrite using `[Category.assoc, hc, ← Category.assoc, sβ, Category.assoc]`. Rewrite `v₁` using `[hxe, v, Category.id_comp, T _ z J₀ J₁ J hJ₀ hJ₁ hJ, hx, mul_inv, _root_.mul_assoc]`. Conclude with `(mul_left_cancel v₁).symm)`. Use `⟨hD, by rw [hD₁, e₁, hp], fun x => ?_⟩` and prove the remaining obligations. Rewrite using `[hD₂]`.
+
+Use `show h₁.xe.symm (h.xe x) = x`. Rewrite using `[hx]`. Conclude with `h₁.xe.symm_apply_apply x`.
+-/
 theorem exists_self_of_comp {R₀ R₁ : Type} [CommRing R₀] [IsDomain R₀] [CommRing R₁] [IsDomain R₁]
     {α : R₀ →+* R₁} {β : R₁ →+* R₁} (hα : Function.Injective α) (hβ : Function.Injective β)
     {D₀ : DegPre R₀} {D : DegPre R₁} (h₁ : IsPullDeg α D₀ D) (h : IsPullDeg (β.comp α) D₀ D)
@@ -73,6 +94,11 @@ theorem exists_self_of_comp {R₀ R₁ : Type} [CommRing R₀] [IsDomain R₀] [
   show h₁.xe.symm (h.xe x) = x
   rw [hx]; exact h₁.xe.symm_apply_apply x
 
+/- English proof (translation)
+Introduce `R R' _ _ _ _ ρ hρ D D' hD σ`. Establish `eq : ρ = (Gal.hom σ).comp ρ` using `RingHom.ext fun r => (σ.2 r).symm`. Take `⟨h₀, cp, cx⟩` from `exists_cast eq hD`. Take `⟨h, h₁, h₂⟩` from `exists_self_of_comp hρ σ.1.injective hD h₀ cp cx`. Use `⟨h, h₂, fun b c hb hc => ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[hb, hc, ← proj_def, ← proj_def]`. Conclude with `h₁`.
+-/
 theorem exists_isPullDeg_self_pullOver : ∀ (R R' : Type) [CommRing R] [IsDomain R] [CommRing R'] [IsDomain R'] (ρ : R →+* R'), Function.Injective ρ →
     ∀ (D : DegPre R) (D' : DegPre R') (hD : IsPullDeg ρ D D') (σ : Gal ρ),
       ∃ h : IsPullDeg (Gal.hom σ) D' D', PullOver hD h := by

@@ -17,8 +17,14 @@ noncomputable def swapAd : ReciprocityTheory.Aut.AL L ≃ₐ[maximalRealSubfield
     TensorProduct (maximalRealSubfield L) (Af (maximalRealSubfield L)) L :=
   Algebra.TensorProduct.comm _ _ _
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem flip_symm_tmul (a : L) (b : Af (maximalRealSubfield L)) : (swapAd L).symm (b ⊗ₜ a) = a ⊗ₜ b := rfl
 
+/- English proof (translation)
+Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul a b => rfl`. Consider the case `add x y hx hy => simp only [map_add, hx, hy]`.
+-/
 theorem flip_conj (x : ReciprocityTheory.Aut.AL L) :
     swapAd L (ReciprocityTheory.Aut.conjAL L x) = sigR (Af (maximalRealSubfield L)) (sig L) (swapAd L x) := by
   induction x using TensorProduct.induction_on with
@@ -35,10 +41,22 @@ noncomputable def flipGL (n : ℕ) : GL (Fin n) (ReciprocityTheory.Aut.AL L) ≃
     GL (Fin n) (TensorProduct (maximalRealSubfield L) (Af (maximalRealSubfield L)) L) :=
   Units.mapEquiv (swapAd L).toRingEquiv.mapMatrix.toMulEquiv
 
+/- English proof (translation)
+Unfold `JR`. Conclude with `Matrix.map_one _ (map_zero _) (map_one _)`.
+-/
 theorem JR_one (n : ℕ) : JR (F := ↥(maximalRealSubfield L)) (Af (maximalRealSubfield L)) (1 : Matrix (Fin n) (Fin n) L) = 1 := by
   unfold JR
   exact Matrix.map_one _ (map_zero _) (map_one _)
 
+/- English proof (translation)
+Use `set M : Matrix (Fin n) (Fin n) (ReciprocityTheory.Aut.AL L) := (g : Matrix (Fin n) (Fin n) (ReciprocityTheory.Aut.AL L))`. Establish `hc : Formalism.UG.cT (sigR (Af (maximalRealSubfield L)) (sig L)) (M.map (swapAd L)) = (ReciprocityTheory.Aut.conjT (ReciprocityTheory.Aut.conjAL L) M).map (swapAd L)`. Use extensionality with `i j`. Simplify using `[Formalism.UG.cT, ReciprocityTheory.Aut.conjT, flip_conj]`. Express the relevant statement in the definitionally equal form `M * ReciprocityTheory.Aut.conjT (ReciprocityTheory.Aut.conjAL L) M = 1 ↔ Formalism.UG.cT (sigR (Af (maximalRealSubfield L)) (sig L)) (M.map (swapAd L)) * JR (F := ↥(maximalRealSubfield L)) (Af (maximalRealSubfield L)) (1 : Matrix (Fin n) (Fin n) L) * M.map (swapAd L) = JR (F := ↥ …`.
+
+Rewrite using `[hc, JR_one, mul_one]`. Establish `key : ∀ X Y : Matrix (Fin n) (Fin n) (ReciprocityTheory.Aut.AL L), X.map (swapAd L) * Y.map (swapAd L) = (X * Y).map (swapAd L)` using `fun X Y => (map_mul (swapAd L).toRingEquiv.mapMatrix X Y).symm`. Rewrite using `[key, mul_eq_one_comm]`. Prove the components needed by the constructor for the conclusion. Introduce `h`.
+
+Rewrite using `[h]`. Conclude with `Matrix.map_one _ (map_zero _) (map_one _)`. Introduce `h`. Apply `(swapAd L).toRingEquiv.mapMatrix.injective` to reduce the goal to its premises. Rewrite using `[map_one]`.
+
+Conclude with `h`.
+-/
 theorem mem_GA_iff {n : ℕ} (g : GL (Fin n) (ReciprocityTheory.Aut.AL L)) :
     g ∈ ReciprocityTheory.Aut.GA L n ↔
       flipGL L n g ∈ HR (Af (maximalRealSubfield L)) (sig L) (1 : Matrix (Fin n) (Fin n) L) := by
@@ -83,15 +101,30 @@ noncomputable def back (n : ℕ) : Hf L n →* Formalism.AUTREP.GAf L n where
 noncomputable def fwd (n : ℕ) (g : Formalism.AUTREP.GAf L n) : Hf L n :=
   ⟨flipGL L n g.1, (mem_GA_iff L g.1).1 g.2⟩
 
+/- English proof (translation)
+Apply `Subtype.ext` to reduce the goal to its premises. Conclude with `MulEquiv.symm_apply_apply (flipGL L n) g.1`.
+-/
 theorem back_fwd (n : ℕ) (g : Formalism.AUTREP.GAf L n) : back L n (fwd L n g) = g := by
   apply Subtype.ext
   exact MulEquiv.symm_apply_apply (flipGL L n) g.1
 
+/- English proof (translation)
+Apply `Subtype.ext` to reduce the goal to its premises. Conclude with `map_mul (flipGL L n).symm (γ.1.1) (HA.mat _ _ _ h)`.
+-/
 theorem back_smul (n : ℕ) (γ : HFinIn (Af (maximalRealSubfield L)) (sig L) (Jn L n)) (h : Hf L n) :
     back L n (γ • h) = back L n γ.1 * back L n h := by
   apply Subtype.ext
   exact map_mul (flipGL L n).symm (γ.1.1) (HA.mat _ _ _ h)
 
+/- English proof (translation)
+Take `⟨γ0, hγ0, e⟩` from `γ.2`. Rewrite using `[ReciprocityTheory.Aut.GQ, Subgroup.mem_subgroupOf]`. Use `⟨γ0, ?_, ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `(γ0 : Matrix (Fin n) (Fin n) L) * ReciprocityTheory.Aut.conjT _ (γ0 : Matrix (Fin n) (Fin n) L) = 1`. Establish `h0 : Formalism.UG.cT (sig L : L →+* L) (γ0 : Matrix (Fin n) (Fin n) L) * 1 * (γ0 : Matrix (Fin n) (Fin n) L) = 1` using `hγ0`.
+
+Rewrite `h0` using `[mul_one]`. Rewrite using `[mul_eq_one_comm]`. Conclude with `h0`. Apply `Units.ext` to reduce the goal to its premises. Establish `e' : Units.val (γ.1.1 : GL (Fin n) _) = Units.val (Formalism.UG.bc (inclR (F` using `↥(maximalRealSubfield L)) (E := L) (Af (maximalRealSubfield L))) γ0) := by`.
+
+Rewrite using `[e]`. Both sides reduce to the same expression. Express the relevant statement in the definitionally equal form `((γ0 : Matrix (Fin n) (Fin n) L)).map Algebra.TensorProduct.includeLeftRingHom = ((γ.1.1 : GL (Fin n) _) : Matrix (Fin n) (Fin n) _).map (swapAd L).symm`. Rewrite using `[e']`. Use extensionality with `i j`.
+
+Both sides reduce to the same expression.
+-/
 theorem back_mem_GQ (n : ℕ) (γ : HFinIn (Af (maximalRealSubfield L)) (sig L) (Jn L n)) :
     back L n γ.1 ∈ ReciprocityTheory.Aut.GQ L n := by
   obtain ⟨γ0, hγ0, e⟩ := γ.2
@@ -120,6 +153,21 @@ variable (L : Type) [Field L] [NumberField L] [IsCMField L]
 def intSet : Set (TensorProduct (maximalRealSubfield L) (Af (maximalRealSubfield L)) L) :=
   (swapAd L).symm ⁻¹' (ReciprocityTheory.Aut.ALint L : Set (ReciprocityTheory.Aut.AL L))
 
+/- English proof (translation)
+Set `b0` to `Module.finBasisOfFinrankEq (maximalRealSubfield L) L (Algebra.IsQuadraticExtension.finrank_eq_two (maximalRealSubfield L) L)`. Take `⟨y, hy0, hy⟩` from `exists_integral_multiples ℤ ℚ (L := L) (Finset.univ.image b0)`. Set `b` to `b0.unitsSMul (fun _ => Units.mk0 ((y : maximalRealSubfield L)) (by exact_mod_cast hy0))`. Establish `hb : ∀ i, IsIntegral ℤ (b i)`. Introduce `i`.
+
+Rewrite using `[Module.Basis.unitsSMul_apply]`. Use `hy _ (Finset.mem_image_of_mem b0 (Finset.mem_univ i))` as an intermediate fact. Simplify `this` using `[Units.smul_def, Int.cast_smul_eq_zsmul]`. Set `B` to `Algebra.TensorProduct.basis (Af (maximalRealSubfield L)) b`. Use `haveI : IsModuleTopology (Af (maximalRealSubfield L)) (TensorProduct (maximalRealSubfield L) (Af (maximalRealSubfield L)) L) := ⟨rfl⟩`.
+
+Establish `hc : Continuous B.equivFun` using `IsModuleTopology.continuous_of_linearMap B.equivFun.toLinearMap`. Set `H : AddSubgroup (Fin 2 → Af (maximalRealSubfield L))` to `(ReciprocityTheory.Aut.ALint L).toAddSubgroup.comap ((swapAd L).symm.toRingEquiv.toAddMonoidHom.comp B.equivFun.symm.toLinearMap.toAddMonoidHom)`. Establish `hW` using `GlobalTheory.AdLat.OpenLat.isOpen_integral (maximalRealSubfield L)`. Establish `hV : (Set.univ.pi fun _ : Fin 2 => {a : Af (maximalRealSubfield L) | ∀ v, a v ∈ HeightOneSpectrum.adicCompletionIntegers (maximalRealSubfield L) v}) ⊆ H`. Introduce `c hc'`.
+
+Simplify using `only [Set.mem_pi, Set.mem_univ, true_implies, Set.mem_setOf_eq] at hc'`. Express the relevant statement in the definitionally equal form `(swapAd L).symm (B.equivFun.symm c) ∈ ReciprocityTheory.Aut.ALint L`. Rewrite using `[Module.Basis.equivFun_symm_apply, map_sum]`. Use `Subring.sum_mem _ fun i _ => ?_` and prove the remaining obligations. Rewrite using `[Algebra.TensorProduct.basis_apply, TensorProduct.smul_tmul', smul_eq_mul, mul_one, flip_symm_tmul]`.
+
+Establish `: b i ⊗ₜ[maximalRealSubfield L] c i = (b i ⊗ₜ[maximalRealSubfield L] (1 : Af (maximalRealSubfield L))) * (1 ⊗ₜ c i)`. Simplify using `[Algebra.TensorProduct.tmul_mul_tmul]`. Rewrite using `[this]`. Conclude with `Subring.mul_mem _ (Subring.subset_closure (Or.inl ⟨⟨b i, hb i⟩, rfl⟩)) (Subring.subset_closure (Or.inr ⟨c i, hc' i, rfl⟩))`. Establish `hHo : IsOpen (H : Set (Fin 2 → Af (maximalRealSubfield L)))`.
+
+Apply `AddSubgroup.isOpen_of_mem_nhds H (g := 0)` to reduce the goal to its premises. Apply `Filter.mem_of_superset _ hV` to reduce the goal to its premises. Apply `(isOpen_set_pi Set.finite_univ fun _ _ => hW).mem_nhds` to reduce the goal to its premises. Introduce `i _ v`. Simplify using the standard rewrite rules.
+
+Establish `: intSet L = B.equivFun ⁻¹' H`. Use extensionality with `x`. Simplify using `[intSet, H]`. Rewrite using `[this]`. Conclude with `hHo.preimage hc`.
+-/
 theorem isOpen_intSet : IsOpen (intSet L) := by
   classical
   let b0 := Module.finBasisOfFinrankEq (maximalRealSubfield L) L
@@ -172,6 +220,11 @@ variable (L : Type) [Field L] [NumberField L] [IsCMField L]
 
 noncomputable def Kmax (n : ℕ) : Subgroup (Hf L n) := (ReciprocityTheory.Aut.Umax L n).comap (back L n)
 
+/- English proof (translation)
+Use `⟨{x : GL (Fin n) (TensorProduct (maximalRealSubfield L) (Af (maximalRealSubfield L)) L) | ∀ i j, (x : Matrix (Fin n) (Fin n) _) i j ∈ intSet L}, ?_, ?_⟩` and prove the remaining obligations. Establish `: {x : GL (Fin n) (TensorProduct (maximalRealSubfield L) (Af (maximalRealSubfield L)) L) | ∀ i j, (x : Matrix (Fin n) (Fin n) _) i j ∈ intSet L} = ⋂ i, ⋂ j, (fun x : GL (Fin n) (TensorProduct (maximalRealSubfield L) (Af (maximalRealSubfield L)) L) => (x : Matrix (Fin n) (Fin n) _ …`. Use extensionality with `x`. Simplify using the standard rewrite rules. Rewrite using `[this]`.
+
+Conclude with `isOpen_iInter_of_finite fun i => isOpen_iInter_of_finite fun j => (isOpen_intSet L).preimage ((Units.continuous_val (M := Matrix (Fin n) (Fin n) (TensorProduct (maximalRealSubfield L) (Af (maximalRealSubfield L)) L))).matrix_elem i j)`. Use extensionality with `h`. Both sides reduce to the same expression.
+-/
 theorem isOpen_Kmax (n : ℕ) : IsOpen (Kmax L n : Set (Hf L n)) := by
   refine ⟨{x : GL (Fin n) (TensorProduct (maximalRealSubfield L) (Af (maximalRealSubfield L)) L) |
     ∀ i j, (x : Matrix (Fin n) (Fin n) _) i j ∈ intSet L}, ?_, ?_⟩
@@ -187,12 +240,20 @@ theorem isOpen_Kmax (n : ℕ) : IsOpen (Kmax L n : Set (Hf L n)) := by
   · ext h
     rfl
 
+/- English proof (translation)
+Use `⟨fun i j => ?_, by simp⟩` and prove the remaining obligations. Distinguish the cases in `h : i = j`. Substitute `h` using the available equality. Simplify using the standard rewrite rules. Simplify using `[Matrix.one_apply, h, Ne.symm h]`.
+-/
 theorem herm_one (n : ℕ) : IsHermND (sig L) (Jn L n) := by
   refine ⟨fun i j => ?_, by simp⟩
   by_cases h : i = j
   · subst h; simp
   · simp [Matrix.one_apply, h, Ne.symm h]
 
+/- English proof (translation)
+Take `⟨S, hS⟩` from `GlobalTheory.Mem.ClassFinite.exists_finset_classes _ L (sig L) (GlobalTheory.AdelicU.isCMExt_of_isCMField L) n (Jn L n) (herm_one L n) (Kmax L n) (isOpen_Kmax L n)`. Use `⟨S.image (back L n), fun g => ?_⟩` and prove the remaining obligations. Take `⟨γ, s, hs, k, hk, e⟩` from `hS (fwd L n g)`. Use `⟨⟨back L n γ.1, back_mem_GQ L n γ⟩, back L n s, back L n k, Finset.mem_image_of_mem _ hs, hk, ?_⟩` and prove the remaining obligations. Use `congrArg (back L n) e` as an intermediate fact.
+
+Rewrite `this` using `[back_fwd, back_smul, map_mul, ← mul_assoc]`. Conclude with `this`.
+-/
 theorem exists_finset_double_cosets_Umax (L : Type) [Field L] [NumberField L] [IsCMField L] (n : ℕ) :
     ∃ T : Finset (Formalism.AUTREP.GAf L n), ∀ g : Formalism.AUTREP.GAf L n,
       ∃ (γ : ReciprocityTheory.Aut.GQ L n) (t : Formalism.AUTREP.GAf L n) (u : Formalism.AUTREP.GAf L n),

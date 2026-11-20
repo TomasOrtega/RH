@@ -18,9 +18,15 @@ noncomputable def twistMap {Ω Ω' : Type} [Field Ω] [Field Ω'] (s : Ω →+* 
     intro h0
     exact hr (by rw [h0, map_zero, mul_zero]))
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 lemma twistMap_coeff {Ω Ω' : Type} [Field Ω] [Field Ω'] (s : Ω →+* Ω') (χ : ℚ → Ω')
     (h : HahnSeries ℚ Ω) (r : ℚ) : (twistMap s χ h).coeff r = χ r * s (h.coeff r) := rfl
 
+/- English proof (translation)
+Introduce `r hr`. Simplify using `only [HahnSeries.mem_support, twistMap_coeff, ne_eq] at hr ⊢`. Introduce `h0`. Conclude with `hr (by rw [h0, map_zero, mul_zero])`.
+-/
 lemma twistMap_support {Ω Ω' : Type} [Field Ω] [Field Ω'] (s : Ω →+* Ω') (χ : ℚ → Ω')
     (h : HahnSeries ℚ Ω) : (twistMap s χ h).support ⊆ h.support := by
   intro r hr
@@ -66,6 +72,13 @@ noncomputable def twistHom {Ω Ω' : Type} [Field Ω] [Field Ω'] (s : Ω →+* 
 
 end GlobalTheory.FNTwist
 
+/- English proof (translation)
+Introduce `Ω Ω' _ _ s l χ hl h0 hadd`. Establish `hinj : Function.Injective (AddMonoidHom.mulRight l)`. Introduce `a b hab`. Simplify `hab` using `[AddMonoidHom.coe_mulRight, hl.ne']`. Establish `hmono : ∀ g g' : ℚ, AddMonoidHom.mulRight l g ≤ AddMonoidHom.mulRight l g' ↔ g ≤ g'`.
+
+Introduce `g g'`. Simplify using `only [AddMonoidHom.coe_mulRight]`. Conclude with `mul_le_mul_iff_of_pos_right hl`. Use `⟨(HahnSeries.embDomainRingHom (AddMonoidHom.mulRight l) hinj hmono).comp (GlobalTheory.FNTwist.twistHom s χ h0 hadd), fun h r => ?_⟩` and prove the remaining obligations. Rewrite using `[RingHom.comp_apply, HahnSeries.embDomainRingHom_apply]`.
+
+Use `HahnSeries.embDomain_coeff (f := ⟨⟨AddMonoidHom.mulRight l, hinj⟩, hmono _ _⟩) (x := GlobalTheory.FNTwist.twistHom s χ h0 hadd h) (a := r)` as an intermediate fact. Rewrite using `[show χ r * s (h.coeff r) = (GlobalTheory.FNTwist.twistHom s χ h0 hadd h).coeff r from rfl]`. Simplify using `using this`.
+-/
 theorem GlobalTheory.FNTwist.exists_scale_twist_ringHom : ∀ (Ω Ω' : Type) [Field Ω] [Field Ω'] (s : Ω →+* Ω') (l : ℚ) (χ : ℚ → Ω'), 0 < l → χ 0 = 1 → (∀ r r', χ (r + r') = χ r * χ r') → ∃ Φ : HahnSeries ℚ Ω →+* HahnSeries ℚ Ω', ∀ h r, (Φ h).coeff (r * l) = χ r * s (h.coeff r) := by
   intro Ω Ω' _ _ s l χ hl h0 hadd
   have hinj : Function.Injective (AddMonoidHom.mulRight l) := by

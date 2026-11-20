@@ -10,6 +10,23 @@ open scoped InnerProductSpace ContDiff
 
 namespace GlobalTheory.BoundedUnfold
 
+/- English proof (translation)
+Establish `hτ : 0 < tau1 I y` using `GlobalTheory.RationalCount.truncatedLeastLatticeSize_pos I hn y`. Break down `Set.eq_empty_or_nonempty {γ : GlobalTheory.RatDiscrete.ratSub I | y⁻¹ * (γ.1 * z) ∈ S ×ˢ I.Kg g} with h0 | ⟨γ0, hγ0⟩` into its components or cases. Rewrite using `[h0]`. Use `⟨Set.finite_empty, ?_⟩` and prove the remaining obligations. Rewrite using `[Set.ncard_empty, Nat.cast_zero]`.
+
+Check the signs of the components of the expression. Take `⟨hCfin, hCcard⟩` from `GlobalTheory.RationalCount.count_le I y y (fun _ => Real.log 2) hn (fun _ => (Real.log_pos one_lt_two).le)`. Establish `hf : ∀ γ ∈ {γ : GlobalTheory.RatDiscrete.ratSub I | y⁻¹ * (γ.1 * z) ∈ S ×ˢ I.Kg g}, (fun γ : GlobalTheory.RatDiscrete.ratSub I => γ.1 * γ0.1⁻¹) γ ∈ {a : I.GA | a ∈ I.GFset ∧ (y⁻¹ * a * y).2 ∈ I.Kset ∧ ∀ v, dOp (uMat ((y⁻¹ * a * y).1 v)) ≤ (fun _ => Real.log 2) v}`. Introduce `γ hγ`. Establish `hγ' : y⁻¹ * (γ.1 * z) ∈ S ×ˢ I.Kg g` using `hγ`.
+
+Establish `hγ0' : y⁻¹ * (γ0.1 * z) ∈ S ×ˢ I.Kg g` using `hγ0`. Establish `key : y⁻¹ * (γ.1 * γ0.1⁻¹) * y = (y⁻¹ * (γ.1 * z)) * (y⁻¹ * (γ0.1 * z))⁻¹` using `by group`. Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Conclude with `(GlobalTheory.RatDiscrete.ratSub I).mul_mem γ.2 ((GlobalTheory.RatDiscrete.ratSub I).inv_mem γ0.2)`. Rewrite using `[key]`.
+
+Establish `h1` using `hγ'.2.1`. Establish `h2` using `hγ0'.2.1`. Simplify using `only [AutInst.Kset, Set.mem_ofPred_eq] at h1 h2 ⊢`. Rewrite using `[Prod.snd_mul, Prod.snd_inv]`. Use `push_cast`.
+
+Conclude with `Subgroup.mul_mem _ h1 (Subgroup.inv_mem _ h2)`. Introduce `v`. Rewrite using `[key, Prod.fst_mul, Prod.fst_inv]`. Conclude with `hS _ hγ'.1 _ hγ0'.1 v`. Establish `hinj : Set.InjOn (fun γ : GlobalTheory.RatDiscrete.ratSub I => γ.1 * γ0.1⁻¹) {γ : GlobalTheory.RatDiscrete.ratSub I | y⁻¹ * (γ.1 * z) ∈ S ×ˢ I.Kg g}` using `fun a _ b _ hab => Subtype.ext (mul_right_cancel hab)`.
+
+Establish `hAfin : {γ : GlobalTheory.RatDiscrete.ratSub I | y⁻¹ * (γ.1 * z) ∈ S ×ˢ I.Kg g}.Finite` using `Set.Finite.of_finite_image (hCfin.subset (Set.image_subset_iff.2 hf)) hinj`. Use `⟨hAfin, ?_⟩` and prove the remaining obligations. Use `le_trans (Nat.cast_le.2 (Set.ncard_le_ncard_of_injOn _ hf hinj hCfin)) (le_trans hCcard ?_)` and prove the remaining obligations. Establish `hsum : (∑ v : InfinitePlace I.F, (fun _ => Real.log 2) v) = (I.f : ℝ) * Real.log 2`. Simplify using `only [Finset.sum_const, Finset.card_univ, nsmul_eq_mul, GlobalTheory.RationalCount.card_places]`.
+
+Establish `hE : Real.exp ((∑ v : InfinitePlace I.F, (fun _ => Real.log 2) v) / I.f) ≤ 2`. Rewrite using `[hsum]`. Break down `Nat.eq_zero_or_pos I.f with hf0 | hfpos` into its components or cases. Rewrite using `[hf0]`. Evaluate the numerical expressions.
+
+Establish `: (I.f : ℝ) ≠ 0` using `by exact_mod_cast hfpos.ne'`. Rewrite using `[mul_div_cancel_left₀ _ this, Real.exp_log two_pos]`. Apply `pow_le_pow_left₀ (by positivity)` to reduce the goal to its premises. Establish `h2 : 2 * Real.sqrt I.n * Real.exp ((∑ v : InfinitePlace I.F, (fun _ => Real.log 2) v) / I.f) / (tau1 I y * tau1 I y) ≤ 2 * Real.sqrt I.n * 2 / (tau1 I y * tau1 I y)` using `by gcongr`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem multiplicity_le (I : AutInst) (g : ℕ) (S : Set I.Ginf) (y z : I.GA) (hn : 1 ≤ I.n)
     (hS : ∀ a ∈ S, ∀ a' ∈ S, ∀ v, dOp (uMat ((a * a'⁻¹) v)) ≤ Real.log 2) :
     {γ : GlobalTheory.RatDiscrete.ratSub I | y⁻¹ * (γ.1 * z) ∈ S ×ˢ I.Kg g}.Finite ∧
@@ -69,6 +86,29 @@ theorem multiplicity_le (I : AutInst) (g : ℕ) (S : Set I.Ginf) (y z : I.GA) (h
     calc _ ≤ 1 + 2 * Real.sqrt I.n * 2 / (tau1 I y * tau1 I y) := by linarith
       _ = 1 + 4 * Real.sqrt I.n / tau1 I y ^ 2 := by ring
 
+/- English proof (translation)
+Introduce `B S y Φ hn hg hSm hS hΦ hΦl hΦr`. Establish `hL : ∀ a : B.I.GA, Measurable (fun q : B.I.GA => a * q)` using `fun a => (GlobalTheory.AdelicUnfold.measurePreserving_left B.I B.μf a).measurable`. Establish `hKm : MeasurableSet (B.I.Kg B.g)` using `((GlobalTheory.CongTop.adelic_topology B.I).2.2.2.2.2.2 B.g hg).1.measurableSet`. Establish `hUm : MeasurableSet (S ×ˢ B.I.Kg B.g)` using `hSm.prod hKm`. Establish `step1 : B.μf (B.I.Kg B.g) * ∫⁻ a in S, Φ (y * (a, 1)) ∂(muInf B.I) = ∫⁻ p in S ×ˢ B.I.Kg B.g, Φ (y * p) ∂(B.I.muA B.μf)`.
+
+Rewrite using `[AutInst.muA, ← Measure.prod_restrict, lintegral_prod (fun p => Φ (y * p)) (hΦ.comp (hL y)).aemeasurable]`. Establish `inner : ∀ a : B.I.Ginf, ∫⁻ k in B.I.Kg B.g, Φ (y * (a, k)) ∂B.μf = Φ (y * (a, 1)) * B.μf (B.I.Kg B.g)`. Introduce `a`. Rewrite using `[← setLIntegral_const]`. Use `setLIntegral_congr_fun hKm (fun k hk => ?_)` and prove the remaining obligations.
+
+Establish `e : y * (a, k) = y * (a, 1) * (1, k)`. Rewrite using `[mul_assoc]`. Use `congr 1`. Conclude with `Prod.ext (mul_one a).symm (one_mul k).symm`. Rewrite using `[e, hΦr k hk]`.
+
+Repeatedly rewrite using `[inner]`. Rewrite using `[lintegral_mul_const (f := fun a : B.I.Ginf => Φ (y * (a, 1))) _ (hΦ.comp ((hL y).comp measurable_prodMk_right))]`. Conclude with `mul_comm _ _`. Establish `hH : Measurable (fun q : B.I.GA => (S ×ˢ B.I.Kg B.g).indicator (fun p => Φ (y * p)) (y⁻¹ * q))` using `((hΦ.comp (hL y)).indicator hUm).comp (hL y⁻¹)`. Establish `step2 : ∫⁻ p in S ×ˢ B.I.Kg B.g, Φ (y * p) ∂(B.I.muA B.μf) = ∫⁻ q, (S ×ˢ B.I.Kg B.g).indicator (fun p => Φ (y * p)) (y⁻¹ * q) ∂(B.I.muA B.μf)`.
+
+Rewrite using `[← lintegral_indicator hUm, ← (GlobalTheory.AdelicUnfold.measurePreserving_left B.I B.μf y).lintegral_comp hH]`. Use `congr 1`. Use function extensionality and compare the values at `p`. Simplify using `only [inv_mul_cancel_left]`. Establish `hfd` using `GlobalTheory.RatDiscrete.isFundamentalDomain B.I B.μf B.fund B.fund_spec`.
+
+Establish `: Countable (GlobalTheory.RatDiscrete.ratSub B.I)` using `Set.Countable.to_subtype (s := (GlobalTheory.RatDiscrete.ratSub B.I : Set B.I.GA)) (GlobalTheory.RatDiscrete.countable_GFset B.I)`. Establish `: MeasurableConstSMul (GlobalTheory.RatDiscrete.ratSub B.I) B.I.GA` using `⟨fun c => hL c.1⟩`. Establish `: SMulInvariantMeasure (GlobalTheory.RatDiscrete.ratSub B.I) B.I.GA (B.I.muA B.μf)` using `⟨fun c s hs => (GlobalTheory.AdelicUnfold.measurePreserving_left B.I B.μf c.1).measure_preimage hs.nullMeasurableSet⟩`. Establish `hpt : ∀ z : B.I.GA, ∑' γ : GlobalTheory.RatDiscrete.ratSub B.I, (S ×ˢ B.I.Kg B.g).indicator (fun p => Φ (y * p)) (y⁻¹ * (γ.1 * z)) ≤ ENNReal.ofReal ((1 + 4 * Real.sqrt B.I.n / tau1 B.I y ^ 2) ^ (2 * (B.I.n ^ 2 * B.I.f))) * Φ z`. Introduce `z`.
+
+Take `⟨hAf, hAc⟩` from `multiplicity_le B.I B.g S y z hn hS`. Establish `hHA : ∀ γ : GlobalTheory.RatDiscrete.ratSub B.I, (S ×ˢ B.I.Kg B.g).indicator (fun p => Φ (y * p)) (y⁻¹ * (γ.1 * z)) = {γ : GlobalTheory.RatDiscrete.ratSub B.I | y⁻¹ * (γ.1 * z) ∈ S ×ˢ B.I.Kg B.g}.indicator (fun _ => Φ z) γ`. Introduce `γ`. Distinguish the cases in `h : y⁻¹ * (γ.1 * z) ∈ S ×ˢ B.I.Kg B.g`. Rewrite using `[Set.indicator_of_mem h, Set.indicator_of_mem (show γ ∈ {γ : GlobalTheory.RatDiscrete.ratSub B.I | y⁻¹ * (γ.1 * z) ∈ S ×ˢ B.I.Kg B.g} from h)] show Φ (y * (y⁻¹ * (γ.1 * z))) = Φ z`.
+
+Rewrite using `[mul_inv_cancel_left]`. Conclude with `hΦl γ.1 γ.2 z`. Rewrite using `[Set.indicator_of_notMem h, Set.indicator_of_notMem (show γ ∉ {γ : GlobalTheory.RatDiscrete.ratSub B.I | y⁻¹ * (γ.1 * z) ∈ S ×ˢ B.I.Kg B.g} from h)]`. Establish `hsum1 : ∑' γ : GlobalTheory.RatDiscrete.ratSub B.I, {γ : GlobalTheory.RatDiscrete.ratSub B.I | y⁻¹ * (γ.1 * z) ∈ S ×ˢ B.I.Kg B.g}.indicator (fun _ => Φ z) γ = ∑ γ ∈ hAf.toFinset, {γ : GlobalTheory.RatDiscrete.ratSub B.I | y⁻¹ * (γ.1 * z) ∈ S ×ˢ B.I.Kg B.g}.indicator (fun _ => Φ z …` using `tsum_eq_sum (s := hAf.toFinset) (fun γ hγ => Set.indicator_of_notMem (by simpa using hγ) _)`. Establish `hsum2 : ∑ γ ∈ hAf.toFinset, {γ : GlobalTheory.RatDiscrete.ratSub B.I | y⁻¹ * (γ.1 * z) ∈ S ×ˢ B.I.Kg B.g}.indicator (fun _ => Φ z) γ = ∑ γ ∈ hAf.toFinset, Φ z` using `Finset.sum_congr rfl (fun γ hγ => Set.indicator_of_mem (by simpa using hγ) _)`.
+
+Rewrite using `[tsum_congr hHA, hsum1, hsum2, Finset.sum_const, nsmul_eq_mul, ← Set.ncard_eq_toFinset_card _ hAf]`. Use `gcongr`. Rewrite using `[← ENNReal.ofReal_natCast]`. Conclude with `ENNReal.ofReal_le_ofReal hAc`. Combine the equalities or inequalities in the displayed calculation.
+
+Rewrite using `[step1, step2]`. Use `_ = ∫⁻ z in B.fund, ∑' γ : GlobalTheory.RatDiscrete.ratSub B.I, (S ×ˢ B.I.Kg B.g).indicator (fun p => Φ (y * p)) (y⁻¹ * (γ.1 * z)) ∂(B.I.muA B.μf) := by`. Rewrite using `[hfd.lintegral_eq_tsum'' (fun q : B.I.GA => (S ×ˢ B.I.Kg B.g).indicator (fun p => Φ (y * p)) (y⁻¹ * q))]`. Rewrite using `[lintegral_tsum (f := fun (γ : GlobalTheory.RatDiscrete.ratSub B.I) (z : B.I.GA) => (S ×ˢ B.I.Kg B.g).indicator (fun p => Φ (y * p)) (y⁻¹ * (γ.1 * z))) (fun γ => (hH.comp (hL γ.1)).aemeasurable)]`. Simplify using `only [Subgroup.smul_def]`.
+
+Both sides reduce to the same expression. Use `_ ≤ ∫⁻ z in B.fund, ENNReal.ofReal ((1 + 4 * Real.sqrt B.I.n / tau1 B.I y ^ 2) ^ (2 * (B.I.n ^ 2 * B.I.f))) * Φ z ∂(B.I.muA B.μf) := lintegral_mono hpt`. Use `_ = _ := lintegral_const_mul _ hΦ`.
+-/
 theorem lintegral_le_multiplicity : ∀ (B : RowsAut) (S : Set B.I.Ginf) (y : B.I.GA) (Φ : B.I.GA → ENNReal), 1 ≤ B.I.n → 1 ≤ B.g → MeasurableSet S → (∀ a ∈ S, ∀ a' ∈ S, ∀ v, dOp (uMat ((a * a'⁻¹) v)) ≤ Real.log 2) → Measurable Φ → (∀ γ ∈ B.I.GFset, ∀ z, Φ (γ * z) = Φ z) → (∀ k ∈ B.I.Kg B.g, ∀ z, Φ (z * (1, k)) = Φ z) → B.μf (B.I.Kg B.g) * ∫⁻ a in S, Φ (y * (a, 1)) ∂(muInf B.I) ≤ ENNReal.ofReal ((1 + 4 * Real.sqrt B.I.n / tau1 B.I y ^ 2) ^ (2 * (B.I.n ^ 2 * B.I.f))) * ∫⁻ z in B.fund, Φ z ∂(B.I.muA B.μf) := by
   intro B S y Φ hn hg hSm hS hΦ hΦl hΦr
   classical

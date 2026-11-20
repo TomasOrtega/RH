@@ -20,6 +20,15 @@ namespace GlobalTheory.Mum.GroupAdjoint
 
 open GlobalTheory.CechPic GlobalTheory.AbDual
 
+/- English proof (translation)
+Use `Q.isAb.comm` as an intermediate fact. Establish `hd : IsDual Q.A Q.A (abelian₂ Q.A Q.L)` using `CompanionTheory.PfDual.kTrivDual K Q.A Q.g Q.isAb Q.smoothDim Q.L Q.isLB Q.ktriv`. Establish `hΛ : (abelian₂ Q.A Q.L).IsLB` using `hd.isLB`. Establish `e : ∀ (Y : Over (Sp K)) (a b : Y ⟶ Q.A), evc hΛ a b = lam (cls Q.L Q.isLB) a b` using `fun Y a b ↦ by`. Rewrite using `[evc, show cls _ hΛ = lam (cls Q.L Q.isLB) (fst Q.A Q.A) (snd Q.A Q.A) from cls_cube_two Q.isLB _ _ hΛ, pull_lam, lift_fst, lift_snd]`.
+
+Establish `l₁ : ∀ (Y : Over (Sp K)) (a a' b : Y ⟶ Q.A), evc hΛ (a * a') b = evc hΛ a b + evc hΛ a' b` using `(isAdditive_iff hΛ).1 hd.additive`. Establish `l₂ : ∀ (Y : Over (Sp K)) (a b b' : Y ⟶ Q.A), evc hΛ a (b * b') = evc hΛ a b + evc hΛ a b'` using `fun Y a b b' ↦ by`. Rewrite using `[e, e, e, lam_comm, lam_comm _ a b, lam_comm _ a b', ← e, ← e, ← e]`. Conclude with `l₁ _ _ _ _`. Establish `a₂ : IsAdditive (swap (abelian₂ Q.A Q.L))` using `(BirigidLift.isAdditive_swap_iff hΛ).2 l₂`.
+
+Establish `hM` using `pull_isLB hΛ (lift (fst Q.A Q.A ≫ f) (snd Q.A Q.A)).left`. Establish `m : ∀ (Y : Over (Sp K)) (a b : Y ⟶ Q.A), evc hM a b = evc hΛ (a ≫ f) b` using `fun Y a b ↦ by`. Rewrite using `[evc_ev hΛ]`. Simplify using `only [lift_fst_assoc, lift_snd]`. Take `⟨x, hx, ex⟩` from `BirigidLift.exists_hom hd a₂ hM ((isAdditive_iff hM).2 fun Y u u' t ↦ by rw [m, m, m, MonObj.mul_comp, l₁]) ((BirigidLift.isAdditive_swap_iff hM).2 fun Y u t t' ↦ by rw [m, m, m, l₂])`.
+
+Use `⟨x, hx, fun Y a b ↦ ?_⟩` and prove the remaining obligations. Rewrite using `[← e, ← e, ← m]`. Conclude with `BirigidLift.evc_of_cls hd.isLB hM ex a b`.
+-/
 theorem exists_adjoint {K : Type} [CommRing K] (Q : PolAV (Sp K)) (f : Q.A ⟶ Q.A) [IsMonHom f] :
     ∃ x : Q.A ⟶ Q.A, IsMonHom x ∧ ∀ (Y : Over (Sp K)) (a b : Y ⟶ Q.A),
       lam (cls Q.L Q.isLB) (a ≫ f) b = lam (cls Q.L Q.isLB) a (b ≫ x) := by
@@ -46,6 +55,19 @@ theorem exists_adjoint {K : Type} [CommRing K] (Q : PolAV (Sp K)) (f : Q.A ⟶ Q
   rw [← e, ← e, ← m]
   exact BirigidLift.evc_of_cls hd.isLB hM ex a b
 
+/- English proof (translation)
+Introduce `R _ _ _ hR D A G _ _ hG U g hg`. Establish `hN : IsNoetherianRing R` using `hR.1.1`. Establish `hI : IsIntegrallyClosed R` using `hR.1.2.2.1`. Use `U.gen_hom` as an intermediate fact. Establish `hL` using `U.LG.isLB`.
+
+Establish `hp` using `isGrpPullback_pullback G (jK R)`. Take `⟨x, hx, ex⟩` from `exists_adjoint A (U.gen.inv ≫ (Over.pullback (jK R)).map g ≫ U.gen.hom)`. Establish `hj : GlobalTheory.IsGenericPointHom (S` using `Sp R) (jK R) := .fractionField R (FractionRing R)`. Take `⟨g', ⟨hg', eg'⟩, -⟩` from `GlobalTheory.semiAbelianHomExtension_holds.of_isGenericPointHom (GlobalTheory.Published.SemiAbelianHomExtension.isNormalScheme_spec R) hj hG hG (U.gen.hom ≫ x ≫ U.gen.inv)`. Use `⟨g', hg', ?_⟩` and prove the remaining obligations.
+
+Use `hG.smooth` as an intermediate fact. Use `hG.geomConnected` as an intermediate fact. Use `GlobalTheory.smooth_tensorObj_hom G G` as an intermediate fact. Use `GlobalTheory.geometricallyIntegral_tensorObj_hom G G` as an intermediate fact. Establish `h₁ : (cubeLB G ![fst G G ≫ g, snd G G] U.LG.L).IsLB` using `LB.isLB_linComb hL _ _`.
+
+Establish `h₂ : (cubeLB G ![fst G G, snd G G ≫ g'] U.LG.L).IsLB` using `LB.isLB_linComb hL _ _`. Use `GlobalTheory.T.lineBundleIso_of_generic_normal_local_base R (G ⊗ G) (1 : 𝟙_ _ ⟶ G ⊗ G).left (Over.w _) _ _ h₁ h₂ ?_` and prove the remaining obligations. Use `(cls_eq_iff (pull_isLB h₁ _) (pull_isLB h₂ _)).1 ?_` and prove the remaining obligations. Establish `ec : pull U.gen.hom.left (cls A.L A.isLB) = pull (pullback.fst G.hom (jK R)) (cls U.LG.L hL)`. Rewrite using `[← cls_pull A.isLB _ (pull_isLB A.isLB _), ← cls_pull hL _ (pull_isLB hL _)]`.
+
+Conclude with `(cls_eq_iff _ _).2 U.ext`. Establish `key : ∀ a b : G ⊗ G ⟶ G, pull (pullback.fst (G ⊗ G).hom (jK R)) (lam (cls U.LG.L hL) a b) = lam (cls A.L A.isLB) ((Over.pullback (jK R)).map a ≫ U.gen.hom) ((Over.pullback (jK R)).map b ≫ U.gen.hom)`. Introduce `a b`. Rewrite using `[← lam_pull, ec, lam_pull_of_isGrpPullback hp]`. Use `GlobalTheory.CompanionTheory.DualScheme.pull_lam_of_left (T' := Over.mk (_ ≫ jK R)) _ _ ?_ ?_` and prove the remaining obligations.
+
+Conclude with `(ExtUnique.pullback_map_left_fst (jK R) a).symm`. Conclude with `(ExtUnique.pullback_map_left_fst (jK R) b).symm`. Rewrite using `[cls_pull h₁, cls_pull h₂, cls_cube_two hL, cls_cube_two hL, key, key, Functor.map_comp, Functor.map_comp, eg']`. Use `ex _ ((Over.pullback (jK R)).map (fst G G) ≫ U.gen.hom) ((Over.pullback (jK R)).map (snd G G) ≫ U.gen.hom)` as an intermediate fact. Simplify `this` using `only [Category.assoc, Iso.hom_inv_id_assoc, Iso.inv_hom_id, Category.comp_id]`.
+-/
 theorem exists_adjoint_on_group : ∀ (R : Type) [CommRing R] [IsDomain R] [IsLocalRing R], Base R → ∀ (D : DegData R (maximalIdeal R)) (A : PolAV (Sp (FractionRing R))) (G : Over (Sp R)) [GrpObj G] [IsCommMonObj G], IsSemiAbelian G → ∀ U : Unif (maximalIdeal R) D A G, ∀ g : G ⟶ G, IsMonHom g → ∃ g' : G ⟶ G, IsMonHom g' ∧ LBIso (cubeLB G ![fst G G ≫ g, snd G G] U.LG.L) (cubeLB G ![fst G G, snd G G ≫ g'] U.LG.L) := by
   intro R _ _ _ hR D A G _ _ hG U g hg
   have hN : IsNoetherianRing R := hR.1.1

@@ -37,9 +37,15 @@ structure Loc : Prop where
 
   p14R : ∀ D : D7, SecondTheoremReduced D
 
+/- English proof (translation)
+The claim follows from `ExtremalProjector.extremal_projector_statement`.
+-/
 theorem extremal_projector_tools_of_loc (h : Loc) : ExtremalProjectorTools where
   extremalProjectorAlt := ExtremalProjector.extremal_projector_statement
 
+/- English proof (translation)
+The claim follows from `h.p14R p39B := SelectionLemmas.Pf.secondPartClosed rationalPlanesClauseThree := Joints.Lit.weyl_dimension_formula_index_sets rationalPlanesClauseFour := Joints.Lit.branching_rule_count_form rationalPlanesClauseFive := Joints.Lit.pieri_rule_count_form dualInclusionLattices := Mode …`.
+-/
 theorem local_model_results (h : Loc) : Loc6 where
   p14R := h.p14R
   p39B := SelectionLemmas.Pf.secondPartClosed
@@ -59,6 +65,9 @@ theorem local_model_results (h : Loc) : Loc6 where
   criterionClauseThirtyFive := Model.fewBadOrbits
   criterionClauseThirtySix := Model.products_sections_integral
 
+/- English proof (translation)
+The claim follows from `flipOneThree.Pf.theorem_I_closed_form_holds p13A := GramWindowAlt.theorem_A_closed_form_holds p15 := ColumnSystems.Pf.extendedClosedForm windowClauseTwo := Model.gl_branching_dimension windowClauseThree := Model.weyl_dual_weight_admissible lWeylV := Model.weylV_proved tFlatHH := …`.
+-/
 theorem local_flatness_results (h : Loc) : Loc8 where
   p13B := flipOneThree.Pf.theorem_I_closed_form_holds
   p13A := GramWindowAlt.theorem_A_closed_form_holds
@@ -73,6 +82,9 @@ theorem local_flatness_results (h : Loc) : Loc8 where
   tKP3 := Joints.restriction_dimension_holds
   tRES := CountingStatementReduction.residue_division_transfer
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨1, one_pos, fun _ _ _ => ⟨⟨0, fun _ => 0, fun _ => 0, fun _ => 0⟩, fun Fm _ _ _ => AuxBlock8.Pf.stmtF Fm⟩⟩`.
+-/
 theorem packet_statement_closed (𝒞 : FamClass) : Closed 𝒞 fun Fm _ => AuxBlock8.KudlaFamilyStatement Fm :=
   ⟨1, one_pos, fun _ _ _ => ⟨⟨0, fun _ => 0, fun _ => 0, fun _ => 0⟩, fun Fm _ _ _ => AuxBlock8.Pf.stmtF Fm⟩⟩
 
@@ -89,6 +101,9 @@ def LocalDataSystem {D : D7} {L : SizeData₂ D} (X : Inst D L) (Y : LatInst D) 
           ∑ v ∈ Finset.univ \ (reps X (D.what₂.places.resChar w)).image (Y.vOf u w hg), Fn v j) -
             ∑ j ∈ Finset.range D.R.m, (dG j : ℝ)
 
+/- English proof (translation)
+Introduce `hT hLT u w hg`. Take `⟨hf, std, vp, unif, eO, eO_spec, dG, dG_spec, om, Y5, hadm, Fn, hFn, hlow⟩` from `h hT hLT u w hg`. Conclude with `⟨hf, std, vp, unif, eO, eO_spec, dG, dG_spec, om, Y5, hadm (Formalism.MainNotions.FormalGroupSystem.Pf.positivity_condition_holds D) (Formalism.L2.G.Pend.up_down_adjoint D _ Y5), Fn, hFn, hlow⟩`.
+-/
 theorem system_of_local_data {D : D7} {L : SizeData₂ D} (X : Inst D L) (Y : LatInst D) (low : D.what₂.Word → D.what₂.places.Pl → ℝ)
     (h : LocalDataSystem X Y low) : LocalSystemCompletion X Y low := by
   intro hT hLT u w hg
@@ -96,6 +111,17 @@ theorem system_of_local_data {D : D7} {L : SizeData₂ D} (X : Inst D L) (Y : La
   exact ⟨hf, std, vp, unif, eO, eO_spec, dG, dG_spec, om, Y5,
     hadm (Formalism.MainNotions.FormalGroupSystem.Pf.positivity_condition_holds D) (Formalism.L2.G.Pend.up_down_adjoint D _ Y5), Fn, hFn, hlow⟩
 
+/- English proof (translation)
+Take `⟨i0⟩` from `Fm.Ix_zero`. Establish `heps : 0 < eps`. Use `(Fm.L 0 i0).sc.eps_pos` as an intermediate fact. Rewrite `this` using `[Fm.L_eps]`. Then use the resulting hypothesis. Take `⟨C31, _, h1⟩` from `TopChoiceBounds.family_uniform_constant_holds Fm`.
+
+Establish `h1' : Ev Fm fun x i => AuxBlock8.adm1 (Fm.D x i) (Fm.L x i) (Fm.Gx x i) C31` using `h1`. Establish `h4 : Ev Fm fun x i => AuxBlock8.ArchimedeanSignatureMatching (Fm.D x i) (Fm.L x i) Fm.GK` using `TopChoiceBounds.family_band_ratio_statement Fm hCN`. Establish `h5` using `family_sizes_bound Fm hLa (eps / 48) (by positivity)`. Establish `hx31 : Ev Fm fun x i => CornerGLContinuity.LargeScaleConditions (Fm.D x i) (Fm.L x i)` using `TopChoiceBounds.family_large_scale_conditions_hold Fm`. Take `⟨xa, hA⟩` from `Filter.eventually_atTop.1 ((AuxBlock8.Pf.numMean_ev eps Fm.GK Fm.GK_nonneg 0 le_rfl).and (AuxBlock8.Pf.restHypI_ev eps Fm.GK Fm.GK_nonneg 0 C31))`.
+
+Take `⟨x0, h⟩` from `((((h1'.and h4).and h5).and hx31).and (eventually_sizes_admitted Fm)).and (Ev.x1 Fm)`. Use `⟨max x0 xa, fun x hx i => ?_⟩` and prove the remaining obligations. Take `⟨⟨⟨⟨⟨a1, a4⟩, a5⟩, a31⟩, aSz⟩, hx1⟩` from `h x (le_trans (le_max_left _ _) hx) i`. Take `⟨hNM, hRH⟩` from `hA x (le_trans (le_max_right _ _) hx)`. Establish `hxx` using `Fm.L_x x i hx1`.
+
+Establish `hee` using `Fm.L_eps x i`. Establish `NM` using `hNM (Fm.D x i) (Fm.L x i) hxx hee aSz.1 a5`. Establish `ZetaZeros` using `hRH (Fm.D x i) (Fm.L x i) (Fm.Gx x i) hxx hee aSz a5 a4 a1 NM`. Take `⟨w⟩` from `exists_place (Fm.D x i)`. Take `⟨_, _, _, _, _, _, hLaG⟩` from `Fm.fills x hx1 i w`.
+
+Introduce `p hc hp0 t0 ht0`. Conclude with `⟨a31.1, a31.2.2 _ hc.2.2.2.1, ZetaZeros p hc hp0 t0 ht0, windows_of Fm.GK (Fm.params x hx1 i) hLaG p t0⟩`.
+-/
 theorem hypIAt_ev {eps : ℝ} (Fm : FamP eps) (hLa : 0 < Fm.GK.La) (hCN : CornerGLContinuity.FamilyWindowLogBound Fm) :
     Ev Fm fun x i => Joints.HypIAt (Fm.D x i) (Fm.L x i) (Fm.Gx x i) Fm.GK := by
   obtain ⟨i0⟩ := Fm.Ix_zero
@@ -132,6 +158,9 @@ structure Fam {eps : ℝ} (Fm : FamP eps) : Prop where
 
   localSystemSizeLowTerm : Ev Fm fun x i => LocalDataSystem (Fm.Gx x i) (Fm.Gy x i) (lowFE (Fm.L x i))
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨0, fun x _ i => FormalGroupSystem.Pf.stmt6G _ _ _ _ _⟩ p05 := FormalGroupSystem.Pf.stmtF_proved Fm gatE := h.gatE gatY := ⟨0, fun x _ i u w hg => Model.operators_preserve_lattices _ _⟩ stdSub := h.stdSub lpBC := Model.lpBaseChange hypII := Joints.hypIIAt_fam Fm hCN model := ⟨0, …`.
+-/
 theorem family_satisfies_ties {eps : ℝ} (Fm : FamP eps) (h : Fam Fm) (hCN : CornerGLContinuity.FamilyWindowLogBound Fm) (hLa : 0 < Fm.GK.La) : Fam1 Fm where
   p6G := ⟨0, fun x _ i => FormalGroupSystem.Pf.stmt6G _ _ _ _ _⟩
   p05 := FormalGroupSystem.Pf.stmtF_proved Fm
@@ -149,11 +178,17 @@ theorem family_satisfies_ties {eps : ℝ} (Fm : FamP eps) (h : Fam Fm) (hCN : Co
     exact ⟨x0, fun x hx i => system_of_local_data _ _ _ (h0 x hx i)⟩
   hypI := hypIAt_ev Fm hLa hCN
 
+/- English proof (translation)
+The claim follows from `link_of_closed_families 𝒞 (extremal_projector_tools_of_loc h) (local_model_results h) (local_flatness_results h) hN (packet_statement_closed 𝒞) (((hf.and (TopChoiceBounds.family_log_bound_closed 𝒞)).and (signs_closed 𝒞)).imp fun Fm _ _ h => family_satisfies_ties Fm h.1.1 h.1.2 h. …`.
+-/
 theorem link_of_descent_closed (𝒞 : FamClass) (h : Loc) (hN : FormalGroupSystem.NumericalComparisonUniform) (hf : Closed 𝒞 fun Fm _ => Fam Fm)
     (h2 : Closed 𝒞 fun Fm _ => Adm2F Fm) (hd : Closed 𝒞 fun Fm _ => NPDescF Fm) :
     Closed 𝒞 fun Fm _ => LinkG Fm :=
   link_of_closed_families 𝒞 (extremal_projector_tools_of_loc h) (local_model_results h) (local_flatness_results h) hN (packet_statement_closed 𝒞) (((hf.and (TopChoiceBounds.family_log_bound_closed 𝒞)).and (signs_closed 𝒞)).imp fun Fm _ _ h => family_satisfies_ties Fm h.1.1 h.1.2 h.2.1) h2 hd
 
+/- English proof (translation)
+The claim follows from `link_of_descent_closed 𝒞 h FormalGroupSystem.Pf.stmtNumE hf h2 hd`.
+-/
 theorem link_of_numbers_proved (𝒞 : FamClass) (h : Loc) (hf : Closed 𝒞 fun Fm _ => Fam Fm)
     (h2 : Closed 𝒞 fun Fm _ => Adm2F Fm) (hd : Closed 𝒞 fun Fm _ => NPDescF Fm) :
     Closed 𝒞 fun Fm _ => LinkG Fm :=
@@ -170,11 +205,19 @@ def zeroCh (Y : LatInst D) : LatInst D where
   Ch := fun _ _ _ => ⟨fun _ => 0⟩
   Vram := Y.Vram
 
+/- English proof (translation)
+The claim follows from `| 0, h, _ => absurd h (by omega) | n + 1, _, F => by simp [Chain.chainK]`.
+-/
 theorem chainK_zero {p : ℕ} {G : GAtP p} {Fl : Fills G} (Lv : Levels Fl) :
     ∀ m : ℕ, 1 ≤ m → ∀ F : Lv.Fm 0, (⟨fun _ => 0⟩ : Chain Lv).chainK m F = 0
   | 0, h, _ => absurd h (by omega)
   | n + 1, _, F => by simp [Chain.chainK]
 
+/- English proof (translation)
+Establish `h0 : ((zeroCh Y).Ch u w hg).chainK D.R.m F = 0` using `chainK_zero _ D.R.m hm F`. Unfold `LatInst.vKge vGeLat`. Take `⟨ϖ, hϖ⟩` from `IsDiscreteValuationRing.exists_irreducible (D.gat u w hg).O`. Use `⟨ϖ, hϖ, ?_⟩` and prove the remaining obligations. Rewrite using `[h0]`.
+
+Conclude with `Submodule.zero_mem _`.
+-/
 theorem vKge_zero (Y : LatInst D) (hm : 1 ≤ D.R.m) (u : D.what₂.Word) (w : D.what₂.places.Pl)
     (hg : GIdx D.host (D.mem u).A.T (D.what₂.places.resChar w)) (F : (D.gat u w hg).Fn) (g : ℝ) :
     (zeroCh Y).vKge u w hg F g := by
@@ -185,6 +228,17 @@ theorem vKge_zero (Y : LatInst D) (hm : 1 ≤ D.R.m) (u : D.what₂.Word) (w : D
   rw [h0]
   exact Submodule.zero_mem _
 
+/- English proof (translation)
+Establish `hG1 : Ev Fm fun x i => AuxBlock8.unitBoundAtTwistedPlaces (Fm.D x i) (Fm.L x i) (Fm.Gx x i) (zeroCh (Fm.Gy x i)) Fm.GK ∧ AuxBlock8.admG1 (Fm.D x i) (Fm.L x i) (Fm.Gx x i) (zeroCh (Fm.Gy x i)) Fm.GK`. Take `⟨x0, h⟩` from `((((hE.and hY).and hLP).and hEp).and (eventually_large_scale_bound Fm)).and (Ev.x1 Fm)`. Use `⟨x0, fun x hx i => ?_⟩` and prove the remaining obligations. Take `⟨⟨⟨⟨⟨hE, hY⟩, hLP⟩, hEp⟩, hB⟩, hx1⟩` from `h x hx i`. Establish `hU : AuxBlock8.unitBoundAtTwistedPlaces (Fm.D x i) (Fm.L x i) (Fm.Gx x i) (zeroCh (Fm.Gy x i)) Fm.GK`.
+
+Introduce `_ _ u w hg _ _ _ _ _ _ _`. Conclude with `vKge_zero _ hB.1 u w hg _ _`. Establish `hS1 : CornerGLContinuity.ServiceLowerValuation (Fm.D x i) (Fm.L x i) (Fm.Gx x i) (zeroCh (Fm.Gy x i)) Fm.GK`. Introduce `_ _ u w hg _ _`. Conclude with `vKge_zero _ hB.1 u w hg _ _`.
+
+Conclude with `⟨hU, TopChoiceBounds.gluing_statement_of_proof _ _ _ (TopChoiceBounds.gluing_statement_holds Fm.GK (Fm.Gx x i) (zeroCh (Fm.Gy x i)) ⟨hU, stability_of_trivial_stabilisers hE, service_statement_of_stability _ _ _ (FormalGroupSystem.Pf.stmt6G _ _ _ _ _) hE hY, hLP, hEp, saturated_ra …`. Establish `hA : AuxBlock8.AdmF Fm Fm.GK Fm.Gx (fun x i => zeroCh (Fm.Gy x i))`. Take `⟨C31, hC31, h1⟩` from `h1`. Take `⟨Cm, hCm, h8⟩` from `h8`. Take `⟨Ce, hCe, h9⟩` from `h9`.
+
+Use `⟨C31, Ce, Cm, hC31, hCe, hCm, fun δ hδ => ?_⟩` and prove the remaining obligations. Take `⟨x0, h⟩` from `((((((((((h1.and h2).and h3).and h4).and (h5 δ hδ)).and h6).and h7).and h8).and h9).and hG1).and (eventually_sizes_admitted Fm))`. Use `⟨max x0 2, lt_of_lt_of_le one_lt_two (le_max_right _ _), fun x hx i => ?_⟩` and prove the remaining obligations. Take `⟨⟨⟨⟨⟨⟨⟨⟨⟨⟨a1, a2⟩, a3⟩, a4⟩, a5⟩, a6⟩, a7⟩, a8⟩, a9⟩, aU, aG⟩, aS⟩` from `h x (le_trans (le_max_left _ _) hx) i`. Conclude with `⟨a1, a2, a3, a4, a5, a6, a7, a8, a9, aU, aG, aS⟩`.
+
+Conclude with `⟨hA, hG1⟩`.
+-/
 theorem admissible_family_no_kernel {eps : ℝ} (Fm : FamP eps)
     (h1 : Adm1F Fm) (h2 : Adm2F Fm) (h3 : Adm3F Fm) (h4 : Adm4F Fm) (h5 : Adm5F Fm) (h6 : Adm6F Fm) (h7 : Adm7F Fm)
     (h8 : Adm8F Fm) (h9 : Adm9F Fm)
@@ -221,6 +275,11 @@ theorem admissible_family_no_kernel {eps : ℝ} (Fm : FamP eps)
     exact ⟨a1, a2, a3, a4, a5, a6, a7, a8, a9, aU, aG, aS⟩
   exact ⟨hA, hG1⟩
 
+/- English proof (translation)
+Take `⟨hA, hG1⟩` from `admissible_family_no_kernel Fm h1 h2 h3 h4 h5 h6 h7 h8 h9 hE hY hLP hEp hd`. Take `⟨C, δ, hδ, hP'⟩` from `AuxBlock8.Pf.stmtF Fm Fm.GK Fm.GK_nonneg Fm.Gx _ hA`. Establish `hP'' : Ev Fm fun x i => AuxBlock8.Conclusion₂ (Fm.D x i) (Fm.L x i) (Fm.Gx x i) Fm.GK C ((Fm.L x i).sc.b ^ δ x)` using `hP'`. Take `⟨x0, h⟩` from `(((((hP''.and hG1).and (servedGIdx_ev Fm)).and (svBound_ev Fm)).and (nuServed_ev Fm)).and (sizeDataLat_ev Fm hd)).and (Ev.x1 Fm)`. Use `⟨4 * |C| + 1, x0, δ, hδ, fun x hx i => ?_⟩` and prove the remaining obligations.
+
+Take `⟨⟨⟨⟨⟨⟨hp, hg⟩, hs⟩, hv⟩, hi⟩, hf⟩, hx1⟩` from `h x hx i`. Conclude with `linkG_at_of (Fm.Gx x i) (zeroCh (Fm.Gy x i)) Fm.GK Fm.GK_nonneg C _ (Fm.gatT x i) (Fm.fills x hx1 i) hf (Fm.supp_sat x hx1 i) (Fm.latTied x hx1 i) (Fm.nuDef x hx1 i) hp.1 hp.2.1 hp.2.2.2.2.1 hg.2 hs hv hi`.
+-/
 theorem linkG_without_kernels {eps : ℝ} (Fm : FamP eps)
     (h1 : Adm1F Fm) (h2 : Adm2F Fm) (h3 : Adm3F Fm) (h4 : Adm4F Fm) (h5 : Adm5F Fm) (h6 : Adm6F Fm) (h7 : Adm7F Fm)
     (h8 : Adm8F Fm) (h9 : Adm9F Fm)
@@ -238,6 +297,15 @@ theorem linkG_without_kernels {eps : ℝ} (Fm : FamP eps)
   exact linkG_at_of (Fm.Gx x i) (zeroCh (Fm.Gy x i)) Fm.GK Fm.GK_nonneg C _ (Fm.gatT x i) (Fm.fills x hx1 i)
     hf (Fm.supp_sat x hx1 i) (Fm.latTied x hx1 i) (Fm.nuDef x hx1 i) hp.1 hp.2.1 hp.2.2.2.2.1 hg.2 hs hv hi
 
+/- English proof (translation)
+Take `⟨C, hC0, a1, a2, a3, a4, a5, a6, hp14⟩` from `h14`. Take `⟨CH, C', b0, b1, b2, b3, b4, b5, b6, hp13⟩` from `h13`. Establish `h6` using `family_second_bound_of_theorem Fm C hC0 a1 a2 a3 a4 a5 a6 hp14`. Establish `h7` using `family_kappa_bound Fm (kapIDefF Fm)`. Establish `h8` using `family_first_bound_of_theorem Fm CH C' (kapIDefF Fm) b0 b1 b2 b3 b4 b5 b6 hp13`.
+
+Establish `hCe0 : 0 ≤ Fm.cX.Ce` using `le_trans zero_le_one hCe`. Take `⟨C₅, h59⟩` from `UnusedSlot33.field_lemmas_except_seven`. Establish `hO : CornerGLContinuity.FamilyGlobalOrderEstimate Fm 100` using `fun x i => (h59 (Fm.D x i) (Fm.L x i).sc).2.2.2.1`. Establish `h9 : Adm9F Fm`. Take `⟨x1, hx1⟩` from `Ev.x1 Fm`.
+
+Conclude with `⟨Fm.cX.Ce, hCe0, x1, fun x hx i => Joints.weyl_sandwich_of_factors _ _ _ Fm.cX.Ce hCe0 (Fm.ex x (hx1 x hx i) i).ep_def (Joints.weylSandwich_of_model _ (Model.modelSandwichG_of_ties _ (Fm.gatT x i))) (Joints.expBound_of _ _ _ Fm.cX.Ce hCe (Fm.ex x (hx1 x hx i) i).ep_def (Fm.params …`. Establish `hLP : Ev Fm fun x i => CornerGLContinuity.OrbitLatticeBounds (Fm.D x i) (Fm.L x i) (Fm.Gx x i) (Fm.Gy x i) Fm.GK`. Take `⟨x0, h⟩` from `((((h6.and h7).and hS).and (hypIAt_ev Fm hLa hCN)).and (Joints.hypIIAt_fam Fm hCN)).and hCb`. Conclude with `⟨x0, fun x hx i => Joints.linear_programming_input_of_hypotheses _ _ _ _ _ (h x hx i).1.1.1.1.1 (h x hx i).1.1.1.1.2 (h x hx i).1.1.1.2 Model.lpBaseChange (h x hx i).1.1.2 (h x hx i).1.2 (rho_le_rhoB _ _ _ Fm.GK_nonneg.2.1 (La_nonneg Fm.GK_nonneg.1 _) (h x hx i).2)⟩`. Establish `hEp : Ev Fm fun x i => CornerGLContinuity.LatticeSandwich (Fm.D x i) (Fm.L x i) (Fm.Gx x i)`.
+
+Take `⟨Ce, _, x0, h⟩` from `id h9`. Conclude with `⟨x0, fun x hx i => TopChoiceBounds.sandwich_of_exponent_clause _ Ce (Fm.gatT x i) (h x hx i)⟩`. Conclude with `linkG_without_kernels Fm (family_first_lemma Fm) h2 (family_orders_first_part Fm 100 (TopChoiceBounds.family_order_bound_holds Fm 100) hO) (family_orders_bound_of_lemma Fm (TopChoiceBounds.family_band_ratio_holds Fm) hCN) (family_sizes_bound Fm hLa) h6 h7 h8 h9 hE ⟨0, fun x _ i u …`.
+-/
 theorem linkG_fam_noKer {eps : ℝ} (Fm : FamP eps) (h14 : SecondTheoremAtFamily Fm) (h13 : FirstTheoremAtFamily Fm)
     (hLa : 0 < Fm.GK.La) (hCe : 1 ≤ Fm.cX.Ce) (hCb : Ev Fm fun x i => CbLarge Fm.GK (Fm.L x i).sc)
     (hE : Ev Fm fun x i => TrivialStabiliserFiniteClasses (Fm.D x i)) (hS : Ev Fm fun x i => Joints.StdSubAt (Fm.D x i))
@@ -269,6 +337,9 @@ theorem linkG_fam_noKer {eps : ℝ} (Fm : FamP eps) (h14 : SecondTheoremAtFamily
     (family_orders_bound_of_lemma Fm (TopChoiceBounds.family_band_ratio_holds Fm) hCN) (family_sizes_bound Fm hLa) h6 h7 h8 h9 hE
     ⟨0, fun x _ i u w hg => Model.operators_preserve_lattices _ _⟩ hLP hEp hd
 
+/- English proof (translation)
+The claim follows from `((((((((((second_theorem_closed_form 𝒞 (second_theorem_absolute_constant (extremal_projector_tools_of_loc h) (local_model_results h))).and (first_theorem_closed_form 𝒞 (first_theorem_threshold_functions (extremal_projector_tools_of_loc h) (loc8All_of (extremal_projector_tools_of_ …`.
+-/
 theorem link_of_local_closed (𝒞 : FamClass) (h : Loc)
     (hE : Closed 𝒞 fun Fm _ => Ev Fm fun x i => TrivialStabiliserFiniteClasses (Fm.D x i))
     (hS : Closed 𝒞 fun Fm _ => Ev Fm fun x i => Joints.StdSubAt (Fm.D x i))
@@ -281,6 +352,9 @@ theorem link_of_local_closed (𝒞 : FamClass) (h : Loc)
     fun Fm _ _ h => linkG_fam_noKer Fm h.1.1.1.1.1.1.1.1.1 h.1.1.1.1.1.1.1.1.2 h.1.1.1.1.1.1.1.2.1
       h.1.1.1.1.1.1.2.2.2 h.1.1.1.1.1.2 h.1.1.1.1.2 h.1.1.1.2 h.1.1.2 h.1.2 h.2
 
+/- English proof (translation)
+Conclude with `⟨fun D => Formalism.MainNotions.G.criterion_restricted_of_closed D (Formalism.MainNotions.TraceSpectra.stmtE D)⟩`.
+-/
 theorem loc_proved : Loc := by
   exact ⟨fun D => Formalism.MainNotions.G.criterion_restricted_of_closed D (Formalism.MainNotions.TraceSpectra.stmtE D)⟩
 

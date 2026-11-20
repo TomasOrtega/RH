@@ -12,6 +12,9 @@ section Lemmas
 
 variable {C : Type} [Field C] {w : Valuation C ℝ≥0} {S W : Type} [AddCommGroup W] [Module C W]
 
+/- English proof (translation)
+Introduce `_ hx` and use `hx.1 stable := by rintro x ⟨hx, h0⟩ refine ⟨fun i => ?_, fun s => ?_⟩ · obtain ⟨f, hf⟩ := hx i exact ⟨Polynomial.X * f, fun s => by simp [unif, hf s]⟩ · show g s ((a s : C) • x s) = 0 rw [map_smul, h0 s, smul_zero] saturated := by rintro x hx c hc ⟨-, h0⟩ refine ⟨hx, fun s => ?_⟩ …`.
+-/
 theorem isFiltration_kerFil (a : S → w.valuationSubring) (N : ℕ)
     (g : S → (Fin N → C) →ₗ[C] W) : IsFiltration a (kerFil a N g) where
   le := fun _ hx => hx.1
@@ -30,6 +33,15 @@ theorem isFiltration_kerFil (a : S → w.valuationSubring) (N : ℕ)
     rw [show (c • x) s = (c : C) • x s from rfl, map_smul] at h1
     exact (smul_eq_zero.1 h1).resolve_left hc'
 
+/- English proof (translation)
+Establish `h1 : ∀ i, ∃ c : w.valuationSubring, c ≠ 0 ∧ (c : C) * y i ∈ w.valuationSubring`. Introduce `i`. Break down `w.valuationSubring.mem_or_inv_mem (y i) with h | h` into its components or cases. Conclude with `⟨1, one_ne_zero, by simpa using h⟩`. Distinguish the cases in `h0 : y i = 0`.
+
+Conclude with `⟨1, one_ne_zero, by simp [h0, zero_mem]⟩`. Use `⟨⟨_, h⟩, fun e => h0 ?_, ?_⟩` and prove the remaining obligations. Simplify using `using congrArg (Subtype.val) e`. Simplify using `[h0, one_mem]`. Use `choose c hc hcy using h1`.
+
+Use `⟨∏ i, c i, Finset.prod_ne_zero_iff.2 fun i _ => hc i, fun i => ?_⟩` and prove the remaining obligations. Rewrite using `[← Finset.mul_prod_erase Finset.univ c (Finset.mem_univ i)]`. Use `push_cast`. Rewrite using `[mul_comm (c i : C), mul_assoc]`. Use `mul_mem ?_ (hcy i)` and prove the remaining obligations.
+
+Conclude with `(∏ j ∈ Finset.univ.erase i, c j).2` after adjusting the coercions.
+-/
 theorem exists_clear_denom {N : ℕ} (y : Fin N → C) :
     ∃ c : w.valuationSubring, c ≠ 0 ∧ ∀ i, (c : C) * y i ∈ w.valuationSubring := by
   have h1 : ∀ i, ∃ c : w.valuationSubring, c ≠ 0 ∧ (c : C) * y i ∈ w.valuationSubring := by
@@ -49,6 +61,23 @@ theorem exists_clear_denom {N : ℕ} (y : Fin N → C) :
   refine mul_mem ?_ (hcy i)
   exact_mod_cast (∏ j ∈ Finset.univ.erase i, c j).2
 
+/- English proof (translation)
+Apply `le_antisymm` to reduce the goal to its premises. Use `Submodule.span_le.2 ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨f, hf, rfl⟩`. Conclude with `hf.2 s`. Introduce `y hy`.
+
+Take `⟨c, hc, hcy⟩` from `exists_clear_denom (w := w) y`. Set `Q : Polynomial w.valuationSubring` to `∏ t ∈ Finset.univ.erase s, (Polynomial.X - Polynomial.C (a t))`. Establish `hQ0 : ∀ t, t ≠ s → Q.eval (a t) = 0`. Introduce `t ht`. Simplify using `only [Q, Polynomial.eval_prod]`.
+
+Conclude with `Finset.prod_eq_zero (Finset.mem_erase.2 ⟨ht, Finset.mem_univ t⟩) (by simp)`. Establish `hQ : Q.eval (a s) ≠ 0`. Simplify using `only [Q, Polynomial.eval_prod]`. Use `Finset.prod_ne_zero_iff.2 fun t ht => ?_` and prove the remaining obligations. Simplify using `only [Polynomial.eval_sub, Polynomial.eval_X, Polynomial.eval_C]`.
+
+Conclude with `sub_ne_zero.2 fun e => (Finset.mem_erase.1 ht).1 (ha e).symm`. Establish `hQ' : ((Q.eval (a s) : w.valuationSubring) : C) ≠ 0` using `fun e => hQ (Subtype.ext e)`. Establish `hc' : (c : C) ≠ 0` using `fun e => hc (Subtype.ext e)`. Set `d : C` to `((Q.eval (a s) : w.valuationSubring) : C) * c`. Establish `hd : d ≠ 0` using `mul_ne_zero hQ' hc'`.
+
+Establish `hmem : d • y ∈ filSpace (kerFil a N g) s`. Use `Submodule.subset_span (Submodule.mem_map.2 ⟨Pi.single s (d • y), ⟨fun i => ?_, fun t => ?_⟩, by simp⟩)` and prove the remaining obligations. Use `⟨Polynomial.C ⟨_, hcy i⟩ * Q, fun t => ?_⟩` and prove the remaining obligations. Distinguish the cases in `ht : t = s`. Substitute `ht` using the available equality.
+
+Simplify using `only [Pi.single_eq_same, Pi.smul_apply, smul_eq_mul, Polynomial.eval_mul, Polynomial.eval_C, d]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[Pi.single_eq_of_ne ht, Polynomial.eval_mul, hQ0 t ht]`. Simplify using the standard rewrite rules.
+
+Distinguish the cases in `ht : t = s`. Substitute `ht` using the available equality. Rewrite using `[Pi.single_eq_same, map_smul, LinearMap.mem_ker.1 hy, smul_zero]`. Rewrite using `[Pi.single_eq_of_ne ht, map_zero]`. Establish `h2` using `Submodule.smul_mem _ d⁻¹ hmem`.
+
+Rewrite `h2` using `[smul_smul, inv_mul_cancel₀ hd, one_smul]`. Then use the resulting hypothesis.
+-/
 theorem filSpace_kerFil [Fintype S] [DecidableEq S] (a : S → w.valuationSubring)
     (ha : Function.Injective a) (N : ℕ) (g : S → (Fin N → C) →ₗ[C] W) (s : S) :
     filSpace (kerFil a N g) s = LinearMap.ker (g s) := by
@@ -94,6 +123,27 @@ theorem filSpace_kerFil [Fintype S] [DecidableEq S] (a : S → w.valuationSubrin
 variable [Fintype S] [DecidableEq S] [Module w.valuationSubring W]
   [IsScalarTower w.valuationSubring C W]
 
+/- English proof (translation)
+Establish `hfs : ∀ (s : S) (x : Fin N → C), (filSpace (kerFil a N g) s).mkQ x = 0 ↔ g s x = 0`. Introduce `s x`. Rewrite using `[Submodule.mkQ_apply, Submodule.Quotient.mk_eq_zero, filSpace_kerFil a ha N g s, LinearMap.mem_ker]`. Prove the components needed by the constructor for the conclusion. Introduce `h`.
+
+Take `⟨f, hf, e⟩` from `Submodule.mem_map.1 (Submodule.mem_comap.1 h)`. Establish `hs : ∀ s, s ≠ τ → g s (f s) = 0`. Introduce `s hs`. Establish `h1` using `congrFun e s`. Rewrite `h1` using `[LinearMap.single_apply, Pi.single_eq_of_ne hs]`.
+
+Conclude with `(hfs s _).1 h1`. Establish `hτ : g τ (f τ) = g τ z`. Establish `h1` using `congrFun e τ`. Rewrite `h1` using `[LinearMap.single_apply, Pi.single_eq_same]`. Establish `h2 : (filSpace (kerFil a N g) τ).mkQ (f τ - z) = 0`.
+
+Rewrite using `[map_sub, sub_eq_zero]`. Conclude with `h1`. Establish `h3` using `(hfs τ _).1 h2`. Rewrite `h3` using `[map_sub, sub_eq_zero]`. Then use the resulting hypothesis. Rewrite using `[hL]`.
+
+Use `⟨⟨z, rfl⟩, f, hf, ?_⟩` and prove the remaining obligations. Rewrite using `[Finset.sum_eq_single τ (fun s _ h => hs s h) (by simp), hτ]`. Introduce `h`. Take `⟨-, f, hf, e⟩` from `(hL _).1 h`. Establish `hu : ∀ s, g s (Function.update f τ (f τ - z) s) = g s (f s) - if s = τ then g τ z else 0`.
+
+Introduce `s`. Distinguish the cases in `hs : s = τ`. Substitute `hs` using the available equality. Simplify using the standard rewrite rules. Simplify using `[hs]`.
+
+Establish `h0` using `hind (Function.update f τ (f τ - z)) (by`. Simplify using `only [hu]`. Rewrite using `[Finset.sum_sub_distrib, e]`. Use the proof step `simp)`. Use `Submodule.mem_comap.2 (Submodule.mem_map.2 ⟨f, hf, funext fun s => ?_⟩)` and prove the remaining obligations.
+
+Distinguish the cases in `hs : s = τ`. Substitute `hs` using the available equality. Establish `h1` using `h0 s`. Rewrite `h1` using `[hu, if_pos rfl]`. Establish `h2 : (filSpace (kerFil a N g) s).mkQ (f s - z) = 0` using `(hfs s _).2 (by rw [map_sub]; exact h1)`.
+
+Rewrite `h2` using `[map_sub, sub_eq_zero]`. Rewrite using `[LinearMap.single_apply, Pi.single_eq_same]`. Conclude with `h2`. Establish `h1` using `h0 s`. Rewrite `h1` using `[hu, if_neg hs, sub_zero]`.
+
+Rewrite using `[LinearMap.single_apply, Pi.single_eq_of_ne hs]`. Conclude with `(hfs s _).2 h1`.
+-/
 theorem mkQ_mem_eigenSub_iff (a : S → w.valuationSubring) (ha : Function.Injective a) (N : ℕ)
     (g : S → (Fin N → C) →ₗ[C] W) (τ : S) (L : Submodule w.valuationSubring W)
     (hind : ∀ f : S → Fin N → C, ∑ s, g s (f s) = 0 → ∀ s, g s (f s) = 0)
@@ -149,6 +199,21 @@ theorem mkQ_mem_eigenSub_iff (a : S → w.valuationSubring) (ha : Function.Injec
       rw [LinearMap.single_apply, Pi.single_eq_of_ne hs]
       exact (hfs s _).2 h1
 
+/- English proof (translation)
+Establish `hfs : ∀ x : Fin N → C, (filSpace (kerFil a N g) τ).mkQ x = 0 ↔ g τ x = 0`. Introduce `x`. Rewrite using `[Submodule.mkQ_apply, Submodule.Quotient.mk_eq_zero, filSpace_kerFil a ha N g τ, LinearMap.mem_ker]`. Establish `hmem` using `mkQ_mem_eigenSub_iff a ha N g τ _ hind hL`. Prove the components needed by the constructor for the conclusion.
+
+Rewrite using `[Fintype.linearIndependent_iff]`. Introduce `c hc`. Establish `h1 : g τ (∑ i, c i • u i) = 0` using `(hfs _).1 (by`. Rewrite using `[map_sum]`. Simplify `hc)` using `only [map_smul]`.
+
+Rewrite `h1` using `[map_sum]`. Simplify using `only [map_smul, hu] at h1`. Conclude with `Fintype.linearIndependent_iff.1 hv c h1`. Apply `le_antisymm` to reduce the goal to its premises. Rewrite using `[Submodule.span_le]`.
+
+Introduce and unpack `_ ⟨i, rfl⟩`. Conclude with `(hmem _).2 (by rw [hu]; exact Submodule.subset_span ⟨i, rfl⟩)`. Introduce `zq hz`. Take `⟨z, rfl⟩` from `(filSpace (kerFil a N g) τ).mkQ_surjective zq`. Take `⟨c, hc⟩` from `(Submodule.mem_span_range_iff_exists_fun w.valuationSubring).1 ((hmem z).1 hz)`.
+
+Establish `h0 : (filSpace (kerFil a N g) τ).mkQ (z - ∑ i, (c i : C) • u i) = 0` using `(hfs _).2 (by`. Rewrite using `[map_sub, map_sum, sub_eq_zero, ← hc]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[map_smul, hu]`. Conclude with `(algebraMap_smul C (c i) (v i)).symm)`.
+
+Rewrite `h0` using `[map_sub, sub_eq_zero, map_sum]`. Rewrite using `[h0]`. Use `sum_mem fun i _ => ?_` and prove the remaining obligations. Rewrite using `[map_smul]`. Rewrite using `[show (c i : C) • (filSpace (kerFil a N g) τ).mkQ (u i) = c i • (filSpace (kerFil a N g) τ).mkQ (u i) from algebraMap_smul C (c i) _]`.
+
+Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span ⟨i, rfl⟩)`.
+-/
 theorem isLatticeBasis_mkQ (a : S → w.valuationSubring) (ha : Function.Injective a) (N : ℕ)
     (g : S → (Fin N → C) →ₗ[C] W) (τ : S) {p : ℕ} (v : Fin p → W)
     (hind : ∀ f : S → Fin N → C, ∑ s, g s (f s) = 0 → ∀ s, g s (f s) = 0)
@@ -195,6 +260,11 @@ theorem isLatticeBasis_mkQ (a : S → w.valuationSubring) (ha : Function.Injecti
 
 end Lemmas
 
+/- English proof (translation)
+Establish `hwy : w y ≠ 0` using `(w.ne_zero_iff).2 hy`. Establish `hx : x ≠ 0` using `(w.ne_zero_iff).1 (h ▸ hwy)`. Establish `ht : x / y ≠ 0` using `div_ne_zero hx hy`. Establish `h1 : w (x / y) = 1` using `by rw [map_div₀, h, div_self hwy]`. Establish `h2 : w (x / y)⁻¹ = 1` using `by rw [map_inv₀, h1, inv_one]`.
+
+Use `⟨⟨⟨x / y, (w.mem_valuationSubring_iff _).2 h1.le⟩, ⟨(x / y)⁻¹, (w.mem_valuationSubring_iff _).2 h2.le⟩, Subtype.ext (mul_inv_cancel₀ ht), Subtype.ext (inv_mul_cancel₀ ht)⟩, ?_⟩` and prove the remaining obligations. Use `show x = x / y * y`. Rewrite using `[div_mul_cancel₀ _ hy]`.
+-/
 theorem exists_unit_of_val_eq {C : Type} [Field C] {w : Valuation C ℝ≥0} {x y : C} (hy : y ≠ 0)
     (h : w x = w y) : ∃ ε : (w.valuationSubring)ˣ, x = (ε : w.valuationSubring) * y := by
   have hwy : w y ≠ 0 := (w.ne_zero_iff).2 hy
@@ -208,6 +278,23 @@ theorem exists_unit_of_val_eq {C : Type} [Field C] {w : Valuation C ℝ≥0} {x 
   show x = x / y * y
   rw [div_mul_cancel₀ _ hy]
 
+/- English proof (translation)
+Introduce `C _ w ℓ hℓ0 hℓ1 S _ _ a p q τ r W _ _ _ _ g v U A ha hind hrank hrq hv hspan hU1 hU2 hM hX`. Establish `hFil` using `isFiltration_kerFil a (p + q) g`. Establish `hLie` using `isLatticeBasis_mkQ a ha (p + q) g τ v hind hv hspan (fun i => U (Fin.castAdd q i)) hU1`. Take `⟨c, hc, hdet⟩` from `GlobalTheory.FrameModel.det_append_eq_mul_det C w ℓ hℓ0 hℓ1 S a p q (kerFil a (p + q) g) τ ha hFil _ _ _ hX hLie hM`. Establish `happ : Fin.append (fun i => U (Fin.castAdd q i)) (fun j => U (Fin.natAdd p j)) = U`.
+
+Use function extensionality and compare the values at `k`. Apply the tactic sequence `refine Fin.addCases (fun i => ?_) (fun j => ?_) k <;> simp`. Establish `hx : Matrix.of (fun i => ∑ j, A i j • U j) = A * Matrix.of U`. Use extensionality with `i k`. Simplify using `[Matrix.mul_apply, Finset.sum_apply]`.
+
+Rewrite `hdet` using `[happ, hx, Matrix.det_mul]`. Establish `hAU : (A * Matrix.of U).det ≠ 0`. Establish `hu : IsUnit (Matrix.of (fun i => ∑ j, A i j • U j))` using `Matrix.linearIndependent_rows_iff_isUnit.1 hX.1`. Rewrite `hu` using `[hx]`. Conclude with `((Matrix.isUnit_iff_isUnit_det _).1 hu).ne_zero`.
+
+Establish `hU0 : (Matrix.of U).det ≠ 0`. Rewrite `hAU` using `[Matrix.det_mul]`. Conclude with `right_ne_zero_of_mul hAU`. Establish `hcA : c * A.det = 1`. Establish `h1 : (c * A.det) * (Matrix.of U).det = 1 * (Matrix.of U).det`.
+
+Rewrite using `[one_mul, mul_assoc]`. Conclude with `hdet.symm`. Conclude with `mul_right_cancel₀ hU0 h1`. Establish `hne : ∀ s ∈ Finset.univ.erase τ, (a τ : C) - (a s : C) ≠ 0` using `fun s hs e => (Finset.mem_erase.1 hs).1 (ha (Subtype.ext (sub_eq_zero.1 e))).symm`. Establish `hr : ∀ s, Module.finrank C (filSpace (kerFil a (p + q) g) s) = r s` using `fun s => by`.
+
+Rewrite using `[filSpace_kerFil a ha (p + q) g s, hrank s]`. Establish `hle : ∀ s, r s ≤ p + q` using `fun s => by`. Rewrite using `[← hr s]`. Simplify using `using Submodule.finrank_le (filSpace (kerFil a (p + q) g) s)`. Establish `hval : w (A.det * (∏ s ∈ Finset.univ.erase τ, ((a τ : C) - (a s : C))) ^ (p + q)) = w (∏ s ∈ Finset.univ.erase τ, ((a τ : C) - (a s : C)) ^ r s)`.
+
+Establish `hwc : w c * w A.det = 1` using `by rw [← map_mul, hcA, map_one]`. Establish `hsplit : w ((∏ s ∈ Finset.univ.erase τ, ((a τ : C) - (a s : C))) ^ (p + q)) = w c * w (∏ s ∈ Finset.univ.erase τ, ((a τ : C) - (a s : C)) ^ r s)`. Simplify using `only [hr] at hc`. Rewrite using `[hc, map_pow, map_prod, map_prod, ← Finset.prod_pow, ← Finset.prod_mul_distrib]`. Use `Finset.prod_congr rfl fun s _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[map_pow, ← pow_add, Nat.sub_add_cancel (hle s)]`. Rewrite using `[map_mul, hsplit, ← mul_assoc, mul_comm (w A.det), hwc, one_mul]`. Conclude with `exists_unit_of_val_eq (Finset.prod_ne_zero_iff.2 fun s hs => pow_ne_zero _ (hne s hs)) hval`.
+-/
 theorem det_adapted_core : ∀ (C : Type) [Field C] (w : Valuation C ℝ≥0) (ℓ : C), 0 < w ℓ → w ℓ < 1 → ∀ (S : Type) [Fintype S] [DecidableEq S] (a : S → w.valuationSubring) (p q : ℕ) (τ : S) (r : S → ℕ) (W : Type) [AddCommGroup W] [Module C W] [Module w.valuationSubring W] [IsScalarTower w.valuationSubring C W] (g : S → (Fin (p + q) → C) →ₗ[C] W) (v : Fin p → W) (U : Fin (p + q) → Fin (p + q) → C) (A : Matrix (Fin (p + q)) (Fin (p + q)) C), Function.Injective a → (∀ f : S → Fin (p + q) → C, ∑ s, g s (f s) = 0 → ∀ s, g s (f s) = 0) → (∀ s, Module.finrank C (LinearMap.ker (g s)) = r s) → r τ = q → LinearIndependent C v → (∀ y, y ∈ Submodule.span w.valuationSubring (Set.range v) ↔ y ∈ LinearMap.range (g τ) ∧ ∃ f ∈ freeLattice a (p + q), ∑ s, g s (f s) = y) → (∀ i, g τ (U (Fin.castAdd q i)) = v i) → (∀ j, g τ (U (Fin.natAdd p j)) = 0) → IsLatticeBasis w (fun j => U (Fin.natAdd p j)) (eigenQuot (W := fun _ => Fin (p + q) → C) (kerFil a (p + q) g) τ) → IsLatticeBasis w (fun i => ∑ j, A i j • U j) (eigenQuot (W := fun _ => Fin (p + q) → C) (freeLattice a (p + q)) τ) → ∃ ε : (w.valuationSubring)ˣ, A.det * (∏ s ∈ Finset.univ.erase τ, ((a τ : C) - (a s : C))) ^ (p + q) = (ε : w.valuationSubring) * ∏ s ∈ Finset.univ.erase τ, ((a τ : C) - (a s : C)) ^ r s := by
   intro C _ w ℓ hℓ0 hℓ1 S _ _ a p q τ r W _ _ _ _ g v U A ha hind hrank hrq hv hspan hU1 hU2 hM hX
   have hFil := isFiltration_kerFil a (p + q) g

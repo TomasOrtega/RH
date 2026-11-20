@@ -4,6 +4,21 @@ import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.LengthCyclotom
 
 open NumberField IsDedekindDomain Formalism.ConjugateSelfDual ReciprocityTheory.Gal Formalism.BasicNotions Formalism.BasicNotions.Loc Formalism.MainNotions.N GlobalTheory.GalOfCusp UpperTheory.V UpperTheory.V.Af UpperTheory.V.Published.Kato
 
+/- English proof (translation)
+Introduce `l _ K Ω _ _ _ _ _ _ _ C V _ _ _ ρ c hc hyp w hw`. Use `haveI : IsAlgClosure ℚ Ω := IsAlgClosure.ofAlgebraic ℚ K Ω`. Take `⟨B, hB⟩` from `exists_isPlaceOver (F := K) Ω w`. Establish `hne : w.asIdeal.comap (algebraMap (𝓞 ℚ) (𝓞 K)) ≠ ⊥`. Take `⟨y, hy, hy0⟩` from `Submodule.exists_mem_ne_zero_of_ne_bot w.ne_bot`.
+
+Conclude with `Ideal.comap_ne_bot_of_integral_mem hy0 hy (Algebra.IsIntegral.isIntegral y)`. Set `p : HeightOneSpectrum (𝓞 ℚ)` to `⟨w.asIdeal.comap (algebraMap (𝓞 ℚ) (𝓞 K)), Ideal.comap_isPrime _ _, hne⟩`. Establish `hBp : IsPlaceOver B p`. Introduce `y`. Establish `key` using `hB (algebraMap (𝓞 ℚ) (𝓞 K) y)`.
+
+Establish `hcoe : ((algebraMap (𝓞 ℚ) (𝓞 K) y : 𝓞 K) : K) = algebraMap ℚ K (y : ℚ)` using `rfl`. Rewrite `key` using `[hcoe, ← IsScalarTower.algebraMap_apply]`. Conclude with `key`. Establish `hlp : ((l : ℕ) : 𝓞 ℚ) ∉ p.asIdeal` using `by show _ ∉ Ideal.comap _ _`. Rewrite using `[Ideal.mem_comap, map_natCast]`.
+
+Conclude with `hw`. Take `⟨A, hA, x, hx⟩` from `hyp p hlp`. Take `⟨σ, hσ⟩` from `exists_smul_eq_of_isPlaceOver hA hBp`. Use `⟨B, hB, ρ σ x - c σ, ?_⟩` and prove the remaining obligations. Introduce `s hs`.
+
+Establish `ht : s.restrictScalars ℚ ∈ Ine (F` using `ℚ) B := ⟨hs.1, fun y hy => hs.2 y hy⟩`. Rewrite `ht` using `[← hσ]`. Establish `hu` using `hx _ (GlobalTheory.Cut.ShaBound.conj_mem_Ine' ht)`. Establish `htu : s.restrictScalars ℚ * σ = σ * (σ⁻¹ * s.restrictScalars ℚ * σ)` using `by group`. Establish `e1` using `hc (s.restrictScalars ℚ) σ`.
+
+Establish `e2` using `hc σ (σ⁻¹ * s.restrictScalars ℚ * σ)`. Rewrite `e1` using `[htu]`. Establish `hct` using `eq_sub_of_add_eq (e1.symm.trans e2)`. Establish `hm : ρ σ (ρ (σ⁻¹ * s.restrictScalars ℚ * σ) x) = ρ (s.restrictScalars ℚ) (ρ σ x)`. Rewrite using `[← Module.End.mul_apply, ← map_mul, ← htu, map_mul, Module.End.mul_apply]`.
+
+Rewrite using `[hct, hu, map_sub, hm, map_sub]`. Normalize the expressions using the abelian group laws.
+-/
 theorem UpperTheory.V.X.Kato.resAway :
     ∀ (l : ℕ) [Fact l.Prime] (K Ω : Type) [Field K] [NumberField K] [Field Ω] [Algebra ℚ Ω] [Algebra K Ω] [IsScalarTower ℚ K Ω] [IsAlgClosure K Ω] (C V : Type) [CommRing C] [AddCommGroup V] [Module C V] (ρ : Representation C (G ℚ Ω) V) (c : G ℚ Ω → V), (∀ g h, c (g * h) = c g + ρ g (c h)) → (∀ w : HeightOneSpectrum (𝓞 ℚ), ((l : ℕ) : 𝓞 ℚ) ∉ w.asIdeal → ∃ A : ValuationSubring Ω, IsPlaceOver A w ∧ ∃ x : V, ∀ s ∈ Ine (F := ℚ) A, c s = ρ s x - x) → ∀ w : HeightOneSpectrum (𝓞 K), ((l : ℕ) : 𝓞 K) ∉ w.asIdeal → ∃ A : ValuationSubring Ω, IsPlaceOver A w ∧ ∃ x : V, ∀ s ∈ Ine (F := K) A, c (s.restrictScalars ℚ) = ρ (s.restrictScalars ℚ) x - x := by
   intro l _ K Ω _ _ _ _ _ _ _ C V _ _ _ ρ c hc hyp w hw

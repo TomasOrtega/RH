@@ -8,6 +8,11 @@ namespace PI.BeDiagZp.IdentW
 
 variable {p : ℕ} [Fact p.Prime]
 
+/- English proof (translation)
+Establish `hex` using `PowerSeries.HasSubst.of_constantCoeff_zero' hex0`. Establish `key` using `congrArg (PowerSeries.coeff 0) h`. Rewrite `key` using `[PowerSeries.coeff_subst' hex, finsum_eq_single _ 0]`. Simplify using `using key`. Introduce `d hd`.
+
+Rewrite using `[PowerSeries.coeff_zero_eq_constantCoeff_apply, map_pow, hex0, zero_pow hd, smul_zero]`.
+-/
 theorem constantCoeff_l {l ex : PowerSeries ℂ_[p]} (hex0 : PowerSeries.constantCoeff ex = 0)
     (h : PowerSeries.subst ex l = PowerSeries.X) : PowerSeries.constantCoeff l = 0 := by
   have hex := PowerSeries.HasSubst.of_constantCoeff_zero' hex0
@@ -17,6 +22,13 @@ theorem constantCoeff_l {l ex : PowerSeries ℂ_[p]} (hex0 : PowerSeries.constan
   · intro d hd
     rw [PowerSeries.coeff_zero_eq_constantCoeff_apply, map_pow, hex0, zero_pow hd, smul_zero]
 
+/- English proof (translation)
+Introduce `h1`. Establish `hex` using `PowerSeries.HasSubst.of_constantCoeff_zero' hex0`. Establish `hXe : (PowerSeries.X : PowerSeries ℂ_[p]) ∣ ex` using `PowerSeries.X_dvd_iff.2 hex0`. Establish `key` using `congrArg (PowerSeries.coeff 1) h`. Rewrite `key` using `[PowerSeries.coeff_subst' hex, finsum_eq_zero_of_forall_eq_zero]`.
+
+Simplify using `at key`. Introduce `d`. Break down `Nat.lt_or_ge d 2 with hd | hd` into its components or cases. Use `interval_cases d`. Simplify using the standard rewrite rules.
+
+Rewrite using `[h1, zero_smul]`. Establish `h0 : PowerSeries.coeff 1 (ex ^ d) = 0` using `PowerSeries.X_pow_dvd_iff.1 ((pow_dvd_pow PowerSeries.X hd).trans (pow_dvd_pow_of_dvd hXe d)) 1 (by norm_num)`. Rewrite using `[h0, smul_zero]`.
+-/
 theorem coeff_one_l_ne_zero {l ex : PowerSeries ℂ_[p]} (hex0 : PowerSeries.constantCoeff ex = 0)
     (h : PowerSeries.subst ex l = PowerSeries.X) : PowerSeries.coeff 1 l ≠ 0 := by
   intro h1
@@ -35,6 +47,11 @@ theorem coeff_one_l_ne_zero {l ex : PowerSeries ℂ_[p]} (hex0 : PowerSeries.con
           (by norm_num)
       rw [h0, smul_zero]
 
+/- English proof (translation)
+Use `set Q := PowerSeries.substInvOfIsUnit l hu with hQ`. Establish `hQl : PowerSeries.subst l Q = PowerSeries.X` using `PowerSeries.subst_substInvOfIsUnit_left l hl0 hu`. Establish `hl : PowerSeries.HasSubst l` using `PowerSeries.HasSubst.of_constantCoeff_zero' hl0`. Establish `hex : PowerSeries.HasSubst ex` using `PowerSeries.HasSubst.of_constantCoeff_zero' hex0`. Establish `key : PowerSeries.subst ex (PowerSeries.subst l Q) = PowerSeries.subst (PowerSeries.subst ex l) Q` using `PowerSeries.subst_comp_subst_apply hl hex Q`.
+
+Rewrite `key` using `[hQl, h, PowerSeries.subst_X hex, PowerSeries.X_subst]`. Rewrite using `[key, hQl]`.
+-/
 theorem subst_left_inv {K : Type*} [Field K] {l ex : PowerSeries K} (hl0 : PowerSeries.constantCoeff l = 0)
     (hu : IsUnit (PowerSeries.coeff 1 l)) (hex0 : PowerSeries.constantCoeff ex = 0)
     (h : PowerSeries.subst ex l = PowerSeries.X) : PowerSeries.subst l ex = PowerSeries.X := by
@@ -47,10 +64,16 @@ theorem subst_left_inv {K : Type*} [Field K] {l ex : PowerSeries K} (hl0 : Power
   rw [hQl, h, PowerSeries.subst_X hex, PowerSeries.X_subst] at key
   rw [key, hQl]
 
+/- English proof (translation)
+The claim follows from `subst_left_inv (constantCoeff_l hex0 h) (isUnit_iff_ne_zero.2 (coeff_one_l_ne_zero hex0 h)) hex0 h`.
+-/
 theorem subst_l_ex {l ex : PowerSeries ℂ_[p]} (hex0 : PowerSeries.constantCoeff ex = 0)
     (h : PowerSeries.subst ex l = PowerSeries.X) : PowerSeries.subst l ex = PowerSeries.X :=
   subst_left_inv (constantCoeff_l hex0 h) (isUnit_iff_ne_zero.2 (coeff_one_l_ne_zero hex0 h)) hex0 h
 
+/- English proof (translation)
+Establish `hex` using `PowerSeries.HasSubst.of_constantCoeff_zero' hex0`. Establish `hy'` using `PowerSeries.HasSubst.of_constantCoeff_zero hy`. Rewrite using `[← PowerSeries.subst_comp_subst_apply hex hy' l, h, PowerSeries.subst_X hy']`.
+-/
 theorem l_ex_apply {σ : Type} {l ex : PowerSeries ℂ_[p]} (hex0 : PowerSeries.constantCoeff ex = 0)
     (h : PowerSeries.subst ex l = PowerSeries.X) (y : MvPowerSeries σ ℂ_[p])
     (hy : MvPowerSeries.constantCoeff y = 0) :
@@ -59,6 +82,9 @@ theorem l_ex_apply {σ : Type} {l ex : PowerSeries ℂ_[p]} (hex0 : PowerSeries.
   have hy' := PowerSeries.HasSubst.of_constantCoeff_zero hy
   rw [← PowerSeries.subst_comp_subst_apply hex hy' l, h, PowerSeries.subst_X hy']
 
+/- English proof (translation)
+Establish `hl` using `PowerSeries.HasSubst.of_constantCoeff_zero' (constantCoeff_l hex0 h)`. Establish `hy'` using `PowerSeries.HasSubst.of_constantCoeff_zero hy`. Rewrite using `[← PowerSeries.subst_comp_subst_apply hl hy' ex, subst_l_ex hex0 h, PowerSeries.subst_X hy']`.
+-/
 theorem ex_l_apply {σ : Type} {l ex : PowerSeries ℂ_[p]} (hex0 : PowerSeries.constantCoeff ex = 0)
     (h : PowerSeries.subst ex l = PowerSeries.X) (y : MvPowerSeries σ ℂ_[p])
     (hy : MvPowerSeries.constantCoeff y = 0) :
@@ -67,6 +93,17 @@ theorem ex_l_apply {σ : Type} {l ex : PowerSeries ℂ_[p]} (hex0 : PowerSeries.
   have hy' := PowerSeries.HasSubst.of_constantCoeff_zero hy
   rw [← PowerSeries.subst_comp_subst_apply hl hy' ex, subst_l_ex hex0 h, PowerSeries.subst_X hy']
 
+/- English proof (translation)
+Introduce `p _ l ex hex0 h`. Establish `hl0` using `constantCoeff_l hex0 h`. Use `⟨hl0, fun σ a b ha hb => ?_⟩` and prove the remaining obligations. Establish `hla : MvPowerSeries.constantCoeff (PowerSeries.subst a l) = 0` using `PowerSeries.constantCoeff_subst_eq_zero ha l hl0`. Establish `hlb : MvPowerSeries.constantCoeff (PowerSeries.subst b l) = 0` using `PowerSeries.constantCoeff_subst_eq_zero hb l hl0`.
+
+Establish `hCa : ∀ c : ℂ_[p], MvPowerSeries.constantCoeff (MvPowerSeries.C c * PowerSeries.subst a l) = 0` using `fun c => by rw [map_mul, hla, mul_zero]`. Establish `lmul : ∀ c : ℂ_[p], PowerSeries.subst (mulBy l ex c a) l = MvPowerSeries.C c * PowerSeries.subst a l` using `fun c => l_ex_apply hex0 h _ (hCa c)`. Use `⟨PowerSeries.constantCoeff_subst_eq_zero (by rw [map_add, hla, hlb, add_zero]) ex hex0, fun c => PowerSeries.constantCoeff_subst_eq_zero (hCa c) ex hex0, ?_, ?_, fun c d => ?_, fun c => ?_, ?_, ?_⟩` and prove the remaining obligations. Unfold `add`. Rewrite using `[add_comm]`.
+
+Unfold `add mulBy`. Rewrite using `[map_ofNat, two_mul]`. Unfold `add`. Rewrite using `[lmul, lmul, ← add_mul, ← map_add]`. Both sides reduce to the same expression.
+
+Unfold `add`. Rewrite using `[lmul]`. Unfold `mulBy`. Rewrite using `[map_add, map_one, add_mul, one_mul]`. Unfold `mulBy`.
+
+Rewrite using `[map_one, one_mul]`. Conclude with `ex_l_apply hex0 h a ha`. Unfold `mulBy`. Rewrite using `[map_zero, zero_mul]`. Conclude with `PowerSeries.subst_zero_of_constantCoeff_zero hex0`.
+-/
 theorem ident_holds : Ident := by
   intro p _ l ex hex0 h
   have hl0 := constantCoeff_l hex0 h

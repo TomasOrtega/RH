@@ -28,6 +28,9 @@ def toRec (j : E ≃+* L) (k : AlgebraicClosure L ≃+* Ω) (hk : FrameOver j k)
     ext x
     simp
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem toRec_apply (j : E ≃+* L) (k : AlgebraicClosure L ≃+* Ω) (hk : FrameOver j k)
     (σ : AlgebraicClosure L ≃ₐ[L] AlgebraicClosure L) (x : Ω) : toRec j k hk σ x = k (σ (k.symm x)) := rfl
 
@@ -48,14 +51,23 @@ def ofRec (j : E ≃+* L) (k : AlgebraicClosure L ≃+* Ω) (hk : FrameOver j k)
     ext x
     simp
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem ofRec_apply (j : E ≃+* L) (k : AlgebraicClosure L ≃+* Ω) (hk : FrameOver j k)
     (g : Ω ≃ₐ[E] Ω) (x : AlgebraicClosure L) : ofRec j k hk g x = k.symm (g (k x)) := rfl
 
+/- English proof (translation)
+Use extensionality with `x`. Simplify using `[toRec_apply, ofRec_apply]`.
+-/
 theorem toRec_ofRec (j : E ≃+* L) (k : AlgebraicClosure L ≃+* Ω) (hk : FrameOver j k) (g : Ω ≃ₐ[E] Ω) :
     toRec j k hk (ofRec j k hk g) = g := by
   ext x
   simp [toRec_apply, ofRec_apply]
 
+/- English proof (translation)
+Use extensionality with `x`. Simplify using `[toRec_apply, ofRec_apply]`.
+-/
 theorem ofRec_toRec (j : E ≃+* L) (k : AlgebraicClosure L ≃+* Ω) (hk : FrameOver j k)
     (σ : AlgebraicClosure L ≃ₐ[L] AlgebraicClosure L) : ofRec j k hk (toRec j k hk σ) = σ := by
   ext x
@@ -108,6 +120,9 @@ def twistRep {Γ K : Type} [Group Γ] [CommRing K] {n : ℕ} (ρ : Γ →* GL (F
     congr 1
     rw [← mul_assoc, ← mul_assoc, ← key]
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem twistRep_apply {Γ K : Type} [Group Γ] [CommRing K] {n : ℕ} (ρ : Γ →* GL (Fin n) K) (χ : Γ →* Kˣ) (g : Γ) :
     ((twistRep ρ χ g : GL (Fin n) K) : Matrix (Fin n) (Fin n) K) =
       algebraMap K (Matrix (Fin n) (Fin n) K) (χ g : K) * (ρ g : Matrix (Fin n) (Fin n) K) := rfl
@@ -115,6 +130,9 @@ theorem twistRep_apply {Γ K : Type} [Group Γ] [CommRing K] {n : ℕ} (ρ : Γ 
 def IsConjRep {Γ K : Type} [Group Γ] [CommRing K] {n : ℕ} (ρ₁ ρ₂ : Γ →* GL (Fin n) K) : Prop :=
   ∃ P : GL (Fin n) K, ∀ g, ρ₁ g = P * ρ₂ g * P⁻¹
 
+/- English proof (translation)
+Use `D.R.two_le_m` as an intermediate fact. Use `show 1 ≤ D.R.k + D.R.m - 1`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem one_le_r (D : D7) : 1 ≤ D.R.r := by
   have := D.R.two_le_m
   show 1 ≤ D.R.k + D.R.m - 1
@@ -145,14 +163,23 @@ def IsRowPar (D : D7) (a : D.nd.Loc) (σ : D.what₂.FT) (Sig : List (Part D.nau
 def rowSig (D : D7) (a : D.nd.Loc) (σ : D.what₂.FT) : List (Part D.naut.CG) :=
   Classical.epsilon (IsRowPar D a σ)
 
+/- English proof (translation)
+The claim follows from `Classical.epsilon_spec (hP a σ hσ)`.
+-/
 theorem rowSig_isRowPar (D : D7) (hP : RowPar D) (a : D.nd.Loc) (σ : D.what₂.FT) (hσ : D.what₂.isot (D.nd.j a) σ ≠ ⊥) :
     IsRowPar D a σ (rowSig D a σ) :=
   Classical.epsilon_spec (hP a σ hσ)
 
+/- English proof (translation)
+The claim follows from `(rowSig_isRowPar D hP a σ hσ).1`.
+-/
 theorem rowSig_spec (D : D7) (hP : RowPar D) (a : D.nd.Loc) (σ : D.what₂.FT) (hσ : D.what₂.isot (D.nd.j a) σ ≠ ⊥) :
     Formalism.MainNotions.N.HasParamW D.nd D.naut a σ (rowSig D a σ) :=
   (rowSig_isRowPar D hP a σ hσ).1
 
+/- English proof (translation)
+The claim follows from `(rowSig_isRowPar D hP a σ hσ).2 hg ⟨D.R.r, π, 1⟩ (by rw [hS]; exact List.mem_singleton_self _)`.
+-/
 theorem rowSig_csd_ralg (D : D7) (hP : RowPar D) (a : D.nd.Loc) (σ : D.what₂.FT) (hσ : D.what₂.isot (D.nd.j a) σ ≠ ⊥)
     (hg : D.nd.goodRow σ) (π : D.naut.CG D.R.r) (hS : rowSig D a σ = [⟨D.R.r, π, 1⟩]) : D.naut.csd π ∧ D.naut.ralg π :=
   (rowSig_isRowPar D hP a σ hσ).2 hg ⟨D.R.r, π, 1⟩ (by rw [hS]; exact List.mem_singleton_self _)
@@ -161,6 +188,9 @@ def rowRho (D : D7) (hG : GalRepEx D) (a : D.nd.Loc) (π : D.naut.CG D.R.r) (hc 
     Formalism.ConjugateSelfDual.G D.host.E D.nd.Om →* GL (Fin D.R.r) (Qbar (D.nd.l a)) :=
   Classical.choose (hG a D.R.r (one_le_r D) π hc hr)
 
+/- English proof (translation)
+The claim follows from `Classical.choose_spec (hG a D.R.r (one_le_r D) π hc hr)`.
+-/
 theorem rowRho_spec (D : D7) (hG : GalRepEx D) (a : D.nd.Loc) (π : D.naut.CG D.R.r) (hc : D.naut.csd π)
     (hr : D.naut.ralg π) : IsRepOfSigQ D a D.R.r [⟨D.R.r, π, 1⟩] (rowRho D hG a π hc hr) :=
   Classical.choose_spec (hG a D.R.r (one_le_r D) π hc hr)

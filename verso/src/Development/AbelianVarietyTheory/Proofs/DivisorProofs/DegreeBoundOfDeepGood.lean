@@ -39,6 +39,19 @@ namespace GlobalTheory.CovTop.DegProof
 
 set_option maxHeartbeats 1000000 in
 
+/- English proof (translation)
+Introduce `hX h2 hS hT hG hQ hN hDG hSz hF`. Establish `hP` using `GlobalTheory.T.stronger_published_hypotheses_imply h2`. Use `Closed.imp (Closed.and (Closed.and (GlobalTheory.T.valuation_multiplicity_weight h2 hG hQ hS hT hN hDG hSz hF) wtBig_run) (Closed.and (Closed.and (GlobalTheory.T.weight_parameter_strict_antitone hSz) (GlobalTheory.T.size_bounds_for_family hSz)) hDG)) ?_` and prove the remaining obligations. Introduce and unpack `eps Fm CH - ⟨⟨⟨_, -, a₁⟩, _, -, a₂⟩, ⟨⟨_, -, a₃⟩, _, -, a₄⟩, _, -, a₅⟩`. Take `⟨x0, a⟩` from `(a₁.and a₂).and ((a₃.and a₄).and a₅)`.
+
+Use `clear a₁ a₂ a₃ a₄ a₅`. Use `⟨0, le_rfl, x0, fun x hx hle ι p hp i hi Y hY u1 hu1 => ?_⟩` and prove the remaining obligations. Take `⟨⟨a₁, a₂⟩, ⟨a₃, a₄⟩, a₅⟩` from `a x hx hle ι p hp`. Use `clear a`. Take `⟨hp1, hq1, hE, hQuo, hAnti, -, -⟩` from `a₃ i hi`.
+
+Take `⟨hLaw, hIn, -⟩` from `a₄ i hi Y hY`. Take `⟨-, -, -, -, -, -, ⟨Z'⟩, -⟩` from `a₅ i hi Y hY`. Establish `hW` using `a₂ i hi`. Establish `hV` using `a₁ i hi Y hY`. Rewrite using `[hQuo u1 hu1]`.
+
+Establish `hPr` using `GlobalTheory.T.proportional_positive_volumes h2 hS hT hN _ p.T hLaw _ hp1 hq1 hE hIn Y _ _ hY.1`. Establish `hEq` using `GlobalTheory.T.equal_volume_deep_level h2 hS hT hN _ p.T hLaw _ hp1 hq1 hE hIn Y _ _ hY.1`. Establish `hBir` using `GlobalTheory.T.weight_principalisation_bound hX hG hQ hS hP h2.q15 h2.q16 _ p.T hLaw _ hp1 hq1 Y _ _ hY.1 _ (fun τ a b hab => by`. Establish `hb` using `b.2`. Establish `h` using `hW.gaps τ a (by rw [← hab]; exact hb)`.
+
+Rewrite `h` using `[gap_eq _ hab]`. Use `le_trans ?_ h` and prove the remaining obligations. Establish `e : ∀ d C N : ℕ, (d + 3) ^ 2 + 2 * N ≤ (d + 3) * (C + 4 * N + d + 3)` using `fun d C N => by nlinarith`. Rewrite using `[GlobalTheory.CompHS.dimFlag_eq]`. Conclude with `e _ _ _)` after adjusting the coercions.
+
+Establish `key` using `GlobalTheory.T.componentImageDegree_between_of_proportionality _ _ _ _ _ _ _ Y.U hY.1.unf hPr.1 hEq _ (fun τ => (hAnti τ).1) (fun τ => (hAnti τ).2) hBir hV`. Use `⟨CompHt.delPrime Y.U Z' _, ?_, fun Z => key Z Z'⟩` and prove the remaining obligations. Conclude with `mul_pos (hPr.2 Z') (Int.cast_pos.2 (CompHt.vdm_pos fun τ => (hAnti τ).2))`.
+-/
 theorem deg : HypothesesX → Hypotheses2 → GlobalTheory.Published.SiegelToroidalIntegral → GlobalTheory.Published.ToroidalForFanKS → GlobalTheory.Published.GrothendieckDeformation →
     GlobalTheory.HSCore.Quoted → GlobalTheory.Published.SemiAbelianLieSeminegative → DeepGood → Size → FlatDeg → Deg := by
   intro hX h2 hS hT hG hQ hN hDG hSz hF

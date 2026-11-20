@@ -24,6 +24,11 @@ namespace GlobalTheory.CoordAdd
 
 open ReciprocityTheory.ChartRestriction.G.Geo.Tor GlobalTheory.TorusCoord
 
+/- English proof (translation)
+Take `⟨a, ha⟩` from `exists_ratio hL h u hu u' hu'`. Establish `h2 : a = 1`. Use `Units.ext (AbelianPartIso.fn_eq_of_thickenings hI ⊤ rfl _ _ fun e z => ?_)` and prove the remaining obligations. Take `⟨J, hJ⟩` from `exists_good' hL z`. Use `ha _ (thick R I e) z J hJ` as an intermediate fact.
+
+Rewrite `this` using `[hv e z J hJ]`. Rewrite using `[gs_unit _ z ⊤ trivial, gs_unit _ z ⊤ trivial, map_one, mul_eq_right.1 this.symm]`. Conclude with `corr_of_val hL fun y J hJ => by rw [ha _ _ y J hJ, h2, map_one, _root_.one_mul]`.
+-/
 theorem corr_of_thick {R : Type} [CommRing R] [IsNoetherianRing R] [IsLocalRing R] {I : Ideal R} (hI : I ≠ ⊤)
     {X : Scheme.{0}} {L : LB X} (hL : L.IsLB) {K K' : Type} [Fintype K] [Fintype K']
     {φ : K → (Spec (CommRingCat.of R) ⟶ X)} {ε : K → ℤ} {φ' : K' → (Spec (CommRingCat.of R) ⟶ X)} {ε' : K' → ℤ}
@@ -52,10 +57,16 @@ variable (I) in
 abbrev levι (e : ℕ) : (Over.map (thick R I e)).obj (lev I e) ⟶ 𝟙_ (Over (Spec (CommRingCat.of R))) := toUnit _
 
 omit [IsDomain R] in
+/- English proof (translation)
+The claim follows from `(Category.comp_id _).symm.trans ((Over.w (levι I e)).trans (Category.id_comp _))`.
+-/
 theorem levι_left (e : ℕ) : (levι I e).left = thick R I e :=
   (Category.comp_id _).symm.trans ((Over.w (levι I e)).trans (Category.id_comp _))
 
 omit [IsDomain R] in
+/- English proof (translation)
+The claim follows from `(Category.comp_id _).symm.trans (Over.w (toUnit (Over.mk (thick R I e))))`.
+-/
 theorem toUnit_left (e : ℕ) : (toUnit (Over.mk (thick R I e))).left = thick R I e :=
   (Category.comp_id _).symm.trans (Over.w (toUnit (Over.mk (thick R I e))))
 
@@ -64,6 +75,13 @@ def Lifts {e : ℕ} (g : GtCoord I D e G) (x : 𝟙_ (Over (Spec (CommRingCat.of
   pushHom (isGrpPullback_pullback G (thick R I e)) (lev I e) a = levι I e ≫ x ∧ im g a = levι I e ≫ gp.b ∧
     ∀ χ z J, Good D.P.L z J → val (g.t χ) a.left z J = val (gp.s χ) (levι I e).left z J
 
+/- English proof (translation)
+Take `⟨xe, h₁, h₂, h₃⟩` from `h`. Establish `hw : xe.left ≫ (thickObj R I e G).hom = 𝟙 _`. Rewrite using `[← cancel_mono (thick R I e), Category.assoc]`. Conclude with `(Over.w xe).trans (Category.id_comp _).symm`. Establish `hu : (toUnit (Over.mk (thick R I e))).left = (levι I e).left` using `(toUnit_left e).trans (levι_left e).symm`.
+
+Use `⟨Over.homMk xe.left hw, Over.OverMorphism.ext ?_, Over.OverMorphism.ext ?_, fun χ z J hJ => ?_⟩` and prove the remaining obligations. Conclude with `(congrArg (·.left) h₁).trans (congrArg (· ≫ x.left) hu)`. Conclude with `(congrArg (·.left) h₂).trans (congrArg (· ≫ gp.b.left) hu)`. Use `(val_pull hJ _ _ _).symm.trans ((val_corr hJ (h₃ χ) (𝟙 _)).trans (val_pull hJ _ _ _))` as an intermediate fact. Rewrite `this` using `[Category.id_comp, Category.id_comp, hu]`.
+
+Conclude with `this`.
+-/
 theorem exists_lifts {e : ℕ} (g : GtCoord I D e G) {x : 𝟙_ (Over (Spec (CommRingCat.of R))) ⟶ G}
     {gp : GtPt D (𝟙_ (Over (Spec (CommRingCat.of R))))}
     (h : ∃ xe : Over.mk (thick R I e) ⟶ (Over.map (thick R I e)).obj (thickObj R I e G),
@@ -84,18 +102,27 @@ theorem exists_lifts {e : ℕ} (g : GtCoord I D e G) {x : 𝟙_ (Over (Spec (Com
     exact this
 
 omit [IsDomain R] [IsCommMonObj G] in
+/- English proof (translation)
+Introduce `a b h` and use `Over.OverMorphism.ext (pullback.hom_ext (congrArg (·.left) h) ((Over.w a).trans (Over.w b).symm))`.
+-/
 theorem push_injective {e : ℕ} {T : Over (Spec (CommRingCat.of (R ⧸ I ^ (e + 1))))} :
     Function.Injective (pushHom (isGrpPullback_pullback G (thick R I e)) T) := fun a b h =>
   Over.OverMorphism.ext (pullback.hom_ext (congrArg (·.left) h) ((Over.w a).trans (Over.w b).symm))
 
 omit [IsDomain R] in
 
+/- English proof (translation)
+The claim follows from `Over.OverMorphism.ext (hom_ext_of_isHausdorff I fun e => (congrArg (· ≫ b.left) (levι_left e)).symm.trans ((congrArg (·.left) (h e)).trans (congrArg (· ≫ b'.left) (levι_left e))))`.
+-/
 theorem pt_ext [IsLocalRing R] [IsHausdorff I R] {B : Over (Spec (CommRingCat.of R))}
     {b b' : 𝟙_ (Over (Spec (CommRingCat.of R))) ⟶ B} (h : ∀ e, levι I e ≫ b = levι I e ≫ b') : b = b' :=
   Over.OverMorphism.ext (hom_ext_of_isHausdorff I fun e =>
     (congrArg (· ≫ b.left) (levι_left e)).symm.trans
       ((congrArg (·.left) (h e)).trans (congrArg (· ≫ b'.left) (levι_left e))))
 
+/- English proof (translation)
+Rewrite using `[Fin.prod_univ_four]`. Use `show h _ ^ (-1 : ℤ) * h _ ^ (1 : ℤ) * h _ ^ (1 : ℤ) * h _ ^ (-1 : ℤ) = _`. Rewrite using `[zpow_neg_one, zpow_neg_one, zpow_one, zpow_one]`. Both sides reduce to the same expression.
+-/
 theorem prod_gtφT {T : Over (Spec (CommRingCat.of R))} (b : T ⟶ D.P.A) (χ : D.X) {U : Type} [CommGroup U]
     (h : (T.left ⟶ D.P.A.left) → U) :
     ∏ k, h (DegPre.gtφT D T b χ k) ^ DegPre.gtε k =
@@ -107,6 +134,17 @@ theorem prod_gtφT {T : Over (Spec (CommRingCat.of R))} (b : T ⟶ D.P.A) (χ : 
 
 variable [IsLocalRing R] [IsNoetherianRing R] [IsHausdorff I R]
 
+/- English proof (translation)
+Use `choose a ha using h`. Use `choose a' ha' using h'`. Use `choose a'' ha'' using h''`. Establish `hm : ∀ e, a'' e = a e * a' e` using `fun e => push_injective (by`. Rewrite using `[map_mul, (ha e).1, (ha' e).1, (ha'' e).1]`.
+
+Conclude with `MonObj.comp_mul _ _ _)`. Establish `hb : gp''.b = gp.b * gp'.b` using `pt_ext (I := I) fun e => by`. Rewrite using `[MonObj.comp_mul, ← (ha e).2.1, ← (ha' e).2.1, ← (ha'' e).2.1, hm, im_mul]`. Use `⟨hb, fun χ => corr_of_thick hI D.P.isLB (fun U _ h => ?_) (DVR.mulGen_isGen _ _ _ _ _ _ _ (gp''.isGen χ) (DVR.pullGen_isGen _ _ _ _ D.cub.isGen _)) (DVR.mulGen_isGen _ _ _ _ _ _ _ (gp.isGen χ) (gp'.isGen χ)) fun e z J hJ => ?_⟩` and prove the remaining obligations. Use `(Fintype.prod_sum_type _).trans (Eq.trans ?_ (Fintype.prod_sum_type _).symm)` and prove the remaining obligations.
+
+Use `(congrArg₂ (· * ·) (prod_gtφT gp''.b χ h) (prod_cub (DegPre.cT D _ χ) gp.b gp'.b h)).trans (Eq.trans ?_ (congrArg₂ (· * ·) (prod_gtφT gp.b χ h) (prod_gtφT gp'.b χ h)).symm)` and prove the remaining obligations. Rewrite using `[hb, _root_.mul_assoc (DegPre.cT D _ χ)]`. Apply `Additive.ofMul.injective` to reduce the goal to its premises. Simplify using `only [ofMul_mul, ofMul_inv]`. Normalize the expressions using the abelian group laws.
+
+Establish `k` using `val_t_mul_points (g e) hGF χ (a e) (a' e) z J hJ`. Establish `c : cubeVal (g e) χ z J (a e) (a' e) = cubV D.cub z J (levι I e ≫ DegPre.cT D _ χ) (levι I e ≫ gp.b) (levι I e ≫ gp'.b)`. Unfold `cubeVal`. Rewrite using `[(ha e).2.1, (ha' e).2.1, comp_toUnit_assoc]`. Rewrite `k` using `[← hm, (ha e).2.2 χ z J hJ, (ha' e).2.2 χ z J hJ, (ha'' e).2.2 χ z J hJ, c]`.
+
+Use `((val_mul hJ _ _ _).trans (congrArg₂ (· * ·) rfl (val_cub D.cub (levι I e) hJ _ _ _))).trans (k.trans (val_mul hJ _ _ _).symm)` as an intermediate fact. Rewrite `this` using `[levι_left]`. Conclude with `this`.
+-/
 theorem isAdd_of_lifts (hGF : GlobalFnsSt) (hI : I ≠ ⊤) (g : ∀ e, GtCoord I D e G)
     {x x' : 𝟙_ (Over (Spec (CommRingCat.of R))) ⟶ G} {gp gp' gp'' : GtPt D (𝟙_ (Over (Spec (CommRingCat.of R))))}
     (h : ∀ e, ∃ a, Lifts (g e) x gp a) (h' : ∀ e, ∃ a, Lifts (g e) x' gp' a)
@@ -140,6 +178,13 @@ theorem isAdd_of_lifts (hGF : GlobalFnsSt) (hI : I ≠ ⊤) (g : ∀ e, GtCoord 
     rw [levι_left] at this
     exact this
 
+/- English proof (translation)
+Use `choose a ha using h`. Establish `hm : ∀ e, a e = 1` using `fun e => push_injective (by`. Rewrite using `[map_one, (ha e).1]`. Conclude with `MonObj.comp_one _)`. Establish `hb : gp.b = 1` using `pt_ext (I := I) fun e => by`.
+
+Rewrite using `[MonObj.comp_one, ← (ha e).2.1, hm, im_one]`. Use `⟨hb, fun χ => corr_of_thick hI D.P.isLB (fun U _ h => ?_) (gp.isGen χ) (fun i j => (map_one _).trans ((congrArg₂ (· * ·) (Fintype.prod_empty _) (map_one _)).trans (_root_.mul_one _)).symm) fun e z J hJ => ?_⟩` and prove the remaining obligations. Use `(prod_gtφT gp.b χ h).trans (Eq.trans ?_ (Fintype.prod_empty _).symm)` and prove the remaining obligations. Rewrite using `[hb, _root_.mul_one, inv_mul_cancel, _root_.one_mul, mul_inv_cancel]`. Establish `k` using `(ha e).2.2 χ z J hJ`.
+
+Rewrite `k` using `[hm, val_unit (g e) χ hJ, levι_left]`. Conclude with `k.symm.trans (val_one _).symm`.
+-/
 theorem isZero_of_lifts (hI : I ≠ ⊤) (g : ∀ e, GtCoord I D e G)
     {gp : GtPt D (𝟙_ (Over (Spec (CommRingCat.of R))))}
     (h : ∀ e, ∃ a, Lifts (g e) 1 gp a) : gp.IsZero := by
@@ -164,6 +209,9 @@ namespace GlobalTheory
 
 open CoordAdd in
 
+/- English proof (translation)
+Introduce `hGF R _ _ _ I hR hI D A G _ _ U`. Take `⟨_, -, -, _⟩` from `hR`. Conclude with `⟨fun x x' gp gp' gp'' h h' h'' => isAdd_of_lifts hGF hI U.gt (fun e => exists_lifts _ (h e)) (fun e => exists_lifts _ (h' e)) (fun e => exists_lifts _ (h'' e)), fun gp h => isZero_of_lifts hI U.gt fun e => exists_lifts _ (h e)⟩`.
+-/
 theorem gtCoord_additive : GlobalFnsSt → ∀ (R : Type) [CommRing R] [IsDomain R] [IsLocalRing R] (I : Ideal R), AdmBase R I → I ≠ ⊤ → ∀ (D : DegData R I) (A : PolAV (Spec (CommRingCat.of (FractionRing R)))) (G : Over (Spec (CommRingCat.of R))) [GrpObj G] [IsCommMonObj G] (U : UnifPre I D A G), (∀ (x x' : (𝟙_ (Over (Spec (CommRingCat.of R)))) ⟶ G) (gp gp' gp'' : GtPt D.toPre (𝟙_ (Over (Spec (CommRingCat.of R))))), (∀ e : ℕ, ∃ xe : Over.mk (thick R I e) ⟶ (Over.map (thick R I e)).obj (thickObj R I e G), xe ≫ fstG I e G = toUnit _ ≫ x ∧ xe ≫ (U.gt e).pG = toUnit _ ≫ gp.b ∧ ∀ χ, LB.Gen.Corr D.toPre.P.L _ _ _ _ (LB.pullGen D.toPre.P.L _ _ ((U.gt e).t χ) xe.left) (LB.pullGen D.toPre.P.L _ _ (gp.s χ) (toUnit (Over.mk (thick R I e))).left)) → (∀ e : ℕ, ∃ xe : Over.mk (thick R I e) ⟶ (Over.map (thick R I e)).obj (thickObj R I e G), xe ≫ fstG I e G = toUnit _ ≫ x' ∧ xe ≫ (U.gt e).pG = toUnit _ ≫ gp'.b ∧ ∀ χ, LB.Gen.Corr D.toPre.P.L _ _ _ _ (LB.pullGen D.toPre.P.L _ _ ((U.gt e).t χ) xe.left) (LB.pullGen D.toPre.P.L _ _ (gp'.s χ) (toUnit (Over.mk (thick R I e))).left)) → (∀ e : ℕ, ∃ xe : Over.mk (thick R I e) ⟶ (Over.map (thick R I e)).obj (thickObj R I e G), xe ≫ fstG I e G = toUnit _ ≫ (x * x') ∧ xe ≫ (U.gt e).pG = toUnit _ ≫ gp''.b ∧ ∀ χ, LB.Gen.Corr D.toPre.P.L _ _ _ _ (LB.pullGen D.toPre.P.L _ _ ((U.gt e).t χ) xe.left) (LB.pullGen D.toPre.P.L _ _ (gp''.s χ) (toUnit (Over.mk (thick R I e))).left)) → GtPt.IsAdd gp gp' gp'') ∧ ∀ gp : GtPt D.toPre (𝟙_ (Over (Spec (CommRingCat.of R)))), (∀ e : ℕ, ∃ xe : Over.mk (thick R I e) ⟶ (Over.map (thick R I e)).obj (thickObj R I e G), xe ≫ fstG I e G = toUnit _ ≫ (1 : (𝟙_ (Over (Spec (CommRingCat.of R)))) ⟶ G) ∧ xe ≫ (U.gt e).pG = toUnit _ ≫ gp.b ∧ ∀ χ, LB.Gen.Corr D.toPre.P.L _ _ _ _ (LB.pullGen D.toPre.P.L _ _ ((U.gt e).t χ) xe.left) (LB.pullGen D.toPre.P.L _ _ (gp.s χ) (toUnit (Over.mk (thick R I e))).left)) → gp.IsZero := by
   intro hGF R _ _ _ I hR hI D A G _ _ U
   obtain ⟨_, -, -, _⟩ := hR

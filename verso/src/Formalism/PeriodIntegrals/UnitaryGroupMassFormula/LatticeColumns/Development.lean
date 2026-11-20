@@ -23,6 +23,9 @@ def ColsIdxStep : Prop :=
       ((X.measW u).μHf (Subtype.val ⁻¹' K2u X hb u)).toReal =
     ∏ p : TypX X, ((glkC D.R.k (gOf p) : ℝ) / (ukC D.R.k (gOf p) : ℝ))
 
+/- English proof (translation)
+Introduce `D X hb hK FdN FdN' u u' X0 L A hH`. Conclude with `And.intro (h1 X hb hK u hH.1 hH.2.1) (And.intro (h2 X hb hK u hH.1 hH.2.1) (And.intro (h1 X hb hK u' hH.1 hH.2.1) (h2 X hb hK u' hH.1 hH.2.1)))`.
+-/
 theorem massDataColumns_of (h1 : ColsDimStep) (h2 : ColsIdxStep) :
     ∀ {D : D7} (X : HidaSetting D) (hb : AdBridgeIso X.B.I) (hK : X.LevelSubgroupCharacter) (FdN FdN' : Set X.B.I.Ginf)
       (u u' : D.what₂.Word) (X0 : Fin (2 * D.R.rS + 2) → Fin X.B.I.n → X.B.I.E) (L : LocIn (TypX X))

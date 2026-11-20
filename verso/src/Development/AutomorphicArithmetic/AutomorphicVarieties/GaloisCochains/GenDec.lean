@@ -4,12 +4,30 @@ import Development.AutomorphicArithmetic.IntegralCasts.CapelliIdentities.ChoiceF
 
 open NumberField IsDedekindDomain Formalism.ConjugateSelfDual ReciprocityTheory.Gal Module UpperTheory.V UpperTheory.V.Fr UpperTheory.V.GC
 
+/- English proof (translation)
+The claim follows from `_root_.UpperTheory.Reformulated.B.InterpolationPointsOfFinrankBound.pick P hp0 W hW`.
+-/
 private theorem pick {k D : Type} [Field k] (P : Set D) {p0 : D} (hp0 : p0 ∈ P) (W : Submodule k (D → k))
     (hW : ∀ f, f ∈ W ↔ ∀ p ∈ P, f p = 0) : ∀ (n : ℕ) (Y : Submodule k (D → k)) [FiniteDimensional k Y],
     finrank k Y ≤ n + finrank k (Y ⊓ W : Submodule k (D → k)) →
     ∃ u : Fin n → D, (∀ a, u a ∈ P) ∧ ∀ f ∈ Y, (∀ a, f (u a) = 0) → f ∈ W :=
   _root_.UpperTheory.Reformulated.B.InterpolationPointsOfFinrankBound.pick P hp0 W hW
 
+/- English proof (translation)
+Set `C : ℕ → Set D` to `fun n => (J : Set D) ∩ Nᶜ ∩ {g | ‖(e g : ℤ_[l]) - 1‖ ≤ (l : ℝ) ^ (-(n : ℤ))}`. Establish `hC : ∀ n, IsClosed (C n)` using `fun n => (hJ.inter hN.isClosed_compl).inter (isClosed_le ((Units.continuous_val.comp he).sub continuous_const).norm continuous_const)`. Establish `hiff : ∀ (n : ℕ) (x : ℤ_[l]), ‖x - 1‖ ≤ (l : ℝ) ^ (-(n : ℤ)) ↔ PadicInt.toZModPow n x = 1`. Introduce `n x`. Rewrite using `[PadicInt.norm_le_pow_iff_mem_span_pow, ← PadicInt.ker_toZModPow, RingHom.mem_ker, map_sub, map_one, sub_eq_zero]`.
+
+Establish `hex : ∃ n, C n = ∅`. Assume the negation of the conclusion as `hne`. Use `push Not at hne`. Establish `hanti : ∀ n, C (n + 1) ⊆ C n` using `fun n g hg => ⟨hg.1, le_trans (b := (l : ℝ) ^ (-((n + 1 : ℕ) : ℤ))) hg.2 (zpow_le_zpow_right₀ (by exact_mod_cast (Fact.out : l.Prime).one_le) (by push_cast; omega))⟩`. Take `⟨g, hg⟩` from `IsCompact.nonempty_iInter_of_sequence_nonempty_isCompact_isClosed C hanti hne (hC 0).isCompact hC`.
+
+Rewrite `hg` using `[Set.mem_iInter]`. Use `(hg 0).1.2 (hJN g (hg 0).1.1 ?_)` and prove the remaining obligations. Use `ext1`. Use `PadicInt.ext_of_toZModPow.mp fun n => ?_` and prove the remaining obligations. Rewrite using `[(hiff n _).mp (hg n).2]`.
+
+Simplify using the standard rewrite rules. Take `⟨n, hn⟩` from `hex`. Set `en : D →* (ZMod (l ^ n))ˣ` to `(Units.map (PadicInt.toZModPow n : ℤ_[l] →+* ZMod (l ^ n)).toMonoidHom).comp e`. Use `haveI : IsCyclic (ZMod (l ^ n))ˣ := ZMod.isCyclic_units_of_prime_pow l Fact.out hl n`. Use `haveI : NeZero (l ^ n) := ⟨pow_ne_zero _ (Fact.out : l.Prime).ne_zero⟩`.
+
+Take `⟨⟨_, u, hu, rfl⟩, hgen⟩` from `IsCyclic.exists_monoid_generator (α := J.map en)`. Use `⟨u, hu, fun g hg => ?_⟩` and prove the remaining obligations. Take `⟨m, hm⟩` from `hgen ⟨en g, g, hg, rfl⟩`. Establish `hm' : en u ^ m = en g` using `congrArg Subtype.val hm`. Use `⟨m, ?_⟩` and prove the remaining obligations.
+
+Assume the negation of the conclusion as `hN'`. Establish `: g⁻¹ * u ^ m ∈ C n`. Use `⟨⟨J.mul_mem (J.inv_mem hg) (J.pow_mem hu m), hN'⟩, (hiff n _).mpr ?_⟩` and prove the remaining obligations. Establish `h1 : en (g⁻¹ * u ^ m) = 1` using `by rw [map_mul, map_inv, map_pow, hm', inv_mul_cancel]`. Conclude with `congrArg Units.val h1`.
+
+Rewrite `this` using `[hn]`. Conclude with `this`.
+-/
 private theorem cyc1 {D : Type} [Group D] [TopologicalSpace D] [IsTopologicalGroup D] [CompactSpace D]
     {l : ℕ} [Fact l.Prime] (hl : l ≠ 2) (J : Subgroup D) (hJ : IsClosed (J : Set D)) (e : D →* ℤ_[l]ˣ)
     (he : Continuous e) (N : Set D) (hN : IsOpen N) (hJN : ∀ g ∈ J, e g = 1 → g ∈ N) :
@@ -51,6 +69,21 @@ private theorem cyc1 {D : Type} [Group D] [TopologicalSpace D] [IsTopologicalGro
   rw [hn] at this
   exact this
 
+/- English proof (translation)
+Take `⟨M, hM, hHM⟩` from `(eq_top_or_exists_le_coatom H).resolve_left hH`. Use `haveI : Nontrivial (B ⧸ M) := QuotientGroup.nontrivial_iff.mpr hM.1`. Use `haveI : IsSimpleGroup (B ⧸ M) := by`. Use `⟨fun N _ => ?_⟩` and prove the remaining obligations. Establish `h1 : M ≤ N.comap (QuotientGroup.mk' M)` using `fun x hx => by`.
+
+Rewrite using `[Subgroup.mem_comap, show QuotientGroup.mk' M x = 1 from (QuotientGroup.eq_one_iff x).mpr hx]`. Conclude with `N.one_mem`. Establish `h2` using `Subgroup.map_comap_eq_self_of_surjective (QuotientGroup.mk'_surjective M) N`. Break down `hM.le_iff.mp h1 with h | h` into its components or cases. Use `right`.
+
+Rewrite using `[← h2, h]`. Conclude with `Subgroup.map_top_of_surjective _ (QuotientGroup.mk'_surjective M)`. Use `left`. Rewrite using `[← h2, h, Subgroup.map_eq_bot_iff, QuotientGroup.ker_mk']`. Establish `hp : (Nat.card (B ⧸ M)).Prime` using `IsSimpleGroup.prime_card`.
+
+Establish `hq : IsPGroup l (B ⧸ M)` using `hB.to_quotient M`. Establish `hc : Nat.card (B ⧸ M) = l`. Take `⟨n, hn⟩` from `IsPGroup.iff_card.mp hq`. Establish `: Nat.card (B ⧸ M) ∣ l` using `hp.dvd_of_dvd_pow (n := n) (by rw [hn])`. Conclude with `(Nat.prime_dvd_prime_iff_eq hp Fact.out).mp this`.
+
+Set `ε : (B ⧸ M) ≃* Multiplicative (ZMod l)` to `mulEquivOfPrimeCardEq hc (by simp)`. Use `⟨ε.toMonoidHom.comp (QuotientGroup.mk' M), fun x hx => ?_, ?_⟩` and prove the remaining obligations. Establish `: (QuotientGroup.mk' M x) = 1` using `(QuotientGroup.eq_one_iff x).mpr (hHM hx)`. Simplify using `only [MonoidHom.comp_apply, this, map_one]`. Choose the witnesses or unpack the hypotheses as in `⟨x, hx⟩ : ∃ x, x ∉ M := by`.
+
+Assume the negation of the conclusion as `h`. Use `push Not at h`. Conclude with `hM.1 (eq_top_iff.mpr fun x _ => h x)`. Use `⟨x, fun h => hx ?_⟩` and prove the remaining obligations. Establish `: (QuotientGroup.mk' M x) = 1` using `ε.injective (by simpa using h)`.
+
+Conclude with `(QuotientGroup.eq_one_iff x).mp this`.
+-/
 private theorem exChar {B : Type} [CommGroup B] [Finite B] {l : ℕ} [Fact l.Prime] (hB : IsPGroup l B)
     (H : Subgroup B) (hH : H ≠ ⊤) :
     ∃ θ : B →* Multiplicative (ZMod l), (∀ x ∈ H, θ x = 1) ∧ ∃ x, θ x ≠ 1 := by
@@ -85,6 +118,15 @@ private theorem exChar {B : Type} [CommGroup B] [Finite B] {l : ℕ} [Fact l.Pri
     have : (QuotientGroup.mk' M x) = 1 := ε.injective (by simpa using h)
     exact (QuotientGroup.eq_one_iff x).mp this
 
+/- English proof (translation)
+Assume the negation of the conclusion as `hg`. Establish `hne : H.subgroupOf χ.range ≠ ⊤` using `fun e => hg (by`. Establish `: (⟨χ g, g, rfl⟩ : χ.range) ∈ H.subgroupOf χ.range` using `e ▸ Subgroup.mem_top _`. Conclude with `this)`. Take `⟨θ, h1, ⟨_, x, rfl⟩, h2⟩` from `exChar (hB.to_subgroup χ.range) _ hne`.
+
+Set `ψ : D →* Multiplicative (ZMod l)` to `θ.comp χ.rangeRestrict`. Establish `hψ : IsOpen (ψ.ker : Set D)` using `Subgroup.isOpen_mono (fun y hy => by`. Establish `: χ.rangeRestrict y = 1` using `Subtype.ext hy`. Simplify using `only [MonoidHom.mem_ker, ψ, MonoidHom.comp_apply, this, map_one]) hχ`. Establish `hc : Continuous ψ`.
+
+Use `continuous_of_continuousAt_one ψ ?_` and prove the remaining obligations. Rewrite using `[ContinuousAt, map_one]`. Conclude with `tendsto_const_nhds.congr' (Filter.eventually_of_mem (hψ.mem_nhds ψ.ker.one_mem) fun y hy => Eq.symm hy)`. Use `hS (fun y => (ψ y).toAdd) (continuous_toAdd.comp hc) (fun a b => by simp) (fun s hs => by` as an intermediate fact. Establish `: ψ s = 1` using `h1 _ (hH s hs)`.
+
+Simplify using `[this])`. Conclude with `h2 (by`. Establish `h3` using `congrFun this x`. Conclude with `h3)`.
+-/
 private theorem fratt {D B : Type} [Group D] [TopologicalSpace D] [IsTopologicalGroup D] [CommGroup B] [Finite B]
     {l : ℕ} [Fact l.Prime] (hB : IsPGroup l B) (χ : D →* B) (hχ : IsOpen (χ.ker : Set D)) (S : Set D)
     (hS : ∀ f : D → ZMod l, Continuous f → (∀ g h, f (g * h) = f g + f h) → (∀ s ∈ S, f s = 0) → f = 0)
@@ -110,6 +152,15 @@ private theorem fratt {D B : Type} [Group D] [TopologicalSpace D] [IsTopological
     have h3 := congrFun this x
     exact h3)
 
+/- English proof (translation)
+Take `⟨n, hn⟩` from `IsPGroup.iff_card.mp hB`. Establish `hpos : 0 < l ^ n` using `pow_pos (Fact.out : l.Prime).pos n`. Use `haveI : NeZero (l ^ n) := ⟨hpos.ne'⟩`. Take `⟨d, hd1, hd2, hd3⟩` from `hd (l ^ n) hpos`. Establish `hB' : IsPGroup l (B × Multiplicative (ZMod (l ^ n)))` using `IsPGroup.of_card (n := n + n) (by rw [Nat.card_prod, hn, pow_add]; simp)`.
+
+Establish `hker : IsOpen (((χ.prod d).ker : Subgroup D) : Set D)`. Rewrite using `[MonoidHom.ker_prod]`. Conclude with `hχ.inter (hd1.isOpen_fiber 1)`. Use `fratt hB' (χ.prod d) hker (insert φ S) (fun f h1 h2 h3 => hS f h1 h2 (h3 φ (Set.mem_insert _ _)) fun s hs => h3 s (Set.mem_insert_of_mem _ hs)) (Subgroup.zpowers ((χ.prod d) φ)) (by` as an intermediate fact. Introduce and unpack `s (rfl | hs)`.
+
+Conclude with `Subgroup.mem_zpowers _`. Establish `: (χ.prod d) s = 1` using `Prod.ext (h0 s hs) (hd2 s (hSI s hs))`. Rewrite using `[this]`. Conclude with `Subgroup.one_mem _) g`. Take `⟨k, hk⟩` from `this`.
+
+Establish `k1 : χ φ ^ k = χ g` using `congrArg Prod.fst hk`. Establish `k2 : d φ ^ k = d g` using `congrArg Prod.snd hk`. Rewrite `k2` using `[hd2 g hg, hd3, ← ofAdd_zsmul, ofAdd_eq_one, zsmul_eq_mul, mul_one, ZMod.intCast_zmod_eq_zero_iff_dvd]`. Take `⟨c, rfl⟩` from `k2`. Rewrite using `[← k1, zpow_mul, zpow_natCast, ← hn, pow_card_eq_one', one_zpow]`.
+-/
 private theorem lastStep {D B : Type} [Group D] [TopologicalSpace D] [IsTopologicalGroup D] [CommGroup B] [Finite B]
     {l : ℕ} [Fact l.Prime] (hB : IsPGroup l B) (χ : D →* B) (hχ : IsOpen (χ.ker : Set D)) (I : Subgroup D) (φ : D)
     (hd : ∀ n : ℕ, 0 < n → ∃ d : D →* Multiplicative (ZMod n), IsLocallyConstant d ∧ (∀ s ∈ I, d s = 1) ∧
@@ -140,6 +191,31 @@ private theorem lastStep {D B : Type} [Group D] [TopologicalSpace D] [IsTopologi
   obtain ⟨c, rfl⟩ := k2
   rw [← k1, zpow_mul, zpow_natCast, ← hn, pow_card_eq_one', one_zpow]
 
+/- English proof (translation)
+Set `P : Set D` to `{g | g ∈ J ∧ e g = 1}`. Establish `hP : (1 : D) ∈ P` using `⟨J.one_mem, map_one e⟩`. Set `W : Submodule (ZMod l) (D → ZMod l)` to `⨅ p ∈ P, LinearMap.ker (LinearMap.proj p)`. Establish `hW : ∀ f, f ∈ W ↔ ∀ p ∈ P, f p = 0` using `fun f => by simp [W, Submodule.mem_iInf]`. Set `Y : Submodule (ZMod l) (D → ZMod l)` to `X ⊓ LinearMap.ker (LinearMap.proj φ)`.
+
+Establish `hlt : Y < X` using `lt_of_le_of_ne inf_le_left fun h => hf0' (by`. Establish `: f0 ∈ Y` using `h ▸ hf0`. Conclude with `this.2)`. Use `haveI : FiniteDimensional (ZMod l) Y := Submodule.finiteDimensional_of_le hlt.le`. Use `haveI : FiniteDimensional (ZMod l) (Y ⊓ W : Submodule (ZMod l) (D → ZMod l)) := Submodule.finiteDimensional_of_le inf_le_left`.
+
+Establish `h1` using `Submodule.finrank_lt_finrank_of_lt hlt`. Distinguish the cases in `hYW : Y ⊓ W = ⊥`. Take `⟨u, hu, hu'⟩` from `pick P hP W hW (n + 1) Y (by omega)`. Use `⟨u, fun a => (hu a).1, fun a _ => (hu a).2, fun f c1 c2 c3 c4 => ?_⟩` and prove the remaining obligations. Establish `hf : f ∈ Y` using `⟨(hX f).mpr ⟨c1, c2⟩, c3⟩`.
+
+Establish `: f ∈ Y ⊓ W` using `⟨hf, hu' f hf c4⟩`. Rewrite `this` using `[hYW]`. Then use the resulting hypothesis. Establish `h2 : finrank (ZMod l) (Y ⊓ W : Submodule (ZMod l) (D → ZMod l)) ≠ 0` using `fun h => hYW (Submodule.finrank_eq_zero.mp h)`. Take `⟨u, hu, hu'⟩` from `pick P hP W hW n Y (by omega)`. Use `haveI : Finite (Y ⊓ W : Submodule (ZMod l) (D → ZMod l)) := Module.finite_of_finite (ZMod l)`.
+
+Set `N : Set D` to `⋂ f : (Y ⊓ W : Submodule (ZMod l) (D → ZMod l)), f.1 ⁻¹' {0}`. Establish `hN : IsOpen N` using `isOpen_iInter_of_finite fun f => (isOpen_discrete _).preimage ((hX f.1).mp f.2.1.1).1`. Take `⟨u0, hu0, hgen⟩` from `cyc1 hl J hJ e he N hN fun g hg hg' => Set.mem_iInter.mpr fun f => (hW f.1).mp f.2.2 g ⟨hg, hg'⟩`. Use `⟨Fin.cons u0 u, fun a => ?_, fun a => ?_, fun f c1 c2 c3 c4 => ?_⟩` and prove the remaining obligations. Use `Fin.cases ?_ (fun a => ?_) a` and prove the remaining obligations.
+
+Conclude with `hu0`. Conclude with `(hu a).1`. Use `Fin.cases ?_ (fun a => ?_) a` and prove the remaining obligations. Conclude with `fun h => absurd rfl h`. Conclude with `fun _ => (hu a).2`.
+
+Establish `hf : f ∈ Y` using `⟨(hX f).mpr ⟨c1, c2⟩, c3⟩`. Establish `hfW : f ∈ Y ⊓ W` using `⟨hf, hu' f hf fun a => c4 a.succ⟩`. Set `ψ : D →* Multiplicative (ZMod l)` to `MonoidHom.mk' (fun g => Multiplicative.ofAdd (f g)) fun a b => by`. Rewrite using `[c2, ofAdd_add]`. Establish `p0 : ψ u0 = 1` using `congrArg Multiplicative.ofAdd (c4 0)`.
+
+Establish `pJ : ∀ g ∈ J, ψ g = 1` using `fun g hg => by`. Take `⟨m, hm⟩` from `hgen g hg`. Establish `: ψ (g⁻¹ * u0 ^ m) = 1` using `congrArg Multiplicative.ofAdd (Set.mem_iInter.mp hm ⟨f, hfW⟩)`. Rewrite `this` using `[map_mul, map_pow, p0, one_pow, mul_one, map_inv, inv_eq_one]`. Then use the resulting hypothesis. Establish `pI : I ≤ ψ.ker` using `fun g hg => by`.
+
+Establish `h3` using `pJ _ (hIJ g hg)`. Rewrite `h3` using `[map_pow]`. Establish `h4 : (r : ZMod l) * f g = 0`. Use `congrArg Multiplicative.toAdd h3` as an intermediate fact. Rewrite `this` using `[toAdd_pow, nsmul_eq_mul]`.
+
+Conclude with `this`. Establish `h5 : (r : ZMod l) ≠ 0` using `by rwa [Ne, ZMod.natCast_eq_zero_iff]`. Conclude with `congrArg Multiplicative.ofAdd ((mul_eq_zero.mp h4).resolve_left h5)`. Establish `hcl : IsClosed (ψ.ker : Set D)` using `(isClosed_discrete ({0} : Set (ZMod l))).preimage c1`. Establish `htop : ⊤ ≤ ψ.ker`.
+
+Rewrite using `[← hφ]`. Use `Subgroup.topologicalClosure_minimal _ (sup_le pI ?_) hcl` and prove the remaining obligations. Rewrite using `[Subgroup.zpowers_le]`. Conclude with `congrArg Multiplicative.ofAdd c3`. Use function extensionality and compare the values at `g`.
+
+Conclude with `congrArg Multiplicative.toAdd (htop (Subgroup.mem_top g))`.
+-/
 private theorem core {D : Type} [Group D] [TopologicalSpace D] [IsTopologicalGroup D] [CompactSpace D]
     {l : ℕ} [Fact l.Prime] (hl : l ≠ 2) (I J : Subgroup D) (hJ : IsClosed (J : Set D)) (e : D →* ℤ_[l]ˣ)
     (he : Continuous e) (r : ℕ) (hr : ¬ l ∣ r) (hIJ : ∀ g ∈ I, g ^ r ∈ J) (φ : D)
@@ -210,6 +286,15 @@ private theorem core {D : Type} [Group D] [TopologicalSpace D] [IsTopologicalGro
       funext g
       exact congrArg Multiplicative.toAdd (htop (Subgroup.mem_top g))
 
+/- English proof (translation)
+Establish `hb : (B1 (Representation.trivial (ZMod l) D (ZMod l))).comap (Z1 (Representation.trivial (ZMod l) D (ZMod l))).subtype = ⊥`. Rewrite using `[eq_bot_iff]`. Introduce `f hf`. Take `⟨m, hm⟩` from `(mem_coboundaries1 _ _).mp hf`. Conclude with `Subtype.ext (funext fun g => by simpa using hm g)`.
+
+Set `ε` to `Submodule.quotEquivOfEqBot _ hb`. Establish `h3 : Loc.H0dual ω (Representation.trivial (ZMod l) D (ZMod l)) = ⊥`. Rewrite using `[eq_bot_iff]`. Introduce `f hf`. Take `⟨g, hg⟩` from `hω`.
+
+Use `LinearMap.ext fun x => ?_` and prove the remaining obligations. Establish `h4 : f x = (ω g : ZMod l) * f x` using `hf g x`. Assume the negation of the conclusion as `h5`. Establish `h6 : f x ≠ 0` using `h5`. Conclude with `hg (Units.ext ((mul_eq_right₀ h6).mp h4.symm))`.
+
+Establish `h4` using `Submodule.finrank_le (H0 (Representation.trivial (ZMod l) D (ZMod l)))`. Rewrite `h2` using `[h3, finrank_bot, finrank_self, ε.finrank_eq]`. Rewrite `h4` using `[finrank_self]`. Conclude with `⟨Module.Finite.equiv ε, by omega⟩`.
+-/
 private theorem finrank_cocycles_trivial_mod_l {D : Type} [Group D] [TopologicalSpace D] {l : ℕ} [Fact l.Prime] (d : ℕ) (ω : D →* (ZMod l)ˣ)
     (hω : ∃ g, ω g ≠ 1) (h1 : Module.Finite (ZMod l) (H1 (Representation.trivial (ZMod l) D (ZMod l))))
     (h2 : finrank (ZMod l) (H1 (Representation.trivial (ZMod l) D (ZMod l))) =
@@ -238,6 +323,17 @@ private theorem finrank_cocycles_trivial_mod_l {D : Type} [Group D] [Topological
   rw [finrank_self] at h4
   exact ⟨Module.Finite.equiv ε, by omega⟩
 
+/- English proof (translation)
+Introduce `p1 p2 p3 F Ω _ _ _ _ _ l _ hl v A hA hv hω K hK hKo hKi`. Take `⟨φ, -, hφ, hd⟩` from `decZhat F Ω v A hA`. Take `⟨e1, -, e2, -, e3⟩` from `locEuler p1 p2 p3 F Ω l v A hA (ZMod l) (ZMod l) (Representation.trivial (ZMod l) (Dec (F := F) A) (ZMod l)) continuous_snd`. Establish `hω' : ∃ g, ((cycF F Ω l (ZMod l)).comp (Dec (F` using `F) A).subtype) g ≠ 1 := by`. Take `⟨g, hg, hg'⟩` from `hω`.
+
+Use `⟨⟨g, hg⟩, fun h => hg' (Units.ext ?_)⟩` and prove the remaining obligations. Establish `h1 : ZMod.castHom (dvd_pow_self l one_ne_zero) (ZMod l) (cycMod F Ω l 1 g : ZMod (l ^ 1)) = 1` using `congrArg Units.val h`. Use `haveI : Fact (l ^ 1).Prime := ⟨by rw [pow_one]; exact Fact.out⟩`. Conclude with `(ZMod.castHom (dvd_pow_self l one_ne_zero) (ZMod l)).injective (by rw [h1]; simp)`. Take `⟨f1, f2⟩` from `finrank_cocycles_trivial_mod_l (locDeg v) _ hω' e1 (by rw [e2 hv, e3])`.
+
+Choose the witnesses or unpack the hypotheses as in `⟨n, hn⟩ : ∃ n, locDeg v = n + 1 := by`. Use `v.isPrime` as an intermediate fact. Establish `h1` using `Ideal.ramificationIdx_pos v.asIdeal ℤ`. Establish `h2` using `Ideal.inertiaDeg_pos v.asIdeal ℤ`. Conclude with `Nat.exists_eq_succ_of_ne_zero (Nat.mul_ne_zero h1.ne' h2.ne')`.
+
+Rewrite `f2`, the goal using `[hn]`. Use `haveI : IsGalois F Ω := {}`. Use `haveI : CompactSpace (Dec (F := F) A) := isCompact_iff_compactSpace.mp (isClosed_Dec A).isCompact`. Take `⟨d, d1, -, d3⟩` from `hd l (Fact.out : l.Prime).pos`. Take `⟨u, u1, u2, u3⟩` from `core hl ((Ine (F := F) A).subgroupOf (Dec (F := F) A)) ((Ine (F := F) A ⊓ K).subgroupOf (Dec (F := F) A)) (((isClosed_Ine A).inter (K.isClosed_of_isOpen hKo)).preimage continuous_subtype_val) ((cycZ F Ω l).comp (Dec (F := F) A).subtype) ((continuous_cycZ F Ω l).comp continuous_su …`.
+
+Use `⟨u, 0, u1, u2, fun B _ _ hB χ hχ h0 g hg => ?_⟩` and prove the remaining obligations. Conclude with `lastStep hB χ hχ _ φ hd (Set.range u) (by rintro _ ⟨a, rfl⟩; exact (u1 a).1) (fun f c1 c2 c3 c4 => u3 f c1 c2 c3 fun a => c4 _ ⟨a, rfl⟩) (by rintro _ ⟨a, rfl⟩; exact h0 a) g hg`.
+-/
 theorem UpperTheory.V.GC.genDec :
     LocalFiniteness → LocalTateDuality → LocalEulerChar → ∀ (F Ω : Type) [Field F] [NumberField F] [Field Ω] [Algebra F Ω] [IsAlgClosure F Ω] (l : ℕ) [Fact l.Prime], l ≠ 2 → ∀ (v : HeightOneSpectrum (𝓞 F)) (A : ValuationSubring Ω), IsPlaceOver A v → ((l : ℕ) : 𝓞 F) ∈ v.asIdeal → (∃ g ∈ Dec (F := F) A, cycMod F Ω l 1 g ≠ 1) →
     ∀ K : Subgroup (G F Ω), K.Normal → IsOpen (K : Set (G F Ω)) → ¬ l ∣ K.index →

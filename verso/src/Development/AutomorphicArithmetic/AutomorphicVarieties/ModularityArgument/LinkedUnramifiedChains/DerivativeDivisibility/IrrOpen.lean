@@ -15,6 +15,9 @@ namespace UpperTheory.V.J
 
 section Abstract
 
+/- English proof (translation)
+Establish `hc : (D.comap φ).chi (MonoidAlgebra.single g 1) = D.chi (MonoidAlgebra.single (φ g) 1)` using `by show D.D (Polynomial A) (MonoidAlgebra.mapDomainRingHom (Polynomial A) φ (MonoidAlgebra.single 1 Polynomial.X - MonoidAlgebra.mapRingHom H Polynomial.C (MonoidAlgebra.single g 1))) = _`. Use `congr 1`. Rewrite using `[map_sub]`. Simplify using `[MonoidAlgebra.mapDomainRingHom_apply, MonoidAlgebra.mapRingHom_apply, MonoidAlgebra.mapDomain_single]`. Simplify using `only [GDet.tr, GDet.lam, hc]`.
+-/
 private theorem tr_comap' {n : ℕ} {A G H : Type} [CommRing A] [Group G] [Group H] (D : GDet n A G) (φ : H →* G) (g : H) :
     (D.comap φ).tr (MonoidAlgebra.single g 1) = D.tr (MonoidAlgebra.single (φ g) 1) := by
   have hc : (D.comap φ).chi (MonoidAlgebra.single g 1) = D.chi (MonoidAlgebra.single (φ g) 1) := by
@@ -25,6 +28,9 @@ private theorem tr_comap' {n : ℕ} {A G H : Type} [CommRing A] [Group G] [Group
     simp [MonoidAlgebra.mapDomainRingHom_apply, MonoidAlgebra.mapRingHom_apply, MonoidAlgebra.mapDomain_single]
   simp only [GDet.tr, GDet.lam, hc]
 
+/- English proof (translation)
+Establish `h1 : f (D.tr (MonoidAlgebra.single (φ g) 1)) = (D.map f).tr (MonoidAlgebra.single (φ g) 1)`. Use `((UpperTheory.V.CA.d_gmap D).2.2.1 f (MonoidAlgebra.single (φ g) 1)).2 1` as an intermediate fact. Simplify `this.symm` using `[GDet.tr, MonoidAlgebra.mapRingHom_apply]`. Rewrite using `[h1, ← tr_comap', h, ← (UpperTheory.V.CA.d_toDet _ _).2.2.1, (UpperTheory.V.CA.d_toDet_ofRep).1 ρ, (UpperTheory.V.CA.d_ofRep _ _ _).2.2.1 hn, GDet.repAlg, MonoidAlgebra.lift_single, one_smul]`. Use `congr 1`.
+-/
 private theorem tr_at {n : ℕ} {A G H K : Type} [CommRing A] [Group G] [Group H] [CommRing K] (hn : 1 ≤ n)
     (D : GDet n A G) (f : A →+* K) (φ : H →* G) (ρ : H →* Matrix (Fin n) (Fin n) K)
     (h : (D.map f).comap φ = GDet.ofRep ρ) (g : H) :
@@ -36,6 +42,9 @@ private theorem tr_at {n : ℕ} {A G H K : Type} [CommRing A] [Group G] [Group H
     (UpperTheory.V.CA.d_ofRep _ _ _).2.2.1 hn, GDet.repAlg, MonoidAlgebra.lift_single, one_smul]
   congr 1
 
+/- English proof (translation)
+Rewrite using `[RingHom.map_det]`. Use `congr 1`. Use extensionality with `a b`. Simplify using `only [RingHom.mapMatrix_apply, Matrix.map_apply, Matrix.of_apply]`. Rewrite using `[tr_at hn D f φ ρ h, map_mul]`.
+-/
 private theorem gram_at {n : ℕ} {A G H K : Type} [CommRing A] [Group G] [Group H] [CommRing K] (hn : 1 ≤ n)
     (D : GDet n A G) (f : A →+* K) (φ : H →* G) (ρ : H →* Matrix (Fin n) (Fin n) K)
     (h : (D.map f).comap φ = GDet.ofRep ρ) (g : Fin n × Fin n → H) :
@@ -47,6 +56,11 @@ private theorem gram_at {n : ℕ} {A G H K : Type} [CommRing A] [Group G] [Group
   simp only [RingHom.mapMatrix_apply, Matrix.map_apply, Matrix.of_apply]
   rw [tr_at hn D f φ ρ h, map_mul]
 
+/- English proof (translation)
+Use `haveI : Nonempty (Fin n) := ⟨⟨0, hn⟩⟩`. Rewrite using `[← UpperTheory.V.AlgebraTools.Det.irrIffSpan]`. Prove the components needed by the constructor for the conclusion. Introduce `h N hN`. Take `⟨-, -, h3⟩` from `h`.
+
+Conclude with `h3 N le_top fun g v hv => hN g v hv`. Introduce `h`. Use `⟨top_ne_bot, fun g v _ => Submodule.mem_top, fun W _ hW => h W fun g v hv => hW g v hv⟩` and prove the remaining obligations.
+-/
 private theorem isIrr_iff_span {Γ k : Type} [Group Γ] [Field k] [IsAlgClosed k] {n : ℕ} (hn : 1 ≤ n)
     (r : Γ →* GL (Fin n) k) : IsIrr r ↔ Submodule.span k (Set.range (mat r)) = ⊤ := by
   haveI : Nonempty (Fin n) := ⟨⟨0, hn⟩⟩

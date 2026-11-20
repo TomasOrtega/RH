@@ -21,6 +21,25 @@ open GlobalTheory.CechPic
 
 variable {S : Scheme.{0}} {A B : Over S} [GrpObj A] [GrpObj B]
 
+/- English proof (translation)
+Establish `hP` using `hd.isLB`. Establish `ext : ∀ {Y : Over S} {x y : Y ⟶ B}, (∀ (Z : Over S) (u : Z ⟶ Y) (a : Z ⟶ A), evc hP a (u ≫ x) = evc hP a (u ≫ y)) → x = y`. Introduce `Y x y h`. Establish `hM : (ev P (fst A Y) (snd A Y ≫ x)).IsLB` using `pull_isLB hP _`. Use `(hd.univ Y _ hM ((isAdditive_iff hM).2 fun Z a a' t ↦ ?_)).unique ((cls_eq_iff hM hM).1 rfl) ((cls_eq_iff hM (pull_isLB hP _)).1 ?_)` and prove the remaining obligations.
+
+Simplify using `only [evc_ev hP, lift_fst, lift_snd_assoc]`. Conclude with `(isAdditive_iff hP).1 hd.additive _ _ _ _`. Conclude with `h (A ⊗ Y) (snd A Y) (fst A Y)`. Establish `h₁ : (ev P (fst A (B ⊗ B)) (snd A (B ⊗ B) ≫ fst B B)).IsLB` using `pull_isLB hP _`. Establish `h₂ : (ev P (fst A (B ⊗ B)) (snd A (B ⊗ B) ≫ snd B B)).IsLB` using `pull_isLB hP _`.
+
+Establish `hM` using `isLB_tens h₁ h₂`. Establish `eM : ∀ (Y : Over S) (a : Y ⟶ A) (t : Y ⟶ B ⊗ B), evc hM a t = evc hP a (t ≫ fst B B) + evc hP a (t ≫ snd B B)`. Introduce `Y a t`. Use `show CechPic.pull _ (cls _ hM) = _`. Rewrite using `[cls_tens h₁ h₂ hM, map_add]`.
+
+Conclude with `congrArg₂ (· + ·) ((evc_ev hP _ _ h₁ a t).trans (by rw [lift_fst, lift_snd_assoc])) ((evc_ev hP _ _ h₂ a t).trans (by rw [lift_fst, lift_snd_assoc]))`. Take `⟨m, hm, -⟩` from `hd.univ (B ⊗ B) _ hM ((isAdditive_iff hM).2 fun Y a a' t ↦ by`. Rewrite using `[eM, eM, eM, (isAdditive_iff hP).1 hd.additive, (isAdditive_iff hP).1 hd.additive]`. Use the proof step `abel)`. Establish `hm' : (ev P (fst A (B ⊗ B)) (snd A (B ⊗ B) ≫ m)).IsLB` using `pull_isLB hP _`.
+
+Establish `key : ∀ (Y : Over S) (a : Y ⟶ A) (t : Y ⟶ B ⊗ B), evc hP a (t ≫ m) = evc hP a (t ≫ fst B B) + evc hP a (t ≫ snd B B)`. Introduce `Y a t`. Establish `e : evc hM a t = evc hm' a t` using `by rw [evc, evc, (cls_eq_iff hM hm').2 hm]`. Rewrite using `[← eM, e, evc_ev hP, lift_fst, lift_snd_assoc]`. Establish `hl : ∀ {Y : Over S} (b : Y ⟶ B), lift b 1 ≫ m = b` using `fun b ↦ ext fun Z u a ↦ by`.
+
+Rewrite using `[← Category.assoc, key]`. Simplify using `only [Category.assoc, comp_lift, lift_fst, lift_snd, MonObj.comp_one, evc_one_right hP hd.zero, add_zero]`. Establish `hr : ∀ {Y : Over S} (b : Y ⟶ B), lift 1 b ≫ m = b` using `fun b ↦ ext fun Z u a ↦ by`. Rewrite using `[← Category.assoc, key]`. Simplify using `only [Category.assoc, comp_lift, lift_fst, lift_snd, MonObj.comp_one, evc_one_right hP hd.zero, zero_add]`.
+
+Establish `e1 : ∀ (X : Over S) [MonObj X], (1 : 𝟙_ (Over S) ⟶ X) = η[X]` using `fun X _ ↦ by`. Rewrite using `[Hom.one_def, toUnit_unique (toUnit _) (𝟙 _), Category.id_comp]`. Establish `hη : η[B ⊗ B] ≫ m = η[B]`. Establish `e : (1 : 𝟙_ (Over S) ⟶ B ⊗ B) = lift (1 : 𝟙_ (Over S) ⟶ B) 1`. Apply the tactic sequence `ext <;> simp`.
+
+Rewrite using `[← e1 (B ⊗ B), ← e1 B, e, hl]`. Use `haveI : IsMonHom m := GlobalTheory.rigidity_holds S (B ⊗ B) B (AbelianSchemeGerms.isAbelianScheme_tensor B B hB hB) hB m hη`. Establish `hs : (swap P).IsLB` using `pull_isLB hP _`. Use `(isAdditive_iff hs).2 fun Y b b' a ↦ ?_` and prove the remaining obligations. Rewrite using `[evc_swap hP hs, evc_swap hP hs, evc_swap hP hs]`.
+
+Establish `e : b * b' = lift b b' ≫ m`. Establish `e' : lift b b' = lift b 1 * lift 1 b'`. Apply the tactic sequence `ext <;> simp [MonObj.mul_comp]`. Rewrite using `[e', MonObj.mul_comp, hl, hr]`. Rewrite using `[e, key, lift_fst, lift_snd]`.
+-/
 theorem isAdditive_swap_of_isDual (hB : IsAbelianScheme B) {P : LB (A ⊗ B).left} (hd : IsDual A B P) :
     IsAdditive (swap P) := by
   have hP := hd.isLB
@@ -74,6 +93,9 @@ theorem isAdditive_swap_of_isDual (hB : IsAbelianScheme B) {P : LB (A ⊗ B).lef
     rw [e', MonObj.mul_comp, hl, hr]
   rw [e, key, lift_fst, lift_snd]
 
+/- English proof (translation)
+The claim follows from `fun _ _ _ _ _ _ hB hd ↦ isAdditive_swap_of_isDual hB hd`.
+-/
 theorem isDual_isAdditive_swap : ∀ (S : Scheme.{0}) (A B : Over S) [GrpObj A] [GrpObj B] (P : LB (A ⊗ B).left),
     IsAbelianScheme B → IsDual A B P → IsAdditive (swap P) :=
   fun _ _ _ _ _ _ hB hd ↦ isAdditive_swap_of_isDual hB hd

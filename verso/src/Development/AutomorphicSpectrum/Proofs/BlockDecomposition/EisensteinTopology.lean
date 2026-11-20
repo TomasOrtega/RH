@@ -12,6 +12,11 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 namespace GlobalTheory.CompanionTheory.SwEisTop
 
+/- English proof (translation)
+Unfold `ext`. Establish `h : ∃ k' : K, p * k * (k' : G)⁻¹ ∈ P` using `⟨⟨k, hk⟩, by simpa using hp⟩`. Rewrite using `[dif_pos h]`. Establish `h1` using `h.choose_spec`. Establish `hm : k * (h.choose : G)⁻¹ ∈ P`.
+
+Use `P.mul_mem (P.inv_mem hp) h1` as an intermediate fact. Simplify `this` using `[mul_assoc]`. Establish `hmK : k * (h.choose : G)⁻¹ ∈ K` using `K.mul_mem hk (K.inv_mem h.choose.2)`. Rewrite using `[mul_assoc, hadd p hp _ hm, hK _ hm hmK, add_zero]`.
+-/
 theorem ext_mul_eq {G : Type} [Group G] (K P : Subgroup G) (f : G → ℝ)
     (hadd : ∀ p ∈ P, ∀ q ∈ P, f (p * q) = f p + f q) (hK : ∀ p ∈ P, p ∈ K → f p = 0)
     {p k : G} (hp : p ∈ P) (hk : k ∈ K) : ext K P f (p * k) = f p := by
@@ -25,6 +30,9 @@ theorem ext_mul_eq {G : Type} [Group G] (K P : Subgroup G) (f : G → ℝ)
   have hmK : k * (h.choose : G)⁻¹ ∈ K := K.mul_mem hk (K.inv_mem h.choose.2)
   rw [mul_assoc, hadd p hp _ hm, hK _ hm hmK, add_zero]
 
+/- English proof (translation)
+Establish `h : absA D u * absA D u⁻¹ = 1` using `by rw [← map_mul, mul_inv_cancel, map_one]`. Conclude with `pos_iff_ne_zero.mpr fun h0 => by simp [h0] at h`.
+-/
 theorem absA_pos' {D : D7} (u : (AE D)ˣ) : 0 < absA D u := by
   have h : absA D u * absA D u⁻¹ = 1 := by rw [← map_mul, mul_inv_cancel, map_one]
   exact pos_iff_ne_zero.mpr fun h0 => by simp [h0] at h
@@ -33,6 +41,9 @@ section Gen
 
 variable {E R : Type} [Field E] [CommRing R] (A : Ad E R) (ε : ℤˣ) {ι : Type} [Fintype ι] [DecidableEq ι] (S : Set ι)
 
+/- English proof (translation)
+The claim follows from `ext_mul_eq (A.uK ε ι) (A.uQ ε S) (fun p => A.lg (bdet ((Sum.inl '' S : Set (ι ⊕ ι))) p.1)) (fun p hp q hq => by show A.lg (bdet _ (p.1 * q.1)) = _ exact (congrArg A.lg (hmul p.1 hp q.1 hq)).trans (hlg _ _)) (fun p hp hk => hk0 _ hp hk) hp hk`.
+-/
 theorem uH_mul (hmul : ∀ p ∈ stab R ((Sum.inl '' S : Set (ι ⊕ ι))), ∀ q ∈ stab R ((Sum.inl '' S : Set (ι ⊕ ι))),
       bdet ((Sum.inl '' S : Set (ι ⊕ ι))) (p * q) = bdet ((Sum.inl '' S : Set (ι ⊕ ι))) p * bdet ((Sum.inl '' S : Set (ι ⊕ ι))) q)
     (hlg : ∀ x y, A.lg (x * y) = A.lg x + A.lg y)
@@ -47,6 +58,15 @@ theorem uH_mul (hmul : ∀ p ∈ stab R ((Sum.inl '' S : Set (ι ⊕ ι))), ∀ 
 
 end Gen
 
+/- English proof (translation)
+Establish `hBd'` using `hBd _ _ (adCM D.sp.cm.sig χ) hGood.toGoodL (Fin n ⊕ Fin n) (Sum.inl '' Set.univ)`. Take `⟨p, hp, k, hk, e⟩` from `hI (Ψ x)`. Establish `h1` using `uH_mul (adCM D.sp.cm.sig χ) (-1) (Set.univ : Set (Fin n)) hBd'.2.1 hGood.lgmul hBd'.2.2.2.2.1 hp hk`. Rewrite `h1` using `[← e]`. Establish `hp₀ : Ψ.symm p ∈ GlobalTheory.StdUnn.P D n` using `(hP _).2 (by simpa using hp)`.
+
+Establish `hk₀ : Ψ.symm k ∈ GlobalTheory.StdUnn.K D n` using `(hK _).2 (by simpa using hk)`. Establish `hx : x = Ψ.symm p * Ψ.symm k` using `by rw [← map_mul, ← e, ContinuousMulEquiv.symm_apply_apply]`. Take `⟨a, ha⟩` from `GlobalTheory.StdUnn.LeftInvSect.exists_blkA hp₀`. Establish `h2` using `hdet _ a ha`. Rewrite `h2` using `[ContinuousMulEquiv.apply_symm_apply]`.
+
+Establish `h3` using `hH _ hp₀ a ha _ hk₀`. Rewrite `h3` using `[← hx]`. Establish `h4 : (adCM D.sp.cm.sig χ).lg (Matrix.GeneralLinearGroup.det a) = Real.log (absA D (Matrix.GeneralLinearGroup.det a))`. Establish `e5` using `(hDict D.host.F D.host.E).2.2.2.2 (Matrix.GeneralLinearGroup.det a)`. Use `show Real.log _ = _`.
+
+Rewrite using `[e5]`. Rewrite using `[h1, h2, h4, h3, Real.exp_log (by exact_mod_cast absA_pos' _)]`.
+-/
 theorem exp_uH_eq (hDict : Dict) (hBd : BdetLaw) {D : D7} {χ : (AE D)ˣ →* Circle} {n : ℕ}
     (hGood : (adCM D.sp.cm.sig χ).Good) (Ψ : GlobalTheory.StdUnn.G D n ≃ₜ* UD D χ n)
     (hP : ∀ g, g ∈ GlobalTheory.StdUnn.P D n ↔ Ψ g ∈ (adCM D.sp.cm.sig χ).uQ (-1) (Set.univ : Set (Fin n)))
@@ -75,6 +95,13 @@ theorem exp_uH_eq (hDict : Dict) (hBd : BdetLaw) {D : D7} {χ : (AE D)ˣ →* Ci
     rw [e5]
   rw [h1, h2, h4, h3, Real.exp_log (by exact_mod_cast absA_pos' _)]
 
+/- English proof (translation)
+Introduce `q hq g`. Take `⟨a, ha⟩` from `GlobalTheory.StdUnn.LeftInvSect.exists_blkA hq`. Establish `hq'` using `(hP q).1 hq`. Establish `h3 : η (Ψ q) = Real.log (absA D (Matrix.GeneralLinearGroup.det a))`. Establish `h` using `hH q hq a ha 1 (one_mem _)`.
+
+Rewrite `h` using `[mul_one]`. Rewrite using `[← Real.log_exp (η (Ψ q)), hexp q, h]`. Rewrite using `[hφ.1 q hq a ha g, map_mul, hleft _ hq' _, h3, hc q a ha, npow_eq_exp (absA_pos' _)]`. Establish `key : Complex.exp (((Real.log (absA D (Matrix.GeneralLinearGroup.det a)) : ℝ) : ℂ) * (s₁ + (n : ℂ) / 2)) * Complex.exp (-(s₁ + (n : ℂ) / 2) * ((Real.log (absA D (Matrix.GeneralLinearGroup.det a)) + η (Ψ g) : ℝ) : ℂ)) = Complex.exp (-(s₁ + (n : ℂ) / 2) * (η (Ψ g) : ℂ))`. Rewrite using `[← Complex.exp_add]`.
+
+Use `congr 1`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Take the linear combination `((χ (Matrix.GeneralLinearGroup.det a) : ℂ) * φ g) * key`.
+-/
 theorem law_div {D : D7} {n : ℕ} {χ : (AE D)ˣ →* Circle} {G' : Type} [Group G'] [TopologicalSpace G']
     (Ψ : GlobalTheory.StdUnn.G D n ≃ₜ* G') (P' : Subgroup G') (η : G' → ℝ) (c : G' → ℂ)
     (hP : ∀ g, g ∈ GlobalTheory.StdUnn.P D n ↔ Ψ g ∈ P') (hleft : ∀ p ∈ P', ∀ g, η (p * g) = η p + η g)
@@ -101,6 +128,11 @@ theorem law_div {D : D7} {n : ℕ} {χ : (AE D)ˣ →* Circle} {G' : Type} [Grou
     ring
   linear_combination ((χ (Matrix.GeneralLinearGroup.det a) : ℂ) * φ g) * key
 
+/- English proof (translation)
+Use `haveI : FiniteDimensional ℂ (kSpan (GlobalTheory.StdUnn.K D n) φ) := hφ`. Use `Submodule.finiteDimensional_of_le (Submodule.span_le.2 ?_ : _ ≤ (kSpan (GlobalTheory.StdUnn.K D n) φ).map (LinearMap.mulRight ℂ (fun x => Complex.exp (t * η (Ψ x)))))` and prove the remaining obligations. Introduce and unpack `_ ⟨k, rfl⟩`. Use `⟨fun x => φ (x * Ψ.symm k), Submodule.subset_span ⟨Ψ.symm k, (hK _).2 (by simpa using k.2), rfl⟩, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `x`.
+
+Simplify using `[hf, LinearMap.mulRight_apply, map_mul, hright _ _ k.2]`.
+-/
 theorem fin_div {D : D7} {n : ℕ} {G' : Type} [Group G'] [TopologicalSpace G']
     (Ψ : GlobalTheory.StdUnn.G D n ≃ₜ* G') (K' : Subgroup G') (η : G' → ℝ)
     (hK : ∀ g, g ∈ GlobalTheory.StdUnn.K D n ↔ Ψ g ∈ K') (hright : ∀ g, ∀ k ∈ K', η (g * k) = η g)
@@ -115,6 +147,11 @@ theorem fin_div {D : D7} {n : ℕ} {G' : Type} [Group G'] [TopologicalSpace G']
   funext x
   simp [hf, LinearMap.mulRight_apply, map_mul, hright _ _ k.2]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `x`. Establish `hpos : (0 : ℝ) < H x` using `by rw [← hexp x]; exact Real.exp_pos _`. Establish `hlog : Real.log (H x) = η x` using `by rw [← hexp x, Real.log_exp]`. Rewrite using `[Complex.cpow_def_of_ne_zero (by exact_mod_cast hpos.ne'), ← Complex.ofReal_log hpos.le, hlog]`. Establish `key : Complex.exp ((z + c) * η x) * Complex.exp (-(s₁ + c) * η x) = Complex.exp (η x * (z - s₁))`.
+
+Rewrite using `[← Complex.exp_add]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree. Take the linear combination `φ x * key`.
+-/
 theorem fun_eq {X : Type} (η : X → ℝ) (H : X → ℝ≥0) (hexp : ∀ x, Real.exp (η x) = (H x : ℝ)) (φ : X → ℂ)
     (s₁ z c : ℂ) : (fun x => Complex.exp ((z + c) * η x) * (φ x * Complex.exp (-(s₁ + c) * η x))) =
       fun x => ((H x : ℝ) : ℂ) ^ (z - s₁) * φ x := by
@@ -128,6 +165,17 @@ theorem fun_eq {X : Type} (η : X → ℝ) (H : X → ℝ≥0) (hexp : ∀ x, Re
     ring
   linear_combination φ x * key
 
+/- English proof (translation)
+Take `⟨R, hR1, hR0⟩ : ∃ R : ℝ, R1 ≤ R ∧ R0 ≤ R` from `⟨max R1 R0, le_max_left _ _, le_max_right _ _⟩`. Take `⟨hmaj, hdiff, hcont, hinv⟩` from `hFar G G' Φ Γ P Γ' K' P' c η R hK hPar hHt hΓ hP (fun x hx => hconv x (lt_of_le_of_lt hR0 hx)) f hf hlaw`. Take `⟨U', d', E', hU'o, hU'r, hs₀', hd', hE'd, hE'c, hE'i, hE'eq⟩` from `hGlue G Γ (fun i x => (i : G) * x) (fun z g => GlobalTheory.Eis.cosetSum P Γ (fun x => Complex.exp (z * η (Φ x)) * f x) g) Hh A R hA hAne hHd hHc (fun z hz x => hHeq z (lt_of_le_of_lt hR1 hz) x) hdiff hcont (fun z i x => hinv z i i.2 x) (s₀ + (w : ℂ))`. Use `⟨(· + (w : ℂ)) ⁻¹' U', Polynomial.taylor (w : ℂ) d', fun z g => E' (z + (w : ℂ)) g, R - w, hU'o.preimage (continuous_id.add continuous_const), hU'r.preimage_add _, hs₀', ?_, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Conclude with `fun h => hd' ((Polynomial.taylor_eq_zero _ d').1 h)`.
+
+Introduce `g`. Conclude with `(hE'd g).comp (differentiableOn_id.add_const _) (fun z hz => hz)`. Use `hE'c.comp ((continuous_fst.add continuous_const).prodMk continuous_snd).continuousOn ?_` and prove the remaining obligations. Introduce `y hy`. Conclude with `⟨hy.1, Set.mem_univ _⟩`.
+
+Introduce `z hz γ hγ g`. Conclude with `hE'i (z + (w : ℂ)) hz ⟨γ, hγ⟩ g`. Introduce `z hz`. Establish `hz' : R < (z + (w : ℂ)).re`. Establish `: (z + (w : ℂ)).re = z.re + w` using `by simp`.
+
+Rewrite using `[this]`. Combine the linear equalities and inequalities to obtain the conclusion. Use `⟨fun C hC => ?_, fun g => ?_⟩` and prove the remaining obligations. Take `⟨u, hu, hb⟩` from `hmaj (z + (w : ℂ)) hz' C hC`. Use `⟨u, hu, fun g hg q => ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[← hF z]`. Conclude with `hb g hg q`. Use `show E' (z + (w : ℂ)) g = _`. Rewrite using `[hE'eq (z + (w : ℂ)) hz' g, Polynomial.taylor_eval, hF z]`.
+-/
 theorem assemble {G G' : Type} [Group G] [TopologicalSpace G] [IsTopologicalGroup G] [Group G'] [TopologicalSpace G']
     [IsTopologicalGroup G'] [T2Space G'] [LocallyCompactSpace G'] (hFar : Far) (hGlue : Glue) (Φ : G ≃ₜ* G')
     (Γ P : Subgroup G) (Γ' K' P' : Subgroup G') (c : G' → ℂ) (η : G' → ℝ) (R0 : ℝ) (hK : IsCompact (K' : Set G'))
@@ -173,6 +221,17 @@ theorem assemble {G G' : Type} [Group G] [TopologicalSpace G] [IsTopologicalGrou
     · show E' (z + (w : ℂ)) g = _
       rw [hE'eq (z + (w : ℂ)) hz' g, Polynomial.taylor_eval, hF z]
 
+/- English proof (translation)
+Introduce `hDict hDI hCM hGT hBd hExt hPar hSg hStd hIwa hScal hFar hGlue`. Introduce `D n hn χ b hχ hres H hH s₁ φ hφ s₀`. Establish `hcm` using `GlobalTheory.AdelicU.isCMExt_host D`. Establish `hur` using `GlobalTheory.HeckeAdjoint.unramified_host D`. Establish `hpow` using `GlobalTheory.LFun.resEtaPow_of_resEta _ _ hcm.2.2.1 χ b ((GlobalTheory.LFun.resEta_iff χ b).1 hres)`.
+
+Establish `hGood : (adCM D.sp.cm.sig χ).Good` using `hCM _ _ D.sp.cm.sig χ b hcm hur hχ hpow`. Take `⟨_, _, _, hT2, hLC, _, hKc⟩` from `hGT _ _ (adCM D.sp.cm.sig χ) hGood (Fin n) (-1)`. Take `⟨Ψ, hΓ, hP, hK, hdet⟩` from `hStd hDict hDI D χ n`. Establish `hI` using `hIwa D χ n`. Take `⟨hPar1, hHt1, -⟩` from `(hPar _ _ (adCM D.sp.cm.sig χ) hGood (Fin n) (-1) Set.univ).2 (by rw [inf_idem]; exact hI)`.
+
+Rewrite `hPar1` using `[inf_idem]`. Establish `hW` using `hSg _ _ D.sp.cm.sig χ b hcm hur hχ hpow (-1) (Fin n) (by simp; omega) hI`. Establish `hexp : ∀ x, Real.exp ((adCM D.sp.cm.sig χ).uH (-1) Set.univ (Ψ x)) = (H x : ℝ)` using `fun x => exp_uH_eq hDict hBd hGood Ψ hP hK hdet hI hH x`. Take `⟨R0, D0, Op0, H0, hwall⟩` from `hW ℂ (1 : (adCM D.sp.cm.sig χ).uK (-1) (Fin n) →* (ℂ →L[ℂ] ℂ)) continuous_const`. Establish `hf : Continuous fun x => φ x * Complex.exp (-(s₁ + (n : ℂ) / 2) * (adCM D.sp.cm.sig χ).uH (-1) Set.univ (Ψ x))` using `hφ.2.1.mul (Complex.continuous_exp.comp (continuous_const.mul (Complex.continuous_ofReal.comp (hHt1.cont.comp Ψ.continuous))))`.
+
+Establish `hlaw` using `law_div Ψ _ _ ((adCM D.sp.cm.sig χ).uC (-1) (Fin n)) hP hHt1.left (fun g a ha => congrArg (fun u => ((χ u : Circle) : ℂ)) (hdet g a ha)) hH hexp hφ`. Establish `hfin` using `fin_div Ψ _ _ hK hHt1.right hφ.2.2 (-(s₁ + (n : ℂ) / 2)) (fun x => φ x * Complex.exp (-(s₁ + (n : ℂ) / 2) * (adCM D.sp.cm.sig χ).uH (-1) Set.univ (Ψ x))) (fun x => rfl)`. Take `⟨A0, Hh, R1, hA0, hA0ne, hHd, hHc, hHeq, -⟩` from `hScal _ _ Ψ _ _ _ _ _ _ _ _ hKc hPar1 hHt1 hΓ hP hW _ hf hlaw hfin`. Conclude with `assemble hFar hGlue Ψ _ _ _ _ _ _ _ R0 hKc hPar1 hHt1 hΓ hP hwall.convR _ hf hlaw A0 Hh R1 hA0 hA0ne hHd hHc hHeq ((n : ℝ) / 2) (fun z x => ((H x : ℝ) : ℂ) ^ (z - s₁) * φ x) (fun z => by`. Establish `e` using `fun_eq (fun x => (adCM D.sp.cm.sig χ).uH (-1) Set.univ (Ψ x)) H hexp φ s₁ z ((n : ℂ) / 2)`.
+
+Use `push_cast`. Conclude with `e) s₀`.
+-/
 theorem eTop : ETop := by
   intro hDict hDI hCM hGT hBd hExt hPar hSg hStd hIwa hScal hFar hGlue
   intro D n hn χ b hχ hres H hH s₁ φ hφ s₀

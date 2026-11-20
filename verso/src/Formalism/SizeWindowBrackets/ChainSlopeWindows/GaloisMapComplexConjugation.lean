@@ -14,38 +14,66 @@ namespace Formalism.LFunctionChainParameters.LHost
 
 open Formalism Formalism.D5 Formalism.LFunctionChainParameters.characterSumData
 
+/- English proof (translation)
+Rewrite using `[← ZMod.natCast_val, ZMod.natCast_eq_natCast_iff]`.
+-/
 lemma cast_eq_natCast_iff {N : ℕ} [NeZero N] (x : ZMod N) (c k : ℕ) :
     (x.cast : ZMod c) = (k : ZMod c) ↔ x.val ≡ k [MOD c] := by
   rw [← ZMod.natCast_val, ZMod.natCast_eq_natCast_iff]
 
+/- English proof (translation)
+Rewrite using `[← cast_eq_natCast_iff, Nat.cast_one]`.
+-/
 lemma cast_eq_one_iff {N : ℕ} [NeZero N] (x : ZMod N) (c : ℕ) :
     (x.cast : ZMod c) = 1 ↔ x.val ≡ 1 [MOD c] := by
   rw [← cast_eq_natCast_iff, Nat.cast_one]
 
+/- English proof (translation)
+Rewrite using `[Units.ext_iff, ZMod.unitsMap_val, Units.val_one, cast_eq_one_iff]`.
+-/
 lemma unitsMap_eq_one_iff {N c : ℕ} [NeZero N] (h : c ∣ N) (u : (ZMod N)ˣ) :
     ZMod.unitsMap h u = 1 ↔ (u : ZMod N).val ≡ 1 [MOD c] := by
   rw [Units.ext_iff, ZMod.unitsMap_val, Units.val_one, cast_eq_one_iff]
 
+/- English proof (translation)
+Rewrite using `[Units.ext_iff, ZMod.unitsMap_val, ZMod.coe_unitOfCoprime, cast_eq_natCast_iff]`.
+-/
 lemma unitsMap_eq_unitOfCoprime_iff {N c k : ℕ} [NeZero N] (h : c ∣ N) (hk : k.Coprime c) (u : (ZMod N)ˣ) :
     ZMod.unitsMap h u = ZMod.unitOfCoprime k hk ↔ (u : ZMod N).val ≡ k [MOD c] := by
   rw [Units.ext_iff, ZMod.unitsMap_val, ZMod.coe_unitOfCoprime, cast_eq_natCast_iff]
 
+/- English proof (translation)
+Unfold `localUnits`. Rewrite using `[MonoidHom.mem_ker, unitsMap_eq_one_iff]`.
+-/
 lemma mem_localUnits_iff {N : ℕ} [NeZero N] (p : ℕ) (u : (ZMod N)ˣ) :
     u ∈ localUnits N p ↔ (u : ZMod N).val ≡ 1 [MOD ordCompl[p] N] := by
   unfold localUnits
   rw [MonoidHom.mem_ker, unitsMap_eq_one_iff]
 
+/- English proof (translation)
+Unfold `IsFrobUnit`. Rewrite using `[cast_eq_natCast_iff, cast_eq_one_iff]`.
+-/
 lemma isFrobUnit_iff {N : ℕ} [NeZero N] (p : ℕ) (w : (ZMod N)ˣ) :
     IsFrobUnit N p w ↔ (w : ZMod N).val ≡ p [MOD ordCompl[p] N] ∧ (w : ZMod N).val ≡ 1 [MOD ordProj[p] N] := by
   unfold IsFrobUnit
   rw [cast_eq_natCast_iff, cast_eq_one_iff]
 
+/- English proof (translation)
+Apply `Units.ext` to reduce the goal to its premises. Use `(ZMod.natCast_eq_natCast_iff _ _ N).2 h` as an intermediate fact. Simplify using `using this`.
+-/
 lemma units_ext_modEq {N : ℕ} [NeZero N] {u v : (ZMod N)ˣ} (h : (u : ZMod N).val ≡ (v : ZMod N).val [MOD N]) :
     u = v := by
   apply Units.ext
   have := (ZMod.natCast_eq_natCast_iff _ _ N).2 h
   simpa using this
 
+/- English proof (translation)
+Substitute `hN` using the available equality. Set `E` to `ZMod.chineseRemainder hab`. Use `⟨Units.map E.symm.toMonoidHom (MulEquiv.prodUnits.symm (x, y)), ?_, ?_⟩` and prove the remaining obligations. Apply `Units.ext` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `((E.symm ((x : ZMod a), (y : ZMod b))).cast : ZMod a) = x`.
+
+Establish `h3 : ∀ z : ZMod (a * b), (E z).1 = (z.cast : ZMod a)` using `fun z => Prod.fst_zmod_cast z`. Rewrite using `[← h3, E.apply_symm_apply]`. Apply `Units.ext` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `((E.symm ((x : ZMod a), (y : ZMod b))).cast : ZMod b) = y`. Establish `h3 : ∀ z : ZMod (a * b), (E z).2 = (z.cast : ZMod b)` using `fun z => Prod.snd_zmod_cast z`.
+
+Rewrite using `[← h3, E.apply_symm_apply]`.
+-/
 lemma exists_unit_crt {N a b : ℕ} (hN : N = a * b) (hab : a.Coprime b) (ha : a ∣ N) (hb : b ∣ N)
     (x : (ZMod a)ˣ) (y : (ZMod b)ˣ) :
     ∃ u : (ZMod N)ˣ, ZMod.unitsMap ha u = x ∧ ZMod.unitsMap hb u = y := by
@@ -61,6 +89,15 @@ lemma exists_unit_crt {N a b : ℕ} (hN : N = a * b) (hab : a.Coprime b) (ha : a
     have h3 : ∀ z : ZMod (a * b), (E z).2 = (z.cast : ZMod b) := fun z => Prod.snd_zmod_cast z
     rw [← h3, E.apply_symm_apply]
 
+/- English proof (translation)
+Introduce `N p hN hp`. Establish `: NeZero N` using `⟨hN⟩`. Establish `hcop : (ordProj[p] N).Coprime (ordCompl[p] N)` using `(Nat.coprime_ordCompl hp hN).pow_left _`. Establish `hex : ∃ w, IsFrobUnit N p w`. Take `⟨u, hu1, hu2⟩` from `exists_unit_crt (Nat.ordProj_mul_ordCompl_eq_self N p).symm hcop (Nat.ordProj_dvd N p) (Nat.ordCompl_dvd N p) 1 (ZMod.unitOfCoprime p (Nat.coprime_ordCompl hp hN))`.
+
+Use `⟨u, (isFrobUnit_iff p u).2 ⟨?_, ?_⟩⟩` and prove the remaining obligations. Conclude with `(unitsMap_eq_unitOfCoprime_iff _ _ u).1 hu2`. Conclude with `(unitsMap_eq_one_iff _ u).1 hu1`. Establish `hspec : IsFrobUnit N p (frobUnit N p)`. Unfold `frobUnit`.
+
+Rewrite using `[dif_pos hex]`. Conclude with `hex.choose_spec`. Use `⟨hspec, fun w hw => ?_⟩` and prove the remaining obligations. Rewrite `hspec`, `hw` using `[isFrobUnit_iff]`. Apply `units_ext_modEq` to reduce the goal to its premises.
+
+Establish `h1` using `hw.1.trans hspec.1.symm`. Establish `h2` using `hw.2.trans hspec.2.symm`. Use `(Nat.modEq_and_modEq_iff_modEq_mul hcop).1 ⟨h2, h1⟩` as an intermediate fact. Rewrite `this` using `[Nat.ordProj_mul_ordCompl_eq_self]`. Then use the resulting hypothesis.
+-/
 theorem frobenius_unit_spec : FrobUnitSpec := by
   intro N p hN hp
   have : NeZero N := ⟨hN⟩
@@ -83,11 +120,23 @@ theorem frobenius_unit_spec : FrobUnitSpec := by
   have := (Nat.modEq_and_modEq_iff_modEq_mul hcop).1 ⟨h2, h1⟩
   rwa [Nat.ordProj_mul_ordCompl_eq_self] at this
 
+/- English proof (translation)
+The claim follows from `(isFrobUnit_iff p _).1 (frobenius_unit_spec N p (NeZero.ne N) hp).1`.
+-/
 lemma frobUnit_modEq {N p : ℕ} [NeZero N] (hp : p.Prime) :
     ((frobUnit N p : (ZMod N)ˣ) : ZMod N).val ≡ p [MOD ordCompl[p] N] ∧
       ((frobUnit N p : (ZMod N)ˣ) : ZMod N).val ≡ 1 [MOD ordProj[p] N] :=
   (isFrobUnit_iff p _).1 (frobenius_unit_spec N p (NeZero.ne N) hp).1
 
+/- English proof (translation)
+Introduce `N p hN hp hpN`. Establish `: NeZero N` using `⟨hN⟩`. Establish `hM : ordCompl[p] N = N` using `(Nat.ordCompl_eq_self_iff_zero_or_not_dvd N hp).2 (Or.inr hpN)`. Prove the components needed by the constructor for the conclusion. Rewrite using `[eq_bot_iff]`.
+
+Introduce `u hu`. Rewrite `hu` using `[mem_localUnits_iff, hM]`. Rewrite using `[Subgroup.mem_bot]`. Apply `units_ext_modEq` to reduce the goal to its premises. Use `hu.trans ?_` and prove the remaining obligations.
+
+Establish `: ((1 : (ZMod N)ˣ) : ZMod N).val ≡ 1 [MOD N]`. Rewrite using `[← cast_eq_one_iff]`. Simplify using the standard rewrite rules. Conclude with `this.symm`. Establish `h` using `(frobUnit_modEq (N := N) hp).1`.
+
+Rewrite `h` using `[hM]`. Use `(ZMod.natCast_eq_natCast_iff _ _ N).2 h` as an intermediate fact. Simplify using `using this`.
+-/
 theorem unramified_spec : UnramSpec := by
   intro N p hN hp hpN
   have : NeZero N := ⟨hN⟩
@@ -110,6 +159,9 @@ theorem unramified_spec : UnramSpec := by
 section
 variable {H : Type} [AddCommGroup H] [Fintype H] [DecidableEq H]
 
+/- English proof (translation)
+Introduce `N r ψ`. Use `⟨fun u => ?_, fun x hx => MulChar.map_nonunit _ hx⟩` and prove the remaining obligations. Unfold `dirChar`. Rewrite using `[MulChar.ofUnitHom_coe, MonoidHom.coe_toHomUnits]`. Both sides reduce to the same expression.
+-/
 theorem dirichlet_character_spec : DirCharSpec H := by
   intro N r ψ
   refine ⟨fun u => ?_, fun x hx => MulChar.map_nonunit _ hx⟩
@@ -117,15 +169,26 @@ theorem dirichlet_character_spec : DirCharSpec H := by
   rw [MulChar.ofUnitHom_coe, MonoidHom.coe_toHomUnits]
   rfl
 
+/- English proof (translation)
+The claim follows from `(dirichlet_character_spec N r ψ).1 u`.
+-/
 lemma dirChar_unit {N : ℕ} (r : (ZMod N)ˣ →* Multiplicative (E0 × H)) (ψ : AddChar (E0 × H) ℂ) (u : (ZMod N)ˣ) :
     dirChar r ψ (u : ZMod N) = ψ (Multiplicative.toAdd (r u)) := (dirichlet_character_spec N r ψ).1 u
 
+/- English proof (translation)
+Express the relevant statement in the definitionally equal form `Multiplicative.ofAdd x ∈ (localUnits N p).map r ↔ _`. Rewrite using `[Subgroup.mem_map]`. Both sides reduce to the same expression.
+-/
 lemma mem_inertia_iff {N : ℕ} (q1 d : ℕ) (r : (ZMod N)ˣ →* Multiplicative (E0 × H)) (p : ℕ) (x : E0 × H) :
     x ∈ (cftData q1 d r).inertia p ↔ ∃ u ∈ localUnits N p, Multiplicative.toAdd (r u) = x := by
   change Multiplicative.ofAdd x ∈ (localUnits N p).map r ↔ _
   rw [Subgroup.mem_map]
   rfl
 
+/- English proof (translation)
+Rewrite using `[← DirichletCharacter.mem_conductorSet_iff_conductor_dvd _ (Nat.ordCompl_dvd N p), DirichletCharacter.mem_conductorSet_iff, DirichletCharacter.factorsThrough_iff_ker_unitsMap (Nat.ordCompl_dvd N p)]`. Prove the components needed by the constructor for the conclusion. Introduce `h u hu`. Rewrite using `[MonoidHom.mem_ker, Units.ext_iff, MulChar.coe_toUnitHom, dirChar_unit, Units.val_one]`. Conclude with `h _ ((mem_inertia_iff q1 d r p _).2 ⟨u, hu, rfl⟩)`.
+
+Introduce `h x hx`. Take `⟨u, hu, rfl⟩` from `(mem_inertia_iff q1 d r p _).1 hx`. Use `h hu` as an intermediate fact. Rewrite `this` using `[MonoidHom.mem_ker, Units.ext_iff, MulChar.coe_toUnitHom, dirChar_unit, Units.val_one]`. Conclude with `this`.
+-/
 lemma trivial_on_inertia_iff {N : ℕ} [NeZero N] (q1 d : ℕ) (r : (ZMod N)ˣ →* Multiplicative (E0 × H))
     (ψ : AddChar (E0 × H) ℂ) (p : ℕ) :
     (∀ x ∈ (cftData q1 d r).inertia p, ψ x = 1) ↔ (dirChar r ψ).conductor ∣ ordCompl[p] N := by
@@ -142,6 +205,11 @@ lemma trivial_on_inertia_iff {N : ℕ} [NeZero N] (q1 d : ℕ) (r : (ZMod N)ˣ �
     rw [MonoidHom.mem_ker, Units.ext_iff, MulChar.coe_toUnitHom, dirChar_unit, Units.val_one] at this
     exact this
 
+/- English proof (translation)
+Introduce `N q1 d r ψ p hN hp`. Establish `: NeZero N` using `⟨hN⟩`. Rewrite using `[trivial_on_inertia_iff]`. Prove the components needed by the constructor for the conclusion. Introduce `h hpc`.
+
+Conclude with `Nat.not_dvd_ordCompl hp hN (hpc.trans h)`. Introduce `h`. Conclude with `Nat.dvd_ordCompl_of_dvd_not_dvd (DirichletCharacter.conductor_dvd_level _) h`.
+-/
 theorem inertia_conductor : InertiaConductor H := by
   intro N q1 d r ψ p hN hp
   have : NeZero N := ⟨hN⟩
@@ -152,6 +220,11 @@ theorem inertia_conductor : InertiaConductor H := by
   · intro h
     exact Nat.dvd_ordCompl_of_dvd_not_dvd (DirichletCharacter.conductor_dvd_level _) h
 
+/- English proof (translation)
+Unfold `cosetMean`. Establish `h0 : ((univ.filter (fun x => x ∈ I)).card : ℂ) ≠ 0`. Establish `: (0 : E0 × H) ∈ univ.filter (fun x => x ∈ I)` using `by simp [I.zero_mem]`. Conclude with `(Finset.card_pos.2 ⟨_, this⟩).ne'` after adjusting the coercions. Rewrite using `[div_eq_iff h0, Finset.sum_congr rfl (g := fun _ => ψ h)]`.
+
+Rewrite using `[Finset.sum_const, nsmul_eq_mul, mul_comm]`. Introduce `x hx`. Rewrite using `[AddChar.map_add_eq_mul, hI x (by simpa using hx), mul_one]`.
+-/
 lemma cosetMean_of_trivial (I : AddSubgroup (E0 × H)) (h : E0 × H) (ψ : AddChar (E0 × H) ℂ)
     (hI : ∀ x ∈ I, ψ x = 1) : cosetMean I h ψ = ψ h := by
   classical
@@ -164,6 +237,19 @@ lemma cosetMean_of_trivial (I : AddSubgroup (E0 × H)) (h : E0 × H) (ψ : AddCh
   · intro x hx
     rw [AddChar.map_add_eq_mul, hI x (by simpa using hx), mul_one]
 
+/- English proof (translation)
+Unfold `cosetMean`. Use `push Not at hI`. Take `⟨y, hy, hy1⟩` from `hI`. Establish `key : ∑ x ∈ univ.filter (fun x => x ∈ I), ψ (h + x) = 0`. Establish `h1 : ∑ x ∈ univ.filter (fun x => x ∈ I), ψ (h + x) = ∑ x ∈ univ.filter (fun x => x ∈ I), ψ (h + (y + x))`.
+
+Use `symm`. Apply `Finset.sum_bij (fun x _ => y + x)` to reduce the goal to its premises. Introduce `x hx`. Simplify using `only [mem_filter, mem_univ, true_and] at hx ⊢`. Conclude with `I.add_mem hy hx`.
+
+Introduce `a _ b _ hab`. Conclude with `add_left_cancel hab`. Introduce `b hb`. Simplify using `only [mem_filter, mem_univ, true_and] at hb`. Conclude with `⟨-y + b, by simpa using I.add_mem (I.neg_mem hy) hb, by simp⟩`.
+
+Introduce `x _`. Both sides reduce to the same expression. Establish `h2 : ∑ x ∈ univ.filter (fun x => x ∈ I), ψ (h + (y + x)) = ψ y * ∑ x ∈ univ.filter (fun x => x ∈ I), ψ (h + x)`. Rewrite using `[Finset.mul_sum]`. Apply `Finset.sum_congr rfl` to reduce the goal to its premises.
+
+Introduce `x _`. Rewrite using `[AddChar.map_add_eq_mul, AddChar.map_add_eq_mul, AddChar.map_add_eq_mul]`. Expand and normalize the polynomial expressions, which then agree. Rewrite `h1` using `[h2]`. Establish `h3 : (1 - ψ y) * ∑ x ∈ univ.filter (fun x => x ∈ I), ψ (h + x) = 0`.
+
+Rewrite using `[sub_mul, one_mul, ← h1, sub_self]`. Break down `mul_eq_zero.1 h3 with h4 | h4` into its components or cases. Conclude with `absurd (sub_eq_zero.1 h4).symm hy1`. Conclude with `h4`. Rewrite using `[key, zero_div]`.
+-/
 lemma cosetMean_of_nontrivial (I : AddSubgroup (E0 × H)) (h : E0 × H) (ψ : AddChar (E0 × H) ℂ)
     (hI : ¬ ∀ x ∈ I, ψ x = 1) : cosetMean I h ψ = 0 := by
   classical
@@ -200,12 +286,24 @@ lemma cosetMean_of_nontrivial (I : AddSubgroup (E0 × H)) (h : E0 × H) (ψ : Ad
     · exact h4
   rw [key, zero_div]
 
+/- English proof (translation)
+Introduce `N q1 d r ψ p i hp hi`. Rewrite using `[primitive_value_pow (cftData q1 d r) ψ p i hp hi]`. Use `⟨fun h => ?_, fun h => cosetMean_of_nontrivial _ _ _ h⟩` and prove the remaining obligations. Rewrite using `[cosetMean_of_trivial _ _ _ h, AddChar.map_nsmul_eq_pow]`.
+-/
 theorem primitive_value_ramified : PrimValRamified H := by
   intro N q1 d r ψ p i hp hi
   rw [primitive_value_pow (cftData q1 d r) ψ p i hp hi]
   refine ⟨fun h => ?_, fun h => cosetMean_of_nontrivial _ _ _ h⟩
   rw [cosetMean_of_trivial _ _ _ h, AddChar.map_nsmul_eq_pow]
 
+/- English proof (translation)
+Distinguish the cases in `h : ∀ x ∈ (cftData q1 d r).inertia p, ψ x = 1`. Rewrite using `[cosetMean_of_trivial _ _ _ h, AddChar.map_nsmul_eq_pow]`. Use `congr 1`. Establish `hc : (dirChar r ψ).conductor ∣ ordCompl[p] N` using `(trivial_on_inertia_iff q1 d r ψ p).1 h`. Express the relevant statement in the definitionally equal form `ψ (Multiplicative.toAdd (r (frobUnit N p))) = _`.
+
+Rewrite using `[← dirChar_unit]`. Use `conv_lhs => rw [← DirichletCharacter.changeLevel_primitiveCharacter (dirChar r ψ)]`. Rewrite using `[DirichletCharacter.changeLevel_eq_cast_of_dvd]`. Use `congr 1`. Rewrite using `[cast_eq_natCast_iff]`.
+
+Conclude with `(frobUnit_modEq hp).1.of_dvd hc`. Rewrite using `[cosetMean_of_nontrivial _ _ _ h]`. Establish `hpc : p ∣ (dirChar r ψ).conductor`. Assume the negation of the conclusion as `hpc`. Conclude with `h ((inertia_conductor N q1 d r ψ p (NeZero.ne N) hp).2 hpc)`.
+
+Rewrite using `[MulChar.map_nonunit, zero_pow hi]`. Rewrite using `[ZMod.isUnit_iff_coprime]`. Introduce `hcop`. Conclude with `hp.one_lt.ne' (Nat.Coprime.eq_one_of_dvd hcop hpc)`.
+-/
 lemma cosetMean_eq_primitive {N : ℕ} [NeZero N] (q1 d : ℕ) (r : (ZMod N)ˣ →* Multiplicative (E0 × H))
     (ψ : AddChar (E0 × H) ℂ) (p i : ℕ) (hp : p.Prime) (hi : i ≠ 0) :
     cosetMean ((cftData q1 d r).inertia p) (i • (cftData q1 d r).frob p) ψ
@@ -230,6 +328,13 @@ lemma cosetMean_eq_primitive {N : ℕ} [NeZero N] (q1 d : ℕ) (r : (ZMod N)ˣ �
     intro hcop
     exact hp.one_lt.ne' (Nat.Coprime.eq_one_of_dvd hcop hpc)
 
+/- English proof (translation)
+Introduce `N q1 d r ψ n hN hn`. Establish `: NeZero N` using `⟨hN⟩`. Unfold `primVal`. Use `conv_rhs => rw [← Nat.prod_factorization_pow_eq_self hn]`. Rewrite using `[Nat.prod_factorization_eq_prod_primeFactors, Nat.cast_prod, map_prod]`.
+
+Apply `Finset.prod_congr rfl` to reduce the goal to its premises. Introduce `p hp`. Establish `hpp : p.Prime` using `Nat.prime_of_mem_primeFactors hp`. Establish `hi : n.factorization p ≠ 0`. Use `(Nat.support_factorization n ▸ hp : p ∈ n.factorization.support)` as an intermediate fact.
+
+Conclude with `Finsupp.mem_support_iff.1 this`. Rewrite using `[cosetMean_eq_primitive q1 d r ψ p _ hpp hi, Nat.cast_pow, map_pow]`.
+-/
 theorem primitive_value_primitive : PrimValPrimitive H := by
   intro N q1 d r ψ n hN hn
   have : NeZero N := ⟨hN⟩
@@ -248,9 +353,15 @@ end
 
 open Formalism.FrobeniusOrbits (HostHyp HGrp hcl)
 
+/- English proof (translation)
+The claim follows from `Nat.mul_ne_zero (Nat.mul_ne_zero (pow_ne_zero _ two_ne_zero) h.1.ne_zero) h.2.1.ne_zero`.
+-/
 lemma hostN_ne_zero (e : ℕ) {q d : ℕ} (h : HostHyp q d) : hostN e q d ≠ 0 :=
   Nat.mul_ne_zero (Nat.mul_ne_zero (pow_ne_zero _ two_ne_zero) h.1.ne_zero) h.2.1.ne_zero
 
+/- English proof (translation)
+Substitute `hN` using the available equality. Establish `h2` using `Nat.ordCompl_pow_mul_of_not_dvd k hp hm`. Establish `h1` using `Nat.ordProj_mul_ordCompl_eq_self (p ^ k * m) p`. Rewrite `h1` using `[h2]`. Conclude with `⟨Nat.eq_of_mul_eq_mul_right (Nat.pos_of_ne_zero hm0) h1, h2⟩`.
+-/
 lemma parts_of_eq {N p k m : ℕ} (hp : p.Prime) (hN : N = p ^ k * m) (hm : ¬ p ∣ m) (hm0 : m ≠ 0) :
     ordProj[p] N = p ^ k ∧ ordCompl[p] N = m := by
   subst hN
@@ -259,10 +370,22 @@ lemma parts_of_eq {N p k m : ℕ} (hp : p.Prime) (hN : N = p ^ k * m) (hm : ¬ p
   rw [h2] at h1
   exact ⟨Nat.eq_of_mul_eq_mul_right (Nat.pos_of_ne_zero hm0) h1, h2⟩
 
+/- English proof (translation)
+Take `⟨_, _, h3, h4, _⟩` from `h`. Apply the tactic sequence `refine ⟨?_, ?_, ?_⟩ <;> omega`.
+-/
 lemma HostHyp_ne {q d : ℕ} (h : HostHyp q d) : q ≠ 2 ∧ d ≠ 2 ∧ q ≠ d := by
   obtain ⟨_, _, h3, h4, _⟩ := h
   refine ⟨?_, ?_, ?_⟩ <;> omega
 
+/- English proof (translation)
+Introduce `e q d h`. Take `⟨hq2, hd2, hqd⟩` from `HostHyp_ne h`. Establish `hq` using `h.1`. Establish `hd` using `h.2.1`. Establish `h2q : ¬ 2 ∣ q` using `fun hh => hq2 ((Nat.prime_dvd_prime_iff_eq Nat.prime_two hq).1 hh).symm`.
+
+Establish `h2d : ¬ 2 ∣ d` using `fun hh => hd2 ((Nat.prime_dvd_prime_iff_eq Nat.prime_two hd).1 hh).symm`. Establish `hq2' : ¬ q ∣ 2 ^ (e + 2)` using `fun hh => hq2 ((Nat.prime_dvd_prime_iff_eq hq Nat.prime_two).1 (hq.dvd_of_dvd_pow hh))`. Establish `hd2' : ¬ d ∣ 2 ^ (e + 2)` using `fun hh => hd2 ((Nat.prime_dvd_prime_iff_eq hd Nat.prime_two).1 (hd.dvd_of_dvd_pow hh))`. Establish `hqd' : ¬ q ∣ d` using `fun hh => hqd ((Nat.prime_dvd_prime_iff_eq hq hd).1 hh)`. Establish `hdq' : ¬ d ∣ q` using `fun hh => hqd ((Nat.prime_dvd_prime_iff_eq hd hq).1 hh).symm`.
+
+Establish `hp0 : (2 : ℕ) ^ (e + 2) ≠ 0` using `pow_ne_zero _ two_ne_zero`. Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Conclude with `parts_of_eq Nat.prime_two (by unfold hostN; ring) (fun hh => (Nat.prime_two.dvd_mul.1 hh).elim h2q h2d) (Nat.mul_ne_zero hq.ne_zero hd.ne_zero)`. Use `parts_of_eq (N := hostN e q d) (k := 1) (m := 2 ^ (e + 2) * d) hq (by unfold hostN; ring) (fun hh => (hq.dvd_mul.1 hh).elim hq2' hqd') (Nat.mul_ne_zero hp0 hd.ne_zero)` as an intermediate fact. Rewrite `this` using `[pow_one]`. Then use the resulting hypothesis.
+
+Use `parts_of_eq (N := hostN e q d) (k := 1) (m := 2 ^ (e + 2) * q) hd (by unfold hostN; ring) (fun hh => (hd.dvd_mul.1 hh).elim hd2' hdq') (Nat.mul_ne_zero hp0 hq.ne_zero)` as an intermediate fact. Rewrite `this` using `[pow_one]`. Then use the resulting hypothesis.
+-/
 theorem extension_local_parts : HostLocalParts := by
   intro e q d h
   obtain ⟨hq2, hd2, hqd⟩ := HostHyp_ne h
@@ -287,18 +410,27 @@ theorem extension_local_parts : HostLocalParts := by
       (fun hh => (hd.dvd_mul.1 hh).elim hd2' hdq') (Nat.mul_ne_zero hp0 hq.ne_zero)
     rwa [pow_one] at this
 
+/- English proof (translation)
+Establish `h8 : d % 8 = 7` using `by have := h.2.2.2.1; omega`. Establish `hodd : Odd d` using `Nat.odd_iff.2 (by omega)`. Rewrite using `[Nat.cast_ofNat, jacobiSym.at_two hodd, ZMod.χ₈_nat_mod_eight, h8]`. Both sides reduce to the same expression.
+-/
 lemma jac_two_d {q d : ℕ} (h : HostHyp q d) : jacobiSym ((2 : ℕ) : ℤ) d = 1 := by
   have h8 : d % 8 = 7 := by have := h.2.2.2.1; omega
   have hodd : Odd d := Nat.odd_iff.2 (by omega)
   rw [Nat.cast_ofNat, jacobiSym.at_two hodd, ZMod.χ₈_nat_mod_eight, h8]
   rfl
 
+/- English proof (translation)
+Establish `h8 : q % 8 = 3` using `h.2.2.1`. Establish `hodd : Odd q` using `Nat.odd_iff.2 (by omega)`. Rewrite using `[Nat.cast_ofNat, jacobiSym.at_two hodd, ZMod.χ₈_nat_mod_eight, h8]`. Both sides reduce to the same expression.
+-/
 lemma jac_two_q {q d : ℕ} (h : HostHyp q d) : jacobiSym ((2 : ℕ) : ℤ) q = -1 := by
   have h8 : q % 8 = 3 := h.2.2.1
   have hodd : Odd q := Nat.odd_iff.2 (by omega)
   rw [Nat.cast_ofNat, jacobiSym.at_two hodd, ZMod.χ₈_nat_mod_eight, h8]
   rfl
 
+/- English proof (translation)
+Establish `h4 : d % 4 = 3` using `by have := h.2.2.2.1; omega`. Establish `hodd : Odd d` using `Nat.odd_iff.2 (by omega)`. Establish `h1` using `FrobeniusOrbits.hostRecip q d h`. Rewrite `h1` using `[jacobiSym.neg _ hodd, ZMod.χ₄_nat_three_mod_four h4]`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 lemma jac_q_d {q d : ℕ} (h : HostHyp q d) : jacobiSym (q : ℤ) d = 1 := by
   have h4 : d % 4 = 3 := by have := h.2.2.2.1; omega
   have hodd : Odd d := Nat.odd_iff.2 (by omega)
@@ -306,6 +438,9 @@ lemma jac_q_d {q d : ℕ} (h : HostHyp q d) : jacobiSym (q : ℤ) d = 1 := by
   rw [jacobiSym.neg _ hodd, ZMod.χ₄_nat_three_mod_four h4] at h1
   linarith
 
+/- English proof (translation)
+Establish `h4 : q % 4 = 3` using `by have := h.2.2.1; omega`. Establish `hodd : Odd q` using `Nat.odd_iff.2 (by omega)`. Establish `h1` using `h.2.2.2.2`. Rewrite `h1` using `[jacobiSym.neg _ hodd, ZMod.χ₄_nat_three_mod_four h4]`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 lemma jac_d_q {q d : ℕ} (h : HostHyp q d) : jacobiSym (d : ℤ) q = -1 := by
   have h4 : q % 4 = 3 := by have := h.2.2.1; omega
   have hodd : Odd q := Nat.odd_iff.2 (by omega)
@@ -313,6 +448,11 @@ lemma jac_d_q {q d : ℕ} (h : HostHyp q d) : jacobiSym (d : ℤ) q = -1 := by
   rw [jacobiSym.neg _ hodd, ZMod.χ₄_nat_three_mod_four h4] at h1
   linarith
 
+/- English proof (translation)
+Rewrite using `[jacobiSym.neg _ hm]`. Establish `hl' : Odd l` using `Nat.odd_iff.2 (by omega)`. Break down `Nat.odd_mod_four_iff.1 (Nat.odd_iff.1 hm) with h1 | h3` into its components or cases. Rewrite using `[ZMod.χ₄_nat_one_mod_four h1, one_mul, jacobiSym.quadratic_reciprocity_one_mod_four h1 hl']`. Rewrite using `[ZMod.χ₄_nat_three_mod_four h3, jacobiSym.quadratic_reciprocity_three_mod_four h3 hl]`.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 lemma jac_flip {l m : ℕ} (hl : l % 4 = 3) (hm : Odd m) : jacobiSym (m : ℤ) l = jacobiSym (-(l : ℤ)) m := by
   rw [jacobiSym.neg _ hm]
   have hl' : Odd l := Nat.odd_iff.2 (by omega)
@@ -321,17 +461,26 @@ lemma jac_flip {l m : ℕ} (hl : l % 4 = 3) (hm : Odd m) : jacobiSym (m : ℤ) l
   · rw [ZMod.χ₄_nat_three_mod_four h3, jacobiSym.quadratic_reciprocity_three_mod_four h3 hl]
     ring
 
+/- English proof (translation)
+Express the relevant statement in the definitionally equal form `(if s = 1 then (0 : ZMod 2) else 1) = _`. Establish `: s = 1 ↔ (s : ℤ) = 1` using `by rw [Units.ext_iff, Units.val_one]`. Simplify using `only [this]`.
+-/
 lemma sgn2_toAdd_eq_ite (s : ℤˣ) : Multiplicative.toAdd (sgn2 s) = if (s : ℤ) = 1 then 0 else 1 := by
   change (if s = 1 then (0 : ZMod 2) else 1) = _
   have : s = 1 ↔ (s : ℤ) = 1 := by rw [Units.ext_iff, Units.val_one]
   simp only [this]
 
+/- English proof (translation)
+Unfold `legU`. Rewrite using `[MonoidHom.comp_apply, MulChar.coe_toUnitHom, ZMod.unitsMap_val, (cast_eq_natCast_iff _ _ _).2 hk, ← jacobiSym.legendreSym.to_jacobiSym, legendreSym, Int.cast_natCast]`.
+-/
 lemma legU_of_modEq {N l : ℕ} [NeZero N] [Fact l.Prime] (h : l ∣ N) (u : (ZMod N)ˣ) (k : ℕ)
     (hk : (u : ZMod N).val ≡ k [MOD l]) : ((legU N l h u : ℤˣ) : ℤ) = jacobiSym (k : ℤ) l := by
   unfold legU
   rw [MonoidHom.comp_apply, MulChar.coe_toUnitHom, ZMod.unitsMap_val, (cast_eq_natCast_iff _ _ _).2 hk,
     ← jacobiSym.legendreSym.to_jacobiSym, legendreSym, Int.cast_natCast]
 
+/- English proof (translation)
+Express the relevant statement in the definitionally equal form `((Multiplicative.toAdd (sgn2 (legU _ d (d_dvd_hostN e q d) u)), Multiplicative.toAdd (sgn2 (legU _ q (q_dvd_hostN e q d) u))), Additive.ofMul (hcl e (ZMod.unitsMap (two_dvd_hostN e q d) u))) = _`. Rewrite using `[sgn2_toAdd_eq_ite, sgn2_toAdd_eq_ite, legU_of_modEq _ u kd h1, legU_of_modEq _ u kq h2, (unitsMap_eq_unitOfCoprime_iff _ hk2 u).2 h3]`.
+-/
 lemma recMap_of_modEq {e q d : ℕ} [Fact q.Prime] [Fact d.Prime] [NeZero (hostN e q d)] (u : (ZMod (hostN e q d))ˣ)
     (kd kq k2 : ℕ) (hk2 : k2.Coprime (2 ^ (e + 2)))
     (h1 : (u : ZMod (hostN e q d)).val ≡ kd [MOD d]) (h2 : (u : ZMod (hostN e q d)).val ≡ kq [MOD q])
@@ -345,17 +494,32 @@ lemma recMap_of_modEq {e q d : ℕ} [Fact q.Prime] [Fact d.Prime] [NeZero (hostN
   rw [sgn2_toAdd_eq_ite, sgn2_toAdd_eq_ite, legU_of_modEq _ u kd h1, legU_of_modEq _ u kq h2,
     (unitsMap_eq_unitOfCoprime_iff _ hk2 u).2 h3]
 
+/- English proof (translation)
+Rewrite using `[ZMod.coe_unitOfCoprime, ZMod.val_natCast]`. Conclude with `(Nat.mod_modEq m N).of_dvd hc`.
+-/
 lemma unitOfCoprime_modEq {N m c : ℕ} [NeZero N] (hm : m.Coprime N) (hc : c ∣ N) :
     ((ZMod.unitOfCoprime m hm : (ZMod N)ˣ) : ZMod N).val ≡ m [MOD c] := by
   rw [ZMod.coe_unitOfCoprime, ZMod.val_natCast]
   exact (Nat.mod_modEq m N).of_dvd hc
 
+/- English proof (translation)
+Break down `hJ with rfl | rfl` into its components or cases. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
+-/
 lemma ite_zmod2 (J : ℤ) (hJ : J = 1 ∨ J = -1) :
     (((if J = 1 then (0 : ZMod 2) else 1) = 0 ↔ J = 1) ∧ ((if J = 1 then (0 : ZMod 2) else 1) = 1 ↔ J = -1)) := by
   rcases hJ with rfl | rfl
   · simp
   · simp
 
+/- English proof (translation)
+Introduce `e q d _ _ h m hm hm2`. Establish `: NeZero (hostN e q d)` using `⟨hostN_ne_zero e h⟩`. Establish `hodd : Odd m`. Establish `: m.Coprime 2` using `Nat.Coprime.coprime_dvd_right (dvd_pow_self 2 (by omega)) hm2`. Conclude with `Nat.Coprime.odd_of_right this`.
+
+Establish `hd4 : d % 4 = 3` using `by have := h.2.2.2.1; omega`. Establish `hq4 : q % 4 = 3` using `by have := h.2.2.1; omega`. Rewrite using `[recMap_of_modEq _ m m m hm2 (unitOfCoprime_modEq hm (d_dvd_hostN e q d)) (unitOfCoprime_modEq hm (q_dvd_hostN e q d)) (unitOfCoprime_modEq hm (two_dvd_hostN e q d)), jac_flip hd4 hodd, jac_flip hq4 hodd]`. Establish `hJd : jacobiSym (-(d : ℤ)) m = 1 ∨ jacobiSym (-(d : ℤ)) m = -1`. Apply `jacobiSym.eq_one_or_neg_one` to reduce the goal to its premises.
+
+Rewrite using `[Int.neg_gcd, Int.gcd_natCast_natCast]`. Conclude with `(Nat.Coprime.coprime_dvd_right (d_dvd_hostN e q d) hm).symm`. Establish `hJq : jacobiSym (-(q : ℤ)) m = 1 ∨ jacobiSym (-(q : ℤ)) m = -1`. Apply `jacobiSym.eq_one_or_neg_one` to reduce the goal to its premises. Rewrite using `[Int.neg_gcd, Int.gcd_natCast_natCast]`.
+
+Conclude with `(Nat.Coprime.coprime_dvd_right (q_dvd_hostN e q d) hm).symm`. Conclude with `⟨(ite_zmod2 _ hJd).1, (ite_zmod2 _ hJd).2, (ite_zmod2 _ hJq).1, (ite_zmod2 _ hJq).2, rfl⟩`.
+-/
 theorem reciprocity_kronecker : RecKronecker := by
   intro e q d _ _ h m hm hm2
   have : NeZero (hostN e q d) := ⟨hostN_ne_zero e h⟩
@@ -380,11 +544,17 @@ theorem reciprocity_kronecker : RecKronecker := by
 def sQ (l : ℕ) [Fact l.Prime] (x : (ZMod l)ˣ) : ZMod 2 :=
   Multiplicative.toAdd (sgn2 ((quadraticChar (ZMod l)).toUnitHom x))
 
+/- English proof (translation)
+Unfold `sQ`. Rewrite using `[map_one, map_one]`. Both sides reduce to the same expression.
+-/
 lemma sQ_one (l : ℕ) [Fact l.Prime] : sQ l 1 = 0 := by
   unfold sQ
   rw [map_one, map_one]
   rfl
 
+/- English proof (translation)
+Take `⟨x, hx⟩` from `quadraticChar_exists_neg_one' (F := ZMod l) (by rwa [ZMod.ringChar_zmod_n])`. Use `⟨x, ?_⟩` and prove the remaining obligations. Unfold `sQ`. Rewrite using `[sgn2_toAdd_eq_ite, MulChar.coe_toUnitHom, hx]`. Simplify using the standard rewrite rules.
+-/
 lemma exists_sQ_eq_one (l : ℕ) [Fact l.Prime] (hl : l ≠ 2) : ∃ x : (ZMod l)ˣ, sQ l x = 1 := by
   obtain ⟨x, hx⟩ := quadraticChar_exists_neg_one' (F := ZMod l) (by rwa [ZMod.ringChar_zmod_n])
   refine ⟨x, ?_⟩
@@ -392,18 +562,32 @@ lemma exists_sQ_eq_one (l : ℕ) [Fact l.Prime] (hl : l ≠ 2) : ∃ x : (ZMod l
   rw [sgn2_toAdd_eq_ite, MulChar.coe_toUnitHom, hx]
   simp
 
+/- English proof (translation)
+Use `revert a`. Evaluate the decidable proposition.
+-/
 lemma zmod_two_eq_zero_or_eq_one (a : ZMod 2) : a = 0 ∨ a = 1 := by revert a; decide
 
+/- English proof (translation)
+Break down `zmod_two_eq_zero_or_eq_one a with rfl | rfl` into its components or cases. Conclude with `⟨1, sQ_one l⟩`. Conclude with `exists_sQ_eq_one l hl`.
+-/
 lemma exists_sQ_eq (l : ℕ) [Fact l.Prime] (hl : l ≠ 2) (a : ZMod 2) : ∃ x : (ZMod l)ˣ, sQ l x = a := by
   rcases zmod_two_eq_zero_or_eq_one a with rfl | rfl
   · exact ⟨1, sQ_one l⟩
   · exact exists_sQ_eq_one l hl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 lemma recMap_apply (e q d : ℕ) [Fact q.Prime] [Fact d.Prime] (u : (ZMod (hostN e q d))ˣ) :
     Multiplicative.toAdd (recMap e q d u)
       = ((sQ d (ZMod.unitsMap (d_dvd_hostN e q d) u), sQ q (ZMod.unitsMap (q_dvd_hostN e q d) u)),
         Additive.ofMul (hcl e (ZMod.unitsMap (two_dvd_hostN e q d) u))) := rfl
 
+/- English proof (translation)
+Take `⟨hq2, hd2, hqd⟩` from `HostHyp_ne h`. Establish `c2q : (2 ^ (e + 2)).Coprime q` using `Nat.Coprime.pow_left _ ((Nat.coprime_primes Nat.prime_two h.1).2 hq2.symm)`. Establish `c2d : (2 ^ (e + 2)).Coprime d` using `Nat.Coprime.pow_left _ ((Nat.coprime_primes Nat.prime_two h.2.1).2 hd2.symm)`. Establish `cqd : q.Coprime d` using `(Nat.coprime_primes h.1 h.2.1).2 hqd`. Take `⟨v, hv1, hv2⟩` from `exists_unit_crt (N := 2 ^ (e + 2) * q) rfl c2q (dvd_mul_right _ _) (dvd_mul_left _ _) x2 xq`.
+
+Establish `hA : 2 ^ (e + 2) * q ∣ hostN e q d` using `Dvd.intro _ rfl`. Take `⟨u, hu1, hu2⟩` from `exists_unit_crt (N := hostN e q d) (a := 2 ^ (e + 2) * q) (b := d) rfl (Nat.Coprime.mul_left c2d cqd) hA (d_dvd_hostN e q d) v xd`. Use `⟨u, ?_, ?_, hu2⟩` and prove the remaining obligations. Rewrite using `[← hv1, ← hu1, ← MonoidHom.comp_apply, ZMod.unitsMap_comp]`. Rewrite using `[← hv2, ← hu1, ← MonoidHom.comp_apply, ZMod.unitsMap_comp]`.
+-/
 lemma host_crt (e : ℕ) {q d : ℕ} (h : HostHyp q d) (x2 : (ZMod (2 ^ (e + 2)))ˣ) (xq : (ZMod q)ˣ) (xd : (ZMod d)ˣ) :
     ∃ u : (ZMod (hostN e q d))ˣ, ZMod.unitsMap (two_dvd_hostN e q d) u = x2 ∧
       ZMod.unitsMap (q_dvd_hostN e q d) u = xq ∧ ZMod.unitsMap (d_dvd_hostN e q d) u = xd := by
@@ -421,10 +605,18 @@ lemma host_crt (e : ℕ) {q d : ℕ} (h : HostHyp q d) (x2 : (ZMod (2 ^ (e + 2))
   · rw [← hv1, ← hu1, ← MonoidHom.comp_apply, ZMod.unitsMap_comp]
   · rw [← hv2, ← hu1, ← MonoidHom.comp_apply, ZMod.unitsMap_comp]
 
+/- English proof (translation)
+Take `⟨x2, hx2⟩` from `QuotientGroup.mk_surjective (Additive.toMul t)`. Conclude with `⟨x2, by unfold FrobeniusOrbits.hcl; rw [hx2]; rfl⟩`.
+-/
 lemma exists_hcl (e : ℕ) (t : HA e) : ∃ x2 : (ZMod (2 ^ (e + 2)))ˣ, Additive.ofMul (hcl e x2) = t := by
   obtain ⟨x2, hx2⟩ := QuotientGroup.mk_surjective (Additive.toMul t)
   exact ⟨x2, by unfold FrobeniusOrbits.hcl; rw [hx2]; rfl⟩
 
+/- English proof (translation)
+Introduce `e q d _ _ h y`. Take `⟨hq2, hd2, -⟩` from `HostHyp_ne h`. Take `⟨xd, hxd⟩` from `exists_sQ_eq d hd2 (Multiplicative.toAdd y).1.1`. Take `⟨xq, hxq⟩` from `exists_sQ_eq q hq2 (Multiplicative.toAdd y).1.2`. Take `⟨x2, hx2⟩` from `exists_hcl e (Multiplicative.toAdd y).2`.
+
+Take `⟨u, h1, h2, h3⟩` from `host_crt e h x2 xq xd`. Use `⟨u, ?_⟩` and prove the remaining obligations. Apply `Multiplicative.toAdd.injective` to reduce the goal to its premises. Rewrite using `[recMap_apply, h1, h2, h3, hxd, hxq, hx2]`.
+-/
 theorem recSurjective_valid : RecSurjective := by
   intro e q d _ _ h y
   obtain ⟨hq2, hd2, -⟩ := HostHyp_ne h
@@ -439,12 +631,25 @@ theorem recSurjective_valid : RecSurjective := by
 section
 variable {e q d : ℕ} [Fact q.Prime] [Fact d.Prime]
 
+/- English proof (translation)
+The claim follows from `mem_inertia_iff q d (recMap e q d) p x`.
+-/
 lemma mem_host_inertia_iff (p : ℕ) (x : E0 × HA e) :
     x ∈ (hostData e q d).inertia p ↔ ∃ u ∈ localUnits (hostN e q d) p, Multiplicative.toAdd (recMap e q d u) = x :=
   mem_inertia_iff q d (recMap e q d) p x
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 lemma hcl_one (e : ℕ) : Additive.ofMul (hcl e 1) = (0 : HA e) := rfl
 
+/- English proof (translation)
+Establish `hN` using `hostN_ne_zero e h`. Establish `hpN : ¬ p ∣ hostN e q d` using `fun hh => hpp.one_lt.ne' (Nat.Coprime.eq_one_of_dvd hp hh)`. Take `⟨h1, h2⟩` from `unramified_spec (hostN e q d) p hN hpp hpN`. Prove the components needed by the constructor for the conclusion. Rewrite using `[eq_bot_iff]`.
+
+Introduce `x hx`. Take `⟨u, hu, rfl⟩` from `(mem_host_inertia_iff p x).1 hx`. Rewrite `hu` using `[h1, Subgroup.mem_bot]`. Rewrite using `[hu, map_one]`. Conclude with `AddSubgroup.zero_mem _`.
+
+Express the relevant statement in the definitionally equal form `Multiplicative.toAdd (recMap e q d (frobUnit (hostN e q d) p)) = _`. Use `congr 2`. Apply `Units.ext` to reduce the goal to its premises. Rewrite using `[h2, ZMod.coe_unitOfCoprime]`.
+-/
 lemma host_unram (h : HostHyp q d) (p : ℕ) (hp : p.Coprime (hostN e q d)) (hpp : p.Prime) :
     (hostData e q d).inertia p = ⊥ ∧
       (hostData e q d).frob p = Multiplicative.toAdd (recMap e q d (ZMod.unitOfCoprime p hp)) := by
@@ -463,6 +668,15 @@ lemma host_unram (h : HostHyp q d) (p : ℕ) (hp : p.Coprime (hostN e q d)) (hpp
     apply Units.ext
     rw [h2, ZMod.coe_unitOfCoprime]
 
+/- English proof (translation)
+Establish `: NeZero (hostN e q d)` using `⟨hostN_ne_zero e h⟩`. Establish `hM` using `(extension_local_parts e q d h).1.2`. Rewrite using `[mem_host_inertia_iff]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨u, hu, rfl⟩`.
+
+Rewrite `hu` using `[mem_localUnits_iff, hM]`. Rewrite using `[recMap_apply, (unitsMap_eq_one_iff _ u).2 (hu.of_dvd (dvd_mul_left d q)), (unitsMap_eq_one_iff _ u).2 (hu.of_dvd (dvd_mul_right q d)), sQ_one, sQ_one]`. Both sides reduce to the same expression. Introduce `hx`. Take `⟨x2, hx2⟩` from `exists_hcl e x.2`.
+
+Take `⟨u, h1, h2, h3⟩` from `host_crt e h x2 1 1`. Use `⟨u, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[mem_localUnits_iff, hM]`. Conclude with `(Nat.modEq_and_modEq_iff_modEq_mul ((Nat.coprime_primes h.1 h.2.1).2 (HostHyp_ne h).2.2)).1 ⟨(unitsMap_eq_one_iff _ u).1 h2, (unitsMap_eq_one_iff _ u).1 h3⟩`. Rewrite using `[recMap_apply, h1, h2, h3, sQ_one, sQ_one, hx2]`.
+
+Conclude with `Prod.ext hx.symm rfl`.
+-/
 lemma host_inertia_two (h : HostHyp q d) (x : E0 × HA e) : x ∈ (hostData e q d).inertia 2 ↔ x.1 = 0 := by
   have : NeZero (hostN e q d) := ⟨hostN_ne_zero e h⟩
   have hM := (extension_local_parts e q d h).1.2
@@ -483,6 +697,17 @@ lemma host_inertia_two (h : HostHyp q d) (x : E0 × HA e) : x ∈ (hostData e q 
     · rw [recMap_apply, h1, h2, h3, sQ_one, sQ_one, hx2]
       exact Prod.ext hx.symm rfl
 
+/- English proof (translation)
+Establish `: NeZero (hostN e q d)` using `⟨hostN_ne_zero e h⟩`. Establish `hM` using `(extension_local_parts e q d h).2.1.2`. Take `⟨hq2, hd2, hqd⟩` from `HostHyp_ne h`. Establish `c2d : (2 ^ (e + 2)).Coprime d` using `Nat.Coprime.pow_left _ ((Nat.coprime_primes Nat.prime_two h.2.1).2 hd2.symm)`. Rewrite using `[mem_host_inertia_iff]`.
+
+Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨u, hu, rfl⟩`. Rewrite `hu` using `[mem_localUnits_iff, hM]`. Rewrite using `[recMap_apply, (unitsMap_eq_one_iff _ u).2 (hu.of_dvd (dvd_mul_left d _)), (unitsMap_eq_one_iff (two_dvd_hostN e q d) u).2 (hu.of_dvd (dvd_mul_right _ d)), sQ_one, hcl_one]`. Apply the tactic sequence `rcases zmod_two_eq_zero_or_eq_one (sQ q (ZMod.unitsMap (q_dvd_hostN e q d) u)) with h0 | h0 <;> rw [h0]`.
+
+Conclude with `Or.inl rfl`. Conclude with `Or.inr rfl`. Introduce and unpack `(rfl | rfl)`. Conclude with `⟨1, Subgroup.one_mem _, by rw [map_one]; rfl⟩`. Take `⟨xq, hxq⟩` from `exists_sQ_eq_one q hq2`.
+
+Take `⟨u, h1, h2, h3⟩` from `host_crt e h 1 xq 1`. Use `⟨u, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[mem_localUnits_iff, hM]`. Conclude with `(Nat.modEq_and_modEq_iff_modEq_mul c2d).1 ⟨(unitsMap_eq_one_iff _ u).1 h1, (unitsMap_eq_one_iff _ u).1 h3⟩`. Rewrite using `[recMap_apply, h1, h2, h3, sQ_one, hxq, hcl_one]`.
+
+Both sides reduce to the same expression.
+-/
 lemma host_inertia_q (h : HostHyp q d) (x : E0 × HA e) : x ∈ (hostData e q d).inertia q ↔ x = 0 ∨ x = sg := by
   have : NeZero (hostN e q d) := ⟨hostN_ne_zero e h⟩
   have hM := (extension_local_parts e q d h).2.1.2
@@ -509,6 +734,17 @@ lemma host_inertia_q (h : HostHyp q d) (x : E0 × HA e) : x ∈ (hostData e q d)
       · rw [recMap_apply, h1, h2, h3, sQ_one, hxq, hcl_one]
         rfl
 
+/- English proof (translation)
+Establish `: NeZero (hostN e q d)` using `⟨hostN_ne_zero e h⟩`. Establish `hM` using `(extension_local_parts e q d h).2.2.2`. Take `⟨hq2, hd2, hqd⟩` from `HostHyp_ne h`. Establish `c2q : (2 ^ (e + 2)).Coprime q` using `Nat.Coprime.pow_left _ ((Nat.coprime_primes Nat.prime_two h.1).2 hq2.symm)`. Rewrite using `[mem_host_inertia_iff]`.
+
+Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨u, hu, rfl⟩`. Rewrite `hu` using `[mem_localUnits_iff, hM]`. Rewrite using `[recMap_apply, (unitsMap_eq_one_iff _ u).2 (hu.of_dvd (dvd_mul_left q _)), (unitsMap_eq_one_iff (two_dvd_hostN e q d) u).2 (hu.of_dvd (dvd_mul_right _ q)), sQ_one, hcl_one]`. Apply the tactic sequence `rcases zmod_two_eq_zero_or_eq_one (sQ d (ZMod.unitsMap (d_dvd_hostN e q d) u)) with h0 | h0 <;> rw [h0]`.
+
+Conclude with `Or.inl rfl`. Conclude with `Or.inr rfl`. Introduce and unpack `(rfl | rfl)`. Conclude with `⟨1, Subgroup.one_mem _, by rw [map_one]; rfl⟩`. Take `⟨xd, hxd⟩` from `exists_sQ_eq_one d hd2`.
+
+Take `⟨u, h1, h2, h3⟩` from `host_crt e h 1 1 xd`. Use `⟨u, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[mem_localUnits_iff, hM]`. Conclude with `(Nat.modEq_and_modEq_iff_modEq_mul c2q).1 ⟨(unitsMap_eq_one_iff _ u).1 h1, (unitsMap_eq_one_iff _ u).1 h2⟩`. Rewrite using `[recMap_apply, h1, h2, h3, sQ_one, hxd, hcl_one]`.
+
+Both sides reduce to the same expression.
+-/
 lemma host_inertia_d (h : HostHyp q d) (x : E0 × HA e) : x ∈ (hostData e q d).inertia d ↔ x = 0 ∨ x = sgc0 := by
   have : NeZero (hostN e q d) := ⟨hostN_ne_zero e h⟩
   have hM := (extension_local_parts e q d h).2.2.2
@@ -535,10 +771,18 @@ lemma host_inertia_d (h : HostHyp q d) (x : E0 × HA e) : x ∈ (hostData e q d)
       · rw [recMap_apply, h1, h2, h3, sQ_one, hxd, hcl_one]
         rfl
 
+/- English proof (translation)
+Apply `Units.ext` to reduce the goal to its premises. Simplify using the standard rewrite rules.
+-/
 lemma unitOfCoprime_one (c : ℕ) (h : (1 : ℕ).Coprime c) : ZMod.unitOfCoprime 1 h = 1 := by
   apply Units.ext
   simp
 
+/- English proof (translation)
+Establish `: NeZero (hostN e q d)` using `⟨hostN_ne_zero e h⟩`. Take `⟨hP, hM⟩` from `(extension_local_parts e q d h).1`. Take `⟨w1, w2⟩` from `frobUnit_modEq (N := hostN e q d) Nat.prime_two`. Rewrite `w1` using `[hM]`. Rewrite `w2` using `[hP]`.
+
+Express the relevant statement in the definitionally equal form `Multiplicative.toAdd (recMap e q d (frobUnit (hostN e q d) 2)) = _`. Rewrite using `[recMap_of_modEq _ 2 2 1 (Nat.coprime_one_left _) (w1.of_dvd (dvd_mul_left d q)) (w1.of_dvd (dvd_mul_right q d)) w2, jac_two_d h, jac_two_q h, unitOfCoprime_one, hcl_one]`. Both sides reduce to the same expression.
+-/
 lemma host_frob_two (h : HostHyp q d) : (hostData e q d).frob 2 = sg := by
   have : NeZero (hostN e q d) := ⟨hostN_ne_zero e h⟩
   obtain ⟨hP, hM⟩ := (extension_local_parts e q d h).1
@@ -550,6 +794,11 @@ lemma host_frob_two (h : HostHyp q d) : (hostData e q d).frob 2 = sg := by
     jac_two_d h, jac_two_q h, unitOfCoprime_one, hcl_one]
   rfl
 
+/- English proof (translation)
+Establish `: NeZero (hostN e q d)` using `⟨hostN_ne_zero e h⟩`. Take `⟨hP, hM⟩` from `(extension_local_parts e q d h).2.1`. Take `⟨w1, w2⟩` from `frobUnit_modEq (N := hostN e q d) h.1`. Rewrite `w1` using `[hM]`. Rewrite `w2` using `[hP]`.
+
+Express the relevant statement in the definitionally equal form `Multiplicative.toAdd (recMap e q d (frobUnit (hostN e q d) q)) = _`. Rewrite using `[recMap_of_modEq _ q 1 q hq (w1.of_dvd (dvd_mul_left d _)) w2 (w1.of_dvd (dvd_mul_right _ d)), jac_q_d h, Nat.cast_one, jacobiSym.one_left]`. Both sides reduce to the same expression.
+-/
 lemma host_frob_q (h : HostHyp q d) (hq : q.Coprime (2 ^ (e + 2))) :
     (hostData e q d).frob q = ((0, 0), Additive.ofMul (hcl e (ZMod.unitOfCoprime q hq))) := by
   have : NeZero (hostN e q d) := ⟨hostN_ne_zero e h⟩
@@ -562,6 +811,11 @@ lemma host_frob_q (h : HostHyp q d) (hq : q.Coprime (2 ^ (e + 2))) :
     jac_q_d h, Nat.cast_one, jacobiSym.one_left]
   rfl
 
+/- English proof (translation)
+Establish `: NeZero (hostN e q d)` using `⟨hostN_ne_zero e h⟩`. Take `⟨hP, hM⟩` from `(extension_local_parts e q d h).2.2`. Take `⟨w1, w2⟩` from `frobUnit_modEq (N := hostN e q d) h.2.1`. Rewrite `w1` using `[hM]`. Rewrite `w2` using `[hP]`.
+
+Express the relevant statement in the definitionally equal form `Multiplicative.toAdd (recMap e q d (frobUnit (hostN e q d) d)) = _`. Rewrite using `[recMap_of_modEq _ 1 d d hd w2 (w1.of_dvd (dvd_mul_left q _)) (w1.of_dvd (dvd_mul_right _ q)), jac_d_q h, Nat.cast_one, jacobiSym.one_left]`. Both sides reduce to the same expression.
+-/
 lemma host_frob_d (h : HostHyp q d) (hd : d.Coprime (2 ^ (e + 2))) :
     (hostData e q d).frob d = ((0, 1), Additive.ofMul (hcl e (ZMod.unitOfCoprime d hd))) := by
   have : NeZero (hostN e q d) := ⟨hostN_ne_zero e h⟩
@@ -576,11 +830,17 @@ lemma host_frob_d (h : HostHyp q d) (hd : d.Coprime (2 ^ (e + 2))) :
 
 end
 
+/- English proof (translation)
+Introduce `e q d _ _ h`. Conclude with `⟨fun p hp hpp => host_unram h p hp hpp, ⟨host_inertia_two h, host_frob_two h⟩, ⟨host_inertia_q h, host_frob_q h⟩, ⟨host_inertia_d h, host_frob_d h⟩⟩`.
+-/
 theorem extension_local : HostLocal := by
   intro e q d _ _ h
   exact ⟨fun p hp hpp => host_unram h p hp hpp, ⟨host_inertia_two h, host_frob_two h⟩,
     ⟨host_inertia_q h, host_frob_q h⟩, ⟨host_inertia_d h, host_frob_d h⟩⟩
 
+/- English proof (translation)
+Unfold `hostN`. Conclude with `Nat.Coprime.mul_right (Nat.Coprime.mul_right (Nat.Coprime.pow_right _ ((Nat.coprime_primes hp Nat.prime_two).2 h2)) ((Nat.coprime_primes hp h.1).2 hq)) ((Nat.coprime_primes hp h.2.1).2 hd)`.
+-/
 lemma coprime_hostN (e : ℕ) {q d p : ℕ} (h : HostHyp q d) (hp : p.Prime) (h2 : p ≠ 2) (hq : p ≠ q) (hd : p ≠ d) :
     p.Coprime (hostN e q d) := by
   unfold hostN
@@ -588,6 +848,15 @@ lemma coprime_hostN (e : ℕ) {q d p : ℕ} (h : HostHyp q d) (hp : p.Prime) (h2
     (Nat.Coprime.pow_right _ ((Nat.coprime_primes hp Nat.prime_two).2 h2))
     ((Nat.coprime_primes hp h.1).2 hq)) ((Nat.coprime_primes hp h.2.1).2 hd)
 
+/- English proof (translation)
+Introduce `e q d _ _ h`. Take `⟨hq2, hd2, hqd⟩` from `HostHyp_ne h`. Establish `cq : q.Coprime (2 ^ (e + 2))` using `Nat.Coprime.pow_right _ ((Nat.coprime_primes h.1 Nat.prime_two).2 hq2)`. Use `⟨h.1, h.2.1, hq2, hd2, hqd, ?_, ?_, ?_, host_inertia_d h⟩` and prove the remaining obligations. Introduce `p hp h2 hq hd`.
+
+Conclude with `(host_unram h p (coprime_hostN e h hp h2 hq hd) hp).1`. Introduce and unpack `p (rfl | hp) x hx`. Use `(host_inertia_two h x).1 hx` as an intermediate fact. Express the relevant statement in the definitionally equal form `x.1.1 = 0`. Rewrite using `[this]`.
+
+Both sides reduce to the same expression. Establish `hp' : p = q` using `hp`. Rewrite `hx` using `[hp']`. Apply the tactic sequence `rcases (host_inertia_q h x).1 hx with rfl | rfl <;> rfl`. Introduce and unpack `p (rfl | hp)`.
+
+Rewrite using `[host_frob_two h]`. Both sides reduce to the same expression. Establish `hp' : p = q` using `hp`. Rewrite using `[hp', host_frob_q h cq]`. Both sides reduce to the same expression.
+-/
 theorem extension_facts : HostFactsHost := by
   intro e q d _ _ h
   obtain ⟨hq2, hd2, hqd⟩ := HostHyp_ne h
@@ -610,26 +879,41 @@ theorem extension_facts : HostFactsHost := by
       rw [hp', host_frob_q h cq]
       rfl
 
+/- English proof (translation)
+Introduce `e q d _ _ h ell a t w ha hw N hN`. Conclude with `colour_balance (hostData e q d) (extension_facts e q d h) ell a t w ha hw N hN`.
+-/
 theorem balance_for_extension : BalanceHost := by
   intro e q d _ _ h ell a t w ha hw N hN
   exact colour_balance (hostData e q d) (extension_facts e q d h) ell a t w ha hw N hN
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 lemma chC_val {H : Type} [AddCommGroup H] [Fintype H] [DecidableEq H] (g : E0 × H) :
     (chC : AddChar (E0 × H) ℂ) g = if g.1.1 = 0 then 1 else -1 := rfl
 
 section
 variable {e q d : ℕ} [Fact q.Prime] [Fact d.Prime]
 
+/- English proof (translation)
+Introduce `x hx`. Rewrite using `[chC_val, (host_inertia_two h x).1 hx]`. Simplify using the standard rewrite rules.
+-/
 lemma chC_trivial_two (h : HostHyp q d) : ∀ x ∈ (hostData e q d).inertia 2, (chC : AddChar (E0 × HA e) ℂ) x = 1 := by
   intro x hx
   rw [chC_val, (host_inertia_two h x).1 hx]
   simp
 
+/- English proof (translation)
+Introduce `x hx`. Rewrite using `[chC_val]`. Apply the tactic sequence `rcases (host_inertia_q h x).1 hx with rfl | rfl <;> simp [sg]`.
+-/
 lemma chC_trivial_q (h : HostHyp q d) : ∀ x ∈ (hostData e q d).inertia q, (chC : AddChar (E0 × HA e) ℂ) x = 1 := by
   intro x hx
   rw [chC_val]
   rcases (host_inertia_q h x).1 hx with rfl | rfl <;> simp [sg]
 
+/- English proof (translation)
+Introduce `hh`. Establish `h1` using `hh sgc0 ((host_inertia_d h _).2 (Or.inr rfl))`. Rewrite `h1` using `[chC_val]`. Simplify using `[sgc0] at h1`. Evaluate the numerical expressions using `at h1`.
+-/
 lemma chC_nontrivial_d (h : HostHyp q d) :
     ¬ ∀ x ∈ (hostData e q d).inertia d, (chC : AddChar (E0 × HA e) ℂ) x = 1 := by
   intro hh
@@ -638,9 +922,25 @@ lemma chC_nontrivial_d (h : HostHyp q d) :
   simp [sgc0] at h1
   norm_num at h1
 
+/- English proof (translation)
+Rewrite using `[jacobiSym.mod_left, Int.emod_self, jacobiSym.zero_left hd]`.
+-/
 lemma jac_self (d : ℕ) (hd : 1 < d) : jacobiSym (d : ℤ) d = 0 := by
   rw [jacobiSym.mod_left, Int.emod_self, jacobiSym.zero_left hd]
 
+/- English proof (translation)
+Establish `: NeZero (hostN e q d)` using `⟨hostN_ne_zero e h⟩`. Take `⟨hq2, hd2, hqd⟩` from `HostHyp_ne h`. Distinguish the cases in `hpd : p = d`. Substitute `hpd` using the available equality. Rewrite using `[cosetMean_of_nontrivial _ _ _ (chC_nontrivial_d h), jac_self p hp.one_lt, zero_pow hi]`.
+
+Simplify using the standard rewrite rules. Distinguish the cases in `hp2 : p = 2`. Substitute `hp2` using the available equality. Rewrite using `[cosetMean_of_trivial _ _ _ (chC_trivial_two h), AddChar.map_nsmul_eq_pow, host_frob_two h, jac_two_d h, chC_val]`. Simplify using `[sg]`.
+
+Distinguish the cases in `hpq : p = q`. Substitute `hpq` using the available equality. Establish `cq : p.Coprime (2 ^ (e + 2))` using `Nat.Coprime.pow_right _ ((Nat.coprime_primes h.1 Nat.prime_two).2 hq2)`. Rewrite using `[cosetMean_of_trivial _ _ _ (chC_trivial_q h), AddChar.map_nsmul_eq_pow, host_frob_q h cq, jac_q_d h, chC_val]`. Simplify using the standard rewrite rules.
+
+Establish `hcop` using `coprime_hostN e h hp hp2 hpq hpd`. Take `⟨h1, h2⟩` from `host_unram (e := e) h p hcop hp`. Establish `c2 : p.Coprime (2 ^ (e + 2))` using `Nat.Coprime.pow_right _ ((Nat.coprime_primes hp Nat.prime_two).2 hp2)`. Rewrite using `[cosetMean_of_trivial _ _ _ (by`. Introduce `x hx`.
+
+Rewrite `hx` using `[h1, AddSubgroup.mem_bot]`. Rewrite using `[hx, AddChar.map_zero_eq_one]), AddChar.map_nsmul_eq_pow, h2,`. Use `recMap_of_modEq _ p p p c2 (unitOfCoprime_modEq hcop (d_dvd_hostN e q d)) (unitOfCoprime_modEq hcop (q_dvd_hostN e q d)) (unitOfCoprime_modEq hcop (two_dvd_hostN e q d)), chC_val]`. Establish `hJ : jacobiSym (p : ℤ) d = 1 ∨ jacobiSym (p : ℤ) d = -1`. Apply `jacobiSym.eq_one_or_neg_one` to reduce the goal to its premises.
+
+Rewrite using `[Int.gcd_natCast_natCast]`. Conclude with `(Nat.coprime_primes hp h.2.1).2 hpd`. Apply the tactic sequence `rcases hJ with hJ | hJ <;> rw [hJ] <;> simp`.
+-/
 lemma cosetMean_chC (h : HostHyp q d) (p i : ℕ) (hp : p.Prime) (hi : i ≠ 0) :
     cosetMean ((hostData e q d).inertia p) (i • (hostData e q d).frob p) chC
       = (((jacobiSym (p : ℤ) d) ^ i : ℤ) : ℂ) := by
@@ -676,6 +976,19 @@ lemma cosetMean_chC (h : HostHyp q d) (p i : ℕ) (hp : p.Prime) (hi : i ≠ 0) 
 
 end
 
+/- English proof (translation)
+Introduce `e q d _ _ h`. Establish `hN` using `hostN_ne_zero e h`. Prove the components needed by the constructor for the conclusion. Establish `i2` using `(inertia_conductor (H := HA e) (hostN e q d) q d (recMap e q d) chC 2 hN Nat.prime_two).1 (chC_trivial_two h)`. Establish `iq` using `(inertia_conductor (H := HA e) (hostN e q d) q d (recMap e q d) chC q hN h.1).1 (chC_trivial_q h)`.
+
+Establish `id : d ∣ (dirChar (recMap e q d) chC).conductor`. Assume the negation of the conclusion as `hh`. Conclude with `chC_nontrivial_d h ((inertia_conductor (H := HA e) (hostN e q d) q d (recMap e q d) chC d hN h.2.1).2 hh)`. Establish `hdvd : (dirChar (recMap e q d) chC).conductor ∣ 2 ^ (e + 2) * q * d` using `DirichletCharacter.conductor_dvd_level _`. Establish `c2 : ((dirChar (recMap e q d) chC).conductor).Coprime (2 ^ (e + 2))` using `Nat.Coprime.pow_right _ ((Nat.Prime.coprime_iff_not_dvd Nat.prime_two).2 i2).symm`.
+
+Establish `cq : ((dirChar (recMap e q d) chC).conductor).Coprime q` using `((Nat.Prime.coprime_iff_not_dvd h.1).2 iq).symm`. Conclude with `Nat.dvd_antisymm (Nat.Coprime.dvd_of_dvd_mul_left (Nat.Coprime.mul_right c2 cq) hdvd) id`. Introduce `n hn`. Set `φ : ℤ →* ℤ` to `{ toFun := fun a => jacobiSym a d map_one' := jacobiSym.one_left d map_mul' := fun a b => jacobiSym.mul_left a b d }`. Establish `hφ : jacobiSym (n : ℤ) d = ∏ p ∈ n.primeFactors, (jacobiSym (p : ℤ) d) ^ n.factorization p` using `by conv_lhs => rw [← Nat.prod_factorization_pow_eq_self hn]`.
+
+Rewrite using `[Nat.prod_factorization_eq_prod_primeFactors, Nat.cast_prod]`. Express the relevant statement in the definitionally equal form `φ _ = _`. Rewrite using `[map_prod]`. Apply `Finset.prod_congr rfl` to reduce the goal to its premises. Introduce `p _`.
+
+Rewrite using `[Nat.cast_pow, map_pow]`. Both sides reduce to the same expression. Rewrite using `[hφ, Int.cast_prod]`. Unfold `primVal`. Apply `Finset.prod_congr rfl` to reduce the goal to its premises.
+
+Introduce `p hp`. Establish `hi : n.factorization p ≠ 0`. Use `(Nat.support_factorization n ▸ hp : p ∈ n.factorization.support)` as an intermediate fact. Conclude with `Finsupp.mem_support_iff.1 this`. Conclude with `cosetMean_chC h p _ (Nat.prime_of_mem_primeFactors hp) hi`.
+-/
 theorem character_conductor : ChConductor := by
   intro e q d _ _ h
   have hN := hostN_ne_zero e h
@@ -718,6 +1031,13 @@ theorem character_conductor : ChConductor := by
       exact Finsupp.mem_support_iff.1 this
     exact cosetMean_chC h p _ (Nat.prime_of_mem_primeFactors hp) hi
 
+/- English proof (translation)
+Introduce `e q d _ _ h ψ ψ' hψ`. Apply `DFunLike.ext` to reduce the goal to its premises. Introduce `x`. Take `⟨u, hu⟩` from `recSurjective_valid e q d h (Multiplicative.ofAdd x)`. Establish `h1` using `dirChar_unit (recMap e q d) ψ u`.
+
+Establish `h2` using `dirChar_unit (recMap e q d) ψ' u`. Rewrite `h1`, `h2` using `[hu]`. Establish `h3 : dirChar (recMap e q d) ψ (u : ZMod (hostN e q d)) = dirChar (recMap e q d) ψ' (u : ZMod (hostN e q d))`. Rewrite using `[hψ]`. Rewrite `h3` using `[h1, h2]`.
+
+Conclude with `h3`.
+-/
 theorem dirichlet_character_injective : DirCharInjective := by
   intro e q d _ _ h ψ ψ' hψ
   apply DFunLike.ext
@@ -731,20 +1051,35 @@ theorem dirichlet_character_injective : DirCharInjective := by
   rw [h1, h2] at h3
   exact h3
 
+/- English proof (translation)
+Evaluate the decidable proposition.
+-/
 lemma sign_injective : ∀ s s' : ℤˣ, Multiplicative.toAdd (sgn2 s) = Multiplicative.toAdd (sgn2 s') → s = s' := by decide
 
+/- English proof (translation)
+Evaluate the decidable proposition.
+-/
 lemma sgn2_toAdd_surjective : ∀ x : ZMod 2, ∃ s : ℤˣ, Multiplicative.toAdd (sgn2 s) = x := by decide
 
+/- English proof (translation)
+Unfold `galoisToProduct`. Simplify using `only [Prod.fst_mul, Prod.snd_mul, map_mul]`. Both sides reduce to the same expression.
+-/
 lemma galois_map_mul (e : ℕ) (g g' : FrobeniusOrbits.GG e) : galoisToProduct e (g * g') = galoisToProduct e g + galoisToProduct e g' := by
   unfold galoisToProduct
   simp only [Prod.fst_mul, Prod.snd_mul, map_mul]
   rfl
 
+/- English proof (translation)
+Unfold `galoisToProduct`. Simplify using `only [Prod.fst_one, Prod.snd_one, map_one]`. Both sides reduce to the same expression.
+-/
 lemma galois_map_one (e : ℕ) : galoisToProduct e 1 = 0 := by
   unfold galoisToProduct
   simp only [Prod.fst_one, Prod.snd_one, map_one]
   rfl
 
+/- English proof (translation)
+Introduce `g g' hg`. Unfold `galoisToProduct at hg`. Simplify using `only [Prod.mk.injEq] at hg`. Take `⟨⟨h1, h2⟩, h3⟩` from `hg`. Conclude with `Prod.ext (Prod.ext (sign_injective _ _ h2) (sign_injective _ _ h1)) (Additive.ofMul.injective h3)`.
+-/
 lemma galois_map_injective (e : ℕ) : Function.Injective (galoisToProduct e) := by
   intro g g' hg
   unfold galoisToProduct at hg
@@ -752,6 +1087,11 @@ lemma galois_map_injective (e : ℕ) : Function.Injective (galoisToProduct e) :=
   obtain ⟨⟨h1, h2⟩, h3⟩ := hg
   exact Prod.ext (Prod.ext (sign_injective _ _ h2) (sign_injective _ _ h1)) (Additive.ofMul.injective h3)
 
+/- English proof (translation)
+Introduce `e`. Use `⟨⟨galois_map_injective e, ?_⟩, galois_map_mul e⟩` and prove the remaining obligations. Introduce and unpack `⟨⟨x, y⟩, t⟩`. Take `⟨s, hs⟩` from `sgn2_toAdd_surjective x`. Take `⟨s', hs'⟩` from `sgn2_toAdd_surjective y`.
+
+Conclude with `⟨((s', s), Additive.toMul t), by unfold galoisToProduct; simp only [hs, hs']; rfl⟩`.
+-/
 theorem galois_map_iso : GaloisToProductIsIso := by
   intro e
   refine ⟨⟨galois_map_injective e, ?_⟩, galois_map_mul e⟩
@@ -760,6 +1100,9 @@ theorem galois_map_iso : GaloisToProductIsIso := by
   obtain ⟨s', hs'⟩ := sgn2_toAdd_surjective y
   exact ⟨((s', s), Additive.toMul t), by unfold galoisToProduct; simp only [hs, hs']; rfl⟩
 
+/- English proof (translation)
+Unfold `galoisToProduct`. Rewrite using `[sgn2_toAdd_eq_ite, sgn2_toAdd_eq_ite]`.
+-/
 lemma galois_map_apply (e : ℕ) (g : FrobeniusOrbits.GG e) :
     galoisToProduct e g = ((if ((g.1.2 : ℤˣ) : ℤ) = 1 then 0 else 1, if ((g.1.1 : ℤˣ) : ℤ) = 1 then 0 else 1),
       Additive.ofMul g.2) := by
@@ -774,39 +1117,67 @@ open Formalism.TwoAdicCyclotomicDecomposition (IsLayer galMap layerGalois odd_cy
 
 variable {e q d : ℕ} {L : Type} [Field L] [NumberField L] {ζ a b : L}
 
+/- English proof (translation)
+The claim follows from `(hostGalois e q d h.toHypOdd L ζ a b hL).2.2.1 σ τ`.
+-/
 lemma galE_mul' (h : HostHyp q d) (hL : IsLayer (e + 2) q d ζ a b) (σ τ : hostE ζ a b ≃ₐ[ℚ] hostE ζ a b) :
     galE e ζ a b (σ * τ) = galE e ζ a b σ * galE e ζ a b τ :=
   (hostGalois e q d h.toHypOdd L ζ a b hL).2.2.1 σ τ
 
+/- English proof (translation)
+Use `galE_mul' h hL 1 1` as an intermediate fact. Rewrite `this` using `[mul_one]`. Conclude with `mul_eq_left.mp this.symm`.
+-/
 lemma galE_one' (h : HostHyp q d) (hL : IsLayer (e + 2) q d ζ a b) :
     galE e ζ a b (1 : hostE ζ a b ≃ₐ[ℚ] hostE ζ a b) = 1 := by
   have := galE_mul' h hL 1 1
   rw [mul_one] at this
   exact mul_eq_left.mp this.symm
 
+/- English proof (translation)
+Rewrite using `[eq_sub_iff_add_eq, ← galois_map_mul, ← galE_mul' h hL, inv_mul_cancel_right]`.
+-/
 lemma galois_map_mul_inv (h : HostHyp q d) (hL : IsLayer (e + 2) q d ζ a b)
     (σ τ : hostE ζ a b ≃ₐ[ℚ] hostE ζ a b) :
     galoisToProduct e (galE e ζ a b (σ * τ⁻¹)) = galoisToProduct e (galE e ζ a b σ) - galoisToProduct e (galE e ζ a b τ) := by
   rw [eq_sub_iff_add_eq, ← galois_map_mul, ← galE_mul' h hL, inv_mul_cancel_right]
 
+/- English proof (translation)
+Evaluate the decidable proposition.
+-/
 lemma sgn2_toAdd_eq_zero_iff : ∀ s : ℤˣ, Multiplicative.toAdd (sgn2 s) = 0 ↔ s = 1 := by decide
 
+/- English proof (translation)
+Express the relevant statement in the definitionally equal form `((Multiplicative.toAdd (sgn2 g.1.2), Multiplicative.toAdd (sgn2 g.1.1)) : E0) = 0 ↔ _`. Rewrite using `[Prod.ext_iff, Prod.ext_iff]`. Express the relevant statement in the definitionally equal form `(Multiplicative.toAdd (sgn2 g.1.2) = 0 ∧ Multiplicative.toAdd (sgn2 g.1.1) = 0) ↔ (g.1.1 = 1 ∧ g.1.2 = 1)`. Rewrite using `[sgn2_toAdd_eq_zero_iff, sgn2_toAdd_eq_zero_iff, and_comm]`.
+-/
 lemma galois_map_first_eq_zero_iff (g : FrobeniusOrbits.GG e) : (galoisToProduct e g).1 = 0 ↔ g.1 = 1 := by
   change ((Multiplicative.toAdd (sgn2 g.1.2), Multiplicative.toAdd (sgn2 g.1.1)) : E0) = 0 ↔ _
   rw [Prod.ext_iff, Prod.ext_iff]
   change (Multiplicative.toAdd (sgn2 g.1.2) = 0 ∧ Multiplicative.toAdd (sgn2 g.1.1) = 0) ↔ (g.1.1 = 1 ∧ g.1.2 = 1)
   rw [sgn2_toAdd_eq_zero_iff, sgn2_toAdd_eq_zero_iff, and_comm]
 
+/- English proof (translation)
+Rewrite using `[galois_map_apply]`. Simplify using `[FrobeniusOrbits.sg, sg]`.
+-/
 lemma galois_map_sign : galoisToProduct e (FrobeniusOrbits.sg e) = sg := by
   rw [galois_map_apply]
   simp [FrobeniusOrbits.sg, sg]
 
+/- English proof (translation)
+Rewrite using `[galois_map_apply]`. Simplify using `[sgc0]`.
+-/
 lemma galois_map_complex_conjugation : galoisToProduct e (((1, -1), 1) : FrobeniusOrbits.GG e) = sgc0 := by
   rw [galois_map_apply]
   simp [sgc0]
 
 variable [Fact q.Prime] [Fact d.Prime]
 
+/- English proof (translation)
+Establish `hI` using `hostInertia e q d h L ζ a b hL σ`. Establish `hinj` using `galois_map_injective e`. Distinguish the cases in `hp2 : p = 2`. Substitute `hp2` using the available equality. Establish `: P.LiesOver (span {(2 : ℤ)})` using `by simpa using hPl`.
+
+Rewrite using `[hI.1 P, host_inertia_two h, galois_map_first_eq_zero_iff]`. Distinguish the cases in `hpq : p = q`. Substitute `hpq` using the available equality. Rewrite using `[hI.2.1 P, host_inertia_q h, ← galois_map_one e, ← galois_map_sign, hinj.eq_iff, hinj.eq_iff]`. Distinguish the cases in `hpd : p = d`.
+
+Substitute `hpd` using the available equality. Rewrite using `[hI.2.2 P, host_inertia_d h, ← galois_map_one e, ← galois_map_complex_conjugation, hinj.eq_iff, hinj.eq_iff]`. Establish `hp : p.Prime` using `Fact.out`. Rewrite using `[(hostFrob_of hostGalois hostGalSpec e q d h.toHypOdd L ζ a b hL p hp2 hpq hpd P).2.2 σ, (host_unram h p (coprime_hostN e h hp hp2 hpq hpd) hp).1, AddSubgroup.mem_bot, ← galois_map_one e, hinj.eq_iff, ← galE_one' h hL, (hostGalois e q d h.toHypOdd L ζ a b hL).2.2.2.1.eq_iff]`.
+-/
 lemma field_inertia (h : HostHyp q d) (hL : IsLayer (e + 2) q d ζ a b) (p : ℕ) [Fact p.Prime]
     (P : Ideal (𝓞 (hostE ζ a b))) [P.IsPrime] [hPl : P.LiesOver (span {(p : ℤ)})]
     (σ : hostE ζ a b ≃ₐ[ℚ] hostE ζ a b) :
@@ -828,6 +1199,13 @@ lemma field_inertia (h : HostHyp q d) (hL : IsLayer (e + 2) q d ζ a b) (p : ℕ
     (host_unram h p (coprime_hostN e h hp hp2 hpq hpd) hp).1, AddSubgroup.mem_bot, ← galois_map_one e, hinj.eq_iff,
     ← galE_one' h hL, (hostGalois e q d h.toHypOdd L ζ a b hL).2.2.2.1.eq_iff]
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce `hσ`. Establish `h2 : ∀ x : 𝓞 (hostE ζ a b), (σ * σ₀⁻¹) • x - x ∈ P` using `AddSubgroup.mem_inertia.mp (hσ.mul_inv_mem_inertia h₀)`. Rewrite `h2` using `[field_inertia h hL p P, galois_map_mul_inv h hL]`. Use `AddSubgroup.add_mem _ h2 h1` as an intermediate fact.
+
+Rewrite `this` using `[sub_add_sub_cancel]`. Then use the resulting hypothesis. Introduce `hσ`. Establish `h2` using `AddSubgroup.sub_mem _ hσ h1`. Rewrite `h2` using `[sub_sub_sub_cancel_right, ← galois_map_mul_inv h hL, ← field_inertia h hL p P]`. Use `FrobeniusOrbits.Frob.frob_mul_inertia P (σ * σ₀⁻¹) σ₀ (AddSubgroup.mem_inertia.mpr h2) h₀` as an intermediate fact.
+
+Rewrite `this` using `[inv_mul_cancel_right]`. Then use the resulting hypothesis.
+-/
 lemma field_frob_of (h : HostHyp q d) (hL : IsLayer (e + 2) q d ζ a b) (p : ℕ) [Fact p.Prime]
     (P : Ideal (𝓞 (hostE ζ a b))) [P.IsPrime] [P.LiesOver (span {(p : ℤ)})]
     (σ₀ : hostE ζ a b ≃ₐ[ℚ] hostE ζ a b) (h₀ : IsArithFrobAt ℤ σ₀ P)
@@ -850,6 +1228,27 @@ lemma field_frob_of (h : HostHyp q d) (hL : IsLayer (e + 2) q d ζ a b) (p : ℕ
 
 omit [Fact q.Prime] [Fact d.Prime] in
 
+/- English proof (translation)
+Establish `hqd` using `h.toHypOdd`. Establish `hp : p.Prime` using `Fact.out`. Take `⟨hEgal, -, -, -⟩` from `hostGalois e q d hqd L ζ a b hL`. Take `⟨hLgal, -, -, -⟩` from `layerGalois (e + 2) q d (by omega) hqd L ζ a b hL`. Use `hEgal` as an intermediate fact.
+
+Use `hLgal` as an intermediate fact. Take `⟨⟨Q, hQp, hQl⟩⟩ : Nonempty (P.primesOver (𝓞 L))` from `inferInstance`. Establish `: Q.LiesOver (span {(p : ℤ)})` using `Ideal.LiesOver.trans Q P (span {(p : ℤ)})`. Establish `: Finite (𝓞 L ⧸ Q)`. Establish `hpb : span {(p : ℤ)} ≠ ⊥`.
+
+Rewrite using `[Ne, Ideal.span_singleton_eq_bot]`. Conclude with `hp.ne_zero` after adjusting the coercions. Conclude with `Ring.HasFiniteQuotients.finiteQuotient (Ideal.ne_bot_of_liesOver_of_ne_bot hpb Q)`. Take `⟨τ, hτ⟩` from `IsArithFrobAt.exists_of_isInvariant ℤ Gal(L/ℚ) Q`. Set `σ₀ : Gal(hostE ζ a b/ℚ)` to `τ.restrictNormal (hostE ζ a b)`.
+
+Establish `hσ₀ : ∀ x : hostE ζ a b, ((σ₀ x : hostE ζ a b) : L) = τ x` using `fun x => AlgEquiv.restrictNormal_commutes τ (hostE ζ a b) x`. Establish `hσ₀F : IsArithFrobAt ℤ σ₀ P`. Introduce `x`. Establish `hx` using `hτ (algebraMap (𝓞 (hostE ζ a b)) (𝓞 L) x)`. Rewrite `hx` using `[odd_card_under p Q]`.
+
+Rewrite using `[odd_card_under p P]`. Rewrite using `[Ideal.over_def Q P, Ideal.under_def, Ideal.mem_comap]`. Use `hx using 1` and compare the differences between its conclusion and the goal. Apply `RingOfIntegers.coe_injective` to reduce the goal to its premises. Simplify using `only [map_sub, map_pow, MulSemiringAction.toAlgHom_apply]`.
+
+Use `congr 1`. Use `show (((σ₀ • x : 𝓞 (hostE ζ a b)) : hostE ζ a b) : L) = τ (((x : 𝓞 (hostE ζ a b)) : hostE ζ a b) : L)`. Conclude with `hσ₀ x`. Establish `hval` using `(hostGalSpec e q d hqd L ζ a b hL σ₀).2.2.2 τ hσ₀`. Establish `ha : a ^ 2 = ((-(q : ℤ) : ℤ) : L)` using `by rw [hL.2.1]; push_cast; rfl`.
+
+Establish `hb : b ^ 2 = ((-(d : ℤ) : ℤ) : L)` using `by rw [hL.2.2.1]; push_cast; rfl`. Use `⟨σ₀, hσ₀F, fun hc => ?_, fun hpq => ?_, fun hpd => ?_⟩` and prove the remaining obligations. Rewrite using `[hval]`. Express the relevant statement in the definitionally equal form `hcl e (galMap hL.1 a b τ).1 = _`. Use `congr 1`.
+
+Apply `Units.ext` to reduce the goal to its premises. Rewrite using `[ZMod.coe_unitOfCoprime]`. Conclude with `odd_cyc_frob hL.1 p hp2 Q τ hτ`. Rewrite using `[hval]`. Use `odd_frob_sgn p hp2 Q τ hτ a _ ha ?_` and prove the remaining obligations.
+
+Rewrite using `[dvd_neg]`. Introduce `hd'`. Conclude with `hpq ((Nat.prime_dvd_prime_iff_eq hp hqd.1).mp (by exact_mod_cast hd'))`. Rewrite using `[hval]`. Use `odd_frob_sgn p hp2 Q τ hτ b _ hb ?_` and prove the remaining obligations.
+
+Rewrite using `[dvd_neg]`. Introduce `hd'`. Conclude with `hpd ((Nat.prime_dvd_prime_iff_eq hp hqd.2.1).mp (by exact_mod_cast hd'))`.
+-/
 lemma exists_frob_odd (h : HostHyp q d) (hL : IsLayer (e + 2) q d ζ a b) (p : ℕ) [Fact p.Prime] (hp2 : p ≠ 2)
     (P : Ideal (𝓞 (hostE ζ a b))) [P.IsPrime] [P.LiesOver (span {(p : ℤ)})] :
     ∃ σ₀ : hostE ζ a b ≃ₐ[ℚ] hostE ζ a b, IsArithFrobAt ℤ σ₀ P ∧
@@ -909,6 +1308,25 @@ lemma exists_frob_odd (h : HostHyp q d) (hL : IsLayer (e + 2) q d ζ a b) (p : �
 
 omit [Fact q.Prime] [Fact d.Prime] in
 
+/- English proof (translation)
+Establish `hqd` using `h.toHypOdd`. Take `⟨hq2, hd2, -⟩` from `HostHyp_ne h`. Take `⟨hEgal, -, -, -⟩` from `hostGalois e q d hqd L ζ a b hL`. Use `hEgal` as an intermediate fact. Establish `: P.LiesOver (span {(2 : ℤ)})` using `by simpa using hPl`.
+
+Establish `: Finite (𝓞 (hostE ζ a b) ⧸ P)`. Establish `hpb : span {(2 : ℤ)} ≠ ⊥`. Rewrite using `[Ne, Ideal.span_singleton_eq_bot]`. Evaluate the numerical expressions. Conclude with `Ring.HasFiniteQuotients.finiteQuotient (Ideal.ne_bot_of_liesOver_of_ne_bot hpb P)`.
+
+Take `⟨σ₀, h₀⟩` from `IsArithFrobAt.exists_of_isInvariant ℤ Gal(hostE ζ a b/ℚ) P`. Establish `cq : q.Coprime (2 ^ (e + 2))` using `Nat.Coprime.pow_right _ ((Nat.coprime_primes h.1 Nat.prime_two).2 hq2)`. Establish `cd : d.Coprime (2 ^ (e + 2))` using `Nat.Coprime.pow_right _ ((Nat.coprime_primes h.2.1 Nat.prime_two).2 hd2)`. Establish `hD` using `(hostDecomp e q d h L ζ a b hL (ZMod.unitOfCoprime q cq) (ZMod.unitOfCoprime d cd) (ZMod.coe_unitOfCoprime q cq) (ZMod.coe_unitOfCoprime d cd) σ₀).1 P`. Establish `hb1 : (galE e ζ a b σ₀).1.2 = 1` using `(FrobeniusOrbits.mem_Psi_iff _).1 (hD.1 h₀.mem_stabilizer)`.
+
+Establish `ha1 : (galE e ζ a b σ₀).1.1 = -1`. Break down `Int.units_eq_one_or (galE e ζ a b σ₀).1.1 with h1 | h1` into its components or cases. It suffices to derive a contradiction. Establish `hin : ∀ x : 𝓞 (hostE ζ a b), σ₀ • x - x ∈ P` using `((hostInertia e q d h L ζ a b hL σ₀).1 P).2 (Prod.ext h1 hb1)`. Establish `hq8 : q % 8 = 3` using `h.2.2.1`.
+
+Establish `hq4 : q % 4 = 3` using `by omega`. Establish `haE : (aE ζ a b) ^ 2 = -(q : hostE ζ a b)`. Apply `Subtype.ext` to reduce the goal to its premises. Use `push_cast`. Conclude with `hL.2.1`.
+
+Set `W : 𝓞 (hostE ζ a b)` to `⟨(1 + aE ζ a b) / 2, FrobeniusOrbits.Inertia.omega_integral hq4 haE⟩`. Establish `hF` using `h₀ W`. Rewrite `hF` using `[odd_card_under 2 P, MulSemiringAction.toAlgHom_apply]`. Establish `h3 : W ^ 2 - W ∈ P`. Use `P.sub_mem (hin W) hF` as an intermediate fact.
+
+Use `this using 1` and compare the differences between its conclusion and the goal. Expand and normalize the polynomial expressions, which then agree. Use `set c : ℤ := ((q : ℤ) + 1) / 4 with hc`. Establish `h4 : 4 * c = (q : ℤ) + 1` using `by omega`. Establish `h4E : 4 * (c : hostE ζ a b) = (q : hostE ζ a b) + 1` using `by exact_mod_cast h4`.
+
+Establish `hW : W ^ 2 - W = ((-c : ℤ) : 𝓞 (hostE ζ a b))`. Apply `RingOfIntegers.coe_injective` to reduce the goal to its premises. Simplify using `only [map_sub, map_pow, map_intCast]`. Express the relevant statement in the definitionally equal form `((1 + aE ζ a b) / 2) ^ 2 - (1 + aE ζ a b) / 2 = ((-c : ℤ) : hostE ζ a b)`. Use `push_cast`.
+
+Take the linear combination `(1 / 4 : hostE ζ a b) * haE + (1 / 4 : hostE ζ a b) * h4E`. Rewrite `h3` using `[hW, odd_intCast_mem_iff 2 P]`. Use linear arithmetic over natural numbers and integers. Conclude with `h1`. Conclude with `⟨σ₀, h₀, Prod.ext ha1 hb1⟩`.
+-/
 lemma exists_frob_two (h : HostHyp q d) (hL : IsLayer (e + 2) q d ζ a b)
     (P : Ideal (𝓞 (hostE ζ a b))) [P.IsPrime] [hPl : P.LiesOver (span {((2 : ℕ) : ℤ)})] :
     ∃ σ₀ : hostE ζ a b ≃ₐ[ℚ] hostE ζ a b, IsArithFrobAt ℤ σ₀ P ∧ (galE e ζ a b σ₀).1 = (-1, 1) := by
@@ -960,6 +1378,19 @@ lemma exists_frob_two (h : HostHyp q d) (hL : IsLayer (e + 2) q d ζ a b)
     · exact h1
   exact ⟨σ₀, h₀, Prod.ext ha1 hb1⟩
 
+/- English proof (translation)
+Introduce `e q d _ _ h L _ _ ζ a b hL p _ P _ _ σ`. Use `⟨field_inertia h hL p P σ, ?_⟩` and prove the remaining obligations. Establish `hp : p.Prime` using `Fact.out`. Take `⟨hq2, hd2, hqd⟩` from `HostHyp_ne h`. Distinguish the cases in `hp2 : p = 2`.
+
+Substitute `hp2` using the available equality. Take `⟨σ₀, h₀, h1⟩` from `exists_frob_two h hL P`. Use `field_frob_of h hL 2 P σ₀ h₀ ?_ σ` and prove the remaining obligations. Rewrite using `[host_inertia_two h, host_frob_two h, galois_map_apply, h1]`. Simplify using `[sg]`.
+
+Take `⟨σ₀, h₀, hH, ha, hb⟩` from `exists_frob_odd h hL p hp2 P`. Establish `c2 : p.Coprime (2 ^ (e + 2))` using `Nat.Coprime.pow_right _ ((Nat.coprime_primes hp Nat.prime_two).2 hp2)`. Use `field_frob_of h hL p P σ₀ h₀ ?_ σ` and prove the remaining obligations. Rewrite using `[galois_map_apply, hH c2]`. Distinguish the cases in `hpq : p = q`.
+
+Substitute `hpq` using the available equality. Rewrite using `[hb hqd, h.2.2.2.2, host_frob_q h c2, host_inertia_q h]`. Apply the tactic sequence `by_cases hs : (((galE e ζ a b σ₀).1.1 : ℤˣ) : ℤ) = 1 <;> simp [hs, sg]`. Distinguish the cases in `hpd : p = d`. Substitute `hpd` using the available equality.
+
+Rewrite using `[ha hqd.symm, FrobeniusOrbits.hostRecip q p h, host_frob_d h c2, host_inertia_d h]`. Apply the tactic sequence `by_cases hs : (((galE e ζ a b σ₀).1.2 : ℤˣ) : ℤ) = 1 <;> simp [hs, sgc0]`. Establish `: NeZero (hostN e q d)` using `⟨hostN_ne_zero e h⟩`. Establish `hcop` using `coprime_hostN e h hp hp2 hpq hpd`. Establish `hodd : Odd p` using `hp.odd_of_ne_two hp2`.
+
+Establish `hd4 : d % 4 = 3` using `by have := h.2.2.2.1; omega`. Establish `hq4 : q % 4 = 3` using `by have := h.2.2.1; omega`. Rewrite using `[ha hpq, hb hpd, (host_unram h p hcop hp).2, recMap_of_modEq _ p p p c2 (unitOfCoprime_modEq hcop (d_dvd_hostN e q d)) (unitOfCoprime_modEq hcop (q_dvd_hostN e q d)) (unitOfCoprime_modEq hcop (two_dvd_hostN e q d)), jac_flip hd4 hodd, jac_flip hq4 hodd, sub_self]`. Conclude with `AddSubgroup.zero_mem _`.
+-/
 theorem extension_data_field : HostDataField := by
   intro e q d _ _ h L _ _ ζ a b hL p _ P _ _ σ
   refine ⟨field_inertia h hL p P σ, ?_⟩

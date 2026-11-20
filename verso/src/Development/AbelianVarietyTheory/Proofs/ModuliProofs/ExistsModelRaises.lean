@@ -19,6 +19,15 @@ open GlobalTheory.Models
 
 namespace GlobalTheory.LocalModelExists
 
+/- English proof (translation)
+Introduce `L1 L2 L3 E _ _ _ H D Xo n N T hN l₀ l B c O _ β b hn hd hβ hb`. Take `⟨o, ⟨m0⟩⟩` from `GlobalTheory.obj_pull E H D l (KA l) (KA l) (baseKA l) (baseKA l) (RingHom.id _) _ _ (Xo l).s (pullback.fst (Xo l).s (spMap (IntermediateField.inclusion c.le).toRingHom) ≫ (Xo l).s) (pullback.fst (Xo l).s (spMap (IntermediateField.inclusion c.le).toRingHom)) rfl rfl (by simp [spM …`. Take `⟨k, r, ν, hr, hk, hlev, hfin, -, -⟩` from `GlobalTheory.LevelMapField.exists_levelMap L1 L2 L3 E H D Xo hN l₀ l c o m0 hd`. Establish `hpos : 0 < n * l₀.M` using `Nat.mul_pos hn (by have := l₀.three_le; omega)`. Establish `hB : IsDedFrac B.β`.
+
+Establish `aux : ∀ a : ℕ, l₀.A = a → a = 1 → ∀ β₀ : RZ H (n * l₀.M) a →+* KA l₀, IsInc (RZ H (n * l₀.M) a).subtype (KA l₀).val.toRingHom β₀ → IsDedFrac β₀`. Introduce `a ha h1`. Substitute `ha` using the available equality. Conclude with `(GlobalTheory.T.cmModelCoefficientSubring_dedekind_compatible_embedding E H l₀ (n * l₀.M) 0 hpos (by simp [h1])).2.2`. Conclude with `aux 1 B.A_one rfl B.β B.β_inc`.
+
+Establish `hcomp : β.comp b = k.comp B.β`. Use `RingHom.ext fun x => Subtype.ext ?_` and prove the remaining obligations. Conclude with `(hb x).trans ((hk (B.β x)).trans (B.β_inc x)).symm`. Establish `hsm : Smooth (pullback.snd (Xo l).s (spMap (IntermediateField.inclusion c.le).toRingHom))`. Use `(Xo l).smooth` as an intermediate fact.
+
+Establish `: Smooth (Xo l).s` using `SmoothOfRelativeDimension.smooth D.dim _`. Use `infer_instance`. Establish `hnorm` using `(GlobalTheory.isReduced_isNormalScheme_isLocallyNoetherian_of_smooth_over_field _ _ _ hsm).2.1`. Take `⟨C, hC⟩` from `GlobalTheory.T.exists_normal_model_above_finite_cover E H _ _ _ (Xo l₀).s (Xo l₀).univ.t B.β _ _ _ (pullback.snd (Xo l).s (spMap (IntermediateField.inclusion c.le).toRingHom)) o.t β B.C b k r hr ν hB hβ hcomp hnorm hfin`. Conclude with `⟨⟨C.X, C.s, C.normal, C.proj, C.flat, C.jQ, C.jQ_over, C.jQ_open, C.jQ_dense, C.t, o, m0, C.m, C.ab_gen⟩, b, r, ν, hb, hlev, hC⟩`.
+-/
 theorem exists_model_raises : Out.Laws → Out.Laws2 → Out.Laws3 → ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (D : Datum H) (Xo : ∀ l : Level H, Moduli D l) (n N : ℕ) (T : Top Xo n N), ToroidalLevelCompatibility (H := H) (D := D) → ∀ (l₀ l : Level H) (B : BaseModel T l₀) (c : Coeff l) (O : Type) [CommRing O] (β : O →+* c.F) (b : RZ H (n * l₀.M) 1 →+* O), 0 < n → l₀.Dvd l → IsDedFrac β → IsInc (RZ H (n * l₀.M) 1).subtype (c.F.val.toRingHom.comp β) b → ∃ Y : Model (Xo l) c β, Raises B Y := by
   intro L1 L2 L3 E _ _ _ H D Xo n N T hN l₀ l B c O _ β b hn hd hβ hb
   obtain ⟨o, ⟨m0⟩⟩ := GlobalTheory.obj_pull E H D l (KA l) (KA l) (baseKA l) (baseKA l) (RingHom.id _) _ _ (Xo l).s

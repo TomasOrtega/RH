@@ -38,6 +38,19 @@ structure RGHyp (t₁ t₂ : Term V M r) (Λ₂ : Submodule M.L.O V) (ψ : ↥(H
       ∃ u' ∈ Submodule.span E (Set.range (Sum.elim t₂.f t₂.f')), ∃ hu' : u' ∈ H.perp (H.X t₂.f'),
         φ' (H.mkW t₁.f' ⟨u, hu⟩) = H.mkW t₂.f' ⟨u', hu'⟩
 
+/- English proof (translation)
+Take `⟨u', hu'U, hu'p, hφ⟩` from `D.hC2 u₁ hu₁U hu₁p`. Establish `hn : (n : V) ∈ H.perp (H.X t₁.f)` using `mem_perp_isotropicSpan_of_mem_framePerp H n.2`. Establish `hsplit : H.mkW t₁.f ⟨u₁ + n, hx₁⟩ = H.mkW t₁.f ⟨u₁, hu₁p⟩ + H.mkW t₁.f ⟨n, hn⟩`. Rewrite using `[← map_add]`. Both sides reduce to the same expression.
+
+Rewrite `h` using `[hsplit, map_add, hφ, D.hC1 n, ← map_add]`. Establish `hX : ((u' + ψ n : V)) - (a + b) ∈ H.X t₂.f` using `sub_mem_X_of_mkW_eq H h`. Establish `hXle : H.X t₂.f ≤ Submodule.span E (Set.range (Sum.elim t₂.f t₂.f'))`. Apply `Submodule.span_mono` to reduce the goal to its premises. Introduce and unpack `_ ⟨i, rfl⟩`.
+
+Conclude with `⟨Sum.inl i.castSucc, rfl⟩`. Establish `hdiff : (ψ n : V) - b = ((u' + ψ n) - (a + b)) - (u' - a)` using `by abel`. Establish `hmemS : (ψ n : V) - b ∈ Submodule.span E (Set.range (Sum.elim t₂.f t₂.f'))`. Rewrite using `[hdiff]`. Conclude with `Submodule.sub_mem _ (hXle hX) (Submodule.sub_mem _ hu'U ha)`.
+
+Establish `hmemW : (ψ n : V) - b ∈ H.W0 t₂.f t₂.f'` using `Submodule.sub_mem _ (ψ n).2 hb`. Establish `h0 : (ψ n : V) - b = 0` using `(Submodule.disjoint_def.1 D.hU₂.disjoint) _ hmemS hmemW`. Establish `hbψ : b = ψ n` using `(sub_eq_zero.1 h0).symm`. Use `⟨hbψ, ?_⟩` and prove the remaining obligations. Rewrite using `[hφ]`.
+
+Establish `hua : (u' : V) - a ∈ H.X t₂.f`. Establish `e1 : (u' : V) - a = (u' + ψ n) - (a + b)`. Rewrite using `[hbψ]`. Normalize the expressions using the abelian group laws. Rewrite using `[e1]`.
+
+Conclude with `hX`. Use `show Submodule.Quotient.mk _ = Submodule.Quotient.mk _`. Rewrite using `[Submodule.Quotient.eq, Submodule.mem_comap]`. Conclude with `hua`.
+-/
 theorem RGHyp.trF {t₁ t₂ : Term V M r} {Λ₂ : Submodule M.L.O V} {ψ : ↥(H.W0 t₁.f t₁.f') ≃ₗ[E] ↥(H.W0 t₂.f t₂.f')}
     {θ : DDt H t₁ ≃ₗ[M.L.O] DDt H t₂} {φ : H.Wb t₁.f ≃ₗ[E] H.Wb t₂.f} {φ' : H.Wb t₁.f' ≃ₗ[E] H.Wb t₂.f'}
     (D : RGHyp H t₁ t₂ Λ₂ ψ θ φ φ')
@@ -77,6 +90,19 @@ theorem RGHyp.trF {t₁ t₂ : Term V M r} {Λ₂ : Submodule M.L.O V} {ψ : ↥
   rw [Submodule.Quotient.eq, Submodule.mem_comap]
   exact hua
 
+/- English proof (translation)
+Take `⟨u', hu'U, hu'p, hφ⟩` from `D.hC2' u₁ hu₁U hu₁p`. Establish `hn : (n : V) ∈ H.perp (H.X t₁.f')` using `mem_perp_isotropicSpan_of_mem_framePerp' H n.2`. Establish `hsplit : H.mkW t₁.f' ⟨u₁ + n, hx₁⟩ = H.mkW t₁.f' ⟨u₁, hu₁p⟩ + H.mkW t₁.f' ⟨n, hn⟩`. Rewrite using `[← map_add]`. Both sides reduce to the same expression.
+
+Rewrite `h` using `[hsplit, map_add, hφ, D.hC1' n, ← map_add]`. Establish `hX : ((u' + ψ n : V)) - (a + b) ∈ H.X t₂.f'` using `sub_mem_X_of_mkW_eq H h`. Establish `hXle : H.X t₂.f' ≤ Submodule.span E (Set.range (Sum.elim t₂.f t₂.f'))`. Apply `Submodule.span_mono` to reduce the goal to its premises. Introduce and unpack `_ ⟨i, rfl⟩`.
+
+Conclude with `⟨Sum.inr i.castSucc, rfl⟩`. Establish `hdiff : (ψ n : V) - b = ((u' + ψ n) - (a + b)) - (u' - a)` using `by abel`. Establish `hmemS : (ψ n : V) - b ∈ Submodule.span E (Set.range (Sum.elim t₂.f t₂.f'))`. Rewrite using `[hdiff]`. Conclude with `Submodule.sub_mem _ (hXle hX) (Submodule.sub_mem _ hu'U ha)`.
+
+Establish `hmemW : (ψ n : V) - b ∈ H.W0 t₂.f t₂.f'` using `Submodule.sub_mem _ (ψ n).2 hb`. Establish `h0 : (ψ n : V) - b = 0` using `(Submodule.disjoint_def.1 D.hU₂.disjoint) _ hmemS hmemW`. Establish `hbψ : b = ψ n` using `(sub_eq_zero.1 h0).symm`. Use `⟨hbψ, ?_⟩` and prove the remaining obligations. Rewrite using `[hφ]`.
+
+Establish `hua : (u' : V) - a ∈ H.X t₂.f'`. Establish `e1 : (u' : V) - a = (u' + ψ n) - (a + b)`. Rewrite using `[hbψ]`. Normalize the expressions using the abelian group laws. Rewrite using `[e1]`.
+
+Conclude with `hX`. Use `show Submodule.Quotient.mk _ = Submodule.Quotient.mk _`. Rewrite using `[Submodule.Quotient.eq, Submodule.mem_comap]`. Conclude with `hua`.
+-/
 theorem RGHyp.trF' {t₁ t₂ : Term V M r} {Λ₂ : Submodule M.L.O V} {ψ : ↥(H.W0 t₁.f t₁.f') ≃ₗ[E] ↥(H.W0 t₂.f t₂.f')}
     {θ : DDt H t₁ ≃ₗ[M.L.O] DDt H t₂} {φ : H.Wb t₁.f ≃ₗ[E] H.Wb t₂.f} {φ' : H.Wb t₁.f' ≃ₗ[E] H.Wb t₂.f'}
     (D : RGHyp H t₁ t₂ Λ₂ ψ θ φ φ')
@@ -116,6 +142,9 @@ theorem RGHyp.trF' {t₁ t₂ : Term V M r} {Λ₂ : Submodule M.L.O V} {ψ : �
   rw [Submodule.Quotient.eq, Submodule.mem_comap]
   exact hua
 
+/- English proof (translation)
+Take `⟨m₁, hm₁⟩` from `Submodule.Quotient.mk_surjective _ (θ.symm (ddMk H t₂ m₂))`. Use `⟨m₁, ?_⟩` and prove the remaining obligations. Use `show θ (Submodule.Quotient.mk m₁) = _`. Rewrite using `[hm₁, LinearEquiv.apply_symm_apply]`.
+-/
 theorem RGHyp.θs {t₁ t₂ : Term V M r} {Λ₂ : Submodule M.L.O V} {ψ : ↥(H.W0 t₁.f t₁.f') ≃ₗ[E] ↥(H.W0 t₂.f t₂.f')}
     {θ : DDt H t₁ ≃ₗ[M.L.O] DDt H t₂} {φ : H.Wb t₁.f ≃ₗ[E] H.Wb t₂.f} {φ' : H.Wb t₁.f' ≃ₗ[E] H.Wb t₂.f'}
     (_D : RGHyp H t₁ t₂ Λ₂ ψ θ φ φ') (m₂ : ↥(MMsharp H t₂)) :

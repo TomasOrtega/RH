@@ -9,6 +9,9 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 namespace GlobalTheory.LineSelfDual
 
+/- English proof (translation)
+Use `conv_lhs => rw [← S.frame.sum_repr u, ← S.frame.sum_repr v]`. Simplify using `only [map_sum, LinearMap.map_smulₛₗ, LinearMap.sum_apply, LinearMap.smul_apply, smul_eq_mul, Module.Basis.equivFun_apply, Formalism.BasicNotions.HSpace.gram, starRingEnd_apply, Finset.mul_sum, RingHom.id_apply]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem hT_frame (D : D7) (S : HSp D) (u v : S.V) :
     S.hT u v = ∑ i, ∑ j, star (S.frame.equivFun u i) * S.gram i j * S.frame.equivFun v j := by
   conv_lhs => rw [← S.frame.sum_repr u, ← S.frame.sum_repr v]
@@ -21,9 +24,21 @@ theorem hT_frame (D : D7) (S : HSp D) (u v : S.V) :
 noncomputable def selfDualLatticeCoordsInHermitianFrame (D : D7) (S : HSp D) : Submodule (𝓞 D.host.E) (Fin S.rank → D.host.E) :=
   S.L0.map (S.frame.equivFun.restrictScalars (𝓞 D.host.E)).toLinearMap
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fun ⟨z, hz, e⟩ => S.frame.equivFun.injective e ▸ hz, fun hu => ⟨u, hu, rfl⟩⟩`.
+-/
 theorem frameCoords_mem_selfDualLatticeCoords_iff (D : D7) (S : HSp D) (u : S.V) : S.frame.equivFun u ∈ selfDualLatticeCoordsInHermitianFrame D S ↔ u ∈ S.L0 :=
   ⟨fun ⟨z, hz, e⟩ => S.frame.equivFun.injective e ▸ hz, fun hu => ⟨u, hu, rfl⟩⟩
 
+/- English proof (translation)
+Use `⟨⟨S.standardTuple_isLattice.fg.map _, ?_⟩, ?_⟩` and prove the remaining obligations. Establish `: (selfDualLatticeCoordsInHermitianFrame D S : Set (Fin S.rank → D.host.E)) = S.frame.equivFun.toLinearMap '' (S.L0 : Set S.V)` using `rfl`. Rewrite using `[this, ← Submodule.map_span, S.standardTuple_isLattice.span_eq_top, Submodule.map_top, LinearEquiv.range]`. Introduce `y`. Take `⟨v, rfl⟩` from `S.frame.equivFun.surjective y`.
+
+Establish `h2 : v ∈ S.L0 ↔ ∀ u ∈ S.L0, S.hT u v ∈ (1 : Submodule (𝓞 D.host.E) D.host.E)` using `by conv_lhs => rw [← show Formalism.HermitianLatticesTheory.dual S.hT S.L0 = S.L0 from S.baseLattice_isUnimodular]`. Simplify using `[Formalism.HermitianLatticesTheory.dual, Formalism.E.hdual]`. Establish `h3 : ∀ z : D.host.E, z ∈ (1 : Submodule (𝓞 D.host.E) D.host.E) ↔ ∃ b : 𝓞 D.host.E, (b : D.host.E) = z` using `fun z => Submodule.mem_one.trans ⟨fun ⟨a, ha⟩ => ⟨a, ha⟩, fun ⟨a, ha⟩ => ⟨a, ha⟩⟩`. Rewrite using `[frameCoords_mem_selfDualLatticeCoords_iff, h2]`. Prove the components needed by the constructor for the conclusion.
+
+Introduce and unpack `H _ ⟨u, hu, rfl⟩`. Use `(h3 _).1 (H u hu)` as an intermediate fact. Rewrite `this` using `[hT_frame]`. Then use the resulting hypothesis. Introduce `H u hu`. Rewrite using `[h3, hT_frame]`.
+
+Conclude with `H _ ⟨u, hu, rfl⟩`.
+-/
 theorem isSelfDualC_selfDualLatticeCoordsInFrame (D : D7) (S : HSp D) : IsSelfDualC S (selfDualLatticeCoordsInHermitianFrame D S) := by
   refine ⟨⟨S.standardTuple_isLattice.fg.map _, ?_⟩, ?_⟩
   · have : (selfDualLatticeCoordsInHermitianFrame D S : Set (Fin S.rank → D.host.E)) = S.frame.equivFun.toLinearMap '' (S.L0 : Set S.V) := rfl

@@ -3,6 +3,9 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.AutomorphicForms.S
 
 open NumberField IsDedekindDomain Polynomial UpperTheory.V UpperTheory.V.Z.Gam UpperTheory.V.Z.ImaginaryQuadraticEtaCharacter
 
+/- English proof (translation)
+Introduce `K _ _ _ n _ π π' h t v hw`. Establish `e : π = π'` using `GlobalTheory.CuspRep.CuspSub.ext (UpperTheory.V.Af.strongMultOneC K n π π' (h.mono fun w ⟨B, h₁, h₂⟩ => ⟨B, (GlobalTheory.CuspRep.CG.hasSat_mk π w B).1 h₁, (GlobalTheory.CuspRep.CG.hasSat_mk π' w B).1 h₂⟩))`. Conclude with `e ▸ hw`.
+-/
 theorem UpperTheory.V.Z.ImaginaryQuadraticEtaCharacter.suppSmo :
     UpperTheory.V.Z.ImaginaryQuadraticEtaCharacter.SuppSmo := by
   intro K _ _ _ n _ π π' h t v hw

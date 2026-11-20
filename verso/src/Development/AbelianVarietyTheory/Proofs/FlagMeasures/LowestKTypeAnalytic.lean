@@ -16,6 +16,15 @@ noncomputable section
 
 namespace GlobalTheory.Jet.Anal
 
+/- English proof (translation)
+Establish `e : ∀ w : ℝ, ∑ k ∈ range (N + 1 + 1), (w ^ k / (k.factorial : ℝ)) • f k s = ∑ k ∈ range (N + 1), (w ^ (k + 1) / ((k + 1).factorial : ℝ)) • f (k + 1) s + f 0 s`. Introduce `w`. Rewrite using `[Finset.sum_range_succ']`. Simplify using the standard rewrite rules. Establish `h1 : HasDerivAt (fun w : ℝ => f 0 (s + w)) (f 1 (s + z)) z` using `(hd 0 (s + z)).comp_const_add s z`.
+
+Establish `h2 : HasDerivAt (fun w : ℝ => ∑ k ∈ range (N + 1), (w ^ (k + 1) / ((k + 1).factorial : ℝ)) • f (k + 1) s) (∑ k ∈ range (N + 1), (z ^ k / (k.factorial : ℝ)) • f (k + 1) s) z`. Apply `HasDerivAt.fun_sum` to reduce the goal to its premises. Introduce `k _`. Establish `hp` using `((hasDerivAt_pow (k + 1) z).div_const ((k + 1).factorial : ℝ)).smul_const (f (k + 1) s)`. Use `hp using 2` and compare the differences between its conclusion and the goal.
+
+Rewrite using `[Nat.add_sub_cancel, Nat.factorial_succ]`. Use `push_cast`. Establish `: (k.factorial : ℝ) ≠ 0` using `by positivity`. Clear the denominators using the available nonvanishing facts. Establish `h3` using `h1.sub (h2.add_const (f 0 s))`.
+
+Use `h3 using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `w`. Rewrite using `[e w]`. Both sides reduce to the same expression.
+-/
 private theorem hasDerivAt_taylor_remainder {H : Type} [NormedAddCommGroup H] [NormedSpace ℝ H] (f : ℕ → ℝ → H)
     (hd : ∀ k t, HasDerivAt (f k) (f (k + 1) t) t) (s : ℝ) (N : ℕ) (z : ℝ) :
     HasDerivAt (fun w : ℝ => f 0 (s + w) - ∑ k ∈ range (N + 1 + 1), (w ^ k / (k.factorial : ℝ)) • f k s)
@@ -42,6 +51,9 @@ private theorem hasDerivAt_taylor_remainder {H : Type} [NormedAddCommGroup H] [N
   rw [e w]
   rfl
 
+/- English proof (translation)
+The claim follows from `|z| ^ (N + 1) / ((N + 1).factorial : ℝ) * M (N + 1) := by induction N with | zero => intro f M hd hM s z have hφ : ∀ τ : ℝ, HasDerivAt (fun τ : ℝ => f 0 (s + τ * z)) (z • f 1 (s + τ * z)) τ := by intro τ have h2 : HasDerivAt (fun τ : ℝ => s + τ * z) z τ := by simpa using ((hasDer …`.
+-/
 private theorem norm_taylor_remainder_le {H : Type} [NormedAddCommGroup H] [NormedSpace ℝ H] (N : ℕ) :
     ∀ (f : ℕ → ℝ → H) (M : ℕ → ℝ), (∀ k t, HasDerivAt (f k) (f (k + 1) t) t) → (∀ k t, ‖f k t‖ ≤ M k) →
       ∀ s z : ℝ, ‖f 0 (s + z) - ∑ k ∈ range (N + 1), (z ^ k / (k.factorial : ℝ)) • f k s‖ ≤
@@ -94,6 +106,23 @@ private theorem norm_taylor_remainder_le {H : Type} [NormedAddCommGroup H] [Norm
       (x := 1) ⟨zero_le_one, le_rfl⟩
     simpa using key
 
+/- English proof (translation)
+Establish `hM0 : ∀ k, 0 ≤ M k` using `fun k => (norm_nonneg _).trans (hM k 0)`. Establish `hg0 : ∀ k, 0 ≤ r ^ k * M k / (k.factorial : ℝ)` using `fun k => by`. Use `hM0 k` as an intermediate fact. Check the signs of the components of the expression. Introduce `s _`.
+
+Set `p : FormalMultilinearSeries ℝ ℝ H` to `fun k => ContinuousMultilinearMap.mkPiRing ℝ (Fin k) ((1 / (k.factorial : ℝ)) • f k s)`. Establish `hp : ∀ (k : ℕ) (y : ℝ), (p k fun _ => y) = (y ^ k / (k.factorial : ℝ)) • f k s`. Introduce `k y`. Simplify using `only [p, ContinuousMultilinearMap.mkPiRing_apply, Finset.prod_const, Finset.card_univ, Fintype.card_fin, smul_smul]`. Use `congr 1`.
+
+Expand and normalize the polynomial expressions, which then agree. Establish `hpn : ∀ k, ‖p k‖ ≤ M k / (k.factorial : ℝ)`. Introduce `k`. Simplify using `only [p, ContinuousMultilinearMap.norm_mkPiRing, norm_smul, Real.norm_eq_abs]`. Rewrite using `[abs_of_pos (by positivity : (0 : ℝ) < 1 / (k.factorial : ℝ)), one_div_mul_eq_div]`.
+
+Conclude with `div_le_div_of_nonneg_right (hM k s) (by positivity)`. Set `ρ : NNReal` to `⟨r, hr.le⟩`. Establish `hrad : (ρ : ENNReal) ≤ p.radius`. Use `p.le_radius_of_bound (∑' k, r ^ k * M k / (k.factorial : ℝ)) fun k => ?_` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation.
+
+Use `⟨p, ρ, hrad, ENNReal.coe_pos.mpr (NNReal.coe_pos.mp hr), ?_⟩` and prove the remaining obligations. Introduce `y hy`. Establish `hy' : |y| ≤ r`. Rewrite `hy` using `[Metric.mem_eball, edist_lt_coe, ← NNReal.coe_lt_coe, coe_nndist, Real.dist_eq, sub_zero]`. Conclude with `hy.le`.
+
+Establish `hsum : Summable fun k : ℕ => (y ^ k / (k.factorial : ℝ)) • f k s`. Use `hs.of_norm_bounded fun k => ?_` and prove the remaining obligations. Rewrite using `[norm_smul, Real.norm_eq_abs, abs_div, abs_pow, Nat.abs_cast]`. Combine the equalities or inequalities in the displayed calculation. Establish `hlim : Filter.Tendsto (fun N : ℕ => ∑ k ∈ range (N + 1), (y ^ k / (k.factorial : ℝ)) • f k s) Filter.atTop (nhds (f 0 (s + y)))`.
+
+Rewrite using `[tendsto_iff_norm_sub_tendsto_zero]`. Use `squeeze_zero (fun _ => norm_nonneg _) (fun N => ?_) ((hs.tendsto_atTop_zero).comp (Filter.tendsto_add_atTop_nat 1))` and prove the remaining obligations. Rewrite using `[norm_sub_rev]`. Combine the equalities or inequalities in the displayed calculation. Establish `hlim2` using `(hsum.hasSum.tendsto_sum_nat).comp (Filter.tendsto_add_atTop_nat 1)`.
+
+Establish `heq` using `tendsto_nhds_unique hlim2 hlim`. Establish `hfun : (fun k : ℕ => p k fun _ => y) = fun k => (y ^ k / (k.factorial : ℝ)) • f k s`. Use function extensionality and compare the values at `fun k => hp k y`. Rewrite using `[hfun, ← heq]`. Conclude with `hsum.hasSum`.
+-/
 theorem analytic_chain {H : Type} [NormedAddCommGroup H] [NormedSpace ℝ H] [CompleteSpace H] (f : ℕ → ℝ → H)
     (M : ℕ → ℝ) (hd : ∀ k t, HasDerivAt (f k) (f (k + 1) t) t) (hM : ∀ k t, ‖f k t‖ ≤ M k) (r : ℝ) (hr : 0 < r)
     (hs : Summable fun k : ℕ => r ^ k * M k / (k.factorial : ℝ)) : AnalyticOnNhd ℝ (f 0) Set.univ := by
@@ -152,6 +181,13 @@ theorem analytic_chain {H : Type} [NormedAddCommGroup H] [NormedSpace ℝ H] [Co
   rw [hfun, ← heq]
   exact hsum.hasSum
 
+/- English proof (translation)
+Establish `hsa : ⟪Cas E u, u⟫_ℂ = ⟪u, Cas E u⟫_ℂ`. Simplify using `only [Cas, LinearMap.sum_apply, Module.End.mul_apply, sum_inner, inner_sum]`. Use `Finset.sum_congr rfl fun a _ => Finset.sum_congr rfl fun b _ => ?_` and prove the remaining obligations. Rewrite using `[hU a b, hU b a, ← mul_assoc]`. Establish `hs : (Formalism.REAL.sgn ε a b : ℂ) * (Formalism.REAL.sgn ε b a : ℂ) = 1`.
+
+Unfold `Formalism.REAL.sgn`. Distinguish the cases in `hab : ε a = ε b`. Simplify using `[hab]`. Simplify using `[hab, Ne.symm hab]`. Rewrite using `[hs, one_mul]`.
+
+Rewrite `hsa` using `[h, inner_smul_left, inner_smul_right]`. Establish `hne : ⟪u, u⟫_ℂ ≠ 0` using `inner_self_ne_zero.mpr hu`. Establish `hc : (starRingEnd ℂ) c = c` using `mul_right_cancel₀ hne hsa`. Conclude with `(Complex.conj_eq_iff_re.mp hc).symm`.
+-/
 theorem cas_real {V : Type} [NormedAddCommGroup V] [InnerProductSpace ℂ V] {n : ℕ} {ε : Fin n → Bool}
     {E : Fin n → Fin n → Module.End ℂ V} (hU : IsUnitary ε E) {u : V} (hu : u ≠ 0) {c : ℂ}
     (h : Cas E u = c • u) : c = (c.re : ℂ) := by
@@ -173,6 +209,19 @@ theorem cas_real {V : Type} [NormedAddCommGroup V] [InnerProductSpace ℂ V] {n 
 variable {n : ℕ} {ε : Fin n → Bool} {H : Type} [NormedAddCommGroup H] [InnerProductSpace ℂ H] [CompleteSpace H]
   {σ : Matrix (Fin n) (Fin n) ℂ → (H →L[ℂ] H)} {V : Submodule ℂ H} {E : Fin n → Fin n → Module.End ℂ V}
 
+/- English proof (translation)
+Take `⟨hGl, hU, -, -⟩` from `id hD`. Establish `hcomm` using `(Formalism.REAL.casCentral (Module.End ℂ V) n ε E hGl).1`. Establish `hKR : KRel ε E` using `glRel_kRel ε E hGl`. Establish `hKU : KUnit ε E` using `isUnitary_kUnit ε E hU`. Establish `hyc : ∀ a b w, E a b (Cas E w) = Cas E (E a b w)` using `fun a b w => by`.
+
+Rewrite using `[← Module.End.mul_apply, ← hcomm a b, Module.End.mul_apply]`. Establish `hyK : KHighest ε E μ (Cas E u)`. Use `⟨fun a => ?_, fun a b hab he => ?_⟩` and prove the remaining obligations. Rewrite using `[hyc, hu.1 a, map_smul]`. Rewrite using `[hyc, hu.2 a b hab he, map_zero]`.
+
+Distinguish the cases in `hy0 : Cas E u = 0`. Conclude with `⟨0, by rw [hy0]; simp⟩`. Establish `hle : kSpan ε E (Cas E u) ≤ (kSpan ε E u).map (Cas E)`. Use `compactSpan_le_of_mem ε E ⟨u, mem_compactSpan_self ε E u, rfl⟩ ?_` and prove the remaining obligations. Introduce `a b hab z hz`.
+
+Take `⟨w, hw, rfl⟩` from `hz`. Conclude with `⟨E a b w, compactSpan_isCompactInvariant ε E u a b hab w hw, (hyc a b w).symm⟩`. Establish `hfy : FiniteDimensional ℂ (kSpan ε E (Cas E u))` using `by haveI := hf`. Conclude with `Submodule.finiteDimensional_of_le hle`. Establish `hT` using `(GlobalTheory.Jet.KType.kType_iff n ε H σ V E hσ hD).1 μ (Cas E u) hy0 hyK hfy`.
+
+Establish `hymem : Cas E u ∈ kSpan ε E u`. Take `⟨w, hw, hwy⟩` from `hall _ hT ⟨Cas E u, mem_compactSpan_self ε E (Cas E u), rfl⟩`. Conclude with `(Subtype.ext hwy : w = Cas E u) ▸ hw`. Break down `Formalism.REAL.kHiUniq V n ε E μ μ u (Cas E u) hKR hKU hu hymem hyK with h0 | ⟨-, c', hc'⟩` into its components or cases. Conclude with `absurd h0 hy0`.
+
+Use `⟨c'.re, ?_⟩` and prove the remaining obligations. Establish `hre` using `cas_real hU hu0 hc'`. Rewrite using `[hc', ← hre]`.
+-/
 theorem cas_eigen (hσ : IsURepOn (UJset ε) σ) (hD : IsDer ε σ V E) {μ : Fin n → ℝ} {u : V} (hu0 : u ≠ 0)
     (hu : KHighest ε E μ u) (hf : FiniteDimensional ℂ (kSpan ε E u))
     (hall : ∀ S, IsKTypeOf ε σ μ S → S ≤ (kSpan ε E u).map V.subtype) : ∃ c : ℝ, Cas E u = (c : ℂ) • u := by
@@ -208,6 +257,27 @@ theorem cas_eigen (hσ : IsURepOn (UJset ε) σ) (hD : IsDer ε σ V E) {μ : Fi
 
 omit [CompleteSpace H] in
 
+/- English proof (translation)
+Take `⟨hGl, hU, -, -⟩` from `hD`. Establish `hpf` using `Formalism.REAL.pfilFacts V n ε E u hGl`. Establish `hug` using `GlobalTheory.FilGrowth.uGrowth V n ε E μ c u hGl hU hu hc hf`. Use `set S : ℝ := ∑ a, ∑ b, ‖X a b‖ with hS`. Establish `hS0 : 0 ≤ S` using `Finset.sum_nonneg fun a _ => Finset.sum_nonneg fun b _ => norm_nonneg _`.
+
+Use `set s0 : ℝ := Real.sqrt (ckv ε μ) with hs0`. Use `set q : ℝ := Real.sqrt (2 * (n : ℝ)) with hq`. Use `set r0 : ℝ := Real.sqrt |c| with hr0`. Establish `hs0' : 0 ≤ s0` using `Real.sqrt_nonneg _`. Establish `hq' : 0 ≤ q` using `Real.sqrt_nonneg _`.
+
+Establish `hr0' : 0 ≤ r0` using `Real.sqrt_nonneg _`. Establish `hqq : q ^ 2 = 2 * (n : ℝ)` using `Real.sq_sqrt (by positivity)`. Establish `hrr : r0 ^ 2 = |c|` using `Real.sq_sqrt (abs_nonneg c)`. Establish `hstep : ∀ (j : ℕ), ∀ x ∈ pfil ε E u j, Coef.act E X x ∈ pfil ε E u (j + 1) ∧ ‖Coef.act E X x‖ ≤ S * (q + 1) * (s0 + n + r0 + j) * ‖x‖`. Introduce `j x hx`.
+
+Prove the components needed by the constructor for the conclusion. Rewrite using `[Coef.act_apply]`. Conclude with `Submodule.sum_mem _ fun a _ => Submodule.sum_mem _ fun b _ => Submodule.smul_mem _ _ (hpf.2.2.2.1 j a b x hx)`. Establish `hD2` using `hug j x hx`. Establish `hT : 0 ≤ s0 + j + n` using `by positivity`.
+
+Establish `k1 : q * (s0 + j + n) + r0 ≤ (q + 1) * (s0 + n + r0 + j)` using `by nlinarith`. Establish `k2 : 2 * (n : ℝ) * (s0 + j + n) ^ 2 + |c| ≤ ((q + 1) * (s0 + n + r0 + j)) ^ 2`. Rewrite using `[← hqq, ← hrr]`. Establish `h0 : 0 ≤ q * (s0 + j + n) + r0` using `by positivity`. Use polynomial arithmetic with `[mul_self_le_mul_self h0 k1, mul_nonneg (mul_nonneg hq' hT) hr0']`.
+
+Establish `hsq : ∀ a b, ‖E a b x‖ ≤ (q + 1) * (s0 + n + r0 + j) * ‖x‖`. Introduce `a b`. Establish `h1 : ‖E a b x‖ ^ 2 ≤ ∑ a, ∑ b, ‖E a b x‖ ^ 2`. Establish `ha` using `Finset.single_le_sum (f := fun a' => ∑ b, ‖E a' b x‖ ^ 2) (fun i _ => Finset.sum_nonneg fun _ _ => sq_nonneg _) (Finset.mem_univ a)`. Establish `hb` using `Finset.single_le_sum (f := fun b' => ‖E a b' x‖ ^ 2) (fun i _ => sq_nonneg _) (Finset.mem_univ b)`.
+
+Conclude with `hb.trans ha`. Establish `h2 : (2 * (n : ℝ) * (s0 + j + n) ^ 2 + |c|) * ‖x‖ ^ 2 ≤ ((q + 1) * (s0 + n + r0 + j) * ‖x‖) ^ 2`. Combine the equalities or inequalities in the displayed calculation. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Coef.act_apply]`.
+
+Combine the equalities or inequalities in the displayed calculation. Rewrite using `[norm_smul]`. Conclude with `mul_le_mul_of_nonneg_left (hsq a b) (norm_nonneg _)`. Use `_ = S * (q + 1) * (s0 + n + r0 + j) * ‖x‖ := by`. Rewrite using `[hS]`.
+
+Simplify using `only [← Finset.sum_mul]`. Expand and normalize the polynomial expressions, which then agree. Use `⟨s0 + n + r0, S * (q + 1), by positivity, by positivity, ?_⟩` and prove the remaining obligations. Introduce `w hw k`. Establish `hw0 : w ∈ pfil ε E u 0`.
+
+Rewrite using `[hpf.1]`. Conclude with `hw`. Establish `hg` using `Formalism.REAL.growthIter V (Coef.act E X) (pfil ε E u) (s0 + n + r0) (S * (q + 1)) (by positivity) (by positivity) hstep 0 k w hw0`. Simplify `hg` using `only [Nat.cast_zero, add_zero]`.
+-/
 theorem pow_growth (hD : IsDer ε σ V E) {μ : Fin n → ℝ} {u : V} (hu : KHighest ε E μ u)
     (hf : FiniteDimensional ℂ (kSpan ε E u)) {c : ℝ} (hc : Cas E u = (c : ℂ) • u) (X : Matrix (Fin n) (Fin n) ℂ) :
     ∃ B C : ℝ, 0 ≤ B ∧ 0 ≤ C ∧ ∀ w ∈ kSpan ε E u, ∀ k : ℕ,
@@ -275,6 +345,21 @@ theorem pow_growth (hD : IsDer ε σ V E) {μ : Fin n → ℝ} {u : V} (hu : KHi
     (by positivity) hstep 0 k w hw0
   simpa only [Nat.cast_zero, add_zero] using hg
 
+/- English proof (translation)
+Introduce `n ε H _ _ _ σ V E lam hσ hD hK hle x hx X hX`. Take `⟨-, -, -, ⟨v0, hv0S, hv0, hv0w⟩, -⟩` from `id hK`. Establish `hv0V : v0 ∈ V` using `hle hv0S`. Establish `hu0 : (⟨v0, hv0V⟩ : V) ≠ 0` using `fun h => hv0 (congrArg Subtype.val h)`. Take `⟨huK, hspan, hfin⟩` from `(GlobalTheory.Jet.KType.kType_iff n ε H σ V E hσ hD).2 (lowK ε lam) (lowKSub ε lam σ) ⟨v0, hv0V⟩ hK hle hv0S hu0 hv0w`.
+
+Take `⟨c, hc⟩` from `cas_eigen hσ hD hu0 huK hfin (fun S' h => by rw [hspan]; exact le_sSup h)`. Take `⟨B, C, hB, hC, hgrow⟩` from `pow_growth hD huK hfin hc X`. Establish `hxV : x ∈ V` using `hle hx`. Establish `hvmem : (⟨x, hxV⟩ : V) ∈ kSpan ε E ⟨v0, hv0V⟩`. Rewrite `hx` using `[← hspan]`.
+
+Take `⟨w, hw, hwx⟩` from `hx`. Conclude with `(Subtype.ext hwx : w = ⟨x, hxV⟩) ▸ hw`. Establish `hd : ∀ (k : ℕ) (t : ℝ), HasDerivAt (fun t : ℝ => σ (NormedSpace.exp ((t : ℂ) • X)) (((Coef.act E X ^ k) ⟨x, hxV⟩ : V) : H)) (σ (NormedSpace.exp ((t : ℂ) • X)) (((Coef.act E X ^ (k + 1)) ⟨x, hxV⟩ : V) : H)) t`. Introduce `k t`. Rewrite using `[pow_succ', Module.End.mul_apply]`.
+
+Conclude with `Coef.der_flow hσ hD hX _ t`. Establish `hM : ∀ (k : ℕ) (t : ℝ), ‖σ (NormedSpace.exp ((t : ℂ) • X)) (((Coef.act E X ^ k) ⟨x, hxV⟩ : V) : H)‖ ≤ C ^ k * (B + k) ^ k * ‖(⟨x, hxV⟩ : V)‖`. Introduce `k t`. Establish `hexp : NormedSpace.exp ((t : ℂ) • X) ∈ UJset ε` using `Formalism.REAL.expUJ n ε X hX t`. Rewrite using `[hσ.2.1 _ hexp]`.
+
+Conclude with `hgrow _ hvmem k`. Establish `hr : 0 < 1 / (C * Real.exp 1 + 1)` using `by positivity`. Establish `hCr : C * (1 / (C * Real.exp 1 + 1)) * Real.exp 1 < 1`. Establish `hpos : 0 < C * Real.exp 1 + 1` using `by positivity`. Rewrite using `[show C * (1 / (C * Real.exp 1 + 1)) * Real.exp 1 = C * Real.exp 1 / (C * Real.exp 1 + 1) by ring, div_lt_one hpos]`.
+
+Combine the linear equalities and inequalities to obtain the conclusion. Establish `hsum` using `(Formalism.REAL.taylorRadius C B (1 / (C * Real.exp 1 + 1)) hC hB hr.le hCr).mul_right ‖(⟨x, hxV⟩ : V)‖`. Establish `hs : Summable fun k : ℕ => (1 / (C * Real.exp 1 + 1)) ^ k * (C ^ k * (B + k) ^ k * ‖(⟨x, hxV⟩ : V)‖) / (k.factorial : ℝ)`. Use `hsum.congr fun k => ?_` and prove the remaining obligations. Rewrite using `[mul_pow]`.
+
+Expand and normalize the polynomial expressions, which then agree. Establish `h` using `analytic_chain (fun k t => σ (NormedSpace.exp ((t : ℂ) • X)) (((Coef.act E X ^ k) ⟨x, hxV⟩ : V) : H)) (fun k => C ^ k * (B + k) ^ k * ‖(⟨x, hxV⟩ : V)‖) hd hM _ hr hs`. Simplify using `using h`.
+-/
 theorem lowK_analytic : ∀ (n : ℕ) (ε : Fin n → Bool) (H : Type) [NormedAddCommGroup H] [InnerProductSpace ℂ H] [CompleteSpace H] (σ : Matrix (Fin n) (Fin n) ℂ → (H →L[ℂ] H)) (V : Submodule ℂ H) (E : Fin n → Fin n → Module.End ℂ V) (lam : Fin n → ℝ), IsURepOn (UJset ε) σ → IsDer ε σ V E → IsKTypeOf ε σ (lowK ε lam) (lowKSub ε lam σ) → lowKSub ε lam σ ≤ V → ∀ x ∈ lowKSub ε lam σ, ∀ X : Matrix (Fin n) (Fin n) ℂ, inG ε X → AnalyticOnNhd ℝ (fun t : ℝ => σ (NormedSpace.exp ((t : ℂ) • X)) x) Set.univ := by
   intro n ε H _ _ _ σ V E lam hσ hD hK hle x hx X hX
   obtain ⟨-, -, -, ⟨v0, hv0S, hv0, hv0w⟩, -⟩ := id hK

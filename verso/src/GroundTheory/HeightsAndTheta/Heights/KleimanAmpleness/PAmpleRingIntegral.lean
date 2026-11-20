@@ -11,6 +11,29 @@ namespace AmpleRingIntegral
 
 variable {S : Type} [CommRing S] {N : ℕ} {Ω : Type} [Field Ω] [Algebra S Ω] {x : Fin (N + 1) → Ω}
 
+/- English proof (translation)
+Use `set v := V.valuation`. Establish `hVle : ∀ {a : Ω}, a ∈ V → v a ≤ 1` using `fun ha => (V.valuation_le_one_iff _).mpr ha`. Take `⟨i, hi, hmax⟩` from `(support x).exists_max_image (fun a => v (x a)) hne`. Establish `hxi : x i ≠ 0` using `(mem_support x).mp hi`. Use `set I : Chart x := singleChart hxi`.
+
+Set `Vs : Subalgebra S Ω` to `{ V.toSubring with algebraMap_mem' := fun r => hV (Subalgebra.algebraMap_mem _ r) }`. Establish `hA : ∀ a ∈ chartRing S x I, a ∈ V`. Introduce `a ha`. Establish `hB` using `mem_ampleBase_of_mem_chartRing hxi ha`. Use `(Algebra.adjoin_le (S := Vs) ?_) hB` and prove the remaining obligations.
+
+Introduce and unpack `_ ⟨l, rfl⟩`. Distinguish the cases in `hl : x l = 0`. Simplify using `only [hl, zero_div]`. Conclude with `V.zero_mem`. Use `V.mem_of_valuation_le_one _ ?_` and prove the remaining obligations.
+
+Establish `hvi : v (x i) ≠ 0` using `(Valuation.ne_zero_iff _).mpr hxi`. Rewrite using `[map_div₀, div_le_one₀ (zero_lt_iff.mpr hvi)]`. Conclude with `hmax l ((mem_support x).mpr hl)`. Take `⟨Q', hQ'⟩` from `H.invertible I`. Establish `hPQ : H.toSubSystem.sub I ^ D.m * Q' ^ D.m = 1`.
+
+Rewrite using `[← mul_pow]`. Conclude with `(congrArg (· ^ D.m) hQ').trans (one_pow _)`. Establish `hgen : H.toSubSystem.sub I ^ D.m = Submodule.span (chartRing S x I) (Set.range D.h)`. Rewrite using `[← SubSystem.pow_sub, D.generates I]`. Establish `hunit : ∃ l, ∃ w ∈ Q' ^ D.m, 1 ≤ v (D.h l * w)`.
+
+Assume the negation of the conclusion as `hcon`. Use `push Not at hcon`. Establish `hone : (1 : Ω) ∈ H.toSubSystem.sub I ^ D.m * Q' ^ D.m` using `hPQ ▸ Submodule.mem_one.mpr ⟨1, map_one _⟩`. Rewrite `hone` using `[hgen]`. Establish `: v 1 < 1`.
+
+Use `Submodule.mul_induction_on hone (fun p hp w hw => ?_) (fun a b ha hb => v.map_add_lt ha hb)` and prove the remaining obligations. Proceed by induction on `hp using Submodule.span_induction with`. Consider the case `mem y hy => obtain ⟨l, rfl⟩ := hy`. Conclude with `hcon l w hw`. Consider the case `zero => simp`.
+
+Consider the case `add a b _ _ ha hb => rw [add_mul]`. Conclude with `v.map_add_lt ha hb`. Consider the case `smul c a _ ha`. Rewrite using `[Subalgebra.smul_def, smul_eq_mul, mul_assoc, map_mul]`. Conclude with `lt_of_le_of_lt (mul_le_of_le_one_left' (hVle (hA _ c.2))) ha`.
+
+Simplify using `at this`. Take `⟨l, w, hw, hlw⟩` from `hunit`. Establish `hjw : 1 ≤ v (D.h j * w)`. Establish `hlj : v (D.h l / D.h j) ≤ 1` using `hVle (hV (Algebra.subset_adjoin ⟨l, rfl⟩))`. Establish `: D.h l * w = D.h l / D.h j * (D.h j * w)` using `by field_simp`.
+
+Rewrite `hlw` using `[this, map_mul]`. Conclude with `hlw.trans (mul_le_of_le_one_left' hlj)`. Take `⟨n, hn⟩` from `Set.mem_iInter.mp hf I`. Rewrite `hn` using `[SubSystem.pow_sub, pow_mul]`. Establish `hmem : f * D.h j ^ n * w ^ n ∈ (H.toSubSystem.sub I ^ D.m) ^ n * (Q' ^ D.m) ^ n` using `Submodule.mul_mem_mul hn (Submodule.pow_mem_pow _ hw n)`.
+
+Rewrite `hmem` using `[← mul_pow, hPQ, one_pow]`. Take `⟨y, hy⟩` from `Submodule.mem_one.mp hmem`. Establish `hle : v (f * D.h j ^ n * w ^ n) ≤ 1` using `hVle (hy ▸ hA _ y.2)`. Rewrite `hle` using `[mul_assoc, ← mul_pow, map_mul, map_pow]`. Conclude with `V.mem_of_valuation_le_one _ ((le_mul_of_one_le_right' (one_le_pow_of_one_le' hjw n)).trans hle)`.
+-/
 theorem mem_valuationSubring {H : LineBundle S x} (D : AmpleData S x H) (j : Fin (D.r + 1))
     (hj : D.h j ≠ 0) (hne : (support x).Nonempty) (V : ValuationSubring Ω)
     (hV : (ampleBase (S := S) D.h j : Set Ω) ⊆ V) {f : Ω}
@@ -78,6 +101,15 @@ theorem mem_valuationSubring {H : LineBundle S x} (D : AmpleData S x H) (j : Fin
 
 end AmpleRingIntegral
 
+/- English proof (translation)
+Introduce `S _ N Ω _ _ x H D j hj f hf`. Use `set B := ampleBase (S := S) D.h j`. Break down `(support x).eq_empty_or_nonempty with hne | hne` into its components or cases. Establish `hI : IsEmpty (Chart x)` using `⟨fun I => by`. Take `⟨i, hi⟩` from `I.2.1`.
+
+Use `I.2.2 hi` as an intermediate fact. Rewrite `this` using `[hne]`. Conclude with `absurd this (Finset.notMem_empty i)⟩`. Take `⟨t, ht⟩` from `D.finite j hj`. Establish `htop : Submodule.span B (t : Set Ω) = ⊤` using `eq_top_iff.mpr fun z _ => ht (by simp [ampleRing])`.
+
+Use `IsIntegral.of_mem_of_fg (⊤ : Subalgebra B Ω) ?_ f trivial` and prove the remaining obligations. Rewrite using `[Algebra.top_toSubmodule, ← htop]`. Conclude with `⟨t, rfl⟩`. Establish `key : f ∈ ⨅ V : {V : ValuationSubring Ω // (B : Set Ω) ⊆ V.toSubring}, V.1.toSubring` using `Subring.mem_iInf.mpr fun V => AmpleRingIntegral.mem_valuationSubring D j hj hne V.1 V.2 hf`. Rewrite `key` using `[iInf_valuationSubring_superset]`.
+
+Establish `hcl : Subring.closure (B : Set Ω) = B.toSubring` using `Subring.closure_eq B.toSubring`. Rewrite `key` using `[hcl]`. Conclude with `key`.
+-/
 theorem AmpleRingIntegral.proof : AmpleRingIntegral.Statement := by
   intro S _ N Ω _ _ x H D j hj f hf
   set B := ampleBase (S := S) D.h j

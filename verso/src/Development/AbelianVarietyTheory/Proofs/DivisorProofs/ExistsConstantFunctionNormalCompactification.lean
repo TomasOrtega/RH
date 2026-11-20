@@ -9,6 +9,19 @@ open ReciprocityTheory.ChartRestriction.G.DVR.FlatBC (algX)
 
 namespace GlobalTheory.CptConst
 
+/- English proof (translation)
+Establish `: IsIntegral Z` using `GeometricallyIntegral.isIntegral_of_subsingleton (g ≫ p)`. Establish `hal : ∀ {W : Scheme.{0}} (q : W ⟶ Sp F), algX q ⊤ = ((Scheme.ΓSpecIso (CommRingCat.of F)).inv ≫ q.appTop).hom`. Introduce `W q`. Establish `: q.appLE ⊤ ⊤ le_top = q.appTop` using `q.appLE_eq_app`. Rewrite using `[← this]`.
+
+Both sides reduce to the same expression. Establish `hint : (algX p ⊤).IsIntegral`. Rewrite using `[hal]`. Set `G` to `(Scheme.ΓSpecIso (CommRingCat.of F)).inv ≫ p.appTop`. Establish `: G.hom.IsIntegral`.
+
+Apply `RingHom.isIntegral_respectsIso.2 (e := (Scheme.ΓSpecIso _).symm.commRingCatIsoToRingEquiv)` to reduce the goal to its premises. Conclude with `isIntegral_appTop_of_universallyClosed p`. Conclude with `this`. Establish `hcomp : g.appTop.hom.comp (algX p ⊤) = algX (g ≫ p) ⊤`. Rewrite using `[hal, hal, Scheme.Hom.comp_appTop]`.
+
+Both sides reduce to the same expression. Use `letI := (isField_of_universallyClosed F p).toField`. Set `φ : Γ(X, ⊤) →+* Z.functionField` to `(GlobalTheory.Cartier.fnOf ⊤ trivial).comp g.appTop.hom`. Establish `hφ : φ.comp (algX p ⊤) = GlobalTheory.Cartier.constFn (g ≫ p)`. Rewrite using `[RingHom.comp_assoc, hcomp]`.
+
+Both sides reduce to the same expression. Take `⟨P, hP, hPf⟩` from `hint f`. Take `⟨a, ha⟩` from `GlobalTheory.GeomIntConst.mem_range_constFn F Z (g ≫ p) (φ f) ⟨P, hP.ne_zero, by`. Rewrite using `[← hφ, ← Polynomial.hom_eval₂, hPf, map_zero]⟩`. Use `⟨a, φ.injective ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[← ha, ← hφ]`. Both sides reduce to the same expression.
+-/
 theorem exists_eq_algX {F : Type} [Field F] {X Z : Scheme.{0}} (p : X ⟶ Sp F) [IsIntegral X] [UniversallyClosed p]
     (g : Z ⟶ X) [GeometricallyIntegral (g ≫ p)] (f : Γ(X, ⊤)) : ∃ a : F, f = algX p ⊤ a := by
   have : IsIntegral Z := GeometricallyIntegral.isIntegral_of_subsingleton (g ≫ p)
@@ -40,6 +53,23 @@ theorem exists_eq_algX {F : Type} [Field F] {X Z : Scheme.{0}} (p : X ⟶ Sp F) 
   rw [← ha, ← hφ]
   rfl
 
+/- English proof (translation)
+Introduce `E _ _ _ H D l Xo c O _ β Y U V hn _ hU hV f`. Use `Xo.smooth` as an intermediate fact. Establish `: Smooth Xo.s` using `SmoothOfRelativeDimension.smooth D.dim _`. Establish `: Smooth (toF Xo c)` using `inferInstanceAs (Smooth (pullback.snd _ _))`. Establish `hgi : GeometricallyIntegral (U.ι ≫ toF Xo c)` using `GlobalTheory.geometricallyIntegral_of_smooth _`.
+
+Establish `: IsIntegral U.toScheme` using `GeometricallyIntegral.isIntegral_of_subsingleton (U.ι ≫ toF Xo c)`. Use `GlobalTheory.IsNormalScheme.of_pred hn` as an intermediate fact. Establish `: IsReduced (gen Y)` using `GlobalTheory.IsNormalScheme.isReduced`. Use `isProper_genStr Y` as an intermediate fact. Establish `hUirr : IsIrreducible (U : Set (Xo.XF c))` using `isIrreducible_iff_irreducibleSpace.2 (inferInstanceAs (IrreducibleSpace U.toScheme))`.
+
+Establish `hirr : IsIrreducible (V : Set (gen Y))` using `hV ▸ (hUirr.image _ Y.jQ.continuous.continuousOn).closure`. Establish `: IrreducibleSpace V.toScheme` using `Subtype.irreducibleSpace hirr`. Establish `: IsIntegral V.toScheme` using `isIntegral_of_irreducibleSpace_of_isReduced _`. Establish `: IsClosedImmersion V.ι` using `IsClosedImmersion.of_isPreimmersion _ (by`. Rewrite using `[Scheme.Opens.range_ι, hV]`.
+
+Conclude with `isClosed_closure)`. Establish `hr : Set.range (U.ι ≫ Y.jQ) ⊆ Set.range V.ι`. Introduce and unpack `_ ⟨x, rfl⟩`. Rewrite using `[Scheme.Opens.range_ι, hV]`. Conclude with `subset_closure ⟨x.1, x.2, rfl⟩`.
+
+Set `g : U.toScheme ⟶ V.toScheme` to `IsOpenImmersion.lift V.ι (U.ι ≫ Y.jQ) hr`. Establish `hg : g ≫ V.ι ≫ genStr Y = U.ι ≫ toF Xo c`. Rewrite using `[IsOpenImmersion.lift_fac_assoc, Category.assoc]`. Conclude with `congrArg (U.ι ≫ ·) Y.jQ_over`. Establish `: GeometricallyIntegral (g ≫ V.ι ≫ genStr Y)` using `hg ▸ hgi`.
+
+Establish `hle : (⊤ : V.toScheme.Opens) ≤ V.ι ⁻¹ᵁ V` using `fun x _ => x.2`. Take `⟨a, ha⟩` from `exists_eq_algX (V.ι ≫ genStr Y) g ((V.ι.appLE V ⊤ hle).hom f)`. Use `⟨a, ?_⟩` and prove the remaining obligations. Establish `hiso : IsIso (V.ι.appLE V ⊤ hle)`. Rewrite using `[Scheme.Opens.ι_appLE]`.
+
+Establish `: V.ι ''ᵁ ⊤ = V` using `V.ι_image_top`. Establish `: IsIso (homOfLE (x` using `V.ι ''ᵁ ⊤) (y := V) this.le) := ⟨homOfLE this.ge, rfl, rfl⟩`. Conclude with `Functor.map_isIso _ (homOfLE (x := V.ι ''ᵁ ⊤) (y := V) V.ι_image_top.le).op`. Use `(ConcreteCategory.bijective_of_isIso (V.ι.appLE V ⊤ hle)).1 (ha.trans ?_)` and prove the remaining obligations. Use `Scheme.Hom.appLE_comp_appLE V.ι (genStr Y) ⊤ V ⊤ (fun _ _ => trivial) hle` as an intermediate fact.
+
+Conclude with `(congrArg (fun g => g.hom ((Scheme.ΓSpecIso (CommRingCat.of c.F)).inv.hom a)) this).symm`.
+-/
 theorem exists_eq_constFn_compactOf :
     ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (D : Datum H) (l : Level H) (Xo : Moduli D l) (c : Coeff l) (O : Type) [CommRing O] (β : O →+* c.F) (Y : Model Xo c β) (U : (Xo.XF c).Opens) (V : (gen Y).Opens), ReciprocityTheory.ChartRestriction.G.Geo.Tor.IsNormalScheme (gen Y) → IsClosed (U : Set (Xo.XF c)) → GeometricallyConnected (U.ι ≫ toF Xo c) → (V : Set (gen Y)) = compactOf Y U → ∀ f : Γ(gen Y, V), ∃ a : c.F, f = ReciprocityTheory.ChartRestriction.G.Geo.Tor.constFn (genStr Y) V a := by
   intro E _ _ _ H D l Xo c O _ β Y U V hn _ hU hV f

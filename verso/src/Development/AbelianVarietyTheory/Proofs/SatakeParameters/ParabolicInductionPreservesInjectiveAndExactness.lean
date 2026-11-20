@@ -16,6 +16,27 @@ set_option synthInstance.maxHeartbeats 400000
 
 namespace GlobalTheory.ParIndExact
 
+/- English proof (translation)
+Introduce `k _ _ _ _ α n m _ _ _ _ _ _ e X Y _ _ _ _ ξ η i hi`. Establish `hval : ∀ (φ : IndSp e ξ) (g : GL n k), (parIndMap e i φ).1.1 g = i (φ.1.1 g)` using `fun _ _ => rfl`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Introduce `φ ψ hφψ`. Use `Subtype.ext (Subtype.ext (funext fun g => hi ?_))` and prove the remaining obligations.
+
+Rewrite using `[← hval, ← hval, hφψ]`. Introduce `Z _ _ ζ q hex φ hφ`. Establish `h0 : ∀ g, q (φ.1.1 g) = 0` using `fun g => congrFun (congrArg (fun χ : IndSp e ζ => χ.1.1) hφ) g`. Use `choose x hx using fun g => hex _ (h0 g)`. Establish `hlaw : x ∈ indSpace (parab k e) ((twist ξ (deltaHalf k m)).comp (leviProj k e))`.
+
+Introduce `p g`. Apply `hi` to reduce the goal to its premises. Rewrite using `[hx]`. Establish `h1` using `parInd_law e η φ p g`. Rewrite using `[h1, ← hx g]`.
+
+Use `show _ = i ((deltaHalf k m (leviProj k e p) : ℂ) • ξ (leviProj k e p) (x g))`. Rewrite using `[map_smul, i.isIntertwining]`. Set `x' : indSpace (parab k e) ((twist ξ (deltaHalf k m)).comp (leviProj k e))` to `⟨x, hlaw⟩`. Establish `hset : {g : GL n k | ind (parab k e) ((twist ξ (deltaHalf k m)).comp (leviProj k e)) g x' = x'} = {g : GL n k | ind (parab k e) ((twist η (deltaHalf k m)).comp (leviProj k e)) g φ.1 = φ.1}`. Use extensionality with `g`.
+
+Simplify using `only [Set.mem_setOf_eq]`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Apply `Subtype.ext` to reduce the goal to its premises. Use function extensionality and compare the values at `y`.
+
+Establish `hy` using `congrFun (congrArg Subtype.val h) y`. Express the relevant statement in the definitionally equal form `x (y * g) = x y at hy`. Express the relevant statement in the definitionally equal form `φ.1.1 (y * g) = φ.1.1 y`. Rewrite using `[← hx, ← hx, hy]`. Introduce `h`.
+
+Apply `Subtype.ext` to reduce the goal to its premises. Use function extensionality and compare the values at `y`. Establish `hy` using `congrFun (congrArg Subtype.val h) y`. Express the relevant statement in the definitionally equal form `φ.1.1 (y * g) = φ.1.1 y at hy`. Express the relevant statement in the definitionally equal form `x (y * g) = x y`.
+
+Apply `hi` to reduce the goal to its premises. Rewrite using `[hx, hx, hy]`. Establish `hsm : x' ∈ smoothPart (ind (parab k e) ((twist ξ (deltaHalf k m)).comp (leviProj k e)))`. Establish `ho : IsOpen {g : GL n k | ind (parab k e) ((twist ξ (deltaHalf k m)).comp (leviProj k e)) g x' = x'}`. Rewrite using `[hset]`.
+
+Conclude with `φ.2`. Conclude with `ho`. Use `⟨⟨x', hsm⟩, ?_⟩` and prove the remaining obligations. Use `Subtype.ext (Subtype.ext (funext fun g => ?_))` and prove the remaining obligations. Rewrite using `[hval]`.
+
+Conclude with `hx g`.
+-/
 theorem parInd_exact : ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] (α n : Type) (m : α → Type) [Fintype α] [LinearOrder α] [∀ a, Fintype (m a)] [∀ a, DecidableEq (m a)] [Fintype n] [DecidableEq n] (e : (Σ a, m a) ≃ n) (X Y : Type) [AddCommGroup X] [Module ℂ X] [AddCommGroup Y] [Module ℂ Y] (ξ : Representation ℂ (Levi k m) X) (η : Representation ℂ (Levi k m) Y) (i : ξ.IntertwiningMap η), Function.Injective i → Function.Injective (parIndMap e i) ∧ ∀ (Z : Type) [AddCommGroup Z] [Module ℂ Z] (ζ : Representation ℂ (Levi k m) Z) (q : η.IntertwiningMap ζ), (∀ y, q y = 0 → ∃ x, i x = y) → ∀ φ, parIndMap e q φ = 0 → ∃ ψ, parIndMap e i ψ = φ := by
   intro k _ _ _ _ α n m _ _ _ _ _ _ e X Y _ _ _ _ ξ η i hi
   have hval : ∀ (φ : IndSp e ξ) (g : GL n k), (parIndMap e i φ).1.1 g = i (φ.1.1 g) := fun _ _ => rfl

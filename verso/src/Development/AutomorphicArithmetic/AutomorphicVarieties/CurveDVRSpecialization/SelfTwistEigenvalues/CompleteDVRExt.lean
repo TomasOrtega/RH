@@ -2,6 +2,9 @@ import Mathlib
 import Development.AbelianVarietyTheory.Proofs.FoundationProofs.IsDiscreteValuationRingIntegralClosure
 open Polynomial Matrix
 
+/- English proof (translation)
+Introduce `A K L _ _ _ _ _ _ _ _ _ _ _ _`. Conclude with `⟨GlobalTheory.FormalIsogeny.finite_integralClosure A K L, GlobalTheory.FormalIsogeny.isDiscreteValuationRing_integralClosure A K L⟩`.
+-/
 theorem UpperTheory.V.Pr.T.completeDVRExt :
     ∀ {A K L : Type} [CommRing A] [IsDomain A] [IsDiscreteValuationRing A]
       [IsAdicComplete (IsLocalRing.maximalIdeal A) A] [Field K] [Algebra A K] [IsFractionRing A K] [Field L]

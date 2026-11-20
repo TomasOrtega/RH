@@ -7,6 +7,17 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.WeakShimuraTheory.
 open NumberField IsDedekindDomain Formalism.ConjugateSelfDual Formalism.HC ReciprocityTheory.Gal IsLocalRing UpperTheory.V.Base UpperTheory.V.HV UpperTheory.V.GradeZeroInterpolatingElement UpperTheory.V.Ws UpperTheory.V.Two
 open scoped Classical
 
+/- English proof (translation)
+Introduce `hF hT hE F Ω _ _ _ _ _ l _ R M _ _ _ _ hl A v ρ hA hv hρ`. Take `⟨inst, ρ', hρ'⟩` from `exists_zmod_prime_representation_of_torsion l (Dec (F := F) A) R M hl ρ`. Use `letI : TopologicalSpace M := ⊥`. Use `haveI : DiscreteTopology M := ⟨rfl⟩`. Establish `hc : ReciprocityTheory.Gal.ContAction ρ'`.
+
+Unfold `ReciprocityTheory.Gal.ContAction`. Rewrite using `[continuous_prod_of_discrete_right]`. Introduce `m`. Simplify using `only [hρ']`. Conclude with `(hρ m).continuous`.
+
+Take `⟨f1, h1⟩` from `local_h1_finite_mod_l hF hT hE F Ω l M A v ρ' hA hc`. Take `⟨fz, hz⟩` from `cocycle_card_euler_formula _ _ M ρ' hc f1`. Rewrite `h1` using `[if_pos hv]`. Establish `h0 : 0 < Nat.card (H0 ρ')` using `by haveI : Finite (H0 ρ') := Subtype.finite haveI : Nonempty (H0 ρ') := ⟨0⟩`. Conclude with `Nat.card_pos`.
+
+Establish `hZ : CardLe (Z1 ρ') (Nat.card M ^ (2 + locDeg v))`. Use `⟨fz, Nat.le_of_mul_le_mul_right ?_ h0⟩` and prove the remaining obligations. Rewrite using `[hz]`. Combine the equalities or inequalities in the displayed calculation. Establish `hmem : ∀ z : cocOff ρ ∅, z.1 ∈ Z1 ρ'` using `fun z => (mem_Z1_iff_cocycle ρ' _).2 ⟨z.2.1.continuous, fun g h => by rw [hρ']; exact z.2.2.1 g h⟩`.
+
+Conclude with `hZ.of_injective (fun z => ⟨z.1, hmem z⟩) fun a b h => Subtype.ext (congrArg (fun z : Z1 ρ' => z.1) h)`.
+-/
 theorem UpperTheory.V.Ws.card_localCocycles_le_of_place_above_prime :
     LocalFiniteness → LocalTateDuality → LocalEulerChar → ∀ (F Ω : Type) [Field F] [NumberField F] [Field Ω] [Algebra F Ω] [IsAlgClosure F Ω] (l : ℕ) [Fact l.Prime] (R M : Type) [CommRing R] [AddCommGroup M] [Module R M] [Finite M], (∀ m : M, l • m = 0) → ∀ (A : ValuationSubring Ω) (v : HeightOneSpectrum (𝓞 F)) (ρ : Representation R (Dec (F := F) A) M), IsPlaceOver A v → ((l : ℕ) : 𝓞 F) ∈ v.asIdeal → (∀ m, IsLocallyConstant fun g => ρ g m) → CardLe (cocOff ρ ∅) (Nat.card M ^ (2 + locDeg v)) := by
   intro hF hT hE F Ω _ _ _ _ _ l _ R M _ _ _ _ hl A v ρ hA hv hρ

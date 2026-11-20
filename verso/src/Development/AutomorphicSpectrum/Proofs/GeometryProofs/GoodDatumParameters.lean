@@ -34,12 +34,24 @@ section Laws
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E} {Dw : Datum H}
   {l : Level H} {Xo : Moduli Dw l} {c : Coeff l} {r : ℕ}
 
+/- English proof (translation)
+Take `⟨hL, -⟩` from `GlobalTheory.Reg.evLaws_genFr_atlas E H Dw l Xo c`. Conclude with `⟨GlobalTheory.FlatLine.evR_idem (GlobalTheory.AllWt.liesOn_genFr h Z) (hL.test _ _), fun Z' hZ => GlobalTheory.AllWt.evC_eq_zero h hZ (GlobalTheory.FlatLine.idem_mem_suppOn Z)⟩`.
+-/
 theorem idem_val (h : GenFrEx Xo c) (Z : Comp Xo c) :
     evC h Z (GlobalTheory.FlatLine.idem Z) = 1 ∧ ∀ Z', Z' ≠ Z → evC h Z' (GlobalTheory.FlatLine.idem Z) = 0 := by
   obtain ⟨hL, -⟩ := GlobalTheory.Reg.evLaws_genFr_atlas E H Dw l Xo c
   exact ⟨GlobalTheory.FlatLine.evR_idem (GlobalTheory.AllWt.liesOn_genFr h Z) (hL.test _ _),
     fun Z' hZ => GlobalTheory.AllWt.evC_eq_zero h hZ (GlobalTheory.FlatLine.idem_mem_suppOn Z)⟩
 
+/- English proof (translation)
+Take `⟨h, hgt⟩` from `GlobalTheory.Reg.genFrEx_and_genFromTest E H Dw l Xo c`. Establish `hB` using `GlobalTheory.abelianSchemeLaws_all.1.secBaseChange`. Establish `hTw` using `GlobalTheory.abelianSchemeLaws_all.2.secTwist`. Take `⟨κ, hb, -⟩` from `GlobalTheory.CompBij.exists_bijection (U c.F.val.toRingHom) rfl (hU _ rfl) hF h`. Use `⟨h, GlobalTheory.FlatLine.idem, ?_⟩` and prove the remaining obligations.
+
+Conclude with `{ comps := by`. Rewrite using `[Nat.card_congr (Equiv.ofBijective κ hb), Nat.card_eq_fintype_card]`. Use `ne := (GlobalTheory.Exist.comp_nonempty_finite_genFr_trdeg E H Dw l Xo c hpq).1`. Use `genT := hgt h`. Use `evalWD := GlobalTheory.TransferCompare.evalWD_framed _ _`.
+
+Use `unf := hU`. Use `unTest := hT`. Use `chiTriv := hC`. Use `ptNe := intFrNe_of' (GlobalTheory.T.xoNumPt_of_p_add_q_pos hN' E H Dw l Xo c hpq) GlobalTheory.locFld (GlobalTheory.Exist.intFrExt_of_good GlobalTheory.partI_closed hN hB hTw E H Dw l Xo c hpq hg)`. Use `intAll := GlobalTheory.IntegralFrames.intAll GlobalTheory.partI_closed hN hB hTw E H Dw l Xo c hpq hg`.
+
+Use `e_sec := GlobalTheory.CompRestr.idem_mem_sec`. Use `e_val := idem_val h }`.
+-/
 theorem compLaws_of (hN : N1ab) (hN' : N1c) (U : ∀ σ : c.F →+* ℂ, Unf Xo c σ r)
     (hpq : 1 ≤ Dw.p + Dw.q) (hg : ∀ p : ℕ, p.Prime → l.GoodAt p) (hF : FnAlgClosed Xo c)
     (hU : ∀ σ, GoodEmb c σ → IsUnf (U σ))
@@ -69,6 +81,9 @@ theorem compLaws_of (hN : N1ab) (hN' : N1c) (U : ∀ σ : c.F →+* ℂ, Unf Xo 
 
 end Laws
 
+/- English proof (translation)
+Substitute `h` using the available equality. Both sides reduce to the same expression.
+-/
 theorem lval_congr {n m : ℕ} (h : n = m) (hn : Fact n.Prime) (hm : Fact m.Prime) (zn : NeZero n) (zm : NeZero m) :
     (deriv (DirichletCharacter.LFunction
         (((quadraticChar (ZMod n)).ringHomComp (Int.castRingHom ℂ)) : DirichletCharacter ℂ n)) 1 /
@@ -81,11 +96,23 @@ theorem lval_congr {n m : ℕ} (h : n = m) (hn : Fact n.Prime) (hm : Fact m.Prim
   subst h
   rfl
 
+/- English proof (translation)
+The claim follows from `lval_congr h ⟨Q.H.d_prime⟩ ⟨D.host.hyp.2.1⟩ ⟨Q.H.d_prime.ne_zero⟩ ⟨D.host.hyp.2.1.ne_zero⟩`.
+-/
 theorem hostLval_eq (D : D7) (Q : Par D) (h : Q.H.d = D.host.d) : hostLval Q.H = dlogL D 1 :=
   lval_congr h ⟨Q.H.d_prime⟩ ⟨D.host.hyp.2.1⟩ ⟨Q.H.d_prime.ne_zero⟩ ⟨D.host.hyp.2.1.ne_zero⟩
 
 end VsLaws
 
+/- English proof (translation)
+Introduce `hG D T hT j hj1 hjm Y e o hY`. Take `⟨⟨-, hN, hN', -⟩, -⟩` from `hG`. Establish `hI : InR D j` using `⟨hj1, hjm.le⟩`. Take `⟨hH, hLv, -, hD⟩` from `hT.pins`. Take `⟨hp, hq, -⟩` from `hD j hI`.
+
+Establish `hpq : (T.Q.Dw j).p + (T.Q.Dw j).q = D.R.r`. Rewrite using `[hp, hq]`. Simplify using `only [Ranks.sigW, Ranks.r]`. Use linear arithmetic over natural numbers and integers. Establish `hg0 : ∀ p : ℕ, p.Prime → T.Q.l.GoodAt p` using `goodAt_of_two_primes hLv.1 (D.host.g_prime 0) (D.host.g_prime 1) D.host.g_ne`.
+
+Establish `hg : ∀ p : ℕ, p.Prime → Y.d.l₂.GoodAt p` using `GlobalTheory.LawsDeep.goodAt_of_mul _ _ _ hY.lev.1.2.1 hg0`. Establish `hr1 : 1 ≤ (T.Q.Dw j).p + (T.Q.Dw j).q`. Rewrite using `[hpq]`. Simplify using `only [Ranks.r]`. Use linear arithmetic over natural numbers and integers.
+
+Use `⟨VsLaws.compLaws_of hN hN' Y.U hr1 hg hY.geo hY.unf hY.unTest hY.chiTriv, hg, hq, hpq, ?_, rfl, VsLaws.hostLval_eq D T.Q hH.1⟩` and prove the remaining obligations. Use `SharpLaws.card_psi D T.Q` and compare the differences between its conclusion and the goal.
+-/
 theorem vs_laws : Top.Given → ∀ (D : D7) (T : CoreJ D), LawsJ T → ∀ j : ℕ, 1 ≤ j → j < D.R.m → ∀ (Y : GlobalTheory.CovTop.Deep T.toCore j) (e : ℕ) (o : ℝ), Y.Good e o → (∃ h e', CompLaws Y.U h e') ∧ (∀ p : ℕ, p.Prime → Y.d.l₂.GoodAt p) ∧ (T.Q.Dw j).q = D.R.m - j ∧ (T.Q.Dw j).p + (T.Q.Dw j).q = D.R.r ∧ Fintype.card (CMType T.Q.H) = D.R.f ∧ hostRd D.host.E = D.host.rdE ∧ hostLval T.Q.H = dlogL D 1 := by
   intro hG D T hT j hj1 hjm Y e o hY
   obtain ⟨⟨-, hN, hN', -⟩, -⟩ := hG

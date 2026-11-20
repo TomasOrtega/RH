@@ -19,6 +19,27 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 namespace GlobalTheory.BigOn.Exp
 
+/- English proof (translation)
+Set `L : (Rl.HW j (sg0 D A3.A)).H →ₗ[ℂ] (GA D (Wc D j) → ℂ)` to `{ toFun := fun x => (Rl.HW j (sg0 D A3.A)).e x (v₀ j _) map_add' := fun x y => by rw [map_add]; rfl map_smul' := fun c x => by rw [map_smul]; rfl }`. Establish `hL : LinearMap.ker L = ⊥` using `LinearMap.ker_eq_bot.2 fun x y h => GlobalTheory.LiftScalarCompare.eval_inj hW hv h`. Take `⟨m, bb, -, hKs, hspan, hLL, -⟩` from `hK`. Set `bK : Module.Basis (Fin m) S.Ks ↥(S.A ((j : ℕ) + 1)).WK` to `(Module.Basis.span hKs).map (LinearEquiv.ofEq _ _ hspan)`. Establish `hbK : ∀ k, ((bK k : ↥(S.A ((j : ℕ) + 1)).WK) : S.WL ((j : ℕ) + 1)) = bb k` using `fun k => by`.
+
+Simplify using `[bK, Module.Basis.span_apply]`. Set `φ : Fin m → (GA D (Wc D j) → ℂ)` to `fun k => evW YS v₀ j (bb k)`. Establish `hφ : LinearIndependent ℂ φ`. Establish `h1 : LinearIndependent D.what₂.LL fun k => (YS.fi j).e (bb k)` using `hLL.map' (YS.fi j).e.toLinearMap (YS.fi j).e.ker`. Conclude with `((hU j (sg0 D A3.A)).1 m _ h1).map' L hL`.
+
+Set `B : Module.Basis (Fin m) (NX.KB S i b) (NX.KB S i b ⊗[S.Ks] NX.FmK S ((j : ℕ) + 1))` to `Algebra.TensorProduct.basis (NX.KB S i b) bK`. Establish `hB : ∀ k, B k = ((1 : NX.KB S i b) ⊗ₜ[S.Ks] (bK k : NX.FmK S ((j : ℕ) + 1)))` using `fun k => Algebra.TensorProduct.basis_apply _ _`. Establish `hxe : x = ∑ k, B.equivFun x k ⊗ₜ[S.Ks] (bK k : NX.FmK S ((j : ℕ) + 1))` using `by conv_lhs => rw [← B.sum_equivFun x]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[hB]`.
+
+Express the relevant statement in the definitionally equal form `(B.equivFun x k • (1 : NX.KB S i b)) ⊗ₜ[S.Ks] (bK k : NX.FmK S ((j : ℕ) + 1)) = _`. Rewrite using `[smul_eq_mul, mul_one]`. Use `⟨m, B.equivFun x, fun k => bK k, hxe, ?_⟩` and prove the remaining obligations. Establish `h1 : evK YS v₀ hρ i j b x = ∑ k, ρ.e i b (B.equivFun x k) • φ k` using `by conv_lhs => rw [hxe]`. Use `(map_sum (evK YS v₀ hρ i j b) _ _).trans ?_` and prove the remaining obligations.
+
+Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Conclude with `(evK_tmul YS v₀ hρ i j b _ _).trans (congrArg _ (congrArg (evW YS v₀ j) (hbK k)))`. Set `emb : S.Ks →+* ℂ` to `D.what₂.embLL.comp (algebraMap S.Ks D.what₂.LL)`. Set `c : Fin n → Fin m → S.Ks` to `fun l => bK.equivFun (g l)`. Establish `h2 : ∀ l, evW YS v₀ j (g l).val = ∑ k, emb (c l k) • φ k` using `fun l => by`.
+
+Establish `e : (g l).val = ∑ k, algebraMap S.Ks D.what₂.LL (c l k) • bb k` using `by conv_lhs => rw [← bK.sum_equivFun (g l)]`. Rewrite using `[Submodule.coe_sum]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[Submodule.coe_smul, hbK, algebraMap_smul]`. Rewrite using `[e, map_sum]`.
+
+Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[evW_smul]`. Both sides reduce to the same expression. Establish `h3 : ∑ l, z l • evW YS v₀ j (g l).val = ∑ k, (∑ l, z l * emb (c l k)) • φ k`. Repeatedly rewrite using `[h2, Finset.smul_sum, smul_smul, Finset.sum_smul]`.
+
+Conclude with `Finset.sum_comm`. Establish `h4 : ∀ k, ρ.e i b (B.equivFun x k) = ∑ l, z l * emb (c l k)`. Establish `h5 : ∑ k, (ρ.e i b (B.equivFun x k) - ∑ l, z l * emb (c l k)) • φ k = 0`. Repeatedly rewrite using `[sub_smul, Finset.sum_sub_distrib]`. Rewrite using `[← h1, hx, h3, sub_self]`.
+
+Introduce `k`. Conclude with `sub_eq_zero.1 (Fintype.linearIndependent_iff.1 hφ _ h5 k)`. Introduce `k`. Rewrite using `[h4 k]`. Establish `hemb : ∀ y : S.Ks, IsAlgebraic ℚ (emb y)` using `fun y => (Algebra.IsAlgebraic.isAlgebraic y).algHom emb.toRatAlgHom`.
+
+Establish `hmem : ∀ y : ℂ, y ∈ algebraicClosure ℚ ℂ ↔ IsAlgebraic ℚ y` using `fun y => mem_algebraicClosure_iff`. Use `(hmem _).1 ?_` and prove the remaining obligations. Use `sum_mem fun l _ => mul_mem ?_ ?_` and prove the remaining obligations. Conclude with `(hmem _).2 (hz l)`. Conclude with `(hmem _).2 (hemb _)`.
+-/
 theorem exists_algExp {D : D7} {Γ : Type} [Group Γ] [Fintype Γ] {Pl0 I0 T : Type}
     {A3 : FamIn3 D.what₂.LL Γ Pl0 I0 (List ℕ) T D.R.m} {Ks : Type} [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL]
     {Rl : RealDat3 D A3 Ks} {cG : G0 Rl.Pg D.R.r ≃* G0g D.nd} {S : NX.RatDat D.ntw} (YS : NX.NExpRealS Rl cG S)
@@ -112,6 +133,13 @@ end GlobalTheory.BigOn.Exp
 
 namespace GlobalTheory.BigOn.Exp
 
+/- English proof (translation)
+Unfold `ExpAlg SerAlg AtTw AtPts at *`. Use `hS.imp fun Fm CH _ h => ?_` and prove the remaining obligations. Take `⟨x0, hx0⟩` from `h`. Use `⟨x0, fun x hx hle i p hp hm w hw j ρ hρ ν hpin hN hR0 s h P hd hP f hf => ?_⟩` and prove the remaining obligations. Take `⟨n, z, g, hz, hsum⟩` from `hx0 x hx hle i p hp hm w hw j ρ hρ ν hpin hN hR0 s h P hd hP`.
+
+Take `⟨Z⟩` from `hm.2.2.series`. Establish `hU : p.R.toRealDat.LUnif` using `hp.prim.unif`. Establish `hW : p.R.toRealDat.models_HW` using `p.charW.base.models.HW`. Establish `hK : (p.Sx.A ((j : ℕ) + 1)).IsKsForm` using `GlobalTheory.isKsForm_of_formsIso _ _ (p.nexp.fi j) (p.fw.ks j)`. Use `exists_algExp p.nexp p.v₀ hρ _ j _ hU hW (Z.vec j) hK _ z g hz ?_` and prove the remaining obligations.
+
+Rewrite using `[← hsum, ← hf]`. Conclude with `(smul_inv_smul₀ hN.1 _).symm`.
+-/
 theorem expAlg_of_serAlg (hS : SerAlg) : ExpAlg := by
   unfold ExpAlg SerAlg AtTw AtPts at *
   refine hS.imp fun Fm CH _ h => ?_
@@ -140,9 +168,21 @@ def SerRef : Prop := AtTw fun Fm x hx i p w j => ∀ (ρ : Setup (Fm.D x i).ntw)
         ∃ (n : ℕ) (z : Fin n → ℂ) (g : Fin n → NX.FmK p.Sx ((j : ℕ) + 1)), (∀ k, IsAlgebraic ℚ (z k)) ∧
           ν₀ • ρ.theta ((Fm.ex x hx i).nch.twI w) j ((Fm.ex x hx i).nch.sd w) h P = ∑ k, z k • evW p.nexp p.v₀ j (g k).val
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨Polynomial.X ^ n - Polynomial.C 1, Polynomial.X_pow_sub_C_ne_zero (Nat.pos_of_ne_zero hn) 1, by simp [h]⟩`.
+-/
 theorem isAlgebraic_of_pow_eq_one {ζ : ℂ} {n : ℕ} (hn : n ≠ 0) (h : ζ ^ n = 1) : IsAlgebraic ℚ ζ :=
   ⟨Polynomial.X ^ n - Polynomial.C 1, Polynomial.X_pow_sub_C_ne_zero (Nat.pos_of_ne_zero hn) 1, by simp [h]⟩
 
+/- English proof (translation)
+Unfold `SerAlg SerRef ScaleRoot AtTw AtPts at *`. Use `(Formalism.MainNotions.Closed.and hR hS).imp fun Fm CH _ h => ?_` and prove the remaining obligations. Take `⟨x0, hx0⟩` from `h.1.and h.2`. Use `⟨x0, fun x hx hle i p hp hm w hw j ρ hρ ν hpin hN hR0 s h P hd hP => ?_⟩` and prove the remaining obligations. Take `⟨a1, a2⟩` from `hx0 x hx hle i p hp`.
+
+Take `⟨ν₀, hN₀, hR₀, hexp⟩` from `a1 hm w hw j ρ hρ ν hpin hN hR0`. Take `⟨n, z, g, hz, hsum⟩` from `hexp s h P hd hP`. Distinguish the cases in `hθ : ρ.theta ((Fm.ex x hx i).nch.twI w) j ((Fm.ex x hx i).nch.sd w) h P = 0`. Use `⟨0, Fin.elim0, Fin.elim0, fun k => Fin.elim0 k, ?_⟩` and prove the remaining obligations. Rewrite using `[hθ, smul_zero, Finset.univ_eq_empty, Finset.sum_empty]`.
+
+Take `⟨m, hm0, hpow⟩` from `a2 hm w hw j ρ ρ hρ hρ ν₀ ν hpin hpin ⟨rfl, rfl, rfl, rfl, rfl⟩ hN₀ hN hR₀ hR0 s h P hd hP hθ`. Establish `h0 : ν₀ ≠ 0` using `hN₀.1`. Establish `hζ : (ν / ν₀) ^ m = 1` using `by rw [div_pow, hpow, div_self (pow_ne_zero _ h0)]`. Use `⟨n, fun k => ν / ν₀ * z k, g, fun k => ?_, ?_⟩` and prove the remaining obligations. Establish `hmem : ∀ y : ℂ, y ∈ algebraicClosure ℚ ℂ ↔ IsAlgebraic ℚ y` using `fun y => mem_algebraicClosure_iff`.
+
+Conclude with `(hmem _).1 (mul_mem ((hmem _).2 (isAlgebraic_of_pow_eq_one hm0 hζ)) ((hmem _).2 (hz k)))`. Use `conv_lhs => rw [← div_mul_cancel₀ ν h0]`. Rewrite using `[mul_smul, hsum, Finset.smul_sum]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[smul_smul]`.
+-/
 theorem serAlg_of_ref (hR : SerRef) (hS : ScaleRoot) : SerAlg := by
   unfold SerAlg SerRef ScaleRoot AtTw AtPts at *
   refine (Formalism.MainNotions.Closed.and hR hS).imp fun Fm CH _ h => ?_

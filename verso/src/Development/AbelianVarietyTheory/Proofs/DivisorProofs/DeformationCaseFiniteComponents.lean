@@ -13,6 +13,15 @@ open NumberField IsDedekindDomain Formalism.BasicNotions Formalism.MainNotions F
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 namespace GlobalTheory.DefCore
 
+/- English proof (translation)
+Introduce `D L hT Gi Gl Kc Y0 cX ex Csz p i PP A M _ hm _ hW _ hF`. Establish `hJ : LawsJ p.T` using `p.fw.laws`. Establish `hj : InR D ((i : ℕ) + 1)` using `⟨Nat.succ_pos _, hm.le⟩`. Take `⟨hp, hq, hr⟩` from `hW.sig`. Establish `hk` using `D.R.m_add_three_le_k`.
+
+Establish `hq0 : (p.T.Q.Dw ((i : ℕ) + 1)).q = 0`. Establish `: (dat p i).q = D.R.m - ((i : ℕ) + 1)` using `by rw [hq]; rfl`. Simplify `this` using `[dat, hm]`. Establish `hp1 : 1 ≤ (p.T.Q.Dw ((i : ℕ) + 1)).p`. Establish `: (dat p i).p = D.R.k + ((i : ℕ) + 1) - 1` using `by rw [hp]; rfl`.
+
+Simplify using `only [dat] at this`. Use linear arithmetic over natural numbers and integers. Use `⟨⟨hq0, hp1, ?_, hJ.pins.2.1.2, hF, hJ.unf _ hj, ?_⟩, CompFin.finite_comp _ _, ?_, ?_⟩` and prove the remaining obligations. Conclude with `goodAt_of_two_primes hJ.pins.2.1.1 (D.host.g_prime 0) (D.host.g_prime 1) D.host.g_ne`. Conclude with `(GlobalTheory.LevGeo.laws_core D p.T _ hJ hj).xiAbs`.
+
+Conclude with `(GlobalTheory.GeomIrr.compNe_and_exists_fnAlgClosed _ _ _ _ _ _ (by omega)).1`. Introduce `σ hσ g`. Conclude with `GlobalTheory.IndefiniteRowSideFullHecke.GeneralDiagonalMatrix.dict_mem_dom p.T hJ _ hj σ hσ g`.
+-/
 theorem defCase_core : ∀ {D : D7} {L : SizeData₂ D} {hT : GatTies D} {Gi : Formalism.MainNotions.G.Inst D L} {Gl : Formalism.MainNotions.G.LatInst D} {Kc : Formalism.MainNotions.G.Consts} {Y0 : DivX D} {cX : ExtraC} {ex : Extra D L hT Gi Gl Kc Y0 cX} {Csz : ℝ} (p : PtAt ex Csz) (i : Fin D.R.m) (PP A M : ℝ), RowsT p → (i : ℕ) + 1 = D.R.m → GramAt p i → WtNum p i PP → HostNum D L PP A M → FnAlgClosed (p.T.Q.Xo ((i : ℕ) + 1)) p.T.Q.c → DefCase (p.T.U ((i : ℕ) + 1)) (xiR D) ∧ Finite (Comp (p.T.Q.Xo ((i : ℕ) + 1)) p.T.Q.c) ∧ Nonempty (Comp (p.T.Q.Xo ((i : ℕ) + 1)) p.T.Q.c) ∧ (∀ σ, GoodEmb p.T.Q.c σ → ∀ g, (p.T.dict ((i : ℕ) + 1) σ g).2 ∈ ((p.T.U ((i : ℕ) + 1) σ).X (p.T.dict ((i : ℕ) + 1) σ g).1).dom) := by
   intro D L hT Gi Gl Kc Y0 cX ex Csz p i PP A M _ hm _ hW _ hF
   have hJ : LawsJ p.T := p.fw.laws

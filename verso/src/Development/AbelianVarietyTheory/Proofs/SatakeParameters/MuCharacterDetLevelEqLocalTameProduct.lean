@@ -18,6 +18,11 @@ section General
 
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
 
+/- English proof (translation)
+Take `⟨n, s, hn, hs⟩` from `GlobalTheory.TwU.MuUnr.exists_pow_eq_span P`. Use `⟨s, Ideal.pow_le_self hn.ne' (hs ▸ Ideal.mem_span_singleton_self s), fun h0 => ?_, fun w hw h => ?_⟩` and prove the remaining obligations. Establish `: s = 0` using `by exact_mod_cast h0`. Substitute `this` using the available equality. Rewrite `hs` using `[Ideal.span_singleton_eq_bot.2 rfl]`.
+
+Conclude with `P.ne_bot (pow_eq_zero_iff hn.ne' |>.1 hs)`. Establish `h1 : P.asIdeal ^ n ≤ w.asIdeal` using `by rw [hs, Ideal.span_le, Set.singleton_subset_iff]; exact h`. Conclude with `hw (HeightOneSpectrum.ext (P.isMaximal.eq_of_le w.isPrime.ne_top (w.isPrime.le_of_pow_le h1))).symm`.
+-/
 theorem exists_mem_only (P : HeightOneSpectrum (𝓞 E)) :
     ∃ s : 𝓞 E, s ∈ P.asIdeal ∧ (s : E) ≠ 0 ∧ ∀ Q : HeightOneSpectrum (𝓞 E), Q ≠ P → s ∉ Q.asIdeal := by
   obtain ⟨n, s, hn, hs⟩ := GlobalTheory.TwU.MuUnr.exists_pow_eq_span P
@@ -29,15 +34,38 @@ theorem exists_mem_only (P : HeightOneSpectrum (𝓞 E)) :
   · have h1 : P.asIdeal ^ n ≤ w.asIdeal := by rw [hs, Ideal.span_le, Set.singleton_subset_iff]; exact h
     exact hw (HeightOneSpectrum.ext (P.isMaximal.eq_of_le w.isPrime.ne_top (w.isPrime.le_of_pow_le h1))).symm
 
+/- English proof (translation)
+Express the relevant statement in the definitionally equal form `afIso F E (b ⊗ₜ[F] 1) P = _`. Rewrite using `[afIso_tmul_one]`. Both sides reduce to the same expression.
+-/
 theorem component_tmul_one (P : HeightOneSpectrum (𝓞 E)) (b : E) :
     evP F P (b ⊗ₜ[F] 1) = algebraMap E (P.adicCompletion E) b := by
   change afIso F E (b ⊗ₜ[F] 1) P = _
   rw [afIso_tmul_one]
   rfl
 
+/- English proof (translation)
+The claim follows from `(afIso F E).injective (FiniteAdeleRing.ext _ h)`.
+-/
 theorem ext_evP {a b : AfE F E} (h : ∀ P, evP F P a = evP F P b) : a = b :=
   (afIso F E).injective (FiniteAdeleRing.ext _ h)
 
+/- English proof (translation)
+Take `⟨s, hs, hs0, hsQ⟩` from `exists_mem_only P`. Take `⟨s', hs', e⟩` from `hP s hs`. Use `set ε : AfE F E := (afIso F E).symm (1 - Formalism.UG.P.afsplitI P 1) with hε`. Establish `hεv : ∀ Q, evP F Q ε = 1 - Formalism.UG.P.afsplitI P 1 Q` using `fun Q => by`. Express the relevant statement in the definitionally equal form `afIso F E ε Q = _`.
+
+Rewrite using `[hε, RingEquiv.apply_symm_apply]`. Both sides reduce to the same expression. Establish `h0 : evP F P ε = 0` using `by rw [hεv, Formalism.UG.P.afsplitI_self, sub_self]`. Establish `h1 : ∀ Q, Q ≠ P → evP F Q ε = 1` using `fun Q hQ => by rw [hεv, Formalism.UG.P.afsplitI_ne P Q hQ, sub_zero]`. Establish `hmul : ∀ w : AfE F E, evP F P w = 0 → ε * w = w` using `fun w hw => ext_evP fun Q => by`.
+
+Rewrite using `[map_mul]`. Distinguish the cases in `hQ : Q = P`. Substitute `hQ` using the available equality. Rewrite using `[hw, mul_zero]`. Rewrite using `[h1 Q hQ, one_mul]`.
+
+Establish `hc : ((s : E)⁻¹ ⊗ₜ[F] 1) * ε ∈ RInt F E`. Use `(mem_rInt_iff F E _).2 fun Q => ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `Valued.v (evP F Q (((s : E)⁻¹ ⊗ₜ[F] 1) * ε)) ≤ 1`. Rewrite using `[map_mul, component_tmul_one]`. Distinguish the cases in `hQ : Q = P`.
+
+Substitute `hQ` using the available equality. Rewrite using `[h0, mul_zero, map_zero]`. Conclude with `zero_le'`. Rewrite using `[h1 Q hQ, mul_one, Formalism.UG.P.levelaf_valued_algebraMap, map_inv₀, GlobalTheory.NormOneUnit.val_eq_one (hsQ Q hQ), inv_one]`. Establish `hεs : ε = ((s : E) ⊗ₜ[F] 1) * (((s : E)⁻¹ ⊗ₜ[F] 1) * ε)`.
+
+Rewrite using `[← mul_assoc, Algebra.TensorProduct.tmul_mul_tmul, mul_inv_cancel₀ hs0, one_mul, ← Algebra.TensorProduct.one_def, one_mul]`. Establish `hlt : Valued.v (evP F' P' (φ ε)) < 1`. Rewrite using `[hεs, map_mul, map_mul, map_mul, e, component_tmul_one, Formalism.UG.P.levelaf_valued_algebraMap]`. Conclude with `lt_of_le_of_lt (mul_le_of_le_one_right' ((mem_rInt_iff F' E' _).1 (hφ _ hc) P')) ((HeightOneSpectrum.valuation_lt_one_iff_mem _ _).2 hs')`. Establish `hid : evP F' P' (φ ε) * evP F' P' (φ ε) = evP F' P' (φ ε)`.
+
+Rewrite using `[← map_mul, ← map_mul, hmul ε h0]`. Establish `hz0 : evP F' P' (φ ε) = 0`. Assume the negation of the conclusion as `hne`. Rewrite `hid` using `[mul_eq_left₀ hne]`. Rewrite `hlt` using `[hid, map_one]`.
+
+Conclude with `lt_irrefl _ hlt`. Rewrite using `[← hmul z hz, map_mul, map_mul, hz0, zero_mul]`.
+-/
 theorem component_map_eq_zero {F' E' : Type} [Field F'] [NumberField F'] [Field E'] [NumberField E'] [Algebra F' E']
     (φ : AfE F E →+* AfE F' E') (hφ : ∀ y ∈ RInt F E, φ y ∈ RInt F' E') {P : HeightOneSpectrum (𝓞 E)} {P' : HeightOneSpectrum (𝓞 E')}
     (hP : ∀ b ∈ P.asIdeal, ∃ b' ∈ P'.asIdeal, φ ((b : E) ⊗ₜ[F] 1) = (b' : E') ⊗ₜ[F'] 1) {z : AfE F E} (hz : evP F P z = 0) :
@@ -81,6 +109,13 @@ theorem component_map_eq_zero {F' E' : Type} [Field F'] [NumberField F'] [Field 
     exact lt_irrefl _ hlt
   rw [← hmul z hz, map_mul, map_mul, hz0, zero_mul]
 
+/- English proof (translation)
+Establish `e : Formalism.UG.P.afsplitEps E v * (z - 1) = 0` using `ext_evP fun P => by`. Rewrite using `[map_mul, map_zero]`. Distinguish the cases in `hP : P.under (𝓞 F) = v`. Rewrite using `[map_sub, h P hP, map_one, sub_self, mul_zero]`. Establish `h2` using `afIso_one_tmul (E := E) (P := P) (k := (0 : F)) (a := Formalism.UG.P.afsplitI v 1) (by rw [Formalism.UG.P.afsplitI_ne v _ hP, map_zero])`.
+
+Rewrite `h2` using `[map_zero, map_zero]`. Establish `h3 : evP F P (Formalism.UG.P.afsplitEps E v) = 0`. Rewrite using `[Formalism.UG.P.afsplitEps, show (1 : E ⊗[F] HeightOneSpectrum.adicCompletion F v) = 1 ⊗ₜ[F] 1 from rfl, Formalism.UG.P.afsplitIE_tmul]`. Conclude with `h2`. Rewrite using `[h3, zero_mul]`.
+
+Establish `e2` using `congrArg (Formalism.UG.prV (E := E) v) e`. Rewrite `e2` using `[map_mul, Formalism.UG.P.afsplit_prV_eps, one_mul, map_zero, map_sub, map_one, sub_eq_zero]`. Then use the resulting hypothesis.
+-/
 theorem prV_eq_one {v : HeightOneSpectrum (𝓞 F)} {z : AfE F E}
     (h : ∀ P : HeightOneSpectrum (𝓞 E), P.under (𝓞 F) = v → evP F P z = 1) : Formalism.UG.prV (E := E) v z = 1 := by
   have e : Formalism.UG.P.afsplitEps E v * (z - 1) = 0 := ext_evP fun P => by
@@ -100,6 +135,15 @@ theorem prV_eq_one {v : HeightOneSpectrum (𝓞 F)} {z : AfE F E}
 
 omit [NumberField F] [Algebra F E] [Field F] in
 
+/- English proof (translation)
+Take `⟨r, s, hrs⟩` from `HeightOneSpectrum.exists_primeCompl_mul_eq_of_integer P a ha.le`. Establish `hs : (s : 𝓞 E) ∉ P.asIdeal` using `s.2`. Take `⟨b, hb⟩` from `Ideal.Quotient.mk_surjective (redP P a)`. Establish `h1` using `reduction_spec P hs ((mul_comm _ _).trans hrs)`. Rewrite `h1` using `[← hb, ← map_mul, Ideal.Quotient.eq]`.
+
+Establish `hlt : P.valuation E (a - b) < 1`. Establish `h2 : P.valuation E (((s : 𝓞 E) : E) * (a - b)) < 1`. Establish `e : ((s : 𝓞 E) : E) * (a - b) = -algebraMap (𝓞 E) E ((s : 𝓞 E) * b - r)`. Rewrite using `[map_sub, map_mul, ← hrs]`. Expand and normalize the polynomial expressions, which then agree.
+
+Rewrite using `[e, Valuation.map_neg]`. Conclude with `(HeightOneSpectrum.valuation_lt_one_iff_mem _ _).2 h1`. Rewrite `h2` using `[map_mul, GlobalTheory.NormOneUnit.val_eq_one hs, one_mul]`. Then use the resulting hypothesis. Use `⟨b, fun hm => ?_, hb.symm, hlt⟩` and prove the remaining obligations. Establish `h3` using `Valuation.map_add_lt _ hlt ((HeightOneSpectrum.valuation_lt_one_iff_mem (K := E) P b).2 hm)`.
+
+Rewrite `h3` using `[sub_add_cancel, ha]`. Conclude with `lt_irrefl _ h3`.
+-/
 theorem exists_int_congr {P : HeightOneSpectrum (𝓞 E)} {a : E} (ha : P.valuation E a = 1) :
     ∃ b : 𝓞 E, b ∉ P.asIdeal ∧ redP P a = Ideal.Quotient.mk P.asIdeal b ∧ P.valuation E (a - b) < 1 := by
   obtain ⟨r, s, hrs⟩ := HeightOneSpectrum.exists_primeCompl_mul_eq_of_integer P a ha.le
@@ -120,6 +164,13 @@ theorem exists_int_congr {P : HeightOneSpectrum (𝓞 E)} {a : E} (ha : P.valuat
   rw [sub_add_cancel, ha] at h3
   exact lt_irrefl _ h3
 
+/- English proof (translation)
+Establish `hk' : Valued.v (algebraMap E (P.adicCompletion E) (k : E)) = 1` using `by rw [Formalism.UG.P.levelaf_valued_algebraMap, hk]`. Establish `h1 : Valued.v (x : P.adicCompletion E) = 1`. Rewrite `hx`, the goal using `[← hk']`. Conclude with `Valuation.map_eq_of_sub_lt _ hx`. Establish `h0 : algebraMap E (P.adicCompletion E) (k : E) ≠ 0` using `by simp`.
+
+Express the relevant statement in the definitionally equal form `χ.loc P x = χ.loc P (atFin P k)`. Establish `e : ((x / atFin P k : (P.adicCompletion E)ˣ) : P.adicCompletion E) = x / algebraMap E _ (k : E)` using `Units.val_div_eq_div_val _ _`. Rewrite using `[← div_eq_one, ← map_div]`. Use `h _ ?_ (le_exp_neg_one ?_)` and prove the remaining obligations. Unfold `IsUnitAt`.
+
+Rewrite using `[e, map_div₀, h1, hk', div_one]`. Rewrite using `[e, div_sub_one h0, map_div₀, hk', div_one]`. Conclude with `hx`.
+-/
 theorem loc_eq_locK {χ : HChar E} {P : HeightOneSpectrum (𝓞 E)} (h : χ.TameAt P) {x : (P.adicCompletion E)ˣ} {k : Eˣ}
     (hk : P.valuation E (k : E) = 1) (hx : Valued.v ((x : P.adicCompletion E) - algebraMap E _ (k : E)) < 1) :
     χ.loc P x = χ.locK P k := by
@@ -138,6 +189,11 @@ theorem loc_eq_locK {χ : HChar E} {P : HeightOneSpectrum (𝓞 E)} (h : χ.Tame
   · rw [e, div_sub_one h0, map_div₀, hk', div_one]
     exact hx
 
+/- English proof (translation)
+Establish `hle : RInt F E ≤ (RInt F E).comap (Formalism.UG.sigR σ (FiniteAdeleRing (𝓞 F) F))`. Use `(Subring.closure_le).2 ?_` and prove the remaining obligations. Introduce and unpack `g (⟨⟨e, ⟨b, rfl⟩⟩, rfl⟩ | ⟨c, rfl⟩)`. Use `Subring.subset_closure (Or.inl ⟨⟨σ (algebraMap (𝓞 E) E b), ⟨RingOfIntegers.mapRingHom (σ : E →+* E) b, ?_⟩⟩, ?_⟩)` and prove the remaining obligations. Both sides reduce to the same expression.
+
+Simplify using `[Formalism.UG.sigR]`. Use `Subring.subset_closure (Or.inr ⟨c, ?_⟩)` and prove the remaining obligations. Simplify using `[Formalism.UG.sigR]`. Conclude with `hle hy`.
+-/
 theorem sigR_mem_rInt (σ : E →ₐ[F] E) {y : AfE F E} (hy : y ∈ RInt F E) :
     Formalism.UG.sigR σ (FiniteAdeleRing (𝓞 F) F) y ∈ RInt F E := by
   have hle : RInt F E ≤ (RInt F E).comap (Formalism.UG.sigR σ (FiniteAdeleRing (𝓞 F) F)) := by
@@ -150,6 +206,11 @@ theorem sigR_mem_rInt (σ : E →ₐ[F] E) {y : AfE F E} (hy : y ∈ RInt F E) :
       simp [Formalism.UG.sigR]
   exact hle hy
 
+/- English proof (translation)
+Establish `h : conjId σ (conjId σ k) = k`. Apply `Units.ext` to reduce the goal to its premises. Use `show Formalism.UG.sigR σ (FiniteAdeleRing (𝓞 F) F) (Formalism.UG.sigR σ (FiniteAdeleRing (𝓞 F) F) (k : AfE F E)) = k`. Proceed by induction on `(k : AfE F E) using TensorProduct.induction_on with`. Consider the case `zero => simp`.
+
+Consider the case `tmul e c => simp [Formalism.UG.sigR, hσ]`. Consider the case `add s t hs ht => rw [map_add, map_add, hs, ht]`. Use `show k / conjId σ k * conjId σ (k / conjId σ k) = 1`. Rewrite using `[map_div, h, div_mul_div_cancel, div_self']`.
+-/
 theorem h90_mem_U1_of_involutive (σ : E →ₐ[F] E) (hσ : ∀ a, σ (σ a) = a) (k : (AfE F E)ˣ) : h90 σ k ∈ U1 σ := by
   have h : conjId σ (conjId σ k) = k := by
     apply Units.ext
@@ -161,12 +222,18 @@ theorem h90_mem_U1_of_involutive (σ : E →ₐ[F] E) (hσ : ∀ a, σ (σ a) = 
   show k / conjId σ k * conjId σ (k / conjId σ k) = 1
   rw [map_div, h, div_mul_div_cancel, div_self']
 
+/- English proof (translation)
+Establish `e : a / h90 σ b * b = a * conjId σ b`. Rewrite using `[show h90 σ b = b / conjId σ b from rfl, div_div_eq_mul_div, div_mul_cancel]`. Conclude with `congrArg Units.val e`.
+-/
 theorem div_h90_mul_eq_mul_sigR (σ : E →ₐ[F] E) (a b : (AfE F E)ˣ) :
     ((a / h90 σ b : (AfE F E)ˣ) : AfE F E) * b = a * Formalism.UG.sigR σ (FiniteAdeleRing (𝓞 F) F) b := by
   have e : a / h90 σ b * b = a * conjId σ b := by
     rw [show h90 σ b = b / conjId σ b from rfl, div_div_eq_mul_div, div_mul_cancel]
   exact congrArg Units.val e
 
+/- English proof (translation)
+Establish `e2` using `congrArg (evP F Q) (div_h90_mul_eq_mul_sigR σ a b)`. Rewrite `e2` using `[map_mul, map_mul, key]`. Conclude with `(mul_eq_right₀ (b.isUnit.map (evP F Q)).ne_zero).1 e2`.
+-/
 theorem evP_div_h90_eq_one (σ : E →ₐ[F] E) (a b : (AfE F E)ˣ) (Q : HeightOneSpectrum (𝓞 E))
     (key : evP F Q (a : AfE F E) * evP F Q (Formalism.UG.sigR σ (FiniteAdeleRing (𝓞 F) F) b) = evP F Q (b : AfE F E)) :
     evP F Q ((a / h90 σ b : (AfE F E)ˣ) : AfE F E) = 1 := by
@@ -178,14 +245,25 @@ variable (F) in
 
 def partAf (y : (AfE F E)ˣ) (S : Finset (HeightOneSpectrum (𝓞 E))) : (AfE F E)ˣ := finAf F E (part (toIdl F E y) S)
 
+/- English proof (translation)
+The claim follows from `(GlobalTheory.Mem.ReadTwist.afIso_finAf_apply _ P).trans (ev_part_mem _ h)`.
+-/
 theorem component_mulIndicator_of_mem (y : (AfE F E)ˣ) {S : Finset (HeightOneSpectrum (𝓞 E))} {P : HeightOneSpectrum (𝓞 E)} (h : P ∈ S) :
     evP F P (partAf F y S : AfE F E) = evP F P (y : AfE F E) :=
   (GlobalTheory.Mem.ReadTwist.afIso_finAf_apply _ P).trans (ev_part_mem _ h)
 
+/- English proof (translation)
+The claim follows from `(GlobalTheory.Mem.ReadTwist.afIso_finAf_apply _ P).trans (ev_part_not_mem _ h)`.
+-/
 theorem component_mulIndicator_of_notMem (y : (AfE F E)ˣ) {S : Finset (HeightOneSpectrum (𝓞 E))} {P : HeightOneSpectrum (𝓞 E)} (h : P ∉ S) :
     evP F P (partAf F y S : AfE F E) = 1 :=
   (GlobalTheory.Mem.ReadTwist.afIso_finAf_apply _ P).trans (ev_part_not_mem _ h)
 
+/- English proof (translation)
+Use `(mem_intU_iff _).2 fun P => ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `Valued.v (evP F P (partAf F y S : AfE F E)) = 1`. Distinguish the cases in `h : P ∈ S`. Rewrite using `[component_mulIndicator_of_mem y h]`. Conclude with `(mem_intU_iff _).1 hy P`.
+
+Rewrite using `[component_mulIndicator_of_notMem y h, map_one]`.
+-/
 theorem partAf_mem_intU {y : (AfE F E)ˣ} (hy : y ∈ intU F E) (S : Finset (HeightOneSpectrum (𝓞 E))) : partAf F y S ∈ intU F E := by
   refine (mem_intU_iff _).2 fun P => ?_
   change Valued.v (evP F P (partAf F y S : AfE F E)) = 1
@@ -194,6 +272,9 @@ theorem partAf_mem_intU {y : (AfE F E)ˣ} (hy : y ∈ intU F E) (S : Finset (Hei
     exact (mem_intU_iff _).1 hy P
   · rw [component_mulIndicator_of_notMem y h, map_one]
 
+/- English proof (translation)
+Rewrite using `[part, map_prod, ← Finset.prod_coe_sort]`. Conclude with `Finset.prod_congr rfl fun P _ => loc_eq_locK (h P.1) (hk P) (hx P)`.
+-/
 theorem map_part {χ : HChar E} (h : ∀ P, χ.TameAt P) (y : (AfE F E)ˣ) (S : Finset (HeightOneSpectrum (𝓞 E))) (k : S → Eˣ)
     (hk : ∀ P : S, P.1.valuation E (k P : E) = 1)
     (hx : ∀ P : S, Valued.v (evP F P.1 (y : AfE F E) - algebraMap E _ (k P : E)) < 1) :
@@ -210,16 +291,25 @@ open GlobalTheory.NormOneUnit
 variable {X : Fields} {Pr : Primes X} {R : Ranks} {Ch : Chars X Pr R.m}
   {sel : HeightOneSpectrum (𝓞 X.F) → HeightOneSpectrum (𝓞 X.E)} {S : Set ℕ} (mu : Tup X.F X.E X.K S)
 
+/- English proof (translation)
+Introduce `gi` and use `by refine h.2.2 ?_ rw [(GlobalTheory.Mem.ReadTwist.plc_under_eq_iff (F := X.F) P (hPr.g_prime i)).2 gi] exact hS i`.
+-/
 theorem g_notMem_of_goodPl (hPr : Pr.Ok) (hS : ∀ i, Pr.g i ∈ S) {P : HeightOneSpectrum (𝓞 X.E)}
     (h : GoodPl X.E S (P.under (𝓞 X.F))) (i : Fin 2) : ((Pr.g i : ℕ) : 𝓞 X.E) ∉ P.asIdeal := fun gi => by
   refine h.2.2 ?_
   rw [(GlobalTheory.Mem.ReadTwist.plc_under_eq_iff (F := X.F) P (hPr.g_prime i)).2 gi]
   exact hS i
 
+/- English proof (translation)
+Take `⟨i, hi⟩` from `mem_vGs h`. Conclude with `⟨i, hPr.piG_norm i ▸ P.asIdeal.mul_mem_left _ hi⟩`.
+-/
 theorem g_mem_of_vGs (hPr : Pr.Ok) {P : HeightOneSpectrum (𝓞 X.E)} (h : P ∈ Pr.vGs) : ∃ i, ((Pr.g i : ℕ) : 𝓞 X.E) ∈ P.asIdeal := by
   obtain ⟨i, hi⟩ := mem_vGs h
   exact ⟨i, hPr.piG_norm i ▸ P.asIdeal.mul_mem_left _ hi⟩
 
+/- English proof (translation)
+Introduce `h'` and use `by classical have hn : ∀ (Q : HeightOneSpectrum (𝓞 X.E)) (n : ℕ), (n : 𝓞 X.E) ∈ (conjPrime₂ Q).asIdeal ↔ (n : 𝓞 X.E) ∈ Q.asIdeal := fun Q n => by rw [mem_conjP, map_natCast] rcases Finset.mem_union.1 h with h | h <;> rcases Finset.mem_union.1 h' with h' | h' · exact conjP_notMem_ …`.
+-/
 theorem conjP_notMem_rowSG (hX : X.Ok) (hPr : Pr.Ok) (hsel : IsSel X sel) (hS : ∀ i, Pr.g i ∈ S) {P : HeightOneSpectrum (𝓞 X.E)}
     (h : P ∈ rowSG Pr sel mu) : conjPrime₂ P ∉ rowSG Pr sel mu := fun h' => by
   classical
@@ -233,11 +323,33 @@ theorem conjP_notMem_rowSG (hX : X.Ok) (hPr : Pr.Ok) (hsel : IsSel X sel) (hS : 
     exact g_notMem_of_goodPl hPr hS (mem_QE mu hsel h).2 i ((hn _ _).1 hi)
   · exact conjP_notMem_QE mu hX hsel h h'
 
+/- English proof (translation)
+Rewrite using `[rhoT, rhoS, LocE.unitV, LocE.unitV, dif_pos h, dif_pos h, ← Units.val_mul]`. Apply the tactic sequence `split_ifs <;> simp`.
+-/
 theorem rhoT_mul_rhoS (i : ℕ) (P : rowSG Pr sel mu) {a : X.E} (h : IsUnit (redP P.1 a)) :
     rhoT Ch sel mu i P a * rhoS Ch sel mu i P a = 1 := by
   rw [rhoT, rhoS, LocE.unitV, LocE.unitV, dif_pos h, dif_pos h, ← Units.val_mul]
   split_ifs <;> simp
 
+/- English proof (translation)
+Take `⟨ξ, hξ⟩` from `exists_reads σ₀ (mu : Chr X.F X.E X.K) mu.2.1.1.1.1.1 mu.2.1.1.1.1.2`. Establish `hξt` using `GlobalTheory.Mem.ReadTwist.tameAt hξ fun v => Subgroup.mem_iInf.1 mu.2.1.2 v`. Establish `hyv : ∀ P, Valued.v (evP X.F P (y : AfE X.F X.E)) = 1` using `(mem_intU_iff _).1 hy`. Establish `h1 : ∀ P : rowSG Pr sel mu, Valued.v (evP X.F P.1 (y : AfE X.F X.E) - algebraMap X.E _ (e P)) < 1` using `fun P => by`. Establish `e1 : evP X.F P.1 (y : AfE X.F X.E) * evP X.F P.1 ((y⁻¹ : (AfE X.F X.E)ˣ) : AfE X.F X.E) = 1`.
+
+Rewrite using `[← map_mul, Units.mul_inv, map_one]`. Establish `e2 : evP X.F P.1 (y : AfE X.F X.E) - algebraMap X.E _ (e P) = -(evP X.F P.1 (y : AfE X.F X.E) * (evP X.F P.1 ((y⁻¹ : (AfE X.F X.E)ˣ) : AfE X.F X.E) * algebraMap X.E _ (e P) - 1))`. Take the linear combination `(algebraMap X.E (P.1.adicCompletion X.E) (e P)) * e1`. Rewrite using `[e2, Valuation.map_neg, map_mul, hyv, one_mul]`. Conclude with `he P`.
+
+Establish `h2 : ∀ P : rowSG Pr sel mu, P.1.valuation X.E (e P) = 1` using `fun P => by`. Establish `h3` using `h1 P`. Rewrite using `[← Formalism.UG.P.levelaf_valued_algebraMap, ← hyv P.1]`. Rewrite `h3` using `[← hyv P.1, ← Valuation.map_neg, neg_sub]`. Conclude with `Valuation.map_eq_of_sub_lt _ h3`.
+
+Use `choose b hb hr hv using fun P : rowSG Pr sel mu => exists_int_congr (h2 P)`. Establish `h0 : ∀ P, (b P : X.E) ≠ 0` using `fun P e0 => hb P ((RingOfIntegers.coe_eq_zero_iff.1 e0) ▸ zero_mem _)`. Establish `hun : ∀ P : rowSG Pr sel mu, IsUnit (redP P.1 (e P))` using `fun P => by`. Use `P.1.isMaximal` as an intermediate fact. Take `⟨c, hc⟩` from `Ideal.Quotient.exists_inv (I := P.1.asIdeal) (a := Ideal.Quotient.mk _ (b P)) (fun h => hb P (Ideal.Quotient.eq_zero_iff_mem.1 h))`.
+
+Rewrite using `[hr]`. Conclude with `IsUnit.of_mul_eq_one _ hc`. Use `⟨?_, hun⟩` and prove the remaining obligations. Establish `hk : ∀ P : rowSG Pr sel mu, P.1.valuation X.E ((Units.mk0 _ (h0 P) : X.Eˣ) : X.E) = 1` using `fun P => val_eq_one (hb P)`. Establish `hx : ∀ P : rowSG Pr sel mu, Valued.v (evP X.F P.1 (y : AfE X.F X.E) - algebraMap X.E _ ((Units.mk0 _ (h0 P) : X.Eˣ) : X.E)) < 1` using `fun P => by`.
+
+Establish `h4` using `hv P`. Rewrite `h4` using `[← Formalism.UG.P.levelaf_valued_algebraMap, map_sub]`. Establish `h5` using `Valuation.map_add_lt _ (h1 P) h4`. Rewrite `h5` using `[sub_add_sub_cancel]`. Then use the resulting hypothesis. Rewrite using `[partAf, ← hξ, map_part hμ.tame y _ _ hk hx, map_part hξt y _ _ hk hx, ← Units.val_mul, ← Finset.prod_mul_distrib, Units.coe_prod, map_prod]`.
+
+Use `Finset.prod_congr rfl fun P _ => ?_` and prove the remaining obligations. Rewrite using `[rhoT, LocE.unitV, dif_pos (hun P), Units.val_mul]`. Distinguish the cases in `hP : P.1 ∈ Pr.vGs`. Establish `hu : ξ.UnrAt P.1`. Assume the negation of the conclusion as `hn`.
+
+Take `⟨i, hi⟩` from `g_mem_of_vGs hPr hP`. Use `g_notMem_of_goodPl hPr hS (by_contra fun hg => ?_) i hi` and prove the remaining obligations. Conclude with `(GlobalTheory.Mem.ReadTwist.mem_qprime_iff hξ _).2 ⟨P.1, rfl, hn⟩ (Subgroup.mem_iInf.1 (Subgroup.mem_iInf.1 mu.2.2 _) hg)`. Rewrite using `[if_pos hP, locK_unr hu (hk P), Units.val_one, mul_one, hμ.atg ⟨P.1, hP⟩ _ (b P) (hun P).unit rfl (hr P), chiP, dif_pos hP, chiAt, extChi, dif_pos j.2]`. Both sides reduce to the same expression.
+
+Establish `hQ` using `(Finset.mem_union.1 P.2).resolve_left hP`. Rewrite using `[if_neg hP, locK_unr (hμ.unr P.1 (g_notMem_of_goodPl hPr hS (mem_QE mu hsel hQ).2)) (hk P), Units.val_one, one_mul, resChar_eq hξ hξt P.1 (hun P).unit (b P) (Units.mk0 _ (h0 P)) rfl (hr P).symm]`.
+-/
 theorem value_part (hPr : Pr.Ok) (hsel : IsSel X sel) (hS : ∀ i, Pr.g i ∈ S) {σ₀ : X.K →+* ℂ} {ee : X.Tau → ℚ} {j : Fin R.m}
     {χ : HChar X.E} (hμ : Formalism.L2.Col.IsMu0 Ch σ₀ ee j χ) {y : (AfE X.F X.E)ˣ} (hy : y ∈ intU X.F X.E) (e : rowSG Pr sel mu → X.E)
     (he : ∀ P : rowSG Pr sel mu,
@@ -303,6 +415,9 @@ open Formalism.L2.Forms
 
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
+/- English proof (translation)
+Apply `D.host.φ₀.injective` to reduce the goal to its premises. Use `letI := D.host.isCMField_hostE`. Use `show D.host.φ₀ (IsCMField.complexConj D.host.E x) = _`. Rewrite using `[NumberField.IsCMField.complexEmbedding_complexConj, Formalism.HC.HostAx.conjE_apply]`.
+-/
 theorem star_eq_conj (D : D7) (x : D.host.E) : star x = D.host.conj x := by
   apply D.host.φ₀.injective
   letI := D.host.isCMField_hostE
@@ -311,6 +426,11 @@ theorem star_eq_conj (D : D7) (x : D.host.E) : star x = D.host.conj x := by
 
 variable {D : D7} {X : Fields} (s : Seam D X)
 
+/- English proof (translation)
+Use extensionality with `y`. Take `⟨x, rfl⟩` from `(RingOfIntegers.mapRingEquiv s.iE).surjective y`. Rewrite using `[mem_conjP, mem_seamP, mem_conjP]`. Establish `h : cO D.host.E (RingOfIntegers.mapRingEquiv s.iE x) = RingOfIntegers.mapRingEquiv s.iE (cO X.E x)`. Apply `RingOfIntegers.ext` to reduce the goal to its premises.
+
+Use `show star (s.iE (x : X.E)) = s.iE (star (x : X.E))`. Rewrite using `[hs.2, star_eq_conj]`. Rewrite using `[h, mem_seamP]`.
+-/
 theorem conjP_seamP (hs : s.Ok) (P : HeightOneSpectrum (𝓞 X.E)) : conjPrime₂ (seamP s P) = seamP s (conjPrime₂ P) := by
   ext y
   obtain ⟨x, rfl⟩ := (RingOfIntegers.mapRingEquiv s.iE).surjective y
@@ -321,6 +441,11 @@ theorem conjP_seamP (hs : s.Ok) (P : HeightOneSpectrum (𝓞 X.E)) : conjPrime�
     rw [hs.2, star_eq_conj]
   rw [h, mem_seamP]
 
+/- English proof (translation)
+Establish `hc : ∃ a : D.host.E, star a ≠ a`. Assume the negation of the conclusion as `hn`. Use `push Not at hn`. Establish `hs : Function.Surjective (algebraMap D.host.F D.host.E)` using `fun e => (D.sp.cm.fixed e).1 (hn e)`. Establish `h1 : Module.finrank D.host.F D.host.E = 1` using `(LinearEquiv.finrank_eq (LinearEquiv.ofBijective (Algebra.linearMap D.host.F D.host.E) ⟨(algebraMap D.host.F D.host.E).injective, hs⟩)).symm.trans (Module.finrank_self _)`.
+
+Establish `h2` using `D.sp.cm.deg2`. Use linear arithmetic over natural numbers and integers. Rewrite using `[← conjP_seamP s hs]`. Conclude with `(GlobalTheory.NormOneUnit.under_eq_iff (fun x => (D.sp.cm.fixed _).2 ⟨x, rfl⟩) D.sp.cm.deg2 hc _ Q).1 (hQ.trans (HeightOneSpectrum.ext hv))`.
+-/
 theorem eq_map_or_eq_map_conj_of_liesOver (hs : s.Ok) {P : HeightOneSpectrum (𝓞 X.E)} {v : HeightOneSpectrum (𝓞 D.host.F)} (hv : IsOver v (seamP s P))
     {Q : HeightOneSpectrum (𝓞 D.host.E)} (hQ : Q.under (𝓞 D.host.F) = v) : Q = seamP s P ∨ Q = seamP s (conjPrime₂ P) := by
   have hc : ∃ a : D.host.E, star a ≠ a := by
@@ -341,10 +466,16 @@ variable {s} (ι : AfE X.F X.E ≃+* AfE D.host.F D.host.E) (hrat : ∀ x : X.E,
 
 include hrat hint
 
+/- English proof (translation)
+The claim follows from `component_map_eq_zero ι.toRingHom (fun y hy => (hint y).2 hy) (fun b hb => ⟨RingOfIntegers.mapRingEquiv s.iE b, (mem_seamP s P b).2 hb, hrat b⟩) hz`.
+-/
 theorem component_transport_eq_zero {P : HeightOneSpectrum (𝓞 X.E)} {z : AfE X.F X.E} (hz : evP X.F P z = 0) : evP D.host.F (seamP s P) (ι z) = 0 :=
   component_map_eq_zero ι.toRingHom (fun y hy => (hint y).2 hy)
     (fun b hb => ⟨RingOfIntegers.mapRingEquiv s.iE b, (mem_seamP s P b).2 hb, hrat b⟩) hz
 
+/- English proof (translation)
+Use `component_map_eq_zero ((Formalism.UG.sigR (sigD D) (FiniteAdeleRing (𝓞 D.host.F) D.host.F)).comp ι.toRingHom) (fun y hy => sigR_mem_rInt _ ((hint y).2 hy)) (fun b hb => ⟨RingOfIntegers.mapRingEquiv s.iE (cO X.E b), (mem_seamP s P _).2 ((mem_conjP P b).1 hb), ?_⟩) hz` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `Formalism.UG.sigR (sigD D) (FiniteAdeleRing (𝓞 D.host.F) D.host.F) (ι ((b : X.E) ⊗ₜ[X.F] 1)) = s.iE (star (b : X.E)) ⊗ₜ[D.host.F] 1`. Rewrite using `[hrat, hs.2, ← star_eq_conj]`. Both sides reduce to the same expression.
+-/
 theorem component_transport_conj_eq_zero (hs : s.Ok) {P : HeightOneSpectrum (𝓞 X.E)} {z : AfE X.F X.E} (hz : evP X.F (conjPrime₂ P) z = 0) :
     evP D.host.F (seamP s P) (Formalism.UG.sigR (sigD D) (FiniteAdeleRing (𝓞 D.host.F) D.host.F) (ι z)) = 0 := by
   refine component_map_eq_zero ((Formalism.UG.sigR (sigD D) (FiniteAdeleRing (𝓞 D.host.F) D.host.F)).comp ι.toRingHom)
@@ -355,6 +486,15 @@ theorem component_transport_conj_eq_zero (hs : s.Ok) {P : HeightOneSpectrum (�
   rw [hrat, hs.2, ← star_eq_conj]
   rfl
 
+/- English proof (translation)
+Take `⟨r', hr', hm⟩` from `h`. Take `⟨r, rfl⟩` from `(RingOfIntegers.mapRingEquiv s.iE).surjective r'`. Rewrite `hr'` using `[mem_seamP]`. Use `set q : ℕ := qOf (seamP s P) with hq`. Establish `hqP : (q : 𝓞 X.E) ∈ P.asIdeal`.
+
+Rewrite using `[← mem_seamP s, map_natCast]`. Conclude with `Ideal.absNorm_mem _`. Establish `hq0 : (q : X.E) ≠ 0`. Establish `: q ≠ 0` using `fun h0 => (seamP s P).ne_bot (Ideal.absNorm_eq_zero_iff.1 h0)`. Conclude with `this` after adjusting the coercions.
+
+Establish `e : iA D.host.F D.host.E (algebraMap (𝓞 D.host.E) D.host.E (RingOfIntegers.mapRingEquiv s.iE r)) * (iA D.host.F D.host.E ((q : D.host.E))⁻¹ * ι z) = ι (((r : X.E) ⊗ₜ[X.F] 1) * (((q : X.E)⁻¹ ⊗ₜ[X.F] 1) * z))`. Rewrite using `[map_mul, map_mul, hrat, hrat, map_inv₀ s.iE, map_natCast s.iE]`. Both sides reduce to the same expression. Establish `h1 : Valued.v (evP X.F P (((r : X.E) ⊗ₜ[X.F] 1) * (((q : X.E)⁻¹ ⊗ₜ[X.F] 1) * z))) ≤ 1` using `(mem_rInt_iff _ _ _).1 ((hint _).1 (e ▸ hm)) P`. Rewrite `h1` using `[map_mul, map_mul, map_mul, map_mul, component_tmul_one, component_tmul_one, Formalism.UG.P.levelaf_valued_algebraMap, Formalism.UG.P.levelaf_valued_algebraMap, GlobalTheory.NormOneUnit.val_eq_one hr', one_mul, map_inv₀, inv_mul_le_one₀ (zero_lt_iff.2 (by simpa using hq0))]`.
+
+Use `lt_of_le_of_lt h1 ?_` and prove the remaining obligations. Rewrite using `[← map_natCast (algebraMap (𝓞 X.E) X.E)]`. Conclude with `(HeightOneSpectrum.valuation_lt_one_iff_mem _ _).2 hqP`.
+-/
 theorem valued_lt_of_intAtA {P : HeightOneSpectrum (𝓞 X.E)} {z : AfE X.F X.E}
     (h : IntAtA (F := D.host.F) (seamP s P) (iA D.host.F D.host.E ((qOf (seamP s P) : D.host.E))⁻¹ * ι z)) :
     Valued.v (evP X.F P z) < 1 := by
@@ -382,6 +522,15 @@ theorem valued_lt_of_intAtA {P : HeightOneSpectrum (𝓞 X.E)} {z : AfE X.F X.E}
 
 set_option maxHeartbeats 800000 in
 
+/- English proof (translation)
+Use `prV_eq_one fun Q hQ => ?_` and prove the remaining obligations. Use `set σ := Formalism.UG.sigR (sigD D) (FiniteAdeleRing (𝓞 D.host.F) D.host.F) with hσ`. Use `set x := partAf X.F y S with hx`. Establish `hn : ι y * σ (ι y) = 1` using `congrArg Units.val (show _ * _ = 1 from hy)`. Establish `key : evP D.host.F Q (ι y) * evP D.host.F Q (σ (ι x)) = evP D.host.F Q (ι x)`.
+
+Break down `eq_map_or_eq_map_conj_of_liesOver s hs hv hQ with rfl | rfl` into its components or cases. Establish `a1` using `component_transport_eq_zero ι hrat hint (P := P) (z := x - y) (by rw [map_sub, component_mulIndicator_of_mem y hP, sub_self])`. Establish `a2` using `component_transport_conj_eq_zero ι hrat hint hs (P := P) (z := x - 1) (by rw [map_sub, component_mulIndicator_of_notMem y (hS P hP), map_one, sub_self])`. Rewrite `a1` using `[map_sub, map_sub, sub_eq_zero]`. Rewrite `a2` using `[map_sub, map_sub, map_sub, map_one, map_one, map_one, sub_eq_zero]`.
+
+Rewrite using `[a1, a2, mul_one]`. Establish `a1` using `component_transport_eq_zero ι hrat hint (P := conjPrime₂ P) (z := x - 1) (by rw [map_sub, component_mulIndicator_of_notMem y (hS P hP), map_one, sub_self])`. Establish `a2` using `component_transport_conj_eq_zero ι hrat hint hs (P := conjPrime₂ P) (z := x - y) (by rw [GlobalTheory.MuConj.conjP_involutive, map_sub, component_mulIndicator_of_mem y hP, sub_self])`. Rewrite `a1` using `[map_sub, map_sub, map_one, map_one, sub_eq_zero]`. Rewrite `a2` using `[map_sub, map_sub, map_sub, sub_eq_zero]`.
+
+Rewrite using `[a1, a2, ← map_mul, hn, map_one]`. Conclude with `evP_div_h90_eq_one _ _ _ Q key`.
+-/
 theorem normOne_idele_eq_hilbert90_part_at_primes (hs : s.Ok) {S : Finset (HeightOneSpectrum (𝓞 X.E))} (hS : ∀ P ∈ S, conjPrime₂ P ∉ S) {y : (AfE X.F X.E)ˣ}
     (hy : Units.map ι.toRingHom.toMonoidHom y ∈ U1 (sigD D)) {P : HeightOneSpectrum (𝓞 X.E)} (hP : P ∈ S)
     {v : HeightOneSpectrum (𝓞 D.host.F)} (hv : IsOver v (seamP s P)) :
@@ -413,6 +562,31 @@ end GlobalTheory.LevMuDet
 open GlobalTheory.LevMuDet GlobalTheory.Mem.Col2 GlobalTheory.Mem.ReadEx GlobalTheory.Mem.LocTriv Formalism.L2.Forms in
 set_option maxHeartbeats 1000000 in
 
+/- English proof (translation)
+Introduce `D L hT Gi Gl Kc Y cX ex t u μ St A dtU a hP _ hMu i hi j hj β κ e he`. Use `letI := D.host.cmStar`. Take `⟨h1, ⟨-, h2⟩, -, h4, -⟩` from `hMu i hi`. Use `set d := Matrix.GeneralLinearGroup.det κ.1 with hd`. Establish `hdU : d ∈ U1 (sigD D)`.
+
+Establish `h` using `GlobalTheory.Port.det_norm_one (Formalism.L2.GlobalTheoryTheory.LocalLatticeBases.bwB_gramN_det D j hj) κ.1 ((((St j hj).K β).lev.U_eq κ.1).1 κ.2).1`. Rewrite `h` using `[mul_comm]`. Conclude with `Units.ext h`. Establish `hdI : d ∈ intU D.host.F D.host.E`. Use `⟨GlobalTheory.Port.det_int_of_level _ κ.1 κ.2, ?_⟩` and prove the remaining obligations.
+
+Establish `h` using `GlobalTheory.Port.det_int_of_level _ κ.1⁻¹ (inv_mem κ.2)`. Rewrite `h` using `[← Matrix.GeneralLinearGroup.val_det_apply, map_inv]`. Conclude with `h`. Take `⟨y, hy⟩ : ∃ y : (AfE t.X.F t.X.E)ˣ, Units.map A.iA.toRingHom.toMonoidHom y = d` from `⟨Units.map A.iA.symm.toRingHom.toMonoidHom d, Units.ext (A.iA.apply_symm_apply _)⟩`. Establish `hmap : ∀ z : (AfE t.X.F t.X.E)ˣ, Units.map A.iA.toRingHom.toMonoidHom z ∈ intU D.host.F D.host.E ↔ z ∈ intU t.X.F t.X.E` using `fun z => and_congr (hP.iA_int z) (hP.iA_int ((z⁻¹ : (AfE t.X.F t.X.E)ˣ) : AfE t.X.F t.X.E))`.
+
+Establish `hyI : y ∈ intU t.X.F t.X.E` using `(hmap y).1 (hy ▸ hdI)`. Establish `hS` using `hP.avoid.1`. Take `⟨hval, hun⟩` from `value_part (t.tup μ) t.pr_ok hP.sel hS (hP.mu0 ⟨i, hi⟩) hyI e fun P => by`. Establish `h` using `valued_lt_of_intAtA A.iA hP.iA_rat hP.iA_int (P := P.1) (z := ((y⁻¹ : (AfE t.X.F t.X.E)ˣ) : AfE t.X.F t.X.E) * (e P ⊗ₜ[t.X.F] 1) - 1) (by`. Establish `h3` using `he P`.
+
+Rewrite `h3` using `[← hy]`. Rewrite using `[map_sub, map_mul, map_one, hP.iA_rat]`. Conclude with `h3)`. Rewrite `h` using `[map_sub, map_mul, map_one, component_tmul_one]`. Then use the resulting hypothesis. Use `set x := partAf t.X.F y (SB t μ) with hx`.
+
+Use `set x' := Units.map A.iA.toRingHom.toMonoidHom x with hx'`. Establish `hxI : x' ∈ intU D.host.F D.host.E` using `(hmap x).2 (partAf_mem_intU hyI _)`. Establish `hhU : h90 (sigD D) x' ∈ U1 (sigD D)` using `h90_mem_U1_of_involutive _ (fun b => star_star b) x'`. Establish `hhI : h90 (sigD D) x' ∈ intU D.host.F D.host.E` using `div_mem hxI ⟨sigR_mem_rInt _ hxI.1, sigR_mem_rInt _ hxI.2⟩`. Establish `hw : muOf t u μ dtU (i + 1) (d / h90 (sigD D) x') = 1`.
+
+Use `h4 _ (div_mem hdU hhU) (div_mem hdI hhI) ?_` and prove the remaining obligations. Introduce and unpack `v ⟨P, hPS, hv⟩`. Rewrite `hdU`, the goal using `[← hy]`. Conclude with `normOne_idele_eq_hilbert90_part_at_primes A.iA hP.iA_rat hP.iA_int t.seam_ok (fun Q hQ => conjP_notMem_rowSG (t.tup μ) hP.fields.ok t.pr_ok hP.sel hS hQ) hdU hPS hv`. Establish `hsc` using `GlobalTheory.Port.scalar_mem_U1Af (D := D) (h90 (sigD D) x') (by`.
+
+Rewrite using `[mul_comm]`. Conclude with `congrArg Units.val (show _ * _ = 1 from hhU))`. Establish `hdet : Matrix.GeneralLinearGroup.det (Matrix.GeneralLinearGroup.scalar (Fin 1) (h90 (sigD D) x')) = h90 (sigD D) x'`. Rewrite using `[Matrix.GeneralLinearGroup.det_scalar]`. Simplify using the standard rewrite rules.
+
+Establish `hq : A.q x = dtU ⟨_, hsc⟩` using `hP.q_dt x ⟨_, hsc⟩ hdet`. Establish `hι : IsAdIso (afIso t.X.F t.X.E)` using `⟨afIso_tmul_one _ _, mem_rInt_iff _ _⟩`. Establish `hmu : D.muTil (i + 1) (A.q x) = (t.glob.mu0 ⟨i, hi⟩).1 (part (toIdl t.X.F t.X.E y) (SB t μ))` using `hP.muTil _ hι ⟨i, hi⟩ _ x (fun w => congrFun (part_fst _ _) w) (afIso_finAf _ _ _)`. Establish `hT2 : muOf t u μ dtU (i + 1) d = t.seam.σ₀ (∏ P, rhoT t.Ch t.sel (t.tup μ) i P (e P))`. Establish `e1` using `h2 _ (div_mem hdU hhU) _ hhU`.
+
+Establish `e2` using `h1 ⟨_, hsc⟩`. Rewrite `e1` using `[div_mul_cancel, hw, one_mul]`. Rewrite using `[e1, ← hval, ← hmu]`. Use `(congrArg _ hdet.symm).trans (e2.trans ?_)` and prove the remaining obligations. Rewrite using `[← hq]`.
+
+Distinguish the cases in `hμ : μ = D.what₂.mu0`. Rewrite using `[(hP.ref hμ).2, (hP.ref hμ).1]`. Simplify using the standard rewrite rules. Take `⟨ξ, hξ, hmt⟩` from `hP.tw μ hμ rfl`. Rewrite using `[hmt u, twMt, if_pos ⟨by omega, by omega⟩, MonoidHom.mul_apply, Units.val_mul, hξ x]`.
+
+Both sides reduce to the same expression. Use `⟨?_, hT2⟩` and prove the remaining obligations. Rewrite using `[hT2, ← map_mul, ← Finset.prod_mul_distrib, Finset.prod_eq_one fun P _ => rhoT_mul_rhoS (t.tup μ) i P (hun P), map_one]`.
+-/
 theorem GlobalTheory.LevMuDet.muOf_det_lev : UnderTie (fun {D L hT Gi Gl Kc Y cX ex t u μ St} A dtU a =>
     MuLaw t u μ dtU → ∀ i, i < D.R.m → ∀ j (hj : j ≤ D.R.m) (β : (St j hj).Ch) (κ : ((St j hj).K β).lev.U) (e : SB t μ → t.X.E),
       (∀ P : SB t μ, IntAtA (F := D.host.F) (seamP t.seam P.1)

@@ -10,6 +10,21 @@ noncomputable section
 
 namespace NormLemmaProof
 
+/- English proof (translation)
+Introduce `i₀ hi₀`. Assume the negation of the conclusion as `hb`. Use `set b := a i₀ with hb_def`. Use `set T := (s.image a).erase b`. Use `set Q : Polynomial ℂ := Polynomial.X * ∏ c ∈ T, (Polynomial.X - Polynomial.C c) with hQ_def`.
+
+Establish `hQ : ∀ x, Q.eval x = x * ∏ c ∈ T, (x - c)`. Introduce `x`. Simplify using `[Q, Polynomial.eval_prod]`. Establish `h1 : ∑ i ∈ s, Q.eval (a i) = 0`. Repeatedly rewrite using `[Polynomial.eval_eq_sum_range]`.
+
+Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_eq_zero fun k _ => ?_` and prove the remaining obligations. Rewrite using `[← Finset.mul_sum]`. Break down `Nat.eq_zero_or_pos k with rfl | hk` into its components or cases. Simplify using `[Q]`.
+
+Rewrite using `[h k hk, mul_zero]`. Establish `h2 : ∑ i ∈ s, Q.eval (a i) = ∑ i ∈ s, if a i = b then Q.eval b else 0`. Use `Finset.sum_congr rfl fun i hi => ?_` and prove the remaining obligations. Use `split_ifs with hab`. Rewrite using `[hab]`.
+
+Rewrite using `[hQ]`. Distinguish the cases in `hai : a i = 0`. Simplify using `[hai]`. Establish `hT : a i ∈ T` using `Finset.mem_erase.2 ⟨hab, Finset.mem_image_of_mem a hi⟩`. Rewrite using `[Finset.prod_eq_zero hT (sub_self _), mul_zero]`.
+
+Rewrite `h1` using `[h2, Finset.sum_ite, Finset.sum_const_zero, add_zero, Finset.sum_const, nsmul_eq_mul]`. Establish `hcard : ((s.filter fun i => a i = b).card : ℂ) ≠ 0`. Establish `hm : i₀ ∈ s.filter fun i => a i = b` using `Finset.mem_filter.2 ⟨hi₀, rfl⟩`. Conclude with `(Finset.card_pos.2 ⟨_, hm⟩).ne'` after adjusting the coercions. Establish `hQb : Q.eval b ≠ 0`.
+
+Rewrite using `[hQ]`. Use `mul_ne_zero hb (Finset.prod_ne_zero_iff.2 fun c hc => sub_ne_zero.2 ?_)` and prove the remaining obligations. Conclude with `(Finset.ne_of_mem_erase hc).symm`. Conclude with `mul_ne_zero hcard hQb h1`.
+-/
 theorem eq_zero_of_powerSum_eq_zero {α : Type*} (s : Finset α) (a : α → ℂ)
     (h : ∀ j : ℕ, 1 ≤ j → ∑ i ∈ s, a i ^ j = 0) : ∀ i ∈ s, a i = 0 := by
   classical
@@ -47,6 +62,53 @@ theorem eq_zero_of_powerSum_eq_zero {α : Type*} (s : Finset α) (a : α → ℂ
     exact (Finset.ne_of_mem_erase hc).symm
   exact mul_ne_zero hcard hQb h1
 
+/- English proof (translation)
+Use `set G : Set ℂ := insert 0 F with hG_def`. Establish `hG : G.Finite` using `hF.insert 0`. Use `set h : ℂ → ℂ := fun t => g t / t ^ (d + 1) with h_def`. Establish `hdh : ∀ t ∉ G, DifferentiableAt ℂ h t`. Introduce `t ht`.
+
+Establish `ht0 : t ≠ 0` using `fun e => ht (e ▸ Set.mem_insert 0 F)`. Establish `htF : t ∉ F` using `fun e => ht (Set.mem_insert_of_mem 0 e)`. Conclude with `(hd t htF).div (differentiableAt_pow _) (pow_ne_zero _ ht0)`. Use `set H : ℂ → ℂ := fun t => limUnder (𝓝[≠] t) h with H_def`. Establish `hHh : ∀ t ∉ G, H t = h t` using `fun t ht => ((hdh t ht).continuousAt.tendsto.mono_left nhdsWithin_le_nhds).limUnder_eq`.
+
+Establish `hloc : ∀ c : ℂ, ∃ r > 0, (∀ t ∈ ball c r, t ≠ c → t ∉ G) ∧ BddAbove (norm ∘ h '' (ball c r \ {c}))`. Introduce `c`. Establish `hiso : (G \ {c})ᶜ ∈ 𝓝 c` using `(hG.sdiff).isClosed.compl_mem_nhds (fun e => e.2 rfl)`. Take `⟨r₁, hr₁, hr₁s⟩` from `Metric.mem_nhds_iff.1 hiso`. Establish `hsep : ∀ t ∈ ball c r₁, t ≠ c → t ∉ G` using `fun t ht htc htG => hr₁s ht ⟨htG, htc⟩`.
+
+Distinguish the cases in `hc : c = 0`. Substitute `hc` using the available equality. Take `⟨r₂, hr₂, hr₂s⟩` from `Metric.mem_nhds_iff.1 hB`. Use `⟨min r₁ r₂, lt_min hr₁ hr₂, fun t ht htc => hsep t (ball_subset_ball (min_le_left _ _) ht) htc, ⟨B, ?_⟩⟩` and prove the remaining obligations. Introduce and unpack `_ ⟨t, ⟨ht, htc⟩, rfl⟩`.
+
+Establish `ht0 : t ≠ 0` using `htc`. Establish `hpos : 0 < ‖t‖ ^ (d + 1)` using `pow_pos (norm_pos_iff.2 ht0) _`. Establish `hle : ‖g t‖ ≤ B * ‖t‖ ^ (d + 1)` using `hr₂s (ball_subset_ball (min_le_right _ _) ht)`. Simplify using `only [Function.comp, h_def, norm_div, norm_pow]`. Rewrite using `[div_le_iff₀ hpos]`.
+
+Conclude with `hle`. Establish `hcpos : 0 < ‖c‖` using `norm_pos_iff.2 hc`. Use `⟨min r₁ (‖c‖ / 2), lt_min hr₁ (by linarith), fun t ht htc => hsep t (ball_subset_ball (min_le_left _ _) ht) htc, ⟨|A| * (1 + 2 * ‖c‖) ^ d / (‖c‖ / 2) ^ (d + 1), ?_⟩⟩` and prove the remaining obligations. Introduce and unpack `_ ⟨t, ⟨ht, htc⟩, rfl⟩`. Establish `htG` using `hsep t (ball_subset_ball (min_le_left _ _) ht) htc`.
+
+Establish `htF : t ∉ F` using `fun e => htG (Set.mem_insert_of_mem 0 e)`. Establish `hdist : ‖t - c‖ < ‖c‖ / 2`. Establish `h'` using `ball_subset_ball (min_le_right r₁ (‖c‖ / 2)) ht`. Rewrite `h'` using `[mem_ball, dist_eq_norm]`. Then use the resulting hypothesis. Establish `hlow : ‖c‖ / 2 ≤ ‖t‖`.
+
+Establish `h'` using `norm_sub_norm_le c t`. Rewrite `h'` using `[norm_sub_rev]`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hup : ‖t‖ ≤ 2 * ‖c‖`. Establish `h'` using `norm_sub_norm_le t c`.
+
+Combine the linear equalities and inequalities to obtain the conclusion. Establish `hnum : ‖g t‖ ≤ |A| * (1 + 2 * ‖c‖) ^ d`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [Function.comp, h_def, norm_div, norm_pow]`. Conclude with `div_le_div₀ (by positivity) hnum (by positivity) (pow_le_pow_left₀ (by positivity) hlow _)`.
+
+Establish `hHd : Differentiable ℂ H`. Introduce `c`. Take `⟨r, hr, hsep, hbdd⟩` from `hloc c`. Establish `hdiffOn : DifferentiableOn ℂ h (ball c r \ {c})` using `fun t ht => (hdh t (hsep t ht.1 ht.2)).differentiableWithinAt`. Establish `hupd` using `Complex.differentiableOn_update_limUnder_of_bddAbove (ball_mem_nhds c hr) hdiffOn hbdd`.
+
+Establish `heq : H =ᶠ[𝓝 c] Function.update h c (limUnder (𝓝[≠] c) h)` using `by filter_upwards [ball_mem_nhds c hr] with t ht`. Distinguish the cases in `htc : t = c`. Substitute `htc` using the available equality. Simplify using `[H_def]`. Rewrite using `[Function.update_of_ne htc, hHh t (hsep t ht htc)]`.
+
+Conclude with `(hupd.differentiableAt (ball_mem_nhds c hr)).congr_of_eventuallyEq heq`. Take `⟨R, hR⟩` from `(isBounded_iff_subset_closedBall (0 : ℂ)).1 hG.isBounded`. Establish `hfar : ∀ t : ℂ, max R 1 < ‖t‖ → ‖H t‖ ≤ |A| * 2 ^ d / ‖t‖`. Introduce `t ht`. Establish `htG : t ∉ G` using `fun e => by`.
+
+Establish `h'` using `hR e`. Rewrite `h'` using `[mem_closedBall, dist_zero_right]`. Combine the linear relations using `[le_max_left R 1]`. Establish `htF : t ∉ F` using `fun e => htG (Set.mem_insert_of_mem 0 e)`. Establish `h1 : 1 < ‖t‖` using `lt_of_le_of_lt (le_max_right R 1) ht`.
+
+Establish `htpos : 0 < ‖t‖` using `by linarith`. Rewrite using `[hHh t htG]`. Simplify using `only [h_def, norm_div, norm_pow]`. Rewrite using `[div_le_div_iff₀ (pow_pos htpos _) htpos]`. Combine the equalities or inequalities in the displayed calculation.
+
+Combine the equalities or inequalities in the displayed calculation. Use `_ = |A| * 2 ^ d * ‖t‖ ^ (d + 1) := by ring`. Establish `hbound : Bornology.IsBounded (Set.range H)`. Establish `hK` using `(isCompact_closedBall (0 : ℂ) (max R 1)).image hHd.continuous`. Use `(hK.isBounded.union (isBounded_closedBall (x := (0 : ℂ)) (r := |A| * 2 ^ d))).subset ?_` and prove the remaining obligations.
+
+Introduce and unpack `_ ⟨t, rfl⟩`. Distinguish the cases in `ht : ‖t‖ ≤ max R 1`. Conclude with `Or.inl ⟨t, by simpa using ht, rfl⟩`. Use `push Not at ht`. Use `Or.inr ?_` and prove the remaining obligations.
+
+Rewrite using `[mem_closedBall, dist_zero_right]`. Establish `h1 : 1 ≤ ‖t‖` using `le_trans (le_max_right R 1) ht.le`. Combine the equalities or inequalities in the displayed calculation. Establish `hconst : ∀ t, H t = H 0` using `fun t => hHd.apply_eq_apply_of_bounded hbound t 0`. Establish `hH0 : H 0 = 0`.
+
+Establish `hle : ∀ N : ℕ, max R 1 < N → ‖H 0‖ ≤ |A| * 2 ^ d / N`. Introduce `N hN`. Rewrite using `[← hconst N]`. Establish `h'` using `hfar (N : ℂ) (by rw [Complex.norm_natCast]; exact hN)`. Rewrite `h'` using `[Complex.norm_natCast]`. Then use the resulting hypothesis.
+
+Establish `htend` using `tendsto_const_div_atTop_nhds_zero_nat (|A| * 2 ^ d)`. Establish `hev : ∀ᶠ N : ℕ in atTop, ‖H 0‖ ≤ |A| * 2 ^ d / N`. Take `⟨N₀, hN₀⟩` from `exists_nat_gt (max R 1)`. Use `filter_upwards [eventually_ge_atTop N₀] with N hN`. Conclude with `hle N (lt_of_lt_of_le hN₀ (by exact_mod_cast hN))`.
+
+Conclude with `norm_le_zero_iff.1 (ge_of_tendsto htend hev)`. Introduce `t ht`. Distinguish the cases in `ht0 : t = 0`. Substitute `ht0` using the available equality. Establish `h'` using `hB.self_of_nhds`.
+
+Simplify using `only [norm_zero, zero_pow (Nat.succ_ne_zero d), mul_zero] at h'`. Conclude with `norm_le_zero_iff.1 h'`. Establish `htG : t ∉ G`. Introduce and unpack `(e | e)`. Conclude with `ht0 e`.
+
+Conclude with `ht e`. Establish `h'` using `hHh t htG`. Rewrite `h'` using `[hconst t, hH0]`. Establish `hp : t ^ (d + 1) ≠ 0` using `pow_ne_zero _ ht0`. Establish `h'' : g t / t ^ (d + 1) = 0` using `h'.symm`.
+
+Conclude with `(div_eq_zero_iff.1 h'').resolve_right hp`.
+-/
 theorem eq_zero_of_growth_of_order {g : ℂ → ℂ} {F : Set ℂ} (hF : F.Finite)
     (hd : ∀ t ∉ F, DifferentiableAt ℂ g t) {A B : ℝ} {d : ℕ}
     (hA : ∀ t ∉ F, ‖g t‖ ≤ A * (1 + ‖t‖) ^ d)
@@ -182,12 +244,21 @@ theorem eq_zero_of_growth_of_order {g : ℂ → ℂ} {F : Set ℂ} (hF : F.Finit
   have h'' : g t / t ^ (d + 1) = 0 := h'.symm
   exact (div_eq_zero_iff.1 h'').resolve_right hp
 
+/- English proof (translation)
+The claim follows from `Finset.sum_nonneg fun _ _ => sq_nonneg _`.
+-/
 theorem normSq_nonneg {n : ℕ} (v : Fin n → ℂ) : 0 ≤ normSq v :=
   Finset.sum_nonneg fun _ _ => sq_nonneg _
 
+/- English proof (translation)
+Simplify using `only [normSq, Pi.smul_apply, smul_eq_mul, norm_mul, mul_pow, Finset.mul_sum]`.
+-/
 theorem normSq_smul {n : ℕ} (t : ℂ) (v : Fin n → ℂ) : normSq (t • v) = ‖t‖ ^ 2 * normSq v := by
   simp only [normSq, Pi.smul_apply, smul_eq_mul, norm_mul, mul_pow, Finset.mul_sum]
 
+/- English proof (translation)
+Combine the equalities or inequalities in the displayed calculation. Rewrite using `[← Real.rpow_natCast b 2, ← Real.rpow_mul hb, show ((2 : ℕ) : ℝ) * ((m : ℝ) / 2) = (m : ℝ) by push_cast; ring, Real.rpow_natCast]`.
+-/
 theorem rpow_half_le {a b : ℝ} (ha : 0 ≤ a) (hb : 0 ≤ b) (hab : a ≤ b ^ 2) (m : ℕ) :
     a ^ ((m : ℝ) / 2) ≤ b ^ m := by
   calc a ^ ((m : ℝ) / 2) ≤ (b ^ 2) ^ ((m : ℝ) / 2) := Real.rpow_le_rpow ha hab (by positivity)
@@ -195,6 +266,15 @@ theorem rpow_half_le {a b : ℝ} (ha : 0 ≤ a) (hb : 0 ≤ b) (hab : a ≤ b ^ 
       rw [← Real.rpow_natCast b 2, ← Real.rpow_mul hb,
         show ((2 : ℕ) : ℝ) * ((m : ℝ) / 2) = (m : ℝ) by push_cast; ring, Real.rpow_natCast]
 
+/- English proof (translation)
+Establish `hP : ∀ (p : MvPolynomial (Fin n) ℂ) (t : ℂ), (MvPolynomial.aeval (fun i => Polynomial.C (v i) * Polynomial.X) p).eval t = MvPolynomial.eval (t • v) p`. Introduce `p t`. Proceed by induction on `p using MvPolynomial.induction_on with`. Consider the case `C a => simp`. Consider the case `add p q hp hq => simp [hp, hq]`.
+
+Consider the case `mul_X p i hp`. Rewrite using `[map_mul, Polynomial.eval_mul, hp, MvPolynomial.aeval_X, Polynomial.eval_mul, Polynomial.eval_C, Polynomial.eval_X, map_mul, MvPolynomial.eval_X, Pi.smul_apply, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree. Use `set P : Polynomial ℂ := MvPolynomial.aeval (fun i => Polynomial.C (v i) * Polynomial.X) De`. Establish `hP0 : P ≠ 0`.
+
+Introduce `h`. Apply `h0` to reduce the goal to its premises. Establish `h1` using `hP De 0`. Rewrite `h1` using `[zero_smul]`. Rewrite using `[← h1]`.
+
+Use `show Polynomial.eval 0 P = 0`. Rewrite using `[h, Polynomial.eval_zero]`. Use `(Polynomial.finite_setOfPred_isRoot hP0).subset fun t ht => ?_` and prove the remaining obligations. Simplify using `only [Set.mem_ofPred_eq, Polynomial.IsRoot.def, P, hP]`. Conclude with `ht`.
+-/
 theorem finite_zeros_on_line {n : ℕ} (De : MvPolynomial (Fin n) ℂ)
     (h0 : MvPolynomial.eval 0 De ≠ 0) (v : Fin n → ℂ) :
     {t : ℂ | MvPolynomial.eval (t • v) De = 0}.Finite := by
@@ -226,6 +306,33 @@ section Sheets
 
 variable {MS : Type} [TopologicalSpace MS] {X : Type} [TopologicalSpace X]
 
+/- English proof (translation)
+Use `set f := B.codRestrict z hz with hf`. Take `⟨_, U, hxU, hUo, hfU, H, hH⟩` from `hcov ⟨x₀, hx₀⟩`. Establish `hfib : (f ⁻¹' {⟨x₀, hx₀⟩} : Set MS) = z ⁻¹' {x₀}`. Use extensionality with `q`. Simplify using `[f, Subtype.ext_iff]`.
+
+Establish `: Finite (f ⁻¹' {⟨x₀, hx₀⟩})` using `by rw [hfib]; exact hfin.to_subtype`. Set `τ : (f ⁻¹' {⟨x₀, hx₀⟩}) → B → MS` to `fun i b => if hb : b ∈ U then ((H.symm (⟨b, hb⟩, i)) : MS) else (i : MS)`. Set `σ : (f ⁻¹' {⟨x₀, hx₀⟩}) → X → MS` to `fun i y => if hy : y ∈ B then τ i ⟨y, hy⟩ else (i : MS)`. Establish `hσ : ∀ i (b : B) (hb : b ∈ U), σ i b = ((H.symm (⟨b, hb⟩, i)) : MS)`. Introduce `i b hb`.
+
+Simplify using `only [σ, τ, dif_pos b.2, Subtype.coe_eta, dif_pos hb]`. Establish `hzH : ∀ (b : B) (hb : b ∈ U) i, z ((H.symm (⟨b, hb⟩, i)) : MS) = b`. Introduce `b hb i`. Establish `h1` using `hH (H.symm (⟨b, hb⟩, i))`. Rewrite `h1` using `[H.apply_symm_apply]`.
+
+Establish `h2` using `congrArg Subtype.val h1`. Simplify `h2.symm` using `[f]`. Use `⟨f ⁻¹' {⟨x₀, hx₀⟩}, Fintype.ofFinite _, σ, Subtype.val '' U, hB.isOpenMap_subtype_val U hUo, ⟨⟨x₀, hx₀⟩, hxU, rfl⟩, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `i`. Introduce and unpack `_ ⟨b, hb, rfl⟩`.
+
+Establish `hτ : ContinuousOn (τ i) U`. Rewrite using `[continuousOn_iff_continuous_domRestrict]`. Establish `he : U.domRestrict (τ i) = fun b : U => ((H.symm (b, i)) : MS)`. Use function extensionality and compare the values at `b`. Simplify using `only [Set.domRestrict_apply, τ, dif_pos b.2]`.
+
+Rewrite using `[he]`. Conclude with `continuous_subtype_val.comp (H.symm.continuous.comp (Continuous.prodMk continuous_id continuous_const))`. Establish `hτb : ContinuousAt (τ i) b` using `hτ.continuousAt (hUo.mem_nhds hb)`. Establish `hres : B.domRestrict (σ i) = τ i`. Use function extensionality and compare the values at `b'`.
+
+Simplify using `only [Set.domRestrict_apply, σ, dif_pos b'.2, Subtype.coe_eta]`. Establish `hw : ContinuousWithinAt (σ i) B b`. Rewrite using `[continuousWithinAt_iff_continuousAt_domRestrict _ b.2, hres]`. Conclude with `hτb`. Conclude with `(hw.continuousAt (hB.mem_nhds b.2)).continuousWithinAt`.
+
+Introduce and unpack `_ ⟨b, hb, rfl⟩ i`. Rewrite using `[hσ i b hb]`. Conclude with `hzH b hb i`. Introduce and unpack `_ ⟨b, hb, rfl⟩`. Use `⟨fun i _ => ?_, fun i _ j _ hij => ?_, fun q hq => ?_⟩` and prove the remaining obligations.
+
+Use `show z (σ i b) = b`. Rewrite using `[hσ i b hb]`. Conclude with `hzH b hb i`. Simplify using `only [hσ _ b hb] at hij`. Establish `h1` using `H.symm.injective (Subtype.ext hij)`.
+
+Conclude with `congrArg Prod.snd h1`. Establish `hfq : f q = b` using `Subtype.ext (by simpa [f] using hq)`. Establish `hqU : q ∈ f ⁻¹' U` using `by show f q ∈ U`. Rewrite using `[hfq]`. Conclude with `hb`.
+
+Use `⟨(H ⟨q, hqU⟩).2, trivial, ?_⟩` and prove the remaining obligations. Use `show σ _ b = q`. Rewrite using `[hσ _ b hb]`. Establish `h1 : (H ⟨q, hqU⟩).1 = ⟨b, hb⟩`. Apply `Subtype.ext` to reduce the goal to its premises.
+
+Rewrite using `[hH]`. Conclude with `hfq`. Establish `h2 : H.symm (⟨b, hb⟩, (H ⟨q, hqU⟩).2) = ⟨q, hqU⟩`. Rewrite using `[H.symm_apply_eq]`. Conclude with `Prod.ext h1.symm rfl`.
+
+Rewrite using `[h2]`.
+-/
 theorem exists_sheets {z : MS → X} {B : Set X} (hB : IsOpen B) (hz : ∀ p, z p ∈ B)
     (hcov : IsCoveringMap (B.codRestrict z hz)) {x₀ : X} (hx₀ : x₀ ∈ B)
     (hfin : (z ⁻¹' {x₀}).Finite) :
@@ -304,6 +411,11 @@ section Lines
 
 variable {n : ℕ} {MS : Type} [TopologicalSpace MS]
 
+/- English proof (translation)
+Take `⟨e, hp, hze, han⟩` from `hu (σ x₀)`. Establish `hx₀ : z (σ x₀) = x₀` using `hz.self_of_nhds`. Establish `ht : x₀ ∈ e.target`. Establish `h1` using `e.map_source hp`. Rewrite `h1` using `[← hze _ hp, hx₀]`. Then use the resulting hypothesis.
+
+Establish `hsrc : ∀ᶠ y in 𝓝 x₀, σ y ∈ e.source` using `hc.preimage_mem_nhds (e.open_source.mem_nhds hp)`. Establish `heq : u ∘ σ =ᶠ[𝓝 x₀] u ∘ e.symm` using `by filter_upwards [hsrc, hz] with y h1 h2 show u (σ y) = u (e.symm y)`. Use `congr 1`. Combine the equalities or inequalities in the displayed calculation. Conclude with `(han x₀ ht).differentiableAt.congr_of_eventuallyEq heq`.
+-/
 theorem differentiableAt_comp_section {z : MS → (Fin n → ℂ)} {u : MS → ℂ}
     (hu : HolomorphicAlong z u) {σ : (Fin n → ℂ) → MS} {x₀ : Fin n → ℂ}
     (hc : ContinuousAt σ x₀) (hz : ∀ᶠ y in 𝓝 x₀, z (σ y) = y) :
@@ -322,6 +434,13 @@ theorem differentiableAt_comp_section {z : MS → (Fin n → ℂ)} {u : MS → �
       _ = e.symm y := by rw [← hze _ h1, h2]
   exact (han x₀ ht).differentiableAt.congr_of_eventuallyEq heq
 
+/- English proof (translation)
+Take `⟨hz, hc, hdeg⟩` from `hcov`. Take `⟨ι, _, σ, W, hWo, hxW, hσc, hσz, hσb⟩` from `exists_sheets hB hz hc ht₀ (Set.finite_of_encard_eq_coe (hdeg _ ht₀))`. Establish `hline : Continuous fun t : ℂ => t • v` using `continuous_id.smul continuous_const`. Establish `hev : ∀ᶠ t in 𝓝 t₀, t • v ∈ W` using `hline.continuousAt.preimage_mem_nhds (hWo.mem_nhds hxW)`. Establish `heq : (fun t : ℂ => ∑ᶠ q ∈ z ⁻¹' {t • v}, u q ^ j) =ᶠ[𝓝 t₀] fun t => ∑ i, u (σ i (t • v)) ^ j` using `by filter_upwards [hev] with t ht`.
+
+Establish `h1` using `finsum_mem_eq_of_bijOn (f := fun i => u (σ i (t • v)) ^ j) (g := fun q => u q ^ j) (fun i => σ i (t • v)) (hσb _ ht) (fun i _ => rfl)`. Rewrite using `[← h1, finsum_mem_univ, finsum_eq_sum_of_fintype]`. Use `DifferentiableAt.congr_of_eventuallyEq ?_ heq` and prove the remaining obligations. Use `DifferentiableAt.fun_sum fun i _ => ?_` and prove the remaining obligations. Establish `hs : DifferentiableAt ℂ (u ∘ σ i) (t₀ • v)` using `differentiableAt_comp_section hu ((hσc i).continuousAt (hWo.mem_nhds hxW)) (Filter.mem_of_superset (hWo.mem_nhds hxW) fun y hy => hσz y hy i)`.
+
+Establish `hl : DifferentiableAt ℂ (fun t : ℂ => t • v) t₀` using `differentiableAt_id.smul_const v`. Conclude with `(hs.comp t₀ hl).pow j`.
+-/
 theorem powerSum_differentiableAt {z : MS → (Fin n → ℂ)} {B : Set (Fin n → ℂ)} {δ : ℕ}
     {u : MS → ℂ} (hB : IsOpen B) (hcov : IsCoveringOfDegree z B δ) (hu : HolomorphicAlong z u)
     (v : Fin n → ℂ) (j : ℕ) {t₀ : ℂ} (ht₀ : t₀ • v ∈ B) :
@@ -345,6 +464,17 @@ theorem powerSum_differentiableAt {z : MS → (Fin n → ℂ)} {B : Set (Fin n �
   have hl : DifferentiableAt ℂ (fun t : ℂ => t • v) t₀ := differentiableAt_id.smul_const v
   exact (hs.comp t₀ hl).pow j
 
+/- English proof (translation)
+Take `⟨-, -, hdeg⟩` from `hcov`. Establish `hfin : (z ⁻¹' {t • v}).Finite` using `Set.finite_of_encard_eq_coe (hdeg _ ht)`. Establish `hcard : hfin.toFinset.card = δ`. Establish `h1` using `hfin.encard_eq_coe_toFinset_card`. Rewrite `h1` using `[hdeg _ ht]`.
+
+Conclude with `h1.symm` after adjusting the coercions. Use `set s := Real.sqrt (normSq v) with hs`. Establish `hs0 : 0 ≤ s` using `Real.sqrt_nonneg _`. Establish `hK : normSq v = s ^ 2` using `(Real.sq_sqrt (normSq_nonneg v)).symm`. Use `set b := (1 + s) * (1 + ‖t‖) with hb`.
+
+Establish `hb0 : 0 ≤ b` using `by positivity`. Establish `hterm : ∀ q ∈ hfin.toFinset, ‖u q ^ j‖ ≤ max C 0 ^ j * b ^ (m * j)`. Introduce `q hq`. Rewrite `hq` using `[Set.Finite.mem_toFinset]`. Establish `hzq : z q = t • v` using `hq`.
+
+Rewrite using `[norm_pow, pow_mul, ← mul_pow]`. Use `gcongr`. Combine the equalities or inequalities in the displayed calculation. Apply `rpow_half_le (by linarith [normSq_nonneg (z q)]) hb0` to reduce the goal to its premises. Rewrite using `[hzq, normSq_smul, hK, hb]`.
+
+Establish `hτ` using `norm_nonneg t`. Use polynomial arithmetic with `[mul_nonneg hs0 hτ, mul_nonneg (mul_nonneg hs0 hτ) hs0, mul_nonneg (mul_nonneg hs0 hτ) hτ, sq_nonneg (s + ‖t‖), sq_nonneg (s * ‖t‖)]`. Rewrite using `[finsum_mem_eq_finite_toFinset_sum _ hfin]`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem powerSum_growth {z : MS → (Fin n → ℂ)} {B : Set (Fin n → ℂ)} {δ : ℕ} {u : MS → ℂ}
     {C : ℝ} {m : ℕ} (hcov : IsCoveringOfDegree z B δ)
     (hgrowth : ∀ p, ‖u p‖ ≤ C * (1 + normSq (z p)) ^ ((m : ℝ) / 2)) (v : Fin n → ℂ) (j : ℕ)
@@ -384,6 +514,23 @@ theorem powerSum_growth {z : MS → (Fin n → ℂ)} {B : Set (Fin n → ℂ)} {
     _ ≤ hfin.toFinset.card • (max C 0 ^ j * b ^ (m * j)) := Finset.sum_le_card_nsmul _ _ _ hterm
     _ = _ := by rw [hcard, nsmul_eq_mul, hb, mul_pow]; ring
 
+/- English proof (translation)
+Take `⟨hz, hc, hdeg⟩` from `hcov`. Take `⟨ι, _, σ, W, hWo, hxW, hσc, hσz, hσb⟩` from `exists_sheets hB hz hc h0B (Set.finite_of_encard_eq_coe (hdeg _ h0B))`. Use `choose Ci hCi using fun i => horder (σ i 0) (hσz 0 hxW i)`. Use `set s := Real.sqrt (normSq v) with hs`. Establish `hs0 : 0 ≤ s` using `Real.sqrt_nonneg _`.
+
+Use `⟨∑ i, (max (Ci i) 0 * s ^ (m + 1)) ^ j, ?_⟩` and prove the remaining obligations. Establish `hL : Tendsto (fun t : ℂ => t • v) (𝓝 0) (𝓝 0)`. Establish `hline : Continuous fun t : ℂ => t • v` using `continuous_id.smul continuous_const`. Establish `h1` using `hline.tendsto 0`. Rewrite `h1` using `[zero_smul]`. Then use the resulting hypothesis.
+
+Establish `hW' : ∀ᶠ t in 𝓝 (0 : ℂ), t • v ∈ W` using `hL.eventually (hWo.mem_nhds hxW)`. Establish `hsmall : ∀ᶠ t in 𝓝 (0 : ℂ), ‖t‖ ≤ 1` using `by filter_upwards [Metric.closedBall_mem_nhds (0 : ℂ) one_pos] with t ht`. Simplify using `using ht`. Establish `hsh : ∀ᶠ t in 𝓝 (0 : ℂ), ∀ i, ‖u (σ i (t • v))‖ ≤ Ci i * Real.sqrt (normSq (z (σ i (t • v)) - z (σ i 0))) ^ (m + 1)`. Use `Filter.eventually_all.2 fun i => ?_` and prove the remaining obligations.
+
+Establish `hσ0 : ContinuousAt (σ i) 0` using `(hσc i).continuousAt (hWo.mem_nhds hxW)`. Conclude with `(hσ0.tendsto.comp hL).eventually (hCi i)`. Use `filter_upwards [hW', hsmall, hsh] with t ht ht1 htb`. Establish `h1` using `finsum_mem_eq_of_bijOn (f := fun i => u (σ i (t • v)) ^ j) (g := fun q => u q ^ j) (fun i => σ i (t • v)) (hσb _ ht) (fun i _ => rfl)`. Rewrite using `[← h1, finsum_mem_univ, finsum_eq_sum_of_fintype]`.
+
+Establish `hτ` using `norm_nonneg t`. Establish `hpow : ‖t‖ ^ ((m + 1) * j) ≤ ‖t‖ ^ (m * j + 1)` using `pow_le_pow_of_le_one hτ ht1 (by rw [add_mul, one_mul]; omega)`. Combine the equalities or inequalities in the displayed calculation. Use `Finset.sum_le_sum fun i _ => ?_` and prove the remaining obligations. Rewrite using `[norm_pow, pow_mul, ← mul_pow]`.
+
+Use `gcongr`. Establish `hzi : z (σ i (t • v)) = t • v` using `hσz _ ht i`. Establish `hz0 : z (σ i 0) = 0` using `hσz 0 hxW i`. Establish `hsq : Real.sqrt (normSq (z (σ i (t • v)) - z (σ i 0))) = ‖t‖ * s`. Rewrite using `[hzi, hz0, sub_zero, normSq_smul, Real.sqrt_mul (sq_nonneg _), Real.sqrt_sq hτ]`.
+
+Combine the equalities or inequalities in the displayed calculation. Rewrite using `[hsq]`. Conclude with `mul_le_mul_of_nonneg_right (le_max_left _ _) (by positivity)`. Use `_ = max (Ci i) 0 * s ^ (m + 1) * ‖t‖ ^ (m + 1) := by ring`. Use `_ ≤ ∑ i, (max (Ci i) 0 * s ^ (m + 1)) ^ j * ‖t‖ ^ (m * j + 1) := by`.
+
+Use `Finset.sum_le_sum fun i _ => ?_` and prove the remaining obligations. Conclude with `mul_le_mul_of_nonneg_left hpow (by positivity)`. Use `_ = (∑ i, (max (Ci i) 0 * s ^ (m + 1)) ^ j) * ‖t‖ ^ (m * j + 1) := by`. Rewrite using `[Finset.sum_mul]`.
+-/
 theorem powerSum_order {z : MS → (Fin n → ℂ)} {B : Set (Fin n → ℂ)} {δ : ℕ} {u : MS → ℂ}
     {m : ℕ} (hB : IsOpen B) (hcov : IsCoveringOfDegree z B δ)
     (horder : ∀ p, z p = 0 → OrderGT z u p m) (h0B : (0 : Fin n → ℂ) ∈ B) (v : Fin n → ℂ)
@@ -443,6 +590,15 @@ end NormLemmaProof
 
 open NormLemmaProof in
 
+/- English proof (translation)
+Introduce `n MS _ _ _ _ De z δ u C m hDe hcov hu hgrowth horder`. Establish `hBo : IsOpen (complementOf De)` using `isOpen_ne_fun (MvPolynomial.continuous_eval De) continuous_const`. Establish `h0B : (0 : Fin n → ℂ) ∈ complementOf De` using `hDe`. Use function extensionality and compare the values at `p`. Use `set v := z p with hv`.
+
+Establish `hvB : v ∈ complementOf De` using `hcov.1 p`. Use `set F : Set ℂ := {t | t • v ∉ complementOf De} with hF_def`. Establish `hF : F.Finite` using `(finite_zeros_on_line De hDe v).subset fun t ht => by`. Simplify `ht` using `[hF_def, complementOf]`. Establish `hps : ∀ j, 1 ≤ j → ∑ᶠ q ∈ z ⁻¹' {v}, u q ^ j = 0`.
+
+Introduce `j hj`. Take `⟨K, hK⟩` from `powerSum_order hBo hcov horder h0B v hj`. Establish `h1` using `eq_zero_of_growth_of_order (g := fun t : ℂ => ∑ᶠ q ∈ z ⁻¹' {t • v}, u q ^ j) hF (fun t ht => powerSum_differentiableAt hBo hcov hu v j (by simpa [hF_def] using ht)) (fun t ht => powerSum_growth hcov hgrowth v j t (by simpa [hF_def] using ht)) hK`. Simplify `hvB)` using `using h1 1 (by simpa [hF_def]`. Take `⟨-, -, hdeg⟩` from `hcov`.
+
+Establish `hfinv : (z ⁻¹' {v}).Finite` using `Set.finite_of_encard_eq_coe (hdeg v hvB)`. Establish `h2` using `eq_zero_of_powerSum_eq_zero hfinv.toFinset u fun j hj => by`. Rewrite using `[← finsum_mem_eq_finite_toFinset_sum _ hfinv]`. Conclude with `hps j hj`. Conclude with `h2 p (by simp [hv])`.
+-/
 theorem NormLemma.proof : NormLemma.Statement := by
   intro n MS _ _ _ _ De z δ u C m hDe hcov hu hgrowth horder
   have hBo : IsOpen (complementOf De) :=

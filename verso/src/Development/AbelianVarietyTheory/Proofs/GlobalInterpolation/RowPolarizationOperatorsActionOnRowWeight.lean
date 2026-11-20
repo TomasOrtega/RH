@@ -4,10 +4,16 @@ open MvPolynomial Formalism.GradedWeylDivisibility Formalism.BasicNotions Global
 
 namespace GlobalTheory.Alc
 
+/- English proof (translation)
+Simplify using `[rowE, LinearMap.sum_apply]`.
+-/
 theorem rowE_apply_eq_sum (R : Type) [CommRing R] (r n : ℕ) (a b : Fin r) (f : MvPolynomial (Fin r × Fin n) R) :
     rowE R r n a b f = ∑ s : Fin n, X (a, s) * pderiv (b, s) f := by
   simp [rowE, LinearMap.sum_apply]
 
+/- English proof (translation)
+Rewrite using `[Finsupp.weight_apply, Finsupp.sum_fintype _ _ (by simp)]`. Simplify using `only [Finset.sum_apply, Pi.smul_apply, rowW, Pi.single_apply, smul_eq_mul, mul_ite, mul_one, mul_zero]`. Rewrite using `[Fintype.sum_prod_type, Finset.sum_eq_single a (fun x _ hx => by simp [Ne.symm hx]) (by simp)]`. Simplify using the standard rewrite rules.
+-/
 theorem weight_rowW_eq_sum {r n : ℕ} (d : Fin r × Fin n →₀ ℕ) (a : Fin r) :
     Finsupp.weight (rowW r n) d a = ∑ s : Fin n, d (a, s) := by
   classical
@@ -16,10 +22,16 @@ theorem weight_rowW_eq_sum {r n : ℕ} (d : Fin r × Fin n →₀ ℕ) (a : Fin 
   rw [Fintype.sum_prod_type, Finset.sum_eq_single a (fun x _ hx => by simp [Ne.symm hx]) (by simp)]
   simp
 
+/- English proof (translation)
+Simplify using `[Finsupp.weight_apply, rowW]`.
+-/
 theorem weight_rowW_single {r n : ℕ} (v : Fin r × Fin n) :
     Finsupp.weight (rowW r n) (Finsupp.single v 1) = Pi.single v.1 1 := by
   simp [Finsupp.weight_apply, rowW]
 
+/- English proof (translation)
+Rewrite using `[pderiv_monomial, X, monomial_mul, one_mul]`.
+-/
 theorem X_mul_monomial_pderiv_term {R : Type} [CommRing R] {r n : ℕ} (a b : Fin r) (s : Fin n)
     (d : Fin r × Fin n →₀ ℕ) (c : R) :
     X (a, s) * pderiv (b, s) (monomial d c) =
@@ -30,6 +42,13 @@ end GlobalTheory.Alc
 
 namespace GlobalTheory.Alc
 
+/- English proof (translation)
+Rewrite using `[rowE_apply_eq_sum]`. Establish `hterm : ∀ s : Fin n, X (a, s) * pderiv (a, s) (monomial d c) = monomial d (c * (d (a, s) : R))`. Introduce `s`. Rewrite using `[X_mul_monomial_pderiv_term]`. Distinguish the cases in `h : d (a, s) = 0`.
+
+Simplify using `[h]`. Rewrite using `[add_comm, tsub_add_cancel_of_le (Finsupp.single_le_iff.mpr (Nat.one_le_iff_ne_zero.mpr h))]`. Repeatedly rewrite using `[hterm]`. Rewrite using `[← map_sum, ← Finset.mul_sum, smul_monomial, smul_eq_mul, mul_comm]`. Use `congr 2`.
+
+Rewrite using `[← hd, weight_rowW_eq_sum]`. Use `push_cast`. Both sides reduce to the same expression.
+-/
 theorem rowE_diag_monomial {R : Type} [CommRing R] {r n : ℕ} (a : Fin r) (μ : Fin r → ℕ)
     (d : Fin r × Fin n →₀ ℕ) (c : R) (hd : Finsupp.weight (rowW r n) d = μ) :
     rowE R r n a a (monomial d c) = (μ a : R) • monomial d c := by
@@ -47,6 +66,11 @@ theorem rowE_diag_monomial {R : Type} [CommRing R] {r n : ℕ} (a : Fin r) (μ :
   push_cast
   rfl
 
+/- English proof (translation)
+Rewrite using `[rowE_apply_eq_sum]`. Use `Finset.sum_eq_zero fun s _ => ?_` and prove the remaining obligations. Establish `h0 : d (b, s) = 0`. Establish `h1 : ∑ t : Fin n, d (b, t) = 0` using `by rw [← weight_rowW_eq_sum, hd, hb]`. Conclude with `(Finset.sum_eq_zero_iff.mp h1) s (Finset.mem_univ _)`.
+
+Rewrite using `[X_mul_monomial_pderiv_term, h0]`. Simplify using the standard rewrite rules.
+-/
 theorem rowE_monomial_eq_zero {R : Type} [CommRing R] {r n : ℕ} (a b : Fin r) (μ : Fin r → ℕ)
     (d : Fin r × Fin n →₀ ℕ) (c : R) (hd : Finsupp.weight (rowW r n) d = μ) (hb : μ b = 0) :
     rowE R r n a b (monomial d c) = 0 := by
@@ -58,6 +82,15 @@ theorem rowE_monomial_eq_zero {R : Type} [CommRing R] {r n : ℕ} (a b : Fin r) 
   rw [X_mul_monomial_pderiv_term, h0]
   simp
 
+/- English proof (translation)
+Rewrite using `[rowE_apply_eq_sum]`. Use `IsWeightedHomogeneous.sum _ _ _ fun s _ => ?_` and prove the remaining obligations. Rewrite using `[X_mul_monomial_pderiv_term]`. Distinguish the cases in `h : d (b, s) = 0`. Rewrite using `[h]`.
+
+Simplify using `only [Nat.cast_zero, mul_zero, map_zero]`. Conclude with `isWeightedHomogeneous_zero R _ _`. Use `isWeightedHomogeneous_monomial _ _ _ ?_` and prove the remaining obligations. Establish `hle : Finsupp.single (b, s) 1 ≤ d` using `Finsupp.single_le_iff.mpr (Nat.one_le_iff_ne_zero.mpr h)`. Establish `hsplit : Finsupp.weight (rowW r n) (d - Finsupp.single (b, s) 1) + Pi.single b 1 = μ`.
+
+Rewrite using `[← weight_rowW_single (b, s), ← map_add, tsub_add_cancel_of_le hle, hd]`. Rewrite using `[map_add, weight_rowW_single]`. Apply `add_right_cancel (b := Pi.single b 1)` to reduce the goal to its premises. Rewrite using `[hμ, ← hsplit]`. Simplify using `only`.
+
+Normalize the expressions using the abelian group laws.
+-/
 theorem rowE_monomial_weight {R : Type} [CommRing R] {r n : ℕ} (a b : Fin r) (μ μ' : Fin r → ℕ)
     (d : Fin r × Fin n →₀ ℕ) (c : R) (hd : Finsupp.weight (rowW r n) d = μ)
     (hμ : μ' + Pi.single b 1 = μ + Pi.single a 1) :
@@ -78,6 +111,11 @@ theorem rowE_monomial_weight {R : Type} [CommRing R] {r n : ℕ} (a b : Fin r) (
     simp only
     abel
 
+/- English proof (translation)
+Introduce `R _ r n μ f hf`. Establish `hmon : ∀ d ∈ f.support, Finsupp.weight (rowW r n) d = μ` using `fun d hd => hf (mem_support_iff.mp hd)`. Use `⟨fun a => ?_, fun a b _ => ⟨fun hb => ?_, fun μ' hμ => ?_⟩⟩` and prove the remaining obligations. Use `conv_lhs => rw [f.as_sum] conv_rhs => rw [f.as_sum]`. Rewrite using `[map_sum, Finset.smul_sum]`.
+
+Conclude with `Finset.sum_congr rfl fun d hd => rowE_diag_monomial a μ d _ (hmon d hd)`. Rewrite using `[f.as_sum, map_sum]`. Conclude with `Finset.sum_eq_zero fun d hd => rowE_monomial_eq_zero a b μ d _ (hmon d hd) hb`. Rewrite using `[f.as_sum, map_sum]`. Conclude with `IsWeightedHomogeneous.sum _ _ _ fun d hd => rowE_monomial_weight a b μ μ' d _ (hmon d hd) hμ`.
+-/
 theorem rowE_rowWeight : ∀ (R : Type) [CommRing R] (r n : ℕ) (μ : Fin r → ℕ) (f : MvPolynomial (Fin r × Fin n) R),
     IsWeightedHomogeneous (rowW r n) f μ → (∀ a, rowE R r n a a f = (μ a : R) • f) ∧
       ∀ a b, a ≠ b → (μ b = 0 → rowE R r n a b f = 0) ∧

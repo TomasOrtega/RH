@@ -12,6 +12,9 @@ noncomputable section
 
 namespace GlobalTheory.FinPl.SplitHalfSuppImp
 
+/- English proof (translation)
+Introduce `D k _ _ _ _ q m n x hx`. Conclude with `GlobalTheory.FinPl.SplitHalfSupp.mxAt_of_isHalf_above D k q m n x hx`.
+-/
 theorem mxAt_of_isHalf : ∀ (D : D7) (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] (q : SplitPt D k) {m n : ℕ} (x : Mx D m n), IsHalf (q.e + cA D q.e) x → MxAt (· = q.v) x := by
   intro D k _ _ _ _ q m n x hx
   exact GlobalTheory.FinPl.SplitHalfSupp.mxAt_of_isHalf_above D k q m n x hx

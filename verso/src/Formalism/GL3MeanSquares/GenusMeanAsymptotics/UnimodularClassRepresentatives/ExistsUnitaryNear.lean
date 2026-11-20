@@ -9,6 +9,17 @@ namespace Formalism.HermitianLattices.Ext.L3.HU
 variable {K : Type*} [Field K] [StarRing K] {S : Subring K} {ϖ : K}
 variable {n : Type*} [Fintype n] [DecidableEq n]
 
+/- English proof (translation)
+Take `⟨l, hl⟩` from `exists_node (K := K) hS n`. Take `⟨D1, Z1, hD1, hZ1, hX1⟩` from `exists_newton hS hH hHS hES hHE hk hX hZ hXZ (k + 2 * l)`. Establish `hpk : ϖ ^ (k - e) ∈ S` using `pow_mem hS _`. Establish `hX1S : Ent S (X + ϖ ^ (k - e) • D1)` using `hX.add (hD1.smul hpk)`. Establish `hk1 : e + 1 ≤ k + 2 * l` using `by omega`.
+
+Take `⟨hd1, hd1S⟩` from `det_unit hS hH hHS hES hHE hk1 hX1S hZ1 hX1`. Take `⟨c, hc, hcc, W', hW', hWW⟩` from `hl _ hX1S hd1 hd1S`. Establish `hN : 2 * l + e + 1 ≤ k + 2 * l` using `by omega`. Take `⟨G, D2, hD2, hG, hGe⟩` from `exists_cayley hS hH hHS hES hHE hN hX1S hZ1 hX1 hc hcc hW' hWW`. Establish `hexp : k + 2 * l - 2 * l - e = k - e` using `by omega`.
+
+Rewrite `hGe` using `[hexp]`. Establish `hGS : Ent S G`. Rewrite using `[hGe]`. Conclude with `hX1S.add (hD2.smul hpk)`. Establish `hG0 : Gᴴ * H * G = H + ϖ ^ k • (0 : Matrix n n K)`.
+
+Rewrite using `[smul_zero, add_zero]`. Conclude with `hG`. Take `⟨hd, hdS⟩` from `det_unit hS hH hHS hES hHE hk hGS Ent.zero hG0`. Use `⟨G, G.det⁻¹ • G.adjugate, D1 + D2, hGS, hGS.adjugate.smul hdS, hD1.add hD2, ?_, hG, ?_⟩` and prove the remaining obligations. Rewrite using `[Matrix.mul_smul, Matrix.mul_adjugate, smul_smul, inv_mul_cancel₀ hd, one_smul]`.
+
+Rewrite using `[hGe, smul_add, add_assoc]`.
+-/
 theorem exists_unitary_near [CharZero K] (hS : IsLocUnif S ϖ) {H E : Matrix n n K} (hH : Hᴴ = H)
     (hHS : Ent S H) (hES : Ent S E) {e k : ℕ} (hHE : H * E = ϖ ^ e • (1 : Matrix n n K))
     (hk : e + 1 ≤ k) {X Z : Matrix n n K} (hX : Ent S X) (hZ : Ent S Z)

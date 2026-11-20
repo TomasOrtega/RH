@@ -14,12 +14,18 @@ variable {W : Type*} [AddCommGroup W] [Module E W] {ι : Type*} [Fintype ι] [De
 
 omit [DecidableEq ι] in
 
+/- English proof (translation)
+The claim follows from `(Complex.nonneg_iff.mp (hP.posSemidef.dotProduct_mulVec_nonneg y)).1`.
+-/
 theorem LenSq.re_nonneg {P : Matrix ι ι ℂ} (hP : P.PosDef) (y : ι → ℂ) :
     0 ≤ (star y ⬝ᵥ (P *ᵥ y)).re :=
   (Complex.nonneg_iff.mp (hP.posSemidef.dotProduct_mulVec_nonneg y)).1
 
 omit [NumberField F] [IsTotallyReal F] [IsTotallyComplex E] in
 
+/- English proof (translation)
+Introduce `M y`. Establish `hw : ∀ w, 0 ≤ (star (y w) ⬝ᵥ (M.P w *ᵥ y w)).re` using `fun w => LenSq.re_nonneg (M.posDef w) (y w)`. Use `⟨hw, ?_⟩` and prove the remaining obligations. Unfold `Majorant.len`. Conclude with `Real.sq_sqrt (Finset.sum_nonneg fun w _ => hw w)`.
+-/
 theorem LenSq.proof (h : HermitianForm F E W) (v : Basis ι E W) : LenSq.Statement h v := by
   intro M y
   have hw : ∀ w, 0 ≤ (star (y w) ⬝ᵥ (M.P w *ᵥ y w)).re := fun w =>

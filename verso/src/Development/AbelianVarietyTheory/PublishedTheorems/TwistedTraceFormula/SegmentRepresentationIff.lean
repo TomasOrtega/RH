@@ -19,6 +19,9 @@ def Concl {d : ℕ} (σ : Representation ℂ (GL (Fin d) k) V) (l : ℕ) : Prop 
       S'.toRepresentation.IsIrreducible → S' = S) ∧
     Nonempty ((jac (consecBlocks l d) S.toRepresentation).Equiv (piTensor (segTerm σ l)))
 
+/- English proof (translation)
+Unfold both sides. The equivalence is reflexive.
+-/
 theorem segmentRepresentation_iff : SegmentRepresentation ↔
     ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
       (d l : ℕ), 0 < d → 0 < l → ∀ σ : IrrRep (GL (Fin d) k), IsCuspidal σ.ρ → Concl σ.ρ l := Iff.rfl
@@ -35,6 +38,11 @@ def jacCongr {α n : Type} {m : α → Type} [Fintype α] [LinearOrder α] [∀ 
         obtain ⟨v, rfl⟩ := Submodule.Quotient.mk_surjective _ y
         exact congrArg Submodule.Quotient.mk (φ.apply_symm_apply v)⟩)
 
+/- English proof (translation)
+Take `⟨hi, f, hf, hS⟩` from `h`. Establish `inc : ∀ S : Subrepresentation (multiProd (consecBlocks l d) (segTerm σ l)), ∃ g : S.toRepresentation.IntertwiningMap (multiProd (consecBlocks l d) (segTerm σ l)), Function.Injective g ∧ g.range = S` using `fun S => ⟨⟨S.toSubmodule.subtype, fun _ => rfl⟩, Subtype.val_injective, Subrepresentation.toSubmodule_injective (Submodule.range_subtype _)⟩`. Take `⟨g, hg, hr⟩` from `inc f.range`. Take `⟨φ⟩` from `nonempty_equiv_of_range_eq f hf g hg hr.symm`. Take `⟨ψ⟩` from `hj`.
+
+Use `⟨f.range, isIrreducible_of_equiv φ hi, fun S' hS' => ?_, ⟨(jacCongr _ φ.symm).trans ψ⟩⟩` and prove the remaining obligations. Take `⟨g', hg', hr'⟩` from `inc S'`. Conclude with `hS _ (hr' ▸ isAtom_range hS' g' hg')`.
+-/
 theorem concl_of_isSocle {d l : ℕ} {σ : Representation ℂ (GL (Fin d) k) V}
     {τ : Representation ℂ (GL (Fin (l * d)) k) W}
     (h : IsSocle τ (multiProd (consecBlocks l d) (segTerm σ l)))
@@ -52,6 +60,15 @@ theorem concl_of_isSocle {d l : ℕ} {σ : Representation ℂ (GL (Fin d) k) V}
   obtain ⟨g', hg', hr'⟩ := inc S'
   exact hS _ (hr' ▸ isAtom_range hS' g' hg')
 
+/- English proof (translation)
+Establish `he : consecBlocks 2 1 = (ProjLine.pts : (Σ _ : Fin 2, Fin 1) ≃ Fin (2 * 1))`. Use extensionality with `⟨a, j⟩`. Rewrite using `[consecBlocks_val, ProjLine.pts_apply]`. Use linear arithmetic over natural numbers and integers. Establish `hη : IsSmoothChar (χ * absPow k ((((2 : ℕ) : ℂ) - 1) / 2))` using `hχ.mul (isSmoothChar_absPow _)`.
+
+Take `⟨ψ⟩` from `nonempty_jac_det_equiv (consecBlocks 2 1) χ`. Use `concl_of_isSocle (τ := detRep (Fin (2 * 1)) (χ * absPow k ((((2 : ℕ) : ℂ) - 1) / 2))) ?_ ⟨ψ⟩` and prove the remaining obligations. Take `⟨X, _, _, π, f, ⟨φ⟩, hf, h0, h, -⟩` from `ProjLine.exists_line hη`. Set `a : (ofChar (detLevi (consecBlocks 2 1) (χ * absPow k ((((2 : ℕ) : ℂ) - 1) / 2)))).Equiv (jac (consecBlocks 2 1) (detRep (Fin (2 * 1)) (χ * absPow k ((((2 : ℕ) : ℂ) - 1) / 2))))` to `.mk (Submodule.quotEquivOfEqBot _ (twKer_detRep _ _)).symm fun g => LinearMap.ext fun c => by`. Simplify using `only [LinearMap.comp_apply]`.
+
+Rewrite using `[Model.jac_detRep, ofChar_apply]`. Conclude with `map_smul _ (_ : ℂ) c`. Establish `b` using `parIndEquiv (consecBlocks 2 1) (a.trans ψ)`. Establish `φ' : π.Equiv (parInd (consecBlocks 2 1) (ofChar (detLevi (consecBlocks 2 1) (χ * absPow k ((((2 : ℕ) : ℂ) - 1) / 2)))))`. Rewrite using `[he]`.
+
+Conclude with `φ`. Conclude with `(ProjLine.isSocle_of_le (isIrreducible_ofChar _) f hf h0 h).of_equiv (.refl _) (φ'.trans b)`.
+-/
 theorem concl_two {χ : kˣ →* ℂˣ} (hχ : IsSmoothChar χ) : Concl (detRep (Fin 1) χ) 2 := by
   classical
   have he : consecBlocks 2 1 = (ProjLine.pts : (Σ _ : Fin 2, Fin 1) ≃ Fin (2 * 1)) := by
@@ -74,6 +91,19 @@ theorem concl_two {χ : kˣ →* ℂˣ} (hχ : IsSmoothChar χ) : Concl (detRep 
     rw [he]; exact φ
   exact (ProjLine.isSocle_of_le (isIrreducible_ofChar _) f hf h0 h).of_equiv (.refl _) (φ'.trans b)
 
+/- English proof (translation)
+Substitute `hN` using the available equality. Establish `he' : ∀ a i, e ⟨a, i⟩ = i` using `fun a i => Fin.ext (he a i)`. Take `⟨φ⟩` from `nonempty_equiv_multiProd_one hπ e he'`. Use `⟨isIrreducible_of_equiv φ hi, ⟨(jacCongr e φ.symm).trans ?_⟩⟩` and prove the remaining obligations. Establish `hU : twKer π (unipRad k e) 1 = ⊥`.
+
+Use `Submodule.span_eq_bot.2 ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨u, v, rfl⟩`. Establish `: (u : GL (Fin N) k) = 1`. Use extensionality with `i j`. Use `(mem_unipRad.1 u.2).2 0 i j` as an intermediate fact.
+
+Rewrite `this` using `[he', he']`. Then use the resulting hypothesis. Simplify using `[this]`. Set `L` to `(PiTensorProduct.subsingletonEquiv (R := ℂ) (s := fun _ : Fin 1 => V) 0).symm`. Establish `hL : ∀ v, L v = PiTensorProduct.tprod ℂ fun _ => v` using `fun v => by`. Rewrite using `[LinearEquiv.symm_apply_eq]`.
+
+Simplify using the standard rewrite rules. Use `.mk ((Submodule.quotEquivOfEqBot _ hU).trans L) fun g => Submodule.linearMap_qext _ (LinearMap.ext fun v => ?_)` and prove the remaining obligations. Establish `hd : deltaHalf k (fun _ : Fin 1 => Fin N) g = 1`. Simplify using `[deltaHalf_apply, modExp, Finset.filter_singleton]`. Establish `hg : leviEmb k e g = g 0`.
+
+Use extensionality with `i j`. Use `leviEmb_apply_same k e g 0 i j` as an intermediate fact. Rewrite `this` using `[he', he']`. Then use the resulting hypothesis. Use `show L ((((deltaHalf k (fun _ : Fin 1 => Fin N) g)⁻¹ : ℂˣ) : ℂ) • π (leviEmb k e g) v) = piTensor (fun _ : Fin 1 => π) g (L v)`. Rewrite using `[hd, hg, hL, hL, piTensor_tprod]`.
+
+Use `congr 1`. Use function extensionality and compare the values at `a`. Rewrite using `[Subsingleton.elim a 0]`. Simplify using the standard rewrite rules.
+-/
 theorem single_block {d N : ℕ} (hN : N = d) (e : (Σ _ : Fin 1, Fin d) ≃ Fin N) (he : ∀ a i, (e ⟨a, i⟩ : ℕ) = i)
     {π : Representation ℂ (GL (Fin d) k) V} (hπ : IsSmooth π) (hi : π.IsIrreducible) :
     (multiProd e fun _ : Fin 1 => π).IsIrreducible ∧
@@ -109,6 +139,13 @@ theorem single_block {d N : ℕ} (hN : N = d) (e : (Σ _ : Fin 1, Fin d) ≃ Fin
   rw [Subsingleton.elim a 0]
   simp
 
+/- English proof (translation)
+Establish `h0 : segTerm σ.ρ 1 = fun _ => σ.ρ` using `funext fun a => by`. Establish `: detChar (Fin d) (absPow k (((a : ℕ) : ℂ))) = 1`. Use extensionality with `g`. Simplify using `[Subsingleton.elim a 0]`. Rewrite using `[segTerm, this, twist_one]`.
+
+Take `⟨h1, h2⟩` from `single_block (one_mul d) (consecBlocks 1 d) (fun a i => by rw [consecBlocks_val]; simp) σ.smooth σ.irr`. Use `concl_of_isSocle (τ := multiProd (consecBlocks 1 d) fun _ : Fin 1 => σ.ρ) ?_ ?_` and prove the remaining obligations. Rewrite using `[h0]`. Conclude with `isSocle_self h1`. Rewrite using `[h0]`.
+
+Conclude with `h2`.
+-/
 theorem concl_one {d : ℕ} (σ : IrrRep (GL (Fin d) k)) : Concl σ.ρ 1 := by
   have h0 : segTerm σ.ρ 1 = fun _ => σ.ρ := funext fun a => by
     have : detChar (Fin d) (absPow k (((a : ℕ) : ℂ))) = 1 := by
@@ -120,10 +157,16 @@ theorem concl_one {d : ℕ} (σ : IrrRep (GL (Fin d) k)) : Concl σ.ρ 1 := by
   · rw [h0]; exact isSocle_self h1
   · rw [h0]; exact h2
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨isCuspidal_detRep_one hχ, concl_two hχ⟩`.
+-/
 example {χ : kˣ →* ℂˣ} (hχ : IsSmoothChar χ) :
     IsCuspidal (IrrRep.det (Fin 1) χ hχ).ρ ∧ Concl (IrrRep.det (Fin 1) χ hχ).ρ 2 :=
   ⟨isCuspidal_detRep_one hχ, concl_two hχ⟩
 
+/- English proof (translation)
+The claim follows from `concl_two isSmoothChar_one`.
+-/
 example (p : ℕ) [Fact p.Prime] : Concl (detRep (Fin 1) (1 : ℚ_[p]ˣ →* ℂˣ)) 2 := concl_two isSmoothChar_one
 
 end GlobalTheory.SegmentRepModel

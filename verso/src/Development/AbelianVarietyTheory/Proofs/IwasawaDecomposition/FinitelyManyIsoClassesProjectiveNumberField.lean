@@ -6,6 +6,9 @@ namespace GlobalTheory.ProjModFinIso
 
 variable {R : Type} [CommRing R] [IsDedekindDomain R]
 
+/- English proof (translation)
+Establish `h1` using `(TensorProduct.isBaseChange R (M × N) (FractionRing R)).finrank_eq`. Establish `h2` using `(TensorProduct.isBaseChange R M (FractionRing R)).finrank_eq`. Establish `h2'` using `(TensorProduct.isBaseChange R N (FractionRing R)).finrank_eq`. Establish `h3` using `(TensorProduct.prodRight R (FractionRing R) (FractionRing R) M N).finrank_eq`. Rewrite using `[← h1, h3, Module.finrank_prod, h2, h2']`.
+-/
 theorem finrank_prod_eq (M N : Type) [AddCommGroup M] [Module R M] [AddCommGroup N] [Module R N]
     [Module.Finite R M] [Module.Finite R N] :
     Module.finrank R (M × N) = Module.finrank R M + Module.finrank R N := by
@@ -15,17 +18,28 @@ theorem finrank_prod_eq (M N : Type) [AddCommGroup M] [Module R M] [AddCommGroup
   have h3 := (TensorProduct.prodRight R (FractionRing R) (FractionRing R) M N).finrank_eq
   rw [← h1, h3, Module.finrank_prod, h2, h2']
 
+/- English proof (translation)
+The claim follows from `haveI : Module.FinitePresentation R M := Module.finitePresentation_of_finite R M Module.Flat.projective_of_finitePresentation`.
+-/
 theorem projective_of_isTorsionFree (M : Type) [AddCommGroup M] [Module R M] [Module.Finite R M]
     [Module.IsTorsionFree R M] : Module.Projective R M :=
   haveI : Module.FinitePresentation R M := Module.finitePresentation_of_finite R M
   Module.Flat.projective_of_finitePresentation
 
+/- English proof (translation)
+Establish `h1 : Module.finrank R I ≤ 1` using `by simpa using Submodule.finrank_le I`. Establish `: Nontrivial I` using `Submodule.nontrivial_iff_ne_bot.mpr h`. Establish `h2` using `Module.finrank_pos (R := R) (M := I)`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem finrank_ideal (I : Ideal R) (h : I ≠ ⊥) : Module.finrank R I = 1 := by
   have h1 : Module.finrank R I ≤ 1 := by simpa using Submodule.finrank_le I
   have : Nontrivial I := Submodule.nontrivial_iff_ne_bot.mpr h
   have h2 := Module.finrank_pos (R := R) (M := I)
   omega
 
+/- English proof (translation)
+Take `⟨x, y, hx, hy, hxy⟩` from `ClassGroup.mk0_eq_mk0_iff.1 h`. Establish `key : ∀ (z : R), z ≠ 0 → ∀ K : Ideal R, Nonempty (K ≃ₗ[R] ↥(Ideal.span {z} * K))`. Introduce `z hz K`. Establish `hinj : Function.Injective (LinearMap.mulLeft R z)` using `fun a b hab => mul_left_cancel₀ hz hab`. Use `⟨(Submodule.equivMapOfInjective _ hinj K).trans (LinearEquiv.ofEq _ _ ?_)⟩` and prove the remaining obligations.
+
+Use extensionality with `w`. Rewrite using `[Submodule.mem_map, Ideal.mem_span_singleton_mul]`. Apply the tactic sequence `constructor <;> rintro ⟨a, ha, rfl⟩ <;> exact ⟨a, ha, rfl⟩`. Conclude with `⟨(key x hx I).some.trans ((LinearEquiv.ofEq _ _ hxy).trans (key y hy J).some.symm)⟩`.
+-/
 theorem nonempty_equiv_of_mk0_eq {I J : (Ideal R)⁰} (h : ClassGroup.mk0 I = ClassGroup.mk0 J) :
     Nonempty ((I : Ideal R) ≃ₗ[R] (J : Ideal R)) := by
   obtain ⟨x, y, hx, hy, hxy⟩ := ClassGroup.mk0_eq_mk0_iff.1 h
@@ -38,6 +52,17 @@ theorem nonempty_equiv_of_mk0_eq {I J : (Ideal R)⁰} (h : ClassGroup.mk0 I = Cl
     constructor <;> rintro ⟨a, ha, rfl⟩ <;> exact ⟨a, ha, rfl⟩
   exact ⟨(key x hx I).some.trans ((LinearEquiv.ofEq _ _ hxy).trans (key y hy J).some.symm)⟩
 
+/- English proof (translation)
+Take `⟨s, hs⟩` from `Module.projective_def'.1 (inferInstance : Module.Projective R X)`. Take `⟨x, hx⟩` from `exists_ne (0 : X)`. Establish `hsx : s x ≠ 0`. Introduce `h`. Apply `hx` to reduce the goal to its premises.
+
+Use `LinearMap.congr_fun hs x` as an intermediate fact. Simplify using `only [LinearMap.comp_apply, h, map_zero, LinearMap.id_apply] at this`. Conclude with `this.symm`. Choose the witnesses or unpack the hypotheses as in `⟨a, ha⟩ : ∃ a, s x a ≠ 0 := by`. Assume the negation of the conclusion as `h`.
+
+Use `push_neg at h`. Conclude with `hsx (Finsupp.ext h)`. Set `f : X →ₗ[R] R` to `Finsupp.lapply a ∘ₗ s`. Establish `hI : LinearMap.range f ≠ ⊥`. Introduce `h`.
+
+Establish `hm : f x ∈ LinearMap.range f` using `LinearMap.mem_range_self f x`. Rewrite `hm` using `[h, Submodule.mem_bot]`. Conclude with `ha hm`. Set `I : (Ideal R)⁰` to `⟨LinearMap.range f, mem_nonZeroDivisors_of_ne_zero hI⟩`. Set `g` to `f.rangeRestrict`.
+
+Use `haveI := projective_of_isTorsionFree (R := R) (LinearMap.range f)`. Take `⟨l, hl⟩` from `Module.projective_lifting_property g LinearMap.id f.surjective_rangeRestrict`. Establish `hex : Function.Exact (LinearMap.ker g).subtype g` using `LinearMap.exact_subtype_ker_map g`. Take `⟨e, -⟩` from `hex.splitSurjectiveEquiv (LinearMap.ker g).injective_subtype ⟨l, hl⟩`. Conclude with `⟨I, LinearMap.ker g, ⟨e⟩⟩`.
+-/
 theorem exists_split (X : Type) [AddCommGroup X] [Module R X] [Module.Projective R X]
     [Nontrivial X] :
     ∃ (I : (Ideal R)⁰) (K : Submodule R X), Nonempty (X ≃ₗ[R] K × (I : Ideal R)) := by
@@ -67,6 +92,17 @@ theorem exists_split (X : Type) [AddCommGroup X] [Module R X] [Module.Projective
   obtain ⟨e, -⟩ := hex.splitSurjectiveEquiv (LinearMap.ker g).injective_subtype ⟨l, hl⟩
   exact ⟨I, LinearMap.ker g, ⟨e⟩⟩
 
+/- English proof (translation)
+Proceed by induction on `r with`. Consider the case `zero`. Introduce `X _ _ _ _ h`. Establish `: Subsingleton X`. Assume the negation of the conclusion as `hne`.
+
+Rewrite `hne` using `[not_subsingleton_iff_nontrivial]`. Use `Module.finrank_pos (R := R) (M := X)` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Conclude with `⟨Empty, inferInstance, Empty.elim, by simp, ⟨LinearEquiv.ofSubsingleton _ _⟩⟩`. Consider the case `succ r ih`.
+
+Introduce `X _ _ _ _ h`. Establish `: Nontrivial X` using `Module.nontrivial_of_finrank_pos (R := R) (by omega)`. Use `haveI := projective_of_isTorsionFree (R := R) X`. Take `⟨I, K, ⟨e⟩⟩` from `exists_split (R := R) X`. Establish `hK : Module.finrank R K = r`.
+
+Establish `h1` using `e.finrank_eq`. Rewrite `h1` using `[finrank_prod_eq, finrank_ideal _ (by simpa using nonZeroDivisors.ne_zero I.2)]`. Use linear arithmetic over natural numbers and integers. Take `⟨ι, _, J, hcard, ⟨eK⟩⟩` from `ih K hK`. Use `⟨Option ι, inferInstance, fun o => o.elim I J, by simp [hcard], ⟨?_⟩⟩` and prove the remaining obligations.
+
+Conclude with `e ≪≫ₗ LinearEquiv.prodComm R _ _ ≪≫ₗ LinearEquiv.prodCongr (LinearEquiv.refl R _) eK ≪≫ₗ (LinearEquiv.piOptionEquivProd R (M := fun o => ((o.elim I J : (Ideal R)⁰) : Ideal R))).symm`.
+-/
 theorem exists_equiv_pi (r : ℕ) : ∀ (X : Type) [AddCommGroup X] [Module R X] [Module.Finite R X]
     [Module.IsTorsionFree R X], Module.finrank R X = r →
     ∃ (ι : Type) (_ : Fintype ι) (I : ι → (Ideal R)⁰), Fintype.card ι = r ∧
@@ -95,6 +131,13 @@ theorem exists_equiv_pi (r : ℕ) : ∀ (X : Type) [AddCommGroup X] [Module R X]
       LinearEquiv.prodCongr (LinearEquiv.refl R _) eK ≪≫ₗ
       (LinearEquiv.piOptionEquivProd R (M := fun o => ((o.elim I J : (Ideal R)⁰) : Ideal R))).symm
 
+/- English proof (translation)
+Set `rep : ClassGroup R → Ideal R` to `fun c => ((ClassGroup.mk0_surjective c).choose : Ideal R)`. Establish `hrep : ∀ c : ClassGroup R, ClassGroup.mk0 (ClassGroup.mk0_surjective c).choose = c` using `fun c => (ClassGroup.mk0_surjective c).choose_spec`. Set `S` to `Σ r : Fin (q + 1), (Fin r → ClassGroup R)`. Set `Y' : S → ModuleCat.{0} R` to `fun s => ModuleCat.of R ((b : Fin s.1) → rep (s.2 b))`. Take `⟨n, ⟨eS⟩⟩` from `Finite.exists_equiv_fin S`.
+
+Use `⟨n, fun k => Y' (eS.symm k), ?_⟩` and prove the remaining obligations. Introduce `X _ _ _ _ hX`. Take `⟨ι, _, I, hcard, ⟨e⟩⟩` from `exists_equiv_pi (R := R) (Module.finrank R X) X rfl`. Set `eι` to `Fintype.equivFin ι`. Set `s : S` to `⟨⟨Fintype.card ι, by omega⟩, fun b => ClassGroup.mk0 (I (eι.symm b))⟩`.
+
+Use `⟨eS s, ?_⟩` and prove the remaining obligations. Use `show Nonempty (X ≃ₗ[R] Y' (eS.symm (eS s)))`. Rewrite using `[Equiv.symm_apply_apply]`. Establish `hI : ∀ i, Nonempty ((I i : Ideal R) ≃ₗ[R] rep (ClassGroup.mk0 (I i)))` using `fun i => nonempty_equiv_of_mk0_eq (hrep _).symm`. Conclude with `⟨e ≪≫ₗ LinearEquiv.piCongrRight (fun i => (hI i).some) ≪≫ₗ LinearEquiv.piCongrLeft' R (fun i => ↥(rep (ClassGroup.mk0 (I i)))) eι⟩`.
+-/
 theorem exists_finite_reps [Finite (ClassGroup R)] (q : ℕ) :
     ∃ (n : ℕ) (Y : Fin n → ModuleCat.{0} R), ∀ (X : Type) [AddCommGroup X] [Module R X]
       [Module.Finite R X] [Module.Projective R X], Module.finrank R X ≤ q →
@@ -118,6 +161,9 @@ theorem exists_finite_reps [Finite (ClassGroup R)] (q : ℕ) :
   exact ⟨e ≪≫ₗ LinearEquiv.piCongrRight (fun i => (hI i).some) ≪≫ₗ
     LinearEquiv.piCongrLeft' R (fun i => ↥(rep (ClassGroup.mk0 (I i)))) eι⟩
 
+/- English proof (translation)
+Introduce `E _ _ q`. Conclude with `exists_finite_reps q`.
+-/
 theorem finitely_many_iso_classes : ∀ (E : Type) [Field E] [NumberField E] (q : ℕ),
     ∃ (n : ℕ) (Y : Fin n → ModuleCat.{0} (𝓞 E)), ∀ (X : Type) [AddCommGroup X] [Module (𝓞 E) X]
       [Module.Finite (𝓞 E) X] [Module.Projective (𝓞 E) X], Module.finrank (𝓞 E) X ≤ q →

@@ -6,6 +6,15 @@ open scoped Topology
 
 namespace GlobalTheory.AdeleBaseChange
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ ι hι`. Use `letI : TopologicalSpace (FiniteAdeleRing (𝓞 F) F ⊗[F] E) := moduleTopology (FiniteAdeleRing (𝓞 F) F) (FiniteAdeleRing (𝓞 F) F ⊗[F] E)`. Use `haveI : IsModuleTopology (FiniteAdeleRing (𝓞 F) F) (FiniteAdeleRing (𝓞 F) F ⊗[F] E) := ⟨rfl⟩`. Use `haveI : IsTopologicalAddGroup (FiniteAdeleRing (𝓞 F) F ⊗[F] E) := IsModuleTopology.topologicalAddGroup (FiniteAdeleRing (𝓞 F) F) _`. Establish `h0` using `(GlobalTheory.AdLat.OpenLat.isOpen_nsmul_hat F E 0 ⊤ (Subsingleton.elim _ _)).2`.
+
+Use `continuous_of_continuousAt_zero ι.symm.toAddMonoidHom ?_` and prove the remaining obligations. Rewrite using `[ContinuousAt, map_zero]`. Introduce `W hW`. Take `⟨N, hN, hNW⟩` from `h0 W hW`. Rewrite using `[Filter.mem_map]`.
+
+Use `Filter.mem_of_superset (GlobalTheory.AdLat.OpenLat.nsmul_integral_mem_nhds E N hN) ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨a, ha, rfl⟩`. Rewrite using `[Set.mem_preimage, map_nsmul]`. Apply `hNW` to reduce the goal to its premises. Establish `h1` using `(hι (ι.symm a)).2 (fun P => by rw [ι.apply_symm_apply]; exact ha P)`.
+
+Use `AddSubgroup.closure_mono ?_ h1` and prove the remaining obligations. Introduce and unpack `_ ⟨b, hb, x, rfl⟩`. Conclude with `⟨b, hb, _, ⟨x, rfl⟩, rfl⟩`.
+-/
 theorem continuous_symm_finite : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (ι : FiniteAdeleRing (𝓞 F) F ⊗[F] E ≃+* FiniteAdeleRing (𝓞 E) E), (∀ y, y ∈ AddSubgroup.closure {y : FiniteAdeleRing (𝓞 F) F ⊗[F] E | ∃ a ∈ {a : FiniteAdeleRing (𝓞 F) F | ∀ v : HeightOneSpectrum (𝓞 F), a v ∈ v.adicCompletionIntegers F}, ∃ x : 𝓞 E, y = a ⊗ₜ[F] (x : E)} ↔ ∀ P, Valued.v (ι y P) ≤ 1) → letI : TopologicalSpace (FiniteAdeleRing (𝓞 F) F ⊗[F] E) := moduleTopology (FiniteAdeleRing (𝓞 F) F) (FiniteAdeleRing (𝓞 F) F ⊗[F] E); Continuous ι.symm := by
   intro F E _ _ _ _ _ ι hι
   letI : TopologicalSpace (FiniteAdeleRing (𝓞 F) F ⊗[F] E) :=

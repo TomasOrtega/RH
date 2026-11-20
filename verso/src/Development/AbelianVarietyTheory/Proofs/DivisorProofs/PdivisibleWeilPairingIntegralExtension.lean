@@ -20,6 +20,9 @@ section Semi
 variable {R K M N : Type} [CommRing R] [IsDomain R] [Field K] [Algebra R K] [IsFractionRing R K]
   [AddCommGroup M] [Module R M] [AddCommGroup N] [Module K N] (f : M →ₛₗ[algebraMap R K] N)
 
+/- English proof (translation)
+Take `⟨t, rfl⟩` from `hf n`. Take `⟨⟨m, s⟩, e⟩` from `IsLocalizedModule.surj (nonZeroDivisors R) (TensorProduct.mk R K M 1) t`. Use `⟨s, nonZeroDivisors.coe_ne_zero s, m, ?_⟩` and prove the remaining obligations. Rewrite using `[← map_smul, algebraMap_smul]`. Conclude with `((congrArg (liftSemi f) e).trans ((liftSemi_tmul f 1 m).trans (one_smul _ _))).symm`.
+-/
 theorem exists_smul_eq (hf : Function.Surjective (liftSemi f)) (n : N) :
     ∃ r : R, r ≠ 0 ∧ ∃ m, f m = algebraMap R K r • n := by
   obtain ⟨t, rfl⟩ := hf n
@@ -28,6 +31,11 @@ theorem exists_smul_eq (hf : Function.Surjective (liftSemi f)) (n : N) :
   rw [← map_smul, algebraMap_smul]
   exact ((congrArg (liftSemi f) e).trans ((liftSemi_tmul f 1 m).trans (one_smul _ _))).symm
 
+/- English proof (translation)
+Use `(injective_iff_map_eq_zero _).2 fun m hm => ?_` and prove the remaining obligations. Establish `e : TensorProduct.mk R K M 1 m = 0` using `hf (by`. Rewrite using `[map_zero]`. Conclude with `(liftSemi_tmul f 1 m).trans ((one_smul _ _).trans hm))`. Take `⟨s, hs⟩` from `(IsLocalizedModule.eq_zero_iff (nonZeroDivisors R) _).1 e`.
+
+Conclude with `(smul_eq_zero.1 hs).resolve_left (nonZeroDivisors.coe_ne_zero s)`.
+-/
 theorem injective_of_free [Module.Free R M] (hf : Function.Injective (liftSemi f)) :
     Function.Injective f := by
   refine (injective_iff_map_eq_zero _).2 fun m hm => ?_
@@ -36,6 +44,17 @@ theorem injective_of_free [Module.Free R M] (hf : Function.Injective (liftSemi f
   obtain ⟨s, hs⟩ := (IsLocalizedModule.eq_zero_iff (nonZeroDivisors R) _).1 e
   exact (smul_eq_zero.1 hs).resolve_left (nonZeroDivisors.coe_ne_zero s)
 
+/- English proof (translation)
+Simplify using `only [algebraMap_smul] at hS ⊢`. Proceed by induction on `hx using Submodule.span_induction with`. Consider the case `mem x hx => exact hS x hx`. Consider the case `zero => exact ⟨1, one_ne_zero, by rw [smul_zero]; exact zero_mem _⟩`. Consider the case `add x y _ _ hx hy`.
+
+Take `⟨r, hr, hx⟩` from `hx`. Take `⟨s, hs, hy⟩` from `hy`. Use `⟨r * s, mul_ne_zero hr hs, ?_⟩` and prove the remaining obligations. Rewrite using `[smul_add]`. Use `add_mem ?_ ?_` and prove the remaining obligations.
+
+Rewrite using `[mul_comm, mul_smul]`. Conclude with `Submodule.smul_mem _ _ hx`. Rewrite using `[mul_smul]`. Conclude with `Submodule.smul_mem _ _ hy`. Consider the case `smul c x _ hx`.
+
+Take `⟨r, hr, hx⟩` from `hx`. Take `⟨⟨a, s⟩, e⟩` from `IsLocalization.surj (nonZeroDivisors R) c`. Use `⟨r * s, mul_ne_zero hr (nonZeroDivisors.coe_ne_zero s), ?_⟩` and prove the remaining obligations. Establish `e' : (r * s : R) • c • x = a • r • x`. Rewrite using `[mul_smul, ← algebraMap_smul K (s : R), smul_smul _ c, mul_comm, e, algebraMap_smul, smul_comm]`.
+
+Rewrite using `[e']`. Conclude with `Submodule.smul_mem _ _ hx`.
+-/
 theorem exists_smul_mem_of_mem_span [Module R N] [IsScalarTower R K N] (P : Submodule R N) {S : Set N}
     (hS : ∀ x ∈ S, ∃ r : R, r ≠ 0 ∧ algebraMap R K r • x ∈ P) {x : N} (hx : x ∈ Submodule.span K S) :
     ∃ r : R, r ≠ 0 ∧ algebraMap R K r • x ∈ P := by
@@ -66,49 +85,79 @@ section General
 
 variable {p : ℕ} [Fact p.Prime] {R S : Type} [CommRing R] [CommRing S] {G H L : PDivGroup p R}
 
+/- English proof (translation)
+Take `⟨y, rfl⟩` from `L.rigToExt_surjective x`. Rewrite using `[← rigToExt_rigExtMap, ← rigToExt_rigExtMap, ← rigToExt_rigExtMap, rigExtMap_comp, LinearMap.comp_apply]`.
+-/
 theorem vecExtMap_comp (f : G ⟶ H) (g : H ⟶ L) (x : L.VecExt) :
     vecExtMap (f ≫ g) x = vecExtMap f (vecExtMap g x) := by
   obtain ⟨y, rfl⟩ := L.rigToExt_surjective x
   rw [← rigToExt_rigExtMap, ← rigToExt_rigExtMap, ← rigToExt_rigExtMap, rigExtMap_comp, LinearMap.comp_apply]
 
+/- English proof (translation)
+The claim follows from `Function.bijective_iff_has_inverse.2 ⟨vecExtMap e.inv, fun x => by rw [← vecExtMap_comp, e.inv_hom_id, vecExtMap_id, LinearMap.id_apply], fun x => by rw [← vecExtMap_comp, e.hom_inv_id, vecExtMap_id, LinearMap.id_apply]⟩`.
+-/
 theorem vecExtMap_iso (e : G ≅ H) : Function.Bijective (vecExtMap e.hom) :=
   Function.bijective_iff_has_inverse.2 ⟨vecExtMap e.inv,
     fun x => by rw [← vecExtMap_comp, e.inv_hom_id, vecExtMap_id, LinearMap.id_apply],
     fun x => by rw [← vecExtMap_comp, e.hom_inv_id, vecExtMap_id, LinearMap.id_apply]⟩
 
+/- English proof (translation)
+Rewrite using `[omegaMap_comp, LinearMap.comp_apply]`.
+-/
 theorem omegaMap_comp_apply (f : G ⟶ H) (g : H ⟶ L) (x : L.omega) :
     omegaMap G L (f ≫ g) x = omegaMap G H f (omegaMap H L g x) := by
   rw [omegaMap_comp, LinearMap.comp_apply]
 
+/- English proof (translation)
+The claim follows from `Function.bijective_iff_has_inverse.2 ⟨omegaMap H G e.inv, fun x => by rw [← omegaMap_comp_apply, e.inv_hom_id, omegaMap_id, LinearMap.id_apply], fun x => by rw [← omegaMap_comp_apply, e.hom_inv_id, omegaMap_id, LinearMap.id_apply]⟩`.
+-/
 theorem omegaMap_iso (e : G ≅ H) : Function.Bijective (omegaMap G H e.hom) :=
   Function.bijective_iff_has_inverse.2 ⟨omegaMap H G e.inv,
     fun x => by rw [← omegaMap_comp_apply, e.inv_hom_id, omegaMap_id, LinearMap.id_apply],
     fun x => by rw [← omegaMap_comp_apply, e.hom_inv_id, omegaMap_id, LinearMap.id_apply]⟩
 
+/- English proof (translation)
+The claim follows from `funext fun x => primLie_naturality f _ _ (extChar_vecExtMap h f x)`.
+-/
 theorem primLie_extChar_comp (h : (p : R) = 0) (f : G ⟶ H) :
     (G.primLie ∘ G.extChar h) ∘ vecExtMap f =
       (omegaMap H.dual G.dual (dualHom G H f)).dualMap ∘ (H.primLie ∘ H.extChar h) :=
   funext fun x => primLie_naturality f _ _ (extChar_vecExtMap h f x)
 
+/- English proof (translation)
+Rewrite using `[← rigExtMap_relFrob_rig, SemiHom.rig_rigOfOmega]`. Conclude with `LinearMap.congr_fun (rigExtMap_relFrob_comp_rigOfOmega h G) _`.
+-/
 theorem absFrob_rigOfOmega (h : (p : R) = 0) (w : G.omega) : (absFrob h G).rig (G.rigOfOmega w) = 0 := by
   rw [← rigExtMap_relFrob_rig, SemiHom.rig_rigOfOmega]
   exact LinearMap.congr_fun (rigExtMap_relFrob_comp_rigOfOmega h G) _
 
+/- English proof (translation)
+The claim follows from `SemiHom.rig_naturality _ _ f f (fun n a => by rw [absFrob_app, absFrob_app, map_pow]) x`.
+-/
 theorem absFrob_rigExtMap (h : (p : R) = 0) (f : G ⟶ H) (x : H.RigExt) :
     (absFrob h G).rig (rigExtMap f x) = rigExtMap f ((absFrob h H).rig x) :=
   SemiHom.rig_naturality _ _ f f (fun n a => by rw [absFrob_app, absFrob_app, map_pow]) x
 
 variable [Algebra R S]
 
+/- English proof (translation)
+The claim follows from `(SemiHom.comp_rig _ _ x).symm.trans (SemiHom.rig_rig _ _ _ (fun n a => by rw [SemiHom.comp_app, absFrob_app, absFrob_app, map_pow]) x).symm`.
+-/
 theorem absFrob_toBase (h : (p : R) = 0) (h' : (p : S) = 0) (x : G.RigExt) :
     (absFrob h' (G.baseChange S)).rig ((G.toBase S).rig x) = (G.toBase S).rig ((absFrob h G).rig x) :=
   (SemiHom.comp_rig _ _ x).symm.trans (SemiHom.rig_rig _ _ _ (fun n a => by
     rw [SemiHom.comp_app, absFrob_app, absFrob_app, map_pow]) x).symm
 
+/- English proof (translation)
+The claim follows from `SemiHom.omega_naturality _ _ f _ (fun _ _ => rfl) w`.
+-/
 theorem toBase_omegaMap (f : G ⟶ H) (w : H.omega) : (G.toBase S).omega (omegaMap G H f w) =
     omegaMap _ _ (PDivGroup.baseChangeMap S f) ((H.toBase S).omega w) :=
   SemiHom.omega_naturality _ _ f _ (fun _ _ => rfl) w
 
+/- English proof (translation)
+Take `⟨y, rfl⟩` from `H.rigToExt_surjective x`. Rewrite using `[← rigToExt_rigExtMap, ← SemiHom.rigToExt_rig, ← SemiHom.rigToExt_rig, ← rigToExt_rigExtMap, SemiHom.rig_naturality _ (H.toBase S) f (PDivGroup.baseChangeMap S f) fun _ _ => rfl]`.
+-/
 theorem toBase_vecExtMap (f : G ⟶ H) (x : H.VecExt) : (G.toBase S).vecExt (vecExtMap f x) =
     vecExtMap (PDivGroup.baseChangeMap S f) ((H.toBase S).vecExt x) := by
   obtain ⟨y, rfl⟩ := H.rigToExt_surjective x
@@ -122,12 +171,18 @@ section Field
 variable {p : ℕ} [Fact p.Prime] {K : Type} [Field K] (h : (p : K) = 0) {G H : PDivGroup p K}
 include h
 
+/- English proof (translation)
+Establish `e` using `((G.primLie_bijective h).comp (G.extChar_bijective h)).2.comp hf`. Rewrite `e` using `[primLie_extChar_comp]`. Conclude with `LinearMap.dualMap_surjective_iff.1 e.of_comp`.
+-/
 theorem omegaMap_dualHom_injective (f : G ⟶ H) (hf : Function.Surjective (vecExtMap f)) :
     Function.Injective (omegaMap H.dual G.dual (dualHom G H f)) := by
   have e := ((G.primLie_bijective h).comp (G.extChar_bijective h)).2.comp hf
   rw [primLie_extChar_comp] at e
   exact LinearMap.dualMap_surjective_iff.1 e.of_comp
 
+/- English proof (translation)
+Establish `e : Function.Bijective (omegaMap _ _ (dualHom _ _ (dualHom G H f)))`. Rewrite using `[← Function.Bijective.of_comp_iff' (omegaMap_iso G.bidual), ← LinearMap.coe_comp, ← omegaMap_comp, bidual_hom_dualHom_dualHom, omegaMap_comp, LinearMap.coe_comp]`. Conclude with `hf.comp (omegaMap_iso H.bidual)`. Rewrite using `[← Function.Bijective.of_comp_iff' ((H.dual.primLie_bijective h).comp (H.dual.extChar_bijective h)), primLie_extChar_comp]`. Conclude with `(LinearMap.dualMap_bijective_iff.2 e).comp ((G.dual.primLie_bijective h).comp (G.dual.extChar_bijective h))`.
+-/
 theorem vecExtMap_dualHom_bijective (f : G ⟶ H) (hf : Function.Bijective (omegaMap G H f)) :
     Function.Bijective (vecExtMap (dualHom G H f)) := by
   have e : Function.Bijective (omegaMap _ _ (dualHom _ _ (dualHom G H f))) := by
@@ -139,6 +194,9 @@ theorem vecExtMap_dualHom_bijective (f : G ⟶ H) (hf : Function.Bijective (omeg
   exact (LinearMap.dualMap_bijective_iff.2 e).comp
     ((G.dual.primLie_bijective h).comp (G.dual.extChar_bijective h))
 
+/- English proof (translation)
+Establish `k` using `(omegaMap_iso G.bidual).1.comp (omegaMap_dualHom_injective h f hf)`. Rewrite `k` using `[← LinearMap.coe_comp, ← omegaMap_comp, e, map_neg]`. Conclude with `fun x y hxy => k (by rw [LinearMap.neg_apply, LinearMap.neg_apply, hxy])`.
+-/
 theorem omegaMap_injective_of_antisymm (f : G ⟶ G.dual) (hf : Function.Surjective (vecExtMap f))
     (e : G.bidual.hom ≫ dualHom _ _ f = -f) : Function.Injective (omegaMap _ _ f) := by
   have k := (omegaMap_iso G.bidual).1.comp (omegaMap_dualHom_injective h f hf)
@@ -161,33 +219,53 @@ variable (hR : (p : R) = 0) (hK : (p : K) = 0) (κ : Γ.baseChange K ⟶ 𝒜) (
 
 omit [IsDomain R] [IsFractionRing R K] in
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem pullRig_apply (y : Δ.RigExt) : pullRig π y = rigExtMap π ((Δ.toBase K).rig y) := rfl
 
 omit [IsDomain R] [IsFractionRing R K] in
 
+/- English proof (translation)
+Rewrite using `[pullRig_apply, pullRig_apply, map_smulₛₗ, map_smul]`.
+-/
 theorem pullRig_smul (r : R) (y : Δ.RigExt) : pullRig π (r • y) = algebraMap R K r • pullRig π y := by
   rw [pullRig_apply, pullRig_apply, map_smulₛₗ, map_smul]
 
 omit [IsDomain R] [IsFractionRing R K] in
 
+/- English proof (translation)
+Rewrite using `[pullRig_apply, pullRig_apply, absFrob_rigExtMap, absFrob_toBase hR]`.
+-/
 theorem absFrob_pullRig (y : Δ.RigExt) :
     (absFrob hK 𝒜).rig (pullRig π y) = pullRig π ((absFrob hR Δ).rig y) := by
   rw [pullRig_apply, pullRig_apply, absFrob_rigExtMap, absFrob_toBase hR]
 
 omit [IsDomain R] [IsFractionRing R K] in
 
+/- English proof (translation)
+Rewrite using `[pullRig_apply, SemiHom.rig_rigOfOmega, rigExtMap_rigOfOmega]`.
+-/
 theorem pullRig_rigOfOmega (η : Δ.omega) : pullRig π (Δ.rigOfOmega η) =
     𝒜.rigOfOmega (omegaMap _ _ π ((Δ.toBase K).omega η)) := by
   rw [pullRig_apply, SemiHom.rig_rigOfOmega, rigExtMap_rigOfOmega]
 
 omit [IsDomain R] [IsFractionRing R K] in
 
+/- English proof (translation)
+Rewrite using `[pullRig_apply, rigToExt_rigExtMap, SemiHom.rigToExt_rig]`.
+-/
 theorem rigToExt_pullRig (y : Δ.RigExt) : 𝒜.rigToExt (pullRig π y) =
     vecExtMap π ((Δ.toBase K).vecExt (Δ.rigToExt y)) := by
   rw [pullRig_apply, rigToExt_rigExtMap, SemiHom.rigToExt_rig]
 
 omit [IsDomain R] [IsFractionRing R K] in
 
+/- English proof (translation)
+Rewrite using `[Submodule.map_span]`. Use `congr 1`. Use extensionality with `z`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨x, hx, rfl⟩`.
+
+Take `⟨_, ⟨η, -, rfl, -⟩, _, ⟨y, rfl⟩, rfl⟩` from `Submodule.mem_sup.1 hx`. Use `⟨_, ⟨y, rfl⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[map_add, absFrob_rigOfOmega, zero_add, ← absFrob_pullRig hR hK, pullRig_apply]`. Introduce and unpack `⟨_, ⟨y, rfl⟩, rfl⟩`. Conclude with `⟨pullRig π y, Submodule.mem_sup_right (show pullRig π y ∈ latExt π from ⟨y, rfl⟩), absFrob_pullRig hR hK π y⟩`.
+-/
 theorem span_image_eq :
     Submodule.span R ((absFrob hK 𝒜).rig '' (latOmega κ ⊔ latExt π : Submodule R 𝒜.RigExt)) =
       (Submodule.span R (Set.range (absFrob hR Δ).rig)).map (pullRig π) := by
@@ -203,6 +281,13 @@ theorem span_image_eq :
     exact ⟨pullRig π y, Submodule.mem_sup_right (show pullRig π y ∈ latExt π from ⟨y, rfl⟩),
       absFrob_pullRig hR hK π y⟩
 
+/- English proof (translation)
+Use `exists_smul_mem_of_mem_span _ ?_ hx` and prove the remaining obligations. Introduce and unpack `_ ⟨x, rfl⟩`. Take `⟨u, hu⟩` from `hπ (𝒜.rigToExt x)`. Use `haveI := IsLocalization.flat K (nonZeroDivisors R)`. Take `⟨r, hr, v, hv⟩` from `exists_smul_eq _ (Δ.liftSemi_vecExt_bijective K hR (.inl inferInstance)).2 u`.
+
+Take `⟨y, rfl⟩` from `Δ.rigToExt_surjective v`. Take `⟨η, hη⟩` from `(𝒜.exact_rigOfOmega_rigToExt (algebraMap R K r • x - pullRig π y)).1 (by`. Rewrite using `[map_sub, rigToExt_pullRig, hv, map_smul, map_smul, hu, sub_self])`. Establish `e` using `absFrob_rigOfOmega hK η`. Rewrite `e` using `[hη, map_sub, sub_eq_zero, map_smulₛₗ, frobRing_apply, ← map_pow, absFrob_pullRig hR]`.
+
+Conclude with `⟨r ^ p, pow_ne_zero _ hr, _, Submodule.subset_span ⟨y, rfl⟩, e.symm⟩`.
+-/
 theorem exists_smul_mem (hπ : Function.Surjective (vecExtMap π)) {x : 𝒜.RigExt}
     (hx : x ∈ Submodule.span K (Set.range (absFrob hK 𝒜).rig)) :
     ∃ r : R, r ≠ 0 ∧ algebraMap R K r • x ∈
@@ -221,6 +306,15 @@ theorem exists_smul_mem (hπ : Function.Surjective (vecExtMap π)) {x : 𝒜.Rig
 
 include hR hK in
 
+/- English proof (translation)
+Use `haveI := IsLocalization.flat K (nonZeroDivisors R)`. Establish `i₁` using `injective_of_free _ (Δ.liftSemi_vecExt_bijective K hR (.inl inferInstance)).1`. Establish `i₂` using `injective_of_free _ (Γ.omega_baseChange_bijective K hR).1`. Establish `e₁ : pullRig π (z - r • y) = 𝒜.rigOfOmega (algebraMap R K r • η)`. Rewrite using `[map_sub, e, smul_add, pullRig_smul, add_sub_cancel_right, map_smul]`.
+
+Establish `e₀ : Δ.rigToExt (z - r • y) = 0` using `i₁ (hπ (by`. Rewrite using `[← rigToExt_pullRig, e₁, map_zero, map_zero]`. Conclude with `𝒜.exact_rigOfOmega_rigToExt.apply_apply_eq_zero _))`. Take `⟨η', hη'⟩` from `(Δ.exact_rigOfOmega_rigToExt _).1 e₀`. Establish `e₃` using `𝒜.rigOfOmega_injective_of_eq_zero hK ((pullRig_rigOfOmega π η').symm.trans ((congrArg (pullRig π) hη').trans e₁))`.
+
+Establish `e₂ : omegaMap _ _ h η' = r • η₀` using `i₂ (by`. Rewrite using `[toBase_omegaMap, hh, omegaMap_comp_apply, e₃, map_smul, hη, map_smulₛₗ])`. Take `⟨η'', rfl⟩` from `hs r η₀ hr ⟨η', e₂⟩`. Rewrite `e₂` using `[← map_smul]`. Rewrite `hη` using `[toBase_omegaMap, hh, omegaMap_comp_apply]`.
+
+Use `⟨Δ.rigOfOmega η'' + y, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[smul_add, ← map_smul, ← hi e₂, hη', sub_add_cancel]`. Rewrite using `[hκ hη, map_add, pullRig_rigOfOmega]`.
+-/
 theorem exists_eq_pullRig [Module.Free R Γ.omega] [Module.Free R Δ.VecExt] (h : Γ ⟶ Δ)
     (hh : PDivGroup.baseChangeMap K h = κ ≫ π) (hκ : Function.Injective (omegaMap _ _ κ))
     (hπ : Function.Injective (vecExtMap π)) (hi : Function.Injective (omegaMap _ _ h))
@@ -249,6 +343,13 @@ theorem exists_eq_pullRig [Module.Free R Γ.omega] [Module.Free R Δ.VecExt] (h 
   · rw [smul_add, ← map_smul, ← hi e₂, hη', sub_add_cancel]
   · rw [hκ hη, map_add, pullRig_rigOfOmega]
 
+/- English proof (translation)
+Use `le_antisymm ?_ (le_inf ?_ (Submodule.span_le.2 ?_))` and prove the remaining obligations. Introduce and unpack `x ⟨hx, hx'⟩`. Take `⟨r, hr, z, hz, e⟩` from `exists_smul_mem hR hK π hπ.2 hx'`. Take `⟨_, ⟨η, η₀, rfl, hη⟩, _, ⟨y, rfl⟩, rfl⟩` from `Submodule.mem_sup.1 hx`. Take `⟨y', rfl, e'⟩` from `exists_eq_pullRig hR hK κ π h hh hκ hπ.1 hi hs hr hη e`.
+
+Conclude with `(span_image_eq hR hK κ π).ge ⟨y', hC r _ hr hz, e'⟩`. Use `(span_image_eq hR hK κ π).le.trans ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨y, -, rfl⟩`. Conclude with `Submodule.mem_sup_right (show pullRig π y ∈ latExt π from ⟨y, rfl⟩)`. Introduce and unpack `_ ⟨x, -, rfl⟩`.
+
+Conclude with `Submodule.subset_span (R := K) ⟨x, rfl⟩`.
+-/
 theorem inf_span_eq [Module.Free R Γ.omega] [Module.Free R Δ.VecExt] (h : Γ ⟶ Δ)
     (hh : PDivGroup.baseChangeMap K h = κ ≫ π) (hκ : Function.Injective (omegaMap _ _ κ))
     (hπ : Function.Bijective (vecExtMap π)) (hi : Function.Injective (omegaMap _ _ h))
@@ -272,6 +373,21 @@ theorem inf_span_eq [Module.Free R Γ.omega] [Module.Free R Δ.VecExt] (h : Γ �
 
 end Main
 
+/- English proof (translation)
+Take `⟨f₁, -, f₂, -, f₃, -⟩` from `T.dieudonne_modules_free_finite hW p R hR Γ`. Take `⟨-, -, -, -, f₄, -⟩` from `T.dieudonne_modules_free_finite hW p R hR Γ.dual`. Take `⟨-, -, -, -, -, -, f₅, -⟩` from `T.dieudonne_modules_free_finite hW p R hR (frobTwist hR Γ.dual)`. Take `⟨-, -, c₁, c₂⟩` from `T.verschiebung_frobenius_kernel_range hW p R hR Γ.dual`. Use `haveI := IsLocalization.flat K (nonZeroDivisors R)`.
+
+Establish `k₁` using `T.vector_extension_surjective_field hW p K hK _ _ κ hκ₁ hκ`. Establish `k₂ : Function.Bijective (vecExtMap (w ≫ dualHom _ _ κ))`. Rewrite using `[show ⇑(vecExtMap (w ≫ dualHom _ _ κ)) = _ ∘ _ from funext (vecExtMap_comp _ _)]`. Conclude with `hw.comp (vecExtMap_dualHom_bijective hK κ hκ)`. Establish `hπ : Function.Bijective (vecExtMap (weilProj κ w))`.
+
+Rewrite using `[weilProj, ← Category.assoc, show ⇑(vecExtMap ((w ≫ dualHom _ _ κ) ≫ _)) = _ ∘ _ from`. Use function extensionality and compare the values at `(vecExtMap_comp _ _)]`. Conclude with `k₂.comp (vecExtMap_iso _)`. Establish `k₃ : Function.Injective (omegaMap _ _ (κ ≫ w ≫ dualHom _ _ κ))`. Use `omegaMap_injective_of_antisymm hK _ ?_ ?_` and prove the remaining obligations.
+
+Rewrite using `[show ⇑(vecExtMap (κ ≫ w ≫ dualHom _ _ κ)) = _ ∘ _ from funext (vecExtMap_comp _ _)]`. Conclude with `k₁.comp k₂.2`. Rewrite using `[dualHom_comp, dualHom_comp, Category.assoc, ← Category.assoc, bidual_hom_dualHom_dualHom, Category.assoc, ← Category.assoc _ (dualHom _ _ w), ha, Preadditive.neg_comp, Preadditive.comp_neg]`. Establish `k₄ : Function.Injective (omegaMap _ _ (PDivGroup.baseChangeMap K h))`. Rewrite using `[hh, weilProj, ← Category.assoc w, ← Category.assoc, omegaMap_comp, LinearMap.coe_comp]`.
+
+Conclude with `k₃.comp (omegaMap_iso _).1`. Establish `hi : Function.Injective (omegaMap _ _ h)` using `fun x y e => injective_of_free _ (Γ.dual.omega_baseChange_bijective K hR).1 (k₄ (by rw [← toBase_omegaMap, ← toBase_omegaMap, e]))`. Establish `hs` using `(T.omega_injective_saturation hW p R hR _ _ h hi fun x => by`. Take `⟨u₀, hu₀⟩` from `k₁ ((Γ.toBase K).vecExt x)`. Take `⟨u, rfl⟩` from `hπ.2 u₀`.
+
+Take `⟨r, hr, v, hv⟩` from `exists_smul_eq _ (Γ.dual.liftSemi_vecExt_bijective K hR (.inl inferInstance)).2 u`. Use `⟨r, hr, v, injective_of_free _ (Γ.liftSemi_vecExt_bijective K hR (.inl inferInstance)).1 ?_⟩` and prove the remaining obligations. Rewrite using `[toBase_vecExtMap, hh, hv, map_smul, vecExtMap_comp, hu₀, map_smulₛₗ]).1`. Use `inf_span_eq hR hK κ _ h hh hκ.1 hπ hi hs fun r y hr hy => ?_` and prove the remaining obligations. Rewrite `hy`, the goal using `[← c₂, ← c₁, LinearMap.mem_ker]`.
+
+Rewrite `hy` using `[map_smul]`. Conclude with `(smul_eq_zero.1 hy).resolve_left hr`.
+-/
 theorem lattice_inf_span_frobenius (hW : GlobalTheory.Published.BarsottiTateDieudonne.WittModule) (p : ℕ) [Fact p.Prime]
     (R : Type) [CommRing R] [IsDomain R] [IsDiscreteValuationRing R] (K : Type) [Field K] [Algebra R K]
     [IsFractionRing R K] (hR : (p : R) = 0) (hK : (p : K) = 0) (Γ : PDivGroup p R) (𝒜 : PDivGroup p K)

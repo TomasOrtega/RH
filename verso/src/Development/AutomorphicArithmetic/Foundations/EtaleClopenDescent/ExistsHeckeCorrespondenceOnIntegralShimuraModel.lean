@@ -13,14 +13,23 @@ namespace UpperTheory.Cb.isogenyLiftUniqueness
 
 variable {p : ℕ} [Fact p.Prime] {D : Datum p} {R R' : Type} [CommRing R] [CommRing R'] {N : ℕ} {S : Scheme.{0}}
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨(Spec.preimage u).hom, by simp [spMap]⟩`.
+-/
 private theorem sp_surj {A B : Type} [CommRing A] [CommRing B] (u : Sp B ⟶ Sp A) :
     ∃ β : A →+* B, u = spMap β :=
   ⟨(Spec.preimage u).hom, by simp [spMap]⟩
 
+/- English proof (translation)
+Simplify using `only [spMap, ← Spec.map_comp, ← CommRingCat.ofHom_comp]`.
+-/
 private theorem sp_comp {A B C : Type} [CommRing A] [CommRing B] [CommRing C] (f : A →+* B) (g : B →+* C) :
     spMap g ≫ spMap f = spMap (g.comp f) := by
   simp only [spMap, ← Spec.map_comp, ← CommRingCat.ofHom_comp]
 
+/- English proof (translation)
+The claim follows from `congrArg CommRingCat.Hom.hom (Spec.map_injective h)`.
+-/
 private theorem sp_inj {A B : Type} [CommRing A] [CommRing B] {f g : A →+* B} (h : spMap f = spMap g) : f = g :=
   congrArg CommRingCat.Hom.hom (Spec.map_injective h)
 
@@ -103,6 +112,11 @@ private def ofR {t : S ⟶ Sp R'} {s : S ⟶ Sp R} (h : t ≫ spMap φ = s) (o :
 local macro "cp " m:term:max : term =>
   `(⟨($m).φ, ($m).φ₂, ($m).cart, ($m).sq, ($m).act, ($m).pol, ($m).eta⟩)
 
+/- English proof (translation)
+Establish `h : g ⁻¹ᵁ X.basicOpen ((p : ℕ) : Γ(X, ⊤)) = ⊤`. Rewrite using `[Scheme.preimage_basicOpen, map_natCast]`. Conclude with `T.basicOpen_of_isUnit hu`. Establish `hz : z ∈ g ⁻¹ᵁ X.basicOpen ((p : ℕ) : Γ(X, ⊤))`. Rewrite using `[h]`.
+
+Discharge the goal by the elementary cases of `trivial`. Conclude with `hz`.
+-/
 private theorem mem_basicOpen {X T : Scheme.{0}} (g : T ⟶ X) (hu : IsUnit ((p : ℕ) : Γ(T, ⊤))) (z : T) :
     g z ∈ X.basicOpen ((p : ℕ) : Γ(X, ⊤)) := by
   have h : g ⁻¹ᵁ X.basicOpen ((p : ℕ) : Γ(X, ⊤)) = ⊤ := by
@@ -112,6 +126,9 @@ private theorem mem_basicOpen {X T : Scheme.{0}} (g : T ⟶ X) (hu : IsUnit ((p 
     rw [h]; trivial
   exact hz
 
+/- English proof (translation)
+Use `⟨IsOpenImmersion.lift _ g ?_, IsOpenImmersion.lift_fac _ _ _⟩` and prove the remaining obligations. Introduce and unpack `_ ⟨z, rfl⟩`. Rewrite using `[Scheme.Opens.range_ι]`. Conclude with `mem_basicOpen g hu z`.
+-/
 private theorem exists_lift {X T : Scheme.{0}} (g : T ⟶ X) (hu : IsUnit ((p : ℕ) : Γ(T, ⊤))) :
     ∃ f : T ⟶ (X.basicOpen ((p : ℕ) : Γ(X, ⊤))).toScheme, f ≫ (X.basicOpen ((p : ℕ) : Γ(X, ⊤))).ι = g := by
   refine ⟨IsOpenImmersion.lift _ g ?_, IsOpenImmersion.lift_fac _ _ _⟩
@@ -119,6 +136,9 @@ private theorem exists_lift {X T : Scheme.{0}} (g : T ⟶ X) (hu : IsUnit ((p : 
   rw [Scheme.Opens.range_ι]
   exact mem_basicOpen g hu z
 
+/- English proof (translation)
+Establish `h` using `hp.map ((Scheme.ΓSpecIso (CommRingCat.of R')).inv ≫ t.appTop).hom`. Rewrite `h` using `[map_natCast]`. Then use the resulting hypothesis.
+-/
 private theorem isUnit_of_sp {T : Scheme.{0}} (t : T ⟶ Sp R') (hp : IsUnit ((p : ℕ) : R')) :
     IsUnit ((p : ℕ) : Γ(T, ⊤)) := by
   have h := hp.map ((Scheme.ΓSpecIso (CommRingCat.of R')).inv ≫ t.appTop).hom
@@ -132,10 +152,16 @@ private instance : IsOpenImmersion (πp p R) := by
   unfold πp spMap
   infer_instance
 
+/- English proof (translation)
+Establish `h` using `IsLocalization.Away.algebraMap_isUnit (S := Rp p R) ((p : ℕ) : R)`. Rewrite `h` using `[map_natCast]`. Then use the resulting hypothesis.
+-/
 private theorem isUnit_Rp : IsUnit ((p : ℕ) : Rp p R) := by
   have h := IsLocalization.Away.algebraMap_isUnit (S := Rp p R) ((p : ℕ) : R)
   rwa [map_natCast] at h
 
+/- English proof (translation)
+Establish `h` using `basicOpen_eq_of_affine (R := CommRingCat.of R) ((p : ℕ) : R)`. Rewrite `h` using `[map_natCast]`. Rewrite using `[h]`. Apply `SetLike.coe_injective` to reduce the goal to its premises. Conclude with `PrimeSpectrum.localization_away_comap_range (Rp p R) ((p : ℕ) : R)`.
+-/
 private theorem opensRange_πp :
     (πp p R).opensRange = (Sp R).basicOpen ((p : ℕ) : Γ(Sp R, ⊤)) := by
   have h := basicOpen_eq_of_affine (R := CommRingCat.of R) ((p : ℕ) : R)
@@ -144,6 +170,9 @@ private theorem opensRange_πp :
   apply SetLike.coe_injective
   exact PrimeSpectrum.localization_away_comap_range (Rp p R) ((p : ℕ) : R)
 
+/- English proof (translation)
+Rewrite using `[Scheme.preimage_basicOpen, map_natCast]`. Both sides reduce to the same expression.
+-/
 private theorem preimage_bo {X : Scheme.{0}} (s : X ⟶ Sp R) :
     s ⁻¹ᵁ (Sp R).basicOpen ((p : ℕ) : Γ(Sp R, ⊤)) = X.basicOpen ((p : ℕ) : Γ(X, ⊤)) := by
   rw [Scheme.preimage_basicOpen, map_natCast]
@@ -153,6 +182,11 @@ private abbrev bb (b : Base D R) : Base D (Rp p R) := baseMap b (algebraMap R (R
 
 private abbrev Uo {b : Base D R} (M : Model b N) : M.X.Opens := M.X.basicOpen ((p : ℕ) : Γ(M.X, ⊤))
 
+/- English proof (translation)
+Introduce and unpack `_ ⟨z, rfl⟩`. Establish `h1 : (Uo M).ι z ∈ M.s ⁻¹ᵁ (Sp R).basicOpen ((p : ℕ) : Γ(Sp R, ⊤))`. Rewrite using `[preimage_bo]`. Establish `h2 : (Uo M).ι z ∈ Set.range (Uo M).ι` using `⟨z, rfl⟩`. Rewrite `h2` using `[Scheme.Opens.range_ι]`. Then use the resulting hypothesis.
+
+Establish `h3 : M.s ((Uo M).ι z) ∈ (πp p R).opensRange`. Rewrite using `[opensRange_πp]`. Conclude with `h1`. Simplify using `using h3`.
+-/
 private theorem range_sU {b : Base D R} (M : Model b N) :
     Set.range ((Uo M).ι ≫ M.s) ⊆ Set.range (πp p R) := by
   rintro _ ⟨z, rfl⟩
@@ -168,13 +202,22 @@ private theorem range_sU {b : Base D R} (M : Model b N) :
 private def sU {b : Base D R} (M : Model b N) : (Uo M).toScheme ⟶ Sp (Rp p R) :=
   IsOpenImmersion.lift (πp p R) ((Uo M).ι ≫ M.s) (range_sU M)
 
+/- English proof (translation)
+The claim follows from `IsOpenImmersion.lift_fac _ _ _`.
+-/
 private theorem sU_fac {b : Base D R} (M : Model b N) : sU M ≫ πp p R = (Uo M).ι ≫ M.s :=
   IsOpenImmersion.lift_fac _ _ _
 
+/- English proof (translation)
+The claim follows from `(IsOpenImmersion.isPullback (sU M) (Uo M).ι (πp p R) M.s (sU_fac M).symm (by rw [opensRange_πp, preimage_bo, Scheme.Opens.opensRange_ι])).flip`.
+-/
 private theorem pbU {b : Base D R} (M : Model b N) : IsPullback (Uo M).ι (sU M) M.s (πp p R) :=
   (IsOpenImmersion.isPullback (sU M) (Uo M).ι (πp p R) M.s (sU_fac M).symm
     (by rw [opensRange_πp, preimage_bo, Scheme.Opens.opensRange_ι])).flip
 
+/- English proof (translation)
+The claim follows from `GlobalTheory.HTPull.exists_objMap_pull p D R b N _ _ M.s (Uo M).ι M.univ`.
+-/
 private theorem exists_uO {b : Base D R} (M : Model b N) :
     ∃ o : Obj b N ((Uo M).ι ≫ M.s), Nonempty (ObjMap o M.univ (Uo M).ι) :=
   GlobalTheory.HTPull.exists_objMap_pull p D R b N _ _ M.s (Uo M).ι M.univ
@@ -202,6 +245,19 @@ private def mdl {b : Base D R} (M : Model b N) : Model (bb (p := p) b) N where
         ⟨by rw [Category.assoc, ← sU_fac, ← Category.assoc, hf'], ⟨MapComp.comp m'' (uM M)⟩⟩
       exact (cancel_mono (Uo M).ι).1 e
 
+/- English proof (translation)
+Take `⟨T, hsf, hse, -, htf, hte, hUP⟩` from `GlobalTheory.T.exists_finiteEtale_Tj_correspondence_p_invertible p D (Rp p R) (bb b) N hN hNp isUnit_Rp r w j c hw hu hj hc hm (mdl M)`. Set `gs : T.Y ⟶ (Uo M).toScheme` to `T.s`. Set `gt : T.Y ⟶ (Uo M).toScheme` to `T.t`. Establish `h₁ : (gs ≫ sU M) ≫ πp p R = (gs ≫ (Uo M).ι) ≫ M.s`. Rewrite using `[Category.assoc, sU_fac, Category.assoc]`.
+
+Set `o₀ : Obj b N ((gs ≫ (Uo M).ι) ≫ M.s)` to `toR h₁ T.o`. Set `o₀' : Obj b N ((gs ≫ (Uo M).ι) ≫ M.s)` to `toR h₁ T.o'`. Establish `hst : gs ≫ sU M = gt ≫ sU M` using `T.st`. Set `ms : ObjMap o₀ (uO M) gs` to `cp T.ms`. Set `mt : ObjMap o₀' (uO M) gt` to `cp T.mt`.
+
+Use `⟨T.Y, gs ≫ (Uo M).ι, gt ≫ (Uo M).ι, gs, gt, o₀, o₀', MapComp.comp ms (uM M), MapComp.comp mt (uM M), T.ψ, ?_, rfl, rfl, hsf, hse, htf, hte, T.isog, T.tj, ?_⟩` and prove the remaining obligations. Rewrite using `[Category.assoc, Category.assoc, ← sU_fac, ← Category.assoc, ← Category.assoc, hst]`. Introduce `S x o₁ o₁' m₁ ψ₁ hpS hisog htj`. Take `⟨x', rfl⟩` from `exists_lift x hpS`. Establish `h₂ : (x' ≫ sU M) ≫ πp p R = (x' ≫ (Uo M).ι) ≫ M.s`.
+
+Rewrite using `[Category.assoc, sU_fac, Category.assoc]`. Take `⟨m'⟩` from `MapComp.cancel m₁ (uM M)`. Set `a₁ : Obj (bb (p` to `p) b) N (x' ≫ sU M) := ofR h₂ o₁`. Set `a₁' : Obj (bb (p` to `p) b) N (x' ≫ sU M) := ofR h₂ o₁'`. Set `m'' : ObjMap a₁ (mdl M).univ x'` to `cp m'`.
+
+Take `⟨y, ⟨hy, m₀, m₂, e⟩, huq⟩` from `hUP S x' a₁ a₁' m'' ψ₁ hpS hisog htj`. Establish `hy' : y ≫ gs = x'` using `hy`. Use `⟨y, ⟨by rw [← Category.assoc, hy'], ⟨cp m₀, cp m₂, e⟩⟩, ?_⟩` and prove the remaining obligations. Introduce and unpack `y' ⟨hy₁, m₀', m₂', e'⟩`. Establish `hy₂ : y' ≫ gs = x'` using `(cancel_mono (Uo M).ι).1 (by rw [Category.assoc]; exact hy₁)`.
+
+Set `n₀ : ObjMap a₁ T.o y'` to `cp m₀'`. Set `n₂ : ObjMap a₁' T.o' y'` to `cp m₂'`. Conclude with `huq y' ⟨hy₂, n₀, n₂, e'⟩`.
+-/
 private theorem main {p : ℕ} [Fact p.Prime] {D : Datum p} {R : Type} [CommRing R] [IsNoetherianRing R] {b : Base D R} {N : ℕ}
     (hN : 3 ≤ N) (hNp : N.Coprime p) {r : ℤ} {w : Ideal (𝓞 D.F)} {j c : ℕ} (hw : w.IsMaximal)
     (hu : uIdeal D r ≤ w) (hj : j ≤ D.n) (hc : ∃ e : ℕ, c = p ^ e ∧ (0 < j → 0 < e)) (hm : D.m = 1)
@@ -240,6 +296,9 @@ private theorem main {p : ℕ} [Fact p.Prime] {D : Datum p} {R : Type} [CommRing
 end UpperTheory.Cb.isogenyLiftUniqueness
 
 open UpperTheory.Cb.isogenyLiftUniqueness in
+/- English proof (translation)
+Introduce `p _ D R _ _ _ _ b N hN hNp _ r w j c hw hu hj hc hm M`. Conclude with `UpperTheory.Cb.isogenyLiftUniqueness.main hN hNp hw hu hj hc hm M`.
+-/
 theorem UpperTheory.Cb.exists_heckeCorrespondence_on_integral_shimuraModel :
     ∀ (p : ℕ) [Fact p.Prime] (D : Datum p) (R : Type) [CommRing R] [IsDomain R] [IsDiscreteValuationRing R] [CharZero R] (b : Base D R) (N : ℕ), 3 ≤ N → N.Coprime p → (p : R) ∈ IsLocalRing.maximalIdeal R → ∀ (r : ℤ) (w : Ideal (𝓞 D.F)) (j c : ℕ), w.IsMaximal → uIdeal D r ≤ w → j ≤ D.n → (∃ e : ℕ, c = p ^ e ∧ (0 < j → 0 < e)) → D.m = 1 → ∀ M : Model b N, ∃ (Y₀ : Scheme.{0}) (s₀ t₀ : Y₀ ⟶ M.X) (gs gt : Y₀ ⟶ (M.X.basicOpen ((p : ℕ) : Γ(M.X, ⊤))).toScheme) (o₀ o₀' : Obj b N (s₀ ≫ M.s)) (ms₀ : ObjMap o₀ M.univ s₀) (mt₀ : ObjMap o₀' M.univ t₀) (ψ₀ : o₀.A ⟶ o₀'.A), s₀ ≫ M.s = t₀ ≫ M.s ∧ gs ≫ (M.X.basicOpen ((p : ℕ) : Γ(M.X, ⊤))).ι = s₀ ∧ gt ≫ (M.X.basicOpen ((p : ℕ) : Γ(M.X, ⊤))).ι = t₀ ∧ IsFinite gs ∧ Etale gs ∧ IsFinite gt ∧ Etale gt ∧ IsPIsog c o₀ o₀' ψ₀ ∧ IsTj r w j o₀ o₀' ψ₀ ∧ ∀ (S : Scheme.{0}) (x : S ⟶ M.X) (o₁ o₁' : Obj b N (x ≫ M.s)) (m₁ : ObjMap o₁ M.univ x) (ψ₁ : o₁.A ⟶ o₁'.A), IsUnit ((p : ℕ) : Γ(S, ⊤)) → IsPIsog c o₁ o₁' ψ₁ → IsTj r w j o₁ o₁' ψ₁ → ∃! y : S ⟶ Y₀, y ≫ s₀ = x ∧ ∃ (m₀ : ObjMap o₁ o₀ y) (m₂ : ObjMap o₁' o₀' y), m₀.φ ≫ ψ₀.left = ψ₁.left ≫ m₂.φ := by
   intro p _ D R _ _ _ _ b N hN hNp _ r w j c hw hu hj hc hm M

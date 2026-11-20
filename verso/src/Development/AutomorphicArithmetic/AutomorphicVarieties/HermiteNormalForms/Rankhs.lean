@@ -3,6 +3,11 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.HermiteNormalForms
 open NumberField Matrix UpperTheory.V UpperTheory.V.KT
 open scoped ComplexOrder
 
+/- English proof (translation)
+Introduce `L _ _ _ N`. Use `(Submodule.finrank_le (HSsub L N)).trans (le_of_eq ?_)` and prove the remaining obligations. Establish `h1` using `IsTotallyComplex.finrank L`. Establish `h2` using `InfinitePlace.card_eq_nrRealPlaces_add_nrComplexPlaces L`. Establish `h3` using `IsTotallyComplex.nrRealPlaces_eq_zero L`.
+
+Simplify using `only [Module.finrank_pi_fintype, Complex.finrank_real_complex, Finset.sum_const, Finset.card_univ, Fintype.card_fin, smul_eq_mul, dd]`. Rewrite using `[h1, h2, h3]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem UpperTheory.V.KT.rankhs :
     ∀ (L : Type) [Field L] [NumberField L] [IsTotallyComplex L] (N : ℕ), Module.finrank ℝ (HS L N) ≤ dd L N * N := by
   intro L _ _ _ N

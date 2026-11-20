@@ -4,6 +4,11 @@ namespace ReciprocityTheory.ChartRestriction.G.T0
 
 open MeasureTheory Module Submodule
 
+/- English proof (translation)
+Establish `e : ((span ℤ (Set.range B) : Submodule ℤ (Fin n → ℝ)) : Set (Fin n → ℝ)) = Set.range (fun c : Fin n → ℤ => ∑ i, c i • B i)`. Use extensionality with `x`. Simplify using `only [SetLike.mem_coe, Submodule.mem_span_range_iff_exists_fun, Set.mem_range]`. Establish `hc : ((span ℤ (Set.range B) : Submodule ℤ (Fin n → ℝ)) : Set (Fin n → ℝ)).Countable`. Rewrite using `[e]`.
+
+Conclude with `Set.countable_range _`. Conclude with `hc.to_subtype`.
+-/
 theorem gtA_countable {n : ℕ} (B : Basis (Fin n) ℝ (Fin n → ℝ)) :
     Countable (span ℤ (Set.range B)).toAddSubgroup := by
   have e : ((span ℤ (Set.range B) : Submodule ℤ (Fin n → ℝ)) : Set (Fin n → ℝ)) =
@@ -15,6 +20,11 @@ theorem gtA_countable {n : ℕ} (B : Basis (Fin n) ℝ (Fin n → ℝ)) :
     exact Set.countable_range _
   exact hc.to_subtype
 
+/- English proof (translation)
+Use `haveI := gtA_countable B`. Establish `fund` using `ZSpan.isAddFundamentalDomain B volume`. Take `⟨x, hx0, hxs⟩` from `MeasureTheory.exists_ne_zero_mem_lattice_of_measure_mul_two_pow_lt_measure (L := (span ℤ (Set.range B)).toAddSubgroup) fund (s := Metric.ball (0 : Fin n → ℝ) t) (fun y hy => by simpa using hy) (convex_ball (0 : Fin n → ℝ) t) (by`. Establish `h2 : (2 : ENNReal) ^ n = ENNReal.ofReal ((2 : ℝ) ^ n)`. Rewrite using `[ENNReal.ofReal_pow (by norm_num)]`.
+
+Simplify using the standard rewrite rules. Rewrite using `[ZSpan.volume_fundamentalDomain B, Real.volume_pi_ball 0 ht, Module.finrank_fin_fun, Fintype.card_fin, h2, ← ENNReal.ofReal_mul (abs_nonneg _), ENNReal.ofReal_lt_ofReal_iff (by positivity), mul_pow, mul_comm ((2 : ℝ) ^ n)]`. Conclude with `mul_lt_mul_of_pos_right h (by positivity))`. Use `⟨x, x.2, fun h0 => hx0 (Subtype.ext h0), ?_⟩` and prove the remaining obligations. Simplify using `using hxs`.
+-/
 theorem gtA_mink_pi_lt {n : ℕ} (B : Basis (Fin n) ℝ (Fin n → ℝ)) {t : ℝ} (ht : 0 < t)
     (h : |(Matrix.of B).det| < t ^ n) :
     ∃ x ∈ span ℤ (Set.range B), x ≠ 0 ∧ ‖x‖ < t := by
@@ -33,6 +43,13 @@ theorem gtA_mink_pi_lt {n : ℕ} (B : Basis (Fin n) ℝ (Fin n → ℝ)) {t : �
   refine ⟨x, x.2, fun h0 => hx0 (Subtype.ext h0), ?_⟩
   simpa using hxs
 
+/- English proof (translation)
+Use `haveI := gtA_countable B`. Use `haveI : Nonempty (Fin n) := ⟨⟨0, hn⟩⟩`. Establish `fund` using `ZSpan.isAddFundamentalDomain B volume`. Take `⟨x, hx0, hxs⟩` from `MeasureTheory.exists_ne_zero_mem_lattice_of_measure_mul_two_pow_le_measure (L := (span ℤ (Set.range B)).toAddSubgroup) fund (s := Metric.closedBall (0 : Fin n → ℝ) t) (fun y hy => by simpa using hy) (convex_closedBall (0 : Fin n → ℝ) t) (isCompact_closedBall (0 : Fin n → ℝ) t) (b …`. Establish `h2 : (2 : ENNReal) ^ n = ENNReal.ofReal ((2 : ℝ) ^ n)`.
+
+Rewrite using `[ENNReal.ofReal_pow (by norm_num)]`. Simplify using the standard rewrite rules. Rewrite using `[ZSpan.volume_fundamentalDomain B, Real.volume_pi_closedBall 0 ht.le, Module.finrank_fin_fun, Fintype.card_fin, h2, ← ENNReal.ofReal_mul (abs_nonneg _)]`. Apply `ENNReal.ofReal_le_ofReal` to reduce the goal to its premises. Rewrite using `[mul_pow, mul_comm ((2 : ℝ) ^ n)]`.
+
+Conclude with `mul_le_mul_of_nonneg_right h (by positivity))`. Use `⟨x, x.2, fun h0 => hx0 (Subtype.ext h0), ?_⟩` and prove the remaining obligations. Simplify using `using hxs`.
+-/
 theorem gtA_mink_pi_le {n : ℕ} (hn : 0 < n) (B : Basis (Fin n) ℝ (Fin n → ℝ)) {t : ℝ}
     (ht : 0 < t) (h : |(Matrix.of B).det| ≤ t ^ n) :
     ∃ x ∈ span ℤ (Set.range B), x ≠ 0 ∧ ‖x‖ ≤ t := by
@@ -53,6 +70,11 @@ theorem gtA_mink_pi_le {n : ℕ} (hn : 0 < n) (B : Basis (Fin n) ℝ (Fin n → 
   refine ⟨x, x.2, fun h0 => hx0 (Subtype.ext h0), ?_⟩
   simpa using hxs
 
+/- English proof (translation)
+Rewrite using `[EuclideanSpace.norm_eq]`. Establish `hM : ∀ i, ‖x i‖ ≤ ‖EuclideanSpace.equiv (Fin n) ℝ x‖` using `fun i => norm_le_pi_norm (EuclideanSpace.equiv (Fin n) ℝ x) i`. Combine the equalities or inequalities in the displayed calculation. Apply `Real.sqrt_le_sqrt` to reduce the goal to its premises. Conclude with `Finset.sum_le_sum fun i _ => by gcongr; exact hM i`.
+
+Use `_ = Real.sqrt n * ‖EuclideanSpace.equiv (Fin n) ℝ x‖ := by`. Rewrite using `[Finset.sum_const, Finset.card_univ, Fintype.card_fin, nsmul_eq_mul, Real.sqrt_mul (Nat.cast_nonneg _), Real.sqrt_sq (norm_nonneg _)]`.
+-/
 theorem gtA_norm_le_sqrt_mul (n : ℕ) (x : EuclideanSpace ℝ (Fin n)) :
     ‖x‖ ≤ Real.sqrt n * ‖EuclideanSpace.equiv (Fin n) ℝ x‖ := by
   rw [EuclideanSpace.norm_eq]
@@ -66,12 +88,20 @@ theorem gtA_norm_le_sqrt_mul (n : ℕ) (x : EuclideanSpace ℝ (Fin n)) :
         rw [Finset.sum_const, Finset.card_univ, Fintype.card_fin, nsmul_eq_mul,
           Real.sqrt_mul (Nat.cast_nonneg _), Real.sqrt_sq (norm_nonneg _)]
 
+/- English proof (translation)
+Use `first`. Consider the case `simp [PiLp.inner_apply, mul_comm]`. Consider the case `(rw [EuclideanSpace.inner_eq_star_dotProduct]; simp [dotProduct, mul_comm])`.
+-/
 theorem gtB_inner_eq (n : ℕ) (x y : EuclideanSpace ℝ (Fin n)) :
     inner ℝ x y = ∑ k, EuclideanSpace.equiv (Fin n) ℝ x k * EuclideanSpace.equiv (Fin n) ℝ y k := by
   first
     | simp [PiLp.inner_apply, mul_comm]
     | (rw [EuclideanSpace.inner_eq_star_dotProduct]; simp [dotProduct, mul_comm])
 
+/- English proof (translation)
+Use `show _ ∧ _`. Prove the components needed by the constructor for the conclusion. Introduce `x hx first`. Consider the case `simpa using hx x`. Consider the case `simpa [innerₗ_apply_apply] using hx x`.
+
+Introduce `y hy first`. Consider the case `simpa using hy y`. Consider the case `simpa [innerₗ_apply_apply] using hy y`.
+-/
 theorem gtB_nondeg (n : ℕ) : (innerₗ (EuclideanSpace ℝ (Fin n))).Nondegenerate := by
   show _ ∧ _
   constructor
@@ -84,6 +114,29 @@ theorem gtB_nondeg (n : ℕ) : (innerₗ (EuclideanSpace ℝ (Fin n))).Nondegene
       | simpa using hy y
       | simpa [innerₗ_apply_apply] using hy y
 
+/- English proof (translation)
+Use `set e := EuclideanSpace.equiv (Fin n) ℝ with he`. Use `set B := b.map e.toLinearEquiv with hBdef`. Establish `hB : ∀ j, B j = e (b j)` using `fun j => by simp [B]`. Establish `hsq : 0 < Real.sqrt n` using `Real.sqrt_pos.2 (by exact_mod_cast hn)`. Establish `hdet : (lam / Real.sqrt n) ^ n ≤ |(Matrix.of B).det|`.
+
+Assume the negation of the conclusion as `hlt`. Use `push Not at hlt`. Take `⟨x, hxs, hx0, hxn⟩` from `gtA_mink_pi_lt B (by positivity) hlt`. Take `⟨c, rfl⟩` from `(Submodule.mem_span_range_iff_exists_fun ℤ).1 hxs`. Establish `hex : e (∑ i, c i • b i) = ∑ i, c i • B i` using `by simp [hB, map_sum, map_zsmul]`.
+
+Establish `hx'0 : (∑ i, c i • b i) ≠ 0` using `by intro h; apply hx0; rw [← hex, h, map_zero]`. Establish `h1` using `hmin _ (Submodule.sum_mem _ fun i _ => Submodule.smul_mem _ _ (Submodule.subset_span ⟨i, rfl⟩)) hx'0`. Establish `h2` using `gtA_norm_le_sqrt_mul n (∑ i, c i • b i)`. Rewrite `h2` using `[hex]`. Establish `: Real.sqrt n * ‖∑ i, c i • B i‖ < lam`.
+
+Combine the equalities or inequalities in the displayed calculation. Combine the linear equalities and inequalities to obtain the conclusion. Use `set c := LinearMap.BilinForm.dualBasis (innerₗ (EuclideanSpace ℝ (Fin n))) (gtB_nondeg n) b with hcdef`. Establish `hc : ∀ i j, inner ℝ (c i) (b j) = if j = i then 1 else 0` using `fun i j => by`. Use `LinearMap.BilinForm.apply_dualBasis_left (gtB_nondeg n) b i j` as an intermediate fact.
+
+Simplify using `using this`. Use `set C := c.map e.toLinearEquiv with hCdef`. Establish `hC : ∀ j, C j = e (c j)` using `fun j => by simp [C]`. Establish `hCB : Matrix.of C * (Matrix.of B).transpose = 1`. Use extensionality with `i j`.
+
+Simplify using `only [Matrix.mul_apply, Matrix.of_apply, Matrix.transpose_apply, Matrix.one_apply, hB, hC]`. Rewrite using `[← gtB_inner_eq, hc]`. Simplify using `[eq_comm]`. Establish `hdetCB : (Matrix.of C).det * (Matrix.of B).det = 1`. Rewrite using `[← Matrix.det_transpose (Matrix.of B), ← Matrix.det_mul, hCB, Matrix.det_one]`.
+
+Establish `hdetC : |(Matrix.of C).det| ≤ (Real.sqrt n / lam) ^ n`. Establish `hpos : 0 < (lam / Real.sqrt n) ^ n` using `by positivity`. Establish `h1 : |(Matrix.of C).det| * |(Matrix.of B).det| = 1` using `by rw [← abs_mul, hdetCB, abs_one]`. Establish `h2 : |(Matrix.of C).det| = |(Matrix.of B).det|⁻¹` using `eq_inv_of_mul_eq_one_left h1`. Rewrite using `[h2, show (Real.sqrt n / lam) ^ n = ((lam / Real.sqrt n) ^ n)⁻¹ by`.
+
+Rewrite using `[← inv_pow, inv_div]]`. Conclude with `inv_anti₀ hpos hdet`. Take `⟨x, hxs, hx0, hxn⟩` from `gtA_mink_pi_le hn C (by positivity) hdetC`. Take `⟨k, rfl⟩` from `(Submodule.mem_span_range_iff_exists_fun ℤ).1 hxs`. Establish `hex : e (∑ i, k i • c i) = ∑ i, k i • C i` using `by simp [hC, map_sum, map_zsmul]`.
+
+Use `⟨∑ i, k i • c i, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `h`. Apply `hx0` to reduce the goal to its premises. Rewrite using `[← hex, h, map_zero]`. Introduce `j`.
+
+Use `⟨k j, ?_⟩` and prove the remaining obligations. Rewrite using `[sum_inner]`. Repeatedly rewrite using `[← Int.cast_smul_eq_zsmul ℝ, real_inner_smul_left, hc]`. Simplify using the standard rewrite rules. Establish `h2` using `gtA_norm_le_sqrt_mul n (∑ i, k i • c i)`.
+
+Rewrite `h2` using `[hex]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[← mul_div_assoc, Real.mul_self_sqrt (Nat.cast_nonneg _)]`.
+-/
 theorem gtB_dual_short {n : ℕ} (hn : 0 < n) (b : Basis (Fin n) ℝ (EuclideanSpace ℝ (Fin n)))
     (lam : ℝ) (hlam : 0 < lam)
     (hmin : ∀ x ∈ span ℤ (Set.range b), x ≠ 0 → lam ≤ ‖x‖) :

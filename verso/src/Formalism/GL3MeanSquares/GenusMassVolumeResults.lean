@@ -11,6 +11,9 @@ import Formalism.GL3MeanSquares.HookFormulaTorsion.FourierTransformScaledInner
 
 namespace Formalism.HermitianLattices.Final
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨Formalism.HermitianLattices.GenusMassVolumes.hecke_spectral_gap, Formalism.HermitianLattices.GenusMassVolumes.sharp_hecke_spectral_gap, Formalism.HermitianLattices.GenusMassVolumes.hecke_operator_terms, Formalism.HermitianLattices.GenusMassVolumes.height_integral_formula, Formal …`.
+-/
 theorem genus_mass_volume_results :
     Formalism.HermitianLattices.GenusMassVolumes.SW_hecke_gap ∧
     Formalism.HermitianLattices.GenusMassVolumes.SW_hecke_gap_sharp ∧

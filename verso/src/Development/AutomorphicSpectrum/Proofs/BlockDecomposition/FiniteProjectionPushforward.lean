@@ -12,24 +12,45 @@ namespace GlobalTheory.CompanionTheory.ComplexSets.DiscCover
 
 open Metric
 
+/- English proof (translation)
+Use function extensionality and compare the values at `i`. Rewrite using `[Subsingleton.elim i 0]`.
+-/
 theorem const_coord (y : Fin 1 → ℂ) : (fun _ : Fin 1 => y 0) = y := by
   funext i
   rw [Subsingleton.elim i 0]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `i`. Rewrite using `[Subsingleton.elim i 0]`. Conclude with `h`.
+-/
 theorem line_ext {y y' : Fin 1 → ℂ} (h : y 0 = y' 0) : y = y' := by
   funext i
   rw [Subsingleton.elim i 0]
   exact h
 
+/- English proof (translation)
+Establish `h : dist (fun _ : Fin 1 => y 0) (fun _ : Fin 1 => y' 0) = dist (y 0) (y' 0)` using `dist_pi_const (y 0) (y' 0)`. Rewrite `h` using `[const_coord y, const_coord y']`. Conclude with `h`.
+-/
 theorem line_dist (y y' : Fin 1 → ℂ) : dist y y' = dist (y 0) (y' 0) := by
   have h : dist (fun _ : Fin 1 => y 0) (fun _ : Fin 1 => y' 0) = dist (y 0) (y' 0) :=
     dist_pi_const (y 0) (y' 0)
   rw [const_coord y, const_coord y'] at h
   exact h
 
+/- English proof (translation)
+Simplify using `only [mem_ball, line_dist]`.
+-/
 theorem mem_line_ball {y c : Fin 1 → ℂ} {ρ : ℝ} : y ∈ ball c ρ ↔ y 0 ∈ ball (c 0) ρ := by
   simp only [mem_ball, line_dist]
 
+/- English proof (translation)
+Use `set e := ContinuousLinearEquiv.funUnique (Fin 1) ℂ ℂ`. Establish `hF : AnalyticAt ℂ (fun t : ℂ => δ (fun _ => t)) (c 0)`. Establish `h1 : AnalyticAt ℂ δ (e.symm (c 0))`. Establish `h2 : e.symm (c 0) = c` using `const_coord c`. Rewrite using `[h2]`.
+
+Conclude with `hδ`. Conclude with `h1.comp (e.symm.analyticAt _)`. Break down `hF.eventually_eq_zero_or_eventually_ne_zero with h0 | h1` into its components or cases. It suffices to derive a contradiction. Apply `hne` to reduce the goal to its premises.
+
+Establish `ht : Tendsto (fun y : Fin 1 → ℂ => y 0) (𝓝 c) (𝓝 (c 0))` using `(continuous_apply 0).tendsto c`. Use `filter_upwards [ht h0] with y hy`. Establish `hy' : δ (fun _ => y 0) = 0` using `hy`. Rewrite `hy'` using `[const_coord]`. Then use the resulting hypothesis. Take `⟨ε, hε, h⟩` from `Metric.eventually_nhds_iff.1 (eventually_nhdsWithin_iff.1 h1)`.
+
+Use `⟨ε, hε, fun y hy hyc => ?_⟩` and prove the remaining obligations. Establish `h2` using `h (y := y 0) (by simpa [line_dist] using mem_ball.1 hy) (fun h3 => hyc (line_ext h3))`. Rewrite `h2` using `[const_coord]`. Then use the resulting hypothesis.
+-/
 theorem exists_punctured_ball_ne_zero (δ : (Fin 1 → ℂ) → ℂ) (c : Fin 1 → ℂ) (hδ : AnalyticAt ℂ δ c)
     (hne : ¬ ∀ᶠ y in 𝓝 c, δ y = 0) : ∃ ρ₀ : ℝ, 0 < ρ₀ ∧ ∀ y ∈ ball c ρ₀, y ≠ c → δ y ≠ 0 := by
   set e := ContinuousLinearEquiv.funUnique (Fin 1) ℂ ℂ
@@ -52,6 +73,13 @@ theorem exists_punctured_ball_ne_zero (δ : (Fin 1 → ℂ) → ℂ) (c : Fin 1 
       (fun h3 => hyc (line_ext h3))
     rwa [const_coord] at h2
 
+/- English proof (translation)
+Establish `hcont : ContinuousOn (fun z i => f i z) C` using `continuousOn_pi.2 fun i => (hf i).continuousOn.mono hsub`. Establish `hcl` using `hcont.preimage_isClosed_of_isClosed hC.isClosed (isClosed_singleton (x := (0 : Fin k → ℂ)))`. Establish `heq : Y ∩ C = C ∩ (fun z i => f i z) ⁻¹' {(0 : Fin k → ℂ)}`. Use extensionality with `z`. Prove the components needed by the constructor for the conclusion.
+
+Introduce and unpack `⟨hzY, hzC⟩`. Establish `h : z ∈ Y ∩ Nn` using `⟨hzY, hsub hzC⟩`. Rewrite `h` using `[hY]`. Conclude with `⟨hzC, funext h.2⟩`. Introduce and unpack `⟨hzC, hz⟩`.
+
+Establish `h : z ∈ {z | z ∈ Nn ∧ ∀ i, f i z = 0}` using `⟨hsub hzC, fun i => congrFun hz i⟩`. Rewrite `h` using `[← hY]`. Conclude with `⟨h.1, hzC⟩`. Rewrite using `[heq]`. Conclude with `hC.of_isClosed_subset hcl Set.inter_subset_left`.
+-/
 theorem isCompact_inter_of_cut {σ : Type} [Fintype σ] {Y C Nn : Set (σ → ℂ)} {k : ℕ}
     {f : Fin k → (σ → ℂ) → ℂ} (hf : ∀ i, AnalyticOnNhd ℂ (f i) Nn)
     (hY : Y ∩ Nn = {z | z ∈ Nn ∧ ∀ i, f i z = 0}) (hC : IsCompact C) (hsub : C ⊆ Nn) :
@@ -73,6 +101,37 @@ theorem isCompact_inter_of_cut {σ : Type} [Fintype σ] {Y C Nn : Set (σ → �
   rw [heq]
   exact hC.of_isClosed_subset hcl Set.inter_subset_left
 
+/- English proof (translation)
+Use `set B := ball w r ∩ A ⁻¹' ball (A w) ρ with hBdef`. Establish `hBopen : IsOpen B` using `isOpen_ball.inter (isOpen_ball.preimage A.continuous)`. Establish `hclosed : ∀ C : Set (Fin 1 → ℂ), IsClosed C → C ⊆ ball (A w) ρ → IsCompact {x | x ∈ Y ∩ B ∧ A x ∈ C}`. Introduce `C hC hCD`. Establish `heq : {x | x ∈ Y ∩ B ∧ A x ∈ C} = (Y ∩ closedBall w r) ∩ A ⁻¹' C`.
+
+Use extensionality with `x`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨⟨hxY, hxb, -⟩, hxC⟩`. Conclude with `⟨⟨hxY, ball_subset_closedBall hxb⟩, hxC⟩`. Introduce and unpack `⟨⟨hxY, hxb⟩, hxC⟩`.
+
+Establish `hD` using `hCD hxC`. Use `⟨⟨hxY, ?_, hD⟩, hxC⟩` and prove the remaining obligations. Break down `(mem_closedBall.1 hxb).lt_or_eq with h | h` into its components or cases. Conclude with `mem_ball.2 h`. Conclude with `absurd hD (hsph x hxY h)`.
+
+Rewrite using `[heq]`. Conclude with `hcomp.inter_right (hC.preimage A.continuous)`. Establish `hsec : ∀ x ∈ Y ∩ B, A x ≠ A w → ∃ (O : Set (Fin 1 → ℂ)) (V : Set (σ → ℂ)) (g : (Fin 1 → ℂ) → σ → ℂ), IsOpen O ∧ IsOpen V ∧ x ∈ V ∧ DifferentiableOn ℂ g O ∧ (∀ t ∈ O, A (g t) = t) ∧ (Y ∩ B) ∩ V = g '' O`. Introduce `x hx hne`. Take `⟨O, V, g, hO, hV, hxV, hg, hAg, hYV⟩` from `hsheet x ⟨hx.1, ball_subset_closedBall hx.2.1⟩ hne hx.2.2`.
+
+Establish `hgc : ContinuousOn g O` using `hg.continuousOn`. Use `⟨O ∩ g ⁻¹' B, V ∩ B, g, hgc.isOpen_inter_preimage hO hBopen, hV.inter hBopen, ⟨hxV, hx.2⟩, hg.differentiableOn.mono Set.inter_subset_left, fun t ht => hAg t ht.1, ?_⟩` and prove the remaining obligations. Rewrite using `[Set.image_inter_preimage, ← hYV]`. Use extensionality with `z`. Simplify using `only [Set.mem_inter_iff]`.
+
+The claim follows by propositional logic. Take `⟨N, hN⟩` from `hCount σ (Y ∩ B) 1 A (ball (A w) ρ) (fun y => y 0 - A w 0) isOpen_ball (convex_ball (A w) ρ).isPreconnected (fun x hx => hx.2.2) (fun K hK hKc => hclosed K hKc.isClosed hK) (fun y _ => ((ContinuousLinearMap.proj (R := ℂ) (φ := fun _ : Fin 1 => ℂ) 0).analyticAt y).sub analyticAt_c …`. Take `⟨O, V, g, hO, hV, hxV, hg, hAg, hYV⟩` from `hsec x hx (fun h => hne (by simp [h]))`. Conclude with `⟨O, V, g, hO, hV, hxV, hg.continuousOn, hAg, hYV⟩)`. Use `⟨N, ?_⟩` and prove the remaining obligations.
+
+Unfold `IsCentredDiscCover`. Use `⟨⟨hw, mem_ball_self hr, mem_ball_self hρ⟩, ?_, ?_, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Establish `hnh` using `Filter.inter_mem hsurj (ball_mem_nhds (A w) hρ)`. Establish `hnb : (𝓝[≠] (A w)).NeBot` using `Module.punctured_nhds_neBot ℂ (Fin 1 → ℂ) (A w)`. Take `⟨y, ⟨⟨x, hx, hxy⟩, hyD⟩, hyne⟩` from `Filter.nonempty_of_mem (Filter.inter_mem (mem_nhdsWithin_of_mem_nhds hnh) self_mem_nhdsWithin : _ ∈ 𝓝[≠] (A w))`.
+
+Establish `hc` using `hN y hyD (sub_ne_zero.2 fun h => hyne (line_ext h))`. Break down `Nat.eq_zero_or_pos N with h0 | h0` into its components or cases. It suffices to derive a contradiction. Substitute `h0` using the available equality. Establish `hempty : {z | z ∈ Y ∩ B ∧ A z = y} = ∅` using `Set.encard_eq_zero.1 (by simpa using hc)`.
+
+Establish `hmem : x ∈ {z | z ∈ Y ∩ B ∧ A z = y}` using `⟨⟨hx.1, hx.2, by simpa [Set.mem_preimage, hxy] using hyD⟩, hxy⟩`. Rewrite `hmem` using `[hempty]`. Conclude with `hmem`. Conclude with `h0`. Conclude with `fun x hx => mem_line_ball.1 hx.2.2`.
+
+Conclude with `fun x hx hpx => hiso x ⟨hx.1, ball_subset_closedBall hx.2.1⟩ (line_ext hpx)`. Introduce `t ht hne`. Establish `hc : (fun _ : Fin 1 => t) ∈ ball (A w) ρ` using `mem_line_ball.2 ht`. Establish `h` using `hN (fun _ => t) hc (sub_ne_zero.2 hne)`. Establish `heq : {x | x ∈ Y ∩ B ∧ ((ContinuousLinearMap.proj (R` using `ℂ) (φ := fun _ : Fin 1 => ℂ) 0).comp A) x = t} = {x | x ∈ Y ∩ B ∧ A x = fun _ => t} := by`.
+
+Use extensionality with `x`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨hx, h1⟩`. Conclude with `⟨hx, line_ext h1⟩`. Introduce and unpack `⟨hx, h1⟩`.
+
+Use `⟨hx, ?_⟩` and prove the remaining obligations. Use `show A x 0 = t`. Rewrite using `[h1]`. Rewrite using `[heq]`. Conclude with `h`.
+
+Introduce `K hK hKc`. Conclude with `hclosed ((fun y : Fin 1 → ℂ => y 0) ⁻¹' K) (hKc.isClosed.preimage (continuous_apply 0)) (fun y hy => mem_line_ball.2 (hK hy))`. Introduce `x hx hne`. Establish `hne' : A x ≠ A w` using `fun h => hne (by show A x 0 = A w 0`. Rewrite using `[h])`.
+
+Take `⟨O, V, g, hO, hV, hxV, hg, hAg, hYV⟩` from `hsec x hx hne'`. Establish `hcc : Continuous (fun (t : ℂ) (_ : Fin 1) => t)` using `continuous_pi fun _ => continuous_id`. Establish `hcd : Differentiable ℂ (fun (t : ℂ) (_ : Fin 1) => t)` using `differentiable_pi.2 fun _ => differentiable_id`. Establish `hcs : Function.Surjective (fun (t : ℂ) (_ : Fin 1) => t)` using `fun y => ⟨y 0, const_coord y⟩`. Use `⟨(fun (t : ℂ) (_ : Fin 1) => t) ⁻¹' O, V, g ∘ (fun (t : ℂ) (_ : Fin 1) => t), hO.preimage hcc, hV, hxV, hg.comp hcd.differentiableOn (fun t ht => ht), fun t ht => ?_, ?_⟩` and prove the remaining obligations.
+
+Use `show A (g (fun _ => t)) 0 = t`. Rewrite using `[hAg _ ht]`. Rewrite using `[Set.image_comp, Set.image_preimage_eq O hcs]`. Conclude with `hYV`.
+-/
 theorem cover_of_radii (hCount : UnbranchedProperCountConstant.Statement) (σ : Type) [Fintype σ]
     (Y : Set (σ → ℂ)) (w : σ → ℂ) (A : (σ → ℂ) →L[ℂ] (Fin 1 → ℂ)) (r ρ : ℝ) (hr : 0 < r) (hρ : 0 < ρ)
     (hw : w ∈ Y) (hcomp : IsCompact (Y ∩ closedBall w r))
@@ -184,6 +243,17 @@ namespace GlobalTheory.CompanionTheory.ComplexSets
 
 open Metric DiscCover
 
+/- English proof (translation)
+Introduce `hOpen hPrim hSheet hCount σ _ Y w A hAn hIrr hIso hDom`. Take `⟨ℓ, N0, a, δ, q, ha, hδ, hq, hδne, hp1, hsep, hcoord⟩` from `hPrim σ Y w 1 A hAn hIrr hIso hDom`. Take `⟨M, hM, hMs⟩` from `hSheet σ Y w 1 A hAn hIrr hIso hDom ℓ N0 a δ q ha hδ hq hδne hp1 hsep hcoord`. Take `⟨ρ₀, hρ₀, hδ0⟩` from `exists_punctured_ball_ne_zero δ (A w) hδ hδne`. Establish `hAn2` using `hAn`.
+
+Establish `hIso2` using `hIso`. Take `⟨Nn, k, f, hNo, hwN, hf, hYN⟩` from `hAn2`. Take `⟨W', hW', hiso⟩` from `hIso2`. Establish `hU : M ∩ Nn ∩ W' ∈ 𝓝 w` using `Filter.inter_mem (Filter.inter_mem hM (hNo.mem_nhds hwN)) hW'`. Take `⟨r, hr, hrU⟩` from `Metric.nhds_basis_closedBall.mem_iff.1 hU`.
+
+Establish `hcomp : IsCompact (Y ∩ closedBall w r)` using `isCompact_inter_of_cut hf hYN (isCompact_closedBall w r) (fun x hx => (hrU hx).1.2)`. Establish `hS : IsCompact ((Y ∩ closedBall w r) ∩ sphere w r)` using `hcomp.inter_right isClosed_sphere`. Establish `hAS : A w ∉ A '' ((Y ∩ closedBall w r) ∩ sphere w r)`. Introduce and unpack `⟨x, ⟨⟨hxY, hxb⟩, hxs⟩, hx⟩`. Establish `hxw` using `hiso x ⟨hxY, (hrU hxb).2⟩ hx`.
+
+Rewrite `hxs` using `[hxw, mem_sphere, dist_self]`. Conclude with `hr.ne hxs`. Establish `hnh : (A '' ((Y ∩ closedBall w r) ∩ sphere w r))ᶜ ∈ 𝓝 (A w)` using `(hS.image A.continuous).isClosed.isOpen_compl.mem_nhds hAS`. Take `⟨ρ₁, hρ₁, hball⟩` from `Metric.mem_nhds_iff.1 hnh`. Take `⟨N, hN⟩` from `cover_of_radii hCount σ Y w A r (min ρ₀ ρ₁) hr (lt_min hρ₀ hρ₁) hIrr.1 hcomp (fun x hxY hd hb => hball (ball_subset_ball (min_le_right _ _) hb) ⟨x, ⟨⟨hxY, mem_closedBall.2 hd.le⟩, mem_sphere.2 hd⟩, rfl⟩) (fun x hx hxe => hiso x ⟨hx.1, (hrU hx.2).2⟩ hxe) (fun x hx hne hb => hMs x …`.
+
+Conclude with `⟨_, _, _, N, fun x hx => hx.1, hN⟩`.
+-/
 theorem irreducibleGerm_contains_centredDiscCover :
     FiniteGermProjectionOpenAt.Statement → IrreducibleGermPrimitiveForm.Statement →
     PrimitiveFormSheetedOffDiscriminant.Statement → UnbranchedProperCountConstant.Statement →

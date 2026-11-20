@@ -6,6 +6,9 @@ open Topology Filter
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Rewrite using `[Ideal.span_singleton_pow, Submodule.ideal_span_singleton_smul, Submodule.mem_smul_pointwise_iff_exists]`. Simplify using `[eq_comm]`.
+-/
 private lemma mem_span_pow_smul_iff_exists_pow_smul {R : Type} [CommRing R] (a : R) {M : Type} [AddCommGroup M]
     [Module R M] (n : ℕ) (x : M) :
     x ∈ (Ideal.span {a}) ^ n • (⊤ : Submodule R M) ↔ ∃ y : M, x = a ^ n • y := by
@@ -13,6 +16,15 @@ private lemma mem_span_pow_smul_iff_exists_pow_smul {R : Type} [CommRing R] (a :
     Submodule.mem_smul_pointwise_iff_exists]
   simp [eq_comm]
 
+/- English proof (translation)
+Set `_ : TopologicalSpace R` to `(Ideal.span {a}).ringFilterBasis.topology`. Set `_ : TopologicalSpace M` to `(Ideal.span {a}).adicModuleTopology M`. Establish `hB : ∀ y : M, (𝓝 y).HasBasis (fun V : Set M => ∃ n : ℕ, V = ↑((Ideal.span {a}) ^ n • (⊤ : Submodule R M))) (fun V => (fun z => y + z) '' V)` using `fun y => ((Ideal.span {a}).ringFilterBasis.moduleFilterBasis ((Ideal.span {a}).adic_module_basis M)).toAddGroupFilterBasis.nhds_hasBasis y`. Rewrite using `[continuous_iff_continuousAt]`. Use `forall_congr' fun g => ?_` and prove the remaining obligations.
+
+Use `((hB (f g)).tendsto_right_iff).trans ⟨fun H n => ?_, fun H V hV => ?_⟩` and prove the remaining obligations. Use `filter_upwards [H _ ⟨n, rfl⟩] with h hh`. Take `⟨z, hz, hzh⟩` from `hh`. Take `⟨y, rfl⟩` from `(mem_span_pow_smul_iff_exists_pow_smul a n z).1 hz`. Use `beta_reduce at hzh`.
+
+Conclude with `⟨y, by rw [← hzh, add_sub_cancel_left]⟩`. Take `⟨n, rfl⟩` from `hV filter_upwards [H n] with h hh`. Take `⟨y, hy⟩` from `hh`. Conclude with `⟨a ^ n • y, (mem_span_pow_smul_iff_exists_pow_smul a n _).2 ⟨y, rfl⟩, by show f g + a ^ n • y = f h`. Rewrite using `[← hy]`.
+
+Use the proof step `abel⟩`.
+-/
 theorem continuous_adicModule_iff {R : Type} [CommRing R] (a : R) {M : Type} [AddCommGroup M]
     [Module R M] {G : Type} [TopologicalSpace G] (f : G → M) :
     @Continuous G M _ ((Ideal.span {a}).adicModuleTopology M) f ↔

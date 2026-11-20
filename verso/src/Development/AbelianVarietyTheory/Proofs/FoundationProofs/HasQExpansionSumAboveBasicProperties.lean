@@ -9,6 +9,15 @@ open ModularForm (E₄ E₆)
 
 namespace GlobalTheory.FNHS
 
+/- English proof (translation)
+Introduce `Ω _ ε`. Use `⟨?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `C C' φ h hC hs z hz`. Conclude with `hs z (lt_of_le_of_lt hC hz)`. Introduce `C φ ψ h h' hφ hψ`.
+
+Use `⟨fun z hz => ?_, fun z hz => ?_⟩` and prove the remaining obligations. Use `(hφ z hz).add (hψ z hz)` as an intermediate fact. Simplify `this` using `[HahnSeries.coeff_add, map_add, add_mul]`. Use `(hφ z hz).sub (hψ z hz)` as an intermediate fact. Simplify `this` using `[HahnSeries.coeff_sub, map_sub, sub_mul]`.
+
+Introduce `C r c z _`. Use `hasSum_single (f := fun s : ℚ => ε ((HahnSeries.single r c).coeff s) * Complex.exp (2 * Real.pi * Complex.I * (s : ℂ) * z)) r (by` as an intermediate fact. Introduce `b hb`. Simplify using `[HahnSeries.coeff_single_of_ne hb])`. Simplify `this` using `[HahnSeries.coeff_single_same]`.
+
+Introduce `C φ ψ h hφψ hs z hz`. Rewrite using `[← hφψ z hz]`. Conclude with `hs z hz`.
+-/
 theorem hs_props : ∀ (Ω : Type) [Field Ω] (ε : Ω →+* ℂ), (∀ (C C' : ℝ) (φ : ℂ → ℂ) (h : HahnSeries ℚ Ω), C ≤ C' → HS ε C φ h → HS ε C' φ h) ∧ (∀ (C : ℝ) (φ ψ : ℂ → ℂ) (h h' : HahnSeries ℚ Ω), HS ε C φ h → HS ε C ψ h' → HS ε C (φ + ψ) (h + h') ∧ HS ε C (φ - ψ) (h - h')) ∧ (∀ (C : ℝ) (r : ℚ) (c : Ω), HS ε C (fun z => ε c * Complex.exp (2 * Real.pi * Complex.I * (r : ℂ) * z)) (HahnSeries.single r c)) ∧ (∀ (C : ℝ) (φ ψ : ℂ → ℂ) (h : HahnSeries ℚ Ω), (∀ z : ℂ, C < z.im → φ z = ψ z) → HS ε C φ h → HS ε C ψ h) := by
   intro Ω _ ε
   refine ⟨?_, ?_, ?_, ?_⟩

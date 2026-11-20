@@ -20,6 +20,9 @@ noncomputable section
 
 namespace GlobalTheory.TanRepr
 
+/- English proof (translation)
+Simplify using `only [spMap]`. Rewrite using `[← Spec.map_comp]`. Both sides reduce to the same expression.
+-/
 theorem spMap_comp' {A B C : Type} [CommRing A] [CommRing B] [CommRing C] (f : A →+* B) (g : B →+* C) :
     spMap g ≫ spMap f = spMap (g.comp f) := by
   simp only [spMap]
@@ -49,6 +52,9 @@ def baseMap : TrivSqZeroExt R M →+* TrivSqZeroExt B M where
       rw [TrivSqZeroExt.fst_add, map_add]
     · rfl
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fun _ => rfl, fun _ => TrivSqZeroExt.ext (by change algebraMap R B 0 = 0; simp) rfl⟩`.
+-/
 theorem baseMap_isSum : IsSum (baseMap R B M) (algebraMap R B) id :=
   ⟨fun _ => rfl, fun _ => TrivSqZeroExt.ext (by change algebraMap R B 0 = 0; simp) rfl⟩
 
@@ -62,20 +68,32 @@ variable (A : Over (Sp R)) [GrpObj A]
 variable {B M : Type} [CommRing B] [Algebra R B] [AddCommGroup M] [Module B M] [Module Bᵐᵒᵖ M]
   [IsCentralScalar B M] [Module R M] [IsScalarTower R B M] [Module Rᵐᵒᵖ M] [IsCentralScalar R M]
 
+/- English proof (translation)
+Use extensionality with `x`. Both sides reduce to the same expression.
+-/
 theorem fst_comp_baseMap : (TrivSqZeroExt.fstHom B B M).toRingHom.comp (baseMap R B M) =
     (algebraMap R B).comp (TrivSqZeroExt.fstHom R R M).toRingHom := by
   ext x; rfl
 
+/- English proof (translation)
+Use `RingHom.ext fun x => ?_` and prove the remaining obligations. Rewrite using `[RingHom.comp_apply, TrivSqZeroExt.algebraMap_eq_inl, (baseMap_isSum R B M).1]`. Both sides reduce to the same expression.
+-/
 theorem baseMap_comp_algebraMap : (baseMap R B M).comp (algebraMap R (TrivSqZeroExt R M)) =
     (TrivSqZeroExt.inlHom B M).comp (algebraMap R B) := by
   refine RingHom.ext fun x => ?_
   rw [RingHom.comp_apply, TrivSqZeroExt.algebraMap_eq_inl, (baseMap_isSum R B M).1]
   rfl
 
+/- English proof (translation)
+Use `Over.w η[A]` as an intermediate fact. Simplify using `using this`.
+-/
 theorem unit_w : (show Sp R ⟶ A.left from η[A].left) ≫ A.hom = 𝟙 (Sp R) := by
   have := Over.w η[A]
   simpa using this
 
+/- English proof (translation)
+Rewrite using `[← Category.assoc, spMap_comp', fst_comp_baseMap, ← spMap_comp', Category.assoc]`. Use `congr 1`. Conclude with `congrArg Over.Hom.left h`.
+-/
 theorem fst_baseMap_left (v : TM R M ⟶ A) (h : zeroSec R M ≫ v = η[A]) :
     spMap (TrivSqZeroExt.fstHom B B M).toRingHom ≫ spMap (baseMap R B M) ≫ v.left =
       spMap (algebraMap R B) ≫ (show Sp R ⟶ A.left from η[A].left) := by
@@ -83,6 +101,9 @@ theorem fst_baseMap_left (v : TM R M ⟶ A) (h : zeroSec R M ≫ v = η[A]) :
   congr 1
   exact congrArg Over.Hom.left h
 
+/- English proof (translation)
+Take `⟨z₀, _, hu⟩` from `GlobalTheory.T.spec_trivSqZeroExt_isPushout R B M (baseMap R B M) (baseMap_isSum R B M) A.left (show Sp R ⟶ A.left from η[A].left) (spMap (baseMap R B M) ≫ v₁.left) (fst_baseMap_left A v₁ h₁)`. Establish `a₁` using `hu v₁.left ⟨congrArg Over.Hom.left h₁, rfl⟩`. Establish `a₂` using `hu v₂.left ⟨congrArg Over.Hom.left h₂, e.symm⟩`. Conclude with `Over.OverMorphism.ext (a₁.trans a₂.symm)`.
+-/
 theorem left_eq (v₁ v₂ : TM R M ⟶ A) (h₁ : zeroSec R M ≫ v₁ = η[A]) (h₂ : zeroSec R M ≫ v₂ = η[A])
     (e : spMap (baseMap R B M) ≫ v₁.left = spMap (baseMap R B M) ≫ v₂.left) : v₁ = v₂ := by
   obtain ⟨z₀, _, hu⟩ := GlobalTheory.T.spec_trivSqZeroExt_isPushout R B M (baseMap R B M) (baseMap_isSum R B M) A.left
@@ -91,6 +112,9 @@ theorem left_eq (v₁ v₂ : TM R M ⟶ A) (h₁ : zeroSec R M ≫ v₁ = η[A])
   have a₂ := hu v₂.left ⟨congrArg Over.Hom.left h₂, e.symm⟩
   exact Over.OverMorphism.ext (a₁.trans a₂.symm)
 
+/- English proof (translation)
+Use `⟨?_, fst_baseMap_left A v h⟩` and prove the remaining obligations. Rewrite using `[Category.assoc, Over.w v]`. Express the relevant statement in the definitionally equal form `spMap (baseMap R B M) ≫ spMap (algebraMap R (TrivSqZeroExt R M)) = _`. Rewrite using `[spMap_comp', baseMap_comp_algebraMap]`.
+-/
 theorem lifts_baseMap (v : TM R M ⟶ A) (h : zeroSec R M ≫ v = η[A]) :
     Lifts A.hom (unitPt A B) (spMap (baseMap R B M) ≫ v.left) := by
   refine ⟨?_, fst_baseMap_left A v h⟩
@@ -98,6 +122,13 @@ theorem lifts_baseMap (v : TM R M ⟶ A) (h : zeroSec R M ≫ v = η[A]) :
   change spMap (baseMap R B M) ≫ spMap (algebraMap R (TrivSqZeroExt R M)) = _
   rw [spMap_comp', baseMap_comp_algebraMap]
 
+/- English proof (translation)
+Take `⟨h₁, h₂⟩` from `hz`. Take `⟨z₀, ⟨a₁, a₂⟩, -⟩` from `GlobalTheory.T.spec_trivSqZeroExt_isPushout R B M (baseMap R B M) (baseMap_isSum R B M) A.left (show Sp R ⟶ A.left from η[A].left) z h₂`. Establish `hb : spMap (TrivSqZeroExt.fstHom B B M).toRingHom ≫ z ≫ A.hom = spMap (algebraMap R B) ≫ 𝟙 (Sp R)`. Rewrite using `[← Category.assoc, h₂, unitPt, Category.assoc, unit_w]`. Take `⟨y, -, hu⟩` from `GlobalTheory.T.spec_trivSqZeroExt_isPushout R B M (baseMap R B M) (baseMap_isSum R B M) (Sp R) (𝟙 (Sp R)) (z ≫ A.hom) hb`.
+
+Establish `e₁` using `hu (z₀ ≫ A.hom) ⟨by rw [← Category.assoc, a₁, unit_w], by rw [← Category.assoc, a₂]⟩`. Establish `e₂` using `hu (spMap (algebraMap R (TrivSqZeroExt R M))) ⟨by`. Rewrite using `[spMap_comp']`. Establish `: (TrivSqZeroExt.fstHom R R M).toRingHom.comp (algebraMap R (TrivSqZeroExt R M)) = RingHom.id R` using `by ext x; rfl`. Apply the tactic sequence `rw [this]; simp only [spMap]; first | (rw [CommRingCat.ofHom_id, Spec.map_id]) | simp, by`.
+
+Rewrite using `[spMap_comp', baseMap_comp_algebraMap, h₁]⟩`. Use `⟨Over.homMk z₀ (e₁.trans e₂.symm), Over.OverMorphism.ext a₁, a₂⟩` and prove the remaining obligations.
+-/
 theorem exists_of_lifts (z : Sp (TrivSqZeroExt B M) ⟶ A.left) (hz : Lifts A.hom (unitPt A B) z) :
     ∃ (v : TM R M ⟶ A) (_ : zeroSec R M ≫ v = η[A]), spMap (baseMap R B M) ≫ v.left = z := by
   obtain ⟨h₁, h₂⟩ := hz
@@ -122,6 +153,9 @@ def phiLin (v : TM R M ⟶ A) (h : zeroSec R M ≫ v = η[A]) : Wmod A →ₗ[R]
   map_add' := map_add _
   map_smul' r w := (GlobalTheory.T.cotangentFormOfSqZeroPoint_linear_natural R A M v h).1 r w
 
+/- English proof (translation)
+Substitute `e` using the available equality. Both sides reduce to the same expression.
+-/
 theorem phiLin_congr {v₁ v₂ : TM R M ⟶ A} (h₁ : zeroSec R M ≫ v₁ = η[A])
     (h₂ : zeroSec R M ≫ v₂ = η[A]) (e : v₁ = v₂) : phiLin A v₁ h₁ = phiLin A v₂ h₂ := by
   subst e; rfl
@@ -133,6 +167,9 @@ def phiOf (z : Sp (TrivSqZeroExt B M) ⟶ A.left) : Wmod A →ₗ[R] M :=
     phiLin A hz.choose hz.choose_spec.choose
   else 0
 
+/- English proof (translation)
+Establish `hz : ∃ (v' : TM R M ⟶ A) (_ : zeroSec R M ≫ v' = η[A]), spMap (baseMap R B M) ≫ v'.left = spMap (baseMap R B M) ≫ v.left` using `⟨v, h, rfl⟩`. Rewrite using `[phiOf, dif_pos hz]`. Conclude with `phiLin_congr A _ _ (left_eq A _ _ hz.choose_spec.choose h hz.choose_spec.choose_spec)`.
+-/
 theorem phiOf_eq (v : TM R M ⟶ A) (h : zeroSec R M ≫ v = η[A]) :
     phiOf A (spMap (baseMap R B M) ≫ v.left) = phiLin A v h := by
   have hz : ∃ (v' : TM R M ⟶ A) (_ : zeroSec R M ≫ v' = η[A]),
@@ -140,6 +177,11 @@ theorem phiOf_eq (v : TM R M ⟶ A) (h : zeroSec R M ≫ v = η[A]) :
   rw [phiOf, dif_pos hz]
   exact phiLin_congr A _ _ (left_eq A _ _ hz.choose_spec.choose h hz.choose_spec.choose_spec)
 
+/- English proof (translation)
+Take `⟨v, h, hv⟩` from `GlobalTheory.T.exists_sqZeroPoint_of_cotangent_linearMap R A hq M l`. Use `⟨spMap (baseMap R B M) ≫ v.left, ⟨lifts_baseMap A v h, (phiOf_eq A v h).trans (LinearMap.ext hv)⟩, fun z' ⟨hl, hp⟩ => ?_⟩` and prove the remaining obligations. Take `⟨v', h', rfl⟩` from `exists_of_lifts A z' hl`. Rewrite `hp` using `[phiOf_eq A v' h']`. Establish `e : v' = v` using `GlobalTheory.T.sqZeroPoint_eq_of_cotangentForm_eq R A hq M v' v h' h fun w => by`.
+
+Express the relevant statement in the definitionally equal form `phiLin A v' h' w = _`. Rewrite using `[hp, hv]`. Rewrite using `[e]`.
+-/
 theorem cotangentAtUnit_tangentBijection (hq : (GlobalTheory.LieVB.omega A).IsQuasicoherent) (l : Wmod A →ₗ[R] M) :
     ∃! z : Sp (TrivSqZeroExt B M) ⟶ A.left, Lifts A.hom (unitPt A B) z ∧ phiOf A z = l := by
   obtain ⟨v, h, hv⟩ := GlobalTheory.T.exists_sqZeroPoint_of_cotangent_linearMap R A hq M l
@@ -162,6 +204,19 @@ variable {B M : Type} [CommRing B] [Algebra R B] [AddCommGroup M] [Module B M] [
 variable {B' M' : Type} [CommRing B'] [Algebra R B'] [AddCommGroup M'] [Module B' M'] [Module B'ᵐᵒᵖ M']
   [IsCentralScalar B' M'] [Module R M'] [IsScalarTower R B' M'] [Module Rᵐᵒᵖ M'] [IsCentralScalar R M']
 
+/- English proof (translation)
+Take `⟨v, h, rfl⟩` from `exists_of_lifts A z hz`. Set `g : TrivSqZeroExt R M →+* TrivSqZeroExt R M'` to `(TrivSqZeroExt.map f).toRingHom`. Establish `hg : IsSum g id f` using `⟨fun r => TrivSqZeroExt.map_inl f r, fun m => TrivSqZeroExt.map_inr f m⟩`. Establish `hw : (spMap g ≫ v.left) ≫ A.hom = (TM R M').hom`. Rewrite using `[Category.assoc, Over.w v]`.
+
+Express the relevant statement in the definitionally equal form `spMap g ≫ spMap (algebraMap R (TrivSqZeroExt R M)) = spMap (algebraMap R (TrivSqZeroExt R M'))`. Rewrite using `[spMap_comp']`. Conclude with `congrArg spMap (TrivSqZeroExt.map f).comp_algebraMap`. Set `v' : TM R M' ⟶ A` to `Over.homMk (spMap g ≫ v.left) hw`. Establish `h' : zeroSec R M' ≫ v' = η[A]`.
+
+Apply `Over.OverMorphism.ext` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `spMap (TrivSqZeroExt.fstHom R R M').toRingHom ≫ spMap g ≫ v.left = η[A].left`. Rewrite using `[← Category.assoc, spMap_comp']`. Establish `: (TrivSqZeroExt.fstHom R R M').toRingHom.comp g = (TrivSqZeroExt.fstHom R R M).toRingHom`. Use extensionality with `x`.
+
+Simplify using `[g]`. Rewrite using `[this]`. Conclude with `congrArg Over.Hom.left h`. Establish `hc : (baseMap R B' M').comp g = β.comp (baseMap R B M)`. Use `RingHom.ext fun x => ?_` and prove the remaining obligations.
+
+Rewrite using `[← TrivSqZeroExt.inl_fst_add_inr_snd_eq x]`. Simplify using `only [RingHom.comp_apply, map_add, hg.1, hg.2, (baseMap_isSum R B M).1, (baseMap_isSum R B M).2, (baseMap_isSum R B' M').1, (baseMap_isSum R B' M').2, hβ.1, hβ.2, id, AlgHom.commutes]`. Establish `e : spMap β ≫ spMap (baseMap R B M) ≫ v.left = spMap (baseMap R B' M') ≫ v'.left`. Express the relevant statement in the definitionally equal form `_ = spMap (baseMap R B' M') ≫ spMap g ≫ v.left`. Rewrite using `[← Category.assoc, ← Category.assoc, spMap_comp', spMap_comp', hc]`.
+
+Rewrite using `[e, phiOf_eq A v' h', phiOf_eq A v h]`. Use extensionality with `w`. Conclude with `(GlobalTheory.T.cotangentFormOfSqZeroPoint_linear_natural R A M v h).2 M' f g hg v' h' rfl w`.
+-/
 theorem cotangentAtUnit_tangentBijection_naturality (α : B →ₐ[R] B') (f : M →ₗ[R] M') (β : TrivSqZeroExt B M →+* TrivSqZeroExt B' M')
     (hβ : IsSum β α f) (z : Sp (TrivSqZeroExt B M) ⟶ A.left) (hz : Lifts A.hom (unitPt A B) z) :
     phiOf A (spMap β ≫ z) = f ∘ₗ phiOf A z := by
@@ -208,6 +263,11 @@ def tanRep (A : Over (Sp R)) [GrpObj A] (hq : (GlobalTheory.LieVB.omega A).IsQua
     letI := opModule R M'; haveI := opModule_central R M'
     exact cotangentAtUnit_tangentBijection_naturality A α f β hβ z hz
 
+/- English proof (translation)
+Introduce `R _ A _ hs`. Use `haveI := hs`. Establish `hfr` using `GlobalTheory.T.exists_cotangent_frame_smooth_groupScheme R A`. Establish `hq : (GlobalTheory.LieVB.omega A).IsQuasicoherent` using `GlobalTheory.OmegaGlobal.isQuasicoherent_of_frames hfr`. Take `⟨hfin, hproj⟩` from `GlobalTheory.T.finite_projective_cotangentGlobalSections_groupScheme R A hfr`.
+
+Conclude with `⟨Wmod A, inferInstance, inferInstance, hfin, hproj, ⟨tanRep A hq⟩⟩`.
+-/
 theorem exists_tanRep : ∀ (R : Type) [CommRing R] (A : Over (Sp R)) [GrpObj A], Smooth A.hom →
     ∃ (W : Type) (_ : AddCommGroup W) (_ : Module R W), Module.Finite R W ∧ Module.Projective R W ∧
       Nonempty (TanRep A W) := by

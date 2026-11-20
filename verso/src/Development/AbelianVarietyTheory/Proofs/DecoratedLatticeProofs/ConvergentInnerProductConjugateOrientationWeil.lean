@@ -24,10 +24,16 @@ namespace GlobalTheory.Core.Rk.IP
 
 variable {D : D7}
 
+/- English proof (translation)
+Simplify using `using (Complex.conjCLE.toContinuousLinearMap).integrable_comp hf`.
+-/
 theorem integrable_star_comp {X : Type*} [MeasurableSpace X] {μ : Measure X} {f : X → ℂ}
     (hf : Integrable f μ) : Integrable (fun x => conj (f x)) μ := by
   simpa using (Complex.conjCLE.toContinuousLinearMap).integrable_comp hf
 
+/- English proof (translation)
+Use `⟨fun γ hγ g => by simp only [hf.1 γ hγ g], ?_⟩` and prove the remaining obligations. Use `(Complex.conjCLE.toContinuousLinearMap).comp_memLp' hf.2` as an intermediate fact. Use `this using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `q`. Simplify using `[GlobalTheory.AutomorphicL2Unitary.descend]`.
+-/
 theorem memL2_conj_comp (V : HSp D) (μ : Measure (GA D V)) {f : GA D V → ℂ}
     (hf : MemL2Quotient (GQ V) μ f) : MemL2Quotient (GQ V) μ (fun x => conj (f x)) := by
   refine ⟨fun γ hγ g => by simp only [hf.1 γ hγ g], ?_⟩
@@ -36,6 +42,9 @@ theorem memL2_conj_comp (V : HSp D) (μ : Measure (GA D V)) {f : GA D V → ℂ}
   funext q
   simp [GlobalTheory.AutomorphicL2Unitary.descend]
 
+/- English proof (translation)
+Simplify using `only [petersson, pet]`. Rewrite using `[← integral_conj]`. Use `congr 1`. Use function extensionality and compare the values at `q`. Simplify using `[GlobalTheory.AutomorphicL2Unitary.descend]`.
+-/
 theorem petersson_star_comp (V : HSp D) (μ : Measure (GA D V)) (f₁ f₂ : GA D V → ℂ) :
     petersson V μ (fun x => conj (f₁ x)) (fun x => conj (f₂ x)) = conj (petersson V μ f₁ f₂) := by
   simp only [petersson, pet]
@@ -43,6 +52,21 @@ theorem petersson_star_comp (V : HSp D) (μ : Measure (GA D V)) (f₁ f₂ : GA 
   congr 1; funext q
   simp [GlobalTheory.AutomorphicL2Unitary.descend]
 
+/- English proof (translation)
+Introduce `hRD hWS hSE D ψ θ A B χA χB sA sB t cA K₁ K₂ c m ν f₁ f₂ hS hw ht hK hm hν hf₁ hf₂`. Take `⟨om, Φ₁, Φ₂, hW, hF₁, hF₂, -, -, hK₁, hK₂, μ, 𝓕, hcov, hc⟩` from `hK`. Take `⟨a, ha, ha'⟩` from `GlobalTheory.T.exists_adelicMajorantFrame_for_cartanInvolutions D θ A sA hS.2.2.2.1 hS.2.2.2.2.2.2.1`. Establish `hP : Pair ψ θ A B χA χB sA sB t cA a om μ 𝓕` using `⟨hS, ha, ha', hW, hcov⟩`. Take `⟨hU₁, hU₂, hI, hE⟩` from `GlobalTheory.T.unitary_theta_innerProduct_formula_convergent_range hRD hWS hSE D ψ θ A B χA χB sA sB t cA a om μ 𝓕 hP hw ht m ν hm hν Φ₁ Φ₂ hF₁ hF₂ f₁ hf₁ f₂ hf₂`.
+
+Establish `hcg : ∀ g, c g = conj (wcoef om μ 𝓕 Φ₁ Φ₂ g)`. Introduce `g`. Establish `h1 : wcoef om μ 𝓕 Φ₁ Φ₂ g = conj (c g)`. Establish `h2` using `hc g`. Simplify using `only at h2`.
+
+Rewrite using `[h2]`. Both sides reduce to the same expression. Rewrite using `[h1, Complex.conj_conj]`. Establish `hlift : ∀ (K : GA D A → GA D B → ℂ) (Φ : WO A B → ℂ) (u : GA D A → ℂ), (∀ g h, K g h = conj (thetaKO om g h Φ)) → GlobalTheory.IndefiniteRowSideFullHecke.SphericalVolumeLift.lift m K u = fun h => conj (up om m Φ u h)`. Introduce `K Φ u hK`.
+
+Use function extensionality and compare the values at `h`. Simplify using `only [GlobalTheory.IndefiniteRowSideFullHecke.SphericalVolumeLift.lift, up, petersson, pet, hK]`. Rewrite using `[← integral_conj]`. Use `congr 1`. Use function extensionality and compare the values at `q`.
+
+Simplify using `[GlobalTheory.AutomorphicL2Unitary.descend]`. Establish `hconv : ∀ (K : GA D A → GA D B → ℂ) (Φ : WO A B → ℂ) (u : GA D A → ℂ), (∀ g h, K g h = conj (thetaKO om g h Φ)) → UpConv om m ν Φ u → GlobalTheory.IndefiniteRowSideFullHecke.SphericalVolumeLift.LiftConv m ν K u`. Introduce `K Φ u hK hU`. Use `⟨fun h => ?_, ?_⟩` and prove the remaining obligations. Use `integrable_star_comp (hU.1 h)` as an intermediate fact.
+
+Use `this using 2 with q` and compare the differences between its conclusion and the goal. Simplify using `[GlobalTheory.AutomorphicL2Unitary.descend, hK]`. Rewrite using `[hlift K Φ u hK]`. Conclude with `memL2_conj_comp B ν hU.2`. Use `⟨hconv K₁ Φ₁ f₁ hK₁ hU₁, hconv K₂ Φ₂ f₂ hK₂ hU₂, ?_, ?_⟩` and prove the remaining obligations.
+
+Use `integrable_star_comp hI` as an intermediate fact. Use `this using 2 with g` and compare the differences between its conclusion and the goal. Simplify using `[hcg, rcoef]`. Rewrite using `[hlift K₁ Φ₁ f₁ hK₁, hlift K₂ Φ₂ f₂ hK₂, petersson_star_comp, hE, map_mul, ← integral_conj]`. Simplify using `[hcg, rcoef]`.
+-/
 theorem innerProduct_convergent_conj : GlobalTheory.Published.CuspRapidDecay → GlobalTheory.Published.WeilSiegelFormulaUnitary → GlobalTheory.Published.SiegelEisensteinContinuation → ∀ D : D7, ∀ (ψ : AddChar (AF D.host.F) ℂ) (θ : InfFam D) (A B : HSp D) (χA χB : (AE D)ˣ →* Circle) (sA : RealMat A) (sB : RealMat B) (t : ℕ) (cA : CptF A) (K₁ K₂ : GA D A → GA D B → ℂ) (c : GA D A → ℂ) (m : Measure (GA D A)) (ν : Measure (GA D B)) (f₁ f₂ : GA D A → ℂ), HidaSetting θ A B sA sB t cA → (wittIndex B = 0 ∨ wittIndex B < t) → A.rank < t → GlobalTheory.IndefiniteRowSideFullHecke.SphericalVolumeLift.IsKernelPair ψ θ A B χA χB sA sB false (fun _ => True) (fun _ => True) K₁ K₂ c → m.IsHaarMeasure → ν.IsHaarMeasure → f₁ ∈ A0 θ A cA → f₂ ∈ A0 θ A cA → GlobalTheory.IndefiniteRowSideFullHecke.SphericalVolumeLift.LiftConv m ν K₁ f₁ ∧ GlobalTheory.IndefiniteRowSideFullHecke.SphericalVolumeLift.LiftConv m ν K₂ f₂ ∧ Integrable (fun g => c g * conj (petersson A m (rTr A g f₁) f₂)) m ∧ petersson B ν (GlobalTheory.IndefiniteRowSideFullHecke.SphericalVolumeLift.lift m K₁ f₁) (GlobalTheory.IndefiniteRowSideFullHecke.SphericalVolumeLift.lift m K₂ f₂) = volQ B ν * ∫ g, c g * conj (petersson A m (rTr A g f₁) f₂) ∂m := by
   intro hRD hWS hSE D ψ θ A B χA χB sA sB t cA K₁ K₂ c m ν f₁ f₂ hS hw ht hK hm hν hf₁ hf₂
   obtain ⟨om, Φ₁, Φ₂, hW, hF₁, hF₂, -, -, hK₁, hK₂, μ, 𝓕, hcov, hc⟩ := hK

@@ -28,6 +28,13 @@ section Unit
 
 variable {S : Scheme.{0}} [IsLocallyNoetherian S] {k : Type} [Field k] (t : Spec (CommRingCat.of k) ⟶ S)
 
+/- English proof (translation)
+Take `⟨V, hpV, c, hc⟩` from `hsq S P (Over.mk t) x₁ x₂ (IsLocalRing.closedPoint k)`. Establish `hV : V = ⊤` using `eq_top_iff.2 fun q _ => by rw [spec_pt_eq q (IsLocalRing.closedPoint k)]; exact hpV`. Substitute `hV` using the available equality. Take `⟨s, hs⟩` from `exists_sec_of_pullGen (Z := (Over.mk t ⊗ P.A).left) ((fst (Over.mk t) P.A).left ⁻¹ᵁ ⊤).ι c hc`. Set `e` to `IsOpenImmersion.lift ((fst (Over.mk t) P.A).left ⁻¹ᵁ ⊤).ι (𝟙 _) (by rintro _ ⟨q, rfl⟩; rw [Scheme.Opens.range_ι]; trivial)`.
+
+Establish `he : e ≫ ((fst (Over.mk t) P.A).left ⁻¹ᵁ ⊤).ι = 𝟙 _` using `IsOpenImmersion.lift_fac _ _ _`. Use `UnitAt.congr P.isLB ?_ ⟨SectionArithmetic.pullSec s e, fun J hJ => ?_⟩` and prove the remaining obligations. Use `formEq_of_add fun U _ hh => ?_` and prove the remaining obligations. Simplify using `only [← Category.assoc, he, Category.id_comp]`. Rewrite using `[SectionArithmetic.sval_pullSec s e (𝟙 _) y hJ]`.
+
+Conclude with `hs _ y J hJ`.
+-/
 theorem unitAt_square (hsq : SquareSt) (P : PolAV S) (x₁ x₂ : Over.mk t ⟶ P.A) (y : (Over.mk t ⊗ P.A).left) :
     UnitAt P.L ![(translPt P.A (x₁ * x₂)).left, (snd (Over.mk t) P.A).left,
       (translPt P.A x₁).left, (translPt P.A x₂).left] ![1, 1, -1, -1] y := by
@@ -46,6 +53,9 @@ theorem unitAt_square (hsq : SquareSt) (P : PolAV S) (x₁ x₂ : Over.mk t ⟶ 
   · rw [SectionArithmetic.sval_pullSec s e (𝟙 _) y hJ]
     exact hs _ y J hJ
 
+/- English proof (translation)
+The claim follows from `| 0 => by refine UnitAt.congr P.isLB (formEq_of_add fun U _ hh => ?_) (unitAt_square t hsq P b b y) simp [Fin.sum_univ_succ, pow_two] module | n + 1 => by refine UnitAt.congr P.isLB (formEq_of_add fun U _ hh => ?_) ((unitAt_iter hsq P b y n).mul (unitAt_square t hsq P (b ^ (n + 2 …`.
+-/
 theorem unitAt_iter (hsq : SquareSt) (P : PolAV S) (b : Over.mk t ⟶ P.A) (y : (Over.mk t ⊗ P.A).left) :
     ∀ n : ℕ, UnitAt P.L ![(translPt P.A (b ^ (n + 2))).left, (snd (Over.mk t) P.A).left,
       (translPt P.A b).left] ![1, (n : ℤ) + 1, -((n : ℤ) + 2)] y
@@ -60,6 +70,11 @@ theorem unitAt_iter (hsq : SquareSt) (P : PolAV S) (b : Over.mk t ⟶ P.A) (y : 
     simp [Fin.sum_univ_succ, e]
     module
 
+/- English proof (translation)
+Take `⟨hfin, -, hsurj, -, -⟩` from `hmul S P r hr`. Take `⟨u, hu⟩` from `SectionDivision.exists_section (pullback.snd (mulA P.A r).left a₀.left)`. Establish `hb' : (u ≫ pullback.fst (mulA P.A r).left a₀.left) ≫ (mulA P.A r).left = a₀.left`. Rewrite using `[Category.assoc, pullback.condition, ← Category.assoc, hu, Category.id_comp]`. Establish `hw : (u ≫ pullback.fst (mulA P.A r).left a₀.left) ≫ P.A.hom = (Over.mk t).hom`.
+
+Rewrite using `[← Over.w (mulA P.A r), ← Category.assoc, hb', Over.w a₀]`. Use `⟨Over.homMk _ hw, ?_⟩` and prove the remaining obligations. Establish `e : ∀ b : Over.mk t ⟶ P.A, b ^ r = b ≫ mulA P.A r` using `fun b => (congrArg (· ^ r) (Category.comp_id b).symm).trans (MonObj.comp_pow (𝟙 P.A) r b).symm`. Rewrite using `[e]`. Conclude with `Over.OverMorphism.ext hb'`.
+-/
 theorem exists_root [IsAlgClosed k] (hmul : MulNSt) (P : PolAV S) (a₀ : Over.mk t ⟶ P.A) (r : ℕ)
     (hr : 1 ≤ r) : ∃ b : Over.mk t ⟶ P.A, b ^ r = a₀ := by
   obtain ⟨hfin, -, hsurj, -, -⟩ := hmul S P r hr
@@ -76,11 +91,41 @@ theorem exists_root [IsAlgClosed k] (hmul : MulNSt) (P : PolAV S) (a₀ : Over.m
 
 end Unit
 
+/- English proof (translation)
+Rewrite `h` using `[gs_eq r z U hz]`. Conclude with `(SetLike.ext_iff.1 (Scheme.preimage_basicOpen r a) z).2 ((Z.mem_basicOpen _ z hz).2 h)`.
+-/
 theorem mem_basicOpen_of_isUnit {Y Z : Scheme.{0}} (r : Z ⟶ Y) (z : Z) (U : Y.Opens) (hz : r z ∈ U) (a : Γ(Y, U))
     (h : IsUnit (gs r z U a)) : r z ∈ Y.basicOpen a := by
   rw [gs_eq r z U hz] at h
   exact (SetLike.ext_iff.1 (Scheme.preimage_basicOpen r a) z).2 ((Z.mem_basicOpen _ z hz).2 h)
 
+/- English proof (translation)
+Set `k` to `AlgebraicClosure (ResidueField V)`. Set `f : V →+* k` to `(algebraMap (ResidueField V) k).comp (residue V)`. Establish `hf : IsLocalHom f` using `inferInstance`. Set `t : Spec (CommRingCat.of k) ⟶ Spec (CommRingCat.of V)` to `Spec.map (CommRingCat.ofHom f)`. Set `T : Over (Spec (CommRingCat.of V))` to `Over.mk t`.
+
+Set `P` to `D.P`. Establish `hLB` using `P.isLB`. Set `o : T ⟶ T ⊗ P.A` to `lift (𝟙 T) 1`. Set `y : (T ⊗ P.A).left` to `o.left (closedPoint k)`. Establish `hy : (snd T P.A).left y = (η[D.P.A]).left (closedPoint V)`.
+
+Establish `e : o ≫ snd T P.A = toUnit T ≫ η[P.A]` using `lift_snd _ _`. Establish `e2` using `congrArg (fun q => q.left (closedPoint k)) e`. Simplify using `only [Over.comp_left, Scheme.Hom.comp_apply, Over.toUnit_left] at e2`. Use `e2.trans ((Scheme.Hom.comp_apply _ _ _).trans (congrArg _ ?_))` and prove the remaining obligations. Conclude with `IsLocalRing.comap_closedPoint f`.
+
+Take `⟨b, hb⟩` from `exists_root t hL.mulN P (toUnit _ ≫ D.c χ) r (by omega)`. Establish `hE` using `unitAt_iter t hL.square P b y (r - 2)`. Establish `hr2 : r - 2 + 2 = r` using `by omega`. Establish `hr2' : ((r - 2 : ℕ) : ℤ) = (r : ℤ) - 2` using `by omega`. Rewrite `hE` using `[hr2, hb, hr2']`.
+
+Establish `: IsIso (P.A.hom ⁻¹ᵁ ⊤).ι` using `inferInstanceAs (IsIso P.A.left.topIso.hom)`. Set `hb' : (T ⊗ P.A).left ⟶ (P.A.hom ⁻¹ᵁ ⊤).toScheme` to `(translPt P.A b).left ≫ inv (P.A.hom ⁻¹ᵁ ⊤).ι`. Establish `hbι : hb' ≫ (P.A.hom ⁻¹ᵁ ⊤).ι = (translPt P.A b).left` using `by show ((translPt P.A b).left ≫ inv (P.A.hom ⁻¹ᵁ ⊤).ι) ≫ _ = _`. Rewrite using `[Category.assoc, IsIso.inv_hom_id, Category.comp_id]`. Take `⟨hgen, -⟩` from `hL.ample _ P r hr`.
+
+Take `⟨M', s', hcov'⟩` from `hgen ⊤ (isAffineOpen_top _)`. Take `⟨m0, hm0⟩ : ∃ m0, hb' y ∈ nonzeroLocus (s' m0)` from `Opens.mem_iSup.1 (by rw [hcov']; trivial)`. Take `⟨kk', hkk'⟩` from `Opens.mem_iSup.1 hm0`. Establish `hG : UnitAt P.L (fun _ : Fin r => hb' ≫ (P.A.hom ⁻¹ᵁ ⊤).ι) (fun _ => 1) y` using `⟨SectionArithmetic.pullSec (s' m0) hb', fun J hJ => by`. Use `SectionArithmetic.sval_pullSec (s' m0) hb' (𝟙 _) y hJ` as an intermediate fact.
+
+Rewrite `this` using `[Category.id_comp]`. Conclude with `(congrArg IsUnit this).mpr (SectionArithmetic.isUnit_sval (s' m0) hb' y hJ kk' hkk')⟩`. Take `⟨c, hc⟩` from `exists_gen_of_local (V := V) P.L hLB ![(D.c χ).left, (η[P.A]).left] ![-1, 1]`. Establish `hC : UnitAt P.L (fun i => (T ⊗ P.A).hom ≫ ![(D.c χ).left, (η[P.A]).left] i) ![-1, 1] y` using `⟨SectionArithmetic.pullSec (Geo.Tor.genSec c hc) (T ⊗ P.A).hom, fun J hJ => by`. Rewrite using `[SectionArithmetic.sval_pullSec _ _ (𝟙 _) y hJ, sval_genSec c hc _ y hJ]`.
+
+Conclude with `Units.isUnit _⟩`. Establish `a0 : (snd T P.A).left ≫ D.famφB χ 0 = (snd T P.A).left` using `Category.comp_id _`. Establish `a1 : (snd T P.A).left ≫ D.famφB χ 1 = (translPt P.A (toUnit T ≫ D.c χ)).left` using `by show (snd T P.A ≫ padd D.P.A (𝟙 D.P.A) (toUnit _ ≫ D.c χ)).left = _`. Use `congr 1`. Establish `e1 : snd T P.A ≫ padd D.P.A (𝟙 D.P.A) (toUnit _ ≫ D.c χ) = snd T P.A * (toUnit _ ≫ D.c χ)`.
+
+Use `(MonObj.comp_mul (snd T P.A) (𝟙 _) (toUnit _ ≫ D.c χ)).trans ?_` and prove the remaining obligations. Rewrite using `[Category.comp_id, ← Category.assoc, comp_toUnit]`. Rewrite using `[e1, mul_comm]`. Use `show _ = (fst T P.A ≫ toUnit T ≫ D.c χ) * snd T P.A`. Rewrite using `[← Category.assoc, comp_toUnit]`.
+
+Establish `a2 : (snd T P.A).left ≫ D.famφB χ 2 = (T ⊗ P.A).hom ≫ (D.c χ).left` using `by show (snd T P.A ≫ toUnit _ ≫ D.c χ).left = _`. Rewrite using `[← Category.assoc, comp_toUnit, Over.comp_left, Over.toUnit_left]`. Establish `a3 : (snd T P.A).left ≫ D.famφB χ 3 = (T ⊗ P.A).hom ≫ (η[P.A]).left` using `by show (snd T P.A ≫ toUnit _ ≫ η[P.A]).left = _`. Rewrite using `[← Category.assoc, comp_toUnit, Over.comp_left, Over.toUnit_left]`. Choose the witnesses or unpack the hypotheses as in `⟨σ, hσ⟩ : UnitAt P.L (fun i => (snd T P.A).left ≫ D.famφB χ i) (DegPre.famε r) y := by`.
+
+Use `UnitAt.congr hLB (formEq_of_add fun U _ hh => ?_) ((hE.mul hG).mul hC)` and prove the remaining obligations. Rewrite using `[Fintype.sum_sum_type, Fintype.sum_sum_type, Fin.sum_univ_four, a0, a1, a2, a3, Fin.sum_univ_three, Fin.sum_univ_two]`. Simplify using `only [Sum.elim_inl, Sum.elim_inr, hbι, DegPre.famε, Matrix.cons_val, Finset.sum_const, Finset.card_univ, Fintype.card_fin, ← natCast_zsmul]`. Use `module`. Take `⟨m, c', β, hβ⟩` from `hTW V D r (by omega) χ k f hf σ`.
+
+Use `choose J hJ using fun ψ : (T ⊗ P.A).left ⟶ P.A.left => exists_chart hLB (ψ y)`. Establish `hJ' : Good P.L y J` using `hJ`. Establish `e` using `SectionScalarValuation.sval_lin (fun l => (fst T P.A).left.appTop.hom (c' l)) (fun l => SectionArithmetic.pullSec (β l) (snd T P.A).left) (fun j => hβ j) (𝟙 _) y hJ'`. Take `⟨i, -, hi⟩` from `IsLocalRing.exists_of_isUnit_sum ((congrArg IsUnit e).mp (hσ J hJ'))`. Establish `hi'` using `isUnit_of_mul_isUnit_right hi`.
+
+Rewrite `hi'` using `[SectionArithmetic.sval_pullSec _ _ (𝟙 _) y hJ', Category.id_comp]`. Use `⟨β i, ?_⟩` and prove the remaining obligations. Rewrite using `[← hy]`. Conclude with `Opens.mem_iSup.2 ⟨_, mem_basicOpen_of_isUnit _ y _ (hJ'.mem _ _) _ hi'⟩`.
+-/
 theorem exists_unit_sec (hL : Laws) (hTW : TwistBCSpanStatement) (V : Type) [CommRing V] [IsDomain V]
     [IsDiscreteValuationRing V] (D : DegPre V) (r : ℕ) (hr : 4 ≤ r) (χ : D.X) :
     ∃ β : D.SecB r χ, (η[D.P.A]).left (closedPoint V) ∈ nonzeroLocus β := by
@@ -162,6 +207,9 @@ section Alg
 
 variable {F R : Type} [CommRing F] [CommRing R] [Algebra F R]
 
+/- English proof (translation)
+The claim follows from `| 0 => by rw [pow_zero] | n + 1 => by rw [pow_succ] calc (1 : Submodule F R) = 1 * 1 := (_root_.mul_one 1).symm _ ≤ V ^ n * V := mul_le_mul' (one_le_pow h1 n) h1`.
+-/
 theorem one_le_pow {V : Submodule F R} (h1 : 1 ≤ V) : ∀ n : ℕ, 1 ≤ V ^ n
   | 0 => by rw [pow_zero]
   | n + 1 => by
@@ -169,12 +217,18 @@ theorem one_le_pow {V : Submodule F R} (h1 : 1 ≤ V) : ∀ n : ℕ, 1 ≤ V ^ n
     calc (1 : Submodule F R) = 1 * 1 := (_root_.mul_one 1).symm
       _ ≤ V ^ n * V := mul_le_mul' (one_le_pow h1 n) h1
 
+/- English proof (translation)
+Take `⟨c, rfl⟩` from `Nat.exists_eq_add_of_le hab`. Rewrite using `[pow_add]`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem pow_mono {V : Submodule F R} (h1 : 1 ≤ V) {a b : ℕ} (hab : a ≤ b) : V ^ a ≤ V ^ b := by
   obtain ⟨c, rfl⟩ := Nat.exists_eq_add_of_le hab
   rw [pow_add]
   calc V ^ a = V ^ a * 1 := (_root_.mul_one _).symm
     _ ≤ V ^ a * V ^ c := mul_le_mul' le_rfl (one_le_pow h1 c)
 
+/- English proof (translation)
+The claim follows from `| 0 => by intro x _ simp [Ideal.one_eq_top] | k + 1 => by rw [pow_succ] refine Submodule.mul_le.2 fun a ha b hb => ?_ rw [Submodule.restrictScalars_mem, pow_succ] exact Ideal.mul_mem_mul (pow_le_ideal_pow h k ha) (h hb)`.
+-/
 theorem pow_le_ideal_pow {W : Submodule F R} {m : Ideal R} (h : W ≤ m.restrictScalars F) :
     ∀ k : ℕ, W ^ k ≤ (m ^ k).restrictScalars F
   | 0 => by
@@ -186,6 +240,19 @@ theorem pow_le_ideal_pow {W : Submodule F R} {m : Ideal R} (h : W ≤ m.restrict
     rw [Submodule.restrictScalars_mem, pow_succ]
     exact Ideal.mul_mem_mul (pow_le_ideal_pow h k ha) (h hb)
 
+/- English proof (translation)
+Use `set m := RingHom.ker aug`. Use `set W : Submodule F R := V ⊓ m.restrictScalars F`. Establish `hVW : V ≤ 1 ⊔ W`. Introduce `v hv`. Establish `hc : v - algebraMap F R (aug v) ∈ m` using `by show aug _ = 0`.
+
+Rewrite using `[map_sub, AlgHom.commutes, Algebra.algebraMap_self, RingHom.id_apply, sub_self]`. Use `Submodule.mem_sup.2 ⟨algebraMap F R (aug v), Submodule.algebraMap_mem _, v - algebraMap F R (aug v), ⟨V.sub_mem hv (h1 (Submodule.algebraMap_mem _)), hc⟩, add_sub_cancel _ _⟩` and prove the remaining obligations. Establish `hWm : W ≤ m.restrictScalars F` using `inf_le_right`. Establish `key : ∀ n k : ℕ, W ^ k * V ^ n ≤ V ^ D`. Introduce `n`.
+
+Proceed by induction on `n with`. Consider the case `zero`. Introduce `k`. Rewrite using `[pow_zero, _root_.mul_one]`. Break down `le_or_gt k D with hk | hk` into its components or cases.
+
+Conclude with `(pow_le_pow_left' (inf_le_left : W ≤ V) k).trans (pow_mono h1 hk)`. Use `(pow_le_ideal_pow hWm k).trans ?_` and prove the remaining obligations. Introduce `x hx`. Establish `: x ∈ m ^ (D + 1)` using `Ideal.pow_le_pow_right hk hx`. Rewrite `this` using `[hD, Ideal.mem_bot]`.
+
+Rewrite using `[this]`. Conclude with `zero_mem _`. Consider the case `succ n ih`. Introduce `k`. Combine the equalities or inequalities in the displayed calculation.
+
+Rewrite using `[Submodule.mul_sup, _root_.mul_one, Submodule.mul_sup, ← _root_.mul_assoc, pow_succ, mul_right_comm (W ^ k) W]`. Use `_ ≤ _ := sup_le (ih k) (ih (k + 1))`. Simplify using `using key n 0`.
+-/
 theorem pow_le_of_aug {V : Submodule F R} (h1 : 1 ≤ V) (aug : R →ₐ[F] F) (D : ℕ)
     (hD : RingHom.ker aug ^ (D + 1) = ⊥) (n : ℕ) : V ^ n ≤ V ^ D := by
   set m := RingHom.ker aug
@@ -220,6 +287,15 @@ theorem pow_le_of_aug {V : Submodule F R} (h1 : 1 ≤ V) (aug : R →ₐ[F] F) (
         _ ≤ _ := sup_le (ih k) (ih (k + 1))
   simpa using key n 0
 
+/- English proof (translation)
+Establish `h1' : 1 ≤ Submodule.span F s` using `Submodule.one_le.2 (Submodule.subset_span h1)`. Establish `ha : a ∈ Algebra.adjoin F s` using `hs ▸ trivial`. It suffices to establish `h : ∃ n, a ∈ Submodule.span F s ^ n by`. Take `⟨n, hn⟩` from `h`. Conclude with `pow_le_of_aug h1' aug D hD n hn`.
+
+Proceed by induction on `ha using Algebra.adjoin_induction with`. Consider the case `mem x hx => exact ⟨1, by rw [pow_one]; exact Submodule.subset_span hx⟩`. Consider the case `algebraMap c => exact ⟨0, by rw [pow_zero]; exact Submodule.algebraMap_mem c⟩`. Consider the case `add x y _ _ hx hy`. Take `⟨n₁, h₁⟩` from `hx`.
+
+Take `⟨n₂, h₂⟩` from `hy`. Conclude with `⟨max n₁ n₂, add_mem (pow_mono h1' (le_max_left _ _) h₁) (pow_mono h1' (le_max_right _ _) h₂)⟩`. Consider the case `mul x y _ _ hx hy`. Take `⟨n₁, h₁⟩` from `hx`. Take `⟨n₂, h₂⟩` from `hy`.
+
+Conclude with `⟨n₁ + n₂, by rw [pow_add]; exact Submodule.mul_mem_mul h₁ h₂⟩`.
+-/
 theorem mem_span_pow {s : Set R} (h1 : (1 : R) ∈ s) (hs : Algebra.adjoin F s = ⊤) (aug : R →ₐ[F] F) (D : ℕ)
     (hD : RingHom.ker aug ^ (D + 1) = ⊥) (a : R) : a ∈ Submodule.span F s ^ D := by
   have h1' : 1 ≤ Submodule.span F s := Submodule.one_le.2 (Submodule.subset_span h1)
@@ -248,6 +324,23 @@ open Chart
 variable {R : Type} [CommRing R] {G : Over (Spec (CommRingCat.of R))} [GrpObj G] {g : ℕ}
   {x : ∀ m : ℕ, sp (R₀ := R) (JetR R (Fin g) m) ⟶ G}
 
+/- English proof (translation)
+Establish `hw : y ≫ G.hom = (sp (R₀` using `R) B).hom := by`. Take `⟨φ, hφ⟩` from `Spec.map_surjective (y ≫ G.hom)`. Establish `e : Spec.map (φ ≫ CommRingCat.ofHom B.val.toRingHom) = Spec.map (CommRingCat.ofHom (algebraMap R (JetR R (Fin g) n)))`. Rewrite using `[Spec.map_comp, hφ, ← Category.assoc, hy]`. Conclude with `Over.w (x n)`.
+
+Establish `e'` using `Spec.map_injective e`. Rewrite using `[← hφ]`. Use `show _ = Spec.map (CommRingCat.ofHom (algebraMap R B))`. Use `congr 1`. Use extensionality with `r`.
+
+Conclude with `congrArg (fun q => q.hom r) e'`. Set `y' : sp (R₀` to `R) B ⟶ G := Over.homMk y hw`. Establish `hy' : spMap B.val ≫ y' = x n` using `Over.OverMorphism.ext hy`. Set `aug` to `(jetAug R (Fin g) n).comp B.val`. Establish `hker : RingHom.ker aug ^ (n + 1) = ⊥`.
+
+Rewrite using `[eq_bot_iff]`. Introduce `t ht`. Establish `hle : Ideal.map B.val (RingHom.ker aug) ≤ RingHom.ker (jetAug R (Fin g) n)` using `Ideal.map_le_iff_le_comap.mpr fun s hs => hs`. Use `Ideal.mem_map_of_mem B.val ht` as an intermediate fact. Rewrite `this` using `[Ideal.map_pow]`.
+
+Establish `h2` using `Ideal.pow_right_mono hle _ this`. Rewrite `h2` using `[ker_jetAug_pow, Ideal.mem_bot]`. Conclude with `Ideal.mem_bot.2 (Subtype.ext h2)`. Establish `h0 : spMap (jetAug R (Fin g) n) ≫ x n = 1` using `spMap_jetAug_alt hx n`. Establish `h1 : spMap aug ≫ y' = 1`.
+
+Rewrite using `[← h0, ← hy', ← Category.assoc, spMap_comp]`. Take `⟨ψ, ⟨hψ1, hψ2⟩, -⟩` from `hx.2.2 B aug n hker y' h1`. Take `⟨ψ₀, -, hu⟩` from `hx.2.2 (JetR R (Fin g) n) (jetAug R (Fin g) n) n (ker_jetAug_pow _ _) (x n) h0`. Establish `e1 : B.val.comp ψ = ψ₀` using `hu _ ⟨hψ1, by rw [← spMap_comp, Category.assoc, ← hψ2, hy']⟩`. Establish `e2 : AlgHom.id R _ = ψ₀` using `hu _ ⟨rfl, by`.
+
+Apply `Over.OverMorphism.ext` to reduce the goal to its premises. Rewrite using `[Over.comp_left, spMap_left]`. Use `show _ = Spec.map (𝟙 _) ≫ _`. Rewrite using `[Spec.map_id, Category.id_comp]⟩`. Use `eq_top_iff.2 fun a _ => ?_` and prove the remaining obligations.
+
+Establish `: a = B.val (ψ a)` using `AlgHom.congr_fun (e2.trans e1.symm) a`. Rewrite using `[this]`. Conclude with `(ψ a).2`.
+-/
 theorem subalgebra_eq_top (hx : IsUnivChart G g x) (n : ℕ) (B : Subalgebra R (JetR R (Fin g) n))
     (y : Spec (CommRingCat.of B) ⟶ G.left) (hy : Spec.map (CommRingCat.ofHom B.val.toRingHom) ≫ y = (x n).left) :
     B = ⊤ := by
@@ -292,6 +385,15 @@ theorem subalgebra_eq_top (hx : IsUnivChart G g x) (n : ℕ) (B : Subalgebra R (
   rw [this]
   exact (ψ a).2
 
+/- English proof (translation)
+Set `q` to `jetAug R (Fin g) n`. Establish `hq : Function.Surjective q` using `aug_surj q`. Establish `hker : RingHom.ker q.toRingHom ≤ p.asIdeal` using `fun a ha => by`. Take `⟨m, hm⟩` from `elt_nil _ (ker_jetAug_nil (R := R) (Fin g) n) a ha`. Conclude with `p.isPrime.mem_of_pow_mem m (by rw [hm]; exact zero_mem _)`.
+
+Use `p.isPrime` as an intermediate fact. Establish `hprime : (p.asIdeal.map q.toRingHom).IsPrime` using `Ideal.map_isPrime_of_surjective hq hker`. Set `p₀ : ↥(Spec (CommRingCat.of R))` to `(⟨p.asIdeal.map q.toRingHom, hprime⟩ : PrimeSpectrum R)`. Establish `hp : (Spec.map (CommRingCat.ofHom q.toRingHom)).base p₀ = p`. Apply `PrimeSpectrum.ext` to reduce the goal to its premises.
+
+Express the relevant statement in the definitionally equal form `Ideal.comap q.toRingHom (Ideal.map q.toRingHom p.asIdeal) = p.asIdeal`. Rewrite using `[Ideal.comap_map_of_surjective' q.toRingHom hq, sup_eq_left.mpr hker]`. Establish `h0 : spMap q ≫ x n = toUnit _ ≫ η[G]` using `spMap_jetAug_alt hx n`. Establish `e` using `congrArg (fun y : sp R ⟶ G => y.left.base p₀) h0`. Simplify using `only [Over.comp_left, spMap_left, Scheme.Hom.comp_apply] at e`.
+
+Rewrite using `[← hp]`. Use `(congrArg (· ∈ O) e).mpr ?_` and prove the remaining obligations. Conclude with `((IsLocalRing.specializes_closedPoint (R := R) ((toUnit (sp (R₀ := R) R)).left p₀)).map (η[G]).left.continuous).mem_open O.isOpen hO`.
+-/
 theorem jet_mem [IsLocalRing R] (hx : IsUnivChart G g x) (n : ℕ) (O : G.left.Opens)
     (hO : (η[G]).left (closedPoint R) ∈ O) (p : (sp (R₀ := R) (JetR R (Fin g) n)).left) : (x n).left p ∈ O := by
   let q := jetAug R (Fin g) n
@@ -320,6 +422,11 @@ section Ratio
 
 variable {X Y Z : Scheme.{0}} {L : LB X} {K : Type} [Fintype K]
 
+/- English proof (translation)
+Take `⟨w, hw⟩` from `exists_sec hL (K' := PEmpty) (φ' := PEmpty.elim) (ε' := PEmpty.elim) (formEq_of_add fun U _ hh => by simp [Fintype.sum_sum_type]) (pullMulSec s h (LB.invGen L _ _ τ) (invGen_isGen _ _ _ _ hτ))`. Establish `le : (⊤ : Z.Opens) ≤ LB.wchart L (K` using `PEmpty) (Y := Z) PEmpty.elim PEmpty.elim := fun _ _ => Set.mem_iInter.2 fun k => k.elim`. Use `⟨(Z.presheaf.map (homOfLE le).op).hom (w.f PEmpty.elim), fun z J hJ => ?_⟩` and prove the remaining obligations. Establish `e` using `hw Z (𝟙 Z) z J hJ`. Rewrite `e` using `[sval_pullMulSec _ _ _ _ _ z hJ, Category.id_comp, val_inv, sval_of w _ z J PEmpty.elim (fun k => k.elim)]`.
+
+Use `Eq.trans ?_ (congrArg (· * _) ((gs_res (𝟙 Z) z le trivial _).trans e).symm)` and prove the remaining obligations. Rewrite using `[_root_.mul_assoc, Units.inv_mul, _root_.mul_one]`.
+-/
 theorem exists_ratio (hL : L.IsLB) {φ : K → (Y ⟶ X)} {ε : K → ℤ} (s : LB.Sec (LB.LinComb L φ ε)) (h : Z ⟶ Y)
     (τ : LB.Gen (LB.LinComb L (fun k => h ≫ φ k) ε)) (hτ : τ.IsGen) :
     ∃ u : Γ(Z, ⊤), ∀ z J, Good L z J → sval s h z J = gs (𝟙 Z) z ⊤ u * (val τ (𝟙 Z) z J).val := by
@@ -343,25 +450,40 @@ open Chart
 def germOf {A : Type} [CommRing A] (z : Spec (CommRingCat.of A)) : A →+* (Spec (CommRingCat.of A)).presheaf.stalk z :=
   ((Spec (CommRingCat.of A)).presheaf.germ ⊤ z trivial).hom.comp (Scheme.ΓSpecIso (CommRingCat.of A)).inv.hom
 
+/- English proof (translation)
+The claim follows from `(gs_eq (𝟙 _) z ⊤ trivial _).symm`.
+-/
 theorem germOf_eq {A : Type} [CommRing A] (z : Spec (CommRingCat.of A)) (a : A) :
     germOf z a = gs (𝟙 _) z ⊤ ((Scheme.ΓSpecIso (CommRingCat.of A)).inv.hom a) :=
   (gs_eq (𝟙 _) z ⊤ trivial _).symm
 
+/- English proof (translation)
+Rewrite using `[germOf_eq]`. Use `congr 1`. Simplify using the standard rewrite rules.
+-/
 theorem germOf_hom {A : Type} [CommRing A] (z : Spec (CommRingCat.of A)) (u : Γ(Spec (CommRingCat.of A), ⊤)) :
     germOf z ((Scheme.ΓSpecIso (CommRingCat.of A)).hom.hom u) = gs (𝟙 _) z ⊤ u := by
   rw [germOf_eq]
   congr 1
   simp
 
+/- English proof (translation)
+The claim follows from `(ConcreteCategory.bijective_of_isIso (Scheme.ΓSpecIso (CommRingCat.of A)).inv).1 (fn_ext (V := ⊤) fun z _ => (germOf_eq z a).symm.trans ((h z).trans (germOf_eq z b)))`.
+-/
 theorem germOf_ext {A : Type} [CommRing A] {a b : A} (h : ∀ z, germOf z a = germOf z b) : a = b :=
   (ConcreteCategory.bijective_of_isIso (Scheme.ΓSpecIso (CommRingCat.of A)).inv).1
     (fn_ext (V := ⊤) fun z _ => (germOf_eq z a).symm.trans ((h z).trans (germOf_eq z b)))
 
+/- English proof (translation)
+Establish `: IsUnit ((Scheme.ΓSpecIso (CommRingCat.of A)).inv.hom a)` using `(Spec (CommRingCat.of A)).toRingedSpace.isUnit_of_isUnit_germ _ _ fun z _ => h z`. Simplify using `using this.map (Scheme.ΓSpecIso (CommRingCat.of A)).hom.hom`.
+-/
 theorem isUnit_of_germOf {A : Type} [CommRing A] {a : A} (h : ∀ z, IsUnit (germOf z a)) : IsUnit a := by
   have : IsUnit ((Scheme.ΓSpecIso (CommRingCat.of A)).inv.hom a) :=
     (Spec (CommRingCat.of A)).toRingedSpace.isUnit_of_isUnit_germ _ _ fun z _ => h z
   simpa using this.map (Scheme.ΓSpecIso (CommRingCat.of A)).hom.hom
 
+/- English proof (translation)
+Establish `e` using `congrArg (fun φ => φ.hom c) (Scheme.ΓSpecIso_inv_naturality (CommRingCat.ofHom f))`. Simplify using `only [CommRingCat.hom_comp, RingHom.comp_apply, CommRingCat.hom_ofHom] at e`. Rewrite using `[germOf_eq, e]`. Conclude with `(congrArg (fun q => gs q z ⊤ _) (Category.id_comp _).symm).trans (gs_pull (𝟙 _) _ z ⊤ trivial _).symm`.
+-/
 theorem gs_const {V A : Type} [CommRing V] [CommRing A] (f : V →+* A) (z : Spec (CommRingCat.of A)) (c : V) :
     gs (Spec.map (CommRingCat.ofHom f)) z ⊤ ((Scheme.ΓSpecIso (CommRingCat.of V)).inv.hom c) = germOf z (f c) := by
   have e := congrArg (fun φ => φ.hom c) (Scheme.ΓSpecIso_inv_naturality (CommRingCat.ofHom f))
@@ -369,6 +491,55 @@ theorem gs_const {V A : Type} [CommRing V] [CommRing A] (f : V →+* A) (z : Spe
   rw [germOf_eq, e]
   exact (congrArg (fun q => gs q z ⊤ _) (Category.id_comp _).symm).trans (gs_pull (𝟙 _) _ z ⊤ trivial _).symm
 
+/- English proof (translation)
+Take `⟨r, rfl⟩ : ∃ r, q = 4 * n + r` from `⟨q - 4 * n, by omega⟩`. Establish `hLB` using `D.P.isLB`. Take `⟨β₀, hβ₀⟩` from `exists_unit_sec hL hTW V D r (by omega) χ`. Set `xn : Spec (CommRingCat.of (JetR V (Fin g) n)) ⟶ D.P.A.left` to `(x n).left`. Set `W` to `(D.P.A.hom ⁻¹ᵁ ⊤).toScheme`.
+
+Set `iw : W ⟶ D.P.A.left` to `(D.P.A.hom ⁻¹ᵁ ⊤).ι`. Establish `: IsIso iw` using `inferInstanceAs (IsIso D.P.A.left.topIso.hom)`. Establish `: IsIso (⊤ : (Spec (CommRingCat.of V)).Opens).ι` using `inferInstanceAs (IsIso (Spec (CommRingCat.of V)).topIso.hom)`. Set `h0 : Spec (CommRingCat.of (JetR V (Fin g) n)) ⟶ W` to `xn ≫ inv iw`. Establish `h0i : h0 ≫ iw = xn` using `by show (xn ≫ inv iw) ≫ iw = xn`.
+
+Rewrite using `[Category.assoc, IsIso.inv_hom_id, Category.comp_id]`. Take `⟨-, hva⟩` from `hL.ample _ D.P 4 le_rfl`. Take `⟨M, s, hcov, hs⟩` from `hva ⊤ (isAffineOpen_top _)`. Take `⟨i0, hi0⟩ : ∃ i0, inv iw ((η[D.P.A]).left (closedPoint V)) ∈ nonzeroLocus (s i0)` from `Opens.mem_iSup.1 (by rw [hcov]; trivial)`. Establish `hz0 : ∀ z, h0 z ∈ nonzeroLocus (s i0)` using `fun z => jet_mem hx n (inv iw ⁻¹ᵁ nonzeroLocus (s i0)) hi0 z`.
+
+Establish `hle : ⊤ ≤ h0 ⁻¹ᵁ nonzeroLocus (s i0)` using `fun z _ => hz0 z`. Take `⟨hD, rr, hrel, hsurj⟩` from `hs i0`. Set `π` to `h0.appLE (nonzeroLocus (s i0)) ⊤ hle ≫ (Scheme.ΓSpecIso (CommRingCat.of (JetR V (Fin g) n))).hom`. Establish `hπ : ∀ z b, germOf z (π.hom b) = gs h0 z _ b` using `fun z b => (germOf_hom z _).trans ((gs_appLE h0 _ ⊤ hle (𝟙 _) z trivial b).trans (by rw [Category.id_comp]))`. Establish `hπs : Spec.map π ≫ hD.fromSpec = h0`.
+
+Establish `h` using `IsAffineOpen.SpecMap_appLE_fromSpec h0 hD (isAffineOpen_top _) hle`. Rewrite `h` using `[IsAffineOpen.fromSpec_top, Scheme.isoSpec_Spec_inv]`. Rewrite using `[Spec.map_comp, Category.assoc, h, ← Category.assoc, ← Spec.map_comp, Iso.inv_hom_id, Spec.map_id, Category.id_comp]`. Set `ρ : Fin (M + 1) → JetR V (Fin g) n` to `fun i => π.hom (rr i)`. Establish `hσ0 : ∀ z J, Good D.P.L z J → IsUnit (sval (s i0) h0 z J)` using `fun z J hJ => by`.
+
+Take `⟨kk, hkk⟩` from `Opens.mem_iSup.1 (hz0 z)`. Conclude with `SectionArithmetic.isUnit_sval (s i0) h0 z hJ kk hkk`. Establish `hβ0 : ∀ z J, Good D.P.L z J → IsUnit (sval β₀ xn z J)` using `fun z J hJ => by`. Take `⟨kk, hkk⟩` from `Opens.mem_iSup.1 (jet_mem hx n _ hβ₀ z)`. Conclude with `SectionArithmetic.isUnit_sval β₀ xn z hJ kk hkk`.
+
+Establish `hrelv : ∀ i z J, Good D.P.L z J → sval (s i) h0 z J = germOf z (ρ i) * sval (s i0) h0 z J` using `fun i z J hJ => (LocalResidues.sval_rel (s i) (s i0) _ (rr i) (hrel i) h0 z hJ (hz0 z)).trans (by rw [← hπ])`. Establish `good : ∀ z : Spec (CommRingCat.of (JetR V (Fin g) n)), ∃ J, Good D.P.L z J` using `fun z => by choose J hJ using fun ψ : Spec (CommRingCat.of (JetR V (Fin g) n)) ⟶ D.P.A.left => exists_chart hLB (ψ z)`. Conclude with `⟨J, hJ⟩`. Establish `hρ1 : ρ i0 = 1` using `germOf_ext fun z => by`. Take `⟨J, hJ⟩` from `good z`.
+
+Rewrite using `[map_one]`. Conclude with `((hσ0 z J hJ).mul_left_inj.1 ((hrelv i0 z J hJ).symm.trans (_root_.one_mul _).symm))`. Establish `hadj : Algebra.adjoin V (Set.range ρ) = ⊤`. Establish `hq' : (h0 ≫ (D.P.A.hom ∣_ ⊤)) ≫ (⊤ : (Spec (CommRingCat.of V)).Opens).ι = Spec.map (CommRingCat.ofHom (algebraMap V (JetR V (Fin g) n)))`. Rewrite using `[Category.assoc, morphismRestrict_ι, ← Category.assoc, h0i]`.
+
+Conclude with `Over.w (x n)`. Establish `hc : ∀ b, π.hom (((D.P.A.hom ∣_ ⊤).appLE ⊤ (nonzeroLocus (s i0)) le_top).hom b) ∈ Algebra.adjoin V (Set.range ρ)` using `fun b => by`. Set `e` to `(⊤ : (Spec (CommRingCat.of V)).Opens).ι`. Set `c : V` to `(Scheme.ΓSpecIso (CommRingCat.of V)).hom.hom (((inv e).app ⊤).hom b)`. Establish `: π.hom (((D.P.A.hom ∣_ ⊤).appLE ⊤ (nonzeroLocus (s i0)) le_top).hom b) = algebraMap V _ c` using `germOf_ext fun z => by`.
+
+Use `(hπ z _).trans ((gs_appLE _ _ _ _ h0 z (hz0 z) b).trans (Eq.trans ?_ (gs_const _ z c)))` and prove the remaining obligations. Establish `e1 : (Scheme.ΓSpecIso (CommRingCat.of V)).inv.hom c = ((inv e).app ⊤).hom b` using `by simp [c]`. Rewrite using `[e1]`. Use `Eq.trans ?_ (gs_pull _ (inv e) z ⊤ trivial b).symm` and prove the remaining obligations. Rewrite using `[← hq', Category.assoc (h0 ≫ _), IsIso.hom_inv_id, Category.comp_id]`.
+
+Rewrite using `[this]`. Conclude with `Subalgebra.algebraMap_mem _ c`. Establish `hall : ∀ b, π.hom b ∈ Algebra.adjoin V (Set.range ρ)` using `fun b => by`. Take `⟨p, rfl⟩` from `hsurj b`. Proceed by induction on `p using MvPolynomial.induction_on with`.
+
+Consider the case `C c => rw [MvPolynomial.eval₂Hom_C]`. Conclude with `hc c`. Consider the case `add p p' hp hp' => rw [map_add, map_add]`. Conclude with `add_mem hp hp'`. Consider the case `mul_X p i hp`.
+
+Rewrite using `[map_mul, map_mul, MvPolynomial.eval₂Hom_X']`. Conclude with `mul_mem hp (Algebra.subset_adjoin ⟨i, rfl⟩)`. Use `subalgebra_eq_top hx n _ (Spec.map (CommRingCat.ofHom (π.hom.codRestrict (Algebra.adjoin V (Set.range ρ)) hall)) ≫ hD.fromSpec ≫ iw) ?_` and prove the remaining obligations. Rewrite using `[← Category.assoc, ← Spec.map_comp]`. Use `Eq.trans ?_ h0i` and prove the remaining obligations.
+
+Rewrite using `[← hπs, Category.assoc]`. Both sides reduce to the same expression. Establish `key : ∀ α : Fin n → Fin (M + 1), ∃ S : D.SecB (4 * n + r) χ, ∀ z J, Good D.P.L z J → sval S xn z J = germOf z (∏ l, ρ (α l)) * (sval (s i0) h0 z J ^ n * sval β₀ xn z J)`. Introduce `α`. Take `⟨S, hS⟩` from `exists_sec hLB (φ' := D.famφB χ) (ε' := DegPre.famε (4 * n + r)) (formEq_of_add fun U _ hh => by`.
+
+Establish `e : inv iw ≫ (D.P.A.hom ⁻¹ᵁ ⊤).ι = D.famφB χ 0` using `IsIso.inv_hom_id iw`. Rewrite using `[Fintype.sum_sum_type, Fin.sum_univ_four, Fin.sum_univ_four]`. Simplify using `only [Sum.elim_inl, Sum.elim_inr, e, DegPre.famε, Matrix.cons_val, Finset.sum_const, Finset.card_univ, Fintype.card_fin, Fintype.card_prod, ← natCast_zsmul]`. Use `push_cast`. Use the proof step `module)`.
+
+Use the proof step `(SectionArithmetic.mulSec (SectionArithmetic.powSec fun l => SectionArithmetic.pullSec (s (α l)) (inv iw)) β₀)`. Use `⟨S, fun z J hJ => ?_⟩` and prove the remaining obligations. Establish `hp : ∀ i, sval (SectionArithmetic.pullSec (s i) (inv iw)) xn z J = germOf z (ρ i) * sval (s i0) h0 z J` using `fun i => (SectionArithmetic.sval_pullSec (s i) (inv iw) xn z hJ).trans (hrelv i z J hJ)`. Establish `e1 : (∏ i, sval (SectionArithmetic.pullSec (s (α i)) (inv iw)) xn z J) = germOf z (∏ l, ρ (α l)) * sval (s i0) h0 z J ^ n` using `(Finset.prod_congr rfl fun i _ => hp (α i)).trans (by rw [Finset.prod_mul_distrib, Fin.prod_const, map_prod])`. Rewrite using `[hS _ xn z J hJ, SectionArithmetic.sval_mulSec _ _ _ z hJ, SectionArithmetic.sval_powSec _ _ z hJ, ← _root_.mul_assoc]`.
+
+Conclude with `congrArg₂ (· * ·) e1 rfl`. Take `⟨S₀, hS₀⟩` from `key fun _ => i0`. Take `⟨u, hu⟩` from `exists_ratio hLB S₀ xn τ hτ`. Set `w : JetR V (Fin g) n` to `(Scheme.ΓSpecIso (CommRingCat.of (JetR V (Fin g) n))).hom.hom u`. Establish `hw : ∀ z J, Good D.P.L z J → sval (s i0) h0 z J ^ n * sval β₀ xn z J = germOf z w * (val τ (𝟙 _) z J).val` using `fun z J hJ => by`.
+
+Use `hS₀ z J hJ` as an intermediate fact. Rewrite `this` using `[hu z J hJ, hρ1, Finset.prod_const_one, map_one, _root_.one_mul, ← germOf_hom]`. Conclude with `this.symm`. Take `⟨w', hw'⟩ : IsUnit w` from `isUnit_of_germOf fun z => by`. Take `⟨J, hJ⟩` from `good z`.
+
+Conclude with `isUnit_of_mul_isUnit_left ((congrArg IsUnit (hw z J hJ)).mp (((hσ0 z J hJ).pow n).mul (hβ0 z J hJ)))`. Set `N : Submodule V (JetR V (Fin g) n)` to `{ carrier := {v | ∃ β : D.SecB (4 * n + r) χ, ∀ z J, Good D.P.L z J → sval β xn z J = germOf z (v * w) * (val τ (𝟙 _) z J).val} add_mem' := by`. Introduce and unpack `v v' ⟨β, hβ⟩ ⟨β', hβ'⟩`. Use `⟨SectionArithmetic.secAdd β β', fun z J hJ => ?_⟩` and prove the remaining obligations. Rewrite using `[add_mul, map_add, add_mul, ← hβ z J hJ, ← hβ' z J hJ]`.
+
+Conclude with `gs_add xn z _ (hJ.mem _ xn) _ _`. Use the proof step `zero_mem' := ⟨SectionArithmetic.secZero _, fun z J hJ => by`. Rewrite using `[zero_mul, map_zero, zero_mul]`. Conclude with `(gs_eq xn z _ (hJ.mem _ xn) _).trans ((congrArg _ (map_zero _)).trans (map_zero _))⟩`. Use the proof step `smul_mem' := by`.
+
+Introduce and unpack `c v ⟨β, hβ⟩`. Use `⟨SectionArithmetic.secCMul (V := D.P.A.hom ⁻¹ᵁ ⊤) (fun _ _ _ => trivial) ((D.P.A.hom.app ⊤).hom ((Scheme.ΓSpecIso (CommRingCat.of V)).inv.hom c)) β, fun z J hJ => ?_⟩` and prove the remaining obligations. Rewrite using `[Algebra.smul_def, _root_.mul_assoc, map_mul, _root_.mul_assoc, ← hβ z J hJ, ← gs_const]`. Use `(gs_mul xn z _ (hJ.mem _ xn) _ _).trans (congrArg₂ (· * ·) ?_ rfl)` and prove the remaining obligations. Use `(gs_res xn z _ (hJ.mem _ xn) _).trans ((gs_pull xn D.P.A.hom z ⊤ trivial _).trans ?_)` and prove the remaining obligations.
+
+Conclude with `congrArg (fun q => gs q z ⊤ _) (Over.w (x n)) }`. Establish `hN : Submodule.span V (Set.range ρ) ^ n ≤ N`. Rewrite using `[Submodule.span_pow (Set.range ρ)]`. Use `Submodule.span_le.2 fun v hv => ?_` and prove the remaining obligations. Take `⟨t, rfl⟩` from `Set.mem_pow.1 hv`.
+
+Use `choose α hα using fun l => (t l).2`. Take `⟨S, hS⟩` from `key α`. Use `⟨S, fun z J hJ => ?_⟩` and prove the remaining obligations. Establish `: (List.ofFn fun i => (t i : JetR V (Fin g) n)).prod = ∏ l, ρ (α l)`. Rewrite using `[List.prod_ofFn]`.
+
+Conclude with `Finset.prod_congr rfl fun l _ => (hα l).symm`. Rewrite using `[hS z J hJ, hw z J hJ, this, map_mul (germOf z), _root_.mul_assoc]`. Take `⟨β, hβ⟩` from `hN (mem_span_pow (s := Set.range ρ) ⟨i0, hρ1⟩ hadj (jetAug V (Fin g) n) n (ker_jetAug_pow _ _) (a * ↑w'⁻¹))`. Use `⟨β, fun z J hJ => (hβ z J hJ).trans ?_⟩` and prove the remaining obligations. Rewrite using `[← hw', _root_.mul_assoc, Units.inv_mul, _root_.mul_one]`.
+-/
 theorem jets (hL : Laws) (hTW : TwistBCSpanStatement) (V : Type) [CommRing V] [IsDomain V]
     [IsDiscreteValuationRing V] (D : DegPre V) (q n : ℕ) (hq : 4 * n + 4 ≤ q) (χ : D.X) (g : ℕ)
     (x : ∀ m : ℕ, sp (R₀ := V) (JetR V (Fin g) m) ⟶ D.P.A) (hx : IsUnivChart D.P.A g x)
@@ -521,6 +692,9 @@ theorem jets (hL : Laws) (hTW : TwistBCSpanStatement) (V : Type) [CommRing V] [I
 
 end Main
 
+/- English proof (translation)
+Introduce `hL hTW V _ _ _ D q n hq χ g x hx τ hτ a`. Take `⟨β, hβ⟩` from `jets hL hTW V D q n hq χ g x hx τ hτ a`. Conclude with `⟨β, fun z J hJ => (hβ z J hJ).trans (congrArg (· * _) (germOf_eq z a))⟩`.
+-/
 theorem integral_jets : Laws → TwistBCSpanStatement → ∀ (V : Type) [CommRing V] [IsDomain V] [IsDiscreteValuationRing V] (D : DegPre V) (q n : ℕ), 4 * n + 4 ≤ q → ∀ (χ : D.X) (g : ℕ) (x : ∀ m : ℕ, Chart.sp (R₀ := V) (Chart.JetR V (Fin g) m) ⟶ D.P.A), Chart.IsUnivChart D.P.A g x → ∀ τ : LB.Gen (LB.LinComb D.P.L (fun i => (x n).left ≫ D.famφB χ i) (DegPre.famε q)), τ.IsGen → ∀ a : Chart.JetR V (Fin g) n, ∃ β : D.SecB q χ, (∀ (z : (Chart.sp (R₀ := V) (Chart.JetR V (Fin g) n)).left) (J), Good D.P.L z J → sval (β) (x n).left z J = gs (𝟙 _) z ⊤ ((Scheme.ΓSpecIso (CommRingCat.of (Chart.JetR V (Fin g) n))).inv.hom (a)) * (val τ (𝟙 _) z J).val) := by
   intro hL hTW V _ _ _ D q n hq χ g x hx τ hτ a
   obtain ⟨β, hβ⟩ := jets hL hTW V D q n hq χ g x hx τ hτ a

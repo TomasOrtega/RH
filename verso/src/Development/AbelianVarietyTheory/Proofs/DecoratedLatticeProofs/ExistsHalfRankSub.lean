@@ -5,6 +5,9 @@ open Module NumberField Formalism.BasicNotions
 
 namespace GlobalTheory.HalfRankSub
 
+/- English proof (translation)
+Use `haveI : IsNoetherian R L := isNoetherian_of_fg_of_noetherian L hL`. Establish `h1 : (X.comap L.subtype).FG` using `IsNoetherian.noetherian _`. Establish `h2` using `h1.map L.subtype`. Rewrite `h2` using `[Submodule.map_comap_subtype, inf_eq_right.mpr hX]`. Then use the resulting hypothesis.
+-/
 theorem fg_of_le_fg {R M : Type} [CommRing R] [IsNoetherianRing R] [AddCommGroup M] [Module R M]
     {L X : Submodule R M} (hL : L.FG) (hX : X ≤ L) : X.FG := by
   haveI : IsNoetherian R L := isNoetherian_of_fg_of_noetherian L hL

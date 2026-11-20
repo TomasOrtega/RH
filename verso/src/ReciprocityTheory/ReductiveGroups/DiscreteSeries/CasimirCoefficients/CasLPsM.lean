@@ -18,6 +18,13 @@ variable {n : ℕ}
 
 variable {ε : Fin n → Bool} {Λ : Fin n → ℝ}
 
+/- English proof (translation)
+Use `compactSpace_KG ε` as an intermediate fact. Take `⟨U, hUo, hpos, hΩ, hdiff, hfd⟩` from `psM_holo T μ`. Use `⟨U, hUo, hpos, hdiff, fun X => CasPsB.differentiableOn_lhol T μ hUo hΩ hfd X, fun z hz => ?_⟩` and prove the remaining obligations. Establish `hint : ∀ a b : Fin n, Integrable (fun k => CasPsB.FY' T μ (Matrix.single b a 1) z k (Matrix.of.symm (Matrix.single a b 1 * z))) (muK ε)` using `fun a b => (CasPsB.integrable_K (CasPsB.continuous_FY' T μ hUo hΩ hfd _ hz)).apply_continuousLinearMap _`. Combine the equalities or inequalities in the displayed calculation.
+
+Rewrite using `[integral_finsetSum Finset.univ (fun a _ => integrable_finsetSum Finset.univ (fun b _ => hint a b)), Finset.smul_sum]`. Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Rewrite using `[integral_finsetSum Finset.univ (fun b _ => hint a b), Finset.smul_sum]`. Use `_ = ((Module.finrank ℂ T.V : ℂ) / ((muK ε Set.univ).toReal : ℂ)) • ∫ k, ((casVal lam : ℝ) : ℂ) • (PhiM μ (toMK k⁻¹ * z * toMK k) • (T.op k * projW T * T.op k⁻¹)) ∂(muK ε) := by`. Use `congr 1`.
+
+Conclude with `integral_congr_ae (Filter.Eventually.of_forall fun k => CasPsB.sum_FY' T μ lam hμ k (hΩ z hz k))`. Use `_ = ((casVal lam : ℝ) : ℂ) • psM T μ z := by`. Rewrite using `[integral_smul, smul_comm]`. Both sides reduce to the same expression.
+-/
 theorem casL_psM (T : KType ε Λ) (μ : Fin n → ℤ) (lam : Fin n → ℝ) (hμ : IsMu lam μ) :
     ∃ U : Set (Matrix (Fin n) (Fin n) ℂ), IsOpen U ∧ posSet n ⊆ U ∧ DifferentiableOn ℂ (psM T μ) U ∧
       (∀ X : Matrix (Fin n) (Fin n) ℂ, DifferentiableOn ℂ (Lhol X (psM T μ)) U) ∧

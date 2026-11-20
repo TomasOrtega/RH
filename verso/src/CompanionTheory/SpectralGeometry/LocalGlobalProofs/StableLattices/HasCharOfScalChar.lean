@@ -14,15 +14,24 @@ open CompanionTheory.D.LK (IsKMod LocFin IsMin)
 
 variable {n : ℕ}
 
+/- English proof (translation)
+Proceed by induction on `ss with`. Consider the case `nil => intro X χ h`. Conclude with `h`. Consider the case `cons s ss ih => intro X χ h`. Conclude with `ih _ _ (hS n X χ s h)`.
+-/
 theorem hasChar_path (hS : StepChar) (ss : List (Fin n)) :
     ∀ (X : GMod n) (χ : Fin n → ℂ), HasChar X χ → HasChar (path X χ ss) (pathEnd χ ss) := by
   induction ss with
   | nil => intro X χ h; exact h
   | cons s ss ih => intro X χ h; exact ih _ _ (hS n X χ s h)
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨1, fun Y => by rw [pow_one, h Y, sub_self]⟩`.
+-/
 theorem hasChar_of_scalChar {X : GMod n} {χ : Fin n → ℂ} (h : ScalChar X χ) : HasChar X χ :=
   ⟨1, fun Y => by rw [pow_one, h Y, sub_self]⟩
 
+/- English proof (translation)
+Use function extensionality and compare the values at `Y`. Unfold `Formalism.QuantumDeterminants.capP`. Rewrite using `[← Equiv.prod_comp τ (fun s => Y + χ s), ← Equiv.prod_comp τ₂ (fun s => Y + χ₂ s)]`. Conclude with `Finset.prod_congr rfl fun a _ => by rw [h a]`.
+-/
 theorem capelliPoly_eq_of_perm {χ χ₂ : Fin n → ℂ} (τ τ₂ : Equiv.Perm (Fin n)) (h : ∀ a, χ (τ a) = χ₂ (τ₂ a)) :
     Formalism.QuantumDeterminants.capP χ = Formalism.QuantumDeterminants.capP χ₂ := by
   funext Y
@@ -36,6 +45,11 @@ def EndOf (ε : Fin n → Bool) (M : GMod n) (χ : Fin n → ℂ) (ss : List (Fi
     (hE : GlRel E), IsUnitary ε E ∧ LocFin ε E ∧ IsSimple ⟨V, E, hE⟩ ∧ AlgDS ε ⟨V, E, hE⟩ d.1 d.2 ∧
       Iso (path M χ ss) ⟨V, E, hE⟩
 
+/- English proof (translation)
+Take `⟨V, i1, i2, E, hE, u, l, sm, a, iso⟩` from `e`. Take `⟨V', j1, j2, E', hE', u', l', sm', a', iso'⟩` from `e'`. Establish `h` using `hU n ε V V' E E' hE hE' d.1 d.2 u u' l l' sm sm' a a'`. Establish `h1` using `(hI n ε (path M χ ss) ⟨V, E, hE⟩ ⟨V', E', hE'⟩).2.2.1 iso h`. Establish `h2` using `(hI n ε (path M' χ ss) ⟨V', E', hE'⟩ (path M' χ ss)).2.1 iso'`.
+
+Establish `h3` using `(hI n ε (path M χ ss) ⟨V', E', hE'⟩ (path M' χ ss)).2.2.1 h1 h2`. Conclude with `(hH n M χ ss hg hM hc hs).2.2 M' hM' hc' h3`.
+-/
 theorem iso_of_ends (hH : Hecke) (hI : IsoFacts) (hU : AlgUniq) {ε : Fin n → Bool} {M M' : GMod n}
     {χ : Fin n → ℂ} {ss : List (Fin n)} {d : Equiv.Perm (Fin n) × (Fin n → ℝ)}
     (hg : GoodPath χ ss) (hM : IsSimple M) (hM' : IsSimple M') (hc : HasChar M χ) (hc' : HasChar M' χ)
@@ -49,6 +63,41 @@ theorem iso_of_ends (hH : Hecke) (hI : IsoFacts) (hU : AlgUniq) {ε : Fin n → 
   have h3 := (hI n ε (path M χ ss) ⟨V', E', hE'⟩ (path M' χ ss)).2.2.1 h1 h2
   exact (hH n M χ ss hg hM hc hs).2.2 M' hM' hc' h3
 
+/- English proof (translation)
+Introduce `hSM hPF hPE hPN hSD hSc hUn hI hCh hU hDU hDA hDD hKM hAC hS hH hDec hFR n ε H _ _ σ hσ`. Take `⟨hcpl, hnt, hur, hir, hsq⟩` from `id hσ`. Use `haveI := hcpl`. Take `⟨D, E, hK⟩` from `hKM n ε H σ hur hir`. Take `⟨hsim, ⟨χ, hχ⟩, hiw⟩` from `hSM n ε H σ hur hir hnt D E hK`.
+
+Take `⟨B, hB⟩` from `hDec n`. Take `⟨C, δ, hδ, hP⟩` from `hPE n χ B`. Take `⟨N₀, hN₀⟩` from `hFR n C δ hδ`. Take `⟨ss, N, hN, hg, hfar, hall, hgap, hbd⟩` from `hP N₀`. Establish `key : ∀ (H' : Type) [NormedAddCommGroup H'] [InnerProductSpace ℂ H'] [CompleteSpace H'] (σ' : Matrix (Fin n) (Fin n) ℂ → (H' →L[ℂ] H')) (D' : Submodule ℂ H') (E' : Fin n → Fin n → Module.End ℂ D') (hK' : IsKMod ε σ' D' E'), GlobalTheory.Dec.IsSqIntIrr ε σ' → IsSimple ⟨D', E', hK' …`.
+
+Introduce `H' _ _ _ σ' D' E' hK' hs' hsm' hsc' hiw'`. Take `⟨_, _, ur, ir, sq⟩` from `id hs'`. Establish `hcX` using `hasChar_of_scalChar hsc'`. Establish `hL` using `hB ε H' σ' D' E' hK' χ ss ur ir sq hcX hg hfar`. Establish `hce` using `hasChar_path hS ss _ χ hcX`.
+
+Establish `hse` using `hSc n ε _ _ hL hce`. Take `⟨sp, sm, -⟩` from `hH n _ χ ss hg hsm' hcX hse`. Take `⟨V, i1, i2, EV, hEV, hun, iso⟩` from `hUn n ε _ hL sm`. Establish `facts` using `hI n ε (path ⟨D', E', hK'.gl⟩ χ ss) ⟨V, EV, hEV⟩ ⟨V, EV, hEV⟩`. Establish `smV : IsSimple ⟨V, EV, hEV⟩` using `(facts.2.2.2.1 iso).1 sm`.
+
+Establish `scV : ScalChar ⟨V, EV, hEV⟩ (pathEnd χ ss)` using `(facts.2.2.2.2.1 iso _).1 hse`. Establish `lfV : LocFin ε EV` using `(facts.2.2.2.2.2.2.1 iso).1 ((hPF n ε _ χ ss).1 hK'.locFin)`. Establish `iwV : IntWt ⟨V, EV, hEV⟩` using `(facts.2.2.2.2.2.2.2.1 iso).1 ((hPF n ε _ χ ss).2 hiw')`. Take `⟨s', mu', hAlg⟩` from `hN₀ ε V EV hEV (pathEnd χ ss) N smV.1 hun lfV iwV scV hN hgap hbd`. Take `⟨τ, hτ⟩` from `hCh n ε V EV hEV (pathEnd χ ss) s' mu' hun lfV scV hAlg`.
+
+Conclude with `⟨sp, hse, (s', mu'), ⟨V, i1, i2, EV, hEV, hun, lfV, smV, hAlg, iso⟩, hAlg.1, hAlg.2.1, τ, hτ⟩`. Take `⟨sp, hse, d₀, e₀, hc₀, ho₀, τ₀, hτ₀⟩` from `key H σ D E hK hσ hsim hχ hiw`. Establish `hend : ∀ a, pathEnd χ ss a = ((d₀.2 (τ₀.symm a) : ℝ) : ℂ)` using `fun a => by`. Rewrite using `[hτ₀, Equiv.apply_symm_apply]`. Establish `hinj' : Function.Injective (pathEnd χ ss)` using `fun a b h => by`.
+
+Rewrite `h` using `[hend, hend]`. Conclude with `τ₀.symm.injective (hc₀.1.injective (Complex.ofReal_injective h))`. Establish `hr' : ∀ a, (pathEnd χ ss a).im = 0 ∧ ∃ m : ℤ, (pathEnd χ ss a).re - ((n : ℝ) - 1) / 2 = m` using `fun a => by`. Rewrite using `[hend]`. Conclude with `⟨Complex.ofReal_im _, by simpa using hc₀.2 (τ₀.symm a)⟩`.
+
+Take `⟨m, hm, -⟩` from `hPN n χ ss`. Establish `hχa : ∀ a, χ a = pathEnd χ ss a - (m a : ℂ)` using `fun a => by`. Rewrite using `[hm]`. Simplify using the standard rewrite rules. Establish `hr : ∀ a, (χ a).im = 0 ∧ ∃ m : ℤ, (χ a).re - ((n : ℝ) - 1) / 2 = m` using `fun a => by`.
+
+Take `⟨h1, k, h2⟩` from `hr' a`. Use `⟨by rw [hχa]; simp [h1], k - m a, ?_⟩` and prove the remaining obligations. Rewrite using `[hχa]`. Simplify using `only [Complex.sub_re, Complex.natCast_re]`. Use `push_cast`.
+
+Combine the linear equalities and inequalities to obtain the conclusion. Establish `hinj` using `hSD n χ ss sp hall`. Take `⟨A, A', hcard, hA, hA'⟩` from `hAC n ε χ (pathEnd χ ss) hinj hinj' hr hr'`. Establish `per : ∀ d : Equiv.Perm (Fin n) × (Fin n → ℝ), ∃ (M : GMod n) (e : Equiv.Perm (Fin n) × (Fin n → ℝ)), d ∈ A → e ∈ A' ∧ IsSimple M ∧ HasChar M χ ∧ ScalChar (path M χ ss) (pathEnd χ ss) ∧ EndOf ε M χ ss e ∧ AlgDS ε M d.1 d.2 ∧ ConeDS ε M d.1 d.2`. Introduce `d`.
+
+Distinguish the cases in `hd : d ∈ A`. Take `⟨hhc, hord, τ, hτ⟩` from `(hA d).1 hd`. Take `⟨H', i1, i2, i3, σ', hsi, hall'⟩` from `hDA n ε d.1 d.2 hhc hord`. Take `⟨_, hnt', ur', ir', _⟩` from `id hsi`. Take `⟨D', E', hK'⟩` from `hKM n ε H' σ' ur' ir'`.
+
+Take `⟨s1, ⟨χd, hχd⟩, iw⟩` from `hSM n ε H' σ' ur' ir' hnt' D' E' hK'`. Take `⟨hAlg, hCone⟩` from `hall' D' E' hK'`. Take `⟨τ', hτ'⟩` from `hCh n ε D' E' hK'.gl χd d.1 d.2 hK'.unit hK'.locFin hχd hAlg`. Establish `hcap : Formalism.QuantumDeterminants.capP χd = Formalism.QuantumDeterminants.capP χ` using `capelliPoly_eq_of_perm τ' τ fun a => by rw [← hτ', ← hτ]`. Establish `hsc : ScalChar ⟨D', E', hK'.gl⟩ χ` using `fun Y => by rw [hχd Y, hcap]`.
+
+Take `⟨-, hse', e, he, hce, hoe, τe, hτe⟩` from `key H' σ' D' E' hK' hsi s1 hsc iw`. Conclude with `⟨⟨D', E', hK'.gl⟩, e, fun _ => ⟨(hA' e).2 ⟨hce, hoe, τe, hτe⟩, s1, hasChar_of_scalChar hsc, hse', he, hAlg, hCone⟩⟩`. Conclude with `⟨triv n, d, fun h => absurd h hd⟩`. Use `haveI : Nonempty (GMod n) := ⟨triv n⟩`. Use `choose! M e hMe using per`.
+
+Establish `hmaps : Set.MapsTo e (A : Set _) (A' : Set _)` using `fun d hd => (hMe d hd).1`. Establish `hinjA : Set.InjOn e (A : Set _)`. Introduce `d₁ h₁ d₂ h₂ heq`. Take `⟨-, s1, c1, p1, n1, a1, k1⟩` from `hMe d₁ h₁`. Take `⟨-, s2, c2, p2, n2, a2, k2⟩` from `hMe d₂ h₂`.
+
+Rewrite `n2` using `[← heq]`. Establish `hiso` using `iso_of_ends hH hI hU hg s1 s2 c1 c2 p1 n1 n2`. Establish `a2' : AlgDS ε (M d₁) d₂.1 d₂.2` using `((hI n ε (M d₁) (M d₂) (M d₁)).2.2.2.2.2.2.2.2.1 hiso _ _).2 a2`. Take `⟨q1, q2⟩` from `hDU n ε (M d₁) _ _ _ _ a1 k1 a2'`. Conclude with `Prod.ext q1 q2`.
+
+Establish `hsurj` using `Finset.surjOn_of_injOn_of_card_le e hmaps hinjA hcard.symm.le`. Take `⟨d, hd, hde⟩` from `hsurj ((hA' d₀).2 ⟨hc₀, ho₀, τ₀, hτ₀⟩)`. Take `⟨-, s2, c2, p2, n2, a2, -⟩` from `hMe d hd`. Rewrite `n2` using `[hde]`. Establish `hiso` using `iso_of_ends hH hI hU hg hsim s2 (hasChar_of_scalChar hχ) c2 hse e₀ n2`.
+
+Establish `aX : AlgDS ε ⟨D, E, hK.gl⟩ d.1 d.2` using `((hI n ε ⟨D, E, hK.gl⟩ (M d) ⟨D, E, hK.gl⟩).2.2.2.2.2.2.2.2.1 hiso _ _).2 a2`. Take `⟨hhc, hord, -⟩` from `(hA d).1 hd`. Conclude with `⟨d.1, d.2, hhc, hord, hDD n ε H σ D E hK d.1 d.2 hσ aX⟩`.
+-/
 theorem finish : StartMod → PathFin → PathExists → PathEndNat → SimpleDistinct → ScalarCharacterOfL2Embedding → UnitarizableOfL2Embedding →
     IsoFacts → CharOfAlgDS → AlgUniq → DataUniq → DSOfArr → DSOfData → KModOf → ArrCount → Finish := by
   intro hSM hPF hPE hPN hSD hSc hUn hI hCh hU hDU hDA hDD hKM hAC hS hH hDec hFR n ε H _ _ σ hσ

@@ -11,6 +11,11 @@ open GlobalTheory.K5.Basic
 
 variable {p : ℕ} [hp : Fact p.Prime] {Ω : Type} [Field Ω] [Algebra (O0 p) Ω]
 
+/- English proof (translation)
+Rewrite `h` using `[ZMod.intCast_eq_intCast_iff_dvd_sub]`. Take `⟨k, hk⟩` from `h`. Use `⟨((-k : ℤ) : Ω), isInt_intCast _, ?_⟩` and prove the remaining obligations. Use `congrArg (Int.cast : ℤ → Ω) hk` as an intermediate fact. Move the coercions through the operations in `at this ⊢`.
+
+Take the linear combination `-this`.
+-/
 theorem zcong (n : ℕ) (A B : ℤ) (h : (A : ZMod (p ^ n)) = B) : Cong p n (A : Ω) (B : Ω) := by
   rw [ZMod.intCast_eq_intCast_iff_dvd_sub] at h
   obtain ⟨k, hk⟩ := h
@@ -19,14 +24,25 @@ theorem zcong (n : ℕ) (A B : ℤ) (h : (A : ZMod (p ^ n)) = B) : Cong p n (A :
   push_cast at this ⊢
   linear_combination -this
 
+/- English proof (translation)
+Use `isInt_intCast (p := p) (Ω := Ω) (m : ℤ)` as an intermediate fact. Simplify using `using this`.
+-/
 theorem isInt_natCast (m : ℕ) : IsInt p (m : Ω) := by
   have := isInt_intCast (p := p) (Ω := Ω) (m : ℤ)
   simpa using this
 
+/- English proof (translation)
+Use `isInt_natCast (p := p) (Ω := Ω) (p ^ c)` as an intermediate fact. Simplify using `using this`.
+-/
 theorem isInt_pow_p (c : ℕ) : IsInt p ((p : Ω) ^ c) := by
   have := isInt_natCast (p := p) (Ω := Ω) (p ^ c)
   simpa using this
 
+/- English proof (translation)
+Establish `h1 : φ 1 = 0`. Establish `e` using `hφ 1 H.one_mem 1 H.one_mem`. Rewrite `e` using `[mul_one]`. Establish `e' : φ 1 + φ 1 = φ 1 + 0` using `by rw [add_zero, ← e]`. Conclude with `add_left_cancel e'`.
+
+Establish `h2 : φ σ + φ σ⁻¹ = 0`. Rewrite using `[← hφ σ hσ σ⁻¹ (H.inv_mem hσ), mul_inv_cancel, h1]`. Rewrite using `[hφ _ (H.mul_mem hσ hh) _ (H.inv_mem hσ), hφ σ hσ h hh, add_right_comm, h2, zero_add]`.
+-/
 theorem conj_invariant {G M : Type*} [Group G] [AddCommGroup M] (H : Subgroup G) (φ : G → M)
     (hφ : ∀ g ∈ H, ∀ h ∈ H, φ (g * h) = φ g + φ h) {σ h : G} (hσ : σ ∈ H) (hh : h ∈ H) :
     φ (σ * h * σ⁻¹) = φ h := by
@@ -39,6 +55,9 @@ theorem conj_invariant {G M : Type*} [Group G] [AddCommGroup M] (H : Subgroup G)
     rw [← hφ σ hσ σ⁻¹ (H.inv_mem hσ), mul_inv_cancel, h1]
   rw [hφ _ (H.mul_mem hσ hh) _ (H.inv_mem hσ), hφ σ hσ h hh, add_right_comm, h2, zero_add]
 
+/- English proof (translation)
+Proceed by induction on `k with`. Consider the case `zero => simp`. Consider the case `succ k ih => show _ = T.ζ (m + k + 1) ^ p ^ (k + 1)`. Rewrite using `[ih, ← T.ζpow (m + k), ← pow_mul, ← pow_succ']`.
+-/
 theorem zeta_eq_pow (T : Tower p Ω) (m k : ℕ) : T.ζ m = T.ζ (m + k) ^ p ^ k := by
   induction k with
   | zero => simp
@@ -46,11 +65,17 @@ theorem zeta_eq_pow (T : Tower p Ω) (m k : ℕ) : T.ζ m = T.ζ (m + k) ^ p ^ k
     show _ = T.ζ (m + k + 1) ^ p ^ (k + 1)
     rw [ih, ← T.ζpow (m + k), ← pow_mul, ← pow_succ']
 
+/- English proof (translation)
+Take `⟨k, rfl⟩` from `Nat.exists_eq_add_of_le hn`. Rewrite using `[zeta_eq_pow T n k, map_pow, ((mem_gn T _ g).1 hg).1]`.
+-/
 theorem gn_fix_zeta (T : Tower p Ω) {L n : ℕ} (hn : n ≤ L) {g : Gal p Ω} (hg : g ∈ Gn T L) :
     g (T.ζ n) = T.ζ n := by
   obtain ⟨k, rfl⟩ := Nat.exists_eq_add_of_le hn
   rw [zeta_eq_pow T n k, map_pow, ((mem_gn T _ g).1 hg).1]
 
+/- English proof (translation)
+Introduce `g hg h hh`. Take `⟨χ, hχ⟩` from `exists_isCyc T n`. Establish `h1 : χ g = 1` using `(isCyc_eq_one_iff hχ g).2 (gn_fix_zeta T hn hg)`. Rewrite using `[isKum_mul hχ hr ha hg hh, h1, one_mul]`.
+-/
 theorem kum_add (T : Tower p Ω) {L n : ℕ} (hn : n ≤ L) {r : Ω} (hr : r ≠ 0) {a : Gal p Ω → ZMod (p ^ n)}
     (ha : IsKum T n (Gn T L) r a) : ∀ g ∈ Gn T L, ∀ h ∈ Gn T L, a (g * h) = a g + a h := by
   intro g hg h hh
@@ -58,11 +83,19 @@ theorem kum_add (T : Tower p Ω) {L n : ℕ} (hn : n ≤ L) {r : Ω} (hr : r ≠
   have h1 : χ g = 1 := (isCyc_eq_one_iff hχ g).2 (gn_fix_zeta T hn hg)
   rw [isKum_mul hχ hr ha hg hh, h1, one_mul]
 
+/- English proof (translation)
+Use `⟨Polynomial.X ^ (p ^ m) - Polynomial.C 1, Polynomial.X_pow_sub_C_ne_zero (pow_pos hp.out.pos m) 1, ?_⟩` and prove the remaining obligations. Simplify using `[(T.prim m).pow_eq_one]`.
+-/
 theorem isAlgZp_zeta (T : Tower p Ω) (m : ℕ) : IsAlgZp p (T.ζ m) := by
   refine ⟨Polynomial.X ^ (p ^ m) - Polynomial.C 1,
     Polynomial.X_pow_sub_C_ne_zero (pow_pos hp.out.pos m) 1, ?_⟩
   simp [(T.prim m).pow_eq_one]
 
+/- English proof (translation)
+Use `haveI : NeZero (p ^ n) := ⟨pow_ne_zero _ hp.out.ne_zero⟩`. Establish `hg' : ∀ x : Ω, IsAlgZp p x → g x = x` using `hg`. Establish `e` using `ha g hH`. Rewrite `e` using `[hg' _ (isAlgZp_zeta T m)]`. Establish `hz : T.ζ m ≠ 0` using `(T.prim m).ne_zero (pow_ne_zero _ hp.out.ne_zero)`.
+
+Establish `e1 : T.ζ n ^ (a g).val = 1` using `mul_right_cancel₀ hz (by rw [one_mul]; exact e.symm)`. Establish `e2 : T.ζ n ^ (a g).val = T.ζ n ^ (0 : ℕ)` using `by rw [pow_zero]; exact e1`. Rewrite `e2` using `[zeta_pow_eq_iff, ← ZMod.natCast_eq_natCast_iff]`. Simplify using `using e2`.
+-/
 theorem kum_geo_zero (T : Tower p Ω) {n m : ℕ} {H : Subgroup (Gal p Ω)} {a : Gal p Ω → ZMod (p ^ n)}
     (ha : IsKum T n H (T.ζ m) a) {g : Gal p Ω} (hH : g ∈ H) (hg : g ∈ Ggeo p Ω) : a g = 0 := by
   haveI : NeZero (p ^ n) := ⟨pow_ne_zero _ hp.out.ne_zero⟩
@@ -75,6 +108,11 @@ theorem kum_geo_zero (T : Tower p Ω) {n m : ℕ} {H : Subgroup (Gal p Ω)} {a :
   rw [zeta_pow_eq_iff, ← ZMod.natCast_eq_natCast_iff] at e2
   simpa using e2
 
+/- English proof (translation)
+Establish `hh' : ∀ x : Ω, IsAlgZp p x → h x = x` using `hh`. Use `show ∀ x : Ω, IsAlgZp p x → (σ * h * σ⁻¹) x = x`. Introduce and unpack `x ⟨P, hP, hPx⟩`. Establish `hx' : IsAlgZp p (σ⁻¹ x)` using `⟨P, hP, by`. Use `Polynomial.aeval_algHom_apply (σ⁻¹ : Gal p Ω).toAlgHom x (P.map (algebraMap ℤ_[p] (O0 p)))` as an intermediate fact.
+
+Rewrite `this` using `[hPx, map_zero]`. Conclude with `this⟩`. Rewrite using `[AlgEquiv.mul_apply, AlgEquiv.mul_apply, hh' _ hx', ← AlgEquiv.mul_apply, mul_inv_cancel, AlgEquiv.one_apply]`.
+-/
 theorem conj_mem_ggeo {σ h : Gal p Ω} (hh : h ∈ Ggeo p Ω) : σ * h * σ⁻¹ ∈ Ggeo p Ω := by
   have hh' : ∀ x : Ω, IsAlgZp p x → h x = x := hh
   show ∀ x : Ω, IsAlgZp p x → (σ * h * σ⁻¹) x = x
@@ -92,6 +130,35 @@ namespace GlobalTheory.EdgeAlg
 
 open GlobalTheory.K5.Basic
 
+/- English proof (translation)
+Introduce `p _ hp2 c₁`. Take `⟨c', hc'⟩` from `GlobalTheory.T.geometric_level_h1_coboundary p hp2`. Use `⟨c₁ + c', ?_⟩` and prove the remaining obligations. Introduce `Ω _ _ hclo T L n hnL x y lz lq η f hxy hlz hlq hfi hff hη hηlc hcob`. Use `haveI : NeZero (p ^ n) := ⟨pow_ne_zero _ (Fact.out : p.Prime).ne_zero⟩`.
+
+Take `⟨W, ⟨hWi, hWlc⟩, hW⟩` from `hcob`. Establish `hx_add : ∀ g ∈ Gn T L, ∀ h ∈ Gn T L, x (g * h) = x g + x h` using `fun g hg h hh => (hxy g hg h hh).1`. Establish `hlq_add` using `kum_add T hnL (qq_ne_zero T (L + n)) hlq`. Establish `hlz0 : ∀ g ∈ (Ggeo p Ω ⊓ Gn T L), lz g = 0` using `fun g hg => kum_geo_zero T hlz (Subgroup.mem_inf.1 hg).2 (Subgroup.mem_inf.1 hg).1`. Establish `hlqΔ : IsKum T n (Ggeo p Ω ⊓ Gn T L) (T.qq (L + n)) lq` using `fun g hg => hlq g (Subgroup.mem_inf.1 hg).2`.
+
+Set `a : Gal p Ω → Ω` to `fun g => (p : Ω) ^ c₁ * ((η g).val : Ω) - W g`. Establish `haLC : IntegralLocallyConstCochainModPow n (Ggeo p Ω ⊓ Gn T L) a`. Use `⟨fun g _ => IsIntegral.sub (IsIntegral.mul (isInt_pow_p c₁) (isInt_natCast _)) (hWi g), fun g hg => ?_⟩` and prove the remaining obligations. Take `⟨S1, hS1⟩` from `hηlc g hg`. Take `⟨S2, hS2⟩` from `hWlc g`.
+
+Use `⟨S1 ∪ S2, fun h hh hS => ?_⟩` and prove the remaining obligations. Establish `e1` using `hS1 h hh (fun z hz => hS z (Finset.mem_union_left _ hz))`. Establish `e2` using `hS2 h (fun z hz => hS z (Finset.mem_union_right _ hz))`. Simplify using `only [a, e1]`. Conclude with `cong_sub (cong_refl _ _) e2`.
+
+Establish `haCoc : ∀ g ∈ (Ggeo p Ω ⊓ Gn T L), ∀ h ∈ (Ggeo p Ω ⊓ Gn T L), Cong p n (a (g * h)) (a g + g (a h))`. Introduce `g hg h hh`. Establish `hgG` using `(Subgroup.mem_inf.1 hg).2`. Establish `hhG` using `(Subgroup.mem_inf.1 hh).2`. Take `⟨w, hw, ew⟩` from `hW g hgG h hhG`.
+
+Take `⟨u, hu, eu⟩` from `zcong (p := p) (Ω := Ω) n (((x g).val : ℤ) * ((y h).val : ℤ)) (((η h).val : ℤ) - ((η (g * h)).val : ℤ) + ((η g).val : ℤ)) (by`. Simplify using `only [Int.cast_mul, Int.cast_add, Int.cast_sub, Int.cast_natCast, ZMod.natCast_zmod_val]`. Conclude with `hη g hg h hh)`. Simplify using `only [hlz0 g hg, ZMod.val_zero, Nat.cast_zero] at ew`. Use `⟨(p : Ω) ^ c₁ * u - w, IsIntegral.sub (IsIntegral.mul (isInt_pow_p c₁) hu) hw, ?_⟩` and prove the remaining obligations.
+
+Simplify using `only [a, map_sub, map_mul, map_pow, map_natCast]`. Move the coercions through the operations in `at eu`. Take the linear combination `(p : Ω) ^ c₁ * eu - ew`. Take `⟨o, hoi, hofix, z, hzi, hz⟩` from `(hc' Ω hclo T L n hnL lq hlqΔ).1 a haLC haCoc`. Use `⟨o, hoi, hofix, fun σ hσ => ?_⟩` and prove the remaining obligations.
+
+Establish `hsi : ∀ v : Ω, σ⁻¹ (σ v) = v` using `fun v => by`. Rewrite using `[← AlgEquiv.mul_apply, inv_mul_cancel, AlgEquiv.one_apply]`. Establish `hfs : σ⁻¹ f = f` using `hff _ ((Gn T L).inv_mem hσ)`. Use `⟨σ⁻¹ (z - σ z - (p : Ω) ^ c' * W σ), isInt_gal _ (IsIntegral.sub (IsIntegral.sub hzi (isInt_gal σ hzi)) (IsIntegral.mul (isInt_pow_p c') (hWi σ))), fun h hh => ?_⟩` and prove the remaining obligations. Establish `hhG` using `(Subgroup.mem_inf.1 hh).2`.
+
+Establish `hh2 : σ * h * σ⁻¹ ∈ (Ggeo p Ω ⊓ Gn T L)` using `Subgroup.mem_inf.2 ⟨conj_mem_ggeo (Subgroup.mem_inf.1 hh).1, (Gn T L).mul_mem ((Gn T L).mul_mem hσ hhG) ((Gn T L).inv_mem hσ)⟩`. Establish `hh2G` using `(Subgroup.mem_inf.1 hh2).2`. Establish `hcomm : σ * h * σ⁻¹ * σ = σ * h` using `by group`. Establish `hxh2 : x (σ * h * σ⁻¹) = x h` using `conj_invariant (Gn T L) x hx_add hσ hhG`. Establish `hlqh2 : lq (σ * h * σ⁻¹) = lq h` using `conj_invariant (Gn T L) lq hlq_add hσ hhG`.
+
+Establish `hlzh2 : lz (σ * h * σ⁻¹) = 0` using `hlz0 _ hh2`. Establish `hsh : σ (h z) = (σ * h * σ⁻¹) (σ z)`. Rewrite using `[AlgEquiv.mul_apply, AlgEquiv.mul_apply, hsi]`. Establish `hs2 : ∀ v : Ω, σ⁻¹ ((σ * h * σ⁻¹) v) = h (σ⁻¹ v)` using `fun v => by`. Rewrite using `[AlgEquiv.mul_apply, AlgEquiv.mul_apply, hsi]`.
+
+Take `⟨w1, hw1, e1⟩` from `hW _ hh2G σ hσ`. Take `⟨w2, hw2, e2⟩` from `hW σ hσ h hhG`. Take `⟨w3, hw3, e3⟩` from `hz h hh`. Take `⟨w4, hw4, e4⟩` from `hz _ hh2`. Take `⟨u0, hu0, e0⟩` from `zcong (p := p) (Ω := Ω) n (((η (σ * h * σ⁻¹) - η h - x h * y σ + x σ * y h).val : ℕ) : ℤ) (((η (σ * h * σ⁻¹)).val : ℤ) - ((η h).val : ℤ) - ((x h).val : ℤ) * ((y σ).val : ℤ) + ((x σ).val : ℤ) * ((y h).val : ℤ)) (by simp only [Int.cast_mul, Int.cast_add, Int.cast_sub, Int.cast_natC …`.
+
+Move the coercions through the operations in `at e0`. Simplify using `only [hxh2, hlzh2, hcomm, ZMod.val_zero, Nat.cast_zero] at e1`. Simplify using `only [a, hlqh2] at e3 e4`. Establish `e3s` using `congrArg σ e3`. Simplify using `only [map_sub, map_mul, map_pow, map_natCast, hsh] at e3s`.
+
+Establish `K : (p : Ω) ^ c₁ * (p : Ω) ^ c' * (((η (σ * h * σ⁻¹) - η h - x h * y σ + x σ * y h).val : ℕ) : Ω) - (o - σ o - (p : Ω) ^ c₁ * (p : Ω) ^ c' * f * ((lz σ).val : Ω)) * ((lq h).val : Ω) - (((σ * h * σ⁻¹) z - (σ * h * σ⁻¹) (σ z) - (p : Ω) ^ c' * (σ * h * σ⁻¹) (W σ)) - (z - σ z - (p : …`. Take the linear combination `(p : Ω) ^ c₁ * (p : Ω) ^ c' * e0 - (p : Ω) ^ c' * e1 + (p : Ω) ^ c' * e2 + e4 - e3s`. Use `⟨σ⁻¹ ((p : Ω) ^ c₁ * (p : Ω) ^ c' * u0 - (p : Ω) ^ c' * w1 + (p : Ω) ^ c' * w2 + w4 - σ w3), isInt_gal _ ?_, ?_⟩` and prove the remaining obligations. Conclude with `IsIntegral.sub (IsIntegral.add (IsIntegral.add (IsIntegral.sub (IsIntegral.mul (IsIntegral.mul (isInt_pow_p c₁) (isInt_pow_p c')) hu0) (IsIntegral.mul (isInt_pow_p c') hw1)) (IsIntegral.mul (isInt_pow_p c') hw2)) hw4) (isInt_gal σ hw3)`. Establish `KS` using `congrArg (⇑(σ⁻¹ : Gal p Ω)) K`.
+
+Simplify using `only [map_sub, map_mul, map_pow, map_natCast, map_add, hs2, hsi, hfs] at KS`. Simplify using `only [map_sub, map_mul, map_pow, map_natCast, map_add, hsi, pow_add]`. Take the linear combination `KS`.
+-/
 theorem edge_class_cup : ∀ (p : ℕ) [Fact p.Prime], p ≠ 2 → ∀ c₁ : ℕ, ∃ c : ℕ, ∀ (Ω : Type) [Field Ω] [Algebra (O0 p) Ω], IsClo p Ω → ∀ (T : GlobalTheory.K5.Tower p Ω) (L n : ℕ), n ≤ L → ∀ (x y lz lq η : Gal p Ω → ZMod (p ^ n)) (f : Ω),
   (∀ g ∈ Gn T L, ∀ h ∈ Gn T L, x (g * h) = x g + x h ∧ y (g * h) = y g + y h) →
   IsKum T n (Gn T L) (T.ζ (L + n)) lz → IsKum T n (Gn T L) (T.qq (L + n)) lq → IsInt p f → (∀ g ∈ Gn T L, g f = f) →

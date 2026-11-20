@@ -17,9 +17,15 @@ namespace GlobalTheory.RealMult.LevelPull
 
 variable {F : Type} [Field F] [NumberField F] {𝔠 : FracId F}
 
+/- English proof (translation)
+Simplify using `using Over.w u`.
+-/
 theorem toUnit_left {S : Scheme.{0}} {T : Over S} (u : T ⟶ 𝟙_ (Over S)) : u.left = T.hom := by
   simpa using Over.w u
 
+/- English proof (translation)
+Apply `Over.OverMorphism.ext` to reduce the goal to its premises. Apply `hg.1.hom_ext` to reduce the goal to its premises. Conclude with `congrArg (fun z => z.left) e`. Rewrite using `[Over.w, Over.w]`.
+-/
 theorem push_inj {S S' : Scheme.{0}} {X : Obj F 𝔠 S} {X' : Obj F 𝔠 S'} {b : S' ⟶ S}
     {φ : X'.A.left ⟶ X.A.left} (hg : IsGrpPullback X'.A X.A b φ) {T : Over S'} {x y : T ⟶ X'.A}
     (e : pushPt hg.1.w x = pushPt hg.1.w y) : x = y := by
@@ -34,11 +40,17 @@ def liftPt {S S' : Scheme.{0}} {X : Obj F 𝔠 S} {X' : Obj F 𝔠 S'} {b : S' �
   Over.homMk (hg.1.lift (b ≫ p.left) (𝟙_ (Over S')).hom (by
     rw [Category.assoc, Over.w p]; simp)) (hg.1.lift_snd _ _ _)
 
+/- English proof (translation)
+The claim follows from `hg.1.lift_fst _ _ _`.
+-/
 theorem liftPt_push {S S' : Scheme.{0}} {X : Obj F 𝔠 S} {X' : Obj F 𝔠 S'} {b : S' ⟶ S}
     {φ : X'.A.left ⟶ X.A.left} (hg : IsGrpPullback X'.A X.A b φ) (p : 𝟙_ (Over S) ⟶ X.A) :
     (liftPt hg p).left ≫ φ = b ≫ p.left :=
   hg.1.lift_fst _ _ _
 
+/- English proof (translation)
+Apply `Over.OverMorphism.ext` to reduce the goal to its premises. Use `show (u ≫ liftPt h.grp p ≫ X'.rm.act a).left ≫ φ = (toUnit (Over.mk (T.hom ≫ b)) ≫ p ≫ X.rm.act a).left`. Simplify using `only [Over.comp_left, Category.assoc]`. Rewrite using `[h.act a, ← Category.assoc (liftPt h.grp p).left, liftPt_push, toUnit_left, toUnit_left]`. Simplify using the standard rewrite rules.
+-/
 theorem push_liftPt_act {S S' : Scheme.{0}} {X : Obj F 𝔠 S} {X' : Obj F 𝔠 S'} {b : S' ⟶ S}
     {φ : X'.A.left ⟶ X.A.left} (h : X'.IsPullBy X b φ) (p : 𝟙_ (Over S) ⟶ X.A) {T : Over S'}
     (u : T ⟶ 𝟙_ (Over S')) (a : 𝓞 F) :
@@ -54,15 +66,35 @@ section
 variable {S S' : Scheme.{0}} {X : Obj F 𝔠 S} {X' : Obj F 𝔠 S'} {b : S' ⟶ S}
     {φ : X'.A.left ⟶ X.A.left} (hg : IsGrpPullback X'.A X.A b φ) {T : Over S'}
 
+/- English proof (translation)
+The claim follows from `map_mul (pushHom hg T) x y`.
+-/
 theorem push_mul (x y : T ⟶ X'.A) : pushPt hg.1.w (x * y) = pushPt hg.1.w x * pushPt hg.1.w y :=
   map_mul (pushHom hg T) x y
 
+/- English proof (translation)
+The claim follows from `map_one (pushHom hg T)`.
+-/
 theorem push_one : pushPt hg.1.w (1 : T ⟶ X'.A) = 1 := map_one (pushHom hg T)
 
+/- English proof (translation)
+The claim follows from `map_pow (pushHom hg T) x n`.
+-/
 theorem push_pow (x : T ⟶ X'.A) (n : ℕ) : pushPt hg.1.w (x ^ n) = pushPt hg.1.w x ^ n :=
   map_pow (pushHom hg T) x n
 end
 
+/- English proof (translation)
+Introduce `F _ _ 𝔠 S S' X X' b φ h N α`. Use `⟨⟨fun i => liftPt h.grp (α.pt i), ?_, ?_, ?_⟩, fun i => liftPt_push h.grp _⟩` and prove the remaining obligations. Introduce `i`. Apply `push_inj h.grp` to reduce the goal to its premises. Establish `e2 : pushPt h.grp.1.w (liftPt h.grp (α.pt i)) = toUnit (Over.mk ((𝟙_ (Over S')).hom ≫ b)) ≫ α.pt i`.
+
+Apply `Over.OverMorphism.ext` to reduce the goal to its premises. Use `show (liftPt h.grp (α.pt i)).left ≫ φ = (toUnit (Over.mk ((𝟙_ (Over S')).hom ≫ b)) ≫ α.pt i).left`. Rewrite using `[liftPt_push, Over.comp_left, toUnit_left]`. Simplify using the standard rewrite rules. Establish `e3 : (toUnit (Over.mk ((𝟙_ (Over S')).hom ≫ b)) ≫ α.pt i) ^ N = toUnit (Over.mk ((𝟙_ (Over S')).hom ≫ b)) ≫ α.pt i ^ N` using `(map_pow (preHom (G := X.A) (toUnit (Over.mk ((𝟙_ (Over S')).hom ≫ b)))) (α.pt i) N).symm`.
+
+Rewrite using `[push_pow h.grp, e2, e3, α.tors i, push_one h.grp]`. Conclude with `MonObj.comp_one _`. Introduce `Ω _ _ t a c hyp`. Apply `α.inj Ω (t ≫ b) a c` to reduce the goal to its premises. Establish `e` using `congrArg (pushPt h.grp.1.w) hyp`.
+
+Rewrite `e` using `[push_mul h.grp, push_one h.grp, push_liftPt_act h (α.pt 0), push_liftPt_act h (α.pt 1)]`. Conclude with `e`. Introduce `Ω _ _ t y hy`. Take `⟨a, c, hac⟩` from `α.surj Ω (t ≫ b) (pushPt h.grp.1.w y) (by`. Rewrite using `[← push_pow h.grp, hy, push_one h.grp])`.
+
+Use `⟨a, c, push_inj h.grp ?_⟩` and prove the remaining obligations. Rewrite using `[push_mul h.grp, push_liftPt_act h (α.pt 0), push_liftPt_act h (α.pt 1)]`. Conclude with `hac`.
+-/
 theorem exists_level_pull : ∀ {F : Type} [Field F] [NumberField F] {𝔠 : FracId F} {S S' : Scheme.{0}} {X : Obj F 𝔠 S} {X' : Obj F 𝔠 S'} {b : S' ⟶ S}
     {φ : X'.A.left ⟶ X.A.left}, X'.IsPullBy X b φ → ∀ {N : ℕ} (α : X.Level N),
     ∃ α' : X'.Level N, ∀ i, (α'.pt i).left ≫ φ = b ≫ (α.pt i).left := by

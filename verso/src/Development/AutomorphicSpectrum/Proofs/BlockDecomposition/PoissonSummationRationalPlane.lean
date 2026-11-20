@@ -23,6 +23,9 @@ open NumberField.mixedEmbedding
 
 def rc (m : mixedSpace ℚ) : ℝ := m.1 ⟨Ad3.GP.wR, Ad3.GP.wR_isReal⟩
 
+/- English proof (translation)
+Use `haveI := GlobalTheory.CompanionTheory.RealAdele.isEmpty_isComplex`. Use `Prod.ext (funext fun w => ?_) (funext fun w => isEmptyElim w)` and prove the remaining obligations. Establish `e : w = ⟨Ad3.GP.wR, Ad3.GP.wR_isReal⟩` using `Subtype.ext (Subsingleton.elim _ _)`. Rewrite using `[e]`. Conclude with `h`.
+-/
 theorem rc_ext {m m' : mixedSpace ℚ} (h : rc m = rc m') : m = m' := by
   haveI := GlobalTheory.CompanionTheory.RealAdele.isEmpty_isComplex
   refine Prod.ext (funext fun w => ?_) (funext fun w => isEmptyElim w)

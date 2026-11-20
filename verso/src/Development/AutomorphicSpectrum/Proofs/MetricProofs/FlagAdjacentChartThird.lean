@@ -10,6 +10,9 @@ noncomputable section
 
 namespace GlobalTheory.CompanionTheory.Ar.PB.WMan.Mem
 
+/- English proof (translation)
+Introduce `x y hxy` and use `by have h1 : (1 : Matrix (Fin N) (Fin N) ℂ) x y = 0 := Matrix.one_apply_ne fun e => hxy (by rw [e]) have h2 : Matrix.single cb ca t x y = 0 := by rw [Matrix.single_apply, if_neg] rintro ⟨rfl, rfl⟩ exact hxy hc.symm rw [Matrix.add_apply, h1, h2, add_zero]`.
+-/
 theorem blockDiag_transvection {N j : ℕ} {ca cb : Fin N} (hc : (ca : ℕ) < N - j ↔ (cb : ℕ) < N - j) (t : ℂ) :
     IsBlockDiag j (1 + Matrix.single cb ca t : Matrix (Fin N) (Fin N) ℂ) := fun x y hxy => by
   have h1 : (1 : Matrix (Fin N) (Fin N) ℂ) x y = 0 := Matrix.one_apply_ne fun e => hxy (by rw [e])
@@ -19,10 +22,16 @@ theorem blockDiag_transvection {N j : ℕ} {ca cb : Fin N} (hc : (ca : ℕ) < N 
     exact hxy hc.symm
   rw [Matrix.add_apply, h1, h2, add_zero]
 
+/- English proof (translation)
+The claim follows from `Matrix.det_transvection_of_ne cb ca hc.symm t`.
+-/
 theorem det_transvection' {N : ℕ} {ca cb : Fin N} (hc : ca ≠ cb) (t : ℂ) :
     (1 + Matrix.single cb ca t : Matrix (Fin N) (Fin N) ℂ).det = 1 :=
   Matrix.det_transvection_of_ne cb ca hc.symm t
 
+/- English proof (translation)
+Use `b.2` as an intermediate fact. Use `cb.2` as an intermediate fact. Unfold `lastCol at hca`. Apply the tactic sequence `split_ifs at hca <;> omega`.
+-/
 theorem cols_same_block {N j : ℕ} {a b ca cb : Fin N} (hb : (b : ℕ) = a + 1) (hbj : (b : ℕ) < j ∨ j ≤ (a : ℕ))
     (hca : (ca : ℕ) = lastCol N j a) (hcb : (cb : ℕ) = ca + 1) : (ca : ℕ) < N - j ↔ (cb : ℕ) < N - j := by
   have := b.2
@@ -30,6 +39,19 @@ theorem cols_same_block {N j : ℕ} {a b ca cb : Fin N} (hb : (b : ℕ) = a + 1)
   unfold lastCol at hca
   split_ifs at hca <;> omega
 
+/- English proof (translation)
+Introduce `K _ ι _ Φ _ y Ψ _ _ N j M n d Rb τ a b k₀ ca cb F kb V bl r h ε hW w hw`. Take `⟨-, hE⟩` from `GlobalTheory.T.flag_adjacent_chart_second K ι Φ y Ψ N j M n d Rb τ a b k₀ ca cb F kb V bl r h ε hW`. Take `⟨hHB, hbase, hX⟩` from `hE w hw`. Take `⟨hb, hbj, hblk, hca, hcb, hvar, hF, hBC, -, -, -⟩` from `hW`. Take `⟨hmc, hnorm, hgood, -⟩` from `hBC.2.2.2.2 (wB ε w) hw`.
+
+Establish `hbase' : basePart M.blk (fstPt k₀ (wPhi M F bl h ε k₀ τ ca cb w)) = bl (wB ε w)` using `hbase`. Establish `hc : ca ≠ cb` using `fun e => by rw [e] at hcb; omega`. Use `(GlobalTheory.T.log_period_statement K ι Φ y Ψ N j M d τ a b k₀ ca cb hb hbj hblk hca hcb hvar F (wPhi M F bl h ε k₀ τ ca cb w) hF (by rw [hbase']; exact hmc) (by rw [hbase']; exact hgood) (by rw [hbase']; exact hnorm)).2 ⟨fun τ' => wH h ε τ' w, wT ε w, ?_, ?_⟩` and prove the remaining obligations. Use `⟨(hX τ a).1.1, hHB, fun p k hk => ⟨1, one_ne_zero, fun m => ?_⟩⟩` and prove the remaining obligations. Rewrite using `[one_mul]`.
+
+Conclude with `(hX p.1 p.2).1.2 k hk m`. Use `⟨(hX τ a).2.1, fun τ' => ?_, fun p k hk => ⟨1, one_ne_zero, fun m => ?_⟩⟩` and prove the remaining obligations. Distinguish the cases in `e : τ' = τ`. Substitute `e` using the available equality. Rewrite using `[Function.update_self]`.
+
+Use `⟨(hHB τ').1.mul (blockDiag_transvection (cols_same_block hb hbj hca hcb) _), ?_⟩` and prove the remaining obligations. Rewrite using `[Matrix.det_mul, det_transvection' hc, mul_one]`. Conclude with `(hHB τ').2`. Rewrite using `[Function.update_of_ne e]`. Conclude with `hHB τ'`.
+
+Rewrite using `[one_mul]`. Establish `hm` using `(hX p.1 p.2).2.2 k hk m`. Distinguish the cases in `e : p.1 = τ`. Rewrite `hm` using `[if_pos e]`. Rewrite using `[e, Function.update_self]`.
+
+Rewrite `hm` using `[e]`. Conclude with `hm`. Rewrite `hm` using `[if_neg e]`. Rewrite using `[Function.update_of_ne e]`. Conclude with `hm`.
+-/
 theorem main : ∀ (K : Type) [Fintype K] (ι : K → Type) [∀ k, Fintype (ι k)] (Φ : Type) [Field Φ] (y : (Σ k, ι k) → Φ) (Ψ : Type) [Fintype Ψ] [DecidableEq Ψ] (N j : ℕ) (M : FlagModel y Ψ N j) (n d : ℕ) (Rb : AnLogRes (mCoordIdeal M.x) ⊤ n) (τ : Ψ) (a b : Fin N) (k₀ : K) (ca cb : Fin N) (F : FrameData ι Ψ N M.Ω M.blk) (kb : Fin Rb.A.n) (V : Set (Fin n → ℂ)) (bl : (Fin n → ℂ) → (Σ k, baseIdx ι M.blk k) → ℂ) (r : ((Σ k, baseIdx ι M.blk k) → ℂ) → Rb.X) (h : Ψ → Matrix (Fin N) (Fin N) ℂ) (ε : Fin n ⊕ LowIdx Ψ N j ⊕ Unit ≃ Fin (d + 2)), IsWCtx M Rb τ a b k₀ ca cb d F kb V bl r h → ∀ w ∈ wD ε V, wPhi M F bl h ε k₀ τ ca cb w ∈ mcPts (wP M τ a k₀ ca cb) := by
   intro K _ ι _ Φ _ y Ψ _ _ N j M n d Rb τ a b k₀ ca cb F kb V bl r h ε hW w hw
   obtain ⟨-, hE⟩ := GlobalTheory.T.flag_adjacent_chart_second K ι Φ y Ψ N j M n d Rb τ a b k₀ ca cb F kb V bl r h ε hW

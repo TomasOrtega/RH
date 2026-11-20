@@ -10,6 +10,9 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.S
 
 namespace GlobalTheory.CechH1Span
 
+/- English proof (translation)
+Use `show ((t.G.hom.appLE U.1 O hO) ≫ t.G.left.presheaf.map (homOfLE h).op).hom r = _`. Rewrite using `[Scheme.Hom.appLE_map]`.
+-/
 theorem resG_appLE {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {X : Scheme.{0}}
     (t : SAB H X) (U : X.affineOpens) {O O' : t.G.left.Opens} (hO : O ≤ t.G.hom ⁻¹ᵁ U.1) (h : O' ≤ O)
     (r : Γ(X, U.1)) :
@@ -19,6 +22,45 @@ theorem resG_appLE {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host 
 
 set_option maxHeartbeats 1000000 in
 
+/- English proof (translation)
+Introduce `E _ _ _ H X t hP hA hK U n v hv hb δ hδ hδU hδv J W j hWa hcov hWU hj c hc`. Set `ρ : ∀ p : J × J, Γ(X, U.1) →+* Γ(t.G.left, W p.1 ⊓ W p.2)` to `fun p => (t.G.hom.appLE U.1 (W p.1 ⊓ W p.2) (inf_le_left.trans (hWU p.1))).hom`. Use `letI inst : ∀ p : J × J, Module Γ(X, U.1) Γ(t.G.left, W p.1 ⊓ W p.2) := fun p => Module.compHom _ (ρ p)`. Establish `smul_apply : ∀ (r : Γ(X, U.1)) (x : ∀ p : J × J, Γ(t.G.left, W p.1 ⊓ W p.2)) (p : J × J), (r • x) p = ρ p r * x p` using `fun _ _ _ => rfl`. Set `Z : Submodule Γ(X, U.1) (∀ p : J × J, Γ(t.G.left, W p.1 ⊓ W p.2))` to `{ carrier := {x | ∀ i i' i'', resG t.G.left (inf_le_left : W i ⊓ W i' ⊓ W i'' ≤ W i ⊓ W i') (x (i, i')) + resG t.G.left (le_inf (inf_le_left.trans inf_le_right) inf_le_right : W i ⊓ W i' ⊓ W i'' ≤ W i' ⊓ W i'') (x (i', i'')) = resG t.G.left (le_inf (inf_le_left.trans inf_le_left) …`.
+
+Introduce `a b ha hb i i' i''`. Simplify using `only [Pi.add_apply, map_add]`. Rewrite using `[← ha i i' i'', ← hb i i' i'']`. Normalize the expressions using the abelian group laws. Use the proof step `zero_mem' := by`.
+
+Introduce `i i' i''`. Simplify using the standard rewrite rules. Use the proof step `smul_mem' := by`. Introduce `r x hx i i' i''`. Simplify using `only [smul_apply, map_mul]`.
+
+Rewrite using `[← hx i i' i'']`. Simplify using `only [ρ, resG_appLE]`. Use `ring }`. Set `Bd : Submodule Γ(X, U.1) (∀ p : J × J, Γ(t.G.left, W p.1 ⊓ W p.2))` to `{ carrier := {x | ∃ h : ∀ i : J, Γ(t.G.left, W i), ∀ i i', x (i, i') = resG t.G.left inf_le_left (h i) - resG t.G.left inf_le_right (h i')} add_mem' := by`. Introduce and unpack `a b ⟨h1, e1⟩ ⟨h2, e2⟩`.
+
+Use `⟨h1 + h2, fun i i' => ?_⟩` and prove the remaining obligations. Simplify using `only [Pi.add_apply, map_add, e1, e2]`. Expand and normalize the polynomial expressions, which then agree. Use the proof step `zero_mem' := ⟨0, fun i i' => by simp⟩`. Use the proof step `smul_mem' := by`.
+
+Introduce and unpack `r x ⟨h1, e1⟩`. Use `⟨fun i => (t.G.hom.appLE U.1 (W i) (hWU i)).hom r * h1 i, fun i i' => ?_⟩` and prove the remaining obligations. Simplify using `only [smul_apply, e1, map_mul, resG_appLE, ρ]`. Use `ring }`. Set `κ : Fin n → (∀ p : J × J, Γ(t.G.left, W p.1 ⊓ W p.2))` to `fun b p => δ b (W p.1 ⊓ W p.2) (resG t.G.left (inf_le_inf (hj p.1) (hj p.2)) (t.PP.L.g (j p.1) (j p.2)).val) * resG t.G.left (inf_le_inf (hj p.1) (hj p.2)) (t.PP.L.g (j p.1) (j p.2))⁻¹.val`.
+
+Set `S : Submodule Γ(X, U.1) (∀ p : J × J, Γ(t.G.left, W p.1 ⊓ W p.2))` to `Bd ⊔ Submodule.span Γ(X, U.1) (Set.range κ)`. Set `S' : Submodule Γ(X, U.1) Z` to `S.comap Z.subtype`. Take `⟨N, e, he, hAe⟩` from `GlobalTheory.T.cech_h1_finite_generation_affine E H X t hP hA U J W hWa hcov hWU`. Set `ek : Fin N → Z` to `fun k => ⟨fun p => e k p.1 p.2, he k⟩`. Establish `hspan : Submodule.span Γ(X, U.1) (Set.range fun k => S'.mkQ (ek k)) = ⊤`.
+
+Use `eq_top_iff.2 fun q _ => ?_` and prove the remaining obligations. Take `⟨z, rfl⟩` from `S'.mkQ_surjective q`. Take `⟨r, h, hz⟩` from `hAe (fun i i' => z.1 (i, i')) (z.2)`. Establish `hmem : z - ∑ k, r k • ek k ∈ S'`. Use `Submodule.mem_sup_left ⟨h, fun i i' => ?_⟩` and prove the remaining obligations.
+
+Express the relevant statement in the definitionally equal form `z.1 (i, i') - (∑ k, r k • ek k).1 (i, i') = _`. Rewrite using `[Submodule.coe_sum, Finset.sum_apply, hz i i']`. Simplify using `only [Submodule.coe_smul, smul_apply, ρ]`. Conclude with `add_sub_cancel_right _ _`. Establish `: S'.mkQ z = ∑ k, r k • S'.mkQ (ek k)`.
+
+Establish `h0 : S'.mkQ (z - ∑ k, r k • ek k) = 0` using `(Submodule.Quotient.mk_eq_zero _).2 hmem`. Rewrite `h0` using `[map_sub, map_sum]`. Simplify using `only [map_smul] at h0`. Conclude with `sub_eq_zero.1 h0`. Rewrite using `[this]`.
+
+Conclude with `Submodule.sum_mem _ fun k _ => Submodule.smul_mem _ _ (Submodule.subset_span ⟨k, rfl⟩)`. Use `haveI : Module.Finite Γ(X, U.1) (Z ⧸ S') := ⟨⟨Finset.univ.image fun k => S'.mkQ (ek k), by`. Rewrite using `[Finset.coe_image, Finset.coe_univ, Set.image_univ]`. Conclude with `hspan⟩⟩`. Establish `hbot` using `GlobalTheory.submodule_eq_top_of_sup_maximal_smul_eq_top Γ(X, U.1) (Z ⧸ S') ⊥ (fun m hm => by`.
+
+Rewrite using `[bot_sup_eq]`. Use `eq_top_iff.2 fun q _ => ?_` and prove the remaining obligations. Take `⟨z, rfl⟩` from `S'.mkQ_surjective q`. Take `⟨θ, h, N', r, e', hr, he', hz⟩` from `GlobalTheory.T.cechCocycle_eq_coboundary_add_logDerivatives_mod E H X t hP hA hK U n v hv hb δ hδ hδU hδv J W j hWa hcov hWU hj m hm (fun i i' => z.1 (i, i')) z.2`. Set `ek' : Fin N' → Z` to `fun k => ⟨fun p => e' k p.1 p.2, he' k⟩`.
+
+Establish `hmem : z - ∑ k, r k • ek' k ∈ S'`. Establish `hw : ∑ b, θ b • κ b ∈ Submodule.span Γ(X, U.1) (Set.range κ)` using `Submodule.sum_mem _ fun b _ => Submodule.smul_mem _ _ (Submodule.subset_span ⟨b, rfl⟩)`. Establish `hy : (fun p : J × J => resG t.G.left (inf_le_left : W p.1 ⊓ W p.2 ≤ W p.1) (h p.1) - resG t.G.left (inf_le_right : W p.1 ⊓ W p.2 ≤ W p.2) (h p.2)) ∈ Bd` using `⟨h, fun i i' => rfl⟩`. Express the relevant statement in the definitionally equal form `(z - ∑ k, r k • ek' k : Z).1 ∈ S`. Use `Submodule.mem_sup.2 ⟨_, hy, _, hw, ?_⟩` and prove the remaining obligations.
+
+Use function extensionality and compare the values at `p`. Take `⟨i, i'⟩` from `p`. Express the relevant statement in the definitionally equal form `_ = z.1 (i, i') - (∑ k, r k • ek' k).1 (i, i')`. Rewrite using `[Submodule.coe_sum, Finset.sum_apply, Pi.add_apply, Finset.sum_apply, hz i i']`. Simplify using `only [Submodule.coe_smul, smul_apply, ρ, κ]`.
+
+Conclude with `(add_sub_cancel_right _ _).symm`. Establish `hq : S'.mkQ z = ∑ k, r k • S'.mkQ (ek' k)`. Establish `h0 : S'.mkQ (z - ∑ k, r k • ek' k) = 0` using `(Submodule.Quotient.mk_eq_zero _).2 hmem`. Rewrite `h0` using `[map_sub, map_sum]`. Simplify using `only [map_smul] at h0`.
+
+Conclude with `sub_eq_zero.1 h0`. Rewrite using `[hq]`. Conclude with `Submodule.sum_mem _ fun k _ => Submodule.smul_mem_smul (hr k) Submodule.mem_top)`. Set `cz : Z` to `⟨fun p => c p.1 p.2, hc⟩`. Establish `hcz : S'.mkQ cz = 0`.
+
+Establish `: S'.mkQ cz ∈ (⊥ : Submodule Γ(X, U.1) (Z ⧸ S'))` using `hbot ▸ Submodule.mem_top`. Conclude with `(Submodule.mem_bot _).1 this`. Establish `hcS0 : cz ∈ S'` using `(Submodule.Quotient.mk_eq_zero S').1 hcz`. Establish `hcS : cz.1 ∈ S` using `hcS0`. Take `⟨y, ⟨h, hy⟩, w, hw, hyw⟩` from `Submodule.mem_sup.1 hcS`.
+
+Take `⟨θ, rfl⟩` from `(Submodule.mem_span_range_iff_exists_fun _).1 hw`. Use `⟨θ, h, fun i i' => ?_⟩` and prove the remaining obligations. Establish `k` using `congrFun hyw (i, i')`. Express the relevant statement in the definitionally equal form `_ = c i i' at k`. Rewrite using `[← k, Pi.add_apply, hy i i', Finset.sum_apply]`.
+
+Simplify using `only [smul_apply, ρ, κ]`.
+-/
 theorem exists_dlog_add_coboundary : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (X : Scheme.{0}) (t : SAB H X), IsProper t.G.hom → Out.RelAmple t.G t.PP.L → Out.KTriv t.G t.PP.L → ∀ (U : X.affineOpens) (n : ℕ) (v : Fin n → (Sp (DualNumber Γ(X, U.1)) ⟶ t.G.left)), (∀ a, IsTanAtG t (chart U) (v a)) → (∀ w, IsTanAtG t (chart U) w → ∃! cf : Fin n → Γ(X, U.1), IsCombAtG t (chart U) v cf w) → ∀ (δ : Fin n → ∀ O : t.G.left.Opens, Γ(t.G.left, O) → Γ(t.G.left, O)), (∀ a, IsField (t.G.hom ⁻¹ᵁ U.1) (δ a)) → (∀ a (O : t.G.left.Opens) (h : O ≤ t.G.hom ⁻¹ᵁ U.1) (r : Γ(X, U.1)), δ a O ((t.G.hom.appLE U.1 O h).hom r) = 0) → (∀ a (O : t.G.left.Opens), O ≤ t.G.hom ⁻¹ᵁ U.1 → ∀ (f : Γ(t.G.left, O)) (S : Type) [CommRing S] (φ : Γ(X, U.1) →+* S) (g₀ : Sp S ⟶ t.G.left) (w : Sp (DualNumber S) ⟶ t.G.left), g₀ ≫ t.G.hom = spMap φ ≫ chart U → ⊤ ≤ g₀ ⁻¹ᵁ O → IsTranslate t φ g₀ (v a) w → valR g₀ O (δ a O f) = (valR w O f).snd) → ∀ (J : Type) (W : J → t.G.left.Opens) (j : J → t.PP.L.ι), (∀ i, IsAffineOpen (W i)) → ⨆ i, W i = t.G.hom ⁻¹ᵁ U.1 → ∀ (hWU : ∀ i, W i ≤ t.G.hom ⁻¹ᵁ U.1) (hj : ∀ i, W i ≤ t.PP.L.U (j i)) (c : ∀ i i' : J, Γ(t.G.left, W i ⊓ W i')), (∀ i i' i'', resG t.G.left (inf_le_left : W i ⊓ W i' ⊓ W i'' ≤ W i ⊓ W i') (c i i') + resG t.G.left (le_inf (inf_le_left.trans inf_le_right) inf_le_right : W i ⊓ W i' ⊓ W i'' ≤ W i' ⊓ W i'') (c i' i'') = resG t.G.left (le_inf (inf_le_left.trans inf_le_left) inf_le_right : W i ⊓ W i' ⊓ W i'' ≤ W i ⊓ W i'') (c i i'')) → ∃ (θ : Fin n → Γ(X, U.1)) (h : ∀ i : J, Γ(t.G.left, W i)), ∀ i i', c i i' = resG t.G.left inf_le_left (h i) - resG t.G.left inf_le_right (h i') + ∑ b, (t.G.hom.appLE U.1 (W i ⊓ W i') (inf_le_left.trans (hWU i))).hom (θ b) * (δ b (W i ⊓ W i') (resG t.G.left (inf_le_inf (hj i) (hj i')) (t.PP.L.g (j i) (j i')).val) * resG t.G.left (inf_le_inf (hj i) (hj i')) (t.PP.L.g (j i) (j i'))⁻¹.val) := by
   classical
   intro E _ _ _ H X t hP hA hK U n v hv hb δ hδ hδU hδv J W j hWa hcov hWU hj c hc

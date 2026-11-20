@@ -19,10 +19,26 @@ variable {l : ℕ} [Fact l.Prime] {k : Type} [Field k] [CharP k l] [PerfectRing 
 abbrev lI {m : ℕ} (n : ℕ) (T : Thick (Wc.L l F ρ m)) : Ideal T.B :=
   Ideal.span {T.i (Ideal.Quotient.mk _ ((l : WittVector l k) ^ n))}
 
+/- English proof (translation)
+Rewrite using `[Ideal.span_le, Set.singleton_subset_iff]`. Conclude with `T.i_mem (Ideal.mem_map_of_mem _ (Ideal.mem_span_singleton.2 (dvd_pow_self _ hn)))`.
+-/
 theorem lI_le {n : ℕ} (hn : n ≠ 0) (T : Thick (Wc.L l F ρ (n + 1))) : lI n T ≤ T.J := by
   rw [Ideal.span_le, Set.singleton_subset_iff]
   exact T.i_mem (Ideal.mem_map_of_mem _ (Ideal.mem_span_singleton.2 (dvd_pow_self _ hn)))
 
+/- English proof (translation)
+Establish `hl : l.Prime` using `Fact.out`. Take `⟨e, u, hu, hfac⟩` from `Nat.exists_eq_pow_mul_and_not_dvd (Nat.factorial_ne_zero j) l hl.one_lt.ne'`. Establish `he : e < j`. Establish `h1 : e ≤ padicValNat l j.factorial` using `(padicValNat_dvd_iff_le (Nat.factorial_ne_zero j)).1 ⟨u, hfac⟩`. Establish `h2` using `sub_one_mul_padicValNat_factorial_lt_of_ne_zero l hj`.
+
+Establish `h3 : 1 ≤ l - 1`. Use `hl.two_le` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish `h4 : padicValNat l j.factorial ≤ (l - 1) * padicValNat l j.factorial` using `Nat.le_mul_of_pos_left _ h3`. Use linear arithmetic over natural numbers and integers.
+
+Establish `hunit : IsUnit (u : WittVector l k)`. Apply `WittVector.isUnit_of_coeff_zero_ne_zero` to reduce the goal to its premises. Rewrite using `[← WittVector.constantCoeff_apply, map_natCast]`. Introduce `h0`. Conclude with `hu ((CharP.cast_eq_zero_iff k l u).1 h0)`.
+
+Take `⟨j', rfl⟩` from `Nat.exists_eq_succ_of_ne_zero hj`. Establish `hnpos : 0 < n` using `Nat.pos_of_ne_zero hn`. Establish `hm1 : n * (j' + 1) = n * j' + n` using `by ring`. Establish `hm2 : j' ≤ n * j'` using `Nat.le_mul_of_pos_left j' hnpos`. Establish `hsum : e + (n * (j' + 1) - e - n) + n = n * (j' + 1)` using `by omega`.
+
+Use `⟨(↑(hunit.unit⁻¹) : WittVector l k) * (l : WittVector l k) ^ (n * (j' + 1) - e - n) * (l : WittVector l k) ^ n, Ideal.mul_mem_left _ _ (Ideal.mem_span_singleton_self _), ?_⟩` and prove the remaining obligations. Rewrite using `[hfac, Nat.cast_mul, Nat.cast_pow]`. Establish `hu1 : (u : WittVector l k) * ↑(hunit.unit⁻¹) = 1` using `hunit.mul_val_inv`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[hu1, one_mul, ← pow_add, ← pow_add]`.
+
+Use `_ = ((l : WittVector l k) ^ n) ^ (j' + 1) := by`. Rewrite using `[← pow_mul, hsum]`.
+-/
 private theorem exists_factorial_mul_eq_pow_pow_in_span {n j : ℕ} (hn : n ≠ 0) (hj : j ≠ 0) :
     ∃ y ∈ Ideal.span {(l : WittVector l k) ^ n},
       (j.factorial : WittVector l k) * y = ((l : WittVector l k) ^ n) ^ j := by
@@ -62,6 +78,15 @@ private theorem exists_factorial_mul_eq_pow_pow_in_span {n j : ℕ} (hn : n ≠ 
     _ = ((l : WittVector l k) ^ n) ^ (j' + 1) := by
         rw [← pow_mul, hsum]
 
+/- English proof (translation)
+Rewrite using `[inf_eq_left.2 (lI_le hn T)]`. Use `(DividedPowers.span_isSubDPIdeal_iff ?_).2 ?_` and prove the remaining obligations. Rewrite using `[Set.singleton_subset_iff]`. Conclude with `lI_le hn T (Ideal.mem_span_singleton_self _)`. Introduce `j hj s hs`.
+
+Rewrite `hs` using `[Set.mem_singleton_iff]`. Substitute `hs` using the available equality. Establish `hmem : Ideal.Quotient.mk (Ideal.span {(l : WittVector l k) ^ (n + 1)}) ((l : WittVector l k) ^ n) ∈ Wc.Im l k (n + 1)` using `Ideal.mem_map_of_mem _ (Ideal.mem_span_singleton.2 (dvd_pow_self _ hn))`. Rewrite using `[T.dpow_i j hmem]`. Take `⟨y, hy, hyeq⟩` from `exists_factorial_mul_eq_pow_pow_in_span (l := l) (k := k) hn hj`.
+
+Establish `hpd` using `(CrystallineSemistableComparison.Wc.isPd l k (n + 1)).2 j ((l : WittVector l k) ^ n) y (Ideal.mem_span_singleton.2 (dvd_pow_self _ hn)) hyeq`. Establish `hpd' : (Wc.bs l k (n + 1)).γ.dpow j (Ideal.Quotient.mk (Ideal.span {(l : WittVector l k) ^ (n + 1)}) ((l : WittVector l k) ^ n)) = Ideal.Quotient.mk (Ideal.span {(l : WittVector l k) ^ (n + 1)}) y` using `hpd`. Rewrite using `[hpd']`. Take `⟨a, rfl⟩` from `Ideal.mem_span_singleton'.1 hy`. Rewrite using `[map_mul, map_mul]`.
+
+Conclude with `Ideal.mul_mem_left _ _ (Ideal.mem_span_singleton_self _)`.
+-/
 theorem subPd {n : ℕ} (hn : n ≠ 0) (T : Thick (Wc.L l F ρ (n + 1))) : IsSubDPIdeal T.δ (lI n T ⊓ T.J) := by
   rw [inf_eq_left.2 (lI_le hn T)]
   refine (DividedPowers.span_isSubDPIdeal_iff ?_).2 ?_
@@ -89,6 +114,9 @@ section Q
 
 variable {n : ℕ} (hn : n ≠ 0)
 
+/- English proof (translation)
+Take `⟨a, rfl⟩` from `Ideal.mem_span_singleton'.1 hw`. Rewrite using `[map_mul, map_mul]`. Conclude with `Ideal.mul_mem_left _ _ (Ideal.mem_span_singleton_self _)`.
+-/
 theorem lI_mem (T : Thick (Wc.L l F ρ (n + 1))) (w : WittVector l k) (hw : w ∈ Ideal.span {(l : WittVector l k) ^ n}) :
     T.i (Ideal.Quotient.mk _ w) ∈ lI n T := by
   obtain ⟨a, rfl⟩ := Ideal.mem_span_singleton'.1 hw
@@ -99,13 +127,22 @@ def qi (T : Thick (Wc.L l F ρ (n + 1))) : Wc.Wm l k n →+* T.B ⧸ lI n T :=
   Ideal.Quotient.lift _ ((Ideal.Quotient.mk (lI n T)).comp (T.i.comp (Ideal.Quotient.mk _))) fun w hw =>
     Ideal.Quotient.eq_zero_iff_mem.2 (lI_mem T w hw)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem qi_mk (T : Thick (Wc.L l F ρ (n + 1))) (w : WittVector l k) :
     qi T (Ideal.Quotient.mk _ w) = Ideal.Quotient.mk _ (T.i (Ideal.Quotient.mk _ w)) := rfl
 
 omit [PerfectRing k l] [CharP k l] in
+/- English proof (translation)
+Conclude with `CrystallineSemistableComparison.Wc.red_mk l k n w`.
+-/
 theorem red_mk' (w : WittVector l k) : Wc.red l k n (Ideal.Quotient.mk _ w) = Ideal.Quotient.mk _ w := by
   exact CrystallineSemistableComparison.Wc.red_mk l k n w
 
+/- English proof (translation)
+Take `⟨w, rfl⟩` from `Ideal.Quotient.mk_surjective r`. Rewrite using `[red_mk', qi_mk]`.
+-/
 theorem qi_red (T : Thick (Wc.L l F ρ (n + 1))) (r : Wc.Wm l k (n + 1)) :
     qi T (Wc.red l k n r) = Ideal.Quotient.mk _ (T.i r) := by
   obtain ⟨w, rfl⟩ := Ideal.Quotient.mk_surjective r
@@ -122,6 +159,11 @@ def qy (T : Thick (Wc.L l F ρ (n + 1))) :
     rw [← red_mk', qi_red]
     exact Ideal.mem_map_of_mem _ (T.i_mem (Ideal.mem_map_of_mem _ hb))
 
+/- English proof (translation)
+Establish `hx : WittVector.constantCoeff (WittVector.teichmuller l c) = c`. Rewrite using `[WittVector.constantCoeff_apply, WittVector.teichmuller_coeff_zero]`. Rewrite using `[← hx, CrystallineSemistableComparison.Wc.res_coeff, CrystallineSemistableComparison.Wc.res_coeff]`. Use `show Ideal.Quotient.mk _ (qi T (Ideal.Quotient.mk _ (WittVector.teichmuller l c))) = _`. Rewrite using `[qi_mk]`.
+
+Rewrite using `[show T.y.1.1 (Ideal.Quotient.mk _ (Ideal.Quotient.mk _ (WittVector.teichmuller l c))) = Ideal.Quotient.mk T.J (T.i (Ideal.Quotient.mk _ (WittVector.teichmuller l c))) from T.w _]`. Both sides reduce to the same expression.
+-/
 theorem qy_res (T : Thick (Wc.L l F ρ (n + 1))) (c : k) :
     qy T (Wc.res l k n c) = qe T (T.y.1.1 (Wc.res l k (n + 1) c)) := by
   have hx : WittVector.constantCoeff (WittVector.teichmuller l c) = c := by
@@ -175,6 +217,9 @@ def qT (T : Thick (Wc.L l F ρ (n + 1))) : Thick (Wc.L l F ρ n) where
     change _ = ∏ j : Empty, _
     rw [Finset.univ_eq_empty, Finset.prod_empty, map_one]
 
+/- English proof (translation)
+Rewrite using `[Ideal.span_le, Set.singleton_subset_iff, SetLike.mem_coe, Ideal.mem_comap, f.comm]`. Conclude with `Ideal.mem_span_singleton_self _`.
+-/
 theorem lI_map {T T' : Thick (Wc.L l F ρ (n + 1))} (f : T ⟶ T') : lI n T ≤ (lI n T').comap f.φ := by
   rw [Ideal.span_le, Set.singleton_subset_iff, SetLike.mem_coe, Ideal.mem_comap, f.comm]
   exact Ideal.mem_span_singleton_self _
@@ -182,6 +227,9 @@ theorem lI_map {T T' : Thick (Wc.L l F ρ (n + 1))} (f : T ⟶ T') : lI n T ≤ 
 def qφ {T T' : Thick (Wc.L l F ρ (n + 1))} (f : T ⟶ T') : T.B ⧸ lI n T →+* T'.B ⧸ lI n T' :=
   Ideal.quotientMap _ f.φ (lI_map f)
 
+/- English proof (translation)
+Rewrite using `[Ideal.map_le_iff_le_comap]`. Introduce `a ha`. Rewrite using `[Ideal.mem_comap, Ideal.mem_comap]`. Conclude with `Ideal.mem_map_of_mem _ (f.hle ha)`.
+-/
 theorem qφ_le {T T' : Thick (Wc.L l F ρ (n + 1))} (f : T ⟶ T') :
     T.J.map (Ideal.Quotient.mk (lI n T)) ≤ (T'.J.map (Ideal.Quotient.mk (lI n T'))).comap (qφ f) := by
   rw [Ideal.map_le_iff_le_comap]
@@ -189,6 +237,9 @@ theorem qφ_le {T T' : Thick (Wc.L l F ρ (n + 1))} (f : T ⟶ T') :
   rw [Ideal.mem_comap, Ideal.mem_comap]
   exact Ideal.mem_map_of_mem _ (f.hle ha)
 
+/- English proof (translation)
+Establish `hpt : F.Pt.map (CommRingCat.ofHom (Ideal.quotientMap T'.J f.φ f.hle)) T.y.1.2 = T'.y.1.2` using `congrArg (fun z => z.1.2) f.pt`. Establish `hcomp : CommRingCat.ofHom (qe T) ≫ CommRingCat.ofHom (Ideal.quotientMap _ (qφ f) (qφ_le f)) = CommRingCat.ofHom (Ideal.quotientMap T'.J f.φ f.hle) ≫ CommRingCat.ofHom (qe T')` using `CommRingCat.hom_ext (Ideal.Quotient.ringHom_ext (RingHom.ext fun b => rfl))`. Rewrite using `[← hpt, ← FunctorToTypes.map_comp_apply, ← FunctorToTypes.map_comp_apply, hcomp]`.
+-/
 theorem qpt {T T' : Thick (Wc.L l F ρ (n + 1))} (f : T ⟶ T') :
     F.Pt.map (CommRingCat.ofHom (Ideal.quotientMap _ (qφ f) (qφ_le f))) (F.Pt.map (CommRingCat.ofHom (qe T)) T.y.1.2) =
       F.Pt.map (CommRingCat.ofHom (qe T')) T'.y.1.2 := by
@@ -259,6 +310,9 @@ def cmpq : Cx.Hom (quo l (CH.cx (CH.modF A)) n) (CH.cx (sq (IdF.top A) (IdF.span
     obtain ⟨y, rfl⟩ := Submodule.Quotient.mk_surjective _ x
     exact (qM A l n).d_pullC i y
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem cmpq_mk (i : ℕ) (y : CH.Cn (CH.modF A) i) :
     (cmpq A l n).f i (Submodule.Quotient.mk y) = (qM A l n).pullC i y := rfl
 

@@ -11,6 +11,25 @@ open GlobalTheory.CompanionTheory.Ar.Flat.CPoint
 
 namespace GlobalTheory.CompanionTheory.Ar.Flat.CPoint
 
+/- English proof (translation)
+Introduce `E _ _ Ω Vs C _ _ _ _ R' g p q ℓ ψ ρH ρHC HL ev σ σC b₁ b₂ u x₁ x₂ hu hE hσ hcl hA hb₁ hb₂`. Unfold `GlobalTheory.CompanionTheory.Ar.Flat.CPoint.IsEval at hE`. Unfold `GlobalTheory.CompanionTheory.Ar.Flat.IsAdapted at hA ⊢`. Take `⟨hE1, hE2, hE3⟩` from `hE`. Take `⟨hA1, hA2, hA3⟩` from `hA`.
+
+Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `i show ev ⟨u i, hu i⟩ ∈ GlobalTheory.CompanionTheory.Ar.HT.eigSp ρHC σC`. Establish `hui` using `hA1 i`. Rewrite `hui`, the goal using `[GlobalTheory.CompanionTheory.Ar.HT.eigSp, Submodule.mem_iInf]`. Introduce `a`.
+
+Establish `h1` using `hui a`. Rewrite `h1` using `[LinearMap.mem_ker, LinearMap.sub_apply, sub_eq_zero]`. Rewrite using `[LinearMap.mem_ker, LinearMap.sub_apply, sub_eq_zero]`. Express the relevant statement in the definitionally equal form `ρH a (u i) = σ (a : E) • u i at h1`. Use `show ρHC a (ev ⟨u i, hu i⟩) = σC (a : E) • ev ⟨u i, hu i⟩`.
+
+Take `⟨hσa, hψ⟩` from `hσ (a : E)`. Establish `hmem : ρH a (u i) ∈ HL` using `hcl a (u i) (hu i)`. Establish `e1 : ev ⟨ρH a (u i), hmem⟩ = ρHC a (ev ⟨u i, hu i⟩)` using `hE1 a ⟨u i, hu i⟩ hmem`. Establish `e2 : (⟨ρH a (u i), hmem⟩ : HL) = (⟨σ a, hσa⟩ : R') • (⟨u i, hu i⟩ : HL)`. Apply `Subtype.ext` to reduce the goal to its premises.
+
+Simplify using `only [Submodule.coe_smul, Subring.smul_def]`. Conclude with `h1`. Rewrite using `[← e1, e2, map_smulₛₗ, hψ]`. Introduce `i`. Conclude with `hE2 ⟨u (Fin.castAdd q i), hu _⟩ (x₁ i) ((hA2 i).trans (hb₁ i))`.
+
+Introduce `j`. Take `⟨hj1, hj2⟩` from `hA3 j`. Prove the components needed by the constructor for the conclusion. Establish `hc : (u (Fin.natAdd p j)).1 = comb ℓ (fun _ => (0 : R'))`. Rewrite using `[hj1]`.
+
+Simplify using `[GlobalTheory.CompanionTheory.Ar.Flat.CPoint.comb]`. Establish `h3` using `hE2 ⟨u (Fin.natAdd p j), hu _⟩ (fun _ => 0) hc`. Use `h3.trans ?_` and prove the remaining obligations. Use function extensionality and compare the values at `k`. Simplify using the standard rewrite rules.
+
+Introduce `j'`. Establish `hc : (u (Fin.natAdd p j)).2 (comb ℓ (x₂ j')) = ((if j = j' then 1 else 0 : R') : Ω)`. Rewrite using `[← hb₂ j', hj2 j']`. Apply the tactic sequence `split_ifs <;> simp`. Establish `h3` using `hE3 ⟨u (Fin.natAdd p j), hu _⟩ (x₂ j') (if j = j' then 1 else 0) hj1 hc`.
+
+Use `h3.trans ?_` and prove the remaining obligations. Apply the tactic sequence `split_ifs <;> simp`.
+-/
 theorem isAdapted_eval : ∀ (E : Type) [Field E] [NumberField E] (Ω Vs C : Type) [Field Ω] [AddCommGroup Vs] [Module Ω Vs] [Field C]
     (R' : Subring Ω) (g p q : ℕ) (ℓ : Fin g → Vs) (ψ : R' →+* C)
     (ρH : 𝓞 E →+* Module.End Ω (Vs × Module.Dual Ω Vs))

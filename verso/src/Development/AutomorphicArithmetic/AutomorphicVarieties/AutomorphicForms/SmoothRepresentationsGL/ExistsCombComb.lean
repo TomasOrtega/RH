@@ -86,6 +86,9 @@ def PftSch : Prop :=
     [NormedAddCommGroup M] [NormedSpace ℝ M] [FiniteDimensional ℝ M] (G : 𝓢(V × M, ℂ)),
     ∃ K : 𝓢(V × M, ℂ), ⇑K = pft G
 
+/- English proof (translation)
+Introduce `V M _ _ _ _ _ _ _ _ G`. Use `h0 (V × M) (Set.range fun G : 𝓢(V × M, ℂ) => pft G) ?_ _ ⟨G, rfl⟩` and prove the remaining obligations. Introduce and unpack `_ ⟨G, rfl⟩`. Conclude with `⟨(h2 V M G).1, (h1 V M G).1, fun v => ((h1 V M G).2 v).imp fun _ => Eq.symm, fun l => ((h2 V M G).2 l).imp fun _ => Eq.symm⟩`.
+-/
 theorem pftSch_of (h0 : SchOfClosed) (h1 : PftDeriv) (h2 : PftMul) : PftSch := by
   intro V M _ _ _ _ _ _ _ _ G
   refine h0 (V × M) (Set.range fun G : 𝓢(V × M, ℂ) => pft G) ?_ _ ⟨G, rfl⟩
@@ -144,6 +147,11 @@ def ArchKir : Prop :=
 
 def comb {G : Type} [Group G] (c : G →₀ ℂ) (W : G → ℂ) (g : G) : ℂ := c.sum fun x z => z * W (g * x)
 
+/- English proof (translation)
+Use `⟨c₁.sum fun a z => c₀.sum fun b z' => Finsupp.single (a * b) (z * z'), fun x hx => ?_, fun W g => ?_⟩` and prove the remaining obligations. Take `⟨a, ha, hx⟩` from `Finset.mem_biUnion.1 (Finsupp.support_sum hx)`. Take `⟨b, hb, hx⟩` from `Finset.mem_biUnion.1 (Finsupp.support_sum hx)`. Conclude with `⟨a, ha, b, hb, Finset.mem_singleton.1 (Finsupp.support_single_subset hx)⟩`. Unfold `comb`.
+
+Rewrite using `[Finsupp.sum_sum_index (by simp) (by intros; ring)]`. Use `Finsupp.sum_congr fun a _ => ?_` and prove the remaining obligations. Rewrite using `[Finsupp.sum_sum_index (by simp) (by intros; ring), Finsupp.mul_sum]`. Use `Finsupp.sum_congr fun b _ => ?_` and prove the remaining obligations. Rewrite using `[Finsupp.sum_single_index (by simp), mul_assoc, mul_assoc]`.
+-/
 theorem exists_comb_comb {G : Type} [Group G] (c₁ c₀ : G →₀ ℂ) : ∃ c : G →₀ ℂ,
     (∀ x ∈ c.support, ∃ a ∈ c₁.support, ∃ b ∈ c₀.support, x = a * b) ∧
       ∀ W g, comb c W g = comb c₁ (comb c₀ W) g := by
@@ -202,6 +210,9 @@ def Away (S : Finset (HeightOneSpectrum (𝓞 E))) (k : GL (Fin n) (Af E)) : Pro
 def InKS (S : Finset (HeightOneSpectrum (𝓞 E))) (k : GL (Fin n) (Af E)) : Prop :=
   Away S k ∧ ∀ w, cmp w k ∈ GlobalTheory.LFun.KGL w n
 
+/- English proof (translation)
+Use `Units.ext (Matrix.ext fun i j => ?_)` and prove the remaining obligations. Use `DFunLike.ext _ _ fun w => ?_` and prove the remaining obligations. Conclude with `congrArg (fun x : GL (Fin n) (w.adicCompletion E) => x i j) (h w)`.
+-/
 theorem cmp_ext {k k' : GL (Fin n) (Af E)} (h : ∀ w, cmp w k = cmp w k') : k = k' := by
   refine Units.ext (Matrix.ext fun i j => ?_)
   refine DFunLike.ext _ _ fun w => ?_
@@ -414,6 +425,15 @@ def TwistRed : Prop :=
   ∀ (E : Type) [Field E] [NumberField E] [IsTotallyReal E] (n : ℕ) (π π' : CuspSub E n) (χ : Formalism.L2.Host.HChar E),
     (SameSat π π' → SameSat (π.twist χ) (π'.twist χ)) ∧ ((π.twist χ).Iso (π'.twist χ) → π.Iso π')
 
+/- English proof (translation)
+Introduce `E _ _ _ n hn π π' hs`. Take `⟨χ, hc⟩` from `h0 E n hn π`. Use `(h1 E n π π' χ).2 ?_` and prove the remaining obligations. Establish `hs'` using `(h1 E n π π' χ).1 hs`. Generalize the expression as in `π.twist χ = π at hc hs'`.
+
+Generalize the expression as in `π'.twist χ = π' at hs'`. Establish `hc'` using `h2 E n π π' hs' hc`. Assume the negation of the conclusion as `hi`. Take `⟨φ, hφ, φ', hφ', β, β', e, h⟩` from `h3 E n hn π π' hc hc' hs'`. Set `μ : Measure (Reduction.normOneGL E n)` to `Measure.haar`.
+
+Rewrite `hφ`, `hφ'` using `[← Fb.map_carrier]`. Take `⟨ψ, hψ, rfl⟩` from `hφ`. Take `⟨ψ', hψ', rfl⟩` from `hφ'`. Establish `l` using `Fb.carrier_le_central π hc`. Establish `l'` using `Fb.carrier_le_central π' hc'`.
+
+Conclude with `h (h6 E n μ ψ ψ' (l hψ) (l' hψ') (h5 E n μ _ _ l l' (Fb.stab_carrier π) (Fb.stab_carrier π') (h4 E n μ π π' hc hc' hi) ψ hψ ψ' hψ') β β' e)`.
+-/
 theorem smo_of (h0 : ∀ (E : Type) [Field E] [NumberField E] [IsTotallyReal E] (n : ℕ), 1 ≤ n → ∀ π : CuspSub E n,
       ∃ χ, Cen (π.twist χ))
     (h1 : TwistRed) (h2 : CenSame) (h3 : Pair) (h4 : InnerZero) (h5 : OrthTr) (h6 : OrthConv) :

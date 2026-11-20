@@ -19,6 +19,11 @@ local notation "ρ" => residue 𝒪
 
 omit [DecidableEq (ResidueField 𝒪)] in
 
+/- English proof (translation)
+Introduce `hS`. Establish `hn : (curveK K W).Nonsingular X₂ ((curveK K W).negY X₂ Y₂)` using `(WeierstrassCurve.Affine.nonsingular_neg _ _).2 h₂`. Take `⟨x₃, y₃, h₃, e, -, -⟩` from `add_of_notMem_range' K W hn hX₂ h`. Establish `hneg : -(WeierstrassCurve.Affine.Point.some _ _ h₂) = WeierstrassCurve.Affine.Point.some _ _ hn` using `WeierstrassCurve.Affine.Point.neg_some h₂`. Establish `e' : WeierstrassCurve.Affine.Point.some _ _ h₁ = WeierstrassCurve.Affine.Point.some _ _ h₃`.
+
+Rewrite using `[← e, ← hS, ← hneg]`. Normalize the expressions using the abelian group laws. Rewrite `e'` using `[WeierstrassCurve.Affine.Point.some.injEq]`. Conclude with `hX₁ ⟨x₃, e'.1.symm⟩`.
+-/
 theorem add_notMem_of_notMem_range {X₁ Y₁ X₂ Y₂ : K} (h₁ : (curveK K W).Nonsingular X₁ Y₁)
     (hX₁ : X₁ ∉ Set.range ι) (h₂ : (curveK K W).Nonsingular X₂ Y₂) (hX₂ : X₂ ∉ Set.range ι)
     {x y : 𝒪} (h : (curveK K W).Nonsingular (ι x) (ι y)) :
@@ -36,6 +41,29 @@ theorem add_notMem_of_notMem_range {X₁ Y₁ X₂ Y₂ : K} (h₁ : (curveK K W
   rw [WeierstrassCurve.Affine.Point.some.injEq] at e'
   exact hX₁ ⟨x₃, e'.1.symm⟩
 
+/- English proof (translation)
+Break down `point_cases K W P with rfl | ⟨X₁, Y₁, h₁, rfl, hX₁⟩ | ⟨x₁, y₁, h₁, rfl⟩` into its components or cases. Rewrite using `[zero_add, reducePoint_zero, zero_add]`. Conclude with `⟨hQ, rfl⟩`. Break down `point_cases K W Q with rfl | ⟨X₂, Y₂, h₂, rfl, hX₂⟩ | ⟨x₂, y₂, h₂, rfl⟩` into its components or cases. Rewrite using `[add_zero, reducePoint_zero, add_zero]`.
+
+Conclude with `⟨hP, rfl⟩`. Rewrite using `[reducePoint_some_notMem K W h₁ hX₁, reducePoint_some_notMem K W h₂ hX₂, add_zero]`. Break down `point_cases K W (WeierstrassCurve.Affine.Point.some _ _ h₁ + WeierstrassCurve.Affine.Point.some _ _ h₂) with h0 | ⟨X, Y, h, hS, hX⟩ | ⟨x, y, h, hS⟩` into its components or cases. Rewrite using `[h0]`. Conclude with `⟨zero_mem_E0Set K W, rfl⟩`.
+
+Rewrite using `[hS]`. Conclude with `⟨mem_E0Set_some_notMem K W h hX, reducePoint_some_notMem K W h hX⟩`. Conclude with `absurd hS (add_notMem_of_notMem_range K W h₁ hX₁ h₂ hX₂ h)`. Establish `n₂` using `hQ x₂ y₂ h₂ rfl`. Take `⟨x₃, y₃, h₃, e, hx, hy⟩` from `add_of_notMem_range' K W h₁ hX₁ h₂`.
+
+Use `add_mem_and_reduce_of_exists K W ⟨x₃, y₃, h₃, hx ▸ hy ▸ n₂, e, ?_⟩` and prove the remaining obligations. Rewrite using `[reducePoint_some_notMem K W h₁ hX₁, zero_add, reducePoint_some_integral K W h₂ n₂, WeierstrassCurve.Affine.Point.some.injEq]`. Conclude with `⟨hx.symm, hy.symm⟩`. Establish `n₁` using `hP x₁ y₁ h₁ rfl`. Break down `point_cases K W Q with rfl | ⟨X₂, Y₂, h₂, rfl, hX₂⟩ | ⟨x₂, y₂, h₂, rfl⟩` into its components or cases.
+
+Rewrite using `[add_zero, reducePoint_zero, add_zero]`. Conclude with `⟨hP, rfl⟩`. Take `⟨x₃, y₃, h₃, e, hx, hy⟩` from `add_of_notMem_range' K W h₂ hX₂ h₁`. Rewrite `e` using `[add_comm]`. Use `add_mem_and_reduce_of_exists K W ⟨x₃, y₃, h₃, hx ▸ hy ▸ n₁, e, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[reducePoint_some_notMem K W h₂ hX₂, add_zero, reducePoint_some_integral K W h₁ n₁, WeierstrassCurve.Affine.Point.some.injEq]`. Conclude with `⟨hx.symm, hy.symm⟩`. Establish `n₂` using `hQ x₂ y₂ h₂ rfl`. Rewrite using `[reducePoint_some_integral K W h₁ n₁, reducePoint_some_integral K W h₂ n₂]`. Distinguish the cases in `hx : ρ x₁ = ρ x₂`.
+
+Distinguish the cases in `hy : ρ y₁ = (curveRed W).negY (ρ x₂) (ρ y₂)`. Rewrite using `[WeierstrassCurve.Affine.Point.add_of_Y_eq hx hy]`. Break down `add_of_residue_neg K W h₁ h₂ n₁ n₂ hx hy with h0 | ⟨X, Y, h, hS, hX⟩` into its components or cases. Rewrite using `[h0]`. Conclude with `⟨zero_mem_E0Set K W, rfl⟩`.
+
+Rewrite using `[hS]`. Conclude with `⟨mem_E0Set_some_notMem K W h hX, reducePoint_some_notMem K W h hX⟩`. Establish `hy' : ρ y₁ = ρ y₂`. Break down `WeierstrassCurve.Affine.Y_eq_of_X_eq n₁.1 n₂.1 hx with h | h` into its components or cases. Conclude with `h`.
+
+Conclude with `absurd h hy`. Establish `hD : ρ (y₁ + y₂ + W.a₁ * x₁ + W.a₃) ≠ 0`. Introduce `h0`. Apply `hy` to reduce the goal to its premises. Rewrite `h0` using `[map_add, map_add, map_add, map_mul]`.
+
+Simplify using `only [WeierstrassCurve.Affine.negY, WeierstrassCurve.map_a₁, WeierstrassCurve.map_a₃, ← hx]`. Take the linear combination `h0`. Take `⟨x₃, y₃, h₃, n₃, e, e'⟩` from `add_of_residue_eq K W h₁ h₂ n₁ n₂ hx hy' hD`. Rewrite using `[e, e', reducePoint_some_integral K W h₃ n₃]`. Conclude with `⟨mem_E0Set_some_integral K W h₃ n₃, rfl⟩`.
+
+Take `⟨x₃, y₃, h₃, n₃, e, e'⟩` from `add_of_residue_X_ne K W h₁ h₂ n₁ n₂ hx`. Rewrite using `[e, e', reducePoint_some_integral K W h₃ n₃]`. Conclude with `⟨mem_E0Set_some_integral K W h₃ n₃, rfl⟩`.
+-/
 theorem add_mem_E0Set_and_reducePoint_add {P Q : (curveK K W).Point} (hP : P ∈ E0Set K W)
     (hQ : Q ∈ E0Set K W) :
     P + Q ∈ E0Set K W ∧ reducePoint K W (P + Q) = reducePoint K W P + reducePoint K W Q := by
@@ -95,6 +123,9 @@ def E0Subgroup : AddSubgroup (curveK K W).Point where
   add_mem' hP hQ := (add_mem_E0Set_and_reducePoint_add K W hP hQ).1
   neg_mem' hP := (neg_mem_and_reduce K W hP).1
 
+/- English proof (translation)
+Unfold both sides. The equivalence is reflexive.
+-/
 theorem mem_E0Subgroup_iff (P : (curveK K W).Point) : P ∈ E0Subgroup K W ↔ P ∈ E0Set K W :=
   Iff.rfl
 
@@ -103,6 +134,9 @@ def reduceE0Hom : E0Subgroup K W →+ (curveRed W).Point where
   map_zero' := reducePoint_zero K W
   map_add' P Q := (add_mem_E0Set_and_reducePoint_add K W P.2 Q.2).2
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem reduceE0Hom_apply (P : E0Subgroup K W) : reduceE0Hom K W P = reducePoint K W P := rfl
 
 end E0

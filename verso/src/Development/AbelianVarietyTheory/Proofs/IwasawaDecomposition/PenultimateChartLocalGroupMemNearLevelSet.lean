@@ -23,6 +23,9 @@ def triv {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algeb
     StepLevel F E σ J T f bad :=
   { S with chi := 1, chi_triv := fun _ _ => rfl }
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨1, one_pos, fun _ _ => by simp only [triv, pow_one]; rfl⟩`.
+-/
 theorem chiFin_triv {B : Base} {X : PreX B.toPre} (I : TC B X) (l : I.Laws) (Z : TC.Later B (I.cols l)) {T i : ℕ} {hi : i ≤ B.R.m}
     {bad : Set (HeightOneSpectrum (𝓞 B.host.F))}
     (S : StepLevel (I.rec7 l Z).host.F (I.rec7 l Z).host.E (sigD (I.rec7 l Z)) (gramN (I.rec7 l Z) i hi) T (I.rec7 l Z).R.f bad) :
@@ -31,6 +34,35 @@ theorem chiFin_triv {B : Base} {X : PreX B.toPre} (I : TC B X) (l : I.Laws) (Z :
 
 set_option maxHeartbeats 4000000 in
 
+/- English proof (translation)
+Introduce `B X I hOk hPins l Z u a i hi bad Ch chOf K k hR c κ`. Establish `: NeZero (B.R.N i)` using `⟨(B.R.N_pos i).ne'⟩`. Establish `hg : gramN (I.rec7 l Z) i hi = 1` using `((GlobalTheory.Mem.Col2.TC.spaces_in_coordinates I hOk hPins l Z).2.2.2 i hi).1`. Establish `eU : UPts (sigD (I.rec7 l Z)) (gramN (I.rec7 l Z) i hi) (FiniteAdeleRing (𝓞 (I.rec7 l Z).host.F) (I.rec7 l Z).host.F) = UAd B.sp.cm (B.R.N i)` using `by rw [hg]; rfl`. Use `set y : GA B (B.R.N i) := ((K (chOf c)).y ⟨c, rfl⟩).1 with hy`.
+
+Use `set kk : GA B (B.R.N i) := k (chOf c) with hkk`. Establish `hsel : ∀ P : SBof I a, ∃ z : (K (chOf c)).lev.U, (∀ P' : SBof I a, P' ≠ P → ∀ r s, adAt B.host.F P'.1 (((show GA B (B.R.N i) from z.1) : Matrix (Fin (B.R.N i)) (Fin (B.R.N i)) (AfE B.host.F B.host.E)) r s) = (1 : Matrix (Fin (B.R.N i)) (Fin (B.R.N i)) (P'.1.adicCompletion B.field …`. Introduce `P`. Distinguish the cases in `hP : P.1 ∈ I.Q a`. Take `⟨v, hv, hv'⟩` from `LevelElt.place_under I hOk hPins l Z a P hP`.
+
+Take `⟨z, -, hz2, hz3, hz4⟩` from `LevelElt.one_prime I hOk hPins l Z a _ i hi bad (triv (K (chOf c)).lev) (chiFin_triv I l Z _) P hP v hv ((I.cst a).D P) (y * (show GA B (B.R.N i) from κ.1)) kk`. Use `⟨⟨z.1, z.2⟩, fun P' hP' r s => ?_, hz3, fun _ => hz4⟩` and prove the remaining obligations. Establish `e` using `(GlobalTheory.T.adelicMatrixCongruenceBadPrime_iff_completion I hOk l Z a (B.R.N i) 0 P' z.1).1`. Establish `h2` using `hv' P' hP'`. Rewrite `h2` using `[e]`.
+
+Conclude with `LevelElt.support_one z.1 v hz2 P'.1 h2 r s`. Use `⟨1, fun P' _ r s => ?_, GlobalTheory.TwU.congAt_one _ _, fun h => absurd h hP⟩ show adAt B.host.F P'.1 ((1 : Matrix (Fin (B.R.N i)) (Fin (B.R.N i)) (AfE B.host.F B.host.E)) r s) = _` and prove the remaining obligations. Simplify using `only [Matrix.one_apply]`. Apply the tactic sequence `split_ifs <;> simp`. Use `choose zf hzf2 hzf3 hzf4 using hsel`.
+
+Set `cP : ∀ P : HeightOneSpectrum (𝓞 B.fields.E), GA B (B.R.N i) →* Matrix (Fin (B.R.N i)) (Fin (B.R.N i)) (P.adicCompletion B.fields.E)` to `fun P => (RingHom.mapMatrix (adAt B.host.F P)).toMonoidHom.comp (Units.coeHom _)`. Establish `cP_apply : ∀ P (g : GA B (B.R.N i)) r s, cP P g r s = adAt B.host.F P ((g : Matrix (Fin (B.R.N i)) (Fin (B.R.N i)) (AfE B.host.F B.host.E)) r s)` using `fun _ _ _ _ => rfl`. Set `ι : (K (chOf c)).lev.U →* GA B (B.R.N i)` to `(K (chOf c)).lev.U.subtype`. Establish `hone : ∀ P P' : SBof I a, P' ≠ P → cP P'.1 (ι (zf P)) = 1` using `fun P P' h => Matrix.ext fun r s => by`. Rewrite using `[cP_apply]`.
+
+Conclude with `hzf2 P P' h r s`. Establish `hlist : ∀ (L : List (SBof I a)), L.Nodup → ∀ P' : SBof I a, cP P'.1 (ι (L.map zf).prod) = if P' ∈ L then cP P'.1 (ι (zf P')) else 1`. Introduce `L`. Proceed by induction on `L with`. Consider the case `nil => intro _ P'`.
+
+Simplify using the standard rewrite rules. Consider the case `cons P L ih`. Introduce `hL P'`. Rewrite `hL` using `[List.nodup_cons]`. Rewrite using `[List.map_cons, List.prod_cons, map_mul, map_mul, ih hL.2]`.
+
+Distinguish the cases in `h : P = P'`. Substitute `h` using the available equality. Simplify using `[hL.1]`. Rewrite using `[hone P P' (Ne.symm h)]`. Simplify using `[Ne.symm h]`.
+
+Take `⟨w, hw⟩ : ∃ w : (K (chOf c)).lev.U, w = ((Finset.univ : Finset (SBof I a)).toList.map zf).prod` from `⟨_, rfl⟩`. Establish `hwP : ∀ P : SBof I a, cP P.1 (ι w) = cP P.1 (ι (zf P))` using `fun P => by`. Rewrite using `[hw, hlist _ (Finset.nodup_toList _) P, if_pos (Finset.mem_toList.2 (Finset.mem_univ _))]`. Establish `hpt : ∀ g : GA B (B.R.N i), g ∈ UAd B.sp.cm (B.R.N i) → (∀ P ∈ I.Q a, ∃ γ : GL (Fin (B.R.N i)) B.fields.E, ∀ r s, adAt B.host.F P ((g : Matrix (Fin (B.R.N i)) (Fin (B.R.N i)) (AfE B.host.F B.host.E)) r s) = algebraMap B.fields.E (P.adicCompletion B.fields.E) ((γ : Matrix (Fin (B. …` using `B.primes X) (R := B.R) I.sel (I.tup a) u i, PtOf g q := fun g hg hr => LevelElt.point_of_rat B.sp.cm _ _ _ g hg hr`. Establish `hQsub : ∀ P ∈ I.Q a, P ∈ SBof I a` using `fun P hP => by show P ∈ uSG _ _`.
+
+Conclude with `Finset.mem_union_right _ hP`. Use `⟨κ * w, ?_, ?_⟩` and prove the remaining obligations. Take `⟨p0, hp0, -⟩` from `hR.k_std (chOf c)`. Establish `hyU : y ∈ UAd B.sp.cm (B.R.N i)` using `eU ▸ ((K (chOf c)).y ⟨c, rfl⟩).2`. Establish `hxU : (show GA B (B.R.N i) from (κ * w).1) ∈ UAd B.sp.cm (B.R.N i)` using `eU ▸ (((K (chOf c)).lev.U_eq _).1 (κ * w).2).1`.
+
+Establish `hkU : kk ∈ UAd B.sp.cm (B.R.N i)` using `hp0.uni`. Use `hpt _ (mul_mem (mul_mem hyU hxU) hkU) fun P hP => ?_` and prove the remaining obligations. Set `P' : SBof I a` to `⟨P, hQsub P hP⟩`. Take `⟨γ, hγ⟩` from `hzf4 P' hP`. Use `⟨γ, fun r s => ?_⟩` and prove the remaining obligations.
+
+Establish `e1` using `LevelElt.mul_comp_eq (cP P) y (show GA B (B.R.N i) from κ.1) (show GA B (B.R.N i) from w.1) (show GA B (B.R.N i) from (zf P').1) kk (hwP P')`. Establish `e2` using `congrFun (congrFun e1 r) s`. Conclude with `(cP_apply P _ r s).symm.trans (e2.trans ((cP_apply P _ r s).trans (hγ r s)))`. Introduce `P`. Establish `e : κ.1⁻¹ * (κ * w).1 = w.1` using `inv_mul_cancel_left κ.1 w.1`.
+
+Use `(congrArg (GlobalTheory.TwU.CongAt (GlobalTheory.TwU.seamP (sm I l Z) P.1) ((I.cst a).D P)) e).mpr ?_` and prove the remaining obligations. Use `((GlobalTheory.T.adelicMatrixCongruenceBadPrime_iff_completion I hOk l Z a (B.R.N i) ((I.cst a).D P) P w.1).2.2).mpr fun r s => ?_` and prove the remaining obligations. Establish `e` using `LevelElt.entry_eq_of_eq (cP P.1) _ _ (hwP P) r s`. Establish `D2` using `((GlobalTheory.T.adelicMatrixCongruenceBadPrime_iff_completion I hOk l Z a (B.R.N i) ((I.cst a).D P) P (zf P).1).2.2.1 (hzf3 P)) r s`. Use `D2 using 3` and compare the differences between its conclusion and the goal.
+
+Conclude with `e`.
+-/
 theorem exists_level_elt : ∀ {B : Base} {X : PreX B.toPre} (I : TC B X), I.Ok → TC.Pins B X → ∀ (l : I.Laws) (Z : TC.Later B (I.cols l)) (u : B.Word) (a : I.ι) (i : ℕ) (hi : i ≤ B.R.m) (bad : Set (HeightOneSpectrum (𝓞 (I.rec7 l Z).host.F))) (Ch : Type) (chOf : (I.stp u a i).Cl → Ch) (K : Charts I l Z u a i hi bad chOf) (k : Ch → GA B (B.R.N i)), ReadsAt I l Z K k → ∀ (c : (I.stp u a i).Cl) (κ : (K (chOf c)).lev.U), ∃ x : (K (chOf c)).lev.U, (∃ q : ChPt (Pr := B.primes X) (R := B.R) I.sel (I.tup a) u i, PtOf ((show GA B (B.R.N i) from ((K (chOf c)).y ⟨c, rfl⟩).1) * (show GA B (B.R.N i) from x.1) * k (chOf c)) q) ∧ ∀ P : SBof I a, GlobalTheory.TwU.CongAt (GlobalTheory.TwU.seamP (sm I l Z) P.1) ((I.cst a).D P) (κ.1⁻¹ * x.1) := by
   intro B X I hOk hPins l Z u a i hi bad Ch chOf K k hR c κ
   classical
@@ -107,6 +139,11 @@ theorem exists_level_elt : ∀ {B : Base} {X : PreX B.toPre} (I : TC B X), I.Ok 
 
 set_option maxHeartbeats 4000000 in
 
+/- English proof (translation)
+Introduce `B X I hOk hPins l Z u a i hi bad Ch chOf K k hR c κ`. Take `⟨x, ⟨q, hq⟩, hxκ⟩` from `exists_level_elt I hOk hPins l Z u a i hi bad Ch chOf K k hR c κ`. Establish `hl` using `hR.lev c x.1 q hq`. Establish `hx : x.1 ∈ (fun β => (K β).lev.U) (chOf c)` using `x.2`. Take `⟨κ', h3⟩` from `hl.mp hx`.
+
+Use `⟨κ', ⟨h3.1, h3.2.2⟩, fun P f he hei g hL => ?_⟩` and prove the remaining obligations. Take `⟨hm1, hm2, hn⟩` from `GlobalTheory.T.levelElement_at_bad_primes_integral_and_near I hOk l Z u a i hi bad Ch chOf K k hR c x.1 κ' h3.1 (h3.2.1 ▸ hq) P`. Take `⟨p, hp, hpN⟩` from `hR.k_std (chOf c)`. Conclude with `GlobalTheory.T.adelicMatrixCongruence_move_rational_frame _ _ κ.1 x.1 (k (chOf c)) f _ (fun r s => (GlobalTheory.T.stdPointMatrix_and_inverse_integral_at_every_prime _ _ p hp hpN _ r s).1) (fun r s => (GlobalTheory.T.stdPointMatrix_and_inverse_integral_at_every_prime _ _ p hp hpN …`.
+-/
 theorem exists_stepElt : ∀ {B : Base} {X : PreX B.toPre} (I : TC B X), I.Ok → TC.Pins B X → ∀ (l : I.Laws) (Z : TC.Later B (I.cols l)) (u : B.Word) (a : I.ι) (i : ℕ) (hi : i ≤ B.R.m) (bad : Set (HeightOneSpectrum (𝓞 (I.rec7 l Z).host.F))) (Ch : Type) (chOf : (I.stp u a i).Cl → Ch) (K : Charts I l Z u a i hi bad chOf) (k : Ch → GA B (B.R.N i)), ReadsAt I l Z K k → ∀ (c : (I.stp u a i).Cl) (κ : (K (chOf c)).lev.U), ∃ κ' : (I.stp u a i).G c.1, Keeps I κ' ((I.stp u a i).rep c) ∧ ∀ (P : SBof I a) (f : GL (Fin ((I.rec7 l Z).R.N i)) (I.rec7 l Z).host.E), GlobalTheory.TwU.CongAt (GlobalTheory.TwU.seamP (sm I l Z) P.1) ((I.cst a).D P) ((show GL (Fin ((I.rec7 l Z).R.N i)) (AfE (I.rec7 l Z).host.F (I.rec7 l Z).host.E) from k (chOf c))⁻¹ * GlobalTheory.TwU.ratA (I.rec7 l Z).host.F f) → GlobalTheory.TwU.CongAt (GlobalTheory.TwU.seamP (sm I l Z) P.1) ((I.cst a).D P) ((GlobalTheory.TwU.ratA (I.rec7 l Z).host.F f)⁻¹ * (show GL (Fin ((I.rec7 l Z).R.N i)) (AfE (I.rec7 l Z).host.F (I.rec7 l Z).host.E) from k (chOf c))) → ∀ (g : Sp B.fields.E (B.R.N i) ≃ₗ[B.fields.E] Sp B.fields.E (B.R.N i)), LiftsInv I κ' P g → GlobalTheory.TwU.InFrame (i := i) (sm I l Z) (fun _ : SBof I a => f) (I.cst a).D P κ.1 g := by
   intro B X I hOk hPins l Z u a i hi bad Ch chOf K k hR c κ
   obtain ⟨x, ⟨q, hq⟩, hxκ⟩ := exists_level_elt I hOk hPins l Z u a i hi bad Ch chOf K k hR c κ
@@ -123,6 +160,9 @@ end GlobalTheory.Mem.Col2.QChi.NearLev
 
 namespace GlobalTheory.Mem.Col2.QChi
 
+/- English proof (translation)
+Introduce `j hj`. Substitute `hj` using the available equality. Conclude with `(hOk.idx_ok a).last_h`.
+-/
 theorem idx_h_last_step {B : Base} {X : PreX B.toPre} (I : TC B X) (hOk : I.Ok) (a : I.ι) :
     ∀ (j : ℕ), j = B.R.m - 2 + 1 → ∀ (b : (I.idx a).β j) (P : SBof I a), (I.idx a).h j b P = 1 := by
   intro j hj
@@ -131,6 +171,17 @@ theorem idx_h_last_step {B : Base} {X : PreX B.toPre} (I : TC B X) (hOk : I.Ok) 
 
 set_option maxHeartbeats 4000000 in
 
+/- English proof (translation)
+Introduce `B X I hOk hPins l Z Ch0 chOf0 F u a Q h1 Ch _ chOf K g hQ _ _ hk _ _ Lb0 _ v hv β x`. Take `⟨k, hR, hk1⟩` from `hk`. Establish `hm : B.R.m - 1 < B.R.m` using `by omega`. Establish `hm2 : B.R.m - 1 = B.R.m - 2 + 1` using `by have := hOk.hm; omega`. Take `⟨c, rfl⟩` from `hR.onto β`.
+
+Introduce `P hPv`. Set `κ : (K (chOf c)).lev.U` to `GlobalTheory.Mem.Col2.ChartLevel.embU (K (chOf c)).lev v x`. Take `⟨κ', -, hκ'⟩` from `NearLev.exists_stepElt I hOk hPins l Z u a (B.R.m - 1) (Nat.sub_le _ _) (badQ (I.rec7 l Z) Q) Ch chOf K k hR c κ`. Take `⟨g', z, hMid, hL⟩` from `GlobalTheory.T.exists_middleStep_level_inverse_lifts I hOk u a (B.R.m - 1) hm c.1 κ' P`. Set `kk : GL (Fin ((I.rec7 l Z).R.N (B.R.m - 1))) (AfE (I.rec7 l Z).host.F (I.rec7 l Z).host.E)` to `k (chOf c)`.
+
+Establish `hv1 : bc (prV (E` using `(I.rec7 l Z).host.E) v) kk = 1 := hk1 (chOf c) v ((hQ v).1 hv)`. Establish `he : GlobalTheory.TwU.CongAt (GlobalTheory.TwU.seamP (sm I l Z) P.1) ((I.cst a).D P) (kk⁻¹ * 1)` using `GlobalTheory.AwayFr.congAt_of_prV_eq v _ hPv ((I.cst a).D P) kk 1 ((map_one _).trans hv1.symm)`. Establish `hei : GlobalTheory.TwU.CongAt (GlobalTheory.TwU.seamP (sm I l Z) P.1) ((I.cst a).D P) (1⁻¹ * kk)` using `GlobalTheory.AwayFr.congAt_of_prV_eq v _ hPv ((I.cst a).D P) 1 kk (hv1.trans (map_one _).symm)`. Establish `hIF` using `hκ' P 1 (by rw [map_one]; exact he) (by rw [map_one]; exact hei) g' hL`. Use `⟨g', z, ?_, ?_⟩` and prove the remaining obligations.
+
+Establish `h` using `hMid`. Unfold `MidAt at h`. Rewrite `h` using `[idx_h_last_step I hOk a _ hm2]`. Conclude with `h`. Unfold `GlobalTheory.TwU.InFrame at hIF`.
+
+Rewrite `hIF` using `[map_one, inv_one, one_mul, mul_one]`. Conclude with `hIF`.
+-/
 theorem mem_nearSet_chart : ∀ {B : Base} {X : PreX B.toPre} (I : TC B X), I.Ok → TC.Pins B X → ∀ (l : I.Laws) (Z : TC.Later B (I.cols l)) (Ch0 : B.Word → ℕ → Type) (chOf0 : ∀ u i, ((I.rec7 l Z).mem u).C.cls i → Ch0 u i) (F : ∀ u, FormsTiedSym (I.rec7 l Z) u (Ch0 u) (chOf0 u)) (u : B.Word) (a : I.ι) (Q : Finset (HeightOneSpectrum (𝓞 (I.rec7 l Z).host.F))) (h1 : 1 ≤ B.R.m - 1) (Ch : Type) (_ : Finite Ch) (chOf : (I.stp u a (B.R.m - 1)).Cl → Ch) (K : ∀ β : Ch, LevelChart (I.rec7 l Z) (B.T u) (badQ (I.rec7 l Z) Q) (B.R.m - 1) (Nat.sub_le _ _) (fun c : {c // chOf c = β} => (I.chain l u a).stab (B.R.m - 1) c.1) (fun c => latCrd (I.rec7 l Z) (B.R.m - 1) (Nat.sub_le _ _) (I.latAt u a (B.R.m - 1) c.1))) (g : Ch → Ch0 u (B.R.m - 1)), (∀ v, v ∈ Q ↔ I.UnderQ a v) → (∀ u, I.StdF l Z u (F u)) → (∀ u j v h, (F u).glevJ.fr j v h = 1) → (∃ k : Ch → GA B (B.R.N (B.R.m - 1)), I.Reads u a (B.R.m - 1) chOf (fun β => (K β).lev.Lb) (fun β => (K β).lev.U) (fun β => (K β).lev.chi) (fun c => ((K (chOf c)).y ⟨c, rfl⟩).1) (fun c s => ((K (chOf c)).stabI ⟨c, rfl⟩ s).1) k ∧ ∀ β (v : HeightOneSpectrum (𝓞 B.host.F)), I.UnderQ a v → bc (prV (E := B.host.E) v) (k β) = 1) → (∀ β, ∀ v, v ∉ Q → (K β).lev.Uloc v = ((F u).ch (B.R.m - 1) h1 (succ_pred_m B.R) (g β)).lev.Uloc v) → (∀ β (κ : (K β).lev.U) (κ' : ((F u).ch (B.R.m - 1) h1 (succ_pred_m B.R) (g β)).lev.U), κ.1 = κ'.1 → (∀ v ∈ Q, bc (prV (E := (I.rec7 l Z).host.E) v) κ.1 = 1) → (K β).lev.chi κ = ((F u).ch (B.R.m - 1) h1 (succ_pred_m B.R) (g β)).lev.chi κ') → ∀ (Lb0 : Submodule (𝓞 (I.rec7 l Z).host.E) (Fin ((I.rec7 l Z).sp.X (B.R.m - 1)).rank → (I.rec7 l Z).host.E)), (F u).levJ.Lb = reL (rankN (I.rec7 l Z) (B.R.m - 1) (Nat.sub_le _ _)) Lb0 → ∀ (v : HeightOneSpectrum (𝓞 (I.rec7 l Z).host.F)), v ∈ Q → ∀ β (x : (K β).lev.Uloc v), x.1 ∈ GlobalTheory.Mem.Col2.QChi.NearSet I l Z a v := by
   intro B X I hOk hPins l Z Ch0 chOf0 F u a Q h1 Ch _ chOf K g hQ _ _ hk _ _ Lb0 _ v hv β x
   obtain ⟨k, hR, hk1⟩ := hk

@@ -20,20 +20,40 @@ variable {L : Type} [Field L] [Valued L (WithZero (Multiplicative ℤ))] {σ : L
 abbrev mat (g : GU σ n) : Matrix (Fin n) (Fin n) L := ((g : GL (Fin n) L) : Matrix (Fin n) (Fin n) L)
 
 omit [Valued L (WithZero (Multiplicative ℤ))] in
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem mat_mul (g g' : GU σ n) : mat (g * g') = mat g * mat g' := rfl
 
 omit [Valued L (WithZero (Multiplicative ℤ))] in
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem mat_one : mat (1 : GU σ n) = 1 := rfl
 
 omit [Valued L (WithZero (Multiplicative ℤ))] in
+/- English proof (translation)
+The claim follows from `Subtype.ext (Units.ext h)`.
+-/
 theorem mat_injective {g g' : GU σ n} (h : mat g = mat g') : g = g' := Subtype.ext (Units.ext h)
 
 omit [Valued L (WithZero (Multiplicative ℤ))] in
+/- English proof (translation)
+Rewrite using `[← mat_mul, inv_mul_cancel, mat_one]`.
+-/
 theorem mat_inv_mul (g : GU σ n) : mat g⁻¹ * mat g = 1 := by rw [← mat_mul, inv_mul_cancel, mat_one]
 
 omit [Valued L (WithZero (Multiplicative ℤ))] in
+/- English proof (translation)
+Rewrite using `[← mat_mul, mul_inv_cancel, mat_one]`.
+-/
 theorem mat_mul_inv (g : GU σ n) : mat g * mat g⁻¹ = 1 := by rw [← mat_mul, mul_inv_cancel, mat_one]
 
+/- English proof (translation)
+Rewrite using `[Matrix.mul_apply, Finset.sum_eq_single i.rev]`. Establish `: i.val + i.rev.val + 1 = n` using `by have := i.2; rw [Fin.val_rev]; omega`. Simplify using `only [antiJ, this, if_true, one_mul]`. Introduce `b _ hb`. Establish `: ¬ (i.val + b.val + 1 = n)` using `fun h => hb (Fin.ext (by rw [Fin.val_rev]; omega))`.
+
+Simplify using `[antiJ, this]`. Simplify using the standard rewrite rules.
+-/
 theorem antiJ_mul_apply (M : Matrix (Fin n) (Fin n) L) (i j : Fin n) : (antiJ L n * M) i j = M i.rev j := by
   rw [Matrix.mul_apply, Finset.sum_eq_single i.rev]
   · have : i.val + i.rev.val + 1 = n := by have := i.2; rw [Fin.val_rev]; omega
@@ -43,6 +63,11 @@ theorem antiJ_mul_apply (M : Matrix (Fin n) (Fin n) L) (i j : Fin n) : (antiJ L 
     simp [antiJ, this]
   · simp
 
+/- English proof (translation)
+Establish `h1 : cT σ (mat g) * antiJ L n * mat g = antiJ L n` using `g.2`. Establish `h2 : mat g⁻¹ = antiJ L n * (cT σ (mat g) * antiJ L n)`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[h1, GlobalTheory.UnitarySwap.antiJ_mul_self, Matrix.one_mul]`. Use `_ = _ := by simp only [Matrix.mul_assoc, mat_mul_inv, Matrix.mul_one]`.
+
+Rewrite using `[h2, antiJ_mul_apply, P.fSatake_cTJ]`.
+-/
 theorem mat_inv_apply (g : GU σ n) (i j : Fin n) : mat g⁻¹ i j = σ (mat g j.rev i.rev) := by
   have h1 : cT σ (mat g) * antiJ L n * mat g = antiJ L n := g.2
   have h2 : mat g⁻¹ = antiJ L n * (cT σ (mat g) * antiJ L n) := by
@@ -51,12 +76,20 @@ theorem mat_inv_apply (g : GU σ n) (i j : Fin n) : mat g⁻¹ i j = σ (mat g j
       _ = _ := by simp only [Matrix.mul_assoc, mat_mul_inv, Matrix.mul_one]
   rw [h2, antiJ_mul_apply, P.fSatake_cTJ]
 
+/- English proof (translation)
+Establish `h : (antiJ L n * (cT σ M * antiJ L n)) * M = 1`. Rewrite using `[Matrix.mul_assoc, hM, GlobalTheory.UnitarySwap.antiJ_mul_self]`. Conclude with `⟨⟨⟨M, _, mul_eq_one_comm.1 h, h⟩, hM⟩, rfl⟩`.
+-/
 theorem exists_mat (M : Matrix (Fin n) (Fin n) L) (hM : cT σ M * antiJ L n * M = antiJ L n) :
     ∃ g : GU σ n, mat g = M := by
   have h : (antiJ L n * (cT σ M * antiJ L n)) * M = 1 := by
     rw [Matrix.mul_assoc, hM, GlobalTheory.UnitarySwap.antiJ_mul_self]
   exact ⟨⟨⟨M, _, mul_eq_one_comm.1 h, h⟩, hM⟩, rfl⟩
 
+/- English proof (translation)
+Use `⟨fun h => P.fSatake_K_int h, fun h => ?_⟩` and prove the remaining obligations. Establish `h' : ∀ i j, mat g⁻¹ i j ∈ intL L` using `fun i j => by`. Rewrite using `[mat_inv_apply]`. Use `show Valued.v (σ _) ≤ 1`. Rewrite using `[hσ]`.
+
+Conclude with `h _ _`. Take `⟨x, hx, e⟩` from `P.cartan_exists_glint (intL L) _ _ (mat_mul_inv g) h h'`. Establish `: x = (g : GL (Fin n) L)` using `Units.ext e`. Rewrite `hx` using `[this]`. Conclude with `⟨g.2, hx⟩`.
+-/
 theorem mem_KU_iff (hσ : ∀ x, Valued.v (σ x) = Valued.v x) (g : GU σ n) :
     g ∈ KU σ n ↔ ∀ i j, mat g i j ∈ intL L := by
   refine ⟨fun h => P.fSatake_K_int h, fun h => ?_⟩
@@ -70,6 +103,13 @@ theorem mem_KU_iff (hσ : ∀ x, Valued.v (σ x) = Valued.v x) (g : GU σ n) :
   rw [this] at hx
   exact ⟨g.2, hx⟩
 
+/- English proof (translation)
+Establish `hint : ∀ i j, antiJ L n i j ∈ intL L`. Introduce `i j`. Unfold `antiJ`. Use `split_ifs`. Conclude with `one_mem _`.
+
+Conclude with `zero_mem _`. Take `⟨J, hJ, hJe⟩` from `P.cartan_exists_glint (intL L) _ _ (GlobalTheory.UnitarySwap.antiJ_mul_self (L := L) (n := n)) hint hint`. Take `⟨k₁, hk₁, k₂, hk₂, e⟩` from `GlobalTheory.UnitarySwap.inv_mem_doubleCoset hU hJ (g := (g : GL (Fin n) L)) (by`. Introduce `i j`. Rewrite using `[hJe]`.
+
+Simplify using `only [antiJ, add_comm i.val j.val]`. Apply the tactic sequence `split_ifs <;> simp) (by rw [hJe]; exact g.2)`. Rewrite `hk₁`, `hk₂` using `[hJe]`. Conclude with `⟨⟨k₁, hk₁.1⟩, hk₁, ⟨k₂, hk₂.1⟩, hk₂, Subtype.ext e⟩`.
+-/
 theorem inv_mem_dc [CompleteSpace L] {ϖ : L} {q : ℕ} (hU : IsUnramInv ϖ σ q) (g : GU σ n) :
     ∃ k₁ ∈ KU σ n, ∃ k₂ ∈ KU σ n, g⁻¹ = k₁ * g * k₂ := by
   have hint : ∀ i j, antiJ L n i j ∈ intL L := by

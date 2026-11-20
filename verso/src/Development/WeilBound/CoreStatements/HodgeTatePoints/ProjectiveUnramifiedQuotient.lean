@@ -3,6 +3,17 @@ import Development.AbelianVarietyTheory.Proofs.FoundationProofs.ExistsUniqueAlgE
 
 namespace PositivityTheory.HtPt.Mi
 
+/- English proof (translation)
+Introduce `R A B _ _ _ _ _ _ _ I _ f hf`. Use `GlobalTheory.isAdicComplete_map_of_finite I A` as an intermediate fact. Set `J` to `I.map (algebraMap R A)`. Establish `hJ : ∀ e, (I ^ e).map (algebraMap R A) = J ^ e` using `fun e => Ideal.map_pow _ _ _`. Establish `ha : StrictMono fun e : ℕ => e + 1` using `fun _ _ h => Nat.succ_lt_succ h`.
+
+Set `f' : ∀ e : ℕ, B →+* A ⧸ J ^ (e + 1)` to `fun e => (Ideal.quotEquivOfEq (hJ (e + 1))).toRingHom.comp (f e).toRingHom`. Establish `key : ∀ e (a : A) (b : B), Ideal.Quotient.mk _ a = f' e b ↔ Ideal.Quotient.mk _ a = f e b` using `fun e a b => by`. Rewrite using `[← (Ideal.quotEquivOfEq (hJ (e + 1))).injective.eq_iff, Ideal.quotEquivOfEq_mk]`. Both sides reduce to the same expression. Establish `hf' : ∀ {m}, (Ideal.Quotient.factorPow J (ha.monotone m.le_succ)).comp (f' (m + 1)) = f' m` using `fun {m} => by`.
+
+Use extensionality with `b`. Take `⟨a, hb⟩` from `Ideal.Quotient.mk_surjective (f' (m + 1) b)`. Rewrite using `[RingHom.comp_apply, ← hb, ← (key m a b).2 (hf m b a ((key _ a b).1 hb))]`. Both sides reduce to the same expression. Set `g` to `IsAdicComplete.StrictMono.liftRingHom J ha f' hf'`.
+
+Establish `hg : ∀ e b, Ideal.Quotient.mk _ (g b) = f' e b` using `fun e b => IsAdicComplete.StrictMono.mk_liftRingHom J ha f' hf' b`. Establish `ext : ∀ a a' : A, (∀ e, Ideal.Quotient.mk (J ^ (e + 1)) a = Ideal.Quotient.mk (J ^ (e + 1)) a') → a = a'` using `fun a a' h => congrFun (IsHausdorff.StrictMono.funext' J ha (f := fun _ : Unit => a) (g := fun _ => a') fun e _ => h e) ()`. Use `⟨{ g with commutes' := fun r => ext _ _ fun e => ?_ }, fun e b => (key e _ b).1 (hg e b), fun g' hg' => AlgHom.ext fun b => ext _ _ fun e => ?_⟩` and prove the remaining obligations. Use `(hg e _).trans ((key e _ _).2 ?_).symm` and prove the remaining obligations. Rewrite using `[AlgHom.commutes]`.
+
+Both sides reduce to the same expression. Conclude with `((key e _ b).2 (hg' e b)).trans (hg e b).symm`.
+-/
 theorem algHom_of_system : ∀ (R A B : Type) [CommRing R] [IsNoetherianRing R] [CommRing A] [CommRing B] [Algebra R A] [Algebra R B] [Module.Finite R A] (I : Ideal R) [IsAdicComplete I R] (f : ∀ e : ℕ, B →ₐ[R] A ⧸ (I ^ (e + 1)).map (algebraMap R A)), (∀ e (b : B) (a : A), Ideal.Quotient.mk _ a = f (e + 1) b → Ideal.Quotient.mk _ a = f e b) → ∃! g : B →ₐ[R] A, ∀ e b, Ideal.Quotient.mk _ (g b) = f e b := by
   intro R A B _ _ _ _ _ _ _ I _ f hf
   have := GlobalTheory.isAdicComplete_map_of_finite I A

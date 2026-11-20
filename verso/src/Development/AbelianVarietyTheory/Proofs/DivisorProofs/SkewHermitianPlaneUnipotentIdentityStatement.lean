@@ -7,6 +7,9 @@ open scoped TensorProduct NNReal Matrix
 open NumberField IsDedekindDomain MeasureTheory Filter Topology Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes
 open GlobalTheory.WeilM GlobalTheory.AdelicU GlobalTheory.LFun GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels GlobalTheory.ThK GlobalTheory.ThK.DescB
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.UnipCocptHerm.cocompact_unip_eps | exact GlobalTheory.UnipCocptHerm.cocompact_unip_eps | (intros; apply GlobalTheory.UnipCocptHerm.cocompact_unip_eps <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.skew_hermitian_plane_unipotent_identity : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E), IsCMExt F E σ →
     ∀ (n n₁ : ℕ) (W : Spc F E n) (W₁ : Spc F E n₁) (H : Plane E n n₁), n = n₁ + 2 → form σ W.J H.x H.x = 0 →
     form σ W.J H.y H.y = 0 → form σ W.J H.x H.y = 1 →

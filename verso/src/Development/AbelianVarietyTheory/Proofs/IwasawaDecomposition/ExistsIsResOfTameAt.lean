@@ -13,6 +13,19 @@ open Formalism.L2.Host
 
 variable {E : Type} [Field E] [NumberField E]
 
+/- English proof (translation)
+Establish `ha : a ∉ P.asIdeal` using `fun ha => hb (by simpa using P.asIdeal.sub_mem ha hab)`. Establish `hva : P.valuation E (k : E) = 1`. Rewrite using `[hk]`. Conclude with `(P.valuation_eq_one_iff_notMem (K := E)).2 ha`. Establish `hvb : P.valuation E (l : E) = 1`.
+
+Rewrite using `[hl]`. Conclude with `(P.valuation_eq_one_iff_notMem (K := E)).2 hb`. Establish `hvd : P.valuation E ((k : E) - l) ≤ WithZero.exp (-((1 : ℕ) : ℤ))`. Establish `e : (k : E) - l = algebraMap (𝓞 E) E (a - b)` using `by rw [hk, hl, map_sub]`. Rewrite using `[e, HeightOneSpectrum.valuation_of_algebraMap]`.
+
+Conclude with `(P.intValuation_le_pow_iff_mem (a - b) 1).2 (by simpa using hab)`. Establish `key : χ.locK P (k * l⁻¹) = 1`. Use `h (atFin P (k * l⁻¹)) ?_ ?_` and prove the remaining obligations. Use `show Valued.v ((((k * l⁻¹ : Eˣ) : E)) : P.adicCompletion E) = 1`. Rewrite using `[HeightOneSpectrum.valuedAdicCompletion_eq_valuation', Units.val_mul, Units.val_inv_eq_inv_val, map_mul, map_inv₀, hva, hvb]`.
+
+Simplify using the standard rewrite rules. Establish `e : ((atFin P (k * l⁻¹) : (P.adicCompletion E)ˣ) : P.adicCompletion E) - 1 = algebraMap E (P.adicCompletion E) (((k : E) - l) * (l : E)⁻¹)`. Establish `e2 : ((k : E) - l) * (l : E)⁻¹ = ((k * l⁻¹ : Eˣ) : E) - 1`. Rewrite using `[Units.val_mul, Units.val_inv_eq_inv_val, sub_mul, mul_inv_cancel₀ l.ne_zero]`. Rewrite using `[e2, map_sub, map_one]`.
+
+Both sides reduce to the same expression. Rewrite using `[e]`. Use `show Valued.v (((((k : E) - l) * (l : E)⁻¹ : E)) : P.adicCompletion E) ≤ _`. Rewrite using `[HeightOneSpectrum.valuedAdicCompletion_eq_valuation', map_mul, map_inv₀, hvb]`. Simplify using `using hvd`.
+
+Rewrite `key` using `[map_mul, map_inv, mul_inv_eq_one]`. Then use the resulting hypothesis.
+-/
 theorem locK_eq_of_congr (χ : HChar E) (P : HeightOneSpectrum (𝓞 E)) (h : χ.TameAt P)
     (a b : 𝓞 E) (k l : Eˣ) (hk : (k : E) = a) (hl : (l : E) = b) (hb : b ∉ P.asIdeal)
     (hab : a - b ∈ P.asIdeal) : χ.locK P k = χ.locK P l := by
@@ -43,6 +56,11 @@ theorem locK_eq_of_congr (χ : HChar E) (P : HeightOneSpectrum (𝓞 E)) (h : χ
       simpa using hvd
   rwa [map_mul, map_inv, mul_inv_eq_one] at key
 
+/- English proof (translation)
+Take `⟨a, ha⟩` from `Ideal.Quotient.mk_surjective (u : 𝓞 E ⧸ P.asIdeal)`. Use `haveI : Nontrivial (𝓞 E ⧸ P.asIdeal) := Ideal.Quotient.nontrivial_iff.2 P.isPrime.ne_top`. Establish `hn : a ∉ P.asIdeal` using `fun h => u.ne_zero (by rw [← ha]; exact Ideal.Quotient.eq_zero_iff_mem.2 h)`. Establish `h0 : (a : E) ≠ 0`. Introduce `h`.
+
+Establish `: a = 0` using `by exact_mod_cast h`. Conclude with `hn (this ▸ P.asIdeal.zero_mem)`. Conclude with `⟨(a, Units.mk0 (a : E) h0), rfl, ha.symm, hn⟩`.
+-/
 theorem exists_lift (P : HeightOneSpectrum (𝓞 E)) (u : (𝓞 E ⧸ P.asIdeal)ˣ) :
     ∃ p : 𝓞 E × Eˣ, (p.2 : E) = p.1 ∧ (u : 𝓞 E ⧸ P.asIdeal) = Ideal.Quotient.mk _ p.1 ∧ p.1 ∉ P.asIdeal := by
   obtain ⟨a, ha⟩ := Ideal.Quotient.mk_surjective (u : 𝓞 E ⧸ P.asIdeal)
@@ -54,6 +72,13 @@ theorem exists_lift (P : HeightOneSpectrum (𝓞 E)) (u : (𝓞 E ⧸ P.asIdeal)
     exact hn (this ▸ P.asIdeal.zero_mem)
   exact ⟨(a, Units.mk0 (a : E) h0), rfl, ha.symm, hn⟩
 
+/- English proof (translation)
+Use `choose f hf1 hf2 hf3 using exists_lift P`. Establish `main : ∀ (a : 𝓞 E) (k : Eˣ) (u : (𝓞 E ⧸ P.asIdeal)ˣ), (k : E) = a → (u : 𝓞 E ⧸ P.asIdeal) = Ideal.Quotient.mk _ a → χ.locK P (f u).2 = χ.locK P k`. Introduce `a k u hk hu`. Use `(locK_eq_of_congr χ P h a (f u).1 k (f u).2 hk (hf1 u) (hf3 u) ?_).symm` and prove the remaining obligations. Rewrite using `[← Ideal.Quotient.eq, ← hu, ← hf2 u]`.
+
+Use `⟨MonoidHom.mk' (fun u => χ.locK P (f u).2) ?_, main⟩` and prove the remaining obligations. Introduce `u v`. Rewrite using `[← map_mul]`. Use `main ((f u).1 * (f v).1) _ _ ?_ ?_` and prove the remaining obligations. Rewrite using `[Units.val_mul, hf1, hf1]`.
+
+Simplify using the standard rewrite rules. Rewrite using `[Units.val_mul, map_mul, ← hf2, ← hf2]`.
+-/
 theorem exists_res (χ : HChar E) (P : HeightOneSpectrum (𝓞 E)) (h : χ.TameAt P) :
     ∃ c : (𝓞 E ⧸ P.asIdeal)ˣ →* ℂˣ, ∀ (a : 𝓞 E) (k : Eˣ) (u : (𝓞 E ⧸ P.asIdeal)ˣ), (k : E) = a →
       (u : 𝓞 E ⧸ P.asIdeal) = Ideal.Quotient.mk _ a → c u = χ.locK P k := by
@@ -72,6 +97,9 @@ theorem exists_res (χ : HChar E) (P : HeightOneSpectrum (𝓞 E)) (h : χ.TameA
 
 end GlobalTheory.TameResidue
 
+/- English proof (translation)
+Introduce `_ χ P h` and use `GlobalTheory.TameResidue.exists_res χ P h`.
+-/
 theorem GlobalTheory.exists_isRes_of_tameAt : ∀ (D : D7) (χ : Formalism.L2.Host.HChar D.host.E) (P : Pl D.host.E),
     χ.TameAt P → ∃ c, IsRes χ P c :=
   fun _ χ P h => GlobalTheory.TameResidue.exists_res χ P h

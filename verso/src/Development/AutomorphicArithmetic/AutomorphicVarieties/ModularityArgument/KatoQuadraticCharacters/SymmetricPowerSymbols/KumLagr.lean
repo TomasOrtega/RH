@@ -4,6 +4,25 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.ModularityArgument
 open scoped MatrixGroups Matrix
 open GlobalTheory.KZ GlobalTheory.K4 UpperTheory.V.Z.Kato.Sym
 
+/- English proof (translation)
+Set `F : IntermediateField K L` to `(FiniteGaloisIntermediateField.adjoin K (B : Set L)).toIntermediateField`. Use `haveI : FiniteDimensional K F := (FiniteGaloisIntermediateField.adjoin K (B : Set L)).finiteDimensional`. Use `haveI : IsGalois K F := (FiniteGaloisIntermediateField.adjoin K (B : Set L)).isGalois`. Establish `hBF : ∀ b ∈ B, b ∈ F` using `fun b hb => FiniteGaloisIntermediateField.subset_adjoin K (B : Set L) hb`. Establish `hagree : ∀ (g : L ≃ₐ[K] L) (σ : F ≃ₐ[K] F), (∀ x : F, g (x : L) = (σ x : L)) → c g = c (σ.liftNormal L)`.
+
+Introduce `g σ hgσ`. Apply `hB` to reduce the goal to its premises. Introduce `b hb`. Establish `h1` using `hgσ ⟨b, hBF b hb⟩`. Establish `h2` using `σ.liftNormal_commutes L ⟨b, hBF b hb⟩`.
+
+Simplify using `only [IntermediateField.algebraMap_apply] at h2`. Rewrite using `[h1, h2]`. Set `cE : (F ≃ₐ[K] F) → K` to `fun σ => c (σ.liftNormal L)`. Establish `hlift : ∀ (σ : F ≃ₐ[K] F) (x : F), σ.liftNormal L (x : L) = (σ x : L)`. Introduce `σ x`.
+
+Use `σ.liftNormal_commutes L x` as an intermediate fact. Simplify `this` using `only [IntermediateField.algebraMap_apply]`. Establish `hcEmul : ∀ σ τ, cE (σ * τ) = cE σ * cE τ`. Introduce `σ τ`. Establish `: c ((σ * τ).liftNormal L) = c (σ.liftNormal L * τ.liftNormal L)`.
+
+Use `symm`. Apply `hagree` to reduce the goal to its premises. Introduce `x`. Simplify using `only [AlgEquiv.mul_apply, hlift]`. Simplify using `only [cE, this, hm]`.
+
+Establish `hcE0 : ∀ σ, algebraMap K F (cE σ) ≠ 0` using `fun σ => by`. Simplify using `using h0 (σ.liftNormal L)`. Set `f : (F ≃ₐ[K] F) → Fˣ` to `fun σ => Units.mk0 _ (hcE0 σ)`. Establish `hcoc : groupCohomology.IsMulCocycle₁ f`. Introduce `σ τ`.
+
+Use `ext`. Simplify using `[f, hcEmul, mul_comm]`. Take `⟨β, hβ⟩` from `groupCohomology.isMulCoboundary₁_of_isMulCocycle₁_of_aut_to_units f hcoc`. Use `⟨((β : F) : L), by simp, fun g => ?_⟩` and prove the remaining obligations. Use `set σ := g.restrictNormal F`.
+
+Establish `hgσ : ∀ x : F, g (x : L) = (σ x : L)`. Introduce `x`. Use `g.restrictNormal_commutes F x` as an intermediate fact. Simplify `this.symm` using `only [IntermediateField.algebraMap_apply]`. Establish `hσβ : (σ (β : F)) = algebraMap K F (cE σ) * (β : F)`.
+
+Use `congrArg (fun u : Fˣ => (u : F)) (hβ σ)` as an intermediate fact. Simplify using `[f, div_eq_iff (β.ne_zero)] at this`. Simplify using `using this`. Rewrite using `[hgσ, hσβ, hagree g σ hgσ]`. Simplify using `[cE]`.
+-/
 private theorem kum_lagr {K L : Type} [Field K] [Field L] [Algebra K L] [IsGalois K L]
     (c : (L ≃ₐ[K] L) → K) (h0 : ∀ g, c g ≠ 0) (hm : ∀ g h, c (g * h) = c g * c h)
     (B : Finset L) (hB : ∀ g h : L ≃ₐ[K] L, (∀ b ∈ B, g b = h b) → c g = c h) :
@@ -57,6 +76,39 @@ private theorem kum_lagr {K L : Type} [Field K] [Field L] [Algebra K L] [IsGaloi
   rw [hgσ, hσβ, hagree g σ hgσ]
   simp [cE]
 
+/- English proof (translation)
+Introduce `Ω _ _ _ ε X m hm`. Use `haveI : NeZero m := ⟨hm.ne'⟩`. Use `haveI : CharZero Ω := charZero_of_injective_algebraMap (algebraMap ℚ Ω).injective`. Use `haveI : CharZero X.K := charZero_of_injective_algebraMap (algebraMap Ω X.K).injective`. Use `haveI : IsGalois X.K (Kb X) := IsGalois.mk`.
+
+Take `⟨hprim, hL2, hL3, -, -, -, -⟩` from `lgB Ω ε X m hm`. Use `set ζK : X.K := algebraMap Ω X.K (eOm ε (1 / (m : ℚ))) with hζK`. Establish `hzt : zt X m = io X ζK` using `rfl`. Establish `hinj : Function.Injective (io X)` using `(io X).injective`. Establish `hζm : ζK ^ m = 1`.
+
+Apply `hinj` to reduce the goal to its premises. Rewrite using `[map_pow, ← hzt, hprim.pow_eq_one, map_one]`. Establish `hζ0 : ζK ≠ 0`. Introduce `h`. Rewrite `hζm` using `[h, zero_pow hm.ne']`.
+
+Conclude with `zero_ne_one hζm`. Establish `hpowmod : ∀ n, ζK ^ (n % m) = ζK ^ n` using `fun n => by conv_rhs => rw [← Nat.mod_add_div n m, pow_add, pow_mul, hζm, one_pow, mul_one]`. Establish `hInDalg : ∀ g : Kb X ≃ₐ[X.K] Kb X, InD X g.toRingEquiv` using `fun g x => g.commutes x`. Set `toAlg : ∀ h : RingAut (Kb X), InD X h → (Kb X ≃ₐ[X.K] Kb X)` to `fun h hh => AlgEquiv.ofRingEquiv (f := h) hh`. Establish `htoAlg : ∀ h hh, (toAlg h hh).toRingEquiv = h` using `fun h hh => rfl`.
+
+Establish `hfixed : ∀ x : Kb X, (∀ h : RingAut (Kb X), InD X h → h x = x) → ∃ a : X.K, io X a = x`. Introduce `x hx`. Establish `hbot : x ∈ (⊥ : IntermediateField X.K (Kb X))` using `(InfiniteGalois.mem_bot_iff_fixed x).mpr fun g => hx g.toRingEquiv (hInDalg g)`. Take `⟨a, ha⟩` from `IntermediateField.mem_bot.mp hbot`. Conclude with `⟨a, ha⟩`.
+
+Establish `hne : ∀ (θ : Kb X) (f : X.Kˣ), θ ^ m = io X (f : X.K) → θ ≠ 0`. Introduce `θ f hθ h0`. Rewrite `hθ` using `[h0, zero_pow hm.ne']`. Conclude with `f.ne_zero (hinj (by rw [← hθ, map_zero]))`. Establish `hact : ∀ (θ : Kb X) (f : X.Kˣ), θ ^ m = io X (f : X.K) → ∀ h : RingAut (Kb X), InD X h → h θ = zt X m ^ (ka X m θ h).val * θ`.
+
+Introduce `θ f hθ h hh`. Apply `hL2 _ _ (hne θ f hθ)` to reduce the goal to its premises. Rewrite using `[← map_pow, hθ, hh]`. Use `⟨fun φ hadd hLC => ?_, fun φ φ' f f' hK hφ => ?_⟩` and prove the remaining obligations. Take `⟨B, hB⟩` from `hLC`.
+
+Set `c : (Kb X ≃ₐ[X.K] Kb X) → X.K` to `fun g => ζK ^ (φ g.toRingEquiv).val`. Establish `hc0 : ∀ g, c g ≠ 0` using `fun g => pow_ne_zero _ hζ0`. Establish `hcm : ∀ g h, c (g * h) = c g * c h`. Introduce `g h`. Establish `e : (g * h).toRingEquiv = g.toRingEquiv * h.toRingEquiv` using `RingEquiv.ext fun _ => rfl`.
+
+Simplify using `only [c, e, hadd _ _ (hInDalg g) (hInDalg h), ZMod.val_add, hpowmod, pow_add]`. Establish `hcB : ∀ g h : Kb X ≃ₐ[X.K] Kb X, (∀ b ∈ B, g b = h b) → c g = c h`. Introduce `g h hgh`. Simplify using `only [c, hB _ _ (hInDalg g) (hInDalg h) hgh]`. Take `⟨θ, hθ0, hθ⟩` from `kum_lagr c hc0 hcm B hcB`.
+
+Take `⟨a, ha⟩` from `hfixed (θ ^ m) (by`. Introduce `h hh`. Rewrite using `[map_pow, show h θ = (toAlg h hh) θ from rfl, hθ, mul_pow, ← map_pow, ← pow_mul, mul_comm _ m, pow_mul, hζm, one_pow, map_one, one_mul])`. Establish `ha0 : a ≠ 0`. Introduce `h0`.
+
+Rewrite `ha` using `[h0, map_zero]`. Conclude with `pow_ne_zero m hθ0 ha.symm`. Use `⟨Units.mk0 a ha0, θ, by simp [ha], fun h hh => ?_⟩` and prove the remaining obligations. Apply `hL3 _ _ _ hθ0` to reduce the goal to its premises. Rewrite using `[show h θ = (toAlg h hh) θ from rfl, hθ]`.
+
+Use `show io X (ζK ^ (φ (toAlg h hh).toRingEquiv).val) * θ = zt X m ^ (φ h).val * θ`. Rewrite using `[htoAlg, hzt, map_pow]`. Take `⟨θ, hθm, hθ⟩` from `hK`. Establish `hθ0` using `hne θ f hθm`. Establish `hθact : ∀ h, InD X h → h θ = zt X m ^ (φ h).val * θ` using `fun h hh => by`.
+
+Rewrite using `[hact θ f hθm h hh, hθ h hh]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨θ', hθ'm, hθ'⟩`. Establish `hθ'0` using `hne θ' f' hθ'm`. Take `⟨u, hu⟩` from `hfixed (θ' / θ) (by`.
+
+Introduce `h hh`. Rewrite using `[map_div₀, hθact h hh, hact θ' f' hθ'm h hh, hθ' h hh, ← hφ h hh]`. Clear denominators, using `[hθ0, hθ'0, pow_ne_zero _ (hprim.ne_zero hm.ne')])` for the nonvanishing conditions. Establish `hu0 : u ≠ 0`. Introduce `h0`.
+
+Rewrite `hu` using `[h0, map_zero, eq_comm, div_eq_zero_iff]`. Conclude with `hu.elim hθ'0 hθ0`. Use `⟨Units.mk0 u hu0, Units.ext (hinj ?_)⟩` and prove the remaining obligations. Simplify using `only [Units.val_mul, Units.val_pow_eq_pow_val, Units.val_mk0, map_mul, map_pow, hu, ← hθ'm, ← hθm]`. Rewrite using `[div_pow, mul_div_cancel₀ _ (pow_ne_zero m hθ0)]`.
+
+Introduce and unpack `⟨v, hv⟩`. Use `⟨θ * io X (v : X.K), ?_, fun h hh => ?_⟩` and prove the remaining obligations. Rewrite using `[mul_pow, hθm, ← map_pow, ← map_mul, hv, Units.val_mul, Units.val_pow_eq_pow_val]`. Apply `hL3 _ _ _ (mul_ne_zero hθ0 ((map_ne_zero _).mpr v.ne_zero))` to reduce the goal to its premises. Rewrite using `[map_mul, hh, hθact h hh, hφ h hh, mul_assoc]`.
+-/
 theorem UpperTheory.V.Z.Kato.Sym.kum :
     UpperTheory.V.Z.Kato.Sym.Kum := by
   intro Ω _ _ _ ε X m hm

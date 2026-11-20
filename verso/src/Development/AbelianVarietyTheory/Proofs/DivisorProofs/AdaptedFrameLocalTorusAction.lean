@@ -13,6 +13,21 @@ noncomputable section
 
 namespace GlobalTheory.LeviFrameSplit
 
+/- English proof (translation)
+Use extensionality with `i j`. Take `⟨⟨a, i⟩, rfl⟩` from `(linePlace h2).surjective i`. Take `⟨⟨b, j⟩, rfl⟩` from `(linePlace h2).surjective j`. Establish `hv` using `GlobalTheory.BlockForms.LeviLoc.tripPlace_val (l := 1) (d := d - 2) (n := d) (by omega) a i`. Distinguish the cases in `hab : a = b`.
+
+Substitute `hab` using the available equality. Rewrite using `[leviEmb_apply_same]`. Distinguish the cases in `hij : i = j`. Substitute `hij` using the available equality. Rewrite using `[Matrix.diagonal_apply_eq]`.
+
+Distinguish the cases in `ha : a = 0`. Substitute `ha` using the available equality. Establish `hi` using `i.2`. Simplify using `only [tripSizes, Matrix.cons_val_zero] at hi`. Establish `hv0 : ((linePlace h2 ⟨0, i⟩ : Fin d) : ℕ) = 0`.
+
+Rewrite using `[hv]`. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Rewrite using `[if_pos hv0]`. Simplify using `[firstBlockScalar]`.
+
+Apply the tactic sequence `have h1 : 1 ≤ (![0, 1, 1 + (d - 2)] : Fin 3 → ℕ) a := by fin_cases a <;> simp_all`. Establish `hv1 : ((linePlace h2 ⟨a, i⟩ : Fin d) : ℕ) ≠ 0`. Rewrite using `[hv]`. Use linear arithmetic over natural numbers and integers. Rewrite using `[if_neg hv1]`.
+
+Simplify using `[firstBlockScalar, Pi.mulSingle_eq_of_ne ha]`. Rewrite using `[Matrix.diagonal_apply_ne _ ((linePlace h2).injective.ne fun h => hij (eq_of_heq (Sigma.mk.inj_iff.1 h).2))]`. Distinguish the cases in `ha : a = 0`. Substitute `ha` using the available equality. Simplify using `[firstBlockScalar, hij]`.
+
+Simplify using `[firstBlockScalar, Pi.mulSingle_eq_of_ne ha, Matrix.one_apply_ne hij]`. Rewrite using `[leviEmb_apply_ne _ _ _ hab, Matrix.diagonal_apply_ne _ ((linePlace h2).injective.ne fun h => hab (congrArg Sigma.fst h))]`.
+-/
 theorem leviEmb_positionOne_eq (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
     {d : ℕ} (h2 : 2 ≤ d) (y : kˣ) :
     ((leviEmb k (linePlace h2) (firstBlockScalar k d y) : GL (Fin d) k) : Matrix (Fin d) (Fin d) k) =
@@ -55,6 +70,27 @@ namespace GlobalTheory.LeviFrameSplit
 
 open GlobalTheory.Div.CoordOpp (piW_inclR piW_cA incM_map_piW)
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ B d m i₀ i₁ W W₁ H hcm hA hdet v t h2 y g hL`. Take `⟨hx, hy, hι⟩` from `hL`. Use `set A := (mat g).map (piW t) with hAdef`. Establish `cx : ∀ r, ∑ k, A r k * t (H.x k) = (y : Fv F v) * t (H.x r)` using `fun r => by`. Use `congrArg (piW t) (congrFun hx r)` as an intermediate fact.
+
+Rewrite `this` using `[RingHom.map_mulVec]`. Simplify `this` using `[Matrix.mulVec, dotProduct, GlobalTheory.ThK.incV, piW_inclR, GlobalTheory.JacGeom.piW_idl, A]`. Establish `cy : ∀ r, ∑ k, A r k * t (H.y k) = t (H.y r)` using `fun r => by`. Use `congrArg (piW t) (congrFun hy r)` as an intermediate fact. Rewrite `this` using `[RingHom.map_mulVec]`.
+
+Establish `e1 : ((GlobalTheory.JacGeom.idl hcm t (y, 1))⁻¹ : (AE F E)ˣ) = GlobalTheory.JacGeom.idl hcm t (y⁻¹, 1)`. Rewrite using `[← map_inv, Prod.inv_mk, inv_one]`. Rewrite `this` using `[e1]`. Simplify `this` using `[Matrix.mulVec, dotProduct, GlobalTheory.ThK.incV, piW_inclR, piW_cA, GlobalTheory.JacGeom.piW_comp_idl, A]`. Establish `cι : A * H.ι.map t = H.ι.map t`.
+
+Use `congrArg (fun Z => Z.map (piW t)) hι` as an intermediate fact. Simplify using `only [Matrix.map_mul, incM_map_piW] at this`. Rewrite `this` using `[show mat (1 : UA σ W₁.J) = 1 from rfl, Matrix.map_one _ (map_zero _) (map_one _), Matrix.mul_one]`. Conclude with `this`. Establish `hPe : ∀ r c, frameMat t H hA.rank r (frameEquiv hA.rank c) = t (GlobalTheory.JacGeom.frame H.x H.ι H.y r c)` using `fun r c => by simp only [frameMat, Matrix.submatrix_apply, Matrix.map_apply, id, Equiv.symm_apply_apply]`.
+
+Establish `key : A * frameMat t H hA.rank = frameMat t H hA.rank * Matrix.diagonal fun j : Fin d => if (j : ℕ) = 0 then (y : Fv F v) else 1`. Use `Matrix.ext fun r j => ?_` and prove the remaining obligations. Take `⟨c, rfl⟩` from `(frameEquiv hA.rank).surjective j`. Rewrite using `[Matrix.mul_diagonal, Matrix.mul_apply, hPe]`. Break down `c with (i | i | i)` into its components or cases.
+
+Rewrite using `[if_pos (frameEquiv_inl hA.rank i)]`. Simplify using `only [hPe, GlobalTheory.JacGeom.frame, Matrix.of_apply, Sum.elim_inl]`. Rewrite using `[cx r, mul_comm]`. Establish `hv : ((frameEquiv hA.rank (.inr (.inl i)) : Fin d) : ℕ) ≠ 0` using `by rw [frameEquiv_mid]; omega`. Rewrite using `[if_neg hv, mul_one]`.
+
+Simplify using `only [hPe, GlobalTheory.JacGeom.frame, Matrix.of_apply, Sum.elim_inl, Sum.elim_inr]`. Use `congrFun (congrFun cι r) i` as an intermediate fact. Simplify `this` using `only [Matrix.mul_apply, Matrix.map_apply]`. Establish `hv : ((frameEquiv hA.rank (.inr (.inr i)) : Fin d) : ℕ) ≠ 0` using `by rw [frameEquiv_inr]; omega`. Rewrite using `[if_neg hv, mul_one]`.
+
+Simplify using `only [hPe, GlobalTheory.JacGeom.frame, Matrix.of_apply, Sum.elim_inr]`. Conclude with `cy r`. Establish `hU : IsUnit (frameMat t H hA.rank)`. Rewrite using `[Matrix.isUnit_iff_isUnit_det, isUnit_iff_ne_zero]`. Express the relevant statement in the definitionally equal form `(((GlobalTheory.JacGeom.frame H.x H.ι H.y).submatrix id (frameEquiv hA.rank).symm).map (t : E →+* Fv F v)).det ≠ 0`.
+
+Rewrite using `[← RingHom.mapMatrix_apply, ← RingHom.map_det]`. Conclude with `(map_ne_zero _).2 hdet`. Establish `hc : frameMat t H hA.rank * ((frameGL t H hA.rank)⁻¹ : GL (Fin d) (Fv F v)) = 1`. Rewrite using `[← frameGL_val t H hA.rank hU]`. Conclude with `Units.mul_inv _`.
+
+Rewrite using `[Units.val_mul, Units.val_mul, frameGL_val t H hA.rank hU, leviEmb_positionOne_eq, ← key, Matrix.mul_assoc, hc, Matrix.mul_one]`.
+-/
 theorem levi_frame_conj : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E)
     (d m i₀ i₁ : ℕ) (W : Spc F E d) (W₁ : Spc F E m) (H : Plane E d m) (hcm : IsCMExt F E σ)
     (hA : H.IsAdapted σ B W W₁ i₀ i₁),

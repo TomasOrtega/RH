@@ -17,10 +17,16 @@ section Point
 
 variable {n : ℕ}
 
+/- English proof (translation)
+Use extensionality with `i`. Simplify using `[coordVec, EuclideanSpace.single_apply, Pi.single_apply]`.
+-/
 theorem coordVec_expand (w : V n) : w = ∑ a, w a • coordVec a := by
   ext i
   simp [coordVec, EuclideanSpace.single_apply, Pi.single_apply]
 
+/- English proof (translation)
+Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty`. Use `hα.smul_left 0 0 y` as an intermediate fact. Simplify using `using this`. Consider the case `insert a s ha ih => rw [Finset.sum_insert ha, Finset.sum_insert ha, hα.add_left, hα.smul_left, ih, smul_eq_mul]`.
+-/
 theorem sesq_sum_left {α : V n → V n → ℂ} (hα : IsSesq α) {ι : Type} (s : Finset ι) (c : ι → ℂ)
     (x : ι → V n) (y : V n) : α (∑ i ∈ s, c i • x i) y = ∑ i ∈ s, c i * α (x i) y := by
   classical
@@ -30,6 +36,9 @@ theorem sesq_sum_left {α : V n → V n → ℂ} (hα : IsSesq α) {ι : Type} (
     simpa using this
   | insert a s ha ih => rw [Finset.sum_insert ha, Finset.sum_insert ha, hα.add_left, hα.smul_left, ih, smul_eq_mul]
 
+/- English proof (translation)
+Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty`. Use `hα.smul_right 0 x 0` as an intermediate fact. Simplify using `using this`. Consider the case `insert a s ha ih => rw [Finset.sum_insert ha, Finset.sum_insert ha, hα.add_right, hα.smul_right, ih, smul_eq_mul]`.
+-/
 theorem sesq_sum_right {α : V n → V n → ℂ} (hα : IsSesq α) {ι : Type} (s : Finset ι) (c : ι → ℂ)
     (x : V n) (y : ι → V n) : α x (∑ i ∈ s, c i • y i) = ∑ i ∈ s, conj (c i) * α x (y i) := by
   classical
@@ -39,6 +48,11 @@ theorem sesq_sum_right {α : V n → V n → ℂ} (hα : IsSesq α) {ι : Type} 
     simpa using this
   | insert a s ha ih => rw [Finset.sum_insert ha, Finset.sum_insert ha, hα.add_right, hα.smul_right, ih, smul_eq_mul]
 
+/- English proof (translation)
+Combine the equalities or inequalities in the displayed calculation. Rewrite using `[← coordVec_expand x, ← coordVec_expand y]`. Use `_ = _ := by`. Rewrite using `[sesq_sum_left hα]`. Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[sesq_sum_right hα, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun b _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem sesq_expand {α : V n → V n → ℂ} (hα : IsSesq α) (x y : V n) :
     α x y = ∑ a, ∑ b, α (coordVec a) (coordVec b) * (x a * conj (y b)) := by
   calc α x y = α (∑ a, x a • coordVec a) (∑ b, y b • coordVec b) := by
@@ -50,6 +64,11 @@ theorem sesq_expand {α : V n → V n → ℂ} (hα : IsSesq α) (x y : V n) :
         refine Finset.sum_congr rfl fun b _ => ?_
         ring
 
+/- English proof (translation)
+Simplify using `only [ofValues, sesq_expand hα (L _), AddSubmonoidClass.coe_finset_sum, Subalgebra.coe_smul, sym, map_sum, map_smul, map_mul, (pull_dz L _).1, (pull_dz L _).2, Finset.sum_mul, Finset.mul_sum, Finset.sum_smul, Finset.smul_sum, smul_mul_smul_comm, smul_smul]`. Use `conv_lhs => enter [2, a, 2, b]`. Rewrite using `[Finset.sum_comm]`. Use `conv_lhs => enter [2, a]`. Rewrite using `[Finset.sum_comm]`.
+
+Use `conv_lhs => rw [Finset.sum_comm]`. Use `conv_lhs => enter [2, c, 2, a]`. Rewrite using `[Finset.sum_comm]`. Use `conv_lhs => enter [2, c]`. Rewrite using `[Finset.sum_comm]`.
+-/
 theorem pull_ofValues (L : V n →L[ℂ] V n) {α : V n → V n → ℂ} (hα : IsSesq α) :
     pull L (ofValues α : Alt n) = ofValues (fun ξ η => α (L ξ) (L η)) := by
   simp only [ofValues, sesq_expand hα (L _), AddSubmonoidClass.coe_finset_sum, Subalgebra.coe_smul, sym, map_sum,
@@ -61,11 +80,17 @@ theorem pull_ofValues (L : V n →L[ℂ] V n) {α : V n → V n → ℂ} (hα : 
   conv_lhs => enter [2, c, 2, a]; rw [Finset.sum_comm]
   conv_lhs => enter [2, c]; rw [Finset.sum_comm]
 
+/- English proof (translation)
+Simplify using `[ofValues, map_sum, Finsupp.finset_sum_apply, sym]`.
+-/
 theorem repr_ofValues (α : V n → V n → ℂ) (S : Finset (Fin (n + n))) :
     (bas n).repr (ofValues α : Alt n) S =
       ∑ a, ∑ b, α (coordVec a) (coordVec b) * (bas n).repr (dz a * dzb b) S := by
   simp [ofValues, map_sum, Finsupp.finset_sum_apply, sym]
 
+/- English proof (translation)
+Take `⟨ε, h⟩` from `bas_mul (n := n) (S := {finSumFinEquiv (.inl a)}) (T := {finSumFinEquiv (.inr b)}) (Finset.disjoint_singleton.2 (finSumFinEquiv.injective.ne Sum.inl_ne_inr))`. Use `⟨ε, ?_⟩` and prove the remaining obligations. Rewrite using `[dz, dzb, ← bas_singleton, ← bas_singleton, h, Units.smul_def, Int.cast_smul_eq_zsmul]`.
+-/
 theorem dz_mul_dzb (a b : Fin n) : ∃ ε : ℤ, dz a * dzb b =
     (ε : ℂ) • bas n ({finSumFinEquiv (.inl a)} ∪ {finSumFinEquiv (.inr b)}) := by
   obtain ⟨ε, h⟩ := bas_mul (n := n) (S := {finSumFinEquiv (.inl a)}) (T := {finSumFinEquiv (.inr b)})
@@ -73,6 +98,17 @@ theorem dz_mul_dzb (a b : Fin n) : ∃ ε : ℤ, dz a * dzb b =
   refine ⟨ε, ?_⟩
   rw [dz, dzb, ← bas_singleton, ← bas_singleton, h, Units.smul_def, Int.cast_smul_eq_zsmul]
 
+/- English proof (translation)
+Introduce `S hS`. Rewrite `hS` using `[repr_ofValues]`. Take `⟨a, -, ha⟩` from `Finset.exists_ne_zero_of_sum_ne_zero hS`. Take `⟨b, -, hb⟩` from `Finset.exists_ne_zero_of_sum_ne_zero ha`. Take `⟨ε, h⟩` from `dz_mul_dzb a b`.
+
+Establish `hb'` using `right_ne_zero_of_mul hb`. Rewrite `hb'` using `[h, map_smul, Module.Basis.repr_self, Finsupp.smul_apply, smul_eq_mul]`. Establish `hS'` using `(Finsupp.single_apply_ne_zero.1 (right_ne_zero_of_mul hb')).1`. Substitute `hS'` using the available equality. Establish `ha'` using `a.2`.
+
+Prove the components needed by the constructor for the conclusion. Rewrite using `[Finset.card_eq_one]`. Use `⟨finSumFinEquiv (.inl a), ?_⟩` and prove the remaining obligations. Use extensionality with `i`. Simplify using `only [Finset.mem_filter, Finset.mem_union, Finset.mem_singleton, finSumFinEquiv_apply_left, finSumFinEquiv_apply_right, Fin.ext_iff, Fin.val_castAdd, Fin.val_natAdd]`.
+
+Use linear arithmetic over natural numbers and integers. Rewrite using `[Finset.card_eq_one]`. Use `⟨finSumFinEquiv (.inr b), ?_⟩` and prove the remaining obligations. Use extensionality with `i`. Simplify using `only [Finset.mem_filter, Finset.mem_union, Finset.mem_singleton, finSumFinEquiv_apply_left, finSumFinEquiv_apply_right, Fin.ext_iff, Fin.val_castAdd, Fin.val_natAdd]`.
+
+Use linear arithmetic over natural numbers and integers.
+-/
 theorem isType_ofValues (α : V n → V n → ℂ) : IsType 1 1 (ofValues α : Alt n) := by
   intro S hS
   rw [repr_ofValues] at hS
@@ -98,6 +134,13 @@ theorem isType_ofValues (α : V n → V n → ℂ) : IsType 1 1 (ofValues α : A
       finSumFinEquiv_apply_right, Fin.ext_iff, Fin.val_castAdd, Fin.val_natAdd]
     omega
 
+/- English proof (translation)
+Introduce `S`. Establish `h₁ (a b : Fin n) : swap (dz a * dzb b) = -(dz b * dzb a)`. Rewrite using `[map_mul, (swap_dz a).1, (swap_dz b).2, dz, dzb]`. Conclude with `eq_neg_of_add_eq_zero_left (ExteriorAlgebra.ι_add_mul_swap _ _)`. Establish `h₂ (a b : Fin n) : conj ((bas n).repr (dz a * dzb b) S) = (bas n).repr (dz a * dzb b) S`.
+
+Take `⟨ε, h⟩` from `dz_mul_dzb a b`. Rewrite using `[h, map_smul, Module.Basis.repr_self, Finsupp.smul_apply, smul_eq_mul, Finsupp.single_apply]`. Apply the tactic sequence `split_ifs <;> simp`. Establish `h₃ : swap (ofValues α : Alt n) = ∑ a, ∑ b, α (coordVec a) (coordVec b) • -(dz b * dzb a)`. Simplify using `only [ofValues, AddSubmonoidClass.coe_finset_sum, Subalgebra.coe_smul, sym, map_sum, map_smul, h₁]`.
+
+Rewrite using `[repr_ofValues, h₃, Finset.sum_comm]`. Simplify using `only [map_sum, map_smul, map_neg, map_mul, Finsupp.finset_sum_apply, Finsupp.smul_apply, Finsupp.neg_apply, smul_eq_mul, h₂, hα, mul_neg, neg_mul]`.
+-/
 theorem isReal_ofValues {α : V n → V n → ℂ} (hα : ∀ ξ η, conj (α ξ η) = -α η ξ) : IsReal (ofValues α : Alt n) := by
   intro S
   have h₁ (a b : Fin n) : swap (dz a * dzb b) = -(dz b * dzb a) := by
@@ -121,6 +164,13 @@ variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℂ E] [NormedSpace ℝ
   [IsScalarTower ℝ ℂ E] {m l : Type} [Fintype m] [Fintype l] [DecidableEq m] [DecidableEq l]
   {K : E → Matrix (m ⊕ l) (m ⊕ l) ℂ} {z : E}
 
+/- English proof (translation)
+Establish `e : extTrace K z = fun ξ η => kappa * (secondForm K z ξ * secondFormAdj K z η).trace`. Use function extensionality and compare the values at `ξ η`. Conclude with `extTrace_eq h hp ξ η`. Establish `a₁ (ξ ξ' : E) : secondForm K z (ξ + ξ') = secondForm K z ξ + secondForm K z ξ'`. Simplify using `only [secondForm, blockQS, conn_add_vec, Matrix.mul_add, Matrix.add_mul]`.
+
+Establish `a₂ (c : ℂ) (ξ : E) : secondForm K z (c • ξ) = c • secondForm K z ξ`. Simplify using `only [secondForm, blockQS, conn_smul_vec, Matrix.mul_smul, Matrix.smul_mul]`. Establish `a₃ (η η' : E) : secondFormAdj K z (η + η') = secondFormAdj K z η + secondFormAdj K z η'`. Simplify using `only [secondFormAdj, adj, a₁, conjTranspose_add, Matrix.mul_add, Matrix.add_mul]`. Establish `a₄ (c : ℂ) (η : E) : secondFormAdj K z (c • η) = conj c • secondFormAdj K z η`.
+
+Simplify using `only [secondFormAdj, adj, a₂, conjTranspose_smul, Matrix.mul_smul, Matrix.smul_mul]`. Both sides reduce to the same expression. Rewrite using `[e]`. Apply the tactic sequence `constructor <;> intros <;>`. Apply the tactic sequence `simp only [a₁, a₂, a₃, a₄, Matrix.add_mul, Matrix.mul_add, Matrix.smul_mul, Matrix.mul_smul, trace_add, trace_smul, smul_eq_mul] <;> ring`.
+-/
 theorem isSesq_extTrace (h : MContDiffAt 1 K z) (hp : ∀ᶠ x in 𝓝 z, (K x).PosDef) : IsSesq (extTrace K z) := by
   have e : extTrace K z = fun ξ η => kappa * (secondForm K z ξ * secondFormAdj K z η).trace := by
     funext ξ η; exact extTrace_eq h hp ξ η
@@ -138,6 +188,13 @@ theorem isSesq_extTrace (h : MContDiffAt 1 K z) (hp : ∀ᶠ x in 𝓝 z, (K x).
     simp only [a₁, a₂, a₃, a₄, Matrix.add_mul, Matrix.mul_add, Matrix.smul_mul, Matrix.mul_smul,
       trace_add, trace_smul, smul_eq_mul] <;> ring
 
+/- English proof (translation)
+Establish `hK` using `hp.self_of_nhds.isHermitian`. Establish `hS` using `(isHermitian_subGram hK).transpose.inv`. Establish `hQ` using `(isHermitian_quotGram hK).transpose`. Establish `e : star (secondForm K z ξ * secondFormAdj K z η).trace = (secondForm K z η * secondFormAdj K z ξ).trace`. Rewrite using `[← trace_conjTranspose]`.
+
+Simplify using `only [secondFormAdj, adj, conjTranspose_mul, conjTranspose_conjTranspose, hS.eq, hQ.eq, Matrix.mul_assoc]`. Rewrite using `[trace_mul_comm]`. Simplify using `only [Matrix.mul_assoc]`. Establish `ek : conj kappa = -kappa` using `by simp [kappa, neg_div, map_ofNat]`. Rewrite using `[extTrace_eq h hp, extTrace_eq h hp, map_mul, ek, ← e, neg_mul]`.
+
+Both sides reduce to the same expression.
+-/
 theorem conj_extTrace (h : MContDiffAt 1 K z) (hp : ∀ᶠ x in 𝓝 z, (K x).PosDef) (ξ η : E) :
     conj (extTrace K z ξ η) = -extTrace K z η ξ := by
   have hK := hp.self_of_nhds.isHermitian
@@ -154,6 +211,11 @@ theorem conj_extTrace (h : MContDiffAt 1 K z) (hp : ∀ᶠ x in 𝓝 z, (K x).Po
   rw [extTrace_eq h hp, extTrace_eq h hp, map_mul, ek, ← e, neg_mul]
   rfl
 
+/- English proof (translation)
+Establish `hu : IsUnit (K z).det` using `hp.det_pos.ne'.isUnit`. Establish `hs : IsUnit (subGram (K z)).det` using `(posDef_subGram hp).det_pos.ne'.isUnit`. Establish `hc : ∀ ζ, MContDiffAt ∞ (fun x => secondForm K x ζ) z` using `fun ζ => by show MContDiffAt ∞ (fun x => quotMap m l * conn K x ζ * incl m l) z`. Conclude with `((mContDiffAt_const _).mul (hK.conn hu (j := ∞) (by simp) ζ)).mul (mContDiffAt_const _)`. Establish `ha : MContDiffAt ∞ (fun x => secondFormAdj K x η) z` using `by show MContDiffAt ∞ (fun x => (subGram (K x))ᵀ⁻¹ * (secondForm K x η)ᴴ * (quotGram (K x))ᵀ) z`.
+
+Conclude with `((hK.subGram.transpose.inv (by rwa [det_transpose])).mul (hc η).conjTranspose).mul (hK.quotGram hs).transpose`. Establish `hm` using `(hc ξ).mul ha`. Simplify using `only [Matrix.trace, Matrix.diag_apply]`. Conclude with `contDiffAt_const.mul (ContDiffAt.sum fun i _ => hm i i)`.
+-/
 theorem contDiffAt_trace (hK : MContDiffAt ∞ K z) (hp : (K z).PosDef) (ξ η : E) :
     ContDiffAt ℝ ∞ (fun x => kappa * (secondForm K x ξ * secondFormAdj K x η).trace) z := by
   have hu : IsUnit (K z).det := hp.det_pos.ne'.isUnit
@@ -179,6 +241,21 @@ open GlobalTheory.Points GlobalTheory.CxPts GlobalTheory.VB
 variable {k : Type} [CommRing k] {X : Scheme.{0}} {p : X ⟶ Sp k} {σ : k →+* ℂ} {D : ℕ}
   {S : ShortComplex X.Modules} {r s : ℕ} {h : Met p σ S.X₂ (r + s)}
 
+/- English proof (translation)
+Establish `hd (a : VBExt.AdaptedChart S r s) (c : AlgChart p σ D) {y : CxPts p σ} (hy : y ∈ c.e.source) (ha : y ∈ ptsIn p σ a.U) : MContDiffAt ∞ (fun v => h.gram a.frame (c.e.symm v)) (c.e y)` using `(H.gram a.frame ha).mContDiffAt c hy`. Use `⟨⟨fun (c : AlgChart p σ D) T v (hv : v ∈ c.e.target) => ?_, fun x x' e => ?_⟩, fun x => ⟨isType_ofValues _, isReal_ofValues fun ξ η => ?_⟩⟩` and prove the remaining obligations. Establish `hWo` using `ChartGlue.isOpen_over c.e (isOpen_ptsIn (p := p) (σ := σ) (f (c.e.symm v)).U)`. Establish `hm` using `hWo.mem_nhds (show v ∈ _ from ⟨hv, hf _⟩)`. Establish `hK` using `hd (f (c.e.symm v)) c (c.e.map_target hv) (hf _)`.
+
+Rewrite `hK` using `[c.e.right_inv hv]`. Establish `hp` using `h.posDef_gram_frame hS (f (c.e.symm v)) (hf _)`. Establish `key : ContDiffAt ℝ ∞ (fun w => ∑ a, ∑ b, kappa * (secondForm (fun u => h.gram (f (c.e.symm v)).frame (c.e.symm u)) w (coordVec a) * secondFormAdj (fun u => h.gram (f (c.e.symm v)).frame (c.e.symm u)) w (coordVec b)).trace * (bas D).repr (dz a * dzb b) T) v` using `ContDiffAt.sum fun a _ => ContDiffAt.sum fun b _ => (contDiffAt_trace hK hp _ _).mul contDiffAt_const`. Use `(key.congr_of_eventuallyEq ?_).contDiffWithinAt` and prove the remaining obligations. Use `filter_upwards [hm] with w hw`.
+
+Establish `hw₁ : w ∈ ((hX.atlas σ).e c).target` using `hw.1`. Use `(congrArg (fun t => (bas D).repr t T) (dif_pos hw₁)).trans ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `(bas D).repr (ofValues (h.bcForm (f (c.e.symm w)) c (c.e.symm w)) : Alt D) T = _`. Rewrite using `[repr_ofValues, Met.bcForm_eq hS (f (c.e.symm v)) _ c H (c.e.map_target hw.1) hw.2 (hf _), Met.bcForm]`. Simplify using `only [extTrace_eq ((hd _ c (c.e.map_target hw.1) hw.2).of_le (by norm_cast)) (h.eventually_posDef hS _ c (c.e.map_target hw.1) hw.2)]`.
+
+Rewrite using `[c.e.right_inv hw.1]`. Take `⟨⟨c, y⟩, hy⟩` from `x`. Take `⟨⟨c', y'⟩, hy'⟩` from `x'`. Take `rfl : y = y'` from `e`. Express the relevant statement in the definitionally equal form `AlgChart p σ D at c c'`.
+
+Express the relevant statement in the definitionally equal form `y ∈ c.e.source at hy`. Express the relevant statement in the definitionally equal form `y ∈ c'.e.source at hy'`. Express the relevant statement in the definitionally equal form `(ofValues (h.bcForm (f y) c y) : Alt D) = pull (fderiv ℂ (c'.e ∘ c.e.symm) (c.e y)) (ofValues (h.bcForm (f y) c' y) : Alt D)`. Establish `ho` using `ChartGlue.isOpen_over c.e c'.e.open_source`. Establish `hm` using `ho.mem_nhds (ChartGlue.mem_over c.e hy hy')`.
+
+Establish `e₂ : (c'.e ∘ c.e.symm) (c.e y) = c'.e y` using `congrArg c'.e (c.e.left_inv hy)`. Establish `hd'` using `(hd (f y) c' hy' (hf y)).of_le (j := 1) (by norm_cast)`. Establish `hp` using `h.eventually_posDef hS _ c' hy' (hf y)`. Rewrite using `[Met.bcForm, Met.bcForm, pull_ofValues _ (isSesq_extTrace hd' hp)]`. Use `congrArg (fun α : V D → V D → ℂ => (ofValues α : Alt D)) (funext fun ξ => funext fun η => ?_)` and prove the remaining obligations.
+
+Rewrite using `[extTrace_congr (K' := fun v => h.gram (f y).frame (c'.e.symm ((c'.e ∘ c.e.symm) v))) (eventually_of_mem hm fun v hv => by simp only [Function.comp_apply, c'.e.left_inv hv.2]), extTrace_comp_holo (K := fun v => h.gram (f y).frame (c'.e.symm v)) (e₂ ▸ hd') (e₂ ▸ hp) (contDiffAt_eu …`. Conclude with `conj_extTrace ((hd (f x.pt) x.1.1 x.2 (hf _)).of_le (by norm_cast)) (h.eventually_posDef hS _ x.1.1 x.2 (hf _)) ξ η`.
+-/
 theorem isRealForm_bcForm (hX : IsRegVar p D) (hS : S.ShortExact) (H : h.IsCInf)
     (f : CxPts p σ → VBExt.AdaptedChart S r s) (hf : ∀ y, y ∈ ptsIn p σ (f y).U) :
     (hX.atlas σ).IsRealForm 1 fun x => (ofValues (h.bcForm (f x.pt) x.1.1 x.pt) : Alt D) := by
@@ -238,6 +315,9 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.S
 open GlobalTheory GlobalTheory.ArInt GlobalTheory.CxForm GlobalTheory.CxPts GlobalTheory.VB GlobalTheory.Cartier GlobalTheory.CovTest GlobalTheory.CovTest.SwapLine GlobalTheory.LineForm
 open scoped Classical
 
+/- English proof (translation)
+Introduce `_ _ _ _ _ _ hX σ _ h H fl` and use `OmReal.isRealForm_bcForm (S := lineSC fl) (r := 1) (s := 1) (h := h.met σ) hX (lineSC_shortExact fl) (H σ) (frameAt fl) (mem_frameAt fl)`.
+-/
 theorem GlobalTheory.LineForm.isRealForm_omF : ∀ (k : Type) [CommRing k] (X : Scheme.{0}) [IsIntegral X] (p : X ⟶ Sp k) (D : ℕ) (hX : IsRegVar p D) (σ : k →+* ℂ),
     ∀ (E : X.Modules) (h : VMetric p E 2) (H : h.IsCInf) (fl : Vert.Flag E 2), (hX.atlas σ).IsRealForm 1 (fld _ (omF hX σ h fl)) :=
   fun _ _ _ _ _ _ hX σ _ h H fl =>

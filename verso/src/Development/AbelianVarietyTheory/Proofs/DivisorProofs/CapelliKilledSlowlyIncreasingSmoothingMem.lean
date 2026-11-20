@@ -15,6 +15,29 @@ open GlobalTheory.AutGrowth.SmoothFinite
 
 namespace GlobalTheory.CapKilledSmooth
 
+/- English proof (translation)
+Introduce `E _ _ _ b ν _ α hα hK L W hW q ψ hψ hg`. Take `⟨⟨⟨hl, hL⟩, hk⟩, hq⟩` from `hψ`. Establish `h` using `GlobalTheory.T.realLieSmoothing_mem_smoothAdelicFunctions E b ν α hα ψ.1 ψ.2`. Use `⟨h, GlobalTheory.CapKilled.mem_space.2 ⟨fun γ g => ?_, fun k hk' => ?_, fun g => ?_, fun τ u => ?_, fun l => ?_⟩⟩` and prove the remaining obligations. Use `show smoothing ν α ψ.1 (ratGL E b γ * g) = smoothing ν α ψ.1 g`.
+
+Establish `hl' : ∀ γ g, ψ.1 (ratGL E b γ * g) = ψ.1 g` using `hl`. Simplify using `only [smoothing, chart, mul_assoc, hl']`. Apply `Subtype.ext` to reduce the goal to its premises. Use function extensionality and compare the values at `g show smoothing ν α ψ.1 (g * finGL E b k) = smoothing ν α ψ.1 g`. Establish `hw : (fun x => ψ.1 (x * finGL E b k)) = ψ.1` using `congrArg Subtype.val (hL k hk')`.
+
+Simplify using `only [smoothing]`. Rewrite using `[← chart_rt_fin, hw]`. Take `⟨s, c, hc⟩` from `GlobalTheory.HCFct.exists_interp W hW`. Establish `hpt : ∀ (k : Kinf E b) (x : GA E b), ψ.1 (x * infGL E b (Unitary.toUnits k)) = ∑ i : s, ψ.1 (x * infGL E b (Unitary.toUnits i.1)) * (c i).1 k` using `fun k x => hc _ (hk x) k`. Establish `hfun : ∀ k : Kinf E b, (fun x => ψ.1 (x * infGL E b (Unitary.toUnits k))) = (∑ i : s, (c i).1 k • cptRep E b i.1 ψ : Sm E b).1`.
+
+Introduce `k`. Use function extensionality and compare the values at `x`. Rewrite using `[hpt k x, Submodule.coe_sum, Finset.sum_apply]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[Submodule.coe_smul, Pi.smul_apply, smul_eq_mul, mul_comm]`.
+
+Both sides reduce to the same expression. Establish `e : (fun k : Kinf E b => (cptRep E b k ⟨smoothing ν α ψ.1, h⟩).1 g) = ∑ i : s, (smoothing ν α (cptRep E b i.1 ψ).1 g) • (c i).1`. Use function extensionality and compare the values at `k`. Establish `e1 : (cptRep E b k ⟨smoothing ν α ψ.1, h⟩).1 g = smoothing ν α ψ.1 (g * infGL E b (Unitary.toUnits k))` using `rfl`. Rewrite using `[e1, ← GlobalTheory.T.smoothing_right_translate_maxCompact E b ν α hK ψ.1 k g, hfun k]`.
+
+Establish `hsum : ∀ (t : Finset s) (f : s → Sm E b), smoothing ν α (∑ i ∈ t, f i).1 = ∑ i ∈ t, smoothing ν α (f i).1`. Introduce `t f`. Proceed by induction on `t using Finset.induction_on with`. Consider the case `empty => funext x`. Simplify using `[smoothing, chart]`.
+
+Consider the case `insert i t hi ih => rw [Finset.sum_insert hi, Finset.sum_insert hi, smoothing_add ν hα, ih]`. Rewrite using `[hsum, Finset.sum_apply, Finset.sum_apply]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[smoothing_smul, Pi.smul_apply, Pi.smul_apply, smul_eq_mul, smul_eq_mul, mul_comm]`. Rewrite using `[e]`.
+
+Conclude with `W.sum_mem fun i _ => W.smul_mem _ (c i).2`. Establish `hz : Polynomial.aeval (cap (a` using `b) τ u) (q τ u) ∈ Zalg E b := by show _ ∈ Algebra.adjoin ℂ _`. Conclude with `Algebra.adjoin_mono (s := {cap (a := b) τ u}) (by rintro _ rfl; exact ⟨τ, u, rfl⟩) (Polynomial.aeval_mem_adjoin_singleton ℂ _)`. Apply `Subtype.ext` to reduce the goal to its premises. Rewrite using `[GlobalTheory.T.centreEnvelopingAlgebra_commute_realLieSmoothing E b ν α hα ψ h _ hz, (GlobalTheory.CapKilled.mem_killed.1 hq) τ u]`.
+
+Use function extensionality and compare the values at `g`. Simplify using `[smoothing, chart]`. Choose the witnesses or unpack the hypotheses as in `⟨β, hβ, e⟩ : ∃ β, IsTest (invSet E b) β ∧ ((l.map (lie E b)).prod (⟨smoothing ν α ψ.1, h⟩ : Sm E b)).1 = smoothing ν β ψ.1 := by`. Proceed by induction on `l with`. Consider the case `nil => exact ⟨α, hα, rfl⟩`.
+
+Consider the case `cons X l ih`. Take `⟨β, hβ, e⟩` from `ih`. Use `⟨dens X β, isTest_dens X hβ, funext fun g => ?_⟩` and prove the remaining obligations. Rewrite using `[List.map_cons, List.prod_cons, Module.End.mul_apply, lie_apply, e]`. Conclude with `GlobalTheory.T.lieDerivative_realLieSmoothing_eq_density E b ν β hβ ψ.1 ψ.2 X g`.
+
+Rewrite using `[e]`. Conclude with `GlobalTheory.T.realLieSmoothing_mem_slowlyIncreasing E b ν β hβ ψ.1 hg`.
+-/
 theorem smoothing_mem_space : ∀ (E : Type) [Field E] [NumberField E] [IsTotallyComplex E] (b : ℕ) (ν : Measure (Lie E b)) [ν.IsAddHaarMeasure] (α : Lie E b → ℂ), IsTest (invSet E b) α → KInv α → ∀ (L : Subgroup (GL (Fin b) (Af E))) (W : Submodule ℂ (Kinf E b → ℂ)), FiniteDimensional ℂ W → ∀ (q : (E →+* ℂ) → ℂ → Polynomial ℂ) (ψ : Sm E b), ψ ∈ leftInv E b ⊓ fixL E b L ⊓ GlobalTheory.CapKilled.ktype E b W ⊓ GlobalTheory.CapKilled.killed E b q → ψ.1 ∈ growth E b → ∃ h : smoothing ν α ψ.1 ∈ Sm E b, (⟨smoothing ν α ψ.1, h⟩ : Sm E b) ∈ GlobalTheory.CapKilled.space E b L W q := by
   intro E _ _ _ b ν _ α hα hK L W hW q ψ hψ hg
   obtain ⟨⟨⟨hl, hL⟩, hk⟩, hq⟩ := hψ

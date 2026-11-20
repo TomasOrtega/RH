@@ -12,6 +12,11 @@ open Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotions.G Formal
 
 namespace GlobalTheory.Proof.UnitaryWeightModels
 
+/- English proof (translation)
+Introduce and unpack `h01 eps Fm ⟨xa, ha⟩ ⟨xb, hb⟩`. Establish `hCL : OrbitPlaces.CLarge 11 1 Fm.GK Fm.cX.err` using `OrbitPlaces.cLarge_of_fixed Fm.fixed.2.2.2.2.1 Fm.fixed.2.2.2.2.2.1 Fm.fixed.2.1 (by rw [Fm.fixed.2.2.1]; norm_num)`. Use `⟨max xa xb, fun x hx h1 i => ?_⟩` and prove the remaining obligations. Take `⟨E, hS⟩` from `ha x (le_trans (le_max_left _ _) hx) h1 i`. Take `⟨h0, LC, hLC⟩` from `hb x (le_trans (le_max_right _ _) hx) h1 i`.
+
+Conclude with `⟨LC, GlobalTheory.Proof.ColumnWeightComparison.cmpV_of_cmpLite _ _ _ _ _ LC h0 fun μ hU u w hg hQ => (hLC μ hU u w hg hQ).1, GlobalTheory.T.local_systems_lower_bounds_second_real_place _ _ (Fm.gatT x i) _ _ _ _ _ _ _ E LC (Fm.latTied x h1 i) (Fm.ex x h1 i).fills_all (Fm.ex x h1 i …`.
+-/
 theorem rowTwU_of_models : OrbitPlaces.OrbitLetterBoundsAll 11 1 → ∀ {eps : ℝ} (Fm : FamP eps),
     (∃ x0 : ℝ, ∀ x ≥ x0, Fm.x1 < x → ∀ i : Fm.Ix x, ∃ E : OrbitPlaces.Ent (Fm.D x i),
       OrbitPlaces.Shape (Fm.D x i) (Fm.L x i) (Fm.Gx x i) E) →

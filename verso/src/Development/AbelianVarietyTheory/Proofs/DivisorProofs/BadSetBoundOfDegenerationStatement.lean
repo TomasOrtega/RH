@@ -27,5 +27,8 @@ open GlobalTheory.IndefiniteRowSideFullHecke.LevelStructureAutomorphisms (LevelA
 open GlobalTheory.BadCount
 open scoped TensorProduct
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.CovTop.bad_of_steps | exact GlobalTheory.CovTop.bad_of_steps | (intros; apply GlobalTheory.CovTop.bad_of_steps <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.bad_set_bound_of_degeneration : GlobalTheory.CovTop.HypothesesX → Hypotheses2 → GlobalTheory.Published.GrothendieckDeformation → GlobalTheory.HSCore.Quoted → GlobalTheory.Published.SiegelToroidalIntegral → GlobalTheory.Published.ToroidalForFanKS → GlobalTheory.Published.SemiAbelianLieSeminegative → GlobalTheory.Published.GreenCuspidal → Gram → DeepEx → DeepGood → Size → FlatDeg → Deg → Share → Bad := by
   first | exact @GlobalTheory.CovTop.bad_of_steps | exact GlobalTheory.CovTop.bad_of_steps | (intros; apply GlobalTheory.CovTop.bad_of_steps <;> assumption)

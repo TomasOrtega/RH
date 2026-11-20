@@ -51,6 +51,27 @@ def twistI {D : Datum H} {R : Type} [CommRing R] [IsDomain R] {D₀ : DegPre R} 
 end GlobalTheory.LowFilt
 
 open GlobalTheory.LowFilt GlobalTheory.LowDat in
+/- English proof (translation)
+Introduce `E _ _ _ H Dw l Xo c R _ _ _ hR C hr`. Take `⟨tK, ⟨m1⟩, ⟨m2⟩⟩` from `C.gen`. Use `haveI : CharZero R := hR.2`. Use `letI := H.starRing`. Establish `hB` using `C.P.D.tau_bimult`.
+
+Establish `hT : C.P.TorsionIso` using `GlobalTheory.FlatTors.torsionIso_holds E H R _ hR.1 C.t C.P`. Use `haveI : IsNoetherianRing R := hR.1.1`. Set `F₀` to `AlgebraicClosure (FractionRing R)`. Use `haveI : CharZero (FractionRing R) := charZero_of_injective_algebraMap (IsFractionRing.injective R _)`. Use `haveI : CharZero F₀ := charZero_of_injective_algebraMap (algebraMap (FractionRing R) F₀).injective`.
+
+Take `⟨I₀, hI₀⟩` from `GlobalTheory.T.exists_levelIsometry_genericFibre_boundaryChart Xo c R hR C tK m1 m2 F₀`. Take `⟨y, hy, hcois⟩` from `GlobalTheory.T.tateIso_latticePart_surjective_coisotropicKernel Dw R C.P.D.toPre C.P.oD C.P.D.psi_even hB F₀ I₀`. Establish `htow : ∀ n m, 0 < n → 0 < m → ∀ a, ∃ e, y (n * m) a = y n a + n • e`. Introduce `n m hn hm a`. Take `⟨q, h₁, -, z, h₃, -⟩` from `I₀.tower n m hn hm a`.
+
+Take `⟨e₁, he₁⟩` from `hy (n * m) (Nat.mul_pos hn hm) a`. Take `⟨e₂, he₂⟩` from `hy n hn a`. Establish `e₃ : (q.y : C.P.D.toPre.X) = (I₀.ev (n * m) a).y` using `h₁`. Establish `e₄ : q.y = (I₀.ev n a).y - n • z` using `by rw [h₃]; abel`. Use `⟨m • e₁ - e₂ - z, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[he₁, he₂, ← e₃, e₄]`. Simplify using `only [smul_sub, smul_smul]`. Normalize the expressions using the abelian group laws. Establish `hM : 0 < l.M'` using `Nat.lcm_pos (by have := l.three_le; omega) l.A_pos`. Take `⟨Z, hZ, hZr, g, hgi, hgt, hgN, hker⟩` from `GlobalTheory.T.exists_compatible_isometries_coisotropic_kernels Dw y hcois htow (GlobalTheory.T.finrank_uChart_le_min_signature Xo c R hR C) l.M' hM`.
+
+Use `⟨Z, hZ, hZr, tK, m1, m2, fun F _ _ _ => ?_⟩` and prove the remaining obligations. Set `I₁` to `twistI hB I₀ g hgi hgt`. Establish `hI₁ : XFLevel C tK m1 m2 F₀ I₁`. Use `⟨hI₀.1, fun k a σ hk x hx => hI₀.2 k a σ hk x ?_⟩` and prove the remaining obligations. Establish `hk1 : 1 ≤ k ∧ k ∣ l.M'`.
+
+Break down `hk with ⟨rfl, -⟩ | ⟨rfl, -⟩` into its components or cases. Conclude with `⟨l.A_pos, Nat.dvd_lcm_right _ _⟩`. Conclude with `⟨by have := l.three_le; omega, Nat.dvd_lcm_left _ _⟩`. Take `⟨f, f₁, -, f₃, -⟩` from `hT F₀ k hk1.1`. Rewrite `hx`, the goal using `[f₁]`.
+
+Rewrite using `[hx]`. Use `(f₃ _ _).2 ((I₀.ker k hk1.1 _ _).2 ?_)` and prove the remaining obligations. Take `⟨e, he⟩` from `hgN k a`. Take `⟨j, hj⟩` from `hk1.2`. Conclude with `⟨j • e, by rw [smul_smul, ← hj]; exact he⟩`.
+
+Take `⟨I, hIl, hIy⟩` from `GlobalTheory.T.exists_levelIsometry_extension_algClosed Xo c R hR C tK m1 m2 I₁ hI₁ F`. Use `⟨I, hIl, fun n hn a => ?_⟩` and prove the remaining obligations. Rewrite using `[GlobalTheory.T.exists_equiv_latticePart_zero_iff_mem_nsmul R _ hB F n hn, hIy, ← hker n hn a]`. Take `⟨e, he⟩` from `hy n hn (g n a)`. Express the relevant statement in the definitionally equal form `(∃ e, (I₀.ev n (g n a)).y = n • e) ↔ _`.
+
+Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨e', he'⟩; exact ⟨e + e', by rw [he, he', smul_add, add_comm]⟩`. Introduce and unpack `⟨e', he'⟩; exact ⟨e' - e, by rw [smul_sub, ← he', he, add_sub_cancel_right]⟩`.
+-/
 theorem GlobalTheory.LowFilt.exists_filt : ∀ {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {Dw : Datum H} {l : Level H} (Xo : Moduli Dw l)
   (c : Coeff l) (R : Type) [CommRing R] [IsDomain R] [IsLocalRing R], GlobalTheory.Mum.Base R → ∀ C : GlobalTheory.UChart.Fam Xo c R,
   1 ≤ Module.finrank (𝓞 E) C.P.D.toPre.X →

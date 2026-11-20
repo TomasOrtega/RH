@@ -20,6 +20,69 @@ open Formalism.FourierDecayAlt.P.MatrixMultiplicationContinuity GlobalTheory.Bes
 
 set_option maxHeartbeats 1600000 in
 
+/- English proof (translation)
+Assume the negation of the conclusion as `hcon`. Use `push_neg at hcon`. Establish `hK : PI.KFinSmooth` using `hy.1.1.2.2.1`. Establish `hRG : R.IsDG ε mu` using `⟨hR.1, hR.2, ⟨h, hgap, hok⟩⟩`. Take `⟨hmul, hone, hun, hsm, hTK, hTKs, hKT, -, hcont⟩` from `GlobalTheory.rep_basic_of_isDS hK k r ε mu R hR`.
+
+Establish `hwT` using `hKT w hwK`. Establish `hw` using `hTK w hwT`. Establish `hΦ` using `fun v hv => (GlobalTheory.cwCont_continuousOn_hasDerivAt hK k r ε mu R hR Wp B hB.1 hB.2.1 hB.2.2.2 v hv).1`. Establish `hS'` using `hS`. Take `⟨hz, hT, ⟨u₀, hπ⟩, -, hWh, hNh, hGh, hq⟩` from `hS'`.
+
+Use `hWh.1` as an intermediate fact. Use `hNh.1` as an intermediate fact. Use `hGh.1` as an intermediate fact. Establish `hGae : ∀ᵐ y ∂μG, Matrix.of y ∈ GG k r` using `ae_iff.mpr hGh.2.2.1`. Establish `hWae : ∀ᵐ p1 ∂μW, Matrix.of p1 ∈ UWset k r z` using `ae_iff.mpr hWh.2.2.1`.
+
+Establish `hNae : ∀ᵐ p2 ∂μN, Matrix.of p2 ∈ Nset k r` using `ae_iff.mpr hNh.2.2.1`. Establish `hPae : ∀ᵐ p ∂(μW.prod μN), Matrix.of p.1 ∈ UWset k r z ∧ Matrix.of p.2 ∈ Nset k r` using `(Measure.quasiMeasurePreserving_fst.ae hWae).and (Measure.quasiMeasurePreserving_snd.ae hNae)`. Establish `hof : Continuous (fun y : Mt k r => (Matrix.of y : Formalism.FourierDecayAlt.ThreeDimData.Mx k r))` using `continuous_id`. Establish `hSeq : Formalism.FourierDecayAlt.ThreeDimData.muSof μW μN = (μW.prod μN).map (fun p => mulMt p.1 p.2)` using `rfl`. Establish `hsf : SFinite (Formalism.FourierDecayAlt.ThreeDimData.muSof μW μN)` using `by rw [hSeq]; infer_instance`.
+
+Establish `hGm : MeasurableSet {y : Mt k r | Matrix.of y ∈ GG k r}` using `(isClosed_UH.preimage hof).measurableSet`. Establish `hSae : ∀ᵐ s ∂(Formalism.FourierDecayAlt.ThreeDimData.muSof μW μN), Matrix.of s ∈ GG k r`. Rewrite using `[hSeq]`. Use `(ae_map_iff measurable_mulMt.aemeasurable hGm).2 ?_` and prove the remaining obligations. Use `filter_upwards [hPae] with p hp`.
+
+Conclude with `Formalism.FourierDecayAlt.P.DDSmoothness.uh_mul hp.1.1 hp.2.1`. Establish `hS0 : Formalism.FourierDecayAlt.ThreeDimData.muSof μW μN ≠ 0` using `GlobalTheory.SideCompare.muS_ne_zero hWh.2.1 hNh.2.1`. Establish `hνae` using `GlobalTheory.BesselNorm.quot_ae hq hGae hSae hS0`. Establish `hνs : SigmaFinite νq` using `GlobalTheory.SideCompare.sigmaFinite_of_isQuotMeas hS0 hq`. Establish `hSC : SecondCountableTopology Wp`.
+
+Use `FiniteDimensional.proper ℂ Wp` as an intermediate fact. Use `infer_instance`. Establish `one_mem : (1 : Formalism.FourierDecayAlt.ThreeDimData.Mx k r) ∈ GG k r` using `by show (1 : Formalism.FourierDecayAlt.ThreeDimData.Mx k r)ᴴ * Hpk k r * 1 = Hpk k r; simp`. Establish `memDD : ∀ g ∈ GG k r, R.σ g w ∈ Formalism.FourierDecayAlt.ThreeDimData.DDsp R.σ w` using `fun g hg => Submodule.subset_span ⟨g, hg, rfl⟩`. Establish `wDD : w ∈ Formalism.FourierDecayAlt.ThreeDimData.DDsp R.σ w`.
+
+Use `memDD 1 one_mem` as an intermediate fact. Rewrite `this` using `[hone]`. Then use the resulting hypothesis. Establish `DDsm : ∀ v ∈ Formalism.FourierDecayAlt.ThreeDimData.DDsp R.σ w, v ∈ R.sm`. Introduce `v hv`. Use `hTK v (Submodule.span_le.2 ?_ hv)` and prove the remaining obligations.
+
+Introduce and unpack `_ ⟨g, hg, rfl⟩`. Conclude with `hTKs g hg w hwT`. Establish `hnorm : ∀ g ∈ GG k r, ‖R.σ g w‖ = ‖w‖` using `fun g hg => (sigma_facts hR.2).2 g hg w`. Establish `hcw : c * ‖w‖ ^ 2 ≠ 0`. Introduce `h1`.
+
+Apply `h0` to reduce the goal to its premises. Rewrite using `[hiso w wDD, h1, ENNReal.ofReal_zero]`. Establish `hmeas : ∀ v ∈ Formalism.FourierDecayAlt.ThreeDimData.DDsp R.σ w, AEStronglyMeasurable (fun y : Mt k r => B (R.σ (Matrix.of y) v)) νq` using `fun v hv => aesm_of_contOn ((hΦ v (DDsm v hv)).comp hof.continuousOn fun y hy => hy) hGm hνae`. Establish `hsq : ∀ v ∈ Formalism.FourierDecayAlt.ThreeDimData.DDsp R.σ w, Integrable (fun y : Mt k r => ‖B (R.σ (Matrix.of y) v)‖ ^ 2) νq ∧ ∫ y : Mt k r, ‖B (R.σ (Matrix.of y) v)‖ ^ 2 ∂νq = c * ‖v‖ ^ 2` using `fun v hv => sq_int (hmeas v hv) (by positivity) (hiso v hv)`. Establish `hpair : ∀ a ∈ Formalism.FourierDecayAlt.ThreeDimData.DDsp R.σ w, ∀ b ∈ Formalism.FourierDecayAlt.ThreeDimData.DDsp R.σ w, Integrable (fun y : Mt k r => ⟪B (R.σ (Matrix.of y) a), B (R.σ (Matrix.of y) b)⟫_ℂ) νq ∧ ∫ y : Mt k r, ‖⟪B (R.σ (Matrix.of y) a), B (R.σ (Matrix.of y) b)⟫_ℂ‖ …`.
+
+Introduce `a ha b hb`. Take `⟨i1, i2, i3⟩` from `inner_int (hmeas a ha) (hmeas b hb) (hsq a ha).1 (hsq b hb).1`. Establish `e : ∫ y : Mt k r, ‖B (R.σ (Matrix.of y) a) + B (R.σ (Matrix.of y) b)‖ ^ 2 ∂νq = c * ‖a + b‖ ^ 2`. Rewrite using `[← (hsq (a + b) (Submodule.add_mem _ ha hb)).2]`. Apply `integral_congr_ae` to reduce the goal to its premises.
+
+Use `filter_upwards [hνae] with y hy`. Rewrite using `[map_add, hB.1 _ (hsm _ hy a (DDsm a ha)) _ (hsm _ hy b (DDsm b hb))]`. Rewrite `i2`, `i3` using `[(hsq a ha).2, (hsq b hb).2]`. Rewrite `i3` using `[e, norm_add_sq (𝕜 := ℂ)]`. Use `⟨i1, i2, ?_⟩` and prove the remaining obligations.
+
+Simplify using `only [RCLike.re_to_complex] at i3`. Combine the linear equalities and inequalities to obtain the conclusion. Use `set m : Mt k r → ℂ := fun g => ⟪w, R.σ (Matrix.of g) w⟫_ℂ with hm`. Establish `hmc : ContinuousOn m {y : Mt k r | Matrix.of y ∈ GG k r}` using `continuousOn_const.inner ((hcont w).comp hof.continuousOn fun y hy => hy)`. Establish `hmi : Integrable m μG`.
+
+Take `⟨C, Ws, -, hd⟩` from `Gp91.GlobalTheory.BesselDecay.decay_TK hy.1 k r ε mu h R hRG hgap hok w hwT`. Take `⟨-, -, t1, t2⟩` from `GlobalTheory.thresholds_of_gapOK k r h hok`. Establish `hg` using `GlobalTheory.gN_rpow_neg_integrable_haar k r μG (Formalism.FourierDecayAlt.ThreeDimData.aOf r h - 1) hGh (by linarith)`. Use `(hg.const_mul (C * (Ws.map fun W => ‖PI.UpqRep.dsigW (k := k) (r := r) R.σ W w‖).sum)).mono' (aesm_of_contOn hmc hGm hGae) ?_` and prove the remaining obligations. Use `filter_upwards [hGae] with y hy`.
+
+Rewrite using `[neg_sub]`. Conclude with `hd w hw _ hy`. Use `set F : Mt k r × Mt k r → ℂ := fun q => star (m q.1) * ⟪B (R.σ (Matrix.of q.2) w), B (R.σ (Matrix.of q.2 * Matrix.of q.1) w)⟫_ℂ with hF`. Establish `hFm : AEStronglyMeasurable F (μG.prod νq)`. Establish `c1 : Continuous (fun q : Mt k r × Mt k r => (Matrix.of q.1 : Formalism.FourierDecayAlt.ThreeDimData.Mx k r))` using `continuous_fst`.
+
+Establish `c2 : Continuous (fun q : Mt k r × Mt k r => (Matrix.of q.2 : Formalism.FourierDecayAlt.ThreeDimData.Mx k r))` using `continuous_snd`. Use `aesm_of_contOn (s := {q : Mt k r × Mt k r | Matrix.of q.1 ∈ GG k r ∧ Matrix.of q.2 ∈ GG k r}) ?_ ((isClosed_UH.preimage c1).inter (isClosed_UH.preimage c2)).measurableSet ((Measure.quasiMeasurePreserving_fst.ae hGae).and (Measure.quasiMeasurePreserving_snd.ae hνae))` and prove the remaining obligations. Conclude with `(continuous_star.comp_continuousOn (hmc.comp continuous_fst.continuousOn fun q hq => hq.1)).mul (((hΦ w hw).comp c2.continuousOn fun q hq => hq.2).inner ((hΦ w hw).comp (c2.matrix_mul c1).continuousOn fun q hq => Formalism.FourierDecayAlt.P.DDSmoothness.uh_mul hq.2 hq.1))`. Establish `hF1 : ∀ g : Mt k r, Matrix.of g ∈ GG k r → (fun y => F (g, y)) =ᵐ[νq] fun y => star (m g) * ⟪B (R.σ (Matrix.of y) w), B (R.σ (Matrix.of y) (R.σ (Matrix.of g) w))⟫_ℂ`. Introduce `g hg`.
+
+Use `filter_upwards [hνae] with y hy`. Simplify using `only [hF]`. Rewrite using `[hmul _ hy _ hg]`. Establish `hF2 : ∀ g : Mt k r, Matrix.of g ∈ GG k r → (fun y => F (g, y)) =ᵐ[νq] fun y => ⟪B (R.σ (Matrix.of y) (m g • w)), B (R.σ (Matrix.of y) (R.σ (Matrix.of g) w))⟫_ℂ`. Introduce `g hg`.
+
+Use `filter_upwards [hνae, hF1 g hg] with y hy h1`. Rewrite using `[h1, map_smul, hB.2.1 _ _ (hsm _ hy w hw), inner_smul_left]`. Both sides reduce to the same expression. Establish `hFi : Integrable F (μG.prod νq)`. Rewrite using `[integrable_prod_iff hFm]`.
+
+Prove the components needed by the constructor for the conclusion. Use `filter_upwards [hGae] with g hg`. Conclude with `((hpair w wDD _ (memDD _ hg)).1.const_mul _).congr (hF1 g hg).symm`. Use `(hmi.norm.mul_const (c * ‖w‖ ^ 2 + c * ‖w‖ ^ 2)).mono' hFm.norm.integral_prod_right' ?_ filter_upwards [hGae] with g hg` and prove the remaining obligations. Rewrite using `[Real.norm_of_nonneg (integral_nonneg fun y => norm_nonneg _)]`.
+
+Establish `e : ∫ y, ‖F (g, y)‖ ∂νq = ‖m g‖ * ∫ y : Mt k r, ‖⟪B (R.σ (Matrix.of y) w), B (R.σ (Matrix.of y) (R.σ (Matrix.of g) w))⟫_ℂ‖ ∂νq`. Rewrite using `[← integral_const_mul]`. Apply `integral_congr_ae` to reduce the goal to its premises. Use `filter_upwards [hF1 g hg] with y hy`. Rewrite using `[hy, norm_mul, norm_star]`.
+
+Rewrite using `[e]`. Use `(hpair w wDD _ (memDD _ hg)).2.1` as an intermediate fact. Rewrite `this` using `[hnorm _ hg]`. Conclude with `mul_le_mul_of_nonneg_left this (norm_nonneg _)`. Establish `hzero : ∫ q, F q ∂(μG.prod νq) = 0`.
+
+Rewrite using `[integral_prod_symm F hFi]`. Use `(integral_congr_ae ?_).trans (integral_zero _ _)` and prove the remaining obligations. Use `filter_upwards [hνae, hFi.prod_left_ae] with y hy hi`. Use `set f : Mt k r → ℂ := fun g => star ⟪R.σ (Matrix.of y) w, R.σ (Matrix.of g) w⟫_ℂ * ⟪B (R.σ (Matrix.of y) w), B (R.σ (Matrix.of g) w)⟫_ℂ with hf`. Establish `hfc : ContinuousOn f {y : Mt k r | Matrix.of y ∈ GG k r}` using `(continuous_star.comp_continuousOn (continuousOn_const.inner ((hcont w).comp hof.continuousOn fun y hy => hy))).mul (continuousOn_const.inner ((hΦ w hw).comp hof.continuousOn fun y hy => hy))`.
+
+Establish `hfm : AEStronglyMeasurable f (μG.map (lmulM (Matrix.of y)))`. Rewrite using `[hGh.2.2.2 _ hy]`. Conclude with `aesm_of_contOn hfc hGm hGae`. Establish `hlm : Measurable (lmulM (k` using `k) (r := r) (Matrix.of y)) := measurable_mulMt.comp (measurable_const.prodMk measurable_id : Measurable fun x : Mt k r => (y, x))`. Establish `e : (fun g => F (g, y)) =ᵐ[μG] f ∘ lmulM (Matrix.of y)` using `by filter_upwards [hGae] with g hg show star ⟪w, R.σ (Matrix.of g) w⟫_ℂ * _ = star ⟪R.σ (Matrix.of y) w, R.σ (Matrix.of y * Matrix.of g) w⟫_ℂ * _`.
+
+Rewrite using `[hmul _ hy _ hg w, hun _ hy, ← hmul _ hy _ hg w]`. Both sides reduce to the same expression. Establish `hfi : Integrable f μG`. Rewrite using `[← hGh.2.2.2 _ hy]`. Conclude with `(integrable_map_measure hfm hlm.aemeasurable).2 (hi.congr e)`.
+
+Establish `e2 : ∫ g, F (g, y) ∂μG = ∫ g, f g ∂μG`. Rewrite using `[integral_congr_ae e]`. Use `conv_rhs => rw [← hGh.2.2.2 _ hy]`. Conclude with `(integral_map hlm.aemeasurable hfm).symm`. Rewrite using `[e2]`.
+
+Use `unfold_zero hK hR hS hB hw (fun x hx => ?_) _ hfi` and prove the remaining obligations. Take `⟨j1, j2⟩` from `hl.2 x hx _ (hTKs _ hy w hwT)`. Use `⟨j1, ?_⟩` and prove the remaining obligations. Rewrite using `[j2, hcon x hx]`. Use extensionality with `ξ`.
+
+Simplify using the standard rewrite rules. Take `⟨d, hd, hSch⟩` from `Gp91.GlobalTheory.BesselDegree.schur_fdeg hy.1 k r ε μG hGh`. Take `⟨s1, s2⟩` from `(hSch mu R hRG).2 w w w w`. Establish `hdpos : 0 < d * fdegHC mu` using `mul_pos hd (GlobalTheory.BesselNorm.fdegHC_pos mu hR.1.1.injective)`. Establish `hre : (∫ q, F q ∂(μG.prod νq)).re = c * (∫ g, m g * star (m g) ∂μG).re`.
+
+Rewrite using `[integral_prod F hFi]`. Establish `a1` using `integral_re hFi.integral_prod_left`. Establish `a2` using `integral_re s1`. Simplify using `only [RCLike.re_to_complex] at a1 a2`. Rewrite using `[← a1, ← a2, ← integral_const_mul]`.
+
+Apply `integral_congr_ae` to reduce the goal to its premises. Use `filter_upwards [hGae] with g hg`. Rewrite using `[integral_congr_ae (hF2 g hg), (hpair _ (Submodule.smul_mem _ _ wDD) _ (memDD _ hg)).2.2, inner_smul_left, mul_comm ((starRingEnd ℂ) (m g))]`. Both sides reduce to the same expression. Rewrite `hre` using `[hzero, s2, inner_self_eq_norm_sq_to_K]`.
+
+Establish `e3 : (((‖w‖ : ℂ) ^ 2 * (‖w‖ : ℂ) ^ 2 / ((d * fdegHC mu : ℝ) : ℂ))).re = ‖w‖ ^ 2 * ‖w‖ ^ 2 / (d * fdegHC mu)`. Rewrite using `[← Complex.ofReal_pow, ← Complex.ofReal_mul, ← Complex.ofReal_div, Complex.ofReal_re]`. Establish `hre' : 0 = c * (‖w‖ ^ 2 * ‖w‖ ^ 2 / (d * fdegHC mu))` using `by rw [← e3]; exact hre`. Establish `hw2 : ‖w‖ ^ 2 ≠ 0` using `right_ne_zero_of_mul hcw`. Establish `hc0 : c ≠ 0` using `left_ne_zero_of_mul hcw`.
+
+Conclude with `mul_ne_zero hc0 (div_ne_zero (mul_ne_zero hw2 hw2) hdpos.ne') hre'.symm`.
+-/
 theorem nzOn_of_mass (hy : GlobalTheory.GapIn.Hyp) {k r : ℕ} {ε : Fin (2 * r + k + 1) → Bool} {mu : Fin (2 * r + k + 1) → ℝ} {h : ℝ}
     {R : Rep k r}
     {Wp : Type} [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp] [CompleteSpace Wp] [FiniteDimensional ℂ Wp]
@@ -213,6 +276,9 @@ theorem nzOn_of_mass (hy : GlobalTheory.GapIn.Hyp) {k r : ℕ} {ε : Fin (2 * r 
   have hc0 : c ≠ 0 := left_ne_zero_of_mul hcw
   exact mul_ne_zero hc0 (div_ne_zero (mul_ne_zero hw2 hw2) hdpos.ne') hre'.symm
 
+/- English proof (translation)
+Introduce `hy k r ε mu h R Wp _ _ _ _ z π u μW μN μG νq B l w hR hgap hok hS hB hwK h0 hfin hl`. Establish `hK : PI.KFinSmooth` using `hy.1.1.2.2.1`. Establish `hw : w ∈ R.sm` using `hK k r ε mu R.H R.σ hR.1 hR.2 w hwK`. Take `⟨c, hc, hiso⟩` from `GlobalTheory.T.exists_l2SG_translates_eq_const_mul_norm_sq k r ε mu R Wp z π u μW μN μG νq B w hR hS hB hw hfin`. Conclude with `GlobalTheory.exists_kFin_ne_zero_of_cwCont hK k r ε mu R hR Wp l hl.1.1 hl.1.2.1 hl.1.2.2.2 (nzOn_of_mass hy hR hgap hok hS hB hwK hc hiso h0 hl)`.
+-/
 theorem exists_kFin_period_ne_zero : GlobalTheory.GapIn.Hyp → ∀ (k r : ℕ) (ε : Fin (2 * r + k + 1) → Bool) (mu : Fin (2 * r + k + 1) → ℝ) (h : ℝ) (R : Rep k r) (Wp : Type) [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp] [CompleteSpace Wp] [FiniteDimensional ℂ Wp] (z : Fin (2 * r + k + 1) → ℂ) (π : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ → (Wp →L[ℂ] Wp)) (u : ℕ → ℝ) (μW μN μG νq : Measure (Mt k r)) (B l : R.H → Wp) (w : R.H), R.IsDS ε mu → GapAtLeast ε mu h → Formalism.FourierDecayAlt.ThreeDimData.GapOK k r h → SideG k r z π u μW μN μG νq → IsBes R z π B → R.KFin w → PI.BesselPeriodGGP.l2SG νq (fun g => B (R.σ g w)) ≠ 0 → PI.BesselPeriodGGP.l2SG νq (fun g => B (R.σ g w)) ≠ ⊤ → IsBeL R z π μW μN l → ∃ v, R.KFin v ∧ l v ≠ 0 := by
   intro hy k r ε mu h R Wp _ _ _ _ z π u μW μN μG νq B l w hR hgap hok hS hB hwK h0 hfin hl
   have hK : PI.KFinSmooth := hy.1.1.2.2.1

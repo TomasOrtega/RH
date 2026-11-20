@@ -9,6 +9,9 @@ open GlobalTheory.ShFam GlobalTheory.TorRef
 
 namespace GlobalTheory.TorRef
 
+/- English proof (translation)
+The claim follows from `sysEx_of_polEx (polExSt_of_siegel_of_fan hSieg hFan)`.
+-/
 theorem sysExSt_of_toroidal (hSieg : GlobalTheory.Published.SiegelToroidalIntegral)
     (hFan : GlobalTheory.Published.ToroidalChartsForFan) : SysExSt :=
   sysEx_of_polEx (polExSt_of_siegel_of_fan hSieg hFan)

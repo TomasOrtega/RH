@@ -29,6 +29,15 @@ namespace GlobalTheory.CovTop.ShareRowsNef
 section Weights
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E} {Dw : Datum H}
 end Weights
+/- English proof (translation)
+Establish `hP1` using `_root_.GlobalTheory.T.covering_topology_refinement hP`. Take `⟨g1, g2, g3⟩` from `gapGe_of_wtBig hB`. Establish `good : ∀ la, GapGe 1 la → _` using `fun la h => _root_.GlobalTheory.T.covering_domain_lattice_regularity hP D T hT j hp hq hf hj Y e o hY la (antitone_of_gapGe hp hq h).1 (antitone_of_gapGe hp hq h).2`. Take `⟨TF, R, ω, h⟩` from `_root_.GlobalTheory.T.exists_weight_hodge_bundle_generated hP1 hG hQ hP.q15 hP.q16 hSI hKS.toroidalChartsForFan hSL D T.toCore j Y e o hY hf Z P hB fun i _ => (good _ (g3 i)).1`. Take `⟨f₁⟩` from `nonempty_cuspFrame ((good _ g1).2 Z)`.
+
+Take `⟨f₂⟩` from `nonempty_cuspFrame ((good _ g2).2 Z)`. Set `k : CompHS.Consts` to `⟨1, 1, 1, 1, 1, le_rfl, le_rfl, le_rfl⟩`. Set `th : R.L.Sec` to `GlobalTheory.CompHS.toSec (R.Δ₁.lift 0)`. Establish `hA` using `_root_.GlobalTheory.T.hodge_bundle_isNef_isBig_of_weight hP1 hQ.nef hSI hKS.toroidalChartsForFan hSL _ _ _ _ _ _ TF Z _ Y.U P R ω _ D _ _ h f₁ f₂ th k hY.geo hB`. Establish `a3` using `GlobalTheory.T.hilbertSamuel_map_birational_of_cuspForms_generate TF.X Z Y.U P R ω _ _ _ h f₁ f₂ th k (GlobalTheory.T.cuspForm_ratios_generate_at_flagSpace_genericPoint TF.X Z Y.U P.u₁ ⟨R.toModif⟩ hbir)`.
+
+Take `⟨a1, a2⟩` from `hA`. Establish `key` using `GlobalTheory.T.choose_mul_componentDegree_le_dimension hQ _ _ _ _ _ _ _ _ Z _ Y.U P R ω _ D _ _ h f₁ f₂ th k a1 a2 a3`. Establish `hr : rankOn Y.U Z (wtOf _ (P.wt P.T) 0) = Module.finrank Y.d.c₂.F (cuspOn Y.U Z (wtOf _ (P.wt P.T) 0))`. Rewrite using `[rankOn, Formalism.HN.rkK, ((good _ (g3 P.T)).2 Z).2.2, finrank_top]`. Rewrite `key` using `[← hr]`.
+
+Conclude with `key` after adjusting the coercions.
+-/
 theorem nef_share_lower_bound (hP : _root_.GlobalTheory.CovTop.PublishedHodgeBundleTheorems) (hSI : GlobalTheory.Published.SiegelToroidalIntegral) (hKS : GlobalTheory.Published.ToroidalForFanKS)
     (hG : GlobalTheory.Published.GrothendieckDeformation) (hQ : GlobalTheory.HSCore.Quoted) (hSL : GlobalTheory.Published.SemiAbelianLieSeminegative) {D : D7} {T : CoreJ D}
     (hT : LawsJ T) {j : ℕ} (hp : 1 ≤ (T.Q.Dw j).p) (hq : 1 ≤ (T.Q.Dw j).q) (hf : 2 < Module.finrank ℚ D.host.E / 2) (hj : InR D j)
@@ -52,6 +61,17 @@ theorem nef_share_lower_bound (hP : _root_.GlobalTheory.CovTop.PublishedHodgeBun
     rw [rankOn, Formalism.HN.rkK, ((good _ (g3 P.T)).2 Z).2.2, finrank_top]
   rw [← hr] at key
   exact_mod_cast key
+/- English proof (translation)
+Establish `hD` using `GlobalTheory.CompHS.dimFlag_eq (T.Q.Dw j)`. Establish `hg` using `hB.gaps`. Establish `hT1` using `hB.le_T`. Establish `hD2` using `two_le_dimFlag hp hq hf`. Rewrite `hg`, `hT1`, `hD2` using `[← hD]`.
+
+Establish `hle` using `(GlobalTheory.T.componentImageDegree_between_of_proportionality _ _ _ _ _ _ _ Y.U hY.unf (_root_.GlobalTheory.T.proportionality_principle_compactification hP hSI hKS hSL D T hT j hp hq hf hj Y e o hY).1 (_root_.GlobalTheory.T.compactification_top_chern_eq_volume hP hSI hKS hSL D …`. Rewrite `hle` using `[CompHt.delPrime_eq _ _ (CompHt.vdm_pos fun τ => (hs τ).1).ne']`. Use `set ρ := CompHt.rhoB _ P.u₁ with hρ`. Use `set n := P.T + CompHt.dimFlag (T.Q.Dw j) + 3 with hn`. Establish `hρ1 : 0 < 1 - ρ` using `by linarith`.
+
+Establish `hn0 : (0 : ℝ) ≤ n` using `Nat.cast_nonneg n`. Establish `ha1 : ((⌊(n : ℝ) / (1 - ρ)⌋₊ : ℕ) : ℝ) ≤ n / (1 - ρ)` using `Nat.floor_le (by positivity)`. Establish `ha2 : (n : ℝ) / (1 - ρ) < (⌊(n : ℝ) / (1 - ρ)⌋₊ : ℕ) + 1` using `Nat.lt_floor_add_one _`. Establish `ha3 : n ≤ ⌊(n : ℝ) / (1 - ρ)⌋₊` using `Nat.le_floor (by rw [le_div_iff₀ hρ1]; nlinarith)`. Establish `hjet` using `_root_.GlobalTheory.T.jet_rank_complex_le hX hP hSI hKS hG hQ hSL D T hT j hp hq hf hj Y e o hY Z P.u₁ la n ⌊(n : ℝ) / (1 - ρ)⌋₊ hg hla hd (by`.
+
+Establish `h2 : CompHt.topDeg Y.U Z P.u₁ ≤ Y.dg P.u₁ Z / (1 - ρ)`. Rewrite using `[le_div_iff₀ hρ1, mul_comm]`. Conclude with `hle`. Combine the equalities or inequalities in the displayed calculation. Use `GlobalTheory.share_bound_of_jet_count _ _ _ ρ _ _ hD2 hT1 h0 h1 ha3 ?_ hδ.le (Nat.cast_nonneg _) hjet` and prove the remaining obligations.
+
+Rewrite `ha1`, the goal using `[hn]`. Move the coercions through the operations in `at ha1 ⊢`. Conclude with `ha1`.
+-/
 theorem nef_share_upper_bound (hX : GlobalTheory.CovTop.HypothesesX) (hP : _root_.GlobalTheory.CovTop.PublishedHodgeBundleTheorems) (hSI : GlobalTheory.Published.SiegelToroidalIntegral) (hKS : GlobalTheory.Published.ToroidalForFanKS) (hG : GlobalTheory.Published.GrothendieckDeformation) (hQ : GlobalTheory.HSCore.Quoted)
     (hSL : GlobalTheory.Published.SemiAbelianLieSeminegative) {D : D7} {T : CoreJ D}
     (hT : LawsJ T) {j : ℕ} (hp : 1 ≤ (T.Q.Dw j).p) (hq : 1 ≤ (T.Q.Dw j).q) (hf : 2 < Module.finrank ℚ D.host.E / 2) (hj : InR D j)
@@ -89,6 +109,21 @@ theorem nef_share_upper_bound (hX : GlobalTheory.CovTop.HypothesesX) (hP : _root
   rw [hn] at ha1 ⊢
   push_cast at ha1 ⊢
   exact ha1
+/- English proof (translation)
+Introduce `hX hP hSI hKS hG hQ hSL hDG hS hF hD`. Establish `h1` using `hS`. Establish `h2` using `hF`. Establish `h3` using `hD`. Establish `h4` using `GlobalTheory.T.size_bounds_for_family hS`.
+
+Establish `h5` using `_root_.GlobalTheory.T.valuation_multiplicity_run_estimate hP hG hQ hSI hKS hSL hDG hS hF`. Establish `h6` using `_root_.GlobalTheory.T.birOn_weightPair_both_components hX hG hQ hSI hP hS`. Unfold `Size at h1`. Unfold `FlatDeg Covers at h2`. Unfold `Deg Covers at h3`.
+
+Unfold `Covers at h4 h5 h6`. Establish `all` using `lifts_and (lifts_and (lifts_and (lifts_and h1 h2) (lifts_and h3 wtBig_run)) (lifts_and (GlobalTheory.T.weight_parameter_strict_antitone hS) h4)) (lifts_and h5 h6)`. Use `clear h1 h2 h3 h4 h5 h6`. Use `Closed.imp all fun Fm _ _ ⟨C, hC, x0, h⟩ => ⟨C, hC, x0, fun x hx hle ι p hp i hi Y hY u1 hu Z => ?_⟩` and prove the remaining obligations. Take `⟨⟨_, ⟨_, ⟨_, ⟨_, hs⟩, _, hfl⟩, _, ⟨_, hdg⟩, _, hB⟩, _, ⟨_, hq⟩, _, hz⟩, _, ⟨_, hv⟩, _, hbi⟩` from `h x hx hle ι p hp i`.
+
+Take `⟨hp1, hq1, hf, hqu, hsa, ⟨w, -, hw⟩, hdom⟩` from `hq hi`. Take `⟨hT, hj, -⟩` from `hz hi Y hY`. Take `⟨-, h0, -, hz1⟩` from `(hs.2.2.2.2.2.2 hi).2 u1 hu`. Take `⟨δ, hδ, hδ2⟩` from `hdg hi Y hY u1 hu`. Take `rfl` from `hqu u1 hu`.
+
+Establish `htw` using `(_root_.GlobalTheory.T.twisted_flat_bundle_ranks hP _ p.T hT _ hp1 hq1 hf hj Y _ _ hY.1 _ (hfl hi Y hY)).1`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Rewrite using `[hw, htw]`. Conclude with `_root_.GlobalTheory.CovTop.ShareRowsNef.nef_share_lower_bound hP hSI hKS hG hQ hSL hT hp1 hq1 hf hj Y hY.1 _ (hB hi) Z (hbi hi Y hY Z).1`. Establish `hD2 : (2 : ℝ) ≤ CompHt.dimFlag (dat p i)`.
+
+Rewrite using `[GlobalTheory.CompHS.dimFlag_eq]`. Conclude with `two_le_dimFlag hp1 hq1 hf` after adjusting the coercions. Use `_root_.GlobalTheory.CovTop.ShareRowsNef.nef_share_upper_bound hX hP hSI hKS hG hQ hSL hT hp1 hq1 hf hj Y hY.1 _ (hB hi) hsa (fun Z => (hbi hi Y hY Z).1) (hv hi Y hY) h0 ?_ (uM p i) (fun τ => ?_) (fun τ => ?_) Z (hδ.trans_le (hδ2 Z).1)` and prove the remaining obligations. Unfold `zed at hz1`. Establish `: 0 ≤ (CompHt.dimFlag (dat p i) : ℝ) ^ 2 / lenT p i (Fm.parT x hx ι).PP` using `by positivity`.
+
+Use polynomial arithmetic with `[mul_le_mul_of_nonneg_right hD2 h0]`. Simplify using `using (hdom 0 (by norm_num) τ).1`. Simplify using `using (hdom 0 (by norm_num) τ).2`.
+-/
 theorem share_of_deg : GlobalTheory.CovTop.HypothesesX → _root_.GlobalTheory.CovTop.PublishedHodgeBundleTheorems → GlobalTheory.Published.SiegelToroidalIntegral → GlobalTheory.Published.ToroidalForFanKS →
     GlobalTheory.Published.GrothendieckDeformation → GlobalTheory.HSCore.Quoted → GlobalTheory.Published.SemiAbelianLieSeminegative →
     DeepGood → Size → FlatDeg → Deg → Share := by
@@ -141,6 +176,9 @@ open GlobalTheory.IndefiniteRowSideFullHecke.LevelStructureAutomorphisms (LevelA
 open GlobalTheory.BadCount
 open scoped TensorProduct
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @_root_.GlobalTheory.CovTop.ShareRowsNef.share_of_deg | exact _root_.GlobalTheory.CovTop.ShareRowsNef.share_of_deg | (intros; apply _root_.GlobalTheory.CovTop.ShareRowsNef.share_of_deg <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.share_of_prints_deg_flatDeg : GlobalTheory.CovTop.HypothesesX → _root_.GlobalTheory.CovTop.PublishedHodgeBundleTheorems → GlobalTheory.Published.SiegelToroidalIntegral → GlobalTheory.Published.ToroidalForFanKS → GlobalTheory.Published.GrothendieckDeformation → GlobalTheory.HSCore.Quoted → GlobalTheory.Published.SemiAbelianLieSeminegative → DeepGood → Size → FlatDeg → Deg → Share := by
   first | exact @_root_.GlobalTheory.CovTop.ShareRowsNef.share_of_deg | exact _root_.GlobalTheory.CovTop.ShareRowsNef.share_of_deg | (intros; apply _root_.GlobalTheory.CovTop.ShareRowsNef.share_of_deg <;> assumption)
 end

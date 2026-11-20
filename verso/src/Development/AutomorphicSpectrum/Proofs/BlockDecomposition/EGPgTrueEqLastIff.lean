@@ -52,6 +52,9 @@ def resInd {Q P : Subgroup G} {x : G} (σ : Representation ℂ Q W₁) (H : Subg
     refine Subtype.ext (Subtype.ext (funext fun p => ?_))
     exact map_smul E _ _
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem resInd_apply {Q P : Subgroup G} {x : G} (σ : Representation ℂ Q W₁) (H : Subgroup P)
     (hH : ∀ p : P, p ∈ H ↔ x * (p : G) * x⁻¹ ∈ Q) (τ : Representation ℂ H W₂) (E : W₁ ≃ₗ[ℂ] W₂)
     (hE : ∀ (h : H) (hq : x * ((h : P) : G) * x⁻¹ ∈ Q) (v : W₁), τ h (E v) = E (σ ⟨_, hq⟩ v))
@@ -74,6 +77,9 @@ def hgpInclg {m j n : ℕ} (h : m + j = n) : HGPg k h →* parab k (eGPg h) wher
   map_one' := rfl
   map_mul' _ _ := rfl
 
+/- English proof (translation)
+Substitute `h` using the available equality. Conclude with `hgp_block_mem _ _ g`.
+-/
 theorem hgpg_block_mem {m j n : ℕ} (h : m + j = n) (g : HGPg k h) :
     (leviProj k (eGPg h) (hgpInclg k h g) true : GL (Fin (j + 1)) k) ∈ Mir k j := by
   subst h
@@ -120,6 +126,11 @@ section Row
 
 variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
 
+/- English proof (translation)
+Establish `h` using `Matrix.cramer_apply (1 : Matrix (Fin N) (Fin N) k) y a`. Rewrite `h` using `[Matrix.cramer_one]`. Establish `e : ((1 : Matrix (Fin N) (Fin N) k).updateCol a y) = ((1 : Matrix (Fin N) (Fin N) k).updateRow a y)ᵀ`. Rewrite using `[← Matrix.updateCol_transpose, Matrix.transpose_one]`. Rewrite `h` using `[e, Matrix.det_transpose]`.
+
+Simplify using `using h.symm`.
+-/
 theorem det_updateRow_one {N : ℕ} (a : Fin N) (y : Fin N → k) :
     ((1 : Matrix (Fin N) (Fin N) k).updateRow a y).det = y a := by
   have h := Matrix.cramer_apply (1 : Matrix (Fin N) (Fin N) k) y a
@@ -129,6 +140,21 @@ theorem det_updateRow_one {N : ℕ} (a : Fin N) (y : Fin N → k) :
   rw [e, Matrix.det_transpose] at h
   simpa using h.symm
 
+/- English proof (translation)
+Set `M : (Fin N → k) → Matrix (Fin N) (Fin N) k` to `fun y => (1 : Matrix (Fin N) (Fin N) k).updateRow a y`. Establish `hM : Continuous M`. Use `continuous_matrix fun c d => ?_` and prove the remaining obligations. Distinguish the cases in `h : c = a`. Substitute `h` using the available equality.
+
+Simplify `continuous_apply d` using `[M]`. Simplify `continuous_const` using `[M, Matrix.updateRow_ne h]`. Establish `hdet : ∀ y, (M y).det = y a` using `fun y => det_updateRow_one a y`. Set `b : (Fin N → k) → GL (Fin N) k` to `fun y => if h : y a ≠ 0 then Matrix.GeneralLinearGroup.mkOfDetNeZero (M y) (by rw [hdet]; exact h) else 1`. Establish `hb : ∀ y : Fin N → k, y a ≠ 0 → (b y : Matrix (Fin N) (Fin N) k) = M y` using `fun y h => by`.
+
+Simplify using `only [b, dif_pos h]`. Both sides reduce to the same expression. Establish `h0 : (Pi.single a 1 : Fin N → k) a ≠ 0` using `by simp`. Establish `hne : ∀ᶠ y : Fin N → k in 𝓝 (Pi.single a 1), y a ≠ 0` using `(continuous_apply a).continuousAt.eventually_ne h0`. Use `⟨b, ?_, ?_, hb⟩` and prove the remaining obligations.
+
+Rewrite using `[Units.isInducing_embedProduct.continuousAt_iff]`. Establish `h1 : ContinuousAt (fun y => (b y : Matrix (Fin N) (Fin N) k)) (Pi.single a 1)` using `hM.continuousAt.congr (hne.mono fun y h => (hb y h).symm)`. Establish `h2 : ContinuousAt (fun y => (((b y)⁻¹ : GL (Fin N) k) : Matrix (Fin N) (Fin N) k)) (Pi.single a 1)`. Establish `h3 : ContinuousAt (fun y : Fin N → k => (y a)⁻¹ • (M y).adjugate) (Pi.single a 1)` using `((continuous_apply a).continuousAt.inv₀ h0).smul hM.matrix_adjugate.continuousAt`. Use `h3.congr (hne.mono fun y h => ?_)` and prove the remaining obligations.
+
+Use `show (y a)⁻¹ • (M y).adjugate = (((b y)⁻¹ : GL (Fin N) k) : Matrix (Fin N) (Fin N) k)`. Rewrite using `[Matrix.coe_units_inv, hb y h, Matrix.inv_def, hdet, Ring.inverse_eq_inv]`. Conclude with `h1.prodMk (MulOpposite.continuous_op.continuousAt.comp h2)`. Use `ext1`. Rewrite using `[hb _ h0]`.
+
+Use `show (1 : Matrix (Fin N) (Fin N) k).updateRow a (Pi.single a 1) = 1`. Use extensionality with `c d`. Distinguish the cases in `h : c = a`. Substitute `h` using the available equality. Simplify using `[Matrix.one_apply, Pi.single_apply, eq_comm]`.
+
+Simplify using `[Matrix.updateRow_ne h]`.
+-/
 theorem exists_rowSec {N : ℕ} (a : Fin N) : ∃ b : (Fin N → k) → GL (Fin N) k,
     ContinuousAt b (Pi.single a 1) ∧ b (Pi.single a 1) = 1 ∧
       ∀ y : Fin N → k, y a ≠ 0 → (b y : Matrix (Fin N) (Fin N) k) = (1 : Matrix (Fin N) (Fin N) k).updateRow a y := by

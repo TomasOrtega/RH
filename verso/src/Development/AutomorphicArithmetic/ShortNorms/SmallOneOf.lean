@@ -5,6 +5,43 @@ open GlobalTheory.Mem.An
 
 namespace UpperTheory.T3
 
+/- English proof (translation)
+Introduce `hP`. Take `⟨C₀, Cr, cr, c, hC₀, hCr, hcr, hc, hI⟩` from `GlobalTheory.Lin.primesAPInterval_of_primesRel hP`. Take `⟨N, hN⟩` from `exists_nat_ge (max (max C₀ 21) (Real.log (200 * Cr) / cr))`. Establish `hN21 : (21:ℝ) ≤ N` using `le_trans (le_trans (le_max_right _ _) (le_max_left _ _)) hN`. Establish `hNC : C₀ ≤ N` using `le_trans (le_trans (le_max_left _ _) (le_max_left _ _)) hN`.
+
+Establish `hNl : Real.log (200 * Cr) / cr ≤ N` using `le_trans (le_max_right _ _) hN`. Use `set K : ℝ := (N:ℝ) ^ 2 with hK`. Establish `hNK : (N:ℝ) ≤ K` using `by nlinarith`. Establish `hK0 : 0 ≤ K` using `by positivity`. Use `⟨3 * K + 1, by linarith, ?_⟩` and prove the remaining obligations.
+
+Introduce `M hM`. Break down `Nat.lt_or_ge M 3 with hM3 | hM3` into its components or cases. Establish `hM2 : M = 2` using `by omega`. Substitute `hM2` using the available equality. Use `⟨3, Nat.prime_three, by norm_num, ?_⟩` and prove the remaining obligations.
+
+Establish `h1 : ((2:ℕ):ℝ) ^ (2:ℝ) ≤ ((2:ℕ):ℝ) ^ (3 * K + 1)` using `Real.rpow_le_rpow_of_exponent_le (by norm_num) (by nlinarith)`. Establish `h2 : ((2:ℕ):ℝ) ^ (2:ℝ) = 4` using `by norm_num`. Move the coercions through the operations in `at h1 h2 ⊢`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hMr : (3:ℝ) ≤ M` using `by exact_mod_cast hM3 set B : ℝ := 4 * (M:ℝ) with hB`.
+
+Establish `hB12 : (12:ℝ) ≤ B` using `by linarith`. Establish `hB0 : 0 < B` using `by linarith`. Establish `hlogB : 1 ≤ Real.log B`. Rewrite using `[Real.le_log_iff_exp_le hB0]`. Use `Real.exp_one_lt_d9` as an intermediate fact.
+
+Combine the linear equalities and inequalities to obtain the conclusion. Use `set Y : ℝ := B ^ K with hY`. Establish `hY0 : 0 < Y` using `Real.rpow_pos_of_pos hB0 _`. Establish `hlogY : Real.log Y = K * Real.log B` using `Real.log_rpow hB0 K`. Establish `hlogY0 : 0 < Real.log Y` using `by rw [hlogY]; nlinarith`.
+
+Establish `hexp : Real.exp (-cr * N) ≤ 1 / (200 * Cr)`. Establish `h1 : Real.log (200 * Cr) ≤ cr * N`. Rewrite `hNl` using `[div_le_iff₀ hcr]`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `h2 : Real.exp (Real.log (200 * Cr)) ≤ Real.exp (cr * N)` using `Real.exp_le_exp.mpr h1`.
+
+Rewrite `h2` using `[Real.exp_log (by positivity)]`. Rewrite using `[show -cr * (N:ℝ) = -(cr * N) by ring, Real.exp_neg, one_div]`. Conclude with `inv_anti₀ (by positivity) h2`. Establish `hρ : Formalism.HermitianLattices.GL2PrimeSums.rhoErr Cr cr B Y ≤ 1 / 100`. Unfold `Formalism.HermitianLattices.GL2PrimeSums.rhoErr`.
+
+Establish `e1 : Real.exp (-cr * Real.log Y / Real.log B) ≤ Real.exp (-cr * N)`. Apply `Real.exp_le_exp.mpr` to reduce the goal to its premises. Rewrite using `[hlogY, show -cr * (K * Real.log B) / Real.log B = -cr * K by field_simp]`. Use the polynomial consequences of the given equalities and inequalities. Establish `e2 : Real.exp (-cr * √(Real.log Y)) ≤ Real.exp (-cr * N)`.
+
+Apply `Real.exp_le_exp.mpr` to reduce the goal to its premises. Establish `: (N:ℝ) ≤ √(Real.log Y)`. Rewrite using `[show (N:ℝ) = √K by rw [hK, Real.sqrt_sq (by positivity)]]`. Apply `Real.sqrt_le_sqrt` to reduce the goal to its premises. Rewrite using `[hlogY]`.
+
+Use the polynomial consequences of the given equalities and inequalities. Use the polynomial consequences of the given equalities and inequalities. Establish `e3 : Cr * Real.exp (-cr * N) ≤ 1 / 200`. Use `mul_le_mul_of_nonneg_left hexp hCr.le` as an intermediate fact. Rewrite `this` using `[show Cr * (1 / (200 * Cr)) = 1 / 200 by field_simp]`.
+
+Conclude with `this`. Use polynomial arithmetic with `[mul_le_mul_of_nonneg_left e1 hCr.le, mul_le_mul_of_nonneg_left e2 hCr.le]`. Establish `hc1 : B ^ C₀ ≤ Y` using `Real.rpow_le_rpow_of_exponent_le (by linarith) (by linarith)`. Establish `hc3 : B ^ (7:ℝ) ≤ 1 * Y ^ ((1:ℝ) / 3)`. Rewrite using `[one_mul, hY, ← Real.rpow_mul hB0.le]`.
+
+Conclude with `Real.rpow_le_rpow_of_exponent_le (by linarith) (by nlinarith)`. Establish `hmain` using `hI M 1 hM3 (Nat.coprime_one_left M) Y 1 hc1 le_rfl (by simpa using hρ) hc3`. Establish `hpos : 0 < c * 1 * B ^ (-6:ℝ) * Y / Real.log Y`. Use `Real.rpow_pos_of_pos hB0 (-6:ℝ)` as an intermediate fact. Check the signs of the components of the expression.
+
+Establish `hcard : 0 < ({p ∈ Finset.Ioc ⌊Y⌋₊ ⌊Y * (1 + 1)⌋₊ | Nat.Prime p ∧ p ≡ 1 [MOD M]}).card`. Use `lt_of_lt_of_le hpos hmain` as an intermediate fact. Conclude with `this` after adjusting the coercions. Take `⟨p, hp⟩` from `Finset.card_pos.mp hcard`. Rewrite `hp` using `[Finset.mem_filter, Finset.mem_Ioc]`.
+
+Take `⟨⟨_, hpY⟩, hpp, hpm⟩` from `hp`. Use `⟨p, hpp, ?_, ?_⟩` and prove the remaining obligations. Establish `: 1 % M = 1` using `Nat.mod_eq_of_lt (by omega)`. Rewrite using `[← this]`. Conclude with `hpm`.
+
+Establish `hp2 : (p:ℝ) ≤ 2 * Y`. Use `Nat.floor_le (show 0 ≤ Y * (1 + 1) by positivity)` as an intermediate fact. Establish `h' : (p:ℝ) ≤ (⌊Y * (1 + 1)⌋₊ : ℝ)` using `by exact_mod_cast hpY`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hBM : B ≤ (M:ℝ) ^ (3:ℝ)`.
+
+Rewrite using `[show (3:ℝ) = ((3:ℕ):ℝ) by norm_num, Real.rpow_natCast, hB]`. Establish `h9 : (9:ℝ) ≤ (M:ℝ) ^ 2` using `by nlinarith`. Use the polynomial consequences of the given equalities and inequalities. Establish `hM0 : (0:ℝ) < M` using `by linarith`. Establish `hYM : Y ≤ (M:ℝ) ^ (3 * K)`.
+
+Rewrite using `[hY, Real.rpow_mul hM0.le]`. Conclude with `Real.rpow_le_rpow hB0.le hBM hK0`. Rewrite using `[Real.rpow_add hM0, Real.rpow_one]`. Establish `: 0 < (M:ℝ) ^ (3 * K)` using `Real.rpow_pos_of_pos hM0 _`. Use the polynomial consequences of the given equalities and inequalities.
+-/
 theorem smallOne_of :
     GlobalTheory.Lin.PrimesRel → SmallOne := by
   intro hP

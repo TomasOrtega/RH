@@ -15,6 +15,9 @@ open GlobalTheory.WeilM GlobalTheory.AdelicU GlobalTheory.IndefiniteRowSideFullH
 namespace PositivityTheory.SiegelWeilFormula.KK
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E}
 variable {d : _root_.PositivityTheory.SiegelWeilFormula.SD_k σ}
+/- English proof (translation)
+Simplify using `only [_root_.PositivityTheory.SiegelWeilFormula.SD_k.T, ← map_add]`. Use `congr 1`. Use function extensionality and compare the values at `z`. Conclude with `mul_add _ _ _`.
+-/
 theorem T_add_k (Φ Ψ : d.Fn) (X : Mx F E d.m d.n) : d.T (Φ + Ψ) X = d.T Φ X + d.T Ψ X := by
   simp only [_root_.PositivityTheory.SiegelWeilFormula.SD_k.T, ← map_add]
   congr 1
@@ -22,6 +25,11 @@ theorem T_add_k (Φ Ψ : d.Fn) (X : Mx F E d.m d.n) : d.T (Φ + Ψ) X = d.T Φ X
   exact mul_add _ _ _
 variable (d) in
 abbrev firstFrameColumns : Matrix (Fin d.n ⊕ Fin d.n) (Fin d.n) (AE F E) := incM F d.b.1.toCols₁
+/- English proof (translation)
+Establish `e : incM F d.b.1 = Matrix.fromCols (_root_.PositivityTheory.SiegelWeilFormula.KK.firstFrameColumns d) (_root_.PositivityTheory.SiegelWeilFormula.KK.secondFrameColumns d)`. Apply the tactic sequence `rw [_root_.PositivityTheory.SiegelWeilFormula.KK.firstFrameColumns, _root_.PositivityTheory.SiegelWeilFormula.KK.secondFrameColumns, ← Matrix.fromCols_toCols d.b.1]; ext i (j | j) <;> rfl`. Establish `e1 : (incM F (d.b⁻¹).1)ᵀ * (incM F d.b.1)ᵀ = 1`. Rewrite using `[← Matrix.transpose_mul, ← incM_mul, ← Units.val_mul, mul_inv_cancel, Units.val_one, incM_one, Matrix.transpose_one]`. Combine the equalities or inequalities in the displayed calculation.
+
+Rewrite using `[e, Matrix.transpose_fromCols, ← Matrix.fromCols_toCols (u * (incM F (d.b⁻¹).1)ᵀ), Matrix.fromCols_mul_fromRows, Matrix.toCols₁_fromCols, Matrix.toCols₂_fromCols]`.
+-/
 theorem split_k (u : Matrix (Fin d.m) (Fin d.n ⊕ Fin d.n) (AE F E)) :
     u = (u * (incM F (d.b⁻¹).1)ᵀ).toCols₁ * (_root_.PositivityTheory.SiegelWeilFormula.KK.firstFrameColumns d)ᵀ + (u * (incM F (d.b⁻¹).1)ᵀ).toCols₂ * (_root_.PositivityTheory.SiegelWeilFormula.KK.secondFrameColumns d)ᵀ := by
   have e : incM F d.b.1 = Matrix.fromCols (_root_.PositivityTheory.SiegelWeilFormula.KK.firstFrameColumns d) (_root_.PositivityTheory.SiegelWeilFormula.KK.secondFrameColumns d) := by
@@ -33,6 +41,13 @@ theorem split_k (u : Matrix (Fin d.m) (Fin d.n ⊕ Fin d.n) (AE F E)) :
     _ = _ := by
       rw [e, Matrix.transpose_fromCols, ← Matrix.fromCols_toCols (u * (incM F (d.b⁻¹).1)ᵀ), Matrix.fromCols_mul_fromRows,
         Matrix.toCols₁_fromCols, Matrix.toCols₂_fromCols]
+/- English proof (translation)
+Take `⟨t, ht⟩` from `d.ok.frame.2`. Use `⟨incM F t.1, ?_⟩` and prove the remaining obligations. Establish `h2 : ∀ i j, d.b.1 i (Sum.inl j) = ∑ k, (diagCols (Fin d.n) : Matrix (Fin d.n ⊕ Fin d.n) (Fin d.n) E) i k * t.1 k j` using `fun i j => congrFun₂ ht i j`. Use extensionality with `i j`. Rewrite using `[Matrix.mul_apply]`.
+
+Express the relevant statement in the definitionally equal form `inclR (AF F) (d.b.1 i (Sum.inl j)) = _`. Rewrite using `[h2, map_sum]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[map_mul]`. Use `congr 1`.
+
+Apply the tactic sequence `rcases i with i | i <;>`. Express the relevant statement in the definitionally equal form `inclR (AF F) ((1 : Matrix (Fin d.n) (Fin d.n) E) i k) = (1 : Matrix (Fin d.n) (Fin d.n) (AE F E)) i k`. Apply the tactic sequence `by_cases h : i = k <;> simp [Matrix.one_apply, h]`.
+-/
 theorem firstColumns_eq_diag_mul : ∃ t : Matrix (Fin d.n) (Fin d.n) (AE F E), _root_.PositivityTheory.SiegelWeilFormula.KK.firstFrameColumns d = _root_.PositivityTheory.SiegelWeilFormula.KK.dg_k d * t := by
   obtain ⟨t, ht⟩ := d.ok.frame.2
   refine ⟨incM F t.1, ?_⟩
@@ -50,11 +65,17 @@ theorem firstColumns_eq_diag_mul : ∃ t : Matrix (Fin d.n) (Fin d.n) (AE F E), 
     by_cases h : i = k <;> simp [Matrix.one_apply, h]
 def vacF_k (R : _root_.PositivityTheory.SiegelWeilFormula.RD_k d) (g : (Fin d.m × Fin d.n × Fin 2 → Af F) → ℂ) (X : Mx F E d.m d.n) : ℂ :=
   (∏ w, gs (2 * Real.pi) (R.loc w X)) * g fun k => (d.crd X k).2
+/- English proof (translation)
+Use extensionality with `i j`. Use `show piInf (d.B.emb w) ((X + realAd F t • Z) i j) = piInf (d.B.emb w) (X i j) + (t : ℂ) * piInf (d.B.emb w) (Z i j)`. Rewrite using `[Matrix.add_apply, Matrix.smul_apply, map_add, GlobalTheory.CompanionTheory.RealAdeleComponent.piInf_realAd_smul]`.
+-/
 theorem cw_add_smul_k (w : InfinitePlace F) (X Z : Mx F E d.m d.n) (t : ℝ) :
     d.cw w (X + realAd F t • Z) = d.cw w X + (t : ℂ) • d.cw w Z := by
   ext i j
   show piInf (d.B.emb w) ((X + realAd F t • Z) i j) = piInf (d.B.emb w) (X i j) + (t : ℂ) * piInf (d.B.emb w) (Z i j)
   rw [Matrix.add_apply, Matrix.smul_apply, map_add, GlobalTheory.CompanionTheory.RealAdeleComponent.piInf_realAd_smul]
+/- English proof (translation)
+Establish `e : d.crd (X + realAd F t • Z) k = d.crd X k + realAd F t * d.crd Z k`. Simplify using `only [_root_.PositivityTheory.SiegelWeilFormula.SD_k.crd, Matrix.add_apply, Matrix.smul_apply, map_add, map_smul, Finsupp.add_apply, Finsupp.smul_apply, smul_eq_mul]`. Rewrite using `[e, snd_add_realAd]`.
+-/
 theorem crd_add_smul_snd_k (X Z : Mx F E d.m d.n) (t : ℝ) (k : Fin d.m × Fin d.n × Fin 2) :
     (d.crd (X + realAd F t • Z) k).2 = (d.crd X k).2 := by
   have e : d.crd (X + realAd F t • Z) k = d.crd X k + realAd F t * d.crd Z k := by
@@ -63,11 +84,19 @@ theorem crd_add_smul_snd_k (X Z : Mx F E d.m d.n) (t : ℝ) (k : Fin d.m × Fin 
   rw [e, snd_add_realAd]
 def qL_k (R : _root_.PositivityTheory.SiegelWeilFormula.RD_k d) (X Z : Mx F E d.m d.n) (t : ℝ) : ℝ :=
   ∑ w, ∑ a, ∑ i, ‖(((R.fr w)⁻¹).1 * d.cw w X) a i + (t : ℂ) * (((R.fr w)⁻¹).1 * d.cw w Z) a i‖ ^ 2
+/- English proof (translation)
+Simplify using `only [gs, _root_.PositivityTheory.SiegelWeilFormula.RD_k.loc, _root_.PositivityTheory.SiegelWeilFormula.KK.cw_add_smul_k, Matrix.mul_add, Matrix.mul_smul, Matrix.map_apply, norm_star, Matrix.add_apply, Matrix.smul_apply, smul_eq_mul, Complex.ofReal_neg]`.
+-/
 theorem gs_loc_k (R : _root_.PositivityTheory.SiegelWeilFormula.RD_k d) (w : InfinitePlace F) (X Z : Mx F E d.m d.n) (t : ℝ) :
     gs (2 * Real.pi) (R.loc w (X + realAd F t • Z)) = Complex.exp ((-(2 * Real.pi * ∑ a, ∑ i,
       ‖(((R.fr w)⁻¹).1 * d.cw w X) a i + (t : ℂ) * (((R.fr w)⁻¹).1 * d.cw w Z) a i‖ ^ 2) : ℝ) : ℂ) := by
   simp only [gs, _root_.PositivityTheory.SiegelWeilFormula.RD_k.loc, _root_.PositivityTheory.SiegelWeilFormula.KK.cw_add_smul_k, Matrix.mul_add, Matrix.mul_smul, Matrix.map_apply, norm_star, Matrix.add_apply,
     Matrix.smul_apply, smul_eq_mul, Complex.ofReal_neg]
+/- English proof (translation)
+Simplify using `only [_root_.PositivityTheory.SiegelWeilFormula.KK.vacF_k, _root_.PositivityTheory.SiegelWeilFormula.KK.crd_add_smul_snd_k, _root_.PositivityTheory.SiegelWeilFormula.KK.gs_loc_k]`. Use `congr 1`. Rewrite using `[← Complex.exp_sum]`. Use `congr 1`. Rewrite using `[_root_.PositivityTheory.SiegelWeilFormula.KK.qL_k]`.
+
+Use `push_cast`. Rewrite using `[Finset.mul_sum]`. Use `Finset.sum_congr rfl fun w _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem vacF_line_k (R : _root_.PositivityTheory.SiegelWeilFormula.RD_k d) (g : (Fin d.m × Fin d.n × Fin 2 → Af F) → ℂ) (X Z : Mx F E d.m d.n) (t : ℝ) :
     _root_.PositivityTheory.SiegelWeilFormula.KK.vacF_k R g (X + realAd F t • Z) = Complex.exp ((-(2 * Real.pi) * _root_.PositivityTheory.SiegelWeilFormula.KK.qL_k R X Z t : ℝ) : ℂ) * g fun k => (d.crd X k).2 := by
   simp only [_root_.PositivityTheory.SiegelWeilFormula.KK.vacF_k, _root_.PositivityTheory.SiegelWeilFormula.KK.crd_add_smul_snd_k, _root_.PositivityTheory.SiegelWeilFormula.KK.gs_loc_k]
@@ -79,6 +108,15 @@ theorem vacF_line_k (R : _root_.PositivityTheory.SiegelWeilFormula.RD_k d) (g : 
   rw [Finset.mul_sum]
   refine Finset.sum_congr rfl fun w _ => ?_
   ring
+/- English proof (translation)
+Establish `hf : (fun t : ℝ => _root_.PositivityTheory.SiegelWeilFormula.KK.vacF_k R g (X + realAd F t • Z)) = fun t => Complex.exp ((-(2 * Real.pi) * _root_.PositivityTheory.SiegelWeilFormula.KK.qL_k R X Z t : ℝ) : ℂ) * g fun k => (d.crd X k).2`. Use function extensionality and compare the values at `(_root_.PositivityTheory.SiegelWeilFormula.KK.vacF_line_k R g X Z)`. Rewrite using `[hf]`. Establish `hq : HasDerivAt (_root_.PositivityTheory.SiegelWeilFormula.KK.qL_k R X Z) (∑ w, ∑ a, ∑ i, 2 * (star ((((R.fr w)⁻¹).1 * d.cw w X) a i) * (((R.fr w)⁻¹).1 * d.cw w Z) a i).re) 0`. Unfold `_root_.PositivityTheory.SiegelWeilFormula.KK.qL_k`.
+
+Use `HasDerivAt.fun_sum (A := fun w (t : ℝ) => ∑ a, ∑ i, ‖(((R.fr w)⁻¹).1 * d.cw w X) a i + (t : ℂ) * (((R.fr w)⁻¹).1 * d.cw w Z) a i‖ ^ 2) fun w _ => ?_` and prove the remaining obligations. Use `HasDerivAt.fun_sum (A := fun a (t : ℝ) => ∑ i, ‖(((R.fr w)⁻¹).1 * d.cw w X) a i + (t : ℂ) * (((R.fr w)⁻¹).1 * d.cw w Z) a i‖ ^ 2) fun a _ => ?_` and prove the remaining obligations. Conclude with `HasDerivAt.fun_sum (A := fun i (t : ℝ) => ‖(((R.fr w)⁻¹).1 * d.cw w X) a i + (t : ℂ) * (((R.fr w)⁻¹).1 * d.cw w Z) a i‖ ^ 2) fun i _ => hasDerivAt_normSq _ _`. Establish `he` using `((hq.const_mul (-(2 * Real.pi))).ofReal_comp.cexp).mul_const (g fun k => (d.crd X k).2)`. Use `he.congr_deriv ?_` and prove the remaining obligations.
+
+Establish `e0 : _root_.PositivityTheory.SiegelWeilFormula.KK.vacF_k R g X = Complex.exp ((-(2 * Real.pi) * _root_.PositivityTheory.SiegelWeilFormula.KK.qL_k R X Z 0 : ℝ) : ℂ) * g fun k => (d.crd X k).2`. Use `_root_.PositivityTheory.SiegelWeilFormula.KK.vacF_line_k R g X Z 0` as an intermediate fact. Rewrite `this` using `[realAd_zero, zero_smul, add_zero]`. Then use the resulting hypothesis. Rewrite using `[e0]`. Establish `e2 : (∑ w, ∑ a, ∑ i, 2 * (star ((((R.fr w)⁻¹).1 * d.cw w X) a i) * (((R.fr w)⁻¹).1 * d.cw w Z) a i).re) = 2 * ∑ w, ∑ a, ∑ i, (star ((((R.fr w)⁻¹).1 * d.cw w X) a i) * (((R.fr w)⁻¹).1 * d.cw w Z) a i).re`.
+
+Simplify using `only [Finset.mul_sum]`. Simplify using `only [trace_re, e2]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem vacF_deriv_k (R : _root_.PositivityTheory.SiegelWeilFormula.RD_k d) (g : (Fin d.m × Fin d.n × Fin 2 → Af F) → ℂ) (X Z : Mx F E d.m d.n) :
     HasDerivAt (fun t : ℝ => _root_.PositivityTheory.SiegelWeilFormula.KK.vacF_k R g (X + realAd F t • Z))
       (((-(4 * Real.pi) * ∑ w, (Matrix.trace ((((R.fr w)⁻¹).1 * d.cw w X)ᴴ * (((R.fr w)⁻¹).1 * d.cw w Z))).re : ℝ) : ℂ) *
@@ -109,6 +147,11 @@ theorem vacF_deriv_k (R : _root_.PositivityTheory.SiegelWeilFormula.RD_k d) (g :
   simp only [trace_re, e2]
   push_cast
   ring
+/- English proof (translation)
+Establish `h` using `d.ok.good.cm`. Establish `cst : ∀ x : Matrix (Fin d.n ⊕ Fin d.n) (Fin d.n ⊕ Fin d.n) E, (x.map σ).map (d.B.emb w).1 = (x.map (d.B.emb w).1).map star` using `fun x => by`. Use extensionality with `i j`. Conclude with `h.2.2.2 (d.B.emb w).1 (x i j)`. Establish `hd : (dbl d.Y.J).map (d.B.emb w).1 = dbl (d.Y.J.map (d.B.emb w).1)`.
+
+Apply the tactic sequence `ext (i | i) (j | j) <;> simp [dbl, Matrix.fromBlocks]`. Use `congrArg (fun x => x.map (d.B.emb w).1) R.hε` as an intermediate fact. Simplify using `only [Matrix.map_mul, Matrix.transpose_map, cst, hd] at this`. Rewrite using `[this]`. Apply the tactic sequence `ext (i | i) (j | j) <;> by_cases hij : i = j <;> simp [jE, Matrix.fromBlocks, Matrix.smul_apply, Matrix.one_apply, hij]`.
+-/
 theorem frame_form_k (R : _root_.PositivityTheory.SiegelWeilFormula.RD_k d) (w : InfinitePlace F) :
     (d.b.1.map (d.B.emb w).1)ᵀ * dbl (d.Y.J.map (d.B.emb w).1) * (d.b.1.map (d.B.emb w).1).map star = jE d.n R.ε := by
   have h := d.ok.good.cm
@@ -121,9 +164,29 @@ theorem frame_form_k (R : _root_.PositivityTheory.SiegelWeilFormula.RD_k d) (w :
   simp only [Matrix.map_mul, Matrix.transpose_map, cst, hd] at this
   rw [this]
   ext (i | i) (j | j) <;> by_cases hij : i = j <;> simp [jE, Matrix.fromBlocks, Matrix.smul_apply, Matrix.one_apply, hij]
+/- English proof (translation)
+Rewrite using `[Matrix.map_mul, Matrix.transpose_map, map_incM']`.
+-/
 theorem map_mul_incM_T_k {p q r : Type} [Fintype q] (w : InfinitePlace F) (x : Matrix p q (AE F E)) (y : Matrix r q E) :
     (x * (incM F y)ᵀ).map (piInf (d.B.emb w)) = x.map (piInf (d.B.emb w)) * (y.map (d.B.emb w).1)ᵀ := by
   rw [Matrix.map_mul, Matrix.transpose_map, map_incM']
+/- English proof (translation)
+Take `⟨tA, htA⟩` from `_root_.PositivityTheory.SiegelWeilFormula.KK.firstColumns_eq_diag_mul (d := d)`. Use `set W := u * (incM F (d.b⁻¹).1)ᵀ with hW`. Establish `hWa : At (evI F) W` using `at_mul hu _`. Establish `h1 : At (evI F) (W.toCols₁ * tAᵀ)` using `at_mul (at_toCols₁ hWa) _`. Establish `h2 : At (evI F) W.toCols₂` using `at_toCols₂ hWa`.
+
+Establish `e1 : W.toCols₁ * (_root_.PositivityTheory.SiegelWeilFormula.KK.firstFrameColumns d)ᵀ = (W.toCols₁ * tAᵀ) * (_root_.PositivityTheory.SiegelWeilFormula.KK.dg_k d)ᵀ`. Rewrite using `[htA, Matrix.transpose_mul, Matrix.mul_assoc]`. Establish `hs` using `_root_.PositivityTheory.SiegelWeilFormula.KK.split_k u`. Rewrite `hs` using `[← hW, e1]`. Establish `hsplitD : Box.D (d.dd.e u) Φ = Box.D (d.dd.e ((W.toCols₁ * tAᵀ) * (_root_.PositivityTheory.SiegelWeilFormula.KK.dg_k d)ᵀ)) Φ + Box.D (d.dd.e (W.toCols₂ * (_root_.PositivityTheory.SiegelWeilFormula.KK.secondFrameColumns d)ᵀ)) Φ` using `by conv_lhs => rw [hs]`.
+
+Rewrite using `[map_add, Box.D_add_left]`. Rewrite using `[hsplitD, _root_.PositivityTheory.SiegelWeilFormula.KK.T_add_k, _root_.PositivityTheory.SiegelWeilFormula.KK.T_D_dg_k hΦ h1, hT]`. Establish `hder` using `_root_.PositivityTheory.SiegelWeilFormula.KK.hasDerivAt_translate_secondColumns hΦ h2 X`. Rewrite `hder` using `[hT]`. Rewrite using `[(_root_.PositivityTheory.SiegelWeilFormula.KK.vacF_deriv_k R g X W.toCols₂).unique hder |>.symm]`.
+
+Establish `hmX : ∀ w, (X * (_root_.PositivityTheory.SiegelWeilFormula.KK.secondFrameColumns d)ᵀ).map (piInf (d.B.emb w)) = d.cw w X * ((d.b.1.map (d.B.emb w).1).toCols₂)ᵀ` using `fun w => by`. Rewrite using `[_root_.PositivityTheory.SiegelWeilFormula.KK.map_mul_incM_T_k]`. Both sides reduce to the same expression. Establish `hmW : ∀ w, W.map (piInf (d.B.emb w)) = d.cw w u * ((d.b⁻¹).1.map (d.B.emb w).1)ᵀ` using `fun w => by`. Rewrite using `[hW, _root_.PositivityTheory.SiegelWeilFormula.KK.map_mul_incM_T_k]`.
+
+Both sides reduce to the same expression. Establish `hmW1 : ∀ w, (W.toCols₁ * (_root_.PositivityTheory.SiegelWeilFormula.KK.firstFrameColumns d)ᵀ).map (piInf (d.B.emb w)) = (d.cw w u * ((d.b⁻¹).1.map (d.B.emb w).1)ᵀ).toCols₁ * ((d.b.1.map (d.B.emb w).1).toCols₁)ᵀ` using `fun w => by`. Rewrite using `[_root_.PositivityTheory.SiegelWeilFormula.KK.map_mul_incM_T_k, ← hmW]`. Both sides reduce to the same expression. Establish `hmW2 : ∀ w, d.cw w W.toCols₂ = (d.cw w u * ((d.b⁻¹).1.map (d.B.emb w).1)ᵀ).toCols₂` using `fun w => by`.
+
+Rewrite using `[← hmW]`. Both sides reduce to the same expression. Establish `hm : _root_.PositivityTheory.SiegelWeilFormula.KK.mZ_k d (W.toCols₁ * tAᵀ) X = ∑ w, -(2 * (T1 (d.A.J.map (d.B.emb w).1) (dbl (d.Y.J.map (d.B.emb w).1)) (d.b.1.map (d.B.emb w).1) (d.cw w X) ((d.cw w u * ((d.b⁻¹).1.map (d.B.emb w).1)ᵀ).toCols₁)).re)`. Rewrite using `[_root_.PositivityTheory.SiegelWeilFormula.KK.mZ_k, ← e1, _root_.PositivityTheory.SiegelWeilFormula.KK.trace_sp_k]`. Use `Finset.sum_congr rfl fun w _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[hmX w, hmW1 w]`. Both sides reduce to the same expression. Rewrite using `[hm]`. Simplify using `only [hmW2, Sw, T2]`. Rewrite using `[Finset.sum_mul]`.
+
+Use `push_cast`. Rewrite using `[Finset.mul_sum, Finset.sum_mul, Finset.mul_sum, Finset.sum_mul, ← Finset.sum_add_distrib]`. Use `Finset.sum_congr rfl fun w _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem T_D_vac_k (R : _root_.PositivityTheory.SiegelWeilFormula.RD_k d) (g : (Fin d.m × Fin d.n × Fin 2 → Af F) → ℂ) {Φ : d.Fn} (hΦ : Φ ∈ d.sch)
     (hT : d.T Φ = _root_.PositivityTheory.SiegelWeilFormula.KK.vacF_k R g) {u : Matrix (Fin d.m) (Fin d.n ⊕ Fin d.n) (AE F E)} (hu : At (evI F) u) (X : Mx F E d.m d.n) :
     d.T (Box.D (d.dd.e u) Φ) X = (∑ w, Sw (d.A.J.map (d.B.emb w).1) ((R.fr w)⁻¹).1 (dbl (d.Y.J.map (d.B.emb w).1))
@@ -167,6 +230,11 @@ theorem T_D_vac_k (R : _root_.PositivityTheory.SiegelWeilFormula.RD_k d) (g : (F
   rw [Finset.mul_sum, Finset.sum_mul, Finset.mul_sum, Finset.sum_mul, ← Finset.sum_add_distrib]
   refine Finset.sum_congr rfl fun w _ => ?_
   ring
+/- English proof (translation)
+Rewrite using `[_root_.PositivityTheory.SiegelWeilFormula.KK.T_D_vac_k R g hΦ hT hu' X, _root_.PositivityTheory.SiegelWeilFormula.KK.T_D_vac_k R g hΦ hT hu X, ← mul_assoc, Finset.mul_sum]`. Use `congr 1`. Use `Finset.sum_congr rfl fun w _ => ?_` and prove the remaining obligations. Establish `e2 : (d.b⁻¹).1.map (d.B.emb w).1 * d.b.1.map (d.B.emb w).1 = 1`. Rewrite using `[← Matrix.map_mul, ← Units.val_mul, inv_mul_cancel, Units.val_one, Matrix.map_one _ (map_zero _) (map_one _)]`.
+
+Establish `hfi : (R.fr w).1 * ((R.fr w)⁻¹).1 = 1` using `by rw [← Units.val_mul, mul_inv_cancel, Units.val_one]`. Conclude with `Sw_rel e2 hfi (_root_.PositivityTheory.SiegelWeilFormula.KK.frame_form_k R w) (R.hfr w) R.hζ (d.cw w X) (d.cw w u) (d.cw w u') (hr w)`.
+-/
 theorem vac_rel_k (R : _root_.PositivityTheory.SiegelWeilFormula.RD_k d) (g : (Fin d.m × Fin d.n × Fin 2 → Af F) → ℂ) {Φ : d.Fn} (hΦ : Φ ∈ d.sch)
     (hT : d.T Φ = _root_.PositivityTheory.SiegelWeilFormula.KK.vacF_k R g) {u u' : Matrix (Fin d.m) (Fin d.n ⊕ Fin d.n) (AE F E)} (hu : At (evI F) u)
     (hu' : At (evI F) u') (hr : Box.Rel d.B.emb (fun _ => 1) (_root_.PositivityTheory.SiegelWeilFormula.KK.thA_k R) (_root_.PositivityTheory.SiegelWeilFormula.KK.thB_k d R.ε) u u') (X : Mx F E d.m d.n) :

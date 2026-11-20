@@ -11,6 +11,17 @@ namespace PositivityTheory.ThKF0
 
 open Grow
 
+/- English proof (translation)
+Use `⟨(NumberField.discr F).natAbs, Nat.one_le_iff_ne_zero.mpr (Int.natAbs_ne_zero.mpr (NumberField.discr_ne_zero F)), ?_⟩` and prove the remaining obligations. Introduce `ξ hξ`. Establish `h10 : (1 : FractionalIdeal (nonZeroDivisors (𝓞 F)) F) ≠ 0`. Rewrite using `[← FractionalIdeal.coeIdeal_top]`. Conclude with `FractionalIdeal.coeIdeal_ne_zero.mpr top_ne_bot`.
+
+Establish `hdual : ξ ∈ FractionalIdeal.dual ℤ ℚ (1 : FractionalIdeal (nonZeroDivisors (𝓞 F)) F)`. Rewrite using `[FractionalIdeal.mem_dual h10]`. Introduce `a ha`. Take `⟨y, rfl⟩` from `(FractionalIdeal.mem_one_iff _).mp ha`. Take `⟨z, hz⟩` from `hξ y`.
+
+Use `⟨z, ?_⟩` and prove the remaining obligations. Rewrite using `[Algebra.traceForm_apply, hz]`. Simplify using the standard rewrite rules. Establish `hD : ((NumberField.discr F).natAbs : 𝓞 F) ∈ differentIdeal ℤ (𝓞 F)`. Rewrite using `[← NumberField.absNorm_differentIdeal F (𝓞 F)]`.
+
+Conclude with `Ideal.absNorm_mem _`. Establish `hD' : ((NumberField.discr F).natAbs : F) ∈ ((differentIdeal ℤ (𝓞 F) : Ideal (𝓞 F)) : FractionalIdeal (nonZeroDivisors (𝓞 F)) F)`. Rewrite using `[FractionalIdeal.mem_coeIdeal]`. Conclude with `⟨_, hD, by simp⟩`. Rewrite `hD'` using `[coeIdeal_differentIdeal ℤ ℚ F (𝓞 F)]`.
+
+Establish `hmem` using `FractionalIdeal.mul_mem_mul hD' hdual`. Rewrite `hmem` using `[inv_mul_cancel₀ (FractionalIdeal.dual_ne_zero ℤ ℚ h10)]`. Take `⟨y, hy⟩` from `(FractionalIdeal.mem_one_iff _).mp hmem`. Rewrite using `[← hy]`. Conclude with `NumberField.RingOfIntegers.isIntegral_coe y`.
+-/
 theorem exists_dual_den (F : Type) [Field F] [NumberField F] : ∃ D : ℕ, 1 ≤ D ∧ ∀ ξ : F,
     (∀ y : 𝓞 F, ∃ z : ℤ, Algebra.trace ℚ F (ξ * y) = z) → IsIntegral ℤ ((D : F) * ξ) := by
   refine ⟨(NumberField.discr F).natAbs,
@@ -41,6 +52,13 @@ theorem exists_dual_den (F : Type) [Field F] [NumberField F] : ∃ D : ℕ, 1 �
   rw [← hy]
   exact NumberField.RingOfIntegers.isIntegral_coe y
 
+/- English proof (translation)
+Establish `e` using `GlobalTheory.PsiNontriv.isStd_fin_rat hψ a`. Establish `e2 : ψ (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.pairA F 0 ((algebraMap F (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.Af F)) a)) = 1` using `h`. Rewrite `e` using `[e2]`. Take `⟨n, hn⟩` from `Complex.exp_eq_one_iff.mp e.symm`. Use `⟨n, ?_⟩` and prove the remaining obligations.
+
+Establish `hpi : (2 * ↑Real.pi * Complex.I : ℂ) ≠ 0`. Simplify using `[Real.pi_ne_zero, Complex.I_ne_zero]`. Establish `hq : ((Algebra.trace ℚ F a : ℚ) : ℂ) = ((n : ℚ) : ℂ)`. Apply `mul_left_cancel₀ hpi` to reduce the goal to its premises. Rewrite using `[hn]`.
+
+Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Conclude with `hq` after adjusting the coercions.
+-/
 theorem trace_int {F : Type} [Field F] [NumberField F] {ψ : AddChar (AF F) ℂ} (hψ : IsStd ψ) (a : F)
     (h : ψ (0, (algebraMap F (AF F) a).2) = 1) : ∃ z : ℤ, Algebra.trace ℚ F a = z := by
   have e := GlobalTheory.PsiNontriv.isStd_fin_rat hψ a
@@ -57,6 +75,19 @@ theorem trace_int {F : Type} [Field F] [NumberField F] {ψ : AddChar (AF F) ℂ}
     ring
   exact_mod_cast hq
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ B n d X W M χX χW om r s r' s' hP Φ hΦ`. Take `⟨C, -, hC⟩` from `htBd F E σ n d X W M`. Take `⟨m₀, hm₀, h₀⟩` from `finInv F _ B.ψ hP.base.std Φ hΦ`. Take `⟨D, hD, hDD⟩` from `exists_dual_den F`. Use `⟨D * m₀ * C, 1, fun g h => ?_⟩` and prove the remaining obligations.
+
+Take `⟨m, hm, hmC, hb⟩` from `hC g h`. Use `⟨D * (m₀ * m), Nat.mul_pos hD (Nat.mul_pos hm₀ hm), ?_, fun ξ hξ i => ?_⟩` and prove the remaining obligations. Use `push_cast`. Rewrite using `[pow_one, mul_assoc, mul_assoc]`. Use `gcongr`.
+
+Rewrite using `[Nat.cast_mul D, mul_assoc]`. Use `hDD _ fun y => trace_int hP.base.std _ ?_` and prove the remaining obligations. Set `u : AF F` to `(0, (algebraMap F (AF F) (y : F)).2)`. Establish `hu : IntF u` using `⟨rfl, fun v => HeightOneSpectrum.coe_mem_adicCompletionIntegers v y⟩`. Establish `h0 : IntF (0 : AF F)` using `⟨rfl, fun v => by rw [map_zero]; exact zero_mem _⟩`.
+
+Establish `key` using `congrFun (h₀ _ _ _ _ (impl_sOf hP.weil g h) hb (0, Pi.single i u) ⟨fun _ => h0, fun j => by`. Distinguish the cases in `e : j = i`. Substitute `e` using the available equality. Simplify using `using hu`. Simplify `h0⟩) fun i => algebraMap F (AF F) (ξ i)` using `[e]`.
+
+Simplify using `only [schr, Prod.smul_mk, smul_zero, add_zero, Pi.zero_apply, zero_mul, mul_zero, dotProduct_smul, dotProduct_single] at key`. Rewrite using `[← mul_right_cancel₀ hξ (key.trans (one_mul _).symm)]`. Use `congrArg B.ψ (Prod.ext ?_ ?_)` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `(0 : Ainf F) = ((m₀ * m : ℕ) : AF F).1 * ((algebraMap F (AF F) (ξ i)).1 * 0)`. Rewrite using `[mul_zero, mul_zero]`.
+
+Rewrite using `[map_mul, map_mul, map_natCast, mul_assoc]`. Both sides reduce to the same expression.
+-/
 theorem weil_rep_bounded_denominator : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E) (n d : ℕ) (X : Spc F E n) (W : Spc F E d) (M : Model σ X W) (χX χW : Chr F E) (om : Rep σ X W) (r s r' s' : ℕ), IsPair B M χX χW om r s r' s' → ∀ Φ ∈ schA F (Fin n × Fin d), ∃ (C : ℝ) (k : ℕ), ∀ g h, ∃ m : ℕ, 1 ≤ m ∧ (m : ℝ) ≤ C * ((ht g : ℝ) * ht h) ^ k ∧
     ∀ ξ : Fin n × Fin d → F, om (g, h) Φ (fun i => algebraMap F (AF F) (ξ i)) ≠ 0 → ∀ i, IsIntegral ℤ ((m : F) * ξ i) := by
   intro F E _ _ _ _ _ σ B n d X W M χX χW om r s r' s' hP Φ hΦ

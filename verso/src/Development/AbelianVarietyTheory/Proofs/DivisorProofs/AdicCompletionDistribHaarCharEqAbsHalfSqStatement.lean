@@ -6,5 +6,8 @@ open NumberField IsDedekindDomain Matrix Polynomial Filter GlobalTheory.CuspRep 
 open scoped Classical TensorProduct
 attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.ModAbs.haar_eq_absHalf_sq | exact GlobalTheory.ModAbs.haar_eq_absHalf_sq | (intros; apply GlobalTheory.ModAbs.haar_eq_absHalf_sq <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.adicCompletion_distribHaarChar_eq_absHalf_sq : ∀ (E : Type) [Field E] [NumberField E] (w : Pl E) (x : w.adicCompletion E) (hx : x ≠ 0), (((MeasureTheory.distribHaarChar (w.adicCompletion E) (Units.mk0 x hx) : NNReal) : ℝ) : ℂ) = absHalf w x ^ 2 := by
   first | exact @GlobalTheory.ModAbs.haar_eq_absHalf_sq | exact GlobalTheory.ModAbs.haar_eq_absHalf_sq | (intros; apply GlobalTheory.ModAbs.haar_eq_absHalf_sq <;> assumption)

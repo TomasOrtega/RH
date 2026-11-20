@@ -15,6 +15,25 @@ set_option autoImplicit false
 
 open GlobalTheory.Heat in
 
+/- English proof (translation)
+Introduce `Ω _ _ n d δ Θ h2 u p p' c hc`. Establish `hs : ∀ (s : Finset (Fin n)) (D : Fin n → Derivation ℤ (FractionRing Ω) (FractionRing Ω)) (x : FractionRing Ω), (∑ i ∈ s, D i) x = ∑ i ∈ s, D i x`. Introduce `s D x`. Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simp`.
+
+Consider the case `insert a s ha ih => rw [Finset.sum_insert ha, Finset.sum_insert ha, Derivation.add_apply, ih]`. Use `⟨d - ∑ a, ∑ b, ((1 / 2) * Θ a b * (δ a c / c)) • δ b - ∑ a, ∑ b, ((1 / 2) * Θ a b * (δ b c / c)) • δ a, u, p + d c / c - (1 / 2) * ∑ a, ∑ b, Θ a b * (δ a c / c) * (δ b c / c), p' - (1 / 2) * ∑ a, ∑ b, Θ a b * δ a (δ b c / c) + ∑ a, u a * (δ a c / c), ?_, ?_⟩` and prove the remaining obligations. Introduce `y hy`. Rewrite using `[Derivation.sub_apply, Derivation.sub_apply, hs, hs, Finset.sum_eq_zero, Finset.sum_eq_zero, sub_zero, sub_zero]`. Introduce `a _`.
+
+Rewrite using `[hs]`. Use `Finset.sum_eq_zero fun b _ => ?_` and prove the remaining obligations. Rewrite using `[Derivation.smul_apply, hy, smul_zero]`. Introduce `a _`. Rewrite using `[hs]`.
+
+Use `Finset.sum_eq_zero fun b _ => ?_` and prove the remaining obligations. Rewrite using `[Derivation.smul_apply, hy, smul_zero]`. Introduce `k f`. Establish `e1 : ∀ b, δ b (c ^ k * f) = c ^ k * (δ b f + (k : FractionRing Ω) * (δ b c / c) * f)` using `fun b => fractionField_derivation_pow_mul_logDeriv (δ b) hc k f`. Establish `e2 : ∀ a b, δ a (δ b (c ^ k * f)) = c ^ k * (δ a (δ b f) + (k : FractionRing Ω) * (δ a c / c) * δ b f + (k : FractionRing Ω) * (δ b c / c) * δ a f + (k : FractionRing Ω) * δ a (δ b c / c) * f + (k : FractionRing Ω) ^ 2 * (δ a c / c) * (δ b c / c) * f)`.
+
+Introduce `a b`. Rewrite using `[e1, fractionField_derivation_pow_mul_logDeriv (δ a) hc]`. Simplify using `only [map_add, Derivation.leibniz, Derivation.map_natCast, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree. Establish `e3 : d (c ^ k * f) = c ^ k * (d f + (k : FractionRing Ω) * (d c / c) * f)` using `fractionField_derivation_pow_mul_logDeriv d hc k f`.
+
+Unfold `ringOp`. Simplify using `only [e2, e3]`. Simplify using `only [e1, Derivation.sub_apply, hs, Derivation.smul_apply, smul_eq_mul]`. Establish `hL : ∑ a, ∑ b, Θ a b * (c ^ k * (δ a (δ b f) + (k : FractionRing Ω) * (δ a c / c) * δ b f + (k : FractionRing Ω) * (δ b c / c) * δ a f + (k : FractionRing Ω) * δ a (δ b c / c) * f + (k : FractionRing Ω) ^ 2 * (δ a c / c) * (δ b c / c) * f)) = c ^ k * (∑ a, ∑ b, Θ a b * δ a (δ b f …`. Simplify using `only [Finset.mul_sum, ← Finset.sum_add_distrib]`.
+
+Use `Finset.sum_congr rfl fun a _ => Finset.sum_congr rfl fun b _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree. Establish `hU : ∑ a, u a * (c ^ k * (δ a f + (k : FractionRing Ω) * (δ a c / c) * f)) = c ^ k * (∑ a, u a * δ a f + (k : FractionRing Ω) * f * ∑ a, u a * (δ a c / c))`. Simplify using `only [Finset.mul_sum, ← Finset.sum_add_distrib]`. Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations.
+
+Expand and normalize the polynomial expressions, which then agree. Establish `hD1 : ∑ a, ∑ b, (1 / 2) * Θ a b * (δ a c / c) * δ b f = (1 / 2) * ∑ a, ∑ b, Θ a b * ((δ a c / c) * δ b f)`. Simplify using `only [Finset.mul_sum]`. Conclude with `Finset.sum_congr rfl fun a _ => Finset.sum_congr rfl fun b _ => by ring`. Establish `hD2 : ∑ a, ∑ b, (1 / 2) * Θ a b * (δ b c / c) * δ a f = (1 / 2) * ∑ a, ∑ b, Θ a b * ((δ b c / c) * δ a f)`.
+
+Simplify using `only [Finset.mul_sum]`. Conclude with `Finset.sum_congr rfl fun a _ => Finset.sum_congr rfl fun b _ => by ring`. Establish `hh : (2 : FractionRing Ω) * (1 / 2) = 1` using `mul_one_div_cancel h2`. Rewrite using `[hL, hU, hD1, hD2]`. Take the linear combination `(c ^ k * ((k : FractionRing Ω) * ∑ a, ∑ b, Θ a b * ((δ a c / c) * δ b f) + (k : FractionRing Ω) * ∑ a, ∑ b, Θ a b * ((δ b c / c) * δ a f) + (k : FractionRing Ω) ^ 2 * f * ∑ a, ∑ b, Θ a b * (δ a c / c) * (δ b c / c) + (k : FractionRing Ω) * f * ∑ a, ∑ b, Θ a b * δ a (δ b c / c))) …`.
+-/
 theorem GlobalTheory.Heat.ringOp_conj_pow_gen : ∀ (Ω : Type) [CommRing Ω] [IsDomain Ω] (n : ℕ) (d : Derivation ℤ (FractionRing Ω) (FractionRing Ω)) (δ : Fin n → Derivation ℤ (FractionRing Ω) (FractionRing Ω)) (Θ : Matrix (Fin n) (Fin n) (FractionRing Ω)), (2 : FractionRing Ω) ≠ 0 → ∀ (u : Fin n → FractionRing Ω) (p p' c : FractionRing Ω), c ≠ 0 → ∃ (d' : Derivation ℤ (FractionRing Ω) (FractionRing Ω)) (u'' : Fin n → FractionRing Ω) (q q' : FractionRing Ω), (∀ y, (∀ a, δ a y = 0) → d' y = d y) ∧ ∀ (k : ℕ) (f : FractionRing Ω), ringOp ⇑d (fun a => ⇑(δ a)) Θ u p p' k (c ^ k * f) = c ^ k * ringOp ⇑d' (fun a => ⇑(δ a)) Θ u'' q q' k f := by
   intro Ω _ _ n d δ Θ h2 u p p' c hc
   have hs : ∀ (s : Finset (Fin n)) (D : Fin n → Derivation ℤ (FractionRing Ω) (FractionRing Ω)) (x : FractionRing Ω),

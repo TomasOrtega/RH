@@ -5,20 +5,32 @@ open scoped TensorProduct
 
 namespace LateralTheory.EtaleFoundations.columnPf
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨⊤, Scheme.etaleTopology.top_mem U, fun V g _ => h V g⟩`.
+-/
 theorem loc_top (U : Scheme.{0}) {P : ∀ V : Scheme.{0}, (V ⟶ U) → Prop} (h : ∀ V g, P V g) : Loc U P :=
   ⟨⊤, Scheme.etaleTopology.top_mem U, fun V g _ => h V g⟩
 
+/- English proof (translation)
+Take `⟨S, hS, hP⟩` from `h`. Conclude with `⟨S, hS, fun V g hg => hPQ V g (hP V g hg)⟩`.
+-/
 theorem loc_mono {U : Scheme.{0}} {P Q : ∀ V : Scheme.{0}, (V ⟶ U) → Prop} (h : Loc U P) (hPQ : ∀ V g, P V g → Q V g) :
     Loc U Q := by
   obtain ⟨S, hS, hP⟩ := h
   exact ⟨S, hS, fun V g hg => hPQ V g (hP V g hg)⟩
 
+/- English proof (translation)
+Take `⟨S, hS, hP⟩` from `h1`. Take `⟨T, hT, hQ⟩` from `h2`. Conclude with `⟨S ⊓ T, Scheme.etaleTopology.intersection_covering hS hT, fun V g hg => ⟨hP V g hg.1, hQ V g hg.2⟩⟩`.
+-/
 theorem loc_and {U : Scheme.{0}} {P Q : ∀ V : Scheme.{0}, (V ⟶ U) → Prop} (h1 : Loc U P) (h2 : Loc U Q) :
     Loc U fun V g => P V g ∧ Q V g := by
   obtain ⟨S, hS, hP⟩ := h1
   obtain ⟨T, hT, hQ⟩ := h2
   exact ⟨S ⊓ T, Scheme.etaleTopology.intersection_covering hS hT, fun V g hg => ⟨hP V g hg.1, hQ V g hg.2⟩⟩
 
+/- English proof (translation)
+Take `⟨S, hS, hP⟩` from `h`. Use `choose T hT hQ using hPQ`. Use `⟨Sieve.bind S.arrows fun V g hg => T V g (hP V g hg), Scheme.etaleTopology.bind_covering hS (fun V g hg => hT V g (hP V g hg)), ?_⟩` and prove the remaining obligations. Introduce and unpack `W _ ⟨V, k, g, hg, hk, rfl⟩`. Conclude with `hQ V g (hP V g hg) W k hk`.
+-/
 theorem loc_bind {U : Scheme.{0}} {P : ∀ V : Scheme.{0}, (V ⟶ U) → Prop} {Q : ∀ V : Scheme.{0}, (V ⟶ U) → Prop}
     (h : Loc U P) (hPQ : ∀ V g, P V g → Loc V fun W k => Q W (k ≫ g)) : Loc U Q := by
   classical
@@ -29,11 +41,19 @@ theorem loc_bind {U : Scheme.{0}} {P : ∀ V : Scheme.{0}, (V ⟶ U) → Prop} {
   rintro W _ ⟨V, k, g, hg, hk, rfl⟩
   exact hQ V g (hP V g hg) W k hk
 
+/- English proof (translation)
+Take `⟨S, hS, hP⟩` from `h`. Conclude with `⟨S.pullback g, Scheme.etaleTopology.pullback_stable g hS, fun W k hk => hP W _ hk⟩`.
+-/
 theorem loc_pull {U V : Scheme.{0}} {P : ∀ W : Scheme.{0}, (W ⟶ U) → Prop} (h : Loc U P) (g : V ⟶ U) :
     Loc V fun W k => P W (k ≫ g) := by
   obtain ⟨S, hS, hP⟩ := h
   exact ⟨S.pullback g, Scheme.etaleTopology.pullback_stable g hS, fun W k hk => hP W _ hk⟩
 
+/- English proof (translation)
+Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => exact loc_top U (by simp)`. Consider the case `insert a s ha ih`. Use `loc_and (h a (by simp)) (ih fun i hi => h i (by simp [hi]))` as an intermediate fact. Conclude with `loc_mono this fun V g ⟨h1, h2⟩ i hi => by`.
+
+Break down `Finset.mem_insert.1 hi with rfl | hi` into its components or cases. Conclude with `h1`. Conclude with `h2 i hi`.
+-/
 theorem loc_finset {ι : Type*} (s : Finset ι) {U : Scheme.{0}} {P : ι → ∀ V : Scheme.{0}, (V ⟶ U) → Prop}
     (h : ∀ i ∈ s, Loc U (P i)) : Loc U fun V g => ∀ i ∈ s, P i V g := by
   classical
@@ -46,6 +66,9 @@ theorem loc_finset {ι : Type*} (s : Finset ι) {U : Scheme.{0}} {P : ι → ∀
       · exact h1
       · exact h2 i hi
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨⊥, Scheme.bot_mem_grothendieckTopology U, fun _ _ h => h.elim⟩`.
+-/
 theorem loc_empty (U : Scheme.{0}) [IsEmpty U] (P : ∀ V : Scheme.{0}, (V ⟶ U) → Prop) : Loc U P :=
   ⟨⊥, Scheme.bot_mem_grothendieckTopology U, fun _ _ h => h.elim⟩
 
@@ -71,6 +94,17 @@ def kill : Prop :=
 end LateralTheory.EtaleFoundations.columnPf
 
 open LateralTheory.EtaleFoundations.columnPf in
+/- English proof (translation)
+Introduce `R _ C J hJ hC U s t x hx`. Take `⟨P, φ, hsurj, hker, hflat⟩` from `hJ t`. Use `loc_bind (hL R (J.X t) P φ hsurj hker (C.X s) (C.X (s + 1)) (C.d s (s + 1)) U x hx) ?_` and prove the remaining obligations. Introduce and unpack `V g ⟨x', hx'0, hx'⟩`. Distinguish the cases in `hV : Nonempty V`.
+
+Use `loc_mono (hK R C P hC V s x' (hflat V hV) hx'0) ?_` and prove the remaining obligations. Introduce and unpack `W k ⟨y, hy⟩`. Use `⟨TensorProduct.map LinearMap.id (φ.app (op W)).hom y, ?_⟩` and prove the remaining obligations. Establish `e1 : TensorProduct.map ((C.d (s - 1) s).hom.app (op W)).hom LinearMap.id (TensorProduct.map LinearMap.id (φ.app (op W)).hom y) = TensorProduct.map LinearMap.id (φ.app (op W)).hom (TensorProduct.map ((C.d (s - 1) s).hom.app (op W)).hom LinearMap.id y)`. Rewrite using `[← LinearMap.comp_apply, ← LinearMap.comp_apply, ← TensorProduct.map_comp, ← TensorProduct.map_comp]`.
+
+Both sides reduce to the same expression. Rewrite using `[e1, hy, ← LinearMap.comp_apply, ← TensorProduct.map_comp]`. Establish `e2 : (TensorProduct.map ((C.X s).obj.map (k ≫ g).op).hom ((J.X t).obj.map (k ≫ g).op).hom) x = TensorProduct.map ((C.X s).obj.map k.op).hom ((J.X t).obj.map k.op).hom (TensorProduct.map ((C.X s).obj.map g.op).hom ((J.X t).obj.map g.op).hom x)`. Rewrite using `[← LinearMap.comp_apply, ← TensorProduct.map_comp, op_comp, Functor.map_comp, Functor.map_comp]`. Both sides reduce to the same expression.
+
+Rewrite using `[e2, ← hx', ← LinearMap.comp_apply, ← TensorProduct.map_comp]`. Use `congr 2`. Use `φ.naturality k.op` as an intermediate fact. Conclude with `congrArg ModuleCat.Hom.hom this`. Establish `: IsEmpty V` using `not_nonempty_iff.1 hV`.
+
+Conclude with `loc_empty V _`.
+-/
 theorem LateralTheory.EtaleFoundations.acyc.column_of_cut (hL : lift) (hK : kill) : LateralTheory.EtaleFoundations.acyc.column := by
   intro R _ C J hJ hC U s t x hx
   obtain ⟨P, φ, hsurj, hker, hflat⟩ := hJ t
@@ -100,6 +134,15 @@ theorem LateralTheory.EtaleFoundations.acyc.column_of_cut (hL : lift) (hK : kill
     exact loc_empty V _
 
 open LateralTheory.EtaleFoundations.columnPf in
+/- English proof (translation)
+Introduce `R _ C P hC V s x' hflat hx'`. Use `set d := ((C.d s (s + 1)).hom.app (op V)).hom`. Establish `hex` using `Module.Flat.rTensor_exact (M := P.obj (op V)) (LinearMap.exact_subtype_ker_map d)`. Take `⟨w, hw⟩` from `(hex x').1 hx'`. Take `⟨S, hS⟩` from `TensorProduct.exists_finset w`.
+
+Establish `hloc : ∀ i ∈ S, Loc V fun W k => ∃ y : Sec (C.X (s - 1)) W, Sec.map (C.d (s - 1) s) y = Sec.res k (i.1 : Sec (C.X s) V)` using `fun i _ => hC V s (i.1 : Sec (C.X s) V) i.1.2`. Use `loc_mono (loc_finset S hloc) ?_` and prove the remaining obligations. Introduce `W k hk`. Use `choose y hy using hk`. Use `⟨∑ i ∈ S.attach, y i.1 i.2 ⊗ₜ (P.map k.op).hom i.1.2, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[map_sum, ← hw, hS, map_sum, map_sum]`. Rewrite using `[← Finset.sum_attach S]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Simplify using `only [TensorProduct.map_tmul, LinearMap.rTensor_tmul, LinearMap.id_apply]`. Use `congr 1`.
+
+Conclude with `hy i.1 i.2`.
+-/
 theorem LateralTheory.EtaleFoundations.columnPf.kill_of : kill := by
   classical
   intro R _ C P hC V s x' hflat hx'

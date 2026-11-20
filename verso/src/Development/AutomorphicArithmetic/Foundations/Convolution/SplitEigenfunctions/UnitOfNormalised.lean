@@ -17,6 +17,11 @@ open UpperTheory.ConvolutionTheory.R2 UpperTheory.ConvolutionTheory.R2.H UpperTh
 open UpperTheory.V.Af.Smo (Eig EigAt)
 open UpperTheory.ConvolutionTheory.RankTwoDescent
 
+/- English proof (translation)
+Establish `hu : P.IsUnitary` using `GlobalTheory.SpehPair.isUnitary_of_isNormalised hN`. Take `⟨φ, hφ, h0⟩` from `(Submodule.ne_bot_iff _).1 P.ne_bot`. Take `⟨g, hg⟩ : ∃ g, φ.1 g ≠ 0` from `Function.ne_iff.1 fun e => h0 (Subtype.ext e)`. Establish `h1` using `hC φ hφ (ideleEmbedding ℚ E a) g`. Establish `h2` using `hu.norm_eq hφ (ideleEmbedding ℚ E a) g`.
+
+Rewrite `h2` using `[h1, norm_mul, ideleNorm_ideleEmbedding, hfr, map_pow, Units.val_pow_eq_pow_val, norm_pow]`. Establish `h3 : ‖((ω.1 a : ℂˣ) : ℂ)‖ ^ 2 = 1` using `(mul_eq_right₀ (norm_ne_zero_iff.2 hg)).1 h2`. Conclude with `(pow_eq_one_iff_of_nonneg (norm_nonneg _) two_ne_zero).1 h3`.
+-/
 private theorem unit_of_normalised {E : Type} [Field E] [NumberField E] [IsTotallyComplex E] (hfr : Module.finrank ℚ E = 2)
     {P : CuspSub E 2} {ω : HChar ℚ} (hN : GlobalTheory.DiscSpec.IsNormalised P) (hC : CenN P ω) (a : (A ℚ)ˣ) :
     ‖((ω.1 a : ℂˣ) : ℂ)‖ = 1 := by
@@ -29,6 +34,13 @@ private theorem unit_of_normalised {E : Type} [Field E] [NumberField E] [IsTotal
   have h3 : ‖((ω.1 a : ℂˣ) : ℂ)‖ ^ 2 = 1 := (mul_eq_right₀ (norm_ne_zero_iff.2 hg)).1 h2
   exact (pow_eq_one_iff_of_nonneg (norm_nonneg _) two_ne_zero).1 h3
 
+/- English proof (translation)
+Introduce `E _ _ _ hfr P hN hC`. Take `⟨D⟩` from `datEx ℚ E hfr`. Take `⟨W⟩` from `weilEx ℚ E D`. Take `⟨M⟩` from `measEx ℚ`. Take `⟨N⟩` from `measEEx E`.
+
+Take `⟨U⟩` from `uMeasEx_of`. Take `⟨ω, hω⟩` from `cenEx_of E hfr P hC`. Establish `hnv` using `asaiNV E D M U P ω W.η hC hω (unit_of_normalised hfr hN hω) W.quad`. Establish `hper : ∃ φ ∈ P.V, ∃ h : G1 E, (UPer D M fun x => φ.1 (x * gl h)) ≠ 0`. Assume the negation of the conclusion as `hno`.
+
+Use `push_neg at hno`. Conclude with `hnv (perU_of E D W M N P U ω hN hω hno)`. Take `⟨π, hπ, hJ⟩` from `rev_holds E D W M N P hper`. Take `⟨π', hπ', hI⟩` from `toII E D W M N P hN π hπ hJ`. Conclude with `finS E D W M N P hN π' hπ' hI`.
+-/
 theorem UpperTheory.ConvolutionTheory.RankTwoDescent.downN :
     DownN := by
   intro E _ _ _ hfr P hN hC

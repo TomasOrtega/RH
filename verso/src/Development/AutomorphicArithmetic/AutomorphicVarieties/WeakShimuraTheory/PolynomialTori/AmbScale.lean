@@ -7,6 +7,9 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.WeakShimuraTheory.
 
 open NumberField IsDedekindDomain Formalism.ConjugateSelfDual Formalism.HC ReciprocityTheory.Gal IsLocalRing UpperTheory.V.Base UpperTheory.V.Alg UpperTheory.V.HV UpperTheory.V.GradeZeroInterpolatingElement UpperTheory.V.Ws
 
+/- English proof (translation)
+Use `letI : NormedField K := w.toNormedField`. Conclude with `carver σ X wt K z hp hz`.
+-/
 private theorem carver_abs (K : Type) [Field K] [IsAlgClosed K] (w : AbsoluteValue K ℝ) (hp : ∃ p, p ≠ 0 ∧ w p ≠ 1)
     (σ : Type) [Finite σ] (X : Type) [AddCommGroup X] [Module.Free ℤ X] [Module.Finite ℤ X] (wt : σ → X) (z : σ → K)
     (hz : ∀ n : σ →₀ ℕ, n ≠ 0 → Finsupp.weight wt n = 0 → w (n.prod fun s k => z s ^ k) < 1) :
@@ -14,6 +17,9 @@ private theorem carver_abs (K : Type) [Field K] [IsAlgClosed K] (w : AbsoluteVal
   letI : NormedField K := w.toNormedField
   exact carver σ X wt K z hp hz
 
+/- English proof (translation)
+Introduce `l _ 𝔞 A _ _ _ f hf σ _ X _ _ _ wt z hz`. Take `⟨w, hw, hp⟩` from `UpperTheory.V.Ws.Po.ambAbs 𝔞 A f hf`. Take `⟨t, ht⟩` from `carver_abs 𝔞.K w hp σ X wt z fun n hn h0 => (hw _).2 (hz n hn h0)`. Conclude with `⟨t, fun s => (hw _).1 (ht s)⟩`.
+-/
 theorem UpperTheory.V.Ws.Po.ambScale :
     ∀ {l : ℕ} [Fact l.Prime] (𝔞 : Amb l) (A : Type) [CommRing A] [IsDomain A] [IsDiscreteValuationRing A] (f : A →+* 𝔞.V), 𝔞.IsDvr f →
       ∀ (σ : Type) [Finite σ] (X : Type) [AddCommGroup X] [Module.Free ℤ X] [Module.Finite ℤ X] (wt : σ → X) (z : σ → 𝔞.K),

@@ -14,6 +14,9 @@ namespace GlobalTheory.BSP.GaussMul
 
 open Filter
 
+/- English proof (translation)
+Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simpa using hC`. Consider the case `insert a s ha ih`. Rewrite using `[Finset.sum_insert ha]`. Conclude with `(IsUltrametricDist.norm_add_le_max _ _).trans_lt (max_lt (h a (Finset.mem_insert_self _ _)) (ih fun i hi => h i (Finset.mem_insert_of_mem hi)))`.
+-/
 theorem norm_sum_lt_of_ultra {E ι : Type} [SeminormedAddCommGroup E] [IsUltrametricDist E] (s : Finset ι)
     (f : ι → E) {C : ℝ} (hC : 0 < C) (h : ∀ i ∈ s, ‖f i‖ < C) : ‖∑ i ∈ s, f i‖ < C := by
   classical
@@ -24,6 +27,11 @@ theorem norm_sum_lt_of_ultra {E ι : Type} [SeminormedAddCommGroup E] [IsUltrame
     exact (IsUltrametricDist.norm_add_le_max _ _).trans_lt
       (max_lt (h a (Finset.mem_insert_self _ _)) (ih fun i hi => h i (Finset.mem_insert_of_mem hi)))
 
+/- English proof (translation)
+Assume the negation of the conclusion as `hne`. Use `push_neg at hne`. Establish `hlt : ∀ n, f n < M` using `fun n => lt_of_le_of_ne (hle n) (hne n)`. Take `⟨N, hN⟩` from `eventually_atTop.1 (ht.eventually (gt_mem_nhds (half_pos hM)))`. Take `⟨k, -, hk⟩` from `Finset.exists_max_image (Finset.range (N + 1)) f ⟨0, by simp⟩`.
+
+Establish `h1 : M ≤ max (M / 2) (f k)` using `hsup _ ((half_pos hM).le.trans (le_max_left _ _)) fun n => by`. Distinguish the cases in `hn : n < N + 1`. Conclude with `(hk n (Finset.mem_range.2 hn)).trans (le_max_right _ _)`. Conclude with `(hN n (by omega)).le.trans (le_max_left _ _)`. Conclude with `absurd h1 (not_le.2 (max_lt (half_lt_self hM) (hlt k)))`.
+-/
 theorem exists_eq_sup {f : ℕ → ℝ} {M : ℝ} (hM : 0 < M) (hle : ∀ n, f n ≤ M)
     (hsup : ∀ r : ℝ, 0 ≤ r → (∀ n, f n ≤ r) → M ≤ r) (ht : Tendsto f atTop (nhds 0)) : ∃ n, f n = M := by
   by_contra hne
@@ -37,6 +45,21 @@ theorem exists_eq_sup {f : ℕ → ℝ} {M : ℝ} (hM : 0 < M) (hle : ∀ n, f n
     · exact (hN n (by omega)).le.trans (le_max_left _ _)
   exact absurd h1 (not_le.2 (max_lt (half_lt_self hM) (hlt k)))
 
+/- English proof (translation)
+Use `set n₀ := Nat.find hp0`. Use `set m₀ := Nat.find hq0`. Establish `hn₀ : ‖p n₀‖ * ρ ^ n₀ = P` using `Nat.find_spec hp0`. Establish `hm₀ : ‖q m₀‖ * ρ ^ m₀ = Q` using `Nat.find_spec hq0`. Use `⟨n₀ + m₀, ?_⟩` and prove the remaining obligations.
+
+Establish `hρN : 0 < ρ ^ (n₀ + m₀)` using `pow_pos hρ _`. Establish `hmem : (n₀, m₀) ∈ Finset.HasAntidiagonal.antidiagonal (n₀ + m₀)` using `by simp`. Rewrite using `[← Finset.add_sum_erase _ _ hmem]`. Establish `hdom : ‖p n₀ * q m₀‖ * ρ ^ (n₀ + m₀) = P * Q`. Rewrite using `[hm, pow_add, ← hn₀, ← hm₀]`.
+
+Expand and normalize the polynomial expressions, which then agree. Establish `hrest : ‖∑ x ∈ (Finset.HasAntidiagonal.antidiagonal (n₀ + m₀)).erase (n₀, m₀), p x.1 * q x.2‖ < P * Q / ρ ^ (n₀ + m₀)`. Use `norm_sum_lt_of_ultra _ _ (div_pos (mul_pos hP hQ) hρN) fun x hx => ?_` and prove the remaining obligations. Rewrite using `[lt_div_iff₀ hρN]`. Take `⟨hne, hx⟩` from `Finset.mem_erase.1 hx`.
+
+Rewrite `hx` using `[Finset.HasAntidiagonal.mem_antidiagonal]`. Establish `e : ‖p x.1 * q x.2‖ * ρ ^ (n₀ + m₀) = (‖p x.1‖ * ρ ^ x.1) * (‖q x.2‖ * ρ ^ x.2)`. Rewrite using `[hm, ← hx, pow_add]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e]`.
+
+Establish `h1 : 0 ≤ ‖p x.1‖ * ρ ^ x.1` using `by positivity`. Establish `h2 : 0 ≤ ‖q x.2‖ * ρ ^ x.2` using `by positivity`. Distinguish the cases in `h : x.1 < n₀`. Establish `hlt : ‖p x.1‖ * ρ ^ x.1 < P` using `lt_of_le_of_ne (hp _) (Nat.find_min hp0 h)`. Combine the equalities or inequalities in the displayed calculation.
+
+Establish `h' : x.2 < m₀`. Assume the negation of the conclusion as `h''`. Apply `hne` to reduce the goal to its premises. Apply the tactic sequence `ext <;> simp <;> omega`. Establish `hlt : ‖q x.2‖ * ρ ^ x.2 < Q` using `lt_of_le_of_ne (hq _) (Nat.find_min hq0 h')`.
+
+Combine the equalities or inequalities in the displayed calculation. Establish `hdom' : ‖p n₀ * q m₀‖ = P * Q / ρ ^ (n₀ + m₀)`. Rewrite using `[eq_div_iff hρN.ne', hdom]`. Rewrite using `[IsUltrametricDist.norm_add_eq_max_of_norm_ne_norm (by rw [hdom']; exact hrest.ne'), hdom', max_eq_left hrest.le, div_mul_cancel₀ _ hρN.ne']`.
+-/
 theorem gauss {D : Type} [NormedRing D] [IsUltrametricDist D] (hm : ∀ x y : D, ‖x * y‖ = ‖x‖ * ‖y‖) {ρ : ℝ}
     (hρ : 0 < ρ) (p q : ℕ → D) {P Q : ℝ} (hP : 0 < P) (hQ : 0 < Q) (hp : ∀ n, ‖p n‖ * ρ ^ n ≤ P)
     (hq : ∀ n, ‖q n‖ * ρ ^ n ≤ Q) (hp0 : ∃ n, ‖p n‖ * ρ ^ n = P) (hq0 : ∃ n, ‖q n‖ * ρ ^ n = Q) :
@@ -84,6 +107,27 @@ end GlobalTheory.BSP.GaussMul
 
 namespace GlobalTheory.BSP.GaussMul
 
+/- English proof (translation)
+Take `⟨a, ha1, ha2, ha3, ha4⟩` from `GlobalTheory.T.exists_gaussNorm_coeff_wittDisc l K bk ρ hρ0 hρ1`. Use `haveI : IsUltrametricDist (Disc l (0 : Wq l bk.a) 1) := (GlobalTheory.T.closedDiscGaugeCompletion_basic_properties l (Wq l bk.a) 0 1).1`. Establish `hm0` using `(GlobalTheory.T.closedDiscGaugeCompletion_zero_one_properties l K bk).1`. Establish `hρ : (0 : ℝ) < ρ` using `NNReal.coe_pos.2 hρ0`. Establish `step1 : ∀ s t : bk.S, ‖toDisc l (X : bk.S) ρ s * toDisc l (X : bk.S) ρ t‖ = ‖toDisc l (X : bk.S) ρ s‖ * ‖toDisc l (X : bk.S) ρ t‖`.
+
+Introduce `s t`. Break down `eq_or_ne (toDisc l (X : bk.S) ρ s) 0 with hu | hu` into its components or cases. Simplify using `[hu]`. Break down `eq_or_ne (toDisc l (X : bk.S) ρ t) 0 with hv | hv` into its components or cases. Simplify using `[hv]`.
+
+Establish `hP : 0 < ‖toDisc l (X : bk.S) ρ s‖` using `norm_pos_iff.2 hu`. Establish `hQ : 0 < ‖toDisc l (X : bk.S) ρ t‖` using `norm_pos_iff.2 hv`. Take `⟨N, hN⟩` from `gauss hm0 hρ (fun n => a n (toDisc l (X : bk.S) ρ s)) (fun n => a n (toDisc l (X : bk.S) ρ t)) hP hQ (fun n => ha2 n _) (fun n => ha2 n _) (exists_eq_sup hP (fun n => ha2 n _) (ha3 _) (ha4 _)) (exists_eq_sup hQ (fun n => ha2 n _) (ha3 _) (ha4 _))`. Establish `hconv : a N (toDisc l (X : bk.S) ρ s * toDisc l (X : bk.S) ρ t) = ∑ x ∈ Finset.HasAntidiagonal.antidiagonal N, a x.1 (toDisc l (X : bk.S) ρ s) * a x.2 (toDisc l (X : bk.S) ρ t)`. Rewrite using `[← map_mul, ha1, coeff_mul, map_sum]`.
+
+Conclude with `Finset.sum_congr rfl fun x _ => by rw [map_mul, ha1, ha1]`. Use `le_antisymm (norm_mul_le _ _) ?_` and prove the remaining obligations. Rewrite using `[← hN, ← hconv]`. Conclude with `ha2 N _`. Establish `hlm` using `(GlobalTheory.T.closedDiscGaugeCompletion_basic_properties l bk.S (X : bk.S) ρ).2.1`.
+
+Establish `hl0 : (0 : ℝ) < (l : ℝ)` using `Nat.cast_pos.2 hl.out.pos`. Establish `hlpow : ∀ (n : ℕ) (z : bk.DS ρ), ‖z * ((l : ℕ) : bk.DS ρ) ^ n‖ = ‖z‖ / (l : ℝ) ^ n`. Introduce `n`. Proceed by induction on `n with`. Consider the case `zero => intro z`.
+
+Simplify using the standard rewrite rules. Consider the case `succ n ih`. Introduce `z`. Rewrite using `[pow_succ, ← mul_assoc, mul_comm _ ((l : ℕ) : bk.DS ρ), hlm, ih, pow_succ, div_div]`. Establish `hpre : ∀ p : PreDisc l (X : bk.S) ρ, ∃ (n : ℕ) (s : bk.S), ofPre l (X : bk.S) ρ p * ((l : ℕ) : bk.DS ρ) ^ n = toDisc l (X : bk.S) ρ s`.
+
+Introduce `p`. Take `⟨n, s, h⟩` from `IsLocalization.Away.surj ((l : ℕ) : bk.S) p`. Use `⟨n, s, ?_⟩` and prove the remaining obligations. Establish `h'` using `congrArg (ofPre l (X : bk.S) ρ) h`. Rewrite `h'` using `[map_mul, map_pow, map_natCast, map_natCast]`.
+
+Conclude with `h'`. Establish `step2 : ∀ p q : PreDisc l (X : bk.S) ρ, ‖ofPre l (X : bk.S) ρ p * ofPre l (X : bk.S) ρ q‖ = ‖ofPre l (X : bk.S) ρ p‖ * ‖ofPre l (X : bk.S) ρ q‖`. Introduce `p q`. Take `⟨n, s, hs⟩` from `hpre p`. Take `⟨m, t, ht⟩` from `hpre q`.
+
+Establish `e : ofPre l (X : bk.S) ρ p * ofPre l (X : bk.S) ρ q * ((l : ℕ) : bk.DS ρ) ^ (n + m) = toDisc l (X : bk.S) ρ s * toDisc l (X : bk.S) ρ t`. Rewrite using `[← hs, ← ht, pow_add]`. Expand and normalize the polynomial expressions, which then agree. Establish `h1` using `hlpow (n + m) (ofPre l (X : bk.S) ρ p * ofPre l (X : bk.S) ρ q)`. Rewrite `h1` using `[e, step1, ← hs, ← ht, hlpow, hlpow, pow_add, div_mul_div_comm]`.
+
+Conclude with `((div_left_inj' (by positivity)).1 h1).symm`. Conclude with `(denseRange_ofPre l (X : bk.S) ρ).induction_on₂ (p := fun x y : bk.DS ρ => ‖x * y‖ = ‖x‖ * ‖y‖) (isClosed_eq (continuous_norm.comp (continuous_fst.mul continuous_snd)) ((continuous_norm.comp continuous_fst).mul (continuous_norm.comp continuous_snd))) step2 x y`.
+-/
 theorem norm_mul_disc (l : ℕ) [hl : Fact l.Prime] (K : FinExt l) (bk : BK K) (ρ : ℝ≥0) (hρ0 : 0 < ρ)
     (hρ1 : ρ < 1) (x y : bk.DS ρ) : ‖x * y‖ = ‖x‖ * ‖y‖ := by
   obtain ⟨a, ha1, ha2, ha3, ha4⟩ := GlobalTheory.T.exists_gaussNorm_coeff_wittDisc l K bk ρ hρ0 hρ1
@@ -143,6 +187,9 @@ theorem norm_mul_disc (l : ℕ) [hl : Fact l.Prime] (K : FinExt l) (bk : BK K) (
     (isClosed_eq (continuous_norm.comp (continuous_fst.mul continuous_snd))
       ((continuous_norm.comp continuous_fst).mul (continuous_norm.comp continuous_snd))) step2 x y
 
+/- English proof (translation)
+Introduce `l _ K bk ρ h0 h1 x y` and use `norm_mul_disc l K bk ρ h0 h1 x y`.
+-/
 theorem norm_mul : ∀ (l : ℕ) [Fact l.Prime] (K : FinExt l) (bk : BK K) (ρ : ℝ≥0), 0 < ρ → ρ < 1 →
     ∀ x y : bk.DS ρ, ‖x * y‖ = ‖x‖ * ‖y‖ :=
   fun l _ K bk ρ h0 h1 x y => norm_mul_disc l K bk ρ h0 h1 x y

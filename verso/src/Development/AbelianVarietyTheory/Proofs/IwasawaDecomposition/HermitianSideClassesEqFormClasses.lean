@@ -14,6 +14,9 @@ variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algeb
 
 open scoped TensorProduct
 
+/- English proof (translation)
+Establish `h1 : v.valuation F (algebraMap (𝓞 F) F (g : 𝓞 F)) < 1` using `(v.valuation_lt_one_iff_mem _).2 h`. Establish `h2 : ((g : v.adicCompletion F)) = algebraMap F (v.adicCompletion F) (algebraMap (𝓞 F) F (g : 𝓞 F))`. Simplify using `only [map_natCast]`. Rewrite using `[h2]`. Conclude with `lt_of_eq_of_lt (HeightOneSpectrum.valuedAdicCompletion_eq_valuation' v (algebraMap (𝓞 F) F (g : 𝓞 F))) h1`.
+-/
 theorem val_nat_lt_one (v : HeightOneSpectrum (𝓞 F)) (g : ℕ) (h : (g : 𝓞 F) ∈ v.asIdeal) :
     Valued.v (g : v.adicCompletion F) < 1 := by
   have h1 : v.valuation F (algebraMap (𝓞 F) F (g : 𝓞 F)) < 1 := (v.valuation_lt_one_iff_mem _).2 h
@@ -22,6 +25,19 @@ theorem val_nat_lt_one (v : HeightOneSpectrum (𝓞 F)) (g : ℕ) (h : (g : 𝓞
   rw [h2]
   exact lt_of_eq_of_lt (HeightOneSpectrum.valuedAdicCompletion_eq_valuation' v (algebraMap (𝓞 F) F (g : 𝓞 F))) h1
 
+/- English proof (translation)
+Establish `hgi : g ∈ v.adicCompletionIntegers F` using `le_of_lt hg`. Establish `h1 : ∀ a b, (1 : Matrix (Fin n) (Fin n) (v.adicCompletion F)) a b ∈ v.adicCompletionIntegers F`. Introduce `a b`. Distinguish the cases in `e : a = b`. Substitute `e` using the available equality.
+
+Rewrite using `[Matrix.one_apply_eq]`. Conclude with `one_mem _`. Rewrite using `[Matrix.one_apply_ne e]`. Conclude with `zero_mem _`. Use extensionality with `a b`.
+
+Establish `hm : X a b ∈ v.adicCompletionIntegers F`. Rewrite using `[hX]`. Conclude with `add_mem (h1 a b) (mul_mem hgi (hW a b))`. Establish `hz : IsLocalRing.residue (v.adicCompletionIntegers F) ⟨g, hgi⟩ = 0`. Rewrite using `[IsLocalRing.residue_eq_zero_iff, IsLocalRing.mem_maximalIdeal, mem_nonunits_iff]`.
+
+Introduce `hu`. Use `(Valuation.integer.integers (Valued.v (R := v.adicCompletion F))).isUnit_iff_valuation_eq_one.1 hu` as an intermediate fact. Conclude with `absurd this (ne_of_lt hg)`. Establish `e : (⟨X a b, hm⟩ : v.adicCompletionIntegers F) = ⟨(1 : Matrix (Fin n) (Fin n) (v.adicCompletion F)) a b, h1 a b⟩ + ⟨g, hgi⟩ * ⟨W a b, hW a b⟩`. Conclude with `Subtype.ext ((hX a b).trans rfl)`.
+
+Simplify using `only [redM]`. Rewrite using `[dif_pos hm, e, map_add, map_mul, hz, zero_mul, add_zero]`. Distinguish the cases in `ab : a = b`. Substitute `ab` using the available equality. Simplify using `only [Matrix.one_apply_eq]`.
+
+Conclude with `map_one _`. Simplify using `only [Matrix.one_apply_ne ab]`. Conclude with `map_zero _`.
+-/
 theorem redM_eq_one {n : ℕ} (v : HeightOneSpectrum (𝓞 F)) (g : v.adicCompletion F) (hg : Valued.v g < 1)
     (X W : Matrix (Fin n) (Fin n) (v.adicCompletion F))
     (hW : ∀ a b, W a b ∈ v.adicCompletionIntegers F)
@@ -57,6 +73,25 @@ theorem redM_eq_one {n : ℕ} (v : HeightOneSpectrum (𝓞 F)) (g : v.adicComple
   · simp only [Matrix.one_apply_ne ab]
     exact map_zero _
 
+/- English proof (translation)
+Establish `hint : ∀ z ∈ latS (F` using `F) (v.adicCompletion F) (intV E v) S.Lb, ∀ a, G.phi i v h (z a) ∈ v.adicCompletionIntegers F := by`. Introduce `z hz a`. Use `(V.fr_lat i v h (fun b => G.phi i v h (z b))).1 ⟨z, hz, fun _ => rfl⟩ a` as an intermediate fact. Rewrite `this` using `[hfr]`. Simplify using `using this`.
+
+Establish `hcol : ∀ b : Fin n, ∃ z ∈ latS (F` using `F) (v.adicCompletion F) (intV E v) S.Lb, ∀ a, (x : Matrix (Fin n) (Fin n) (E ⊗[F] v.adicCompletion F)) a b = (1 : Matrix (Fin n) (Fin n) (E ⊗[F] v.adicCompletion F)) a b + (gp i : E ⊗[F] v.adicCompletion F) * z a := by`. Introduce `b`. Establish `e1 : (fun j => inclE (F` using `F) (v.adicCompletion F) ((Pi.single b 1 : Fin n → E) j)) = (Pi.single b 1 : Fin n → E ⊗[F] v.adicCompletion F) := by`. Use function extensionality and compare the values at `j`. Distinguish the cases in `e : j = b`.
+
+Substitute `e` using the available equality. Simplify using the standard rewrite rules. Simplify using `[e]`. Establish `hb : (Pi.single b 1 : Fin n → E ⊗[F] v.adicCompletion F) ∈ latS (F` using `F) (v.adicCompletion F) (intV E v) S.Lb := by`. Rewrite using `[← e1]`.
+
+Conclude with `Submodule.subset_span ⟨_, hLb b, rfl⟩`. Take `⟨z, hz, e⟩` from `hc _ hb`. Use `⟨z, hz, fun a => ?_⟩` and prove the remaining obligations. Use `congrFun e a` as an intermediate fact. Rewrite `this` using `[Matrix.mulVec_single_one]`.
+
+Simplify using `only [Pi.sub_apply, Pi.smul_apply, smul_eq_mul, Matrix.col_apply] at this`. Rewrite using `[← this]`. Distinguish the cases in `ab : a = b`. Substitute `ab` using the available equality. Simplify using the standard rewrite rules.
+
+Simplify using `[ab]`. Use `choose Z hZ hZe using hcol`. Use `(V.mem i v h x hx).2 ⟨1, one_mem _, ?_⟩` and prove the remaining obligations. Establish `key : redM F v (G.mat i v h (V.fr i v h) x) = 1`. Rewrite using `[hfr]`.
+
+Use `redM_eq_one v (gp i : v.adicCompletion F) (val_nat_lt_one v (gp i) h) _ (fun a b => G.phi i v h (Z b a)) (fun a b => hint _ (hZ b) a) fun a b => ?_` and prove the remaining obligations. Establish `e2 : G.mat i v h 1 x a b = G.phi i v h ((x : Matrix (Fin n) (Fin n) (E ⊗[F] v.adicCompletion F)) a b)`. Simplify using `[GLoc.mat, bc]`. Rewrite using `[e2, hZe b a, map_add, map_mul, map_natCast]`. Use `congr 1`.
+
+Distinguish the cases in `ab : a = b`. Substitute `ab` using the available equality. Simplify using the standard rewrite rules. Simplify using `[ab]`. Rewrite using `[key]`.
+
+Both sides reduce to the same expression.
+-/
 theorem mem_Uloc_of_princ {σ : E →ₐ[F] E} {n : ℕ} {J : Matrix (Fin n) (Fin n) E} {T f : ℕ}
     {bad : Set (HeightOneSpectrum (𝓞 F))} {gp : Fin 2 → ℕ} (S : StepLevel F E σ J T f bad) (G : GLoc F E σ gp)
     {H : ∀ (a : Fin 2) (v : HeightOneSpectrum (𝓞 F)), (gp a : 𝓞 F) ∈ v.asIdeal → Subgroup (GL (Fin n) (kv F v))}
@@ -124,22 +159,49 @@ variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [StarR
 
 open scoped TensorProduct
 
+/- English proof (translation)
+Use extensionality with `a b`. Simplify using `[reGL]`.
+-/
 theorem reGL_rfl_apply {n : ℕ} (R : Type) [CommRing R] (g : GL (Fin n) R) : reGL rfl R g = g := by
   ext a b
   simp [reGL]
 
+/- English proof (translation)
+Use `ext1 g`. Conclude with `reGL_rfl_apply R g`.
+-/
 theorem reGL_rfl_hom {n : ℕ} (R : Type) [CommRing R] :
     (reGL (rfl : n = n) R).toMonoidHom = MonoidHom.id _ := by
   ext1 g
   exact reGL_rfl_apply R g
 
+/- English proof (translation)
+Use extensionality with `x`. Simplify using `[reL, reV]`.
+-/
 theorem reL_rfl {n : ℕ} (L : Submodule (𝓞 E) (Fin n → E)) : reL rfl L = L := by
   ext x
   simp [reL, reV]
 
+/- English proof (translation)
+The claim follows from `LinearEquiv.ext fun x => funext fun j => by simp [co, Formalism.L2.Herm.crd]`.
+-/
 theorem co_rfl (S : HSpace E) : co S rfl = Formalism.L2.Herm.crd S :=
   LinearEquiv.ext fun x => funext fun j => by simp [co, Formalism.L2.Herm.crd]
 
+/- English proof (translation)
+Substitute `h` using the available equality. Substitute `hσ` using the available equality. Take `rfl : J = S.gram` from `hJ.trans (by ext a b; simp)`. Substitute `hbad` using the available equality. Establish `hL : St.Lb = Formalism.L2.Herm.crdLat S S.L0`.
+
+Use extensionality with `x`. Rewrite using `[hLb x, ← hO.mem_standardLattice_iff_integral_coords rfl x]`. Unfold `Formalism.L2.Herm.crdLat`. Rewrite using `[show Crd.co S rfl = Formalism.L2.Herm.crd S from co_rfl S]`. Establish `hone : ∀ v : HeightOneSpectrum (𝓞 F), ((1 : ℕ) : 𝓞 F) ∉ v.asIdeal` using `fun v hv => v.isPrime.ne_top ((Ideal.eq_top_iff_one _).2 (by simpa using hv))`.
+
+Establish `hs : ∀ b : Fin S.rank, (Pi.single b 1 : Fin S.rank → E) ∈ St.Lb`. Introduce `b`. Use `(hLb _).2 fun j => ?_` and prove the remaining obligations. Distinguish the cases in `e : j = b`. Substitute `e` using the available equality.
+
+Conclude with `⟨1, by simp⟩`. Conclude with `⟨0, by simp [e]⟩`. Use `⟨fun c => (lat c).map (((Formalism.L2.Herm.crd S).symm : (Fin S.rank → E) →ₗ[E] S.V).restrictScalars (𝓞 E)), { Uloc := St.Uloc Uloc_lev := fun v => hL ▸ St.Uloc_lev v Uloc_hyp := fun v h0 h1 => ?_ Uloc_g := fun i v hv x hx => ?_ U := St.U U_eq := St.U_eq }, { y := y y_bij := y_bi …` and prove the remaining obligations. Rewrite using `[St.Uloc_hyp v (by rintro (h | h); exacts [h0 h, h1 h]) (hone v), hL]`. Rewrite `hx` using `[← hL]`.
+
+Conclude with `mem_Uloc_of_princ St G V hs i v hv (hfr i v hv) x hx.1 hx.2`. Establish `e : Formalism.L2.Herm.crdLat S ((lat c).map (((Formalism.L2.Herm.crd S).symm : (Fin S.rank → E) →ₗ[E] S.V).restrictScalars (𝓞 E))) = lat c` using `Crd.map_symm_map (Formalism.L2.Herm.crd S) (lat c)`. Rewrite using `[e, ← hL]`. Conclude with `y_lat c x`. Rewrite using `[reL_rfl, hL]`.
+
+Use `show St.Uloc v = (St.Uloc v).map (reGL rfl _).toMonoidHom`. Rewrite using `[reGL_rfl_hom, Subgroup.map_id]`. Use `show St.U = St.U.map (reGL rfl _).toMonoidHom`. Rewrite using `[reGL_rfl_hom, Subgroup.map_id]`. Conclude with `(reGL_rfl_apply _ _).symm`.
+
+Conclude with `(reGL_rfl_apply _ _).symm`. Rewrite using `[show co S rfl = Formalism.L2.Herm.crd S from co_rfl S]`. Conclude with `(Crd.map_symm_map (Formalism.L2.Herm.crd S) (lat c)).symm`.
+-/
 theorem tie_of_forms (hc : CMData F E) (S : HSpace E) {n : ℕ} (h : S.rank = n) (hO : Crd.Ortho S)
     {σ : E →ₐ[F] E} (hσ : σ = hc.sig) {J : Matrix (Fin n) (Fin n) E} (hJ : J = S.gram.reindex (finCongr h) (finCongr h))
     {f : ℕ} {gp : Fin 2 → ℕ} {bad : Set (HeightOneSpectrum (𝓞 F))}
@@ -218,6 +280,13 @@ end Tr
 
 set_option maxHeartbeats 4000000 in
 
+/- English proof (translation)
+Introduce `B X I hI hP l Z H F hstd hcar u`. Take `⟨hs, -, hX', -⟩` from `hI.spaces`. Establish `oX' : Crd.Ortho B.sp.X'` using `by rw [hX']; exact Crd.ortho_pos hs _`. Establish `hr` using `(hstd u).1.what₂`. Establish `hLb : ∀ x, x ∈ (F u).clsP.lev.Lb ↔ ∀ j, x j ∈ (algebraMap (𝓞 (I.rec7 l Z).host.E) (I.rec7 l Z).host.E).range`.
+
+Introduce `x`. Use `(hr.lb x).trans ⟨fun hx j => ?_, fun hx j => ?_⟩` and prove the remaining obligations. Take `⟨r, e, -⟩` from `hx j`. Conclude with `⟨r, e.symm⟩`. Take `⟨r, e⟩` from `hx j`.
+
+Conclude with `⟨r, e.symm, fun _ => one_dvd r⟩`. Conclude with `tie_of_forms (I.rec7 l Z).sp.cm (I.rec7 l Z).sp.X' (rankP (I.rec7 l Z)) oX' rfl rfl rfl (F u).clsP.lev (F u).gl (F u).glevP (hstd u).1.frP hLb (F u).clsP.y (F u).clsP.y_bij (F u).clsP.lat (F u).clsP.y_lat (F u).clsP.stabI (F u).clsP.stabI_inj (F u).clsP.stabI_range`.
+-/
 theorem clsP_hermitian : ∀ {B : Base} {X : PreX B.toPre} (I : TC B X), I.Ok → TC.Pins B X → ∀ (l : I.Laws) (Z : TC.Later B (I.cols l)) (H : Formalism.L2.Herm.HermColsCh (I.rec7 l Z)) (F : ∀ u, FormsTiedSym (I.rec7 l Z) u (H.Ch u) (H.chOf u)), (∀ u, I.StdF l Z u (F u) ∧ I.StdLvC l Z u (F u)) → CarH H F → ∀ u, ∃ (lattice₂ : ((I.rec7 l Z).fm u).clsP → Submodule (𝓞 (I.rec7 l Z).host.E) (I.rec7 l Z).sp.X'.V) (levP : Formalism.L2.Herm.StepLevel0 (I.rec7 l Z).sp.cm (I.rec7 l Z).sp.X' (I.rec7 l Z).host.g (Formalism.L2.Herm.crdLat (I.rec7 l Z).sp.X' (I.rec7 l Z).sp.X'.L0)) (clsP : Formalism.L2.Herm.ClassTie (I.rec7 l Z).sp.cm (I.rec7 l Z).sp.X' (Formalism.L2.Herm.crdLat (I.rec7 l Z).sp.X' (I.rec7 l Z).sp.X'.L0) levP.U ((I.rec7 l Z).fm u).stabilizer₂ lattice₂), SameCar (rankP (I.rec7 l Z)) (Formalism.L2.Herm.crdLat (I.rec7 l Z).sp.X' (I.rec7 l Z).sp.X'.L0) (F u).clsP.lev.Lb levP.Uloc (F u).clsP.lev.Uloc levP.U (F u).clsP.lev.U (fun c => (clsP.y c).1) (fun c => ((F u).clsP.y c).1) (fun c s => (clsP.stabI c s).1) (fun c s => ((F u).clsP.stabI c s).1) ∧ ∀ c, (F u).clsP.lat c = (lattice₂ c).map ((crdP (I.rec7 l Z) : (I.rec7 l Z).sp.X'.V →ₗ[(I.rec7 l Z).host.E] (Fin ((I.rec7 l Z).R.N (I.rec7 l Z).R.m - 1) → (I.rec7 l Z).host.E)).restrictScalars (𝓞 (I.rec7 l Z).host.E)) := by
   intro B X I hI hP l Z H F hstd hcar u
   obtain ⟨hs, -, hX', -⟩ := hI.spaces

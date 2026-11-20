@@ -24,6 +24,13 @@ open ReciprocityTheory.ChartRestriction.G.PullbackSections (TanM tv mkT tanM_ext
 
 attribute [local instance] Over.cartesianMonoidalCategory
 
+/- English proof (translation)
+Establish `hB : A.BlockTriangular OrderDual.toDual` using `fun i j h => hA i j (OrderDual.toDual_lt_toDual.1 h)`. Establish `hdet : IsUnit A.det`. Rewrite using `[Matrix.det_of_lowerTriangular A hB]`. Conclude with `IsUnit.prod_univ_iff.2 hd`. Establish `: Invertible A` using `Matrix.invertibleOfIsUnitDet A hdet`.
+
+Establish `hB'` using `Matrix.blockTriangular_inv_of_blockTriangular hB`. Use `le_antisymm (initSpan_le_of_tri (B := A.transpose) (fun i j h => hA j i h) e k) (initSpan_le_of_tri (B := A⁻¹.transpose) (fun i j h => hB' (OrderDual.toDual_lt_toDual.2 h)) (fun i => ?_) k)` and prove the remaining obligations. Simplify using `only [e, Finset.smul_sum, smul_smul, Matrix.transpose_apply]`. Rewrite using `[Finset.sum_comm]`. Simplify using `only [← Finset.sum_smul]`.
+
+Establish `e2 : ∀ l, (∑ j, A⁻¹ i j * A j l) = (1 : Matrix _ _ R) i l` using `fun l => by`. Rewrite using `[← Matrix.nonsing_inv_mul A hdet, Matrix.mul_apply]`. Simplify using `only [e2, Matrix.one_apply, ite_smul, one_smul, zero_smul, Finset.sum_ite_eq, Finset.mem_univ, if_true]`.
+-/
 theorem initSpan_eq_of_lowerTri {R : Type} [CommRing R] {m : ℕ} {M : Type} [AddCommGroup M] [Module R M]
     {A : Matrix (Fin m) (Fin m) R} (hA : ∀ i j, i < j → A i j = 0) (hd : ∀ i, IsUnit (A i i)) {u w : Fin m → M}
     (e : ∀ i, u i = ∑ j, A i j • w j) (k : ℕ) : initSpan R u k = initSpan R w k := by
@@ -46,6 +53,15 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {Dw : D
   {Xo : Moduli Dw l} {c : Coeff l} {O : Type} [CommRing O] {β : O →+* c.F} {Y : Model Xo c β}
   {S : Type} [CommRing S] [Algebra c.F S]
 
+/- English proof (translation)
+Take `⟨Q, hQ⟩` from `X.top.exists_chartFr hy (hx.trans hxy) k hz`. Take `⟨P, hP⟩` from `X.top.exists_chartFr hy (hx'.trans hxy) k' hz'`. Establish `hQx` using `hQ.over.trans hx`. Establish `hPx` using `hP.over.trans hx'`. Establish `ex : ∀ σ, ∃ b : Matrix (Fin (Dw.mult σ)) (Fin (Dw.mult σ)) S, b.BlockTriangular id ∧ (∀ i, IsUnit (b i i)) ∧ ∀ i, frVec Y P hPx σ i = ∑ j, b j i • frVec Y Q hQx σ j` using `fun σ => by`.
+
+Rewrite using `[hQ.frVec_eq hx, hP.frVec_eq hx']`. Conclude with `exists_tri_of_eq (X.F.linearIndependent_vecAt k z hz hx σ) (h σ)`. Use `choose b hb hu hv using ex`. Establish `e : P.x = Q.x`. Rewrite using `[← frX_fst, ← frX_fst, xF_ext (Y := Y) (frX_snd P) (frX_snd Q) (hPx.trans hQx.symm)]`.
+
+Establish `hB : ∃ t, FrBor t Q P`. Take `⟨x', xo', v', t1', t2', t3', s', t4'⟩` from `P`. Simplify using `only at e`. Substitute `e` using the available equality. Take `⟨u0, hu0⟩` from `gen_unit Q.s s' Q.gen t4'`.
+
+Conclude with `⟨_, frBor_of_frVec (X.F.inM hz hx) hQx hPx (fun ix => match ix with | none => u0 | some p => (hu p.1 p.2).unit) b hb (fun _ _ => rfl) hv fun _ => hu0⟩`. Take `⟨t, ht⟩` from `hB`. Conclude with `(X.rep S P).unique (hQ.lies.frBor ht) hP.lies`.
+-/
 theorem eq_of_initSpan_eq (X : FlagCover Y) {y : Sp S ⟶ Xo.XF c}
     (hy : y ≫ pullback.snd _ _ = spMap (algebraMap c.F S)) {x : Sp S ⟶ Y.X} (hxy : x = y ≫ Y.j) {z z' : Sp S ⟶ X.YY}
     (hx : z ≫ X.π = x) (hx' : z' ≫ X.π = x) {k k' : X.F.J} (hz : ⊤ ≤ z ⁻¹ᵁ X.F.U k) (hz' : ⊤ ≤ z' ⁻¹ᵁ X.F.U k')
@@ -80,6 +96,23 @@ open ReciprocityTheory.ChartRestriction.G.PullbackSections (TanM tv mkT tanM_ext
 
 attribute [local instance] Over.cartesianMonoidalCategory
 
+/- English proof (translation)
+Introduce `E _ _ _ H Dw l Xo c TF Z _ U n e v hv W k L N hC S _ z₁ z₂ h₁ h₂ o₁ _ hr hN`. Establish `hU : ∀ {z : Sp S ⟶ Y₀ TF.X Z}, ⊤ ≤ z ⁻¹ᵁ W → ⊤ ≤ (z ≫ toBase TF Z) ⁻¹ᵁ U.1` using `fun hz p hp => hC.2.1 (hz hp)`. Establish `hb : z₂ ≫ toBase TF Z = z₁ ≫ toBase TF Z`. Rewrite using `[← spMap_ev _ U.2 (hU h₁), ← spMap_ev _ U.2 (hU h₂)]`. Use `congr 2`.
+
+Use extensionality with `r`. Conclude with `(ev_appLE z₂ _ hC.2.1 h₂ (hU h₂) r).symm.trans ((hr r).symm.trans (ev_appLE z₁ _ hC.2.1 h₁ (hU h₁) r))`. Take `⟨-, -, hWk, hLz, hLu, hNz, hN1, hcomb⟩` from `hC`. Establish `hNN : ∀ σ i j, ev z₂ W h₂ (N σ i j) = ev z₁ W h₁ (N σ i j)` using `fun σ i j => by`. Break down `lt_trichotomy i j with h | rfl | h` into its components or cases.
+
+Conclude with `(hN ⟨σ, ⟨(i, j), h⟩⟩).symm`. Rewrite using `[hN1, map_one, map_one]`. Rewrite using `[hNz σ i j h, map_zero, map_zero]`. Establish `hvT : ∀ m, IsTanAtG TF.Y.t (z₁ ≫ toBase TF Z) (spMap (dualMap (ev (z₁ ≫ toBase TF Z) U.1 (hU h₁))) ≫ v m)` using `fun m => GlobalTheory.LieMet.isTan_map _ (spMap_ev _ U.2 (hU h₁)) (hv.1 m)`. Establish `key : ∀ (z : Sp S ⟶ Y₀ TF.X Z) (hz : ⊤ ≤ z ⁻¹ᵁ W) (hk : ⊤ ≤ (z ≫ inc₀ TF.X Z) ⁻¹ᵁ TF.X.F.U k) (x : Sp S ⟶ TF.Y.X) (hxU : ⊤ ≤ x ⁻¹ᵁ U.1) (hT : ∀ m, IsTanAtG TF.Y.t x (spMap (dualMap (ev x U.1 hxU)) ≫ v m)) (_ : z ≫ toBase TF Z = x) (hx : (z ≫ inc₀ TF.X Z) ≫ TF.X.π = x) σ i, initSp …`.
+
+Introduce and unpack `z hz hk _ hxU hT rfl hx σ`. Use `CellMono.initSpan_eq_of_lowerTri (A := (L σ).map (ev z W hz)) (fun i j h => ?_) (fun i => (hLu σ i).map (ev z W hz)) fun i => ?_` and prove the remaining obligations. Use `show ev z W hz (L σ i j) = 0`. Rewrite using `[hLz σ i j h, map_zero]`. Rewrite using `[(GlobalTheory.LieMet.isComb_iff (fun j => GlobalTheory.LieMet.tanOf (hT (e ⟨σ, j⟩))) _ _).1 (hcomb S z hz hxU hk hx σ i)]`.
+
+Simplify using `only [Finset.smul_sum, smul_smul, Matrix.mul_apply, map_sum, map_mul, Finset.sum_smul, Matrix.map_apply]`. Conclude with `Finset.sum_comm`. Establish `hrg : Set.range (z₁ ≫ inc₀ TF.X Z) ⊆ Set.range TF.X.inc`. Introduce and unpack `_ ⟨s, rfl⟩`. Conclude with `(opensRange_inc TF.X).ge (o₁ (Set.mem_univ s))`.
+
+Take `⟨w, hw⟩ : ∃ w, w ≫ TF.X.inc = z₁ ≫ inc₀ TF.X Z` from `⟨_, IsOpenImmersion.lift_fac TF.X.inc _ hrg⟩`. Use `letI : Algebra c.F S := ((ev (w ≫ pullback.snd TF.X.π TF.Y.j ≫ pullback.snd _ _) ⊤ le_top).comp (toΓ c.F)).toAlgebra`. Establish `hy : (w ≫ pullback.snd TF.X.π TF.Y.j) ≫ pullback.snd _ _ = spMap (algebraMap c.F S)` using `(Category.assoc _ _ _).trans (spMap_ev_top _).symm`. Establish `hx₁ : (z₁ ≫ inc₀ TF.X Z) ≫ TF.X.π = z₁ ≫ toBase TF Z` using `Category.assoc _ _ _`. Establish `hx₂ : (z₂ ≫ inc₀ TF.X Z) ≫ TF.X.π = z₁ ≫ toBase TF Z` using `(Category.assoc _ _ _).trans hb`.
+
+Establish `hxy : z₁ ≫ toBase TF Z = (w ≫ pullback.snd TF.X.π TF.Y.j) ≫ TF.Y.j`. Rewrite using `[← hx₁, ← hw, Category.assoc, Category.assoc, pullback.condition]`. Establish `hk₁ : ⊤ ≤ (z₁ ≫ inc₀ TF.X Z) ⁻¹ᵁ TF.X.F.U k` using `fun p hp => hWk (h₁ hp)`. Establish `hk₂ : ⊤ ≤ (z₂ ≫ inc₀ TF.X Z) ⁻¹ᵁ TF.X.F.U k` using `fun p hp => hWk (h₂ hp)`. Rewrite using `[← cancel_mono (inc₀ TF.X Z)]`.
+
+Use `CellMono.eq_of_initSpan_eq TF.X hy hxy hx₁ hx₂ hk₁ hk₂ fun σ i => ?_` and prove the remaining obligations. Rewrite using `[key z₁ h₁ hk₁ _ (hU h₁) hvT rfl hx₁, key z₂ h₂ hk₂ _ (hU h₁) hvT hb hx₂]`. Simplify using `only [hNN]`.
+-/
 theorem eq_of_cellCoord_eq : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l) (TF : TorFlag Xo c) (Z : Comp Xo c), FnAlgClosed Xo c → ∀ (U : TF.Y.X.affineOpens) (n : ℕ) (e : (Σ τ : E →+* ℂ, Fin (Dw.mult τ)) ≃ Fin n) (v : Fin n → (Sp (DualNumber Γ(TF.Y.X, U.1)) ⟶ TF.Y.t.G.left)), IsEigBasis TF U e v → ∀ (W : (Y₀ TF.X Z).Opens) (k : TF.X.F.J) (L N : ∀ σ : E →+* ℂ, Matrix (Fin (Dw.mult σ)) (Fin (Dw.mult σ)) Γ(Y₀ TF.X Z, W)) (h : IsCell TF Z U e v W k L N) (S : Type) [CommRing S] (z₁ z₂ : Sp S ⟶ Y₀ TF.X Z) (h₁ : ⊤ ≤ z₁ ⁻¹ᵁ W) (h₂ : ⊤ ≤ z₂ ⁻¹ᵁ W), ⊤ ≤ z₁ ⁻¹ᵁ U₀ TF.X Z → ⊤ ≤ z₂ ⁻¹ᵁ U₀ TF.X Z → (∀ r, ev z₁ W h₁ (((toBase TF Z).appLE U.1 W h.2.1).hom r) = ev z₂ W h₂ (((toBase TF Z).appLE U.1 W h.2.1).hom r)) → (∀ i, ev z₁ W h₁ (cellCoord N i) = ev z₂ W h₂ (cellCoord N i)) → z₁ = z₂ := by
   intro E _ _ _ H Dw l Xo c TF Z _ U n e v hv W k L N hC S _ z₁ z₂ h₁ h₂ o₁ _ hr hN
   have hU : ∀ {z : Sp S ⟶ Y₀ TF.X Z}, ⊤ ≤ z ⁻¹ᵁ W → ⊤ ≤ (z ≫ toBase TF Z) ⁻¹ᵁ U.1 := fun hz p hp => hC.2.1 (hz hp)

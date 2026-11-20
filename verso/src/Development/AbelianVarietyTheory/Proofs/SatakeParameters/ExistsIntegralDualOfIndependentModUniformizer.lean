@@ -6,6 +6,11 @@ noncomputable section
 
 namespace GlobalTheory.Hk3.IntWitt
 
+/- English proof (translation)
+Break down `eq_or_ne x 0 with rfl | hx` into its components or cases. Conclude with `zero_le`. Rewrite `h`, the goal using `[← WithZero.exp_log hx]`. Rewrite `h` using `[← WithZero.exp_zero, WithZero.exp_lt_exp]`. Rewrite using `[WithZero.exp_le_exp]`.
+
+Use linear arithmetic over natural numbers and integers.
+-/
 theorem le_exp_neg_one_of_lt_one' {x : WithZero (Multiplicative ℤ)} (h : x < 1) :
     x ≤ WithZero.exp (-1) := by
   rcases eq_or_ne x 0 with rfl | hx
@@ -17,6 +22,15 @@ theorem le_exp_neg_one_of_lt_one' {x : WithZero (Multiplicative ℤ)} (h : x < 1
 
 variable {L : Type} [Field L] [Valued L (WithZero (Multiplicative ℤ))]
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨u, rfl⟩`. Establish `h1` using `congrArg (fun y : (Valued.v : Valuation L (WithZero (Multiplicative ℤ))).valuationSubring => Valued.v (y : L)) u.mul_inv`. Simplify using `only [MulMemClass.coe_mul, map_mul, OneMemClass.coe_one, map_one] at h1`. Establish `hu : Valued.v ((u : _) : L) ≤ 1` using `((u : (Valued.v : Valuation L (WithZero (Multiplicative ℤ))).valuationSubring)).2`.
+
+Establish `hw : Valued.v ((u⁻¹ : _) : L) ≤ 1` using `((u⁻¹ : _) : (Valued.v : Valuation L (WithZero (Multiplicative ℤ))).valuationSubring).2`. Use `le_antisymm hu ?_` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation. Introduce `h`. Establish `hx0 : (x : L) ≠ 0`.
+
+Introduce `h0`. Rewrite `h` using `[h0, map_zero]`. Conclude with `zero_ne_one h`. Set `y : (Valued.v : Valuation L (WithZero (Multiplicative ℤ))).valuationSubring` to `⟨(x : L)⁻¹, by show Valued.v (x : L)⁻¹ ≤ 1`. Rewrite using `[map_inv₀, h, inv_one]⟩`.
+
+Establish `hxy : x * y = 1` using `Subtype.ext (mul_inv_cancel₀ hx0)`. Conclude with `⟨⟨x, y, hxy, by rw [mul_comm]; exact hxy⟩, rfl⟩`.
+-/
 theorem isUnit_valuationSubring_iff (x : (Valued.v : Valuation L (WithZero (Multiplicative ℤ))).valuationSubring) :
     IsUnit x ↔ Valued.v (x : L) = 1 := by
   constructor
@@ -40,6 +54,17 @@ theorem isUnit_valuationSubring_iff (x : (Valued.v : Valuation L (WithZero (Mult
     have hxy : x * y = 1 := Subtype.ext (mul_inv_cancel₀ hx0)
     exact ⟨⟨x, y, hxy, by rw [mul_comm]; exact hxy⟩, rfl⟩
 
+/- English proof (translation)
+Rewrite using `[IsLocalRing.residue_eq_zero_iff, IsLocalRing.mem_maximalIdeal, mem_nonunits_iff, isUnit_valuationSubring_iff]`. Establish `hx : Valued.v (x : L) ≤ 1` using `x.2`. Establish `hϖ0 : ϖ ≠ 0`. Introduce `h0`. Rewrite `hϖ` using `[h0, map_zero]`.
+
+Conclude with `WithZero.zero_ne_coe hϖ`. Prove the components needed by the constructor for the conclusion. Introduce `hne`. Establish `hlt : Valued.v (x : L) < 1` using `lt_of_le_of_ne hx hne`. Establish `hle` using `le_exp_neg_one_of_lt_one' hlt`.
+
+Use `⟨(x : L) / ϖ, ?_, by field_simp⟩` and prove the remaining obligations. Use `show Valued.v ((x : L) / ϖ) ≤ 1`. Rewrite using `[map_div₀, hϖ]`. Establish `hpos : (0 : WithZero (Multiplicative ℤ)) < ((Multiplicative.ofAdd (-1 : ℤ) : Multiplicative ℤ) : WithZero (Multiplicative ℤ))` using `WithZero.zero_lt_coe _`. Conclude with `(div_le_one₀ hpos).2 hle`.
+
+Introduce and unpack `⟨b, hb, hxb⟩ h1`. Establish `hb' : Valued.v b ≤ 1` using `hb`. Rewrite `h1` using `[hxb, pow_one, map_mul, hϖ]`. Establish `: ((Multiplicative.ofAdd (-1 : ℤ) : Multiplicative ℤ) : WithZero (Multiplicative ℤ)) * Valued.v b ≤ ((Multiplicative.ofAdd (-1 : ℤ) : Multiplicative ℤ) : WithZero (Multiplicative ℤ)) * 1` using `by gcongr`. Rewrite `this` using `[h1, mul_one]`.
+
+Conclude with `absurd this (by decide)`.
+-/
 theorem residue_eq_zero_iff_dvdPow {ϖ : L}
     (hϖ : Valued.v ϖ = ((Multiplicative.ofAdd (-1 : ℤ) : Multiplicative ℤ) : WithZero (Multiplicative ℤ)))
     (x : (Valued.v : Valuation L (WithZero (Multiplicative ℤ))).valuationSubring) :
@@ -67,6 +92,31 @@ theorem residue_eq_zero_iff_dvdPow {ϖ : L}
     rw [h1, mul_one] at this
     exact absurd this (by decide)
 
+/- English proof (translation)
+Introduce `L _ _ ϖ hϖ m ι _ _ z hz hind`. Set `O` to `(Valued.v : Valuation L (WithZero (Multiplicative ℤ))).valuationSubring`. Set `k` to `IsLocalRing.ResidueField O`. Set `res : O →+* k` to `IsLocalRing.residue O`. Establish `hres : Function.Surjective res` using `IsLocalRing.residue_surjective`.
+
+Set `Z : Matrix ι (Fin m) O` to `fun i r => ⟨z i r, hz i r⟩`. Set `Zb : Matrix ι (Fin m) k` to `Z.map res`. Establish `hinj : LinearMap.ker (Matrix.mulVecLin Zbᵀ) = ⊥`. Rewrite using `[LinearMap.ker_eq_bot']`. Introduce `w hw`.
+
+Set `d : ι → O` to `fun i => (hres (w i)).choose`. Establish `hd : ∀ i, res (d i) = w i` using `fun i => (hres (w i)).choose_spec`. Establish `hsum : ∀ r, DvdPow ϖ 1 (∑ i, ((d i : O) : L) * z i r)`. Introduce `r`. Establish `h1 : res (∑ i, d i * Z i r) = 0`.
+
+Use `congrFun hw r` as an intermediate fact. Simplify using `only [Matrix.mulVecLin_apply, Matrix.mulVec, dotProduct, Matrix.transpose_apply, Pi.zero_apply] at this`. Rewrite using `[map_sum]`. Simplify `this` using `[Zb, hd, mul_comm]`. Establish `h2` using `(residue_eq_zero_iff_dvdPow hϖ _).1 h1`.
+
+Simplify `h2` using `[Z]`. Establish `hdi` using `hind (fun i => (d i : L)) (fun i => (d i).2) hsum`. Use function extensionality and compare the values at `i`. Rewrite using `[← hd i]`. Conclude with `(residue_eq_zero_iff_dvdPow hϖ _).2 (hdi i)`.
+
+Take `⟨g, hg⟩` from `LinearMap.exists_leftInverse_of_injective _ hinj`. Set `B : Matrix ι (Fin m) k` to `LinearMap.toMatrix' g`. Establish `hB : B * Zbᵀ = 1`. Use `congrArg LinearMap.toMatrix' hg` as an intermediate fact. Rewrite `this` using `[LinearMap.toMatrix'_comp, LinearMap.toMatrix'_id, ← Matrix.toLin'_apply', LinearMap.toMatrix'_toLin']`. Then use the resulting hypothesis.
+
+Set `Bo : Matrix ι (Fin m) O` to `fun i r => (hres (B i r)).choose`. Establish `hBo : Bo.map res = B`. Use extensionality with `i r`. Conclude with `(hres (B i r)).choose_spec`. Set `M : Matrix ι ι O` to `Bo * Zᵀ`.
+
+Establish `hM : M.map res = 1`. Simplify using `only [M, Matrix.map_mul, Matrix.transpose_map, hBo]`. Conclude with `hB`. Establish `hdet : IsUnit M.det`. Rewrite using `[← IsLocalRing.residue_ne_zero_iff_isUnit]`.
+
+Establish `: res M.det = 1`. Rewrite using `[RingHom.map_det]`. Express the relevant statement in the definitionally equal form `(M.map res).det = 1`. Rewrite using `[hM, Matrix.det_one]`. Rewrite using `[show IsLocalRing.residue O M.det = res M.det from rfl, this]`.
+
+Conclude with `one_ne_zero`. Set `A : Matrix ι (Fin m) O` to `M⁻¹ * Bo`. Establish `hA : A * Zᵀ = 1`. Simplify using `only [A, Matrix.mul_assoc]`. Conclude with `Matrix.nonsing_inv_mul M hdet`.
+
+Use `⟨fun i r => (A i r : L), fun i r => (A i r).2, fun i j => ?_⟩` and prove the remaining obligations. Establish `h` using `congrArg (fun x : O => (x : L)) (congrFun (congrFun hA i) j)`. Simplify using `only [Matrix.mul_apply, Matrix.transpose_apply, Matrix.one_apply] at h`. Establish `h2 : ((∑ r, A i r * Z j r : O) : L) = ∑ r, (A i r : L) * z j r`. Simplify using `[Z, O]`.
+
+Rewrite `h` using `[h2]`. Rewrite using `[h]`. Apply the tactic sequence `split_ifs <;> simp`.
+-/
 theorem exists_dual_of_indepMod : ∀ (L : Type) [Field L] [Valued L (WithZero (Multiplicative ℤ))] (ϖ : L),
     Valued.v ϖ = ((Multiplicative.ofAdd (-1 : ℤ) : Multiplicative ℤ) : WithZero (Multiplicative ℤ)) →
     ∀ (m : ℕ) (ι : Type) [Fintype ι] [DecidableEq ι] (z : ι → Fin m → L), (∀ i r, z i r ∈ Formalism.UG.intL L) →

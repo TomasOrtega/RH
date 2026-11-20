@@ -12,10 +12,16 @@ open Matrix IsLocalRing ReciprocityTheory.Gal UpperTheory.V.U3 UpperTheory.V.Alg
 
 namespace UpperTheory.V.UnitaryThreeInertia.Tan
 
+/- English proof (translation)
+Rewrite using `[mem_maximalIdeal, mem_nonunits_iff, TrivSqZeroExt.isUnit_iff_isUnit_fst, isUnit_iff_ne_zero, not_not]`.
+-/
 private theorem mem_max_dual {K : Type} [Field K] (x : DualNumber K) :
     x ∈ maximalIdeal (DualNumber K) ↔ x.fst = 0 := by
   rw [mem_maximalIdeal, mem_nonunits_iff, TrivSqZeroExt.isUnit_iff_isUnit_fst, isUnit_iff_ne_zero, not_not]
 
+/- English proof (translation)
+Rewrite using `[eq_bot_iff, Ideal.mul_le]`. Introduce `x hx y hy`. Rewrite `hx`, `hy` using `[mem_max_dual]`. Rewrite using `[Ideal.mem_bot]`. Apply the tactic sequence `ext <;> simp [hx, hy]`.
+-/
 private theorem max_sq_dual {K : Type} [Field K] :
     maximalIdeal (DualNumber K) * maximalIdeal (DualNumber K) = ⊥ := by
   rw [eq_bot_iff, Ideal.mul_le]
@@ -24,6 +30,11 @@ private theorem max_sq_dual {K : Type} [Field K] :
   rw [Ideal.mem_bot]
   ext <;> simp [hx, hy]
 
+/- English proof (translation)
+Establish `: Finite (DualNumber (ResidueField O))` using `inferInstanceAs (Finite (_ × _))`. Conclude with `{ complete := inferInstance isLocalHom := ⟨fun a ha => by`. Rewrite `ha` using `[TrivSqZeroExt.isUnit_iff_isUnit_fst]`. Conclude with `(isUnit_map_iff (residue O) a).1 ha⟩`. Use `res_surj := fun x => by`.
+
+Take `⟨a, ha⟩` from `residue_surjective x.fst`. Use `⟨a, ?_⟩` and prove the remaining obligations. Rewrite using `[mem_max_dual, TrivSqZeroExt.fst_sub, ← ha, sub_eq_zero]`. Use `rfl }`.
+-/
 private theorem isCO_dual (O : Type) [CommRing O] [IsLocalRing O] [Finite (ResidueField O)] :
     IsCO O (DualNumber (ResidueField O)) := by
   have : Finite (DualNumber (ResidueField O)) := inferInstanceAs (Finite (_ × _))
@@ -38,6 +49,19 @@ private theorem isCO_dual (O : Type) [CommRing O] [IsLocalRing O] [Finite (Resid
         rw [mem_max_dual, TrivSqZeroExt.fst_sub, ← ha, sub_eq_zero]
         rfl }
 
+/- English proof (translation)
+Establish `hc : ∀ n : σ →₀ ℕ, n ≠ 0 → ∃ i, n i ≠ 0` using `fun n hn => by`. Assume the negation of the conclusion as `h`. Use `push Not at h`. Conclude with `hn (Finsupp.ext h)`. Use `choose c hc using hc`.
+
+Set `q : σ → MvPowerSeries σ O` to `fun i n => if h : n ≠ 0 then (if c n h = i then MvPowerSeries.coeff n p else 0) else 0`. Establish `hq : ∀ i n, MvPowerSeries.coeff n (q i) = if h : n ≠ 0 then (if c n h = i then MvPowerSeries.coeff n p else 0) else 0` using `fun _ _ => rfl`. Establish `hs : p = ∑ i, q i`. Use extensionality with `n`. Rewrite using `[map_sum]`.
+
+Simplify using `only [hq]`. Distinguish the cases in `h : n ≠ 0`. Simplify using `[dif_pos h]`. Simplify using `only [dif_neg h, Finset.sum_const_zero] push Not at h`. Substitute `h` using the available equality.
+
+Simplify using `using hp`. Rewrite using `[hs, map_sum]`. Use `Finset.sum_eq_zero fun i _ => ?_` and prove the remaining obligations. Establish `: MvPowerSeries.X i ∣ q i`. Rewrite using `[MvPowerSeries.X_dvd_iff]`.
+
+Introduce `m hm`. Rewrite using `[hq]`. Use `split_ifs with h1 h2`. Conclude with `absurd (h2 ▸ hm) (hc m h1)`. Both sides reduce to the same expression.
+
+Both sides reduce to the same expression. Take `⟨r, hr⟩` from `this`. Rewrite using `[hr, map_mul, hφ, zero_mul]`.
+-/
 private theorem map_eq_zero_of_cc {O A σ : Type} [CommRing O] [CommRing A] [Fintype σ]
     (φ : MvPowerSeries σ O →+* A) (hφ : ∀ i, φ (MvPowerSeries.X i) = 0) (p : MvPowerSeries σ O)
     (hp : MvPowerSeries.constantCoeff p = 0) : φ p = 0 := by
@@ -74,6 +98,9 @@ private theorem map_eq_zero_of_cc {O A σ : Type} [CommRing O] [CommRing A] [Fin
   obtain ⟨r, hr⟩ := this
   rw [hr, map_mul, hφ, zero_mul]
 
+/- English proof (translation)
+Establish `h` using `map_eq_zero_of_cc (φ : MvPowerSeries σ O →+* A) hφ (p - algebraMap O _ (MvPowerSeries.constantCoeff p)) (by simp [MvPowerSeries.algebraMap_apply])`. Rewrite `h` using `[map_sub, sub_eq_zero]`. Conclude with `h.trans (φ.commutes _)`.
+-/
 private theorem map_eq_cc {O A σ : Type} [CommRing O] [CommRing A] [Algebra O A] [Fintype σ]
     (φ : MvPowerSeries σ O →ₐ[O] A) (hφ : ∀ i, φ (MvPowerSeries.X i) = 0) (p : MvPowerSeries σ O) :
     φ p = algebraMap O A (MvPowerSeries.constantCoeff p) := by
@@ -82,9 +109,31 @@ private theorem map_eq_cc {O A σ : Type} [CommRing O] [CommRing A] [Algebra O A
   rw [map_sub, sub_eq_zero] at h
   exact h.trans (φ.commutes _)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 private theorem diagonal_rep_matrix_eq {G C : Type} [Group G] [CommRing C] (η : G →* ℤˣ) (Ψ : G →* Cˣ) (g : G) :
     (r0 η Ψ g).mat = Matrix.diagonal fun i => ((Ψ g ^ wt1 i : Cˣ) : C) := rfl
 
+/- English proof (translation)
+Establish `hne : ¬ η c = 1` using `by rw [hM.ηc]; decide`. Establish `hΨs : Ψ (gstar c g₁) = (Ψ g₁)⁻¹` using `by simp [gstar, hM.Ψc]`. Establish `hηs : η (gstar c g₁) = 1` using `by simp [gstar, hM.ηc, hM.ηg]`. Establish `h1 : γ 1 = 0`. Use `hc 1 1` as an intermediate fact.
+
+Rewrite `this` using `[mul_one, map_one]`. Simplify using `using this`. Establish `hcc : ∀ a b, γ c a b = γ c b.rev a.rev` using `fun a b => by`. Use `congrFun (congrFun (hc c c) a) b` as an intermediate fact. Rewrite `this` using `[hM.csq, h1, Matrix.add_apply, adRep_baseLift_apply, if_neg hne, hM.Ψc]`.
+
+Simplify using `only [_root_.one_zpow, Units.val_one, one_mul, Matrix.zero_apply] at this`. Take the linear combination `-this`. Take `⟨hz, hu⟩` from `zeta_reducible_rep_eq_sub_inv_and_isUnit η Ψ c g₁ hM`. Rewrite `hu` using `[hz]`. Take `⟨v, hv⟩` from `hu.exists_left_inv`.
+
+Take `⟨w, hw2⟩` from `h2.exists_left_inv`. Establish `hab : ((Ψ g₁ : Cˣ) : C) * (((Ψ g₁)⁻¹ : Cˣ) : C) = 1` using `Units.mul_inv _`. Use `set p : C := ((Ψ g₁ : Cˣ) : C) with hp`. Use `set q : C := (((Ψ g₁)⁻¹ : Cˣ) : C) with hq`. Use `set s : C := -(v * (γ g₁ 0 1 - γ (gstar c g₁) 0 1)) with hs`.
+
+Use `set t : C := v * (γ g₁ 1 0 * p - γ (gstar c g₁) 1 0 * q) with ht`. Establish `hw' : ∀ g a b, wt a b ≠ j → γ g a b = 0` using `hw`. Use `⟨!![w * γ c 0 0, s, w * γ c 0 2; t, w * γ c 1 1, γ c 0 1 - s; w * γ c 2 0, γ c 1 0 - t, w * γ c 0 0], ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `a b hab`. Establish `e1` using `fun g => hw' g a b hab`.
+
+Establish `e2 : γ c b.rev a.rev = 0` using `by rw [← hcc, e1]`. Establish `e3 : ∀ g, γ g b.rev a.rev = 0` using `fun g => hw' g _ _ (by`. Apply the tactic sequence `have : wt b.rev a.rev = wt a b := by fin_cases a <;> fin_cases b <;> rfl`. Rewrite using `[this])` and apply the resulting hypothesis. Apply the tactic sequence `fin_cases a <;> fin_cases b <;> simp [Fin.rev] at e1 e2 e3 <;> simp [hs, ht, e1, e2, e3]`.
+
+Use extensionality with `a b`. Rewrite using `[Pi.sub_apply, cob, Matrix.sub_apply, Matrix.sub_apply, adRep_baseLift_apply, if_neg hne, hM.Ψc]`. Establish `e` using `hcc a b`. Apply the tactic sequence `fin_cases a <;> fin_cases b <;> simp [Fin.rev] at e ⊢ <;> first | linear_combination (-γ c 0 0) * hw2 | linear_combination (-γ c 0 2) * hw2 | linear_combination (-γ c 1 1) * hw2 | linear_combination (-γ c 2 0) * hw2 | linear_combination e | linear_combination e - γ c 0 0 * hw2`. Establish `w0 : wt 0 1 = 1` using `by decide`.
+
+Establish `w1 : wt1 1 = 0` using `by decide`. Simplify using `only [zvar, diagonal_rep_matrix_eq, Matrix.sub_apply, Matrix.mul_diagonal, Pi.sub_apply, cob, adRep_baseLift_apply, hηs, hM.ηg, if_true, hΨs, w0, w1, zpow_one, zpow_zero, inv_inv, Units.val_one]`. Simplify using `only [Matrix.of_apply, Matrix.cons_val, ← hp, ← hq]`. Take the linear combination `(-(γ g₁ 0 1 - γ (gstar c g₁) 0 1)) * hv + (p - q) * hs`. Establish `w0 : wt 1 0 = -1` using `by decide`.
+
+Establish `w1 : wt1 0 = 1` using `by decide`. Simplify using `only [zvar, diagonal_rep_matrix_eq, Matrix.sub_apply, Matrix.mul_diagonal, Pi.sub_apply, cob, adRep_baseLift_apply, hηs, hM.ηg, if_true, hΨs, w0, w1, zpow_one, _root_.zpow_neg_one, inv_inv, Units.val_one]`. Simplify using `only [Matrix.of_apply, Matrix.cons_val, ← hp, ← hq]`. Take the linear combination `(-(γ g₁ 1 0 * p - γ (gstar c g₁) 1 0 * q)) * hv - (p - q) * ht`.
+-/
 private theorem exists_norm {G C : Type} [Group G] [CommRing C] (η : G →* ℤˣ) (Ψ : G →* Cˣ) (c g₁ : G)
     (h2 : IsUnit (2 : C)) (hM : Marks η Ψ c g₁) (j : ℤ) (γ : G → Matrix (Fin 3) (Fin 3) C)
     (hw : ∀ g, γ g ∈ gw C j) (hc : IsCoc (r0 η Ψ) γ) :
@@ -144,20 +193,42 @@ variable {O : Type} [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] [IsAdi
   [Group Γ] [TopologicalSpace Γ] [IsTopologicalGroup Γ] [CompactSpace Γ] [T2Space Γ] [TotallyDisconnectedSpace Γ] [Finite ι]
   (F : Frame O G Γ ι)
 
+/- English proof (translation)
+The claim follows from `Subtype.ext h`.
+-/
 private theorem val_ext {k : Type} [CommRing k] {j : ℤ} {X Y : Gb k j} (h : X.val = Y.val) : X = Y :=
   Subtype.ext h
 
+/- English proof (translation)
+Establish `h` using `(hF.Ψ_cont 1).comp (Ideal.Quotient.lift (maximalIdeal O ^ 1) (residue O) (fun a ha => by rwa [pow_one, ← residue_eq_zero_iff] at ha))`. Conclude with `IsLocallyConstant.desc F.Ψbar Units.val h Units.val_injective`.
+-/
 private theorem psibar_lc (hF : F.Ok) : IsLocallyConstant F.Ψbar := by
   have h := (hF.Ψ_cont 1).comp (Ideal.Quotient.lift (maximalIdeal O ^ 1) (residue O)
     (fun a ha => by rwa [pow_one, ← residue_eq_zero_iff] at ha))
   exact IsLocallyConstant.desc F.Ψbar Units.val h Units.val_injective
 
+/- English proof (translation)
+Apply `val_ext` to reduce the goal to its premises. Use extensionality with `a b`. Rewrite using `[gRep_val, gRep_val, adRep_baseLift_apply, adRep_baseLift_apply, h1, h2]`.
+-/
 private theorem gbar_congr (j : ℤ) {g h : Γ} (h1 : F.η g = F.η h) (h2 : F.Ψbar g = F.Ψbar h)
     (Y : Gb (ResidueField O) j) : F.gbar j g Y = F.gbar j h Y := by
   apply val_ext
   ext a b
   rw [gRep_val, gRep_val, adRep_baseLift_apply, adRep_baseLift_apply, h1, h2]
 
+/- English proof (translation)
+Establish `hlc : IsLocallyConstant (d0 (F.gbar j) Y)`. Rewrite using `[IsLocallyConstant.iff_eventually_eq]`. Introduce `x`. Use `filter_upwards [hF.η_cont.eventually_eq x, (psibar_lc F hF).eventually_eq x] with y h1 h2`. Rewrite using `[amitsur_d0_apply, amitsur_d0_apply, gbar_congr F j h1 h2]`.
+
+Establish `hcoc : ∀ g h, d0 (F.gbar j) Y (g * h) = d0 (F.gbar j) Y g + F.gbar j g (d0 (F.gbar j) Y h)`. Introduce `g h`. Simplify using `only [amitsur_d0_apply, map_mul, map_sub, Module.End.mul_apply]`. Normalize the expressions using the abelian group laws. Use `⟨⟨hlc.continuous, hcoc⟩, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[SetLike.mem_coe, Submodule.mem_iInf]`. Introduce `v`. Establish `hloc : Continuous (F.loc v)` using `hF.π_cont.comp continuous_subtype_val`. Use `⟨⟨hlc.continuous.comp hloc, fun g h => ?_⟩, fun _ s hs => ?_, fun _ _ => ⟨Y, rfl⟩, fun e e' s hs => ?_⟩` and prove the remaining obligations. Use `hcoc (F.loc v g) (F.loc v h)` as an intermediate fact.
+
+Rewrite `this` using `[← map_mul]`. Conclude with `this`. Use `show d0 (F.gbar j) Y (F.loc v s) = 0`. Rewrite using `[amitsur_d0_apply, gbar_congr F j (h := 1) (hs.1.2.trans (map_one _).symm) (hs.2.trans (map_one _).symm)]`. Simplify using the standard rewrite rules.
+
+Use `show d0 (F.gbar j) Y (F.loc v s) = 0`. Establish `h1 : F.η (F.loc v s) = 1` using `hF.η_I v (e ▸ Set.mem_insert _ _) s hs`. Rewrite using `[amitsur_d0_apply, sub_eq_zero]`. Apply `val_ext` to reduce the goal to its premises. Use extensionality with `a b`.
+
+Rewrite using `[gRep_val, adRep_baseLift_apply, if_pos h1]`. Distinguish the cases in `hab : wt a b = j`. Rewrite using `[hab.trans e', zpow_zero, Units.val_one, one_mul]`. Establish `: Y.val a b = 0` using `Y.2 a b hab`. Rewrite using `[this, mul_zero]`.
+-/
 private theorem commAlgFunctorCoboundaryZero_mem_cocyclesOne (hF : F.Ok) (j : ℤ) (Y : Gb (ResidueField O) j) : d0 (F.gbar j) Y ∈ F.selmerCocycles j := by
   have hlc : IsLocallyConstant (d0 (F.gbar j) Y) := by
     rw [IsLocallyConstant.iff_eventually_eq]
@@ -190,6 +261,11 @@ private theorem commAlgFunctorCoboundaryZero_mem_cocyclesOne (hF : F.Ok) (j : �
     · have : Y.val a b = 0 := Y.2 a b hab
       rw [this, mul_zero]
 
+/- English proof (translation)
+Use `MonoidHom.ext fun g => SemidirectProduct.ext (Units.ext ?_) rfl` and prove the remaining obligations. Use `show (tor O (F.Ψ g) : Matrix (Fin 3) (Fin 3) O).map (algebraMap O A) = ((tor A _ : GL (Fin 3) A) : Matrix (Fin 3) (Fin 3) A)`. Rewrite using `[tor_val, tor_val, Matrix.diagonal_map (map_zero _)]`. Use `congr 1`. Use function extensionality and compare the values at `i`.
+
+Conclude with `congrArg Units.val (map_zpow (Units.map (algebraMap O A).toMonoidHom) (F.Ψ g) (wt1 i))`.
+-/
 private theorem rz_eq (A : Type) [CommRing A] [Algebra O A] :
     F.rz A = r0 F.η ((Units.map (algebraMap O A).toMonoidHom).comp F.Ψ) := by
   refine MonoidHom.ext fun g => SemidirectProduct.ext (Units.ext ?_) rfl
@@ -199,6 +275,9 @@ private theorem rz_eq (A : Type) [CommRing A] [Algebra O A] :
   funext i
   exact congrArg Units.val (map_zpow (Units.map (algebraMap O A).toMonoidHom) (F.Ψ g) (wt1 i))
 
+/- English proof (translation)
+Establish `e1` using `congrArg Units.val (map_zpow (Units.map (algebraMap O (DualNumber (ResidueField O))).toMonoidHom) (F.Ψ g) n)`. Establish `e2` using `congrArg Units.val (map_zpow (Units.map (residue O).toMonoidHom) (F.Ψ g) n)`. Use `e1.symm.trans ?_` and prove the remaining obligations. Conclude with `congrArg TrivSqZeroExt.inl e2`.
+-/
 private theorem psi_dual (g : Γ) (n : ℤ) :
     ((((Units.map (algebraMap O (DualNumber (ResidueField O))).toMonoidHom).comp F.Ψ) g ^ n :
       (DualNumber (ResidueField O))ˣ) : DualNumber (ResidueField O)) =
@@ -208,6 +287,11 @@ private theorem psi_dual (g : Γ) (n : ℤ) :
   refine e1.symm.trans ?_
   exact congrArg TrivSqZeroExt.inl e2
 
+/- English proof (translation)
+Introduce `g h`. Use `ext1 a b`. Establish `e : (y (g * h)).val = (y g).val + adRep (r0 F.η F.Ψbar) g (y h).val` using `congrArg Gb.val (hy.1.2 g h)`. Rewrite using `[rz_eq, Matrix.add_apply, adRep_baseLift_apply, psi_dual]`. Simplify using `only [Matrix.map_apply]`.
+
+Rewrite using `[e, Matrix.add_apply, adRep_baseLift_apply]`. Apply the tactic sequence `split_ifs <;> ext <;> simp [mul_comm]`.
+-/
 private theorem coc_dual (j : ℤ) (y : Γ → Gb (ResidueField O) j) (hy : y ∈ F.selmerCocycles j) :
     IsCoc (F.rz (DualNumber (ResidueField O))) fun g => (y g).val.map TrivSqZeroExt.inr := by
   intro g h
@@ -218,6 +302,17 @@ private theorem coc_dual (j : ℤ) (y : Γ → Gb (ResidueField O) j) (hy : y �
   rw [e, Matrix.add_apply, adRep_baseLift_apply]
   split_ifs <;> ext <;> simp [mul_comm]
 
+/- English proof (translation)
+Use `haveI := isCO_dual O`. Establish `hz : F.IsPt g₁ (F.rz (DualNumber (ResidueField O)))` using `isPt_rz F hF g₁`. Establish `hf1 : ∀ x ∈ maximalIdeal (DualNumber (ResidueField O)), x * DualNumber.eps = 0` using `fun x hx => by`. Rewrite `hx` using `[mem_max_dual]`. Apply the tactic sequence `ext <;> simp [hx]`.
+
+Establish `hf2 : DualNumber.eps ∈ maximalIdeal (DualNumber (ResidueField O))` using `(mem_max_dual _).2 rfl`. Establish `hred : Red (F.ηv v) (F.Ψv v) ((F.rz (DualNumber (ResidueField O))).comp (F.loc v))` using `⟨fun g => rfl, fun g => hz.red (F.loc v g)⟩`. Establish `hzl : F.res1 j v y ∈ F.ZL j v` using `(Submodule.mem_iInf _).1 hy.2 v`. Establish `ho : ∀ g a b, ∃ o : O, residue O o = (F.res1 j v y g).val a b ∧ ((y (F.loc v g)).val.map TrivSqZeroExt.inr : Matrix _ _ (DualNumber (ResidueField O))) a b = o • DualNumber.eps` using `fun g a b => by`. Take `⟨o, ho⟩` from `residue_surjective ((y (F.loc v g)).val a b)`.
+
+Use `⟨o, ho, ?_⟩` and prove the remaining obligations. Rewrite using `[Matrix.map_apply, ← ho]`. Use `ext`. Simplify using the standard rewrite rules. Simplify using `[Algebra.smul_def]`.
+
+Both sides reduce to the same expression. Establish `hd : IsDeform ((F.rz (DualNumber (ResidueField O))).comp (F.loc v)) (fun g => (y (F.loc v g)).val.map TrivSqZeroExt.inr) (r.comp (F.loc v))` using `fun g => hr (F.loc v g)`. Distinguish the cases in `h1 : v = F.vl`. Conclude with `triangular_condition_at_l_of_first_order_deformation F hF hV _ hf1 hf2 j v h1 _ _ _ _ hred (hz.loc v) hzl ho hd`. Distinguish the cases in `h2 : v ∈ F.Sb`.
+
+Conclude with `locAt_deform_d F hF hV _ hf1 hf2 j v h2 _ _ _ _ hred (hz.loc v) hzl ho hd`. Conclude with `locAt_deform_u F hF hV _ hf1 hf2 j v (fun h => h.elim h1 h2) _ _ _ _ hred (hz.loc v) hzl ho hd`.
+-/
 private theorem loc_dual (hF : F.Ok) (hV : F.LocVan) (g₁ : Γ) (j : ℤ) (y : Γ → Gb (ResidueField O) j)
     (hy : y ∈ F.selmerCocycles j) (r : Γ →* GG 3 (DualNumber (ResidueField O)))
     (hr : IsDeform (F.rz _) (fun g => (y g).val.map TrivSqZeroExt.inr) r) (v : ι) :
@@ -249,6 +344,11 @@ private theorem loc_dual (hF : F.Ok) (hV : F.LocVan) (g₁ : Γ) (j : ℤ) (y : 
   · exact locAt_deform_d F hF hV _ hf1 hf2 j v h2 _ _ _ _ hred (hz.loc v) hzl ho hd
   · exact locAt_deform_u F hF hV _ hf1 hf2 j v (fun h => h.elim h1 h2) _ _ _ _ hred (hz.loc v) hzl ho hd
 
+/- English proof (translation)
+Establish `hv : ∀ a b, zvar F.c g₁ (F.rz (DualNumber (ResidueField O))) (fun g => (y g).val.map TrivSqZeroExt.inr) a b = TrivSqZeroExt.inr (zvar F.c g₁ (r0 F.η F.Ψbar) (fun g => (y g).val) a b)` using `fun a b => by`. Rewrite using `[rz_eq, zvar, zvar, diagonal_rep_matrix_eq, diagonal_rep_matrix_eq, diagonal_rep_matrix_eq, diagonal_rep_matrix_eq]`. Simplify using `only [Matrix.sub_apply, Matrix.mul_diagonal, Matrix.map_apply]`. Rewrite using `[psi_dual, psi_dual]`. Apply the tactic sequence `ext <;> simp [mul_comm]`.
+
+Use `⟨?_, by rw [hv, hn.z12, TrivSqZeroExt.inr_zero], by rw [hv, hn.z21, TrivSqZeroExt.inr_zero]⟩` and prove the remaining obligations. Establish `: (y F.c).val = 0` using `hn.atc`. Use `show (y F.c).val.map _ = 0`. Rewrite using `[this]`. Apply the tactic sequence `ext <;> simp`.
+-/
 private theorem norm_dual (g₁ : Γ) (j : ℤ) (y : Γ → Gb (ResidueField O) j)
     (hn : NormCoc F.c g₁ (r0 F.η F.Ψbar) fun g => (y g).val) :
     NormCoc F.c g₁ (F.rz (DualNumber (ResidueField O))) fun g => (y g).val.map TrivSqZeroExt.inr := by
@@ -264,6 +364,9 @@ private theorem norm_dual (g₁ : Γ) (j : ℤ) (y : Γ → Gb (ResidueField O) 
   rw [this]
   ext <;> simp
 
+/- English proof (translation)
+Rewrite using `[rz_eq, diagonal_rep_matrix_eq]`. Use `congr 1`. Use function extensionality and compare the values at `i`. Conclude with `psi_dual F g _`.
+-/
 private theorem rz_mat_dual (g : Γ) : (F.rz (DualNumber (ResidueField O)) g).mat =
     Matrix.diagonal fun i => TrivSqZeroExt.inl ((F.Ψbar g ^ wt1 i : (ResidueField O)ˣ) : ResidueField O) := by
   rw [rz_eq, diagonal_rep_matrix_eq]
@@ -271,6 +374,9 @@ private theorem rz_mat_dual (g : Γ) : (F.rz (DualNumber (ResidueField O)) g).ma
   funext i
   exact psi_dual F g _
 
+/- English proof (translation)
+Use `⟨fun g => (hr g).1, fun g a b => ?_⟩` and prove the remaining obligations. Establish `e0 : (F.rz A g).mat = ((r0 F.η F.Ψ g).mat).map (algebraMap O A)` using `rfl`. Rewrite using `[(hr g).2, Matrix.add_mul, Matrix.one_mul, ← e0, add_sub_cancel_left, Matrix.mul_apply]`. Conclude with `Ideal.sum_mem _ fun k _ => Ideal.mul_mem_right _ _ (hγ g a k)`.
+-/
 private theorem red_deform {A : Type} [CommRing A] [IsLocalRing A] [Algebra O A] (γ : Γ → Matrix (Fin 3) (Fin 3) A)
     (hγ : ∀ g, EntIn (maximalIdeal A) (γ g)) (r : Γ →* GG 3 A) (hr : IsDeform (F.rz A) γ r) : Red F.η F.Ψ r := by
   refine ⟨fun g => (hr g).1, fun g a b => ?_⟩
@@ -278,6 +384,11 @@ private theorem red_deform {A : Type} [CommRing A] [IsLocalRing A] [Algebra O A]
   rw [(hr g).2, Matrix.add_mul, Matrix.one_mul, ← e0, add_sub_cancel_left, Matrix.mul_apply]
   exact Ideal.sum_mem _ fun k _ => Ideal.mul_mem_right _ _ (hγ g a k)
 
+/- English proof (translation)
+Establish `hlc : IsLocallyConstant y` using `(IsLocallyConstant.iff_continuous y).2 hy.1.1`. Rewrite using `[IsLocallyConstant.iff_eventually_eq]`. Introduce `x`. Use `filter_upwards [hlc.eventually_eq x, (psibar_lc F hF).eventually_eq x] with z h1 h2`. Rewrite using `[(hr z).2, (hr x).2, rz_mat_dual, rz_mat_dual, h2]`.
+
+Use `beta_reduce`. Rewrite using `[h1]`.
+-/
 private theorem lc_dual (hF : F.Ok) (j : ℤ) (y : Γ → Gb (ResidueField O) j)
     (hy : y ∈ F.selmerCocycles j) (r : Γ →* GG 3 (DualNumber (ResidueField O)))
     (hr : IsDeform (F.rz _) (fun g => (y g).val.map TrivSqZeroExt.inr) r) :
@@ -290,6 +401,11 @@ private theorem lc_dual (hF : F.Ok) (j : ℤ) (y : Γ → Gb (ResidueField O) j)
   beta_reduce
   rw [h1]
 
+/- English proof (translation)
+Use `haveI := isCO_dual O`. Establish `hz : F.IsPt g₁ (F.rz (DualNumber (ResidueField O)))` using `isPt_rz F hF g₁`. Establish `hent : ∀ g, EntIn (maximalIdeal (DualNumber (ResidueField O))) ((y g).val.map TrivSqZeroExt.inr)` using `fun g a b => (mem_max_dual _).2 rfl`. Take `⟨r, hr⟩` from `exists_isDeform (maximalIdeal (DualNumber (ResidueField O))) (F.rz (DualNumber (ResidueField O))) (fun g => (y g).val.map TrivSqZeroExt.inr) max_sq_dual hent (coc_dual F j y hy)`. Establish `h1` using `red_deform F _ hent r hr`.
+
+Establish `h2` using `loc_dual F hF hV g₁ j y hy r hr`. Establish `h3` using `(isDeform_normalised_iff _ _ _ _ _ hz.norm hr).2 (norm_dual F g₁ j y hn)`. Establish `h4 : UnitaryThreeInertia.AdicCont (maximalIdeal (DualNumber (ResidueField O))) r` using `fun n => (lc_dual F hF j y hy r hr).comp fun X => X.map (Ideal.Quotient.mk (maximalIdeal _ ^ n))`. Conclude with `⟨r, ⟨⟨⟨h1, h2⟩, h3⟩, h4⟩, hr⟩`.
+-/
 private theorem exists_pt (hF : F.Ok) (hV : F.LocVan) (g₁ : Γ) (j : ℤ) (y : Γ → Gb (ResidueField O) j)
     (hy : y ∈ F.selmerCocycles j) (hn : NormCoc F.c g₁ (r0 F.η F.Ψbar) fun g => (y g).val) :
     ∃ r : Γ →* GG 3 (DualNumber (ResidueField O)), F.IsPt g₁ r ∧
@@ -307,6 +423,19 @@ private theorem exists_pt (hF : F.Ok) (hV : F.LocVan) (g₁ : Γ) (j : ℤ) (y :
     (lc_dual F hF j y hy r hr).comp fun X => X.map (Ideal.Quotient.mk (maximalIdeal _ ^ n))
   exact ⟨r, ⟨⟨⟨h1, h2⟩, h3⟩, h4⟩, hr⟩
 
+/- English proof (translation)
+Use `haveI := isCO_dual O`. Take `⟨r, hp, hr⟩` from `exists_pt F hF hV g₁ j y hy hn`. Establish `key : ∀ (r : Γ →* GG 3 (DualNumber (ResidueField O))) (f : R →ₐ[O] DualNumber (ResidueField O)), push f u = r → (∀ i, (r (g i)).mat (a i) (b i) = (F.rz _ (g i)).mat (a i) (b i)) → ∀ p, f (W.π p) = algebraMap O _ (MvPowerSeries.constantCoeff p)`. Introduce `r f hf h`. Use `map_eq_cc (f.comp W.π) fun i => ?_` and prove the remaining obligations.
+
+Establish `e1 : f ((u (g i)).mat (a i) (b i)) = (r (g i)).mat (a i) (b i)` using `congrArg (fun r : Γ →* GG 3 _ => (r (g i)).mat (a i) (b i)) hf`. Establish `e2 : f ((F.rz R (g i)).mat (a i) (b i)) = (F.rz _ (g i)).mat (a i) (b i)` using `f.commutes _`. Use `show f (W.z i) = 0`. Rewrite using `[hW, map_sub, e1, e2, h, sub_self]`. Establish `hm : ∀ s a b, (r s).mat a b = (F.rz _ s).mat a b + TrivSqZeroExt.inr ((y s).val a b * ((F.Ψbar s ^ wt1 b : (ResidueField O)ˣ) : ResidueField O))`.
+
+Introduce `s a b`. Rewrite using `[(hr s).2, Matrix.add_mul, Matrix.one_mul, Matrix.add_apply, add_right_inj, rz_mat_dual, Matrix.mul_diagonal]`. Apply the tactic sequence `ext <;> simp [mul_comm]`. Take `⟨f, hf, -⟩` from `hu.univ _ r hp`. Take `⟨f₀, hf₀, -⟩` from `hu.univ _ (F.rz (DualNumber (ResidueField O))) (isPt_rz F hF g₁)`.
+
+Establish `k1` using `key r f hf fun i => by rw [hm, h0, zero_mul, TrivSqZeroExt.inr_zero, add_zero]`. Establish `k2` using `key _ f₀ hf₀ fun _ => rfl`. Establish `hff : f = f₀` using `AlgHom.ext fun x => by`. Take `⟨p, rfl⟩` from `W.surj x`. Rewrite using `[k1, k2]`.
+
+Establish `hrr : r = F.rz _` using `by rw [← hf, hff, hf₀]`. Use function extensionality and compare the values at `s`. Apply `val_ext` to reduce the goal to its premises. Use extensionality with `a b`. Use `hm s a b` as an intermediate fact.
+
+Rewrite `this` using `[hrr, left_eq_add]`. Establish `h3` using `congrArg TrivSqZeroExt.snd this`. Rewrite `h3` using `[TrivSqZeroExt.snd_inr, TrivSqZeroExt.snd_zero, Units.mul_left_eq_zero]`. Conclude with `h3`.
+-/
 private theorem eq_zero_of_coord (hF : F.Ok) (hV : F.LocVan) (g₁ : Γ) {R : Type} [CommRing R] [Algebra O R] [IsCO O R]
     (u : Γ →* GG 3 R) (hu : F.IsUniv g₁ u) (W : WPres O ℤ R) (g : W.σ → Γ) (a b : W.σ → Fin 3)
     (hW : ∀ i, W.z i = (u (g i)).mat (a i) (b i) - (F.rz R (g i)).mat (a i) (b i))
@@ -350,6 +479,13 @@ private theorem eq_zero_of_coord (hF : F.Ok) (hV : F.LocVan) (g₁ : Γ) {R : Ty
 
 end Main
 
+/- English proof (translation)
+Establish `hi : Function.Injective (φ.comp N.subtype)`. Rewrite using `[injective_iff_map_eq_zero]`. Conclude with `fun x hx => Subtype.ext (h2 x x.2 hx)`. Establish `: Module.Finite k N` using `Module.Finite.of_injective _ hi`. Establish `hs : Function.Surjective (B.mkQ.comp N.subtype)` using `fun q => by`.
+
+Take `⟨x, rfl⟩` from `B.mkQ_surjective q`. Take `⟨b, hb, hx⟩` from `h1 x`. Use `⟨⟨_, hx⟩, ?_⟩` and prove the remaining obligations. Use `show B.mkQ (x + b) = B.mkQ x`. Rewrite using `[map_add, Submodule.mkQ_apply B b, (Submodule.Quotient.mk_eq_zero B).2 hb, add_zero]`.
+
+Conclude with `(LinearMap.finrank_le_finrank_of_surjective hs).trans (LinearMap.finrank_le_finrank_of_injective hi)`.
+-/
 private theorem finrank_quot_le {k V U : Type} [Field k] [AddCommGroup V] [Module k V] [AddCommGroup U] [Module k U]
     [Module.Finite k U] (B N : Submodule k V) (φ : V →ₗ[k] U) (h1 : ∀ x, ∃ b ∈ B, x + b ∈ N)
     (h2 : ∀ x ∈ N, φ x = 0 → x = 0) : Module.finrank k (V ⧸ B) ≤ Module.finrank k U := by
@@ -367,6 +503,23 @@ private theorem finrank_quot_le {k V U : Type} [Field k] [AddCommGroup V] [Modul
 
 end UpperTheory.V.UnitaryThreeInertia.Tan
 
+/- English proof (translation)
+Introduce `O _ _ _ _ _ _ G Γ ι _ _ _ _ _ _ _ _ _ _ _ _ _ F hF hV _ g₁ hg R _ _ _ u hu W hW j`. Use `choose g a b _ hwt hz using hW.var`. Establish `hM : Marks F.η F.Ψbar F.c g₁` using `⟨hF.csq, hF.ηc, by simp [Frame.Ψbar, hF.Ψc], hg.1, by simpa [Frame.Ψbar] using hg.2.map (residue O)⟩`. Establish `h2 : IsUnit (2 : ResidueField O)`. Use `hF.two.map (residue O)` as an intermediate fact.
+
+Rewrite `this` using `[map_ofNat]`. Then use the resulting hypothesis. Set `N : Submodule (ResidueField O) (F.selmerCocycles j)` to `{ carrier := {y | NormCoc F.c g₁ (r0 F.η F.Ψbar) fun g => (y.1 g).val} add_mem' := fun {y y'} h h' => by`. Establish `e : ∀ s, ((y + y').1 s).val = (y.1 s).val + (y'.1 s).val` using `fun _ => rfl`. Establish `e' : zvar F.c g₁ (r0 F.η F.Ψbar) (fun g => ((y + y').1 g).val) = zvar F.c g₁ (r0 F.η F.Ψbar) (fun g => (y.1 g).val) + zvar F.c g₁ (r0 F.η F.Ψbar) (fun g => (y'.1 g).val)`. Simplify using `only [zvar, e, Matrix.add_mul]`.
+
+Normalize the expressions using the abelian group laws. Use `⟨?_, by rw [e', Matrix.add_apply, h.z12, h'.z12, add_zero], by rw [e', Matrix.add_apply, h.z21, h'.z21, add_zero]⟩` and prove the remaining obligations. Conclude with `(e _).trans ((congrArg₂ (· + ·) h.atc h'.atc).trans (add_zero _))`. Use the proof step `zero_mem' := by`. Establish `e : ∀ s, ((0 : F.selmerCocycles j).1 s).val = 0` using `fun _ => rfl`.
+
+Conclude with `⟨rfl, by simp only [zvar, e, Matrix.zero_mul, sub_zero, Matrix.zero_apply], by simp only [zvar, e, Matrix.zero_mul, sub_zero, Matrix.zero_apply]⟩`. Use the proof step `smul_mem' := fun t y h => by`. Establish `e : ∀ s, ((t • y).1 s).val = t • (y.1 s).val` using `fun _ => rfl`. Establish `e' : zvar F.c g₁ (r0 F.η F.Ψbar) (fun g => ((t • y).1 g).val) = t • zvar F.c g₁ (r0 F.η F.Ψbar) (fun g => (y.1 g).val)`. Simplify using `only [zvar, e, Matrix.smul_mul, smul_sub]`.
+
+Use `⟨?_, by rw [e', Matrix.smul_apply, h.z12, smul_zero], by rw [e', Matrix.smul_apply, h.z21, smul_zero]⟩` and prove the remaining obligations. Conclude with `(e _).trans ((congrArg (t • ·) h.atc).trans (smul_zero _)) }`. Set `φ : F.selmerCocycles j →ₗ[ResidueField O] ({i // W.wt i = j} → ResidueField O)` to `{ toFun := fun y i => (y.1 (g i)).val (a i) (b i) map_add' := fun _ _ => rfl map_smul' := fun _ _ => rfl }`. Rewrite using `[Nat.card_eq_fintype_card, ← Module.finrank_fintype_fun_eq_card (ResidueField O)]`. Use `Tan.finrank_quot_le _ N φ (fun y => ?_) fun y hy h0 => ?_` and prove the remaining obligations.
+
+Take `⟨Y, hY, hn⟩` from `Tan.exists_norm F.η F.Ψbar F.c g₁ h2 hM j (fun s => (y.1 s).val) (fun s => (y.1 s).2) fun s t => congrArg Gb.val (y.2.1.2 s t)`. Use `⟨⟨_, Tan.commAlgFunctorCoboundaryZero_mem_cocyclesOne F hF j ⟨Y, hY⟩⟩, ⟨⟨Y, hY⟩, rfl⟩, ?_⟩` and prove the remaining obligations. Use `show NormCoc _ _ _ _`. Use `hn using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `s`.
+
+Use `show (y.1 s).val + (adRep (r0 F.η F.Ψbar) s Y - Y) = (y.1 s).val - (Y - adRep (r0 F.η F.Ψbar) s Y)`. Normalize the expressions using the abelian group laws. Use `Subtype.ext (Tan.eq_zero_of_coord F hF hV g₁ u hu W g a b hz j y.1 y.2 hy fun i => ?_)` and prove the remaining obligations. Distinguish the cases in `hi : W.wt i = j`. Conclude with `congrFun h0 ⟨i, hi⟩`.
+
+Conclude with `(y.1 (g i)).2 _ _ (hwt i ▸ hi)`.
+-/
 theorem UpperTheory.V.UnitaryThreeInertia.finrank_H1L_le :
     ∀ {O : Type} [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] [IsAdicComplete (maximalIdeal O) O] [CharZero O] [Finite (ResidueField O)]
       {G Γ ι : Type} [Group G] [TopologicalSpace G] [IsTopologicalGroup G] [CompactSpace G] [T2Space G] [TotallyDisconnectedSpace G]

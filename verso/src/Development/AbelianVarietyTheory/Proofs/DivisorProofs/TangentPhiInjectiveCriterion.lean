@@ -13,6 +13,9 @@ attribute [local instance] Over.cartesianMonoidalCategory
 
 namespace GlobalTheory.SqZeroPt.CnSurj
 
+/- English proof (translation)
+Use `letI := (isChart O M).algebra`. Use `letI := topModule O M`. Conclude with `map_smul ((AugCot.lift ((isChart O M).aug (GlobalTheory.LieVB.sec_hom _)) (sndFn O M) (sndFn_der O M)) ∘ₗ ((isChart O M).augCotEquiv (GlobalTheory.LieVB.sec_hom _)).symm.toLinearMap) r s`.
+-/
 theorem kappa_smul (O : Type) [CommRing O] (M : Type) [AddCommGroup M] [Module O M]
     [Module Oᵐᵒᵖ M] [IsCentralScalar O M] (r : Γ(Sp O, ⊤))
     (s : Γ(GlobalTheory.Conormal.conormal (GlobalTheory.LieVB.sec (zeroSec O M)), ⊤)) :
@@ -22,6 +25,9 @@ theorem kappa_smul (O : Type) [CommRing O] (M : Type) [AddCommGroup M] [Module O
   exact map_smul ((AugCot.lift ((isChart O M).aug (GlobalTheory.LieVB.sec_hom _)) (sndFn O M)
     (sndFn_der O M)) ∘ₗ ((isChart O M).augCotEquiv (GlobalTheory.LieVB.sec_hom _)).symm.toLinearMap) r s
 
+/- English proof (translation)
+Establish `e : toO O (GlobalTheory.LieVB.cst O c) = c` using `Iso.inv_hom_id_apply (Scheme.ΓSpecIso (CommRingCat.of O)) c`. Establish `h1` using `map_smul (QCoh.appLinear (GlobalTheory.LieVB.cotMap z h) ⊤) (GlobalTheory.LieVB.cst O c) (show Γ(GlobalTheory.LieVB.omega A, ⊤) from w)`. Use `(congrArg (kappa O M) h1).trans ((kappa_smul O M _ _).trans ?_)` and prove the remaining obligations. Rewrite using `[e]`. Both sides reduce to the same expression.
+-/
 theorem Phi_smul {O : Type} [CommRing O] {M : Type} [AddCommGroup M] [Module O M]
     [Module Oᵐᵒᵖ M] [IsCentralScalar O M] {A : Over (Sp O)} [GrpObj A]
     (z : TM O M ⟶ A) (h : zeroSec O M ≫ z = η[A]) (c : O) (w : Wmod A) :
@@ -33,6 +39,15 @@ theorem Phi_smul {O : Type} [CommRing O] {M : Type} [AddCommGroup M] [Module O M
   rw [e]
   rfl
 
+/- English proof (translation)
+Set `ε` to `Bialgebra.counitAlgHom O (G.A n)`. Set `c : Wmod A →ₗ[O] AugCot ε` to `{ toFun := cn t n map_add' := map_add (cn t n) map_smul' := fun a w => Phi_smul _ _ a w }`. Set `N` to `AugCot ε ⧸ LinearMap.range c`. Use `letI : Module Oᵐᵒᵖ N := opModule O N`. Use `haveI : IsCentralScalar O N := opModule_central O N`.
+
+Set `q : AugCot ε →ₗ[O] N` to `(LinearMap.range c).mkQ`. Set `φ` to `(AugCot.sqZeroEquiv ε N).symm q`. Set `φ₀` to `(AugCot.sqZeroEquiv ε N).symm 0`. Establish `e : φ.1 = φ₀.1` using `t.inj n _ _ _ <| hinj N _ _ (zeroSec_spOver_y t n φ.1 φ.2) (zeroSec_spOver_y t n φ₀.1 φ₀.2) fun w => by`. Use `(hnat N n φ.1 φ.2 w).trans (Eq.trans ?_ (hnat N n φ₀.1 φ₀.2 w).symm)` and prove the remaining obligations.
+
+Express the relevant statement in the definitionally equal form `AugCot.sqZeroEquiv ε N φ (c w) = AugCot.sqZeroEquiv ε N φ₀ (c w)`. Rewrite using `[Equiv.apply_symm_apply, Equiv.apply_symm_apply, LinearMap.zero_apply]`. Conclude with `(Submodule.Quotient.mk_eq_zero _).2 ⟨w, rfl⟩`. Establish `hq : q = 0` using `(AugCot.sqZeroEquiv ε N).symm.injective (Subtype.ext e)`. Introduce `x`.
+
+Conclude with `(Submodule.Quotient.mk_eq_zero (LinearMap.range c)).1 (LinearMap.congr_fun hq x)`.
+-/
 theorem cn_surjective (p : ℕ) (O : Type) [CommRing O] (G : GlobalTheory.PDivGroup p O) (A : Over (Sp O))
     [GrpObj A] (t : G.TorsionTower A)
     (hinj : ∀ (M : Type) [AddCommGroup M] [Module O M] [Module Oᵐᵒᵖ M] [IsCentralScalar O M]

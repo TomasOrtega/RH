@@ -12,20 +12,32 @@ variable {F E : Type*} [Field F] [Field E] [NumberField F] [NumberField E] [Alge
 variable {W : Type*} [AddCommGroup W] [Module E W] {ι : Type*} [Fintype ι] [DecidableEq ι]
 
 omit [DecidableEq ι] in
+/- English proof (translation)
+The claim follows from `(continuous_star.comp hy).dotProduct (continuous_const.matrix_mulVec hy)`.
+-/
 theorem continuous_hForm_self (H : Matrix ι ι ℂ) {X : Type*} [TopologicalSpace X] {y : X → ι → ℂ}
     (hy : Continuous y) : Continuous fun x => hForm H (y x) (y x) :=
   (continuous_star.comp hy).dotProduct (continuous_const.matrix_mulVec hy)
 
 omit [DecidableEq ι] in
+/- English proof (translation)
+The claim follows from `continuous_const.dotProduct (continuous_const.matrix_mulVec hy)`.
+-/
 theorem continuous_hForm_right (H : Matrix ι ι ℂ) (u : ι → ℂ) {X : Type*} [TopologicalSpace X]
     {y : X → ι → ℂ} (hy : Continuous y) : Continuous fun x => hForm H u (y x) :=
   continuous_const.dotProduct (continuous_const.matrix_mulVec hy)
 
 omit [DecidableEq ι] in
+/- English proof (translation)
+Apply the tactic sequence `apply Complex.ext <;> simp [heisS]`.
+-/
 theorem heisS_eq (H : Matrix ι ι ℂ) (y : ι → ℂ) (t : ℝ) :
     heisS H y t = ((-(hForm H y y).re / 2 : ℝ) : ℂ) + (t : ℂ) * Complex.I := by
   apply Complex.ext <;> simp [heisS]
 
+/- English proof (translation)
+Establish `hs : Continuous fun x => heisS H (y x) (t x)`. Simplify using `only [heisS_eq]`. Conclude with `(Complex.continuous_ofReal.comp ((Complex.continuous_re.comp (continuous_hForm_self H hy)).neg.div_const 2)).add ((Complex.continuous_ofReal.comp ht).mul continuous_const)`. Unfold `heisMat`. Conclude with `(continuous_const.add ((hy.add (hs.smul continuous_const)).matrix_vecMulVec continuous_const)).sub (continuous_const.matrix_vecMulVec ((continuous_star.comp hy).matrix_vecMul continuous_const))`.
+-/
 theorem continuous_heisMat_heisS (H : Matrix ι ι ℂ) (a : ι → ℂ) {X : Type*} [TopologicalSpace X]
     {y : X → ι → ℂ} {t : X → ℝ} (hy : Continuous y) (ht : Continuous t) :
     Continuous fun x => heisMat H a (y x) (heisS H (y x) (t x)) := by
@@ -44,12 +56,18 @@ section Homeo
 variable {h : HermitianForm F E W} {v : Basis ι E W} {x₀ w₀ : W}
 
 omit [NumberField F] [NumberField E] [IsTotallyReal F] [IsTotallyComplex E] in
+/- English proof (translation)
+The claim follows from `Units.continuous_val.comp ((continuous_apply w).comp (continuous_subtype_val.comp continuous_subtype_val))`.
+-/
 theorem continuous_unipRadical_at (w : InfinitePlace E) :
     Continuous fun n : unipRadical h v x₀ =>
       (((n : archUnitary h v) : InfinitePlace E → GL ι ℂ) w : Matrix ι ι ℂ) :=
   Units.continuous_val.comp ((continuous_apply w).comp
     (continuous_subtype_val.comp continuous_subtype_val))
 
+/- English proof (translation)
+Take `⟨hH, -, -, -, hab⟩` from `hyperbolic_at_place h v hp w`. Establish `hyb : hForm (gramAt h v w) ((p.1 : InfinitePlace E → ι → ℂ) w) (vecAt v w₀ w) = 0`. Rewrite using `[← hForm_conj hH, (p.1.2 w).2, map_zero]`. Rewrite using `[heisU, heisPoint_val, heisMatAt, heisMat_mulVec, hab, hyb]`. Simplify using `only [one_smul, zero_smul, sub_zero, add_sub_cancel_left]`.
+-/
 theorem heisU_heisPoint (hp : IsHyperbolicPair h x₀ w₀) (p : HeisCoord h v x₀ w₀)
     (w : InfinitePlace E) :
     heisU (w₀ := w₀) (heisPoint hp p) w = (p.1 : InfinitePlace E → ι → ℂ) w +
@@ -60,6 +78,9 @@ theorem heisU_heisPoint (hp : IsHyperbolicPair h x₀ w₀) (p : HeisCoord h v x
   rw [heisU, heisPoint_val, heisMatAt, heisMat_mulVec, hab, hyb]
   simp only [one_smul, zero_smul, sub_zero, add_sub_cancel_left]
 
+/- English proof (translation)
+Take `⟨hH, -, -, -, hab⟩` from `hyperbolic_at_place h v hp w`. Establish `hba : hForm (gramAt h v w) (vecAt v w₀ w) (vecAt v x₀ w) = 1`. Rewrite using `[← hForm_conj hH, hab, map_one]`. Rewrite using `[heisU_heisPoint, hForm_add_right, hForm_smul_right, (p.1.2 w).2, hba]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem hForm_heisU_heisPoint (hp : IsHyperbolicPair h x₀ w₀) (p : HeisCoord h v x₀ w₀)
     (w : InfinitePlace E) :
     hForm (gramAt h v w) (vecAt v w₀ w) (heisU (w₀ := w₀) (heisPoint hp p) w) =
@@ -70,6 +91,9 @@ theorem hForm_heisU_heisPoint (hp : IsHyperbolicPair h x₀ w₀) (p : HeisCoord
   rw [heisU_heisPoint, hForm_add_right, hForm_smul_right, (p.1.2 w).2, hba]
   ring
 
+/- English proof (translation)
+Use `Prod.ext (Subtype.ext (funext fun w => ?_)) (funext fun w => ?_)` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `heisYOf (w₀ := w₀) (heisPoint hp p) w = (p.1 : InfinitePlace E → ι → ℂ) w`. Rewrite using `[heisYOf, hForm_heisU_heisPoint, heisU_heisPoint, add_sub_cancel_right]`. Express the relevant statement in the definitionally equal form `(hForm (gramAt h v w) (vecAt v w₀ w) (heisU (w₀ := w₀) (heisPoint hp p) w)).im = p.2 w`. Rewrite using `[hForm_heisU_heisPoint, heisS_im]`.
+-/
 theorem heisCoordOf_heisPoint (hp : IsHyperbolicPair h x₀ w₀) (p : HeisCoord h v x₀ w₀) :
     heisCoordOf hp (heisPoint hp p) = p := by
   refine Prod.ext (Subtype.ext (funext fun w => ?_)) (funext fun w => ?_)
@@ -78,6 +102,11 @@ theorem heisCoordOf_heisPoint (hp : IsHyperbolicPair h x₀ w₀) (p : HeisCoord
   · change (hForm (gramAt h v w) (vecAt v w₀ w) (heisU (w₀ := w₀) (heisPoint hp p) w)).im = p.2 w
     rw [hForm_heisU_heisPoint, heisS_im]
 
+/- English proof (translation)
+Apply `Subtype.ext` to reduce the goal to its premises. Apply `Subtype.ext` to reduce the goal to its premises. Use function extensionality and compare the values at `w`. Apply `Units.ext` to reduce the goal to its premises. Take `⟨-, -, h3, h4⟩` from `heisYOf_spec hp n w`.
+
+Rewrite using `[heisPoint_val]`. Use `conv_rhs => rw [h4]`. Conclude with `congrArg (heisMat (gramAt h v w) (vecAt v x₀ w) (heisYOf (w₀ := w₀) n w)) (eq_heisS h3).symm`.
+-/
 theorem heisPoint_heisCoordOf (hp : IsHyperbolicPair h x₀ w₀) (n : unipRadical h v x₀) :
     heisPoint hp (heisCoordOf hp n) = n := by
   apply Subtype.ext
@@ -117,9 +146,17 @@ def heisHomeo (hp : IsHyperbolicPair h x₀ w₀) : HeisCoord h v x₀ w₀ ≃�
       exact (hu w).sub ((hs w).smul continuous_const)
     · exact continuous_pi fun w => Complex.continuous_im.comp (hs w)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem heisHomeo_apply (hp : IsHyperbolicPair h x₀ w₀) (p : HeisCoord h v x₀ w₀) :
     heisHomeo hp p = heisPoint hp p := rfl
 
+/- English proof (translation)
+Apply `Subtype.ext` to reduce the goal to its premises. Apply `Subtype.ext` to reduce the goal to its premises. Use function extensionality and compare the values at `w`. Apply `Units.ext` to reduce the goal to its premises. Simplify using `only [Subgroup.coe_mul, Pi.mul_apply, Units.val_mul]`.
+
+Rewrite using `[heisPoint_val, heisPoint_val, heisPoint_val, heisMatAt_mul hp p.1.2 q.1.2]`. Both sides reduce to the same expression.
+-/
 theorem heisPoint_mul (hp : IsHyperbolicPair h x₀ w₀) (p q : HeisCoord h v x₀ w₀) :
     heisPoint hp p * heisPoint hp q = heisPoint hp (p.1 + q.1, p.2 + q.2 - fun w =>
       (hForm (gramAt h v w) ((p.1 : InfinitePlace E → ι → ℂ) w)
@@ -155,11 +192,19 @@ def heisConjLin (g : archUnitary h v) (hg : g ∈ vecFixGroup h v x₀ ⊓ vecFi
     rw [real_smul_vec, real_smul_vec, mulVec_smul]
 
 omit [NumberField F] [NumberField E] [IsTotallyReal F] [IsTotallyComplex E] in
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem heisConjLin_apply (g : archUnitary h v)
     (hg : g ∈ vecFixGroup h v x₀ ⊓ vecFixGroup h v w₀) (y : heisY h v x₀ w₀) (w : InfinitePlace E) :
     ((heisConjLin g hg y : heisY h v x₀ w₀) : InfinitePlace E → ι → ℂ) w =
       ((g : InfinitePlace E → GL ι ℂ) w : Matrix ι ι ℂ) *ᵥ (y : InfinitePlace E → ι → ℂ) w := rfl
 
+/- English proof (translation)
+Apply `Subtype.ext` to reduce the goal to its premises. Use function extensionality and compare the values at `w`. Apply `Units.ext` to reduce the goal to its premises. Establish `ha` using `(Subgroup.mem_inf.1 hg).1 w`. Establish `hu` using `archUnitary_at_place g w`.
+
+Simplify using `only [Subgroup.coe_mul, Subgroup.coe_inv, Pi.mul_apply, Pi.inv_apply, Units.val_mul]`. Rewrite using `[heisPoint_val, heisPoint_val, heisMatAt, heisMatAt, heisMat_conj hu ha, mul_assoc, Units.mul_inv, mul_one, heisConjLin_apply]`. Use `congr 1`. Simplify using `only [heisS, hForm_mulVec_of_unitary _ hu]`.
+-/
 theorem heisPoint_conj (hp : IsHyperbolicPair h x₀ w₀) (g : archUnitary h v)
     (hg : g ∈ vecFixGroup h v x₀ ⊓ vecFixGroup h v w₀) (p : HeisCoord h v x₀ w₀) :
     g * ((heisPoint hp p : unipRadical h v x₀) : archUnitary h v) * g⁻¹ =

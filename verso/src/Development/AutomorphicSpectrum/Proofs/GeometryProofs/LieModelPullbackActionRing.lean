@@ -12,6 +12,13 @@ noncomputable section
 
 namespace GlobalTheory.CompanionTheory.Ar.FlagStep
 
+/- English proof (translation)
+Introduce `_ ha ha' hj a e`. Establish `hcanc : ∀ v w : epsAt ξ' ⟶ t'.G, v.left ≫ m.φ = w.left ≫ m.φ → v = w`. Introduce `v w h`. Apply `Over.OverMorphism.ext` to reduce the goal to its premises. Use `m.cart.1.hom_ext h ?_` and prove the remaining obligations.
+
+Rewrite using `[Over.w v, Over.w w]`. Apply `M'.inj` to reduce the goal to its premises. Use `hcanc _ _ ?_` and prove the remaining obligations. Rewrite using `[ha' a (j e), hj, ha a e, Over.comp_left, Over.comp_left, Category.assoc, m.act a]`. Establish `h2` using `congrArg (· ≫ (t.act.act a).left) (hj e)`.
+
+Simplify using `only [Category.assoc] at h2 ⊢`. Conclude with `h2.symm`.
+-/
 theorem lieMap_act_pull (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (X X' : Scheme.{0}) (t : SAB H X)
     (t' : SAB H X') (f : X' ⟶ X) (m : SABMap t' t f) (Ω Ω' : Type) [Field Ω] [Field Ω']
     (ξ : Spec (CommRingCat.of Ω) ⟶ X) (ξ' : Spec (CommRingCat.of Ω') ⟶ X') (i : Ω →+* Ω')

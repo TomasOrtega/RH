@@ -18,17 +18,41 @@ section Alg
 
 variable {E : Type} [Field E] {n : ℕ} (σ : E →+* E) (J : Matrix (Fin n) (Fin n) E)
 
+/- English proof (translation)
+Simplify using `[form, Matrix.mulVec_add, dotProduct_add]`.
+-/
 theorem form_add_left (x x' y : Fin n → E) : form σ J (x + x') y = form σ J x y + form σ J x' y := by
   simp [form, Matrix.mulVec_add, dotProduct_add]
 
+/- English proof (translation)
+Establish `h : (fun i => σ ((y + y') i)) = (fun i => σ (y i)) + fun i => σ (y' i)`. Use extensionality with `i`. Simplify using the standard rewrite rules. Rewrite using `[form, h, add_dotProduct]`. Both sides reduce to the same expression.
+-/
 theorem form_add_right (x y y' : Fin n → E) : form σ J x (y + y') = form σ J x y + form σ J x y' := by
   have h : (fun i => σ ((y + y') i)) = (fun i => σ (y i)) + fun i => σ (y' i) := by
     ext i; simp
   rw [form, h, add_dotProduct]; rfl
 
+/- English proof (translation)
+Simplify using `[form]`.
+-/
 theorem form_zero_right (x : Fin n → E) : form σ J x 0 = 0 := by
   simp [form]
 
+/- English proof (translation)
+Set `Φ : (Fin n → E) →ₗ[E] (Fin r → E) × (Fin r → E)` to `{ toFun := fun t => (fun b => form σ J t (e b), fun b => form σ J t (g b)) map_add' := fun x y => by`. Apply the tactic sequence `ext b <;> simp [form_add_left]`. Use the proof step `map_smul' := fun c x => by`. Apply the tactic sequence `ext b <;> simp [form_smul_left'] }`. Establish `hs : Function.Surjective Φ`.
+
+Introduce and unpack `⟨a, b⟩`. Use `⟨∑ c, a c • g c + ∑ c, b c • e c, ?_⟩` and prove the remaining obligations. Use `Prod.ext (funext fun d => ?_) (funext fun d => ?_)` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `form σ J _ (e d) = a d`. Simplify using `[form_add_left, form_sum_left', form_smul_left', hge, hee]`.
+
+Express the relevant statement in the definitionally equal form `form σ J _ (g d) = b d`. Simplify using `[form_add_left, form_sum_left', form_smul_left', heg, hgg]`. Establish `hk : Module.finrank E (LinearMap.ker Φ) = m`. Establish `h` using `LinearMap.finrank_range_add_finrank_ker Φ`. Rewrite `h` using `[LinearMap.range_eq_top.2 hs, finrank_top]`.
+
+Simplify using `only [Module.finrank_prod, Module.finrank_fintype_fun_eq_card, Fintype.card_fin] at h`. Use linear arithmetic over natural numbers and integers. Set `ee : (Fin m → E) ≃ₗ[E] LinearMap.ker Φ` to `LinearEquiv.ofFinrankEq _ _ (by simp [hk])`. Set `ι : (Fin m → E) →ₗ[E] (Fin n → E)` to `(LinearMap.ker Φ).subtype ∘ₗ ee.toLinearMap`. Establish `hι : LinearMap.ker ι = ⊥`.
+
+Use `LinearMap.ker_eq_bot.2 fun x y h => ee.injective (Subtype.ext h)` and prove the remaining obligations. Take `⟨gg, hgg'⟩` from `ι.exists_leftInverse_of_injective hι`. Use `⟨LinearMap.toMatrix' ι, LinearMap.toMatrix' gg, ?_, fun t => ?_⟩` and prove the remaining obligations. Rewrite using `[← LinearMap.toMatrix'_comp, hgg', LinearMap.toMatrix'_id]`. Prove the components needed by the constructor for the conclusion.
+
+Introduce `h`. Establish `ht : t ∈ LinearMap.ker Φ`. Use `Prod.ext (funext fun b => (h b).1) (funext fun b => (h b).2)` and prove the remaining obligations. Use `⟨ee.symm ⟨t, ht⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[LinearMap.toMatrix'_mulVec]`.
+
+Simplify using `[ι]`. Introduce and unpack `⟨u, rfl⟩ b`. Rewrite using `[LinearMap.toMatrix'_mulVec]`. Establish `h : Φ (ι u) = 0` using `(ee u).2`. Conclude with `⟨congrFun (congrArg Prod.fst h) b, congrFun (congrArg Prod.snd h) b⟩`.
+-/
 theorem exists_basis {r m : ℕ} (hn : n = 2 * r + m) (e g : Fin r → Fin n → E)
     (hge : ∀ c d, form σ J (g c) (e d) = if c = d then 1 else 0)
     (heg : ∀ c d, form σ J (e c) (g d) = if c = d then 1 else 0)
@@ -74,6 +98,9 @@ theorem exists_basis {r m : ℕ} (hn : n = 2 * r + m) (e g : Fin r → Fin n →
       have h : Φ (ι u) = 0 := (ee u).2
       exact ⟨congrFun (congrArg Prod.fst h) b, congrFun (congrArg Prod.snd h) b⟩
 
+/- English proof (translation)
+Establish `h1 : ∀ b, form σ J (e b) t = 0` using `fun b => by`. Rewrite using `[← form_conj σ J hσ hJ, (ht b).1, map_zero]`. Establish `h2 : ∀ b, form σ J (g b) t = 0` using `fun b => by`. Rewrite using `[← form_conj σ J hσ hJ, (ht b).2, map_zero]`. Simplify using `[projF, form_sub_left', form_sum_left', form_smul_left', h1, h2]`.
+-/
 theorem form_projF (hσ : ∀ x, σ (σ x) = x) (hJ : ∀ i j, σ (J j i) = J i j) {r : ℕ} (e g : Fin r → Fin n → E)
     {t : Fin n → E} (ht : ∀ b, form σ J t (e b) = 0 ∧ form σ J t (g b) = 0) (u : Fin n → E) :
     form σ J (projF σ J e g u) t = form σ J u t := by
@@ -83,6 +110,13 @@ theorem form_projF (hσ : ∀ x, σ (σ x) = x) (hJ : ∀ i j, σ (J j i) = J i 
     rw [← form_conj σ J hσ hJ, (ht b).2, map_zero]
   simp [projF, form_sub_left', form_sum_left', form_smul_left', h1, h2]
 
+/- English proof (translation)
+Establish `h0 : ∀ u, form σ J u t = 0` using `fun u => by`. Rewrite using `[← form_projF σ J hσ hJ e g ht u]`. Conclude with `h _ (projF_orth σ J e g hee hgg hge heg u)`. Establish `h1 : (fun i => σ (t i)) ᵥ* J = 0`. Use extensionality with `j`.
+
+Use `h0 (Pi.single j 1)` as an intermediate fact. Simplify `this` using `[form, Matrix.mulVec_single_one, dotProduct, Matrix.vecMul, Matrix.col_apply]`. Establish `h2 : (fun i => σ (t i)) = 0`. Establish `hu : IsUnit J.det` using `Ne.isUnit hdet`. Use `congrArg (· ᵥ* J⁻¹) h1` as an intermediate fact.
+
+Simplify `this` using `[Matrix.vecMul_vecMul, Matrix.mul_nonsing_inv _ hu]`. Use extensionality with `i`. Use `congrFun h2 i` as an intermediate fact. Simplify using `using this`.
+-/
 theorem eq_zero_of_orth (hσ : ∀ x, σ (σ x) = x) (hJ : ∀ i j, σ (J j i) = J i j) (hdet : J.det ≠ 0) {r : ℕ}
     (e g : Fin r → Fin n → E)
     (hee : ∀ c d, form σ J (e c) (e d) = 0) (hgg : ∀ c d, form σ J (g c) (g d) = 0)
@@ -105,6 +139,9 @@ theorem eq_zero_of_orth (hσ : ∀ x, σ (σ x) = x) (hJ : ∀ i j, σ (J j i) =
   have := congrFun h2 i
   simpa using this
 
+/- English proof (translation)
+Establish `h : Y *ᵥ y = ∑ j, y j • fun i => Y i j`. Use extensionality with `i`. Simplify using `[Matrix.mulVec, dotProduct, Finset.sum_apply, mul_comm]`. Rewrite using `[h, form_sum_left']`. Conclude with `Finset.sum_congr rfl fun j _ => form_smul_left' σ J _ _ _`.
+-/
 theorem form_mulVec_left {m : ℕ} (Y : Matrix (Fin n) (Fin m) E) (y : Fin m → E) (t : Fin n → E) :
     form σ J (Y *ᵥ y) t = ∑ j, y j * form σ J (fun i => Y i j) t := by
   have h : Y *ᵥ y = ∑ j, y j • fun i => Y i j := by
@@ -113,6 +150,17 @@ theorem form_mulVec_left {m : ℕ} (Y : Matrix (Fin n) (Fin m) E) (y : Fin m →
   rw [h, form_sum_left']
   exact Finset.sum_congr rfl fun j _ => form_smul_left' σ J _ _ _
 
+/- English proof (translation)
+Set `B : (Fin m → E) →ₗ[E] (Fin m → E)` to `{ toFun := fun u j => form σ J (Y *ᵥ u) (fun i => Y i j) map_add' := fun x y => by`. Use extensionality with `j`. Simplify using `[Matrix.mulVec_add, form_add_left]`. Use the proof step `map_smul' := fun c x => by`. Use extensionality with `j`.
+
+Simplify using `[Matrix.mulVec_smul, form_smul_left'] }`. Establish `hinj : Function.Injective B`. Use `(injective_iff_map_eq_zero B).2 fun u hu => ?_` and prove the remaining obligations. Establish `ht` using `(hW (Y *ᵥ u)).2 ⟨u, rfl⟩`. Establish `h0 : ∀ j, form σ J (fun i => Y i j) (Y *ᵥ u) = 0` using `fun j => by`.
+
+Rewrite using `[← form_conj σ J hσ hJ]`. Establish `: form σ J (Y *ᵥ u) (fun i => Y i j) = 0` using `congrFun hu j`. Rewrite using `[this, map_zero]`. Establish `h1 : Y *ᵥ u = 0`. Use `eq_zero_of_orth σ J hσ hJ hdet e g hee hgg hge heg ht fun x hx => ?_` and prove the remaining obligations.
+
+Take `⟨y, rfl⟩` from `(hW x).1 hx`. Rewrite using `[form_mulVec_left]`. Simplify using `[h0]`. Use `congrArg (Ly *ᵥ ·) h1` as an intermediate fact. Simplify `this` using `[Matrix.mulVec_mulVec, hY]`.
+
+Take `⟨u, hu⟩` from `LinearMap.injective_iff_surjective.1 hinj (fun j => σ (Tv j))`. Use `⟨u, fun j => ?_⟩` and prove the remaining obligations. Rewrite using `[← form_conj σ J hσ hJ]`. Establish `: form σ J (Y *ᵥ u) (fun i => Y i j) = σ (Tv j)` using `congrFun hu j`. Rewrite using `[this, hσ]`.
+-/
 theorem exists_solve (hσ : ∀ x, σ (σ x) = x) (hJ : ∀ i j, σ (J j i) = J i j) (hdet : J.det ≠ 0) {r m : ℕ}
     (e g : Fin r → Fin n → E)
     (hee : ∀ c d, form σ J (e c) (e d) = 0) (hgg : ∀ c d, form σ J (g c) (g d) = 0)
@@ -153,6 +201,15 @@ section Lat
 
 variable {E : Type} [Field E] [NumberField E] {n : ℕ} (σ : E →+* E) (J : Matrix (Fin n) (Fin n) E)
 
+/- English proof (translation)
+Take `⟨S, hS⟩` from `hSD.1`. Take `⟨b, hb⟩` from `IsLocalization.exist_integer_multiples (𝓞 E)⁰ S (fun w => form σ J v w)`. Use `⟨b, nonZeroDivisors.ne_zero b.2, (hSD.2 _).2 fun w hw => ?_⟩` and prove the remaining obligations. Rewrite `hw` using `[← hS]`. Proceed by induction on `hw using Submodule.span_induction with`.
+
+Consider the case `mem x hx`. Take `⟨y, hy⟩` from `hb x hx`. Rewrite using `[form_smul_left']`. Use `⟨y, ?_⟩` and prove the remaining obligations. Rewrite using `[hy]`.
+
+Both sides reduce to the same expression. Consider the case `zero => exact ⟨0, by simp [form_zero_right]⟩`. Consider the case `add x y _ _ hx hy`. Rewrite using `[form_add_right]`. Conclude with `add_mem hx hy`.
+
+Consider the case `smul a x _ hx`. Establish `: a • x = ((a : 𝓞 E) : E) • x` using `(algebraMap_smul E a x).symm`. Rewrite using `[this, form_smul_right']`. Conclude with `mul_mem ⟨RingOfIntegers.mapRingHom σ a, rfl⟩ hx`.
+-/
 theorem exists_smul_mem {Λ : Submodule (𝓞 E) (Fin n → E)} (hSD : GlobalTheory.SgGlob.SelfDual σ J Λ) (v : Fin n → E) :
     ∃ d : 𝓞 E, d ≠ 0 ∧ ((d : E)) • v ∈ Λ := by
   classical
@@ -179,9 +236,21 @@ theorem exists_smul_mem {Λ : Submodule (𝓞 E) (Fin n → E)} (hSD : GlobalThe
 def coordLat {m : ℕ} (Λ : Submodule (𝓞 E) (Fin n → E)) (Y : Matrix (Fin n) (Fin m) E) :
     Submodule (𝓞 E) (Fin m → E) := Λ.comap (Y.mulVecLin.restrictScalars (𝓞 E))
 
+/- English proof (translation)
+Unfold both sides. The equivalence is reflexive.
+-/
 theorem mem_coordLat {m : ℕ} {Λ : Submodule (𝓞 E) (Fin n → E)} {Y : Matrix (Fin n) (Fin m) E} {u : Fin m → E} :
     u ∈ coordLat Λ Y ↔ Y *ᵥ u ∈ Λ := Iff.rfl
 
+/- English proof (translation)
+Establish `hinj : Function.Injective (Y.mulVecLin.restrictScalars (𝓞 E))` using `fun x y h => by`. Establish `h' : Y *ᵥ x = Y *ᵥ y` using `h`. Use `congrArg (Ly *ᵥ ·) h'` as an intermediate fact. Simplify `this` using `[Matrix.mulVec_mulVec, hY]`. Use `⟨?_, ?_⟩` and prove the remaining obligations.
+
+Use `Submodule.fg_of_fg_map_injective _ hinj (Submodule.FG.of_le hSD.1 ?_)` and prove the remaining obligations. Introduce and unpack `_ ⟨u, hu, rfl⟩`. Conclude with `hu`. Rewrite using `[eq_top_iff]`. Introduce `u _`.
+
+Take `⟨d, hd, hm⟩` from `exists_smul_mem σ J hSD (Y *ᵥ u)`. Establish `hd' : (d : E) ≠ 0` using `by exact_mod_cast hd`. Establish `h1 : ((d : E)) • u ∈ coordLat Λ Y`. Rewrite using `[mem_coordLat, Matrix.mulVec_smul]`. Conclude with `hm`.
+
+Establish `: u = (d : E)⁻¹ • ((d : E) • u)` using `by rw [smul_smul, inv_mul_cancel₀ hd', one_smul]`. Rewrite using `[this]`. Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span h1)`.
+-/
 theorem isLattice_coordLat {m : ℕ} {Λ : Submodule (𝓞 E) (Fin n → E)} (hSD : GlobalTheory.SgGlob.SelfDual σ J Λ)
     {Y : Matrix (Fin n) (Fin m) E} {Ly : Matrix (Fin m) (Fin n) E} (hY : Ly * Y = 1) :
     Submodule.IsLattice E (coordLat Λ Y) := by
@@ -204,6 +273,13 @@ theorem isLattice_coordLat {m : ℕ} {Λ : Submodule (𝓞 E) (Fin n → E)} (hS
     rw [this]
     exact Submodule.smul_mem _ _ (Submodule.subset_span h1)
 
+/- English proof (translation)
+Establish `hΛ : ∀ v ∈ Λ, ∀ w ∈ Λ, form σ J v w ∈ (algebraMap (𝓞 E) E).range` using `fun v hv w hw => (hSD.2 v).1 hv w hw`. Prove the components needed by the constructor for the conclusion. Introduce `h x hx _`. Use `form_mem_inv σ J hσ hΛ (inv_ne_zero hI) (hIs.inv hσ hI) h hx` as an intermediate fact. Rewrite `this` using `[inv_inv]`. Then use the resulting hypothesis.
+
+Introduce `h c hc`. Use `(hSD.2 _).2 fun w hw => ?_` and prove the remaining obligations. Establish `h1` using `h _ (projF_mem σ J hσ hΛ 𝔞 h0 hs e g he hg hw) (projF_orth σ J e g hee hgg hge heg w)`. Rewrite `h1` using `[form_projF σ J hσ hJ e g ht]`. Rewrite using `[form_smul_left', ← form_conj σ J hσ hJ]`.
+
+Establish `h2` using `FractionalIdeal.mul_mem_mul hc (hIs _ h1)`. Rewrite `h2` using `[inv_mul_cancel₀ hI]`. Conclude with `(FractionalIdeal.mem_one_iff _).1 h2 |>.elim fun d hd => ⟨d, hd⟩`.
+-/
 theorem smul_mem_iff (hσ : ∀ x, σ (σ x) = x) (hJ : ∀ i j, σ (J j i) = J i j)
     {Λ : Submodule (𝓞 E) (Fin n → E)} (hSD : GlobalTheory.SgGlob.SelfDual σ J Λ) {r : ℕ} (e g : Fin r → Fin n → E)
     (hee : ∀ c d, form σ J (e c) (e d) = 0) (hgg : ∀ c d, form σ J (g c) (g d) = 0)
@@ -234,6 +310,9 @@ end Lat
 
 section Model
 
+/- English proof (translation)
+Establish `ha` using `a.isLt`. Establish `hj` using `j.isLt`. Simplify using `only [Hpk, esI, eI, Fin.ext_iff]`. Apply the tactic sequence `split_ifs <;> first | rfl | (exfalso; omega)`.
+-/
 theorem Hpk_eI_row (k r : ℕ) (a : Fin r) (j : Fin (2 * r + k + 1)) :
     Hpk k r (eI k r a) j = if j = esI k r a then 1 else 0 := by
   have ha := a.isLt
@@ -241,21 +320,36 @@ theorem Hpk_eI_row (k r : ℕ) (a : Fin r) (j : Fin (2 * r + k + 1)) :
   simp only [Hpk, esI, eI, Fin.ext_iff]
   split_ifs <;> first | rfl | (exfalso; omega)
 
+/- English proof (translation)
+Simplify using `[Matrix.mulVec, dotProduct, Hpk_eI_row]`.
+-/
 theorem mulVec_eI (k r : ℕ) (a : Fin r) (x : Fin (2 * r + k + 1) → ℂ) :
     x (esI k r a) = (Hpk k r *ᵥ x) (eI k r a) := by
   simp [Matrix.mulVec, dotProduct, Hpk_eI_row]
 
 def eps (k : ℕ) (l : Fin (k + 1)) : ℂ := if l.val = k then -1 else 1
 
+/- English proof (translation)
+Apply the tactic sequence `unfold eps; split_ifs <;> simp`.
+-/
 theorem eps_mul_self (k : ℕ) (l : Fin (k + 1)) : eps k l * eps k l = 1 := by
   unfold eps; split_ifs <;> simp
 
+/- English proof (translation)
+Apply the tactic sequence `unfold eps; split_ifs <;> simp`.
+-/
 theorem norm_eps (k : ℕ) (l : Fin (k + 1)) : ‖eps k l‖ = 1 := by
   unfold eps; split_ifs <;> simp
 
+/- English proof (translation)
+Apply the tactic sequence `unfold eps; split_ifs <;> simp`.
+-/
 theorem star_eps (k : ℕ) (l : Fin (k + 1)) : star (eps k l) = eps k l := by
   unfold eps; split_ifs <;> simp
 
+/- English proof (translation)
+Establish `hl` using `l.isLt`. Establish `hj` using `j.isLt`. Simplify using `only [Hpk, wI, eps, Fin.ext_iff]`. Apply the tactic sequence `split_ifs <;> first | rfl | (exfalso; omega)`.
+-/
 theorem Hpk_col_wI (k r : ℕ) (l : Fin (k + 1)) (j : Fin (2 * r + k + 1)) :
     Hpk k r j (wI k r l) = if j = wI k r l then eps k l else 0 := by
   have hl := l.isLt
@@ -263,10 +357,18 @@ theorem Hpk_col_wI (k r : ℕ) (l : Fin (k + 1)) (j : Fin (2 * r + k + 1)) :
   simp only [Hpk, wI, eps, Fin.ext_iff]
   split_ifs <;> first | rfl | (exfalso; omega)
 
+/- English proof (translation)
+Simplify using `[herm, bvec, dotProduct, Matrix.mulVec_single_one, Hpk_col_wI]`.
+-/
 theorem herm_bvec_wI (k r : ℕ) (l : Fin (k + 1)) (v : Fin (2 * r + k + 1) → ℂ) :
     herm (Hpk k r) (bvec (wI k r l)) v = star (v (wI k r l)) * eps k l := by
   simp [herm, bvec, dotProduct, Matrix.mulVec_single_one, Hpk_col_wI]
 
+/- English proof (translation)
+Establish `hi` using `i.isLt`. Distinguish the cases in `h1 : i.val < r`. Conclude with `Or.inl ⟨⟨i.val, h1⟩, Fin.ext rfl⟩`. Distinguish the cases in `h2 : i.val ≤ r + k`. Conclude with `Or.inr (Or.inl ⟨⟨i.val - r, by omega⟩, Fin.ext (by simp only [wI]; omega)⟩)`.
+
+Conclude with `Or.inr (Or.inr ⟨⟨2 * r + k - i.val, by omega⟩, Fin.ext (by simp only [esI]; omega)⟩)`.
+-/
 theorem idx_cases' (k r : ℕ) (i : Fin (2 * r + k + 1)) :
     (∃ a, i = eI k r a) ∨ (∃ l, i = wI k r l) ∨ ∃ a, i = esI k r a := by
   have hi := i.isLt
@@ -276,6 +378,9 @@ theorem idx_cases' (k r : ℕ) (i : Fin (2 * r + k + 1)) :
   · exact Or.inr (Or.inl ⟨⟨i.val - r, by omega⟩, Fin.ext (by simp only [wI]; omega)⟩)
   · exact Or.inr (Or.inr ⟨⟨2 * r + k - i.val, by omega⟩, Fin.ext (by simp only [esI]; omega)⟩)
 
+/- English proof (translation)
+Introduce `h`. Use `congrArg Fin.val h` as an intermediate fact. Establish `ha` using `a.isLt`. Simplify using `only [eI, wI] at this`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem eI_ne_wI' (k r : ℕ) (a : Fin r) (l : Fin (k + 1)) : eI k r a ≠ wI k r l := by
   intro h
   have := congrArg Fin.val h
@@ -283,6 +388,11 @@ theorem eI_ne_wI' (k r : ℕ) (a : Fin r) (l : Fin (k + 1)) : eI k r a ≠ wI k 
   simp only [eI, wI] at this
   omega
 
+/- English proof (translation)
+Introduce `h`. Use `congrArg Fin.val h` as an intermediate fact. Establish `ha` using `a.isLt`. Establish `hl` using `l.isLt`. Simplify using `only [esI, wI] at this`.
+
+Use linear arithmetic over natural numbers and integers.
+-/
 theorem esI_ne_wI' (k r : ℕ) (a : Fin r) (l : Fin (k + 1)) : esI k r a ≠ wI k r l := by
   intro h
   have := congrArg Fin.val h
@@ -291,11 +401,19 @@ theorem esI_ne_wI' (k r : ℕ) (a : Fin r) (l : Fin (k + 1)) : esI k r a ≠ wI 
   simp only [esI, wI] at this
   omega
 
+/- English proof (translation)
+Introduce `a b h` and use `by have := congrArg Fin.val h simp only [wI] at this exact Fin.ext (by omega)`.
+-/
 theorem wI_injective (k r : ℕ) : Function.Injective (wI k r) := fun a b h => by
   have := congrArg Fin.val h
   simp only [wI] at this
   exact Fin.ext (by omega)
 
+/- English proof (translation)
+Use extensionality with `i`. Simplify using `only [Finset.sum_apply, Pi.smul_apply, bvec, Pi.single_apply, smul_eq_mul, mul_ite, mul_one, mul_zero]`. Break down `idx_cases' k r i with ⟨a, rfl⟩ | ⟨l, rfl⟩ | ⟨a, rfl⟩` into its components or cases. Simplify using `[h1, eI_ne_wI']`. Simplify using `[(wI_injective k r).eq_iff]`.
+
+Simplify using `[h2, esI_ne_wI']`.
+-/
 theorem mid_expand {k r : ℕ} (x : Fin (2 * r + k + 1) → ℂ) (h1 : ∀ a, x (eI k r a) = 0)
     (h2 : ∀ a, x (esI k r a) = 0) : x = ∑ l, x (wI k r l) • bvec (wI k r l) := by
   ext i
@@ -305,10 +423,16 @@ theorem mid_expand {k r : ℕ} (x : Fin (2 * r + k + 1) → ℂ) (h1 : ∀ a, x 
   · simp [(wI_injective k r).eq_iff]
   · simp [h2, esI_ne_wI']
 
+/- English proof (translation)
+Simplify using `[herm, Matrix.mulVec_smul, dotProduct_smul]`.
+-/
 theorem herm_smul_left' {n : ℕ} (H : Matrix (Fin n) (Fin n) ℂ) (c : ℂ) (x y : Fin n → ℂ) :
     herm H (c • x) y = c * herm H x y := by
   simp [herm, Matrix.mulVec_smul, dotProduct_smul]
 
+/- English proof (translation)
+Simplify using `[herm, Matrix.mulVec_sum, dotProduct_sum]`.
+-/
 theorem herm_sum_left' {n : ℕ} {ι : Type} (H : Matrix (Fin n) (Fin n) ℂ) (S : Finset ι) (g : ι → Fin n → ℂ)
     (y : Fin n → ℂ) : herm H (∑ c ∈ S, g c) y = ∑ c ∈ S, herm H (g c) y := by
   simp [herm, Matrix.mulVec_sum, dotProduct_sum]
@@ -319,6 +443,9 @@ section Cx
 
 variable {E : Type} [Field E] {n : ℕ}
 
+/- English proof (translation)
+Simplify using `[herm, form, dotProduct, Matrix.mulVec, mv, map_sum, hφ]`.
+-/
 theorem herm_map_mv (σ : E →+* E) (J : Matrix (Fin n) (Fin n) E) (φ : E →+* ℂ) (hφ : ∀ x, φ (σ x) = star (φ x))
     (x y : Fin n → E) : herm (J.map φ) (mv φ x) (mv φ y) = φ (form σ J x y) := by
   simp [herm, form, dotProduct, Matrix.mulVec, mv, map_sum, hφ]
@@ -326,6 +453,11 @@ theorem herm_map_mv (σ : E →+* E) (J : Matrix (Fin n) (Fin n) E) (φ : E →+
 variable {k r : ℕ} (σ : E →+* E) (J : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) E) (φ : E →+* ℂ)
   (B : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ)
 
+/- English proof (translation)
+Establish `hs' : (s a : ℂ) ≠ 0` using `by exact_mod_cast (hs a).ne'`. Prove the components needed by the constructor for the conclusion. Establish `h` using `herm_model hB (mv φ x) (mv φ (g a))`. Rewrite `h` using `[herm_map_mv σ J φ hφ, (hx a).2, map_zero, hg, herm_smul_right', herm_bvec_right, ← mulVec_esI]`. Simplify `h` using `[hs']`.
+
+Establish `h` using `herm_model hB (mv φ x) (mv φ (e a))`. Rewrite `h` using `[herm_map_mv σ J φ hφ, (hx a).1, map_zero, he, herm_smul_right', herm_bvec_right, ← mulVec_eI]`. Simplify `h` using `[hs']`.
+-/
 theorem orth_coords (hφ : ∀ x, φ (σ x) = star (φ x)) (hB : Bᴴ * Hpk k r * B = J.map φ)
     {e g : Fin r → Fin (2 * r + k + 1) → E} {s : Fin r → ℝ} (hs : ∀ a, 0 < s a)
     (he : ∀ a, B *ᵥ mv φ (e a) = (s a : ℂ) • bvec (eI k r a))
@@ -344,6 +476,9 @@ theorem orth_coords (hφ : ∀ x, φ (σ x) = star (φ x)) (hB : Bᴴ * Hpk k r 
 def Cm {m : ℕ} (Y : Matrix (Fin (2 * r + k + 1)) (Fin m) E) : Matrix (Fin (k + 1)) (Fin m) ℂ :=
   Matrix.of fun l j => (B *ᵥ mv φ fun i => Y i j) (wI k r l)
 
+/- English proof (translation)
+Simplify using `only [Matrix.mulVec, dotProduct, mv, Matrix.map_apply, Finset.mul_sum]`. Rewrite using `[Finset.sum_comm]`. Conclude with `Finset.sum_congr rfl fun j _ => Finset.sum_congr rfl fun l _ => by ring`.
+-/
 theorem B_map_mulVec {m : ℕ} (Y : Matrix (Fin (2 * r + k + 1)) (Fin m) E) (c : Fin m → ℂ)
     (i : Fin (2 * r + k + 1)) :
     (B *ᵥ (Y.map φ *ᵥ c)) i = ∑ j, c j * (B *ᵥ mv φ fun i => Y i j) i := by
@@ -351,16 +486,33 @@ theorem B_map_mulVec {m : ℕ} (Y : Matrix (Fin (2 * r + k + 1)) (Fin m) E) (c :
   rw [Finset.sum_comm]
   exact Finset.sum_congr rfl fun j _ => Finset.sum_congr rfl fun l _ => by ring
 
+/- English proof (translation)
+Rewrite using `[B_map_mulVec]`. Simplify using `[Cm, Matrix.mulVec, dotProduct, mul_comm]`.
+-/
 theorem Cm_mulVec {m : ℕ} (Y : Matrix (Fin (2 * r + k + 1)) (Fin m) E) (c : Fin m → ℂ) (l : Fin (k + 1)) :
     (Cm φ B Y *ᵥ c) l = (B *ᵥ (Y.map φ *ᵥ c)) (wI k r l) := by
   rw [B_map_mulVec]
   simp [Cm, Matrix.mulVec, dotProduct, mul_comm]
 
+/- English proof (translation)
+Use extensionality with `i`. Simplify using `[mv, Matrix.mulVec, dotProduct, map_sum]`.
+-/
 theorem mv_mulVec {m : ℕ} (Y : Matrix (Fin (2 * r + k + 1)) (Fin m) E) (u : Fin m → E) :
     mv φ (Y *ᵥ u) = Y.map φ *ᵥ fun j => φ (u j) := by
   ext i
   simp [mv, Matrix.mulVec, dotProduct, map_sum]
 
+/- English proof (translation)
+Rewrite using `[← Matrix.isUnit_iff_isUnit_det, ← Matrix.mulVec_injective_iff_isUnit]`. Establish `hker : ∀ c, Cm φ B Y *ᵥ c = 0 → c = 0`. Introduce `c hc`. Establish `h1 : B *ᵥ (Y.map φ *ᵥ c) = 0`. Use extensionality with `i`.
+
+Break down `idx_cases' k r i with ⟨a, rfl⟩ | ⟨l, rfl⟩ | ⟨a, rfl⟩` into its components or cases. Rewrite using `[B_map_mulVec]`. Simplify using `[(orth_coords σ J φ B hφ hB hs he hg (hW _) a).1]`. Rewrite using `[← Cm_mulVec, hc]`. Both sides reduce to the same expression.
+
+Rewrite using `[B_map_mulVec]`. Simplify using `[(orth_coords σ J φ B hφ hB hs he hg (hW _) a).2]`. Establish `h2 : Y.map φ *ᵥ c = 0`. Use `congrArg (B⁻¹ *ᵥ ·) h1` as an intermediate fact. Simplify `this` using `[Matrix.mulVec_mulVec, Matrix.nonsing_inv_mul_cancel_left _ _ hBu]`.
+
+Establish `h3 : Ly.map φ * Y.map φ = 1`. Rewrite using `[← Matrix.map_mul, hY, Matrix.map_one _ (map_zero _) (map_one _)]`. Use `congrArg (Ly.map φ *ᵥ ·) h2` as an intermediate fact. Simplify `this` using `[Matrix.mulVec_mulVec, h3]`. Introduce `x y hxy`.
+
+Establish `: x - y = 0` using `hker _ (by rw [Matrix.mulVec_sub]; exact sub_eq_zero.2 hxy)`. Conclude with `sub_eq_zero.1 this`.
+-/
 theorem isUnit_det_Cm (hφ : ∀ x, φ (σ x) = star (φ x)) (hB : Bᴴ * Hpk k r * B = J.map φ) (hBu : IsUnit B.det)
     {e g : Fin r → Fin (2 * r + k + 1) → E} {s : Fin r → ℝ} (hs : ∀ a, 0 < s a)
     (he : ∀ a, B *ᵥ mv φ (e a) = (s a : ℂ) • bvec (eI k r a))
@@ -391,6 +543,11 @@ theorem isUnit_det_Cm (hφ : ∀ x, φ (σ x) = star (φ x)) (hB : Bᴴ * Hpk k 
   have : x - y = 0 := hker _ (by rw [Matrix.mulVec_sub]; exact sub_eq_zero.2 hxy)
   exact sub_eq_zero.1 this
 
+/- English proof (translation)
+Rewrite using `[← herm_map_mv σ J φ hφ, ← herm_model hB]`. Establish `hx` using `mid_expand (B *ᵥ mv φ fun i => Y i j) (fun a => (orth_coords σ J φ B hφ hB hs he hg (hW j) a).1) (fun a => (orth_coords σ J φ B hφ hB hs he hg (hW j) a).2)`. Use `conv_lhs => rw [hx]`. Rewrite using `[herm_sum_left']`. Use `Finset.sum_congr rfl fun l _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[herm_smul_left', mul_comm]`. Both sides reduce to the same expression.
+-/
 theorem pairing_eq (hφ : ∀ x, φ (σ x) = star (φ x)) (hB : Bᴴ * Hpk k r * B = J.map φ)
     {e g : Fin r → Fin (2 * r + k + 1) → E} {s : Fin r → ℝ} (hs : ∀ a, 0 < s a)
     (he : ∀ a, B *ᵥ mv φ (e a) = (s a : ℂ) • bvec (eI k r a))
@@ -420,8 +577,24 @@ attribute [local instance] haar_two haar_three
 def lineLat (I : FractionalIdeal (𝓞 E)⁰ E) : Submodule (𝓞 E) (Fin 1 → E) :=
   (I : Submodule (𝓞 E) E).comap (LinearMap.proj (R := 𝓞 E) (φ := fun _ : Fin 1 => E) 0)
 
+/- English proof (translation)
+Unfold both sides. The equivalence is reflexive.
+-/
 theorem mem_lineLat {I : FractionalIdeal (𝓞 E)⁰ E} {y : Fin 1 → E} : y ∈ lineLat E I ↔ y 0 ∈ I := Iff.rfl
 
+/- English proof (translation)
+Set `ee : E ≃ₗ[𝓞 E] (Fin 1 → E)` to `(LinearEquiv.funUnique (Fin 1) (𝓞 E) E).symm`. Establish `hm : lineLat E I = (I : Submodule (𝓞 E) E).map ee.toLinearMap`. Use extensionality with `y`. Rewrite using `[mem_lineLat]`. Prove the components needed by the constructor for the conclusion.
+
+Introduce `h`. Use `⟨y 0, h, ?_⟩` and prove the remaining obligations. Use extensionality with `i`. Rewrite using `[Subsingleton.elim i 0]`. Both sides reduce to the same expression.
+
+Introduce and unpack `⟨x, hx, rfl⟩`. Conclude with `hx`. Establish `hfg : (I : Submodule (𝓞 E) E).FG` using `FractionalIdeal.fg_of_isNoetherianRing le_rfl I`. Choose the witnesses or unpack the hypotheses as in `⟨x, hx, hx0⟩ : ∃ x ∈ I, x ≠ 0 := by`. Assume the negation of the conclusion as `h`.
+
+Use `push_neg at h`. Conclude with `hI (FractionalIdeal.ext fun y => ⟨fun hy => (FractionalIdeal.mem_zero_iff _).2 (h y hy), fun hy => by rw [(FractionalIdeal.mem_zero_iff _).1 hy]; exact FractionalIdeal.zero_mem _⟩)`. Use `⟨hm ▸ hfg.map _, ?_⟩` and prove the remaining obligations. Rewrite using `[eq_top_iff]`. Introduce `y _`.
+
+Establish `h1 : (fun _ : Fin 1 => x) ∈ lineLat E I` using `hx`. Establish `: y = (y 0 / x) • fun _ : Fin 1 => x`. Use extensionality with `i`. Rewrite using `[Subsingleton.elim i 0]`. Simplify using `[hx0]`.
+
+Rewrite using `[this]`. Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span h1)`.
+-/
 theorem isLattice_lineLat {I : FractionalIdeal (𝓞 E)⁰ E} (hI : I ≠ 0) : Submodule.IsLattice E (lineLat E I) := by
   let ee : E ≃ₗ[𝓞 E] (Fin 1 → E) := (LinearEquiv.funUnique (Fin 1) (𝓞 E) E).symm
   have hm : lineLat E I = (I : Submodule (𝓞 E) E).map ee.toLinearMap := by
@@ -456,6 +629,9 @@ def gS (c : ℝ) : MatInf E 1 := fun _ _ _ => ((c : ℂ))⁻¹
 
 def gC {m : ℕ} (C : InfinitePlace E → Matrix (Fin m) (Fin m) ℂ) : MatInf E m := fun w => ((C w)⁻¹ : Matrix (Fin m) (Fin m) ℂ)
 
+/- English proof (translation)
+Establish `hc' : (c : ℂ) ≠ 0` using `by exact_mod_cast hc.ne'`. Use `Matrix.inv_eq_right_inv ?_` and prove the remaining obligations. Use extensionality with `i j`. Rewrite using `[Subsingleton.elim i 0, Subsingleton.elim j 0]`. Simplify using `[gS, Matrix.mul_apply, hc']`.
+-/
 theorem inv_gS {c : ℝ} (hc : 0 < c) (w : InfinitePlace E) :
     (Matrix.of (gS E c w))⁻¹ = (c : ℂ) • (1 : Matrix (Fin 1) (Fin 1) ℂ) := by
   have hc' : (c : ℂ) ≠ 0 := by exact_mod_cast hc.ne'
@@ -464,10 +640,16 @@ theorem inv_gS {c : ℝ} (hc : 0 < c) (w : InfinitePlace E) :
   rw [Subsingleton.elim i 0, Subsingleton.elim j 0]
   simp [gS, Matrix.mul_apply, hc']
 
+/- English proof (translation)
+Simplify using `[detNorm, gS, Matrix.det_fin_one, Finset.prod_const, Finset.card_univ, ← pow_mul, abs_of_pos hc, mul_comm]`.
+-/
 theorem detNorm_gS {c : ℝ} (hc : 0 < c) :
     detNorm E 1 (gS E c) = (c ^ (2 * Fintype.card (InfinitePlace E)))⁻¹ := by
   simp [detNorm, gS, Matrix.det_fin_one, Finset.prod_const, Finset.card_univ, ← pow_mul, abs_of_pos hc, mul_comm]
 
+/- English proof (translation)
+Use `Finset.prod_pos fun w _ => pow_pos (norm_pos_iff.2 ?_) _` and prove the remaining obligations. Establish `: (Matrix.of (gC E C w)) = (C w)⁻¹` using `rfl`. Rewrite using `[this, Matrix.det_nonsing_inv]`. Conclude with `(((hC w).ringInverse).ne_zero)`.
+-/
 theorem detNorm_gC {m : ℕ} {C : InfinitePlace E → Matrix (Fin m) (Fin m) ℂ} (hC : ∀ w, IsUnit (C w).det) :
     0 < detNorm E m (gC E C) := by
   refine Finset.prod_pos fun w _ => pow_pos (norm_pos_iff.2 ?_) _
@@ -475,6 +657,11 @@ theorem detNorm_gC {m : ℕ} {C : InfinitePlace E → Matrix (Fin m) (Fin m) ℂ
   rw [this, Matrix.det_nonsing_inv]
   exact (((hC w).ringInverse).ne_zero)
 
+/- English proof (translation)
+Establish `hg : 0 < detNorm E 1 (gS E c)`. Rewrite using `[detNorm_gS E hc]`. Check the signs of the components of the expression. Rewrite using `[covAt_latAt E hE (lineLat E I) 1 (fun _ => I) (by simp) (fun _ => hI) (fun y => ?_) (gS E c) hg]`. Establish `h1 : ∏ w : InfinitePlace E, ‖(((1 : Matrix (Fin 1) (Fin 1) E).map w.embedding) * Matrix.of (gS E c w)).det‖ ^ 2 = detNorm E 1 (gS E c)`.
+
+Use `Finset.prod_congr rfl fun w _ => ?_` and prove the remaining obligations. Rewrite using `[Matrix.map_one _ (map_zero _) (map_one _), Matrix.one_mul]`. Rewrite using `[h1, detNorm_gS E hc]`. Simplify using the standard rewrite rules. Simplify using `[mem_lineLat, Fin.forall_fin_one]`.
+-/
 theorem covAt_line (hE : IsTotallyComplex E) {I : FractionalIdeal (𝓞 E)⁰ E} (hI : I ≠ 0) {c : ℝ} (hc : 0 < c) :
     covAt E 1 (latAt E 1 (lineLat E I) (gS E c)) =
       (FractionalIdeal.absNorm I : ℝ) * Formalism.HermitianLatticesTheory.vInv E ^ Formalism.HermitianLatticesTheory.fDeg E *
@@ -490,6 +677,29 @@ theorem covAt_line (hE : IsTotallyComplex E) {I : FractionalIdeal (𝓞 E)⁰ E}
     simp
   · simp [mem_lineLat, Fin.forall_fin_one]
 
+/- English proof (translation)
+Establish `hc' : (c : ℂ) ≠ 0` using `by exact_mod_cast hc.ne'`. Set `L₃ : Submodule ℤ (InfinitePlace E → Fin 1 → Fin m → ℂ)` to `{ carrier := {z | ∃ T : Matrix (Fin 1) (Fin m) E, (∀ y ∈ Λ', T *ᵥ y ∈ lineLat E I) ∧ ∀ w, Matrix.of (z w) = (Matrix.of (gS E c w))⁻¹ * T.map w.embedding * Matrix.of (gC E C w)} add_mem' := by`. Introduce and unpack `a b ⟨T, hT, h⟩ ⟨T', hT', h'⟩`. Use `⟨T + T', fun y hy => ?_, fun w => ?_⟩` and prove the remaining obligations. Rewrite using `[Matrix.add_mulVec]`.
+
+Conclude with `Submodule.add_mem _ (hT y hy) (hT' y hy)`. Establish `e : (T + T').map w.embedding = T.map w.embedding + T'.map w.embedding`. Use extensionality with `i j`. Simplify using the standard rewrite rules. Rewrite using `[e, Matrix.mul_add, Matrix.add_mul, ← h, ← h']`.
+
+Both sides reduce to the same expression. Use the proof step `zero_mem' := ⟨0, fun y _ => by simp [Submodule.zero_mem], fun w => by`. Establish `e : (0 : Matrix (Fin 1) (Fin m) E).map w.embedding = 0`. Use extensionality with `i j`. Simplify using the standard rewrite rules.
+
+Rewrite using `[e, Matrix.mul_zero, Matrix.zero_mul]`. Use the proof step `rfl⟩`. Use the proof step `smul_mem' := by`. Introduce and unpack `n a ⟨T, hT, h⟩`. Use `⟨n • T, fun y hy => ?_, fun w => ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[Matrix.smul_mulVec]`. Conclude with `zsmul_mem (hT y hy) n`. Establish `e : (n • T).map w.embedding = n • T.map w.embedding`. Use extensionality with `i j`. Simplify using the standard rewrite rules.
+
+Rewrite using `[e, Matrix.mul_smul, Matrix.smul_mul, ← h]`. Use `rfl }`. Establish `hg : 0 < detNorm E 1 (gS E c)`. Rewrite using `[detNorm_gS E hc]`. Check the signs of the components of the expression.
+
+Take `⟨hd, hz, hcov⟩` from `homCovolume E hE 1 m (lineLat E I) Λ' (isLattice_lineLat E hI) hΛ' (gS E c) (gC E C) hg (detNorm_gC E hC) L₃ (fun z => Iff.rfl)`. Set `e₀ : (InfinitePlace E → Fin m → ℂ) ≃ₗ[ℝ] (InfinitePlace E → Fin 1 → Fin m → ℂ)` to `{ toFun := fun z w _ l => z w l, invFun := fun z w l => z w 0 l, map_add' := fun _ _ => rfl, map_smul' := fun _ _ => rfl, left_inv := fun _ => rfl, right_inv := fun z => by`. Use extensionality with `w i l`. Rewrite using `[Subsingleton.elim i 0] }`. Establish `hmp : MeasurePreserving e₀.toContinuousLinearEquiv volume volume`.
+
+Use `measurePreserving_of_ball _ _ _ (fun x => ?_) ?_` and prove the remaining obligations. Simplify using `only [pi_norm_le_iff_of_nonneg zero_le_one]`. Conclude with `⟨fun h w l => h w 0 l, fun h w _ l => h w l⟩`. Simplify using `[volume_pi_closedBall _ zero_le_one, ← pow_mul, mul_comm]`. Use `⟨L₃.comap (e₀.toLinearMap.restrictScalars ℤ), fun z => ?_, ?_⟩` and prove the remaining obligations.
+
+Establish `hmem : z ∈ L₃.comap (e₀.toLinearMap.restrictScalars ℤ) ↔ ∃ T : Matrix (Fin 1) (Fin m) E, (∀ y ∈ Λ', T *ᵥ y ∈ lineLat E I) ∧ ∀ w, Matrix.of (e₀ z w) = (Matrix.of (gS E c w))⁻¹ * T.map w.embedding * Matrix.of (gC E C w)` using `Iff.rfl`. Rewrite using `[hmem]`. Use `exists_congr fun T => and_congr Iff.rfl ⟨fun h w l => ?_, fun h w => ?_⟩` and prove the remaining obligations. Establish `h1` using `congrFun (congrFun (h w) 0) l`. Rewrite `h1` using `[inv_gS E hc, Matrix.smul_mul, Matrix.one_mul]`.
+
+Rewrite `h1` using `[Matrix.smul_mul]`. Conclude with `h1`. Rewrite using `[inv_gS E hc, Matrix.smul_mul, Matrix.one_mul, Matrix.smul_mul]`. Use extensionality with `i l`. Rewrite using `[Subsingleton.elim i 0]`.
+
+Conclude with `h w l`. Establish `h` using `HasCov.of_measurePreserving (L := L₃.comap (e₀.toLinearMap.restrictScalars ℤ)) (L' := L₃) e₀.toContinuousLinearEquiv hmp (fun _ => Iff.rfl) ⟨hd, hz, hcov⟩`. Rewrite `h` using `[covAt_line E hE hI hc, pow_one]`. Conclude with `h`.
+-/
 theorem exists_core (hE : IsTotallyComplex E) {m : ℕ} (Λ' : Submodule (𝓞 E) (Fin m → E))
     (hΛ' : Submodule.IsLattice E Λ') (C : InfinitePlace E → Matrix (Fin m) (Fin m) ℂ)
     (hC : ∀ w, IsUnit (C w).det) {I : FractionalIdeal (𝓞 E)⁰ E} (hI : I ≠ 0) {c : ℝ} (hc : 0 < c) :
@@ -562,6 +772,11 @@ theorem exists_core (hE : IsTotallyComplex E) {m : ℕ} (Λ' : Submodule (𝓞 E
 
 end Core
 
+/- English proof (translation)
+Take `⟨_, _, h⟩` from `hc`. Use `⟨GlobalTheory.latticeDomain L, GlobalTheory.measurableSet_latticeDomain L, fun v => ?_, ?_⟩` and prove the remaining obligations. Take `⟨z, hz, hu⟩` from `GlobalTheory.existsUnique_add_mem_latticeDomain L v`. Use `⟨z, ⟨(hS _).1 z.2, hz⟩, ?_⟩` and prove the remaining obligations. Introduce and unpack `l ⟨hl, hlD⟩`.
+
+Conclude with `congrArg Subtype.val (hu ⟨l, (hS l).2 hl⟩ hlD)`. Rewrite using `[GlobalTheory.measure_latticeDomain, h]`.
+-/
 theorem hasDom_of_hasCov {V : Type} [NormedAddCommGroup V] [NormedSpace ℝ V] [FiniteDimensional ℝ V]
     [MeasurableSpace V] [BorelSpace V] {μ : Measure V} [μ.IsAddHaarMeasure] {L : Submodule ℤ V} {S : Set V}
     (hS : ∀ z, z ∈ L ↔ z ∈ S) {c : ℝ} (hc : HasCov μ L c) : HasDom μ S (ENNReal.ofReal c) := by
@@ -595,13 +810,76 @@ def signConj (E : Type) [Field E] [NumberField E] (k : ℕ) :
         ext w l
         simp only [star_mul', star_star, star_eps, ← mul_assoc, eps_mul_self, one_mul] }
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem signConj_apply (k : ℕ) (x : InfinitePlace E → Fin (k + 1) → ℂ) (w : InfinitePlace E) (l : Fin (k + 1)) :
     signConj E k x w l = eps k l * star (x w l) := rfl
 
+/- English proof (translation)
+Use `measurePreserving_of_ball _ _ _ (fun x => ?_) rfl` and prove the remaining obligations. Simplify using `only [pi_norm_le_iff_of_nonneg zero_le_one, signConj_apply, norm_mul, norm_eps, one_mul, norm_star]`.
+-/
 theorem signConj_measurePreserving (k : ℕ) : MeasurePreserving (signConj E k) volume volume := by
   refine measurePreserving_of_ball _ _ _ (fun x => ?_) rfl
   simp only [pi_norm_le_iff_of_nonneg zero_le_one, signConj_apply, norm_mul, norm_eps, one_mul, norm_star]
 
+/- English proof (translation)
+Use `set e : Fin r → Fin (2 * r + k + 1) → E := fun c i => P i c.castSucc with he`. Use `set g : Fin r → Fin (2 * r + k + 1) → E := fun c i => f i c with hg`. Establish `hee : ∀ c d, form σ J (e c) (e d) = 0` using `fun c d => by`. Use `congrFun (congrFun hPP d.castSucc) c.castSucc` as an intermediate fact. Rewrite `this` using `[pairM_apply']`.
+
+Rewrite using `[show form σ J (e c) (e d) = _ from this]`. Simplify using `[TF, Matrix.diagonal_apply, (Fin.castSucc_lt_last _).ne]`. Establish `hgg : ∀ c d, form σ J (g c) (g d) = 0` using `fun c d => by`. Use `congrFun (congrFun hDu.2 d) c` as an intermediate fact. Rewrite `this` using `[pairM_apply']`.
+
+Conclude with `this`. Establish `hge : ∀ c d, form σ J (g c) (e d) = if c = d then 1 else 0` using `fun c d => by`. Use `congrFun (congrFun hDu.1 d.castSucc) c` as an intermediate fact. Rewrite `this` using `[pairM_apply']`. Rewrite using `[show form σ J (g c) (e d) = _ from this]`.
+
+Simplify using `[eq_comm]`. Establish `heg : ∀ c d, form σ J (e c) (g d) = if c = d then 1 else 0` using `fun c d => by`. Rewrite using `[← form_conj σ J hσ hJ, hge]`. Distinguish the cases in `h : d = c`. Simplify using `[h]`.
+
+Simplify using `[h, Ne.symm h]`. Establish `hle : ∀ c, ∀ x ∈ dInv E (r - c.val), x • e c ∈ Λ` using `fun c x hx => hLat (Submodule.subset_span ⟨Fin.castAdd r c.castSucc, x, by rwa [FrameDual.frameDualTupleIdeals_castAdd], by`. Use extensionality with `i`. Simplify using `[sideM, he]⟩)`. Establish `hlg : ∀ c, ∀ x ∈ (dInv E (r - c.val))⁻¹, x • g c ∈ Λ` using `fun c x hx => hLat (Submodule.subset_span ⟨Fin.natAdd (r + 1) c, x, by rwa [FrameDual.frameDualTupleIdeals_natAdd], by`.
+
+Use extensionality with `i`. Simplify using `[sideM, hg]⟩)`. Take `⟨Y, Ly, hY, hW⟩` from `exists_basis (n := 2 * r + k + 1) (m := k + 1) σ J (by ring) e g hge heg hee hgg`. Establish `hcol : ∀ j b, form σ J (fun i => Y i j) (e b) = 0 ∧ form σ J (fun i => Y i j) (g b) = 0` using `fun j => (hW _).2 ⟨Pi.single j 1, by ext i; simp [Matrix.mulVec_single_one]⟩`. Establish `hBu : ∀ w, IsUnit (A w).det` using `fun w => by`.
+
+Use `Ne.isUnit fun h0 => hdetJ ?_` and prove the remaining obligations. Establish `h1` using `congrArg Matrix.det (hMod w)`. Rewrite `h1` using `[Matrix.det_mul, h0, mul_zero]`. Establish `h2 : (J.map w.embedding).det = w.embedding J.det` using `(RingHom.map_det _ _).symm`. Rewrite `h1` using `[h2]`.
+
+Conclude with `(map_eq_zero _).1 h1.symm`. Establish `hAe : ∀ (w : InfinitePlace E) a, A w *ᵥ mv w.embedding (e a) = (s a : ℂ) • bvec (eI k r a)` using `fun w a => (hAd w a).1`. Establish `hAg : ∀ (w : InfinitePlace E) a, A w *ᵥ mv w.embedding (g a) = ((s a)⁻¹ : ℂ) • bvec (esI k r a)` using `fun w a => (hAd w a).2`. Use `set C : InfinitePlace E → Matrix (Fin (k + 1)) (Fin (k + 1)) ℂ := fun w => Cm w.embedding (A w) Y with hCdef`. Establish `hCu : ∀ w, IsUnit (C w).det` using `fun w => isUnit_det_Cm σ J w.embedding (A w) (hτ _) (hMod w) (hBu w) hs (hAe w) (hAg w) hY hcol`.
+
+Establish `hlat` using `isLattice_coordLat σ J hSD hY`. Establish `hrow : ∀ (t : Fin (2 * r + k + 1) → E) (w : InfinitePlace E) (l : Fin (k + 1)), herm (Hpk k r) (bvec (wI k r l)) (A w *ᵥ mv w.embedding t) = (((Matrix.of fun _ j => form σ J (fun i => Y i j) t : Matrix (Fin 1) (Fin (k + 1)) E)).map w.embedding * (C w)⁻¹) 0 l`. Introduce `t w l`. Establish `h1 : ((Matrix.of fun _ j => form σ J (fun i => Y i j) t : Matrix (Fin 1) (Fin (k + 1)) E)).map w.embedding = (Matrix.of fun _ l => herm (Hpk k r) (bvec (wI k r l)) (A w *ᵥ mv w.embedding t) : Matrix (Fin 1) (Fin (k + 1)) ℂ) * C w`. Use extensionality with `i j`.
+
+Rewrite using `[Matrix.map_apply, Matrix.of_apply, pairing_eq σ J w.embedding (A w) (hτ _) (hMod w) hs (hAe w) (hAg w) hcol t j]`. Both sides reduce to the same expression. Rewrite using `[h1, Matrix.mul_nonsing_inv_cancel_right _ _ (hCu w)]`. Both sides reduce to the same expression. Establish `hiff : ∀ (I : FractionalIdeal (𝓞 E)⁰ E), I ≠ 0 → Stab σ I → ∀ (c : ℝ) (z : InfinitePlace E → Fin (k + 1) → ℂ), z ∈ homLat σ J Λ P f A I c ↔ ∃ T : Matrix (Fin 1) (Fin (k + 1)) E, (∀ y ∈ coordLat Λ Y, (T *ᵥ y) 0 ∈ I) ∧ ∀ w l, z w l = (c : ℂ) * (T.map w.embedding * (C w)⁻¹) 0 l`.
+
+Introduce `I hI hIs c z`. Establish `hsm` using `fun (t : Fin (2 * r + k + 1) → E) (ht : ∀ b, form σ J t (e b) = 0 ∧ form σ J t (g b) = 0) => smul_mem_iff σ J hσ hJ hSD e g hee hgg hge heg (fun c => dInv E (r - c.val)) (fun c => FrameDual.dInv_ne_zero _) (fun c => FrameDual.stab_dInv hσ _) hle hlg hI hIs ht`. Establish `hTy : ∀ (t : Fin (2 * r + k + 1) → E) (y : Fin (k + 1) → E), ((Matrix.of fun _ j => form σ J (fun i => Y i j) t : Matrix (Fin 1) (Fin (k + 1)) E) *ᵥ y) 0 = form σ J (Y *ᵥ y) t`. Introduce `t y`. Rewrite using `[form_mulVec_left]`.
+
+Simplify using `[Matrix.mulVec, dotProduct, mul_comm]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨t, ⟨htW, htc⟩, hz⟩`. Use `⟨Matrix.of fun _ j => form σ J (fun i => Y i j) t, fun y hy => ?_, fun w l => ?_⟩` and prove the remaining obligations. Rewrite using `[hTy]`.
+
+Conclude with `(hsm t htW).1 htc _ hy ((hW _).2 ⟨y, rfl⟩)`. Rewrite using `[← hrow]`. Conclude with `hz w l`. Introduce and unpack `⟨Tm, hT, hz⟩`. Take `⟨u, hu⟩` from `exists_solve σ J hσ hJ hdetJ e g hee hgg hge heg hY hW (Tm 0)`.
+
+Establish `hT' : Tm = Matrix.of fun _ j => form σ J (fun i => Y i j) (Y *ᵥ u)`. Use extensionality with `i j`. Rewrite using `[Subsingleton.elim i 0, Matrix.of_apply, hu]`. Establish `htW` using `(hW (Y *ᵥ u)).2 ⟨u, rfl⟩`. Use `⟨Y *ᵥ u, ⟨htW, (hsm _ htW).2 fun x hx hxW => ?_⟩, fun w l => ?_⟩` and prove the remaining obligations.
+
+Take `⟨y, rfl⟩` from `(hW x).1 hxW`. Rewrite using `[← hTy, ← hT']`. Conclude with `hT y hx`. Rewrite using `[hz, hT', ← hrow]`. Both sides reduce to the same expression.
+
+Establish `hone : (1 : FractionalIdeal (𝓞 E)⁰ E) ≠ 0` using `one_ne_zero`. Take `⟨L₁, hL₁, hcov₁⟩` from `exists_core E hE (coordLat Λ Y) hlat C hCu hone one_pos`. Establish `hmem : ∀ x, x ∈ latAt E (k + 1) (coordLat Λ Y) (gC E C) ↔ signConj E k x ∈ L₁`. Introduce `x`. Establish `hofc : ∀ w, (Matrix.of (gC E C w))⁻¹ = C w` using `fun w => Matrix.nonsing_inv_nonsing_inv _ (hCu w)`.
+
+Establish `hval : ∀ (y : Fin (k + 1) → E) (w : InfinitePlace E) (l : Fin (k + 1)), (A w *ᵥ mv w.embedding (Y *ᵥ y)) (wI k r l) = (C w *ᵥ fun a => w.embedding (y a)) l` using `fun y w l => by`. Rewrite using `[mv_mulVec]`. Conclude with `(Cm_mulVec w.embedding (A w) Y _ l).symm`. Rewrite using `[hL₁, ← hiff 1 hone (stab_one σ) 1, mem_latAt]`. Prove the components needed by the constructor for the conclusion.
+
+Introduce and unpack `⟨y, hy, hx⟩`. Use `⟨Y *ᵥ y, ⟨(hW _).2 ⟨y, rfl⟩, fun c hc => ?_⟩, fun w l => ?_⟩` and prove the remaining obligations. Rewrite `hc` using `[inv_one]`. Take `⟨d, rfl⟩` from `(FractionalIdeal.mem_one_iff _).1 hc`. Conclude with `(algebraMap_smul E d (Y *ᵥ y)) ▸ Λ.smul_mem d hy`.
+
+Establish `h1` using `herm_bvec_wI k r l (A w *ᵥ mv w.embedding (Y *ᵥ y))`. Rewrite `h1` using `[hval]`. Rewrite using `[signConj_apply, hx w, hofc]`. Express the relevant statement in the definitionally equal form `_ = ((1 : ℝ) : ℂ) * herm (Hpk k r) (bvec (wI k r l)) (A w *ᵥ mv w.embedding (Y *ᵥ y))`. Rewrite using `[h1]`.
+
+Simplify using `[mul_comm]`. Introduce and unpack `⟨t, ⟨htW, htc⟩, hz⟩`. Establish `htΛ : t ∈ Λ`. Use `htc 1 (by rw [inv_one]; exact (FractionalIdeal.mem_one_iff _).2 ⟨1, by simp⟩)` as an intermediate fact. Simplify using `using this`.
+
+Take `⟨y, rfl⟩` from `(hW t).1 htW`. Use `⟨y, htΛ, fun w => ?_⟩` and prove the remaining obligations. Use extensionality with `l`. Establish `h1` using `hz w l`. Establish `h2` using `herm_bvec_wI k r l (A w *ᵥ mv w.embedding (Y *ᵥ y))`.
+
+Rewrite `h2` using `[hval]`. Express the relevant statement in the definitionally equal form `_ = ((1 : ℝ) : ℂ) * herm (Hpk k r) (bvec (wI k r l)) (A w *ᵥ mv w.embedding (Y *ᵥ y)) at h1`. Rewrite `h1` using `[h2, signConj_apply]`. Establish `h3 : star (x w l) = star ((C w *ᵥ fun a => w.embedding (y a)) l)`. Use `congrArg (eps k l * ·) h1` as an intermediate fact.
+
+Simplify using `only [Complex.ofReal_one, one_mul] at this`. Rewrite `this` using `[← mul_assoc, eps_mul_self, one_mul, mul_comm (star _), ← mul_assoc, eps_mul_self, one_mul]`. Conclude with `this`. Rewrite using `[hofc]`. Conclude with `star_injective h3`.
+
+Take `⟨hd, hz, hcv⟩` from `HasCov.of_measurePreserving (signConj E k) (signConj_measurePreserving k) hmem hcov₁`. Establish `hv : 0 < Formalism.HermitianLatticesTheory.vInv E ^ Formalism.HermitianLatticesTheory.fDeg E`. Rewrite using `[vInv_pow E hE]`. Establish `: (discr E : ℝ) ≠ 0` using `by exact_mod_cast discr_ne_zero E`. Check the signs of the components of the expression.
+
+Establish `hpos : 0 < covAt E (k + 1) (latAt E (k + 1) (coordLat Λ Y) (gC E C))` using `ZLattice.covolume_pos _ _`. Establish `hκ : covAt E (k + 1) (latAt E (k + 1) (coordLat Λ Y) (gC E C)) = (Formalism.HermitianLatticesTheory.vInv E ^ Formalism.HermitianLatticesTheory.fDeg E) ^ (k + 1)`. Establish `h1 : covAt E (k + 1) (latAt E (k + 1) (coordLat Λ Y) (gC E C)) = _` using `hcv`. Simplify using `only [map_one, Rat.cast_one, one_mul, one_pow, mul_one, pow_mul] at h1`. Generalize the expression as in `covAt E (k + 1) (latAt E (k + 1) (coordLat Λ Y) (gC E C)) = κ at h1 hpos`.
+
+Establish `hvk` using `pow_pos hv (k + 1)`. Generalize the expression as in `(Formalism.HermitianLatticesTheory.vInv E ^ Formalism.HermitianLatticesTheory.fDeg E) ^ (k + 1) = v at h1 hvk ⊢`. Establish `h2 : κ * κ = v * v`. Combine the equalities or inequalities in the displayed calculation. Break down `mul_self_eq_mul_self_iff.1 h2 with h | h` into its components or cases.
+
+Conclude with `h`. Combine the linear equalities and inequalities to obtain the conclusion. Take `⟨L, hL, hcov⟩` from `exists_core E hE (coordLat Λ Y) hlat C hCu hI hc`. Use `hasDom_of_hasCov (L := L) (fun z => (hL z).trans (hiff I hI hIs c z).symm) ?_` and prove the remaining obligations. Rewrite `hcov` using `[hκ, ← pow_mul, div_self (by rw [pow_mul]; exact (pow_pos hv _).ne'), mul_one]`.
+
+Conclude with `hcov`.
+-/
 theorem hasDom_homLat (hE : IsTotallyComplex E) (σ : E →+* E) (hσ : ∀ x, σ (σ x) = x)
     (hτ : ∀ (τ : E →+* ℂ) (x : E), τ (σ x) = star (τ x)) {k r : ℕ}
     {J : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) E} (hJ : ∀ i j, σ (J j i) = J i j) (hdetJ : J.det ≠ 0)
@@ -778,6 +1056,13 @@ theorem hasDom_homLat (hE : IsTotallyComplex E) (σ : E →+* E) (hσ : ∀ x, �
 
 end Main
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ k r J Λ P f T A s hV a`. Take `⟨hCM, hU, hND, hSD, hFr, hDu, hLat, hMod, hs, hAd⟩` from `hV`. Use `haveI := hU`. Establish `hτ : ∀ (τ : E →+* ℂ) (x : E), τ ((σ : E →+* E) x) = star (τ x)` using `hCM.2.2.2`. Establish `hσ : ∀ x, (σ : E →+* E) ((σ : E →+* E) x) = x` using `fun x => by`.
+
+Set `τ : E →+* ℂ` to `(IsAlgClosed.lift : E →ₐ[ℚ] ℂ).toRingHom`. Apply `τ.injective` to reduce the goal to its premises. Rewrite using `[hτ, hτ, star_star]`. Establish `h` using `hasDom_homLat hCM.2.1 (σ : E →+* E) hσ hτ hND.1 hND.2 hSD hFr.2 hDu hLat hMod hs hAd (FrameDual.dInv_ne_zero (r - a.val)) (FrameDual.stab_dInv hσ _) (hs a)`. Establish `hv` using `CovMul.value_eq (F := F) (E := E) hCM.2.1 hCM.2.2.1 (r - a.val) 0`.
+
+Establish `h0 : dInv E 0 = 1` using `pow_zero _`. Rewrite `hv` using `[h0, mul_one]`. Simplify using `only [Nat.cast_zero, mul_zero, sub_zero] at hv`. Rewrite `h` using `[hv]`. Conclude with `h`.
+-/
 theorem covolume_homLat : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (k r : ℕ) (J : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) E) (Λ : Submodule (𝓞 E) (Fin (2 * r + k + 1) → E)) (P : Matrix (Fin (2 * r + k + 1)) (Fin (r + 1)) E) (f : Matrix (Fin (2 * r + k + 1)) (Fin r) E) (T : F) (A : InfinitePlace E → Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ) (s : Fin r → ℝ), IsVolData σ J Λ P f T A s → ∀ a : Fin r, HasDom volume (homLat (σ : E →+* E) J Λ P f A (dInv E (r - a.val)) (s a)) (ENNReal.ofReal (((2⁻¹ : ℝ) ^ Fintype.card (InfinitePlace E) * |(NumberField.discr F : ℝ)| ^ (1 - 2 * ((r - a.val : ℕ) : ℝ)) * s a ^ (2 * Fintype.card (InfinitePlace E))) ^ (k + 1))) := by
   intro F E _ _ _ _ _ σ k r J Λ P f T A s hV a
   obtain ⟨hCM, hU, hND, hSD, hFr, hDu, hLat, hMod, hs, hAd⟩ := hV

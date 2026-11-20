@@ -55,6 +55,19 @@ def ThetaLiftConvergence : Prop := ∀ (F E : Type) [Field F] [NumberField F] [F
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
 open Formalism.IndefR.DatumF Sw in
 set_option maxHeartbeats 400000 in
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ B hB nS nT JS JT hS hT ξ₀ hξ hσξ hL χS χT cS cT rS rT ω hω JA JB ξ hA hBm κ _ co hrat om hom`. Establish `lS` using `invT_mul hS`. Establish `lT` using `invT_mul hT`. Establish `hsm : ∀ {n : ℕ} (M : Matrix (Fin n) (Fin n) E), incM F (ξ₀ • M) = incAF F E ξ₀ • incM F M` using `fun M => by`. Use extensionality with `i j`.
+
+Conclude with `map_mul (incAF F E) _ _`. Establish `hB' : ξ • incM F JB = incAF F E ξ₀ • incM F JS⁻¹` using `hBm.trans (hsm _)`. Establish `hx : IsUnit (incAF F E ξ₀)` using `(IsUnit.mk0 _ hξ).map _`. Establish `hd : IsUnit (incM F JS⁻¹).det`. Establish `h1 : IsUnit (JS⁻¹).det` using `Matrix.isUnit_nonsing_inv_det _ (Ne.isUnit hS.2)`.
+
+Establish `h2 : (incM F JS⁻¹).det = incAF F E (JS⁻¹).det` using `(RingHom.map_det (incAF F E) _).symm`. Rewrite using `[h2]`. Conclude with `h1.map _`. Establish `hle` using `ug_le (cA σ) hB' hx hd`. Establish `hge` using `ug_ge (cA σ) hB' hx`.
+
+Establish `hD` using `smul_dbl hB'`. Establish `hge'` using `ug_ge (cA σ) hD hx`. Establish `htr` using `swap_transport σ lS lT B.ψ hle co _ (castD_transD_rho _ hB' co B.ψ) hom _ (swapHom_apply hle om)`. Establish `hrat' : ∀ x : Matrix (Fin nS) (Fin nT) E, ∃ y z : κ → F, (castD _ hB' (GlobalTheory.WeilSchrodinger.transD (cA σ) co)).e (incM F x) = (fun i => algebraMap F (AF F) (y i), fun i => algebraMap F (AF F) (z i))` using `fun x => by`. Take `⟨y, z, h⟩` from `hrat xᵀ`.
+
+Conclude with `⟨y, z, (castD_transD_e _ hB' co _).trans h⟩`. Establish `g1 : JS⁻¹ = (JS⁻¹ᵀ)ᵀ` using `(Matrix.transpose_transpose _).symm`. Establish `g2 : incAF F E ξ₀ • incM F JA = incM F (ξ₀ • (JT⁻¹ᵀ)⁻¹)`. Rewrite using `[(dual_inv lT).2, hsm, hA]`. Take `⟨dd, omd, k1, k2, k3⟩` from `H F E σ B hB nT nS JT⁻¹ᵀ JS⁻¹ᵀ (isHermND_invT hT) (isHermND_invT hS) ξ₀ hξ hσξ (LatH.swap hS hT hL) χT χS cT cS rT rS _ (swap_datum σ lS lT ξ₀ B.ψ hω) JS⁻¹ JA (incAF F E ξ₀) g1 g2 κ _ hrat' _ htr`.
+
+Use `⟨castD₂ _ hD dd, omd.comp (Subgroup.inclusion hge'), isDblCoord_cast₂ _ hB' co k1, isUWeilSplit_cast₂ _ hD hge' (isLagr_diagCols _ _) k2, fun g gd hgd φ₁ hφ₁ φ₂ hφ₂ => ?_⟩` and prove the remaining obligations. Establish `k4` using `k3 (Subgroup.inclusion hge g) (Subgroup.inclusion hge' gd) hgd φ₁ hφ₁ φ₂ hφ₂`. Rewrite `k4` using `[swapHom_fst]`. Rewrite using `[MonoidHom.comp_apply]`. Conclude with `k4`.
+-/
 theorem dblS_of_dblT_k (H : _root_.PositivityTheory.ThKW.ThetaLiftNonvanishing) : _root_.PositivityTheory.ThKW.ThetaLiftConvergence := by
   intro F E _ _ _ _ _ σ B hB nS nT JS JT hS hT ξ₀ hξ hσξ hL χS χT cS cT rS rT ω hω JA JB ξ hA hBm κ _ co hrat om hom
   have lS := invT_mul hS

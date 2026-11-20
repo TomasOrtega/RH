@@ -25,10 +25,20 @@ namespace GlobalTheory.CxRegPair
 
 variable {p : ℕ} [Fact p.Prime]
 
+/- English proof (translation)
+Simplify using `only [sh]`. Rewrite using `[← MulOpposite.unop_mul, ← map_mul, Units.inv_mul, map_one, MulOpposite.unop_one]`.
+-/
 theorem sh_mul_sh_inv (G : HTGroup p) (c : G.Cˣ) : sh G (c : G.C) * sh G ((c⁻¹ : G.Cˣ) : G.C) = 1 := by
   simp only [sh]
   rw [← MulOpposite.unop_mul, ← map_mul, Units.inv_mul, map_one, MulOpposite.unop_one]
 
+/- English proof (translation)
+Establish `key : (γ : G.C) * ((β : G.C) * ((β₁⁻¹ : G.Cˣ) : G.C)) * ((β₁ : G.C) * sh G γ) = (β : G.C) * ((β₁⁻¹ : G.Cˣ) : G.C) * γ * ((β₁ : G.C) * sh G γ)`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[mul_assoc, ← mul_assoc ((β₁⁻¹ : G.Cˣ) : G.C), ← Algebra.commutes, mul_assoc, Units.inv_mul, mul_one, Algebra.commutes]`. Use `_ = _ := by rw [← h₁]; simp only [mul_assoc]`. Establish `hinv : ((β₁ : G.C) * sh G γ) * (sh G ((γ⁻¹ : G.Cˣ) : G.C) * ((β₁⁻¹ : G.Cˣ) : G.C)) = 1`.
+
+Rewrite using `[mul_assoc, ← mul_assoc (sh G γ), sh_mul_sh_inv, one_mul, Units.mul_inv]`. Use `show (β : G.C) * ((β₁⁻¹ : G.Cˣ) : G.C) * γ = γ * ((β : G.C) * ((β₁⁻¹ : G.Cˣ) : G.C))`. Use `congrArg (· * (sh G ((γ⁻¹ : G.Cˣ) : G.C) * ((β₁⁻¹ : G.Cˣ) : G.C))) key` as an intermediate fact. Simplify using `only [mul_assoc] at this hinv`. Simplify using `only [mul_assoc]`.
+
+Rewrite `this` using `[hinv, mul_one, mul_one]`. Conclude with `this.symm`.
+-/
 theorem commute_mul_inv_of_sim (G : HTGroup p) (β β₁ γ : G.Cˣ) (c : ℚ)
     (h : (γ : G.C) * β * sh G γ = algebraMap ℚ G.C c * β)
     (h₁ : (γ : G.C) * β₁ * sh G γ = algebraMap ℚ G.C c * β₁) :
@@ -50,6 +60,21 @@ theorem commute_mul_inv_of_sim (G : HTGroup p) (β β₁ γ : G.Cˣ) (c : ℚ)
   rw [hinv, mul_one, mul_one] at this
   exact this.symm
 
+/- English proof (translation)
+Set `φ` to `Algebra.TensorProduct.map (AfP.eval w) (AlgHom.id ℚ G.C)`. Set `u : (w.1.adicCompletion ℚ ⊗[ℚ] G.C)ˣ` to `((compL G w g : UPts G.star (w.1.adicCompletion ℚ)) : (w.1.adicCompletion ℚ ⊗[ℚ] G.C)ˣ × (w.1.adicCompletion ℚ)ˣ).1`. Set `ν : (w.1.adicCompletion ℚ)ˣ` to `((compL G w g : UPts G.star (w.1.adicCompletion ℚ)) : (w.1.adicCompletion ℚ ⊗[ℚ] G.C)ˣ × (w.1.adicCompletion ℚ)ˣ).2`. Set `xw : (w.1.adicCompletion ℚ ⊗[ℚ] G.C)ˣ` to `Units.map (φ : AfP p ⊗[ℚ] G.C →* w.1.adicCompletion ℚ ⊗[ℚ] G.C) x`. Set `mY : (w.1.adicCompletion ℚ ⊗[ℚ] G.C)ˣ` to `Units.map (inC G (w.1.adicCompletion ℚ)).toMonoidHom P.γ`.
+
+Set `tw : (w.1.adicCompletion ℚ)ˣ` to `Units.map (AfP.eval w : AfP p →* w.1.adicCompletion ℚ) t`. Establish `hT : ((compL G w (P.toAf x t hx P.self) : UPts G.star (w.1.adicCompletion ℚ)) : (w.1.adicCompletion ℚ ⊗[ℚ] G.C)ˣ × (w.1.adicCompletion ℚ)ˣ).1 = xw * mY * xw⁻¹`. Apply `Units.ext` to reduce the goal to its premises. Use `show φ ((x : AfP p ⊗[ℚ] G.C) * inC G (AfP p) (P.γ : G.C) * ((x⁻¹ : (AfP p ⊗[ℚ] G.C)ˣ) : AfP p ⊗[ℚ] G.C)) = _`. Rewrite using `[map_mul, map_mul, glueL_evalT_inC]`.
+
+Both sides reduce to the same expression. Establish `E : ((compL G w (g⁻¹ * P.toAf x t hx P.self * g) : UPts G.star (w.1.adicCompletion ℚ)) : (w.1.adicCompletion ℚ ⊗[ℚ] G.C)ˣ × (w.1.adicCompletion ℚ)ˣ).1 = (u⁻¹ * xw) * mY * (u⁻¹ * xw)⁻¹`. Rewrite using `[map_mul, map_mul, map_inv]`. Express the relevant statement in the definitionally equal form `u⁻¹ * ((compL G w (P.toAf x t hx P.self) : UPts G.star (w.1.adicCompletion ℚ)) : (w.1.adicCompletion ℚ ⊗[ℚ] G.C)ˣ × (w.1.adicCompletion ℚ)ˣ).1 * u = _`. Rewrite using `[hT]`.
+
+Use `group`. Use `⟨u⁻¹ * xw, tw * ν⁻¹, ?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[E]`. Both sides reduce to the same expression. Rewrite using `[E, show (u⁻¹ * xw * mY * (u⁻¹ * xw)⁻¹)⁻¹ = (u⁻¹ * xw) * mY⁻¹ * (u⁻¹ * xw)⁻¹ by group]`.
+
+Both sides reduce to the same expression. Establish `hu : ((u⁻¹ : (w.1.adicCompletion ℚ ⊗[ℚ] G.C)ˣ) : w.1.adicCompletion ℚ ⊗[ℚ] G.C) * (starT G.star (w.1.adicCompletion ℚ) ((u⁻¹ : (w.1.adicCompletion ℚ ⊗[ℚ] G.C)ˣ) : w.1.adicCompletion ℚ ⊗[ℚ] G.C)).unop = algebraMap (w.1.adicCompletion ℚ) (w.1.adicCompletion ℚ ⊗[ℚ] G.C) ((ν⁻¹ : (w.1 …` using `((compL G w g)⁻¹).2`. Establish `hxw : φ (x : AfP p ⊗[ℚ] G.C) * inC G (w.1.adicCompletion ℚ) (P.β : G.C) * (starT G.star (w.1.adicCompletion ℚ) (φ (x : AfP p ⊗[ℚ] G.C))).unop = algebraMap (w.1.adicCompletion ℚ) (w.1.adicCompletion ℚ ⊗[ℚ] G.C) (tw : w.1.adicCompletion ℚ)`. Establish `h` using `congrArg φ hx`. Rewrite `h` using `[map_mul, map_mul, glueL_evalT_inC, glueL_evalT_starT, glueL_evalT_algebraMap]`.
+
+Conclude with `h`. Establish `hk : (((u⁻¹ * xw : (w.1.adicCompletion ℚ ⊗[ℚ] G.C)ˣ)) : w.1.adicCompletion ℚ ⊗[ℚ] G.C) = ((u⁻¹ : (w.1.adicCompletion ℚ ⊗[ℚ] G.C)ˣ) : w.1.adicCompletion ℚ ⊗[ℚ] G.C) * φ (x : AfP p ⊗[ℚ] G.C)` using `rfl`. Rewrite using `[hk, RingHom.map_mul (starT G.star (w.1.adicCompletion ℚ)), MulOpposite.unop_mul]`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [mul_assoc]`.
+
+Use `_ = algebraMap (w.1.adicCompletion ℚ) (w.1.adicCompletion ℚ ⊗[ℚ] G.C) (tw : w.1.adicCompletion ℚ) * (((u⁻¹ : (w.1.adicCompletion ℚ ⊗[ℚ] G.C)ˣ) : w.1.adicCompletion ℚ ⊗[ℚ] G.C) * (starT G.star (w.1.adicCompletion ℚ) ((u⁻¹ : (w.1.adicCompletion ℚ ⊗[ℚ] G.C)ˣ) : w.1.adicCompletion ℚ …`. Rewrite using `[hxw, ← mul_assoc, ← Algebra.commutes, mul_assoc]`. Use `_ = _ := by rw [hu, ← map_mul, Units.val_mul]`.
+-/
 theorem glue_pair (G : HTGroup p) (P : Pair G) (x : (AfP p ⊗[ℚ] G.C)ˣ) (t : (AfP p)ˣ)
     (hx : Triv G (AfP p) P.β x t) (g : G.GAf) (w : AwayP p) :
     ∃ (k : (w.1.adicCompletion ℚ ⊗[ℚ] G.C)ˣ) (lam : (w.1.adicCompletion ℚ)ˣ),
@@ -105,6 +130,31 @@ theorem glue_pair (G : HTGroup p) (P : Pair G) (x : (AfP p ⊗[ℚ] G.C)ˣ) (t :
           rw [hxw, ← mul_assoc, ← Algebra.commutes, mul_assoc]
       _ = _ := by rw [hu, ← map_mul, Units.val_mul]
 
+/- English proof (translation)
+Introduce `p _ G L f hf _ P₁`. Establish `hdeg` using `P₁.reg.1`. Establish `hsep` using `P₁.reg.2`. Take `⟨Ω, hΩc, hΩ⟩` from `GlobalTheory.T.exists_compact_support_twistedHeckeTestFunction p G L f hf`. Establish `hev` using `eventually_compL_mem_intPts p G Ω hΩc`.
+
+Establish `hlat` using `GlobalTheory.T.eventually_kottwitz_lattice_separable_minpoly p G P₁.γ hsep hdeg`. Establish `hnorm` using `GlobalTheory.T.eventually_tauFixed_unit_centralizer_is_norm p G P₁.β P₁.sym P₁.γ (P₁.c : ℚ) P₁.sim hsep hdeg`. Establish `hstab` using `GlobalTheory.FinClsLoc.intC_stab p G P₁.β`. Take `⟨S, hS⟩` from `GlobalTheory.FinClsLoc.exists_finset_forall_prime_awayP_padic p _ (hev.and (hlat.and (hnorm.and hstab)))`. Use `⟨S, fun P hγ hc x t hx g hfy ℓ _ hℓ => ?_⟩` and prove the remaining obligations.
+
+Take `⟨w, ⟨hev', hlat', hnorm', hmul, hstar, hβi, hβi'⟩, ⟨e⟩⟩` from `hS ℓ hℓ`. Apply `GlobalTheory.T.localTwistedNormConclusion_transfer_ringEquiv p G (w.1.adicCompletion ℚ) ℚ_[ℓ] e` to reduce the goal to its premises. Establish `hint` using `hev' _ (hΩ _ hfy)`. Take `⟨k, lam, hk1, hk2, hk3⟩` from `GlobalTheory.CxRegPair.glue_pair G P x t hx g w`. Rewrite `hk1`, `hk2` using `[hγ]`.
+
+Take `⟨z, m, hz, hm, hm', hkzm⟩` from `hlat' k (by rw [hk1]; exact hint.1) (by rw [hk2]; exact hint.2.1)`. Establish `hcm : Commute ((P.β : G.C) * ((P₁.β⁻¹ : G.Cˣ) : G.C)) (P₁.γ : G.C)`. Establish `h` using `P.sim`. Rewrite `h` using `[hγ, hc]`. Conclude with `GlobalTheory.CxRegPair.commute_mul_inv_of_sim G P.β P₁.β P₁.γ (P₁.c : ℚ) h P₁.sim`.
+
+Establish `hinv` using `starT_invol G (w.1.adicCompletion ℚ)`. Establish `hbb : inC G (w.1.adicCompletion ℚ) ((P₁.β⁻¹ : G.Cˣ) : G.C) * inC G (w.1.adicCompletion ℚ) (P₁.β : G.C) = 1`. Rewrite using `[← map_mul, Units.inv_mul, map_one]`. Establish `hβ' : (starT G.star (w.1.adicCompletion ℚ) (inC G (w.1.adicCompletion ℚ) (P₁.β : G.C))).unop = inC G (w.1.adicCompletion ℚ) (P₁.β : G.C)` using `by show (starT G.star (w.1.adicCompletion ℚ) ((1 : w.1.adicCompletion ℚ) ⊗ₜ (P₁.β : G.C))).unop = (1 : w.1.adicCompletion ℚ) ⊗ₜ (P₁.β : G.C)`. Rewrite using `[starT_tmul]`.
+
+Conclude with `congrArg (TensorProduct.tmul ℚ (1 : w.1.adicCompletion ℚ)) P₁.sym`. Establish `hY' : inC G (w.1.adicCompletion ℚ) (P₁.γ : G.C) * inC G (w.1.adicCompletion ℚ) (P₁.β : G.C) * (starT G.star (w.1.adicCompletion ℚ) (inC G (w.1.adicCompletion ℚ) (P₁.γ : G.C))).unop = algebraMap (w.1.adicCompletion ℚ) (w.1.adicCompletion ℚ ⊗[ℚ] G.C) (algebraMap ℚ (w.1.adicCompleti …`. Establish `h` using `congrArg (inC G (w.1.adicCompletion ℚ)) P₁.sim`. Rewrite `h` using `[map_mul, map_mul, map_mul]`. Establish `e1 : inC G (w.1.adicCompletion ℚ) (sh G (P₁.γ : G.C)) = (starT G.star (w.1.adicCompletion ℚ) (inC G (w.1.adicCompletion ℚ) (P₁.γ : G.C))).unop` using `(starT_tmul G.star (w.1.adicCompletion ℚ) 1 _).symm`.
+
+Establish `e2 : inC G (w.1.adicCompletion ℚ) (algebraMap ℚ G.C (P₁.c : ℚ)) = algebraMap (w.1.adicCompletion ℚ) (w.1.adicCompletion ℚ ⊗[ℚ] G.C) (algebraMap ℚ (w.1.adicCompletion ℚ) (P₁.c : ℚ))`. Rewrite using `[← IsScalarTower.algebraMap_apply]`. Conclude with `(Algebra.TensorProduct.includeRight : G.C →ₐ[ℚ] w.1.adicCompletion ℚ ⊗[ℚ] G.C).commutes _`. Rewrite `h` using `[e1, e2]`. Conclude with `h`.
+
+Establish `hk3' : (k : (w.1.adicCompletion ℚ ⊗[ℚ] G.C)) * (inC G (w.1.adicCompletion ℚ) ((P.β : G.C) * ((P₁.β⁻¹ : G.Cˣ) : G.C)) * inC G (w.1.adicCompletion ℚ) (P₁.β : G.C)) * (starT G.star (w.1.adicCompletion ℚ) (k : (w.1.adicCompletion ℚ ⊗[ℚ] G.C))).unop = algebraMap (w.1.adicCompletion ℚ) …`. Rewrite using `[← map_mul, mul_assoc (P.β : G.C), Units.inv_mul, mul_one]`. Conclude with `hk3`. Establish `hN : ∀ m' : (w.1.adicCompletion ℚ ⊗[ℚ] G.C)ˣ, (m' : (w.1.adicCompletion ℚ ⊗[ℚ] G.C)) = m * (starT G.star (w.1.adicCompletion ℚ) (m : (w.1.adicCompletion ℚ ⊗[ℚ] G.C))).unop * inC G (w.1.adicCompletion ℚ) ((P₁.β⁻¹ : G.Cˣ) : G.C) → Commute (m' : (w.1.adicCompletion ℚ ⊗[ℚ] G.C)) (inC …`. Introduce `m' hm'v hcm' hτ`.
+
+Establish `hss : (starT G.star (w.1.adicCompletion ℚ) (m : (w.1.adicCompletion ℚ ⊗[ℚ] G.C))).unop * (starT G.star (w.1.adicCompletion ℚ) ((m⁻¹ : (w.1.adicCompletion ℚ ⊗[ℚ] G.C)ˣ) : (w.1.adicCompletion ℚ ⊗[ℚ] G.C))).unop = 1`. Rewrite using `[← MulOpposite.unop_mul, ← map_mul, Units.inv_mul, map_one, MulOpposite.unop_one]`. Establish `h1 : (m' : (w.1.adicCompletion ℚ ⊗[ℚ] G.C)) * (inC G (w.1.adicCompletion ℚ) (P₁.β : G.C) * (starT G.star (w.1.adicCompletion ℚ) ((m⁻¹ : (w.1.adicCompletion ℚ ⊗[ℚ] G.C)ˣ) : (w.1.adicCompletion ℚ ⊗[ℚ] G.C))).unop * ((m⁻¹ : (w.1.adicCompletion ℚ ⊗[ℚ] G.C)ˣ) : (w.1.adicCompletion ℚ ⊗ …`. Rewrite using `[hm'v]`. Combine the equalities or inequalities in the displayed calculation.
+
+Simplify using `only [mul_assoc]`. Use `_ = 1 := by rw [hbb, mul_one, hss, mul_one, Units.mul_inv]`. Establish `hinv'` using `Units.inv_eq_of_mul_eq_one_right h1`. Use `hnorm' m' hcm' ?_ ?_ hτ` and prove the remaining obligations. Rewrite using `[hm'v]`.
+
+Conclude with `hmul _ _ (hmul _ _ hm (hstar _ hm)) hβi'`. Rewrite using `[hinv']`. Conclude with `hmul _ _ (hmul _ _ hβi (hstar _ hm')) hm'`. Establish `halg` using `GlobalTheory.twisted_norm_local_step (starT G.star (w.1.adicCompletion ℚ)) hinv (Units.map (inC G (w.1.adicCompletion ℚ)).toMonoidHom P₁.β) (Units.map (inC G (w.1.adicCompletion ℚ)).toMonoidHom P₁.γ) k z m (inC G (w.1.adicCompletion ℚ) ((P.β : G.C) * ((P₁.β⁻¹ : G.Cˣ) : G.C))) lam …`. Take `⟨z', hz', hz'eq⟩` from `halg`.
+
+Conclude with `⟨lam, z', hz', hz'eq⟩`.
+-/
 theorem local_pair_scalar_norm : ∀ (p : ℕ) [Fact p.Prime] (G : HTGroup p) (L : G.Level) (f : G.GAf → ℂ), IsTest (MonoidHom.id _) L.K.toSubgroup L.K.toSubgroup f → (∀ g, f g ≠ 0 → RegAf G g) → ∀ P₁ : Pair G, ∃ S : Finset ℕ, ∀ (P : Pair G), P.γ = P₁.γ → P.c = P₁.c → ∀ (x : (AfP p ⊗[ℚ] G.C)ˣ) (t : (AfP p)ˣ) (hx : Triv G (AfP p) P.β x t) (g : G.GAf), f (g⁻¹ * P.toAf x t hx P.self * g) ≠ 0 → ∀ (ℓ : ℕ) [Fact ℓ.Prime], ℓ ∉ S → ∃ (u : ℚ_[ℓ]ˣ) (z : (ℚ_[ℓ] ⊗[ℚ] G.C)ˣ), Commute (z : ℚ_[ℓ] ⊗[ℚ] G.C) (inC G ℚ_[ℓ] (P₁.γ : G.C)) ∧ inC G ℚ_[ℓ] ((P.β : G.C) * ((P₁.β⁻¹ : G.Cˣ) : G.C)) = algebraMap ℚ_[ℓ] (ℚ_[ℓ] ⊗[ℚ] G.C) (u : ℚ_[ℓ]) * ((z : ℚ_[ℓ] ⊗[ℚ] G.C) * inC G ℚ_[ℓ] (P₁.β : G.C) * (starT G.star ℚ_[ℓ] (z : ℚ_[ℓ] ⊗[ℚ] G.C)).unop * inC G ℚ_[ℓ] ((P₁.β⁻¹ : G.Cˣ) : G.C)) := by
   intro p _ G L f hf _ P₁
   have hdeg := P₁.reg.1

@@ -12,6 +12,15 @@ section Gram
 variable {K : Type} [Field K] [NumberField K] [IsTotallyComplex K] {V : Type} [AddCommGroup V] [Module K V]
   [Module (𝓞 K) V] [IsScalarTower (𝓞 K) K V] [StarRing K]
 
+/- English proof (translation)
+Establish `hX : ∀ v, IsUnit (X v).det` using `fun v => (h v).1`. Establish `hL : (Submodule.span (𝓞 K) (Set.range e)).FG` using `Submodule.fg_span (Set.finite_range e)`. Establish `hne : Submodule.span (𝓞 K) (Set.range e) ≠ ⊥` using `fun h0 => by`. Establish `: e ⟨0, hj⟩ ∈ Submodule.span (𝓞 K) (Set.range e)` using `Submodule.subset_span ⟨_, rfl⟩`. Rewrite `this` using `[h0, Submodule.mem_bot]`.
+
+Conclude with `he.ne_zero _ this`. Establish `hrk : Formalism.HN.rkK (Submodule.span (𝓞 K) (Set.range e)) = j`. Rewrite using `[Formalism.HN.rkK, Submodule.span_span_of_tower, finrank_span_eq_card he, Fintype.card_fin]`. Establish `h1` using `(Formalism.HN.sizeMu K V ι b X hX _ hL hne).2.1`. Establish `h2` using `(Formalism.HN.htGram K V ι b X hX j e he).1`.
+
+Establish `h3` using `(Formalism.HN.plLat K V ι b X hX _ hL).2.2`. Establish `hf : (0 : ℝ) < Formalism.HN.nPl K`. Unfold `Formalism.HN.nPl`. Conclude with `Fintype.card_pos` after adjusting the coercions. Establish `hj' : (0 : ℝ) < j` using `by exact_mod_cast hj`.
+
+Rewrite using `[deg, slope, slope_sq_eq h hL, h1, Formalism.HN.size, Real.log_rpow h3, h2, hrk]`. Clear the denominators using the available nonvanishing facts.
+-/
 theorem deg_span {ι : Type} [Fintype ι] [DecidableEq ι] {b : Basis ι K V} {X : InfinitePlace K → Matrix ι ι ℂ}
     {N : (K →+* ℂ) → V → ℝ} (h : IsGram b X N) {j : ℕ} (hj : 0 < j) (e : Fin j → V) (he : LinearIndependent K e) :
     deg N (Submodule.span (𝓞 K) (Set.range e)) =
@@ -35,6 +44,13 @@ theorem deg_span {ι : Type} [Fintype ι] [DecidableEq ι] {b : Basis ι K V} {X
 
 omit [StarRing K] in
 
+/- English proof (translation)
+Establish `hrk : Formalism.HN.rkK (Submodule.span (𝓞 K) {(2 : K)}) = 1`. Rewrite using `[Formalism.HN.rkK, Submodule.span_span_of_tower, finrank_span_singleton two_ne_zero]`. Establish `hf : (0 : ℝ) < Formalism.HN.nPl K`. Unfold `Formalism.HN.nPl`. Conclude with `Fintype.card_pos` after adjusting the coercions.
+
+Establish `hv : ∀ v : InfinitePlace K, v 2 = 2` using `fun v => by`. Rewrite using `[← InfinitePlace.norm_embedding_eq, map_ofNat]`. Simplify using the standard rewrite rules. Rewrite using `[deg, slope, slope_sq_line 2 two_ne_zero, hrk]`. Simplify using `only [hv, Finset.sum_const, Finset.card_univ, nsmul_eq_mul]`.
+
+Rewrite using `[show (Fintype.card (InfinitePlace K) : ℝ) = Formalism.HN.nPl K from rfl]`. Clear the denominators using the available nonvanishing facts. Simplify using the standard rewrite rules.
+-/
 theorem deg_two : deg (fun (σ : K →+* ℂ) (y : K) => ‖σ y‖) (Submodule.span (𝓞 K) {(2 : K)}) = -Real.log 2 := by
   have hrk : Formalism.HN.rkK (Submodule.span (𝓞 K) {(2 : K)}) = 1 := by
     rw [Formalism.HN.rkK, Submodule.span_span_of_tower, finrank_span_singleton two_ne_zero]
@@ -55,6 +71,9 @@ open ReciprocityTheory.ChartRestriction.G.Geo.Tor ReciprocityTheory.ChartRestric
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E} {Dw : Datum H}
   {l : Level H}
 
+/- English proof (translation)
+Establish `h1 : Dw.p - 1 < Dw.p` using `by omega`. Simplify using `only [weightOf, h1, if_true, lt_irrefl, if_false, Nat.sub_self, Nat.sub_zero]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem bar_gap (a : (E →+* ℂ) × ℕ → ℤ) (m : ℤ) (τ : Psi H) (hp : 0 < Dw.p) (hq : 0 < Dw.q) :
     weightOf Dw a m τ ⟨Dw.p - 1, by omega⟩ - weightOf Dw a m τ ⟨Dw.p, by omega⟩ =
       a (τ.1, Dw.p - 1) + a (conjEmb τ.1, Dw.q - 1) + 2 * m := by
@@ -62,6 +81,9 @@ theorem bar_gap (a : (E →+* ℂ) × ℕ → ℤ) (m : ℤ) (τ : Psi H) (hp : 
   simp only [weightOf, h1, if_true, lt_irrefl, if_false, Nat.sub_self, Nat.sub_zero]
   ring
 
+/- English proof (translation)
+Rewrite using `[wtOf_small la m τ j hj, wtOf_small la m τ i (by omega)]`. Use `h ⟨Dw.p + (Dw.q - 1 - j), by omega⟩ ⟨Dw.p + (Dw.q - 1 - i), by omega⟩ (by simp) (by simp only [Fin.mk_le_mk]; omega)` as an intermediate fact. Use linear arithmetic over natural numbers and integers.
+-/
 theorem small_antitone (la : Weight Dw) (m : ℤ) (τ : Psi H)
     (h : ∀ i j : Fin (Dw.p + Dw.q), Dw.p ≤ i → i ≤ j → la τ j ≤ la τ i) (i j : ℕ) (hij : i ≤ j) (hj : j < Dw.q) :
     (wtOf Dw la m).1 (conjEmb τ.1, j) ≤ (wtOf Dw la m).1 (conjEmb τ.1, i) := by
@@ -70,6 +92,9 @@ theorem small_antitone (la : Weight Dw) (m : ℤ) (τ : Psi H)
     (by simp only [Fin.mk_le_mk]; omega)
   omega
 
+/- English proof (translation)
+Rewrite using `[wtOf_big _ _ _ _ hi, wtOf_small _ _ _ _ hj]`. Simplify using `[hi]`.
+-/
 theorem canonical_exponents (τ : Psi H) (i j : ℕ) (hi : i < Dw.p) (hj : j < Dw.q) :
     (wtOf Dw (fun _ k => if (k : ℕ) < Dw.p then (Dw.q : ℤ) else -(Dw.p : ℤ)) 0).1 (τ.1, i) = Dw.q ∧
       (wtOf Dw (fun _ k => if (k : ℕ) < Dw.p then (Dw.q : ℤ) else -(Dw.p : ℤ)) 0).1 (conjEmb τ.1, j) = Dw.p := by
@@ -77,6 +102,21 @@ theorem canonical_exponents (τ : Psi H) (i j : ℕ) (hi : i < Dw.p) (hj : j < D
 
 variable {Xo : Moduli Dw l} {c : Coeff l} {r : ℕ}
 
+/- English proof (translation)
+Take `⟨B, hB⟩ : ∃ B : ℕ, ∀ (τ : E →+* ℂ) (i : Fin r), (G.1 (τ, i)).natAbs ≤ B` from `⟨Finset.univ.sup fun x : (E →+* ℂ) × Fin r => (G.1 (x.1, x.2)).natAbs, fun τ i => Finset.le_sup (f := fun x : (E →+* ℂ) × Fin r => (G.1 (x.1, x.2)).natAbs) (Finset.mem_univ (τ, i))⟩`. Establish `hB' : ∀ τ i, i < r → -(B : ℤ) ≤ G.1 (τ, i) ∧ G.1 (τ, i) ≤ B` using `fun τ i hi => by`. Use `hB τ ⟨i, hi⟩` as an intermediate fact. Simplify using `only at this`. Use linear arithmetic over natural numbers and integers.
+
+Take `⟨s, hs⟩` from `hG`. Establish `hpos : ∀ τ i, i < r → 0 ≤ G.1 (τ, i) + ((2 * B * (r - i) : ℕ) : ℤ)` using `fun τ i hi => by`. Establish `h1` using `(hB' τ i hi).1`. Establish `h2 : 2 * B * 1 ≤ 2 * B * (r - i)` using `Nat.mul_le_mul_left _ (by omega)`. Use linear arithmetic over natural numbers and integers.
+
+Use `⟨fun x => 2 * B * (r - x.2), 2 * s.natAbs, fun x => if x.2 < r then (G.1 x + ((2 * B * (r - x.2) : ℕ) : ℤ)).toNat else 0, 2 * (s + s.natAbs).toNat, ⟨fun τ i j hij => Nat.mul_le_mul_left _ (by omega), even_two_mul _⟩, ⟨fun τ i j hij => ?_, even_two_mul _⟩, fun k => ?_⟩` and prove the remaining obligations. Simplify using `only split_ifs with h1 h2 h2`. Break down `hij.eq_or_lt with rfl | hlt` into its components or cases. Conclude with `le_rfl`. Establish `e1` using `hB' τ i h2`.
+
+Establish `e2` using `hB' τ j h1`. Establish `e3 : 2 * B * (r - j) + 2 * B * 1 ≤ 2 * B * (r - i)`. Rewrite using `[← mul_add]; exact Nat.mul_le_mul_left _ (by omega)`. Use linear arithmetic over natural numbers and integers. Use linear arithmetic over natural numbers and integers.
+
+Conclude with `Nat.zero_le _`. Conclude with `le_rfl`. Use function extensionality and compare the values at `τ j`. Establish `hj` using `j.2`. Establish `hp` using `(U.X k).p0_le`.
+
+Simplify using `only [laU, modelWt, Pi.add_apply]`. Use `split_ifs with h1 h2 h2`. Rewrite using `[Int.toNat_of_nonneg (hpos _ _ h2)]`. Use linear arithmetic over natural numbers and integers. Use linear arithmetic over natural numbers and integers.
+
+Rewrite using `[Int.toNat_of_nonneg (hpos _ _ h2)]`. Use linear arithmetic over natural numbers and integers. Use linear arithmetic over natural numbers and integers.
+-/
 theorem modelWt_eq_sub {σ : c.F →+* ℂ} (U : Unf Xo c σ r) (G : WTZ E) (hG : Even G.2) :
     ∃ a n a' n', Dom a n ∧ Dom a' n' ∧ ∀ k, laU U a' n' k = modelWt U G k + laU U a n k := by
   obtain ⟨B, hB⟩ : ∃ B : ℕ, ∀ (τ : E →+* ℂ) (i : Fin r), (G.1 (τ, i)).natAbs ≤ B :=
@@ -117,6 +157,9 @@ theorem modelWt_eq_sub {σ : c.F →+* ℂ} (U : Unf Xo c σ r) (G : WTZ E) (hG 
     · rw [Int.toNat_of_nonneg (hpos _ _ h2)]; omega
     · omega
 
+/- English proof (translation)
+Introduce `γ hγ`. Take `⟨a, n, a', n', h1, h2, h3⟩` from `modelWt_eq_sub U G hG`. Use `h a' n' h2 k γ hγ` as an intermediate fact. Rewrite `this` using `[h3, (U.X k).χ_add _ _ γ hγ, h a n h1 k γ hγ, mul_one]`. Then use the resulting hypothesis.
+-/
 theorem chi_modelWt {σ : c.F →+* ℂ} (U : Unf Xo c σ r)
     (h : ∀ a n, Dom a n → ∀ k, ∀ γ ∈ (U.X k).Γ, (U.X k).χ (laU U a n k) γ = 1)
     (G : WTZ E) (hG : Even G.2) (k : U.Comp) : ∀ γ ∈ (U.X k).Γ, (U.X k).χ (modelWt U G k) γ = 1 := by

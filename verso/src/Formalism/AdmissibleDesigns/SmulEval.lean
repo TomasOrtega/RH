@@ -34,6 +34,9 @@ structure EvS (r : D.nd.X i → (GE D.nd →* GL (Fin D.R.nV) (D.nd.O i))) (π :
   ρk_eval : ∀ (a : Dd.R') k, (Dd.ρπ a).toSquareBlock (RepresentationBoundsCohomology.blk D.R) k = Dd.ρk k a
   pπ : Dd.p Dd.π' = π
 
+/- English proof (translation)
+Take `⟨-, -, -, -, h4, -, h6, -, h8, -, h10, h11, -, -, -, -, h16, h17, -⟩` from `hD`. Conclude with `⟨fun g x' => h6 g x', fun g x' => h11 g x', h8, h10, h16, h17, h4⟩`.
+-/
 theorem evS_of (hD : RingDef (D.nd.O i) (D.nd.T i) (RepresentationBoundsCohomology.repX D.nd r) π (chiU D.nd i 1) (epsU D.nd i) g0 eB e₁ s Dd) :
     EvS r π Dd := by
   obtain ⟨-, -, -, -, h4, -, h6, -, h8, -, h10, h11, -, -, -, -, h16, h17, -⟩ := hD
@@ -45,6 +48,11 @@ section GlobalTheory
 variable {D : D7} {i : D.nd.Loc} {r : D.nd.X i → (GE D.nd →* GL (Fin D.R.nV) (D.nd.O i))} {π : D.nd.X i}
   {Dd : RingData (D.nd.O i) (D.nd.X i) (Fin D.R.nV) (GE D.nd) D.R.t (RepresentationBoundsCohomology.blk D.R)}
 
+/- English proof (translation)
+Establish `h'` using `h`. Simplify using `only [Formalism.MainNotions.N.RepresentationBoundsCohomology.blk, Formalism.MainNotions.N.RepresentationBoundsCohomology.blkG] at h'`. Use `split_ifs at h' with h1`. Conclude with `absurd h'.symm (Fin.succ_ne_zero c')`. Apply `Fin.ext` to reduce the goal to its premises.
+
+Establish `h2` using `congrArg Fin.val h'`. Simplify using `only [Fin.val_succ] at h2`. Simplify using `only [Fin.coe_natAdd]`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem blkS_eq {c' : Fin D.R.t} (a : Fin D.R.nV) (h : RepresentationBoundsCohomology.blk D.R a = c'.succ) :
     a = (Fin.natAdd D.R.r c' : Fin (D.R.r + D.R.t)) := by
   have h' := h
@@ -57,6 +65,11 @@ theorem blkS_eq {c' : Fin D.R.t} (a : Fin D.R.nV) (h : RepresentationBoundsCohom
     simp only [Fin.coe_natAdd]
     omega
 
+/- English proof (translation)
+Establish `hb : RepresentationBoundsCohomology.blk D.R (Fin.natAdd D.R.r c') = c'.succ`. Simplify using `only [Formalism.MainNotions.N.RepresentationBoundsCohomology.blk, Formalism.MainNotions.N.RepresentationBoundsCohomology.blkG]`. Rewrite using `[dif_neg (by simp)]`. Use `ext`. Simplify using the standard rewrite rules.
+
+Establish `hu : ∀ y : {x : Fin D.R.nV // RepresentationBoundsCohomology.blk D.R x = c'.succ}, y = ⟨Fin.natAdd D.R.r c', hb⟩` using `fun y => Subtype.ext (blkS_eq y.1 y.2)`. Use function extensionality and compare the values at `j`. Use `show ∑ k, (Dd.ρk c'.succ a) j k • m k = (Dd.ρπ a (Fin.natAdd D.R.r c') (Fin.natAdd D.R.r c')) • m j`. Rewrite using `[Fintype.sum_eq_single j (fun k hk => absurd ((hu k).trans (hu j).symm) hk), ← hE.ρk_eval a c'.succ, hu j]`. Both sides reduce to the same expression.
+-/
 theorem blkS_act (c' : Fin D.R.t) (a : Dd.R') (m : blockRestrictedRepresentationType (RepresentationBoundsCohomology.blk D.R) Dd.ρk c'.succ) (hE : EvS r π Dd) :
     a • m = (Dd.ρπ a (Fin.natAdd D.R.r c') (Fin.natAdd D.R.r c')) • m := by
   have hb : RepresentationBoundsCohomology.blk D.R (Fin.natAdd D.R.r c') = c'.succ := by
@@ -84,6 +97,11 @@ variable {D : D7} (i : D.nd.Loc) (dc : TruncatedSeriesCountingIdentities.Decl D 
 
 variable {i r ρ π Dd} in
 
+/- English proof (translation)
+Establish `h3 : (Dd.ρπ (Dd.r g)).map (algebraMap (D.nd.O i) (FractionRing (D.nd.O i))) = (rO D.nd i r π g).map (algebraMap (D.nd.O i) (FractionRing (D.nd.O i)))`. Rewrite using `[hE.ρπ_eval, hE.r_eval, hE.pπ]`. Establish `h4` using `congrFun (congrFun h3 (Fin.natAdd D.R.r c')) (Fin.natAdd D.R.r c')`. Establish `h5 : Dd.ρπ (Dd.r g) (Fin.natAdd D.R.r c') (Fin.natAdd D.R.r c') = rO D.nd i r π g (Fin.natAdd D.R.r c') (Fin.natAdd D.R.r c')` using `IsFractionRing.injective (D.nd.O i) (FractionRing (D.nd.O i)) h4`. Rewrite using `[h5]`.
+
+Conclude with `hN.2.1 g c'`.
+-/
 theorem rblkS (hE : EvS r π Dd) (hN : RepresentationBoundsCohomology.NormAt D.nd r ρ π) (c' : Fin D.R.t) (g : GE D.nd) :
     Dd.ρπ (Dd.r g) (Fin.natAdd D.R.r c') (Fin.natAdd D.R.r c') =
       ((D.nd.chi i ((c' : ℕ) + 1) g : (D.nd.O i)ˣ) : D.nd.O i) := by
@@ -99,6 +117,9 @@ theorem rblkS (hE : EvS r π Dd) (hN : RepresentationBoundsCohomology.NormAt D.n
 
 variable {i r ρ π Dd} in
 
+/- English proof (translation)
+Rewrite using `[blkS_act c' (Dd.r g) m hE, rblkS hE hN c' g]`.
+-/
 theorem rS_act (hE : EvS r π Dd) (hN : RepresentationBoundsCohomology.NormAt D.nd r ρ π) (c' : Fin D.R.t) (g : GE D.nd)
     (m : blockRestrictedRepresentationType (RepresentationBoundsCohomology.blk D.R) Dd.ρk c'.succ) :
     Dd.r g • m = ((D.nd.chi i ((c' : ℕ) + 1) g : (D.nd.O i)ˣ) : D.nd.O i) • m := by

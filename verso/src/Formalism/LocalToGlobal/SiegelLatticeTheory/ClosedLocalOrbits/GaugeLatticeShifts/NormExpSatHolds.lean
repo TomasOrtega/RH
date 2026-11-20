@@ -14,12 +14,20 @@ open NumberField Formalism.BasicNotions Formalism.MainNotions.S Formalism.MainNo
 
 namespace Formalism.L2.SG.NormCut
 
+/- English proof (translation)
+The claim follows from `colFree_steps Y.TR (Y.cs u) Y.hK (Y.colReps u) (Formalism.L2.SG.Closed.NeatKu_holds X u Y.hK) (Formalism.L2.SG.Pf.NormSteps.levi_onto_reduction Y.TR (Y.cs u)) (Formalism.L2.SG.Pf.NormSteps.column_lattice_representatives (Y.cs u) Y.hK (Y.rowsOK u)) (Formalism.L2.SG.Pf.massAC_holds …`.
+-/
 theorem colFreeAll (D : D7) (X : Formalism.L2.SG.HidaSetting.HidaSetting D) (Y : Full X) (u : D.what₂.Word) :
     ColFree (X.Fu u) Y.TR (Y.cs u) (Aset Y.TR (Y.cs u)) (scOf Y.TR (Y.cs u)) :=
   colFree_steps Y.TR (Y.cs u) Y.hK (Y.colReps u) (Formalism.L2.SG.Closed.NeatKu_holds X u Y.hK)
     (Formalism.L2.SG.Pf.NormSteps.levi_onto_reduction Y.TR (Y.cs u))
     (Formalism.L2.SG.Pf.NormSteps.column_lattice_representatives (Y.cs u) Y.hK (Y.rowsOK u)) (Formalism.L2.SG.Pf.massAC_holds D X Y u)
 
+/- English proof (translation)
+Establish `hB : Formalism.L2.SG.Pf.SatGramActL.ChiNBiAll` using `by first`. Consider the case `exact fun D X => chi_n_bilinear X`. Consider the case `(intro D X; exact chi_n_bilinear X)`. Establish `hGen : ∀ D : D7, Formalism.L2.SG.Saturated.GenIso (VS D) D.R.rS (gS D)`. Introduce `D`.
+
+Use `first`. Consider the case `exact Formalism.L2.SG.Pf.generic_isomorphism_holds (gS D)`. Consider the case `exact Formalism.L2.SG.Pf.generic_isomorphism_holds _`. Consider the case `exact Formalism.L2.SG.Pf.generic_isomorphism_holds _ _ _`. Conclude with `Formalism.L2.SG.Pf.SatGramActL.left_action_of_local_data hPD hGen Formalism.L2.SG.Pf.iotaRepC_holds Formalism.L2.SG.Pf.ampRepNC_holds hB`.
+-/
 theorem leftActC'_of_PD (hPD : ∀ D : D7, Formalism.L2.SG.Saturated.PDIso D) : Formalism.L2.SG.Pf.SatGramActL.LeftActC' := by
   have hB : Formalism.L2.SG.Pf.SatGramActL.ChiNBiAll := by
     first
@@ -34,6 +42,9 @@ theorem leftActC'_of_PD (hPD : ∀ D : D7, Formalism.L2.SG.Saturated.PDIso D) : 
   exact Formalism.L2.SG.Pf.SatGramActL.left_action_of_local_data hPD hGen Formalism.L2.SG.Pf.iotaRepC_holds
     Formalism.L2.SG.Pf.ampRepNC_holds hB
 
+/- English proof (translation)
+Establish `hB : Formalism.L2.SG.Pf.SatGramActL.ChiNBiAll` using `by first`. Consider the case `exact fun D X => chi_n_bilinear X`. Consider the case `(intro D X; exact chi_n_bilinear X)`. Conclude with `Formalism.L2.SG.Pf.SatGramActR.right_action_three_families hB Formalism.L2.SG.Pf.iotaRepC_holds Formalism.L2.SG.Pf.ampRepNC_holds`.
+-/
 theorem rightActC'_holds : Formalism.L2.SG.Pf.SatGramActR.RightActC' := by
   have hB : Formalism.L2.SG.Pf.SatGramActL.ChiNBiAll := by
     first
@@ -41,10 +52,16 @@ theorem rightActC'_holds : Formalism.L2.SG.Pf.SatGramActR.RightActC' := by
     | (intro D X; exact chi_n_bilinear X)
   exact Formalism.L2.SG.Pf.SatGramActR.right_action_three_families hB Formalism.L2.SG.Pf.iotaRepC_holds Formalism.L2.SG.Pf.ampRepNC_holds
 
+/- English proof (translation)
+Establish `hN : NeatC` using `Formalism.L2.SG.Closed.NeatC_holds`. Conclude with `normExpSatC'_of_acts hN Formalism.L2.SG.Pf.massAC_holds (leftActC'_of_PD hPD) rightActC'_holds`.
+-/
 theorem normExpSatC'_of_PD (hPD : ∀ D : D7, Formalism.L2.SG.Saturated.PDIso D) : NormExpSatC' := by
   have hN : NeatC := Formalism.L2.SG.Closed.NeatC_holds
   exact normExpSatC'_of_acts hN Formalism.L2.SG.Pf.massAC_holds (leftActC'_of_PD hPD) rightActC'_holds
 
+/- English proof (translation)
+The claim follows from `leftActC'_of_PD hPD D X Y u u h1 h2 h3 _ (by simp)`.
+-/
 theorem degLeftAct_of_PD (hPD : ∀ D : D7, Formalism.L2.SG.Saturated.PDIso D) (D : D7) (X : Formalism.L2.SG.HidaSetting.HidaSetting D)
     (Y : Full X) (u : D.what₂.Word) (h1 : OOIntAll X u u (X.Fu u) (X.Fu u) (Y.what₂ u) (Y.what₂ u))
     (h2 : AmpWellDef (X.Fu u) (X.Fu u) (Y.cs u) (Y.cs u)) (h3 : OOFundIndep X u u (X.Fu u) (X.Fu u) (Y.what₂ u) (Y.what₂ u)) :
@@ -52,6 +69,9 @@ theorem degLeftAct_of_PD (hPD : ∀ D : D7, Formalism.L2.SG.Saturated.PDIso D) (
       (Aset Y.TR (Y.cs u)) :=
   leftActC'_of_PD hPD D X Y u u h1 h2 h3 _ (by simp)
 
+/- English proof (translation)
+The claim follows from `rightActC'_holds D X Y u u h1 h2 h3 _ (by simp)`.
+-/
 theorem degRightAct_holds (D : D7) (X : Formalism.L2.SG.HidaSetting.HidaSetting D) (Y : Full X) (u : D.what₂.Word)
     (h1 : OOIntAll X u u (X.Fu u) (X.Fu u) (Y.what₂ u) (Y.what₂ u))
     (h2 : AmpWellDef (X.Fu u) (X.Fu u) (Y.cs u) (Y.cs u)) (h3 : OOFundIndep X u u (X.Fu u) (X.Fu u) (Y.what₂ u) (Y.what₂ u)) :

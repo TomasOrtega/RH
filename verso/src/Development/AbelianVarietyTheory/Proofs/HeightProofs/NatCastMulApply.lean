@@ -14,6 +14,9 @@ section Local
 
 variable {F : Type} [Field F] [NumberField F]
 
+/- English proof (translation)
+Establish `h1 : ((Ideal.absNorm v.asIdeal : ℕ) : v.adicCompletion F) = FinitePlace.embedding v (algebraMap (𝓞 F) F (Ideal.absNorm v.asIdeal : ℕ))`. Simplify using the standard rewrite rules. Rewrite using `[h1, FinitePlace.embedding_apply, HeightOneSpectrum.valuedAdicCompletion_eq_valuation', HeightOneSpectrum.valuation_of_algebraMap]`. Establish `h2` using `(HeightOneSpectrum.intValuation_le_pow_iff_mem v ((Ideal.absNorm v.asIdeal : ℕ) : 𝓞 F) 1).2 (by simpa using Ideal.absNorm_mem v.asIdeal)`. Simplify using `using h2`.
+-/
 theorem valued_absNorm_le (v : HeightOneSpectrum (𝓞 F)) :
     Valued.v ((Ideal.absNorm v.asIdeal : ℕ) : v.adicCompletion F) ≤ WithZero.exp (-1 : ℤ) := by
   have h1 : ((Ideal.absNorm v.asIdeal : ℕ) : v.adicCompletion F) =
@@ -25,6 +28,15 @@ theorem valued_absNorm_le (v : HeightOneSpectrum (𝓞 F)) :
     ((Ideal.absNorm v.asIdeal : ℕ) : 𝓞 F) 1).2 (by simpa using Ideal.absNorm_mem v.asIdeal)
   simpa using h2
 
+/- English proof (translation)
+Distinguish the cases in `hx : Valued.v x ≤ 1`. Conclude with `⟨1, one_pos, by simp, by simpa [HeightOneSpectrum.mem_adicCompletionIntegers] using hx⟩`. Establish `h1 : 1 < Valued.v x` using `not_le.1 hx`. Establish `h0 : Valued.v x ≠ 0` using `(zero_lt_one.trans h1).ne'`. Take `⟨e, he⟩ : ∃ e : ℤ, Valued.v x = WithZero.exp e` from `⟨_, (WithZero.exp_log h0).symm⟩`.
+
+Establish `hpos : 0 < e`. Rewrite `h1` using `[he, ← WithZero.exp_zero, WithZero.exp_lt_exp]`. Conclude with `h1`. Take `⟨k, rfl⟩` from `Int.eq_ofNat_of_zero_le hpos.le`. Use `⟨Ideal.absNorm v.asIdeal ^ k, pow_pos (zero_lt_one.trans (NumberField.HeightOneSpectrum.one_lt_absNorm v)) k, ?_, ?_⟩` and prove the remaining obligations.
+
+Use `le_max_of_le_right (le_of_eq ?_)` and prove the remaining obligations. Apply `NNReal.eq` to reduce the goal to its premises. Rewrite using `[coe_nnnorm, FinitePlace.norm_def, he, WithZeroMulInt.toNNReal_neg_apply _ WithZero.exp_ne_zero]`. Simplify using `[WithZero.exp]`. Rewrite using `[HeightOneSpectrum.mem_adicCompletionIntegers, map_mul, he, Nat.cast_pow, map_pow]`.
+
+Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem local_den (v : HeightOneSpectrum (𝓞 F)) (x : v.adicCompletion F) :
     ∃ n : ℕ, 0 < n ∧ (n : ℝ≥0) ≤ max 1 ‖x‖₊ ∧ (n : v.adicCompletion F) * x ∈ v.adicCompletionIntegers F := by
   by_cases hx : Valued.v x ≤ 1
@@ -46,6 +58,15 @@ theorem local_den (v : HeightOneSpectrum (𝓞 F)) (x : v.adicCompletion F) :
             gcongr; exact valued_absNorm_le v
         _ = 1 := by rw [← WithZero.exp_nsmul, ← WithZero.exp_add]; simp
 
+/- English proof (translation)
+Use `choose m hm0 hm1 hm2 using fun v => local_den v (c v)`. Establish `hm3 : ∀ v, (m v : ℝ≥0) ≤ h v` using `fun v => (hm1 v).trans (max_le (h1 v) (hc v))`. Use `⟨∏ v ∈ hf.toFinset, m v, Finset.prod_pos fun v _ => hm0 v, ?_, fun v => ?_⟩` and prove the remaining obligations. Rewrite using `[finprod_eq_prod h hf, Nat.cast_prod]`. Conclude with `Finset.prod_le_prod' fun v _ => hm3 v`.
+
+Distinguish the cases in `hv : v ∈ hf.toFinset`. Rewrite using `[← Finset.prod_erase_mul _ _ hv, Nat.cast_mul, mul_assoc]`. Conclude with `mul_mem (natCast_mem _ _) (hm2 v)`. Establish `hv1 : h v = 1` using `by simpa using hv`. Establish `hm : m v = 1`.
+
+Use `hm3 v` as an intermediate fact. Rewrite `this` using `[hv1]`. Establish `h' : m v ≤ 1` using `by exact_mod_cast this`. Use `hm0 v` as an intermediate fact. Use linear arithmetic over natural numbers and integers.
+
+Use `hm2 v` as an intermediate fact. Rewrite `this` using `[hm, Nat.cast_one, one_mul]`. Conclude with `mul_mem (natCast_mem _ _) this`.
+-/
 theorem adele_den (c : FiniteAdeleRing (𝓞 F) F) (h : HeightOneSpectrum (𝓞 F) → ℝ≥0)
     (hf : (Function.mulSupport h).Finite) (h1 : ∀ v, 1 ≤ h v) (hc : ∀ v, ‖c v‖₊ ≤ h v) :
     ∃ n : ℕ, 0 < n ∧ (n : ℝ≥0) ≤ ∏ᶠ v, h v ∧
@@ -70,6 +91,11 @@ theorem adele_den (c : FiniteAdeleRing (𝓞 F) F) (h : HeightOneSpectrum (𝓞 
       rw [hm, Nat.cast_one, one_mul] at this
       exact mul_mem (natCast_mem _ _) this
 
+/- English proof (translation)
+Use `choose n hn using fun p => adele_den (c p) h hf h1 (hc p)`. Use `⟨∏ p, n p, Finset.prod_pos fun p _ => (hn p).1, ?_, ?_⟩` and prove the remaining obligations. Use `push_cast`. Combine the equalities or inequalities in the displayed calculation. Introduce `p v classical`.
+
+Establish `e : ((∏ q, n q : ℕ) : v.adicCompletion F) * c p v = ((∏ q ∈ Finset.univ.erase p, n q : ℕ) : v.adicCompletion F) * ((n p : v.adicCompletion F) * c p v)`. Rewrite using `[← mul_assoc, ← Nat.cast_mul, Finset.prod_erase_mul _ _ (Finset.mem_univ p)]`. Rewrite using `[e]`. Conclude with `mul_mem (natCast_mem _ _) ((hn p).2.2 v)`.
+-/
 theorem family_den {ι : Type} [Fintype ι] (c : ι → FiniteAdeleRing (𝓞 F) F) (h : HeightOneSpectrum (𝓞 F) → ℝ≥0)
     (hf : (Function.mulSupport h).Finite) (h1 : ∀ v, 1 ≤ h v) (hc : ∀ p v, ‖c p v‖₊ ≤ h v) :
     ∃ n : ℕ, 0 < n ∧ (n : ℝ≥0) ≤ (∏ᶠ v, h v) ^ Fintype.card ι ∧
@@ -93,6 +119,11 @@ section Lattice
 
 variable {E : Type} [Field E] [NumberField E]
 
+/- English proof (translation)
+Take `⟨α, hα, hαI⟩` from `FractionalIdeal.exists_ne_zero_mem_isInteger hI`. Establish `hn : Ideal.absNorm (Ideal.span {α}) ≠ 0`. Rewrite using `[Ne, Ideal.absNorm_eq_zero_iff, Ideal.span_singleton_eq_bot]`. Conclude with `hα`. Use `⟨_, Nat.pos_of_ne_zero hn, ?_⟩` and prove the remaining obligations.
+
+Take `⟨β, hβ⟩` from `Ideal.mem_span_singleton'.1 (Ideal.absNorm_mem (Ideal.span {α}))`. Establish `: ((Ideal.absNorm (Ideal.span {α}) : ℕ) : E) = β • algebraMap (𝓞 E) E α`. Rewrite using `[Algebra.smul_def, ← map_mul, hβ, map_natCast]`. Rewrite using `[this]`. Conclude with `Submodule.smul_mem (I : Submodule (𝓞 E) E) β hαI`.
+-/
 theorem exists_nat_mem (I : FractionalIdeal (nonZeroDivisors (𝓞 E)) E) (hI : I ≠ 0) :
     ∃ n : ℕ, 0 < n ∧ (n : E) ∈ I := by
   obtain ⟨α, hα, hαI⟩ := FractionalIdeal.exists_ne_zero_mem_isInteger hI
@@ -105,6 +136,23 @@ theorem exists_nat_mem (I : FractionalIdeal (nonZeroDivisors (𝓞 E)) E) (hI : 
   rw [this]
   exact Submodule.smul_mem (I : Submodule (𝓞 E) E) β hαI
 
+/- English proof (translation)
+Establish `hx : x ∈ Submodule.span E (L : Set W)` using `by rw [hL]; trivial`. Establish `key : ∀ (n : ℕ) (y : W), y ∈ L → (n : E) • y ∈ L` using `fun n y hy => by`. Rewrite using `[Nat.cast_smul_eq_nsmul]`. Conclude with `nsmul_mem hy n`. Proceed by induction on `hx using Submodule.span_induction with`.
+
+Consider the case `mem y hy => exact ⟨1, one_pos, by simpa using hy⟩`. Consider the case `zero => exact ⟨1, one_pos, by simp⟩`. Consider the case `add y z _ _ hy hz`. Take `⟨s, hs, hsy⟩` from `hy`. Take `⟨t, ht, htz⟩` from `hz`.
+
+Use `⟨s * t, mul_pos hs ht, ?_⟩` and prove the remaining obligations. Rewrite using `[smul_add]`. Use `add_mem ?_ ?_` and prove the remaining obligations. Rewrite using `[mul_comm, Nat.cast_mul, mul_smul]`. Conclude with `key _ _ hsy`.
+
+Rewrite using `[Nat.cast_mul, mul_smul]`. Conclude with `key _ _ htz`. Consider the case `smul e y _ hy`. Take `⟨s, hs, hsy⟩` from `hy`. Take `⟨m, hm, hint⟩` from `exists_integral_multiples ℤ ℚ ({e} : Finset E)`.
+
+Establish `hi : IsIntegral ℤ ((m.natAbs : E) * e)`. Establish `h0` using `hint e (Finset.mem_singleton_self e)`. Rewrite `h0` using `[zsmul_eq_mul]`. Break down `Int.natAbs_eq m with h | h` into its components or cases. Rewrite `h0` using `[h]`.
+
+Simplify using `using h0`. Rewrite `h0` using `[h]`. Simplify using `using h0.neg`. Use `⟨m.natAbs * s, mul_pos (Int.natAbs_pos.2 hm) hs, ?_⟩` and prove the remaining obligations. Take `⟨r, hr⟩ : ∃ r : 𝓞 E, algebraMap (𝓞 E) E r = (m.natAbs : E) * e` from `⟨⟨_, hi⟩, rfl⟩`.
+
+Establish `: ((m.natAbs * s : ℕ) : E) • e • y = r • ((s : E) • y)`. Rewrite using `[← algebraMap_smul E r, smul_smul, smul_smul, hr]`. Use `congr 1`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+
+Rewrite using `[this]`. Conclude with `L.smul_mem _ hsy`.
+-/
 theorem exists_nat_smul_mem {W : Type} [AddCommGroup W] [Module E W] [Module (𝓞 E) W] [IsScalarTower (𝓞 E) E W]
     (L : Submodule (𝓞 E) W) (hL : Submodule.span E (L : Set W) = ⊤) (x : W) :
     ∃ n : ℕ, 0 < n ∧ (n : E) • x ∈ L := by
@@ -142,6 +190,17 @@ theorem exists_nat_smul_mem {W : Type} [AddCommGroup W] [Module E W] [Module (�
 
 end Lattice
 
+/- English proof (translation)
+Establish `hv : (fun l => (1 : R) ⊗ₜ[F] (Pi.single i ((B * N : ℕ) : E) : n → E) l) = Pi.single i ((B * N : ℕ) : R ⊗[F] E)`. Use function extensionality and compare the values at `l`. Distinguish the cases in `hl : l = i`. Substitute `hl` using the available equality. Rewrite using `[Pi.single_eq_same, Pi.single_eq_same]`.
+
+Conclude with `map_natCast (Algebra.TensorProduct.includeRight : E →ₐ[F] R ⊗[F] E) _`. Rewrite using `[Pi.single_eq_of_ne hl, Pi.single_eq_of_ne hl, TensorProduct.tmul_zero]`. Establish `e1 : ((B * N : ℕ) : R ⊗[F] E) = (N : R) ⊗ₜ[F] (B : E)`. Establish `a1 : ((B : ℕ) : R ⊗[F] E) = (1 : R) ⊗ₜ[F] (B : E)` using `(map_natCast (Algebra.TensorProduct.includeRight : E →ₐ[F] R ⊗[F] E) _).symm`. Rewrite using `[Nat.cast_mul, a1, Algebra.TensorProduct.natCast_def N, Algebra.TensorProduct.tmul_mul_tmul, one_mul, mul_one]`.
+
+Rewrite using `[hv, Matrix.mulVec_single]`. Use function extensionality and compare the values at `l`. Rewrite using `[Finset.sum_apply, Finset.sum_eq_single l]`. Rewrite using `[Finset.sum_apply]`. Establish `hy2` using `(Algebra.TensorProduct.basis R b).sum_repr (M l i)`.
+
+Express the relevant statement in the definitionally equal form `M l i * _ = _`. Use `conv_lhs => rw [← hy2, Finset.sum_mul]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[MulOpposite.unop_op, e1, Algebra.TensorProduct.basis_apply, TensorProduct.smul_tmul', Algebra.TensorProduct.tmul_mul_tmul, smul_eq_mul, mul_one, map_smul, Module.Basis.repr_self, Finsupp.smul_apply, Finsupp.single_eq_same, smul_eq_mul, mul_one, mul_comm (b k), mul_comm _ (N : R) …`. Introduce `j _ hj`.
+
+Rewrite using `[Finset.sum_apply]`. Use `Finset.sum_eq_zero fun k _ => ?_` and prove the remaining obligations. Rewrite using `[map_smul, Module.Basis.repr_self, Finsupp.smul_apply, Finsupp.single_eq_of_ne hj.symm, smul_zero, TensorProduct.tmul_zero]`. Introduce `h`. Conclude with `absurd (Finset.mem_univ l) h`.
+-/
 theorem column_expand {F E R W n κ : Type} [Field F] [Field E] [Algebra F E] [CommRing R] [Algebra F R]
     [AddCommGroup W] [Module E W] [Fintype n] [DecidableEq n] [Fintype κ] (b : Module.Basis κ F E)
     (f : Module.Basis n E W) (M : Matrix n n (R ⊗[F] E)) (i : n) (B N : ℕ) :
@@ -180,6 +239,9 @@ theorem column_expand {F E R W n κ : Type} [Field F] [Field E] [Algebra F E] [C
       TensorProduct.tmul_zero]
   · intro h; exact absurd (Finset.mem_univ l) h
 
+/- English proof (translation)
+Apply the tactic sequence `first | rfl | simp`.
+-/
 theorem natCast_mul_apply {F : Type} [Field F] [NumberField F] (N : ℕ) (a : FiniteAdeleRing (𝓞 F) F)
     (v : HeightOneSpectrum (𝓞 F)) :
     ((N : FiniteAdeleRing (𝓞 F) F) * a) v = (N : v.adicCompletion F) * a v := by first | rfl | simp
@@ -188,6 +250,17 @@ open Formalism.BasicNotions Formalism.BasicNotions.TH Formalism.MainNotions.Glob
 
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
+/- English proof (translation)
+Take `⟨A, hA0, hA⟩` from `exists_nat_mem D.host.AA (Formalism.L2.Pj.AA_ne_zero Formalism.IndefR.Fin.factPrincipalDatum D)`. Use `set b := Module.finBasis D.host.F D.host.E with hb`. Take `⟨B, hB0, hB⟩ : ∃ B : ℕ, 0 < B ∧ ∀ j k, ((B : D.host.E) * b k) • V.frame j ∈ V.L0` from `by choose m hm0 hm using fun p : Fin V.rank × Fin (Module.finrank D.host.F D.host.E) => exists_nat_smul_mem V.L0 V.standardTuple_isLattice.span_eq_top (b p.2 • V.frame p.1)`. Use `⟨∏ p, m p, Finset.prod_pos fun p _ => hm0 p, fun j k => ?_⟩` and prove the remaining obligations. Rewrite using `[← Finset.prod_erase_mul _ _ (Finset.mem_univ (j, k)), Nat.cast_mul, mul_assoc, mul_smul, mul_smul, Nat.cast_smul_eq_nsmul]`.
+
+Conclude with `nsmul_mem (hm (j, k)) _`. Use `⟨A * B, Fintype.card (Fin V.rank × Fin V.rank × Fin (Module.finrank D.host.F D.host.E)), fun g => ?_⟩` and prove the remaining obligations. Take `⟨N, hN0, hN1, hN⟩` from `family_den (fun p : Fin V.rank × Fin V.rank × Fin (Module.finrank D.host.F D.host.E) => GlobalTheory.IndefiniteRowSideFullHecke.LieAlgebraExponentialFamilies.finCoord D (Formalism.MainNotions.StandardLattice.finMat D.sp.cm.sig V.gram g⁻¹ p.1 p.2.1) p.2.2) (fun v => GlobalTheory.I …`. Use `⟨A * (B * N), by positivity, ?_, fun i => ?_⟩` and prove the remaining obligations. Establish `h1 : (∏ᶠ v, GlobalTheory.IndefiniteRowSideFullHecke.LieAlgebraExponentialFamilies.finHt V v g) ≤ GlobalTheory.IndefiniteRowSideFullHecke.LieAlgebraExponentialFamilies.height θ V g` using `le_mul_of_one_le_left' (Finset.one_le_prod' fun _ _ => le_max_left _ _)`.
+
+Establish `h2 : (N : ℝ≥0) ≤ GlobalTheory.IndefiniteRowSideFullHecke.LieAlgebraExponentialFamilies.height θ V g ^ _` using `hN1.trans (pow_le_pow_left' h1 _)`. Establish `h3 : (N : ℝ) ≤ (GlobalTheory.IndefiniteRowSideFullHecke.LieAlgebraExponentialFamilies.height θ V g : ℝ) ^ Fintype.card (Fin V.rank × Fin V.rank × Fin (Module.finrank D.host.F D.host.E))` using `by exact_mod_cast h2`. Use `push_cast`. Rewrite using `[← mul_assoc]`. Use `gcongr`.
+
+Use `Submodule.subset_span ⟨A, hA, Pi.single i ((B * N : ℕ) : D.host.E), ?_, ?_⟩` and prove the remaining obligations. Use `⟨(finHom V g⁻¹).1.mulVec (Formalism.L2.Pj.finVec V (Pi.single i ((B * N : ℕ) : D.host.E))), ?_, ?_⟩` and prove the remaining obligations. Establish `hz : (finHom V g⁻¹).1.mulVec (Formalism.L2.Pj.finVec V (Pi.single i ((B * N : ℕ) : D.host.E))) = ∑ j, ∑ k, fun l => ((N : Af D.host.F) * GlobalTheory.IndefiniteRowSideFullHecke.LieAlgebraExponentialFamilies.finCoord D (Formalism.MainNotions.StandardLattice.finMat D.sp.cm.sig V.gr …` using `column_expand b V.frame (Formalism.MainNotions.StandardLattice.finMat D.sp.cm.sig V.gram g⁻¹) i B N`. Rewrite using `[hz]`. Use `sum_mem fun j _ => sum_mem fun k _ => AddSubgroup.subset_closure ⟨_, fun v => ?_, _, hB j k, rfl⟩` and prove the remaining obligations.
+
+Rewrite using `[natCast_mul_apply]`. Conclude with `hN (j, i, k) v`. Rewrite using `[Matrix.mulVec_mulVec, ← Units.val_mul, ← map_mul, mul_inv_cancel, map_one, Units.val_one, Matrix.one_mulVec]`. Rewrite using `[← Pi.single_smul, smul_eq_mul, ← Nat.cast_mul]`.
+-/
 theorem denomBound (D : D7) (θ : D.what₂.Tau → (Ainf D.host.F ⊗[D.host.F] D.host.E →+* ℂ)) (V : HSp D) :
     GlobalTheory.SmoothForms.DenomBound θ V := by
   classical

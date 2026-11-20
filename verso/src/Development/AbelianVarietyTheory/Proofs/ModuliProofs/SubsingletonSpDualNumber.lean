@@ -12,6 +12,11 @@ open GlobalTheory.KS
 
 namespace GlobalTheory.DualRigidity
 
+/- English proof (translation)
+Take `⟨_, ⟨W, hW, rfl⟩, hyW, -⟩` from `Y.isBasis_affineOpens.exists_subset_of_mem_open (Set.mem_univ y) isOpen_univ`. Use `haveI : IsAffine W := hW`. Establish `hr : Set.range g ⊆ Set.range (Scheme.Opens.ι W)`. Introduce and unpack `_ ⟨x, rfl⟩`. Rewrite using `[hy x, Scheme.Opens.range_ι]`.
+
+Conclude with `hyW`. Establish `key` using `GlobalTheory.eq_comp_section_of_surjective_appTop p ε (IsOpenImmersion.lift (Scheme.Opens.ι W) g hr) h hs`. Use `congrArg (· ≫ Scheme.Opens.ι W) key` as an intermediate fact. Simplify `this` using `only [Category.assoc, IsOpenImmersion.lift_fac]`.
+-/
 theorem eq_comp_section_of_const {X T Y : Scheme.{0}} (p : X ⟶ T) (ε : T ⟶ X) (g : X ⟶ Y)
     (h : ε ≫ p = 𝟙 T) (hs : Function.Surjective p.appTop.hom) (y : Y) (hy : ∀ x : X, g x = y) :
     g = p ≫ ε ≫ g := by
@@ -26,6 +31,13 @@ theorem eq_comp_section_of_const {X T Y : Scheme.{0}} (p : X ⟶ T) (ε : T ⟶ 
   have := congrArg (· ≫ Scheme.Opens.ι W) key
   simpa only [Category.assoc, IsOpenImmersion.lift_fac] using this
 
+/- English proof (translation)
+Establish `h : ∀ p : PrimeSpectrum (DualNumber ℂ), p.asIdeal = IsLocalRing.maximalIdeal (DualNumber ℂ)`. Introduce `p`. Use `le_antisymm (IsLocalRing.le_maximalIdeal p.isPrime.ne_top) fun x hx => ?_` and prove the remaining obligations. Establish `hn : IsNilpotent x`. Rewrite using `[TrivSqZeroExt.isNilpotent_iff_isNilpotent_fst]`.
+
+Establish `: ¬ IsUnit x.fst` using `fun hu => hx (TrivSqZeroExt.isUnit_iff_isUnit_fst.2 hu)`. Establish `h0 : x.fst = 0` using `by simpa using this`. Rewrite using `[h0]`. Conclude with `IsNilpotent.zero`. Take `⟨n, hn⟩` from `hn`.
+
+Conclude with `p.isPrime.mem_of_pow_mem n (hn ▸ p.asIdeal.zero_mem)`. Conclude with `⟨fun p q => PrimeSpectrum.ext ((h p).trans (h q).symm)⟩`.
+-/
 theorem subsingleton_sp_dualNumber : Subsingleton (Sp (DualNumber ℂ)) := by
   have h : ∀ p : PrimeSpectrum (DualNumber ℂ),
       p.asIdeal = IsLocalRing.maximalIdeal (DualNumber ℂ) := by
@@ -40,6 +52,17 @@ theorem subsingleton_sp_dualNumber : Subsingleton (Sp (DualNumber ℂ)) := by
     exact p.isPrime.mem_of_pow_mem n (hn ▸ p.asIdeal.zero_mem)
   exact ⟨fun p q => PrimeSpectrum.ext ((h p).trans (h q).symm)⟩
 
+/- English proof (translation)
+Introduce `hL _ A₀ _ A' G' _ _ j a b hA hj hab hη`. Use `haveI := subsingleton_sp_dualNumber`. Set `c : A' ⟶ G'` to `a * b⁻¹`. Set `j' : Over.mk (j ≫ A'.hom) ⟶ A'` to `Over.homMk j rfl`. Establish `h1 : j' ≫ a = j' ≫ b` using `Over.OverMorphism.ext hab`.
+
+Establish `h2 : j' ≫ c = 1`. Simplify using `only [c, MonObj.comp_mul, GrpObj.comp_inv, h1, mul_inv_cancel]`. Establish `h3 : η[A'] ≫ c = 1`. Simplify using `only [c, MonObj.comp_mul, GrpObj.comp_inv, hη, mul_inv_cancel]`. Take `⟨t₀⟩ : Nonempty (Sp ℂ)` from `inferInstance`.
+
+Set `t : Sp (DualNumber ℂ)` to `spMap (TrivSqZeroExt.fstHom ℂ ℂ ℂ).toRingHom t₀`. Establish `hc : ∀ x : A'.left, c.left x = (η[G'] : 𝟙_ (Over (Sp (DualNumber ℂ))) ⟶ G').left t`. Introduce `x`. Take `⟨z, rfl, -⟩` from `Scheme.exists_preimage_of_isPullback hj x t₀ (Subsingleton.elim _ _)`. Establish `e : j ≫ c.left = (j' ≫ c).left` using `rfl`.
+
+Rewrite using `[← Scheme.Hom.comp_apply, e, h2, Hom.one_def, Over.comp_left]`. Use `(Scheme.Hom.comp_apply _ _ _).trans ?_` and prove the remaining obligations. Use `congr 1`. Conclude with `Subsingleton.elim (α := Sp (DualNumber ℂ)) _ _`. Establish `hη' : (η[A'] : 𝟙_ (Over (Sp (DualNumber ℂ))) ⟶ A').left ≫ A'.hom = 𝟙 _` using `Over.w η[A']`.
+
+Establish `key` using `eq_comp_section_of_const A'.hom _ c.left hη' (hL.globalFns _ A' hA).2 _ hc`. Establish `key' : c = toUnit A' ≫ η[A'] ≫ c` using `Over.OverMorphism.ext key`. Rewrite `key'` using `[h3, MonObj.comp_one]`. Conclude with `mul_inv_eq_one.1 key'`.
+-/
 theorem rigidity_dualNumber : Out.Laws → Out.Laws2 → ∀ (A₀ : Over (Sp ℂ)) [GrpObj A₀] (A' G' : Over (Sp (DualNumber ℂ))) [GrpObj A'] [GrpObj G'] (j : A₀.left ⟶ A'.left) (a b : A' ⟶ G'), IsAbelianScheme A' → IsPullback j A₀.hom A'.hom (spMap (TrivSqZeroExt.fstHom ℂ ℂ ℂ).toRingHom) → j ≫ a.left = j ≫ b.left → η[A'] ≫ a = η[A'] ≫ b → a = b := by
   intro hL _ A₀ _ A' G' _ _ j a b hA hj hab hη
   haveI := subsingleton_sp_dualNumber

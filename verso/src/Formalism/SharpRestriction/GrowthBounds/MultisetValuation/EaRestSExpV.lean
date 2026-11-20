@@ -25,6 +25,13 @@ def ea_RestSExpV (X : Sys p) : Prop :=
             MvPowerSeries (X.EA j ⊕ X.EA j) (K0 p))))))) =
           expK (-(MvPowerSeries.C (vp ^ (p + 1) / (p : K')) * X.hhA K' j v u)) * V
 
+/- English proof (translation)
+Introduce `hD hbe v j U hU K' _ _ _ _ R' vp hvp hRp hOc`. Take `⟨u, hu, V, hV, heq⟩` from `hE hD Y.be hbe j v Y.Kc K' vp hvp`. Establish `heq' : atPi vp (MvPowerSeries.map (algebraMap Y.Kc K') (X.ThZA Y.Kc j (MvPowerSeries.map (algebraMap (K0 p) Y.Kc) (expS p (-Y.PhAt j v))))) = expK (-(MvPowerSeries.C (vp ^ (p + 1) / (p : K')) * X.hhA K' j v u)) * V` using `heq`. Use `⟨u, fun s => hRp (hu s), ?_⟩` and prove the remaining obligations. Rewrite using `[ThZA_mul, map_mul, atPi_mul, heq', mul_assoc]`.
+
+Establish `hW : IntR R' (atPi vp (MvPowerSeries.map (algebraMap Y.Kc K') (X.ThZA Y.Kc j U)))` using `restSIntA (X := X) j Y.Kc Y.Oc U hU K' R' vp hvp hRp hOc`. Establish `hVW` using `IntR_mul (fun n => hRp (hV n)) hW`. Establish `hp0 : (p : K') ≠ 0`. Rewrite using `[← map_natCast (algebraMap (K0 p) K') p]`. Conclude with `(map_ne_zero _).mpr (Nat.cast_ne_zero.mpr hp.out.ne_zero)`.
+
+Conclude with `inClass_of_exp hp0 (fun k => hRp (piFact (p := p) (vp := vp) (hvp := hvp) (k := k))) (X.hhA K' j v u) (hhA_const (X := X) K' j v u) hVW`.
+-/
 theorem ea_restSU_of (X : Sys p) (Y : Pend X) (hE : ea_RestSExpV X) : ea_RestSU X Y := by
   intro hD hbe v j U hU K' _ _ _ _ R' vp hvp hRp hOc
   obtain ⟨u, hu, V, hV, heq⟩ := hE hD Y.be hbe j v Y.Kc K' vp hvp
@@ -41,6 +48,9 @@ theorem ea_restSU_of (X : Sys p) (Y : Pend X) (hE : ea_RestSExpV X) : ea_RestSU 
     exact (map_ne_zero _).mpr (Nat.cast_ne_zero.mpr hp.out.ne_zero)
   exact inClass_of_exp hp0 (fun k => hRp (piFact (p := p) (vp := vp) (hvp := hvp) (k := k))) (X.hhA K' j v u) (hhA_const (X := X) K' j v u) hVW
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨first_theorem_place_of_series D Y (ea_restSU_of X Y hE) h1, second_lemma_place_of_series D Y (ea_restSU_of X Y hE) h2, ea_restBU D Y (ea_restSU_of X Y hE) h3⟩`.
+-/
 theorem ea_three (D : Formalism.BasicNotions.D7) (X : Sys p) (Y : Pend X) (hE : ea_RestSExpV X) (h1 : SeriesGaussValuationFirst X)
     (h2 : SeriesGaussValuationSecond X) (h3 : ea_RestKerB X) : EntryBoundOfHypotheses X Y D ∧ PlacewiseLowerBoundEvenShift X Y D ∧ RestBU X Y D :=
   ⟨first_theorem_place_of_series D Y (ea_restSU_of X Y hE) h1, second_lemma_place_of_series D Y (ea_restSU_of X Y hE) h2,

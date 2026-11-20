@@ -17,6 +17,9 @@ namespace GlobalTheory.MixHalf
 
 variable {D : D7}
 
+/- English proof (translation)
+Take `⟨h1, h2, v, ε, ⟨β, rfl, -⟩, h3⟩` from `he`. Establish `h0 : infPart D (algebraMap (AF D.host.F) (AE D) (pairA D.host.F 0 β)) = 0` using `TensorProduct.zero_tmul _ _`. Establish `he' : cA D e * cA D e = cA D e` using `by rw [← map_mul, h1]`. Establish `h4 : (e + cA D e) * cA D e = cA D e` using `by rw [add_mul, h2, he', zero_add]`. Rewrite using `[← hz, ← h4, h3, map_mul, map_mul, h0, zero_mul, zero_mul]`.
+-/
 theorem infPart_eq_zero {e : AE D} (he : IsSplitIdem D e) {z : AE D} (hz : cA D e * z = z) : infPart D z = 0 := by
   obtain ⟨h1, h2, v, ε, ⟨β, rfl, -⟩, h3⟩ := he
   have h0 : infPart D (algebraMap (AF D.host.F) (AE D) (pairA D.host.F 0 β)) = 0 := TensorProduct.zero_tmul _ _
@@ -24,10 +27,16 @@ theorem infPart_eq_zero {e : AE D} (he : IsSplitIdem D e) {z : AE D} (hz : cA D 
   have h4 : (e + cA D e) * cA D e = cA D e := by rw [add_mul, h2, he', zero_add]
   rw [← hz, ← h4, h3, map_mul, map_mul, h0, zero_mul, zero_mul]
 
+/- English proof (translation)
+Rewrite using `[Matrix.map_mul, hx, Matrix.zero_mul]`.
+-/
 theorem map_infPart_mul {l m n : ℕ} {x : Mx D l m} (hx : x.map (infPart D) = 0) (y : Mx D m n) :
     (x ⬝ y).map (infPart D) = 0 := by
   rw [Matrix.map_mul, hx, Matrix.zero_mul]
 
+/- English proof (translation)
+Unfold `symplO`. Rewrite using `[d.hO_coordS, d.hO_coordS]`. Simplify using `only [HypDec.extX_apply, HypDec.extY_apply, Matrix.mul_assoc, HypDec.pX_jX, HypDec.pX_j0, HypDec.pX_jY, HypDec.pY_jX, HypDec.pY_j0, HypDec.pY_jY, Matrix.mul_one, Matrix.mul_zero, pairS, hO_eq_trace S₀, trace_zero]`.
+-/
 theorem symplO_extX {S S₀ : HSp D} {ρ : ℕ} (d : HypDec S S₀ ρ) (T : HSp D) (x : Mx D T.rank ρ) (w : WO S T) :
     symplO S T (d.extX T x) w = symplO S T (d.extX T x) (d.extY T (w ⬝ d.jY)) := by
   unfold symplO
@@ -35,12 +44,30 @@ theorem symplO_extX {S S₀ : HSp D} {ρ : ℕ} (d : HypDec S S₀ ρ) (T : HSp 
   simp only [HypDec.extX_apply, HypDec.extY_apply, Matrix.mul_assoc, HypDec.pX_jX, HypDec.pX_j0, HypDec.pX_jY,
     HypDec.pY_jX, HypDec.pY_j0, HypDec.pY_jY, Matrix.mul_one, Matrix.mul_zero, pairS, hO_eq_trace S₀, trace_zero]
 
+/- English proof (translation)
+Use `le_antisymm (by simpa using Matrix.rank_le_height d.qX) ?_` and prove the remaining obligations. Establish `h : d.qX * d.e = 1` using `d.e'e`. Use `Matrix.rank_mul_le_left d.qX d.e` as an intermediate fact. Rewrite `this` using `[h, Matrix.rank_one, Fintype.card_fin]`. Then use the resulting hypothesis.
+-/
 theorem rank_qX {S S₀ : HSp D} {ρ : ℕ} (d : HypDec S S₀ ρ) : d.qX.rank = ρ := by
   refine le_antisymm (by simpa using Matrix.rank_le_height d.qX) ?_
   have h : d.qX * d.e = 1 := d.e'e
   have := Matrix.rank_mul_le_left d.qX d.e
   rwa [h, Matrix.rank_one, Fintype.card_fin] at this
 
+/- English proof (translation)
+Introduce `D ψ hψ S S₀ T ρ d μ 𝓕 hμ e he f hf`. Take `⟨hX, hY, -⟩` from `GlobalTheory.T.heisenbergOperator_thetaFunctional_mixedSourceModel D ψ hψ S S₀ T ρ d ⟨μ, 𝓕, hμ⟩ f hf`. Take `⟨U, hU, hl⟩` from `hf.level`. Establish `hhalf : ∀ x : Mx D T.rank ρ, (∀ i j, cA D e * x i j = x i j) → x.map (infPart D) = 0` using `fun x hx => by`. Use extensionality with `i j`.
+
+Conclude with `infPart_eq_zero he (hx i j)`. Establish `cX : Continuous (d.extX T)` using `continuous_id.matrix_mul continuous_const`. Establish `cY : Continuous (d.extY T)` using `continuous_id.matrix_mul continuous_const`. Use `⟨⟨U.comap (d.extX T), hU.preimage cX, fun u hu hu' x => ?_⟩, ?_⟩` and prove the remaining obligations. Use `hX x u` as an intermediate fact.
+
+Rewrite `this` using `[hl _ hu (map_infPart_mul (hhalf u hu') _)]`. Conclude with `this.symm`. Set `r : WO S T →+ Mx D T.rank ρ` to `{ toFun := fun w => w ⬝ d.jY, map_zero' := Matrix.zero_mul _, map_add' := fun _ _ => Matrix.add_mul _ _ _ }`. Establish `cr : Continuous r` using `continuous_id.matrix_mul continuous_const`. Take `⟨K, hK, hmem⟩` from `GlobalTheory.IsoMeanAnnih.finPart_mem_compact D S T T.rank ρ 1 d.qX (by rw [Matrix.rank_one, Fintype.card_fin]) (rank_qX d) ψ hψ (U.comap ((d.extY T).comp r)) (hU.preimage (cY.comp cr))`.
+
+Take `⟨g, hg, -, hc⟩` from `GlobalTheory.AdSplit.exists_adele_equiv D.host.F D.host.E`. Establish `hs : Continuous fun b : Af D.host.F ⊗[D.host.F] D.host.E => (g.symm (0, b) : AE D)` using `hc.comp (continuous_const.prodMk continuous_id)`. Use `⟨(fun y => y.map fun b => (g.symm (0, b) : AE D)) '' K, hK.image (continuous_id.matrix_map hs), fun x hx h0 => ⟨x.map (finPart D), hmem x fun u hu hu' => ?_, ?_⟩⟩` and prove the remaining obligations. Establish `h1` using `hY x (u ⬝ d.jY)`. Rewrite `h1` using `[hl (d.extY T (u ⬝ d.jY)) hu (map_infPart_mul (map_infPart_mul hu' _) _)]`.
+
+Establish `h2 : GlobalTheory.IsoMean.emb S T 1 d.qX x = d.extX T x`. Express the relevant statement in the definitionally equal form `(rat (1 : Matrix (Fin T.rank) (Fin T.rank) D.host.E) ⬝ x : Mx D T.rank ρ) ⬝ d.pX = x ⬝ d.pX`. Rewrite using `[rat_one, Matrix.one_mul]`. Rewrite using `[h2, symplO_extX]`. Establish `h3 : (ψ (symplO S T (d.extX T x) (d.extY T (u ⬝ d.jY))) - 1) • d.mixS T ψ μ 𝓕 f x = 0`.
+
+Rewrite using `[sub_smul, one_smul]`. Conclude with `sub_eq_zero.2 h1.symm`. Conclude with `sub_eq_zero.1 ((smul_eq_zero.1 h3).resolve_right h0)`. Use extensionality with `i j`. Simplify using `only [Matrix.map_apply]`.
+
+Rewrite using `[RingEquiv.symm_apply_eq]`. Conclude with `Prod.ext ((infPart_eq_zero he (hx i j)).symm.trans (hg _).1.symm) (hg _).2.symm`.
+-/
 theorem mixS_half : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ), IsStdChar D ψ (-1) → ∀ (S S₀ T : HSp D) (ρ : ℕ) (d : HypDec S S₀ ρ) (μ : Measure (Mx D T.rank ρ)) (𝓕 : Set (Mx D T.rank ρ)), IsCovolOne (ratMx D T.rank ρ) μ 𝓕 → ∀ e, IsSplitIdem D e → ∀ f, IsThetaFunO ψ S T f → (∃ U : AddSubgroup (Mx D T.rank ρ), IsOpen (U : Set (Mx D T.rank ρ)) ∧ ∀ u ∈ U, (∀ i j, cA D e * u i j = u i j) → ∀ x, d.mixS T ψ μ 𝓕 f (x + u) = d.mixS T ψ μ 𝓕 f x) ∧ ∃ K : Set (Mx D T.rank ρ), IsCompact K ∧ ∀ x : Mx D T.rank ρ, (∀ i j, cA D e * x i j = x i j) → d.mixS T ψ μ 𝓕 f x ≠ 0 → x ∈ K := by
   intro D ψ hψ S S₀ T ρ d μ 𝓕 hμ e he f hf
   obtain ⟨hX, hY, -⟩ := GlobalTheory.T.heisenbergOperator_thetaFunctional_mixedSourceModel D ψ hψ S S₀ T ρ d ⟨μ, 𝓕, hμ⟩ f hf

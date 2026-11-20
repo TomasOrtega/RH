@@ -49,6 +49,11 @@ end Sections
 
 section Algebra
 
+/- English proof (translation)
+Establish `hx : x t₀ ≠ 0`. Introduce `e`. Use `h t₀` as an intermediate fact. Rewrite `this` using `[e, MulZeroClass.mul_zero, MulZeroClass.zero_mul]`. Conclude with `mul_ne_zero hκ' (mul_ne_zero h₀ (pow_ne_zero m h₀)) this.symm`.
+
+Use `⟨κ' * v t₀ ^ m / (κ * x t₀ ^ m), div_ne_zero (mul_ne_zero hκ' (pow_ne_zero m h₀)) (mul_ne_zero hκ (pow_ne_zero m hx)), fun t => ?_⟩` and prove the remaining obligations. Use `h t` as an intermediate fact. Clear the denominators using the available nonvanishing facts. Take the linear combination `this`.
+-/
 theorem cancel {F T : Type} [Field F] (x v : T → F) (t₀ : T) (κ κ' : F) (m : ℕ) (hκ : κ ≠ 0) (hκ' : κ' ≠ 0)
     (h₀ : v t₀ ≠ 0) (h : ∀ t, κ * x t * x t₀ ^ m = κ' * (v t * v t₀ ^ m)) :
     ∃ c : F, c ≠ 0 ∧ ∀ t, x t = c * v t := by
@@ -72,6 +77,11 @@ variable {R : Type} [CommRing R] [IsDomain R] {I : Ideal R} {D : DegData R I}
   {G : Over (Spec (CommRingCat.of R))} [GrpObj G] [IsCommMonObj G]
   (U : UnifPre I D A G) {F : Type} [Field F] [Algebra (FractionRing R) F]
 
+/- English proof (translation)
+Establish `hm` using `MatchCoord.mem_of_le hl`. Take `⟨J, hJ, e⟩` from `exists_good U.LG.L U.LG.isLB (MatchCoord.pt F) (fun _ : Fin 1 => x ≫ UnifPre.gFK (G := G) F) (fun _ => l) (fun _ _ _ => rfl) (fun k => Set.mem_iInter.1 hm k)`. Take `⟨s, hs⟩` from `GenericGenerated.exists_secK_isUnit hA R I D A G U N hN _ (x ≫ (snd (TFK (R := R) F) ((Over.pullback (jK R)).obj G)).left) (MatchCoord.pt F) J hJ`. Set `σ : U.SecGF F N` to `H1.SectionArithmetic.pullSec s (snd (TFK (R := R) F) ((Over.pullback (jK R)).obj G)).left`. Establish `h₁ : sval σ x (MatchCoord.pt F) J = _` using `H1.SectionArithmetic.sval_pullSec s _ x (MatchCoord.pt F) hJ`.
+
+Establish `h₂` using `sval_of σ x (MatchCoord.pt F) J (fun _ => l) e`. Use `⟨σ, fun h0 => ?_⟩` and prove the remaining obligations. Establish `h₃` using `MatchCoord.stk_valF hl (σ.f (fun _ => l))`. Establish `h₄ : gs x (MatchCoord.pt F) _ (σ.f (fun _ => l)) = 0` using `h₃.symm.trans ((congrArg _ h0).trans (map_zero _))`. Conclude with `not_isUnit_zero ((congrArg IsUnit (h₁.symm.trans (h₂.trans h₄))).mp hs)`.
+-/
 theorem exists_val_ne_zero (hA : AmpleSt) {N : ℕ} (hN : 4 ≤ N) (x : Sp F ⟶ (UnifPre.GF (G := G) F).left)
     (l : U.LG.L.ι) (hl : ⊤ ≤ x ⁻¹ᵁ LB.wchart U.LG.L (fun _ : Fin 1 => UnifPre.gFK (G := G) F) (fun _ => l)) :
     ∃ σ : U.SecGF F N, valF x _ (σ.f (fun _ => l)) ≠ 0 := by
@@ -92,6 +102,29 @@ theorem exists_val_ne_zero (hA : AmpleSt) {N : ℕ} (hN : 4 ≤ N) (x : Sp F ⟶
 
 end Point
 
+/- English proof (translation)
+Introduce `hL o Ω _ _ _ _ S ρ p _ y₀ u lab N k a g hN hk H w hw l hl`. Set `x : Sp (PadicAlgCl p) ⟶ (UnifPre.GF (G` to `u.G) (PadicAlgCl p)).left := (lift (𝟙 (TFK (R := u.V) (PadicAlgCl p))) a).left`. Establish `hx : x ≫ UnifPre.gFK (G` using `u.G) (PadicAlgCl p) = u.toG a := by`. Establish `: x ≫ (snd (TFK (R` using `u.V) (PadicAlgCl p)) ((Over.pullback (jK u.V)).obj u.G)).left = a.left := congrArg (fun q => q.left) (lift_snd (𝟙 (TFK (R := u.V) (PadicAlgCl p))) a)`. Conclude with `(Category.assoc _ _ _).symm.trans (congrArg (· ≫ pullback.fst u.G.hom (jK u.V)) this)`.
+
+Establish `hl' : ⊤ ≤ x ⁻¹ᵁ LB.wchart u.U.LG.L (fun _ : Fin 1 => UnifPre.gFK (G` using `u.G) (PadicAlgCl p)) (fun _ => l) := by`. Introduce `z _`. Use `Set.mem_iInter.2 fun _ => ?_` and prove the remaining obligations. Establish `: (x ≫ UnifPre.gFK (G` using `u.G) (PadicAlgCl p)) z ∈ u.U.LG.L.U l := by`. Rewrite using `[hx]`.
+
+Conclude with `hl (Set.mem_univ z)`. Conclude with `this`. Set `v : ∀ d : ℕ, u.U.toUnifPre.SecGF (PadicAlgCl p) d → PadicAlgCl p` to `fun d σ => valF x (LB.wchart u.U.LG.L (fun _ : Fin 1 => UnifPre.gFK (G := u.G) (PadicAlgCl p)) (fun _ => l)) (σ.f (fun _ => l))`. Establish `expd : ∀ d : ℕ, 1 ≤ d → ∀ σ : u.U.toUnifPre.SecGF (PadicAlgCl p) d, ∃ s, u.U.toUnifPre.ExpandsG (PadicAlgCl p) d σ s` using `fun d hd σ => ((FieldBaseChange.expandsG_bijective u.U.toUnifPre (PadicAlgCl p) hL.1.globalFns hd (u.U.expand d hd)).1 σ).exists`. Establish `summ : ∀ s : Fam u.D.toPre (PadicAlgCl p) N, HasSum (fun χ => GlobalTheory.UT.coef s g w χ) (∑' χ, GlobalTheory.UT.coef s g w χ)` using `fun s => (GlobalTheory.T.summable_fourierCoefficients_family_finite_extension hL o Ω S ρ p y₀ u lab N (by omega) s g w hw).1.hasSum`.
+
+Take `⟨σ₀, h₀⟩ : ∃ σ, v N σ ≠ 0` from `exists_val_ne_zero u.U.toUnifPre hL.1.ample hN x l hl'`. Take `⟨s₀, hs₀⟩` from `expd N (by omega) σ₀`. Establish `key : ∀ (m d : ℕ), d = N * (m + 1) → ∃ w' : GlobalTheory.UT.Frm u.D.toPre (PadicAlgCl p) d g.b, w'.IsGen ∧ ∃ κ : PadicAlgCl p, κ ≠ 0 ∧ ∀ σ s, u.U.toUnifPre.ExpandsG (PadicAlgCl p) N σ s → ∃ τ t, u.U.toUnifPre.ExpandsG (PadicAlgCl p) d τ t ∧ v d τ = v N σ * v N σ₀ ^ m ∧ HasSum (fu …`. Introduce `m`. Proceed by induction on `m with`.
+
+Consider the case `zero`. Introduce `d hd`. Take `rfl : N = d` from `by omega`. Use `⟨w, hw, 1, one_ne_zero, fun σ s hs => ⟨σ, s, hs, by simp, ?_⟩⟩` and prove the remaining obligations. Simplify using `using summ s`.
+
+Consider the case `succ m ih`. Introduce `d hd`. Take `⟨w', hw', κ, hκ, h⟩` from `ih _ rfl`. Take `rfl : d = N * (m + 1) + N` from `hd`. Establish `h1 : 1 ≤ N * (m + 1)` using `Nat.mul_pos (by omega) (by omega)`.
+
+Take `⟨w'', hw''⟩ : ∃ w : GlobalTheory.UT.Frm u.D.toPre (PadicAlgCl p) (N * (m + 1) + N) g.b, w.IsGen` from `DVR.exists_gen_of_local (V := PadicAlgCl p) u.D.toPre.P.L u.D.toPre.P.isLB _ _`. Take `⟨c, hc, hp⟩` from `GlobalTheory.T.fourierSeries_product_eq_product_series hL o Ω S ρ p y₀ u lab (N * (m + 1)) N g w' w w'' h1 (by omega) hw' hw hw''`. Use `⟨w'', hw'', c * κ, mul_ne_zero hc hκ, fun σ s hs => ?_⟩` and prove the remaining obligations. Take `⟨τ, t, hτ, e, hsum⟩` from `h σ s hs`. Take `⟨t', ht'⟩` from `expd (N * (m + 1) + N) (by omega) (mulPow τ σ₀)`.
+
+Use `⟨mulPow τ σ₀, t', ht', ?_, ?_⟩` and prove the remaining obligations. Establish `: v _ (mulPow τ σ₀) = v _ τ * v _ σ₀` using `MatchCoord.valF_mul hl' _ _`. Rewrite using `[this, e]`. Expand and normalize the polynomial expressions, which then agree. Use `hp τ σ₀ (mulPow τ σ₀) t s₀ t' hτ hs₀ ht' (fun _ => rfl) _ _ hsum (summ s₀) using 1` and compare the differences between its conclusion and the goal.
+
+Expand and normalize the polynomial expressions, which then agree. Take `⟨m, rfl⟩ : ∃ m, k = m + 1` from `⟨k - 1, by omega⟩`. Take `⟨w', hw', κ, hκ, h⟩` from `key m _ rfl`. Take `⟨κ', hκ', h'⟩` from `H w' hw' l hl`. Take `⟨c, hc, e⟩` from `cancel (T := {q : u.U.toUnifPre.SecGF (PadicAlgCl p) N × Fam u.D.toPre (PadicAlgCl p) N // u.U.toUnifPre.ExpandsG (PadicAlgCl p) N q.1 q.2}) (fun q => ∑' χ, GlobalTheory.UT.coef q.1.2 g w χ) (fun q => v N q.1.1) ⟨(σ₀, s₀), hs₀⟩ κ κ' m hκ hκ' h₀ (fun q => by`.
+
+Take `⟨τ, t, hτ, e, hsum⟩` from `h q.1.1 q.1.2 q.2`. Conclude with `(hsum.unique (h' τ t hτ)).trans (congrArg (κ' * ·) e))`. Use `⟨c, hc, fun σ s hs => ?_⟩` and prove the remaining obligations. Use `summ s` as an intermediate fact. Rewrite `this` using `[e ⟨(σ, s), hs⟩]`.
+
+Conclude with `this`.
+-/
 theorem parAt_of_parAt_mul : GlobalTheory.UT.LL → ∀ (o Ω : Type) [CommRing o] [Field Ω] [Algebra o Ω] [ArithBase o Ω] (S : ThetaSys o Ω) (ρ : S.Real) (p : ℕ) [Fact p.Prime] (y₀ : S.R →+* PadicAlgCl p) (u : ρ.UTest p y₀) (l : u.Lab) (N k : ℕ) (a : u.PtC) (g : GtPtF u.D.toPre (PadicAlgCl p)), 4 ≤ N → 1 ≤ k → u.ParAt (N * k) a g → u.ParAt N a g := by
   intro hL o Ω _ _ _ _ S ρ p _ y₀ u lab N k a g hN hk H w hw l hl
   let x : Sp (PadicAlgCl p) ⟶ (UnifPre.GF (G := u.G) (PadicAlgCl p)).left :=

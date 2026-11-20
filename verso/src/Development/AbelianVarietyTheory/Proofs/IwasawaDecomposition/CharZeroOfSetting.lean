@@ -20,6 +20,15 @@ namespace GlobalTheory.ClassRank
 
 section General
 
+/- English proof (translation)
+Establish `hW : CharZero W`. Take `⟨l, hl⟩` from `CharP.exists W`. Break down `CharP.char_is_prime_or_zero W l with hp | rfl` into its components or cases. It suffices to derive a contradiction. Distinguish the cases in `h : l = p`.
+
+Substitute `h` using the available equality. Conclude with `hS.p_unif.ne_zero (CharP.cast_eq_zero W l)`. Apply `hS.p_unif.not_isUnit` to reduce the goal to its premises. Establish `hc : Nat.Coprime p l` using `(Nat.coprime_primes hS.prime hp).2 (Ne.symm h)`. Establish `h1` using `(Nat.isCoprime_iff_coprime.2 hc).map (Int.castRingHom W)`.
+
+Simplify using `only [eq_intCast, Int.cast_natCast, CharP.cast_eq_zero] at h1`. Conclude with `isCoprime_zero_right.1 h1`. Conclude with `CharP.charP_to_charZero W`. Use `hS.frac_alt` as an intermediate fact. Establish `hQ : CharZero Qq` using `charZero_of_injective_algebraMap (IsFractionRing.injective W Qq)`.
+
+Conclude with `charZero_of_injective_ringHom ι.injective`.
+-/
 theorem charZero_of_setting {p n' : ℕ} {W Qq O Kf : Type} [CommRing W] [IsDomain W] [IsDiscreteValuationRing W]
     [Field Qq] [Algebra W Qq] [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] [Field Kf] [Algebra O Kf]
     {ι : Qq →+* Kf} {σ : Qq ≃+* Qq} {j : W →+* O} {w : O} (hS : HidaSetting p n' W Qq O Kf ι σ j w) : CharZero Kf := by
@@ -40,6 +49,15 @@ theorem charZero_of_setting {p n' : ℕ} {W Qq O Kf : Type} [CommRing W] [IsDoma
   have hQ : CharZero Qq := charZero_of_injective_algebraMap (IsFractionRing.injective W Qq)
   exact charZero_of_injective_ringHom ι.injective
 
+/- English proof (translation)
+Set `f : weyl ℤ k k le_rfl ν →ₗ[ℤ] MvPolynomial (Fin k × Fin k) O` to `(map (Int.castRingHom O) : MvPolynomial (Fin k × Fin k) ℤ →+* MvPolynomial (Fin k × Fin k) O).toIntAlgHom.toLinearMap.comp (Submodule.subtype _)`. Apply `le_antisymm` to reduce the goal to its premises. Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨i, rfl⟩`. Conclude with `sw_weyl_map (Int.castRingHom O) le_rfl ν _ (b i).2`.
+
+Use `show Submodule.span O (Set.range fun w => applyWord O w (hw O (le_refl k) ν)) ≤ _`. Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨w, rfl⟩`. Use `show applyWord O w (hw O (le_refl k) ν) ∈ _`. Establish `hmem : applyWord ℤ w (hw ℤ (le_refl k) ν) ∈ weyl ℤ k k le_rfl ν` using `Submodule.subset_span ⟨w, rfl⟩`.
+
+Establish `hsp : (⟨_, hmem⟩ : weyl ℤ k k le_rfl ν) ∈ Submodule.span ℤ (Set.range b)`. Rewrite using `[b.span_eq]`. Discharge the goal by the elementary cases of `trivial`. Establish `h2` using `Submodule.mem_map_of_mem (f := f) hsp`. Rewrite `h2` using `[Submodule.map_span, ← Set.range_comp]`.
+
+Rewrite using `[← lclosedeq_hw_map (Int.castRingHom O) (le_refl k) ν, lclosedeq_applyWord_map]`. Conclude with `Submodule.span_le_restrictScalars ℤ O _ h2`.
+-/
 theorem span_map_weyl (O : Type) [CommRing O] (k : ℕ) (ν : Fin k → ℕ) {ι : Type}
     (b : Module.Basis ι ℤ (weyl ℤ k k le_rfl ν)) :
     Submodule.span O (Set.range fun i => MvPolynomial.map (Int.castRingHom O) (b i : MvPolynomial (Fin k × Fin k) ℤ)) =
@@ -63,6 +81,21 @@ theorem span_map_weyl (O : Type) [CommRing O] (k : ℕ) (ν : Fin k → ℕ) {ι
     rw [← lclosedeq_hw_map (Int.castRingHom O) (le_refl k) ν, lclosedeq_applyWord_map]
     exact Submodule.span_le_restrictScalars ℤ O _ h2
 
+/- English proof (translation)
+Take `⟨g, hg, rfl⟩` from `hΛ`. Establish `hν : Antitone (nuOf lam)` using `toNat_antitone lam hlam`. Take `⟨ι, hι, b0, -⟩` from `Formalism.L2.GlobalTheoryTheory.LocalLatticeBases.weyl_homogeneous_basis (le_refl (m + 1)) (nuOf lam) hν`. Establish `hcard : Fintype.card ι = Nat.card (ssIdx (m + 1) (m + 1) (nuOf lam))`. Rewrite using `[← Module.finrank_eq_card_basis b0, Formalism.L2.GlobalTheoryTheory.LemB.finrank_weylZ _ hν]`.
+
+Set `b` to `b0.reindex (Fintype.equivFinOfCardEq hcard)`. Establish `hli` using `Formalism.L2.GlobalTheoryTheory.LocalLatticeBases.weyl_basis_lin_indep_field (le_refl (m + 1)) (nuOf lam) hν Kf b`. Establish `hd : g.det ^ (-(lam (Fin.last m))) ≠ 0` using `zpow_ne_zero _ hg.ne_zero`. Set `φ : MvPolynomial (Fin (m + 1) × Fin (m + 1)) Kf →ₗ[Kf] MvPolynomial (Fin (m + 1) × Fin (m + 1)) Kf` to `(g.det ^ (-(lam (Fin.last m)))) • (rowAct Kf (n := m + 1) g⁻¹).toLinearMap`. Establish `hφ : LinearMap.ker φ = ⊥`.
+
+Rewrite using `[LinearMap.ker_eq_bot']`. Introduce `x hx`. Establish `h1 : rowAct Kf g⁻¹ x = 0` using `(smul_eq_zero.1 hx).resolve_left hd`. Rewrite using `[← rowAct_inv_right Kf _ _ g hg x, h1, map_zero]`. Use `⟨_, hli.map' φ hφ, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[Formalism.L2.G.Cmp.dw_eq hinj m lam hlam g hg]`. Establish `e1 : deltaL O Kf (m + 1) (nuOf lam) g = ((weyl O (m + 1) (m + 1) le_rfl (nuOf lam)).map (mapAlgHom (Algebra.ofId O Kf)).toLinearMap).map ((rowAct Kf (n` using `m + 1) g⁻¹).toLinearMap.restrictScalars O) := by`. Use extensionality with `x`. Prove the components needed by the constructor for the conclusion. Introduce `hx`.
+
+Conclude with `⟨_, Submodule.mem_comap.1 hx, rowAct_inv_left Kf _ _ g hg x⟩`. Introduce and unpack `⟨y, hy, hyx⟩`. Establish `h1 : rowAct Kf g⁻¹ y = x` using `hyx`. Establish `h2 : rowAct Kf g x = y` using `by rw [← h1, rowAct_inv_right Kf _ _ g hg]`. Use `Submodule.mem_comap.2 ?_` and prove the remaining obligations.
+
+Rewrite using `[LinearMap.restrictScalars_apply, AlgHom.toLinearMap_apply, h2]`. Conclude with `hy`. Rewrite using `[deltaLTw, e1, ← span_map_weyl O (m + 1) (nuOf lam) b, Submodule.map_span, Submodule.map_span, Submodule.map_span, ← Set.range_comp, ← Set.range_comp, ← Set.range_comp]`. Use `congr 2`. Use function extensionality and compare the values at `i`.
+
+Use `show (g.det ^ (-(lam (Fin.last m)))) • rowAct Kf (n := m + 1) g⁻¹ (map (Int.castRingHom Kf) (b i).1) = (g.det ^ (-(lam (Fin.last m)))) • rowAct Kf (n := m + 1) g⁻¹ (map (algebraMap O Kf) (map (Int.castRingHom O) (b i).1))`. Rewrite using `[map_map, Subsingleton.elim ((algebraMap O Kf).comp (Int.castRingHom O)) (Int.castRingHom Kf)]`.
+-/
 theorem exists_basis_Dl0 {O Kf : Type} [CommRing O] [Field Kf] [Algebra O Kf] [CharZero Kf]
     (hinj : Function.Injective (algebraMap O Kf)) (m : ℕ) (lam : Fin (m + 1) → ℤ) (hlam : Antitone lam)
     (Λ : Submodule O (Fin (m + 1) → Kf)) (hΛ : IsLattice O Λ) :
@@ -107,6 +140,13 @@ theorem exists_basis_Dl0 {O Kf : Type} [CommRing O] [Field Kf] [Algebra O Kf] [C
       (map (algebraMap O Kf) (map (Int.castRingHom O) (b i).1))
   rw [map_map, Subsingleton.elim ((algebraMap O Kf).comp (Int.castRingHom O)) (Int.castRingHom Kf)]
 
+/- English proof (translation)
+Establish `key : ∀ lam : Fin (m + 1) → ℤ, Antitone lam → ((Nat.card (ssIdx (m + 1) (m + 1) (nuOf lam)) : ℕ) : ℚ) = Formalism.CountingSumsFrames.weylDim (m + 1) lam`. Introduce `lam hlam`. Rewrite using `[card_ssIdx, Formalism.MainNotions.TestSideCounting.dGT_weylDim _ _ (fun a b hab => by exact_mod_cast toNat_antitone lam hlam hab)]`. Establish `: (fun t => ((nuOf lam t : ℕ) : ℤ)) = fun t => lam t + (-lam (Fin.last m))`. Use function extensionality and compare the values at `(Formalism.MainNotions.TestSideCounting.nuOf_cast lam hlam)`.
+
+Rewrite using `[this, Formalism.MainNotions.Pf14.weylDim_shift]`. Apply `Nat.cast_injective (R := ℚ)` to reduce the goal to its premises. Rewrite using `[key _ (lamAt_antitone' lam0 hdom s), key _ (hdom s)]`. Unfold `lamAt`. Use `split_ifs`.
+
+Both sides reduce to the same expression. Conclude with `Formalism.MainNotions.Pf14.weylDim_dual _ _`.
+-/
 theorem card_ssIdx_lamAt {n' m : ℕ} (lam0 : Fin n' → Fin (m + 1) → ℤ) (hdom : IsDominant lam0) (s : Fin n') :
     Nat.card (ssIdx (m + 1) (m + 1) (nuOf (lamAt lam0 s))) = Nat.card (ssIdx (m + 1) (m + 1) (nuOf (lam0 s))) := by
   have key : ∀ lam : Fin (m + 1) → ℤ, Antitone lam →
@@ -125,6 +165,19 @@ theorem card_ssIdx_lamAt {n' m : ℕ} (lam0 : Fin n' → Fin (m + 1) → ℤ) (h
 
 variable {p : ℕ}
 
+/- English proof (translation)
+Establish `hinj : Function.Injective (algebraMap G.O G.Kf)` using `IsFractionRing.injective G.O G.Kf`. Establish `hB` using `fun (v : Fin G.P.nV) (s : Fin (G.P.n' v)) => exists_basis_Dl0 hinj G.P.m (lamAt (G.P.lam0 v) s) (lamAt_antitone' _ (G.P.dom v) s) _ (LatticeSystems.je_extO_lat G v s.val (L v) (hL v))`. Use `choose B b1 b2 using hB`. Use `LatticeSystems.jr_KK G.Kf` as an intermediate fact. Take `⟨hli, -⟩` from `tensorBasis G.Kf G.Kf (Σ v : Fin G.P.nV, Fin (G.P.n' v)) (G.P.m + 1) (G.P.m + 1) _ (fun x => Submodule.span G.Kf (Set.range (B x.1 x.2))) (fun x => B x.1 x.2) (fun x => b1 x.1 x.2) (fun _ => rfl)`.
+
+Establish `hli2` using `hli.map' (rename (LatticeSystems.jr_psi G) : _ →ₐ[G.Kf] G.P.Xsp).toLinearMap (LinearMap.ker_eq_bot.2 (rename_injective _ (LatticeSystems.jr_psi_inj G)))`. Establish `hli3 : LinearIndependent G.O _` using `hli2.restrict_scalars (by intro a b hab; apply hinj; simpa [Algebra.smul_def] using hab)`. Establish `hQ : ∀ i : (∀ x : (Σ v : Fin G.P.nV, Fin (G.P.n' v)), Fin (Nat.card (ssIdx (G.P.m + 1) (G.P.m + 1) (nuOf (lamAt (G.P.lam0 x.1) x.2))))), rename (LatticeSystems.jr_psi G) (∏ x, blockEmb G.Kf x (B x.1 x.2 (i x))) = ∏ v, G.P.vEmb v (∏ s, blockEmb G.Kf s (B v s (i ⟨v, s⟩)))`. Introduce `i`. Simplify using `only [map_prod]`.
+
+Rewrite using `[Fintype.prod_sigma]`. Use `Finset.prod_congr rfl fun v _ => Finset.prod_congr rfl fun s _ => ?_` and prove the remaining obligations. Unfold `blockEmb Places.vEmb`. Rewrite using `[rename_rename, rename_rename]`. Both sides reduce to the same expression.
+
+Establish `hloc : ∀ v, Submodule.span G.O (Set.range fun i : (∀ s : Fin (G.P.n' v), Fin (Nat.card (ssIdx (G.P.m + 1) (G.P.m + 1) (nuOf (lamAt (G.P.lam0 v) s))))) => ∏ s, blockEmb G.Kf s (B v s (i s))) = HtenW G.O (G.P.lam0 v) (fun s => extO G.O (G.P.ι v) (G.P.σ v) s.val (L v))` using `fun v => (tensorBasis G.O G.Kf (Fin (G.P.n' v)) (G.P.m + 1) (G.P.m + 1) _ _ (B v) (fun s => (b1 v s).restrict_scalars (by intro a b hab; apply hinj; simpa [Algebra.smul_def] using hab)) (b2 v)).2`. Use `⟨_, hli3, le_antisymm ?_ ?_⟩` and prove the remaining obligations. Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨i, rfl⟩`. Use `Submodule.subset_span ⟨fun v => ∏ s, blockEmb G.Kf s (B v s (i ⟨v, s⟩)), fun v => ?_, hQ i⟩` and prove the remaining obligations.
+
+Conclude with `(hloc v).le (Submodule.subset_span ⟨fun s => i ⟨v, s⟩, rfl⟩)`. Unfold `Places.HtupW Places.tenV`. Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨F, hF, rfl⟩`. Use `Formalism.BasicNotions.Examples₂.NZ.prod_mem_of_span (R := G.O) (fun v => (G.P.vEmb v).toLinearMap.restrictScalars G.O) _ _ (fun f hf => ?_) F (fun v => (hloc v).ge (hF v))` and prove the remaining obligations.
+
+Use `choose I hI using hf`. Use `Submodule.subset_span ⟨fun x => I x.1 x.2, ?_⟩` and prove the remaining obligations. Use `(hQ _).trans (Finset.prod_congr rfl fun v _ => ?_)` and prove the remaining obligations. Rewrite using `[← hI v]`. Both sides reduce to the same expression.
+-/
 theorem exists_basis_HtupW (G : GAtP p) [IsFractionRing G.O G.Kf] [CharZero G.Kf] (L : G.P.Tup)
     (hL : G.P.IsLatTup L) :
     ∃ Q : (∀ x : (Σ v : Fin G.P.nV, Fin (G.P.n' v)),
@@ -177,6 +230,13 @@ theorem exists_basis_HtupW (G : GAtP p) [IsFractionRing G.O G.Kf] [CharZero G.Kf
     rw [← hI v]
     rfl
 
+/- English proof (translation)
+Establish `h1 : ∀ (γ : (G.lev c).Γ) (L : G.P.Tup), G.P.IsLatTup L → ∀ x ∈ G.P.HtupW L, (G.lev c).actX γ x ∈ G.P.HtupW ((G.lev c).smul γ L)`. Introduce `γ L hL x hx`. Establish `h` using `Submodule.smul_mem _ (((G.lev c).χ γ)⁻¹ : G.Oˣ).1 (Formalism.L2.G.Cmp.equivSys_HtupW G c γ L hL x hx)`. Rewrite `h` using `[smul_smul, Units.inv_mul, one_smul]`. Then use the resulting hypothesis. Introduce `γ L hL`.
+
+Apply `le_antisymm` to reduce the goal to its premises. Introduce and unpack `_ ⟨x, hx, rfl⟩`. Conclude with `h1 γ L hL x hx`. Introduce `y hy`. Establish `h` using `h1 γ⁻¹ _ (isLatTup_smul _ γ hL) y hy`.
+
+Rewrite `h` using `[← smul_mul, inv_mul_cancel, smul_one]`. Use `⟨_, h, ?_⟩` and prove the remaining obligations. Use `show (G.lev c).actX γ ((G.lev c).actX γ⁻¹ y) = y`. Rewrite using `[← actX_mul, mul_inv_cancel, actX_one]`.
+-/
 theorem actHW (G : GAtP p) (c : G.comp) : (G.lev c).ActHW := by
   have h1 : ∀ (γ : (G.lev c).Γ) (L : G.P.Tup), G.P.IsLatTup L → ∀ x ∈ G.P.HtupW L,
       (G.lev c).actX γ x ∈ G.P.HtupW ((G.lev c).smul γ L) := by
@@ -194,6 +254,17 @@ theorem actHW (G : GAtP p) (c : G.comp) : (G.lev c).ActHW := by
     show (G.lev c).actX γ ((G.lev c).actX γ⁻¹ y) = y
     rw [← actX_mul, mul_inv_cancel, actX_one]
 
+/- English proof (translation)
+Use `choose idx tup hlat hcl using hsurj`. Establish `hr : ∀ c, IsReps (G.lev c) (fun x : {x : X // idx x = c} => tup x.1)`. Introduce `c`. Use `⟨fun x => hlat x.1, fun L hL => ?_, fun x y γ h => ?_⟩` and prove the remaining obligations. Take `⟨h1, γ, h2⟩` from `(hiff _ _ _ _ (hlat (cl c L)) hL).1 (hcl (cl c L))`.
+
+Generalize the expression as in `cl c L = x at h1 γ h2`. Substitute `h1` using the available equality. Conclude with `⟨⟨x, rfl⟩, γ, h2⟩`. Take `⟨x, rfl⟩` from `x`. Take `⟨y, hy⟩` from `y`.
+
+Apply `Subtype.ext` to reduce the goal to its premises. Use `show x = y`. Rewrite using `[← hcl x, ← hcl y]`. Conclude with `(hiff _ _ _ _ (hlat x) (hlat y)).2 ⟨hy.symm, γ, h.symm⟩`. Rewrite using `[d_eq_card_mul G (IsFractionRing.injective G.O G.Kf) htriv (actHW G) _ hr ?_ _ ?_, ← Fintype.card_sigma, Fintype.card_congr (Equiv.sigmaFiberEquiv idx)]`.
+
+Introduce `c x`. Take `⟨Q, -, hQ⟩` from `exists_basis_HtupW G _ (hlat x.1)`. Rewrite using `[← hQ]`. Conclude with `Submodule.fg_span (Set.finite_range _)`. Introduce `c x`.
+
+Take `⟨Q, hli, hQ⟩` from `exists_basis_HtupW G _ (hlat x.1)`. Rewrite using `[← hQ, finrank_span_eq_card hli, Fintype.card_pi]`. Use `Finset.prod_congr rfl fun y _ => ?_` and prove the remaining obligations. Rewrite using `[Fintype.card_fin, card_ssIdx_lamAt _ (G.P.dom y.1)]`.
+-/
 theorem d_eq_of_classes (G : GAtP p) [IsFractionRing G.O G.Kf] [CharZero G.Kf] (htriv : G.TrivStab)
     {X : Type} [Fintype X] (cl : G.comp → G.P.Tup → X)
     (hiff : ∀ i i' L L', G.P.IsLatTup L → G.P.IsLatTup L' →
@@ -228,6 +299,11 @@ theorem d_eq_of_classes (G : GAtP p) [IsFractionRing G.O G.Kf] [CharZero G.Kf] (
     refine Finset.prod_congr rfl fun y _ => ?_
     rw [Fintype.card_fin, card_ssIdx_lamAt _ (G.P.dom y.1)]
 
+/- English proof (translation)
+Substitute `h` using the available equality. Establish `: nuOf l = lam.natW`. Use function extensionality and compare the values at `t`. Simplify using `only [nuOf, Formalism.BasicNotions.DomWeight.natW, Formalism.BasicNotions.DomWeight.detShift, hl, dif_pos (Nat.succ_pos m)]`. Both sides reduce to the same expression.
+
+Rewrite using `[this]`.
+-/
 theorem card_ssIdx_natW {N m : ℕ} (h : m + 1 = N) (lam : Formalism.BasicNotions.DomWeight N) (l : Fin (m + 1) → ℤ)
     (hl : ∀ i, l i = lam.w (Fin.cast h i)) :
     Nat.card (ssIdx (m + 1) (m + 1) (nuOf l)) = Nat.card (ssIdx N N lam.natW) := by
@@ -248,6 +324,11 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar Formalism.BasicNot
 
 set_option maxHeartbeats 2000000 in
 
+/- English proof (translation)
+Establish `hF : IsFractionRing (X.gat r e).O (X.gat r e).Kf` using `X.hS.frac_O`. Establish `hC : CharZero (X.gat r e).Kf` using `charZero_of_setting X.hS`. Establish `hH` using `isHyperbolicAt_rec_of_placeIdentification D u w hg X.I`. Establish `hdet` using `isUnit_det_gram0 D.sp`. Rewrite using `[Formalism.L2.GlobalTheoryTheory.LemB.finrank_forms_level_zero T (Triv.stabZero_rec D L0 u), d_eq_of_classes (X.gat r e) (Cmp.trivStab X.hS r _ _ (k_pred D.R) X.I X.ψ e hdet hH (Triv.trivStabU_rec D L0 u)) (fun i L => Cmp.clsR (k_pred D.R) X.I hdet i L) (fun i i' L L' h h' => Cmp …`.
+
+Use `congr 1`. Use `Fintype.prod_equiv (gatRec_pos D u _ X.hS r (L0 u) X.I X.ψ (repP (L0 u) _) e) _ _ fun x => ?_` and prove the remaining obligations. Conclude with `card_ssIdx_natW ((k_pred D.R).trans (rank_eq_first_level D.R)) _ _ fun _ => rfl`.
+-/
 theorem locPack_d_eq (D : D7) (L0 : LevelData D) (u : D.what₂.Word) (T : Forms0 D u) (w : D.what₂.places.Pl)
     (hg : GIdx D.host (D.mem u).A.T (D.what₂.places.resChar w)) (X : LocPack D u (L0 u) (D.what₂.places.resChar w))
     (r e : ℕ) : (X.gat r e).d = Module.finrank ℂ (D.mem u).A.Mu0 := by
@@ -265,6 +346,9 @@ theorem locPack_d_eq (D : D7) (L0 : LevelData D) (u : D.what₂.Word) (T : Forms
   refine Fintype.prod_equiv (gatRec_pos D u _ X.hS r (L0 u) X.I X.ψ (repP (L0 u) _) e) _ _ fun x => ?_
   exact card_ssIdx_natW ((k_pred D.R).trans (rank_eq_first_level D.R)) _ _ fun _ => rfl
 
+/- English proof (translation)
+Introduce `D L0 T _ u w hg _ _ r e` and use `locPack_d_eq D L0 u (T u) w hg _ r e`.
+-/
 theorem pack_d_eq : ∀ (D : D7) (L0 : LevelData D) (T : ∀ u : D.what₂.Word, Forms0 D u), (∀ u, Joint0 L0 u (T u)) →
     ∀ (u : D.what₂.Word) (w : D.what₂.places.Pl) (hg : GIdx D.host (D.mem u).A.T (D.what₂.places.resChar w))
       (I : LocId (L0 u) (D.what₂.places.resChar w) (nOrb (zH D.R.toFrame (hP D (D.what₂.places.resChar w))))

@@ -132,6 +132,9 @@ def AdjIs {L : LB G.left} {j : JetPts G x d} (e : FrameFam G x L j) (α β : G �
   ∃ w : LB.Iso (cubeLB G ![fst G G ≫ α, snd G G] L) (cubeLB G ![fst G G, snd G G ≫ β] L),
     IsRigAdj G L α β w ∧ AdjVia e w A B ad
 
+/- English proof (translation)
+Simplify using `only [lamφ, psum]`. Rewrite using `[foldr_padd_pre, Over.comp_left]`.
+-/
 theorem comp_lamφ {T T' : Over X₀} (h : T' ⟶ T) (p : Fin 2 → (T ⟶ G)) (I : ULift.{0} (Finset (Fin 2))) :
     h.left ≫ lamφ G p I = lamφ G (fun k => h ≫ p k) I := by
   simp only [lamφ, psum]

@@ -19,20 +19,34 @@ open GlobalTheory.FinPl.FrameLat GlobalTheory.SeeSaw.LiftModel
 
 variable {D : D7} {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
 
+/- English proof (translation)
+Rewrite using `[p.int_iff, p.sec_pr, RingHom.map_mul]`. Conclude with `mul_mem_intAE (e_mem_intAt p).2 ha`.
+-/
 theorem pr_mem_of_intAt (p : SplitPt D k) {a : AE D} (ha : finPart D a ∈ intAE D) : p.pr a ∈ 𝒪[k] := by
   rw [p.int_iff, p.sec_pr, RingHom.map_mul]
   exact mul_mem_intAE (e_mem_intAt p).2 ha
 
+/- English proof (translation)
+Rewrite using `[p.sec_pr, p.sec_pr, RingHom.map_mul, cA_cA, ← add_mul, (idem_iff p a).1 ha]`.
+-/
 theorem eq_sec_add (p : SplitPt D k) {a : AE D} (ha : a ∈ idAt D (· = p.v)) :
     a = p.sec (p.pr a) + cA D (p.sec (p.pr (cA D a))) := by
   rw [p.sec_pr, p.sec_pr, RingHom.map_mul, cA_cA, ← add_mul, (idem_iff p a).1 ha]
 
+/- English proof (translation)
+Use `⟨fun h => ⟨pr_mem_of_intAt p h.2, pr_mem_of_intAt p ((cA_int_iff a).2 h.2)⟩, fun h => ⟨ha, ?_⟩⟩` and prove the remaining obligations. Rewrite using `[eq_sec_add p ha, RingHom.map_add]`. Conclude with `add_mem ((p.int_iff _).1 h.1) ((cA_int_iff _).2 ((p.int_iff _).1 h.2))`.
+-/
 theorem mem_intAt_iff (p : SplitPt D k) {a : AE D} (ha : a ∈ idAt D (· = p.v)) :
     a ∈ intAt D (· = p.v) ↔ p.pr a ∈ 𝒪[k] ∧ p.pr (cA D a) ∈ 𝒪[k] := by
   refine ⟨fun h => ⟨pr_mem_of_intAt p h.2, pr_mem_of_intAt p ((cA_int_iff a).2 h.2)⟩, fun h => ⟨ha, ?_⟩⟩
   rw [eq_sec_add p ha, RingHom.map_add]
   exact add_mem ((p.int_iff _).1 h.1) ((cA_int_iff _).2 ((p.int_iff _).1 h.2))
 
+/- English proof (translation)
+Take `⟨h1, h2⟩` from `hp.1 _ (e_mem_intAt p)`. Establish `he : p.pr p.e = 1` using `by rw [← sec_one, p.pr_sec]`. Establish `h3` using `pr_mem_of_intAt p h1.2`. Establish `h4` using `pr_mem_of_intAt p h2.2`. Rewrite `h3`, `h4` using `[RingHom.map_mul, he, mul_one, Valuation.mem_integer_iff]`.
+
+Establish `h5 : valuation k (p.pr (incA D D.host.xi0)) * valuation k (p.pr (incA D D.host.xi0⁻¹)) = 1`. Rewrite using `[← map_mul, ← RingHom.map_mul, ← RingHom.map_mul, mul_inv_cancel₀ (GlobalTheory.DualPairCompare.embedding_xi_zero_ne_zero D), RingHom.map_one, RingHom.map_one, map_one]`. Use `le_antisymm h3 ?_` and prove the remaining obligations. Rewrite using `[← h5]`. Conclude with `mul_le_of_le_one_right' h4`.
+-/
 theorem valuation_xi_zero_eq_one (p : SplitPt D k) (hp : p.UnitAA) : valuation k (p.pr (incA D D.host.xi0)) = 1 := by
   obtain ⟨h1, h2⟩ := hp.1 _ (e_mem_intAt p)
   have he : p.pr p.e = 1 := by rw [← sec_one, p.pr_sec]
@@ -46,6 +60,15 @@ theorem valuation_xi_zero_eq_one (p : SplitPt D k) (hp : p.UnitAA) : valuation k
   rw [← h5]
   exact mul_le_of_le_one_right' h4
 
+/- English proof (translation)
+Establish `h0 : (Pi.single (Sum.inr 0) t : n ⊕ Fin 1 → k) ∘ Sum.inl = 0`. Use function extensionality and compare the values at `j`. Simplify using the standard rewrite rules. Rewrite using `[GlobalTheory.LevelUnfold.mem_gluedS, h0]`. Prove the components needed by the constructor for the conclusion.
+
+Introduce and unpack `⟨s, h1, h2⟩`. Establish `h3` using `(h2 0).1 rfl`. Rewrite `h3` using `[Pi.single_eq_same]`. Rewrite `h1` using `[zero_sub, neg_mem_iff, Pair.mem_ker]`. Establish `h4` using `(P.hasVal_vec.smul s).unique h1`.
+
+Rewrite `h4` using `[mul_one, IsLocalRing.residue_eq_zero_iff, q.mem_max_iff]`. Take `⟨c, rfl⟩` from `h4`. Rewrite using `[h3, Unif.inv, Subring.coe_mul, ← mul_assoc, inv_mul_cancel₀ q.ne_zero, one_mul]`. Conclude with `c.2`. Introduce `ht`.
+
+Use `⟨q.1 * ⟨t, ht⟩, ?_, fun i => ⟨fun _ => ?_, fun hi => absurd hi (by omega)⟩⟩` and prove the remaining obligations. Rewrite using `[zero_sub]`. Conclude with `neg_mem (Pair.smul_mem_ker (Ideal.mul_mem_right _ _ q.mem_max) P.hasVal_vec.mem)`. Take `rfl : i = 0` from `Subsingleton.elim _ _`. Rewrite using `[Pi.single_eq_same, Unif.inv, Subring.coe_mul, ← mul_assoc, inv_mul_cancel₀ q.ne_zero, one_mul]`.
+-/
 theorem single_mem_glued_iff {n : Type} [DecidableEq n] (q : Unif k) (P : Pair k n) (t : k) :
     (Pi.single (Sum.inr 0) t : n ⊕ Fin 1 → k) ∈ gluedS q 1 P.ker P.vec ↔ t ∈ 𝒪[k] := by
   have h0 : (Pi.single (Sum.inr 0) t : n ⊕ Fin 1 → k) ∘ Sum.inl = 0 := by
@@ -69,6 +92,19 @@ theorem single_mem_glued_iff {n : Type} [DecidableEq n] (q : Unif k) (P : Pair k
     · obtain rfl : i = 0 := Subsingleton.elim _ _
       rw [Pi.single_eq_same, Unif.inv, Subring.coe_mul, ← mul_assoc, inv_mul_cancel₀ q.ne_zero, one_mul]
 
+/- English proof (translation)
+Set `f : D.host.E →+* k` to `p.pr.comp (incA D)`. Set `r : Fin S.rank → D.host.E` to `star (vecB o ζ) ᵥ* S.gram`. Establish `hr : ∀ i, r i = ∑ j, star (S.gram i j) * star (vecB o ζ j)` using `fun i => by`. Simplify using `only [r, vecMul, dotProduct, Pi.star_apply]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[mul_comm, ← conjTranspose_apply, gram_conjTranspose]`. Establish `h1 : ∑ i, ∑ j, (β₀.b *ᵥ x) i * p.pr (cA D (incA D (S.gram i j))) * (t * p.pr (incA D (star (vecB o ζ j)))) = t * ((f ∘ r) ⬝ᵥ β₀.b *ᵥ x)`. Simplify using `only [dotProduct, Function.comp_apply, hr, map_sum, map_mul, Finset.mul_sum, Finset.sum_mul]`. Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `_ * f (star (S.gram i j)) * (t * f (star (vecB o ζ j))) = _`.
+
+Expand and normalize the polynomial expressions, which then agree. Establish `hA : r ᵥ* o.iA = 0`. Simplify using `only [r, vecB, star_mulVec, vecMul_vecMul, o.orth, vecMul_zero]`. Establish `hB : r ⬝ᵥ vecB o ζ = star ζ ⬝ᵥ L.gram *ᵥ ζ`. Rewrite using `[← o.isoB]`.
+
+Simplify using `only [r, vecB, star_mulVec, vecMul_vecMul, dotProduct_mulVec]`. Establish `hA' : (f ∘ r) ᵥ* o.jA.map p.pr = 0`. Use function extensionality and compare the values at `i`. Use `RingHom.map_vecMul f o.iA r i` as an intermediate fact. Rewrite `this` using `[hA, Pi.zero_apply, map_zero]`.
+
+Conclude with `this.symm`. Establish `hB' : (f ∘ r) ⬝ᵥ (fun i => p.pr (ratV (vecB o ζ) i)) = p.pr (incA D (star ζ ⬝ᵥ L.gram *ᵥ ζ))`. Rewrite using `[← hB]`. Conclude with `(RingHom.map_dotProduct f r (vecB o ζ)).symm`. Rewrite using `[h1, hs, dotProduct_mulVec, vecMul_fromCols, ← vecMul_vecMul, hA', zero_vecMul, ← hB']`.
+
+Use `congr 1`. Simplify using `[dotProduct, vecMul, Fintype.sum_sum_type]`.
+-/
 theorem pair_sumFrame {p : SplitPt D k} {S A L : HSp D} (o : OrthDec S A L) (ζ : Fin L.rank → D.host.E) {n : Type} [Fintype n]
     [DecidableEq n] {β : Frame p A n} {β₀ : Frame p S (n ⊕ Fin 1)} (hs : IsSumFrame o ζ β β₀) (x : n ⊕ Fin 1 → k) (t : k) :
     ∑ i, ∑ j, (β₀.b *ᵥ x) i * p.pr (cA D (incA D (S.gram i j))) * (t * p.pr (incA D (star (vecB o ζ j)))) =
@@ -102,6 +138,17 @@ theorem pair_sumFrame {p : SplitPt D k} {S A L : HSp D} (o : OrthDec S A L) (ζ 
   congr 1
   simp [dotProduct, vecMul, Fintype.sum_sum_type]
 
+/- English proof (translation)
+Establish `hdec : a • ratV (vecB B.o B.ζ) = (fun i => p.sec ((β₀.b *ᵥ (Pi.single (Sum.inr 0) (p.pr a) : n ⊕ Fin 1 → k)) i)) + fun i => cA D (p.sec (p.pr (cA D a) * p.pr (incA D (star (vecB B.o B.ζ i)))))`. Use function extensionality and compare the values at `i`. Establish `e` using `eq_sec_add p (Ideal.mul_mem_right (incA D (vecB B.o B.ζ i)) _ ha)`. Rewrite `e` using `[RingHom.map_mul, RingHom.map_mul (cA D), RingHom.map_mul, cA_incA]`. Use `e.trans ?_` and prove the remaining obligations.
+
+Rewrite using `[Pi.add_apply, mulVec_single, hg.sum]`. Use `congr 2`. Conclude with `mul_comm _ _`. Establish `hq : valuation k ((q.1 : 𝒪[k]) : k) ≠ 0` using `by simpa using q.ne_zero`. Establish `hu : valuation k (p.pr (incA D (star B.ζ ⬝ᵥ B.L.gram *ᵥ B.ζ)) * q.inv) = 1`.
+
+Rewrite using `[map_mul, hg.norm, Unif.inv, map_inv₀, mul_inv_cancel₀ hq]`. Rewrite using `[hdec, decomp hM, ← hg.lat, single_mem_glued_iff, mem_intAt_iff p ha, csec_mem_iff hM]`. Use `and_congr_right fun _ => ⟨fun h => ?_, fun h x hx => ?_⟩` and prove the remaining obligations. Establish `h1` using `h _ ((hg.lat _).1 (GlobalTheory.LevelUnfold.mem_gluedS.2 ⟨1, (by simp : Sum.elim P.vec (fun _ => q.inv) ∘ Sum.inl - (1 : 𝒪[k]) • P.vec ∈ P.ker), fun i => ⟨fun _ => by simp, fun hi => absurd hi (by omega)⟩⟩))`. Rewrite `h1` using `[pair_sumFrame B.o B.ζ hg.sum, Sum.elim_inr, Valuation.mem_integer_iff, map_mul, hu, mul_one]`.
+
+Conclude with `h1`. Establish `hx' : x = β₀.b *ᵥ (β₀.b' *ᵥ x)` using `by rw [mulVec_mulVec, β₀.bb', one_mulVec]`. Rewrite `hx` using `[hx']`. Take `⟨s, -, hs⟩` from `GlobalTheory.LevelUnfold.mem_gluedS.1 ((hg.lat _).2 hx)`. Rewrite using `[hx', pair_sumFrame B.o B.ζ hg.sum, (hs 0).1 rfl, ← mul_assoc _ q.inv]`.
+
+Conclude with `mul_mem h (mul_mem ((Valuation.mem_integer_iff _ _).2 hu.le) s.2)`.
+-/
 theorem line_of_glued {p : SplitPt D k} {ρ : ℕ} {B : BesLev D ρ} {M : Lat B.V₀} {q : Unif k} {n : Type} [Fintype n] [DecidableEq n]
     {β : Frame p B.A n} {β₀ : Frame p B.V₀ (n ⊕ Fin 1)} {P : Pair k n} (hM : IsSelfDualC B.V₀ M) (hg : GluedCore B M q β β₀ P)
     {a : AE D} (ha : a ∈ idAt D (· = p.v)) :

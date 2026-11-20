@@ -11,6 +11,9 @@ open GlobalTheory.Doubling (absE)
 
 namespace GlobalTheory.StdPsiNontrivial
 
+/- English proof (translation)
+Introduce `F _ _ ψ hψ`. Conclude with `GlobalTheory.StdCharFromIsStd.exists_ne_one hψ`.
+-/
 theorem exists_ne_one_of_isStd : ∀ (F : Type) [Field F] [NumberField F] (ψ : AddChar (AF F) ℂ), IsStd ψ → ∃ s : AF F, ψ s ≠ 1 := by
   intro F _ _ ψ hψ
   exact GlobalTheory.StdCharFromIsStd.exists_ne_one hψ

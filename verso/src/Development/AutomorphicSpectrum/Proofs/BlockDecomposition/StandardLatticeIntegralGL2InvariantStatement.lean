@@ -11,5 +11,8 @@ open Ad3 Ad3.K Ad3.K.QuadraticBaseChangeGL3
 open scoped NumberField.AdeleRing ValuativeRel
 
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.CompanionTheory.WS.standard_lattice_indicator_invariant | exact GlobalTheory.CompanionTheory.WS.standard_lattice_indicator_invariant | (intros; apply GlobalTheory.CompanionTheory.WS.standard_lattice_indicator_invariant <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.standard_lattice_integral_GL2_invariant : ∀ (F : Type) [Field F] [ValuativeRel F] [TopologicalSpace F] [IsNonarchimedeanLocalField F] [MeasurableSpace F] [BorelSpace F] (k : GL (Fin 2) F), k ∈ GLnLocal.integralGL F 2 → GlobalTheory.CompanionTheory.WS.lat0 F ∘ GlobalTheory.CompanionTheory.WS.rowAct k = GlobalTheory.CompanionTheory.WS.lat0 F := by
   first | exact @GlobalTheory.CompanionTheory.WS.standard_lattice_indicator_invariant | exact GlobalTheory.CompanionTheory.WS.standard_lattice_indicator_invariant | (intros; apply GlobalTheory.CompanionTheory.WS.standard_lattice_indicator_invariant <;> assumption)

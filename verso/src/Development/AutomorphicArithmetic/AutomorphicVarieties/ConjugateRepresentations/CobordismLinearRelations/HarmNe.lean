@@ -6,6 +6,15 @@ open NumberField IsDedekindDomain Matrix Formalism.L2.Host GlobalTheory.CuspRep 
 open UpperTheory.V.Af UpperTheory.V.AlgRepEndIrreducible UpperTheory.V.Lit UpperTheory.V.Lit.Geo UpperTheory.V.Lit.Bor UpperTheory.V.Cj
 open scoped TensorProduct
 
+/- English proof (translation)
+Introduce `E _ _ _ a ha π Ξ r n e he hr hC`. Take `⟨φ, hφ, h0⟩` from `(Submodule.ne_bot_iff _).1 π.ne_bot`. Establish `h0' : (⟨φ, hφ⟩ : π.V) ≠ 0` using `fun e => h0 (congrArg Subtype.val e)`. Set `S : Subgroup (GL (Fin a) (Af E))` to `{ carrier := {k | π.finPart k ⟨φ, hφ⟩ = ⟨φ, hφ⟩} one_mem' := by simp mul_mem' := fun {x y} hx hy => by`. Express the relevant statement in the definitionally equal form `π.finPart (x * y) _ = _`.
+
+Rewrite using `[map_mul, Module.End.mul_apply, hy, hx]`. Use the proof step `inv_mem' := fun {x} hx => by`. Express the relevant statement in the definitionally equal form `π.finPart x⁻¹ _ = _`. Use `conv_lhs => rw [← show π.finPart x ⟨φ, hφ⟩ = ⟨φ, hφ⟩ from hx]`. Rewrite using `[← Module.End.mul_apply, ← map_mul, inv_mul_cancel, map_one, Module.End.one_apply] }`.
+
+Establish `hL : IsOpen (S : Set (GL (Fin a) (Af E)))` using `π.isSmooth_finPart _`. Take `⟨K₀, ho₀, hc₀⟩` from `GlobalTheory.GLIntegral.exists_isOpen_isCompact E a`. Establish `ho : IsOpen ((K₀ ⊓ S : Subgroup _) : Set (GL (Fin a) (Af E)))` using `ho₀.inter hL`. Establish `hc : IsCompact ((K₀ ⊓ S : Subgroup _) : Set (GL (Fin a) (Af E)))` using `hc₀.of_isClosed_subset (Subgroup.isClosed_of_isOpen _ ho) fun k hk => hk.1`. Take `⟨q, ω, w0, wH, wV⟩` from `harmEx E a ha n e he _ hc π Ξ r hr hC ⟨⟨φ, hφ⟩, h0', fun k hk => hk.2⟩`.
+
+Conclude with `⟨q, ω, w0, ⟨_, ho, hc, ((harmLin E a n e _ Ξ r q).2 ω).1 wH⟩, wH.closed, wH.coclosed, wV⟩`.
+-/
 theorem UpperTheory.V.Cj.harmNe :
     UpperTheory.V.Cj.HarmNe := by
   intro E _ _ _ a ha π Ξ r n e he hr hC

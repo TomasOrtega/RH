@@ -16,6 +16,27 @@ abbrev xuP (X : HidaSetting D) (hb : AdBridgeIso X.B.I) (u : D.what₂.Word) (p 
     HA (Fv X.B.I.F p.1) X.B.I.cm.sig X.B.I.J :=
   PI.MassDataKppVolLemmas.piV X.B.I p.1 (finHA X hb (X.xu u))
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce `hx`. Rewrite `hx` using `[Subgroup.mem_subgroupOf]`. Take `⟨y, hy, hyx⟩` from `Subgroup.mem_map.1 hx`. Establish `hy' : (y : HA (Af X.B.I.F) X.B.I.cm.sig X.B.I.J) ∈ K2u X hb u`.
+
+Establish `: y ∈ (unitaryLevelClosureSubgroup X hb u : Set (Hsub (Af X.B.I.F) X.B.I.cm.sig X.B.I.J (frameOf X u)))` using `hy`. Rewrite `this` using `[coe_K2Hg X hb hK u]`. Conclude with `this`. Take `⟨k, hk, e⟩` from `(mem_conjugate_level_iff X hb u _).1 hy'`. Use `⟨finHA X hb k, ⟨k, hk, rfl⟩, ?_⟩` and prove the remaining obligations.
+
+Establish `hxy : ((x : Hsub (Fv X.B.I.F p.1) X.B.I.cm.sig X.B.I.J (frameOf X u)) : HA (Fv X.B.I.F p.1) X.B.I.cm.sig X.B.I.J) = PI.MassDataKppVolLemmas.piV X.B.I p.1 (y : HA (Af X.B.I.F) X.B.I.cm.sig X.B.I.J)`. Rewrite using `[← hyx]`. Both sides reduce to the same expression. Rewrite using `[hxy, ← e]`. Use `show PI.MassDataKppVolLemmas.piV X.B.I p.1 (finHA X hb k) = _`.
+
+Simplify using `only [map_mul, map_inv]`. Use `group`. Introduce `hx`. Take `⟨k', ⟨k, hk, rfl⟩, hke⟩` from `hx`. Use `set y : HA (Fv X.B.I.F p.1) X.B.I.cm.sig X.B.I.J := ((x : Hsub (Fv X.B.I.F p.1) X.B.I.cm.sig X.B.I.J (frameOf X u)) : HA (Fv X.B.I.F p.1) X.B.I.cm.sig X.B.I.J) with hy_def`.
+
+Establish `hyK : y ∈ Kv X.B.I.cm.sig X.B.I.J (X.B.I.L : Set (Fin X.B.I.n → X.B.I.E)) p.1` using `x.2`. Take `⟨h, hKf, h1, h2⟩` from `PI.MassDataKppVolLemmas.single_component_surjective X.B.I p.1 y hyK`. Establish `hH : h ∈ Hsub (Af X.B.I.F) X.B.I.cm.sig X.B.I.J (frameOf X u)`. Apply `mem_stabT_of_comp X.B.I h` to reduce the goal to its premises. Introduce `v`.
+
+Distinguish the cases in `hv : v = p.1`. Substitute `hv` using the available equality. Rewrite using `[h1]`. Conclude with `(x : Hsub (Fv X.B.I.F p.1) X.B.I.cm.sig X.B.I.J (frameOf X u)).2`. Rewrite using `[h2 v hv]`.
+
+Conclude with `one_mem _`. Establish `hK2u : h ∈ K2u X hb u`. Apply `mem_conjugate_level_of_local X hb hK hL u h hKf` to reduce the goal to its premises. Introduce `q`. Distinguish the cases in `hq : q = p`.
+
+Substitute `hq` using the available equality. Use `⟨k, hk, ?_⟩` and prove the remaining obligations. Rewrite using `[map_mul, map_mul, map_inv, h1]`. Conclude with `hke`. Use `⟨1, hK.1, ?_⟩` and prove the remaining obligations.
+
+Establish `hq1 : q.1 ≠ p.1` using `fun e => hq (Subtype.ext e)`. Rewrite using `[finHA_one, map_one, map_mul, map_mul, map_inv, h2 q.1 hq1, mul_one, inv_mul_cancel]`. Rewrite using `[Subgroup.mem_subgroupOf]`. Use `⟨⟨h, hH⟩, ?_, ?_⟩` and prove the remaining obligations. Apply `Subgroup.subset_closure` to reduce the goal to its premises.
+
+Conclude with `hK2u`. Apply `Subtype.ext` to reduce the goal to its premises. Conclude with `h1`.
+-/
 theorem mem_K2Hp_iff (X : HidaSetting D) (hb : AdBridgeIso X.B.I) (hK : X.LevelSubgroupCharacter) (hL : X.LevelSubgroupNormalized)
     (u : D.what₂.Word) (p : TypX X) (x : KvH X u p.1) :
     x ∈ (unitaryLevelLocalComponent X hb u p.1).subgroupOf (KvH X u p.1) ↔
@@ -71,6 +92,9 @@ theorem mem_K2Hp_iff (X : HidaSetting D) (hb : AdBridgeIso X.B.I) (hK : X.LevelS
     · apply Subtype.ext
       exact h1
 
+/- English proof (translation)
+Establish `ha : finHA X hb (X.xu u) ∈ Kf X.B.I.cm.sig X.B.I.J (X.B.I.L : Set (Fin X.B.I.n → X.B.I.E))` using `(PI.MassDataKppVolLemmas.Bridge_mem_Kf_iff X.B.I hb (X.xu u)).2 (X.xu_K u)`. Rewrite `ha` using `[Kf, Subgroup.mem_iInf]`. Conclude with `ha p.1`.
+-/
 theorem unipotent_mem_localStabilizer (X : HidaSetting D) (hb : AdBridgeIso X.B.I) (u : D.what₂.Word) (p : TypX X) :
     xuP X hb u p ∈ Kv X.B.I.cm.sig X.B.I.J (X.B.I.L : Set (Fin X.B.I.n → X.B.I.E)) p.1 := by
   have ha : finHA X hb (X.xu u) ∈ Kf X.B.I.cm.sig X.B.I.J (X.B.I.L : Set (Fin X.B.I.n → X.B.I.E)) :=
@@ -78,6 +102,13 @@ theorem unipotent_mem_localStabilizer (X : HidaSetting D) (hb : AdBridgeIso X.B.
   rw [Kf, Subgroup.mem_iInf] at ha
   exact ha p.1
 
+/- English proof (translation)
+Rewrite using `[mem_K2Hp_iff X hb hK hL u p x, MassDataIdxSteps.stImAloc_holds X hb p]`. Establish `hxK : ((x : Hsub (Fv X.B.I.F p.1) X.B.I.cm.sig X.B.I.J (frameOf X u)) : HA (Fv X.B.I.F p.1) X.B.I.cm.sig X.B.I.J) ∈ Kv X.B.I.cm.sig X.B.I.J (X.B.I.L : Set (Fin X.B.I.n → X.B.I.E)) p.1` using `x.2`. Establish `hA` using `unipotent_mem_localStabilizer X hb u p`. Establish `hA' : HA.mat (Fv X.B.I.F p.1) X.B.I.cm.sig X.B.I.J (xuP X hb u p) ∈ Kloc (E` using `X.B.I.E) p.1 (X.B.I.L : Set (Fin X.B.I.n → X.B.I.E)) := hA`. Establish `hX' : HA.mat (Fv X.B.I.F p.1) X.B.I.cm.sig X.B.I.J ((x : Hsub (Fv X.B.I.F p.1) X.B.I.cm.sig X.B.I.J (frameOf X u)) : HA (Fv X.B.I.F p.1) X.B.I.cm.sig X.B.I.J) ∈ Kloc (E` using `X.B.I.E) p.1 (X.B.I.L : Set (Fin X.B.I.n → X.B.I.E)) := hxK`.
+
+Establish `hmem : (xuP X hb u p)⁻¹ * ((x : Hsub (Fv X.B.I.F p.1) X.B.I.cm.sig X.B.I.J (frameOf X u)) : HA (Fv X.B.I.F p.1) X.B.I.cm.sig X.B.I.J) * xuP X hb u p ∈ MassDataIdxSteps.KvX X p` using `by show HA.mat (Fv X.B.I.F p.1) X.B.I.cm.sig X.B.I.J _ ∈ Kloc (E := X.B.I.E) p.1 (X.B.I.L : Set (Fin X.B.I.n → X.B.I.E))`. Conclude with `mul_mem (mul_mem (inv_mem hA') hX') hA'`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Conclude with `h.2`.
+
+Introduce `h`. Conclude with `⟨hmem, h⟩`.
+-/
 theorem mem_K2Hp_iff_cong (X : HidaSetting D) (hb : AdBridgeIso X.B.I) (hK : X.LevelSubgroupCharacter) (hL : X.LevelSubgroupNormalized)
     (u : D.what₂.Word) (p : TypX X) (x : KvH X u p.1) :
     x ∈ (unitaryLevelLocalComponent X hb u p.1).subgroupOf (KvH X u p.1) ↔

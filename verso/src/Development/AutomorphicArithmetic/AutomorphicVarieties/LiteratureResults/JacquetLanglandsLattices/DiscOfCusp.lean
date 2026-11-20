@@ -6,6 +6,29 @@ open NumberField IsDedekindDomain Neutral.B1 Formalism.L2.Host Formalism.BasicNo
 
 open GroundTheory.Global GroundTheory.Global.IdeleGroup GroundTheory.Automorphic.Reduction in
 
+/- English proof (translation)
+Establish `key : ∀ h : Ideles F → ℝ, Continuous h → (∀ a b, h (a * b) = h a + h b) → (∀ k, h (diagUnits F k) = 0) → ∀ (b : ℝ) (z y : Ideles F), h y = 0 → (∀ n : ℕ, ∃ k : ℤ, 1 ≤ (ideleModule F (z ^ n * y ^ k) : ℝ) ∧ (ideleModule F (z ^ n * y ^ k) : ℝ) ≤ b) → h z = 0`. Introduce `h hc hm hd b z y hy hb`. Set `H : Ideles F →* Multiplicative ℝ` to `MonoidHom.mk' (fun a => Multiplicative.ofAdd (h a)) fun a b => by rw [hm]; rfl`. Establish `hp : ∀ (a : Ideles F) (k : ℤ), h (a ^ k) = k * h a` using `fun a k => by`. Use `congrArg Multiplicative.toAdd (map_zpow H a k)` as an intermediate fact.
+
+Simplify `this` using `[H]`. Take `⟨S, hS, hSm⟩` from `exists_isCompact_mul_mem_of_ideleModule_mem_Icc (K := F) one_pos b`. Take `⟨B, hB⟩` from `hS.exists_bound_of_continuousOn (f := h) hc.continuousOn`. Establish `hn : ∀ n : ℕ, (n : ℝ) * |h z| ≤ B` using `fun n => by`. Take `⟨k, h1, h2⟩` from `hb n`.
+
+Take `⟨c, hc'⟩` from `hSm _ h1 h2`. Establish `h3` using `hB _ hc'`. Establish `h4 : h (diagonal F c) = 0` using `hd c`. Rewrite `h3` using `[hm, h4, hm, ← zpow_natCast, hp, hp, hy]`. Simplify `h3` using `[abs_mul]`.
+
+Assume the negation of the conclusion as `hz`. Take `⟨n, hn'⟩` from `exists_nat_gt (B / |h z|)`. Rewrite `hn'` using `[div_lt_iff₀ (abs_pos.2 hz)]`. Conclude with `absurd (hn n) (not_le.2 hn')`. Establish `g1 : g 1 = 0` using `by simpa using gd 1`.
+
+Establish `hm1 : (ideleModule F z₀ : ℝ) ≠ 1` using `fun e => h₀ (key g gc gm gd 1 z₀ 1 g1 fun n => ⟨0, by`. Establish `: (ideleModule F (z₀ ^ n * 1 ^ (0 : ℤ)) : ℝ) = 1`. Rewrite using `[zpow_zero, mul_one, map_pow, Positive.val_pow, e, one_pow]`. Conclude with `⟨this.ge, this.le⟩⟩)`. Set `M : Ideles F →* ℝ` to `(MonoidHom.mk ⟨fun x : {r : ℝ // 0 < r} => (x : ℝ), rfl⟩ fun _ _ => rfl).comp (ideleModule F)`.
+
+Establish `hM : ∀ x, M x = (ideleModule F x : ℝ)` using `fun _ => rfl`. Establish `hpos : ∀ x, 0 < M x` using `fun x => (ideleModule F x).2`. Establish `hinv : ∀ x, M x⁻¹ = (M x)⁻¹` using `fun x => by`. Use `eq_inv_of_mul_eq_one_left ?_` and prove the remaining obligations. Rewrite using `[← map_mul, inv_mul_cancel, map_one]`.
+
+Establish `hz : ∀ x (k : ℤ), M (x ^ k) = M x ^ k` using `fun x k => by`. Consider the cases of `k with`. Consider the case `ofNat n => simp`. Consider the case `negSucc n => simp [hinv]`. Choose the witnesses or unpack the hypotheses as in `⟨y, hy, hy1⟩ : ∃ y, g y ≠ 0 ∧ 1 < M y := by`.
+
+Break down `lt_or_gt_of_ne hm1 with h | h` into its components or cases. Use `⟨z₀⁻¹, fun e => h₀ ?_, ?_⟩` and prove the remaining obligations. Use `gm z₀ z₀⁻¹` as an intermediate fact. Rewrite `this` using `[mul_inv_cancel, g1, e]`. Combine the linear equalities and inequalities to obtain the conclusion.
+
+Rewrite using `[hinv]`. Conclude with `(one_lt_inv₀ (hpos _)).2 h`. Conclude with `⟨z₀, h₀, h⟩`. Use `⟨f y / g y, fun z => sub_eq_zero.1 (key (fun z => f z - f y / g y * g z) (fc.sub (gc.const_mul _)) (fun a b => by simp only [fm, gm]; ring) (fun k => by simp [fd, gd]) (M y) z y (by field_simp; ring) fun n => ?_)⟩` and prove the remaining obligations. Take `⟨k, h1, h2⟩` from `exists_mem_Ico_zpow (hpos (z ^ n)) hy1`.
+
+Establish `hy0` using `hpos y`. Use `⟨-k, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[← hM, map_mul, hz, zpow_neg, ← div_eq_mul_inv, one_le_div (zpow_pos hy0 _)]`. Conclude with `h1`. Rewrite using `[← hM, map_mul, hz, zpow_neg, ← div_eq_mul_inv, div_le_iff₀ (zpow_pos hy0 _), mul_comm, ← zpow_add_one₀ hy0.ne']`.
+
+Conclude with `h2.le`.
+-/
 private theorem UpperTheory.V.Lit.JL.add_prop (F : Type) [Field F] [NumberField F] (f g : Ideles F → ℝ)
     (fc : Continuous f) (gc : Continuous g) (fm : ∀ a b, f (a * b) = f a + f b) (gm : ∀ a b, g (a * b) = g a + g b)
     (fd : ∀ k, f (diagUnits F k) = 0) (gd : ∀ k, g (diagUnits F k) = 0) (z₀ : Ideles F) (h₀ : g z₀ ≠ 0) :
@@ -67,6 +90,11 @@ private theorem UpperTheory.V.Lit.JL.add_prop (F : Type) [Field F] [NumberField 
 
 open GlobalTheory.Mem.Chr.CharModel in
 
+/- English proof (translation)
+Choose the witnesses or unpack the hypotheses as in `⟨z₀, h₀⟩ : ∃ z₀, logNorm F z₀ ≠ 0 := by`. Assume the negation of the conclusion as `hn`. Use `push Not at hn`. Use `absChar_not_unitary (F := F) fun z => ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `‖Complex.exp (1 * logNorm F z)‖ = 1`.
+
+Simplify using `[hn]`. Establish `hne : ∀ z, ‖((ω.1 z : ℂˣ) : ℂ)‖ ≠ 0` using `fun z => norm_ne_zero_iff.2 (Units.ne_zero _)`. Take `⟨s, hs⟩` from `add_prop F (fun z => Real.log ‖((ω.1 z : ℂˣ) : ℂ)‖) (logNorm F) ((Units.continuous_val.comp ω.2.1).norm.log hne) (continuous_logNorm F) (fun a b => by rw [map_mul, Units.val_mul, norm_mul, Real.log_mul (hne a) (hne b)]) (logNorm_mul F) (fun k => by rw [ω.2.2 k]; simp) (logNorm_pr …`. Conclude with `⟨s, fun z => by rw [← hs, Real.exp_log (norm_pos_iff.2 (Units.ne_zero _))]⟩`.
+-/
 private theorem UpperTheory.V.Lit.JL.abs_pow (F : Type) [Field F] [NumberField F] (ω : HChar F) :
     ∃ s : ℝ, ∀ z, ‖((ω.1 z : ℂˣ) : ℂ)‖ = Real.exp (s * logNorm F z) := by
   obtain ⟨z₀, h₀⟩ : ∃ z₀, logNorm F z₀ ≠ 0 := by

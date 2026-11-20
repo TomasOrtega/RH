@@ -22,6 +22,11 @@ set_option maxHeartbeats 1000000
 
 namespace GlobalTheory.NonSplitLevel
 
+/- English proof (translation)
+Substitute `h` using the available equality. Establish `key : ∀ z : E ⊗[F1] FiniteAdeleRing (𝓞 F1) F1, Algebra.TensorProduct.map (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.evalV F1 (Q.under (𝓞 F1))) (AlgHom.id F1 E) ((swapCast (rfl : F1 = F1)).symm z) = Algebra.TensorProduct.comm F1 E _ (Algebra.TensorProduct.map (AlgH …`. Introduce `z`. Proceed by induction on `z using TensorProduct.induction_on with`. Consider the case `zero => simp only [map_zero]`.
+
+Consider the case `tmul a b => rfl`. Consider the case `add a b ha hb => simp only [map_add, ha, hb]`. Rewrite using `[key, key, e]`.
+-/
 theorem comp_swapCast {E : Type} [Field E] [NumberField E] {F1 F2 : Subfield E} (h : F1 = F2) (Q : HeightOneSpectrum (𝓞 E))
     (x y : E ⊗[F2] FiniteAdeleRing (𝓞 F2) F2)
     (e : Algebra.TensorProduct.map (AlgHom.id F2 E) (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.evalV F2 (Q.under (𝓞 F2))) x =
@@ -42,6 +47,13 @@ theorem comp_swapCast {E : Type} [Field E] [NumberField E] {F1 F2 : Subfield E} 
 
 variable {D : D7}
 
+/- English proof (translation)
+Take `⟨⟨β, β', h1, -, hβ⟩, -⟩` from `hP`. Set `g` to `(Algebra.TensorProduct.map (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.evalV D.host.F (Q.under (𝓞 D.host.F))) (AlgHom.id D.host.F D.host.E)).toRingHom`. Establish `hK : ((κ.1 : Matrix (Fin n) (Fin n) (AL D.host.E)).map (swapCast hF).symm).map g = 1`. Use extensionality with `i j`. Establish `e2` using `congrFun (congrFun hκ i) j`.
+
+Rewrite `e2` using `[Matrix.map_apply]`. Rewrite using `[Matrix.map_apply, Matrix.map_apply]`. Rewrite `e2`, the goal using `[Matrix.one_apply]`. Use `split_ifs at e2 ⊢`. Conclude with `(comp_swapCast hF Q _ 1 (e2.trans (map_one _).symm)).trans (by rw [map_one, map_one])`.
+
+Conclude with `(comp_swapCast hF Q _ 0 (e2.trans (map_zero _).symm)).trans (by rw [map_zero, map_zero])`. Use `GlobalTheory.AdelicU.matHom_injective _ D.sp.cm.sig V.gram (Units.ext ?_)` and prove the remaining obligations. Rewrite using `[MonoidHom.map_one, Units.val_one]`. Establish `e1 : (GlobalTheory.AdelicU.matHom _ D.sp.cm.sig V.gram (GlobalTheory.FinZeta.projV V (Q.under (𝓞 D.host.F)) (P.ψ κ))).1 = (Formalism.MainNotions.StandardLattice.finMat D.sp.cm.sig V.gram (P.ψ κ)).map g` using `Matrix.ext fun i j => (GlobalTheory.FinZeta.LevelOff.evalV_finPart (Q.under (𝓞 D.host.F)) _).symm`. Rewrite using `[e1, hβ κ, Matrix.map_mul, Matrix.map_mul, hK, Matrix.mul_one, ← Matrix.map_mul, h1, Matrix.map_one _ (map_zero g) (map_one g)]`.
+-/
 theorem projV_eq_one {V : TH.HSp D} {n : ℕ} {hF : D.host.F = maximalRealSubfield D.host.E} {P : Formalism.IndefR.principalLevelFrame.RowPsi V n}
     (hP : StdFrame hF P) (κ : GAf D.host.E n) (Q : PlE D.host)
     (hκ : (κ.1 : Matrix (Fin n) (Fin n) (AL D.host.E)).map
@@ -67,6 +79,11 @@ theorem projV_eq_one {V : TH.HSp D} {n : ℕ} {hF : D.host.F = maximalRealSubfie
   rw [e1, hβ κ, Matrix.map_mul, Matrix.map_mul, hK, Matrix.mul_one, ← Matrix.map_mul, h1,
     Matrix.map_one _ (map_zero g) (map_one g)]
 
+/- English proof (translation)
+Unfold `Formalism.IndefR.Lev.IsConjPl at h`. Use `push Not at h`. Take `⟨c, hc, h⟩` from `h`. Establish `e : star (c : D.host.E) = D.host.conj c`. Apply `D.host.φ₀.injective` to reduce the goal to its premises.
+
+Use `D.host.isCMField_hostE` as an intermediate fact. Conclude with `(IsCMField.complexEmbedding_complexConj _ D.host.φ₀ _).trans (D.host.conjE_apply D.host.φ₀ _).symm`. Conclude with `⟨c, hc, fun y hy hyQ => h y hyQ (hy.trans e.symm)⟩`.
+-/
 theorem split_of_not_conj {Q : PlE D.host} (h : ¬ Formalism.IndefR.Lev.IsConjPl Q Q) : IsSplitPl D.host Q := by
   unfold Formalism.IndefR.Lev.IsConjPl at h
   push Not at h
@@ -78,6 +95,13 @@ theorem split_of_not_conj {Q : PlE D.host} (h : ¬ Formalism.IndefR.Lev.IsConjPl
       (D.host.conjE_apply D.host.φ₀ _).symm
   exact ⟨c, hc, fun y hy hyQ => h y hyQ (hy.trans e.symm)⟩
 
+/- English proof (translation)
+Establish `hS` using `(GlobalTheory.FinZeta.LevelOff.finE_mem_St_iff hB (P.into κ)).2 ((hP.2 κ).1 hU)`. Establish `hred : ∀ PP, PP ∈ L.Pg ∨ PP ∈ L.Q → Formalism.L2.DIV.redFn β PP (Formalism.IndefR.Lev.finE V (P.ψ κ)) = 1`. Introduce `PP hPP`. Use `GlobalTheory.FinZeta.LevelOff.redFn_eq_one_of_proj β {PP.under (𝓞 D.host.F)} hS (fun u hu => ?_) (Finset.mem_singleton_self _)` and prove the remaining obligations. Rewrite using `[Finset.mem_singleton.1 hu]`.
+
+Use `projV_eq_one hP κ PP (hT _ fun e => ?_)` and prove the remaining obligations. Establish `e' : HeightOneSpectrum.under (𝓞 (maximalRealSubfield D.host.E)) PP = HeightOneSpectrum.under (𝓞 (maximalRealSubfield D.host.E)) w'` using `e`. Conclude with `GlobalTheory.SphNonSplit.not_split_of_overPl D (w := w') (w' := PP) (v := HeightOneSpectrum.under (𝓞 (maximalRealSubfield D.host.E)) w') rfl (congrArg HeightOneSpectrum.asIdeal e') hw (hL PP hPP)`. Use `⟨⟨P.into κ, GlobalTheory.LevSplit.mem_lev_of_red _ _ β L _ (GlobalTheory.LevSplit.finE_mem_UA V _) hS hred⟩, ?_⟩` and prove the remaining obligations. Unfold `Formalism.IndefR.Lev.levChi`.
+
+Rewrite using `[GlobalTheory.LevSplit.levFn_eq_one β L _ hred, Units.val_one]`.
+-/
 theorem mem_level {V : TH.HSp D} {n : ℕ} {hF : D.host.F = maximalRealSubfield D.host.E} {P : Formalism.IndefR.principalLevelFrame.RowPsi V n}
     (hP : StdFrame hF P) {β : GL (Fin V.rank) (Formalism.IndefR.Lev.EAf D)} {Λ : Submodule (𝓞 D.host.E) (Fin V.rank → D.host.E)}
     (hB : Formalism.IndefR.Lev.IsBaseFrame V β Λ 1) (L : Formalism.L2.DIV.LevDat D.host.E ℂ V.rank)
@@ -100,6 +124,11 @@ theorem mem_level {V : TH.HSp D} {n : ℕ} {hF : D.host.F = maximalRealSubfield 
   unfold Formalism.IndefR.Lev.levChi
   rw [GlobalTheory.LevSplit.levFn_eq_one β L _ hred, Units.val_one]
 
+/- English proof (translation)
+Use `GlobalTheory.HeightCounting.JumpsAt.evLgG_of_forall fun K B f T _ w _ Z Wt hX z p0 Y _ _ _ _ _ i P hP w' hw κ hU hT => ?_` and prove the remaining obligations. Establish `hlev` using `z.pins.char.base.lev`. Take `⟨c, hc⟩` from `hlev.βV i`. Rewrite `hc` using `[one_pow]`. Use `mem_level hP hc _ (fun PP hPP => ?_) hw hU hT` and prove the remaining obligations.
+
+Break down `hPP with h | h` into its components or cases. Take `⟨k, hk⟩` from `(hlev.Pg PP).1 h`. Conclude with `GlobalTheory.SphNonSplit.split_of_over_g _ k (GlobalTheory.Mem.TypePl.div_over _ hk)`. Conclude with `split_of_not_conj ((hlev.Q_pl _ PP h).2 PP h)`.
+-/
 theorem lift_level : OverRows fun _ _ _ _ w Z _ _ z _ Y => ∀ (i : Fin (w.st Z).toD7.R.m)
       (P : Formalism.IndefR.principalLevelFrame.RowPsi (Formalism.IndefR.Links.Vc (w.st Z).toD7 i) (w.st Z).toD7.R.nV), StdFrame Y.hF P →
       ∀ w' : PlE (w.st Z).toD7.host, ¬ IsSplitPl (w.st Z).toD7.host w' →

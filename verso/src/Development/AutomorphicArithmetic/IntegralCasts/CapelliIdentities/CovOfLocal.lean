@@ -1,6 +1,13 @@
 import Mathlib
 import Development.WeilBound.CoreStatements.PadicHodgeComparison.EtaleCohomologyComparison.PerfectoidPullbacks.SEqOne
 
+/- English proof (translation)
+Introduce `O _ X Q q _ _ h`. Use `choose V d hx hQ hc using h`. Establish `: CompactSpace X` using `AlgebraicGeometry.QuasiCompact.compactSpace_of_compactSpace q`. Establish `: X.IsSeparated` using `⟨by`. Rewrite using `[← CategoryTheory.Limits.terminal.comp_from q]`.
+
+Use the proof step `infer_instance⟩`. Take `⟨s, hs⟩` from `isCompact_univ.elim_finite_subcover (fun x => (V x : Set X)) (fun x => (V x).isOpen) (fun x _ => Set.mem_iUnion.2 ⟨x, hx x⟩)`. Use `⟨⟨s, fun a => V a, fun a => d a, fun a => (hc a).some, ?_, fun S hS => ?_⟩, fun a => hQ _⟩` and prove the remaining obligations. Use `top_le_iff.1 fun x _ => ?_` and prove the remaining obligations. Take `⟨a, ha, hxa⟩` from `Set.mem_iUnion₂.1 (hs (Set.mem_univ x))`.
+
+Conclude with `TopologicalSpace.Opens.mem_iSup.2 ⟨⟨a, ha⟩, hxa⟩`. Conclude with `AlgebraicGeometry.IsAffineOpen.biInf (S : Set s) S.finite_toSet hS fun a _ => (hc a).some.affine`.
+-/
 theorem UpperTheory.Reformulated.B.Qm13.cov_of_local :
     ∀ {O : Type} [inst : CommRing O] {X : AlgebraicGeometry.Scheme} (Q : X.Opens → Prop)
     (q : X ⟶ AlgebraicGeometry.Spec (CommRingCat.of O)) [AlgebraicGeometry.IsSeparated q]

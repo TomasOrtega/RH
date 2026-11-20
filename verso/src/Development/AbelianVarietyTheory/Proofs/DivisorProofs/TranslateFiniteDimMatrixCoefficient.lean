@@ -5,6 +5,39 @@ namespace GlobalTheory
 private def rightTranslLin {G : Type} [CommGroup G] (s : G) : (G → ℂ) →ₗ[ℂ] (G → ℂ) :=
   LinearMap.funLeft ℂ ℂ (fun t => t * s)
 
+/- English proof (translation)
+Introduce `G _ _ H Fn hmul hF hH hfin`. Use `set V : Submodule ℂ (G → ℂ) := Submodule.span ℂ (Set.range fun s : G => fun t => Fn (t * s)) with hV`. Establish `hmap : ∀ s : G, ∀ v ∈ V, rightTranslLin s v ∈ V`. Introduce `s v hv`. Establish `: V ≤ V.comap (rightTranslLin s)`.
+
+Rewrite using `[hV, Submodule.span_le]`. Introduce and unpack `_ ⟨s', rfl⟩`. Use `Submodule.subset_span ⟨s * s', ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `t`. Simplify using `[rightTranslLin, LinearMap.funLeft_apply, mul_assoc]`.
+
+Conclude with `this hv`. Establish `hcont : ∀ v ∈ V, Continuous v`. Introduce `v hv`. Proceed by induction on `hv using Submodule.span_induction with`. Consider the case `mem x hx`.
+
+Take `⟨s, rfl⟩` from `hx`. Conclude with `hF.comp (hmul s)`. Consider the case `zero => exact continuous_const`. Consider the case `add x y _ _ hx hy => exact hx.add hy`. Consider the case `smul c x _ hx => exact hx.const_smul c`.
+
+Establish `hinv : ∀ γ ∈ H, ∀ v ∈ V, ∀ t, v (t * γ) = v t`. Introduce `γ hγ v hv`. Proceed by induction on `hv using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨s, rfl⟩` from `hx`.
+
+Introduce `t`. Use `show Fn (t * γ * s) = Fn (t * s)`. Rewrite using `[mul_comm t γ, mul_assoc, hH γ hγ]`. Consider the case `zero => intro t`. Both sides reduce to the same expression.
+
+Consider the case `add x y _ _ hx hy => intro t`. Simplify using `[hx t, hy t]`. Consider the case `smul c x _ hx => intro t`. Simplify using `[hx t]`. Set `R : G →* Module.End ℂ V` to `{ toFun := fun s => (rightTranslLin s).restrict (hmap s) map_one' := by`.
+
+Use extensionality with `v t`. Simplify using `[rightTranslLin, LinearMap.funLeft_apply]`. Use the proof step `map_mul' := by`. Introduce `s s'`. Use extensionality with `v t`.
+
+Simplify using `[rightTranslLin, LinearMap.funLeft_apply, mul_assoc] }`. Establish `hR : ∀ s (v : V) t, (R s v : G → ℂ) t = (v : G → ℂ) (t * s)` using `fun s v t => rfl`. Set `b` to `Module.finBasis ℂ V`. Set `ρ : G →* Matrix (Fin (Module.finrank ℂ V)) (Fin (Module.finrank ℂ V)) ℂ` to `((LinearMap.toMatrixAlgEquiv b : Module.End ℂ V ≃ₐ[ℂ] _) : Module.End ℂ V →* _).comp R`. Establish `hρ : ∀ s i j, ρ s i j = b.repr (R s (b j)) i`.
+
+Introduce `s i j`. Conclude with `LinearMap.toMatrixAlgEquiv_apply b (R s) i j`. Establish `hFV : Fn ∈ V` using `Submodule.subset_span ⟨1, by funext t; simp⟩`. Use `⟨_, ρ, fun i j => b.repr ⟨Fn, hFV⟩ j * (b i : G → ℂ) 1, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `γ hγ`.
+
+Establish `: R γ = 1`. Use extensionality with `v t`. Conclude with `hinv γ hγ v v.2 t`. Use `show LinearMap.toMatrixAlgEquiv b (R γ) = 1`. Rewrite using `[this, map_one]`.
+
+Introduce `i j`. Simplify using `only [hρ]`. Establish `h1 : Continuous (b.coord i)` using `LinearMap.continuous_of_finiteDimensional _`. Establish `h2 : Continuous fun s => R s (b j)`. Use `continuous_induced_rng.2 (continuous_pi fun x => ?_)` and prove the remaining obligations.
+
+Establish `: (fun s => (R s (b j) : G → ℂ) x) = fun s => (b j : G → ℂ) (s * x)`. Use function extensionality and compare the values at `s`. Rewrite using `[hR, mul_comm]`. Conclude with `this ▸ (hcont _ (b j).2).comp (hmul x)`. Conclude with `h1.comp h2`.
+
+Introduce `t`. Set `ev : V →ₗ[ℂ] ℂ` to `(LinearMap.proj (1 : G)).comp V.subtype`. Establish `hev : ∀ v : V, ev v = (v : G → ℂ) 1` using `fun v => rfl`. Establish `e1 : Fn t = ev (R t ⟨Fn, hFV⟩)` using `by rw [hev, hR, one_mul]`. Rewrite using `[e1, Finset.sum_comm]`.
+
+Use `conv_lhs => rw [← b.sum_repr ⟨Fn, hFV⟩]`. Rewrite using `[map_sum, map_sum]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[map_smul, map_smul]`. Use `conv_lhs => rw [← b.sum_repr (R t (b j))]`.
+
+Rewrite using `[map_sum, Finset.smul_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[map_smul, hρ, hev, smul_eq_mul, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem exists_matrix_rep_of_finiteDimensional_translates :
     ∀ (G : Type) [CommGroup G] [TopologicalSpace G] (H : Set G) (Fn : G → ℂ),
       (∀ s : G, Continuous fun t : G => t * s) → Continuous Fn →

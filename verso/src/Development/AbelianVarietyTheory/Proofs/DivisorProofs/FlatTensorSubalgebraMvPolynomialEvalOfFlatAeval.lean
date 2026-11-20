@@ -13,6 +13,13 @@ set_option autoImplicit false
 noncomputable section
 namespace GlobalTheory.GraphLocal
 
+/- English proof (translation)
+Introduce `K κ' _ _ _ _ A m v h`. Establish `h1 : (Algebra.TensorProduct.map (AlgHom.id ℂ κ') (MvPolynomial.aeval v : MvPolynomial (Fin m) ℂ →ₐ[ℂ] A)).toRingHom.Flat` using `RingHom.Flat.tensorProductMap (f := AlgHom.id ℂ κ') (RingHom.Flat.id κ') h`. Set `e1` to `(MvPolynomial.algebraTensorAlgEquiv (σ := Fin m) ℂ κ').symm.toRingEquiv`. Set `e2` to `((Algebra.TensorProduct.comm ℂ κ' A).trans (tensEquiv (κ' := κ') A)).toRingEquiv`. Establish `h2` using `((RingHom.Flat.of_bijective (f := e1.toRingHom) e1.bijective).comp h1).comp (RingHom.Flat.of_bijective (f := e2.toRingHom) e2.bijective)`.
+
+Use `h2 using 1` and compare the differences between its conclusion and the goal. Use `MvPolynomial.ringHom_ext (fun b => Subtype.ext ?_) (fun i => Subtype.ext ?_)` and prove the remaining obligations. Establish `: (MvPolynomial.algebraTensorAlgEquiv (σ` using `Fin m) ℂ κ').symm (MvPolynomial.C b) = b ⊗ₜ 1 := by`. Rewrite using `[AlgEquiv.symm_apply_eq]`. Simplify using `[MvPolynomial.algebraTensorAlgEquiv_tmul, MvPolynomial.smul_eq_C_mul]`.
+
+Simplify using `[e1, e2, tensMap, this]`. Simplify using `[e1, e2, tensMap]`.
+-/
 theorem flat_polyMap_of_flat_aeval : ∀ {K κ' : Type} [Field K] [Field κ'] [Algebra ℂ K] [Algebra ℂ κ'] (A : Subalgebra ℂ K)
     (m : ℕ) (v : Fin m → A),
     (MvPolynomial.aeval v : MvPolynomial (Fin m) ℂ →ₐ[ℂ] A).toRingHom.Flat →

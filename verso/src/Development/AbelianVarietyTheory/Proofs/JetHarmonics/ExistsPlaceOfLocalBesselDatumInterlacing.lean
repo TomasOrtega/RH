@@ -15,6 +15,9 @@ open BpJoin Formalism.FourierDecayAlt Formalism.MainNotions.S Formalism.MainNoti
 
 namespace GlobalTheory.PlaceOfLocalBesselType
 
+/- English proof (translation)
+Establish `hπ' : PI.UpqRep.IsHCTypeW k r z u π` using `hπ`. Take `⟨u', h1, h2, h3, h4, h5, -⟩` from `GlobalTheory.CapelliOfHC.exists_isType k r Wp z π u hz hT hπ'`. Conclude with `⟨h1, h2, h3, h4, h5, GlobalTheory.ThA.capParam_of_isHCTypeW k r z u U Wp π hz hT hπ hU⟩`.
+-/
 theorem isType_of_isHCTypeW (k r : ℕ) (z : Fin (2 * r + k + 1) → ℂ) (u : Fin k → ℝ) (U : ℕ → ℝ) (Wp : Type)
     [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp] [FiniteDimensional ℂ Wp] (π : B.Mat k r → (Wp →L[ℂ] Wp))
     (hz : inWb k r z) (hT : 0 < Tz k r z) (hπ : Formalism.MainNotions.S.IsHCTypeW k r z u π)
@@ -25,9 +28,17 @@ theorem isType_of_isHCTypeW (k r : ℕ) (z : Fin (2 * r + k + 1) → ℂ) (u : F
 
 noncomputable def ext {k : ℕ} (u : Fin k → ℝ) (i : ℕ) : ℝ := if h : i - 1 < k then u ⟨i - 1, h⟩ else 0
 
+/- English proof (translation)
+Simplify using `[ext]`.
+-/
 theorem ext_succ {k : ℕ} (u : Fin k → ℝ) (i : Fin k) : ext u (i.val + 1) = u i := by
   simp [ext]
 
+/- English proof (translation)
+Take `⟨m, rfl⟩` from `ha`. Take `⟨n, rfl⟩` from `hb`. Establish `h : (m : ℝ) < n` using `by linarith`. Establish `h' : m + 1 ≤ n` using `by exact_mod_cast h`. Establish `h'' : (m : ℝ) + 1 ≤ n` using `by exact_mod_cast h'`.
+
+Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem add_one_le {a b c l : ℝ} (ha : ∃ m : ℤ, a = m + c) (hb : ∃ m : ℤ, b = m + c) (h1 : a < l) (h2 : l < b) :
     a + 1 ≤ b := by
   obtain ⟨m, rfl⟩ := ha
@@ -43,6 +54,25 @@ namespace GlobalTheory
 
 open PlaceOfLocalBesselType
 
+/- English proof (translation)
+Introduce `k r L μsec lam0 hk h2 hsec hI hI'`. Establish `hk1 : 1 ≤ k` using `by omega`. Take `⟨Bs, hBs⟩` from `GlobalTheory.T.exists_normalised_localBesselDatum k r L μsec hk1 hsec`. Take `⟨ν', m₀, hF⟩` from `Formalism.FourierDecayAlt.P.HaarMassHermitianCurvature.frame_of Bs`. Establish `hT` using `isType_of_isHCTypeW k r L.z L.u (ext L.u) L.Wp L.π L.hz.1 L.hz.2 L.hπ (ext_succ L.u)`.
+
+Establish `hT'` using `isType_of_isHCTypeW k r L.z' L.u' (ext L.u') L.Wq L.π' L.hz'.1 L.hz'.2 L.hπ' (ext_succ L.u')`. Establish `hZ` using `GlobalTheory.capelliParam_mem_int_add_half k r L.Wp L.z L.π _ L.hz.1 L.hz.2 hT`. Establish `hZ'` using `GlobalTheory.capelliParam_mem_int_add_half k r L.Wq L.z' L.π' _ L.hz'.1 L.hz'.2 hT'`. Establish `h1 : 1 ∈ Finset.Icc 1 k` using `Finset.mem_Icc.2 ⟨le_rfl, hk1⟩`. Establish `hOK : (⟨k, r, Tz k r L.z, Tz k r L.z', ext L.u, ext L.u'⟩ : M.Par).OK`.
+
+Use `⟨hk1, L.hz.2, L.hz'.2, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `i hi`. Take `⟨m, hm⟩` from `hZ i hi`. Take `⟨n, hn⟩` from `hZ 1 h1`. Conclude with `⟨m - n, by dsimp only; rw [hm, hn]; push_cast; ring⟩`.
+
+Introduce `i hi`. Take `⟨m, hm⟩` from `hZ' i hi`. Take `⟨n, hn⟩` from `hZ 1 h1`. Conclude with `⟨m - n, by dsimp only; rw [hm, hn]; push_cast; ring⟩`. Introduce `i hi dsimp only at hi`.
+
+Rewrite `hi` using `[Finset.mem_Icc]`. Take `⟨j, rfl⟩ : ∃ j, i = j + 1` from `⟨i - 1, by omega⟩`. Establish `hj : j + 1 < k` using `by omega`. Establish `m1 : j + 1 ∈ Finset.Icc 1 k` using `Finset.mem_Icc.2 ⟨by omega, by omega⟩`. Establish `m2 : j + 1 + 1 ∈ Finset.Icc 1 k` using `Finset.mem_Icc.2 ⟨by omega, by omega⟩`.
+
+Take `⟨a1, a2⟩` from `hI.1 j hj`. Take `⟨b1, b2⟩` from `hI'.1 j hj`. Rewrite `a1`, `a2` using `[← ext_succ L.u]`. Rewrite `b1`, `b2` using `[← ext_succ L.u']`. Simplify using `only at a1 a2 b1 b2`.
+
+Establish `c1` using `add_one_le (hZ _ m2) (hZ _ m1) a2 a1`. Establish `c2` using `add_one_le (hZ _ m2) (hZ' _ m1) a2 b1`. Establish `c3` using `add_one_le (hZ' _ m2) (hZ _ m1) b2 a1`. Establish `c4` using `add_one_le (hZ' _ m2) (hZ' _ m1) b2 b1`. Simplify using `only [M.Par.lo, M.Par.hi]`.
+
+Apply the tactic sequence `rcases max_choice (ext L.u (j + 1 + 1)) (ext L.u' (j + 1 + 1)) with e | e <;>`. Apply the tactic sequence `rcases min_choice (ext L.u (j + 1)) (ext L.u' (j + 1)) with e' | e' <;> rw [e, e'] <;> linarith`. Take `⟨e1, e2, e3, e4, e5, e6, e7, e8⟩` from `hBs`. Take `⟨Cb, hCb⟩` from `GlobalTheory.ThA.plExists`. Take `⟨p, -, hp, -⟩` from `hCb L.Wp L.Wq ⟨k, r, Tz k r L.z, Tz k r L.z', ext L.u, ext L.u'⟩ Bs ν' m₀ 1 le_rfl hk1 h2 (by rw [e5]; exact L.hμW.2) (by rw [e6]; exact L.hμW'.2) e7 hF (by rw [e1, e2, e3, e4]; exact ⟨hOK, L.hz.1, L.hz'.1, rfl, rfl, hT, hT'⟩)`.
+
+Use `⟨ext L.u, ext L.u', p, fun i => ⟨ext_succ _ i, ext_succ _ i⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[hp]`. Conclude with `⟨e1, e2, e3, e4, e5, e6, e7, e8⟩`.
+-/
 theorem exists_place_of_locBessel : ∀ (k r : ℕ) (L : LocBessel k r) (μsec : ℂ → Matrix (Fin (k + 1)) (Fin (k + 1)) ℂ) (lam0 : Fin (2 * r + k + 1) → ℝ) (hk : k ≤ 2 * r + k + 1), 2 ≤ k → IsSection k r L.z L.z' μsec → InterlaceS hk L.u lam0 → InterlaceS hk L.u' lam0 → ∃ (U U' : ℕ → ℝ) (p : KB.Pl ⟨k, r, Tz k r L.z, Tz k r L.z', U, U'⟩ L.Wp L.Wq), (∀ i : Fin k, U (i.val + 1) = L.u i ∧ U' (i.val + 1) = L.u' i) ∧ IsStdOf L μsec p.T.base := by
   intro k r L μsec lam0 hk h2 hsec hI hI'
   have hk1 : 1 ≤ k := by omega

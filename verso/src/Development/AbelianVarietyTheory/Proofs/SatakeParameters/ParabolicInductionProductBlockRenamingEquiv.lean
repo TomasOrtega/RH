@@ -15,6 +15,9 @@ variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchim
 omit [Fintype γ] [LinearOrder γ] [Fintype γ'] [LinearOrder γ'] [Fintype n] [DecidableEq n]
   [∀ c, Fintype (m c)] [∀ c, DecidableEq (m c)] in
 
+/- English proof (translation)
+Take `⟨⟨c', x⟩, rfl⟩` from `e₂.surjective j`. Establish `h1 : blk e₂ (e₂ ⟨c', x⟩) = c'` using `blk_apply e₂ c' x`. Rewrite using `[h1, he, blk_apply]`.
+-/
 theorem blk_rename {e : (Σ c, m c) ≃ n} {e₂ : (Σ c', m (f c')) ≃ n}
     (he : ∀ c' x, e₂ ⟨c', x⟩ = e ⟨f c', x⟩) (j : n) : blk e j = f (blk e₂ j) := by
   obtain ⟨⟨c', x⟩, rfl⟩ := e₂.surjective j
@@ -23,12 +26,20 @@ theorem blk_rename {e : (Σ c, m c) ≃ n} {e₂ : (Σ c', m (f c')) ≃ n}
 
 omit [Fintype γ] [Fintype γ'] [∀ c, Fintype (m c)] [∀ c, DecidableEq (m c)] in
 
+/- English proof (translation)
+Simplify using `only [mem_parab, blk_rename he, hf.lt_iff_lt]`.
+-/
 theorem mem_parab_rename (hf : StrictMono f) {e : (Σ c, m c) ≃ n} {e₂ : (Σ c', m (f c')) ≃ n}
     (he : ∀ c' x, e₂ ⟨c', x⟩ = e ⟨f c', x⟩) (g : GL n k) : g ∈ parab k e ↔ g ∈ parab k e₂ := by
   simp only [mem_parab, blk_rename he, hf.lt_iff_lt]
 
 omit [∀ c, DecidableEq (m c)] in
 
+/- English proof (translation)
+Unfold `modExp`. Set `E` to `Equiv.ofBijective f ⟨hf.injective, hs⟩`. Use `congr 1`. Rewrite using `[Finset.sum_filter, Finset.sum_filter]`. Conclude with `Fintype.sum_equiv E _ _ fun b => if_congr hf.lt_iff_lt.symm rfl rfl`.
+
+Rewrite using `[Finset.sum_filter, Finset.sum_filter]`. Conclude with `Fintype.sum_equiv E _ _ fun b => if_congr hf.lt_iff_lt.symm rfl rfl`.
+-/
 theorem modExp_rename (hf : StrictMono f) (hs : Function.Surjective f) (c' : γ') :
     modExp (fun c' => m (f c')) c' = modExp m (f c') := by
   unfold modExp
@@ -39,12 +50,18 @@ theorem modExp_rename (hf : StrictMono f) (hs : Function.Surjective f) (c' : γ'
   · rw [Finset.sum_filter, Finset.sum_filter]
     exact Fintype.sum_equiv E _ _ fun b => if_congr hf.lt_iff_lt.symm rfl rfl
 
+/- English proof (translation)
+Rewrite using `[deltaHalf_apply, deltaHalf_apply]`. Set `E` to `Equiv.ofBijective f ⟨hf.injective, hs⟩`. Conclude with `Fintype.prod_equiv E _ _ fun c' => by rw [modExp_rename hf hs]; rfl`.
+-/
 theorem deltaHalf_rename (hf : StrictMono f) (hs : Function.Surjective f) (g : Levi k m) :
     deltaHalf k (fun c' => m (f c')) (fun c' => g (f c')) = deltaHalf k m g := by
   rw [deltaHalf_apply, deltaHalf_apply]
   let E := Equiv.ofBijective f ⟨hf.injective, hs⟩
   exact Fintype.prod_equiv E _ _ fun c' => by rw [modExp_rename hf hs]; rfl
 
+/- English proof (translation)
+Use function extensionality and compare the values at `c'`. Use `Units.ext (Matrix.ext fun i j => ?_)` and prove the remaining obligations. Rewrite using `[leviProj_apply, leviProj_apply, he, he, hpq]`.
+-/
 theorem leviProj_rename {e : (Σ c, m c) ≃ n} {e₂ : (Σ c', m (f c')) ≃ n}
     (he : ∀ c' x, e₂ ⟨c', x⟩ = e ⟨f c', x⟩) (p : parab k e₂) (q : parab k e) (hpq : (p : GL n k) = q) :
     leviProj k e₂ p = fun c' => leviProj k e q (f c') := by
@@ -56,11 +73,17 @@ def kappa (hf : StrictMono f) (hs : Function.Surjective f) (X : γ → Type) [�
     [∀ c, Module ℂ (X c)] : (⨂[ℂ] c, X c) ≃ₗ[ℂ] ⨂[ℂ] c', X (f c') :=
   PiTensorProduct.reindex ℂ X (Equiv.ofBijective f ⟨hf.injective, hs⟩).symm
 
+/- English proof (translation)
+Conclude with `PiTensorProduct.reindex_tprod (R := ℂ) (s := X) _ x`.
+-/
 theorem kappa_tprod (hf : StrictMono f) (hs : Function.Surjective f) {X : γ → Type} [∀ c, AddCommGroup (X c)]
     [∀ c, Module ℂ (X c)] (x : ∀ c, X c) :
     kappa hf hs X (PiTensorProduct.tprod ℂ x) = PiTensorProduct.tprod ℂ fun c' => x (f c') := by
   exact PiTensorProduct.reindex_tprod (R := ℂ) (s := X) _ x
 
+/- English proof (translation)
+Proceed by induction on `w using PiTensorProduct.induction_on with`. Consider the case `smul_tprod r x => simp only [map_smul, kappa_tprod, piTensor_tprod]`. Consider the case `add x y hx hy => simp only [map_add, hx, hy]`.
+-/
 theorem piTensor_rename (hf : StrictMono f) (hs : Function.Surjective f) {X : γ → Type}
     [∀ c, AddCommGroup (X c)] [∀ c, Module ℂ (X c)] (σ : ∀ c, Representation ℂ (GL (m c) k) (X c))
     (g : Levi k m) (w : ⨂[ℂ] c, X c) :
@@ -73,6 +96,13 @@ end GlobalTheory.SmGL.BlockRename
 
 namespace GlobalTheory.SmGL.BlockRename
 
+/- English proof (translation)
+Introduce `k _ _ _ _ γ γ' n _ _ _ _ _ _ f hf hs m _ _ e e₂ he X _ _ σ`. Set `κ` to `kappa hf hs X`. Establish `key : ∀ (p : parab k e₂) (q : parab k e), (p : GL n k) = q → ∀ w, ((twist (piTensor fun c' => σ (f c')) (deltaHalf k fun c' => m (f c'))).comp (leviProj k e₂)) p (κ w) = κ (((twist (piTensor σ) (deltaHalf k m)).comp (leviProj k e)) q w)`. Introduce `p q hpq w`. Rewrite using `[MonoidHom.comp_apply, MonoidHom.comp_apply, leviProj_rename he p q hpq, twist_apply, twist_apply, deltaHalf_rename hf hs, piTensor_rename hf hs]`.
+
+Conclude with `(map_smul κ _ _).symm`. Establish `hP` using `mem_parab_rename (k := k) hf he`. Use `⟨Representation.Equiv.mk (LinearEquiv.ofLinear (GlobalTheory.SmGL.MultiIrr.indPull (σ := (twist (piTensor fun c' => σ (f c')) (deltaHalf k fun c' => m (f c'))).comp (leviProj k e₂)) (τ := (twist (piTensor σ) (deltaHalf k m)).comp (leviProj k e)) (MonoidHom.id _) continuous_id κ.t …` and prove the remaining obligations. Simplify using `only [LinearEquiv.coe_coe]`. Rewrite using `[LinearEquiv.apply_symm_apply, ← key ⟨q, (hP q).1 q.2⟩ q rfl, LinearEquiv.apply_symm_apply])⟩) ?_ ?_) fun g => ?_⟩`.
+
+Conclude with `LinearMap.ext fun F => Subtype.ext (Subtype.ext (funext fun x => κ.apply_symm_apply (F.1.1 x)))`. Conclude with `LinearMap.ext fun F => Subtype.ext (Subtype.ext (funext fun x => κ.symm_apply_apply (F.1.1 x)))`. Conclude with `LinearMap.ext fun F => Subtype.ext (Subtype.ext (funext fun x => rfl))`.
+-/
 theorem multiProd_rename : ∀ {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] {γ γ' n : Type} [Fintype γ] [LinearOrder γ] [Fintype γ'] [LinearOrder γ'] [Fintype n] [DecidableEq n] (f : γ' → γ), StrictMono f → Function.Surjective f → ∀ {m : γ → Type} [∀ c, Fintype (m c)] [∀ c, DecidableEq (m c)] (e : (Σ c, m c) ≃ n) (e₂ : (Σ c', m (f c')) ≃ n), (∀ c' x, e₂ ⟨c', x⟩ = e ⟨f c', x⟩) → ∀ {X : γ → Type} [∀ c, AddCommGroup (X c)] [∀ c, Module ℂ (X c)] (σ : ∀ c, Representation ℂ (GL (m c) k) (X c)), Nonempty ((multiProd e σ).Equiv (multiProd e₂ fun c' => σ (f c'))) := by
   intro k _ _ _ _ γ γ' n _ _ _ _ _ _ f hf hs m _ _ e e₂ he X _ _ σ
   let κ := kappa hf hs X

@@ -8,6 +8,11 @@ attribute [local instance] Over.cartesianMonoidalCategory
 
 namespace GlobalTheory.AV
 
+/- English proof (translation)
+Introduce `K _ X _ hX`. Use `haveI := hX.smooth`. Use `haveI := hX.geomConnected`. Use `haveI : ConnectedSpace X.left := GeometricallyConnected.connectedSpace X.hom X.hom.isOpenMap`. Take `⟨x₀⟩` from `(inferInstance : ConnectedSpace X.left).toNonempty`.
+
+Conclude with `exists_dim_of_preconnected X.hom x₀`.
+-/
 theorem exists_smoothOfRelativeDimension_of_isAbelianScheme :
     ∀ (K : Type) [Field K] (X : Over (Sp K)) [GrpObj X], IsAbelianScheme X →
       ∃ g : ℕ, SmoothOfRelativeDimension g X.hom := by

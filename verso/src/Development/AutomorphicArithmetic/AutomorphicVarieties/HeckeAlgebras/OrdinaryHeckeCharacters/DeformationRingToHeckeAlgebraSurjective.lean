@@ -8,6 +8,23 @@ open scoped TensorProduct
 attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField
 set_option synthInstance.maxHeartbeats 200000
 
+/- English proof (translation)
+Introduce `L Ω _ _ _ _ _ l _ n c H hH A T B _ _ _ _ _ _ gen D₀ ψ₀ f h1 h2 j hj htop`. Establish `hgen : ∀ i, gen i ∈ f.range`. Introduce and unpack `(⟨w, k⟩ | ⟨v, k⟩)`. Take `⟨P, hP⟩` from `exists_isPlaceOver Ω w.1`. Take `⟨σ, hσ⟩` from `exists_isFrob hP`.
+
+Establish `hq : IsUnit ((normV w.1 : ℕ) : c.O)`. Establish `h0` using `(cycZ L Ω l σ).isUnit.map (algebraMap ℤ_[l] c.O)`. Rewrite `h0` using `[cycZ_of_isFrob (hH.Wp_away w.1 w.2) hP hσ, map_natCast]`. Then use the resulting hypothesis. Take `⟨u, hu⟩` from `hq.exists_left_inv`. Establish `huT : algebraMap c.O T u * ((normV w.1 : ℕ) : T) = 1`.
+
+Rewrite using `[← map_natCast (algebraMap c.O T), ← map_mul, hu, map_one]`. Establish `e` using `JEx.heckePol_coeff n (normV w.1) (fun j => if h : 0 < j ∧ j - 1 < n then gen (.inl (w, ⟨j - 1, h.2⟩)) else 1) (k + 1) k.2`. Rewrite `e` using `[← h1 w P σ hP hσ, dif_pos ⟨Nat.succ_pos _, k.2⟩]`. Establish `e2 : (D₀.map f.toRingHom).chi (MonoidAlgebra.single (H.prj σ⁻¹) 1) = (D₀.chi (MonoidAlgebra.single (H.prj σ⁻¹) 1)).map f.toRingHom`. Rewrite using `[← (AlgebraTools.Det.mapApi D₀ _).1]`.
+
+Simplify using the standard rewrite rules. Rewrite `e` using `[e2, coeff_map]`. Establish `e3 : gen (.inl (w, k)) = algebraMap c.O T u ^ ((k + 1) * (k + 1 - 1) / 2 : ℕ) * ((-1) ^ ((k : ℕ) + 1) * f ((D₀.chi (MonoidAlgebra.single (H.prj σ⁻¹) 1)).coeff (n - (k + 1))))`. Use `Eq.trans ?_ (congrArg _ e.symm)` and prove the remaining obligations. Rewrite using `[← mul_assoc, ← mul_pow, huT, one_pow, one_mul]`.
+
+Both sides reduce to the same expression. Rewrite using `[e3]`. Conclude with `mul_mem (pow_mem (f.range.algebraMap_mem u) _) (mul_mem (pow_mem (neg_mem (one_mem _)) _) (f.mem_range_self _))`. Take `⟨y, hy⟩` from `(hH.art_spec v).surj (unif _)`. Rewrite using `[← h2 v k y (Subgroup.inclusion (Weil_le_Dec (H.ovr v)) y) rfl hy, Units.coe_prod]`.
+
+Use `prod_mem fun i _ => ?_` and prove the remaining obligations. Rewrite using `[Units.val_mul, Units.val_pow_eq_pow_val]`. Conclude with `mul_mem (f.mem_range_self _) (pow_mem (f.range.algebraMap_mem _) _)`. Introduce `t`. Establish `ht : t ∈ Algebra.adjoin A (Set.range gen)` using `htop ▸ Algebra.mem_top`.
+
+Express the relevant statement in the definitionally equal form `t ∈ f.range`. Proceed by induction on `ht using Algebra.adjoin_induction with`. Consider the case `mem x hx`. Take `⟨i, rfl⟩` from `hx`. Conclude with `hgen i`.
+
+Consider the case `algebraMap r => exact ⟨j r, hj r⟩`. Consider the case `add x y _ _ hx hy => exact add_mem hx hy`. Consider the case `mul x y _ _ hx hy => exact mul_mem hx hy`.
+-/
 theorem UpperTheory.V.Hi.deformationRing_to_heckeAlgebra_surjective :
     ∀ (L Ω : Type) [Field L] [NumberField L] [Field Ω] [Algebra L Ω] [IsAlgClosure L Ω] (l : ℕ) [Fact l.Prime] (n : ℕ) (c : Coef l) (H : HSet L Ω l n c), H.Ax →
     ∀ (A T B : Type) [CommRing A] [CommRing T] [Algebra c.O T] [Algebra A T] [CommRing B] [Algebra c.O B] (gen : H.Op → T) (D₀ : W.GDet n B H.Gq) (ψ₀ : ∀ v, Fin n → Dec (F := L) (H.pl v) →* Bˣ) (f : B →ₐ[c.O] T),

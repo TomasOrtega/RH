@@ -109,8 +109,14 @@ def equivField : GtPt D (TF (R := R) F) ≃ GtPtF D F where
   left_inv _ := rfl
   right_inv _ := rfl
 
+/- English proof (translation)
+Unfold both sides. The equivalence is reflexive.
+-/
 example (g : GtPt D (TF (R := R) F)) : g.IsZero ↔ (equivField D F g).IsZero := Iff.rfl
 
+/- English proof (translation)
+Unfold both sides. The equivalence is reflexive.
+-/
 example (g g' g'' : GtPt D (TF (R := R) F)) :
     GtPt.IsAdd g g' g'' ↔
       GtPtF.IsAdd (equivField D F g) (equivField D F g') (equivField D F g'') := Iff.rfl

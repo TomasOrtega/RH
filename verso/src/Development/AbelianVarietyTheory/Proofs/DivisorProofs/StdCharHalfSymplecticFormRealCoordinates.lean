@@ -16,6 +16,9 @@ namespace GlobalTheory.RealCharF
 
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
 
+/- English proof (translation)
+Proceed by induction on `z using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul a x => rfl`. Consider the case `add a b ha hb => simp only [map_add, ha, hb]`.
+-/
 theorem infPartF_cAF (σ : E →ₐ[F] E) (z : AEF F E) :
     infPartF F E (cAF σ z) = sigR (Ainf F) σ (infPartF F E z) := by
   induction z using TensorProduct.induction_on with
@@ -23,6 +26,9 @@ theorem infPartF_cAF (σ : E →ₐ[F] E) (z : AEF F E) :
   | tmul a x => rfl
   | add a b ha hb => simp only [map_add, ha, hb]
 
+/- English proof (translation)
+Establish `hv : w.IsReal` using `IsTotallyReal.isReal w`. Rewrite using `[GlobalTheory.DualPairCompare.gen_inf_val τ w hw θ h a, ← InfinitePlace.Completion.extensionEmbeddingOfIsReal_apply hv]`. Conclude with `Complex.conj_ofReal _`.
+-/
 theorem conj_theta_tmul_one [IsTotallyReal F] {τ : E →+* ℂ} {w : InfinitePlace F}
     (hw : w.embedding = τ.comp (algebraMap F E)) {θ : Ainf F ⊗[F] E →+* ℂ} (h : IsInfEmbF τ θ) (a : Ainf F) :
     starRingEnd ℂ (θ (a ⊗ₜ[F] (1 : E))) = θ (a ⊗ₜ[F] (1 : E)) := by
@@ -30,6 +36,13 @@ theorem conj_theta_tmul_one [IsTotallyReal F] {τ : E →+* ℂ} {w : InfinitePl
   rw [GlobalTheory.DualPairCompare.gen_inf_val τ w hw θ h a, ← InfinitePlace.Completion.extensionEmbeddingOfIsReal_apply hv]
   exact Complex.conj_ofReal _
 
+/- English proof (translation)
+Use `haveI : IsTotallyReal F := hσ.1`. Proceed by induction on `y using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `add a b ha hb => simp only [map_add, ha, hb]`. Consider the case `tmul a e`.
+
+Establish `e1 : ∀ e' : E, a ⊗ₜ[F] e' = (a ⊗ₜ[F] (1 : E)) * ((1 : Ainf F) ⊗ₜ[F] e')`. Introduce `e'`. Rewrite using `[Algebra.TensorProduct.tmul_mul_tmul, mul_one, one_mul]`. Use `show θ (a ⊗ₜ[F] σ e) = _`. Rewrite using `[e1 (σ e), e1 e, map_mul, map_mul, map_mul, h.1, h.1, hσ.2.2.2, conj_theta_tmul_one hw h a]`.
+
+Both sides reduce to the same expression.
+-/
 theorem theta_sigR {σ : E →ₐ[F] E} (hσ : IsCMExt F E σ) {τ : E →+* ℂ} {w : InfinitePlace F}
     (hw : w.embedding = τ.comp (algebraMap F E)) {θ : Ainf F ⊗[F] E →+* ℂ} (h : IsInfEmbF τ θ)
     (y : Ainf F ⊗[F] E) : θ (sigR (Ainf F) σ y) = starRingEnd ℂ (θ y) := by
@@ -44,6 +57,9 @@ theorem theta_sigR {σ : E →ₐ[F] E} (hσ : IsCMExt F E σ) {τ : E →+* ℂ
     rw [e1 (σ e), e1 e, map_mul, map_mul, map_mul, h.1, h.1, hσ.2.2.2, conj_theta_tmul_one hw h a]
     rfl
 
+/- English proof (translation)
+Establish `: infPartF F E (incAF F E e) = (1 : Ainf F) ⊗ₜ[F] e` using `by show (Algebra.TensorProduct.map (fstA F) (AlgHom.id F E)) ((1 : AF F) ⊗ₜ[F] e) = _`. Rewrite using `[Algebra.TensorProduct.map_tmul, map_one, AlgHom.id_apply]`. Rewrite using `[this, h.1]`.
+-/
 theorem theta_infPartF_incAF {τ : E →+* ℂ} {θ : Ainf F ⊗[F] E →+* ℂ} (h : IsInfEmbF τ θ) (e : E) :
     θ (infPartF F E (incAF F E e)) = τ e := by
   have : infPartF F E (incAF F E e) = (1 : Ainf F) ⊗ₜ[F] e := by
@@ -51,6 +67,15 @@ theorem theta_infPartF_incAF {τ : E →+* ℂ} {θ : Ainf F ⊗[F] E →+* ℂ}
     rw [Algebra.TensorProduct.map_tmul, map_one, AlgHom.id_apply]
   rw [this, h.1]
 
+/- English proof (translation)
+Use `set z := incAF F E ξ₀ * hOF σ JS JT x y with hz`. Establish `h1 : fstA F (symplOHF σ JS JT ξ₀ x y) = algebraMap F (Ainf F) (1 / 2) * Algebra.trace (Ainf F) (Ainf F ⊗[F] E) (infPartF F E z)`. Unfold `symplOHF symplOF`. Rewrite using `[map_mul, AlgHom.commutes, GlobalTheory.HeisLineDiffF.map_trace_tens]`. Both sides reduce to the same expression.
+
+Establish `h2 : ∀ c : Ainf F, c ⊗ₜ[F] (1 : E) = algebraMap (Ainf F) (Ainf F ⊗[F] E) c`. Introduce `c`. Rewrite using `[Algebra.TensorProduct.algebraMap_apply, Algebra.algebraMap_self, RingHom.id_apply]`. Establish `h3 : θ (algebraMap (Ainf F) (Ainf F ⊗[F] E) (algebraMap F (Ainf F) (1 / 2))) = 1 / 2`. Rewrite using `[← IsScalarTower.algebraMap_apply]`.
+
+Establish `: (θ.comp (algebraMap F (Ainf F ⊗[F] E))) (1 / 2) = 1 / 2`. Rewrite using `[map_div₀, map_one, map_ofNat]`. Conclude with `this`. Establish `h4 : θ (infPartF F E z) = τ ξ₀ * θ (infPartF F E (hOF σ JS JT x y))`. Rewrite using `[hz, map_mul, map_mul, theta_infPartF_incAF h]`.
+
+Rewrite using `[h1, h2, map_mul, map_mul, GlobalTheory.SelfDualLatticeCompare.trace_tensor (Ainf F) hσ, map_add, theta_sigR hσ hw h, h3, h4, Complex.add_conj]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem theta_fstA_symplOHF {σ : E →ₐ[F] E} (hσ : IsCMExt F E σ) {τ : E →+* ℂ} {w : InfinitePlace F}
     (hw : w.embedding = τ.comp (algebraMap F E)) {θ : Ainf F ⊗[F] E →+* ℂ} (h : IsInfEmbF τ θ)
     {nS nT : ℕ} (JS : Matrix (Fin nS) (Fin nS) E) (JT : Matrix (Fin nT) (Fin nT) E) (ξ₀ : E) (x y : WOF F E nS nT) :
@@ -77,6 +102,9 @@ theorem theta_fstA_symplOHF {σ : E →ₐ[F] E} (hσ : IsCMExt F E σ) {τ : E 
   push_cast
   ring
 
+/- English proof (translation)
+Rewrite using `[GlobalTheory.OrientedChar.map_inv_field _ _ hJS, GlobalTheory.OrientedChar.trace_four]`. Unfold `hOF`. Simplify using `only [map_sum, map_mul, infPartF_cAF, theta_sigR hσ (hw w) (hθ w), theta_infPartF_incAF (hθ w), iotaVF, Matrix.of_apply, hι.comp, cpt, Matrix.map_apply]`.
+-/
 theorem theta_hOF {σ : E →ₐ[F] E} (hσ : IsCMExt F E σ) {tau : InfinitePlace F → (E →+* ℂ)}
     (hw : ∀ w, w.embedding = (tau w).comp (algebraMap F E)) {θ : InfinitePlace F → (Ainf F ⊗[F] E →+* ℂ)}
     (hθ : IsInfFamF tau θ) {ι : (InfinitePlace F → ℂ) →+ AEF F E} (hι : IsChartF θ ι)
@@ -89,6 +117,9 @@ theorem theta_hOF {σ : E →ₐ[F] E} (hσ : IsCMExt F E σ) {tau : InfinitePla
   simp only [map_sum, map_mul, infPartF_cAF, theta_sigR hσ (hw w) (hθ w), theta_infPartF_incAF (hθ w),
     iotaVF, Matrix.of_apply, hι.comp, cpt, Matrix.map_apply]
 
+/- English proof (translation)
+Rewrite using `[star_dotProduct_eq]`. Use `Finset.sum_congr rfl fun w _ => ?_` and prove the remaining obligations. Unfold `HMF`. Rewrite using `[cpt_blk, ← Matrix.mul_assoc, Matrix.trace_mul_comm, Matrix.smul_mul, Matrix.mul_smul, Matrix.mul_smul, Matrix.trace_smul, smul_eq_mul]`. Simplify using `only [Matrix.mul_assoc]`.
+-/
 theorem trace_HMF {nS nT : ℕ} (JS : Matrix (Fin nS) (Fin nS) E) (JT : Matrix (Fin nT) (Fin nT) E) (ξ₀ : E)
     (tau : InfinitePlace F → (E →+* ℂ)) (u v : IxF F nS nT → ℂ) :
     star v ⬝ᵥ HMF JS JT ξ₀ tau *ᵥ u = ∑ w, ((2 * (tau w ξ₀).im : ℝ) : ℂ) *
@@ -100,6 +131,19 @@ theorem trace_HMF {nS nT : ℕ} (JS : Matrix (Fin nS) (Fin nS) E) (JT : Matrix (
     Matrix.trace_smul, smul_eq_mul]
   simp only [Matrix.mul_assoc]
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ B hB nS nT JS JT hJS hJT ξ₀ hξ hσξ θ hθ ι hι u v`. Establish `hσ` using `hB.cm`. Use `haveI : IsTotallyReal F := hσ.1`. Establish `hψ` using `GlobalTheory.StdCharWeilDatum.isStdCharF_of_isGood F E σ B hB`. Establish `hw : ∀ w : InfinitePlace F, w.embedding = (B.emb w).1.comp (algebraMap F E)` using `fun w => (B.emb w).2.symm`.
+
+Use `set s := symplOHF σ JS JT ξ₀ (iotaVF ι u) (iotaVF ι v) with hs`. Establish `hsnd : sndA F s = 0` using `GlobalTheory.HeisDerivCM.map_symplOHF_eq_zero (sndA F) σ JS JT ξ₀ _ _ (Or.inr (real_iotaVF hι v))`. Establish `e1 : B.ψ s = psiInf F B.ψ (fstA F s)`. Establish `hsplit : s = pairA F (fstA F s) 0` using `Prod.ext rfl hsnd`. Use `conv_lhs => rw [hsplit]`.
+
+Both sides reduce to the same expression. Establish `hre : ∀ w : InfinitePlace F, ((B.emb w).1 ξ₀).re = 0`. Introduce `w`. Establish `h1` using `hσ.2.2.2 (B.emb w).1 ξ₀`. Rewrite `h1` using `[hσξ, map_neg]`.
+
+Establish `h2` using `congrArg Complex.re h1`. Rewrite `h2` using `[Complex.neg_re, Complex.star_def, Complex.conj_re]`. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite using `[e1, hψ.2.2 θ hθ, trace_HMF]`. Establish `e2 : ∑ w, θ w (fstA F s ⊗ₜ[F] (1 : E)) = ∑ w, ((((B.emb w).1 ξ₀) * ((JS.map (B.emb w).1)⁻¹ * (cpt v w)ᴴ * JT.map (B.emb w).1 * cpt u w).trace).re : ℂ)` using `Finset.sum_congr rfl fun w _ => by`.
+
+Rewrite using `[hs, theta_fstA_symplOHF hσ (hw w) (hθ w) JS JT ξ₀ (iotaVF ι u) (iotaVF ι v), theta_hOF hσ hw hθ hι JT hJS.2 u v]`. Rewrite using `[e2]`. Use `congr 1`. Rewrite using `[Complex.im_sum]`. Simplify using `only [Complex.mul_re, hre, Complex.im_ofReal_mul, zero_mul, zero_sub]`.
+
+Use `push_cast`. Rewrite using `[Finset.mul_sum, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun w _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem psi_symplOHF_iotaVF : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E)
     (B : Base F E), B.IsGood σ → ∀ (nS nT : ℕ) (JS : Matrix (Fin nS) (Fin nS) E) (JT : Matrix (Fin nT) (Fin nT) E),
       IsHermND σ JS → IsHermND σ JT → ∀ ξ₀ : E, ξ₀ ≠ 0 → σ ξ₀ = -ξ₀ → ∀ θ : InfinitePlace F → (Ainf F ⊗[F] E →+* ℂ),

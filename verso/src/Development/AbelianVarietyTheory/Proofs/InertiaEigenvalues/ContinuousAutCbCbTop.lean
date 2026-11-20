@@ -13,6 +13,23 @@ open Filter Topology
 
 namespace GlobalTheory.WeakClosed
 
+/- English proof (translation)
+Use `letI V : Valued K (ValuationRing.ValueGroup A K) := Valued.mk' (ValuationRing.valuation A K)`. Establish `hle : ∀ x y : K, Valued.v x ≤ Valued.v y ↔ ∃ c : A, algebraMap A K c * y = x`. Introduce `x y`. Express the relevant statement in the definitionally equal form `(∃ c : A, c • y = x) ↔ _`. Simplify using `only [Algebra.smul_def]`.
+
+Establish `hinj` using `IsFractionRing.injective A K`. Use `GlobalTheory.WeakTop.continuous_act_of_orbits σ ?_ ?_` and prove the remaining obligations. Introduce `g x y`. Simplify using `only [← not_le, hle]`. Introduce and unpack `h ⟨c, hc⟩`.
+
+Use `h ⟨(τ g).symm c, (σ g).injective ?_⟩` and prove the remaining obligations. Rewrite using `[map_mul, hσ, RingEquiv.apply_symm_apply, hc]`. Establish `hA : ∀ x : A, Continuous fun g => σ g (algebraMap A K x)`. Introduce `x`. Rewrite using `[continuous_iff_continuousAt]`.
+
+Introduce `g₀ s hs`. Take `⟨c, hc, hs⟩` from `GlobalTheory.WeakTop.mem_nhds_iff_lt.1 hs`. Take `⟨a, d, hd, rfl⟩` from `IsFractionRing.div_surjective A c`. Establish `hd0 : algebraMap A K d ≠ 0` using `IsFractionRing.to_map_ne_zero_of_mem_nonZeroDivisors hd`. Establish `ha : a ≠ 0`.
+
+Introduce and unpack `rfl`. Simplify using `at hc`. Rewrite using `[mem_map]`. Use `filter_upwards [ho x a g₀ ha] with g hg`. Apply `hs` to reduce the goal to its premises.
+
+Express the relevant statement in the definitionally equal form `Valued.v (σ g (algebraMap A K x) - σ g₀ (algebraMap A K x)) < _`. Rewrite using `[← not_le, hle, hσ, hσ, ← map_sub]`. Introduce and unpack `⟨e, he⟩`. Use `hg ⟨e * d, hinj ?_⟩` and prove the remaining obligations. Rewrite `he` using `[eq_div_iff hd0]`.
+
+Rewrite using `[← he, map_mul, map_mul]`. Expand and normalize the polynomial expressions, which then agree. Introduce `x`. Take `⟨a, d, hd, rfl⟩` from `IsFractionRing.div_surjective A x`. Establish `hd0 : algebraMap A K d ≠ 0` using `IsFractionRing.to_map_ne_zero_of_mem_nonZeroDivisors hd`.
+
+Simplify using `only [map_div₀]`. Conclude with `(hA a).div (hA d) fun g => by simpa using hd0`.
+-/
 theorem continuous_frac_act {A K G : Type} [CommRing A] [IsDomain A] [ValuationRing A] [Field K]
     [Algebra A K] [IsFractionRing A K] [TopologicalSpace G] (τ : G → (A ≃+* A))
     (σ : G → (K ≃+* K)) (hσ : ∀ g a, σ g (algebraMap A K a) = algebraMap A K (τ g a))
@@ -57,6 +74,11 @@ theorem continuous_frac_act {A K G : Type} [CommRing A] [IsDomain A] [ValuationR
     simp only [map_div₀]
     exact (hA a).div (hA d) fun g => by simpa using hd0
 
+/- English proof (translation)
+Introduce `l _ P AI`. Use `continuous_frac_act (A := OCb l) (fun g => AI.actT g) (fun g => autCb l (AI.actT g)) (fun g a => autCb_alg l _ a) fun x a g₀ ha => ?_` and prove the remaining obligations. Take `⟨n, hn⟩ : ∃ n, PreTilt.coeff n a ≠ 0` from `by by_contra! h`. Use `ha (Perfection.ext fun n => ?_)` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `PreTilt.coeff n a = PreTilt.coeff n 0`.
+
+Rewrite using `[h, map_zero]`. Use `filter_upwards [GlobalTheory.WeakTop.eventually_coeff_eq AI x n g₀] with g hg`. Introduce and unpack `⟨c, hc⟩`. Apply `hn` to reduce the goal to its premises. Rewrite using `[hc, map_mul, map_sub, hg, sub_self, zero_mul]`.
+-/
 theorem continuous_autCb_cbTop : ∀ {l : ℕ} [Fact l.Prime] {P : LocPrime l} (AI : LocAinf l P),
     letI := cbTop l; Continuous fun q : GQ l × Cb l => autCb l (AI.actT q.1) q.2 := by
   intro l _ P AI

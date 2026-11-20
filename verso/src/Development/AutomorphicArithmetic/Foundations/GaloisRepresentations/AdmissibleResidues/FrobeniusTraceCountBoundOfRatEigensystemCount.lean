@@ -19,6 +19,11 @@ namespace UpperTheory.GalN.V.Win
 section
 open NumberField IsDedekindDomain Formalism.ConjugateSelfDual ReciprocityTheory.Gal Formalism.BasicNotions Formalism.BasicNotions.Loc Formalism.MainNotions.N Polynomial GlobalTheory.GalOfCusp UpperTheory.V.Af
 
+/- English proof (translation)
+Establish `h1 : 0 ≤ (a - w) * (a * w - 1)` using `mul_nonneg (by linarith) (by linarith)`. Establish `h4 : a * (u * v * w) = a` using `by rw [hp, mul_one]`. Establish `h5 : 0 ≤ (a - 1) * w` using `mul_nonneg (by linarith) hw0.le`. Establish `h2 : w + u * v ≤ a + 1`. Establish `h3 : a * w * (w + u * v) ≤ a * w * (a + 1)` using `by nlinarith`.
+
+Establish `: 0 < a * w` using `by positivity`. Conclude with `le_of_mul_le_mul_left h3 this`. Use the polynomial consequences of the given equalities and inequalities.
+-/
 private theorem add_add_le_add_two_of_mul_eq_one_of_sub_one_mul_nonneg (a u v w : ℝ) (ha : 1 ≤ a) (hw1 : 1 ≤ a * w) (hw2 : w ≤ a) (hw0 : 0 < w)
     (hp : u * v * w = 1) (huv : 0 ≤ (u - 1) * (v - 1)) : u + v + w ≤ a + 2 := by
   have h1 : 0 ≤ (a - w) * (a * w - 1) := mul_nonneg (by linarith) (by linarith)
@@ -30,6 +35,13 @@ private theorem add_add_le_add_two_of_mul_eq_one_of_sub_one_mul_nonneg (a u v w 
     exact le_of_mul_le_mul_left h3 this
   nlinarith
 
+/- English proof (translation)
+Establish `c12 : 0 ≤ (y1 - 1) * (y2 - 1) → y1 + y2 + y3 ≤ a + 2` using `fun h => add_add_le_add_two_of_mul_eq_one_of_sub_one_mul_nonneg a y1 y2 y3 ha h31 h32 h30 hp h`. Establish `c13 : 0 ≤ (y1 - 1) * (y3 - 1) → y1 + y2 + y3 ≤ a + 2` using `fun h => by`. Combine the linear relations using `[add_add_le_add_two_of_mul_eq_one_of_sub_one_mul_nonneg a y1 y3 y2 ha h21 h22 h20 (by rw [← hp]; ring) h]`. Establish `c23 : 0 ≤ (y2 - 1) * (y3 - 1) → y1 + y2 + y3 ≤ a + 2` using `fun h => by`. Combine the linear relations using `[add_add_le_add_two_of_mul_eq_one_of_sub_one_mul_nonneg a y2 y3 y1 ha h11 h12 h10 (by rw [← hp]; ring) h]`.
+
+Apply the tactic sequence `rcases le_total y1 1 with g1 | g1 <;> rcases le_total y2 1 with g2 | g2 <;>`. Apply the tactic sequence `rcases le_total y3 1 with g3 | g3 <;>`. Use `first`. Consider the case `exact c12 (by nlinarith)`. Consider the case `exact c13 (by nlinarith)`.
+
+Consider the case `exact c23 (by nlinarith)`.
+-/
 private theorem add_add_le_add_two_of_mul_eq_one_of_one_le_mul_of_le (a y1 y2 y3 : ℝ) (ha : 1 ≤ a)
     (h11 : 1 ≤ a * y1) (h12 : y1 ≤ a) (h10 : 0 < y1)
     (h21 : 1 ≤ a * y2) (h22 : y2 ≤ a) (h20 : 0 < y2)
@@ -48,6 +60,17 @@ private theorem add_add_le_add_two_of_mul_eq_one_of_one_le_mul_of_le (a y1 y2 y3
     | exact c13 (by nlinarith)
     | exact c23 (by nlinarith)
 
+/- English proof (translation)
+Rewrite using `[norm_inv, norm_mul, Complex.norm_natCast]`. Establish `hQ : (1 : ℝ) ≤ q` using `by exact_mod_cast hq`. Establish `hQ0 : (0 : ℝ) < q` using `by linarith`. Establish `hs : 0 < √(q : ℝ)` using `Real.sqrt_pos.2 hQ0`. Establish `hr : 0 < ‖b‖`.
+
+Assume the negation of the conclusion as `hc`. Use `push_neg at hc`. Establish `: √(q : ℝ) * ‖b‖ ≤ 0` using `mul_nonpos_of_nonneg_of_nonpos hs.le hc`. Establish `: (0 : ℝ) < (q : ℝ)⁻¹` using `inv_pos.2 hQ0`. Combine the linear equalities and inequalities to obtain the conclusion.
+
+Establish `hQr : 0 < (q : ℝ) * ‖b‖` using `mul_pos hQ0 hr`. Establish `e1 : (q : ℝ) * ‖b‖ < √(q : ℝ)`. Use `mul_lt_mul_of_pos_left h2 hQ0` as an intermediate fact. Rewrite `this` using `[mul_left_comm, mul_inv_cancel₀ hQ0.ne', mul_one]`. Then use the resulting hypothesis. Establish `e2 : 1 < √(q : ℝ) * ((q : ℝ) * ‖b‖)`.
+
+Use `mul_lt_mul_of_pos_left h1 hQ0` as an intermediate fact. Rewrite `this` using `[mul_inv_cancel₀ hQ0.ne']`. Combine the linear relations using `[show (q : ℝ) * (√(q : ℝ) * ‖b‖) = √(q : ℝ) * ((q : ℝ) * ‖b‖) by ring]`. Use `⟨?_, ?_, inv_pos.2 hQr⟩` and prove the remaining obligations. Rewrite using `[← div_eq_mul_inv, le_div_iff₀ hQr, one_mul]`.
+
+Conclude with `e1.le`. Rewrite using `[inv_le_iff_one_le_mul₀' hQr]`. Combine the linear relations using `[show √(q : ℝ) * ((q : ℝ) * ‖b‖) = (q : ℝ) * ‖b‖ * √(q : ℝ) by ring]`.
+-/
 private theorem one_le_sqrt_mul_norm_inv_natCast_mul_and_le_sqrt_and_pos (q : ℕ) (hq : 1 ≤ q) (b : ℂ)
     (h1 : ((q : ℝ))⁻¹ < √(q : ℝ) * ‖b‖) (h2 : ‖b‖ < √(q : ℝ) * (q : ℝ)⁻¹) :
     1 ≤ √(q : ℝ) * ‖((q : ℂ) * b)⁻¹‖ ∧ ‖((q : ℂ) * b)⁻¹‖ ≤ √(q : ℝ) ∧ 0 < ‖((q : ℂ) * b)⁻¹‖ := by
@@ -75,6 +98,31 @@ private theorem one_le_sqrt_mul_norm_inv_natCast_mul_and_le_sqrt_and_pos (q : �
   · rw [inv_le_iff_one_le_mul₀' hQr]
     linarith [show √(q : ℝ) * ((q : ℝ) * ‖b‖) = (q : ℝ) * ‖b‖ * √(q : ℝ) by ring]
 
+/- English proof (translation)
+Introduce `q e hq D`. Establish `hq0 : (q : ℂ) ≠ 0` using `by exact_mod_cast (show q ≠ 0 by omega)`. Use `⟨⟨D.S, D.fin, fun s => ((D.β s).map fun b => ((q : ℂ) * b)⁻¹).sum, ?_, ?_, ?_⟩, Equiv.refl _, fun s => rfl⟩` and prove the remaining obligations. Introduce `σ`. Take `⟨u, hu⟩` from `D.conj σ`.
+
+Use `⟨u, fun s => ?_⟩` and prove the remaining obligations. Rewrite using `[hu, map_multiset_sum, Multiset.map_map, Multiset.map_map]`. Use `congr 1`. Apply `Multiset.map_congr rfl` to reduce the goal to its premises. Introduce `b _`.
+
+Simplify using `[map_inv₀, map_mul, map_natCast]`. Introduce `s`. Take `⟨b1, b2, b3, hb⟩` from `Multiset.card_eq_three.1 (D.card s)`. Establish `hw` using `D.pure s`. Rewrite `hw` using `[hb]`.
+
+Unfold `Win WinC at hw`. Establish `hc : ((q : ℝ)) ^ ((((1 - ((3 : ℕ) : ℤ)) : ℤ) : ℝ) / 2) = (q : ℝ)⁻¹`. Evaluate the numerical expressions using `[Real.rpow_neg_one]`. Rewrite `hw` using `[hc]`. Take `⟨hw1, hw2⟩` from `hw`.
+
+Establish `k1` using `one_le_sqrt_mul_norm_inv_natCast_mul_and_le_sqrt_and_pos q hq b1 (hw1 b1 (by simp)).1 (hw1 b1 (by simp)).2`. Establish `k2` using `one_le_sqrt_mul_norm_inv_natCast_mul_and_le_sqrt_and_pos q hq b2 (hw1 b2 (by simp)).1 (hw1 b2 (by simp)).2`. Establish `k3` using `one_le_sqrt_mul_norm_inv_natCast_mul_and_le_sqrt_and_pos q hq b3 (hw1 b3 (by simp)).1 (hw1 b3 (by simp)).2`. Establish `hQ0 : (0 : ℝ) < q` using `by exact_mod_cast (show 0 < q by omega)`. Establish `hprod : ‖b1‖ * ‖b2‖ * ‖b3‖ = ((q : ℝ)⁻¹) ^ 3`.
+
+Simplify `hw2` using `[norm_mul, mul_assoc]`. Establish `hp : ‖((q : ℂ) * b1)⁻¹‖ * ‖((q : ℂ) * b2)⁻¹‖ * ‖((q : ℂ) * b3)⁻¹‖ = 1`. Simplify using `only [norm_inv, norm_mul, Complex.norm_natCast]`. Rewrite using `[← mul_inv, ← mul_inv, inv_eq_one]`. Combine the equalities or inequalities in the displayed calculation.
+
+Establish `ha : 1 ≤ √(q : ℝ)` using `Real.one_le_sqrt.2 (by exact_mod_cast hq)`. Establish `key` using `add_add_le_add_two_of_mul_eq_one_of_one_le_mul_of_le (√(q : ℝ)) _ _ _ ha k1.1 k1.2.1 k1.2.2 k2.1 k2.2.1 k2.2.2 k3.1 k3.2.1 k3.2.2 hp`. Use `show ‖((D.β s).map fun b => ((q : ℂ) * b)⁻¹).sum‖ ≤ _`. Rewrite using `[hb]`. Simplify using `only [Multiset.insert_eq_cons, Multiset.map_cons, Multiset.sum_cons, Multiset.map_singleton, Multiset.sum_singleton]`.
+
+Combine the equalities or inequalities in the displayed calculation. Conclude with `norm_add_le _ _`. Use `_ ≤ _ := by linarith`. Introduce `s show IsIntegral ℤ ((q : ℂ) ^ e * ((D.β s).map fun b => ((q : ℂ) * b)⁻¹).sum)`. Establish `hm : ∀ i : Fin 3, (![(e : ℤ) - 1, -1, -(e : ℤ) - 1] : Fin 3 → ℤ) i ≤ (e : ℤ) - 1`.
+
+Introduce `i`. Apply the tactic sequence `fin_cases i <;> simp <;> omega`. Establish `hb' : ∀ b ∈ D.β s, IsIntegral ℤ ((q : ℂ) ^ e * ((q : ℂ) * b)⁻¹)`. Introduce `b hb`. Use `D.intInv ((e : ℤ) - 1) hm s b hb` as an intermediate fact.
+
+Establish `heq : (q : ℂ) ^ e * ((q : ℂ) * b)⁻¹ = (q : ℂ) ^ ((e : ℤ) - 1) * b⁻¹`. Rewrite using `[mul_inv, zpow_sub_one₀ hq0, zpow_natCast]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[heq]`. Conclude with `this`.
+
+Take `⟨b1, b2, b3, hb⟩` from `Multiset.card_eq_three.1 (D.card s)`. Establish `i1` using `hb' b1 (by rw [hb]; simp)`. Establish `i2` using `hb' b2 (by rw [hb]; simp)`. Establish `i3` using `hb' b3 (by rw [hb]; simp)`. Rewrite using `[hb]`.
+
+Simplify using `only [Multiset.insert_eq_cons, Multiset.map_cons, Multiset.sum_cons, Multiset.map_singleton, Multiset.sum_singleton, mul_add]`. Conclude with `i1.add (i2.add i3)`.
+-/
 theorem traces_from_eigenvalues_rank3 :
     ∀ (q e : ℕ), 1 ≤ q → ∀ D : EigData 3 q ![(e : ℤ) - 1, -1, -(e : ℤ) - 1] (1 - ((3 : ℕ) : ℤ)), ∃ (T : TrData q e) (u : D.S ≃ T.S), ∀ s, T.t (u s) = ((D.β s).map fun b => ((q : ℂ) * b)⁻¹).sum := by
   intro q e hq D
@@ -149,6 +197,13 @@ end
 section
 open NumberField IsDedekindDomain Formalism.ConjugateSelfDual ReciprocityTheory.Gal Formalism.BasicNotions Formalism.BasicNotions.Loc Formalism.MainNotions.N Polynomial GlobalTheory.GalOfCusp UpperTheory.V.Af
 
+/- English proof (translation)
+Establish `hs : 0 < √(p : ℝ)` using `Real.sqrt_pos.2 (by exact_mod_cast (show 0 < p by omega))`. Establish `hr : 0 < ‖b‖`. Assume the negation of the conclusion as `hc`. Use `push_neg at hc`. Establish `: √(p : ℝ) * ‖b‖ ≤ 0` using `mul_nonpos_of_nonneg_of_nonpos hs.le hc`.
+
+Combine the linear equalities and inequalities to obtain the conclusion. Establish `hsq : √((p ^ h : ℕ) : ℝ) = √(p : ℝ) ^ h`. Rewrite using `[Nat.cast_pow, Real.sqrt_eq_iff_mul_self_eq (by positivity) (by positivity), ← mul_pow, Real.mul_self_sqrt (by positivity)]`. Rewrite using `[hsq, norm_pow, norm_inv]`. Use `⟨pow_le_pow_left₀ (inv_nonneg.2 hr.le) ?_ h, pow_pos (inv_pos.2 hr) h⟩` and prove the remaining obligations.
+
+Rewrite using `[inv_le_iff_one_le_mul₀' hr]`. Combine the linear relations using `[show √(p : ℝ) * ‖b‖ = ‖b‖ * √(p : ℝ) by ring]`.
+-/
 private theorem norm_inv_pow_le_sqrt_and_pos_of_one_lt_sqrt_mul_norm (p : ℕ) (hp : 1 ≤ p) (h : ℕ) (b : ℂ)
     (h1 : 1 < √(p : ℝ) * ‖b‖) (h2 : ‖b‖ < √(p : ℝ) * 1) :
     ‖b⁻¹ ^ h‖ ≤ √((p ^ h : ℕ) : ℝ) ∧ 0 < ‖b⁻¹ ^ h‖ := by
@@ -166,6 +221,29 @@ private theorem norm_inv_pow_le_sqrt_and_pos_of_one_lt_sqrt_mul_norm (p : ℕ) (
   rw [inv_le_iff_one_le_mul₀' hr]
   linarith [show √(p : ℝ) * ‖b‖ = ‖b‖ * √(p : ℝ) by ring]
 
+/- English proof (translation)
+Introduce `p h e hp D`. Use `⟨⟨D.S, D.fin, fun s => 1 + ((D.β s).map fun b => b⁻¹ ^ h).sum, ?_, ?_, ?_⟩, Equiv.refl _, fun s => rfl⟩` and prove the remaining obligations. Introduce `σ`. Take `⟨u, hu⟩` from `D.conj σ`. Use `⟨u, fun s => ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[hu, map_add, map_one, map_multiset_sum, Multiset.map_map, Multiset.map_map]`. Use `congr 2`. Apply `Multiset.map_congr rfl` to reduce the goal to its premises. Introduce `b _`. Simplify using `[map_inv₀, map_pow]`.
+
+Introduce `s`. Take `⟨b1, b2, hb⟩` from `Multiset.card_eq_two.1 (D.card s)`. Establish `hw` using `D.pure s`. Rewrite `hw` using `[hb]`. Unfold `Win WinC at hw`.
+
+Establish `hc : ((p : ℝ)) ^ ((((0 : ℤ)) : ℝ) / 2) = 1` using `by simp`. Rewrite `hw` using `[hc]`. Take `⟨hw1, hw2⟩` from `hw`. Establish `k1` using `norm_inv_pow_le_sqrt_and_pos_of_one_lt_sqrt_mul_norm p hp h b1 (by simpa using (hw1 b1 (by simp)).1) (hw1 b1 (by simp)).2`. Establish `k2` using `norm_inv_pow_le_sqrt_and_pos_of_one_lt_sqrt_mul_norm p hp h b2 (by simpa using (hw1 b2 (by simp)).1) (hw1 b2 (by simp)).2`.
+
+Establish `hprod : ‖b1‖ * ‖b2‖ = 1` using `by simpa [norm_mul] using hw2`. Establish `hp2 : ‖b1⁻¹ ^ h‖ * ‖b2⁻¹ ^ h‖ = 1`. Rewrite using `[norm_pow, norm_pow, norm_inv, norm_inv, ← mul_pow, ← mul_inv, hprod, inv_one, one_pow]`. Establish `ha : 1 ≤ √((p ^ h : ℕ) : ℝ)` using `Real.one_le_sqrt.2 (by exact_mod_cast Nat.one_le_pow _ _ (by omega))`. Use `show ‖1 + ((D.β s).map fun b => b⁻¹ ^ h).sum‖ ≤ _`.
+
+Rewrite using `[hb]`. Simplify using `only [Multiset.insert_eq_cons, Multiset.map_cons, Multiset.sum_cons, Multiset.map_singleton, Multiset.sum_singleton]`. Establish `hy : ‖b1⁻¹ ^ h‖ + ‖b2⁻¹ ^ h‖ ≤ √((p ^ h : ℕ) : ℝ) + 1`. Use polynomial arithmetic with `[mul_nonneg (sub_nonneg.2 k1.1) (sub_nonneg.2 k2.1)]`. Combine the equalities or inequalities in the displayed calculation.
+
+Conclude with `norm_add_le _ _`. Use `_ ≤ _ := by rw [norm_one]; linarith`. Introduce `s show IsIntegral ℤ (((p ^ h : ℕ) : ℂ) ^ e * (1 + ((D.β s).map fun b => b⁻¹ ^ h).sum))`. Establish `hm : ∀ i : Fin 2, (![(e : ℤ), -(e : ℤ)] : Fin 2 → ℤ) i ≤ (e : ℤ)`. Introduce `i`.
+
+Apply the tactic sequence `fin_cases i <;> simp`. Establish `hb' : ∀ b ∈ D.β s, IsIntegral ℤ (((p ^ h : ℕ) : ℂ) ^ e * b⁻¹ ^ h)`. Introduce `b hb`. Use `D.intInv (e : ℤ) hm s b hb` as an intermediate fact. Rewrite `this` using `[zpow_natCast]`.
+
+Establish `heq : ((p ^ h : ℕ) : ℂ) ^ e * b⁻¹ ^ h = ((p : ℂ) ^ e * b⁻¹) ^ h`. Rewrite using `[mul_pow, Nat.cast_pow, ← pow_mul, ← pow_mul, mul_comm h e]`. Rewrite using `[heq]`. Conclude with `this.pow h`. Take `⟨b1, b2, hb⟩` from `Multiset.card_eq_two.1 (D.card s)`.
+
+Establish `i1` using `hb' b1 (by rw [hb]; simp)`. Establish `i2` using `hb' b2 (by rw [hb]; simp)`. Rewrite using `[hb]`. Simplify using `only [Multiset.insert_eq_cons, Multiset.map_cons, Multiset.sum_cons, Multiset.map_singleton, Multiset.sum_singleton, mul_add, mul_one]`. Establish `i0 : IsIntegral ℤ (((p ^ h : ℕ) : ℂ) ^ e)`.
+
+Establish `: IsIntegral ℤ ((p ^ h : ℕ) : ℂ)`. Simplify using `using (isIntegral_algebraMap (R := ℤ) (A := ℂ) (x := ((p ^ h : ℕ) : ℤ)))`. Conclude with `this.pow e`. Conclude with `i0.add (i1.add i2)`.
+-/
 theorem traces_from_eigenvalues_rank2 :
     ∀ (p h e : ℕ), 1 ≤ p → ∀ D : EigData 2 p ![(e : ℤ), -(e : ℤ)] 0, ∃ (T : TrData (p ^ h) e) (u : D.S ≃ T.S), ∀ s, T.t (u s) = 1 + ((D.β s).map fun b => b⁻¹ ^ h).sum := by
   intro p h e hp D
@@ -234,6 +312,35 @@ end
 section
 open NumberField IsDedekindDomain Formalism.ConjugateSelfDual ReciprocityTheory.Gal Formalism.BasicNotions Formalism.BasicNotions.Loc Formalism.MainNotions.N Polynomial GlobalTheory.GalOfCusp UpperTheory.V.Af
 
+/- English proof (translation)
+Introduce `q e k hq he hk z t hz ht hti`. Establish `hQ : (7 : ℝ) ≤ q` using `by exact_mod_cast hq`. Establish `hQ0 : (0 : ℝ) < q` using `by linarith`. Establish `hzn : ‖z‖ = 1`. Establish `h1 : ‖z‖ ^ k = 1` using `by rw [← norm_pow, hz, norm_one]`.
+
+Conclude with `(pow_eq_one_iff_of_nonneg (norm_nonneg z) hk.ne').1 h1`. Establish `hz0 : z ≠ 0`. Introduce `h0`. Rewrite `hzn` using `[h0, norm_zero]`. Evaluate the numerical expressions using `at hzn`.
+
+Establish `hzinv : z⁻¹ = z ^ (k - 1)` using `(eq_inv_of_mul_eq_one_left (by rw [pow_sub_one_mul hk.ne', hz])).symm`. Establish `hqc : ((q : ℂ) ^ e) ≠ 0` using `pow_ne_zero _ (by exact_mod_cast (show q ≠ 0 by omega))`. Establish `hPc : ‖((q : ℂ) ^ e)‖ = (q : ℝ) ^ e` using `by rw [norm_pow, Complex.norm_natCast]`. Establish `hQP : (q : ℝ) ≤ (q : ℝ) ^ e` using `le_self_pow₀ (by linarith) (by omega)`. Establish `hP7 : (7 : ℝ) ≤ (q : ℝ) ^ e` using `le_trans hQ hQP`.
+
+Establish `hs0 : 0 ≤ √(q : ℝ)` using `Real.sqrt_nonneg _`. Establish `hs : √(q : ℝ) ≤ ((q : ℝ) + 9) / 6`. Use polynomial arithmetic with `[Real.sq_sqrt hQ0.le, sq_nonneg (√(q : ℝ) - 3)]`. Establish `hE : (q : ℂ) ^ e * (t - eis3 q e z) = (q : ℂ) ^ e * t - (z + (q : ℂ) ^ e + ((q : ℂ) ^ e) ^ 2 * z⁻¹)`. Simplify using `only [eis3]`.
+
+Rewrite using `[mul_sub]`. Use `congr 1`. Rewrite using `[mul_add, mul_add, ← mul_assoc, mul_inv_cancel₀ hqc, one_mul, mul_one, ← mul_assoc, sq]`. Establish `hne : t ≠ eis3 q e z`. Introduce `heq`.
+
+Establish `h1 : (q : ℂ) ^ e * z⁻¹ = eis3 q e z - ((((q : ℂ) ^ e)⁻¹ * z) + 1)`. Simplify using `only [eis3]`. Expand and normalize the polynomial expressions, which then agree. Establish `h2 : ‖(q : ℂ) ^ e * z⁻¹‖ = (q : ℝ) ^ e`. Rewrite using `[norm_mul, hPc, norm_inv, hzn, inv_one, mul_one]`.
+
+Establish `h3 : ‖(((q : ℂ) ^ e)⁻¹ * z) + 1‖ ≤ ((q : ℝ) ^ e)⁻¹ + 1`. Combine the equalities or inequalities in the displayed calculation. Establish `h4 : (q : ℝ) ^ e ≤ ‖eis3 q e z‖ + (((q : ℝ) ^ e)⁻¹ + 1)`. Establish `h6` using `norm_sub_le (eis3 q e z) ((((q : ℂ) ^ e)⁻¹ * z) + 1)`. Rewrite `h6` using `[← h1, h2]`.
+
+Combine the linear equalities and inequalities to obtain the conclusion. Establish `h5 : ((q : ℝ) ^ e)⁻¹ ≤ 1 / 7`. Rewrite using `[inv_eq_one_div]`. Conclude with `one_div_le_one_div_of_le (by norm_num) hP7`. Rewrite `h4` using `[← heq]`.
+
+Combine the linear equalities and inequalities to obtain the conclusion. Use `⟨hne, ?_, ?_⟩` and prove the remaining obligations. Establish `hqi : IsIntegral ℤ ((q : ℂ) ^ e)`. Establish `: IsIntegral ℤ (q : ℂ)`. Simplify using `using (isIntegral_algebraMap (R := ℤ) (A := ℂ) (x := ((q : ℕ) : ℤ)))`.
+
+Conclude with `this.pow e`. Establish `hzi : IsIntegral ℤ z` using `IsIntegral.of_pow hk (by rw [hz]; exact isIntegral_one)`. Establish `hzii : IsIntegral ℤ z⁻¹` using `by rw [hzinv]; exact hzi.pow _`. Rewrite using `[hE]`. Conclude with `hti.sub ((hzi.add hqi).add ((hqi.pow 2).mul hzii))`.
+
+Establish `hX0 : 0 < ‖(q : ℂ) ^ e * (t - eis3 q e z)‖` using `norm_pos_iff.2 (mul_ne_zero hqc (sub_ne_zero.2 hne))`. Rewrite using `[Real.log_le_iff_le_exp hX0]`. Establish `hexp : Real.exp (2 * (e : ℝ) * Real.log q + 1) = ((q : ℝ) ^ e) ^ 2 * Real.exp 1`. Rewrite using `[Real.exp_add, show 2 * (e : ℝ) * Real.log q = ((2 * e : ℕ) : ℝ) * Real.log q by push_cast; ring, Real.exp_nat_mul, Real.exp_log hQ0]`. Expand and normalize the polynomial expressions, which then agree.
+
+Rewrite using `[hexp]`. Establish `hX : ‖(q : ℂ) ^ e * (t - eis3 q e z)‖ ≤ (q : ℝ) ^ e * (√(q : ℝ) + 2) + (1 + (q : ℝ) ^ e + ((q : ℝ) ^ e) ^ 2)`. Rewrite using `[hE]`. Combine the equalities or inequalities in the displayed calculation. Conclude with `(norm_add_le _ _).trans (by gcongr; exact norm_add_le _ _)`.
+
+Use `_ ≤ _ := by`. Rewrite using `[norm_mul, hPc, hzn, norm_mul, norm_pow, hPc, norm_inv, hzn, inv_one, mul_one]`. Use `gcongr`. Establish `he1 : (2 : ℝ) ≤ Real.exp 1` using `by linarith [Real.add_one_le_exp (1 : ℝ)]`. Establish `hPs : 4 / 3 ≤ (q : ℝ) ^ e - √(q : ℝ) - 3` using `by linarith`.
+
+Establish `hP2 : (q : ℝ) ^ e * (√(q : ℝ) + 2) + (1 + (q : ℝ) ^ e + ((q : ℝ) ^ e) ^ 2) ≤ 2 * ((q : ℝ) ^ e) ^ 2`. Use polynomial arithmetic with `[mul_nonneg (sub_nonneg.2 hP7) (show (0 : ℝ) ≤ (q : ℝ) ^ e - √(q : ℝ) - 3 by linarith)]`. Establish `hP0 : 0 ≤ ((q : ℝ) ^ e) ^ 2` using `sq_nonneg _`. Use the polynomial consequences of the given equalities and inequalities.
+-/
 theorem eisenstein_trace_difference_log_bound :
     ∀ (q e k : ℕ), 7 ≤ q → 1 ≤ e → 0 < k → ∀ z t : ℂ, z ^ k = 1 → ‖t‖ ≤ Real.sqrt q + 2 → IsIntegral ℤ ((q : ℂ) ^ e * t) → t ≠ eis3 q e z ∧ IsIntegral ℤ ((q : ℂ) ^ e * (t - eis3 q e z)) ∧ Real.log ‖(q : ℂ) ^ e * (t - eis3 q e z)‖ ≤ 2 * e * Real.log q + 1 := by
   intro q e k hq he hk z t hz ht hti
@@ -319,6 +426,9 @@ end
 section
 open NumberField IsDedekindDomain Formalism.ConjugateSelfDual ReciprocityTheory.Gal Formalism.BasicNotions Formalism.BasicNotions.Loc Formalism.MainNotions.N Polynomial GlobalTheory.GalOfCusp UpperTheory.V.Af
 
+/- English proof (translation)
+Use `show ‖(q : PadicAlgCl l)‖ = 1`. Rewrite using `[← map_natCast (algebraMap ℚ_[l] (PadicAlgCl l)), PadicAlgCl.norm_extends]`. Establish `: ((q : ℚ_[l])) = ((q : ℚ) : ℚ_[l])` using `by push_cast; rfl`. Rewrite using `[this, Padic.eq_padicNorm]`. Conclude with `(padicNorm.nat_eq_one_iff q).2 h` after adjusting the coercions.
+-/
 private theorem norm_natCast_qbar_eq_one_of_not_dvd (l q : ℕ) [Fact l.Prime] (h : ¬ l ∣ q) : ‖(q : Qbar l)‖ = 1 := by
   show ‖(q : PadicAlgCl l)‖ = 1
   rw [← map_natCast (algebraMap ℚ_[l] (PadicAlgCl l)), PadicAlgCl.norm_extends]
@@ -326,6 +436,33 @@ private theorem norm_natCast_qbar_eq_one_of_not_dvd (l q : ℕ) [Fact l.Prime] (
   rw [this, Padic.eq_padicNorm]
   exact_mod_cast (padicNorm.nat_eq_one_iff q).2 h
 
+/- English proof (translation)
+Introduce `q e hq he D Orb _ z hz hσ`. Use `haveI := D.fin`. Use `haveI : Fintype D.S := Fintype.ofFinite _`. Establish `hq0 : (q : ℂ) ≠ 0` using `by exact_mod_cast (show q ≠ 0 by omega)`. Set `F : Orb → D.S → ℂ` to `fun o s => (q : ℂ) ^ e * (D.t s - eis3 q e (z o))`.
+
+Establish `hF : ∀ o s, D.t s ≠ eis3 q e (z o) ∧ IsIntegral ℤ (F o s) ∧ Real.log ‖F o s‖ ≤ 2 * e * Real.log q + 1`. Introduce `o s`. Take `⟨k, hk, hzk⟩` from `hz o`. Conclude with `eisenstein_trace_difference_log_bound q e k hq he hk (z o) (D.t s) hzk (D.bd s) (D.int s)`. Establish `Heisenberg₂ : ∀ (σ : ℂ ≃+* ℂ) (w : ℂ), σ (eis3 q e w) = eis3 q e (σ w)`.
+
+Introduce `σ w`. Simplify using `only [eis3]`. Simplify using `[map_add, map_mul, map_inv₀, map_pow, map_natCast]`. Take `⟨NN, hNN⟩` from `UpperTheory.exists_int_eq_prod_of_galois_permuted_integral (Orb × D.S) (fun x => F x.1 x.2) (fun x => (hF x.1 x.2).2.1) (by`. Introduce `σ`.
+
+Take `⟨uO, huO⟩` from `hσ σ`. Take `⟨uD, huD⟩` from `D.conj σ`. Use `⟨Equiv.prodCongr uO uD, fun x => ?_⟩` and prove the remaining obligations. Simplify using `only [Equiv.prodCongr_apply, Prod.map_fst, Prod.map_snd, F]`. Rewrite using `[huO, huD, ← Heisenberg₂]`.
+
+Simplify using `[map_mul, map_sub, map_pow, map_natCast])`. Establish `hprod : (NN : ℂ) = ∏ o, ∏ s, F o s` using `by rw [hNN, Fintype.prod_prod_type]`. Establish `hne : ∀ o s, F o s ≠ 0` using `fun o s => mul_ne_zero (pow_ne_zero _ hq0) (sub_ne_zero.2 (hF o s).1)`. Use `⟨NN, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `h0`.
+
+Establish `h1 : (NN : ℂ) = 0` using `by rw [h0]; simp`. Rewrite `h1` using `[hprod]`. Take `⟨o, -, ho⟩` from `Finset.prod_eq_zero_iff.1 h1`. Take `⟨s, -, hs⟩` from `Finset.prod_eq_zero_iff.1 ho`. Conclude with `hne o s hs`.
+
+Establish `habs : |(NN : ℝ)| = ∏ o, ∏ s, ‖F o s‖`. Rewrite using `[← Complex.norm_intCast, hprod, norm_prod]`. Simplify using `only [norm_prod]`. Rewrite using `[habs, Real.log_prod (fun o _ => (Finset.prod_pos fun s _ => norm_pos_iff.2 (hne o s)).ne')]`. Combine the equalities or inequalities in the displayed calculation.
+
+Apply `Finset.sum_congr rfl` to reduce the goal to its premises. Introduce `o _`. Conclude with `Real.log_prod (fun s _ => (norm_pos_iff.2 (hne o s)).ne')`. Use `_ ≤ ∑ o : Orb, ∑ s : D.S, (2 * (e : ℝ) * Real.log q + 1) := Finset.sum_le_sum fun o _ => Finset.sum_le_sum fun s _ => (hF o s).2.2`. Use `_ = _ := by`.
+
+Simplify using `only [Finset.sum_const, Finset.card_univ, nsmul_eq_mul, Nat.card_eq_fintype_card]`. Expand and normalize the polynomial expressions, which then agree. Introduce `l _ hlq ι Γ _ g admitted hcl X hAdm hX`. Take `⟨cl, hcl1, hcl2⟩` from `hcl`. Establish `htr : ∀ o, ∀ ρ (hρ : ρ ∈ X o), (ρ g : Matrix (Fin 3) (Fin 3) (Qbar l)).trace = ι.symm (D.t (cl ⟨ρ, hAdm o ρ hρ⟩))` using `fun o ρ hρ => hcl2 ⟨ρ, hAdm o ρ hρ⟩`.
+
+Use `⟨fun o ρ hρ => ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[htr o ρ hρ]`. Introduce `h`. Conclude with `(hF o _).1 (ι.symm.injective h)`. Set `cl' : (o : Orb) → ↥(X o) → D.S` to `fun o r => cl ⟨r.1, hAdm o r.1 r.2⟩`.
+
+Establish `hinj : ∀ o, Function.Injective (cl' o)`. Introduce `o r r' h`. Conclude with `Subtype.ext (hX o r.1 r.2 r'.1 r'.2 (hcl1 _ _ h))`. Establish `key` using `UpperTheory.adicNorm_prod_le_prod_of_injective_classes l ι Orb D.S (Γ →* GL (Fin 3) (Qbar l)) F (fun o s => (hF o s).2.1) X cl' hinj`. Establish `hqn` using `norm_natCast_qbar_eq_one_of_not_dvd l q hlq`.
+
+Establish `hL : ι.symm (∏ o, ∏ s, F o s) = ((NN : ℤ) : Qbar l)` using `by rw [← hprod, map_intCast]`. Rewrite `key` using `[hL]`. Use `key.trans (le_of_eq ?_)` and prove the remaining obligations. Apply `Finset.prod_congr rfl` to reduce the goal to its premises. Introduce `o _`.
+
+Use `Eq.trans ?_ (Finset.prod_coe_sort (X o) (fun ρ => ‖(ρ g : Matrix (Fin 3) (Fin 3) (Qbar l)).trace - ι.symm (eis3 q e (z o))‖))` and prove the remaining obligations. Apply `Finset.prod_congr rfl` to reduce the goal to its premises. Introduce `r _`. Simplify using `only [F, cl']`. Rewrite using `[map_mul, map_pow, map_natCast, norm_mul, norm_pow, hqn, one_pow, one_mul, map_sub, htr o r.1 r.2]`.
+-/
 theorem frobenius_trace_norm_nonzero_log_bound :
     ∀ (q e : ℕ), 7 ≤ q → 1 ≤ e → ∀ (D : TrData q e) (Orb : Type) [Fintype Orb] (z : Orb → ℂ), (∀ o, ∃ k : ℕ, 0 < k ∧ z o ^ k = 1) → (∀ σ : ℂ ≃+* ℂ, ∃ u : Orb ≃ Orb, ∀ o, z (u o) = σ (z o)) → ∃ NN : ℤ, NN ≠ 0 ∧ Real.log |(NN : ℝ)| ≤ Fintype.card Orb * Nat.card D.S * (2 * e * Real.log q + 1) ∧ ∀ (l : ℕ) [Fact l.Prime], ¬ l ∣ q → ∀ (ι : Qbar l ≃+* ℂ) (Γ : Type) [Group Γ] (g : Γ) (admitted : (Γ →* GL (Fin 3) (Qbar l)) → Prop), D.Classifies ι g admitted → ∀ X : Orb → Finset (Γ →* GL (Fin 3) (Qbar l)), (∀ o, ∀ ρ ∈ X o, admitted ρ) → (∀ o, ∀ ρ ∈ X o, ∀ ρ' ∈ X o, RepIso ρ ρ' → ρ = ρ') → (∀ o, ∀ ρ ∈ X o, (ρ g : Matrix (Fin 3) (Fin 3) (Qbar l)).trace ≠ ι.symm (eis3 q e (z o))) ∧ ‖((NN : ℤ) : Qbar l)‖ ≤ ∏ o, ∏ ρ ∈ X o, ‖(ρ g : Matrix (Fin 3) (Fin 3) (Qbar l)).trace - ι.symm (eis3 q e (z o))‖ := by
   intro q e hq he D Orb _ z hz hσ
@@ -404,10 +541,16 @@ end
 section
 open NumberField IsDedekindDomain Formalism.ConjugateSelfDual ReciprocityTheory.Gal Formalism.BasicNotions Formalism.BasicNotions.Loc Formalism.MainNotions.N Polynomial GlobalTheory.GalOfCusp UpperTheory.V.Af
 
+/- English proof (translation)
+Rewrite using `[Units.val_mul, Matrix.trace_mul_comm, ← Units.val_mul, ← mul_assoc, inv_mul_cancel, one_mul]`.
+-/
 private theorem trace_conj_gl3 {k : Type} [Field k] (g x : GL (Fin 3) k) :
     ((g * x * g⁻¹ : GL (Fin 3) k) : Matrix (Fin 3) (Fin 3) k).trace = (x : Matrix (Fin 3) (Fin 3) k).trace := by
   rw [Units.val_mul, Matrix.trace_mul_comm, ← Units.val_mul, ← mul_assoc, inv_mul_cancel, one_mul]
 
+/- English proof (translation)
+Use `⟨w.under (𝓞 ℚ), ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `(p : 𝓞 ℚ) ∈ w.asIdeal.comap (algebraMap (𝓞 ℚ) (𝓞 K))`. Rewrite using `[Ideal.mem_comap, map_natCast]`. Conclude with `hw`.
+-/
 private theorem place_over_rational_prime (K : Type) [Field K] [NumberField K] (p : ℕ) (w : HeightOneSpectrum (𝓞 K))
     (hw : (p : 𝓞 K) ∈ w.asIdeal) : ∃ v : HeightOneSpectrum (𝓞 ℚ), (p : 𝓞 ℚ) ∈ v.asIdeal := by
   refine ⟨w.under (𝓞 ℚ), ?_⟩
@@ -420,6 +563,9 @@ end
 section
 open NumberField IsDedekindDomain Formalism.ConjugateSelfDual ReciprocityTheory.Gal Formalism.BasicNotions Formalism.BasicNotions.Loc Formalism.MainNotions.N Polynomial GlobalTheory.GalOfCusp UpperTheory.V.Af
 
+/- English proof (translation)
+Introduce `h`. Establish `hc : IsCoprime (l : 𝓞 K) (p : 𝓞 K)` using `Nat.Coprime.cast ((Nat.coprime_primes hl hp).2 hlp)`. Take `⟨a, b, hab⟩` from `hc`. Conclude with `w.isPrime.ne_top ((Ideal.eq_top_iff_one _).2 (hab ▸ w.asIdeal.add_mem (w.asIdeal.mul_mem_left a h) (w.asIdeal.mul_mem_left b hw)))`.
+-/
 private theorem not_mem_of_distinct_prime {K : Type} [Field K] [NumberField K] {p l : ℕ} (w : HeightOneSpectrum (𝓞 K)) (hp : p.Prime)
     (hl : l.Prime) (hlp : l ≠ p) (hw : (p : 𝓞 K) ∈ w.asIdeal) : (l : 𝓞 K) ∉ w.asIdeal := by
   intro h
@@ -428,6 +574,11 @@ private theorem not_mem_of_distinct_prime {K : Type} [Field K] [NumberField K] {
   exact w.isPrime.ne_top ((Ideal.eq_top_iff_one _).2
     (hab ▸ w.asIdeal.add_mem (w.asIdeal.mul_mem_left a h) (w.asIdeal.mul_mem_left b hw)))
 
+/- English proof (translation)
+Use `⟨(UpperTheory.isIrr_twist_and_repIso_of_twist_repIso _ _ 3 _).1 ρ h.irr, h.aut, ?_, by decide⟩` and prove the remaining obligations. Establish `h1` using `UpperTheory.level_twist_cyclotomic_pow K Ω l 3 N _ ρ (-1) h.level`. Rewrite `h1` using `[zpow_neg_one]`. Use `h1 using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `i`.
+
+Apply the tactic sequence `fin_cases i <;> simp <;> ring`.
+-/
 private theorem admissible_twist_cyclotomic {K Ω : Type} [Field K] [NumberField K] [IsCMField K] [Field Ω] [Algebra K Ω] [IsAlgClosure K Ω]
     {l : ℕ} [Fact l.Prime] (ι : Qbar l ≃+* ℂ) (e N : ℕ) (ρ : G K Ω →* GL (Fin 3) (Qbar l)) (h : Adm3 ι e N ρ) :
     AdmK ι N ![(e : ℤ) - 1, -1, -(e : ℤ) - 1] (tw ρ (cycBar K Ω l)⁻¹) := by
@@ -448,6 +599,9 @@ section
 
 end
 
+/- English proof (translation)
+Substitute `h` using the available equality. Rewrite using `[Multiset.mem_sections, Multiset.map_map, Multiset.rel_map_left]`. Apply `Multiset.rel_refl_of_refl_on` to reduce the goal to its premises. Introduce `x _`. Simplify using `[Polynomial.mem_nthRoots hf]`.
+-/
 private theorem rootSum_lemma (f : ℕ) (hf : 0 < f) (β B : Multiset ℂ)
     (h : Multiset.map (fun x => x ^ f) B = β) :
     B ∈ (Multiset.map (fun y => Polynomial.nthRoots f y) β).Sections := by
@@ -457,6 +611,11 @@ private theorem rootSum_lemma (f : ℕ) (hf : 0 < f) (β B : Multiset ℂ)
   intro x _
   simp [Polynomial.mem_nthRoots hf]
 
+/- English proof (translation)
+Rewrite using `[Multiset.card_sections, Multiset.map_map]`. Combine the equalities or inequalities in the displayed calculation. Introduce `x hx`. Take `⟨y, _, rfl⟩` from `Multiset.mem_map.1 hx`. Conclude with `(Polynomial.card_nthRoots f y).trans hf2)`.
+
+Use `_ = _ := by rw [Multiset.card_map]`.
+-/
 private theorem card_sections_map_nthRoots_le_two_pow_of_le_two (f : ℕ) (hf2 : f ≤ 2) (β : Multiset ℂ) :
     ((Multiset.map (fun y => Polynomial.nthRoots f y) β).Sections).card ≤ 2 ^ β.card := by
   rw [Multiset.card_sections, Multiset.map_map]
@@ -467,6 +626,11 @@ private theorem card_sections_map_nthRoots_le_two_pow_of_le_two (f : ℕ) (hf2 :
           exact (Polynomial.card_nthRoots f y).trans hf2)
     _ = _ := by rw [Multiset.card_map]
 
+/- English proof (translation)
+Establish `hinj : Function.Injective (fun B : {B : Multiset ℂ // Multiset.map (fun x => x ^ f) B = β} => (⟨B.1, Multiset.mem_toFinset.2 (rootSum_lemma f hf _ _ B.2)⟩ : ((Multiset.map (fun y => Polynomial.nthRoots f y) β).Sections.toFinset)))`. Introduce `x y h`. Apply `Subtype.ext` to reduce the goal to its premises. Establish `h'` using `congrArg Subtype.val h`. Conclude with `h'`.
+
+Use `⟨Finite.of_injective _ hinj, ?_⟩` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation.
+-/
 private theorem finite_and_card_map_pow_eq_le_two_pow_of_le_two (f : ℕ) (hf : 0 < f) (hf2 : f ≤ 2) (β : Multiset ℂ) :
     Finite {B : Multiset ℂ // Multiset.map (fun x => x ^ f) B = β} ∧
       Nat.card {B : Multiset ℂ // Multiset.map (fun x => x ^ f) B = β} ≤ 2 ^ β.card := by
@@ -484,6 +648,17 @@ private theorem finite_and_card_map_pow_eq_le_two_pow_of_le_two (f : ℕ) (hf : 
         Nat.card_eq_finsetCard _
     _ ≤ _ := (Multiset.toFinset_card_le _).trans (card_sections_map_nthRoots_le_two_pow_of_le_two f hf2 β)
 
+/- English proof (translation)
+Unfold `Win WinC at *`. Establish `hp0 : (0 : ℝ) ≤ p` using `Nat.cast_nonneg p`. Establish `hc0 : 0 ≤ (p : ℝ) ^ ((wt : ℝ) / 2)` using `Real.rpow_nonneg hp0 _`. Establish `hs0 : 0 ≤ √(p : ℝ)` using `Real.sqrt_nonneg _`. Establish `h1 : ((p ^ f : ℕ) : ℝ) ^ ((wt : ℝ) / 2) = ((p : ℝ) ^ ((wt : ℝ) / 2)) ^ f`.
+
+Rewrite using `[Nat.cast_pow, ← Real.rpow_natCast (p : ℝ) f, ← Real.rpow_mul hp0, mul_comm, Real.rpow_mul hp0, Real.rpow_natCast]`. Establish `h2 : √((p ^ f : ℕ) : ℝ) = (√(p : ℝ)) ^ f`. Rewrite using `[Nat.cast_pow, show (p : ℝ) ^ f = ((√(p : ℝ)) ^ f) ^ 2 by`. Rewrite using `[← pow_mul, mul_comm, pow_mul, Real.sq_sqrt hp0]]`. Conclude with `Real.sqrt_sq (pow_nonneg hs0 f)`.
+
+Rewrite `hw` using `[h1, h2]`. Take `⟨hw1, hw2⟩` from `hw`. Substitute `h` using the available equality. Use `⟨fun b hb => ?_, ?_⟩` and prove the remaining obligations. Use `hw1 (b ^ f) (Multiset.mem_map_of_mem _ hb)` as an intermediate fact.
+
+Rewrite `this` using `[norm_pow, ← mul_pow, ← mul_pow]`. Conclude with `⟨(pow_lt_pow_iff_left₀ hc0 (mul_nonneg hs0 (norm_nonneg _)) hf.ne').1 this.1, (pow_lt_pow_iff_left₀ (norm_nonneg _) (mul_nonneg hs0 hc0) hf.ne').1 this.2⟩`. Establish `hpr : (Multiset.map (fun x => x ^ f) B).prod = B.prod ^ f`. Simplify using `using Multiset.prod_map_pow (m := B) (f := id) (n := f)`. Rewrite `hw2` using `[hpr, norm_pow, Multiset.card_map, ← pow_mul, mul_comm f, pow_mul]`.
+
+Conclude with `(pow_left_inj₀ (norm_nonneg _) (pow_nonneg hc0 _) hf.ne').1 hw2`.
+-/
 private theorem win_of_map_pow_eq_of_win_pow (p f : ℕ) (hp : 0 < p) (hf : 0 < f) (wt : ℤ) (B β : Multiset ℂ)
     (h : Multiset.map (fun x => x ^ f) B = β) (hw : Win (p ^ f) (wt : ℝ) β) : Win p (wt : ℝ) B := by
   unfold Win WinC at *
@@ -510,6 +685,9 @@ private theorem win_of_map_pow_eq_of_win_pow (p f : ℕ) (hp : 0 < p) (hf : 0 < 
     rw [hpr, norm_pow, Multiset.card_map, ← pow_mul, mul_comm f, pow_mul] at hw2
     exact (pow_left_inj₀ (norm_nonneg _) (pow_nonneg hc0 _) hf.ne').1 hw2
 
+/- English proof (translation)
+Apply `IsIntegral.of_pow hf` to reduce the goal to its premises. Establish `: ((p : ℂ) ^ a * b) ^ f = ((p ^ f : ℕ) : ℂ) ^ a * b ^ f`. Rewrite using `[mul_pow, Nat.cast_pow, ← zpow_natCast ((p : ℂ) ^ a) f, ← zpow_natCast (p : ℂ) f, ← zpow_mul, ← zpow_mul, mul_comm a]`. Rewrite using `[this]`. Conclude with `h`.
+-/
 private theorem isIntegral_zpow_mul_of_isIntegral_pow_zpow_mul_pow (p f : ℕ) (hf : 0 < f) (a : ℤ) (b : ℂ)
     (h : IsIntegral ℤ (((p ^ f : ℕ) : ℂ) ^ a * b ^ f)) : IsIntegral ℤ ((p : ℂ) ^ a * b) := by
   apply IsIntegral.of_pow hf
@@ -520,6 +698,25 @@ private theorem isIntegral_zpow_mul_of_isIntegral_pow_zpow_mul_pow (p f : ℕ) (
   exact h
 
 open UpperTheory.V.Br in
+/- English proof (translation)
+Introduce `n p hp m wt I _ q f hf D`. Establish `hf0 : ∀ i, 0 < f i` using `fun i => (hf i).1`. Establish `key : ∀ (i : I) (σ : ℂ ≃+* ℂ) (B : Multiset ℂ), Multiset.map (fun x => x ^ f i) (Multiset.map σ B) = Multiset.map σ (Multiset.map (fun x => x ^ f i) B)`. Introduce `i σ B`. Simplify using `[Multiset.map_map, Function.comp_def, map_pow]`.
+
+Establish `hfib : ∀ i (s : (D i).S), Finite {B : Multiset ℂ // Multiset.map (fun x => x ^ f i) B = (D i).β s} ∧ Nat.card {B : Multiset ℂ // Multiset.map (fun x => x ^ f i) B = (D i).β s} ≤ 2 ^ n`. Introduce `i s`. Use `finite_and_card_map_pow_eq_le_two_pow_of_le_two (f i) (hf0 i) (hf i).2.1 ((D i).β s)` as an intermediate fact. Rewrite `this` using `[(D i).card s]`. Then use the resulting hypothesis. Establish `hT : ∀ i, Finite {x : (D i).S × Multiset ℂ // Multiset.map (fun x => x ^ f i) x.2 = (D i).β x.1} ∧ Nat.card {x : (D i).S × Multiset ℂ // Multiset.map (fun x => x ^ f i) x.2 = (D i).β x.1} ≤ 2 ^ n * Nat.card (D i).S`.
+
+Introduce `i`. Use `haveI := (D i).fin`. Use `haveI : Fintype (D i).S := Fintype.ofFinite _`. Use `haveI : ∀ s, Finite {B : Multiset ℂ // Multiset.map (fun x => x ^ f i) B = (D i).β s} := fun s => (hfib i s).1`. Set `E` to `Equiv.subtypeProdEquivSigmaSubtype (fun (s : (D i).S) (B : Multiset ℂ) => Multiset.map (fun x => x ^ f i) B = (D i).β s)`.
+
+Use `⟨Finite.of_equiv _ E.symm, ?_⟩` and prove the remaining obligations. Rewrite using `[Nat.card_congr E, Nat.card_sigma]`. Combine the equalities or inequalities in the displayed calculation. Use `haveI : ∀ i, Finite {x : (D i).S × Multiset ℂ // Multiset.map (fun x => x ^ f i) x.2 = (D i).β x.1} := fun i => (hT i).1`. Use `⟨⟨(i : I) × {x : (D i).S × Multiset ℂ // Multiset.map (fun x => x ^ f i) x.2 = (D i).β x.1} × Bool, inferInstance, fun x => x.2.1.1.2, ?_, ?_, ?_, ?_, ?_⟩, ?_, id, Function.injective_id, fun _ => rfl⟩` and prove the remaining obligations.
+
+Introduce `x`. Use `congrArg Multiset.card x.2.1.2` as an intermediate fact. Simplify `this` using `[(D x.1).card]`. Introduce `σ choose e he using fun i => (D i).conj σ`. Set `mE : Multiset ℂ ≃ Multiset ℂ` to `⟨Multiset.map σ, Multiset.map σ.symm, fun B => by simp [Multiset.map_map, Function.comp_def], fun B => by simp [Multiset.map_map, Function.comp_def]⟩`.
+
+Use `⟨Equiv.sigmaCongrRight fun i => Equiv.prodCongr (Equiv.subtypeEquiv (Equiv.prodCongr (e i) mE) (fun x => ?_)) (Equiv.refl Bool), fun x => rfl⟩` and prove the remaining obligations. Break down `x with ⟨s, B⟩` into its components or cases. Use `show _ ↔ Multiset.map (fun y => y ^ f i) (Multiset.map σ B) = (D i).β (e i s)`. Rewrite using `[he, key]`. Conclude with `(Multiset.map_injective σ.injective).eq_iff.symm`.
+
+Introduce `x`. Conclude with `win_of_map_pow_eq_of_win_pow p (f x.1) hp (hf0 x.1) wt _ _ x.2.1.2 (by rw [← (hf x.1).2.2]; exact (D x.1).pure x.2.1.1.1)`. Introduce `a ha x b hb`. Establish `hm : b ^ f x.1 ∈ (D x.1).β x.2.1.1.1` using `x.2.1.2 ▸ Multiset.mem_map_of_mem _ hb`. Conclude with `isIntegral_zpow_mul_of_isIntegral_pow_zpow_mul_pow p (f x.1) (hf0 x.1) a b (by rw [← (hf x.1).2.2]; exact (D x.1).int a ha _ _ hm)`.
+
+Introduce `a ha x b hb`. Establish `hm : b ^ f x.1 ∈ (D x.1).β x.2.1.1.1` using `x.2.1.2 ▸ Multiset.mem_map_of_mem _ hb`. Use `(D x.1).intInv a ha _ _ hm` as an intermediate fact. Rewrite `this` using `[← inv_pow]`. Conclude with `isIntegral_zpow_mul_of_isIntegral_pow_zpow_mul_pow p (f x.1) (hf0 x.1) a b⁻¹ (by rw [← (hf x.1).2.2]; exact this)`.
+
+Rewrite using `[Nat.card_sigma, Finset.mul_sum]`. Apply `Finset.sum_le_sum` to reduce the goal to its premises. Introduce `i _`. Rewrite using `[Nat.card_prod, Nat.card_eq_fintype_card (α := Bool), Fintype.card_bool]`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem rootSum :
     RootSum := by
   intro n p hp m wt I _ q f hf D

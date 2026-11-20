@@ -14,9 +14,25 @@ namespace GlobalTheory.CompanionTheory.PsiStd
 def adelicAddChar (E : Type) [Field E] [NumberField E] : AddChar (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.AF E) ℂ :=
   Circle.coeHom.compAddChar (adelicChar E)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem adelicAddChar_apply (E : Type) [Field E] [NumberField E] (a : Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.AF E) :
     adelicAddChar E a = (adelicChar E a : ℂ) := rfl
 
+/- English proof (translation)
+Use `⟨⟨?_, ?_, ?_, ?_⟩, ?_⟩` and prove the remaining obligations. Use `show Continuous (fun a : Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.AF E => ((adelicChar E a : Circle) : ℂ))`. Conclude with `continuous_subtype_val.comp continuous_adelicChar`. Introduce `x`. Rewrite using `[adelicAddChar_apply]`.
+
+Establish `h` using `(adelicChar E x).2`. Conclude with `mem_sphere_zero_iff_norm.mp h`. Introduce `a`. Rewrite using `[adelicAddChar_apply]`. Establish `h` using `adelicChar_algebraMap (K := E) a`.
+
+Rewrite using `[show (Algebra.algebraMap E (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.AF E) a) = algebraMap E (NumberField.AdeleRing (𝓞 E) E) a from rfl, h]`. Simplify using the standard rewrite rules. Take `⟨x, hx⟩` from `AddChar.ne_one_iff.mp (adelicChar_ne_one (K := E))`. Use `⟨x, ?_⟩` and prove the remaining obligations. Rewrite using `[adelicAddChar_apply]`.
+
+Introduce `h`. Apply `hx` to reduce the goal to its premises. Conclude with `Subtype.ext h`. Introduce `x show ((adelicChar E (x, 0) : Circle) : ℂ) = GlobalTheory.IndefiniteRowSideFullHecke.LocalDualIndex.stdInf E x`. Rewrite using `[adelicChar_infinite, Real.fourierChar_apply]`.
+
+Unfold `GlobalTheory.IndefiniteRowSideFullHecke.LocalDualIndex.stdInf`. Establish `ht : (infiniteTrace E x) = GlobalTheory.IndefiniteRowSideFullHecke.LocalDualIndex.traceInf E x` using `rfl`. Rewrite using `[ht]`. Use `congr 1`. Use `push_cast`.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem isStdChar_adelicAddChar (E : Type) [Field E] [NumberField E] (w : HeightOneSpectrum (𝓞 E)) :
     GlobalTheory.IndefiniteRowSideFullHecke.LocalDualIndex.IsStdChar E (adelicAddChar E) := by
   refine ⟨⟨?_, ?_, ?_, ?_⟩, ?_⟩
@@ -48,6 +64,21 @@ theorem isStdChar_adelicAddChar (E : Type) [Field E] [NumberField E] (w : Height
     push_cast
     ring
 
+/- English proof (translation)
+Establish `hce : c = Complex.exp (↑(Complex.arg c) * Complex.I)`. Establish `h'` using `Complex.norm_mul_exp_arg_mul_I c`. Rewrite `h'` using `[hc]`. Simplify using `using h'.symm`. Distinguish the cases in `h0 : Complex.arg c = 0`.
+
+Rewrite using `[hce, h0]`. Simplify using the standard rewrite rules. It suffices to derive a contradiction. Use `set θ := Complex.arg c with hθ`. Establish `hpos : 0 < |θ|` using `abs_pos.mpr h0`.
+
+Establish `hle : |θ| ≤ Real.pi` using `Complex.abs_arg_le_pi c`. Use `set m : ℕ := ⌈Real.pi / (2 * |θ|)⌉₊ with hm`. Establish `h2pos : 0 < 2 * |θ|` using `by positivity`. Establish `h1 : Real.pi / (2 * |θ|) ≤ (m : ℝ)` using `Nat.le_ceil _`. Establish `h2 : (m : ℝ) < Real.pi / (2 * |θ|) + 1` using `Nat.ceil_lt_add_one (by positivity)`.
+
+Establish `h1' : Real.pi ≤ (m : ℝ) * (2 * |θ|)` using `(div_le_iff₀ h2pos).mp h1`. Establish `h2' : ((m : ℝ) - 1) * (2 * |θ|) < Real.pi`. Establish `: (m : ℝ) - 1 < Real.pi / (2 * |θ|)` using `by linarith`. Conclude with `(lt_div_iff₀ h2pos).mp this`. Establish `hA : Real.pi / 2 ≤ (m : ℝ) * |θ|` using `by nlinarith`.
+
+Establish `hB : (m : ℝ) * |θ| ≤ Real.pi + Real.pi / 2` using `by nlinarith`. Establish `hre : (c ^ m).re = Real.cos ((m : ℝ) * |θ|)`. Rewrite using `[hce, ← Complex.exp_nat_mul]`. Establish `hx : (↑m * (↑θ * Complex.I) : ℂ) = ↑((m : ℝ) * θ) * Complex.I`. Use `push_cast`.
+
+Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hx, Complex.exp_ofReal_mul_I_re, ← Real.cos_abs, abs_mul, Nat.abs_cast]`. Establish `hcos` using `Real.cos_nonpos_of_pi_div_two_le_of_le hA hB`. Use `h m` as an intermediate fact. Rewrite `this` using `[hre]`.
+
+Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 private theorem eq_one_of_norm_one_of_forall_re_pow_pos (c : ℂ) (hc : ‖c‖ = 1)
     (h : ∀ m : ℕ, 0 < (c ^ m).re) : c = 1 := by
   have hce : c = Complex.exp (↑(Complex.arg c) * Complex.I) := by
@@ -82,6 +113,11 @@ private theorem eq_one_of_norm_one_of_forall_re_pow_pos (c : ℂ) (hc : ‖c‖ 
   rw [hre] at this
   linarith
 
+/- English proof (translation)
+Establish `hsplit : (finiteAdeleInr (algebraMap E (IsDedekindDomain.FiniteAdeleRing (𝓞 E) E) k) : NumberField.AdeleRing (𝓞 E) E) = algebraMap E (NumberField.AdeleRing (𝓞 E) E) k + infiniteAdeleInl (-(algebraMap E (NumberField.InfiniteAdeleRing E) k))`. Rewrite using `[← infiniteAdeleInl_add_finiteAdeleInr (algebraMap E (NumberField.AdeleRing (𝓞 E) E) k), adeleRing_algebraMap_fst, adeleRing_algebraMap_snd, map_neg]`. Normalize the expressions using the abelian group laws. Rewrite using `[hsplit, AddChar.map_add_eq_mul]`. Establish `h1 : ψ (algebraMap E (NumberField.AdeleRing (𝓞 E) E) k) = 1` using `hψ.1.2.2.1 k`.
+
+Rewrite using `[h1, one_mul]`. Conclude with `hψ.2 _`.
+-/
 private theorem stdChar_finite_algebraMap_eq_stdInf_neg (E : Type) [Field E] [NumberField E]
     (ψ : AddChar (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.AF E) ℂ) (hψ : GlobalTheory.IndefiniteRowSideFullHecke.LocalDualIndex.IsStdChar E ψ) (k : E) :
     ψ (finiteAdeleInr (algebraMap E (IsDedekindDomain.FiniteAdeleRing (𝓞 E) E) k)) =
@@ -98,6 +134,13 @@ private theorem stdChar_finite_algebraMap_eq_stdInf_neg (E : Type) [Field E] [Nu
   rw [h1, one_mul]
   exact hψ.2 _
 
+/- English proof (translation)
+Establish `h2` using `IsDedekindDomain.HeightOneSpectrum.valuedAdicCompletion_eq_valuation (K := E) v ((m : ℕ) : 𝓞 E)`. Simplify using `at h2`. Prove the components needed by the constructor for the conclusion. Establish `h3 : IsDedekindDomain.HeightOneSpectrum.valuation E v ((m : ℕ) : E) ≤ 1`. Simplify using `using IsDedekindDomain.HeightOneSpectrum.valuation_le_one (K := E) v ((m : ℕ) : 𝓞 E)`.
+
+Rewrite using `[h2]`. Conclude with `h3`. Introduce `hm`. Establish `h4 : IsDedekindDomain.HeightOneSpectrum.valuation E v ((m : ℕ) : E) < 1`. Simplify using `using (IsDedekindDomain.HeightOneSpectrum.valuation_lt_one_iff_mem (K := E) v _).mpr hm`.
+
+Rewrite using `[h2]`. Conclude with `h4`.
+-/
 private theorem valued_natCast_le_one_and_lt (E : Type) [Field E] [NumberField E]
     (v : HeightOneSpectrum (𝓞 E)) (m : ℕ) :
     Valued.v (m : v.adicCompletion E) ≤ 1 ∧
@@ -116,6 +159,19 @@ private theorem valued_natCast_le_one_and_lt (E : Type) [Field E] [NumberField E
     rw [h2]
     exact h4
 
+/- English proof (translation)
+Take `⟨γ, hγ⟩` from `Valued.mem_nhds_zero.mp hu`. Take `⟨y0, hy0⟩` from `MonoidWithZeroHom.ValueGroup₀.restrict₀_surjective _ γ.val`. Establish `hy0' : Valued.v.restrict y0 = γ.val` using `by rw [Valuation.restrict_def]; exact hy0`. Establish `hy0ne : Valued.v y0 ≠ 0`. Introduce `h0`.
+
+Establish `hz : y0 = 0` using `(Valuation.zero_iff _).mp h0`. Rewrite `hy0'` using `[hz, map_zero]`. Conclude with `γ.ne_zero hy0'.symm`. Establish `hq1 : Valued.v (q : v.adicCompletion E) ≤ WithZero.exp (-1 : ℤ)`. Distinguish the cases in `hq0 : Valued.v (q : v.adicCompletion E) = 0`.
+
+Rewrite using `[hq0]`. Conclude with `zero_le`. Establish `hlog : WithZero.log (Valued.v (q : v.adicCompletion E)) < 0`. Establish `h1 : WithZero.exp (WithZero.log (Valued.v (q : v.adicCompletion E))) < WithZero.exp (0 : ℤ)`. Rewrite using `[WithZero.exp_log hq0, WithZero.exp_zero]`.
+
+Conclude with `hq`. Conclude with `WithZero.exp_lt_exp.mp h1`. Combine the equalities or inequalities in the displayed calculation. Use `⟨(-(WithZero.log (Valued.v y0))).toNat + 1, fun M hM x hx => hγ ?_⟩` and prove the remaining obligations. Use `show Valued.v.restrict ((q : v.adicCompletion E) ^ M * x) < γ.val`.
+
+Rewrite using `[← hy0', Valuation.restrict_lt_iff, map_mul, Valuation.map_pow]`. Combine the equalities or inequalities in the displayed calculation. Conclude with `mul_le_of_le_one_right' hx`. Use `_ ≤ WithZero.exp (-1 : ℤ) ^ M := pow_le_pow_left' hq1 M`. Use `_ = WithZero.exp (M • (-1 : ℤ)) := (WithZero.exp_nsmul M (-1)).symm`.
+
+Use `_ < Valued.v y0 := by`. Rewrite using `[← WithZero.exp_log hy0ne, WithZero.exp_lt_exp, nsmul_eq_mul]`. Use linear arithmetic over natural numbers and integers.
+-/
 private theorem eventually_natCast_pow_mul_mem_nhds (E : Type) [Field E] [NumberField E]
     (v : HeightOneSpectrum (𝓞 E)) (u : Set (v.adicCompletion E))
     (hu : u ∈ nhds (0 : v.adicCompletion E))
@@ -153,6 +209,49 @@ private theorem eventually_natCast_pow_mul_mem_nhds (E : Type) [Field E] [Number
         rw [← WithZero.exp_log hy0ne, WithZero.exp_lt_exp, nsmul_eq_mul]
         omega
 
+/- English proof (translation)
+Use `set h : IsDedekindDomain.FiniteAdeleRing (𝓞 E) E → ℂ := fun b => ψ (finiteAdeleInr b) * (ψ' (finiteAdeleInr b))⁻¹ with hh`. Establish `hne : ∀ b, ψ' (finiteAdeleInr b) ≠ 0`. Introduce `b h0`. Establish `h1` using `hψ'.1.2.1 (finiteAdeleInr b)`. Rewrite `h1` using `[h0, norm_zero]`.
+
+Conclude with `zero_ne_one h1`. Establish `hmul : ∀ b c, h (b + c) = h b * h c`. Introduce `b c`. Simplify using `only [hh, map_add, AddChar.map_add_eq_mul, mul_inv]`. Expand and normalize the polynomial expressions, which then agree.
+
+Establish `h0 : h 0 = 1` using `by simp [hh]`. Establish `hpow : ∀ (n : ℕ) b, h (n • b) = h b ^ n`. Introduce `n b`. Proceed by induction on `n with`. Consider the case `zero => simp [h0]`.
+
+Consider the case `succ n ih => rw [succ_nsmul, hmul, ih, pow_succ]`. Establish `hnorm : ∀ b, ‖h b‖ = 1`. Introduce `b`. Simplify using `only [hh, norm_mul, norm_inv, hψ.1.2.1, hψ'.1.2.1, inv_one, mul_one]`. Establish `hF : ∀ k : E, h (algebraMap E (IsDedekindDomain.FiniteAdeleRing (𝓞 E) E) k) = 1`.
+
+Introduce `k`. Simplify using `only [hh]`. Rewrite using `[stdChar_finite_algebraMap_eq_stdInf_neg E ψ hψ k, stdChar_finite_algebraMap_eq_stdInf_neg E ψ' hψ' k]`. Apply `mul_inv_cancel₀` to reduce the goal to its premises. Unfold `GlobalTheory.IndefiniteRowSideFullHecke.LocalDualIndex.stdInf`.
+
+Conclude with `Complex.exp_ne_zero _`. Establish `hinr : Continuous (fun b : IsDedekindDomain.FiniteAdeleRing (𝓞 E) E => (finiteAdeleInr b : NumberField.AdeleRing (𝓞 E) E))` using `by show Continuous (fun b => ((0 : NumberField.InfiniteAdeleRing E), b))`. Conclude with `continuous_const.prodMk continuous_id`. Establish `hcont : Continuous h`. Establish `c1 : Continuous (fun b => ψ (finiteAdeleInr b))` using `hψ.1.1.comp hinr`.
+
+Establish `c2 : Continuous (fun b => ψ' (finiteAdeleInr b))` using `hψ'.1.1.comp hinr`. Conclude with `c1.mul (c2.inv₀ hne)`. Use `set U : Set (IsDedekindDomain.FiniteAdeleRing (𝓞 E) E) := {b | 0 < (h b).re} with hU`. Establish `hUo : IsOpen U` using `isOpen_lt continuous_const (Complex.continuous_re.comp hcont)`. Establish `h0U : (0 : IsDedekindDomain.FiniteAdeleRing (𝓞 E) E) ∈ U` using `by show 0 < (h 0).re`.
+
+Rewrite using `[h0]`. Simplify using the standard rewrite rules. Choose the witnesses or unpack the hypotheses as in `⟨n, hn0, hnU⟩ : ∃ n : ℕ, n ≠ 0 ∧ ∀ z ∈ integralFiniteAdeles (𝓞 E) E, n • z ∈ U := by`. Set `ι : (∀ v : HeightOneSpectrum (𝓞 E), v.adicCompletionIntegers E) → IsDedekindDomain.FiniteAdeleRing (𝓞 E) E` to `RestrictedProduct.structureMap _ _ Filter.cofinite`. Establish `hιc : Continuous ι` using `RestrictedProduct.isEmbedding_structureMap.continuous`.
+
+Establish `hι0 : ι 0 = 0`. Apply `RestrictedProduct.ext` to reduce the goal to its premises. Introduce `v`. Both sides reduce to the same expression. Establish `hV : ι ⁻¹' U ∈ nhds (0 : ∀ v : HeightOneSpectrum (𝓞 E), v.adicCompletionIntegers E)` using `hιc.continuousAt.preimage_mem_nhds (hUo.mem_nhds (by rw [hι0]; exact h0U))`.
+
+Rewrite `hV` using `[nhds_pi, Filter.mem_pi']`. Take `⟨I, t, ht, hIt⟩` from `hV`. Establish `hloc : ∀ v : HeightOneSpectrum (𝓞 E), ∃ N : ℕ, ∀ M : ℕ, N ≤ M → ∀ y : v.adicCompletionIntegers E, ∀ x : v.adicCompletion E, Valued.v x ≤ 1 → (y : v.adicCompletion E) = ((Ideal.absNorm v.asIdeal : ℕ) : v.adicCompletion E) ^ M * x → y ∈ t v`. Introduce `v`. Take `⟨u, hu, hut⟩` from `(mem_nhds_subtype _ _ _).mp (ht v)`.
+
+Take `⟨N, hN⟩` from `eventually_natCast_pow_mul_mem_nhds E v u hu (Ideal.absNorm v.asIdeal) ((valued_natCast_le_one_and_lt E v _).2 (Ideal.absNorm_mem v.asIdeal))`. Use `⟨N, fun M hM y x hx hyx => hut ?_⟩` and prove the remaining obligations. Use `show (y : v.adicCompletion E) ∈ u`. Rewrite using `[hyx]`. Conclude with `hN M hM x hx`.
+
+Use `choose Nf hNf using hloc`. Use `set S : ℕ := ∑ u ∈ I, Nf u with hS`. Use `⟨∏ u ∈ I, (Ideal.absNorm u.asIdeal) ^ S, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[Finset.prod_ne_zero_iff]`. Introduce `u _`.
+
+Conclude with `pow_ne_zero _ (fun h0 => u.ne_bot (Ideal.absNorm_eq_zero_iff.mp h0))`. Introduce `z hz`. Rewrite `hz` using `[mem_integralFiniteAdeles]`. Set `z' : ∀ v : HeightOneSpectrum (𝓞 E), v.adicCompletionIntegers E` to `fun v => ⟨(∏ u ∈ I, (Ideal.absNorm u.asIdeal) ^ S) • z v, nsmul_mem (hz v) _⟩`. Establish `hz' : ι z' = (∏ u ∈ I, (Ideal.absNorm u.asIdeal) ^ S) • z`.
+
+Apply `RestrictedProduct.ext` to reduce the goal to its premises. Introduce `v`. Use `first`. Consider the case `rfl`. Consider the case `(rw [RestrictedProduct.nsmul_apply]; rfl)`.
+
+Establish `hz'' : z' ∈ (↑I : Set (HeightOneSpectrum (𝓞 E))).pi t`. Introduce `v hv`. Establish `hvI : v ∈ I` using `Finset.mem_coe.mp hv`. Establish `hprod : (Ideal.absNorm v.asIdeal) ^ S * ∏ u ∈ I.erase v, (Ideal.absNorm u.asIdeal) ^ S = ∏ u ∈ I, (Ideal.absNorm u.asIdeal) ^ S` using `Finset.mul_prod_erase I (fun u => (Ideal.absNorm u.asIdeal) ^ S) hvI`. Apply `hNf v S (Finset.single_le_sum (fun _ _ => Nat.zero_le _) hvI) (z' v) (((∏ u ∈ I.erase v, (Ideal.absNorm u.asIdeal) ^ S : ℕ) : v.adicCompletion E) * z v)` to reduce the goal to its premises.
+
+Rewrite using `[map_mul]`. Combine the equalities or inequalities in the displayed calculation. Use `show ((∏ u ∈ I, (Ideal.absNorm u.asIdeal) ^ S) • z v : v.adicCompletion E) = _`. Rewrite using `[nsmul_eq_mul, ← mul_assoc, ← Nat.cast_pow, ← Nat.cast_mul, hprod]`. Rewrite using `[← hz']`.
+
+Conclude with `hIt hz''`. Establish `hone : ∀ z ∈ integralFiniteAdeles (𝓞 E) E, h (n • z) = 1`. Introduce `z hz`. Apply `eq_one_of_norm_one_of_forall_re_pow_pos _ (hnorm _)` to reduce the goal to its premises. Introduce `m`.
+
+Rewrite using `[← hpow, smul_smul, mul_comm, ← smul_smul]`. Conclude with `hnU _ (nsmul_mem hz m)`. Establish `hint : ∀ y ∈ integralFiniteAdeles (𝓞 E) E, h y = 1`. Introduce `y hy`. Use `set w := algebraMap E (IsDedekindDomain.FiniteAdeleRing (𝓞 E) E) ((n : E)⁻¹) * y with hw`.
+
+Take `⟨k, hk⟩` from `exists_sub_mem_integralFiniteAdeles (R := 𝓞 E) (K := E) w`. Establish `hyw : y = n • w`. Rewrite using `[hw, nsmul_eq_mul, ← mul_assoc, ← map_natCast (algebraMap E (IsDedekindDomain.FiniteAdeleRing (𝓞 E) E)) n, ← map_mul, mul_inv_cancel₀ (Nat.cast_ne_zero.mpr hn0), map_one, one_mul]`. Establish `hsplit : y = algebraMap E (IsDedekindDomain.FiniteAdeleRing (𝓞 E) E) ((n : E) * k) + n • (w - algebraMap E (IsDedekindDomain.FiniteAdeleRing (𝓞 E) E) k)`. Rewrite using `[smul_sub, ← hyw, map_mul, map_natCast, ← nsmul_eq_mul]`.
+
+Normalize the expressions using the abelian group laws. Rewrite using `[hsplit, hmul, hF, hone _ hk, one_mul]`. Take `⟨k, hk⟩` from `exists_sub_mem_integralFiniteAdeles (R := 𝓞 E) (K := E) a`. Establish `ha : h a = 1`. Establish `hsum : a = algebraMap E (IsDedekindDomain.FiniteAdeleRing (𝓞 E) E) k + (a - algebraMap E (IsDedekindDomain.FiniteAdeleRing (𝓞 E) E) k)` using `by abel`.
+
+Rewrite using `[hsum, hmul, hF, hint _ hk, one_mul]`. Simplify using `only [hh] at ha`. Conclude with `(mul_inv_eq_one₀ (hne a)).mp ha`.
+-/
 private theorem stdChar_finiteAdele_eq (E : Type) [Field E] [NumberField E]
     (ψ ψ' : AddChar (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.AF E) ℂ) (hψ : GlobalTheory.IndefiniteRowSideFullHecke.LocalDualIndex.IsStdChar E ψ)
     (hψ' : GlobalTheory.IndefiniteRowSideFullHecke.LocalDualIndex.IsStdChar E ψ') (a : IsDedekindDomain.FiniteAdeleRing (𝓞 E) E) :
@@ -287,6 +386,9 @@ private theorem stdChar_finiteAdele_eq (E : Type) [Field E] [NumberField E]
   simp only [hh] at ha
   exact (mul_inv_eq_one₀ (hne a)).mp ha
 
+/- English proof (translation)
+Introduce `E _ _ w x`. Establish `h` using `stdChar_finiteAdele_eq E (GlobalTheory.HeckeEps.stdChar E) (adelicAddChar E) (GlobalTheory.HeckeEps.isStdChar_stdChar E) (isStdChar_adelicAddChar E w) (finiteAdeleSingleAdd w x)`. Rewrite using `[localAdelicChar_apply, finitePlaceIncl_apply, ← adelicAddChar_apply]`. Conclude with `h`.
+-/
 theorem psiAt_eq_localAdelicChar : ∀ (E : Type) [Field E] [NumberField E] (w : HeightOneSpectrum (𝓞 E)) (x : w.adicCompletion E), psiAt w x = (localAdelicChar E w x : ℂ) := by
   intro E _ _ w x
   have h := stdChar_finiteAdele_eq E (GlobalTheory.HeckeEps.stdChar E) (adelicAddChar E)

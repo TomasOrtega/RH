@@ -13,11 +13,19 @@ open GlobalTheory.Cartier
 
 namespace GlobalTheory.PrimeOrd
 
+/- English proof (translation)
+The claim follows from `((fnOf (⊤ : X.Opens) (TopologicalSpace.Opens.mem_top _)).charZero_iff (fnOf_injective ⊤ (TopologicalSpace.Opens.mem_top _))).1 h.charZero`.
+-/
 theorem charZero_functionField {k : Type} [CommRing k] {X : Scheme.{0}} [IsIntegral X]
     {p : X ⟶ Sp k} {D : ℕ} (h : IsArithVar p D) : CharZero X.functionField :=
   ((fnOf (⊤ : X.Opens) (TopologicalSpace.Opens.mem_top _)).charZero_iff
     (fnOf_injective ⊤ (TopologicalSpace.Opens.mem_top _))).1 h.charZero
 
+/- English proof (translation)
+Distinguish the cases in `hz : Order.coheight z = 1`. Establish `e : (l : X.functionField) = algebraMap (X.presheaf.stalk z) X.functionField l` using `(map_natCast _ l).symm`. Establish `ha : (l : X.presheaf.stalk z) ≠ 0` using `fun h0 => hl (by rw [e, h0, map_zero])`. Rewrite using `[e, ord_algebraMap hz ha]`. Conclude with `Nat.cast_nonneg _`.
+
+Conclude with `(Scheme.ord_eq_zero_of_coheight_neq_one hz _).ge`.
+-/
 theorem ord_natCast_nonneg {X : Scheme.{0}} [IsIntegral X] [IsLocallyNoetherian X] {l : ℕ}
     (hl : (l : X.functionField) ≠ 0) (z : X) : 0 ≤ Scheme.ord (l : X.functionField) z := by
   by_cases hz : Order.coheight z = 1
@@ -28,6 +36,9 @@ theorem ord_natCast_nonneg {X : Scheme.{0}} [IsIntegral X] [IsLocallyNoetherian 
     exact Nat.cast_nonneg _
   · exact (Scheme.ord_eq_zero_of_coheight_neq_one hz _).ge
 
+/- English proof (translation)
+Take `⟨u, v, huv⟩ : IsCoprime (l : X.presheaf.stalk z) (l' : X.presheaf.stalk z)` from `h.cast`. Establish `hu : IsUnit (u * (l : X.presheaf.stalk z) + v * (l' : X.presheaf.stalk z))` using `huv ▸ isUnit_one`. Break down `IsLocalRing.isUnit_or_isUnit_of_isUnit_add hu with h₁ | h₁` into its components or cases. Conclude with `.inl (UnitAt.ord_eq_zero ⟨_, isUnit_of_mul_isUnit_right h₁, map_natCast _ l⟩)`. Conclude with `.inr (UnitAt.ord_eq_zero ⟨_, isUnit_of_mul_isUnit_right h₁, map_natCast _ l'⟩)`.
+-/
 theorem ord_eq_zero_or_of_coprime {X : Scheme.{0}} [IsIntegral X] [IsLocallyNoetherian X]
     {l l' : ℕ} (h : l.Coprime l') (z : X) :
     Scheme.ord (l : X.functionField) z = 0 ∨ Scheme.ord (l' : X.functionField) z = 0 := by
@@ -39,6 +50,11 @@ theorem ord_eq_zero_or_of_coprime {X : Scheme.{0}} [IsIntegral X] [IsLocallyNoet
   · exact .inl (UnitAt.ord_eq_zero ⟨_, isUnit_of_mul_isUnit_right h₁, map_natCast _ l⟩)
   · exact .inr (UnitAt.ord_eq_zero ⟨_, isUnit_of_mul_isUnit_right h₁, map_natCast _ l'⟩)
 
+/- English proof (translation)
+Introduce `k _ X _ _ p D h l hl`. Use `charZero_functionField h` as an intermediate fact. Use `h.isNoetherian` as an intermediate fact. Establish `h0 : (l : X.functionField) ≠ 0` using `Nat.cast_ne_zero.2 hl.ne_zero`. Use `⟨ord_natCast_nonneg h0, ?_, fun l' hl' hne z => ord_eq_zero_or_of_coprime ((Nat.coprime_primes hl hl').2 hne) z⟩` and prove the remaining obligations.
+
+Use `(CartierDiv.principal (Units.mk0 _ h0)).finite_support_mult.subset fun z hz h₁ => hz ?_` and prove the remaining obligations. Rewrite `h₁` using `[(CartierDiv.isEqn_principal _ z).mult_eq, Units.val_mk0]`. Then use the resulting hypothesis.
+-/
 theorem prime_ord : ∀ (k : Type) [CommRing k] (X : Scheme.{0}) [IsIntegral X] [IsLocallyNoetherian X] (p : X ⟶ Sp k) (D : ℕ), IsArithVar p D → ∀ l : ℕ, l.Prime → (∀ z, 0 ≤ Scheme.ord ((l : X.functionField)) z) ∧ (Function.support fun z => Scheme.ord ((l : X.functionField)) z).Finite ∧ ∀ l' : ℕ, l'.Prime → l ≠ l' → ∀ z, Scheme.ord ((l : X.functionField)) z = 0 ∨ Scheme.ord ((l' : X.functionField)) z = 0 := by
   intro k _ X _ _ p D h l hl
   have := charZero_functionField h

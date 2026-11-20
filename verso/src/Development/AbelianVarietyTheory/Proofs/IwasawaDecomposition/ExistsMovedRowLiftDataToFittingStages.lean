@@ -35,6 +35,11 @@ def cpR (z : Dat a.st I hX T Wt) :
     @RealDat3 b.st.toD7 _ _ _ _ _ _ (famR b.st I hX (usedOf I T Wt) z.Xg z.tr) (coreJ b z.core).Q.c.F _ _ ((by with_unfolding_all exact ((alg b z.alg) :))) :=
   (by with_unfolding_all exact ((real3 b (iK := z.alg) z.R) :))
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Use `case is => exact (by with_unfolding_all exact ((levIs_tr b h.is) :))`. Use `case C => exact (by with_unfolding_all exact ((congrArg (chFr b) h.C) :))`. Use `case xiH => exact (by with_unfolding_all exact (h.xiH :))`. Use `case Pg => exact (by with_unfolding_all exact (h.Pg :))`.
+
+Use `case Q => exact (by with_unfolding_all exact (h.Q :))`. Use `case beta => exact (by with_unfolding_all exact (h.beta :))`.
+-/
 theorem levOf_tr {U : Set I.ι} {L : Links.LevCh a.D (TupU I U)} (h : LevOf a.st I U L) : LevOf b.st I U (levCh b L) := by
   constructor
   case is => exact (by with_unfolding_all exact ((levIs_tr b h.is) :))
@@ -44,6 +49,9 @@ theorem levOf_tr {U : Set I.ι} {L : Links.LevCh a.D (TupU I U)} (h : LevOf a.st
   case Q => exact (by with_unfolding_all exact (h.Q :))
   case beta => exact (by with_unfolding_all exact (h.beta :))
 
+/- English proof (translation)
+Establish `e : (fun g => a.D.ntypes.e0.coeff (eR g)) = fun g => b.D.ntypes.e0.coeff ((eR.trans s.iso) g)`. Use function extensionality and compare the values at `fun g => (s.e0 (eR g)).symm`. Use `(goodSet_iff b.st (px := px) _ Xg).2 ?_` and prove the remaining obligations. Use `tr_via (fun c : Gc B px → ℂ => (∀ χ : Gc B px → B.LL, χ ∈ Xg ↔ IsAbsIrrChar χ ∧ ∑ g : Gc B px, c g * B.embLL (χ g) = B.embLL (χ 1)) ∧ ∀ g, B.embLL ((idemOf Xg).coeff g) = c g) e ((goodSet_iff a.st (px := px) eR Xg).1 h)`.
+-/
 theorem goodSet_tr (s : SameGrp a b) {eR : Gc B px ≃* G0g a.D.nd} {Xg : Finset (Gc B px → B.LL)}
     (h : GoodSet a.st (px := px) eR Xg) : GoodSet b.st (px := px) (eR.trans s.iso) Xg := by
   have e : (fun g => a.D.ntypes.e0.coeff (eR g)) = fun g => b.D.ntypes.e0.coeff ((eR.trans s.iso) g) :=
@@ -71,6 +79,11 @@ def cpDat (s : SameGrp a b) (z : Dat a.st I hX T Wt) : Dat b.st I hX T Wt :=
     (fieldValues_mem_fixedField := (by with_unfolding_all exact (z.fieldValues_mem_fixedField :)))
     (Ks_le := (by with_unfolding_all exact (z.Ks_le :)))
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Use `case toLawsM => exact (by with_unfolding_all exact ((lawsM_tr b h.toLawsM) :))`. Use `case cuspMul => exact (by with_unfolding_all exact (h.cuspMul :))`. Use `case latZ => exact (by with_unfolding_all exact (h.latZ :))`. Use `case cuNe => exact (by with_unfolding_all exact (h.cuNe :))`.
+
+Use `case expo => exact (by with_unfolding_all exact (h.expo :))`.
+-/
 theorem lawsCore_tr {K : Formalism.L2.Pj.Core a.D} (h : Formalism.L2.Pj.LawsCore K) : Formalism.L2.Pj.LawsCore (core b K) := by
   constructor
   case toLawsM => exact (by with_unfolding_all exact ((lawsM_tr b h.toLawsM) :))
@@ -81,14 +94,29 @@ theorem lawsCore_tr {K : Formalism.L2.Pj.Core a.D} (h : Formalism.L2.Pj.LawsCore
 
 variable (s : SameGrp a b) (z : Dat a.st I hX T Wt)
 
+/- English proof (translation)
+The claim follows from `(by with_unfolding_all exact ((holds_tr b (iK := z.alg) h) :))`.
+-/
 theorem cp_holds (h : Holds z.R z.F) : Holds (cpDat b s z).R (cpDat b s z).F := (by with_unfolding_all exact ((holds_tr b (iK := z.alg) h) :))
 
+/- English proof (translation)
+The claim follows from `(by with_unfolding_all exact ((exAt_tr b (iK := z.alg) h) :))`.
+-/
 theorem cp_exAt (h : z.R.toRealDat.ExAt) : (cpDat b s z).R.toRealDat.ExAt := (by with_unfolding_all exact ((exAt_tr b (iK := z.alg) h) :))
 
+/- English proof (translation)
+The claim follows from `(by with_unfolding_all exact ((inGeo_tr b (iK := z.alg) h) :))`.
+-/
 theorem cp_inGeo (h : GlobalTheory.RealGeo.InGeo z.geo) : GlobalTheory.RealGeo.InGeo (cpDat b s z).geo := (by with_unfolding_all exact ((inGeo_tr b (iK := z.alg) h) :))
 
+/- English proof (translation)
+The claim follows from `(by with_unfolding_all exact (h :))`.
+-/
 theorem cp_canon (h : z.core.Q.Canon) : (cpDat b s z).core.Q.Canon := (by with_unfolding_all exact (h :))
 
+/- English proof (translation)
+The claim follows from `(by with_unfolding_all exact ((congrArg (fun X : Cx.CxData (famR a.st I hX (usedOf I T Wt) z.Xg z.tr).fam3.amb3 => {w : B.places.Pl | ∃ j, ∃ w' ∈ ({a.D.plEq w, Formalism.DivisionValues.conjPl (a.D.plEq w)} : Set (HeightOneSpectrum (𝓞 a.D.what₂.LL))), (X.data z.F.cr false).Iw j (f …`.
+-/
 theorem forcedContentPlaces_eq_transport_sameFiniteGroup (F0) : (cpDat b s z).W1 F0 = z.W1 ((F0)) :=
   (by with_unfolding_all exact ((congrArg (fun X : Cx.CxData (famR a.st I hX (usedOf I T Wt) z.Xg z.tr).fam3.amb3 =>
     {w : B.places.Pl | ∃ j, ∃ w' ∈ ({a.D.plEq w, Formalism.DivisionValues.conjPl (a.D.plEq w)} : Set (HeightOneSpectrum (𝓞 a.D.what₂.LL))),
@@ -107,6 +135,9 @@ def fixTup {A : FamIn a.D.what₂.LL G Pl0 T₀ a.D.R.m} {R : RealDat a.D A Ks} 
   letI := alg b iK
   { y' with tup := (by with_unfolding_all exact (y.tup :)), tupT := (by with_unfolding_all exact (y.tupT :)), tupT_tup := (by with_unfolding_all exact (y.tupT_tup :)), tup0 := (by with_unfolding_all exact (y.tup0 :)) }
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨(by with_unfolding_all exact ((HEq.refl y.tup) :)), (by with_unfolding_all exact ((HEq.refl y.tupT) :)), (by with_unfolding_all exact (h.PY :)), (by with_unfolding_all exact (h.PW :))⟩`.
+-/
 theorem fixTup_same {A : FamIn a.D.what₂.LL G Pl0 T₀ a.D.R.m} {R : RealDat a.D A Ks} {y : Hd R} {y' : HdB b R} (h : Same b y y') :
     Same b y (fixTup b y y') :=
   ⟨(by with_unfolding_all exact ((HEq.refl y.tup) :)), (by with_unfolding_all exact ((HEq.refl y.tupT) :)), (by with_unfolding_all exact (h.PY :)), (by with_unfolding_all exact (h.PW :))⟩
@@ -120,6 +151,9 @@ def mCp (mA : Bool → a.D.what₂.Tup → Mat1 a.D.what₂.LL G) : Bool → b.D
 
 def pCp (p : PkD a.D G) : PkD b.D G := (by with_unfolding_all exact (p :))
 
+/- English proof (translation)
+Use `tr_via (fun m : type_of% (@Mult.Mult a.D) => n = Module.finrank ℂ (m R.θ (R.MY 0) (levS _ (R.βY 0) (R.dat0 (R.toRealDat.levR F.lv2 true))) (levChi _ (R.βY 0) (R.dat0 (R.toRealDat.levR F.lv2 true))))) (mult_eq b a) h`.
+-/
 theorem dall_tr {n : ℕ} (h : n = Module.finrank ℂ (Mult.Mult R.θ (R.MY 0) (levS _ (R.βY 0) (R.dat0 (R.toRealDat.levR F.lv2 true)))
     (levChi _ (R.βY 0) (R.dat0 (R.toRealDat.levR F.lv2 true))))) : letI := alg b iK
     n = Module.finrank ℂ (Mult.Mult (real3 b R).θ ((real3 b R).MY 0)
@@ -131,6 +165,13 @@ theorem dall_tr {n : ℕ} (h : n = Module.finrank ℂ (Mult.Mult R.θ (R.MY 0) (
 
 set_option maxHeartbeats 1000000 in
 
+/- English proof (translation)
+Use `letI := alg b iK`. Establish `hs'` using `fixTup_same b hs`. Establish `h1` using `(GlobalTheory.T.typeRepresentativesParts_otherLaterStages B C a b G Pl0 T₀ Ks A3.A R.toRealDat F.lv2 y _ hs').1 p.Φ t.rep t.reps`. Establish `h2` using `fun c => GlobalTheory.T.chainComparison_transfer_otherLaterStages B C a b G Pl0 T₀ Ks A3.A R.toRealDat F.lv2 y _ hs' c p.Φ t.rep ((by with_unfolding_all exact ((fun μ => (p.sA c μ).A) :))) ((by with_unfolding_all exact ((p.ch c) :))) ((by with_unfolding_all exact ((fun u x => ((t …`. Take `⟨l, hl1, hl2⟩` from `GlobalTheory.T.liftsCompatible_otherLaterStages_of_sameChoices B C a b G Pl0 T₀ Ks A3.A R.toRealDat F.lv2 y _ hs' p.Φ t.rep ((by with_unfolding_all exact ((fun μ j => (p.sL μ j).A) :))) ((by with_unfolding_all exact (p.lf :))) ((by with_unfolding_all exact ((fun (i : Fin a.D.R.m) …`.
+
+Establish `h4` using `(GlobalTheory.T.rowBasis_congruenceLengths_other_later_stages B C a b G Pl0 I0 T₀ Ks A3 R F).2 y (hd3 b y y') true (p.ch true).EE (t.ch true).jE ((by with_unfolding_all exact ((h2 true).choose.jE :))) p.nR p.cR p.Xo ((by with_unfolding_all exact ((h2 true).choose_spec.1 :))) t.rr`. Use `⟨{ rep := (by with_unfolding_all exact (t.rep :)) reps := (by with_unfolding_all exact (h1 :)) tA := (by with_unfolding_all exact (t.tA :)) lawsA := (by with_unfolding_all exact (t.lawsA :)) lawsL := (by with_unfolding_all exact (t.lawsL :)) hA := (by with_unfolding_all exact (t. …` and prove the remaining obligations. Conclude with `(by with_unfolding_all exact ((HEq.refl t.tA) :))`. Conclude with `(by with_unfolding_all exact ((HEq.refl t.rep) :))`. Conclude with `(by with_unfolding_all exact ((h2 c).choose_spec.1 :))`.
+
+Conclude with `(by with_unfolding_all exact ((h2 c).choose_spec.2.1 :))`. Conclude with `(by with_unfolding_all exact ((h2 c).choose_spec.2.2 :))`. Conclude with `(by with_unfolding_all exact (hl1 :))`. Conclude with `(by with_unfolding_all exact (hl2 :))`.
+-/
 theorem pkT_tr (hs : Same b y y') {mA : Bool → a.D.what₂.Tup → Mat1 a.D.what₂.LL G} {p : PkD a.D G} (t : PkT F y mA p) :
     letI := alg b iK
     ∃ t' : PkT (R := real3 b R) (face3 b F) (hd3 b y y') (mCp b mA) (pCp b p),
@@ -173,6 +214,15 @@ end Read
 
 set_option maxHeartbeats 1000000 in
 
+/- English proof (translation)
+Introduce `B f T w Z₀ hX Wt z₀ q o h1 h2 h3 h4 h5`. Establish `s : SameGrp (B` using `B) (C := w.C) Z₀ o.Z := sameGrp o.Z h4 h5.grp`. Take `⟨y', hy⟩` from `@GlobalTheory.Mem.R3.Rw.hd_tr B w.C Z₀ o.Z _ _ _ _ _ _ _ _ z₀.alg _ z₀.R.toRealDat q.y`. Take `⟨t, a1, a2, a3, a4, a5, a6, a7⟩` from `pkT_tr (a := Z₀) o.Z (iK := z₀.alg) z₀.F q.y y' hy q.t`. Establish `he` using `(@GlobalTheory.T.rowBasis_congruenceLengths_other_later_stages B w.C Z₀ o.Z _ _ _ _ _ _ _ _ _ z₀.alg _ z₀.R z₀.F).1`.
+
+Use `letI : Algebra z₀.core.Q.c.F (Late.D o.Z).what₂.LL := alg (a := Z₀) o.Z z₀.alg`. Establish `hA : ((by with_unfolding_all exact (t.tA :)) : type_of% q.t.tA) = q.t.tA` using `eq_of_heq ((by with_unfolding_all exact (a1 :)))`. Establish `hs` using `fixTup_same (a := Z₀) o.Z (iK := z₀.alg) hy`. Use `⟨{ z := cpDat (a := Z₀) o.Z s z₀ intersectionNumber_baseChange := cp_holds (a := Z₀) o.Z s z₀ h1 exAt := cp_exAt (a := Z₀) o.Z s z₀ h2 inGeo := cp_inGeo (a := Z₀) o.Z s z₀ h3 Xg := rfl tr := rfl core := fun h => ⟨(by with_unfolding_all exact ((lawsCore_tr (a := Z₀) o.Z h.1) :)), …` and prove the remaining obligations. Conclude with `(by with_unfolding_all exact ((HEq.refl (coreJ (a := Z₀) o.Z z₀.core)) :))`.
+
+Conclude with `(by with_unfolding_all exact ((HEq.refl (real3 (a := Z₀) o.Z (iK := z₀.alg) z₀.R)) :))`. Conclude with `(by with_unfolding_all exact ((HEq.refl q.y.tupT) :))`. Conclude with `(by with_unfolding_all exact (hy.PY :))`. Conclude with `(by with_unfolding_all exact (hy.PW :))`. Conclude with `(by with_unfolding_all exact (a2 :))`.
+
+Conclude with `(by with_unfolding_all exact (a3 :))`. Conclude with `(by with_unfolding_all exact (a4 :))`. Conclude with `(by with_unfolding_all exact (a5 :))`. Conclude with `(by with_unfolding_all exact (a6 :))`. Conclude with `(by with_unfolding_all exact (a7 :))`.
+-/
 theorem exists_moved : ∀ (B : Base) (f : Fr B.toPre) (T : TwDat B) (w : ColW B f T) (Z₀ : w.Lt) (hX : B.fields.Ok)
     (Wt : Set B.places.Pl) (z₀ : Dat (w.st Z₀) w.I hX T Wt), ∀ (q : RowPk w z₀) (o : q.Over), Holds z₀.R z₀.F →
     z₀.R.toRealDat.ExAt → GlobalTheory.RealGeo.InGeo z₀.geo → GrpTrue Z₀.N f → o.Fits → ∃ m : Moved o, m.Copy ∧ m.Coh := by

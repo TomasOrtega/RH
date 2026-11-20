@@ -27,6 +27,9 @@ noncomputable section
 
 namespace GlobalTheory.VacSchurFin
 
+/- English proof (translation)
+The claim follows from `GlobalTheory.T.riesz_eigenvector_sesquilinear_function_space`.
+-/
 theorem fin_riesz_eigen : ∀ (X : Type) (C : Submodule ℂ (X → ℂ)), FiniteDimensional ℂ C →
     ∀ (ip Φ : (X → ℂ) → (X → ℂ) → ℂ),
     (∀ (a : ℂ) (f f' g : X → ℂ), f ∈ C → f' ∈ C → g ∈ C → ip (a • f + f') g = star a * ip f g + ip f' g) →
@@ -39,12 +42,18 @@ theorem fin_riesz_eigen : ∀ (X : Type) (C : Submodule ℂ (X → ℂ)), Finite
     (C ≠ ⊥ → ∃ c : ℂ, ∃ e : X → ℂ, e ∈ C ∧ e ≠ 0 ∧ ∀ f : X → ℂ, f ∈ C → Φ f e = c * ip f e) :=
   GlobalTheory.T.riesz_eigenvector_sesquilinear_function_space
 
+/- English proof (translation)
+The claim follows from `GlobalTheory.T.thetaFunction_heisenberg_irreducible_orthogonal`.
+-/
 theorem irr_theta : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ) (S T : HSp D), IsStdChar D ψ (-1) →
     ∀ (μ : Measure (WO S T)) (𝓕 : Set (WO S T)), IsCovolOne (ratL T S) μ 𝓕 →
     ∀ h e : WO S T → ℂ, IsThetaFunO ψ S T h → IsThetaFunO ψ S T e →
     (∀ w : WO S T, thetaIP μ 𝓕 h (heisO ψ S T w e) = 0) → h = 0 ∨ e = 0 :=
   GlobalTheory.T.thetaFunction_heisenberg_irreducible_orthogonal
 
+/- English proof (translation)
+The claim follows from `GlobalTheory.T.heisenberg_realPoint_fockVacuum_pairing_scalar`.
+-/
 theorem comp_real : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ) (θ : InfFam D) (S T : HSp D), IsStdChar D ψ (-1) →
     IsInfFam θ → ∀ (sS : D.what₂.Tau → Matrix (Fin S.rank) (Fin S.rank) ℂ)
     (sT : D.what₂.Tau → Matrix (Fin T.rank) (Fin T.rank) ℂ),
@@ -58,17 +67,28 @@ theorem comp_real : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ) (θ : InfFam D
 
 variable {D : D7} {ψ : AddChar (AF D.host.F) ℂ} {θ : InfFam D} {S T : HSp D}
 
+/- English proof (translation)
+Use function extensionality and compare the values at `x`. Simplify using `only [heisO, Pi.add_apply]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem heisO_add' (u : WO S T) (f g : WO S T → ℂ) :
     heisO ψ S T u (f + g) = heisO ψ S T u f + heisO ψ S T u g := by
   funext x
   simp only [heisO, Pi.add_apply]
   ring
 
+/- English proof (translation)
+Use function extensionality and compare the values at `x`. Simplify using `only [heisO, Pi.smul_apply, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem heisO_smul' (u : WO S T) (a : ℂ) (f : WO S T → ℂ) : heisO ψ S T u (a • f) = a • heisO ψ S T u f := by
   funext x
   simp only [heisO, Pi.smul_apply, smul_eq_mul]
   ring
 
+/- English proof (translation)
+Introduce `τ z`. Establish `h` using `hf τ z`. Unfold `annih at h ⊢`. Rewrite using `[← GlobalTheory.Hk3.FiniteHeis.heisO_dRho ψ hθ hu, ← GlobalTheory.Hk3.FiniteHeis.heisO_dRho ψ hθ hu, ← heisO_smul', ← heisO_add', h]`. Use function extensionality and compare the values at `x`.
+
+Simplify using `[heisO]`.
+-/
 theorem vac_heisO_fin (hθ : IsInfFam θ)
     {J : D.what₂.Tau → Matrix (Fin T.rank) (Fin S.rank) ℂ → Matrix (Fin T.rank) (Fin S.rank) ℂ}
     {u : WO S T} (hu : u.map (infPart D) = 0) {f : WO S T → ℂ}
@@ -82,6 +102,9 @@ theorem vac_heisO_fin (hθ : IsInfFam θ)
   funext x
   simp [heisO]
 
+/- English proof (translation)
+Unfold `thetaIP GlobalTheory.Ker.ipO`. Use `congr 1`. Use function extensionality and compare the values at `w`. Rewrite using `[mul_comm]`. Both sides reduce to the same expression.
+-/
 theorem thetaIP_eq_ipO (μ : Measure (WO S T)) (𝓕 : Set (WO S T)) (f g : WO S T → ℂ) :
     thetaIP μ 𝓕 f g = GlobalTheory.Ker.ipO μ 𝓕 g f := by
   unfold thetaIP GlobalTheory.Ker.ipO
@@ -92,11 +115,17 @@ theorem thetaIP_eq_ipO (μ : Measure (WO S T)) (𝓕 : Set (WO S T)) (f g : WO S
 
 variable {μ : Measure (WO S T)} {𝓕 : Set (WO S T)}
 
+/- English proof (translation)
+Rewrite using `[thetaIP_eq_ipO, thetaIP_eq_ipO, GlobalTheory.Size.ipO_heisO hψ hcv.1 hcv.2.1 hb ha]`.
+-/
 theorem thetaInner_heisenberg (hψ : IsStdChar D ψ (-1)) (hcv : IsCovolOne (ratL T S) μ 𝓕) {a b : WO S T → ℂ}
     (ha : IsThetaFunO ψ S T a) (hb : IsThetaFunO ψ S T b) (w : WO S T) :
     thetaIP μ 𝓕 (heisO ψ S T w a) (heisO ψ S T w b) = thetaIP μ 𝓕 a b := by
   rw [thetaIP_eq_ipO, thetaIP_eq_ipO, GlobalTheory.Size.ipO_heisO hψ hcv.1 hcv.2.1 hb ha]
 
+/- English proof (translation)
+Rewrite using `[thetaIP_eq_ipO, thetaIP_eq_ipO, thetaIP_eq_ipO, GlobalTheory.Size.ipO_add_right hψ hcv.1 hcv.2.1 hg (GlobalTheory.WeilVacMove.isTheta_smul a hf) hf', GlobalTheory.Size.ipO_smul_right]`. Both sides reduce to the same expression.
+-/
 theorem thetaInner_left (hψ : IsStdChar D ψ (-1)) (hcv : IsCovolOne (ratL T S) μ 𝓕) (a : ℂ) {f f' g : WO S T → ℂ}
     (hf : IsThetaFunO ψ S T f) (hf' : IsThetaFunO ψ S T f') (hg : IsThetaFunO ψ S T g) :
     thetaIP μ 𝓕 (a • f + f') g = star a * thetaIP μ 𝓕 f g + thetaIP μ 𝓕 f' g := by
@@ -104,12 +133,20 @@ theorem thetaInner_left (hψ : IsStdChar D ψ (-1)) (hcv : IsCovolOne (ratL T S)
     GlobalTheory.Size.ipO_add_right hψ hcv.1 hcv.2.1 hg (GlobalTheory.WeilVacMove.isTheta_smul a hf) hf', GlobalTheory.Size.ipO_smul_right]
   rfl
 
+/- English proof (translation)
+Rewrite using `[thetaIP_eq_ipO, thetaIP_eq_ipO, thetaIP_eq_ipO, GlobalTheory.Size.ipO_add_left hψ hcv.1 hcv.2.1 (GlobalTheory.WeilVacMove.isTheta_smul a hg) hg' hf, GlobalTheory.Size.ipO_smul_left]`.
+-/
 theorem thetaInner_right (hψ : IsStdChar D ψ (-1)) (hcv : IsCovolOne (ratL T S) μ 𝓕) (a : ℂ) {f g g' : WO S T → ℂ}
     (hf : IsThetaFunO ψ S T f) (hg : IsThetaFunO ψ S T g) (hg' : IsThetaFunO ψ S T g') :
     thetaIP μ 𝓕 f (a • g + g') = a * thetaIP μ 𝓕 f g + thetaIP μ 𝓕 f g' := by
   rw [thetaIP_eq_ipO, thetaIP_eq_ipO, thetaIP_eq_ipO,
     GlobalTheory.Size.ipO_add_left hψ hcv.1 hcv.2.1 (GlobalTheory.WeilVacMove.isTheta_smul a hg) hg' hf, GlobalTheory.Size.ipO_smul_left]
 
+/- English proof (translation)
+Unfold `thetaIP`. Rewrite using `[← integral_const_mul]`. Use `congr 1`. Use function extensionality and compare the values at `x`. Simplify using `only [Pi.smul_apply, smul_eq_mul]`.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem thetaInner_smul_right (a : ℂ) (f g : WO S T → ℂ) : thetaIP μ 𝓕 f (a • g) = a * thetaIP μ 𝓕 f g := by
   unfold thetaIP
   rw [← integral_const_mul]
@@ -118,6 +155,13 @@ theorem thetaInner_smul_right (a : ℂ) (f g : WO S T → ℂ) : thetaIP μ 𝓕
   simp only [Pi.smul_apply, smul_eq_mul]
   ring
 
+/- English proof (translation)
+Establish `e : thetaIP μ 𝓕 f f = ((∫ w in 𝓕, ‖f w‖ ^ 2 ∂μ : ℝ) : ℂ)`. Unfold `thetaIP`. Rewrite using `[← integral_complex_ofReal]`. Use `integral_congr_ae (Filter.Eventually.of_forall fun w => ?_)` and prove the remaining obligations. Simplify using `only [Complex.ofReal_pow]`.
+
+Conclude with `Complex.conj_mul' (f w)`. Establish `hne` using `GlobalTheory.RawLift.VecNonzero.thetaInner_self_ne_zero hψ hf h0 hcv`. Rewrite `hne`, the goal using `[e]`. Rewrite using `[Complex.ofReal_re]`. Establish `hnn : 0 ≤ ∫ w in 𝓕, ‖f w‖ ^ 2 ∂μ` using `integral_nonneg fun w => by positivity`.
+
+Use `lt_of_le_of_ne hnn fun h => hne ?_` and prove the remaining obligations. Rewrite using `[← h, Complex.ofReal_zero]`.
+-/
 theorem thetaInner_re_pos (hψ : IsStdChar D ψ (-1)) (hcv : IsCovolOne (ratL T S) μ 𝓕) {f : WO S T → ℂ}
     (hf : IsThetaFunO ψ S T f) (h0 : f ≠ 0) : 0 < (thetaIP μ 𝓕 f f).re := by
   have e : thetaIP μ 𝓕 f f = ((∫ w in 𝓕, ‖f w‖ ^ 2 ∂μ : ℝ) : ℂ) := by
@@ -133,6 +177,9 @@ theorem thetaInner_re_pos (hψ : IsStdChar D ψ (-1)) (hcv : IsCovolOne (ratL T 
   refine lt_of_le_of_ne hnn fun h => hne ?_
   rw [← h, Complex.ofReal_zero]
 
+/- English proof (translation)
+Establish `h1 : symplO S T (-b) a = -symplO S T b a`. Use `GlobalTheory.SplitScalar.symplO_sub_left S T 0 b a` as an intermediate fact. Rewrite `this` using `[zero_sub, GlobalTheory.SplitScalar.symplO_zero_left, zero_sub]`. Then use the resulting hypothesis. Rewrite using `[GlobalTheory.SplitScalar.symplO_skew S T (-b) a, h1, GlobalTheory.SplitScalar.symplO_skew S T a b, neg_neg]`.
+-/
 theorem symplO_neg_right' (a b : WO S T) : symplO S T a (-b) = -symplO S T a b := by
   have h1 : symplO S T (-b) a = -symplO S T b a := by
     have := GlobalTheory.SplitScalar.symplO_sub_left S T 0 b a
@@ -156,12 +203,20 @@ def vacSub (hψ : IsStdChar D ψ (-1)) (hθ : IsInfFam θ) (sS : D.what₂.Tau �
     fun u hu h0 => by rw [heisO_smul', hf.2.1 u hu h0],
     fun τ z => by rw [GlobalTheory.FockIndep.annih_smul hψ hθ τ _ z a hf.1, hf.2.2 τ z, smul_zero]⟩
 
+/- English proof (translation)
+Unfold both sides. The equivalence is reflexive.
+-/
 theorem mem_vacSub {hψ : IsStdChar D ψ (-1)} {hθ : IsInfFam θ}
     {sS : D.what₂.Tau → Matrix (Fin S.rank) (Fin S.rank) ℂ}
     {sT : D.what₂.Tau → Matrix (Fin T.rank) (Fin T.rank) ℂ} {U : AddSubgroup (WO S T)} {f : WO S T → ℂ} :
     f ∈ vacSub hψ hθ sS sT U ↔ IsThetaFunO ψ S T f ∧ (∀ u ∈ U, u.map (infPart D) = 0 → heisO ψ S T u f = f) ∧
       ∀ τ, IsFockVacAt (heisO ψ S T) θ τ (cplxO (sS τ) (sT τ)) f := Iff.rfl
 
+/- English proof (translation)
+Use `haveI := GlobalTheory.FockLevelDim.finiteDimensional_level_degree D ψ θ S T sS sT hψ hθ hcS hcT U hU 1`. Establish `hle : vacSub hψ hθ sS sT U ≤ Submodule.span ℂ {f : WO S T → ℂ | IsThetaFunO ψ S T f ∧ (∀ u ∈ U, u.map (infPart D) = 0 → heisO ψ S T u f = f) ∧ ∀ l : List (D.what₂.Tau × Matrix (Fin T.rank) (Fin S.rank) ℂ), l.length = 1 → l.foldr (fun p f => annih (heisO ψ S T) θ p.1 (cplxO (sS p. …`. Introduce `f hf`. Use `Submodule.subset_span ?_` and prove the remaining obligations. Take `⟨h1, h2, h3⟩` from `mem_vacSub.1 hf`.
+
+Use `⟨h1, h2, fun l hl => ?_⟩` and prove the remaining obligations. Take `⟨p, rfl⟩` from `List.length_eq_one_iff.1 hl`. Simplify using `using h3 p.1 p.2`. Conclude with `Submodule.finiteDimensional_of_le hle`.
+-/
 theorem fd_vacSub (hψ : IsStdChar D ψ (-1)) (hθ : IsInfFam θ)
     (sS : D.what₂.Tau → Matrix (Fin S.rank) (Fin S.rank) ℂ) (sT : D.what₂.Tau → Matrix (Fin T.rank) (Fin T.rank) ℂ)
     (hcS : ∀ τ, IsCartanInv (gramAt D S τ) (sS τ)) (hcT : ∀ τ, IsCartanInv (gramAt D T τ) (sT τ))
@@ -181,6 +236,15 @@ theorem fd_vacSub (hψ : IsStdChar D ψ (-1)) (hθ : IsInfFam θ)
 
 variable {D : D7} {ψ : AddChar (AF D.host.F) ℂ} {θ : InfFam D} {S T : HSp D}
 
+/- English proof (translation)
+Introduce `D ψ θ S T hψ hθ sS sT hcS hcT μ 𝓕 hcv h e hh he vh ve hw`. Use `irr_theta D ψ S T hψ μ 𝓕 hcv h e hh he fun w => ?_` and prove the remaining obligations. Use `set wr : WO S T := w.map fun z => GlobalTheory.SplitScalar.realIdem D * z with hwr`. Use `set wf : WO S T := w - wr with hwf`. Establish `hfin : wf.map (infPart D) = 0`.
+
+Use extensionality with `i j`. Use `show infPart D (w i j - GlobalTheory.SplitScalar.realIdem D * w i j) = 0`. Rewrite using `[RingHom.map_sub, RingHom.map_mul, GlobalTheory.SplitScalar.infPart_realIdem, one_mul, sub_self]`. Establish `hreal : wr.map (finPart D) = 0`. Use extensionality with `i j`.
+
+Use `show finPart D (GlobalTheory.SplitScalar.realIdem D * w i j) = 0`. Rewrite using `[RingHom.map_mul, GlobalTheory.SplitScalar.finPart_realIdem, zero_mul]`. Take `⟨κ, hκ⟩` from `comp_real D ψ θ S T hψ hθ sS sT hcS hcT μ 𝓕 hcv wr hreal`. Establish `laws` using `GlobalTheory.HeisThetaLaws.heis_theta_laws D ψ hψ S T`. Establish `hs : wr + wf = w` using `by rw [hwf]; abel`.
+
+Establish `e1 : heisO ψ S T wr (heisO ψ S T wf e) = ψ (symplOH S T wr wf) • heisO ψ S T w e`. Rewrite using `[GlobalTheory.SplitScalar.heisO_heisO, hs]`. Establish `e2` using `hκ h (heisO ψ S T wf e) hh (laws.1 wf e he) vh (vac_heisO_fin hθ hfin ve)`. Rewrite `e2` using `[e1, thetaInner_smul_right, hw wf hfin, mul_zero]`. Conclude with `(mul_eq_zero.1 e2).resolve_left (GlobalTheory.ThetaSchurBdd.psi_ne_zero hψ _)`.
+-/
 theorem irr_vac : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ) (θ : InfFam D) (S T : HSp D), IsStdChar D ψ (-1) →
     IsInfFam θ → ∀ (sS : D.what₂.Tau → Matrix (Fin S.rank) (Fin S.rank) ℂ)
     (sT : D.what₂.Tau → Matrix (Fin T.rank) (Fin T.rank) ℂ),
@@ -220,6 +284,35 @@ variable {D : D7} {ψ : AddChar (AF D.host.F) ℂ} {θ : InfFam D} {S T : HSp D}
 
 set_option synthInstance.maxHeartbeats 400000 in
 
+/- English proof (translation)
+Use `haveI := fd_vacSub hψ hθ sS sT hcS hcT U hU`. Use `set C := vacSub hψ hθ sS sT U with hC`. Establish `ipl : ∀ (a : ℂ) (f f' g : WO S T → ℂ), f ∈ C → f' ∈ C → g ∈ C → thetaIP μ 𝓕 (a • f + f') g = star a * thetaIP μ 𝓕 f g + thetaIP μ 𝓕 f' g` using `fun a f f' g hf hf' hg => thetaInner_left hψ hcv a (mem_vacSub.1 hf).1 (mem_vacSub.1 hf').1 (mem_vacSub.1 hg).1`. Establish `ipr : ∀ (a : ℂ) (f g g' : WO S T → ℂ), f ∈ C → g ∈ C → g' ∈ C → thetaIP μ 𝓕 f (a • g + g') = a * thetaIP μ 𝓕 f g + thetaIP μ 𝓕 f g'` using `fun a f g g' hf hg hg' => thetaInner_right hψ hcv a (mem_vacSub.1 hf).1 (mem_vacSub.1 hg).1 (mem_vacSub.1 hg').1`. Establish `ips : ∀ f g : WO S T → ℂ, f ∈ C → g ∈ C → thetaIP μ 𝓕 g f = star (thetaIP μ 𝓕 f g)` using `fun f g _ _ => (GlobalTheory.RawLift.FockCoef.thetaInner_star f g).symm`.
+
+Establish `ipp : ∀ f : WO S T → ℂ, f ∈ C → f ≠ 0 → 0 < (thetaIP μ 𝓕 f f).re` using `fun f hf h0 => thetaInner_re_pos hψ hcv (mem_vacSub.1 hf).1 h0`. Establish `Φl : ∀ (a : ℂ) (f f' g : WO S T → ℂ), f ∈ C → f' ∈ C → g ∈ C → Φ (a • f + f') g = star a * Φ f g + Φ f' g` using `fun a f f' g hf hf' hg => hl a f f' g (mem_vacSub.1 hf).1 (mem_vacSub.1 hf').1 (mem_vacSub.1 hg).1 (mem_vacSub.1 hf).2.2 (mem_vacSub.1 hf').2.2 (mem_vacSub.1 hg).2.2`. Establish `Φr : ∀ (a : ℂ) (f g g' : WO S T → ℂ), f ∈ C → g ∈ C → g' ∈ C → Φ f (a • g + g') = a * Φ f g + Φ f g'` using `fun a f g g' hf hg hg' => hr a f g g' (mem_vacSub.1 hf).1 (mem_vacSub.1 hg).1 (mem_vacSub.1 hg').1 (mem_vacSub.1 hf).2.2 (mem_vacSub.1 hg).2.2 (mem_vacSub.1 hg').2.2`. Establish `hCne : C ≠ ⊥` using `fun h => hne ((Submodule.mem_bot ℂ).1 (h ▸ h₀))`. Take `⟨c, e, heC, he0, hce⟩` from `(fin_riesz_eigen (WO S T) C inferInstance (thetaIP μ 𝓕) Φ ipl ipr ips ipp Φl Φr).2 hCne`.
+
+Use `set Ψ : (WO S T → ℂ) → (WO S T → ℂ) → ℂ := fun f g => Φ f g - c * thetaIP μ 𝓕 f g with hΨ`. Establish `Ψl : ∀ (a : ℂ) (f f' g : WO S T → ℂ), f ∈ C → f' ∈ C → g ∈ C → Ψ (a • f + f') g = star a * Ψ f g + Ψ f' g` using `fun a f f' g hf hf' hg => by`. Simplify using `only [hΨ]`. Rewrite using `[Φl a f f' g hf hf' hg, ipl a f f' g hf hf' hg]`. Expand and normalize the polynomial expressions, which then agree.
+
+Establish `Ψr : ∀ (a : ℂ) (f g g' : WO S T → ℂ), f ∈ C → g ∈ C → g' ∈ C → Ψ f (a • g + g') = a * Ψ f g + Ψ f g'` using `fun a f g g' hf hg hg' => by`. Simplify using `only [hΨ]`. Rewrite using `[Φr a f g g' hf hg hg', ipr a f g g' hf hg hg']`. Expand and normalize the polynomial expressions, which then agree. Establish `hR` using `(fin_riesz_eigen (WO S T) C inferInstance (thetaIP μ 𝓕) Ψ ipl ipr ips ipp Ψl Ψr).1`.
+
+Take `⟨heT, heL, heV⟩` from `mem_vacSub.1 heC`. Establish `laws` using `GlobalTheory.HeisThetaLaws.heis_theta_laws D ψ hψ S T`. Establish `key : ∀ f g : WO S T → ℂ, f ∈ C → g ∈ C → Ψ f g = 0`. Introduce `f g hf hg`. Take `⟨hfT, hfL, hfV⟩` from `mem_vacSub.1 hf`.
+
+Take `⟨h, hhC, hh⟩` from `hR f hf`. Take `⟨hhT, hhL, hhV⟩` from `mem_vacSub.1 hhC`. It suffices to establish `h0 : h = 0 by`. Rewrite using `[← hh g hg, h0]`. Simplify using `[thetaIP]`.
+
+Use `(irr_vac D ψ θ S T hψ hθ sS sT hcS hcT μ 𝓕 hcv h e hhT heT hhV heV fun w hw => ?_).resolve_right he0` and prove the remaining obligations. Establish `hwe : IsThetaFunO ψ S T (heisO ψ S T w e)` using `laws.1 w e heT`. Distinguish the cases in `hA : ∀ u ∈ U, u.map (infPart D) = 0 → ψ (symplO S T u w) = 1`. Establish `hwC : heisO ψ S T w e ∈ C` using `mem_vacSub.2 ⟨hwe, fun u hu h0 => by`. Rewrite using `[GlobalTheory.SplitScalar.heisO_comm, hA u hu h0, one_smul, heL u hu h0], vac_heisO_fin hθ hw heV⟩`.
+
+Rewrite using `[hh _ hwC]`. Establish `hnw : (-w).map (infPart D) = 0`. Use extensionality with `i j`. Establish `h1 : infPart D (w i j) = 0` using `congrFun (congrFun hw i) j`. Use `show infPart D (-(w i j)) = 0`.
+
+Rewrite using `[RingHom.map_neg, h1, neg_zero]`. Establish `hfC : heisO ψ S T (-w) f ∈ C` using `mem_vacSub.2 ⟨laws.1 _ f hfT, fun u hu h0 => by`. Rewrite using `[GlobalTheory.SplitScalar.heisO_comm, hfL u hu h0, symplO_neg_right', AddChar.map_neg_eq_inv, hA u hu h0, inv_one, one_smul], vac_heisO_fin hθ hnw hfV⟩`. Take `⟨hfT', -, hfV'⟩` from `mem_vacSub.1 hfC`. Establish `e1 : heisO ψ S T w (heisO ψ S T (-w) f) = ψ (symplOH S T w (-w)) • f`.
+
+Rewrite using `[GlobalTheory.SplitScalar.heisO_heisO, add_neg_cancel, GlobalTheory.SplitScalar.heisO_zero]`. Establish `e2 : Ψ (heisO ψ S T w (heisO ψ S T (-w) f)) (heisO ψ S T w e) = 0`. Simplify using `only [hΨ]`. Rewrite using `[hi w hw _ e hfT' heT hfV' heV, thetaInner_heisenberg hψ hcv hfT' heT, hce _ hfC, sub_self]`. Establish `z` using `Ψl 1 0 0 (heisO ψ S T w e) C.zero_mem C.zero_mem hwC`.
+
+Simplify using `only [smul_zero, add_zero, star_one, one_mul] at z`. Establish `z0 : Ψ 0 (heisO ψ S T w e) = 0` using `by linear_combination -z`. Establish `e3` using `Ψl (ψ (symplOH S T w (-w))) f 0 (heisO ψ S T w e) hf C.zero_mem hwC`. Rewrite `e3` using `[add_zero, z0, add_zero, ← e1, e2]`. Conclude with `(mul_eq_zero.1 e3.symm).resolve_left (star_ne_zero.2 (GlobalTheory.ThetaSchurBdd.psi_ne_zero hψ _))`.
+
+Use `push_neg at hA`. Take `⟨u, hu, h0, hne1⟩` from `hA`. Establish `e1 : thetaIP μ 𝓕 h (heisO ψ S T w e) = thetaIP μ 𝓕 (heisO ψ S T u h) (heisO ψ S T u (heisO ψ S T w e))` using `(thetaInner_heisenberg hψ hcv hhT hwe u).symm`. Rewrite `e1` using `[hhL u hu h0, GlobalTheory.SplitScalar.heisO_comm, heL u hu h0, thetaInner_smul_right]`. Establish `: (1 - ψ (symplO S T u w)) * thetaIP μ 𝓕 h (heisO ψ S T w e) = 0` using `by linear_combination e1`.
+
+Conclude with `(mul_eq_zero.1 this).resolve_left (sub_ne_zero.2 (Ne.symm hne1))`. Establish `hΦC : ∀ f g : WO S T → ℂ, f ∈ C → g ∈ C → Φ f g = c * thetaIP μ 𝓕 f g` using `fun f g hf hg => sub_eq_zero.1 (key f g hf hg)`. Establish `hc : Φ f₀ f₀ / thetaIP μ 𝓕 f₀ f₀ = c`. Rewrite using `[hΦC f₀ f₀ h₀ h₀, mul_div_assoc, div_self (GlobalTheory.RawLift.VecNonzero.thetaInner_self_ne_zero hψ (mem_vacSub.1 h₀).1 hne hcv), mul_one]`. Rewrite using `[hc]`.
+
+Conclude with `hΦC f g hf hg`.
+-/
 theorem lev (hψ : IsStdChar D ψ (-1)) (hθ : IsInfFam θ)
     (sS : D.what₂.Tau → Matrix (Fin S.rank) (Fin S.rank) ℂ) (sT : D.what₂.Tau → Matrix (Fin T.rank) (Fin T.rank) ℂ)
     (hcS : ∀ τ, IsCartanInv (gramAt D S τ) (sS τ)) (hcT : ∀ τ, IsCartanInv (gramAt D T τ) (sT τ))
@@ -326,6 +419,15 @@ theorem lev (hψ : IsStdChar D ψ (-1)) (hθ : IsInfFam θ)
 
 end GlobalTheory.VacSchurFin
 
+/- English proof (translation)
+Introduce `D ψ θ S T hψ hθ sS sT hcS hcT μ 𝓕 hcv Φ hl hr _ hi`. Distinguish the cases in `hV : ∃ f₀ : WO S T → ℂ, IsThetaFunO ψ S T f₀ ∧ (∀ τ, IsFockVacAt (heisO ψ S T) θ τ (cplxO (sS τ) (sT τ)) f₀) ∧ f₀ ≠ 0`. Take `⟨f₀, h0t, h0v, h0ne⟩` from `hV`. Use `⟨Φ f₀ f₀ / thetaIP μ 𝓕 f₀ f₀, fun f g hf hg vf vg => ?_⟩` and prove the remaining obligations. Take `⟨U₀, o₀, l₀⟩` from `h0t.level`.
+
+Take `⟨U₁, o₁, l₁⟩` from `hf.level`. Take `⟨U₂, o₂, l₂⟩` from `hg.level`. Establish `hU : IsOpen ((U₀ ⊓ U₁ ⊓ U₂ : AddSubgroup (WO S T)) : Set (WO S T))`. Rewrite using `[AddSubgroup.coe_inf, AddSubgroup.coe_inf]`. Conclude with `(o₀.inter o₁).inter o₂`.
+
+Establish `m : ∀ {u : WO S T}, u ∈ U₀ ⊓ U₁ ⊓ U₂ → u ∈ U₀ ∧ u ∈ U₁ ∧ u ∈ U₂` using `fun hu => ⟨(AddSubgroup.mem_inf.1 (AddSubgroup.mem_inf.1 hu).1).1, (AddSubgroup.mem_inf.1 (AddSubgroup.mem_inf.1 hu).1).2, (AddSubgroup.mem_inf.1 hu).2⟩`. Conclude with `GlobalTheory.VacSchurFin.lev hψ hθ sS sT hcS hcT hcv Φ hl hr hi (U₀ ⊓ U₁ ⊓ U₂) hU (GlobalTheory.VacSchurFin.mem_vacSub.2 ⟨h0t, fun u hu h => l₀ u (m hu).1 h, h0v⟩) h0ne f g (GlobalTheory.VacSchurFin.mem_vacSub.2 ⟨hf, fun u hu h => l₁ u (m hu).2.1 h, vf⟩) (GlobalTheory.VacSchurFin …`. Use `push_neg at hV`. Use `⟨0, fun f g hf hg vf vg => ?_⟩` and prove the remaining obligations. Establish `hf0 : f = 0` using `hV f hf vf`.
+
+Substitute `hf0` using the available equality. Establish `z` using `hl 1 0 0 g hf hf hg vf vf vg`. Simplify using `only [smul_zero, add_zero, star_one, one_mul] at z`. Rewrite using `[zero_mul]`. Take the linear combination `-z`.
+-/
 theorem GlobalTheory.VacSchurFin.vacSchur : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ) (θ : InfFam D) (S T : HSp D), IsStdChar D ψ (-1) → IsInfFam θ → ∀ (sS : D.what₂.Tau → Matrix (Fin S.rank) (Fin S.rank) ℂ) (sT : D.what₂.Tau → Matrix (Fin T.rank) (Fin T.rank) ℂ), (∀ τ, IsCartanInv (gramAt D S τ) (sS τ)) → (∀ τ, IsCartanInv (gramAt D T τ) (sT τ)) → ∀ (μ : Measure (WO S T)) (𝓕 : Set (WO S T)), IsCovolOne (ratL T S) μ 𝓕 → ∀ Φ : (WO S T → ℂ) → (WO S T → ℂ) → ℂ, (∀ (a : ℂ) (f f' g : WO S T → ℂ), IsThetaFunO ψ S T f → IsThetaFunO ψ S T f' → IsThetaFunO ψ S T g → (∀ τ, IsFockVacAt (heisO ψ S T) θ τ (cplxO (sS τ) (sT τ)) f) → (∀ τ, IsFockVacAt (heisO ψ S T) θ τ (cplxO (sS τ) (sT τ)) f') → (∀ τ, IsFockVacAt (heisO ψ S T) θ τ (cplxO (sS τ) (sT τ)) g) → Φ (a • f + f') g = star a * Φ f g + Φ f' g) → (∀ (a : ℂ) (f g g' : WO S T → ℂ), IsThetaFunO ψ S T f → IsThetaFunO ψ S T g → IsThetaFunO ψ S T g' → (∀ τ, IsFockVacAt (heisO ψ S T) θ τ (cplxO (sS τ) (sT τ)) f) → (∀ τ, IsFockVacAt (heisO ψ S T) θ τ (cplxO (sS τ) (sT τ)) g) → (∀ τ, IsFockVacAt (heisO ψ S T) θ τ (cplxO (sS τ) (sT τ)) g') → Φ f (a • g + g') = a * Φ f g + Φ f g') → (∃ C : ℝ, ∀ f g : WO S T → ℂ, IsThetaFunO ψ S T f → IsThetaFunO ψ S T g → (∀ τ, IsFockVacAt (heisO ψ S T) θ τ (cplxO (sS τ) (sT τ)) f) → (∀ τ, IsFockVacAt (heisO ψ S T) θ τ (cplxO (sS τ) (sT τ)) g) → ‖Φ f g‖ ^ 2 ≤ C * (nrm2 μ 𝓕 f * nrm2 μ 𝓕 g)) → (∀ w : WO S T, w.map (infPart D) = 0 → ∀ f g : WO S T → ℂ, IsThetaFunO ψ S T f → IsThetaFunO ψ S T g → (∀ τ, IsFockVacAt (heisO ψ S T) θ τ (cplxO (sS τ) (sT τ)) f) → (∀ τ, IsFockVacAt (heisO ψ S T) θ τ (cplxO (sS τ) (sT τ)) g) → Φ (heisO ψ S T w f) (heisO ψ S T w g) = Φ f g) → ∃ c : ℂ, ∀ f g : WO S T → ℂ, IsThetaFunO ψ S T f → IsThetaFunO ψ S T g → (∀ τ, IsFockVacAt (heisO ψ S T) θ τ (cplxO (sS τ) (sT τ)) f) → (∀ τ, IsFockVacAt (heisO ψ S T) θ τ (cplxO (sS τ) (sT τ)) g) → Φ f g = c * thetaIP μ 𝓕 f g := by
   intro D ψ θ S T hψ hθ sS sT hcS hcT μ 𝓕 hcv Φ hl hr _ hi
   by_cases hV : ∃ f₀ : WO S T → ℂ, IsThetaFunO ψ S T f₀ ∧

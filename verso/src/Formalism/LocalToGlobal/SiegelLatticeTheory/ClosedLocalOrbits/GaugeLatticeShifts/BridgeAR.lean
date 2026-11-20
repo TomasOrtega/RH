@@ -14,6 +14,13 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 variable {D : D7} (X : Formalism.L2.SG.HidaSetting.HidaSetting D)
 
+/- English proof (translation)
+Take `⟨s, hs, hcs⟩` from `hZ`. Establish `hb` using `Nat.gcd_eq_gcd_ab c X.B.g`. Rewrite `hb` using `[hc.gcd_eq_one, Nat.cast_one]`. Establish `hb' : (1 : X.B.I.E ⊗[X.B.I.F] Af X.B.I.F) = (c : X.B.I.E ⊗[X.B.I.F] Af X.B.I.F) * (Nat.gcdA c X.B.g : X.B.I.E ⊗[X.B.I.F] Af X.B.I.F) + (X.B.g : X.B.I.E ⊗[X.B.I.F] Af X.B.I.F) * (Nat.gcdB c X.B.g : X.B.I.E ⊗[X.B.I.F] Af X.B.I.F)`. Establish `h1` using `congrArg (Int.cast : ℤ → X.B.I.E ⊗[X.B.I.F] Af X.B.I.F) hb`.
+
+Move the coercions through the operations in `at h1`. Conclude with `h1`. Use `⟨(Nat.gcdA c X.B.g : X.B.I.E ⊗[X.B.I.F] Af X.B.I.F) * s + (Nat.gcdB c X.B.g : X.B.I.E ⊗[X.B.I.F] Af X.B.I.F) * t, ?_, ?_⟩` and prove the remaining obligations. Conclude with `(IntAf X.B.I.F X.B.I.E).add_mem ((IntAf X.B.I.F X.B.I.E).mul_mem (intCast_mem _ _) hs) ((IntAf X.B.I.F X.B.I.E).mul_mem (intCast_mem _ _) ht)`. Combine the equalities or inequalities in the displayed calculation.
+
+Rewrite using `[hb']`. Expand and normalize the polynomial expressions, which then agree. Use `_ = _ := by`. Rewrite using `[hcs]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem Z_of_coprime {t : X.B.I.E ⊗[X.B.I.F] Af X.B.I.F} (ht : t ∈ IntAf X.B.I.F X.B.I.E) {c : ℕ}
     (hc : Nat.Coprime c X.B.g) (hZ : ZMod' X.B.I X.B.g ((c : X.B.I.E ⊗[X.B.I.F] Af X.B.I.F) * t)) :
     ZMod' X.B.I X.B.g t := by
@@ -49,6 +56,21 @@ open Formalism.L2.SG.Pf.BridgeAR
 
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
+/- English proof (translation)
+Introduce `D X Y u Λ hΛ β b hb hK hN hT x hx`. Use `set A : X.B.I.Gf := ((Y.cs u).h ((Y.cs u).base Λ) : X.B.I.Gf) * X.xu u with hAdef`. Establish `hbl : (Y.cs u).lamOf ((Y.cs u).base Λ) = Λ` using `(Y.cs u).base_lam Λ hΛ`. Establish `hlat : ∀ y, y ∈ Λ ↔ hat X A y ∈ X.B.I.Lf` using `fun y => by`. Use `(Y.cs u).lat_eq ((Y.cs u).base Λ) y` as an intermediate fact.
+
+Rewrite `this` using `[hbl]`. Conclude with `this`. Establish `hfixE : ∀ a, hat X A (X.eX a) = incl X.B.I (X.crd (X.eX a))` using `fun a => by`. Unfold `hat`. Conclude with `fixes_inv X (fixes_mul X (((Y.cs u).h ((Y.cs u).base Λ)).2 _ (Or.inl (Or.inl ⟨a, rfl⟩))) ((X.xu_fix u a).1))`.
+
+Establish `hTF : ∀ a, (X.Fu u).e a = X.eX a` using `(Formalism.L2.SG.Full.Full.frameTie (X := X) u u).1`. Establish `hFC : IsFixedConv Λ (gS D) (lf D (X.Fu u))` using `((Y.rowsOK u).1 Λ hΛ).2.1.2.2.2`. Use `ratFromAd X A hlat hfixE hFC hTF ?_` and prove the remaining obligations. Rewrite using `[hat_sub, hat_ratLink X A hb, show X.B.I.fmat (A⁻¹ * b.2 * A) *ᵥ hat X A x - hat X A x = (X.B.I.fmat (A⁻¹ * b.2 * A) - 1) *ᵥ hat X A x by rw [Matrix.sub_mulVec, Matrix.one_mulVec]]`. Establish `hxΛ : x ∈ Λ` using `hx.1`.
+
+Establish `hw : hat X A x ∈ X.B.I.Lf` using `(hlat x).1 hxΛ`. Use `Formalism.L2.SG.Pf.BridgeAd.adFull_of_adTriv Y.TR hK hN hT hw (fun a => ?_)` and prove the remaining obligations. Establish `hxo : x ∈ orth (VS D) (Xsp (lf D (X.Fu u)))` using `hx.2`. Establish `h0 : (VS D).hT (X.eX a) x = 0`. Establish `hmem : X.eX a ∈ Xsp (lf D (X.Fu u))`.
+
+Rewrite using `[← hTF a]`. Conclude with `Submodule.subset_span ⟨a, rfl⟩`. Use `(Submodule.mem_iInf _).1 hxo (X.eX a)` as an intermediate fact. Conclude with `(Submodule.mem_iInf _).1 this hmem`. Establish `hE0 : hA X.B.I (incl X.B.I (X.crd (X.eX a))) (hat X A x) = 0`.
+
+Rewrite using `[← hfixE a, hA_hat, h0, map_zero, map_zero]`. Take `⟨c, hc, hcd⟩` from `(X.basisApprox a).1`. Establish `hint : hA X.B.I (X.e0 a) (hat X A x) ∈ IntAf X.B.I.F X.B.I.E` using `hA_int X.B.I (X.vectorsInLattice.1 a).1 hw`. Use `Z_of_coprime X hint hc ?_` and prove the remaining obligations. Establish `e : (c : X.B.I.E ⊗[X.B.I.F] Af X.B.I.F) * hA X.B.I (X.e0 a) (hat X A x) = hA X.B.I ((c : X.B.I.E ⊗[X.B.I.F] Af X.B.I.F) • (X.e0 a - incl X.B.I (X.crd (X.eX a)))) (hat X A x)`.
+
+Rewrite using `[hA_smul_left, hA_sub_left, hE0, sub_zero, map_natCast]`. Rewrite using `[e]`. Conclude with `Z_hA_mL X hcd hw`.
+-/
 theorem iotaBridgeARC_holds : IotaBridgeARC := by
   intro D X Y u Λ hΛ β b hb hK hN hT x hx
   set A : X.B.I.Gf := ((Y.cs u).h ((Y.cs u).base Λ) : X.B.I.Gf) * X.xu u with hAdef

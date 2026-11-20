@@ -19,11 +19,19 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {D : Da
 
 section Algebra
 
+/- English proof (translation)
+Establish `h : (1 : 𝓞 E) ∈ l.Mb ⊔ l.Mb.map (H.bar : 𝓞 E →+* 𝓞 E)` using `by rw [l.coprime]; trivial`. Conclude with `Submodule.mem_sup.1 h`.
+-/
 theorem level_split (l : Level H) :
     ∃ u ∈ l.Mb, ∃ v ∈ l.Mb.map (H.bar : 𝓞 E →+* 𝓞 E), u + v = 1 := by
   have h : (1 : 𝓞 E) ∈ l.Mb ⊔ l.Mb.map (H.bar : 𝓞 E →+* 𝓞 E) := by rw [l.coprime]; trivial
   exact Submodule.mem_sup.1 h
 
+/- English proof (translation)
+Take `⟨b, rfl⟩` from `h`. Establish `hM : (l.M : 𝓞 E) ∈ l.Mb`. Establish `h : l.Mb * l.Mb.map (H.bar : 𝓞 E →+* 𝓞 E) ≤ l.Mb` using `Ideal.mul_le_inf.trans inf_le_left`. Rewrite `h` using `[l.prod]`. Conclude with `h (Ideal.subset_span rfl)`.
+
+Rewrite using `[← Nat.cast_smul_eq_nsmul (𝓞 E)]`. Conclude with `Submodule.smul_mem_smul hM trivial`.
+-/
 theorem mem_of_modN (l : Level H) {x : D.La} (h : D.ModN l.M x) :
     x ∈ l.Mb • (⊤ : Submodule (𝓞 E) D.La) := by
   obtain ⟨b, rfl⟩ := h
@@ -34,8 +42,14 @@ theorem mem_of_modN (l : Level H) {x : D.La} (h : D.ModN l.M x) :
   rw [← Nat.cast_smul_eq_nsmul (𝓞 E)]
   exact Submodule.smul_mem_smul hM trivial
 
+/- English proof (translation)
+The claim follows from `lt_of_lt_of_le (by norm_num) l.three_le`.
+-/
 theorem level_pos (l : Level H) : 0 < l.M := lt_of_lt_of_le (by norm_num) l.three_le
 
+/- English proof (translation)
+Use `hP (a - b) b` as an intermediate fact. Rewrite `this` using `[sub_add_cancel, h]`. Conclude with `mul_eq_right.1 this.symm`.
+-/
 theorem sub_eq_one {Q : Type} [Group Q] (P : D.La → Q) (hP : ∀ a b, P (a + b) = P a * P b) {a b : D.La}
     (h : P a = P b) : P (a - b) = 1 := by
   have := hP (a - b) b
@@ -44,10 +58,16 @@ theorem sub_eq_one {Q : Type} [Group Q] (P : D.La → Q) (hP : ∀ a b, P (a + b
 
 variable {k : Type} [Field k] {Q : Type} [Group Q] {act : 𝓞 E → Q → Q} {e : ℕ → Q → Q → kˣ → Prop}
 
+/- English proof (translation)
+The claim follows from `(J.ker n hn _).1 (sub_eq_one _ (J.add n) h)`.
+-/
 theorem modN_of_ev_eq (J : TateIso D k Q act e) {n : ℕ} (hn : 0 < n) {a b : D.La} (h : J.ev n a = J.ev n b) :
     D.ModN n (a - b) :=
   (J.ker n hn _).1 (sub_eq_one _ (J.add n) h)
 
+/- English proof (translation)
+Take `⟨d, rfl⟩` from `h`. Establish `hn : 0 < n` using `Nat.pos_of_mul_pos_right hN`. Establish `hd : 0 < d` using `Nat.pos_of_mul_pos_left hN`. Rewrite using `[Nat.mul_div_cancel_left _ hn]`. Conclude with `J.tower n d hn hd a`.
+-/
 theorem ev_pow_div (J : TateIso D k Q act e) {n N : ℕ} (hN : 0 < N) (h : n ∣ N) (a : D.La) :
     J.ev N a ^ (N / n) = J.ev n a := by
   obtain ⟨d, rfl⟩ := h
@@ -56,6 +76,11 @@ theorem ev_pow_div (J : TateIso D k Q act e) {n N : ℕ} (hN : 0 < N) (h : n ∣
   rw [Nat.mul_div_cancel_left _ hn]
   exact J.tower n d hn hd a
 
+/- English proof (translation)
+Take `⟨u, hu, v, hv, huv⟩` from `level_split l`. Establish `hcs : c = u • c + v • c` using `by rw [← add_smul, huv, one_smul]`. Establish `h1 : u • c ∈ l.Mb • (⊤ : Submodule (𝓞 E) D.La)` using `Submodule.smul_mem_smul hu trivial`. Establish `h2 : J.ev l.M (v • c) = 1`. Rewrite using `[← hJ _ (Submodule.smul_mem_smul hv trivial)]`.
+
+Rewrite `hc` using `[hcs, hP, hk _ h1, _root_.one_mul]`. Conclude with `hc`. Rewrite using `[hcs]`. Conclude with `Submodule.add_mem _ h1 (mem_of_modN l ((J.ker _ (level_pos l) _).1 h2))`.
+-/
 theorem mem_of_eq_one (l : Level H) (J : TateIso D k Q act e) (P : D.La → Q) (hP : ∀ a b, P (a + b) = P a * P b)
     (hk : ∀ a ∈ l.Mb • (⊤ : Submodule (𝓞 E) D.La), P a = 1)
     (hJ : ∀ a ∈ l.Mb.map (H.bar : 𝓞 E →+* 𝓞 E) • (⊤ : Submodule (𝓞 E) D.La), P a = J.ev l.M a)
@@ -70,6 +95,13 @@ theorem mem_of_eq_one (l : Level H) (J : TateIso D k Q act e) (P : D.La → Q) (
   rw [hcs]
   exact Submodule.add_mem _ h1 (mem_of_modN l ((J.ker _ (level_pos l) _).1 h2))
 
+/- English proof (translation)
+Take `⟨u, hu, v, hv, huv⟩` from `level_split l₂`. Establish `hcs : ∀ c : D.La, c = u • c + v • c` using `fun c => by rw [← add_smul, huv, one_smul]`. Use `⟨⟨?_, fun a => ?_, fun a => ?_⟩, fun a => ?_⟩` and prove the remaining obligations. Rewrite using `[← (J.ζ_prim _ l₂.A_pos).zpow_eq_one_iff_dvd, zpow_sub_one, ← (hg _ l₂.A_pos).2, hζ, mul_inv_cancel]`. Establish `h` using `hM (v • a)`.
+
+Rewrite `h` using `[hJ _ (Submodule.smul_mem_smul hv trivial), hJ' _ (Submodule.smul_mem_smul hv trivial), ev_pow_div J (level_pos l₂) hd.1, ev_pow_div J' (level_pos l₂) hd.1, (hg _ (level_pos l)).1]`. Establish `h2` using `mem_of_modN l (modN_of_ev_eq J (level_pos l) h.symm)`. Rewrite `h2` using `[map_smul, ← smul_sub]`. Rewrite using `[hcs (g.f l.M a - a)]`. Conclude with `Submodule.add_mem _ (Submodule.smul_mem_smul (hd.2.1 hu) trivial) h2`.
+
+Establish `h` using `hA a`. Rewrite `h` using `[ev_pow_div J l₂.A_pos hd.2.2, ev_pow_div J' l₂.A_pos hd.2.2, (hg _ l.A_pos).1]`. Conclude with `modN_of_ev_eq J l.A_pos h.symm`. Rewrite using `[hcs a, hP', hk' _ (Submodule.smul_mem_smul hu trivial), map_add, hP, map_smul, map_smul, hk _ (Submodule.smul_mem_smul hu trivial), hJ _ (Submodule.smul_mem_smul hv trivial), hJ' _ (Submodule.smul_mem_smul hv trivial), (hg _ (level_pos l₂)).1, map_smul]`.
+-/
 theorem inGam_of_diff (l l₂ : Level H) (hd : l.Dvd l₂) (J J' : TateIso D k Q act e) (g : Sim D)
     (hg : ∀ n, 0 < n → (∀ a, J'.ev n a = J.ev n (g.f n a)) ∧ J'.ζ n = J.ζ n ^ g.ν n)
     (hζ : J'.ζ l₂.A = J.ζ l₂.A) (P P' : D.La → Q)
@@ -99,6 +131,11 @@ theorem inGam_of_diff (l l₂ : Level H) (hd : l.Dvd l₂) (J J' : TateIso D k Q
       hk _ (Submodule.smul_mem_smul hu trivial), hJ _ (Submodule.smul_mem_smul hv trivial),
       hJ' _ (Submodule.smul_mem_smul hv trivial), (hg _ (level_pos l₂)).1, map_smul]
 
+/- English proof (translation)
+Take `⟨d, hdd⟩` from `hd.1`. Establish `hd0 : 0 < d` using `Nat.pos_of_mul_pos_left (hdd ▸ level_pos l₂)`. Establish `h` using `mem_of_modN l (g.tower l.M d (level_pos l) hd0 a)`. Rewrite `h` using `[← hdd]`. Use `Submodule.add_mem _ h (hg.2.1 a)` as an intermediate fact.
+
+Rewrite `this` using `[sub_add_sub_cancel]`. Then use the resulting hypothesis.
+-/
 theorem sub_mem_of_inGam {l l₂ : Level H} (hd : l.Dvd l₂) {g : Sim D} (hg : g.InGam l l₂) (a : D.La) :
     g.f l₂.M a - a ∈ l.Mb • (⊤ : Submodule (𝓞 E) D.La) := by
   obtain ⟨d, hdd⟩ := hd.1
@@ -131,6 +168,9 @@ section Points
 
 variable {S S' T : Scheme.{0}}
 
+/- English proof (translation)
+Establish `h : (toUnit (Over.mk x)).left = x`. Use `Over.w (toUnit (Over.mk x))` as an intermediate fact. Simplify using `using this`. Rewrite using `[Over.comp_left, h]`.
+-/
 theorem unit_left {G : Over S} (x : T ⟶ S) (σ : 𝟙_ (Over S) ⟶ G) :
     (toUnit (Over.mk x) ≫ σ).left = x ≫ σ.left := by
   have h : (toUnit (Over.mk x)).left = x := by
@@ -138,8 +178,16 @@ theorem unit_left {G : Over S} (x : T ⟶ S) (σ : 𝟙_ (Over S) ⟶ G) :
     simpa using this
   rw [Over.comp_left, h]
 
+/- English proof (translation)
+The claim follows from `Over.w σ`.
+-/
 theorem sec_w {G : Over S} (σ : 𝟙_ (Over S) ⟶ G) : σ.left ≫ G.hom = 𝟙 S := Over.w σ
 
+/- English proof (translation)
+Substitute `hz` using the available equality. Set `F : (Over.mk x ⟶ G') →* (Over.mk (x ≫ f) ⟶ G)` to `MonoidHom.mk' (fun p => pushPt h.1.w p) fun p q => Over.OverMorphism.ext (h.2 _ p q (pushPt h.1.w p) (pushPt h.1.w q) rfl rfl).symm`. Use `⟨MulEquiv.ofBijective F ⟨fun p q hpq => ?_, fun q => ?_⟩, fun p => rfl⟩` and prove the remaining obligations. Apply `Over.OverMorphism.ext` to reduce the goal to its premises. Apply `h.1.hom_ext` to reduce the goal to its premises.
+
+Conclude with `congrArg (fun w => w.left) hpq`. Rewrite using `[Over.w, Over.w]`. Use `⟨Over.homMk (h.1.lift q.left x (Over.w q)) (h.1.lift_snd _ _ _), Over.OverMorphism.ext ?_⟩` and prove the remaining obligations. Conclude with `h.1.lift_fst _ _ _`.
+-/
 theorem exists_ptEquiv {G : Over S} {G' : Over S'} [GrpObj G] [GrpObj G'] {f : S' ⟶ S} {φ : G'.left ⟶ G.left}
     (h : IsGrpPullback G' G f φ) (x : T ⟶ S') (z : T ⟶ S) (hz : x ≫ f = z) :
     ∃ e : (Over.mk x ⟶ G') ≃* (Over.mk z ⟶ G), ∀ p, (e p).left = p.left ≫ φ := by
@@ -154,19 +202,33 @@ theorem exists_ptEquiv {G : Over S} {G' : Over S'} [GrpObj G] [GrpObj G'] {f : S
   · refine ⟨Over.homMk (h.1.lift q.left x (Over.w q)) (h.1.lift_snd _ _ _), Over.OverMorphism.ext ?_⟩
     exact h.1.lift_fst _ _ _
 
+/- English proof (translation)
+Substitute `h` using the available equality. Conclude with `⟨m, rfl⟩`.
+-/
 theorem sab_cast {t : SAB H S} {t' : SAB H S'} {f f' : S' ⟶ S} (h : f = f') (m : SABMap t' t f) :
     ∃ m' : SABMap t' t f', m'.φ = m.φ := by
   subst h; exact ⟨m, rfl⟩
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨(Spec.preimage f).hom, (Spec.map_preimage f).symm⟩`.
+-/
 theorem exists_spMap {A B : Type} [CommRing A] [CommRing B] (f : Sp B ⟶ Sp A) : ∃ β : A →+* B, f = spMap β :=
   ⟨(Spec.preimage f).hom, (Spec.map_preimage f).symm⟩
 
+/- English proof (translation)
+The claim follows from `Spec.map_id _`.
+-/
 theorem spMap_id' (A : Type) [CommRing A] : spMap (RingHom.id A) = 𝟙 (Sp A) := Spec.map_id _
 
 end Points
 
 section Main
 
+/- English proof (translation)
+Substitute `hz` using the available equality. Use `⟨tateTransport I e (fun c p => Over.OverMorphism.ext ?_) (fun n p q c h => ?_), rfl, fun _ _ => rfl⟩` and prove the remaining obligations. Rewrite using `[he, Over.comp_left, Over.comp_left, he, Category.assoc, Category.assoc]`. Conclude with `congrArg _ (m.act c)`. Take `⟨w, hw, -⟩` from `(isPullCubical_iff m.cm t.cub t'.cub).1 m.lin`.
+
+Conclude with `(weilIs_grpPullback_of_comm _ _ _ _ f m.φ _ _ t.PP.isLB t'.PP.isLB m.cart ⟨w, (isGen_iff w).2 hw⟩ (Over.mk x) n p q (e p) (e q) _ (he p) (he q)).1 h`.
+-/
 theorem exists_tate_push
     {S S' : Scheme.{0}} {t : SAB H S} {t' : SAB H S'} {f : S' ⟶ S} (m : SABMap t' t f) {k : Type} [Field k]
     (x : Sp k ⟶ S') (z : Sp k ⟶ S) (hz : x ≫ f = z) (e : (Over.mk x ⟶ t'.G) ≃* (Over.mk z ⟶ t.G))
@@ -183,6 +245,9 @@ theorem exists_tate_push
     exact (weilIs_grpPullback_of_comm _ _ _ _ f m.φ _ _ t.PP.isLB t'.PP.isLB m.cart ⟨w, (isGen_iff w).2 hw⟩ (Over.mk x) n p q (e p) (e q) _
       (he p) (he q)).1 h
 
+/- English proof (translation)
+Introduce `a b h`. Apply `Units.ext` to reduce the goal to its premises. Conclude with `(ConcreteCategory.bijective_of_isIso (Scheme.ΓSpecIso (CommRingCat.of k)).inv).1 (congrArg Units.val h)`.
+-/
 theorem unitOn_injective {k : Type} [Field k] : Function.Injective (unitOn (R := k)) := by
   intro a b h
   apply Units.ext
@@ -190,6 +255,33 @@ theorem unitOn_injective {k : Type} [Field k] : Function.Injective (unitOn (R :=
 
 variable {l l₂ : Level H} {Xo : Moduli D l} {Xo₂ : Moduli D l₂}
 
+/- English proof (translation)
+Take `⟨-, ν, hν, hνA⟩` from `hρ`. Take `⟨o, ⟨p⟩⟩` from `hPull k (x ≫ r)`. Take `⟨n, hn⟩` from `sabCancel pullCubCancel E H _ _ _ _ _ _ r x m p.toSABMap`. Take `⟨n₂, hn₂⟩` from `sabComp pullCubComp E H _ _ _ _ _ _ _ _ ν n`. Take `⟨n₃, hn₃⟩` from `sab_cast hx n₂`.
+
+Take `⟨n₄, hn₄⟩` from `sabComp pullCubComp E H _ _ _ _ _ _ _ _ m n₃`. Take `⟨e, he⟩` from `exists_ptEquiv m.cart x _ rfl`. Take `⟨eν, heν⟩` from `exists_ptEquiv ν.cart x x hx`. Set `P : D.La → (Over.mk x ⟶ Xo₂.univ.t.G)` to `fun a => toUnit _ ≫ Xo₂.univ.eta a`. Set `PA : D.La → (Over.mk x ⟶ Xo₂.univ.t.G)` to `fun a => toUnit _ ≫ Xo₂.univ.etaA a`.
+
+Establish `hP : ∀ a b, P (a + b) = P a * P b` using `fun a b => by`. Simplify using `only [P]`. Rewrite using `[Xo₂.univ.eta_add, MonObj.comp_mul]`. Establish `hPpow : ∀ a, (P a ^ (l₂.M / l.M)).left = x ≫ (Xo₂.univ.eta a ^ (l₂.M / l.M)).left` using `fun a => by`. Simplify using `only [P]`.
+
+Rewrite using `[← MonObj.comp_pow, unit_left]`. Establish `hPe : ∀ a, e (P a ^ (l₂.M / l.M)) = toUnit _ ≫ Xo.univ.eta a` using `fun a => by`. Apply `Over.OverMorphism.ext` to reduce the goal to its premises. Rewrite using `[he, hPpow, unit_left, Category.assoc, Category.assoc]`. Conclude with `congrArg _ (hm a)`.
+
+Establish `hPν : ∀ a, eν (P (g.f l₂.M a)) = P a` using `fun a => by`. Apply `Over.OverMorphism.ext` to reduce the goal to its premises. Simplify using `only [P]`. Rewrite using `[heν, unit_left, unit_left, Category.assoc]`. Conclude with `(congrArg _ (hν a)).trans (by rw [← Category.assoc, hx])`.
+
+Establish `hPAν : ∀ a, eν (PA (g.f l₂.A a)) = PA a` using `fun a => by`. Apply `Over.OverMorphism.ext` to reduce the goal to its premises. Simplify using `only [PA]`. Rewrite using `[heν, unit_left, unit_left, Category.assoc]`. Conclude with `(congrArg _ (hνA a)).trans (by rw [← Category.assoc, hx])`.
+
+Establish `hfix : ∀ a, eν (P a ^ (l₂.M / l.M)) = P a ^ (l₂.M / l.M)` using `fun a => by`. Establish `h : P (g.f l₂.M a) ^ (l₂.M / l.M) = P a ^ (l₂.M / l.M)`. Apply `e.injective` to reduce the goal to its premises. Rewrite using `[hPe, hPe, ← sub_add_cancel (g.f l₂.M a) a, Xo.univ.eta_add, Xo.univ.eta_ker _ (sub_mem_of_inGam hd hg a), _root_.one_mul]`. Rewrite using `[← h, map_pow, hPν, h]`.
+
+Establish `hon : ∀ a, (o.eta a).left ≫ n.φ = (P a ^ (l₂.M / l.M)).left` using `fun a => by`. Apply `m.cart.1.hom_ext` to reduce the goal to its premises. Rewrite using `[← he, hPe, unit_left, Category.assoc]`. Conclude with `(congrArg _ hn.symm).trans (p.eta a)`. Rewrite using `[Over.w, Category.assoc, n.cart.1.w, ← Category.assoc, sec_w]`.
+
+Conclude with `(Category.id_comp x).symm`. Establish `hrig : p.toSABMap.φ = n₄.φ` using `hRig k _ o p.toSABMap n₄ fun a => ⟨_, rfl, by`. Rewrite using `[hn₄, hn₃, hn₂, hn, ← Category.assoc, ← Category.assoc, ← Category.assoc, hon, ← heν, hfix]⟩`. Establish `hnν : n.φ ≫ ν.φ = n.φ`. Rewrite using `[← hn₂, ← hn₃]`.
+
+Apply `m.cart.1.hom_ext` to reduce the goal to its premises. Conclude with `hn₄.symm.trans (hrig.symm.trans hn)`. Conclude with `n₃.cart.1.w.trans n.cart.1.w.symm`. Establish `hid : ∀ q, eν q = q` using `fun q => by`. Apply `Over.OverMorphism.ext` to reduce the goal to its premises.
+
+Establish `hq : n.cart.1.lift q.left (𝟙 _) ((Over.w q).trans (Category.id_comp x).symm) ≫ n.φ = q.left` using `n.cart.1.lift_fst _ _ _`. Rewrite using `[heν, ← hq, Category.assoc]`. Conclude with `congrArg _ hnν`. Take `⟨β, hβ⟩` from `exists_spMap (x ≫ Xo₂.s)`. Take `⟨-, I, -, hIA, hI⟩` from `Xo₂.univ.geom k x β hβ`.
+
+Use `⟨fun a => mem_of_eq_one l₂ I P hP (fun b hb => ?_) hI (sub_eq_one P hP ?_), fun a => ?_⟩` and prove the remaining obligations. Simplify using `only [P]`. Rewrite using `[Xo₂.univ.eta_ker b hb, MonObj.comp_one]`. Rewrite using `[← hPν a, hid]`. Apply `modN_of_ev_eq I l₂.A_pos` to reduce the goal to its premises.
+
+Rewrite using `[← hIA, ← hIA]`. Conclude with `(hid _).symm.trans (hPAν a)`.
+-/
 theorem trivAt_of_fixed
     (hPull : ∀ (k : Type) [Field k] (z : Sp k ⟶ Xo.X), ∃ o' : Obj D l (baseKA l) (z ≫ Xo.s), Nonempty (ObjMap o' Xo.univ z))
     (hRig : ∀ (k : Type) [Field k] (z : Sp k ⟶ Xo.X) (o' : Obj D l (baseKA l) (z ≫ Xo.s)) (m m' : SABMap o'.t Xo.univ.t z),

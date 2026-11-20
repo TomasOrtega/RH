@@ -23,11 +23,17 @@ def jMap (z₂ : M₂.Z) (h : ∀ b ∈ integralClosure (M₁.Z.presheaf.stalk z
     integralClosure (M₁.Z.presheaf.stalk z₁) Ω₂ →+* M₂.Z.presheaf.stalk z₂ :=
   (M₂.stalkEquiv z₂).symm.toRingHom.comp ((RingHom.id Ω₂).restrict _ (M₂.O z₂) h)
 
+/- English proof (translation)
+Rewrite using `[← RatModel.coe_stalkEquiv]`. Simplify using `[jMap]`.
+-/
 theorem stalkHom_jMap (z₂ : M₂.Z) (h : ∀ b ∈ integralClosure (M₁.Z.presheaf.stalk z₁) Ω₂, b ∈ M₂.O z₂)
     (b : integralClosure (M₁.Z.presheaf.stalk z₁) Ω₂) : M₂.stalkHom z₂ (jMap z₂ h b) = b := by
   rw [← RatModel.coe_stalkEquiv]
   simp [jMap]
 
+/- English proof (translation)
+Rewrite using `[IsLocalRing.mem_maximalIdeal, mem_nonunits_iff, ← MulEquiv.isUnit_map (M₂.stalkEquiv z₂).toMulEquiv, RatModel.isUnit_O_iff]`. Express the relevant statement in the definitionally equal form `¬ ((M₂.stalkEquiv z₂ (jMap z₂ h c) : Ω₂) ≠ 0 ∧ (M₂.stalkEquiv z₂ (jMap z₂ h c) : Ω₂)⁻¹ ∈ M₂.O z₂) ↔ _`. Rewrite using `[RatModel.coe_stalkEquiv, stalkHom_jMap]`.
+-/
 theorem jMap_mem_max_iff (z₂ : M₂.Z) (h : ∀ b ∈ integralClosure (M₁.Z.presheaf.stalk z₁) Ω₂, b ∈ M₂.O z₂)
     (c : integralClosure (M₁.Z.presheaf.stalk z₁) Ω₂) :
     jMap z₂ h c ∈ maximalIdeal (M₂.Z.presheaf.stalk z₂) ↔ ¬ ((c : Ω₂) ≠ 0 ∧ (c : Ω₂)⁻¹ ∈ M₂.O z₂) := by
@@ -36,6 +42,9 @@ theorem jMap_mem_max_iff (z₂ : M₂.Z) (h : ∀ b ∈ integralClosure (M₁.Z.
   change ¬ ((M₂.stalkEquiv z₂ (jMap z₂ h c) : Ω₂) ≠ 0 ∧ (M₂.stalkEquiv z₂ (jMap z₂ h c) : Ω₂)⁻¹ ∈ M₂.O z₂) ↔ _
   rw [RatModel.coe_stalkEquiv, stalkHom_jMap]
 
+/- English proof (translation)
+Set `τ' : Ω₂ →ₐ[M₁.Z.presheaf.stalk z₁] Ω₂` to `{ τ.toRingHom with commutes' := fun x => by`. Express the relevant statement in the definitionally equal form `τ (algebraMap (M₁.Z.presheaf.stalk z₁) Ω₂ x) = algebraMap (M₁.Z.presheaf.stalk z₁) Ω₂ x`. Rewrite using `[halg]`. Conclude with `τ.commutes _ }`. Conclude with `IsIntegral.map τ' hb`.
+-/
 theorem algHom_mem_integralClosure
     (halg : ∀ x, algebraMap (M₁.Z.presheaf.stalk z₁) Ω₂ x = algebraMap Ω₁ Ω₂ (M₁.stalkHom z₁ x))
     (τ : Ω₂ →ₐ[Ω₁] Ω₂) {b : Ω₂} (hb : b ∈ integralClosure (M₁.Z.presheaf.stalk z₁) Ω₂) :
@@ -48,6 +57,9 @@ theorem algHom_mem_integralClosure
         exact τ.commutes _ }
   exact IsIntegral.map τ' hb
 
+/- English proof (translation)
+Take `⟨b, hb, s, hs, hs0, hsO, rfl⟩` from `hloc x hx`. Rewrite using `[map_div₀, div_eq_mul_inv]`. Conclude with `mul_mem (hB _ (algHom_mem_integralClosure halg τ hb)) (hu s hs hs0 hsO)`.
+-/
 theorem algHom_mem_O
     (halg : ∀ x, algebraMap (M₁.Z.presheaf.stalk z₁) Ω₂ x = algebraMap Ω₁ Ω₂ (M₁.stalkHom z₁ x)) {z₂ : M₂.Z}
     (hB : ∀ b ∈ integralClosure (M₁.Z.presheaf.stalk z₁) Ω₂, b ∈ M₂.O z₂)
@@ -68,6 +80,15 @@ variable {o₁ Ω₁ o₂ Ω₂ : Type} [CommRing o₁] [Field Ω₁] [Algebra o
   [Algebra Ω₁ Ω₂] {M₁ : RatModel o₁ Ω₁} {M₂ : RatModel o₂ Ω₂} {z₁ : M₁.Z}
   [Algebra (M₁.Z.presheaf.stalk z₁) Ω₂]
 
+/- English proof (translation)
+Establish `hu : ∀ s ∈ integralClosure (M₁.Z.presheaf.stalk z₁) Ω₂, s ≠ 0 → s⁻¹ ∈ M₂.O z₂ → (σ.toAlgHom s)⁻¹ ∈ M₂.O z₂`. Introduce `s hs hs0 hsO`. Establish `hs' : σ s ∈ integralClosure (M₁.Z.presheaf.stalk z₁) Ω₂` using `algHom_mem_integralClosure halg σ.toAlgHom hs`. Establish `key` using `H ⟨s, hs⟩ ⟨σ s, hs'⟩ rfl`. Rewrite `key` using `[jMap_mem_max_iff, jMap_mem_max_iff]`.
+
+Conclude with `((not_iff_not.mp key).mp ⟨hs0, hsO⟩).2`. Establish `hu' : ∀ s ∈ integralClosure (M₁.Z.presheaf.stalk z₁) Ω₂, s ≠ 0 → s⁻¹ ∈ M₂.O z₂ → (σ.symm.toAlgHom s)⁻¹ ∈ M₂.O z₂`. Introduce `s hs hs0 hsO`. Establish `ht : σ.symm s ∈ integralClosure (M₁.Z.presheaf.stalk z₁) Ω₂` using `algHom_mem_integralClosure halg σ.symm.toAlgHom hs`. Establish `key` using `H ⟨σ.symm s, ht⟩ ⟨s, hs⟩ (σ.apply_symm_apply s).symm`.
+
+Rewrite `key` using `[jMap_mem_max_iff, jMap_mem_max_iff]`. Conclude with `((not_iff_not.mp key).mpr ⟨hs0, hsO⟩).2`. Establish `hσ : ∀ x ∈ M₂.O z₂, σ x ∈ M₂.O z₂` using `fun x hx => algHom_mem_O halg hB hloc σ.toAlgHom hu hx`. Establish `hσ' : ∀ x ∈ M₂.O z₂, σ.symm x ∈ M₂.O z₂` using `fun x hx => algHom_mem_O halg hB hloc σ.symm.toAlgHom hu' hx`. Set `e : M₂.O z₂ ≃+* M₂.O z₂` to `{ toFun := fun x => ⟨σ x, hσ x x.2⟩ invFun := fun x => ⟨σ.symm x, hσ' x x.2⟩ left_inv := fun x => Subtype.ext (σ.symm_apply_apply (x : Ω₂)) right_inv := fun x => Subtype.ext (σ.apply_symm_apply (x : Ω₂)) map_mul' := fun x y => Subtype.ext (map_mul σ (x : Ω₂) y) map_add' := fun x …`.
+
+Use `⟨(M₂.stalkEquiv z₂).trans (e.trans (M₂.stalkEquiv z₂).symm), fun x => ?_⟩` and prove the remaining obligations. Rewrite using `[← RatModel.coe_stalkEquiv, ← RatModel.coe_stalkEquiv]`. Simplify using `only [RingEquiv.trans_apply, RingEquiv.apply_symm_apply]`. Both sides reduce to the same expression.
+-/
 theorem exists_stalk_ringEquiv
     (halg : ∀ x, algebraMap (M₁.Z.presheaf.stalk z₁) Ω₂ x = algebraMap Ω₁ Ω₂ (M₁.stalkHom z₁ x)) (z₂ : M₂.Z)
     (hB : ∀ b ∈ integralClosure (M₁.Z.presheaf.stalk z₁) Ω₂, b ∈ M₂.O z₂)
@@ -109,6 +130,23 @@ theorem exists_stalk_ringEquiv
   simp only [RingEquiv.trans_apply, RingEquiv.apply_symm_apply]
   rfl
 
+/- English proof (translation)
+Rewrite using `[injective_iff_map_eq_zero]`. Introduce `y hy`. Assume the negation of the conclusion as `hy0`. Establish `hY : M₂.stalkHom z₂ y ≠ 0`. Introduce `h`.
+
+Apply `hy0` to reduce the goal to its premises. Apply `M₂.stalkHom_injective z₂` to reduce the goal to its premises. Rewrite using `[h, map_zero]`. Establish `hYO : M₂.stalkHom z₂ y ∈ M₂.O z₂`. Rewrite using `[← RatModel.coe_stalkEquiv]`.
+
+Conclude with `(M₂.stalkEquiv z₂ y).2`. Take `⟨b, hb, s, hs, hs0, -, hYe⟩` from `hloc _ hYO`. Establish `hb0 : b ≠ 0`. Introduce and unpack `rfl`. Rewrite `hYe` using `[zero_div]`.
+
+Conclude with `hY hYe`. Establish `hjb : jMap z₂ hB ⟨b, hb⟩ = y * jMap z₂ hB ⟨s, hs⟩`. Apply `M₂.stalkHom_injective z₂` to reduce the goal to its premises. Rewrite using `[map_mul, stalkHom_jMap, stalkHom_jMap, hYe]`. Conclude with `(div_mul_cancel₀ b hs0).symm`.
+
+Establish `hev0 : ev₂ (jMap z₂ hB ⟨b, hb⟩) = 0`. Rewrite using `[hjb, map_mul, hy, zero_mul]`. Establish `hbB : (⟨b, hb⟩ : integralClosure (M₁.Z.presheaf.stalk z₁) Ω₂) ≠ 0` using `fun h => hb0 (congrArg Subtype.val h)`. Establish `hne` using `Ideal.comap_ne_bot_of_integral_mem hbB (Ideal.mem_span_singleton_self _) (integralClosure.isIntegral _)`. Take `⟨a, ha, ha0⟩` from `Submodule.exists_mem_ne_zero_of_ne_bot hne`.
+
+Rewrite `ha` using `[Ideal.mem_comap, Ideal.mem_span_singleton']`. Take `⟨c, hc⟩` from `ha`. Establish `h1 : ev₂ (jMap z₂ hB (algebraMap _ _ a)) = io (ev a)`. Apply `hE` to reduce the goal to its premises. Rewrite using `[stalkHom_jMap]`.
+
+Conclude with `halg a`. Establish `h2 : ev₂ (jMap z₂ hB (algebraMap _ _ a)) = 0`. Rewrite using `[← hc, map_mul, map_mul, hev0, mul_zero]`. Rewrite `h1` using `[h2]`. Establish `h3 : ev a = ev 0` using `hio (by rw [map_zero, map_zero, ← h1])`.
+
+Conclude with `ha0 (hev h3)`.
+-/
 theorem injective_of_ext
     (halg : ∀ x, algebraMap (M₁.Z.presheaf.stalk z₁) Ω₂ x = algebraMap Ω₁ Ω₂ (M₁.stalkHom z₁ x)) {z₂ : M₂.Z}
     (hB : ∀ b ∈ integralClosure (M₁.Z.presheaf.stalk z₁) Ω₂, b ∈ M₂.O z₂)
@@ -161,6 +199,17 @@ end GlobalTheory.Poinc.RingSide
 
 open GlobalTheory.Poinc.RingSide in
 
+/- English proof (translation)
+Introduce `g n F W Z i X₁ act 𝔗 z₁`. Use `letI : Algebra (X₁.M.Z.presheaf.stalk z₁) 𝔗.X₂.Ω₁ := ((algebraMap X₁.Ω₁ 𝔗.X₂.Ω₁).comp (X₁.M.stalkHom z₁)).toAlgebra`. Establish `halg : ∀ x, algebraMap (X₁.M.Z.presheaf.stalk z₁) 𝔗.X₂.Ω₁ x = algebraMap X₁.Ω₁ 𝔗.X₂.Ω₁ (X₁.M.stalkHom z₁ x)` using `fun _ => rfl`. Establish `hN : ReciprocityTheory.ChartRestriction.G.Geo.Tor.IsNormalScheme 𝔗.X₂.M.Z`. Conclude with `@GlobalTheory.IsNormalScheme.pred _ 𝔗.X₂.normal`.
+
+Take `⟨𝔷, h𝔷⟩` from `Ideal.exists_maximal (integralClosure (X₁.M.Z.presheaf.stalk z₁) 𝔗.X₂.Ω₁)`. Take `⟨z₂, hz₂, hmem⟩` from `GlobalTheory.Poinc.FinPts.maximal_point hN 𝔗.p_fin 𝔗.p_pt halg 𝔷 h𝔷`. Establish `hB : ∀ b ∈ integralClosure (X₁.M.Z.presheaf.stalk z₁) 𝔗.X₂.Ω₁, b ∈ 𝔗.X₂.M.O z₂` using `fun b hb => GlobalTheory.Poinc.FinPts.mem_O_of_isIntegral hN 𝔗.p_pt halg hb hz₂`. Establish `hloc` using `GlobalTheory.Poinc.exists_div_integralClosure_of_mem_O _ _ _ _ X₁.M 𝔗.X₂.M 𝔗.p hN 𝔗.p_fin 𝔗.p_pt z₁ z₂ hz₂`. Use `⟨z₂, jMap z₂ hB, hz₂, fun b => stalkHom_jMap z₂ hB b, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations.
+
+Establish `hc : (maximalIdeal (𝔗.X₂.M.Z.presheaf.stalk z₂)).comap (jMap z₂ hB) = 𝔷`. Use extensionality with `c`. Rewrite using `[Ideal.mem_comap, jMap_mem_max_iff, hmem c]`. The claim follows by propositional logic. Rewrite using `[hc]`.
+
+Conclude with `h𝔷`. Introduce `x hx`. Conclude with `GlobalTheory.Poinc.FinPts.isIntegral_of_mem_O 𝔗.p_fin 𝔗.p_pt halg hx`. Introduce `σ H`. Conclude with `exists_stalk_ringEquiv halg z₂ hB hloc σ H`.
+
+Introduce `V _ ev V' _ io ev₂ hev hio hE`. Conclude with `injective_of_ext halg hB hloc ev io ev₂ hev hio hE.2`.
+-/
 theorem GlobalTheory.Poinc.Sep.Tower.exists_point_integralClosure_stalk : ∀ (g n : ℕ) (F : SFam g n (zetaAway n)) (W : Matrix (Fin 8) (Fin 8) ℤ) (Z : Scheme.{0}) (i : F.X ⟶ Z) (X₁ : Setup F W i) (act : Matrix (Fin 8) (Fin 8) ℤ → (X₁.ρ.P.A ⟶ X₁.ρ.P.A)) (𝔗 : Tower X₁ act) (z₁ : X₁.M.Z), letI : Algebra (X₁.M.Z.presheaf.stalk z₁) 𝔗.X₂.Ω₁ := ((algebraMap X₁.Ω₁ 𝔗.X₂.Ω₁).comp (X₁.M.stalkHom z₁)).toAlgebra; ∃ (z₂ : 𝔗.X₂.M.Z) (j₂ : integralClosure (X₁.M.Z.presheaf.stalk z₁) 𝔗.X₂.Ω₁ →+* 𝔗.X₂.M.Z.presheaf.stalk z₂), 𝔗.p z₂ = z₁ ∧ (∀ b, 𝔗.X₂.M.stalkHom z₂ (j₂ b) = b) ∧ ((maximalIdeal (𝔗.X₂.M.Z.presheaf.stalk z₂)).comap j₂).IsMaximal ∧ (∀ x : 𝔗.X₂.Ω₁, (∀ w, 𝔗.p w = z₁ → x ∈ 𝔗.X₂.M.O w) → x ∈ integralClosure (X₁.M.Z.presheaf.stalk z₁) 𝔗.X₂.Ω₁) ∧ (∀ σ : 𝔗.X₂.Ω₁ ≃ₐ[X₁.Ω₁] 𝔗.X₂.Ω₁, (∀ b b' : integralClosure (X₁.M.Z.presheaf.stalk z₁) 𝔗.X₂.Ω₁, (b' : 𝔗.X₂.Ω₁) = σ b → (j₂ b ∈ maximalIdeal (𝔗.X₂.M.Z.presheaf.stalk z₂) ↔ j₂ b' ∈ maximalIdeal (𝔗.X₂.M.Z.presheaf.stalk z₂))) → ∃ σ₂ : 𝔗.X₂.M.Z.presheaf.stalk z₂ ≃+* 𝔗.X₂.M.Z.presheaf.stalk z₂, ∀ x, 𝔗.X₂.M.stalkHom z₂ (σ₂ x) = σ (𝔗.X₂.M.stalkHom z₂ x)) ∧ ∀ (V : Type) [CommRing V] (ev : X₁.M.Z.presheaf.stalk z₁ →+* V) (V' : Type) [CommRing V'] (io : V →+* V') (ev₂ : 𝔗.X₂.M.Z.presheaf.stalk z₂ →+* V'), Function.Injective ev → Function.Injective io → 𝔗.Ext ev io ev₂ → Function.Injective ev₂ := by
   intro g n F W Z i X₁ act 𝔗 z₁
   letI : Algebra (X₁.M.Z.presheaf.stalk z₁) 𝔗.X₂.Ω₁ :=

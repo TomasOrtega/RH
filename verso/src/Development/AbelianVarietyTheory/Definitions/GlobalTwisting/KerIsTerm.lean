@@ -187,6 +187,9 @@ def KerIsTerm : Prop :=
 
 end Conc
 
+/- English proof (translation)
+Introduce `_ _` and use `rfl`.
+-/
 example {E : Type} [Field E] [NumberField E] [StarRing E] {n : ℕ} (ST : Finset (HeightOneSpectrum (𝓞 E)))
     (N : Submodule (𝓞 E) (Sp E n)) : SameOff ST N N := fun _ _ => rfl
 

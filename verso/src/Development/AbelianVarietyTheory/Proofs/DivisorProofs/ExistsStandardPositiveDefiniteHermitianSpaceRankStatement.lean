@@ -16,5 +16,8 @@ open GlobalTheory.IndefiniteRowSideFullHecke.ClassFunctionSumIntegral (IsDefinit
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.StdDefSpace.exists_std_definite | exact GlobalTheory.StdDefSpace.exists_std_definite | (intros; apply GlobalTheory.StdDefSpace.exists_std_definite <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.exists_standardPositiveDefinite_hermitianSpace_rank : ∀ (D : D7) (n : ℕ), ∃ V : HSp D, V.rank = n ∧ V.gram = 1 ∧ IsDefiniteSpace V := by
   first | exact @GlobalTheory.StdDefSpace.exists_std_definite | exact GlobalTheory.StdDefSpace.exists_std_definite | (intros; apply GlobalTheory.StdDefSpace.exists_std_definite <;> assumption)

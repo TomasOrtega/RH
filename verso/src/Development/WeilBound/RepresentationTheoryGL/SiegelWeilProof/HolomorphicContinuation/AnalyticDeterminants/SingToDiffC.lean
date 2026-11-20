@@ -16,6 +16,9 @@ namespace STD
 
 variable {n : ℕ}
 
+/- English proof (translation)
+Establish `hd : HasFDerivAt (fun y => Ψ (hermL n y)) (((fderiv ℂ Ψ (herm x)).restrictScalars ℝ).comp (hermL n)) x` using `(hΨ.hasFDerivAt.restrictScalars ℝ).comp x (hermL n).hasFDerivAt`. Establish `hf : fderiv ℝ (fun y => Ψ (herm y)) x = ((fderiv ℂ Ψ (herm x)).restrictScalars ℝ).comp (hermL n)` using `hd.fderiv`. Simplify using `only [dc, hf, ContinuousLinearMap.comp_apply, ContinuousLinearMap.coe_restrictScalars', hermL_apply]`. Rewrite using `[← herm_v, map_add, map_smul, smul_eq_mul]`.
+-/
 theorem dc_comp {Ψ : Matrix (Fin n) (Fin n) ℂ → ℂ} {x : Vr n} (hΨ : DifferentiableAt ℂ Ψ (herm x))
     (a : Fin n × Fin n) :
     dc a (fun y => Ψ (herm y)) x = fderiv ℂ Ψ (herm x) (Matrix.single a.1 a.2 1) := by
@@ -26,6 +29,9 @@ theorem dc_comp {Ψ : Matrix (Fin n) (Fin n) ℂ → ℂ} {x : Vr n} (hΨ : Diff
   simp only [dc, hf, ContinuousLinearMap.comp_apply, ContinuousLinearMap.coe_restrictScalars', hermL_apply]
   rw [← herm_v, map_add, map_smul, smul_eq_mul]
 
+/- English proof (translation)
+The claim follows from `| 0, m, x, _ => by simp [dList] | k + 1, m, x, hx => by have hU : IsOpen ((hermL n) ⁻¹' Metric.ball 0 r) := Metric.isOpen_ball.preimage (hermL n).continuous set V : Fin k → Matrix (Fin n) (Fin n) ℂ := fun i => Matrix.single (m i.succ).1 (m i.succ).2 1 with hV set Ψ : Matrix (Fin …`.
+-/
 theorem dList_ofFn {r : ℝ} {G : Matrix (Fin n) (Fin n) ℂ → ℂ} (hG : ContDiffOn ℂ ∞ G (Metric.ball 0 r)) :
     ∀ (k : ℕ) (m : Fin k → Fin n × Fin n) (x : Vr n), herm x ∈ Metric.ball 0 r →
       dList (List.ofFn m) (fun y => G (herm y)) x =

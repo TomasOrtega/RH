@@ -18,6 +18,11 @@ open GlobalTheory.HkFam
 
 namespace GlobalTheory.HkFam
 
+/- English proof (translation)
+Establish `key : ∀ {A B : Scheme.{0}} (w : P ⟶ A) (c : A ⟶ B) (L : Set B), Set.range (w ≫ c) ⊆ L ↔ Set.range w ⊆ c ⁻¹' L`. Introduce `A B w c L`. Simplify using `[Set.range_subset_iff]`. Take `⟨w₁, hw₁, hw₁'⟩` from `hn₁.exists_lift u₁ x₁ hu₁`. Take `⟨w₂, hw₂, hw₂'⟩` from `hn₂.exists_lift u₂ x₂ hu₂`.
+
+Establish `hw : w₁ ≫ a₁ = w₂ ≫ a₂`. Apply `hmu.hom_ext` to reduce the goal to its premises. Rewrite using `[Category.assoc, Category.assoc, ← e₁, ← e₂, ← Category.assoc, ← Category.assoc, hw₁, hw₂, hu]`. Rewrite using `[Category.assoc, Category.assoc, ha₁, ha₂, ← Category.assoc, ← Category.assoc, hw₁', hw₂', hx]`. Rewrite using `[← hw₁, ← hw₂, key, key, ← k₁, ← k₂, ← key, ← key, hw]`.
+-/
 theorem range_subset_iff_of_charts {X Hk S S₁ S₂ U G₀ G G₁ G₂ P : Scheme.{0}} {g₀ : G₀ ⟶ Hk} {gU : U ⟶ X}
     {m₁ : G₀ ⟶ U} {f : S ⟶ X} {g : G ⟶ S} {mu : G ⟶ U} (hmu : IsPullback mu g gU f)
     {K : Set G₀} {K' : Set G}
@@ -40,6 +45,31 @@ theorem range_subset_iff_of_charts {X Hk S S₁ S₂ U G₀ G G₁ G₂ P : Sche
     · rw [Category.assoc, Category.assoc, ha₁, ha₂, ← Category.assoc, ← Category.assoc, hw₁', hw₂', hx]
   rw [← hw₁, ← hw₂, key, key, ← k₁, ← k₂, ← key, ← key, hw]
 
+/- English proof (translation)
+Introduce `E _ _ _ H D l Xo 𝔓 p i hA`. Establish `laws : Out.Laws` using `GlobalTheory.firstFiveLaws.1`. Take `⟨Hk, π₁, o₁, m₁, K, fin₁, et₁, hK, hE, hpt, hex⟩` from `GlobalTheory.T.exists_heckeKernel_scheme_universal E H D l Xo 𝔓 p i hA`. Use `⟨⟨Hk, π₁, fin₁, et₁, o₁, m₁, K, hK, hE, ?_⟩, hE⟩` and prove the remaining obligations. Introduce `S s hS o K' hE' hK'`.
+
+Take `⟨f, ⟨hf, ⟨mu⟩⟩, hfu⟩` from `Xo.rep S s hS o`. Take `⟨S', π, o', m, τ, hπ₁, hπ₂, hπ₃, hL⟩` from `GlobalTheory.T.hecke_set_etale_level_structure_exists E H D l 𝔓 p i S s o K' hA hE' hK'`. Establish `hK''` using `((GlobalTheory.heckeSets_pull E H D 𝔓 p i S S' o.t o'.t π m.toSABMap o.proper).2 K').1 hK'`. Take `⟨mu', hmu'⟩` from `((GlobalTheory.ObjMaps.id_comp_cancel E H D l _ _ _ _ _ _ _ _ _ _ _ _ Xo.univ o o').2 f π mu).1 m`. Take `⟨h', n', hh', hn', hKn'⟩` from `hex S' (π ≫ s) o' (π ≫ f) mu' τ _ hL hK''`.
+
+Establish `cm` using `m.cart.1`. Establish `cm₁` using `m₁.cart.1`. Establish `cn'` using `n'.cart.1`. Use `haveI : IsReduced S' := GlobalTheory.isReduced_of_smooth_of_isReduced π`. Use `haveI : IsReduced (pullback π π : Scheme.{0}) := GlobalTheory.isReduced_of_smooth_of_isReduced (pullback.fst π π)`.
+
+Establish `hd : pullback.fst π π ≫ h' = pullback.snd π π ≫ h'`. Establish `h0 : (pullback.fst π π ≫ h') ≫ π₁ = (pullback.snd π π ≫ h') ≫ π₁`. Rewrite using `[Category.assoc, Category.assoc, hh', pullback.condition_assoc]`. Use `hom_ext_of_geometric_points _ _ _ π₁ _ _ h0 ?_` and prove the remaining obligations. Introduce `k _ _ x`.
+
+Use `hpt k _ _ (by rw [Category.assoc, Category.assoc x, h0]) ?_` and prove the remaining obligations. Introduce `u u' huu`. Conclude with `range_subset_iff_of_charts mu.cart.1 cm.w cn' (hn'.trans hmu') hKn' cm.w cn' (hn'.trans hmu') hKn' (x ≫ pullback.fst π π) (x ≫ pullback.snd π π) (by rw [Category.assoc, Category.assoc, pullback.condition]) u.left u'.left (by rw [Category.assoc]; exact Over.w u) (by rw [Category.a …`. Choose the witnesses or unpack the hypotheses as in `⟨h, hh⟩ : ∃ h : S ⟶ Hk, π ≫ h = h' := by`. It suffices to establish `hc : ∀ {Z : Scheme.{0}} (a b : Z ⟶ S'), a ≫ π = b ≫ π → a ≫ h' = b ≫ h' from ⟨EffectiveEpi.desc π h' hc, EffectiveEpi.fac π h' hc⟩`.
+
+Use `focus`. Introduce `Z a b hab`. Use `congrArg (pullback.lift a b hab ≫ ·) hd` as an intermediate fact. Simplify `this` using `only [pullback.lift_fst_assoc, pullback.lift_snd_assoc]`. Establish `hhf : h ≫ π₁ = f`.
+
+Rewrite using `[← cancel_epi π, ← Category.assoc, hh, hh']`. Substitute `hhf` using the available equality. Take `⟨n, hn⟩` from `((GlobalTheory.ObjMaps.id_comp_cancel E H D l _ _ _ _ _ _ _ _ _ _ _ _ Xo.univ o₁ o).2 π₁ h m₁).2 mu`. Establish `cn` using `n.cart.1`. Establish `hmn : m.toSABMap.φ ≫ n.toSABMap.φ = n'.toSABMap.φ`.
+
+Apply `cm₁.hom_ext` to reduce the goal to its premises. Rewrite using `[Category.assoc, ← hn]`. Conclude with `(hn'.trans hmu').symm`. Rewrite using `[Category.assoc, cn.w, cn'.w, ← Category.assoc, cm.w, Category.assoc, hh]`. Establish `hsurj : Surjective m.toSABMap.φ` using `MorphismProperty.of_isPullback cm.flip hπ₃`.
+
+Establish `hKn : K' = n.toSABMap.φ ⁻¹' K`. Apply `hsurj.surj.preimage_injective` to reduce the goal to its premises. Rewrite using `[hKn', ← hmn]`. Use extensionality with `y`. Simplify using the standard rewrite rules.
+
+Use `⟨h, ⟨by rw [← Category.assoc, hf], n, hKn⟩, ?_⟩` and prove the remaining obligations. Introduce and unpack `h₂ ⟨hs₂, n₂, hKn₂⟩`. Take `⟨mu₂, hmu₂⟩` from `((GlobalTheory.ObjMaps.id_comp_cancel E H D l _ _ _ _ _ _ _ _ _ _ _ _ Xo.univ o₁ o).2 π₁ h₂ m₁).1 n₂`. Establish `h0 : h₂ ≫ π₁ = h ≫ π₁` using `hfu _ ⟨by rw [Category.assoc, hs₂], ⟨mu₂⟩⟩`. Establish `hrig : ∀ (f₂ : S ⟶ Xo.X) (mu₂ : ObjMap o Xo.univ f₂), f₂ = h ≫ π₁ → mu₂.toSABMap.φ = mu.toSABMap.φ`.
+
+Introduce `f₂ mu₂ e`. Substitute `e` using the available equality. Conclude with `GlobalTheory.obj_rigid_closed laws E H D l _ _ _ _ _ _ _ _ Xo.univ o _ (Or.inl hS) _ _ fun a => ⟨_, mu₂.eta a, mu.eta a⟩`. Establish `e₂` using `hmu₂.symm.trans (hrig _ mu₂ h0)`. Use `hom_ext_of_geometric_points _ _ _ π₁ _ _ h0 ?_` and prove the remaining obligations.
+
+Introduce `k _ _ x`. Use `hpt k _ _ (by rw [Category.assoc, Category.assoc x, h0]) ?_` and prove the remaining obligations. Introduce `u u' huu`. Conclude with `range_subset_iff_of_charts (q₁ := 𝟙 S) (q₂ := 𝟙 S) (a₁ := 𝟙 _) (a₂ := 𝟙 _) (K' := K') mu.cart.1 (by simp) n₂.cart.1 (by rw [Category.id_comp]; exact e₂) (by rw [← hKn₂]; simp) (by simp) cn (by rw [Category.id_comp]; exact hn.symm) (by rw [← hKn]; simp) x x rfl u.left u'.left (Ove …`.
+-/
 theorem exists_kerScheme : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (D : Datum H) (l : Level H) (Xo : Moduli D l) (𝔓 : Ideal (𝓞 E)) (p i : ℕ), admitted l 𝔓 p → ∃ Z : KerScheme Xo 𝔓 p i, EtSet Z.o₁.t.G Z.K := by
   intro E _ _ _ H D l Xo 𝔓 p i hA
   have laws : Out.Laws := GlobalTheory.firstFiveLaws.1

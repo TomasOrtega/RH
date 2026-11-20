@@ -13,12 +13,26 @@ attribute [local instance] Over.cartesianMonoidalCategory
 
 namespace GlobalTheory.RankTwoTorsion
 
+/- English proof (translation)
+Use `hx _ (Ideal.pow_mem_pow hN𝔭 n)` as an intermediate fact. Rewrite `this` using `[← Nat.cast_pow, Nat.cast_smul_eq_nsmul]`. Then use the resulting hypothesis.
+-/
 theorem ptorsion_sub (F : Type) [Field F] [NumberField F] (M : Type) [AddCommGroup M] [Module (𝓞 F) M]
     (N : ℕ) (𝔭 : Ideal (𝓞 F)) (hN𝔭 : (N : 𝓞 F) ∈ 𝔭) (n : ℕ) (x : M) (hx : ∀ a ∈ 𝔭 ^ n, a • x = 0) :
     (N ^ n) • x = 0 := by
   have := hx _ (Ideal.pow_mem_pow hN𝔭 n)
   rwa [← Nat.cast_pow, Nat.cast_smul_eq_nsmul] at this
 
+/- English proof (translation)
+Establish `hfin : ∀ j : ℕ, Finite {x : M // (N ^ j) • x = 0}` using `fun j => by`. Apply `Nat.finite_of_card_ne_zero` to reduce the goal to its premises. Rewrite using `[h2 j]`. Check the signs of the components of the expression. Establish `hdiv` using `GlobalTheory.T.torsion_lift_number_field_module F M N hN h2`.
+
+Establish `hfin1 : Finite {x : M // N • x = 0}` using `by simpa using hfin 1`. Establish `hp : ∀ 𝔭 : Ideal (𝓞 F), 𝔭.IsMaximal → (N : 𝓞 F) ∈ 𝔭 → Nat.card {x : M // ∀ a ∈ 𝔭, a • x = 0} ≤ Ideal.absNorm 𝔭 ^ 2`. Introduce `𝔭 h𝔭 hN𝔭`. Take `⟨C, hC⟩` from `h3 𝔭 h𝔭 hN𝔭`. Take `⟨e, he, hblk⟩` from `GlobalTheory.T.torsion_count_multiplicative_prime_powers F M N hN hfin hdiv 𝔭 h𝔭 hN𝔭`.
+
+Establish `hfinp : ∀ n, Finite {x : M // ∀ a ∈ 𝔭 ^ n, a • x = 0}` using `fun n => Finite.of_injective (fun x => (⟨x.1, ptorsion_sub F M N 𝔭 hN𝔭 n x.1 x.2⟩ : {x : M // (N ^ n) • x = 0})) (fun x y h => Subtype.ext (by simpa using congrArg Subtype.val h))`. Establish `h0 : Nat.card {x : M // ∀ a ∈ 𝔭 ^ 0, a • x = 0} = 1`. Rewrite using `[Nat.card_eq_one_iff_unique]`. Use `⟨⟨fun x y => Subtype.ext ?_⟩, ⟨⟨0, fun a _ => smul_zero a⟩⟩⟩` and prove the remaining obligations. Establish `hx` using `x.2 1 (by simp); have hy := y.2 1 (by simp)`.
+
+Simplify using `only [one_smul] at hx hy`. Rewrite using `[hx, hy]`. Use `GlobalTheory.T.log_concave_multiplicative_growth_bound (fun n => Nat.card {x : M // ∀ a ∈ 𝔭 ^ n, a • x = 0}) e C (Ideal.absNorm 𝔭 ^ 2) he h0 (fun n => by haveI := hfinp n haveI : Nonempty {x : M // ∀ a ∈ 𝔭 ^ n, a • x = 0} := ⟨⟨0, fun a _ => smul_zero a⟩⟩` as an intermediate fact. Conclude with `Nat.card_pos (α := {x : M // ∀ a ∈ 𝔭 ^ n, a • x = 0}))`. Use the proof step `(fun k => GlobalTheory.T.torsion_count_log_concave_prime_powers F M 𝔭 h𝔭 k (hfinp (k + 2))) hblk`.
+
+Use the proof step `(fun n => by rw [← pow_mul]; exact hC n)`. Simplify using `using this`. Take `⟨p, hpN, hgen⟩` from `GlobalTheory.T.torsion_two_generators_global F M N hN hfin1 (fun 𝔭 h𝔭 hN𝔭 => GlobalTheory.T.torsion_two_generators_mod_prime F M N hN hfin1 𝔭 h𝔭 hN𝔭 (hp 𝔭 h𝔭 hN𝔭))`. Conclude with `⟨p, hpN, GlobalTheory.T.torsion_basis_relations_divisible F M N hN (by simpa using h2 1) p hpN hgen, hgen⟩`.
+-/
 theorem rank_two_torsion (F : Type) [Field F] [NumberField F] (M : Type) [AddCommGroup M] [Module (𝓞 F) M]
     (N : ℕ) (hN : 1 ≤ N)
     (h2 : ∀ j : ℕ, Nat.card {x : M // (N ^ j) • x = 0} = (N ^ j) ^ (2 * Module.finrank ℚ F))

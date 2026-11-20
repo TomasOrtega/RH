@@ -10,10 +10,82 @@ open scoped ComplexConjugate
 
 variable {E : Type} [Field E] [NumberField E] [NumberField.IsCMField E]
 
+/- English proof (translation)
+Simplify using `[Pi.single_apply]`.
+-/
 private lemma sum_pi_single_one_smul {n : ℕ} (j : Fin n) (y : Fin n → Fin n → ℂ) :
     ∑ k, (Pi.single j (1 : ℂ) : Fin n → ℂ) k • y k = y j := by
   simp [Pi.single_apply]
 
+/- English proof (translation)
+Unfold `LatticeBoundAtMaximum`. Introduce `r X z0 x0 laStar ρ hz0 hx0 hortho hflag hla0 hla1 hρ0 hρ1 hshort`. Break down `Nat.eq_zero_or_pos r with hr0 | hr` into its components or cases. Substitute `hr0` using the available equality. Establish `hp : X.p0 = 0` using `Nat.le_zero.mp X.p0_le`.
+
+Use `haveI : IsEmpty (Fin X.p0) := by rw [hp]; infer_instance`. Use `⟨fun j => j.elim0, 0, ?_, ?_⟩` and prove the remaining obligations. Use `show (⨆ τ : X.Ψ, Data.opN (Matrix.of ((0 : X.Coord) τ))) ≤ ρ / 3`. Use `Real.iSup_le (fun τ => ?_) (by linarith)` and prove the remaining obligations. Use `SmallOperatorExistence.opN_le _ (by linarith) (fun w => ?_)` and prove the remaining obligations.
+
+Establish `h0 : Matrix.of ((0 : X.Coord) τ) *ᵥ w = 0`. Use function extensionality and compare the values at `i`. Conclude with `absurd i.2 (by omega)`. Rewrite using `[h0, OrthonormalChartBounds.nsq_zero']`. Conclude with `mul_nonneg (sq_nonneg _) (OrthonormalChartBounds.nsq_nonneg w)`.
+
+Unfold `LamBasis`. Use `⟨fun j => j.elim0, linearIndependent_empty_type, fun j => j.elim0, fun j => j.elim0, fun j => j.elim0, fun j => j.elim0, fun τ => ?_⟩` and prove the remaining obligations. Simplify using `only [Set.range_eq_empty]`. Establish `hcard : Fintype.card X.Ψ = fdeg E` using `by first`. Consider the case `exact QuadraticCoefficientForms.card_Psi`.
+
+Consider the case `exact QuadraticCoefficientForms.card_Psi (X := X.toData)`. Consider the case `exact QuadraticCoefficientForms.card_Psi X.toData`. Establish `hcardpos : 0 < Fintype.card X.Ψ` using `by first`. Consider the case `exact QuadraticCoefficientForms.card_Psi_pos`. Consider the case `exact QuadraticCoefficientForms.card_Psi_pos (X := X.toData)`.
+
+Consider the case `exact QuadraticCoefficientForms.card_Psi_pos X.toData`. Use `haveI : Nonempty X.Ψ := Fintype.card_pos_iff.mp hcardpos`. Establish `hdet : ∀ τ : X.Ψ, (mat x0 τ).det ≠ 0` using `fun τ => (hx0 τ).1`. Establish `hc0 : (0 : ℝ) < Fintype.card X.Ψ` using `by exact_mod_cast hcardpos`. Establish `hc1 : (1 : ℝ) ≤ Fintype.card X.Ψ` using `by exact_mod_cast hcardpos`.
+
+Establish `hcne : (Fintype.card X.Ψ : ℝ) ≠ 0` using `hc0.ne'`. Establish `hr1 : (1 : ℝ) ≤ r` using `by exact_mod_cast hr`. Establish `hsq1 : (1 : ℝ) ≤ Real.sqrt (Fintype.card X.Ψ)`. Establish `h` using `Real.sqrt_le_sqrt hc1`. Rewrite `h` using `[Real.sqrt_one]`. Then use the resulting hypothesis.
+
+Establish `hsr : (1 : ℝ) ≤ Real.sqrt r`. Establish `h` using `Real.sqrt_le_sqrt hr1`. Rewrite `h` using `[Real.sqrt_one]`. Then use the resulting hypothesis. Establish `hsq0 : (0 : ℝ) < Real.sqrt (Fintype.card X.Ψ)` using `by linarith`. Establish `hl0 : 0 < laStar / Real.sqrt (Fintype.card X.Ψ)` using `div_pos hla0 hsq0`.
+
+Establish `hl1 : laStar / Real.sqrt (Fintype.card X.Ψ) ≤ 1`. Rewrite using `[div_le_one hsq0]`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hd : (1 : ℝ) ≤ |(NumberField.discr E : ℝ)|`. Rewrite using `[← Int.cast_abs]`.
+
+Use `first`. Consider the case `exact_mod_cast Int.one_le_abs (NumberField.discr_ne_zero E)`. Consider the case `exact_mod_cast Int.one_le_abs NumberField.discr_ne_zero`. Establish `hmaj : ∀ (τ : X.Ψ) (w : Fin r → ℂ), X.maj z0 τ w = ReciprocityTheory.MultiplicativeHeights.normSq ((mat x0 τ)⁻¹ *ᵥ w)`. Introduce `τ w`.
+
+Rewrite using `[← MajorantOrthogonality.maj_ortho X.toData hx0 hortho τ w]`. Use `first`. Consider the case `exact (FlowMajorantFlags.maj_flag hz0 hx0 hflag τ w).symm`. Consider the case `exact (FlowMajorantFlags.maj_flag X.toData hz0 hx0 hflag τ w).symm`. Consider the case `exact (FlowMajorantFlags.maj_flag (X := X.toData) hz0 hx0 hflag τ w).symm`.
+
+Establish `hconst : ∑ _τ : X.Ψ, (laStar / Real.sqrt (Fintype.card X.Ψ)) ^ 2 = laStar ^ 2`. Rewrite using `[Finset.sum_const, Finset.card_univ, nsmul_eq_mul, div_pow, Real.sq_sqrt hc0.le]`. Clear the denominators using the available nonvanishing facts. Apply the tactic sequence `try ring`. Establish `hsv : ∀ v ∈ X.L', v ≠ 0 → ∃ τ : X.Ψ, (laStar / Real.sqrt (Fintype.card X.Ψ)) ^ 2 ≤ ReciprocityTheory.MultiplicativeHeights.normSq ((mat x0 τ)⁻¹ *ᵥ ReciprocityTheory.MultiplicativeHeights.embVec τ.1 v)`.
+
+Introduce `v hv hv0`. Assume the negation of the conclusion as `hcon`. Use `push_neg at hcon`. Establish `hlt : ∑ τ : X.Ψ, X.maj z0 τ (Data.emb τ.1 v) < ∑ _τ : X.Ψ, (laStar / Real.sqrt (Fintype.card X.Ψ)) ^ 2`. Apply `Finset.sum_lt_sum_of_nonempty Finset.univ_nonempty` to reduce the goal to its premises.
+
+Introduce `τ _`. Rewrite using `[hmaj τ]`. Conclude with `hcon τ`. Combine the linear relations using `[hshort v hv hv0]`. Establish `hform : ∀ (i : X.Ψ) (x y : Fin r → E), i.1 ((MajorantOrthogonality.pform X.toData).h x y) = ReciprocityTheory.MultiplicativeHeights.jForm X.p0 ((mat x0 i)⁻¹ *ᵥ ReciprocityTheory.MultiplicativeHeights.embVec i.1 x) ((mat x0 i)⁻¹ *ᵥ ReciprocityTheory.MultiplicativeHeights.embVec i. …`.
+
+Introduce `i x y`. Rewrite using `[MajorantOrthogonality.pform_h]`. Conclude with `MajorantOrthogonality.herm_coord X.toData hx0 hortho i y x`. Establish `hQdet : ∀ i : X.Ψ, ((mat x0 i)⁻¹).det ≠ 0`. Introduce `i`.
+
+Use `first`. Consider the case `(rw [Matrix.det_nonsing_inv, Ring.inverse_eq_inv']; exact inv_ne_zero (hdet i))`. Consider the case `simp [Matrix.det_nonsing_inv, hdet i]`. Establish `hcm : ∀ τ : E →+* ℂ, (∃ i : X.Ψ, i.1 = τ) ↔ ¬ ∃ i : X.Ψ, i.1 = ComplexEmbedding.conjugate τ`. Introduce `τ`.
+
+Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨i, rfl⟩ ⟨j, hj⟩`. Conclude with `(X.cmType i.1).mp i.2 (hj ▸ j.2)`. Introduce `hn`. Establish `hmem : τ ∈ X.Ψ` using `(X.cmType τ).mpr (fun h => hn ⟨⟨_, h⟩, rfl⟩)`.
+
+Conclude with `⟨⟨τ, hmem⟩, rfl⟩`. Unfold `CoveringRadiusStatement at hD5`. Establish `h5` using `hD5 E ↥X.Ψ r X.p0 (MajorantOrthogonality.pform X.toData) (fun τ => τ.1) (fun τ => (mat x0 τ)⁻¹) X.L' (laStar / Real.sqrt (Fintype.card X.Ψ)) Subtype.val_injective hcm X.p0_le hl0 hQdet hform (MajorantOrthogonality.isLattice X) (MajorantOrthogonality.selfDual X) hsv`. Take `⟨hcov, v, hvL, hvli, hvmaj⟩` from `h5`. Use `set μ : ℝ := d5mu (Fintype.card X.Ψ) r |(NumberField.discr E : ℝ)| (laStar / Real.sqrt (Fintype.card X.Ψ)) with hμdef`.
+
+Establish `hμ4 : 4 ≤ μ`. Establish `hfr : (1 : ℝ) ≤ (Fintype.card X.Ψ : ℝ) * r` using `one_le_mul_of_one_le_of_one_le hc1 hr1`. Establish `h2 : (1 : ℝ) ≤ ((Fintype.card X.Ψ : ℝ) * r) * ((Fintype.card X.Ψ : ℝ) * r)` using `one_le_mul_of_one_le_of_one_le hfr hfr`. Establish `h3 : (1 : ℝ) ≤ ((Fintype.card X.Ψ : ℝ) * r) ^ 3`. Establish `h` using `one_le_mul_of_one_le_of_one_le h2 hfr`.
+
+Combine the equalities or inequalities in the displayed calculation. Establish `h4 : (1 : ℝ) ≤ ((Fintype.card X.Ψ : ℝ) * r) ^ 3 * |(NumberField.discr E : ℝ)|` using `one_le_mul_of_one_le_of_one_le h3 hd`. Rewrite using `[hμdef]`. Unfold `d5mu`. Apply the tactic sequence `first | rw [le_div_iff₀ hl0] | rw [le_div_iff hl0]`.
+
+Use polynomial arithmetic with `[h4, hl1]`. Establish `hμ0 : 0 ≤ μ` using `by linarith`. Establish `happ` using `ReciprocityTheory.MultiplicativeHeights.Closed.approx`. Unfold `ReciprocityTheory.MultiplicativeHeights.ApproxStatement at happ`. Take `⟨la, hlaL, hlali, horth, hpos, hneg, hbd1, hbd2⟩` from `happ E ↥X.Ψ r X.p0 (MajorantOrthogonality.pform X.toData) (fun τ => τ.1) (fun τ => (mat x0 τ)⁻¹) X.L' v μ ρ X.p0_le (by linarith) hρ0 hρ1 hQdet hform (MajorantOrthogonality.selfDual X).1 hcov hvL hvli hvmaj`.
+
+Establish `hZ` using `fun τ : X.Ψ => SmallOperatorExistence.exists_Z X.toData hx0 τ (fun j => Data.emb τ.1 (la j)) (δ := ρ / 3) (by linarith) (fun w hw => hpos τ w hw)`. Use `choose Zf hZn hZs using hZ`. Use `⟨la, fun τ => Zf τ, ?_, ?_⟩` and prove the remaining obligations. Use `show (⨆ τ : X.Ψ, Data.opN (Matrix.of (Zf τ))) ≤ ρ / 3`. Conclude with `Real.iSup_le (fun τ => hZn τ) (by linarith)`.
+
+Unfold `LamBasis`. Use `⟨hlaL, hlali, ?_, ?_, ?_, ?_, fun τ => hZs τ (fun τ => Zf τ) rfl⟩` and prove the remaining obligations. Introduce `j k hj hk`. Establish `h0` using `horth j k hj hk`. Rewrite `h0` using `[MajorantOrthogonality.pform_h]`.
+
+Rewrite using `[← HermitianPairingAlgebra.herm_symm X.Gm_herm, h0]`. Simplify using `[cc]`. Introduce `j hj τ`. Establish `hw : ∀ k : Fin r, X.p0 ≤ (k : ℕ) → (Pi.single j (1 : ℂ) : Fin r → ℂ) k = 0`. Introduce `k hk`.
+
+Establish `hkj : k ≠ j` using `fun h => by rw [h] at hk; omega`. Use `first`. Consider the case `exact Pi.single_eq_of_ne hkj 1`. Consider the case `simp [Pi.single_apply, hkj]`. Establish `hw0 : (Pi.single j (1 : ℂ) : Fin r → ℂ) ≠ 0`.
+
+Introduce `h`. Establish `h'` using `congrFun h j`. Simplify using `at h'`. Establish `h` using `(hpos τ _ hw).2 hw0`. Simplify using `only [sum_pi_single_one_smul] at h`.
+
+Rewrite using `[MajorantOrthogonality.herm_coord X.toData hx0 hortho τ]`. Conclude with `h`. Introduce `j hj τ`. Establish `hw : ∀ k : Fin r, (k : ℕ) < X.p0 → (Pi.single j (1 : ℂ) : Fin r → ℂ) k = 0`. Introduce `k hk`.
+
+Establish `hkj : k ≠ j` using `fun h => by rw [h] at hk; omega`. Use `first`. Consider the case `exact Pi.single_eq_of_ne hkj 1`. Consider the case `simp [Pi.single_apply, hkj]`. Establish `hw0 : (Pi.single j (1 : ℂ) : Fin r → ℂ) ≠ 0`.
+
+Introduce `h`. Establish `h'` using `congrFun h j`. Simplify using `at h'`. Establish `h` using `hneg τ _ hw hw0`. Simplify using `only [sum_pi_single_one_smul] at h`.
+
+Rewrite using `[MajorantOrthogonality.herm_coord X.toData hx0 hortho τ]`. Conclude with `h`. Introduce `j τ`. Establish `hA : 4 * μ ≤ ReciprocityTheory.MultiplicativeHeights.approxR r μ ρ`. Unfold `ReciprocityTheory.MultiplicativeHeights.approxR`.
+
+Apply the tactic sequence `first | rw [le_div_iff₀ hρ0] | rw [le_div_iff hρ0]`. Use polynomial arithmetic with `[mul_le_mul_of_nonneg_left hρ1 hμ0, mul_le_mul_of_nonneg_right hsr hμ0]`. Establish `hT : (1 : ℝ) ≤ 2 * ReciprocityTheory.MultiplicativeHeights.approxR r μ ρ` using `by linarith`. Establish `hTμ : 2 * μ ^ 2 ≤ (2 * ReciprocityTheory.MultiplicativeHeights.approxR r μ ρ) ^ 2`. Use polynomial arithmetic with `[mul_self_le_mul_self (by linarith : (0 : ℝ) ≤ 8 * μ) (by linarith : 8 * μ ≤ 2 * ReciprocityTheory.MultiplicativeHeights.approxR r μ ρ)]`.
+
+Establish `hLa : frameBasisRadius r X.p0 (fdeg E) (dE E) laStar ρ = (2 * ReciprocityTheory.MultiplicativeHeights.approxR r μ ρ) ^ (2 * (X.p0 + 1) - 1)`. Rewrite using `[show 2 * (X.p0 + 1) - 1 = 2 * X.p0 + 1 by omega]`. Unfold `frameBasisRadius`. Apply the tactic sequence `rw [← hcard] <;> rfl`. Rewrite using `[hLa, ← MajorantOrthogonality.pform_h]`.
+
+Use `IsotropicCombinations.la_bound (p0 := X.p0 + 1) hT hTμ (by omega) ?_` and prove the remaining obligations. Distinguish the cases in `hj : (j : ℕ) < X.p0`. Conclude with `Or.inl (hbd1 τ j hj)`. Use `right`. Rewrite using `[Nat.add_sub_cancel]`.
+
+Conclude with `hbd2 τ j (by omega)`.
+-/
 theorem latticeBoundAtMaximum_of_transference (hD5 : CoveringRadiusStatement) : LatticeBoundAtMaximum (E := E) := by
   unfold LatticeBoundAtMaximum
   intro r X z0 x0 laStar ρ hz0 hx0 hortho hflag hla0 hla1 hρ0 hρ1 hshort

@@ -36,6 +36,9 @@ section Transport
 
 variable (I : AutInst) {H : Type} [Group H] [TopologicalSpace H] [MeasurableSpace H] [BorelSpace H]
 
+/- English proof (translation)
+Rewrite using `[Subgroup.mem_comap]`. Use `show E (E.symm y) ∈ K`. Rewrite using `[ContinuousMulEquiv.apply_symm_apply]`. Conclude with `y.2`.
+-/
 theorem symm_mem (E : I.Ginf ≃ₜ* H) (K : Subgroup H) (y : K) :
     E.symm y ∈ K.comap E.toMulEquiv.toMonoidHom := by
   rw [Subgroup.mem_comap]; show E (E.symm y) ∈ K; rw [ContinuousMulEquiv.apply_symm_apply]; exact y.2
@@ -49,10 +52,32 @@ def resEquiv (E : I.Ginf ≃ₜ* H) (K : Subgroup H) :
   continuous_toFun := (E.continuous.comp continuous_subtype_val).subtype_mk (fun x => x.2)
   continuous_invFun := (E.symm.continuous.comp continuous_subtype_val).subtype_mk (fun y => symm_mem I E K y)
 
+/- English proof (translation)
+The claim follows from `Subtype.ext (map_mul E (x : I.Ginf) y)`.
+-/
 theorem resEquiv_mul (E : I.Ginf ≃ₜ* H) (K : Subgroup H) (x y : K.comap E.toMulEquiv.toMonoidHom) :
     resEquiv I E K (x * y) = resEquiv I E K x * resEquiv I E K y :=
   Subtype.ext (map_mul E (x : I.Ginf) y)
 
+/- English proof (translation)
+Use `set S' : Subgroup I.Ginf := K.comap E.toMulEquiv.toMonoidHom with hS'def`. Establish `hSS : (S' : Set I.Ginf) = S`. Use extensionality with `s`. Conclude with `hS s`. Establish `hcl' : IsClosed (S' : Set I.Ginf)` using `hSS ▸ hcl`.
+
+Establish `hμ' : IsHaarOnSet I (S' : Set I.Ginf) μ` using `hSS ▸ hμ`. Take `⟨hHaar, -, -⟩` from `Formalism.L2.SG.Pf.haarOnSet_isHaar_inst I S' hcl' μ hμ'`. Use `set μ' := μ.comap ((↑) : S' → I.Ginf) with hμ'def`. Use `set ψ := resEquiv I E K with hψ`. Establish `hψm : Measurable ψ` using `ψ.continuous.measurable`.
+
+Establish `hψsm : Measurable ψ.symm` using `ψ.symm.continuous.measurable`. Use `set Ψ : S' ≃ᵐ K := ψ.toMeasurableEquiv with hΨ`. Establish `hcoeΨ : (Ψ : S' → K) = ψ` using `rfl`. Use `⟨μ'.map ψ, ?_, ?_⟩` and prove the remaining obligations. Establish `hmul : ∀ (c : K), (fun y : K => c * y) = ψ ∘ (fun x : S' => ψ.symm c * x) ∘ ψ.symm`.
+
+Introduce `c`. Use function extensionality and compare the values at `y`. Simplify using `only [Function.comp_apply]`. Rewrite using `[resEquiv_mul, ← hψ, Homeomorph.apply_symm_apply, Homeomorph.apply_symm_apply]`. Establish `hmeas : ∀ c : K, Measurable (fun y : K => c * y)`.
+
+Introduce `c`. Rewrite using `[hmul c]`. Conclude with `hψm.comp ((measurable_const_mul _).comp hψsm)`. Use `{ toIsFiniteMeasureOnCompacts := ⟨fun C hC => ?_⟩, toIsMulLeftInvariant := ⟨fun c => ?_⟩, toIsOpenPosMeasure := ψ.continuous.isOpenPosMeasure_map ψ.surjective }` and prove the remaining obligations. Rewrite using `[← hcoeΨ, Ψ.map_apply]`.
+
+Establish `: (Ψ : S' → K) ⁻¹' C = ψ.symm '' C`. Rewrite using `[hcoeΨ, Homeomorph.image_symm]`. Rewrite using `[this]`. Conclude with `(hC.image ψ.symm.continuous).measure_lt_top`. Rewrite using `[Measure.map_map (hmeas c) hψm]`.
+
+Establish `: (fun y : K => c * y) ∘ ψ = ψ ∘ (fun x : S' => ψ.symm c * x)`. Use function extensionality and compare the values at `x`. Simplify using `only [Function.comp_apply]`. Rewrite using `[resEquiv_mul, ← hψ, Homeomorph.apply_symm_apply]`. Rewrite using `[this, ← Measure.map_map hψm (measurable_const_mul _), map_mul_left_eq_self]`.
+
+Establish `hval : Measurable ((↑) : K → H)` using `measurable_subtype_coe`. Establish `hvalS : Measurable ((↑) : S' → I.Ginf)` using `measurable_subtype_coe`. Establish `hE : Measurable E` using `E.continuous.measurable`. Use `show (μ'.map ψ).map ((↑) : K → H) = μ.map E`. Rewrite using `[Measure.map_map hval hψm]`.
+
+Establish `: ((↑) : K → H) ∘ ψ = E ∘ ((↑) : S' → I.Ginf)` using `rfl`. Rewrite using `[this, ← Measure.map_map hE hvalS, hμ'def, Formalism.L2.SG.Pf.map_comap_subgroup S' hcl' μ hμ'.2.2.1]`.
+-/
 theorem transport (E : I.Ginf ≃ₜ* H) (K : Subgroup H) (S : Set I.Ginf) (hS : ∀ s, E s ∈ K ↔ s ∈ S)
     (hcl : IsClosed S) (μ : Measure I.Ginf) (hμ : IsHaarOnSet I S μ) :
     ∃ ν : Measure K, ν.IsHaarMeasure ∧ Formalism.L2.SG.Measures.amb ν = μ.map E := by
@@ -106,6 +131,11 @@ end Transport
 
 instance borelHI (I : AutInst) : BorelSpace (HI I) := ⟨rfl⟩
 
+/- English proof (translation)
+Introduce `I hb r e f z T hstd muN muH hN hH`. Take `⟨E, hE⟩` from `h1 I hb`. Take `⟨ν1, hν1, hamb1⟩` from `transport I E _ (Ninf I e z) (fun s => by rw [hE]; exact h2 I hb r e f z T hstd s) (h4 I r e z) muN hN`. Take `⟨ν2, hν2, hamb2⟩` from `transport I E _ (Hset I (Set.range e ∪ Set.range f ∪ {z})) (fun s => by rw [hE]; exact h3 I hb r e f z s) (h5 I _) muH hH`. Establish `hEfun : (E : I.Ginf → HI I) = Formalism.L2.SG.Pf.MeasInf.toInfL I hb` using `funext hE`.
+
+Use `⟨ν1, ν2, hν1, hν2, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[hamb1, hEfun]`. Rewrite using `[hamb2, hEfun]`.
+-/
 theorem measInfXfer_of (h1 : IsoStep) (h2 : NStep) (h3 : HStep) (h4 : NClosed) (h5 : HClosed) :
     Formalism.L2.SG.Pf.MeasInf.InfTransfer := by
   intro I hb r e f z T hstd muN muH hN hH

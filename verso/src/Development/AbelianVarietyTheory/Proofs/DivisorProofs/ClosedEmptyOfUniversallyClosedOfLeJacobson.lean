@@ -5,6 +5,13 @@ open ReciprocityTheory.ChartRestriction.G.Out GlobalTheory.AbLaw GlobalTheory.Fo
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Introduce `R _ I hI X p hp Z hZ hmiss`. Assume the negation of the conclusion as `hne`. Take `⟨x, hx⟩` from `Set.nonempty_iff_ne_empty.mpr hne`. Establish `hcl : IsClosed (p.base '' Z)` using `p.isClosedMap _ hZ`. Take `⟨m, hm, hle⟩` from `Ideal.exists_le_maximal _ (p x).isPrime.ne_top`.
+
+Set `q : Spec (CommRingCat.of R)` to `⟨m, hm.isPrime⟩`. Establish `hq : q ∈ closure {p.base x}` using `(PrimeSpectrum.le_iff_mem_closure _ _).mp hle`. Establish `hq' : q ∈ p.base '' Z` using `closure_minimal (Set.singleton_subset_iff.mpr (Set.mem_image_of_mem p.base hx)) hcl hq`. Take `⟨y, hy, hyq⟩` from `hq'`. Apply `hmiss y hy` to reduce the goal to its premises.
+
+Establish `hmy : (p y).asIdeal = m` using `by show (p.base y).asIdeal = m`. Rewrite using `[hyq]`. Rewrite using `[hmy]`. Use `hI.trans ?_` and prove the remaining obligations. Conclude with `sInf_le ⟨bot_le, hm⟩`.
+-/
 theorem closed_empty_of_universallyClosed_of_le_jacobson :
   ∀ (R : Type) [CommRing R] (I : Ideal R), I ≤ Ideal.jacobson ⊥ → ∀ (X : Scheme.{0}) (p : X ⟶ Spec (CommRingCat.of R)), UniversallyClosed p → ∀ Z : Set X, IsClosed Z → (∀ x ∈ Z, ¬ I ≤ (p x).asIdeal) → Z = ∅ := by
   intro R _ I hI X p hp Z hZ hmiss

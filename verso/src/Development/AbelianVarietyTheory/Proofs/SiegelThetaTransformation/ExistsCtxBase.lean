@@ -14,6 +14,9 @@ namespace GlobalTheory.Ker.Inhab
 
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
+/- English proof (translation)
+Introduce `D n p q`. Take `⟨S, T, C, h1, h2, h3, h4, h5, B, hB⟩` from `exists_ctx_sig D n p q`. Take `⟨⟨Lv, hw⟩, h6, -⟩` from `GlobalTheory.Ker.Base.level_base_fam D S T C`. Take `⟨f, hf⟩` from `h6 Lv B hB`. Conclude with `⟨S, T, C, h1, h2, h3, h4, h5, Lv, B, f, hw, hB, hf⟩`.
+-/
 theorem exists_ctx_base : ∀ (D : D7) (n p q : ℕ), ∃ (S T : HSp D) (C : Ctx S T), S.rank = 2 * n ∧ C.X.p0 = p ∧
     C.q0 = q ∧ S.SigOK ∧ T.SigOK ∧ ∃ (Lv : GlobalTheory.SW.Level C.X) (B : C.Bas) (f : WO S T → ℂ),
       IdemTwo Lv.w ∧ C.IsB B ∧ C.IsBase Lv B f := by
@@ -23,6 +26,9 @@ theorem exists_ctx_base : ∀ (D : D7) (n p q : ℕ), ∃ (S T : HSp D) (C : Ctx
   obtain ⟨f, hf⟩ := h6 Lv B hB
   exact ⟨S, T, C, h1, h2, h3, h4, h5, Lv, B, f, hw, hB, hf⟩
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨exists_ctx, exists_ctx_base⟩`.
+-/
 theorem inhabitants :
     (∀ (D : D7) (S T : HSp D) (p q : ℕ) (L : Lt D.host.E T.rank), S.gram = 1 → Even S.rank → p + q = T.rank →
       T.SigOK → (∀ τ, T.sig (tauE D τ) = (p, q)) → IsSelfDualC T L →

@@ -9,6 +9,9 @@ open Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotions.S Formal
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 namespace GlobalTheory.Core.Deg
 
+/- English proof (translation)
+Introduce `S h Cg cb Cu cT CT`. Take `⟨c3, cH, cS, c4, thr, hthr⟩` from `h Cg cb Cu cT CT`. Conclude with `⟨c3, cH, thr, fun C0 hC0 C' Cl h1 h2 D large₂ u => ⟨(hthr C0 hC0 C' Cl h1 h2 D large₂ u).1, (hthr C0 hC0 C' Cl h1 h2 D large₂ u).2.1⟩⟩`.
+-/
 theorem corankTwoCountBounds_of_rowCountBoundsUniform : ∀ S : Set ℝ, CntOn S → CountBoundOn S := by
   intro S h Cg cb Cu cT CT
   obtain ⟨c3, cH, cS, c4, thr, hthr⟩ := h Cg cb Cu cT CT

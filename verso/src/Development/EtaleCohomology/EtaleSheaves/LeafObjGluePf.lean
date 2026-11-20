@@ -11,15 +11,24 @@ variable {k : Type} [Field k] {Ω : Type} [Field Ω] [Algebra k Ω]
 def DescAt (R : Subalgebra k Ω) {X : Scheme.{0}} (f : X ⟶ Sp Ω) : Prop :=
   ∃ (D : Scheme.{0}) (q : D ⟶ Sp R) (v : X ⟶ D), FP q ∧ IsPullback v f q (toR R)
 
+/- English proof (translation)
+Simplify using `only [toR, incl]`. Rewrite using `[← Spec.map_comp]`. Both sides reduce to the same expression.
+-/
 theorem toR_eq {R R' : Subalgebra k Ω} (h : R ≤ R') : toR R' ≫ incl h = toR R := by
   simp only [toR, incl]
   rw [← Spec.map_comp]
   rfl
 
+/- English proof (translation)
+Take `⟨h1, h2, h3⟩` from `hq`. Conclude with `⟨inferInstance, inferInstance, inferInstance⟩`.
+-/
 theorem fp_snd {X Y Z : Scheme.{0}} (q : X ⟶ Z) (g : Y ⟶ Z) (hq : FP q) : FP (pullback.snd q g) := by
   obtain ⟨h1, h2, h3⟩ := hq
   exact ⟨inferInstance, inferInstance, inferInstance⟩
 
+/- English proof (translation)
+Take `⟨D, q, v, hq, hp⟩` from `hd`. Use `⟨pullback q (incl h), pullback.snd q (incl h), pullback.lift v (f ≫ toR R') (by rw [hp.w, Category.assoc, toR_eq]), fp_snd _ _ hq, ?_⟩` and prove the remaining obligations. Use `IsPullback.of_right (h₁₂ := pullback.fst q (incl h)) (v₁₃ := q) (h₂₂ := incl h) ?_ (pullback.lift_snd _ _ _) (IsPullback.of_hasPullback q (incl h))` and prove the remaining obligations. Rewrite using `[pullback.lift_fst, toR_eq]`. Conclude with `hp`.
+-/
 theorem descAt_mono {R R' : Subalgebra k Ω} (h : R ≤ R') {X : Scheme.{0}} {f : X ⟶ Sp Ω}
     (hd : DescAt R f) : DescAt R' f := by
   obtain ⟨D, q, v, hq, hp⟩ := hd
@@ -46,6 +55,9 @@ def LeafInclDescend : Prop := ∀ (k : Type) [Field k] (Ω : Type) [Field Ω] [A
 def LeafGlueTwo : Prop := ∀ (k : Type) [Field k] (Ω : Type) [Field Ω] [Algebra k Ω] {X : Scheme.{0}}
     (f : X ⟶ Sp Ω) (U V : X.Opens) (R : Subalgebra k Ω), U ⊔ V = ⊤ → GlueData R f U V → DescAt R f
 
+/- English proof (translation)
+Introduce `k _ Ω _ _ X f hf U V hUV ⟨R1, h1, d1⟩ ⟨R2, h2, d2⟩ ⟨R3, h3, d3⟩`. Take `⟨R', -, hR', g⟩` from `hI k Ω f hf U V (R1 ⊔ R2 ⊔ R3) ((h1.sup h2).sup h3) (descAt_mono (le_sup_left.trans le_sup_left) d1) (descAt_mono (le_sup_right.trans le_sup_left) d2) (descAt_mono le_sup_right d3)`. Conclude with `⟨R', hR', hG k Ω f U V R' hUV g⟩`.
+-/
 theorem LeafObjGlue_of (hI : LeafInclDescend) (hG : LeafGlueTwo) : LeafObjGlue := by
   intro k _ Ω _ _ X f hf U V hUV ⟨R1, h1, d1⟩ ⟨R2, h2, d2⟩ ⟨R3, h3, d3⟩
   obtain ⟨R', -, hR', g⟩ := hI k Ω f hf U V (R1 ⊔ R2 ⊔ R3) ((h1.sup h2).sup h3)

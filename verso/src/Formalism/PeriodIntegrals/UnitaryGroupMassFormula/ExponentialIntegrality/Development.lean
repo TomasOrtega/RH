@@ -15,6 +15,11 @@ def KeyW : Prop :=
 def StepIII : Prop :=
   ∀ (p : ℕ) [Fact p.Prime] (x : ℂ_[p]), InWf x → ‖x‖ ≤ 1 → x ∈ Wp p
 
+/- English proof (translation)
+Introduce `p _ σ f hf hs`. Take `⟨h0, hint⟩` from `hs`. Rewrite `h0`, `hint` using `[sub_zero]`. Use `⟨by rw [sub_zero]; exact h0, ?_⟩` and prove the remaining obligations. Rewrite using `[sub_zero]`.
+
+Introduce `n`. Conclude with `h3 p _ (h1 p σ f hf n) (hint n)`.
+-/
 theorem expIntW_of_steps (h1 : StepI) (h3 : StepIII) : ExpIntW := by
   intro p _ σ f hf hs
   obtain ⟨h0, hint⟩ := hs

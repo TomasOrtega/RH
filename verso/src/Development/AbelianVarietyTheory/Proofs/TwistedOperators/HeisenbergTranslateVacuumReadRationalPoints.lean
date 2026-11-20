@@ -22,6 +22,11 @@ open GlobalTheory.FinTranslate Formalism.MainNotions.GlobalTheoryTheory.GenusMas
 
 variable {D : D7}
 
+/- English proof (translation)
+Use extensionality with `i j`. Express the relevant statement in the definitionally equal form `infPart D (incA D (ℓ i j) - pairA D.host.F 1 0 ⊗ₜ[D.host.F] ℓ i j) = 0`. Rewrite using `[map_sub]`. Express the relevant statement in the definitionally equal form `Algebra.TensorProduct.map (fstA D.host.F) (AlgHom.id D.host.F D.host.E) (1 ⊗ₜ ℓ i j) - Algebra.TensorProduct.map (fstA D.host.F) (AlgHom.id D.host.F D.host.E) (pairA D.host.F 1 0 ⊗ₜ ℓ i j) = 0`. Rewrite using `[Algebra.TensorProduct.map_tmul, Algebra.TensorProduct.map_tmul, map_one]`.
+
+Conclude with `sub_eq_zero.2 rfl`.
+-/
 theorem ratW_sub_realPt_inf (S T : HSp D) (ℓ : Matrix (Fin T.rank) (Fin S.rank) D.host.E) :
     (ratW T S ℓ - GlobalTheory.IndefiniteRowSideFullHecke.OrthonormalLatticeThetaValues.realPt S T ℓ).map (infPart D) = 0 := by
   ext i j
@@ -32,11 +37,17 @@ theorem ratW_sub_realPt_inf (S T : HSp D) (ℓ : Matrix (Fin T.rank) (Fin S.rank
   rw [Algebra.TensorProduct.map_tmul, Algebra.TensorProduct.map_tmul, map_one]
   exact sub_eq_zero.2 rfl
 
+/- English proof (translation)
+Use extensionality with `i j`. Simplify using `only [GlobalTheory.IndefiniteRowSideFullHecke.OrthonormalLatticeThetaValues.realPt, Matrix.of_apply, Matrix.sub_apply, TensorProduct.tmul_sub]`.
+-/
 theorem realPt_sub (S T : HSp D) (X Y : Matrix (Fin T.rank) (Fin S.rank) D.host.E) :
     GlobalTheory.IndefiniteRowSideFullHecke.OrthonormalLatticeThetaValues.realPt S T (X - Y) = GlobalTheory.IndefiniteRowSideFullHecke.OrthonormalLatticeThetaValues.realPt S T X - GlobalTheory.IndefiniteRowSideFullHecke.OrthonormalLatticeThetaValues.realPt S T Y := by
   ext i j
   simp only [GlobalTheory.IndefiniteRowSideFullHecke.OrthonormalLatticeThetaValues.realPt, Matrix.of_apply, Matrix.sub_apply, TensorProduct.tmul_sub]
 
+/- English proof (translation)
+Establish `hw' : ∀ k l, infPart D (w k l) = 0` using `fun k l => congrFun (congrFun hw k) l`. Use extensionality with `i j`. Rewrite using `[Matrix.map_apply, Matrix.zero_apply]`. Unfold `actO`. Simplify using `only [Matrix.mul_apply, map_sum, map_mul, hw', mul_zero, zero_mul, Finset.sum_const_zero]`.
+-/
 theorem actO_inf (S T : HSp D) (h : GA D T) {w : WO S T} (hw : w.map (infPart D) = 0) :
     (actO S T 1 h w).map (infPart D) = 0 := by
   have hw' : ∀ k l, infPart D (w k l) = 0 := fun k l => congrFun (congrFun hw k) l
@@ -45,6 +56,9 @@ theorem actO_inf (S T : HSp D) (h : GA D T) {w : WO S T} (hw : w.map (infPart D)
   unfold actO
   simp only [Matrix.mul_apply, map_sum, map_mul, hw', mul_zero, zero_mul, Finset.sum_const_zero]
 
+/- English proof (translation)
+Simplify using `only [actO, Matrix.mul_add, Matrix.add_mul]`.
+-/
 theorem actO_add (S T : HSp D) (h : GA D T) (u v : WO S T) :
     actO S T 1 h (u + v) = actO S T 1 h u + actO S T 1 h v := by
   simp only [actO, Matrix.mul_add, Matrix.add_mul]
@@ -55,6 +69,23 @@ namespace GlobalTheory.HeisRatRead
 
 open GlobalTheory.FinTranslate Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes
 
+/- English proof (translation)
+Introduce `D G _ _ Pl0 T0 A T _ R hL hF hT i g x hx ℓ w hw hρw hxe X`. Establish `hW` using `hT.ωP i A.μ0`. Establish `hv` using `hT.vP i A.μ0`. Establish `hf : IsThetaFunO R.ψ (Vc D i) (Wc D i) (R.vacP i)` using `hv.1.2.theta`. Use `set F := R.ωP i A.μ0 (1, g) (R.vacP i) with hFdef`.
+
+Establish `hFθ : IsThetaFunO R.ψ (Vc D i) (Wc D i) F` using `hW.om_pres _ _ hf`. Use `set lf := ratW (Wc D i) (Vc D i) ℓ - GlobalTheory.IndefiniteRowSideFullHecke.OrthonormalLatticeThetaValues.realPt (Vc D i) (Wc D i) ℓ with hlf`. Establish `hlf0 : lf.map (infPart D) = 0` using `ratW_sub_realPt_inf (Vc D i) (Wc D i) ℓ`. Use `set gw := actO (Vc D i) (Wc D i) 1 g w with hgw`. Establish `hgw0 : gw.map (infPart D) = 0` using `actO_inf (Vc D i) (Wc D i) g hw`.
+
+Establish `hgx : actO (Vc D i) (Wc D i) 1 g x = lf + gw`. Rewrite using `[hxe, actO_add, ← GlobalTheory.HeckeVacuum.act_mul, mul_inv_cancel, GlobalTheory.HeckeVacuum.act_one]`. Establish `hFw : heisO R.ψ (Vc D i) (Wc D i) gw F = F`. Use `hW.om_heis 1 g w (R.vacP i) hf` as an intermediate fact. Rewrite `this` using `[hρw]`.
+
+Conclude with `this.symm`. Use `set P := GlobalTheory.IndefiniteRowSideFullHecke.OrthonormalLatticeThetaValues.realPt (Vc D i) (Wc D i) X`. Use `set z := GlobalTheory.IndefiniteRowSideFullHecke.OrthonormalLatticeThetaValues.realPt (Vc D i) (Wc D i) (X - ℓ)`. Establish `hP0 : P.map (finPart D) = 0` using `GlobalTheory.FrameConst.realPt_fin (Vc D i) (Wc D i) X`. Establish `hz0 : z.map (finPart D) = 0` using `GlobalTheory.FrameConst.realPt_fin (Vc D i) (Wc D i) (X - ℓ)`.
+
+Establish `hl0 : (GlobalTheory.IndefiniteRowSideFullHecke.OrthonormalLatticeThetaValues.realPt (Vc D i) (Wc D i) ℓ).map (finPart D) = 0` using `GlobalTheory.FrameConst.realPt_fin (Vc D i) (Wc D i) ℓ`. Establish `hzF : F (z + gw) = F z`. Use `congrFun hFw z` as an intermediate fact. Simplify using `only [heisO, symplOH_real_fin hgw0 hz0, AddChar.map_zero_eq_one, one_mul] at this`. Conclude with `this`.
+
+Establish `hpt : P + (lf + gw) = ratW (Wc D i) (Vc D i) ℓ + (z + gw)`. Simplify using `only [z, P, hlf, realPt_sub]`. Normalize the expressions using the abelian group laws. Establish `hratW : ratW (Wc D i) (Vc D i) ℓ = GlobalTheory.IndefiniteRowSideFullHecke.OrthonormalLatticeThetaValues.realPt (Vc D i) (Wc D i) ℓ + lf`. Rewrite using `[hlf]`.
+
+Normalize the expressions using the abelian group laws. Rewrite using `[hW.om_heis 1 g x (R.vacP i) hf, ← hFdef]`. Use `show R.ψ (symplOH (Vc D i) (Wc D i) P (actO (Vc D i) (Wc D i) 1 g x)) * F (P + actO (Vc D i) (Wc D i) 1 g x) = _`. Rewrite using `[hgx, hpt, hFθ.quasi, hzF, ← mul_assoc, ← AddChar.map_add_eq_mul]`. Use `congr 2`.
+
+Rewrite using `[hratW, symplOH_add_right, symplOH_add_left, symplOH_add_right, symplOH_add_right, symplOH_real_fin hlf0 hP0, symplOH_real_fin hgw0 hP0, symplOH_real_fin hgw0 hl0, symplOH_fin_real hlf0 hz0]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem heis_translate_read : ∀ (D : D7) (G : Type) [Group G] [Fintype G] (Pl0 T0 : Type) (A : FamIn D.what₂.LL G Pl0 T0 D.R.m)
     (T : CoreJ D) [Algebra T.Q.c.F D.what₂.LL] (R : RealDat D A T.Q.c.F),
     R.toLevCh.Is A.μ0 → R.IsFam → R.IsThP → ∀ (i : Fin D.R.m) (g : GA D (Wc D i)) (x : WO (Vc D i) (Wc D i)),

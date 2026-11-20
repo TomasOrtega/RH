@@ -11,6 +11,13 @@ open CategoryTheory Limits GroundTheory.PAdicHodge CrystallineSemistableComparis
 
 namespace UpperTheory.Ru.crystallineComparison
 
+/- English proof (translation)
+Take `⟨hi, hs⟩` from `hb`. Use `⟨fun x y hxy => ?_, fun b => ?_⟩` and prove the remaining obligations. Take `⟨x, rfl⟩` from `c.surjective x`. Take `⟨y, rfl⟩` from `c.surjective y`. Use `congrArg c (hi (funext fun i => (d i).injective ?_))` and prove the remaining obligations.
+
+Use `congrFun hxy i` as an intermediate fact. Simplify `this` using `only [h]`. Take `⟨x, hx⟩` from `hs fun i => (d i).symm (b i)`. Use `⟨c x, funext fun i => ?_⟩` and prove the remaining obligations. Use `congrFun hx i` as an intermediate fact.
+
+Simplify using `only at this`. Simplify using `only [h, this, Equiv.apply_symm_apply]`.
+-/
 private theorem bij_transport {ι X X' : Type*} {Y Y' : ι → Type*} (c : X ≃ X') (d : ∀ i, Y i ≃ Y' i)
     (g : ∀ i, X → Y i) (f : ∀ i, X' → Y' i) (h : ∀ i x, f i (c x) = d i (g i x))
     (hb : Function.Bijective fun x i => g i x) : Function.Bijective fun x i => f i x := by
@@ -27,6 +34,9 @@ private theorem bij_transport {ι X X' : Type*} {Y Y' : ι → Type*} (c : X ≃
     simp only at this
     simp only [h, this, Equiv.apply_symm_apply]
 
+/- English proof (translation)
+Apply `e.injective` to reduce the goal to its premises. Rewrite using `[map_zero, map_sum]`. Simplify using `only [map_zsmul, h]`. Conclude with `key`.
+-/
 private theorem sum_transport {W Y I : Type*} [AddCommGroup W] [AddCommGroup Y] [Fintype I] (a : I → ℤ) (e : Y ≃+ W)
     (f : I → Y) (g : I → W) (h : ∀ i, e (f i) = g i) (key : ∑ i, a i • g i = 0) : ∑ i, a i • f i = 0 := by
   apply e.injective
@@ -36,12 +46,20 @@ private theorem sum_transport {W Y I : Type*} [AddCommGroup W] [AddCommGroup Y] 
 
 variable {l : ℕ} [Fact l.Prime]
 
+/- English proof (translation)
+Use `⟨fun x y _ => Subsingleton.elim x y, fun b => ⟨0, ?_⟩⟩` and prove the remaining obligations. Use function extensionality and compare the values at `e`. Conclude with `e.elim`.
+-/
 private theorem empty_isDec {A : Test l} (h : Subsingleton A.obj.A) :
     IsDec (⟨Empty, fun e => e.elim, fun e => e.elim⟩ : Fam A) := by
   refine ⟨fun x y _ => Subsingleton.elim x y, fun b => ⟨0, ?_⟩⟩
   funext e
   exact e.elim
 
+/- English proof (translation)
+Introduce `A y`. Take `⟨S, hS, hs⟩` from `hz A y`. Use `⟨S, (hPa A S).2 hS, fun s => ?_⟩` and prove the remaining obligations. Break down `hs s with h0 | h0` into its components or cases. Conclude with `Or.inl h0`.
+
+Conclude with `Or.inr ((hPa _ _).2 (empty_isDec h0))`.
+-/
 private theorem locZero_of {Pa : Parts (Test l)} (hPa : ∀ (A : Test l) (S : Fam A), Pa.Cov S ↔ IsDec S)
     {Q P : PAlg l ⥤ Type} {I : Type} [Fintype I] {a : I → ℤ} {u : I → (Q ⟶ P)} (hz : TZero a u) :
     Pa.LocZero (Q := testι l ⋙ Q) (P := testι l ⋙ P) a (fun i => Functor.whiskerLeft (testι l) (u i)) := by
@@ -52,6 +70,9 @@ private theorem locZero_of {Pa : Parts (Test l)} (hPa : ∀ (A : Test l) (S : Fa
   · exact Or.inl h0
   · exact Or.inr ((hPa _ _).2 (empty_isDec h0))
 
+/- English proof (translation)
+Introduce `A S hS`. Conclude with `bij_transport (c A).toEquiv (fun i => (c (S.B i)).toEquiv) (fun i x => PAlg.mapAcr (S.f i).hom n x) (fun i x => (F'.map (S.f i)).hom x) (fun i x => (hc (S.f i) x).symm) (hacr l n A S ((hPa A S).1 hS))`.
+-/
 private theorem add_of {Pa : Parts (Test l)} (hPa : ∀ (A : Test l) (S : Fam A), Pa.Cov S ↔ IsDec S)
     (n : ℕ) (hacr : AcrAdd) (F' : Coef (Test l)) (c : ∀ A, (testι l ⋙ AcrF l n).obj A ≃+ F'.obj A)
     (hc : ∀ {A B : Test l} (φ : A ⟶ B) (x : (testι l ⋙ AcrF l n).obj A),
@@ -63,6 +84,11 @@ private theorem add_of {Pa : Parts (Test l)} (hPa : ∀ (A : Test l) (S : Fam A)
 end UpperTheory.Ru.crystallineComparison
 
 open UpperTheory.Ru.crystallineComparison in
+/- English proof (translation)
+Introduce `l _ Q P I _ a u hz n j x`. Use `(partsEx l).elim fun Pa hPa => (theoryEx (Test l)).elim fun T hT => ?_` and prove the remaining obligations. Use `(hT (Acris l) (testι l ⋙ AcrF l n)).elim fun F' h1 => h1.elim fun c h2 => h2.elim fun e h3 => ?_` and prove the remaining obligations. Establish `hAdd : Pa.Add F'` using `add_of hPa n acrAdd F' c h3.1`. Establish `key` using `locSum (Test l) Pa T F' hAdd (testι l ⋙ Q) (testι l ⋙ P) I a (fun i => Functor.whiskerLeft (testι l) (u i)) (locZero_of hPa hz) j`.
+
+Establish `hp : ∀ i, e (testι l ⋙ Q) j (pullH (u i) n j x) = T.pull (Functor.whiskerLeft (testι l) (u i)) F' j (e (testι l ⋙ P) j x)` using `fun i => h3.2 (Functor.whiskerLeft (testι l) (u i)) (pullMor (u i) n) rfl (fun _ _ => HEq.rfl) j x`. Conclude with `sum_transport a (e (testι l ⋙ Q) j) _ _ hp (key (e (testι l ⋙ P) j x))`.
+-/
 theorem UpperTheory.Ru.crystallineComparison.sumMH :
     UpperTheory.Ru.crystallineComparison.SumMH := by
   intro l _ Q P I _ a u hz n j x

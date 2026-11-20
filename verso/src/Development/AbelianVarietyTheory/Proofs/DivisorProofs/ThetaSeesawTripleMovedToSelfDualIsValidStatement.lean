@@ -22,6 +22,9 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 open GlobalTheory.BotMove
 
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.BotMove.moveTri_is | exact GlobalTheory.BotMove.moveTri_is | (intros; apply GlobalTheory.BotMove.moveTri_is <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.thetaSeesawTriple_moved_to_selfDual_isValid : ∀ {D : D7} {T : Type} {A A' WW : HSp D} (Y : Tri T A A' WW) (ψ : AddChar (AF D.host.F) ℂ) (θ : InfFam D)
     (α β : T → ((AE D)ˣ →* Circle)) (νH : T → HChar D.host.E) (S : T → Finset (Formalism.L2.DIV.Pl D.host.E)),
     Y.Is ψ θ α β νH S →

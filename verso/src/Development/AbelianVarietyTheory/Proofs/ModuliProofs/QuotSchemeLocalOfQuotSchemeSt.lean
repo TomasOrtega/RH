@@ -18,6 +18,21 @@ open GlobalTheory.UU GlobalTheory.IndefiniteRowSideFullHecke.TorusQuotientTorsio
 section Clauses
 variable {S S' : Scheme.{0}} {X : Type} [AddCommGroup X]
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨hpb, hmul⟩`. Establish `: IsIso β` using `hpb.isIso_fst_of_isIso`. Establish `hw : β ≫ B'.hom = B.hom` using `by simpa using hpb.w`. Take `⟨e, he⟩ : ∃ e : B ≅ B', e.hom.left = β` from `⟨Over.isoMk (asIso β) hw, rfl⟩`.
+
+Establish `key : ∀ (T : Over S) (x y : T ⟶ B), (x * y) ≫ e.hom = (x ≫ e.hom) * (y ≫ e.hom)`. Introduce `T x y`. Establish `h1` using `hmul T x y (Over.homMk (x.left ≫ β) (by simp [hw])) (Over.homMk (y.left ≫ β) (by simp [hw]))`. Use `rfl rfl`. Apply `Over.OverMorphism.ext` to reduce the goal to its premises.
+
+Simplify using `only [Hom.mul_def, Over.comp_left, Over.lift_left, Over.homMk_left, Category.assoc, he] at h1 ⊢`. Conclude with `h1.symm`. Establish `hone : ∀ {M : Over S} [GrpObj M], (1 : 𝟙_ (Over S) ⟶ M) = η[M]`. Introduce `M _`. Rewrite using `[Hom.one_def, toUnit_unique (toUnit _) (𝟙 _), Category.id_comp]`.
+
+Use `⟨e, ⟨?_, ?_⟩, he⟩` and prove the remaining obligations. Establish `h2` using `key (𝟙_ (Over S)) 1 1`. Rewrite `h2` using `[_root_.one_mul]`. Establish `h3 : (1 : 𝟙_ (Over S) ⟶ B) ≫ e.hom = 1` using `_root_.mul_left_cancel (h2.symm.trans (_root_.mul_one _).symm)`. Rewrite `h3` using `[hone, hone]`.
+
+Conclude with `h3`. Establish `h3` using `key _ (fst B B) (snd B B)`. Rewrite `h3` using `[Hom.mul_def, Hom.mul_def, lift_fst_snd, Category.id_comp]`. Rewrite using `[h3]`. Use `congr 1`.
+
+Introduce and unpack `⟨e, he, rfl⟩`. Establish `: IsIso e.hom.left` using `(Over.forget S).map_isIso e.hom`. Use `⟨IsPullback.of_horiz_isIso ⟨by simp⟩, ?_⟩` and prove the remaining obligations. Introduce `T x y x₀ y₀ hx hy`. Establish `hm` using `(IsMonHom.monoidHom e.hom T).map_mul x y`.
+
+Simplify using `only [IsMonHom.monoidHom_apply] at hm`. Establish `h4` using `congrArg Over.Hom.left hm`. Simplify using `only [Hom.mul_def, Over.comp_left, Over.lift_left, Category.assoc] at h4 ⊢`. Simplify using `only [hx, hy]`. Conclude with `h4.symm`.
+-/
 theorem isGrpPullback_id_iff {B B' : Over S} [GrpObj B] [GrpObj B'] (β : B.left ⟶ B'.left) :
     IsGrpPullback B B' (𝟙 S) β ↔ ∃ e : B ≅ B', IsMonHom e.hom ∧ e.hom.left = β := by
   constructor

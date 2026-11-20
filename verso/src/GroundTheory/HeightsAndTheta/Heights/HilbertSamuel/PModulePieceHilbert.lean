@@ -16,6 +16,11 @@ set_option linter.unusedSectionVars false
 
 variable {K : Type} [Fintype K] {ι : K → Type} [∀ k, Fintype (ι k)]
 
+/- English proof (translation)
+Introduce `h`. Establish `: (N : ℤ) ∈ W.comap (C : ℤ →+* MRing ι)`. Rewrite using `[Ideal.mem_comap, map_natCast]`. Conclude with `hNW`. Rewrite `h` using `[IsHorizontal]`.
+
+Rewrite `this` using `[h, Ideal.mem_bot]`. Conclude with `hN (by exact_mod_cast this)`.
+-/
 theorem not_horizontal_of_mem {W : Ideal (MRing ι)} {N : ℕ} (hN : N ≠ 0) (hNW : (N : MRing ι) ∈ W) :
     ¬ IsHorizontal W := by
   intro h
@@ -26,11 +31,21 @@ theorem not_horizontal_of_mem {W : Ideal (MRing ι)} {N : ℕ} (hN : N ≠ 0) (h
   rw [h, Ideal.mem_bot] at this
   exact hN (by exact_mod_cast this)
 
+/- English proof (translation)
+Introduce `h`. Apply `hc` to reduce the goal to its premises. Rewrite using `[charOf, (Submodule.IsPrincipal.eq_bot_iff_generator_eq_zero _).mp h, Int.natAbs_zero]`.
+-/
 theorem not_horizontal_of_charOf {W : Ideal (MRing ι)} (hc : charOf W ≠ 0) : ¬ IsHorizontal W := by
   intro h
   apply hc
   rw [charOf, (Submodule.IsPrincipal.eq_bot_iff_generator_eq_zero _).mp h, Int.natAbs_zero]
 
+/- English proof (translation)
+Introduce `n V a k i hV hc hdim hX ha`. Establish `hp` using `charOf_prime hV.1 (not_horizontal_of_charOf hc)`. Establish `h` using `Inter.GeoNumCut.full K ι V n (Fin.init a) (Pi.single k 1) (X ⟨k, i⟩) hV hp hdim (isMultiHomog_X' k i) hX`. Establish `e : (fun k' => (((Pi.single k 1 : K → ℕ) k' : ℕ) : ℤ)) = a (Fin.last n)`. Rewrite using `[ha]`.
+
+Use function extensionality and compare the values at `k'`. Distinguish the cases in `hk : k' = k`. Substitute `hk` using the available equality. Simplify using the standard rewrite rules. Simplify using `[hk]`.
+
+Rewrite `h` using `[e, Fin.snoc_init_self]`. Conclude with `h`.
+-/
 theorem geoNum_cut_X [DecidableEq K] : ∀ (n : ℕ) (V : Ideal (MRing ι)) (a : Fin (n + 1) → K → ℤ) (k : K)
     (i : ι k), IsMultiProjPrime V → charOf V ≠ 0 →
     ringKrullDim (MRing ι ⧸ V) = ((n + 1 + Fintype.card K : ℕ) : WithBot ℕ∞) →
@@ -52,6 +67,9 @@ theorem geoNum_cut_X [DecidableEq K] : ∀ (n : ℕ) (V : Ideal (MRing ι)) (a :
   rw [e, Fin.snoc_init_self] at h
   exact h
 
+/- English proof (translation)
+Introduce `n V a σ hV hc hdim`. Establish `: Fact (charOf V).Prime` using `⟨charOf_prime hV.1 (not_horizontal_of_charOf hc)⟩`. Rewrite using `[← Bridge.intNum_map_eq_geoNum (charOf V) n V hV (Inter.C_charOf_mem V) hdim, ← Bridge.intNum_map_eq_geoNum (charOf V) n V hV (Inter.C_charOf_mem V) hdim]`. Conclude with `FieldNumbers.IntNumSymm.full (ZMod (charOf V)) K ι _ n a σ`.
+-/
 theorem geoNum_symm [DecidableEq K] : ∀ (n : ℕ) (V : Ideal (MRing ι)) (a : Fin n → K → ℤ)
     (σ : Equiv.Perm (Fin n)), IsMultiProjPrime V → charOf V ≠ 0 →
     ringKrullDim (MRing ι ⧸ V) = ((n + Fintype.card K : ℕ) : WithBot ℕ∞) →
@@ -62,6 +80,13 @@ theorem geoNum_symm [DecidableEq K] : ∀ (n : ℕ) (V : Ideal (MRing ι)) (a : 
     ← Bridge.intNum_map_eq_geoNum (charOf V) n V hV (Inter.C_charOf_mem V) hdim]
   exact FieldNumbers.IntNumSymm.full (ZMod (charOf V)) K ι _ n a σ
 
+/- English proof (translation)
+Establish `h1` using `card_le_dim hq hqm hrel`. Generalize the expression as in `ringKrullDim (MRing ι ⧸ q) = x at h1 hd ⊢`. Proceed by induction on `x using WithBot.recBotCoe with`. Consider the case `bot => exact absurd h1 (by simp)`. Consider the case `coe y`.
+
+Proceed by induction on `y using ENat.recTopCoe with`. Consider the case `top`. Use `WithBot.coe_le_coe.1 hd` as an intermediate fact. Conclude with `absurd (top_le_iff.1 this) (ENat.natCast_ne_top _)`. Consider the case `coe n`.
+
+Establish `h1' : Fintype.card K ≤ n` using `Nat.cast_le.1 (WithBot.coe_le_coe.1 h1)`. Establish `hd' : n ≤ d + Fintype.card K` using `Nat.cast_le.1 (WithBot.coe_le_coe.1 hd)`. Use `⟨n - Fintype.card K, by omega, ?_⟩` and prove the remaining obligations. Rewrite using `[show n - Fintype.card K + Fintype.card K = n by omega]`. Both sides reduce to the same expression.
+-/
 theorem exists_dim_nat [DecidableEq K] {q : Ideal (MRing ι)} (hq : q.IsPrime) (hqm : IsMultiHomogIdeal q)
     (hrel : IsRelevant q) {d : ℕ}
     (hd : ringKrullDim (MRing ι ⧸ q) ≤ ((d + Fintype.card K : ℕ) : WithBot ℕ∞)) :
@@ -82,6 +107,9 @@ theorem exists_dim_nat [DecidableEq K] {q : Ideal (MRing ι)} (hq : q.IsPrime) (
       rw [show n - Fintype.card K + Fintype.card K = n by omega]
       rfl
 
+/- English proof (translation)
+Take `⟨r, hrp, hrq⟩` from `SetLike.exists_of_lt h`. Establish `hr : Ideal.Quotient.mk q r ∈ nonZeroDivisors (R ⧸ q)` using `mem_nonZeroDivisors_of_ne_zero (by rwa [ne_eq, Ideal.Quotient.eq_zero_iff_mem])`. Conclude with `ringKrullDim_succ_le_of_surjective (Ideal.Quotient.factor h.le) (Ideal.Quotient.factor_surjective h.le) hr (by rw [Ideal.Quotient.factor_mk, Ideal.Quotient.eq_zero_iff_mem]; exact hrp)`.
+-/
 theorem dim_add_one_le_of_lt {R : Type*} [CommRing R] {p q : Ideal R} [p.IsPrime] [q.IsPrime]
     (h : q < p) : ringKrullDim (R ⧸ p) + 1 ≤ ringKrullDim (R ⧸ q) := by
   obtain ⟨r, hrp, hrq⟩ := SetLike.exists_of_lt h
@@ -91,6 +119,15 @@ theorem dim_add_one_le_of_lt {R : Type*} [CommRing R] {p q : Ideal R} [p.IsPrime
     (Ideal.Quotient.factor_surjective h.le) hr
     (by rw [Ideal.Quotient.factor_mk, Ideal.Quotient.eq_zero_iff_mem]; exact hrp)
 
+/- English proof (translation)
+Take `⟨W, hW, hWq⟩` from `Ideal.exists_minimalPrimes_le hJq`. Break down `eq_or_lt_of_le hWq with h | h` into its components or cases. Conclude with `h ▸ hW`. It suffices to derive a contradiction. Use `hW.1.1` as an intermediate fact.
+
+Establish `hWrel : IsRelevant W` using `fun k => by`. Take `⟨i, hi⟩` from `hrel k`. Conclude with `⟨i, fun h' => hi (hWq h')⟩`. Establish `h1` using `dim_add_one_le_of_lt h`. Establish `h2` using `hdim W hW.1.1 hW.1.2 hWrel`.
+
+Rewrite `h1` using `[hqd]`. Establish `h3` using `h1.trans h2`. Establish `h' : (((d + Fintype.card K + 1 : ℕ) : ℕ∞) : WithBot ℕ∞) ≤ (((d + Fintype.card K : ℕ) : ℕ∞) : WithBot ℕ∞)`. Conclude with `h3` after adjusting the coercions. Establish `: d + Fintype.card K + 1 ≤ d + Fintype.card K` using `by exact_mod_cast h'`.
+
+Use linear arithmetic over natural numbers and integers.
+-/
 theorem mem_minimalPrimes_of_dim {J₂ q : Ideal (MRing ι)} {d : ℕ} (hq : q.IsPrime) (hrel : IsRelevant q)
     (hJq : J₂ ≤ q)
     (hdim : ∀ W : Ideal (MRing ι), W.IsPrime → J₂ ≤ W → IsRelevant W →
@@ -115,6 +152,9 @@ theorem mem_minimalPrimes_of_dim {J₂ q : Ideal (MRing ι)} {d : ℕ} (hq : q.I
     have : d + Fintype.card K + 1 ≤ d + Fintype.card K := by exact_mod_cast h'
     omega
 
+/- English proof (translation)
+The claim follows from `|(geoNum n V (fun _ => x) : ℝ)| ≤ coefB n V * nrm x ^ n := by rw [geoNum_expand_real n V hS, coefB, Finset.sum_mul] refine (Finset.abs_sum_le_sum_abs _ _).trans (Finset.sum_le_sum fun r _ => ?_) rw [abs_mul, mul_comm] refine mul_le_mul_of_nonneg_left ?_ (abs_nonneg _) have := abs …`.
+-/
 theorem abs_geoNum_le [DecidableEq K] (n : ℕ) (V : Ideal (MRing ι)) (hS : SymmAt n V) (x : K → ℤ) :
     |(geoNum n V (fun _ => x) : ℝ)| ≤ coefB n V * nrm x ^ n := by
   rw [geoNum_expand_real n V hS, coefB, Finset.sum_mul]
@@ -125,9 +165,17 @@ theorem abs_geoNum_le [DecidableEq K] (n : ℕ) (V : Ideal (MRing ι)) (hS : Sym
     (fun i _ => abs_le_nrm x (r i))
   simpa using this
 
+/- English proof (translation)
+Simplify using `[tdeg, Finset.sum_add_distrib]`.
+-/
 theorem tdeg_add (a s : K → ℕ) : tdeg (a + s) = tdeg a + tdeg s := by
   simp [tdeg, Finset.sum_add_distrib]
 
+/- English proof (translation)
+Rewrite using `[← mul_pow]`. Establish `h' : (tdeg b : ℝ) ≤ tdeg a + tdeg s` using `by exact_mod_cast h`. Establish `ha : (0 : ℝ) ≤ tdeg a` using `by positivity`. Establish `hs : (0 : ℝ) ≤ tdeg s` using `by positivity`. Use `gcongr`.
+
+Use the polynomial consequences of the given equalities and inequalities.
+-/
 theorem pow_shift_le {a s b : K → ℕ} (h : tdeg b ≤ tdeg a + tdeg s) (m : ℕ) :
     ((tdeg b : ℝ) + 1) ^ m ≤ ((tdeg s : ℝ) + 1) ^ m * ((tdeg a : ℝ) + 1) ^ m := by
   rw [← mul_pow]
@@ -139,6 +187,9 @@ theorem pow_shift_le {a s b : K → ℕ} (h : tdeg b ≤ tdeg a + tdeg s) (m : �
 
 open Classical in
 
+/- English proof (translation)
+The claim follows from `|lg q (a + s - c) - (if q ∈ topComps J₂ d then appr (Real.log (charOf q)) d q a else 0)| ≤ C * d * ((tdeg a : ℝ) + 1) ^ (d - 1) := by have hcle : ∀ (a : K → ℕ) (a₀ : ℕ), (∀ k, a₀ + tdeg c ≤ a k) → ∀ k, c k ≤ a k ∧ a₀ ≤ (a + s - c) k := fun a a₀ ha k => by have h2 : c k ≤ tdeg c : …`.
+-/
 theorem factor_est [DecidableEq K] {J₂ q : Ideal (MRing ι)} {N d : ℕ} (hN : 0 < N) (hq : q.IsPrime)
     (hqm : IsMultiHomogIdeal q) (hNq : (N : MRing ι) ∈ q) (hJq : J₂ ≤ q)
     (hdim : ∀ W : Ideal (MRing ι), W.IsPrime → J₂ ≤ W → IsRelevant W →
@@ -260,6 +311,29 @@ theorem factor_est [DecidableEq K] {J₂ q : Ideal (MRing ι)} {N d : ℕ} (hN :
       _ ≤ (C' * d' + Real.log (charOf q) * coefB d' q) * Q * d * P := by
         gcongr
 
+/- English proof (translation)
+Introduce `K _ ι _ J₁ J₂ N d hJ₁ hJ₂ hle hN hNJ hdim s`. Take `⟨n, F, f, c, q, h0, hlast, hj⟩` from `exists_relFiltration J₁ hJ₁ J₂ hJ₂ hle`. Establish `hq : ∀ j, J₂ ≤ q j` using `le_colon_chain h0 fun j => ⟨(hj j).2.2.1, (hj j).2.2.2.2.2⟩`. Establish `hNq : ∀ j, (N : MRing ι) ∈ q j` using `fun j => by`. Rewrite using `[(hj j).2.2.2.2.2]`.
+
+Establish `h1 : (N : MRing ι) * f j ∈ J₂` using `hNJ _ (hj j).2.1`. Rewrite `h1` using `[← h0]`. Conclude with `le_chain (fun j => (hj j).2.2.1) j.castSucc h1`. Use `choose a0 C hC hb using fun j => factor_est hN (hj j).2.2.2.1 (hj j).2.2.2.2.1 (hNq j) (hq j) hdim s (c j)`. Use `⟨∑ j, a0 j + ∑ j, tdeg (c j), (∑ j, C j) * d, fun a ha => ?_⟩` and prove the remaining obligations.
+
+Establish `ha0 : ∀ j k, a0 j ≤ a k` using `fun j k => by`. Establish `h1 : a0 j ≤ ∑ j, a0 j` using `Finset.single_le_sum (f := a0) (fun _ _ => Nat.zero_le _) (Finset.mem_univ j)`. Use `ha k` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish `hca : ∀ j k, c j k ≤ (a + s) k` using `fun j k => by`.
+
+Establish `h1 : c j k ≤ tdeg (c j)` using `Finset.single_le_sum (f := c j) (fun _ _ => Nat.zero_le _) (Finset.mem_univ k)`. Establish `h2 : tdeg (c j) ≤ ∑ j, tdeg (c j)` using `Finset.single_le_sum (f := fun j => tdeg (c j)) (fun _ _ => Nat.zero_le _) (Finset.mem_univ j)`. Use `ha k` as an intermediate fact. Simplify using `only [Pi.add_apply]`. Use linear arithmetic over natural numbers and integers.
+
+Establish `hcard` using `modPieceCard_chain (a + s) J₁ n F f c q (h0 ▸ hJ₂) hlast (fun j => ⟨(hj j).1, (hj j).2.2.1, (hj j).2.2.2.2.2⟩) hca`. Rewrite `hcard` using `[h0]`. Establish `hlog : Real.log (modPieceCard J₁ J₂ (a + s)) = ∑ j, lg (q j) (a + s - c j)`. Rewrite using `[hcard, Nat.cast_prod, Real.log_prod]`. Both sides reduce to the same expression.
+
+Introduce `j _`. Conclude with `(card_mPiece_pos _ _ hN (hNq j)).ne'` after adjusting the coercions. Establish `hfin : (topComps J₂ d).Finite` using `(Ideal.finite_minimalPrimes_of_isNoetherianRing _ J₂).subset fun W h => h.1`. Establish `hcount : ∀ W ∈ hfin.toFinset, ((multAt J₂ W : ℝ) - multAt J₁ W) = ∑ j, if q j = W then (1 : ℝ) else 0`. Introduce `W hW`.
+
+Establish `h` using `multAt_sub_eq_count hJ₁ hle h0 hlast (fun j => ⟨(hj j).2.2.1, (hj j).2.2.2.1, (hj j).2.2.2.2.2⟩) ((Set.Finite.mem_toFinset hfin).mp hW).1`. Establish `h'` using `congrArg (Int.cast : ℤ → ℝ) h`. Move the coercions through the operations in `at h'`. Conclude with `h'`. Establish `hsum : (∑ᶠ W ∈ topComps J₂ d, ((multAt J₂ W : ℝ) - multAt J₁ W) * Real.log (charOf W) * (geoNum d W (fun _ k => (a k : ℤ)) : ℝ)) / (d.factorial : ℝ) = ∑ j, (if q j ∈ topComps J₂ d then appr (Real.log (charOf (q j))) d (q j) a else 0)`.
+
+Rewrite using `[finsum_mem_eq_finite_toFinset_sum _ hfin, Finset.sum_congr rfl fun W hW => by rw [hcount W hW]]`. Repeatedly rewrite using `[Finset.sum_mul, ite_mul, one_mul, zero_mul]`. Rewrite using `[Finset.sum_comm, Finset.sum_div]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_ite_eq]`.
+
+Simplify using `only [Set.Finite.mem_toFinset, appr]`. Apply the tactic sequence `split_ifs <;> simp`. Rewrite using `[hlog, hsum, ← Finset.sum_sub_distrib]`. Establish `hX : (0 : ℝ) < (tdeg a : ℝ) + 1` using `by positivity`. Establish `hfinal : (∑ j, C j) * d * ((tdeg a : ℝ) + 1) ^ (d - 1) ≤ (∑ j, C j) * d * ((tdeg a : ℝ) + 1) ^ d / ((tdeg a : ℝ) + 1)`.
+
+Break down `Nat.eq_zero_or_pos d with hd0 | hd0` into its components or cases. Substitute `hd0` using the available equality. Simplify using the standard rewrite rules. Rewrite using `[mul_div_assoc, show ((tdeg a : ℝ) + 1) ^ d / ((tdeg a : ℝ) + 1) = ((tdeg a : ℝ) + 1) ^ (d - 1) by`. Rewrite using `[div_eq_iff hX.ne', ← pow_succ, Nat.sub_add_cancel hd0]]`.
+
+Express the relevant statement in the definitionally equal form `_ ≤ (∑ j, C j) * d * ((tdeg a : ℝ) + 1) ^ d / ((tdeg a : ℝ) + 1)`. Use `((Finset.abs_sum_le_sum_abs _ _).trans ?_).trans hfinal` and prove the remaining obligations. Rewrite using `[Finset.sum_mul, Finset.sum_mul]`. Conclude with `Finset.sum_le_sum fun j _ => hb j a (fun k => ha0 j k)`.
+-/
 theorem ModulePieceHilbert.proof : ModulePieceHilbert.Statement := by
   intro K _ ι _ J₁ J₂ N d hJ₁ hJ₂ hle hN hNJ hdim s
   classical

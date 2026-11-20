@@ -37,6 +37,13 @@ variable {J : Type} {tup : J → T0} (src : ∀ j, OMDat C R i Unit (fun _ => tu
 
 set_option maxHeartbeats 1000000 in
 
+/- English proof (translation)
+Establish `hu0 : ∀ j, u j ≠ 0` using `fun j h0 => by`. Take `⟨m, hm, e⟩` from `hc0`. Rewrite `e` using `[← hu j, h0]`. Simplify using `[hm.ne'] at e`. Use `⟨hlift, fun j => ⟨?_, ((hsrc j).tuple ()).B, ((hsrc j).tuple ()).xi, ((hsrc j).tuple ()).phi, ((hsrc j).tuple ()).half⟩, ⟨hact, (GlobalTheory.FieldBC.actLev_and_actBC _ _ _ _ _ _ _ h₃ _ _ hact).1⟩, fun j => (hsrc j).bad (), fun j => (hsrc j).reps (), fun j => ⟨fun k => congrArg ( …` and prove the remaining obligations.
+
+Take `⟨J', hr⟩` from `hh j`. Take `⟨_, _, _, hT, hc⟩` from `hlift.c0`. Conclude with `⟨h j, J', repsR_map _ hr, GlobalTheory.RationalValues.placeEx R i jL₃ (inC c₃) (tup j) (h j) c0₃ hMo.jV hT hc hL hW hF.pl_onto hF.muVal, thAdIs_thAdOf R i (tup j) (h j) c0₃ hMo.HV hr.2.2.1 hr.2.2.2.2.2.1 v₀, fun _ => Iff.rfl⟩`. Use `(cXiVal_iff _ _ _ _ _ _ _ _ _).2 ⟨c0, hc0, fun j => ?_⟩` and prove the remaining obligations. Rewrite using `[← hu j]`.
+
+Conclude with `GlobalTheory.OneMapAll.cXiAt_covBC D _ _ _ _ _ _ _ _ (hs j) _ _ _ (u j) _ _ _ _ _ _ ((hsrc j).cov ()).1.2.2.2.2.2.2.2.1 (hcs j)`.
+-/
 theorem pins_merge_of_clauses (hL : R.toLevCh.Is A.μ0) (hW : R.grp_chiW) (hF : R.IsFam) (hMo : R.IsModels)
     {κ : WeightFamilies.Wt D ((i : ℕ) + 1)} {ι x₀}
     (hsrc : ∀ j, (src j).Pins κ v₀ ι x₀)
@@ -77,6 +84,29 @@ variable {T R κ v₀}
 
 set_option maxHeartbeats 1600000 in
 
+/- English proof (translation)
+Take `⟨a, ha, hca⟩` from `(cXiVal_iff _ _ _ _ _ _ _ _ _).1 hO.cxi`. Take `⟨b, hb, hcb⟩` from `(cXiVal_iff _ _ _ _ _ _ _ _ _).1 hO'.cxi`. Take `⟨c₃, h', haF, hbF⟩` from `exists_coeff_roots O'.c' ha hb`. Establish `hb0 : b ≠ 0` using `fun h0 => by`. Take `⟨m, hm, e⟩` from `hb`.
+
+Simplify using `[h0, hm.ne'] at e`. Establish `h₁ : O.c'.F ≤ c₃.F` using `hle.trans h'`. Establish `h₃ : T.Q.c.F ≤ c₃.F` using `O.hle.trans h₁`. Establish `hV₃ : T.V ((i : ℕ) + 1) (sOv T.toCore c₃ h₃) = Wc D i`. Rewrite using `[sOv_eq, ← sOv_eq T.toCore O.c' O.hle]`.
+
+Conclude with `O.hV`. Take `⟨c0₃, hc0⟩` from `exists_coef_ext (incF O.c' c₃ h₁) (σ := inC O.c') (inC c₃) (fun _ => rfl) (lamV D i) O.c0'`. Take `⟨io₃, hw₃, hio, hover⟩` from `GlobalTheory.IoExtend.exists_ioLFRec_over _ _ _ _ O.c' c₃ h₁ _ _ (tauE D) (lamV D i) (wtA (κ i)) O.io O.hw hO.io`. Establish `hlift : ThPinsR R i ((incF O.c' c₃ h₁).comp O.jL) (inC c₃) (v₀ i (sg0 D A)) c0₃ ι T.Q.l.M (Mfr T.Q.l) O.lev`. Use `⟨(RingHom.ext fun _ => rfl : _ = (inC O.c').comp O.jL).trans hO.lift.field, hO.lift.std, hO.lift.v0, ?_, hO.lift.lev⟩` and prove the remaining obligations.
+
+Take `⟨g, r, c0L, hT, hc⟩` from `hO.lift.c0`. Use `⟨g, r, c0L, hT, fun v => ?_⟩` and prove the remaining obligations. Take `⟨v', hv', e⟩` from `hc v`. Take `⟨v'', hv''⟩` from `GlobalTheory.FieldBCModel.exists_over h₁ (lamV D i) v'`. Conclude with `⟨v'', by rw [hv'', hv', MvPolynomial.map_map], (hc0 v' v'' hv'').trans e⟩`.
+
+Take `⟨h₀, J₀, hr₀, -, hth₀, hpl₀⟩` from `(hO.tuple ()).reps`. Use `choose hh Jt hrt _ using fun t => (hO'.tuple t).reps`. Set `src : ∀ o : Option T0, OMDat T.toCore R i Unit (fun _ => o.getD A.μ0)` to `fun o => match o with`. Consider the case `none => O`. Consider the case `some t => comap O' (fun _ => t)`.
+
+Establish `hs : ∀ o, (src o).c'.F ≤ c₃.F` using `fun o => match o with`. Consider the case `none => h₁`. Consider the case `some _ => h'`. Set `u : Option T0 → c₃.F` to `fun o => match o with`. Consider the case `none => 1`.
+
+Consider the case `some _ => ⟨a, haF⟩ / ⟨b, hbF⟩`. Set `h : ∀ o, (src o).Cl' () → GA D (Vc D i)` to `fun o => match o with`. Consider the case `none => h₀`. Consider the case `some t => hh t`. Establish `hP` using `pins_merge_of_clauses src c₃ h₃ hs _ hV₃ c0₃ O.lev io₃ hw₃ u h (v₀ i (sg0 D A)) hL hW hF hMo (fun o => match o with`.
+
+Consider the case `none => hO`. Consider the case `some t => pins_comap (fun _ => t) hO') hlift hO.act.1 hio`. Use the proof step `(fun o => match o with`. Consider the case `none => ⟨J₀, hr₀⟩`. Consider the case `some t => ⟨Jt t, hrt t⟩) a ha (fun o => o.elim a fun _ => b)`.
+
+Use the proof step `(fun o => match o with`. Consider the case `none => one_mul a`. Consider the case `some _ => div_mul_cancel₀ a hb0)`. Use the proof step `(fun o => match o with`. Consider the case `none => hca ()`.
+
+Consider the case `some t => hcb t)`. Use `⟨_, h₁, rfl, hP, fun x hx => ?_⟩` and prove the remaining obligations. Take `⟨y, hy⟩` from `(hpl₀ x).1 hx`. Use `choose x' hx' using fun k => GlobalTheory.FieldBCModel.exists_over h₁ (lamV D i) (x k)`. Establish `hy' : Place R i A.μ0 h₀ c0₃ (jVx R i A.μ0 y) x'` using `fun k => (hy k).trans (hc0 _ _ (hx' k)).symm`.
+
+Use `⟨x', ⟨y, hy'⟩, (thAdIs_thAdOf R i A.μ0 h₀ c0₃ hMo.HV hr₀.2.2.1 hr₀.2.2.2.2.2.1 _ _ _ hy').trans (hth₀ _ _ hy).symm, fun f hf hfx => ?_⟩` and prove the remaining obligations. Conclude with `isThClsD_covBC_one h₁ (O.dδ ()) rfl _ _ _ _ _ _ O.io io₃ x x' (fun k => hover _ _ (hx' k)) (hO.cov ()).1.2.2.2.2.2.2.2.1 hf hfx`.
+-/
 theorem exists_extension_of_clauses (hL : R.toLevCh.Is A.μ0) (hW : R.grp_chiW) (hF : R.IsFam) (hMo : R.IsModels)
     {i : Fin D.R.m} {ι x₀}
     (O : OMDat T.toCore R i Unit (fun _ => A.μ0)) (O' : OMDat T.toCore R i T0 id) (hle : O.c'.F ≤ O'.c'.F)
@@ -147,6 +177,11 @@ theorem exists_extension_of_clauses (hL : R.toLevCh.Is A.μ0) (hW : R.grp_chiW) 
 
 variable (T R κ v₀)
 
+/- English proof (translation)
+Use `⟨hrow0, fun hG => ?_⟩` and prove the remaining obligations. Take `⟨O', hLL', hP'⟩` from `hex hG`. Establish `hP` using `hpins.2`. Rewrite `hP'` using `[show O'.s0 = T.σ₀ from sOv_eq _ _ _]`. Rewrite `hP` using `[show (O i).s0 = T.σ₀ from sOv_eq _ _ _]`.
+
+Take `⟨M, h₁, hlev, hM, hext⟩` from `exists_extension_of_clauses hL hW hF hMo (O i) O' (hpins.1.le.trans hLL') hP hP'`. Establish `hLM : D.what₂.embLL.toRatAlgHom.fieldRange ≤ M.c'.F` using `hpins.1.ge.trans h₁`. Rewrite `hM` using `[← show M.s0 = T.σ₀ from sOv_eq _ _ _]`. Take `⟨cc', ph', hrow⟩` from `hid _ _ M hLM hM`. Conclude with `⟨comap M some, hLM, pins_comap some hM, oneMapOf_comap some (oneMapOf_of_extends (O i) M none h₁ hlev hM hext hspan (T.cE ((i : ℕ) + 1)) (htie hrow0) hrow)⟩`.
+-/
 theorem oneMapRowR_of_clauses (O : ∀ i, OMDat T.toCore R i Unit (fun _ => A.μ0)) (ph : Fin D.R.m → ℂ) (i : Fin D.R.m)
     (hL : R.toLevCh.Is A.μ0) (hW : R.grp_chiW) (hF : R.IsFam) (hMo : R.IsModels)
     (hpins : OMPins T R κ v₀ O i) (htie : PhaseTie T R κ v₀ O ph i)

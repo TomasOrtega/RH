@@ -10,6 +10,11 @@ namespace GlobalTheory.NuShift
 variable {E Ω : Type} [Field E] [NumberField E] [Field Ω] [Algebra E Ω] [IsAlgClosure E Ω]
   {A : ValuationSubring Ω} {w : HeightOneSpectrum (𝓞 E)} {h : IsPlaceOver A w}
 
+/- English proof (translation)
+Proceed by induction on `x using WD.ind with`. Consider the case `hP n a`. Proceed by induction on `y using WD.ind with`. Consider the case `hP m b`. Rewrite using `[WD.lpTw_mk, WD.lpChar_mk, WD.lpChar_mk, WD.lpTw_mk]`.
+
+Use `WD.sound ⟨.refl _ _, fun σ v => ?_, fun v => ?_⟩` and prove the remaining obligations. Simplify using `only [WDRep.tensor_ρ, WDRep.tw_ρ, LinearEquiv.refl_apply, TensorProduct.map_smul_left]`. Both sides reduce to the same expression.
+-/
 theorem lpChar_lpTw (x y : WD h) (s : ℝ) : (x.lpTw s).lpChar y = (x.lpChar y).lpTw s := by
   induction x using WD.ind with
   | hP n a =>
@@ -20,10 +25,16 @@ theorem lpChar_lpTw (x y : WD h) (s : ℝ) : (x.lpTw s).lpChar y = (x.lpChar y).
   · simp only [WDRep.tensor_ρ, WDRep.tw_ρ, LinearEquiv.refl_apply, TensorProduct.map_smul_left]
   · rfl
 
+/- English proof (translation)
+Rewrite using `[WD.lpZero, WD.lpTw_mk]`. Conclude with `WD.sound ⟨.refl _ _, fun σ v => Subsingleton.elim _ _, fun v => Subsingleton.elim _ _⟩`.
+-/
 theorem lpTw_lpZero (s : ℝ) : (WD.lpZero h).lpTw s = WD.lpZero h := by
   rw [WD.lpZero, WD.lpTw_mk]
   exact WD.sound ⟨.refl _ _, fun σ v => Subsingleton.elim _ _, fun v => Subsingleton.elim _ _⟩
 
+/- English proof (translation)
+Proceed by induction on `l with`. Consider the case `nil => exact (lpTw_lpZero s).symm`. Consider the case `cons x l ih => show WD.lpSum _ (sumList _) = (WD.lpSum x (sumList l)).lpTw s`. Rewrite using `[ih, WD.lpTw_sum]`.
+-/
 theorem sumList_lpTw (l : List (WD h)) (s : ℝ) :
     sumList (l.map fun x => x.lpTw s) = (sumList l).lpTw s := by
   induction l with
@@ -38,6 +49,9 @@ namespace GlobalTheory
 
 open GlobalTheory.NuShift
 
+/- English proof (translation)
+The claim follows from `GlobalTheory.LocalData.isLocalField w ∀ (h : IsPlaceOver A w) (rc : IrrGL (w.adicCompletion E) → WD h), IsRec h rc → ∀ (l : List (Segment (w.adicCompletion E))) (c : ℝ), sumList ((l.map fun Γ => Γ.nu (c : ℂ)).map fun Δ => ((rc Δ.first).lpTw (((Δ.len : ℝ) - 1) / 2)).lpChar (WD.lpS …`.
+-/
 theorem lpSum_segments_nu : ∀ (E Ω : Type) [Field E] [NumberField E] [Field Ω] [Algebra E Ω] [IsAlgClosure E Ω]
     (A : ValuationSubring Ω) (w : HeightOneSpectrum (𝓞 E)),
     letI := GlobalTheory.LocalData.complRel w

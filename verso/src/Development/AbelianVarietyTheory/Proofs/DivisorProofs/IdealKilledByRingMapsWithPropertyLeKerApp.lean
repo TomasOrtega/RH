@@ -5,6 +5,9 @@ open AlgebraicGeometry CategoryTheory ReciprocityTheory.ChartRestriction.G.Geo.T
 
 namespace GlobalTheory.PtClosed
 
+/- English proof (translation)
+Establish `h` using `IsAffineOpen.SpecMap_appLE_fromSpec (𝟙 (Sp R')) (isAffineOpen_top (Sp R')) hW le_top`. Rewrite `h` using `[Category.comp_id, IsAffineOpen.fromSpec_top, Scheme.isoSpec_Spec_inv, ← Spec.map_comp]`. Rewrite using `[← h]`. Simplify using `[spMap, Scheme.Hom.appLE]`.
+-/
 theorem fromSpec_Sp_eq (R' : Type) [CommRing R'] {W : (Sp R').Opens} (hW : IsAffineOpen W) :
     hW.fromSpec = spMap ((Scheme.ΓSpecIso (CommRingCat.of R')).inv ≫
       (Sp R').presheaf.map (homOfLE le_top : W ⟶ ⊤).op).hom := by
@@ -13,6 +16,15 @@ theorem fromSpec_Sp_eq (R' : Type) [CommRing R'] {W : (Sp R').Opens} (hW : IsAff
   rw [← h]
   simp [spMap, Scheme.Hom.appLE]
 
+/- English proof (translation)
+Introduce `S P hP R' _ x hx V hV a ha`. Rewrite using `[RingHom.mem_ker]`. Apply `(Sp R').IsSheaf.section_ext` to reduce the goal to its premises. Introduce `p hp`. Take `⟨W, hWa, hpW, hWle⟩` from `(TopologicalSpace.Opens.isBasis_iff_nbhd.mp (Sp R').isBasis_affineOpens) hp`.
+
+Use `⟨W, hWle, hpW, ?_⟩` and prove the remaining obligations. Establish `hW : IsAffineOpen W` using `hWa`. Establish `e : hW.fromSpec ≫ x = spMap (x.appLE V W hWle).hom ≫ hV.fromSpec`. Rewrite using `[← IsAffineOpen.SpecMap_appLE_fromSpec x hV hW hWle]`. Both sides reduce to the same expression.
+
+Establish `hy : ptQ P V hV _ (x.appLE V W hWle).hom` using `by show P _ (spMap (x.appLE V W hWle).hom ≫ hV.fromSpec)`. Rewrite using `[← e, fromSpec_Sp_eq]`. Conclude with `hP _ _ _ x hx`. Establish `h0` using `ha _ _ hy`. Rewrite using `[map_zero]`.
+
+Simplify `h0` using `[Scheme.Hom.appLE]`.
+-/
 theorem killIdeal_le_ker_app : ∀ (S : Scheme.{0}) (P : ∀ (R' : Type) [CommRing R'], (Sp R' ⟶ S) → Prop),
   (∀ (R' : Type) [CommRing R'] (R'' : Type) [CommRing R''] (g : R' →+* R'') (x : Sp R' ⟶ S),
     P R' x → P R'' (spMap g ≫ x)) →

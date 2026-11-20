@@ -19,16 +19,25 @@ variable {D : D7} (X : HidaSetting D)
 def matOf (γ : (VS D).V →ₗ[D.host.E] (VS D).V) : Matrix (Fin X.B.I.n) (Fin X.B.I.n) X.B.I.E :=
   (LinearMap.toMatrix X.bas X.bas γ).map X.ιE.symm
 
+/- English proof (translation)
+Unfold `matOf`. Rewrite using `[LinearMap.toMatrix_comp X.bas X.bas X.bas]`. Simplify using `using map_mul X.ιE.symm.mapMatrix (LinearMap.toMatrix X.bas X.bas γ) (LinearMap.toMatrix X.bas X.bas δ)`.
+-/
 theorem matOf_comp (γ δ : (VS D).V →ₗ[D.host.E] (VS D).V) : matOf X (γ ∘ₗ δ) = matOf X γ * matOf X δ := by
   unfold matOf
   rw [LinearMap.toMatrix_comp X.bas X.bas X.bas]
   simpa using map_mul X.ιE.symm.mapMatrix (LinearMap.toMatrix X.bas X.bas γ) (LinearMap.toMatrix X.bas X.bas δ)
 
+/- English proof (translation)
+Unfold `matOf`. Rewrite using `[LinearMap.toMatrix_id]`. Simplify using the standard rewrite rules.
+-/
 theorem matOf_id : matOf X LinearMap.id = 1 := by
   unfold matOf
   rw [LinearMap.toMatrix_id]
   simp
 
+/- English proof (translation)
+Use function extensionality and compare the values at `i`. Use `show X.ιE.symm (X.bas.repr (γ y) i) = _`. Rewrite using `[← LinearMap.toMatrix_mulVec_repr X.bas X.bas γ y]`. Conclude with `RingHom.map_mulVec (X.ιE.symm : D.host.E →+* X.B.I.E) _ _ i`.
+-/
 theorem crd_apply (γ : (VS D).V →ₗ[D.host.E] (VS D).V) (y : (VS D).V) :
     X.crd (γ y) = matOf X γ *ᵥ X.crd y := by
   funext i
@@ -36,6 +45,9 @@ theorem crd_apply (γ : (VS D).V →ₗ[D.host.E] (VS D).V) (y : (VS D).V) :
   rw [← LinearMap.toMatrix_mulVec_repr X.bas X.bas γ y]
   exact RingHom.map_mulVec (X.ιE.symm : D.host.E →+* X.B.I.E) _ _ i
 
+/- English proof (translation)
+Introduce `_ _ h` and use `X.bas.repr.injective (Finsupp.ext fun i => X.ιE.symm.injective (congrFun h i))`.
+-/
 theorem crd_inj : Function.Injective (X.crd) := fun _ _ h =>
   X.bas.repr.injective (Finsupp.ext fun i => X.ιE.symm.injective (congrFun h i))
 
@@ -51,6 +63,9 @@ def glOf (γ : (VS D).V ≃ₗ[D.host.E] (VS D).V) : GL (Fin X.B.I.n) X.B.I.E wh
     congr 1
     exact LinearMap.ext fun x => by simp
 
+/- English proof (translation)
+Apply `LinearEquiv.ext` to reduce the goal to its premises. Introduce `y`. Apply `crd_inj X` to reduce the goal to its premises. Rewrite using `[matE_crd]`. Conclude with `(crd_apply X γ.toLinearMap y).symm`.
+-/
 theorem matE_glOf (γ : (VS D).V ≃ₗ[D.host.E] (VS D).V) : matE X (glOf X γ) = γ := by
   apply LinearEquiv.ext
   intro y
@@ -58,6 +73,9 @@ theorem matE_glOf (γ : (VS D).V ≃ₗ[D.host.E] (VS D).V) : matE X (glOf X γ)
   rw [matE_crd]
   exact (crd_apply X γ.toLinearMap y).symm
 
+/- English proof (translation)
+Apply `Units.ext` to reduce the goal to its premises. Apply `Matrix.toLin'.injective` to reduce the goal to its premises. Apply `LinearMap.ext` to reduce the goal to its premises. Introduce `x`. Rewrite using `[Matrix.toLin'_apply, Matrix.toLin'_apply, ← LatDictK.crd_vOf X x, ← matE_crd, ← matE_crd, h]`.
+-/
 theorem matE_inj {M M' : GL (Fin X.B.I.n) X.B.I.E} (h : matE X M = matE X M') : M = M' := by
   apply Units.ext
   apply Matrix.toLin'.injective
@@ -65,12 +83,20 @@ theorem matE_inj {M M' : GL (Fin X.B.I.n) X.B.I.E} (h : matE X M = matE X M') : 
   intro x
   rw [Matrix.toLin'_apply, Matrix.toLin'_apply, ← LatDictK.crd_vOf X x, ← matE_crd, ← matE_crd, h]
 
+/- English proof (translation)
+Rewrite using `[hT_expand X x y]`. Simplify using `only [← X.J_eq]`. Rewrite using `[qform]`.
+-/
 theorem hT_coord (x y : (VS D).V) :
     (VS D).hT x y = star (X.bas.equivFun x) ⬝ᵥ (mapM X X.B.I.J *ᵥ X.bas.equivFun y) := by
   rw [hT_expand X x y]
   simp only [← X.J_eq]
   rw [qform]
 
+/- English proof (translation)
+Use extensionality with `i j`. Use `h (Pi.single i 1) (Pi.single j 1)` as an intermediate fact. Establish `hs : star (Pi.single i (1 : D.host.E) : m → D.host.E) = Pi.single i 1`. Use extensionality with `k`. Apply the tactic sequence `by_cases hk : k = i <;> simp [Pi.single_apply, hk]`.
+
+Rewrite `this` using `[hs]`. Simplify `this` using `[Matrix.mulVec, dotProduct, Pi.single_apply]`.
+-/
 theorem form_ext {m : Type} [Fintype m] [DecidableEq m] {P Q : Matrix m m D.host.E}
     (h : ∀ a c : m → D.host.E, star a ⬝ᵥ (P *ᵥ c) = star a ⬝ᵥ (Q *ᵥ c)) : P = Q := by
   ext i j
@@ -81,12 +107,24 @@ theorem form_ext {m : Type} [Fintype m] [DecidableEq m] {P Q : Matrix m m D.host
   rw [hs] at this
   simpa [Matrix.mulVec, dotProduct, Pi.single_apply] using this
 
+/- English proof (translation)
+Use extensionality with `i j`. Simplify using `only [mapM, RingHom.mapMatrix_apply, Matrix.map_apply, Matrix.conjTranspose_apply, Formalism.UG.cT, Matrix.transpose_apply, starRingEnd_apply, RingEquiv.coe_toRingHom, X.ιE_conj, Formalism.BasicNotions.bridge_star_holds D.R D.host]`.
+-/
 theorem mapM_cT (M : Matrix (Fin X.B.I.n) (Fin X.B.I.n) X.B.I.E) :
     mapM X (Formalism.UG.cT (starRingEnd X.B.I.E) M) = (mapM X M)ᴴ := by
   ext i j
   simp only [mapM, RingHom.mapMatrix_apply, Matrix.map_apply, Matrix.conjTranspose_apply, Formalism.UG.cT,
     Matrix.transpose_apply, starRingEnd_apply, RingEquiv.coe_toRingHom, X.ιE_conj, Formalism.BasicNotions.bridge_star_holds D.R D.host]
 
+/- English proof (translation)
+Use `set A := mapM X ((glOf X γ : GL _ _) : Matrix _ _ _) with hA`. Establish `hrep : ∀ y, X.bas.equivFun (γ y) = A *ᵥ X.bas.equivFun y`. Introduce `y`. Rewrite using `[hA, ← matE_repr, matE_glOf]`. Establish `key : Aᴴ * mapM X X.B.I.J * A = mapM X X.B.I.J`.
+
+Apply `form_ext` to reduce the goal to its premises. Introduce `a c`. Establish `h1` using `hγ (X.bas.equivFun.symm a) (X.bas.equivFun.symm c)`. Rewrite `h1` using `[hT_coord, hT_coord, hrep, hrep, LinearEquiv.apply_symm_apply, LinearEquiv.apply_symm_apply]`. Rewrite using `[← h1, Matrix.star_mulVec, Matrix.mulVec_mulVec]`.
+
+Simplify using `only [Matrix.dotProduct_mulVec, Matrix.vecMul_vecMul, Matrix.mul_assoc]`. Use `show Formalism.UG.cT (starRingEnd X.B.I.E) ((glOf X γ : GL _ _) : Matrix _ _ _) * X.B.I.J * ((glOf X γ : GL _ _) : Matrix _ _ _) = X.B.I.J`. Apply `Matrix.map_injective X.ιE.injective` to reduce the goal to its premises. Use `show mapM X _ = mapM X _`. Rewrite using `[map_mul, map_mul, mapM_cT]`.
+
+Conclude with `key`.
+-/
 theorem glOf_unitary (γ : (VS D).V ≃ₗ[D.host.E] (VS D).V) (hγ : γ ∈ Formalism.HermitianLatticesTheory.isom (VS D).hT) :
     glOf X γ ∈ Formalism.UG.UJ (starRingEnd X.B.I.E) X.B.I.J := by
   set A := mapM X ((glOf X γ : GL _ _) : Matrix _ _ _) with hA
@@ -111,6 +149,11 @@ end Mat
 
 section UJ
 
+/- English proof (translation)
+Establish `hg' : Formalism.UG.cT σA (g : Matrix m m A) * JA * (g : Matrix m m A) = JA` using `hg`. Use `show Formalism.UG.cT σB ((g : Matrix m m A).map φ) * JA.map φ * (g : Matrix m m A).map φ = JA.map φ`. Establish `hc : Formalism.UG.cT σB ((g : Matrix m m A).map φ) = (Formalism.UG.cT σA (g : Matrix m m A)).map φ`. Use extensionality with `i j`. Simplify using `[Formalism.UG.cT, hσ]`.
+
+Rewrite using `[hc, ← Matrix.map_mul, ← Matrix.map_mul, hg']`.
+-/
 theorem uj_bc {A B : Type} [CommRing A] [CommRing B] {m : Type} [Fintype m] [DecidableEq m]
     (φ : A →+* B) (σA : A →+* A) (σB : B →+* B) (hσ : ∀ a, φ (σA a) = σB (φ a)) (JA : Matrix m m A)
     (g : GL m A) (hg : g ∈ Formalism.UG.UJ σA JA) : Formalism.UG.bc φ g ∈ Formalism.UG.UJ σB (JA.map φ) := by
@@ -131,6 +174,11 @@ def AH (Λ : Submodule (𝓞 D.host.E) (VS D).V) : Set ((VS D).V ≃ₗ[D.host.E
   {γ | γ ∈ Formalism.HermitianLatticesTheory.isom (VS D).hT ∧ (∀ a, γ (X.eX a) = X.eX a) ∧ (∀ a, γ (X.fY a) = X.fY a) ∧
     γ (X.zu u) = X.zu u ∧ Formalism.HermitianLatticesTheory.gmap γ Λ = Λ}
 
+/- English proof (translation)
+Establish `hc : ∀ v, γ v = v → (glOf X γ : Matrix _ _ _) *ᵥ X.crd v = X.crd v` using `fun v hv => by`. Rewrite using `[← matE_crd, matE_glOf, hv]`. Break down `hy with (⟨a, rfl⟩ | ⟨a, rfl⟩) | hz'` into its components or cases. Conclude with `hc _ (he a)`. Conclude with `hc _ (hf a)`.
+
+Rewrite `hz'` using `[Set.mem_singleton_iff]`. Rewrite using `[hz']`. Conclude with `hc _ hz`.
+-/
 theorem crd_fix_of (γ : (VS D).V ≃ₗ[D.host.E] (VS D).V) (he : ∀ a, γ (X.eX a) = X.eX a)
     (hf : ∀ a, γ (X.fY a) = X.fY a) (hz : γ (X.zu u) = X.zu u) (y : Fin X.B.I.n → X.B.I.E) (hy : y ∈ fixSet X u) :
     (glOf X γ : Matrix _ _ _) *ᵥ y = y := by
@@ -155,6 +203,9 @@ def gOf (γ : (VS D).V ≃ₗ[D.host.E] (VS D).V) (hγ : γ ∈ Formalism.Hermit
       rw [crd_fix_of X u γ he hf hz y hy] at this
       exact this⟩
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem fmat_gOf (γ : (VS D).V ≃ₗ[D.host.E] (VS D).V) (hγ : γ ∈ Formalism.HermitianLatticesTheory.isom (VS D).hT)
     (he : ∀ a, γ (X.eX a) = X.eX a) (hf : ∀ a, γ (X.fY a) = X.fY a) (hz : γ (X.zu u) = X.zu u) :
     X.B.I.fmat ((gOf X u γ hγ he hf hz : Hfin X u) : X.B.I.Gf) =

@@ -2,6 +2,15 @@ import Mathlib
 
 open MeasureTheory
 
+/- English proof (translation)
+Use `haveI : ProperSpace P := FiniteDimensional.proper_real P`. Establish `hc : Continuous Ψ` using `hΨ.continuous`. Establish `hd : Differentiable ℝ Ψ` using `hΨ.differentiable (by simp)`. Establish `hD : Continuous fun z : P × E ↦ (fderiv ℝ Ψ z).comp (ContinuousLinearMap.inl ℝ P E)` using `(hΨ.continuous_fderiv (by simp)).clm_comp continuous_const`. Establish `hcomp : IsCompact (Metric.closedBall p₀ 1 ×ˢ (a '' K))` using `(isCompact_closedBall p₀ 1).prod (hK.image ha)`.
+
+Take `⟨C, hC⟩` from `hcomp.exists_bound_of_continuousOn hD.continuousOn`. Establish `hsec : ∀ p : P, Continuous fun x : X ↦ (p, a x)` using `fun p ↦ continuous_const.prodMk ha`. Use `hasFDerivAt_integral_of_dominated_of_fderiv_le (F := fun p x ↦ Ψ (p, a x)) (F' := fun p x ↦ (fderiv ℝ Ψ (p, a x)).comp (ContinuousLinearMap.inl ℝ P E)) (bound := fun _ ↦ C) (s := Metric.closedBall p₀ 1) (Metric.closedBall_mem_nhds p₀ one_pos) ?_ ?_ ?_ ?_ ?_ ?_` and prove the remaining obligations. Conclude with `Filter.Eventually.of_forall fun p ↦ ((hc.comp (hsec p)).continuousOn.integrableOn_compact hK).aestronglyMeasurable`. Conclude with `(hc.comp (hsec p₀)).continuousOn.integrableOn_compact hK`.
+
+Conclude with `((hD.comp (hsec p₀)).continuousOn.integrableOn_compact hK).aestronglyMeasurable`. Use `filter_upwards [ae_restrict_mem hK.measurableSet] with x hx p hp`. Conclude with `hC (p, a x) ⟨hp, Set.mem_image_of_mem a hx⟩`. Conclude with `(continuous_const (y := C)).continuousOn.integrableOn_compact hK`. Use `Filter.Eventually.of_forall fun x p _ ↦ ?_` and prove the remaining obligations.
+
+Conclude with `(hd (p, a x)).hasFDerivAt.comp p (hasFDerivAt_prodMk_left p (a x))`.
+-/
 private theorem UpperTheory.Reformulated.B.SetIntegralDifferentiability.hasFDerivAt_setIntegral
     {X P E F : Type} [TopologicalSpace X] [T2Space X]
     [MeasurableSpace X] [BorelSpace X] [NormedAddCommGroup P] [NormedSpace ℝ P]
@@ -36,6 +45,13 @@ private theorem UpperTheory.Reformulated.B.SetIntegralDifferentiability.hasFDeri
   · refine Filter.Eventually.of_forall fun x p _ ↦ ?_
     exact (hd (p, a x)).hasFDerivAt.comp p (hasFDerivAt_prodMk_left p (a x))
 
+/- English proof (translation)
+Introduce `X P E _ _ _ _ _ _ _ _ _ μ _ K hK a ha m`. Proceed by induction on `m with`. Consider the case `zero`. Introduce `F _ _ _ Ψ hΨ`. Rewrite using `[Nat.cast_zero, contDiff_zero]`.
+
+Conclude with `continuous_iff_continuousAt.2 fun p ↦ (UpperTheory.Reformulated.B.SetIntegralDifferentiability.hasFDerivAt_setIntegral μ hK ha Ψ hΨ p).continuousAt`. Consider the case `succ n ih`. Introduce `F _ _ _ Ψ hΨ`. Establish `hD : ContDiff ℝ ((⊤ : ℕ∞) : WithTop ℕ∞) fun z : P × E ↦ (fderiv ℝ Ψ z).comp (ContinuousLinearMap.inl ℝ P E)` using `(contDiff_infty_iff_fderiv.1 hΨ).2.clm_comp contDiff_const`. Rewrite using `[Nat.cast_succ, contDiff_succ_iff_hasFDerivAt]`.
+
+Conclude with `⟨_, ih _ hD, fun p ↦ UpperTheory.Reformulated.B.SetIntegralDifferentiability.hasFDerivAt_setIntegral μ hK ha Ψ hΨ p⟩`.
+-/
 theorem UpperTheory.Reformulated.B.SetIntegralDifferentiability.contDiff_setIntegral_nat :
     ∀ {X P E : Type} [inst : TopologicalSpace X] [T2Space X]
     [inst_2 : MeasurableSpace X] [BorelSpace X] [inst_4 : NormedAddCommGroup P] [inst_5 : NormedSpace ℝ P]

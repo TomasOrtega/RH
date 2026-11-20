@@ -7,6 +7,21 @@ open GlobalTheory.Mem.Chr (unitIdl)
 
 namespace UpperTheory.V.Af.Tw
 
+/- English proof (translation)
+Set `I : Ideal (v.adicCompletionIntegers K)` to `Ideal.span {(N : v.adicCompletionIntegers K)}`. Establish `hI : I ≠ ⊥`. Rewrite using `[Ne, Ideal.span_singleton_eq_bot]`. Introduce `h`. Apply `hN` to reduce the goal to its premises.
+
+Use `congrArg (fun r : v.adicCompletionIntegers K => (r : v.adicCompletion K)) h` as an intermediate fact. Simplify using `using this`. Use `haveI := Formalism.UG.P.glint_finite_quotient_of_dvr inferInstance I hI`. Use `haveI : Finite (v.adicCompletionIntegers K ⧸ I)ˣ := Finite.of_injective (fun u : (v.adicCompletionIntegers K ⧸ I)ˣ => (u : v.adicCompletionIntegers K ⧸ I)) (fun a b h => Units.ext h)`. Use `⟨Nat.card (v.adicCompletionIntegers K ⧸ I)ˣ, Nat.card_pos, ?_⟩` and prove the remaining obligations.
+
+Introduce `x hx k hk`. Establish `hxR : x ∈ v.adicCompletionIntegers K`. Rewrite using `[HeightOneSpectrum.mem_adicCompletionIntegers]`. Conclude with `hx.le`. Establish `hyR : x⁻¹ ∈ v.adicCompletionIntegers K`.
+
+Rewrite using `[HeightOneSpectrum.mem_adicCompletionIntegers, map_inv₀, hx, inv_one]`. Establish `hx0 : x ≠ 0`. Introduce `h`. Rewrite `hx` using `[h, map_zero]`. Conclude with `zero_ne_one hx`.
+
+Set `u : (v.adicCompletionIntegers K)ˣ` to `⟨⟨x, hxR⟩, ⟨x⁻¹, hyR⟩, Subtype.ext (mul_inv_cancel₀ hx0), Subtype.ext (inv_mul_cancel₀ hx0)⟩`. Take `⟨j, rfl⟩` from `hk`. Establish `h1 : (Units.map (Ideal.Quotient.mk I).toMonoidHom u) ^ (Nat.card (v.adicCompletionIntegers K ⧸ I)ˣ * j) = 1`. Rewrite using `[pow_mul, pow_card_eq_one', one_pow]`. Establish `h2 : ((⟨x, hxR⟩ : v.adicCompletionIntegers K) ^ (Nat.card (v.adicCompletionIntegers K ⧸ I)ˣ * j) - 1) ∈ I`.
+
+Rewrite using `[← Ideal.Quotient.eq_zero_iff_mem, map_sub, map_pow, map_one, sub_eq_zero]`. Use `congrArg Units.val h1` as an intermediate fact. Simplify `this` using `[u]`. Take `⟨y, hy⟩` from `Ideal.mem_span_singleton'.1 h2`. Establish `hy' : x ^ (Nat.card (v.adicCompletionIntegers K ⧸ I)ˣ * j) - 1 = (y : v.adicCompletion K) * (N : v.adicCompletion K)`.
+
+Use `congrArg (fun r : v.adicCompletionIntegers K => (r : v.adicCompletion K)) hy` as an intermediate fact. Simplify using `using this.symm`. Rewrite using `[hy', map_mul]`. Establish `hyle : Valued.v (y : v.adicCompletion K) ≤ 1` using `(HeightOneSpectrum.mem_adicCompletionIntegers _ _ _).1 y.2`. Simplify using `using mul_le_mul' hyle (le_refl (Valued.v (N : v.adicCompletion K)))`.
+-/
 private theorem loc (K : Type) [Field K] [NumberField K] {N : ℕ} (hN : N ≠ 0) (v : HeightOneSpectrum (𝓞 K)) :
     ∃ M : ℕ, 0 < M ∧ ∀ x : v.adicCompletion K, Valued.v x = 1 → ∀ k : ℕ, M ∣ k →
       Valued.v (x ^ k - 1) ≤ Valued.v (N : v.adicCompletion K) := by
@@ -51,6 +66,21 @@ private theorem loc (K : Type) [Field K] [NumberField K] {N : ℕ} (hN : N ≠ 0
   have hyle : Valued.v (y : v.adicCompletion K) ≤ 1 := (HeightOneSpectrum.mem_adicCompletionIntegers _ _ _).1 y.2
   simpa using mul_le_mul' hyle (le_refl (Valued.v (N : v.adicCompletion K)))
 
+/- English proof (translation)
+Unfold `LevPow`. Introduce `K _ _ N hN`. Use `choose M hMpos hM using fun v : HeightOneSpectrum (𝓞 K) => loc K hN v`. Establish `hN0 : Ideal.span {(N : 𝓞 K)} ≠ 0`. Rewrite using `[Ne, Ideal.zero_eq_bot, Ideal.span_singleton_eq_bot]`.
+
+Conclude with `hN` after adjusting the coercions. Establish `hfin` using `Ideal.finite_factors hN0`. Use `⟨∏ v ∈ hfin.toFinset, M v, Finset.prod_pos (fun v _ => hMpos v), ?_⟩` and prove the remaining obligations. Introduce `u hu`. Use `⟨pow_mem hu _, fun v => ?_⟩` and prove the remaining obligations.
+
+Establish `hpow : ∀ P : ℕ, (u ^ P).val.2 v = (u.val.2 v) ^ P`. Introduce `P`. Proceed by induction on `P with`. Consider the case `zero => rfl`. Consider the case `succ n ih`.
+
+Rewrite using `[pow_succ, Units.val_mul, pow_succ, ← ih]`. Both sides reduce to the same expression. Establish `hu1 : Valued.v (u.val.2 v) = 1` using `hu v`. Use `show Valued.v ((u ^ (∏ v ∈ hfin.toFinset, M v)).val.2 v - 1) ≤ Valued.v (N : v.adicCompletion K)`. Rewrite using `[hpow]`.
+
+Distinguish the cases in `hv : v ∈ hfin.toFinset`. Conclude with `hM v _ hu1 _ (Finset.dvd_prod_of_mem M hv)`. Rewrite `hv` using `[Set.Finite.mem_toFinset, Set.mem_setOf_eq, Ideal.dvd_span_singleton]`. Establish `hlt` using `(HeightOneSpectrum.valuation_lt_one_iff_mem (K := K) v (N : 𝓞 K)).not.2 hv`. Establish `hle` using `HeightOneSpectrum.valuation_le_one (K := K) v (N : 𝓞 K)`.
+
+Establish `h2` using `PI.IntAdCpctOpenWork.valued_algebraMap v (N : K)`. Simplify using `at h2 hlt hle`. Establish `hN1 : Valued.v (N : v.adicCompletion K) = 1`. Rewrite using `[h2]`. Conclude with `le_antisymm hle hlt`.
+
+Rewrite using `[hN1]`. Use `(Valuation.map_sub _ _ _).trans (max_le ?_ ?_)` and prove the remaining obligations. Rewrite using `[map_pow, hu1, one_pow]`. Rewrite using `[map_one]`.
+-/
 theorem levPow : LevPow := by
   unfold LevPow
   intro K _ _ N hN

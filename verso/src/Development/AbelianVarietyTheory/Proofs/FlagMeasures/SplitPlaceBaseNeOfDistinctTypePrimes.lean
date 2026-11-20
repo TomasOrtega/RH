@@ -23,6 +23,11 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar GlobalTheory.LabPi
 
 namespace GlobalTheory.SplitPlaceDistinct
 
+/- English proof (translation)
+Establish `hc : IsCoprime (p : ℤ) (q : ℤ)` using `Nat.isCoprime_iff_coprime.2 ((Nat.coprime_primes hp hq).2 hne)`. Take `⟨a, b, hab⟩` from `hc`. Apply `w.isPrime.ne_top` to reduce the goal to its premises. Rewrite using `[Ideal.eq_top_iff_one]`. Establish `e : ((a : 𝓞 E)) * ((p : ℕ) : 𝓞 E) + (b : 𝓞 E) * ((q : ℕ) : 𝓞 E) = 1`.
+
+Conclude with `congrArg (Int.cast : ℤ → 𝓞 E) hab` after adjusting the coercions. Rewrite using `[← e]`. Conclude with `w.asIdeal.add_mem (w.asIdeal.mul_mem_left _ h1) (w.asIdeal.mul_mem_left _ h2)`.
+-/
 theorem not_mem_both {E : Type} [Field E] [NumberField E] {p q : ℕ} (hp : p.Prime) (hq : q.Prime)
     (hne : p ≠ q) (w : IsDedekindDomain.HeightOneSpectrum (𝓞 E))
     (h1 : ((p : ℕ) : 𝓞 E) ∈ w.asIdeal) (h2 : ((q : ℕ) : 𝓞 E) ∈ w.asIdeal) : False := by
@@ -35,6 +40,17 @@ theorem not_mem_both {E : Type} [Field E] [NumberField E] {p q : ℕ} (hp : p.Pr
   rw [← e]
   exact w.asIdeal.add_mem (w.asIdeal.mul_mem_left _ h1) (w.asIdeal.mul_mem_left _ h2)
 
+/- English proof (translation)
+Introduce `D s s' kv kv' hs hs' hne hv`. Take `⟨k, v⟩` from `kv`. Take `⟨k', v'⟩` from `kv'`. Establish `hgk : ∀ a b : Fin 2, a ≠ b → D.host.g a ≠ D.host.g b`. Introduce `a b hab`.
+
+Establish `h01` using `D.host.g_ne`. Apply the tactic sequence `fin_cases a <;> fin_cases b`. Conclude with `absurd rfl hab`. Conclude with `h01`. Conclude with `h01.symm`.
+
+Conclude with `absurd rfl hab`. Establish `hover` using `D.naut.plGw_over`. Break down `GlobalTheory.SplitPlaceOver.eq_or_isConjPl D s s'.w (s'.w_under.trans (congrArg IsDedekindDomain.HeightOneSpectrum.asIdeal hv.symm)) with e | e` into its components or cases. Rewrite `e` using `[hs, hs']`. Distinguish the cases in `hk : k = k'`.
+
+Substitute `hk` using the available equality. Conclude with `hne (congrArg (Sigma.mk k) (D.naut.plGw_inj k e))`. Conclude with `not_mem_both (D.host.g_prime k) (D.host.g_prime k') (hgk k k' hk) _ (hover k v) (e ▸ hover k' v')`. Rewrite `e` using `[hs, hs']`. Distinguish the cases in `hk : k = k'`.
+
+Substitute `hk` using the available equality. Conclude with `D.naut.plGw_nconj k v' v e`. Establish `hm : ((D.host.g k' : ℕ) : 𝓞 D.host.E) ∈ (D.naut.plGw k v).asIdeal` using `(e _ _ (by simp)).1 (hover k' v')`. Conclude with `not_mem_both (D.host.g_prime k) (D.host.g_prime k') (hgk k k' hk) _ (hover k v) hm`.
+-/
 theorem splitPlace_v_ne : ∀ (D : D7) (s s' : ReciprocityTheory.Aut.SplitPlace D.host.E) (kv kv' : Σ k : Fin 2, D.nd.PlG k),
     s.w = D.naut.plGw kv.1 kv.2 → s'.w = D.naut.plGw kv'.1 kv'.2 → kv ≠ kv' → s.v ≠ s'.v := by
   intro D s s' kv kv' hs hs' hne hv

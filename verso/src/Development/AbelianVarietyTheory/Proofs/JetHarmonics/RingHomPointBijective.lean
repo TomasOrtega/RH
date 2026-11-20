@@ -37,6 +37,9 @@ def ringHomPoint {k k' : Type*} [Field k] [Field k'] (f : k →+* k') (W : Weier
 open PowerSeries WeierstrassCurve WeierstrassCurve.Affine in
 open scoped ComplexConjugate BigOperators Topology in
 open Classical in
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 private lemma ringHomPoint_some {k k' : Type*} [Field k] [Field k']
     (f : k →+* k') (W : WeierstrassCurve k) {x y : k} (h : W.toAffine.Nonsingular x y) :
     _root_.GlobalTheory.MomOne.ringHomPoint f W (.some x y h) =
@@ -45,6 +48,11 @@ private lemma ringHomPoint_some {k k' : Type*} [Field k] [Field k']
 open PowerSeries WeierstrassCurve WeierstrassCurve.Affine in
 open scoped ComplexConjugate BigOperators Topology in
 open Classical in
+/- English proof (translation)
+Introduce and unpack `(_ | ⟨x, y, h⟩)`. Conclude with `⟨0, map_zero _⟩`. Establish `h' : W.toAffine.Nonsingular (e.symm x) (e.symm y)`. Rewrite using `[← WeierstrassCurve.Affine.map_nonsingular W.toAffine (f := (e : k →+* k')) e.injective]`. Simplify using `using h`.
+
+Use `⟨.some _ _ h', ?_⟩` and prove the remaining obligations. Rewrite using `[ringHomPoint_some]`. Simplify using the standard rewrite rules.
+-/
 private lemma ringHomPoint_surjective_of_ringEquiv {k k' : Type*} [Field k] [Field k']
     (e : k ≃+* k') (W : WeierstrassCurve k) :
     Function.Surjective (_root_.GlobalTheory.MomOne.ringHomPoint (e : k →+* k') W) := by
@@ -60,6 +68,9 @@ private lemma ringHomPoint_surjective_of_ringEquiv {k k' : Type*} [Field k] [Fie
 open PowerSeries WeierstrassCurve WeierstrassCurve.Affine in
 open scoped ComplexConjugate BigOperators Topology in
 open Classical in
+/- English proof (translation)
+Break down `P with _ | ⟨x, y, h⟩` into its components or cases. Conclude with `⟨fun _ => rfl, fun _ => rfl⟩`. Rewrite using `[ringHomPoint_some]`. Simplify using the standard rewrite rules.
+-/
 private lemma ringHomPoint_eq_zero_iff {k k' : Type*} [Field k] [Field k']
     (f : k →+* k') (W : WeierstrassCurve k) (P : W.toAffine.Point) :
     _root_.GlobalTheory.MomOne.ringHomPoint f W P = 0 ↔ P = 0 := by
@@ -72,6 +83,31 @@ open PowerSeries WeierstrassCurve WeierstrassCurve.Affine in
 open scoped ComplexConjugate BigOperators Topology in
 open Classical in
 
+/- English proof (translation)
+Take `⟨hc, -, -, -, -, -, -, h₄, h₆⟩` from `hM`. Establish `hιc : M.ι M.c ≠ 0` using `(map_ne_zero M.ι).mpr hc`. Take `⟨C, hCu, hCr, hCs, hCt⟩ : ∃ C : VariableChange ℂ_[q], (C.u : ℂ_[q]) = (M.ι M.c)⁻¹ ∧ C.r = -(M.W.b₂ / 12) ∧ C.s = -(M.W.a₁ / 2) ∧ C.t = M.W.a₁ * M.W.b₂ / 24 - M.W.a₃ / 2` from `⟨⟨Units.mk0 _ (inv_ne_zero hιc), _, _, _⟩, rfl, rfl, rfl, rfl⟩`. Establish `hCu' : ((C.u⁻¹ : ℂ_[q]ˣ) : ℂ_[q]) = M.ι M.c`. Rewrite using `[Units.val_inv_eq_inv_val, hCu, inv_inv]`.
+
+Establish `hE : (_root_.GlobalTheory.latticeCurve M.L).a₁ = 0 ∧ (_root_.GlobalTheory.latticeCurve M.L).a₂ = 0 ∧ (_root_.GlobalTheory.latticeCurve M.L).a₃ = 0 ∧ (_root_.GlobalTheory.latticeCurve M.L).a₄ = -M.L.g₂ / 4 ∧ (_root_.GlobalTheory.latticeCurve M.L).a₆ = -M.L.g₃ / 4`. Simplify using `[_root_.GlobalTheory.latticeCurve]`. Take `⟨hE₁, hE₂, hE₃, hE₄, hE₆⟩` from `hE`. Establish `hg₂ : M.ι M.L.g₂ = M.W.c₄ / 12 * M.ι M.c ^ 4`. Rewrite using `[h₄, map_div₀, map_pow, div_mul_cancel₀ _ (pow_ne_zero 4 hιc)]`.
+
+Establish `hg₃ : M.ι M.L.g₃ = M.W.c₆ / 216 * M.ι M.c ^ 6`. Rewrite using `[h₆, map_div₀, map_pow, div_mul_cancel₀ _ (pow_ne_zero 6 hιc)]`. Establish `hC : C • M.W = (_root_.GlobalTheory.latticeCurve M.L).map (M.ι : ℂ →+* ℂ_[q])`. Use `ext`. Rewrite using `[variableChange_a₁, hCu', hCs, map_a₁, hE₁]`.
+
+Simplify using `only [map_zero]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[variableChange_a₂, hCu', hCs, hCr, map_a₂, hE₂]`. Simplify using `only [map_zero, WeierstrassCurve.b₂]`. Expand and normalize the polynomial expressions, which then agree.
+
+Rewrite using `[variableChange_a₃, hCu', hCt, hCr, map_a₃, hE₃]`. Simplify using `only [map_zero, WeierstrassCurve.b₂]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[variableChange_a₄, hCu', hCs, hCt, hCr, map_a₄, hE₄]`. Simplify using `only [RingHom.coe_coe, map_div₀, map_neg, map_ofNat, hg₂, WeierstrassCurve.c₄, WeierstrassCurve.b₂, WeierstrassCurve.b₄]`.
+
+Expand and normalize the polynomial expressions, which then agree. Rewrite using `[variableChange_a₆, hCu', hCt, hCr, map_a₆, hE₆]`. Simplify using `only [RingHom.coe_coe, map_div₀, map_neg, map_ofNat, hg₃, WeierstrassCurve.c₆, WeierstrassCurve.b₂, WeierstrassCurve.b₄, WeierstrassCurve.b₆]`. Expand and normalize the polynomial expressions, which then agree. Set `φ : ℂ →+ M.W.toAffine.Point` to `(_root_.GlobalTheory.variableChangePoint C hC).comp ((_root_.GlobalTheory.MomOne.ringHomPoint (M.ι : ℂ →+* ℂ_[q]) (_root_.GlobalTheory.latticeCurve M.L)).comp (_root_.GlobalTheory.latticePointHom M.L))`.
+
+Establish `hφ : ∀ z, φ z = _root_.GlobalTheory.variableChangePoint C hC (_root_.GlobalTheory.MomOne.ringHomPoint (M.ι : ℂ →+* ℂ_[q]) (_root_.GlobalTheory.latticeCurve M.L) (_root_.GlobalTheory.latticePoint M.L z))`. Introduce `z`. Simplify using `only [φ, AddMonoidHom.coe_comp, Function.comp_apply, _root_.GlobalTheory.latticePointHom_apply]`. Use `⟨φ, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `P`.
+
+Take `⟨P₁, rfl⟩` from `(_root_.GlobalTheory.variableChangePoint_bijective C hC).2 P`. Take `⟨P₂, rfl⟩` from `ringHomPoint_surjective_of_ringEquiv M.ι _ P₁`. Take `⟨z, rfl⟩` from `_root_.GlobalTheory.latticePoint_surjective M.L P₂`. Conclude with `⟨z, hφ z⟩`. Introduce `z`.
+
+Rewrite using `[hφ, map_eq_zero_iff _ (_root_.GlobalTheory.variableChangePoint_bijective C hC).1, ringHomPoint_eq_zero_iff, _root_.GlobalTheory.latticePoint_eq_zero_iff]`. Introduce `z hz`. Establish `key : ∀ {a b a' b' : ℂ_[q]} (h : M.W.toAffine.Nonsingular a b), a = a' → b = b' → ∃ h', (Point.some a b h : M.W.toAffine.Point) = Point.some a' b' h'`. Introduce and unpack `a b a' b' h rfl rfl`. Conclude with `⟨h, rfl⟩`.
+
+Establish `hx : (C.u : ℂ_[q]) ^ 2 * M.ι (M.L.weierstrassP z) + C.r = M.ι (M.x z)` using `by show _ = M.ι (M.L.weierstrassP z / M.c ^ 2 - M.ι.symm (M.W.b₂ / 12))`. Rewrite using `[map_sub, map_div₀, map_pow, RingEquiv.apply_symm_apply, hCu, hCr]`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Establish `hy : (C.u : ℂ_[q]) ^ 3 * M.ι (M.L.derivWeierstrassP z / 2) + (C.u : ℂ_[q]) ^ 2 * C.s * M.ι (M.L.weierstrassP z) + C.t = M.ι (M.y z)` using `by show _ = M.ι ((M.L.derivWeierstrassP z / M.c ^ 3 - M.ι.symm M.W.a₁ * M.x z - M.ι.symm M.W.a₃) / 2)`.
+
+Simplify using `only [map_div₀, map_sub, map_mul, map_pow, RingEquiv.apply_symm_apply, map_ofNat]`. Rewrite using `[← hx, hCu, hCr, hCs, hCt]`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hφ, _root_.GlobalTheory.latticePoint_of_notMem M.L hz, ringHomPoint_some, _root_.GlobalTheory.variableChangePoint_some]`.
+
+Conclude with `key _ hx hy`.
+-/
 theorem _root_.GlobalTheory.MomOne.Mdl.exists_pointHom (q : ℕ) [Fact q.Prime]
     (M : _root_.GlobalTheory.MomOne.Mdl q) (hM : M.Ok) :
     ∃ φ : ℂ →+ M.W.toAffine.Point, Function.Surjective φ ∧

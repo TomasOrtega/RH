@@ -22,6 +22,9 @@ namespace GlobalTheory.SBClosure
 
 open scoped Topology
 
+/- English proof (translation)
+Rewrite `hU` using `[nhds_pi, Filter.mem_pi]`. Take `⟨I, -, t, ht, hs⟩` from `hU`. Use `choose K hK using fun i => NonarchimedeanAddGroup.is_nonarchimedean (G := G i) (t i) (ht i)`. Conclude with `⟨⟨AddSubgroup.pi Set.univ fun i => (K i : AddSubgroup (G i)), isOpen_set_pi Set.finite_univ fun i _ => (K i).isOpen⟩, fun x hx => hs fun i _ => hK i (hx i trivial)⟩`.
+-/
 theorem nonarch_pi {ι : Type} [Finite ι] (G : ι → Type) [∀ i, AddCommGroup (G i)] [∀ i, TopologicalSpace (G i)]
     [∀ i, NonarchimedeanAddGroup (G i)] : NonarchimedeanAddGroup (∀ i, G i) where
   is_nonarchimedean U hU := by
@@ -31,6 +34,57 @@ theorem nonarch_pi {ι : Type} [Finite ι] (G : ι → Type) [∀ i, AddCommGrou
     exact ⟨⟨AddSubgroup.pi Set.univ fun i => (K i : AddSubgroup (G i)),
       isOpen_set_pi Set.finite_univ fun i _ => (K i).isOpen⟩, fun x hx => hs fun i _ => hK i (hx i trivial)⟩
 
+/- English proof (translation)
+Use `set H : AddSubgroup X := S.topologicalClosure with hHdef`. Establish `hHc : (H : Set X) = closure (S : Set X)` using `rfl`. Rewrite using `[← hHc]`. Establish `hcont : Continuous f` using `hf.1.continuous`. Choose the witnesses or unpack the hypotheses as in `⟨Y₀, hY₀⟩ : ∃ Y₀, f Y₀ ≠ 0 := by`.
+
+Assume the negation of the conclusion as `h`. Use `push_neg at h`. Conclude with `hf0 (funext h)`. Establish `hind : ∀ U : Set X, IsClopen U → ∀ φ ∈ GlobalTheory.WeilM.SB X, U.indicator φ ∈ GlobalTheory.WeilM.SB X`. Introduce `U hU φ hφ`.
+
+Establish `: U.indicator φ = U.indicator 1 * φ`. Apply the tactic sequence `funext x; by_cases hx : x ∈ U <;> simp [hx]`. Rewrite using `[this]`. Conclude with `⟨(LocallyConstant.indicator (1 : LocallyConstant X ℂ) hU).isLocallyConstant.mul hφ.1, hφ.2.mul_left⟩`. Establish `hSH : S ≤ H` using `S.le_topologicalClosure`.
+
+Establish `hHcl : IsClosed (H : Set X)` using `S.isClosed_topologicalClosure`. Establish `hH : ∀ h ∈ H, f (Y₀ + h) = f Y₀`. Introduce `h hh`. Establish `hcl : IsClosed {h : X | f (Y₀ + h) = f Y₀}` using `isClosed_eq (hcont.comp (continuous_const.add continuous_id)) continuous_const`. Establish `hS : (S : Set X) ⊆ {h : X | f (Y₀ + h) = f Y₀}` using `fun s hs => hinv s hs Y₀`.
+
+Conclude with `(closure_minimal hS hcl) hh`. Establish `hW : ∀ x, f x ≠ 0 → x - Y₀ ∈ H`. Introduce `x hx`. Assume the negation of the conclusion as `hxH`. Establish `hopen : (H : Set X)ᶜ ∈ 𝓝 (x - Y₀)` using `hHcl.isOpen_compl.mem_nhds hxH`.
+
+Establish `h0 : (fun u => x - Y₀ + u) ⁻¹' (H : Set X)ᶜ ∈ 𝓝 (0 : X)`. Apply `(continuous_const.add continuous_id).continuousAt.preimage_mem_nhds` to reduce the goal to its premises. Simplify using `using hopen`. Take `⟨U, hU⟩` from `NonarchimedeanAddGroup.is_nonarchimedean _ h0`. Use `set V : AddSubgroup X := H ⊔ U.toAddSubgroup with hVdef`.
+
+Establish `hVo : IsOpen (V : Set X)` using `AddSubgroup.isOpen_mono (le_sup_right : U.toAddSubgroup ≤ V) U.isOpen`. Establish `hVc : IsClosed (V : Set X)` using `AddSubgroup.isClosed_of_isOpen V hVo`. Establish `hxV : x - Y₀ ∉ V`. Introduce `hm`. Take `⟨a, ha, b, hb, hab⟩` from `AddSubgroup.mem_sup.mp hm`.
+
+Establish `hb' : -b ∈ U` using `U.neg_mem hb`. Use `hU hb'` as an intermediate fact. Simplify using `only [Set.mem_preimage, Set.mem_compl_iff, SetLike.mem_coe] at this`. Apply `this` to reduce the goal to its premises. Rewrite using `[← hab]`.
+
+Simplify using `using ha`. Use `set Wset : Set X := (fun y => y - Y₀) ⁻¹' (V : Set X) with hWdef`. Establish `hWc : IsClopen Wset` using `⟨hVc.preimage (continuous_id.sub continuous_const), hVo.preimage (continuous_id.sub continuous_const)⟩`. Establish `hWinv : ∀ s ∈ S, ∀ Y, (Y + s ∈ Wset ↔ Y ∈ Wset)`. Introduce `s hs Y`.
+
+Establish `hsV : s ∈ V` using `AddSubgroup.mem_sup_left (hSH hs)`. Simplify using `only [Wset, Set.mem_preimage, SetLike.mem_coe]`. Rewrite using `[show Y + s - Y₀ = (Y - Y₀) + s by abel]`. Conclude with `V.add_mem_cancel_right hsV`. Take `⟨c, hc⟩` from `huniq (Wset.indicator f) (hind _ hWc f hf) (by`.
+
+Introduce `s hs Y`. Distinguish the cases in `hY : Y ∈ Wset`. Rewrite using `[Set.indicator_of_mem hY, Set.indicator_of_mem ((hWinv s hs Y).mpr hY), hinv s hs Y]`. Rewrite using `[Set.indicator_of_notMem hY, Set.indicator_of_notMem (fun h => hY ((hWinv s hs Y).mp h))]) (by`. Introduce `Y hY`.
+
+Distinguish the cases in `h : Y ∈ Wset`. Rewrite using `[Set.indicator_of_mem h, hsupp Y hY]`. Rewrite using `[Set.indicator_of_notMem h])`. Establish `e1` using `congrFun hc Y₀`. Establish `e2` using `congrFun hc x`.
+
+Establish `hY₀W : Y₀ ∈ Wset` using `by simp [Wset, V.zero_mem]`. Rewrite `e1` using `[Set.indicator_of_mem hY₀W]`. Rewrite `e2` using `[Set.indicator_of_notMem (show x ∉ Wset from hxV)]`. Simplify using `only [Pi.smul_apply, smul_eq_mul] at e1 e2`. Establish `hc1 : c = 1`.
+
+Establish `: (c - 1) * f Y₀ = 0` using `by rw [sub_mul, ← e1]; ring`. Conclude with `sub_eq_zero.mp ((mul_eq_zero.mp this).resolve_right hY₀)`. Rewrite `e2` using `[hc1, one_mul]`. Conclude with `hx e2.symm`. Establish `hHeq : (H : Set X) = (fun h => Y₀ + h) ⁻¹' {y | f y ≠ 0}`.
+
+Use extensionality with `h`. Simplify using `only [Set.mem_preimage, Set.mem_setOf_eq, SetLike.mem_coe]`. Prove the components needed by the constructor for the conclusion. Introduce `hh`. Rewrite using `[hH h hh]`.
+
+Conclude with `hY₀`. Introduce `hne`. Simplify using `using hW _ hne`. Establish `hHo : IsOpen (H : Set X)`. Rewrite using `[hHeq]`.
+
+Conclude with `(isOpen_compl_singleton.preimage hcont).preimage (continuous_const.add continuous_id)`. Establish `hHk : IsCompact (H : Set X)`. Establish `hK : IsCompact ((fun h => Y₀ + h) ⁻¹' tsupport f)` using `(Homeomorph.addLeft Y₀).isCompact_preimage.mpr hf.2`. Use `hK.of_isClosed_subset hHcl ?_` and prove the remaining obligations. Introduce `h hh`.
+
+Conclude with `subset_tsupport f (by rw [Function.mem_support, hH h hh]; exact hY₀)`. Establish `hHclo : IsClopen (H : Set X)` using `⟨hHcl, hHo⟩`. Establish `h1SB : (H : Set X).indicator (1 : X → ℂ) ∈ GlobalTheory.WeilM.SB X`. Use `⟨?_, HasCompactSupport.intro' hHk hHcl fun x hx => Set.indicator_of_notMem hx _⟩` and prove the remaining obligations. Use `(LocallyConstant.indicator (1 : LocallyConstant X ℂ) hHclo).isLocallyConstant` as an intermediate fact.
+
+Use `this using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `x`. Use `first`. Consider the case `rfl`. Consider the case `by_cases hx : x ∈ (H : Set X) <;> simp [hx, LocallyConstant.indicator]`.
+
+Take `⟨c, hc⟩` from `huniq _ h1SB (by`. Introduce `s hs Y`. Establish `: (Y + s ∈ (H : Set X) ↔ Y ∈ (H : Set X))` using `H.add_mem_cancel_right (hSH hs)`. Distinguish the cases in `hY : Y ∈ (H : Set X)`. Rewrite using `[Set.indicator_of_mem hY, Set.indicator_of_mem (this.mpr hY)]`.
+
+Both sides reduce to the same expression. Rewrite using `[Set.indicator_of_notMem hY, Set.indicator_of_notMem (fun h => hY (this.mp h))]) (by`. Introduce `Y hY`. Use `Set.indicator_of_notMem (fun hYH => hY ?_) _` and prove the remaining obligations. Establish `hB0 : Y₀ ∈ B`.
+
+Assume the negation of the conclusion as `h`. Conclude with `hY₀ (hsupp _ h)`. Establish `hB1 : Y₀ + Y ∈ B`. Assume the negation of the conclusion as `h`. Conclude with `hY₀ ((hH Y hYH).symm.trans (hsupp _ h))`.
+
+Conclude with `hB _ _ hB0 hB1)`. Establish `e0` using `congrFun hc 0`. Rewrite `e0` using `[Set.indicator_of_mem (show (0 : X) ∈ (H : Set X) from H.zero_mem)]`. Simplify using `only [Pi.smul_apply, smul_eq_mul, Pi.one_apply] at e0`. Establish `hc0 : c ≠ 0`.
+
+Introduce and unpack `rfl`. Simplify using `at e0`. Use `⟨c⁻¹, ?_, hHo, hHk⟩` and prove the remaining obligations. Use function extensionality and compare the values at `y`. Establish `ey` using `congrFun hc y`.
+
+Simplify using `only [Pi.smul_apply, smul_eq_mul] at ey ⊢`. Rewrite using `[ey, ← mul_assoc, inv_mul_cancel₀ hc0, one_mul]`.
+-/
 theorem eq_smul_indicator_closure {X : Type} [AddCommGroup X] [TopologicalSpace X] [NonarchimedeanAddGroup X]
     (S : AddSubgroup X) (B : Set X) (hB : ∀ Y h, Y ∈ B → Y + h ∈ B → h ∈ B) (f : X → ℂ) (hf : f ∈ GlobalTheory.WeilM.SB X)
     (hf0 : f ≠ 0) (hinv : ∀ s ∈ S, ∀ Y, f (Y + s) = f Y) (hsupp : ∀ Y ∉ B, f Y = 0)
@@ -158,6 +212,9 @@ theorem eq_smul_indicator_closure {X : Type} [AddCommGroup X] [TopologicalSpace 
 
 end GlobalTheory.SBClosure
 
+/- English proof (translation)
+Introduce `F _ _ v m k S B hB f hf hf0 hinv hsupp huniq`. Use `haveI : NonarchimedeanAddGroup (Fin k → Fv F v) := GlobalTheory.SBClosure.nonarch_pi (fun _ : Fin k => Fv F v)`. Use `haveI : NonarchimedeanAddGroup (Matrix (Fin m) (Fin k) (Fv F v)) := GlobalTheory.SBClosure.nonarch_pi (fun _ : Fin m => Fin k → Fv F v)`. Conclude with `GlobalTheory.SBClosure.eq_smul_indicator_closure S B hB f hf hf0 hinv hsupp huniq`.
+-/
 theorem GlobalTheory.SBClosure.main : ∀ {F : Type} [Field F] [NumberField F] (v : IsDedekindDomain.HeightOneSpectrum (𝓞 F)) {m k : ℕ}
     (S : AddSubgroup (Matrix (Fin m) (Fin k) (Fv F v))) (B : Set (Matrix (Fin m) (Fin k) (Fv F v)))
     (hB : ∀ Y h, Y ∈ B → Y + h ∈ B → h ∈ B) (f : Matrix (Fin m) (Fin k) (Fv F v) → ℂ) (hf : f ∈ GlobalTheory.WeilM.SB _) (hf0 : f ≠ 0)

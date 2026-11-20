@@ -10,6 +10,9 @@ namespace RestTerms
 
 open MvPolynomial Finset
 
+/- English proof (translation)
+Introduce `f N k τ w`. Simplify using `only [blockPowerSum, map_sum, map_pow, Flag.blockPermute_X]`. Conclude with `Equiv.sum_comp (w τ) (fun i => (X (τ, i) : RootRing f N) ^ k)`.
+-/
 theorem FlagPowerSumSymmetric.proof : FlagPowerSumSymmetric.Statement := by
   intro f N k τ w
   simp only [blockPowerSum, map_sum, map_pow, Flag.blockPermute_X]

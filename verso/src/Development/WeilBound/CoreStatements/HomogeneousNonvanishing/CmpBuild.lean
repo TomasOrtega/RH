@@ -24,6 +24,11 @@ section Forms
 variable {K : Type} [Fintype K] {ι : K → Type} [∀ k, Fintype (ι k)]
   {K' : Type} [Fintype K'] {ι' : K' → Type} [∀ k, Fintype (ι' k)]
 
+/- English proof (translation)
+Simplify using `only [evC, eval_map]`. Rewrite using `[eval₂_eq', eval₂_eq', Finset.mul_sum]`. Use `Finset.sum_congr rfl fun m hm => ?_` and prove the remaining obligations. Establish `h1 : ∏ p : Σ k, ι k, c p.1 ^ m p = ∏ k, c k ^ b k`. Rewrite using `[Fintype.prod_sigma]`.
+
+Use `Finset.prod_congr rfl fun k _ => ?_` and prove the remaining obligations. Use `show ∏ i, c k ^ m ⟨k, i⟩ = c k ^ b k`. Rewrite using `[Finset.prod_pow_eq_pow_sum, hf m hm k]`. Simplify using `only [mul_pow, Finset.prod_mul_distrib, h1]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem evC_torus {f : MRing ι} {b : K → ℕ} (hf : IsMultiHomog f b) (c : K → ℂ) (z : (Σ k, ι k) → ℂ) :
     evC (fun p => c p.1 * z p) f = (∏ k, c k ^ b k) * evC z f := by
   classical
@@ -38,6 +43,9 @@ theorem evC_torus {f : MRing ι} {b : K → ℕ} (hf : IsMultiHomog f b) (c : K 
   simp only [mul_pow, Finset.prod_mul_distrib, h1]
   ring
 
+/- English proof (translation)
+Take `⟨c, hc, rfl⟩` from `h`. Establish `h0 : ∏ k, c k ^ b k ≠ 0` using `Finset.prod_ne_zero_iff.2 fun k _ => pow_ne_zero _ (hc k)`. Rewrite using `[evC_torus hf]`. Simplify using `[h0]`.
+-/
 theorem evC_eq_zero_iff_of_sameOrbit {f : MRing ι} {b : K → ℕ} (hf : IsMultiHomog f b)
     {z z' : (Σ k, ι k) → ℂ} (h : SameOrbit z z') : evC z f = 0 ↔ evC z' f = 0 := by
   obtain ⟨c, hc, rfl⟩ := h
@@ -45,14 +53,31 @@ theorem evC_eq_zero_iff_of_sameOrbit {f : MRing ι} {b : K → ℕ} (hf : IsMult
   rw [evC_torus hf]
   simp [h0]
 
+/- English proof (translation)
+Rewrite using `[evC, map_rename, eval_rename]`. Both sides reduce to the same expression.
+-/
 theorem evC_rename (v : (Σ k, ι k) → Σ k, ι' k) (z : (Σ k, ι' k) → ℂ) (f : MRing ι) :
     evC z (rename v f) = evC (fun p => z (v p)) f := by
   rw [evC, map_rename, eval_rename]
   rfl
 
+/- English proof (translation)
+Simplify using `[evC]`.
+-/
 theorem evC_mul (z : (Σ k, ι k) → ℂ) (f g : MRing ι) : evC z (f * g) = evC z f * evC z g := by
   simp [evC]
 
+/- English proof (translation)
+Proceed by induction on `m using Finsupp.induction_linear with`. Consider the case `zero => simp`. Consider the case `add f g hf hg`. Rewrite using `[Finsupp.mapDomain_add]`. Simplify using `only [Finsupp.add_apply, Finset.sum_add_distrib, hf, hg]`.
+
+Rewrite using `[← Finset.sum_add_distrib]`. Use `Finset.sum_congr rfl fun p _ => ?_` and prove the remaining obligations. Apply the tactic sequence `split_ifs <;> simp`. Consider the case `single p n`. Establish `hR : (∑ q : Σ k, ι k, if κ q.1 = k' then (Finsupp.single p n) q else 0) = if κ p.1 = k' then n else 0`.
+
+Rewrite using `[Finset.sum_eq_single p]`. Simplify using the standard rewrite rules. Introduce `q _ hq`. Simplify using `[Finsupp.single_apply, Ne.symm hq]`. Simplify using the standard rewrite rules.
+
+Establish `hL : ∀ q : Σ k, ι' k, ∑ i, (Finsupp.single q n) ⟨k', i⟩ = if q.1 = k' then n else 0`. Introduce and unpack `⟨kq, iq⟩`. Distinguish the cases in `h : kq = k'`. Substitute `h` using the available equality. Simplify using `[Finsupp.single_apply]`.
+
+Simplify using `[Finsupp.single_apply, h]`. Rewrite using `[Finsupp.mapDomain_single, hL, hR, hv]`.
+-/
 theorem sum_mapDomain {κ : K → K'} {v : (Σ k, ι k) → Σ k, ι' k} (hv : ∀ p, (v p).1 = κ p.1)
     [DecidableEq K'] (m : (Σ k, ι k) →₀ ℕ) (k' : K') :
     ∑ i, (Finsupp.mapDomain v m) ⟨k', i⟩ = ∑ p : Σ k, ι k, if κ p.1 = k' then m p else 0 := by
@@ -81,6 +106,13 @@ theorem sum_mapDomain {κ : K → K'} {v : (Σ k, ι k) → Σ k, ι' k} (hv : �
       · simp [Finsupp.single_apply, h]
     rw [Finsupp.mapDomain_single, hL, hR, hv]
 
+/- English proof (translation)
+Introduce `m hm k'`. Rewrite `hm` using `[support_rename_of_injective hb.2.1, Finset.mem_image]`. Take `⟨m₀, hm₀, rfl⟩` from `hm`. Rewrite using `[sum_mapDomain hb.2.2.1, Fintype.sum_sigma]`. Distinguish the cases in `hk : ∃ k, κ k = k'`.
+
+Take `⟨k, rfl⟩` from `hk`. Rewrite using `[hb.1.extend_apply, Finset.sum_eq_single k]`. Simplify using `using hf m₀ hm₀ k`. Introduce `k₂ _ hne`. Conclude with `Finset.sum_eq_zero fun i _ => if_neg (hb.1.ne hne)`.
+
+Simplify using the standard rewrite rules. Rewrite using `[Function.extend_apply' _ _ _ hk]`. Conclude with `Finset.sum_eq_zero fun k _ => Finset.sum_eq_zero fun i _ => if_neg fun h => hk ⟨k, h⟩`.
+-/
 theorem isMultiHomog_rename {κ : K → K'} {v : (Σ k, ι k) → Σ k, ι' k} (hb : IsBlockMap κ v) {f : MRing ι}
     {b : K → ℕ} (hf : IsMultiHomog f b) : IsMultiHomog (rename v f) (Function.extend κ b 0) := by
   classical
@@ -98,6 +130,9 @@ theorem isMultiHomog_rename {κ : K → K'} {v : (Σ k, ι k) → Σ k, ι' k} (
   · rw [Function.extend_apply' _ _ _ hk]
     exact Finset.sum_eq_zero fun k _ => Finset.sum_eq_zero fun i _ => if_neg fun h => hk ⟨k, h⟩
 
+/- English proof (translation)
+Introduce `m hm k`. Take `⟨m₁, h₁, m₂, h₂, rfl⟩` from `Finset.mem_add.1 (support_mul f g hm)`. Simplify using `only [Finsupp.add_apply, Finset.sum_add_distrib, Pi.add_apply, hf m₁ h₁ k, hg m₂ h₂ k]`.
+-/
 theorem isMultiHomog_mul {f g : MRing ι} {a b : K → ℕ} (hf : IsMultiHomog f a) (hg : IsMultiHomog g b) :
     IsMultiHomog (f * g) (a + b) := by
   classical
@@ -112,6 +147,9 @@ section Sides
 variable {K : Type} [Fintype K] {ι : K → Type} [∀ k, Fintype (ι k)]
   {K₁ : Type} [Fintype K₁] {ι₁ : K₁ → Type} [∀ k, Fintype (ι₁ k)]
 
+/- English proof (translation)
+Take `⟨K₀, _, ι₀, _, κ, v, U, lam, β, b, hb, -, hor, hβ, hn, hz⟩` from `h`. Use `⟨rename v β, Function.extend κ b 0, isMultiHomog_rename hb hβ, hn, fun x hx => ?_⟩` and prove the remaining obligations. Rewrite using `[evC_rename, ← evC_eq_zero_iff_of_sameOrbit hβ (hor x)]`. Conclude with `hz _ hx`.
+-/
 theorem exists_bdry_form {P₁ : Ideal (MRing ι₁)} {D : ℕ} {σ : Type} {S : AnSys D σ} (Re : Realis S P₁)
     (h : AlgOver Re) : ∃ (γ : MRing ι₁) (c : K₁ → ℕ), IsMultiHomog γ c ∧ γ ∉ P₁ ∧
       ∀ x, Re.π x ∈ bdry S.s → evC (Re.R.lift x x) γ = 0 := by
@@ -120,6 +158,9 @@ theorem exists_bdry_form {P₁ : Ideal (MRing ι₁)} {D : ℕ} {σ : Type} {S :
   rw [evC_rename, ← evC_eq_zero_iff_of_sameOrbit hβ (hor x)]
   exact hz _ hx
 
+/- English proof (translation)
+Substitute `e` using the available equality. Take `⟨π, hπ, h1, h2, h3, -⟩` from `PositivityTheory.UnitarySelfGeneration.r_pull K ι K₁ ι₁ κ₁ v₁ P J D σ S Re R hb har alg`. Conclude with `⟨π, hπ, h1, h2, h3⟩`.
+-/
 theorem side {κ₁ : K₁ → K} {v₁ : (Σ k, ι₁ k) → Σ k, ι k} (hb : IsBlockMap κ₁ v₁) {P J : Ideal (MRing ι)}
     {D : ℕ} {σ : Type} {S : AnSys D σ} {P₁ : Ideal (MRing ι₁)} (Re : Realis S P₁) (e : imageZ v₁ P = P₁)
     (R : AnLogRes P J D) (har : IsArithVar P (D + 1)) (alg : AlgOver Re) :
@@ -133,6 +174,9 @@ theorem side {κ₁ : K₁ → K} {v₁ : (Σ k, ι₁ k) → Σ k, ι k} (hb : 
   obtain ⟨π, hπ, h1, h2, h3, -⟩ := PositivityTheory.UnitarySelfGeneration.r_pull K ι K₁ ι₁ κ₁ v₁ P J D σ S Re R hb har alg
   exact ⟨π, hπ, h1, h2, h3⟩
 
+/- English proof (translation)
+Establish `hmem : (fun p => R.lift x x (v₁ p)) ∈ mcPts P₁` using `e ▸ (GlobalTheory.T.block_pullback_herm_line K₁ ι₁ K ι κ₁ v₁ hb).2.2.1 P _ (R.mem x x (R.mem_U x))`. Take `⟨x₁, hx₁⟩` from `GlobalTheory.T.log_resolution_covers_complex_points K₁ ι₁ P₁ _ D Re.R Re.arith _ hmem`. Rewrite using `[evC_rename, ← evC_eq_zero_iff_of_sameOrbit hγ hx₁]`. Conclude with `hz x₁ (hπ x x₁ hx₁ ▸ hx)`.
+-/
 theorem evC_bdry {κ₁ : K₁ → K} {v₁ : (Σ k, ι₁ k) → Σ k, ι k} (hb : IsBlockMap κ₁ v₁) {P J : Ideal (MRing ι)}
     {D : ℕ} {σ : Type} {S : AnSys D σ} {P₁ : Ideal (MRing ι₁)} (Re : Realis S P₁) (e : imageZ v₁ P = P₁)
     (R : AnLogRes P J D) {π : R.X → S.X}
@@ -146,6 +190,11 @@ theorem evC_bdry {κ₁ : K₁ → K} {v₁ : (Σ k, ι₁ k) → Σ k, ι k} (h
   rw [evC_rename, ← evC_eq_zero_iff_of_sameOrbit hγ hx₁]
   exact hz x₁ (hπ x x₁ hx₁ ▸ hx)
 
+/- English proof (translation)
+Set `ρ : MRing ι →+* ℂ` to `(eval z).comp (map (Int.castRingHom ℂ))`. Establish `hρ : ∀ q, ρ q = evC z q` using `fun _ => rfl`. Establish `hprime : (RingHom.ker ρ).IsPrime` using `RingHom.ker_isPrime ρ`. Establish `hle : P ≤ RingHom.ker ρ` using `fun q hq => hz.2 q hq`. Establish `hrel : IsRelevant (RingHom.ker ρ)` using `fun k => by`.
+
+Take `⟨i, hi⟩` from `hz.1 k`. Use `⟨i, fun hm => hi ?_⟩` and prove the remaining obligations. Simplify `(RingHom.mem_ker.1 hm)` using `[ρ]`. Take `⟨u, w, hu, -, huw⟩` from `h.2.2 _ hprime hle hrel`. Conclude with `⟨u, w, huw, fun h0 => hu (RingHom.mem_ker.2 h0)⟩`.
+-/
 theorem exists_pair {P : Ideal (MRing ι)} {f g : MRing ι} (h : UnitRatio P f g) {z : (Σ k, ι k) → ℂ}
     (hz : z ∈ mcPts P) : ∃ u w : MRing ι, u * f - w * g ∈ P ∧ evC z u ≠ 0 := by
   let ρ : MRing ι →+* ℂ := (eval z).comp (map (Int.castRingHom ℂ))
@@ -168,6 +217,49 @@ variable {K : Type} [Fintype K] {ι : K → Type} [∀ k, Fintype (ι k)]
   {K₂ : Type} [Fintype K₂] {ι₂ : K₂ → Type} [∀ k, Fintype (ι₂ k)]
   {K' : Type} [Fintype K'] {ι' : K' → Type} [∀ k, Fintype (ι' k)]
 
+/- English proof (translation)
+Establish `hjb` using `GlobalTheory.T.block_join_inclusions_compat`. Establish `e₀ : imageZ v (mCoordIdeal y') = mCoordIdeal y`. Rewrite using `[hjb.2.1 K ι K' ι' κ v Ω y' hb, hy]`. Establish `hc₁ : IsBlockMap (κ ∘ κ₁) (v ∘ v₁)` using `(hjb.2.2 K₁ ι₁ K ι K' ι' κ₁ v₁ κ v hb₁ hb).1`. Establish `hc₂ : IsBlockMap (κ ∘ κ₂) (v ∘ v₂)` using `(hjb.2.2 K₂ ι₂ K ι K' ι' κ₂ v₂ κ v hb₂ hb).1`.
+
+Establish `e₁ : imageZ (v ∘ v₁) (mCoordIdeal y') = mCoordIdeal (y ∘ v₁)`. Rewrite using `[hjb.2.1 K₁ ι₁ K' ι' (κ ∘ κ₁) (v ∘ v₁) Ω y' hc₁, ← hy]`. Both sides reduce to the same expression. Establish `e₂ : imageZ (v ∘ v₂) (mCoordIdeal y') = mCoordIdeal (y ∘ v₂)`. Rewrite using `[hjb.2.1 K₂ ι₂ K' ι' (κ ∘ κ₂) (v ∘ v₂) Ω y' hc₂, ← hy]`.
+
+Both sides reduce to the same expression. Take `⟨π₁, h₁, l₁, p₁, q₁⟩` from `side hc₁ Re₁ e₁ R har' alg₁`. Take `⟨π₂, h₂, l₂, p₂, q₂⟩` from `side hc₂ Re₂ e₂ R har' alg₂`. Establish `hB0 : ∀ z, evC z (rename v B) = evC (fun p => z (v p)) β * evC z (rename (v ∘ v₁) γ₁) * evC z (rename (v ∘ v₂) γ₂)`. Introduce `z`.
+
+Rewrite using `[hBdef, evC_rename, evC_mul, evC_mul, evC_rename (v ∘ v₁), evC_rename (v ∘ v₂), evC_rename v₁, evC_rename v₂]`. Both sides reduce to the same expression. Establish `hbd₁ : ∀ x, π₁ x ∈ bdry S₁.s → evC (R.lift x x) (rename v B) = 0` using `fun x hx => by`. Rewrite using `[hB0, evC_bdry hc₁ Re₁ e₁ R l₁ hγ₁ hz₁ x hx]`. Simplify using the standard rewrite rules.
+
+Establish `hbd₂ : ∀ x, π₂ x ∈ bdry S₂.s → evC (R.lift x x) (rename v B) = 0` using `fun x hx => by`. Rewrite using `[hB0, evC_bdry hc₂ Re₂ e₂ R l₂ hγ₂ hz₂ x hx]`. Simplify using the standard rewrite rules. Establish `hBn' : rename v B ∉ mCoordIdeal y'` using `fun h => hBn (e₀ ▸ h)`. Take `⟨L, s, nb, m, W, C₅, C, t₀, hL, hsec, hsnc, hnorm, hbd, ht₁, ht₂, hm₁, hm₂⟩` from `PositivityTheory.UnitarySelfGeneration.r_combine hPB K' ι' _ J D R Amp (rename v B) _ σ S₁ S₂ π₁ π₂ h₁ h₂ hpot hpos (isMultiHomog_rename hb hB) hBn' hbad (fun x hx => hbd₁ x hx) (fun x hx => hbd₂ x hx)`.
+
+Set `S : AnSys D (σ ⊕ σ)` to `{ X := R.X, A := R.A, Θ := potOf R Amp, L := L, s := s, nb := nb, m := m, W := W, potΘ := hpot, posΘ := hpos, potL := hL, sec := hsec, snc := hsnc, norm_le := hnorm, th := Sum.elim (fun a => (S₁.th a).pullback π₁ h₁.1) (fun a => (S₂.th a).pullback π₂ h₂.1), ph := Sum.elim (fun a …`. Introduce and unpack `(a | a)`. Use `exacts [(hm₁ a).1, (hm₂ a).1]`. Use `reg := by`. Introduce and unpack `(a | a)`.
+
+Use `exacts [(hm₁ a).2.1, (hm₂ a).2.1]`. Use `c2 := by`. Introduce and unpack `(a | a)`. Use `exacts [(hm₁ a).2.2, (hm₂ a).2.2] }`. Establish `hp₁` using `GlobalTheory.T.block_pullback_herm_line K₁ ι₁ K' ι' (κ ∘ κ₁) (v ∘ v₁) hc₁`.
+
+Establish `hp₂` using `GlobalTheory.T.block_pullback_herm_line K₂ ι₂ K' ι' (κ ∘ κ₂) (v ∘ v₂) hc₂`. Use `choose r₁ hr₁ using fun a => (hp₁.1 (Re₁.ref a)).exists`. Use `choose r₂ hr₂ using fun a => (hp₂.1 (Re₂.ref a)).exists`. Use `choose n₁ hn₁ using fun a t => (hp₁.1 (Re₁.line a t)).exists`. Use `choose n₂ hn₂ using fun a t => (hp₂.1 (Re₂.line a t)).exists`.
+
+Establish `sm₁ : ∀ a, IsSmoothHerm (r₁ a)` using `fun a => hp₁.2.1 _ _ (hr₁ a) (Re₁.ref_smooth a)`. Establish `sm₂ : ∀ a, IsSmoothHerm (r₂ a)` using `fun a => hp₂.2.1 _ _ (hr₂ a) (Re₂.ref_smooth a)`. Set `Re : Realis S (mCoordIdeal y')` to `{ arith := har', J := J, R := R, π := id, holo := holoMap_id R.A, deg := 1, deg_pos := one_pos, br := ∅, degree := isDegreeOff_id R.A, ref := Sum.elim r₁ r₂, line := Sum.elim n₁ n₂, ref_smooth := by`. Introduce and unpack `(a | a)`. Use `exacts [sm₁ a, sm₂ a]`.
+
+Use `ref_pot := by`. Introduce and unpack `(a | a) x hx`. Take `⟨V, hV, hxV, G, hG, h⟩` from `p₁ a _ (hr₁ a) x hx`. Conclude with `⟨V, hV, hxV, G, hG, h⟩`. Take `⟨V, hV, hxV, G, hG, h⟩` from `p₂ a _ (hr₂ a) x hx`.
+
+Conclude with `⟨V, hV, hxV, G, hG, h⟩`. Use `line_deg := by`. Introduce and unpack `(a | a) t`. Use `show (n₁ a t).a = (r₁ a).a`. Rewrite using `[(hn₁ a t).1, (hr₁ a).1, Re₁.line_deg]`.
+
+Use `show (n₂ a t).a = (r₂ a).a`. Rewrite using `[(hn₂ a t).1, (hr₂ a).1, Re₂.line_deg]`. Use `line_smooth := by`. Introduce and unpack `(a | a) t ht ht'`. Conclude with `hp₁.2.1 _ _ (hn₁ a t) (Re₁.line_smooth a t ht (ht'.trans ht₁))`.
+
+Conclude with `hp₂.2.1 _ _ (hn₂ a t) (Re₂.line_smooth a t ht (ht'.trans ht₂))`. Use `line_eq := by`. Introduce and unpack `(a | a) t ht ht' x`. Use `show Real.log ((n₁ a t).h (R.lift x x)) = Real.log ((r₁ a).h (R.lift x x)) + S₁.phT a t (π₁ x)`. Rewrite using `[(hn₁ a t).2, (hr₁ a).2]`.
+
+Conclude with `q₁ a t ht (ht'.trans ht₁) x`. Use `show Real.log ((n₂ a t).h (R.lift x x)) = Real.log ((r₂ a).h (R.lift x x)) + S₂.phT a t (π₂ x)`. Rewrite using `[(hn₂ a t).2, (hr₂ a).2]`. Conclude with `q₂ a t ht (ht'.trans ht₂) x }`. Simplify using `only [SameSing] at hS`.
+
+Use `choose f₀ g₀ hfg using hS`. Establish `hiso : ∀ a, IsLineIso (mCoordIdeal y') (r₁ a).a (r₂ a).a (rename v (f₀ a)) (rename v (g₀ a))`. Introduce `a`. Rewrite using `[(hr₁ a).1, (hr₂ a).1, (hjb.2.2 K₁ ι₁ K ι K' ι' κ₁ v₁ κ v hb₁ hb).2, (hjb.2.2 K₂ ι₂ K ι K' ι' κ₂ v₂ κ v hb₂ hb).2]`. Conclude with `(GlobalTheory.T.line_isomorphism_groupoid_laws K ι _ har.2.1).2.2.2.2 K' ι' κ v _ hb e₀ _ _ _ _ (hfg a).1`.
+
+Use `choose w hw hinv hsm using fun a => GlobalTheory.T.line_isomorphism_defect_function K' ι' _ J D R (r₁ a) (r₂ a) (rename v (f₀ a)) (rename v (g₀ a)) har'.2.1 (hiso a) (sm₁ a) (sm₂ a)`. Establish `hmain : ∀ a x, x ∉ bdry s → S₁.ph a (π₁ x) = S₂.ph a (π₂ x) + w a (R.lift x x)`. Introduce `a x hx`. Establish `hzP : R.lift x x ∈ mcPts (mCoordIdeal y')` using `R.mem x x (R.mem_U x)`. Establish `hz : (fun p => R.lift x x (v p)) ∈ mcPts (mCoordIdeal y)` using `e₀ ▸ (GlobalTheory.T.block_pullback_herm_line K ι K' ι' κ v hb).2.2.1 _ _ hzP`.
+
+Establish `hne : evC (R.lift x x) (rename v B) ≠ 0` using `fun h => hx ((hbd x).2 h)`. Establish `hβ' : evC (fun p => R.lift x x (v p)) β ≠ 0` using `fun h => hne (by rw [hB0, h]; simp)`. Establish `hx₁ : π₁ x ∉ bdry S₁.s` using `fun h => hne (hbd₁ x h)`. Establish `hx₂ : π₂ x ∉ bdry S₂.s` using `fun h => hne (hbd₂ x h)`. Establish `hm1 : (fun p => R.lift x x ((v ∘ v₁) p)) ∈ mcPts (mCoordIdeal (y ∘ v₁))` using `e₁ ▸ hp₁.2.2.1 _ _ hzP`.
+
+Establish `hm2 : (fun p => R.lift x x ((v ∘ v₂) p)) ∈ mcPts (mCoordIdeal (y ∘ v₂))` using `e₂ ▸ hp₂.2.2.1 _ _ hzP`. Take `⟨y₁, hy₁⟩` from `GlobalTheory.T.log_resolution_covers_complex_points K₁ ι₁ _ _ D Re₁.R Re₁.arith _ hm1`. Take `⟨y₂, hy₂⟩` from `GlobalTheory.T.log_resolution_covers_complex_points K₂ ι₂ _ _ D Re₂.R Re₂.arith _ hm2`. Establish `ε₁ : π₁ x = Re₁.π y₁` using `l₁ x y₁ hy₁`. Establish `ε₂ : π₂ x = Re₂.π y₂` using `l₂ x y₂ hy₂`.
+
+Take `⟨u, t, hut, hu⟩` from `exists_pair (hfg a).1.2 hz`. Establish `key` using `(hfg a).2 _ hz hβ' y₁ y₂ hy₁ hy₂ (ε₁ ▸ hx₁) (ε₂ ▸ hx₂) u t hut hu`. Establish `hmem : rename v u * rename v (f₀ a) - rename v t * rename v (g₀ a) ∈ mCoordIdeal y'`. Establish `: rename v (u * f₀ a - t * g₀ a) ∈ mCoordIdeal y'`. Establish `h' : u * f₀ a - t * g₀ a ∈ imageZ v (mCoordIdeal y')` using `e₀ ▸ hut`.
+
+Conclude with `h'`. Simplify using `using this`. Establish `hdf` using `hw a _ hzP (rename v u) (rename v t) hmem (by rw [evC_rename]; exact hu)`. Rewrite `hdf` using `[evC_rename, evC_rename, (hr₂ a).2, (hr₁ a).2]`. Establish `h3 : w a (R.lift x x) = S₁.ph a (π₁ x) - S₂.ph a (π₂ x)`.
+
+Rewrite using `[ε₁, ε₂]`. Conclude with `hdf.trans key`. Combine the linear equalities and inequalities to obtain the conclusion. Use `⟨S, Re, fun a => rename v (f₀ a), fun a => rename v (g₀ a), fun a x => w a (R.lift x x), rfl, ht₁, ht₂, fun a t => ⟨hn₁ a t, hn₂ a t⟩, hiso, hsm, fun a x hx => hmain a x hx, ?_⟩` and prove the remaining obligations. Conclude with `fun a x u t h1 h2 => hw a _ (R.mem x x (R.mem_U x)) u t h1 h2`.
+-/
 theorem assemble (hPB : PullbackStatement) {κ₁ : K₁ → K} {v₁ : (Σ k, ι₁ k) → Σ k, ι k} {κ₂ : K₂ → K}
     {v₂ : (Σ k, ι₂ k) → Σ k, ι k} {Ω : Type} [Field Ω] {y : (Σ k, ι k) → Ω} {D : ℕ} {σ : Type} [Fintype σ]
     {S₁ S₂ : AnSys D σ} (Re₁ : Realis S₁ (mCoordIdeal (y ∘ v₁))) (Re₂ : Realis S₂ (mCoordIdeal (y ∘ v₂)))
@@ -323,6 +415,15 @@ theorem assemble (hPB : PullbackStatement) {κ₁ : K₁ → K} {v₁ : (Σ k, �
 
 end Assemble
 
+/- English proof (translation)
+Introduce `hI hK K _ ι _ K₁ _ ι₁ _ K₂ _ ι₂ _ κ₁ v₁ κ₂ v₂ Ω _ _ y D σ _ S₁ S₂ Re₁ Re₂ β b hb₁ hb₂ har hβ hβn alg₁ alg₂ hS`. Take `⟨γ₁, c₁, hγ₁, hγn₁, hz₁⟩` from `exists_bdry_form Re₁ alg₁`. Take `⟨γ₂, c₂, hγ₂, hγn₂, hz₂⟩` from `exists_bdry_form Re₂ alg₂`. Establish `hjb` using `GlobalTheory.T.block_join_inclusions_compat`. Establish `hprime : (mCoordIdeal y).IsPrime` using `har.2.1.1`.
+
+Establish `hn₁ : rename v₁ γ₁ ∉ mCoordIdeal y` using `fun h => hγn₁ (by`. Rewrite using `[← hjb.2.1 K₁ ι₁ K ι κ₁ v₁ Ω y hb₁]`. Conclude with `h)`. Establish `hn₂ : rename v₂ γ₂ ∉ mCoordIdeal y` using `fun h => hγn₂ (by`. Rewrite using `[← hjb.2.1 K₂ ι₂ K ι κ₂ v₂ Ω y hb₂]`.
+
+Conclude with `h)`. Establish `hBn : β * rename v₁ γ₁ * rename v₂ γ₂ ∉ mCoordIdeal y` using `fun h => by`. Break down `hprime.mem_or_mem h with h | h` into its components or cases. Break down `hprime.mem_or_mem h with h | h exacts [hβn h, hn₁ h]` into its components or cases. Conclude with `hn₂ h`.
+
+Establish `hB` using `isMultiHomog_mul (isMultiHomog_mul hβ (isMultiHomog_rename hb₁ hγ₁)) (isMultiHomog_rename hb₂ hγ₂)`. Take `⟨K', _, ι', _, κ, v, y', J, R, Amp, hb, hy, hfield, har', -, -, hpot, hpos, hbad⟩` from `GlobalTheory.CompanionTheory.Ar.Cmp.Good.exists_good_model hK K ι Ω y D _ _ har hB hBn`. Take `⟨S, Re, f, g, d, h⟩` from `assemble hI.pullback Re₁ Re₂ hb₁ hb₂ har alg₁ alg₂ hS hγ₁ hz₁ hγ₂ hz₂ rfl hB hBn R Amp hb hy har' hpot hpos hbad`. Conclude with `⟨K', _, ι', _, κ, v, y', S, Re, f, g, d, hb, hy, hfield, h⟩`.
+-/
 theorem joint_system : Inputs → ReciprocityTheory.ChartRestriction.G.Geo.ResK.ResKStatement → ∀ (K : Type) [Fintype K] (ι : K → Type) [∀ k, Fintype (ι k)] (K₁ : Type) [Fintype K₁] (ι₁ : K₁ → Type) [∀ k, Fintype (ι₁ k)] (K₂ : Type) [Fintype K₂] (ι₂ : K₂ → Type) [∀ k, Fintype (ι₂ k)] (κ₁ : K₁ → K) (v₁ : (Σ k, ι₁ k) → Σ k, ι k) (κ₂ : K₂ → K) (v₂ : (Σ k, ι₂ k) → Σ k, ι k) (Ω : Type) [Field Ω] [CharZero Ω] (y : (Σ k, ι k) → Ω) (D : ℕ) (σ : Type) [Fintype σ] (S₁ S₂ : AnSys D σ) (Re₁ : Realis S₁ (mCoordIdeal (y ∘ v₁))) (Re₂ : Realis S₂ (mCoordIdeal (y ∘ v₂))) (β : MRing ι) (b : K → ℕ), IsBlockMap κ₁ v₁ → IsBlockMap κ₂ v₂ → IsArithVar (mCoordIdeal y) (D + 1) → IsMultiHomog β b → β ∉ mCoordIdeal y → AlgOver Re₁ → AlgOver Re₂ → (∀ a, SameSing Re₁ Re₂ (mCoordIdeal y) κ₁ v₁ κ₂ v₂ β a a) → ∃ (K' : Type) (_ : Fintype K') (ι' : K' → Type) (_ : ∀ k, Fintype (ι' k)) (κ : K → K') (v : (Σ k, ι k) → Σ k, ι' k) (y' : (Σ k, ι' k) → Ω) (S : AnSys D (σ ⊕ σ)) (Re : Realis S (mCoordIdeal y')) (f g : σ → MRing ι') (d : σ → S.X → ℝ), IsBlockMap κ v ∧ y' ∘ v = y ∧ blockFnField y' = blockFnField y ∧ Re.deg = 1 ∧ S.t₀ ≤ S₁.t₀ ∧ S.t₀ ≤ S₂.t₀ ∧ (∀ a t, IsPullHerm (κ ∘ κ₁) (v ∘ v₁) (Re₁.line a t) (Re.line (Sum.inl a) t) ∧ IsPullHerm (κ ∘ κ₂) (v ∘ v₂) (Re₂.line a t) (Re.line (Sum.inr a) t)) ∧ (∀ a, IsLineIso (mCoordIdeal y') (Re.ref (Sum.inl a)).a (Re.ref (Sum.inr a)).a (f a) (g a)) ∧ (∀ a, S.A.Smooth (d a)) ∧ (∀ a, ∀ x ∈ S.open', S.ph (Sum.inl a) x = S.ph (Sum.inr a) x + d a x) ∧ ∀ a x, ∀ u w : MRing ι', u * f a - w * g a ∈ mCoordIdeal y' → evC (Re.R.lift x x) u ≠ 0 → d a (Re.π x) = Real.log (‖evC (Re.R.lift x x) w‖ / ‖evC (Re.R.lift x x) u‖ * (Re.ref (Sum.inr a)).h (Re.R.lift x x) / (Re.ref (Sum.inl a)).h (Re.R.lift x x)) := by
   intro hI hK K _ ι _ K₁ _ ι₁ _ K₂ _ ι₂ _ κ₁ v₁ κ₂ v₂ Ω _ _ y D σ _ S₁ S₂ Re₁ Re₂ β b hb₁ hb₂ har hβ hβn alg₁ alg₂ hS
   obtain ⟨γ₁, c₁, hγ₁, hγn₁, hz₁⟩ := exists_bdry_form Re₁ alg₁

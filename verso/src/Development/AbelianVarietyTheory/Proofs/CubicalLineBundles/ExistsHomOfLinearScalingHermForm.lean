@@ -21,37 +21,61 @@ section Values
 
 variable {X : Scheme.{0}} (x : Sp ℂ ⟶ X)
 
+/- English proof (translation)
+Take `⟨e, he⟩` from `(valueRules X x).2.1 U h`. Simplify using `only [he, map_mul]`.
+-/
 lemma val_mul {U : X.Opens} (h : ⊤ ≤ x ⁻¹ᵁ U) (f f' : Γ(X, U)) :
     valAt' x U (f * f') = valAt' x U f * valAt' x U f' := by
   obtain ⟨e, he⟩ := (valueRules X x).2.1 U h
   simp only [he, map_mul]
 
+/- English proof (translation)
+Take `⟨e, he⟩` from `(valueRules X x).2.1 U h`. Simplify using `only [he, map_add]`.
+-/
 lemma val_add {U : X.Opens} (h : ⊤ ≤ x ⁻¹ᵁ U) (f f' : Γ(X, U)) :
     valAt' x U (f + f') = valAt' x U f + valAt' x U f' := by
   obtain ⟨e, he⟩ := (valueRules X x).2.1 U h
   simp only [he, map_add]
 
+/- English proof (translation)
+Take `⟨e, he⟩` from `(valueRules X x).2.1 U h`. Simplify using `only [he, map_one]`.
+-/
 lemma val_one {U : X.Opens} (h : ⊤ ≤ x ⁻¹ᵁ U) : valAt' x U 1 = 1 := by
   obtain ⟨e, he⟩ := (valueRules X x).2.1 U h
   simp only [he, map_one]
 
+/- English proof (translation)
+Take `⟨e, he⟩` from `(valueRules X x).2.1 U h`. Simplify using `only [he, map_zero]`.
+-/
 lemma val_zero {U : X.Opens} (h : ⊤ ≤ x ⁻¹ᵁ U) : valAt' x U 0 = 0 := by
   obtain ⟨e, he⟩ := (valueRules X x).2.1 U h
   simp only [he, map_zero]
 
+/- English proof (translation)
+The claim follows from `(valueRules X x).2.2.1 U V hVU f h`.
+-/
 lemma val_resG {U V : X.Opens} (hVU : V ≤ U) (h : ⊤ ≤ x ⁻¹ᵁ V) (f : Γ(X, U)) :
     valAt' x V (resG X hVU f) = valAt' x U f :=
   (valueRules X x).2.2.1 U V hVU f h
 
+/- English proof (translation)
+Rewrite using `[← (valueRules X x).2.2.2.1, ← val_resG x h hx]`. Both sides reduce to the same expression.
+-/
 lemma val_appLE {Y : Scheme.{0}} (φ : X ⟶ Y) (U : Y.Opens) (V : X.Opens) (h : V ≤ φ ⁻¹ᵁ U)
     (f : Γ(Y, U)) (hx : ⊤ ≤ x ⁻¹ᵁ V) :
     valAt' x V ((φ.appLE U V h).hom f) = valAt' (x ≫ φ) U f := by
   rw [← (valueRules X x).2.2.2.1, ← val_resG x h hx]
   rfl
 
+/- English proof (translation)
+Introduce `_ hp` and use `hVU (h hp)`.
+-/
 lemma le_preimage_mono {U V : X.Opens} (hVU : V ≤ U) (h : ⊤ ≤ x ⁻¹ᵁ V) : ⊤ ≤ x ⁻¹ᵁ U :=
   fun _ hp => hVU (h hp)
 
+/- English proof (translation)
+Establish `hij` using `(le_preimage_inf x _ _).2 ⟨hi, hj⟩`. Rewrite using `[← val_resG x inf_le_left hij (s.f i), ← val_resG x inf_le_right hij (s.f j), ← val_mul x hij]`. Conclude with `congrArg _ (s.compat i j)`.
+-/
 lemma val_sec {L : LB X} (s : L.Sec) (i j : L.ι) (hi : ⊤ ≤ x ⁻¹ᵁ L.U i) (hj : ⊤ ≤ x ⁻¹ᵁ L.U j) :
     valAt' x (L.U i) (s.f i) =
       valAt' x (L.U i ⊓ L.U j) (L.g i j).val * valAt' x (L.U j) (s.f j) := by
@@ -59,6 +83,11 @@ lemma val_sec {L : LB X} (s : L.Sec) (i j : L.ι) (hi : ⊤ ≤ x ⁻¹ᵁ L.U i
   rw [← val_resG x inf_le_left hij (s.f i), ← val_resG x inf_le_right hij (s.f j), ← val_mul x hij]
   exact congrArg _ (s.compat i j)
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce `h`. Take `⟨i, hi⟩` from `TopologicalSpace.Opens.mem_iSup.1 (((valueRules X x).1 _).1 h)`. Establish `hi'` using `((valueRules X x).1 _).2 hi`. Establish `h1` using `((valueRules X x).2.2.2.2.1 _ _).1 hi'`.
+
+Rewrite `h1` using `[val_sec x s i j (le_preimage_mono x (X.basicOpen_le _) hi') hj]`. Conclude with `right_ne_zero_of_mul h1`. Introduce `h`. Conclude with `le_preimage_mono x (le_iSup (fun k => X.basicOpen (s.f k)) j) (((valueRules X x).2.2.2.2.1 _ _).2 h)`.
+-/
 lemma le_preimage_nonzeroLocus {L : LB X} (s : L.Sec) (j : L.ι) (hj : ⊤ ≤ x ⁻¹ᵁ L.U j) :
     ⊤ ≤ x ⁻¹ᵁ Out.nonzeroLocus s ↔ valAt' x (L.U j) (s.f j) ≠ 0 := by
   constructor
@@ -82,6 +111,17 @@ variable {X Y : Scheme.{0}} (p : X ⟶ Sp ℂ) [LocallyOfFiniteType p] [IsReduce
 
 include hon in
 
+/- English proof (translation)
+Use `choose ρ hρ using hfn`. Establish `ext : ∀ a b : Γ(X, W), (∀ w, ⊤ ≤ ex w ⁻¹ᵁ W → valAt' (ex w) W a = valAt' (ex w) W b) → a = b` using `fun a b h => eq_of_valAt'_eq p W a b fun x hx hxW => by`. Take `⟨w, rfl⟩` from `hon x hx`. Conclude with `h w hxW`. Set `ρ' : Γ(Y, D) →+* Γ(X, W)` to `{ toFun := ρ map_one' := ext _ _ fun w hw => by rw [hρ _ w hw, val_one _ hw, val_one _ (hin w hw)] map_mul' := fun a b => ext _ _ fun w hw => by`.
+
+Rewrite using `[hρ _ w hw, val_mul _ hw, val_mul _ (hin w hw), hρ _ w hw, hρ _ w hw]`. Use the proof step `map_zero' := ext _ _ fun w hw => by rw [hρ _ w hw, val_zero _ hw, val_zero _ (hin w hw)]`. Use the proof step `map_add' := fun a b => ext _ _ fun w hw => by`. Rewrite using `[hρ _ w hw, val_add _ hw, val_add _ (hin w hw), hρ _ w hw, hρ _ w hw] }`. Use `⟨hW.isoSpec.hom ≫ Spec.map (CommRingCat.ofHom ρ') ≫ hD.fromSpec, fun w y hy => ?_⟩` and prove the remaining obligations.
+
+Establish `hw : ⊤ ≤ ex w ⁻¹ᵁ W`. Rewrite using `[← hy]`. Introduce `a _`. Conclude with `(y a).2`. Establish `h1` using `specMap_appLE_fromSpec hW (R := CommRingCat.of ℂ) (ex w) hw`.
+
+Establish `h2` using `specMap_appLE_fromSpec hD (R := CommRingCat.of ℂ) (ey w) (hin w hw)`. Establish `h3 : y ≫ hW.isoSpec.hom = Spec.map ((ex w).appLE W ⊤ hw ≫ (Scheme.ΓSpecIso (CommRingCat.of ℂ)).hom)`. Rewrite using `[← cancel_mono hW.fromSpec, h1, ← hy, Category.assoc, ← hW.isoSpec_inv_ι, Iso.hom_inv_id_assoc]`. Rewrite using `[← Category.assoc, h3, ← h2, ← Category.assoc, ← Spec.map_comp]`. Use `congr 2`.
+
+Use extensionality with `f`. Use `hρ f w hw` as an intermediate fact. Rewrite `this` using `[valAt', valAt', dif_pos hw, dif_pos (hin w hw)]`. Conclude with `this`.
+-/
 lemma exists_hom_affine {W : X.Opens} {D : Y.Opens} (hW : IsAffineOpen W) (hD : IsAffineOpen D)
     (hin : ∀ w, ⊤ ≤ ex w ⁻¹ᵁ W → ⊤ ≤ ey w ⁻¹ᵁ D)
     (hfn : ∀ f : Γ(Y, D), ∃ h : Γ(X, W), ∀ w, ⊤ ≤ ex w ⁻¹ᵁ W →
@@ -120,6 +160,11 @@ lemma exists_hom_affine {W : X.Opens} {D : Y.Opens} (hW : IsAffineOpen W) (hD : 
 
 include hon in
 
+/- English proof (translation)
+Use `first`. Consider the case `(rename_i h_3 h_4 h_11 h_12; revert X Y p h_3 h_4 Z ex ey hon S q h_11 h_12 h; exact @_root_.GlobalTheory.SchemeHomsFromPoints.exists_hom)`. Consider the case `exact @_root_.GlobalTheory.SchemeHomsFromPoints.exists_hom`. Consider the case `exact _root_.GlobalTheory.SchemeHomsFromPoints.exists_hom`. Consider the case `(apply _root_.GlobalTheory.SchemeHomsFromPoints.exists_hom <;> assumption)`.
+
+Consider the case `(intros; apply _root_.GlobalTheory.SchemeHomsFromPoints.exists_hom <;> assumption)`. Consider the case `(intros; apply @_root_.GlobalTheory.SchemeHomsFromPoints.exists_hom <;> first | assumption | infer_instance)`. Consider the case `(intros; exact _root_.GlobalTheory.SchemeHomsFromPoints.exists_hom ..)`.
+-/
 lemma exists_hom_of_values {S : Scheme.{0}} (q : Y ⟶ S) [IsSeparated q] [IsAffine S]
     (h : ∀ z, ∃ (W : X.Opens) (D : Y.Opens), IsAffineOpen D ∧ ⊤ ≤ ex z ⁻¹ᵁ W ∧
       (∀ w, ⊤ ≤ ex w ⁻¹ᵁ W → ⊤ ≤ ey w ⁻¹ᵁ D) ∧
@@ -141,6 +186,11 @@ section Transport
 variable {X Y : Scheme.{0}} (L : LB X) (κ : Y ⟶ X) (σ : X ⟶ Y) (e : σ ≫ κ = 𝟙 X) (N : ℕ)
 
 include e in
+/- English proof (translation)
+Introduce `y hy`. Establish `h : κ (σ y) = y` using `by rw [← Scheme.Hom.comp_apply, e]; rfl`. Use `Set.mem_iInter.2 fun _ => ?_` and prove the remaining obligations. Use `Set.mem_iInter.1 hy PUnit.unit` as an intermediate fact. Use `show κ (σ y) ∈ L.U (j PUnit.unit)`.
+
+Rewrite using `[h]`. Conclude with `this`.
+-/
 lemma chart_le (j : PUnit → L.ι) :
     L.wchart (fun _ : PUnit => 𝟙 X) j ≤
       σ ⁻¹ᵁ L.wchart (fun _ : Fin N => κ) (fun _ => j PUnit.unit) := by
@@ -153,6 +203,13 @@ lemma chart_le (j : PUnit → L.ι) :
 
 include e in
 
+/- English proof (translation)
+Set `f : ∀ j : PUnit → L.ι, Γ(X, L.wchart (fun _ : PUnit => 𝟙 X) j)` to `fun j => (σ.appLE _ _ (chart_le L κ σ e N j)).hom (s.f fun _ => j PUnit.unit)`. Establish `hf : ∀ (x : Sp ℂ ⟶ X) (j : PUnit → L.ι), ⊤ ≤ x ⁻¹ᵁ L.wchart (fun _ : PUnit => 𝟙 X) j → valAt' x _ (f j) = valAt' (x ≫ σ) (L.wchart (fun _ : Fin N => κ) (fun _ => j PUnit.unit)) (s.f fun _ => j PUnit.unit)` using `fun x j hj => val_appLE x σ _ _ _ _ hj`. Use `⟨⟨f, fun i j => eq_of_valAt'_eq p _ _ _ fun x _ hx => ?_⟩, hf⟩` and prove the remaining obligations. Take `⟨hi, hj⟩` from `(le_preimage_inf x _ _).1 hx`. Establish `hi' : ⊤ ≤ (x ≫ σ) ⁻¹ᵁ L.wchart (fun _ : Fin N => κ) (fun _ => i PUnit.unit)` using `le_preimage_mono x (chart_le L κ σ e N i) hi`.
+
+Establish `hj' : ⊤ ≤ (x ≫ σ) ⁻¹ᵁ L.wchart (fun _ : Fin N => κ) (fun _ => j PUnit.unit)` using `le_preimage_mono x (chart_le L κ σ e N j) hj`. Use `(val_resG x inf_le_left hx _).trans (Eq.trans ?_ (val_mul x hx _ _).symm)` and prove the remaining obligations. Use `(hf x i hi).trans ((val_sec (x ≫ σ) s _ _ hi' hj').trans (congrArg₂ (· * ·) ?_ ?_))` and prove the remaining obligations. Use `(val_linComb (x ≫ σ) valueRules L _ _ _ _ hi' hj').trans (Eq.trans ?_ (val_linComb x valueRules L _ _ _ _ hi hj).symm)` and prove the remaining obligations. Simplify using `[e]`.
+
+Conclude with `((val_resG x inf_le_right hx _).trans (hf x j hj)).symm`.
+-/
 lemma exists_sec_pow (p : X ⟶ Sp ℂ) [LocallyOfFiniteType p] [IsReduced X]
     (s : (L.LinComb (K := Fin N) (fun _ => κ) (fun _ => 1)).Sec) :
     ∃ s' : (lbPow L N).Sec, ∀ (x : Sp ℂ ⟶ X) (j : PUnit → L.ι), ⊤ ≤ x ⁻¹ᵁ (lbPow L N).U j →
@@ -184,6 +241,15 @@ section Theta
 variable {A A' : Over (Sp ℂ)} [GrpObj A] [GrpObj A'] {L : LB A.left} {L' : LB A'.left} {g g' : ℕ}
   (u : HolUnif A L g) (u' : HolUnif A' L' g')
 
+/- English proof (translation)
+Establish `hF : Differentiable ℂ F` using `F.toContinuousLinearMap.differentiable`. Use `⟨(h₁.1.comp hF).mul (h₂.1.comp hF), fun l z => ?_⟩` and prove the remaining obligations. Establish `k₁` using `h₁.2 ⟨F l, hΛ l l.2⟩ (F z)`. Establish `k₂` using `h₂.2 ⟨F l, hΛ l l.2⟩ (F z)`. Simplify using `only [hH] at k₁ k₂`.
+
+Establish `e : Complex.exp (Real.pi * (n * hermForm Hm z l) + Real.pi / 2 * (n * hermForm Hm l l)) = Complex.exp (Real.pi * hermForm Hm z l + Real.pi / 2 * hermForm Hm l l) ^ n`. Rewrite using `[← Complex.exp_nat_mul]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree. Simplify using `only [map_add]`.
+
+Rewrite using `[k₁, k₂, e]`. Generalize the expression as in `Complex.exp _ = E`. Establish `a₁ : χ l ^ (2 * (n * N)) = 1` using `by rw [pow_mul, hχ, one_pow]`. Establish `a₂ : χ' ⟨F l, hΛ l l.2⟩ ^ (2 * N) = 1` using `by rw [pow_mul, hχ', one_pow]`. Rewrite using `[mul_pow (χ l), a₁]`.
+
+Take the linear combination `(E ^ (2 * (n * N)) * θ₁ (F z) * θ₂ (F z)) * a₂`.
+-/
 lemma isThetaFn_comp {Hm : Matrix (Fin g) (Fin g) ℂ} {χ : u.Λ → ℂ}
     {Hm' : Matrix (Fin g') (Fin g') ℂ} {χ' : u'.Λ → ℂ} (hχ : ∀ l, χ l ^ 2 = 1)
     (hχ' : ∀ l, χ' l ^ 2 = 1) (F : (Fin g → ℂ) →ₗ[ℂ] (Fin g' → ℂ)) (n : ℕ)
@@ -209,12 +275,22 @@ lemma isThetaFn_comp {Hm : Matrix (Fin g) (Fin g) ℂ} {χ : u.Λ → ℂ}
   rw [mul_pow (χ l), a₁]
   linear_combination (E ^ (2 * (n * N)) * θ₁ (F z) * θ₂ (F z)) * a₂
 
+/- English proof (translation)
+Use `(le_preimage_wchart x L (fun _ : PUnit => 𝟙 X) j).trans ?_` and prove the remaining obligations. Simplify using `only [Category.comp_id]`. Conclude with `⟨fun h => h _, fun h _ => h⟩`.
+-/
 lemma le_preimage_lbPow {X : Scheme.{0}} (x : Sp ℂ ⟶ X) (L : LB X) (k : ℕ) (j : PUnit → L.ι) :
     ⊤ ≤ x ⁻¹ᵁ (lbPow L k).U j ↔ ⊤ ≤ x ⁻¹ᵁ L.U (j PUnit.unit) := by
   refine (le_preimage_wchart x L (fun _ : PUnit => 𝟙 X) j).trans ?_
   simp only [Category.comp_id]
   exact ⟨fun h => h _, fun h _ => h⟩
 
+/- English proof (translation)
+Establish `hle` using `A.left.basicOpen_le (t.f j)`. Take `⟨v, hv⟩` from `isUnit_of_valAt'_ne_zero A.hom _ (resG _ hle (t.f j)) fun x _ hx => by`. Rewrite using `[val_resG x hle hx]`. Conclude with `((valueRules _ x).2.2.2.2.1 _ _).1 hx`. Use `⟨resG _ hle (s.f j) * (v⁻¹).val, fun w hw => ?_⟩` and prove the remaining obligations.
+
+Establish `hj` using `le_preimage_mono _ hle hw`. Establish `h1 : valAt' (u.ex w).left _ (v⁻¹).val * valAt' (u.ex w).left _ v.val = 1`. Rewrite using `[← val_mul _ hw, Units.inv_mul, val_one _ hw]`. Rewrite `h1` using `[hv, val_resG _ hle hw, ht j w hj]`. Rewrite using `[val_mul _ hw, val_resG _ hle hw, hs j w hj]`.
+
+Take the linear combination `θ w * h1`.
+-/
 lemma exists_quot [LocallyOfFiniteType A.hom] {k : ℕ} {s t : (lbPow L k).Sec}
     {θ ϑ : (Fin g → ℂ) → ℂ} (hs : u.IsFnPow k s θ) (ht : u.IsFnPow k t ϑ) (j : (lbPow L k).ι) :
     ∃ h : Γ(A.left, A.left.basicOpen (t.f j)), ∀ w,
@@ -239,6 +315,13 @@ section Main
 variable {A A' : Over (Sp ℂ)} [GrpObj A] [GrpObj A'] {L : LB A.left} {L' : LB A'.left} {g g' : ℕ}
   (u : HolUnif A L g) (u' : HolUnif A' L' g')
 
+/- English proof (translation)
+Establish `h` using `hf 0`. Rewrite `h` using `[map_zero, ex_zero, ex_zero, Hom.one_def, Hom.one_def, toUnit_unit, Category.id_comp, Category.id_comp]`. Conclude with `h.symm`. Use `mul_hom := by haveI : Smooth (A ⊗ A).hom := by`. Express the relevant statement in the definitionally equal form `Smooth (pullback.fst A.hom A.hom ≫ A.hom)`.
+
+Use `infer_instance`. Use `haveI := isReduced_of_smooth_complex _ (A ⊗ A).hom inferInstance`. Use `over_hom_ext_of_complexPoints fun x => ?_` and prove the remaining obligations. Take `⟨z, hz⟩` from `u.ex_onto (x ≫ fst A A)`. Take `⟨w, hw⟩` from `u.ex_onto (x ≫ snd A A)`.
+
+Establish `hx : x = lift (u.ex z) (u.ex w)`. Rewrite using `[hz, hw, ← comp_lift, lift_fst_snd, Category.comp_id]`. Rewrite using `[hx, lift_map_assoc, ← Category.assoc, ← Hom.mul_def, ← Hom.mul_def, ← u.ex_add, ← hf, ← hf, ← hf, map_add, u'.ex_add]`.
+-/
 lemma isMonHom_of_additive [Smooth A.hom] [IsSeparated A'.hom]
     (F : (Fin g → ℂ) →ₗ[ℂ] (Fin g' → ℂ)) (f : A ⟶ A') (hf : ∀ z, u'.ex (F z) = u.ex z ≫ f) :
     IsMonHom f where
@@ -260,6 +343,35 @@ lemma isMonHom_of_additive [Smooth A.hom] [IsSeparated A'.hom]
     rw [hx, lift_map_assoc, ← Category.assoc, ← Hom.mul_def, ← Hom.mul_def, ← u.ex_add, ← hf, ← hf,
       ← hf, map_add, u'.ex_add]
 
+/- English proof (translation)
+Use `haveI := isReduced_of_smooth_complex _ A.hom inferInstance`. Use `haveI := isReduced_of_smooth_complex _ A'.hom inferInstance`. Take `⟨N, -, M, s, hcov, hD⟩` from `ha ⊤ (isAffineOpen_top _)`. Establish `hr : Set.range (𝟙 A'.left : A'.left ⟶ A'.left) ⊆ Set.range (A'.hom ⁻¹ᵁ ⊤).ι`. Introduce `x _`.
+
+Rewrite using `[Scheme.Opens.range_ι]`. Discharge the goal by the elementary cases of `trivial`. Take `⟨σ, hσ⟩ : ∃ σ : A'.left ⟶ (A'.hom ⁻¹ᵁ ⊤).toScheme, σ ≫ (A'.hom ⁻¹ᵁ ⊤).ι = 𝟙 _` from `⟨_, IsOpenImmersion.lift_fac _ _ hr⟩`. Use `choose s' hs' using fun i => exists_sec_pow L' _ σ hσ N A'.hom (s i)`. Use `choose θ hθ₁ hθ₂ using fun i => (hθ N (s' i)).exists`.
+
+Use `choose t ht using fun i j => (hs _ _ (isThetaFn_comp u u' hχ hχ' F n hΛ hH (hθ₁ i) (hθ₁ j))).exists`. Use `choose ch hch using exists_chart u valueRules hL`. Use `choose ch' hch' using exists_chart u' valueRules hL'`. Establish `hU : ∀ z, ⊤ ≤ ((u'.ex z).left ≫ σ) ⁻¹ᵁ (Out.powOver A' L' ⊤ N).U (fun _ => ch' z)` using `fun z => le_preimage_mono (u'.ex z).left (chart_le L' _ σ hσ N fun _ => ch' z) ((le_preimage_lbPow _ L' N fun _ => ch' z).2 (hch' z))`. Establish `hval : ∀ i z, valAt' ((u'.ex z).left ≫ σ) ((Out.powOver A' L' ⊤ N).U fun _ => ch' z) ((s i).f fun _ => ch' z) = θ i z * u'.fr (ch' z) z ^ N` using `fun i z =>`.
+
+Establish `k` using `(le_preimage_lbPow _ L' N fun _ => ch' z).2 (hch' z)`. Use the proof step `(hs' i _ _ k).symm.trans (hθ₂ i _ z k)`. Establish `hfr : ∀ z, u'.fr (ch' z) z ^ N ≠ 0` using `fun z => pow_ne_zero _ (u'.fr_ne _ _ (hch' z))`. Establish `hmem : ∀ i z, ⊤ ≤ ((u'.ex z).left ≫ σ) ⁻¹ᵁ Out.nonzeroLocus (s i) ↔ θ i z ≠ 0` using `fun i z => by`. Rewrite using `[le_preimage_nonzeroLocus _ (s i) _ (hU z), hval, mul_ne_zero_iff_right (hfr z)]`.
+
+Establish `hon : ∀ x : Sp ℂ ⟶ A.left, x ≫ A.hom = 𝟙 _ → ∃ z, (u.ex z).left = x` using `fun x hx => by`. Take `⟨z, hz⟩` from `u.ex_onto (Over.homMk x hx)`. Conclude with `⟨z, by rw [hz]; rfl⟩`. Use `(exists_hom_of_values A.hom (fun z => (u.ex z).left) (fun z => (u'.ex (F z)).left ≫ σ) hon ((A'.hom ⁻¹ᵁ ⊤).ι ≫ A'.hom) (fun z => ?_)).elim fun G hG => ⟨G ≫ (A'.hom ⁻¹ᵁ ⊤).ι, fun z => by` and prove the remaining obligations. Rewrite using `[← Category.assoc, hG, Category.assoc, hσ, Category.comp_id]⟩`.
+
+Establish `hz : ((u'.ex (F z)).left ≫ σ) (default : PrimeSpectrum ℂ) ∈ ⨆ i, Out.nonzeroLocus (s i)`. Rewrite using `[hcov]`. Discharge the goal by the elementary cases of `trivial`. Take `⟨i, hi⟩` from `TopologicalSpace.Opens.mem_iSup.1 hz`. Use `replace hi := (hmem i _).1 (((valueRules _ _).1 _).2 hi)`.
+
+Take `⟨hDi, r, hr, hsurj⟩` from `hD i`. Establish `hne : ∀ w, ⊤ ≤ (u.ex w).left ⁻¹ᵁ A.left.basicOpen ((t i i).f fun _ => ch z) → θ i (F w) ≠ 0` using `fun w hw => by`. Establish `k` using `((valueRules _ _).2.2.2.2.1 _ _).1 hw`. Rewrite `k` using `[ht i i _ w (le_preimage_mono _ (A.left.basicOpen_le _) hw)]`. Conclude with `left_ne_zero_of_mul (left_ne_zero_of_mul k)`.
+
+Establish `hzU` using `(le_preimage_lbPow _ L (2 * (n * N)) fun _ => ch z).2 (hch z)`. Use `⟨A.left.basicOpen ((t i i).f fun _ => ch z), _, hDi, ?_, fun w hw => (hmem i _).2 (hne w hw), fun f => ?_⟩` and prove the remaining obligations. Use `((valueRules _ _).2.2.2.2.1 _ _).2 ?_` and prove the remaining obligations. Rewrite using `[ht i i _ z hzU]`. Conclude with `mul_ne_zero (mul_ne_zero hi hi) (pow_ne_zero _ (u.fr_ne _ _ (hch z)))`.
+
+Take `⟨Q, rfl⟩` from `hsurj f`. Proceed by induction on `Q using MvPolynomial.induction_on with`. Consider the case `C a`. Establish `hc : ∀ w, ((u'.ex w).left ≫ σ) ≫ (A'.hom ∣_ ⊤) = ((u'.ex 0).left ≫ σ) ≫ (A'.hom ∣_ ⊤)`. Introduce `w`.
+
+Rewrite using `[← cancel_mono (⊤ : (Sp ℂ).Opens).ι]`. Simplify using `only [Category.assoc, morphismRestrict_ι, reassoc_of% hσ, Over.w]`. Use `⟨constFn A.hom _ (valAt' (((u'.ex 0).left ≫ σ) ≫ (A'.hom ∣_ ⊤)) ⊤ a), fun w hw => ?_⟩` and prove the remaining obligations. Rewrite using `[(valueRules _ _).2.2.2.2.2 A.hom (Over.w (u.ex w)) _ _ hw, MvPolynomial.eval₂Hom_C, ← hc (F w)]`. Conclude with `(val_appLE _ (A'.hom ∣_ ⊤) ⊤ _ _ a ((hmem i _).2 (hne w hw))).symm`.
+
+Consider the case `add Q Q' h h'`. Take `⟨a, ha⟩` from `h`. Take `⟨a', ha'⟩` from `h'`. Use `⟨a + a', fun w hw => ?_⟩` and prove the remaining obligations. Rewrite using `[map_add, val_add _ hw, val_add _ ((hmem i _).2 (hne w hw)), ha w hw, ha' w hw]`.
+
+Consider the case `mul_X Q j h`. Take `⟨a, ha⟩` from `h`. Take `⟨b, hb⟩` from `exists_quot u (ht i j) (ht i i) fun _ => ch z`. Use `⟨a * b, fun w hw => ?_⟩` and prove the remaining obligations. Establish `hw'` using `(hmem i _).2 (hne w hw)`.
+
+Rewrite using `[map_mul, val_mul _ hw, val_mul _ hw', ha w hw, MvPolynomial.eval₂Hom_X']`. Use `congr 1`. Establish `k` using `(le_preimage_inf _ _ _).2 ⟨hw', hU (F w)⟩`. Establish `k₁` using `congrArg (valAt' ((u'.ex (F w)).left ≫ σ) _) (hr j fun _ => ch' (F w))`. Rewrite `k₁` using `[val_mul _ k, val_resG _ _ k, val_resG _ _ k, val_resG _ _ k, hval, hval, ← _root_.mul_assoc]`.
+
+Establish `k₂` using `mul_right_cancel₀ (hfr _) k₁`. Establish `k₃` using `hb w hw`. Use `mul_right_cancel₀ (mul_ne_zero (hne w hw) (hne w hw)) (k₃.trans ?_)` and prove the remaining obligations. Take the linear combination `θ i (F w) * k₂`.
+-/
 lemma exists_hom [Smooth A.hom] [Smooth A'.hom] [IsSeparated A'.hom] (hL : L.IsLB) (hL' : L'.IsLB)
     (ha : Out.RelAmple A' L')
     {Hm : Matrix (Fin g) (Fin g) ℂ} {χ : u.Λ → ℂ}
@@ -355,6 +467,13 @@ end AnalyticHom
 
 open AnalyticHom in
 
+/- English proof (translation)
+Introduce `P P' u u' Hm χ Hm' χ' h h' hs hθ F n hΛ hH`. Use `haveI := P.isAb.smooth`. Use `haveI := P'.isAb.smooth`. Use `haveI := P'.isAb.proper`. Take `⟨f, hf⟩` from `exists_hom u u' P.isLB P'.isLB P'.ample (semicharacter_sq_eq_one_of_symmetric P u Hm χ h) (semicharacter_sq_eq_one_of_symmetric P' u' Hm' χ' h') hs hθ F n hΛ hH`.
+
+Use `haveI := isReduced_of_smooth_complex _ P.A.hom inferInstance`. Establish `hw : f ≫ P'.A.hom = P.A.hom`. Use `ComplexPoints.hom_ext_of_points P.A.hom (terminal.from (Sp ℂ)) (terminal.hom_ext _ _) fun x hx => ?_` and prove the remaining obligations. Take `⟨z, hz⟩` from `u.ex_onto (Over.homMk x hx)`. Take `rfl : (u.ex z).left = x` from `by rw [hz]; rfl`.
+
+Rewrite using `[← Category.assoc, hf, Over.w, Over.w]`. Establish `key : ∀ z, u'.ex (F z) = u.ex z ≫ Over.homMk f hw` using `fun z => Over.OverMorphism.ext (hf z).symm`. Conclude with `⟨Over.homMk f hw, isMonHom_of_additive u u' F _ key, key⟩`.
+-/
 theorem exists_hom_of_linear_scaling_hermForm :
     ∀ (P P' : Out.PolAV (Sp ℂ)) (u : HolUnif P.A P.L P.g) (u' : HolUnif P'.A P'.L P'.g)
       (Hm : Matrix (Fin P.g) (Fin P.g) ℂ) (χ : u.Λ → ℂ) (Hm' : Matrix (Fin P'.g) (Fin P'.g) ℂ)

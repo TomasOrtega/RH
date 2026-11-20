@@ -88,24 +88,39 @@ def ToricDenominatorLevel : Prop :=
       ∀ (κ : I → ℕ) (𝔣 : Ideal (OF E)) (Λ : PeriodPair) (χ : HChar E),
         IsBaseCond 𝔣 → IsIntLattice d Λ → IsLevelChar φ s κ 𝔣 χ → DenomBound d s φ κ 𝔣 Λ z χ
 
+/- English proof (translation)
+Introduce `E _ _ _ _ I _ d φ s hd hs`. Take `⟨z, hz, H⟩` from `h E I d φ s hd hs`. Use `⟨z, hz, fun κ 𝔣 Λ χ h𝔣 hΛ hχ => H κ 𝔣 Λ χ h𝔣 hΛ ⟨hχ.1, hχ.2.1, hχ.2.2.1, fun v P hP => ?_⟩⟩` and prove the remaining obligations. Conclude with `(((hχ.2.2.2 v P hP).2 (by simp)) _).2 le_rfl`.
+-/
 theorem ToricDenominatorLevel.exact (h : ToricDenominatorLevel) : ToricDenominator := by
   intro E _ _ _ _ I _ d φ s hd hs
   obtain ⟨z, hz, H⟩ := h E I d φ s hd hs
   refine ⟨z, hz, fun κ 𝔣 Λ χ h𝔣 hΛ hχ => H κ 𝔣 Λ χ h𝔣 hΛ ⟨hχ.1, hχ.2.1, hχ.2.2.1, fun v P hP => ?_⟩⟩
   exact (((hχ.2.2.2 v P hP).2 (by simp)) _).2 le_rfl
 
+/- English proof (translation)
+Distinguish the cases in `hv : v.asIdeal ∣ 𝔣`. Conclude with `(h.2.2 v hv).2.1`. Rewrite using `[expIn, multiplicity_eq_zero.2 hv]`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem expIn_le_two {𝔣 : Ideal (OF E)} (h : IsBaseCond 𝔣) (v : HeightOneSpectrum (OF E)) : expIn 𝔣 v ≤ 2 := by
   by_cases hv : v.asIdeal ∣ 𝔣
   · exact (h.2.2 v hv).2.1
   · rw [expIn, multiplicity_eq_zero.2 hv]; omega
 
+/- English proof (translation)
+The claim follows from `le_csSup ⟨2, by rintro _ ⟨w, -, rfl⟩; exact expIn_le_two h w⟩ ⟨v, hv, rfl⟩`.
+-/
 theorem expIn_le_maxConductorExponentOverPrime {𝔣 : Ideal (OF E)} (h : IsBaseCond 𝔣) {l : ℕ} {v : HeightOneSpectrum (OF E)}
     (hv : (l : OF E) ∈ v.asIdeal) : expIn 𝔣 v ≤ a0 𝔣 l :=
   le_csSup ⟨2, by rintro _ ⟨w, -, rfl⟩; exact expIn_le_two h w⟩ ⟨v, hv, rfl⟩
 
+/- English proof (translation)
+Simplify using `using h 0 1 one_pos (by simp)`.
+-/
 example (l : ℕ) (a : ℂ) (h : ValGe_vp l 0 a) : IntAt l a := by
   simpa using h 0 1 one_pos (by simp)
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fun _ => rfl, fun _ _ => rfl⟩`.
+-/
 example (c : Ideal (OF E)) : IsPicChar c (1 : HChar E) := ⟨fun _ => rfl, fun _ _ => rfl⟩
 
 end GlobalTheory.IndefiniteRowSideFullHecke.ClassZetaValuationBounds

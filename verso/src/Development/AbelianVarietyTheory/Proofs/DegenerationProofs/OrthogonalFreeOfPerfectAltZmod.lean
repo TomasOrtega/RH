@@ -4,6 +4,13 @@ open Module TensorProduct
 
 namespace GlobalTheory.ZModPerp
 
+/- English proof (translation)
+Establish `hN : N ≠ 0`. Introduce and unpack `rfl`. Conclude with `NeZero.ne n (by simpa using h.symm)`. Establish `h1 : ((N * y.val : ℕ) : ZMod n) = 0`. Simplify `hy` using `[nsmul_eq_mul]`.
+
+Rewrite `h1` using `[ZMod.natCast_eq_zero_iff]`. Use `replace h1 : N * r ∣ N * y.val := by rwa [mul_comm N r, h]`. Take `⟨k, hk⟩` from `Nat.dvd_of_mul_dvd_mul_left (Nat.pos_of_ne_zero hN) h1`. Use `⟨(k : ZMod n), ?_⟩` and prove the remaining obligations. Rewrite using `[← ZMod.natCast_zmod_val y, hk]`.
+
+Simplify using `[nsmul_eq_mul]`.
+-/
 theorem exists_eq_nsmul_zmod {n r N : ℕ} [NeZero n] (h : r * N = n) (y : ZMod n)
     (hy : N • y = 0) : ∃ z : ZMod n, y = r • z := by
   have hN : N ≠ 0 := by
@@ -18,6 +25,13 @@ theorem exists_eq_nsmul_zmod {n r N : ℕ} [NeZero n] (h : r * N = n) (y : ZMod 
   rw [← ZMod.natCast_zmod_val y, hk]
   simp [nsmul_eq_mul]
 
+/- English proof (translation)
+Take `⟨m, hm⟩` from `Nat.gcd_dvd_right x.val n`. Take `⟨k, hk⟩` from `Nat.gcd_dvd_left x.val n`. Establish `h1 : (m : ZMod n) * x = 0`. Establish `: ((m * x.val : ℕ) : ZMod n) = 0`. Rewrite using `[ZMod.natCast_eq_zero_iff]`.
+
+Use `⟨k, ?_⟩` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation. Simplify using `using this`. Take `⟨z, hz⟩` from `exists_eq_nsmul_zmod hm.symm y (by simpa [nsmul_eq_mul] using h _ h1)`. Establish `h2` using `congrArg (Int.cast : ℤ → ZMod n) (Nat.gcd_eq_gcd_ab x.val n)`.
+
+Simplify using `only [Int.cast_natCast, Int.cast_add, Int.cast_mul, ZMod.natCast_self, zero_mul, add_zero, ZMod.natCast_zmod_val] at h2`. Rewrite using `[hz, nsmul_eq_mul, h2, mul_assoc]`. Conclude with `dvd_mul_right _ _`.
+-/
 theorem dvd_of_forall_mul_eq_zero {n : ℕ} [NeZero n] (x y : ZMod n)
     (h : ∀ a : ZMod n, a * x = 0 → a * y = 0) : x ∣ y := by
   obtain ⟨m, hm⟩ := Nat.gcd_dvd_right x.val n
@@ -37,9 +51,19 @@ theorem dvd_of_forall_mul_eq_zero {n : ℕ} [NeZero n] (x y : ZMod n)
   rw [hz, nsmul_eq_mul, h2, mul_assoc]
   exact dvd_mul_right _ _
 
+/- English proof (translation)
+The claim follows from `IsPrincipalIdealRing.of_surjective (Int.castRingHom (ZMod n)) (ZMod.ringHom_surjective _)`.
+-/
 theorem isPrincipalIdealRing_zmod (n : ℕ) : IsPrincipalIdealRing (ZMod n) :=
   IsPrincipalIdealRing.of_surjective (Int.castRingHom (ZMod n)) (ZMod.ringHom_surjective _)
 
+/- English proof (translation)
+Introduce `I g`. Take `⟨x, rfl⟩` from `((isPrincipalIdealRing_zmod n).principal I).principal`. Establish `hx : x ∈ Submodule.span (ZMod n) {x}` using `Submodule.mem_span_singleton_self x`. Take `⟨c, hc⟩` from `dvd_of_forall_mul_eq_zero x (g ⟨x, hx⟩) fun a ha => by`. Rewrite using `[← smul_eq_mul, ← map_smul]`.
+
+Establish `: a • (⟨x, hx⟩ : Submodule.span (ZMod n) {x}) = 0` using `Subtype.ext ha`. Rewrite using `[this, map_zero]`. Use `⟨LinearMap.toSpanSingleton _ _ c, fun y hy => ?_⟩` and prove the remaining obligations. Take `⟨a, rfl⟩` from `Submodule.mem_span_singleton.mp hy`. Establish `: (⟨a • x, hy⟩ : Submodule.span (ZMod n) {x}) = a • ⟨x, hx⟩` using `rfl`.
+
+Rewrite using `[this, map_smul g, hc]`. Simplify using `[mul_assoc]`.
+-/
 theorem baer_zmod (n : ℕ) [NeZero n] : Module.Baer (ZMod n) (ZMod n) := by
   intro I g
   obtain ⟨x, rfl⟩ := ((isPrincipalIdealRing_zmod n).principal I).principal
@@ -54,6 +78,15 @@ theorem baer_zmod (n : ℕ) [NeZero n] : Module.Baer (ZMod n) (ZMod n) := by
   rw [this, map_smul g, hc]
   simp [mul_assoc]
 
+/- English proof (translation)
+Take `⟨x, hx⟩` from `((isPrincipalIdealRing_zmod n).principal (LinearMap.ker (LinearMap.toSpanSingleton (ZMod n) M q))).principal`. Establish `hx' : ∀ a : ZMod n, a • q = 0 ↔ x ∣ a` using `fun a => by`. Rewrite using `[← Ideal.mem_span_singleton, ← Ideal.submodule_span_eq, ← hx]`. Simplify using the standard rewrite rules. Take `⟨c, hc, hc0⟩ : ∃ c : ZMod n, c * x = 0 ∧ c ≠ 0` from `by by_contra! H`.
+
+Use `dvd_of_forall_mul_eq_zero x 1 fun a ha => by simp [H a ha]` as an intermediate fact. Conclude with `hq (by simpa using (hx' 1).mpr this)`. Establish `H : ∀ a : ZMod n, a • q = 0 → (RingHom.id (ZMod n)) a • c = 0` using `fun a ha => by`. Take `⟨b, rfl⟩` from `(hx' a).mp ha`. Simplify using `only [RingHom.id_apply, smul_eq_mul]`.
+
+Take the linear combination `b * hc`. Set `φ` to `LinearPMap.mkSpanSingleton' q c H`. Take `⟨f, hf⟩` from `(baer_zmod n).extension_property φ.domain.subtype φ.domain.subtype_injective φ.toFun`. Use `⟨f, ?_⟩` and prove the remaining obligations. Use `LinearMap.congr_fun hf ⟨q, Submodule.mem_span_singleton_self q⟩` as an intermediate fact.
+
+Establish `h2` using `LinearPMap.mkSpanSingleton'_apply_self q c H (Submodule.mem_span_singleton_self q)`. Establish `h3 : f q = c` using `this.trans h2`. Rewrite using `[h3]` and apply the resulting hypothesis.
+-/
 theorem exists_dual_ne_zero {n : ℕ} [NeZero n] {M : Type*} [AddCommGroup M] [Module (ZMod n) M]
     {q : M} (hq : q ≠ 0) : ∃ f : Dual (ZMod n) M, f q ≠ 0 := by
   obtain ⟨x, hx⟩ := ((isPrincipalIdealRing_zmod n).principal
@@ -78,6 +111,9 @@ theorem exists_dual_ne_zero {n : ℕ} [NeZero n] {M : Type*} [AddCommGroup M] [M
   have h3 : f q = c := this.trans h2
   rwa [h3]
 
+/- English proof (translation)
+Set `b` to `Module.Free.chooseBasis (ZMod n) M`. Use `Module.Baer.of_equiv b.equivFun.symm fun I g => ?_` and prove the remaining obligations. Use `choose l hl using fun i => baer_zmod n I ((LinearMap.proj i).comp g)`. Conclude with `⟨LinearMap.pi l, fun x hx => funext fun i => hl i x hx⟩`.
+-/
 theorem baer_of_free {n : ℕ} [NeZero n] (M : Type*) [AddCommGroup M] [Module (ZMod n) M]
     [Module.Free (ZMod n) M] [Module.Finite (ZMod n) M] : Module.Baer (ZMod n) M := by
   let b := Module.Free.chooseBasis (ZMod n) M
@@ -85,6 +121,11 @@ theorem baer_of_free {n : ℕ} [NeZero n] (M : Type*) [AddCommGroup M] [Module (
   choose l hl using fun i => baer_zmod n I ((LinearMap.proj i).comp g)
   exact ⟨LinearMap.pi l, fun x hx => funext fun i => hl i x hx⟩
 
+/- English proof (translation)
+Set `b` to `Module.Free.chooseBasis (ZMod n) M`. Use `choose z hz using fun i => exists_eq_nsmul_zmod h (b.equivFun y i) (by`. Rewrite using `[← Pi.smul_apply, ← map_nsmul, hy, map_zero, Pi.zero_apply])`. Use `⟨b.equivFun.symm z, b.equivFun.injective ?_⟩` and prove the remaining obligations. Rewrite using `[map_nsmul, LinearEquiv.apply_symm_apply]`.
+
+Conclude with `funext hz`.
+-/
 theorem exists_eq_nsmul_of_free {n r N : ℕ} [NeZero n] (h : r * N = n) {M : Type*}
     [AddCommGroup M] [Module (ZMod n) M] [Module.Free (ZMod n) M] [Module.Finite (ZMod n) M]
     (y : M) (hy : N • y = 0) : ∃ z : M, y = r • z := by
@@ -95,6 +136,13 @@ theorem exists_eq_nsmul_of_free {n r N : ℕ} [NeZero n] (h : r * N = n) {M : Ty
   rw [map_nsmul, LinearEquiv.apply_symm_apply]
   exact funext hz
 
+/- English proof (translation)
+Set `e` to `Submodule.prodEquivOfIsCompl T T' h`. Establish `: Module.Finite R T` using `Module.Finite.of_surjective (T.projectionOnto T' h) (Submodule.projectionOnto_surjective h)`. Establish `: Module.Finite R T'` using `Module.Finite.of_surjective (T'.projectionOnto T h.symm) (Submodule.projectionOnto_surjective h.symm)`. Establish `: Module.Projective R T'` using `Module.Projective.of_split T'.subtype (T'.projectionOnto T h.symm) (by ext; simp)`. Use `Module.free_of_flat_of_finrank_eq R T' (finrank R M - finrank R T) fun P => ?_` and prove the remaining obligations.
+
+Set `` to `P.isMaximal`. Set `` to `Ideal.Quotient.field P.asIdeal`. Establish `: Nontrivial R` using `(Ideal.Quotient.mk P.asIdeal).domain_nontrivial`. Establish `e' : ((R ⧸ P.1) ⊗[R] M) ≃ₗ[R ⧸ P.1] ((R ⧸ P.1) ⊗[R] T) × ((R ⧸ P.1) ⊗[R] T')` using `(e.symm.baseChange R (R ⧸ P.1) _ _).trans (TensorProduct.prodRight R (R ⧸ P.1) _ _ _)`. Use `e'.finrank_eq` as an intermediate fact.
+
+Rewrite `this` using `[finrank_prod, finrank_baseChange, finrank_baseChange]`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem free_of_isCompl {R M : Type*} [CommRing R] [Finite (MaximalSpectrum R)] [AddCommGroup M]
     [Module R M] [Module.Free R M] [Module.Finite R M] {T T' : Submodule R M} [Module.Free R T]
     (h : IsCompl T T') : Module.Free R T' := by
@@ -121,6 +169,27 @@ namespace GlobalTheory
 
 open ZModPerp
 
+/- English proof (translation)
+Introduce `N r _ Γ _ _ _ _ e halt hbij`. Establish `hmem : ∀ (H : Submodule (ZMod (r * N)) Γ) (x : Γ), x ∈ e.orthogonal H ↔ ∀ y ∈ H, e x y = 0` using `fun H x => by`. Rewrite using `[LinearMap.BilinForm.mem_orthogonal_iff]`. Conclude with `forall₂_congr fun y _ => ⟨halt.isRefl _ _, halt.isRefl _ _⟩`. Establish `hkill : ∀ x : Γ, (r * N) • x = 0` using `fun x => by`.
+
+Rewrite using `[← Nat.cast_smul_eq_nsmul (ZMod (r * N)), ZMod.natCast_self, zero_smul]`. Use `⟨fun H => le_antisymm (fun x hx => ?_) (fun x hx => ?_), fun T hT => ?_⟩` and prove the remaining obligations. Assume the negation of the conclusion as `hxH`. Take `⟨f, hf⟩` from `exists_dual_ne_zero (n := r * N) (q := H.mkQ x) (by simpa using hxH)`. Take `⟨b, hb⟩` from `hbij.2 (f ∘ₗ H.mkQ)`.
+
+Establish `hb' : b ∈ e.orthogonal H` using `(hmem _ _).mpr fun y hy => by`. Rewrite using `[hb, LinearMap.comp_apply, Submodule.mkQ_apply, (Submodule.Quotient.mk_eq_zero H).mpr hy, map_zero]`. Use `halt.isRefl _ _ ((hmem _ _).mp hx b hb')` as an intermediate fact. Rewrite `this` using `[hb]`. Conclude with `hf this`.
+
+Conclude with `(hmem _ _).mpr fun y hy => halt.isRefl _ _ ((hmem _ _).mp hy x hx)`. Take `⟨p, hp⟩` from `(baer_of_free (n := r * N) T).extension_property T.subtype T.subtype_injective LinearMap.id`. Establish `hp' : ∀ t : T, p t = t` using `fun t => LinearMap.congr_fun hp t`. Establish `hc : IsCompl T (LinearMap.ker p)` using `LinearMap.isCompl_of_proj hp'`. Use `⟨⟨_, hc⟩, ?_, fun t ht => ⟨fun h => ?_, ?_⟩, fun a => ⟨fun h => ?_, ?_⟩⟩` and prove the remaining obligations.
+
+Use `free_of_isCompl hc` as an intermediate fact. Establish `: Module.Free (ZMod (r * N)) (Γ ⧸ T)` using `Module.Free.of_equiv (Submodule.quotientEquivOfIsCompl T _ hc).symm`. Establish `E : e.orthogonal T ≃ₗ[ZMod (r * N)] T.dualAnnihilator` using `(LinearEquiv.ofBijective e hbij).ofSubmodules _ _ (by`. Use extensionality with `f`. Take `⟨b, rfl⟩` from `hbij.2 f`.
+
+Simplify using `only [Submodule.mem_map, Submodule.mem_dualAnnihilator, hmem]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨x, hx, hxb⟩`. Rewrite using `[← hxb]`. Conclude with `hx`.
+
+Conclude with `fun h => ⟨b, h, rfl⟩)`. Conclude with `Module.Free.of_equiv (E.trans T.dualQuotEquivDualAnnihilator.symm).symm`. Take `⟨z, hz⟩` from `exists_eq_nsmul_of_free (n := r * N) rfl (⟨t, ht⟩ : T) (Subtype.ext h)`. Conclude with `⟨z, z.2, congrArg Subtype.val hz⟩`. Introduce and unpack `⟨t', -, rfl⟩`.
+
+Rewrite using `[← mul_smul, mul_comm, hkill]`. Take `⟨l, hl⟩` from `exists_eq_nsmul_of_free (n := r * N) (mul_comm N r) (M := Dual (ZMod (r * N)) T) (e a ∘ₗ T.subtype) (LinearMap.ext fun t => h t t.2)`. Take `⟨b, hb⟩` from `hbij.2 (l ∘ₗ p)`. Use `⟨a - N • b, (hmem _ _).mpr fun y hy => ?_, ?_⟩` and prove the remaining obligations. Establish `h1 : e a y = N • l ⟨y, hy⟩` using `LinearMap.congr_fun hl ⟨y, hy⟩`.
+
+Establish `h2 : e b y = l ⟨y, hy⟩`. Rewrite using `[hb, LinearMap.comp_apply, hp' ⟨y, hy⟩]`. Rewrite using `[map_sub, map_nsmul, LinearMap.sub_apply, LinearMap.smul_apply, h1, h2, sub_self]`. Rewrite using `[smul_sub, ← mul_smul, hkill, sub_zero]`. Introduce and unpack `⟨h, hh, hah⟩ t ht`.
+
+Rewrite using `[← LinearMap.smul_apply, ← map_nsmul, hah, map_nsmul, LinearMap.smul_apply, (hmem _ _).mp hh t ht, smul_zero]`.
+-/
 theorem orthogonal_free_of_perfect_alt_zmod :
     ∀ (N r : ℕ) [NeZero (r * N)] (Γ : Type) [AddCommGroup Γ] [Module (ZMod (r * N)) Γ]
       [Module.Free (ZMod (r * N)) Γ] [Module.Finite (ZMod (r * N)) Γ]

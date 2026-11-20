@@ -19,6 +19,13 @@ def LIP (R : Type) [CommRing R] : Prop :=
   ∀ (m n : Type) [Fintype m] [Fintype n] [DecidableEq m] [DecidableEq n] (W : Matrix m n R),
     (∀ c, W *ᵥ c = 0 → c = 0) → ∃ P : Matrix n m R, P * W = 1
 
+/- English proof (translation)
+Introduce `m n _ _ _ _ W hW`. Establish `hk : LinearMap.ker (Matrix.toLin' W) = ⊥`. Rewrite using `[LinearMap.ker_eq_bot']`. Introduce `c hc`. Conclude with `hW c (by simpa [Matrix.toLin'_apply] using hc)`.
+
+Take `⟨g, hg⟩` from `LinearMap.exists_leftInverse_of_injective (Matrix.toLin' W) hk`. Use `⟨LinearMap.toMatrix' g, ?_⟩` and prove the remaining obligations. Establish `h1 : Matrix.toLin' (LinearMap.toMatrix' g * W) = LinearMap.id`. Rewrite using `[Matrix.toLin'_mul, Matrix.toLin'_toMatrix', hg]`. Establish `h2` using `congrArg LinearMap.toMatrix' h1`.
+
+Rewrite `h2` using `[LinearMap.toMatrix'_toLin', LinearMap.toMatrix'_id]`. Then use the resulting hypothesis.
+-/
 theorem lip_field (K : Type) [Field K] : LIP K := by
   intro m n _ _ _ _ W hW
   have hk : LinearMap.ker (Matrix.toLin' W) = ⊥ := by
@@ -32,6 +39,19 @@ theorem lip_field (K : Type) [Field K] : LIP K := by
   have h2 := congrArg LinearMap.toMatrix' h1
   rwa [LinearMap.toMatrix'_toLin', LinearMap.toMatrix'_id] at h2
 
+/- English proof (translation)
+Introduce `m n _ _ _ _ W hW`. Establish `hv : ∀ v, ∃ P : Matrix n m (K v), P * W.map (fun x => x v) = 1`. Introduce `v`. Use `h v m n _ ?_` and prove the remaining obligations. Introduce `c hc`.
+
+Establish `key : W *ᵥ (fun j => Pi.single v (c j)) = 0`. Use function extensionality and compare the values at `i v'`. Simplify using `only [Matrix.mulVec, dotProduct, Finset.sum_apply, Pi.mul_apply, Pi.zero_apply]`. Distinguish the cases in `hv' : v' = v`. Substitute `hv'` using the available equality.
+
+Use `congrFun hc i` as an intermediate fact. Simplify `this` using `[Matrix.mulVec, dotProduct, Matrix.map_apply]`. Simplify using `[hv']`. Establish `h0` using `hW _ key`. Use function extensionality and compare the values at `j`.
+
+Use `congrFun (congrFun h0 j) v` as an intermediate fact. Simplify using `using this`. Use `choose P hP using hv`. Set `Q : Matrix n m (∀ v, K v)` to `fun i j v => P v i j`. Use `⟨Q, ?_⟩` and prove the remaining obligations.
+
+Use function extensionality and compare the values at `i j v`. Use `congrFun (congrFun (hP v) i) j` as an intermediate fact. Simplify using `only [Matrix.mul_apply, Matrix.map_apply] at this`. Rewrite using `[Matrix.mul_apply, Finset.sum_apply]`. Use `show ∑ k, P v i k * W k j v = _`.
+
+Rewrite using `[this]`. Apply the tactic sequence `by_cases hij : i = j <;> simp [Matrix.one_apply, hij]`.
+-/
 theorem lip_pi {ι : Type} [Fintype ι] [DecidableEq ι] (K : ι → Type) [∀ i, CommRing (K i)]
     (h : ∀ i, LIP (K i)) : LIP (∀ i, K i) := by
   intro m n _ _ _ _ W hW
@@ -62,6 +82,9 @@ theorem lip_pi {ι : Type} [Fintype ι] [DecidableEq ι] (K : ι → Type) [∀ 
   rw [this]
   by_cases hij : i = j <;> simp [Matrix.one_apply, hij]
 
+/- English proof (translation)
+Establish `h1 : (P * W) *ᵥ c = 0` using `by rw [← Matrix.mulVec_mulVec, hc, Matrix.mulVec_zero]`. Take `⟨u, hu⟩` from `(Matrix.isUnit_iff_isUnit_det _).2 hP`. Establish `h2 : ((u⁻¹ : (Matrix n n R)ˣ) : Matrix n n R) *ᵥ ((P * W) *ᵥ c) = c`. Rewrite using `[Matrix.mulVec_mulVec, ← hu, Units.inv_mul, Matrix.one_mulVec]`. Rewrite using `[← h2, h1, Matrix.mulVec_zero]`.
+-/
 theorem inj_of_isUnit {R : Type} [CommRing R] {m n : Type} [Fintype m] [Fintype n]
     [DecidableEq n] (W : Matrix m n R) (P : Matrix n m R) (hP : IsUnit (P * W).det)
     (c : n → R) (hc : W *ᵥ c = 0) : c = 0 := by
@@ -77,6 +100,9 @@ def wMat (R : Type) [CommRing R] [Algebra F R] {a M : ℕ} (X : Fin a → Fin M 
     Matrix (Fin M × Fin d) (Fin a × Fin d) R :=
   fun p q => crd b R (((1 : R) ⊗ₜ[F] b q.2) * X q.1 p.1) p.2
 
+/- English proof (translation)
+Simplify using `only [Matrix.mulVec, dotProduct, wMat, crd, Fintype.sum_prod_type, Finset.sum_mul, smul_mul_assoc, map_sum, map_smul, Finsupp.coe_finsetSum, Finset.sum_apply, Finsupp.smul_apply, smul_eq_mul]`. Conclude with `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun k _ => mul_comm _ _`.
+-/
 theorem wMat_mulVec (R : Type) [CommRing R] [Algebra F R] {a M : ℕ}
     (X : Fin a → Fin M → R ⊗[F] E) (c : Fin a × Fin d → R) (j : Fin M) (l : Fin d) :
     (wMat b R X *ᵥ c) (j, l) =
@@ -86,6 +112,13 @@ theorem wMat_mulVec (R : Type) [CommRing R] [Algebra F R] {a M : ℕ}
     Finsupp.smul_apply, smul_eq_mul]
   exact Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun k _ => mul_comm _ _
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce `h j`. Apply `(Algebra.TensorProduct.basis R b).repr.injective` to reduce the goal to its premises. Use extensionality with `l`. Use `congrFun h (j, l)` as an intermediate fact.
+
+Rewrite `this` using `[wMat_mulVec]`. Simplify `this` using `[crd]`. Introduce `h`. Use function extensionality and compare the values at `p`. Rewrite using `[wMat_mulVec, h p.1]`.
+
+Simplify using `[crd]`.
+-/
 theorem wMat_mulVec_eq_zero (R : Type) [CommRing R] [Algebra F R] {a M : ℕ}
     (X : Fin a → Fin M → R ⊗[F] E) (c : Fin a × Fin d → R) :
     wMat b R X *ᵥ c = 0 ↔ ∀ j, ∑ i, (∑ k, c (i, k) • ((1 : R) ⊗ₜ[F] b k)) * X i j = 0 := by
@@ -101,6 +134,19 @@ theorem wMat_mulVec_eq_zero (R : Type) [CommRing R] [Algebra F R] {a M : ℕ}
     rw [wMat_mulVec, h p.1]
     simp [crd]
 
+/- English proof (translation)
+Use `set B := Algebra.TensorProduct.basis R b with hB`. Establish `hBk : ∀ k, B k = (1 : R) ⊗ₜ[F] b k` using `fun k => Algebra.TensorProduct.basis_apply _ _`. Rewrite using `[Fintype.linearIndependent_iff]`. Prove the components needed by the constructor for the conclusion. Introduce `hX c hc`.
+
+Rewrite `hc` using `[wMat_mulVec_eq_zero]`. Establish `h0` using `hX (fun i => ∑ k, c (i, k) • ((1 : R) ⊗ₜ[F] b k)) (by`. Use function extensionality and compare the values at `j`. Simplify using `only [Finset.sum_apply, Pi.smul_apply, smul_eq_mul, Pi.zero_apply]`. Conclude with `hc j)`.
+
+Use function extensionality and compare the values at `p`. Establish `h1` using `h0 p.1`. Establish `h2 : B.equivFun (∑ k, c (p.1, k) • B k) = fun k => c (p.1, k)`. Rewrite using `[← Module.Basis.equivFun_symm_apply, LinearEquiv.apply_symm_apply]`. Simplify using `only [hBk] at h2`.
+
+Rewrite `h2` using `[h1, map_zero]`. Conclude with `(congrFun h2 p.2).symm`. Introduce `hW g hg i`. Establish `hc` using `hW (fun p => B.repr (g p.1) p.2) (by`. Rewrite using `[wMat_mulVec_eq_zero]`.
+
+Introduce `j`. Establish `e : ∀ i, ∑ k, B.repr (g i) k • ((1 : R) ⊗ₜ[F] b k) = g i`. Introduce `i`. Simplify using `only [← hBk]`. Conclude with `B.sum_repr (g i)`.
+
+Simplify using `only [e]`. Use `congrFun hg j` as an intermediate fact. Simplify `this)` using `[Finset.sum_apply, smul_eq_mul]`. Rewrite using `[← B.sum_repr (g i)]`. Simplify using `[fun k => congrFun hc (i, k)]`.
+-/
 theorem linIndep_iff (R : Type) [CommRing R] [Algebra F R] {a M : ℕ}
     (X : Fin a → Fin M → R ⊗[F] E) :
     LinearIndependent (R ⊗[F] E) X ↔ ∀ c, wMat b R X *ᵥ c = 0 → c = 0 := by
@@ -140,6 +186,9 @@ section Top
 variable [FiniteDimensional F E] (R : Type) [CommRing R] [Algebra F R] [TopologicalSpace R]
   [IsTopologicalRing R]
 
+/- English proof (translation)
+Use `continuous_pi fun p => continuous_pi fun q => ?_` and prove the remaining obligations. Conclude with `(continuous_crd b R p.2).comp (continuous_const.mul ((continuous_apply p.1).comp (continuous_apply q.1)))`.
+-/
 theorem continuous_wMat {a M : ℕ} :
     Continuous (fun X : Fin a → Fin M → R ⊗[F] E => wMat b R X) := by
   refine continuous_pi fun p => continuous_pi fun q => ?_
@@ -147,6 +196,13 @@ theorem continuous_wMat {a M : ℕ} :
     (continuous_const.mul ((continuous_apply p.1).comp (continuous_apply q.1)))
 
 include b in
+/- English proof (translation)
+Establish `e : {X : Fin a → Fin M → R ⊗[F] E | LinearIndependent (R ⊗[F] E) X} = ⋃ P : Matrix (Fin a × Fin d) (Fin M × Fin d) R, (fun X => (P * wMat b R X).det) ⁻¹' {r | IsUnit r}`. Use extensionality with `X`. Simplify using `only [Set.mem_ofPred_eq, Set.mem_iUnion, Set.mem_preimage]`. Rewrite using `[linIndep_iff b]`. Prove the components needed by the constructor for the conclusion.
+
+Introduce `h`. Take `⟨P, hP⟩` from `hL _ _ _ h`. Conclude with `⟨P, by rw [hP, Matrix.det_one]; exact isUnit_one⟩`. Introduce and unpack `⟨P, hP⟩ c hc`. Conclude with `inj_of_isUnit _ P hP c hc`.
+
+Rewrite using `[e]`. Conclude with `isOpen_iUnion fun P => hU.preimage ((continuous_const.matrix_mul (continuous_wMat b R)).matrix_det)`.
+-/
 theorem isOpen_linIndep (hU : IsOpen {r : R | IsUnit r}) (hL : LIP R) {a M : ℕ} :
     IsOpen {X : Fin a → Fin M → R ⊗[F] E | LinearIndependent (R ⊗[F] E) X} := by
   have e : {X : Fin a → Fin M → R ⊗[F] E | LinearIndependent (R ⊗[F] E) X} =
@@ -173,6 +229,9 @@ open scoped TensorProduct
 open NumberField IsDedekindDomain MeasureTheory Topology Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes PI.AdicCompletionValuation
   PI.VolFromSW TensAllW
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨inferInstance, inferInstance, inferInstance, isClosed_HermR R σ a, continuous_gramR R σ J, gramR_mem R σ hσ J hJ, isOpen_linIndep (Module.finBasis F E) R hU hL⟩`.
+-/
 theorem tensFacts_of {F E : Type} [Field F] [Field E] [Algebra F E] [FiniteDimensional F E]
     (σ : E →ₐ[F] E) (hσ : ∀ x, σ (σ x) = x) {M : ℕ} (J : Matrix (Fin M) (Fin M) E)
     (hJ : ∀ i j, σ (J j i) = J i j) (a : ℕ) (R : Type) [CommRing R] [Algebra F R]
@@ -182,10 +241,18 @@ theorem tensFacts_of {F E : Type} [Field F] [Field E] [Algebra F E] [FiniteDimen
   ⟨inferInstance, inferInstance, inferInstance, isClosed_HermR R σ a, continuous_gramR R σ J,
     gramR_mem R σ hσ J hJ, isOpen_linIndep (Module.finBasis F E) R hU hL⟩
 
+/- English proof (translation)
+Conclude with `lip_pi (fun v : InfinitePlace F => v.Completion) (fun v => lip_field _)`.
+-/
 theorem lip_ainf (F : Type) [Field F] [NumberField F] : LIP (InfiniteAdeleRing F) := by
   classical
   exact lip_pi (fun v : InfinitePlace F => v.Completion) (fun v => lip_field _)
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ hCM M J hJ _ _ a _ _ X0 hT hdet`. Establish `: FiniteDimensional F E` using `Module.finite_of_finrank_pos (by rw [hCM.2.2.1]; norm_num)`. Establish `hσ : ∀ x, σ (σ x) = x` using `sigma_invol σ hCM.2.2.2`. Use `⟨?_, fun v => ?_⟩` and prove the remaining obligations. Conclude with `tensFacts_of σ hσ J hJ.1 a (Ainf F) (isOpen_units_Ainf F) (lip_ainf F)`.
+
+Use `secondCountable_Fv F v` as an intermediate fact. Use `locallyCompact_Fv F v` as an intermediate fact. Conclude with `tensFacts_of σ hσ J hJ.1 a (Fv F v) (isOpen_units_Fv F v) (lip_field _)`.
+-/
 theorem tensAll_holds : TensAll := by
   intro F E _ _ _ _ _ σ hCM M J hJ _ _ a _ _ X0 hT hdet
   have : FiniteDimensional F E := Module.finite_of_finrank_pos (by rw [hCM.2.2.1]; norm_num)

@@ -22,11 +22,43 @@ namespace GlobalTheory.AbelianBaseChange
 
 variable {R R' : Type} [CommRing R] [CommRing R'] [Algebra R R'] {X X' : Scheme.{0}}
 
+/- English proof (translation)
+The claim follows from `hu (h₁.symm.trans h₂)`.
+-/
 theorem isPull1_unique {s : X ⟶ Sp R} {s' : X' ⟶ Sp R'} {φ : X' ⟶ X}
     {w : φ ≫ s = s' ≫ spMap (algebraMap R R')} (hu : Function.Injective (pullHyp1 (pairRes φ s')))
     {c : HH1 s} {c₁ c₂ : HH1 s'} (h₁ : IsPull1 w c c₁) (h₂ : IsPull1 w c c₂) : c₁ = c₂ :=
   hu (h₁.symm.trans h₂)
 
+/- English proof (translation)
+Substitute `hs hs'` using the available equality. Establish `key : ∀ c : FirstDeRham s, cmp1 s' (m.pull1 c) = e (1 ⊗ₜ cmp1 s c)` using `fun c ↦ isPull1_unique hu (comparison_pullback m c) (he _)`. Set `C` to `LinearEquiv.ofBijective (cmp1 s) hcmp`. Set `C'` to `LinearEquiv.ofBijective (cmp1 s') hcmp'`. Establish `hsq : (cmp1 s') ∘ₗ liftSemi m.pull1 = e.toLinearMap ∘ₗ (LinearEquiv.baseChange R R' _ _ C).toLinearMap`.
+
+Use `LinearMap.ext fun z ↦ ?_` and prove the remaining obligations. Proceed by induction on `z using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `add x y hx hy => simp only [map_add] at hx hy ⊢`. Rewrite using `[hx, hy]`.
+
+Consider the case `tmul x c`. Simplify using `only [LinearMap.coe_comp, Function.comp_apply, liftSemi_tmul, map_smul, LinearEquiv.coe_coe, LinearEquiv.baseChange_tmul, key]`. Rewrite using `[← map_smul, TensorProduct.smul_tmul', smul_eq_mul, mul_one]`. Both sides reduce to the same expression. Use `⟨?_, ?_⟩` and prove the remaining obligations.
+
+Establish `hb : Function.Bijective ((cmp1 s') ∘ liftSemi m.pull1)`. Use `congrArg DFunLike.coe hsq` as an intermediate fact. Rewrite `this` using `[LinearMap.coe_comp]`. Rewrite using `[this, LinearMap.coe_comp]`. Conclude with `(e.bijective).comp (LinearEquiv.baseChange R R' _ _ C).bijective`.
+
+Conclude with `(Function.Bijective.of_comp_iff' hcmp' _).1 hb`. Use `le_antisymm ?_ (Submodule.span_le.2 ?_)` and prove the remaining obligations. Introduce `c' hc'`. Establish `h1 : cmp1 s' c' ∈ CechHodgeFiltration s'` using `comparison_mem_cechHodgeFiltration s' hc'`. Rewrite `h1` using `[cechHodgeFiltration_eq_range]`.
+
+Take `⟨ω', hω'⟩` from `h1`. Set `Φ : GlobForm s' →ₗ[R'] HH1 s'` to `clForm s' ∘ₗ (LinearEquiv.ofTop _ hcl').symm.toLinearMap`. Set `Ψ : R' ⊗[R] GlobForm s →ₗ[R'] FirstDeRham s'` to `C'.symm.toLinearMap ∘ₗ Φ ∘ₗ e'.toLinearMap`. Establish `hΦ : ∀ ω : ClosedForm s', Φ ω.1 = clForm s' ω` using `fun ω ↦ by`. Simplify using `only [Φ, LinearMap.coe_comp, Function.comp_apply, LinearEquiv.coe_coe, LinearEquiv.ofTop_symm_apply]`.
+
+Take `⟨z, hz⟩` from `e'.surjective ω'.1`. Establish `hc'z : c' = Ψ z`. Apply `hcmp'.1` to reduce the goal to its premises. Simplify using `only [Ψ, LinearMap.coe_comp, Function.comp_apply, LinearEquiv.coe_coe, hz, hΦ]`. Rewrite using `[← hω']`.
+
+Conclude with `(C'.apply_symm_apply _).symm`. Rewrite using `[hc'z]`. Use `clear hc'z hz`. Proceed by induction on `z using TensorProduct.induction_on with`. Consider the case `zero => simp`.
+
+Consider the case `add x y hx hy => rw [map_add]`. Conclude with `Submodule.add_mem _ hx hy`. Consider the case `tmul x ω`. Rewrite using `[show x ⊗ₜ[R] ω = x • (1 ⊗ₜ[R] ω) by rw [TensorProduct.smul_tmul', smul_eq_mul, mul_one], map_smul]`. Use `Submodule.smul_mem _ x (Submodule.subset_span ?_)` and prove the remaining obligations.
+
+Set `ωc : ClosedForm s` to `⟨ω, hcl ▸ trivial⟩`. Use `⟨C.symm (clForm s ωc), ?_, ?_⟩` and prove the remaining obligations. Establish `hF : clForm s ωc ∈ CechHodgeFiltration s` using `by rw [cechHodgeFiltration_eq_range]; exact ⟨ωc, rfl⟩`. Express the relevant statement in the definitionally equal form `toH1O s _ = 0`. Apply `hO` to reduce the goal to its premises.
+
+Rewrite using `[← structureSheaf_comparison_comm, map_zero]`. Establish `: cmp1 s (C.symm (clForm s ωc)) = clForm s ωc` using `C.apply_symm_apply _`. Rewrite using `[this]`. Conclude with `hF`. Apply `hcmp'.1` to reduce the goal to its premises.
+
+Set `ωc' : ClosedForm s'` to `⟨e' (1 ⊗ₜ ω), hcl' ▸ trivial⟩`. Establish `h2 : IsPull1 hpb (clForm s ωc) (clForm s' ωc')` using `IsPullForm.cl (he' ω)`. Establish `h3` using `comparison_pullback m (C.symm (clForm s ωc))`. Establish `h4 : cmp1 s (C.symm (clForm s ωc)) = clForm s ωc` using `C.apply_symm_apply _`. Rewrite `h3` using `[h4]`.
+
+Rewrite using `[isPull1_unique hu h3 h2]`. Simplify using `only [Ψ, LinearMap.coe_comp, Function.comp_apply, LinearEquiv.coe_coe]`. Rewrite using `[hΦ ωc']`. Conclude with `(C'.apply_symm_apply _).symm`. Introduce and unpack `_ ⟨c, hc, rfl⟩`.
+
+Conclude with `m.pullback1_mem_hodgeFiltration hc`.
+-/
 theorem core (s₀ s : X ⟶ Sp R) (hs : s = s₀) (s₀' s' : X' ⟶ Sp R') (hs' : s' = s₀') (φ : X' ⟶ X)
     (hpb : φ ≫ s₀ = s₀' ≫ spMap (algebraMap R R'))
     (m : IsMor (dp0 R) s (dp0 R') s' (algebraMap R R') φ)
@@ -113,6 +145,25 @@ end GlobalTheory.AbelianBaseChange
 
 namespace GlobalTheory.AbelianBaseChange
 
+/- English proof (translation)
+Introduce `R _ A _ g hA hg R' _ _ A' _ φ h`. Establish `hA' : IsAbelianScheme A'` using `GlobalTheory.PolPull.isAbelianScheme_of_isGrpPullback hA h`. Establish `hg' : SmoothOfRelativeDimension g A'.hom` using `(smoothOfRelativeDimension_isStableUnderBaseChange (n := g)).of_isPullback h.1 hg`. Establish `hF` using `GlobalTheory.AbelianPrim.abelianDeRham_free (GlobalTheory.T.abelianDeRhamFree_of_crystalline_comparison H₁ H₂)`. Establish `hP : primDR A = ⊤` using `(hF R A g hA hg).1`.
+
+Establish `hP' : primDR A' = ⊤` using `(hF R' A' g hA' hg').1`. Establish `geom : ∀ {S : Type} [CommRing S] (B : Over (Sp S)) [GrpObj B], IsAbelianScheme B → Smooth (B.hom ≫ 𝟙 _) ∧ IsSeparated (B.hom ≫ 𝟙 _) ∧ QuasiCompact (B.hom ≫ 𝟙 _)`. Introduce `S _ B _ hB`. Rewrite using `[Category.comp_id]`. Use `haveI := hB.smooth`.
+
+Use `haveI := hB.proper`. Conclude with `⟨inferInstance, inferInstance, inferInstance⟩`. Take `⟨sm, se, sq⟩` from `geom A hA`. Take `⟨sm', se', sq'⟩` from `geom A' hA'`. Establish `hcmp` using `(GlobalTheory.CechDR.cechDeRham_comparison_bijective_cup_smooth H₁ R A.left (A.hom ≫ 𝟙 _) sm se sq).1`.
+
+Establish `hcmp'` using `(GlobalTheory.CechDR.cechDeRham_comparison_bijective_cup_smooth H₁ R' A'.left (A'.hom ≫ 𝟙 _) sm' se' sq').1`. Take `⟨-, -, -, -, ⟨hcl, -, -⟩, hbc⟩` from `H₂ R A g hA hg`. Take `⟨-, -, -, -, ⟨hcl', -, -⟩, -⟩` from `H₂ R' A' g hA' hg'`. Take `⟨⟨e, he⟩, ⟨e', he'⟩, -⟩` from `hbc R' A'.left A'.hom φ h.1`. Set `m` to `(GlobalTheory.Published.AbelianDeRham.bcMor h).isMor`.
+
+Take `⟨hB, hF1⟩` from `core A.hom (A.hom ≫ 𝟙 _) (Category.comp_id _) A'.hom (A'.hom ≫ 𝟙 _) (Category.comp_id _) φ h.1.w m hcmp hcmp' (GlobalTheory.T.structure_sheaf_comparison_injective R A.left _) (GlobalTheory.T.affinePairRestriction_injective_firstCohomology φ (A'.hom ≫ 𝟙 _)).2.2 hcl hcl' e he e' he …`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Establish `hsq : (LinearEquiv.ofTop _ hP').toLinearMap ∘ₗ liftSemi (GlobalTheory.Published.AbelianDeRham.bcMor h).pull = liftSemi m.pull1 ∘ₗ (LinearEquiv.baseChange R R' _ _ (LinearEquiv.ofTop _ hP)).toLinearMap`. Use `LinearMap.ext fun z ↦ ?_` and prove the remaining obligations. Proceed by induction on `z using TensorProduct.induction_on with`.
+
+Consider the case `zero => simp`. Consider the case `add x y hx hy => simp only [map_add] at hx hy ⊢`. Rewrite using `[hx, hy]`. Consider the case `tmul x c => rfl`. Establish `hb : Function.Bijective ((LinearEquiv.ofTop _ hP') ∘ liftSemi (GlobalTheory.Published.AbelianDeRham.bcMor h).pull)`.
+
+Use `congrArg DFunLike.coe hsq` as an intermediate fact. Rewrite `this` using `[LinearMap.coe_comp]`. Rewrite `this` using `[LinearEquiv.coe_toLinearMap]`. Rewrite using `[this, LinearMap.coe_comp]`. Conclude with `hB.comp (LinearEquiv.baseChange R R' _ _ (LinearEquiv.ofTop _ hP)).bijective`.
+
+Conclude with `(Function.Bijective.of_comp_iff' (LinearEquiv.ofTop _ hP').bijective _).1 hb`. Apply `Submodule.map_injective_of_injective (primDR A').injective_subtype` to reduce the goal to its premises. Rewrite using `[PrimitiveSubmodule, Submodule.map_comap_eq, Submodule.range_subtype, inf_eq_right.2 (by rw [hP']; exact le_top), hF1, Submodule.map_span, Set.image_image]`. Use `congr 1`. Use extensionality with `x`.
+
+Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨c, hc, rfl⟩`. Conclude with `⟨⟨c, by rw [show prim (dp0 R) (𝟙 (Sp R)) A = ⊤ from hP]; trivial⟩, hc, rfl⟩`. Introduce and unpack `⟨c, hc, rfl⟩`. Conclude with `⟨c.1, hc, rfl⟩`.
+-/
 theorem abelianDeRham_baseChange_of_smoothLift (H₁ : GlobalTheory.Published.CrystallineSmoothLift) (H₂ : GlobalTheory.Published.AbelianHodgeDeRham) :
     GlobalTheory.Published.AbelianDeRham.BaseChange := by
   intro R _ A _ g hA hg R' _ _ A' _ φ h

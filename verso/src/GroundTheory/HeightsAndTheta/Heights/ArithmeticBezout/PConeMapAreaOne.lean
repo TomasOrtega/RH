@@ -36,10 +36,16 @@ def reImL (m : ℕ) : EuclideanSpace ℂ (Fin m) ≃ₗ[ℝ] EuclideanSpace ℝ 
     obtain ⟨i, k⟩ := p
     fin_cases k <;> simp
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem reImL_apply (m : ℕ) (y : EuclideanSpace ℂ (Fin m)) (p : Fin m × Fin 2) :
     reImL m y p = (![(y p.1).re, (y p.1).im] : Fin 2 → ℝ) p.2 :=
   rfl
 
+/- English proof (translation)
+Rewrite using `[EuclideanSpace.norm_eq, EuclideanSpace.norm_eq, Fintype.sum_prod_type]`. Use `congr 1`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Simplify using `only [reImL_apply, Fin.sum_univ_two, Matrix.cons_val_zero, Matrix.cons_val_one, Real.norm_eq_abs, sq_abs]`. Rewrite using `[Complex.sq_norm, Complex.normSq_apply, sq, sq]`.
+-/
 theorem norm_reImL (m : ℕ) (y : EuclideanSpace ℂ (Fin m)) : ‖reImL m y‖ = ‖y‖ := by
   rw [EuclideanSpace.norm_eq, EuclideanSpace.norm_eq, Fintype.sum_prod_type]
   congr 1
@@ -51,10 +57,20 @@ theorem norm_reImL (m : ℕ) (y : EuclideanSpace ℂ (Fin m)) : ‖reImL m y‖ 
 def reIm (m : ℕ) : EuclideanSpace ℂ (Fin m) ≃ₗᵢ[ℝ] EuclideanSpace ℝ (Fin m × Fin 2) :=
   { reImL m with norm_map' := norm_reImL m }
 
+/- English proof (translation)
+The claim follows from `_root_.UpperTheory.Reformulated.B.VolumePreservingUncurry.volume_preserving_uncurry ι κ`.
+-/
 theorem volume_preserving_uncurry (ι κ : Type*) [Fintype ι] [Fintype κ] :
     MeasurePreserving (Function.uncurry : (ι → κ → ℝ) → ι × κ → ℝ) volume volume :=
   _root_.UpperTheory.Reformulated.B.VolumePreservingUncurry.volume_preserving_uncurry ι κ
 
+/- English proof (translation)
+Establish `h1 : MeasurePreserving (fun (x : Fin m → ℂ) (i : Fin m) => Complex.measurableEquivPi (x i)) volume volume` using `volume_preserving_pi fun _ => Complex.volume_preserving_equiv_pi`. Establish `h2` using `volume_preserving_uncurry (Fin m) (Fin 2)`. Establish `h3` using `PiLp.volume_preserving_toLp (Fin m × Fin 2)`. Establish `h` using `(reIm m).symm.measurePreserving.comp (h3.comp (h2.comp h1))`. Establish `hfun : (WithLp.toLp 2 : (Fin m → ℂ) → EuclideanSpace ℂ (Fin m)) = ⇑(reIm m).symm ∘ WithLp.toLp 2 ∘ Function.uncurry ∘ fun x i => Complex.measurableEquivPi (x i)`.
+
+Use function extensionality and compare the values at `x`. Rewrite using `[Function.comp_apply, LinearIsometryEquiv.eq_symm_apply]`. Use extensionality with `p`. Take `⟨i, k⟩` from `p`. Apply the tactic sequence `fin_cases k <;> rfl`.
+
+Rewrite using `[hfun]`. Conclude with `h`.
+-/
 theorem measurePreserving_toLp (m : ℕ) :
     MeasurePreserving (WithLp.toLp 2 : (Fin m → ℂ) → EuclideanSpace ℂ (Fin m)) volume volume := by
   have h1 : MeasurePreserving
@@ -78,10 +94,16 @@ def splitE (e : ℕ) : EuclideanSpace ℂ (Fin (e + 1)) ≃ᵐ (Fin e → ℂ) �
   ((MeasurableEquiv.toLp 2 (Fin (e + 1) → ℂ)).symm.trans
     (MeasurableEquiv.piFinSuccAbove (fun _ => ℂ) 0)).trans MeasurableEquiv.prodComm
 
+/- English proof (translation)
+Apply the tactic sequence `ext j <;> simp [splitE, MeasurableEquiv.piFinSuccAbove, MeasurableEquiv.prodComm, Fin.tail]`.
+-/
 theorem splitE_apply (e : ℕ) (p : EuclideanSpace ℂ (Fin (e + 1))) :
     splitE e p = (fun j => p j.succ, p 0) := by
   ext j <;> simp [splitE, MeasurableEquiv.piFinSuccAbove, MeasurableEquiv.prodComm, Fin.tail]
 
+/- English proof (translation)
+Establish `h1` using `(measurePreserving_toLp (e + 1)).symm (MeasurableEquiv.toLp 2 (Fin (e + 1) → ℂ))`. Establish `h2` using `volume_preserving_piFinSuccAbove (fun _ : Fin (e + 1) => ℂ) 0`. Establish `h3` using `Measure.measurePreserving_swap (μ := (volume : Measure ℂ)) (ν := (volume : Measure (Fin e → ℂ)))`. Conclude with `h3.comp (h2.comp h1)`.
+-/
 theorem measurePreserving_splitE (e : ℕ) : MeasurePreserving (splitE e) volume volume := by
   have h1 := (measurePreserving_toLp (e + 1)).symm (MeasurableEquiv.toLp 2 (Fin (e + 1) → ℂ))
   have h2 := volume_preserving_piFinSuccAbove (fun _ : Fin (e + 1) => ℂ) 0
@@ -92,6 +114,9 @@ theorem measurePreserving_splitE (e : ℕ) : MeasurePreserving (splitE e) volume
 def tailL (e : ℕ) : EuclideanSpace ℂ (Fin (e + 1)) →L[ℂ] (Fin e → ℂ) :=
   ContinuousLinearMap.pi fun j => EuclideanSpace.proj j.succ
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem tailL_apply (e : ℕ) (p : EuclideanSpace ℂ (Fin (e + 1))) (j : Fin e) :
     tailL e p j = p j.succ :=
   rfl
@@ -103,11 +128,17 @@ def coneMapE {e n : ℕ} (v : (Fin e → ℂ) → (Fin n → ℂ)) (p : Euclidea
 def gramVecs {e n : ℕ} (v : (Fin e → ℂ) → (Fin n → ℂ)) (y : Fin e → ℂ) : Fin (e + 1) → Fin n → ℂ :=
   Fin.cons (v y) fun j => fderiv ℂ v y (Pi.single j 1)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem gramVol_eq {e n : ℕ} (v : (Fin e → ℂ) → (Fin n → ℂ)) (y : Fin e → ℂ) :
     gramVol v y =
       (Matrix.det (Matrix.of fun a b => ∑ i, star (gramVecs v y a i) * gramVecs v y b i)).re :=
   rfl
 
+/- English proof (translation)
+Establish `hc` using `(EuclideanSpace.proj (0 : Fin (e + 1)) : EuclideanSpace ℂ (Fin (e + 1)) →L[ℂ] ℂ).hasFDerivAt (x := p)`. Establish `hf` using `(PiLp.continuousLinearEquiv 2 ℂ (fun _ : Fin n => ℂ)).symm.hasFDerivAt.comp p (hv.hasFDerivAt.comp p (tailL e).hasFDerivAt)`. Conclude with `hc.smul hf`.
+-/
 theorem hasFDerivAt_coneMapE {e n : ℕ} {v : (Fin e → ℂ) → (Fin n → ℂ)}
     {p : EuclideanSpace ℂ (Fin (e + 1))} (hv : DifferentiableAt ℂ v (tailL e p)) :
     HasFDerivAt (coneMapE v)
@@ -121,6 +152,11 @@ theorem hasFDerivAt_coneMapE {e n : ℕ} {v : (Fin e → ℂ) → (Fin n → ℂ
     (hv.hasFDerivAt.comp p (tailL e).hasFDerivAt)
   exact hc.smul hf
 
+/- English proof (translation)
+Rewrite using `[(hasFDerivAt_coneMapE hv).fderiv]`. Use `Fin.cases ?_ (fun j => ?_) a` and prove the remaining obligations. Establish `h0 : tailL e (EuclideanSpace.single 0 1) = 0`. Use function extensionality and compare the values at `j`. Simplify using `[tailL_apply, Fin.succ_ne_zero]`.
+
+Simplify using `[h0, gramVecs]`. Establish `h1 : tailL e (EuclideanSpace.single j.succ 1) = Pi.single j 1`. Use function extensionality and compare the values at `i`. Simplify using `[tailL_apply, Pi.single_apply]`. Simplify using `[h1, gramVecs, Fin.succ_ne_zero]`.
+-/
 theorem fderiv_coneMapE_single {e n : ℕ} {v : (Fin e → ℂ) → (Fin n → ℂ)}
     {p : EuclideanSpace ℂ (Fin (e + 1))} (hv : DifferentiableAt ℂ v (tailL e p)) (a : Fin (e + 1)) :
     fderiv ℂ (coneMapE v) p (EuclideanSpace.single a 1) =
@@ -136,10 +172,24 @@ theorem fderiv_coneMapE_single {e n : ℕ} {v : (Fin e → ℂ) → (Fin n → �
       simp [tailL_apply, Pi.single_apply]
     simp [h1, gramVecs, Fin.succ_ne_zero]
 
+/- English proof (translation)
+Take `⟨h1, h2⟩` from `Complex.nonneg_iff.1 hz`. Rewrite using `[← Complex.abs_re_eq_norm.2 h2.symm, abs_of_nonneg h1]`.
+-/
 theorem norm_eq_re_of_nonneg {z : ℂ} (hz : 0 ≤ z) : ‖z‖ = z.re := by
   obtain ⟨h1, h2⟩ := Complex.nonneg_iff.1 hz
   rw [← Complex.abs_re_eq_norm.2 h2.symm, abs_of_nonneg h1]
 
+/- English proof (translation)
+Use `set S : EuclideanSpace ℂ (Fin (e + 1)) →ₗ[ℂ] EuclideanSpace ℂ (Fin n) := ↑(fderiv ℂ (coneMapE v) p)`. Rewrite using `[FrameJacobianSumAlt.areaJacobian_restrictScalars, FrameJacobianSumAlt.det_adjoint_comp]`. Take `⟨c, hcdef⟩ : ∃ c : Fin (e + 1) → ℂ, c = Fin.cons 1 (fun _ => p 0)` from `⟨_, rfl⟩`. Take `⟨w, hw⟩ : ∃ w, w = gramVecs v (tailL e p)` from `⟨_, rfl⟩`. Take `⟨G, hGdef⟩ : ∃ G : Matrix (Fin (e + 1)) (Fin (e + 1)) ℂ, G = Matrix.of fun a b => ∑ i, star (w a i) * w b i` from `⟨_, rfl⟩`.
+
+Establish `hM : (Matrix.of fun i j : Fin (e + 1) => inner ℂ (S (EuclideanSpace.basisFun (Fin (e + 1)) ℂ i)) (S (EuclideanSpace.basisFun (Fin (e + 1)) ℂ j))) = Matrix.diagonal (fun a => star (c a)) * G * Matrix.diagonal c`. Use extensionality with `a b`. Simplify using `only [S, EuclideanSpace.basisFun_apply, ContinuousLinearMap.coe_coe, fderiv_coneMapE_single hv, inner_smul_left, inner_smul_right, Matrix.of_apply, Matrix.diagonal_mul, Matrix.mul_diagonal, hGdef, PiLp.inner_apply, RCLike.inner_apply, Complex.star_def, hcdef, hw]`. Rewrite using `[Finset.sum_congr rfl fun x _ => mul_comm (gramVecs v (tailL e p) b x) _]`. Expand and normalize the polynomial expressions, which then agree.
+
+Establish `hG : G = Matrix.conjTranspose (Matrix.of fun i a => w a i) * Matrix.of fun i a => w a i`. Use extensionality with `a b`. Simplify using `[hGdef, Matrix.mul_apply]`. Establish `hpsd : 0 ≤ G.det`. Rewrite using `[hG]`.
+
+Conclude with `(Matrix.posSemidef_conjTranspose_mul_self _).det_nonneg`. Establish `hc : ∏ a, c a = p 0 ^ e`. Simplify using `[hcdef, Fin.prod_univ_succ]`. Establish `hcs : ∏ a, star (c a) = star (p 0) ^ e`. Simplify using `[hcdef, Fin.prod_univ_succ]`.
+
+Rewrite using `[hM, Matrix.det_mul, Matrix.det_mul, Matrix.det_diagonal, Matrix.det_diagonal, hc, hcs, norm_mul, norm_mul, norm_pow, norm_pow, norm_star, gramVol_eq, ← hw, ← hGdef, norm_eq_re_of_nonneg hpsd]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem areaJacobian_coneMapE {e n : ℕ} {v : (Fin e → ℂ) → (Fin n → ℂ)}
     {p : EuclideanSpace ℂ (Fin (e + 1))} (hv : DifferentiableAt ℂ v (tailL e p)) :
     areaJacobian ((fderiv ℂ (coneMapE v) p : EuclideanSpace ℂ (Fin (e + 1)) →ₗ[ℂ]
@@ -179,6 +229,11 @@ def coneIntegrand {e n : ℕ} (v : (Fin e → ℂ) → (Fin n → ℂ)) (F : Euc
     (q : (Fin e → ℂ) × ℂ) : ℝ≥0∞ :=
   F (q.2 • WithLp.toLp 2 (v q.1)) * ENNReal.ofReal (‖q.2‖ ^ (2 * e) * gramVol v q.1)
 
+/- English proof (translation)
+Establish `hnull : (volume : Measure ((Fin e → ℂ) × ℂ)) (Set.univ ×ˢ {0}) = 0`. Rewrite using `[Measure.volume_eq_prod, Measure.prod_prod, measure_singleton, mul_zero]`. Establish `hset : {q : (Fin e → ℂ) × ℂ | q.1 ∈ D ∧ q.2 ≠ 0} = D ×ˢ Set.univ \ Set.univ ×ˢ {0}`. Use extensionality with `q`. Simplify using the standard rewrite rules.
+
+Rewrite using `[hset, setLIntegral_congr (sdiff_null_ae_eq_self hnull), Measure.volume_eq_prod, ← Measure.restrict_univ (μ := (volume : Measure ℂ)), ← Measure.prod_restrict]`. Simplify using `only [Measure.restrict_univ]`. Conclude with `lintegral_prod G hG`.
+-/
 theorem lintegral_cone_prod {e : ℕ} {D : Set (Fin e → ℂ)} (G : (Fin e → ℂ) × ℂ → ℝ≥0∞)
     (hG : AEMeasurable G ((volume.restrict D).prod volume)) :
     ∫⁻ q in {q : (Fin e → ℂ) × ℂ | q.1 ∈ D ∧ q.2 ≠ 0}, G q = ∫⁻ x in D, ∫⁻ t, G (x, t) := by
@@ -192,6 +247,15 @@ theorem lintegral_cone_prod {e : ℕ} {D : Set (Fin e → ℂ)} (G : (Fin e → 
   simp only [Measure.restrict_univ]
   exact lintegral_prod G hG
 
+/- English proof (translation)
+Establish `hvD : AEMeasurable v (volume.restrict D)` using `(hv.continuousOn.mono hDU).aemeasurable hD`. Establish `hW : AEMeasurable (gramVecs v) (volume.restrict D)`. Use `aemeasurable_pi_lambda _ fun a => ?_` and prove the remaining obligations. Use `Fin.cases ?_ (fun j => ?_) a` and prove the remaining obligations. Simplify `hvD` using `[gramVecs]`.
+
+Simplify `(measurable_fderiv_apply_const (𝕜 := ℂ) (f := v) (Pi.single j (1 : ℂ))).aemeasurable` using `[gramVecs]`. Establish `hΦ : Continuous fun W : Fin (e + 1) → Fin n → ℂ => (Matrix.det (Matrix.of fun a b => ∑ i, star (W a i) * W b i)).re`. Use `Complex.continuous_re.comp (Continuous.matrix_det ?_)` and prove the remaining obligations. Use `continuous_pi fun a => continuous_pi fun b => ?_` and prove the remaining obligations. Simplify using `only [Matrix.of_apply]`.
+
+Use `continuous_finsetSum _ fun i _ => ?_` and prove the remaining obligations. Use `fun_prop`. Establish `hg : AEMeasurable (gramVol v) (volume.restrict D)` using `hΦ.measurable.comp_aemeasurable hW`. Establish `h1 : AEMeasurable (fun q : (Fin e → ℂ) × ℂ => q.2 • WithLp.toLp 2 (v q.1)) ((volume.restrict D).prod volume)` using `measurable_snd.aemeasurable.smul ((PiLp.continuous_toLp 2 _).measurable.comp_aemeasurable hvD).comp_fst`. Use `(hF.comp_aemeasurable h1).mul ?_` and prove the remaining obligations.
+
+Conclude with `((measurable_snd.norm.pow_const _).aemeasurable.mul hg.comp_fst).ennreal_ofReal`.
+-/
 theorem aemeasurable_coneIntegrand {e n : ℕ} {U D : Set (Fin e → ℂ)}
     {v : (Fin e → ℂ) → (Fin n → ℂ)} {F : EuclideanSpace ℂ (Fin n) → ℝ≥0∞} (hD : MeasurableSet D)
     (hDU : D ⊆ U) (hv : DifferentiableOn ℂ v U) (hF : Measurable F) :
@@ -218,6 +282,9 @@ theorem aemeasurable_coneIntegrand {e n : ℕ} {U D : Set (Fin e → ℂ)}
   refine (hF.comp_aemeasurable h1).mul ?_
   exact ((measurable_snd.norm.pow_const _).aemeasurable.mul hg.comp_fst).ennreal_ofReal
 
+/- English proof (translation)
+Rewrite using `[← Measure.measure_univ_eq_zero]`. Establish `hd : dimH (Set.univ : Set (EuclideanSpace ℂ (Fin n))) < (((2 * d : ℕ) : ℝ≥0) : ℝ≥0∞)`. Rewrite using `[Real.dimH_univ_eq_finrank (EuclideanSpace ℂ (Fin n)), finrank_real_of_complex, finrank_euclideanSpace_fin]`. Conclude with `(by omega : 2 * n < 2 * d)` after adjusting the coercions. Simplify using `using hausdorffMeasure_of_dimH_lt hd`.
+-/
 theorem hausdorff_eq_zero_of_lt {n d : ℕ} (h : n < d) :
     (Measure.hausdorffMeasure ((2 * d : ℕ) : ℝ) : Measure (EuclideanSpace ℂ (Fin n))) = 0 := by
   rw [← Measure.measure_univ_eq_zero]
@@ -227,6 +294,9 @@ theorem hausdorff_eq_zero_of_lt {n d : ℕ} (h : n < d) :
     exact_mod_cast (by omega : 2 * n < 2 * d)
   simpa using hausdorffMeasure_of_dimH_lt hd
 
+/- English proof (translation)
+Rewrite using `[InnerProductSpace.volume_ball_of_dim_even (k := e + 1) (by rw [finrank_real_of_complex, finrank_euclideanSpace_fin])]`. Simplify using the standard rewrite rules.
+-/
 theorem volume_ball_E (e : ℕ) :
     volume (Metric.ball (0 : EuclideanSpace ℂ (Fin (e + 1))) 1) =
       ENNReal.ofReal (Real.pi ^ (e + 1) / ((e + 1).factorial : ℝ)) := by
@@ -234,6 +304,17 @@ theorem volume_ball_E (e : ℕ) :
     (by rw [finrank_real_of_complex, finrank_euclideanSpace_fin])]
   simp
 
+/- English proof (translation)
+Use extensionality with `y`. Simplify using `only [Set.mem_ofPred_eq, Set.mem_image, Metric.mem_ball, dist_zero_right]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨hy, hz⟩`. Use `⟨WithLp.toLp 2 fun i => y (Fin.castAdd k i), ?_, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[← norm_zeroExt m k]`. Use `hy using 2` and compare the differences between its conclusion and the goal. Use extensionality with `j`. Use `Fin.addCases (fun i => ?_) (fun i => ?_) j` and prove the remaining obligations. Simplify using `[zeroExt]`.
+
+Simplify using `[zeroExt, hz (Fin.natAdd m i) (by simp)]`. Use extensionality with `j`. Use `Fin.addCases (fun i => ?_) (fun i => ?_) j` and prove the remaining obligations. Simplify using `[zeroExt]`. Simplify using `[zeroExt, hz (Fin.natAdd m i) (by simp)]`.
+
+Introduce and unpack `⟨x, hx, rfl⟩`. Use `⟨by rwa [norm_zeroExt], fun j hj => ?_⟩` and prove the remaining obligations. Use `revert hj`. Use `Fin.addCases (fun i => ?_) (fun i => ?_) j` and prove the remaining obligations. Introduce `hi`.
+
+Simplify using `at hi`. Use linear arithmetic over natural numbers and integers. Introduce `_`. Simplify using `[zeroExt]`.
+-/
 theorem coordBall_eq (m k : ℕ) :
     {y : EuclideanSpace ℂ (Fin (m + k)) | ‖y‖ < 1 ∧ ∀ j : Fin (m + k), m ≤ (j : ℕ) → y j = 0} =
       zeroExt m k '' Metric.ball 0 1 := by
@@ -266,6 +347,29 @@ end ConeMapAreaFormula
 
 open ConeMapAreaFormula in
 
+/- English proof (translation)
+Introduce `n e U D v F hU hD hDU hv hinj hF`. Distinguish the cases in `hn : e + 1 ≤ n`. Use `swap`. Rewrite using `[hausdorff_eq_zero_of_lt (by omega : n < e + 1)]`. Simplify using the standard rewrite rules.
+
+Take `⟨k, rfl⟩` from `Nat.exists_eq_add_of_le hn`. Establish `hfin : finrank ℝ (EuclideanSpace ℂ (Fin (e + 1))) = 2 * (e + 1)`. Rewrite using `[finrank_real_of_complex, finrank_euclideanSpace_fin]`. Use `set S := {q : (Fin e → ℂ) × ℂ | q.1 ∈ D ∧ q.2 ≠ 0} with hSdef`. Establish `hSm : MeasurableSet S` using `hD.prod (measurableSet_singleton (0 : ℂ)).compl`.
+
+Use `set AE := splitE e ⁻¹' S with hAEdef`. Establish `hAEm : MeasurableSet AE` using `(splitE e).measurable hSm`. Use `set UE := {p : EuclideanSpace ℂ (Fin (e + 1)) | tailL e p ∈ U} with hUEdef`. Establish `hUE : IsOpen UE` using `hU.preimage (tailL e).continuous`. Establish `hAU : AE ⊆ UE`.
+
+Introduce `p hp`. Establish `h1` using `hp.1`. Rewrite `h1` using `[splitE_apply]`. Conclude with `hDU h1`. Establish `hdiff : ∀ p ∈ UE, DifferentiableAt ℂ v (tailL e p)` using `fun p hp => hv.differentiableAt (hU.mem_nhds hp)`.
+
+Establish `hvC : ContDiffOn ℂ 1 v U`. Use `contDiffOn_pi.2 fun i => ?_` and prove the remaining obligations. Establish `hvi : DifferentiableOn ℂ (fun x => v x i) U` using `fun x hx => ((differentiableAt_pi.1 (hv.differentiableAt (hU.mem_nhds hx))) i).differentiableWithinAt`. Conclude with `(ReciprocityTheory.AnForm.Osgood.osgood e U _ hU hvi).contDiffOn (n := 1) hU.uniqueDiffOn`. Establish `hC : ContDiffOn ℝ 1 (coneMapE (n` using `e + 1 + k) v) UE := by`.
+
+Establish `h1 : ContDiffOn ℂ 1 (fun p => WithLp.toLp 2 (v (tailL e p)) : EuclideanSpace ℂ (Fin (e + 1)) → EuclideanSpace ℂ (Fin (e + 1 + k))) UE` using `(PiLp.continuousLinearEquiv 2 ℂ (fun _ : Fin (e + 1 + k) => ℂ)).symm.contDiff.comp_contDiffOn (hvC.comp (tailL e).contDiff.contDiffOn (fun p hp => hp))`. Conclude with `((EuclideanSpace.proj (0 : Fin (e + 1)) : EuclideanSpace ℂ (Fin (e + 1)) →L[ℂ] ℂ).contDiff.contDiffOn.smul h1).restrict_scalars ℝ`. Establish `hcomp : coneMapE (n` using `e + 1 + k) v = (fun q : (Fin e → ℂ) × ℂ => q.2 • WithLp.toLp 2 (v q.1)) ∘ splitE e := by`. Use function extensionality and compare the values at `p`. Rewrite using `[Function.comp_apply, splitE_apply]`.
+
+Both sides reduce to the same expression. Establish `hinjE : Set.InjOn (coneMapE (n` using `e + 1 + k) v) AE := by`. Rewrite using `[hcomp]`. Conclude with `hinj.comp (splitE e).injective.injOn (fun p hp => hp)`. Establish `himg : coneMapE (n` using `e + 1 + k) v '' AE = (fun q : (Fin e → ℂ) × ℂ => q.2 • WithLp.toLp 2 (v q.1)) '' S := by`.
+
+Rewrite using `[hcomp, Set.image_comp, Set.image_preimage_eq _ (splitE e).surjective]`. Establish `key` using `hA (EuclideanSpace ℂ (Fin (e + 1))) (EuclideanSpace ℂ (Fin (e + 1 + k))) (2 * (e + 1)) hfin UE AE (coneMapE v) F hUE hC hAU hAEm hinjE hF`. Rewrite `key` using `[himg]`. Rewrite using `[key]`. Establish `hJ : Set.EqOn (fun p => F (coneMapE v p) * ENNReal.ofReal (areaJacobian (fderiv ℝ (coneMapE (n` using `e + 1 + k) v) p : EuclideanSpace ℂ (Fin (e + 1)) →ₗ[ℝ] EuclideanSpace ℂ (Fin (e + 1 + k))))) (fun p => coneIntegrand v F (splitE e p)) AE := by`.
+
+Introduce `p hp`. Establish `hd` using `hdiff p (hAU hp)`. Simplify using `only`. Rewrite using `[(hasFDerivAt_coneMapE hd).differentiableAt.fderiv_restrictScalars ℝ]`. Rewrite using `[show ((ContinuousLinearMap.restrictScalars ℝ (fderiv ℂ (coneMapE (n := e + 1 + k) v) p) : EuclideanSpace ℂ (Fin (e + 1)) →L[ℝ] EuclideanSpace ℂ (Fin (e + 1 + k))) : EuclideanSpace ℂ (Fin (e + 1)) →ₗ[ℝ] EuclideanSpace ℂ (Fin (e + 1 + k))) = ((fderiv ℂ (coneMapE (n := e + 1 + k) v …`.
+
+Rewrite using `[areaJacobian_coneMapE hd, coneIntegrand, splitE_apply]`. Both sides reduce to the same expression. Rewrite using `[setLIntegral_congr_fun hAEm hJ]`. Establish `hexp : ((2 * (e + 1) : ℕ) : ℝ) = (finrank ℝ (EuclideanSpace ℂ (Fin (e + 1))) : ℝ)`. Rewrite using `[hfin]`.
+
+Rewrite using `[coordBall_eq (e + 1) k, hexp, (isometry_zeroExt (e + 1) k).hausdorffMeasure_image (Or.inl (by positivity))]`. Establish `hμ` using `Measure.isAddLeftInvariant_eq_smul (μH[(finrank ℝ (EuclideanSpace ℂ (Fin (e + 1))) : ℝ)] : Measure (EuclideanSpace ℂ (Fin (e + 1)))) volume`. Rewrite using `[hμ, Measure.restrict_smul, lintegral_smul_measure, Measure.smul_apply, (measurePreserving_splitE e).setLIntegral_comp_preimage_emb (splitE e).measurableEmbedding, lintegral_cone_prod _ (aemeasurable_coneIntegrand hD hDU hv hF), volume_ball_E]`. Simplify using `only [ENNReal.smul_def, smul_eq_mul, coneIntegrand]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem ConeMapAreaOne.proof (hA : AreaFormulaInj.Statement) : ConeMapAreaOne.Statement := by
   intro n e U D v F hU hD hDU hv hinj hF
   by_cases hn : e + 1 ≤ n

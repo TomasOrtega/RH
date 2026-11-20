@@ -3,6 +3,9 @@ import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsSemili
 import Mathlib
 open scoped TensorProduct
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.exists_semilinear_descent_to_baseChange | exact GlobalTheory.exists_semilinear_descent_to_baseChange | (intros; apply GlobalTheory.exists_semilinear_descent_to_baseChange <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.exists_semilinear_descent_to_baseChange_of_form : ∀ {LL : Type} [Field LL] [Algebra ℚ LL] (L0 : IntermediateField ℚ LL) {Ks : Type} [Field Ks] [Algebra Ks LL]
     (kKs : Ks →+* L0), (∀ x, ((kKs x : L0) : LL) = algebraMap Ks LL x) →
     ∀ {WL : Type} [AddCommGroup WL] [Module LL WL] [Module Ks WL] [IsScalarTower Ks LL WL]

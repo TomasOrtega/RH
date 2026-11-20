@@ -12,12 +12,18 @@ open GlobalTheory.Doubling (absE)
 open GlobalTheory.ConeBumpB
 open scoped GlobalTheory.VacAny
 
+/- English proof (translation)
+Use function extensionality and compare the values at `z`. Simplify using `[GlobalTheory.WeilM.Darboux.rho, GlobalTheory.WeilM.schr]`.
+-/
 private theorem rho_zero' {R : Type} [CommRing R] [Invertible (2 : R)] {U : Type} [AddCommGroup U] [Module R U]
     {B : U → U → R} {κ : Type} [Fintype κ] (co : GlobalTheory.WeilM.Darboux B κ) (ψ : AddChar R ℂ)
     (Φ : (κ → R) → ℂ) : co.rho ψ 0 Φ = Φ := by
   funext z
   simp [GlobalTheory.WeilM.Darboux.rho, GlobalTheory.WeilM.schr]
 
+/- English proof (translation)
+Proceed by induction on `z using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `add x y hx hy => simp only [map_add, hx, hy]`. Consider the case `tmul a x => show a ⊗ₜ[F] σ (σ x) = _`. Rewrite using `[hσ]`.
+-/
 private theorem sigR_sigR' {F E : Type} [Field F] [Field E] [Algebra F E] (R : Type) [CommRing R] [Algebra F R]
     {σ : E →ₐ[F] E} (hσ : ∀ x, σ (σ x) = x) (z : R ⊗[F] E) : sigR R σ (sigR R σ z) = z := by
   induction z using TensorProduct.induction_on with
@@ -27,11 +33,19 @@ private theorem sigR_sigR' {F E : Type} [Field F] [Field E] [Algebra F E] (R : T
     show a ⊗ₜ[F] σ (σ x) = _
     rw [hσ]
 
+/- English proof (translation)
+Express the relevant statement in the definitionally equal form `evFin F v 1 ⊗ₜ[F] x i = (1 : Fv F v) ⊗ₜ[F] x i`. Rewrite using `[map_one]`.
+-/
 private theorem atV_incV {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {n : ℕ}
     (v : Pl F) (x : Fin n → E) (i : Fin n) : atV v (incV F x) i = inclR (F := F) (Fv F v) (x i) := by
   change evFin F v 1 ⊗ₜ[F] x i = (1 : Fv F v) ⊗ₜ[F] x i
   rw [map_one]
 
+/- English proof (translation)
+Establish `h1 : ∀ i, atV v (c • incV F x) i = compFin F E v c * inclR (F` using `F) (Fv F v) (x i) := fun i => by`. Rewrite using `[← atV_incV]`. Simplify using `only [atV, Pi.smul_apply, smul_eq_mul, map_mul]`. Establish `h2 : ∀ e : E, sigR (Fv F v) σ (inclR (F` using `F) (Fv F v) e) = inclR (F := F) (Fv F v) (σ e) := fun _ => rfl`. Establish `h3` using `congrArg (inclR (F := F) (Fv F v)) hxy`.
+
+Simplify using `only [form, dotProduct, Matrix.mulVec, map_sum, map_mul, map_one] at h3`. Simplify using `only [pairV, dotProduct, Matrix.mulVec, h1, map_mul, sigR_sigR' _ hσ, atV_incV, h2, Matrix.map_apply]`. Rewrite using `[← mul_one (compFin F E v c * a), ← h3]`. Simplify using `only [Finset.mul_sum]`. Conclude with `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => by ring`.
+-/
 private theorem pair_eq {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {n : ℕ}
     {σ : E →ₐ[F] E} (hσ : ∀ x, σ (σ x) = x) (J : Matrix (Fin n) (Fin n) E) (v : Pl F) (x y : Fin n → E)
     (hxy : form σ J x y = 1) (c : AE F E) (a : Fv F v ⊗[F] E) :
@@ -47,6 +61,9 @@ private theorem pair_eq {F E : Type} [Field F] [NumberField F] [Field E] [Number
   simp only [Finset.mul_sum]
   exact Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => by ring
 
+/- English proof (translation)
+Introduce `r hr`. Use `show c • T _ = _`. Rewrite using `[h r hr]`. Use function extensionality and compare the values at `x`. Simplify using `only [tens, Pi.smul_apply, smul_eq_mul, mul_assoc]`.
+-/
 private theorem acts_smul {F : Type} [Field F] [NumberField F] {κ : Type} [Fintype κ] {v : Pl F}
     {T : ((κ → AF F) → ℂ) → (κ → AF F) → ℂ} {φ φ₁ : (κ → Fv F v) → ℂ} (c : ℂ) (h : Acts (evFin F v) T φ φ₁) :
     Acts (evFin F v) (fun Ψ => c • T Ψ) φ (c • φ₁) := by
@@ -56,6 +73,23 @@ private theorem acts_smul {F : Type} [Field F] [NumberField F] {κ : Type} [Fint
   funext x
   simp only [tens, Pi.smul_apply, smul_eq_mul, mul_assoc]
 
+/- English proof (translation)
+Introduce `hP F E _ _ _ _ _ σ B a b G G₁ H H' hC e' he' ei' ev' hl X om om' om₁ om₁' hT hT₁ v l hlinv k hk t hkx φ hφ s`. Establish `hA` using `GlobalTheory.T.theta_action_exists hP`. Establish `P'` using `GlobalTheory.ThK.Inhab.pairV' hT`. Establish `P₁'` using `GlobalTheory.ThK.Inhab.pairV' hT₁`. Establish `hσ : ∀ x, σ (σ x) = x` using `GlobalTheory.AdelicU.cm_conj_conj hT.base.cm`.
+
+Establish `hone : ∀ {n : ℕ} (Y : Spc F E n), (1 : UA σ Y.J) ∈ UAt σ Y (evFin F v)` using `fun Y u _ => by simp [mat]`. Establish `hmem : ∀ φ ∈ SB (Fin (b + 2) × Fin (a + (b + 2)) → Fv F v), ev' v φ ∈ SB (Fin b × Fin (a + b) → Fv F v)` using `fun φ hφ => (hl.2.1 v).2 ▸ Submodule.mem_map_of_mem hφ`. Take `⟨g₀, hg₀, m, u, hu, hL, hkum⟩` from `UpperTheory.unitary_stabilizer_lifts_to_smaller_space F E σ B _ _ _ _ _ _ G.V' G₁.V' H hT.base hT.geo.hV' hC.hH v k hk t hkx`. Take `⟨hU, hLaw⟩` from `GlobalTheory.ThK.EvLawBLeft.globalLaw hP F E σ B a b G G₁ H H' hC e' he' X om om' om₁ om₁' hT hT₁`. Establish `step1 : ∀ φ' ∈ SB (Fin (b + 2) × Fin (a + (b + 2)) → Fv F v), l (ev' v (locOp v (om' (k, 1)) φ')) = GlobalTheory.ThK.LemF.fac X.ν (((a + (b + 2) : ℕ) : ℝ) / 2) t * l (ev' v φ')`.
+
+Introduce `φ' hφ'`. Establish `hact : ∀ ψ ∈ SB (Fin b × Fin (a + b) → Fv F v), Acts (evFin F v) (fun Ψ => GlobalTheory.ThK.LemF.fac X.ν (((a + (b + 2) : ℕ) : ℝ) / 2) t • om₁' (g₀, 1) Ψ) ψ (GlobalTheory.ThK.LemF.fac X.ν (((a + (b + 2) : ℕ) : ℝ) / 2) t • locOp v (om₁' (g₀, 1)) ψ)` using `fun ψ hψ => acts_smul _ (acts_locOp_om hA P₁' hg₀ (hone _) hψ)`. Establish `key` using `GlobalTheory.T.local_part_operator_compatible F E σ B.ψ _ _ _ _ G.V' G.W G₁.V' G₁.W G.M' G₁.M' hT.geo.hM' hT₁.geo.hM' e' ei' ev' hl v (om' (k, 1)) (fun Ψ => GlobalTheory.ThK.LemF.fac X.ν (((a + (b + 2) : ℕ) : ℝ) / 2) t • om₁' (g₀, 1) Ψ) (fun Φ hΦ => by`. Establish `e : om' (k, 1) Φ = om' (u, 1) (om' (m, 1) Φ)`. Rewrite using `[← Module.End.mul_apply, ← map_mul, Prod.mk_mul_mk, one_mul, hkum]`.
+
+Rewrite using `[e, hU u hu _ ((hT.weil'.isUSplitting).pres _ _ hΦ), hLaw t g₀ m hL Φ hΦ])`. Use the proof step `(fun ψ hψ => ⟨_, locOp_mem _ _ _, acts_locOp_om hA P' hk (hone _) hψ⟩)`. Use the proof step `(fun ψ hψ => ⟨_, (SB _).smul_mem _ (locOp_mem _ _ _), hact ψ hψ⟩) φ' hφ'`. Rewrite using `[key, locOp_eq (hmem φ' hφ') ((SB _).smul_mem _ (locOp_mem _ _ _)) (hact _ (hmem φ' hφ')), map_smul, hlinv g₀ hg₀ _ (hmem φ' hφ'), smul_eq_mul]`. Establish `hz : ∀ ψ ∈ SB (Fin (b + 2) × Fin (a + (b + 2)) → Fv F v), evS B G.M' v (ev' v) H H' ψ 0 = ev' v ψ`.
+
+Introduce `ψ hψ`. Rewrite using `[evS, uS_zero, partFin, smul_zero, locOp_of_fix (fun Φ _ => rho_zero' _ _ Φ) hψ]`. Establish `h11 : ∀ ψ ∈ SB (Fin (b + 2) × Fin (a + (b + 2)) → Fv F v), locOp v (om' ((1 : UA σ G.V'.J), (1 : UA σ G.W.J))) ψ = ψ` using `fun ψ hψ => locOp_of_fix (fun Φ _ => by show (om' 1) Φ = Φ`. Rewrite using `[map_one]`. Use the proof step `rfl) hψ`.
+
+Establish `hinv : mat k⁻¹ *ᵥ incV F H.x = ((t⁻¹ : (AE F E)ˣ) : AE F E) • incV F H.x`. Establish `h1 : mat k⁻¹ * mat k = 1` using `by show mat (k⁻¹ * k) = 1`. Rewrite using `[inv_mul_cancel]`. Both sides reduce to the same expression. Establish `h2` using `congrArg (fun z => ((t⁻¹ : (AE F E)ˣ) : AE F E) • mat k⁻¹ *ᵥ z) hkx`.
+
+Simplify using `only [Matrix.mulVec_mulVec, h1, Matrix.one_mulVec, Matrix.mulVec_smul, smul_smul, Units.inv_mul, one_smul] at h2`. Conclude with `h2.symm`. Establish `h1x : mat (1 : UA σ G.V'.J)⁻¹ *ᵥ incV F H.x = (1 : AE F E) • incV F H.x`. Rewrite using `[inv_one, one_smul]`. Conclude with `Matrix.one_mulVec _`.
+
+Establish `A` using `UpperTheory.local_theta_partition_triple_alt hP F E σ B a b G G₁ H H' hC e' he' ei' ev' hl X om om' om₁ om₁' hT hT₁ v k hk φ hφ (fun i => sigR (Fv F v) σ (compFin F E v (t : AE F E) * s) * atV v (incV F H.y) i) 0`. Establish `A1` using `UpperTheory.local_theta_partition_triple_alt hP F E σ B a b G G₁ H H' hC e' he' ei' ev' hl X om om' om₁ om₁' hT hT₁ v 1 (hone _) φ hφ (fun i => sigR (Fv F v) σ (compFin F E v (t : AE F E) * s) * atV v (incV F H.y) i) 0`. Rewrite `A` using `[hinv, pair_eq hσ _ v _ _ hC.hH.xy, zero_add, ← mul_assoc, ← map_mul, Units.inv_mul, map_one, one_mul, hz _ (locOp_mem _ _ _)]`. Rewrite `A1` using `[h1x, pair_eq hσ _ v _ _ hC.hH.xy, zero_add, map_one, one_mul, h11 _ (locOp_mem _ _ _), h11 _ hφ, hz _ (locOp_mem _ _ _)]`. Rewrite using `[← A, ← A1, step1 _ (locOp_mem _ _ _)]`.
+-/
 theorem UpperTheory.local_part_evaluation_config_two :
     GlobalTheory.FunPr.Hypotheses₂ → ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E) (a b : ℕ)
                  (G : Geo σ a (b + 2)) (G₁ : Geo σ a b) (H : Plane E (b + 2) b) (H' : Plane E (a + (b + 2)) (a + b)), CfgB B G G₁ H H' →

@@ -13,6 +13,9 @@ open PI.UnitaryGroupMassFormula.CubeRelationOfParallelogram (Good simeq_iff_good
 
 variable {p : ℕ} [Fact p.Prime] {l ex ph : PowerSeries ℂ_[p]}
 
+/- English proof (translation)
+Establish `h` using `simeq_ren (p := p) (fun j => r (e.symm j)) (hG κ n (fun j => a (e.symm j)) (fun j i => ha _ i))`. Rewrite `h` using `[PhOn_eq, ren_PhVF hex0 hl0 _ _ _ (fun j => constantCoeff_X j), ren_GramRhs hex0 hl0 e]`. Simplify using `only [ren_X, Equiv.symm_apply_apply] at h`. Establish `eA : PhVF l ex ph (fun j => a (e.symm j)) (fun j => X (r (e.symm j)) : Fin n → MvPowerSeries τ ℂ_[p]) = PhVF l ex ph a (fun x => X (r x))` using `PhVF_equiv e a (fun x => X (r x))`. Rewrite `h` using `[eA]`. Then use the resulting hypothesis.
+-/
 theorem block_simeq (hl0 : PowerSeries.constantCoeff l = 0) (hex0 : PowerSeries.constantCoeff ex = 0)
     {S : Set (ℂ_[p] × ℂ_[p])}
     (hG : ∀ (κ : Type) [Fintype κ] (k : ℕ) (A : Fin k → κ → ℂ_[p] × ℂ_[p]), (∀ j i, A j i ∈ S) →
@@ -27,6 +30,13 @@ theorem block_simeq (hl0 : PowerSeries.constantCoeff l = 0) (hex0 : PowerSeries.
       PhVF l ex ph a (fun x => X (r x)) := PhVF_equiv e a (fun x => X (r x))
   rwa [eA] at h
 
+/- English proof (translation)
+Set `eι : ι ≃ Fin (Fintype.card ι)` to `Fintype.equivFin ι`. Set `eι' : ι' ≃ Fin (Fintype.card ι')` to `Fintype.equivFin ι'`. Establish `hlr : ∀ i g, (Equiv.sumCongr eι eι').trans finSumFinEquiv (Sum.inl i) < (Equiv.sumCongr eι eι').trans finSumFinEquiv (Sum.inr g)`. Introduce `i g`. Simplify using `only [Equiv.trans_apply, Equiv.sumCongr_apply, Sum.map_inl, Sum.map_inr, finSumFinEquiv_apply_left, finSumFinEquiv_apply_right, Fin.lt_def, Fin.val_castAdd, Fin.val_natAdd]`.
+
+Use `(eι i).isLt` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Use `⟨(Equiv.sumCongr eι eι').trans finSumFinEquiv, eι, eι', ?_, ?_, hlr, fun g i h => lt_asymm h (hlr i g)⟩` and prove the remaining obligations. Introduce `i i'`. Simplify using `only [Equiv.trans_apply, Equiv.sumCongr_apply, Sum.map_inl, finSumFinEquiv_apply_left]`.
+
+Rewrite using `[Fin.lt_def, Fin.lt_def, Fin.val_castAdd, Fin.val_castAdd]`. Introduce `g g'`. Simplify using `only [Equiv.trans_apply, Equiv.sumCongr_apply, Sum.map_inr, finSumFinEquiv_apply_right]`. Rewrite using `[Fin.lt_def, Fin.lt_def, Fin.val_natAdd, Fin.val_natAdd]`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem numbering (ι ι' : Type) [Fintype ι] [Fintype ι'] :
     ∃ (E : ι ⊕ ι' ≃ Fin (Fintype.card ι + Fintype.card ι')) (eι : ι ≃ Fin (Fintype.card ι))
       (eι' : ι' ≃ Fin (Fintype.card ι')),
@@ -53,6 +63,13 @@ theorem numbering (ι ι' : Type) [Fintype ι] [Fintype ι'] :
     rw [Fin.lt_def, Fin.lt_def, Fin.val_natAdd, Fin.val_natAdd]
     omega
 
+/- English proof (translation)
+Unfold `sdRF sdRF'`. Rewrite using `[← Finset.sum_sub_distrib]`. Use `good_sum _ _ fun f _ => ?_` and prove the remaining obligations. Rewrite using `[← Finset.sum_sub_distrib]`. Use `good_sum _ _ fun g _ => ?_` and prove the remaining obligations.
+
+Establish `hα` using `hP_mem h0 hsw hadd hmul (a f) (a' g) (ha f) (ha' g)`. Establish `h` using `simeq_ren (p := p) (![Sum.inl f, Sum.inr g] : Fin 2 → ι ⊕ ι') (hconj _ hα)`. Simplify using `only [Xv] at h`. Rewrite `h` using `[ren_be hex0 hl0 _ (cc_mulBy hex0 hl0 _ (constantCoeff_X _)) (constantCoeff_X _), ren_be hex0 hl0 _ (constantCoeff_X _) (cc_mulBy hex0 hl0 _ (constantCoeff_X _)), ren_mulBy hl0 _ _ (constantCoeff_X _), ren_mulBy hl0 _ _ (constantCoeff_X _)]`. Simplify using `only [ren_X, Matrix.cons_val_zero, Matrix.cons_val_one] at h`.
+
+Conclude with `(simeq_iff_good _ _).mp h`.
+-/
 theorem cross (hl0 : PowerSeries.constantCoeff l = 0) (hex0 : PowerSeries.constantCoeff ex = 0)
     {S : Set (ℂ_[p] × ℂ_[p])} (h0 : (0 : ℂ_[p] × ℂ_[p]) ∈ S) (hsw : ∀ α ∈ S, α.swap ∈ S)
     (hadd : ∀ α ∈ S, ∀ β ∈ S, α + β ∈ S) (hmul : ∀ α ∈ S, ∀ β ∈ S, α * β ∈ S)
@@ -76,6 +93,15 @@ theorem cross (hl0 : PowerSeries.constantCoeff l = 0) (hex0 : PowerSeries.consta
   simp only [ren_X, Matrix.cons_val_zero, Matrix.cons_val_one] at h
   exact (simeq_iff_good _ _).mp h
 
+/- English proof (translation)
+Take `⟨E, eι, eι', hll, hrr, hlr, hrl⟩` from `numbering ι ι'`. Establish `hS : ∀ x k, Sum.elim a a' x k ∈ S`. Introduce and unpack `(e | e) k`. Use `exacts [ha e k, ha' e k]`. Establish `hF` using `block_simeq hl0 hex0 hG E (fun x => x) (Sum.elim a a') hS`.
+
+Rewrite `hF` using `[gr_split (E := E) eι eι' hll hrr hlr hrl a a']`. Establish `hA` using `block_simeq hl0 hex0 hG eι (fun i => (Sum.inl i : ι ⊕ ι')) a ha`. Establish `hA'` using `block_simeq hl0 hex0 hG eι' (fun g => (Sum.inr g : ι ⊕ ι')) a' ha'`. Establish `first : Good (PhOn l ex ph (Sum.elim a a') - PhVF l ex ph a (fun e => X (Sum.inl e)) - PhVF l ex ph a' (fun e => X (Sum.inr e)) - sdRF l ex ph a a')`. Establish `g` using `good_sub (good_sub ((simeq_iff_good _ _).mp hF) ((simeq_iff_good _ _).mp hA)) ((simeq_iff_good _ _).mp hA')`.
+
+Rewrite `g` using `[← PhOn_eq]`. Use `g using 1` and compare the differences between its conclusion and the goal. Normalize the expressions using the abelian group laws. Use `⟨first, ?_⟩` and prove the remaining obligations. Establish `g` using `good_add first (cross hl0 hex0 h0 hsw hadd hmul hconj a a' ha ha')`.
+
+Rewrite using `[simeq_iff_good]`. Use `g using 1` and compare the differences between its conclusion and the goal. Normalize the expressions using the abelian group laws.
+-/
 theorem core (hl0 : PowerSeries.constantCoeff l = 0) (hex0 : PowerSeries.constantCoeff ex = 0)
     {S : Set (ℂ_[p] × ℂ_[p])} (h0 : (0 : ℂ_[p] × ℂ_[p]) ∈ S) (hsw : ∀ α ∈ S, α.swap ∈ S)
     (hadd : ∀ α ∈ S, ∀ β ∈ S, α + β ∈ S) (hmul : ∀ α ∈ S, ∀ β ∈ S, α * β ∈ S)
@@ -111,6 +137,9 @@ theorem core (hl0 : PowerSeries.constantCoeff l = 0) (hex0 : PowerSeries.constan
   convert g using 1
   abel
 
+/- English proof (translation)
+Introduce `p _ l ex ph hl0 hex0 _ _ S h0 hsw hadd hmul hG hconj κ ι ι' _ _ _ a a' ha ha'`. Conclude with `core hl0 hex0 h0 hsw hadd hmul (fun κ _ k A hA => hG κ k A hA) hconj a a' ha ha'`.
+-/
 theorem sDiffGram_main : PI.SDiffGram.SDiffGram := by
   intro p _ l ex ph hl0 hex0 _ _ S h0 hsw hadd hmul hG hconj κ ι ι' _ _ _ a a' ha ha'
   exact core hl0 hex0 h0 hsw hadd hmul (fun κ _ k A hA => hG κ k A hA) hconj a a' ha ha'

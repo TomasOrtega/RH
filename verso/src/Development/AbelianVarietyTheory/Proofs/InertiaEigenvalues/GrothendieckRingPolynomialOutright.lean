@@ -6,6 +6,9 @@ import Development.AbelianVarietyTheory.PublishedTheorems.TwistedTraceFormula.Gr
 
 namespace GlobalTheory
 
+/- English proof (translation)
+The claim follows from `CompanionTheory.Groth.grothendieckRingPolynomial_of_seg CompanionTheory.RgGu.segmentRepresentation`.
+-/
 theorem grothendieckRingPolynomial_outright : GlobalTheory.Published.GrothendieckRingPolynomial :=
   CompanionTheory.Groth.grothendieckRingPolynomial_of_seg CompanionTheory.RgGu.segmentRepresentation
 

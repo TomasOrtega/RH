@@ -9,12 +9,28 @@ namespace GlobalTheory.RSJ
 
 open IsDedekindDomain.HeightOneSpectrum WithZero
 
+/- English proof (translation)
+Rewrite using `[← map_natCast (algebraMap E (FiniteAdeleRing (𝓞 E) E)) N]`. Conclude with `valuedAdicCompletion_eq_valuation' v (N : E)`.
+-/
 theorem valued_natCast_apply (E : Type) [Field E] [NumberField E] (N : ℕ)
     (v : HeightOneSpectrum (𝓞 E)) :
     Valued.v ((N : FiniteAdeleRing (𝓞 E) E) v) = v.valuation E (N : E) := by
   rw [← map_natCast (algebraMap E (FiniteAdeleRing (𝓞 E) E)) N]
   exact valuedAdicCompletion_eq_valuation' v (N : E)
 
+/- English proof (translation)
+Introduce `E _ _ N hN J hJ x`. Establish `hN0 : (N : E) ≠ 0` using `Nat.cast_ne_zero.2 hN.ne'`. Establish `hc0 : ∀ v : HeightOneSpectrum (𝓞 E), v.valuation E (N : E) ≠ 0` using `fun v => (Valuation.ne_zero_iff _).2 hN0`. Establish `hc : ∀ v : HeightOneSpectrum (𝓞 E), exp (-FractionalIdeal.count E v (J : FractionalIdeal (𝓞 E)⁰ E)) = v.valuation E (N : E)`. Introduce `v`.
+
+Rewrite using `[hJ, GroundTheory.Global.count_spanSingleton v hN0, neg_neg, exp_log (hc0 v)]`. Rewrite using `[GroundTheory.Global.mem_idealFiniteAdeles]`. Simplify using `only [hc]`. Establish `hunit : (N : FiniteAdeleRing (𝓞 E) E) * algebraMap E (FiniteAdeleRing (𝓞 E) E) (N : E)⁻¹ = 1`. Rewrite using `[← map_natCast (algebraMap E (FiniteAdeleRing (𝓞 E) E)) N, ← map_mul, mul_inv_cancel₀ hN0, map_one]`.
+
+Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨z, hz, rfl⟩ v`. Express the relevant statement in the definitionally equal form `Valued.v ((N : FiniteAdeleRing (𝓞 E) E) v * z v) ≤ _`. Rewrite using `[map_mul, valued_natCast_apply]`. Establish `: Valued.v (z v) ≤ 1`.
+
+Establish `h` using `hz v`. Rewrite `h` using `[mem_adicCompletionIntegers]`. Then use the resulting hypothesis. Combine the equalities or inequalities in the displayed calculation. Introduce `hx`. Use `⟨algebraMap E (FiniteAdeleRing (𝓞 E) E) (N : E)⁻¹ * x, fun v => ?_, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[mem_adicCompletionIntegers]`. Express the relevant statement in the definitionally equal form `Valued.v ((algebraMap E (FiniteAdeleRing (𝓞 E) E) (N : E)⁻¹) v * x v) ≤ 1`. Rewrite using `[map_mul]`. Express the relevant statement in the definitionally equal form `Valued.v (((N : E)⁻¹ : E) : v.adicCompletion E) * Valued.v (x v) ≤ 1`. Rewrite using `[valuedAdicCompletion_eq_valuation' v, map_inv₀]`.
+
+Conclude with `(GroundTheory.Global.inv_mul_le_one_iff_withZero (hc0 v)).2 (hx v)`. Rewrite using `[← mul_assoc, hunit, one_mul]`.
+-/
 theorem natLat_iff_mem_idealFiniteAdeles : ∀ (E : Type) [Field E] [NumberField E] (N : ℕ), 0 < N →
     ∀ (J : (FractionalIdeal (𝓞 E)⁰ E)ˣ),
       (J : FractionalIdeal (𝓞 E)⁰ E) = FractionalIdeal.spanSingleton (𝓞 E)⁰ (N : E) →

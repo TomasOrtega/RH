@@ -6,12 +6,24 @@ open NumberField IsDedekindDomain Formalism.BasicNotions Formalism.HermitianLatt
 
 namespace GlobalTheory.MomT.SplitK
 
+/- English proof (translation)
+Establish `h1 : IsIntegral ℤ r` using `(isIntegral_algHom_iff (algebraMap ℚ E).toIntAlgHom (algebraMap ℚ E).injective).1 (by simpa using h)`. Simplify using `using IsIntegrallyClosed.isIntegral_iff.1 h1`.
+-/
 theorem rat_int_of_isIntegral {E : Type} [Field E] [CharZero E] (r : ℚ) (h : IsIntegral ℤ (r : E)) :
     ∃ m : ℤ, (m : ℚ) = r := by
   have h1 : IsIntegral ℤ r :=
     (isIntegral_algHom_iff (algebraMap ℚ E).toIntAlgHom (algebraMap ℚ E).injective).1 (by simpa using h)
   simpa using IsIntegrallyClosed.isIntegral_iff.1 h1
 
+/- English proof (translation)
+Establish `h1 : IsIntegral ℤ (((d : ℚ) * c) ^ 2)`. Establish `: ((d : ℚ) * c) ^ 2 = algebraMap ℤ ℚ (d * k)`. Simplify using `only [eq_intCast]`. Use `push_cast`. Rewrite using `[← h]`.
+
+Expand and normalize the polynomial expressions, which then agree. Rewrite using `[this]`. Conclude with `isIntegral_algebraMap`. Take `⟨e, he⟩` from `rat_int_of_isIntegral (E := ℚ) ((d : ℚ) * c) (by simpa using IsIntegral.of_pow two_pos h1)`. Establish `h2 : e ^ 2 = d * k`.
+
+Establish `: (e : ℚ) ^ 2 = d * k` using `by rw [he, ← h]; ring`. Conclude with `this` after adjusting the coercions. Take `⟨n, hn⟩` from `(Nat.prime_iff_prime_int.1 hd).dvd_of_dvd_pow (n := 2) ⟨k, h2⟩`. Use `⟨n, ?_⟩` and prove the remaining obligations. Establish `hd0 : (d : ℚ) ≠ 0` using `by exact_mod_cast hd.ne_zero`.
+
+Apply `mul_left_cancel₀ hd0` to reduce the goal to its premises. Rewrite using `[← he, hn]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem int_of_prime_mul_sq {d : ℕ} (hd : d.Prime) (c : ℚ) (k : ℤ) (h : (d : ℚ) * c ^ 2 = k) :
     ∃ n : ℤ, (n : ℚ) = c := by
   have h1 : IsIntegral ℤ (((d : ℚ) * c) ^ 2) := by
@@ -29,6 +41,13 @@ theorem int_of_prime_mul_sq {d : ℕ} (hd : d.Prime) (c : ℚ) (k : ℤ) (h : (d
   apply mul_left_cancel₀ hd0
   rw [← he, hn]; push_cast; ring
 
+/- English proof (translation)
+Establish `hg : m.gcd p = 1`. Rewrite using `[Int.gcd_comm]`. Conclude with `Int.isCoprime_iff_gcd_eq_one.1 ((Nat.prime_iff_prime_int.1 hp).irreducible.coprime_iff_not_dvd.2 hm)`. Establish `h1 : jacobiSym (-d * n ^ 2) p = 1`. Rewrite using `[← jacobiSym.sq_one' hg]`.
+
+Apply `jacobiSym.mod_left'` to reduce the goal to its premises. Conclude with `(Int.emod_emod_of_dvd _ (dvd_refl _)).symm.trans ((Int.emod_emod_of_dvd _ (dvd_refl _)).trans (Int.modEq_iff_dvd.2 ⟨4, by linear_combination h⟩))`. Rewrite `h1` using `[jacobiSym.mul_left, jacobiSym.pow_left]`. Break down `jacobiSym.trichotomy (-d) p with h2 | h2 | h2` into its components or cases. Rewrite `h1` using `[h2]`.
+
+Simplify using `at h1`. Conclude with `h2`. Rewrite `h1` using `[h2]`. Use polynomial arithmetic with `[sq_nonneg (jacobiSym n p)]`.
+-/
 theorem jacobi_of_eq {p : ℕ} (hp : p.Prime) (d m n : ℤ) (h : m ^ 2 + d * n ^ 2 = 4 * p)
     (hm : ¬ (p : ℤ) ∣ m) : jacobiSym (-d) p = 1 := by
   have hg : m.gcd p = 1 := by
@@ -45,6 +64,13 @@ theorem jacobi_of_eq {p : ℕ} (hp : p.Prime) (d m n : ℤ) (h : m ^ 2 + d * n ^
   · exact h2
   · rw [h2] at h1; nlinarith [sq_nonneg (jacobiSym n p)]
 
+/- English proof (translation)
+Establish `hall : ∀ τ τ' : D.what₂.Tau, TaylorLogMetric.embT D τ (s.iE x) = TaylorLogMetric.embT D τ' (s.iE x)` using `fun τ τ' => by`. Establish `h1` using `hs.1 (s.iT.symm τ) x`. Establish `h2` using `hs.1 (s.iT.symm τ') x`. Rewrite `h1`, `h2` using `[Equiv.apply_symm_apply]`. Rewrite using `[← h1, ← h2, hx (s.iT.symm τ) (s.iT.symm τ')]`.
+
+Set `τ₀ : D.what₂.Tau` to `D.eTau.symm 1`. Establish `h` using `GlobalTheory.InducedType.sum_eq_trace D (s.iE x)`. Rewrite `h` using `[← GlobalTheory.InducedType.restrict_K D τ₀, Finset.sum_congr rfl (fun τ _ => hall τ τ₀), Finset.sum_const, ← map_nsmul]`. Establish `h2` using `(TaylorLogMetric.embT D τ₀).injective h`. Rewrite `h2` using `[nsmul_eq_mul]`.
+
+Establish `hc : (((Finset.univ : Finset D.what₂.Tau).card : ℕ) : D.host.E) ≠ 0`. Conclude with `(Finset.card_pos.2 ⟨τ₀, Finset.mem_univ _⟩).ne'` after adjusting the coercions. Rewrite using `[eq_div_of_mul_eq hc ((mul_comm _ _).trans h2)]`. Conclude with `div_mem (Subtype.property _) (natCast_mem _ _)`.
+-/
 theorem mem_K {D : D7} {X : Fields} (s : Seam D X) (hs : s.Ok) {x : X.E} (hx : x ∈ X.Kq) :
     s.iE x ∈ D.host.K := by
   have hall : ∀ τ τ' : D.what₂.Tau, TaylorLogMetric.embT D τ (s.iE x) = TaylorLogMetric.embT D τ' (s.iE x) := fun τ τ' => by
@@ -63,6 +89,25 @@ theorem mem_K {D : D7} {X : Fields} (s : Seam D X) (hs : s.Ok) {x : X.E} (hx : x
   rw [eq_div_of_mul_eq hc ((mul_comm _ _).trans h2)]
   exact div_mem (Subtype.property _) (natCast_mem _ _)
 
+/- English proof (translation)
+Introduce `D X s ϖ p hs hK`. Establish `hmem` using `mem_K s hs hK`. Use `⟨?_, fun hp _ hN hco => ?_⟩` and prove the remaining obligations. Establish `h1 : IsIntegral ℤ (s.iE (ϖ : X.E))` using `IsIntegral.map (s.iE : X.E →+* D.host.E).toIntAlgHom ϖ.isIntegral_coe`. Establish `h2 : IsIntegral ℤ (⟨_, hmem⟩ : D.host.K)` using `(isIntegral_algHom_iff D.host.K.val.toRingHom.toIntAlgHom D.host.K.val.toRingHom.injective).1 h1`.
+
+Conclude with `⟨⟨_, h2⟩, rfl⟩`. Take `⟨a, b, hab⟩` from `GlobalTheory.QuadSubfield.exists_coords D hmem`. Establish `hc : s.iE ((X.conjO ϖ : 𝓞 X.E) : X.E) = a - b * D.host.sqrtMinusD`. Rewrite using `[← GlobalTheory.QuadSubfield.conj_coords, ← hab, ← hs.2]`. Both sides reduce to the same expression.
+
+Establish `hsum : ((ϖ + X.conjO ϖ : 𝓞 X.E) : X.E) = ((2 * a : ℚ) : X.E)`. Apply `s.iE.injective` to reduce the goal to its premises. Rewrite using `[map_ratCast]`. Use `push_cast`. Rewrite using `[map_add, hc, hab]`.
+
+Expand and normalize the polynomial expressions, which then agree. Take `⟨m, hm⟩` from `rat_int_of_isIntegral (E := X.E) (2 * a) (hsum ▸ (ϖ + X.conjO ϖ).isIntegral_coe)`. Establish `hprod : a ^ 2 + D.host.d * b ^ 2 = p`. Establish `h1` using `congrArg (fun z : 𝓞 X.E => s.iE (z : X.E)) hN`. Move the coercions through the operations in `at h1`.
+
+Rewrite `h1` using `[map_mul, hc, hab, map_natCast]`. Establish `h2 : (a : D.host.E) ^ 2 + D.host.d * (b : D.host.E) ^ 2 = p`. Take the linear combination `h1 + (b : D.host.E) ^ 2 * D.host.sqrtMinusD_sq`. Conclude with `h2` after adjusting the coercions. Take `⟨n, hn⟩` from `int_of_prime_mul_sq D.host.hyp.2.1 (2 * b) (4 * p - m ^ 2) (by push_cast; rw [hm]; linear_combination 4 * hprod)`.
+
+Use `jacobi_of_eq hp _ m n ?_ ?_` and prove the remaining obligations. Establish `: (m : ℚ) ^ 2 + D.host.d * (n : ℚ) ^ 2 = 4 * p`. Rewrite using `[hm, hn]`. Take the linear combination `4 * hprod`. Conclude with `this` after adjusting the coercions.
+
+Introduce and unpack `⟨t, ht⟩`. Establish `h1 : ϖ + X.conjO ϖ = (p : 𝓞 X.E) * (t : 𝓞 X.E)`. Apply `RingOfIntegers.ext` to reduce the goal to its premises. Rewrite using `[hsum, ← hm, ht]`. Simplify using the standard rewrite rules.
+
+Rewrite `h1` using `[← hN]`. Establish `u1 : IsUnit ϖ` using `hco.isUnit_of_dvd' dvd_rfl ⟨X.conjO ϖ * t - 1, by linear_combination h1⟩`. Establish `u2 : IsUnit (X.conjO ϖ)` using `u1.map _`. Establish `u3 : IsUnit (algebraMap ℤ (𝓞 X.E) (p : ℤ))`. Simplify `u1.mul u2` using `[hN]`.
+
+Use `Algebra.IsIntegral.isLocalHom ℤ (𝓞 X.E)` as an intermediate fact. Conclude with `(Nat.prime_iff_prime_int.1 hp).not_unit (isUnit_of_map_unit _ _ u3)`.
+-/
 theorem splitk : ∀ (D : D7) (X : Fields) (s : Seam D X) (ϖ : 𝓞 X.E) (p : ℕ), s.Ok → (ϖ : X.E) ∈ X.Kq → (∃ κ : 𝓞 D.host.K, ((κ : D.host.K) : D.host.E) = s.iE (ϖ : X.E)) ∧ (p.Prime → p ≠ 2 → ϖ * X.conjO ϖ = (p : 𝓞 X.E) → IsCoprime ϖ (X.conjO ϖ) → jacobiSym (-(D.host.d : ℤ)) p = 1) := by
   intro D X s ϖ p hs hK
   have hmem := mem_K s hs hK

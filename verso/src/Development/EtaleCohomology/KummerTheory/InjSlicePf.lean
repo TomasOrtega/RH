@@ -9,6 +9,9 @@ def ForgetInj : Prop := ∀ (R : Type) [CommRing R] (F : Shv R) [Injective F] (S
   ∃ h : Presheaf.IsSheaf (Scheme.etaleTopology.over S) ((Over.forget S).op ⋙ F.obj),
     Injective (⟨_, h⟩ : Sheaf (Scheme.etaleTopology.over S) (ModuleCat.{1} (ULift.{1} R)))
 
+/- English proof (translation)
+Establish `adj` using `(Over.mapPullbackAdj p).sheafPushforwardContinuous (E := ModuleCat.{1} (ULift.{1} R)) (Scheme.etaleTopology.over X) (Scheme.etaleTopology.over S)`. Establish `: ((Over.map p).sheafPushforwardContinuous (ModuleCat.{1} (ULift.{1} R)) (Scheme.etaleTopology.over X) (Scheme.etaleTopology.over S)).PreservesMonomorphisms` using `inferInstance`. Conclude with `Injective.injective_of_adjoint adj G`.
+-/
 theorem pushPullback_inj {R : Type} [CommRing R] {X S : Scheme.{0}} (p : X ⟶ S)
     (G : Sheaf (Scheme.etaleTopology.over X) (ModuleCat.{1} (ULift.{1} R))) [Injective G] :
     Injective (((Over.pullback p).sheafPushforwardContinuous (ModuleCat.{1} (ULift.{1} R))
@@ -19,6 +22,9 @@ theorem pushPullback_inj {R : Type} [CommRing R] {X S : Scheme.{0}} (p : X ⟶ S
       (Scheme.etaleTopology.over X) (Scheme.etaleTopology.over S)).PreservesMonomorphisms := inferInstance
   exact Injective.injective_of_adjoint adj G
 
+/- English proof (translation)
+Introduce `R _ F _ X S p`. Take `⟨hX, iX⟩` from `hF R F X`. Use `⟨?_, hF R F S⟩` and prove the remaining obligations. Set `G : Sheaf (Scheme.etaleTopology.over X) (ModuleCat.{1} (ULift.{1} R))` to `⟨_, hX⟩`. Conclude with `⟨(((Over.pullback p).sheafPushforwardContinuous (ModuleCat.{1} (ULift.{1} R)) (Scheme.etaleTopology.over S) (Scheme.etaleTopology.over X)).obj G).2, pushPullback_inj p G⟩`.
+-/
 theorem InjSlice_of (hF : ForgetInj) : InjSlice := by
   intro R _ F _ X S p
   obtain ⟨hX, iX⟩ := hF R F X

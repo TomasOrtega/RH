@@ -20,12 +20,18 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar GlobalTheory.TypeR
 
 namespace GlobalTheory.CenLocAt
 
+/- English proof (translation)
+The claim follows from `GlobalTheory.HeightCounting.JumpsAt.evLgG_of_forall fun _ _ _ _ _ _ _ _ _ _ _ _ _ _ hE _ _ => hE.elim fun e => ⟨NMore.ad e⟩`.
+-/
 theorem exists_ad (hL : GlobalTheory.Published.LocalLanglandsGL) :
     AtMem hL fun _ _ _ _ _ _ _ _ t _ _ c => Nonempty (MtAd t.r.Y c.a.all.gal.mt) :=
   GlobalTheory.HeightCounting.JumpsAt.evLgG_of_forall fun _ _ _ _ _ _ _ _ _ _ _ _ _ _ hE _ _ => hE.elim fun e => ⟨NMore.ad e⟩
 
 set_option maxHeartbeats 2000000 in
 
+/- English proof (translation)
+Introduce `hL` and use `Model.AtMem.imp (Model.AtMem.and (Model.AtMem.and (GlobalTheory.T.central_rational_at_member hL) (GlobalTheory.T.action_read_at_member hL)) (Model.AtMem.and (GlobalTheory.T.central_local_frame_at_member hL) (exists_ad hL))) fun _ _ _ _ _ _ _ _ t _ _ _ h => h.2.2.elim fun ad => ce …`.
+-/
 theorem cenLoc_at : ∀ hL : GlobalTheory.Published.LocalLanglandsGL,
     AtMem hL fun _ _ _ _ w Z _ _ _ _ _ c => CenLoc (w.D Z) c.a.all.gal.mt := fun hL =>
   Model.AtMem.imp (Model.AtMem.and (Model.AtMem.and (GlobalTheory.T.central_rational_at_member hL) (GlobalTheory.T.action_read_at_member hL)) (Model.AtMem.and (GlobalTheory.T.central_local_frame_at_member hL) (exists_ad hL)))

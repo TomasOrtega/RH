@@ -6,5 +6,8 @@ import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.SemisimpleOfIn
 import Formalism.LocalToGlobal.NormalizedHeckeFactors.CoverStd
 open Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotions.N Formalism.ConjugateSelfDual ReciprocityTheory.Gal ReciprocityTheory.Aut Formalism.AUTREP Formalism.L2 NumberField IsDedekindDomain Polynomial GlobalTheory.EtaJoin GlobalTheory.CoefDuty
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.OChoose.oChoose | exact GlobalTheory.OChoose.oChoose | (intros; apply GlobalTheory.OChoose.oChoose <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.exists_finite_chosen_set : GlobalTheory.TwSys.Cheb → ∀ (D : D7), SumRepresentations.Conclusion41 D → GlobalTheory.SplitCoef.OSplit D → ∀ i : D.nd.Loc, ZDecomp D.nd i → Live D.nd i → ∃ S : Finset ℂ, Chosen D.nd D.naut i ↑S := by
   first | exact @GlobalTheory.OChoose.oChoose | exact GlobalTheory.OChoose.oChoose | (intros; apply GlobalTheory.OChoose.oChoose <;> assumption)

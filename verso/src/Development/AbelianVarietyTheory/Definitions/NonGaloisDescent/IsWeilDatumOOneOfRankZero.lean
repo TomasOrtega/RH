@@ -101,12 +101,18 @@ variable {ψ : AddChar (AF D.host.F) ℂ} {V W : HSp D} {χV χW : (AE D)ˣ →*
 
 open scoped ComplexOrder in
 
+/- English proof (translation)
+Establish `h1` using `h.sigOK τ`. Rewrite `h1` using `[h.pos τ]`. Conclude with `Formalism.IndefR.Fin.Lifts.posDef_of_sig _ h1`.
+-/
 theorem SWSetup.posDef {νV 𝓗 νW 𝓖 μ 𝓕 fr} (h : SWSetup ψ V W χV χW om νV 𝓗 νW 𝓖 μ 𝓕 fr) (τ : D.host.E →+* ℂ) :
     (V.gram.map τ).PosDef := by
   have h1 := h.sigOK τ
   rw [h.pos τ] at h1
   exact Formalism.IndefR.Fin.Lifts.posDef_of_sig _ h1
 
+/- English proof (translation)
+Set `b` to `Module.finBasisOfFinrankEq D.host.E Y.1 Y.2.1`. Use `⟨(fun a j => (b j).1.1 a, fun a j => (b j).1.2 a), ?_⟩` and prove the remaining obligations. Establish `h` using `congrArg (Submodule.map Y.1.subtype) b.span_eq`. Rewrite `h` using `[Submodule.map_span, Submodule.map_top, Submodule.range_subtype, ← Set.range_comp]`. Conclude with `h`.
+-/
 theorem exists_lagFrame (W : HSp D) (Y : Lag W) : ∃ C, IsLagFrame W Y C := by
   let b := Module.finBasisOfFinrankEq D.host.E Y.1 Y.2.1
   refine ⟨(fun a j => (b j).1.1 a, fun a j => (b j).1.2 a), ?_⟩
@@ -123,6 +129,11 @@ def Lag.diag (W : HSp D) : Lag W :=
 
 instance (W : HSp D) : Inhabited (Lag W) := ⟨Lag.diag W⟩
 
+/- English proof (translation)
+Establish `h` using `congrArg (Submodule.map (LinearMap.prod (LinearMap.id : (Fin W.rank → D.host.E) →ₗ[D.host.E] _) LinearMap.id)) (Pi.basisFun D.host.E (Fin W.rank)).span_eq`. Rewrite `h` using `[Submodule.map_span, Submodule.map_top, ← Set.range_comp]`. Use `Eq.trans ?_ h` and prove the remaining obligations. Use `congr 2`. Use function extensionality and compare the values at `j`.
+
+Apply the tactic sequence `ext a <;> simp [Matrix.one_apply, Pi.single_apply]`.
+-/
 theorem isLagFrame_diag (W : HSp D) : IsLagFrame W (Lag.diag W) (1, 1) := by
   have h := congrArg (Submodule.map (LinearMap.prod (LinearMap.id : (Fin W.rank → D.host.E) →ₗ[D.host.E] _) LinearMap.id))
     (Pi.basisFun D.host.E (Fin W.rank)).span_eq
@@ -132,14 +143,25 @@ theorem isLagFrame_diag (W : HSp D) : IsLagFrame W (Lag.diag W) (1, 1) := by
   funext j
   ext a <;> simp [Matrix.one_apply, Pi.single_apply]
 
+/- English proof (translation)
+Unfold `ratMul`. Rewrite using `[Matrix.map_one _ (map_zero _) (map_one _), Matrix.one_mul]`.
+-/
 theorem ratMul_one {a c : ℕ} (u : Mx D a c) : ratMul 1 u = u := by
   unfold ratMul
   rw [Matrix.map_one _ (map_zero _) (map_one _), Matrix.one_mul]
 
+/- English proof (translation)
+Simplify using `only [lagTerm, thetaIP, ratMul_one, mul_comm]`.
+-/
 theorem lagTerm_one_one (μ : Measure (WO V W)) (𝓕 : Set (WO V W)) (f₁ f₂ : WO V W → ℂ) :
     lagTerm μ 𝓕 (1, 1) f₁ f₂ = thetaIP μ 𝓕 f₂ f₁ := by
   simp only [lagTerm, thetaIP, ratMul_one, mul_comm]
 
+/- English proof (translation)
+Use `(GlobalTheory.MemberAdelicTop.locallyCompact_secondCountable_t2 D V).1` as an intermediate fact. Establish `: BorelSpace (GA D V)` using `⟨rfl⟩`. Establish `: IsModuleTopology (AF D.host.F) (AF D.host.F ⊗[D.host.F] D.host.E)` using `⟨rfl⟩`. Establish `: Module.Finite D.host.F D.host.E` using `Module.Finite.of_restrictScalars_finite ℚ _ _`. Establish `: IsTopologicalRing (AF D.host.F ⊗[D.host.F] D.host.E)` using `IsModuleTopology.isTopologicalRing (AF D.host.F) _`.
+
+Establish `: IsTopologicalGroup (GA D V)` using `inferInstanceAs (IsTopologicalGroup (HR (AF D.host.F) D.sp.cm.sig V.gram))`. Take `⟨𝓖, h⟩` from `GlobalTheory.FundDomDiscrete.exists_fundDom D V Measure.haar inferInstance`. Conclude with `⟨Measure.haar, 𝓖, inferInstance, h⟩`.
+-/
 theorem exists_haar_fundDomain (V : HSp D) :
     ∃ (ν : Measure (GA D V)) (𝓖 : Set (GA D V)), ν.IsHaarMeasure ∧ IsFundamentalDomain (GQ V) 𝓖 ν := by
   have := (GlobalTheory.MemberAdelicTop.locallyCompact_secondCountable_t2 D V).1
@@ -153,6 +175,11 @@ theorem exists_haar_fundDomain (V : HSp D) :
   obtain ⟨𝓖, h⟩ := GlobalTheory.FundDomDiscrete.exists_fundDom D V Measure.haar inferInstance
   exact ⟨Measure.haar, 𝓖, inferInstance, h⟩
 
+/- English proof (translation)
+Take `⟨νV, 𝓗, h1, h2⟩` from `exists_haar_fundDomain V`. Take `⟨νW, 𝓖, h3, h4⟩` from `exists_haar_fundDomain W`. Take `⟨i1, i2, i3, i4, i5, K, hK, hKc⟩` from `GlobalTheory.AdelicMatrixLattice.lattice D W V`. Establish `: BorelSpace (WO V W)` using `⟨rfl⟩`. Take `⟨μ, 𝓕, h5⟩` from `(GlobalTheory.meanSquare_addFundamentalDomain_of_cocompact (WO V W) (ratL W V) K hK hKc).1`.
+
+Use `choose fr hfr using exists_lagFrame W`. Conclude with `⟨νV, 𝓗, νW, 𝓖, μ, 𝓕, fr, hw, hp, hb, h1, h2, h3, h4, h5, hfr, hs⟩`.
+-/
 theorem exists_swSetup (hw : IsWeilDatumO ψ V W χV χW om) (hs : V.SigOK) (hp : V.IsPosDef) (hb : 2 * W.rank < V.rank) :
     ∃ νV 𝓗 νW 𝓖 μ 𝓕 fr, SWSetup ψ V W χV χW om νV 𝓗 νW 𝓖 μ 𝓕 fr := by
   obtain ⟨νV, 𝓗, h1, h2⟩ := exists_haar_fundDomain V
@@ -163,6 +190,11 @@ theorem exists_swSetup (hw : IsWeilDatumO ψ V W χV χW om) (hs : V.SigOK) (hp 
   choose fr hfr using exists_lagFrame W
   exact ⟨νV, 𝓗, νW, 𝓖, μ, 𝓕, fr, hw, hp, hb, h1, h2, h3, h4, h5, hfr, hs⟩
 
+/- English proof (translation)
+Take `⟨η, h1, -, h3, -⟩` from `GlobalTheory.Mem.EtaTilde.exists_etaTilde D`. Use `⟨η ^ n, ⟨?_, fun x => ?_⟩, h3.1, fun e he a => ?_⟩` and prove the remaining obligations. Establish `: ((η ^ n : (AE D)ˣ →* Circle) : (AE D)ˣ → Circle) = fun x => η x ^ n`. Use function extensionality and compare the values at `x`. Simplify using the standard rewrite rules.
+
+Rewrite using `[this]`. Conclude with `h1.1.pow n`. Rewrite using `[MonoidHom.pow_apply, h1.2 x, one_pow]`. Rewrite using `[MonoidHom.pow_apply, h3.2 e he a, pow_one]`.
+-/
 theorem exists_hecke_resEta (D : D7) (n : ℕ) : ∃ χ : (AE D)ˣ →* Circle, IsHeckeChar D χ ∧ ResEta D χ n := by
   obtain ⟨η, h1, -, h3, -⟩ := GlobalTheory.Mem.EtaTilde.exists_etaTilde D
   refine ⟨η ^ n, ⟨?_, fun x => ?_⟩, h3.1, fun e he a => ?_⟩
@@ -173,6 +205,9 @@ theorem exists_hecke_resEta (D : D7) (n : ℕ) : ∃ χ : (AE D)ˣ →* Circle, 
   · rw [MonoidHom.pow_apply, h1.2 x, one_pow]
   · rw [MonoidHom.pow_apply, h3.2 e he a, pow_one]
 
+/- English proof (translation)
+Take `⟨-, ψ, hψ⟩` from `GlobalTheory.Ker.exists_infFam_and_stdChar D`. Take `⟨χV, a1, a2⟩` from `exists_hecke_resEta D V.rank`. Take `⟨χW, b1, b2⟩` from `exists_hecke_resEta D W.rank`. Take `⟨om, hom⟩` from `hex ψ V W χV χW hψ a1 b1 a2 b2`. Conclude with `⟨ψ, χV, χW, om, exists_swSetup hom hs hp hb⟩`.
+-/
 theorem exists_swSetup_of_weilExists (hex : Formalism.IndefR.AutomorphicFormsHyp.WeilExistsO D) (V W : HSp D) (hs : V.SigOK) (hp : V.IsPosDef)
     (hb : 2 * W.rank < V.rank) :
     ∃ ψ χV χW om νV 𝓗 νW 𝓖 μ 𝓕 fr, SWSetup ψ V W χV χW om νV 𝓗 νW 𝓖 μ 𝓕 fr := by
@@ -182,11 +217,19 @@ theorem exists_swSetup_of_weilExists (hex : Formalism.IndefR.AutomorphicFormsHyp
   obtain ⟨om, hom⟩ := hex ψ V W χV χW hψ a1 b1 a2 b2
   exact ⟨ψ, χV, χW, om, exists_swSetup hom hs hp hb⟩
 
+/- English proof (translation)
+The claim follows from `exists_swSetup_of_weilExists hex _ W (Examples₂.posSpace_sigOK _ n) (fun _ => rfl) hb`.
+-/
 theorem exists_swSetup_unitForm (hex : Formalism.IndefR.AutomorphicFormsHyp.WeilExistsO D) (W : HSp D) (n : ℕ) (hb : 2 * W.rank < n) :
     ∃ ψ χV χW om νV 𝓗 νW 𝓖 μ 𝓕 fr,
       SWSetup (D := D) ψ (Examples₂.posSpace Examples₂.star_isIntegral n) W χV χW om νV 𝓗 νW 𝓖 μ 𝓕 fr :=
   exists_swSetup_of_weilExists hex _ W (Examples₂.posSpace_sigOK _ n) (fun _ => rfl) hb
 
+/- English proof (translation)
+Use `haveI : IsEmpty (Fin W.rank) := by rw [h]; infer_instance`. Use `haveI : Subsingleton (WO V W) := ⟨fun a b => by funext i; exact isEmptyElim i⟩`. Use `⟨hψ, h1, ⟨continuous_const, fun _ => rfl⟩, h2, ⟨h2.1, fun e _ a => by simp [h]⟩, fun p f hf => by simpa using hf, fun g k w₀ f _ => ?_, fun γ _ γ' _ f _ => by simp, fun f _ w => by simpa using continuous_const, fun μ 𝓕 _ _ p f _ => by simp, fun e _ g k _ _ x y _ hy => ⟨1, one_pos …` and prove the remaining obligations. Rewrite using `[Subsingleton.elim (actO V W g k w₀) w₀]`. Simplify using the standard rewrite rules.
+
+Establish `: y = 1` using `Units.ext (by rw [hy, Matrix.det_isEmpty]; simp)`. Simplify using `[this, splitFacO]`.
+-/
 theorem isWeilDatumO_one_of_rank_zero (hψ : IsStdChar D ψ (-1)) (h1 : IsHeckeChar D χV) (h2 : ResEta D χV V.rank)
     (h : W.rank = 0) : IsWeilDatumO ψ V W χV 1 1 := by
   haveI : IsEmpty (Fin W.rank) := by rw [h]; infer_instance
@@ -199,12 +242,18 @@ theorem isWeilDatumO_one_of_rank_zero (hψ : IsStdChar D ψ (-1)) (h1 : IsHeckeC
   · have : y = 1 := Units.ext (by rw [hy, Matrix.det_isEmpty]; simp)
     simp [this, splitFacO]
 
+/- English proof (translation)
+Take `⟨-, ψ, hψ⟩` from `GlobalTheory.Ker.exists_infFam_and_stdChar D`. Take `⟨χV, a1, a2⟩` from `exists_hecke_resEta D V.rank`. Conclude with `⟨ψ, χV, 1, 1, exists_swSetup (isWeilDatumO_one_of_rank_zero hψ a1 a2 h) hs hp (by omega)⟩`.
+-/
 theorem exists_swSetup_of_rank_zero (V W : HSp D) (hs : V.SigOK) (hp : V.IsPosDef) (hV : 0 < V.rank) (h : W.rank = 0) :
     ∃ ψ χV χW om νV 𝓗 νW 𝓖 μ 𝓕 fr, SWSetup ψ V W χV χW om νV 𝓗 νW 𝓖 μ 𝓕 fr := by
   obtain ⟨-, ψ, hψ⟩ := GlobalTheory.Ker.exists_infFam_and_stdChar D
   obtain ⟨χV, a1, a2⟩ := exists_hecke_resEta D V.rank
   exact ⟨ψ, χV, 1, 1, exists_swSetup (isWeilDatumO_one_of_rank_zero hψ a1 a2 h) hs hp (by omega)⟩
 
+/- English proof (translation)
+Establish `: μ.real 𝓕 = 1` using `by rw [Measure.real, h, ENNReal.toReal_one]`. Rewrite using `[lagTerm, setIntegral_const, this, one_smul, one_mul]`. Simplify using the standard rewrite rules.
+-/
 example {μ : Measure (WO V W)} {𝓕 : Set (WO V W)} (h : μ 𝓕 = 1) (C) :
     lagTerm μ 𝓕 C (fun _ => 1) (fun _ => Complex.I) = -Complex.I := by
   have : μ.real 𝓕 = 1 := by rw [Measure.real, h, ENNReal.toReal_one]

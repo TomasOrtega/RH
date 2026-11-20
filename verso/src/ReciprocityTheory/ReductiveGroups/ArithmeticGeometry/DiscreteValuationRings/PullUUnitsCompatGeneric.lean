@@ -12,6 +12,11 @@ open ReciprocityTheory.ChartRestriction.G.Semi
 
 variable {X Y Z : Scheme.{0}} {L : LB X} {K K' : Type} [Fintype K] [Fintype K']
 
+/- English proof (translation)
+Establish `hc : S.presheaf.map (homOfLE h1).op ≫ S.presheaf.map (homOfLE h2).op = S.presheaf.map (homOfLE (h2.trans h1)).op`. Rewrite using `[← Functor.map_comp]`. Both sides reduce to the same expression. Use `ext`. Simplify using `only [res, Units.coe_map, MonoidHom.coe_coe]`.
+
+Rewrite using `[← hc]`. Both sides reduce to the same expression.
+-/
 private lemma res_res_lemma {S : Scheme.{0}} {U V W : S.Opens} (h1 : V ≤ U) (h2 : W ≤ V) (x : Γ(S, U)ˣ) :
     res h2 (res h1 x) = res (h2.trans h1) x := by
   have hc : S.presheaf.map (homOfLE h1).op ≫ S.presheaf.map (homOfLE h2).op =
@@ -23,6 +28,11 @@ private lemma res_res_lemma {S : Scheme.{0}} {U V W : S.Opens} (h1 : V ≤ U) (h
   rw [← hc]
   rfl
 
+/- English proof (translation)
+Establish `hn` using `h.naturality (homOfLE hVU).op`. Establish `key : S.presheaf.map (homOfLE hVU).op ≫ h.app V ≫ T.presheaf.map (homOfLE hW).op = h.app U ≫ T.presheaf.map (homOfLE hW').op`. Rewrite using `[← Category.assoc, hn, Category.assoc, ← Functor.map_comp]`. Both sides reduce to the same expression. Use `ext`.
+
+Simplify using `only [res, pullU, Units.coe_map, MonoidHom.coe_coe]`. Conclude with `congrArg (fun φ => φ.hom t.val) key`.
+-/
 private lemma res_pullU_res_eq_res_pullU {S T : Scheme.{0}} (h : T ⟶ S) {U V : S.Opens} {W : T.Opens} (hVU : V ≤ U)
     (hW : W ≤ h ⁻¹ᵁ V) (hW' : W ≤ h ⁻¹ᵁ U) (t : Γ(S, U)ˣ) :
     res hW (pullU h V (res hVU t)) = res hW' (pullU h U t) := by
@@ -35,6 +45,11 @@ private lemma res_pullU_res_eq_res_pullU {S T : Scheme.{0}} (h : T ⟶ S) {U V :
   simp only [res, pullU, Units.coe_map, MonoidHom.coe_coe]
   exact congrArg (fun φ => φ.hom t.val) key
 
+/- English proof (translation)
+Substitute `hg'` using the available equality. Establish `hW : Wi ⊓ Wj ≤ h ⁻¹ᵁ (Ui ⊓ Uj)` using `le_inf (inf_le_left.trans hi) (inf_le_right.trans hj)`. Establish `h1 : res (X` using `Z) (U := h ⁻¹ᵁ (Ui ⊓ Uj)) (V := Wi ⊓ Wj) hW (pullU h (Ui ⊓ Uj) (res (inf_le_left : Ui ⊓ Uj ≤ Ui) ti)) = res (X := Z) (U := h ⁻¹ᵁ (Ui ⊓ Uj)) (V := Wi ⊓ Wj) hW (pullU h (Ui ⊓ Uj) g) * res (X := Z) (U := h ⁻¹ᵁ (Ui ⊓ Uj)) (V := Wi ⊓ Wj) hW (pullU h (Ui ⊓ Uj) (res (inf_le_right : Ui ⊓ …`. Rewrite using `[hc, map_mul, map_mul]`. Rewrite `h1` using `[res_pullU_res_eq_res_pullU h inf_le_left hW (inf_le_left.trans hi), res_pullU_res_eq_res_pullU h inf_le_right hW (inf_le_right.trans hj)]`.
+
+Rewrite using `[res_res_lemma, res_res_lemma]`. Conclude with `h1`.
+-/
 lemma pullU_units_compat_generic (h : Z ⟶ Y) {Ui Uj : Y.Opens} {Wi Wj : Z.Opens} (hi : Wi ≤ h ⁻¹ᵁ Ui)
     (hj : Wj ≤ h ⁻¹ᵁ Uj) (ti : Γ(Y, Ui)ˣ) (tj : Γ(Y, Uj)ˣ) (g : Γ(Y, Ui ⊓ Uj)ˣ)
     (hc : res (inf_le_left : Ui ⊓ Uj ≤ Ui) ti = g * res (inf_le_right : Ui ⊓ Uj ≤ Uj) tj)
@@ -56,6 +71,9 @@ lemma pullU_units_compat_generic (h : Z ⟶ Y) {Ui Uj : Y.Opens} {Wi Wj : Z.Open
   rw [res_res_lemma, res_res_lemma]
   exact h1
 
+/- English proof (translation)
+Introduce `i j`. Conclude with `pullU_units_compat_generic h (wchart_comp_le φ h i) (wchart_comp_le φ h j) (t.s i) (t.s j) _ (ht i j) _ (linComb_g_comp φ ε h i j)`.
+-/
 lemma pullGen_isGen_of_isGen (φ : K → (Y ⟶ X)) (ε : K → ℤ) (t : LB.Gen (LB.LinComb L φ ε)) (ht : t.IsGen)
     (h : Z ⟶ Y) : (LB.pullGen L φ ε t h).IsGen := by
   intro i j
@@ -65,15 +83,24 @@ lemma pullGen_isGen_of_isGen (φ : K → (Y ⟶ X)) (ε : K → ℤ) (t : LB.Gen
 def scaleGen {M : LB Y} (c : Γ(Y, ⊤)ˣ) (t : LB.Gen M) : LB.Gen M where
   s j := res le_top c * t.s j
 
+/- English proof (translation)
+Introduce `i j`. Simplify using `only [scaleGen, map_mul]`. Rewrite using `[ht i j, res_res_lemma, res_res_lemma, mul_left_comm]`.
+-/
 lemma scaleGen_isGen {M : LB Y} (c : Γ(Y, ⊤)ˣ) (t : LB.Gen M) (ht : t.IsGen) : (scaleGen c t).IsGen := by
   intro i j
   simp only [scaleGen, map_mul]
   rw [ht i j, res_res_lemma, res_res_lemma, mul_left_comm]
 
+/- English proof (translation)
+Use extensionality with `x`. Simplify using `[LB.wchart]`.
+-/
 lemma wchart_empty (j : PEmpty → L.ι) : LB.wchart L (Y := Y) (K := PEmpty) PEmpty.elim j = ⊤ := by
   ext x
   simp [LB.wchart]
 
+/- English proof (translation)
+Substitute `hf` using the available equality. Use `ext`. Apply the tactic sequence `simp [res, pullU, CommRingCat.hom_id, Units.coe_map] <;> rfl`.
+-/
 lemma pullU_of_eq_id (f : Z ⟶ Z) (hf : f = 𝟙 Z) (U V : Z.Opens) (hV : V ≤ f ⁻¹ᵁ U) (hV' : V ≤ U)
     (c : Γ(Z, U)ˣ) : res hV (pullU f U c) = res hV' c := by
   subst hf
@@ -82,6 +109,13 @@ lemma pullU_of_eq_id (f : Z ⟶ Z) (hf : f = 𝟙 Z) (U V : Z.Opens) (hV : V ≤
 
 open scoped Classical in
 
+/- English proof (translation)
+Establish `hs : LB.SameSum (fun k => z ≫ φ k) ε (K'` using `PEmpty) PEmpty.elim PEmpty.elim := by`. Rewrite using `[sameSum_iff_fsum, h0, fsum_empty]`. Take `⟨te, -, hc⟩` from `gen_transport hL hs (LB.pullGen L φ ε t z) (pullGen_isGen_of_isGen φ ε t ht z)`. Set `j0 : PEmpty → L.ι` to `PEmpty.elim`. Use `⟨res (le_of_eq (wchart_empty j0).symm) (te.s j0), fun j hj => ?_⟩` and prove the remaining obligations.
+
+Establish `e` using `hc j j0 hj (fun k _ => k.elim) (fun _ k => k.elim)`. Establish `hle : LB.wchart L (fun k => z ≫ φ k) j ≤ LB.wchart L (fun k => z ≫ φ k) j ⊓ LB.wchart L PEmpty.elim j0` using `le_inf le_rfl (by rw [wchart_empty]; exact le_top)`. Establish `e2` using `congrArg (res hle) e`. Use `erw [res_res'] at e2`. Establish `e3` using `e2.symm`.
+
+Use `erw [res_res', res_refl'] at e3`. Use `erw [res_res']`. Conclude with `e3`.
+-/
 theorem exists_value (hL : L.IsLB) (φ : K → (Y ⟶ X)) (ε : K → ℤ) (t : LB.Gen (LB.LinComb L φ ε)) (ht : t.IsGen)
     (z : Z ⟶ Y) (h0 : fsum (fun k => z ≫ φ k) ε = 0) :
     ∃ c : Γ(Z, ⊤)ˣ, ∀ j : K → L.ι, LB.Coh L (fun k => z ≫ φ k) j →
@@ -101,12 +135,18 @@ theorem exists_value (hL : L.IsLB) (φ : K → (Y ⟶ X)) (ε : K → ℤ) (t : 
   erw [res_res']
   exact e3
 
+/- English proof (translation)
+Use `first`. Consider the case `rfl`. Consider the case `(ext; simp [pullU, Scheme.comp_app])`.
+-/
 private lemma pullU_comp_lemma_3 {S T R : Scheme.{0}} (g : R ⟶ T) (f : T ⟶ S) (U : S.Opens) (x : Γ(S, U)ˣ) :
     pullU (g ≫ f) U x = pullU g (f ⁻¹ᵁ U) (pullU f U x) := by
   first
   | rfl
   | (ext; simp [pullU, Scheme.comp_app])
 
+/- English proof (translation)
+Establish `hV' : V ≤ z ⁻¹ᵁ (p ⁻¹ᵁ ⊤)` using `fun x hx => hW (hV hx)`. Rewrite using `[res_pullU_res_eq_res_pullU z hW hV hV', ← pullU_comp_lemma_3]`. Conclude with `pullU_of_eq_id (z ≫ p) hzp ⊤ V hV' le_top c`.
+-/
 lemma pull_pull_id (z : Z ⟶ Y) (p : Y ⟶ Z) (hzp : z ≫ p = 𝟙 Z) {W : Y.Opens} {V : Z.Opens}
     (hW : W ≤ p ⁻¹ᵁ ⊤) (hV : V ≤ z ⁻¹ᵁ W) (c : Γ(Z, ⊤)ˣ) :
     res hV (pullU z W (res hW (pullU p ⊤ c))) = res (le_top : V ≤ ⊤) c := by
@@ -114,6 +154,13 @@ lemma pull_pull_id (z : Z ⟶ Y) (p : Y ⟶ Z) (hzp : z ≫ p = 𝟙 Z) {W : Y.O
   rw [res_pullU_res_eq_res_pullU z hW hV hV', ← pullU_comp_lemma_3]
   exact pullU_of_eq_id (z ≫ p) hzp ⊤ V hV' le_top c
 
+/- English proof (translation)
+Take `⟨c, hc⟩` from `exists_value hL φ ε t ht z h0`. Set `c' : Γ(Y, ⊤)ˣ` to `res (fun _ _ => trivial : (⊤ : Y.Opens) ≤ p ⁻¹ᵁ ⊤) (pullU p ⊤ c⁻¹)`. Use `⟨scaleGen c' t, scaleGen_isGen c' t ht, fun j hj => ?_⟩` and prove the remaining obligations. Establish `e` using `hc j hj`. Use `show res _ (pullU z _ (res le_top c' * t.s j)) = 1`.
+
+Rewrite using `[map_mul, map_mul]`. Establish `e1 : res (wchart_comp_le φ z j) (pullU z _ (res (le_top : (LB.LinComb L φ ε).U j ≤ ⊤) c')) = res (le_top : LB.wchart L (fun k => z ≫ φ k) j ≤ ⊤) c⁻¹`. Simplify using `only [c']`. Use `erw [res_res']`. Conclude with `pull_pull_id z p hzp _ _ c⁻¹`.
+
+Use `erw [e1]`. Establish `e2 : res (wchart_comp_le φ z j) (pullU z _ (t.s j)) = (LB.pullGen L φ ε t z).s j` using `rfl`. Use `erw [e2, ← e, ← map_mul, inv_mul_cancel, map_one]`. Both sides reduce to the same expression.
+-/
 theorem exists_normalized (hL : L.IsLB) (φ : K → (Y ⟶ X)) (ε : K → ℤ) (t : LB.Gen (LB.LinComb L φ ε))
     (ht : t.IsGen) (p : Y ⟶ Z) (z : Z ⟶ Y) (hzp : z ≫ p = 𝟙 Z) (h0 : fsum (fun k => z ≫ φ k) ε = 0) :
     ∃ t' : LB.Gen (LB.LinComb L φ ε), t'.IsGen ∧
@@ -134,6 +181,11 @@ theorem exists_normalized (hL : L.IsLB) (φ : K → (Y ⟶ X)) (ε : K → ℤ) 
   erw [e2, ← e, ← map_mul, inv_mul_cancel, map_one]
   rfl
 
+/- English proof (translation)
+Establish `e : ∀ k, W.left.topIso.inv ≫ (W.hom ⁻¹ᵁ ⊤).ι ≫ ψ k = ψ k` using `fun k => W.left.toIso_inv_ι_assoc (ψ k)`. Establish `hs : LB.SameSum (fun k => W.left.topIso.inv ≫ (W.hom ⁻¹ᵁ ⊤).ι ≫ ψ k) ε ψ ε`. Rewrite using `[sameSum_iff_fsum]`. Conclude with `congrArg (fun f => fsum f ε) (funext e)`. Take `⟨t', ht', -⟩` from `gen_transport hL hs _ (pullGen_isGen_of_isGen _ ε t ht W.left.topIso.inv)`.
+
+Conclude with `⟨t', ht'⟩`.
+-/
 theorem gen_of_top (hL : L.IsLB) {S : Scheme.{0}} {W : Over S} (ψ : K → (W.left ⟶ X)) (ε : K → ℤ)
     (t : LB.Gen (LB.LinComb L (fun k => (W.hom ⁻¹ᵁ ⊤).ι ≫ ψ k) ε)) (ht : t.IsGen) :
     ∃ t' : LB.Gen (LB.LinComb L ψ ε), t'.IsGen := by
@@ -145,6 +197,9 @@ theorem gen_of_top (hL : L.IsLB) {S : Scheme.{0}} {W : Over S} (ψ : K → (W.le
   obtain ⟨t', ht', -⟩ := gen_transport hL hs _ (pullGen_isGen_of_isGen _ ε t ht W.left.topIso.inv)
   exact ⟨t', ht'⟩
 
+/- English proof (translation)
+Take `⟨U, hU, t, ht⟩` from `h (IsLocalRing.closedPoint V)`. Take `rfl : U = ⊤` from `(IsLocalRing.closedPoint_mem_iff (R := V) U).1 hU`. Conclude with `gen_of_top hL ψ ε t ht`.
+-/
 theorem gen_of_local_base {V : Type} [CommRing V] [IsLocalRing V] (hL : L.IsLB)
     {W : Over (Spec (CommRingCat.of V))} (ψ : K → (W.left ⟶ X)) (ε : K → ℤ)
     (h : ∀ s : Spec (CommRingCat.of V), ∃ U : (Spec (CommRingCat.of V)).Opens, s ∈ U ∧

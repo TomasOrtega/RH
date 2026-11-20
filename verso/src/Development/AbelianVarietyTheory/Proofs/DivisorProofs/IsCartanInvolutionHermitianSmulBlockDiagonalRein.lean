@@ -22,6 +22,15 @@ open scoped ComplexOrder
 
 namespace GlobalTheory.CartanBlocks
 
+/- English proof (translation)
+Rewrite using `[Matrix.posDef_iff_dotProduct_mulVec]`. Use `⟨?_, fun x hx => ?_⟩` and prove the remaining obligations. Rewrite using `[Matrix.IsHermitian, Matrix.fromBlocks_conjTranspose, hA.1.eq, hD.1.eq, Matrix.conjTranspose_zero, Matrix.conjTranspose_zero]`. Establish `key : star x ⬝ᵥ (Matrix.fromBlocks A 0 0 D *ᵥ x) = star (x ∘ Sum.inl) ⬝ᵥ (A *ᵥ (x ∘ Sum.inl)) + star (x ∘ Sum.inr) ⬝ᵥ (D *ᵥ (x ∘ Sum.inr))`. Simplify using `[dotProduct, Fintype.sum_sum_type, Matrix.fromBlocks_mulVec, Function.comp_def, Matrix.mulVec, Pi.star_apply]`.
+
+Rewrite using `[key]`. Distinguish the cases in `h1 : x ∘ Sum.inl = 0`. Establish `h2 : x ∘ Sum.inr ≠ 0`. Introduce `h2`. Apply `hx` to reduce the goal to its premises.
+
+Use function extensionality and compare the values at `i`. Break down `i with i | i` into its components or cases. Conclude with `congrFun h1 i`. Conclude with `congrFun h2 i`. Rewrite using `[h1]`.
+
+Simplify using `using hD.dotProduct_mulVec_pos h2`. Conclude with `add_pos_of_pos_of_nonneg (hA.dotProduct_mulVec_pos h1) (hD.posSemidef.dotProduct_mulVec_nonneg _)`.
+-/
 theorem posDef_fromBlocks_diag {m n : Type} [Fintype m] [Fintype n] [DecidableEq m] [DecidableEq n]
     {A : Matrix m m ℂ} {D : Matrix n n ℂ} (hA : A.PosDef) (hD : D.PosDef) :
     (Matrix.fromBlocks A 0 0 D).PosDef := by
@@ -41,16 +50,39 @@ theorem posDef_fromBlocks_diag {m n : Type} [Fintype m] [Fintype n] [DecidableEq
       rw [h1]; simpa using hD.dotProduct_mulVec_pos h2
     · exact add_pos_of_pos_of_nonneg (hA.dotProduct_mulVec_pos h1) (hD.posSemidef.dotProduct_mulVec_nonneg _)
 
+/- English proof (translation)
+Unfold `GlobalTheory.IndefiniteRowSideFullHecke.UnitaryConjugation.blk`. Rewrite using `[Matrix.reindex_apply]`. Conclude with `(posDef_fromBlocks_diag hA hD).submatrix e.symm.injective`.
+-/
 theorem posDef_blk {p q d : ℕ} (e : Fin p ⊕ Fin q ≃ Fin d) {A : Matrix (Fin p) (Fin p) ℂ}
     {D : Matrix (Fin q) (Fin q) ℂ} (hA : A.PosDef) (hD : D.PosDef) : (GlobalTheory.IndefiniteRowSideFullHecke.UnitaryConjugation.blk e A D).PosDef := by
   unfold GlobalTheory.IndefiniteRowSideFullHecke.UnitaryConjugation.blk
   rw [Matrix.reindex_apply]
   exact (posDef_fromBlocks_diag hA hD).submatrix e.symm.injective
 
+/- English proof (translation)
+Simplify using `[GlobalTheory.IndefiniteRowSideFullHecke.UnitaryConjugation.blk, Matrix.conjTranspose_reindex, Matrix.fromBlocks_conjTranspose]`.
+-/
 theorem blk_conjTranspose {p q d : ℕ} (e : Fin p ⊕ Fin q ≃ Fin d) (A : Matrix (Fin p) (Fin p) ℂ)
     (D : Matrix (Fin q) (Fin q) ℂ) : (GlobalTheory.IndefiniteRowSideFullHecke.UnitaryConjugation.blk e A D)ᴴ = GlobalTheory.IndefiniteRowSideFullHecke.UnitaryConjugation.blk e Aᴴ Dᴴ := by
   simp [GlobalTheory.IndefiniteRowSideFullHecke.UnitaryConjugation.blk, Matrix.conjTranspose_reindex, Matrix.fromBlocks_conjTranspose]
 
+/- English proof (translation)
+Introduce `a b d e GA sA GB sB κ hκ hA hB`. Take `⟨hA1, hA2, hA3⟩` from `hA`. Take `⟨hB1, hB2, hB3⟩` from `hB`. Use `set S := GlobalTheory.IndefiniteRowSideFullHecke.UnitaryConjugation.blk e sA sB with hS`. Use `set G := GlobalTheory.IndefiniteRowSideFullHecke.UnitaryConjugation.blk e GA GB with hG`.
+
+Establish `hSS : S * S = 1` using `by rw [hS, GlobalTheory.IndefiniteRowSideFullHecke.UnitaryConjugation.blk_mul, hA1, hB1, GlobalTheory.IndefiniteRowSideFullHecke.UnitaryConjugation.blk_one]`. Establish `hSGS : Sᴴ * G * S = G`. Rewrite using `[hS, hG, blk_conjTranspose, GlobalTheory.IndefiniteRowSideFullHecke.UnitaryConjugation.blk_mul, GlobalTheory.IndefiniteRowSideFullHecke.UnitaryConjugation.blk_mul, hA2, hB2]`. Establish `hGS : (G * S).PosDef`. Rewrite using `[hS, hG, GlobalTheory.IndefiniteRowSideFullHecke.UnitaryConjugation.blk_mul]`.
+
+Conclude with `posDef_blk e hA3 hB3`. Establish `hGH : Gᴴ = G`. Establish `h4 : Sᴴ * Gᴴ = G * S` using `by rw [← Matrix.conjTranspose_mul]; exact hGS.1.eq`. Establish `h5 : Sᴴ * Sᴴ = 1` using `by rw [← Matrix.conjTranspose_mul, hSS, Matrix.conjTranspose_one]`. Combine the equalities or inequalities in the displayed calculation.
+
+Establish `hSG : Sᴴ * G = G * S`. Use `hGS.1.eq` as an intermediate fact. Rewrite `this` using `[Matrix.conjTranspose_mul, hGH]`. Conclude with `this`. Establish `hT : (S.map (starRingEnd ℂ))ᵀ = Sᴴ`.
+
+Use extensionality with `i j`. Simplify using `[Matrix.conjTranspose_apply]`. Establish `hMM : (S.map (starRingEnd ℂ)).map star = S`. Use extensionality with `i j`. Simplify using the standard rewrite rules.
+
+Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[← Matrix.map_mul, hSS, Matrix.map_one _ (map_zero _) (map_one _)]`. Rewrite using `[hT, hMM, Matrix.mul_smul, Matrix.smul_mul, hSGS]`. Introduce `x hx`. Establish `hy : star x ≠ 0` using `by simpa using hx`.
+
+Establish `hv : S.map (starRingEnd ℂ) *ᵥ x = star (S *ᵥ star x)`. Use extensionality with `i`. Simplify using `[Matrix.mulVec, dotProduct, star_sum, Pi.star_apply, mul_comm]`. Establish `hpos : ((κ : ℂ) • (G * S)).PosDef` using `hGS.smul (by exact_mod_cast hκ)`. Establish `key : (S.map (starRingEnd ℂ) *ᵥ x) ⬝ᵥ ((κ : ℂ) • G) *ᵥ star x = star (star x) ⬝ᵥ (((κ : ℂ) • (G * S)) *ᵥ star x)`.
+
+Rewrite using `[hv, Matrix.star_mulVec, ← Matrix.dotProduct_mulVec, Matrix.mulVec_mulVec, Matrix.mul_smul, hSG]`. Rewrite using `[key]`. Use `hpos.dotProduct_mulVec_pos hy` as an intermediate fact. Conclude with `(Complex.lt_def.1 this).1`.
+-/
 theorem isCartan_blk : ∀ {a b d : ℕ} (e : Fin a ⊕ Fin b ≃ Fin d) (GA sA : Matrix (Fin a) (Fin a) ℂ) (GB sB : Matrix (Fin b) (Fin b) ℂ) {κ : ℝ},
     0 < κ → Formalism.IndefR.Datum.IsCartanInv GA sA → Formalism.IndefR.Datum.IsCartanInv GB sB →
     GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.IsCartan ((κ : ℂ) • GlobalTheory.IndefiniteRowSideFullHecke.UnitaryConjugation.blk e GA GB) ((GlobalTheory.IndefiniteRowSideFullHecke.UnitaryConjugation.blk e sA sB).map (starRingEnd ℂ)) := by

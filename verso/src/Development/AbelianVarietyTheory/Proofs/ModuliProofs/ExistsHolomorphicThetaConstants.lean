@@ -14,6 +14,11 @@ attribute [local instance] MvPolynomial.gradedAlgebra
 
 namespace GlobalTheory.TorusFamilyTheta
 
+/- English proof (translation)
+Establish `k` using `HermAdjoint.adjoint_of_im (Hm - Hm') LinearMap.id 0 s hs fun a ha c hc => by`. Use `h a ha c hc` as an intermediate fact. Simplify using `only [hermForm] at this`. Simplify using `[hermForm, Matrix.sub_mulVec, this]`. Rewrite using `[← sub_eq_zero]`.
+
+Use extensionality with `i j`. Simplify `k (Pi.single i 1) (Pi.single j 1)` using `[hermForm, Pi.star_single]`.
+-/
 theorem matrix_eq_of_im {g : ℕ} {Hm Hm' : Matrix (Fin g) (Fin g) ℂ} {s : Set (Fin g → ℂ)}
     (hs : Submodule.span ℝ s = ⊤) (h : ∀ a ∈ s, ∀ c ∈ s, (hermForm Hm a c).im = (hermForm Hm' a c).im) :
     Hm = Hm' := by
@@ -25,6 +30,13 @@ theorem matrix_eq_of_im {g : ℕ} {Hm Hm' : Matrix (Fin g) (Fin g) ℂ} {s : Set
   ext i j
   simpa [hermForm, Pi.star_single] using k (Pi.single i 1) (Pi.single j 1)
 
+/- English proof (translation)
+Take `⟨E, hE', hb, h₁, h₂, -⟩` from `AnyAppellHumbert.isAH_properties abelianSchemeLaws_all.1 abelianSchemeLaws_all.2 (fun S P M hM => AbLaw.CubeAssembly.cube_gen S P M hM) thetaUnifAV_all P u Hm χ' hA`. Establish `hr : Set.range Q = (u.Λ : Set (Fin P.g → ℂ))` using `Set.ext fun z => ⟨fun ⟨l, hl⟩ => (hΛ z).2 ⟨l, hl.symm⟩, fun hz => ((hΛ z).1 hz).imp fun _ => Eq.symm⟩`. Set `e : La ≃ₗ[ℤ] u.Λ` to `LinearEquiv.ofBijective (LinearMap.codRestrict u.Λ Q.toIntLinearMap fun l => (hΛ _).2 ⟨l, rfl⟩) ⟨fun x y h => hQ (congrArg Subtype.val h), fun z => ((hΛ z).1 z.2).imp fun _ h => Subtype.ext h.symm⟩`. Establish `he : ∀ l, (e l : Fin P.g → ℂ) = Q l` using `fun _ => rfl`. Establish `hEe : ∀ x y, E (e x) (e y) = Ef x y` using `fun x y => by`.
+
+Apply `Int.cast_injective (α := ℝ)` to reduce the goal to its premises. Rewrite using `[hE', he, he, hE]`. Use `⟨?_, hr ▸ u.full, ?_, fun x => hχ x _ (he x) ▸ h₁ (e x), fun x y => ?_⟩` and prove the remaining obligations. Establish `: DiscreteTopology (Set.range Q)` using `hr ▸ u.discrete`. Conclude with `this`.
+
+Establish `: ⇑Ef = e.dualMap ∘ E ∘ e` using `funext fun x => LinearMap.ext fun y => (hEe x y).symm`. Rewrite using `[this]`. Conclude with `e.dualMap.bijective.comp (hb.comp e.bijective)`. Rewrite using `[← hχ _ _ (he (x + y)), ← hχ _ _ (he x), ← hχ _ _ (he y), map_add, h₂, hEe]`.
+-/
 theorem lattice_properties (P : Out.PolAV (Sp ℂ)) {La : Type} [AddCommGroup La] {Ef : LinearMap.BilinForm ℤ La}
     {χ : La → ℂ} {Q : La →+ (Fin P.g → ℂ)} (u : HolUnif P.A P.L P.g) {Hm : Matrix (Fin P.g) (Fin P.g) ℂ}
     {χ' : u.Λ → ℂ} (hQ : Function.Injective Q) (hΛ : ∀ z, z ∈ u.Λ ↔ ∃ l, z = Q l) (hA : u.IsAH Hm χ')
@@ -51,6 +63,23 @@ theorem lattice_properties (P : Out.PolAV (Sp ℂ)) {La : Type} [AddCommGroup La
     exact e.dualMap.bijective.comp (hb.comp e.bijective)
   · rw [← hχ _ _ (he (x + y)), ← hχ _ _ (he x), ← hχ _ _ (he y), map_add, h₂, hEe]
 
+/- English proof (translation)
+Introduce `o _ g N' _ J b em Ef τ χ tl d U P hN hU hP hex`. Break down `U.eq_empty_or_nonempty with rfl | ⟨z₀, hz₀⟩` into its components or cases. Conclude with `⟨0, fun _ => differentiableOn_empty, fun _ h => absurd h (Set.notMem_empty _)⟩`. Establish `hH : ∀ z, ∃ Hm : Matrix (Fin g) (Fin g) ℂ, z ∈ U → (Function.Injective (P z) ∧ DiscreteTopology (P z).range ∧ Submodule.span ℝ (Set.range (P z)) = ⊤ ∧ Hm.IsHermitian ∧ (∀ w : Fin g → ℂ, w ≠ 0 → 0 < (hermForm Hm w w).re) ∧ ∀ x y, (hermForm Hm (P z x) (P z y)).im = Ef x y) ∧ Functi …` using `fun z => by`. Distinguish the cases in `hz : z ∈ U`.
+
+Take `⟨t, u, Hm, χ', hi, hΛ, hA, hχ, hE, -⟩` from `hex z hz`. Take `⟨h₁, h₂, h₃⟩` from `lattice_properties t.pol u hi hΛ hA hχ hE`. Conclude with `⟨Hm, fun _ => ⟨⟨hi, h₁, h₂, hA.1, hA.2.1, hE⟩, h₃⟩⟩`. Conclude with `⟨0, fun h => absurd h hz⟩`. Use `choose Hm hH using hH`.
+
+Take `⟨-, hb, h₁, h₂⟩` from `hH z₀ hz₀`. Take `⟨θ, hθ, hhol⟩` from `HolTheta.exists_theta_holomorphic (Lat g) Ef χ g d N' U P Hm hN.pos hb h₁ h₂ hU hP fun z hz => (hH z hz).1`. Set `lam : Fin (2 * g) → Lat g` to `fun i => tl ((labEquiv g _).symm (Pi.single i 1))`. Set `x : Ix g (N' ^ 2) → Lat g` to `fun a => ∑ i, ((a i).val : ℤ) • lam i`. Use `⟨fun z a => χ (x a) * (Complex.exp (-(Real.pi / 2 / (N' : ℂ) ^ 2) * hermForm (Hm z) (P z (x a)) (P z (x a))) * θ z ((N' : ℂ)⁻¹ • P z (x a))), fun a => (hhol (x a)).const_mul _, ?_⟩` and prove the remaining obligations.
+
+Introduce and unpack `z hz t ⟨u, Hm', χ', -, hΛ, hA, hχ, hE, hlev, -⟩`. Take `rfl : Hm z = Hm'` from `matrix_eq_of_im (hH z hz).1.2.2.1 (by`. Introduce and unpack `_ ⟨l, rfl⟩ _ ⟨l', rfl⟩`. Rewrite using `[hE, (hH z hz).1.2.2.2.2.2])`. Take `⟨hne, hdiff, hfe⟩` from `hθ z hz`.
+
+Set `lam' : Fin (2 * g) → u.Λ` to `fun i => ⟨P z (lam i), (hΛ _).2 ⟨_, rfl⟩⟩`. Establish `hth : u.IsThetaFn (Hm z) χ' 1 (θ z)`. Use `⟨hdiff, fun l w => ?_⟩` and prove the remaining obligations. Take `⟨y, hy⟩` from `(hΛ l).1 l.2`. Rewrite using `[pow_one, hχ y l hy, hy, hfe]`.
+
+Establish `key` using `ThetaClassical.hasTh_classical abelianSchemeLaws_all.1 abelianSchemeLaws_all.2 thetaUnifAV_all o g N' J b em t u (Hm z) χ' (θ z) lam' hN hA hth hne fun i => by`. Establish `e` using `hlev ((labEquiv g _).symm (Pi.single i 1))`. Rewrite `e` using `[toTh_lev, lab_single, Nat.cast_pow]`. Conclude with `congrArg (fun f => f.left) e`. Establish `hx : ∀ a : Ix g (N' ^ 2), ∑ i, ((a i).val : ℂ) • (lam' i : Fin g → ℂ) = P z (x a)` using `fun a => by`.
+
+Simplify using `only [x, lam', map_sum, map_zsmul]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[natCast_zsmul, Nat.cast_smul_eq_nsmul]`. Establish `hx' : ∀ a : Ix g (N' ^ 2), χ' (∑ i, ((a i).val : ℤ) • lam' i) = χ (x a)` using `fun a => by`. Use `hχ _ _ ?_` and prove the remaining obligations.
+
+Simplify using `only [x, lam', map_sum, map_zsmul, AddSubmonoidClass.coe_finsetSum, SetLike.val_smul]`. Simplify using `only [hx, hx'] at key`. Use `key using 2 with a` and compare the differences between its conclusion and the goal. Conclude with `(_root_.mul_assoc _ _ _).symm`.
+-/
 theorem exists_holomorphic_thetaConstants : ∀ (o : Type) [CommRing o] (g N' : ℕ) [NeZero N'] (J : Type) (b : TBase o (N' ^ 2)) (em : o →+* ℂ) (Ef : LinearMap.BilinForm ℤ (Lat g)) (τ : J → (Lat g →ₗ[ℤ] Lat g)) (χ : Lat g → ℂ) (tl : Lab g (N' ^ 2) → Lat g) (d : ℕ) (U : Set (Fin d → ℂ)) (P : (Fin d → ℂ) → (Lat g →+ (Fin g → ℂ))), Odd N' → IsOpen U → (∀ l, DifferentiableOn ℂ (fun z => P z l) U) → (∀ z ∈ U, ∃ t : TObj g (N' ^ 2) J b (spMap em), IsTorusOf Ef χ tl τ (P z) (toTh t)) → ∃ θ : (Fin d → ℂ) → Ix g (N' ^ 2) → ℂ, (∀ a, DifferentiableOn ℂ (fun z => θ z a) U) ∧ ∀ z ∈ U, ∀ t : TObj g (N' ^ 2) J b (spMap em), IsTorusOf Ef χ tl τ (P z) (toTh t) → t.HasTh (𝟙 _) (θ z) := by
   intro o _ g N' _ J b em Ef τ χ tl d U P hN hU hP hex
   rcases U.eq_empty_or_nonempty with rfl | ⟨z₀, hz₀⟩

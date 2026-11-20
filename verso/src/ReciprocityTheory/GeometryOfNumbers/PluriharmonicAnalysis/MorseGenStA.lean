@@ -4,6 +4,11 @@ namespace ReciprocityTheory.GeometryOfNumbersTheory
 
 open Matrix MeasureTheory Complex
 
+/- English proof (translation)
+Establish `hre : (-(n : ℂ) * qz / 2).re = -((n : ℝ) * qz.re) / 2` using `by simp`. Establish `e1 : Real.exp (-((n : ℝ) * qz.re) / 2) ^ 2 * Real.exp (-((n : ℝ) * (φz - φ0 - qz.re))) = Real.exp (-((n : ℝ) * φz)) * Real.exp ((n : ℝ) * φ0)`. Rewrite using `[sq, ← Real.exp_add, ← Real.exp_add, ← Real.exp_add]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree.
+
+Rewrite using `[norm_mul, Complex.norm_exp, hre, mul_pow]`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem morseGen_ident (fz qz : ℂ) (φz φ0 νz ν0 : ℝ) (n : ℕ) :
     ‖fz * cexp (-(n : ℂ) * qz / 2)‖ ^ 2 * Real.exp (-((n : ℝ) * (φz - φ0 - qz.re))) * (νz / ν0) =
       ‖fz‖ ^ 2 * Real.exp (-((n : ℝ) * φz)) * νz * (Real.exp ((n : ℝ) * φ0) / ν0) := by
@@ -20,6 +25,11 @@ theorem morseGen_ident (fz qz : ℂ) (φz φ0 νz ν0 : ℝ) (n : ℕ) :
           Real.exp (-((n : ℝ) * (φz - φ0 - qz.re)))) * (νz / ν0) := by ring
     _ = _ := by rw [e1]; ring
 
+/- English proof (translation)
+Establish `hs : 0 ≤ ∑ j, ‖z j‖ ^ 2` using `Finset.sum_nonneg fun j _ => by positivity`. Establish `h : ‖z‖ ≤ Real.sqrt (∑ j, ‖z j‖ ^ 2)`. Use `(pi_norm_le_iff_of_nonneg (Real.sqrt_nonneg _)).2 fun i => ?_` and prove the remaining obligations. Apply `Real.le_sqrt_of_sq_le` to reduce the goal to its premises. Conclude with `Finset.single_le_sum (f := fun j => ‖z j‖ ^ 2) (fun j _ => by positivity) (Finset.mem_univ i)`.
+
+Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem morseGen_sq_le_sum {D : ℕ} (z : Fin D → ℂ) : ‖z‖ ^ 2 ≤ ∑ j, ‖z j‖ ^ 2 := by
   have hs : 0 ≤ ∑ j, ‖z j‖ ^ 2 := Finset.sum_nonneg fun j _ => by positivity
   have h : ‖z‖ ≤ Real.sqrt (∑ j, ‖z j‖ ^ 2) := by
@@ -30,6 +40,9 @@ theorem morseGen_sq_le_sum {D : ℕ} (z : Fin D → ℂ) : ‖z‖ ^ 2 ≤ ∑ j
   calc ‖z‖ ^ 2 ≤ Real.sqrt (∑ j, ‖z j‖ ^ 2) ^ 2 := pow_le_pow_left₀ (norm_nonneg _) h 2
     _ = _ := Real.sq_sqrt hs
 
+/- English proof (translation)
+Establish `h1 : B z z ≤ ‖B‖ * ‖z‖ * ‖z‖` using `(le_abs_self _).trans (B.le_opNorm₂ z z)`. Establish `h2 : B (I • z) (I • z) ≤ ‖B‖ * ‖I • z‖ * ‖I • z‖` using `(le_abs_self _).trans (B.le_opNorm₂ _ _)`. Establish `hI : ‖I • z‖ = ‖z‖` using `by rw [norm_smul, Complex.norm_I, one_mul]`. Rewrite `h2` using `[hI]`. Use the polynomial consequences of the given equalities and inequalities.
+-/
 theorem morseGen_levi_le {D : ℕ} (B : (Fin D → ℂ) →L[ℝ] (Fin D → ℂ) →L[ℝ] ℝ) (z : Fin D → ℂ) :
     (B z z + B (I • z) (I • z)) / 4 ≤ ‖B‖ / 2 * ‖z‖ ^ 2 := by
   have h1 : B z z ≤ ‖B‖ * ‖z‖ * ‖z‖ := (le_abs_self _).trans (B.le_opNorm₂ z z)

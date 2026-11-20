@@ -18,18 +18,27 @@ namespace GlobalTheory.RowLevelUnit
 
 variable {D : D7} {T : Type} {L : LevCh D T} {sc : Consts}
 
+/- English proof (translation)
+Consider the cases of `n with`. Consider the case `zero => exact absurd rfl hn`. Consider the case `succ n => rfl`.
+-/
 theorem levJ_grid_succ (G : GridData L sc) (t : T) (i n : ℕ) (hn : n ≠ 0) :
     levJ G t (.grid (i + 1) n) = G.levMax (.grid (i + 1) n) := by
   cases n with
   | zero => exact absurd rfl hn
   | succ n => rfl
 
+/- English proof (translation)
+Consider the cases of `n with`. Consider the case `zero => exact absurd rfl hn`. Consider the case `succ n => exact HEq.rfl`.
+-/
 theorem levJ_grid_zero (G : GridData L sc) (t : T) (n : ℕ) (hn : n ≠ 0) :
     HEq (levJ G t (.grid 0 n)) (levCol L t (n - 1)) := by
   cases n with
   | zero => exact absurd rfl hn
   | succ n => exact HEq.rfl
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨0, fun _ _ _ => ⟨0, fun D _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ s ch _ _ t i hi k => by have hm : D.R.m ≠ 0 := by have := D.R.two_le_m; omega have hU : finG (ch.G.V (.grid i D.R.m)) k ∈ UA D.sp.cm (ch.G.V (.grid i D.R.m)).gram := GlobalTheory.LevSplit.finE_mem_UA _ _ suffices e : ch.S.t …`.
+-/
 theorem levRow_iff_levJ : Big fun {D} _ _ _ _ _ _ _ _ _ _ _ ch => ∀ t i (hi : i ≤ D.R.m) (k : FinPt ch.G (.grid i D.R.m)), finG (ch.G.V (.grid i D.R.m)) k ∈ ch.S.toGridChoice.levRow t i hi ↔ finG (ch.G.V (.grid i D.R.m)) k ∈ levJ ch.G t (.grid i D.R.m) :=
   ⟨0, fun _ _ _ => ⟨0, fun D _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ s ch _ _ t i hi k => by
     have hm : D.R.m ≠ 0 := by have := D.R.two_le_m; omega

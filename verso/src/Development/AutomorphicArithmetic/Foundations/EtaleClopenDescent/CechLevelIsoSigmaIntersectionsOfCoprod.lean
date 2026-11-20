@@ -7,6 +7,9 @@ open CategoryTheory Limits AlgebraicGeometry Opposite
 namespace UpperTheory.Cb.RestrictionCovers
 open LateralTheory.E.CechSigmaProof LateralTheory.E.CechSigma_xy1Pf_Lev
 
+/- English proof (translation)
+Use `⟨fun h k => (iInf_le U k) h, fun h => ?_⟩` and prove the remaining obligations. Rewrite using `[← Finset.inf_univ_eq_iInf, ← SetLike.mem_coe, TopologicalSpace.Opens.coe_finset_inf]`. Simplify using `[Finset.inf_eq_iInf, h]`.
+-/
 private theorem mem_iInf_fin {T : Type*} [TopologicalSpace T] {m : ℕ}
     (U : Fin m → TopologicalSpace.Opens T) (x : T) : x ∈ ⨅ k, U k ↔ ∀ k, x ∈ U k := by
   refine ⟨fun h k => (iInf_le U k) h, fun h => ?_⟩
@@ -19,15 +22,24 @@ variable {X : Scheme.{0}} (O : X.Opens) {ι : Type} (V : ι → X.Opens) (hV : �
 abbrev P (n : ℕ) : Scheme.{0} :=
   widePullback O.toScheme (fun _ : Fin (n + 1) => ∐ fun j => (V j).toScheme) (fun _ => cov O V hV)
 
+/- English proof (translation)
+Simplify using `[cov]`.
+-/
 private theorem ι_cov (i : ι) : Sigma.ι (fun j => (V j).toScheme) i ≫ cov O V hV ≫ O.ι = (V i).ι := by
   simp [cov]
 
 variable (W : (Fin (n + 1) → ι) → X.Opens) (hW : ∀ j x, x ∈ W j ↔ ∀ k, x ∈ V (j k))
 
 include hW in
+/- English proof (translation)
+Introduce `x hx` and use `(hW j x).1 hx k`.
+-/
 private theorem le_V (j) (k) : W j ≤ V (j k) := fun x hx => (hW j x).1 hx k
 
 include hV hW in
+/- English proof (translation)
+The claim follows from `(le_V V W hW j 0).trans (hV _)`.
+-/
 private theorem le_O (j) : W j ≤ O := (le_V V W hW j 0).trans (hV _)
 
 def cmp (j : Fin (n + 1) → ι) : (W j).toScheme ⟶ P O V hV n :=
@@ -37,9 +49,15 @@ def cmp (j : Fin (n + 1) → ι) : (W j).toScheme ⟶ P O V hV n :=
       rw [← cancel_mono O.ι]
       simp [cov])
 
+/- English proof (translation)
+The claim follows from `WidePullback.lift_base ..`.
+-/
 theorem cmp_base (j) : cmp O V hV W hW j ≫ WidePullback.base _ = X.homOfLE (le_O O V hV W hW j) :=
   WidePullback.lift_base ..
 
+/- English proof (translation)
+The claim follows from `WidePullback.lift_π ..`.
+-/
 theorem cmp_π (j) (k) : cmp O V hV W hW j ≫ WidePullback.π _ k =
     X.homOfLE (le_V V W hW j k) ≫ Sigma.ι (fun j => (V j).toScheme) (j k) :=
   WidePullback.lift_π ..
@@ -48,6 +66,9 @@ def PJ (j : Fin (n + 1) → ι) : (P O V hV n).Opens :=
   ⨅ k, (WidePullback.π (fun _ : Fin (n + 1) => cov O V hV) k) ⁻¹ᵁ
     (Sigma.ι (fun j => (V j).toScheme) (j k)).opensRange
 
+/- English proof (translation)
+Rewrite using `[PJ, mem_iInf_fin]`. Both sides reduce to the same expression.
+-/
 theorem mem_PJ (j) (x : P O V hV n) : x ∈ PJ O V hV j ↔
     ∀ k, ∃ z, Sigma.ι (fun j => (V j).toScheme) (j k) z =
       WidePullback.π (fun _ : Fin (n + 1) => cov O V hV) k x := by
@@ -55,6 +76,11 @@ theorem mem_PJ (j) (x : P O V hV n) : x ∈ PJ O V hV j ↔
   rfl
 
 include hW in
+/- English proof (translation)
+Introduce and unpack `_ ⟨y, rfl⟩`. Rewrite using `[Scheme.Opens.range_ι]`. Use `(hW j _).2 fun k => ?_` and prove the remaining obligations. Take `⟨z, hz⟩` from `(mem_PJ O V hV j _).1 y.2 k`. Establish `e : (V (j k)).ι z = ((PJ O V hV j).ι ≫ WidePullback.base (fun _ : Fin (n + 1) => cov O V hV) ≫ O.ι) y`.
+
+Rewrite using `[← ι_cov O V hV (j k), Scheme.Hom.comp_apply, hz, ← WidePullback.π_arrow _ k]`. Simplify using `only [Scheme.Hom.comp_apply, Category.assoc]`. Both sides reduce to the same expression. Rewrite using `[← e]`. Conclude with `(V (j k)).ι_apply z ▸ z.2`.
+-/
 private theorem hr (j) : Set.range ((PJ O V hV j).ι ≫
     WidePullback.base (fun _ : Fin (n + 1) => cov O V hV) ≫ O.ι) ⊆ Set.range (W j).ι := by
   rintro _ ⟨y, rfl⟩
@@ -72,10 +98,18 @@ private theorem hr (j) : Set.range ((PJ O V hV j).ι ≫
 def rr (j : Fin (n + 1) → ι) : (PJ O V hV j).toScheme ⟶ (W j).toScheme :=
   IsOpenImmersion.lift (W j).ι _ (hr O V hV W hW j)
 
+/- English proof (translation)
+The claim follows from `IsOpenImmersion.lift_fac _ _ _`.
+-/
 theorem rr_ι (j) : rr O V hV W hW j ≫ (W j).ι =
     (PJ O V hV j).ι ≫ WidePullback.base (fun _ : Fin (n + 1) => cov O V hV) ≫ O.ι :=
   IsOpenImmersion.lift_fac _ _ _
 
+/- English proof (translation)
+Apply `WidePullback.hom_ext` to reduce the goal to its premises. Introduce `k`. Establish `hs : Set.range ((PJ O V hV j).ι ≫ WidePullback.π (fun _ : Fin (n + 1) => cov O V hV) k) ⊆ Set.range (Sigma.ι (fun j => (V j).toScheme) (j k))`. Introduce and unpack `_ ⟨y, rfl⟩`. Take `⟨z, hz⟩` from `(mem_PJ O V hV j _).1 y.2 k`.
+
+Conclude with `⟨z, by rw [hz, Scheme.Hom.comp_apply]; rfl⟩`. Rewrite using `[Category.assoc, cmp_π, ← IsOpenImmersion.lift_fac _ _ hs, ← Category.assoc]`. Use `congr 1`. Rewrite using `[← cancel_mono (V (j k)).ι, Category.assoc, Scheme.homOfLE_ι, rr_ι, ← ι_cov O V hV (j k), IsOpenImmersion.lift_fac_assoc, Category.assoc, WidePullback.π_arrow_assoc]`. Rewrite using `[Category.assoc, cmp_base, ← cancel_mono O.ι, Category.assoc, Scheme.homOfLE_ι, rr_ι, Category.assoc]`.
+-/
 theorem rr_cmp (j) : rr O V hV W hW j ≫ cmp O V hV W hW j = (PJ O V hV j).ι := by
   apply WidePullback.hom_ext
   · intro k
@@ -91,6 +125,9 @@ theorem rr_cmp (j) : rr O V hV W hW j ≫ cmp O V hV W hW j = (PJ O V hV j).ι :
   · rw [Category.assoc, cmp_base, ← cancel_mono O.ι, Category.assoc, Scheme.homOfLE_ι, rr_ι,
       Category.assoc]
 
+/- English proof (translation)
+Introduce and unpack `_ ⟨w, rfl⟩`. Rewrite using `[Scheme.Opens.range_ι]`. Use `(mem_PJ O V hV j _).2 fun k => ⟨X.homOfLE (le_V V W hW j k) w, ?_⟩` and prove the remaining obligations. Rewrite using `[← Scheme.Hom.comp_apply, ← cmp_π O V hV W hW j k, Scheme.Hom.comp_apply]`.
+-/
 private theorem hr3 (j) : Set.range (cmp O V hV W hW j) ⊆ Set.range (PJ O V hV j).ι := by
   rintro _ ⟨w, rfl⟩
   rw [Scheme.Opens.range_ι]
@@ -100,13 +137,22 @@ private theorem hr3 (j) : Set.range (cmp O V hV W hW j) ⊆ Set.range (PJ O V hV
 def ss (j : Fin (n + 1) → ι) : (W j).toScheme ⟶ (PJ O V hV j).toScheme :=
   IsOpenImmersion.lift (PJ O V hV j).ι _ (hr3 O V hV W hW j)
 
+/- English proof (translation)
+The claim follows from `IsOpenImmersion.lift_fac _ _ _`.
+-/
 theorem ss_ι (j) : ss O V hV W hW j ≫ (PJ O V hV j).ι = cmp O V hV W hW j :=
   IsOpenImmersion.lift_fac _ _ _
 
+/- English proof (translation)
+Rewrite using `[← cancel_mono (W j).ι, Category.assoc, rr_ι, ← Category.assoc, ss_ι, ← Category.assoc, cmp_base, Scheme.homOfLE_ι, Category.id_comp]`.
+-/
 theorem ss_rr (j) : ss O V hV W hW j ≫ rr O V hV W hW j = 𝟙 _ := by
   rw [← cancel_mono (W j).ι, Category.assoc, rr_ι, ← Category.assoc, ss_ι, ← Category.assoc,
     cmp_base, Scheme.homOfLE_ι, Category.id_comp]
 
+/- English proof (translation)
+Rewrite using `[← cancel_mono (PJ O V hV j).ι, Category.assoc, ss_ι, rr_cmp, Category.id_comp]`.
+-/
 theorem rr_ss (j) : rr O V hV W hW j ≫ ss O V hV W hW j = 𝟙 _ := by
   rw [← cancel_mono (PJ O V hV j).ι, Category.assoc, ss_ι, rr_cmp, Category.id_comp]
 
@@ -115,6 +161,11 @@ instance cmp_open (j) : IsOpenImmersion (cmp O V hV W hW j) := by
   rw [← ss_ι]
   infer_instance
 
+/- English proof (translation)
+Introduce `a b hab`. Rewrite using `[Function.onFun, Set.disjoint_left]`. Introduce and unpack `_ ⟨u, rfl⟩ ⟨v, hv⟩`. Choose the witnesses or unpack the hypotheses as in `⟨k, hk⟩ : ∃ k, a k ≠ b k := by`. Assume the negation of the conclusion as `h`.
+
+Use `push_neg at h`. Conclude with `hab (funext h)`. Establish `e : Sigma.ι (fun j => (V j).toScheme) (b k) (X.homOfLE (le_V V W hW b k) v) = Sigma.ι (fun j => (V j).toScheme) (a k) (X.homOfLE (le_V V W hW a k) u)`. Rewrite using `[← Scheme.Hom.comp_apply, ← cmp_π O V hV W hW b k, Scheme.Hom.comp_apply, hv, ← Scheme.Hom.comp_apply, cmp_π, Scheme.Hom.comp_apply]`. Conclude with `hk (congrArg Sigma.fst ((sigmaι_eq_iff _ _ _ _ _).mp e)).symm`.
+-/
 private theorem cmp_disj : Pairwise (Function.onFun Disjoint
     (fun j => Set.range (cmp O V hV W hW j))) := by
   intro a b hab
@@ -162,6 +213,13 @@ end UpperTheory.Cb.RestrictionCovers
 namespace UpperTheory.Cb.RestrictionCovers
 open LateralTheory.E.CechSigmaProof LateralTheory.E.CechSigma_xy1Pf_Lev
 
+/- English proof (translation)
+Apply `Sigma.hom_ext` to reduce the goal to its premises. Introduce `j`. Simplify using `only [Sigma.ι_desc_assoc, Sigma.ι_map_assoc, Sigma.ι_desc]`. Apply `WidePullback.hom_ext` to reduce the goal to its premises. Introduce `k`.
+
+Simplify using `only [wpMap, sqS, Category.assoc, WidePullback.lift_π, Arrow.homMk_left]`. Rewrite using `[← Category.assoc, cmp_π, cmp_π, Category.assoc, Sigma.ι_map, ← Category.assoc, ← Category.assoc]`. Use `congr 1`. Rewrite using `[← cancel_mono (V (j k)).ι, Category.assoc, morphismRestrict_ι, ← Category.assoc, Scheme.homOfLE_ι, Category.assoc, Scheme.homOfLE_ι, morphismRestrict_ι]`. Simplify using `only [wpMap, sqS, Category.assoc, WidePullback.lift_base, Arrow.homMk_right]`.
+
+Rewrite using `[← Category.assoc, cmp_base, cmp_base, ← cancel_mono O.ι, Category.assoc, morphismRestrict_ι, ← Category.assoc, Scheme.homOfLE_ι, Category.assoc, Scheme.homOfLE_ι, morphismRestrict_ι]`.
+-/
 theorem nat_sq {Y X : Scheme.{0}} (g : Y ⟶ X) (O : X.Opens) {ι : Type} (V : ι → X.Opens)
     (hV : ∀ j, V j ≤ O) (n : ℕ)
     (hW : ∀ (j : Fin (n + 1) → ι) x, x ∈ (⨅ k, V (j k)) ↔ ∀ k, x ∈ V (j k))
@@ -188,6 +246,9 @@ theorem nat_sq {Y X : Scheme.{0}} (g : Y ⟶ X) (O : X.Opens) {ι : Type} (V : �
 end UpperTheory.Cb.RestrictionCovers
 
 open LateralTheory.E.CechSigmaProof LateralTheory.E.CechSigma_xy1Pf_Lev UpperTheory.Cb.RestrictionCovers in
+/- English proof (translation)
+Introduce `_ Y X g O ι V hV n`. Establish `hW : ∀ (j : Fin (n + 1) → ι) x, x ∈ (⨅ k, V (j k)) ↔ ∀ k, x ∈ V (j k)` using `fun j x => mem_iInf_fin (fun k => V (j k)) x`. Establish `hW' : ∀ (j : Fin (n + 1) → ι) x, x ∈ g ⁻¹ᵁ (⨅ k, V (j k)) ↔ ∀ k, x ∈ g ⁻¹ᵁ V (j k)` using `fun j x => mem_iInf_fin (fun k => V (j k)) (g x)`. Conclude with `⟨(Arrow.isoMk (asIso (Limits.Sigma.desc (cmp (g ⁻¹ᵁ O) (fun j => g ⁻¹ᵁ V j) (fun j => pre_le g (hV j)) _ hW'))) (asIso (Limits.Sigma.desc (cmp O V hV _ hW))) (nat_sq g O V hV n hW hW')).symm⟩`.
+-/
 theorem UpperTheory.Cb.cechLevel_iso_sigma_intersections_of_coprod :
     LateralTheory.E.t_E3Cut.Coprod → LateralTheory.E.CechSigma_xy1Pf_Lev.SchemeLevel := by
   intro _ Y X g O ι V hV n

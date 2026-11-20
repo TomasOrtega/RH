@@ -12,6 +12,9 @@ open CategoryTheory AlgebraicGeometry NumberField IsDedekindDomain MvPolynomial 
 open Formalism.BasicNotions Formalism.MainNotions GlobalTheory GlobalTheory.Cartier GlobalTheory.CechPic GlobalTheory.ArInt GlobalTheory.ProjVar GlobalTheory.TrueGeo GlobalTheory.Mean4O GlobalTheory.CoverNorm GlobalTheory.ShFam GlobalTheory.ShFam.Pad GlobalTheory.VertForm GlobalTheory.TrivFlag GlobalTheory.CovTop GlobalTheory.CovHt GlobalTheory.TrueCx GlobalTheory.ConstLat
 open scoped Classical
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.EqHalf.eqData_geo | exact GlobalTheory.EqHalf.eqData_geo | (intros; apply GlobalTheory.EqHalf.eqData_geo <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.exists_cm_lattice_embedding_data : Hypotheses2 → HypothesesH → GlobalTheory.Published.RegularAlteration → GlobalTheory.Published.ScholzeWeinsteinB → GlobalTheory.Published.PrismaticDieudonnePerfd →
     ∀ (D : D7) (O : Setup D), O.Core → ∀ (T : Finset ℕ) (R : ℝ), 2 ≤ R → ∀ p : ℕ, p.Prime → p ∈ T → ∀ c : O.s.Comp,
     ∃ (bar : 𝓞 D.host.E ≃+* 𝓞 D.host.E) (Φ : Set (D.host.E →+* D.what₂.LL))

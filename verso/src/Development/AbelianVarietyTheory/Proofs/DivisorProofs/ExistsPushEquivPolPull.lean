@@ -18,6 +18,9 @@ section Tate
 
 variable {p : ℕ} {M : Type} [CommGroup M]
 
+/- English proof (translation)
+Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simp`. Consider the case `insert a s ha ih => rw [Finset.sum_insert ha, Finset.prod_insert ha, Tate.lev_add, ih]`.
+-/
 theorem lev_sum {J : Type} (s : Finset J) (t : J → Tate p M) (n : ℕ) :
     (∑ a ∈ s, t a).lev n = ∏ a ∈ s, (t a).lev n := by
   classical
@@ -25,11 +28,17 @@ theorem lev_sum {J : Type} (s : Finset J) (t : J → Tate p M) (n : ℕ) :
   | empty => simp
   | insert a s ha ih => rw [Finset.sum_insert ha, Finset.prod_insert ha, Tate.lev_add, ih]
 
+/- English proof (translation)
+Proceed by induction on `N with`. Consider the case `zero => simp`. Consider the case `succ N ih => rw [succ_nsmul, Tate.lev_add, ih, pow_succ]`.
+-/
 theorem lev_nsmul (N : ℕ) (t : Tate p M) (n : ℕ) : (N • t).lev n = t.lev n ^ N := by
   induction N with
   | zero => simp
   | succ N ih => rw [succ_nsmul, Tate.lev_add, ih, pow_succ]
 
+/- English proof (translation)
+Use `⟨Tate.map_injective hf, fun t => ?_⟩` and prove the remaining obligations. Use `choose s hs using fun n => h n _ (t.lev_pow n)`. Conclude with `⟨Tate.mk s fun n => ⟨hf (by rw [map_pow, hs, t.lev_pow, map_one]), hf (by rw [map_pow, hs, hs, t.lev_succ])⟩, Tate.ext hs⟩`.
+-/
 theorem tate_map_bijective [Fact p.Prime] {M' : Type} [CommGroup M'] {f : M →* M'} (hf : Function.Injective f)
     (h : ∀ (n : ℕ) (y : M'), y ^ p ^ n = 1 → ∃ x, f x = y) : Function.Bijective (Tate.map p f) := by
   refine ⟨Tate.map_injective hf, fun t => ?_⟩
@@ -47,6 +56,9 @@ variable {R Ω C : Type} [CommRing R] [Field Ω] [Field C] (α : R →+* Ω) (κ
 def extPt : (Over.mk (spMap β) : Over (Sp R)) ⟶ Over.mk (spMap α) :=
   Over.homMk (spMap κ) (by subst hβ; exact (Spec.map_comp _ _).symm)
 
+/- English proof (translation)
+Use `haveI : Epi (spMap κ) := by`. Use `letI := κ.toAlgebra`. Use `haveI : Flat (spMap κ) := (Flat.SpecMap_iff).2 (inferInstanceAs (Module.Flat Ω C))`. Conclude with `Flat.epi_of_flat_of_surjective _`. Conclude with `fun x y h => Over.OverMorphism.ext ((cancel_epi (spMap κ)).1 (congrArg (·.left) h))`.
+-/
 theorem extPt_injective (G : Over (Sp R)) : Function.Injective fun x : Over.mk (spMap α) ⟶ G => extPt α κ hβ ≫ x := by
   haveI : Epi (spMap κ) := by
     letI := κ.toAlgebra
@@ -54,6 +66,11 @@ theorem extPt_injective (G : Over (Sp R)) : Function.Injective fun x : Over.mk (
     exact Flat.epi_of_flat_of_surjective _
   exact fun x y h => Over.OverMorphism.ext ((cancel_epi (spMap κ)).1 (congrArg (·.left) h))
 
+/- English proof (translation)
+Use `haveI : CharZero Ω := κ.charZero`. Establish `h` using `(GlobalTheory.firstFiveLaws.1.mulN (Sp R) B n hn).2.2.2.2`. Establish `h1` using `h Ω (spMap α) (Nat.cast_ne_zero.2 (by omega))`. Establish `h2` using `h C (spMap β) (Nat.cast_ne_zero.2 (by omega))`. Use `haveI : Finite {x : Over.mk (spMap β) ⟶ B.A // x ^ n = 1} := Nat.finite_of_card_ne_zero (by rw [h2]; positivity)`.
+
+Set `F : {x : Over.mk (spMap α) ⟶ B.A // x ^ n = 1} → {x : Over.mk (spMap β) ⟶ B.A // x ^ n = 1}` to `fun x => ⟨extPt α κ hβ ≫ x.1, by rw [← MonObj.comp_pow, x.2, MonObj.comp_one]⟩`. Establish `hF : Function.Injective F` using `fun x y e => Subtype.ext (extPt_injective α κ hβ _ (congrArg Subtype.val e))`. Take `⟨x, hx⟩` from `(hF.bijective_of_nat_card_le (h2.trans h1.symm).le).2 ⟨y, hy⟩`. Conclude with `⟨x.1, x.2, congrArg Subtype.val hx⟩`.
+-/
 theorem exists_extPt_eq [IsNoetherianRing R] [IsAlgClosed Ω] [IsAlgClosed C] [CharZero C] (B : Out.PolAV (Sp R)) {n : ℕ}
     (hn : 1 ≤ n) (y : Over.mk (spMap β) ⟶ B.A) (hy : y ^ n = 1) :
     ∃ x : Over.mk (spMap α) ⟶ B.A, x ^ n = 1 ∧ extPt α κ hβ ≫ x = y := by
@@ -70,6 +87,9 @@ theorem exists_extPt_eq [IsNoetherianRing R] [IsAlgClosed Ω] [IsAlgClosed C] [C
 
 end Algebraic
 
+/- English proof (translation)
+The claim follows from `lamEq_baseChange _ _ s X.A Y.A A.A B.A _ _ (StrictPull.polPull A s).A (StrictPull.polPull B s).A (pullback.fst X.A.hom s) (pullback.fst Y.A.hom s) _ _ pullback.condition pullback.condition (isGrpPullback_pullback A.A s) (isGrpPullback_pullback B.A s) _ _ _ _ A.isLB B.isLB (Strict …`.
+-/
 theorem lamEq_polPull {S S' : Scheme.{0}} (s : S' ⟶ S) {X Y A B : Out.PolAV S} {f₁ : X.A ⟶ A.A} {f₂ : Y.A ⟶ A.A}
     {g₁ : X.A ⟶ B.A} {g₂ : Y.A ⟶ B.A} (h : LamEq A.L f₁ f₂ B.L g₁ g₂) :
     LamEq (X := (StrictPull.polPull X s).A) (Y := (StrictPull.polPull Y s).A) (StrictPull.polPull A s).L
@@ -82,6 +102,9 @@ theorem lamEq_polPull {S S' : Scheme.{0}} (s : S' ⟶ S) {X Y A B : Out.PolAV S}
     (PolBaseChange.lbIso_refl (StrictPull.polPull B s).isLB) _ _ _ _ _ _ _ _ (pullback.lift_fst _ _ _)
     (pullback.lift_fst _ _ _) (pullback.lift_fst _ _ _) (pullback.lift_fst _ _ _) h
 
+/- English proof (translation)
+Take `⟨e₁, h₁⟩` from `LiePull.exists_pushEquiv h' (Over.mk (𝟙 _)) f' (Category.id_comp _).symm`. Take `⟨e₂, h₂⟩` from `LiePull.exists_pushEquiv h (Over.mk f') g hg`. Conclude with `⟨e₁.trans e₂, fun x => (h₂ _).trans ((congrArg (· ≫ _) (h₁ x)).trans (Category.assoc _ _ _))⟩`.
+-/
 theorem exists_pushEquiv₂ {S S' S'' : Scheme.{0}} {G : Over S} {G' : Over S'} {G'' : Over S''} [GrpObj G] [GrpObj G']
     [GrpObj G''] {f : S' ⟶ S} {f' : S'' ⟶ S'} {φ : G'.left ⟶ G.left} {φ' : G''.left ⟶ G'.left}
     (h' : IsGrpPullback G'' G' f' φ') (h : IsGrpPullback G' G f φ) (g : S'' ⟶ S) (hg : g = f' ≫ f) :
@@ -90,6 +113,9 @@ theorem exists_pushEquiv₂ {S S' S'' : Scheme.{0}} {G : Over S} {G' : Over S'} 
   obtain ⟨e₂, h₂⟩ := LiePull.exists_pushEquiv h (Over.mk f') g hg
   exact ⟨e₁.trans e₂, fun x => (h₂ _).trans ((congrArg (· ≫ _) (h₁ x)).trans (Category.assoc _ _ _))⟩
 
+/- English proof (translation)
+The claim follows from `exists_pushEquiv₂ (G' := (StrictPull.polPull B f).A) (isGrpPullback_pullback (StrictPull.polPull B f).A f') (isGrpPullback_pullback B.A f) g hg`.
+-/
 theorem exists_pushEquiv_polPull {S S' S'' : Scheme.{0}} (B : Out.PolAV S) (f : S' ⟶ S) (f' : S'' ⟶ S') (g : S'' ⟶ S)
     (hg : g = f' ≫ f) :
     ∃ e : ((Over.mk (𝟙 S'') : Over S'') ⟶ (StrictPull.polPull (StrictPull.polPull B f) f').A) ≃* (Over.mk g ⟶ B.A),
@@ -106,6 +132,9 @@ variable {Λ : Type} [CommRing Λ] [StarRing Λ] {p : ℕ} [Fact p.Prime] {C : T
 def toBase : (goodPoint hv ε j B o).A.A.left ⟶ B.A.left :=
   (goodPoint hv ε j B o).gen ≫ pullback.fst B.A.hom (spMap j)
 
+/- English proof (translation)
+Establish `h2 : (homC hv ε j o o' f).left ≫ (goodPoint hv ε j B' o').gen = (goodPoint hv ε j B o).gen ≫ (homO hv ε j o o' f).left` using `pullback.lift_fst _ _ _`. Establish `h3 : (homO hv ε j o o' f).left ≫ pullback.fst B'.A.hom (spMap j) = pullback.fst B.A.hom (spMap j) ≫ f.left` using `pullback.lift_fst _ _ _`. Conclude with `(Category.assoc _ _ _).symm.trans ((congrArg (· ≫ _) h2).trans ((Category.assoc _ _ _).trans ((congrArg (_ ≫ ·) h3).trans (Category.assoc _ _ _).symm)))`.
+-/
 theorem homC_toBase (f : B.A ⟶ B'.A) :
     (homC hv ε j o o' f).left ≫ toBase hv ε j o' = toBase hv ε j o ≫ f.left := by
   have h2 : (homC hv ε j o o' f).left ≫ (goodPoint hv ε j B' o').gen =
@@ -115,6 +144,9 @@ theorem homC_toBase (f : B.A ⟶ B'.A) :
   exact (Category.assoc _ _ _).symm.trans ((congrArg (· ≫ _) h2).trans ((Category.assoc _ _ _).trans
     ((congrArg (_ ≫ ·) h3).trans (Category.assoc _ _ _).symm)))
 
+/- English proof (translation)
+The claim follows from `exists_pushEquiv_polPull B (spMap j) (spMap (algebraMap O C)) _ (Spec.map_comp (CommRingCat.ofHom j) _)`.
+-/
 theorem exists_ptsEquiv : ∃ e : ChTor.Pts (goodPoint hv ε j B o).A.A ≃*
     (Over.mk (spMap ((algebraMap O C).comp j)) ⟶ B.A), ∀ x, (e x).left = x.left ≫ toBase hv ε j o :=
   exists_pushEquiv_polPull B (spMap j) (spMap (algebraMap O C)) _ (Spec.map_comp (CommRingCat.ofHom j) _)
@@ -122,9 +154,15 @@ theorem exists_ptsEquiv : ∃ e : ChTor.Pts (goodPoint hv ε j B o).A.A ≃*
 def ptsEquiv : ChTor.Pts (goodPoint hv ε j B o).A.A ≃* (Over.mk (spMap ((algebraMap O C).comp j)) ⟶ B.A) :=
   (exists_ptsEquiv hv ε j o).choose
 
+/- English proof (translation)
+The claim follows from `(exists_ptsEquiv hv ε j o).choose_spec x`.
+-/
 theorem ptsEquiv_left (x : ChTor.Pts (goodPoint hv ε j B o).A.A) :
     (ptsEquiv hv ε j o x).left = x.left ≫ toBase hv ε j o := (exists_ptsEquiv hv ε j o).choose_spec x
 
+/- English proof (translation)
+The claim follows from `Over.OverMorphism.ext (by rw [ptsEquiv_left, Over.comp_left, Over.comp_left, ptsEquiv_left, Category.assoc, homC_toBase, Category.assoc])`.
+-/
 theorem ptsEquiv_homC (f : B.A ⟶ B'.A) (x : ChTor.Pts (goodPoint hv ε j B o).A.A) :
     ptsEquiv hv ε j o' (x ≫ homC hv ε j o o' f) = ptsEquiv hv ε j o x ≫ f :=
   Over.OverMorphism.ext (by
@@ -132,6 +170,11 @@ theorem ptsEquiv_homC (f : B.A ⟶ B'.A) (x : ChTor.Pts (goodPoint hv ε j B o).
 
 variable [IsAlgClosed C] [CharZero C]
 
+/- English proof (translation)
+Set `F` to `fun (B : Out.PolAV (Sp R)) (o : B.OAct Λ) => (ptsEquiv hv ε j o).symm.toMonoidHom.comp (preHom (G := B.A) (extPt α κ h))`. Establish `hF : ∀ B o, Function.Bijective (Tate.map p (F B o))` using `fun B o => tate_map_bijective ((ptsEquiv hv ε j o).symm.injective.comp (extPt_injective α κ h _)) fun n y hy => by`. Take `⟨x, -, hx⟩` from `exists_extPt_eq α κ h B (one_le_ppow p n) (ptsEquiv hv ε j o y) (by rw [← map_pow, hy, map_one])`. Conclude with `⟨x, (ptsEquiv hv ε j o).symm_apply_eq.2 hx⟩`. Use `⟨fun B o => LinearEquiv.ofBijective _ (hF B o), fun B B' o o' f _ t => Tate.ext fun n => ?_⟩` and prove the remaining obligations.
+
+Use `(ptsEquiv hv ε j o').symm_apply_eq.2 ?_` and prove the remaining obligations. Rewrite using `[lev_homT, ptsEquiv_homC]`. Conclude with `(Category.assoc _ _ _).symm.trans (congrArg (· ≫ f) ((ptsEquiv hv ε j o).apply_symm_apply _).symm)`.
+-/
 theorem exists_tateEquiv [IsNoetherianRing R] {Ω : Type} [Field Ω] [IsAlgClosed Ω] (α : R →+* Ω) (κ : Ω →+* C)
     (h : κ.comp α = (algebraMap O C).comp j) :
     ∃ e : ∀ (B : Out.PolAV (Sp R)) (o : B.OAct Λ), Tate p (Over.mk (spMap α) ⟶ B.A) ≃ₗ[ℤ_[p]] (goodPoint hv ε j B o).T,
@@ -149,6 +192,9 @@ theorem exists_tateEquiv [IsNoetherianRing R] {Ω : Type} [Field Ω] [IsAlgClose
   rw [lev_homT, ptsEquiv_homC]
   exact (Category.assoc _ _ _).symm.trans (congrArg (· ≫ f) ((ptsEquiv hv ε j o).apply_symm_apply _).symm)
 
+/- English proof (translation)
+Establish `hW` using `weilEq_of_lamEq GlobalTheory.firstFiveLaws.1 C (goodPoint hv ε j X oX).A (goodPoint hv ε j Y oY).A (goodPoint hv ε j A oA).A (goodPoint hv ε j B oB).A (homC hv ε j oX oA f₁) (homC hv ε j oY oA f₂) (homC hv ε j oX oB g₁) (homC hv ε j oY oB g₂) inferInstance inferInstance inferInst …`. Use `congrArg ε.equiv.symm (Tate.ext fun n => ?_)` and prove the remaining obligations. Establish `hn` using `one_le_ppow p n`. Conclude with `(weilIs_iff hn ((homT hv ε j oX oB g₁ s).lev_pow n) ((homT hv ε j oY oB g₂ t).lev_pow n) _).1 ((hW _ _ _ _ hn (s.lev_pow n) (t.lev_pow n)).1 ((weilIs_iff hn ((homT hv ε j oX oA f₁ s).lev_pow n) ((homT hv ε j oY oA f₂ t).lev_pow n) _).2 rfl))`.
+-/
 theorem pairT_homT_of_lamEq {X Y A B : Out.PolAV (Sp R)} (oX : X.OAct Λ) (oY : Y.OAct Λ) (oA : A.OAct Λ)
     (oB : B.OAct Λ) (f₁ : X.A ⟶ A.A) (f₂ : Y.A ⟶ A.A) (g₁ : X.A ⟶ B.A) (g₂ : Y.A ⟶ B.A) [IsMonHom f₁] [IsMonHom f₂]
     [IsMonHom g₁] [IsMonHom g₂] (h : LamEq A.L f₁ f₂ B.L g₁ g₂) (s : (goodPoint hv ε j X oX).T)
@@ -166,12 +212,18 @@ theorem pairT_homT_of_lamEq {X Y A B : Out.PolAV (Sp R)} (oX : X.OAct Λ) (oY : 
       ((weilIs_iff hn ((homT hv ε j oX oA f₁ s).lev_pow n) ((homT hv ε j oY oA f₂ t).lev_pow n) _).2 rfl))
 
 omit [IsAlgClosed C] [CharZero C] in
+/- English proof (translation)
+The claim follows from `LinearMap.ext fun t => Tate.ext fun n => (ptsEquiv hv ε j o').injective (by rw [lev_homT, ptsEquiv_homC, MonObj.comp_one, LinearMap.zero_apply, Tate.lev_zero, map_one])`.
+-/
 theorem homT_one [IsMonHom (1 : B.A ⟶ B'.A)] : homT hv ε j o o' 1 = 0 :=
   LinearMap.ext fun t => Tate.ext fun n => (ptsEquiv hv ε j o').injective (by
     rw [lev_homT, ptsEquiv_homC, MonObj.comp_one, LinearMap.zero_apply, Tate.lev_zero, map_one])
 
 omit [IsAlgClosed C] [CharZero C] in
 
+/- English proof (translation)
+Simplify using `only [Tate.lev_add, lev_sum, map_mul, map_prod, lev_homT, ptsEquiv_homC]`.
+-/
 theorem ptsEquiv_lev_sum {A A' : Out.PolAV (Sp R)} (oA : A.OAct Λ) (oA' : A'.OAct Λ) {m m' : ℕ}
     (φ : Fin m → (A.A ⟶ B.A)) (φ' : Fin m' → (A'.A ⟶ B.A)) [∀ k, IsMonHom (φ k)] [∀ k, IsMonHom (φ' k)]
     (s : Fin m → (goodPoint hv ε j A oA).T) (s' : Fin m' → (goodPoint hv ε j A' oA').T) (n : ℕ) :
@@ -181,6 +233,9 @@ theorem ptsEquiv_lev_sum {A A' : Out.PolAV (Sp R)} (oA : A.OAct Λ) (oA' : A'.OA
 
 omit [IsAlgClosed C] [CharZero C] in
 
+/- English proof (translation)
+Use `⟨fun t => Tate.ext fun n => (ptsEquiv hv ε j o).injective ?_, fun s s' => ⟨fun l => Tate.ext fun n => (ptsEquiv hv ε j oA).injective ?_, fun l => Tate.ext fun n => (ptsEquiv hv ε j oA').injective ?_⟩⟩` and prove the remaining obligations. Rewrite using `[ptsEquiv_lev_sum, lev_nsmul, map_pow, ← h1]`. Simplify using `only [lev_homT, ptsEquiv_homC, Category.assoc]`. Rewrite using `[lev_homT, ptsEquiv_homC, lev_nsmul, map_pow, ptsEquiv_lev_sum, (h2 _ _ _).1]`. Rewrite using `[lev_homT, ptsEquiv_homC, lev_nsmul, map_pow, ptsEquiv_lev_sum, (h2 _ _ _).2]`.
+-/
 theorem homT_inverse {A A' : Out.PolAV (Sp R)} (oA : A.OAct Λ) (oA' : A'.OAct Λ) {m m' N : ℕ}
     (φ : Fin m → (A.A ⟶ B.A)) (φ' : Fin m' → (A'.A ⟶ B.A)) [∀ k, IsMonHom (φ k)] [∀ k, IsMonHom (φ' k)]
     (ψ : Fin m → (B.A ⟶ A.A)) (ψ' : Fin m' → (B.A ⟶ A'.A)) [∀ k, IsMonHom (ψ k)] [∀ k, IsMonHom (ψ' k)]
@@ -210,6 +265,11 @@ section Points
 variable {p : ℕ} [Fact p.Prime] {C : Type} [Field C] {v : Valuation C ℝ≥0} {O : Type} [CommRing O]
   [Algebra O C] {Λ : Type} [CommRing Λ] [StarRing Λ] [IsAlgClosed C] [CharZero C]
 
+/- English proof (translation)
+Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `add x x' hx hx' => simp only [map_add, LinearMap.add_apply, hx, hx']`. Consider the case `tmul c s`. Proceed by induction on `y using TensorProduct.induction_on with`.
+
+Consider the case `zero => simp`. Consider the case `add y y' hy hy' => simp only [map_add, hy, hy']`. Consider the case `tmul d t => exact congrArg (· • (c * d)) (h s t)`.
+-/
 theorem pairV_baseChange [Algebra ℤ_[p] C] {X Y A B : Point p v O Λ} {f₁ : X.T →ₗ[ℤ_[p]] A.T} {f₂ : Y.T →ₗ[ℤ_[p]] A.T}
     {g₁ : X.T →ₗ[ℤ_[p]] B.T} {g₂ : Y.T →ₗ[ℤ_[p]] B.T}
     (h : ∀ s t, pairT A.A A.eps (f₁ s) (f₂ t) = pairT B.A B.eps (g₁ s) (g₂ t)) (x : X.V) (y : Y.V) :
@@ -223,6 +283,11 @@ theorem pairV_baseChange [Algebra ℤ_[p] C] {X Y A B : Point p v O Λ} {f₁ : 
     | add y y' hy hy' => simp only [map_add, hy, hy']
     | tmul d t => exact congrArg (· • (c * d)) (h s t)
 
+/- English proof (translation)
+Assume the negation of the conclusion as `ha`. Take `⟨b, hb⟩` from `Ideal.mem_span_singleton'.1 (Ideal.absNorm_mem (Ideal.span {a}))`. Establish `hn : Ideal.absNorm (Ideal.span {a}) ≠ 0` using `by rwa [Ne, Ideal.absNorm_eq_zero_iff, Ideal.span_singleton_eq_bot]`. Use `haveI : Nontrivial P.T := Module.nontrivial_of_finrank_pos (R := ℤ_[p]) (by rw [P.hodgeTateLatticePoint_finrank_tateModule]; omega)`. Take `⟨t, ht⟩` from `exists_ne (0 : P.T)`.
+
+Establish `e` using `congrArg (P.actT b) (h t)`. Rewrite `e` using `[map_zero, ← Module.End.mul_apply, ← map_mul, hb, map_natCast, Module.End.natCast_apply, ← Nat.cast_smul_eq_nsmul ℤ_[p], smul_eq_zero]`. Conclude with `ht (e.resolve_left (Nat.cast_ne_zero.2 hn))`.
+-/
 theorem eq_zero_of_actT {E : Type} [Field E] [NumberField E] [StarRing (𝓞 E)] (P : Point p v O (𝓞 E)) (hg : 0 < P.A.g)
     {a : 𝓞 E} (h : ∀ t, P.actT a t = 0) : a = 0 := by
   by_contra ha
@@ -241,6 +306,31 @@ variable {A A' B : Point p v O Λ} {m m' : ℕ} (φ : Fin m → (A.T →ₗ[ℤ_
 omit [IsAlgClosed C] in
 include hN in
 
+/- English proof (translation)
+Establish `hC : (N : C) ≠ 0` using `Nat.cast_ne_zero.2 hN.ne'`. Establish `a1 : ∀ l k x, (ψ l).baseChange C ((φ k).baseChange C x) = if k = l then (N : C) • x else 0` using `fun l k x => by`. Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `add x y hx hy => simp only [map_add, hx, hy]; split_ifs <;> simp`.
+
+Consider the case `tmul c t`. Use `(h2 (Pi.single k t) 0).1 l` as an intermediate fact. Rewrite `this` using `[Finset.sum_eq_single k (fun b _ hb => by simp [hb]) (by simp)]`. Simplify using `only [Pi.single_eq_same, Pi.zero_apply, map_zero, Finset.sum_const_zero, add_zero] at this`. Rewrite using `[LinearMap.baseChange_tmul, LinearMap.baseChange_tmul, this, Nat.cast_smul_eq_nsmul]`.
+
+Use `split_ifs with h`. Rewrite using `[h, Pi.single_eq_same, TensorProduct.tmul_smul]`. Simplify using `[Ne.symm h]`. Establish `a2 : ∀ l k x, (ψ l).baseChange C ((φ' k).baseChange C x) = 0` using `fun l k x => by`. Proceed by induction on `x using TensorProduct.induction_on with`.
+
+Consider the case `zero => simp`. Consider the case `add x y hx hy => simp only [map_add, hx, hy, add_zero]`. Consider the case `tmul c t`. Use `(h2 0 (Pi.single k t)).1 l` as an intermediate fact. Rewrite `this` using `[Finset.sum_eq_single k (f := fun b => φ' b _) (fun b _ hb => by simp [hb]) (by simp)]`.
+
+Simplify using `only [Pi.single_eq_same, Pi.zero_apply, map_zero, Finset.sum_const_zero, zero_add, smul_zero] at this`. Rewrite using `[LinearMap.baseChange_tmul, LinearMap.baseChange_tmul, this, TensorProduct.tmul_zero]`. Establish `a3 : ∀ l k x, (ψ' l).baseChange C ((φ k).baseChange C x) = 0` using `fun l k x => by`. Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => simp`.
+
+Consider the case `add x y hx hy => simp only [map_add, hx, hy, add_zero]`. Consider the case `tmul c t`. Use `(h2 (Pi.single k t) 0).2 l` as an intermediate fact. Rewrite `this` using `[Finset.sum_eq_single k (fun b _ hb => by simp [hb]) (by simp)]`. Simplify using `only [Pi.single_eq_same, Pi.zero_apply, map_zero, Finset.sum_const_zero, add_zero, smul_zero] at this`.
+
+Rewrite using `[LinearMap.baseChange_tmul, LinearMap.baseChange_tmul, this, TensorProduct.tmul_zero]`. Establish `a4 : ∀ l k x, (ψ' l).baseChange C ((φ' k).baseChange C x) = if k = l then (N : C) • x else 0` using `fun l k x => by`. Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `add x y hx hy => simp only [map_add, hx, hy]; split_ifs <;> simp`.
+
+Consider the case `tmul c t`. Use `(h2 0 (Pi.single k t)).2 l` as an intermediate fact. Rewrite `this` using `[Finset.sum_eq_single k (f := fun b => φ' b _) (fun b _ hb => by simp [hb]) (by simp)]`. Simplify using `only [Pi.single_eq_same, Pi.zero_apply, map_zero, Finset.sum_const_zero, zero_add] at this`. Rewrite using `[LinearMap.baseChange_tmul, LinearMap.baseChange_tmul, this, Nat.cast_smul_eq_nsmul]`.
+
+Use `split_ifs with h`. Rewrite using `[h, Pi.single_eq_same, TensorProduct.tmul_smul]`. Simplify using `[Ne.symm h]`. Establish `a5 : ∀ x : B.V, ∑ k, (φ k).baseChange C ((ψ k).baseChange C x) + ∑ k, (φ' k).baseChange C ((ψ' k).baseChange C x) = (N : C) • x` using `fun x => by`. Proceed by induction on `x using TensorProduct.induction_on with`.
+
+Consider the case `zero => simp`. Consider the case `add x y hx hy => simp only [map_add, Finset.sum_add_distrib, smul_add, ← hx, ← hy]`. Normalize the expressions using the abelian group laws. Consider the case `tmul c t`. Simplify using `only [LinearMap.baseChange_tmul, ← TensorProduct.tmul_sum, ← TensorProduct.tmul_add, h1]`.
+
+Rewrite using `[Nat.cast_smul_eq_nsmul, TensorProduct.tmul_smul]`. Use `⟨fun z z' h => Prod.ext (funext fun l => ?_) (funext fun l => ?_), fun x => ?_⟩` and prove the remaining obligations. Use `congrArg ((ψ l).baseChange C) h` as an intermediate fact. Simplify using `only [map_add, map_sum, a1, a2, Finset.sum_ite_eq', Finset.mem_univ, if_true] at this`. Conclude with `smul_right_injective _ hC (add_right_cancel this)`.
+
+Use `congrArg ((ψ' l).baseChange C) h` as an intermediate fact. Simplify using `only [map_add, map_sum, a3, a4, Finset.sum_ite_eq', Finset.mem_univ, if_true] at this`. Conclude with `smul_right_injective _ hC (add_left_cancel this)`. Use `⟨(fun k => (ψ k).baseChange C ((N : C)⁻¹ • x), fun k => (ψ' k).baseChange C ((N : C)⁻¹ • x)), ?_⟩` and prove the remaining obligations. Conclude with `(a5 _).trans (smul_inv_smul₀ hC x)`.
+-/
 theorem bijective_of_inverse [Algebra ℤ_[p] C] (h1 : ∀ t, ∑ k, φ k (ψ k t) + ∑ k, φ' k (ψ' k t) = N • t)
     (h2 : ∀ (s : Fin m → A.T) (s' : Fin m' → A'.T), (∀ l, ψ l (∑ k, φ k (s k) + ∑ k, φ' k (s' k)) = N • s l) ∧
       ∀ l, ψ' l (∑ k, φ k (s k) + ∑ k, φ' k (s' k)) = N • s' l) :
@@ -310,6 +400,9 @@ theorem bijective_of_inverse [Algebra ℤ_[p] C] (h1 : ∀ t, ∑ k, φ k (ψ k 
 
 include hN in
 
+/- English proof (translation)
+Introduce `h0` and use `by obtain ⟨w, hw, hwg⟩ := Matrix.exists_vecMul_eq_zero_iff.2 h0 refine hw (funext fun a => eq_zero_of_actT A hg fun t => congrFun (h2 (fun k => A.actT (w k) t) ?_) a) refine (injective_iff_map_eq_zero _).1 B.pairT_bijective.1 _ (LinearMap.ext fun y => ?_) obtain ⟨s, s', hs⟩ := h1 …`.
+-/
 theorem det_ne_zero_of_inverse {E : Type} [Field E] [NumberField E] [StarRing (𝓞 E)] {A A' B : Point p v O (𝓞 E)}
     (hg : 0 < A.A.g) (φ : Fin m → (A.T →ₗ[ℤ_[p]] B.T)) (φ' : Fin m' → (A'.T →ₗ[ℤ_[p]] B.T))
     (g : Matrix (Fin m) (Fin m) (𝓞 E))
@@ -330,6 +423,9 @@ theorem det_ne_zero_of_inverse {E : Type} [Field E] [NumberField E] [StarRing (�
   rw [← LinearMap.sum_apply, ← map_sum, ← LinearMap.sum_apply, ← map_sum, e]
   simp
 
+/- English proof (translation)
+Use `sub_eq_zero.1 (eq_zero_of_actT A hg fun s => ?_)` and prove the remaining obligations. Use `(injective_iff_map_eq_zero _).1 A.pairT_bijective.1 _ (LinearMap.ext fun t => ?_)` and prove the remaining obligations. Establish `e : pairT A.A A.eps (A.actT (star (g b a)) s) t = pairT A.A A.eps s (A.actT (star (star (g b a))) t)` using `pairT_act A.oA A.eps _ s t`. Rewrite using `[map_sub, LinearMap.sub_apply, map_sub, LinearMap.sub_apply, ← hφ, e, star_star, ← (isAlt_pairT A.A A.eps).neg_eq, ← hφ, (isAlt_pairT B.A B.eps).neg_eq, sub_self, LinearMap.zero_apply]`.
+-/
 theorem star_gram {E : Type} [Field E] [NumberField E] [StarRing (𝓞 E)] {A B : Point p v O (𝓞 E)}
     (hg : 0 < A.A.g) (φ : Fin m → (A.T →ₗ[ℤ_[p]] B.T)) (g : Matrix (Fin m) (Fin m) (𝓞 E))
     (hφ : ∀ a b s t, pairT B.A B.eps (φ a s) (φ b t) = pairT A.A A.eps (A.actT (g a b) s) t) (a b : Fin m) :

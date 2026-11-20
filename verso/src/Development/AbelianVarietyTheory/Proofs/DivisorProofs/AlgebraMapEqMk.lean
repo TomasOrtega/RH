@@ -22,14 +22,26 @@ abbrev Alg (φ : MultilinearMap B (fun _ : Fin q => L) B) : Type :=
 
 variable (φ : MultilinearMap B (fun _ : Fin q => L) B)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem algebraMap_eq_mk (c : B) : algebraMap B (Alg φ) c = Ideal.Quotient.mk _ (C c) := rfl
 
+/- English proof (translation)
+The claim follows from `Ideal.subset_span (Or.inl (Or.inl ⟨(a, b), rfl⟩))`.
+-/
 theorem add_mem (a b : L) : X (a + b) - X a - X b ∈ ideal φ :=
   Ideal.subset_span (Or.inl (Or.inl ⟨(a, b), rfl⟩))
 
+/- English proof (translation)
+The claim follows from `Ideal.subset_span (Or.inl (Or.inr ⟨(c, a), rfl⟩))`.
+-/
 theorem smul_mem (c : B) (a : L) : X (c • a) - C c * X a ∈ ideal φ :=
   Ideal.subset_span (Or.inl (Or.inr ⟨(c, a), rfl⟩))
 
+/- English proof (translation)
+The claim follows from `Ideal.subset_span (Or.inr ⟨ℓ, rfl⟩)`.
+-/
 theorem prod_mem (ℓ : Fin q → L) : ∏ i, X (ℓ i) - C (φ ℓ) ∈ ideal φ :=
   Ideal.subset_span (Or.inr ⟨ℓ, rfl⟩)
 
@@ -43,8 +55,14 @@ def gen : L →ₗ[B] Alg φ where
       ← map_mul, ← map_sub, Ideal.Quotient.eq_zero_iff_mem]
     exact smul_mem φ c a
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem gen_apply (ℓ : L) : gen φ ℓ = Ideal.Quotient.mk _ (X ℓ) := rfl
 
+/- English proof (translation)
+Rewrite using `[← sub_eq_zero]`. Simplify using `only [gen_apply, ← map_prod, algebraMap_eq_mk]`. Rewrite using `[← map_sub, Ideal.Quotient.eq_zero_iff_mem]`. Conclude with `prod_mem φ ℓ`.
+-/
 theorem prod_gen (ℓ : Fin q → L) : ∏ i, gen φ (ℓ i) = algebraMap B (Alg φ) (φ ℓ) := by
   rw [← sub_eq_zero]
   simp only [gen_apply, ← map_prod, algebraMap_eq_mk]
@@ -53,11 +71,26 @@ theorem prod_gen (ℓ : Fin q → L) : ∏ i, gen φ (ℓ i) = algebraMap B (Alg
 
 def scalePoly (t : B) : MvPolynomial L B →ₐ[B] MvPolynomial L B := aeval fun ℓ => C t * X ℓ
 
+/- English proof (translation)
+Simplify using `[scalePoly]`.
+-/
 theorem scalePoly_X (t : B) (ℓ : L) : scalePoly t (X ℓ) = C t * X ℓ := by simp [scalePoly]
 
+/- English proof (translation)
+Simplify using `[scalePoly, aeval_C, MvPolynomial.algebraMap_eq]`.
+-/
 theorem scalePoly_C (t c : B) : scalePoly (L := L) t (C c) = C c := by
   simp [scalePoly, aeval_C, MvPolynomial.algebraMap_eq]
 
+/- English proof (translation)
+Rewrite using `[ideal, Ideal.span_le]`. Introduce and unpack `r ((⟨⟨a, b⟩, rfl⟩ | ⟨⟨c, a⟩, rfl⟩) | ⟨ℓ, rfl⟩)`. Express the relevant statement in the definitionally equal form `scalePoly t _ ∈ ideal φ`. Establish `: scalePoly t (X (a + b) - X a - X b) = C t * (X (a + b) - X a - X b)`. Simplify using `only [map_sub, scalePoly_X]`.
+
+Expand and normalize the polynomial expressions, which then agree. Rewrite using `[this]`. Conclude with `Ideal.mul_mem_left _ _ (add_mem φ a b)`. Express the relevant statement in the definitionally equal form `scalePoly t _ ∈ ideal φ`. Establish `: scalePoly t (X (c • a) - C c * X a) = C t * (X (c • a) - C c * X a)`.
+
+Simplify using `only [map_sub, map_mul, scalePoly_X, scalePoly_C]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[this]`. Conclude with `Ideal.mul_mem_left _ _ (smul_mem φ c a)`. Express the relevant statement in the definitionally equal form `scalePoly t _ ∈ ideal φ`.
+
+Establish `: scalePoly t (∏ i, X (ℓ i) - C (φ ℓ)) = ∏ i, X (ℓ i) - C (φ ℓ)`. Simplify using `only [map_sub, map_prod, scalePoly_X, scalePoly_C, Finset.prod_mul_distrib, Finset.prod_const, Finset.card_univ, Fintype.card_fin, ← map_pow, ht, map_one, one_mul]`. Rewrite using `[this]`. Conclude with `prod_mem φ ℓ`.
+-/
 theorem le_comap_scale (t : B) (ht : t ^ q = 1) : ideal φ ≤ (ideal φ).comap (scalePoly t) := by
   rw [ideal, Ideal.span_le]
   rintro r ((⟨⟨a, b⟩, rfl⟩ | ⟨⟨c, a⟩, rfl⟩) | ⟨ℓ, rfl⟩)
@@ -78,38 +111,68 @@ theorem le_comap_scale (t : B) (ht : t ^ q = 1) : ideal φ ≤ (ideal φ).comap 
 def scale (t : B) (ht : t ^ q = 1) : Alg φ →ₐ[B] Alg φ :=
   Ideal.quotientMapₐ (ideal φ) (scalePoly t) (le_comap_scale φ t ht)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem scale_mk (t : B) (ht : t ^ q = 1) (p : MvPolynomial L B) :
     scale φ t ht (Ideal.Quotient.mk _ p) = Ideal.Quotient.mk _ (scalePoly t p) := rfl
 
+/- English proof (translation)
+Rewrite using `[gen_apply, scale_mk, scalePoly_X, map_mul, Algebra.smul_def, algebraMap_eq_mk]`.
+-/
 theorem scale_gen (t : B) (ht : t ^ q = 1) (ℓ : L) : scale φ t ht (gen φ ℓ) = t • gen φ ℓ := by
   rw [gen_apply, scale_mk, scalePoly_X, map_mul, Algebra.smul_def, algebraMap_eq_mk]
 
+/- English proof (translation)
+The claim follows from `Ideal.Quotient.algHom_ext B (MvPolynomial.algHom_ext fun ℓ => h ℓ)`.
+-/
 theorem scale_ext {f g : Alg φ →ₐ[B] Alg φ} (h : ∀ ℓ, f (gen φ ℓ) = g (gen φ ℓ)) : f = g :=
   Ideal.Quotient.algHom_ext B (MvPolynomial.algHom_ext fun ℓ => h ℓ)
 
+/- English proof (translation)
+The claim follows from `scale_ext φ fun ℓ => by rw [AlgHom.comp_apply, scale_gen, map_smul, scale_gen, scale_gen, smul_smul, mul_comm]`.
+-/
 theorem scale_comp (s t : B) (hs : s ^ q = 1) (ht : t ^ q = 1) :
     (scale φ s hs).comp (scale φ t ht) = scale φ (s * t) (by rw [mul_pow, hs, ht, one_mul]) :=
   scale_ext φ fun ℓ => by
     rw [AlgHom.comp_apply, scale_gen, map_smul, scale_gen, scale_gen, smul_smul, mul_comm]
 
+/- English proof (translation)
+The claim follows from `scale_ext φ fun ℓ => by rw [scale_gen, h1, one_smul, AlgHom.id_apply]`.
+-/
 theorem scale_eq_id (t : B) (ht : t ^ q = 1) (h1 : t = 1) : scale φ t ht = AlgHom.id B (Alg φ) :=
   scale_ext φ fun ℓ => by rw [scale_gen, h1, one_smul, AlgHom.id_apply]
 
+/- English proof (translation)
+Substitute `h` using the available equality. Both sides reduce to the same expression.
+-/
 theorem scale_congr (s t : B) (hs : s ^ q = 1) (ht : t ^ q = 1) (h : s = t) :
     scale φ s hs = scale φ t ht := by subst h; rfl
 
 def tw (ζ : B) (g : ZMod q) : B := ζ ^ g.val
 
+/- English proof (translation)
+Rewrite using `[tw, tw, tw, ZMod.val_add, ← pow_add]`. Use `conv_rhs => rw [← Nat.mod_add_div (g.val + h.val) q, pow_add, pow_mul, hζ, one_pow, mul_one]`.
+-/
 theorem tw_add [NeZero q] {ζ : B} (hζ : ζ ^ q = 1) (g h : ZMod q) :
     tw ζ (g + h) = tw ζ g * tw ζ h := by
   rw [tw, tw, tw, ZMod.val_add, ← pow_add]
   conv_rhs => rw [← Nat.mod_add_div (g.val + h.val) q, pow_add, pow_mul, hζ, one_pow, mul_one]
 
+/- English proof (translation)
+Rewrite using `[tw, ← pow_mul, mul_comm, pow_mul, hζ, one_pow]`.
+-/
 theorem tw_pow {ζ : B} (hζ : ζ ^ q = 1) (g : ZMod q) : tw ζ g ^ q = 1 := by
   rw [tw, ← pow_mul, mul_comm, pow_mul, hζ, one_pow]
 
+/- English proof (translation)
+Simplify using `[tw]`.
+-/
 theorem tw_zero (ζ : B) : tw ζ (0 : ZMod q) = 1 := by simp [tw]
 
+/- English proof (translation)
+Rewrite using `[← tw_add hζ, add_neg_cancel, tw_zero]`.
+-/
 theorem tw_mul_tw_neg [NeZero q] {ζ : B} (hζ : ζ ^ q = 1) (g : ZMod q) :
     tw ζ g * tw ζ (-g) = 1 := by rw [← tw_add hζ, add_neg_cancel, tw_zero]
 
@@ -127,6 +190,9 @@ def act [NeZero q] (ζ : B) (hζ : ζ ^ q = 1) : Multiplicative (ZMod q) →* (A
     rw [← AlgHom.comp_apply, scale_comp]
     exact DFunLike.congr_fun (scale_congr φ _ _ _ _ (tw_add hζ _ _)) x
 
+/- English proof (translation)
+The claim follows from `scale_gen φ _ (tw_pow hζ _) ℓ`.
+-/
 theorem act_gen [NeZero q] (ζ : B) (hζ : ζ ^ q = 1) (g : ZMod q) (ℓ : L) :
     act φ ζ hζ (Multiplicative.ofAdd g) (gen φ ℓ) = ζ ^ g.val • gen φ ℓ :=
   scale_gen φ _ (tw_pow hζ _) ℓ

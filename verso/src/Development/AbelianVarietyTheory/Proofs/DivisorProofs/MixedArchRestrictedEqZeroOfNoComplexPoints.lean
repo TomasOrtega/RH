@@ -7,6 +7,9 @@ open GlobalTheory GlobalTheory.CechPic GlobalTheory.CxPts GlobalTheory.Cartier G
 
 namespace GlobalTheory.MixHt
 
+/- English proof (translation)
+Unfold `HermLB.archInt`. Use `finsum_eq_zero_of_forall_eq_zero fun σ => ?_` and prove the remaining obligations. Use `haveI := hq σ`. Simplify using `[Weight.chernInt, MeasureTheory.integral_of_isEmpty]`.
+-/
 theorem archInt_eq_zero_of_isEmpty {k : Type} [CommRing k] {Z : Scheme.{0}} [IsIntegral Z] {q : Z ⟶ Sp k}
     (hq : ∀ σ : k →+* ℂ, IsEmpty (CxPts q σ)) (L M : HermLB q) (e : ℕ)
     {r : M.B.ι → Z.functionFieldˣ} (hr : IsRatSec M.B r) : L.archInt M e hr = 0 := by
@@ -15,12 +18,20 @@ theorem archInt_eq_zero_of_isEmpty {k : Type} [CommRing k] {Z : Scheme.{0}} [IsI
   haveI := hq σ
   simp [Weight.chernInt, MeasureTheory.integral_of_isEmpty]
 
+/- English proof (translation)
+Unfold `mixArch`. Simplify using `[archInt_eq_zero_of_isEmpty hq, FibreProj.pol]`.
+-/
 theorem mixArch_eq_zero_of_isEmpty {k : Type} [CommRing k] {Z : Scheme.{0}} [IsIntegral Z] {q : Z ⟶ Sp k}
     (hq : ∀ σ : k →+* ℂ, IsEmpty (CxPts q σ)) {e : ℕ} (L : Fin e → HermLB q) (M : HermLB q)
     {r : M.B.ι → Z.functionFieldˣ} (hr : IsRatSec M.B r) : mixArch L M hr = 0 := by
   unfold mixArch
   simp [archInt_eq_zero_of_isEmpty hq, FibreProj.pol]
 
+/- English proof (translation)
+Introduce `k _ Y _ q hq e L M`. Use `⟨fun r hr => mixArch_eq_zero_of_isEmpty hq L M hr, fun t z => ?_⟩` and prove the remaining obligations. Unfold `resArch`. Use `split_ifs with h`. Use `mixArch_eq_zero_of_isEmpty (fun σ => ?_) _ _ _` and prove the remaining obligations.
+
+Conclude with `(Points.PtsOver.map (cloι z) rfl _ : CxPts (cloι z ≫ q) σ → CxPts q σ).isEmpty`. Both sides reduce to the same expression.
+-/
 theorem mixArch_resArch_eq_zero_of_noCxPts : ∀ (k : Type) [CommRing k] (Y : Scheme.{0}) [IsIntegral Y] (q : Y ⟶ Sp k), (∀ σ : k →+* ℂ, IsEmpty (CxPts q σ)) → ∀ (e : ℕ) (L : Fin e → HermLB q) (M : HermLB q), (∀ (r : M.B.ι → Y.functionFieldˣ) (hr : IsRatSec M.B r), mixArch L M hr = 0) ∧ ∀ (t : M.B.Sec) (z : Y), resArch L M t z = 0 := by
   intro k _ Y _ q hq e L M
   refine ⟨fun r hr => mixArch_eq_zero_of_isEmpty hq L M hr, fun t z => ?_⟩

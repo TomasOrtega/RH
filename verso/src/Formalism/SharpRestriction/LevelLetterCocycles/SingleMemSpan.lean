@@ -20,12 +20,86 @@ variable {G : Type} [Group G] [TopologicalSpace G] {Qp K₀ K : Type} [Field Qp]
 local notation "ιE" => algebraMap (LetA O n) W.EE
 local notation "aev" => Polynomial.aeval (AlgHom.toLinearMap (W.γE W.gam) : Module.End O W.EE)
 
+/- English proof (translation)
+Use `Submodule.subset_span ⟨Fintype.equivFin ι i, ?_⟩` and prove the remaining obligations. Simplify using `[hV]`.
+-/
 theorem single_mem_span {d : ℕ} {ι : Type} [Fintype ι] (V : ι → Fin d → W.EE) (k : Fin d) (x : W.EE)
     (i : ι) (hV : V i = Pi.single k x) : Pi.single k x ∈ Submodule.span O (Set.range fun j : Fin (Fintype.card ι) =>
       V ((Fintype.equivFin ι).symm j)) := by
   refine Submodule.subset_span ⟨Fintype.equivFin ι i, ?_⟩
   simp [hV]
 
+/- English proof (translation)
+Introduce `A m T₂ c hsit d b sol Rst hFO`. Take `⟨hCA, h5, hAOK, hWin, -, hc⟩` from `hsit`. Establish `hb : Formalism.MainNotions.LiftingTheory.IsFrameΔ W T₂ (c - ((A.len c : ℕ) : ZMod n)) b` using `hFO.1.1`. Establish `hbij` using `hCA.1`. Use `set e := A.len c with he`.
+
+Use `set Λ := abelian₂ W A c e with hΛ`. Use `set H : ℕ → ℕ := A.Hs c e with hH`. Use `set M := ∑ s ∈ Finset.range e, H s with hMdef`. Establish `hM : ∀ s < e, A.Hs c e s ≤ M` using `fun s hs => Finset.single_le_sum (f := H) (fun _ _ => Nat.zero_le _) (Finset.mem_range.2 hs)`. Use `set JS : Finset ℤ := Finset.Ico (-(M : ℤ)) M with hJS`.
+
+Use `set t : O := (PPO W e JS).eval 1 with ht`. Use `set lR : O := ((PD.p : ℕ) : O) with hlR`. Establish `hps` using `Formalism.MainNotions.UnusedSlot80.KL.ps_mem W (Formalism.MainNotions.UnusedSlot80.UnivC.uniformizer_mem_delta_invariants W)`. Establish `hΛm : Λ ∈ W.AΔ` using `W.AΔ.prod_mem fun s _ => W.AΔ.pow_mem (hps s) _`. Take `⟨κc, u₀, hu₀m, u, hum, hsum, ⟨r₀, hr₀, hu₀⟩, hus⟩` from `Formalism.MainNotions.UnusedSlot80.LevC.crtLev W hR e (fun t => 2 * H t)`.
+
+Use `choose! rs hrs hus' using hus`. Establish `hp0` using `p_ne_zero_O' W`. Establish `hU : PsUnitE W` using `Formalism.MainNotions.UnusedSlot80.KF.psUnitE_of W hR ⟨Formalism.MainNotions.UnusedSlot80.ToolsR.tools1 hR, Formalism.MainNotions.UnusedSlot80.ToolsR.tools2 hR hp0 hpu, Formalism.MainNotions.UnusedSlot80.ToolsR.tools3 hR, Formalism.MainNotions.UnusedSlot80.ToolsR.tools4 hR⟩`. Establish `hΛU : IsUnit (ιE Λ)`. Use `⟨∏ s ∈ Finset.range e, (hU s).unit ^ H s, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[Units.coe_prod, hΛ, abelian₂, map_prod]`. Use `Finset.prod_congr rfl fun s _ => ?_` and prove the remaining obligations. Rewrite using `[Units.val_pow_eq_pow_val, IsUnit.unit_spec, map_pow]`. Use `set Λi : W.EE := ((hΛU.unit⁻¹ : W.EEˣ) : W.EE) with hΛi`. Establish `hΛinv : Λi * ιE Λ = 1`.
+
+Rewrite using `[hΛi]`. Use `nth_rewrite 2 [← hΛU.unit_spec]`. Conclude with `Units.inv_mul _`. Establish `hP` using `exists_gammaA_pi0_eq_pi0_mul_of_RingP W hR`. Use `set Ms := Msub W A c e Rst with hMs`.
+
+Use `set Ps := Psub W T₂ A c e b Rst with hPs`. Use `set Is := Isub W T₂ A c e b Rst with hIs`. Establish `hIM : Is ≤ Ms` using `fun f hf => hf.1`. Take `⟨D, hD⟩` from `hFin c e H`. Use `set F : Fin d × Fin D → Fin d → W.EE := fun p => Pi.single p.1 (Λi * ιE (letE c * W.π₀ ^ (p.2 : ℕ))) with hF`.
+
+Establish `hfg : Ms ≤ Submodule.span O (Set.range F) ⊔ Ps`. Introduce `f hf`. Establish `hdec : ∀ k, ∃ (cc : Fin D → O) (R : W.EE), InFr W c (W.π₀ * Λ) 1 R ∧ (k ∉ Rst → R = 0) ∧ f k = ∑ j, cc j • (Λi * ιE (letE c * W.π₀ ^ (j : ℕ))) + R`. Introduce `k`. Distinguish the cases in `hk : k ∈ Rst`.
+
+Take `⟨uu, huu, hfu⟩` from `hf.1 k`. Take `⟨cc, w, hw, hcw⟩` from `hD uu huu`. Rewrite `hcw` using `[show (∏ t ∈ Finset.range e, ps W t ^ H t) = Λ from rfl]`. Use `⟨cc, ιE (letE c * (W.π₀ * Λ) * w), ⟨w, hw, by rw [map_one, one_mul]⟩, fun h => absurd hk h, ?_⟩` and prove the remaining obligations. Establish `hsm : ∑ j, cc j • (Λi * ιE (letE c * W.π₀ ^ (j : ℕ))) = Λi * ιE (letE c * ∑ j : Fin D, algebraMap O (LetA O n) (cc j) * W.π₀ ^ (j : ℕ))`.
+
+Rewrite using `[Finset.mul_sum, map_sum, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[Algebra.smul_def, IsScalarTower.algebraMap_apply O (LetA O n) W.EE]`. Simplify using `only [map_mul]`. Expand and normalize the polynomial expressions, which then agree.
+
+Establish `hfk : ιE Λ * f k = ιE (letE c * ∑ j : Fin D, algebraMap O (LetA O n) (cc j) * W.π₀ ^ (j : ℕ)) + ιE Λ * ιE (letE c * (W.π₀ * Λ) * w)`. Rewrite using `[hfu, mul_one, hcw, map_add, ← map_mul]`. Use `congr 1`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree.
+
+Rewrite using `[hsm]`. Take the linear combination `Λi * hfk - (f k - ιE (letE c * (W.π₀ * Λ) * w)) * hΛinv`. Conclude with `⟨0, 0, ⟨0, W.AΔ.zero_mem, by simp⟩, fun _ => rfl, by simp [hf.2 k hk]⟩`. Use `choose cc R hR1 hR2 hR3 using hdec`. Establish `hRv : (fun k => R k) ∈ Ps` using `psub_of_pi0Lam W T₂ A c b Rst hR hbij hAOK hc hWin hb _ hR1 fun k hk => hR2 k hk`.
+
+Establish `hfeq : f = ∑ p : Fin d × Fin D, cc p.1 p.2 • F p + fun k => R k`. Use function extensionality and compare the values at `k`. Rewrite using `[hR3 k, Pi.add_apply, Finset.sum_apply, Fintype.sum_prod_type]`. Simplify using `only [Pi.smul_apply, hF, Pi.single_apply]`. Rewrite using `[Finset.sum_eq_single k]`.
+
+Simplify using the standard rewrite rules. Introduce `k' _ hk'`. Simplify using `[Ne.symm hk']`. Simplify using the standard rewrite rules. Rewrite using `[hfeq]`.
+
+Conclude with `Submodule.add_mem_sup (Submodule.sum_mem _ fun p _ => Submodule.smul_mem _ _ (Submodule.subset_span ⟨p, rfl⟩)) hRv`. Use `set Cg : ℕ → W.EE := fun j => if j < e then ιE (letE c * u j) else ιE (letE c * (Λ * r₀)) with hCg`. Use `set ιv := {k // k ∈ Rst} × Fin (e + 1)`. Use `set vv : ιv → Fin d → W.EE := fun p => Pi.single p.1.1 (Cg p.2) with hvv`. Use `set v' : Fin (Fintype.card ιv) → Fin d → W.EE := fun j => vv ((Fintype.equivFin ιv).symm j) with hv'`.
+
+Establish `hvmem : ∀ k ∈ Rst, ∀ j < e + 1, Pi.single k (Cg j) ∈ Submodule.span O (Set.range v')` using `fun k hk j hj => single_mem_span W vv k _ (⟨k, hk⟩, ⟨j, hj⟩) rfl`. Establish `hK : ∀ f ∈ Is, ∃ K : ℕ, (lR ^ K * t) • f ∈ Submodule.span O (Set.range v') ⊔ Ps`. Introduce `f hf`. Take `⟨g₁, hg₁, hpp⟩` from `pp_inv W hS hP T₂ A c e b (PPO W e JS) f hf.2`. Establish `hke` using `fun k => killer_elem W hR hKL hS hRAT hCA h5 A c e M hM (hInv A c hc) κc u₀ r₀ u rs hr₀ (fun s hs => hrs s hs) hsum hu₀ (fun s hs => hus' s hs) (f k) (hf.1.1 k)`.
+
+Use `choose Kk xk x0k hRk using hke`. Use `set Kt := ∑ k, Kk k with hKt`. Establish `hKle : ∀ k, Kk k ≤ Kt` using `fun k => Finset.single_le_sum (fun _ _ => Nat.zero_le _) (Finset.mem_univ k)`. Use `set Sv : Fin d → W.EE := ∑ k ∈ Rst, (∑ s ∈ Finset.range e, (lR ^ (Kt - Kk k) * xk k s) • (Pi.single k (Cg s) : Fin d → W.EE) + (lR ^ (Kt - Kk k) * x0k k) • (Pi.single k (Cg e) : Fin d → W.EE)) with hSv`. Use `set Rr : Fin d → W.EE := fun k => if k ∈ Rst then lE W (Kt - Kk k) * (lE W (Kk k) * PPγ W e JS (f k) - ∑ s ∈ Finset.range e, xk k s • ιE (letE c * u s) - x0k k • ιE (letE c * (Λ * r₀))) else 0 with hRr`.
+
+Use `set D2 : Fin d → W.EE := fun k => lE W Kt * (ιE W.π₀ * g₁ k) with hD2`. Establish `hSvm : Sv ∈ Submodule.span O (Set.range v')`. Use `Submodule.sum_mem _ fun k hk => Submodule.add_mem _ (Submodule.sum_mem _ fun s hs => ?_) ?_` and prove the remaining obligations. Conclude with `Submodule.smul_mem _ _ (hvmem k hk s (by have := Finset.mem_range.1 hs; omega))`. Conclude with `Submodule.smul_mem _ _ (hvmem k hk e (by omega))`.
+
+Establish `hRrm : Rr ∈ Ps`. Use `psub_of_pi0Lam W T₂ A c b Rst hR hbij hAOK hc hWin hb _ (fun k => ?_) (fun k hk => by simp [hRr, hk])` and prove the remaining obligations. Distinguish the cases in `hk : k ∈ Rst`. Simplify using `only [hRr, hk, if_true]`. Take `⟨w, hw, hwe⟩` from `hRk k`.
+
+Use `⟨lA W ^ (Kt - Kk k) * w, W.AΔ.mul_mem (W.AΔ.pow_mem (Formalism.MainNotions.UnusedSlot80.KL.lA_mem W) _) hw, ?_⟩` and prove the remaining obligations. Rewrite `hwe`, the goal using `[map_one, one_mul]`. Rewrite using `[hwe, ← Formalism.MainNotions.UnusedSlot80.KL.ι_lE, ← map_mul]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree.
+
+Simplify using `only [hRr, hk, if_false]; exact ⟨0, W.AΔ.zero_mem, by simp⟩`. Establish `hf0 : ∀ k ∉ Rst, ιE W.π₀ * g₁ k = 0` using `fun k hk => by`. Rewrite using `[← hpp k, hf.1.2 k hk, map_zero, smul_zero, sub_zero]`. Establish `hD2m : D2 ∈ Ps`. Use `⟨⟨fun k => ?_, fun k hk => by simp [hD2, hf0 k hk]⟩, fun k => lE W Kt * g₁ k, ?_, fun k => by` and prove the remaining obligations.
+
+Simplify using `only [hD2]`. Use the proof step `ring⟩`. Simplify using `only [hD2]`. Rewrite using `[← hpp k]`. Use `(Formalism.MainNotions.UnusedSlot80.UnivC.inFr_lam_iff W A c e _).2 (inId_lE W (inId_sub W ?_ ?_) _)` and prove the remaining obligations.
+
+Conclude with `inId_aeval W hS _ _ ((Formalism.MainNotions.UnusedSlot80.UnivC.inFr_lam_iff W A c e _).1 (hf.1.1 k))`. Conclude with `inId_smul W ((Formalism.MainNotions.UnusedSlot80.UnivC.inFr_lam_iff W A c e _).1 (hf.1.1 k)) _`. Use `Formalism.MainNotions.UnusedSlot80.UnivC.inNL_mulι W T₂ A c e b (W.AΔ.pow_mem (Formalism.MainNotions.UnusedSlot80.KL.lA_mem W) Kt) hg₁` as an intermediate fact. Simplify `this` using `only [Formalism.MainNotions.UnusedSlot80.KL.ι_lE]`. Establish `hSvk : ∀ k, Sv k = if k ∈ Rst then (∑ s ∈ Finset.range e, (lR ^ (Kt - Kk k) * xk k s) • Cg s + (lR ^ (Kt - Kk k) * x0k k) • Cg e) else 0`.
+
+Introduce `k`. Simplify using `only [hSv, Finset.sum_apply, Pi.add_apply, Pi.smul_apply, Pi.single_apply, smul_ite, smul_zero]`. Distinguish the cases in `hk : k ∈ Rst`. Rewrite using `[if_pos hk, Finset.sum_eq_single k (fun k' _ hk' => by simp [Ne.symm hk']) (fun h => absurd hk h)]`. Simplify using the standard rewrite rules.
+
+Rewrite using `[if_neg hk, Finset.sum_eq_zero]`. Introduce `k' hk'`. Establish `: k ≠ k'` using `fun h => hk (h ▸ hk')`. Simplify using `[this]`. Establish `key : ∀ k ∈ Rst, (lR ^ Kt * t) • f k = (∑ s ∈ Finset.range e, (lR ^ (Kt - Kk k) * xk k s) • Cg s + (lR ^ (Kt - Kk k) * x0k k) • Cg e) + (lE W (Kt - Kk k) * (lE W (Kk k) * PPγ W e JS (f k) - ∑ s ∈ Finset.range e, xk k s • ιE (letE c * u s) - x0k k • ιE (letE c * (Λ * r₀))) - lE W …`.
+
+Introduce `k hk`. Establish `hsplit : lE W Kt = lE W (Kt - Kk k) * lE W (Kk k)`. Rewrite using `[← lE_add', Nat.sub_add_cancel (hKle k)]`. Establish `hCe : Cg e = ιE (letE c * (Λ * r₀))` using `by simp [hCg]`. Establish `hCs : ∑ s ∈ Finset.range e, (lR ^ (Kt - Kk k) * xk k s) • Cg s = lE W (Kt - Kk k) * ∑ s ∈ Finset.range e, xk k s • ιE (letE c * u s)`.
+
+Rewrite using `[Finset.mul_sum]`. Use `Finset.sum_congr rfl fun s hs => ?_` and prove the remaining obligations. Establish `: s < e` using `Finset.mem_range.1 hs`. Simplify using `only [hCg, this, if_true]`. Rewrite using `[lE_smul, smul_smul]`.
+
+Establish `e2 : t • f k = PPγ W e JS (f k) - ιE W.π₀ * g₁ k`. Rewrite using `[← hpp k]`. Unfold `PPγ`. Expand and normalize the polynomial expressions, which then agree. Establish `e3 : (lR ^ Kt * t) • f k = lE W Kt * (t • f k)` using `by rw [lE_smul, smul_smul]`.
+
+Establish `e4 : (lR ^ (Kt - Kk k) * x0k k) • Cg e = lE W (Kt - Kk k) * (x0k k • ιE (letE c * (Λ * r₀)))`. Rewrite using `[hCe, lE_smul, smul_smul]`. Rewrite using `[hCs, e4, e3, e2, hsplit]`. Expand and normalize the polynomial expressions, which then agree. Establish `heq : (lR ^ Kt * t) • f = Sv + (Rr - D2)`.
+
+Use function extensionality and compare the values at `k`. Rewrite using `[Pi.add_apply, Pi.sub_apply, Pi.smul_apply, hSvk k]`. Distinguish the cases in `hk : k ∈ Rst`. Simplify using `only [hRr, hD2, hk, if_true]`. Conclude with `key k hk`.
+
+Simplify using `only [hRr, hD2, hk, if_false, hf.1.2 k hk, smul_zero, hf0 k hk, mul_zero, sub_zero, add_zero]`. Use `⟨Kt, ?_⟩` and prove the remaining obligations. Rewrite using `[heq]`. Conclude with `Submodule.add_mem_sup hSvm (Ps.sub_mem hRrm hD2m)`. Establish `hsat : ∀ K : ℕ, ∀ f ∈ Ms, (lR ^ K * t) • f ∈ Ps → f ∈ Ps`.
+
+Introduce `K f hf hKf`. Take `⟨N, o, ho⟩` from `eval_one_dvd_prime_pow W hKL hCA hinj hO2 e JS`. Establish `h1 : (lR ^ (K + N)) • f ∈ Ps`. Use `Ps.smul_mem o hKf` as an intermediate fact. Rewrite `this` using `[smul_smul, show o * (lR ^ K * t) = lR ^ (K + N) by rw [pow_add, ← ho]; ring]`. Then use the resulting hypothesis.
+
+Take `⟨-, g, hg, hfg⟩` from `h1`. Take `⟨g', hg', hfg'⟩` from `sat_l W hR T₂ A c e b (K + N) f hf.1 g hg (fun k => by`. Rewrite using `[lE_smul]`. Conclude with `hfg k)`. Conclude with `⟨hf, g', hg', hfg'⟩`.
+
+Take `⟨g₀, J, hg₀, hJ, hgen⟩` from `gen_of_killer Ms Ps Is hIM F hfg lR t v' hK hsat`. Use `⟨g₀, J, ?_, fun i => ⟨(hJ i).1.1, (hJ i).1.2, (hJ i).2⟩, fun f hf1 hf2 hf3 => ?_⟩` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation. Take `⟨o, ho⟩` from `hgen f ⟨⟨hf1, hf2⟩, hf3⟩`. Take `⟨-, g, hg, hfg⟩` from `ho`.
+
+Use `⟨o, g, hg, fun k => ?_⟩` and prove the remaining obligations. Use `hfg k` as an intermediate fact. Simplify `this` using `[Finset.sum_apply, Pi.smul_apply, Algebra.smul_def]`.
+-/
 theorem univGenCore_of' [IsDomain O] [IsPrincipalIdealRing O] [NeZero n]
     [IsAdicComplete (Ideal.span {((PD.p : ℕ) : O)}) O] [Fintype (K →ₐ[Qp] LL)]
     (hinj : Function.Injective (algebraMap O LL))

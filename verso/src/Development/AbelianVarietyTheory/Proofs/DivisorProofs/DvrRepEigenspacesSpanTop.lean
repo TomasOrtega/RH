@@ -9,6 +9,13 @@ open GlobalTheory.Sandwich GlobalTheory.IndefiniteRowSideFullHecke.SandwichMaps
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Introduce `p _ C _ _ _ v O _ _ _ _ hv Λ _ _ _ _ _ _ h ρ`. Establish `hscal : ∀ c : ℤ_[p], ρ (algebraMap ℤ_[p] Λ c) = padicToO p O c • (1 : Matrix (Fin h) (Fin h) O)` using `fun c => (GlobalTheory.T.padic_ring_hom_unique_adic_complete p O).2 h (ρ.comp (algebraMap ℤ_[p] Λ)) c`. Establish `hkill` using `GlobalTheory.T.scalar_rep_commute_and_annihilate C O Λ h ℤ_[p] (padicToO p O) ρ hscal`. Establish `hdiag` using `GlobalTheory.T.commuting_semisimple_eigenspaces_span C (Fin h → C) Λ (fun a => Matrix.toLin' ((ρ a).map (algebraMap O C))) hkill.1 (fun a => by`. Take `⟨f, hf, hsep⟩` from `GlobalTheory.T.exists_separable_annihilating_poly p C ((algebraMap O C).comp (padicToO p O)) Λ a`.
+
+Conclude with `⟨f.map ((algebraMap O C).comp (padicToO p O)), hsep, hkill.2 a f hf⟩)`. Use `eq_top_iff.2 (hdiag ▸ iSup_le fun χ => ?_)` and prove the remaining obligations. Distinguish the cases in `hne : (⨅ a : Λ, Module.End.eigenspace (Matrix.toLin' ((ρ a).map (algebraMap O C))) (χ a)) = ⊥`. Rewrite using `[hne]`. Conclude with `bot_le`.
+
+Take `⟨σ, hσ⟩` from `GlobalTheory.T.exists_ring_hom_of_joint_eigenvalue C v O Λ h hv ρ χ hne`. Establish `hχ : χ = fun a => algebraMap O C (σ a)` using `funext fun a => (hσ a).symm`. Substitute `hχ` using the available equality. Conclude with `le_iSup_of_le σ le_rfl`.
+-/
 theorem eigenspaces_span_of_integral_action : ∀ (p : ℕ) [Fact p.Prime] (C : Type) [Field C] [IsAlgClosed C] [CharZero C] (v : Valuation C NNReal) (O : Type) [CommRing O] [Algebra O C] [Fact ¬IsUnit (p : O)] [IsAdicComplete (Ideal.span {(p : O)}) O], v.Integers O → ∀ (Λ : Type) [CommRing Λ] [IsDomain Λ] [IsDiscreteValuationRing Λ] [Algebra ℤ_[p] Λ] [Module.Finite ℤ_[p] Λ] [FaithfulSMul ℤ_[p] Λ] (h : ℕ) (ρ : Λ →+* Matrix (Fin h) (Fin h) O), (⨆ σ : Λ →+* O, eig C (⇑ρ) σ) = ⊤ := by
   intro p _ C _ _ _ v O _ _ _ _ hv Λ _ _ _ _ _ _ h ρ
   have hscal : ∀ c : ℤ_[p], ρ (algebraMap ℤ_[p] Λ c) = padicToO p O c • (1 : Matrix (Fin h) (Fin h) O) :=

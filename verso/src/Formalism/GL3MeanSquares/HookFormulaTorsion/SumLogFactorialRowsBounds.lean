@@ -7,6 +7,41 @@ namespace Formalism.HermitianLattices.TraceIntegrality
 open Finset
 open Formalism.LogVandermondeBounds.flipTwoThree (hookF Interlace B0 len)
 
+/- English proof (translation)
+Introduce `C₀ hC`. Use `⟨8 * C₀ + 11, ?_⟩` and prove the remaining obligations. Introduce `ι _ N N' m n logHook logOm v L logT logg logK logh logh' lev logBlock logThn logS2 logTh hf hN hNN hm hv hL hT hg hlf hlN hlv hmax hK hh hh' hlev hBlock hThn hS2`. Establish `hf1 : (1 : ℝ) ≤ (Fintype.card ι : ℝ)` using `by exact_mod_cast hf`. Establish `hN1 : (1 : ℝ) ≤ (N : ℝ)` using `by exact_mod_cast hN`.
+
+Establish `hNN' : (N : ℝ) ≤ (N' : ℝ)` using `by exact_mod_cast hNN`. Establish `hm1 : (1 : ℝ) ≤ (m : ℝ)` using `by exact_mod_cast hm`. Establish `hsum : ∑ τ, ((N : ℝ) * N') * Real.log (2 * Real.exp 1 * max 1 ((n τ : ℝ) / ((N : ℝ) * N'))) ≤ (Fintype.card ι : ℝ) * ((N : ℝ) * N') * (2 + C₀ * L)`. Combine the equalities or inequalities in the displayed calculation. Apply `sum_le_sum` to reduce the goal to its premises.
+
+Introduce `τ _`. Apply `mul_le_mul_of_nonneg_left _ (by positivity)` to reduce the goal to its premises. Establish `hmx : 0 < max 1 ((n τ : ℝ) / ((N : ℝ) * N'))` using `lt_of_lt_of_le one_pos (le_max_left _ _)`. Rewrite using `[Real.log_mul (by positivity) hmx.ne', Real.log_mul (by norm_num) (Real.exp_pos 1).ne', Real.log_exp]`. Use `Real.log_two_lt_d9` as an intermediate fact.
+
+Combine the linear relations using `[hmax τ]`. Use `_ = _ := by rw [sum_const, card_univ, nsmul_eq_mul]; ring`. Generalize the expression as in `(∑ τ, ((N : ℝ) * N') * Real.log (2 * Real.exp 1 * max 1 ((n τ : ℝ) / ((N : ℝ) * N')))) = J at hsum hThn`. Generalize the expression as in `(∑ τ, (logHook τ - n τ * logOm τ)) = Sg at hBlock ⊢`. Generalize the expression as in `(Fintype.card ι : ℝ) = f at *`.
+
+Generalize the expression as in `(N : ℝ) = Nr at *`. Generalize the expression as in `(N' : ℝ) = Nr' at *`. Generalize the expression as in `(m : ℝ) = mr at *`. Establish `hN'1 : 1 ≤ Nr'` using `hN1.trans hNN'`. Establish `hf0 : 0 < f` using `by linarith`.
+
+Establish `hN0 : 0 < Nr` using `by linarith`. Establish `hN'0 : 0 < Nr'` using `by linarith`. Establish `hv0 : 0 < v` using `by linarith`. Establish `hL0 : 0 ≤ L` using `by linarith`. Establish `hlN0 : Real.log Nr ≤ L` using `(Real.log_le_log hN0 hNN').trans hlN`.
+
+Establish `hl2` using `Real.log_two_lt_d9`. Establish `hl4 : Real.log 4 ≤ 2`. Rewrite using `[show (4 : ℝ) = 2 ^ 2 by norm_num, Real.log_pow]; push_cast; linarith`. Establish `hl16 : Real.log 16 ≤ 3`. Rewrite using `[show (16 : ℝ) = 2 ^ 4 by norm_num, Real.log_pow]; push_cast; linarith`.
+
+Establish `hx1 : 1 ≤ f * Nr * Nr' * v`. Establish `h1 : 1 ≤ f * Nr` using `one_le_mul_of_one_le_of_one_le hf1 hN1`. Establish `h2 : 1 ≤ f * Nr * Nr'` using `one_le_mul_of_one_le_of_one_le h1 hN'1`. Conclude with `one_le_mul_of_one_le_of_one_le h2 hv`. Establish `hbig : Real.log (2 + 8 * (f * Nr * Nr') * v) ≤ 3 + 4 * L`.
+
+Combine the equalities or inequalities in the displayed calculation. Apply `Real.log_le_log (by positivity); linarith` to reduce the goal to its premises. Use `_ = Real.log 16 + (Real.log f + Real.log Nr + Real.log Nr' + Real.log v) := by`. Rewrite using `[Real.log_mul (by norm_num) (by positivity), Real.log_mul (by positivity) hv0.ne', Real.log_mul (by positivity) hN'0.ne', Real.log_mul hf0.ne' hN0.ne']`. Use `_ ≤ 3 + 4 * L := by linarith`.
+
+Establish `hfN : Real.log (f * Nr') ≤ 2 * L`. Rewrite using `[Real.log_mul hf0.ne' hN'0.ne']`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hE0 : 0 ≤ L + logT + logg` using `by linarith`. Establish `hm2 : 1 ≤ mr ^ 2` using `one_le_pow₀ hm1`.
+
+Establish `hP0 : 0 ≤ f * mr ^ 2 * Nr' ^ 2` using `by positivity`. Establish `a1 : f * Nr' ^ 2 ≤ f * mr ^ 2 * Nr' ^ 2`. Establish `: f * Nr' ^ 2 * 1 ≤ f * Nr' ^ 2 * mr ^ 2` using `by gcongr`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `a2 : f * Nr * Nr' ≤ f * Nr' ^ 2`.
+
+Establish `: f * Nr * Nr' ≤ f * Nr' * Nr'` using `by gcongr`. Combine the linear relations using `[this, sq Nr']`. Establish `a3 : f * Nr' ≤ f * Nr' ^ 2`. Establish `: f * Nr' * 1 ≤ f * Nr' * Nr'` using `by gcongr`. Use polynomial arithmetic with `[this]`.
+
+Establish `a4 : f * (mr ^ 2 * Nr + Nr * Nr') ≤ 2 * (f * mr ^ 2 * Nr' ^ 2)`. Establish `h1 : f * (mr ^ 2 * Nr) ≤ f * (mr ^ 2 * Nr' ^ 2)`. Establish `: Nr ≤ Nr' ^ 2` using `by nlinarith`. Use `gcongr`. Establish `h2 : f * (Nr * Nr') ≤ f * mr ^ 2 * Nr' ^ 2` using `by linarith`.
+
+Combine the linear equalities and inequalities to obtain the conclusion. Establish `t1 : f * Nr' ^ 2 * (L + logT + logg) ≤ f * mr ^ 2 * Nr' ^ 2 * (L + logT + logg)` using `mul_le_mul_of_nonneg_right a1 hE0`. Establish `t2 : f * Nr' * L ≤ f * mr ^ 2 * Nr' ^ 2 * (L + logT + logg)` using `mul_le_mul (a3.trans a1) (by linarith) hL0 hP0`. Establish `t3 : f * Nr' * logT ≤ f * mr ^ 2 * Nr' ^ 2 * (L + logT + logg)` using `mul_le_mul (a3.trans a1) (by linarith) hT hP0`. Establish `t4 : f * (mr ^ 2 * Nr + Nr * Nr') * logg ≤ 2 * (f * mr ^ 2 * Nr' ^ 2) * (L + logT + logg)` using `mul_le_mul a4 (by linarith) hg (by positivity)`.
+
+Establish `t5 : f * Nr * Nr' * L ≤ f * mr ^ 2 * Nr' ^ 2 * (L + logT + logg)` using `mul_le_mul (a2.trans a1) (by linarith) hL0 hP0`. Establish `t6 : f * Nr * Nr' * 1 ≤ f * mr ^ 2 * Nr' ^ 2 * (L + logT + logg)` using `mul_le_mul (a2.trans a1) (by linarith) zero_le_one hP0`. Establish `c1` using `mul_le_mul_of_nonneg_left t1 hC`. Establish `c2` using `mul_le_mul_of_nonneg_left t2 hC`. Establish `c3` using `mul_le_mul_of_nonneg_left t3 hC`.
+
+Establish `c4` using `mul_le_mul_of_nonneg_left t4 hC`. Establish `c5` using `mul_le_mul_of_nonneg_left t5 hC`. Establish `e1 : C₀ * f * Nr' * Real.log (f * Nr') ≤ C₀ * f * Nr' * (2 * L)` using `by gcongr`. Establish `e2 : (f * Nr * Nr') * Real.log 4 ≤ (f * Nr * Nr') * 2` using `by gcongr`. Establish `e3 : (f * Nr * Nr') * Real.log (2 + 8 * (f * Nr * Nr') * v) ≤ (f * Nr * Nr') * (3 + 4 * L)` using `by gcongr`.
+
+Generalize the expression as in `Real.log (f * Nr') = z1 at *`. Generalize the expression as in `Real.log 4 = z2 at *`. Generalize the expression as in `Real.log (2 + 8 * (f * Nr * Nr') * v) = z3 at *`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem first_zeta_arithmetic_bound : ZetaValueArithmetic := by
   intro C₀ hC
   refine ⟨8 * C₀ + 11, ?_⟩
@@ -105,6 +140,29 @@ theorem first_zeta_arithmetic_bound : ZetaValueArithmetic := by
   generalize Real.log (2 + 8 * (f * Nr * Nr') * v) = z3 at *
   linarith
 
+/- English proof (translation)
+Establish `hW1 : (1 : ℝ) ≤ (Wnum lam : ℝ)`. Establish `h0 : lam (Fin.last n) ≤ lam 0` using `h (Fin.zero_le _)`. Establish `: (1 : ℤ) ≤ Wnum lam` using `by unfold Wnum; omega`. Conclude with `this` after adjusting the coercions. Establish `hfac : ∀ i j : Fin (n + 1), i < j → 1 ≤ (((lam i - lam j + (j : ℤ) - (i : ℤ) : ℤ) : ℝ) / (((j : ℕ) : ℝ) - ((i : ℕ) : ℝ))) ∧ (((lam i - lam j + (j : ℤ) - (i : ℤ) : ℤ) : ℝ) / (((j : ℕ) : ℝ) - ((i : ℕ) : ℝ))) ≤ (Wnum lam : ℝ)`.
+
+Introduce `i j hij`. Establish `hij' : (i : ℕ) < (j : ℕ)` using `hij`. Establish `hd : (1 : ℝ) ≤ ((j : ℕ) : ℝ) - ((i : ℕ) : ℝ)`. Establish `: ((i : ℕ) : ℝ) + 1 ≤ ((j : ℕ) : ℝ)` using `by exact_mod_cast hij'`. Combine the linear equalities and inequalities to obtain the conclusion.
+
+Establish `h1 : lam j ≤ lam i` using `h hij.le`. Establish `h2 : lam i ≤ lam 0` using `h (Fin.zero_le _)`. Establish `h3 : lam (Fin.last n) ≤ lam j` using `h (Fin.le_last _)`. Establish `hj : (j : ℕ) ≤ n` using `j.is_le`. Establish `hnum : (((lam i - lam j + (j : ℤ) - (i : ℤ) : ℤ) : ℝ)) = ((lam i - lam j : ℤ) : ℝ) + (((j : ℕ) : ℝ) - ((i : ℕ) : ℝ))` using `by push_cast; ring`.
+
+Establish `h1' : (0 : ℝ) ≤ ((lam i - lam j : ℤ) : ℝ)` using `by exact_mod_cast sub_nonneg.mpr h1`. Prove the components needed by the constructor for the conclusion. Rewrite using `[le_div_iff₀ (by linarith), hnum]; linarith`. Rewrite using `[div_le_iff₀ (by linarith)]`. Establish `h4 : (((lam i - lam j + (j : ℤ) - (i : ℤ) : ℤ) : ℝ)) ≤ (Wnum lam : ℝ)`.
+
+Establish `: lam i - lam j + (j : ℤ) - (i : ℤ) ≤ Wnum lam` using `by unfold Wnum; omega`. Conclude with `this` after adjusting the coercions. Use the polynomial consequences of the given equalities and inequalities. Establish `hpos : 0 < weylDim lam`. Unfold `weylDim`.
+
+Apply `prod_pos` to reduce the goal to its premises. Introduce `i _`. Apply `prod_pos` to reduce the goal to its premises. Introduce `j hj`. Use `(hfac i j (by simpa using hj)).1` as an intermediate fact.
+
+Combine the linear equalities and inequalities to obtain the conclusion. Establish `hle : weylDim lam ≤ (Wnum lam : ℝ) ^ ((n + 1) * (n + 1))`. Unfold `weylDim`. Combine the equalities or inequalities in the displayed calculation. Apply `prod_le_prod` to reduce the goal to its premises.
+
+Introduce `i _`. Apply `prod_nonneg` to reduce the goal to its premises. Introduce `j hj`. Use `(hfac i j (by simpa using hj)).1` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
+
+Introduce `i _`. Combine the equalities or inequalities in the displayed calculation. Apply `prod_le_prod` to reduce the goal to its premises. Introduce `j hj`. Use `(hfac i j (by simpa using hj)).1` as an intermediate fact.
+
+Combine the linear equalities and inequalities to obtain the conclusion. Introduce `j hj`. Conclude with `(hfac i j (by simpa using hj)).2`. Use `_ = (Wnum lam : ℝ) ^ (univ.filter (fun j : Fin (n + 1) => i < j)).card := by`. Rewrite using `[prod_const]`.
+
+Use `_ ≤ (Wnum lam : ℝ) ^ (n + 1) := by`. Apply `pow_le_pow_right₀ hW1` to reduce the goal to its premises. Combine the equalities or inequalities in the displayed calculation. Use `_ = _ := by rw [prod_const, card_univ, Fintype.card_fin, ← pow_mul]`. Combine the equalities or inequalities in the displayed calculation.
+-/
 private lemma log_weyl_dimension_bound (n : ℕ) (lam : Fin (n + 1) → ℤ) (h : Antitone lam) :
     Real.log (weylDim lam) ≤ ((n : ℝ) + 1) ^ 2 * Real.log (Wnum lam : ℝ) := by
   have hW1 : (1 : ℝ) ≤ (Wnum lam : ℝ) := by
@@ -166,6 +224,11 @@ private lemma log_weyl_dimension_bound (n : ℕ) (lam : Fin (n + 1) → ℤ) (h 
     _ = (((n + 1) * (n + 1) : ℕ) : ℝ) * Real.log (Wnum lam : ℝ) := Real.log_pow _ _
     _ = _ := by push_cast; ring
 
+/- English proof (translation)
+Establish `h1 : -d * logT ≤ (-A + 2 * b' + C₀ * (S + eta + mt)) * logT` using `mul_le_mul_of_nonneg_right (by linarith) hT`. Establish `h2 : 2 * nn * lw * M ≤ 2 * nn * (C₀ * L) * M` using `by gcongr`. Establish `h3 : 2 * nn * (C₀ * L) * M ≤ 2 * nn * (C₀ * L) * (6 * b' + 4 * eta + 4 * S)` using `by gcongr; linarith`. Establish `h4 : ld ≤ (nn + 1) ^ 2 * (C₀ * L)` using `hld.trans (by gcongr)`. Establish `key : 0 ≤ (-A * logT + (12 * C₀ + 2) * b' * (logT + (nn + 1) * L) + ((12 * C₀ + 2) * (eta + 3 * S + mt) * (logT + (nn + 1) * L) + (12 * C₀ + 2) * (nn + 1) ^ 2 * L)) - ((-A + 2 * b' + C₀ * (S + eta + mt)) * logT + 2 * nn * (C₀ * L) * (6 * b' + 4 * eta + 4 * S) + (nn + 1) ^ 2 * (C₀ …` using `by ring_nf; positivity`.
+
+Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 private lemma arithmetic_bound_at_top {C₀ L logT b' eta S mt nn d M lw ld B bt A : ℝ} (hC : 0 ≤ C₀) (hL : 0 ≤ L)
     (hT : 0 ≤ logT) (hb : 0 ≤ b') (he : 0 ≤ eta) (hS : 0 ≤ S) (hmt : 0 ≤ mt) (hn : 0 ≤ nn)
     (hM0 : 0 ≤ M) (hM : M ≤ 3 * B + (eta + S)) (hlw : lw ≤ C₀ * L) (hld : ld ≤ (nn + 1) ^ 2 * lw)
@@ -187,6 +250,11 @@ private lemma arithmetic_bound_at_top {C₀ L logT b' eta S mt nn d M lw ld B bt
     ring_nf; positivity
   linarith
 
+/- English proof (translation)
+Establish `h1 : -d * logT ≤ (S + eta + C₀ * mt) * logT` using `mul_le_mul_of_nonneg_right (by linarith) hT`. Establish `h2 : 2 * nn * lw * M ≤ 2 * nn * (C₀ * L) * M` using `by gcongr`. Establish `h3 : 2 * nn * (C₀ * L) * M ≤ 2 * nn * (C₀ * L) * (4 * eta + 4 * S)` using `by gcongr; linarith`. Establish `h4 : ld ≤ (nn + 1) ^ 2 * (C₀ * L)` using `hld.trans (by gcongr)`. Establish `key : 0 ≤ (0 + ((12 * C₀ + 2) * (eta + 3 * S + mt) * (logT + (nn + 1) * L) + (12 * C₀ + 2) * (nn + 1) ^ 2 * L)) - ((S + eta + C₀ * mt) * logT + 2 * nn * (C₀ * L) * (4 * eta + 4 * S) + (nn + 1) ^ 2 * (C₀ * L))` using `by ring_nf; positivity`.
+
+Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 private lemma arithmetic_bound_off_top {C₀ L logT eta S mt nn d M lw ld B : ℝ} (hC : 0 ≤ C₀) (hL : 0 ≤ L)
     (hT : 0 ≤ logT) (he : 0 ≤ eta) (hS : 0 ≤ S) (hmt : 0 ≤ mt) (hn : 0 ≤ nn)
     (hM0 : 0 ≤ M) (hM : M ≤ 3 * B + (eta + S)) (hlw : lw ≤ C₀ * L) (hld : ld ≤ (nn + 1) ^ 2 * lw)
@@ -207,6 +275,23 @@ private lemma arithmetic_bound_off_top {C₀ L logT eta S mt nn d M lw ld B : �
     ring_nf; positivity
   linarith
 
+/- English proof (translation)
+Introduce `C₀ hC`. Use `⟨12 * C₀ + 2, ?_⟩` and prove the remaining obligations. Introduce `ι _ _ TT n lam sg A bt b' L logT eta S mt logP hL hT hb he hS hmt hI hW hbt hBt hBn hX hdt hdn hP`. Establish `hL0 : 0 ≤ L` using `by linarith`. Establish `hplace : ∀ ρ, MeanSquareTwistBound (lam ρ) (sg ρ) logT ≤ (if ρ ∈ TT then -A ρ * logT + (12 * C₀ + 2) * b' * (logT + ((n : ℝ) + 1) * L) else 0) + ((12 * C₀ + 2) * (eta + 3 * S + mt) * (logT + ((n : ℝ) + 1) * L) + (12 * C₀ + 2) * ((n : ℝ) + 1) ^ 2 * L)`.
+
+Introduce `ρ`. Take `⟨X, hXc, hXs⟩` from `hX ρ`. Establish `hB0 : 0 ≤ B0 (lam ρ) (sg ρ)` using `sum_nonneg (fun i _ => sub_nonneg.mpr ((hI ρ).2 i).1)`. Establish `hlen : ∀ i, 0 ≤ len (lam ρ) i` using `fun i => sub_nonneg.mpr (((hI ρ).2 i).1.trans ((hI ρ).2 i).2)`. Establish `hM0 : 0 ≤ ∑ i, min (len (lam ρ) i) (B0 (lam ρ) (sg ρ))` using `sum_nonneg fun i _ => le_min (hlen i) hB0`.
+
+Establish `hM : ∑ i, min (len (lam ρ) i) (B0 (lam ρ) (sg ρ)) ≤ 3 * B0 (lam ρ) (sg ρ) + ∑ i ∈ Xᶜ, len (lam ρ) i`. Rewrite using `[← Finset.sum_add_sum_compl X]`. Use `add_le_add ?_ (Finset.sum_le_sum fun i _ => min_le_left _ _)` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation. Apply `mul_le_mul_of_nonneg_right _ hB0` to reduce the goal to its premises.
+
+Conclude with `hXc` after adjusting the coercions. Establish `hcast : (∑ i, ((min (len (lam ρ) i) (B0 (lam ρ) (sg ρ)) : ℤ) : ℝ)) = ((∑ i, min (len (lam ρ) i) (B0 (lam ρ) (sg ρ)) : ℤ) : ℝ)` using `(Int.cast_sum _ _).symm`. Establish `hM0r : (0 : ℝ) ≤ ((∑ i, min (len (lam ρ) i) (B0 (lam ρ) (sg ρ)) : ℤ) : ℝ)`. Conclude with `hM0` after adjusting the coercions. Establish `hMr : ((∑ i, min (len (lam ρ) i) (B0 (lam ρ) (sg ρ)) : ℤ) : ℝ) ≤ 3 * (B0 (lam ρ) (sg ρ) : ℝ) + (eta + S)`.
+
+Establish `: ((∑ i, min (len (lam ρ) i) (B0 (lam ρ) (sg ρ)) : ℤ) : ℝ) ≤ ((3 * B0 (lam ρ) (sg ρ) + ∑ i ∈ Xᶜ, len (lam ρ) i : ℤ) : ℝ)` using `by exact_mod_cast hM`. Rewrite `this` using `[Int.cast_add, Int.cast_mul]`. Establish `h3 : ((3 : ℤ) : ℝ) = 3` using `by norm_num`. Rewrite `this` using `[h3]`. Combine the linear equalities and inequalities to obtain the conclusion.
+
+Establish `hdim` using `log_weyl_dimension_bound n (lam ρ) (hI ρ).1`. Unfold `MeanSquareTwistBound`. Rewrite using `[hcast]`. Distinguish the cases in `hρ : ρ ∈ TT`. Rewrite using `[if_pos hρ]`.
+
+Conclude with `arithmetic_bound_at_top hC hL0 hT hb he hS hmt (Nat.cast_nonneg n) hM0r hMr (hW ρ) hdim (hbt ρ hρ) (hBt ρ hρ) (hdt ρ hρ)`. Rewrite using `[if_neg hρ]`. Conclude with `arithmetic_bound_off_top hC hL0 hT he hS hmt (Nat.cast_nonneg n) hM0r hMr (hW ρ) hdim (hBn ρ hρ) (hdn ρ hρ)`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[sum_add_distrib, sum_const, sum_ite_mem, univ_inter, sum_add_distrib, sum_const, ← sum_mul, sum_neg_distrib, card_univ, nsmul_eq_mul, nsmul_eq_mul]`.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem third_zeta_application : ZetaBoundApplication := by
   intro C₀ hC
   refine ⟨12 * C₀ + 2, ?_⟩
@@ -265,6 +350,9 @@ theorem third_zeta_application : ZetaBoundApplication := by
         ← sum_mul, sum_neg_distrib, card_univ, nsmul_eq_mul, nsmul_eq_mul]
       ring
 
+/- English proof (translation)
+Establish `h` using `Stirling.le_log_factorial_stirling (n := n) (by omega)`. Establish `h1 : 0 ≤ Real.log (n : ℝ)` using `Real.log_nonneg (by exact_mod_cast hn)`. Establish `h2 : 0 ≤ Real.log (2 * Real.pi)` using `Real.log_nonneg (by linarith [Real.pi_gt_three])`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 private lemma stirling_lower_bound (n : ℕ) (hn : 1 ≤ n) :
     (n : ℝ) * Real.log n - n ≤ Real.log (n.factorial : ℝ) := by
   have h := Stirling.le_log_factorial_stirling (n := n) (by omega)
@@ -272,6 +360,15 @@ private lemma stirling_lower_bound (n : ℕ) (hn : 1 ≤ n) :
   have h2 : 0 ≤ Real.log (2 * Real.pi) := Real.log_nonneg (by linarith [Real.pi_gt_three])
   linarith
 
+/- English proof (translation)
+Proceed by induction on `n, hn using Nat.le_induction with`. Consider the case `base => simp`. Consider the case `succ n hn ih`. Establish `hn0 : (0 : ℝ) < n` using `by exact_mod_cast hn`. Rewrite using `[Nat.factorial_succ]`.
+
+Use `push_cast`. Rewrite using `[Real.log_mul (by positivity) (by positivity)]`. Establish `key : Real.log ((n : ℝ) / (n + 1)) ≤ (n : ℝ) / (n + 1) - 1` using `Real.log_le_sub_one_of_pos (by positivity)`. Rewrite `key` using `[Real.log_div (by positivity) (by positivity)]`. Establish `e : (n : ℝ) / (n + 1) - 1 = -(1 / ((n : ℝ) + 1))` using `by field_simp; ring`.
+
+Rewrite `key` using `[e]`. Establish `k2 : ((n : ℝ) + 1) * (Real.log n - Real.log ((n : ℝ) + 1)) ≤ -1`. Use `mul_le_mul_of_nonneg_left key (by positivity : (0 : ℝ) ≤ (n : ℝ) + 1)` as an intermediate fact. Establish `e2 : ((n : ℝ) + 1) * -(1 / ((n : ℝ) + 1)) = -1` using `by field_simp`. Combine the linear equalities and inequalities to obtain the conclusion.
+
+Use the polynomial consequences of the given equalities and inequalities.
+-/
 private lemma stirling_upper_bound (n : ℕ) (hn : 1 ≤ n) :
     Real.log (n.factorial : ℝ) ≤ (n : ℝ) * Real.log n - n + Real.log n + 1 := by
   induction n, hn using Nat.le_induction with
@@ -292,6 +389,11 @@ private lemma stirling_upper_bound (n : ℕ) (hn : 1 ≤ n) :
       linarith
     nlinarith
 
+/- English proof (translation)
+Break down `Nat.eq_zero_or_pos n with rfl | hn` into its components or cases. Simplify using `using mul_nonneg (by linarith) (Real.log_nonneg hx)`. Establish `h1 : (n.factorial : ℝ) ≤ (n : ℝ) ^ n` using `by exact_mod_cast Nat.factorial_le_pow n`. Establish `h2 : Real.log (n : ℝ) ≤ Real.log x` using `Real.log_le_log (by exact_mod_cast hn) h`. Establish `h3 : 0 ≤ Real.log (n : ℝ)` using `Real.log_nonneg (by exact_mod_cast hn)`.
+
+Combine the equalities or inequalities in the displayed calculation.
+-/
 private lemma log_factorial_row_bound (n : ℕ) (x : ℝ) (hx : 1 ≤ x) (h : (n : ℝ) ≤ x) :
     Real.log (n.factorial : ℝ) ≤ x * Real.log x := by
   rcases Nat.eq_zero_or_pos n with rfl | hn
@@ -303,6 +405,9 @@ private lemma log_factorial_row_bound (n : ℕ) (x : ℝ) (hx : 1 ≤ x) (h : (n
     _ = n * Real.log n := Real.log_pow _ _
     _ ≤ x * Real.log x := mul_le_mul h h2 h3 (by linarith)
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Conclude with `Finset.sum_nonneg fun i _ => Real.log_nonneg (by exact_mod_cast Nat.factorial_pos _)`. Combine the equalities or inequalities in the displayed calculation.
+-/
 private lemma sum_log_factorial_rows_bounds (k : ℕ) (g : Fin k → ℕ) (x : ℝ) (hx : 1 ≤ x) (h : ∀ i, (g i : ℝ) ≤ x) :
     0 ≤ ∑ i, Real.log ((g i).factorial : ℝ) ∧
       ∑ i, Real.log ((g i).factorial : ℝ) ≤ k * (x * Real.log x) := by
@@ -312,6 +417,11 @@ private lemma sum_log_factorial_rows_bounds (k : ℕ) (g : Fin k → ℕ) (x : �
           Finset.sum_le_sum fun i _ => log_factorial_row_bound _ _ hx (h i)
       _ = k * (x * Real.log x) := by simp
 
+/- English proof (translation)
+Proceed by induction on `k with`. Consider the case `zero => simp`. Consider the case `succ k ih`. Establish `h' : ((n + k : ℕ) : ℝ) ≤ x` using `by push_cast at h ⊢; linarith`. Establish `h1` using `ih h'`.
+
+Rewrite using `[← add_assoc, Nat.factorial_succ]`. Use `push_cast`. Rewrite using `[Real.log_mul (by positivity) (by positivity)]`. Establish `h2 : Real.log ((n : ℝ) + k + 1) ≤ Real.log x` using `Real.log_le_log (by positivity) (by push_cast at h; linarith)`. Use the polynomial consequences of the given equalities and inequalities.
+-/
 private lemma log_factorial_shift_bound (n k : ℕ) (x : ℝ) (h : ((n + k : ℕ) : ℝ) ≤ x) :
     Real.log ((n + k).factorial : ℝ) ≤ Real.log (n.factorial : ℝ) + k * Real.log x := by
   induction k with
@@ -326,6 +436,13 @@ private lemma log_factorial_shift_bound (n k : ℕ) (x : ℝ) (h : ((n + k : ℕ
       Real.log_le_log (by positivity) (by push_cast at h; linarith)
     nlinarith
 
+/- English proof (translation)
+Take `⟨h1, h2, -⟩` from `Formalism.LogVandermondeBounds.flipTwoThree.hook_product_bounds R nu h`. Use `⟨?_, h2⟩` and prove the remaining obligations. Establish `hpos : 0 < hookF nu`. Unfold `Formalism.LogVandermondeBounds.flipTwoThree.hookF`. Apply `div_pos (by positivity)` to reduce the goal to its premises.
+
+Apply `Finset.prod_pos` to reduce the goal to its premises. Introduce `i _`. Apply `Finset.prod_pos` to reduce the goal to its premises. Introduce `j hj`. Combine the linear relations using `[(Formalism.LogVandermondeBounds.flipTwoThree.hook_den_bounds R nu h i j (mem_filter.mp hj).2).1]`.
+
+Combine the equalities or inequalities in the displayed calculation.
+-/
 private lemma log_hook_product_bounds (R : ℕ) (nu : Fin (R + 1) → ℕ) (h : Antitone nu) :
     Real.log (hookF nu) ≤ ∑ i : Fin (R + 1), Real.log ((nu i + R - i : ℕ).factorial : ℝ) ∧
     ∑ i : Fin (R + 1), Real.log ((nu i + R - i : ℕ).factorial : ℝ)
@@ -344,6 +461,9 @@ private lemma log_hook_product_bounds (R : ℕ) (nu : Fin (R + 1) → ℕ) (h : 
         Real.log_le_log hpos h1
     _ = _ := Real.log_prod (fun i _ => by positivity)
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Conclude with `Finset.sum_nonneg fun i _ => Nat.cast_nonneg _`. Combine the equalities or inequalities in the displayed calculation.
+-/
 private lemma sum_rows_bounds (k : ℕ) (g : Fin k → ℕ) (x : ℝ) (h : ∀ i, (g i : ℝ) ≤ x) :
     0 ≤ ∑ i, (g i : ℝ) ∧ ∑ i, (g i : ℝ) ≤ k * x := by
   constructor
@@ -352,6 +472,43 @@ private lemma sum_rows_bounds (k : ℕ) (g : Fin k → ℕ) (x : ℝ) (h : ∀ i
       _ = k * x := by simp
 
 set_option maxHeartbeats 800000 in
+/- English proof (translation)
+Introduce `C₀ hC`. Use `⟨21 + (3 + C₀) ^ 2 + C₀ * (2 + C₀), ?_⟩` and prove the remaining obligations. Introduce `R nu A w a b' L logOm hnu h0 hw hrow haA hA2 hb1 hba hL hla hRb hOm`. Establish `ha1 : (1 : ℝ) ≤ a` using `hb1.trans hba`. Establish `hA1r : (1 : ℝ) ≤ A` using `ha1.trans haA`.
+
+Establish `hA1 : 1 ≤ A` using `by exact_mod_cast hA1r`. Establish `hR0 : (0 : ℝ) ≤ R` using `Nat.cast_nonneg R`. Establish `hw0 : (0 : ℝ) ≤ w` using `Nat.cast_nonneg w`. Use `set l5 := Real.log (5 * a) with hl5def`. Establish `hl5 : l5 ≤ 5 * L`.
+
+Rewrite using `[hl5def, Real.log_mul (by norm_num) (by linarith)]`. Establish `: Real.log 5 ≤ 5 - 1` using `Real.log_le_sub_one_of_pos (by norm_num)`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hl50 : 0 ≤ l5` using `Real.log_nonneg (by linarith)`. Use `set X := (3 + C₀) * b' with hX`.
+
+Establish `hX1 : 1 ≤ X` using `by nlinarith`. Establish `hlX : Real.log X ≤ (3 + C₀) * L`. Rewrite using `[hX, Real.log_mul (by linarith) (by linarith)]`. Establish `h1 : Real.log (3 + C₀) ≤ (3 + C₀) - 1` using `Real.log_le_sub_one_of_pos (by linarith)`. Establish `h2 : Real.log b' ≤ Real.log a` using `Real.log_le_log (by linarith) hba`.
+
+Use the polynomial consequences of the given equalities and inequalities. Establish `hlX0 : 0 ≤ Real.log X` using `Real.log_nonneg hX1`. Take `⟨hup, hlo⟩` from `log_hook_product_bounds R nu hnu`. Rewrite `hup`, `hlo` using `[Fin.sum_univ_succ]`. Establish `e0 : nu 0 + R - ((0 : Fin (R + 1)) : ℕ) = A + (w + R)`.
+
+Establish `: ((0 : Fin (R + 1)) : ℕ) = 0` using `rfl`. Use linear arithmetic over natural numbers and integers. Rewrite `hup`, `hlo` using `[e0]`. Take `⟨hT0, hTU⟩` from `sum_log_factorial_rows_bounds R (fun i : Fin R => nu i.succ + R - (i.succ : Fin (R + 1))) X hX1 (by`. Introduce `i`.
+
+Establish `h1 : ((nu i.succ + R - (i.succ : Fin (R + 1)) : ℕ) : ℝ) ≤ ((nu i.succ + R : ℕ) : ℝ)` using `Nat.cast_le.mpr (Nat.sub_le _ _)`. Establish `h2` using `hrow i.succ (Fin.succ_ne_zero i)`. Move the coercions through the operations in `at h1`. Rewrite using `[hX]`. Use the proof step `linarith)`.
+
+Use `set Tl := ∑ i : Fin R, Real.log ((nu i.succ + R - (i.succ : Fin (R + 1)) : ℕ).factorial : ℝ) with hTl`. Take `⟨hS0, hSU⟩` from `sum_rows_bounds R (fun i : Fin R => nu i.succ) ((2 + C₀) * b') (fun i => hrow i.succ (Fin.succ_ne_zero i))`. Establish `hsum : ∑ i, (nu i : ℝ) = (A : ℝ) + w + ∑ i : Fin R, (nu i.succ : ℝ)`. Rewrite using `[Fin.sum_univ_succ, h0]`. Use `push_cast`.
+
+Expand and normalize the polynomial expressions, which then agree. Use `set S := ∑ i : Fin R, (nu i.succ : ℝ) with hS`. Establish `hsh` using `log_factorial_shift_bound A (w + R) (5 * a) (by push_cast; linarith)`. Establish `hmono : Real.log (A.factorial : ℝ) ≤ Real.log ((A + (w + R)).factorial : ℝ)` using `Real.log_le_log (by positivity) (by exact_mod_cast Nat.factorial_le (Nat.le_add_right _ _))`. Establish `hlo'` using `stirling_lower_bound A hA1`.
+
+Establish `hhi'` using `stirling_upper_bound A hA1`. Establish `hlA : Real.log (A : ℝ) ≤ l5` using `Real.log_le_log (by linarith) (by linarith)`. Establish `hl0 : Real.log ((nu 0 : ℝ) + R + 1) ≤ l5`. Apply `Real.log_le_log (by positivity)` to reduce the goal to its premises. Rewrite using `[h0]`.
+
+Use `push_cast`. Combine the linear equalities and inequalities to obtain the conclusion. Use `set Q := ((R : ℝ) + 1) * b' * L with hQ`. Establish `hbL : b' * L ≤ Q`. Use `mul_nonneg hR0 (mul_nonneg (by linarith : (0:ℝ) ≤ b') (by linarith : (0:ℝ) ≤ L))` as an intermediate fact.
+
+Rewrite using `[hQ]`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hLQ : L ≤ Q` using `(le_mul_of_one_le_left (by linarith) hb1).trans hbL`. Establish `t1 : ((w + R : ℕ) : ℝ) * l5 ≤ 15 * Q`. Establish `: ((w + R : ℕ) : ℝ) ≤ 3 * b'` using `by push_cast; linarith`.
+
+Combine the equalities or inequalities in the displayed calculation. Establish `t2 : (R : ℝ) * (X * Real.log X) ≤ (3 + C₀) ^ 2 * Q`. Establish `h1 : X * Real.log X ≤ X * ((3 + C₀) * L)` using `mul_le_mul_of_nonneg_left hlX (by linarith)`. Establish `h2 : (R : ℝ) * (X * Real.log X) ≤ ((R : ℝ) + 1) * (X * ((3 + C₀) * L))` using `mul_le_mul (by linarith) h1 (mul_nonneg (by linarith) hlX0) (by linarith)`. Combine the equalities or inequalities in the displayed calculation.
+
+Establish `t3 : ((R : ℝ) + 1) ^ 2 * Real.log ((nu 0 : ℝ) + R + 1) ≤ 5 * Q`. Establish `h1 : ((R : ℝ) + 1) ^ 2 ≤ ((R : ℝ) + 1) * b'`. Rewrite using `[sq]; exact mul_le_mul_of_nonneg_left hRb (by linarith)`. Combine the equalities or inequalities in the displayed calculation. Establish `t4 : |((w : ℝ) + S) * logOm| ≤ C₀ * (2 + C₀) * Q`.
+
+Rewrite using `[abs_mul, abs_of_nonneg (by linarith : (0 : ℝ) ≤ (w : ℝ) + S)]`. Establish `h1 : (w : ℝ) + S ≤ ((R : ℝ) + 1) * ((2 + C₀) * b')`. Use `mul_nonneg hC (by linarith : (0:ℝ) ≤ b')` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Combine the equalities or inequalities in the displayed calculation.
+
+Establish `hgoal : placeTerm nu logOm - topTerm A logOm = (Real.log (hookF nu) - ((A : ℝ) * Real.log A - A)) - ((w : ℝ) + S) * logOm`. Unfold `placeTerm topTerm`. Rewrite using `[hsum]`. Expand and normalize the polynomial expressions, which then agree. Establish `hfin : (21 + (3 + C₀) ^ 2 + C₀ * (2 + C₀)) * ((R : ℝ) + 1) * b' * L = (21 + (3 + C₀) ^ 2 + C₀ * (2 + C₀)) * Q` using `by rw [hQ]; ring`.
+
+Rewrite using `[hgoal, hfin]`. Take `⟨t4a, t4b⟩` from `abs_le.mp t4`. Establish `hQ0 : 0 ≤ Q` using `by linarith`. Establish `hsq : 0 ≤ (3 + C₀) ^ 2 * Q` using `by positivity`. Rewrite using `[abs_le]`.
+
+Apply the tactic sequence `constructor <;> linarith`.
+-/
 theorem second_zeta_top_bound : LargestPlaceHookBound := by
   intro C₀ hC
   refine ⟨21 + (3 + C₀) ^ 2 + C₀ * (2 + C₀), ?_⟩
@@ -447,6 +604,27 @@ theorem second_zeta_top_bound : LargestPlaceHookBound := by
   rw [abs_le]
   constructor <;> linarith
 
+/- English proof (translation)
+Introduce `C₀ hC`. Use `⟨(3 + C₀) ^ 2 + C₀ * (2 + C₀), ?_⟩` and prove the remaining obligations. Introduce `R nu b' L logOm hnu hrow hb1 hL hlb hRb hOm`. Establish `hR0 : (0 : ℝ) ≤ R` using `Nat.cast_nonneg R`. Use `set X := (3 + C₀) * b' with hX`.
+
+Establish `hX1 : 1 ≤ X` using `by nlinarith`. Establish `hlX : Real.log X ≤ (3 + C₀) * L`. Rewrite using `[hX, Real.log_mul (by linarith) (by linarith)]`. Establish `h1 : Real.log (3 + C₀) ≤ (3 + C₀) - 1` using `Real.log_le_sub_one_of_pos (by linarith)`. Use the polynomial consequences of the given equalities and inequalities.
+
+Establish `hlX0 : 0 ≤ Real.log X` using `Real.log_nonneg hX1`. Take `⟨hup, hlo⟩` from `log_hook_product_bounds R nu hnu`. Take `⟨hT0, hTU⟩` from `sum_log_factorial_rows_bounds (R + 1) (fun i : Fin (R + 1) => nu i + R - (i : ℕ)) X hX1 (by`. Introduce `i`. Establish `h1 : ((nu i + R - (i : ℕ) : ℕ) : ℝ) ≤ ((nu i + R : ℕ) : ℝ)` using `Nat.cast_le.mpr (Nat.sub_le _ _)`.
+
+Establish `h2` using `hrow i`. Move the coercions through the operations in `at h1`. Rewrite using `[hX]`. Use the proof step `linarith)`. Use `set Tl := ∑ i : Fin (R + 1), Real.log ((nu i + R - (i : ℕ) : ℕ).factorial : ℝ) with hTl`.
+
+Take `⟨hS0, hSU⟩` from `sum_rows_bounds (R + 1) nu ((2 + C₀) * b') hrow`. Use `set S := ∑ i, (nu i : ℝ) with hS`. Establish `hl0 : Real.log ((nu 0 : ℝ) + R + 1) ≤ Real.log X`. Apply `Real.log_le_log (by positivity)` to reduce the goal to its premises. Use `hrow 0` as an intermediate fact.
+
+Rewrite using `[hX]`. Combine the linear equalities and inequalities to obtain the conclusion. Use `set Q := ((R : ℝ) + 1) * b' * L with hQ`. Establish `hQ0 : 0 ≤ Q` using `by rw [hQ]; positivity`. Establish `t2 : ((R + 1 : ℕ) : ℝ) * (X * Real.log X) ≤ (3 + C₀) ^ 2 * Q`.
+
+Establish `h1 : X * Real.log X ≤ X * ((3 + C₀) * L)` using `mul_le_mul_of_nonneg_left hlX (by linarith)`. Combine the equalities or inequalities in the displayed calculation. Establish `t3 : ((R : ℝ) + 1) ^ 2 * Real.log ((nu 0 : ℝ) + R + 1) ≤ (3 + C₀) * Q`. Establish `h1 : ((R : ℝ) + 1) ^ 2 ≤ ((R : ℝ) + 1) * b'`. Rewrite using `[sq]; exact mul_le_mul_of_nonneg_left hRb (by linarith)`.
+
+Combine the equalities or inequalities in the displayed calculation. Establish `t4 : |S * logOm| ≤ C₀ * (2 + C₀) * Q`. Rewrite using `[abs_mul, abs_of_nonneg hS0]`. Combine the equalities or inequalities in the displayed calculation. Establish `hfin : ((3 + C₀) ^ 2 + C₀ * (2 + C₀)) * ((R : ℝ) + 1) * b' * L = ((3 + C₀) ^ 2 + C₀ * (2 + C₀)) * Q` using `by rw [hQ]; ring`.
+
+Unfold `placeTerm`. Rewrite using `[hfin]`. Take `⟨t4a, t4b⟩` from `abs_le.mp t4`. Establish `h33 : (3 + C₀) * Q ≤ (3 + C₀) ^ 2 * Q`. Use `mul_nonneg (mul_nonneg (by linarith : (0:ℝ) ≤ 3 + C₀) (by linarith : (0:ℝ) ≤ 2 + C₀)) hQ0` as an intermediate fact.
+
+Combine the linear equalities and inequalities to obtain the conclusion. Rewrite using `[abs_le]`. Apply the tactic sequence `constructor <;> linarith`.
+-/
 theorem second_zeta_thin_bound : ThinPlaceHookBound := by
   intro C₀ hC
   refine ⟨(3 + C₀) ^ 2 + C₀ * (2 + C₀), ?_⟩
@@ -504,19 +682,31 @@ theorem second_zeta_thin_bound : ThinPlaceHookBound := by
   rw [abs_le]
   constructor <;> linarith
 
+/- English proof (translation)
+Unfold `mean`. Conclude with `div_le_div_of_nonneg_right (Finset.sum_le_sum fun s _ => h s) (Nat.cast_nonneg _)`.
+-/
 private lemma mean_mono' {σ : Type} [Fintype σ] (F G : σ → ℝ) (h : ∀ s, F s ≤ G s) :
     mean F ≤ mean G := by
   unfold mean
   exact div_le_div_of_nonneg_right (Finset.sum_le_sum fun s _ => h s) (Nat.cast_nonneg _)
 
+/- English proof (translation)
+Unfold `mean`. Rewrite using `[Finset.sum_add_distrib, add_div]`.
+-/
 private lemma mean_add_eq {σ : Type} [Fintype σ] (F G : σ → ℝ) :
     mean (fun s => F s + G s) = mean F + mean G := by
   unfold mean; rw [Finset.sum_add_distrib, add_div]
 
+/- English proof (translation)
+Unfold `mean`. Rewrite using `[Finset.sum_comm, Finset.sum_div]`.
+-/
 private lemma mean_finset_sum_comm {σ J : Type} [Fintype σ] [Fintype J] (F : J → σ → ℝ) :
     mean (fun s => ∑ j, F j s) = ∑ j, mean (F j) := by
   unfold mean; rw [Finset.sum_comm, Finset.sum_div]
 
+/- English proof (translation)
+Unfold `mean`. Establish `hc : (Fintype.card σ : ℝ) ≠ 0` using `by exact_mod_cast Fintype.card_ne_zero`. Simplify using `only [Finset.sum_const, Finset.card_univ, nsmul_eq_mul]`. Clear the denominators using the available nonvanishing facts.
+-/
 private lemma mean_const_eq {σ : Type} [Fintype σ] [Nonempty σ] (c : ℝ) :
     mean (fun _ : σ => c) = c := by
   unfold mean
@@ -524,6 +714,9 @@ private lemma mean_const_eq {σ : Type} [Fintype σ] [Nonempty σ] (c : ℝ) :
   simp only [Finset.sum_const, Finset.card_univ, nsmul_eq_mul]
   field_simp
 
+/- English proof (translation)
+Establish `hc : (Fintype.card σ : ℝ) ≠ 0` using `by exact_mod_cast Fintype.card_ne_zero`. Unfold `placeTerm mean`. Rewrite using `[Finset.sum_sub_distrib, ← Finset.mul_sum]`. Simplify using `only [Finset.sum_const, Finset.card_univ, nsmul_eq_mul]`. Clear the denominators using the available nonvanishing facts.
+-/
 private lemma mean_place_term_comm {σ : Type} [Fintype σ] [Nonempty σ] {N : ℕ} (nu : Fin N → ℕ)
     (x : σ → ℝ) : mean (fun s => placeTerm nu (x s)) = placeTerm nu (mean x) := by
   have hc : (Fintype.card σ : ℝ) ≠ 0 := by exact_mod_cast Fintype.card_ne_zero
@@ -532,6 +725,33 @@ private lemma mean_place_term_comm {σ : Type} [Fintype σ] [Nonempty σ] {N : �
   simp only [Finset.sum_const, Finset.card_univ, nsmul_eq_mul]
   field_simp
 
+/- English proof (translation)
+Introduce `C₀ hC`. Take `⟨Ct, hCt⟩` from `ht C₀ hC`. Take `⟨Cn, hCn⟩` from `hth C₀ hC`. Use `⟨|Ct| + |Cn| + 2 * C₀, ?_⟩` and prove the remaining obligations. Introduce `ι σ _ _ _ _ TT T2 R N m nu A w a b' L logT logg logOm logOms logTh logK hdis hRN hL hla hb1 hba hNL hT0 hg0 hsqm hanti htop hthin hper hOm hTh hK`.
+
+Establish `hL0 : (0:ℝ) ≤ L` using `by linarith`. Establish `hb0 : (0:ℝ) ≤ b'` using `by linarith`. Establish `hN0 : (0:ℝ) ≤ (N:ℝ)` using `Nat.cast_nonneg _`. Establish `hR0 : (0:ℝ) ≤ (R:ℝ)` using `Nat.cast_nonneg _`. Establish `hRN' : (R:ℝ) + 1 ≤ N` using `by exact_mod_cast hRN`.
+
+Establish `hRb : (R:ℝ) + 1 ≤ b'` using `by nlinarith`. Establish `hlb : Real.log b' ≤ L` using `le_trans (Real.log_le_log (by linarith) hba) hla`. Use `set f : ℝ := (Fintype.card ι : ℝ) with hf`. Establish `hf0 : 0 ≤ f` using `Nat.cast_nonneg _`. Use `set G : ℝ := (N:ℝ) * b' * L with hG`.
+
+Establish `hG0 : 0 ≤ G` using `by positivity`. Establish `hRG : ((R:ℝ) + 1) * b' * L ≤ G` using `by rw [hG]; gcongr`. Establish `hRG0 : 0 ≤ ((R:ℝ) + 1) * b' * L` using `by positivity`. Establish `hplace : ∀ τ, placeTerm (nu τ) logOm ≤ (if τ ∈ TT then topTerm (A τ) logOm else 0) + (if τ ∈ T2 then placeTerm (nu τ) logOm else 0) + (|Ct| + |Cn|) * G`. Introduce `τ`.
+
+Establish `hg1 : 0 ≤ |Ct| * G` using `by positivity`. Establish `hg2 : 0 ≤ |Cn| * G` using `by positivity`. Distinguish the cases in `h1 : τ ∈ TT`. Establish `h2 : τ ∉ T2` using `Finset.disjoint_left.1 hdis h1`. Rewrite using `[if_pos h1, if_neg h2]`.
+
+Take `⟨p1, p2, p3, p4, p5⟩` from `htop τ h1`. Use `hCt R (nu τ) (A τ) (w τ) a b' L logOm (hanti τ) p3 p4 p5 p1 p2 hb1 hba hL hla hRb hOm` as an intermediate fact. Establish `h3` using `(abs_le.1 this).2`. Establish `h4 : Ct * ((R:ℝ) + 1) * b' * L ≤ |Ct| * G`. Combine the equalities or inequalities in the displayed calculation.
+
+Combine the linear equalities and inequalities to obtain the conclusion. Distinguish the cases in `h2 : τ ∈ T2`. Rewrite using `[if_neg h1, if_pos h2]`. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite using `[if_neg h1, if_neg h2]`.
+
+Use `hCn R (nu τ) b' L logOm (hanti τ) (hthin τ h1 h2) hb1 hL hlb hRb hOm` as an intermediate fact. Establish `h3` using `(abs_le.1 this).2`. Establish `h4 : Cn * ((R:ℝ) + 1) * b' * L ≤ |Cn| * G`. Combine the equalities or inequalities in the displayed calculation. Combine the linear equalities and inequalities to obtain the conclusion.
+
+Establish `hsum : ∑ τ, placeTerm (nu τ) logOm ≤ ∑ τ ∈ TT, topTerm (A τ) logOm + ∑ τ ∈ T2, placeTerm (nu τ) logOm + f * ((|Ct| + |Cn|) * G)`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Finset.sum_add_distrib, Finset.sum_add_distrib, Finset.sum_ite_mem, Finset.sum_ite_mem, Finset.univ_inter, Finset.univ_inter]`. Simplify using `only [Finset.sum_const, Finset.card_univ, nsmul_eq_mul, hf]`. Establish `hmean : mean logK ≤ ∑ τ, placeTerm (nu τ) logOm + mean logTh + C₀ * f * (m : ℝ) ^ 2 * (N : ℝ) ^ 2 * (L + logT + logg)`.
+
+Combine the equalities or inequalities in the displayed calculation. Rewrite using `[mean_add_eq, mean_add_eq, mean_finset_sum_comm, mean_const_eq]`. Simplify using `only [mean_place_term_comm, hper]`. Establish `e1 : mean logTh ≤ C₀ * f * G`. Use `le_trans hTh ?_` and prove the remaining obligations.
+
+Establish `: (N:ℝ) ^ 2 * L ≤ G`. Rewrite using `[hG]`. Establish `h1 : (N:ℝ) ^ 2 * L ≤ N * b'` using `by nlinarith`. Establish `h2 : (N:ℝ) * b' ≤ N * b' * L` using `by nlinarith [mul_nonneg hN0 hb0]`. Combine the linear equalities and inequalities to obtain the conclusion.
+
+Combine the equalities or inequalities in the displayed calculation. Establish `e2 : C₀ * f * (m : ℝ) ^ 2 * (N : ℝ) ^ 2 * (L + logT + logg) ≤ C₀ * f * G`. Combine the equalities or inequalities in the displayed calculation. Establish `hfin : (|Ct| + |Cn| + 2 * C₀) * f * N * b' * L = f * ((|Ct| + |Cn|) * G) + C₀ * f * G + C₀ * f * G` using `by rw [hG]; ring`. Rewrite using `[hfin]`.
+
+Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem second_zeta_mean_of_top_thin (ht : LargestPlaceHookBound) (hth : ThinPlaceHookBound) : MeanLogNormBound := by
   intro C₀ hC
   obtain ⟨Ct, hCt⟩ := ht C₀ hC
@@ -610,6 +830,9 @@ theorem second_zeta_mean_of_top_thin (ht : LargestPlaceHookBound) (hth : ThinPla
   rw [hfin]
   linarith
 
+/- English proof (translation)
+The claim follows from `second_zeta_mean_of_top_thin second_zeta_top_bound second_zeta_thin_bound`.
+-/
 theorem second_zeta_mean_bound : MeanLogNormBound := second_zeta_mean_of_top_thin second_zeta_top_bound second_zeta_thin_bound
 
 end Formalism.HermitianLattices.TraceIntegrality

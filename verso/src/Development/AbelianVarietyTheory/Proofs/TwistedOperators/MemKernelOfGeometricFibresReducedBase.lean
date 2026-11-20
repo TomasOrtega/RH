@@ -15,6 +15,21 @@ namespace GlobalTheory.HeckeEx
 
 attribute [local instance] Over.cartesianMonoidalCategory
 
+/- English proof (translation)
+Use `Xo.univ.t.semi.smooth` as an intermediate fact. Use `Xo.univ.t.semi.separated` as an intermediate fact. Establish `: Smooth (fst (Over.mk x) Xo.univ.t.G).left` using `by show Smooth (pullback.fst x Xo.univ.t.G.hom) infer_instance`. Establish `: IsSeparated (fst (Over.mk x') Xo.univ.t.G).left` using `by show IsSeparated (pullback.fst x' Xo.univ.t.G.hom) infer_instance`. Establish `: IsReduced (Over.mk x).left` using `(affine_isReduced_iff _).2 ‹IsReduced T›`.
+
+Establish `: IsReduced (Gx x)` using `GlobalTheory.isReduced_of_smooth_of_isReduced (fst (Over.mk x) Xo.univ.t.G).left`. Establish `hT : ∀ {Y : Scheme.{0}} (y : Y ⟶ Xo.X) (c : Over.mk y ⟶ Xo.univ.t.G), (translT Xo.univ.t.G c).left ≫ (fst (Over.mk y) Xo.univ.t.G).left = (fst (Over.mk y) Xo.univ.t.G).left` using `fun y c => by rw [← Over.comp_left, translT, lift_fst]`. Rewrite using `[mem_transKer]`. Use `hom_ext_of_geometric_points (Gx x) (Gx x') (Sp T) (fst (Over.mk x') Xo.univ.t.G).left _ _ (by rw [Category.assoc, hΨ, hT]) fun Ω _ _ q => ?_` and prove the remaining obligations. Set `φ : CommRingCat.of T ⟶ CommRingCat.of Ω` to `Spec.preimage (q ≫ (fst (Over.mk x) Xo.univ.t.G).left)`.
+
+Set `χ : T →+* Ω` to `φ.hom`. Establish `hχ : spMap χ = q ≫ (fst (Over.mk x) Xo.univ.t.G).left` using `Spec.map_preimage _`. Take `⟨Ψ₁, pm, pm', hp, hp', hc, h1⟩` from `exists_isFib χ (x₁ := spMap χ ≫ x) (x₁' := spMap χ ≫ x') rfl rfl Ψ hΨ`. Take `⟨b, hb, hba⟩` from `hk Ω χ _ _ Ψ₁ ⟨pm, pm', hp, hp', hc, h1⟩`. Set `q₁ : Sp Ω ⟶ Gx (spMap χ ≫ x)` to `ReciprocityTheory.ChartRestriction.G.PullbackSections.gxLift (spMap χ ≫ x) (𝟙 _) (q ≫ (snd (Over.mk x) Xo.univ.t.G).left) (by rw [Category.assoc, ReciprocityTheory.ChartRestriction.G.PullbackSections.gx_w x, ← Category.assoc, ← hχ, Category.id_comp])`.
+
+Establish `hq₁ : q₁ ≫ pm = q`. Use `ReciprocityTheory.ChartRestriction.G.PullbackSections.gx_ext x _ _ ?_ ?_` and prove the remaining obligations. Rewrite using `[Category.assoc, hp.2.2, ← Category.assoc, ReciprocityTheory.ChartRestriction.G.PullbackSections.gxLift_fst, Category.id_comp, hχ]`. Rewrite using `[Category.assoc, hp.2.1, ReciprocityTheory.ChartRestriction.G.PullbackSections.gxLift_snd]`. Set `pmO : Over.mk (spMap χ ≫ x) ⊗ Xo.univ.t.G ⟶ Over.mk x ⊗ Xo.univ.t.G` to `Over.homMk pm (by`.
+
+Rewrite using `[← Over.w (fst (Over.mk x) Xo.univ.t.G), ← Over.w (fst (Over.mk (spMap χ ≫ x)) Xo.univ.t.G), ← Category.assoc, hp.2.2]`. Use the proof step `rfl)`. Set `φo : Over.mk (spMap χ ≫ x) ⟶ Over.mk x` to `Over.homMk (spMap χ) rfl`. Establish `hb' : b = φo ≫ a` using `Over.OverMorphism.ext hba`. Establish `hpf : pmO ≫ fst (Over.mk x) Xo.univ.t.G = fst _ Xo.univ.t.G ≫ φo` using `Over.OverMorphism.ext hp.2.2`.
+
+Establish `hps : pmO ≫ snd (Over.mk x) Xo.univ.t.G = snd _ Xo.univ.t.G` using `Over.OverMorphism.ext hp.2.1`. Establish `tp : ∀ {Y : Over Xo.X} (c : Y ⟶ Xo.univ.t.G), translPt Xo.univ.t.G c = (fst Y Xo.univ.t.G ≫ c) * snd Y Xo.univ.t.G` using `fun _ => rfl`. Establish `key : translT Xo.univ.t.G b ≫ pmO = pmO ≫ translT Xo.univ.t.G a`. Apply `CartesianMonoidalCategory.hom_ext` to reduce the goal to its premises. Simplify using `only [Category.assoc, translT, lift_fst, lift_fst_assoc, hpf]`.
+
+Simplify using `only [Category.assoc, translT, lift_snd, lift_snd_assoc, hps, tp, MonObj.comp_mul, reassoc_of% hpf, hb']`. Establish `keyL : (translT Xo.univ.t.G b).left ≫ pm = pm ≫ (translT Xo.univ.t.G a).left` using `congrArg (fun f => f.left) key`. Rewrite using `[← hq₁, Category.assoc, Category.assoc, ← reassoc_of% keyL, ← hc, reassoc_of% (mem_transKer.1 hb)]`.
+-/
 theorem mem_transKer_of_geometric
     (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l)
     (T : Type) [CommRing T] [IsReduced T] (x x' : Sp T ⟶ Xo.X) (Ψ : Gx x ⟶ Gx x') (a : Over.mk x ⟶ Xo.univ.t.G)

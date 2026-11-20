@@ -8,6 +8,19 @@ noncomputable section
 
 namespace GlobalTheory.CompanionTheory.GJTwo.PhkS
 
+/- English proof (translation)
+Establish `hloc : ∀ x : G, ∃ W ∈ nhds (0 : G), ∀ h ∈ W, ∀ k ∈ W, Φ (x + (h + k)) = Φ x`. Introduce `x`. Establish `ho : IsOpen {h : G | Φ (x + h) = Φ x}` using `(hlc.isOpen_fiber (Φ x)).preimage (continuous_const.add continuous_id)`. Establish `hU : {h : G | Φ (x + h) = Φ x} ∈ nhds (0 : G)` using `ho.mem_nhds (by simp)`. Take `⟨W, hW, hWW⟩` from `exists_nhds_zero_half hU`.
+
+Conclude with `⟨W, hW, fun h hh k hk => hWW h hh k hk⟩`. Use `choose W hW hWW using hloc`. Take `⟨t, -, ht⟩` from `hc.isCompact.elim_nhds_subcover (fun x => {y : G | y - x ∈ W x}) (fun x _ => ((continuous_id.sub continuous_const).continuousAt (x := x)).preimage_mem_nhds (by simpa using hW x))`. Establish `hV₀ : (⋂ x ∈ t, W x) ∈ nhds (0 : G)` using `(Filter.biInter_finset_mem t).2 fun x _ => hW x`. Establish `hval : ∀ y ∈ tsupport Φ, ∀ h ∈ (⋂ x ∈ t, W x), Φ (y + h) = Φ y`.
+
+Introduce `y hy h hh`. Establish `hc'` using `ht hy`. Simplify using `only [Set.mem_iUnion] at hc'`. Take `⟨x, hxt, hyx⟩` from `hc'`. Establish `hhx : h ∈ W x` using `Set.mem_iInter₂.1 hh x hxt`.
+
+Establish `e1` using `hWW x (y - x) hyx 0 (mem_of_mem_nhds (hW x))`. Establish `e2` using `hWW x (y - x) hyx h hhx`. Rewrite `e1` using `[add_zero, add_sub_cancel]`. Rewrite `e2` using `[← add_assoc, add_sub_cancel]`. Rewrite using `[e1, e2]`.
+
+Establish `hneg : Neg.neg ⁻¹' (⋂ x ∈ t, W x) ∈ nhds (0 : G)` using `(continuous_neg.tendsto' (0 : G) 0 neg_zero) hV₀`. Use `⟨(⋂ x ∈ t, W x) ∩ Neg.neg ⁻¹' (⋂ x ∈ t, W x), Filter.inter_mem hV₀ hneg, ?_⟩` and prove the remaining obligations. Introduce and unpack `y h ⟨hh, hh'⟩`. Distinguish the cases in `hy : y ∈ tsupport Φ`. Conclude with `hval y hy h hh`.
+
+Distinguish the cases in `hyh : y + h ∈ tsupport Φ`. Use `hval (y + h) hyh (-h) hh'` as an intermediate fact. Rewrite `this` using `[add_neg_cancel_right]`. Conclude with `this.symm`. Rewrite using `[image_eq_zero_of_notMem_tsupport hy, image_eq_zero_of_notMem_tsupport hyh]`.
+-/
 theorem exists_nhds_invariant {G : Type*} [TopologicalSpace G] [AddCommGroup G]
     [IsTopologicalAddGroup G] {Φ : G → ℂ} (hlc : IsLocallyConstant Φ) (hc : HasCompactSupport Φ) :
     ∃ V ∈ nhds (0 : G), ∀ x, ∀ z ∈ V, Φ (x + z) = Φ x := by
@@ -49,16 +62,27 @@ theorem exists_nhds_invariant {G : Type*} [TopologicalSpace G] [AddCommGroup G]
 
 variable {F : Type} [Field F] [ValuativeRel F] [TopologicalSpace F] [IsNonarchimedeanLocalField F]
 
+/- English proof (translation)
+Use extensionality with `i j`. Apply the tactic sequence `fin_cases i <;> simp [what₂]`.
+-/
 theorem rows_add (r z r₂ : Fin 2 → F) : what₂ (r + z) r₂ = what₂ r r₂ + what₂ z 0 := by
   ext i j
   fin_cases i <;> simp [what₂]
 
+/- English proof (translation)
+Use `continuous_matrix fun i j => ?_` and prove the remaining obligations. Use `fin_cases i`. Simplify `continuous_apply j` using `[what₂]`. Simplify `continuous_const` using `[what₂]`.
+-/
 theorem continuous_rows_zero : Continuous fun z : Fin 2 → F => what₂ z 0 := by
   refine continuous_matrix fun i j => ?_
   fin_cases i
   · simpa [what₂] using continuous_apply j
   · simpa [what₂] using continuous_const
 
+/- English proof (translation)
+Take `⟨V, hV, hinv⟩` from `exists_nhds_invariant hΦ.1 hΦ.2`. Establish `h0 : what₂ (0 : Fin 2 → F) 0 = 0`. Use extensionality with `i j`. Apply the tactic sequence `fin_cases i <;> simp [what₂]`. Establish `hpre : (fun z : Fin 2 → F => what₂ z 0) ⁻¹' V ∈ nhds (0 : Fin 2 → F)` using `(continuous_rows_zero.tendsto' (0 : Fin 2 → F) 0 h0) hV`.
+
+Take `⟨n, hn⟩` from `GodementSectionLocal.exists_box_subset hpre`. Conclude with `⟨n, fun z hz r r₂ => by rw [rows_add]; exact hinv _ _ (hn hz)⟩`.
+-/
 theorem exists_box_invariant {Φ : Matrix (Fin 2) (Fin 2) F → ℂ} (hΦ : SB2 Φ) :
     ∃ n : ℤ, ∀ z ∈ GodementSectionLocal.box F n, ∀ r r₂ : Fin 2 → F,
       Φ (what₂ (r + z) r₂) = Φ (what₂ r r₂) := by
@@ -71,21 +95,42 @@ theorem exists_box_invariant {Φ : Matrix (Fin 2) (Fin 2) F → ℂ} (hΦ : SB2 
   obtain ⟨n, hn⟩ := GodementSectionLocal.exists_box_subset hpre
   exact ⟨n, fun z hz r r₂ => by rw [rows_add]; exact hinv _ _ (hn hz)⟩
 
+/- English proof (translation)
+Unfold `mx`. Conclude with `((NNReal.continuous_coe.comp continuous_modulus).comp (continuous_apply 0)).max ((NNReal.continuous_coe.comp continuous_modulus).comp (continuous_apply 1))`.
+-/
 theorem continuous_mx : Continuous (mx : (Fin 2 → F) → ℝ) := by
   unfold mx
   exact ((NNReal.continuous_coe.comp continuous_modulus).comp (continuous_apply 0)).max
     ((NNReal.continuous_coe.comp continuous_modulus).comp (continuous_apply 1))
 
+/- English proof (translation)
+The claim follows from `continuous_pi fun j => continuous_id.matrix_elem i j`.
+-/
 theorem continuous_row (i : Fin 2) :
     Continuous fun X : Matrix (Fin 2) (Fin 2) F => (fun j => X i j : Fin 2 → F) :=
   continuous_pi fun j => continuous_id.matrix_elem i j
 
+/- English proof (translation)
+Use extensionality with `j`. Simplify using `[what₂]`.
+-/
 theorem rows_first (r r₂ : Fin 2 → F) : (fun j => what₂ r r₂ 0 j) = r := by
   ext j; simp [what₂]
 
+/- English proof (translation)
+Use extensionality with `j`. Simplify using `[what₂]`.
+-/
 theorem rows_second (r r₂ : Fin 2 → F) : (fun j => what₂ r r₂ 1 j) = r₂ := by
   ext j; simp [what₂]
 
+/- English proof (translation)
+Establish `h' : modulus c * (residueCard F : NNReal) ^ n < modulus ξ` using `by exact_mod_cast h`. Establish `hξ : ξ ≠ 0`. Introduce and unpack `rfl`. Simplify using `at h'`. Use `⟨hξ, ?_⟩` and prove the remaining obligations.
+
+Distinguish the cases in `h0 : c = 0`. Simplify using `[h0]`. Establish `hQ : (0 : NNReal) < (residueCard F : NNReal) ^ n` using `zpow_pos (zero_lt_one.trans one_lt_residueCard_nnreal) _`. Establish `hm` using `modulus_pos hξ`. Establish `hlt : modulus (c / ξ) < (residueCard F : NNReal) ^ (-n)`.
+
+Rewrite using `[div_eq_mul_inv, modulus_mul, modulus_inv, _root_.zpow_neg, ← div_eq_mul_inv, div_lt_iff₀ hm, inv_mul_eq_div, lt_div_iff₀ hQ]`. Conclude with `h'`. Rewrite using `[mem_valBall_iff_le_ord (div_ne_zero h0 hξ)]`. Rewrite `hlt` using `[modulus_of_ne_zero (div_ne_zero h0 hξ)]`. Use `(zpow_lt_zpow_iff_right₀ one_lt_residueCard_nnreal).1 hlt` as an intermediate fact.
+
+Use linear arithmetic over natural numbers and integers.
+-/
 theorem div_mem_valBall {c ξ : F} {n : ℤ}
     (h : ((modulus c * (residueCard F : NNReal) ^ n : NNReal) : ℝ) < modulus ξ) :
     ξ ≠ 0 ∧ c / ξ ∈ valBall F n := by
@@ -118,6 +163,13 @@ instance instCompacts (ψ : AddChar F Circle) : IsFiniteMeasureOnCompacts (LFS.v
   unfold LFS.vol2
   infer_instance
 
+/- English proof (translation)
+Establish `ha : ((ψ⁻¹ (z 1 / r₂ 1 - t * (z 0 * r₂ 1 - z 1 * r₂ 0)) : Circle) : ℂ) ≠ 1` using `fun h => hne (Circle.coe_eq_one.mp h)`. Use `eq_zero_of_eq_mul_of_ne_one ha ?_` and prove the remaining obligations. Unfold `phk`. Combine the equalities or inequalities in the displayed calculation. Use `congr 1`.
+
+Use extensionality with `r₁`. Establish `e : (r₁ + z) 1 / r₂ 1 - t * ((r₁ + z) 0 * r₂ 1 - (r₁ + z) 1 * r₂ 0) = (r₁ 1 / r₂ 1 - t * (r₁ 0 * r₂ 1 - r₁ 1 * r₂ 0)) + (z 1 / r₂ 1 - t * (z 0 * r₂ 1 - z 1 * r₂ 0))`. Simplify using `only [Pi.add_apply]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hz, e, AddChar.map_add_eq_mul, Circle.coe_mul]`.
+
+Expand and normalize the polynomial expressions, which then agree. Use `_ = _ := integral_const_mul _ _`.
+-/
 theorem phk_eq_zero_of_shift {ψ : AddChar F Circle} {Φ : Matrix (Fin 2) (Fin 2) F → ℂ} {t : F}
     {r₂ : Fin 2 → F} (z : Fin 2 → F) (hz : ∀ r, Φ (what₂ (r + z) r₂) = Φ (what₂ r r₂))
     (hne : ψ⁻¹ (z 1 / r₂ 1 - t * (z 0 * r₂ 1 - z 1 * r₂ 0)) ≠ 1) : phk ψ Φ t r₂ = 0 := by
@@ -150,6 +202,35 @@ end GlobalTheory.CompanionTheory.GJTwo.PhkS
 
 open GlobalTheory.CompanionTheory.GJTwo GlobalTheory.CompanionTheory.GJTwo.PhkS in
 
+/- English proof (translation)
+Introduce `F _ _ _ _ _ _ ψ hψ Φ hΦ`. Take `⟨n, hinv⟩` from `exists_box_invariant hΦ`. Take `⟨C, hC⟩` from `hΦ.1.continuous.bounded_above_of_compact_support hΦ.2`. Establish `hC0 : 0 ≤ C` using `(norm_nonneg _).trans (hC 0)`. Establish `hK₁ : IsCompact ((fun X : Matrix (Fin 2) (Fin 2) F => (fun j => X 0 j : Fin 2 → F)) '' tsupport Φ)` using `hΦ.2.isCompact.image (continuous_row 0)`.
+
+Establish `hK₂ : IsCompact ((fun X : Matrix (Fin 2) (Fin 2) F => (fun j => X 1 j : Fin 2 → F)) '' tsupport Φ)` using `hΦ.2.isCompact.image (continuous_row 1)`. Take `⟨R₀, hR₀⟩` from `hK₂.bddAbove_image continuous_mx.continuousOn`. Choose the witnesses or unpack the hypotheses as in `⟨c, hc⟩ : ∃ c, ψ c ≠ 1 := by`. Assume the negation of the conclusion as `hcon`. Use `push_neg at hcon`.
+
+Conclude with `hψ.2.1 (by ext x; simp [hcon x])`. Use `set K₁ := (fun X : Matrix (Fin 2) (Fin 2) F => (fun j => X 0 j : Fin 2 → F)) '' tsupport Φ with hK₁def`. Establish `hsupp : ∀ r r₂ : Fin 2 → F, Φ (what₂ r r₂) ≠ 0 → r ∈ K₁ ∧ mx r₂ ≤ R₀`. Introduce `r r₂ h`. Establish `hm : what₂ r r₂ ∈ tsupport Φ` using `subset_tsupport Φ h`.
+
+Use `⟨⟨_, hm, rows_first r r₂⟩, hR₀ ⟨r₂, ⟨_, hm, rows_second r r₂⟩, rfl⟩⟩` and prove the remaining obligations. Use `set Q : ℝ := ((modulus c * (residueCard F : NNReal) ^ n : NNReal) : ℝ) with hQ`. Use `⟨C * (LFS.vol2 ψ).real K₁, max R₀ Q, mul_nonneg hC0 measureReal_nonneg, ?_⟩` and prove the remaining obligations. Introduce `r₂ hv t`. Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations.
+
+Unfold `phk`. Rewrite using `[← setIntegral_eq_integral_of_forall_compl_eq_zero (s := K₁)]`. Use `norm_setIntegral_le_of_norm_le_const hK₁.measure_lt_top fun r _ => ?_` and prove the remaining obligations. Simplify using `only [norm_mul, Circle.norm_coe, mul_one]`. Conclude with `hC _`.
+
+Introduce `r hr`. Establish `: Φ (what₂ r r₂) = 0`. Assume the negation of the conclusion as `h`. Conclude with `hr (hsupp r r₂ h).1`. Simplify using `[this]`.
+
+Introduce `hne`. Prove the components needed by the constructor for the conclusion. Assume the negation of the conclusion as `hlt push_neg at hlt`. Take `⟨hξ, ha⟩` from `div_mem_valBall (lt_of_le_of_lt (le_max_right _ _) hlt)`. Establish `hb : (![c / (r₂ 1 * t), 0] : Fin 2 → F) ∈ GodementSectionLocal.box F n`.
+
+Use `GodementSectionLocal.mem_box.2 fun i => ?_` and prove the remaining obligations. Use `fin_cases i`. Simplify using `using ha`. Simplify using the standard rewrite rules. Use `hne (phk_eq_zero_of_shift _ (fun r => hinv _ hb r r₂) ?_)` and prove the remaining obligations.
+
+Establish `e : (![c / (r₂ 1 * t), 0] : Fin 2 → F) 1 / r₂ 1 - t * ((![c / (r₂ 1 * t), 0] : Fin 2 → F) 0 * r₂ 1 - (![c / (r₂ 1 * t), 0] : Fin 2 → F) 1 * r₂ 0) = -c`. Establish `ht : t ≠ 0` using `right_ne_zero_of_mul hξ`. Simplify using the standard rewrite rules. Clear the denominators using the available nonvanishing facts. Rewrite using `[e, AddChar.inv_apply, neg_neg]`.
+
+Conclude with `hc`. Assume the negation of the conclusion as `hlt push_neg at hlt`. Take `⟨hξ, ha⟩` from `div_mem_valBall (lt_of_le_of_lt (le_max_right _ _) hlt)`. Establish `hb : (![0, -(c / (r₂ 0 * t + (r₂ 1)⁻¹))] : Fin 2 → F) ∈ GodementSectionLocal.box F n`. Use `GodementSectionLocal.mem_box.2 fun i => ?_` and prove the remaining obligations.
+
+Use `fin_cases i`. Simplify using the standard rewrite rules. Simplify using `using neg_mem ha`. Use `hne (phk_eq_zero_of_shift _ (fun r => hinv _ hb r r₂) ?_)` and prove the remaining obligations. Establish `e : (![0, -(c / (r₂ 0 * t + (r₂ 1)⁻¹))] : Fin 2 → F) 1 / r₂ 1 - t * ((![0, -(c / (r₂ 0 * t + (r₂ 1)⁻¹))] : Fin 2 → F) 0 * r₂ 1 - (![0, -(c / (r₂ 0 * t + (r₂ 1)⁻¹))] : Fin 2 → F) 1 * r₂ 0) = -c`.
+
+Establish `e2 : -(c / (r₂ 0 * t + (r₂ 1)⁻¹)) / r₂ 1 - t * (0 * r₂ 1 - -(c / (r₂ 0 * t + (r₂ 1)⁻¹)) * r₂ 0) = -(c / (r₂ 0 * t + (r₂ 1)⁻¹) * (r₂ 0 * t + (r₂ 1)⁻¹))`. Expand and normalize the polynomial expressions, which then agree. Simplify using `only [Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.cons_val_fin_one]`. Rewrite using `[e2, div_mul_cancel₀ _ hξ]`. Rewrite using `[e, AddChar.inv_apply, neg_neg]`.
+
+Conclude with `hc`. Introduce `hlt`. Unfold `phk`. Use `integral_eq_zero_of_ae (Filter.Eventually.of_forall fun r => ?_)` and prove the remaining obligations. Establish `: Φ (what₂ r r₂) = 0`.
+
+Assume the negation of the conclusion as `h`. Conclude with `absurd (lt_of_le_of_lt (le_max_left _ _) hlt) (not_lt.2 (hsupp r r₂ h).2)`. Simplify using `[this]`.
+-/
 theorem GlobalTheory.CompanionTheory.GJTwo.phk_bound_support :
     (ForS fun F _ _ _ _ _ _ ψ => ∀ Φ : Matrix (Fin 2) (Fin 2) F → ℂ, SB2 Φ →
   ∃ A R : ℝ, 0 ≤ A ∧ ∀ r₂ : Fin 2 → F, r₂ 1 ≠ 0 → ∀ t : F, ‖phk ψ Φ t r₂‖ ≤ A ∧

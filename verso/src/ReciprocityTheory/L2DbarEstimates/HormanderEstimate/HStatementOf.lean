@@ -24,6 +24,9 @@ import ReciprocityTheory.L2DbarEstimates.HormanderEstimate.Hormander
 
 namespace ReciprocityTheory.L2DbarEstimates.F
 
+/- English proof (translation)
+The claim follows from `hormander n M (testIneq n M (choice n M chi (psi n M) (shell n M) (leviNormSq n M) hChain) (primedIneq n M hAP) (closureIneq n M (dens n M (cutoff n M (multAdj n M) (multS n M)) (unweightRel n M) (unweightBack n M) (localize n M (multDiv n M) (multS n M)) (chartFlat n M (extend n …`.
+-/
 theorem hStatement_of (n : ℕ) (M : Type*) [TopologicalSpace M] [T2Space M]
     [SecondCountableTopology M] [MeasurableSpace M] [BorelSpace M]
     (hAP : APStatement n M) (hTIbp : TStarIbpStatement n M) (hChain : ChainStatement n M)

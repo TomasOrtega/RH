@@ -9,6 +9,15 @@ open Formalism.FourierDecayAlt Formalism.REAL Formalism.QuantumDeterminants Glob
 
 namespace GlobalTheory.TopVec
 
+/- English proof (translation)
+Introduce `hA Cb`. Take `⟨Cc, hCc⟩` from `GlobalTheory.T.levelZeroPairing_eq_integral_inner_topVectors hA Cb`. Use `⟨Cc, ?_⟩` and prove the remaining obligations. Introduce `Wp Wq _ _ _ _ _ _ P p f χ A N w hD hχ hf hdec hAle hw hN ε hε`. Establish `h` using `hCc Wp Wq P p f χ A N w hD hχ hf hdec hAle hw hN ε ε hε hε`.
+
+Establish `hF` using `Formalism.FourierDecayAlt.P.JCTx6.Link2.ckOn_cutF p.T.base hχ hf ε`. Establish `h0 : p.RR (D.cutF p.T.base χ f ε) 0 w [] [] = ∫ c, inner ℂ (tv p (D.cutF p.T.base χ f ε) w c) (tv p (D.cutF p.T.base χ f ε) w c)`. Unfold `KB.Pl.RR`. Rewrite using `[Formalism.FourierDecayAlt.P.level_zero_holds _ _ _ _ _ _ _ _ _ _ _ hF (Formalism.FourierDecayAlt.P.CutBP.good_positioned_of_cut hw)]`. Conclude with `h`.
+
+Establish `h1 : ∀ c, inner ℂ (tv p (D.cutF p.T.base χ f ε) w c) (tv p (D.cutF p.T.base χ f ε) w c) = ((‖tv p (D.cutF p.T.base χ f ε) w c‖ ^ 2 : ℝ) : ℂ)` using `fun c => by`. Rewrite using `[inner_self_eq_norm_sq_to_K]`. Simplify using the standard rewrite rules. Rewrite using `[h0]`. Simplify using `only [h1, Ew_eq_norm_tv_sq]`.
+
+Rewrite using `[integral_complex_ofReal, Complex.ofReal_re]`.
+-/
 theorem levelZero_cut_eq_integral_Ew : P5.ThmPActualCpt → ∀ Cb : ℝ, ∃ Cc : ℝ, ∀ (Wp Wq : Type) [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp] [NormedAddCommGroup Wq] [InnerProductSpace ℂ Wq] [FiniteDimensional ℂ Wp] [FiniteDimensional ℂ Wq] (P : M.Par) (p : KB.Pl P Wp Wq) (f : B.Mat P.k P.r → (Wq →L[ℂ] Wp)) (χ : ℝ → ℝ) (A : ℝ) (N : ℕ) (w : List C.Letter), KB.InDDplus2 P p.l0 p.T.base Cb p.Θ → C6.IsCut0 χ → B.CkOn ⊤ (B.GV P.k P.r) f → (∀ m : ℕ, B.InCC A m f) → Cc * ((P.r : ℝ) + 1) ^ 4 * ((N : ℝ) * (2 * (P.r : ℝ) + P.k + 1) ^ 2 + (2 * (P.r : ℝ) + P.k + 1) ^ 3) ≤ A → KB.CutWord P p.l0 w → w.length ≤ N → ∀ ε : ℝ, 0 < ε → (p.RR (D.cutF p.T.base χ f ε) 0 w [] []).re = ∫ c : Fin (P.r + 1) → ℂ, TBB.Ew p (fun _ => 1) (D.cutF p.T.base χ f ε) (P.r + 1) w (TBB.bigPt P.r c) := by
   intro hA Cb
   obtain ⟨Cc, hCc⟩ := GlobalTheory.T.levelZeroPairing_eq_integral_inner_topVectors hA Cb

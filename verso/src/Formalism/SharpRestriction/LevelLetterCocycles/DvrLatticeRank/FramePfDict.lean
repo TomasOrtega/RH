@@ -19,6 +19,9 @@ def framepf_ι (π' : LetA O n) (i : ZMod n) (g : PowerSeries O) : LetA O n :=
 variable (π' : LetA O n) (i : ZMod n) (hπ0 : PowerSeries.constantCoeff (π' i) = 0)
 include hπ0
 
+/- English proof (translation)
+Establish `ha : PowerSeries.HasSubst (π' i)` using `PowerSeries.HasSubst.of_constantCoeff_zero' hπ0`. Set `S : PowerSeries O →ₐ[O] PowerSeries O` to `PowerSeries.substAlgHom ha`. Apply the tactic sequence `have hS : ∀ g, PowerSeries.subst (π' i) g = S g := fun g => by first | exact (congrFun (PowerSeries.coe_substAlgHom ha) g).symm | rfl`. Simplify using `only [framepf_ι, hS, map_mul, Pi.single_mul]`.
+-/
 theorem framepf_ι_mul (g h : PowerSeries O) :
     framepf_ι π' i (g * h) = framepf_ι π' i g * framepf_ι π' i h := by
   have ha : PowerSeries.HasSubst (π' i) := PowerSeries.HasSubst.of_constantCoeff_zero' hπ0
@@ -27,6 +30,9 @@ theorem framepf_ι_mul (g h : PowerSeries O) :
     first | exact (congrFun (PowerSeries.coe_substAlgHom ha) g).symm | rfl
   simp only [framepf_ι, hS, map_mul, Pi.single_mul]
 
+/- English proof (translation)
+Establish `ha : PowerSeries.HasSubst (π' i)` using `PowerSeries.HasSubst.of_constantCoeff_zero' hπ0`. Set `S : PowerSeries O →ₐ[O] PowerSeries O` to `PowerSeries.substAlgHom ha`. Apply the tactic sequence `have hS : ∀ g, PowerSeries.subst (π' i) g = S g := fun g => by first | exact (congrFun (PowerSeries.coe_substAlgHom ha) g).symm | rfl`. Simplify using `only [framepf_ι, hS, map_add, Pi.single_add]`.
+-/
 theorem framepf_ι_add (g h : PowerSeries O) :
     framepf_ι π' i (g + h) = framepf_ι π' i g + framepf_ι π' i h := by
   have ha : PowerSeries.HasSubst (π' i) := PowerSeries.HasSubst.of_constantCoeff_zero' hπ0
@@ -35,6 +41,9 @@ theorem framepf_ι_add (g h : PowerSeries O) :
     first | exact (congrFun (PowerSeries.coe_substAlgHom ha) g).symm | rfl
   simp only [framepf_ι, hS, map_add, Pi.single_add]
 
+/- English proof (translation)
+Establish `ha : PowerSeries.HasSubst (π' i)` using `PowerSeries.HasSubst.of_constantCoeff_zero' hπ0`. Set `S : PowerSeries O →ₐ[O] PowerSeries O` to `PowerSeries.substAlgHom ha`. Apply the tactic sequence `have hS : ∀ g, PowerSeries.subst (π' i) g = S g := fun g => by first | exact (congrFun (PowerSeries.coe_substAlgHom ha) g).symm | rfl`. Simplify using `only [framepf_ι, hS, map_sub, Pi.single_sub]`.
+-/
 theorem framepf_ι_sub (g h : PowerSeries O) :
     framepf_ι π' i (g - h) = framepf_ι π' i g - framepf_ι π' i h := by
   have ha : PowerSeries.HasSubst (π' i) := PowerSeries.HasSubst.of_constantCoeff_zero' hπ0
@@ -43,6 +52,11 @@ theorem framepf_ι_sub (g h : PowerSeries O) :
     first | exact (congrFun (PowerSeries.coe_substAlgHom ha) g).symm | rfl
   simp only [framepf_ι, hS, map_sub, Pi.single_sub]
 
+/- English proof (translation)
+Establish `ha : PowerSeries.HasSubst (π' i)` using `PowerSeries.HasSubst.of_constantCoeff_zero' hπ0`. Set `S : PowerSeries O →ₐ[O] PowerSeries O` to `PowerSeries.substAlgHom ha`. Apply the tactic sequence `have hS : ∀ g, PowerSeries.subst (π' i) g = S g := fun g => by first | exact (congrFun (PowerSeries.coe_substAlgHom ha) g).symm | rfl`. Establish `hC : PowerSeries.C o = o • (1 : PowerSeries O)` using `by rw [PowerSeries.smul_eq_C_mul, mul_one]`. Simplify using `only [framepf_ι, hS, letE, hC, map_smul, map_one, Algebra.algebraMap_eq_smul_one]`.
+
+Use function extensionality and compare the values at `j`. Distinguish the cases in `hj : j = i`. Substitute `hj` using the available equality. Simplify using the standard rewrite rules. Simplify using `[Pi.single_apply, hj]`.
+-/
 theorem framepf_ι_C (o : O) :
     framepf_ι π' i (PowerSeries.C o) = letE i * algebraMap O (LetA O n) o := by
   have ha : PowerSeries.HasSubst (π' i) := PowerSeries.HasSubst.of_constantCoeff_zero' hπ0
@@ -56,6 +70,9 @@ theorem framepf_ι_C (o : O) :
   · subst hj; simp
   · simp [Pi.single_apply, hj]
 
+/- English proof (translation)
+Establish `ha : PowerSeries.HasSubst (π' i)` using `PowerSeries.HasSubst.of_constantCoeff_zero' hπ0`. Set `S : PowerSeries O →ₐ[O] PowerSeries O` to `PowerSeries.substAlgHom ha`. Apply the tactic sequence `have hS : ∀ g, PowerSeries.subst (π' i) g = S g := fun g => by first | exact (congrFun (PowerSeries.coe_substAlgHom ha) g).symm | rfl`. Simplify using `only [framepf_ι, hS, map_one, letE]`.
+-/
 theorem framepf_ι_one : framepf_ι π' i 1 = letE i := by
   have ha : PowerSeries.HasSubst (π' i) := PowerSeries.HasSubst.of_constantCoeff_zero' hπ0
   let S : PowerSeries O →ₐ[O] PowerSeries O := PowerSeries.substAlgHom ha
@@ -63,6 +80,11 @@ theorem framepf_ι_one : framepf_ι π' i 1 = letE i := by
     first | exact (congrFun (PowerSeries.coe_substAlgHom ha) g).symm | rfl
   simp only [framepf_ι, hS, map_one, letE]
 
+/- English proof (translation)
+Establish `ha : PowerSeries.HasSubst (π' i)` using `PowerSeries.HasSubst.of_constantCoeff_zero' hπ0`. Set `S : PowerSeries O →ₐ[O] PowerSeries O` to `PowerSeries.substAlgHom ha`. Apply the tactic sequence `have hS : ∀ g, PowerSeries.subst (π' i) g = S g := fun g => by first | exact (congrFun (PowerSeries.coe_substAlgHom ha) g).symm | rfl`. Establish `hSX : S PowerSeries.X = π' i` using `by rw [← hS]; exact PowerSeries.subst_X ha`. Simplify using `only [framepf_ι, hS, hSX, letE]`.
+
+Use function extensionality and compare the values at `j`. Distinguish the cases in `hj : j = i`. Substitute `hj` using the available equality. Simplify using the standard rewrite rules. Simplify using `[Pi.single_apply, hj]`.
+-/
 theorem framepf_ι_X : framepf_ι π' i PowerSeries.X = letE i * π' := by
   have ha : PowerSeries.HasSubst (π' i) := PowerSeries.HasSubst.of_constantCoeff_zero' hπ0
   let S : PowerSeries O →ₐ[O] PowerSeries O := PowerSeries.substAlgHom ha
@@ -75,6 +97,11 @@ theorem framepf_ι_X : framepf_ι π' i PowerSeries.X = letE i * π' := by
   · subst hj; simp
   · simp [Pi.single_apply, hj]
 
+/- English proof (translation)
+Establish `ha : PowerSeries.HasSubst (π' i)` using `PowerSeries.HasSubst.of_constantCoeff_zero' hπ0`. Set `S : PowerSeries O →ₐ[O] PowerSeries O` to `PowerSeries.substAlgHom ha`. Apply the tactic sequence `have hS : ∀ g, PowerSeries.subst (π' i) g = S g := fun g => by first | exact (congrFun (PowerSeries.coe_substAlgHom ha) g).symm | rfl`. Simplify using `only [framepf_ι, hS, map_pow, letE]`. Use function extensionality and compare the values at `j`.
+
+Distinguish the cases in `hj : j = i`. Substitute `hj` using the available equality. Simplify using the standard rewrite rules. Simplify using `[Pi.single_apply, hj]`.
+-/
 theorem framepf_ι_pow (g : PowerSeries O) (k : ℕ) :
     framepf_ι π' i (g ^ k) = letE i * framepf_ι π' i g ^ k := by
   have ha : PowerSeries.HasSubst (π' i) := PowerSeries.HasSubst.of_constantCoeff_zero' hπ0
@@ -87,6 +114,21 @@ theorem framepf_ι_pow (g : PowerSeries O) (k : ℕ) :
   · subst hj; simp
   · simp [Pi.single_apply, hj]
 
+/- English proof (translation)
+Establish `ha : PowerSeries.HasSubst (ψ PowerSeries.X)` using `PowerSeries.HasSubst.of_constantCoeff_zero' hψ`. Set `S : PowerSeries O →ₐ[O] PowerSeries O` to `PowerSeries.substAlgHom ha`. Apply the tactic sequence `have hS : ∀ g, PowerSeries.subst (ψ PowerSeries.X) g = S g := fun g => by first | exact (congrFun (PowerSeries.coe_substAlgHom ha) g).symm | rfl`. Establish `hSX : S PowerSeries.X = ψ PowerSeries.X`. Rewrite using `[← hS]`.
+
+Conclude with `PowerSeries.subst_X ha`. Establish `hC : ∀ a : O, ψ (PowerSeries.C a) = S (PowerSeries.C a)` using `fun a => by`. Rewrite using `[show PowerSeries.C a = a • (1 : PowerSeries O) by rw [PowerSeries.smul_eq_C_mul, mul_one], map_smul, map_smul, map_one, map_one]`. Establish `hpoly : ∀ p : Polynomial O, ψ (p : PowerSeries O) = S (p : PowerSeries O)`. Introduce `p`.
+
+Use `Polynomial.induction_on' p ?_ ?_` and prove the remaining obligations. Introduce `p q hp hq`. Rewrite using `[Polynomial.coe_add, map_add, map_add, hp, hq]`. Introduce `m a`. Rewrite using `[← Polynomial.C_mul_X_pow_eq_monomial, Polynomial.coe_mul, Polynomial.coe_C, Polynomial.coe_pow, Polynomial.coe_X, map_mul, map_mul, map_pow, map_pow, hSX, hC]`.
+
+Rewrite using `[hS]`. Use extensionality with `k`. Establish `hdvd : PowerSeries.X ^ (k + 1) ∣ f - (PowerSeries.trunc (k + 1) f : PowerSeries O)`. Rewrite using `[PowerSeries.X_pow_dvd_iff]`. Introduce `m hm`.
+
+Rewrite using `[map_sub, Polynomial.coeff_coe, PowerSeries.coeff_trunc, if_pos hm, sub_self]`. Take `⟨q, hq⟩` from `hdvd`. Establish `hf : f = (PowerSeries.trunc (k + 1) f : PowerSeries O) + PowerSeries.X ^ (k + 1) * q`. Rewrite using `[← hq]`. Expand and normalize the polynomial expressions, which then agree.
+
+Establish `hXd : PowerSeries.X ∣ ψ PowerSeries.X` using `PowerSeries.X_dvd_iff.mpr hψ`. Establish `hdiff : PowerSeries.X ^ (k + 1) ∣ ψ f - S f`. Rewrite using `[hf, map_add, map_add, map_mul, map_mul, map_pow, map_pow, hSX, hpoly, add_sub_add_left_eq_sub, ← mul_sub]`. Conclude with `Dvd.dvd.mul_right (pow_dvd_pow_of_dvd hXd _) _`. Establish `h0` using `PowerSeries.X_pow_dvd_iff.mp hdiff k (Nat.lt_succ_self k)`.
+
+Rewrite `h0` using `[map_sub, sub_eq_zero]`. Conclude with `h0`.
+-/
 private lemma powerSeries_algHom_eq_subst_X (ψ : PowerSeries O →ₐ[O] PowerSeries O)
     (hψ : PowerSeries.constantCoeff (ψ PowerSeries.X) = 0) (f : PowerSeries O) :
     ψ f = PowerSeries.subst (ψ PowerSeries.X) f := by
@@ -125,6 +167,19 @@ private lemma powerSeries_algHom_eq_subst_X (ψ : PowerSeries O →ₐ[O] PowerS
   rw [map_sub, sub_eq_zero] at h0
   exact h0
 
+/- English proof (translation)
+Establish `ha : PowerSeries.HasSubst (π' i)` using `PowerSeries.HasSubst.of_constantCoeff_zero' hπ0`. Establish `hGs : PowerSeries.HasSubst G` using `PowerSeries.HasSubst.of_constantCoeff_zero' hG0`. Set `S : PowerSeries O →ₐ[O] PowerSeries O` to `PowerSeries.substAlgHom ha`. Set `SG : PowerSeries O →ₐ[O] PowerSeries O` to `PowerSeries.substAlgHom hGs`. Apply the tactic sequence `have hS : ∀ g, PowerSeries.subst (π' i) g = S g := fun g => by first | exact (congrFun (PowerSeries.coe_substAlgHom ha) g).symm | rfl`.
+
+Apply the tactic sequence `have hSG : ∀ g, PowerSeries.subst G g = SG g := fun g => by first | exact (congrFun (PowerSeries.coe_substAlgHom hGs) g).symm | rfl`. Establish `hSX : S PowerSeries.X = π' i` using `by rw [← hS]; exact PowerSeries.subst_X ha`. Establish `hSGX : SG PowerSeries.X = G` using `by rw [← hSG]; exact PowerSeries.subst_X hGs`. Establish `h1X : (γ₀.comp S) PowerSeries.X = PowerSeries.subst (π' i) G`. Rewrite using `[AlgHom.comp_apply, hSX, hG]`.
+
+Establish `h2X : (S.comp SG) PowerSeries.X = PowerSeries.subst (π' i) G`. Rewrite using `[AlgHom.comp_apply, hSGX, hS]`. Establish `hcc : PowerSeries.constantCoeff (PowerSeries.subst (π' i) G) = 0`. Rewrite using `[← h1X, AlgHom.comp_apply, hSX]`. Take `⟨q, hq⟩` from `PowerSeries.X_dvd_iff.mpr hπ0`.
+
+Rewrite using `[hq, map_mul, map_mul, hγ0, zero_mul]`. Establish `key : ∀ g, (γ₀.comp S) g = (S.comp SG) g` using `fun g => by`. Rewrite using `[powerSeries_algHom_eq_subst_X π' i hπ0 (γ₀.comp S) (by rw [h1X]; exact hcc) g, powerSeries_algHom_eq_subst_X π' i hπ0 (S.comp SG) (by rw [h2X]; exact hcc) g, h1X, h2X]`. Use function extensionality and compare the values at `j`. Use `show γ₀ ((Pi.single i (PowerSeries.subst (π' i) g) : LetA O n) j) = (Pi.single i (PowerSeries.subst (π' i) (PowerSeries.subst G g)) : LetA O n) j`.
+
+Distinguish the cases in `hj : j = i`. Substitute `hj` using the available equality. Simplify using `only [Pi.single_eq_same]`. Establish `hk` using `key g`. Rewrite `hk` using `[AlgHom.comp_apply, AlgHom.comp_apply]`.
+
+Rewrite using `[hS, hS, hSG]`. Conclude with `hk`. Simplify using `only [Pi.single_eq_of_ne hj, map_zero]`.
+-/
 theorem framepf_ι_letγ (γ₀ : PowerSeries O →ₐ[O] PowerSeries O)
     (hγ0 : PowerSeries.constantCoeff (γ₀ PowerSeries.X) = 0) (G : PowerSeries O)
     (hG0 : PowerSeries.constantCoeff G = 0) (hG : γ₀ (π' i) = PowerSeries.subst (π' i) G)
@@ -191,6 +246,15 @@ variable {W T} (Bs : FramepfBas W T) (π' : LetA O n) (i : ZMod n)
 
 include hπ0 hR2 in
 
+/- English proof (translation)
+Establish `memNcS : ∀ z : W.DD T, z ∈ NcS W T i ↔ (z ∈ W.N T ∧ ∀ δ ∈ W.DelF, W.γD T δ z = z) ∧ (letE i : LetA O n) • z = z`. Introduce `z`. Simplify using `[NcS, DelS, letS, sub_eq_zero]`. Take `⟨⟨hN, hD⟩, hL⟩` from `(memNcS x).1 hx`. Take `⟨a, ha, hxa⟩` from `Bs.delta x (show _ ∧ _ from ⟨hN, hD⟩)`.
+
+Use `choose f hf using fun k => (hR2 (a k) (ha k)).exists`. Use `⟨fun k => f k i, ?_⟩` and prove the remaining obligations. Rewrite using `[← hL, hxa, Finset.smul_sum]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[smul_smul]`.
+
+Use `congr 1`. Use function extensionality and compare the values at `j`. Distinguish the cases in `hj : j = i`. Substitute `hj` using the available equality. Simplify using `[framepf_ι, letE, hf k]`.
+
+Simplify using `[framepf_ι, letE, Pi.single_apply, hj]`.
+-/
 theorem framepf_coord {x : W.DD T} (hx : x ∈ NcS W T i) :
     ∃ g : Fin Bs.r → PowerSeries O, x = ∑ k, framepf_ι π' i (g k) • Bs.b k := by
   have memNcS : ∀ z : W.DD T, z ∈ NcS W T i ↔
@@ -212,6 +276,25 @@ theorem framepf_coord {x : W.DD T} (hx : x ∈ NcS W T i) :
 
 include hπ0 hΔπ hR2 in
 
+/- English proof (translation)
+Establish `ha : PowerSeries.HasSubst (π' i)` using `PowerSeries.HasSubst.of_constantCoeff_zero' (hπ0 i)`. Set `S : PowerSeries O →ₐ[O] PowerSeries O` to `PowerSeries.substAlgHom ha`. Apply the tactic sequence `have hS : ∀ g, PowerSeries.subst (π' i) g = S g := fun g => by first | exact (congrFun (PowerSeries.coe_substAlgHom ha) g).symm | rfl`. Establish `hSX : S PowerSeries.X = π' i` using `by rw [← hS]; exact PowerSeries.subst_X ha`. Establish `hfix : ∀ δ ∈ W.DelF, ∀ g : PowerSeries O, W.γ₀ δ (PowerSeries.subst (π' i) g) = PowerSeries.subst (π' i) g`.
+
+Introduce `δ hδ g`. Establish `h1 : W.γ₀ δ (π' i) = π' i` using `congrFun (hΔπ δ hδ) i`. Establish `h2 : ((W.γ₀ δ).comp S) PowerSeries.X = π' i` using `by rw [AlgHom.comp_apply, hSX, h1]`. Establish `h3` using `powerSeries_algHom_eq_subst_X π' i (hπ0 i) ((W.γ₀ δ).comp S) (by rw [h2]; exact hπ0 i) g`. Rewrite `h3` using `[h2, AlgHom.comp_apply, ← hS]`.
+
+Conclude with `h3`. Establish `hmem : ∀ g : PowerSeries O, framepf_ι π' i g ∈ W.AΔ`. Introduce `g`. Use `show ∀ δ ∈ W.DelF, W.γA δ (framepf_ι π' i g) = framepf_ι π' i g`. Introduce `δ hδ`.
+
+Use function extensionality and compare the values at `j`. Use `show W.γ₀ δ ((Pi.single i (PowerSeries.subst (π' i) g) : LetA O n) j) = (Pi.single i (PowerSeries.subst (π' i) g) : LetA O n) j`. Distinguish the cases in `hj : j = i`. Substitute `hj` using the available equality. Simplify using `only [Pi.single_eq_same]`.
+
+Conclude with `hfix δ hδ g`. Simplify using `only [Pi.single_eq_of_ne hj, map_zero]`. Establish `hzero : ∀ j, PowerSeries.subst (π' j) (0 : PowerSeries O) = 0` using `fun j => by`. Establish `hj` using `PowerSeries.HasSubst.of_constantCoeff_zero' (hπ0 j)`. Use `first`.
+
+Consider the case `(rw [← PowerSeries.coe_substAlgHom hj]; exact map_zero _)`. Consider the case `exact map_zero (PowerSeries.substAlgHom hj)`. Establish `hrep : ∀ g : PowerSeries O, ∀ j, framepf_ι π' i g j = PowerSeries.subst (π' j) ((Pi.single i g : ZMod n → PowerSeries O) j)`. Introduce `g j`. Distinguish the cases in `hj : j = i`.
+
+Substitute `hj` using the available equality. Simplify using `only [framepf_ι, Pi.single_eq_same]`. Simplify using `only [framepf_ι, Pi.single_eq_of_ne hj]`. Conclude with `(hzero j).symm`. Take `⟨f0, _, huniq⟩` from `hR2 (framepf_ι π' i g) (hmem g)`.
+
+Establish `e1` using `huniq (Pi.single i g) (hrep g)`. Establish `e2` using `huniq (Pi.single i g') (fun j => by`. Rewrite using `[show framepf_ι π' i g = framepf_ι π' i g' by simp only [framepf_ι, h]]`. Conclude with `hrep g' j)`. Establish `e3` using `congrFun (e1.trans e2.symm) i`.
+
+Simplify using `using e3`.
+-/
 theorem framepf_subst_inj (γ0 : ∀ δ ∈ W.DelF, PowerSeries.constantCoeff (W.γ₀ δ PowerSeries.X) = 0)
     {g g' : PowerSeries O} (h : PowerSeries.subst (π' i) g = PowerSeries.subst (π' i) g') : g = g' := by
   have ha : PowerSeries.HasSubst (π' i) := PowerSeries.HasSubst.of_constantCoeff_zero' (hπ0 i)
@@ -255,6 +338,9 @@ theorem framepf_subst_inj (γ0 : ∀ δ ∈ W.DelF, PowerSeries.constantCoeff (W
   simpa using e3
 
 include hπ0 in
+/- English proof (translation)
+Use `Finset.induction_on s ?_ ?_` and prove the remaining obligations. Simplify using `only [Finset.sum_empty]`. Simplify using `using framepf_ι_sub π' i (hπ0 i) 0 0`. Introduce `a s has ih`. Rewrite using `[Finset.sum_insert has, Finset.sum_insert has, framepf_ι_add π' i (hπ0 i), ih]`.
+-/
 theorem framepf_ι_sum {ι' : Type*} (s : Finset ι') (g : ι' → PowerSeries O) :
     framepf_ι π' i (∑ m ∈ s, g m) = ∑ m ∈ s, framepf_ι π' i (g m) := by
   classical
@@ -265,6 +351,9 @@ theorem framepf_ι_sum {ι' : Type*} (s : Finset ι') (g : ι' → PowerSeries O
     rw [Finset.sum_insert has, Finset.sum_insert has, framepf_ι_add π' i (hπ0 i), ih]
 
 include hπ0 in
+/- English proof (translation)
+Use function extensionality and compare the values at `j`. Distinguish the cases in `hj : j = i`. Substitute `hj` using the available equality. Simplify using `[letE, framepf_ι]`. Simplify using `[letE, framepf_ι, Pi.single_apply, hj]`.
+-/
 theorem framepf_letE_ι (g : PowerSeries O) : letE i * framepf_ι π' i g = framepf_ι π' i g := by
   funext j
   by_cases hj : j = i
@@ -273,6 +362,11 @@ theorem framepf_letE_ι (g : PowerSeries O) : letE i * framepf_ι π' i g = fram
 
 include hπ0 hΔπ hR2 in
 
+/- English proof (translation)
+Establish `hbN : ∀ k, Bs.b k ∈ W.N T` using `fun k => (show Bs.b k ∈ W.N T ∧ ∀ δ ∈ W.DelF, W.γD T δ (Bs.b k) = Bs.b k from Bs.mem k).1`. Establish `hmemN : (∑ k, framepf_ι π' i (g k) • Bs.b k) ∈ W.N T` using `Submodule.sum_mem _ fun k _ => Submodule.smul_mem _ _ (hbN k)`. Take `⟨a0, _, hu⟩` from `Bs.uniq _ hmemN`. Establish `e1` using `hu (fun k => framepf_ι π' i (g k)) rfl`. Establish `e2` using `hu (fun k => framepf_ι π' i (g' k)) h`.
+
+Use function extensionality and compare the values at `k`. Establish `hk` using `congrFun (congrFun (e1.trans e2.symm) k) i`. Simplify using `only [framepf_ι, Pi.single_eq_same] at hk`. Conclude with `framepf_subst_inj π' i hπ0 hΔπ hR2 γ0 hk`.
+-/
 theorem framepf_coord_uniq (γ0 : ∀ δ ∈ W.DelF, PowerSeries.constantCoeff (W.γ₀ δ PowerSeries.X) = 0)
     {g g' : Fin Bs.r → PowerSeries O}
     (h : ∑ k, framepf_ι π' i (g k) • Bs.b k = ∑ k, framepf_ι π' i (g' k) • Bs.b k) : g = g' := by
@@ -292,12 +386,24 @@ def framepf_vec (H : Matrix (Fin Bs.r) (Fin Bs.r) (PowerSeries O)) (k : Fin Bs.r
   ∑ m, framepf_ι π' i (H m k) • Bs.b m
 
 include hπ0 in
+/- English proof (translation)
+Simplify using `only [framepf_vec, Matrix.add_apply, framepf_ι_add π' i (hπ0 i), add_smul, Finset.sum_add_distrib]`.
+-/
 theorem framepf_vec_add (H H' : Matrix (Fin Bs.r) (Fin Bs.r) (PowerSeries O)) (k : Fin Bs.r) :
     framepf_vec Bs π' i (H + H') k = framepf_vec Bs π' i H k + framepf_vec Bs π' i H' k := by
   simp only [framepf_vec, Matrix.add_apply, framepf_ι_add π' i (hπ0 i), add_smul, Finset.sum_add_distrib]
 
 include hπ0 in
 
+/- English proof (translation)
+Establish `hγ0 : PowerSeries.constantCoeff (W.γ₀ W.gam PowerSeries.X) = 0` using `(W.γ₀_X W.gam).1`. Establish `hsm : ∀ (a : LetA O n) (y : W.DD T), W.γD T W.gam (a • y) = letγ (W.γ₀ W.gam) a • W.γD T W.gam y`. Introduce `a y`. Rewrite using `[← algebraMap_smul W.EE a y, W.γD_smul, W.γE_ext, algebraMap_smul]`. Establish `hι : ∀ h : PowerSeries O, letγ (W.γ₀ W.gam) (framepf_ι π' i h) = framepf_ι π' i (PowerSeries.subst Gs h)` using `fun h => framepf_ι_letγ π' i (hπ0 i) (W.γ₀ W.gam) hγ0 Gs hGs0 hGs h`.
+
+Unfold `framepf_vec`. Rewrite using `[map_sum]`. Establish `hterm : ∀ m, W.γD T W.gam (framepf_ι π' i (H m k) • Bs.b m) = ∑ p, framepf_ι π' i (Γ p m * PowerSeries.subst Gs (H m k)) • Bs.b p`. Introduce `m`. Rewrite using `[← framepf_letE_ι π' i hπ0 (H m k), mul_comm (letE i : LetA O n), ← smul_smul, hsm, hι, hΓ m, framepf_vec, Finset.smul_sum]`.
+
+Use `Finset.sum_congr rfl fun p _ => ?_` and prove the remaining obligations. Rewrite using `[smul_smul, framepf_ι_mul π' i (hπ0 i), mul_comm (framepf_ι π' i (PowerSeries.subst Gs (H m k)))]`. Rewrite using `[Finset.sum_congr rfl fun m _ => hterm m, Finset.sum_comm]`. Use `Finset.sum_congr rfl fun p _ => ?_` and prove the remaining obligations. Rewrite using `[← Finset.sum_smul, show (∑ m, framepf_ι π' i (Γ p m * PowerSeries.subst Gs (H m k))) = framepf_ι π' i (∑ m, Γ p m * PowerSeries.subst Gs (H m k)) from (framepf_ι_sum π' i hπ0 _ _).symm]`.
+
+Simplify using `only [Matrix.mul_apply, Matrix.map_apply]`.
+-/
 theorem framepf_γ_vec (Gs : PowerSeries O) (hGs0 : PowerSeries.constantCoeff Gs = 0)
     (hGs : W.γ₀ W.gam (π' i) = PowerSeries.subst (π' i) Gs)
     (Γ : Matrix (Fin Bs.r) (Fin Bs.r) (PowerSeries O))
@@ -327,10 +433,18 @@ theorem framepf_γ_vec (Gs : PowerSeries O) (hGs0 : PowerSeries.constantCoeff Gs
   simp only [Matrix.mul_apply, Matrix.map_apply]
 
 include hπ0 in
+/- English proof (translation)
+Simplify using `using framepf_ι_sub π' i (hπ0 i) 0 0`.
+-/
 theorem framepf_ι_zero : framepf_ι π' i (0 : PowerSeries O) = 0 := by
   simpa using framepf_ι_sub π' i (hπ0 i) 0 0
 
 include hπ0 in
+/- English proof (translation)
+Unfold `framepf_vec`. Rewrite using `[Finset.sum_eq_single m]`. Rewrite using `[Matrix.one_apply_eq, framepf_ι_one π' i (hπ0 i)]`. Introduce `b _ hb`. Rewrite using `[Matrix.one_apply_ne hb, framepf_ι_zero π' i hπ0, zero_smul]`.
+
+Introduce `h`. Conclude with `absurd (Finset.mem_univ m) h`.
+-/
 theorem framepf_vec_one (m : Fin Bs.r) :
     framepf_vec Bs π' i (1 : Matrix (Fin Bs.r) (Fin Bs.r) (PowerSeries O)) m = (letE i : LetA O n) • Bs.b m := by
   unfold framepf_vec
@@ -340,6 +454,9 @@ theorem framepf_vec_one (m : Fin Bs.r) :
   · intro h; exact absurd (Finset.mem_univ m) h
 
 include hπ0 in
+/- English proof (translation)
+Unfold `framepf_vec`. Rewrite using `[Finset.smul_sum]`. Use `Finset.sum_congr rfl fun m _ => ?_` and prove the remaining obligations. Rewrite using `[smul_smul, Matrix.smul_apply, smul_eq_mul, framepf_ι_mul π' i (hπ0 i), framepf_ι_X π' i (hπ0 i), mul_right_comm, framepf_letE_ι π' i hπ0, mul_comm]`.
+-/
 theorem framepf_vec_X_smul (Hm : Matrix (Fin Bs.r) (Fin Bs.r) (PowerSeries O)) (k : Fin Bs.r) :
     framepf_vec Bs π' i ((PowerSeries.X : PowerSeries O) • Hm) k = π' • framepf_vec Bs π' i Hm k := by
   unfold framepf_vec
@@ -348,6 +465,17 @@ theorem framepf_vec_X_smul (Hm : Matrix (Fin Bs.r) (Fin Bs.r) (PowerSeries O)) (
   rw [smul_smul, Matrix.smul_apply, smul_eq_mul, framepf_ι_mul π' i (hπ0 i), framepf_ι_X π' i (hπ0 i),
     mul_right_comm, framepf_letE_ι π' i hπ0, mul_comm]
 
+/- English proof (translation)
+Establish `memNcS : ∀ z : W.DD T, z ∈ NcS W T i ↔ (z ∈ W.N T ∧ ∀ δ ∈ W.DelF, W.γD T δ z = z) ∧ (letE i : LetA O n) • z = z`. Introduce `z`. Simplify using `[NcS, DelS, letS, sub_eq_zero]`. Establish `hb` using `(show Bs.b m ∈ W.N T ∧ ∀ δ ∈ W.DelF, W.γD T δ (Bs.b m) = Bs.b m from Bs.mem m)`. Establish `hfixE : ∀ g, letγ (W.γ₀ g) (letE i : LetA O n) = letE i`.
+
+Introduce `g`. Use function extensionality and compare the values at `j`. Use `show W.γ₀ g ((Pi.single i 1 : LetA O n) j) = (Pi.single i 1 : LetA O n) j`. Distinguish the cases in `hj : j = i`. Substitute `hj` using the available equality.
+
+Simplify using the standard rewrite rules. Simplify using `[Pi.single_eq_of_ne hj]`. Establish `hsm : ∀ g (a : LetA O n) (y : W.DD T), W.γD T g (a • y) = letγ (W.γ₀ g) a • W.γD T g y`. Introduce `g a y`. Rewrite using `[← algebraMap_smul W.EE a y, W.γD_smul, W.γE_ext, algebraMap_smul]`.
+
+Establish `hEE : (letE i : LetA O n) * letE i = letE i` using `by show (Pi.single i 1 : LetA O n) * Pi.single i 1 = Pi.single i 1`. Rewrite using `[← Pi.single_mul, mul_one]`. Rewrite using `[memNcS]`. Use `⟨⟨Submodule.smul_mem _ _ hb.1, fun δ hδ => ?_⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[hsm, hfixE, hb.2 δ hδ]`.
+
+Rewrite using `[smul_smul, hEE]`.
+-/
 theorem framepf_letE_mem (m : Fin Bs.r) : (letE i : LetA O n) • Bs.b m ∈ NcS W T i := by
   have memNcS : ∀ z : W.DD T, z ∈ NcS W T i ↔
       (z ∈ W.N T ∧ ∀ δ ∈ W.DelF, W.γD T δ z = z) ∧ (letE i : LetA O n) • z = z := by
@@ -373,6 +501,33 @@ theorem framepf_letE_mem (m : Fin Bs.r) : (letE i : LetA O n) • Bs.b m ∈ NcS
 
 include hπ0 hΔπ hR2 in
 
+/- English proof (translation)
+Establish `γ0 : ∀ δ ∈ W.DelF, PowerSeries.constantCoeff (W.γ₀ δ PowerSeries.X) = 0` using `fun δ _ => (W.γ₀_X δ).1`. Establish `memNcS : ∀ z : W.DD T, z ∈ NcS W T i ↔ (z ∈ W.N T ∧ ∀ δ ∈ W.DelF, W.γD T δ z = z) ∧ (letE i : LetA O n) • z = z`. Introduce `z`. Simplify using `[NcS, DelS, letS, sub_eq_zero]`. Establish `hfixE : ∀ g, letγ (W.γ₀ g) (letE i : LetA O n) = letE i`.
+
+Introduce `g`. Use function extensionality and compare the values at `j`. Use `show W.γ₀ g ((Pi.single i 1 : LetA O n) j) = (Pi.single i 1 : LetA O n) j`. Distinguish the cases in `hj : j = i`. Substitute `hj` using the available equality.
+
+Simplify using the standard rewrite rules. Simplify using `[Pi.single_eq_of_ne hj]`. Establish `hsm : ∀ g (a : LetA O n) (y : W.DD T), W.γD T g (a • y) = letγ (W.γ₀ g) a • W.γD T g y`. Introduce `g a y`. Rewrite using `[← algebraMap_smul W.EE a y, W.γD_smul, W.γE_ext, algebraMap_smul]`.
+
+Establish `hEE : (letE i : LetA O n) * letE i = letE i` using `by show (Pi.single i 1 : LetA O n) * Pi.single i 1 = Pi.single i 1`. Rewrite using `[← Pi.single_mul, mul_one]`. Establish `hinj : ∀ z : W.DD T, π' • z = 0 → z = 0`. Introduce `z hz`. Take `⟨u, hu'⟩` from `hu`.
+
+Rewrite `hz` using `[← algebraMap_smul W.EE π' z, ← hu']`. Establish `h1` using `congrArg (fun w => ((u⁻¹ : W.EEˣ) : W.EE) • w) hz`. Simplify `h1` using `[smul_smul]`. Establish `hcol : ∀ m, ∃ c e : Fin Bs.r → PowerSeries O, W.γD T W.gam ((letE i : LetA O n) • Bs.b m) = ∑ p, framepf_ι π' i (c p) • Bs.b p ∧ W.γD T W.gam ((letE i : LetA O n) • Bs.b m) - (letE i : LetA O n) • Bs.b m = π' • ∑ p, framepf_ι π' i (e p) • Bs.b p`. Introduce `m`.
+
+Establish `hyM` using `framepf_letE_mem Bs i m`. Generalize the expression as in `hy : (letE i : LetA O n) • Bs.b m = y at hyM ⊢`. Take `⟨⟨yN, yD⟩, yL⟩` from `(memNcS y).1 hyM`. Take `⟨d, hdN, hd⟩` from `hγN y (show _ ∧ _ from ⟨yN, yD⟩)`. Establish `gyD : ∀ δ ∈ W.DelF, W.γD T δ (W.γD T W.gam y) = W.γD T W.gam y`.
+
+Introduce `δ hδ`. Rewrite using `[← W.γD_mul, mul_comm, W.γD_mul, yD δ hδ]`. Establish `gyE : (letE i : LetA O n) • W.γD T W.gam y = W.γD T W.gam y`. Rewrite using `[← hfixE W.gam, ← hsm, yL]`. Establish `gyN : W.γD T W.gam y ∈ W.N T`.
+
+Rewrite using `[← sub_add_cancel (W.γD T W.gam y) y, hd]`. Conclude with `(W.N T).add_mem (Submodule.smul_mem _ _ hdN) yN`. Take `⟨c, hc⟩` from `framepf_coord Bs π' i hπ0 hR2 ((memNcS _).2 ⟨⟨gyN, gyD⟩, gyE⟩)`. Establish `hd' : W.γD T W.gam y - y = π' • ((letE i : LetA O n) • d)`. Rewrite using `[smul_comm, ← hd, smul_sub, gyE, yL]`.
+
+Establish `d'N : (letE i : LetA O n) • d ∈ W.N T` using `Submodule.smul_mem _ _ hdN`. Establish `d'E : (letE i : LetA O n) • (letE i : LetA O n) • d = (letE i : LetA O n) • d`. Rewrite using `[smul_smul, hEE]`. Establish `d'D : ∀ δ ∈ W.DelF, W.γD T δ ((letE i : LetA O n) • d) = (letE i : LetA O n) • d`. Introduce `δ hδ`.
+
+Apply `sub_eq_zero.mp` to reduce the goal to its premises. Apply `hinj` to reduce the goal to its premises. Establish `hπδ : letγ (W.γ₀ δ) π' = π'` using `hΔπ δ hδ`. Rewrite using `[smul_sub, ← hπδ, ← hsm, hπδ, ← hd', map_sub, gyD δ hδ, yD δ hδ, sub_self]`. Take `⟨e, he⟩` from `framepf_coord Bs π' i hπ0 hR2 ((memNcS _).2 ⟨⟨d'N, d'D⟩, d'E⟩)`.
+
+Conclude with `⟨c, e, hc, by rw [hd', he]⟩`. Use `choose c e hc he using hcol`. Use `⟨Matrix.of fun p m => c m p, fun m => hc m, Matrix.of fun p m => e m p, ?_⟩` and prove the remaining obligations. Use `Matrix.ext fun p m => ?_` and prove the remaining obligations. Establish `key : framepf_vec Bs π' i (Matrix.of fun p m => c m p) m = framepf_vec Bs π' i (1 + (PowerSeries.X : PowerSeries O) • Matrix.of fun p m => e m p) m`.
+
+Rewrite using `[framepf_vec_add Bs π' i hπ0, framepf_vec_one Bs π' i hπ0, framepf_vec_X_smul Bs π' i hπ0]`. Establish `h1 : framepf_vec Bs π' i (Matrix.of fun p m => c m p) m = W.γD T W.gam ((letE i : LetA O n) • Bs.b m)` using `(hc m).symm`. Establish `h2 : framepf_vec Bs π' i (Matrix.of fun p m => e m p) m = ∑ p, framepf_ι π' i (e m p) • Bs.b p` using `rfl`. Rewrite using `[h1, h2, ← he m]`. Normalize the expressions using the abelian group laws.
+
+Establish `h3` using `framepf_coord_uniq Bs π' i hπ0 hΔπ hR2 γ0 key`. Conclude with `congrFun h3 p`.
+-/
 theorem framepf_Γ (hu : IsUnit (algebraMap (LetA O n) W.EE π'))
     (hγN : ∀ y ∈ W.NΔ T, ∃ d ∈ W.N T, W.γD T W.gam y - y = π' • d) :
     ∃ Γ : Matrix (Fin Bs.r) (Fin Bs.r) (PowerSeries O),

@@ -15,8 +15,20 @@ namespace Formalism.RepresentationBoundsCohomology.ringDataObjects
 
 open Formalism.NG Formalism.TruncatedSeriesCounting.TruncatedSeriesCountingIdentities Formalism.RepresentationBoundsCohomology.BR
 
+/- English proof (translation)
+The claim follows from `density_point_of_corner_simple density cornerSimple`.
+-/
 theorem x0 : DensityPointExists := density_point_of_corner_simple density cornerSimple
 
+/- English proof (translation)
+Introduce `O _ _ X T d _ _ G _ r π eB heB hid m jj a h c`. Establish `hx : ∀ x, eB x * eB x = eB x` using `fun x => congrFun hid x`. Use `⟨?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Establish `h1 : (fun x => c • ∑ i, jj i x • (eB x * a i x * eB x)) = c • ∑ i, (fun x => jj i x • (eB * a i * eB) x)`. Use function extensionality and compare the values at `x`.
+
+Simplify using `[Finset.sum_apply]`. Rewrite using `[h1]`. Use `(spanSub T r).smul_mem ((spanSub T r).sum_mem fun i _ => ?_) c` and prove the remaining obligations. Establish `h2 : (fun x => jj i x • (eB * a i * eB) x) = term r (jj i) 1 * (eB * a i * eB)`. Use function extensionality and compare the values at `x`.
+
+Simplify using `[term]`. Rewrite using `[h2]`. Conclude with `mul_mem_tSpan T r (term_mem T r (h i).1 1) (mul_mem_tSpan T r (mul_mem_tSpan T r heB (h i).2.2) heB)`. Use function extensionality and compare the values at `x`. Simplify using `only [Pi.mul_apply, Matrix.mul_smul, Finset.mul_sum, ← mul_assoc, hx]`.
+
+Use function extensionality and compare the values at `x`. Simplify using `only [Pi.mul_apply, Matrix.smul_mul, Finset.sum_mul, mul_assoc, hx]`. Simplify using `[(h _).2.1]`.
+-/
 theorem bridge : StatBridge := by
   intro O _ _ X T d _ _ G _ r π eB heB hid m jj a h c
   have hx : ∀ x, eB x * eB x = eB x := fun x => congrFun hid x
@@ -37,6 +49,11 @@ theorem bridge : StatBridge := by
     simp only [Pi.mul_apply, Matrix.smul_mul, Finset.sum_mul, mul_assoc, hx]
   · simp [(h _).2.1]
 
+/- English proof (translation)
+Introduce `O O' _ _ _ X T`. Set `φ : (X → O) →+* (X → O')` to `(algebraMap O O').compLeft X`. Establish `h1 : ((fun f : X → O => algebraMap O O' ∘ f) '' (T : Set (X → O))) = ((T.toSubsemiring.toSubmonoid.map φ.toMonoidHom : Submonoid (X → O')) : Set (X → O'))` using `rfl`. Establish `h2` using `Algebra.adjoin_eq_span O' ((fun f : X → O => algebraMap O O' ∘ f) '' (T : Set (X → O)))`. Establish `h3 : (bcT O' T : Set (X → O')) = (Subalgebra.toSubmodule (bcT O' T) : Set (X → O'))` using `rfl`.
+
+Rewrite using `[h3]`. Unfold `bcT`. Rewrite using `[h2, h1, Submonoid.closure_eq]`.
+-/
 theorem bcSpan : StatBcSpan := by
   intro O O' _ _ _ X T
   let φ : (X → O) →+* (X → O') := (algebraMap O O').compLeft X
@@ -48,11 +65,29 @@ theorem bcSpan : StatBcSpan := by
   unfold bcT
   rw [h2, h1, Submonoid.closure_eq]
 
+/- English proof (translation)
+The claim follows from `Algebra.subset_adjoin ⟨f, hf, rfl⟩`.
+-/
 theorem mem_bcT {O : Type} (O' : Type) [CommRing O] [CommRing O'] [Algebra O O'] {X : Type}
     (T : Subalgebra O (X → O)) {f : X → O} (hf : f ∈ T) :
     (fun x => algebraMap O O' (f x)) ∈ bcT O' T :=
   Algebra.subset_adjoin ⟨f, hf, rfl⟩
 
+/- English proof (translation)
+Introduce `O O' _ _ _ _ _ _ X _ _ T hT`. Establish `hres : ∀ f ∈ bcT O' T, ∀ x y : X, IsLocalRing.residue O' (f x) = IsLocalRing.residue O' (f y)`. Introduce `f hf x y`. Proceed by induction on `hf using Algebra.adjoin_induction with`. Consider the case `mem f hf`.
+
+Take `⟨f0, hf0, rfl⟩` from `hf`. Establish `h` using `resConst O X T hT f0 hf0 x y`. Establish `h2` using `congrArg (IsLocalRing.ResidueField.map (algebraMap O O')) h`. Conclude with `h2`. Consider the case `algebraMap c => rfl`.
+
+Consider the case `add f g _ _ hf hg => simp only [Pi.add_apply, map_add, hf, hg]`. Consider the case `mul f g _ _ hf hg => simp only [Pi.mul_apply, map_mul, hf, hg]`. Establish `: Algebra.IsIntegral O' (X → O')` using `inferInstance`. Establish `: Algebra.IsIntegral (bcT O' T) (X → O')` using `Algebra.IsIntegral.tower_top O'`. Establish `: FaithfulSMul (bcT O' T) (X → O')` using `(faithfulSMul_iff_algebraMap_injective _ _).mpr Subtype.val_injective`.
+
+Establish `hloc : IsLocalHom (algebraMap (bcT O' T) (X → O'))` using `inferInstance`. Take `⟨π⟩` from `‹Nonempty X›`. Establish `hunit : ∀ a : bcT O' T, IsUnit (a.1 π) → IsUnit a`. Introduce `a ha`. Use `hloc.map_nonunit a ?_` and prove the remaining obligations.
+
+Use `show IsUnit a.1`. Rewrite using `[Pi.isUnit_iff]`. Introduce `x`. Establish `h1 : IsLocalRing.residue O' (a.1 x) ≠ 0`. Rewrite using `[hres a.1 a.2 x π]`.
+
+Conclude with `(IsLocalRing.residue_ne_zero_iff_isUnit _).mpr ha`. Conclude with `(IsLocalRing.residue_ne_zero_iff_isUnit _).mp h1`. Establish `: Nontrivial (bcT O' T)` using `inferInstance`. Use `IsLocalRing.of_isUnit_or_isUnit_one_sub_self fun a => ?_` and prove the remaining obligations. Break down `IsLocalRing.isUnit_or_isUnit_one_sub_self (a.1 π) with h | h` into its components or cases.
+
+Conclude with `Or.inl (hunit a h)`. Conclude with `Or.inr (hunit (1 - a) h)`.
+-/
 theorem bcLocal : StatBcLocal := by
   intro O O' _ _ _ _ _ _ X _ _ T hT
   have hres : ∀ f ∈ bcT O' T, ∀ x y : X,
@@ -89,6 +124,27 @@ theorem bcLocal : StatBcLocal := by
   · exact Or.inl (hunit a h)
   · exact Or.inr (hunit (1 - a) h)
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce `W hW`. Establish `hall : ∀ A ∈ Submodule.span k (Set.range ρ), ∀ v ∈ W, A.mulVec v ∈ W`. Introduce `A hA`. Proceed by induction on `hA using Submodule.span_induction with`.
+
+Consider the case `mem A hA => obtain ⟨g, rfl⟩ := hA`. Conclude with `hW g`. Consider the case `zero => intro v _`. Rewrite using `[Matrix.zero_mulVec]`. Conclude with `W.zero_mem`.
+
+Consider the case `add A B _ _ hA hB => intro v hv`. Rewrite using `[Matrix.add_mulVec]`. Conclude with `W.add_mem (hA v hv) (hB v hv)`. Consider the case `smul c A _ hA => intro v hv`. Rewrite using `[Matrix.smul_mulVec]`.
+
+Conclude with `W.smul_mem c (hA v hv)`. Distinguish the cases in `hb : W = ⊥`. Conclude with `Or.inl hb`. Use `right`. Take `⟨v, hv, hv0⟩` from `(Submodule.ne_bot_iff W).mp hb`.
+
+Choose the witnesses or unpack the hypotheses as in `⟨j, hj⟩ : ∃ j, v j ≠ 0 := by`. Assume the negation of the conclusion as `hc`. Conclude with `hv0 (funext fun j => by_contra fun hj => hc ⟨j, hj⟩)`. Establish `hs : ∀ i, Pi.single i (1 : k) ∈ W`. Introduce `i`.
+
+Establish `h1` using `W.smul_mem (v j)⁻¹ (hall _ (h i j) v hv)`. Establish `h2 : (v j)⁻¹ • (Matrix.single i j (1 : k)).mulVec v = Pi.single i (1 : k)`. Use function extensionality and compare the values at `a`. Distinguish the cases in `ha : a = i`. Substitute `ha` using the available equality.
+
+Simplify using `[Matrix.mulVec, dotProduct, Matrix.single_apply, hj]`. Simplify using `[Matrix.mulVec, dotProduct, ha, Ne.symm ha]`. Rewrite `h1` using `[h2]`. Then use the resulting hypothesis. Use `eq_top_iff.mpr fun w _ => ?_` and prove the remaining obligations. Establish `h3 : w = ∑ i, w i • Pi.single i (1 : k)`.
+
+Use function extensionality and compare the values at `a`. Simplify using `[Finset.sum_apply, Pi.single_apply]`. Rewrite using `[h3]`. Conclude with `W.sum_mem fun i _ => W.smul_mem _ (hs i)`. Introduce `M hM`.
+
+Establish `hall : ∀ A ∈ Submodule.span k (Set.range ρ), M * A = A * M`. Introduce `A hA`. Proceed by induction on `hA using Submodule.span_induction with`. Consider the case `mem A hA => obtain ⟨g, rfl⟩ := hA`. Conclude with `hM g`.
+
+Consider the case `zero => simp`. Consider the case `add A B _ _ hA hB => rw [mul_add, add_mul, hA, hB]`. Consider the case `smul c A _ hA => rw [Matrix.mul_smul, Matrix.smul_mul, hA]`. Take `⟨c, hc⟩` from `Matrix.mem_range_scalar_iff_commute_single'.mpr (fun i j => (hall _ (h i j)).symm)`. Conclude with `⟨c, by rw [← hc, Matrix.scalar_apply, Matrix.smul_one_eq_diagonal]⟩`.
+-/
 theorem absIrr_of_span {k : Type} [Field k] {n : Type} [Fintype n] [DecidableEq n] {G : Type}
     (ρ : G → Matrix n n k) (h : ∀ i j, Matrix.single i j (1 : k) ∈ Submodule.span k (Set.range ρ)) :
     AbsIrr ρ := by
@@ -136,6 +192,17 @@ theorem absIrr_of_span {k : Type} [Field k] {n : Type} [Fintype n] [DecidableEq 
       (fun i j => (hall _ (h i j)).symm)
     exact ⟨c, by rw [← hc, Matrix.scalar_apply, Matrix.smul_one_eq_diagonal]⟩
 
+/- English proof (translation)
+Introduce `k k' _ _ f n _ _ G _ ρ hρ`. Break down `isEmpty_or_nonempty n with hn | hn` into its components or cases. Conclude with `⟨fun W _ => Or.inl (Subsingleton.elim _ _), fun M _ => ⟨0, Subsingleton.elim _ _⟩⟩`. Establish `hspan` using `burnsideMat k n G ρ hρ`. Establish `hmap : ∀ A ∈ Submodule.span k (Set.range ρ), A.map f ∈ Submodule.span k' (Set.range fun g => (ρ g).map f)`.
+
+Introduce `A hA`. Proceed by induction on `hA using Submodule.span_induction with`. Consider the case `mem A hA => obtain ⟨g, rfl⟩ := hA`. Conclude with `Submodule.subset_span ⟨g, rfl⟩`. Consider the case `zero => rw [Matrix.map_zero f f.map_zero]`.
+
+Conclude with `Submodule.zero_mem _`. Consider the case `add A B _ _ hA hB => rw [Matrix.map_add f f.map_add]`. Conclude with `Submodule.add_mem _ hA hB`. Consider the case `smul c A _ hA`. Establish `h1 : (c • A).map f = f c • A.map f`.
+
+Use extensionality with `i j`. Simplify using the standard rewrite rules. Rewrite using `[h1]`. Conclude with `Submodule.smul_mem _ _ hA`. Use `absIrr_of_span _ fun i j => ?_` and prove the remaining obligations.
+
+Establish `h1` using `hmap (Matrix.single i j (1 : k)) (hspan ▸ Submodule.mem_top)`. Establish `h2 : (Matrix.single i j (1 : k)).map f = Matrix.single i j (1 : k')`. Use extensionality with `a b`. Apply the tactic sequence `by_cases hab : i = a ∧ j = b <;> simp [hab]`. Rewrite `h1` using `[h2]`. Then use the resulting hypothesis.
+-/
 theorem absIrrExt : StatAbsIrrExt := by
   intro k k' _ _ f n _ _ G _ ρ hρ
   rcases isEmpty_or_nonempty n with hn | hn
@@ -159,11 +226,27 @@ theorem absIrrExt : StatAbsIrrExt := by
     by_cases hab : i = a ∧ j = b <;> simp [hab]
   rwa [h2] at h1
 
+/- English proof (translation)
+Introduce `O _ _ F F' _ _ f f' d _ _ e he`. Take `⟨P, Q, dd, hdd, hPQ, hQP, rfl⟩` from `idem_normal_form e he`. Rewrite using `[rank_map_conj f' P Q dd hdd hPQ hQP, rank_map_conj f P Q dd hdd hPQ hQP]`.
+-/
 theorem bcRank : StatBcRank := by
   intro O _ _ F F' _ _ f f' d _ _ e he
   obtain ⟨P, Q, dd, hdd, hPQ, hQP, rfl⟩ := idem_normal_form e he
   rw [rank_map_conj f' P Q dd hdd hPQ hQP, rank_map_conj f P Q dd hdd hPQ hQP]
 
+/- English proof (translation)
+Introduce `K _ d _ _ e a t he hea hae hrk`. Take `⟨S, _, _, U, W, hUW, hWU⟩` from `idem_factor e he`. Establish `hcard : Fintype.card S = t`. Rewrite using `[← hrk, ← hUW]`. Apply `le_antisymm` to reduce the goal to its premises.
+
+Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Matrix.mul_assoc, Matrix.mul_assoc, hWU, Matrix.mul_one, hWU]`. Use `_ ≤ (U * W).rank := (Matrix.rank_mul_le_left _ _).trans (Matrix.rank_mul_le_right _ _)`. Conclude with `(Matrix.rank_mul_le_left _ _).trans (Matrix.rank_le_card_width U)`. Establish `ha : a = U * (W * a * U) * W`.
+
+Combine the equalities or inequalities in the displayed calculation. Establish `hpoly : blockPoly e a = (W * a * U).charpoly` using `by conv_lhs => rw [ha, ← hUW]`. Conclude with `blockPoly_factor U W hWU _`. Establish `hmon : (blockPoly e a).Monic` using `hpoly ▸ Matrix.charpoly_monic _`. Establish `hdeg : (blockPoly e a).natDegree = t`.
+
+Rewrite using `[hpoly, Matrix.charpoly_natDegree_eq_dim, hcard]`. Use `⟨hmon, hdeg, fun hsep hspl => ?_⟩` and prove the remaining obligations. Use `set Q := blockPoly e a with hQ`. Establish `hnd : Q.roots.Nodup` using `Polynomial.nodup_roots hsep`. Establish `hc : Q.roots.toFinset.card = t`.
+
+Rewrite using `[Multiset.toFinset_card_of_nodup hnd, ← hspl.natDegree_eq_card_roots, hdeg]`. Set `en` to `Q.roots.toFinset.equivFinOfCardEq hc`. Use `⟨fun i => (en.symm i).1, fun i j hij => en.symm.injective (Subtype.ext hij), ?_⟩` and prove the remaining obligations. Rewrite using `[Equiv.prod_comp en.symm (fun z : Q.roots.toFinset => Polynomial.X - Polynomial.C z.1), Finset.prod_coe_sort Q.roots.toFinset (fun z => Polynomial.X - Polynomial.C z)]`. Use `conv_lhs => rw [hspl.eq_prod_roots_of_monic hmon]`.
+
+Rewrite using `[Finset.prod, Multiset.toFinset_val, Multiset.dedup_eq_self.mpr hnd]`.
+-/
 theorem bcSplit : StatBcSplit := by
   intro K _ d _ _ e a t he hea hae hrk
   obtain ⟨S, _, _, U, W, hUW, hWU⟩ := idem_factor e he
@@ -196,6 +279,11 @@ theorem bcSplit : StatBcSplit := by
   conv_lhs => rw [hspl.eq_prod_roots_of_monic hmon]
   rw [Finset.prod, Multiset.toFinset_val, Multiset.dedup_eq_self.mpr hnd]
 
+/- English proof (translation)
+Take `⟨S, c, hc, rfl⟩` from `ha`. Use `⟨S, fun g x => algebraMap O O' (c g x), fun g => mem_bcT O' T (hc g), ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `x`. Use extensionality with `i j`. Simplify using `[bcM, bcR, Finset.sum_apply, Matrix.sum_apply]`.
+
+Conclude with `Finset.sum_congr rfl fun g _ => (Algebra.smul_def _ _).symm`.
+-/
 theorem bcM_mem {O : Type} (O' : Type) [CommRing O] [CommRing O'] [Algebra O O'] {X d G : Type} [Fintype d]
     [DecidableEq d] [Group G] (T : Subalgebra O (X → O)) (r : G →* (X → Matrix d d O))
     {a : X → Matrix d d O} (ha : a ∈ tSpan T r) : bcM O' a ∈ tSpan (bcT O' T) (bcR O' r) := by
@@ -205,11 +293,17 @@ theorem bcM_mem {O : Type} (O' : Type) [CommRing O] [CommRing O'] [Algebra O O']
   simp [bcM, bcR, Finset.sum_apply, Matrix.sum_apply]
   exact Finset.sum_congr rfl fun g _ => (Algebra.smul_def _ _).symm
 
+/- English proof (translation)
+Use function extensionality and compare the values at `x`. Simplify using `[bcM, Matrix.map_mul]`.
+-/
 theorem bcM_mul {O : Type} (O' : Type) [CommRing O] [CommRing O'] [Algebra O O'] {X d : Type} [Fintype d]
     (a b : X → Matrix d d O) : bcM O' (a * b) = bcM O' a * bcM O' b := by
   funext x
   simp [bcM, Matrix.map_mul]
 
+/- English proof (translation)
+Establish `hκ : (IsFractionRing.lift hf : FractionRing O →+* F).comp (algebraMap O (FractionRing O)) = f` using `RingHom.ext (IsFractionRing.lift_algebraMap hf)`. Rewrite using `[← hκ, ← Polynomial.map_map, Polynomial.separable_map]`. Conclude with `h`.
+-/
 theorem sep_ext {O : Type} [CommRing O] [IsDomain O] {F : Type} [Field F] (f : O →+* F)
     (hf : Function.Injective f) (P : Polynomial O)
     (h : (P.map (algebraMap O (FractionRing O))).Separable) : (P.map f).Separable := by
@@ -219,6 +313,45 @@ theorem sep_ext {O : Type} [CommRing O] [IsDomain O] {F : Type} [Field F] (f : O
   exact h
 
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Introduce `O O' _ _ _ _ _ _ _ _ _ e he X _ T d _ _ G _ r π t bl χ₁ ε hP hA eB e₁ hI g₀ s hsm hes hse hsπ hsep hspl`. Take `⟨hloc, hpts, hG1, hbd, hc1, hχ⟩` from `hP`. Take `⟨heBm, he1m, heBB, he11, heB1, he1B, hrkB, hrk1, heBπ, he1π⟩` from `hI`. Set `j : O →+* O'` to `algebraMap O O'`. Establish `hj : Function.Injective j` using `FaithfulSMul.algebraMap_injective O O'`.
+
+Establish `hjl : IsLocalHom (algebraMap O O')` using `inferInstance`. Set `ι : O →+* FractionRing O` to `algebraMap O (FractionRing O)`. Set `ι' : O' →+* FractionRing O'` to `algebraMap O' (FractionRing O')`. Establish `hι' : Function.Injective ι'` using `IsFractionRing.injective O' (FractionRing O')`. Establish `: Nonempty X` using `⟨π⟩`.
+
+Use `⟨⟨bcLocal O O' X T hloc, ?_, ?_, ?_, hc1, ?_⟩, ?_, ⟨bcM_mem O' T r heBm, bcM_mem O' T r he1m, ?_, ?_, ?_, ?_, ?_, ?_, ?_, ?_⟩, ⟨bcM_mem O' T r hsm, ?_, ?_, ?_, ?_⟩, ?_⟩` and prove the remaining obligations. Introduce `x y hxy`. Take `⟨f, hf, hne⟩` from `hpts x y hxy`. Conclude with `⟨_, mem_bcT O' T hf, fun h => hne (hj h)⟩`. Introduce `g k`.
+
+Establish `h1 : (fun x => (Matrix.charpolyRev (bcR O' r g x)).coeff k) = fun x => algebraMap O O' ((Matrix.charpolyRev (r g x)).coeff k)`. Use function extensionality and compare the values at `x`. Use `show (Matrix.charpolyRev ((r g x).map j)).coeff k = _`. Rewrite using `[← charpolyRev_map, Polynomial.coeff_map]`. Rewrite using `[h1]`.
+
+Conclude with `mem_bcT O' T (hG1 g k)`. Introduce `g a b hab show j (r g π a b) = 0`. Rewrite using `[hbd g a b hab, map_zero]`. Introduce `g a ha show j (r g π a a) = _`. Rewrite using `[hχ g a ha, map_mul]`.
+
+Simplify using `[bcChar, j]`. Set `ρ0 : G →* Matrix {a // bl a = 0} {a // bl a = 0} (IsLocalRing.ResidueField O)` to `{ toFun := fun g => ((r g π).toSquareBlock bl 0).map (IsLocalRing.residue O) map_one' := by`. Rewrite using `[map_one]`. Use extensionality with `a b`. Distinguish the cases in `h : a = b`.
+
+Substitute `h` using the available equality. Simplify using `[Matrix.toSquareBlock_def]`. Establish `h' : a.1 ≠ b.1` using `fun e => h (Subtype.ext e)`. Simplify using `[Matrix.toSquareBlock_def, Matrix.one_apply, h, h']`. Use the proof step `map_mul' := fun g h => by`.
+
+Rewrite using `[map_mul, Pi.mul_apply, blk_mul bl (hbd g) 0, Matrix.map_mul] }`. Conclude with `absIrrExt _ _ (IsLocalRing.ResidueField.map (algebraMap O O')) _ G ρ0 hA`. Rewrite using `[← bcM_mul, heBB]`. Rewrite using `[← bcM_mul, he11]`. Rewrite using `[← bcM_mul, heB1]`.
+
+Use function extensionality and compare the values at `x`. Simplify using `[bcM]`. Rewrite using `[← bcM_mul, he1B]`. Use function extensionality and compare the values at `x`. Simplify using `[bcM]`.
+
+Introduce `x show (((eB x).map j).map ι').rank = t`. Rewrite using `[Matrix.map_map, ← hrkB x]`. Conclude with `bcRank O _ _ ι (ι'.comp j) d (eB x) (congrFun heBB x)`. Introduce `x show (((e₁ x).map j).map ι').rank = 1`. Rewrite using `[Matrix.map_map, ← hrk1 x]`.
+
+Conclude with `bcRank O _ _ ι (ι'.comp j) d (e₁ x) (congrFun he11 x)`. Use `show (eB π).map j = _`. Rewrite using `[heBπ]`. Use extensionality with `a b`. Distinguish the cases in `hab : a = b`.
+
+Apply the tactic sequence `subst hab; by_cases h0 : bl a = 0 <;> simp [h0]`. Simplify using `[Matrix.diagonal_apply_ne _ hab]`. Introduce `a b hab show j (e₁ π a b) = 0`. Rewrite using `[he1π a b hab, map_zero]`. Rewrite using `[← bcM_mul, hes]`.
+
+Rewrite using `[← bcM_mul, hse]`. Use `show (s π).map j = 0`. Rewrite using `[hsπ]`. Use extensionality with `a b`. Simplify using the standard rewrite rules.
+
+Introduce `x`. Set `X0 : Matrix d d O` to `eB x * r g₀ x * eB x + s x`. Establish `hX0 : (bcM O' eB x * bcR O' r g₀ x * bcM O' eB x + bcM O' s x) = X0.map j` using `by show (eB x).map j * (r g₀ x).map j * (eB x).map j + (s x).map j = _`. Rewrite using `[← Matrix.map_mul, ← Matrix.map_mul, ← Matrix.map_add j j.map_add]`. Establish `hpoly : blockPoly ((bcM O' eB x).map ι') ((X0.map j).map ι') = (blockPoly (eB x) X0).map (ι'.comp j)` using `by show blockPoly (((eB x).map j).map ι') _ = _`.
+
+Rewrite using `[Matrix.map_map, Matrix.map_map]`. Conclude with `(blockPoly_map (ι'.comp j) _ _).symm`. Establish `hinj : Function.Injective (ι'.comp j)` using `hι'.comp hj`. Establish `hsep' : ((blockPoly (eB x) X0).map (ι'.comp j)).Separable`. Use `sep_ext _ hinj _ ?_` and prove the remaining obligations.
+
+Rewrite using `[blockPoly_map]`. Conclude with `hsep x`. Establish `hmm : ∀ u v w : Matrix d d O, u * v = w → (u.map j).map ι' * (v.map j).map ι' = (w.map j).map ι'`. Introduce `u v w h`. Rewrite using `[← Matrix.map_mul, ← Matrix.map_mul, h]`.
+
+Establish `hbb : eB x * eB x = eB x` using `congrFun heBB x`. Establish `hbs : eB x * s x = s x` using `congrFun hes x`. Establish `hsb : s x * eB x = s x` using `congrFun hse x`. Establish `heX0 : eB x * X0 = X0` using `by show eB x * (eB x * r g₀ x * eB x + s x) = _`. Rewrite using `[mul_add, ← mul_assoc, ← mul_assoc, hbb, hbs]`.
+
+Establish `hX0e : X0 * eB x = X0` using `by show (eB x * r g₀ x * eB x + s x) * eB x = _`. Rewrite using `[add_mul, mul_assoc, hbb, hsb]`. Establish `hrk : ((bcM O' eB x).map ι').rank = t` using `by show (((eB x).map j).map ι').rank = t`. Rewrite using `[Matrix.map_map, ← hrkB x]`. Conclude with `bcRank O _ _ ι (ι'.comp j) d (eB x) (congrFun heBB x)`.
+
+Take `⟨-, -, h3⟩` from `bcSplit (FractionRing O') d ((bcM O' eB x).map ι') ((X0.map j).map ι') t (hmm _ _ _ (congrFun heBB x)) (hmm _ _ _ heX0) (hmm _ _ _ hX0e) hrk`. Rewrite using `[hX0]`. Conclude with `h3 (hpoly ▸ hsep') (hpoly ▸ hspl x)`. Introduce `Z`. Conclude with `vccBaseChange O O' e he X T (bcT O' T) (bcSpan O O' X T) Z π`.
+-/
 theorem stageC : StatStageC := by
   intro O O' _ _ _ _ _ _ _ _ _ e he X _ T d _ _ G _ r π t bl χ₁ ε hP hA eB e₁ hI g₀ s hsm hes hse hsπ
     hsep hspl
@@ -328,6 +461,11 @@ theorem stageC : StatStageC := by
   · intro Z
     exact vccBaseChange O O' e he X T (bcT O' T) (bcSpan O O' X T) Z π
 
+/- English proof (translation)
+Take `⟨-, -, -, -, -, hrr, -⟩` from `hD`. Establish `h2 : D.δO = ∏ i ∈ Finset.Ioo 0 t, ((D.rr 0 : D.X' → O) D.π' - (D.rr i : D.X' → O) D.π')` using `by show ((Pi.evalRingHom (fun _ : D.X' => O) D.π').comp D.T'.val.toRingHom) D.δ = _`. Unfold `RingData.δ`. Rewrite using `[map_prod]`. Both sides reduce to the same expression.
+
+Rewrite using `[h2]`. Use `Finset.prod_congr rfl fun i hi => ?_` and prove the remaining obligations. Rewrite `hi` using `[Finset.mem_Ioo]`. Rewrite using `[hrr 0 (by omega), hrr i hi.2]`. Simplify using the standard rewrite rules.
+-/
 theorem deltaO_eq {O : Type} [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] {X d G : Type}
     [Fintype d] [DecidableEq d] [Group G] {t : ℕ} {bl : d → Fin (t + 1)} {T : Subalgebra O (X → O)}
     {r₀ : G →* (X → Matrix d d O)} {π : X} {χ₁ ε : G →* Oˣ} {g₀ : G} {eB e₁ s : X → Matrix d d O}
@@ -345,6 +483,11 @@ theorem deltaO_eq {O : Type} [CommRing O] [IsDomain O] [IsDiscreteValuationRing 
   rw [hrr 0 (by omega), hrr i hi.2]
   simp
 
+/- English proof (translation)
+Introduce `O O' _ _ _ _ _ _ _ e he`. Use `⟨?_, fun ℓ => ?_⟩` and prove the remaining obligations. Introduce `X d G _ _ _ t bl T r π χ₁ ε g₀ eB e₁ s D' hD'`. Establish `h1 : D'.δO = algebraMap O O' (∏ i ∈ Finset.Ioo 0 t, ((χ₁ g₀ : O) - (χ₁ g₀ : O) * (((ε g₀)⁻¹ ^ i : Oˣ) : O)))`. Rewrite using `[deltaO_eq hD', map_prod]`.
+
+Use `Finset.prod_congr rfl fun i _ => ?_` and prove the remaining obligations. Simplify using `[bcChar]`. Conclude with `⟨h1, by rw [h1, he]⟩`. Rewrite using `[Formalism.NG.IdempotentNormalFormsLenFacts.length_quot_span, Formalism.NG.IdempotentNormalFormsLenFacts.length_quot_span, ← he, map_natCast (algebraMap O O')]`.
+-/
 theorem deltaBc : StatDeltaBc := by
   intro O O' _ _ _ _ _ _ _ e he
   refine ⟨?_, fun ℓ => ?_⟩

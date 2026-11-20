@@ -11,6 +11,9 @@ noncomputable section
 
 namespace GlobalTheory.PerpInst
 
+/- English proof (translation)
+Take `⟨m, rfl⟩ : ∃ m, n = m + 1` from `⟨n - 1, by have := k.2; omega⟩`. Use `⟨m, k.succAbove, rfl, Fin.succAbove_right_injective, k.succAbove_ne, fun b => ?_⟩` and prove the remaining obligations. Rewrite using `[Finset.card_filter, Finset.card_filter, Fin.sum_univ_succAbove _ k, add_comm]`.
+-/
 theorem exists_drop {n : ℕ} (ε : Fin n → Bool) (k : Fin n) :
     ∃ (m : ℕ) (f : Fin m → Fin n), m + 1 = n ∧ Function.Injective f ∧ (∀ i, f i ≠ k) ∧
       ∀ b, (univ.filter fun a => ε (f a) = b).card + (if ε k = b then 1 else 0) =
@@ -19,14 +22,31 @@ theorem exists_drop {n : ℕ} (ε : Fin n → Bool) (k : Fin n) :
   refine ⟨m, k.succAbove, rfl, Fin.succAbove_right_injective, k.succAbove_ne, fun b => ?_⟩
   rw [Finset.card_filter, Finset.card_filter, Fin.sum_univ_succAbove _ k, add_comm]
 
+/- English proof (translation)
+Simplify using `[Formalism.UG.hform, dotProduct, mulVec, Finset.mul_sum, mul_assoc, starRingEnd_apply]`.
+-/
 theorem hform_eq {E : Type} [Field E] [StarRing E] {n : ℕ} (J : Matrix (Fin n) (Fin n) E) (y x : Fin n → E) :
     Formalism.UG.hform (starRingEnd E) J y x = star y ⬝ᵥ (J *ᵥ x) := by
   simp [Formalism.UG.hform, dotProduct, mulVec, Finset.mul_sum, mul_assoc, starRingEnd_apply]
 
+/- English proof (translation)
+Rewrite using `[star_mulVec, ← dotProduct_mulVec, mulVec_mulVec, mulVec_mulVec]`.
+-/
 theorem form_mulVec {E : Type} [Field E] [StarRing E] {n : ℕ} (J G : Matrix (Fin n) (Fin n) E)
     (y x : Fin n → E) : star (G *ᵥ y) ⬝ᵥ (J *ᵥ (G *ᵥ x)) = star y ⬝ᵥ ((Gᴴ * J * G) *ᵥ x) := by
   rw [star_mulVec, ← dotProduct_mulVec, mulVec_mulVec, mulVec_mulVec]
 
+/- English proof (translation)
+Establish `key : ∃ v, φ = I.φ v ∨ φ = ComplexEmbedding.conjugate (I.φ v)`. Use `⟨(InfinitePlace.mk φ).comap (algebraMap I.F I.E), ?_⟩` and prove the remaining obligations. Apply the tactic sequence `rcases GlobalTheory.Count.Test.embedding_cases I (InfinitePlace.mk φ) with h | h <;>`. Break down `InfinitePlace.embedding_mk_eq φ with h' | h'` into its components or cases. Conclude with `Or.inl (h'.symm.trans h)`.
+
+Use `right`. Rewrite using `[← h, h']`. Simplify using the standard rewrite rules. Conclude with `Or.inr (h'.symm.trans h)`. Use `left`.
+
+Conclude with `star_injective (h'.symm.trans h)`. Take `⟨v, rfl | rfl⟩` from `key`. Rewrite using `[← (h v).1, ← (h v).2]`. Conclude with `hasSignature_inst I v`. Rewrite using `[← (h v).1, ← (h v).2]`.
+
+Use `hasSignature_of_frame (P := (I.P v).map (starRingEnd ℂ)) ((I.P_unit v).map (starRingEnd ℂ).mapMatrix) ?_` and prove the remaining obligations. Establish `h1` using `congrArg (fun M => Matrix.map M (starRingEnd ℂ)) (I.P_spec v)`. Simplify using `only [Matrix.map_mul] at h1`. Establish `h2 : (Formalism.REAL.Jm (I.ε v)).map (starRingEnd ℂ) = Formalism.REAL.Jm (I.ε v)`. Rewrite using `[Formalism.REAL.Jm, Matrix.diagonal_map (map_zero _)]`.
+
+Use `congr 1`. Use function extensionality and compare the values at `a`. Apply the tactic sequence `split_ifs <;> simp`. Rewrite `h1` using `[h2]`. Conclude with `h1`.
+-/
 theorem hasSignature_all (I : AutInst) {P Q : ℕ} (h : HasSig I P Q) (φ : I.E →+* ℂ) :
     Formalism.UG.HasSignature (I.J.map φ) P Q := by
   have key : ∃ v, φ = I.φ v ∨ φ = ComplexEmbedding.conjugate (I.φ v) := by
@@ -53,6 +73,17 @@ theorem hasSignature_all (I : AutInst) {P Q : ℕ} (h : HasSig I P Q) (φ : I.E 
     rw [h2] at h1
     exact h1
 
+/- English proof (translation)
+Use `set G : Matrix (Fin I.n) (Fin I.n) I.E := γ.val with hG`. Establish `hsur : Function.Surjective G.mulVec` using `Matrix.mulVec_surjective_iff_isUnit.2 γ.isUnit`. Establish `hinj : Function.Injective G.mulVec` using `Matrix.mulVec_injective_iff_isUnit.2 γ.isUnit`. Set `Λ : Submodule (𝓞 I.E) (Fin I.n → I.E)` to `(intLat I.E I.n).map (G.mulVecLin.restrictScalars (𝓞 I.E))`. Establish `hΛ : ∀ z, G *ᵥ z ∈ Λ ↔ z ∈ intLat I.E I.n` using `fun z => ⟨fun ⟨w, hw, e⟩ => (hinj e : w = z) ▸ hw, fun hz => ⟨z, hz, rfl⟩⟩`.
+
+Take `⟨xf, hxf⟩` from `GlobalTheory.T.exists_finiteAdelicPoint_lattice_eq_selfDual I Λ ⟨(intLat_fg _).map _, by`. Establish `: (Λ : Set (Fin I.n → I.E)) = G.mulVecLin '' (intLat I.E I.n : Set (Fin I.n → I.E))` using `rfl`. Rewrite using `[this, ← Submodule.map_span, intLat_span, Submodule.map_top, LinearMap.range_eq_top]`. Conclude with `hsur⟩ (by`. Introduce `x`.
+
+Take `⟨x, rfl⟩` from `hsur x`. Rewrite using `[hΛ, intLat_dual ε]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `h _ ⟨y, hy, rfl⟩`. Use `h y hy` as an intermediate fact.
+
+Rewrite `this` using `[hform_eq, ← hγ, ← form_mulVec, ← hform_eq]`. Conclude with `this`. Introduce `h y hy`. Use `h _ ((hΛ y).2 hy)` as an intermediate fact. Rewrite using `[hform_eq, form_mulVec, hγ, ← hform_eq] at this)` and apply the resulting hypothesis.
+
+Conclude with `⟨xf, fun z => hxf ▸ hΛ z⟩`.
+-/
 theorem exists_point (I : AutInst) (ε : Fin I.n → Bool) (γ : GL (Fin I.n) I.E)
     (hγ : (γ : Matrix (Fin I.n) (Fin I.n) I.E)ᴴ * I.J * (γ : Matrix (Fin I.n) (Fin I.n) I.E) = signMat I.E ε) :
     ∃ xf : I.Gf, ∀ z, (γ : Matrix (Fin I.n) (Fin I.n) I.E) *ᵥ z ∈ lamX I (1, xf) ↔ z ∈ intLat I.E I.n := by
@@ -79,6 +110,35 @@ theorem exists_point (I : AutInst) (ε : Fin I.n → Bool) (γ : GL (Fin I.n) I.
         rwa [hform_eq, form_mulVec, hγ, ← hform_eq] at this)
   exact ⟨xf, fun z => hxf ▸ hΛ z⟩
 
+/- English proof (translation)
+Introduce `I P Q h _ s hs`. Take `⟨v⟩ : Nonempty (InfinitePlace I.F)` from `inferInstance`. Use `set ε := I.ε v with hε`. Establish `hP : (univ.filter fun a => ε a = true).card = P` using `(h v).1`. Establish `hQ : (univ.filter fun a => ε a = false).card = Q` using `(h v).2`.
+
+Choose the witnesses or unpack the hypotheses as in `⟨k, hk⟩ : ∃ k, ε k = s := by`. Establish `: 0 < (univ.filter fun a => ε a = s).card`. Consider the cases of `s`. Rewrite using `[hQ]`. Conclude with `hs`.
+
+Rewrite using `[hP]`. Conclude with `hs`. Take `⟨k, hk⟩` from `Finset.card_pos.1 this`. Conclude with `⟨k, (Finset.mem_filter.1 hk).2⟩`. Take `⟨γ, hγ⟩` from `GlobalTheory.T.hermitian_spaces_same_signature_isometric I.E I.cm.cmUnram I.n I.J (signMat I.E ε) I.J_herm (signMat_isHerm ε) I.J_det (signMat_det ε) ⟨I.L, ⟨I.L_fg, I.L_span⟩, fun x => by simpa only [hform_eq] using I.L_dual x⟩ ⟨intLat I.E I.n, ⟨intLat_fg _, intLat_span _⟩, fun x …`.
+
+Rewrite using `[signMat_map, ← hP, ← hQ]`. Conclude with `hasSignature_of_frame (P := 1) isUnit_one (by simp)⟩)`. Take `⟨xf, hxf⟩` from `exists_point I ε γ hγ`. Take `⟨m, f, hm, hf, hfk, hcard⟩` from `exists_drop ε k`. Use `set G : Matrix (Fin I.n) (Fin I.n) I.E := γ.val with hG`.
+
+Set `C : Matrix (Fin I.n) (Fin m) I.E` to `(1 : Matrix (Fin I.n) (Fin I.n) I.E).submatrix id f`. Use `⟨ofSigns I.cm (fun a => ε (f a)), RingEquiv.refl I.E, G *ᵥ Pi.single k 1, G * C, xf, ⟨fun _ => rfl, hm, ?_, ?_, ?_, ?_, ?_⟩, fun w => ⟨?_, ?_⟩⟩` and prove the remaining obligations. Rewrite using `[form_mulVec, hγ]`. Simplify using `[signMat, sgn, hk]`. Establish `: star (G *ᵥ Pi.single k 1) ᵥ* (I.J * (G * C)) = star (Pi.single k 1) ᵥ* ((Gᴴ * I.J * G) * C)`.
+
+Rewrite using `[star_mulVec, vecMul_vecMul]`. Simplify using `only [Matrix.mul_assoc]`. Use `this.trans ?_` and prove the remaining obligations. Rewrite using `[hγ]`. Use function extensionality and compare the values at `j`.
+
+Simplify using `[signMat, C, vecMul, dotProduct, Pi.single_apply, Matrix.one_apply, hfk j]`. Both sides reduce to the same expression. Establish `: (G * C)ᴴ * I.J * (G * C) = Cᴴ * (Gᴴ * I.J * G) * C`. Rewrite using `[conjTranspose_mul]`. Simplify using `only [Matrix.mul_assoc]`.
+
+Use `this.trans ?_` and prove the remaining obligations. Rewrite using `[hγ]`. Express the relevant statement in the definitionally equal form `_ = signMat I.E fun a => ε (f a)`. Use extensionality with `i j`. Rewrite using `[Matrix.mul_apply]`.
+
+Simplify using `[signMat, C, Matrix.one_apply, Matrix.diagonal_apply, hf.eq_iff]`. Distinguish the cases in `hij : i = j`. Substitute `hij` using the available equality. Simplify using the standard rewrite rules. Simplify using `[hij]`.
+
+Conclude with `(hxf _).2 (Submodule.subset_span ⟨k, by simp⟩)`. Express the relevant statement in the definitionally equal form `∀ y : Fin m → I.E, y ∈ intLat I.E m ↔ (G * C) *ᵥ y ∈ lamX I (1, xf)`. Introduce `y`. Rewrite using `[← mulVec_mulVec, hxf, mem_intLat, mem_intLat]`. Prove the components needed by the constructor for the conclusion.
+
+Introduce `hy i`. Express the relevant statement in the definitionally equal form `∑ j, C i j * y j ∈ _`. Use `sum_mem fun j _ => mul_mem ?_ (hy j)` and prove the remaining obligations. Simplify using `only [C, submatrix_apply, id, Matrix.one_apply]`. Use `split_ifs`.
+
+Conclude with `one_mem _`. Conclude with `zero_mem _`. Introduce `hy j`. Use `hy (f j)` as an intermediate fact. Simplify `this` using `[C, mulVec, dotProduct, Matrix.one_apply, hf.eq_iff]`.
+
+Express the relevant statement in the definitionally equal form `(univ.filter fun a => ε (f a) = true).card = _`. Use `hcard true` as an intermediate fact. Rewrite `this` using `[hP, hk]`. Apply the tactic sequence `cases s <;> simp at this ⊢ <;> omega`. Express the relevant statement in the definitionally equal form `(univ.filter fun a => ε (f a) = false).card = _`.
+
+Use `hcard false` as an intermediate fact. Rewrite `this` using `[hQ, hk]`. Apply the tactic sequence `cases s <;> simp at this ⊢ <;> omega`.
+-/
 theorem exists_isPerpInst : ∀ (I : AutInst) (P Q : ℕ), HasSig I P Q → 3 ≤ I.n → ∀ s : Bool, (if s then 1 ≤ P else 1 ≤ Q) → ∃ (I' : AutInst) (e : I'.E ≃+* I.E) (x : Fin I.n → I.E) (A : Matrix (Fin I.n) (Fin I'.n) I.E) (xf : I.Gf), IsPerpInst I I' e s x A xf ∧ HasSig I' (if s then P - 1 else P) (if s then Q else Q - 1) := by
   intro I P Q h _ s hs
   obtain ⟨v⟩ : Nonempty (InfinitePlace I.F) := inferInstance

@@ -9,6 +9,13 @@ open scoped CategoryTheory.Obj RatFunc
 
 namespace GlobalTheory.Nef
 
+/- English proof (translation)
+Introduce `S G _ hG s π ε m h`. Establish `hstr` using `h.str`. Use `clear h`. Use `revert π hstr`. Establish `hs : G.hom.base (unitSec G s) = s`.
+
+Rewrite using `[← Scheme.Hom.comp_apply, unitSec, sec_hom]`. Both sides reduce to the same expression. Generalize the expression as in `unitSec G s = p at hs ⊢`. Substitute `hs` using the available equality. Introduce `π hstr`.
+
+Establish `e : Spec.map (CommRingCat.ofHom π) = Spec.map (G.hom.stalkMap p)` using `(cancel_mono (S.fromSpecStalk (G.hom.base p))).1 (by`. Rewrite using `[hstr, Scheme.SpecMap_stalkMap_fromSpecStalk])`. Establish `e' : π = (G.hom.stalkMap p).hom` using `congrArg CommRingCat.Hom.hom (Spec.map_injective e)`. Rewrite using `[e']`. Conclude with `Scheme.Hom.mem_smoothLocus.mp (G.hom.smoothLocus_eq_top.ge (Set.mem_univ p))`.
+-/
 theorem stalk_formallySmooth_of_smooth : ∀ (S : Scheme.{0}) (G : Over S) [GrpObj G], Smooth G.hom → ∀ (s : S) (π : S.presheaf.stalk s →+* G.left.presheaf.stalk (unitSec G s)) (ε : G.left.presheaf.stalk (unitSec G s) →+* S.presheaf.stalk s) (m : G.left.presheaf.stalk (unitSec G s) →+* G.left.presheaf.stalk (unitSec G s)), StalkData G s π ε m → π.FormallySmooth := by
   intro S G _ hG s π ε m h
   have hstr := h.str

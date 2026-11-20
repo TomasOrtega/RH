@@ -8,6 +8,9 @@ open GlobalTheory.WeilM GlobalTheory.SplitFlip
 open scoped Matrix
 
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.BlockDiagonalOmegaIdentities.frobenius_X0 | exact GlobalTheory.BlockDiagonalOmegaIdentities.frobenius_X0 | (intros; apply GlobalTheory.BlockDiagonalOmegaIdentities.frobenius_X0 <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.frobenius_reciprocity_unitary : ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] (a b : ℕ) (ν β : kˣ →* ℂˣ), GlobalTheory.SmGL.IsSmoothChar ν → GlobalTheory.SmGL.IsUnitaryChar ν →
     GlobalTheory.SmGL.IsSmoothChar β → GlobalTheory.SmGL.IsUnitaryChar β →
     ∀ Bf : GlobalTheory.WeilM.SB (Matrix (Fin a) (Fin (a + b)) k) →ₗ[ℂ] GlobalTheory.WeilM.SB (Matrix (Fin a) (Fin (a + b)) k) →ₗ⋆[ℂ] ℂ,

@@ -21,6 +21,17 @@ noncomputable section
 
 namespace GlobalTheory.UT.CoefZeroInt
 
+/- English proof (translation)
+Introduce `V _ _ D θ hθ th`. Take `⟨lam, hlam, -⟩` from `existsUnique_scalar D θ hθ (FractionRing V) th`. Use `⟨lam, fun g b hb w x hx z J hJ => ?_⟩` and prove the remaining obligations. Establish `h1` using `hx z J hJ`. Rewrite `h1` using `[pow_one]`.
+
+Rewrite using `[h1]`. Establish `hs : sval (th.s 0) (lift (𝟙 (TF (R` using `V) (FractionRing V))) g.b).left z J = sval (famProj D (FractionRing V) 1 0 th) (lift (𝟙 (TF (R := V) (FractionRing V))) g.b).left z J := rfl`. Establish `hfst : (lift (𝟙 (TF (R` using `V) (FractionRing V))) g.b).left ≫ famBase D (FractionRing V) = 𝟙 _ := by show (lift (𝟙 (TF (R := V) (FractionRing V))) g.b).left ≫ (fst (TF (R := V) (FractionRing V)) D.P.A).left = _`. Rewrite using `[← Over.comp_left, lift_fst]`. Both sides reduce to the same expression.
+
+Establish `hsnd : (lift (𝟙 (TF (R` using `V) (FractionRing V))) g.b).left ≫ (DegPre.prB D (FractionRing V)).left = (toUnit (TF (R := V) (FractionRing V))).left ≫ b.left := by show (lift (𝟙 (TF (R := V) (FractionRing V))) g.b).left ≫ (snd (TF (R := V) (FractionRing V)) D.P.A).left = _`. Rewrite using `[← Over.comp_left, lift_snd, hb, Over.comp_left]`. Establish `hv : (Geo.Tor.val (g.s 0) (𝟙 (TF (R` using `V) (FractionRing V)).left) z J).val = 1 := by`. Rewrite using `[val_corr hJ g.s_zero, val_one]`. Both sides reduce to the same expression.
+
+Establish `e1` using `sval_smul' (π := famBase D (FractionRing V)) hJ (lift (𝟙 (TF (R := V) (FractionRing V))) g.b).left lam (termF D (FractionRing V) 1 0 θ)`. Establish `e2` using `sval_pullOver (L := D.P.L) (ε := DegPre.famε 1) (prB_hom' D (FractionRing V)) (famφ_prB D (FractionRing V) 0) θ (lift (𝟙 (TF (R := V) (FractionRing V))) g.b).left hJ`. Establish `hc : constVal (𝟙 (TF (R` using `V) (FractionRing V)).left) z lam = cst (FractionRing V) z lam := rfl`. Rewrite using `[hs, hlam, e1, hfst]`. Use `erw [e2]`.
+
+Rewrite using `[hsnd, hv, _root_.mul_one, hc]`.
+-/
 theorem coef_zero_int : ∀ (V : Type) [CommRing V] [IsDomain V] (D : DegPre V) (θ : SecOver D.P.A.hom (LB.LinComb D.P.L (D.famφB 0) (DegPre.famε 1))), (∀ (R' : Type) [CommRing R'] (f : V →+* R') θ', IsPullSecLC D.P.L (D.famφB 0) (DegPre.famε 1) (snd (Over.mk (Spec.map (CommRingCat.ofHom f))) D.P.A).left θ θ' → ThetaOne.OneBasisAt D f θ') → ∀ (th : Fam D (FractionRing V) 1), ∃ lam : FractionRing V, ∀ (g : GtPtF D (FractionRing V)) (b : 𝟙_ (Over (Sp V)) ⟶ D.P.A), g.b = toUnit _ ≫ b → ∀ (w : Frm D (FractionRing V) 1 g.b) (x : FractionRing V), IsCoef 1 g w 0 (th.s 0) x → ∀ z J, Good D.P.L z J → cst (FractionRing V) z x * (rigV D (TF (R := V) (FractionRing V)).hom z J).val = cst (FractionRing V) z lam * sval (θ : LB.Sec (LB.LinComb D.P.L (D.famφB 0) (DegPre.famε 1))) ((toUnit (TF (R := V) (FractionRing V))).left ≫ b.left) z J * (val w (𝟙 _) z J).val := by
   intro V _ _ D θ hθ th
   obtain ⟨lam, hlam, -⟩ := existsUnique_scalar D θ hθ (FractionRing V) th

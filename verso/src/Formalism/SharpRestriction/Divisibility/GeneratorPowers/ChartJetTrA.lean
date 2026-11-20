@@ -17,13 +17,24 @@ section Ring
 
 variable {V K : Type} [CommRing V] [CommRing K] (f : V →+* K)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem jetCoef_mk (κ : Type) (m : ℕ) (p : MvPolynomial κ V) :
     jetCoef f κ m (Ideal.Quotient.mk _ p) = Ideal.Quotient.mk _ (MvPolynomial.map f p) := rfl
 
+/- English proof (translation)
+Simplify using `only [psTrunc, map_sum, MvPolynomial.map_monomial, MvPowerSeries.coeff_map]`.
+-/
 theorem psTrunc_map {σ : Type} [Fintype σ] [DecidableEq σ] (m : ℕ) (F : MvPowerSeries σ V) :
     psTrunc m (MvPowerSeries.map f F) = MvPolynomial.map f (psTrunc m F) := by
   simp only [psTrunc, map_sum, MvPolynomial.map_monomial, MvPowerSeries.coeff_map]
 
+/- English proof (translation)
+Use `RingHom.ext fun v => ?_` and prove the remaining obligations. Use `first`. Consider the case `(show jetCoef f κ m (Ideal.Quotient.mk _ (MvPolynomial.C v)) = Ideal.Quotient.mk _ (MvPolynomial.C (f v))`. Rewrite using `[jetCoef_mk, MvPolynomial.map_C])`. Consider the case `(simp only [RingHom.comp_apply]`.
+
+Rewrite using `[← Ideal.Quotient.mk_algebraMap, ← Ideal.Quotient.mk_algebraMap, MvPolynomial.algebraMap_eq, MvPolynomial.algebraMap_eq, jetCoef_mk, MvPolynomial.map_C])`.
+-/
 theorem jetCoef_alg (κ : Type) (m : ℕ) :
     (jetCoef f κ m).comp (algebraMap V (Jet V κ m)) = (algebraMap K (Jet K κ m)).comp f := by
   refine RingHom.ext fun v => ?_
@@ -34,6 +45,11 @@ theorem jetCoef_alg (κ : Type) (m : ℕ) :
      rw [← Ideal.Quotient.mk_algebraMap, ← Ideal.Quotient.mk_algebraMap, MvPolynomial.algebraMap_eq,
        MvPolynomial.algebraMap_eq, jetCoef_mk, MvPolynomial.map_C])
 
+/- English proof (translation)
+Use `Ideal.Quotient.ringHom_ext (MvPolynomial.ringHom_ext (fun a => ?_) (fun i => ?_))` and prove the remaining obligations. Use `show (jetAug : Jet K κ m →ₐ[K] K) (jetCoef f κ m (Ideal.Quotient.mk _ (MvPolynomial.C a))) = f ((jetAug : Jet V κ m →ₐ[V] V) (Ideal.Quotient.mk _ (MvPolynomial.C a)))`. Rewrite using `[jetCoef_mk, MvPolynomial.map_C]`. Use `show (MvPolynomial.aeval fun _ => (0 : K)) (MvPolynomial.C (f a)) = f ((MvPolynomial.aeval fun _ => (0 : V)) (MvPolynomial.C a))`. Simplify using the standard rewrite rules.
+
+Use `show (jetAug : Jet K κ m →ₐ[K] K) (jetCoef f κ m (Ideal.Quotient.mk _ (MvPolynomial.X i))) = f ((jetAug : Jet V κ m →ₐ[V] V) (Ideal.Quotient.mk _ (MvPolynomial.X i)))`. Rewrite using `[jetCoef_mk, MvPolynomial.map_X]`. Use `show (MvPolynomial.aeval fun _ => (0 : K)) (MvPolynomial.X i) = f ((MvPolynomial.aeval fun _ => (0 : V)) (MvPolynomial.X i))`. Simplify using the standard rewrite rules.
+-/
 theorem jetCoef_aug (κ : Type) (m : ℕ) :
     ((jetAug : Jet K κ m →ₐ[K] K) : Jet K κ m →+* K).comp (jetCoef f κ m) =
       f.comp ((jetAug : Jet V κ m →ₐ[V] V) : Jet V κ m →+* V) := by
@@ -51,6 +67,9 @@ theorem jetCoef_aug (κ : Type) (m : ℕ) :
       f ((MvPolynomial.aeval fun _ => (0 : V)) (MvPolynomial.X i))
     simp
 
+/- English proof (translation)
+Use `Ideal.Quotient.ringHom_ext (RingHom.ext fun p => ?_)` and prove the remaining obligations. Use `first`. Consider the case `rfl`. Consider the case `simp [jetCoef_mk, jetTrunc]`.
+-/
 theorem jetCoef_trunc (κ : Type) (m : ℕ) :
     ((jetTrunc : Jet K κ (m + 1) →ₐ[K] Jet K κ m) : Jet K κ (m + 1) →+* Jet K κ m).comp (jetCoef f κ (m + 1)) =
       (jetCoef f κ m).comp ((jetTrunc : Jet V κ (m + 1) →ₐ[V] Jet V κ m) : Jet V κ (m + 1) →+* Jet V κ m) := by
@@ -59,6 +78,11 @@ theorem jetCoef_trunc (κ : Type) (m : ℕ) :
   | rfl
   | simp [jetCoef_mk, jetTrunc]
 
+/- English proof (translation)
+Use `Ideal.Quotient.ringHom_ext (MvPolynomial.ringHom_ext (fun a => ?_) (fun i => ?_))` and prove the remaining obligations. Use `show jetCoef f κ' m (Ideal.Quotient.mk _ ((MvPolynomial.aeval φ) (MvPolynomial.C a))) = Ideal.Quotient.mk _ ((MvPolynomial.aeval fun i => MvPolynomial.map f (φ i)) (MvPolynomial.map f (MvPolynomial.C a)))`. Rewrite using `[jetCoef_mk]`. Simplify using the standard rewrite rules. Use `show jetCoef f κ' m (Ideal.Quotient.mk _ ((MvPolynomial.aeval φ) (MvPolynomial.X i))) = Ideal.Quotient.mk _ ((MvPolynomial.aeval fun i => MvPolynomial.map f (φ i)) (MvPolynomial.map f (MvPolynomial.X i)))`.
+
+Rewrite using `[jetCoef_mk]`. Simplify using the standard rewrite rules.
+-/
 theorem jetCoef_map {κ κ' : Type} (m : ℕ) (φ : κ → MvPolynomial κ' V) (hφ : ∀ i, φ i ∈ orig V κ')
     (hφ' : ∀ i, MvPolynomial.map f (φ i) ∈ orig K κ') :
     (jetCoef f κ' m).comp ((jetMap φ hφ : Jet V κ m →ₐ[V] Jet V κ' m) : Jet V κ m →+* Jet V κ' m) =

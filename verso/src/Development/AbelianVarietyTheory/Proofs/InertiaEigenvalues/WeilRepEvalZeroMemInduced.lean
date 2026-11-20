@@ -10,9 +10,15 @@ namespace GlobalTheory.WeilSmooth
 def lS {k : Type} [CommRing k] (u : k) : SpecialLinearGroup (Fin 2) k :=
   ⟨!![1, 0; u, 1], by simp [Matrix.det_fin_two]⟩
 
+/- English proof (translation)
+The claim follows from `Subtype.ext h`.
+-/
 theorem sl_ext {k : Type} [CommRing k] {A B : SpecialLinearGroup (Fin 2) k}
     (h : (A : Matrix (Fin 2) (Fin 2) k) = B) : A = B := Subtype.ext h
 
+/- English proof (translation)
+Apply `sl_ext` to reduce the goal to its premises. Simplify using `only [Matrix.SpecialLinearGroup.coe_mul, Matrix.SpecialLinearGroup.coe_inv]`. Use extensionality with `i j`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;>`. Simplify using `[lS, nS, wS, Matrix.adjugate_fin_two, Matrix.mul_apply, Fin.sum_univ_two]`.
+-/
 theorem lS_eq {k : Type} [CommRing k] (u : k) : lS u = (wS k)⁻¹ * nS (-u) * wS k := by
   apply sl_ext
   simp only [Matrix.SpecialLinearGroup.coe_mul, Matrix.SpecialLinearGroup.coe_inv]
@@ -20,6 +26,11 @@ theorem lS_eq {k : Type} [CommRing k] (u : k) : lS u = (wS k)⁻¹ * nS (-u) * w
   fin_cases i <;> fin_cases j <;>
     simp [lS, nS, wS, Matrix.adjugate_fin_two, Matrix.mul_apply, Fin.sum_univ_two]
 
+/- English proof (translation)
+Simplify using `only [Matrix.SpecialLinearGroup.coe_mul]`. Use extensionality with `i j`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;> simp [lS, nS, Matrix.mul_apply, Fin.sum_univ_two]`. Take the linear combination `(a-1)*ht - t*a*((a-1)*(a'-1)*t'*ht + t'*ha)`. Take the linear combination `(a-1)*(a'-1)*t' * ht + t' * ha`.
+
+Take the linear combination `(-t*a*(a'-1))*ht - t*ha`. Take the linear combination `(a'-1)*ht`.
+-/
 theorem mid_eq {k : Type} [CommRing k] (a a' t t' : k) (ha : a * a' = 1) (ht : t * t' = 1) :
     ((nS ((a - 1) * t') * lS t * nS ((a' - 1) * t') * lS (-(t * a)) : SpecialLinearGroup (Fin 2) k) :
       Matrix (Fin 2) (Fin 2) k) = !![a, 0; 0, a'] := by
@@ -31,6 +42,13 @@ theorem mid_eq {k : Type} [CommRing k] (a a' t t' : k) (ha : a * a' = 1) (ht : t
   · linear_combination (-t*a*(a'-1))*ht - t*ha
   · linear_combination (a'-1)*ht
 
+/- English proof (translation)
+Establish `hdet : (g : Matrix (Fin 2) (Fin 2) k) 0 0 * (g : Matrix (Fin 2) (Fin 2) k) 1 1 - (g : Matrix (Fin 2) (Fin 2) k) 0 1 * (g : Matrix (Fin 2) (Fin 2) k) 1 0 = 1`. Use `g.2` as an intermediate fact. Rewrite `this` using `[Matrix.det_fin_two]`. Conclude with `this`. Apply `sl_ext` to reduce the goal to its premises.
+
+Rewrite using `[Matrix.SpecialLinearGroup.coe_mul, Matrix.SpecialLinearGroup.coe_mul, mid_eq _ _ _ _ ha ht]`. Use extensionality with `i j`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;> simp [lS, nS, Matrix.mul_apply, Fin.sum_univ_two]`. Take the linear combination `-((g : Matrix (Fin 2) (Fin 2) k) 0 1) * ha`. Take the linear combination `-((g : Matrix (Fin 2) (Fin 2) k) 1 0) * ha`.
+
+Take the linear combination `-((g : Matrix (Fin 2) (Fin 2) k) 1 0 * (g : Matrix (Fin 2) (Fin 2) k) 0 1 * a' + (g : Matrix (Fin 2) (Fin 2) k) 1 1) * ha + a' * hdet`.
+-/
 theorem decomp {k : Type} [CommRing k] (g : SpecialLinearGroup (Fin 2) k) (a' t t' : k)
     (ha : (g : Matrix (Fin 2) (Fin 2) k) 0 0 * a' = 1) (ht : t * t' = 1) :
     g = lS ((g : Matrix (Fin 2) (Fin 2) k) 1 0 * a') * (nS (((g : Matrix (Fin 2) (Fin 2) k) 0 0 - 1) * t') * lS t *
@@ -56,10 +74,23 @@ open GlobalTheory.JR
 
 variable {F E : Type} [NontriviallyNormedField F] [NontriviallyNormedField E] [NormedAlgebra F E] [StarRing E]
 
+/- English proof (translation)
+The claim follows from `GlobalTheory.T.continuous_etaleHermitianPair_norm_and_map_zero F E A`.
+-/
 theorem nl_cont [Unram F E] (A : Et F E) : Continuous A.NL ∧ A.NL 0 = 0 := GlobalTheory.T.continuous_etaleHermitianPair_norm_and_map_zero F E A
+/- English proof (translation)
+The claim follows from `GlobalTheory.T.etaleHermitianPair_eventually_isUnit_continuousAt_inverse F E A`.
+-/
 theorem inv_cont (A : Et F E) : (∀ᶠ a in 𝓝 (1 : A.K), IsUnit a) ∧ ContinuousAt Ring.inverse (1 : A.K) :=
   GlobalTheory.T.etaleHermitianPair_eventually_isUnit_continuousAt_inverse F E A
 
+/- English proof (translation)
+Establish `htr : Continuous (Algebra.trace F A.K)` using `IsModuleTopology.continuous_of_linearMap _`. Establish `hc : Continuous fun p : A.K × A.L => ‖Algebra.trace F A.K (p.1 * x * A.NL p.2)‖` using `(htr.comp ((continuous_fst.mul continuous_const).mul ((nl_cont A).1.comp continuous_snd))).norm`. Establish `hK : IsCompact (tsupport f)` using `hf.2`. Establish `hev : ∀ᶠ z in 𝓝 (0 : A.K), ∀ y ∈ tsupport f, ‖Algebra.trace F A.K (z * x * A.NL y)‖ < 1`. Use `hK.eventually_forall_of_forall_eventually fun y _ => ?_` and prove the remaining obligations.
+
+Establish `h0 : ‖Algebra.trace F A.K ((0 : A.K) * x * A.NL y)‖ < 1` using `by simp`. Conclude with `hc.continuousAt.preimage_mem_nhds (Iio_mem_nhds h0)`. Use `filter_upwards [hev] with z hz`. Use function extensionality and compare the values at `y`. Rewrite using `[(hW.2 f hf).1 z y]`.
+
+Distinguish the cases in `hy : y ∈ tsupport f`. Rewrite using `[Et.psiK, hψ.1 _ (hz y hy).le, one_mul]`. Rewrite using `[image_eq_zero_of_notMem_tsupport hy, mul_zero]`.
+-/
 theorem fix_n [Unram F E] (A : Et F E) (ψ : AddChar F ℂ) (hψ : IsStdChar ψ) (x : A.K) (ω : A.K → ℂ)
     (μ : Measure A.L) (γ : ℂ) (W : SpecialLinearGroup (Fin 2) A.K → (A.L → ℂ) → A.L → ℂ)
     (hW : A.IsWeil ψ x ω μ γ W) (f : A.L → ℂ) (hf : IsTest f) :
@@ -79,6 +110,11 @@ theorem fix_n [Unram F E] (A : Et F E) (ψ : AddChar F ℂ) (hψ : IsStdChar ψ)
   · rw [Et.psiK, hψ.1 _ (hz y hy).le, one_mul]
   · rw [image_eq_zero_of_notMem_tsupport hy, mul_zero]
 
+/- English proof (translation)
+Establish `h1` using `fix_n A ψ hψ x ω μ γ W hW (W (wS A.K) f) (hW.1.1 _ _ hf)`. Establish `h2 : Tendsto (fun u : A.K => -u) (𝓝 0) (𝓝 0)` using `by simpa using (continuous_neg.tendsto (0 : A.K))`. Use `filter_upwards [h2.eventually h1] with u hu`. Establish `hwf` using `hW.1.1 (wS A.K) f hf`. Combine the equalities or inequalities in the displayed calculation.
+
+Rewrite using `[hW.1.2.2.1 _ _ _ hf, hW.1.2.2.1 _ _ _ hwf]`. Use `_ = W ((wS A.K)⁻¹ * wS A.K) f := by rw [hu, hW.1.2.2.1 _ _ _ hf]`. Use `_ = f := by rw [inv_mul_cancel, hW.1.2.1 _ hf]`.
+-/
 theorem fix_l [Unram F E] (A : Et F E) (ψ : AddChar F ℂ) (hψ : IsStdChar ψ) (x : A.K) (ω : A.K → ℂ)
     (μ : Measure A.L) (γ : ℂ) (W : SpecialLinearGroup (Fin 2) A.K → (A.L → ℂ) → A.L → ℂ)
     (hW : A.IsWeil ψ x ω μ γ W) (f : A.L → ℂ) (hf : IsTest f) :
@@ -93,6 +129,39 @@ theorem fix_l [Unram F E] (A : Et F E) (ψ : AddChar F ℂ) (hψ : IsStdChar ψ)
     _ = W ((wS A.K)⁻¹ * wS A.K) f := by rw [hu, hW.1.2.2.1 _ _ _ hf]
     _ = f := by rw [inv_mul_cancel, hW.1.2.1 _ hf]
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ A ψ hψ x μ γ W hW φ hφ`. Take `⟨⟨htest, hone, hmul, hlin⟩, hact⟩` from `id hW`. Establish `ht0 : IsTest (0 : A.L → ℂ)` using `⟨IsLocallyConstant.const 0, HasCompactSupport.zero⟩`. Establish `h0 : ∀ g, W g 0 = 0`. Introduce `g`.
+
+Use `hlin g (-1) 0 0 ht0 ht0` as an intermediate fact. Simplify using `using this`. Establish `hfix : ∀ g h, W h φ = φ → W (g * h) φ = W g φ` using `fun g h hh => by rw [hmul _ _ _ hφ, hh]`. Use `⟨⟨?_, ?_⟩, ?_⟩` and prove the remaining obligations. Establish `hn` using `fix_n A ψ hψ x A.etaK μ γ W hW φ hφ`.
+
+Establish `hl` using `fix_l A ψ hψ x A.etaK μ γ W hW φ hφ`. Take `⟨hunit, hinv⟩` from `inv_cont A`. Establish `hQ : ∀ᶠ u in 𝓝 (0 : A.K), ∀ᶠ v in 𝓝 u, W (lS v) φ = φ` using `hl.eventually_nhds`. Use `haveI : ContinuousSMul F A.K := IsModuleTopology.toContinuousSMul F A.K`. Establish `hcm : Continuous (algebraMap F A.K)` using `continuous_algebraMap F A.K`.
+
+Establish `hQ2 : ∀ᶠ c in 𝓝 (0 : F), (∀ᶠ v in 𝓝 (algebraMap F A.K c), W (lS v) φ = φ) ∧ ∀ᶠ v in 𝓝 (-algebraMap F A.K c), W (lS v) φ = φ`. Establish `e1 : Tendsto (algebraMap F A.K) (𝓝 0) (𝓝 0)` using `by simpa using hcm.tendsto 0`. Establish `e2 : Tendsto (fun c => -algebraMap F A.K c) (𝓝 0) (𝓝 0)` using `by simpa using (hcm.tendsto 0).neg`. Conclude with `(e1.eventually hQ).and (e2.eventually hQ)`. Use `haveI := NormedField.nhdsNE_neBot (0 : F)`.
+
+Take `⟨c, ⟨hc1, hc2⟩, hc0⟩` from `((hQ2.filter_mono nhdsWithin_le_nhds).and (self_mem_nhdsWithin : {y : F | y ≠ 0} ∈ 𝓝[≠] (0 : F))).exists`. Use `set t := algebraMap F A.K c with ht_def`. Use `set t' := algebraMap F A.K c⁻¹ with ht'_def`. Establish `htt : t * t' = 1` using `by rw [ht_def, ht'_def, ← map_mul, mul_inv_cancel₀ hc0, map_one]`. Establish `hq1 : Tendsto (fun q : A.K × A.K × A.K => q.1) (𝓝 (0, 0, 0)) (𝓝 0)` using `continuous_fst.tendsto ((0 : A.K), (0 : A.K), (0 : A.K))`.
+
+Establish `ha : Tendsto (fun q : A.K × A.K × A.K => 1 + q.1) (𝓝 (0, 0, 0)) (𝓝 1)`. Simplify using `using (tendsto_const_nhds (x := (1 : A.K))).add hq1`. Establish `hi : Tendsto (fun q : A.K × A.K × A.K => Ring.inverse (1 + q.1)) (𝓝 (0, 0, 0)) (𝓝 1)`. Use `hinv.tendsto.comp ha` as an intermediate fact. Rewrite `this` using `[Ring.inverse_one]`.
+
+Conclude with `this`. Establish `hq2 : Tendsto (fun q : A.K × A.K × A.K => q.2.1) (𝓝 (0, 0, 0)) (𝓝 0)` using `(continuous_fst.comp continuous_snd).tendsto ((0 : A.K), (0 : A.K), (0 : A.K))`. Establish `hq3 : Tendsto (fun q : A.K × A.K × A.K => q.2.2) (𝓝 (0, 0, 0)) (𝓝 0)` using `(continuous_snd.comp continuous_snd).tendsto ((0 : A.K), (0 : A.K), (0 : A.K))`. Establish `key : ∀ᶠ q : A.K × A.K × A.K in 𝓝 (0, 0, 0), IsUnit (1 + q.1) ∧ W (lS (q.2.2 * Ring.inverse (1 + q.1))) φ = φ ∧ W (nS (q.1 * t')) φ = φ ∧ W (nS ((Ring.inverse (1 + q.1) - 1) * t')) φ = φ ∧ W (lS (-(t * (1 + q.1)))) φ = φ ∧ W (nS (q.2.1 * Ring.inverse (1 + q.1))) φ = φ`. Establish `f1 : Tendsto (fun q : A.K × A.K × A.K => q.2.2 * Ring.inverse (1 + q.1)) (𝓝 (0, 0, 0)) (𝓝 0)`.
+
+Simplify using `using hq3.mul hi`. Establish `f2 : Tendsto (fun q : A.K × A.K × A.K => q.1 * t') (𝓝 (0, 0, 0)) (𝓝 0)`. Simplify using `using hq1.mul_const t'`. Establish `f3 : Tendsto (fun q : A.K × A.K × A.K => (Ring.inverse (1 + q.1) - 1) * t') (𝓝 (0, 0, 0)) (𝓝 0)`. Simplify using `using (hi.sub_const 1).mul_const t'`.
+
+Establish `f4 : Tendsto (fun q : A.K × A.K × A.K => -(t * (1 + q.1))) (𝓝 (0, 0, 0)) (𝓝 (-t))`. Simplify using `using (ha.const_mul t).neg`. Establish `f5 : Tendsto (fun q : A.K × A.K × A.K => q.2.1 * Ring.inverse (1 + q.1)) (𝓝 (0, 0, 0)) (𝓝 0)`. Simplify using `using hq2.mul hi`. Conclude with `(ha.eventually hunit).and ((f1.eventually hl).and ((f2.eventually hn).and ((f3.eventually hn).and ((f4.eventually hc2).and (f5.eventually hn)))))`.
+
+Rewrite `key` using `[nhds_prod_eq, nhds_prod_eq]`. Take `⟨p1, hp1, p2, hp2, h12⟩` from `eventually_prod_iff.1 key`. Take `⟨p3, hp3, p4, hp4, h34⟩` from `eventually_prod_iff.1 hp2`. Use `⟨{e | p1 e ∧ p3 e ∧ p4 e}, hp1.and (hp3.and hp4), ?_⟩` and prove the remaining obligations. Introduce `g k hk`.
+
+Establish `e00 : ((k : Matrix (Fin 2) (Fin 2) A.K) - 1) 0 0 = (k : Matrix (Fin 2) (Fin 2) A.K) 0 0 - 1` using `by simp`. Establish `e01 : ((k : Matrix (Fin 2) (Fin 2) A.K) - 1) 0 1 = (k : Matrix (Fin 2) (Fin 2) A.K) 0 1` using `by simp`. Establish `e10 : ((k : Matrix (Fin 2) (Fin 2) A.K) - 1) 1 0 = (k : Matrix (Fin 2) (Fin 2) A.K) 1 0` using `by simp`. Establish `k1` using `(hk 0 0).1`. Establish `k2` using `(hk 0 1).2.1`.
+
+Establish `k3` using `(hk 1 0).2.2`. Rewrite `k1` using `[e00]`. Rewrite `k2` using `[e01]`. Rewrite `k3` using `[e10]`. Take `⟨hu, hP1, hP2, hP3, hP4, hP5⟩` from `h12 k1 (h34 k2 k3)`.
+
+Establish `h1a : (1 : A.K) + ((k : Matrix (Fin 2) (Fin 2) A.K) 0 0 - 1) = (k : Matrix (Fin 2) (Fin 2) A.K) 0 0` using `by ring`. Simplify using `only [h1a] at hu hP1 hP2 hP3 hP4 hP5`. Establish `hdec` using `decomp k (Ring.inverse ((k : Matrix (Fin 2) (Fin 2) A.K) 0 0)) t t' (Ring.mul_inverse_cancel _ hu) htt`. Establish `hk : W k φ = φ`. Rewrite using `[hdec, hfix _ _ hP5, hfix _ _ ?_, hP1]`.
+
+Rewrite using `[hfix _ _ hP4, hfix _ _ hP3, hfix _ _ hc1.self_of_nhds, hP2]`. Use `show W (g * k) φ 0 = W g φ 0`. Rewrite using `[hfix _ _ hk]`. Introduce `z s g`. Establish `hg` using `htest g φ hφ`.
+
+Use `show W (nS z * mS s * g) φ 0 = A.etaK s * (A.absK s : ℂ) * W g φ 0`. Rewrite using `[hmul _ _ _ hφ, hmul _ _ _ hg, (hact _ (htest _ _ hg)).1 z 0, (hact _ hg).2.1 s 0, smul_zero, (nl_cont A).2]`. Simplify using `[Et.psiK]`. Introduce `hne hγ`. Apply `hne` to reduce the goal to its premises.
+
+Establish `hw : W (wS A.K) φ = 0` using `funext fun y => by rw [(hact φ hφ).2.2 y, hγ, zero_mul]; rfl`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem jx_mem_induced : ∀ (F E : Type) [NontriviallyNormedField F] [NontriviallyNormedField E] [NormedAlgebra F E] [StarRing E] [Unram F E] (A : Et F E) (ψ : AddChar F ℂ), IsStdChar ψ → ∀ (x : A.Kˣ) (μ : Measure A.L) (γ : ℂ) W, A.IsWeil ψ x A.etaK μ γ W → ∀ φ, IsTest φ → A.InI (fun g => W g φ 0) ∧ (φ ≠ 0 → γ ≠ 0) := by
   intro F E _ _ _ _ _ A ψ hψ x μ γ W hW φ hφ
   obtain ⟨⟨htest, hone, hmul, hlin⟩, hact⟩ := id hW

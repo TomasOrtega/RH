@@ -8,6 +8,9 @@ open scoped TensorProduct
 attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField
 set_option synthInstance.maxHeartbeats 200000
 
+/- English proof (translation)
+Use extensionality with `x`. Establish `h1` using `s.hw v (algebraMap (𝓞 (Lp L)) (𝓞 L) x)`. Establish `h2` using `s.hA v x`. Conclude with `h1.symm.trans h2`.
+-/
 private theorem w_under {l : ℕ} [Fact l.Prime] {L Ω : Type} [Field L] [NumberField L] [IsCMField L] [Field Ω] [Algebra L Ω]
     [IsAlgClosure L Ω] (s : HidaSetting l L Ω) (v : Plc (Lp L)) : (s.w v).under (𝓞 (Lp L)) = v := by
   ext x
@@ -15,6 +18,9 @@ private theorem w_under {l : ℕ} [Fact l.Prime] {L Ω : Type} [Field L] [Number
   have h2 := s.hA v x
   exact h1.symm.trans h2
 
+/- English proof (translation)
+Introduce `h'` and use `h <| by rw [← hu] change algebraMap (𝓞 (Lp L)) (𝓞 L) (l : 𝓞 (Lp L)) ∈ u.asIdeal rwa [map_natCast]`.
+-/
 private theorem l_notMem {l : ℕ} {L : Type} [Field L] [NumberField L] [IsCMField L] {w u : Plc L}
     (h : ((l : ℕ) : 𝓞 (Lp L)) ∉ (w.under (𝓞 (Lp L))).asIdeal) (hu : u.under (𝓞 (Lp L)) = w.under (𝓞 (Lp L))) :
     ((l : ℕ) : 𝓞 L) ∉ u.asIdeal := fun h' => h <| by
@@ -22,12 +28,20 @@ private theorem l_notMem {l : ℕ} {L : Type} [Field L] [NumberField L] [IsCMFie
   change algebraMap (𝓞 (Lp L)) (𝓞 L) (l : 𝓞 (Lp L)) ∈ u.asIdeal
   rwa [map_natCast]
 
+/- English proof (translation)
+Unfold `CaseU.cmp`. Rewrite using `[dif_pos h]`. Both sides reduce to the same expression.
+-/
 private theorem cmp_of {l : ℕ} [Fact l.Prime] {L : Type} [Field L] [NumberField L] [IsCMField L] {n : ℕ} {w : Plc L}
     (h : ((l : ℕ) : 𝓞 L) ∉ w.asIdeal) (x : UA L n) : cmp n w ((away l L n).rangeRestrict x) = cLoc w x := by
   unfold CaseU.cmp
   rw [dif_pos h]
   rfl
 
+/- English proof (translation)
+Distinguish the cases in `h : ((l : ℕ) : 𝓞 L) ∉ u.asIdeal`. Rewrite using `[cmp_of h]`. Conclude with `MonoidHom.mem_ker.1 (Subgroup.mem_iInf.1 (Subgroup.mem_iInf.1 (Subgroup.mem_inf.1 hx).2 u) hu)`. Unfold `CaseU.cmp`. Rewrite using `[dif_neg h]`.
+
+Both sides reduce to the same expression.
+-/
 private theorem cmp_loc {l : ℕ} [Fact l.Prime] {L : Type} [Field L] [NumberField L] [IsCMField L] {n : ℕ} {w u : Plc L}
     {x : UA L n} (hx : x ∈ locU n w) (hu : u.under (𝓞 (Lp L)) ≠ w.under (𝓞 (Lp L))) :
     cmp n u ((away l L n).rangeRestrict x) = 1 := by
@@ -38,6 +52,11 @@ private theorem cmp_loc {l : ℕ} [Fact l.Prime] {L : Type} [Field L] [NumberFie
     rw [dif_neg h]
     rfl
 
+/- English proof (translation)
+Establish `hw1 : ∀ v, v = w → cLoc v x = 1`. Introduce and unpack `v rfl`. Conclude with `h1`. Break down `(GlobalTheory.SplitPts.over_split hw).2.2 u hu with rfl | rfl` into its components or cases. Conclude with `h1`.
+
+Establish `hce` using `GlobalTheory.SplitPts.comp_eq x (conjSrc (GlobalTheory.SplitPts.conjE L) w)`. Rewrite `hce` using `[hw1 _ (GlobalTheory.SplitPts.conjSrc_conjSrc_cm w), Units.val_one, Matrix.map_one _ (map_zero _) (map_one _), Matrix.transpose_one, Matrix.one_mul]`. Conclude with `Units.ext hce`.
+-/
 private theorem cLoc_conj {L : Type} [Field L] [NumberField L] [IsCMField L] {n : ℕ} {w u : Plc L} (hw : IsSplitAt w)
     (x : UA L n) (h1 : cLoc w x = 1) (hu : u.under (𝓞 (Lp L)) = w.under (𝓞 (Lp L))) : cLoc u x = 1 := by
   have hw1 : ∀ v, v = w → cLoc v x = 1 := by
@@ -50,6 +69,23 @@ private theorem cLoc_conj {L : Type} [Field L] [NumberField L] [IsCMField L] {n 
       Matrix.transpose_one, Matrix.one_mul] at hce
     exact Units.ext hce
 
+/- English proof (translation)
+Introduce `l _ L Ω _ _ _ _ _ _ s n _ w hw`. Take `⟨e, he⟩` from `GlobalTheory.T.splitPlace_unitaryLocalPoints_equiv_GL L n w hw`. Establish `hs : ∀ y, cLoc w (e.symm y : UA L n) = y` using `fun y => by`. Rewrite using `[← he, e.apply_symm_apply]`. Use `⟨⟨(locU n w).subtype.comp e.symm.toMulEquiv.toMonoidHom, fun g => (e.symm g).2, hs, continuous_subtype_val.comp e.symm.continuous, fun x hx => ?_⟩, fun hS => ?_⟩` and prove the remaining obligations.
+
+Establish `h1` using `he ⟨x, hx⟩`. Express the relevant statement in the definitionally equal form `x = (e.symm (cLoc w x) : UA L n)`. Rewrite using `[← h1, e.symm_apply_apply]`. Establish `hl : ((l : ℕ) : 𝓞 (Lp L)) ∉ (w.under (𝓞 (Lp L))).asIdeal` using `fun h => hS (Or.inl h)`. Establish `hb : Function.Bijective (((cmp n w).comp (Ub n s).subtype).comp (locA n s w).subtype)`.
+
+Use `⟨(injective_iff_map_eq_one _).2 ?_, fun y => ?_⟩` and prove the remaining obligations. Introduce and unpack `⟨⟨g, hg⟩, hA⟩ h1`. Take `⟨x, rfl⟩` from `(away l L n).rangeRestrict_surjective g`. Establish `h2 : cLoc w x = 1` using `(cmp_of (l_notMem hl rfl) x).symm.trans h1`. Use `Subtype.ext (Subtype.ext (Subtype.ext (funext fun u => ?_)))` and prove the remaining obligations.
+
+Express the relevant statement in the definitionally equal form `cLoc u.1 x = 1`. Distinguish the cases in `hu : u.1.under (𝓞 (Lp L)) = w.under (𝓞 (Lp L))`. Conclude with `cLoc_conj hw x h2 hu`. Conclude with `(cmp_of u.2 x).symm.trans (MonoidHom.mem_ker.1 (Subgroup.mem_iInf.1 (Subgroup.mem_iInf.1 hA u.1) hu))`. Establish `hU : (away l L n).rangeRestrict (e.symm y : UA L n) ∈ Ub n s`.
+
+Use `Subgroup.mem_inf.2 ⟨Subgroup.mem_iInf.2 fun u => ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[Subgroup.mem_comap, cmp_loc (e.symm y).2 (by`. Rewrite using `[w_under]`. Conclude with `fun h => hS (Or.inr (Or.inl (h ▸ u.2))))]`. Conclude with `one_mem _`.
+
+Rewrite using `[Subgroup.mem_comap, cmp_loc (e.symm y).2 (by`. Rewrite using `[w_under]`. Conclude with `fun h => hS (Or.inr (Or.inr h.symm)))]`. Conclude with `one_mem _`. Use `⟨⟨⟨_, hU⟩, Subgroup.mem_iInf.2 fun u => Subgroup.mem_iInf.2 fun hu => MonoidHom.mem_ker.2 (cmp_loc (e.symm y).2 hu)⟩, ?_⟩` and prove the remaining obligations.
+
+Conclude with `(cmp_of (l_notMem hl rfl) _).trans (hs y)`. Use `⟨hb, fun g => ?_, fun g => ?_⟩` and prove the remaining obligations. Unfold `CaseU.sec`. Rewrite using `[dif_pos hb]`. Conclude with `(MulEquiv.ofBijective _ hb).apply_symm_apply g`.
+
+Unfold `CaseU.sec`. Rewrite using `[dif_pos hb]`. Conclude with `((MulEquiv.ofBijective _ hb).symm g).2`.
+-/
 theorem UpperTheory.V.Hi.secU :
     ∀ (l : ℕ) [Fact l.Prime] (L Ω : Type) [Field L] [NumberField L] [IsCMField L] [Field Ω] [Algebra L Ω] [IsAlgClosure L Ω] (s : HidaSetting l L Ω) (n : ℕ), 1 ≤ n →
     ∀ w : Plc L, IsSplitAt w → (∃ j : GLw n w →* UA L n, (∀ g, j g ∈ locU n w) ∧ (∀ g, cLoc w (j g) = g) ∧ Continuous j ∧ ∀ x ∈ locU n w, x = j (cLoc w x)) ∧ (w.under (𝓞 (Lp L)) ∉ s.S → Function.Bijective (((cmp n w).comp (Ub n s).subtype).comp (locA n s w).subtype) ∧ (∀ g, cmp n w ((sec n s w g : Ub n s) : Ga l L n) = g) ∧ ∀ g, sec n s w g ∈ locA n s w) := by

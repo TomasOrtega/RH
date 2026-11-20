@@ -16,6 +16,11 @@ section Gen
 
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] [FiniteDimensional F E]
 
+/- English proof (translation)
+Rewrite using `[Algebra.trace_eq_matrix_trace (Algebra.TensorProduct.basis R' (bE F E)), Algebra.trace_eq_matrix_trace (Algebra.TensorProduct.basis R (bE F E)), Matrix.trace, Matrix.trace, map_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[Matrix.diag_apply, Matrix.diag_apply, Algebra.leftMulMatrix_eq_repr_mul, Algebra.leftMulMatrix_eq_repr_mul, Algebra.TensorProduct.basis_apply, Algebra.TensorProduct.basis_apply]`. Establish `e : Algebra.TensorProduct.map φ (AlgHom.id F E) (z * (1 ⊗ₜ[F] bE F E i)) = Algebra.TensorProduct.map φ (AlgHom.id F E) z * (1 ⊗ₜ[F] bE F E i)`. Rewrite using `[map_mul]`.
+
+Simplify using the standard rewrite rules. Rewrite using `[← e, LIdemEx.repr_map']`.
+-/
 theorem trace_map {R R' : Type} [CommRing R] [Algebra F R] [CommRing R'] [Algebra F R'] (φ : R →ₐ[F] R')
     (z : R ⊗[F] E) :
     Algebra.trace R' (R' ⊗[F] E) (Algebra.TensorProduct.map φ (AlgHom.id F E) z) =
@@ -31,13 +36,22 @@ theorem trace_map {R R' : Type} [CommRing R] [Algebra F R] [CommRing R'] [Algebr
     rw [map_mul]; simp
   rw [← e, LIdemEx.repr_map']
 
+/- English proof (translation)
+The claim follows from `GlobalTheory.CompanionTheory.PsiCondLoc.single_self v y`.
+-/
 theorem sgl_self (v : HeightOneSpectrum (𝓞 F)) (y : Fv F v) : (singleV F v y) v = y :=
   GlobalTheory.CompanionTheory.PsiCondLoc.single_self v y
 
+/- English proof (translation)
+The claim follows from `GlobalTheory.CompanionTheory.PsiCondLoc.single_ne v y h`.
+-/
 theorem sgl_ne (v : HeightOneSpectrum (𝓞 F)) (y : Fv F v) {w : HeightOneSpectrum (𝓞 F)} (h : w ≠ v) :
     (singleV F v y) w = 0 :=
   GlobalTheory.CompanionTheory.PsiCondLoc.single_ne v y h
 
+/- English proof (translation)
+The claim follows from `GlobalTheory.CompanionTheory.PsiCondLoc.mul_single u v y`.
+-/
 theorem sgl_mul (u : Af F) (v : HeightOneSpectrum (𝓞 F)) (y : Fv F v) :
     u * singleV F v y = singleV F v (u v * y) :=
   GlobalTheory.CompanionTheory.PsiCondLoc.mul_single u v y
@@ -58,20 +72,40 @@ def iV (v : HeightOneSpectrum (𝓞 F)) : Fv F v →ₗ[F] AF F where
     rw [sgl_mul, Algebra.smul_def]
     rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem iV_fst (v : HeightOneSpectrum (𝓞 F)) (a : Fv F v) : (iV v a).1 = 0 := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem iV_snd (v : HeightOneSpectrum (𝓞 F)) (a : Fv F v) : (iV v a).2 = singleV F v a := rfl
 
 variable (E) in
 
 def plc (v : HeightOneSpectrum (𝓞 F)) : Fv F v ⊗[F] E →ₗ[F] AF F ⊗[F] E := TensorProduct.map (iV v) LinearMap.id
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem plc_tmul (v : HeightOneSpectrum (𝓞 F)) (a : Fv F v) (e : E) : plc E v (a ⊗ₜ[F] e) = iV v a ⊗ₜ[F] e := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem evFin_apply (v : HeightOneSpectrum (𝓞 F)) (y : AF F) : evFin F v y = y.2 v := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem evInf_apply (w : InfinitePlace F) (y : AF F) : evInf F w y = y.1 w := rfl
 
+/- English proof (translation)
+Proceed by induction on `t using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `add x y hx hy => rw [map_add, map_add, hx, hy]`. Consider the case `tmul a e`. Rewrite using `[plc_tmul]`.
+
+Use `show evFin F v (iV v a) ⊗ₜ[F] e = _`. Rewrite using `[evFin_apply, iV_snd, sgl_self]`.
+-/
 theorem compFin_plc_self (v : HeightOneSpectrum (𝓞 F)) (t : Fv F v ⊗[F] E) : compFin F E v (plc E v t) = t := by
   induction t using TensorProduct.induction_on with
   | zero => simp
@@ -81,6 +115,11 @@ theorem compFin_plc_self (v : HeightOneSpectrum (𝓞 F)) (t : Fv F v ⊗[F] E) 
     show evFin F v (iV v a) ⊗ₜ[F] e = _
     rw [evFin_apply, iV_snd, sgl_self]
 
+/- English proof (translation)
+Proceed by induction on `t using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `add x y hx hy => rw [map_add, map_add, hx, hy, add_zero]`. Consider the case `tmul a e`. Rewrite using `[plc_tmul]`.
+
+Use `show evFin F w (iV v a) ⊗ₜ[F] e = 0`. Rewrite using `[evFin_apply, iV_snd, sgl_ne v _ h, TensorProduct.zero_tmul]`.
+-/
 theorem compFin_plc_ne {v w : HeightOneSpectrum (𝓞 F)} (h : w ≠ v) (t : Fv F v ⊗[F] E) :
     compFin F E w (plc E v t) = 0 := by
   induction t using TensorProduct.induction_on with
@@ -91,6 +130,11 @@ theorem compFin_plc_ne {v w : HeightOneSpectrum (𝓞 F)} (h : w ≠ v) (t : Fv 
     show evFin F w (iV v a) ⊗ₜ[F] e = 0
     rw [evFin_apply, iV_snd, sgl_ne v _ h, TensorProduct.zero_tmul]
 
+/- English proof (translation)
+Proceed by induction on `t using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `add x y hx hy => rw [map_add, map_add, hx, hy, add_zero]`. Consider the case `tmul a e`. Rewrite using `[plc_tmul]`.
+
+Use `show evInf F w (iV v a) ⊗ₜ[F] e = 0`. Rewrite using `[evInf_apply, iV_fst]`. Conclude with `TensorProduct.zero_tmul _ _`.
+-/
 theorem compInf_plc (w : InfinitePlace F) (v : HeightOneSpectrum (𝓞 F)) (t : Fv F v ⊗[F] E) :
     compInf F E w (plc E v t) = 0 := by
   induction t using TensorProduct.induction_on with
@@ -102,6 +146,15 @@ theorem compInf_plc (w : InfinitePlace F) (v : HeightOneSpectrum (𝓞 F)) (t : 
     rw [evInf_apply, iV_fst]
     exact TensorProduct.zero_tmul _ _
 
+/- English proof (translation)
+Take `⟨α, hα, hk⟩` from `GlobalTheory.CompanionTheory.PsiCondLoc.exists_int_kernel hψ`. Establish `hα0 : (α : F) ≠ 0` using `by exact_mod_cast hα`. Establish `h1` using `Filter.eventually_cofinite.1 (eventually_int (F := F) ((α : F)⁻¹))`. Use `⟨h1.toFinset, fun S hS y hy1 hyS hyI => ?_⟩` and prove the remaining obligations. Establish `hu : algebraMap F (Af F) ((α : F)⁻¹) * y.2 ∈ Formalism.UG.intAd F`.
+
+Introduce `v`. Use `show (algebraMap F (Af F) ((α : F)⁻¹)) v * y.2 v ∈ v.adicCompletionIntegers F`. Distinguish the cases in `hv : v ∈ S`. Rewrite using `[hyS v hv, mul_zero]`. Conclude with `zero_mem _`.
+
+Establish `hv' : v ∉ h1.toFinset` using `fun h => hv (hS h)`. Rewrite `hv'` using `[Set.Finite.mem_toFinset, Set.mem_ofPred_eq, not_not]`. Conclude with `mul_mem hv' (hyI v hv)`. Establish `e : y = pairA F 0 (algebraMap F (Af F) (α : F) * (algebraMap F (Af F) ((α : F)⁻¹) * y.2))`. Rewrite using `[← mul_assoc, ← map_mul, mul_inv_cancel₀ hα0, map_one, one_mul]`.
+
+Conclude with `Prod.ext hy1 rfl`. Rewrite using `[e]`. Conclude with `hk _ hu`.
+-/
 theorem psi_kernel {ψ : AddChar (AF F) ℂ} (hψ : IsCharAF F ψ) :
     ∃ S₀ : Finset (HeightOneSpectrum (𝓞 F)), ∀ S, S₀ ⊆ S → ∀ y : AF F, y.1 = 0 → (∀ v ∈ S, y.2 v = 0) →
       (∀ v ∉ S, y.2 v ∈ v.adicCompletionIntegers F) → ψ y = 1 := by
@@ -131,16 +184,27 @@ open Formalism.BasicNotions Formalism.L2.Theta GlobalTheory.StdUnn
 
 variable {D : D7}
 
+/- English proof (translation)
+Rewrite using `[← evInf_apply]`. Conclude with `(trace_map (evInf D.host.F w) z).symm`.
+-/
 theorem trA_fst (z : AE D) (w : InfinitePlace D.host.F) :
     (trA z).1 w = Algebra.trace w.Completion (w.Completion ⊗[D.host.F] D.host.E) (compInf D.host.F D.host.E w z) := by
   rw [← evInf_apply]
   exact (trace_map (evInf D.host.F w) z).symm
 
+/- English proof (translation)
+Rewrite using `[← evFin_apply]`. Conclude with `(trace_map (evFin D.host.F v) z).symm`.
+-/
 theorem trA_snd (z : AE D) (v : Pl D) :
     (trA z).2 v = Algebra.trace (Fv D.host.F v) (Fv D.host.F v ⊗[D.host.F] D.host.E) (cv D v z) := by
   rw [← evFin_apply]
   exact (trace_map (evFin D.host.F v) z).symm
 
+/- English proof (translation)
+Use `LIdemEx.ae_ext _ _ (fun w => ?_) (fun w => ?_)` and prove the remaining obligations. Rewrite using `[map_mul, compInf_plc, compInf_plc, mul_zero]`. Rewrite using `[map_mul]`. Distinguish the cases in `h : w = v`. Substitute `h` using the available equality.
+
+Rewrite using `[compFin_plc_self, compFin_plc_self]`. Rewrite using `[compFin_plc_ne h, compFin_plc_ne h, mul_zero]`.
+-/
 theorem mul_plc (z : AE D) (v : Pl D) (t : Fv D.host.F v ⊗[D.host.F] D.host.E) :
     z * plc D.host.E v t = plc D.host.E v (cv D v z * t) := by
   refine LIdemEx.ae_ext _ _ (fun w => ?_) (fun w => ?_)
@@ -150,6 +214,11 @@ theorem mul_plc (z : AE D) (v : Pl D) (t : Fv D.host.F v ⊗[D.host.F] D.host.E)
     · subst h; rw [compFin_plc_self, compFin_plc_self]
     · rw [compFin_plc_ne h, compFin_plc_ne h, mul_zero]
 
+/- English proof (translation)
+Use `Prod.ext (funext fun w => ?_) (Subtype.ext (funext fun w => ?_))` and prove the remaining obligations. Rewrite using `[trA_fst, compInf_plc, map_zero]`. Both sides reduce to the same expression. Use `show (trA (plc D.host.E v t)).2 w = (singleV D.host.F v _) w`. Rewrite using `[trA_snd]`.
+
+Distinguish the cases in `h : w = v`. Substitute `h` using the available equality. Rewrite using `[compFin_plc_self, sgl_self]`. Rewrite using `[compFin_plc_ne h, map_zero, sgl_ne v _ h]`.
+-/
 theorem trA_plc (v : Pl D) (t : Fv D.host.F v ⊗[D.host.F] D.host.E) :
     trA (plc D.host.E v t) =
       pairA D.host.F 0 (singleV D.host.F v (Algebra.trace (Fv D.host.F v) (Fv D.host.F v ⊗[D.host.F] D.host.E) t)) := by

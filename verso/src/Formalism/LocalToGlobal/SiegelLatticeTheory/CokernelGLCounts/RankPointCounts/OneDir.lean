@@ -17,6 +17,13 @@ section OneDir2
 
 variable {D : D7} (Zd : LocDat D)
 
+/- English proof (translation)
+Establish `hNU` using `(stepExp D Λ G n hn).1`. Establish `hMU` using `(stepExp D Λ G₁ m hm).1`. Rewrite using `[Matrix.sub_apply, Matrix.mul_apply, Finset.sum_eq_single (Fin.last D.R.rS)]`. Rewrite using `[(hNU _ _).2 rfl, one_mul, Matrix.one_apply]`. Distinguish the cases in `hb : Fin.last D.R.rS = b`.
+
+Rewrite using `[(hMU _ _).2 hb, if_pos hb, sub_self]`. Establish `hlt : b < Fin.last D.R.rS` using `lt_of_le_of_ne (Fin.le_last b) (Ne.symm hb)`. Rewrite using `[(hMU _ _).1 hlt, if_neg hb, sub_self]`. Introduce `c _ hc`. Establish `hlt : c < Fin.last D.R.rS` using `lt_of_le_of_ne (Fin.le_last c) hc`.
+
+Rewrite using `[(hNU _ _).1 hlt, zero_mul]`. Introduce `h`. Conclude with `absurd (Finset.mem_univ _) h`.
+-/
 theorem nm_last (Λ : Submodule (𝓞 D.host.E) (VS D).V) {T T' : D.host.E} (G : LFlag (VS D) D.R.rS T)
     (G₁ : LFlag (VS D) D.R.rS T') (n m : (VS D).V ≃ₗ[D.host.E] (VS D).V) (hn : n ∈ NLam Λ G)
     (hm : m ∈ NLam Λ G₁) (b : Fin (D.R.rS + 1)) :
@@ -34,6 +41,27 @@ theorem nm_last (Λ : Submodule (𝓞 D.host.E) (VS D).V) {T T' : D.host.E} (G :
     rw [(hNU _ _).1 hlt, zero_mul]
   · intro h; exact absurd (Finset.mem_univ _) h
 
+/- English proof (translation)
+Take `⟨n, hn, m, hm, hfr, -⟩` from `hdc`. Establish `hEn` using `stepExp D Λ (lf D F0) n hn`. Establish `hEm` using `stepExp D Λ F₁ m hm`. Establish `hrel` using `stepGram D (lf D F0) F₁ F₂ n m (fmat D (lf D F0) n) (fmat D F₁ m) hn.1.1 hEn.2 hEm.2 hfr`. Establish `hXS : XLam Λ (lf D F0) = XS D (lf D F0).fl` using `hRL.2.2`.
+
+Establish `hz : (lf D F0).fl.z ∈ Λ` using `hRL.2.1.2.2.1.1`. Establish `hNb` using `entry_mem D Λ (lf D F0) n hn hXS hz`. Establish `hMb` using `entry_mem D Λ F₁ m hm hP₁.2.2.2 hP₁.1.1`. Establish `hNU : ∀ a b, b < a → fmat D (lf D F0) n a b = 0` using `fun a b h => (hEn.1 a b).1 h`. Establish `hNd : ∀ a, fmat D (lf D F0) n a a = 1` using `fun a => (hEn.1 a a).2 rfl`.
+
+Establish `hMU : ∀ a b, b < a → fmat D F₁ m a b = 0` using `fun a b h => (hEm.1 a b).1 h`. Establish `hMd : ∀ a, fmat D F₁ m a a = 1` using `fun a => (hEm.1 a a).2 rfl`. Consider the cases of `hs : (Zd.M p).split with`. Consider the case `none => exact modeL Zd p hs u u' _ _ _ _ hNU hNd hMU hMd hNb hMb hrel`. Consider the case `some g`.
+
+Use `modeG Zd p g hs u u' _ _ _ _ hNU hNd hMU hMd hNb hMb hrel ?_` and prove the remaining obligations. Take `⟨sg, hsg, -, hq⟩` from `typed_split Zd p hs`. Establish `hgP` using `gS_mem_of_split p hsg`. Establish `hg : ((gS D : ℕ) : D.host.E) ≠ 0`. Establish `: gS D ≠ 0`.
+
+Unfold `Lat.gS`. Conclude with `Nat.mul_ne_zero (D.host.g_prime 0).ne_zero (D.host.g_prime 1).ne_zero`. Conclude with `this` after adjusting the coercions. Establish `hφ` using `fun a => Formalism.L2.SG.Pf.BBTie.bt_typed_frFac Zd (Formalism.L2.SG.Pf.locEqC_holds D Zd) (Formalism.L2.SG.Pf.locDiffC_holds D Zd) p F0 Λ hRL.2.1.1.fg hRL.2.2 hRL.2.1.2.2.2 hgP a`. Establish `hκ` using `(Formalism.L2.SG.Pf.BBTie.bt_kappa Zd p sg hsg).1`.
+
+Establish `hq0 : (sg.q : (D.s.atP p).Fp) ≠ 0`. Introduce `h`. Conclude with `sg.q_irr.ne_zero (Subtype.ext h)`. Establish `hOO : (Zd.M p).L.O = (D.s.atP p).O` using `(Zd.agree p).2.2.2.1`. Rewrite using `[locU_mul, locU_sub_one]`.
+
+Introduce `i j`. Rewrite using `[locU_apply]`. Take `⟨w, hwO, hw⟩` from `(hφ i).2`. Establish `hinv : Ring.inverse (frFac Zd.δ p i) = w`. Combine the equalities or inequalities in the displayed calculation.
+
+Rewrite using `[hw, one_mul]`. Use `_ = w := by rw [mul_assoc, frFac_mul_inv, mul_one]`. Proceed by induction on `i using Fin.lastCases with`. Consider the case `last`. Rewrite using `[nm_last Λ (lf D F0) F₁ n m hn hm j, map_zero, mul_zero, zero_mul]`.
+
+Conclude with `⟨0, Subring.zero_mem _, by rw [mul_zero]⟩`. Consider the case `cast d => set x := (fmat D (lf D F0) n * fmat D F₁ m - 1) d.castSucc j with hxdef`. Establish `hint : (D.s.atP p).ιE (x / (gS D : D.host.E)) ∈ (Zd.M p).L.O`. Rewrite using `[hOO]`. Conclude with `iota_mem_O p _ (fun P hP => cong_at D Λ (lf D F0) F₁ F₂ n m hn hm hfr hRL.2.1.2.2.2 hP₁.2.2.1 hA₁ hA₂ hP₁.1.1 P (hgP P hP) hg d j)`.
+
+Establish `hx : (D.s.atP p).ιE x = algebraMap (D.s.atP p).Fp (D.s.atP p).Ep (sg.q : (D.s.atP p).Fp) * ((algebraMap (D.s.atP p).Fp (D.s.atP p).Ep ((sg.q : (D.s.atP p).Fp)⁻¹) * (D.s.atP p).ιE ((gS D : ℕ) : D.host.E)) * (D.s.atP p).ιE (x / (gS D : D.host.E)))`. Rewrite using `[← mul_assoc, ← mul_assoc, ← map_mul (algebraMap (D.s.atP p).Fp (D.s.atP p).Ep), mul_inv_cancel₀ hq0, map_one, one_mul, ← map_mul, mul_div_cancel₀ x hg]`. Use `⟨w * ((algebraMap (D.s.atP p).Fp (D.s.atP p).Ep ((sg.q : (D.s.atP p).Fp)⁻¹) * (D.s.atP p).ιE ((gS D : ℕ) : D.host.E)) * (D.s.atP p).ιE (x / (gS D : D.host.E))) * frFac Zd.δ p j, Subring.mul_mem _ (Subring.mul_mem _ hwO (Subring.mul_mem _ hκ hint)) (hφ j).1, ?_⟩` and prove the remaining obligations. Rewrite using `[hinv, hx, hq]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem one_dir {u u' : D.what₂.Word} {F0 : FlagG (VS D) D.R.rS (Formalism.L2.SG.CntLocal.Tn u)}
     {Λ : Submodule (𝓞 D.host.E) (VS D).V} (hRL : IsRowLat D F0 Λ)
     (F₁ F₂ : LFlag (VS D) D.R.rS ((Tu D u' : ℕ) : D.host.E))

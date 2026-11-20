@@ -25,18 +25,32 @@ namespace GlobalTheory.LeviShift
 
 variable {D : D7} {V : HSp D} (Φ : WittFrame V)
 
+/- English proof (translation)
+Apply the tactic sequence `unfold bas; rw [if_neg]; unfold stdVec; split_ifs <;> decide`.
+-/
 theorem bas_stdVec (j i : Fin (wittIndex V)) : bas Φ (stdVec j) i = Φ.e i := by
   unfold bas; rw [if_neg]; unfold stdVec; split_ifs <;> decide
 
+/- English proof (translation)
+Apply the tactic sequence `unfold dbas; rw [if_neg]; unfold stdVec; split_ifs <;> decide`.
+-/
 theorem dbas_stdVec (j i : Fin (wittIndex V)) : dbas Φ (stdVec j) i = Φ.f i := by
   unfold dbas; rw [if_neg]; unfold stdVec; split_ifs <;> decide
 
+/- English proof (translation)
+Simplify using `only [detMat, Matrix.of_apply, bas_stdVec, dbas_stdVec]`. Both sides reduce to the same expression.
+-/
 theorem detMat_stdVec_apply (j : Fin (wittIndex V)) (p : PA Φ.flag0) (a b : Supp (stdVec j)) :
     detMat Φ D.sp.cm (AF D.host.F) (stdVec j) p a b =
       Φ.coef D.sp.cm (AF D.host.F) a.1
         (GlobalTheory.IndefiniteRowSideFullHecke.AdelicUnitaryGroups.act D.sp.cm V (p : GA D V) (GlobalTheory.IndefiniteRowSideFullHecke.AdelicUnitaryGroups.coordR V (AF D.host.F) (Φ.e b.1))) := by
   simp only [detMat, Matrix.of_apply, bas_stdVec, dbas_stdVec]; rfl
 
+/- English proof (translation)
+Introduce `a b hba`. Rewrite using `[detMat_stdVec_apply]`. Apply `Φ.coef_eq_zero` to reduce the goal to its premises. Establish `he : GlobalTheory.IndefiniteRowSideFullHecke.AdelicUnitaryGroups.coordR V (AF D.host.F) (Φ.e b.1) ∈ GlobalTheory.IndefiniteRowSideFullHecke.AdelicUnitaryGroups.extSub (F` using `D.host.F) V (AF D.host.F) (Φ.flag0.X b.1.succ) := coordR_mem V _ (Submodule.subset_span ⟨b.1, Nat.lt_succ_self _, rfl⟩)`. Establish `h1` using `mem_parab_iff_maps.1 (IsoFlag.mem_par.1 p.2 b.1.succ) _ he`.
+
+Establish `hle : b.1.succ ≤ a.1.castSucc`. Establish `: b.1.val < a.1.val` using `hba`. Rewrite using `[Fin.le_iff_val_le_val, Fin.val_succ, Fin.coe_castSucc]`. Use linear arithmetic over natural numbers and integers. Conclude with `Submodule.span_mono (Set.image_mono (Φ.flag0.strictMono.monotone hle)) h1`.
+-/
 theorem detMat_stdVec_blockTriangular (j : Fin (wittIndex V)) (p : PA Φ.flag0) :
     (detMat Φ D.sp.cm (AF D.host.F) (stdVec j) p).BlockTriangular id := by
   intro a b hba
@@ -51,6 +65,11 @@ theorem detMat_stdVec_blockTriangular (j : Fin (wittIndex V)) (p : PA Φ.flag0) 
     rw [Fin.le_iff_val_le_val, Fin.val_succ, Fin.coe_castSucc]; omega
   exact Submodule.span_mono (Set.image_mono (Φ.flag0.strictMono.monotone hle)) h1
 
+/- English proof (translation)
+Establish `hdet : detU Φ D.sp.cm (AF D.host.F) (stdVec j) p = ((∏ a : Supp (stdVec j), (Φ.chi D.sp.cm (AF D.host.F) a.1).toHomUnits p : (AF D.host.F ⊗[D.host.F] D.host.E)ˣ) : AF D.host.F ⊗[D.host.F] D.host.E)`. Rewrite using `[detU, Matrix.det_of_upperTriangular (detMat_stdVec_blockTriangular Φ j p), Units.coe_prod]`. Use `Finset.prod_congr rfl fun a _ => ?_` and prove the remaining obligations. Rewrite using `[detMat_stdVec_apply]`. Both sides reduce to the same expression.
+
+Rewrite using `[hdet, absA_unit, map_prod]`. Rewrite using `[Finset.prod_subtype (Finset.Iic j) (p := fun i => stdVec j i ≠ 0) (fun i => by simp [stdVec])]`. Both sides reduce to the same expression.
+-/
 theorem prod_absChi_eq_absA_detU (j : Fin (wittIndex V)) (p : PA Φ.flag0) :
     ∏ i ∈ Finset.Iic j, absChi Φ i p = absA D.host.F D.host.E (detU Φ D.sp.cm (AF D.host.F) (stdVec j) p) := by
   have hdet : detU Φ D.sp.cm (AF D.host.F) (stdVec j) p =
@@ -66,6 +85,9 @@ theorem prod_absChi_eq_absA_detU (j : Fin (wittIndex V)) (p : PA Φ.flag0) :
 
 end GlobalTheory.LeviShift
 
+/- English proof (translation)
+Introduce `_ _ Φ j p` and use `GlobalTheory.LeviShift.prod_absChi_eq_absA_detU Φ j p`.
+-/
 theorem GlobalTheory.LeviShift.prod_absChi_Iic : ∀ (D : D7) (V : HSp D) (Φ : WittFrame V) (j : Fin (wittIndex V)) (p : PA Φ.flag0),
     ∏ i ∈ Finset.Iic j, absChi Φ i p = absA D.host.F D.host.E (detU Φ D.sp.cm (AF D.host.F) (stdVec j) p) :=
   fun _ _ Φ j p => GlobalTheory.LeviShift.prod_absChi_eq_absA_detU Φ j p

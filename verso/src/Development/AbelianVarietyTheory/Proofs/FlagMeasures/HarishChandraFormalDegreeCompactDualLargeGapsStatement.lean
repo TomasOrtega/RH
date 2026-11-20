@@ -4,6 +4,9 @@ import Formalism.SharpRestriction.CuspSpanNormBounds.BridgeLitG
 import Development.AbelianVarietyTheory.Definitions.Foundations.CdScaleTieIff
 open Formalism.BasicNotions Formalism.MainNotions.S MeasureTheory
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.FdegGap.fdeg_gap | exact GlobalTheory.FdegGap.fdeg_gap | (intros; apply GlobalTheory.FdegGap.fdeg_gap <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.harishChandra_formalDegree_compactDual_large_gaps : ∀ (cd : CDHaar) (sc : ∀ n : ℕ, (Fin n → Bool) → NNReal),
     (∀ (n : ℕ) (ε : Fin n → Bool) (P Q : ℕ) (e : Fin P ⊕ Fin Q ≃ Fin n),
       (∀ i, ε (e (Sum.inl i)) = true) → (∀ j, ε (e (Sum.inr j)) = false) →

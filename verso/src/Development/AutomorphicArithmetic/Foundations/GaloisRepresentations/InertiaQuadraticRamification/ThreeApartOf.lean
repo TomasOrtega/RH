@@ -51,6 +51,13 @@ def GoodOf : Prop :=
     (∀ u ∉ T, ((l : ℕ) : 𝓞 Y) ∉ u.asIdeal ∧ ∃ B, (CG.mk π).HasSat u B) → ∀ Q : QCM Y Ω, Step1 T Q →
     ∀ P : CuspSub ↥Q.K a, UpperTheory.CBC.SplitLift (UpperTheory.CBC.Cusp.cx π) (UpperTheory.CBC.Cusp.cx P) → GlobalTheory.GalCut.Good l P
 
+/- English proof (translation)
+Introduce `E Ω _ _ _ _ _ _ T₁ Q₁ s₁ T₂ Q₂ s₂ t ht hT M _ _ _ _`. Take `⟨a, b, ha, hb, hab⟩` from `h1 E Ω T₁ Q₁ s₁ t ht`. Take `⟨x, y, hx, hy, hxy⟩` from `h1 ↥Q₁.K Ω T₂ Q₂ s₂ a (hT a ha)`. Take `⟨z, hz⟩` from `(h2 ↥Q₁.K ↥Q₂.K).2 b`. Establish `hxz : GlobalTheory.Cong.Apart x z` using `(h2 ↥Q₁.K ↥Q₂.K).1 x z (by rw [hx, hz]; exact hab)`.
+
+Establish `hyz : GlobalTheory.Cong.Apart y z` using `(h2 ↥Q₁.K ↥Q₂.K).1 y z (by rw [hy, hz]; exact hab)`. Use `choose up hup using (h2 ↥Q₂.K M).2`. Use `⟨fun i => up (![x, y, z] i), fun i => ?_, fun i j hij => (h2 ↥Q₂.K M).1 _ _ ?_⟩` and prove the remaining obligations. Rewrite using `[hup] fin_cases i`. Simplify `ha` using `[hx]`.
+
+Simplify `ha` using `[hy]`. Simplify `hb` using `[hz]`. Apply the tactic sequence `rw [hup, hup] fin_cases i <;> fin_cases j <;> first | exact absurd rfl hij | exact hxy | exact hxz | exact hyz | exact hxy.symm | exact hxz.symm | exact hyz.symm`.
+-/
 theorem threeApart_of (h1 : Double) (h2 : ApartUp) : ThreeApart := by
   intro E Ω _ _ _ _ _ _ T₁ Q₁ s₁ T₂ Q₂ s₂ t ht hT M _ _ _ _
   obtain ⟨a, b, ha, hb, hab⟩ := h1 E Ω T₁ Q₁ s₁ t ht

@@ -20,6 +20,13 @@ namespace GlobalTheory.AcrisMuBound
 
 variable {l : ℕ} [hl : Fact l.Prime]
 
+/- English proof (translation)
+Proceed by induction on `k with`. Consider the case `zero => simp`. Consider the case `succ k ih`. Establish `hX : A * (A ⊔ B) ^ k ⊔ B ^ (k + 1) ≤ (A ⊔ B) ^ (k + 1)` using `sup_le (by rw [pow_succ']; exact Ideal.mul_mono_left le_sup_left) (Ideal.pow_right_mono le_sup_right _)`. Combine the equalities or inequalities in the displayed calculation.
+
+Rewrite using `[Ideal.sup_mul, Ideal.mul_sup B]`. Use `_ ≤ A * (A ⊔ B) ^ (k + 1) ⊔ B ^ (k + 1 + 1) := by`. Use `sup_le (le_sup_of_le_left (Ideal.mul_mono_right hX)) (sup_le ?_ ?_)` and prove the remaining obligations. Use `le_sup_of_le_left ?_` and prove the remaining obligations. Rewrite using `[mul_left_comm]`.
+
+Conclude with `Ideal.mul_mono_right (by rw [pow_succ']; exact Ideal.mul_mono_left le_sup_right)`. Conclude with `le_sup_of_le_right (by rw [← pow_succ'])`.
+-/
 theorem sup_pow_le {R : Type*} [CommRing R] (A B : Ideal R) (k : ℕ) :
     (A ⊔ B) ^ (k + 1) ≤ A * (A ⊔ B) ^ k ⊔ B ^ (k + 1) := by
   induction k with
@@ -43,18 +50,33 @@ abbrev Tw (ϖ : OCb l) : Ainf l := WittVector.teichmuller l ϖ ^ (l - 1)
 
 abbrev Iw (ϖ : OCb l) : Ideal (Ainf l) := Ideal.span {(l : Ainf l)} ⊔ Ideal.span {Tw ϖ}
 
+/- English proof (translation)
+The claim follows from `Ideal.mem_sup_left (Ideal.mem_span_singleton_self _)`.
+-/
 theorem l_mem_Iw (ϖ : OCb l) : (l : Ainf l) ∈ Iw ϖ :=
   Ideal.mem_sup_left (Ideal.mem_span_singleton_self _)
 
+/- English proof (translation)
+The claim follows from `Ideal.mem_sup_right (Ideal.mem_span_singleton_self _)`.
+-/
 theorem T_mem_Iw (ϖ : OCb l) : Tw ϖ ∈ Iw ϖ :=
   Ideal.mem_sup_right (Ideal.mem_span_singleton_self _)
 
+/- English proof (translation)
+Rewrite using `[map_natCast]`. Conclude with `CharP.cast_eq_zero _ l`.
+-/
 theorem cc_natCast_l : WittVector.constantCoeff (l : Ainf l) = 0 := by
   rw [map_natCast]; exact CharP.cast_eq_zero _ l
 
+/- English proof (translation)
+Rewrite using `[WittVector.constantCoeff_apply, WittVector.teichmuller_coeff_zero]`.
+-/
 theorem cc_teich (x : OCb l) : WittVector.constantCoeff (WittVector.teichmuller l x) = x := by
   rw [WittVector.constantCoeff_apply, WittVector.teichmuller_coeff_zero]
 
+/- English proof (translation)
+Establish `h0` using `WittVector.dvd_sub_sum_teichmuller_iterateFrobeniusEquiv_coeff c 0`. Establish `hI : (Finset.Iic 0 : Finset ℕ) = {0}` using `by ext i; simp`. Rewrite `h0` using `[hI, Finset.sum_singleton]`. Simplify `h0` using `[WittVector.constantCoeff_apply]`.
+-/
 theorem l_dvd_sub_teich (c : Ainf l) :
     (l : Ainf l) ∣ c - WittVector.teichmuller l (WittVector.constantCoeff c) := by
   have h0 := WittVector.dvd_sub_sum_teichmuller_iterateFrobeniusEquiv_coeff c 0
@@ -62,15 +84,30 @@ theorem l_dvd_sub_teich (c : Ainf l) :
   rw [hI, Finset.sum_singleton] at h0
   simpa [WittVector.constantCoeff_apply] using h0
 
+/- English proof (translation)
+Simplify `l_dvd_sub_teich c` using `[h]`.
+-/
 theorem l_dvd_of_cc {c : Ainf l} (h : WittVector.constantCoeff c = 0) : (l : Ainf l) ∣ c := by
   simpa [h] using l_dvd_sub_teich c
 
+/- English proof (translation)
+Introduce `h`. Establish `h1` using `congrArg (Per.θ l) h`. Rewrite `h1` using `[map_natCast, map_zero]`. Conclude with `GlobalTheory.RingBasics.p_ne_zero (p := l) (by simpa using congrArg Subtype.val h1)`.
+-/
 theorem l_ne_zero_ainf : (l : Ainf l) ≠ 0 := by
   intro h
   have h1 := congrArg (Per.θ l) h
   rw [map_natCast, map_zero] at h1
   exact GlobalTheory.RingBasics.p_ne_zero (p := l) (by simpa using congrArg Subtype.val h1)
 
+/- English proof (translation)
+Establish `h1` using `sup_pow_le _ _ k h`. Rewrite `h1` using `[Ideal.span_singleton_pow, Submodule.mem_sup]`. Take `⟨u, hu, v, hv, huv⟩` from `h1`. Take `⟨u', hu', rfl⟩` from `Ideal.mem_span_singleton_mul.1 hu`. Take `⟨c, rfl⟩` from `Ideal.mem_span_singleton'.1 hv`.
+
+Establish `hc : WittVector.constantCoeff c = 0`. Use `congrArg WittVector.constantCoeff huv` as an intermediate fact. Rewrite `this` using `[map_add, map_mul, map_mul, map_mul, map_pow, map_pow, cc_natCast_l, cc_teich]`. Simplify using `only [zero_mul, zero_add] at this`. Conclude with `(mul_eq_zero.1 this).resolve_right (pow_ne_zero _ (pow_ne_zero _ hϖ))`.
+
+Take `⟨c', rfl⟩` from `l_dvd_of_cc hc`. Establish `h2 : (l : Ainf l) * (y - (u' + c' * Tw ϖ ^ (k + 1))) = 0`. Rewrite using `[mul_sub, ← huv]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[sub_eq_zero.1 ((mul_eq_zero.1 h2).resolve_left l_ne_zero_ainf)]`.
+
+Use `Ideal.add_mem _ hu' (Ideal.mul_mem_left _ _ ?_)` and prove the remaining obligations. Conclude with `Ideal.pow_le_pow_right (Nat.le_succ k) (Ideal.pow_mem_pow (T_mem_Iw ϖ) _)`.
+-/
 theorem mem_of_l_mul {ϖ : OCb l} (hϖ : ϖ ≠ 0) (k : ℕ) {y : Ainf l}
     (h : (l : Ainf l) * y ∈ Iw ϖ ^ (k + 1)) : y ∈ Iw ϖ ^ k := by
   have h1 := sup_pow_le _ _ k h
@@ -90,6 +127,11 @@ theorem mem_of_l_mul {ϖ : OCb l} (hϖ : ϖ ≠ 0) (k : ℕ) {y : Ainf l}
   refine Ideal.add_mem _ hu' (Ideal.mul_mem_left _ _ ?_)
   exact Ideal.pow_le_pow_right (Nat.le_succ k) (Ideal.pow_mem_pow (T_mem_Iw ϖ) _)
 
+/- English proof (translation)
+Proceed by induction on `m with`. Consider the case `zero => intro n y h`. Simplify using `using h`. Consider the case `succ m ih`. Introduce `n y h`.
+
+Use `mem_of_l_mul hϖ n (ih (n + 1) ?_)` and prove the remaining obligations. Rewrite using `[← mul_assoc, ← pow_succ, show n + 1 + m = n + (m + 1) by omega]`. Conclude with `h`.
+-/
 theorem mem_of_l_pow_mul {ϖ : OCb l} (hϖ : ϖ ≠ 0) (m : ℕ) : ∀ (n : ℕ) {y : Ainf l},
     (l : Ainf l) ^ m * y ∈ Iw ϖ ^ (n + m) → y ∈ Iw ϖ ^ n := by
   induction m with
@@ -106,6 +148,13 @@ namespace GlobalTheory.AcrisMuBound
 
 variable {l : ℕ} [hl : Fact l.Prime]
 
+/- English proof (translation)
+Take `⟨z, hz⟩` from `l_dvd_sub_teich x`. Establish `h1 : (WittVector.constantCoeff x).untilt = -((l : Per.OC l) * Per.θ l z)`. Use `congrArg (Per.θ l) hz` as an intermediate fact. Rewrite `this` using `[map_sub, hx, WittVector.fontaineTheta_teichmuller, map_mul, map_natCast]`. Take the linear combination `-this`.
+
+Take `⟨c, hc⟩ : ϖ ∣ WittVector.constantCoeff x` from `GlobalTheory.TiltAlgClosed.dvd_of_untilt_dvd (by rw [hϖ, h1]; exact (Dvd.intro _ rfl).neg_right)`. Establish `h2 : x = (l : Ainf l) * z + WittVector.teichmuller l ϖ * WittVector.teichmuller l c`. Rewrite using `[← map_mul, ← hc, ← hz]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[h2]`.
+
+Conclude with `Ideal.add_mem _ (Ideal.mem_sup_left (Ideal.mul_mem_right _ _ (Ideal.mem_span_singleton_self _))) (Ideal.mem_sup_right (Ideal.mul_mem_right _ _ (Ideal.mem_span_singleton_self _)))`.
+-/
 theorem mem_of_theta {ϖ : OCb l} (hϖ : ϖ.untilt = (l : Per.OC l)) {x : Ainf l} (hx : Per.θ l x = 0) :
     x ∈ Ideal.span {(l : Ainf l)} ⊔ Ideal.span {WittVector.teichmuller l ϖ} := by
   obtain ⟨z, hz⟩ := l_dvd_sub_teich x
@@ -121,6 +170,9 @@ theorem mem_of_theta {ϖ : OCb l} (hϖ : ϖ.untilt = (l : Per.OC l)) {x : Ainf l
   exact Ideal.add_mem _ (Ideal.mem_sup_left (Ideal.mul_mem_right _ _ (Ideal.mem_span_singleton_self _)))
     (Ideal.mem_sup_right (Ideal.mul_mem_right _ _ (Ideal.mem_span_singleton_self _)))
 
+/- English proof (translation)
+Establish `h2` using `hl.out.two_le`. Establish `h` using `sup_pow_le (Ideal.span {(l : Ainf l)}) (Ideal.span {WittVector.teichmuller l ϖ}) (l - 2)`. Rewrite `h` using `[show l - 2 + 1 = l - 1 by omega, Ideal.span_singleton_pow]`. Conclude with `h.trans (sup_le_sup_right Ideal.mul_le_left _)`.
+-/
 theorem pow_le_Iw (ϖ : OCb l) :
     (Ideal.span {(l : Ainf l)} ⊔ Ideal.span {WittVector.teichmuller l ϖ}) ^ (l - 1) ≤ Iw ϖ := by
   have h2 := hl.out.two_le
@@ -143,6 +195,17 @@ def Qs (ϖ : OCb l) : Subalgebra (Per.Ainf l) (Per.AinfP l) where
     · rw [map_add, map_mul, map_mul, map_pow, map_pow, map_natCast, ← hz, ← hw]; ring
   algebraMap_mem' r := ⟨0, r, by simp, by simp⟩
 
+/- English proof (translation)
+Establish `hxI` using `mem_of_theta hϖ hx`. Establish `he : (l - 1) * k.factorial.factorization l ≤ k`. Use `sub_one_mul_padicValNat_factorial (p := l) k` as an intermediate fact. Rewrite `this` using `[← Nat.factorization_def _ hl.out]`. Use linear arithmetic over natural numbers and integers.
+
+Use `set e := k.factorial.factorization l`. Use `set r := k.factorial / l ^ e`. Establish `hkr : l ^ e * r = k.factorial` using `Nat.ordProj_mul_ordCompl_eq_self _ _`. Establish `hr : ¬ l ∣ r` using `Nat.not_dvd_ordCompl hl.out k.factorial_ne_zero`. Establish `hru : IsUnit (r : ℤ_[l])` using `PadicInt.isUnit_iff.2 (PadicInt.norm_natCast_eq_one_iff.2 ((Nat.Prime.coprime_iff_not_dvd hl.out).2 hr))`.
+
+Take `⟨w, hw⟩` from `hru.exists_left_inv`. Use `⟨e, algebraMap ℤ_[l] (Ainf l) w * x ^ k, ?_, ?_⟩` and prove the remaining obligations. Use `Ideal.mul_mem_left _ _ ?_` and prove the remaining obligations. Establish `h1 : x ^ k ∈ (Ideal.span {(l : Ainf l)} ⊔ Ideal.span {WittVector.teichmuller l ϖ}) ^ ((l - 1) * e)` using `Ideal.pow_le_pow_right he (Ideal.pow_mem_pow hxI k)`. Rewrite `h1` using `[pow_mul]`.
+
+Conclude with `Ideal.pow_right_mono (pow_le_Iw ϖ) e h1`. Establish `h1 : (algebraMap ℤ_[l] (Ainf l) w) * (r : Ainf l) = 1`. Rewrite using `[← map_natCast (algebraMap ℤ_[l] (Ainf l)), ← map_mul, hw, map_one]`. Establish `h2` using `congrArg (algebraMap (Per.Ainf l) (Per.AinfP l)) h1`. Rewrite `h2` using `[map_mul, map_one, map_natCast]`.
+
+Rewrite using `[map_mul, map_pow, ← hk, ← hkr]`. Use `push_cast`. Take the linear combination `(-(l : Per.AinfP l) ^ e * y) * h2`.
+-/
 theorem dividedPower_mem_pt {ϖ : OCb l} (hϖ : ϖ.untilt = (l : Per.OC l)) (x : Per.Ainf l) (k : ℕ)
     (y : Per.AinfP l) (hx : Per.θ l x = 0)
     (hk : ((k.factorial : ℕ) : Per.AinfP l) * y = algebraMap (Per.Ainf l) (Per.AinfP l) x ^ k) :
@@ -173,9 +236,21 @@ theorem dividedPower_mem_pt {ϖ : OCb l} (hϖ : ϖ.untilt = (l : Per.OC l)) (x :
     push_cast
     linear_combination (-(l : Per.AinfP l) ^ e * y) * h2
 
+/- English proof (translation)
+The claim follows from `GlobalTheory.RingIface.Acris0_le_of_dividedPowers l _ (dividedPower_mem_pt hϖ)`.
+-/
 theorem acris0_le (hl2 : 2 ≤ l) {ϖ : OCb l} (hϖ : ϖ.untilt = (l : Per.OC l)) : Per.Acris0 l ≤ Qs ϖ :=
   GlobalTheory.RingIface.Acris0_le_of_dividedPowers l _ (dividedPower_mem_pt hϖ)
 
+/- English proof (translation)
+Take `⟨w, hw⟩` from `h`. Take `⟨e, he⟩` from `GlobalTheory.AdicMaps.exists_acris_completion l`. Establish `h3 : ainfToAcris l y = algebraMap (Per.Acris0 l) (Per.Acris l) (algebraMap (Per.Ainf l) (Per.Acris0 l) y)` using `GlobalTheory.RingIface.tower l y`. Establish `hw'` using `congrArg e hw`. Rewrite `hw'` using `[h3, he, map_mul, map_pow, map_natCast]`.
+
+Establish `h1` using `congrArg (AdicCompletion.evalₐ (Ideal.span {(l : Per.Acris0 l)}) n) hw'`. Rewrite `h1` using `[map_mul, map_pow, map_natCast]`. Establish `h0 : ((l : Per.Acris0 l ⧸ Ideal.span {(l : Per.Acris0 l)} ^ n)) ^ n = 0`. Rewrite using `[← map_natCast (Ideal.Quotient.mk _), ← map_pow, Ideal.Quotient.eq_zero_iff_mem]`. Conclude with `Ideal.pow_mem_pow (Ideal.mem_span_singleton_self _) n`.
+
+Establish `h2 : algebraMap (Per.Ainf l) (Per.Acris0 l) y ∈ Ideal.span {(l : Per.Acris0 l)} ^ n`. Rewrite using `[← Ideal.Quotient.eq_zero_iff_mem]`. Express the relevant statement in the definitionally equal form `AdicCompletion.evalₐ _ n (AdicCompletion.of (Ideal.span {(l : Per.Acris0 l)}) _ (algebraMap (Per.Ainf l) (Per.Acris0 l) y)) = _ at h1`. Rewrite `h1` using `[h0, zero_mul, AdicCompletion.evalₐ_of]`. Conclude with `h1`.
+
+Rewrite `h2` using `[Ideal.span_singleton_pow, Ideal.mem_span_singleton']`. Take `⟨z, hz⟩` from `h2`. Use `⟨z, z.2, ?_⟩` and prove the remaining obligations. Use `congrArg Subtype.val hz` as an intermediate fact. Simplify `this` using `[mul_comm]`.
+-/
 theorem exists_of_dvd {n : ℕ} {y : Ainf l} (h : (l : Per.Acris l) ^ n ∣ ainfToAcris l y) :
     ∃ z ∈ Per.Acris0 l, (l : Per.AinfP l) ^ n * z = algebraMap (Per.Ainf l) (Per.AinfP l) y := by
   obtain ⟨w, hw⟩ := h
@@ -208,6 +283,11 @@ namespace GlobalTheory.AcrisMuBound
 
 variable {l : ℕ} [hl : Fact l.Prime]
 
+/- English proof (translation)
+Introduce and unpack `rfl`. Establish `h1 : (l : Per.OC l) ^ 2 = l` using `by rw [← hϖ, ← map_pow, zero_pow two_ne_zero]`. Establish `h2 : ((l : ℕ) : ℂ_[l]) * (l : ℂ_[l]) = (l : ℂ_[l]) * 1`. Use `congrArg Subtype.val h1` as an intermediate fact. Move the coercions through the operations in `at this`.
+
+Rewrite using `[mul_one, ← pow_two]`. Conclude with `this`. Establish `h3` using `mul_left_cancel₀ (GlobalTheory.RingBasics.p_ne_zero (p := l)) h2`. Conclude with `hl.out.one_lt.ne' (by exact_mod_cast h3)`.
+-/
 theorem ne_zero_of_untilt {ϖ : OCb l} (hϖ : ϖ.untilt = (l : Per.OC l)) : ϖ ≠ 0 := by
   rintro rfl
   have h1 : (l : Per.OC l) ^ 2 = l := by rw [← hϖ, ← map_pow, zero_pow two_ne_zero]
@@ -218,6 +298,15 @@ theorem ne_zero_of_untilt {ϖ : OCb l} (hϖ : ϖ.untilt = (l : Per.OC l)) : ϖ �
   have h3 := mul_left_cancel₀ (GlobalTheory.RingBasics.p_ne_zero (p := l)) h2
   exact hl.out.one_lt.ne' (by exact_mod_cast h3)
 
+/- English proof (translation)
+Take `⟨z, hz0, hz⟩` from `exists_of_dvd h`. Take `⟨m, a, ha, hza⟩` from `acris0_le hl2 hϖ hz0`. Establish `hinj : Function.Injective (algebraMap (Per.Ainf l) (Per.AinfP l))` using `IsLocalization.injective (Per.AinfP l) (powers_le_nonZeroDivisors_of_noZeroDivisors l_ne_zero_ainf)`. Establish `h1 : (l : Ainf l) ^ m * y = (l : Ainf l) ^ n * a`. Apply `hinj` to reduce the goal to its premises.
+
+Rewrite using `[map_mul, map_mul, map_pow, map_pow, map_natCast, ← hz, ← hza]`. Expand and normalize the polynomial expressions, which then agree. Establish `h2 : y ∈ Iw ϖ ^ n`. Use `mem_of_l_pow_mul (ne_zero_of_untilt hϖ) m n ?_` and prove the remaining obligations. Rewrite using `[h1, pow_add]`.
+
+Conclude with `Ideal.mul_mem_mul (Ideal.pow_mem_pow (l_mem_Iw ϖ) n) ha`. Establish `h3` using `Ideal.mem_map_of_mem (WittVector.constantCoeff (p := l) (R := OCb l)) h2`. Establish `h4 : Ideal.map (WittVector.constantCoeff (p` using `l) (R := OCb l)) (Iw ϖ) ≤ Ideal.span {ϖ ^ (l - 1)} := by`. Rewrite using `[Ideal.map_sup, Ideal.map_span, Ideal.map_span, Set.image_singleton, Set.image_singleton, cc_natCast_l, map_pow, cc_teich, Ideal.span_singleton_eq_bot.2 rfl, bot_sup_eq]`. Rewrite `h3` using `[Ideal.map_pow]`.
+
+Establish `h5` using `Ideal.pow_right_mono h4 n h3`. Rewrite `h5` using `[Ideal.span_singleton_pow, Ideal.mem_span_singleton, ← pow_mul]`. Conclude with `h5`.
+-/
 theorem pow_dvd_cc (hl2 : 2 ≤ l) {ϖ : OCb l} (hϖ : ϖ.untilt = (l : Per.OC l)) {n : ℕ} {y : Ainf l}
     (h : (l : Per.Acris l) ^ n ∣ ainfToAcris l y) : ϖ ^ ((l - 1) * n) ∣ WittVector.constantCoeff y := by
   obtain ⟨z, hz0, hz⟩ := exists_of_dvd h
@@ -247,6 +336,35 @@ namespace GlobalTheory.AcrisMuBound
 
 variable {l : ℕ} [hl : Fact l.Prime]
 
+/- English proof (translation)
+Take `⟨hε1, δ, hδ, hδ1⟩` from `hε`. Establish `hl3 : 3 ≤ l` using `by have := hl.out.two_le; omega`. Use `set ζ : ℂ_[l] := ((δ.untilt : Per.OC l) : ℂ_[l]) with hζ`. Establish `hζl : ζ ^ l = 1`. Establish `h1 : δ.untilt ^ l = 1` using `by rw [← map_pow, hδ, hε1]`.
+
+Use `congrArg Subtype.val h1` as an intermediate fact. Move the coercions through the operations in `at this`. Conclude with `this`. Establish `hζ1 : ζ ≠ 1` using `fun h1 => hδ1 (Subtype.ext (by rw [OneMemClass.coe_one]; exact h1))`. Establish `hprim : IsPrimitiveRoot ζ l`.
+
+Use `IsPrimitiveRoot.orderOf ζ` as an intermediate fact. Rewrite `this` using `[orderOf_eq_prime hζl hζ1]`. Then use the resulting hypothesis. Establish `ha : ‖ζ - 1‖ ^ (l - 1) = ‖((l : ℕ) : ℂ_[l])‖`. Use `GlobalTheory.CycTrace.norm_sub_one_pow_totient (K := ℂ_[l]) l 0 ζ (by simpa using hprim)` as an intermediate fact. Simplify `this` using `[Nat.totient_prime hl.out]`.
+
+Use `set a := ‖ζ - 1‖`. Use `set b := ‖((l : ℕ) : ℂ_[l])‖`. Establish `hb0 : 0 < b` using `norm_pos_iff.2 GlobalTheory.RingBasics.p_ne_zero`. Establish `hb1 : b < 1` using `GlobalTheory.RingBasics.norm_p_lt`. Establish `ha0 : 0 ≤ a` using `norm_nonneg _`.
+
+Establish `ha1 : a < 1`. Assume the negation of the conclusion as `hc`. Establish `: 1 ≤ a ^ (l - 1)` using `one_le_pow₀ (not_lt.1 hc)`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hba : b < a`.
+
+Establish `h1 : a ^ (l - 2) < 1` using `pow_lt_one₀ ha0 ha1 (by omega)`. Establish `h2 : a ^ (l - 1) = a * a ^ (l - 2)`. Rewrite using `[← pow_succ']`. Use `congr 1`. Use linear arithmetic over natural numbers and integers.
+
+Establish `ha0' : 0 < a`. Break down `ha0.lt_or_eq with h | h` into its components or cases. Conclude with `h`. Rewrite using `[← h, zero_pow (by omega)] at ha; linarith`. Use the polynomial consequences of the given equalities and inequalities.
+
+Take `⟨t, ht⟩` from `GlobalTheory.TiltAbs.untilt_add (δ - 1) 1`. Rewrite `ht` using `[sub_add_cancel, map_one]`. Use `set d : ℂ_[l] := (((δ - 1).untilt : Per.OC l) : ℂ_[l])`. Establish `hd : a ≤ ‖d‖`. Establish `h1 : ζ - 1 = d + (l : ℂ_[l]) * ((t : Per.OC l) : ℂ_[l])`.
+
+Use `congrArg Subtype.val ht` as an intermediate fact. Move the coercions through the operations in `at this`. Rewrite using `[hζ, this]`. Expand and normalize the polynomial expressions, which then agree. Establish `h2 : ‖(l : ℂ_[l]) * ((t : Per.OC l) : ℂ_[l])‖ < a`.
+
+Rewrite using `[norm_mul]`. Conclude with `lt_of_le_of_lt (mul_le_of_le_one_right (norm_nonneg _) (GlobalTheory.TiltAbs.norm_le_one t)) hba`. Establish `h3 : a ≤ max ‖d‖ ‖(l : ℂ_[l]) * ((t : Per.OC l) : ℂ_[l])‖`. Use `IsUltrametricDist.norm_add_le_max d ((l : ℂ_[l]) * ((t : Per.OC l) : ℂ_[l]))` as an intermediate fact. Rewrite `this` using `[← h1]`.
+
+Conclude with `this`. Break down `le_max_iff.1 h3 with h | h` into its components or cases. Conclude with `h`. Conclude with `absurd h (not_le.2 h2)`. Establish `hεδ : ε - 1 = (δ - 1) ^ l` using `by rw [sub_pow_char, one_pow, hδ]`.
+
+Take `⟨c, hc⟩` from `map_dvd (PreTilt.untilt (O := Per.OC l) (p := l)) h`. Rewrite `hc` using `[map_pow, map_pow, hϖ, hεδ, map_pow]`. Establish `hc'` using `congrArg (fun z : Per.OC l => ‖(z : ℂ_[l])‖) hc`. Move the coercions through the operations in `at hc'`. Rewrite `hc'` using `[norm_mul, norm_pow, norm_pow, norm_pow]`.
+
+Establish `h4 : ‖d‖ ^ (l * j) ≤ b ^ N`. Rewrite using `[pow_mul]`. Rewrite using `[hc']`. Conclude with `mul_le_of_le_one_right (pow_nonneg (norm_nonneg _) _) (GlobalTheory.TiltAbs.norm_le_one c)`. Establish `h5 : a ^ (l * j) ≤ b ^ N` using `(pow_le_pow_left₀ ha0 hd _).trans h4`.
+
+Establish `h6 : b ^ (l * j) ≤ b ^ ((l - 1) * N)`. Combine the equalities or inequalities in the displayed calculation. Conclude with `(pow_le_pow_iff_right_of_lt_one₀ hb0 hb1).1 h6`.
+-/
 theorem tilt_bound (hl2 : l ≠ 2) {ε ϖ : OCb l} (hε : IsEps ε) (hϖ : ϖ.untilt = (l : Per.OC l)) {N j : ℕ}
     (h : ϖ ^ N ∣ (ε - 1) ^ j) : (l - 1) * N ≤ l * j := by
   obtain ⟨hε1, δ, hδ, hδ1⟩ := hε
@@ -323,6 +441,21 @@ end GlobalTheory.AcrisMuBound
 
 namespace GlobalTheory.AcrisMuBound
 
+/- English proof (translation)
+Introduce `l hl hl2 ε hε j n x hx h`. Establish `hl2' : 2 ≤ l` using `hl.out.two_le`. Take `⟨ϖ, hϖ⟩` from `GlobalTheory.MemLoc.FundOnto.untilt_surjective l (l : Per.OC l)`. Use `set u := PadicInt.unitCoeff hx`. Use `set v := x.valuation`.
+
+Establish `hxu : algebraMap ℤ_[l] (Ainf l) x = (l : Ainf l) ^ v * algebraMap ℤ_[l] (Ainf l) (u : ℤ_[l])` using `by conv_lhs => rw [PadicInt.unitCoeff_spec hx]`. Rewrite using `[map_mul, map_pow, map_natCast, mul_comm]`. Use `set y := muOf ε ^ j * algebraMap ℤ_[l] (Ainf l) (u : ℤ_[l])`. Break down `le_or_gt n v with hnv | hnv` into its components or cases. Use `Nat.mul_le_mul_left (l - 1) hnv` as an intermediate fact.
+
+Use linear arithmetic over natural numbers and integers. Take `⟨n', rfl⟩` from `Nat.exists_eq_add_of_le hnv.le`. Establish `h2 : (l : Per.Acris l) ^ n' ∣ ainfToAcris l y`. Take `⟨w, hw⟩` from `h`. Use `⟨w, ?_⟩` and prove the remaining obligations.
+
+Establish `h3 : ((l ^ v : ℕ) : Per.Acris l) * (ainfToAcris l y - (l : Per.Acris l) ^ n' * w) = 0`. Rewrite `hw` using `[hxu, mul_left_comm, map_mul, map_pow, map_natCast]`. Use `push_cast`. Rewrite using `[mul_sub, hw]`. Expand and normalize the polynomial expressions, which then agree.
+
+Conclude with `sub_eq_zero.1 (acris_nat_cancel (pow_ne_zero _ hl.out.ne_zero) h3)`. Establish `h4` using `pow_dvd_cc hl2' hϖ h2`. Establish `h5 : WittVector.constantCoeff y = (ε - 1) ^ j * WittVector.constantCoeff (algebraMap ℤ_[l] (Ainf l) (u : ℤ_[l]))`. Simplify using `only [y, muOf, map_mul, map_pow, map_sub, map_one, cc_teich]`. Establish `hu : IsUnit (WittVector.constantCoeff (algebraMap ℤ_[l] (Ainf l) (u : ℤ_[l])))` using `(u.isUnit.map _).map _`.
+
+Rewrite `h4` using `[h5, hu.dvd_mul_right]`. Establish `h6` using `tilt_bound hl2 hε hϖ h4`. Establish `h7 : l ≤ 2 * (l - 1)` using `by omega`. Establish `h8 : (l - 1) * ((l - 1) * n') ≤ (l - 1) * (2 * j)`. Combine the equalities or inequalities in the displayed calculation.
+
+Establish `h9` using `Nat.le_of_mul_le_mul_left h8 (by omega)`. Rewrite using `[mul_add]`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem main : ∀ (l : ℕ) [Fact l.Prime], l ≠ 2 → ∀ ε : OCb l, IsEps ε → ∀ (j n : ℕ) (x : ℤ_[l]), x ≠ 0 → (l : Per.Acris l) ^ n ∣ ainfToAcris l (muOf ε ^ j * algebraMap ℤ_[l] (Ainf l) x) → (l - 1) * n ≤ (l - 1) * x.valuation + 2 * j := by
   intro l hl hl2 ε hε j n x hx h
   have hl2' : 2 ≤ l := hl.out.two_le

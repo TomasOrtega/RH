@@ -7,6 +7,11 @@ namespace GlobalTheory.LayerIso
 variable {n m d : ℕ} {W : ℕ → Submodule ℂ (Fin n → ℂ)} {r : ℕ → ℕ}
   {U : ∀ b, Matrix (Fin n) (Fin (r b)) ℂ} {B : Fin d → Matrix (Fin n) (Fin n) ℂ} {deg : Fin d → ℕ}
 
+/- English proof (translation)
+Take `⟨-, h2, h3⟩` from `hU`. Establish `: U t = (∑ b ∈ range m, U b * (U b)ᴴ) * U t` using `by rw [h3, Matrix.one_mul]`. Rewrite using `[this, Matrix.sum_mul]`. Use `Finset.sum_eq_zero fun b hb => ?_` and prove the remaining obligations. Establish `hb' : b ≠ t` using `by have := Finset.mem_range.1 hb; omega`.
+
+Rewrite using `[Matrix.mul_assoc, h2 b t hb', Matrix.mul_zero]`.
+-/
 theorem block_eq_zero (hU : Biorth r m U (fun b => (U b)ᴴ)) {t : ℕ} (ht : m ≤ t) : U t = 0 := by
   obtain ⟨-, h2, h3⟩ := hU
   have : U t = (∑ b ∈ range m, U b * (U b)ᴴ) * U t := by rw [h3, Matrix.one_mul]
@@ -15,6 +20,17 @@ theorem block_eq_zero (hU : Biorth r m U (fun b => (U b)ᴴ)) {t : ℕ} (ht : m 
   have hb' : b ≠ t := by have := Finset.mem_range.1 hb; omega
   rw [Matrix.mul_assoc, h2 b t hb', Matrix.mul_zero]
 
+/- English proof (translation)
+Take `⟨-, h2, h3⟩` from `hU`. Rewrite using `[mem_lowers]`. Prove the components needed by the constructor for the conclusion. Introduce `h s t hst`. Rewrite using `[Matrix.ext_iff_mulVec]`.
+
+Introduce `x`. Establish `hx : U t *ᵥ x ∈ W (s + c + 1)`. Rewrite using `[hW]`. Introduce `b hb`. Rewrite using `[Matrix.mulVec_mulVec, h2 b t (by omega), Matrix.zero_mulVec]`.
+
+Use `(hW _ _).1 (h s _ hx) s le_rfl` as an intermediate fact. Rewrite `this` using `[Matrix.mulVec_mulVec, Matrix.mulVec_mulVec]`. Rewrite using `[this, Matrix.zero_mulVec]`. Introduce `h b y hy`. Rewrite `hy`, the goal using `[hW]`.
+
+Introduce `s hs`. Establish `: y = (∑ t ∈ range m, U t * (U t)ᴴ) *ᵥ y` using `by rw [h3, Matrix.one_mulVec]`. Rewrite using `[this, Matrix.mulVec_mulVec, Matrix.mulVec_mulVec, Matrix.mul_sum, Matrix.sum_mulVec]`. Use `Finset.sum_eq_zero fun t _ => ?_` and prove the remaining obligations. Rewrite using `[← Matrix.mul_assoc]`.
+
+Distinguish the cases in `ht : t ≤ s + c`. Rewrite using `[h s t ht, Matrix.zero_mul, Matrix.zero_mulVec]`. Rewrite using `[← Matrix.mulVec_mulVec, hy t (by omega), Matrix.mulVec_zero]`.
+-/
 theorem mem_lowers_iff (hU : Biorth r m U (fun b => (U b)ᴴ))
     (hW : ∀ k y, y ∈ W k ↔ ∀ b, k ≤ b → (U b)ᴴ *ᵥ y = 0) (c : ℕ) (Y : Matrix (Fin n) (Fin n) ℂ) :
     Y ∈ lowers W c ↔ ∀ s t, t ≤ s + c → (U s)ᴴ * Y * U t = 0 := by
@@ -42,6 +58,15 @@ theorem mem_lowers_iff (hU : Biorth r m U (fun b => (U b)ᴴ))
     · rw [h s t ht, Matrix.zero_mul, Matrix.zero_mulVec]
     · rw [← Matrix.mulVec_mulVec, hy t (by omega), Matrix.mulVec_zero]
 
+/- English proof (translation)
+Proceed by induction on `hY using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨j, hj, rfl⟩` from `hx`. Use `⟨by simp [hB], fun i hi => ?_⟩` and prove the remaining obligations. Rewrite using `[hB, if_neg]`.
+
+Introduce and unpack `rfl`. Conclude with `hi hj`. Consider the case `zero => simp`. Consider the case `add x y _ _ hx hy`. Use `⟨?_, fun i hi => ?_⟩` and prove the remaining obligations.
+
+Simplify using `only [Matrix.add_mul, trace_add, add_smul, Finset.sum_add_distrib]`. Rewrite using `[← hx.1, ← hy.1]`. Rewrite using `[Matrix.add_mul, trace_add, hx.2 i hi, hy.2 i hi, add_zero]`. Consider the case `smul a x _ hx`. Use `⟨?_, fun i hi => ?_⟩` and prove the remaining obligations.
+
+Simplify using `only [Matrix.smul_mul, trace_smul, smul_eq_mul, mul_smul, ← Finset.smul_sum]`. Rewrite using `[← hx.1]`. Rewrite using `[Matrix.smul_mul, trace_smul, hx.2 i hi, smul_zero]`.
+-/
 theorem expand (hB : ∀ i k, (B i * (B k)ᴴ).trace = if i = k then 1 else 0) (S : Set (Fin d))
     {Y : Matrix (Fin n) (Fin n) ℂ} (hY : Y ∈ Submodule.span ℂ (B '' S)) :
     Y = ∑ i, (Y * (B i)ᴴ).trace • B i ∧ ∀ i, i ∉ S → (Y * (B i)ᴴ).trace = 0 := by
@@ -64,10 +89,18 @@ theorem expand (hB : ∀ i k, (B i * (B k)ᴴ).trace = if i = k then 1 else 0) (
       rw [← hx.1]
     · rw [Matrix.smul_mul, trace_smul, hx.2 i hi, smul_zero]
 
+/- English proof (translation)
+Simplify using `[Matrix.trace, Matrix.mul_apply, Complex.mul_conj, Complex.normSq_eq_norm_sq]`.
+-/
 theorem trace_self {p q : Type} [Fintype p] [Fintype q] (A : Matrix p q ℂ) :
     (A * Aᴴ).trace = ((∑ s, ∑ t, ‖A s t‖ ^ 2 : ℝ) : ℂ) := by
   simp [Matrix.trace, Matrix.mul_apply, Complex.mul_conj, Complex.normSq_eq_norm_sq]
 
+/- English proof (translation)
+Take `⟨-, -, h3⟩` from `hU`. Establish `: Y * Yᴴ = (∑ b ∈ range m, U b * (U b)ᴴ) * (Y * (∑ b ∈ range m, U b * (U b)ᴴ) * Yᴴ)`. Rewrite using `[h3, Matrix.one_mul, Matrix.mul_one]`. Rewrite using `[this, Matrix.sum_mul, trace_sum]`. Use `Finset.sum_congr rfl fun s _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[Matrix.mul_sum, Matrix.sum_mul, Matrix.mul_sum, trace_sum]`. Use `Finset.sum_congr rfl fun t _ => ?_` and prove the remaining obligations. Rewrite using `[Matrix.mul_assoc (U s), Matrix.trace_mul_comm]`. Simplify using `only [conjTranspose_mul, conjTranspose_conjTranspose, Matrix.mul_assoc]`.
+-/
 theorem trace_blocks (hU : Biorth r m U (fun b => (U b)ᴴ)) (Y : Matrix (Fin n) (Fin n) ℂ) :
     (Y * Yᴴ).trace = ∑ s ∈ range m, ∑ t ∈ range m,
       (((U s)ᴴ * Y * U t) * ((U s)ᴴ * Y * U t)ᴴ).trace := by
@@ -81,6 +114,11 @@ theorem trace_blocks (hU : Biorth r m U (fun b => (U b)ᴴ)) (Y : Matrix (Fin n)
   rw [Matrix.mul_assoc (U s), Matrix.trace_mul_comm]
   simp only [conjTranspose_mul, conjTranspose_conjTranspose, Matrix.mul_assoc]
 
+/- English proof (translation)
+Take `⟨-, h2, -⟩` from `hU`. Establish `: (U s')ᴴ * (U s * Z * (U t)ᴴ) * U t' = ((U s')ᴴ * U s) * Z * ((U t)ᴴ * U t')`. Simplify using `only [Matrix.mul_assoc]`. Rewrite using `[this]`. Break down `h with h | h` into its components or cases.
+
+Rewrite using `[h2 _ _ h]`. Simplify using the standard rewrite rules. Rewrite using `[h2 _ _ h]`. Simplify using the standard rewrite rules.
+-/
 theorem placed_block (hU : Biorth r m U (fun b => (U b)ᴴ)) {s t s' t' : ℕ}
     (Z : Matrix (Fin (r s)) (Fin (r t)) ℂ) (h : s' ≠ s ∨ t ≠ t') :
     (U s')ᴴ * (U s * Z * (U t)ᴴ) * U t' = 0 := by
@@ -92,6 +130,9 @@ theorem placed_block (hU : Biorth r m U (fun b => (U b)ᴴ)) {s t s' t' : ℕ}
   · rw [h2 _ _ h]; simp
   · rw [h2 _ _ h]; simp
 
+/- English proof (translation)
+Take `⟨h1, -, -⟩` from `hU`. Establish `: (U s)ᴴ * (U s * Z * (U t)ᴴ) * U t = ((U s)ᴴ * U s) * Z * ((U t)ᴴ * U t)`. Simplify using `only [Matrix.mul_assoc]`. Rewrite using `[this, h1, h1]`. Simplify using the standard rewrite rules.
+-/
 theorem placed_block_self (hU : Biorth r m U (fun b => (U b)ᴴ)) {s t : ℕ}
     (Z : Matrix (Fin (r s)) (Fin (r t)) ℂ) :
     (U s)ᴴ * (U s * Z * (U t)ᴴ) * U t = Z := by
@@ -111,9 +152,19 @@ noncomputable def toBlocks (m : ℕ) (U : ∀ b, Matrix (Fin n) (Fin (r b)) ℂ)
     funext b s t
     simp [mul_smul, ← Finset.smul_sum]
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem of_toBlocks (c : ℕ) (z : {i : Fin d // deg i = c} → ℂ) (b : Fin m) :
     Matrix.of (toBlocks m U B deg c z b) = (U b)ᴴ * (∑ i, z i • B i.1) * U (b + c + 1) := rfl
 
+/- English proof (translation)
+Rewrite using `[of_toBlocks]`. Rewrite `hY` using `[hL]`. Take `⟨h1, h2⟩` from `expand hB _ hY`. Use `conv_rhs => rw [h1]`. Rewrite using `[← Finset.sum_subtype (Finset.univ.filter fun i => deg i = c) (by simp) (fun i => (Y * (B i)ᴴ).trace • B i)]`.
+
+Simplify using `only [Matrix.mul_sum, Matrix.sum_mul]`. Use `Finset.sum_subset (Finset.subset_univ _) fun i _ hi => ?_` and prove the remaining obligations. Establish `hi' : deg i ≠ c` using `by simpa using hi`. Distinguish the cases in `hc : c ≤ deg i`. Establish `: B i ∈ lowers W (c + 1)`.
+
+Rewrite using `[hL]`. Conclude with `Submodule.subset_span ⟨i, by show c + 1 ≤ deg i; omega, rfl⟩`. Rewrite using `[Matrix.mul_smul, Matrix.smul_mul, (mem_lowers_iff hU hW _ _).1 this b (b + c + 1) (by omega), smul_zero]`. Rewrite using `[h2 i hc]`. Simplify using the standard rewrite rules.
+-/
 theorem toBlocks_coords (hU : Biorth r m U (fun b => (U b)ᴴ))
     (hW : ∀ k y, y ∈ W k ↔ ∀ b, k ≤ b → (U b)ᴴ *ᵥ y = 0)
     (hB : ∀ i k, (B i * (B k)ᴴ).trace = if i = k then 1 else 0)
@@ -138,6 +189,13 @@ theorem toBlocks_coords (hU : Biorth r m U (fun b => (U b)ᴴ))
       (mem_lowers_iff hU hW _ _).1 this b (b + c + 1) (by omega), smul_zero]
   · rw [h2 i hc]; simp
 
+/- English proof (translation)
+Introduce `Z`. Use `set Y : Matrix (Fin n) (Fin n) ℂ := ∑ b : Fin m, U b * Matrix.of (Z b) * (U (b + c + 1))ᴴ with hYdef`. Establish `hY : Y ∈ lowers W c`. Use `Submodule.sum_mem _ fun b _ => ?_` and prove the remaining obligations. Rewrite using `[mem_lowers_iff hU hW]`.
+
+Introduce `s t hst`. Conclude with `placed_block hU _ (by omega)`. Use `⟨fun i => (Y * (B i.1)ᴴ).trace, funext fun b => ?_⟩` and prove the remaining obligations. Apply `Matrix.of.injective` to reduce the goal to its premises. Rewrite using `[toBlocks_coords hU hW hB hL c Y hY b, hYdef, Matrix.mul_sum, Matrix.sum_mul, Finset.sum_eq_single b]`.
+
+Conclude with `placed_block_self hU _`. Introduce `b' _ hb`. Conclude with `placed_block hU _ (Or.inl fun h => hb (Fin.ext h.symm))`. Simplify using the standard rewrite rules.
+-/
 theorem toBlocks_surjective (hU : Biorth r m U (fun b => (U b)ᴴ))
     (hW : ∀ k y, y ∈ W k ↔ ∀ b, k ≤ b → (U b)ᴴ *ᵥ y = 0)
     (hB : ∀ i k, (B i * (B k)ᴴ).trace = if i = k then 1 else 0)
@@ -160,6 +218,21 @@ theorem toBlocks_surjective (hU : Biorth r m U (fun b => (U b)ᴴ))
     exact placed_block hU _ (Or.inl fun h => hb (Fin.ext h.symm))
   · simp
 
+/- English proof (translation)
+Use `set Y : Matrix (Fin n) (Fin n) ℂ := ∑ i, z i • B i.1 with hYdef`. Establish `hY : Y ∈ lowers W c`. Rewrite using `[hL]`. Conclude with `Submodule.sum_mem _ fun i _ => Submodule.smul_mem _ _ (Submodule.subset_span ⟨i.1, i.2.ge, rfl⟩)`. Establish `h1 : (Y * Yᴴ).trace = ((∑ i, ‖z i‖ ^ 2 : ℝ) : ℂ)`.
+
+Simplify using `[hYdef, conjTranspose_sum, Matrix.mul_sum, Matrix.sum_mul, trace_sum, hB, Subtype.val_inj, Complex.mul_conj, Complex.normSq_eq_norm_sq, Complex.conj_mul']`. Establish `horth : ∀ X ∈ lowers W (c + 1), (X * Yᴴ).trace = 0`. Introduce `X hX`. Rewrite `hX` using `[hL]`. Establish `h2` using `(expand hB _ hX).2`.
+
+Rewrite using `[hYdef, conjTranspose_sum, Matrix.mul_sum, trace_sum]`. Use `Finset.sum_eq_zero fun i _ => ?_` and prove the remaining obligations. Rewrite using `[conjTranspose_smul, Matrix.mul_smul, trace_smul, h2 i.1, smul_zero]`. Use `i.2` as an intermediate fact. Use `show ¬ (c + 1 ≤ deg i.1)`.
+
+Use linear arithmetic over natural numbers and integers. Establish `h2 : (Y * Yᴴ).trace = ∑ s ∈ range m, (((U s)ᴴ * Y * U (s + c + 1)) * ((U s)ᴴ * Y * U (s + c + 1))ᴴ).trace`. Rewrite using `[trace_blocks hU]`. Use `Finset.sum_congr rfl fun s _ => Finset.sum_eq_single _ (fun t _ ht => ?_) (fun h => ?_)` and prove the remaining obligations. Distinguish the cases in `hst : t ≤ s + c`.
+
+Rewrite using `[(mem_lowers_iff hU hW _ _).1 hY s t hst]`. Simplify using the standard rewrite rules. Establish `hX : U s * ((U s)ᴴ * Y * U t) * (U t)ᴴ ∈ lowers W (c + 1)`. Rewrite using `[mem_lowers_iff hU hW]`. Introduce `s' t' h'`.
+
+Conclude with `placed_block hU _ (by omega)`. Rewrite using `[← horth _ hX, Matrix.mul_assoc (U s), Matrix.mul_assoc (U s), Matrix.trace_mul_comm (U s)]`. Simplify using `only [conjTranspose_mul, conjTranspose_conjTranspose, Matrix.mul_assoc]`. Rewrite using `[block_eq_zero hU (t := s + c + 1) (by simpa using h)]; simp`. Rewrite `h1` using `[h2, ← Fin.sum_univ_eq_sum_range (fun s => (((U s)ᴴ * Y * U (s + c + 1)) * ((U s)ᴴ * Y * U (s + c + 1))ᴴ).trace)]`.
+
+Simplify using `only [trace_self] at h1`. Rewrite `h1` using `[← Complex.ofReal_sum]`. Conclude with `Complex.ofReal_injective h1`.
+-/
 theorem toBlocks_norm (hU : Biorth r m U (fun b => (U b)ᴴ))
     (hW : ∀ k y, y ∈ W k ↔ ∀ b, k ≤ b → (U b)ᴴ *ᵥ y = 0)
     (hB : ∀ i k, (B i * (B k)ᴴ).trace = if i = k then 1 else 0)
@@ -203,6 +276,13 @@ theorem toBlocks_norm (hU : Biorth r m U (fun b => (U b)ᴴ))
   rw [← Complex.ofReal_sum] at h1
   exact Complex.ofReal_injective h1
 
+/- English proof (translation)
+Introduce `n m d W r U B deg hU hW hB hL c`. Establish `hinj : Function.Injective (toBlocks m U B deg c)`. Rewrite using `[injective_iff_map_eq_zero]`. Introduce `z hz`. Establish `h` using `toBlocks_norm hU hW hB hL c z`.
+
+Rewrite `h` using `[hz]`. Establish `h0 : ∑ i, ‖z i‖ ^ 2 = 0` using `by rw [← h]; simp`. Rewrite `h0` using `[Finset.sum_eq_zero_iff_of_nonneg (fun i _ => by positivity)]`. Use function extensionality and compare the values at `i`. Simplify using `using h0 i (Finset.mem_univ i)`.
+
+Conclude with `⟨LinearEquiv.ofBijective _ ⟨hinj, toBlocks_surjective hU hW hB hL c⟩, toBlocks_norm hU hW hB hL c, toBlocks_coords hU hW hB hL c⟩`.
+-/
 theorem exists_layerIso : ∀ (n m d : ℕ) (W : ℕ → Submodule ℂ (Fin n → ℂ)) (r : ℕ → ℕ) (U : ∀ b, Matrix (Fin n) (Fin (r b)) ℂ) (B : Fin d → Matrix (Fin n) (Fin n) ℂ) (deg : Fin d → ℕ), Biorth r m U (fun b => (U b)ᴴ) → (∀ k y, y ∈ W k ↔ ∀ b, k ≤ b → (U b)ᴴ *ᵥ y = 0) → (∀ i k, (B i * (B k)ᴴ).trace = if i = k then 1 else 0) → (∀ c, lowers W c = Submodule.span ℂ (B '' {i | c ≤ deg i})) → ∀ c : ℕ, ∃ Φ : ({i : Fin d // deg i = c} → ℂ) ≃ₗ[ℂ] (∀ b : Fin m, Fin (r b) → Fin (r (b + c + 1)) → ℂ), (∀ z, ∑ b, ∑ s, ∑ t, ‖Φ z b s t‖ ^ 2 = ∑ i, ‖z i‖ ^ 2) ∧ ∀ Y ∈ lowers W c, ∀ b : Fin m, Matrix.of (Φ (fun i => (Y * (B i.1)ᴴ).trace) b) = (U b)ᴴ * Y * U (b + c + 1) := by
   intro n m d W r U B deg hU hW hB hL c
   have hinj : Function.Injective (toBlocks m U B deg c) := by

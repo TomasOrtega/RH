@@ -4,6 +4,27 @@ open Matrix Finset Real
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Introduce `a q τ ha haq hpos hinc hta`. Establish `hmono : ∀ j, j ≤ a → ∀ i, i ≤ j → τ i ≤ τ j`. Introduce `j`. Proceed by induction on `j with`. Consider the case `zero => intro _ i hi`.
+
+Rewrite using `[Nat.le_zero.mp hi]`. Consider the case `succ n ih`. Introduce `hn i hi`. Break down `Nat.lt_or_ge i (n + 1) with h | h` into its components or cases. Conclude with `(ih (by omega) i (by omega)).trans (hinc n (by omega)).le`.
+
+Rewrite using `[le_antisymm hi h]`. Establish `hqpos : (0 : ℝ) < q` using `by exact_mod_cast (show 0 < q by omega)`. Use `set x := 2 * τ 0 with hx`. Establish `hx0 : 0 < x` using `by linarith [hpos 0 (Nat.zero_le _)]`. Establish `hx1 : x ≤ 1` using `by linarith [hmono a le_rfl 0 (Nat.zero_le _)]`.
+
+Use `set r := x ^ ((1 : ℝ) / q) with hr`. Establish `hr0 : 0 < r` using `Real.rpow_pos_of_pos hx0 _`. Establish `hr1 : r ≤ 1` using `Real.rpow_le_one hx0.le hx1 (by positivity)`. Establish `hrq : r ^ q = x`. Rewrite using `[hr, ← Real.rpow_natCast, ← Real.rpow_mul hx0.le, one_div_mul_cancel hqpos.ne', Real.rpow_one]`.
+
+Establish `hra : x ≤ r ^ a` using `by rw [← hrq]; exact pow_le_pow_of_le_one hr0.le hr1 haq`. Choose the witnesses or unpack the hypotheses as in `⟨b, hb, hbr⟩ : ∃ b < a, τ b / τ (b + 1) ≤ r := by`. Assume the negation of the conclusion as `hne`. Use `push_neg at hne`. Establish `hstep : ∀ b < a, r * τ (b + 1) < τ b` using `fun b hb => by`.
+
+Establish `h1` using `hne b hb`. Establish `h2` using `hpos (b + 1) (by omega)`. Rewrite `h1` using `[lt_div_iff₀ h2]`. Then use the resulting hypothesis. Establish `hind : ∀ i, i ≤ a → r ^ i * τ i ≤ τ 0`. Introduce `i`.
+
+Proceed by induction on `i with`. Consider the case `zero => intro _`. Simplify using the standard rewrite rules. Consider the case `succ n ih`. Introduce `hn`.
+
+Combine the equalities or inequalities in the displayed calculation. Take `⟨c, rfl⟩ : ∃ c, a = c + 1` from `⟨a - 1, by omega⟩`. Establish `hlast : r ^ (c + 1) * τ (c + 1) < τ 0`. Combine the equalities or inequalities in the displayed calculation. Rewrite `hlast` using `[hta]`.
+
+Combine the linear equalities and inequalities to obtain the conclusion. Use `⟨b, hb, hbr, ?_⟩` and prove the remaining obligations. Establish `hb1 : 0 < τ (b + 1)` using `hpos (b + 1) (by omega)`. Establish `hb0 : 0 < τ b` using `hpos b (by omega)`. Establish `hle : τ b ≤ r * τ (b + 1)` using `by rwa [div_le_iff₀ hb1] at hbr`.
+
+Establish `hhalf : τ (b + 1) ≤ 1 / 2` using `by rw [← hta]; exact hmono a le_rfl (b + 1) (by omega)`. Establish `htb : τ b ≤ r / 2` using `by nlinarith [mul_le_mul_of_nonneg_left hhalf hr0.le]`. Use polynomial arithmetic with `[mul_le_mul htb htb hb0.le (by linarith), mul_le_mul_of_nonneg_left hr1 hr0.le]`.
+-/
 theorem exists_consecutive_ratio_le_rpow :
     ∀ (a q : ℕ) (τ : ℕ → ℝ), 1 ≤ a → a ≤ q → (∀ i ≤ a, 0 < τ i) → (∀ i < a, τ i < τ (i + 1)) →
       τ a = 1 / 2 → ∃ b < a, τ b / τ (b + 1) ≤ (2 * τ 0) ^ ((1 : ℝ) / q) ∧

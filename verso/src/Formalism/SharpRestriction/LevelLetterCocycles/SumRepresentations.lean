@@ -234,6 +234,9 @@ def IdempotentChoiceProperties {i : N.Loc} (r : N.X i → (G H.E N.Om →* GL (F
 
   CharpolyCoeffsInSubalgebra N i S.T' (fun x' => rO N i r (S.p x'))
 
+/- English proof (translation)
+Take `⟨c1, c2, c3, c4, c5, -, c7, c8, c9, c10, ⟨e1, e2, e3, -⟩, c12⟩` from `h`. Conclude with `⟨c1, c2, c3, c4, c5, c7, c8, c9, c10, ⟨e1, e2, e3⟩, c12⟩`.
+-/
 theorem inertia_props_of_idempotent_choice {i : N.Loc} {r : N.X i → (G H.E N.Om →* GL (Fin R.nV) (N.O i))}
     {ρ : N.X i → (G H.E N.Om →* GL (Fin R.r) (N.O i))} {π : N.X i} {S : IdempotentChoiceData N i} (h : GoodCongruenceObjects N r ρ π S) :
     IdempotentChoiceProperties N r ρ π S := by

@@ -13,9 +13,17 @@ section lev0
 variable {k ρ : ℕ} {Wp Wq : Type} [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp]
   [NormedAddCommGroup Wq] [InnerProductSpace ℂ Wq]
 
+/- English proof (translation)
+Simplify using `[D.ptG, D.ptMatN, D.ptEntry, Matrix.det_fin_one]`.
+-/
 theorem ptG_one (TT : ℝ) (ζ : ℂ) : D.ptG TT 0 [(1, ζ)] = Complex.normSq ζ - TT := by
   simp [D.ptG, D.ptMatN, D.ptEntry, Matrix.det_fin_one]
 
+/- English proof (translation)
+Use `⟨?_, ?_⟩` and prove the remaining obligations. Introduce `b hb`. Simplify using `only [List.mem_singleton] at hb`. Substitute `hb` using the available equality. Conclude with `⟨le_refl _, hζ⟩`.
+
+Simplify using `[D.ptSize]`.
+-/
 theorem isLocPt_one {ζ : ℂ} (hζ : ζ ≠ 0) : D.IsLocPt [(1, ζ)] (0 + 1) := by
   refine ⟨?_, ?_⟩
   · intro b hb
@@ -24,6 +32,27 @@ theorem isLocPt_one {ζ : ℂ} (hζ : ζ ≠ 0) : D.IsLocPt [(1, ζ)] (0 + 1) :=
     exact ⟨le_refl _, hζ⟩
   · simp [D.ptSize]
 
+/- English proof (translation)
+Establish `: IsEmpty (C2.Lstidx (1 : Equiv.Perm (Fin (ρ + 1))))` using `⟨fun q => by`. Take `⟨⟨a, b⟩, h1, h2⟩` from `q`. Simplify using `only [Equiv.Perm.one_symm, Equiv.Perm.coe_one, id] at h2`. Conclude with `absurd h1 (not_lt.2 h2.le)⟩`. Establish `hone : D.rhoOfU S γ 1 = 1`.
+
+Unfold `D.rhoOfU`. Use `split_ifs with hex`. Establish `h1mem : (1 : B.Mat k ρ) ∈ C6.Rset γ`. Use `⟨WeylGroupFacts.mem_n_one, ?_⟩` and prove the remaining obligations. Rewrite using `[Matrix.mul_one, Matrix.nonsing_inv_mul _ (Formalism.FourierDecayAlt.P.Dx2.OrbJ.isUnit_of_G hγ)]`.
+
+Conclude with `WeylGroupFacts.mem_n_one`. Conclude with `Formalism.FourierDecayAlt.P.Dx2.Rad.u_inj S hγ hpos hd hZ hex.choose_spec.1 h1mem (hex.choose_spec.2.trans (Formalism.FourierDecayAlt.P.Dx2.Rad.uMap_one S.z ⟨S.z_mem, S.T_pos⟩).symm)`. Both sides reduce to the same expression. Establish `hlow : C2.lowOf (fun q : C2.Lstidx (1 : Equiv.Perm (Fin (ρ + 1))) => q.1) isEmptyElim = 1`. Unfold `C2.lowOf`.
+
+Use extensionality with `i j`. Simplify using the standard rewrite rules. Establish `hR : D.muR S γ 1 = Measure.dirac (Matrix.of.symm (1 : B.Mat k ρ))`. Unfold `D.muR`. Rewrite using `[MeasureTheory.volume_pi, Measure.pi_of_empty _ isEmptyElim, Measure.map_dirac' Subsingleton.measurable, hlow, Matrix.conjTranspose_one, hone]`.
+
+Establish `hact : ∀ p, C6.actR γ 1 p = p`. Introduce `p`. Unfold `C6.actR`. Rewrite using `[Matrix.mul_one, Matrix.nonsing_inv_mul _ (Formalism.FourierDecayAlt.P.Dx2.OrbJ.isUnit_of_G hγ), Matrix.one_mul, Matrix.one_mul]`. Both sides reduce to the same expression.
+
+Establish `hθ : ∀ θ, D.IsNormCut S γ (D.muR S γ 1) θ → ∀ p, S.inSS p → θ p = 1`. Introduce `θ hθ p hp`. Establish `h` using `hθ.2.2 p hp`. Rewrite `h` using `[hR, integral_dirac]`. Simplify `h` using `[hact]`.
+
+Unfold `D.orbJ`. Use `split_ifs with hex`. Establish `h1` using `hθ _ hex.choose_spec.1`. Combine the equalities or inequalities in the displayed calculation. Use `integral_congr_ae ?_` and prove the remaining obligations.
+
+Use `filter_upwards [Formalism.FourierDecayAlt.P.Dx2.OrbJ.ae_inSS S] with p hp`. Rewrite using `[h1 p hp, one_smul]`. Use `_ = B.Jtau S (1, 1) F γ := rfl`. Use `_ = B.JF S F γ := Formalism.FourierDecayAlt.P.bessel_function_trivial_index k ρ Wp Wq S F γ`. Establish `hni : ¬ Integrable (fun p => D.orbIntegrand S γ F p) S.μSS`.
+
+Introduce `hI`. Apply `hex` to reduce the goal to its premises. Use `⟨fun _ => 1, ⟨measurable_const, fun _ => zero_le_one, fun p _ => ?_⟩, by simpa using hI⟩` and prove the remaining obligations. Rewrite using `[hR, integral_dirac]`. Rewrite using `[← Formalism.FourierDecayAlt.P.bessel_function_trivial_index k ρ Wp Wq S F γ]`.
+
+Conclude with `(integral_undef hni).symm`.
+-/
 theorem orbJ_one_eq (S : B.RealPlaceData k ρ Wp Wq) {γ : B.Mat k ρ} (hγ : γ ∈ B.GV k ρ)
     (hpos : 0 < Gf k ρ S.z S.z' γ) {d : Fin (ρ + 1) → ℂ} (hd : ∀ a, d a ≠ 0)
     (hZ : Zhat k ρ S.z S.z' γ = C2.monoP 1 d) (F : B.Mat k ρ → (Wq →L[ℂ] Wp)) :
@@ -78,6 +107,17 @@ theorem orbJ_one_eq (S : B.RealPlaceData k ρ Wp Wq) {γ : B.Mat k ρ} (hγ : γ
     rw [← Formalism.FourierDecayAlt.P.bessel_function_trivial_index k ρ Wp Wq S F γ]
     exact (integral_undef hni).symm
 
+/- English proof (translation)
+Substitute `hρ` using the available equality. Establish `hTT : 0 < Tz k 0 B0.z * Tz k 0 B0.z'` using `mul_pos B0.T_pos B0.T'_pos`. Establish `hζ0 : ζ ≠ 0`. Introduce `h`. Rewrite `hζ` using `[h, Complex.normSq_zero]`.
+
+Combine the linear equalities and inequalities to obtain the conclusion. Establish `hloc` using `isLocPt_one hζ0`. Establish `hG : 0 < D.ptG (Tz k 0 B0.z * Tz k 0 B0.z') 0 [(1, ζ)]` using `by rw [ptG_one]; linarith`. Rewrite using `[Formalism.FourierDecayAlt.P.isotropic_vectors_linear_indep k 0 Wp Wq B0 ν m Φ [(1, ζ)] hloc γ0 hb hG hγ0 hZ hD]`. Establish `hw : (hloc.2 ▸ D.ptPerm [(1, ζ)] : Equiv.Perm (Fin (0 + 1))) = 1`.
+
+Use `Equiv.ext fun a => Fin.ext ?_` and prove the remaining obligations. Establish `h1` using `a.isLt`. Establish `h2` using `((hloc.2 ▸ D.ptPerm [(1, ζ)] : Equiv.Perm (Fin (0 + 1))) a).isLt`. Simplify using `only [Equiv.Perm.coe_one, id]`. Use linear arithmetic over natural numbers and integers.
+
+Take `⟨hmono, hnz⟩` from `Formalism.FourierDecayAlt.P.Dx2.VV.ptMatN_monoP' [(1, ζ)] (0 + 1) hloc.2 hloc.1`. Rewrite `hmono` using `[hw]`. Establish `hpos : 0 < Gf k 0 B0.z B0.z' γ0`. Rewrite using `[← Formalism.FourierDecayAlt.P.ptG_spec k 0 _ _ [(1, ζ)] γ0 hloc hZ]`. Conclude with `hG`.
+
+Rewrite using `[hw]`. Conclude with `orbJ_one_eq B0 hγ0 hpos hnz (hZ.trans hmono) Φ`.
+-/
 theorem vector_level_zero_eq_jacquet (hρ : ρ = 0) (B0 : B.RealPlaceData k ρ Wp Wq) (ν : Fin (2 * ρ + k + 1) → ℂ) (m : B.Mat k ρ)
     (hb : D.IsBaseFrame B0 ν m) (Φ : B.Mat k ρ → (Wq →L[ℂ] Wp)) (ζ : ℂ)
     (hζ : Tz k ρ B0.z * Tz k ρ B0.z' < Complex.normSq ζ) (γ0 : B.Mat k ρ) (hγ0 : γ0 ∈ B.GV k ρ)
@@ -103,6 +143,11 @@ theorem vector_level_zero_eq_jacquet (hρ : ρ = 0) (B0 : B.RealPlaceData k ρ W
   rw [hw]
   exact orbJ_one_eq B0 hγ0 hpos hnz (hZ.trans hmono) Φ
 
+/- English proof (translation)
+Substitute `hρ` using the available equality. Unfold `D.vecV`. Rewrite using `[dif_neg]`. Introduce and unpack `⟨_, h⟩`. Rewrite `h` using `[ptG_one]`.
+
+Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem vector_level_zero_degenerate (hρ : ρ = 0) (B0 : B.RealPlaceData k ρ Wp Wq) (ν : Fin (2 * ρ + k + 1) → ℂ) (m : B.Mat k ρ)
     (Φ : B.Mat k ρ → (Wq →L[ℂ] Wp)) (ζ : ℂ) (hζ : Complex.normSq ζ ≤ Tz k ρ B0.z * Tz k ρ B0.z') :
     D.vecV B0 ν m Φ [(1, ζ)] = 0 := by
@@ -113,6 +158,11 @@ theorem vector_level_zero_degenerate (hρ : ρ = 0) (B0 : B.RealPlaceData k ρ W
   rw [ptG_one] at h
   linarith
 
+/- English proof (translation)
+Substitute `hρ` using the available equality. Establish `hTT : 0 < Tz k 0 B0.z * Tz k 0 B0.z'` using `mul_pos B0.T_pos B0.T'_pos`. Establish `hζ0 : ζ ≠ 0`. Introduce `h`. Rewrite `hζ` using `[h, Complex.normSq_zero]`.
+
+Combine the linear equalities and inequalities to obtain the conclusion. Establish `hG : 0 < D.ptG (Tz k 0 B0.z * Tz k 0 B0.z') 0 [(1, ζ)]` using `by rw [ptG_one]; linarith`. Conclude with `Formalism.FourierDecayAlt.P.exists_isotropic_frame k 0 Wp Wq B0 ν m [(1, ζ)] hb (isLocPt_one hζ0) hG`.
+-/
 theorem exists_frame_level_zero (hρ : ρ = 0) (B0 : B.RealPlaceData k ρ Wp Wq) (ν : Fin (2 * ρ + k + 1) → ℂ) (m : B.Mat k ρ)
     (hb : D.IsBaseFrame B0 ν m) (ζ : ℂ) (hζ : Tz k ρ B0.z * Tz k ρ B0.z' < Complex.normSq ζ) :
     ∃ γ0 ∈ B.GV k ρ, Zhat k ρ B0.z B0.z' γ0 = D.ptMatN [(1, ζ)] (ρ + 1) ∧ D.IsDFrame B0 ν m γ0 := by
@@ -123,6 +173,13 @@ theorem exists_frame_level_zero (hρ : ρ = 0) (B0 : B.RealPlaceData k ρ Wp Wq)
   have hG : 0 < D.ptG (Tz k 0 B0.z * Tz k 0 B0.z') 0 [(1, ζ)] := by rw [ptG_one]; linarith
   exact Formalism.FourierDecayAlt.P.exists_isotropic_frame k 0 Wp Wq B0 ν m [(1, ζ)] hb (isLocPt_one hζ0) hG
 
+/- English proof (translation)
+Substitute `hρ` using the available equality. Establish `: SigmaFinite B0.μW` using `Formalism.FourierDecayAlt.P.Dx2.MN.sigma_of_haar B0.haarW`. Establish `: SigmaFinite B0.μW'` using `Formalism.FourierDecayAlt.P.Dx2.MN.sigma_of_haar B0.haarW'`. Establish `hN0 : B0.μN = Measure.dirac (Matrix.of.symm (1 : B.Mat k 0))` using `hN`. Establish `hmeas : (B0.μW.prod B0.μN).prod (B0.μW'.prod B0.μN) = (B0.μW.prod B0.μW').map (fun p : Mt k 0 × Mt k 0 => ((p.1, Matrix.of.symm (1 : B.Mat k 0)), (p.2, Matrix.of.symm (1 : B.Mat k 0))))`.
+
+Rewrite using `[hN0, Measure.prod_dirac, Measure.prod_dirac, Measure.map_prod_map (f := fun x : Mt k 0 => (x, Matrix.of.symm (1 : B.Mat k 0))) (g := fun x : Mt k 0 => (x, Matrix.of.symm (1 : B.Mat k 0))) _ _ (by fun_prop) (by fun_prop)]`. Both sides reduce to the same expression. Establish `hemb : MeasurableEmbedding (fun p : Mt k 0 × Mt k 0 => ((p.1, Matrix.of.symm (1 : B.Mat k 0)), (p.2, Matrix.of.symm (1 : B.Mat k 0))))` using `(MeasurableEmbedding.id.prodMk_right _).prodMap (MeasurableEmbedding.id.prodMk_right _)`. Establish `hpsi : ∀ (z : Fin (2 * 0 + k + 1) → ℂ) (g : B.Mat k 0), Formalism.QuantumDeterminants.psi k 0 z cStd g = 1`. Introduce `z g`.
+
+Simplify using `[Formalism.QuantumDeterminants.psi, Formalism.QuantumDeterminants.ell]`. Unfold `B.JF besselJ`. Rewrite using `[hmeas, hemb.integral_map]`. Use `integral_congr_ae (Filter.Eventually.of_forall fun p => ?_)` and prove the remaining obligations. Simplify using `only [hpsi, star_one, mul_one, one_smul, Equiv.apply_symm_apply, inv_one]`.
+-/
 theorem jacquet_integral_level_zero (hρ : ρ = 0) (B0 : B.RealPlaceData k ρ Wp Wq) (hN : B0.μN = D.muN k ρ)
     (Φ : B.Mat k ρ → (Wq →L[ℂ] Wp)) (γ : B.Mat k ρ) :
     B.JF B0 Φ γ = ∫ p : Mt k ρ × Mt k ρ, (B0.π (Matrix.of p.1)).comp

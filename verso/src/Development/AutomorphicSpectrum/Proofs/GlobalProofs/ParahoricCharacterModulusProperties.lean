@@ -13,6 +13,11 @@ section Alg
 
 variable {F : Type} [Field F]
 
+/- English proof (translation)
+Establish `h` using `RingHom.map_det O.subtype (fun i j => (⟨X i j, hX i j⟩ : O))`. Establish `h2 : O.subtype.mapMatrix (fun i j => (⟨X i j, hX i j⟩ : O) : Matrix ι ι O) = X`. Use extensionality with `i j`. Both sides reduce to the same expression. Rewrite `h` using `[h2]`.
+
+Conclude with `h.symm`.
+-/
 theorem det_eq_coe {ι : Type} [Fintype ι] [DecidableEq ι] (O : Subring F) (X : Matrix ι ι F)
     (hX : ∀ i j, X i j ∈ O) :
     X.det = ((Matrix.det (fun i j => (⟨X i j, hX i j⟩ : O)) : O) : F) := by
@@ -22,10 +27,24 @@ theorem det_eq_coe {ι : Type} [Fintype ι] [DecidableEq ι] (O : Subring F) (X 
   rw [h2] at h
   exact h.symm
 
+/- English proof (translation)
+Rewrite using `[det_eq_coe O X hX]`. Conclude with `Subtype.property _`.
+-/
 theorem det_mem {ι : Type} [Fintype ι] [DecidableEq ι] (O : Subring F) (X : Matrix ι ι F)
     (hX : ∀ i j, X i j ∈ O) : X.det ∈ O := by
   rw [det_eq_coe O X hX]; exact Subtype.property _
 
+/- English proof (translation)
+Set `Xo : Matrix ι ι O` to `fun i j => ⟨X i j, hX i j⟩`. Set `Yo : Matrix ι ι O` to `fun i j => ⟨Y i j, hY i j⟩`. Set `I : Ideal O` to `Ideal.span {⟨ϖ, hϖ⟩}`. Establish `hmap : (Ideal.Quotient.mk I).mapMatrix Xo = (Ideal.Quotient.mk I).mapMatrix Yo`. Use extensionality with `i j`.
+
+Simplify using `only [RingHom.mapMatrix_apply, Matrix.map_apply]`. Rewrite using `[Ideal.Quotient.eq, Ideal.mem_span_singleton']`. Take `⟨o, ho, e⟩` from `h i j`. Use `⟨⟨o, ho⟩, Subtype.ext ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `o * ϖ = X i j - Y i j`.
+
+Rewrite using `[e, mul_comm]`. Establish `hdet : Ideal.Quotient.mk I Xo.det = Ideal.Quotient.mk I Yo.det`. Rewrite using `[RingHom.map_det, RingHom.map_det, hmap]`. Rewrite `hdet` using `[Ideal.Quotient.eq, Ideal.mem_span_singleton']`. Take `⟨a, ha⟩` from `hdet`.
+
+Use `⟨a, a.2, ?_⟩` and prove the remaining obligations. Rewrite using `[det_eq_coe O X hX, det_eq_coe O Y hY]`. Use `congrArg Subtype.val ha` as an intermediate fact. Express the relevant statement in the definitionally equal form `(a : F) * ϖ = ((Xo.det : O) : F) - ((Yo.det : O) : F) at this`. Express the relevant statement in the definitionally equal form `((Xo.det : O) : F) - ((Yo.det : O) : F) = ϖ * a`.
+
+Rewrite using `[← this, mul_comm]`.
+-/
 theorem det_congr_mod {ι : Type} [Fintype ι] [DecidableEq ι] (O : Subring F) {ϖ : F} (hϖ : ϖ ∈ O)
     (X Y : Matrix ι ι F) (hX : ∀ i j, X i j ∈ O) (hY : ∀ i j, Y i j ∈ O)
     (h : ∀ i j, ∃ o ∈ O, X i j - Y i j = ϖ * o) : ∃ o ∈ O, X.det - Y.det = ϖ * o := by
@@ -51,6 +70,11 @@ theorem det_congr_mod {ι : Type} [Fintype ι] [DecidableEq ι] (O : Subring F) 
   change ((Xo.det : O) : F) - ((Yo.det : O) : F) = ϖ * a
   rw [← this, mul_comm]
 
+/- English proof (translation)
+Establish `h : M = Matrix.reindex finSumFinEquiv finSumFinEquiv (Matrix.fromBlocks (bAA M) (bAD M) (bDA M) (bDD M))`. Use extensionality with `i j`. Apply the tactic sequence `induction i using Fin.addCases <;> induction j using Fin.addCases <;>`. Simplify using `[bAA, bAD, bDA, bDD]`. Use `conv_lhs => rw [h]`.
+
+Conclude with `Matrix.det_reindex_self _ _`.
+-/
 theorem det_eq_blocks {r c : ℕ} (M : Matrix (Fin (r + c)) (Fin (r + c)) F) :
     M.det = (Matrix.fromBlocks (bAA M) (bAD M) (bDA M) (bDD M)).det := by
   have h : M = Matrix.reindex finSumFinEquiv finSumFinEquiv
@@ -61,20 +85,38 @@ theorem det_eq_blocks {r c : ℕ} (M : Matrix (Fin (r + c)) (Fin (r + c)) F) :
   conv_lhs => rw [h]
   exact Matrix.det_reindex_self _ _
 
+/- English proof (translation)
+The claim follows from `Matrix.submatrix_one _ (Fin.natAdd_injective _ _)`.
+-/
 theorem bDD_one {r c : ℕ} : bDD (1 : Matrix (Fin (r + c)) (Fin (r + c)) F) = 1 :=
   Matrix.submatrix_one _ (Fin.natAdd_injective _ _)
 
+/- English proof (translation)
+Unfold `chi0`. Rewrite using `[dif_neg u.ne_zero]`. Simplify using the standard rewrite rules.
+-/
 theorem extendedCharacter_units (δ : Fˣ →* ℂˣ) (u : Fˣ) : chi0 δ (u : F) = ((δ u : ℂˣ) : ℂ) := by
   unfold chi0
   rw [dif_neg u.ne_zero]
   simp
 
+/- English proof (translation)
+Establish `e : x * y = ((Units.mk0 x hx * Units.mk0 y hy : Fˣ) : F)` using `by simp`. Rewrite using `[e, extendedCharacter_units, map_mul, Units.val_mul, ← extendedCharacter_units, ← extendedCharacter_units]`. Simplify using the standard rewrite rules.
+-/
 theorem unitCharExtendedByZero_mul (δ : Fˣ →* ℂˣ) {x y : F} (hx : x ≠ 0) (hy : y ≠ 0) :
     chi0 δ (x * y) = chi0 δ x * chi0 δ y := by
   have e : x * y = ((Units.mk0 x hx * Units.mk0 y hy : Fˣ) : F) := by simp
   rw [e, extendedCharacter_units, map_mul, Units.val_mul, ← extendedCharacter_units, ← extendedCharacter_units]
   simp
 
+/- English proof (translation)
+Establish `hy0 : y ≠ 0`. Introduce and unpack `rfl`. Simplify using `at hy`. Establish `hx0 : x ≠ 0`. Introduce and unpack `rfl`.
+
+Simplify using `[hy] at hxy`. Establish `h1 : δ (Units.mk0 x hx0 / Units.mk0 y hy0) = 1`. Apply `hδ.tame` to reduce the goal to its premises. Establish `e : (((Units.mk0 x hx0 / Units.mk0 y hy0 : Fˣ) : F) - 1) = (x - y) / y`. Simplify using `only [Units.val_div_eq_div_val, Units.val_mk0]`.
+
+Clear the denominators using the available nonvanishing facts. Rewrite using `[e, map_div₀, hy, div_one]`. Conclude with `hxy`. Rewrite `h1` using `[map_div, div_eq_one]`. Establish `ex : x = ((Units.mk0 x hx0 : Fˣ) : F)` using `rfl`.
+
+Establish `ey : y = ((Units.mk0 y hy0 : Fˣ) : F)` using `rfl`. Rewrite using `[ex, ey, extendedCharacter_units, extendedCharacter_units, h1]`.
+-/
 theorem extendedCharacter_congr_of_tame {nrm : AbsoluteValue F ℝ} {δ : Fˣ →* ℂˣ} (hδ : Del nrm δ) {x y : F}
     (hy : nrm y = 1) (hxy : nrm (x - y) < 1) : chi0 δ x = chi0 δ y := by
   have hy0 : y ≠ 0 := by
@@ -102,6 +144,21 @@ section Loc
 variable {F : Type} [Field F] [ValuativeRel F] [TopologicalSpace F] [IsNonarchimedeanLocalField F]
   {O : Subring F} {ϖ : F} {nrm : AbsoluteValue F ℝ} {q : ℕ}
 
+/- English proof (translation)
+Take `⟨-, hϖ, hO, hlt, -, hult, -⟩` from `GlobalTheory.T.localField_uniformizer_norm_properties h`. Use `set M : Matrix (Fin (r + c)) (Fin (r + c)) F := (k : Matrix (Fin (r + c)) (Fin (r + c)) F) with hMdef`. Establish `hM : IsInt O M` using `hk.1.1`. Establish `hdet : nrm M.det = 1` using `((GlobalTheory.T.mem_integralGL_iff_integral_unit_det h (r + c) k).1 hk.1).2`. Establish `hC` using `hk.2`.
+
+Establish `hcong : ∃ o ∈ O, M.det - (bAA M).det * (bDD M).det = ϖ * o`. Apply the tactic sequence `have := det_congr_mod O hϖ (Matrix.fromBlocks (bAA M) (bAD M) (bDA M) (bDD M)) (Matrix.fromBlocks (bAA M) (bAD M) 0 (bDD M)) (by rintro (i | i) (j | j) <;> exact hM _ _) (by`. Introduce and unpack `(i | i) (j | j)`. Conclude with `hM _ _`. Conclude with `hM _ _`.
+
+Conclude with `O.zero_mem`. Conclude with `hM _ _)`. Use the proof step `(by`. Introduce and unpack `(i | i) (j | j)`. Conclude with `⟨0, O.zero_mem, by simp⟩`.
+
+Conclude with `⟨0, O.zero_mem, by simp⟩`. Take `⟨o, ho, e⟩` from `hC i j`. Conclude with `⟨o, ho, by simpa using e⟩`. Conclude with `⟨0, O.zero_mem, by simp⟩)`. Rewrite `this` using `[← det_eq_blocks, Matrix.det_fromBlocks_zero₂₁]`. Then use the resulting hypothesis.
+
+Take `⟨o, ho, e⟩` from `hcong`. Establish `hA : nrm (bAA M).det ≤ 1` using `(hO _).2 (det_mem O _ fun i j => hM _ _)`. Establish `hD : nrm (bDD M).det ≤ 1` using `(hO _).2 (det_mem O _ fun i j => hM _ _)`. Establish `hsmall : nrm (ϖ * o) < 1` using `(hlt _).2 ⟨o, ho, rfl⟩`. Establish `hprod : 1 ≤ nrm (bAA M).det * nrm (bDD M).det`.
+
+Establish `e2 : M.det = (bAA M).det * (bDD M).det + ϖ * o` using `by rw [← e]; ring`. Establish `h3` using `hult ((bAA M).det * (bDD M).det) (ϖ * o)`. Rewrite `h3` using `[← e2, hdet, map_mul]`. Break down `le_max_iff.1 h3 with h4 | h4` into its components or cases. Conclude with `h4`.
+
+Conclude with `absurd h4 (not_le.2 hsmall)`. Establish `hA0 : 0 ≤ nrm (bAA M).det` using `nrm.nonneg _`. Establish `hD0 : 0 ≤ nrm (bDD M).det` using `nrm.nonneg _`. Apply the tactic sequence `refine ⟨?_, ?_, o, ho, e⟩ <;> nlinarith`.
+-/
 theorem par_data (h : LF O ϖ nrm q) {r c : ℕ} {k : GL (Fin (r + c)) F} (hk : k ∈ parJ O ϖ r c) :
     nrm (bAA (k : Matrix (Fin (r + c)) (Fin (r + c)) F)).det = 1 ∧
     nrm (bDD (k : Matrix (Fin (r + c)) (Fin (r + c)) F)).det = 1 ∧
@@ -146,6 +203,23 @@ theorem par_data (h : LF O ϖ nrm q) {r c : ℕ} {k : GL (Fin (r + c)) F} (hk : 
   have hD0 : 0 ≤ nrm (bDD M).det := nrm.nonneg _
   refine ⟨?_, ?_, o, ho, e⟩ <;> nlinarith
 
+/- English proof (translation)
+Take `⟨-, hϖ, hO, hlt, -, -, -⟩` from `GlobalTheory.T.localField_uniformizer_norm_properties h`. Take `⟨-, hD, -⟩` from `par_data h hk`. Take `⟨-, hD', -⟩` from `par_data h hk'`. Unfold `lamJ`. Establish `hC` using `hk.2`.
+
+Use `set M : Matrix (Fin (r + c)) (Fin (r + c)) F := (k : Matrix (Fin (r + c)) (Fin (r + c)) F) with hMdef`. Use `set M' : Matrix (Fin (r + c)) (Fin (r + c)) F := (k' : Matrix (Fin (r + c)) (Fin (r + c)) F) with hM'def`. Establish `hM : IsInt O M` using `hk.1.1`. Establish `hM' : IsInt O M'` using `hk'.1.1`. Establish `hprod : ((k * k' : GL (Fin (r + c)) F) : Matrix (Fin (r + c)) (Fin (r + c)) F) = M * M'` using `rfl`.
+
+Establish `hblock : bDD (M * M') = bDA M * bAD M' + bDD M * bDD M'` using `(GlobalTheory.CompanionTheory.QL.BlockMul.blocks_mul r c c c M M').2.2.2`. Rewrite using `[hprod, hblock]`. Use `choose o ho e using hC`. Establish `hCB : ∀ i j, ∃ t ∈ O, (bDA M * bAD M') i j = ϖ * t`. Introduce `i j`.
+
+Use `⟨∑ l, o i l * bAD M' l j, O.sum_mem fun l _ => O.mul_mem (ho i l) (hM' _ _), ?_⟩` and prove the remaining obligations. Rewrite using `[Matrix.mul_apply, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun l _ => ?_` and prove the remaining obligations. Rewrite using `[e i l, mul_assoc]`. Establish `hDD : ∀ i j, (bDD M * bDD M') i j ∈ O`.
+
+Introduce `i j`. Rewrite using `[Matrix.mul_apply]`. Conclude with `O.sum_mem fun l _ => O.mul_mem (hM _ _) (hM' _ _)`. Take `⟨t, ht, et⟩` from `det_congr_mod O hϖ (bDA M * bAD M' + bDD M * bDD M') (bDD M * bDD M') (by`. Introduce `i j`.
+
+Take `⟨t, ht, et⟩` from `hCB i j`. Rewrite using `[Matrix.add_apply, et]`. Conclude with `O.add_mem (O.mul_mem hϖ ht) (hDD i j))`. Use `hDD`. Use the proof step `(by`.
+
+Introduce `i j`. Take `⟨t, ht, et⟩` from `hCB i j`. Conclude with `⟨t, ht, by rw [Matrix.add_apply, et]; ring⟩)`. Establish `hn : nrm (bDD M * bDD M').det = 1`. Rewrite using `[Matrix.det_mul, map_mul, hD, hD', one_mul]`.
+
+Establish `hne : ∀ {x : F}, nrm x = 1 → x ≠ 0`. Introduce and unpack `x hx rfl`. Simplify using `at hx`. Rewrite using `[extendedCharacter_congr_of_tame hδ hn (by rw [et]; exact (hlt _).2 ⟨t, ht, rfl⟩), Matrix.det_mul, unitCharExtendedByZero_mul δ (hne hD) (hne hD')]`.
+-/
 theorem lam_mul (h : LF O ϖ nrm q) {δ : Fˣ →* ℂˣ} (hδ : Del nrm δ) {r c : ℕ}
     {k k' : GL (Fin (r + c)) F} (hk : k ∈ parJ O ϖ r c) (hk' : k' ∈ parJ O ϖ r c) :
     lamJ δ (k * k') = lamJ δ k * lamJ δ k' := by
@@ -194,6 +268,21 @@ theorem lam_mul (h : LF O ϖ nrm q) {δ : Fˣ →* ℂˣ} (hδ : Del nrm δ) {r 
 
 end Loc
 
+/- English proof (translation)
+Introduce `F _ _ _ _ O ϖ nrm q h δ hδ r c`. Take `⟨-, hϖ, hO, hlt, -, -, -⟩` from `GlobalTheory.T.localField_uniformizer_norm_properties h`. Establish `hne : ∀ {x : F}, nrm x = 1 → x ≠ 0`. Introduce and unpack `x hx rfl`. Simplify using `at hx`.
+
+Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Unfold `lamJ`. Establish `e : ((1 : GL (Fin (r + c)) F) : Matrix (Fin (r + c)) (Fin (r + c)) F) = 1` using `rfl`. Rewrite using `[e, bDD_one, Matrix.det_one]`. Use `extendedCharacter_units δ (1 : Fˣ)` as an intermediate fact.
+
+Simplify using `using this`. Introduce `k hk`. Take `⟨hA, hD, o, ho, e⟩` from `par_data h hk`. Use `⟨?_, hA, hD, ?_, fun k' hk' => lam_mul h hδ hk hk'⟩` and prove the remaining obligations. Unfold `lamJ`.
+
+Establish `: (bDD (k : Matrix (Fin (r + c)) (Fin (r + c)) F)).det = ((Units.mk0 _ (hne hD) : Fˣ) : F)` using `rfl`. Rewrite using `[this, extendedCharacter_units]`. Conclude with `hδ.unitary _`. Unfold `lamJ`. Rewrite using `[← extendedCharacter_units, ← unitCharExtendedByZero_mul δ (hne hA) (hne hD)]`.
+
+Apply `extendedCharacter_congr_of_tame hδ` to reduce the goal to its premises. Rewrite using `[map_mul, hA, hD, one_mul]`. Rewrite using `[Matrix.GeneralLinearGroup.val_det_apply, e]`. Conclude with `(hlt _).2 ⟨o, ho, rfl⟩`. Take `⟨-, -, -, hcont, -, -⟩` from `GlobalTheory.T.localField_topology_norm_balls h`.
+
+Introduce `k₀ hk₀`. Take `⟨-, hD₀, -⟩` from `par_data h hk₀`. Establish `hf : Continuous (fun k : GL (Fin (r + c)) F => (bDD (k : Matrix (Fin (r + c)) (Fin (r + c)) F)).det)` using `Continuous.matrix_det (Continuous.matrix_submatrix Units.continuous_val _ _)`. Establish `hU : {k : GL (Fin (r + c)) F | nrm ((bDD (k : Matrix (Fin (r + c)) (Fin (r + c)) F)).det - (bDD (k₀ : Matrix (Fin (r + c)) (Fin (r + c)) F)).det) < 1} ∈ nhds k₀`. Use `IsOpen.mem_nhds (isOpen_lt (hcont.comp (hf.sub continuous_const)) continuous_const) ?_` and prove the remaining obligations.
+
+Simplify using the standard rewrite rules. Use `(continuousWithinAt_const (b := lamJ δ k₀)).congr_of_eventuallyEq ?_ rfl` and prove the remaining obligations. Use `filter_upwards [mem_nhdsWithin_of_mem_nhds hU] with k hkU`. Conclude with `extendedCharacter_congr_of_tame hδ hD₀ hkU`.
+-/
 theorem tame_character : ∀ {F : Type} [Field F] [ValuativeRel F] [TopologicalSpace F] [IsNonarchimedeanLocalField F] {O : Subring F} {ϖ : F} {nrm : AbsoluteValue F ℝ} {q : ℕ}, LF O ϖ nrm q → ∀ δ : Fˣ →* ℂˣ, Del nrm δ → ∀ r c : ℕ, lamJ δ (1 : GL (Fin (r + c)) F) = 1 ∧ (∀ k ∈ parJ O ϖ r c, ‖lamJ δ k‖ = 1 ∧ nrm (bAA (k : Matrix (Fin (r + c)) (Fin (r + c)) F)).det = 1 ∧ nrm (bDD (k : Matrix (Fin (r + c)) (Fin (r + c)) F)).det = 1 ∧ ((δ (Matrix.GeneralLinearGroup.det k) : ℂˣ) : ℂ) = chi0 δ (bAA (k : Matrix (Fin (r + c)) (Fin (r + c)) F)).det * lamJ δ k ∧ ∀ k' ∈ parJ O ϖ r c, lamJ δ (k * k') = lamJ δ k * lamJ δ k') ∧ ContinuousOn (fun k : GL (Fin (r + c)) F => lamJ δ k) (parJ O ϖ r c) := by
   intro F _ _ _ _ O ϖ nrm q h δ hδ r c
   obtain ⟨-, hϖ, hO, hlt, -, -, -⟩ := GlobalTheory.T.localField_uniformizer_norm_properties h

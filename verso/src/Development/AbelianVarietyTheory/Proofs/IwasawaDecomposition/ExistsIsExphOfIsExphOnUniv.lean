@@ -17,9 +17,17 @@ open Set
 
 def shortCut (ε s : ℝ) : ℝ := Real.smoothTransition ((ε / 2 - s) / (ε / 4))
 
+/- English proof (translation)
+The claim follows from `Real.smoothTransition.one_of_one_le ((one_le_div (by positivity)).2 (by linarith))`.
+-/
 theorem smoothCutoff_eq_one {ε s : ℝ} (hε : 0 < ε) (hs : s ≤ ε / 4) : shortCut ε s = 1 :=
   Real.smoothTransition.one_of_one_le ((one_le_div (by positivity)).2 (by linarith))
 
+/- English proof (translation)
+Break down `lt_or_ge s (ε / 2) with h | h` into its components or cases. Establish `h0` using `Real.smoothTransition.nonneg ((ε / 2 - s) / (ε / 4))`. Establish `h1` using `Real.smoothTransition.le_one ((ε / 2 - s) / (ε / 4))`. Establish `: shortCut ε s ^ 2 ≤ 1` using `pow_le_one₀ h0 h1`. Use the polynomial consequences of the given equalities and inequalities.
+
+Establish `: shortCut ε s = 0` using `Real.smoothTransition.zero_of_nonpos (div_nonpos_of_nonpos_of_nonneg (by linarith) (by positivity))`. Rewrite using `[this]`. Simplify using `using hε`.
+-/
 theorem smoothCutoff_sq_mul_lt {ε s : ℝ} (hε : 0 < ε) (hs : 0 ≤ s) : shortCut ε s ^ 2 * s < ε := by
   rcases lt_or_ge s (ε / 2) with h | h
   · have h0 := Real.smoothTransition.nonneg ((ε / 2 - s) / (ε / 4))
@@ -31,11 +39,17 @@ theorem smoothCutoff_sq_mul_lt {ε s : ℝ} (hε : 0 < ε) (hs : 0 ≤ s) : shor
     rw [this]
     simpa using hε
 
+/- English proof (translation)
+The claim follows from `Real.smoothTransition.contDiff.comp ((contDiff_const.sub contDiff_id).div_const _)`.
+-/
 theorem contDiff_shortCut (ε : ℝ) : ContDiff ℝ ∞ (shortCut ε) :=
   Real.smoothTransition.contDiff.comp ((contDiff_const.sub contDiff_id).div_const _)
 
 variable {k : Type} [CommRing k] {Y : Scheme.{0}} {p : Y ⟶ Sp k} {σ : k →+* ℂ} {d : ℕ}
 
+/- English proof (translation)
+Use function extensionality and compare the values at `b`. Simplify using `only [AlgChart.dtrans, WithLp.toLp_smul, ContinuousLinearMap.map_smul_of_tower, Pi.smul_apply]`. Both sides reduce to the same expression.
+-/
 theorem dtrans_smul (c c' : AlgChart p σ d) (y : CxPts p σ) (t : ℝ) (ξ : Fin d → ℂ) :
     c.dtrans c' y (t • ξ) = t • c.dtrans c' y ξ := by
   funext b
@@ -45,6 +59,11 @@ theorem dtrans_smul (c c' : AlgChart p σ d) (y : CxPts p σ) (t : ℝ) (ξ : Fi
 def formIn (a : ChartForm p σ d) (c : AlgChart p σ d) (q : ReciprocityTheory.L2DbarEstimates.V d × ReciprocityTheory.L2DbarEstimates.V d) : ℝ :=
   (((q.2.ofLp ᵥ* matIn a c q.1) ⬝ᵥ star q.2.ofLp : ℂ)).re
 
+/- English proof (translation)
+Establish `hm : ∀ i j, ContDiffOn ℝ ∞ (fun q : ReciprocityTheory.L2DbarEstimates.V d × ReciprocityTheory.L2DbarEstimates.V d => matIn a c q.1 i j) (c.e.target ×ˢ univ)` using `fun i j => ((GlobalTheory.T.chart_matrix_smooth_invertible k Y p σ d R a ha c).1 i j).comp contDiffOn_fst fun q hq => hq.1`. Establish `hx : ∀ i, ContDiff ℝ ∞ (fun q : ReciprocityTheory.L2DbarEstimates.V d × ReciprocityTheory.L2DbarEstimates.V d => q.2.ofLp i)` using `fun i => (contDiff_piLp_apply 2).comp contDiff_snd`. Establish `e : formIn a c = fun q => Complex.reCLM (∑ j, (∑ i, q.2.ofLp i * matIn a c q.1 i j) * Complex.conjCLE (q.2.ofLp j))`. Use function extensionality and compare the values at `q`. Simplify using `[formIn, vecMul, dotProduct]`.
+
+Rewrite using `[e]`. Use `Complex.reCLM.contDiff.comp_contDiffOn (ContDiffOn.sum fun j _ => ContDiffOn.mul (ContDiffOn.sum fun i _ => ((hx i).contDiffOn).mul (hm i j)) (Complex.conjCLE.contDiff.comp (hx j)).contDiffOn)` and prove the remaining obligations.
+-/
 theorem contDiffOn_formIn {R : AnRead p σ d} {a : ChartForm p σ d} (ha : IsKaehlerForm R a) (c : AlgChart p σ d) :
     ContDiffOn ℝ ∞ (formIn a c) (c.e.target ×ˢ (univ : Set (ReciprocityTheory.L2DbarEstimates.V d))) := by
   have hm : ∀ i j, ContDiffOn ℝ ∞ (fun q : ReciprocityTheory.L2DbarEstimates.V d × ReciprocityTheory.L2DbarEstimates.V d => matIn a c q.1 i j)
@@ -61,6 +80,31 @@ theorem contDiffOn_formIn {R : AnRead p σ d} {a : ChartForm p σ d} (ha : IsKae
     (ContDiffOn.sum fun i _ => ((hx i).contDiffOn).mul (hm i j))
     (Complex.conjCLE.contDiff.comp (hx j)).contDiffOn)
 
+/- English proof (translation)
+Introduce `k _ Y p σ d _ R a E ε ha hε hE`. Establish `hsm : ∀ c : AlgChart p σ d, ∀ y ∈ c.e.source, ∀ (t : ℝ) ξ, a c y (t • ξ) = t ^ 2 * a c y ξ` using `fun c y hy => (continuous_and_smul ha hy).2`. Establish `hnn : ∀ c : AlgChart p σ d, ∀ y ∈ c.e.source, ∀ ξ, 0 ≤ a c y ξ`. Introduce `c y hy ξ`. Distinguish the cases in `h : ξ = 0`.
+
+Substitute `h` using the available equality. Use `hsm c y hy 0 0` as an intermediate fact. Rewrite `this` using `[smul_zero, zero_pow two_ne_zero, zero_mul]`. Rewrite using `[this]`. Conclude with `(ha.2 c y hy ξ h).le`.
+
+Establish `hshort : ∀ c : AlgChart p σ d, ∀ y ∈ c.e.source, ∀ ξ, a c y (shortCut ε (a c y ξ) • ξ) < ε`. Introduce `c y hy ξ`. Rewrite using `[hsm c y hy]`. Conclude with `smoothCutoff_sq_mul_lt hε (hnn c y hy ξ)`. Set `E' : ChartMap p σ d` to `fun c y ξ => E c y (shortCut ε (a c y ξ) • ξ)`.
+
+Establish `hform : ∀ c : AlgChart p σ d, ∀ q ∈ c.e.target ×ˢ (univ : Set (ReciprocityTheory.L2DbarEstimates.V d)), formIn a c q = a c (c.e.symm q.1) q.2.ofLp`. Introduce `c q hq`. Use `(GlobalTheory.T.chart_matrix_smooth_invertible k Y p σ d R a ha c).2.2 q.1 hq.1 q.2` as an intermediate fact. Rewrite using `[formIn, ← this, Complex.ofReal_re]`. Set `g : AlgChart p σ d → ReciprocityTheory.L2DbarEstimates.V d × ReciprocityTheory.L2DbarEstimates.V d → ReciprocityTheory.L2DbarEstimates.V d × ReciprocityTheory.L2DbarEstimates.V d` to `fun c q => (q.1, shortCut ε (formIn a c q) • q.2)`.
+
+Establish `hg : ∀ c, ContDiffOn ℝ ∞ (g c) (c.e.target ×ˢ univ)` using `fun c => contDiffOn_fst.prodMk (((contDiff_shortCut ε).comp_contDiffOn (contDiffOn_formIn ha c)).smul contDiffOn_snd)`. Establish `hopen : ∀ c : AlgChart p σ d, IsOpen (c.e.target ×ˢ (univ : Set (ReciprocityTheory.L2DbarEstimates.V d)))` using `fun c => c.e.open_target.prod isOpen_univ`. Establish `hFg : ∀ c, ∀ q ∈ c.e.target ×ˢ univ, E c (c.e.symm (g c q).1) (g c q).2.ofLp = E' c (c.e.symm q.1) q.2.ofLp`. Introduce `c q hq`. Simplify using `only [g, E', WithLp.ofLp_smul, hform c q hq]`.
+
+Establish `hgs : ∀ c, ∀ q ∈ c.e.target ×ˢ univ, (g c q).1 ∈ c.e.target ∧ a c (c.e.symm (g c q).1) (g c q).2.ofLp < ε`. Introduce `c q hq`. Use `⟨hq.1, ?_⟩` and prove the remaining obligations. Simplify using `only [g, WithLp.ofLp_smul, hform c q hq]`. Conclude with `hshort c _ (c.e.map_target hq.1) _`.
+
+Use `⟨E', ⟨?_, ?_, ?_, ?_, ?_⟩⟩` and prove the remaining obligations. Introduce `c c' y hy hy' ξ`. Simplify using `only [E']`. Rewrite using `[hE.trans c c' y hy hy', dtrans_smul, ha.trans hy hy' ξ]`. Introduce `c q hq`.
+
+Establish `hFc : ContinuousAt (fun q : ReciprocityTheory.L2DbarEstimates.V d × ReciprocityTheory.L2DbarEstimates.V d => E c (c.e.symm q.1) q.2.ofLp) (g c q)` using `hE.cont c _ (hgs c q hq).1 trivial _ (hgs c q hq).2`. Establish `hgc : ContinuousAt (g c) q` using `(hg c).continuousOn.continuousAt ((hopen c).mem_nhds hq)`. Use `(ContinuousAt.congr (hFc.comp hgc) ?_).continuousWithinAt` and prove the remaining obligations. Conclude with `eventually_of_mem ((hopen c).mem_nhds hq) fun q' hq' => hFg c q' hq'`. Introduce `c c' q hq`.
+
+Establish `hq0 : q ∈ c.e.target ×ˢ (univ : Set (ReciprocityTheory.L2DbarEstimates.V d))` using `⟨hq.1, trivial⟩`. Establish `hF` using `hE.smooth c c' _ (hgs c q hq0).1 trivial _ (hgs c q hq0).2 (by rw [hFg c q hq0]; exact hq.2)`. Establish `hgd : ContDiffAt ℝ ∞ (g c) q` using `(hg c).contDiffAt ((hopen c).mem_nhds hq0)`. Use `((hF.comp q hgd).congr_of_eventuallyEq ?_).contDiffWithinAt` and prove the remaining obligations. Conclude with `eventually_of_mem ((hopen c).mem_nhds hq0) fun q' hq' => by`.
+
+Simplify using `only [Function.comp_apply, hFg c q' hq']`. Introduce `c y hy`. Simplify using `only [E', smul_zero]`. Conclude with `hE.zero c y hy trivial`. Introduce `c y hy ξ n`.
+
+Rewrite using `[← hE.jets c y hy trivial ξ n]`. Apply `Filter.EventuallyEq.iteratedDeriv_eq` to reduce the goal to its premises. Establish `hc : Continuous fun t : ℝ => t ^ 2 * a c y ξ.ofLp` using `by fun_prop`. Establish `h0 : (0 : ℝ) ^ 2 * a c y ξ.ofLp < ε / 4`. Rewrite using `[zero_pow two_ne_zero, zero_mul]`.
+
+Check the signs of the components of the expression. Use `filter_upwards [(hc.tendsto 0).eventually (gt_mem_nhds h0)] with t ht`. Simplify using `only [E', hsm c y hy, smoothCutoff_eq_one hε ht.le, one_smul]`.
+-/
 theorem exists_isExph_of_isExphOn_univ : ∀ (k : Type) [CommRing k] (Y : Scheme.{0}) (p : Y ⟶ Sp k) (σ : k →+* ℂ) (d : ℕ)
     [SmoothOfRelativeDimension d p] (R : AnRead p σ d) (a : ChartForm p σ d) (E : ChartMap p σ d) (ε : ℝ),
     IsKaehlerForm R a → 0 < ε → ExphOn.IsExphOn a E Set.univ ε → ∃ E' : ChartMap p σ d, IsExph a E' := by

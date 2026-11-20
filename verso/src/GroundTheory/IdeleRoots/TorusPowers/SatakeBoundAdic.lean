@@ -19,6 +19,11 @@ attribute [local instance] GroundTheory.Automorphic.Spherical.fintypeResidue
 
 variable {K : Type} [Field K] [NumberField K] (w : HeightOneSpectrum (𝓞 K))
 
+/- English proof (translation)
+Establish `hS : (Valuation.integer (ValuativeRel.valuation (w.adicCompletion K))) = (w.adicCompletionIntegers K).toSubring`. Use extensionality with `x`. Conclude with `GroundTheory.Global.mem_valuationInteger_iff w x`. Set `e` to `RingEquiv.subringCongr hS`. Establish `hirr : Irreducible (e (uniformizer (w.adicCompletion K)))` using `(MulEquiv.irreducible_iff e).2 (irreducible_uniformizer _)`.
+
+Use `GroundTheory.Global.valued_of_irreducible (v := w) (K := K) (ϖ := ⟨(e (uniformizer (w.adicCompletion K)) : w.adicCompletion K), (e _).2⟩) (by exact hirr)` as an intermediate fact. Simplify `this` using `[e]`.
+-/
 theorem valued_uniformizer_eq :
     Valued.v (uniformizer (w.adicCompletion K) : w.adicCompletion K) = WithZero.exp (-1 : ℤ) := by
   have hS : (Valuation.integer (ValuativeRel.valuation (w.adicCompletion K))) =
@@ -32,11 +37,17 @@ theorem valued_uniformizer_eq :
     (ϖ := ⟨(e (uniformizer (w.adicCompletion K)) : w.adicCompletion K), (e _).2⟩) (by exact hirr)
   simpa [e] using this
 
+/- English proof (translation)
+The claim follows from `(HeightOneSpectrum.mem_adicCompletionIntegers (R := 𝓞 K) K w).1 ((GroundTheory.Global.mem_valuationInteger_iff w x).1 hx)`.
+-/
 theorem valued_le_one_of_mem {x : w.adicCompletion K} (hx : x ∈ 𝒪[w.adicCompletion K]) :
     Valued.v x ≤ 1 :=
   (HeightOneSpectrum.mem_adicCompletionIntegers (R := 𝓞 K) K w).1
     ((GroundTheory.Global.mem_valuationInteger_iff w x).1 hx)
 
+/- English proof (translation)
+The claim follows from `(GroundTheory.Global.mem_valuationInteger_iff w x).2 ((HeightOneSpectrum.mem_adicCompletionIntegers (R := 𝓞 K) K w).2 hx)`.
+-/
 theorem mem_of_valued_le_one {x : w.adicCompletion K} (hx : Valued.v x ≤ 1) :
     x ∈ 𝒪[w.adicCompletion K] :=
   (GroundTheory.Global.mem_valuationInteger_iff w x).2

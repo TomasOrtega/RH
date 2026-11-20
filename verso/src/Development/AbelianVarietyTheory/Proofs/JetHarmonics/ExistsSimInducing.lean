@@ -12,6 +12,17 @@ namespace GlobalTheory.CoverCharacter
 
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E}
 
+/- English proof (translation)
+Establish `h0 : (Ideal.span {(l.M : 𝓞 E)} : Ideal (𝓞 E)) ≠ 0`. Use `l.three_le` as an intermediate fact. Rewrite using `[Ne, Ideal.zero_eq_bot, Ideal.span_singleton_eq_bot, Nat.cast_eq_zero]`. Use linear arithmetic over natural numbers and integers. Establish `h1 : Ideal.span {(l.M : 𝓞 E)} * (I * I.map (H.bar : 𝓞 E →+* 𝓞 E)) = Ideal.span {(l.M : 𝓞 E)} * Ideal.span {(p : 𝓞 E)}`.
+
+Establish `h` using `l₂.prod`. Rewrite `h` using `[hI, Ideal.map_mul, hM, Nat.cast_mul, ← Ideal.span_singleton_mul_span_singleton]`. Rewrite using `[← h, ← l.prod]`. Expand and normalize the polynomial expressions, which then agree. Establish `h2` using `mul_left_cancel₀ h0 h1`.
+
+Establish `hpI : (p : 𝓞 E) ∈ I`. Establish `: (p : 𝓞 E) ∈ I * I.map (H.bar : 𝓞 E →+* 𝓞 E)`. Rewrite using `[h2]`. Conclude with `Ideal.mem_span_singleton_self _`. Conclude with `(Ideal.mul_le_inf this).1`.
+
+Establish `hMM : (l.M : 𝓞 E) ∈ l.Mb`. Establish `: (l.M : 𝓞 E) ∈ l.Mb * l.Mb.map (H.bar : 𝓞 E →+* 𝓞 E)`. Rewrite using `[l.prod]`. Conclude with `Ideal.mem_span_singleton_self _`. Conclude with `(Ideal.mul_le_inf this).1`.
+
+Take `⟨u, v, huv⟩` from `(Nat.isCoprime_iff_coprime.2 hp).map (Int.castRingHom (𝓞 E))`. Rewrite using `[Ideal.eq_top_iff_one, ← huv]`. Use `Ideal.add_mem _ (Ideal.mem_sup_right (I.mul_mem_left _ ?_)) (Ideal.mem_sup_left (l.Mb.mul_mem_left _ ?_))` and prove the remaining obligations. Simplify using `using hpI`. Simplify using `using hMM`.
+-/
 theorem sup_eq_top_of_level (l l₂ : Level H) (p : ℕ) (I : Ideal (𝓞 E)) (hM : l₂.M = l.M * p)
     (hp : Nat.Coprime p l.M) (hI : l₂.Mb = l.Mb * I) : l.Mb ⊔ I = ⊤ := by
   have h0 : (Ideal.span {(l.M : 𝓞 E)} : Ideal (𝓞 E)) ≠ 0 := by
@@ -39,6 +50,33 @@ theorem sup_eq_top_of_level (l l₂ : Level H) (p : ℕ) (I : Ideal (𝓞 E)) (h
   · simpa using hpI
   · simpa using hMM
 
+/- English proof (translation)
+Take `⟨e, he, e', he', hee⟩` from `Submodule.mem_sup.1 (show (1 : 𝓞 E) ∈ l.Mb ⊔ I by rw [sup_eq_top_of_level l l₂ p I hM hp hI]; trivial)`. Use `haveI : Module.Projective (𝓞 E) D.La := D.proj`. Take `⟨f, hf⟩` from `Module.projective_lifting_property (I • ⊤ : Submodule (𝓞 E) D.La).mkQ (k.toLinearMap ∘ₗ (I • ⊤ : Submodule (𝓞 E) D.La).mkQ) (Submodule.mkQ_surjective _)`. Establish `hf' : ∀ a, (Submodule.Quotient.mk (f a) : D.La ⧸ (I • ⊤ : Submodule (𝓞 E) D.La)) = k (Submodule.Quotient.mk a)` using `fun a => LinearMap.congr_fun hf a`. Use `set F : D.La →ₗ[𝓞 E] D.La := e • f + e' • LinearMap.id with hF`.
+
+Establish `h1 : ∀ x, F x - f x ∈ (I • ⊤ : Submodule (𝓞 E) D.La)` using `fun x => by`. Establish `: F x - f x = e' • (x - f x)`. Establish `h : e = 1 - e'` using `by linear_combination hee`. Simplify using `only [hF, LinearMap.add_apply, LinearMap.smul_apply, LinearMap.id_apply]`. Rewrite using `[h, sub_smul, one_smul, smul_sub]`.
+
+Normalize the expressions using the abelian group laws. Rewrite using `[this]`. Conclude with `Submodule.smul_mem_smul he' Submodule.mem_top`. Establish `h2 : ∀ x, F x - x ∈ (l.Mb • ⊤ : Submodule (𝓞 E) D.La)` using `fun x => by`. Establish `: F x - x = e • (f x - x)`.
+
+Establish `h : e' = 1 - e` using `by linear_combination hee`. Simplify using `only [hF, LinearMap.add_apply, LinearMap.smul_apply, LinearMap.id_apply]`. Rewrite using `[h, sub_smul, one_smul, smul_sub]`. Normalize the expressions using the abelian group laws. Rewrite using `[this]`.
+
+Conclude with `Submodule.smul_mem_smul he Submodule.mem_top`. Establish `lM : (l₂.Mb • ⊤ : Submodule (𝓞 E) D.La) ≤ l.Mb • ⊤` using `Submodule.smul_mono_left hd.2.1`. Establish `lI : (l₂.Mb • ⊤ : Submodule (𝓞 E) D.La) ≤ I • ⊤` using `Submodule.smul_mono_left (by rw [hI]; exact Ideal.mul_le_inf.trans inf_le_right)`. Take `⟨g, g1, -⟩` from `GlobalTheory.exists_sim_of_aut_mod E H D l₂ 1 F hpq one_pos (Nat.coprime_one_left _) (by`. Introduce `x hx`.
+
+Establish `x1 : x ∈ (l.Mb • ⊤ : Submodule (𝓞 E) D.La)`. Use `Submodule.sub_mem _ (lM hx) (h2 x)` as an intermediate fact. Rewrite `this` using `[sub_sub_cancel]`. Then use the resulting hypothesis. Establish `x2 : x ∈ (I • ⊤ : Submodule (𝓞 E) D.La)`. Use `Submodule.sub_mem _ (lI hx) (h1 x)` as an intermediate fact.
+
+Rewrite `this` using `[sub_sub_cancel, ← Submodule.Quotient.mk_eq_zero, hf', k.map_eq_zero_iff, Submodule.Quotient.mk_eq_zero]`. Conclude with `this`. Establish `: x = e • x + e' • x` using `by rw [← add_smul, hee, one_smul]`. Rewrite using `[this, hI]`. Use `Submodule.add_mem _ ?_ ?_` and prove the remaining obligations.
+
+Rewrite using `[Submodule.mul_smul]`. Conclude with `Submodule.smul_mem_smul he x2`. Rewrite using `[mul_comm, Submodule.mul_smul]`. Conclude with `Submodule.smul_mem_smul he' x1)`. Establish `hM0 : 0 < l.M` using `lt_of_lt_of_le (by norm_num) l.three_le`.
+
+Establish `hp0 : 0 < p`. Use `l₂.three_le` as an intermediate fact. Break down `Nat.eq_zero_or_pos p with h | h` into its components or cases. Rewrite `this` using `[hM, h]`. Use linear arithmetic over natural numbers and integers.
+
+Conclude with `h`. Establish `hMM : (l.M : 𝓞 E) ∈ l.Mb`. Establish `: (l.M : 𝓞 E) ∈ l.Mb * l.Mb.map (H.bar : 𝓞 E →+* 𝓞 E)`. Rewrite using `[l.prod]`. Conclude with `Ideal.mem_span_singleton_self _`.
+
+Conclude with `(Ideal.mul_le_inf this).1`. Establish `hA1 : l.A = 1` using `Nat.dvd_one.1 (hA ▸ hd.2.2)`. Use `⟨g, ⟨by rw [hA]; simp, fun a => ?_, fun a => ⟨g.f l.A a - a, by rw [hA1, one_smul]⟩⟩, fun a => ?_⟩` and prove the remaining obligations. Take `⟨b, hb⟩` from `g.tower l.M p hM0 hp0 a`. Rewrite `hb` using `[← hM]`.
+
+Establish `h3 : g.f l₂.M a - g.f l.M a ∈ (l.Mb • ⊤ : Submodule (𝓞 E) D.La)`. Rewrite using `[hb, ← Nat.cast_smul_eq_nsmul (𝓞 E)]`. Conclude with `Submodule.smul_mem_smul hMM Submodule.mem_top`. Use `Submodule.sub_mem _ (Submodule.add_mem _ (lM (g1 a)) (h2 a)) h3` as an intermediate fact. Use `this using 1` and compare the differences between its conclusion and the goal.
+
+Normalize the expressions using the abelian group laws. Rewrite using `[← hf', Submodule.Quotient.eq]`. Use `Submodule.add_mem _ (lI (g1 a)) (h1 a)` as an intermediate fact. Rewrite `this` using `[sub_add_sub_cancel]`. Then use the resulting hypothesis.
+-/
 theorem exists_sim_inducing (D : Datum H) (hpq : 1 ≤ D.p + D.q) (l l₂ : Level H) (p : ℕ) (I : Ideal (𝓞 E))
     (hd : l.Dvd l₂) (hM : l₂.M = l.M * p) (hp : Nat.Coprime p l.M) (hI : l₂.Mb = l.Mb * I) (hA : l₂.A = 1)
     (k : (D.La ⧸ (I • ⊤ : Submodule (𝓞 E) D.La)) ≃ₗ[𝓞 E] (D.La ⧸ (I • ⊤ : Submodule (𝓞 E) D.La))) :
@@ -109,6 +147,13 @@ theorem exists_sim_inducing (D : Datum H) (hpq : 1 ≤ D.p + D.q) (l l₂ : Leve
     have := Submodule.add_mem _ (lI (g1 a)) (h1 a)
     rwa [sub_add_sub_cancel] at this
 
+/- English proof (translation)
+Introduce `E _ _ _ H Dw l Xo c n d hpq hlev hA K _ _ _ ⟨y⟩ ψ ψ' h h'`. Take `⟨hd, hM, hp, hI, -, -, -, -, hne⟩` from `hlev`. Use extensionality with `k`. Take `⟨g, hg, hk⟩` from `exists_sim_inducing Dw hpq l d.l₂ d.pd d.I hd hM hp hI hA k`. Take `⟨ρ, hρ⟩` from `GlobalTheory.LevelActionLaws.exists_levAut hpq d.Xo₂ g hg.1`.
+
+Take `⟨hs, ν, -⟩` from `id hρ`. Take `⟨y', hy'⟩` from `(GlobalTheory.exists_unique_frMove E H Dw d.l₂ d.Xo₂ d.c₂ ρ.hom ν hs K y).1`. Establish `hgA : ∀ a, Dw.ModN d.l₂.A (g.f d.l₂.A a - a)` using `fun a => ⟨g.f d.l₂.A a - a, by rw [hA, one_smul]⟩`. Establish `e1` using `h k g ρ hg hgA hρ hk K y y' hy'.1`. Establish `e2` using `h' k g ρ hg hgA hρ hk K y y' hy'.1`.
+
+Establish `e3` using `mul_right_cancel₀ (hne K y) (e1.symm.trans e2)`. Establish `e4` using `d.eF.injective ((algebraMap d.c₂.F K).injective e3)`. Rewrite using `[e4]`.
+-/
 theorem psi_unique : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l) (n : ℕ) (d : DeltaDat Xo c n), 1 ≤ Dw.p + Dw.q → d.IsLev → d.l₂.A = 1 → ∀ (k : Type) [Field k] [IsAlgClosed k] [Algebra d.c₂.F k], Nonempty (FrPt d.Xo₂ d.c₂ k) → ∀ ψ ψ' : (LaI Xo c d ≃ₗ[𝓞 E] LaI Xo c d) →* c.Fˣ, d.PsiTie ψ → d.PsiTie ψ' → ψ = ψ' := by
   intro E _ _ _ H Dw l Xo c n d hpq hlev hA K _ _ _ ⟨y⟩ ψ ψ' h h'
   obtain ⟨hd, hM, hp, hI, -, -, -, -, hne⟩ := hlev

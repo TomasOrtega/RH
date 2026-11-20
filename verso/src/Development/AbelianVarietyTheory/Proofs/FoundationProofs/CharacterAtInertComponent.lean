@@ -15,6 +15,19 @@ open GlobalTheory.InertTrivial
 
 variable {D : D7}
 
+/- English proof (translation)
+Establish `h` using `χ.aut a`. Establish `hsq : ∀ τ, (embT D τ (a : D.host.E) / (‖embT D τ (a : D.host.E)‖ : ℂ)) ^ 2 = 1`. Introduce `τ`. Establish `h2 : embT D τ (D.host.conj a) = starRingEnd ℂ (embT D τ a)` using `D.host.conjE_apply (embT D τ) a`. Rewrite `h2` using `[ha]`.
+
+Establish `h0 : embT D τ (a : D.host.E) ≠ 0` using `(map_ne_zero _).2 a.ne_zero`. Rewrite using `[div_pow, ← Complex.mul_conj', ← h2, pow_two, div_self (mul_ne_zero h0 h0)]`. Establish `hp : ∀ τ, (embT D τ (a : D.host.E) / (‖embT D τ (a : D.host.E)‖ : ℂ)) ^ (χ.n τ) = (embT D τ (a : D.host.E) / (‖embT D τ (a : D.host.E)‖ : ℂ)) ^ N`. Introduce `τ`. Take `⟨c, hc⟩` from `χ.par τ`.
+
+Establish `h0 : embT D τ (a : D.host.E) / (‖embT D τ (a : D.host.E)‖ : ℂ) ≠ 0`. Introduce `h0`. Use `hsq τ` as an intermediate fact. Rewrite `this` using `[h0]`. Evaluate the numerical expressions using `at this`.
+
+Rewrite using `[show χ.n τ = 2 * c + N by omega, zpow_add₀ h0, zpow_mul, zpow_natCast, zpow_two, ← pow_two, hsq, one_zpow, one_mul]`. Rewrite `h` using `[Finset.prod_congr rfl (fun τ _ => hp τ), Finset.prod_pow]`. Establish `hS : (∏ τ, (embT D τ (a : D.host.E) / (‖embT D τ (a : D.host.E)‖ : ℂ))) ^ 2 = 1`. Rewrite using `[← Finset.prod_pow]`. Conclude with `Finset.prod_eq_one fun τ _ => hsq τ`.
+
+Break down `(mul_self_eq_one_iff.1 (by rwa [pow_two] at hS)) with h1 | h1` into its components or cases. It suffices to derive a contradiction. Rewrite `h1` using `[Finset.prod_div_distrib, ← Complex.ofReal_prod]`. Establish `h2` using `eq_of_div_eq_one h1`. Rewrite `hneg` using `[h2, Complex.ofReal_re]`.
+
+Conclude with `absurd (Finset.prod_nonneg fun τ _ => norm_nonneg _) (not_le.2 hneg)`. Rewrite `h` using `[h1]`. Establish `h3 : ((-1 : ℂ) ^ N) * (-1) ^ N = 1` using `by rw [← mul_pow]; simp`. Take the linear combination `(-1 : ℂ) ^ N * h - ((χ.f (Units.map (inc D).toMonoidHom a) : ℂˣ) : ℂ) * h3`.
+-/
 theorem val_of_real_neg {N : ℕ} (χ : HeckeU D N) (a : D.host.Eˣ)
     (ha : D.host.conj (a : D.host.E) = a) (hneg : (∏ τ, embT D τ (a : D.host.E)).re < 0) :
     ((χ.f (Units.map (inc D).toMonoidHom a) : ℂˣ) : ℂ) = (-1) ^ N := by
@@ -50,6 +63,27 @@ theorem val_of_real_neg {N : ℕ} (χ : HeckeU D N) (a : D.host.Eˣ)
     have h3 : ((-1 : ℂ) ^ N) * (-1) ^ N = 1 := by rw [← mul_pow]; simp
     linear_combination (-1 : ℂ) ^ N * h - ((χ.f (Units.map (inc D).toMonoidHom a) : ℂˣ) : ℂ) * h3
 
+/- English proof (translation)
+Establish `huniq : ∀ {B y z}, Gen D B y → Gen D B z → ψ y = ψ z` using `fun hy hz => by`. Use `h1 _ (hy.intU hz)` as an intermediate fact. Rewrite `this` using `[map_mul, map_inv, mul_inv_eq_one]`. Then use the resulting hypothesis. Establish `hprime : ∀ P : Ideal (𝓞 D.host.E), Prime P → Ev D (Ideal.absNorm P) ∧ ∀ y, Gen D P y → ((ψ y : ℂˣ) : ℂ) = sgn D (Ideal.absNorm P) ^ N`. Introduce `P hP`.
+
+Establish `hP0 : P ≠ ⊥` using `hP.ne_zero`. Establish `hPp : P.IsPrime` using `Ideal.isPrime_of_prime hP`. Establish `hPm : P.IsMaximal` using `hPp.isMaximal hP0`. Take `⟨hev, hfix, hmov⟩` from `GlobalTheory.InertResidue.norm_prime D P hPm`. Use `⟨hev, fun y hy => ?_⟩` and prove the remaining obligations.
+
+Distinguish the cases in `hi : D.host.conj • P = P`. Take `⟨t, B, ht0, htc, e⟩` from `GlobalTheory.T.exists_real_span_eq_conjFixedPrime_mul_relNorm D P hPp hP0 hi`. Establish `hneg` using `GlobalTheory.NormSignInert.norm_neg D t P B ht0 htc hPm hi e`. Establish `hB : B ≠ ⊥`. Introduce and unpack `rfl`.
+
+Conclude with `ht0 (by simpa using e)`. Take `⟨z, hz⟩` from `exists_gen D B hB`. Establish `htE : (t : D.host.E) ≠ 0` using `by simpa using ht0`. Establish `g1` using `gen_span t (Units.mk0 _ htE) rfl`. Establish `g2` using `(hy.mul hz).mul hz.conj`.
+
+Rewrite `g2` using `[← e]`. Use `huniq g1 g2` as an intermediate fact. Rewrite `this` using `[mul_assoc, map_mul, h2, mul_one]`. Rewrite using `[← this, h3 _ htc hneg, (hfix hi).1]`. Take `⟨q, hq, hqP⟩ : ∃ q : ℕ, q.Prime ∧ (q : 𝓞 D.host.E) ∈ P` from `exists_prime_mem P hPp _ (by simpa [Ideal.absNorm_eq_zero_iff] using hP0) (Ideal.absNorm_mem P)`.
+
+Rewrite using `[h4 q y hq ((hmov hi).2 q hq hqP) hy.1 (hy.inv_mul hqP), (hmov hi).1]`. Simplify using the standard rewrite rules. Proceed by induction on `B using UniqueFactorizationMonoid.induction_on_prime with`. Consider the case `h₁ => intro h`. Conclude with `absurd rfl h`.
+
+Consider the case `h₂ B hB`. Introduce `_`. Rewrite using `[Ideal.isUnit_iff.1 hB, Ideal.absNorm_top]`. Use `⟨Ev.one, fun y hy => ?_⟩` and prove the remaining obligations. Rewrite using `[h1 y ⟨hy.1, by simpa using hy.inv_mul (q := 1) Submodule.mem_top⟩, sgn_one]`.
+
+Simplify using the standard rewrite rules. Consider the case `h₃ C P hC hP ih`. Introduce `_`. Take `⟨e1, v1⟩` from `hprime P hP`. Take `⟨e2, v2⟩` from `ih hC`.
+
+Establish `n1 : Ideal.absNorm P ≠ 0` using `fun h => hP.ne_zero (Ideal.absNorm_eq_zero_iff.1 h)`. Establish `n2 : Ideal.absNorm C ≠ 0` using `fun h => hC (Ideal.absNorm_eq_zero_iff.1 h)`. Rewrite using `[map_mul]`. Use `⟨e1.mul e2 n1 n2, fun y hy => ?_⟩` and prove the remaining obligations. Take `⟨a, ha⟩` from `exists_gen D P hP.ne_zero`.
+
+Take `⟨c, hc⟩` from `exists_gen D C hC`. Rewrite using `[huniq hy (ha.mul hc), map_mul, Units.val_mul, v1 a ha, v2 c hc, sgn_mul e1 e2 n1 n2, mul_pow]`.
+-/
 theorem hom_gen (N : ℕ) (ψ : (AE D)ˣ →* ℂˣ) (h1 : ∀ u, IntU D u → ψ u = 1)
     (h2 : ∀ y, ψ (y * sgU D y) = 1)
     (h3 : ∀ a : D.host.Eˣ, D.host.conj (a : D.host.E) = a → (∏ τ, embT D τ (a : D.host.E)).re < 0 →
@@ -108,6 +142,33 @@ theorem hom_gen (N : ℕ) (ψ : (AE D)ˣ →* ℂˣ) (h1 : ∀ u, IntU D u → �
 
 set_option maxHeartbeats 800000 in
 
+/- English proof (translation)
+Introduce `D N χ y x hy0 hx`. Take `⟨hinv, ε, hε, h1, h2, h3⟩` from `GlobalTheory.NormSum.HalfIdempotent.conj_involutive_and_exists_half_idempotent D`. Establish `h1' : sgA D ε * sgA D ε = sgA D ε` using `by rw [← map_mul, h1]`. Establish `he : (1 - (ε + sgA D ε)) * (1 - (ε + sgA D ε)) = 1 - (ε + sgA D ε)`. Take the linear combination `h1 + h1' + 2 * h2`.
+
+Establish `heO : 1 - (ε + sgA D ε) ∈ OhE D` using `sub_mem (one_mem _) (add_mem hε (VacMove.sgA_mem D hε))`. Establish `hse : sgA D (1 - (ε + sgA D ε)) = 1 - (ε + sgA D ε)`. Rewrite using `[map_sub, map_add, map_one, hinv, add_comm]`. Establish `hunr : ∀ y : (AE D)ˣ, (y : AE D) ∈ OhE D → (1 - (ε + sgA D ε)) * ((y⁻¹ : (AE D)ˣ) : AE D) ∈ OhE D → χ.f (proj _ he y) = 1`. Introduce `y hy hy'`.
+
+Use `χ.unr _ ⟨?_, ?_⟩ fun q hq hi => ?_` and prove the remaining obligations. Rewrite using `[proj_val]`. Conclude with `add_mem (mul_mem heO hy) (sub_mem (one_mem _) heO)`. Rewrite using `[proj_inv]`. Conclude with `add_mem hy' (sub_mem (one_mem _) heO)`.
+
+Use `VacMove.zeroAt_mul D hq ((h3 q hq).2 hi) ((y : AE D) - 1) using 1` and compare the differences between its conclusion and the goal. Rewrite using `[proj_val]`. Expand and normalize the polynomial expressions, which then agree. Establish `hyE : (y : D.host.E) ≠ 0` using `by simpa using hy0`. Establish `key` using `(hom_gen N (χ.f.comp (proj _ he)) (fun u hu => hunr u hu.1 (mul_mem heO hu.2)) (fun y => ?_) (fun a ha hneg => ?_) (fun q y hq hi hy hy' => hunr y hy ?_) (Ideal.span {y}) (by simpa using hy0)).2 _ (gen_span y (Units.mk0 _ hyE) rfl)`.
+
+Establish `h0 : (ε + sgA D ε) * ((x : AE D) - 1) + (1 - (ε + sgA D ε)) * ((x : AE D) - inc D (y : D.host.E)) = 0`. Establish `z1 : (ε + sgA D ε) * ((x : AE D) - 1) = 0`. Use `(GlobalTheory.IntAdeleComplete.integral_separated_complete D).1 _ (dvd_of_forall_prime (OhE D) _ fun q hq => ?_)` and prove the remaining obligations. Distinguish the cases in `hi : InertQ D q`. Conclude with `VacMove.zeroAt_mul D hq ((h3 q hq).1 hi) _`.
+
+Rewrite using `[mul_comm]`. Conclude with `VacMove.zeroAt_mul D hq ((hx q hq).2 hi) _`. Establish `z2 : (1 - (ε + sgA D ε)) * ((x : AE D) - inc D (y : D.host.E)) = 0`. Use `(GlobalTheory.IntAdeleComplete.integral_separated_complete D).1 _ (dvd_of_forall_prime (OhE D) _ fun q hq => ?_)` and prove the remaining obligations. Distinguish the cases in `hi : InertQ D q`.
+
+Rewrite using `[mul_comm]`. Conclude with `VacMove.zeroAt_mul D hq ((hx q hq).1 hi) _`. Conclude with `VacMove.zeroAt_mul D hq ((h3 q hq).2 hi) _`. Rewrite using `[z1, z2, add_zero]`. Establish `: proj _ he (Units.map (inc D).toMonoidHom (Units.mk0 _ hyE)) = x` using `by ext; rw [proj_val]`.
+
+Express the relevant statement in the definitionally equal form `_ * inc D (y : D.host.E) + _ = _`. Take the linear combination `-h0`. Rewrite `key` using `[MonoidHom.comp_apply, this]`. Then use the resulting hypothesis. Establish `: proj _ he (sgU D y) = sgU D (proj _ he y)`. Use `ext`.
+
+Express the relevant statement in the definitionally equal form `_ * sgA D y + _ = sgA D (_ * y + _)`. Rewrite using `[map_add, map_mul, hse, map_sub, map_one, hse]`. Rewrite using `[MonoidHom.comp_apply, map_mul, this, χ.norm]`. Establish `h4` using `val_of_real_neg χ a ha hneg set t := Units.map (inc D).toMonoidHom a with ht`. Establish `hst : sgA D (t : AE D) = t`.
+
+Express the relevant statement in the definitionally equal form `sgA D (inc D a) = inc D a`. Rewrite using `[GlobalTheory.NormSum.PtsMem.sgA_inc, ha]`. Establish `: t = proj _ he t * (proj ε h1 t * sgU D (proj ε h1 t))`. Use `ext`. Express the relevant statement in the definitionally equal form `(t : AE D) = (_ * t + _) * ((ε * t + _) * sgA D (ε * t + _))`.
+
+Rewrite using `[map_add, map_mul, map_sub, map_one, hst]`. Take the linear combination `((t : AE D) - 1) ^ 2 * he - ((t : AE D) - 1) ^ 2 * (1 + (1 - (ε + sgA D ε)) * (t - 1)) * h2`. Rewrite `h4` using `[this, map_mul, χ.norm, mul_one]`. Conclude with `h4`. Take `⟨m, -, hm, s, hs, e⟩` from `(h3 q hq).2 hi 1`.
+
+Take `⟨a, b, hab⟩` from `Nat.isCoprime_iff_coprime.2 hm`. Establish `hab'` using `congrArg (Int.cast : ℤ → AE D) hab`. Move the coercions through the operations in `at hab'`. Rewrite using `[show (1 - (ε + sgA D ε)) * ((y⁻¹ : (AE D)ˣ) : AE D) = (a * s + b * (1 - (ε + sgA D ε))) * ((q : AE D) * ((y⁻¹ : (AE D)ˣ) : AE D)) by`. Take the linear combination `(-(1 - (ε + sgA D ε)) * ((y⁻¹ : (AE D)ˣ) : AE D)) * hab' + a * ((y⁻¹ : (AE D)ˣ) : AE D) * e]`.
+
+Conclude with `mul_mem (add_mem (mul_mem (intCast_mem _ _) hs) (mul_mem (intCast_mem _ _) heO)) hy'`.
+-/
 theorem character_at_inert_component : ∀ (D : D7) (N : ℕ) (χ : HeckeU D N) (y : 𝓞 D.host.E) (x : (AE D)ˣ), y ≠ 0 → (∀ q : ℕ, q.Prime → (InertQ D q → ZeroAt D q ((x : AE D) - inc D (y : D.host.E))) ∧ (¬ InertQ D q → ZeroAt D q ((x : AE D) - 1))) → ((χ.f x : ℂˣ) : ℂ) = sgn D (Ideal.absNorm (Ideal.span {y})) ^ N := by
   intro D N χ y x hy0 hx
   obtain ⟨hinv, ε, hε, h1, h2, h3⟩ := GlobalTheory.NormSum.HalfIdempotent.conj_involutive_and_exists_half_idempotent D

@@ -21,12 +21,20 @@ def HomOf {R R₁ : Type} [CommRing R] [CommRing R₁] (ρ : R →+* R₁) (P : 
     (Q : Out.PolAV (Sp R)) (t : epsR R ⟶ Q.A) (a : R₁) : Prop :=
   ∀ (P₁ Q₁ : Out.PolAV (Sp R₁)) (φ₁ : P₁.A.left ⟶ P.A.left) (ψ₁ : Q₁.A.left ⟶ Q.A.left) (v₁ : epsR R₁ ⟶ P₁.A) (t₁ : epsR R₁ ⟶ Q₁.A), IsPolFibre ρ P P₁ φ₁ → IsPolFibre ρ Q Q₁ ψ₁ → IsVecOver ρ φ₁ v v₁ → IsVecOver ρ ψ₁ t t₁ → ∃ f₁ : P₁.A ⟶ Q₁.A, IsMonHom f₁ ∧ IsLieComb ![a] ![t₁] (v₁ ≫ f₁)
 
+/- English proof (translation)
+Take `⟨-, hb, -, -⟩` from `h`. Unfold `IsLieBasis at hb`. Conclude with `hb.1 0`.
+-/
 theorem Curve.isTangent {R : Type} [CommRing R] {P : Out.PolAV (Sp R)} {v : epsR R ⟶ P.A}
     {Lf : (R →+* ℂ) → PeriodPair} (h : Curve P v Lf) : IsTangent v := by
   obtain ⟨-, hb, -, -⟩ := h
   unfold IsLieBasis at hb
   exact hb.1 0
 
+/- English proof (translation)
+Take `⟨P₀, φ, hφ⟩` from `exists_isPolFibre hB ρ P`. Take `⟨Q₀, ψ, hψ⟩` from `exists_isPolFibre hB ρ Q`. Take `⟨v₀, hv, -⟩` from `existsUnique_isVecOver hφ.2.1.1 v`. Take `⟨t₀, ht, -⟩` from `existsUnique_isVecOver hψ.2.1.1 t`. Take `⟨f, hf, hfa⟩` from `h P₀ Q₀ φ ψ v₀ t₀ hφ hψ hv ht`.
+
+Conclude with `hom_deriv_baseChange R P Q v t R₀ ρ P₀ Q₀ φ ψ v₀ t₀ f a hφ hψ hv ht hf hfa R₁ g`.
+-/
 theorem HomOf.up (hB : Out.PolBaseChangeSt) {R R₀ R₁ : Type} [CommRing R] [CommRing R₀] [CommRing R₁]
     {ρ : R →+* R₀} {P : Out.PolAV (Sp R)} {v : epsR R ⟶ P.A} {Q : Out.PolAV (Sp R)} {t : epsR R ⟶ Q.A} {a : R₀}
     (h : HomOf ρ P v Q t a) (g : R₀ →+* R₁) : HomOf (g.comp ρ) P v Q t (g a) := by
@@ -37,6 +45,9 @@ theorem HomOf.up (hB : Out.PolBaseChangeSt) {R R₀ R₁ : Type} [CommRing R] [C
   obtain ⟨f, hf, hfa⟩ := h P₀ Q₀ φ ψ v₀ t₀ hφ hψ hv ht
   exact hom_deriv_baseChange R P Q v t R₀ ρ P₀ Q₀ φ ψ v₀ t₀ f a hφ hψ hv ht hf hfa R₁ g
 
+/- English proof (translation)
+Introduce `P₁ Q₁ φ₁ ψ₁ v₁ t₁ h₁ h₂ h₃ h₄`. Establish `w₁ : φ₁ ≫ P₀.A.hom = P₁.A.hom ≫ spMap g` using `h₁.2.1.1.w`. Establish `w₂ : ψ₁ ≫ Q₀.A.hom = Q₁.A.hom ≫ spMap g` using `h₂.2.1.1.w`. Conclude with `h P₁ Q₁ (φ₁ ≫ φ) (ψ₁ ≫ ψ) v₁ t₁ (PolFibre.comp hφ h₁) (PolFibre.comp hψ h₂) ((PolFibre.vec_iff hφ.2.1.1 w₁ hv).1 h₃) ((PolFibre.vec_iff hψ.2.1.1 w₂ ht).1 h₄)`.
+-/
 theorem HomOf.fibre {R R₀ R₁ : Type} [CommRing R] [CommRing R₀] [CommRing R₁]
     {f : R →+* R₀} {g : R₀ →+* R₁} {P : Out.PolAV (Sp R)} {v : epsR R ⟶ P.A} {Q : Out.PolAV (Sp R)}
     {t : epsR R ⟶ Q.A} {a : R₁} (h : HomOf (g.comp f) P v Q t a)
@@ -55,6 +66,11 @@ def multipliers (L L' : PeriodPair) : Submodule ℤ ℂ where
   zero_mem' z _ := by rw [zero_mul]; exact zero_mem _
   smul_mem' n a ha z hz := by rw [smul_mul_assoc]; exact Submodule.smul_mem _ n (ha z hz)
 
+/- English proof (translation)
+Establish `hω : L.ω₁ ≠ 0` using `by simpa using L.indep.ne_zero 0`. Establish `hle : (multipliers L L').map (LinearMap.mulRight ℤ L.ω₁) ≤ L'.lattice`. Introduce and unpack `_ ⟨α, hα, rfl⟩`. Conclude with `hα _ L.ω₁_mem_lattice`. Establish `hfg : L'.lattice.FG` using `Submodule.fg_span (Set.toFinite _)`.
+
+Conclude with `Submodule.fg_of_fg_map_injective _ (mul_left_injective₀ hω) (hfg.of_le hle)`.
+-/
 theorem multipliers_fg (L L' : PeriodPair) : (multipliers L L').FG := by
 
   have hω : L.ω₁ ≠ 0 := by simpa using L.indep.ne_zero 0
@@ -68,6 +84,9 @@ def DefinedOver {R : Type} [CommRing R] {k : IntermediateField ℚ ℂ} (ρ : R 
     (v : epsR R ⟶ P.A) (Q : Out.PolAV (Sp R)) (t : epsR R ⟶ Q.A) (N : IntermediateField ℚ ℂ) (α : ℂ) : Prop :=
   ∃ (hk : k ≤ N) (a : N), (a : ℂ) = α ∧ HomOf ((IntermediateField.inclusion hk).toRingHom.comp ρ) P v Q t a
 
+/- English proof (translation)
+Take `⟨hk, a, ha, hh⟩` from `h`. Use `⟨hk.trans hN, IntermediateField.inclusion hN a, ha, ?_⟩` and prove the remaining obligations. Establish `e : (IntermediateField.inclusion (hk.trans hN)).toRingHom.comp ρ = (IntermediateField.inclusion hN).toRingHom.comp ((IntermediateField.inclusion hk).toRingHom.comp ρ)` using `by ext; rfl`. Rewrite using `[e]`. Conclude with `hh.up hB _`.
+-/
 theorem DefinedOver.mono (hB : Out.PolBaseChangeSt) {R : Type} [CommRing R] {k : IntermediateField ℚ ℂ}
     {ρ : R →+* k} {P : Out.PolAV (Sp R)} {v : epsR R ⟶ P.A} {Q : Out.PolAV (Sp R)} {t : epsR R ⟶ Q.A}
     {N N' : IntermediateField ℚ ℂ} {α : ℂ} (h : DefinedOver ρ P v Q t N α) (hN : N ≤ N') :
@@ -80,6 +99,19 @@ theorem DefinedOver.mono (hB : Out.PolBaseChangeSt) {R : Type} [CommRing R] {k :
   rw [e]
   exact hh.up hB _
 
+/- English proof (translation)
+Establish `hv` using `hP.isTangent`. Establish `ht` using `hQ.isTangent`. Use `set s := (algebraMap k ℂ).comp ρ with hs`. Take `⟨G, hG⟩` from `multipliers_fg (L s) (L' s)`. Establish `key : ∀ α ∈ multipliers (L s) (L' s), ∃ K₁ : IntermediateField ℚ ℂ, FiniteDimensional ℚ K₁ ∧ DefinedOver ρ P v Q t K₁ α`.
+
+Introduce `α hα`. Establish `hhom` using `(EllipticHom.multiplier_iff_exists_hom hU hB R P Q v t s (L s) (L' s) α hP.1 hQ.1 hv ht (hP.2.2.2 s) (hQ.2.2.2 s)).1 hα`. Take `⟨K₁, hk, a, hK, ha, hh⟩` from `hom_deriv_descends_to_numberField hU hB R P Q v t k ρ α inferInstance hv hQ.2.2.1 hhom`. Conclude with `⟨K₁, hK, hk, a, ha, hh⟩`. Use `choose! K hK hD using key`.
+
+Establish `hGm : ∀ β ∈ G, β ∈ multipliers (L s) (L' s)` using `fun β hβ => hG ▸ Submodule.subset_span hβ`. Establish `: ∀ β : G, FiniteDimensional ℚ (K β)` using `fun β => hK β (hGm β β.2)`. Set `N : IntermediateField ℚ ℂ` to `k ⊔ ⨆ β : G, K β`. Establish `hkN : k ≤ N` using `le_sup_left`. Use `⟨N, inferInstance, hkN, ?_⟩` and prove the remaining obligations.
+
+Introduce `α hα`. Set `S : Set N` to `{a | HomOf ((IntermediateField.inclusion hkN).toRingHom.comp ρ) P v Q t a}`. Set `T : AddSubgroup ℂ` to `(AddSubgroup.closure S).map (algebraMap N ℂ).toAddMonoidHom`. Establish `hGT : ∀ β ∈ G, β ∈ T`. Introduce `β hβ`.
+
+Establish `hKN : K β ≤ N` using `le_sup_of_le_right (le_iSup (fun (j : G) => K j) ⟨β, hβ⟩)`. Take `⟨_, a, ha, hh⟩` from `(hD β (hGm β hβ)).mono hB hKN`. Conclude with `⟨a, AddSubgroup.subset_closure hh, ha⟩`. Establish `hspan : multipliers (L s) (L' s) ≤ T.toIntSubmodule`. Rewrite using `[← hG, Submodule.span_le]`.
+
+Conclude with `hGT`. Take `⟨a, ha, rfl⟩` from `AddSubgroup.mem_map.1 (hspan hα)`. Conclude with `⟨hkN, a, rfl, HomDerivative.hom_derivative_closure hB R P Q v t N _ S ht (fun _ hb => hb) a ha⟩`.
+-/
 theorem exists_field (hU : ThetaUnifAV) (hB : Out.PolBaseChangeSt) {R : Type} [CommRing R]
     {k : IntermediateField ℚ ℂ} [FiniteDimensional ℚ k] (ρ : R →+* k) {P : Out.PolAV (Sp R)} {v : epsR R ⟶ P.A}
     {Q : Out.PolAV (Sp R)} {t : epsR R ⟶ Q.A} {L L' : (R →+* ℂ) → PeriodPair} (hP : Curve P v L)
@@ -121,6 +153,41 @@ theorem exists_field (hU : ThetaUnifAV) (hB : Out.PolBaseChangeSt) {R : Type} [C
   obtain ⟨a, ha, rfl⟩ := AddSubgroup.mem_map.1 (hspan hα)
   exact ⟨hkN, a, rfl, HomDerivative.hom_derivative_closure hB R P Q v t N _ S ht (fun _ hb => hb) a ha⟩
 
+/- English proof (translation)
+Introduce `hU hB K _ _ hK2 σ₀ hσ 𝔟 hyp`. Take `⟨M, hM, κ, P, v, L₀, Q, t, L, δ, hκ, hP, hQ, hδ, ⟨c, hc, hL₀⟩, β, hβ, h₁, h₂⟩` from `hyp`. Establish `cP : Curve P v L₀` using `hP`. Establish `cQ : ∀ C, Curve (Q C) (t C) (L C)` using `hQ`. Take `⟨N₀, hN₀, hMN₀, hD₀⟩` from `exists_field hU hB (algebraMap (𝓞 M) M) cP cP`.
+
+Use `choose N₁ hN₁ hMN₁ hD₁ using fun C => exists_field hU hB (algebraMap (𝓞 M) M) cP (cQ C)`. Use `choose N₂ hN₂ hMN₂ hD₂ using fun C => exists_field hU hB (algebraMap (𝓞 M) M) (cQ C) cP`. Establish `: FiniteDimensional ℚ N₀` using `hN₀`. Establish `: ∀ C, FiniteDimensional ℚ (N₁ C)` using `hN₁`. Establish `: ∀ C, FiniteDimensional ℚ (N₂ C)` using `hN₂`.
+
+Set `N : IntermediateField ℚ ℂ` to `N₀ ⊔ (⨆ C, N₁ C) ⊔ ⨆ C, N₂ C`. Establish `l₀ : N₀ ≤ N` using `le_sup_left.trans le_sup_left`. Establish `l₁ : ∀ C, N₁ C ≤ N` using `fun C => (le_iSup N₁ C).trans (le_sup_right.trans le_sup_left)`. Establish `l₂ : ∀ C, N₂ C ≤ N` using `fun C => (le_iSup N₂ C).trans le_sup_right`. Establish `hMN : M ≤ N` using `hMN₀.trans l₀`.
+
+Establish `hNf : FiniteDimensional ℚ N` using `inferInstance`. Establish `hNn : NumberField N` using `⟨⟩`. Set `f : 𝓞 M →+* 𝓞 N` to `RingOfIntegers.mapRingHom (IntermediateField.inclusion hMN).toRingHom`. Establish `ef : (algebraMap (𝓞 N) N).comp f = (IntermediateField.inclusion hMN).toRingHom.comp (algebraMap (𝓞 M) M)`. Use extensionality with `x`.
+
+Both sides reduce to the same expression. Establish `ec : ((algebraMap N ℂ).comp (algebraMap (𝓞 N) N)).comp f = (algebraMap M ℂ).comp (algebraMap (𝓞 M) M)`. Use extensionality with `x`. Both sides reduce to the same expression. Take `⟨P', φ, hφ⟩` from `exists_isPolFibre hB f P`.
+
+Take `⟨v', hv, -⟩` from `existsUnique_isVecOver hφ.2.1.1 v`. Use `choose Q' ψ hψ using fun C => exists_isPolFibre hB f (Q C)`. Use `choose t' ht using fun C => (existsUnique_isVecOver (hψ C).2.1.1 (t C)).exists`. Establish `hb : ∀ C, ∃ b : N, (b : ℂ) = β C`. Introduce `C`.
+
+Establish `hm : ∀ z ∈ (L₀ ((algebraMap M ℂ).comp (algebraMap (𝓞 M) M))).lattice, β C * z ∈ (L C ((algebraMap M ℂ).comp (algebraMap (𝓞 M) M))).lattice`. Introduce `z hz`. Establish `h` using `h₁ C 1 (fun b _ => by rw [_root_.one_mul]; exact RingOfIntegers.isIntegral_coe b) z hz`. Rewrite `h` using `[_root_.map_one, _root_.mul_one]`. Then use the resulting hypothesis. Take `⟨_, b, hb, _⟩` from `(hD₁ C (β C) hm).mono hB (l₁ C)`.
+
+Conclude with `⟨b, hb⟩`. Use `choose b hbv using hb`. Use `⟨N, hNn, (IntermediateField.inclusion hMN).toRingHom.comp κ, P', v', fun s => L₀ (s.comp f), Q', t', fun C s => L C (s.comp f), fun C => Units.map f.toMonoidHom (δ C), fun a => hκ a, curve_lattice_baseChange _ P v L₀ _ f P' φ v' hP hφ hv, fun C => curve_lattice_baseChange _ (Q C) …` and prove the remaining obligations. Establish `h` using `hL₀ z`. Rewrite `h` using `[← ec]`.
+
+Conclude with `h`. Rewrite using `[← hbv C, h]`. Both sides reduce to the same expression. Introduce `a`. Establish `hm : ∀ z ∈ (L₀ ((algebraMap M ℂ).comp (algebraMap (𝓞 M) M))).lattice, σ₀ (a : K) * z ∈ (L₀ ((algebraMap M ℂ).comp (algebraMap (𝓞 M) M))).lattice`.
+
+Introduce `z hz`. Take `⟨a', rfl⟩` from `(hL₀ z).1 hz`. Use `(hL₀ _).2 ⟨a * a', ?_⟩` and prove the remaining obligations. Rewrite using `[show ((a * a' : 𝓞 K) : K) = (a : K) * a' from rfl, _root_.map_mul]`. Expand and normalize the polynomial expressions, which then agree.
+
+Take `⟨_, e, he, hh⟩` from `(hD₀ _ hm).mono hB l₀`. Establish `hee : e = (IntermediateField.inclusion hMN).toRingHom.comp κ (a : K)` using `Subtype.ext (he.trans (hκ a).symm)`. Establish `hh' : HomOf ((algebraMap (𝓞 N) N).comp f) P v P v e`. Rewrite using `[ef]`. Conclude with `hh`.
+
+Establish `h` using `HomOf.fibre hh' hφ hφ hv hv`. Rewrite `h` using `[hee]`. Conclude with `h`. Introduce `C x hx`. Take `⟨_, e, he, hh⟩` from `(hD₁ C _ (h₁ C x hx)).mono hB (l₁ C)`.
+
+Establish `hee : e = b C * (IntermediateField.inclusion hMN).toRingHom.comp κ x`. Apply `Subtype.ext` to reduce the goal to its premises. Rewrite using `[he, IntermediateField.coe_mul, hbv C]`. Conclude with `congrArg (β C * ·) (hκ x).symm`. Establish `hh' : HomOf ((algebraMap (𝓞 N) N).comp f) P v (Q C) (t C) e`.
+
+Rewrite using `[ef]`. Conclude with `hh`. Establish `h` using `HomOf.fibre hh' hφ (hψ C) hv (ht C)`. Rewrite `h` using `[hee]`. Conclude with `h`.
+
+Introduce `C y hy`. Take `⟨_, e, he, hh⟩` from `(hD₂ C _ (h₂ C y hy)).mono hB (l₂ C)`. Establish `hee : e = (b C)⁻¹ * (IntermediateField.inclusion hMN).toRingHom.comp κ (y : K)`. Apply `Subtype.ext` to reduce the goal to its premises. Rewrite using `[he, IntermediateField.coe_mul, IntermediateField.coe_inv, hbv C]`.
+
+Conclude with `congrArg ((β C)⁻¹ * ·) (hκ y).symm`. Establish `hh' : HomOf ((algebraMap (𝓞 N) N).comp f) (Q C) (t C) P v e`. Rewrite using `[ef]`. Conclude with `hh`. Establish `h` using `HomOf.fibre hh' (hψ C) hφ (ht C) hv`.
+
+Rewrite `h` using `[hee]`. Conclude with `h`.
+-/
 theorem exists_common_field : ThetaUnifAV → Out.PolBaseChangeSt → ∀ (K : Type) [Field
     K] [NumberField K], Module.finrank ℚ K = 2 → ∀ (σ₀
     : K →+* ℂ), ¬ ComplexEmbedding.IsReal σ₀ → ∀ (𝔟 : ClassGroup (𝓞 K) → nonZeroDivisors (Ideal (𝓞

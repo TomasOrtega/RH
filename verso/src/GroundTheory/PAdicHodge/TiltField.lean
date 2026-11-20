@@ -28,15 +28,27 @@ instance isFractionRing_preTilt_tilt : IsFractionRing 𝒪♭ K♭ :=
 
 section Sharp
 
+/- English proof (translation)
+Rewrite using `[map_mul, Subring.coe_mul]`.
+-/
 theorem untiltK_mul (a b : 𝒪♭) : ♮(a * b) = ♮a * ♮b := by
   rw [map_mul, Subring.coe_mul]
 
+/- English proof (translation)
+Rewrite using `[map_one, OneMemClass.coe_one]`.
+-/
 theorem untiltK_one : ♮(1 : 𝒪♭) = 1 := by
   rw [map_one, OneMemClass.coe_one]
 
+/- English proof (translation)
+Introduce `h` and use `ha (untilt_eq_zero_iff.1 h)`.
+-/
 theorem untiltK_ne_zero {a : 𝒪♭} (ha : a ≠ 0) : ♮a ≠ 0 :=
   fun h => ha (untilt_eq_zero_iff.1 h)
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨_, _, nonZeroDivisors.ne_zero (IsLocalization.sec (nonZeroDivisors 𝒪♭) x).2.2, IsLocalization.sec_spec (nonZeroDivisors 𝒪♭) x⟩`.
+-/
 theorem exists_mul_algebraMap_eq (x : K♭) :
     ∃ a b : 𝒪♭, b ≠ 0 ∧ x * algebraMap 𝒪♭ K♭ b = algebraMap 𝒪♭ K♭ a :=
   ⟨_, _, nonZeroDivisors.ne_zero (IsLocalization.sec (nonZeroDivisors 𝒪♭) x).2.2,
@@ -48,6 +60,13 @@ def tiltSharpFun (x : K♭) : K :=
   ♮(IsLocalization.sec (nonZeroDivisors 𝒪♭) x).1 /
     ♮((IsLocalization.sec (nonZeroDivisors 𝒪♭) x).2 : 𝒪♭)
 
+/- English proof (translation)
+Establish `hs` using `IsLocalization.sec_spec (nonZeroDivisors 𝒪♭) x`. Use `set a' := (IsLocalization.sec (nonZeroDivisors 𝒪♭) x).1`. Use `set b' : 𝒪♭ := ((IsLocalization.sec (nonZeroDivisors 𝒪♭) x).2 : 𝒪♭) with hb'def`. Establish `hb' : b' ≠ 0` using `nonZeroDivisors.ne_zero (IsLocalization.sec (nonZeroDivisors 𝒪♭) x).2.2`. Establish `key : a' * b = a * b'`.
+
+Apply `IsFractionRing.injective 𝒪♭ K♭` to reduce the goal to its premises. Rewrite using `[map_mul, map_mul, ← hs, ← h]`. Expand and normalize the polynomial expressions, which then agree. Establish `key' : ♮a' * ♮b = ♮a * ♮b'`. Rewrite using `[← untiltK_mul, ← untiltK_mul, key]`.
+
+Express the relevant statement in the definitionally equal form `♮a' / ♮b' = _`. Rewrite using `[div_eq_div_iff (untiltK_ne_zero hb') (untiltK_ne_zero hb), key']`.
+-/
 theorem tiltSharpFun_eq {x : K♭} {a b : 𝒪♭} (hb : b ≠ 0)
     (h : x * algebraMap 𝒪♭ K♭ b = algebraMap 𝒪♭ K♭ a) : tiltSharpFun K p x = ♮a / ♮b := by
   have hs := IsLocalization.sec_spec (nonZeroDivisors 𝒪♭) x
@@ -81,14 +100,27 @@ def tiltSharp : K♭ →*₀ K where
         (by rw [map_mul, map_mul, ← h, ← h']; ring),
       untiltK_mul, untiltK_mul, div_mul_div_comm]
 
+/- English proof (translation)
+The claim follows from `tiltSharpFun_eq hb h @[simp]`.
+-/
 theorem tiltSharp_eq {x : K♭} {a b : 𝒪♭} (hb : b ≠ 0)
     (h : x * algebraMap 𝒪♭ K♭ b = algebraMap 𝒪♭ K♭ a) : tiltSharp K p x = ♮a / ♮b :=
   tiltSharpFun_eq hb h
 
 @[simp]
+/- English proof (translation)
+Rewrite using `[tiltSharp_eq (a := a) (b := 1) one_ne_zero (by simp), untiltK_one, div_one]`.
+-/
 theorem tiltSharp_algebraMap (a : 𝒪♭) : tiltSharp K p (algebraMap 𝒪♭ K♭ a) = ♮a := by
   rw [tiltSharp_eq (a := a) (b := 1) one_ne_zero (by simp), untiltK_one, div_one]
 
+/- English proof (translation)
+Take `⟨a, b, hb, h⟩` from `exists_mul_algebraMap_eq x`. Rewrite using `[tiltSharp_eq hb h, div_eq_zero_iff, or_iff_left (untiltK_ne_zero hb)]`. Prove the components needed by the constructor for the conclusion. Introduce `ha`. Establish `ha' : a = 0` using `untilt_eq_zero_iff.1 ha`.
+
+Establish `hb' : algebraMap 𝒪♭ K♭ b ≠ 0` using `(map_ne_zero_iff _ (IsFractionRing.injective 𝒪♭ K♭)).2 hb`. Rewrite `h` using `[ha', map_zero]`. Conclude with `(mul_eq_zero.1 h).resolve_right hb'`. Introduce and unpack `rfl`. Rewrite `h` using `[zero_mul, eq_comm, map_eq_zero_iff _ (IsFractionRing.injective 𝒪♭ K♭)]`.
+
+Rewrite using `[h, untilt_zero, ZeroMemClass.coe_zero]`.
+-/
 theorem tiltSharp_eq_zero_iff {x : K♭} : tiltSharp K p x = 0 ↔ x = 0 := by
   obtain ⟨a, b, hb, h⟩ := exists_mul_algebraMap_eq x
   rw [tiltSharp_eq hb h, div_eq_zero_iff, or_iff_left (untiltK_ne_zero hb)]
@@ -103,6 +135,9 @@ theorem tiltSharp_eq_zero_iff {x : K♭} : tiltSharp K p x = 0 ↔ x = 0 := by
     rw [zero_mul, eq_comm, map_eq_zero_iff _ (IsFractionRing.injective 𝒪♭ K♭)] at h
     rw [h, untilt_zero, ZeroMemClass.coe_zero]
 
+/- English proof (translation)
+Take `⟨a, b, hb, h⟩` from `exists_mul_algebraMap_eq x`. Take `⟨c, d, hd, h'⟩` from `exists_mul_algebraMap_eq y`. Establish `hbd : b * d ≠ 0` using `mul_ne_zero hb hd`. Rewrite using `[tiltSharp_eq (x := x) (a := a * d) (b := b * d) hbd (by rw [map_mul, map_mul, ← h]; ring), tiltSharp_eq (x := y) (a := c * b) (b := b * d) hbd (by rw [map_mul, map_mul, ← h']; ring), tiltSharp_eq (x := x + y) (a := a * d + c * b) (b := b * d) hbd (by rw [map_add, map_mul, map_mu …`. Conclude with `div_le_div_of_nonneg_right (norm_untilt_add_le _ _) (norm_nonneg _)`.
+-/
 theorem norm_tiltSharp_add_le (x y : K♭) :
     ‖tiltSharp K p (x + y)‖ ≤ max ‖tiltSharp K p x‖ ‖tiltSharp K p y‖ := by
   obtain ⟨a, b, hb, h⟩ := exists_mul_algebraMap_eq x
@@ -133,17 +168,29 @@ def tiltAbv : AbsoluteValue K♭ ℝ where
 
 instance normedFieldTilt : NormedField K♭ := (tiltAbv K p).toNormedField
 
+/- English proof (translation)
+The claim follows from `rfl @[simp]`.
+-/
 theorem norm_tiltSharp (x : K♭) : ‖tiltSharp K p x‖ = ‖x‖ := rfl
 
 @[simp]
+/- English proof (translation)
+Rewrite using `[← norm_tiltSharp, tiltSharp_algebraMap, preTilt_norm_def]`.
+-/
 theorem norm_algebraMap_preTilt (a : 𝒪♭) : ‖algebraMap 𝒪♭ K♭ a‖ = ‖a‖ := by
   rw [← norm_tiltSharp, tiltSharp_algebraMap, preTilt_norm_def]
 
+/- English proof (translation)
+Rewrite using `[← nnnorm_eq_val]`. Conclude with `NNReal.eq (norm_algebraMap_preTilt a)`.
+-/
 theorem nnnorm_algebraMap_preTilt (a : 𝒪♭) : ‖algebraMap 𝒪♭ K♭ a‖₊ =
     PreTilt.val K NormedField.valuation (normInteger K) normInteger_integers p a := by
   rw [← nnnorm_eq_val]
   exact NNReal.eq (norm_algebraMap_preTilt a)
 
+/- English proof (translation)
+Rewrite using `[dist_eq_norm, dist_eq_norm, ← map_sub, norm_algebraMap_preTilt]`.
+-/
 theorem dist_algebraMap_preTilt (a b : 𝒪♭) :
     dist (algebraMap 𝒪♭ K♭ a) (algebraMap 𝒪♭ K♭ b) = dist a b := by
   rw [dist_eq_norm, dist_eq_norm, ← map_sub, norm_algebraMap_preTilt]
@@ -151,6 +198,13 @@ theorem dist_algebraMap_preTilt (a b : 𝒪♭) :
 instance isUltrametricDist_tilt : IsUltrametricDist K♭ :=
   IsUltrametricDist.isUltrametricDist_of_forall_norm_add_le_max_norm norm_tiltSharp_add_le
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce `hx`. Take `⟨a, b, hb, h⟩` from `exists_mul_algebraMap_eq x`. Establish `hle : ‖a‖ ≤ ‖b‖`. Rewrite using `[← norm_algebraMap_preTilt (K := K) a, ← h, norm_mul, norm_algebraMap_preTilt]`.
+
+Conclude with `mul_le_of_le_one_left (norm_nonneg _) hx`. Take `⟨c, rfl⟩` from `preTilt_dvd_iff_norm_le.2 hle`. Establish `hb' : algebraMap 𝒪♭ K♭ b ≠ 0` using `(map_ne_zero_iff _ (IsFractionRing.injective 𝒪♭ K♭)).2 hb`. Use `⟨c, ?_⟩` and prove the remaining obligations. Rewrite `h` using `[map_mul, mul_comm x]`.
+
+Conclude with `(mul_left_cancel₀ hb' h).symm`. Introduce and unpack `⟨a, rfl⟩`. Rewrite using `[norm_algebraMap_preTilt]`. Conclude with `preTilt_norm_le_one a`.
+-/
 theorem norm_le_one_iff_exists_algebraMap {x : K♭} :
     ‖x‖ ≤ 1 ↔ ∃ a : 𝒪♭, algebraMap 𝒪♭ K♭ a = x := by
   constructor
@@ -169,6 +223,9 @@ theorem norm_le_one_iff_exists_algebraMap {x : K♭} :
     rw [norm_algebraMap_preTilt]
     exact preTilt_norm_le_one a
 
+/- English proof (translation)
+Use extensionality with `x`. Rewrite using `[mem_normInteger, norm_le_one_iff_exists_algebraMap, RingHom.mem_range]`.
+-/
 theorem normInteger_tilt_eq_range : normInteger K♭ = (algebraMap 𝒪♭ K♭).range := by
   ext x
   rw [mem_normInteger, norm_le_one_iff_exists_algebraMap, RingHom.mem_range]
@@ -182,13 +239,22 @@ def preTiltEquivNormInteger : 𝒪♭ ≃+* normInteger K♭ :=
     (RingEquiv.subringCongr normInteger_tilt_eq_range.symm)
 
 @[simp]
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem coe_preTiltEquivNormInteger (a : 𝒪♭) :
     ((preTiltEquivNormInteger K p a : normInteger K♭) : K♭) = algebraMap 𝒪♭ K♭ a := rfl
 
+/- English proof (translation)
+Rewrite using `[coe_preTiltEquivNormInteger, norm_algebraMap_preTilt]`.
+-/
 theorem norm_preTiltEquivNormInteger (a : 𝒪♭) :
     ‖((preTiltEquivNormInteger K p a : normInteger K♭) : K♭)‖ = ‖a‖ := by
   rw [coe_preTiltEquivNormInteger, norm_algebraMap_preTilt]
 
+/- English proof (translation)
+Take `⟨ϖ, h1, h2⟩` from `IsPerfectoidField.exists_norm_mem_Ioo (K := K) (p := p) (max r ‖(p : K)‖) (max_lt hr IsPerfectoidField.norm_natCast_lt_one)`. Take `⟨a, ha⟩` from `exists_norm_untilt_eq (p := p) ⟨ϖ, mem_normInteger.2 h2.le⟩ ((le_max_right _ _).trans_lt h1)`. Apply the tactic sequence `refine ⟨algebraMap 𝒪♭ K♭ a, ?_, ?_⟩ <;> rw [norm_algebraMap_preTilt, preTilt_norm_def, ha]`. Conclude with `(le_max_left _ _).trans_lt h1`. Conclude with `h2`.
+-/
 theorem exists_tilt_norm_mem_Ioo (r : ℝ) (hr : r < 1) : ∃ x : K♭, r < ‖x‖ ∧ ‖x‖ < 1 := by
   obtain ⟨ϖ, h1, h2⟩ := IsPerfectoidField.exists_norm_mem_Ioo (K := K) (p := p) (max r ‖(p : K)‖)
     (max_lt hr IsPerfectoidField.norm_natCast_lt_one)
@@ -252,10 +318,18 @@ end Norm
 
 section ValueGroup
 
+/- English proof (translation)
+The claim follows from `_root_.GroundTheory.Variant₂.N1.exists_norm_untilt_eq_norm_of_norm_le_one hy0 hy1`.
+-/
 theorem exists_norm_untilt_eq_norm {y : K} (hy0 : y ≠ 0) (hy1 : ‖y‖ ≤ 1) :
     ∃ a : 𝒪♭, ‖♮a‖ = ‖y‖ :=
   _root_.GroundTheory.Variant₂.N1.exists_norm_untilt_eq_norm_of_norm_le_one hy0 hy1
 
+/- English proof (translation)
+Break down `le_or_gt ‖y‖ 1 with h | h` into its components or cases. Take `⟨a, ha⟩` from `exists_norm_untilt_eq_norm (p := p) hy h`. Conclude with `⟨algebraMap 𝒪♭ K♭ a, by rw [norm_algebraMap_preTilt, preTilt_norm_def, ha]⟩`. Take `⟨a, ha⟩` from `exists_norm_untilt_eq_norm (p := p) (inv_ne_zero hy) (by rw [norm_inv]; exact inv_le_one_of_one_le₀ h.le)`. Use `⟨(algebraMap 𝒪♭ K♭ a)⁻¹, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[norm_inv, norm_algebraMap_preTilt, preTilt_norm_def, ha, norm_inv, inv_inv]`.
+-/
 theorem exists_tilt_norm_eq {y : K} (hy : y ≠ 0) : ∃ x : K♭, ‖x‖ = ‖y‖ := by
   rcases le_or_gt ‖y‖ 1 with h | h
   · obtain ⟨a, ha⟩ := exists_norm_untilt_eq_norm (p := p) hy h
@@ -265,6 +339,13 @@ theorem exists_tilt_norm_eq {y : K} (hy : y ≠ 0) : ∃ x : K♭, ‖x‖ = ‖
     refine ⟨(algebraMap 𝒪♭ K♭ a)⁻¹, ?_⟩
     rw [norm_inv, norm_algebraMap_preTilt, preTilt_norm_def, ha, norm_inv, inv_inv]
 
+/- English proof (translation)
+Use extensionality with `r`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨x, hx, rfl⟩`. Use `⟨tiltSharp K p x, fun h => hx ?_, rfl⟩` and prove the remaining obligations. Conclude with `tiltSharp_eq_zero_iff.1 h`.
+
+Introduce and unpack `⟨y, hy, rfl⟩`. Take `⟨x, hx⟩` from `exists_tilt_norm_eq (K := K) (p := p) hy`. Use `⟨x, fun h => hy ?_, hx⟩` and prove the remaining obligations. Rewrite `h` using `[Set.mem_singleton_iff]`. Rewrite `hx` using `[h, norm_zero, eq_comm, norm_eq_zero]`.
+
+Conclude with `hx`.
+-/
 theorem image_norm_tilt :
     (fun x : K♭ => ‖x‖) '' {0}ᶜ = (fun y : K => ‖y‖) '' {0}ᶜ := by
   ext r

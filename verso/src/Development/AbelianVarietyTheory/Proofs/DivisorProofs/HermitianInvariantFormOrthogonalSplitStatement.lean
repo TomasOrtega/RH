@@ -4,6 +4,9 @@ import Mathlib
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.LeSocleOverOfSimple
 open scoped Topology
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.StableMinFix.exists_minimal_simple_mod_radical | exact GlobalTheory.StableMinFix.exists_minimal_simple_mod_radical | (intros; apply GlobalTheory.StableMinFix.exists_minimal_simple_mod_radical <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.hermitian_invariant_form_orthogonal_split : ∀ {V G : Type} [AddCommGroup V] [Module ℂ V] [Group G] (ρ : G →* Module.End ℂ V)
     (B : V → V → ℂ) (D : Submodule ℂ V),
     (∀ x ∈ D, ∀ y ∈ D, ∀ z ∈ D, B (x + y) z = B x z + B y z) →

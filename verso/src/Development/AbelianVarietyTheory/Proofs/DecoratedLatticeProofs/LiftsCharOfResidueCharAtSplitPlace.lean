@@ -35,16 +35,25 @@ variable {D : D7} {v : HeightOneSpectrum (𝓞 D.host.F)}
 def swapProj (φ : SplitProj D v) : D.host.E ⊗[D.host.F] Fv D.host.F v →+* Fv D.host.F v :=
   φ.toRingHom.comp (Algebra.TensorProduct.comm D.host.F D.host.E (Fv D.host.F v)).toAlgHom.toRingHom
 
+/- English proof (translation)
+Express the relevant statement in the definitionally equal form `φ (a ⊗ₜ[D.host.F] (1 : D.host.E)) = a`. Conclude with `φ.commutes a`.
+-/
 theorem swapProj_one_tmul (φ : SplitProj D v) (a : Fv D.host.F v) : swapProj φ ((1 : D.host.E) ⊗ₜ[D.host.F] a) = a := by
   change φ (a ⊗ₜ[D.host.F] (1 : D.host.E)) = a
   exact φ.commutes a
 
+/- English proof (translation)
+Proceed by induction on `z using TensorProduct.induction_on with`. Consider the case `zero => simp only [map_zero]`. Consider the case `add x y hx hy => simp only [map_add, hx, hy]`. Consider the case `tmul b y => rfl`.
+-/
 theorem swapProj_prV (φ : SplitProj D v) (z : EAf D) : swapProj φ (Formalism.UG.prV v z) = GlobalTheory.IndefiniteRowSideFullHecke.RestrictedTensorSplitting.rdE φ z := by
   induction z using TensorProduct.induction_on with
   | zero => simp only [map_zero]
   | add x y hx hy => simp only [map_add, hx, hy]
   | tmul b y => rfl
 
+/- English proof (translation)
+Rewrite using `[swapProj_prV, Formalism.L2.DIV.oToS_coe]`. Express the relevant statement in the definitionally equal form `φ ((Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.evalV D.host.F v 1) ⊗ₜ[D.host.F] (x : D.host.E)) = _`. Rewrite using `[map_one]`. Both sides reduce to the same expression.
+-/
 theorem swapProj_prV_oToS (φ : SplitProj D v) (x : 𝓞 D.host.E) :
     swapProj φ (Formalism.UG.prV v (Formalism.L2.DIV.oToS D.host.F D.host.E x).1) = GlobalTheory.IndefiniteRowSideFullHecke.RestrictedTensorSplitting.rdQ φ (x : D.host.E) := by
   rw [swapProj_prV, Formalism.L2.DIV.oToS_coe]
@@ -52,15 +61,28 @@ theorem swapProj_prV_oToS (φ : SplitProj D v) (x : 𝓞 D.host.E) :
   rw [map_one]
   rfl
 
+/- English proof (translation)
+Use `⟨GlobalTheory.EmbChart.isSplitIdem_idem _, ?_, GlobalTheory.SplitProjChart.rdA_idem φ⟩` and prove the remaining obligations. Rewrite using `[GlobalTheory.EmbChart.cA_idem, GlobalTheory.EmbChart.idem, ← LinearMap.map_add, add_sub_cancel]`. Both sides reduce to the same expression.
+-/
 theorem isIdemOf_idem (φ : SplitProj D v) : IsIdemOf φ (GlobalTheory.EmbChart.idem (GlobalTheory.SplitProjChart.emb φ)) := by
   refine ⟨GlobalTheory.EmbChart.isSplitIdem_idem _, ?_, GlobalTheory.SplitProjChart.rdA_idem φ⟩
   rw [GlobalTheory.EmbChart.cA_idem, GlobalTheory.EmbChart.idem, ← LinearMap.map_add, add_sub_cancel]
   rfl
 
+/- English proof (translation)
+The claim follows from `HeightOneSpectrum.ext (Ideal.ext fun x => (hφ x).trans (mem_splitPrime (GlobalTheory.SplitProjChart.emb φ) x).symm)`.
+-/
 theorem eq_splitPrime {φ : SplitProj D v} {PP : Pl D.host.E} (hφ : IsProjAt φ PP) :
     PP = splitPrime (GlobalTheory.SplitProjChart.emb φ) :=
   HeightOneSpectrum.ext (Ideal.ext fun x => (hφ x).trans (mem_splitPrime (GlobalTheory.SplitProjChart.emb φ) x).symm)
 
+/- English proof (translation)
+Choose the witnesses or unpack the hypotheses as in `⟨p, hp, hp'⟩ : ∃ p ∈ (splitPrime τ).asIdeal, p ∉ (splitPrime (τ.comp D.sp.cm.sig)).asIdeal := by`. Assume the negation of the conclusion as `hc`. Use `push Not at hc`. Establish `h` using `(splitPrime τ).isMaximal.eq_of_le (splitPrime (τ.comp D.sp.cm.sig)).isPrime.ne_top hc`. Conclude with `splitPrime_comp_ne (isCMExt_host D) τ (HeightOneSpectrum.ext h.symm)`.
+
+Use `⟨p, hp, fun P hP hpP => ?_⟩` and prove the remaining obligations. Establish `hm : P.asIdeal ∈ v.asIdeal.primesOver (𝓞 D.host.E)` using `⟨P.isPrime, ⟨hP ▸ rfl⟩⟩`. Rewrite `hm` using `[primesOver_eq_split (isCMExt_host D) τ]`. Break down `hm with h | h` into its components or cases. Conclude with `HeightOneSpectrum.ext h`.
+
+Conclude with `absurd (h ▸ hpP) hp'`.
+-/
 theorem exists_mem_only (τ : D.host.E →ₐ[D.host.F] Fv D.host.F v) : ∃ p ∈ (splitPrime τ).asIdeal,
     ∀ P : HeightOneSpectrum (𝓞 D.host.E), P.under (𝓞 D.host.F) = v → p ∈ P.asIdeal → P = splitPrime τ := by
   obtain ⟨p, hp, hp'⟩ : ∃ p ∈ (splitPrime τ).asIdeal, p ∉ (splitPrime (τ.comp D.sp.cm.sig)).asIdeal := by
@@ -75,6 +97,11 @@ theorem exists_mem_only (τ : D.host.E →ₐ[D.host.F] Fv D.host.F v) : ∃ p �
   · exact HeightOneSpectrum.ext h
   · exact absurd (h ▸ hpP) hp'
 
+/- English proof (translation)
+Take `⟨p, hp, hp'⟩` from `exists_mem_only (GlobalTheory.SplitProjChart.emb φ)`. Rewrite `hp`, `hp'` using `[← eq_splitPrime hφ]`. Take `⟨ρ, ι, hρ, hρr⟩` from `GlobalTheory.SplitResidue.exists_residue_equiv D.host.F D.host.E v PP (swapProj φ) p (swapProj_one_tmul φ) ((hφ p).1 hp) hp'`. Establish `h0 : IsLocalRing.residue _ (ρ s) = IsLocalRing.residue _ (ρ (oToS D.host.F D.host.E x))`. Use `Ideal.Quotient.eq.2 ((GlobalTheory.SplitResidue.mem_maximalIdeal_iff v _).2 ?_)` and prove the remaining obligations.
+
+Rewrite using `[AddSubgroupClass.coe_sub, hρ, hρ, swapProj_prV_oToS, swapProj_prV]`. Conclude with `h`. Rewrite `h0` using `[hρr, hρr, resS_oToS]`. Conclude with `ι.injective h0`.
+-/
 theorem resS_eq {φ : SplitProj D v} {PP : Pl D.host.E} (hφ : IsProjAt φ PP)
     (s : Formalism.L2.Herm.intAf D.host.F D.host.E) (x : 𝓞 D.host.E)
     (h : Valued.v (GlobalTheory.IndefiniteRowSideFullHecke.RestrictedTensorSplitting.rdE φ s.1 - GlobalTheory.IndefiniteRowSideFullHecke.RestrictedTensorSplitting.rdQ φ (x : D.host.E)) < 1) :
@@ -90,6 +117,13 @@ theorem resS_eq {φ : SplitProj D v} {PP : Pl D.host.E} (hφ : IsProjAt φ PP)
   rw [hρr, hρr, resS_oToS] at h0
   exact ι.injective h0
 
+/- English proof (translation)
+Take `⟨U, hU⟩` from `hs (u : K)`. Take `⟨U', hU'⟩` from `hs ((u⁻¹ : Kˣ) : K)`. Establish `h1 : e * (U * U' - 1) = 0` using `(hk _).1 (by rw [map_sub, map_mul, hU, hU', map_one, Units.mul_inv, sub_self])`. Establish `h2 : π (1 - e) = 0` using `(hk _).2 (by linear_combination -hee)`. Establish `h3 : π e = 1`.
+
+Rewrite `h2` using `[map_sub, map_one, sub_eq_zero]`. Conclude with `h2.symm`. Use `⟨⟨e * U + (1 - e), e * U' + (1 - e), by linear_combination h1 + (U * U' - U - U' + 1) * hee, by linear_combination h1 + (U * U' - U - U' + 1) * hee⟩, ?_, ?_, ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `(1 - e) * (e * U + (1 - e)) = 1 - e`. Take the linear combination `(1 - U) * hee`.
+
+Express the relevant statement in the definitionally equal form `e * (e * U + (1 - e) - 1) = e * U + (1 - e) - 1`. Take the linear combination `(U - 1) * hee`. Express the relevant statement in the definitionally equal form `π (e * U + (1 - e)) = u`. Rewrite using `[map_add, map_mul, h2, h3, hU, one_mul, add_zero]`.
+-/
 theorem exists_unit_lift {A K : Type} [CommRing A] [CommRing K] (π : A →+* K) {e : A} (hee : e * e = e)
     (hs : Function.Surjective π) (hk : ∀ a, π a = 0 ↔ e * a = 0) (u : Kˣ) :
     ∃ x : Aˣ, (1 - e) * (x : A) = 1 - e ∧ e * ((x : A) - 1) = (x : A) - 1 ∧ π x = u := by
@@ -109,6 +143,19 @@ theorem exists_unit_lift {A K : Type} [CommRing A] [CommRing K] (π : A →+* K)
   · change π (e * U + (1 - e)) = u
     rw [map_add, map_mul, h2, h3, hU, one_mul, add_zero]
 
+/- English proof (translation)
+Introduce `D χ PP a hres v φ hφ μ hμ u k ⟨x0, hx0k, hx0⟩`. Establish `he` using `isIdemOf_idem φ`. Generalize the expression as in `GlobalTheory.EmbChart.idem (GlobalTheory.SplitProjChart.emb φ) = e at he`. Establish `hch` using `(GlobalTheory.SplitProjChart.chart_rdA D v φ e he).1`. Establish `hAt : Formalism.L2.NTheta.IsIdemAt e PP` using `(((GlobalTheory.SplitIdemDict.idem_dictionary D).2 v φ PP hφ).2.2 e he).1`.
+
+Take `⟨x, h1, h2, h3⟩` from `exists_unit_lift (rdA φ) he.1.1 hch.1 hch.2.1 u`. Establish `hu : (u : Fv D.host.F v) ∈ v.adicCompletionIntegers D.host.F`. Establish `h4 : (u : Fv D.host.F v) - GlobalTheory.IndefiniteRowSideFullHecke.RestrictedTensorSplitting.rdQ φ (x0 : D.host.E) ∈ v.adicCompletionIntegers D.host.F` using `hx0.le`. Establish `h5 : GlobalTheory.IndefiniteRowSideFullHecke.RestrictedTensorSplitting.rdQ φ (x0 : D.host.E) ∈ v.adicCompletionIntegers D.host.F` using `apply_coe_mem (GlobalTheory.SplitProjChart.emb φ) x0`. Establish `h6` using `add_mem h4 h5`.
+
+Rewrite `h6` using `[sub_add_cancel]`. Then use the resulting hypothesis. Establish `hint : toEAf D (x : AE D) ∈ Formalism.L2.Herm.intAf D.host.F D.host.E`. Establish `h4 : finPart D (e * ((x : AE D) - 1)) ∈ intAE D`. Use `(hch.2.2.2 _).2 (GlobalTheory.SplitHecke.isInt_Ov.2 ?_)` and prove the remaining obligations. Rewrite using `[RingHom.map_sub, h3, RingHom.map_one]`.
+
+Conclude with `sub_mem hu (one_mem _)`. Establish `h5` using `(GlobalTheory.SplitDec.int_iff _).1 h4`. Rewrite `h5` using `[h2, RingHom.map_sub, RingHom.map_one]`. Establish `h6` using `add_mem h5 (one_mem _)`. Rewrite `h6` using `[sub_add_cancel]`. Then use the resulting hypothesis.
+
+Establish `hk : resS D.host.F PP ⟨_, hint⟩ = Ideal.Quotient.mk PP.asIdeal x0`. Use `resS_eq hφ _ x0 ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `Valued.v (GlobalTheory.IndefiniteRowSideFullHecke.RestrictedTensorSplitting.rdE φ (toEAf D (x : AE D)) - _) < 1`. Rewrite using `[GlobalTheory.SplitProjChart.rdE_toEAf, h3]`. Conclude with `hx0`.
+
+Rewrite using `[hμ x u ⟨e, he, h1, h3⟩]`. Conclude with `Units.ext (hres e hAt x h2 hint k (hk.trans hx0k).symm)`.
+-/
 theorem liftsChar_of_resAt : ∀ (D : D7) (χ : (AE D)ˣ →* Circle) (PP : Pl D.host.E) (a : (kP PP)ˣ →* ℂˣ), GlobalTheory.StepLaw.ResAt χ PP a → ∀ (v : HeightOneSpectrum (𝓞 D.host.F)) (φ : SplitProj D v), IsProjAt φ PP → ∀ μ : (Fv D.host.F v)ˣ →* ℂˣ, (∀ (x : (AE D)ˣ) (y : (Fv D.host.F v)ˣ), (∃ e, IsIdemOf φ e ∧ (1 - e) * (x : AE D) = 1 - e ∧ rdA φ (x : AE D) = y) → μ y = Circle.toUnits (χ x)) → LiftsChar φ PP μ a := by
   intro D χ PP a hres v φ hφ μ hμ u k ⟨x0, hx0k, hx0⟩
   have he := isIdemOf_idem φ

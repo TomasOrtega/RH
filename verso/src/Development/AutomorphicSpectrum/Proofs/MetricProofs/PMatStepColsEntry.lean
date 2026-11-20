@@ -11,6 +11,11 @@ noncomputable section
 
 namespace GlobalTheory.CompanionTheory.Ar.PB.PFl.SmallStep
 
+/- English proof (translation)
+Establish `h1` using `m.2`. Establish `h2` using `i.2`. Establish `h3` using `b.2`. Establish `h4` using `x.2`. Establish `h5 : (m : ℕ) ≤ i` using `hmi`.
+
+Simplify using `only [stepCols, Finset.mem_filter, Finset.mem_univ, true_and] at hb hb' hx ⊢`. Apply the tactic sequence `split_ifs at hb hb' hx ⊢ <;> omega`.
+-/
 theorem stepCols_subset_of_le {N j : ℕ} (hj : j ≤ N) {m i b x : Fin N} (hmi : m ≤ i)
     (hb : b ∈ stepCols N j m) (hb' : b ∈ stepCols N j i) (hx : x ∈ stepCols N j m) : x ∈ stepCols N j i := by
   have h1 := m.2
@@ -21,6 +26,19 @@ theorem stepCols_subset_of_le {N j : ℕ} (hj : j ≤ N) {m i b x : Fin N} (hmi 
   simp only [stepCols, Finset.mem_filter, Finset.mem_univ, true_and] at hb hb' hx ⊢
   split_ifs at hb hb' hx ⊢ <;> omega
 
+/- English proof (translation)
+Take `⟨⟨⟨τ, a, b⟩, hlt, hblk⟩, hsep⟩` from `q`. Take `⟨i, hk, hp, hb, ha⟩` from `id hsep`. Simplify using `only at hk hp hb ha hlt hblk ⊢`. Establish `hne : (pSteps j keep τ b).Nonempty` using `⟨i, Finset.mem_filter.mpr ⟨Finset.mem_univ _, hk, hp, hb⟩⟩`. Establish `hm : pStep j keep τ b ∈ pSteps j keep τ b`.
+
+Unfold `pStep`. Rewrite using `[dif_pos hne]`. Conclude with `Finset.min'_mem _ _`. Establish `hmin : ∀ i' ∈ pSteps j keep τ b, pStep j keep τ b ≤ i'`. Introduce `i' hi'`.
+
+Unfold `pStep`. Rewrite using `[dif_pos hne]`. Conclude with `Finset.min'_le _ _ hi'`. Take `⟨hmk, hmp, hmb⟩` from `(Finset.mem_filter.mp hm).2`. Use `⟨hmk, hmp, hmb, fun hx => ha (stepCols_subset_of_le hj (hmin i ?_) hmb hb hx), fun c => ⟨?_, ?_⟩⟩` and prove the remaining obligations.
+
+Conclude with `Finset.mem_filter.mpr ⟨Finset.mem_univ _, hk, hp, hb⟩`. Unfold `pMat lowMat`. Rewrite using `[dif_pos (⟨hlt, hblk⟩ : b < a ∧ ((a : ℕ) < N - j ↔ (b : ℕ) < N - j))]`. Unfold `cExt`. Rewrite using `[dif_pos hsep]`.
+
+Introduce `x hx hxb`. Unfold `pMat lowMat`. Distinguish the cases in `hc : b < x ∧ ((x : ℕ) < N - j ↔ (b : ℕ) < N - j)`. Rewrite using `[dif_pos hc]`. Unfold `cExt`.
+
+Use `dif_neg ?_` and prove the remaining obligations. Introduce and unpack `⟨i', hk', hp', hb', hx'⟩`. Conclude with `hx' (stepCols_subset_of_le hj (hmin i' (Finset.mem_filter.mpr ⟨Finset.mem_univ _, hk', hp', hb'⟩)) hmb hb' hx)`. Rewrite using `[dif_neg hc, if_neg hxb]`.
+-/
 theorem pStep_reads (Ψ : Type) (N j : ℕ) (keep : Ψ × Fin N → Prop) (q : PIdx j keep) (hj : j ≤ N) :
     keep (q.1.1.1, pStep j keep q.1.1.1 q.1.1.2.2) ∧ IsProperStep N j (pStep j keep q.1.1.1 q.1.1.2.2) ∧
       q.1.1.2.2 ∈ stepCols N j (pStep j keep q.1.1.1 q.1.1.2.2) ∧

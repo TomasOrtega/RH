@@ -28,6 +28,9 @@ noncomputable section
 namespace GlobalTheory.CompanionTheory.EllTrace
 open GlobalTheory.TruncKer
 
+/- English proof (translation)
+Use `haveI : Countable D.host.E := (Module.finBasis ℚ D.host.E).equivFun.injective.countable`. Use `haveI : Countable (Matrix (Fin V.rank) (Fin V.rank) D.host.E) := (show Countable (Fin V.rank → Fin V.rank → D.host.E) from inferInstance)`. Use `haveI : Countable (GL (Fin V.rank) D.host.E) := Units.val_injective.countable`. Use `infer_instance`.
+-/
 theorem countable_GF {D : D7} (V : HSp D) : Countable (GF V) := by
   haveI : Countable D.host.E :=
     (Module.finBasis ℚ D.host.E).equivFun.injective.countable
@@ -36,6 +39,13 @@ theorem countable_GF {D : D7} (V : HSp D) : Countable (GF V) := by
   haveI : Countable (GL (Fin V.rank) D.host.E) := Units.val_injective.countable
   infer_instance
 
+/- English proof (translation)
+Establish `hcs` using `continuous_of_mem_ccAd hf`. Establish `hr : (ratEmb D.sp.cm.sig V.gram).range = GQ V` using `by rw [range_ratEmb]; rfl`. Set `e : GF V ≃* GQ V` to `(MonoidHom.ofInjective (ratEmb_injective D.sp.cm.sig V.gram)).trans (MulEquiv.subgroupCongr hr)`. Establish `he : ∀ δ : GF V, ((e δ : GQ V) : GA D V) = rat V δ` using `fun δ => rfl`. Use `⟨?_, ?_⟩` and prove the remaining obligations.
+
+Establish `hC : IsCompact ((fun g : GA D V => x * g * x⁻¹) '' tsupport f)` using `hcs.2.isCompact.image (by fun_prop)`. Establish `hfin` using `finite_mem_compact (Γ := GQ V) hC`. Use `(hfin.preimage e.injective.injOn).subset fun δ hδ => ?_` and prove the remaining obligations. Use `⟨x⁻¹ * rat V δ * x, subset_tsupport _ hδ, ?_⟩` and prove the remaining obligations. Simplify using `only [he]`.
+
+Use `group`. Use `hasSum_kernel (Γ := GQ V) hcs.2 x x` as an intermediate fact. Conclude with `(e.toEquiv.hasSum_iff (f := fun γ : GQ V => f (x⁻¹ * (γ : GA D V) * x))).2 this`.
+-/
 theorem kernel_diag_hasSum {D : D7} (V : HSp D) {f : GA D V → ℂ} (hf : f ∈ CcGA V) (x : GA D V) :
     (Function.support fun δ : GF V => f (x⁻¹ * rat V δ * x)).Finite ∧
     HasSum (fun δ : GF V => f (x⁻¹ * rat V δ * x)) (GlobalTheory.AutomorphicL2Unitary.kernel (GQ V) f x x) := by
@@ -55,12 +65,44 @@ theorem kernel_diag_hasSum {D : D7} (V : HSp D) {f : GA D V → ℂ} (hf : f ∈
   · have := hasSum_kernel (Γ := GQ V) hcs.2 x x
     exact (e.toEquiv.hasSum_iff (f := fun γ : GQ V => f (x⁻¹ * (γ : GA D V) * x))).2 this
 
+/- English proof (translation)
+Take `⟨c, rfl⟩` from `isConj_iff.1 h`. Express the relevant statement in the definitionally equal form `a.1.1.charpoly = ((c.1 : GL _ _) * a.1 * (c.1)⁻¹ : GL _ _).1.charpoly`. Rewrite using `[Units.val_mul, Units.val_mul, Matrix.coe_units_inv, Matrix.charpoly_units_conj]`.
+-/
 theorem charpoly_eq_of_isConj {D : D7} {V : HSp D} {a b : GF V} (h : IsConj a b) :
     a.1.1.charpoly = b.1.1.charpoly := by
   obtain ⟨c, rfl⟩ := isConj_iff.1 h
   change a.1.1.charpoly = ((c.1 : GL _ _) * a.1 * (c.1)⁻¹ : GL _ _).1.charpoly
   rw [Units.val_mul, Units.val_mul, Matrix.coe_units_inv, Matrix.charpoly_units_conj]
 
+/- English proof (translation)
+Introduce `hInt hFinC hCO hPC hIw _hRS hNF hHZ D V lam S M T U μa μf μ _ _ fa ff hT`. Establish `hT'` using `hT`. Take `⟨hodd, -, -, hnf, hμ, harch, hfin⟩` from `hT'`. Establish `hμ'` using `hμ`. Take `⟨hμa, hμf, -, -⟩` from `hμ'`.
+
+Use `set f := tensor D.sp.cm.sig V.gram fa ff with hfdef`. Establish `hcc : f ∈ CcGA V` using `tensor_mem_ccAd harch.mem hfin.isFinFamily`. Establish `hcs` using `continuous_of_mem_ccAd hcc`. Take `⟨hH, -⟩` from `GlobalTheory.T.typeHypothesis_forms_agree D V T hnf`. Use `haveI := hμa`.
+
+Use `haveI := hμf`. Establish `hconst` using `hPC.2 D V hodd S M T hH U μa μf f ⟨fa, ff, harch, hfin, rfl⟩`. Establish `hcusp : GlobalTheory.IndefiniteRowSideFullHecke.CuspidalNoRadicalFixed.IsCuspidalOp V μ f` using `hCO D V μ f hcc (fun 𝔉 h𝔉 ν hν x y => ((hconst 𝔉 h𝔉).1 ν x y).2) (fun 𝔉 h𝔉 ν hν x y => ((hconst 𝔉 h𝔉).2 ν x y).2)`. Establish `hcuspFn : MainStatements.RegularCuspidalTrace.IsCuspFn f` using `fun 𝔉 h => (hconst 𝔉 h).1`. Use `⟨hcusp.traceClass, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[hcusp.trace_eq_integral]`. Use `haveI : Countable (GF V) := countable_GF V`. Set `ι` to `{𝔬 : Set (GF V) // ∃ γ : GF V, IsRegSS γ.1.1 ∧ 𝔬 = {δ | IsConj γ δ}}`. Use `haveI : Countable ι := by`. Establish `hs : Function.Surjective (fun γ : {γ : GF V // IsRegSS γ.1.1} => (⟨{δ | IsConj γ.1 δ}, γ.1, γ.2, rfl⟩ : ι))`.
+
+Introduce and unpack `⟨_, γ, hγ, rfl⟩`. Conclude with `⟨⟨γ, hγ⟩, rfl⟩`. Conclude with `hs.countable`. Set `k : ι → GlobalTheory.AutomorphicL2Unitary.Quot (GQ V) → ℂ` to `fun i => GlobalTheory.AutomorphicL2Unitary.descend (GQ V) (fun x => ∑' δ : i.1, f (x⁻¹ * rat V δ * x))`. Establish `hkint : ∀ i : ι, Integrable (k i) (autMeasure V μ)`.
+
+Introduce and unpack `⟨_, γ, hγ, rfl⟩`. Take `⟨hcl, -⟩` from `(GlobalTheory.T.regularSemisimple_rational_class_kernel_integrals D V γ hγ).2 f`. Use `hInt D V μ f hcc hcuspFn γ hγ` as an intermediate fact. Rewrite `this` using `[show GlobalTheory.IndefiniteRowSideFullHecke.NonFieldTypeVanishingAlt.classKernel (GQ V) (rat V γ) f = fun x => ∑' δ : {δ | IsConj γ δ}, f (x⁻¹ * rat V δ * x) from funext hcl]`. Conclude with `this`.
+
+Establish `hreg : ∀ (δ : GF V) (x : GA D V), f (x⁻¹ * rat V δ * x) ≠ 0 → IsRegSS δ.1.1` using `fun δ x h => GlobalTheory.T.isRegularSemisimple_of_testFunction_ne_zero hIw D V T U μf ff hfin fa δ x h`. Establish `hPc : ∀ a b : GF V, IsConj a b → Irreducible a.1.1.charpoly → Irreducible b.1.1.charpoly` using `fun a b h ha => charpoly_eq_of_isConj h ▸ ha`. Use `GlobalTheory.T.integral_hasSum_eq_integral_indicator_hasSum' (autMeasure V μ) k hkint ?_ {i : ι | ∀ δ ∈ i.1, Irreducible δ.1.1.charpoly} _ _ (fun q => ?_) (fun q => ?_) ?_` and prove the remaining obligations. Use `((hFinC D V f hcc).preimage Subtype.val_injective.injOn).subset fun i hi => ⟨i.2, ?_⟩` and prove the remaining obligations. Assume the negation of the conclusion as `hno`.
+
+Apply `hi` to reduce the goal to its premises. Establish `hz : ∀ q, k i q = 0`. Introduce `q`. Express the relevant statement in the definitionally equal form `(∑' δ : i.1, f (q.out⁻¹ * rat V δ * q.out)) = 0`. Establish `: ∀ δ : i.1, f (q.out⁻¹ * rat V δ * q.out) = 0` using `fun δ => by`.
+
+Assume the negation of the conclusion as `h`. Conclude with `hno ⟨q.out, δ.1, δ.2, h⟩`. Simplify using `[this]`. Simplify using `[hz]`. Take `⟨hsupp, hsum⟩` from `kernel_diag_hasSum V hcc q.out`.
+
+Use `(GlobalTheory.T.hasSum_conjClasses_regroup_with_invariant_selection _ hsupp (fun δ => IsRegSS δ.1.1) (fun δ => Irreducible δ.1.1.charpoly) (fun δ h => hreg δ _ h) hPc).1` as an intermediate fact. Rewrite `this` using `[hsum.tsum_eq]`. Conclude with `this`. Take `⟨hsupp, -⟩` from `kernel_diag_hasSum V hcc q.out`. Use `(GlobalTheory.T.hasSum_conjClasses_regroup_with_invariant_selection _ hsupp (fun δ => IsRegSS δ.1.1) (fun δ => Irreducible δ.1.1.charpoly) (fun δ h => hreg δ _ h) hPc).2` as an intermediate fact.
+
+Establish `hfs : (Function.support fun δ : {δ : GF V // Irreducible δ.1.1.charpoly} => f (q.out⁻¹ * rat V δ.1 * q.out)).Finite` using `(hsupp.preimage Subtype.val_injective.injOn).subset fun δ hδ => hδ`. Establish `e : GlobalTheory.AutomorphicL2Unitary.descend (GQ V) (ellKernel V f) q = ∑' δ : {δ : GF V // Irreducible δ.1.1.charpoly}, f (q.out⁻¹ * rat V δ.1 * q.out)`. Express the relevant statement in the definitionally equal form `ellKernel V f q.out = _`. Rewrite using `[ellKernel, tsum_eq_finsum hfs]`. Rewrite using `[e]`.
+
+Conclude with `this`. Introduce and unpack `⟨_, γ, hγ, rfl⟩ hi`. Establish `hirr : ¬ Irreducible γ.1.1.charpoly` using `fun h => hi fun δ hδ => hPc γ δ hδ h`. Establish `hZ : GlobalTheory.IndefiniteRowSideFullHecke.NonFieldTypeVanishingAlt.ZeroClause μ f (ratEmb D.sp.cm.sig V.gram γ)`. Distinguish the cases in `hA : GlobalTheory.IndefiniteRowSideFullHecke.NonFieldTypeVanishingAlt.IsNonFieldAniso D.sp.cm.sig V.gram γ.1.1`.
+
+Conclude with `hNF.zero hodd hH hμ ⟨fa, ff, harch, hfin, rfl⟩ hA`. Conclude with `hHZ D V lam S M T U μa μf μ fa ff hT γ hγ hirr hA`. Take `⟨hcl, hiff⟩` from `(GlobalTheory.T.regularSemisimple_rational_class_kernel_integrals D V γ hγ).2 f`. Use `((hiff hcs.1 hcs.2 μ 0).1 hZ).2` as an intermediate fact. Rewrite `this` using `[show GlobalTheory.IndefiniteRowSideFullHecke.NonFieldTypeVanishingAlt.classKernel (GQ V) (rat V γ) f = fun x => ∑' δ : {δ | IsConj γ δ}, f (x⁻¹ * rat V δ * x) from funext hcl]`.
+
+Conclude with `this`.
+-/
 theorem ellTrace_of_middle : MainStatements.RegularCuspidalTrace.RegClassInt → MainStatements.RegularCuspidalTrace.RegClassFin → (∀ (D : D7) (V : HSp D) (μ : Measure (GA D V)) [μ.IsHaarMeasure] [μ.IsMulRightInvariant], GlobalTheory.IndefiniteRowSideFullHecke.CuspidalNoRadicalFixed.CuspidalOperators V μ) → GlobalTheory.IndefiniteRowSideFullHecke.ConstantTermVanishing.ParabolicAndConstTerm → GlobalTheory.IndefiniteRowSideFullHecke.IwahoriSubgroup.IwahoriEigenvalues → GlobalTheory.IndefiniteRowSideFullHecke.CentralizerTensorForms.RegularSemisimple → GlobalTheory.IndefiniteRowSideFullHecke.NonFieldTypeVanishingAlt.NonFieldTypeVanishing → HyperZero → EllTrace := by
   intro hInt hFinC hCO hPC hIw _hRS hNF hHZ D V lam S M T U μa μf μ _ _ fa ff hT
   have hT' := hT

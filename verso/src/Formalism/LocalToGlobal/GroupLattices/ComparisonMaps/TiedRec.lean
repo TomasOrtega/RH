@@ -18,6 +18,9 @@ variable {D : D7}
 def tEL (D : D7) : D.what₂.Tau → D.host.E →+* D.what₂.LL :=
   fun τ => D.embE.comp (D.host.sigmaOf (D.eTau τ : D.R.GG) : D.host.E →+* D.host.E)
 
+/- English proof (translation)
+Simplify using `only [tEL, embT, Formalism.BasicNotions.Host.emb, RingHom.comp_apply]`. Use `first`. Consider the case `exact RingHom.congr_fun D.embE_φ₀ _`. Consider the case `exact D.embE_φ₀ _`. Consider the case `(rw [← D.embE_φ₀]; rfl)`.
+-/
 theorem tEL_emb (D : D7) (τ : D.what₂.Tau) (x : D.host.E) : D.what₂.embLL (tEL D τ x) = embT D τ x := by
   simp only [tEL, embT, Formalism.BasicNotions.Host.emb, RingHom.comp_apply]
   first
@@ -66,6 +69,9 @@ structure CmpTied (D : D7) (X : Formalism.L2.Herm.Herm0 D) (T : ∀ u : D.what�
       (fun x cl z => (D.fm u).emb 0 x cl (((T u).val0).eY.symm z))
       ((T u).cls0).y (c.cmp u w hg)
 
+/- English proof (translation)
+The claim follows from `(K.tie u w hg).val_rat x i L hL`.
+-/
 theorem CmpTied.val_rat {X : Formalism.L2.Herm.Herm0 D} {T : ∀ u : D.what₂.Word, Forms0 D u} {Gt : GatTies D} {c : LatCmp D}
     (K : CmpTied D X T Gt c) (u : D.what₂.Word)
     (w : D.what₂.places.Pl) (hg : GIdx D.host (D.mem u).A.T (D.what₂.places.resChar w)) (x : ((D.fm u).lat 0).V)

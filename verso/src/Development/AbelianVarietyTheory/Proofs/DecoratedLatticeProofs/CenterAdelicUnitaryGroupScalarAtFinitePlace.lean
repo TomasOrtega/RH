@@ -38,12 +38,23 @@ def commSub (φ : E →+* R') (Z : Matrix n n R') : Submodule E (Matrix n n E) w
     have e : (c • a).map φ = φ c • a.map φ := by ext i j; simp
     rw [e, Matrix.mul_smul, Matrix.smul_mul, ha]
 
+/- English proof (translation)
+Unfold both sides. The equivalence is reflexive.
+-/
 theorem mem_commSub {φ : E →+* R'} {Z : Matrix n n R'} {A : Matrix n n E} :
     A ∈ commSub φ Z ↔ Z * A.map φ = A.map φ * Z := Iff.rfl
 
+/- English proof (translation)
+Rewrite using `[mem_commSub, Matrix.map_one _ (map_zero φ) (map_one φ), Matrix.mul_one, Matrix.one_mul]`.
+-/
 theorem one_mem_commSub (φ : E →+* R') (Z : Matrix n n R') : (1 : Matrix n n E) ∈ commSub φ Z := by
   rw [mem_commSub, Matrix.map_one _ (map_zero φ) (map_one φ), Matrix.mul_one, Matrix.one_mul]
 
+/- English proof (translation)
+Rewrite `*` using `[mem_commSub]`. Establish `e1 : A.map φ * A⁻¹.map φ = 1`. Rewrite using `[← Matrix.map_mul, Matrix.mul_nonsing_inv _ hA, Matrix.map_one _ (map_zero φ) (map_one φ)]`. Establish `e2 : A⁻¹.map φ * A.map φ = 1`. Rewrite using `[← Matrix.map_mul, Matrix.nonsing_inv_mul _ hA, Matrix.map_one _ (map_zero φ) (map_one φ)]`.
+
+Combine the equalities or inequalities in the displayed calculation. Rewrite using `[← Matrix.mul_assoc (A.map φ), e1, Matrix.one_mul]`. Use `_ = A.map φ * (Z * A⁻¹.map φ) * A.map φ := by rw [h]`. Use `_ = A.map φ * Z := by simp only [Matrix.mul_assoc, e2, Matrix.mul_one]`.
+-/
 theorem mem_commSub_of_inv {φ : E →+* R'} {Z : Matrix n n R'} {A : Matrix n n E} (hA : IsUnit A.det)
     (h : A⁻¹ ∈ commSub φ Z) : A ∈ commSub φ Z := by
   rw [mem_commSub] at *
@@ -58,9 +69,21 @@ theorem mem_commSub_of_inv {φ : E →+* R'} {Z : Matrix n n R'} {A : Matrix n n
 
 variable (σ : E →+* E)
 
+/- English proof (translation)
+Use extensionality with `i j`. Simplify using `[cT]`.
+-/
 theorem cT_add' (A B : Matrix n n E) : cT σ (A + B) = cT σ A + cT σ B := by ext i j; simp [cT]
+/- English proof (translation)
+Use extensionality with `i j`. Simplify using `[cT]`.
+-/
 theorem cT_sub' (A B : Matrix n n E) : cT σ (A - B) = cT σ A - cT σ B := by ext i j; simp [cT]
+/- English proof (translation)
+Use extensionality with `i j`. Simplify using `[cT]`.
+-/
 theorem cT_smul' (c : E) (A : Matrix n n E) : cT σ (c • A) = σ c • cT σ A := by ext i j; simp [cT]
+/- English proof (translation)
+Rewrite using `[cT, Matrix.det_transpose, RingHom.map_det]`. Both sides reduce to the same expression.
+-/
 theorem det_cT' (A : Matrix n n E) : (cT σ A).det = σ A.det := by
   rw [cT, Matrix.det_transpose, RingHom.map_det]; rfl
 
@@ -71,6 +94,27 @@ section Cayley
 variable {E R' : Type} [Field E] [CharZero E] [CommRing R'] {n : Type} [Fintype n] [DecidableEq n]
   (σ : E →+* E) (J : Matrix n n E) (φ : E →+* R') (Z : Matrix n n R')
 
+/- English proof (translation)
+Take `⟨A, rfl⟩ : ∃ A : Matrix n n E, A = 1 - Y` from `⟨_, rfl⟩`. Establish `hAB : (1 - Y) * (1 + Y) = (1 + Y) * (1 - Y)` using `by noncomm_ring`. Establish `hcA : cT σ (1 - Y) * J = J * (1 + Y)`. Rewrite using `[cT_sub', cT_one, Matrix.sub_mul, hY, Matrix.one_mul, Matrix.mul_add, Matrix.mul_one, sub_neg_eq_add]`. Establish `hcB : cT σ (1 + Y) * J = J * (1 - Y)`.
+
+Rewrite using `[cT_add', cT_one, Matrix.add_mul, hY, Matrix.one_mul, Matrix.mul_sub, Matrix.mul_one, ← sub_eq_add_neg]`. Establish `hB : IsUnit (1 + Y).det`. Establish `h1` using `congrArg Matrix.det hcA`. Rewrite `h1` using `[Matrix.det_mul, Matrix.det_mul, det_cT']`. Establish `h2 : (1 + Y).det = σ (1 - Y).det` using `(mul_left_cancel₀ hJ.ne_zero (h1.symm.trans (mul_comm _ _))).trans rfl`.
+
+Rewrite using `[h2]`. Conclude with `hA.map σ`. Establish `hAAi : (1 - Y) * (1 - Y)⁻¹ = 1` using `Matrix.mul_nonsing_inv _ hA`. Establish `hgu : IsUnit ((1 + Y) * (1 - Y)⁻¹)`. Rewrite using `[Matrix.isUnit_iff_isUnit_det, Matrix.det_mul]`.
+
+Conclude with `hB.mul (Matrix.isUnit_nonsing_inv_det _ hA)`. Take `⟨u, hu⟩` from `hgu`. Establish `hmem : u ∈ UJ σ J` using `by show cT σ (u : Matrix n n E) * J * (u : Matrix n n E) = J`. Rewrite using `[hu]`. Combine the equalities or inequalities in the displayed calculation.
+
+Rewrite using `[cT_mul]`. Simplify using `only [Matrix.mul_assoc]`. Use `_ = cT σ (1 - Y)⁻¹ * J * ((1 - Y) * (1 + Y)) * (1 - Y)⁻¹ := by`. Rewrite using `[hcB]`. Simplify using `only [Matrix.mul_assoc]`.
+
+Use `_ = cT σ (1 - Y)⁻¹ * (J * (1 + Y)) * ((1 - Y) * (1 - Y)⁻¹) := by`. Rewrite using `[hAB]`. Simplify using `only [Matrix.mul_assoc]`. Use `_ = cT σ (1 - Y)⁻¹ * cT σ (1 - Y) * J := by`. Rewrite using `[hAAi, Matrix.mul_one, Matrix.mul_assoc (cT σ (1 - Y)⁻¹) (cT σ (1 - Y)) J, hcA]`.
+
+Use `_ = J := by rw [← cT_mul, hAAi, cT_one, Matrix.one_mul]`. Establish `hg : (1 + Y) * (1 - Y)⁻¹ ∈ commSub φ Z` using `by have := hZ u hmem; rwa [hu] at this`. Establish `hsum : (1 + Y) * (1 - Y)⁻¹ + 1 = (2 : E) • (1 - Y)⁻¹`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Matrix.add_mul (1 + Y) (1 - Y), hAAi]`.
+
+Use `_ = ((2 : E) • (1 : Matrix n n E)) * (1 - Y)⁻¹ := by`. Use `congr 1`. Rewrite using `[two_smul]`. Normalize the expressions using the abelian group laws. Use `_ = (2 : E) • (1 - Y)⁻¹ := by rw [Matrix.smul_mul, Matrix.one_mul]`.
+
+Establish `hAi : (1 - Y)⁻¹ ∈ commSub φ Z`. Establish `e : (1 - Y)⁻¹ = (2 : E)⁻¹ • ((1 + Y) * (1 - Y)⁻¹ + 1)`. Rewrite using `[hsum, smul_smul, inv_mul_cancel₀ (two_ne_zero), one_smul]`. Rewrite using `[e]`. Conclude with `Submodule.smul_mem _ _ (Submodule.add_mem _ hg (one_mem_commSub _ _))`.
+
+Establish `hAm` using `mem_commSub_of_inv hA hAi`. Establish `e : Y = 1 - (1 - Y)` using `(sub_sub_cancel _ _).symm`. Rewrite using `[e]`. Conclude with `Submodule.sub_mem _ (one_mem_commSub _ _) hAm`.
+-/
 theorem cayley_mem (hZ : ∀ g ∈ UJ σ J, (g : Matrix n n E) ∈ commSub φ Z) (hJ : IsUnit J.det)
     {Y : Matrix n n E} (hY : cT σ Y * J = -(J * Y)) (hA : IsUnit (1 - Y).det) : Y ∈ commSub φ Z := by
   obtain ⟨A, rfl⟩ : ∃ A : Matrix n n E, A = 1 - Y := ⟨_, rfl⟩
@@ -120,6 +164,9 @@ theorem cayley_mem (hZ : ∀ g ∈ UJ σ J, (g : Matrix n n E) ∈ commSub φ Z)
   rw [e]
   exact Submodule.sub_mem _ (one_mem_commSub _ _) hAm
 
+/- English proof (translation)
+Rewrite using `[Matrix.charpolyRev, ← Polynomial.coe_evalRingHom, RingHom.map_det]`. Use `congr 1`. Use extensionality with `a b : 2`. Apply the tactic sequence `by_cases h : a = b <;> simp [h, mul_comm t]`.
+-/
 theorem eval_det_one_sub (X : Matrix n n E) (t : E) :
     X.charpolyRev.eval t = (1 - t • X).det := by
   rw [Matrix.charpolyRev, ← Polynomial.coe_evalRingHom, RingHom.map_det]
@@ -127,6 +174,19 @@ theorem eval_det_one_sub (X : Matrix n n E) (t : E) :
   ext a b : 2
   by_cases h : a = b <;> simp [h, mul_comm t]
 
+/- English proof (translation)
+Choose the witnesses or unpack the hypotheses as in `⟨t, ht0, htp⟩ : ∃ t : ℕ, (t : E) ≠ 0 ∧ IsUnit (1 - (t : E) • X).det := by`. Assume the negation of the conclusion as `hcon`. Use `push_neg at hcon`. Establish `hq : X.charpolyRev ≠ 0`. Introduce `h`.
+
+Use `eval_det_one_sub X 0` as an intermediate fact. Rewrite `this` using `[h, zero_smul, sub_zero, Matrix.det_one]`. Simplify using `at this`. Establish `hp : Polynomial.X * X.charpolyRev ≠ 0` using `mul_ne_zero Polynomial.X_ne_zero hq`. Apply `hp` to reduce the goal to its premises.
+
+Apply `Polynomial.eq_zero_of_infinite_isRoot` to reduce the goal to its premises. Use `Set.Infinite.mono ?_ (Set.infinite_range_of_injective (Nat.cast_injective (R := E)))` and prove the remaining obligations. Introduce and unpack `_ ⟨t, rfl⟩`. Use `show Polynomial.eval _ _ = 0`. Rewrite using `[Polynomial.eval_mul, Polynomial.eval_X]`.
+
+Distinguish the cases in `h0 : (t : E) = 0`. Rewrite using `[h0, zero_mul]`. Rewrite using `[eval_det_one_sub]`. Use `hcon t h0` as an intermediate fact. Rewrite `this` using `[isUnit_iff_ne_zero, not_not]`.
+
+Rewrite using `[this, mul_zero]`. Establish `hY : cT σ ((t : E) • X) * J = -(J * ((t : E) • X))`. Rewrite using `[cT_smul', map_natCast, Matrix.smul_mul, hX, Matrix.mul_smul, smul_neg]`. Establish `h1` using `cayley_mem σ J φ Z hZ hJ hY htp`. Establish `e : X = (t : E)⁻¹ • ((t : E) • X)` using `by rw [smul_smul, inv_mul_cancel₀ ht0, one_smul]`.
+
+Rewrite using `[e]`. Conclude with `Submodule.smul_mem _ _ h1`.
+-/
 theorem lie_mem (hZ : ∀ g ∈ UJ σ J, (g : Matrix n n E) ∈ commSub φ Z) (hJ : IsUnit J.det)
     {X : Matrix n n E} (hX : cT σ X * J = -(J * X)) : X ∈ commSub φ Z := by
   obtain ⟨t, ht0, htp⟩ : ∃ t : ℕ, (t : E) ≠ 0 ∧ IsUnit (1 - (t : E) • X).det := by
@@ -164,9 +224,21 @@ section Span
 variable {E R' : Type} [Field E] [CharZero E] [CommRing R'] {n : Type} [Fintype n] [DecidableEq n]
   (σ : E →+* E) (J : Matrix n n E) (φ : E →+* R') (Z : Matrix n n R')
 
+/- English proof (translation)
+Use extensionality with `i j`. Simplify using `[cT, hσσ]`.
+-/
 theorem cT_cT' (hσσ : ∀ x, σ (σ x) = x) (A : Matrix n n E) : cT σ (cT σ A) = A := by
   ext i j; simp [cT, hσσ]
 
+/- English proof (translation)
+Establish `key : ∀ K : Matrix n n E, cT σ K = -K → K * J ∈ commSub φ Z` using `fun K hK => lie_mem σ J φ Z hZ hJ (by rw [cT_mul, hJh, hK, Matrix.mul_neg, Matrix.neg_mul, Matrix.mul_assoc])`. Establish `h2 : σ ((2 : E)⁻¹) = (2 : E)⁻¹` using `by rw [map_inv₀, map_ofNat]`. Use `set N := M * J⁻¹ with hN`. Use `set K₁ := (2 : E)⁻¹ • (N - cT σ N) with hK₁`. Use `set K₂ := ((2 : E)⁻¹ * δ⁻¹) • (N + cT σ N) with hK₂`.
+
+Establish `c₁ : cT σ K₁ = -K₁`. Rewrite using `[hK₁, cT_smul', h2, cT_sub', cT_cT' σ hσσ, ← smul_neg, neg_sub]`. Establish `c₂ : cT σ K₂ = -K₂`. Rewrite using `[hK₂, cT_smul', cT_add', cT_cT' σ hσσ, map_mul, h2, map_inv₀, hδ, ← smul_neg, add_comm (cT σ N), inv_neg, mul_neg, neg_smul, smul_neg]`. Establish `hsum : N = K₁ + δ • K₂`.
+
+Rewrite using `[hK₁, hK₂, smul_smul, mul_comm δ, mul_assoc, inv_mul_cancel₀ hδ0, mul_one, ← smul_add]`. Rewrite using `[sub_add_add_cancel, ← two_smul E N, smul_smul, inv_mul_cancel₀ two_ne_zero, one_smul]`. Establish `hM : M = K₁ * J + δ • (K₂ * J)`. Rewrite using `[← Matrix.smul_mul, ← Matrix.add_mul, ← hsum, hN, Matrix.mul_assoc, Matrix.nonsing_inv_mul _ hJ, Matrix.mul_one]`. Rewrite using `[hM]`.
+
+Conclude with `Submodule.add_mem _ (key K₁ c₁) (Submodule.smul_mem _ _ (key K₂ c₂))`.
+-/
 theorem all_mem (hσσ : ∀ x, σ (σ x) = x) {δ : E} (hδ0 : δ ≠ 0) (hδ : σ δ = -δ) (hJh : cT σ J = J)
     (hJ : IsUnit J.det) (hZ : ∀ g ∈ UJ σ J, (g : Matrix n n E) ∈ commSub φ Z) (M : Matrix n n E) :
     M ∈ commSub φ Z := by
@@ -190,11 +262,17 @@ theorem all_mem (hσσ : ∀ x, σ (σ x) = x) {δ : E} (hδ0 : δ ≠ 0) (hδ :
   rw [hM]
   exact Submodule.add_mem _ (key K₁ c₁) (Submodule.smul_mem _ _ (key K₂ c₂))
 
+/- English proof (translation)
+Use extensionality with `a b`. Simplify using `only [Matrix.map_apply, Matrix.single_apply]`. Apply the tactic sequence `split_ifs <;> simp`.
+-/
 theorem map_single_one (i j : n) : (Matrix.single i j (1 : E)).map φ = Matrix.single i j 1 := by
   ext a b
   simp only [Matrix.map_apply, Matrix.single_apply]
   split_ifs <;> simp
 
+/- English proof (translation)
+Take `⟨ζ, hζ⟩` from `Matrix.mem_range_scalar_of_commute_single (M := Z) (fun i j _ => by`. Establish `h` using `all_mem σ J φ Z hσσ hδ0 hδ hJh hJ hZ (Matrix.single i j 1)`. Rewrite `h` using `[mem_commSub, map_single_one]`. Conclude with `h.symm)`. Conclude with `⟨ζ, by rw [← hζ, Matrix.scalar_apply, Matrix.smul_one_eq_diagonal]⟩`.
+-/
 theorem scalar_of_comm (hσσ : ∀ x, σ (σ x) = x) {δ : E} (hδ0 : δ ≠ 0) (hδ : σ δ = -δ) (hJh : cT σ J = J)
     (hJ : IsUnit J.det) (hZ : ∀ g ∈ UJ σ J, (g : Matrix n n E) ∈ commSub φ Z) :
     ∃ ζ : R', Z = ζ • (1 : Matrix n n R') := by
@@ -210,6 +288,11 @@ section Main
 
 open Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes GlobalTheory.AdelicU
 
+/- English proof (translation)
+Assume the negation of the conclusion as `h`. Use `push_neg at h`. Establish `hall : ∀ a : E, a ∈ (algebraMap F E).range` using `fun a => (cm.fixed a).1 (h a)`. Establish `htop : (⊥ : Subalgebra F E) = ⊤`. Use `eq_top_iff.2 fun a _ => ?_` and prove the remaining obligations.
+
+Take `⟨b, rfl⟩` from `hall a`. Conclude with `Subalgebra.algebraMap_mem _ b`. Use `Subalgebra.bot_eq_top_iff_finrank_eq_one.1 htop` as an intermediate fact. Rewrite `this` using `[cm.deg2]`. Conclude with `absurd this (by norm_num)`.
+-/
 theorem exists_sig_ne {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [StarRing E] [Algebra F E]
     (cm : CMData F E) : ∃ a : E, cm.sig a ≠ a := by
   by_contra h
@@ -223,6 +306,15 @@ theorem exists_sig_ne {F E : Type} [Field F] [NumberField F] [Field E] [NumberFi
   rw [cm.deg2] at this
   exact absurd this (by norm_num)
 
+/- English proof (translation)
+Introduce `D V z hz v`. Establish `hND` using `GlobalTheory.Mem.VolExists.isHermND D.sp.cm V`. Establish `hσσ : ∀ x, (D.sp.cm.sig : D.host.E →+* D.host.E) (D.sp.cm.sig x) = x` using `fun x => star_star x`. Take `⟨a, ha⟩` from `exists_sig_ne D.sp.cm`. Establish `hJh : cT (D.sp.cm.sig : D.host.E →+* D.host.E) V.gram = V.gram`.
+
+Conclude with `Matrix.ext fun i j => hND.1 i j`. Use `scalar_of_comm (D.sp.cm.sig : D.host.E →+* D.host.E) V.gram (inclR (Fv D.host.F v)) _ hσσ (δ := a - D.sp.cm.sig a) (sub_ne_zero.2 (Ne.symm ha)) (by rw [map_sub, hσσ, neg_sub]; rfl) hJh (isUnit_iff_ne_zero.2 hND.2) ?_` and prove the remaining obligations. Introduce `g hg`. Set `γ : GRat D.sp.cm.sig V.gram` to `⟨g, hg⟩`. Establish `hc` using `Subgroup.mem_center_iff.1 hz (ratEmb D.sp.cm.sig V.gram γ)`.
+
+Establish `h1` using `congrArg (fun x => (matHom _ D.sp.cm.sig V.gram (proj D.sp.cm.sig V.gram v x)).val) hc`. Simplify using `only [map_mul, proj_ratEmb, Units.val_mul] at h1`. Establish `hm : (matHom _ D.sp.cm.sig V.gram (ratLoc D.sp.cm.sig V.gram v γ)).val = (g : Matrix (Fin V.rank) (Fin V.rank) D.host.E).map (inclR (Fv D.host.F v))`. Use extensionality with `r s`. Both sides reduce to the same expression.
+
+Rewrite using `[mem_commSub, ← hm]`. Conclude with `h1.symm`.
+-/
 theorem scalar_at_finite_place : ∀ (D : D7) (V : Formalism.BasicNotions.TH.HSp D) (z : GA D V), z ∈ Subgroup.center (GA D V) → ∀ v : IsDedekindDomain.HeightOneSpectrum (𝓞 D.host.F), ∃ ζ : Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.Fv D.host.F v ⊗[D.host.F] D.host.E, (GlobalTheory.AdelicU.matHom (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.Fv D.host.F v) D.sp.cm.sig V.gram (GlobalTheory.AdelicU.proj D.sp.cm.sig V.gram v z)).val = ζ • (1 : Matrix (Fin V.rank) (Fin V.rank) (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.Fv D.host.F v ⊗[D.host.F] D.host.E)) := by
   intro D V z hz v
   have hND := GlobalTheory.Mem.VolExists.isHermND D.sp.cm V

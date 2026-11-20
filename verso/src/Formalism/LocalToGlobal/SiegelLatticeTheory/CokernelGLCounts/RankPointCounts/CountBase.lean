@@ -14,6 +14,9 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 variable {D : D7} {M : ∀ p : PlF D, Loc.Model (D.s.atP p).Fp (D.s.atP p).Ep} {δ : ∀ p : PlF D, (D.s.atP p).Fp}
 
+/- English proof (translation)
+Use extensionality with `a b`. Simplify using `only [ZhatOM, Sg, Matrix.mul_diagonal]`. Rewrite using `[mul_comm, ← mul_assoc, ← mul_pow]`. Simplify using the standard rewrite rules.
+-/
 theorem zhatOM_sg (X : Matrix (Fin (D.R.rS + 1)) (Fin (D.R.rS + 1)) D.host.E) :
     ZhatOM X * Sg D.host.E D.R.rS = X := by
   ext a b
@@ -21,6 +24,15 @@ theorem zhatOM_sg (X : Matrix (Fin (D.R.rS + 1)) (Fin (D.R.rS + 1)) D.host.E) :
   rw [mul_comm, ← mul_assoc, ← mul_pow]
   simp
 
+/- English proof (translation)
+Use `set Zd : LocDat D := ⟨δ, M, hA⟩`. Establish `hR : (D.s.atP p).split = none`. Establish `h` using `(hA p).2.2.2.2.2`. Rewrite `h` using `[hM]`. Consider the cases of `h' : (D.s.atP p).split with`.
+
+Consider the case `none => rfl`. Consider the case `some sg => rw [h'] at h`. Conclude with `h.elim`. Use extensionality with `a b`. Rewrite using `[modMat_apply', Matrix.mul_diagonal, Matrix.diagonal_mul, Matrix.map_apply, ptMat_apply']`.
+
+Distinguish the cases in `hb : b = sgF w a`. Rewrite using `[if_pos hb, if_pos hb, modMat_blk Zd]`. Simplify using `only [twist, qE, tau0, hR, Ring.inverse_one, mul_one, ite_self, sub_zero, map_mul]`. Substitute `hb` using the available equality. Expand and normalize the polynomial expressions, which then agree.
+
+Rewrite using `[if_neg hb, if_neg hb, map_zero, mul_zero, zero_mul]`.
+-/
 theorem modMat_ord (hA : ∀ p, Agree δ M p) (T T' : ℕ) (p : PlF D) (hM : (M p).split = none)
     (w : Point D.host.E (D.R.rS + 1)) :
     Matrix.diagonal (fun a => algebraMap (D.s.atP p).Fp (D.s.atP p).Ep (cf (⟨δ, M, hA⟩ : LocDat D) p a)) *
@@ -43,6 +55,11 @@ theorem modMat_ord (hA : ∀ p, Agree δ M p) (T T' : ℕ) (p : PlF D) (hM : (M 
     ring
   · rw [if_neg hb, if_neg hb, map_zero, mul_zero, zero_mul]
 
+/- English proof (translation)
+Use `set Zd : LocDat D := ⟨δ, M, hA⟩`. Establish `hY` using `Formalism.L2.SG.Pf.PCount.zzp_sgn_ord Zd u u' p hM (ZhatOM (ptMat w))`. Rewrite `hY` using `[zhatOM_sg]`. Establish `hmat` using `Formalism.L2.SG.Pf.LocOrbSumPf.modShift_holds δ (D.mem u).A.T (D.mem u').A.T p w a ha`. Rewrite using `[hmat]`.
+
+Unfold `Formalism.L2.SG.Pf.ProdE.Y0`. Use `congr 1`. Rewrite using `[show Formalism.L2.SG.CntLocal.ZZP (M := M) δ u u' p (ZhatOM (ptMat w)) * Formalism.L2.SG.LsDatumB.sgnP p = Formalism.L2.SG.CntLocal.ZZP (M := Zd.M) Zd.δ u u' p (ZhatOM (ptMat w)) * Formalism.L2.SG.LsDatumB.sgnP p from rfl, hY]`. Conclude with `modMat_ord hA _ _ p hM w`.
+-/
 theorem baseConj_L (hA : ∀ p, Agree δ M p) (u u' : D.what₂.Word) (w : Point D.host.E (D.R.rS + 1)) (p : PlF D)
     (hM : (M p).split = none) (a : Loc.Pt (D.s.atP p).Ep (D.R.rS + 1))
     (ha : modPt δ (D.mem u).A.T (D.mem u').A.T p w = some a) :

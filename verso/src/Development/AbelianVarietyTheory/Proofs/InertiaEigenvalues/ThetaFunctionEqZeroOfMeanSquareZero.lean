@@ -21,11 +21,23 @@ namespace GlobalTheory.ThetaSchurBdd
 
 variable {D : D7} {ψ : AddChar (AF D.host.F) ℂ} {S T : HSp D}
 
+/- English proof (translation)
+Introduce `h` and use `by have := hψ.1.2.1 a rw [h, norm_zero] at this exact zero_ne_one this`.
+-/
 theorem psi_ne_zero (hψ : IsStdChar D ψ (-1)) (a : AF D.host.F) : ψ a ≠ 0 := fun h => by
   have := hψ.1.2.1 a
   rw [h, norm_zero] at this
   exact zero_ne_one this
 
+/- English proof (translation)
+Rewrite using `[hg.quasi, hh.quasi, hf.quasi, star_mul']`. Take the linear combination `(star (g w) * h w * f w * ψ (-(symplOH S T (ratW T S γ) w))) * GlobalTheory.ThetaSchur.mul_star_psi hψ (-(symplOH S T (ratW T S γ) w))`. Use `level := by`. Take `⟨U1, o1, h1⟩` from `hg.level`. Take `⟨U2, o2, h2⟩` from `hh.level`.
+
+Take `⟨U3, o3, h3⟩` from `hf.level`. Use `⟨U1 ⊓ U2 ⊓ U3, (o1.inter o2).inter o3, fun u hu hfin => ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `x`. Establish `e1` using `congrFun (h1 u hu.1.1 hfin) x`. Establish `e2` using `congrFun (h2 u hu.1.2 hfin) x`.
+
+Establish `e3` using `congrFun (h3 u hu.2 hfin) x`. Simplify using `only [heisO] at e1 e2 e3 ⊢`. Establish `hs` using `GlobalTheory.ThetaSchur.mul_star_psi hψ (symplOH S T x u)`. Rewrite using `[← e1, ← e2, ← e3, star_mul']`. Take the linear combination `(-(ψ (symplOH S T x u) * (star (g (x + u)) * h (x + u) * f (x + u)))) * hs`.
+
+Use `cont := (hg.cont.star.mul hh.cont).mul hf.cont`. Use `smooth k L hL hL0 w := by`. Establish `hs : ContDiff ℝ ∞ (fun t => star (g (w + L t)))` using `Complex.conjCLE.contDiff.comp (hg.smooth k L hL hL0 w)`. Conclude with `ContDiff.mul (ContDiff.mul hs (hh.smooth k L hL hL0 w)) (hf.smooth k L hL hL0 w)`.
+-/
 theorem isTheta_star_mul_mul (hψ : IsStdChar D ψ (-1)) {g h f : WO S T → ℂ} (hg : IsThetaFunO ψ S T g)
     (hh : IsThetaFunO ψ S T h) (hf : IsThetaFunO ψ S T f) :
     IsThetaFunO ψ S T (fun x => star (g x) * h x * f x) where
@@ -52,6 +64,11 @@ theorem isTheta_star_mul_mul (hψ : IsStdChar D ψ (-1)) {g h f : WO S T → ℂ
       Complex.conjCLE.contDiff.comp (hg.smooth k L hL hL0 w)
     exact ContDiff.mul (ContDiff.mul hs (hh.smooth k L hL hL0 w)) (hf.smooth k L hL hL0 w)
 
+/- English proof (translation)
+Take `⟨i1, i2, i3, i4, i5, K, hK, hKc⟩` from `GlobalTheory.AdelicMatrixLattice.lattice D T S`. Establish `hp : ∀ γ ∈ ratL T S, ∀ w, ‖f (γ + w)‖ = ‖f w‖`. Introduce and unpack `_ ⟨γ, rfl⟩ w`. Conclude with `(congrArg norm (hf.quasi γ w)).trans (by rw [norm_mul, hψ.1.2.1, one_mul])`. Take `⟨C, hC⟩` from `hK.exists_bound_of_continuousOn hf.cont.continuousOn`.
+
+Use `⟨C, fun w => ?_⟩` and prove the remaining obligations. Take `⟨γ, hγ, h⟩` from `hKc w`. Rewrite using `[← hp γ hγ w]`. Conclude with `hC _ h`.
+-/
 theorem exists_bound (hψ : IsStdChar D ψ (-1)) {f : WO S T → ℂ} (hf : IsThetaFunO ψ S T f) :
     ∃ C : ℝ, ∀ x, ‖f x‖ ≤ C := by
   obtain ⟨i1, i2, i3, i4, i5, K, hK, hKc⟩ := GlobalTheory.AdelicMatrixLattice.lattice D T S
@@ -64,6 +81,11 @@ theorem exists_bound (hψ : IsStdChar D ψ (-1)) {f : WO S T → ℂ} (hf : IsTh
   rw [← hp γ hγ w]
   exact hC _ h
 
+/- English proof (translation)
+Use `haveI : BorelSpace (WO S T) := ⟨rfl⟩`. Use `haveI : IsFiniteMeasure (μ.restrict 𝓕) := ⟨by rw [Measure.restrict_apply_univ, h1]; exact ENNReal.one_lt_top⟩`. Take `⟨C, hC⟩` from `exists_bound hψ hf`. Use `Integrable.of_bound (hf.cont.norm.pow 2).aestronglyMeasurable (C ^ 2) (Filter.Eventually.of_forall fun w => ?_)` and prove the remaining obligations. Rewrite using `[Real.norm_eq_abs, abs_of_nonneg (by positivity)]`.
+
+Conclude with `pow_le_pow_left₀ (norm_nonneg _) (hC w) 2`.
+-/
 theorem integrable_sq (hψ : IsStdChar D ψ (-1)) {μ : Measure (WO S T)} {𝓕 : Set (WO S T)} (h1 : μ 𝓕 = 1)
     {f : WO S T → ℂ} (hf : IsThetaFunO ψ S T f) : Integrable (fun w => ‖f w‖ ^ 2) (μ.restrict 𝓕) := by
   haveI : BorelSpace (WO S T) := ⟨rfl⟩
@@ -74,6 +96,17 @@ theorem integrable_sq (hψ : IsStdChar D ψ (-1)) {μ : Measure (WO S T)} {𝓕 
   rw [Real.norm_eq_abs, abs_of_nonneg (by positivity)]
   exact pow_le_pow_left₀ (norm_nonneg _) (hC w) 2
 
+/- English proof (translation)
+Take `⟨hμ, h𝓕, h1⟩` from `hcv`. Take `⟨i1, i2, i3, i4, i5, -⟩` from `GlobalTheory.AdelicMatrixLattice.lattice D T S`. Use `haveI : BorelSpace (WO S T) := ⟨rfl⟩`. Use `haveI : Countable (ratL T S) := TopologicalSpace.separableSpace_iff_countable.1 inferInstance`. Establish `hae : ∀ᵐ w ∂(μ.restrict 𝓕), ‖f w‖ ^ 2 = 0` using `(integral_eq_zero_iff_of_nonneg (fun w => by positivity) (integrable_sq hψ h1 hf)).1 h0`.
+
+Establish `ho : IsOpen {x | f x ≠ 0}` using `isOpen_ne_fun hf.cont continuous_const`. Establish `hper : ∀ γ ∈ ratL T S, ∀ x, (f (γ + x) ≠ 0 ↔ f x ≠ 0)`. Introduce and unpack `_ ⟨γ, rfl⟩ x`. Use `show f (ratW T S γ + x) ≠ 0 ↔ _`. Rewrite using `[hf.quasi, ne_eq, mul_eq_zero, not_or]`.
+
+Conclude with `⟨fun h => h.2, fun h => ⟨psi_ne_zero hψ _, h⟩⟩`. Establish `h2 : μ {x | f x ≠ 0} = 0`. Use `h𝓕.measure_zero_of_invariant _ (fun g => ?_) ?_` and prove the remaining obligations. Use extensionality with `x`. Rewrite using `[Set.mem_vadd_set_iff_neg_vadd_mem]`.
+
+Use `show f (((-g : ratL T S) : WO S T) + x) ≠ 0 ↔ f x ≠ 0`. Conclude with `hper _ (-g).2 x`. Rewrite using `[← Measure.restrict_apply ho.measurableSet]`. Rewrite `hae` using `[ae_iff]`. Simplify using `using hae`.
+
+Use function extensionality and compare the values at `x`. Assume the negation of the conclusion as `hx`. Conclude with `(ho.measure_pos μ ⟨x, hx⟩).ne' h2`.
+-/
 theorem thetaFunction_eq_zero_of_meanSquare_zero (hψ : IsStdChar D ψ (-1)) {μ : Measure (WO S T)} {𝓕 : Set (WO S T)}
     (hcv : IsCovolOne (ratL T S) μ 𝓕) {f : WO S T → ℂ} (hf : IsThetaFunO ψ S T f) (h0 : nrm2 μ 𝓕 f = 0) :
     f = 0 := by
@@ -108,6 +141,15 @@ namespace GlobalTheory.ThetaSchurBdd
 
 variable {D : D7} {ψ : AddChar (AF D.host.F) ℂ} {S T : HSp D}
 
+/- English proof (translation)
+Take `⟨i1, i2, i3, i4, i5, K, hK, hKc⟩` from `GlobalTheory.AdelicMatrixLattice.lattice D T S`. Use `haveI : BorelSpace (WO S T) := ⟨rfl⟩`. Take `⟨l1, l2, -, l4, -⟩` from `GlobalTheory.OrientedFormLaws.symplOH_laws D S T`. Conclude with `GlobalTheory.trigPoly_dense_periodic (WO S T) (ratL T S) K hK hKc (ratL T S) (fun γ x => ψ (symplO S T x γ)) (fun γ => by`. Establish `: Continuous fun x : WO S T => symplOH S T x (γ : WO S T)` using `GlobalTheory.WeilVacMove.continuous_symplOH S T continuous_id' continuous_const`.
+
+Simplify using `only [← l4]`. Conclude with `hψ.1.1.comp (this.add this))`. Use the proof step `(fun γ x y => by`. Simplify using `only [← l4, l1, AddChar.map_add_eq_mul]`. Use the proof step `ring)`.
+
+Use the proof step `(fun γ γ' x => by`. Simplify using `only [← l4, AddSubgroup.coe_add, l2, AddChar.map_add_eq_mul]`. Use the proof step `ring)`. Use the proof step `(fun x => by`. Simplify using `only [← l4, AddSubgroup.coe_zero, GlobalTheory.WeilVacMove.symplOH_zero_right, add_zero, AddChar.map_zero_eq_one])`.
+
+Use the proof step `(fun γ x => hψ.1.2.1 _)`. Use the proof step `(fun x => by`. Rewrite using `[← GlobalTheory.RatAnnih.ratL_annihilator D ψ hψ S T x]`. Conclude with `⟨fun h γ hγ => h ⟨γ, hγ⟩, fun h γ => h γ γ.2⟩)`. Use `q hq hqp δ hδ`.
+-/
 theorem trig_approx (hψ : IsStdChar D ψ (-1)) {q : WO S T → ℂ} (hq : Continuous q)
     (hqp : ∀ γ ∈ ratL T S, ∀ x, q (γ + x) = q x) {δ : ℝ} (hδ : 0 < δ) :
     ∃ (s : Finset (ratL T S)) (c : ratL T S → ℂ), ∀ x, ‖q x - ∑ a ∈ s, c a * ψ (symplO S T x a)‖ ≤ δ := by
@@ -141,6 +183,9 @@ def thetaSub (ψ : AddChar (AF D.host.F) ℂ) (S T : HSp D) : Submodule ℂ (WO 
   zero_mem' := GlobalTheory.WeilVacMove.isTheta_zero
   smul_mem' := fun c _ h => GlobalTheory.WeilVacMove.isTheta_smul c h
 
+/- English proof (translation)
+Use function extensionality and compare the values at `x`. Rewrite using `[Finset.sum_apply, Finset.sum_mul]`. Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Rewrite using `[Pi.smul_apply, smul_eq_mul, GlobalTheory.ThetaSchur.heisO_rat hf a.2, mul_assoc]`.
+-/
 theorem trig_mul_eq (s : Finset (ratL T S)) (c : ratL T S → ℂ) {f : WO S T → ℂ} (hf : IsThetaFunO ψ S T f) :
     (fun x => (∑ a ∈ s, c a * ψ (symplO S T x a)) * f x) = ∑ a ∈ s, c a • heisO ψ S T a f := by
   funext x

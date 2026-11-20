@@ -17,6 +17,11 @@ def mono (κ : ι → Γ → Matrix (Fin n) (Fin n) ℂ) {m : ℕ} (lab : Fin m 
 def Mono (κ : ι → Γ → Matrix (Fin n) (Fin n) ℂ) (H : Set ι) : Set (Γ → ℂ) :=
   {g | ∃ (m : ℕ) (lab : Fin m → ι) (c : ι → ℤ) (I K : Fin m → Fin n), (∀ p, lab p ∈ H) ∧ g = mono κ lab c I K}
 
+/- English proof (translation)
+Set `e` to `Fintype.equivFin ι`. Use `⟨{τ | e τ < e (bar τ)}, fun τ => ?_⟩` and prove the remaining obligations. Simplify using `only [Set.mem_setOf_eq, h1, not_lt]`. Establish `hne : e τ ≠ e (bar τ)` using `fun h => h2 τ (e.injective h).symm`. Prove the components needed by the constructor for the conclusion.
+
+Introduce `h`. Conclude with `h.le`. Introduce `h`. Conclude with `lt_of_le_of_ne h hne`.
+-/
 theorem exists_half (bar : ι → ι) (h1 : ∀ τ, bar (bar τ) = τ) (h2 : ∀ τ, bar τ ≠ τ) :
     ∃ H : Set ι, ∀ τ, τ ∈ H ↔ bar τ ∉ H := by
   classical
@@ -32,12 +37,20 @@ theorem exists_half (bar : ι → ι) (h1 : ∀ τ, bar (bar τ) = τ) (h2 : ∀
 
 variable {bar : ι → ι} {κ : ι → Γ → Matrix (Fin n) (Fin n) ℂ}
 
+/- English proof (translation)
+Introduce `h`. Use `congrArg Matrix.det (hK.unit τ γ)` as an intermediate fact. Rewrite `this` using `[Matrix.det_mul, h, zero_mul, Matrix.det_one]`. Conclude with `zero_ne_one this`.
+-/
 theorem det_ne (hK : IsKD bar κ) (τ : ι) (γ : Γ) : (κ τ γ).det ≠ 0 := by
   intro h
   have := congrArg Matrix.det (hK.unit τ γ)
   rw [Matrix.det_mul, h, zero_mul, Matrix.det_one] at this
   exact zero_ne_one this
 
+/- English proof (translation)
+Establish `hent : ∀ τ, Continuous fun k => κ τ k` using `fun τ => continuous_pi fun i => continuous_pi fun j => hK.cont τ i j`. Unfold `mono`. Use `Continuous.mul ?_ ?_` and prove the remaining obligations. Use `continuous_finset_prod _ fun τ _ => ?_` and prove the remaining obligations. Conclude with `((hent τ).matrix_det).zpow₀ (c τ) fun k => Or.inl (det_ne hK τ k)`.
+
+Conclude with `continuous_finset_prod _ fun p _ => hK.cont (lab p) (I p) (K p)`.
+-/
 theorem mono_cont (hK : IsKD bar κ) {m : ℕ} (lab : Fin m → ι) (c : ι → ℤ) (I K : Fin m → Fin n) :
     Continuous (mono κ lab c I K) := by
   have hent : ∀ τ, Continuous fun k => κ τ k :=
@@ -48,11 +61,21 @@ theorem mono_cont (hK : IsKD bar κ) {m : ℕ} (lab : Fin m → ι) (c : ι → 
     exact ((hent τ).matrix_det).zpow₀ (c τ) fun k => Or.inl (det_ne hK τ k)
   · exact continuous_finset_prod _ fun p _ => hK.cont (lab p) (I p) (K p)
 
+/- English proof (translation)
+Use `⟨0, Fin.elim0, 0, Fin.elim0, Fin.elim0, fun p => p.elim0, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `k`. Simplify using `[mono]`.
+-/
 theorem one_mem_Mono (H : Set ι) : (1 : Γ → ℂ) ∈ Mono κ H := by
   refine ⟨0, Fin.elim0, 0, Fin.elim0, Fin.elim0, fun p => p.elim0, ?_⟩
   funext k
   simp [mono]
 
+/- English proof (translation)
+Take `⟨m1, l1, c1, I1, K1, hl1, rfl⟩` from `hg`. Take `⟨m2, l2, c2, I2, K2, hl2, rfl⟩` from `hg'`. Use `⟨m1 + m2, Fin.append l1 l2, c1 + c2, Fin.append I1 I2, Fin.append K1 K2, ?_, ?_⟩` and prove the remaining obligations. Introduce `p`. Use `Fin.addCases (fun i => ?_) (fun i => ?_) p` and prove the remaining obligations.
+
+Simplify `hl1 i` using `[Fin.append_left]`. Simplify `hl2 i` using `[Fin.append_right]`. Use function extensionality and compare the values at `k`. Simplify using `only [mono, Pi.mul_apply, Fin.prod_univ_add, Fin.append_left, Fin.append_right, Pi.add_apply]`. Rewrite using `[show (∏ τ, (κ τ k).det ^ (c1 τ + c2 τ)) = (∏ τ, (κ τ k).det ^ c1 τ) * ∏ τ, (κ τ k).det ^ c2 τ by`.
+
+Rewrite using `[← Finset.prod_mul_distrib]`. Conclude with `Finset.prod_congr rfl fun τ _ => zpow_add₀ (det_ne hK τ k) _ _]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem mul_mem_Mono (hK : IsKD bar κ) (H : Set ι) {g g' : Γ → ℂ} (hg : g ∈ Mono κ H) (hg' : g' ∈ Mono κ H) :
     g * g' ∈ Mono κ H := by
   obtain ⟨m1, l1, c1, I1, K1, hl1, rfl⟩ := hg
@@ -79,10 +102,34 @@ def monoAlg (hK : IsKD bar κ) (H : Set ι) : Subalgebra ℂ (Γ → ℂ) :=
     rintro _ ⟨a, ha, b, hb, rfl⟩
     exact Submodule.subset_span (mul_mem_Mono hK H ha hb))
 
+/- English proof (translation)
+Conclude with `hf.integrable_of_hasCompactSupport (HasCompactSupport.of_compactSpace f)`.
+-/
 theorem integrable_of_cont [MeasurableSpace Γ] [BorelSpace Γ] [CompactSpace Γ] (μ : MeasureTheory.Measure Γ)
     [MeasureTheory.IsFiniteMeasure μ] {f : Γ → ℂ} (hf : Continuous f) : MeasureTheory.Integrable f μ := by
   exact hf.integrable_of_hasCompactSupport (HasCompactSupport.of_compactSpace f)
 
+/- English proof (translation)
+Express the relevant statement in the definitionally equal form `(fun k => κ τ k i j) ∈ monoAlg hK H`. Establish `hent : ∀ σ ∈ H, ∀ a b : Fin n, (fun k => κ σ k a b) ∈ monoAlg hK H`. Introduce `σ hσ a b`. Apply `Submodule.subset_span` to reduce the goal to its premises. Use `⟨1, fun _ => σ, 0, fun _ => a, fun _ => b, fun _ => hσ, ?_⟩` and prove the remaining obligations.
+
+Use function extensionality and compare the values at `k`. Simplify using `[mono]`. Distinguish the cases in `hτ : τ ∈ H`. Conclude with `hent τ hτ i j`. Establish `hσ : bar τ ∈ H`.
+
+Assume the negation of the conclusion as `h`. Conclude with `hτ ((hH τ).2 h)`. Establish `hinv : ∀ z : ℤ, (fun k => (κ (bar τ) k).det ^ z) ∈ monoAlg hK H`. Introduce `z`. Apply `Submodule.subset_span` to reduce the goal to its premises.
+
+Use `⟨0, Fin.elim0, Pi.single (bar τ) z, Fin.elim0, Fin.elim0, fun p => p.elim0, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `k`. Use `symm`. Simplify using `only [mono, Fin.prod_univ_zero, mul_one]`. Rewrite using `[Finset.prod_eq_single (bar τ)]`.
+
+Simplify using the standard rewrite rules. Introduce `b _ hb`. Simplify using `[Pi.single_apply, hb]`. Introduce `h`. Conclude with `absurd (Finset.mem_univ _) h`.
+
+Establish `hadj : (fun k => (κ (bar τ) k).adjugate j i) ∈ monoAlg hK H`. Establish `hfun : (fun k => (κ (bar τ) k).adjugate j i) = ∑ p : Equiv.Perm (Fin n), (Equiv.Perm.sign p : ℤ) • ∏ r, (fun k => ((κ (bar τ) k).updateRow i (Pi.single j 1)) (p r) r)`. Use function extensionality and compare the values at `k`. Simplify using `[Matrix.adjugate_apply, Matrix.det_apply, Finset.sum_apply, Finset.prod_apply, Units.smul_def]`. Rewrite using `[hfun]`.
+
+Use `Subalgebra.sum_mem _ fun p _ => zsmul_mem (Subalgebra.prod_mem _ fun r _ => ?_) _` and prove the remaining obligations. Distinguish the cases in `h : p r = i`. Simplify using `only [h, Matrix.updateRow_self]`. Conclude with `Subalgebra.algebraMap_mem (monoAlg hK H) ((Pi.single j (1 : ℂ) : Fin n → ℂ) r)`. Simplify using `only [Matrix.updateRow_ne h]`.
+
+Conclude with `hent _ hσ _ _`. Establish `hkey : (fun k => κ τ k i j) = (fun k => (κ (bar τ) k).det ^ (-1 : ℤ)) * (fun k => (κ (bar τ) k).adjugate j i)`. Use function extensionality and compare the values at `k`. Establish `hinvM : (κ (bar τ) k)⁻¹ = (κ (bar τ) k)ᴴ` using `Matrix.inv_eq_right_inv (hK.unit (bar τ) k)`. Establish `e1 : κ τ k i j = star (κ (bar τ) k i j)`.
+
+Use `hK.conj (bar τ) k i j` as an intermediate fact. Rewrite `this` using `[hK.invol]`. Then use the resulting hypothesis. Establish `e2 : star (κ (bar τ) k i j) = ((κ (bar τ) k)ᴴ) j i`. Simplify using `[Matrix.conjTranspose_apply]`. Rewrite using `[Pi.mul_apply, e1, e2, ← hinvM]`.
+
+Simplify using `[Matrix.inv_def, Ring.inverse_eq_inv', _root_.zpow_neg_one]`. Rewrite using `[hkey]`. Conclude with `Subalgebra.mul_mem _ (hinv (-1)) hadj`.
+-/
 theorem entry_mem (hK : IsKD bar κ) {H : Set ι} (hH : ∀ τ, τ ∈ H ↔ bar τ ∉ H) (τ : ι) (i j : Fin n) :
     (fun k => κ τ k i j) ∈ Submodule.span ℂ (Mono κ H) := by
   classical

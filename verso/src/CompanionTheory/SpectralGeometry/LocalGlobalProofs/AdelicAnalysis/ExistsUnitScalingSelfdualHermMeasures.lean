@@ -13,6 +13,15 @@ noncomputable section
 
 namespace GlobalTheory.CompanionTheory.SW.HermSd
 
+/- English proof (translation)
+Establish `h1 : ∀ g : Fin n × Fin n → M, ∑ p : {p : Fin n × Fin n // p.1 < p.2}, g p.1 = ∑ x : Fin n × Fin n, if x.1 < x.2 then g x else 0`. Introduce `g`. Rewrite using `[← Finset.sum_filter]`. Conclude with `(Finset.sum_subtype _ (by simp) g).symm`. Establish `h2 : ∑ p : {p : Fin n × Fin n // p.1 < p.2}, f p.1.2 p.1.1 = ∑ x : Fin n × Fin n, if x.2 < x.1 then f x.1 x.2 else 0`.
+
+Rewrite using `[h1 (fun x => f x.2 x.1), ← Equiv.sum_comp (Equiv.prodComm (Fin n) (Fin n))]`. Both sides reduce to the same expression. Establish `h3 : ∑ a, f a a = ∑ x : Fin n × Fin n, if x.1 = x.2 then f x.1 x.2 else 0`. Rewrite using `[Fintype.sum_prod_type]`. Simplify using the standard rewrite rules.
+
+Rewrite using `[Finset.sum_add_distrib, h1 (fun x => f x.1 x.2), h2, h3, ← Finset.sum_add_distrib, ← Finset.sum_add_distrib, ← Fintype.sum_prod_type']`. Use `Finset.sum_congr rfl fun x _ => ?_` and prove the remaining obligations. Break down `lt_trichotomy x.1 x.2 with h | h | h` into its components or cases. Simplify using `[h, h.ne, not_lt_of_gt h]`. Simplify using `[h]`.
+
+Simplify using `[h, h.ne', not_lt_of_gt h]`.
+-/
 theorem sum_square {M : Type*} [AddCommMonoid M] {n : ℕ} (f : Fin n → Fin n → M) :
     ∑ a, ∑ b, f a b = ∑ a, f a a +
       ∑ p : {p : Fin n × Fin n // p.1 < p.2}, (f p.1.1 p.1.2 + f p.1.2 p.1.1) := by
@@ -40,17 +49,26 @@ section Alg
 
 variable {F E : Type} [Field F] [Field E] [Algebra F E]
 
+/- English proof (translation)
+Establish `: r ⊗ₜ[F] x = r • ((1 : R) ⊗ₜ[F] x)` using `by simp [TensorProduct.smul_tmul']`. Rewrite using `[this, map_smul, smul_eq_mul, Algebra.trace_apply, Algebra.trace_apply, ← Algebra.baseChange_lmul, LinearMap.trace_baseChange]`.
+-/
 theorem trace_tmul [FiniteDimensional F E] (R : Type) [CommRing R] [Algebra F R] (r : R) (x : E) :
     Algebra.trace R (R ⊗[F] E) (r ⊗ₜ[F] x) = r * algebraMap F R (Algebra.trace F E x) := by
   have : r ⊗ₜ[F] x = r • ((1 : R) ⊗ₜ[F] x) := by simp [TensorProduct.smul_tmul']
   rw [this, map_smul, smul_eq_mul, Algebra.trace_apply, Algebra.trace_apply, ← Algebra.baseChange_lmul,
     LinearMap.trace_baseChange]
 
+/- English proof (translation)
+The claim follows from `Algebra.trace_eq_of_algEquiv (AlgEquiv.ofAlgHom σ σ (AlgHom.ext hinv) (AlgHom.ext hinv)) x`.
+-/
 theorem trace_sigma {σ : E →ₐ[F] E} (hinv : ∀ x, σ (σ x) = x) (x : E) :
     Algebra.trace F E (σ x) = Algebra.trace F E x :=
   Algebra.trace_eq_of_algEquiv
     (AlgEquiv.ofAlgHom σ σ (AlgHom.ext hinv) (AlgHom.ext hinv)) x
 
+/- English proof (translation)
+Proceed by induction on `y with`. Consider the case `zero => simp`. Consider the case `tmul r e => rw [HaarCoord.sigR_tmul, trace_tmul, trace_tmul, trace_sigma hinv]`. Consider the case `add a b ha hb => rw [map_add, map_add, map_add, ha, hb]`.
+-/
 theorem trace_sigR [FiniteDimensional F E] (R : Type) [CommRing R] [Algebra F R] {σ : E →ₐ[F] E}
     (hinv : ∀ x, σ (σ x) = x) (y : R ⊗[F] E) :
     Algebra.trace R (R ⊗[F] E) (sigR R σ y) = Algebra.trace R (R ⊗[F] E) y := by
@@ -62,12 +80,26 @@ theorem trace_sigR [FiniteDimensional F E] (R : Type) [CommRing R] [Algebra F R]
 def gramB (σ : E →ₐ[F] E) {d : ℕ} (b : Module.Basis (Fin d) F E) : Matrix (Fin d) (Fin d) F :=
   fun k l => Algebra.trace F E (b k * σ (b l))
 
+/- English proof (translation)
+Use extensionality with `k l`. Simplify using `only [Matrix.transpose_apply, gramB]`. Rewrite using `[← trace_sigma hinv, map_mul, hinv, mul_comm]`.
+-/
 theorem gramB_isSymm {σ : E →ₐ[F] E} (hinv : ∀ x, σ (σ x) = x) {d : ℕ}
     (b : Module.Basis (Fin d) F E) : (gramB σ b).IsSymm := by
   ext k l
   simp only [Matrix.transpose_apply, gramB]
   rw [← trace_sigma hinv, map_mul, hinv, mul_comm]
 
+/- English proof (translation)
+Introduce `h0`. Take `⟨v, hv, hv0⟩` from `Matrix.exists_mulVec_eq_zero_iff.mpr h0`. Apply `hv` to reduce the goal to its premises. Use `set w : E := ∑ l, v l • b l with hw`. Establish `hz : ∀ x : E, Algebra.trace F E (x * σ w) = 0`.
+
+Introduce `x`. Establish `hk : ∀ k, Algebra.trace F E (b k * σ w) = 0`. Introduce `k`. Use `congrFun hv0 k` as an intermediate fact. Simplify using `only [Matrix.mulVec, dotProduct, gramB, Pi.zero_apply] at this`.
+
+Rewrite using `[hw, map_sum, Finset.mul_sum, map_sum, ← this]`. Use `Finset.sum_congr rfl fun l _ => ?_` and prove the remaining obligations. Rewrite using `[map_smul, mul_smul_comm, map_smul, smul_eq_mul, mul_comm]`. Establish `hx` using `b.sum_repr x`. Rewrite using `[← hx, Finset.sum_mul, map_sum]`.
+
+Use `Finset.sum_eq_zero fun k _ => ?_` and prove the remaining obligations. Rewrite using `[smul_mul_assoc, map_smul, hk, smul_zero]`. Establish `hs : σ w = 0` using `(traceForm_nondegenerate F E).2 _ fun x => by`. Simplify `hz x` using `[Algebra.traceForm_apply]`. Establish `hw0 : w = 0` using `by rw [← hinv w, hs, map_zero]`.
+
+Use function extensionality and compare the values at `l`. Use `b.linearIndependent` as an intermediate fact. Conclude with `(Fintype.linearIndependent_iff.mp this) v hw0 l`.
+-/
 theorem gramB_det [FiniteDimensional F E] [Algebra.IsSeparable F E] {σ : E →ₐ[F] E}
     (hinv : ∀ x, σ (σ x) = x) {d : ℕ}
     (b : Module.Basis (Fin d) F E) : (gramB σ b).det ≠ 0 := by
@@ -107,6 +139,9 @@ def formB (σ : E →ₐ[F] E) {d : ℕ} (b : Module.Basis (Fin d) F E) (n : ℕ
     Matrix (Idx n d) (Idx n d) F :=
   Matrix.fromBlocks 1 0 0 ((1 : Matrix {p : Fin n × Fin n // p.1 < p.2} _ F) ⊗ₖ gramB σ b)
 
+/- English proof (translation)
+Use `Matrix.IsSymm.fromBlocks Matrix.isSymm_one (by simp) ?_` and prove the remaining obligations. Use extensionality with `⟨p, k⟩ ⟨q, l⟩`. Use `congrFun (congrFun (gramB_isSymm hinv b) k) l` as an intermediate fact. Simplify using `only [Matrix.transpose_apply] at this`. Simplify using `only [Matrix.transpose_apply, Matrix.kroneckerMap_apply, Matrix.one_apply, this, eq_comm]`.
+-/
 theorem formB_isSymm {σ : E →ₐ[F] E} (hinv : ∀ x, σ (σ x) = x) {d : ℕ}
     (b : Module.Basis (Fin d) F E) (n : ℕ) : (formB σ b n).IsSymm := by
   refine Matrix.IsSymm.fromBlocks Matrix.isSymm_one (by simp) ?_
@@ -115,6 +150,9 @@ theorem formB_isSymm {σ : E →ₐ[F] E} (hinv : ∀ x, σ (σ x) = x) {d : ℕ
   simp only [Matrix.transpose_apply] at this
   simp only [Matrix.transpose_apply, Matrix.kroneckerMap_apply, Matrix.one_apply, this, eq_comm]
 
+/- English proof (translation)
+Unfold `formB`. Rewrite using `[Matrix.det_fromBlocks_zero₁₂, Matrix.det_one, one_mul, Matrix.det_kronecker, Matrix.det_one, one_pow, one_mul]`. Conclude with `pow_ne_zero _ (gramB_det hinv b)`.
+-/
 theorem formB_det [FiniteDimensional F E] [Algebra.IsSeparable F E] {σ : E →ₐ[F] E}
     (hinv : ∀ x, σ (σ x) = x) {d : ℕ}
     (b : Module.Basis (Fin d) F E) (n : ℕ) : (formB σ b n).det ≠ 0 := by
@@ -125,11 +163,19 @@ theorem formB_det [FiniteDimensional F E] [Algebra.IsSeparable F E] {σ : E →�
 
 variable (R : Type) [CommRing R] [Algebra F R]
 
+/- English proof (translation)
+Simplify using `[Matrix.mulVec, dotProduct, formB, Fintype.sum_sum_type, Matrix.one_apply]`.
+-/
 theorem formB_mulVec_inl (σ : E →ₐ[F] E) {d : ℕ} (b : Module.Basis (Fin d) F E) (n : ℕ)
     (y : Idx n d → R) (i : Fin n) :
     (((formB σ b n).map (algebraMap F R)) *ᵥ y) (Sum.inl i) = y (Sum.inl i) := by
   simp [Matrix.mulVec, dotProduct, formB, Fintype.sum_sum_type, Matrix.one_apply]
 
+/- English proof (translation)
+Simplify using `only [Matrix.mulVec, dotProduct, formB, Fintype.sum_sum_type, Fintype.sum_prod_type, Matrix.map_apply, Matrix.fromBlocks_apply₂₁, Matrix.fromBlocks_apply₂₂, Matrix.zero_apply, map_zero, zero_mul, Finset.sum_const_zero, zero_add, Matrix.kroneckerMap_apply, Matrix.one_apply]`. Rewrite using `[Finset.sum_eq_single p]`. Simplify using the standard rewrite rules. Introduce `q _ hq`. Simplify using `[Ne.symm hq]`.
+
+Simplify using the standard rewrite rules.
+-/
 theorem formB_mulVec_inr (σ : E →ₐ[F] E) {d : ℕ} (b : Module.Basis (Fin d) F E) (n : ℕ)
     (y : Idx n d → R) (p : {p : Fin n × Fin n // p.1 < p.2}) (k : Fin d) :
     (((formB σ b n).map (algebraMap F R)) *ᵥ y) (Sum.inr (p, k)) =
@@ -155,6 +201,15 @@ def hermVec (σ : E →ₐ[F] E) {d : ℕ} (b : Module.Basis (Fin d) F E) (n : �
   toVec R b n (HaarCoord.hermCoord R σ n S)
 
 omit [TopologicalSpace R] in
+/- English proof (translation)
+Use `set C := Algebra.TensorProduct.basis R b with hC`. Establish `h1 : sigR R σ x * y = sigR R σ (x * sigR R σ y)`. Rewrite using `[map_mul, HaarCoord.sigR_sigR R hinv]`. Rewrite using `[h1, map_add, trace_sigR R hinv, HaarCoord.half_add_self (F := F) R]`. Establish `hx : x = ∑ k, C.repr x k • ((1 : R) ⊗ₜ[F] b k)` using `by conv_lhs => rw [← C.sum_repr x]`.
+
+Simplify using `[hC, Algebra.TensorProduct.basis_apply]`. Establish `hy : sigR R σ y = ∑ l, C.repr y l • ((1 : R) ⊗ₜ[F] σ (b l))` using `by conv_lhs => rw [← C.sum_repr y]`. Rewrite using `[map_sum]`. Use `Finset.sum_congr rfl fun l _ => ?_` and prove the remaining obligations. Rewrite using `[hC, Algebra.TensorProduct.basis_apply, TensorProduct.smul_tmul', TensorProduct.smul_tmul', HaarCoord.sigR_tmul]`.
+
+Rewrite using `[hy]`. Use `conv_lhs => rw [hx]`. Rewrite using `[Finset.sum_mul, map_sum]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[smul_mul_assoc, map_smul, smul_eq_mul, Finset.mul_sum, map_sum]`.
+
+Use `congr 1`. Use `Finset.sum_congr rfl fun l _ => ?_` and prove the remaining obligations. Rewrite using `[mul_smul_comm, map_smul, Algebra.TensorProduct.tmul_mul_tmul, one_mul, trace_tmul, one_mul, smul_eq_mul, mul_comm]`. Both sides reduce to the same expression.
+-/
 theorem off_diag [FiniteDimensional F E] [CharZero F] {σ : E →ₐ[F] E} (hinv : ∀ x, σ (σ x) = x)
     {d : ℕ} (b : Module.Basis (Fin d) F E) (x y : R ⊗[F] E) :
     algebraMap F R (1 / 2) * Algebra.trace R (R ⊗[F] E) (x * sigR R σ y + sigR R σ x * y) =
@@ -184,6 +239,13 @@ theorem off_diag [FiniteDimensional F E] [CharZero F] {σ : E →ₐ[F] E} (hinv
     smul_eq_mul, mul_comm]
   rfl
 
+/- English proof (translation)
+Establish `hS : ∀ a c, (S : Matrix (Fin n) (Fin n) (R ⊗[F] E)) c a = sigR R σ ((S : Matrix (Fin n) (Fin n) (R ⊗[F] E)) a c)` using `fun a c => (S.2 c a).symm`. Establish `hT : ∀ a c, (T : Matrix (Fin n) (Fin n) (R ⊗[F] E)) c a = sigR R σ ((T : Matrix (Fin n) (Fin n) (R ⊗[F] E)) a c)` using `fun a c => (T.2 c a).symm`. Unfold `pairHerm`. Rewrite using `[sum_square, map_add, mul_add, map_sum, map_sum, Finset.mul_sum, Finset.mul_sum]`. Simplify using `only [dotProduct, Fintype.sum_sum_type, Fintype.sum_prod_type, formB_mulVec_inl, formB_mulVec_inr]`.
+
+Use `congr 1`. Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Take `⟨r, hr⟩` from `HaarCoord.fixed_eq_tmul R hinv h2 hδ hσδ _ (S.2 a a)`. Take `⟨s, hs⟩` from `HaarCoord.fixed_eq_tmul R hinv h2 hδ hσδ _ (T.2 a a)`. Simplify using `only [hermVec, toVec, HaarCoord.hermCoord, Sum.elim_inl]`.
+
+Rewrite using `[hr, hs, Algebra.TensorProduct.tmul_mul_tmul, one_mul, HaarCoord.half_trace_tmul R h2, HaarCoord.half_trace_tmul R h2, HaarCoord.half_trace_tmul R h2]`. Use `Finset.sum_congr rfl fun p _ => ?_` and prove the remaining obligations. Rewrite using `[hT p.1.1 p.1.2, hS p.1.1 p.1.2, off_diag R hinv b]`. Simplify using `only [hermVec, toVec, HaarCoord.hermCoord, Sum.elim_inr]`.
+-/
 theorem pair_eq [FiniteDimensional F E] [CharZero F] {σ : E →ₐ[F] E} (hinv : ∀ x, σ (σ x) = x)
     (h2 : Module.finrank F E = 2) {δ : E} (hδ : δ ≠ 0) (hσδ : σ δ = -δ) {d : ℕ}
     (b : Module.Basis (Fin d) F E) (n : ℕ) (S T : HermR R σ n) :
@@ -212,6 +274,13 @@ end Form
 
 section Meas
 
+/- English proof (translation)
+Establish `h : (Measure.pi fun _ : ι × κ => μ) = (Measure.pi fun _ : ι => Measure.pi fun _ : κ => μ).map (MeasurableEquiv.curry ι κ A).symm`. Use `Measure.pi_eq fun s hs => ?_` and prove the remaining obligations. Rewrite using `[Measure.map_apply (MeasurableEquiv.measurable _) (MeasurableSet.univ_pi hs)]`. Establish `e : (MeasurableEquiv.curry ι κ A).symm ⁻¹' Set.univ.pi s = Set.univ.pi (fun i => Set.univ.pi (fun j => s (i, j)))`. Use extensionality with `f`.
+
+Simplify using `[MeasurableEquiv.coe_curry_symm, Function.uncurry]`. Rewrite using `[e, Measure.pi_pi]`. Repeatedly rewrite using `[Measure.pi_pi]`. Rewrite using `[Fintype.prod_prod_type]`. Use `⟨(MeasurableEquiv.curry ι κ A).measurable, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[h, Measure.map_map (MeasurableEquiv.measurable _) (MeasurableEquiv.measurable _)]`. Simplify using the standard rewrite rules.
+-/
 theorem curry_mp (ι κ A : Type) [Fintype ι] [Fintype κ] [MeasurableSpace A] (μ : Measure A)
     [SigmaFinite μ] :
     MeasurePreserving (MeasurableEquiv.curry ι κ A) (Measure.pi fun _ => μ)
@@ -230,6 +299,9 @@ theorem curry_mp (ι κ A : Type) [Fintype ι] [Fintype κ] [MeasurableSpace A] 
   rw [h, Measure.map_map (MeasurableEquiv.measurable _) (MeasurableEquiv.measurable _)]
   simp
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨h.measurable, by rw [h.measurableEmbedding.map_comap, h.surjective.range_eq, Measure.restrict_univ]⟩`.
+-/
 theorem mp_comap {X Y : Type*} [MeasurableSpace X] [MeasurableSpace Y] (h : X ≃ᵐ Y) (ρ : Measure Y) :
     MeasurePreserving h (Measure.comap h ρ) ρ :=
   ⟨h.measurable, by rw [h.measurableEmbedding.map_comap, h.surjective.range_eq, Measure.restrict_univ]⟩
@@ -240,6 +312,13 @@ variable (R : Type) [CommRing R] [Algebra F R] [TopologicalSpace R] [IsTopologic
   [LocallyCompactSpace R] [SecondCountableTopology R] [T2Space R]
 
 include hcm in
+/- English proof (translation)
+Take `⟨-, -, -, -, -, -, t7, -, -, -⟩` from `GlobalTheory.CompanionTheory.SW.TopK.topTens_props F E σ hcm R`. Set `cK : R ⊗[F] E ≃ₜ (Fin d → R)` to `(t7 d b).homeomorph _`. Set `A2 : ({p : Fin n × Fin n // p.1 < p.2} → Fin d → R) ≃ₜ ({p : Fin n × Fin n // p.1 < p.2} × Fin d → R)` to `{ (Equiv.curry {p : Fin n × Fin n // p.1 < p.2} (Fin d) R).symm with continuous_toFun := continuous_pi fun q => (continuous_apply q.2).comp (continuous_apply q.1) continuous_invFun := continuous_pi fun p => continuous_pi fun k => continuous_apply (p, k) }`. Set `A` to `((Homeomorph.refl (Fin n → R)).prodCongr (Homeomorph.piCongrRight fun _ => cK)).trans (((Homeomorph.refl (Fin n → R)).prodCongr A2).trans (Homeomorph.sumArrowHomeomorphProdArrow).symm)`. Establish `: toVec R b n = A`.
+
+Use function extensionality and compare the values at `x i`. Consider the cases of `i with`. Consider the case `inl i => rfl`. Consider the case `inr q => rfl`. Rewrite using `[this]`.
+
+Conclude with `A.isHomeomorph`.
+-/
 theorem toVec_isHomeomorph {d : ℕ} (b : Module.Basis (Fin d) F E) (n : ℕ) :
     IsHomeomorph (toVec R b n) := by
   obtain ⟨-, -, -, -, -, -, t7, -, -, -⟩ := GlobalTheory.CompanionTheory.SW.TopK.topTens_props F E σ hcm R
@@ -263,6 +342,13 @@ theorem toVec_isHomeomorph {d : ℕ} (b : Module.Basis (Fin d) F E) (n : ℕ) :
 variable [MeasurableSpace R] [BorelSpace R]
 
 include hcm in
+/- English proof (translation)
+Take `⟨t1, t2, t3, t4, -, -, t7, -, -, -⟩` from `GlobalTheory.CompanionTheory.SW.TopK.topTens_props F E σ hcm R`. Use `haveI : BorelSpace (R ⊗[F] E) := ⟨rfl⟩`. Set `cK : R ⊗[F] E ≃ₜ (Fin d → R)` to `(t7 d b).homeomorph _`. Establish `hH` using `(GlobalTheory.CompanionTheory.SW.coord_measures_haar F E σ hcm R d b lam inferInstance).1`. Use `haveI : SigmaFinite (coordK R b lam) := inferInstance`.
+
+Establish `hcK : MeasurePreserving cK (coordK R b lam) (Measure.pi fun _ => lam)` using `mp_comap cK.toMeasurableEquiv _`. Establish `mp1` using `(MeasurePreserving.id (Measure.pi fun _ : Fin n => lam)).prod (measurePreserving_pi (fun _ : {p : Fin n × Fin n // p.1 < p.2} => coordK R b lam) (fun _ => Measure.pi fun _ => lam) fun _ => hcK)`. Establish `mp2` using `(MeasurePreserving.id (Measure.pi fun _ : Fin n => lam)).prod (curry_mp {p : Fin n × Fin n // p.1 < p.2} (Fin d) R lam).symm`. Establish `mp3` using `(measurePreserving_sumPiEquivProdPi (fun _ : Idx n d => lam)).symm`. Establish `h` using `mp3.comp (mp2.comp mp1)`.
+
+Use `h using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `x i`. Consider the cases of `i with`. Consider the case `inl i => rfl`. Consider the case `inr q => rfl`.
+-/
 theorem mp_toVec {d : ℕ} (b : Module.Basis (Fin d) F E) (n : ℕ) (lam : Measure R)
     [lam.IsAddHaarMeasure] :
     MeasurePreserving (toVec R b n)
@@ -290,6 +376,11 @@ theorem mp_toVec {d : ℕ} (b : Module.Basis (Fin d) F E) (n : ℕ) (lam : Measu
   | inr q => rfl
 
 include hcm in
+/- English proof (translation)
+Take `⟨t1, t2, t3, t4, t5, t6, t7, -, -, -⟩` from `GlobalTheory.CompanionTheory.SW.TopK.topTens_props F E σ hcm R`. Take `⟨hinv, δ, hδ, hσδ⟩` from `HaarCoord.conj_facts hcm`. Use `haveI : BorelSpace (R ⊗[F] E) := ⟨rfl⟩`. Use `haveI : BorelSpace (HermR R σ n) := ⟨rfl⟩`. Use `haveI : IsModuleTopology R (R ⊗[F] E) := ⟨rfl⟩`.
+
+Use `haveI : ContinuousSMul R (R ⊗[F] E) := IsModuleTopology.toContinuousSMul R _`. Set `hc` to `(HaarCoord.hermCoord_isHomeomorph R hinv hcm.2.2.1 hδ hσδ n t5 t6).homeomorph _`. Use `(mp_toVec hcm R b n lam).comp (mp_comap hc.toMeasurableEquiv ((Measure.pi fun _ : Fin n => lam).prod (Measure.pi fun _ : {p : Fin n × Fin n // p.1 < p.2} => coordK R b lam)))` as an intermediate fact. Conclude with `this`.
+-/
 theorem mp_hermVec {d : ℕ} (b : Module.Basis (Fin d) F E) (n : ℕ) (lam : Measure R)
     [lam.IsAddHaarMeasure] :
     MeasurePreserving (hermVec R σ b n) (coordHerm R σ b lam n)
@@ -306,6 +397,9 @@ theorem mp_hermVec {d : ℕ} (b : Module.Basis (Fin d) F E) (n : ℕ) (lam : Mea
         (Measure.pi fun _ : {p : Fin n × Fin n // p.1 < p.2} => coordK R b lam)))
   exact this
 
+/- English proof (translation)
+Use function extensionality and compare the values at `i`. Consider the cases of `i with`. Consider the case `inl i => simp [hermVec, toVec, HaarCoord.hermCoord_add]`. Consider the case `inr q => simp [hermVec, toVec, HaarCoord.hermCoord_add]`.
+-/
 theorem hermVec_add {d : ℕ} (b : Module.Basis (Fin d) F E) (n : ℕ) (S T : HermR R σ n) :
     hermVec R σ b n (S + T) = hermVec R σ b n S + hermVec R σ b n T := by
   funext i
@@ -314,6 +408,11 @@ theorem hermVec_add {d : ℕ} (b : Module.Basis (Fin d) F E) (n : ℕ) (S T : He
   | inr q => simp [hermVec, toVec, HaarCoord.hermCoord_add]
 
 include hcm in
+/- English proof (translation)
+Take `⟨t1, t2, t3, t4, t5, t6, t7, -, -, -⟩` from `GlobalTheory.CompanionTheory.SW.TopK.topTens_props F E σ hcm R`. Take `⟨hinv, δ, hδ, hσδ⟩` from `HaarCoord.conj_facts hcm`. Use `haveI : IsModuleTopology R (R ⊗[F] E) := ⟨rfl⟩`. Use `haveI : ContinuousSMul R (R ⊗[F] E) := IsModuleTopology.toContinuousSMul R _`. Establish `h1` using `HaarCoord.hermCoord_isHomeomorph R hinv hcm.2.2.1 hδ hσδ n t5 t6`.
+
+Establish `h2` using `toVec_isHomeomorph hcm R b n`. Conclude with `((h1.homeomorph _).trans (h2.homeomorph _)).isHomeomorph`.
+-/
 theorem hermVec_isHomeomorph {d : ℕ} (b : Module.Basis (Fin d) F E) (n : ℕ) :
     IsHomeomorph (hermVec R σ b n) := by
   obtain ⟨t1, t2, t3, t4, t5, t6, t7, -, -, -⟩ := GlobalTheory.CompanionTheory.SW.TopK.topTens_props F E σ hcm R
@@ -326,6 +425,15 @@ theorem hermVec_isHomeomorph {d : ℕ} (b : Module.Basis (Fin d) F E) (n : ℕ) 
 
 include hcm in
 
+/- English proof (translation)
+Take `⟨t1, t2, t3, t4, t5, t6, t7, -, -, -⟩` from `GlobalTheory.CompanionTheory.SW.TopK.topTens_props F E σ hcm R`. Take `⟨hinv, δ, hδ, hσδ⟩` from `HaarCoord.conj_facts hcm`. Use `haveI : BorelSpace (HermR R σ n) := ⟨rfl⟩`. Use `haveI : FiniteDimensional F E := Module.finite_of_finrank_pos (by rw [hcm.2.2.1]; omega)`. Set `hh` to `(hermVec_isHomeomorph hcm R b n).homeomorph _`.
+
+Set `e : HermR R σ n ≃ₜ+ (Idx n d → R)` to `{ AddEquiv.mk' hh.toEquiv (hermVec_add R b n) with continuous_toFun := hh.continuous continuous_invFun := hh.symm.continuous }`. Establish `hT` using `GlobalTheory.T.selfdual_measure_transport_equiv (HermR R σ n) (Idx n d → R) e ν (fun x y => ψR (x ⬝ᵥ ((formB σ b n).map (algebraMap F R) *ᵥ y)))`. Establish `hp : (fun S T : HermR R σ n => ψR (pairHerm R σ n S T)) = fun S T => ψR (e S ⬝ᵥ ((formB σ b n).map (algebraMap F R) *ᵥ e T))`. Use function extensionality and compare the values at `S T`. Rewrite using `[pair_eq R hinv hcm.2.2.1 hδ hσδ b n S T]`.
+
+Both sides reduce to the same expression. Establish `hmp` using `mp_hermVec hcm R b n lam`. Unfold `SdHerm`. Rewrite using `[hp, hT, h, ← hmp.map_eq]`. Establish `hinj` using `hh.toMeasurableEquiv.map_measurableEquiv_injective`.
+
+Establish `hsm : c • Measure.map (hermVec R σ b n) (coordHerm R σ b lam n) = Measure.map hh.toMeasurableEquiv (c • coordHerm R σ b lam n)`. Rewrite using `[Measure.map_smul]`. Both sides reduce to the same expression. Rewrite using `[hsm]`. Conclude with `hinj.eq_iff`.
+-/
 theorem sd_core {d : ℕ} (b : Module.Basis (Fin d) F E) (n : ℕ) (lam : Measure R)
     [lam.IsAddHaarMeasure] (ψR : R → ℂ) (c : ℝ≥0)
     (h : ∀ μ : Measure (Idx n d → R),
@@ -366,6 +474,11 @@ end GlobalTheory.CompanionTheory.SW.HermSd
 
 namespace GlobalTheory.CompanionTheory.SW
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ hcm d b laminf lam hinf hv ψ hψ n`. Take `⟨hinv, -⟩` from `HaarCoord.conj_facts hcm`. Use `haveI : FiniteDimensional F E := Module.finite_of_finrank_pos (by rw [hcm.2.2.1]; omega)`. Take `⟨cinf, c, hu, h1, h2⟩` from `GlobalTheory.T.exists_unipotentInvariant_compactlySupported_weight F hcm.1 laminf lam hinf hv ψ hψ (HermSd.Idx n d) (HermSd.formB σ b n) (HermSd.formB_isSymm hinv b n) (HermSd.formB_det hinv b n)`. Use `⟨cinf, c, hu, ?_, fun v => ?_⟩` and prove the remaining obligations.
+
+Take `⟨a1, a2, a3, a4, -⟩` from `GlobalTheory.CompanionTheory.SW.isLocR_Ainf F hcm.1 haveI : BorelSpace (Ainf F) := ⟨rfl⟩ haveI := hinf.1`. Conclude with `HermSd.sd_core hcm (Ainf F) b n laminf (psiInf F ψ) cinf h1`. Take `⟨a1, a2, a3, a4, -⟩` from `GlobalTheory.CompanionTheory.SW.LocFv.isLocR_Fv F v haveI : BorelSpace (Fv F v) := ⟨rfl⟩ haveI := (hv v).1`. Conclude with `HermSd.sd_core hcm (Fv F v) b n (lam v) (psiV F ψ v) (c v) (h2 v)`.
+-/
 theorem sdHerm_eq_coord : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E), IsCMExt F E σ → ∀ (d : ℕ) (b : Module.Basis (Fin d) F E) (laminf : Measure (Ainf F)) (lam : ∀ v : HeightOneSpectrum (𝓞 F), Measure (Fv F v)), IsStdInf laminf → (∀ v, IsStdV v (lam v)) → ∀ ψ, IsCharAF F ψ → ∀ n : ℕ, ∃ (cinf : ℝ≥0) (c : HeightOneSpectrum (𝓞 F) → ℝ≥0), IsUnitProd cinf c ∧ (∀ ν, SdHerm F E σ (Ainf F) (psiInf F ψ) n ν ↔ ν = cinf • coordHerm (Ainf F) σ b laminf n) ∧ ∀ v : HeightOneSpectrum (𝓞 F), (∀ ν, SdHerm F E σ (Fv F v) (psiV F ψ v) n ν ↔ ν = c v • coordHerm (Fv F v) σ b (lam v) n) := by
   intro F E _ _ _ _ _ σ hcm d b laminf lam hinf hv ψ hψ n
   obtain ⟨hinv, -⟩ := HaarCoord.conj_facts hcm

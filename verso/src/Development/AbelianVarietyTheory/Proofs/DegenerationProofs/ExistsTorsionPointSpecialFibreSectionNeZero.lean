@@ -26,20 +26,32 @@ variable {X Y : Scheme.{0}}
 
 abbrev one (L : LB X) : LB X := LB.LinComb L (K := Fin 1) (fun _ => 𝟙 X) (fun _ => 1)
 
+/- English proof (translation)
+Introduce `x hx` and use `⟨h (x := x) trivial, Set.mem_iInter.2 fun _ => Set.mem_iInter.1 hx PUnit.unit⟩`.
+-/
 theorem chart_le (L : LB X) {V : X.Opens} (F : Y ⟶ X) (h : ⊤ ≤ F ⁻¹ᵁ V) (k : PUnit → L.ι) :
     (L.pull F).U k ≤ F ⁻¹ᵁ (V ⊓ (one L).U (fun _ => k PUnit.unit)) := fun x hx =>
   ⟨h (x := x) trivial, Set.mem_iInter.2 fun _ => Set.mem_iInter.1 hx PUnit.unit⟩
 
+/- English proof (translation)
+Rewrite using `[← Scheme.Hom.map_appLE F h (homOfLE e).op]`. Both sides reduce to the same expression.
+-/
 theorem appLE_res (F : Y ⟶ X) {U V : X.Opens} {W : Y.Opens} (e : V ≤ U) (h : W ≤ F ⁻¹ᵁ V) (h' : W ≤ F ⁻¹ᵁ U)
     (a : Γ(X, U)) : (F.appLE V W h).hom (resG X e a) = (F.appLE U W h').hom a := by
   rw [← Scheme.Hom.map_appLE F h (homOfLE e).op]
   rfl
 
+/- English proof (translation)
+Rewrite using `[← Scheme.Hom.appLE_map F h (homOfLE e).op]`. Both sides reduce to the same expression.
+-/
 theorem res_appLE (F : Y ⟶ X) {U : X.Opens} {W W' : Y.Opens} (e : W' ≤ W) (h : W ≤ F ⁻¹ᵁ U) (h' : W' ≤ F ⁻¹ᵁ U)
     (a : Γ(X, U)) : resG Y e ((F.appLE U W h).hom a) = (F.appLE U W' h').hom a := by
   rw [← Scheme.Hom.appLE_map F h (homOfLE e).op]
   rfl
 
+/- English proof (translation)
+Simplify using `only [LB.LinComb, Fintype.prod_unique, zpow_one]`. Both sides reduce to the same expression.
+-/
 theorem g_eq {K : Type} [Fintype K] [Unique K] (L : LB X) (F : Y ⟶ X) (i j : K → L.ι)
     (h : _ ≤ F ⁻¹ᵁ (L.U (i default) ⊓ L.U (j default))) :
     ((LB.LinComb L (K := K) (fun _ => F) (fun _ => 1)).g i j).val =
@@ -73,6 +85,15 @@ def pullSec (L : LB X) {V : X.Opens} (σ : ∀ j, Γ(X, V ⊓ (one L).U j)) (hσ
     exact congrArg (fun φ => φ.hom (L.g (i PUnit.unit) (j PUnit.unit)).val)
       (Scheme.Hom.appLE_comp_appLE F (𝟙 X) _ _ _ h₁ hU)
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce `hx`. Take `⟨k, hk⟩` from `TopologicalSpace.Opens.mem_iSup.1 ((Points.le_preimage_iff x _).1 hx)`. Establish `h₁` using `(Points.le_preimage_iff x _).2 hk`. Establish `h₂` using `Points.le_preimage_mono x (Y.basicOpen_le _) h₁`.
+
+Establish `h₃` using `(Points.le_preimage_basicOpen_iff x h₂ _).1 h₁`. Use `⟨fun _ => k PUnit.unit, ?_⟩` and prove the remaining obligations. Rewrite using `[Points.valF_eq_valR, ← Points.valR_appLE x F (chart_le L F h k) h₂]`. Conclude with `h₃.ne_zero`. Introduce and unpack `⟨j, hj⟩`.
+
+Take `⟨a, rfl⟩ : ∃ a, j = fun _ => a` from `⟨j 0, funext fun i => congrArg j (Subsingleton.elim _ _)⟩`. Establish `h₁ : ⊤ ≤ (x ≫ F) ⁻¹ᵁ (V ⊓ (one L).U fun _ => a)`. Assume the negation of the conclusion as `hc`. Conclude with `hj (dif_neg hc)`. Establish `h₂ : ⊤ ≤ x ⁻¹ᵁ (L.pull F).U (fun _ => a)` using `fun z hz => Set.mem_iInter.2 fun _ => Set.mem_iInter.1 (h₁ hz).2 0`.
+
+Rewrite `hj` using `[Points.valF_eq_valR, ← Points.valR_appLE x F (chart_le L F h fun _ => a) h₂]`. Conclude with `Points.le_preimage_mono x (le_iSup (fun k => Y.basicOpen ((pullSec L σ hσ F h).f k)) fun _ => a) ((Points.le_preimage_basicOpen_iff x h₂ _).2 hj.isUnit)`.
+-/
 theorem le_nonzeroLocus_iff (L : LB X) {V : X.Opens} (σ : ∀ j, Γ(X, V ⊓ (one L).U j)) (hσ : σ ∈ secOn (one L) V)
     (F : Y ⟶ X) (h : ⊤ ≤ F ⁻¹ᵁ V) {K : Type} [Field K] (x : Sp K ⟶ Y) :
     ⊤ ≤ x ⁻¹ᵁ nonzeroLocus (pullSec L σ hσ F h) ↔ ∃ j, valF (x ≫ F) _ (σ j) ≠ 0 := by
@@ -98,6 +119,27 @@ theorem le_nonzeroLocus_iff (L : LB X) {V : X.Opens} (σ : ∀ j, Γ(X, V ⊓ (o
 
 end Pull
 
+/- English proof (translation)
+Introduce `laws laws₂ o Ω _ _ _ _ S ρ M U₀ Q hbig p _ y y₀ u jV yV yK hfac F ψ hmap hiso N σ hσ hne hy`. Take `⟨hj, hyV, -, -⟩` from `hfac`. Establish `hloc` using `ZHPre.isLocalHom_of_test u jV hj`. Establish `hK : IsAlgClosed (IsLocalRing.ResidueField (OO p))` using `(GlobalTheory.ZJ.kb_isAlgClosed_and_conj p).1`. Establish `hsq` using `hmap.1.1`.
+
+Use `set r : Sp (IsLocalRing.ResidueField (OO p)) ⟶ Sp u.V := spMap (IsLocalRing.residue (OO p)) ≫ spMap jV with hr`. Establish `key : ∀ x, r x = IsLocalRing.closedPoint u.V` using `fun x => by`. Establish `hx : x = IsLocalRing.closedPoint _` using `Subsingleton.elim (α := PrimeSpectrum (IsLocalRing.ResidueField (OO p))) _ _`. Substitute `hx` using the available equality. Conclude with `(congrArg (PrimeSpectrum.comap jV) (IsLocalRing.comap_closedPoint (IsLocalRing.residue (OO p)))).trans (IsLocalRing.comap_closedPoint jV)`.
+
+Establish `hrange : Set.range r = {IsLocalRing.closedPoint u.V}`. Use extensionality with `x`. Conclude with `⟨fun ⟨a, ha⟩ => ha ▸ key a, fun h => ⟨IsLocalRing.closedPoint _, (key _).trans h.symm⟩⟩`. Establish `hyN : ⊤ ≤ yV ⁻¹ᵁ N`. Use `(Points.le_preimage_iff yV N).2 ?_` and prove the remaining obligations.
+
+Rewrite `hy` using `[← hyV]`. Rewrite using `[← IsLocalRing.comap_closedPoint jV]`. Conclude with `hy`. Establish `hF : ⊤ ≤ F ⁻¹ᵁ (Q.G.hom ⁻¹ᵁ N)`. Rewrite using `[← Scheme.Hom.comp_preimage, hsq.w]`.
+
+Conclude with `fun z _ => hyN (x := u.G.hom z) trivial`. Set `θ` to `pullSec Q.L.L σ hσ F hF`. Establish `hθ : ∃ x ∈ nonzeroLocus θ, u.G.hom x = IsLocalRing.closedPoint u.V`. Take `⟨g, j, hg, hv⟩` from `hne _ (r ≫ yV) (by`. Introduce and unpack `_ ⟨z, rfl⟩`.
+
+Conclude with `hyN (x := r z) trivial)`. Establish `h₁` using `(le_nonzeroLocus_iff Q.L.L σ hσ F hF (hsq.lift g r hg)).2 ⟨j, by rwa [hsq.lift_fst]⟩`. Use `⟨hsq.lift g r hg (IsLocalRing.closedPoint _), h₁ (x := IsLocalRing.closedPoint _) trivial, ?_⟩` and prove the remaining obligations. Conclude with `(congrArg (fun φ : Sp _ ⟶ Sp u.V => φ (IsLocalRing.closedPoint _)) (hsq.lift_snd g r hg)).trans (key _)`. Establish `hg : u.A.g = S.g` using `(H1.dim_unique u.A.A.hom u.A.smoothDim ((smoothOfRelativeDimension_isStableUnderBaseChange _).of_isPullback u.cart.1 ρ.P.smoothDim) (eSec u.A.A (IsLocalRing.closedPoint (FractionRing u.V)))).trans ρ.g_eq`.
+
+Establish `hN : 4 ≤ S.N`. Rewrite using `[ρ.N_eq]`. Establish `h₂ : 2 ≤ ρ.n ^ ρ.k` using `ρ.n_prime.two_le.trans (Nat.le_self_pow (two_pos.trans_le ρ.two_le).ne' _)`. Conclude with `Nat.pow_le_pow_left h₂ 2`. Establish `hn : ((S.r * S.N : ℕ) : IsLocalRing.ResidueField (OO p)) ≠ 0`.
+
+Use `S.unit.map (Spec.preimage (r ≫ yV ≫ M.s)).hom` as an intermediate fact. Rewrite `this` using `[map_natCast]`. Conclude with `this.ne_zero`. Establish `hlt : 6 * (S.N ^ u.A.g * u.A.g.factorial) < (S.r * S.N) ^ 2`. Rewrite using `[hg]`.
+
+Conclude with `hbig.2.2.trans_le (Nat.le_self_pow two_ne_zero _)`. Establish `hc` using `GlobalTheory.FewZeros.card_torsion_translate_zeros_lt laws laws₂ u.V u.complete u.D u.A u.G u.U (Q.L.L.pull F) θ (pull_isLB Q.L.isLB F) hiso hθ _ r S.N (S.r * S.N) hrange hN hn hlt 1`. Assume the negation of the conclusion as `hcon`. Establish `heq : Nat.card {h : Over.mk r ⟶ u.G // h ^ (S.r * S.N) = 1 ∧ ¬ ⊤ ≤ (1 * h).left ⁻¹ᵁ nonzeroLocus θ} = Nat.card {h : Over.mk r ⟶ u.G // h ^ (S.r * S.N) = 1}`. Use `Nat.card_congr (Equiv.subtypeEquivRight fun h => and_iff_left_of_imp fun hh hle => hcon ⟨h, hh, ?_⟩)` and prove the remaining obligations.
+
+Rewrite `hle` using `[_root_.one_mul]`. Conclude with `(le_nonzeroLocus_iff Q.L.L σ hσ F hF h.left).1 hle`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem exists_torsion_valF_ne_zero : Laws → Laws2 → ∀ (o Ω : Type) [CommRing o] [Field Ω] [Algebra o Ω] [ArithBase o Ω] (S : ThetaSys o Ω) (ρ : S.Real) (M : RatModel o Ω) (U₀ : M.Z.Opens) (Q : ZHPre ρ M U₀), S.Big → ∀ (p : ℕ) [Fact p.Prime] (y : Sp (OO p) ⟶ M.Z) (y₀ : S.R →+* PadicAlgCl p) (u : ρ.UTest p y₀) (jV : u.V →+* OO p) (yV : Sp u.V ⟶ M.Z) (yK : Sp (FractionRing u.V) ⟶ U₀.toScheme), Q.TestFac y u jV yV yK → ∀ (F : u.G.left ⟶ Q.G.left) (ψ : pullback u.G.hom (jK u.V) ⟶ pullback ρ.P.A.hom Q.u₀), Q.TestMap u yV yK F ψ → LBIso (Q.L.L.pull F) u.U.LG.L → ∀ (N : M.Z.Opens) (σ : Q.SecFam N), σ ∈ secOn Q.LOne (Q.G.hom ⁻¹ᵁ N) → Q.FibNe N σ → y (cPt p) ∈ N → ∃ t : Over.mk (spMap (IsLocalRing.residue (OO p)) ≫ spMap jV) ⟶ u.G, t ^ (S.r * S.N) = 1 ∧ ∃ j, valF (X := Q.G.left) (t.left ≫ F) _ (σ j) ≠ 0 := by
   intro laws laws₂ o Ω _ _ _ _ S ρ M U₀ Q hbig p _ y y₀ u jV yV yK hfac F ψ hmap hiso N σ hσ hne hy
   obtain ⟨hj, hyV, -, -⟩ := hfac

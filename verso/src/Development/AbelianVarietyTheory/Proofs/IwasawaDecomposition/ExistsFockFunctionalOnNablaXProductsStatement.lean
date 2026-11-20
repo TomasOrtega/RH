@@ -6,6 +6,9 @@ import Development.AbelianVarietyTheory.Proofs.SatakeParameters.DualWeylEqSpanCo
 import Formalism.LocalToGlobal.Columns.CoefficientsModP.FkPderivBlockEmbNe
 open MvPolynomial
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.FockMinorFunctional.fock_functional_nablaX | exact GlobalTheory.FockMinorFunctional.fock_functional_nablaX | (intros; apply GlobalTheory.FockMinorFunctional.fock_functional_nablaX <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.exists_fock_functional_on_nablaX_products : ∀ (p : ℕ) [Fact p.Prime] {Lt : Type} [Fintype Lt] [DecidableEq Lt] (N : ℕ) (nu : Lt → YoungDiagram)
     (hY : ∀ s, (nu s).colLen 0 ≤ N) (g : Lt → MvPolynomial (Fin N × Fin N) ℤ),
     ∃ Ψ : Module.Dual ℂ_[p] (MvPolynomial (Lt × ℕ × Fin N) ℂ_[p]),

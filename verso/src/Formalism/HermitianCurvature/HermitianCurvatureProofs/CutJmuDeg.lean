@@ -13,6 +13,11 @@ variable {P : M.Par} {Wp Wq : Type} [NormedAddCommGroup Wp] [InnerProductSpace �
 def Present (F : JFam P.k P.r Wp Wq) (μ : Fin (2 * P.r + P.k + 1) → ℤ) : Prop :=
   Formalism.QuantumDeterminants.IsHCParam (lamOf F.sh μ) ∧ (F.A μ).l (F.A μ).w0 ≠ 0 ∧ (F.A μ).l' (F.A μ).w0 ≠ 0
 
+/- English proof (translation)
+Distinguish the cases in `hc : Formalism.QuantumDeterminants.IsHCParam (lamOf F.sh μ)`. Rewrite using `[JFam.J_of_hc Bs F μ hc]`. Apply `coef_eq_zero_of` to reduce the goal to its premises. Assume the negation of the conclusion as `h'`. Use `push Not at h'`.
+
+Conclude with `h ⟨hc, h'.1, h'.2⟩`. Conclude with `JFam.J_of_not_hc Bs F μ hc`.
+-/
 theorem J_eq_zero_of_not_present (Bs : B.RealPlaceData P.k P.r Wp Wq) (F : JFam P.k P.r Wp Wq)
     (μ : Fin (2 * P.r + P.k + 1) → ℤ) (h : ¬ Present F μ) : F.J Bs μ = 0 := by
   by_cases hc : Formalism.QuantumDeterminants.IsHCParam (lamOf F.sh μ)
@@ -23,6 +28,9 @@ theorem J_eq_zero_of_not_present (Bs : B.RealPlaceData P.k P.r Wp Wq) (F : JFam 
     exact h ⟨hc, h'.1, h'.2⟩
   · exact JFam.J_of_not_hc Bs F μ hc
 
+/- English proof (translation)
+Establish `e : (0 : B.Mat P.k P.r → (Wq →L[ℂ] Wp)) = fun g => (0 : ℂ) • (0 : B.Mat P.k P.r → (Wq →L[ℂ] Wp)) g`. Use function extensionality and compare the values at `g`. Simplify using the standard rewrite rules. Rewrite using `[e, norm_sq_const_smul]`. Simplify using the standard rewrite rules.
+-/
 theorem norm_sq_zero_function (p : KB.Pl P Wp Wq) : TBB.jN2 p (0 : B.Mat P.k P.r → (Wq →L[ℂ] Wp)) = 0 := by
   have e : (0 : B.Mat P.k P.r → (Wq →L[ℂ] Wp)) = fun g => (0 : ℂ) • (0 : B.Mat P.k P.r → (Wq →L[ℂ] Wp)) g := by
     funext g
@@ -30,6 +38,9 @@ theorem norm_sq_zero_function (p : KB.Pl P Wp Wq) : TBB.jN2 p (0 : B.Mat P.k P.r
   rw [e, norm_sq_const_smul]
   simp
 
+/- English proof (translation)
+Establish `e : (0 : B.Mat P.k P.r → (Wq →L[ℂ] Wp)) = fun g => (0 : ℂ) • (0 : B.Mat P.k P.r → (Wq →L[ℂ] Wp)) g`. Use function extensionality and compare the values at `g`. Simplify using the standard rewrite rules. Rewrite using `[e, V_csmul]`. Simplify using the standard rewrite rules.
+-/
 theorem V_zero_fun (p : KB.Pl P Wp Wq) (γ : C.LPt) : p.V (0 : B.Mat P.k P.r → (Wq →L[ℂ] Wp)) γ = 0 := by
   have e : (0 : B.Mat P.k P.r → (Wq →L[ℂ] Wp)) = fun g => (0 : ℂ) • (0 : B.Mat P.k P.r → (Wq →L[ℂ] Wp)) g := by
     funext g
@@ -50,6 +61,25 @@ def DegRatio (p : KB.Pl P Wp Wq) (F : JFam P.k P.r Wp Wq) (lam0 : Fin (2 * P.r +
     (F.A (μ + LatticeNorms.eI I)).deg p.T.base.μG ≤
       (Real.exp 1 * ((2 * P.r + P.k + 1 : ℕ) : ℝ)) ^ (P.r + 1) * (F.A μ).deg p.T.base.μG
 
+/- English proof (translation)
+Take `⟨c, hc, hN⟩` from `hN`. Establish `hz` using `J_eq_zero_of_not_present p.T.base F`. Use `⟨?_, fun μ hμ => ⟨?_, ?_⟩, ?_⟩` and prove the remaining obligations. Use `show 0 < TBB.jN2 p (F.J p.T.base lam0)`. Establish `h0 : LatticeNorms.N1 (lam0 - lam0) ≤ q0` using `by rw [sub_self, LatticeNorms.n1_zero]; exact Nat.zero_le _`.
+
+Rewrite using `[hN lam0 h0 hP0]`. Conclude with `ENNReal.ofReal_pos.2 (mul_pos hc (hpos lam0 h0 hP0))`. Use `show TBB.jN2 p (F.J p.T.base μ) < ⊤`. Distinguish the cases in `hp : Present F μ`. Rewrite using `[hN μ hμ hp]`.
+
+Conclude with `ENNReal.ofReal_lt_top`. Rewrite using `[hz μ hp, norm_sq_zero_function]`. Conclude with `ENNReal.zero_lt_top`. Introduce `h0 cc _ _ show p.V (F.J p.T.base μ) _ = 0`. Distinguish the cases in `hp : Present F μ`.
+
+It suffices to derive a contradiction. Express the relevant statement in the definitionally equal form `TBB.jN2 p (F.J p.T.base μ) = 0 at h0`. Rewrite `h0` using `[hN μ hμ hp]`. Conclude with `(ENNReal.ofReal_pos.2 (mul_pos hc (hpos μ hμ hp))).ne' h0`. Rewrite using `[hz μ hp]`.
+
+Conclude with `V_zero_fun p _`. Use `show ∀ μ : Fin (2 * P.r + P.k + 1) → ℤ, LatticeNorms.N1 (μ - lam0) + c0 ≤ q0 → TBB.jN2 p (F.J p.T.base μ) ≠ 0 → ∀ I ∈ powersetCard (P.r + 1) (univ : Finset (Fin (2 * P.r + P.k + 1))), TBB.jN2 p (F.J p.T.base (μ + LatticeNorms.eI I)) ≤ ENNReal.ofReal ((Real.exp 1 * ((2 * P.r + P.k …`. Introduce `μ hμ hne I hI`. Establish `hp : Present F μ`. Assume the negation of the conclusion as `hp`.
+
+Rewrite `hne` using `[hz μ hp, norm_sq_zero_function]`. Conclude with `hne rfl`. Establish `hcard : I.card = P.r + 1` using `(mem_powersetCard.1 hI).2`. Establish `hμ' : LatticeNorms.N1 (μ - lam0) ≤ q0` using `by omega`. Establish `hI' : LatticeNorms.N1 (μ + LatticeNorms.eI I - lam0) ≤ q0`.
+
+Establish `e : μ + LatticeNorms.eI I - lam0 = (μ - lam0) + LatticeNorms.eI I` using `by abel`. Establish `h1` using `LatticeNorms.n1_add_le (μ - lam0) (LatticeNorms.eI I)`. Rewrite `h1` using `[LatticeNorms.n1_eI_eq_card, hcard]`. Rewrite using `[e]`. Use linear arithmetic over natural numbers and integers.
+
+Distinguish the cases in `hq : Present F (μ + LatticeNorms.eI I)`. Establish `hd` using `hR μ I hcard hμ' hI' hp hq`. Establish `hE : 0 ≤ (Real.exp 1 * ((2 * P.r + P.k + 1 : ℕ) : ℝ)) ^ (P.r + 1)` using `by positivity`. Rewrite using `[hN _ hI' hq, hN μ hμ' hp, ← ENNReal.ofReal_mul hE]`. Apply `ENNReal.ofReal_le_ofReal` to reduce the goal to its premises.
+
+Combine the equalities or inequalities in the displayed calculation. Rewrite using `[hz _ hq, norm_sq_zero_function]`. Conclude with `bot_le`.
+-/
 theorem pieri_degree_of_family (p : KB.Pl P Wp Wq) (F : JFam P.k P.r Wp Wq) (lam0 : Fin (2 * P.r + P.k + 1) → ℤ)
     (tau : (Fin (2 * P.r + P.k + 1) → ℤ) → Finset (Fin (2 * P.r + P.k + 1)) → ℂ) (c0 q0 : ℕ) (H : ℝ)
     (hc0 : P.r + 1 ≤ c0) (hN : NormDeg p F lam0 q0) (hpos : DegPos p F lam0 q0) (hR : DegRatio p F lam0 q0)

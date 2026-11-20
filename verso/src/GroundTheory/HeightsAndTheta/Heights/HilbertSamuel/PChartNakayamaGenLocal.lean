@@ -21,6 +21,9 @@ def mdeg (μ : (Σ k, ι k) →₀ ℕ) : K → ℤ := fun k => ((∑ i, μ ⟨k
 def comp (g : K → ℤ) (b : MRingOver S ι) : MRingOver S ι :=
   ∑ μ ∈ b.support.filter (fun μ => mdeg μ = g), monomial μ (coeff μ b)
 
+/- English proof (translation)
+Unfold `comp at hμ`. Take `⟨ν, hν, hμν⟩` from `Finset.mem_biUnion.mp (MvPolynomial.support_sum hμ)`. Rewrite using `[Finset.mem_singleton.mp (MvPolynomial.support_monomial_subset hμν)]`. Conclude with `(Finset.mem_filter.mp hν).2`.
+-/
 theorem mdeg_of_mem_support_comp {g : K → ℤ} {b : MRingOver S ι} {μ : (Σ k, ι k) →₀ ℕ}
     (hμ : μ ∈ (comp g b).support) : mdeg μ = g := by
   unfold comp at hμ
@@ -28,6 +31,11 @@ theorem mdeg_of_mem_support_comp {g : K → ℤ} {b : MRingOver S ι} {μ : (Σ 
   rw [Finset.mem_singleton.mp (MvPolynomial.support_monomial_subset hμν)]
   exact (Finset.mem_filter.mp hν).2
 
+/- English proof (translation)
+Introduce `m hm k`. Take `⟨m₁, h₁, m₂, h₂, rfl⟩` from `Finset.mem_add.mp (MvPolynomial.support_mul _ _ hm)`. Establish `e₁` using `congrFun (mdeg_of_mem_support_comp h₁) k`. Establish `e₂` using `hw m₂ h₂ k`. Establish `e₃` using `h k`.
+
+Simplify using `only [mdeg] at e₁`. Simplify using `only [Finsupp.add_apply, Finset.sum_add_distrib]`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem isMultiHomog_comp_mul {g : K → ℤ} {b w : MRingOver S ι} {ω a : K → ℕ} (hw : IsMultiHomog w ω)
     (h : ∀ k, g k + ω k = a k) : IsMultiHomog (comp g b * w) a := by
   intro m hm k
@@ -39,17 +47,28 @@ theorem isMultiHomog_comp_mul {g : K → ℤ} {b w : MRingOver S ι} {ω a : K �
   simp only [Finsupp.add_apply, Finset.sum_add_distrib]
   omega
 
+/- English proof (translation)
+Use `isMultiHomog_comp_mul (b := b) (isMultiHomog_one_zero (S := S) (ι := ι)) (g := g) (a := a) fun k => by simp [h k]` as an intermediate fact. Rewrite `this` using `[mul_one]`. Then use the resulting hypothesis.
+-/
 theorem isMultiHomog_comp {g : K → ℤ} {b : MRingOver S ι} {a : K → ℕ} (h : ∀ k, g k = a k) :
     IsMultiHomog (comp g b) a := by
   have := isMultiHomog_comp_mul (b := b) (isMultiHomog_one_zero (S := S) (ι := ι)) (g := g) (a := a)
     fun k => by simp [h k]
   rwa [mul_one] at this
 
+/- English proof (translation)
+Unfold `comp`. Rewrite using `[Finset.sum_fiberwise_of_maps_to (fun μ hμ => Finset.mem_image_of_mem mdeg hμ)]`. Conclude with `b.support_sum_monomial_coeff`.
+-/
 theorem sum_comp (b : MRingOver S ι) : ∑ g ∈ b.support.image mdeg, comp g b = b := by
   unfold comp
   rw [Finset.sum_fiberwise_of_maps_to (fun μ hμ => Finset.mem_image_of_mem mdeg hμ)]
   exact b.support_sum_monomial_coeff
 
+/- English proof (translation)
+Assume the negation of the conclusion as `h`. Simplify using `only [not_exists, not_not] at h`. Apply `hb` to reduce the goal to its premises. Rewrite using `[← sum_comp b]`. Use `Ideal.sum_mem _ fun g hg => ?_` and prove the remaining obligations.
+
+Take `⟨μ, -, rfl⟩` from `Finset.mem_image.mp hg`. Conclude with `h (fun k => ∑ i, μ ⟨k, i⟩)`.
+-/
 theorem exists_comp_notMem {P : Ideal (MRingOver S ι)} {b : MRingOver S ι} (hb : b ∉ P) :
     ∃ δ : K → ℕ, comp (fun k => (δ k : ℤ)) b ∉ P := by
   by_contra h
@@ -60,6 +79,9 @@ theorem exists_comp_notMem {P : Ideal (MRingOver S ι)} {b : MRingOver S ι} (hb
   obtain ⟨μ, -, rfl⟩ := Finset.mem_image.mp hg
   exact h (fun k => ∑ i, μ ⟨k, i⟩)
 
+/- English proof (translation)
+Unfold `comp`. Rewrite using `[Finset.sum_filter_add_sum_filter_not]`. Conclude with `b.support_sum_monomial_coeff`.
+-/
 theorem comp_add_rest (g : K → ℤ) (b : MRingOver S ι) :
     comp g b + ∑ μ ∈ b.support.filter (fun μ => ¬ mdeg μ = g), monomial μ (coeff μ b) = b := by
   unfold comp
@@ -71,10 +93,16 @@ section Graded
 variable {M : Type} [AddCommGroup M] [Module (MRingOver S ι) M] [Module S M] [IsScalarTower S (MRingOver S ι) M]
   {𝓜 : (K → ℤ) → Submodule S M}
 
+/- English proof (translation)
+The claim follows from `h𝓜.2 (fun k => ∑ i, μ ⟨k, i⟩) e _ m (GenTwistGenerated.isMultiHomog_monomial μ r _ fun _ => rfl) hm`.
+-/
 theorem monomial_smul_mem (h𝓜 : KH.IsMGraded S ι 𝓜) {e : K → ℤ} {m : M} (hm : m ∈ 𝓜 e)
     (μ : (Σ k, ι k) →₀ ℕ) (r : S) : (monomial μ r : MRingOver S ι) • m ∈ 𝓜 (e + mdeg μ) :=
   h𝓜.2 (fun k => ∑ i, μ ⟨k, i⟩) e _ m (GenTwistGenerated.isMultiHomog_monomial μ r _ fun _ => rfl) hm
 
+/- English proof (translation)
+Unfold `comp`. Rewrite using `[Finset.sum_smul]`. Use `Submodule.sum_mem _ fun μ hμ => ?_` and prove the remaining obligations. Use `monomial_smul_mem h𝓜 hm μ (coeff μ b)` as an intermediate fact. Rewrite `this` using `[(Finset.mem_filter.mp hμ).2]`. Then use the resulting hypothesis.
+-/
 theorem comp_smul_mem (h𝓜 : KH.IsMGraded S ι 𝓜) {e g : K → ℤ} {m : M} (hm : m ∈ 𝓜 e)
     (b : MRingOver S ι) : comp g b • m ∈ 𝓜 (e + g) := by
   unfold comp
@@ -83,6 +111,9 @@ theorem comp_smul_mem (h𝓜 : KH.IsMGraded S ι 𝓜) {e g : K → ℤ} {m : M}
   have := monomial_smul_mem h𝓜 hm μ (coeff μ b)
   rwa [(Finset.mem_filter.mp hμ).2] at this
 
+/- English proof (translation)
+Rewrite using `[← sub_smul, ← eq_sub_of_add_eq' (comp_add_rest (G - e) b), Finset.sum_smul]`. Use `Submodule.sum_mem _ fun μ hμ => ?_` and prove the remaining obligations. Establish `hne : e + mdeg μ ≠ G` using `fun h => (Finset.mem_filter.mp hμ).2 (eq_sub_of_add_eq' h)`. Conclude with `Submodule.mem_iSup_of_mem (e + mdeg μ) (Submodule.mem_iSup_of_mem hne (monomial_smul_mem h𝓜 hm μ _))`.
+-/
 theorem smul_sub_comp_mem (h𝓜 : KH.IsMGraded S ι 𝓜) {e G : K → ℤ} {m : M} (hm : m ∈ 𝓜 e)
     (b : MRingOver S ι) : b • m - comp (G - e) b • m ∈ ⨆ (g) (_ : g ≠ G), 𝓜 g := by
   rw [← sub_smul, ← eq_sub_of_add_eq' (comp_add_rest (G - e) b), Finset.sum_smul]
@@ -91,6 +122,13 @@ theorem smul_sub_comp_mem (h𝓜 : KH.IsMGraded S ι 𝓜) {e G : K → ℤ} {m 
   exact Submodule.mem_iSup_of_mem (e + mdeg μ)
     (Submodule.mem_iSup_of_mem hne (monomial_smul_mem h𝓜 hm μ _))
 
+/- English proof (translation)
+Establish `hX : comp (G - E) q • m₀ - ∑ i, comp (G - F) (b i) • m₁ i ∈ 𝓜 G`. Use `sub_mem ?_ (Submodule.sum_mem _ fun i _ => ?_)` and prove the remaining obligations. Use `comp_smul_mem h𝓜 hm₀ q (g := G - E)` as an intermediate fact. Rewrite `this` using `[add_sub_cancel]`. Then use the resulting hypothesis. Use `comp_smul_mem h𝓜 (hm₁ i) (b i) (g := G - F)` as an intermediate fact.
+
+Rewrite `this` using `[add_sub_cancel]`. Then use the resulting hypothesis. Establish `hR : comp (G - E) q • m₀ - ∑ i, comp (G - F) (b i) • m₁ i ∈ ⨆ (g) (_ : g ≠ G), 𝓜 g`. Establish `e : comp (G - E) q • m₀ - ∑ i, comp (G - F) (b i) • m₁ i = -((q • m₀ - comp (G - E) q • m₀) - ∑ i, (b i • m₁ i - comp (G - F) (b i) • m₁ i))`. Rewrite using `[Finset.sum_sub_distrib, ← h]`. Normalize the expressions using the abelian group laws.
+
+Rewrite using `[e]`. Conclude with `neg_mem (sub_mem (smul_sub_comp_mem h𝓜 hm₀ q) (Submodule.sum_mem _ fun i _ => smul_sub_comp_mem h𝓜 (hm₁ i) (b i)))`. Conclude with `sub_eq_zero.mp (Submodule.disjoint_def.mp (h𝓜.1.submodule_iSupIndep G) _ hX hR)`.
+-/
 theorem comp_relation (h𝓜 : KH.IsMGraded S ι 𝓜) {E F G : K → ℤ} {n : ℕ} {q : MRingOver S ι} {m₀ : M}
     (hm₀ : m₀ ∈ 𝓜 E) {b : Fin n → MRingOver S ι} {m₁ : Fin n → M} (hm₁ : ∀ i, m₁ i ∈ 𝓜 F)
     (h : q • m₀ = ∑ i, b i • m₁ i) :
@@ -113,15 +151,32 @@ theorem comp_relation (h𝓜 : KH.IsMGraded S ι 𝓜) {E F G : K → ℤ} {n : 
 
 end Graded
 
+/- English proof (translation)
+Rewrite using `[LocalizedModule.smul'_mk, mul_comm, mul_smul, ← Submonoid.smul_def, LocalizedModule.mk_cancel]`.
+-/
 theorem smul_mk_cancel {T : Submonoid (MRingOver S ι)} {M : Type} [AddCommGroup M] [Module (MRingOver S ι) M]
     (w : MRingOver S ι) (y : M) (s : T) :
     (w * s) • LocalizedModule.mk y s = LocalizedModule.mk (w • y) 1 := by
   rw [LocalizedModule.smul'_mk, mul_comm, mul_smul, ← Submonoid.smul_def, LocalizedModule.mk_cancel]
 
+/- English proof (translation)
+Simplify using `only [← LocalizedModule.mkLinearMap_apply, map_sum]`.
+-/
 theorem sum_mk_one {T : Submonoid (MRingOver S ι)} {M : Type} [AddCommGroup M] [Module (MRingOver S ι) M]
     {n : ℕ} (y : Fin n → M) : ∑ i, LocalizedModule.mk (y i) (1 : T) = LocalizedModule.mk (∑ i, y i) 1 := by
   simp only [← LocalizedModule.mkLinearMap_apply, map_sum]
 
+/- English proof (translation)
+Proceed by induction on `hw using Submodule.span_induction with`. Consider the case `mem x hx => exact ⟨1, T.one_mem, by rw [one_smul]; exact Submodule.subset_span hx⟩`. Consider the case `zero => exact ⟨1, T.one_mem, by rw [smul_zero]; exact zero_mem _⟩`. Consider the case `add x y _ _ hx hy`. Take `⟨v, hv, hvx⟩` from `hx`.
+
+Take `⟨v', hv', hvy⟩` from `hy`. Use `⟨v * v', T.mul_mem hv hv', ?_⟩` and prove the remaining obligations. Rewrite using `[smul_add]`. Use `add_mem ?_ ?_` and prove the remaining obligations. Rewrite using `[mul_comm, mul_smul]`.
+
+Conclude with `Submodule.smul_mem _ _ hvx`. Rewrite using `[mul_smul]`. Conclude with `Submodule.smul_mem _ _ hvy`. Consider the case `smul l x _ hx`. Take `⟨v, hv, hvx⟩` from `hx`.
+
+Take `⟨⟨b, s⟩, rfl⟩` from `IsLocalization.mk'_surjective T l`. Use `⟨s * v, T.mul_mem s.2 hv, ?_⟩` and prove the remaining obligations. Establish `key : ((s : MRingOver S ι) * v) • (IsLocalization.mk' (Localization T) b s • x) = b • (v • x)`. Rewrite using `[← algebraMap_smul (Localization T) ((s : MRingOver S ι) * v), ← algebraMap_smul (Localization T) b, ← algebraMap_smul (Localization T) v, smul_smul, smul_smul, map_mul, mul_right_comm, IsLocalization.mk'_spec']`. Rewrite using `[key]`.
+
+Conclude with `Submodule.smul_mem _ b hvx`.
+-/
 theorem exists_smul_mem_span_of_mem_span {T : Submonoid (MRingOver S ι)} {M : Type} [AddCommGroup M]
     [Module (MRingOver S ι) M] {Z : Set (LocalizedModule T M)} {w : LocalizedModule T M}
     (hw : w ∈ Submodule.span (Localization T) Z) :
@@ -150,6 +205,63 @@ theorem exists_smul_mem_span_of_mem_span {T : Submonoid (MRingOver S ι)} {M : T
     rw [key]
     exact Submodule.smul_mem _ b hvx
 
+/- English proof (translation)
+Use `hS` as an intermediate fact. Use `hM` as an intermediate fact. Use `set T := KH.cellMon S (chart c).1 with hT`. Establish `: IsNoetherianRing (Localization T)` using `IsLocalization.isNoetherianRing T _ inferInstance`. Use `set Z : Set (LocalizedModule T M) := {w | ∃ z ∈ KH.cechZc ι 𝓜 d 0, w = z (chart c)} with hZ`.
+
+Use `set N : Submodule (Localization T) (LocalizedModule T M) := Submodule.span _ Z with hN`. Use `set 𝔮 : Ideal (Localization T) := P.map (algebraMap (MRingOver S ι) (Localization T)) with h𝔮`. Establish `hdisj : ∀ v ∈ T, v ∉ P` using `fun v hv => cellMon_notMem hP hc hv`. Establish `hideal : ∀ w ∈ locIdealPart 𝓜 T P d, w ∈ 𝔮 • (⊤ : Submodule (Localization T) (LocalizedModule T M))`. Introduce `w hw`.
+
+Proceed by induction on `hw using Submodule.span_induction with`. Consider the case `mem w hw`. Take `⟨p, a, y, hp, -, -, rfl⟩` from `hw`. Rewrite using `[← algebraMap_smul (Localization T) p y]`. Conclude with `Submodule.smul_mem_smul (Ideal.mem_map_of_mem _ hp) Submodule.mem_top`.
+
+Consider the case `zero => exact zero_mem _`. Consider the case `add x y _ _ hx hy => exact add_mem hx hy`. Consider the case `smul s x _ hx`. Establish `e : s • x = (algebraMap (MRingOver S ι) (Localization T) (C s : MRingOver S ι)) • x`. Proceed by induction on `x using LocalizedModule.induction_on with`.
+
+Consider the case `h m t`. Rewrite using `[algebraMap_smul, LocalizedModule.smul'_mk, LocalizedModule.smul'_mk, ← MvPolynomial.algebraMap_eq, algebraMap_smul]`. Rewrite using `[e]`. Conclude with `Submodule.smul_mem _ _ hx`. Establish `hmk1 : ∀ m : M, LocalizedModule.mk m (1 : T) ∈ N ⊔ 𝔮 • ⊤`.
+
+Introduce `m`. Establish `hm : m ∈ ⨆ e, 𝓜 e`. Rewrite using `[h𝓜.1.submodule_iSup_eq_top]`. Conclude with `Submodule.mem_top`. Use `Submodule.iSup_induction (motive := fun m => LocalizedModule.mk m (1 : T) ∈ N ⊔ 𝔮 • ⊤) 𝓜 hm ?_ ?_ ?_` and prove the remaining obligations.
+
+Introduce `e m hm`. Take `⟨gp, gn, hg⟩ : ∃ gp gn : K → ℕ, e + (fun k => (gn k : ℤ)) = d + fun k => (gp k : ℤ)` from `⟨fun k => (e k - d k).toNat, fun k => (-(e k - d k)).toNat, funext fun k => by`. Simplify using `only [Pi.add_apply]`. Combine the linear relations using `[Int.toNat_sub_toNat_neg (e k - d k)]⟩`. Establish `hx : LocalizedModule.mk (chartMon (S` using `S) c gn • m) (⟨chartMon (S := S) c gp, chartMon_mem c gp⟩ : T) ∈ KH.locPart ι 𝓜 T d := by`.
+
+Use `GenSESStep.mk_mem_locPart _ _ gp (isMultiHomog_chartMon c gp) ?_` and prove the remaining obligations. Rewrite using `[← hg]`. Conclude with `h𝓜.2 _ _ _ _ (isMultiHomog_chartMon c gn) hm`. Take `⟨z, hz, hxz⟩` from `hgen _ hx`. Establish `hx' : LocalizedModule.mk (chartMon (S` using `S) c gn • m) (⟨chartMon (S := S) c gp, chartMon_mem c gp⟩ : T) ∈ N ⊔ 𝔮 • ⊤ := by`.
+
+Rewrite using `[← sub_add_cancel (LocalizedModule.mk _ _) (z (chart c))]`. Conclude with `add_mem (Submodule.mem_sup_right (hideal _ hxz)) (Submodule.mem_sup_left (Submodule.subset_span ⟨z, hz, rfl⟩))`. Establish `e : LocalizedModule.mk m (1 : T) = Localization.mk (chartMon (S` using `S) c gp) (⟨chartMon (S := S) c gn, chartMon_mem c gn⟩ : T) • LocalizedModule.mk (chartMon (S := S) c gn • m) (⟨chartMon (S := S) c gp, chartMon_mem c gp⟩ : T) := by`. Rewrite using `[LocalizedModule.mk_smul_mk, LocalizedModule.mk_eq]`. Use `⟨1, ?_⟩` and prove the remaining obligations.
+
+Simplify using `only [one_smul, Submonoid.smul_def, Submonoid.coe_mul, ← mul_smul, mul_comm]`. Rewrite using `[e]`. Conclude with `Submodule.smul_mem _ _ hx'`. Rewrite using `[LocalizedModule.zero_mk]`. Conclude with `zero_mem _`.
+
+Introduce `x y hx hy`. Establish `e : LocalizedModule.mk (x + y) (1 : T) = LocalizedModule.mk x 1 + LocalizedModule.mk y 1`. Rewrite using `[LocalizedModule.mk_add_mk, one_smul, one_smul, mul_one]`. Rewrite using `[e]`. Conclude with `add_mem hx hy`.
+
+Establish `htop : (⊤ : Submodule (Localization T) (LocalizedModule T M)) ≤ N ⊔ 𝔮 • ⊤`. Introduce `w _`. Proceed by induction on `w using LocalizedModule.induction_on with`. Consider the case `h m s`. Establish `e : LocalizedModule.mk m s = Localization.mk (1 : MRingOver S ι) s • LocalizedModule.mk m (1 : T)`.
+
+Rewrite using `[LocalizedModule.mk_smul_mk, one_smul, mul_one]`. Rewrite using `[e]`. Conclude with `Submodule.smul_mem _ _ (hmk1 m)`. Take `⟨r, hr1, hrN⟩` from `Submodule.exists_sub_one_mem_and_smul_le_of_fg_of_le_sup (I := 𝔮) (N := N) (N' := ⊤) (P := ⊤) Module.Finite.fg_top le_rfl htop`. Take `⟨⟨q, s⟩, rfl⟩` from `IsLocalization.mk'_surjective T r`.
+
+Establish `hqs : q - (s : MRingOver S ι) ∈ P`. Establish `h1 : algebraMap (MRingOver S ι) (Localization T) (q - s) ∈ 𝔮`. Use `𝔮.mul_mem_left (algebraMap (MRingOver S ι) (Localization T) (s : MRingOver S ι)) hr1` as an intermediate fact. Rewrite `this` using `[mul_sub, IsLocalization.mk'_spec', mul_one, ← map_sub]`. Then use the resulting hypothesis. Establish `hc'` using `IsLocalization.under_map_of_isPrime_disjoint T (Localization T) hP (Set.disjoint_left.mpr fun v hv hvP => hdisj v hv hvP)`.
+
+Rewrite using `[← hc']`. Conclude with `h1`. Establish `hq : q ∉ P` using `fun hq => hdisj s s.2 (by simpa using P.sub_mem hq hqs)`. Take `⟨δ₀, hδ⟩` from `exists_comp_notMem hq`. Use `⟨comp (fun k => (δ₀ k : ℤ)) q, δ₀, isMultiHomog_comp fun _ => rfl, hδ, fun x hx => ?_⟩` and prove the remaining obligations.
+
+Establish `hrx : IsLocalization.mk' (Localization T) q s • x ∈ N` using `hrN (Submodule.smul_mem_pointwise_smul x _ ⊤ Submodule.mem_top)`. Take `⟨v, hv, hvx⟩` from `exists_smul_mem_span_of_mem_span hrx`. Establish `hqx : (v * q) • x ∈ Submodule.span (MRingOver S ι) Z`. Establish `h` using `Submodule.smul_mem _ (s : MRingOver S ι) hvx`. Establish `e : (s : MRingOver S ι) • v • IsLocalization.mk' (Localization T) q s • x = (v * q) • x`.
+
+Rewrite using `[← algebraMap_smul (Localization T) (s : MRingOver S ι), ← algebraMap_smul (Localization T) v, ← algebraMap_smul (Localization T) (v * q), smul_smul, smul_smul, map_mul, mul_right_comm, IsLocalization.mk'_spec', mul_comm]`. Rewrite `h` using `[e]`. Then use the resulting hypothesis. Take `⟨n, b, g, hsum⟩` from `Submodule.mem_span_set'.mp hqx`. Use `choose z hz hzg using fun i => (g i).2`. Establish `hzI : ∀ i, z i (chart c) ∈ KH.locPart ι 𝓜 T d` using `fun i => Submodule.mem_pi.mp (hz i).1 (chart c) (Set.mem_univ _)`.
+
+Use `choose mi ti ai hti hmi hzeq using fun i => GenSESStep.locPart_normal h𝓜 (hzI i)`. Take `⟨m, t, a, ht, hm, rfl⟩` from `GenSESStep.locPart_normal h𝓜 hx`. Take `⟨γ, hγ⟩` from `GenSESStep.cellMon_homog hv`. Use `set u : MRingOver S ι := ∏ j, (ti j : MRingOver S ι) with hu`. Establish `huT : u ∈ T` using `Submonoid.prod_mem _ fun j _ => (ti j).2`.
+
+Establish `hu_homog : IsMultiHomog u (∑ j, ai j)` using `isMultiHomog_prod _ _ _ fun j _ => hti j`. Establish `hui_homog : ∀ i, IsMultiHomog (∏ j ∈ Finset.univ.erase i, (ti j : MRingOver S ι)) (∑ j ∈ Finset.univ.erase i, ai j)` using `fun i => isMultiHomog_prod _ _ _ fun j _ => hti j`. Establish `hper : ∀ i, u • LocalizedModule.mk (mi i) (ti i) = LocalizedModule.mk ((∏ j ∈ Finset.univ.erase i, (ti j : MRingOver S ι)) • mi i) 1`. Introduce `i`. Rewrite using `[hu, ← Finset.prod_erase_mul Finset.univ (fun j => (ti j : MRingOver S ι)) (Finset.mem_univ i), smul_mk_cancel]`.
+
+Establish `h3 : LocalizedModule.mk ((u * (v * q)) • m) t = LocalizedModule.mk (∑ i, b i • (∏ j ∈ Finset.univ.erase i, (ti j : MRingOver S ι)) • mi i) (1 : T)`. Establish `h : u • (∑ i, b i • (g i : LocalizedModule T M)) = u • ((v * q) • LocalizedModule.mk m t)`. Rewrite using `[hsum]`. Rewrite `h` using `[LocalizedModule.smul'_mk, LocalizedModule.smul'_mk, smul_smul, Finset.smul_sum]`. Rewrite using `[← h, ← sum_mk_one]`.
+
+Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[hzg i, hzeq i, smul_comm, hper i, LocalizedModule.smul'_mk]`. Take `⟨v', hv'⟩` from `LocalizedModule.mk_eq.mp h3`. Simplify using `only [one_smul, Submonoid.smul_def] at hv'`. Take `⟨γ', hγ'⟩` from `GenSESStep.cellMon_homog v'.2`.
+
+Establish `hrel : q • (((v' : MRingOver S ι) * u * v) • m) = ∑ i, b i • (((v' : MRingOver S ι) * t * ∏ j ∈ Finset.univ.erase i, (ti j : MRingOver S ι)) • mi i)`. Establish `e₁ : q • (((v' : MRingOver S ι) * u * v) • m) = (v' : MRingOver S ι) • (u * (v * q)) • m`. Simplify using `only [smul_smul]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree.
+
+Rewrite using `[e₁, hv', Finset.smul_sum, Finset.smul_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Simplify using `only [smul_smul]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree.
+
+Establish `hm₀ : ((v' : MRingOver S ι) * u * v) • m ∈ 𝓜 ((d + fun k => (a k : ℤ)) + fun k => ((γ' + ∑ j, ai j + γ) k : ℤ))` using `h𝓜.2 _ _ _ _ (GenSESStep.isMultiHomog_mul (GenSESStep.isMultiHomog_mul hγ' hu_homog) hγ) hm`. Establish `hm₁ : ∀ i, ((v' : MRingOver S ι) * t * ∏ j ∈ Finset.univ.erase i, (ti j : MRingOver S ι)) • mi i ∈ 𝓜 (d + fun k => ((γ' + a + ∑ j, ai j) k : ℤ))`. Introduce `i`. Establish `h` using `h𝓜.2 _ _ _ _ (GenSESStep.isMultiHomog_mul (GenSESStep.isMultiHomog_mul hγ' ht) (hui_homog i)) (hmi i)`. Establish `e : ((d + fun k => (ai i k : ℤ)) + fun k => ((γ' + a + ∑ j ∈ Finset.univ.erase i, ai j) k : ℤ)) = d + fun k => ((γ' + a + ∑ j, ai j) k : ℤ)`.
+
+Use function extensionality and compare the values at `k`. Use `congrFun (Finset.sum_erase_add Finset.univ ai (Finset.mem_univ i)) k` as an intermediate fact. Simplify using `only [Pi.add_apply] at this ⊢`. Use `push_cast`. Use linear arithmetic over natural numbers and integers.
+
+Rewrite `h` using `[e]`. Then use the resulting hypothesis. Establish `hcomp` using `comp_relation h𝓜 (G := ((d + fun k => (a k : ℤ)) + fun k => ((γ' + ∑ j, ai j + γ) k : ℤ)) + fun k => (δ₀ k : ℤ)) hm₀ hm₁ hrel`. Rewrite `hcomp` using `[add_sub_cancel_left]`. Use `⟨(v' : MRingOver S ι) * u * v * t, γ' + ∑ j, ai j + γ + a, n, fun i => comp ((((d + fun k => (a k : ℤ)) + fun k => ((γ' + ∑ j, ai j + γ) k : ℤ)) + fun k => (δ₀ k : ℤ)) - (d + fun k => ((γ' + a + ∑ j, ai j) k : ℤ))) (b i) * ((v' : MRingOver S ι) * t * (∏ j ∈ Finset.univ.erase i, ( …` and prove the remaining obligations. Use `isMultiHomog_comp_mul (GenSESStep.isMultiHomog_mul (GenSESStep.isMultiHomog_mul (GenSESStep.isMultiHomog_mul hγ' ht) (hui_homog i)) (hti i)) fun k => ?_` and prove the remaining obligations.
+
+Use `congrFun (Finset.sum_erase_add Finset.univ ai (Finset.mem_univ i)) k` as an intermediate fact. Simplify using `only [Pi.add_apply, Pi.sub_apply] at this ⊢`. Use `push_cast`. Use linear arithmetic over natural numbers and integers. Rewrite using `[← mul_assoc, smul_mk_cancel, mul_smul, hcomp, ← sum_mk_one]`.
+
+Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Simplify using `only`. Rewrite using `[hzeq i, ← mul_assoc, smul_mk_cancel]`. Use `congr 1`. Conclude with `(mul_smul _ _ _).symm`.
+-/
 theorem chart_nakayama {M : Type} [AddCommGroup M] [Module (MRingOver S ι) M] [Module S M]
     [IsScalarTower S (MRingOver S ι) M] {𝓜 : (K → ℤ) → Submodule S M} {P : Ideal (MRingOver S ι)} {d : K → ℤ}
     (hS : IsNoetherianRing S) (hM : Module.Finite (MRingOver S ι) M) (h𝓜 : KH.IsMGraded S ι 𝓜)

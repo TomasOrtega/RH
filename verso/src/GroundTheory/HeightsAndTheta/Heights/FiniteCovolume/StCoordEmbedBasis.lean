@@ -15,6 +15,9 @@ def coordEmbed : (ι → E) →+ (InfinitePlace E → ι → ℂ) where
   map_add' y z := by funext w i; simp
 
 omit [Fintype ι] in
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem coordEmbed_apply (y : ι → E) (w : InfinitePlace E) (i : ι) :
     coordEmbed E ι y w i = w.embedding (y i) := rfl
 

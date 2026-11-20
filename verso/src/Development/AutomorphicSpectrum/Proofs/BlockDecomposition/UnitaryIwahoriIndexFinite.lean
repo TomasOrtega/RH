@@ -11,6 +11,19 @@ namespace GlobalTheory.CompanionTheory.SatPow
 
 variable {L : Type} [Field L] [Valued L (WithZero (Multiplicative ℤ))]
 
+/- English proof (translation)
+Establish `hc : ∀ i j : Fin n, Continuous fun g : GU σ n => ((g : GL (Fin n) L) : Matrix (Fin n) (Fin n) L) i j` using `fun i j => (Units.continuous_val.comp continuous_subtype_val).matrix_elem i j`. Establish `hle : IsOpen {x : L | Valued.v x ≤ 1}`. Use `Valued.isOpen_integer (Γ₀ := WithZero (Multiplicative ℤ)) L using 1` and compare the differences between its conclusion and the goal. Use extensionality with `x`. Conclude with `(Valuation.mem_integer_iff (Valued.v : Valuation L (WithZero (Multiplicative ℤ))) x).symm`.
+
+Establish `hlt : IsOpen {x : L | Valued.v x < 1}`. Use `Valued.isOpen_ball L 1 using 2 with x` and compare the differences between its conclusion and the goal. Simplify using `only [Valuation.restrict_lt_one_iff]`. Establish `hset : (IwU σ n : Set (GU σ n)) = ⋂ i : Fin n, ⋂ j : Fin n, ({g : GU σ n | Valued.v (((g : GL (Fin n) L) : Matrix (Fin n) (Fin n) L) i j) ≤ 1} ∩ {g : GU σ n | j < i → Valued.v (((g : GL (Fin n) L) : Matrix (Fin n) (Fin n) L) i j) < 1})`. Use extensionality with `g`.
+
+Simplify using `only [SetLike.mem_coe, mem_iwU_iff hσv g, Set.mem_iInter, Set.mem_inter_iff, Set.mem_setOf_eq]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨h1, h2⟩ i j`. Conclude with `⟨h1 i j, h2 i j⟩`. Introduce `h`.
+
+Conclude with `⟨fun i j => (h i j).1, fun i j => (h i j).2⟩`. Rewrite using `[hset]`. Use `isOpen_iInter_of_finite fun i => isOpen_iInter_of_finite fun j => ?_` and prove the remaining obligations. Use `(hle.preimage (hc i j)).inter ?_` and prove the remaining obligations. Distinguish the cases in `hij : j < i`.
+
+Establish `e : {g : GU σ n | j < i → Valued.v (((g : GL (Fin n) L) : Matrix (Fin n) (Fin n) L) i j) < 1} = (fun g : GU σ n => ((g : GL (Fin n) L) : Matrix (Fin n) (Fin n) L) i j) ⁻¹' {x : L | Valued.v x < 1}`. Use extensionality with `g`. Simplify using `[hij]`. Rewrite using `[e]`. Conclude with `hlt.preimage (hc i j)`.
+
+Establish `e : {g : GU σ n | j < i → Valued.v (((g : GL (Fin n) L) : Matrix (Fin n) (Fin n) L) i j) < 1} = Set.univ`. Use extensionality with `g`. Simplify using `[hij]`. Rewrite using `[e]`. Conclude with `isOpen_univ`.
+-/
 theorem isOpen_iwU {σ : L →+* L} {n : ℕ} (hσv : ∀ x, Valued.v (σ x) = Valued.v x) :
     IsOpen (IwU σ n : Set (GU σ n)) := by
   have hc : ∀ i j : Fin n, Continuous fun g : GU σ n =>
@@ -52,6 +65,11 @@ theorem isOpen_iwU {σ : L →+* L} {n : ℕ} (hσv : ∀ x, Valued.v (σ x) = V
     rw [e]
     exact isOpen_univ
 
+/- English proof (translation)
+Rewrite using `[Subgroup.coe_map]`. Establish `e : ⇑(MulAut.conj t).toMonoidHom = fun x => t * x * t⁻¹`. Use function extensionality and compare the values at `x`. Simplify using `[MulAut.conj_apply]`. Rewrite using `[e]`.
+
+Establish `h1 : IsOpenMap fun x : G => t * x * t⁻¹` using `(isOpenMap_mul_right t⁻¹).comp (isOpenMap_mul_left t)`. Conclude with `h1 _ hH`.
+-/
 theorem isOpen_map_conj {G : Type} [Group G] [TopologicalSpace G] [IsTopologicalGroup G]
     {H : Subgroup G} (hH : IsOpen (H : Set G)) (t : G) :
     IsOpen ((H.map (MulAut.conj t).toMonoidHom : Subgroup G) : Set G) := by
@@ -64,6 +82,13 @@ theorem isOpen_map_conj {G : Type} [Group G] [TopologicalSpace G] [IsTopological
     (isOpenMap_mul_right t⁻¹).comp (isOpenMap_mul_left t)
   exact h1 _ hH
 
+/- English proof (translation)
+Introduce `L _ _ _ ϖ σ q n h`. Take `⟨-, hKc, hle, -⟩` from `GlobalTheory.CompanionTheory.KUFactsU.kuFacts L ϖ σ q n h`. Establish `hIo : IsOpen (IwU σ n : Set (GU σ n))` using `isOpen_iwU h.2.1`. Use `haveI : CompactSpace (KU σ n) := isCompact_iff_compactSpace.mp hKc`. Use `⟨Subgroup.quotient_finite_of_isOpen _ (Subgroup.subgroupOf_isOpen _ _ hIo), fun t => ?_⟩` and prove the remaining obligations.
+
+Establish `hIc : IsCompact (IwU σ n : Set (GU σ n))` using `hKc.of_isClosed_subset (Subgroup.isClosed_of_isOpen _ hIo) fun x hx => hle hx`. Use `haveI : CompactSpace (IwU σ n) := isCompact_iff_compactSpace.mp hIc`. Establish `hOpen : IsOpen ((IwU σ n ⊓ (IwU σ n).map (MulAut.conj t).toMonoidHom : Subgroup (GU σ n)) : Set (GU σ n))`. Rewrite using `[Subgroup.coe_inf]`. Conclude with `hIo.inter (isOpen_map_conj hIo t)`.
+
+Conclude with `Subgroup.quotient_finite_of_isOpen _ (Subgroup.subgroupOf_isOpen _ _ hOpen)`.
+-/
 theorem finite_index_iwU : ∀ (L : Type) [Field L] [Valued L (WithZero (Multiplicative ℤ))] [CompleteSpace L]
     (ϖ : L) (σ : L →+* L) (q n : ℕ), IsUnramInv ϖ σ q →
       Finite (KU σ n ⧸ (IwU σ n).subgroupOf (KU σ n)) ∧

@@ -27,5 +27,8 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.G
 open GroundTheory.Heights₂.Heights TensorProduct
 open GlobalTheory.CompanionTheory.Ar GlobalTheory.CompanionTheory.Ar.Sl
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.CompanionTheory.Ar.Sl.TanIso.tangentCoords_of_iso | exact GlobalTheory.CompanionTheory.Ar.Sl.TanIso.tangentCoords_of_iso | (intros; apply GlobalTheory.CompanionTheory.Ar.Sl.TanIso.tangentCoords_of_iso <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.uniformization_iso_transfer : ∀ (A A' : Over (Sp ℂ)) [GrpObj A] [GrpObj A'] (M : LB A.left) (M' : LB A'.left) (g : ℕ) (u : HolUnif A M g) (u' : HolUnif A' M' g) (e : A' ≅ A) [IsMonHom e.hom], IsAbelianScheme A → (∀ v, IsTangent v → ∃! w, u.IsDiff w v) → (∀ w, ∃! v, IsTangent v ∧ u.IsDiff w v) → (∀ v, IsTangent v → ∃! w, u'.IsDiff w v) ∧ (∀ w, ∃! v, IsTangent v ∧ u'.IsDiff w v) := by
   first | exact @GlobalTheory.CompanionTheory.Ar.Sl.TanIso.tangentCoords_of_iso | exact GlobalTheory.CompanionTheory.Ar.Sl.TanIso.tangentCoords_of_iso | (intros; apply GlobalTheory.CompanionTheory.Ar.Sl.TanIso.tangentCoords_of_iso <;> assumption)

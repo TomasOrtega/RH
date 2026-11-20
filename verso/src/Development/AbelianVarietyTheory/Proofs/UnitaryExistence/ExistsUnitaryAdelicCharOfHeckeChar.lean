@@ -17,12 +17,32 @@ open GlobalTheory.Member
 
 namespace GlobalTheory.Member
 
+/- English proof (translation)
+Use `haveI := Formalism.L2.GlobalTheoryTheory.GenusMassVolumes.Unfold.isTopRing (F := D.host.F) (E := D.host.E)`. Establish `hm : Continuous fun g : GA D V => matHom V g` using `continuous_subtype_val`. Conclude with `Matrix.GeneralLinearGroup.continuous_det.comp hm`.
+-/
 theorem continuous_det_matHom (D : D7) (V : HSp D) :
     Continuous fun g : GA D V => Matrix.GeneralLinearGroup.det (matHom V g) := by
   haveI := Formalism.L2.GlobalTheoryTheory.GenusMassVolumes.Unfold.isTopRing (F := D.host.F) (E := D.host.E)
   have hm : Continuous fun g : GA D V => matHom V g := continuous_subtype_val
   exact Matrix.GeneralLinearGroup.continuous_det.comp hm
 
+/- English proof (translation)
+Introduce `D V χ hχ hF`. Take `⟨hex, huniq, hrat, hmul⟩` from `GlobalTheory.Member.isDetRoot_laws D V`. Use `choose r hr using hex`. Establish `hval : ∀ g x, IsDetRoot V g x → χ (r g) = χ x`. Introduce `g x hx`.
+
+Take `⟨a, ha⟩` from `huniq g _ _ (hr g) hx`. Rewrite using `[ha, map_mul, hF, mul_one]`. Establish `hm : ∀ g g', χ (r (g * g')) = χ (r g) * χ (r g')`. Introduce `g g'`. Rewrite using `[hval _ _ (hmul _ _ _ _ (hr g) (hr g')), map_mul]`.
+
+Set `m : GA D V →* Circle` to `MonoidHom.mk' (fun g => χ (r g)) hm`. Establish `hcont : Continuous m` using `by haveI := Formalism.L2.GlobalTheoryTheory.GenusMassVolumes.Unfold.topGroupHA D.sp.cm.sig V.gram`. Use `continuous_of_continuousAt_one m ?_` and prove the remaining obligations. Introduce `U hU`. Rewrite `hU` using `[map_one]`.
+
+Establish `hW : χ ⁻¹' U ∈ 𝓝 (1 : (AE D)ˣ)` using `hχ.1.continuousAt.preimage_mem_nhds (by rwa [map_one])`. Take `⟨N, hN, hNW⟩` from `GlobalTheory.Member.exists_root_near_one D _ hW`. Establish `hN' : (fun g : GA D V => Matrix.GeneralLinearGroup.det (matHom V g)) ⁻¹' N ∈ 𝓝 (1 : GA D V)` using `(continuous_det_matHom D V).continuousAt.preimage_mem_nhds (by rwa [map_one, map_one])`. Use `Filter.mem_map.2 (Filter.mem_of_superset hN' ?_)` and prove the remaining obligations. Introduce `g hg`.
+
+Take `⟨x, hxW, hx⟩` from `hNW _ hg (GlobalTheory.Member.finHom_herm_det D V g).2.2`. Establish `: m g = χ x` using `hval g x hx`. Use `show m g ∈ U`. Rewrite using `[this]`. Conclude with `hxW`.
+
+Use `⟨fun g => (m g : ℂ), ?_, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Conclude with `⟨fun g => ⟨r g, hr g⟩, fun g x hx => congrArg (fun z : Circle => (z : ℂ)) (hval g x hx)⟩`. Introduce `g g'`. Simplify using `only [map_mul, Circle.coe_mul]`. Introduce `g`.
+
+Conclude with `Circle.norm_coe _`. Introduce `γ hγ`. Take `⟨x, hx⟩` from `hrat γ hγ`. Establish `: m γ = 1` using `(hval γ _ hx).trans (hχ.2 x)`. Simplify using `only [this, Circle.coe_one]`.
+
+Conclude with `continuous_subtype_val.comp hcont`.
+-/
 theorem exists_muVal : ∀ (D : D7) (V : HSp D), ∀ χ : (AE D)ˣ →* Circle, IsHeckeChar D χ → (∀ a, χ (idF D a) = 1) → ∃ mu : GA D V → ℂ, MuVal V χ mu ∧ (∀ g g', mu (g * g') = mu g * mu g') ∧ (∀ g, ‖mu g‖ = 1) ∧ (∀ γ ∈ GQ V, mu γ = 1) ∧ Continuous mu := by
   intro D V χ hχ hF
   obtain ⟨hex, huniq, hrat, hmul⟩ := GlobalTheory.Member.isDetRoot_laws D V

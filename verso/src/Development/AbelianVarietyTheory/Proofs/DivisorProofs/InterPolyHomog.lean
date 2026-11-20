@@ -11,6 +11,15 @@ namespace GlobalTheory.CompChern
 
 open MvPolynomial
 
+/- English proof (translation)
+Establish `hM : GlobalTheory.Published.MumfordProportionality` using `(GlobalTheory.T.stronger_published_hypotheses_imply hP).p16`. Establish `he : (O.var c).dim = Formalism.DegreeFormula.dimFl D.what₂.Tau O.N` using `O.dim_eq c`. Use `set Λ₁ := (O.var c).interPoly (fun x : DV.Rt D.what₂.Tau O.N => GlobalTheory.ShFam.Pad.divOf (O.Φ.C c) (O.ex x)) with hΛ₁`. Use `set Λ₂ := (O.s.cx O.L O.B O.fl).volC c • Formalism.L2.Geo.degFlL D.what₂.Tau O.N with hΛ₂`. Establish `key` using `GlobalTheory.T.polynomial_power_eq_of_integral_points (Formalism.DegreeFormula.dimFl D.what₂.Tau O.N) Λ₁ Λ₂ (fun a => by`.
+
+Use `GlobalTheory.CompPropObj.interPoly_int hM O c fun τ i => -a (τ, i)` as an intermediate fact. Simplify using `only [neg_neg, he] at this`. Use `this.trans ?_` and prove the remaining obligations. Establish `hl : Formalism.DegreeFormula.linRoot (fun τ i => ((-a (τ, i) : ℤ) : ℝ)) = ∑ x, C ((a x : ℤ) : ℝ) * X x`. Simplify using `[Formalism.DegreeFormula.linRoot, Finset.sum_neg_distrib]`.
+
+Use `show _ * Formalism.DegreeFormula.degFl _ _ (Formalism.DegreeFormula.linRoot _ ^ Formalism.DegreeFormula.dimFl _ _) = _ * (Formalism.L2.Geo.degFlL D.what₂.Tau O.N _)`. Rewrite using `[hl]`. Use `erw [Formalism.L2.Geo.degFlL_apply])`. Establish `hpol : GlobalTheory.PowLinSpan.polOf (Λ₁ - Λ₂) (Formalism.DegreeFormula.dimFl D.what₂.Tau O.N) = 0`. Use `MvPolynomial.funext fun u => ?_` and prove the remaining obligations.
+
+Rewrite using `[GlobalTheory.PowLinSpan.eval_polOf, map_zero, LinearMap.sub_apply, key u, sub_self]`. Establish `h0` using `GlobalTheory.PowLinSpan.homog_kill (Λ₁ - Λ₂) _ hpol Q hQ`. Rewrite `h0` using `[LinearMap.sub_apply, sub_eq_zero]`. Rewrite using `[h0, hΛ₂, LinearMap.smul_apply, smul_eq_mul]`.
+-/
 theorem interPoly_homog (hP : GlobalTheory.CovTop.Hypotheses2) {D : D7} (O : GlobalTheory.Mean4O.Setup D) (c : O.s.Comp)
     (Q : MvPolynomial (DV.Rt D.what₂.Tau O.N) ℝ) (hQ : Q.IsHomogeneous (Formalism.DegreeFormula.dimFl D.what₂.Tau O.N)) :
     letI := Classical.decEq D.what₂.Tau
@@ -38,6 +47,9 @@ theorem interPoly_homog (hP : GlobalTheory.CovTop.Hypotheses2) {D : D7} (O : Glo
   rw [LinearMap.sub_apply, sub_eq_zero] at h0
   rw [h0, hΛ₂, LinearMap.smul_apply, smul_eq_mul]
 
+/- English proof (translation)
+Introduce `hP D O Q hQ`. Rewrite using `[Finset.sum_congr rfl fun c _ => interPoly_homog hP O c Q hQ, ← Finset.sum_mul]`. Use `show _ = O.Y.vol * Formalism.L2.Geo.degFlL D.what₂.Tau O.N Q`. Both sides reduce to the same expression.
+-/
 theorem chern_eq_sum : GlobalTheory.CovTop.Hypotheses2 → ∀ (D : D7) (O : GlobalTheory.Mean4O.Setup D) (Q : MvPolynomial (DV.Rt D.what₂.Tau O.N) ℝ),
     Q.IsHomogeneous (Formalism.DegreeFormula.dimFl D.what₂.Tau O.N) → ∑ c : O.s.Comp, (O.var c).interPoly
       (fun x : DV.Rt D.what₂.Tau O.N => GlobalTheory.ShFam.Pad.divOf (O.Φ.C c) (O.ex x)) Q = O.Y.chern Q := by

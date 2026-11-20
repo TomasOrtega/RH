@@ -21,6 +21,11 @@ open GlobalTheory.CompanionTheory.SiegelND.Integ.Weyl GlobalTheory.CompanionTheo
 
 namespace GlobalTheory.CompanionTheory.SiegelND.Integ.Weyl.RatTest
 
+/- English proof (translation)
+Establish `h1 : (r ⊗ₜ[F] e : R ⊗[F] E) = r • ((1 : R) ⊗ₜ[F] e)`. Simplify using `[TensorProduct.smul_tmul']`. Establish `h2 : Algebra.lmul R (R ⊗[F] E) ((1 : R) ⊗ₜ[F] e) = LinearMap.baseChange R (Algebra.lmul F E e)`. Use `LinearMap.ext fun x => ?_` and prove the remaining obligations. Proceed by induction on `x using TensorProduct.induction_on with`.
+
+Consider the case `zero => simp`. Consider the case `tmul s y => simp [LinearMap.baseChange_tmul, Algebra.TensorProduct.tmul_mul_tmul]`. Consider the case `add x y hx hy => simp only [map_add, hx, hy]`. Rewrite using `[h1, map_smul, Algebra.trace_apply, h2, LinearMap.trace_baseChange, Algebra.trace_apply]`. Simplify using the standard rewrite rules.
+-/
 theorem trace_tmul_eq {F E : Type} [Field F] [Field E] [Algebra F E] [FiniteDimensional F E]
     (R : Type) [CommRing R] [Algebra F R] (r : R) (e : E) :
     Algebra.trace R (R ⊗[F] E) (r ⊗ₜ[F] e) = r * algebraMap F R (Algebra.trace F E e) := by
@@ -36,6 +41,11 @@ theorem trace_tmul_eq {F E : Type} [Field F] [Field E] [Algebra F E] [FiniteDime
   rw [h1, map_smul, Algebra.trace_apply, h2, LinearMap.trace_baseChange, Algebra.trace_apply]
   simp
 
+/- English proof (translation)
+Introduce `j`. Distinguish the cases in `h : j = k`. Substitute `h` using the available equality. Conclude with `⟨α, hα, by simp [Algebra.TensorProduct.basis_repr_tmul]⟩`. Use `⟨0, fun v => zero_mem _, ?_⟩` and prove the remaining obligations.
+
+Simplify using `[Algebra.TensorProduct.basis_repr_tmul, Finsupp.single_apply, Ne.symm h]`.
+-/
 theorem inNOh_tmul {F E : Type} [Field F] [NumberField F] [Field E] [Algebra F E] {d : ℕ}
     (b : Module.Basis (Fin d) F E) (N : ℕ) {α : Af F} (hα : α ∈ Oh F) (k : Fin d) :
     InNOh b N (((N : Af F) * α) ⊗ₜ[F] b k) := by
@@ -46,6 +56,13 @@ theorem inNOh_tmul {F E : Type} [Field F] [NumberField F] [Field E] [Algebra F E
   · refine ⟨0, fun v => zero_mem _, ?_⟩
     simp [Algebra.TensorProduct.basis_repr_tmul, Finsupp.single_apply, Ne.symm h]
 
+/- English proof (translation)
+Establish `hex : ∀ k, ∃ y : ℤ, y ≠ 0 ∧ IsIntegral ℤ ((y : E) * ε k)`. Introduce `k`. Take `⟨y, hy, h⟩` from `IsAlgebraic.exists_integral_multiple (R := ℤ) ((IsFractionRing.isAlgebraic_iff ℤ ℚ E).mpr (Algebra.IsAlgebraic.isAlgebraic (ε k)))`. Conclude with `⟨y, hy, by simpa [zsmul_eq_mul] using h⟩`. Use `choose y hy hint using hex`.
+
+Use `⟨∏ k, y k, Finset.prod_ne_zero_iff.mpr fun k _ => hy k, fun k => ?_⟩` and prove the remaining obligations. Establish `h1 : (((∏ j, y j : ℤ)) : E) * ε k = ((∏ j ∈ Finset.univ.erase k, y j : ℤ) : E) * ((y k : E) * ε k)`. Rewrite using `[← mul_assoc, ← Int.cast_mul, mul_comm (∏ j ∈ Finset.univ.erase k, y j) (y k), Finset.mul_prod_erase _ _ (Finset.mem_univ k)]`. Rewrite using `[h1]`. Establish `h2 : IsIntegral ℤ (((∏ j ∈ Finset.univ.erase k, y j : ℤ)) : E)`.
+
+Simplify using `using isIntegral_algebraMap (R := ℤ) (A := E) (x := (∏ j ∈ Finset.univ.erase k, y j : ℤ))`. Conclude with `h2.mul (hint k)`.
+-/
 theorem exists_common_denom {E : Type} [Field E] [NumberField E] {d : ℕ} (ε : Fin d → E) :
     ∃ y : ℤ, y ≠ 0 ∧ ∀ k, IsIntegral ℤ ((y : E) * ε k) := by
   have hex : ∀ k, ∃ y : ℤ, y ≠ 0 ∧ IsIntegral ℤ ((y : E) * ε k) := by
@@ -63,6 +80,25 @@ theorem exists_common_denom {E : Type} [Field E] [NumberField E] {d : ℕ} (ε :
     simpa using isIntegral_algebraMap (R := ℤ) (A := E) (x := (∏ j ∈ Finset.univ.erase k, y j : ℤ))
   exact h2.mul (hint k)
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ hCM d b ψ hψ N hN D hD hDint`. Establish `hF : IsTotallyReal F` using `hCM.1`. Take `⟨ρ, e, h1, h2, h3, -, -⟩` from `GlobalTheory.T.infinite_adele_haar_map_eq_scaled_volume F hF`. Take `⟨a, ha, -, ψf, hstd, hpsi⟩` from `GlobalTheory.T.adelic_character_archimedean_form F hF ρ e h1 h2 h3 ψ hψ`. Establish `hbeta` using `((GlobalTheory.T.standard_adelic_character F).2 ψf hstd).2.2`.
+
+Use `haveI : FiniteDimensional F E := Module.Finite.of_basis b`. Set `τ : E ≃ₐ[F] E` to `AlgEquiv.ofBijective σ (Algebra.IsAlgebraic.algHom_bijective σ)`. Set `b' : Module.Basis (Fin d) F E` to `b.map τ.toLinearEquiv`. Establish `hb' : ∀ k, b' k = σ (b k)` using `fun k => by simp [b', τ]`. Set `ε` to `(Algebra.traceForm F E).dualBasis (traceForm_nondegenerate F E) b'`.
+
+Take `⟨y, hy, hyint⟩` from `exists_common_denom (fun k => ε k)`. Establish `hNF : (N : F) ≠ 0` using `Nat.cast_ne_zero.mpr hN.ne'`. Establish `hDF : (D : F) ≠ 0` using `Nat.cast_ne_zero.mpr hD.ne'`. Establish `hyF : (y : F) ≠ 0` using `Int.cast_ne_zero.mpr hy`. Use `⟨(y : F) * ((D : F) * (a * (N : F))), mul_ne_zero hyF (mul_ne_zero hDF (mul_ne_zero ha hNF)), ?_⟩` and prove the remaining obligations.
+
+Introduce `w hw`. Establish `hcoord : ∀ k, ∃ o : 𝓞 F, (o : F) = (D : F) * (a * (N : F) * ε.repr w k)`. Introduce `k`. Establish `hrepr : ε.repr w k = Algebra.trace F E (σ (b k) * w)`. Rewrite using `[LinearMap.BilinForm.dualBasis_repr_apply, hb', Algebra.traceForm_apply, mul_comm]`.
+
+Use `hDint _ ((hbeta _).mp fun α hα => ?_)` and prove the remaining obligations. Establish `hx` using `hw (((N : Af F) * α) ⊗ₜ[F] b k) (inNOh_tmul b N hα k)`. Establish `e1 : sigR (Af F) σ (((N : Af F) * α) ⊗ₜ[F] b k) * inclR (Af F) w = ((N : Af F) * α) ⊗ₜ[F] (σ (b k) * w)`. Express the relevant statement in the definitionally equal form `(((N : Af F) * α) ⊗ₜ[F] σ (b k)) * ((1 : Af F) ⊗ₜ[F] w) = _`. Simplify using `[Algebra.TensorProduct.tmul_mul_tmul]`.
+
+Rewrite `hx` using `[e1, trace_tmul_eq]`. Express the relevant statement in the definitionally equal form `ψ (pairA F 0 _) = 1 at hx`. Rewrite `hx` using `[hpsi]`. Rewrite using `[hrepr, ← hx]`. Use `congr 1`.
+
+Simplify using `only [map_mul, map_natCast]`. Expand and normalize the polynomial expressions, which then agree. Use `choose o ho using hcoord`. Rewrite using `[← IsIntegralClosure.isIntegral_iff (A := 𝓞 E) (R := ℤ), ← ε.sum_repr w, Finset.smul_sum]`. Use `IsIntegral.sum _ fun k _ => ?_` and prove the remaining obligations.
+
+Establish `e2 : ((y : F) * ((D : F) * (a * (N : F)))) • (ε.repr w k • ε k) = algebraMap F E (o k : F) * ((y : E) * ε k)`. Establish `e3 : (y : F) * ((D : F) * (a * (N : F))) * ε.repr w k = (y : F) * ((D : F) * (a * (N : F) * ε.repr w k))` using `by ring`. Rewrite using `[smul_smul, Algebra.smul_def, e3, ho k, map_mul, map_intCast]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e2]`.
+
+Conclude with `(IsIntegral.algebraMap (RingOfIntegers.isIntegral_coe (o k))).mul (hyint k)`.
+-/
 theorem rat_test : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
     (σ : E →ₐ[F] E), IsCMExt F E σ → ∀ (d : ℕ) (b : Module.Basis (Fin d) F E) (ψ : AddChar (AF F) ℂ),
     IsCharAF F ψ → ∀ N : ℕ, 0 < N → ∀ D : ℕ, 0 < D → (∀ f : F,

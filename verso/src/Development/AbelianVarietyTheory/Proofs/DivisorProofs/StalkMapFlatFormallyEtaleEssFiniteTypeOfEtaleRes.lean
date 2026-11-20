@@ -5,12 +5,20 @@ namespace GlobalTheory
 
 universe u
 
+/- English proof (translation)
+Use `algebraize [(e : S →+* T)]`. Conclude with `Algebra.FormallyEtale.of_equiv (R := S) (A := S) (B := T) (AlgEquiv.ofRingEquiv (f := e) (fun _ => rfl))`.
+-/
 theorem ringHom_formallyEtale_of_ringEquiv {S T : Type u} [CommRing S] [CommRing T]
     (e : S ≃+* T) : (e : S →+* T).FormallyEtale := by
   algebraize [(e : S →+* T)]
   exact Algebra.FormallyEtale.of_equiv (R := S) (A := S) (B := T)
     (AlgEquiv.ofRingEquiv (f := e) (fun _ => rfl))
 
+/- English proof (translation)
+Establish `hiso` using `@ringHom_formallyEtale_of_ringEquiv.{u}`. Prove the components needed by the constructor for the conclusion. Introduce `R S T _ _ _ f e hf`. Conclude with `RingHom.FormallyEtale.comp hf (hiso e)`. Introduce `R S T _ _ _ f e hf`.
+
+Conclude with `RingHom.FormallyEtale.comp (hiso e) hf`.
+-/
 theorem ringHom_formallyEtale_respectsIso : RingHom.RespectsIso.{u} @RingHom.FormallyEtale := by
   have hiso := @ringHom_formallyEtale_of_ringEquiv.{u}
   constructor
@@ -19,6 +27,11 @@ theorem ringHom_formallyEtale_respectsIso : RingHom.RespectsIso.{u} @RingHom.For
   · intro R S T _ _ _ f e hf
     exact RingHom.FormallyEtale.comp (hiso e) hf
 
+/- English proof (translation)
+Use `algebraize [f]`. Set `Rₓ` to `Localization.AtPrime (J.comap f)`. Set `Sₓ` to `Localization.AtPrime J`. Set `: Algebra Rₓ Sₓ` to `(Localization.localRingHom _ _ _ rfl).toAlgebra`. Establish `: IsScalarTower R Rₓ Sₓ` using `.of_algebraMap_eq fun x ↦ (Localization.localRingHom_to_map _ _ _ rfl x).symm`.
+
+Establish `: Algebra.FormallyEtale R Sₓ` using `inferInstance`. Establish `: Algebra.FormallyEtale Rₓ Sₓ` using `Algebra.FormallyEtale.localization_base (J.comap f).primeCompl`. Conclude with `(RingHom.formallyEtale_algebraMap (R := Rₓ) (S := Sₓ)).2 this`.
+-/
 theorem formallyEtale_localRingHom_of_etale {R S : Type} [CommRing R] [CommRing S]
     (f : R →+* S) (hf : f.Etale) (J : Ideal S) [J.IsPrime] :
     (Localization.localRingHom (J.comap f) J f rfl).FormallyEtale := by
@@ -33,12 +46,22 @@ theorem formallyEtale_localRingHom_of_etale {R S : Type} [CommRing R] [CommRing 
     Algebra.FormallyEtale.localization_base (J.comap f).primeCompl
   exact (RingHom.formallyEtale_algebraMap (R := Rₓ) (S := Sₓ)).2 this
 
+/- English proof (translation)
+The claim follows from `HasRingHomProperty.stalkMap_of_respectsIso (P := @Etale) (Q := RingHom.Etale) ringHom_formallyEtale_respectsIso (fun f hf J _ => formallyEtale_localRingHom_of_etale f hf J) ‹_› x`.
+-/
 theorem formallyEtale_stalkMap_of_etale {X Y : Scheme.{0}} (g : X ⟶ Y) [Etale g] (x : X) :
     (g.stalkMap x).hom.FormallyEtale :=
   HasRingHomProperty.stalkMap_of_respectsIso (P := @Etale) (Q := RingHom.Etale)
     ringHom_formallyEtale_respectsIso
     (fun f hf J _ => formallyEtale_localRingHom_of_etale f hf J) ‹_› x
 
+/- English proof (translation)
+Introduce `M W f U hg y hy`. Establish `key : ∀ (x : M) (z : U), U.ι z = x → (f.stalkMap x).hom.Flat ∧ (f.stalkMap x).hom.FormallyEtale ∧ (f.stalkMap x).hom.EssFiniteType`. Introduce `x z hz`. Substitute `hz` using the available equality. Establish `h1` using `Flat.stalkMap (U.ι ≫ f) z`.
+
+Establish `h2` using `formallyEtale_stalkMap_of_etale (U.ι ≫ f) z`. Establish `h3` using `LocallyOfFiniteType.stalkMap (U.ι ≫ f) z`. Establish `e` using `Scheme.Hom.stalkMap_comp U.ι f z`. Rewrite `h1`, `h2`, `h3` using `[e]`. Establish `: IsIso (U.ι.stalkMap z)` using `(IsOpenImmersion.iff_isIso_stalkMap.1 inferInstance).2 _`.
+
+Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Conclude with `(RingHom.Flat.respectsIso.cancel_right_isIso _ _).1 h1`. Conclude with `(ringHom_formallyEtale_respectsIso.cancel_right_isIso _ _).1 h2`. Conclude with `(RingHom.EssFiniteType.respectsIso.cancel_right_isIso _ _).1 h3`. Conclude with `key y ⟨y, hy⟩ (by simp)`.
+-/
 theorem stalkMap_flat_formallyEtale_essFiniteType_of_etale_restrict :
     ∀ (M W : Scheme.{0}) (f : M ⟶ W) (U : M.Opens), Etale (U.ι ≫ f) → ∀ y ∈ U,
       (f.stalkMap y).hom.Flat ∧ (f.stalkMap y).hom.FormallyEtale ∧

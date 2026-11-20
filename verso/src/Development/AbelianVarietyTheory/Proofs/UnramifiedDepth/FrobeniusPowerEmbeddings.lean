@@ -2,6 +2,13 @@ import Mathlib
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Establish `: CharP F p` using `RingHom.charP a a.injective p`. Set `: Algebra (ZMod p) F` to `ZMod.algebra F p`. Set `: Algebra (ZMod p) k` to `ZMod.algebra k p`. Set `: Algebra F k` to `a.toAlgebra`. Establish `: IsScalarTower (ZMod p) F k` using `IsScalarTower.of_algebraMap_eq' (Subsingleton.elim _ _)`.
+
+Set `b' : F →ₐ[ZMod p] k` to `{ b with commutes' := fun r => RingHom.congr_fun (Subsingleton.elim (b.comp (algebraMap (ZMod p) F)) (algebraMap (ZMod p) k)) r }`. Take `⟨n, hn⟩` from `FiniteField.exists_forall_apply_eq_pow (ZMod p) p F (b'.restrictNormal' F)`. Use `⟨n, fun x => ?_⟩` and prove the remaining obligations. Establish `h` using `AlgHom.restrictNormal_commutes b' F x`. Establish `h2 : b'.restrictNormal F x = x ^ p ^ n`.
+
+Use `hn x` as an intermediate fact. Rewrite `this` using `[Nat.card_zmod]`. Conclude with `this`. Rewrite `h` using `[h2, map_pow]`. Conclude with `h.symm`.
+-/
 theorem exists_forall_eq_pow_of_finite_field (p : ℕ) [Fact p.Prime] (F : Type) [Field F] [Finite F]
     (k : Type) [Field k] [CharP k p] (a b : F →+* k) : ∃ n : ℕ, ∀ x, b x = a x ^ p ^ n := by
   have : CharP F p := RingHom.charP a a.injective p
@@ -24,6 +31,13 @@ theorem exists_forall_eq_pow_of_finite_field (p : ℕ) [Fact p.Prime] (F : Type)
   rw [h2, map_pow] at h
   exact h.symm
 
+/- English proof (translation)
+Set `I : Ideal OE` to `RingHom.ker σ₀`. Establish `: I.IsPrime` using `RingHom.ker_isPrime σ₀`. Establish `hp : (p : OE ⧸ I) = 0`. Rewrite using `[← map_natCast (Ideal.Quotient.mk I), Ideal.Quotient.eq_zero_iff_mem]`. Simplify using `[I, RingHom.mem_ker]`.
+
+Establish `: Module.Finite ℤ (OE ⧸ I)` using `Module.Finite.of_surjective (Ideal.Quotient.mk I).toIntAlgHom.toLinearMap Ideal.Quotient.mk_surjective`. Establish `: Finite (OE ⧸ I)`. Use `Module.finite_of_fg_torsion _ (fun x => ⟨⟨(p : ℤ), ?_⟩, ?_⟩)` and prove the remaining obligations. Conclude with `mem_nonZeroDivisors_of_ne_zero (by exact_mod_cast (Fact.out : p.Prime).ne_zero)`. Express the relevant statement in the definitionally equal form `(p : ℤ) • x = 0`.
+
+Rewrite using `[zsmul_eq_mul, Int.cast_natCast, hp, zero_mul]`. Set `: Field (OE ⧸ I)` to `(Finite.isField_of_domain (OE ⧸ I)).toField`. Take `⟨n, hn⟩` from `exists_forall_eq_pow_of_finite_field p (OE ⧸ I) k (Ideal.Quotient.lift I σ₀ (fun _ hx => hx)) (Ideal.Quotient.lift I σ (fun x hx => h x hx))`. Conclude with `⟨n, fun x => hn (Ideal.Quotient.mk I x)⟩`.
+-/
 theorem exists_forall_eq_pow_of_ker_le (p : ℕ) [Fact p.Prime] (OE : Type) [CommRing OE]
     [Module.Finite ℤ OE] (k : Type) [Field k] [CharP k p] (σ₀ σ : OE →+* k)
     (h : ∀ x, σ₀ x = 0 → σ x = 0) : ∃ n : ℕ, ∀ x, σ x = σ₀ x ^ p ^ n := by

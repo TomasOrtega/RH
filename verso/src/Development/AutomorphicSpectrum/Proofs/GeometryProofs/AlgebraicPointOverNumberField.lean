@@ -9,6 +9,9 @@ open GlobalTheory.CompanionTheory.Ar.Sl.Reg
 
 namespace GlobalTheory.CompanionTheory.Ar.Sl.Reg.Descend
 
+/- English proof (translation)
+The claim follows from `_root_.UpperTheory.Reformulated.B.SpecPointFactorsThroughNumberField.main C X π x`.
+-/
 theorem exists_numberField_point (C : Type) [Field C] [CharZero C] [Algebra.IsAlgebraic ℚ C]
     (X : Scheme.{0}) (π : X ⟶ Sp ℤ) [LocallyOfFiniteType π] (x : Sp C ⟶ X) :
     ∃ (K : Type) (_ : Field K) (_ : NumberField K) (e : K →+* C) (x' : Sp K ⟶ X),

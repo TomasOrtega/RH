@@ -16,6 +16,9 @@ open scoped ComplexOrder
 
 namespace GlobalTheory.HodgeConj
 
+/- English proof (translation)
+Unfold `hermForm`. Simplify using `[dotProduct, Matrix.mulVec, map_sum, Complex.star_def]`.
+-/
 theorem hermForm_star {g : ℕ} (Hm : Matrix (Fin g) (Fin g) ℂ) (z w : Fin g → ℂ) :
     hermForm (Hm.map star) (star z) (star w) = starRingEnd ℂ (hermForm Hm z w) := by
   unfold hermForm
@@ -23,6 +26,9 @@ theorem hermForm_star {g : ℕ} (Hm : Matrix (Fin g) (Fin g) ℂ) (z w : Fin g �
 
 open scoped CategoryTheory.Obj in
 
+/- English proof (translation)
+Establish `hc : IsGrpPullback d.conj.B d.B GlobalTheory.ArchMetricCompare.cj _` using `isGrpPullback_pullback d.B GlobalTheory.ArchMetricCompare.cj`. Take `⟨v', hv'⟩` from `(GlobalTheory.existsUnique_isVecOver (f := starRingEnd ℂ) (A' := d.conj.B) hc.1 v).exists`. Use `⟨v', hv'.isTangent hc ht, GlobalTheory.ArchMetricCompare.cj_isDiff hc (ConjUnif.pullId d.u) ht hv' hd, ?_⟩` and prove the remaining obligations. Conclude with `((Category.assoc _ _ _).symm.trans (congrArg (· ≫ d.φ) hv')).trans (Category.assoc _ _ _)`.
+-/
 theorem exists_conj_tangent {T : Scheme.{0}} {P : PPAS T} {y : Sp ℂ ⟶ T} (d : P.RiemannData y) {z : Fin P.g → ℂ}
     {v : epsR ℂ ⟶ d.B} (ht : IsTangent v) (hd : d.u.IsDiff z v) :
     ∃ v' : epsR ℂ ⟶ d.conj.B, IsTangent v' ∧ d.conj.u.IsDiff (star z) v' ∧
@@ -32,6 +38,17 @@ theorem exists_conj_tangent {T : Scheme.{0}} {P : PPAS T} {y : Sp ℂ ⟶ T} (d 
   refine ⟨v', hv'.isTangent hc ht, GlobalTheory.ArchMetricCompare.cj_isDiff hc (ConjUnif.pullId d.u) ht hv' hd, ?_⟩
   exact ((Category.assoc _ _ _).symm.trans (congrArg (· ≫ d.φ) hv')).trans (Category.assoc _ _ _)
 
+/- English proof (translation)
+Introduce `D A N j S κ s x T b Q θ _ _ H σ' yc y₀ hy u d z hz`. Distinguish the cases in `hσ : Formalism.L2.PjFree.GoodEmb κ.c σ'`. Conclude with `H σ' hσ yc y₀ hy u d z hz`. Establish `h1 : Formalism.L2.PjFree.GoodEmb κ.c ((starRingEnd ℂ).comp σ')`. Establish `h0 : ¬ Formalism.L2.Pj.GoodEmb κ.c σ'` using `hσ`.
+
+Establish `h2 : Formalism.L2.Pj.GoodEmb κ.c ((starRingEnd ℂ).comp σ')`. Simplify `Formalism.L2.Pj.goodEmb_goodOf κ.c σ'` using `only [Formalism.L2.Pj.goodOf, if_neg h0]`. Conclude with `h2`. Set `y' : CxPts (genStr s.T.Z) ((starRingEnd ℂ).comp σ')` to `⟨spMap (starRingEnd ℂ) ≫ yc.1, by rw [Category.assoc, yc.2, ← Spec.map_comp]; rfl⟩`. Take `⟨u', hu'⟩` from `u.exists_isMap (starRingEnd ℂ) (φ' := (starRingEnd ℂ).comp σ') (x' := y'.1 ≫ genι s.T.Z) rfl (Category.assoc _ _ _)`.
+
+Take `⟨k₁, k₂⟩` from `H _ h1 y' (spMap (starRingEnd ℂ) ≫ y₀) (by rw [Category.assoc, hy]; exact (Category.assoc _ _ _).symm) u' d.conj (fun τ i => star (z τ i)) fun τ i => by`. Take `⟨v, ht, hd, hv⟩` from `hz τ i`. Take `⟨v', ht', hd', hv'⟩` from `exists_conj_tangent d ht hd`. Use `⟨v', ht', hd', ?_⟩` and prove the remaining obligations. Rewrite using `[hu' τ i, ← hv]`.
+
+Conclude with `((Category.assoc _ _ _).symm.trans (congrArg (· ≫ θ) hv')).trans ((Category.assoc _ _ _).trans (congrArg _ (Category.assoc _ _ _)))`. Use `⟨fun τ b₁ b₂ => ?_, fun τ τ' b₁ b₂ hτ => ?_⟩` and prove the remaining obligations. Establish `e` using `k₁ τ b₁ b₂`. Rewrite `e` using `[ConjMet.hodge_conj x (y := yc) (y' := y') rfl rfl hu' τ, Matrix.map_apply]`. Establish `e'` using `e.trans (congrArg _ (hermForm_star d.H (z τ b₂) (z τ b₁)))`.
+
+Rewrite `e'` using `[← Complex.conj_ofReal, ← map_mul]`. Conclude with `(starRingEnd ℂ).injective e'`. Establish `e` using `(hermForm_star d.H (z τ b₁) (z τ' b₂)).symm.trans (k₂ τ τ' b₁ b₂ hτ)`. Conclude with `(map_eq_zero _).1 e`.
+-/
 theorem hodge_eq_riemann_of_good : ∀ (D : D7) (A : Amb D) (N j : ℕ) (S : Sig A N j) (κ : Lv A) (s : FinalTheorems S κ) (x : ToroidalCompactificationData s) (T : Scheme.{0}) (b : T ⟶ s.T.Z.X) (Q : Out.PolAV T) (θ : Q.A.left ⟶ s.T.Z.t.G.left), IsGrpPullback Q.A s.T.Z.t.G b θ → LBIso (s.T.Z.t.PP.L.pull θ) Q.L → (∀ (σ' : κ.c.F →+* ℂ), Formalism.L2.PjFree.GoodEmb κ.c σ' → ∀ (yc : CxPts (genStr s.T.Z) σ') (y₀ : Sp ℂ ⟶ T), y₀ ≫ b = yc.1 ≫ genι s.T.Z → ∀ (u : EigFrame s.T.Z σ' (yc.1 ≫ genι s.T.Z)) (d : (PPAS.ofPolAV Q).RiemannData y₀) (z : ∀ τ : D.host.E →+* ℂ, Fin (S.Dw.mult τ) → Fin Q.g → ℂ), (∀ τ i, ∃ v : epsR ℂ ⟶ d.B, IsTangent v ∧ d.u.IsDiff (z τ i) v ∧ v.left ≫ d.φ ≫ θ = u.v τ i) → (∀ τ b₁ b₂, (x.hodge σ').gram yc u τ b₁ b₂ = (Real.pi : ℂ) * hermForm d.H (z τ b₂) (z τ b₁)) ∧ ∀ τ τ' b₁ b₂, τ ≠ τ' → hermForm d.H (z τ b₁) (z τ' b₂) = 0) → ∀ (σ' : κ.c.F →+* ℂ), ∀ (yc : CxPts (genStr s.T.Z) σ') (y₀ : Sp ℂ ⟶ T), y₀ ≫ b = yc.1 ≫ genι s.T.Z → ∀ (u : EigFrame s.T.Z σ' (yc.1 ≫ genι s.T.Z)) (d : (PPAS.ofPolAV Q).RiemannData y₀) (z : ∀ τ : D.host.E →+* ℂ, Fin (S.Dw.mult τ) → Fin Q.g → ℂ), (∀ τ i, ∃ v : epsR ℂ ⟶ d.B, IsTangent v ∧ d.u.IsDiff (z τ i) v ∧ v.left ≫ d.φ ≫ θ = u.v τ i) → (∀ τ b₁ b₂, (x.hodge σ').gram yc u τ b₁ b₂ = (Real.pi : ℂ) * hermForm d.H (z τ b₂) (z τ b₁)) ∧ ∀ τ τ' b₁ b₂, τ ≠ τ' → hermForm d.H (z τ b₁) (z τ' b₂) = 0 := by
   intro D A N j S κ s x T b Q θ _ _ H σ' yc y₀ hy u d z hz
   by_cases hσ : Formalism.L2.PjFree.GoodEmb κ.c σ'

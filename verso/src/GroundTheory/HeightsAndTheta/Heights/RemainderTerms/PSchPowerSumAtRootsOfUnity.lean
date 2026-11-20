@@ -9,9 +9,21 @@ open MvPolynomial Finset
 
 noncomputable section
 
+/- English proof (translation)
+Simplify `Complex.isPrimitiveRoot_exp k (by omega)` using `[rootOfUnity]`.
+-/
 theorem SchPowerSumAtRootsOfUnity.rootOfUnity_isPrimitiveRoot {k : ℕ} (hk : 1 ≤ k) : IsPrimitiveRoot (rootOfUnity k) k := by
   simpa [rootOfUnity] using Complex.isPrimitiveRoot_exp k (by omega)
 
+/- English proof (translation)
+Introduce `N k j hk hkN hj`. Establish `hprim` using `SchPowerSumAtRootsOfUnity.rootOfUnity_isPrimitiveRoot hk`. Simplify using `only [psum, map_sum, map_pow, aeval_X]`. Establish `hsum : ∑ i : Fin N, rootOfUnityPoint N k i ^ j = ∑ i ∈ range k, (rootOfUnity k ^ j) ^ i`. Unfold `rootOfUnityPoint`.
+
+Rewrite using `[Fin.sum_univ_eq_sum_range (fun i => (if i < k then rootOfUnity k ^ i else 0) ^ j) N, ← Finset.sum_range_add_sum_Ico _ hkN]`. Rewrite using `[Finset.sum_eq_zero (s := Ico k N) (fun i hi => by`. Simplify using `only [Finset.mem_Ico] at hi`. Simplify using `[show ¬ i < k by omega, zero_pow (show j ≠ 0 by omega)]), add_zero]`. Use `Finset.sum_congr rfl fun i hi => ?_` and prove the remaining obligations.
+
+Simplify using `only [Finset.mem_range] at hi`. Simplify using `[hi, ← pow_mul, mul_comm]`. Rewrite using `[hsum]`. Use `split_ifs with hd`. Establish `h1 : rootOfUnity k ^ j = 1` using `(hprim.pow_eq_one_iff_dvd j).2 hd`.
+
+Simplify using `[h1]`. Establish `h1 : rootOfUnity k ^ j ≠ 1` using `fun h => hd ((hprim.pow_eq_one_iff_dvd j).1 h)`. Establish `h2 : (rootOfUnity k ^ j) ^ k = 1`. Rewrite using `[← pow_mul, mul_comm, pow_mul, hprim.pow_eq_one, one_pow]`. Rewrite using `[geom_sum_eq h1, h2, sub_self, zero_div]`.
+-/
 theorem SchPowerSumAtRootsOfUnity.proof : SchPowerSumAtRootsOfUnity.Statement := by
   intro N k j hk hkN hj
   have hprim := SchPowerSumAtRootsOfUnity.rootOfUnity_isPrimitiveRoot hk

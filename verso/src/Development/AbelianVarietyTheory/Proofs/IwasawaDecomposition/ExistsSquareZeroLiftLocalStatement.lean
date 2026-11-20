@@ -16,6 +16,9 @@ open GlobalTheory Formalism.L2.Pj GlobalTheory.Serre GlobalTheory.RayEv GlobalTh
 attribute [local instance] Over.cartesianMonoidalCategory
 
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.ExpUniqCh0.exists_factor_trivSqZeroExt | exact GlobalTheory.ExpUniqCh0.exists_factor_trivSqZeroExt | (intros; apply GlobalTheory.ExpUniqCh0.exists_factor_trivSqZeroExt <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.exists_square_zero_lift_local : ∀ {X : Scheme.{0}} {G : Over X} [GrpObj G] {S : Type} [Field S] (x0 : Sp S ⟶ X)
     {A B : Type} [CommRing A] [Algebra S A] [IsLocalRing A] [CommRing B] [Algebra S B] [IsLocalRing B]
     (q : A →ₐ[S] B), Function.Surjective q → ∀ [Module Sᵐᵒᵖ (RingHom.ker q)] [IsCentralScalar S (RingHom.ker q)]

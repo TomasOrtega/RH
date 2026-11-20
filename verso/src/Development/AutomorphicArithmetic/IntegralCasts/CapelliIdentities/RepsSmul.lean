@@ -10,6 +10,9 @@ import Development.AutomorphicArithmetic.IntegralCasts.CapelliIdentities.AeFunda
 
 open MeasureTheory GroundTheory.Automorphic
 
+/- English proof (translation)
+Establish `: Countable Γ` using `TopologicalSpace.separableSpace_iff_countable.mp inferInstance`. Use `UpperTheory.ae_fundamental_domain Γ μ (RightCosetSpace.fundamentalDomain Γ) (RightCosetSpace.mk Γ) measurable_quotient_mk'' (fun γ g => Quotient.sound ⟨γ, rfl⟩) (fun g => ?_) p hp` and prove the remaining obligations. Unfold `RightCosetSpace.fundamentalDomain`. Use `generalize_proofs h`. Conclude with `(h.choose_spec.2 g).exists`.
+-/
 private theorem UpperTheory.Reformulated.B.Glb3.ae_pull {G : Type} [Group G] (Γ : Subgroup G) [TopologicalSpace G]
     [IsTopologicalGroup G] [MeasurableSpace G] [BorelSpace G] [SecondCountableTopology G]
     [DiscreteTopology ↥Γ] (μ : Measure G) [μ.IsMulLeftInvariant] (p : RightCosetSpace Γ → Prop)
@@ -22,6 +25,9 @@ private theorem UpperTheory.Reformulated.B.Glb3.ae_pull {G : Type} [Group G] (Γ
   generalize_proofs h
   exact (h.choose_spec.2 g).exists
 
+/- English proof (translation)
+Establish `h1` using `UpperTheory.Reformulated.B.Glb3.ae_pull (PositivityTheory.Rg.Tf.Core.Gam K n) μ _ (Lp.coeFn_smul c v)`. Use `filter_upwards [h, h1] with y hy hy1`. Conclude with `hy1.trans (congrArg (c • ·) hy)`.
+-/
 private theorem UpperTheory.Reformulated.B.Glb3.reps_smul {K : Type} [Field K] [NumberField K] {n : ℕ}
     (μ : Measure (PositivityTheory.Rg.Tf.Core.G1 K n)) [μ.IsHaarMeasure] (v : PositivityTheory.Rg.Tf.Core.L2 μ)
     (φ : PositivityTheory.Rg.Tf.Core.G1 K n → ℂ) (c : ℂ) (h : PositivityTheory.Rg.Tf.Adel.Reps μ v φ) :
@@ -30,6 +36,17 @@ private theorem UpperTheory.Reformulated.B.Glb3.reps_smul {K : Type} [Field K] [
   filter_upwards [h, h1] with y hy hy1
   exact hy1.trans (congrArg (c • ·) hy)
 
+/- English proof (translation)
+Introduce `K _ _ μ _ τ₁ τ₂ f f' hf hf' c`. Take `⟨h1, ⟨C, h2⟩, h3, h4, h5⟩` from `hf`. Take `⟨h1', ⟨C', h2'⟩, h3', h4', h5'⟩` from `hf'`. Use `⟨h1.add (h1'.const_smul c), ⟨C + ‖c‖ * C', fun g => ?_⟩, fun X g => ?_, fun r x g hx => ?_, fun g => ?_⟩` and prove the remaining obligations. Use `(norm_add_le (f g) (c • f' g)).trans (add_le_add (h2 g) ?_)` and prove the remaining obligations.
+
+Rewrite using `[norm_smul]`. Conclude with `mul_le_mul_of_nonneg_left (h2' g) (norm_nonneg c)`. Simplify using `only [Pi.add_apply, Pi.smul_apply, h3 X g, h3' X g]`. Simplify using `only [Pi.add_apply, Pi.smul_apply, h4 r x g hx, h4' r x g hx]`. Take `⟨d, φ, ψ, hφ, hψ, hs⟩` from `h5 g`.
+
+Take `⟨d', φ', ψ', hφ', hψ', hs'⟩` from `h5' g`. Use `⟨d + d', Fin.append φ (fun i => c • φ' i), Fin.append ψ ψ', fun i => ?_, fun i => ?_, fun m₁ m₂ x hx => ?_⟩` and prove the remaining obligations. Use `Fin.addCases (fun j => ?_) (fun j => ?_) i` and prove the remaining obligations. Rewrite using `[Fin.append_left]`. Conclude with `hφ j`.
+
+Rewrite using `[Fin.append_right]`. Take `⟨hc, v, hv, hr⟩` from `hφ' j`. Conclude with `⟨hc.const_smul c, c • v, τ₁.smul_mem c hv, UpperTheory.Reformulated.B.Glb3.reps_smul μ v _ c hr⟩`. Use `Fin.addCases (fun j => ?_) (fun j => ?_) i` and prove the remaining obligations. Rewrite using `[Fin.append_left]`.
+
+Conclude with `hψ j`. Rewrite using `[Fin.append_right]`. Conclude with `hψ' j`. Simplify using `only [Fin.sum_univ_add, Fin.append_left, Fin.append_right, Pi.add_apply, Pi.smul_apply, smul_eq_mul, hs m₁ m₂ x hx, hs' m₁ m₂ x hx, Finset.mul_sum, mul_assoc]`.
+-/
 theorem UpperTheory.Reformulated.B.Glb3.sec_add :
     ∀ {K : Type} [inst : Field K] [inst_1 : NumberField K] {μ₂ : MeasureTheory.Measure (PositivityTheory.Rg.Tf.Core.G1 K (2 : ℕ))}
       [μ₂.IsHaarMeasure] {τ₁ τ₂ : Submodule ℂ (PositivityTheory.Rg.Tf.Core.L2 μ₂)}

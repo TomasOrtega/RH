@@ -17,6 +17,13 @@ set_option autoImplicit false
 noncomputable section
 namespace GlobalTheory.RayLift
 
+/- English proof (translation)
+Take `⟨hF, hS, -⟩` from `GlobalTheory.Heat.Descend.q_props Y`. Set `p` to `pullback.fst (DegPre.prB Q (FractionRing R)).left Y.q.left`. Establish `hpF : Flat p` using `by haveI := hF; dsimp [p]; infer_instance`. Establish `hpS : Surjective p` using `by haveI := hS; dsimp [p]; infer_instance`. Take `⟨w, hw⟩` from `p.surjective z`.
+
+Use `⟨_, p, w, pullback.snd _ _, hw, Flat.epi_of_flat_of_surjective p, ?_, pullback.condition.symm⟩` and prove the remaining obligations. Set `_` to `(p.stalkMap w).hom.toAlgebra`. Establish `: Module.Flat _ _` using `Flat.stalkMap p w`. Establish `: IsLocalHom (algebraMap ((DegPre.BF Q (FractionRing R)).left.presheaf.stalk (p w)) ((pullback (DegPre.prB Q (FractionRing R)).left Y.q.left).presheaf.stalk w))` using `inferInstanceAs (IsLocalHom (p.stalkMap w).hom)`. Establish `: Module.FaithfullyFlat ((DegPre.BF Q (FractionRing R)).left.presheaf.stalk (p w)) ((pullback (DegPre.prB Q (FractionRing R)).left Y.q.left).presheaf.stalk w)` using `Module.FaithfullyFlat.of_flat_of_isLocalHom`.
+
+Conclude with `FaithfulSMul.algebraMap_injective _ _`.
+-/
 theorem exists_flat_lift (R : Type) [CommRing R] [IsDomain R] (Q : DegPre R) (O : Type) [CommRing O] [StarRing O]
     [Module O Q.X] (oa : Q.OAct O) (Y : Ray oa) (z : (DegPre.BF Q (FractionRing R)).left) :
     ∃ (Z : Scheme.{0}) (p : Z ⟶ (DegPre.BF Q (FractionRing R)).left) (w : Z) (y : Z ⟶ Y.H.left),

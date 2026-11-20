@@ -42,6 +42,11 @@ end True
 end GlobalTheory.HeightCounting.Blocks
 namespace GlobalTheory.HeightCounting
 open Formalism.BasicNotions GlobalTheory.CuspRep Blocks
+/- English proof (translation)
+Introduce `Sig Sig' h _ _ e`. Use `host_isCMField D.host` as an intermediate fact. Use `haveI : Fact (Nat.Prime 2) := Nat.fact_prime_two`. Take `⟨ι⟩` from `GlobalTheory.nonempty_padicAlgCl_ringEquiv_complex 2`. Establish `h1` using `fun p hp => h p (List.mem_append_left Sig' hp)`.
+
+Establish `h2` using `fun p hp => h p (List.mem_append_right Sig hp)`. Conclude with `Multiset.coe_eq_coe.2 ((perm_of_split hC (GlobalTheory.RowPar.isobaricRigid_of_jacquetShalika hJ (_root_.GlobalTheory.HeightCounting.Blocks.readsCusp_alt hF C)) (_root_.GlobalTheory.HeightCounting.Blocks.cuspFam_alt_alt hF C hG (l := 2) ι) (fun p hp => ⟨(h1 p hp).1, (h1 p hp).2.1 …`.
+-/
 theorem CGTrueT.blocksUnique (hL : _root_.UpperTheory.Zero.LLC.RecTExists) (hF : GlobalTheory.Published.AutomorphicFormsFiniteGL)
     (hG : _root_.UpperTheory.GalS.CuspUAlt) (hJ : GlobalTheory.Published.JacquetShalikaRigidity)
     (hC : GlobalTheory.Published.ChebotarevDegreeOne) {D : D7} {T : GlobalTheory.RowTie.WDTie D.nd D.naut} (C : _root_.GlobalTheory.HeightCounting.CGTrueT hL D T) :

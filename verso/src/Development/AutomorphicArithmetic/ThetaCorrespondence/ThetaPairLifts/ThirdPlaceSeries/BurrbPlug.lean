@@ -20,6 +20,9 @@ noncomputable section
 open Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotions.Pk Formalism.MainNotions.Lnk Formalism.MainNotions.GlobalTheoryTheory Formalism.L2.GlobalTheoryTheory Formalism.MainNotions.RT
 namespace Formalism.L2.DIV.RatFullFam
 open Formalism.L2.Top3 Formalism.L2.Top4
+/- English proof (translation)
+The claim follows from `rRows.imp fun Fm CH _ h hc _ _ => by obtain ⟨C, _, x0, H⟩ := h hc have key : ∀ x ≥ max (max x0 (sel Fm (d3_a hc)).1) (Fm.x1 + 1), ∀ i : Fm.Ix x, (Fm.D x i).BuRational ∧ (Fm.D x i).RRFull := by intro x hx0 i have h0 : x0 ≤ x := le_trans (le_trans (le_max_left _ _) (le_max_left _ _ …`.
+-/
 theorem buRat_rrFull_closed_alt (𝒜 : FamClass)
     (sel : _root_.Formalism.L2.TwistSelection 𝒜)
     (selS : _root_.Formalism.L2.Top4.SelectionSpectralCondition 𝒜 sel)

@@ -21,6 +21,9 @@ namespace UpperTheory.V.Z.Sym.Glob
 
 open NumberField Loc
 
+/- English proof (translation)
+Rewrite using `[show (∑ᶠ i : {a // p a}, f i.1) = ∑ᶠ a ∈ {a | p a}, f a from finsum_set_coe_eq_finsum_mem (f := f) {a | p a}, finsum_mem_def]`. Use `congr 1`. Use extensionality with `a`. Apply the tactic sequence `by_cases h : p a <;> simp [one, Set.indicator, h]`.
+-/
 private theorem sum_sub {α : Type} (p : α → Prop) (f : α → ℂ) :
     ∑ᶠ i : {a // p a}, f i.1 = ∑ᶠ a, one (p a) * f a := by
   rw [show (∑ᶠ i : {a // p a}, f i.1) = ∑ᶠ a ∈ {a | p a}, f a from
@@ -29,11 +32,21 @@ private theorem sum_sub {α : Type} (p : α → Prop) (f : α → ℂ) :
   ext a
   by_cases h : p a <;> simp [one, Set.indicator, h]
 
+/- English proof (translation)
+Conclude with `(mul_finsum f c).symm`.
+-/
 private theorem const_sum {α : Type} (c : ℂ) (f : α → ℂ) : ∑ᶠ i, c * f i = c * ∑ᶠ i, f i := by
   exact (mul_finsum f c).symm
 
 variable {F : Type} [Field F] [NumberField F] {Δ : F} (D : Dat Δ)
 
+/- English proof (translation)
+Introduce `h0`. Take `⟨v, hv⟩` from `hD.ne`. Use `((hD.sig v hv).reg (t v) (ht v hv) _ (h v hv)).2 ?_` and prove the remaining obligations. Establish `h2 : IsIntegral (Ov v) (2 : Kv v)`. Use `isIntegral_algebraMap (R := Ov v) (A := Kv v) (x := 2)` as an intermediate fact.
+
+Rewrite `this` using `[map_ofNat]`. Then use the resulting hypothesis. Establish `h1 : (τ - 2) * (τ + 2) = 0` using `by rw [← h0]; ring`. Break down `mul_eq_zero.mp h1 with h1 | h1` into its components or cases. Rewrite using `[sub_eq_zero.mp h1, map_ofNat]`. Conclude with `h2`.
+
+Rewrite using `[eq_neg_of_add_eq_zero_left h1, map_neg, map_ofNat]`. Conclude with `h2.neg`.
+-/
 private theorem aux_statement_10 (hD : D.Ok) (t : Dat.Par F) (ht : D.Cone t) (τ : F) (h : D.admitted t τ) : τ ^ 2 - 4 ≠ 0 := by
   intro h0
   obtain ⟨v, hv⟩ := hD.ne
@@ -46,6 +59,11 @@ private theorem aux_statement_10 (hD : D.Ok) (t : Dat.Par F) (ht : D.Cone t) (τ
   · rw [sub_eq_zero.mp h1, map_ofNat]; exact h2
   · rw [eq_neg_of_add_eq_zero_left h1, map_neg, map_ofNat]; exact h2.neg
 
+/- English proof (translation)
+Introduce `h0`. Use `haveI := hD.real`. Take `⟨w⟩ : Nonempty (InfinitePlace F)` from `inferInstance`. Establish `hw : w.IsReal` using `IsTotallyReal.isReal w`. Use `hD.neg (InfinitePlace.embedding_of_isReal hw)` as an intermediate fact.
+
+Rewrite `this` using `[h0, map_zero]`. Conclude with `lt_irrefl _ this`.
+-/
 private theorem delta_ne (hD : D.Ok) : Δ ≠ 0 := by
   intro h0
   haveI := hD.real
@@ -57,6 +75,17 @@ private theorem delta_ne (hD : D.Ok) : Δ ≠ 0 := by
 
 private def GI (t : Dat.Par F) (τ : F) : Prop := D.Good t τ ∧ ∀ v ∉ D.Sg, cv v τ ∈ (algebraMap (Ov v) (Kv v)).range
 
+/- English proof (translation)
+Establish `key : ∀ (h : F → ℂ) (τ : F), (D.Good t τ → ¬ (∀ v ∉ D.Sg, (cv v) τ ∈ (algebraMap (Ov v) (Kv v)).range) → h τ = 0) → one (D.Good t τ) * h τ = one (GI D t τ) * h τ`. Introduce `h τ hh`. Distinguish the cases in `hg : D.Good t τ`. Distinguish the cases in `hi : ∀ v ∉ D.Sg, (cv v) τ ∈ (algebraMap (Ov v) (Kv v)).range`. Establish `hG : GI D t τ` using `⟨hg, hi⟩`.
+
+Simplify using `only [one, if_pos hg, if_pos hG]`. Rewrite using `[hh hg hi, mul_zero, mul_zero]`. Establish `hG : ¬ GI D t τ` using `fun h' => hg h'.1`. Simplify using `only [one, if_neg hg, if_neg hG]`. Establish `van : ∀ τ, D.Good t τ → ¬ (∀ v ∉ D.Sg, (cv v) τ ∈ (algebraMap (Ov v) (Kv v)).range) → D.nS τ = 0 ∧ D.nK τ = 0` using `fun τ hg hi => sg_vanish D hD (aux_statement_10 D hD t ht τ hg.2) hi`.
+
+Establish `kS : ∀ τ, one (D.Good t τ) * (ch τ * ms τ * D.nS τ) = one (GI D t τ) * (ch τ * ms τ * D.nS τ)` using `fun τ => key (fun τ => ch τ * ms τ * D.nS τ) τ (fun hg hi => by show ch τ * ms τ * D.nS τ = 0`. Rewrite using `[(van τ hg hi).1, mul_zero])`. Establish `kK : ∀ τ, one (D.Good t τ) * (ch τ * ms τ * D.nK τ) = one (GI D t τ) * (ch τ * ms τ * D.nK τ)` using `fun τ => key (fun τ => ch τ * ms τ * D.nK τ) τ (fun hg hi => by show ch τ * ms τ * D.nK τ = 0`. Rewrite using `[(van τ hg hi).2, mul_zero])`. Establish `hfin` using `finSupp F Δ D hD t ht`.
+
+Establish `sup : ∀ h : F → ℂ, (Function.support fun τ => one (GI D t τ) * h τ).Finite` using `fun h => hfin.subset (fun τ hτ => by`. Assume the negation of the conclusion as `hn`. Conclude with `hτ (by simp only [one, if_neg (show ¬ GI D t τ from hn), zero_mul]))`. Establish `sup' : ∀ h : F → ℂ, (Function.support fun τ => e * (one (GI D t τ) * h τ)).Finite` using `fun h => hfin.subset (fun τ hτ => by`. Assume the negation of the conclusion as `hn`.
+
+Conclude with `hτ (by simp only [one, if_neg (show ¬ GI D t τ from hn), zero_mul, mul_zero]))`. Rewrite using `[sum_sub (GI D t) (fun τ => ch τ * ms τ * (D.nS τ + e * D.nK τ))]`. Simplify using `only [Dat.sumS, Dat.sumK]`. Rewrite using `[finsum_congr kS, finsum_congr kK, ← const_sum, ← finsum_add_distrib (sup _) (sup' _)]`. Conclude with `finsum_congr (fun τ => by ring)`.
+-/
 private theorem sum_GI (hD : D.Ok) (t : Dat.Par F) (ht : D.Cone t) (ch : F → ℂ) (e : ℂ) :
     ∑ᶠ τ : {τ // GI D t τ}, ch τ.1 * ms τ.1 * (D.nS τ.1 + e * D.nK τ.1) = D.sumS ch t + e * D.sumK ch t := by
   have key : ∀ (h : F → ℂ) (τ : F),
@@ -95,6 +124,11 @@ private theorem sum_GI (hD : D.Ok) (t : Dat.Par F) (ht : D.Cone t) (ch : F → �
   exact finsum_congr (fun τ => by ring)
 
 set_option maxHeartbeats 800000 in
+/- English proof (translation)
+Take `⟨h1, h2, h3, h4⟩` from `modelFacts F Δ τ c d m δ i P (delta_ne D hD) hd h`. Take `⟨hF, hT⟩` from `finG F Δ D hD V ch B s hB`. Establish `a` using `sideGTerm _ _ V _ B hF s (D.FG t) (hT t ht) hB.ω hB.Γ₀ δ (negU Δ) i h3 (fun x => by rw [hB.θΓ]; exact h4 x) D.UG (scalE τ) hB.U h2`. Establish `b` using `gqG F Δ D hD B.ι hB.ι s.θ.toMonoidHom hB.θ t ht τ c d m δ i P hτ.1 hd h`. Establish `o : one (D.admitted t τ) = 1` using `if_pos hτ.2`.
+
+Establish `a'` using `a.trans (congrArg₂ (fun x y : ℂ => x * y) (hB.tr δ τ h1) b)`. Simplify using `only [o] at a'`. Take the linear combination `(1 / 2 : ℂ) * a'`.
+-/
 private theorem term_eq (hD : D.Ok) {V : Type} [AddCommGroup V] [Module ℂ V] {ch : F → ℂ} {B : Base (U3 Δ) (GA Δ) V} {s : B.Tw}
     (hB : D.IsBG ch B s) {t : Dat.Par F} (ht : D.Cone t) {τ c : F} {d m : EL Δ τ} {δ i P} (hτ : D.Good t τ) (hd : IsDat c d m)
     (h : Models c d m δ i P) :
@@ -109,6 +143,17 @@ private theorem term_eq (hD : D.Ok) {V : Type} [AddCommGroup V] [Module ℂ V] {
   simp only [o] at a'
   linear_combination (1 / 2 : ℂ) * a'
 
+/- English proof (translation)
+Establish `hd' : IsDat (c.out : F) d ((u : F) • m)`. Establish `h1` using `datSmul F Δ τ 1 d m hd u`. Conclude with `⟨h1.reg, Units.ne_zero _, h1.d_norm, h1.m_unit, h1.m_star, h1.m_sig⟩`. Distinguish the cases in `hn : D.nL (c.out : F) d ((u : F) • m) = 0`. Rewrite using `[hn]`.
+
+Simplify using the standard rewrite rules. Establish `hev` using `sg_ev D hD hd' hn`. Distinguish the cases in `hm : ∃ δ ι P, Models (c.out : F) d ((u : F) • m) δ ι P`. Take `⟨δ, ι, P, hM⟩` from `hm`. Establish `hq` using `(posLaw F Δ D hD τ d m hp (c.out : F) (u : F)).2 δ ι P hM`.
+
+Establish `hS : c ∈ D.Sel (2 - τ)` using `⟨hq.1, hev⟩`. Simplify using `only [one, if_pos (show ∃ δ ι P, Models (c.out : F) d ((u : F) • m) δ ι P from ⟨δ, ι, P, hM⟩), if_pos hS, if_pos hq.2]`. Expand and normalize the polynomial expressions, which then agree. Establish `hno : ¬ (c ∈ D.Sel (2 - τ) ∧ TPos (u : F))`. Introduce and unpack `⟨hS, hu⟩`.
+
+Conclude with `hm (exG F Δ D hD τ (c.out : F) d _ hd' ((posLaw F Δ D hD τ d m hp (c.out : F) (u : F)).1 hS.1 hu) hev)`. Distinguish the cases in `hS : c ∈ D.Sel (2 - τ)`. Establish `hu : ¬ TPos (u : F)` using `fun hu => hno ⟨hS, hu⟩`. Simplify using `only [one, if_neg hm, if_pos hS, if_neg hu]`. Expand and normalize the polynomial expressions, which then agree.
+
+Simplify using `only [one, if_neg hm, if_neg hS]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 private theorem weight_eq (hD : D.Ok) {τ : F} {d m : EL Δ τ} (hd : IsDat 1 d m) (hp : PosF 1 m)
     (c : Fˣ ⧸ (powMonoidHom 2 : Fˣ →* Fˣ).range) (u : Fˣ) (A : ℂ) :
     one (∃ δ ι P, Models (c.out : F) d ((u : F) • m) δ ι P) * (A * D.nL (c.out : F) d ((u : F) • m)) =
@@ -138,6 +183,13 @@ private theorem weight_eq (hD : D.Ok) {τ : F} {d m : EL Δ τ} (hd : IsDat 1 d 
       · simp only [one, if_neg hm, if_neg hS]
         ring
 
+/- English proof (translation)
+Take `⟨h1, h2⟩` from `h`. Take `⟨x1, x2⟩` from `x`. Take `⟨y1, y2⟩` from `y`. Simplify using `only at h1 h2`. Rewrite using `[Prod.mk.injEq]`.
+
+Prove the components needed by the constructor for the conclusion. Rewrite using `[← QuotientGroup.out_eq' x1, ← QuotientGroup.out_eq' y1, QuotientGroup.eq]`. Take `⟨r, hr⟩` from `h1`. Conclude with `⟨r, by rw [powMonoidHom_apply, pow_two, ← hr, div_eq_inv_mul]⟩`. Rewrite using `[← QuotientGroup.out_eq' x2, ← QuotientGroup.out_eq' y2, QuotientGroup.eq, ← div_eq_inv_mul]`.
+
+Conclude with `h2`.
+-/
 private theorem cls_eq {K : Type} [Field K] {τ : K} {x y : (Kˣ ⧸ (powMonoidHom 2 : Kˣ →* Kˣ).range) × (Kˣ ⧸ NE τ)}
     (h : IsSquare (y.1.out / x.1.out) ∧ y.2.out / x.2.out ∈ NE τ) : x = y := by
   obtain ⟨h1, h2⟩ := h
@@ -153,6 +205,35 @@ private theorem cls_eq {K : Type} [Field K] {τ : K} {x y : (Kˣ ⧸ (powMonoidH
     exact h2
 
 set_option maxHeartbeats 1600000 in
+/- English proof (translation)
+Introduce `F _ _ Δ D hD`. Take `⟨e, he⟩` from `basePt F Δ D hD`. Take `⟨hS1f, hS1n, -⟩` from `selCard F Δ D hD`. Establish `hΔ` using `delta_ne D hD`. Establish `hp : 0 < ∏ v ∈ D.Sg, (D.S v).cG` using `Finset.prod_pos (fun v hv => (hD.sig v hv).cG)`.
+
+Establish `hn : 0 < (D.Sel 1).ncard` using `(Set.ncard_pos hS1f).mpr hS1n`. Use `⟨(∏ v ∈ D.Sg, (D.S v).cG) * (D.Sel 1).ncard / 4, e, div_pos (mul_pos hp (Nat.cast_pos.mpr hn)) (by norm_num), ?_⟩` and prove the remaining obligations. Introduce `V _ _ _ ch B s hB t ht`. Take `⟨hFin, hTest⟩` from `finG F Δ D hD V ch B s hB`. Establish `spl : ∀ τ : {τ // GI D t τ}, D.Spl τ.1` using `fun τ v hv => ((hD.sig v hv).reg (t v) (ht v hv) (cv v τ.1) (τ.2.1.2 v hv)).1`.
+
+Establish `bp : ∀ τ : {τ // GI D t τ}, ∃ d m : EL Δ τ.1, IsDat 1 d m ∧ PosF 1 m ∧ ∀ (c : F), TPos c → D.Ev (c * (2 - τ.1)) → ∏ᶠ (v : Pl F) (_ : v ∉ D.Sg), kapSum (Ov v) ((cv v) c) (elmap (cv v) d) (elmap (cv v) m) = (e : ℂ) * D.nK τ.1` using `fun τ => he τ.1 τ.2.1.1 (spl τ) τ.2.2`. Use `choose d m hdm using bp`. Establish `hex : ∀ (τ : {τ // GI D t τ}) (x : {x : (Fˣ ⧸ (powMonoidHom 2 : Fˣ →* Fˣ).range) × (Fˣ ⧸ NE τ.1) // ∃ δ ι P, Models (x.1.out : F) (d τ) ((x.2.out : F) • m τ) δ ι P}), ∃ δ ι P, Models (x.1.1.out : F) (d τ) ((x.1.2.out : F) • m τ) δ ι P` using `fun τ x => x.2`. Use `choose δf ιf Pf hM using hex`. Establish `isD : ∀ (τ : {τ // GI D t τ}) (c u : Fˣ), IsDat (c : F) (d τ) ((u : F) • m τ)`.
+
+Introduce `τ c u`. Establish `h1` using `datSmul F Δ τ.1 1 (d τ) (m τ) (hdm τ).1 u`. Conclude with `⟨h1.reg, Units.ne_zero _, h1.d_norm, h1.m_unit, h1.m_star, h1.m_sig⟩`. Establish `inj : ∀ i j : (Σ τ : {τ // GI D t τ}, {x : (Fˣ ⧸ (powMonoidHom 2 : Fˣ →* Fˣ).range) × (Fˣ ⧸ NE τ.1) // ∃ δ ι P, Models (x.1.out : F) (d τ) ((x.2.out : F) • m τ) δ ι P}), s.Rel (δf i.1 i.2) (δf j.1 j.2) → i = j`. Introduce and unpack `⟨τ, x⟩ ⟨τ', x'⟩ ⟨g, z, hz, hrel⟩`.
+
+Rewrite `hz` using `[hB.Γ₀, Subgroup.mem_bot]`. Substitute `hz` using the available equality. Rewrite `hrel` using `[mul_one, hB.θΓ]`. Establish `h1` using `(modelFacts F Δ τ.1 _ _ _ _ _ _ hΔ (isD τ _ _) (hM τ x)).1`. Establish `h2` using `(modelFacts F Δ τ'.1 _ _ _ _ _ _ hΔ (isD τ' _ _) (hM τ' x')).1`.
+
+Establish `heq : τ.1 = τ'.1` using `sideGTau.2.1 F Δ (δf τ' x') τ.1 τ'.1 (by rw [hrel]; exact sideGTau.1 F Δ _ g τ.1 h1) h2`. Take `⟨τ, hτ⟩` from `τ`. Take `⟨τ', hτ'⟩` from `τ'`. Simplify using `only at heq`. Substitute `heq` using the available equality.
+
+Establish `hc` using `(conjG F Δ τ (d ⟨τ, hτ⟩) (m ⟨τ, hτ⟩) hΔ (hdm ⟨τ, hτ⟩).1 x.1.1.out x'.1.1.out x.1.2.out x'.1.2.out _ _ _ _ _ _ (hM ⟨τ, hτ⟩ x) (hM ⟨τ, hτ'⟩ x')).mp ⟨g, hrel⟩`. Conclude with `Sigma.ext rfl (heq_of_eq (Subtype.ext (cls_eq hc)))`. Establish `surj : ∀ γ : U3 Δ, (∃ y, s.ker (D.FG t) γ y ≠ 0) → ∃ i : (Σ τ : {τ // GI D t τ}, {x : (Fˣ ⧸ (powMonoidHom 2 : Fˣ →* Fˣ).range) × (Fˣ ⧸ NE τ.1) // ∃ δ ι P, Models (x.1.out : F) (d τ) ((x.2.out : F) • m τ) δ ι P}), s.Rel (δf i.1 i.2) γ`. Introduce and unpack `γ ⟨y, hy⟩`. Take `⟨τ, hγτ, hcm⟩` from `tauEx F Δ D hD γ`.
+
+Establish `hsupp` using `sideGSupp F Δ D hD B.ι hB.ι s.θ.toMonoidHom hB.θ t ht γ τ y.out hγτ hy`. Establish `hG : GI D t τ` using `⟨⟨hcm (aux_statement_10 D hD t ht τ hsupp.1), hsupp.1⟩, hsupp.2⟩`. Take `⟨c, u, ι, P, hMod⟩` from `classG F Δ τ (d ⟨τ, hG⟩) (m ⟨τ, hG⟩) hΔ (hdm ⟨τ, hG⟩).1 γ hγτ`. Take `⟨x, P', hx⟩` from `sg_out hMod`. Use `⟨⟨⟨τ, hG⟩, ⟨x, γ, ι, P', hx⟩⟩, ?_⟩` and prove the remaining obligations.
+
+Take `⟨g, hg⟩` from `(conjG F Δ τ (d ⟨τ, hG⟩) (m ⟨τ, hG⟩) hΔ (hdm ⟨τ, hG⟩).1 x.1.out x.1.out x.2.out x.2.out _ γ _ ι _ P' (hM ⟨τ, hG⟩ ⟨x, γ, ι, P', hx⟩) hx).mpr ⟨by rw [div_self']; exact ⟨1, (mul_one 1).symm⟩, by rw [div_self']; exact one_mem _⟩`. Conclude with `⟨g, 1, by rw [hB.Γ₀]; exact one_mem _, by rw [mul_one, hB.θΓ]; exact hg⟩`. Establish `htr` using `UpperTheory.V.Z.Sym.Tf.trace (U3 Δ) (GA Δ) V B hFin s (D.FG t) (hTest t ht) (Σ τ : {τ // GI D t τ}, {x : (Fˣ ⧸ (powMonoidHom 2 : Fˣ →* Fˣ).range) × (Fˣ ⧸ NE τ.1) // ∃ δ ι P, Models (x.1.out : F) (d τ) ((x.2.out : F) • m τ) δ ι P}) (fun i => δf i.1 i.2) inj surj`. Rewrite using `[htr.2]`. Establish `indicator_eq_one_of_true : ∀ {p : Prop}, p → one p = 1` using `fun h => if_pos h`.
+
+Establish `hterm : ∀ i : (Σ τ : {τ // GI D t τ}, {x : (Fˣ ⧸ (powMonoidHom 2 : Fˣ →* Fˣ).range) × (Fˣ ⧸ NE τ.1) // ∃ δ ι P, Models (x.1.out : F) (d τ) ((x.2.out : F) • m τ) δ ι P}), s.term (D.FG t) (δf i.1 i.2) = (1 / 2 * ∏ v ∈ D.Sg, ((D.S v).cG : ℂ)) * (ch i.1.1 * ms i.1.1) * D.nL (i.2.1.1. …` using `fun i => by`. Rewrite using `[term_eq D hD hB ht i.1.2.1 (isD i.1 _ _) (hM i.1 i.2)]`. Expand and normalize the polynomial expressions, which then agree. Use `haveI : Finite {τ // GI D t τ} := (finSupp F Δ D hD t ht).to_subtype`. Establish `hinner : ∀ τ : {τ // GI D t τ}, (Function.support fun x : {x : (Fˣ ⧸ (powMonoidHom 2 : Fˣ →* Fˣ).range) × (Fˣ ⧸ NE τ.1) // ∃ δ ι P, Models (x.1.out : F) (d τ) ((x.2.out : F) • m τ) δ ι P} => (1 / 2 * ∏ v ∈ D.Sg, ((D.S v).cG : ℂ)) * (ch τ.1 * ms τ.1) * D.nL (x.1.1.out : F) (d τ) ( …`.
+
+Introduce `τ`. Establish `hsg` using `sg_inner D hD τ.2.1.1 (spl τ) (hdm τ).1 (hdm τ).2.2`. Prove the components needed by the constructor for the conclusion. Use `(hsg.1.preimage Subtype.val_injective.injOn).subset (fun x hx => ?_)` and prove the remaining obligations. Simplify using `only [Set.mem_preimage, Function.mem_support] at hx ⊢`.
+
+Introduce `h0`. Apply `hx` to reduce the goal to its premises. Establish `hw` using `weight_eq D hD (hdm τ).1 (hdm τ).2.1 x.1.1 x.1.2.out ((1 / 2 * ∏ v ∈ D.Sg, ((D.S v).cG : ℂ)) * (ch τ.1 * ms τ.1))`. Rewrite `hw` using `[indicator_eq_one_of_true x.2, one_mul]`. Rewrite using `[hw, h0, mul_zero]`.
+
+Rewrite using `[sum_sub (fun (x : (Fˣ ⧸ (powMonoidHom 2 : Fˣ →* Fˣ).range) × (Fˣ ⧸ NE τ.1)) => ∃ δ ι P, Models (x.1.out : F) (d τ) ((x.2.out : F) • m τ) δ ι P) (fun (x : (Fˣ ⧸ (powMonoidHom 2 : Fˣ →* Fˣ).range) × (Fˣ ⧸ NE τ.1)) => (1 / 2 * ∏ v ∈ D.Sg, ((D.S v).cG : ℂ)) * (ch τ.1 * ms τ.1) * D.n …`. Rewrite using `[finsum_congr (fun (x : (Fˣ ⧸ (powMonoidHom 2 : Fˣ →* Fˣ).range) × (Fˣ ⧸ NE τ.1)) => weight_eq D hD (hdm τ).1 (hdm τ).2.1 x.1 x.2.out ((1 / 2 * ∏ v ∈ D.Sg, ((D.S v).cG : ℂ)) * (ch τ.1 * ms τ.1))), const_sum, hsg.2]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[finsum_congr hterm]`.
+
+Rewrite using `[sg_sigma _ (fun τ => (hinner τ).1)]`. Rewrite using `[finsum_congr (fun τ => (hinner τ).2), const_sum, sum_GI D hD t ht ch (e : ℂ)]`.
+-/
 theorem sideG : SideG := by
   intro F _ _ Δ D hD
   obtain ⟨e, he⟩ := basePt F Δ D hD

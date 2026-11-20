@@ -14,6 +14,9 @@ noncomputable def toNorm : integralClosure S L →+* integralClosure D (TensorPr
         o.2.map _
       exact h.tower_top)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem toNorm_coe (o : integralClosure S L) :
     ((toNorm S L D o : integralClosure D (TensorProduct S D L)) : TensorProduct S D L) =
       (1 : D) ⊗ₜ[S] (o : L) := rfl
@@ -26,6 +29,9 @@ noncomputable def locHom (Q : Ideal (integralClosure D (TensorProduct S D L))) [
     (g := (algebraMap _ (Localization.AtPrime Q)).comp (toNorm S L D)) (fun s =>
       IsLocalization.map_units (Localization.AtPrime Q) (⟨toNorm S L D s, s.2⟩ : Q.primeCompl))
 
+/- English proof (translation)
+The claim follows from `IsLocalization.lift_eq _ _`.
+-/
 theorem locHom_algebraMap (Q : Ideal (integralClosure D (TensorProduct S D L))) [Q.IsPrime]
     (o : integralClosure S L) :
     locHom Q (algebraMap _ _ o) = algebraMap _ (Localization.AtPrime Q) (toNorm S L D o) :=

@@ -5,6 +5,9 @@ import Development.EtaleCohomology.EtaleSheaves.HensQuot
 namespace LateralTheory.E.LeafClosedSH0PfCut
 open LateralTheory.E.LeafClosedSH0Pf
 
+/- English proof (translation)
+The claim follows from `LateralTheory.E.LeafClosedSH0Pf.LeafClosedSH0_of hS LateralTheory.E.LeafClosedSH0PfQuot.shQuot LateralTheory.E.LeafClosedSH0PfEmpty.emptySec LateralTheory.E.LeafClosedSH0PfPrim.primLift`.
+-/
 theorem LeafClosedSH0_of (hS : LeafSHSieve) : LateralTheory.E.LeafVanBPf.LeafClosedSH0 :=
   LateralTheory.E.LeafClosedSH0Pf.LeafClosedSH0_of hS LateralTheory.E.LeafClosedSH0PfQuot.shQuot
     LateralTheory.E.LeafClosedSH0PfEmpty.emptySec LateralTheory.E.LeafClosedSH0PfPrim.primLift

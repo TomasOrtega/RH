@@ -15,6 +15,19 @@ open Classical
 
 noncomputable section
 
+/- English proof (translation)
+Establish `hgen` using `isGrpPullback_pullback G m`. Establish `wk : pullback.fst G.hom m ≫ G.hom = (pullback.snd G.hom m ≫ pt) ≫ q`. Rewrite using `[Category.assoc, hm, pullback.condition]`. Set `k : pullback G.hom m ⟶ G₀.left` to `hΦ.1.lift (pullback.fst _ _) (pullback.snd _ _ ≫ pt) wk`. Establish `hk : IsGrpPullback ((Over.pullback m).obj G) G₀ pt k` using `hΦ.cancel (hgen.congr hm.symm (hΦ.1.lift_fst _ _ _).symm) (hΦ.1.lift_snd _ _ _)`.
+
+Take `⟨e, he, hek⟩` from `GlobalTheory.Ex.Arch.exists_pull_endo hk f₀ hf₀`. Take `⟨F, ⟨hF, hFe⟩, -⟩` from `hendo e he`. Take `⟨F₀, hF₀, hF₀e⟩` from `GlobalTheory.Ex.Arch.exists_pull_endo hΦ F hF`. Establish `wθ : (pullback.fst G₀.hom pt ≫ Φ) ≫ G.hom = pullback.snd G₀.hom pt ≫ m`. Rewrite using `[Category.assoc, hΦ.1.w, ← Category.assoc, pullback.condition, Category.assoc, hm]`.
+
+Set `θ : pullback G₀.hom pt ⟶ pullback G.hom m` to `pullback.lift _ _ wθ`. Establish `hθk : θ ≫ k = pullback.fst _ _`. Apply `hΦ.1.hom_ext` to reduce the goal to its premises. Rewrite using `[Category.assoc, hΦ.1.lift_fst, pullback.lift_fst]`. Rewrite using `[Category.assoc, hΦ.1.lift_snd, ← Category.assoc, pullback.lift_snd, pullback.condition]`.
+
+Apply the tactic sequence `have hFm : ((Over.pullback m).map F).left ≫ pullback.fst G.hom m = pullback.fst G.hom m ≫ F.left := by first | exact pullback.lift_fst _ _ _ | (simp [Over.pullback, pullback.map]) | (erw [pullback.lift_fst])`. Establish `key : F₀ = f₀`. Apply `GlobalTheory.T.abelianScheme_endomorphism_ext_of_dense_point W G₀ hab Ω pt hd` to reduce the goal to its premises. Apply `hΦ.1.hom_ext` to reduce the goal to its premises. Combine the equalities or inequalities in the displayed calculation.
+
+Rewrite using `[Category.assoc, hF₀e]`. Use `_ = θ ≫ pullback.fst G.hom m ≫ F.left := by rw [← Category.assoc θ, pullback.lift_fst, Category.assoc]`. Use `_ = θ ≫ e.left ≫ pullback.fst G.hom m := by rw [← hFm, hFe]`. Use `_ = θ ≫ e.left ≫ k ≫ Φ := by rw [hΦ.1.lift_fst]`. Use `_ = θ ≫ k ≫ f₀.left ≫ Φ := by rw [← Category.assoc e.left, hek, Category.assoc]`.
+
+Use `_ = (pullback.fst G₀.hom pt ≫ f₀.left) ≫ Φ := by rw [← Category.assoc θ, hθk, Category.assoc]`. Rewrite using `[Category.assoc, Category.assoc, Over.w F₀, Over.w f₀]`. Conclude with `⟨F, hF, by rw [← hF₀e, key]⟩`.
+-/
 theorem GlobalTheory.UPoinc.exists_endo_of_generic {Z W : Scheme.{0}} [IsIntegral W] {G : Over Z} [GrpObj G] {G₀ : Over W}
     [GrpObj G₀] (hab : IsAbelianScheme G₀) {q : W ⟶ Z} {Φ : G₀.left ⟶ G.left} (hΦ : IsGrpPullback G₀ G q Φ)
     {Ω : Type} [Field Ω] (pt : Sp Ω ⟶ W) (hd : Dense (Set.range pt)) (m : Sp Ω ⟶ Z) (hm : pt ≫ q = m)
@@ -52,6 +65,23 @@ theorem GlobalTheory.UPoinc.exists_endo_of_generic {Z W : Scheme.{0}} [IsIntegra
     · rw [Category.assoc, Category.assoc, Over.w F₀, Over.w f₀]
   exact ⟨F, hF, by rw [← hF₀e, key]⟩
 
+/- English proof (translation)
+Introduce `E _ _ _ H Dw l Xo c C X₁ M U₀ EE out hAdm`. Use `haveI := X₁.ar.char`. Take `⟨hW, pt, hpt, hd⟩` from `GlobalTheory.T.isIntegral_pullback_rationalSaturation_model_open X₁.o₁ X₁.Ω₁ M U₀ X₁.S.R out.u₀ hAdm.1.ne out.u₀_gen`. Use `haveI := hW`. Take `⟨G₁, _, α, β, hα, hβ, hL⟩` from `X₁.pulled`.
+
+Set `s : pullback out.u₀ (spMap (toRat X₁.S.R)) ⟶ Sp (ratHull X₁.S.R)` to `pullback.snd _ _`. Set `G₀ : Over (pullback out.u₀ (spMap (toRat X₁.S.R)))` to `(Over.pullback s).obj G₁`. Establish `h₀ : IsGrpPullback G₀ G₁ s (pullback.fst G₁.hom s)` using `isGrpPullback_pullback G₁ s`. Set `w : pullback out.u₀ (spMap (toRat X₁.S.R)) ⟶ Xo.XF c` to `s ≫ X₁.u`. Establish `hβ₀ : IsGrpPullback G₀ Xo.univ.t.G (w ≫ pullback.fst _ _) (pullback.fst G₁.hom s ≫ β)` using `(h₀.comp hβ).congr (Category.assoc _ _ _).symm rfl`.
+
+Take `⟨f₀, hf₀, hT⟩` from `GlobalTheory.T.exists_action_pullback_universalUnitary E H Dw l Xo c _ w G₀ _ hβ₀`. Establish `hα₀` using `h₀.comp hα`. Establish `wψ : (pullback.fst G₁.hom s ≫ α) ≫ X₁.ρ.P.A.hom = (G₀.hom ≫ pullback.fst out.u₀ (spMap (toRat X₁.S.R))) ≫ out.u₀`. Rewrite using `[hα₀.1.w, Category.assoc, pullback.condition]`. Set `ψ : G₀.left ⟶ pullback X₁.ρ.P.A.hom out.u₀` to `pullback.lift _ _ wψ`.
+
+Establish `hψ : IsGrpPullback G₀ ((Over.pullback out.u₀).obj X₁.ρ.P.A) (pullback.fst out.u₀ (spMap (toRat X₁.S.R))) ψ` using `(isGrpPullback_pullback X₁.ρ.P.A out.u₀).cancel (hα₀.congr pullback.condition.symm (pullback.lift_fst _ _ _).symm) (pullback.lift_snd _ _ _)`. Establish `hΦ` using `hψ.comp out.cart`. Establish `hm : pt ≫ pullback.fst out.u₀ (spMap (toRat X₁.S.R)) ≫ U₀.ι = M.pt` using `hpt`. Establish `hab : IsAbelianScheme G₀` using `PolPull.isAbelianScheme_of_isGrpPullback X₁.ρ.P.isAb hα₀`. Use `choose F hF hFe using fun a => exists_endo_of_generic hab hΦ pt hd M.pt hm out.endo (f₀ a) (hf₀ a).1`.
+
+Use `⟨F, hF, ?_⟩` and prove the remaining obligations. Introduce `K _ ξ₀ y hLies tK ⟨mm⟩`. Take `⟨x', hx', hxy⟩` from `hLies`. Set `x : Sp K ⟶ pullback out.u₀ (spMap (toRat X₁.S.R))` to `pullback.lift ξ₀ x' hx'.symm`. Establish `hxw : x ≫ w = y` using `by show x ≫ pullback.snd _ _ ≫ X₁.u = y`.
+
+Rewrite using `[← Category.assoc, pullback.lift_snd, hxy]`. Establish `mm' : SABMap tK Xo.univ.t ((x ≫ w) ≫ pullback.fst _ _)` using `by rw [hxw]; exact mm`. Take `⟨γ₀, hγ₀, -, hLγ, hact⟩` from `hT (Sp K) x tK mm'`. Use `⟨γ₀ ≫ ψ ≫ out.φ, (hγ₀.comp hΦ).congr (by rw [← Category.assoc, pullback.lift_fst]) rfl, ?_, fun a => ?_⟩` and prove the remaining obligations. Establish `hU` using `Xo.univ.t.PP.isLB`.
+
+Establish `hP` using `X₁.ρ.P.isLB`. Establish `hO` using `out.L.isLB`. Establish `i1 : LBIso (out.L.L.pull out.φ) (X₁.ρ.P.L.pull (pullback.fst X₁.ρ.P.A.hom out.u₀))` using `⟨out.w, out.w_gen⟩`. Establish `i2 : LBIso (out.L.L.pull (ψ ≫ out.φ)) (X₁.ρ.P.L.pull (pullback.fst G₁.hom s ≫ α))` using `GenSpread.lbIso_pull_comp ψ rfl (pullback.lift_fst _ _ _).symm i1`. Establish `i3 : LBIso (X₁.ρ.P.L.pull (pullback.fst G₁.hom s ≫ α)) (Xo.univ.t.PP.L.pull (pullback.fst G₁.hom s ≫ β))` using `GenSpread.lbIso_pull_comp (pullback.fst G₁.hom s) rfl rfl hL`.
+
+Establish `i4` using `LBIso.trans (pull_isLB hO _) (pull_isLB hP _) (pull_isLB hU _) i2 i3`. Establish `i5 : LBIso (out.L.L.pull (γ₀ ≫ ψ ≫ out.φ)) (Xo.univ.t.PP.L.pull (γ₀ ≫ pullback.fst G₁.hom s ≫ β))` using `GenSpread.lbIso_pull_comp γ₀ rfl rfl i4`. Establish `i6 : LBIso (Xo.univ.t.PP.L.pull (γ₀ ≫ pullback.fst G₁.hom s ≫ β)) ((Xo.univ.t.PP.L.pull (pullback.fst G₁.hom s ≫ β)).pull γ₀)` using `GenSpread.lbIso_pull_pull hU γ₀ rfl`. Conclude with `LBIso.trans tK.PP.isLB (pull_isLB (pull_isLB hU _) _) (pull_isLB hO _) hLγ (LBIso.trans (pull_isLB (pull_isLB hU _) _) (pull_isLB hU _) (pull_isLB hO _) i6.symm i5.symm)`. Rewrite using `[← Category.assoc, hact a, Category.assoc, Category.assoc, ← hFe a, Category.assoc]`.
+-/
 theorem GlobalTheory.UPoinc.act_extends_ratModel : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (Dw : Datum H) (l : Geo.Tor.Level H) (Xo : Moduli Dw l) (c : Coeff l) (C : UCompact Xo c) (X₁ : USetup C) (M : RatModel X₁.o₁ X₁.Ω₁) (U₀ : M.Z.Opens) (EE : M.Lat X₁.S.J) (out : ZHOut X₁.ρ M U₀ EE), X₁.S.admitted M U₀ → ∃ f : 𝓞 E → (out.G ⟶ out.G), (∀ a, IsMonHom (f a)) ∧ ∀ (K : Type) [Field K] (ξ₀ : Sp K ⟶ U₀.toScheme) (y : Sp K ⟶ Xo.XF c), X₁.Lies (ξ₀ ≫ out.u₀) y → ∀ (tK : SAB H (Sp K)), Nonempty (SABMap tK Xo.univ.t (y ≫ pullback.fst _ _)) → ∃ γ : tK.G.left ⟶ out.G.left, IsGrpPullback tK.G out.G (ξ₀ ≫ U₀.ι) γ ∧ LBIso tK.PP.L (out.L.L.pull γ) ∧ ∀ a, (tK.act.act a).left ≫ γ = γ ≫ (f a).left := by
   intro E _ _ _ H Dw l Xo c C X₁ M U₀ EE out hAdm
   haveI := X₁.ar.char

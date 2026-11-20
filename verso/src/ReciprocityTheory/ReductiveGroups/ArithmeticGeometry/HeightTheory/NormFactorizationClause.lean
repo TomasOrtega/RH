@@ -20,6 +20,13 @@ namespace Data
 
 variable (d : Data K ι Ω WT A)
 
+/- English proof (translation)
+Use `finsum_congr fun w => ?_` and prove the remaining obligations. Distinguish the cases in `hG : w ∈ d.GoodP c p`. Establish `hO : w ∈ d.OverP c p` using `hG.1`. Simplify using `only [finsum_eq_if, if_pos hO, if_pos hG]`. Both sides reduce to the same expression.
+
+Simplify using `only [finsum_eq_if, if_neg hG] split_ifs with hO`. Establish `h0 : d.Wres c w g = 0`. Assume the negation of the conclusion as `hne`. Conclude with `hG ⟨hO, g, hg, hne⟩`. Establish `h1 : w (algebraMap (Ω c) (OmS (Ω c) d.D d.N) g) = 0` using `h0`.
+
+Rewrite using `[h1, hF]`. Both sides reduce to the same expression.
+-/
 theorem finsum_liesOver_eq_finsum_good (c : ι) (p : Ideal (KTp K d.D d.N)) (g : Ω c) (hg : g ≠ 0)
     (F : AddValuation (OmS (Ω c) d.D d.N) (WithTop ℤ) → WithTop ℤ → ℤ)
     (hF : ∀ w, F w 0 = 0) :
@@ -42,6 +49,13 @@ theorem finsum_liesOver_eq_finsum_good (c : ι) (p : Ideal (KTp K d.D d.N)) (g :
       rw [h1, hF]
     · rfl
 
+/- English proof (translation)
+Take `⟨-, hy⟩` from `d.norm_by_places hd h c`. Establish `hne : algebraMap (Ω c) (OmS (Ω c) d.D d.N) g ≠ 0`. Introduce `h0`. Conclude with `hg ((map_eq_zero_iff _ (algebraMap (Ω c) (OmS (Ω c) d.D d.N)).injective).mp h0)`. Take `⟨-, κ, hκ, hN⟩` from `hy _ hne`.
+
+Use `⟨κ, hκ, ?_⟩` and prove the remaining obligations. Rewrite using `[hN]`. Use `congr 1`. Use `finprod_congr fun p => finprod_congr fun _ => ?_` and prove the remaining obligations. Use `congr 1`.
+
+Conclude with `d.finsum_liesOver_eq_finsum_good c p g hg (fun w t => (d.fze h c w : ℤ) * WithTop.untopD 0 t) (fun w => by simp)`.
+-/
 theorem norm_factorization_clause (hd : d.AxH 𝒜) (h : d.S1) (c : ι) (g : Ω c) (hg : g ≠ 0) :
     ∃ κ : K, κ ≠ 0 ∧
       letI : Algebra (KTf K d.D d.N) (OmS (Ω c) d.D d.N) := (d.KTtoS h c).toAlgebra
@@ -64,6 +78,9 @@ theorem norm_factorization_clause (hd : d.AxH 𝒜) (h : d.S1) (c : ι) (g : Ω 
   exact d.finsum_liesOver_eq_finsum_good c p g hg (fun w t => (d.fze h c w : ℤ) * WithTop.untopD 0 t)
     (fun w => by simp)
 
+/- English proof (translation)
+Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simp`. Consider the case `insert x s hx ih => rw [Finset.prod_insert hx, Finset.sum_insert hx, ih, zpow_add₀ ha]`.
+-/
 theorem prod_zpow_eq_zpow_sum {M : Type*} [CommGroupWithZero M] {α : Type*} (s : Finset α)
     (a : M) (ha : a ≠ 0) (k : α → ℤ) : ∏ p ∈ s, a ^ k p = a ^ (∑ p ∈ s, k p) := by
   classical
@@ -71,6 +88,13 @@ theorem prod_zpow_eq_zpow_sum {M : Type*} [CommGroupWithZero M] {α : Type*} (s 
   | empty => simp
   | insert x s hx ih => rw [Finset.prod_insert hx, Finset.sum_insert hx, ih, zpow_add₀ ha]
 
+/- English proof (translation)
+Break down `M with n | n` into its components or cases. Establish `h' : ((2 ^ n : ℕ) : F) = 1` using `by push_cast; simpa using h`. Establish `h2 : 2 ^ n = 1` using `by exact_mod_cast h'`. Use `Nat.pow_eq_one.mp h2` as an intermediate fact. Establish `hn : n = 0` using `by omega`.
+
+Simplify using `[hn]`. It suffices to derive a contradiction. Rewrite `h` using `[zpow_negSucc, inv_eq_one]`. Establish `h' : ((2 ^ (n + 1) : ℕ) : F) = 1` using `by push_cast; exact h`. Establish `h2 : 2 ^ (n + 1) = 1` using `by exact_mod_cast h'`.
+
+Use `Nat.pow_eq_one.mp h2` as an intermediate fact. Use linear arithmetic over natural numbers and integers.
+-/
 theorem int_eq_zero_of_two_zpow {F : Type*} [Field F] [CharZero F] {M : ℤ}
     (h : (2 : F) ^ M = 1) : M = 0 := by
   rcases M with n | n
@@ -86,6 +110,11 @@ theorem int_eq_zero_of_two_zpow {F : Type*} [Field F] [CharZero F] {M : ℤ}
     have := Nat.pow_eq_one.mp h2
     omega
 
+/- English proof (translation)
+Rewrite using `[Finset.sum_filter, Fintype.sum_prod_type, Finset.sum_eq_single (1 : Fin (D + 1))]`. Simplify using the standard rewrite rules. Introduce `b _ hb`. Simplify using `[hb]`. Introduce `h1`.
+
+Conclude with `absurd (Finset.mem_univ _) h1`.
+-/
 private theorem sum_fst_lemma {D N : ℕ} [DecidablePred (fun v : TVar D N => v.1 = (1 : Fin (D + 1)))]
     (s : TVar D N →₀ ℕ) :
     ∑ v ∈ Finset.univ.filter (fun v : TVar D N => v.1 = (1 : Fin (D + 1))), s v = ∑ j, s (1, j) := by
@@ -96,6 +125,9 @@ private theorem sum_fst_lemma {D N : ℕ} [DecidablePred (fun v : TVar D N => v.
   · intro h1
     exact absurd (Finset.mem_univ _) h1
 
+/- English proof (translation)
+Establish `hq' : q = ∑ s ∈ q.support, MvPolynomial.monomial s (q.coeff s)` using `q.as_sum`. Rewrite using `[hq', map_sum, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun s hs => ?_` and prove the remaining obligations. Rewrite using `[sigP, scaleEquiv_monomial, sum_fst_lemma, hq s hs]`.
+-/
 private theorem scaleBlock_eq_C_pow_mul {D N : ℕ} (u : Kˣ) (q : KTp K D N) (m : ℕ)
     (hq : ∀ s ∈ q.support, ∑ j, s (1, j) = m) :
     sigP (N := N) (1 : Fin (D + 1)) u q = MvPolynomial.C ((u : K) ^ m) * q := by
@@ -104,6 +136,31 @@ private theorem scaleBlock_eq_C_pow_mul {D N : ℕ} (u : Kˣ) (q : KTp K D N) (m
   refine Finset.sum_congr rfl fun s hs => ?_
   rw [sigP, scaleEquiv_monomial, sum_fst_lemma, hq s hs]
 
+/- English proof (translation)
+Take `⟨κ, hκ, hN⟩` from `hN`. Establish `hb : (1 : Fin (d.D + 1)) ≠ 0`. Use `hd.D_ge` as an intermediate fact. Rewrite using `[Ne, Fin.one_eq_zero_iff]`. Use linear arithmetic over natural numbers and integers.
+
+Establish `hT : ∀ p, p ∈ hfin.toFinset ↔ p ∈ d.HtOne ∧ n p ≠ 0` using `fun p => Set.Finite.mem_toFinset hfin`. Establish `hprod : ∏ᶠ (p : Ideal (KTp K d.D d.N)) (_ : p ∈ d.HtOne), algebraMap (KTp K d.D d.N) (KTf K d.D d.N) (d.gen p) ^ n p = ∏ p ∈ hfin.toFinset, algebraMap (KTp K d.D d.N) (KTf K d.D d.N) (d.gen p) ^ n p`. Apply `finprod_mem_eq_prod_of_subset` to reduce the goal to its premises. Introduce and unpack `p ⟨hp, hs⟩`. Use `(hT p).mpr ⟨hp, fun h0 => hs ?_⟩` and prove the remaining obligations.
+
+Simplify using `[h0]`. Introduce `p hp`. Conclude with `((hT p).mp hp).1`. Establish `hsum : (∑ᶠ (p : Ideal (KTp K d.D d.N)) (_ : p ∈ d.HtOne), n p * (d.dg (d.gen p) : ℤ)) = ∑ p ∈ hfin.toFinset, n p * (d.dg (d.gen p) : ℤ)`. Apply `finsum_mem_eq_sum_of_subset` to reduce the goal to its premises.
+
+Introduce and unpack `p ⟨hp, hs⟩`. Use `(hT p).mpr ⟨hp, fun h0 => hs ?_⟩` and prove the remaining obligations. Simplify using `[h0]`. Introduce `p hp`. Conclude with `((hT p).mp hp).1`.
+
+Rewrite using `[hsum]`. Rewrite `hN` using `[hprod]`. Establish `hne : algebraMap (Ω c) (OmS (Ω c) d.D d.N) r ≠ 0`. Introduce `h0`. Conclude with `hr ((map_eq_zero_iff _ (algebraMap (Ω c) (OmS (Ω c) d.D d.N)).injective).mp h0)`.
+
+Establish `hX : (letI : Algebra (KTf K d.D d.N) (OmS (Ω c) d.D d.N)` using `(d.KTtoS h c).toAlgebra Algebra.norm (KTf K d.D d.N) (algebraMap (Ω c) (OmS (Ω c) d.D d.N) r)) ≠ 0 := by`. Use `letI : Algebra (KTf K d.D d.N) (OmS (Ω c) d.D d.N) := (d.KTtoS h c).toAlgebra`. Distinguish the cases in `hfd : FiniteDimensional (KTf K d.D d.N) (OmS (Ω c) d.D d.N)`. Conclude with `Algebra.norm_ne_zero_iff.mpr hne`. Rewrite using `[Algebra.norm_eq_one_of_not_exists_basis]`.
+
+Conclude with `one_ne_zero`. Introduce and unpack `⟨s, ⟨bs⟩⟩`. Conclude with `hfd (Module.Finite.of_basis bs)`. Take `⟨u, hu⟩ : ∃ u : Kˣ, (u : K) = 2` from `⟨Units.mk0 2 two_ne_zero, rfl⟩`. Establish `hσ` using `d.sigF_norm h c 1 hb u r`.
+
+Establish `hκσ : sigF (N` using `d.N) (1 : Fin (d.D + 1)) u (algebraMap K (KTf K d.D d.N) κ) = algebraMap K (KTf K d.D d.N) κ := by`. Rewrite using `[IsScalarTower.algebraMap_apply K (KTp K d.D d.N) (KTf K d.D d.N), sigF, IsFractionRing.ringEquivOfRingEquiv_algebraMap]`. Use `congr 1`. Conclude with `(sigP (N := d.N) (1 : Fin (d.D + 1)) u).commutes κ`. Establish `hgσ : ∀ p ∈ hfin.toFinset, sigF (N` using `d.N) (1 : Fin (d.D + 1)) u (algebraMap (KTp K d.D d.N) (KTf K d.D d.N) (d.gen p) ^ n p) = algebraMap K (KTf K d.D d.N) 2 ^ (n p * (d.dg (d.gen p) : ℤ)) * algebraMap (KTp K d.D d.N) (KTf K d.D d.N) (d.gen p) ^ n p := by`.
+
+Introduce `p hp`. Take `⟨hp1, hp2⟩` from `(hT p).mp hp`. Rewrite using `[map_zpow₀, sigF, IsFractionRing.ringEquivOfRingEquiv_algebraMap]`. Establish `hs : (sigP (N` using `d.N) (1 : Fin (d.D + 1)) u).toRingEquiv (d.gen p) = MvPolynomial.C ((u : K) ^ d.dg (d.gen p)) * d.gen p := scaleBlock_eq_C_pow_mul u (d.gen p) _ (hhom p hp1 hp2)`. Rewrite using `[hs, map_mul, mul_zpow]`.
+
+Use `congr 1`. Rewrite using `[← MvPolynomial.algebraMap_eq, ← IsScalarTower.algebraMap_apply, map_pow, hu, ← zpow_natCast, ← zpow_mul, mul_comm]`. Establish `h2 : algebraMap K (KTf K d.D d.N) 2 ≠ 0` using `(map_ne_zero (algebraMap K (KTf K d.D d.N))).mpr two_ne_zero`. Rewrite `hσ`, `hX` using `[hN]`. Simplify using `only [map_mul, map_prod] at hσ`.
+
+Rewrite `hσ` using `[hκσ, Finset.prod_congr rfl hgσ, Finset.prod_mul_distrib, prod_zpow_eq_zpow_sum _ _ h2]`. Establish `h1 : algebraMap K (KTf K d.D d.N) 2 ^ (∑ p ∈ hfin.toFinset, n p * (d.dg (d.gen p) : ℤ)) = 1`. Apply `mul_right_cancel₀ hX` to reduce the goal to its premises. Rewrite using `[one_mul]`. Take the linear combination `hσ`.
+
+Rewrite `h1` using `[← map_zpow₀, map_eq_one_iff _ (algebraMap K (KTf K d.D d.N)).injective]`. Conclude with `int_eq_zero_of_two_zpow h1`.
+-/
 private theorem key_lemma_3 (hd : d.AxH 𝒜) (h : d.S1) (c : ι) (r : Ω c) (hr : r ≠ 0)
     (n : Ideal (KTp K d.D d.N) → ℤ) (hfin : {p | p ∈ d.HtOne ∧ n p ≠ 0}.Finite)
     (hN : ∃ κ : K, κ ≠ 0 ∧
@@ -186,6 +243,19 @@ private theorem key_lemma_3 (hd : d.AxH 𝒜) (h : d.S1) (c : ι) (r : Ω c) (hr
   rw [← map_zpow₀, map_eq_one_iff _ (algebraMap K (KTf K d.D d.N)).injective] at h1
   exact int_eq_zero_of_two_zpow h1
 
+/- English proof (translation)
+Establish `hb : (1 : Fin (d.D + 1)) ≠ 0`. Use `hd.D_ge` as an intermediate fact. Rewrite using `[Ne, Fin.one_eq_zero_iff]`. Use linear arithmetic over natural numbers and integers. Use `key_lemma_3 d hd h c r hr (fun p => ∑ᶠ (w : AddValuation (OmS (Ω c) d.D d.N) (WithTop ℤ)) (_ : w ∈ d.GoodP c p), (d.fze h c w : ℤ) * WithTop.untopD 0 (d.Wres c w r)) ?_ (d.norm_factorization_clause hd h c r hr) ?_` and prove the remaining obligations.
+
+Take `⟨-, hy⟩` from `d.norm_by_places hd h c`. Establish `hne : algebraMap (Ω c) (OmS (Ω c) d.D d.N) r ≠ 0`. Introduce `h0`. Conclude with `hr ((map_eq_zero_iff _ (algebraMap (Ω c) (OmS (Ω c) d.D d.N)).injective).mp h0)`. Use `(hy _ hne).1.subset ?_` and prove the remaining obligations.
+
+Introduce and unpack `p ⟨hp, hsum⟩`. Use `⟨hp, ?_⟩` and prove the remaining obligations. Assume the negation of the conclusion as `hcon`. Use `push_neg at hcon`. Apply `hsum` to reduce the goal to its premises.
+
+Use `finsum_eq_zero_of_forall_eq_zero fun w => ?_` and prove the remaining obligations. Distinguish the cases in `hw : w ∈ d.GoodP c p`. Establish `h0 : d.Wres c w r = 0` using `hcon w hw.1`. Simplify using `[finsum_eq_if, hw, h0]`. Simplify using `[finsum_eq_if, hw]`.
+
+Introduce `p hp hn0 s hs`. Establish `hex : ∃ w, w ∈ d.GoodP c p`. Assume the negation of the conclusion as `hne`. Use `push_neg at hne`. Apply `hn0` to reduce the goal to its premises.
+
+Use `finsum_eq_zero_of_forall_eq_zero fun w => ?_` and prove the remaining obligations. Simplify using `[finsum_eq_if, hne w]`. Use `(d.good_primes_properties hd h c).2.1 p hp hex s hs 1` as an intermediate fact. Simplify `this` using `[hb]`.
+-/
 theorem key_degree (hd : d.AxH 𝒜) (h : d.S1) (c : ι) (r : Ω c) (hr : r ≠ 0) :
     (∑ᶠ (p : Ideal (KTp K d.D d.N)) (_ : p ∈ d.HtOne),
       (∑ᶠ (w : AddValuation (OmS (Ω c) d.D d.N) (WithTop ℤ)) (_ : w ∈ d.GoodP c p),
@@ -223,6 +293,9 @@ theorem key_degree (hd : d.AxH 𝒜) (h : d.S1) (c : ι) (r : Ω c) (hr : r ≠ 
   have := (d.good_primes_properties hd h c).2.1 p hp hex s hs 1
   simpa [hb] using this
 
+/- English proof (translation)
+Take `⟨hO, a, ha, hwa⟩` from `hw`. Break down `d.PlaceTrivialOrPositive hd h c p hp w hO with h1 | h2` into its components or cases. Conclude with `absurd (h1 a ha) hwa`. Conclude with `h2.1`.
+-/
 theorem good_adm (hd : d.AxH 𝒜) (h : d.S1) (c : ι) {p : Ideal (KTp K d.D d.N)} (hp : p ∈ d.HtOne)
     {w : AddValuation (OmS (Ω c) d.D d.N) (WithTop ℤ)} (hw : w ∈ d.GoodP c p) :
     d.admitted c (d.Wres c w) := by
@@ -231,10 +304,16 @@ theorem good_adm (hd : d.AxH 𝒜) (h : d.S1) (c : ι) {p : Ideal (KTp K d.D d.N
   · exact absurd (h1 a ha) hwa
   · exact h2.1
 
+/- English proof (translation)
+The claim follows from `((d.norm_by_places hd h c).1 p hp).subset fun _ hw => hw.1`.
+-/
 theorem goodP_finite (hd : d.AxH 𝒜) (h : d.S1) (c : ι) {p : Ideal (KTp K d.D d.N)}
     (hp : p ∈ d.HtOne) : (d.GoodP c p).Finite :=
   ((d.norm_by_places hd h c).1 p hp).subset fun _ hw => hw.1
 
+/- English proof (translation)
+Unfold `nP`. Rewrite using `[← finsum_mem_add_distrib (d.goodP_finite hd h c hp)]`. Use `finsum_mem_congr rfl fun w hw => ?_` and prove the remaining obligations. Rewrite using `[hd.ord_mul c _ (d.good_adm hd h c hp hw) hf hg hf0 hg0, mul_add]`.
+-/
 theorem nP_mul (hd : d.AxH 𝒜) (h : d.S1) (c : ι) {G G' : WT} {f g : A c} (hf : f ∈ 𝒜 c G)
     (hg : g ∈ 𝒜 c G') (hf0 : f ≠ 0) (hg0 : g ≠ 0) {p : Ideal (KTp K d.D d.N)}
     (hp : p ∈ d.HtOne) :
@@ -244,11 +323,19 @@ theorem nP_mul (hd : d.AxH 𝒜) (h : d.S1) (c : ι) {G G' : WT} {f g : A c} (hf
   refine finsum_mem_congr rfl fun w hw => ?_
   rw [hd.ord_mul c _ (d.good_adm hd h c hp hw) hf hg hf0 hg0, mul_add]
 
+/- English proof (translation)
+Proceed by induction on `t using WithTop.recTopCoe with`. Consider the case `top => exact absurd rfl ht`. Consider the case `coe a => simp`.
+-/
 theorem untopD_eq {t : WithTop ℤ} (ht : t ≠ ⊤) : ((t.untopD 0 : ℤ) : WithTop ℤ) = t := by
   induction t using WithTop.recTopCoe with
   | top => exact absurd rfl ht
   | coe a => simp
 
+/- English proof (translation)
+Unfold `nP`. Rewrite using `[← finsum_mem_add_distrib (d.goodP_finite hd h c hp)]`. Use `finsum_mem_congr rfl fun w hw => ?_` and prove the remaining obligations. Establish `key` using `hd.ord_smul c _ (d.good_adm hd h c hp hw) (G := G) (f := f) a hf hf0 ha`. Establish `hva : (d.Wres c w) a ≠ ⊤`.
+
+Introduce `htop`. Conclude with `ha ((AddValuation.top_iff _).mp htop)`. Rewrite `key` using `[← untopD_eq hva, ← WithTop.coe_add]`. Rewrite using `[WithTop.coe_inj.mp key]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem nP_smul (hd : d.AxH 𝒜) (h : d.S1) (c : ι) {G : WT} {f : A c} (hf : f ∈ 𝒜 c G)
     (hf0 : f ≠ 0) {a : Ω c} (ha : a ≠ 0) {p : Ideal (KTp K d.D d.N)} (hp : p ∈ d.HtOne) :
     d.nP h c G (a • f) p = d.nP h c G f p +
@@ -265,6 +352,13 @@ theorem nP_smul (hd : d.AxH 𝒜) (h : d.S1) (c : ι) {G : WT} {f : A c} (hf : f
   rw [WithTop.coe_inj.mp key]
   ring
 
+/- English proof (translation)
+Take `⟨-, hy⟩` from `d.norm_by_places hd h c`. Establish `hne : algebraMap (Ω c) (OmS (Ω c) d.D d.N) r ≠ 0`. Introduce `h0`. Conclude with `hr ((map_eq_zero_iff _ (algebraMap (Ω c) (OmS (Ω c) d.D d.N)).injective).mp h0)`. Use `(hy _ hne).1.subset ?_` and prove the remaining obligations.
+
+Introduce and unpack `p ⟨hp, hsum⟩`. Use `⟨hp, ?_⟩` and prove the remaining obligations. Assume the negation of the conclusion as `hcon`. Use `push_neg at hcon`. Apply `hsum` to reduce the goal to its premises.
+
+Use `finsum_eq_zero_of_forall_eq_zero fun w => ?_` and prove the remaining obligations. Distinguish the cases in `hw : w ∈ d.GoodP c p`. Establish `h0 : d.Wres c w r = 0` using `hcon w hw.1`. Simplify using `[finsum_eq_if, hw, h0]`. Simplify using `[finsum_eq_if, hw]`.
+-/
 theorem use₈ (hd : d.AxH 𝒜) (h : d.S1) (c : ι) (r : Ω c) (hr : r ≠ 0) :
     {p | p ∈ d.HtOne ∧ (∑ᶠ (w : AddValuation (OmS (Ω c) d.D d.N) (WithTop ℤ))
       (_ : w ∈ d.GoodP c p), (d.fze h c w : ℤ) * WithTop.untopD 0 (d.Wres c w r)) ≠ 0}.Finite := by
@@ -285,6 +379,23 @@ theorem use₈ (hd : d.AxH 𝒜) (h : d.S1) (c : ι) (r : Ω c) (hr : r ≠ 0) :
     simp [finsum_eq_if, hw, h0]
   · simp [finsum_eq_if, hw]
 
+/- English proof (translation)
+Establish `hfin1 : ∀ c (G : WT) (f : A c), f ∈ 𝒜 c G → f ≠ 0 → (d.HtOne ∩ Function.support fun p => d.nP h c G f p * (d.dg (d.gen p) : ℤ)).Finite`. Introduce `c G f hf hf0`. Use `((d.good_primes_properties hd h c).2.2.1 G f hf hf0).subset ?_` and prove the remaining obligations. Introduce and unpack `p ⟨hp, hs⟩`. Use `⟨hp, fun h0 => hs ?_⟩` and prove the remaining obligations.
+
+Simplify using `[h0]`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Introduce `G ta ta' hta hta'`. Unfold `aG`. Use `Finset.sum_congr rfl fun c _ => ?_` and prove the remaining obligations.
+
+Establish `hv : (⟨ta c, (hta c).1⟩ : 𝒜 c G) ≠ 0`. Introduce `h0`. Apply `(hta c).2` to reduce the goal to its premises. Simplify using `using congrArg Subtype.val h0`. Take `⟨a, ha⟩` from `(finrank_eq_one_iff_of_nonzero' _ hv).mp (hd.finrank_one c G) ⟨ta' c, (hta' c).1⟩`.
+
+Establish `ha' : a • ta c = ta' c` using `congrArg Subtype.val ha`. Establish `ha0 : a ≠ 0`. Introduce and unpack `rfl`. Apply `(hta' c).2` to reduce the goal to its premises. Rewrite using `[← ha', zero_smul]`.
+
+Establish `hS : (d.HtOne ∩ Function.support fun p => (∑ᶠ (w : AddValuation (OmS (Ω c) d.D d.N) (WithTop ℤ)) (_ : w ∈ d.GoodP c p), (d.fze h c w : ℤ) * WithTop.untopD 0 (d.Wres c w a)) * (d.dg (d.gen p) : ℤ)).Finite`. Use `(d.use₈ hd h c a ha0).subset ?_` and prove the remaining obligations. Introduce and unpack `p ⟨hp, hs⟩`. Use `⟨hp, fun h0 => hs ?_⟩` and prove the remaining obligations. Simplify using `[h0]`.
+
+Establish `e : ∀ p ∈ d.HtOne, d.nP h c G (a • ta c) p * (d.dg (d.gen p) : ℤ) = d.nP h c G (ta c) p * (d.dg (d.gen p) : ℤ) + (∑ᶠ (w : AddValuation (OmS (Ω c) d.D d.N) (WithTop ℤ)) (_ : w ∈ d.GoodP c p), (d.fze h c w : ℤ) * WithTop.untopD 0 (d.Wres c w a)) * (d.dg (d.gen p) : ℤ)`. Introduce `p hp`. Rewrite using `[d.nP_smul hd h c (hta c).1 (hta c).2 ha0 hp, add_mul]`. Rewrite using `[← ha', finsum_mem_congr rfl e, finsum_mem_add_distrib' (hfin1 c G _ (hta c).1 (hta c).2) hS, d.key_degree hd h c a ha0, add_zero]`. Introduce `G G' ta ta' hta hta'`.
+
+Unfold `aG`. Rewrite using `[← Finset.sum_add_distrib]`. Use `Finset.sum_congr rfl fun c _ => ?_` and prove the remaining obligations. Establish `e : ∀ p ∈ d.HtOne, d.nP h c (G + G') ((ta * ta') c) p * (d.dg (d.gen p) : ℤ) = d.nP h c G (ta c) p * (d.dg (d.gen p) : ℤ) + d.nP h c G' (ta' c) p * (d.dg (d.gen p) : ℤ)`. Introduce `p hp`.
+
+Rewrite using `[Pi.mul_apply, d.nP_mul hd h c (hta c).1 (hta' c).1 (hta c).2 (hta' c).2 hp, add_mul]`. Rewrite using `[finsum_mem_congr rfl e, finsum_mem_add_distrib' (hfin1 c G _ (hta c).1 (hta c).2) (hfin1 c G' _ (hta' c).1 (hta' c).2)]`.
+-/
 theorem arithDegree_additive (hd : d.AxH 𝒜) (h : d.S1) :
     (∀ (G : WT) (ta ta' : ∀ c, A c), (∀ c, ta c ∈ 𝒜 c G ∧ ta c ≠ 0) →
       (∀ c, ta' c ∈ 𝒜 c G ∧ ta' c ≠ 0) → d.aG h G ta = d.aG h G ta') ∧
@@ -339,6 +450,9 @@ theorem arithDegree_additive (hd : d.AxH 𝒜) (h : d.S1) :
     rw [finsum_mem_congr rfl e, finsum_mem_add_distrib' (hfin1 c G _ (hta c).1 (hta c).2)
       (hfin1 c G' _ (hta' c).1 (hta' c).2)]
 
+/- English proof (translation)
+Conclude with `⟨fun c g hg => d.norm_factorization_clause hd h c g hg, (d.arithDegree_additive hd h).1, (d.arithDegree_additive hd h).2⟩`.
+-/
 theorem norm_factorization (hd : d.AxH 𝒜) (h : d.S1) :
     (∀ c (g : Ω c), g ≠ 0 → ∃ κ : K, κ ≠ 0 ∧
       letI : Algebra (KTf K d.D d.N) (OmS (Ω c) d.D d.N) := (d.KTtoS h c).toAlgebra

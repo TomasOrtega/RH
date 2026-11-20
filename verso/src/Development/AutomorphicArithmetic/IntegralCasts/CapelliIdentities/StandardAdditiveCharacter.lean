@@ -5,6 +5,9 @@ open scoped nonZeroDivisors
 
 namespace UpperTheory.TraceAwayCharacter
 
+/- English proof (translation)
+Rewrite using `[Algebra.trace_eq_matrix_trace (mixedEmbedding.latticeBasis F), Algebra.trace_eq_matrix_trace (integralBasis F)]`. Simplify using `only [Matrix.trace, Matrix.diag, Algebra.leftMulMatrix_eq_repr_mul, Rat.cast_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[mixedEmbedding.latticeBasis_apply, ← map_mul, mixedEmbedding.latticeBasis_repr_apply]`.
+-/
 private lemma trace_eq (F : Type) [Field F] [NumberField F] (x : F) :
     Algebra.trace ℝ (mixedEmbedding.mixedSpace F) (mixedEmbedding F x)
       = ((Algebra.trace ℚ F x : ℚ) : ℝ) := by
@@ -15,6 +18,21 @@ private lemma trace_eq (F : Type) [Field F] [NumberField F] (x : F) :
   refine Finset.sum_congr rfl fun i _ => ?_
   rw [mixedEmbedding.latticeBasis_apply, ← map_mul, mixedEmbedding.latticeBasis_repr_apply]
 
+/- English proof (translation)
+Use `by_contra! h`. Use `set z : ℂ := Complex.exp (-(2 * Real.pi * Complex.I) * (q : ℂ)) with hz`. Establish `hpow : ∀ m : ℕ, Complex.exp (-(2 * Real.pi * Complex.I) * ((((m : ℚ) * q : ℚ) : ℝ) : ℂ)) = z ^ m`. Introduce `m`. Rewrite using `[hz, ← Complex.exp_nat_mul]`.
+
+Use `congr 1`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Establish `hz1 : z ≠ 1`. Introduce `h1`.
+
+Take `⟨n, hn⟩` from `Complex.exp_eq_one_iff.mp h1`. Apply `hq (-n)` to reduce the goal to its premises. Establish `h2 : (q : ℂ) = ((-n : ℤ) : ℂ)`. Apply `mul_left_cancel₀ (neg_ne_zero.mpr Complex.two_pi_I_ne_zero)` to reduce the goal to its premises. Rewrite using `[hn]`.
+
+Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Conclude with `h2` after adjusting the coercions. Establish `hd : z ^ q.den = 1`. Rewrite using `[← hpow, Rat.den_mul_eq_num, Complex.exp_eq_one_iff]`.
+
+Use `⟨-q.num, ?_⟩` and prove the remaining obligations. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Establish `hs : ∑ m ∈ Finset.range q.den, z ^ m = 0`. Rewrite using `[geom_sum_eq hz1, hd]`.
+
+Simplify using the standard rewrite rules. Establish `hpos : 0 < (∑ m ∈ Finset.range q.den, z ^ m).re`. Rewrite using `[Complex.re_sum]`. Use `Finset.sum_pos (fun m _ => hpow m ▸ h m) ?_` and prove the remaining obligations. Conclude with `Finset.nonempty_range_iff.mpr q.den_nz`.
+
+Rewrite `hpos` using `[hs]`. Simplify using `at hpos`.
+-/
 private lemma far (q : ℚ) (hq : ∀ z : ℤ, q ≠ z) :
     ∃ m : ℕ, (Complex.exp (-(2 * Real.pi * Complex.I) * ((((m : ℚ) * q : ℚ) : ℝ) : ℂ))).re ≤ 0 := by
   by_contra! h
@@ -51,6 +69,13 @@ private lemma far (q : ℚ) (hq : ∀ z : ℤ, q ≠ z) :
   rw [hs] at hpos
   simp at hpos
 
+/- English proof (translation)
+Take `⟨x, hx, hx1⟩` from `FractionalIdeal.exists_notMem_one_of_ne_bot (K := F) v.ne_bot v.isPrime.ne_top`. Use `⟨x, fun u hu => ?_, fun hi => hx1 ?_⟩` and prove the remaining obligations. Establish `hle : ¬ v.asIdeal ≤ u.asIdeal` using `fun h => hu (HeightOneSpectrum.ext (v.isMaximal.eq_of_le u.isPrime.ne_top h).symm)`. Take `⟨t, ht, htu⟩` from `Set.not_subset.mp hle`. Establish `hv0 : (v.asIdeal : FractionalIdeal (𝓞 F)⁰ F) ≠ 0` using `FractionalIdeal.coeIdeal_ne_zero.mpr v.ne_bot`.
+
+Establish `h1` using `(FractionalIdeal.mem_inv_iff hv0).mp hx (algebraMap _ F t) (FractionalIdeal.mem_coeIdeal_of_mem _ ht)`. Take `⟨s, hs⟩` from `(FractionalIdeal.mem_one_iff _).mp h1`. Establish `h2 : u.valuation F (algebraMap _ F t) = 1`. Use `le_antisymm (u.valuation_le_one t) (not_lt.mp fun h => htu ?_)` and prove the remaining obligations. Conclude with `(u.valuation_lt_one_iff_mem t).mp h`.
+
+Establish `h3 : u.valuation F (algebraMap (𝓞 F) F s) ≤ 1` using `u.valuation_le_one s`. Rewrite `h3` using `[hs, map_mul, h2, mul_one]`. Then use the resulting hypothesis. Conclude with `(FractionalIdeal.mem_one_iff _).mpr ⟨⟨x, hi⟩, rfl⟩`.
+-/
 private lemma exists_pole (F : Type) [Field F] [NumberField F] (v : HeightOneSpectrum (𝓞 F)) :
     ∃ x : F, (∀ u : HeightOneSpectrum (𝓞 F), u ≠ v → u.valuation F x ≤ 1) ∧ ¬ IsIntegral ℤ x := by
   obtain ⟨x, hx, hx1⟩ :=
@@ -71,6 +96,19 @@ private lemma exists_pole (F : Type) [Field F] [NumberField F] (v : HeightOneSpe
     rwa [hs, map_mul, h2, mul_one] at h3
   · exact (FractionalIdeal.mem_one_iff _).mpr ⟨⟨x, hi⟩, rfl⟩
 
+/- English proof (translation)
+Use `by_contra! h`. Take `⟨x, hx, hxi⟩` from `exists_pole F v`. Set `M : Submodule ℤ F` to `AddSubgroup.toIntSubmodule { carrier := {a | ∃ y : F, (∀ u : HeightOneSpectrum (𝓞 F), u ≠ v → u.valuation F y ≤ 1) ∧ a = (N : F) * y} add_mem' := by`. Introduce and unpack `_ _ ⟨a, ha, rfl⟩ ⟨b, hb, rfl⟩`. Conclude with `⟨a + b, fun u hu => Valuation.map_add_le _ (ha u hu) (hb u hu), by ring⟩`.
+
+Use the proof step `zero_mem' := ⟨0, by simp, by simp⟩`. Use the proof step `neg_mem' := by`. Introduce and unpack `_ ⟨a, ha, rfl⟩`. Conclude with `⟨-a, fun u hu => by simpa using ha u hu, by ring⟩ }`. Establish `hM : ∀ a, a ∈ M ↔ ∃ y : F, (∀ u : HeightOneSpectrum (𝓞 F), u ≠ v → u.valuation F y ≤ 1) ∧ a = (N : F) * y` using `fun _ => Iff.rfl`.
+
+Establish `hle : M ≤ Submodule.span ℤ (Set.range ((Algebra.traceForm ℚ F).dualBasis (traceForm_nondegenerate ℚ F) (integralBasis F)))`. Rewrite using `[← LinearMap.BilinForm.dualSubmodule_span_of_basis]`. Introduce `a ha b hb`. Take `⟨y, hy, rfl⟩` from `(hM a).mp ha`. Take `⟨c, rfl⟩` from `(mem_span_integralBasis F).mp hb`.
+
+Take `⟨z, hz⟩` from `h (y * algebraMap _ F c) fun u hu => by`. Rewrite using `[map_mul]`. Conclude with `mul_le_one' (hy u hu) (u.valuation_le_one c)`. Use `Submodule.mem_one.mpr ⟨z, ?_⟩` and prove the remaining obligations. Rewrite using `[Algebra.traceForm_apply, mul_assoc, hz]`.
+
+Simplify using the standard rewrite rules. Establish `hfg : M.FG` using `Submodule.FG.of_le (Submodule.fg_span (Set.finite_range _)) hle`. Use `hxi (isIntegral_of_smul_mem_submodule M ?_ hfg x ?_)` and prove the remaining obligations. Use `(Submodule.ne_bot_iff _).mpr ⟨(N : F), (hM _).mpr ⟨1, by simp, by simp⟩, ?_⟩` and prove the remaining obligations. Conclude with `hN` after adjusting the coercions.
+
+Introduce `a ha`. Take `⟨y, hy, rfl⟩` from `(hM a).mp ha`. Use `(hM _).mpr ⟨x * y, fun u hu => ?_, by rw [smul_eq_mul]; ring⟩` and prove the remaining obligations. Rewrite using `[map_mul]`. Conclude with `mul_le_one' (hx u hu) (hy u hu)`.
+-/
 private lemma exists_trace (F : Type) [Field F] [NumberField F] (v : HeightOneSpectrum (𝓞 F))
     (N : ℕ) (hN : N ≠ 0) :
     ∃ y : F, (∀ u : HeightOneSpectrum (𝓞 F), u ≠ v → u.valuation F y ≤ 1) ∧
@@ -114,6 +152,17 @@ private lemma exists_trace (F : Type) [Field F] [NumberField F] (v : HeightOneSp
     rw [map_mul]
     exact mul_le_one' (hx u hu) (hy u hu)
 
+/- English proof (translation)
+Establish `hnat : ∀ m : ℕ, ((m : ℕ) : u.adicCompletion F) = algebraMap F (u.adicCompletion F) (algebraMap (𝓞 F) F (m : 𝓞 F))`. Introduce `m`. Simplify using the standard rewrite rules. Establish `hval : ∀ m : ℕ, Valued.v ((m : ℕ) : u.adicCompletion F) = u.valuation F (algebraMap (𝓞 F) F (m : 𝓞 F))`. Introduce `m`.
+
+Rewrite using `[hnat]`. Conclude with `HeightOneSpectrum.valuedAdicCompletion_eq_valuation' u _`. Use `set p : ℕ := Ideal.absNorm u.asIdeal with hp`. Establish `hp0 : p ≠ 0` using `fun h => u.ne_bot (Ideal.absNorm_eq_zero_iff.mp h)`. Establish `hp1 : Valued.v ((p : ℕ) : u.adicCompletion F) < 1`.
+
+Rewrite using `[hval]`. Conclude with `(u.valuation_lt_one_iff_mem _).mpr (Ideal.absNorm_mem _)`. Establish `ht` using `Valued.tendsto_zero_pow_of_v_lt_one hp1`. Rewrite `ht`, the goal using `[(Valued.hasBasis_nhds_zero _ _).tendsto_right_iff]`. Introduce `γ hγ`.
+
+Take `⟨k, hk⟩` from `(ht γ hγ).exists`. Use `filter_upwards [eventually_ge_atTop (p ^ k)] with n hn`. Take `⟨c, hc⟩` from `Nat.dvd_factorial (Nat.pos_of_ne_zero (pow_ne_zero k hp0)) hn`. Use `lt_of_le_of_lt ?_ hk` and prove the remaining obligations. Rewrite using `[hc, Nat.cast_mul, Nat.cast_pow, mul_assoc, map_mul]`.
+
+Use `mul_le_of_le_one_right' ?_` and prove the remaining obligations. Rewrite using `[Valuation.restrict_le_one_iff, map_mul]`. Use `mul_le_one' ?_ (hw n)` and prove the remaining obligations. Rewrite using `[hval]`. Conclude with `u.valuation_le_one _`.
+-/
 private lemma tendsto_local (F : Type) [Field F] [NumberField F] (u : HeightOneSpectrum (𝓞 F))
     (w : ℕ → u.adicCompletion F) (hw : ∀ n, Valued.v (w n) ≤ 1) :
     Tendsto (fun n : ℕ => ((n.factorial : ℕ) : u.adicCompletion F) * w n) atTop (𝓝 0) := by
@@ -145,6 +194,13 @@ private lemma tendsto_local (F : Type) [Field F] [NumberField F] (u : HeightOneS
   rw [hval]
   exact u.valuation_le_one _
 
+/- English proof (translation)
+Establish `hmem : ∀ u n, a n u ∈ (u.adicCompletionIntegers F : Set (u.adicCompletion F))`. Introduce `u n`. Rewrite using `[ha]`. Conclude with `mul_mem (natCast_mem (u.adicCompletionIntegers F) _) (hw u n)`. Set `b : ℕ → ∀ u : HeightOneSpectrum (𝓞 F), (u.adicCompletionIntegers F : Set (u.adicCompletion F))` to `fun n u => ⟨a n u, hmem u n⟩`.
+
+Set `b0 : ∀ u : HeightOneSpectrum (𝓞 F), (u.adicCompletionIntegers F : Set (u.adicCompletion F))` to `fun u => ⟨0, zero_mem (u.adicCompletionIntegers F)⟩`. Establish `hb : Tendsto b atTop (𝓝 b0)`. Rewrite using `[tendsto_pi_nhds]`. Introduce `u`. Rewrite using `[tendsto_subtype_rng]`.
+
+Simplify using `only [b, b0, ha]`. Conclude with `tendsto_local F u (w u) (hw u)`. Conclude with `((RestrictedProduct.isEmbedding_structureMap (R := fun u : HeightOneSpectrum (𝓞 F) => u.adicCompletion F) (A := fun u => (u.adicCompletionIntegers F : Set (u.adicCompletion F))) (𝓕 := cofinite)).continuous.tendsto b0).comp hb`.
+-/
 private lemma tendsto_finite (F : Type) [Field F] [NumberField F]
     (a : ℕ → FiniteAdeleRing (𝓞 F) F) (w : ∀ u : HeightOneSpectrum (𝓞 F), ℕ → u.adicCompletion F)
     (hw : ∀ u n, Valued.v (w u n) ≤ 1)
@@ -170,6 +226,11 @@ private lemma tendsto_finite (F : Type) [Field F] [NumberField F]
     (A := fun u => (u.adicCompletionIntegers F : Set (u.adicCompletion F)))
     (𝓕 := cofinite)).continuous.tendsto b0).comp hb
 
+/- English proof (translation)
+Use `⟨⟨fun u => if u = v then 0 else algebraMap F (u.adicCompletion F) x, ?_⟩, ?_, ?_⟩` and prove the remaining obligations. Use `filter_upwards [(algebraMap F (FiniteAdeleRing (𝓞 F) F) x).2] with u hu split_ifs`. Conclude with `zero_mem (u.adicCompletionIntegers F)`. Conclude with `hu`. Conclude with `if_pos rfl`.
+
+Conclude with `fun u hu => if_neg hu`.
+-/
 private lemma exists_away (F : Type) [Field F] [NumberField F] (v : HeightOneSpectrum (𝓞 F))
     (x : F) : ∃ r : FiniteAdeleRing (𝓞 F) F,
       r v = 0 ∧ ∀ u, u ≠ v → r u = algebraMap F (u.adicCompletion F) x := by
@@ -185,6 +246,29 @@ private lemma exists_away (F : Type) [Field F] [NumberField F] (v : HeightOneSpe
 end UpperTheory.TraceAwayCharacter
 
 open UpperTheory.TraceAwayCharacter in
+/- English proof (translation)
+Introduce `F _ _ ψ hc hF hinf v`. Use `by_contra! hv`. Set `j : FiniteAdeleRing (𝓞 F) F → AdeleRing (𝓞 F) F` to `fun r => (0, r)`. Establish `hj : Continuous j` using `continuous_const.prodMk continuous_id`. Establish `key : ∀ (x : F) (r : FiniteAdeleRing (𝓞 F) F), (∀ u, u ≠ v → r u = algebraMap F (u.adicCompletion F) x) → ψ (-j r) = Complex.exp (-(2 * Real.pi * Complex.I) * (((Algebra.trace ℚ F x : ℚ) : ℝ) : ℂ))`.
+
+Introduce `x r hr`. Set `i : AdeleRing (𝓞 F) F` to `(algebraMap F (InfiniteAdeleRing F) x, 0)`. Set `c : AdeleRing (𝓞 F) F` to `(0, r - algebraMap F (FiniteAdeleRing (𝓞 F) F) x)`. Establish `h1 : ψ c = 1` using `hv c rfl fun u hu => by`. Express the relevant statement in the definitionally equal form `r u - algebraMap F (u.adicCompletion F) x = 0`.
+
+Rewrite using `[hr u hu, sub_self]`. Establish `h2 : i = -j r + c + algebraMap F (AdeleRing (𝓞 F) F) x`. Use `Prod.ext ?_ ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `algebraMap F (InfiniteAdeleRing F) x = -0 + 0 + algebraMap F (InfiniteAdeleRing F) x`. Expand and normalize the polynomial expressions, which then agree.
+
+Express the relevant statement in the definitionally equal form `0 = -r + (r - algebraMap F (FiniteAdeleRing (𝓞 F) F) x) + algebraMap F (FiniteAdeleRing (𝓞 F) F) x`. Expand and normalize the polynomial expressions, which then agree. Establish `h3` using `hinf i rfl`. Establish `h4 : InfiniteAdeleRing.ringEquiv_mixedSpace F i.1 = mixedEmbedding F x` using `(InfiniteAdeleRing.mixedEmbedding_eq_algebraMap_comp F).symm`. Rewrite `h3` using `[h4, trace_eq, h2, AddChar.map_add_eq_mul, AddChar.map_add_eq_mul, h1, hF, mul_one, mul_one]`.
+
+Conclude with `h3`. Establish `hy : ∀ n : ℕ, ∃ y : F, (∀ u : HeightOneSpectrum (𝓞 F), u ≠ v → u.valuation F y ≤ 1) ∧ (Complex.exp (-(2 * Real.pi * Complex.I) * (((Algebra.trace ℚ F ((n.factorial : F) * y) : ℚ) : ℝ) : ℂ))).re ≤ 0`. Introduce `n`. Take `⟨y, hy, hz⟩` from `exists_trace F v n.factorial n.factorial_ne_zero`. Take `⟨m, hm⟩` from `far _ hz`.
+
+Use `⟨(m : F) * y, fun u hu => ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[map_mul]`. Use `mul_le_one' ?_ (hy u hu)` and prove the remaining obligations. Establish `: u.valuation F (algebraMap (𝓞 F) F (m : 𝓞 F)) ≤ 1` using `u.valuation_le_one _`. Rewrite `this` using `[map_natCast]`. Then use the resulting hypothesis.
+
+Rewrite using `[mul_left_comm, ← nsmul_eq_mul m, map_nsmul, nsmul_eq_mul]` and apply the resulting hypothesis. Use `choose y hy hre using hy`. Use `choose r hr0 hr using fun n : ℕ => exists_away F v ((n.factorial : F) * y n)`. Establish `ht : Tendsto r atTop (𝓝 0)`. Use `tendsto_finite F r (fun u n => if u = v then 0 else algebraMap F (u.adicCompletion F) (y n)) ?_ ?_` and prove the remaining obligations.
+
+Introduce `u n split_ifs with hu`. Simplify using the standard rewrite rules. Conclude with `(HeightOneSpectrum.valuedAdicCompletion_eq_valuation' u _).trans_le (hy n u hu)`. Introduce `u n split_ifs with hu`. Substitute `hu` using the available equality.
+
+Rewrite using `[hr0, mul_zero]`. Rewrite using `[hr n u hu, map_mul, map_natCast]`. Establish `hcont : Continuous fun s => (ψ (-j s)).re` using `Complex.continuous_re.comp (hc.comp hj.neg)`. Establish `hlim` using `(hcont.tendsto 0).comp ht`. Establish `h0 : (ψ (-j 0)).re = 1`.
+
+Establish `: j 0 = 0` using `rfl`. Rewrite using `[this, neg_zero, AddChar.map_zero_eq_one, Complex.one_re]`. Rewrite `hlim` using `[h0]`. Establish `hle : (1 : ℝ) ≤ 0` using `le_of_tendsto' hlim fun n => by`. Express the relevant statement in the definitionally equal form `(ψ (-j (r n))).re ≤ 0`.
+
+Rewrite using `[key _ _ (hr n)]`. Conclude with `hre n`. Conclude with `absurd hle (by norm_num)`.
+-/
 theorem UpperTheory.standard_additive_character :
     ∀ (F : Type) [Field F] [NumberField F] (ψ : AddChar (NumberField.AdeleRing (NumberField.RingOfIntegers F) F) ℂ),
         Continuous ψ →

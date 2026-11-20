@@ -22,6 +22,19 @@ variable {k : Type*} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchi
   [IsNonarchimedeanLocalField M] [Algebra k M] [ValuativeExtension k M] [FiniteDimensional k M]
   [IsGalois k M] [IsMulCommutative (M ≃ₐ[k] M)]
 
+/- English proof (translation)
+Set `ι : M →ₐ[k] SeparableClosure k` to `IsSepClosed.lift`. Set `E : IntermediateField k (SeparableClosure k)` to `ι.fieldRange`. Establish `: FiniteDimensional k E` using `finiteDimensional_fieldRange ι`. Set `j : M ≃ₐ[k] E` to `ι.equivFieldRange`. Establish `hj : ∀ x y : M, j.toRingEquiv x ≤ᵥ j.toRingEquiv y ↔ x ≤ᵥ y` using `vle_map_iff j.toAlgHom`.
+
+Establish `hE : ramificationIndex k E = 1`. Establish `h1` using `ord_algebraMap (K := k) (L := M) (π : k)`. Establish `h2` using `ord_algebraMap (K := k) (L := E) (π : k)`. Establish `h3` using `ord_apply_of_vle j.toRingEquiv hj (Units.map (algebraMap k M).toMonoidHom π)`. Establish `h4 : j.toRingEquiv (algebraMap k M (π : k)) = algebraMap k E (π : k)` using `j.commutes _`.
+
+Express the relevant statement in the definitionally equal form `ord (j.toRingEquiv (algebraMap k M (π : k))) = ord (algebraMap k M (π : k)) at h3`. Rewrite `h3` using `[h4, h2, h1, hπ, hM]`. Simplify using `using h3`. Establish `hle : E ≤ maximalUnramifiedExtension k (SeparableClosure k)` using `((isUnramifiedSubextension_iff' E).2 hE).le_maximalUnramifiedExtension`. Establish `hmem : ∀ x : M, ι x ∈ maximalUnramifiedExtension k (SeparableClosure k)` using `fun x ↦ hle ⟨x, rfl⟩`.
+
+Establish `key : ι (normResidueSymbol k M π z) = (maximalUnramifiedExtensionFrobenius k (SeparableClosure k) ⟨ι z, hmem z⟩ : SeparableClosure k)`. Rewrite using `[normResidueSymbol_apply_eq_localArtinMap ι π (z : M)]`. Conclude with `localArtinMap_uniformizer_apply hπ (hmem z)`. Establish `hval : ∀ x : M, valuation (SeparableClosure k) (ι x) ≤ 1 ↔ x ∈ 𝒪[M]` using `fun x ↦ (mem_integer_intermediateField_iff E (j x)).symm.trans (apply_mem_integer_iff j.toRingEquiv hj x)`. Establish `hlt : ∀ x : 𝒪[M], x ∈ 𝓂[M] ↔ valuation (SeparableClosure k) (ι (x : M)) < 1` using `fun x ↦ by`.
+
+Express the relevant statement in the definitionally equal form `x ∈ 𝓂[M] ↔ valuation (SeparableClosure k) (((integerEquivOfVle j.toRingEquiv hj x : E) : SeparableClosure k)) < 1`. Rewrite using `[← mem_maximalIdeal_intermediateField_iff E (integerEquivOfVle j.toRingEquiv hj x), IsLocalRing.mem_maximalIdeal, IsLocalRing.mem_maximalIdeal, mem_nonunits_iff, mem_nonunits_iff, isUnit_map_iff]`. Set `y : 𝒪[maximalUnramifiedExtension k (SeparableClosure k)]` to `⟨⟨ι z, hmem z⟩, (mem_integer_intermediateField_iff _ _).2 ((hval z).2 z.2)⟩`. Establish `hf` using `frobenius_integer_sub_pow_mem_maximalIdeal (K := k) (Ω := SeparableClosure k) y`. Rewrite `hf` using `[mem_maximalIdeal_intermediateField_iff]`.
+
+Rewrite using `[hlt]`. Use `hf using 2` and compare the differences between its conclusion and the goal. Simplify using `only [AddSubgroupClass.coe_sub, SubmonoidClass.coe_pow, map_sub, map_pow, coe_integerAlgEquiv_apply, coe_integerAlgEquivOfIsAlgebraic_apply]`. Rewrite using `[key]`.
+-/
 theorem normResidueSymbol_integer_sub_pow_mem (hM : ramificationIndex k M = 1) {π : kˣ}
     (hπ : ord (π : k) = 1) (z : 𝒪[M]) :
     integerAlgEquiv k M (normResidueSymbol k M π) z - z ^ Nat.card 𝓀[k] ∈ 𝓂[M] := by
@@ -77,6 +90,11 @@ variable {K L : Type*} [Field K] [NumberField K] [Field L] [NumberField L] [Alge
   [IsGalois K L] [IsMulCommutative (L ≃ₐ[K] L)]
   (v : HeightOneSpectrum (𝓞 K)) (w : HeightOneSpectrum (𝓞 L)) [w.asIdeal.LiesOver v.asIdeal]
 
+/- English proof (translation)
+Set `w' : PlacesOver L v` to `⟨w, inferInstance⟩`. Use `isMulCommutative_gal_adicCompletion L v w'` as an intermediate fact. Establish `hM : ramificationIndex (v.adicCompletion K) (w.adicCompletion L) = 1` using `(ramificationIdx_integer v w).trans he`. Establish `h` using `eq_decompositionToLocal_arithFrobAt v w he _ (normResidueSymbol_integer_sub_pow_mem hM hπ)`. Rewrite using `[localSymbol_eq_symbolAt L v w']`.
+
+Express the relevant statement in the definitionally equal form `(((decompositionMulEquiv v w).symm (normResidueSymbol (v.adicCompletion K) (w.adicCompletion L) π) : MulAction.stabilizer Gal(L/K) w.asIdeal) : Gal(L/K)) = _`. Rewrite using `[h, ← decompositionMulEquiv_apply, MulEquiv.symm_apply_apply]`. Both sides reduce to the same expression.
+-/
 theorem localSymbol_eq_arithFrobAt (he : w.asIdeal.ramificationIdx (𝓞 K) = 1)
     {π : (v.adicCompletion K)ˣ} (hπ : ord (π : v.adicCompletion K) = 1) :
     localSymbol L v π = arithFrobAt (𝓞 K) Gal(L/K) w.asIdeal := by
@@ -93,6 +111,9 @@ theorem localSymbol_eq_arithFrobAt (he : w.asIdeal.ramificationIdx (𝓞 K) = 1)
   rw [h, ← decompositionMulEquiv_apply, MulEquiv.symm_apply_apply]
   rfl
 
+/- English proof (translation)
+Rewrite using `[ideleSymbol_finiteEmbedding, localSymbol_eq_arithFrobAt v w he hπ]`.
+-/
 theorem ideleSymbol_finiteEmbedding_eq_arithFrobAt (he : w.asIdeal.ramificationIdx (𝓞 K) = 1)
     {π : (v.adicCompletion K)ˣ} (hπ : ord (π : v.adicCompletion K) = 1) :
     ideleSymbol K L (IdeleGroup.finiteEmbedding v π) = arithFrobAt (𝓞 K) Gal(L/K) w.asIdeal := by

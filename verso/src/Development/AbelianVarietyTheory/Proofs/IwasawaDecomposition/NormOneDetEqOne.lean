@@ -5,6 +5,15 @@ namespace GlobalTheory.Mem.Col2.IdxEx
 
 open NumberField IsDedekindDomain Formalism.BasicNotions Formalism.HermitianLatticesTheory Formalism.L2.Col Formalism.L2.DIV GlobalTheory.QNormal GlobalTheory.Mem.Col2.IdxEx
 
+/- English proof (translation)
+Take `⟨h1, h2⟩` from `hr`. Distinguish the cases in `hs : s.1 < n`. Establish `e : (Pi.single s 1 : Fin (n + c) → F) = Loc.inX F n c (Pi.single ⟨s.1, hs⟩ 1)`. Use function extensionality and compare the values at `m`. Distinguish the cases in `hm : m.1 < n`.
+
+Simplify using `[Loc.inX, hm, Pi.single_apply, Fin.ext_iff]`. Establish `: m ≠ s` using `fun h => hm (h ▸ hs)`. Simplify using `[Loc.inX, hm, this]`. Rewrite using `[e, h2]`. Establish `e : (Pi.single s 1 : Fin (n + c) → F) = Loc.eN F (n + c) (n + (s.1 - n))`.
+
+Use function extensionality and compare the values at `m`. Establish `: n + (s.1 - n) = s.1` using `by omega`. Simplify using `[Loc.eN, this, Pi.single_apply, Fin.ext_iff]`. Establish `h3` using `h1.1.2.2 (s.1 - n) l (by`. Establish `: s.1 ≤ l.1` using `hl`.
+
+Simplify using `only [Set.mem_setOf_eq]`. Use the proof step `omega)`. Rewrite using `[e]`. Conclude with `sub_eq_zero.1 h3`.
+-/
 theorem apply_single_of_mem_unip {F : Type} [Field F] {n c : ℕ} {r : (Fin (n + c) → F) ≃ₗ[F] (Fin (n + c) → F)}
     (hr : r ∈ Loc.N1 F n c) (s l : Fin (n + c)) (hl : s ≤ l) :
     r (Pi.single s 1) l = (Pi.single s 1 : Fin (n + c) → F) l := by
@@ -28,6 +37,13 @@ theorem apply_single_of_mem_unip {F : Type} [Field F] {n c : ℕ} {r : (Fin (n +
     rw [e]
     exact sub_eq_zero.1 h3
 
+/- English proof (translation)
+Introduce `F _ n c r hr`. Apply `Units.ext` to reduce the goal to its premises. Rewrite using `[LinearEquiv.coe_det, ← LinearMap.det_toMatrix', Matrix.det_of_upperTriangular]`. Use `Finset.prod_eq_one fun s _ => ?_` and prove the remaining obligations. Use `apply_single_of_mem_unip hr s s le_rfl` as an intermediate fact.
+
+Rewrite using `[LinearMap.toMatrix'_apply]`. Simplify using `using this`. Introduce `l s hls`. Establish `hls' : s < l` using `hls`. Use `apply_single_of_mem_unip hr s l hls'.le` as an intermediate fact.
+
+Rewrite using `[LinearMap.toMatrix'_apply]`. Simplify `this` using `[hls'.ne']`.
+-/
 theorem det_eq_one_of_mem_unip :
     ∀ (F : Type) [Field F] (n c : ℕ), ∀ r ∈ Loc.N1 F n c, LinearEquiv.det r = 1 := by
   intro F _ n c r hr

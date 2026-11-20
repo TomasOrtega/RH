@@ -61,12 +61,21 @@ section Closed
 
 variable (C0 : ℝ) {𝒞 : FamClass} (sel : SSel 𝒞)
 
+/- English proof (translation)
+Unfold `FamP.cOut`. Simplify using the standard rewrite rules.
+-/
 theorem cOut_take {eps : ℝ} (Fm : FamP eps) (CH : ℝ) : (Fm.cOut ++ Fm.cMid CH).take 16 = Fm.cOut := by
   unfold FamP.cOut; simp
 
+/- English proof (translation)
+Unfold `FamP.cOut`. Simplify using the standard rewrite rules.
+-/
 theorem constant_list_cylinder {eps : ℝ} (Fm : FamP eps) (CH : ℝ) : (Fm.cOut ++ Fm.cMid CH).getD 6 0 = Fm.CYL := by
   unfold FamP.cOut; simp
 
+/- English proof (translation)
+Unfold `FamP.cOut`. Simplify using the standard rewrite rules.
+-/
 theorem constant_list_trace {eps : ℝ} (Fm : FamP eps) (CH : ℝ) : (Fm.cOut ++ Fm.cMid CH).getD 13 0 = Fm.CTu := by
   unfold FamP.cOut; simp
 
@@ -99,10 +108,16 @@ def YFOK : Prop :=
 
 def yR {eps : ℝ} (Fm : FamP eps) (hc : 𝒞 Fm) : ℝ := max (sel Fm hc).1 (yF Fm hc)
 
+/- English proof (translation)
+The claim follows from `((le_max_left _ _).trans (le_max_right _ _)).trans hx.le`.
+-/
 theorem h0R {eps : ℝ} {Fm : FamP eps} {hc : 𝒞 Fm} {x : ℝ} (hx : (Fm.raise (yR sel yF Fm hc)).x1 < x) :
     (sel Fm hc).1 ≤ x :=
   ((le_max_left _ _).trans (le_max_right _ _)).trans hx.le
 
+/- English proof (translation)
+The claim follows from `((le_max_right _ _).trans (le_max_right _ _)).trans hx.le`.
+-/
 theorem hyR {eps : ℝ} {Fm : FamP eps} {hc : 𝒞 Fm} {x : ℝ} (hx : (Fm.raise (yR sel yF Fm hc)).x1 < x) :
     yF Fm hc ≤ x :=
   ((le_max_right _ _).trans (le_max_right _ _)).trans hx.le
@@ -123,6 +138,21 @@ def CcR (hyF : YFOK sel yF) {eps : ℝ} (Fm : FamP eps) (hc : 𝒞 Fm) (x : ℝ)
 
 variable [Fact Formalism.HermitianLattices.Ext.L3.HermRepUnram] in
 
+/- English proof (translation)
+Introduce `aF`. Use `choose f g hfg using fun p : ℝ × ℝ × ℝ × ℝ => loop_evaluation_threshold_zero Formalism.FourierDecayAlt.P.loop_kernels Formalism.FourierDecayAlt.P.subfamilyAlt Formalism.HermitianLattices.Ext.L3.siegelMassRatio (p.1 + 1) (1 / 4) 3 (1 / 2) p.2.1 C0 p.2.2.1 p.2.2.2`. Set `par : List ℝ → ℝ × ℝ × ℝ × ℝ` to `fun l => (l.getD 6 0, l.getD 13 0, aF (l.take 16), C₀f aF l)`. Take `⟨e1, he1, H1⟩` from `hRowsF aF`. Take `⟨e2, he2, H2⟩` from `hForm`.
+
+Use `⟨min e1 e2, lt_min he1 he2, fun eps he hle => ?_⟩` and prove the remaining obligations. Take `⟨K1, hK1⟩` from `H1 eps he (hle.trans (min_le_left _ _))`. Take `⟨K2, hK2⟩` from `H2 eps he (hle.trans (min_le_right _ _))`. Set `K4 : TransportedAlt` to `⟨0, fun _ => 0, fun _ => 0, fun l => max (f (par l)) (g (par l))⟩`. Use `⟨(K1.sup K2).sup K4, fun Fm CH hc hL => ?_⟩` and prove the remaining obligations.
+
+Take `⟨hL12, hL4⟩` from `(Fm.large_sup _ _ CH).1 hL`. Take `⟨hL1, hL2⟩` from `(Fm.large_sup _ _ CH).1 hL12`. Introduce `hc'`. Establish `epar : par (Fm.cOut ++ Fm.cMid CH) = (Fm.CYL, Fm.CTu, aF Fm.cOut, C₀f aF (Fm.cOut ++ Fm.cMid CH))`. Simplify using `only [par, constant_list_cylinder, constant_list_trace, cOut_take]`.
+
+Establish `hthr : ∀ c ∈ Fm.cLast, max (f (Fm.CYL, Fm.CTu, aF Fm.cOut, C₀f aF (Fm.cOut ++ Fm.cMid CH))) (g (Fm.CYL, Fm.CTu, aF Fm.cOut, C₀f aF (Fm.cOut ++ Fm.cMid CH))) ≤ c`. Introduce `c hc0`. Use `hL4.2.2.2 c hc0` as an intermediate fact. Simplify `this` using `only [K4, epar]`. Establish `hC' : f (Fm.CYL, Fm.CTu, aF Fm.cOut, C₀f aF (Fm.cOut ++ Fm.cMid CH)) ≤ sC' Fm` using `(le_max_left _ _).trans (hthr _ (by unfold FamP.cLast sC'; simp))`.
+
+Establish `hCl : g (Fm.CYL, Fm.CTu, aF Fm.cOut, C₀f aF (Fm.cOut ++ Fm.cMid CH)) ≤ sCl Fm`. Establish `h` using `fun c hc => (le_max_right _ _).trans (hthr c hc)`. Unfold `sCl`. Use `le_min (h _ (by unfold FamP.cLast; simp)) (le_min (h _ (by unfold FamP.cLast; simp)) (le_min (h _ (by unfold FamP.cLast; simp)) (le_min (h _ (by unfold FamP.cLast; simp)) (le_min (h _ (by unfold FamP.cLast; simp)) (h _ (by unfold FamP.cLast; simp))))))` and prove the remaining obligations. Establish `hE` using `hfg (Fm.CYL, Fm.CTu, aF Fm.cOut, C₀f aF (Fm.cOut ++ Fm.cMid CH)) (Fm.raise (yR sel yF Fm hc')) (C1f Fm.cOut) (AtR sel yF hyF Fm hc') (Yt Fm hc') (CcR sel yF hyF Fm hc') (hK1 Fm CH hc hL1 hc') (hK2 Fm CH hc hL2)`.
+
+Take `⟨x0, H⟩` from `hE`. Use `⟨max x0 (yR sel yF Fm hc' + 1), fun x hx0 i => ?_⟩` and prove the remaining obligations. Introduce `hx h0 u u' hH hCT hA`. Establish `hx' : (Fm.raise (yR sel yF Fm hc')).x1 < x` using `by show max Fm.x1 (yR sel yF Fm hc') < x`. Use `max_lt hx ?_` and prove the remaining obligations.
+
+Use `(le_max_right _ _).trans hx0` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Conclude with `H x ((le_max_left _ _).trans hx0) i hC' hCl hx' u u' hH hCT hA`.
+-/
 theorem loopRowS_of_raised (hyF : YFOK sel yF) (C1f : List ℝ → ℝ) (C₀f : (List ℝ → ℝ) → List ℝ → ℝ)
     (Yt : ∀ {eps : ℝ} (Fm : FamP eps) (hc : 𝒞 Fm) x (hx : (Fm.raise (yR sel yF Fm hc)).x1 < x) (i : Fm.Ix x)
       (u u' : (Fm.D x i).what₂.Word), LoopTie (Fm.D x i) (Fm.L x i) (AtR sel yF hyF Fm hc x hx i) u u' (C1f Fm.cOut))
@@ -177,11 +207,19 @@ theorem loopRowS_of_raised (hyF : YFOK sel yF) (C1f : List ℝ → ℝ) (C₀f :
     linarith
   exact H x ((le_max_left _ _).trans hx0) i hC' hCl hx' u u' hH hCT hA
 
+/- English proof (translation)
+Unfold `FamP.cOut FamP.cMid`. Simplify using the standard rewrite rules.
+-/
 theorem constant_list_gamma {eps : ℝ} (Fm : FamP eps) (CH : ℝ) : (Fm.cOut ++ Fm.cMid CH).getD 17 0 = Fm.CGam := by
   unfold FamP.cOut FamP.cMid; simp
 
 variable [Fact Formalism.HermitianLattices.Ext.L3.HermRepUnram] in
 
+/- English proof (translation)
+Use `loopRowS_of_raised C0 sel yF hyF C1f (fun aF l => Formalism.L2.SG.RowsU.c0U (l.getD 13 0) (aF (l.take 16)) C0 (l.getD 17 0) (Uf aF l)) Yt ?_ hForm` and prove the remaining obligations. Introduce `aF`. Take `⟨e, he, H⟩` from `hAdmR.and ((hUR aF).and hTR)`. Use `⟨e, he, fun eps h1 h2 => ?_⟩` and prove the remaining obligations. Take `⟨K, hK⟩` from `H eps h1 h2`.
+
+Use `⟨K, fun Fm CH hc hL hc' C hC => ?_⟩` and prove the remaining obligations. Take `⟨hA, hU, hT⟩` from `hK Fm CH hc hL`. Rewrite `hC` using `[constant_list_trace, cOut_take, constant_list_gamma]`. Conclude with `Formalism.L2.SG.RowsU.rowsFU (Fm.raise (yR sel yF Fm hc')) (C1f Fm.cOut) (AtR sel yF hyF Fm hc') (Yt Fm hc') (Fm.CYL + 1) (1 / 4) 3 (1 / 2) Fm.CTu C0 (aF Fm.cOut) (hA hc') (hT hc').1 (hT hc').2 (fun x i => _root_.beta_l_unique (Fm.D x i)) _ (hU hc') C hC`.
+-/
 theorem loopRowS_of_U (hyF : YFOK sel yF) (C1f : List ℝ → ℝ) (Uf : (List ℝ → ℝ) → List ℝ → Formalism.L2.SG.RowsU.UC)
     (Yt : ∀ {eps : ℝ} (Fm : FamP eps) (hc : 𝒞 Fm) x (hx : (Fm.raise (yR sel yF Fm hc)).x1 < x) (i : Fm.Ix x)
       (u u' : (Fm.D x i).what₂.Word), LoopTie (Fm.D x i) (Fm.L x i) (AtR sel yF hyF Fm hc x hx i) u u' (C1f Fm.cOut))

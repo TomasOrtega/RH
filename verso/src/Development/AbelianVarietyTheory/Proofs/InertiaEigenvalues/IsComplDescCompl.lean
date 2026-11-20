@@ -12,11 +12,17 @@ section SlopeTestRemainingChoices
 
 variable {k k' : Type} [Field k] [Field k'] [Algebra k k'] {n : ℕ}
 
+/- English proof (translation)
+Take `⟨g, hg⟩` from `LinearMap.exists_leftInverse_of_injective (Algebra.linearMap k k') (LinearMap.ker_eq_bot.mpr (algebraMap k k').injective)`. Conclude with `⟨g, fun c => by simpa using LinearMap.congr_fun hg c⟩`.
+-/
 theorem exists_retraction : ∃ l : k' →ₗ[k] k, ∀ c : k, l (algebraMap k k' c) = c := by
   obtain ⟨g, hg⟩ := LinearMap.exists_leftInverse_of_injective (Algebra.linearMap k k')
     (LinearMap.ker_eq_bot.mpr (algebraMap k k').injective)
   exact ⟨g, fun c => by simpa using LinearMap.congr_fun hg c⟩
 
+/- English proof (translation)
+Use function extensionality and compare the values at `i`. Simplify using `only [Matrix.mulVec, dotProduct, Matrix.map_apply, map_sum]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[← Algebra.smul_def, map_smul, smul_eq_mul]`.
+-/
 theorem form_mulVec (l : k' →ₗ[k] k) (A : Matrix (Fin n) (Fin n) k) (x : Fin n → k') :
     (fun i => l ((A.map (algebraMap k k')).mulVec x i)) = A.mulVec (fun i => l (x i)) := by
   funext i
@@ -24,6 +30,9 @@ theorem form_mulVec (l : k' →ₗ[k] k) (A : Matrix (Fin n) (Fin n) k) (x : Fin
   refine Finset.sum_congr rfl fun j _ => ?_
   rw [← Algebra.smul_def, map_smul, smul_eq_mul]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `i`. Simplify using `[Matrix.mulVec, dotProduct, map_sum, map_mul]`.
+-/
 theorem ext_mulVec (A : Matrix (Fin n) (Fin n) k) (v : Fin n → k) :
     (A.map (algebraMap k k')).mulVec (fun i => algebraMap k k' (v i))
       = fun i => algebraMap k k' (A.mulVec v i) := by
@@ -34,6 +43,17 @@ def extSub (k' : Type) [Field k'] [Algebra k k'] (W : Submodule k (Fin n → k))
     Submodule k' (Fin n → k') :=
   Submodule.span k' ((fun (v : Fin n → k) (i : Fin n) => algebraMap k k' (v i)) '' W)
 
+/- English proof (translation)
+Establish `key : ∀ c : k', (fun i => l (c * x i)) ∈ W`. Proceed by induction on `hx using Submodule.span_induction with`. Consider the case `mem y hy`. Take `⟨w, hw, rfl⟩` from `hy`. Introduce `c`.
+
+Use `W.smul_mem (l c) hw using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `i`. Rewrite using `[Pi.smul_apply, smul_eq_mul, mul_comm c, ← Algebra.smul_def, map_smul, smul_eq_mul, mul_comm]`. Consider the case `zero`. Introduce `c`.
+
+Use `W.zero_mem using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `i`. Simplify using the standard rewrite rules. Consider the case `add y z _ _ hy hz`. Introduce `c`.
+
+Use `W.add_mem (hy c) (hz c) using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `i`. Simplify using `[mul_add]`. Consider the case `smul a y _ hy`. Introduce `c`.
+
+Use `hy (c * a) using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `i`. Simplify using `[mul_assoc]`. Simplify using `using key 1`.
+-/
 theorem form_mem (l : k' →ₗ[k] k) (W : Submodule k (Fin n → k)) (x : Fin n → k')
     (hx : x ∈ extSub k' W) : (fun i => l (x i)) ∈ W := by
   have key : ∀ c : k', (fun i => l (c * x i)) ∈ W := by
@@ -61,6 +81,13 @@ theorem form_mem (l : k' →ₗ[k] k) (W : Submodule k (Fin n → k)) (x : Fin n
       simp [mul_assoc]
   simpa using key 1
 
+/- English proof (translation)
+Proceed by induction on `hx using Submodule.span_induction with`. Consider the case `mem y hy`. Take `⟨w, hw, rfl⟩` from `hy`. Rewrite using `[ext_mulVec]`. Conclude with `Submodule.subset_span ⟨_, hA w hw, rfl⟩`.
+
+Consider the case `zero`. Rewrite using `[Matrix.mulVec_zero]`. Conclude with `Submodule.zero_mem _`. Consider the case `add y z _ _ hy hz`. Rewrite using `[Matrix.mulVec_add]`.
+
+Conclude with `Submodule.add_mem _ hy hz`. Consider the case `smul a y _ hy`. Rewrite using `[Matrix.mulVec_smul]`. Conclude with `Submodule.smul_mem _ a hy`.
+-/
 theorem extSub_stable (A : Matrix (Fin n) (Fin n) k) (W : Submodule k (Fin n → k))
     (hA : ∀ v ∈ W, A.mulVec v ∈ W) (x : Fin n → k') (hx : x ∈ extSub k' W) :
     (A.map (algebraMap k k')).mulVec x ∈ extSub k' W := by
@@ -110,6 +137,21 @@ def descCompl (l : k' →ₗ[k] k) (W : Submodule k (Fin n → k)) (U : Submodul
       simp only [Pi.smul_apply, smul_eq_mul, Pi.zero_apply] at a ⊢
       rw [← Algebra.smul_def, map_smul, a, smul_zero]
 
+/- English proof (translation)
+Establish `hmem : ∀ v ∈ W, (fun i => algebraMap k k' (v i)) ∈ extSub k' W` using `fun v hv => Submodule.subset_span ⟨v, hv, rfl⟩`. Establish `hback : ∀ v : Fin n → k, (fun i => l (algebraMap k k' (v i))) = v` using `fun v => funext fun i => hl (v i)`. Prove the components needed by the constructor for the conclusion. Rewrite using `[Submodule.disjoint_def]`. Introduce and unpack `v hv ⟨x, hx, u, hu, h1, h2⟩`.
+
+Establish `hu' : u ∈ extSub k' W`. Establish `e : u = (fun i => algebraMap k k' (v i)) - x` using `by rw [← h1]; abel`. Rewrite using `[e]`. Conclude with `Submodule.sub_mem _ (hmem v hv) hx`. Establish `hu0 : u = 0` using `(Submodule.disjoint_def.mp h.disjoint) u hu' hu`.
+
+Rewrite `h1` using `[hu0, add_zero]`. Rewrite `h2` using `[h1, hback]`. Conclude with `h2`. Rewrite using `[codisjoint_iff, eq_top_iff]`. Introduce `v _`.
+
+Establish `hv : (fun i => algebraMap k k' (v i)) ∈ extSub k' W ⊔ U`. Rewrite using `[h.sup_eq_top]`. Discharge the goal by the elementary cases of `trivial`. Take `⟨x, hx, u, hu, hxu⟩` from `Submodule.mem_sup.mp hv`. Take `⟨w, hw⟩ : ∃ w : Fin n → k, w = fun i => l (x i)` from `⟨_, rfl⟩`.
+
+Establish `hwW : w ∈ W` using `hw ▸ form_mem l W x hx`. Establish `hd : v - w ∈ descCompl l W U`. Use `⟨x - fun i => algebraMap k k' (w i), Submodule.sub_mem _ hx (hmem w hwW), u, hu, ?_, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `i`. Establish `e` using `congrFun hxu i`.
+
+Simplify using `only [Pi.add_apply, Pi.sub_apply, map_sub] at e ⊢`. Rewrite using `[← e]`. Expand and normalize the polynomial expressions, which then agree. Use function extensionality and compare the values at `i`. Simplify using `[hw, hl]`.
+
+Simplify using `using Submodule.add_mem_sup hwW hd`.
+-/
 theorem isCompl_descCompl (l : k' →ₗ[k] k) (hl : ∀ c : k, l (algebraMap k k' c) = c)
     (W : Submodule k (Fin n → k)) (U : Submodule k' (Fin n → k'))
     (h : IsCompl (extSub k' W) U) : IsCompl W (descCompl l W U) := by
@@ -147,6 +189,9 @@ theorem isCompl_descCompl (l : k' →ₗ[k] k) (hl : ∀ c : k, l (algebraMap k 
         simp [hw, hl]
     simpa using Submodule.add_mem_sup hwW hd
 
+/- English proof (translation)
+Introduce and unpack `v ⟨x, hx, u, hu, h1, h2⟩`. Use `⟨(A.map (algebraMap k k')).mulVec x, extSub_stable A W hA x hx, (A.map (algebraMap k k')).mulVec u, hU u hu, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[← Matrix.mulVec_add, h1, ext_mulVec]`. Rewrite using `[form_mulVec, h2, Matrix.mulVec_zero]`.
+-/
 theorem descCompl_stable (l : k' →ₗ[k] k) (A : Matrix (Fin n) (Fin n) k)
     (W : Submodule k (Fin n → k)) (U : Submodule k' (Fin n → k'))
     (hA : ∀ v ∈ W, A.mulVec v ∈ W)
@@ -160,6 +205,13 @@ theorem descCompl_stable (l : k' →ₗ[k] k) (A : Matrix (Fin n) (Fin n) k)
 
 end SlopeTestRemainingChoices
 
+/- English proof (translation)
+Set `_ : Algebra k k'` to `ι.toAlgebra`. Establish `hcoe : ∀ g, ((mapRep ι ρ g : GL (Fin n) k') : Matrix (Fin n) (Fin n) k') = (ρ g : Matrix (Fin n) (Fin n) k).map (algebraMap k k')` using `fun _ => rfl`. Take `⟨l, hl⟩` from `exists_retraction (k := k) (k' := k')`. Introduce `W hW`. Establish `hWe : IsInv (mapRep ι ρ) (extSub k' W)` using `fun g x hx => by`.
+
+Rewrite using `[hcoe]`. Conclude with `extSub_stable _ W (hW g) x hx`. Take `⟨U, hU, hc⟩` from `h _ hWe`. Use `⟨descCompl l W U, fun g => ?_, isCompl_descCompl l hl W U hc⟩` and prove the remaining obligations. Conclude with `descCompl_stable l _ W U (hW g) fun u hu => by`.
+
+Rewrite using `[← hcoe]`. Conclude with `hU g u hu`.
+-/
 theorem isSSRep_of_mapRep {Γ k k' : Type} [Group Γ] [Field k] [Field k'] {n : ℕ}
     (ι : k →+* k') (ρ : Γ →* GL (Fin n) k) (h : IsSSRep (mapRep ι ρ)) : IsSSRep ρ := by
   let _ : Algebra k k' := ι.toAlgebra

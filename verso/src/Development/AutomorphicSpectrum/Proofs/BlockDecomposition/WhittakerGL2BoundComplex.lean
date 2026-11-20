@@ -21,6 +21,13 @@ def Pn (N : ℕ) : Seminorm ℝ Sp :=
   (Finset.Iic ((N, N) : ℕ × ℕ)).sup (schwartzSeminormFamily ℝ (Fin 2 → ℂ) ℂ)
 
 open GlobalTheory.CompanionTheory.GodementFE.Unif in
+/- English proof (translation)
+Establish `h : ∀ i ∈ Finset.range (N + 1), ∀ j ∈ Finset.range (N + 1), SchwartzMap.seminorm ℝ i j f ≤ Pn N f`. Introduce `i hi j hj`. Establish `hm : ((i, j) : ℕ × ℕ) ∈ Finset.Iic ((N, N) : ℕ × ℕ)`. Rewrite using `[Finset.mem_Iic]`. Conclude with `⟨by simpa using Nat.lt_succ_iff.1 (Finset.mem_range.1 hi), by simpa using Nat.lt_succ_iff.1 (Finset.mem_range.1 hj)⟩`.
+
+Conclude with `Seminorm.le_finset_sup_apply (p := schwartzSeminormFamily ℝ (Fin 2 → ℂ) ℂ) hm`. Unfold `pS`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [Finset.sum_const, Finset.card_range, nsmul_eq_mul]`. Use `push_cast`.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem pS_le_Pn (N : ℕ) (f : Sp) : pS N f ≤ ((N : ℝ) + 1) ^ 2 * Pn N f := by
   have h : ∀ i ∈ Finset.range (N + 1), ∀ j ∈ Finset.range (N + 1),
       SchwartzMap.seminorm ℝ i j f ≤ Pn N f := by
@@ -40,6 +47,13 @@ theorem pS_le_Pn (N : ℕ) (f : Sp) : pS N f ≤ ((N : ℝ) + 1) ^ 2 * Pn N f :=
 
 open GlobalTheory.CompanionTheory.GodementFE.Unif in
 
+/- English proof (translation)
+Establish `hc : Continuous (Pn N)` using `Seminorm.continuous_finsetSup fun i _ => (schwartz_withSeminorms ℝ (Fin 2 → ℂ) ℂ).continuous_seminorm i`. Set `q : Seminorm ℝ Sp` to `(Pn N).comp T.toLinearMap`. Establish `hq : Continuous q` using `hc.comp T.continuous`. Take `⟨u, C, -, hle⟩` from `Seminorm.bound_of_continuous (schwartz_withSeminorms ℝ (Fin 2 → ℂ) ℂ) q hq`. Establish `hN : (0 : ℝ) ≤ ((N : ℝ) + 1) ^ 2` using `by positivity`.
+
+Use `⟨u.sup fun i => max i.1 i.2, ((N : ℝ) + 1) ^ 2 * C, mul_nonneg hN C.2, fun f => ?_⟩` and prove the remaining obligations. Establish `h1 : q f ≤ (C : ℝ) * (u.sup (schwartzSeminormFamily ℝ (Fin 2 → ℂ) ℂ)) f` using `hle f`. Establish `h2 : (u.sup (schwartzSeminormFamily ℝ (Fin 2 → ℂ) ℂ)) f ≤ pS (u.sup fun i => max i.1 i.2) f`. Use `sup_le_pS u (fun i hi => ?_) f` and prove the remaining obligations. Use `Finset.le_sup (f := fun i : ℕ × ℕ => max i.1 i.2) hi` as an intermediate fact.
+
+Conclude with `⟨(le_max_left _ _).trans this, (le_max_right _ _).trans this⟩`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem pS_comp_bound (N : ℕ) (T : Sp →L[ℝ] Sp) :
     ∃ (N' : ℕ) (D : ℝ), 0 ≤ D ∧ ∀ f : Sp, pS N (T f) ≤ D * pS N' f := by
   have hc : Continuous (Pn N) := Seminorm.continuous_finsetSup fun i _ =>
@@ -63,6 +77,19 @@ theorem pS_comp_bound (N : ℕ) (T : Sp →L[ℝ] Sp) :
 
 open GlobalTheory.CompanionTheory.GodementFE.Unif in
 
+/- English proof (translation)
+Use `set m : ℕ := 2 * a + 4 with hm`. Use `set K : ℝ := 2 ^ m * pS m f with hK`. Use `set v : Fin 2 → ℂ := ![x, u] with hv`. Establish `h : (1 + ‖v‖) ^ m * ‖f v‖ ≤ K`. Establish `h1` using `SchwartzMap.one_add_le_sup_seminorm_apply (𝕜 := ℝ) (m := (m, 0)) (k := m) (n := 0) le_rfl le_rfl f v`.
+
+Rewrite `h1` using `[norm_iteratedFDeriv_zero]`. Use `h1.trans (mul_le_mul_of_nonneg_left ?_ (by positivity))` and prove the remaining obligations. Use `sup_le_pS _ (fun i hi => ?_) f` and prove the remaining obligations. Establish `h2` using `Finset.mem_Iic.1 hi`. Establish `h3 : i.1 ≤ m` using `h2.1`.
+
+Establish `h4 : i.2 ≤ 0` using `h2.2`. Conclude with `⟨h3, by omega⟩`. Establish `hx : ‖x‖ ≤ ‖v‖` using `by simpa [hv] using norm_le_pi_norm v 0`. Establish `hu : ‖u‖ ≤ ‖v‖` using `by simpa [hv] using norm_le_pi_norm v 1`. Establish `hr : 0 ≤ ‖v‖` using `norm_nonneg _`.
+
+Establish `hA : 1 + ‖x‖ ^ 2 ≤ (1 + ‖v‖) ^ 2` using `by nlinarith [norm_nonneg x]`. Establish `hB : 1 + ‖u‖ ^ 2 ≤ (1 + ‖v‖) ^ 2` using `by nlinarith [norm_nonneg u]`. Establish `hAB : (1 + ‖x‖ ^ 2) ^ a * (1 + ‖u‖ ^ 2) ^ 2 ≤ (1 + ‖v‖) ^ m`. Establish `h1 : (1 + ‖x‖ ^ 2) ^ a ≤ ((1 + ‖v‖) ^ 2) ^ a` using `pow_le_pow_left₀ (by positivity) hA a`. Establish `h2 : (1 + ‖u‖ ^ 2) ^ 2 ≤ ((1 + ‖v‖) ^ 2) ^ 2` using `pow_le_pow_left₀ (by positivity) hB 2`.
+
+Combine the equalities or inequalities in the displayed calculation. Establish `h3 : (1 + ‖x‖ ^ 2) ^ a * (1 + ‖u‖ ^ 2) ^ 2 * ‖f v‖ ≤ K` using `le_trans (mul_le_mul_of_nonneg_right hAB (norm_nonneg _)) h`. Establish `hpos : 0 < (1 + ‖x‖ ^ 2) ^ a * (1 + ‖u‖ ^ 2) ^ 2` using `by positivity`. Establish `e : K * (dd x ^ a * dd u ^ 2) = K / ((1 + ‖x‖ ^ 2) ^ a * (1 + ‖u‖ ^ 2) ^ 2)`. Simplify using `only [dd, inv_pow]`.
+
+Clear the denominators using the available nonvanishing facts. Rewrite using `[e, le_div_iff₀ hpos, mul_comm]`. Conclude with `h3`.
+-/
 theorem schw_pow (a : ℕ) (f : Sp) (x u : ℂ) :
     ‖f ![x, u]‖ ≤ 2 ^ (2 * a + 4) * pS (2 * a + 4) f * (dd x ^ a * dd u ^ 2) := by
   set m : ℕ := 2 * a + 4 with hm
@@ -99,6 +126,11 @@ theorem schw_pow (a : ℕ) (f : Sp) (x u : ℂ) :
   exact h3
 
 open GlobalTheory.CompanionTheory.GodementFE.Unif in
+/- English proof (translation)
+Establish `hJ : 0 ≤ ∫ u : ℂ, dd u ^ 2` using `integral_nonneg fun u => by positivity`. Use `⟨2 ^ (2 * a + 4) * ∫ u : ℂ, dd u ^ 2, 2 * a + 4, by positivity, fun f x ξ => ?_⟩` and prove the remaining obligations. Use `set K : ℝ := 2 ^ (2 * a + 4) * pS (2 * a + 4) f with hK`. Establish `h1 : ‖sF f x ξ‖ ≤ ∫ u : ℂ, K * dd x ^ a * dd u ^ 2`. Use `norm_integral_le_of_norm_le (dd_sq_int.const_mul _) (Eventually.of_forall fun u => ?_)` and prove the remaining obligations.
+
+Rewrite using `[norm_mul, norm_psiC, mul_one]`. Combine the equalities or inequalities in the displayed calculation. Rewrite `h1` using `[integral_const_mul]`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem sF_x_decay (a : ℕ) : ∃ (C : ℝ) (N : ℕ), 0 ≤ C ∧ ∀ (f : Sp) (x ξ : ℂ),
     ‖sF f x ξ‖ ≤ C * pS N f * dd x ^ a := by
   have hJ : 0 ≤ ∫ u : ℂ, dd u ^ 2 := integral_nonneg fun u => by positivity
@@ -115,6 +147,17 @@ theorem sF_x_decay (a : ℕ) : ∃ (C : ℝ) (N : ℕ), 0 ≤ C ∧ ∀ (f : Sp)
     _ = _ := by rw [hK]; ring
 
 open GlobalTheory.CompanionTheory.GodementFE.Unif in
+/- English proof (translation)
+Proceed by induction on `b with`. Consider the case `zero`. Take `⟨C, N, hC, h⟩` from `sF_x_decay (a + 1)`. Conclude with `⟨C, N, hC, fun f x ξ => by simpa using h f x ξ⟩`. Consider the case `succ b ih`.
+
+Take `⟨C, N, hC, h⟩` from `ih`. Take `⟨N1, D1, hD1, t1⟩` from `pS_comp_bound N (T2 1)`. Take `⟨N2, D2, hD2, t2⟩` from `pS_comp_bound N (T2 Complex.I)`. Use `⟨C * (1 + D1 + D2), max N (max N1 N2), by positivity, fun f x ξ => ?_⟩` and prove the remaining obligations. Use `set A := pS (max N (max N1 N2)) f with hA`.
+
+Establish `p0 : pS N f ≤ A` using `pS_mono (le_max_left _ _) f`. Establish `p1 : pS N (T2 1 f) ≤ D1 * A` using `(t1 f).trans (mul_le_mul_of_nonneg_left (pS_mono ((le_max_left _ _).trans (le_max_right _ _)) f) hD1)`. Establish `p2 : pS N (T2 Complex.I f) ≤ D2 * A` using `(t2 f).trans (mul_le_mul_of_nonneg_left (pS_mono ((le_max_right _ _).trans (le_max_right _ _)) f) hD2)`. Establish `hdx` using `(dd_pos x).le`. Establish `hdξ` using `(dd_pos ξ).le`.
+
+Use `set Wt : ℝ := dd x ^ a * dd ξ ^ b with hWt`. Establish `hW0 : 0 ≤ Wt` using `by positivity`. Establish `key : ∀ (g : Sp) (B : ℝ), pS N g ≤ B → ‖sF g x ξ‖ ≤ C * B * Wt * dd x` using `fun g B hB => by`. Use `(h g x ξ).trans ?_` and prove the remaining obligations. Establish `e : dd x ^ (a + 1) * dd ξ ^ b = Wt * dd x` using `by rw [hWt, pow_succ]; ring`.
+
+Rewrite using `[e]`. Combine the equalities or inequalities in the displayed calculation. Use `decay_of_bounds f (C * A * Wt) (C * (D1 * A) * Wt) (C * (D2 * A) * Wt) x ξ (key f A p0) (by rw [← secondLineDeriv_apply]; exact key _ _ p1) (by rw [← secondLineDeriv_apply]; exact key _ _ p2)` as an intermediate fact. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem sF_decay_ab (a b : ℕ) : ∃ (C : ℝ) (N : ℕ), 0 ≤ C ∧ ∀ (f : Sp) (x ξ : ℂ),
     ‖sF f x ξ‖ ≤ C * pS N f * (dd x ^ (a + 1) * dd ξ ^ b) := by
   induction b with
@@ -150,12 +193,22 @@ theorem sF_decay_ab (a b : ℕ) : ∃ (C : ℝ) (N : ℕ), 0 ≤ C ∧ ∀ (f : 
     calc _ ≤ _ := this
       _ = _ := by rw [hWt, pow_succ (dd x), pow_succ (dd ξ)]; ring
 
+/- English proof (translation)
+Take `⟨C, N, hC, h⟩` from `sF_decay_ab B (B + 1)`. Conclude with `⟨C, N, hC, fun f x ξ => by rw [mul_pow]; exact h f x ξ⟩`.
+-/
 theorem sF_decay_pow (B : ℕ) : ∃ (C : ℝ) (N : ℕ), 0 ≤ C ∧
     ∀ (f : SchwartzMap (Fin 2 → ℂ) ℂ) (x ξ : ℂ),
       ‖sF f x ξ‖ ≤ C * pS N f * (dd x * dd ξ) ^ (B + 1) := by
   obtain ⟨C, N, hC, h⟩ := sF_decay_ab B (B + 1)
   exact ⟨C, N, hC, fun f x ξ => by rw [mul_pow]; exact h f x ξ⟩
 
+/- English proof (translation)
+Establish `hYi : 0 < Y⁻¹` using `inv_pos.2 hY`. Break down `le_total 1 Y with h | h` into its components or cases. Establish `h2 : 1 + Y⁻¹ ≤ 2`. Use `inv_le_one_of_one_le₀ h` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
+
+Establish `h3` using `Real.log_le_log (by positivity) h2`. Combine the linear relations using `[abs_nonneg (Real.log Y)]`. Establish `h2 : 1 + Y⁻¹ ≤ 2 * Y⁻¹`. Use `(one_le_inv₀ hY).2 h` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
+
+Establish `h3` using `Real.log_le_log (by positivity) h2`. Rewrite `h3` using `[Real.log_mul (by norm_num) hYi.ne', Real.log_inv]`. Combine the linear relations using `[neg_le_abs (Real.log Y)]`.
+-/
 theorem log_one_add_inv_le (Y : ℝ) (hY : 0 < Y) :
     Real.log (1 + Y⁻¹) ≤ Real.log 2 + |Real.log Y| := by
   have hYi : 0 < Y⁻¹ := inv_pos.2 hY
@@ -174,12 +227,18 @@ theorem log_one_add_inv_le (Y : ℝ) (hY : 0 < Y) :
 
 def rad (s r : ℝ) : ℝ := r * ((1 + r ^ 2)⁻¹ * (1 + (r * s) ^ 2)⁻¹)
 
+/- English proof (translation)
+Unfold `rad`. Use `continuous_id.mul (Continuous.mul ?_ ?_)` and prove the remaining obligations. Conclude with `Continuous.inv₀ (by fun_prop) fun r => by positivity`. Conclude with `Continuous.inv₀ (by fun_prop) fun r => by positivity`.
+-/
 theorem continuous_rad (s : ℝ) : Continuous (rad s) := by
   unfold rad
   refine continuous_id.mul (Continuous.mul ?_ ?_)
   · exact Continuous.inv₀ (by fun_prop) fun r => by positivity
   · exact Continuous.inv₀ (by fun_prop) fun r => by positivity
 
+/- English proof (translation)
+Unfold `rad`. Use `mul_le_mul_of_nonneg_left ?_ hr.le` and prove the remaining obligations. Establish `h : (1 + (r * s) ^ 2)⁻¹ ≤ 1` using `inv_le_one_of_one_le₀ (by nlinarith [sq_nonneg (r * s)])`. Establish `h0 : 0 ≤ (1 + r ^ 2)⁻¹` using `by positivity`. Use the polynomial consequences of the given equalities and inequalities.
+-/
 theorem rad_le_left (s : ℝ) {r : ℝ} (hr : 0 < r) : rad s r ≤ r * (1 + r ^ 2)⁻¹ := by
   unfold rad
   refine mul_le_mul_of_nonneg_left ?_ hr.le
@@ -187,6 +246,11 @@ theorem rad_le_left (s : ℝ) {r : ℝ} (hr : 0 < r) : rad s r ≤ r * (1 + r ^ 
   have h0 : 0 ≤ (1 + r ^ 2)⁻¹ := by positivity
   nlinarith
 
+/- English proof (translation)
+Establish `e : r ^ (-3 : ℝ) = (r ^ 3)⁻¹`. Rewrite using `[Real.rpow_neg hr.le]`. Use `norm_cast`. Rewrite using `[e]`. Unfold `rad`.
+
+Establish `h1 : (1 + r ^ 2)⁻¹ ≤ (r ^ 2)⁻¹` using `inv_anti₀ (by positivity) (by linarith)`. Establish `h2 : (1 + (r * s) ^ 2)⁻¹ ≤ ((r * s) ^ 2)⁻¹` using `inv_anti₀ (by positivity) (by linarith)`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem rad_le_right {s r : ℝ} (hs : 0 < s) (hr : 0 < r) :
     rad s r ≤ (s ^ 2)⁻¹ * r ^ (-3 : ℝ) := by
   have e : r ^ (-3 : ℝ) = (r ^ 3)⁻¹ := by
@@ -201,6 +265,13 @@ theorem rad_le_right {s r : ℝ} (hs : 0 < s) (hr : 0 < r) :
         mul_le_mul_of_nonneg_left (mul_le_mul h1 h2 (by positivity) (by positivity)) hr.le
     _ = _ := by field_simp
 
+/- English proof (translation)
+Rewrite using `[← intervalIntegral.integral_of_le ha.le]`. Establish `hd : ∀ x ∈ Set.uIcc 0 a, HasDerivAt (fun r : ℝ => Real.log (1 + r ^ 2) / 2) (x * (1 + x ^ 2)⁻¹) x`. Introduce `x _`. Establish `h1 : HasDerivAt (fun r : ℝ => 1 + r ^ 2) (2 * x) x`. Simplify using `using ((hasDerivAt_id x).pow 2).const_add 1`.
+
+Establish `h2 : HasDerivAt (fun r : ℝ => Real.log (1 + r ^ 2) / 2) (2 * x / (1 + x ^ 2) / 2) x` using `(h1.log (by positivity)).div_const 2`. Use `h2 using 1` and compare the differences between its conclusion and the goal. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[intervalIntegral.integral_eq_sub_of_hasDerivAt hd]`. Simplify using the standard rewrite rules.
+
+Use `Continuous.intervalIntegrable ?_ _ _` and prove the remaining obligations. Use `continuous_id.mul (Continuous.inv₀ (by fun_prop) fun r => by positivity)` and prove the remaining obligations.
+-/
 theorem integral_left (a : ℝ) (ha : 0 < a) :
     ∫ r in Set.Ioc 0 a, r * (1 + r ^ 2)⁻¹ = Real.log (1 + a ^ 2) / 2 := by
   rw [← intervalIntegral.integral_of_le ha.le]
@@ -218,6 +289,11 @@ theorem integral_left (a : ℝ) (ha : 0 < a) :
   · refine Continuous.intervalIntegrable ?_ _ _
     refine continuous_id.mul (Continuous.inv₀ (by fun_prop) fun r => by positivity)
 
+/- English proof (translation)
+Establish `hsplit : Set.Ioi (0 : ℝ) = Set.Ioc 0 s⁻¹ ∪ Set.Ioi s⁻¹` using `(Set.Ioc_union_Ioi_eq_Ioi (inv_pos.2 hs).le).symm`. Rewrite using `[hsplit]`. Use `IntegrableOn.union (continuous_rad s).integrableOn_Ioc ?_` and prove the remaining obligations. Establish `hb : IntegrableOn (fun r : ℝ => (s ^ 2)⁻¹ * r ^ (-3 : ℝ)) (Set.Ioi s⁻¹)` using `(integrableOn_Ioi_rpow_of_lt (by norm_num) (inv_pos.2 hs)).const_mul _`. Use `Integrable.mono' hb (continuous_rad s).aestronglyMeasurable ?_` and prove the remaining obligations.
+
+Use `(ae_restrict_iff' measurableSet_Ioi).2 (Eventually.of_forall fun r hr => ?_)` and prove the remaining obligations. Establish `hr0 : 0 < r` using `(inv_pos.2 hs).trans hr`. Rewrite using `[Real.norm_of_nonneg (by unfold rad; positivity)]`. Conclude with `rad_le_right hs hr0`.
+-/
 theorem rad_integrableOn (s : ℝ) (hs : 0 < s) : IntegrableOn (rad s) (Set.Ioi 0) := by
   have hsplit : Set.Ioi (0 : ℝ) = Set.Ioc 0 s⁻¹ ∪ Set.Ioi s⁻¹ :=
     (Set.Ioc_union_Ioi_eq_Ioi (inv_pos.2 hs).le).symm
@@ -231,6 +307,23 @@ theorem rad_integrableOn (s : ℝ) (hs : 0 < s) : IntegrableOn (rad s) (Set.Ioi 
   rw [Real.norm_of_nonneg (by unfold rad; positivity)]
   exact rad_le_right hs hr0
 
+/- English proof (translation)
+Establish `ha : 0 < s⁻¹` using `inv_pos.2 hs`. Establish `hsplit : Set.Ioi (0 : ℝ) = Set.Ioc 0 s⁻¹ ∪ Set.Ioi s⁻¹` using `(Set.Ioc_union_Ioi_eq_Ioi ha.le).symm`. Establish `hi` using `rad_integrableOn s hs`. Establish `hi1 : IntegrableOn (rad s) (Set.Ioc 0 s⁻¹)` using `hi.mono_set (by`. Introduce `r hr`.
+
+Conclude with `hr.1)`. Establish `hi2 : IntegrableOn (rad s) (Set.Ioi s⁻¹)` using `hi.mono_set (by`. Introduce `r hr`. Conclude with `ha.trans hr)`. Establish `hu : ∫ r in Set.Ioi (0 : ℝ), rad s r = (∫ r in Set.Ioc 0 s⁻¹, rad s r) + ∫ r in Set.Ioi s⁻¹, rad s r`.
+
+Rewrite using `[hsplit]`. Conclude with `setIntegral_union (Set.Ioc_disjoint_Ioi le_rfl) measurableSet_Ioi hi1 hi2`. Establish `hl : IntegrableOn (fun r : ℝ => r * (1 + r ^ 2)⁻¹) (Set.Ioc 0 s⁻¹)` using `(continuous_id.mul (Continuous.inv₀ (by fun_prop) fun r => by positivity)).integrableOn_Ioc`. Establish `h1 : ∫ r in Set.Ioc 0 s⁻¹, rad s r ≤ Real.log (1 + (s⁻¹) ^ 2) / 2`. Rewrite using `[← integral_left _ ha]`.
+
+Conclude with `setIntegral_mono_on hi1 hl measurableSet_Ioc fun r hr => rad_le_left s hr.1`. Establish `hb : IntegrableOn (fun r : ℝ => (s ^ 2)⁻¹ * r ^ (-3 : ℝ)) (Set.Ioi s⁻¹)` using `(integrableOn_Ioi_rpow_of_lt (by norm_num) ha).const_mul _`. Establish `h2 : ∫ r in Set.Ioi s⁻¹, rad s r ≤ 1 / 2`. Establish `e : ∫ r in Set.Ioi s⁻¹, (s ^ 2)⁻¹ * r ^ (-3 : ℝ) = 1 / 2`. Rewrite using `[integral_const_mul, integral_Ioi_rpow_of_lt (by norm_num) ha]`.
+
+Establish `e2 : (s⁻¹) ^ ((-3 : ℝ) + 1) = s ^ 2`. Rewrite using `[show ((-3 : ℝ) + 1) = -2 by norm_num, Real.rpow_neg ha.le, Real.inv_rpow hs.le, inv_inv]`. Use `norm_cast`. Rewrite using `[e2]`. Clear the denominators using the available nonvanishing facts.
+
+Evaluate the numerical expressions. Rewrite using `[← e]`. Conclude with `setIntegral_mono_on hi2 hb measurableSet_Ioi fun r hr => rad_le_right hs (ha.trans hr)`. Establish `h3` using `log_one_add_inv_le (s ^ 2) (by positivity)`. Establish `h4 : Real.log 2 < 1`.
+
+Use `Real.log_two_lt_d9` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish `e3 : (s⁻¹) ^ 2 = (s ^ 2)⁻¹` using `by rw [inv_pow]`. Rewrite using `[hu]`. Rewrite `h1` using `[e3]`.
+
+Combine the linear relations using `[abs_nonneg (Real.log (s ^ 2))]`.
+-/
 theorem rad_integral_le (s : ℝ) (hs : 0 < s) :
     ∫ r in Set.Ioi (0 : ℝ), rad s r ≤ 1 + |Real.log (s ^ 2)| := by
   have ha : 0 < s⁻¹ := inv_pos.2 hs
@@ -274,6 +367,21 @@ theorem rad_integral_le (s : ℝ) (hs : 0 < s) :
   rw [e3] at h1
   linarith [abs_nonneg (Real.log (s ^ 2))]
 
+/- English proof (translation)
+Use `set V : ℝ := (Module.finrank ℝ ℂ : ℝ) * (volume : Measure ℂ).real (Metric.ball 0 1) with hV`. Establish `hV0 : 0 ≤ V` using `by positivity`. Use `⟨V, hV0, fun A D hA hD => ?_⟩` and prove the remaining obligations. Establish `hAp : 0 < ‖A‖` using `norm_pos_iff.2 hA`. Establish `hDp : 0 < ‖D‖` using `norm_pos_iff.2 hD`.
+
+Use `set s : ℝ := ‖A‖ / ‖D‖ with hs`. Establish `hs0 : 0 < s` using `div_pos hAp hDp`. Use `set G : ℝ → ℝ := fun r => (1 + r ^ 2)⁻¹ * (1 + (r * s) ^ 2)⁻¹ with hG`. Establish `hpt : ∀ t : ℂ, t ≠ 0 → (‖t‖ ^ 2)⁻¹ * (dd (t * A) * dd (t * D)⁻¹) = ‖D‖ ^ 2 * G ‖t * D‖`. Introduce `t ht`.
+
+Establish `htp : 0 < ‖t‖` using `norm_pos_iff.2 ht`. Rewrite using `[GlobalTheory.CompanionTheory.GodementFE.TInt.dd_inv _ (mul_ne_zero ht hD)]`. Establish `e : ‖t * D‖ * s = ‖t * A‖`. Rewrite using `[norm_mul, norm_mul, hs]`. Clear the denominators using the available nonvanishing facts.
+
+Simplify using `only [hG, e, dd]`. Rewrite using `[norm_mul]`. Clear the denominators using the available nonvanishing facts. Rewrite using `[norm_mul]`. Expand and normalize the polynomial expressions, which then agree.
+
+Establish `h1 : ∫ t : ℂ, (‖t‖ ^ 2)⁻¹ * (dd (t * A) * dd (t * D)⁻¹) = ∫ t : ℂ, ‖D‖ ^ 2 * G ‖t * D‖`. Use `integral_congr_ae ?_` and prove the remaining obligations. Use `filter_upwards [compl_mem_ae_iff.2 (measure_singleton (0 : ℂ))] with t ht`. Conclude with `hpt t ht`. Establish `h2 : ∫ t : ℂ, G ‖t * D‖ = (‖D‖ ^ 2)⁻¹ * ∫ u : ℂ, G ‖u‖` using `GlobalTheory.CompanionTheory.GodementFE.TInt.integral_comp_mulRight (fun u => G ‖u‖) D hD`.
+
+Establish `h3 : ∫ u : ℂ, G ‖u‖ = V * ∫ r in Set.Ioi (0 : ℝ), rad s r`. Rewrite using `[integral_fun_norm_addHaar (volume : Measure ℂ) G]`. Simplify using `only [Complex.finrank_real_complex, smul_eq_mul, hV, hG, rad]`. Evaluate the numerical expressions. Expand and normalize the polynomial expressions, which then agree.
+
+Rewrite using `[h1, integral_const_mul, h2, h3]`. Establish `e : ‖D‖ ^ 2 * ((‖D‖ ^ 2)⁻¹ * (V * ∫ r in Set.Ioi (0 : ℝ), rad s r)) = V * ∫ r in Set.Ioi (0 : ℝ), rad s r`. Clear the denominators using the available nonvanishing facts. Rewrite using `[e]`. Conclude with `mul_le_mul_of_nonneg_left (rad_integral_le s hs0) hV0`.
+-/
 theorem tint_log : ∃ c : ℝ, 0 ≤ c ∧ ∀ A D : ℂ, A ≠ 0 → D ≠ 0 →
     ∫ t : ℂ, (‖t‖ ^ 2)⁻¹ * (dd (t * A) * dd (t * D)⁻¹) ≤
       c * (1 + |Real.log ((‖A‖ / ‖D‖) ^ 2)|) := by
@@ -317,6 +425,11 @@ theorem tint_log : ∃ c : ℝ, 0 ≤ c ∧ ∀ A D : ℂ, A ≠ 0 → D ≠ 0 �
   rw [e]
   exact mul_le_mul_of_nonneg_left (rad_integral_le s hs0) hV0
 
+/- English proof (translation)
+Unfold `dd`. Rewrite using `[← mul_inv]`. Use `inv_anti₀ (by positivity) ?_` and prove the remaining obligations. Establish `h1` using `sq_nonneg ‖a‖`. Establish `h2` using `sq_nonneg ‖b‖`.
+
+Use polynomial arithmetic with `[mul_pow ‖a‖ ‖b‖ 2]`.
+-/
 theorem dd_mul_le (a b : ℂ) : dd a * dd b ≤ (1 + (‖a‖ * ‖b‖) ^ 2)⁻¹ := by
   unfold dd
   rw [← mul_inv]
@@ -325,6 +438,33 @@ theorem dd_mul_le (a b : ℂ) : dd a * dd b ≤ (1 + (‖a‖ * ‖b‖) ^ 2)⁻
   have h2 := sq_nonneg ‖b‖
   nlinarith [mul_pow ‖a‖ ‖b‖ 2]
 
+/- English proof (translation)
+Introduce `k _ N`. Take `⟨C1, N1, hC1, b1⟩` from `sF_decay_pow N`. Take `⟨C2, hC2, b2⟩` from `GlobalTheory.CompanionTheory.UnitaryCompSchwartz.comp_unitary_bounded N1`. Take `⟨c, hc, b3⟩` from `tint_log`. Take `⟨c', _, b5⟩` from `GlobalTheory.CompanionTheory.GodementFE.TInt.tint 1 one_pos (by norm_num)`.
+
+Use `⟨C1 * C2 * c, N1, fun f M hM => ?_⟩` and prove the remaining obligations. Take `⟨κ, b, R, hR, hR2, hκ, hκd, hMκ⟩` from `GlobalTheory.CompanionTheory.GodementFE.Iwasawa.gl2_complex_iwasawa M hM`. Take `⟨f', hf', hP⟩` from `b2 κ hκ f`. Establish `hRc : (R : ℂ) ≠ 0` using `Complex.ofReal_ne_zero.2 hR.ne'`. Establish `hDn : ‖(R : ℂ)‖ = R` using `by rw [Complex.norm_real, Real.norm_of_nonneg hR.le]`.
+
+Use `set A : ℂ := M.det / (R : ℂ) with hA`. Establish `hA0 : A ≠ 0` using `div_ne_zero hM hRc`. Establish `hAp : 0 < ‖A‖` using `norm_pos_iff.2 hA0`. Use `set s : ℝ := ‖A‖ / ‖(R : ℂ)‖ with hs`. Establish `hs0 : 0 < s` using `div_pos hAp (norm_pos_iff.2 hRc)`.
+
+Establish `hY : Yb M = s ^ 2`. Rewrite using `[Yb, ← hR2, hs, hA, norm_div, hDn]`. Clear the denominators using the available nonvanishing facts. Establish `hY12 : Yb M ^ ((1 : ℝ) / 2) = s`. Rewrite using `[hY, ← Real.sqrt_eq_rpow, Real.sqrt_sq hs0.le]`.
+
+Establish `hQ0 : 0 ≤ pS N1 f'` using `GlobalTheory.CompanionTheory.AbsoluteW2Bounds.pS_nonneg N1 f'`. Establish `hQ1 : 0 ≤ pS N1 f` using `GlobalTheory.CompanionTheory.AbsoluteW2Bounds.pS_nonneg N1 f`. Establish `h3` using `norm_whittakerGL2_triangular_le k f f' κ A b (R : ℂ) hA0 hRc hκd hf'`. Rewrite `h3` using `[← hMκ]`. Take `⟨i5, -⟩` from `b5 A (R : ℂ) hA0 hRc`.
+
+Use `set w : ℝ := ((1 + s ^ 2)⁻¹) ^ N with hw`. Establish `hw0 : 0 ≤ w` using `by positivity`. Use `set K : ℝ := C1 * pS N1 f' * w with hK`. Establish `hK0 : 0 ≤ K` using `by positivity`. Establish `hpt : ∀ t : ℂ, t ≠ 0 → (‖t‖ ^ 2)⁻¹ * ‖sF f' (t * A) (t * (R : ℂ))⁻¹‖ ≤ K * ((‖t‖ ^ 2)⁻¹ * (dd (t * A) * dd (t * (R : ℂ))⁻¹))`.
+
+Introduce `t ht`. Establish `htp : 0 < ‖t‖` using `norm_pos_iff.2 ht`. Use `set p : ℝ := dd (t * A) * dd (t * (R : ℂ))⁻¹ with hp`. Establish `hp0 : 0 ≤ p` using `mul_nonneg (dd_pos _).le (dd_pos _).le`. Establish `hps : p ≤ (1 + s ^ 2)⁻¹`.
+
+Establish `e : ‖t * A‖ * ‖(t * (R : ℂ))⁻¹‖ = s`. Rewrite using `[norm_inv, norm_mul, norm_mul, hs]`. Clear the denominators using the available nonvanishing facts. Use `dd_mul_le (t * A) (t * (R : ℂ))⁻¹` as an intermediate fact. Rewrite `this` using `[e]`. Then use the resulting hypothesis.
+
+Establish `hpow : p ^ (N + 1) ≤ w * p`. Rewrite using `[pow_succ]`. Conclude with `mul_le_mul_of_nonneg_right (pow_le_pow_left₀ hp0 hps N) hp0`. Establish `h1` using `b1 f' (t * A) (t * (R : ℂ))⁻¹`. Establish `h2 : ‖sF f' (t * A) (t * (R : ℂ))⁻¹‖ ≤ K * p` using `h1.trans (by`.
+
+Combine the equalities or inequalities in the displayed calculation. Combine the equalities or inequalities in the displayed calculation. Establish `hint : ∫ t : ℂ, (‖t‖ ^ 2)⁻¹ * ‖sF f' (t * A) (t * (R : ℂ))⁻¹‖ ≤ K * ∫ t : ℂ, (‖t‖ ^ 2)⁻¹ * (dd (t * A) * dd (t * (R : ℂ))⁻¹)`. Rewrite using `[← integral_const_mul]`. Use `integral_mono_of_nonneg (Eventually.of_forall fun t => by positivity) (i5.const_mul _) ?_` and prove the remaining obligations.
+
+Use `filter_upwards [compl_mem_ae_iff.2 (measure_singleton (0 : ℂ))] with t ht`. Conclude with `hpt t ht`. Establish `hJ` using `b3 A (R : ℂ) hA0 hRc`. Rewrite `hJ` using `[← hs]`. Use `set L : ℝ := 1 + |Real.log (s ^ 2)| with hL`.
+
+Establish `hL0 : 0 ≤ L` using `by positivity`. Establish `hfin : ‖W2 k f M‖ ≤ s * (K * (c * L))`. Establish `e : ‖A‖ * ‖(R : ℂ)‖⁻¹ = s` using `by rw [hs, div_eq_mul_inv]`. Rewrite `h3` using `[e]`. Conclude with `h3.trans (mul_le_mul_of_nonneg_left (hint.trans (mul_le_mul_of_nonneg_left hJ hK0)) hs0.le)`.
+
+Rewrite using `[hY12, hY, ← hL]`. Establish `hwe : w = 1 / (1 + s ^ 2) ^ N` using `by rw [hw, inv_pow, one_div]`. Establish `hCQ : C1 * pS N1 f' ≤ C1 * (C2 * pS N1 f)` using `mul_le_mul_of_nonneg_left hP hC1`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem main : Ad3.K.LC.C.WhittakerSchwartzBound := by
   intro k _ N
   obtain ⟨C1, N1, hC1, b1⟩ := sF_decay_pow N

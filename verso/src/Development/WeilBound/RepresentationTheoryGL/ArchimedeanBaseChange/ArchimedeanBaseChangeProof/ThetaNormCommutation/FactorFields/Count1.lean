@@ -25,13 +25,22 @@ import Development.WeilBound.RepresentationTheoryGL.ArchimedeanBaseChange.Archim
 
 namespace PositivityTheory.Rg.BcB.G3
 
+/- English proof (translation)
+The claim follows from `param_pf skewEx_pf (struct_pf factorField_pf) quadField_pf (locDict_pf clsNorm_pf clsOnto_pf clsEq_pf baseFrame_pf (inertBase_pf tensorCompl_pf) (splitSq_pf tensorCompl_pf) tensorCompl_pf) clsNorm_pf clsOnto_pf clsEq_pf locGood_pf`.
+-/
 theorem param : Param :=
   param_pf skewEx_pf (struct_pf factorField_pf) quadField_pf
     (locDict_pf clsNorm_pf clsOnto_pf clsEq_pf baseFrame_pf (inertBase_pf tensorCompl_pf) (splitSq_pf tensorCompl_pf)
       tensorCompl_pf) clsNorm_pf clsOnto_pf clsEq_pf locGood_pf
 
+/- English proof (translation)
+The claim follows from `count1_pf param`.
+-/
 theorem count1 : Count1 := count1_pf param
 
+/- English proof (translation)
+The claim follows from `twisted_trace_formula_elliptic_expansion absSum_pf finCl2_pf invar2_pf (unit_pair_of_support locGood_pf genUnit_pf supp_pf) (count2_pf count1) supp_pf finPol2_pf`.
+-/
 theorem g3 : G8.G3 :=
   twisted_trace_formula_elliptic_expansion absSum_pf finCl2_pf invar2_pf (unit_pair_of_support locGood_pf genUnit_pf supp_pf) (count2_pf count1) supp_pf finPol2_pf
 

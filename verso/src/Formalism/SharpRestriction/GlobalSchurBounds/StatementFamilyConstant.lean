@@ -13,6 +13,9 @@ open NumberField Formalism.BasicNotions Formalism.MainNotions.TaylorLogMetric
 
 def TwistedThetaFamily (D : D7) (C : ℝ) : Prop := GL3Theta.TwistedThetaTheorem D C fun cc δ e => StandardLatticesGL3.natTie D cc δ e
 
+/- English proof (translation)
+The claim follows from `GL3Theta.TwistedThetaTheorem.mono (fun _ _ _ _ => trivial) h`.
+-/
 theorem TwistedThetaFamily.toE {D : D7} {C : ℝ} (h : TwistedThetaFamily D C) : GL3Theta.ConclusionE D C :=
   GL3Theta.TwistedThetaTheorem.mono (fun _ _ _ _ => trivial) h
 

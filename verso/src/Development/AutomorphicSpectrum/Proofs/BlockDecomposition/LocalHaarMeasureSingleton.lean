@@ -6,6 +6,17 @@ noncomputable section
 
 namespace GlobalTheory.CompanionTheory.Mass.MeanV
 
+/- English proof (translation)
+Introduce `F _ _ v lam hstd`. Take `⟨hH, h1⟩` from `hstd`. Use `haveI : BorelSpace (Fv F v) := ⟨rfl⟩`. Use `haveI : CharZero (Fv F v) := charZero_of_injective_algebraMap (algebraMap F (Fv F v)).injective`. Establish `hs : ∀ x : Fv F v, lam {x} = lam {0}`.
+
+Introduce `x`. Rewrite using `[← measure_preimage_add lam x ({x} : Set (Fv F v))]`. Use `congr 1`. Use extensionality with `y`. Simplify using the standard rewrite rules.
+
+Assume the negation of the conclusion as `h0`. Take `⟨N, hN⟩` from `ENNReal.exists_nat_mul_gt h0 ENNReal.one_ne_top`. Establish `hcard : ((Finset.range N).image (fun n : ℕ => (n : Fv F v))).card = N`. Rewrite using `[Finset.card_image_of_injective _ Nat.cast_injective, Finset.card_range]`. Establish `hsum : lam (((Finset.range N).image (fun n : ℕ => (n : Fv F v)) : Finset (Fv F v)) : Set (Fv F v)) = N * lam {0}`.
+
+Rewrite using `[← sum_measure_singleton, Finset.sum_congr rfl (fun x _ => hs x), Finset.sum_const, hcard, nsmul_eq_mul]`. Establish `hsub : (((Finset.range N).image (fun n : ℕ => (n : Fv F v)) : Finset (Fv F v)) : Set (Fv F v)) ⊆ (v.adicCompletionIntegers F : Set (Fv F v))`. Introduce `x hx`. Simplify using `only [Finset.coe_image, Set.mem_image] at hx`. Take `⟨n, -, rfl⟩` from `hx`.
+
+Conclude with `natCast_mem (v.adicCompletionIntegers F) n`. Establish `hle` using `measure_mono (μ := lam) hsub`. Rewrite `hle` using `[hsum, h1]`. Conclude with `absurd hN (not_lt.2 hle)`.
+-/
 theorem isStdV_measure_singleton_zero : ∀ (F : Type) [Field F] [NumberField F] (v : HeightOneSpectrum (𝓞 F))
     (lam : Measure (Fv F v)), IsStdV v lam → lam {0} = 0 := by
   intro F _ _ v lam hstd

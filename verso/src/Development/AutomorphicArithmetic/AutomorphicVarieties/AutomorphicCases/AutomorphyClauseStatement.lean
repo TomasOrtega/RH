@@ -37,6 +37,9 @@ def AutomorphyClauseStatement : Prop :=
       ∀ (ξ : Sring c.O u →ₐ[c.O] PadicAlgCl l) (r : Gam Ω S →* GG 3 (PadicAlgCl l)), IsPtHom u ξ r → TypeI F.η r →
         Af.AutOn K ι (-1) fun s => (r (toGS Ω _ s)).mat
 
+/- English proof (translation)
+Introduce `K _ _ _ hK Ω _ _ _ l _ ι c N _ e ψ o₁ hd S A F hF` and use `by obtain ⟨g₁, hg, H⟩ := h K hK Ω l ι c N e ψ o₁ hd S A F hF exact ⟨g₁, hg, fun R _ _ _ u hu => ⟨(H R u hu).1, fun ξ r h1 h2 => ((H R u hu).2 ξ r h1 h2).aut⟩⟩`.
+-/
 theorem LiftRingStatement.core (h : LiftRingStatement) : AutomorphyClauseStatement := fun K _ _ _ hK Ω _ _ _ l _ ι c N _ e ψ o₁ hd S A F hF => by
   obtain ⟨g₁, hg, H⟩ := h K hK Ω l ι c N e ψ o₁ hd S A F hF
   exact ⟨g₁, hg, fun R _ _ _ u hu => ⟨(H R u hu).1, fun ξ r h1 h2 => ((H R u hu).2 ξ r h1 h2).aut⟩⟩

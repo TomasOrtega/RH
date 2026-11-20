@@ -16,6 +16,33 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 section Gen
 
+/- English proof (translation)
+Use `set K : ℝ := ∏ l ∈ Finset.Icc 1 j, (64 * Rl (D := D) H1 l) ^ (2 * Fintype.card D.what₂.Tau) with hK`. Establish `hmaps : ∀ δ ∈ T, KappaEndpoints.k2ends D j δ ∈ (Finset.Icc 1 j).powerset`. Introduce `δ _`. Rewrite using `[Finset.mem_powerset]`. Unfold `KappaEndpoints.k2ends`.
+
+Conclude with `Finset.filter_subset _ _`. Rewrite using `[← Finset.sum_fiberwise_of_maps_to hmaps]`. Establish `hS : ∀ S ∈ (Finset.Icc 1 j).powerset, ∑ δ ∈ T with KappaEndpoints.k2ends D j δ = S, KappaEndpoints.k2S D H1 j δ ^ (-(3 * (D.R.rS : ℝ))) ≤ K`. Introduce `S hSm`. Establish `hSsub` using `Finset.mem_powerset.1 hSm`.
+
+Use `set TS := T.filter (fun δ => KappaEndpoints.k2ends D j δ = S) with hTS`. Establish `step1 : ∑ δ ∈ TS, KappaEndpoints.k2S D H1 j δ ^ (-(3 * (D.R.rS : ℝ))) ≤ ∑ δ ∈ TS, ∏ l ∈ S, wl (D` using `D) H1 l (δ l) := by`. Apply `Finset.sum_le_sum` to reduce the goal to its premises. Introduce `δ hδ`. Establish `he` using `(Finset.mem_filter.1 hδ).2`.
+
+Use `S_rpow_le (D := D) H1 hj δ` as an intermediate fact. Rewrite `this` using `[he]`. Then use the resulting hypothesis. Establish `hinj : ∀ δ ∈ TS, ∀ δ' ∈ TS, (∀ l ∈ S, δ l = δ' l) → δ = δ'`. Introduce `δ hδ δ' hδ' h`. Take `⟨hδT, he⟩` from `Finset.mem_filter.1 hδ`.
+
+Take `⟨hδT', he'⟩` from `Finset.mem_filter.1 hδ'`. Take `⟨-, hz, h0⟩` from `hfact δ hδT`. Take `⟨-, hz', h0'⟩` from `hfact δ' hδT'`. Use function extensionality and compare the values at `l`. Distinguish the cases in `hl0 : l = 0`.
+
+Rewrite using `[hl0, h0, h0']`. Distinguish the cases in `hlj : j < l`. Rewrite using `[hz l hlj, hz' l hlj]`. Distinguish the cases in `hlS : l ∈ S`. Conclude with `h l hlS`.
+
+Establish `hI : l ∈ Finset.Icc 1 j` using `Finset.mem_Icc.2 ⟨by omega, by omega⟩`. Establish `a1 : δ l = 0`. Assume the negation of the conclusion as `hne`. Apply `hlS` to reduce the goal to its premises. Rewrite using `[← he]`.
+
+Unfold `KappaEndpoints.k2ends`. Conclude with `Finset.mem_filter.2 ⟨hI, hne⟩`. Establish `a2 : δ' l = 0`. Assume the negation of the conclusion as `hne`. Apply `hlS` to reduce the goal to its premises.
+
+Rewrite using `[← he']`. Unfold `KappaEndpoints.k2ends`. Conclude with `Finset.mem_filter.2 ⟨hI, hne⟩`. Rewrite using `[a1, a2]`. Establish `step2` using `sum_prod_le S TS (fun l x => wl (D := D) H1 l x) (fun l x => wl_nonneg H1 l x) hinj`.
+
+Establish `step3 : ∏ l ∈ S, ∑ x ∈ TS.image (fun δ => δ l), wl (D` using `D) H1 l x ≤ ∏ l ∈ S, (64 * Rl (D := D) H1 l) ^ (2 * Fintype.card D.what₂.Tau) := by`. Apply `Finset.prod_le_prod` to reduce the goal to its premises. Introduce `l _`. Conclude with `Finset.sum_nonneg fun x _ => wl_nonneg H1 l x`. Introduce `l _`.
+
+Establish `hint : ∀ x ∈ TS.image (fun δ => δ l), IsIntegral ℤ x`. Introduce `x hx`. Take `⟨δ, hδ, rfl⟩` from `Finset.mem_image.1 hx`. Conclude with `(hfact δ (Finset.mem_filter.1 hδ).1).1 l`. Combine the equalities or inequalities in the displayed calculation.
+
+Establish `step4 : ∏ l ∈ S, (64 * Rl (D` using `D) H1 l) ^ (2 * Fintype.card D.what₂.Tau) ≤ K := by`. Rewrite using `[hK, ← Finset.prod_sdiff hSsub]`. Establish `hge : ∀ l, 1 ≤ (64 * Rl (D` using `D) H1 l) ^ (2 * Fintype.card D.what₂.Tau) := fun l => one_le_pow₀ (by linarith [one_le_Rl (D := D) H1 l])`. Establish `h1 : 1 ≤ ∏ l ∈ Finset.Icc 1 j \ S, (64 * Rl (D` using `D) H1 l) ^ (2 * Fintype.card D.what₂.Tau) := Finset.prod_induction _ (fun x => 1 ≤ x) (fun a b ha hb => one_le_mul_of_one_le_of_one_le ha hb) le_rfl (fun l _ => hge l)`. Establish `h0 : 0 ≤ ∏ l ∈ S, (64 * Rl (D` using `D) H1 l) ^ (2 * Fintype.card D.what₂.Tau) := Finset.prod_nonneg fun l _ => le_trans zero_le_one (hge l)`.
+
+Use the polynomial consequences of the given equalities and inequalities. Conclude with `step1.trans (step2.trans (step3.trans step4))`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Finset.sum_const, Finset.card_powerset, nsmul_eq_mul]`. Simplify using the standard rewrite rules.
+-/
 theorem cosets_sum_gen {D : D7} (hNT : KTwoMinorIntegrality.NormLB) (hLS : KTwoMinorIntegrality.LatSum)
     [Nonempty D.what₂.Tau] (hrd : 0 < D.host.rdE) {H1 : ℝ}
     (hH : 0 < H1) {j : ℕ} (hj : j ≤ D.R.rS) (T : Finset (ℕ → D.host.E))
@@ -99,6 +126,17 @@ theorem cosets_sum_gen {D : D7} (hNT : KTwoMinorIntegrality.NormLB) (hLS : KTwoM
       rw [Finset.sum_const, Finset.card_powerset, nsmul_eq_mul]
       simp
 
+/- English proof (translation)
+Take `⟨⟨h0, -, -⟩, -⟩` from `hH`. Take `⟨-, -, hmf, -, -, -, -, -, -, -, hrdL, -, -, -, -, -, -, -, hv, -, -, -, -, -, hCl⟩` from `h0`. Establish `hjI` using `Finset.mem_Icc.1 hj`. Establish `hrd2 : 2 ≤ D.host.rdE` using `by unfold Formalism.BasicNotions.Host.v at hv; linarith`. Establish `hm2` using `D.R.two_le_m`.
+
+Establish `hf1 : 1 ≤ D.R.f` using `le_trans (Nat.one_le_pow _ _ (by omega)) hmf`. Establish `: Nonempty D.what₂.Tau` using `Fintype.card_pos_iff.1 (by rw [D.what₂.card_Tau]; omega)`. Establish `hb2` using `KappaEndpoints.two_le_scale_b D large₂`. Use `set H1 : ℝ := large₂.sc.b ^ (CH * (D.R.m : ℝ)) with hH1def`. Establish `hH1 : 0 < H1` using `Real.rpow_pos_of_pos (by linarith) _`.
+
+Establish `hsum` using `cosets_sum_gen hNT hLS (by linarith) hH1 hjI.2 T hfact`. Use `set B : ℝ := D.host.rdE ^ (((2 * (D.R.rS * D.R.rS) : ℕ)) : ℝ) * (max 1 (2 * H1)) ^ (2 * D.R.rS) with hB`. Establish `hB1 : 1 ≤ B` using `one_le_mul_of_one_le_of_one_le (Real.one_le_rpow (by linarith) (Nat.cast_nonneg _)) (one_le_pow₀ (le_max_left _ _))`. Establish `hRl : ∀ l ∈ Finset.Icc 1 j, Rl (D` using `D) H1 l ≤ B := by`. Introduce `l hl`.
+
+Establish `hlr : l ≤ D.R.rS` using `(Finset.mem_Icc.1 hl).2.trans hjI.2`. Establish `hfe` using `frameExp_le hlr`. Use `max_le hB1 (mul_le_mul ?_ (pow_le_pow_left₀ (by positivity) (le_max_right _ _) _) (by positivity) (Real.rpow_nonneg (by linarith) _))` and prove the remaining obligations. Conclude with `Real.rpow_le_rpow_of_exponent_le (by linarith) (by exact_mod_cast (by omega : 2 * frameExp D.R.rS l ≤ 2 * (D.R.rS * D.R.rS)))`. Establish `hprod : ∏ l ∈ Finset.Icc 1 j, (64 * Rl (D` using `D) H1 l) ^ (2 * Fintype.card D.what₂.Tau) ≤ ((64 * B) ^ (2 * Fintype.card D.what₂.Tau)) ^ j := by`.
+
+Combine the equalities or inequalities in the displayed calculation. Establish `hfin` using `final_arith (L := large₂.sc.L) (CH := CH) (rd := D.host.rdE) (r := D.R.rS) (m := D.R.m) (f := D.R.f) (n := Fintype.card D.what₂.Tau) (j := j) (KappaEndpoints.one_lt_scale_L D large₂) hCl (by linarith) hrdL (by omega) (by have := KappaEndpoints.two_rank_add_two_eq_m D; omega) hjI. …`. Unfold `Hb`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem kloostermanCosetSum_le {D : D7} (hNT : KTwoMinorIntegrality.NormLB) (hLS : KTwoMinorIntegrality.LatSum) (large₂ : SizeData₂ D)
     {C' Cl Cg cb Cu cT CT C0 : ℝ} (hH : Formalism.MainNotions.NonGenericAndKTwoTheorems.KTwoHypotheses D large₂ C' Cl Cg cb Cu cT CT C0) (CH : ℝ)
     (j : ℕ) (hj : j ∈ Finset.Icc 1 D.R.rS) (T : Finset (ℕ → D.host.E))
@@ -147,6 +185,15 @@ section Conc
 
 variable {D : D7} {X : HidaSetting D} {Y : Full X} {u : D.what₂.Word}
 
+/- English proof (translation)
+Establish `hRow : IsRowLat D (X.Fu u) t.lam` using `(Y.rowsOK u).1 t.lam t.mem`. Establish `hOK : FrameOK D t.lam (frq X t.rep)` using `t.rep.2.2.2.2.2.2`. Establish `hU : Formalism.HermitianLatticesTheory.IsUnimodular (hS D).hT t.lam` using `hRow.2.1.2.1`. Establish `he : ∀ a, (lf D (X.Fu u)).fl.e a ∈ t.lam` using `e_mem_lam D t.lam (lf D (X.Fu u)) hRow.2.2`. Establish `he' : ∀ a, (frq X t.rep).fl.e a ∈ t.lam` using `e_mem_lam D t.lam (frq X t.rep) hOK.2`.
+
+Establish `hl' : l ≤ D.R.rS + 1` using `by omega`. Unfold `Dl leadMinorE`. Rewrite using `[dif_pos hl']`. Apply `det_isIntegral` to reduce the goal to its premises. Introduce `i j`.
+
+Establish `hi : Fin.castLE hl' i = Fin.castSucc ⟨i, by omega⟩` using `Fin.ext rfl`. Establish `hj : Fin.castLE hl' j = Fin.castSucc ⟨j, by omega⟩` using `Fin.ext rfl`. Simplify using `only [Matrix.submatrix_apply, Zhat, brS]`. Rewrite using `[hi, hj]`. Simplify using `only [FlagG.fvec, Fin.snoc_castSucc]`.
+
+Conclude with `pair_int D hU (he' _) (he _)`.
+-/
 theorem minorInt_conc (t : GTu Y u) (l : ℕ) (hl : l ≤ D.R.rS) :
     IsIntegral ℤ (Dl (lf D (X.Fu u)).fl (frq X t.rep).fl l) := by
   have hRow : IsRowLat D (X.Fu u) t.lam := (Y.rowsOK u).1 t.lam t.mem
@@ -166,6 +213,13 @@ theorem minorInt_conc (t : GTu Y u) (l : ℕ) (hl : l ≤ D.R.rS) :
   simp only [FlagG.fvec, Fin.snoc_castSucc]
   exact pair_int D hU (he' _) (he _)
 
+/- English proof (translation)
+Use `⟨fun l => ?_, fun l hl => ?_, ?_⟩` and prove the remaining obligations. Unfold `labT split_ifs with hl`. Conclude with `minorInt_conc t l (le_trans hl (Nat.sub_le _ _))`. Conclude with `isIntegral_zero`. Unfold `labT`.
+
+Rewrite using `[if_neg (not_le.mpr (by unfold jT at hl; exact hl))]`. Unfold `labT`. Rewrite using `[if_pos (Nat.zero_le _)]`. Unfold `Dl leadMinorE`. Use `first`.
+
+Consider the case `exact Matrix.det_isEmpty`. Consider the case `simp`. Consider the case `done`.
+-/
 theorem labFacts_conc (t : GTu Y u) :
     (∀ l, IsIntegral ℤ (labT t l)) ∧ (∀ l, jT t < l → labT t l = 0) ∧ labT t 0 = 1 := by
   refine ⟨fun l => ?_, fun l hl => ?_, ?_⟩
@@ -183,6 +237,17 @@ theorem labFacts_conc (t : GTu Y u) :
       | simp
       | done
 
+/- English proof (translation)
+Introduce `Cg cb Cw cT CT C0 CH hCH`. Use `⟨21 + 4 * |CH|, by positivity, 0, 1, fun C' Cl _ hCl1 D large₂ X Y u hH _ j hj T hTm => ?_⟩` and prove the remaining obligations. Establish `hfact : ∀ δ ∈ T, (∀ l, IsIntegral ℤ (δ l)) ∧ (∀ l, j < l → δ l = 0) ∧ δ 0 = 1`. Introduce `δ hδ`. Take `⟨t, -, rfl, rfl⟩` from `hTm δ hδ`.
+
+Conclude with `labFacts_conc t`. Establish `h` using `kloostermanCosetSum_le NormLB_holds Formalism.MainNotions.LatticeSumConvergence.LatSum_holds large₂ hH CH j hj T hfact`. Unfold `H1C`. Use `h.trans ?_` and prove the remaining obligations. Establish `hb : 1 ≤ large₂.sc.b` using `by linarith [KappaEndpoints.two_le_scale_b D large₂]`.
+
+Establish `hCl0 : 0 < Cl` using `by linarith`. Establish `hc0 : 0 ≤ ccOf CH Cl` using `by unfold ccOf; positivity`. Establish `hcle : ccOf CH Cl ≤ 21 + 4 * |CH|`. Unfold `ccOf`. Establish `: 4 / Cl ≤ 4` using `by rw [div_le_iff₀ hCl0]; linarith`.
+
+Combine the linear equalities and inequalities to obtain the conclusion. Unfold `Hb`. Rewrite using `[← Real.rpow_mul (by linarith), ← Real.rpow_mul (by linarith)]`. Apply `Real.rpow_le_rpow_of_exponent_le hb` to reduce the goal to its premises. Establish `hx : 0 ≤ (D.R.m : ℝ) ^ 2 * D.R.f * D.R.rS` using `by positivity`.
+
+Establish `e1 : ccOf CH Cl * (D.R.m : ℝ) ^ 2 * D.R.f * (ccOf CH Cl * D.R.rS) = ccOf CH Cl * ccOf CH Cl * ((D.R.m : ℝ) ^ 2 * D.R.f * D.R.rS)` using `by ring`. Establish `e2 : (21 + 4 * |CH|) * (D.R.m : ℝ) ^ 2 * D.R.f * ((21 + 4 * |CH|) * D.R.rS) = (21 + 4 * |CH|) * (21 + 4 * |CH|) * ((D.R.m : ℝ) ^ 2 * D.R.f * D.R.rS)` using `by ring`. Rewrite using `[e1, e2]`. Conclude with `mul_le_mul_of_nonneg_right (mul_le_mul hcle hcle hc0 (by positivity)) hx`.
+-/
 theorem cosetsC_holds : CosetsC := by
   intro Cg cb Cw cT CT C0 CH hCH
   refine ⟨21 + 4 * |CH|, by positivity, 0, 1, fun C' Cl _ hCl1 D large₂ X Y u hH _ j hj T hTm => ?_⟩

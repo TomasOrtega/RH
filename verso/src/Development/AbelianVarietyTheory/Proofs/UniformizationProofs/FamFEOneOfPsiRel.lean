@@ -18,6 +18,11 @@ namespace GlobalTheory.UU
 section
 variable {R : Type} [CommRing R] [IsDomain R] (D : DegPre R) (F : Type) [Field F] [Algebra (FractionRing R) F]
 
+/- English proof (translation)
+Establish `e : val (D.tau mu α) (σ.left ≫ jFK (R` using `R) F) z J = val (D.psi (mu + α)) (σ.left ≫ jFK (R := R) F) z J * (val (D.psi mu) (σ.left ≫ jFK (R := R) F) z J)⁻¹ * (val (D.psi α) (σ.left ≫ jFK (R := R) F) z J)⁻¹ * (val D.rigK (σ.left ≫ jFK (R := R) F) z J)⁻¹ := (val_mul hJ _ _ _).trans (congrArg₂ (· * ·) ((val_mul hJ _ _ _).tr …`. Establish `p₁ : val (GeneratorPullback.powGen D.P.L _ _ (D.psi mu) 1) (σ.left ≫ jFK (R` using `R) F) z J = val (D.psi mu) (σ.left ≫ jFK (R := R) F) z J := congrArg (gm _ z _) (pow_one _)`. Establish `p₂ : val (GeneratorPullback.powGen D.P.L _ _ D.rigK 1) (σ.left ≫ jFK (R` using `R) F) z J = val D.rigK (σ.left ≫ jFK (R := R) F) z J := congrArg (gm _ z _) (pow_one _)`. Rewrite using `[val_famMult σ hJ, e, p₁, p₂]`. Apply `Additive.ofMul.injective` to reduce the goal to its premises.
+
+Simplify using `only [ofMul_mul, ofMul_inv]`. Normalize the expressions using the abelian group laws.
+-/
 theorem val_famMult_one {T : Over (Spec (CommRingCat.of R))} (σ : T ⟶ TF (R := R) F) {z : T.left}
     {J : (T.left ⟶ D.P.A.left) → D.P.L.ι} (hJ : Good D.P.L z J) (mu α : D.X) :
     val (DegPre.famMult D F 1 mu α) σ.left z J * val (D.psi α) (σ.left ≫ jFK (R := R) F) z J =
@@ -36,11 +41,17 @@ theorem val_famMult_one {T : Over (Spec (CommRingCat.of R))} (σ : T ⟶ TF (R :
   simp only [ofMul_mul, ofMul_inv]
   abel
 
+/- English proof (translation)
+Establish `C : IsCub (th D z J)` using `isCub_cubV D.cub hJ`. Rewrite using `[uVal, cubN, Finset.prod_range_one, pow_zero, _root_.mul_one, C.s12, mul_inv_cancel]`.
+-/
 theorem uVal_one (α : D.X) (m : TF (R := R) F ⟶ D.P.A) {T : Over (Spec (CommRingCat.of R))} (ρ : T ⟶ DegPre.BF D F)
     {z : T.left} {J : (T.left ⟶ D.P.A.left) → D.P.L.ι} (hJ : Good D.P.L z J) : uVal D F 1 α m ρ z J = 1 := by
   have C : IsCub (th D z J) := isCub_cubV D.cub hJ
   rw [uVal, cubN, Finset.prod_range_one, pow_zero, _root_.mul_one, C.s12, mul_inv_cancel]
 
+/- English proof (translation)
+The claim follows from `(congrArg (gs r z _) (hs α _)).trans ((gs_mul r z _ (hJ.mem _ r) _ _).trans (congrArg₂ (· * ·) ((gs_res r z le_top (hJ.mem _ r) _).trans (gs_pull r (fst (TF (R := R) F) D.P.A).left z ⊤ trivial _)) rfl))`.
+-/
 theorem sval_of_const (s₀ s : Raw D F 1) (c : F) (hs : ∀ α j, (s α).f j = DegPre.constBF D F c _ * (s₀ α).f j)
     (α : D.X) {Z : Scheme.{0}} (r : Z ⟶ (DegPre.BF D F).left) (z : Z) {J} (hJ : Good D.P.L z J) :
     sval (s α) r z J =
@@ -51,6 +62,17 @@ theorem sval_of_const (s₀ s : Raw D F 1) (c : F) (hs : ∀ α j, (s α).f j = 
 
 end
 
+/- English proof (translation)
+Introduce `hG R _ _ D F _ _ s₀ s c hψ hs mu α u hu hc`. Use `(secRel_iff D.P.isLB _ _ _ _ _ _ _ _ _ u).2 fun y J hJ => ?_` and prove the remaining obligations. Establish `e₃` using `(gen_fe hG 1 mu α).2 u hu hc _ (𝟙 _) y J hJ`. Rewrite `e₃` using `[uVal_one D F _ _ _ hJ, _root_.one_mul, Category.id_comp, Over.id_left]`. Establish `e₄` using `val_famMult_one D F (fst (TF (R := R) F) D.P.A) hJ mu α`.
+
+Set `κ : DegPre.BF D F ⟶ TK R` to `Over.homMk ((fst (TF (R := R) F) D.P.A).left ≫ jFK (R := R) F) ((Category.assoc _ _ _).trans (Over.w (fst (TF (R := R) F) D.P.A)))`. Establish `e₁` using `hψ (α + 1 • mu) _ (fst _ _) κ (snd _ _) y J hJ`. Establish `e₂` using `hψ α _ (fst _ _) κ (snd _ _ * cT D _ mu) y J hJ`. Establish `q : snd (TF (R` using `R) F) D.P.A * cT D _ mu * cT D _ α = snd (TF (R := R) F) D.P.A * cT D _ (α + 1 • mu) := by`. Rewrite using `[one_nsmul, add_comm, _root_.mul_assoc]`.
+
+Conclude with `congrArg _ (cPoint_add D _ mu α).symm`. Rewrite `e₂` using `[q]`. Rewrite `e₁` using `[lift_fst_snd, Over.id_left]`. Establish `e₅ : val (D.psi (α + 1 • mu)) κ.left y J = val (DegPre.famMult D F 1 mu α) (fst (TF (R` using `R) F) D.P.A).left y J * val (D.psi α) κ.left y J := by`. Rewrite using `[one_nsmul, add_comm]`.
+
+Conclude with `e₄.symm`. Establish `t : (DegPre.trF D F mu).left ≫ (fst (TF (R` using `R) F) D.P.A).left = (fst (TF (R := R) F) D.P.A).left := congrArg (fun q => q.left) (lift_fst _ _ : DegPre.trF D F mu ≫ fst (TF (R := R) F) D.P.A = _)`. Establish `e₁' : sval (s₀ (α + 1 • mu)) (𝟙 _) y J = _` using `e₁`. Establish `e₂' : sval (s₀ α) (DegPre.trF D F mu).left y J = _` using `e₂`. Rewrite using `[sval_of_const D F s₀ s c hs _ _ y hJ, sval_of_const D F s₀ s c hs _ _ y hJ, Category.id_comp, Category.id_comp, t, e₁', e₂', e₃, e₅]`.
+
+Simplify using `only [Units.val_mul]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem famFE_one_of_psiRel : GlobalFnsSt → ∀ (R : Type) [CommRing R] [IsDomain R] (D : DegPre R) (F : Type) [Field F] [Algebra (FractionRing R) F] (s₀ s : Raw D F 1) (c : F), PsiRel D (TF (R := R) F) s₀ → (∀ α j, (s α).f j = DegPre.constBF D F c _ * (s₀ α).f j) → DegPre.FamFE D F 1 s := by
   intro hG R _ _ D F _ _ s₀ s c hψ hs mu α u hu hc
   refine (secRel_iff D.P.isLB _ _ _ _ _ _ _ _ _ u).2 fun y J hJ => ?_

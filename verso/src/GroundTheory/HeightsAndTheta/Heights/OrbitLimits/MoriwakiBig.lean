@@ -8,6 +8,9 @@ namespace GroundTheory.Heights₂.Heights.Targets
 
 open ReciprocityTheory.ChartRestriction.G.Geo ReciprocityTheory.ChartRestriction.G.ArakelovGeometry
 
+/- English proof (translation)
+Introduce `K _ ι _ Ω _ y D A P0 II hII har hb hP0 hs hc hnef hgen`. Break down `Nat.eq_zero_or_pos D with rfl | hD` into its components or cases. Conclude with `hC K ι Ω y A P0 II hII har hb hP0 hs hc hnef hgen`. Conclude with `hG6 K ι Ω y D A P0 II hD hII har hb hP0 hs hnef hc`.
+-/
 theorem MoriwakiBig.of_found (hG6 : HilbertSamuel.ArithmeticVolumeBig.Statement) (hC : MoriwakiBigCurve.Statement) :
     ReciprocityTheory.ChartRestriction.G.ArakelovGeometry.MoriwakiBigStatement := by
   intro K _ ι _ Ω _ y D A P0 II hII har hb hP0 hs hc hnef hgen

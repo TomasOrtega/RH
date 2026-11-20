@@ -7,5 +7,8 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.S
 open ReciprocityTheory.ChartRestriction.G.Out (nonzeroLocus)
 open GlobalTheory GlobalTheory.CxPts GlobalTheory.VB
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.VB.isVB_cokernel_satι_of_split | exact GlobalTheory.VB.isVB_cokernel_satι_of_split | (intros; apply GlobalTheory.VB.isVB_cokernel_satι_of_split <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.saturated_cokernel_vector_bundle : ∀ (C : Scheme.{0}) [IsIntegral C] [IsLocallyNoetherian C] (F G : C.Modules) (r : ℕ) (φ : G ⟶ F), IsVB F (r + 1) → IsVB G 1 → Mono φ → (∀ x : C, IsPrincipalIdealRing (C.presheaf.stalk x) ∨ ∃ ρ : (F.presheaf.stalk x :) →ₗ[C.presheaf.stalk x] (G.presheaf.stalk x :), ρ ∘ₗ GlobalTheory.QCoh.stalkLinear φ x = LinearMap.id) → IsVB (Limits.cokernel (satι φ)) r := by
   first | exact @GlobalTheory.VB.isVB_cokernel_satι_of_split | exact GlobalTheory.VB.isVB_cokernel_satι_of_split | (intros; apply GlobalTheory.VB.isVB_cokernel_satι_of_split <;> assumption)

@@ -12,6 +12,15 @@ open scoped Pointwise
 
 namespace GlobalTheory.BKGal.ContNear
 
+/- English proof (translation)
+Introduce `l _ LL T t _ m`. Establish `hO` using `GlobalTheory.HTW.Rec.goodO_finExt_integers l LL`. Establish `hT : IsOpen (T.L.T : Set T.V)` using `GlobalTheory.Cyc.locLat_isOpen hO T`. Establish `hc : ((l : ↥LL.1) ^ m) ≠ 0`. Use `pow_ne_zero _ ?_` and prove the remaining obligations.
+
+Establish `h1 : (l : ↥LL.1) = algebraMap ℚ_[l] ↥LL.1 (l : ℚ_[l])` using `by simp`. Rewrite using `[h1, ne_eq, map_eq_zero_iff _ (algebraMap ℚ_[l] ↥LL.1).injective]`. Conclude with `(Fact.out : l.Prime).ne_zero` after adjusting the coercions. Establish `hU : IsOpen (((l : ↥LL.1) ^ m) • (T.L.T : Set T.V))` using `hT.smul₀ hc`. Use `haveI := hO.2.2.2.1`.
+
+Use `haveI := IsModuleTopology.topologicalAddGroup (↥LL.1) T.V`. Establish `hf : Continuous fun g : Gl l => T.ρ g t - t` using `(T.cont t).sub continuous_const`. Establish `h0 : (fun g : Gl l => T.ρ g t - t) 1 ∈ ((l : ↥LL.1) ^ m) • (T.L.T : Set T.V)`. Simplify using `only [map_one, Module.End.one_apply, sub_self]`. Conclude with `⟨0, T.L.T.zero_mem, smul_zero _⟩`.
+
+Use `filter_upwards [hf.continuousAt.preimage_mem_nhds (hU.mem_nhds h0)] with g hg`. Take `⟨t', ht', he⟩` from `hg`. Conclude with `⟨t', ht', he.symm⟩`.
+-/
 theorem sub_mem_pow_smul_lattice_eventually :
     ∀ (l : ℕ) [Fact l.Prime] (LL : FinExt l) (T : QLat LL) (t : T.V), t ∈ T.L.T → ∀ m : ℕ, ∀ᶠ g in nhds (1 : Gl l), ∃ t' ∈ T.L.T, T.ρ g t - t = ((l : ↥LL.1) ^ m) • t' := by
   intro l _ LL T t _ m

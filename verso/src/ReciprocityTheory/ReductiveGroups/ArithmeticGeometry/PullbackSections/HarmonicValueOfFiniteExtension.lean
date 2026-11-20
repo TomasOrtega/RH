@@ -15,6 +15,9 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.S
 
 attribute [local instance] Over.cartesianMonoidalCategory
 
+/- English proof (translation)
+Substitute `h` using the available equality. Both sides reduce to the same expression.
+-/
 theorem nab_zCast {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {Dw : Datum H} {l : Level H}
     {Xo : Moduli Dw l} {c : Coeff l} (nab : NabV Xo c) {S : Type} [CommRing S] [Algebra c.F S] (y : FrPt Xo c S)
     {k₁ k₂ : ℤ} (h : k₁ = k₂) (F : LB.Sec (LPow Xo.univ.t.G Xo.univ.t.PP.L k₁ (ptO Xo y.x))) (α : Lt1 Dw →₀ ℕ) :
@@ -22,6 +25,9 @@ theorem nab_zCast {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E
   subst h
   rfl
 
+/- English proof (translation)
+Establish `e : (M : K) = algebraMap (𝓞 K) K (M : 𝓞 K)` using `by simp`. Establish `h1 : la.valuation K (M : K) = 1`. Rewrite using `[e, HeightOneSpectrum.valuation_of_algebraMap, HeightOneSpectrum.intValuation_eq_one_iff]`. Conclude with `hM`. Simplify using `[vLa, map_inv₀, map_pow, h1]`.
+-/
 theorem vLa_natCast_inv_pow {K : Type} [Field K] [NumberField K] (la : HeightOneSpectrum (𝓞 K)) {M : ℕ}
     (hM : (M : 𝓞 K) ∉ la.asIdeal) (d : ℕ) : vLa la (((M : K) ^ d)⁻¹) = 0 := by
   have e : (M : K) = algebraMap (𝓞 K) K (M : 𝓞 K) := by simp

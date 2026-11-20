@@ -43,14 +43,41 @@ open GlobalTheory.PRep Formalism.UG GlobalTheory.DefU
 
 namespace UpperTheory.Gal.Int.Div
 
+/- English proof (translation)
+The claim follows from `subLoc_of subSplit_of inFacts_of locConj_of locSum_of jumpCard_of`.
+-/
 theorem subLoc_holds : SubLoc := subLoc_of subSplit_of inFacts_of locConj_of locSum_of jumpCard_of
+/- English proof (translation)
+The claim follows from `phiSeed_of subLoc_holds locConj_of rootPin_of algGen_of`.
+-/
 theorem phiSeed_holds : PhiSeed := phiSeed_of subLoc_holds locConj_of rootPin_of algGen_of
+/- English proof (translation)
+The claim follows from `centU_of zetaEx_of zetaLoc_of schurU_of charOfZeta_of algOfFix_of satCent_of`.
+-/
 theorem centU_holds : CentU := centU_of zetaEx_of zetaLoc_of schurU_of charOfZeta_of algOfFix_of satCent_of
+/- English proof (translation)
+The claim follows from `detEx_of centU_holds`.
+-/
 theorem detEx_holds : DetEx := detEx_of centU_holds
+/- English proof (translation)
+The claim follows from `divDet_of denseUs_of detFrob_of`.
+-/
 theorem divDet_holds : DivDet := divDet_of denseUs_of detFrob_of
+/- English proof (translation)
+The claim follows from `senWLac_of jumpCard_of`.
+-/
 theorem senWLac_holds : PositivityTheory.AutomorphicGaloisHodgeTate.Div.SenWLac := senWLac_of jumpCard_of
+/- English proof (translation)
+The claim follows from `divSet_of LateralTheory.DivDb.goal_holds senWLac_holds lacBridge_of inFacts_of`.
+-/
 theorem divSet_holds : DivSet := divSet_of LateralTheory.DivDb.goal_holds senWLac_holds lacBridge_of inFacts_of
+/- English proof (translation)
+The claim follows from `divOne_of divSet_holds denseUs_of detFrob_of inFacts_of sepPin_of`.
+-/
 theorem divOne_holds : DivOne := divOne_of divSet_holds denseUs_of detFrob_of inFacts_of sepPin_of
+/- English proof (translation)
+The claim follows from `divAll_of detEx_holds divDet_holds phiSeed_holds divOne_holds (divUniq_of denseUs_of) isoMove_of (frobSeed_of inFacts_of genPin_of algGen_of detFrob_of) (jumpSeed_of coverIn_of sSBlock_of subLoc_holds locConj_of jumpCard_of) subLoc_holds`.
+-/
 theorem divAll_holds : DivAll :=
   divAll_of detEx_holds divDet_holds phiSeed_holds divOne_holds (divUniq_of denseUs_of) isoMove_of
     (frobSeed_of inFacts_of genPin_of algGen_of detFrob_of) (jumpSeed_of coverIn_of sSBlock_of subLoc_holds locConj_of jumpCard_of)

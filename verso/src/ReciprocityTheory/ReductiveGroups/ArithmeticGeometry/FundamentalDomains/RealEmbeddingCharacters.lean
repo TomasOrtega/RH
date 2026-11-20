@@ -7,6 +7,9 @@ open scoped ComplexConjugate
 
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {r : ℕ}
 
+/- English proof (translation)
+Establish `h` using `NumberField.IsCMField.complexEmbedding_complexConj (K := E) τ a`. Establish `h2 : (starRingEnd ℂ) (τ a) = τ a`. Rewrite using `[← h]`. Conclude with `congrArg τ ha`. Conclude with `(Complex.conj_eq_iff_re.mp h2).symm`.
+-/
 lemma emb_real {τ : E →+* ℂ} {a : E} (ha : cc a = a) : τ a = ((τ a).re : ℂ) := by
   have h := NumberField.IsCMField.complexEmbedding_complexConj (K := E) τ a
   have h2 : (starRingEnd ℂ) (τ a) = τ a := by
@@ -14,29 +17,56 @@ lemma emb_real {τ : E →+* ℂ} {a : E} (ha : cc a = a) : τ a = ((τ a).re : 
     exact congrArg τ ha
   exact (Complex.conj_eq_iff_re.mp h2).symm
 
+/- English proof (translation)
+Simplify using `only [cc, map_add]`.
+-/
 lemma cc_add' (a b : E) : cc (a + b) = cc a + cc b := by
   simp only [cc, map_add]
 
+/- English proof (translation)
+Simplify using `only [cc, map_neg]`.
+-/
 lemma cc_neg' (a : E) : cc (-a) = -cc a := by
   simp only [cc, map_neg]
 
+/- English proof (translation)
+Simplify using `only [cc, map_zero]`.
+-/
 lemma cc_zero' : cc (0 : E) = 0 := by
   simp only [cc, map_zero]
 
 variable (X : Data E r) (la : Wt X.Ψ r)
 
+/- English proof (translation)
+The claim follows from `(X.χ_fin la).choose_spec.1`.
+-/
 lemma chiOrd_pos : 0 < X.chiOrd la := (X.χ_fin la).choose_spec.1
 
 noncomputable def per (a : E) : X.Ψ → ℝ := fun τ => ((X.m * X.chiOrd la : ℕ) : ℝ) * (τ.1 a).re
 
+/- English proof (translation)
+Use function extensionality and compare the values at `τ`. Simplify using `only [per, Pi.add_apply, map_add, Complex.add_re, mul_add]`.
+-/
 lemma per_add (a b : E) : per X la (a + b) = per X la a + per X la b := by
   funext τ
   simp only [per, Pi.add_apply, map_add, Complex.add_re, mul_add]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `τ`. Simplify using `only [per, Pi.neg_apply, map_neg, Complex.neg_re, mul_neg]`.
+-/
 lemma per_neg (a : E) : per X la (-a) = -per X la a := by
   funext τ
   simp only [per, Pi.neg_apply, map_neg, Complex.neg_re, mul_neg]
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce `hp`. Unfold `Data.periods at hp`. Proceed by induction on `hp using AddSubgroup.closure_induction with`. Consider the case `mem q hq`.
+
+Take `⟨a, h1, h2, rfl⟩` from `hq`. Conclude with `⟨a, h1, h2, rfl⟩`. Consider the case `zero`. Use `⟨0, cc_zero', isIntegral_zero, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `τ`.
+
+Simplify using `[per]`. Consider the case `add q q' _ _ hq hq'`. Take `⟨a, ha1, ha2, rfl⟩` from `hq`. Take `⟨b, hb1, hb2, rfl⟩` from `hq'`. Conclude with `⟨a + b, by rw [cc_add', ha1, hb1], ha2.add hb2, (per_add X la a b).symm⟩`.
+
+Consider the case `neg q _ hq`. Take `⟨a, ha1, ha2, rfl⟩` from `hq`. Conclude with `⟨-a, by rw [cc_neg', ha1], ha2.neg, (per_neg X la a).symm⟩`. Introduce and unpack `⟨a, h1, h2, rfl⟩`. Conclude with `AddSubgroup.subset_closure ⟨a, h1, h2, rfl⟩`.
+-/
 lemma mem_periods_iff (p : X.Ψ → ℝ) :
     p ∈ X.periods la ↔ ∃ a : E, cc a = a ∧ IsIntegral ℤ a ∧ p = per X la a := by
   constructor
@@ -60,6 +90,17 @@ lemma mem_periods_iff (p : X.Ψ → ℝ) :
   · rintro ⟨a, h1, h2, rfl⟩
     exact AddSubgroup.subset_closure ⟨a, h1, h2, rfl⟩
 
+/- English proof (translation)
+Establish `h3 : 1 ≤ X.m * X.chiOrd la` using `Nat.mul_pos X.m_pos (chiOrd_pos X la)`. Establish `hc : (1 : ℝ) ≤ ((X.m * X.chiOrd la : ℕ) : ℝ)` using `by exact_mod_cast h3`. Establish `hfin` using `NumberField.Embeddings.finite_of_norm_le E ℂ 1`. Use `(hfin.image (per X la)).subset ?_` and prove the remaining obligations. Introduce and unpack `p ⟨hp, hn⟩`.
+
+Take `⟨a, ha, hai, rfl⟩` from `(mem_periods_iff X la p).mp hp`. Establish `hΨ : ∀ τ : X.Ψ, ‖τ.1 a‖ ≤ 1`. Introduce `τ`. Establish `h1 : ‖per X la a τ‖ < 1` using `lt_of_le_of_lt (norm_le_pi_norm (per X la a) τ) hn`. Rewrite using `[emb_real (τ := τ.1) ha, Complex.norm_real, Real.norm_eq_abs]`.
+
+Simplify using `only [per, Real.norm_eq_abs, abs_mul] at h1`. Establish `hc0 : (0 : ℝ) ≤ ((X.m * X.chiOrd la : ℕ) : ℝ)` using `Nat.cast_nonneg _`. Rewrite `h1` using `[abs_of_nonneg hc0]`. Use polynomial arithmetic with `[abs_nonneg (τ.1 a).re]`. Use `⟨a, ⟨hai, fun φ => ?_⟩, rfl⟩` and prove the remaining obligations.
+
+Distinguish the cases in `hφ : φ ∈ X.Ψ`. Conclude with `hΨ ⟨φ, hφ⟩`. Establish `hc' : NumberField.ComplexEmbedding.conjugate φ ∈ X.Ψ`. Assume the negation of the conclusion as `hc'`. Conclude with `hφ ((X.cmType φ).mpr hc')`.
+
+Establish `h4` using `hΨ ⟨_, hc'⟩`. Express the relevant statement in the definitionally equal form `‖starRingEnd ℂ (φ a)‖ ≤ 1 at h4`. Rewrite `h4` using `[Complex.norm_conj]`. Then use the resulting hypothesis.
+-/
 lemma finite_small : {p : X.Ψ → ℝ | p ∈ X.periods la ∧ ‖p‖ < 1}.Finite := by
   have h3 : 1 ≤ X.m * X.chiOrd la := Nat.mul_pos X.m_pos (chiOrd_pos X la)
   have hc : (1 : ℝ) ≤ ((X.m * X.chiOrd la : ℕ) : ℝ) := by exact_mod_cast h3
@@ -124,9 +165,35 @@ def fixF : Subfield E where
     show cc a⁻¹ = a⁻¹
     rw [show cc a⁻¹ = (cc a)⁻¹ from map_inv₀ _ a, show cc a = a from ha]
 
+/- English proof (translation)
+Simplify using `only [cc, NumberField.IsCMField.complexConj_apply_apply]`.
+-/
 lemma cc_cc' (a : E) : cc (cc a) = a := by
   simp only [cc, NumberField.IsCMField.complexConj_apply_apply]
 
+/- English proof (translation)
+Establish `hξ` using `X.ξ0_im`. Establish `hξne` using `X.ξ0_ne`. Establish `hf : ∀ a : E, cc (a + cc a) = a + cc a` using `fun a => by rw [cc_add', cc_cc', add_comm]`. Establish `hh : ∀ a : E, cc ((a - cc a) * X.ξ0) = (a - cc a) * X.ξ0` using `fun a => by`. Rewrite using `[show cc ((a - cc a) * X.ξ0) = cc (a - cc a) * cc X.ξ0 from map_mul _ _ _, hξ, sub_eq_add_neg, cc_add', cc_neg', cc_cc']`.
+
+Expand and normalize the polynomial expressions, which then agree. Establish `hdec : ∀ a : E, (2 : E) * a = (a + cc a) + ((a - cc a) * X.ξ0) / X.ξ0` using `fun a => by`. Rewrite using `[mul_div_cancel_right₀ _ hξne]`. Expand and normalize the polynomial expressions, which then agree. Establish `hexp : ∀ σ : E →+* ℂ, ∀ a : E, 2 * σ a = σ (a + cc a) + σ ((a - cc a) * X.ξ0) / σ X.ξ0`.
+
+Introduce `σ a`. Establish `e` using `congrArg σ (hdec a)`. Rewrite `e` using `[map_mul, map_add, map_div₀, map_ofNat]`. Conclude with `e`. Establish `hsq : τ.1 X.ξ0 ^ 2 = τ'.1 X.ξ0 ^ 2`.
+
+Rewrite using `[← map_pow, ← map_pow]`. Apply `h` to reduce the goal to its premises. Rewrite using `[pow_two, show cc (X.ξ0 * X.ξ0) = cc X.ξ0 * cc X.ξ0 from map_mul _ _ _, hξ]`. Expand and normalize the polynomial expressions, which then agree. Break down `sq_eq_sq_iff_eq_or_eq_neg.mp hsq with h1 | h1` into its components or cases.
+
+Apply `Subtype.ext` to reduce the goal to its premises. Apply `RingHom.ext` to reduce the goal to its premises. Introduce `a`. Establish `e1` using `hexp τ.1 a`. Establish `e2` using `hexp τ'.1 a`.
+
+Rewrite `e1` using `[h (a + cc a) (hf a), h _ (hh a), h1]`. Establish `e3 : (2 : ℂ) * τ.1 a = 2 * τ'.1 a` using `e1.trans e2.symm`. Conclude with `mul_left_cancel₀ two_ne_zero e3`. It suffices to derive a contradiction. Establish `hconj : ∀ a : E, τ'.1 a = starRingEnd ℂ (τ.1 a)`.
+
+Introduce `a`. Establish `e1` using `hexp τ.1 (cc a)`. Establish `e2` using `hexp τ'.1 a`. Rewrite `e1` using `[cc_cc']`. Rewrite using `[← NumberField.IsCMField.complexEmbedding_complexConj (K := E) τ.1 a]`.
+
+Use `show τ'.1 a = τ.1 (cc a)`. Establish `k1 : τ.1 (cc a + a) = τ'.1 (a + cc a)`. Rewrite using `[add_comm]`. Conclude with `h _ (hf a)`. Establish `k2 : τ.1 ((cc a - a) * X.ξ0) = -τ'.1 ((a - cc a) * X.ξ0)`.
+
+Rewrite using `[show (cc a - a) * X.ξ0 = -((a - cc a) * X.ξ0) by ring, map_neg, h _ (hh a)]`. Rewrite `e1` using `[k1, k2, h1]`. Establish `e3 : (2 : ℂ) * τ.1 (cc a) = 2 * τ'.1 a`. Rewrite using `[e1, e2, neg_div_neg_eq]`. Conclude with `(mul_left_cancel₀ two_ne_zero e3).symm`.
+
+Establish `hτ : τ'.1 = NumberField.ComplexEmbedding.conjugate τ.1`. Apply `RingHom.ext` to reduce the goal to its premises. Introduce `a`. Rewrite using `[hconj a]`. Both sides reduce to the same expression.
+
+Establish `hm` using `(X.cmType τ.1).mp τ.2`. Rewrite `hm` using `[← hτ]`. Conclude with `hm τ'.2`.
+-/
 lemma restrict_inj {τ τ' : X.Ψ} (h : ∀ a : E, cc a = a → τ.1 a = τ'.1 a) : τ = τ' := by
   have hξ := X.ξ0_im
   have hξne := X.ξ0_ne
@@ -186,6 +253,11 @@ lemma restrict_inj {τ τ' : X.Ψ} (h : ∀ a : E, cc a = a → τ.1 a = τ'.1 a
 
 def resChar (τ : X.Ψ) : (fixF (E := E)) →* ℂ := (τ.1.comp (fixF (E := E)).subtype).toMonoidHom
 
+/- English proof (translation)
+Establish `hinj : Function.Injective (fun τ : X.Ψ => resChar X τ)`. Introduce `τ τ' h`. Apply `restrict_inj X` to reduce the goal to its premises. Introduce `a ha`. Use `DFunLike.congr_fun h ⟨a, ha⟩` as an intermediate fact.
+
+Conclude with `this`. Conclude with `(linearIndependent_monoidHom (fixF (E := E)) ℂ).comp _ hinj`.
+-/
 lemma resChar_linInd :
     LinearIndependent ℂ (fun τ : X.Ψ => ((resChar X τ : (fixF (E := E)) →* ℂ) : (fixF (E := E)) → ℂ)) := by
   have hinj : Function.Injective (fun τ : X.Ψ => resChar X τ) := by
@@ -197,6 +269,37 @@ lemma resChar_linInd :
   exact (linearIndependent_monoidHom (fixF (E := E)) ℂ).comp _ hinj
 
 open Classical in
+/- English proof (translation)
+Assume the negation of the conclusion as `hne`. Take `⟨f, hf0, hle⟩` from `Submodule.exists_le_ker_of_lt_top _ (lt_top_iff_ne_top.mpr hne)`. Establish `hfv : ∀ v : X.Ψ → ℝ, f v = ∑ τ, v τ * f (fun j => if τ = j then 1 else 0)` using `fun v => by`. Rewrite using `[LinearMap.pi_apply_eq_sum_univ f v]`. Both sides reduce to the same expression.
+
+Establish `hM : ((X.m * X.chiOrd la : ℕ) : ℝ) ≠ 0`. Establish `h3 : 0 < X.m * X.chiOrd la` using `Nat.mul_pos X.m_pos (chiOrd_pos X la)`. Conclude with `h3.ne'` after adjusting the coercions. Establish `hvan : ∀ a : E, cc a = a → IsIntegral ℤ a → ∑ τ : X.Ψ, ((f (fun j => if τ = j then 1 else 0) : ℝ) : ℂ) * τ.1 a = 0`. Introduce `a ha hai`.
+
+Establish `hmem : per X la a ∈ Submodule.span ℝ (X.periods la : Set (X.Ψ → ℝ))` using `Submodule.subset_span ((mem_periods_iff X la _).mpr ⟨a, ha, hai, rfl⟩)`. Establish `h0 : f (per X la a) = 0` using `LinearMap.mem_ker.mp (hle hmem)`. Rewrite `h0` using `[hfv]`. Establish `h1 : ∑ τ : X.Ψ, (τ.1 a).re * f (fun j => if τ = j then 1 else 0) = 0`. Establish `h5 : ((X.m * X.chiOrd la : ℕ) : ℝ) * ∑ τ : X.Ψ, (τ.1 a).re * f (fun j => if τ = j then 1 else 0) = 0`.
+
+Rewrite using `[Finset.mul_sum]`. Use `Eq.trans (Finset.sum_congr rfl fun τ _ => ?_) h0` and prove the remaining obligations. Simplify using `only [per]`. Expand and normalize the polynomial expressions, which then agree. Break down `mul_eq_zero.mp h5 with h | h` into its components or cases.
+
+Conclude with `absurd h hM`. Conclude with `h`. Establish `h2 : ∀ τ : X.Ψ, ((f (fun j => if τ = j then 1 else 0) : ℝ) : ℂ) * τ.1 a = (((τ.1 a).re * f (fun j => if τ = j then 1 else 0) : ℝ) : ℂ)`. Introduce `τ`. Use `conv_lhs => rw [emb_real (τ := τ.1) ha]`.
+
+Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[Finset.sum_congr rfl fun τ _ => h2 τ, ← Complex.ofReal_sum, h1, Complex.ofReal_zero]`. Set `G : Submonoid (fixF (E` to `E)) := { carrier := {a | IsIntegral ℤ (a : E)} mul_mem' := fun {a b} ha hb => IsIntegral.mul ha hb one_mem' := isIntegral_one }`. Establish `hinj : Function.Injective (fun τ : X.Ψ => (resChar X τ).comp G.subtype)`.
+
+Introduce `τ τ' h`. Apply `restrict_inj X` to reduce the goal to its premises. Introduce `a ha`. Establish `hG : ∀ b : E, cc b = b → IsIntegral ℤ b → τ.1 b = τ'.1 b`. Introduce `b hb hbi`.
+
+Establish `h6` using `DFunLike.congr_fun h (⟨⟨b, hb⟩, hbi⟩ : G)`. Conclude with `h6`. Take `⟨x, y, hy, hxy⟩` from `IsFractionRing.div_surjective (A := 𝓞 E) a`. Use `set x' : E := algebraMap (𝓞 E) E x with hx'`. Use `set y' : E := algebraMap (𝓞 E) E y with hy'`.
+
+Establish `hy0 : y' ≠ 0` using `IsFractionRing.to_map_ne_zero_of_mem_nonZeroDivisors hy`. Establish `hxi : IsIntegral ℤ x'` using `(Algebra.IsIntegral.isIntegral (R := ℤ) x).algebraMap`. Establish `hyi : IsIntegral ℤ y'` using `(Algebra.IsIntegral.isIntegral (R := ℤ) y).algebraMap`. Establish `hcy : IsIntegral ℤ (cc y')` using `hyi.map (RingHom.toIntAlgHom (IsCMField.complexConj E : E →+* E))`. Establish `hcy0 : cc y' ≠ 0`.
+
+Introduce `h0`. Apply `hy0` to reduce the goal to its premises. Rewrite using `[← cc_cc' y', h0, cc_zero']`. Establish `hd0 : y' * cc y' ≠ 0` using `mul_ne_zero hy0 hcy0`. Establish `hdfix : cc (y' * cc y') = y' * cc y'`.
+
+Rewrite using `[show cc (y' * cc y') = cc y' * cc (cc y') from map_mul _ _ _, cc_cc', mul_comm]`. Establish `hn : a * (y' * cc y') = x' * cc y'`. Rewrite using `[← hxy, ← mul_assoc, div_mul_cancel₀ _ hy0]`. Establish `hnfix : cc (x' * cc y') = x' * cc y'`. Rewrite using `[← hn, show cc (a * (y' * cc y')) = cc a * cc (y' * cc y') from map_mul _ _ _, ha, hdfix]`.
+
+Establish `e1` using `hG _ hdfix (hyi.mul hcy)`. Establish `e2` using `hG _ hnfix (hxi.mul hcy)`. Establish `ha' : a = (x' * cc y') / (y' * cc y')`. Rewrite using `[← hn, mul_div_cancel_right₀ _ hd0]`. Rewrite using `[ha', map_div₀, map_div₀, e1, e2]`.
+
+Establish `hLI : LinearIndependent ℂ (fun τ : X.Ψ => (((resChar X τ).comp G.subtype : G →* ℂ) : G → ℂ))` using `(linearIndependent_monoidHom G ℂ).comp _ hinj`. Establish `hsum : ∑ τ : X.Ψ, ((f (fun j => if τ = j then 1 else 0) : ℝ) : ℂ) • (((resChar X τ).comp G.subtype : G →* ℂ) : G → ℂ) = 0`. Use function extensionality and compare the values at `g`. Rewrite using `[Finset.sum_apply]`. Simplify using `only [Pi.smul_apply, smul_eq_mul, Pi.zero_apply]`.
+
+Conclude with `hvan _ g.1.2 g.2`. Establish `hzero` using `Fintype.linearIndependent_iff.mp hLI _ hsum`. Apply `hf0` to reduce the goal to its premises. Apply `LinearMap.ext` to reduce the goal to its premises. Introduce `v`.
+
+Rewrite using `[hfv v, LinearMap.zero_apply]`. Use `Finset.sum_eq_zero fun τ _ => ?_` and prove the remaining obligations. Rewrite using `[Complex.ofReal_eq_zero.mp (hzero τ), mul_zero]`.
+-/
 lemma periods_span : Submodule.span ℝ (X.periods la : Set (X.Ψ → ℝ)) = ⊤ := by
   by_contra hne
   obtain ⟨f, hf0, hle⟩ := Submodule.exists_le_ker_of_lt_top _ (lt_top_iff_ne_top.mpr hne)
@@ -291,6 +394,9 @@ instance perL_discrete : DiscreteTopology (perL X la) := periods_discrete X la
 
 instance perL_isZLattice : IsZLattice ℝ (perL X la) := ⟨periods_span X la⟩
 
+/- English proof (translation)
+Rewrite using `[ZLattice.rank ℝ (perL X la)]`. Conclude with `Module.finrank_fintype_fun_eq_card ℝ`.
+-/
 lemma perL_rank : Module.finrank ℤ (perL X la) = Fintype.card X.Ψ := by
   rw [ZLattice.rank ℝ (perL X la)]
   exact Module.finrank_fintype_fun_eq_card ℝ

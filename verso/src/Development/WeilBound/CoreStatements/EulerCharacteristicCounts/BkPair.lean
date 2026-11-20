@@ -14,6 +14,11 @@ open NumberField IsDedekindDomain Formalism Formalism.ConjugateSelfDual Formalis
 namespace PositivityTheory.LocalTateOrthogonality.Bk
 
 set_option maxHeartbeats 2000000 in
+/- English proof (translation)
+Introduce `D l _ K LL _ _ _ O _ _ hG A A' LA LA' P hd ϖ hϖ r`. Establish `hG0 : ∃ hO : IsDomain O, @IsDiscreteValuationRing O _ hO ∧ IsFractionRing O LL` using `hG.1`. Establish `hO : IsDomain O` using `hG0.choose`. Establish `hF : IsFractionRing O LL` using `hG0.choose_spec.2`. Establish `h1 : ∀ y, y ∈ LA'.T ↔ ∀ x ∈ LA.T, ∃ a : O, P x y = algebraMap O LL a` using `hd.2`.
+
+Establish `h2 : ∀ x, x ∈ LA.T ↔ ∀ y ∈ LA'.T, ∃ a : O, P.flip y x = algebraMap O LL a` using `((GlobalTheory.T.lattice_open_compact_nhds_basis D l K LL O hG A LA ϖ hϖ).2.2.2.2 A' LA' P hd).2`. Simplify using `only [LinearMap.flip_apply] at h2`. Conclude with `GlobalTheory.CompanionTheory.LocDual.Q.pairing_exists LL O A.V A'.V LA.T LA'.T P ϖ hϖ.ne_zero r h1 h2`.
+-/
 theorem pairO : ∀ (D : D7) (l : ℕ) [Fact l.Prime] (K : FinExt l), ∀ (LL : Type) [Field LL] [Algebra ℚ_[l] LL] [TopologicalSpace LL] (O : Type) [CommRing O] [Algebra O LL], GoodO (Qp := ℚ_[l]) LL O → ∀ (A A' : GRep ↥(GK K) ℚ_[l] LL O) (LA : Lattice (O := O) A.ρ) (LA' : Lattice (O := O) A'.ρ) (P : A.V →ₗ[LL] A'.V →ₗ[LL] LL), IsDualLat1 ((D.loc l).PD K) LA LA' P → ∀ ϖ : O, Irreducible ϖ → ∀ r : ℕ, ∃ B : (↥LA.T ⧸ (Ideal.span {ϖ ^ r} • ⊤ : Submodule O ↥LA.T)) →ₗ[O] (↥LA'.T ⧸ (Ideal.span {ϖ ^ r} • ⊤ : Submodule O ↥LA'.T)) →ₗ[O] (O ⧸ Ideal.span {ϖ ^ r}), (∀ (x : ↥LA.T) (y : ↥LA'.T) (p : O), P x y = algebraMap O LL p → B (Submodule.Quotient.mk x) (Submodule.Quotient.mk y) = Ideal.Quotient.mk _ p) ∧ (∀ x, (∀ y, B x y = 0) → x = 0) ∧ (∀ y, (∀ x, B x y = 0) → y = 0) := by
   intro D l _ K LL _ _ _ O _ _ hG A A' LA LA' P hd ϖ hϖ r
   have hG0 : ∃ hO : IsDomain O, @IsDiscreteValuationRing O _ hO ∧ IsFractionRing O LL := hG.1
@@ -25,6 +30,11 @@ theorem pairO : ∀ (D : D7) (l : ℕ) [Fact l.Prime] (K : FinExt l), ∀ (LL : 
   simp only [LinearMap.flip_apply] at h2
   exact GlobalTheory.CompanionTheory.LocDual.Q.pairing_exists LL O A.V A'.V LA.T LA'.T P ϖ hϖ.ne_zero r h1 h2
 
+/- English proof (translation)
+Introduce `l _ K LL _ _ _ O _ _ hG A LA ϖ hϖ r`. Take `⟨⟨hO, hD, hF⟩, -⟩` from `id hG`. Use `hO` as an intermediate fact. Use `hD` as an intermediate fact. Use `hF` as an intermediate fact.
+
+Establish `hq` using `(GlobalTheory.T.goodO_adic_complete_compact_basis l LL O hG ϖ hϖ).2.1`. Use `⟨(GlobalTheory.CompanionTheory.LocDual.Q.finite_quot O A.V LA.T ϖ r hq LA.fg).2, ?_⟩` and prove the remaining obligations. Establish `: Module.Finite O ↥LA.T` using `Module.Finite.iff_fg.mpr LA.fg`. Use `LA.free` as an intermediate fact. Rewrite using `[GlobalTheory.CompanionTheory.GrowthOfInvariants.card_quot_free (Module.finBasis O ↥LA.T).equivFun, GlobalTheory.CompanionTheory.GrowthOfInvariants.card_quot_pow ϖ hϖ.ne_zero, GlobalTheory.H1fGeneratorBoundAlt.finrank_lattice LA, pow_mul]`.
+-/
 theorem cardQ : ∀ (l : ℕ) [Fact l.Prime] (K : FinExt l), ∀ (LL : Type) [Field LL] [Algebra ℚ_[l] LL] [TopologicalSpace LL] (O : Type) [CommRing O] [Algebra O LL], GoodO (Qp := ℚ_[l]) LL O → ∀ (A : GRep ↥(GK K) ℚ_[l] LL O) (LA : Lattice (O := O) A.ρ) (ϖ : O), Irreducible ϖ → ∀ r : ℕ, Finite (↥LA.T ⧸ (Ideal.span {ϖ ^ r} • ⊤ : Submodule O ↥LA.T)) ∧ Nat.card (↥LA.T ⧸ (Ideal.span {ϖ ^ r} • ⊤ : Submodule O ↥LA.T)) = Nat.card (O ⧸ Ideal.span {ϖ}) ^ (r * finrank LL A.V) := by
   intro l _ K LL _ _ _ O _ _ hG A LA ϖ hϖ r
   obtain ⟨⟨hO, hD, hF⟩, -⟩ := id hG
@@ -38,6 +48,9 @@ theorem cardQ : ∀ (l : ℕ) [Fact l.Prime] (K : FinExt l), ∀ (LL : Type) [Fi
   rw [GlobalTheory.CompanionTheory.GrowthOfInvariants.card_quot_free (Module.finBasis O ↥LA.T).equivFun,
     GlobalTheory.CompanionTheory.GrowthOfInvariants.card_quot_pow ϖ hϖ.ne_zero, GlobalTheory.H1fGeneratorBoundAlt.finrank_lattice LA, pow_mul]
 
+/- English proof (translation)
+Introduce `D l _ K LL _ _ _ O _ _ hG A LA ϖ hϖ r hI m`. Conclude with `GlobalTheory.CompanionTheory.LocDual.Q.act_locConst D l K LL O hG A LA ϖ hϖ r hI m`.
+-/
 theorem locconst : ∀ (_D : D7) (l : ℕ) [Fact l.Prime] (K : FinExt l), ∀ (LL : Type) [Field LL] [Algebra ℚ_[l] LL] [TopologicalSpace LL] (O : Type) [CommRing O] [Algebra O LL], GoodO (Qp := ℚ_[l]) LL O → ∀ (A : GRep ↥(GK K) ℚ_[l] LL O) (LA : Lattice (O := O) A.ρ) (ϖ : O), Irreducible ϖ → ∀ (r : ℕ) (hI : StableSub LA (Ideal.span {ϖ ^ r} • ⊤ : Submodule O ↥LA.T)) (m : ↥LA.T ⧸ (Ideal.span {ϖ ^ r} • ⊤ : Submodule O ↥LA.T)), IsLocallyConstant fun g => actQ LA _ hI g m := by
   intro D l _ K LL _ _ _ O _ _ hG A LA ϖ hϖ r hI m
   exact GlobalTheory.CompanionTheory.LocDual.Q.act_locConst D l K LL O hG A LA ϖ hϖ r hI m

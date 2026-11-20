@@ -6,6 +6,19 @@ open AlgebraicGeometry CategoryTheory Limits
 
 namespace GlobalTheory.ClopenIdealSheaf
 
+/- English proof (translation)
+Apply `le_antisymm` to reduce the goal to its premises. Rewrite using `[Ideal.map_le_iff_le_comap]`. Introduce `a ha`. Use `Ideal.mem_comap.mpr (Ideal.mem_comap.mpr ?_)` and prove the remaining obligations. Rewrite using `[hcomm]`.
+
+Conclude with `Ideal.mem_map_of_mem _ ha`. Introduce `s hs`. Take `⟨⟨⟨x, hx⟩, ⟨_, n, rfl⟩⟩, hxs⟩` from `(IsLocalization.mem_map_algebraMap_iff (.powers (ρ f)) T).mp (Ideal.mem_comap.mp hs)`. Take `⟨⟨b, ⟨_, k, rfl⟩⟩, hb⟩` from `IsLocalization.surj (.powers f) s`. Simplify using `only at hxs hb`.
+
+Establish `h1 : algebraMap A T (ρ b * ρ f ^ n) = algebraMap A T (x * ρ f ^ k)`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[← hb, map_mul]`. Use `_ = τ s * algebraMap A T (ρ f ^ n) * algebraMap A T (ρ f ^ k) := by`. Rewrite using `[hcomm, map_pow]`.
+
+Expand and normalize the polynomial expressions, which then agree. Use `_ = algebraMap A T (x * ρ f ^ k) := by rw [hxs, map_mul]`. Take `⟨⟨_, m, rfl⟩, hm⟩` from `(IsLocalization.eq_iff_exists (.powers (ρ f)) T).mp h1`. Simplify using `only at hm`. Rewrite using `[IsLocalization.mem_map_algebraMap_iff (.powers f)]`.
+
+Use `⟨⟨⟨f ^ (m + n) * b, ?_⟩, ⟨f ^ (m + n + k), m + n + k, rfl⟩⟩, ?_⟩` and prove the remaining obligations. Establish `e : ρ (f ^ (m + n) * b) = ρ f ^ m * (ρ b * ρ f ^ n)`. Rewrite using `[map_mul, map_pow, pow_add]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[Ideal.mem_comap, e, hm]`.
+
+Conclude with `Ideal.mul_mem_left _ _ (Ideal.mul_mem_right _ _ hx)`. Simplify using `only`. Rewrite using `[map_mul, pow_add, map_mul, ← hb]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem map_comap_localization {R A S T : Type*} [CommRing R] [CommRing A] [CommRing S]
     [CommRing T] [Algebra R S] [Algebra A T] (f : R) [IsLocalization.Away f S] (ρ : R →+* A)
     [IsLocalization.Away (ρ f) T] (τ : S →+* T)
@@ -42,6 +55,11 @@ theorem map_comap_localization {R A S T : Type*} [CommRing R] [CommRing A] [Comm
       rw [map_mul, pow_add, map_mul, ← hb]
       ring
 
+/- English proof (translation)
+Substitute `hB` using the available equality. Rewrite using `[← hI]`. Use `haveI := U.2.isLocalization_basicOpen f`. Use `haveI := V.2.isLocalization_basicOpen ((Z.presheaf.map (homOfLE hVU).op).hom f)`. Use `map_comap_localization (S := Γ(Z, Z.basicOpen f)) f _ (T := Γ(Z, Z.basicOpen ((Z.presheaf.map (homOfLE hVU).op).hom f))) _ ?_ _` and prove the remaining obligations.
+
+Introduce `a`. Express the relevant statement in the definitionally equal form `(Z.presheaf.map (homOfLE hBD).op).hom ((Z.presheaf.map (homOfLE (Z.basicOpen_le f)).op).hom a) = (Z.presheaf.map (homOfLE (Z.basicOpen_le _)).op).hom ((Z.presheaf.map (homOfLE hVU).op).hom a)`. Rewrite using `[← CommRingCat.comp_apply, ← CommRingCat.comp_apply, ← Functor.map_comp, ← Functor.map_comp]`. Both sides reduce to the same expression.
+-/
 theorem map_comap_eq {Z : Scheme.{0}} (F : ∀ U : Z.affineOpens, Ideal Γ(Z, U))
     {U V B : Z.affineOpens} (hVU : (V : Z.Opens) ≤ U) (f : Γ(Z, U))
     (hB : Z.affineBasicOpen ((Z.presheaf.map (homOfLE hVU).op).hom f) = B)
@@ -71,6 +89,31 @@ end GlobalTheory.ClopenIdealSheaf
 
 namespace GlobalTheory.ClopenIdealSheaf
 
+/- English proof (translation)
+Introduce `Z W hW F hF`. Set `W' : Z.Opens` to `⟨W, hW.isOpen⟩`. Set `Wc : Z.Opens` to `⟨Wᶜ, hW.isClosed.isOpen_compl⟩`. Establish `hAff : ∀ U : Z.affineOpens, IsAffineOpen ((U : Z.Opens) ⊓ W')`. Introduce `U`.
+
+Take `⟨e, -, he, -⟩` from `GlobalTheory.IsNormalScheme.exists_isIdempotentElem_basicOpen_eq (X := Z) (U := (U : Z.Opens)) (V := (U : Z.Opens) ⊓ W') (W := (U : Z.Opens) ⊓ Wc) (by`. Rewrite using `[← inf_sup_left]`. Establish `: W' ⊔ Wc = ⊤`. Use extensionality with `x`. Simplify using `[W', Wc, em]`.
+
+Rewrite using `[this, inf_top_eq])`. Use the proof step `(by`. Use `Disjoint.mono inf_le_right inf_le_right ?_` and prove the remaining obligations. Rewrite using `[disjoint_iff]`. Use extensionality with `x`.
+
+Simplify using `[W', Wc])`. Rewrite using `[← he]`. Conclude with `U.2.basicOpen e`. Set `V : Z.affineOpens → Z.affineOpens` to `fun U => ⟨(U : Z.Opens) ⊓ W', hAff U⟩`. Establish `hVU : ∀ U, (V U : Z.Opens) ≤ U` using `fun U => inf_le_left`.
+
+Establish `hVW : ∀ U, ((V U : Z.Opens) : Set Z) ⊆ W` using `fun U => Set.inter_subset_right`. Set `I : ∀ U : Z.affineOpens, Ideal Γ(Z, U)` to `fun U => (F (V U)).comap (Z.presheaf.map (homOfLE (hVU U)).op).hom`. Use `⟨{ ideal := I, map_ideal_basicOpen := ?_ }, ?_, ?_⟩` and prove the remaining obligations. Introduce `U f`. Establish `hB : Z.affineBasicOpen ((Z.presheaf.map (homOfLE (hVU U)).op).hom f) = V (Z.affineBasicOpen f)`.
+
+Apply `Subtype.ext` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `Z.basicOpen ((Z.presheaf.map (homOfLE (hVU U)).op).hom f) = Z.basicOpen f ⊓ W'`. Rewrite using `[Scheme.basicOpen_res]`. Use `Z.basicOpen_le f` as an intermediate fact. Apply `le_antisymm` to reduce the goal to its premises.
+
+Conclude with `le_inf inf_le_right (inf_le_left.trans inf_le_right)`. Conclude with `le_inf (le_inf (inf_le_left.trans this) inf_le_right) inf_le_left`. Conclude with `map_comap_eq F (hVU U) f hB (hVU _) (hF (V U) _ (hVW U))`. Introduce `U hU`. Establish `key : ∀ (A B : Z.affineOpens), A = B → ∀ hle : (B : Z.Opens) ≤ A, (F B).comap (Z.presheaf.map (homOfLE hle).op).hom = F A`.
+
+Introduce and unpack `A B rfl hle`. Establish `: homOfLE hle = 𝟙 _` using `rfl`. Rewrite using `[this, op_id, CategoryTheory.Functor.map_id, CommRingCat.hom_id]`. Conclude with `Ideal.comap_id _`. Conclude with `key U (V U) (Subtype.ext (inf_eq_left.mpr (show (U : Z.Opens) ≤ W' from hU)).symm) (hVU U)`.
+
+Introduce `x hx`. Assume the negation of the conclusion as `hxW`. Take `⟨_, ⟨U, hU, rfl⟩, hxU, hUW⟩` from `Z.isBasis_affineOpens.exists_subset_of_mem_open hxW hW.isClosed.isOpen_compl`. Use `replace hx := (Scheme.IdealSheafData.mem_support_iff_of_mem (U := ⟨U, hU⟩) hxU).mp hx`. Establish `hbot : ((V ⟨U, hU⟩ : Z.affineOpens) : Z.Opens) = ⊥`.
+
+Use extensionality with `y`. Simplify using `only [V, W', TopologicalSpace.Opens.coe_inf, TopologicalSpace.Opens.coe_mk, Set.mem_inter_iff, TopologicalSpace.Opens.coe_bot, Set.mem_empty_iff_false, iff_false]`. Conclude with `fun h => hUW h.1 h.2`. Use `haveI : Subsingleton Γ(Z, (V ⟨U, hU⟩ : Z.Opens)) := CommRingCat.subsingleton_of_isTerminal (Z.sheaf.isTerminalOfEqEmpty hbot)`. Establish `htop : F (V ⟨U, hU⟩) = ⊤`.
+
+Rewrite using `[Ideal.eq_top_iff_one, Subsingleton.elim (1 : Γ(Z, (V ⟨U, hU⟩ : Z.Opens))) 0]`. Conclude with `zero_mem _`. Establish `hI : I ⟨U, hU⟩ = ⊤`. Simplify using `only [I, htop, Ideal.comap_top]`. Express the relevant statement in the definitionally equal form `x ∈ Z.zeroLocus (U := U) (I ⟨U, hU⟩ : Set Γ(Z, U)) at hx`.
+
+Rewrite `hx` using `[hI, Scheme.mem_zeroLocus_iff]`. Conclude with `hx 1 (Submodule.mem_top) (by rw [Scheme.basicOpen_one]; exact hxU)`.
+-/
 theorem exists_idealSheafData_of_isClopen : ∀ (Z : Scheme.{0}) (W : Set Z), IsClopen W →
     ∀ (F : ∀ U : Z.affineOpens, Ideal Γ(Z, U)),
     (∀ (U : Z.affineOpens) (f : Γ(Z, U)), (U : Set Z) ⊆ W →

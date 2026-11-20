@@ -13,6 +13,13 @@ open MvPolynomial ReciprocityTheory.ChartRestriction.G.Geo ReciprocityTheory.Cha
 
 universe u v w
 
+/- English proof (translation)
+Establish `hmin` using `hW.1`. Establish `hWp : W.IsPrime` using `hmin.1.1`. Establish `hm : IsLocalRing.maximalIdeal (Localization.AtPrime W) ∈ ((V ⊔ Ideal.span {f}).map (algebraMap (MRingOver F ι) (Localization.AtPrime W))).minimalPrimes`. Rewrite using `[IsLocalization.minimalPrimes_map W.primeCompl (Localization.AtPrime W)]`. Rewrite using `[Set.mem_preimage, Localization.AtPrime.under_maximalIdeal]`.
+
+Conclude with `hmin`. Establish `hne` using `SwapLoc.length_quot_ne_top_of_mem_minimalPrimes _ hm`. Establish `: Nontrivial (Localization.AtPrime W ⧸ (V ⊔ Ideal.span {f}).map (algebraMap (MRingOver F ι) (Localization.AtPrime W)))` using `Ideal.Quotient.nontrivial_iff.mpr (ne_top_of_le_ne_top (IsLocalRing.maximalIdeal.isMaximal _).ne_top hm.1.2)`. Establish `hpos` using `Module.length_pos (R := Localization.AtPrime W) (M := Localization.AtPrime W ⧸ (V ⊔ Ideal.span {f}).map (algebraMap (MRingOver F ι) (Localization.AtPrime W)))`. Rewrite using `[multAt, dif_pos hWp, inh_length_locQuot]`.
+
+Conclude with `ENat.toNat_pos hpos.ne' hne`.
+-/
 theorem multAt_pos_of_mem_divSupp_field {K : Type*} [Fintype K] {ι : K → Type*} [∀ k, Fintype (ι k)]
     {F : Type*} [Field F] {V W : Ideal (MRingOver F ι)} {f : MRingOver F ι}
     (hW : W ∈ divSupp V f) : 0 < multAt (V ⊔ Ideal.span {f}) W := by
@@ -34,6 +41,11 @@ theorem multAt_pos_of_mem_divSupp_field {K : Type*} [Fintype K] {ι : K → Type
   rw [multAt, dif_pos hWp, inh_length_locQuot]
   exact ENat.toNat_pos hpos.ne' hne
 
+/- English proof (translation)
+Introduce `K _ ι _ F _ V n hV`. Take `⟨i, hi⟩ : ∃ i : ∀ k, ι k, IsChart V i` from `⟨fun k => (hV.1.2.2 k).choose, fun k => (hV.1.2.2 k).choose_spec⟩`. Use `⟨_, isMultiHomog_coordProd (F := F) i (fun _ => 1), coordProd_not_mem hV.1.1 i hi _, ?_⟩` and prove the remaining obligations. Take `⟨W, hW⟩` from `h₁ K ι F V n _ hV (isMultiHomog_coordProd (F := F) i (fun _ => 1))`. Introduce `h0`.
+
+Establish `hpos` using `multAt_pos_of_mem_divSupp_field hW`. Rewrite `hpos` using `[← DivisorCycleSwap.divCycle_apply_of_mem hW, h0, Finsupp.zero_apply]`. Conclude with `lt_irrefl _ hpos`.
+-/
 theorem SegreDivisor.proof (h₁ : SegreComponent.Statement.{u, v, w}) :
     SegreDivisor.Statement.{u, v, w} := by
   intro K _ ι _ F _ V n hV

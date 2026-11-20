@@ -14,6 +14,9 @@ noncomputable section
 
 namespace GlobalTheory.UMin.ThBdl
 
+/- English proof (translation)
+Establish `hd : IsDominant ξ` using `⟨by show Dense (Set.range ξ)`. Rewrite using `[hξ]`. Conclude with `dense_iff_closure_eq.2 (genericPoint_spec S)⟩`. Use `⟨⟨fun U _ _ => (Set.subsingleton_of_subsingleton).isCompact⟩, ?_⟩` and prove the remaining obligations. Conclude with `IsSchemeTheoreticallyDominant.of_isDominant ξ`.
+-/
 theorem genPt_dom {S : Scheme.{0}} [IsIntegral S] {K : Type} [Field K] (ξ : Sp K ⟶ S)
     (hξ : Set.range ξ = {genericPoint S}) : QuasiCompact ξ ∧ IsSchemeTheoreticallyDominant ξ := by
   have hd : IsDominant ξ := ⟨by
@@ -23,6 +26,9 @@ theorem genPt_dom {S : Scheme.{0}} [IsIntegral S] {K : Type} [Field K] (ξ : Sp 
   refine ⟨⟨fun U _ _ => (Set.subsingleton_of_subsingleton).isCompact⟩, ?_⟩
   exact IsSchemeTheoreticallyDominant.of_isDominant ξ
 
+/- English proof (translation)
+Take `⟨_, _⟩` from `genPt_dom ξ hξ`. Establish `hP : IsPullback (fst (Over.mk ξ) G).left (snd (Over.mk ξ) G).left ξ G.hom` using `.of_hasPullback _ _`. Establish `: IsSchemeTheoreticallyDominant (snd (Over.mk ξ) G).left` using `IsSchemeTheoreticallyDominant.of_isPullback hP`. Establish `: QuasiCompact (snd (Over.mk ξ) G).left` using `MorphismProperty.of_isPullback (P := @QuasiCompact) hP inferInstance`. Conclude with `(snd (Over.mk ξ) G).left.app_injective O`.
+-/
 theorem app_snd_injective {S : Scheme.{0}} [IsIntegral S] (G : Over S) [Flat G.hom] {K : Type} [Field K]
     (ξ : Sp K ⟶ S) (hξ : Set.range ξ = {genericPoint S}) (O : G.left.Opens) :
     Function.Injective ((snd (Over.mk ξ) G).left.app O).hom := by
@@ -33,6 +39,17 @@ theorem app_snd_injective {S : Scheme.{0}} [IsIntegral S] (G : Over S) [Flat G.h
     MorphismProperty.of_isPullback (P := @QuasiCompact) hP inferInstance
   exact (snd (Over.mk ξ) G).left.app_injective O
 
+/- English proof (translation)
+Introduce `S _ G _ _ hG L K _ ξ hξ N N' s s' v ⟨h₁, e₁⟩ ⟨h₂, e₂⟩ i`. Use `hG.smooth` as an intermediate fact. Establish `hfl : Flat G.hom` using `inferInstance`. Establish `e` using `congrFun (e₁.trans e₂.symm) (fun _ => i)`. Establish `h₃ : Set.range ξ ⊆ ((N ⊓ N' : S.Opens) : Set S)` using `fun x hx => ⟨h₁ hx, h₂ hx⟩`.
+
+Use `set O : G.left.Opens := L.U i ⊓ G.hom ⁻¹ᵁ (N ⊓ N') with hO`. Use `set W : (Over.mk ξ ⊗ G).left.Opens := (LPow G L 1 (Over.mk ξ)).U (fun _ => i) with hW`. Establish `hle : W ≤ (snd (Over.mk ξ) G).left ⁻¹ᵁ O` using `lpow_U_le h₃ (fun _ => i)`. Establish `hge : (snd (Over.mk ξ) G).left ⁻¹ᵁ O ≤ W` using `fun y hy => Set.mem_iInter.2 fun _ => hy.1`. Establish `hinj : Function.Injective ((snd (Over.mk ξ) G).left.appLE O W hle).hom`.
+
+Establish `hEq : W = (snd (Over.mk ξ) G).left ⁻¹ᵁ O` using `le_antisymm hle hge`. Use `clear_value W`. Substitute `hEq` using the available equality. Rewrite using `[← Scheme.Hom.app_eq_appLE]`. Conclude with `app_snd_injective G ξ hξ O`.
+
+Apply `hinj` to reduce the goal to its premises. Establish `k₁ : ((snd (Over.mk ξ) G).left.appLE O W hle).hom (resG _ (fun _ hx => ⟨hx.1, hx.2.1⟩ : O ≤ L.U i ⊓ G.hom ⁻¹ᵁ N) (s i)) = genPull h₁ s (fun _ => i)` using `by dsimp only [resG]`. Rewrite using `[← CommRingCat.comp_apply, Scheme.Hom.map_appLE]`. Both sides reduce to the same expression. Establish `k₂ : ((snd (Over.mk ξ) G).left.appLE O W hle).hom (resG _ (fun _ hx => ⟨hx.1, hx.2.2⟩ : O ≤ L.U i ⊓ G.hom ⁻¹ᵁ N') (s' i)) = genPull h₂ s' (fun _ => i)` using `by dsimp only [resG]`.
+
+Rewrite using `[← CommRingCat.comp_apply, Scheme.Hom.map_appLE]`. Both sides reduce to the same expression. Conclude with `k₁.trans (e.trans k₂.symm)`.
+-/
 theorem locSec_eq_of_genIs : ∀ (S : Scheme.{0}) [IsIntegral S] (G : Over S) [GrpObj G] [IsCommMonObj G], IsSemiAbelian G →
     ∀ (L : LB G.left) (K : Type) [Field K] (ξ : Sp K ⟶ S), Set.range ξ = {genericPoint S} →
     ∀ (N N' : S.Opens) (s : LocSec G L N) (s' : LocSec G L N') (v : SecM G L 1 (Over.mk ξ)),

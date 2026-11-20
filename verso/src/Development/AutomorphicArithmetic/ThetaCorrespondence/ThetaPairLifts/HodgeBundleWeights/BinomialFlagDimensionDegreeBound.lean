@@ -24,6 +24,13 @@ namespace GlobalTheory.CovTop.DgShare
 section Weights
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E} {Dw : Datum H}
 end Weights
+/- English proof (translation)
+Establish `hP1` using `_root_.GlobalTheory.T.covering_topology_refinement hP`. Take `⟨g1, g2, g3⟩` from `gapGe_of_wtBig hB`. Establish `good : ∀ la, GapGe 1 la → _` using `fun la h => _root_.GlobalTheory.T.covering_domain_lattice_regularity hP D T hT j hp hq hf hj Y e o hY la (antitone_of_gapGe hp hq h).1 (antitone_of_gapGe hp hq h).2`. Take `⟨TF, R, ω, h⟩` from `_root_.GlobalTheory.T.exists_weight_hodge_bundle_generated hP1 hG hQ hP.q15 hP.q16 hSi hFa hSA D T.toCore j Y e o hY hf Z P hB fun i _ => (good _ (g3 i)).1`. Take `⟨f₁⟩` from `nonempty_cuspFrame ((good _ g1).2 Z)`.
+
+Take `⟨f₂⟩` from `nonempty_cuspFrame ((good _ g2).2 Z)`. Set `k : CompHS.Consts` to `⟨1, 1, 1, 1, 1, le_rfl, le_rfl, le_rfl⟩`. Set `th : R.L.Sec` to `GlobalTheory.CompHS.toSec (R.Δ₁.lift 0)`. Take `⟨a1, a2⟩` from `_root_.GlobalTheory.T.hodge_bundle_isNef_isBig_of_weight hP1 hP.q7 hSi hFa hSA _ _ _ _ _ _ TF Z _ Y.U P R ω _ D _ _ h f₁ f₂ th k hY.geo hB`. Establish `a3` using `birational_of_ratGen TF.X Z Y.U P R ω _ _ _ h f₁ f₂ th k (ratGen_of_birOn TF.X Z Y.U P.u₁ ⟨R.toModif⟩ hbir)`.
+
+Conclude with `GlobalTheory.HSCore.CompShare.choose_mul_compDeg_le hQ _ _ _ _ _ _ _ _ Z _ Y.U P R ω _ D _ _ h f₁ f₂ th k a1 a2 a3`.
+-/
 theorem nef_share_lower_bound (hP : _root_.GlobalTheory.CovTop.PublishedHodgeBundleTheorems) (hG : GlobalTheory.Published.GrothendieckDeformation) (hQ : GlobalTheory.HSCore.Quoted)
     (hSi : GlobalTheory.Published.SiegelToroidalIntegral) (hFa : GlobalTheory.Published.ToroidalChartsForFan) (hSA : GlobalTheory.Published.SemiAbelianLieSeminegative) {D : D7} {T : CoreJ D}
     (hT : LawsJ T) {j : ℕ} (hp : 1 ≤ (T.Q.Dw j).p) (hq : 1 ≤ (T.Q.Dw j).q) (hf : 2 < Module.finrank ℚ D.host.E / 2)
@@ -45,6 +52,13 @@ theorem nef_share_lower_bound (hP : _root_.GlobalTheory.CovTop.PublishedHodgeBun
   have a3 := birational_of_ratGen TF.X Z Y.U P R ω _ _ _ h f₁ f₂ th k
     (ratGen_of_birOn TF.X Z Y.U P.u₁ ⟨R.toModif⟩ hbir)
   exact GlobalTheory.HSCore.CompShare.choose_mul_compDeg_le hQ _ _ _ _ _ _ _ _ Z _ Y.U P R ω _ D _ _ h f₁ f₂ th k a1 a2 a3
+/- English proof (translation)
+Introduce `hX hP hG hQ hSi hKS hSA _ hS _`. Establish `hFa` using `hKS.toroidalChartsForFan`. Establish `h4` using `GlobalTheory.T.size_bounds_for_family hS`. Establish `h5` using `_root_.GlobalTheory.T.birOn_weightPair_both_components hX hG hQ hSi hP hS`. Unfold `Covers at h4 h5`.
+
+Establish `all` using `lifts_and (lifts_and (GlobalTheory.T.weight_parameter_strict_antitone hS) wtBig_run) (lifts_and h4 h5)`. Use `clear h4 h5`. Use `Closed.imp all fun Fm _ _ ⟨C, hC, x0, h⟩ => ⟨C, hC, x0, fun x hx hle ι p hp i hi Y hY Z => ?_⟩` and prove the remaining obligations. Take `⟨⟨_, ⟨_, hq⟩, _, hB⟩, _, ⟨_, hz⟩, _, hb⟩` from `h x hx hle ι p hp i`. Take `⟨hp1, hq1, hf, -⟩` from `hq hi`.
+
+Take `⟨hT, hj, -⟩` from `hz hi Y hY`. Conclude with `_root_.GlobalTheory.CovTop.DgShare.nef_share_lower_bound hP hG hQ hSi hFa hSA hT hp1 hq1 hf hj Y hY.1 _ (hB hi) Z (hb hi Y hY Z).1`.
+-/
 theorem choose_mul_compDeg_le_alt : GlobalTheory.CovTop.HypothesesX → _root_.GlobalTheory.CovTop.PublishedHodgeBundleTheorems → GlobalTheory.Published.GrothendieckDeformation → GlobalTheory.HSCore.Quoted →
     GlobalTheory.Published.SiegelToroidalIntegral → GlobalTheory.Published.ToroidalForFanKS → GlobalTheory.Published.SemiAbelianLieSeminegative → DeepGood → Size → FlatDeg →
     Covers fun Fm x _ ι p i Y PP _ => ∀ Z, (lenT p i PP - 1).choose (GlobalTheory.CompHt.dimFlag (dat p i)) *
@@ -79,6 +93,9 @@ open GlobalTheory.IndefiniteRowSideFullHecke.LevelStructureAutomorphisms (LevelA
 open GlobalTheory.BadCount
 open scoped TensorProduct
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @_root_.GlobalTheory.CovTop.DgShare.choose_mul_compDeg_le_alt | exact _root_.GlobalTheory.CovTop.DgShare.choose_mul_compDeg_le_alt | (intros; apply _root_.GlobalTheory.CovTop.DgShare.choose_mul_compDeg_le_alt <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.binomial_flag_dimension_degree_bound_alt : GlobalTheory.CovTop.HypothesesX → _root_.GlobalTheory.CovTop.PublishedHodgeBundleTheorems → GlobalTheory.Published.GrothendieckDeformation → GlobalTheory.HSCore.Quoted → GlobalTheory.Published.SiegelToroidalIntegral → GlobalTheory.Published.ToroidalForFanKS → GlobalTheory.Published.SemiAbelianLieSeminegative → DeepGood → Size → FlatDeg → Covers fun Fm x _ ι p i Y PP _ => ∀ Z, (lenT p i PP - 1).choose (GlobalTheory.CompHt.dimFlag (dat p i)) * GlobalTheory.CompHt.compDeg Y.U Z (wtOf (dat p i) (⟨uW p i, cZero (Fm.D x ι) ((i : ℕ) + 1), (Fm.D x ι).R.k - 2, lenT p i PP⟩ : WtPar (dat p i)).u₁ 0) ≤ Module.finrank Y.d.c₂.F (cuspOn Y.U Z (wtOf (dat p i) ((⟨uW p i, cZero (Fm.D x ι) ((i : ℕ) + 1), (Fm.D x ι).R.k - 2, lenT p i PP⟩ : WtPar (dat p i)).wt (lenT p i PP)) 0)) := by
   first | exact @_root_.GlobalTheory.CovTop.DgShare.choose_mul_compDeg_le_alt | exact _root_.GlobalTheory.CovTop.DgShare.choose_mul_compDeg_le_alt | (intros; apply _root_.GlobalTheory.CovTop.DgShare.choose_mul_compDeg_le_alt <;> assumption)
 end

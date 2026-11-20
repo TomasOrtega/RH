@@ -16,6 +16,9 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {Wp Wq : InfinitePla
   [∀ x, NormedAddCommGroup (Wp x)] [∀ x, InnerProductSpace ℂ (Wp x)]
   [∀ x, NormedAddCommGroup (Wq x)] [∀ x, InnerProductSpace ℂ (Wq x)] [∀ x, FiniteDimensional ℂ (Wq x)]
 
+/- English proof (translation)
+Take `⟨h1, h2, h3, h4, h5, h6, h7, h8, h9, h10, h11, h12, h13⟩` from `hB`. Use `⟨h1, h2, h3, h4, h5, h6, h7, fun v => le_trans ?_ (h8 v), le_trans h h9, h10, h11, le_trans ?_ h12, h13⟩` and prove the remaining obligations. Conclude with `mul_le_mul_of_nonneg_right h (by positivity)`. Conclude with `mul_le_mul_of_nonneg_right (mul_le_mul_of_nonneg_right h (by positivity)) (by positivity)`.
+-/
 theorem isBuiltPlace_mono {Cc₁ Cc₂ : ℝ} (h : Cc₁ ≤ Cc₂) {S : C.HidaSetting E Wp Wq}
     {T : ∀ v : Fin S.f, D.LevTower S.G.k S.G.r (Wp (S.pl v)) (Wq (S.pl v))}
     {f : ∀ v : Fin S.f, B.Mat S.G.k S.G.r → (Wq (S.pl v) →L[ℂ] Wp (S.pl v))} {χ : ℝ → ℝ}
@@ -27,6 +30,13 @@ theorem isBuiltPlace_mono {Cc₁ Cc₂ : ℝ} (h : Cc₁ ≤ Cc₂) {S : C.HidaS
   · exact mul_le_mul_of_nonneg_right h (by positivity)
   · exact mul_le_mul_of_nonneg_right (mul_le_mul_of_nonneg_right h (by positivity)) (by positivity)
 
+/- English proof (translation)
+Unfold `Formalism.FourierDecayAlt.MA.toSm`. Distinguish the cases in `hu : u ∈ MA.smSub P.r P.TT`. Rewrite using `[dif_pos hu, dif_pos (Subalgebra.smul_mem _ hu c)]`. Both sides reduce to the same expression. Rewrite using `[dif_neg hu, smul_zero]`.
+
+Distinguish the cases in `hc : c = 0`. Substitute `hc` using the available equality. Rewrite using `[dif_pos (by rw [zero_smul]; exact Subalgebra.zero_mem _)]`. Conclude with `Subtype.ext (by simp)`. Rewrite using `[dif_neg]`.
+
+Introduce `h`. Apply `hu` to reduce the goal to its premises. Establish `h2` using `Subalgebra.smul_mem _ h c⁻¹`. Rewrite `h2` using `[smul_smul, inv_mul_cancel₀ hc, one_smul]`. Then use the resulting hypothesis.
+-/
 theorem toSm_smul (P : M.Par) (c : ℂ) (u : MA.Qp P.r P.TT → ℂ) : MA.toSm P (c • u) = c • MA.toSm P u := by
   unfold Formalism.FourierDecayAlt.MA.toSm
   by_cases hu : u ∈ MA.smSub P.r P.TT
@@ -43,11 +53,19 @@ theorem toSm_smul (P : M.Par) (c : ℂ) (u : MA.Qp P.r P.TT → ℂ) : MA.toSm P
       have h2 := Subalgebra.smul_mem _ h c⁻¹
       rwa [smul_smul, inv_mul_cancel₀ hc, one_smul] at h2
 
+/- English proof (translation)
+Unfold `B.hsVec`. Both sides reduce to the same expression.
+-/
 theorem hsVec_smul {V W : Type} [NormedAddCommGroup V] [InnerProductSpace ℂ V] [NormedAddCommGroup W]
     [InnerProductSpace ℂ W] [FiniteDimensional ℂ W] (c : ℂ) (A : W →L[ℂ] V) : B.hsVec (c • A) = c • B.hsVec A := by
   unfold B.hsVec
   rfl
 
+/- English proof (translation)
+Use function extensionality and compare the values at `ρ`. Simplify using `only [trJ, Pi.smul_apply, hsVec_smul, inner_smul_right]`. Rewrite using `[← toSm_smul]`. Use `congr 1`. Use function extensionality and compare the values at `q`.
+
+Simplify using `only [Pi.smul_apply, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem trJ_smul (S : C.HidaSetting E Wp Wq) (T : ∀ v : Fin S.f, D.LevTower S.G.k S.G.r (Wp (S.pl v)) (Wq (S.pl v)))
     (v : Fin S.f) (e : M.Ty (D.parOf S v) → ℂ → (Wq (S.pl v) →L[ℂ] Wp (S.pl v)))
     (c : ℂ) (J : B.Mat S.G.k S.G.r → (Wq (S.pl v) →L[ℂ] Wp (S.pl v))) :
@@ -60,6 +78,9 @@ theorem trJ_smul (S : C.HidaSetting E Wp Wq) (T : ∀ v : Fin S.f, D.LevTower S.
   simp only [Pi.smul_apply, smul_eq_mul]
   ring
 
+/- English proof (translation)
+Use function extensionality and compare the values at `ρ`. Simplify using `only [trJ]`. Use `congr 1`. Use function extensionality and compare the values at `q`. Rewrite using `[h q.1 q.2]`.
+-/
 theorem trJ_congr (S : C.HidaSetting E Wp Wq) (T : ∀ v : Fin S.f, D.LevTower S.G.k S.G.r (Wp (S.pl v)) (Wq (S.pl v)))
     (v : Fin S.f) (e : M.Ty (D.parOf S v) → ℂ → (Wq (S.pl v) →L[ℂ] Wp (S.pl v)))
     (J J' : B.Mat S.G.k S.G.r → (Wq (S.pl v) →L[ℂ] Wp (S.pl v)))
@@ -76,13 +97,22 @@ def prFst (P : M.Par) : (MA.DQ P).Pr →+ (MA.DQ P).Op where
   map_zero' := rfl
   map_add' _ _ := rfl
 
+/- English proof (translation)
+Conclude with `map_sum (prFst P) g s`.
+-/
 theorem pr_fst_sum (P : M.Par) {ι : Type} (s : Finset ι) (g : ι → (MA.DQ P).Pr) :
     (∑ i ∈ s, g i).1 = ∑ i ∈ s, (g i).1 := by
   exact map_sum (prFst P) g s
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem pr_fst_smul (P : M.Par) (c : ℂ) (a : (MA.DQ P).Pr) : (c • a).1 = c • a.1 := by
   rfl
 
+/- English proof (translation)
+Use `first`. Consider the case `exact LinearMap.sum_apply s g y`. Consider the case `exact ContinuousLinearMap.sum_apply s g y`. Consider the case `simp`.
+-/
 theorem op_sum_apply (P : M.Par) {ι : Type} (s : Finset ι) (g : ι → (MA.DQ P).Op) (y : (MA.DQ P).R) :
     (∑ i ∈ s, g i) y = ∑ i ∈ s, g i y := by
   first
@@ -90,6 +120,13 @@ theorem op_sum_apply (P : M.Par) {ι : Type} (s : Finset ι) (g : ι → (MA.DQ 
   | exact ContinuousLinearMap.sum_apply s g y
   | simp
 
+/- English proof (translation)
+Use function extensionality and compare the values at `π`. Use `show ∑ π', ((a * b) π π').1 (x π') = ∑ σ, (a π σ).1 (∑ π', (b σ π').1 (x π'))`. Establish `e : ∀ π', ((a * b) π π').1 (x π') = ∑ i, (a π i).1 ((b i π').1 (x π'))`. Introduce `π'`. Rewrite using `[Matrix.mul_apply, pr_fst_sum]`.
+
+Use `first`. Consider the case `exact (LinearMap.sum_apply _ _ _).trans (Finset.sum_congr rfl fun i _ => rfl)`. Consider the case `exact (ContinuousLinearMap.sum_apply _ _ _).trans (Finset.sum_congr rfl fun i _ => rfl)`. Consider the case `exact (op_sum_apply P Finset.univ _ _).trans (Finset.sum_congr rfl fun i _ => rfl)`. Consider the case `(simp; rfl)`.
+
+Rewrite using `[Finset.sum_congr rfl fun π' _ => e π', Finset.sum_comm]`. Use `Finset.sum_congr rfl fun σ _ => ?_` and prove the remaining obligations. Rewrite using `[map_sum]`.
+-/
 theorem actA_mul (P : M.Par) (a b : MA.A P (MA.DQ P)) (x : M.Ty P → MA.SmQ P.r P.TT) :
     MA.actA P (a * b) x = MA.actA P a (MA.actA P b x) := by
   funext π
@@ -106,6 +143,11 @@ theorem actA_mul (P : M.Par) (a b : MA.A P (MA.DQ P)) (x : M.Ty P → MA.SmQ P.r
   refine Finset.sum_congr rfl fun σ _ => ?_
   rw [map_sum]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `π`. Simplify using `only [Formalism.FourierDecayAlt.MA.actA, Matrix.smul_apply, pr_fst_smul, Pi.smul_apply]`. Rewrite using `[eq_comm]`. Use `erw [Finset.smul_sum]`. Use `symm`.
+
+Use `Finset.sum_congr rfl fun π' _ => ?_` and prove the remaining obligations. Use `first`. Consider the case `exact LinearMap.smul_apply _ _ _`. Consider the case `exact ContinuousLinearMap.smul_apply _ _ _`. Consider the case `rfl`.
+-/
 theorem actA_smul (P : M.Par) (c : ℂ) (a : MA.A P (MA.DQ P)) (x : M.Ty P → MA.SmQ P.r P.TT) :
     MA.actA P (c • a) x = c • MA.actA P a x := by
   funext π
@@ -119,6 +161,9 @@ theorem actA_smul (P : M.Par) (c : ℂ) (a : MA.A P (MA.DQ P)) (x : M.Ty P → M
     | exact ContinuousLinearMap.smul_apply _ _ _
     | rfl
 
+/- English proof (translation)
+Use function extensionality and compare the values at `π`. Simplify using `only [Formalism.FourierDecayAlt.MA.actA, Matrix.one_apply]`. Use `erw [Finset.sum_eq_single π (fun b _ hb => by simp only [if_neg (Ne.symm hb)]; rfl) (fun h => absurd (Finset.mem_univ π) h)]`. Simplify using `only [if_pos rfl]`. Both sides reduce to the same expression.
+-/
 theorem actA_one (P : M.Par) (x : M.Ty P → MA.SmQ P.r P.TT) : MA.actA P 1 x = x := by
   classical
   funext π
@@ -128,6 +173,9 @@ theorem actA_one (P : M.Par) (x : M.Ty P → MA.SmQ P.r P.TT) : MA.actA P 1 x = 
   simp only [if_pos rfl]
   rfl
 
+/- English proof (translation)
+Simplify using `only [Formalism.FourierDecayAlt.Wd.C0, Formalism.FourierDecayAlt.MA.startM, Matrix.smul_apply, smul_mul_assoc, mul_smul_comm, Finset.smul_sum]`.
+-/
 theorem initial_coefficient_of_start_matrix (P : M.Par) (l : ℕ) (Y : ℂ) :
     Wd.C0 (MA.startM P (MA.DQ P) l).QQ (MA.sites P (MA.DQ P)) Y =
       M.sgn P l • Wd.C0 (MA.QQr P (MA.DQ P)) (MA.sites P (MA.DQ P)) Y := by
@@ -142,6 +190,13 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {Wp Wq : InfinitePla
   [∀ x, NormedAddCommGroup (Wp x)] [∀ x, InnerProductSpace ℂ (Wp x)]
   [∀ x, NormedAddCommGroup (Wq x)] [∀ x, InnerProductSpace ℂ (Wq x)] [∀ x, FiniteDimensional ℂ (Wq x)]
 
+/- English proof (translation)
+Introduce `L J₀ hJ₀`. Proceed by induction on `L with`. Consider the case `nil`. Use `⟨hJ₀, ?_⟩` and prove the remaining obligations. Simplify using `only [List.foldr_nil, List.map_nil, List.prod_nil]`.
+
+Rewrite using `[actA_one]`. Consider the case `cons x L ih`. Take `⟨hmem, htr⟩` from `ih`. Use `⟨hP _ hmem x.2 _, ?_⟩` and prove the remaining obligations. Simplify using `only [List.foldr_cons, List.map_cons, List.prod_cons]`.
+
+Rewrite using `[trJ_smul, hG _ hmem x.2, ← actA_smul, ← initial_coefficient_of_start_matrix, htr, ← actA_mul]`.
+-/
 theorem trJ_foldr (S : C.HidaSetting E Wp Wq) (T : ∀ v : Fin S.f, D.LevTower S.G.k S.G.r (Wp (S.pl v)) (Wq (S.pl v)))
     (v : Fin S.f) (e : M.Ty (D.parOf S v) → ℂ → (Wq (S.pl v) →L[ℂ] Wp (S.pl v))) (hG : IsGauge S T v e)
     (hP : ∀ J ∈ Q.FFl S.G.k S.G.r (T v).base.z (T v).base.z' (T v).base.π (T v).base.π' 0 (OmP S T v), ∀ (Y : ℝ) (s : ℂ), s • Q.CV S.G.k S.G.r (Y : ℂ) J ∈ Q.FFl S.G.k S.G.r (T v).base.z (T v).base.z' (T v).base.π (T v).base.π' 0 (OmP S T v)) :

@@ -10,6 +10,13 @@ namespace GlobalTheory.CompanionTheory.ChainCAR
 
 variable {n : ℕ} {ε : Fin n → Bool}
 
+/- English proof (translation)
+Unfold `key at h`. Establish `hi` using `i.1.2.2`. Establish `hj` using `j.1.2.2`. Establish `hn : 0 < n` using `by omega`. Establish `h2 : (i.1.2 : ℕ) = j.1.2`.
+
+Use `congrArg (· % n) h` as an intermediate fact. Simplify `this` using `[Nat.mul_add_mod_of_lt hi, Nat.mul_add_mod_of_lt hj]`. Establish `h1 : (i.1.1 : ℕ) = j.1.1`. Rewrite `h` using `[h2]`. Conclude with `Nat.eq_of_mul_eq_mul_right hn (Nat.add_right_cancel h)`.
+
+Conclude with `Subtype.ext (Prod.ext (Fin.ext h1) (Fin.ext h2))`.
+-/
 theorem key_inj {i j : NC ε} (h : key i = key j) : i = j := by
   unfold key at h
   have hi := i.1.2.2
@@ -25,11 +32,20 @@ theorem key_inj {i j : NC ε} (h : key i = key j) : i = j := by
 
 def tw (i j : NC ε) : ℂ := if key j < key i then -1 else 1
 
+/- English proof (translation)
+Simplify using `[tw]`.
+-/
 theorem tw_self (i : NC ε) : tw i i = 1 := by simp [tw]
 
+/- English proof (translation)
+Apply the tactic sequence `unfold tw; split_ifs <;> simp`.
+-/
 theorem tw_mul_self (i j : NC ε) : tw i j * tw i j = 1 := by
   unfold tw; split_ifs <;> simp
 
+/- English proof (translation)
+Establish `hk : key i ≠ key j` using `fun e => h (key_inj e)`. Unfold `tw`. Break down `lt_or_gt_of_ne hk with h1 | h1` into its components or cases. Simplify using `[h1, h1.not_gt]`. Simplify using `[h1, h1.not_gt]`.
+-/
 theorem tw_swap {i j : NC ε} (h : i ≠ j) : tw j i = -tw i j := by
   have hk : key i ≠ key j := fun e => h (key_inj e)
   unfold tw
@@ -37,10 +53,18 @@ theorem tw_swap {i j : NC ε} (h : i ≠ j) : tw j i = -tw i j := by
   · simp [h1, h1.not_gt]
   · simp [h1, h1.not_gt]
 
+/- English proof (translation)
+Unfold `sg`. Rewrite using `[← mul_pow]`. Simplify using the standard rewrite rules.
+-/
 theorem sg_mul_self (i : NC ε) (A : Finset (NC ε)) : sg i A * sg i A = 1 := by
   unfold sg
   rw [← mul_pow]; simp
 
+/- English proof (translation)
+Unfold `sg tw`. Rewrite using `[Finset.filter_insert]`. Use `split_ifs with hk`. Rewrite using `[Finset.card_insert_of_notMem (fun hm => h (Finset.mem_filter.1 hm).1), pow_succ]`. Expand and normalize the polynomial expressions, which then agree.
+
+Simplify using the standard rewrite rules.
+-/
 theorem sg_insert (i : NC ε) {j : NC ε} {A : Finset (NC ε)} (h : j ∉ A) :
     sg i (insert j A) = tw i j * sg i A := by
   unfold sg tw
@@ -49,6 +73,9 @@ theorem sg_insert (i : NC ε) {j : NC ε} {A : Finset (NC ε)} (h : j ∉ A) :
   · rw [Finset.card_insert_of_notMem (fun hm => h (Finset.mem_filter.1 hm).1), pow_succ]; ring
   · simp
 
+/- English proof (translation)
+Establish `h1` using `sg_insert i (Finset.notMem_erase j A)`. Rewrite `h1` using `[Finset.insert_erase h]`. Rewrite using `[h1, ← mul_assoc, tw_mul_self, one_mul]`.
+-/
 theorem sg_erase (i : NC ε) {j : NC ε} {A : Finset (NC ε)} (h : j ∈ A) :
     sg i (A.erase j) = tw i j * sg i A := by
   have h1 := sg_insert i (Finset.notMem_erase j A)
@@ -57,12 +84,25 @@ theorem sg_erase (i : NC ε) {j : NC ε} {A : Finset (NC ε)} (h : j ∈ A) :
 
 variable {V : Type} [AddCommGroup V] [Module ℂ V]
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem ann_apply (i : NC ε) (x : Ch ε V) (A : Finset (NC ε)) :
     ann i x A = if i ∈ A then 0 else sg i A • x (insert i A) := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem cre_apply (i : NC ε) (x : Ch ε V) (A : Finset (NC ε)) :
     cre i x A = if i ∈ A then sg i A • x (A.erase i) else 0 := rfl
 
+/- English proof (translation)
+Use `LinearMap.ext fun x => funext fun A => ?_` and prove the remaining obligations. Simplify using `only [LinearMap.add_apply, Module.End.mul_apply, Pi.add_apply, LinearMap.zero_apply, Pi.zero_apply, ann_apply]`. Distinguish the cases in `hij : i = j`. Substitute `hij` using the available equality. Simplify using the standard rewrite rules.
+
+Establish `hji : j ≠ i` using `fun e => hij e.symm`. Distinguish the cases in `hi : i ∈ A`. Simplify using `[hi]`. Distinguish the cases in `hj : j ∈ A`. Simplify using `[hj]`.
+
+Simplify using `only [hi, hj, Finset.mem_insert, hij, hji, or_self, if_false]`. Rewrite using `[sg_insert j hi, sg_insert i hj, tw_swap hij, Finset.insert_comm j i, smul_smul, smul_smul, ← add_smul]`. Establish `: sg i A * (-tw i j * sg j A) + sg j A * (tw i j * sg i A) = 0` using `by ring`. Rewrite using `[this, zero_smul]`.
+-/
 theorem ann_ann (i j : NC ε) : (ann i * ann j + ann j * ann i : Module.End ℂ (Ch ε V)) = 0 := by
   refine LinearMap.ext fun x => funext fun A => ?_
   simp only [LinearMap.add_apply, Module.End.mul_apply, Pi.add_apply, LinearMap.zero_apply, Pi.zero_apply,
@@ -80,6 +120,15 @@ theorem ann_ann (i j : NC ε) : (ann i * ann j + ann j * ann i : Module.End ℂ 
   have : sg i A * (-tw i j * sg j A) + sg j A * (tw i j * sg i A) = 0 := by ring
   rw [this, zero_smul]
 
+/- English proof (translation)
+Use `LinearMap.ext fun x => funext fun A => ?_` and prove the remaining obligations. Simplify using `only [LinearMap.add_apply, Module.End.mul_apply, Pi.add_apply, LinearMap.zero_apply, Pi.zero_apply, cre_apply]`. Distinguish the cases in `hij : i = j`. Substitute `hij` using the available equality. Simplify using the standard rewrite rules.
+
+Establish `hji : j ≠ i` using `fun e => hij e.symm`. Distinguish the cases in `hi : i ∈ A`. Use `swap`. Simplify using `[hi]`. Distinguish the cases in `hj : j ∈ A`.
+
+Use `swap`. Simplify using `[hj]`. Simplify using `only [hi, hj, Finset.mem_erase, ne_eq, hij, hji, not_false_eq_true, and_self, if_true]`. Rewrite using `[sg_erase j hi, sg_erase i hj, tw_swap hij, Finset.erase_right_comm (a := j) (b := i), smul_smul, smul_smul, ← add_smul]`. Establish `: sg i A * (-tw i j * sg j A) + sg j A * (tw i j * sg i A) = 0` using `by ring`.
+
+Rewrite using `[this, zero_smul]`.
+-/
 theorem cre_cre (i j : NC ε) : (cre i * cre j + cre j * cre i : Module.End ℂ (Ch ε V)) = 0 := by
   refine LinearMap.ext fun x => funext fun A => ?_
   simp only [LinearMap.add_apply, Module.End.mul_apply, Pi.add_apply, LinearMap.zero_apply, Pi.zero_apply,
@@ -100,6 +149,15 @@ theorem cre_cre (i j : NC ε) : (cre i * cre j + cre j * cre i : Module.End ℂ 
   have : sg i A * (-tw i j * sg j A) + sg j A * (tw i j * sg i A) = 0 := by ring
   rw [this, zero_smul]
 
+/- English proof (translation)
+Use `LinearMap.ext fun x => funext fun A => ?_` and prove the remaining obligations. Simplify using `only [LinearMap.add_apply, Module.End.mul_apply, Pi.add_apply, ann_apply, cre_apply]`. Distinguish the cases in `hij : i = j`. Substitute `hij` using the available equality. Distinguish the cases in `hi : i ∈ A`.
+
+Simplify using `[hi, sg_erase i hi, tw_self, smul_smul, sg_mul_self, Finset.insert_erase hi]`. Simplify using `[hi, sg_insert i hi, tw_self, smul_smul, sg_mul_self, Finset.erase_insert hi]`. Establish `hji : j ≠ i` using `fun e => hij e.symm`. Rewrite using `[if_neg hij, LinearMap.zero_apply, Pi.zero_apply]`. Distinguish the cases in `hi : i ∈ A`.
+
+Simplify using `[hi, hij]`. Distinguish the cases in `hj : j ∈ A`. Use `swap`. Simplify using `[hj, hji]`. Simplify using `only [hi, hj, Finset.mem_insert, Finset.mem_erase, or_true, and_false, if_true, if_false]`.
+
+Rewrite using `[sg_insert j hi, sg_erase i hj, tw_swap hij, Finset.erase_insert_of_ne hij, smul_smul, smul_smul, ← add_smul]`. Establish `: sg i A * (-tw i j * sg j A) + sg j A * (tw i j * sg i A) = 0` using `by ring`. Rewrite using `[this, zero_smul]`.
+-/
 theorem ann_cre (i j : NC ε) :
     (ann i * cre j + cre j * ann i : Module.End ℂ (Ch ε V)) = if i = j then 1 else 0 := by
   refine LinearMap.ext fun x => funext fun A => ?_
@@ -122,6 +180,9 @@ theorem ann_cre (i j : NC ε) :
   have : sg i A * (-tw i j * sg j A) + sg j A * (tw i j * sg i A) = 0 := by ring
   rw [this, zero_smul]
 
+/- English proof (translation)
+Introduce `_ _ _ _ _ i j` and use `⟨ann_ann i j, cre_cre i j, ann_cre i j⟩`.
+-/
 theorem car : CompanionTheory.D.DSIC.CAR := fun _ _ _ _ _ i j => ⟨ann_ann i j, cre_cre i j, ann_cre i j⟩
 
 end GlobalTheory.CompanionTheory.ChainCAR

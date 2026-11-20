@@ -9,5 +9,8 @@ import Development.AbelianVarietyTheory.Definitions.Divisors.JetAnalytic
 import Development.AbelianVarietyTheory.Definitions.Divisors.TorsTransport
 import Development.AbelianVarietyTheory.Definitions.Divisors.HypothesisBundleConversions
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.JoinFun.joinOut_of_lat | exact GlobalTheory.JoinFun.joinOut_of_lat | (intros; apply GlobalTheory.JoinFun.joinOut_of_lat <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.toricPeriodZeta_of_latticeValue_statements : GlobalTheory.Published.EllipticMainTheoremCM → GlobalTheory.Published.HilbertClassFieldJ → GlobalTheory.Published.SiegelKlingenDeligneRibet → GlobalTheory.Published.HeckeTateFunctionalEquation → GlobalTheory.LatVal.LatIntRam → GlobalTheory.LatVal.LatIntUnr → GlobalTheory.LatVal.LatAlg → GlobalTheory.LatVal.LatConj → GlobalTheory.Mem.LiteralAutomorphy.JoinOut := by
   first | exact @GlobalTheory.JoinFun.joinOut_of_lat | exact GlobalTheory.JoinFun.joinOut_of_lat | (intros; apply GlobalTheory.JoinFun.joinOut_of_lat <;> assumption)

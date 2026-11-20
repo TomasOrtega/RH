@@ -22,6 +22,9 @@ open Formalism.DivisionValues.PlaceSumConjugation
 
 variable {K : Type} [Field K] [NumberField K]
 
+/- English proof (translation)
+Unfold `vw`. Rewrite using `[← FractionalIdeal.spanSingleton_mul_spanSingleton]`. Conclude with `FractionalIdeal.count_mul K w ((FractionalIdeal.spanSingleton_ne_zero_iff).2 ha) ((FractionalIdeal.spanSingleton_ne_zero_iff).2 hb)`.
+-/
 theorem vw_mul' (w : HeightOneSpectrum (𝓞 K)) (a b : K) (ha : a ≠ 0) (hb : b ≠ 0) :
     vw w (a * b) = vw w a + vw w b := by
   unfold vw
@@ -30,10 +33,18 @@ theorem vw_mul' (w : HeightOneSpectrum (𝓞 K)) (a b : K) (ha : a ≠ 0) (hb : 
     ((FractionalIdeal.spanSingleton_ne_zero_iff).2 ha)
     ((FractionalIdeal.spanSingleton_ne_zero_iff).2 hb)
 
+/- English proof (translation)
+Unfold `vw`. Rewrite using `[FractionalIdeal.spanSingleton_one, FractionalIdeal.count_one]`.
+-/
 theorem vw_one' (w : HeightOneSpectrum (𝓞 K)) : vw w (1 : K) = 0 := by
   unfold vw
   rw [FractionalIdeal.spanSingleton_one, FractionalIdeal.count_one]
 
+/- English proof (translation)
+Proceed by induction on `n with`. Consider the case `zero => simp [vw_one']`. Consider the case `succ n ih`. Rewrite using `[pow_succ, vw_mul' w _ _ (pow_ne_zero n ha) ha, ih]`. Use `push_cast`.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem vw_pow' (w : HeightOneSpectrum (𝓞 K)) (a : K) (ha : a ≠ 0) (n : ℕ) :
     vw w (a ^ n) = (n : ℤ) * vw w a := by
   induction n with

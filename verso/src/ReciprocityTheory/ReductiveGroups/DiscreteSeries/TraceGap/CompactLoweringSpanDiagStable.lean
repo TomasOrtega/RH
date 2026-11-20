@@ -14,6 +14,9 @@ section Straight
 
 variable {M : Type*} [AddCommGroup M] [Module ℂ M] {E : Fin n → Fin n → Module.End ℂ M}
 
+/- English proof (translation)
+The claim follows from `| [], _, a => by simpa [lowWord, lowWt] using hy a | p :: l, hl, a => by obtain ⟨c, d⟩ := p have hcd : IsKLow ε (c, d) := hl _ (List.mem_cons_self ..) have h := congrArg (fun X : Module.End ℂ M => X (lowWord E y l)) (hE a a c d rfl hcd.2) simp only [LinearMap.sub_apply, Module.En …`.
+-/
 theorem lowerWord_weight (hE : Formalism.REAL.KRel ε E) {μ : Fin n → ℝ} {y : M}
     (hy : ∀ a, E a a y = (μ a : ℂ) • y) :
     ∀ (l : List (Fin n × Fin n)), (∀ p ∈ l, IsKLow ε p) → ∀ (a : Fin n),
@@ -41,6 +44,11 @@ theorem lowerWord_weight (hE : Formalism.REAL.KRel ε E) {μ : Fin n → ℝ} {y
       module
     · simp [hac, had, Ne.symm had]
 
+/- English proof (translation)
+Establish `: kLowSpan ε E y ≤ (kLowSpan ε E y).comap (E a a)`. Use `Submodule.span_le.2 ?_` and prove the remaining obligations. Introduce and unpack `x ⟨l, hl, rfl⟩`. Use `show E a a (lowWord E y l) ∈ kLowSpan ε E y`. Rewrite using `[lowerWord_weight hE hy l hl a]`.
+
+Conclude with `Submodule.smul_mem _ _ (lowWord_mem hl)`. Conclude with `fun x hx => this hx`.
+-/
 theorem compactLoweringSpan_diag_stable (hE : Formalism.REAL.KRel ε E) {μ : Fin n → ℝ} {y : M}
     (hy : ∀ a, E a a y = (μ a : ℂ) • y) (a : Fin n) :
     ∀ x ∈ kLowSpan ε E y, E a a x ∈ kLowSpan ε E y := by
@@ -52,6 +60,9 @@ theorem compactLoweringSpan_diag_stable (hE : Formalism.REAL.KRel ε E) {μ : Fi
     exact Submodule.smul_mem _ _ (lowWord_mem hl)
   exact fun x hx => this hx
 
+/- English proof (translation)
+Break down `hab.lt_or_eq with h | rfl` into its components or cases. Conclude with `kLowSpan_low_stable (c := a) (d := b) ⟨h, hε⟩ _ (lowWord_mem hl)`. Conclude with `compactLoweringSpan_diag_stable hE hy b _ (lowWord_mem hl)`.
+-/
 theorem lowerWord_mem_span_of_ge (hE : Formalism.REAL.KRel ε E) {μ : Fin n → ℝ} {y : M}
     (hy : ∀ a, E a a y = (μ a : ℂ) • y)
     {l : List (Fin n × Fin n)} (hl : ∀ p ∈ l, IsKLow ε p) {a b : Fin n} (hab : b ≤ a)
@@ -60,6 +71,9 @@ theorem lowerWord_mem_span_of_ge (hE : Formalism.REAL.KRel ε E) {μ : Fin n →
   · exact kLowSpan_low_stable (c := a) (d := b) ⟨h, hε⟩ _ (lowWord_mem hl)
   · exact compactLoweringSpan_diag_stable hE hy b _ (lowWord_mem hl)
 
+/- English proof (translation)
+The claim follows from `| [], _, a, b, hab, hε => by simp only [lowWord] rw [hy.2 a b hab hε] exact Submodule.zero_mem _ | p :: l, hl, a, b, hab, hε => by obtain ⟨c, d⟩ := p have hcd : IsKLow ε (c, d) := hl _ (List.mem_cons_self ..) have hl' : ∀ p ∈ l, IsKLow ε p := fun p hp => hl p (List.mem_cons_of_me …`.
+-/
 theorem lowerWord_raise_mem_span (hE : Formalism.REAL.KRel ε E) {μ : Fin n → ℝ} {y : M} (hy : IsKHWVec ε E μ y) :
     ∀ (l : List (Fin n × Fin n)), (∀ p ∈ l, IsKLow ε p) → ∀ a b : Fin n, a < b → ε a = ε b →
       E a b (lowWord E y l) ∈ kLowSpan ε E y
@@ -90,6 +104,11 @@ theorem lowerWord_raise_mem_span (hE : Formalism.REAL.KRel ε E) {μ : Fin n →
       · subst hda; exact key c b (hcd.2.trans hε)
       · simp
 
+/- English proof (translation)
+Introduce `a b hab`. Break down `lt_or_ge a b with h | h` into its components or cases. Establish `: kLowSpan ε E y ≤ (kLowSpan ε E y).comap (E a b)`. Use `Submodule.span_le.2 ?_` and prove the remaining obligations. Introduce and unpack `x ⟨l, hl, rfl⟩`.
+
+Conclude with `lowerWord_raise_mem_span hE hy l hl a b h hab`. Conclude with `fun x hx => this hx`. Break down `h.lt_or_eq with h | rfl` into its components or cases. Conclude with `kLowSpan_low_stable ⟨h, hab⟩`. Conclude with `compactLoweringSpan_diag_stable hE hy.1 b`.
+-/
 theorem compactLoweringSpan_kStable (hE : Formalism.REAL.KRel ε E) {μ : Fin n → ℝ} {y : M} (hy : IsKHWVec ε E μ y) :
     IsKStableSub ε E (kLowSpan ε E y) := by
   intro a b hab
@@ -105,6 +124,43 @@ theorem compactLoweringSpan_kStable (hE : Formalism.REAL.KRel ε E) {μ : Fin n 
 
 end Straight
 
+/- English proof (translation)
+Use `set S := kLowSpan ε F z with hSdef`. Establish `hS : IsKStableSub ε F S` using `compactLoweringSpan_kStable hR hz`. Use `⟨hS, ?_⟩` and prove the remaining obligations. Set `G : Fin n → Fin n → Module.End ℂ S` to `fun a b => if h : ε a = ε b then (F a b).restrict (p := S) (q := S) (hS a b h) else 0`. Establish `hGapp : ∀ a b, ε a = ε b → ∀ v : S, ((G a b v : S) : M) = F a b v`.
+
+Introduce `a b h v`. Simplify using `only [G, dif_pos h]`. Both sides reduce to the same expression. Establish `hRG : Formalism.REAL.KRel ε G`. Introduce `a b c d hab hcd`.
+
+Use `LinearMap.ext fun v => Subtype.ext ?_` and prove the remaining obligations. Establish `h` using `congrArg (fun X : Module.End ℂ M => X (v : M)) (hR a b c d hab hcd)`. Simplify using `only [LinearMap.sub_apply, Module.End.mul_apply] at h ⊢`. Simplify using `only [Submodule.coe_sub, hGapp a b hab, hGapp c d hcd]`. Apply the tactic sequence `by_cases h1 : b = c <;> by_cases h2 : d = a`.
+
+Rewrite `h`, the goal using `[if_pos h1, if_pos h2]`. Simplify `h` using `only [Submodule.coe_sub, hGapp a d (by rw [hab, h1, hcd]), hGapp c b (by rw [hcd, h2, hab])]`. Rewrite `h`, the goal using `[if_pos h1, if_neg h2]`. Simplify `h` using `only [Submodule.coe_sub, LinearMap.zero_apply, Submodule.coe_zero, hGapp a d (by rw [hab, h1, hcd])]`. Rewrite `h`, the goal using `[if_neg h1, if_pos h2]`.
+
+Simplify `h` using `only [Submodule.coe_sub, LinearMap.zero_apply, Submodule.coe_zero, hGapp c b (by rw [hcd, h2, hab])]`. Rewrite `h`, the goal using `[if_neg h1, if_neg h2]`. Simplify `h` using `only [Submodule.coe_sub, LinearMap.zero_apply, Submodule.coe_zero]`. Establish `hUG : Formalism.REAL.KUnit ε G`. Introduce `a b hab x y`.
+
+Rewrite using `[Submodule.coe_inner, Submodule.coe_inner, hGapp a b hab, hGapp b a hab.symm]`. Conclude with `hU a b hab x y`. Set `e : S ≃ₗᵢ[ℂ] EuclideanSpace ℂ (Fin (Module.finrank ℂ S))` to `(stdOrthonormalBasis ℂ S).repr`. Set `G' : Fin n → Fin n → Module.End ℂ (EuclideanSpace ℂ (Fin (Module.finrank ℂ S)))` to `fun a b => LinearEquiv.conjRingEquiv e.toLinearEquiv (G a b)`. Establish `hG'app : ∀ a b y, G' a b y = e (G a b (e.symm y))` using `fun a b y => rfl`.
+
+Establish `hRG' : Formalism.REAL.KRel ε G'` using `HW.uq_kRel_map ε G (LinearEquiv.conjRingEquiv e.toLinearEquiv).toRingHom hRG`. Establish `hUG' : Formalism.REAL.KUnit ε G'`. Introduce `a b hab x y`. Take `⟨x, rfl⟩` from `e.surjective x`. Take `⟨y, rfl⟩` from `e.surjective y`.
+
+Simplify using `only [hG'app, LinearIsometryEquiv.symm_apply_apply, LinearIsometryEquiv.inner_map_map]`. Conclude with `hUG a b hab x y`. Use `set z0 : S := ⟨z, self_mem_kLowSpan (ε := ε) (E := F) z⟩ with hz0def`. Establish `hGe : ∀ a b, ε a = ε b → ∀ s : S, G' a b (e s) = e (G a b s)`. Introduce `a b _ s`.
+
+Rewrite using `[hG'app, LinearIsometryEquiv.symm_apply_apply]`. Establish `hw' : Formalism.REAL.KHighest ε G' γ (e z0)`. Use `⟨fun a => ?_, fun a b hab he => ?_⟩` and prove the remaining obligations. Rewrite using `[hGe a a rfl, ← map_smul]`. Use `congr 1`.
+
+Conclude with `Subtype.ext ((hGapp a a rfl z0).trans (hz.1 a))`. Rewrite using `[hGe a b he, ← map_zero e]`. Use `congr 1`. Conclude with `Subtype.ext ((hGapp a b he z0).trans (hz.2 a b hab he))`. Establish `hw0' : e z0 ≠ 0`.
+
+Introduce `h`. Apply `hz0` to reduce the goal to its premises. Conclude with `congrArg Subtype.val (e.injective (h.trans e.map_zero.symm))`. Establish `hTw0 : T.w ≠ 0`. Introduce `h`.
+
+Use `T.w_norm` as an intermediate fact. Rewrite `this` using `[h, norm_zero]`. Conclude with `zero_ne_one this`. Establish `htop : Formalism.REAL.kSpan ε G' (e z0) = ⊤` using `by set P := Formalism.REAL.kSpan ε G' (e z0) with hP`. Set `Q : Submodule ℂ M` to `(P.comap e.toLinearEquiv.toLinearMap).map S.subtype`.
+
+Establish `hQ : IsKStableSub ε F Q`. Introduce and unpack `a b hab v ⟨s, hs, rfl⟩`. Use `⟨G a b s, ?_, hGapp a b hab s⟩` and prove the remaining obligations. Use `show e (G a b s) ∈ P`. Rewrite using `[← hGe a b hab s]`.
+
+Conclude with `HW.uq_kSpan_stable ε G' (e z0) a b hab _ hs`. Establish `hzQ : z ∈ Q` using `⟨z0, HW.uq_mem_kSpan ε G' (e z0), rfl⟩`. Establish `hle` using `kLowSpan_le (E := F) hQ hzQ`. Establish `hall : ∀ s : S, e s ∈ P`. Introduce `s`.
+
+Take `⟨s', hs', hss⟩` from `hle s.2`. Establish `: s' = s` using `Subtype.ext hss`. Substitute `this` using the available equality. Conclude with `hs'`. Rewrite using `[eq_top_iff]`.
+
+Introduce `y _`. Rewrite using `[← e.apply_symm_apply y]`. Conclude with `hall _`. Take `⟨φ0, hφ0, hφ0w⟩` from `HW.uq_exists_equiv ε (HW.kunits T) G' γ T.w (e z0) (HW.KType.kRel T) hRG' (HW.KType.kUnit T) hUG' (HW.uq_kHighest T) hw' hTw0 hw0' (HW.KType.kSpan_eq_top T) htop`. Use `⟨e.toLinearEquiv.trans φ0.symm, ?_, ?_⟩` and prove the remaining obligations.
+
+Introduce `a b hab v w hw`. Establish `hw2 : w = G a b v` using `Subtype.ext (hw.trans (hGapp a b hab v).symm)`. Substitute `hw2` using the available equality. Rewrite using `[LinearEquiv.trans_apply, LinearEquiv.trans_apply]`. Use `show φ0.symm (e (G a b v)) = HW.kunits T a b (φ0.symm (e v))`.
+
+Rewrite using `[← hGe a b hab v, LinearEquiv.symm_apply_eq, hφ0 a b hab, LinearEquiv.apply_symm_apply]`. Rewrite using `[LinearEquiv.trans_apply, LinearEquiv.symm_apply_eq]`. Conclude with `hφ0w.symm`.
+-/
 theorem kLowSpan_kIso {M : Type*} [NormedAddCommGroup M] [InnerProductSpace ℂ M]
     {F : Fin n → Fin n → Module.End ℂ M} (hR : Formalism.REAL.KRel ε F) (hU : Formalism.REAL.KUnit ε F)
     {γ : Fin n → ℝ} {z : M} (hz : IsKHWVec ε F γ z) (hz0 : z ≠ 0)

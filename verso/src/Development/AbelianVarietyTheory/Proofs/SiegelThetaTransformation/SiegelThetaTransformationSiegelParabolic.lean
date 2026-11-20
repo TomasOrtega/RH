@@ -8,6 +8,11 @@ open scoped ComplexConjugate Real
 
 namespace GlobalTheory.SW.Parab
 
+/- English proof (translation)
+Use `⟨∏ p : ι × ι, (S p.1 p.2).den, Finset.prod_pos fun p _ => (S p.1 p.2).den_pos, ?_⟩` and prove the remaining obligations. Introduce `i j`. Take `⟨c, hc⟩ : (S i j).den ∣ ∏ p : ι × ι, (S p.1 p.2).den` from `Finset.dvd_prod_of_mem (fun p : ι × ι => (S p.1 p.2).den) (Finset.mem_univ (i, j))`. Rewrite using `[hc, Matrix.smul_apply, smul_eq_mul]`. Establish `: (((S i j).den * c : ℕ) : ℚ) * S i j = algebraMap ℤ ℚ (c * (S i j).num)`.
+
+Simplify using `only [eq_intCast, Int.cast_mul, Int.cast_natCast, Nat.cast_mul]`. Rewrite using `[← Rat.mul_den_eq_num (S i j)]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[this]`. Conclude with `isIntegral_algebraMap`.
+-/
 theorem par_exists_den {ι : Type} [Fintype ι] (S : Matrix ι ι ℚ) :
     ∃ N : ℕ, 0 < N ∧ ∀ i j, IsIntegral ℤ (((N : ℚ) • S) i j) := by
   classical
@@ -29,6 +34,9 @@ noncomputable def parChar {κ ι : Type} [Fintype κ] [Fintype ι] (S : Matrix �
 
 open Matrix Complex in
 open scoped ComplexConjugate Real in
+/- English proof (translation)
+Unfold `_root_.GlobalTheory.SW.Parab.parChar`. Rewrite using `[← Complex.exp_conj, ← Complex.exp_add]`. Use `Complex.exp_zero using 2` and compare the differences between its conclusion and the goal. Simplify using `[Complex.conj_I, map_ratCast]`.
+-/
 lemma _root_.GlobalTheory.SW.Parab.parChar_mul_conj {κ ι : Type} [Fintype κ] [Fintype ι]
     (S : Matrix ι ι ℚ) (x : Matrix κ ι ℚ) :
     _root_.GlobalTheory.SW.Parab.parChar S x * conj (_root_.GlobalTheory.SW.Parab.parChar S x) = 1 := by
@@ -39,6 +47,13 @@ lemma _root_.GlobalTheory.SW.Parab.parChar_mul_conj {κ ι : Type} [Fintype κ] 
 
 open Matrix Complex in
 open scoped ComplexConjugate Real in
+/- English proof (translation)
+Use `⟨∏ i, ∏ j, (S i j).den, Finset.prod_pos fun i _ => Finset.prod_pos fun j _ => (S i j).den_pos, ?_⟩` and prove the remaining obligations. Establish `key : ∀ i j, ∃ t : ℤ, (t : ℚ) = ((∏ i, ∏ j, (S i j).den : ℕ) : ℚ) * S i j`. Introduce `i j`. Take `⟨m, hm⟩ : (S i j).den ∣ ∏ i, ∏ j, (S i j).den` from `(Finset.dvd_prod_of_mem (fun j => (S i j).den) (Finset.mem_univ j)).trans (Finset.dvd_prod_of_mem (fun i => ∏ j, (S i j).den) (Finset.mem_univ i))`. Use `⟨m * (S i j).num, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[hm]`. Use `push_cast`. Rewrite using `[← Rat.mul_den_eq_num]`. Expand and normalize the polynomial expressions, which then agree. Use `choose T hT using key`.
+
+Conclude with `⟨T, hT⟩`.
+-/
 private lemma exists_pos_nat_mul_eq_int {ι : Type} [Fintype ι] (S : Matrix ι ι ℚ) :
     ∃ d : ℕ, 0 < d ∧ ∃ T : Matrix ι ι ℤ, ∀ i j, (T i j : ℚ) = d * S i j := by
   refine ⟨∏ i, ∏ j, (S i j).den, Finset.prod_pos fun i _ => Finset.prod_pos fun j _ => (S i j).den_pos, ?_⟩
@@ -57,12 +72,38 @@ private lemma exists_pos_nat_mul_eq_int {ι : Type} [Fintype ι] (S : Matrix ι 
 
 open Matrix Complex in
 open scoped ComplexConjugate Real in
+/- English proof (translation)
+Rewrite using `[IsIntegrallyClosed.isIntegral_iff]`. Simplify using the standard rewrite rules.
+-/
 private lemma isIntegral_int_rat_iff_exists_int (q : ℚ) : IsIntegral ℤ q ↔ ∃ n : ℤ, (n : ℚ) = q := by
   rw [IsIntegrallyClosed.isIntegral_iff]
   simp
 
 open Matrix Complex in
 open scoped ComplexConjugate Real in
+/- English proof (translation)
+Take `⟨R, hR, hsupp, hper⟩` from `h`. Take `⟨d, hd, T, hT⟩` from `exists_pos_nat_mul_eq_int S`. Use `⟨2 * d * R, by positivity, ?_, ?_⟩` and prove the remaining obligations. Introduce `x hx`. Establish `hint` using `hsupp x (right_ne_zero_of_mul hx)`.
+
+Introduce `k i`. Take `⟨n, hn⟩` from `(isIntegral_int_rat_iff_exists_int _).1 (hint k i)`. Use `(isIntegral_int_rat_iff_exists_int _).2 ⟨2 * d * n, ?_⟩` and prove the remaining obligations. Simplify using `only [Matrix.smul_apply, smul_eq_mul] at hn ⊢`. Move the coercions through the operations in `at hn ⊢`.
+
+Take the linear combination `(2 * d : ℚ) * hn`. Introduce `x y hy`. Establish `hy' : _root_.GlobalTheory.SW.IntM (((2 * d : ℕ) : ℚ) • y)`. Introduce `k i`. Take `⟨n, hn⟩` from `(isIntegral_int_rat_iff_exists_int _).1 (hy k i)`.
+
+Use `(isIntegral_int_rat_iff_exists_int _).2 ⟨2 * d * n, ?_⟩` and prove the remaining obligations. Simplify using `only [Matrix.smul_apply, smul_eq_mul]`. Use `push_cast`. Rewrite using `[hn]`. Establish `hφ : φ (x + ((2 * d * R : ℕ) : ℚ) • y) = φ x`.
+
+Rewrite using `[← hper x _ hy', smul_smul]`. Use `push_cast`. Put the polynomial expressions in normal form. Simplify using `only`. Rewrite using `[hφ]`.
+
+Distinguish the cases in `h0 : φ x = 0`. Simplify using `[h0]`. Use `congr 1`. Establish `hU : ∀ k i, ∃ n : ℤ, (n : ℚ) = R * x k i` using `fun k i => by`. Simplify using `using (isIntegral_int_rat_iff_exists_int _).1 (hsupp x h0 k i)`.
+
+Use `choose U hU using hU`. Establish `hY : ∀ k i, ∃ n : ℤ, (n : ℚ) = y k i` using `fun k i => (isIntegral_int_rat_iff_exists_int _).1 (hy k i)`. Use `choose Y hY using hY`. Establish `hQ : ∑ k, (x + ((2 * d * R : ℕ) : ℚ) • y) k ⬝ᵥ S *ᵥ (x + ((2 * d * R : ℕ) : ℚ) • y) k = ∑ k, x k ⬝ᵥ S *ᵥ x k + 2 * ((∑ k, ∑ i, ∑ j, (U k i * T i j * Y k j + Y k i * T i j * U k j + 2 * d * R ^ 2 * Y k i * T i j * Y k j) : ℤ) : ℚ)`. Use `push_cast`.
+
+Simplify using `only [dotProduct, mulVec, Finset.mul_sum, ← Finset.sum_add_distrib]`. Use `Finset.sum_congr rfl fun k _ => Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Establish `hR' : (R : ℚ) ≠ 0` using `by positivity`. Establish `hd' : (d : ℚ) ≠ 0` using `by positivity`. Establish `hx1 : x k i = U k i / R` using `by rw [hU]; field_simp`.
+
+Establish `hx2 : x k j = U k j / R` using `by rw [hU]; field_simp`. Establish `hS : S i j = T i j / d` using `by rw [hT]; field_simp`. Simplify using `only [Matrix.add_apply, Matrix.smul_apply, smul_eq_mul]`. Use `push_cast`. Rewrite using `[hx1, hx2, hS, ← hY k i, ← hY k j]`.
+
+Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Unfold `_root_.GlobalTheory.SW.Parab.parChar`. Rewrite using `[hQ]`. Use `set m : ℤ := ∑ k, ∑ i, ∑ j, (U k i * T i j * Y k j + Y k i * T i j * U k j + 2 * d * R ^ 2 * Y k i * T i j * Y k j)`.
+
+Establish `: -(↑π * I * (((∑ k, x k ⬝ᵥ S *ᵥ x k + 2 * (m : ℚ) : ℚ)) : ℂ)) = -(↑π * I * ((∑ k, x k ⬝ᵥ S *ᵥ x k : ℚ) : ℂ)) + ((-m : ℤ) : ℂ) * (2 * π * I)`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[this, Complex.exp_add, Complex.exp_int_mul_two_pi_mul_I, mul_one]`.
+-/
 theorem _root_.GlobalTheory.SW.Parab.isSB_parChar_mul {κ ι : Type} [Fintype κ] [Fintype ι] (S : Matrix ι ι ℚ)
     (φ : Matrix κ ι ℚ → ℂ) (h : _root_.GlobalTheory.SW.IsSB φ) :
     _root_.GlobalTheory.SW.IsSB fun x => _root_.GlobalTheory.SW.Parab.parChar S x * φ x := by
@@ -129,6 +170,9 @@ theorem _root_.GlobalTheory.SW.Parab.isSB_parChar_mul {κ ι : Type} [Fintype κ
 
 open Matrix Complex in
 open scoped ComplexConjugate Real in
+/- English proof (translation)
+Use function extensionality and compare the values at `j`. Simplify using `[_root_.GlobalTheory.SW.qv, _root_.GlobalTheory.SW.qm, vecMul, dotProduct, mul_apply]`.
+-/
 theorem _root_.GlobalTheory.SW.Parab.qv_row_mul {κ ι : Type} [Fintype ι] (x : Matrix κ ι ℚ) (A : Matrix ι ι ℚ) (k : κ) :
     _root_.GlobalTheory.SW.qv ((x * A) k) = _root_.GlobalTheory.SW.qv (x k) ᵥ* _root_.GlobalTheory.SW.qm A := by
   funext j
@@ -136,12 +180,18 @@ theorem _root_.GlobalTheory.SW.Parab.qv_row_mul {κ ι : Type} [Fintype ι] (x :
 
 open Matrix Complex in
 open scoped ComplexConjugate Real in
+/- English proof (translation)
+Simplify using `[_root_.GlobalTheory.SW.qv, _root_.GlobalTheory.SW.qm, mulVec, dotProduct]`.
+-/
 theorem _root_.GlobalTheory.SW.Parab.qv_bilin {ι : Type} [Fintype ι] (S : Matrix ι ι ℚ) (v : ι → ℚ) :
     ((v ⬝ᵥ S *ᵥ v : ℚ) : ℂ) = _root_.GlobalTheory.SW.qv v ⬝ᵥ _root_.GlobalTheory.SW.qm S *ᵥ _root_.GlobalTheory.SW.qv v := by
   simp [_root_.GlobalTheory.SW.qv, _root_.GlobalTheory.SW.qm, mulVec, dotProduct]
 
 open Matrix Complex in
 open scoped ComplexConjugate Real in
+/- English proof (translation)
+Use extensionality with `i j`. Simplify using `[_root_.GlobalTheory.SW.qm, mul_apply]`.
+-/
 theorem _root_.GlobalTheory.SW.Parab.qm_mul' {α β γ : Type} [Fintype β] (A : Matrix α β ℚ) (B : Matrix β γ ℚ) :
     _root_.GlobalTheory.SW.qm (A * B) = _root_.GlobalTheory.SW.qm A * _root_.GlobalTheory.SW.qm B := by
   ext i j
@@ -149,6 +199,11 @@ theorem _root_.GlobalTheory.SW.Parab.qm_mul' {α β γ : Type} [Fintype β] (A :
 
 open Matrix Complex in
 open scoped ComplexConjugate Real in
+/- English proof (translation)
+Rewrite using `[_root_.GlobalTheory.SW.Parab.qv_bilin, _root_.GlobalTheory.SW.Parab.qm_mul']`. Establish `hT : _root_.GlobalTheory.SW.qm Aᵀ = (_root_.GlobalTheory.SW.qm A)ᵀ`. Use extensionality with `i j`. Simplify using `[_root_.GlobalTheory.SW.qm]`. Rewrite using `[hT, add_mul, add_mulVec, dotProduct_add, ← mulVec_mulVec, ← mulVec_mulVec, mulVec_transpose, dotProduct_mulVec, vecMul_transpose, dotProduct_mulVec _ (_root_.GlobalTheory.SW.qm A) z]`.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 private lemma parabolic_exponent_term_eq {ι : Type} [Fintype ι] (A B : Matrix ι ι ℚ) (τ : Matrix ι ι ℂ)
     (v : ι → ℚ) (z : ι → ℂ) :
     _root_.GlobalTheory.SW.qv v ⬝ᵥ ((_root_.GlobalTheory.SW.qm A * τ + _root_.GlobalTheory.SW.qm B) *
@@ -169,6 +224,35 @@ private lemma parabolic_exponent_term_eq {ι : Type} [Fintype ι] (A B : Matrix 
 open Matrix Complex in
 open scoped ComplexConjugate Real in
 
+/- English proof (translation)
+Introduce `κ ι _ _ _ σ hev hσ hC`. Establish `hDA : σ.toBlocks₂₂ * σ.toBlocks₁₁ᵀ = 1`. Establish `h` using `hσ`. Rewrite `h` using `[SymplecticGroup.mem_iff, ← fromBlocks_toBlocks σ, hC]`. Simplify using `only [J, fromBlocks_transpose, fromBlocks_multiply, fromBlocks_inj] at h`.
+
+Simplify using `using h.2.2.1`. Use `set A := σ.toBlocks₁₁ with hA`. Use `set B := σ.toBlocks₁₂ with hB`. Use `set D := σ.toBlocks₂₂ with hD`. Establish `hAD : Aᵀ * D = 1` using `mul_eq_one_comm.mp hDA`.
+
+Establish `hDtA : Dᵀ * A = 1` using `by simpa [Matrix.transpose_mul] using congrArg Matrix.transpose hAD`. Establish `hADt : A * Dᵀ = 1` using `mul_eq_one_comm.mp hDtA`. Establish `hdet : D.det * A.det = 1`. Establish `h` using `congrArg Matrix.det hDA`. Rewrite `h` using `[det_mul, det_transpose, det_one]`. Then use the resulting hypothesis.
+
+Establish `hdetA : A.det ≠ 0` using `fun h => by simp [h] at hdet`. Set `e : Matrix κ ι ℚ ≃ Matrix κ ι ℚ` to `{ toFun := fun x => x * A invFun := fun x => x * Dᵀ left_inv := fun x => by simp [Matrix.mul_assoc, hADt] right_inv := fun x => by simp [Matrix.mul_assoc, hDtA] }`. Set `c : ℂ` to `(_root_.GlobalTheory.SW.qm D).det ^ (Fintype.card κ / 2)`. Use `⟨fun φ => c • fun x => _root_.GlobalTheory.SW.Parab.parChar (B * Aᵀ) x * φ (x * A), fun φ hφ => ?_⟩` and prove the remaining obligations. Establish `hφA` using `(_root_.GlobalTheory.SW.LinChange.haar_mul ℚ κ ι φ hφ).1 A hdetA`.
+
+Establish `hf` using `_root_.GlobalTheory.SW.Parab.isSB_parChar_mul (B * Aᵀ) _ hφA.1`. Use `⟨(_root_.GlobalTheory.SW.isSB_algebra_haar_linear ℚ κ ι _ _ hf hf).2.1 c, ?_, ?_⟩` and prove the remaining obligations. Introduce `τ hτ ζ`. Establish `hqD : (_root_.GlobalTheory.SW.qm D)⁻¹ = _root_.GlobalTheory.SW.qm Aᵀ`. Use `Matrix.inv_eq_right_inv ?_` and prove the remaining obligations.
+
+Rewrite using `[← _root_.GlobalTheory.SW.Parab.qm_mul', hDA]`. Use extensionality with `i j`. Apply the tactic sequence `by_cases hij : i = j <;> simp [_root_.GlobalTheory.SW.qm, one_apply, hij]`. Establish `h0 : _root_.GlobalTheory.SW.qm σ.toBlocks₂₁ = 0`. Rewrite using `[hC]`.
+
+Use extensionality with `i j`. Simplify using `[_root_.GlobalTheory.SW.qm]`. Unfold `_root_.GlobalTheory.SW.thS _root_.GlobalTheory.SW.spAct _root_.GlobalTheory.SW.spDen`. Rewrite using `[h0, ← hA, ← hB, ← hD]`. Simplify using `only [zero_mul, zero_add, Matrix.mul_zero, zero_mulVec, dotProduct_zero, Finset.sum_const_zero, mul_zero, Complex.exp_zero, mul_one, hqD, Pi.smul_apply, smul_eq_mul]`.
+
+Use `conv_rhs => rw [← e.tsum_eq, ← tsum_mul_left]`. Use `congr 1`. Use function extensionality and compare the values at `x`. Simplify using `only [e, Equiv.coe_fn_mk, _root_.GlobalTheory.SW.Parab.qv_row_mul, parabolic_exponent_term_eq, Finset.sum_add_distrib]`. Unfold `_root_.GlobalTheory.SW.Parab.parChar`.
+
+Rewrite using `[Rat.cast_sum, mul_add, Complex.exp_add, Complex.exp_neg]`. Clear the denominators using the available nonvanishing facts. Conclude with `mul_comm _ _`. Introduce `φ' hφ'`. Establish `hconj` using `(_root_.GlobalTheory.SW.isSB_algebra_haar_linear ℚ κ ι φ' φ' hφ' hφ').2.2.2.1`.
+
+Establish `hg : _root_.GlobalTheory.SW.IsSB fun x => φ x * conj (φ' x)` using `(_root_.GlobalTheory.SW.isSB_algebra_haar_linear ℚ κ ι _ _ hφ hconj).2.2.1`. Establish `hgA` using `(_root_.GlobalTheory.SW.LinChange.haar_mul ℚ κ ι _ hg).1 A hdetA`. Establish `hgA'` using `(_root_.GlobalTheory.SW.isSB_algebra_haar_linear ℚ κ ι _ _ hgA.1 hgA.1).2.2.2.2.2.1`. Unfold `_root_.GlobalTheory.SW.ip`. Establish `hpt : (fun x => (c • fun x => _root_.GlobalTheory.SW.Parab.parChar (B * Aᵀ) x * φ (x * A)) x * conj ((c • fun x => _root_.GlobalTheory.SW.Parab.parChar (B * Aᵀ) x * φ' (x * A)) x)) = (c * conj c) • fun x => φ (x * A) * conj (φ' (x * A))`.
+
+Use function extensionality and compare the values at `x`. Simplify using `only [Pi.smul_apply, smul_eq_mul, map_mul]`. Take the linear combination `(c * conj c * φ (x * A) * conj (φ' (x * A))) * _root_.GlobalTheory.SW.Parab.parChar_mul_conj (B * Aᵀ) x`. Rewrite using `[hpt, hgA', hgA.2, ← mul_assoc]`. Establish `hdetD : (_root_.GlobalTheory.SW.qm D).det = (D.det : ℂ)`.
+
+Rewrite using `[_root_.GlobalTheory.SW.qm]`. Conclude with `((Rat.castHom ℂ).map_det D).symm`. Take `⟨r, hr⟩` from `hev`. Establish `hn : Fintype.card κ / 2 = r` using `by omega`. Establish `hq : (D.det ^ r * D.det ^ r * |A.det| ^ (r + r) : ℚ) = 1`.
+
+Rewrite using `[Even.pow_abs ⟨r, rfl⟩, ← pow_add, ← mul_pow, hdet, one_pow]`. Establish `hconst : ∀ N : ℚ, N = A.det → c * conj c * ((|N| : ℚ) : ℂ) ^ Fintype.card κ = 1`. Introduce and unpack `N rfl`. Simplify using `only [c, hdetD, hn, map_pow, map_ratCast]`. Rewrite using `[hr]`.
+
+Conclude with `hq` after adjusting the coercions. Rewrite using `[hconst _ ?_, one_mul]`. Conclude with `congrFun (congrArg DFunLike.coe (Algebra.norm_self ℚ)) A.det`.
+-/
 theorem _root_.GlobalTheory.SW.Parab.trans_parabolic : ∀ (κ ι : Type) [Fintype κ] [Fintype ι] [DecidableEq ι]
     (σ : Matrix (ι ⊕ ι) (ι ⊕ ι) ℚ), Even (Fintype.card κ) → σ ∈ Matrix.symplecticGroup ι ℚ →
     σ.toBlocks₂₁ = 0 → ∃ ω : (Matrix κ ι ℚ → ℂ) → (Matrix κ ι ℚ → ℂ), ∀ φ, _root_.GlobalTheory.SW.IsSB φ →

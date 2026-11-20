@@ -27,6 +27,11 @@ section Row
 
 variable {κ : Type} [CommRing κ] {n : ℕ} [NeZero n]
 
+/- English proof (translation)
+Rewrite using `[Matrix.single_one_vecMul]`. Use `⟨fun h => funext fun j => ?_, fun h j => ?_⟩` and prove the remaining obligations. Rewrite using `[Pi.single_apply]`. Conclude with `h j`. Use `congrFun h j` as an intermediate fact.
+
+Rewrite `this` using `[Pi.single_apply]`. Conclude with `this`.
+-/
 theorem mem_mirab_iff (g : GL (Fin n) κ) :
     g ∈ mirab κ n ↔ Pi.single (lastIdx n) 1 ᵥ* (g : Matrix (Fin n) (Fin n) κ) = Pi.single (lastIdx n) 1 := by
   rw [Matrix.single_one_vecMul]
@@ -35,6 +40,13 @@ theorem mem_mirab_iff (g : GL (Fin n) κ) :
   · have := congrFun h j
     rw [Pi.single_apply] at this; exact this
 
+/- English proof (translation)
+Establish `h1 : c • (Pi.single (lastIdx n) (1 : κ) ᵥ* (g : Matrix (Fin n) (Fin n) κ)) = Pi.single (lastIdx n) 1`. Rewrite using `[← Matrix.smul_vecMul, ← hg, Matrix.vecMul_vecMul, ← Units.val_mul, inv_mul_cancel, Units.val_one, Matrix.vecMul_one]`. Establish `hc : IsUnit c`. Use `congrFun h1 (lastIdx n)` as an intermediate fact. Rewrite `this` using `[Pi.smul_apply, Pi.single_eq_same, smul_eq_mul]`.
+
+Conclude with `IsUnit.of_mul_eq_one _ this`. Rewrite using `[mem_mirab_iff, mem_mirab_iff, Units.val_mul, Units.val_mul, ← Matrix.vecMul_vecMul, ← Matrix.vecMul_vecMul, hg, Matrix.smul_vecMul, Matrix.smul_vecMul]`. Use `⟨fun h => by rw [h, h1], fun h => ?_⟩` and prove the remaining obligations. Establish `h2` using `congrArg (· ᵥ* ((g⁻¹ : GL (Fin n) κ) : Matrix (Fin n) (Fin n) κ)) h`. Simplify using `only [Matrix.smul_vecMul, Matrix.vecMul_vecMul, ← Units.val_mul, mul_inv_cancel_right, hg] at h2`.
+
+Conclude with `hc.smul_left_cancel.1 h2`.
+-/
 theorem conj_mem_mirab {g : GL (Fin n) κ} {c : κ}
     (hg : Pi.single (lastIdx n) 1 ᵥ* ((g⁻¹ : GL (Fin n) κ) : Matrix (Fin n) (Fin n) κ) = c • Pi.single (lastIdx n) (1 : κ))
     (m : GL (Fin n) κ) : m ∈ mirab κ n ↔ g⁻¹ * m * g ∈ mirab κ n := by
@@ -67,6 +79,15 @@ structure BasePt (k : GL (Fin n) (AfE F E)) : Prop where
 
 variable {hc ST SG}
 
+/- English proof (translation)
+Rewrite using `[mem_mirabolicLevel_iff_reduction, mem_mirabolicLevel_iff_reduction]`. Establish `e : ∀ (hx : x ∈ St (1 : GL (Fin n) (AfE F E))) (hx' : k⁻¹ * x * k ∈ St (1 : GL (Fin n) (AfE F E))) P, redAt 1 P ⟨_, hx'⟩ = (redAt 1 P ⟨k, hk.int⟩)⁻¹ * redAt 1 P ⟨x, hx⟩ * redAt 1 P ⟨k, hk.int⟩` using `fun hx hx' P => by`. Rewrite using `[← map_inv, ← map_mul, ← map_mul]`. Both sides reduce to the same expression. Prove the components needed by the constructor for the conclusion.
+
+Introduce and unpack `⟨h1, h2, h3⟩`. Use `⟨mul_mem (mul_mem (inv_mem hk.uni) h1) hk.uni, mul_mem (mul_mem (inv_mem hk.int) h2) hk.int, fun P hP => ?_⟩` and prove the remaining obligations. Take `⟨c, hc'⟩` from `hk.row P hP`. Rewrite using `[e h2]`. Conclude with `(conj_mem_mirab hc' _).1 (h3 P hP)`.
+
+Introduce and unpack `⟨h1, h2, h3⟩`. Establish `h2' : x ∈ St (1 : GL (Fin n) (AfE F E))` using `((St _).mul_mem_cancel_left (inv_mem hk.int)).1 (((St _).mul_mem_cancel_right hk.int).1 h2)`. Use `⟨((UAd hc n).mul_mem_cancel_left (inv_mem hk.uni)).1 (((UAd hc n).mul_mem_cancel_right hk.uni).1 h1), h2', fun P hP => ?_⟩` and prove the remaining obligations. Take `⟨c, hc'⟩` from `hk.row P hP`. Use `h3 P hP` as an intermediate fact.
+
+Rewrite `this` using `[e h2']`. Conclude with `(conj_mem_mirab hc' _).2 this`.
+-/
 theorem BasePt.conj {k : GL (Fin n) (AfE F E)} (hk : BasePt hc ST SG k) (x : GL (Fin n) (AfE F E)) :
     x ∈ J0 hc n ST ↔ k⁻¹ * x * k ∈ J0 hc n ST := by
   rw [mem_mirabolicLevel_iff_reduction, mem_mirabolicLevel_iff_reduction]
@@ -88,6 +109,11 @@ theorem BasePt.conj {k : GL (Fin n) (AfE F E)} (hk : BasePt hc ST SG k) (x : GL 
     rw [e h2'] at this
     exact (conj_mem_mirab hc' _).2 this
 
+/- English proof (translation)
+Use function extensionality and compare the values at `w`. Establish `: redG hc n ST SG ⟨_, hx'⟩ w = (redAt 1 w.1 ⟨k, hk.int⟩)⁻¹ * redAt 1 w.1 ⟨x, congruence_subgroup_le_stabilizer hc n ST hx⟩ * redAt 1 w.1 ⟨k, hk.int⟩`. Rewrite using `[← map_inv, ← map_mul, ← map_mul]`. Both sides reduce to the same expression. Rewrite using `[this, hk.off w.1 w.2, inv_one, one_mul, mul_one]`.
+
+Both sides reduce to the same expression.
+-/
 theorem BasePt.red {k : GL (Fin n) (AfE F E)} (hk : BasePt hc ST SG k) {x : GL (Fin n) (AfE F E)} (hx : x ∈ J0 hc n ST)
     (hx' : k⁻¹ * x * k ∈ J0 hc n ST) : redG hc n ST SG ⟨_, hx'⟩ = redG hc n ST SG ⟨x, hx⟩ := by
   funext w
@@ -97,6 +123,19 @@ theorem BasePt.red {k : GL (Fin n) (AfE F E)} (hk : BasePt hc ST SG k) {x : GL (
   rw [this, hk.off w.1 w.2, inv_one, one_mul, mul_one]
   rfl
 
+/- English proof (translation)
+Take `⟨p, hp, hN⟩` from `h1`. Take `⟨hu, hd⟩` from `(_root_.GlobalTheory.Mem.Col2.PtDeco.isPtOf_iff_decoRaw F E hc n ∅ ∅ ∅ k p rfl).1 hp`. Establish `hi : k ∈ St (1 : GL (Fin n) (AfE F E))`. Take `⟨hJ, -⟩` from `mem_congruence_of_action hc ∅ ∅ hu (one_mem _) 1 (by ext1`. Rewrite using `[Deco.act_one_N, decoRaw_one, ← hd, hN]`.
+
+Both sides reduce to the same expression. Use function extensionality and compare the values at `P`. Conclude with `absurd P.2 (Finset.notMem_empty _)`. Use function extensionality and compare the values at `P`. Conclude with `absurd P.2 (Finset.notMem_empty _))`.
+
+Simplify using `using congruence_subgroup_le_stabilizer hc n ∅ hJ`. Use `⟨hu, hi, fun w hw => ?_, fun P hP => ?_⟩` and prove the remaining obligations. Use `rll_redAt_congr (P := w) (v := w.under (𝓞 F)) n rfl ⟨k, hi⟩ 1 (by rw [h2 w hw]; exact (map_one _).symm)` as an intermediate fact. Rewrite using `[this, map_one]`. Take `⟨c, hc'⟩` from `h3 P hP`.
+
+Use `⟨c, ?_⟩` and prove the remaining obligations. Rewrite using `[← map_inv, Matrix.single_one_vecMul]`. Take `⟨y, hy, hr⟩` from `St_one_int (inv_mem hi)`. Use function extensionality and compare the values at `j`. Establish `a1` using `hc' (lastIdx n) j (by have := NeZero.pos n; simp only [lastIdx]; omega)`.
+
+Establish `a2` using `PtExist.hasRes_redA P (a := (k⁻¹ : GL (Fin n) (AfE F E)).1 (lastIdx n) j) (by rw [hy]; exact (y _ _).2)`. Establish `a3` using `a1.unique a2`. Rewrite `a3` using `[redA_int P (by rw [hy]; exact (y _ _).2)]`. Use `(hr P (lastIdx n) j).trans ?_` and prove the remaining obligations. Rewrite using `[Pi.smul_apply, Pi.single_apply, smul_eq_mul, mul_ite, mul_one, mul_zero, a3]`.
+
+Use `congr 1`. Conclude with `Subtype.ext (hy _ _).symm`.
+-/
 theorem basePt_of {k : GL (Fin n) (AfE F E)} (h1 : ∃ p : DecoF E n ∅ ∅ ∅, IsPtOf hc k p ∧ p.deco.1.N = stdLat E n)
     (h2 : ∀ w ∈ SG, bc (prV (E := E) (w.under (𝓞 F))) k = 1)
     (h3 : ∀ P ∈ ST, ∃ c, ∀ (r j : Fin n), r.1 + 1 = n →
@@ -131,6 +170,13 @@ variable {Q : Finset (HeightOneSpectrum (𝓞 E))} (hQ : Q = ∅) {k y : GL (Fin
   {p : DecoF E n ST SG Q} (hp : IsPtOf hc (y * k) p)
 include hQ hk hp
 
+/- English proof (translation)
+Take `⟨hu, hd⟩` from `(_root_.GlobalTheory.Mem.Col2.PtDeco.isPtOf_iff_decoRaw F E hc n ST SG Q _ p hQ).1 hp`. Establish `hx'` using `(hk.conj _).1 (inv_mem hx)`. Establish `e : y * x * k = bc (iA F E) ((1 : URat hc n) : GL (Fin n) E) * (y * k) * (k⁻¹ * x⁻¹ * k)⁻¹`. Rewrite using `[OneMemClass.coe_one, map_one]`. Use `group`.
+
+Use `(_root_.GlobalTheory.Mem.Col2.PtDeco.isPtOf_iff_decoRaw F E hc n ST SG Q _ _ hQ).2 ⟨?_, ?_⟩` and prove the remaining obligations. Rewrite using `[e, OneMemClass.coe_one, map_one, one_mul]`. Conclude with `mul_mem hu (inv_mem (congruence_le_adelic_unitary hc n ST hx'))`. Use `decoRaw_rawSm hc ST SG 1 ⟨_, hx'⟩ (y * k)` as an intermediate fact. Rewrite using `[e, this, hk.red (inv_mem hx), map_one, ← hd, ← map_inv]`.
+
+Both sides reduce to the same expression.
+-/
 theorem pt_move {x : GL (Fin n) (AfE F E)} (hx : x ∈ J0 hc n ST) (θ : GLQ E n Q) :
     IsPtOf hc (y * x * k) (((1 : UF E n), (redG hc n ST SG ⟨x, hx⟩)⁻¹, θ) • p) := by
   obtain ⟨hu, hd⟩ := (_root_.GlobalTheory.Mem.Col2.PtDeco.isPtOf_iff_decoRaw F E hc n ST SG Q _ p hQ).1 hp
@@ -144,12 +190,22 @@ theorem pt_move {x : GL (Fin n) (AfE F E)} (hx : x ∈ J0 hc n ST) (θ : GLQ E n
     rw [e, this, hk.red (inv_mem hx), map_one, ← hd, ← map_inv]
     rfl
 
+/- English proof (translation)
+Establish `hu : y * x * k ∈ UAd hc n` using `mul_mem (mul_mem (((UAd hc n).mul_mem_cancel_right hk.uni).1 hp.uni) hx) hk.uni`. Conclude with `⟨⟨(⟨_, decorated_lattice_exists hc n ST SG _ hu⟩, fun _ => 1), fun P => (Finset.eq_empty_iff_forall_notMem.1 hQ P.1 P.2).elim⟩, (_root_.GlobalTheory.Mem.Col2.PtDeco.isPtOf_iff_decoRaw F E hc n ST SG Q _ _ hQ).2 ⟨hu, rfl⟩⟩`.
+-/
 theorem pt_exists {x : GL (Fin n) (AfE F E)} (hx : x ∈ UAd hc n) : ∃ q : DecoF E n ST SG Q, IsPtOf hc (y * x * k) q := by
   have hu : y * x * k ∈ UAd hc n :=
     mul_mem (mul_mem (((UAd hc n).mul_mem_cancel_right hk.uni).1 hp.uni) hx) hk.uni
   exact ⟨⟨(⟨_, decorated_lattice_exists hc n ST SG _ hu⟩, fun _ => 1), fun P => (Finset.eq_empty_iff_forall_notMem.1 hQ P.1 P.2).elim⟩,
     (_root_.GlobalTheory.Mem.Col2.PtDeco.isPtOf_iff_decoRaw F E hc n ST SG Q _ _ hQ).2 ⟨hu, rfl⟩⟩
 
+/- English proof (translation)
+Take `⟨hu, hd⟩` from `(_root_.GlobalTheory.Mem.Col2.PtDeco.isPtOf_iff_decoRaw F E hc n ST SG Q _ p hQ).1 hp`. Take `⟨hu', hd'⟩` from `(_root_.GlobalTheory.Mem.Col2.PtDeco.isPtOf_iff_decoRaw F E hc n ST SG Q _ _ hQ).1 hq`. Take `⟨hJ, hr⟩` from `mem_congruence_of_action hc ST SG hu' hu h (by rw [← hd, ← hd']; rfl)`. Establish `e : (y * x * k)⁻¹ * (y * k) = k⁻¹ * x⁻¹ * k` using `by group`. Establish `h1 : k⁻¹ * x⁻¹ * k ∈ J0 hc n ST` using `e ▸ hJ`.
+
+Establish `h2` using `(hk.conj _).2 h1`. Use `⟨by simpa using inv_mem h2, ?_⟩` and prove the remaining obligations. Rewrite using `[← hr, ← map_inv]`. Use `hk.red h2 h1` as an intermediate fact. Simplify using `only [e]`.
+
+Rewrite using `[this]`. Both sides reduce to the same expression.
+-/
 theorem pt_read {x : GL (Fin n) (AfE F E)} (h : GLG E n SG) (θ : GLQ E n Q)
     (hq : IsPtOf hc (y * x * k) (((1 : UF E n), h, θ) • p)) :
     ∃ hx : x ∈ J0 hc n ST, (redG hc n ST SG ⟨x, hx⟩)⁻¹ = h := by
@@ -170,6 +226,13 @@ end Base
 
 section Orb
 
+/- English proof (translation)
+Use `haveI : ∀ i, Finite (G ⧸ H i) := fun i => Subgroup.finite_quotient_of_finiteIndex`. Use `⟨Σ i, G ⧸ H i, inferInstance, inferInstance, fun i => ⟨i, ((1 : G) : G ⧸ H i)⟩, fun y => ?_, fun i g => ?_⟩` and prove the remaining obligations. Take `⟨i, q⟩` from `y`. Proceed by induction on `q using QuotientGroup.induction_on with`. Consider the case `H z`.
+
+Use `⟨i, ⟨z, ?_⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[Sigma.smul_mk, MulAction.Quotient.smul_mk, smul_eq_mul, mul_one]`. Introduce and unpack `j ⟨g, hg⟩`. Rewrite `hg` using `[Sigma.smul_mk]`. Conclude with `(Sigma.mk.inj_iff.1 hg).1`.
+
+Rewrite using `[Sigma.smul_mk, Sigma.mk.inj_iff, heq_iff_eq, MulAction.Quotient.smul_mk, smul_eq_mul, mul_one, QuotientGroup.eq, mul_one]`. Simplify using `only [true_and, inv_mem_iff]`.
+-/
 theorem exists_orbits {G ι : Type} [Group G] (H : ι → Subgroup G) [Finite ι] (hH : ∀ i, (H i).FiniteIndex) :
     ∃ (Yb : Type) (_ : Finite Yb) (_ : MulAction G Yb) (yb : ι → Yb), (∀ y : Yb, ∃! i, ∃ g : G, g • yb i = y) ∧
       ∀ i (g : G), g ∈ H i ↔ g • yb i = yb i := by
@@ -195,6 +258,13 @@ variable {X : Fields} {Pr : Primes X} {R : Ranks} {sel : HeightOneSpectrum (𝓞
 
 open Classical in
 
+/- English proof (translation)
+Take `⟨y0, -, hY⟩` from `p.mem_ybSet h`. Use function extensionality and compare the values at `P`. Use extensionality with `z`. Use `⟨?_, fun hz => ⟨0, h0, by simpa using hz⟩⟩` and prove the remaining obligations. Introduce and unpack `⟨y, hy, hz⟩`.
+
+Rewrite `hy`, `h0` using `[hY, Set.mem_ofPred_eq]`. Establish `h1` using `sub_mem hy h0`. Rewrite `h1` using `[sub_sub_sub_cancel_right, sub_zero]`. Establish `h2 : ((qOf P.1 : X.E) ^ (if P.1 ∈ Pr.vGs then (0 : ℤ) else (cst.M : ℤ)))⁻¹ • y ∈ Formalism.HermitianLatticesTheory.localization₂ P.1.asIdeal p.1.1.deco.1.N` using `(Submodule.mem_iInf _).1 h1 P`. Establish `h3 : ((qOf P.1 : X.E) ^ (if P.1 ∈ Pr.vGs then 0 else cst.M))⁻¹ • (frsF sel mu p.1.1 P).symm y ∈ stdAt X.E (R.N j) P.1`.
+
+Rewrite using `[← GlobalTheory.ColPeriod.isFrames_frsF p.1.1 P, map_smul, LinearEquiv.apply_symm_apply]`. Use `h2 using 3` and compare the differences between its conclusion and the goal. Apply the tactic sequence `split_ifs <;> simp`. Establish `h4` using `add_mem hz h3`. Rewrite `h4` using `[← smul_add, sub_add_cancel]`. Then use the resulting hypothesis.
+-/
 theorem cosetIn_of_zero_mem (h : j + 1 = R.m) (p : PtAt R sel mu cst u j) (h0 : (0 : Sp X.E (R.N j)) ∈ p.1.2) :
     cosetIn p = fun P => {z | ((qOf P.1 : X.E) ^ (if P.1 ∈ Pr.vGs then 0 else cst.M))⁻¹ • z ∈ stdAt X.E (R.N j) P.1} := by
   obtain ⟨y0, -, hY⟩ := p.mem_ybSet h
@@ -226,6 +296,9 @@ variable {B : Base} {X : PreX B.toPre} {I : TC B X} {u : B.Word} {j : ℕ} {Ch :
   {k : Ch → GA B (B.R.N j)} (H : I.Reads u I.mu0 j chOf Lb U chi y st k)
 include H
 
+/- English proof (translation)
+Establish `hPr` using `(base_fields_primes_ok B X).2.1`. Use `basePt_of (H.k_std β) (fun w hw => H.k_off β _ (fun hT => ?_) ?_ (Or.inl rfl)) fun P hP => ⟨_, H.k_T β ⟨P, hP⟩⟩` and prove the remaining obligations. Conclude with `rls_T_notUnder hPr u _ hT ⟨w, hw, rfl⟩`. Introduce and unpack `⟨P, hP, -⟩`. Conclude with `Finset.eq_empty_iff_forall_notMem.1 I.twistPrimes_reference_tuple_eq_empty P hP`.
+-/
 theorem reads_base (β : Ch) : BasePt B.sp.cm ((B.primes X).vT u) (B.primes X).vGs (k β) := by
   have hPr := (base_fields_primes_ok B X).2.1
   refine basePt_of (H.k_std β) (fun w hw => H.k_off β _ (fun hT => ?_) ?_ (Or.inl rfl)) fun P hP => ⟨_, H.k_T β ⟨P, hP⟩⟩
@@ -233,11 +306,21 @@ theorem reads_base (β : Ch) : BasePt B.sp.cm ((B.primes X).vT u) (B.primes X).v
   · rintro ⟨P, hP, -⟩
     exact Finset.eq_empty_iff_forall_notMem.1 I.twistPrimes_reference_tuple_eq_empty P hP
 
+/- English proof (translation)
+The claim follows from `IsPtOf.of_extTo (I.Q_subset_SQ _) (Finset.disjoint_right.2 fun P hP => (Finset.eq_empty_iff_forall_notMem.1 I.twistPrimes_reference_tuple_eq_empty P hP).elim) (H.pt c)`.
+-/
 theorem reads_pt (c : (I.stp u I.mu0 j).Cl) : IsPtOf B.sp.cm (y c * k (chOf c)) ((I.stp u I.mu0 j).rep c).1.1 :=
   IsPtOf.of_extTo (I.Q_subset_SQ _) (Finset.disjoint_right.2 fun P hP => (Finset.eq_empty_iff_forall_notMem.1 I.twistPrimes_reference_tuple_eq_empty P hP).elim) (H.pt c)
 
 set_option maxHeartbeats 2000000 in
 
+/- English proof (translation)
+Take `⟨q, hq⟩` from `pt_exists I.twistPrimes_reference_tuple_eq_empty (reads_base H (chOf c)) (reads_pt H c) hx`. Take `⟨κ, h1, h2, -⟩` from `(H.lev c x.1 q hq).1 x.2`. Substitute `h2` using the available equality. Establish `h3` using `H.chr c x κ h1 hq`. Take `⟨γ, h, θ⟩` from `κ`.
+
+Take `rfl : γ = 1` from `Subtype.ext ((toGLm B.fields.E (B.R.N j)).injective (h1.trans (map_one _).symm))`. Take `⟨hJ, hr⟩` from `pt_read I.twistPrimes_reference_tuple_eq_empty (reads_base H (chOf c)) (reads_pt H c) h.1 θ.1 hq`. Use `⟨hJ, hr ▸ h.2, ?_⟩` and prove the remaining obligations. Take `rfl : θ = 1` from `Subtype.ext (funext fun P => (Finset.eq_empty_iff_forall_notMem.1 I.twistPrimes_reference_tuple_eq_empty P.1 P.2).elim)`. Rewrite using `[h3]`.
+
+Establish `e : (⟨_, hr ▸ h.2⟩ : (levGAt I.sel (I.tup I.mu0) (I.idx I.mu0) (I.Tp I.mu0) j c.1).grp) = h` using `Subtype.ext hr`. Rewrite using `[e]`. Use `congrArg (fun z : B.LLˣ => B.embLL (z : B.LL)) ?_` and prove the remaining obligations. Conclude with `(congrArg (_ * ·) (map_one (levQAt I.sel (I.tup I.mu0) (I.idx I.mu0) (I.Tp I.mu0) j c.1).chr)).trans (mul_one _)`.
+-/
 theorem read_of_mem (c : (I.stp u I.mu0 j).Cl) (x : U (chOf c)) (hx : x.1 ∈ UAd B.sp.cm (B.R.N j)) :
     ∃ (hJ : x.1 ∈ J0 B.sp.cm (B.R.N j) ((B.primes X).vT u))
       (hm : (redG B.sp.cm (B.R.N j) ((B.primes X).vT u) (B.primes X).vGs ⟨x.1, hJ⟩)⁻¹ ∈
@@ -258,6 +341,9 @@ theorem read_of_mem (c : (I.stp u I.mu0 j).Cl) (x : U (chOf c)) (hx : x.1 ∈ UA
   refine congrArg (fun z : B.LLˣ => B.embLL (z : B.LL)) ?_
   exact (congrArg (_ * ·) (map_one (levQAt I.sel (I.tup I.mu0) (I.idx I.mu0) (I.Tp I.mu0) j c.1).chr)).trans (mul_one _)
 
+/- English proof (translation)
+The claim follows from `(H.lev c x _ (pt_move I.twistPrimes_reference_tuple_eq_empty (reads_base H (chOf c)) (reads_pt H c) hJ 1)).2 ⟨(1, ⟨_, hm⟩, 1), map_one (ufGL _ _), rfl, hc⟩`.
+-/
 theorem mem_of_read (c : (I.stp u I.mu0 j).Cl) (x : GA B (B.R.N j)) (hJ : x ∈ J0 B.sp.cm (B.R.N j) ((B.primes X).vT u))
     (hm : (redG B.sp.cm (B.R.N j) ((B.primes X).vT u) (B.primes X).vGs ⟨x, hJ⟩)⁻¹ ∈
         (levGAt I.sel (I.tup I.mu0) (I.idx I.mu0) (I.Tp I.mu0) j c.1).grp)
@@ -275,6 +361,29 @@ variable {X : Fields} {Pr : Primes X} {R : Ranks} {Ch : Chars X Pr R.m}
 
 set_option maxHeartbeats 1000000 in
 
+/- English proof (translation)
+Take `⟨wOf, hwOf, hwP, hprod⟩` from `_root_.GlobalTheory.Mem.TypePrimes.primes_over_places X Pr hc hPr`. Establish `hres` using `fun a v h => _root_.GlobalTheory.SplitResidue.exists_residue_equiv X.F X.E v (wOf a v h).1 (G.phi a v h) (X.conjO (Pr.piG a)) (fun t => congrArg Prod.fst (G.sp_alg a v h t)) (by`. Use `G.sp_pi a v h` as an intermediate fact. Rewrite `this` using `[hpi]`. Conclude with `this) (hwP a v h).1`.
+
+Use `choose ρ e hρ hρe using hres`. Establish `hback : ∀ a v h (M : GL (Fin (R.N j)) (kv X.F v)), Matrix.GeneralLinearGroup.map (e a v h).toRingHom (Matrix.GeneralLinearGroup.map (e a v h).symm.toRingHom M) = M` using `fun a v h M => by`. Use extensionality with `i i'`. Conclude with `(e a v h).apply_symm_apply _`. Establish `hH : ∀ a v h M, M ∈ (L.levG j b (wOf a v h)).H ↔ Matrix.GeneralLinearGroup.map (e a v h).toRingHom M ∈ JSymG (kv X.F v) (R.N j) R.k (rSD R) R.t false` using `fun a v h M => ⟨_root_.GlobalTheory.Mem.LastGrp.levG_le_JSymG Ch sel mu cst L Gc m2 hX hPr hsel hL hsh j hj b _ _ (e a v h) M, _root_.GlobalTheory.Mem.LastGrp.mem_levG_last Ch sel mu cst L Gc m2 hX hPr hsel hL hsh j hj b _ _ (e a v h) M⟩`.
+
+Set `lamw : ∀ w : {w // w ∈ Pr.vGs}, (L.levG j b w).H →* ℂˣ` to `fun w => (Units.map (σ : X.K →* ℂ)).comp (L.levG j b w).lam`. Set `back : ∀ a v h, JSymG (kv X.F v) (R.N j) R.k (rSD R) R.t false →* (L.levG j b (wOf a v h)).H` to `fun a v h => ((Matrix.GeneralLinearGroup.map (e a v h).symm.toRingHom).comp (Subgroup.subtype _)).codRestrict _ fun M => (hH a v h _).2 ((hback a v h M.1).symm ▸ M.2)`. Establish `hB` using `basePi_of_ok hX hPr u`. Take `⟨V, hV⟩` from `_root_.GlobalTheory.Mem.LevStd.levU_prod_glevH X.F X.E hc (R.N j) (Pr.vT u) Pr.vGs T f bad Pr.g Jm J G (fun w => (L.levG j b w).H) lamw (fun _ v _ => JSymG (kv X.F v) (R.N j) R.k (rSD R) R.t false) (fun a v h => (lamw (wOf a v h)).comp (back a v h)) wOf e hJm (by`. Use extensionality with `x`.
+
+Rewrite using `[hLb, rll_mem_baseLb]`. Establish `hl : (lastIdx (R.N j)).1 + 1 = R.N j` using `by have := NeZero.pos (R.N j); simp only [lastIdx]; omega`. Prove the components needed by the constructor for the conclusion. Introduce `h choose r h1 h2 using h`. Conclude with `⟨r, fun i => (h1 i).symm, (hB.dvd _).2 (h2 _ hl)⟩`.
+
+Introduce and unpack `⟨r, h1, h2⟩ i`. Use `⟨r i, (h1 i).symm, fun hi => ?_⟩` and prove the remaining obligations. Take `rfl : i = lastIdx (R.N j)` from `Fin.ext (by omega)`. Conclude with `(hB.dvd _).1 h2) hU`. Use the proof step `(fun x => by`.
+
+Take `⟨hJ, hm, h⟩` from `hχ x`. Apply `Units.ext` to reduce the goal to its premises. Rewrite using `[h]`. Use `(congrArg (fun z : X.Kˣ => σ z) (MonoidHom.finsetProd_apply _ _ _)).trans ?_` and prove the remaining obligations. Rewrite using `[Units.coe_prod, map_prod, Units.coe_prod]`.
+
+Use `Finset.prod_congr rfl fun w _ => ?_` and prove the remaining obligations. Rewrite using `[← map_inv (lamw w)]`. Use the proof step `rfl)`. Use the proof step `(fun a v h hv => rls_T_notUnder hPr u v ((mem_plUnder_iff_norm hc (rls_vT_iff hX hPr u) (Pr.T u) (hPr.piT_norm u) v).1 hv) ⟨(wOf a v h).1, (wOf a v h).2, (hwOf a v h _).2 rfl⟩)`. Use `hwOf hprod`.
+
+Use the proof step `(fun a v h z => ⟨hρ a v h z ▸ (ρ a v h z).2, by`. Rewrite using `[← hρe]`. Conclude with `congrArg _ (Subtype.ext (hρ a v h z).symm)⟩)`. Use `hH`. Use the proof step `(fun a v h M M' hM => congrArg (lamw (wOf a v h)) (Subtype.ext (by show Matrix.GeneralLinearGroup.map (e a v h).symm.toRingHom M'.1 = M.1`.
+
+Rewrite using `[hM]`. Use extensionality with `i i'`. Conclude with `(e a v h).symm_apply_apply _)))`. Use `⟨_, V, hV, fun a v h M => ?_⟩` and prove the remaining obligations. Use `_root_.GlobalTheory.Proof.LastStepChar.chr_last Ch sel mu cst L Gc m2 hX hPr hsel hL hsh j hj b _ _ (e a v h) σ (G.psi0 a v h) (G.chiB a v h) (fun c => by` as an intermediate fact.
+
+Take `⟨n, rfl⟩` from `(hwP a v h).2.2 c`. Rewrite using `[map_natCast]`. Conclude with `hpsi a v h _ (hwP a v h).2.1 n)`. Use the proof step `(fun s c => by`. Take `⟨n, hn⟩` from `(hwP a v h).2.2 c`.
+
+Rewrite using `[hn, map_natCast]`. Conclude with `hchi a v h _ (hwP a v h).2.1 s n c hn) (back a v h M)`. Use `this.trans (congrArg _ ?_)` and prove the remaining obligations. Conclude with `congrArg Units.val (hback a v h M.1)`.
+-/
 theorem exists_gLevH (hX : X.Ok) (hPr : Pr.Ok) (hsel : IsSel X sel) (hL : L.Ok Ch sel mu cst Gc m2) (hsh : cst.sharp = true)
     (hc : Formalism.BasicNotions.CMData X.F X.E) {j : ℕ} (hj : j + 1 = R.m) [NeZero (R.N j)] (b : L.β j) (u : Pr.Word) (σ : X.K →+* ℂ)
     {Jm : Matrix (Fin (R.N j)) (Fin (R.N j)) X.E} {T f : ℕ} {bad : Set (HeightOneSpectrum (𝓞 X.F))}
@@ -366,6 +475,45 @@ end Level
 
 set_option maxHeartbeats 8000000 in
 
+/- English proof (translation)
+Introduce `B X I hOk hPins l Z u G Ch chOf K hG hR`. Take `⟨k, H⟩` from `hR`. Establish `hm2` using `B.R.two_le_m`. Establish `hmj : B.R.m - 1 + 1 = B.R.m` using `by omega`. Establish `hL` using `hOk.idx_ok I.mu0`.
+
+Take `⟨b0x, hb0⟩` from `hL.last_uniq`. Establish `hsub : ∀ x x' : (I.idx I.mu0).β (B.R.m - 1), x = x'`. Rewrite using `[show B.R.m - 1 = B.R.m - 2 + 1 by omega]`. Introduce `x x'`. Rewrite using `[hb0 x, hb0 x']`.
+
+Establish `hsubI : ∀ b b' : Idx I.sel (I.tup I.mu0) (I.idx I.mu0) (B.R.m - 1), b = b'`. Introduce and unpack `⟨b, hb⟩ ⟨b', hb'⟩`. Establish `h1 : b.isSome` using `hb.2 (by omega)`. Establish `h2 : b'.isSome` using `hb'.2 (by omega)`. Take `⟨x, rfl⟩` from `Option.isSome_iff_exists.1 h1`.
+
+Take `⟨x', rfl⟩` from `Option.isSome_iff_exists.1 h2`. Rewrite using `[hsub x x']`. Use `haveI : NeZero (B.R.N (B.R.m - 1)) := ⟨by unfold Ranks.N; have := B.R.m_add_three_le_k; omega⟩`. Set `b0 : Idx I.sel (I.tup I.mu0) (I.idx I.mu0) (B.R.m - 1)` to `⟨some (cast (by rw [show B.R.m - 1 = B.R.m - 2 + 1 by omega]) b0x), by simp; omega⟩`. Set `q0 : (I.stp u I.mu0 (B.R.m - 1)).D b0` to `⟨(DecoF.base _ _ _ _ _, {z | z - 0 ∈ locLat (rowSG (B.primes X) I.sel (I.tup I.mu0)) (DecoF.base B.fields.E (B.R.N (B.R.m - 1)) ((B.primes X).vT u) (B.primes X).vGs (QE I.sel (I.tup I.mu0 : Chr B.fields.F B.fields.E B.fields.K))).deco.1.N (fun P => if P.1 ∈ (B.primes X).vGs then …`.
+
+Rewrite using `[ysAt_ys_of_eq _ _ _ hmj]`. Conclude with `⟨0, zero_mem _, rfl⟩⟩`. Set `c0` to `(I.stp u I.mu0 (B.R.m - 1)).cl b0 q0`. Establish `zero_act : ∀ (b) (g : (I.stp u I.mu0 (B.R.m - 1)).G b) (p : (I.stp u I.mu0 (B.R.m - 1)).D b), (0 : Sp B.fields.E (B.R.N (B.R.m - 1))) ∈ p.1.2 → (0 : Sp B.fields.E (B.R.N (B.R.m - 1))) ∈ ((I.stp u I.mu0 (B.R.m - 1)).act b g p).1.2` using `fun b g p h => ⟨0, h, map_zero _⟩`. Establish `h0 : (0 : Sp B.fields.E (B.R.N (B.R.m - 1))) ∈ ((I.stp u I.mu0 (B.R.m - 1)).rep c0).1.2`.
+
+Take `⟨g, hg⟩` from `(I.stp u I.mu0 (B.R.m - 1)).exists_mv b0 q0`. Use `letI := (I.stp u I.mu0 (B.R.m - 1)).actD b0`. Establish `e : (I.stp u I.mu0 (B.R.m - 1)).act b0 g⁻¹ q0 = (I.stp u I.mu0 (B.R.m - 1)).rep c0` using `by rw [← hg]; exact inv_smul_smul g _`. Conclude with `e ▸ zero_act _ _ _ (show (0 : Sp B.fields.E (B.R.N (B.R.m - 1))) - 0 ∈ locLat (rowSG (B.primes X) I.sel (I.tup I.mu0)) (DecoF.base B.fields.E (B.R.N (B.R.m - 1)) ((B.primes X).vT u) (B.primes X).vGs (QE I.sel (I.tup I.mu0 : Chr B.fields.F B.fields.E B.fields.K))).deco.1.N (fun P …`. Establish `hcrd` using `GlobalTheory.Mem.Col2.TC.spaces_in_coordinates I hOk hPins l Z`.
+
+Establish `hUA : ∀ β, ∀ x ∈ (K β).lev.U, x ∈ UAd B.sp.cm (B.R.N (B.R.m - 1))` using `fun β x hx => by`. Use `(((K β).lev.U_eq x).1 hx).1` as an intermediate fact. Rewrite `this` using `[(hcrd.2.2.2 (B.R.m - 1) (Nat.sub_le _ _)).1]`. Conclude with `this`. Establish `hcos : ∀ (p q : PtAt B.R I.sel (I.tup I.mu0) (I.cst I.mu0) u (B.R.m - 1)), (0 : Sp B.fields.E (B.R.N (B.R.m - 1))) ∈ p.1.2 → (0 : Sp B.fields.E (B.R.N (B.R.m - 1))) ∈ q.1.2 → cosetIn p = cosetIn q` using `fun p q hp hq => by`.
+
+Rewrite using `[cosetIn_of_zero_mem hmj p hp, cosetIn_of_zero_mem hmj q hq]`. Set `β0` to `chOf c0`. Set `J` to `(K β0).lev`. Establish `hle : ∀ c, ∀ x ∈ (K (chOf c)).lev.U, x ∈ J.U` using `fun c x hx => by`. Take `⟨hJ, hm, -⟩` from `read_of_mem H c ⟨x, hx⟩ (hUA _ _ hx)`.
+
+Establish `e : c.1 = c0.1` using `hsubI _ _`. Rewrite `hm` using `[e]`. Conclude with `mem_of_read H c0 x hJ hm (hcos _ _ (zero_act _ _ _ h0) h0)`. Establish `hJ0 : ∀ x ∈ J.U, x ∈ J0 B.sp.cm (B.R.N (B.R.m - 1)) ((B.primes X).vT u)` using `fun x hx => (read_of_mem H c0 ⟨x, hx⟩ (hUA _ _ hx)).1`. Establish `key : ∀ (b b' : Idx I.sel (I.tup I.mu0) (I.idx I.mu0) (B.R.m - 1)) (_ : b = b') (z z' : GLG B.fields.E (B.R.N (B.R.m - 1)) (B.primes X).vGs) (hz : z ∈ (levGAt I.sel (I.tup I.mu0) (I.idx I.mu0) (I.Tp I.mu0) (B.R.m - 1) b).grp) (hz' : z' ∈ (levGAt I.sel (I.tup I.mu0) (I.idx I.mu0) …`.
+
+Introduce and unpack `b _ rfl z _ hz hz' rfl`. Both sides reduce to the same expression. Establish `hchi : ∀ β (κ : (K β).lev.U) (κ' : J.U), κ.1 = κ'.1 → (K β).lev.chi κ = J.chi κ'`. Introduce `β κ κ' e`. Take `⟨c, rfl⟩` from `H.onto β`.
+
+Take `⟨hJ, hm, hχ⟩` from `read_of_mem H c κ (hUA _ _ κ.2)`. Take `⟨hJ', hm', hχ'⟩` from `read_of_mem H c0 κ' (hUA _ _ κ'.2)`. Apply `Units.ext` to reduce the goal to its premises. Use `hχ.trans (Eq.trans ?_ hχ'.symm)` and prove the remaining obligations. Conclude with `congrArg (fun z : B.LLˣ => B.embLL (z : B.LL)) (key _ _ (hsubI _ _) _ _ hm hm' (by`.
+
+Use `congr 2`. Conclude with `Subtype.ext e))`. Establish `hV : ∃ (lamJ : ∀ (a : Fin 2) (v : HeightOneSpectrum (𝓞 (I.rec7 l Z).host.F)), ((I.rec7 l Z).host.g a : 𝓞 (I.rec7 l Z).host.F) ∈ v.asIdeal → HSym (I.rec7 l Z) (B.R.N (B.R.m - 1)) false v →* ℂˣ) (V : GLevH J G (fun _ v _ => HSym (I.rec7 l Z) (B.R.N (B.R.m - 1)) false v) lamJ), (∀ a …` using `exists_gLevH (base_fields_primes_ok B X).1 (base_fields_primes_ok B X).2.1 hOk.sel_ok hL (hOk.sharp I.mu0) B.sp.cm hmj (cast (by rw [show B.R.m - 1 = B.R.m - 2 + 1 by omega]) b0x) u B.embLL J G (hcrd.2.2.2 (B.R.m - 1) (Nat.sub_le _ _)).1 hG.piG hG.psi hG.chi (H.lb β0) (Subgroup.e …`. Take `⟨hJ, hm, -⟩` from `read_of_mem H c0 ⟨x, hx⟩ (hUA _ _ hx)`. Conclude with `⟨hJ, (Subgroup.inv_mem_iff _).1 hm⟩,`.
+
+Use `fun ⟨hJ, hm⟩ => mem_of_read H c0 x hJ (inv_mem hm) (hcos _ _ (zero_act _ _ _ h0) h0)⟩).trans (mem_levU _ _ _ _ _).symm)`. Use the proof step `(fun x => read_of_mem H c0 x (hUA _ _ x.2))`. Take `⟨lamJ, V, hV1, hV2⟩` from `hV`. Use `haveI : Finite Ch := by`. Establish `hfin` using `((l.ch u I.mu0).step (B.R.m - 1)).fin_orb`.
+
+Use `haveI : Finite (I.stp u I.mu0 (B.R.m - 1)).Cl := @Finite.instSigma _ _ inferInstance hfin`. Conclude with `Finite.of_surjective chOf H.onto`. Use `haveI : ∀ w : (B.primes X).vGs, Finite (𝓞 B.fields.E ⧸ w.1.asIdeal) := fun w => Ideal.finiteQuotientOfFreeOfNeBot _ w.1.ne_bot`. Set `f : J.U →* GLG B.fields.E (B.R.N (B.R.m - 1)) (B.primes X).vGs` to `{ toFun := fun x => redG B.sp.cm (B.R.N (B.R.m - 1)) ((B.primes X).vT u) (B.primes X).vGs ⟨x.1, hJ0 x.1 x.2⟩ map_one' := by rw [← map_one (redG B.sp.cm (B.R.N (B.R.m - 1)) ((B.primes X).vT u) (B.primes X).vGs)]; rfl map_mul' := fun x y => by rw [← map_mul]; rfl }`. Establish `hker : ∀ β, f.ker ≤ (K β).lev.U.subgroupOf J.U` using `fun β x hx => by`.
+
+Take `⟨c, rfl⟩` from `H.onto β`. Establish `hx1 : f x = 1` using `hx`. Establish `hm : (redG B.sp.cm (B.R.N (B.R.m - 1)) ((B.primes X).vT u) (B.primes X).vGs ⟨x.1, hJ0 x.1 x.2⟩)⁻¹ ∈ (levGAt I.sel (I.tup I.mu0) (I.idx I.mu0) (I.Tp I.mu0) (B.R.m - 1) c.1).grp`. Rewrite using `[show redG B.sp.cm (B.R.N (B.R.m - 1)) ((B.primes X).vT u) (B.primes X).vGs ⟨x.1, hJ0 x.1 x.2⟩ = 1 from hx1, inv_one]`. Conclude with `one_mem _`.
+
+Use `mem_of_read H c x.1 (hJ0 x.1 x.2) hm ?_` and prove the remaining obligations. Use `letI := (I.stp u I.mu0 (B.R.m - 1)).actD c.1`. Establish `e : ((1 : UF B.fields.E (B.R.N (B.R.m - 1))), (⟨_, hm⟩ : (levGAt I.sel (I.tup I.mu0) (I.idx I.mu0) (I.Tp I.mu0) (B.R.m - 1) c.1).grp), (1 : (levQAt I.sel (I.tup I.mu0) (I.idx I.mu0) (I.Tp I.mu0) (B.R.m - 1) c.1).grp)) = (1 : (I.stp u I.mu0 (B.R.m - 1)).G c.1)` using `Prod.ext rfl (Prod.ext (Subtype.ext (show (redG B.sp.cm (B.R.N (B.R.m - 1)) ((B.primes X).vT u) (B.primes X).vGs ⟨x.1, hJ0 x.1 x.2⟩)⁻¹ = 1 by`. Rewrite using `[show redG B.sp.cm (B.R.N (B.R.m - 1)) ((B.primes X).vT u) (B.primes X).vGs ⟨x.1, hJ0 x.1 x.2⟩ = 1 from hx1, inv_one])) rfl)`. Use `show cosetIn ((_ : (I.stp u I.mu0 (B.R.m - 1)).G c.1) • (I.stp u I.mu0 (B.R.m - 1)).rep c) = _`.
+
+Rewrite using `[e, one_smul]`. Establish `hfi : ∀ β, ((K β).lev.U.subgroupOf J.U).FiniteIndex` using `fun β => by haveI : f.ker.FiniteIndex := inferInstance`. Conclude with `Subgroup.finiteIndex_of_le (hker β)`. Take `⟨Yb, hYb, act, yb, horb, hstab⟩` from `exists_orbits (fun β => (K β).lev.U.subgroupOf J.U) hfi`. Use `⟨J, lamJ, V, Yb, hYb, act, yb, hV1, hV2, horb, fun β => ⟨?_, fun x hx => ?_, fun κ => ?_, hchi β⟩⟩` and prove the remaining obligations.
+
+Use extensionality with `x`. Take `⟨c, rfl⟩` from `H.onto β`. Conclude with `(H.lb _ x).trans (H.lb β0 x).symm`. Take `⟨c, rfl⟩` from `H.onto β`. Conclude with `hle c x hx`.
+
+Conclude with `hstab β κ`.
+-/
 theorem stepBefore_oneLevel : ∀ {B : Base} {X : PreX B.toPre} (I : TC B X), I.Ok → TC.Pins B X → ∀ (l : I.Laws) (Z : TC.Later B (I.cols l)), ∀ (u : B.Word) (G : GLoc (I.rec7 l Z).host.F (I.rec7 l Z).host.E (sigD (I.rec7 l Z)) (I.rec7 l Z).host.g) (Ch : Type) (chOf : (I.stp u I.mu0 (B.R.m - 1)).Cl → Ch) (K : ∀ β : Ch, LevelChart (I.rec7 l Z) (B.T u) (badG (I.rec7 l Z)) (B.R.m - 1) (Nat.sub_le _ _) (fun c : {c // chOf c = β} => (I.chain l u I.mu0).stab (B.R.m - 1) c.1) (fun c => latCrd (I.rec7 l Z) (B.R.m - 1) (Nat.sub_le _ _) (I.latAt u I.mu0 (B.R.m - 1) c.1))), I.IdG l Z G → I.ReadsK l Z u I.mu0 (B.R.m - 1) (Nat.sub_le _ _) chOf K → ∃ (J : StepLevel (I.rec7 l Z).host.F (I.rec7 l Z).host.E (sigD (I.rec7 l Z)) (gramN (I.rec7 l Z) (B.R.m - 1) (Nat.sub_le _ _)) (B.T u) B.R.f (badG (I.rec7 l Z))) (lamJ : ∀ (j : Fin 2) (v : HeightOneSpectrum (𝓞 (I.rec7 l Z).host.F)), ((I.rec7 l Z).host.g j : 𝓞 (I.rec7 l Z).host.F) ∈ v.asIdeal → HSym (I.rec7 l Z) (B.R.N (B.R.m - 1)) false v →* ℂˣ) (V : GLevH J G (fun _ v _ => HSym (I.rec7 l Z) (B.R.N (B.R.m - 1)) false v) lamJ) (Yb : Type) (_ : Finite Yb) (_ : MulAction J.U Yb) (yb : Ch → Yb), (∀ j v h, V.fr j v h = 1) ∧ (∀ j v h M, ((lamJ j v h M : ℂˣ) : ℂ) = lamSym (G.psi0 j v h) (G.chiB j v h) B.R.k (rSD B.R) B.R.t (B.R.m - 1) M.1.1) ∧ (∀ y : Yb, ∃! β, ∃ κ : J.U, κ • yb β = y) ∧ ∀ β, (K β).lev.Lb = J.Lb ∧ (K β).lev.U ≤ J.U ∧ (∀ κ : J.U, κ.1 ∈ (K β).lev.U ↔ κ • yb β = yb β) ∧ ∀ (κ : (K β).lev.U) (κ' : J.U), κ.1 = κ'.1 → (K β).lev.chi κ = J.chi κ' := by
   intro B X I hOk hPins l Z u G Ch chOf K hG hR
   classical

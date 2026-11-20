@@ -11,23 +11,45 @@ open Classical
 
 namespace GlobalTheory.UPoinc.ClassCore
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨0, by simp⟩`.
+-/
 theorem cm_refl {X : Type} [AddCommGroup X] (N : ℕ) (x : X) : CongMod N x x := ⟨0, by simp⟩
 
+/- English proof (translation)
+Take `⟨w, rfl⟩` from `h; exact ⟨-w, by simp⟩`.
+-/
 theorem cm_symm {X : Type} [AddCommGroup X] {N : ℕ} {x y : X} (h : CongMod N x y) : CongMod N y x := by
   obtain ⟨w, rfl⟩ := h; exact ⟨-w, by simp⟩
 
+/- English proof (translation)
+Take `⟨w, rfl⟩` from `h; obtain ⟨w', rfl⟩ := h'; exact ⟨w' + w, by rw [smul_add, add_assoc]⟩`.
+-/
 theorem cm_trans {X : Type} [AddCommGroup X] {N : ℕ} {x y z : X} (h : CongMod N x y) (h' : CongMod N y z) :
     CongMod N x z := by
   obtain ⟨w, rfl⟩ := h; obtain ⟨w', rfl⟩ := h'; exact ⟨w' + w, by rw [smul_add, add_assoc]⟩
 
+/- English proof (translation)
+Take `⟨w, rfl⟩` from `h; exact ⟨g w, by simp [map_nsmul]⟩`.
+-/
 theorem cm_map {X Y : Type} [AddCommGroup X] [AddCommGroup Y] {N : ℕ} (g : X →+ Y) {x y : X} (h : CongMod N x y) :
     CongMod N (g x) (g y) := by
   obtain ⟨w, rfl⟩ := h; exact ⟨g w, by simp [map_nsmul]⟩
 
+/- English proof (translation)
+Simplify using `[qW]`.
+-/
 theorem qW_one {X : Type} [AddCommGroup X] (β : LinearMap.BilinForm ℤ X) (μ : Fin 1 → X) :
     qW !![(1 : ℤ)] β μ = β (μ 0) (μ 0) := by
   simp [qW]
 
+/- English proof (translation)
+Establish `hnn : ∀ x, 0 ≤ β x x` using `fun x => by`. Distinguish the cases in `hx : x = 0`. Simplify using `[hx]`. Conclude with `(hpos x hx).le`. Take `⟨n, ⟨μ', hμ', rfl⟩, hmin⟩` from `WellFounded.has_min Nat.lt_wfRel.wf {n | ∃ μ' : Fin 1 → X, (∀ u, CongMod N (μ' u) (μ u)) ∧ (qW !![(1 : ℤ)] β μ').toNat = n} ⟨_, μ, fun u => cm_refl N _, rfl⟩`.
+
+Use `⟨μ', hμ', fun μ'' h => ?_⟩` and prove the remaining obligations. Use `hmin _ ⟨μ'', h, rfl⟩` as an intermediate fact. Establish `key` using `not_lt.1 this`. Simplify using `only [qW_one] at key ⊢`. Establish `h1` using `hnn (μ' 0)`.
+
+Establish `h2` using `hnn (μ'' 0)`. Establish `e1` using `Int.toNat_of_nonneg h1`. Establish `e2` using `Int.toNat_of_nonneg h2`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem exists_min {X : Type} [AddCommGroup X] (β : LinearMap.BilinForm ℤ X) (hpos : ∀ x, x ≠ 0 → 0 < β x x)
     (N : ℕ) (μ : Fin 1 → X) : ∃ μ' : Fin 1 → X, (∀ u, CongMod N (μ' u) (μ u)) ∧
       ∀ μ'' : Fin 1 → X, (∀ u, CongMod N (μ'' u) (μ u)) → qW !![(1 : ℤ)] β μ' ≤ qW !![(1 : ℤ)] β μ'' := by
@@ -50,6 +72,11 @@ end GlobalTheory.UPoinc.ClassCore
 
 namespace GlobalTheory.UPoinc.ClassCore
 
+/- English proof (translation)
+Establish `hnn : 0 ≤ t.T.be x x` using `by simpa using IsMonomial.nonneg t.T.mono 0 x`. Use `set a := t.ι (algebraMap t.T.V (FractionRing t.T.V) t.T.ϖ) with ha`. Establish `ha0 : a ≠ 0` using `(map_ne_zero t.ι).2 ((map_ne_zero_iff _ (IsFractionRing.injective t.T.V _)).2 t.T.irr.ne_zero)`. Establish `hpos : 0 < ‖a‖` using `norm_pos_iff.2 ha0`. Use `⟨a ^ (t.T.be x x).toNat, ?_⟩` and prove the remaining obligations.
+
+Establish `e1 : ((t.T.be x x : ℤ) : ℝ) = (((t.T.be x x).toNat : ℕ) : ℝ)`. Rewrite using `[← Int.cast_natCast, Int.toNat_of_nonneg hnn]`. Rewrite using `[norm_pow, e1, UCTrait.sc, ← ha, neg_mul, neg_neg, mul_comm, Real.exp_nat_mul, Real.exp_log hpos]`.
+-/
 theorem exists_norm_eq {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {Dw : Datum H}
     {l : Geo.Tor.Level H} {Xo : Moduli Dw l} {c : Coeff l} {C : UCompact Xo c} {X₁ : USetup C} {p : ℕ} [Fact p.Prime]
     {z₁ : X₁.M.Z} (t : UCTrait X₁ p z₁) (x : t.T.P.D.toPre.X) :
@@ -67,6 +94,75 @@ end GlobalTheory.UPoinc.ClassCore
 
 namespace GlobalTheory.UPoinc.ClassCore
 
+/- English proof (translation)
+Introduce `E _ _ _ H Dw hpq l Xo c C X₁ p _ z₁ Φ hΦ y₀ N₀`. Take `⟨N, hN₀, hdvd, Ω₂, i1, i2, i3, i4, hc⟩` from `hcore E H Dw hpq l Xo c C X₁ p z₁ Φ hΦ y₀ N₀`. Use `⟨N, hN₀, hdvd, Ω₂, i1, i2, i3, i4, ?_⟩` and prove the remaining obligations. Use `letI : Algebra (X₁.M.Z.presheaf.stalk z₁) Ω₂ := ((algebraMap X₁.Ω₁ Ω₂).comp (X₁.M.stalkHom z₁)).toAlgebra`. Introduce `𝔷 h𝔷 ev' h1 h2 h3`.
+
+Take `⟨k, Q, F, hk0, hcls, hle, heq, hgal⟩` from `hc 𝔷 h𝔷 ev' h1 h2 h3`. Set `qv : ∀ y, (Fin 1 → Φ.X y) → ℤ` to `fun y μ => qW !![(1 : ℤ)] (Φ.β y) μ`. Set `Cg : ∀ y, (Fin 1 → Φ.X y) → (Fin 1 → Φ.X y) → Prop` to `fun y μ μ' => ∀ u, CongMod N (μ u) (μ' u)`. Set `sel : ∀ y, (Fin 1 → Φ.X y) → (Fin 1 → Φ.X y)` to `fun y μ => Classical.epsilon (fun μ' => Cg y μ' μ ∧ ∀ μ'', Cg y μ'' μ → qv y μ' ≤ qv y μ'')`. Establish `hsel : ∀ y μ, Cg y (sel y μ) μ ∧ ∀ μ'', Cg y μ'' μ → qv y (sel y μ) ≤ qv y μ''` using `fun y μ => Classical.epsilon_spec (exists_min (Φ.β y) (Φ.pos y) N μ)`.
+
+Establish `hselc : ∀ y μ μ', Cg y μ μ' → sel y μ = sel y μ'`. Introduce `y μ μ' h`. Use `show Classical.epsilon _ = Classical.epsilon _`. Use `congr 1`. Use function extensionality and compare the values at `μ₁`.
+
+Apply `propext` to reduce the goal to its premises. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨h₁, h₂⟩`. Conclude with `⟨fun u => cm_trans (h₁ u) (h u), fun μ'' h'' => h₂ μ'' fun u => cm_trans (h'' u) (cm_symm (h u))⟩`. Introduce and unpack `⟨h₁, h₂⟩`.
+
+Conclude with `⟨fun u => cm_trans (h₁ u) (cm_symm (h u)), fun μ'' h'' => h₂ μ'' fun u => cm_trans (h'' u) (h u)⟩`. Set `NS : ∀ y, (Fin 1 → Φ.X y) → Prop` to `fun y μ => ∃ μ', Cg y μ' μ ∧ μ' ≠ μ ∧ qv y μ' ≤ qv y μ`. Set `wit : ∀ y, (Fin 1 → Φ.X y) → (Fin 1 → Φ.X y)` to `fun y μ => if h : NS y μ then h.choose else μ`. Establish `hwit : ∀ y μ, NS y μ → Cg y (wit y μ) μ ∧ wit y μ ≠ μ ∧ qv y (wit y μ) ≤ qv y μ`. Introduce `y μ h`.
+
+Simplify using `only [wit, dif_pos h]`. Conclude with `h.choose_spec`. Establish `hel : ∀ y μ, ∃ e : PadicAlgCl p, ‖e‖ = Real.exp (-(Φ.sc y * qv y μ))`. Introduce `y μ`. Take `⟨t, -, e', he'⟩` from `hΦ y`.
+
+Take `⟨e, he⟩` from `exists_norm_eq t (e' (μ 0))`. Use `⟨e, ?_⟩` and prove the remaining obligations. Rewrite using `[he, ← he']`. Simplify using `only [qv, qW_one]`. Use `choose el hel using hel`.
+
+Set `g : ∀ y, (Fin 1 → Φ.X y) → (Fin 1 → Φ.X y) → PadicAlgCl p` to `fun y μ ν => if NS y μ then (if ν = μ then el y μ else if ν = wit y μ then -el y μ else 0) else 0`. Set `Q' : Type` to `Q ⊕ (Σ y, (Fin 1 → Φ.X y))`. Set `t : ∀ y, (Fin 1 → Φ.X y) → Q' → PadicAlgCl p` to `fun y ν => Sum.elim (fun κ => if ν = sel y ν then ev' y (F (fun u => (k y).symm (ν u)) κ) ^ 2 else 0) (fun s => if h : y = s.1 then g s.1 s.2 (h ▸ ν) else 0)`. Set `f : (Fin 1 → Φ.X y₀) → Q' → integralClosure (X₁.M.Z.presheaf.stalk z₁) Ω₂` to `fun cc => Sum.elim (fun κ => F cc κ ^ 2) (fun _ => 0)`. Use `⟨fun y => (k y).toLinearMap.restrictScalars ℤ, Q', t, f, ?_, ?_, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations.
+
+Use `show (k y₀).toLinearMap.restrictScalars ℤ = _`. Rewrite using `[hk0]`. Both sides reduce to the same expression. Introduce `y`. Use `⟨fun a x => ⟨0, by simp⟩, (k y).symm.restrictScalars ℤ, ?_⟩` and prove the remaining obligations.
+
+Establish `: ((k y).symm.restrictScalars ℤ).toLinearMap ∘ₗ (k y).toLinearMap.restrictScalars ℤ = LinearMap.id`. Use extensionality with `x`. Simplify using the standard rewrite rules. Rewrite using `[this, LinearMap.det_id, sub_self]`. Conclude with `dvd_zero _`.
+
+Establish `hsc : ∀ y, 0 < Φ.sc y` using `Φ.sc_pos`. Establish `hsq : ∀ y (μ : Fin 1 → Φ.X y) κ, μ = sel y μ → ‖ev' y (F (fun u => (k y).symm (μ u)) κ) ^ 2‖ ≤ Real.exp (-(Φ.sc y * qv y μ))`. Introduce `y μ κ hμ`. Establish `h` using `hle y (fun u => (k y).symm (μ u)) κ μ (fun u => by`. Simplify using `only [LinearEquiv.apply_symm_apply]; exact cm_refl N _) (fun μ' h' => by`.
+
+Use `(hsel y μ).2 μ' h'` as an intermediate fact. Rewrite `this` using `[← hμ]`. Conclude with `this)`. Rewrite using `[norm_pow]`. Combine the equalities or inequalities in the displayed calculation.
+
+Establish `hg : ∀ y (μ ν : Fin 1 → Φ.X y), ‖g y μ ν‖ ≤ Real.exp (-(Φ.sc y * qv y ν))`. Introduce `y μ ν`. Simplify using `only [g]`. Use `split_ifs with hN hν hw`. Substitute `hν` using the available equality.
+
+Rewrite using `[hel]`. Substitute `hw` using the available equality. Rewrite using `[norm_neg, hel]`. Use `Real.exp_le_exp.2 (neg_le_neg (mul_le_mul_of_nonneg_left ?_ (hsc y).le))` and prove the remaining obligations. Conclude with `(hwit y μ hN).2.2` after adjusting the coercions.
+
+Rewrite using `[norm_zero]`. Conclude with `(Real.exp_pos _).le`. Rewrite using `[norm_zero]`. Conclude with `(Real.exp_pos _).le`. Use `⟨fun y μ κ => ?_, fun y μ => ?_⟩` and prove the remaining obligations.
+
+Break down `κ with κ | ⟨y', μ'⟩` into its components or cases. Simplify using `only [t, Sum.elim_inl] split_ifs with hμ`. Conclude with `hsq y μ κ hμ`. Rewrite using `[norm_zero]`. Conclude with `(Real.exp_pos _).le`.
+
+Simplify using `only [t, Sum.elim_inr] split_ifs with h`. Substitute `h` using the available equality. Conclude with `hg y μ' μ`. Rewrite using `[norm_zero]`. Conclude with `(Real.exp_pos _).le`.
+
+Distinguish the cases in `hns : NS y μ`. Use `⟨Sum.inr ⟨y, μ⟩, ?_⟩` and prove the remaining obligations. Simplify using `only [t, Sum.elim_inr, dif_pos rfl, g, if_pos hns, if_pos rfl]`. Conclude with `hel y μ`. Establish `hstrict : ∀ μ' : Fin 1 → Φ.X y, (∀ u, CongMod N (μ' u) (μ u)) → μ' ≠ μ → qW !![(1 : ℤ)] (Φ.β y) μ < qW !![(1 : ℤ)] (Φ.β y) μ'`.
+
+Introduce `μ' h1 h2`. Assume the negation of the conclusion as `h3`. Conclude with `hns ⟨μ', h1, h2, not_lt.1 h3⟩`. Take `⟨cc, κ, hcc, hnorm⟩` from `heq y μ hstrict`. Establish `hsel' : sel y μ = μ`.
+
+Assume the negation of the conclusion as `hne`. Use `hstrict _ (hsel y μ).1 hne` as an intermediate fact. Conclude with `absurd ((hsel y μ).2 μ (fun u => cm_refl N _)) (not_le.2 this)`. Establish `hF : F (fun u => (k y).symm (μ u)) κ = F cc κ`. Use `hcls _ _ κ (fun u => ?_)` and prove the remaining obligations.
+
+Use `cm_map (k y).symm.toLinearMap.toAddMonoidHom (hcc u)` as an intermediate fact. Simplify using `using this`. Use `⟨Sum.inl κ, ?_⟩` and prove the remaining obligations. Simplify using `only [t, Sum.elim_inl, hsel', if_pos rfl]`. Rewrite using `[if_pos trivial, hF, norm_pow, hnorm, ← Real.exp_nat_mul]`.
+
+Use `congr 1`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Introduce and unpack `cc cc' (κ | s) h`. Simplify using `only [f, Sum.elim_inl, hcls cc cc' κ h]`.
+
+Both sides reduce to the same expression. Introduce `y cc κ ε hε`. Break down `κ with κ | ⟨y', μ⟩` into its components or cases. Use `set s := sel y (fun u => k y (cc u)) with hs`. Use `⟨{s}, fun S hS hS₀ => ?_⟩` and prove the remaining obligations.
+
+Establish `hS' : ∀ μ ∈ S, Cg y μ (fun u => k y (cc u))` using `fun μ hμ u => by simpa using hS μ hμ u`. Establish `hmem : s ∈ S` using `hS₀ s (Finset.mem_singleton_self _) (fun u => by simpa using (hsel y _).1 u)`. Establish `hss : sel y s = s` using `hselc y s _ (hsel y _).1`. Establish `hsum : ∑ μ ∈ S, t y μ (Sum.inl κ) = t y s (Sum.inl κ)`. Use `Finset.sum_eq_single_of_mem s hmem (fun μ hμ hne => ?_)` and prove the remaining obligations.
+
+Simplify using `only [t, Sum.elim_inl]`. Rewrite using `[if_neg]`. Introduce `h`. Conclude with `hne (h.trans (hselc y μ _ (hS' μ hμ)))`. Establish `hF : F (fun u => (k y).symm (s u)) κ = F cc κ`.
+
+Use `hcls _ _ κ (fun u => ?_)` and prove the remaining obligations. Use `cm_map (k y).symm.toLinearMap.toAddMonoidHom ((hsel y (fun u => k y (cc u))).1 u)` as an intermediate fact. Simplify using `using this`. Rewrite using `[hsum]`. Simplify using `only [t, Sum.elim_inl, hss]`.
+
+Rewrite using `[if_pos trivial, hF]`. Simplify using `[f, hε.le]`. Distinguish the cases in `hy : y = y'`. Substitute `hy` using the available equality. Use `⟨{μ, wit y μ}, fun S hS hS₀ => ?_⟩` and prove the remaining obligations.
+
+Establish `hS' : ∀ ν ∈ S, Cg y ν (fun u => k y (cc u))` using `fun ν hν u => by simpa using hS ν hν u`. Establish `hsum : ∑ ν ∈ S, t y ν (Sum.inr ⟨y, μ⟩) = 0`. Simplify using `only [t, Sum.elim_inr, dif_pos rfl, dite_true]`. Distinguish the cases in `hns : NS y μ`. Take `⟨hw1, hw2, -⟩` from `hwit y μ hns`.
+
+Simplify using `only [g, if_pos hns]`. Distinguish the cases in `hc : Cg y μ (fun u => k y (cc u))`. Establish `hμS : μ ∈ S` using `hS₀ μ (by simp) (fun u => by simpa using hc u)`. Establish `hwS : wit y μ ∈ S` using `hS₀ _ (by simp) (fun u => by simpa using cm_trans (hw1 u) (hc u))`. Establish `e : ∀ ν : Fin 1 → Φ.X y, (if ν = μ then el y μ else if ν = wit y μ then -el y μ else 0) = (if ν = μ then el y μ else 0) + (if ν = wit y μ then -el y μ else 0)`.
+
+Introduce `ν`. Distinguish the cases in `h1 : ν = μ`. Substitute `h1` using the available equality. Simplify using `[hw2.symm]`. Simplify using `[h1]`.
+
+Rewrite using `[Finset.sum_congr rfl (fun ν _ => e ν), Finset.sum_add_distrib, Finset.sum_ite_eq' S μ, Finset.sum_ite_eq' S (wit y μ), if_pos hμS, if_pos hwS, add_neg_cancel]`. Use `Finset.sum_eq_zero (fun ν hν => ?_)` and prove the remaining obligations. Establish `h1 : ν ≠ μ` using `fun h => hc (h ▸ hS' ν hν)`. Establish `h2 : ν ≠ wit y μ` using `fun h => hc (fun u => cm_trans (cm_symm (hw1 u)) (h ▸ hS' ν hν u))`. Simplify using `[h1, h2]`.
+
+Simplify using `[g, hns]`. Rewrite using `[hsum]`. Simplify using `[f, hε.le]`. Use `⟨∅, fun S _ _ => ?_⟩` and prove the remaining obligations. Establish `hsum : ∑ ν ∈ S, t y ν (Sum.inr ⟨y', μ⟩) = 0` using `Finset.sum_eq_zero (fun ν _ => by simp [t, hy])`.
+
+Rewrite using `[hsum]`. Simplify using `[f, hε.le]`. Introduce `σ hσ`. Take `⟨γ, hdet, hcong, hF⟩` from `hgal σ hσ`. Use `⟨γ.toLinearMap.restrictScalars ℤ, fun a x => ⟨0, by simp⟩, hdet, hcong, ?_⟩` and prove the remaining obligations.
+
+Introduce and unpack `cc (κ | s)`. Simplify using `[f, hF]`. Simplify using `[f]`.
+-/
 theorem main_of_core (hcore : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (Dw
     : Datum H), 1 ≤ Dw.p + Dw.q → ∀ (l : Geo.Tor.Level H) (Xo : Moduli Dw l) (c : Coeff l) (C
     : UCompact Xo c) (X₁ : USetup C) (p : ℕ) [Fact p.Prime] (z₁ : X₁.M.Z) (Φ : FPre (H.bar
@@ -295,6 +391,9 @@ end GlobalTheory.UPoinc.ClassCore
 
 namespace GlobalTheory.UPoinc.ClassCore
 
+/- English proof (translation)
+The claim follows from `main_of_core GlobalTheory.T.unitary_classSums_deeper_level_geometric_core`.
+-/
 theorem classSums_core : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (Dw : Datum H), 1 ≤ Dw.p + Dw.q → ∀ (l : Geo.Tor.Level H) (Xo : Moduli Dw l) (c : Coeff l) (C : UCompact Xo c) (X₁ : USetup C) (p : ℕ) [Fact p.Prime] (z₁ : X₁.M.Z) (Φ : FPre (H.bar : 𝓞 E → 𝓞 E) (min Dw.p Dw.q) p (X₁.M.Z.presheaf.stalk z₁)), (∀ y, ∃ t : UCTrait X₁ p z₁, (∀ a, Φ.ev y a = t.val a) ∧ ∃ e : Φ.X y ≃ₗ[𝓞 E] t.T.P.D.toPre.X, ∀ a b, Φ.sc y * Φ.β y a b = t.sc * t.T.be (e a) (e b)) → ∀ (y₀ : Φ.Y) (N₀ : ℕ), ∃ N, N₀ ≤ N ∧ (X₁.S.r * X₁.S.N) ∣ N ∧ ∃ (Ω₂ : Type) (_ : Field Ω₂) (_ : Algebra X₁.Ω₁ Ω₂) (_ : FiniteDimensional X₁.Ω₁ Ω₂) (_ : IsGalois X₁.Ω₁ Ω₂), letI : Algebra (X₁.M.Z.presheaf.stalk z₁) Ω₂ := ((algebraMap X₁.Ω₁ Ω₂).comp (X₁.M.stalkHom z₁)).toAlgebra; ∀ 𝔷 : Ideal (integralClosure (X₁.M.Z.presheaf.stalk z₁) Ω₂), 𝔷.IsMaximal → ∀ ev' : Φ.Y → (integralClosure (X₁.M.Z.presheaf.stalk z₁) Ω₂) →+* PadicAlgCl p, (∀ y a, ev' y (algebraMap (X₁.M.Z.presheaf.stalk z₁) (integralClosure (X₁.M.Z.presheaf.stalk z₁) Ω₂) a) = Φ.ev y a) → (∀ y b, ‖ev' y b‖ ≤ 1) → (∀ y, ∀ b ∈ 𝔷, ‖ev' y b‖ < 1) → ∃ (k : ∀ y, Φ.X y₀ →ₗ[ℤ] Φ.X y) (Q : Type) (t : ∀ y, (Fin 1 → Φ.X y) → Q → PadicAlgCl p) (f : (Fin 1 → Φ.X y₀) → Q → (integralClosure (X₁.M.Z.presheaf.stalk z₁) Ω₂)), k y₀ = LinearMap.id ∧ (∀ y, IsUnimodMod (𝓞 E) N (k y)) ∧ Φ.IsTerms !![(1 : ℤ)] t ∧ (∀ c c' κ, (∀ u, CongMod N (c u) (c' u)) → f c κ = f c' κ) ∧ (∀ y c κ (ε : ℝ), 0 < ε → ∃ S₀ : Finset (Fin 1 → Φ.X y), ∀ S : Finset (Fin 1 → Φ.X y), (∀ μ ∈ S, ∀ u, CongMod N (μ u) (k y (c u))) → (∀ μ ∈ S₀, (∀ u, CongMod N (μ u) (k y (c u))) → μ ∈ S) → ‖ev' y (f c κ) - ∑ μ ∈ S, t y μ κ‖ ≤ ε) ∧ ∀ σ : (integralClosure (X₁.M.Z.presheaf.stalk z₁) Ω₂) ≃ₐ[(X₁.M.Z.presheaf.stalk z₁)] (integralClosure (X₁.M.Z.presheaf.stalk z₁) Ω₂), 𝔷.comap σ = 𝔷 → ∃ γ : Φ.X y₀ →ₗ[ℤ] Φ.X y₀, (∀ (a : 𝓞 E) x, CongMod N (γ (a • x)) (a • γ x)) ∧ (N : ℤ) ∣ LinearMap.det γ - 1 ∧ (∀ x, CongMod (X₁.S.r * X₁.S.N) (γ x) x) ∧ ∀ c κ, σ (f c κ) = f (fun u => γ (c u)) κ :=
   main_of_core GlobalTheory.T.unitary_classSums_deeper_level_geometric_core
 

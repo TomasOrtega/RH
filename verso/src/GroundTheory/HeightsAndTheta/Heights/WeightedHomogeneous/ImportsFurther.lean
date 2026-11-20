@@ -10,6 +10,13 @@ namespace GroundTheory.Heights₂.Heights.IndefiniteRowSideFullHecke.Close
 
 open AddBlockEq
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce `hA ι _ _ n P D G z hz c hc`. Establish `h` using `hA ι n P (split_model_to_place_model D) G.d G.g G.isFormSystem z hz c hc`. Rewrite `h` using `[addBlockEquiv_symm_conePoints]`. Establish `e : (D.join z fun j ↦ evalCone z (G.g c j)) = (split_model_to_place_model D).joinPt z fun j ↦ evalCone z (G.g c j)`.
+
+Use function extensionality and compare the values at `o`. Apply the tactic sequence `cases o <;> rfl`. Rewrite using `[e]`. Conclude with `h`. Introduce `hB ι _ _ n P D d g hg z hz c hc`.
+
+Establish `h` using `hB ι n P (toIndefiniteRowSideFullHecke D) (ChartForms.ofFormSystem hg) z hz c hc`. Rewrite using `[extPoints_eq, ← addBlockEquiv_join]`. Conclude with `h`.
+-/
 theorem ConePointsConverse.equiv :
     GroundTheory.Heights₂.Heights.ConePointsConverse.Statement ↔
       GroundTheory.Heights₂.Heights.IndefiniteRowSideFullHecke.Close.ConePointsConverse.Statement := by

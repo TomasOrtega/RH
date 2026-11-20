@@ -21,6 +21,15 @@ noncomputable section
 
 namespace GlobalTheory.UPoinc
 
+/- English proof (translation)
+Introduce `O _ _ _ _ _ A G _ _ _ hA hG K _ _ _ B _ a g ha hg`. Establish `hS` using `GlobalTheory.Published.SemiAbelianHomExtension.isNormalScheme_spec O`. Establish `hj` using `GlobalTheory.IsGenericPointHom.fractionField O K`. Establish `hA'` using `GlobalTheory.isSemiAbelian_of_isAbelianScheme A hA`. Take `⟨E, ⟨hE, hEa⟩, -⟩` from `GlobalTheory.semiAbelianHomExtension_holds.generic_existsUnique_iso_of_extensions hS hj hA' hG ha hg`.
+
+Take `⟨_, _⟩` from `hj.quasiCompact_and_dominant`. Take `⟨_, -⟩` from `GlobalTheory.ExtUnique.flat_and_isSeparated_of_isSemiAbelian A hA'`. Take `⟨-, _⟩` from `GlobalTheory.ExtUnique.flat_and_isSeparated_of_isSemiAbelian G hG`. Use `⟨E, hE, hEa, ?_, ?_⟩` and prove the remaining obligations. Introduce `L L' hL hL' h`.
+
+Use `GlobalTheory.Poinc.Extend.lbIso_of_generic A hA ha.1 hL (pull_isLB hL' _) ?_` and prove the remaining obligations. Conclude with `LBIso.trans (pull_isLB hL _) (pull_isLB hL' _) (pull_isLB (pull_isLB hL' _) _) h (GlobalTheory.GenSpread.lbIso_pull_pull hL' a hEa.symm)`. Introduce `e f eB he hf`. Use `GlobalTheory.ExtUnique.over_hom_ext_of_isPullback ha.1 ?_` and prove the remaining obligations. Rewrite using `[Over.comp_left, Over.comp_left, ← Category.assoc a e.left, ← he, Category.assoc, hEa, reassoc_of% hEa]`.
+
+Conclude with `hf`.
+-/
 theorem iso_of_common_generic_fibre : ∀ (O : Type) [CommRing O] [IsDomain O] [IsLocalRing O] [IsNoetherianRing O] [IsIntegrallyClosed O] (A G : Over (Sp O)) [GrpObj A] [GrpObj G] [IsCommMonObj G], IsAbelianScheme A → IsSemiAbelian G → ∀ (K : Type) [Field K] [Algebra O K] [IsFractionRing O K] (B : Over (Sp K)) [GrpObj B] (a : B.left ⟶ A.left) (g : B.left ⟶ G.left), IsGrpPullback B A (spMap (algebraMap O K)) a → IsGrpPullback B G (spMap (algebraMap O K)) g → ∃ i : A ≅ G, IsMonHom i.hom ∧ a ≫ i.hom.left = g ∧ (∀ (L : LB A.left) (L' : LB G.left), L.IsLB → L'.IsLB → LBIso (L.pull a) (L'.pull g) → LBIso L (L'.pull i.hom.left)) ∧ ∀ (e : A ⟶ A) (f : G ⟶ G) (eB : B ⟶ B), eB.left ≫ a = a ≫ e.left → eB.left ≫ g = g ≫ f.left → e ≫ i.hom = i.hom ≫ f := by
   intro O _ _ _ _ _ A G _ _ _ hA hG K _ _ _ B _ a g ha hg
   have hS := GlobalTheory.Published.SemiAbelianHomExtension.isNormalScheme_spec O

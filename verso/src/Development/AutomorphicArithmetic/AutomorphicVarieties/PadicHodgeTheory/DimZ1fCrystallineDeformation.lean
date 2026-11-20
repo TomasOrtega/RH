@@ -9,6 +9,9 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.PadicHodgeTheory.P
 import Development.AutomorphicArithmetic.AutomorphicVarieties.UnitaryThreeGroups.AdRepBaseLiftApply
 open Formalism.BasicNotions Formalism.BasicNotions.Loc ReciprocityTheory.Gal Module UpperTheory.V.Loc UpperTheory.V.U3 UpperTheory.V.Alg UpperTheory.V.Published IsLocalRing Polynomial
 
+/- English proof (translation)
+Set `e : T ≃ₗ[E] (∀ i, S i)` to `{ toFun := fun x i => ⟨Φ x i, (hT _).1 x.2 i⟩ invFun := fun y => ⟨Φ.symm fun i => y i, (hT _).2 fun i => by simp⟩ map_add' := fun x y => by ext i; simp map_smul' := fun c x => by ext i; simp left_inv := fun x => by ext; simp right_inv := fun y => by ext i; simp }`. Conclude with `⟨Module.Finite.equiv e.symm, by rw [e.finrank_eq, Module.finrank_pi_fintype]⟩`.
+-/
 private theorem dz_pi {E ι M : Type} [Field E] [Fintype ι] [AddCommGroup M] [Module E M]
     {N : Type} [AddCommGroup N] [Module E N] (Φ : N ≃ₗ[E] (ι → M)) (S : ι → Submodule E M) (T : Submodule E N)
     (hT : ∀ x, x ∈ T ↔ ∀ i, Φ x i ∈ S i) (hS : ∀ i, Module.Finite E (S i)) :
@@ -22,9 +25,23 @@ private theorem dz_pi {E ι M : Type} [Field E] [Fintype ι] [AddCommGroup M] [M
       right_inv := fun y => by ext i; simp }
   exact ⟨Module.Finite.equiv e.symm, by rw [e.finrank_eq, Module.finrank_pi_fintype]⟩
 
+/- English proof (translation)
+Simplify using `[chRep]`.
+-/
 private theorem dz_ch {G E : Type} [Group G] [CommRing E] (κ : G →* Eˣ) (g : G) (x : E) :
     chRep κ g x = (κ g : E) * x := by simp [chRep]
 
+/- English proof (translation)
+Use `⟨⟨fun h i => ?_, fun h => ?_⟩, ⟨fun h i => ?_, fun h => ?_⟩, fun h i => ?_⟩` and prove the remaining obligations. Conclude with `(z1fMap _ ρ (chRep (χ i))).2 (((LinearMap.proj i).comp e.toLinearMap).restrictScalars ℚ_[l]) (fun g x => by simp [he, dz_ch]) c h`. Establish `h1 : c = ∑ i, fun g => e.symm (Pi.single i (e (c g) i))`. Use function extensionality and compare the values at `g`. Rewrite using `[Finset.sum_apply, ← map_sum, Finset.univ_sum_single, e.symm_apply_apply]`.
+
+Rewrite using `[h1]`. Use `Submodule.sum_mem _ fun i _ => ?_` and prove the remaining obligations. Use `(z1fMap _ (chRep (χ i)) ρ).2 ((e.symm.toLinearMap.comp (LinearMap.single E (fun _ => E) i)).restrictScalars ℚ_[l]) (fun g x => ?_) _ (h i)` and prove the remaining obligations. Apply `e.injective` to reduce the goal to its premises. Use function extensionality and compare the values at `k`.
+
+Distinguish the cases in `hk : k = i`. Substitute `hk` using the available equality. Simplify using `[he, dz_ch]`. Simplify using `[he, hk]`. Take `⟨m, hm⟩` from `(mem_coboundaries1 _ _).1 h`.
+
+Conclude with `(mem_coboundaries1 _ _).2 ⟨e m i, fun g => by simp [hm g, he, dz_ch]⟩`. Use `choose m hm using fun i => (mem_coboundaries1 _ _).1 (h i)`. Use `(mem_coboundaries1 _ _).2 ⟨e.symm m, fun g => e.injective (funext fun i => ?_)⟩` and prove the remaining obligations. Simplify `hm i g` using `[he, dz_ch]`. Establish `hc : Continuous (((LinearMap.proj i).comp e.toLinearMap).restrictScalars ℚ_[l] : V →ₗ[ℚ_[l]] E)` using `IsModuleTopology.continuous_of_linearMap _`.
+
+Conclude with `⟨hc.comp h.1, fun g k => by simp [h.2 g k, he, dz_ch]⟩`.
+-/
 private theorem dz_dec {l : ℕ} [Fact l.Prime] {E : Type} [Field E] [Algebra ℚ_[l] E] [Module.Finite ℚ_[l] E]
     [TopologicalSpace E] [IsModuleTopology ℚ_[l] E] [IsTopologicalRing E]
     {V : Type} [AddCommGroup V] [Module E V] [Module ℚ_[l] V] [IsScalarTower ℚ_[l] E V] [FiniteDimensional ℚ_[l] V]
@@ -59,6 +76,11 @@ private theorem dz_dec {l : ℕ} [Fact l.Prime] {E : Type} [Field E] [Algebra �
       IsModuleTopology.continuous_of_linearMap _
     exact ⟨hc.comp h.1, fun g k => by simp [h.2 g k, he, dz_ch]⟩
 
+/- English proof (translation)
+Establish `: (fun p : G × E => chRep κ p.1 p.2) = fun p => (κ p.1 : E) * p.2`. Use function extensionality and compare the values at `p`. Simplify using `[chRep]`. Unfold `ReciprocityTheory.Gal.ContAction`. Rewrite using `[this]`.
+
+Conclude with `(hκ.comp continuous_fst).mul continuous_snd`.
+-/
 private theorem dz_cont {G E : Type} [Group G] [TopologicalSpace G] [CommRing E] [TopologicalSpace E]
     [IsTopologicalRing E] (κ : G →* Eˣ) (hκ : Continuous fun g => (κ g : E)) : ContAction (chRep κ) := by
   have : (fun p : G × E => chRep κ p.1 p.2) = fun p => (κ p.1 : E) * p.2 := by
@@ -67,6 +89,13 @@ private theorem dz_cont {G E : Type} [Group G] [TopologicalSpace G] [CommRing E]
   rw [this]
   exact (hκ.comp continuous_fst).mul continuous_snd
 
+/- English proof (translation)
+Establish `hI' : ∀ g ∈ Iq l, chRep κ g = 1` using `fun g hg => by ext; simp [dz_ch, hI g hg]`. Establish `h1` using `z1fUnr hP (MonoidHom.id (GQ l)) Topology.IsOpenEmbedding.id (chRep κ) (dz_cont κ hκ) hI'`. Use `⟨h1, ?_⟩` and prove the remaining obligations. Take `⟨σ, hσ⟩` from `(iqBasic l).2.2.2.1`. Establish `h2` using `existsUnique_unramified_cocycle_frobenius_value (l := l) (chRep κ) (dz_cont κ hκ) hI' σ hσ`.
+
+Set `f : finiteCocycles (MonoidHom.id _) (chRep κ) →ₗ[E] E` to `(LinearMap.proj σ).comp (Submodule.subtype _)`. Establish `hf : Function.Bijective f`. Use `⟨fun c c' h => Subtype.ext ?_, fun x => ?_⟩` and prove the remaining obligations. Conclude with `(h2 (c'.1 σ)).unique ⟨c.2.1, (h1 _ c.2.1).1 c.2, h⟩ ⟨c'.2.1, (h1 _ c'.2.1).1 c'.2, rfl⟩`. Take `⟨c, hc, hc', hx⟩` from `(h2 x).exists`.
+
+Conclude with `⟨⟨c, (h1 c hc).2 hc'⟩, hx⟩`. Set `e` to `LinearEquiv.ofBijective f hf`. Conclude with `⟨Module.Finite.equiv e.symm, by rw [e.finrank_eq, finrank_self]⟩`.
+-/
 private theorem dz_unr (hP : LocalPublishedTheorems) {l : ℕ} [Fact l.Prime] {E : Type} [Field E] [Algebra ℚ_[l] E]
     [Module.Finite ℚ_[l] E] [TopologicalSpace E] [IsModuleTopology ℚ_[l] E] [IsTopologicalRing E]
     (κ : GQ l →* Eˣ) (hκ : Continuous fun g => (κ g : E)) (hI : ∀ g ∈ Iq l, κ g = 1) :
@@ -101,12 +130,21 @@ private noncomputable def dzE (E : Type) [Field E] [CharZero E] : Matrix (Fin 3)
     funext ⟨a, b⟩
     fin_cases a <;> fin_cases b <;> simp [dzS, Fin.rev] <;> ring
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 private theorem dzE_apply {E : Type} [Field E] [CharZero E] (X : Matrix (Fin 3) (Fin 3) E) (p : Fin 3 × Fin 3) :
     dzE E X p = X p.1 p.2 + dzS E p * X p.2.rev p.1.rev := rfl
 
+/- English proof (translation)
+Use `revert a b`. Evaluate the decidable proposition.
+-/
 private theorem dz_wt (a b : Fin 3) : wt b.rev a.rev = wt a b := by
   revert a b; decide
 
+/- English proof (translation)
+Use `⟨fun h p hp => ?_, fun h a b hp => ?_⟩` and prove the remaining obligations. Rewrite using `[dzE_apply, h _ _ hp, h _ _ (by rwa [dz_wt])]; simp`. Rewrite using `[← (dzE E).symm_apply_apply X]`. Express the relevant statement in the definitionally equal form `_ * (dzE E X (a, b) - _ * dzE E X (b.rev, a.rev)) = 0`. Rewrite using `[h (a, b) hp, h (b.rev, a.rev) (by rwa [dz_wt])]; simp`.
+-/
 private theorem dz_gw {E : Type} [Field E] [CharZero E] (X : Matrix (Fin 3) (Fin 3) E) (j : ℤ) :
     X ∈ gw E j ↔ ∀ p : Fin 3 × Fin 3, wt p.1 p.2 ≠ j → dzE E X p = 0 := by
   refine ⟨fun h p hp => ?_, fun h a b hp => ?_⟩
@@ -118,6 +156,9 @@ private theorem dz_gw {E : Type} [Field E] [CharZero E] (X : Matrix (Fin 3) (Fin
 private def dzChi {G E : Type} [Group G] [Field E] (η : G →* ℤˣ) (κ : G →* Eˣ) (p : Fin 3 × Fin 3) : G →* Eˣ :=
   κ ^ wt p.1 p.2 * if p.1.val + p.2.val ≤ 2 then (Units.map (Int.castRingHom E : ℤ →* E)).comp η else 1
 
+/- English proof (translation)
+Take `⟨a, b⟩` from `p`. Simplify using `only [dzE_apply, adRep_baseLift_apply, dz_wt, dzChi, MonoidHom.mul_apply, MonoidHom.zpow_apply, Units.val_mul]`. Generalize the expression as in `((κ g ^ wt a b : Eˣ) : E) = t`. Apply the tactic sequence `rcases Int.units_eq_one_or (η g) with h | h <;> fin_cases a <;> fin_cases b <;> simp [dzS, Fin.rev, h] <;> ring`.
+-/
 private theorem dz_eq {G E : Type} [Group G] [Field E] [CharZero E] (η : G →* ℤˣ) (κ : G →* Eˣ) (g : G)
     (X : Matrix (Fin 3) (Fin 3) E) (p : Fin 3 × Fin 3) :
     dzE E (adRep (r0 η κ) g X) p = (dzChi η κ p g : E) * dzE E X p := by
@@ -127,6 +168,25 @@ private theorem dz_eq {G E : Type} [Group G] [Field E] [CharZero E] (η : G →*
   rcases Int.units_eq_one_or (η g) with h | h <;>
     fin_cases a <;> fin_cases b <;> simp [dzS, Fin.rev, h] <;> ring
 
+/- English proof (translation)
+Establish `h1 : Continuous fun g => (κ g : E)`. Establish `h` using `(ptCont (l := l) O E (Algebra.ofId O E)).1 _ _ D.Ψ_cont`. Unfold `QCont at h`. Rewrite `h` using `[← eq_moduleTopology ℚ_[l] E]`. Substitute `hκ` using the available equality.
+
+Conclude with `h`. Establish `h2 : Continuous κ` using `Units.continuous_iff.2 ⟨h1, by`. Simplify `h1.comp continuous_inv⟩` using `only [map_inv, Function.comp_def]`. Establish `h3 : Continuous ((Units.map (Int.castRingHom E : ℤ →* E)).comp D.η)`. Establish `ho : IsOpen (D.η.ker : Set (GQ l))`.
+
+Establish `: D.η.ker = GK D.Kv` using `Subgroup.ext fun g => D.η_ker g`. Rewrite using `[this]`. Use `haveI := D.Kv.2`. Conclude with `D.Kv.1.fixingSubgroup_isOpen`. Use `continuous_of_continuousAt_one _ ?_` and prove the remaining obligations.
+
+Use `(continuousAt_const (y := 1)).congr ?_` and prove the remaining obligations. Use `filter_upwards [ho.mem_nhds D.η.ker.one_mem] with g hg`. Establish `hg' : D.η g = 1` using `hg`. Simplify using `[hg']`. Establish `h4 : ∀ (p : Fin 3 × Fin 3), ∀ g ∈ Iq l, dzChi D.η κ p g = κ g ^ wt p.1 p.2`.
+
+Introduce `p g hg`. Unfold `dzChi`. Apply the tactic sequence `split_ifs <;> simp [D.η_unr g hg]`. Use `⟨?_, fun p => ⟨?_, ⟨D.τ.ker, D.τ_open, fun g hg hI => ?_⟩, fun h g hg => by rw [h4 p g hg, h, zpow_zero]⟩⟩` and prove the remaining obligations. Substitute `hκ` using the available equality.
+
+Use `MonoidHom.ext fun g => SemidirectProduct.ext (Units.ext ?_) rfl` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `(tor O (D.Ψ g) : Matrix (Fin 3) (Fin 3) O).map (algebraMap O E) = tor E _`. Rewrite using `[tor_val, tor_val, Matrix.diagonal_map (map_zero _)]`. Use `congr 1`. Use function extensionality and compare the values at `i`.
+
+Rewrite using `[MonoidHom.comp_apply, ← map_zpow (Units.map (algebraMap O E : O →* E))]`. Both sides reduce to the same expression. Use `Units.continuous_val.comp ?_` and prove the remaining obligations. Unfold `dzChi`. Use `split_ifs`.
+
+Conclude with `(h2.zpow _).mul h3`. Conclude with `(h2.zpow _).mul continuous_const`. Establish `hg' : D.τ g = 1` using `hg`. Establish `h5 : κ g = cycA l l E g ^ D.e`. Substitute `hκ` using the available equality.
+
+Rewrite using `[MonoidHom.comp_apply, D.Ψ_I g hI, hg', mul_one, map_pow]`. Use `congr 1`. Conclude with `Units.ext (IsScalarTower.algebraMap_apply ℤ_[l] O E _).symm`. Rewrite using `[h4 p g hI, h5, zpow_mul, zpow_natCast]`. Both sides reduce to the same expression.
+-/
 private theorem dz_data {l : ℕ} [Fact l.Prime] {O : Type} [CommRing O] [IsDomain O] [IsDiscreteValuationRing O]
     [CharZero O] [Algebra ℤ_[l] O] [Module.Finite ℤ_[l] O] [IsAdicComplete (maximalIdeal O) O] (D : Dat3 l O)
     (E : Type) [Field E] [Algebra ℚ_[l] E] [Module.Finite ℚ_[l] E] [Algebra O E] [Algebra ℤ_[l] E]
@@ -181,6 +241,11 @@ private theorem dz_data {l : ℕ} [Fact l.Prime] {O : Type} [CommRing O] [IsDoma
     rw [h4 p g hI, h5, zpow_mul, zpow_natCast]
     rfl
 
+/- English proof (translation)
+Distinguish the cases in `h : -2 ≤ j ∧ j ≤ 2`. Apply the tactic sequence `obtain ⟨h1, h2⟩ := h interval_cases j <;> decide`. Establish `hw : ∀ p : Fin 3 × Fin 3, -2 ≤ wt p.1 p.2 ∧ wt p.1 p.2 ≤ 2` using `by decide`. Rewrite using `[Finset.sum_eq_zero fun p _ => if_neg fun (hp : wt p.1 p.2 = j) => h (hp ▸ hw p)]`. Unfold `locDims`.
+
+Apply the tactic sequence `split_ifs <;> omega`.
+-/
 private theorem dz_sum (j : ℤ) :
     ∑ p : Fin 3 × Fin 3, (if wt p.1 p.2 = j then (if 0 < wt p.1 p.2 then 2 else 1) else 0) = locDims j := by
   by_cases h : -2 ≤ j ∧ j ≤ 2
@@ -191,6 +256,35 @@ private theorem dz_sum (j : ℤ) :
     unfold locDims
     split_ifs <;> omega
 
+/- English proof (translation)
+Introduce `hP l _ O _ _ _ _ _ _ _ D E _ _ _ _ _ _ _ _ _ _ j`. Use `haveI : CharZero E := charZero_of_injective_algebraMap (algebraMap ℚ_[l] E).injective`. Use `haveI : IsModuleTopology ℚ_[l] (Matrix (Fin 3) (Fin 3) E) := inferInstanceAs (IsModuleTopology ℚ_[l] (Fin 3 → Fin 3 → E))`. Take `⟨hr, hχ⟩` from `dz_data D E _ rfl`. Rewrite using `[hr]`.
+
+Use `set κ := (Units.map (algebraMap O E : O →* E)).comp D.Ψ`. Use `set χ := dzChi D.η κ`. Establish `hd` using `dz_dec (adRep (r0 D.η κ)) χ (dzE E) (dz_eq D.η κ)`. Establish `he : (0 : ℤ) < D.e` using `by exact_mod_cast D.e_pos`. Establish `hch` using `fun p => z1fChar hP (MonoidHom.id (GQ l)) Topology.IsOpenEmbedding.id (χ p) (hχ p).1 _ (hχ p).2.1`.
+
+Establish `hun` using `fun p hp => dz_unr hP (χ p) (hχ p).1 ((hχ p).2.2 hp)`. Establish `hdim : ∀ p, Module.Finite E (finiteCocycles (MonoidHom.id _) (chRep (χ p))) ∧ finrank E (finiteCocycles (MonoidHom.id _) (chRep (χ p))) = if 0 < wt p.1 p.2 then 2 else 1`. Introduce `p`. Break down `lt_trichotomy (wt p.1 p.2) 0 with h | h | h` into its components or cases. Take `⟨h1, h2⟩` from `(hch p).1 (mul_neg_of_pos_of_neg he h)`.
+
+Rewrite using `[h1, h2, if_neg h.le.not_gt]`. Conclude with `⟨by unfold ReciprocityTheory.Gal.B1; infer_instance, rfl⟩`. Rewrite using `[if_neg h.le.not_gt]`. Conclude with `(hun p h).2`. Take `⟨h1, h2⟩` from `(hch p).2 (mul_pos he h)`.
+
+Rewrite using `[if_pos h, h2, MonoidHom.range_eq_top.2 Function.surjective_id, Subgroup.index_top]`. Conclude with `⟨h1, rfl⟩`. Set `Φ : (GQ l → Matrix (Fin 3) (Fin 3) E) ≃ₗ[E] (Fin 3 × Fin 3 → GQ l → E)` to `(LinearEquiv.piCongrRight fun _ => dzE E).trans { Equiv.piComm _ with map_add' := fun _ _ => rfl, map_smul' := fun _ _ => rfl }`. Establish `hΦ : ∀ c p, Φ c p = fun g => dzE E (c g) p` using `fun _ _ => rfl`. Use `⟨(dz_pi Φ _ _ (fun c => (hd c).1) fun p => (hdim p).1).1, ?_, fun γ hγ => ?_, fun γ hγ hg => ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[← dz_sum, (dz_pi Φ (fun p => if wt p.1 p.2 = j then finiteCocycles (MonoidHom.id _) (chRep (χ p)) else ⊥) _ (fun c => ?_) fun p => ?_).2]`. Use `Finset.sum_congr rfl fun p _ => ?_` and prove the remaining obligations. Distinguish the cases in `h : wt p.1 p.2 = j`. Rewrite using `[if_pos h, if_pos h, (hdim p).2]`. Rewrite using `[if_neg h, if_neg h, finrank_bot]`.
+
+Rewrite using `[Submodule.mem_inf, (hd c).1, Submodule.mem_pi]`. Simplify using `only [dz_gw, hΦ]`. Use `⟨fun h p => ?_, fun h => ⟨fun p => ?_, fun g _ p hp => ?_⟩⟩` and prove the remaining obligations. Use `split_ifs with hp`. Conclude with `h.1 p`.
+
+Conclude with `funext fun g => h.2 g trivial p hp`. Use `h p split_ifs at this with hp` as an intermediate fact. Conclude with `this`. Conclude with `SetLike.le_def.1 bot_le this`. Use `h p` as an intermediate fact.
+
+Rewrite `this` using `[if_neg hp]`. Conclude with `congrFun this g`. Distinguish the cases in `h : wt p.1 p.2 = j`. Rewrite using `[if_pos h]`. Conclude with `(hdim p).1`.
+
+Rewrite using `[if_neg h]`. Use `infer_instance`. Rewrite `hγ`, the goal using `[(hd _).1]`. Introduce `p`. Distinguish the cases in `h : wt p.1 p.2 = j`.
+
+Simplify `hγ p` using `only [dzE_apply, Matrix.of_apply, dz_wt, if_pos h]`. Simplify using `only [dzE_apply, Matrix.of_apply, dz_wt, if_neg h, mul_zero, add_zero]`. Conclude with `Submodule.zero_mem _`. Establish `h0 : ∀ p : Fin 3 × Fin 3, wt p.1 p.2 ≠ j → (fun g => dzE E (γ g) p) = 0` using `fun p hp => funext fun g => (dz_gw _ _).1 (hg g) p hp`. Use `⟨fun hj => ?_, fun hj => ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[(hd _).1, (hd _).2.1]`. Use `forall_congr' fun p => ?_` and prove the remaining obligations. Distinguish the cases in `h : wt p.1 p.2 = j`. Rewrite using `[((hch p).1 (mul_neg_of_pos_of_neg he (h ▸ hj))).1]`. Rewrite using `[h0 p h]`.
+
+Simplify using the standard rewrite rules. Establish `h1 : (∀ g ∈ Iq l, γ g = 0) ↔ ∀ p, ∀ g ∈ Iq l, dzE E (γ g) p = 0` using `⟨fun h p g hg => by rw [h g hg, map_zero]; rfl, fun h g hg => (dzE E).map_eq_zero_iff.1 (funext fun p => h p g hg)⟩`. Rewrite using `[(hd _).1, h1]`. Use `forall_congr' fun p => ?_` and prove the remaining obligations. Distinguish the cases in `h : wt p.1 p.2 = j`.
+
+Conclude with `(hun p (h.trans hj)).1 _ ((hd γ).2.2 hγ p)`. Conclude with `⟨fun _ g _ => congrFun (h0 p h) g, fun _ => by rw [h0 p h]; exact Submodule.zero_mem _⟩`.
+-/
 theorem UpperTheory.V.Loc.dim_Z1f_crystalline_deformation :
     LocalPublishedTheorems → ∀ {l : ℕ} [Fact l.Prime] {O : Type} [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] [CharZero O] [Algebra ℤ_[l] O] [Module.Finite ℤ_[l] O] [IsAdicComplete (maximalIdeal O) O] (D : Dat3 l O) (E : Type) [Field E] [Algebra ℚ_[l] E] [Module.Finite ℚ_[l] E] [Algebra O E] [Algebra ℤ_[l] E] [IsScalarTower ℤ_[l] O E] [IsScalarTower ℤ_[l] ℚ_[l] E] [TopologicalSpace E] [IsModuleTopology ℚ_[l] E] [IsTopologicalRing E] (j : ℤ), Module.Finite E ↥(finiteCocycles (MonoidHom.id _) (adRep (D.rz E))) ∧ finrank E ↥(finiteCocycles (MonoidHom.id _) (adRep (D.rz E)) ⊓ Submodule.pi Set.univ fun _ => gw E j) = locDims j ∧ (∀ γ ∈ finiteCocycles (MonoidHom.id _) (adRep (D.rz E)), (fun g => Matrix.of fun a b => if wt a b = j then γ g a b else 0) ∈ finiteCocycles (MonoidHom.id _) (adRep (D.rz E))) ∧ ∀ γ ∈ Z1 (adRep (D.rz E)), (∀ g, γ g ∈ gw E j) → (j < 0 → (γ ∈ finiteCocycles (MonoidHom.id _) (adRep (D.rz E)) ↔ γ ∈ B1 (adRep (D.rz E)))) ∧ (j = 0 → (γ ∈ finiteCocycles (MonoidHom.id _) (adRep (D.rz E)) ↔ ∀ g ∈ Iq l, γ g = 0)) := by
   intro hP l _ O _ _ _ _ _ _ _ D E _ _ _ _ _ _ _ _ _ _ j

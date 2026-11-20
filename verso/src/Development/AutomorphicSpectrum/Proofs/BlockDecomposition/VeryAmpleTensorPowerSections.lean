@@ -8,6 +8,11 @@ set_option autoImplicit false
 noncomputable section
 namespace GlobalTheory.CompanionTheory.FormalAlg
 
+/- English proof (translation)
+Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty`. Simplify using `only [Finset.prod_empty, Scheme.basicOpen_one, Finset.notMem_empty, false_imp_iff, implies_true, iff_true]`. Conclude with `hy`. Consider the case `insert b s hb ih`.
+
+Rewrite using `[Finset.prod_insert hb, Scheme.basicOpen_mul, Finset.forall_mem_insert, ← ih]`. Both sides reduce to the same expression.
+-/
 theorem mem_basicOpen_prod {X : Scheme.{0}} {U : X.Opens} {ι : Type} (s : Finset ι) (g : ι → Γ(X, U)) {y : X}
     (hy : y ∈ U) : y ∈ X.basicOpen (∏ l ∈ s, g l) ↔ ∀ l ∈ s, y ∈ X.basicOpen (g l) := by
   classical
@@ -19,6 +24,11 @@ theorem mem_basicOpen_prod {X : Scheme.{0}} {U : X.Opens} {ι : Type} (s : Finse
     rw [Finset.prod_insert hb, Scheme.basicOpen_mul, Finset.forall_mem_insert, ← ih]
     rfl
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce `hy l`. Take `⟨c, hc⟩` from `exists_chart_of_mem_nonzeroLocus hy`. Establish `h1` using `(mem_nonzeroLocus_iff_basicOpen (secMono h a w) hc).1 hy`. Conclude with `(mem_nonzeroLocus_iff_basicOpen (a (w l)) hc).2 ((mem_basicOpen_prod Finset.univ (fun l => chartFn (a (w l)) c) hc).1 h1 l (Finset.mem_univ l))`.
+
+Introduce `hy`. Take `⟨c, hc⟩` from `exists_chart_of_mem_nonzeroLocus (hy ⟨0, hk⟩)`. Use `(mem_nonzeroLocus_iff_basicOpen (secMono h a w) hc).2 ?_` and prove the remaining obligations. Conclude with `(mem_basicOpen_prod Finset.univ (fun l => chartFn (a (w l)) c) hc).2 fun l _ => (mem_nonzeroLocus_iff_basicOpen (a (w l)) hc).1 (hy l)`.
+-/
 theorem mem_nonzeroLocus_secMono {X : Scheme.{0}} {L : LB X} {τ : Type} {d D : ℤ} {k : ℕ} (h : d * k = D)
     (a : τ → LB.Sec (pw L d)) (w : Fin k → τ) (hk : 1 ≤ k) (y : X) :
     y ∈ nonzeroLocus (secMono h a w) ↔ ∀ l, y ∈ nonzeroLocus (a (w l)) := by
@@ -34,6 +44,9 @@ theorem mem_nonzeroLocus_secMono {X : Scheme.{0}} {L : LB X} {τ : Type} {d D : 
     exact (mem_basicOpen_prod Finset.univ (fun l => chartFn (a (w l)) c) hc).2 fun l _ =>
       (mem_nonzeroLocus_iff_basicOpen (a (w l)) hc).1 (hy l)
 
+/- English proof (translation)
+Rewrite using `[← Finset.mul_prod_erase Finset.univ _ (Finset.mem_univ l), ← Finset.mul_prod_erase Finset.univ (fun l' => φ (w l')) (Finset.mem_univ l), Function.update_self, h, mul_assoc]`. Use `congr 2`. Use `Finset.prod_congr rfl fun l' hl' => ?_` and prove the remaining obligations. Rewrite using `[Function.update_of_ne (Finset.ne_of_mem_erase hl')]`.
+-/
 theorem prod_update_eq_mul {B τ : Type} [CommMonoid B] {k : ℕ} (φ : τ → B) (w : Fin k → τ) (l : Fin k) (c : τ)
     (ρ : B) (h : φ c = ρ * φ (w l)) :
     ∏ l', φ (Function.update w l c l') = ρ * ∏ l', φ (w l') := by
@@ -43,6 +56,11 @@ theorem prod_update_eq_mul {B τ : Type} [CommMonoid B] {k : ℕ} (φ : τ → B
   refine Finset.prod_congr rfl fun l' hl' => ?_
   rw [Function.update_of_ne (Finset.ne_of_mem_erase hl')]
 
+/- English proof (translation)
+Use `(eq_secRatio _ _ fun κ => ?_).symm` and prove the remaining obligations. Establish `key` using `secRatio_on (a (w l)) (a c) κ (W := nonzeroLocus (secMono h a w) ⊓ (pw L D).U κ) (inf_le_left.trans hl) inf_le_right`. Use `prod_update_eq_mul (fun t => resG X (inf_le_right : nonzeroLocus (secMono h a w) ⊓ (pw L D).U κ ≤ L.U κ) (chartFn (a t) κ)) w l c _ key` as an intermediate fact. Express the relevant statement in the definitionally equal form `resG X _ (∏ l', chartFn (a (Function.update w l c l')) κ) = _ * resG X _ (∏ l', chartFn (a (w l')) κ)`. Rewrite using `[map_prod, map_prod, resG_resG]`.
+
+Conclude with `this`.
+-/
 theorem secRatio_secMono_update {X : Scheme.{0}} {L : LB X} {τ : Type} {d D : ℤ} {k : ℕ} (h : d * k = D)
     (a : τ → LB.Sec (pw L d)) (w : Fin k → τ) (l : Fin k) (c : τ)
     (hl : nonzeroLocus (secMono h a w) ≤ nonzeroLocus (a (w l))) :
@@ -56,6 +74,11 @@ theorem secRatio_secMono_update {X : Scheme.{0}} {L : LB X} {τ : Type} {d D : �
   rw [map_prod, map_prod, resG_resG]
   exact this
 
+/- English proof (translation)
+Substitute `hV` using the available equality. Use `hU.isLocalization_basicOpen F` as an intermediate fact. Take `⟨⟨x, ⟨_, n, rfl⟩⟩, hx⟩` from `IsLocalization.surj (Submonoid.powers F) z`. Establish `hx' : z * resG X hle F ^ n = resG X hle x`. Establish `e : ∀ t, algebraMap Γ(X, U) Γ(X, X.basicOpen F) t = resG X hle t` using `fun _ => rfl`.
+
+Simplify `hx` using `only [e, map_pow]`. Establish `: z = resG X hle x * g ^ n`. Rewrite using `[← hx', mul_assoc, ← mul_pow, mul_comm (resG X hle F), hgF, one_pow, mul_one]`. Rewrite using `[this]`. Conclude with `S.mul_mem (h1 x) (S.pow_mem hg n)`.
+-/
 theorem mem_of_basicOpen {X : Scheme.{0}} {U V : X.Opens} (hU : IsAffineOpen U) (F : Γ(X, U))
     (hV : V = X.basicOpen F) (hle : V ≤ U) (S : Subring Γ(X, V)) (h1 : ∀ x, resG X hle x ∈ S)
     (g : Γ(X, V)) (hg : g ∈ S) (hgF : g * resG X hle F = 1) (z : Γ(X, V)) : z ∈ S := by
@@ -70,6 +93,29 @@ theorem mem_of_basicOpen {X : Scheme.{0}} {U V : X.Opens} (hU : IsAffineOpen U) 
   rw [this]
   exact S.mul_mem (h1 x) (S.pow_mem hg n)
 
+/- English proof (translation)
+Introduce `R _ X f L d D k h p a hL hk hva m e`. Take `⟨hcov, hch⟩` from `hva`. Use `⟨?_, fun j => ?_⟩` and prove the remaining obligations. Use `top_unique ?_` and prove the remaining obligations. Rewrite using `[← hcov]`.
+
+Use `iSup_le fun i => ?_` and prove the remaining obligations. Rewrite using `[← nonzeroLocus_secMono_const h a i hk]`. Use `le_trans ?_ (le_iSup _ (e.symm fun _ => i))` and prove the remaining obligations. Simplify using `only [Equiv.apply_symm_apply, le_refl]`. Use `beta_reduce`.
+
+Set `w : Fin k → Fin (p + 1)` to `e j`. Set `l₀ : Fin k` to `⟨0, hk⟩`. Take `⟨hU, r, hr, hsurj⟩` from `hch (w l₀)`. Take `rfl : r = fun t => secRatio (a (w l₀)) (a t)` from `funext fun t => eq_secRatio _ _ (hr t)`. Establish `hN : ∀ l, nonzeroLocus (secMono h a w) ≤ nonzeroLocus (a (w l))` using `fun l y hy => (mem_nonzeroLocus_secMono h a w hk y).1 hy l`.
+
+Establish `hV : nonzeroLocus (secMono h a w) = X.basicOpen (∏ l, secRatio (a (w l₀)) (a (w l)))`. Use extensionality with `y`. Prove the components needed by the constructor for the conclusion. Introduce `hy`. Use `(mem_basicOpen_prod Finset.univ _ (hN l₀ hy)).2 fun l _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[basicOpen_secRatio]`. Conclude with `⟨hN l₀ hy, hN l hy⟩`. Introduce `hy`. Establish `hy₀` using `X.basicOpen_le _ hy`. Use `(mem_nonzeroLocus_secMono h a w hk y).2 fun l => ?_` and prove the remaining obligations.
+
+Use `(mem_basicOpen_prod Finset.univ _ hy₀).1 hy l (Finset.mem_univ l)` as an intermediate fact. Rewrite `this` using `[basicOpen_secRatio]`. Conclude with `this.2`. Use `⟨hV ▸ hU.basicOpen _, fun t => secRatio (secMono h a w) (secMono h a (e t)), fun t κ => secRatio_spec _ _ κ, fun z => ?_⟩` and prove the remaining obligations. Set `S` to `(MvPolynomial.eval₂Hom (cst f (nonzeroLocus (secMono h a w))) fun t => secRatio (secMono h a w) (secMono h a (e t))).range`.
+
+Establish `hρ : ∀ v, secRatio (secMono h a w) (secMono h a v) ∈ S` using `fun v => ⟨MvPolynomial.X (e.symm v), by simp⟩`. Establish `hC : ∀ c : R, cst f (nonzeroLocus (secMono h a w)) c ∈ S` using `fun c => ⟨MvPolynomial.C c, by simp⟩`. Establish `h1 : ∀ x, resG X (hN l₀) x ∈ S` using `fun x => by`. Take `⟨P, rfl⟩` from `hsurj x`. Proceed by induction on `P using MvPolynomial.induction_on with`.
+
+Consider the case `C c`. Rewrite using `[MvPolynomial.eval₂Hom_C]`. Conclude with `(rs_cst f (hN l₀) c).symm ▸ hC c`. Consider the case `add P Q hP hQ`. Rewrite using `[map_add, map_add]`.
+
+Conclude with `S.add_mem hP hQ`. Consider the case `mul_X P t hP`. Rewrite using `[map_mul, map_mul, MvPolynomial.eval₂Hom_X']`. Use `S.mul_mem hP ?_` and prove the remaining obligations. Rewrite using `[← secRatio_secMono_update h a w l₀ t (hN l₀)]`.
+
+Conclude with `hρ _`. Take `⟨P, hP⟩ : z ∈ S` from `mem_of_basicOpen hU _ hV (hN l₀) S h1 (∏ l, secRatio (secMono h a w) (secMono h a (Function.update w l (w l₀)))) (S.prod_mem fun l _ => hρ _) (by`. Rewrite using `[map_prod, ← Finset.prod_mul_distrib]`. Use `Finset.prod_eq_one fun l _ => ?_` and prove the remaining obligations. Rewrite using `[secRatio_secMono_update h a w l (w l₀) (hN l), mul_comm, secRatio_mul_secRatio _ _ _ (hN l₀) (hN l), secRatio_self, map_one]) z`.
+
+Conclude with `⟨P, hP⟩`.
+-/
 theorem veryAmpleBy_secMono : ∀ (R : Type) [CommRing R] {X : Scheme.{0}} (f : X ⟶ Spec (CommRingCat.of R)) (L : LB X) (d D : ℤ) (k : ℕ) (h : d * k = D) (p : ℕ) (a : Fin (p + 1) → LB.Sec (pw L d)), L.IsLB → 1 ≤ k → VeryAmpleBy f (pw L d) a → ∀ (m : ℕ) (e : Fin (m + 1) ≃ (Fin k → Fin (p + 1))), VeryAmpleBy f (pw L D) (fun j => secMono h a (e j)) := by
   intro R _ X f L d D k h p a hL hk hva m e
   obtain ⟨hcov, hch⟩ := hva

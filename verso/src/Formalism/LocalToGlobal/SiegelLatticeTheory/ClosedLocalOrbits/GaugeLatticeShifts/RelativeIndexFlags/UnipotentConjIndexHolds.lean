@@ -4,6 +4,9 @@ import Formalism.LocalToGlobal.SiegelLatticeTheory.ClosedLocalOrbits.GaugeLattic
 
 namespace Formalism.L2.SG.Pf.RelativeIndexFlags
 
+/- English proof (translation)
+Introduce `X g hg hX _ _`. Conclude with `Filt.relIndex_unipotent_conj_symm (loGen n K) Filt.closure_le_FG X g hg hX`.
+-/
 theorem unipotent_conj_index_holds (n : ℕ) (K : Type*) [Field K] : UniConjIdx n K := by
   intro X g hg hX _ _
   exact Filt.relIndex_unipotent_conj_symm (loGen n K) Filt.closure_le_FG X g hg hX

@@ -51,6 +51,55 @@ def BlockHaarV : Prop := ∀ (n : ℕ) (ε : Fin n → Bool) (S : Finset (Fin n)
       ∀ A ⊆ ball (0 : EuclideanSpace ℝ β) r, MeasurableSet A →
         ν ((fun y => (⟨expU ε (L₁ y), hmem y⟩ : UstdSub ε S)) '' A) = ∫⁻ y in A, ENNReal.ofReal (e y)
 
+/- English proof (translation)
+Introduce `D X u' hb c S ι η _ _ L L₁ ctx hS`. Take `⟨⟨ψ', hT, μinf, νinf, fibInf, hP⟩, hc, hL, hB⟩` from `ctx`. Establish `hgd : ∀ v, Formalism.MainNotions.S.Gauge.GaugeDens (X.B.I.ε v)` using `hP.2.2.2.1`. Use `choose β hβ L1 P1 ν r e hmem h1 h2 h3 h4 hνL hνF hν0 hr hem hen hec he0 hrat hcont hinj hdens using fun v => hBH X.B.I.n (X.B.I.ε v) (S v) D.R.k (hc.1 v).1 (hc.1 v).2 (hgd v)`. Use `letI : ∀ v, Fintype (β v) := hβ`.
+
+Establish `hUJ : ∀ v, SecondCountableTopology (Formalism.REAL.UJ (X.B.I.ε v))` using `fun v => Formalism.REAL.instSecondCountableUJ _ _`. Establish `: ∀ v, SecondCountableTopology (UstdSub (X.B.I.ε v) (S v))` using `fun v => TopologicalSpace.Subtype.secondCountableTopology ((UstdSub (X.B.I.ε v) (S v) : Set (Formalism.REAL.UJ (X.B.I.ε v))))`. Establish `: ∀ v, OpensMeasurableSpace (UstdSub (X.B.I.ε v) (S v))` using `fun v => inferInstance`. Establish `: OpensMeasurableSpace (∀ v, UstdSub (X.B.I.ε v) (S v))` using `Pi.opensMeasurableSpace`. Establish `: ∀ v, IsFiniteMeasure (ν v)` using `hνF`.
+
+Establish `: ∀ v, (ν v).IsMulLeftInvariant` using `hνL`. Establish `: FiniteDimensional X.B.I.F X.B.I.E` using `Module.finite_of_finrank_pos (by rw [X.B.I.cm.deg2]; norm_num)`. Establish `: SecondCountableTopology (HA (Ainf X.B.I.F) X.B.I.cm.sig X.B.I.J)` using `PI.AprimeInfT.secondCountable_HA (Ainf X.B.I.F) X.B.I.cm.sig X.B.I.J`. Take `⟨hTyb, hTyn⟩` from `coord_facts L₁ (fun v M => InBlock (X.B.I.ε v) (S v) M) L1 P1 h1 h2 h3 h4 (fun y v => hB.1 y v) (fun y => hB.2.1 y) (fun M hM => hB.2.2 M hM)`. Use `set Ty : EuclideanSpace ℝ η →ₗ[ℝ] (∀ v, EuclideanSpace ℝ (β v)) := LinearMap.pi fun v => (P1 v).comp ((LinearMap.proj v).comp L₁) with hTyd`.
+
+Establish `hTym` using `PI.AprimeInfG.measurePreserving_of_normSq Ty hTyb hTyn`. Set `Tye : EuclideanSpace ℝ η ≃ᵐ (∀ v, EuclideanSpace ℝ (β v))` to `(LinearEquiv.ofBijective Ty hTyb).toContinuousLinearEquiv.toHomeomorph.toMeasurableEquiv`. Establish `hTye : MeasurePreserving Tye volume (Measure.pi fun _ => volume)` using `hTym`. Establish `hTyv : ∀ y v, L1 v (Ty y v) = L₁ y v` using `fun y v => h2 v _ (hB.1 y v)`. Set `ψf : (∀ v, UstdSub (X.B.I.ε v) (S v)) → MulAction.stabilizer (HA (Ainf X.B.I.F) X.B.I.cm.sig X.B.I.J) (Y0 X u')` to `fun g => ⟨X.toInf hb (c * (fun v => ((g v : UstdSub (X.B.I.ε v) (S v)) : Formalism.REAL.UJ (X.B.I.ε v))) * c⁻¹), (hc.2 _).2 fun v => (g v).2⟩`.
+
+Set `ψm : (∀ v, UstdSub (X.B.I.ε v) (S v)) →ₙ* MulAction.stabilizer (HA (Ainf X.B.I.F) X.B.I.cm.sig X.B.I.J) (Y0 X u')` to `{ toFun := ψf map_mul' := fun g h => by`. Apply `Subtype.ext` to reduce the goal to its premises. Use `show toInfHom X hb _ = toInfHom X hb _ * toInfHom X hb _`. Rewrite using `[← map_mul]`. Use `congr 1`.
+
+Establish `: (fun v => (((g * h) v : UstdSub (X.B.I.ε v) (S v)) : Formalism.REAL.UJ (X.B.I.ε v))) = (fun v => ((g v : UstdSub (X.B.I.ε v) (S v)) : Formalism.REAL.UJ (X.B.I.ε v))) * (fun v => ((h v : UstdSub (X.B.I.ε v) (S v)) : Formalism.REAL.UJ (X.B.I.ε v)))` using `funext fun v => rfl`. Rewrite using `[this]`. Use `group }`. Establish `hψc : Continuous ψm`. Apply `Continuous.subtype_mk` to reduce the goal to its premises.
+
+Conclude with `(MassDataMassesW.continuous_toInf X hb).comp ((continuous_const.mul (continuous_pi fun v => continuous_subtype_val.comp (continuous_apply v))).mul continuous_const)`. Establish `hψi : Function.Injective ψm`. Introduce `g h he`. Establish `e1` using `toInf_injective X hb (congrArg Subtype.val he)`. Establish `e2 : (fun v => ((g v : UstdSub (X.B.I.ε v) (S v)) : Formalism.REAL.UJ (X.B.I.ε v))) = (fun v => ((h v : UstdSub (X.B.I.ε v) (S v)) : Formalism.REAL.UJ (X.B.I.ε v)))` using `by simpa using e1`.
+
+Use function extensionality and compare the values at `v`. Conclude with `Subtype.ext (congrFun e2 v)`. Establish `hψs : Function.Surjective ψm`. Introduce `hh`. Take `⟨s, hs⟩` from `PI.AprimeInfU.toInf_surjective X hb MassDataMassesW.splitIso_holds (hh : HA (Ainf X.B.I.F) X.B.I.cm.sig X.B.I.J)`.
+
+Establish `hmemS : X.toInf hb (c * (c⁻¹ * s * c) * c⁻¹) ∈ MulAction.stabilizer (HA (Ainf X.B.I.F) X.B.I.cm.sig X.B.I.J) (Y0 X u')`. Rewrite using `[show c * (c⁻¹ * s * c) * c⁻¹ = s by group, hs]`. Conclude with `hh.2`. Establish `hstd` using `(hc.2 _).1 hmemS`. Use `⟨fun v => ⟨(c⁻¹ * s * c) v, hstd v⟩, Subtype.ext ?_⟩` and prove the remaining obligations.
+
+Use `show X.toInf hb (c * (c⁻¹ * s * c) * c⁻¹) = hh`. Rewrite using `[show c * (c⁻¹ * s * c) * c⁻¹ = s by group, hs]`. Set `Φ : ∀ v, EuclideanSpace ℝ (β v) → UstdSub (X.B.I.ε v) (S v)` to `fun v z => ⟨expU (X.B.I.ε v) (L1 v z), hmem v z⟩`. Establish `hχ : ∀ y, (⟨chiOf X hb c L₁ y, hS y⟩ : MulAction.stabilizer (HA (Ainf X.B.I.F) X.B.I.cm.sig X.B.I.J) (Y0 X u')) = ψm (fun v => Φ v (Ty y v))`. Introduce `y`.
+
+Apply `Subtype.ext` to reduce the goal to its premises. Use `show chiOf X hb c L₁ y = X.toInf hb (c * (fun v => expU (X.B.I.ε v) (L1 v (Ty y v))) * c⁻¹)`. Unfold `chiOf`. Repeatedly rewrite using `[hTyv]`. Use `set rr := (insert 1 (Finset.univ.image r)).min' ⟨1, Finset.mem_insert_self _ _⟩ with hrr`.
+
+Establish `hrr0 : 0 < rr`. Establish `hm` using `Finset.min'_mem (insert 1 (Finset.univ.image r)) ⟨1, Finset.mem_insert_self _ _⟩`. Break down `Finset.mem_insert.1 hm with e' | e'` into its components or cases. Rewrite using `[hrr, e']`. Evaluate the numerical expressions.
+
+Take `⟨v, -, hv⟩` from `Finset.mem_image.1 e'`. Rewrite using `[hrr, ← hv]`. Conclude with `hr v`. Establish `hrrv : ∀ v, rr ≤ r v` using `fun v => Finset.min'_le _ _ (Finset.mem_insert_of_mem (Finset.mem_image_of_mem r (Finset.mem_univ v)))`. Establish `hTyle : ∀ y v, ‖Ty y v‖ ≤ ‖y‖`.
+
+Introduce `y v`. Establish `: ‖Ty y v‖ ^ 2 ≤ ‖y‖ ^ 2`. Rewrite using `[← hTyn y]`. Conclude with `Finset.single_le_sum (f := fun v => ‖Ty y v‖ ^ 2) (fun v _ => sq_nonneg _) (Finset.mem_univ v)`. Conclude with `(sq_le_sq₀ (norm_nonneg _) (norm_nonneg _)).1 this`.
+
+Establish `hT0 : ∀ v, Ty 0 v = 0` using `fun v => by simp`. Establish `hνu : (Measure.pi ν).map ψm Set.univ = ∏ v, ν v Set.univ`. Rewrite using `[Measure.map_apply hψc.measurable MeasurableSet.univ, Set.preimage_univ, Measure.pi_univ]`. Use `⟨(Measure.pi ν).map ψm, rr, fun y => ∏ v, e v (Ty y v), isMulLeftInvariant_map ψm hψc.measurable hψs, inferInstance, ?_, ?_, hrr0, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[hνu]`.
+
+Conclude with `Finset.prod_ne_zero_iff.2 fun v _ => hν0 v`. Rewrite using `[hνu]`. Conclude with `ENNReal.prod_ne_top fun v _ => measure_ne_top _ _`. Use `tendsto_finsetProd _ fun v _ => ?_` and prove the remaining obligations. Establish `hv : ContinuousAt (fun y : EuclideanSpace ℝ η => Ty y v) 0` using `((continuous_apply v).comp Ty.continuous_of_finiteDimensional).continuousAt`.
+
+Establish `hd : ContinuousAt (e v) (Ty 0 v)` using `by rw [hT0 v]; exact hec v`. Establish `hdv` using `ContinuousAt.comp (f := fun y : EuclideanSpace ℝ η => Ty y v) hd hv`. Conclude with `hdv`. Simplify using `only [hT0]`. Conclude with `Finset.prod_pos fun v _ => he0 v`.
+
+Rewrite using `[hνu, ENNReal.toReal_prod]`. Simplify using `only [hT0]`. Rewrite using `[← Finset.prod_div_distrib]`. Simplify using `only [hrat, Finset.prod_const, Finset.card_univ]`. Introduce `s hs hsr`.
+
+Establish `hB' : Ty '' ball 0 s ⊆ Set.univ.pi fun v => ball 0 (r v)`. Introduce and unpack `_ ⟨y, hy, rfl⟩ v -`. Conclude with `mem_ball_zero_iff.2 (((hTyle y v).trans_lt (mem_ball_zero_iff.1 hy)).trans_le (hsr.trans (hrrv v)))`. Establish `hΦc : Continuous (fun z : ∀ v, EuclideanSpace ℝ (β v) => fun v => Φ v (z v))` using `continuous_pi fun v => (hcont v).comp (continuous_apply v)`. Establish `hΦi : Set.InjOn (fun z : ∀ v, EuclideanSpace ℝ (β v) => fun v => Φ v (z v)) (Set.univ.pi fun v => ball 0 (r v))`.
+
+Introduce `z hz z' hz' he'`. Use function extensionality and compare the values at `v`. Conclude with `hinj v (hz v (Set.mem_univ v)) (hz' v (Set.mem_univ v)) (congr_fun he' v)`. Establish `hTA : MeasurableSet (Tye '' ball 0 s)` using `Tye.measurableSet_image.2 measurableSet_ball`. Establish `hAi : MeasurableSet ((fun z : ∀ v, EuclideanSpace ℝ (β v) => fun v => Φ v (z v)) '' (Tye '' ball 0 s))` using `hTA.image_of_continuousOn_injOn hΦc.continuousOn (hΦi.mono hB')`.
+
+Establish `himg : (fun y => (⟨chiOf X hb c L₁ y, hS y⟩ : MulAction.stabilizer (HA (Ainf X.B.I.F) X.B.I.cm.sig X.B.I.J) (Y0 X u'))) '' ball 0 s = ψm '' ((fun z : ∀ v, EuclideanSpace ℝ (β v) => fun v => Φ v (z v)) '' (Tye '' ball 0 s))`. Rewrite using `[Set.image_image, Set.image_image]`. Conclude with `Set.image_congr fun y _ => hχ y`. Establish `hmeasH : MeasurableSet (ψm '' ((fun z : ∀ v, EuclideanSpace ℝ (β v) => fun v => Φ v (z v)) '' (Tye '' ball 0 s)))`. Establish `e3 : ψm '' ((fun z : ∀ v, EuclideanSpace ℝ (β v) => fun v => Φ v (z v)) '' (Tye '' ball 0 s)) = (fun y => ψm (fun v => Φ v (Ty y v))) '' ball 0 s`.
+
+Rewrite using `[Set.image_image, Set.image_image]`. Both sides reduce to the same expression. Rewrite using `[e3]`. Use `measurableSet_ball.image_of_continuousOn_injOn ?_ ?_` and prove the remaining obligations. Conclude with `(hψc.comp (hΦc.comp Ty.continuous_of_finiteDimensional)).continuousOn`.
+
+Introduce `y hy y' hy' he'`. Establish `e4` using `hψi he'`. Establish `e5 : Ty y = Ty y'` using `hΦi (hB' ⟨y, hy, rfl⟩) (hB' ⟨y', hy', rfl⟩) e4`. Conclude with `hTyb.1 e5`. Rewrite using `[himg, Measure.map_apply hψc.measurable hmeasH, hψi.preimage_image, PI.AprimeInfG.pi_chart_dens ν (fun _ => volume) Φ (fun v => (hcont v).measurable) (fun v => ball 0 (r v)) (fun v => measurableSet_ball) hinj e hem hdens (Tye '' ball 0 s) hB' hTA hAi, ← hTye.setLIntegral_comp_emb …`.
+
+Use `lintegral_congr fun y => ?_` and prove the remaining obligations. Rewrite using `[ENNReal.ofReal_prod_of_nonneg fun v _ => hen v _]`. Both sides reduce to the same expression.
+-/
 theorem grpHaarH_of (hBH : BlockHaarV) : GrpHaarH := by
   intro D X u' hb c S ι η _ _ L L₁ ctx hS
   obtain ⟨⟨ψ', hT, μinf, νinf, fibInf, hP⟩, hc, hL, hB⟩ := ctx

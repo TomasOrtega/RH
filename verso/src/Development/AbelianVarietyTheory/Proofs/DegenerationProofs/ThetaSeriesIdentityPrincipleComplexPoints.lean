@@ -20,6 +20,9 @@ open GlobalTheory GlobalTheory.Ex
 
 namespace GlobalTheory.ArcIdentity
 
+/- English proof (translation)
+Use `⟨⟨β.be.compl₁₂ e.toIntLinearEquiv.toLinearMap e.toIntLinearEquiv.toLinearMap, fun y z => ?_, fun y hy => ?_, fun y z => ?_⟩, fun y z => ?_⟩` and prove the remaining obligations. Simplify using `using β.symm (e y) (e z)`. Simplify using `using β.pos (e y) (fun h => hy (e.injective (by rw [h, map_zero])))`. Simplify using `using β.dvd (e y) (e z)`. Simplify using the standard rewrite rules.
+-/
 theorem exists_form {O O' : Type} [CommRing O] [CommRing O'] {N : NumD O} {N' : NumD O'} (e : N.X ≃+ N'.X) {k : ℕ}
     (β : N'.Form k) : ∃ b : N.Form k, ∀ y z, b.be y z = β.be (e y) (e z) := by
   refine ⟨⟨β.be.compl₁₂ e.toIntLinearEquiv.toLinearMap e.toIntLinearEquiv.toLinearMap, fun y z => ?_,
@@ -29,6 +32,11 @@ theorem exists_form {O O' : Type} [CommRing O] [CommRing O'] {N : NumD O} {N' : 
   · simpa using β.dvd (e y) (e z)
   · simp
 
+/- English proof (translation)
+Take `⟨z, h1, h2⟩` from `h`. Use extensionality with `n`. Simplify using `only [NumD.arcTx, PowerSeries.coeff_mk]`. Use `conv_rhs => rw [← finsum_comp_equiv (Equiv.addRight (m • z))]`. Use `finsum_congr fun χ => ?_` and prove the remaining obligations.
+
+Establish `hx : p'.1.1.toAdd + m • χ = p.1.1.toAdd + m • (χ + m • z)`. Rewrite using `[h1, smul_add, smul_smul, ← pow_two]`. Normalize the expressions using the abelian group laws. Simplify using `only [Equiv.coe_addRight, hx, (GlobalTheory.T.thetaConstantTerm_representative_dependence O N m ho p p' χ).1 z h1 h2]`.
+-/
 theorem arcTx_qEq {O : Type} [CommRing O] (N : NumD O) (be : LinearMap.BilinForm ℤ N.X) {m : ℕ} (ho : Odd m)
     {p p' : N.QT (m ^ 2)} (h : N.QEq p p') : N.arcTx be m p' = N.arcTx be m p := by
   obtain ⟨z, h1, h2⟩ := h
@@ -41,6 +49,11 @@ theorem arcTx_qEq {O : Type} [CommRing O] (N : NumD O) (be : LinearMap.BilinForm
     abel
   simp only [Equiv.coe_addRight, hx, (GlobalTheory.T.thetaConstantTerm_representative_dependence O N m ho p p' χ).1 z h1 h2]
 
+/- English proof (translation)
+Distinguish the cases in `h : (Function.support g).Finite`. Conclude with `map_finsum φ h`. Establish `hs : Function.support (fun a => φ (g a)) = Function.support g`. Use extensionality with `a`. Simplify using `only [Function.mem_support, ne_eq]`.
+
+Conclude with `⟨fun h1 h2 => h1 (by rw [h2, map_zero]), fun h1 h2 => h1 (hφ (by rw [h2, map_zero]))⟩`. Establish `h' : (Function.support (fun a => φ (g a))).Infinite`. Rewrite using `[hs]`. Conclude with `h`. Rewrite using `[finsum_of_infinite_support h, finsum_of_infinite_support h', map_zero]`.
+-/
 private theorem map_finsum_of_injective' {α M M' : Type*} [AddCommMonoid M] [AddCommMonoid M'] (φ : M →+ M')
     (hφ : Function.Injective φ) (g : α → M) : φ (∑ᶠ a, g a) = ∑ᶠ a, φ (g a) := by
   by_cases h : (Function.support g).Finite
@@ -54,6 +67,9 @@ private theorem map_finsum_of_injective' {α M M' : Type*} [AddCommMonoid M] [Ad
       exact h
     rw [finsum_of_infinite_support h, finsum_of_infinite_support h', map_zero]
 
+/- English proof (translation)
+Use `map_finsum_of_injective' ((AddMonoidHom.mulLeft (c : F')).comp f.toAddMonoidHom) ?_ g` and prove the remaining obligations. Introduce `a b hab`. Establish `hab' : (c : F') * f a = (c : F') * f b` using `hab`. Conclude with `f.injective (mul_left_cancel₀ c.ne_zero hab')`.
+-/
 private theorem unit_mul_map_finsum {α F F' : Type*} [Field F] [Field F'] (f : F →+* F') (c : F'ˣ) (g : α → F) :
     (c : F') * f (∑ᶠ a, g a) = ∑ᶠ a, (c : F') * f (g a) := by
   refine map_finsum_of_injective' ((AddMonoidHom.mulLeft (c : F')).comp f.toAddMonoidHom) ?_ g
@@ -61,12 +77,20 @@ private theorem unit_mul_map_finsum {α F F' : Type*} [Field F] [Field F'] (f : 
   have hab' : (c : F') * f a = (c : F') * f b := hab
   exact f.injective (mul_left_cancel₀ c.ne_zero hab')
 
+/- English proof (translation)
+Rewrite using `[finsum_eq_if, finsum_eq_if]`. Apply the tactic sequence `split_ifs <;> simp`.
+-/
 private theorem unit_mul_map_finsum_prop {F F' : Type*} [Field F] [Field F'] (f : F →+* F') (c : F'ˣ) (P : Prop)
     (x : F) : (c : F') * f (∑ᶠ (_ : P), x) = ∑ᶠ (_ : P), (c : F') * f x := by
   classical
   rw [finsum_eq_if, finsum_eq_if]
   split_ifs <;> simp
 
+/- English proof (translation)
+Use extensionality with `n`. Rewrite using `[PowerSeries.coeff_C_mul, PowerSeries.coeff_map]`. Simplify using `only [NumD.arcTx, PowerSeries.coeff_mk, unit_mul_map_finsum f I.lam, unit_mul_map_finsum_prop f I.lam]`. Use `conv_lhs => rw [← finsum_comp_equiv I.e.toEquiv]`. Use `finsum_congr fun χ => ?_` and prove the remaining obligations.
+
+Establish `hx : p'.1.1.toAdd + m • I.e χ = I.e (p.1.1.toAdd + m • χ)`. Rewrite using `[h1, map_add, map_nsmul]`. Establish `hχ : I.e.toEquiv χ = I.e χ` using `rfl`. Rewrite using `[hχ]`. Simplify using `only [hx, ← hb, I.txT_eq ho p p' h1 h2 χ]`.
+-/
 theorem arcTx_hom {F F' : Type} [Field F] [Field F'] {f : F →+* F'} {N : NumD F} {N' : NumD F'} (I : NumD.Hom f N N')
     (be : LinearMap.BilinForm ℤ N.X) (be' : LinearMap.BilinForm ℤ N'.X) (hb : ∀ y z, be y z = be' (I.e y) (I.e z))
     {m : ℕ} (ho : Odd m) {p : N.QT (m ^ 2)} {p' : N'.QT (m ^ 2)} (h1 : p'.1.1.toAdd = I.e p.1.1.toAdd)
@@ -83,6 +107,9 @@ theorem arcTx_hom {F F' : Type} [Field F] [Field F'] {f : F →+* F'} {N : NumD 
   rw [hχ]
   simp only [hx, ← hb, I.txT_eq ho p p' h1 h2 χ]
 
+/- English proof (translation)
+Simplify using `only [MvPolynomial.eval₂_eq, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun s hs => ?_` and prove the remaining obligations. Rewrite using `[hG.degree_eq_sum_deg_support hs]`. Simplify using `only [mul_pow, Finset.prod_mul_distrib, Finset.prod_pow_eq_pow_sum]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 private theorem eval2_smul_of_isHomogeneous {J S T : Type*} [CommSemiring S] [CommSemiring T] (g : S →+* T) (c : T)
     (w : J → T) {G : MvPolynomial J S} {d : ℕ} (hG : G.IsHomogeneous d) :
     MvPolynomial.eval₂ g (fun x => c * w x) G = c ^ d * MvPolynomial.eval₂ g w G := by
@@ -92,6 +119,9 @@ private theorem eval2_smul_of_isHomogeneous {J S T : Type*} [CommSemiring S] [Co
   simp only [mul_pow, Finset.prod_mul_distrib, Finset.prod_pow_eq_pow_sum]
   ring
 
+/- English proof (translation)
+Rewrite using `[MvPolynomial.aeval_def, MvPolynomial.aeval_def, MvPolynomial.eval₂_map, MvPolynomial.eval₂_map, eval2_smul_of_isHomogeneous _ _ (fun x => PowerSeries.map f (v x)) hG, MvPolynomial.eval₂_comp_left]`. Establish `hr : (PowerSeries.map f).comp ((algebraMap F (PowerSeries F)).comp c) = (algebraMap F' (PowerSeries F')).comp (f.comp c)` using `RingHom.ext fun a => by simp [PowerSeries.map_C]`. Rewrite using `[hr]`. Both sides reduce to the same expression.
+-/
 theorem aeval_smul_map {J S F F' : Type} [CommRing S] [CommRing F] [CommRing F'] (f : F →+* F') (c : S →+* F)
     (l : F') (v : J → PowerSeries F) {G : MvPolynomial J S} {d : ℕ} (hG : G.IsHomogeneous d) :
     MvPolynomial.aeval (fun x => PowerSeries.C l * PowerSeries.map f (v x)) (MvPolynomial.map (f.comp c) G) =
@@ -104,6 +134,9 @@ theorem aeval_smul_map {J S F F' : Type} [CommRing S] [CommRing F] [CommRing F']
   rw [hr]
   rfl
 
+/- English proof (translation)
+Apply `MvPolynomial.ringHom_ext` to reduce the goal to its premises. Introduce `r`. Simplify using the standard rewrite rules. Apply the tactic sequence `intro i fin_cases i <;> simp`.
+-/
 theorem cf_comp {F F' : Type} [CommRing F] [CommRing F'] (f : F →+* F') (a b : F) :
     cf (f a) (f b) = f.comp (cf a b) := by
   apply MvPolynomial.ringHom_ext
@@ -116,6 +149,19 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {D : Da
   {R : Type} [CommRing R] [IsDomain R] {F : Type} [Field F] [Algebra (FractionRing R) F]
   {R' : Type} [CommRing R'] [IsDomain R'] {F' : Type} [Field F'] [Algebra (FractionRing R') F']
 
+/- English proof (translation)
+Take `⟨I, hρ, hζ, hact, hq⟩` from `h`. Use `⟨I.e, fun k β β' hbe => ⟨?_, fun m hm G d hG => ?_⟩⟩` and prove the remaining obligations. Prove the components needed by the constructor for the conclusion. Introduce `hB a y' z'`. Take `⟨y, rfl⟩` from `I.e.surjective y'`.
+
+Take `⟨z, rfl⟩` from `I.e.surjective z'`. Establish `h1` using `hB a y z`. Rewrite `h1` using `[hbe, hbe, hact, hact]`. Conclude with `h1`. Introduce `hB a y z`.
+
+Rewrite using `[hbe, hbe, hact, hact]`. Conclude with `hB _ _ _`. Establish `hpos : 0 < m ^ 2` using `pow_pos hm.pos 2`. Establish `hv : ∀ x, A'.N.arcTx β'.be m (A'.q _ x) = PowerSeries.C (I.lam : F') * PowerSeries.map f (A.N.arcTx β.be m (A.q (m ^ 2) x))`. Introduce `x`.
+
+Take `⟨p', h1, h2, h3⟩` from `hq (m ^ 2) x hpos`. Rewrite using `[arcTx_qEq A'.N β'.be hm h3]`. Conclude with `arcTx_hom I β.be β'.be hbe hm h1 h2`. Establish `hcf : cf (A'.I.ζ (m ^ 2) : F') A'.ρ = f.comp (cf (A.I.ζ (m ^ 2) : F) A.ρ)`. Rewrite using `[← hρ, ← hζ _ hpos, cf_comp]`.
+
+Simplify using `only [hv, hcf]`. Rewrite using `[aeval_smul_map f (cf (A.I.ζ (m ^ 2) : F) A.ρ) (I.lam : F') (fun x => A.N.arcTx β.be m (A.q (m ^ 2) x)) hG]`. Establish `hC : PowerSeries.C (I.lam : F') ^ d ≠ 0` using `pow_ne_zero _ ((map_ne_zero_iff _ PowerSeries.C_injective).mpr I.lam.ne_zero)`. Prove the components needed by the constructor for the conclusion. Introduce `h0`.
+
+Rewrite using `[h0, map_zero, mul_zero]`. Introduce `h0`. Establish `h0'` using `(mul_eq_zero.mp h0).resolve_left hC`. Conclude with `PowerSeries.map_injective f f.injective (by rw [h0', map_zero])`.
+-/
 theorem over_iff {f : F →+* F'} {A : ArcF D R F} {A' : ArcF D R' F'} (h : A.Over f A') :
     ∃ e : A.N.X ≃+ A'.N.X, ∀ (k : ℕ) (β : A.N.Form k) (β' : A'.N.Form k), (∀ y z, β.be y z = β'.be (e y) (e z)) →
       (A.Bal β ↔ A'.Bal β') ∧ ∀ m : ℕ, Odd m → ∀ (G : MvPolynomial D.La (MvPolynomial (Fin 2) ℤ)) (d : ℕ),
@@ -156,6 +202,33 @@ theorem over_iff {f : F →+* F'} {A : ArcF D R F} {A' : ArcF D R' F'} (h : A.Ov
       have h0' := (mul_eq_zero.mp h0).resolve_left hC
       exact PowerSeries.map_injective f f.injective (by rw [h0', map_zero])
 
+/- English proof (translation)
+Introduce `hHV h6 hU hE hT hEnd hTU`. Establish `hHV'` using `hHV`. Take `⟨⟨hL, hL2, -⟩, -⟩` from `hHV'`. Establish `hGt` using `GlobalTheory.Ex.GtValues.points_correspond`. Establish `hWp` using `GlobalTheory.WeilValues.weil_eq_values hGt (GlobalTheory.Ex.brFam hL hL2)`.
+
+Establish `hC4400` using `GlobalTheory.T.exists_thetaPoint_complexDegeneration_small hHV h6 hU hE hT hEnd hTU`. Establish `hdown` using `GlobalTheory.FieldPull.exists_countable_model hL hGt hWp`. Establish `hup` using `GlobalTheory.ArcExt.exists_arcF_over hL hGt hWp`. Unfold `AllD at hC4400 hdown hup ⊢`. Introduce `E _ _ _ H D R _ _ F _ _ _ _ A k β hB m hmk hm hC G hV`.
+
+Take `⟨-, ⟨d, hG⟩, hVan⟩` from `hV`. Establish `hpos : 0 < m ^ 2` using `pow_pos hm.pos 2`. Take `⟨R₁, F₁, _, _, _, _, _, _, f, A₁, hA₁⟩` from `hdown E H D R F A`. Use `haveI : CharZero F₁ := A₁.charZero`. Take `⟨e₁, he₁⟩` from `over_iff hA₁`.
+
+Take `⟨β₁, hβ₁⟩` from `exists_form e₁ β`. Establish `h1` using `he₁ k β₁ β hβ₁`. Rewrite using `[← h1.2 m hm G d hG]`. Take `⟨I₁, hρ₁, hζ₁, _, _⟩` from `hA₁`. Establish `hC₁ : Compat H (m ^ 2) (A₁.I.ζ (m ^ 2) : F₁) A₁.ρ`.
+
+Introduce `c hc`. Establish `h0` using `hC c hc`. Rewrite `h0` using `[← hρ₁, ← hζ₁ _ hpos, cf_comp, RingHom.comp_apply]`. Conclude with `f.injective (by rw [h0, map_zero])`. Establish `halg : ∀ i, IsAlgebraic ℚ (![zeta (m ^ 2), H.rt0] i)`.
+
+Introduce `i`. Use `fin_cases i`. Use `show IsAlgebraic ℚ (zeta (m ^ 2))`. Establish `hz : IsPrimitiveRoot (zeta (m ^ 2)) (m ^ 2)`. Unfold `zeta`.
+
+Conclude with `Complex.isPrimitiveRoot_exp _ hpos.ne'`. Use `IsIntegral.isAlgebraic (IsIntegral.of_pow hpos ?_)` and prove the remaining obligations. Rewrite using `[hz.pow_eq_one]`. Conclude with `isIntegral_one`. Use `show IsAlgebraic ℚ H.rt0`.
+
+Use `IsIntegral.isAlgebraic (IsIntegral.of_pow (n := 2) two_pos ?_)` and prove the remaining obligations. Rewrite using `[H.sqrt_neg_disc_sq]`. Establish `hd` using `isIntegral_algebraMap (R := ℚ) (A := ℂ) (x := -(H.d : ℚ))`. Simplify using `using hd`. Take `⟨g, hg⟩` from `GlobalTheory.exists_ringHom_complex_of_countable_of_relations F₁ ![(A₁.I.ζ (m ^ 2) : F₁), A₁.ρ] ![zeta (m ^ 2), H.rt0] halg hC₁`.
+
+Establish `hg0 : g (A₁.I.ζ (m ^ 2) : F₁) = zeta (m ^ 2)` using `by simpa using hg 0`. Establish `hg1 : g A₁.ρ = H.rt0` using `by simpa using hg 1`. Use `letI : Algebra (FractionRing R₁) ℂ := (g.comp (algebraMap (FractionRing R₁) F₁)).toAlgebra`. Take `⟨A₂, -, hA₂⟩` from `hup E H D R₁ F₁ ℂ g (fun x => rfl) A₁`. Take `⟨e₂, he₂⟩` from `over_iff hA₂`.
+
+Take `⟨β₂, hβ₂⟩` from `exists_form e₂.symm β₁`. Establish `hb12 : ∀ y z, β₁.be y z = β₂.be (e₂ y) (e₂ z)`. Introduce `y z`. Rewrite using `[hβ₂]`. Simplify using the standard rewrite rules.
+
+Establish `h2` using `he₂ k β₁ β₂ hb12`. Rewrite using `[h2.2 m hm G d hG]`. Take `⟨I₂, hρ₂, hζ₂, _, _⟩` from `hA₂`. Establish `hρ₂' : A₂.ρ = H.rt0` using `by rw [← hρ₂, hg1]`. Establish `hζ₂' : (A₂.I.ζ (m ^ 2) : ℂ) = zeta (m ^ 2)` using `by rw [← hζ₂ _ hpos, hg0]`.
+
+Establish `hB₂ : A₂.Bal β₂` using `h2.1.mp (h1.1.mpr hB)`. Take `⟨ε, hε, hsmall⟩` from `hC4400 E H D R₁ A₂ hρ₂' k β₂ hB₂ m hmk hm`. Rewrite using `[hζ₂', hρ₂']`. Use `GlobalTheory.Ex.ArcForm.aeval_arcTx_eq_zero A₂.N k β₂ m hmk hm D.La (fun x => A₂.q _ x) _ ε hε fun u hu => ⟨(hsmall u hu).1, ?_⟩` and prove the remaining obligations. Take `⟨o, hoρ, hoζ, hθ⟩` from `(hsmall u hu).2`.
+
+Rewrite using `[MvPolynomial.eval_map]`. Conclude with `hVan o hoρ (by rw [hoζ]; exact hζ₂') _ hθ`.
+-/
 theorem aeval_arcTx_eq_zero_of_vanishC : HV → Laws6 → GlobalTheory.LN.UDvrSt → GlobalTheory.LN.HomExtSt → ThetaPtDeterminesSt → EndDeterminedOnTorsionSt → ThetaUnifAV → AllD fun {_} _ _ _ {H} D => ∀ (R : Type) [CommRing R] [IsDomain R] (F : Type) [Field F] [IsAlgClosed F] [CharZero F] [Algebra (FractionRing R) F] (A : ArcF D R F) (k : ℕ) (β : A.N.Form k), A.Bal β → ∀ m : ℕ, m ^ 2 ∣ k → Odd m → Compat H (m ^ 2) (A.I.ζ (m ^ 2) : F) A.ρ → ∀ G, VanishC D m G → MvPolynomial.aeval (fun x => A.N.arcTx β.be m (A.q _ x)) (MvPolynomial.map (cf (A.I.ζ (m ^ 2) : F) A.ρ) G) = 0 := by
   intro hHV h6 hU hE hT hEnd hTU
   have hHV' := hHV

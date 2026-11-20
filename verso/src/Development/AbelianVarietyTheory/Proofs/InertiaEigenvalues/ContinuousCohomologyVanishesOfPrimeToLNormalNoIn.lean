@@ -10,12 +10,26 @@ section Algebra
 variable {G Q R M : Type} [Group G] [Group Q] [CommRing R] [AddCommGroup M] [Module R M]
   (ρ : Representation R G M) (π : G →* Q) (J : Subgroup G) (K : Subgroup Q) [Fintype K]
 
+/- English proof (translation)
+Establish `h : a⁻¹ * k * a ∈ K` using `by simpa using hK.conj_mem k hk a⁻¹`. Use `Fintype.sum_equiv (Equiv.mulLeft (⟨_, h⟩ : K)) _ _ fun i => ?_` and prove the remaining obligations. Simplify using `[mul_assoc]`.
+-/
 theorem sum_shift [hK : K.Normal] (φ : Q → M) (a k : Q) (hk : k ∈ K) :
     ∑ i : K, φ (k * (a * i)) = ∑ i : K, φ (a * i) := by
   have h : a⁻¹ * k * a ∈ K := by simpa using hK.conj_mem k hk a⁻¹
   refine Fintype.sum_equiv (Equiv.mulLeft (⟨_, h⟩ : K)) _ _ fun i => ?_
   simp [mul_assoc]
 
+/- English proof (translation)
+Establish `hS : ∀ a b, ∑ i : K, ∑ j : K, F (a * i) (b * j) = 0`. Introduce `a b`. Use `hinv _ fun g hg => ?_` and prove the remaining obligations. Simplify using `only [map_sum, ← heq]`. Rewrite using `[← sum_shift K (fun x => ∑ j : K, F x (b * j)) a _ (hJK g hg)]`.
+
+Conclude with `Finset.sum_congr rfl fun i _ => sum_shift K (fun x => F _ x) b _ (hJK g hg)`. Establish `key : ∀ a b, (Fintype.card K) ^ 2 • F a b = Fintype.card K • ∑ i : K, F a (a * i) - Fintype.card K • ∑ i : K, F b (b * i)`. Introduce `a b`. Establish `e : ∀ a' b', F a b = F a' b' + F a a' - F b b'`. Introduce `a' b'`.
+
+Establish `e1` using `hc a a' b'`. Establish `e2` using `hc a b b'`. Rewrite using `[← sub_eq_zero, ← sub_self (0 : M)]`. Use `nth_rewrite 1 [← e2]`. Rewrite using `[← e1]`.
+
+Normalize the expressions using the abelian group laws. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [Finset.sum_sub_distrib, Finset.sum_add_distrib, hS, zero_add, Finset.sum_const, Finset.card_univ, ← Finset.smul_sum]`. Use `⟨-(Fintype.card K • ∑ i : K, F 1 (1 * i)), fun g => ?_⟩` and prove the remaining obligations. Rewrite using `[key, map_neg, map_nsmul, map_sum]`.
+
+Simplify using `only [← heq, mul_one, one_mul]`. Normalize the expressions using the abelian group laws.
+-/
 theorem two_variables [K.Normal] (hJK : ∀ j ∈ J, π j ∈ K)
     (hinv : ∀ m : M, (∀ j ∈ J, ρ j m = m) → m = 0) (F : Q → Q → M)
     (heq : ∀ g a b, F (π g * a) (π g * b) = ρ g (F a b))
@@ -48,6 +62,19 @@ theorem two_variables [K.Normal] (hJK : ∀ j ∈ J, π j ∈ K)
   simp only [← heq, mul_one, one_mul]
   abel
 
+/- English proof (translation)
+Establish `hS : ∀ a b c, ∑ i : K, ∑ j : K, ∑ k : K, F (a * i) (b * j) (c * k) = 0`. Introduce `a b c`. Use `hinv _ fun g hg => ?_` and prove the remaining obligations. Simplify using `only [map_sum, ← heq]`. Rewrite using `[← sum_shift K (fun x => ∑ j : K, ∑ k : K, F x (b * j) (c * k)) a _ (hJK g hg)]`.
+
+Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[← sum_shift K (fun x => ∑ k : K, F _ x (c * k)) b _ (hJK g hg)]`. Conclude with `Finset.sum_congr rfl fun i _ => sum_shift K (fun x => F _ _ x) c _ (hJK g hg)`. Set `H : Q → Q → M` to `fun a b => Fintype.card K • ∑ i : K, ∑ j : K, (F a b (b * j) - F a (a * i) (b * j))`. Establish `key : ∀ a b c, (Fintype.card K) ^ 3 • F a b c = H b c - H a c + H a b`.
+
+Introduce `a b c`. Establish `e : ∀ a' b' c', F a b c = F a' b' c' + (F b c c' - F b b' c') - (F a c c' - F a a' c') + (F a b b' - F a a' b')`. Introduce `a' b' c'`. Establish `e1` using `hc a a' b' c'`. Establish `e2` using `hc a b b' c'`.
+
+Establish `e3` using `hc a b c c'`. Establish `e4 : (0 : M) = 0 - 0 - 0` using `by simp`. Rewrite using `[← sub_eq_zero, e4]`. Use `nth_rewrite 1 [← e2]`. Use `nth_rewrite 1 [← e1]`.
+
+Rewrite using `[← e3]`. Normalize the expressions using the abelian group laws. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [H, Finset.sum_sub_distrib, Finset.sum_add_distrib, hS, zero_add, Finset.sum_const, Finset.card_univ, ← Finset.smul_sum, smul_sub]`. Establish `hH : ∀ g a b, H (π g * a) (π g * b) = ρ g (H a b)`.
+
+Introduce `g a b`. Simplify using `only [H, map_nsmul, map_sum, map_sub, ← heq, mul_assoc]`. Use `⟨H 1, fun g h => ?_⟩` and prove the remaining obligations. Rewrite using `[key, ← hH, mul_one, map_mul]`.
+-/
 theorem three_variables [K.Normal] (hJK : ∀ j ∈ J, π j ∈ K)
     (hinv : ∀ m : M, (∀ j ∈ J, ρ j m = m) → m = 0) (F : Q → Q → Q → M)
     (heq : ∀ g a b c, F (π g * a) (π g * b) (π g * c) = ρ g (F a b c))
@@ -92,6 +119,11 @@ theorem three_variables [K.Normal] (hJK : ∀ j ∈ J, π j ∈ K)
   refine ⟨H 1, fun g h => ?_⟩
   rw [key, ← hH, mul_one, map_mul]
 
+/- English proof (translation)
+Use `choose n hn using htor`. Take `⟨k, hk⟩` from `(Set.finite_range fun x => n (φ x)).bddAbove`. Establish `h0 : ∀ x, l ^ k • φ x = 0` using `fun x => by`. Take `⟨d, hd⟩` from `Nat.exists_eq_add_of_le' (hk ⟨x, rfl⟩)`. Rewrite using `[hd, pow_add, mul_smul, hn, smul_zero]`.
+
+Take `⟨a, b, hab⟩` from `Nat.isCoprime_iff_coprime.2 (hN.pow_right k)`. Use `⟨a, fun x => ?_⟩` and prove the remaining obligations. Establish `: (a * N + b * (l ^ k : ℕ)) • φ x = φ x` using `by rw [hab, one_smul]`. Rewrite `this` using `[add_smul, mul_smul, mul_smul, natCast_zsmul, natCast_zsmul, h0, smul_zero, add_zero]`. Then use the resulting hypothesis.
+-/
 theorem exists_inverse {X : Type} [Finite X] (l N : ℕ) (hN : Nat.Coprime N l)
     (htor : ∀ m : M, ∃ n, l ^ n • m = 0) (φ : X → M) : ∃ a : ℤ, ∀ x, a • N • φ x = φ x := by
   choose n hn using htor
@@ -104,6 +136,11 @@ theorem exists_inverse {X : Type} [Finite X] (l N : ℕ) (hN : Nat.Coprime N l)
   have : (a * N + b * (l ^ k : ℕ)) • φ x = φ x := by rw [hab, one_smul]
   rwa [add_smul, mul_smul, mul_smul, natCast_zsmul, natCast_zsmul, h0, smul_zero, add_zero] at this
 
+/- English proof (translation)
+Rewrite using `[Nat.coprime_comm, hl.coprime_iff_not_dvd]`. Introduce `hd`. Use `haveI := Fact.mk hl`. Take `⟨x, hx⟩` from `exists_prime_orderOf_dvd_card l hd`. Take `⟨n, hn, hxn⟩` from `h x x.2`.
+
+Establish `: orderOf x ∣ n` using `orderOf_dvd_of_pow_eq_one (Subtype.ext (by simpa using hxn))`. Rewrite `this` using `[hx]`. Conclude with `hl.one_lt.ne' (Nat.eq_one_of_dvd_coprimes hn this dvd_rfl)`.
+-/
 theorem card_coprime (l : ℕ) (hl : l.Prime) (h : ∀ k ∈ K, ∃ n, Nat.Coprime n l ∧ k ^ n = 1) :
     Nat.Coprime (Fintype.card K) l := by
   rw [Nat.coprime_comm, hl.coprime_iff_not_dvd]
@@ -117,6 +154,13 @@ theorem card_coprime (l : ℕ) (hl : l.Prime) (h : ∀ k ∈ K, ∃ n, Nat.Copri
 
 end Algebra
 
+/- English proof (translation)
+Establish `h1 : ∀ᶠ u in nhds (1 : Γ × Γ × Γ), ∀ x ∈ (Set.univ : Set (Γ × Γ × Γ)), F (x * u) = F x`. Use `isCompact_univ.eventually_forall_of_forall_eventually fun x _ => ?_` and prove the remaining obligations. Establish `ho : IsOpen {z : (Γ × Γ × Γ) × (Γ × Γ × Γ) | F (z.2 * z.1) = F z.2}` using `(isOpen_discrete {p : M × M | p.1 = p.2}).preimage (f := fun z : (Γ × Γ × Γ) × (Γ × Γ × Γ) => (F (z.2 * z.1), F z.2)) (by fun_prop)`. Conclude with `ho.mem_nhds (by simp)`. Take `⟨A, hA, BC, hBC, h2⟩` from `mem_nhds_prod_iff.1 h1`.
+
+Take `⟨B, hB, C, hC, h3⟩` from `mem_nhds_prod_iff.1 hBC`. Take `⟨W, hW, hWo, hW1⟩` from `mem_nhds_iff.1 (Filter.inter_mem hA (Filter.inter_mem hB hC))`. Take `⟨U, hU⟩` from `ProfiniteGrp.exist_openNormalSubgroup_sub_open_nhds_of_one hWo hW1`. Use `⟨U, fun a b c => F (a.out, b.out, c.out), fun a b c => ?_⟩` and prove the remaining obligations. Take `⟨u, hu⟩` from `QuotientGroup.mk_out_eq_mul U.toSubgroup a`.
+
+Take `⟨v, hv⟩` from `QuotientGroup.mk_out_eq_mul U.toSubgroup b`. Take `⟨w, hw⟩` from `QuotientGroup.mk_out_eq_mul U.toSubgroup c`. Simplify using `only [hu, hv, hw]`. Conclude with `h2 (a := ((u : Γ), (v : Γ), (w : Γ))) ⟨(hW (hU u.2)).1, h3 ⟨(hW (hU v.2)).2.1, (hW (hU w.2)).2.2⟩⟩ (a, b, c) trivial`.
+-/
 theorem exists_level {Γ M : Type} [Group Γ] [TopologicalSpace Γ] [IsTopologicalGroup Γ]
     [CompactSpace Γ] [T2Space Γ] [TotallyDisconnectedSpace Γ] [TopologicalSpace M]
     [DiscreteTopology M] (F : Γ × Γ × Γ → M) (hF : Continuous F) :
@@ -140,6 +184,39 @@ theorem exists_level {Γ M : Type} [Group Γ] [TopologicalSpace Γ] [IsTopologic
   exact h2 (a := ((u : Γ), (v : Γ), (w : Γ))) ⟨(hW (hU u.2)).1,
     h3 ⟨(hW (hU v.2)).2.1, (hW (hU w.2)).2.2⟩⟩ (a, b, c) trivial
 
+/- English proof (translation)
+Introduce `Γ _ _ _ _ _ _ R M _ _ _ _ _ _ ρ l J hl hJ _ hord hρ htor hinv`. Establish `hcop : ∀ (U : OpenNormalSubgroup Γ) [Fintype (J.map (QuotientGroup.mk' U.toSubgroup))], Nat.Coprime (Fintype.card (J.map (QuotientGroup.mk' U.toSubgroup))) l`. Introduce `U _`. Use `card_coprime _ l hl ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨j, hj, rfl⟩`.
+
+Take `⟨n, hn, hjn⟩` from `hord U.toSubgroup inferInstance U.isOpen j hj`. Conclude with `⟨n, hn, by rw [← map_pow]; exact (QuotientGroup.eq_one_iff _).2 hjn⟩`. Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Conclude with `(Submodule.eq_bot_iff _).2 fun m hm => hinv m fun j _ => hm j`. Use `Submodule.Quotient.subsingleton_iff.2 (Submodule.eq_top_iff'.2 ?_)` and prove the remaining obligations.
+
+Introduce and unpack `⟨f, hf, hfc⟩`. Take `⟨U, F, hF⟩` from `exists_level (fun p : Γ × Γ × Γ => ρ p.1 (f (p.1⁻¹ * p.2.1))) (hρ.comp (continuous_fst.prodMk (hf.comp (by fun_prop))))`. Use `haveI : Finite (Γ ⧸ U.toSubgroup) := Subgroup.quotient_finite_of_isOpen _ U.isOpen`. Use `haveI := Fintype.ofFinite (J.map (QuotientGroup.mk' U.toSubgroup))`. Use `haveI := hJ.map _ (QuotientGroup.mk'_surjective U.toSubgroup)`.
+
+Establish `hF' : ∀ a b : Γ, F a b 1 = ρ a (f (a⁻¹ * b))` using `fun a b => hF a b 1`. Take `⟨m, hm⟩` from `two_variables ρ (QuotientGroup.mk' U.toSubgroup) J (J.map (QuotientGroup.mk' U.toSubgroup)) (fun j hj => ⟨j, hj, rfl⟩) hinv (fun a b => F a b 1) (by`. Introduce `g a b`. Proceed by induction on `a using QuotientGroup.induction_on`. Proceed by induction on `b using QuotientGroup.induction_on`.
+
+Simplify using `only [QuotientGroup.mk'_apply, ← QuotientGroup.mk_mul, hF']`. Simplify using `[mul_assoc]) (by`. Introduce `a b c`. Proceed by induction on `a using QuotientGroup.induction_on with | H a => ?_`. Proceed by induction on `b using QuotientGroup.induction_on with | H b => ?_`.
+
+Proceed by induction on `c using QuotientGroup.induction_on with | H c => ?_`. Establish `e` using `hfc (a⁻¹ * b) (b⁻¹ * c)`. Establish `e' : a⁻¹ * b * (b⁻¹ * c) = a⁻¹ * c` using `by group`. Simplify using `only [hF']`. Rewrite using `[← e', e, map_add, ← Module.End.mul_apply, ← map_mul, mul_inv_cancel_left]`.
+
+Use the proof step `abel)`. Take `⟨a, ha⟩` from `exists_inverse l _ ((hcop U).pow_left 2) htor (fun q => F 1 q 1)`. Use `(mem_coboundaries1 ρ _).2 ⟨a • m, fun g => ?_⟩` and prove the remaining obligations. Establish `e` using `ha g`. Establish `e2` using `hF 1 g 1`.
+
+Establish `e3` using `hm g`. Simplify using `only [QuotientGroup.mk'_apply] at e3`. Rewrite `e` using `[e3]`. Rewrite using `[map_zsmul, ← smul_sub, e, ← QuotientGroup.mk_one, e2]`. Simplify using the standard rewrite rules.
+
+Use `Submodule.Quotient.subsingleton_iff.2 (Submodule.eq_top_iff'.2 ?_)` and prove the remaining obligations. Introduce and unpack `⟨f, hf, hfc⟩`. Take `⟨U, F, hF⟩` from `exists_level (fun p : Γ × Γ × Γ => ρ p.1 (f (p.1⁻¹ * p.2.1, p.2.1⁻¹ * p.2.2))) (hρ.comp (continuous_fst.prodMk (hf.comp (by fun_prop))))`. Use `haveI : Finite (Γ ⧸ U.toSubgroup) := Subgroup.quotient_finite_of_isOpen _ U.isOpen`. Use `haveI : DiscreteTopology (Γ ⧸ U.toSubgroup) := QuotientGroup.discreteTopology U.isOpen`.
+
+Use `haveI := Fintype.ofFinite (J.map (QuotientGroup.mk' U.toSubgroup))`. Use `haveI := hJ.map _ (QuotientGroup.mk'_surjective U.toSubgroup)`. Simplify using `only at hF`. Take `⟨H, hH⟩` from `three_variables ρ (QuotientGroup.mk' U.toSubgroup) J (J.map (QuotientGroup.mk' U.toSubgroup)) (fun j hj => ⟨j, hj, rfl⟩) hinv F (by`. Introduce `g a b c`.
+
+Proceed by induction on `a using QuotientGroup.induction_on`. Proceed by induction on `b using QuotientGroup.induction_on`. Proceed by induction on `c using QuotientGroup.induction_on`. Simplify using `only [QuotientGroup.mk'_apply, ← QuotientGroup.mk_mul, hF]`. Simplify using `[mul_assoc]) (by`.
+
+Introduce `a b c d`. Proceed by induction on `a using QuotientGroup.induction_on with | H a => ?_`. Proceed by induction on `b using QuotientGroup.induction_on with | H b => ?_`. Proceed by induction on `c using QuotientGroup.induction_on with | H c => ?_`. Proceed by induction on `d using QuotientGroup.induction_on with | H d => ?_`.
+
+Establish `e` using `congrArg (ρ a) (hfc (a⁻¹ * b) (b⁻¹ * c) (c⁻¹ * d))`. Establish `e1 : a⁻¹ * b * (b⁻¹ * c) = a⁻¹ * c` using `by group`. Establish `e2 : b⁻¹ * c * (c⁻¹ * d) = b⁻¹ * d` using `by group`. Rewrite `e` using `[e1, e2, map_sub, map_add, map_sub, ← Module.End.mul_apply, ← map_mul, mul_inv_cancel_left, map_zero]`. Simplify using `only [hF]`.
+
+Conclude with `e)`. Take `⟨a, ha⟩` from `exists_inverse l _ ((hcop U).pow_left 3) htor (fun q : (Γ ⧸ U.toSubgroup) × (Γ ⧸ U.toSubgroup) => F 1 q.1 q.2)`. Use `(separated_dvr_second_cohomology_mem ρ _).2 ⟨fun g => a • H g, ?_, ?_⟩` and prove the remaining obligations. Conclude with `(continuous_of_discreteTopology (f := fun q => a • H q)).comp QuotientGroup.continuous_mk`. Use function extensionality and compare the values at `⟨g, h⟩`.
+
+Establish `e` using `ha ((g : Γ ⧸ U.toSubgroup), ((g * h : Γ) : Γ ⧸ U.toSubgroup))`. Establish `e2` using `hF 1 g (g * h)`. Establish `e3` using `hH g h`. Simplify using `only [QuotientGroup.mk'_apply] at e3`. Simplify using `only at e`.
+
+Rewrite `e` using `[e3]`. Rewrite using `[d1_apply, map_zsmul, ← smul_sub, ← smul_add, e, ← QuotientGroup.mk_one, e2]`. Simplify using the standard rewrite rules.
+-/
 theorem cohomology_vanishes : ∀ (Γ : Type) [Group Γ] [TopologicalSpace Γ] [IsTopologicalGroup Γ] [CompactSpace Γ] [T2Space Γ] [TotallyDisconnectedSpace Γ] (R M : Type) [CommRing R] [AddCommGroup M] [Module R M] [TopologicalSpace M] [DiscreteTopology M] [ContinuousConstSMul R M] (ρ : Representation R Γ M) (l : ℕ) (J : Subgroup Γ), l.Prime → J.Normal → IsClosed (J : Set Γ) → (∀ U : Subgroup Γ, U.Normal → IsOpen (U : Set Γ) → ∀ j ∈ J, ∃ n, Nat.Coprime n l ∧ j ^ n ∈ U) → ContAction ρ → (∀ m : M, ∃ n, l ^ n • m = 0) → (∀ m : M, (∀ j ∈ J, ρ j m = m) → m = 0) → H0 ρ = ⊥ ∧ Subsingleton (H1 ρ) ∧ Subsingleton (H2 ρ) := by
   intro Γ _ _ _ _ _ _ R M _ _ _ _ _ _ ρ l J hl hJ _ hord hρ htor hinv
   classical

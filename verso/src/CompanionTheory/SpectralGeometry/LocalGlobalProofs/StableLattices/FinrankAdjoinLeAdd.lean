@@ -12,17 +12,26 @@ noncomputable def compr (W W' : Submodule ℂ V) (hc : IsCompl W W') :
   map_add' b c := by ext w; simp
   map_smul' t b := by ext w; simp
 
+/- English proof (translation)
+Use `show W.linearProjOfIsCompl W' hc (b w) = _`. Conclude with `Submodule.linearProjOfIsCompl_apply_left hc ⟨b w, hb w w.2⟩`.
+-/
 lemma compr_of_inv (W W' : Submodule ℂ V) (hc : IsCompl W W') (b : End ℂ V)
     (hb : ∀ w ∈ W, b w ∈ W) (w : W) : compr W W' hc b w = ⟨b w, hb w w.2⟩ := by
   show W.linearProjOfIsCompl W' hc (b w) = _
   exact Submodule.linearProjOfIsCompl_apply_left hc ⟨b w, hb w w.2⟩
 
+/- English proof (translation)
+Use `LinearMap.ext fun w => ?_` and prove the remaining obligations. Rewrite using `[compr_of_inv W W' hc b hb w]`. Both sides reduce to the same expression.
+-/
 lemma compr_eq_restrict (W W' : Submodule ℂ V) (hc : IsCompl W W') (b : End ℂ V)
     (hb : ∀ w ∈ W, b w ∈ W) : compr W W' hc b = b.restrict hb := by
   refine LinearMap.ext fun w => ?_
   rw [compr_of_inv W W' hc b hb w]
   rfl
 
+/- English proof (translation)
+Use `LinearMap.ext fun w => ?_` and prove the remaining obligations. Rewrite using `[Module.End.mul_apply, compr_of_inv W W' hc c hcW w]`. Both sides reduce to the same expression.
+-/
 lemma compr_mul (W W' : Submodule ℂ V) (hc : IsCompl W W') (b c : End ℂ V)
     (hcW : ∀ w ∈ W, c w ∈ W) :
     compr W W' hc (b * c) = compr W W' hc b * compr W W' hc c := by
@@ -30,6 +39,11 @@ lemma compr_mul (W W' : Submodule ℂ V) (hc : IsCompl W W') (b c : End ℂ V)
   rw [Module.End.mul_apply, compr_of_inv W W' hc c hcW w]
   rfl
 
+/- English proof (translation)
+Establish `hb : ∀ w ∈ W, algebraMap ℂ (End ℂ V) t w ∈ W` using `fun w hw => by`. Rewrite using `[Module.algebraMap_end_apply]`. Conclude with `W.smul_mem t hw`. Rewrite using `[compr_eq_restrict W W' hc _ hb]`. Use extensionality with `w`.
+
+Simplify using `[Module.algebraMap_end_apply]`.
+-/
 lemma compr_algebraMap (W W' : Submodule ℂ V) (hc : IsCompl W W') (t : ℂ) :
     compr W W' hc (algebraMap ℂ (End ℂ V) t) = algebraMap ℂ (End ℂ W) t := by
   have hb : ∀ w ∈ W, algebraMap ℂ (End ℂ V) t w ∈ W := fun w hw => by
@@ -39,6 +53,17 @@ lemma compr_algebraMap (W W' : Submodule ℂ V) (hc : IsCompl W W') (t : ℂ) :
   ext w
   simp [Module.algebraMap_end_apply]
 
+/- English proof (translation)
+Proceed by induction on `hb using Algebra.adjoin_induction with`. Consider the case `mem x hx`. Take `⟨i, rfl⟩` from `hx`. Use `⟨h i, ?_⟩` and prove the remaining obligations. Rewrite using `[compr_eq_restrict W W' hc _ (h i)]`.
+
+Conclude with `Algebra.subset_adjoin ⟨i, rfl⟩`. Consider the case `algebraMap r`. Use `⟨fun w hw => ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[Module.algebraMap_end_apply]`. Conclude with `W.smul_mem r hw`.
+
+Rewrite using `[compr_algebraMap]`. Conclude with `Subalgebra.algebraMap_mem _ r`. Consider the case `add x y _ _ hx hy`. Use `⟨fun w hw => ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[LinearMap.add_apply]`.
+
+Conclude with `W.add_mem (hx.1 w hw) (hy.1 w hw)`. Rewrite using `[map_add]`. Conclude with `Subalgebra.add_mem _ hx.2 hy.2`. Consider the case `mul x y _ _ hx hy`. Use `⟨fun w hw => ?_, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[Module.End.mul_apply]`. Conclude with `hx.1 _ (hy.1 w hw)`. Rewrite using `[compr_mul W W' hc x y hy.1]`. Conclude with `Subalgebra.mul_mem _ hx.2 hy.2`.
+-/
 lemma adjoin_compr {l : ℕ} (a : Fin l → End ℂ V) (W W' : Submodule ℂ V) (hc : IsCompl W W')
     (h : ∀ i, ∀ w ∈ W, a i w ∈ W) (b : End ℂ V) (hb : b ∈ Algebra.adjoin ℂ (Set.range a)) :
     (∀ w ∈ W, b w ∈ W) ∧ compr W W' hc b ∈
@@ -68,6 +93,19 @@ lemma adjoin_compr {l : ℕ} (a : Fin l → End ℂ V) (W W' : Submodule ℂ V) 
     · rw [compr_mul W W' hc x y hy.1]
       exact Subalgebra.mul_mem _ hx.2 hy.2
 
+/- English proof (translation)
+Introduce `V _ _ _ l a W W' hc h h'`. Set `AW` to `Algebra.adjoin ℂ (Set.range fun i => ((a i).restrict (h i) : Module.End ℂ W))`. Set `AW'` to `Algebra.adjoin ℂ (Set.range fun i => ((a i).restrict (h' i) : Module.End ℂ W'))`. Set `Φ : Algebra.adjoin ℂ (Set.range a) →ₗ[ℂ] AW × AW'` to `{ toFun := fun b => (⟨compr W W' hc b, (adjoin_compr a W W' hc h b b.2).2⟩, ⟨compr W' W hc.symm b, (adjoin_compr a W' W hc.symm h' b b.2).2⟩) map_add' := fun b c => by`. Apply the tactic sequence `ext <;> simp [map_add]`.
+
+Use the proof step `map_smul' := fun t b => by`. Apply the tactic sequence `ext <;> simp [map_smul] }`. Establish `hinj : Function.Injective Φ`. Introduce `b c hbc`. Establish `h1` using `congrArg (fun p => (p.1 : Module.End ℂ W)) hbc`.
+
+Establish `h2` using `congrArg (fun p => (p.2 : Module.End ℂ W')) hbc`. Simplify using `only [Φ, LinearMap.coe_mk, AddHom.coe_mk] at h1 h2`. Apply `Subtype.ext` to reduce the goal to its premises. Use `LinearMap.ext fun v => ?_` and prove the remaining obligations. Establish `hv : v ∈ W ⊔ W'` using `by rw [hc.sup_eq_top]; exact Submodule.mem_top`.
+
+Take `⟨w, hw, w', hw', rfl⟩` from `Submodule.mem_sup.mp hv`. Establish `e1 : (b : Module.End ℂ V) w = (c : Module.End ℂ V) w`. Establish `e` using `LinearMap.congr_fun h1 ⟨w, hw⟩`. Rewrite `e` using `[compr_of_inv W W' hc _ (adjoin_compr a W W' hc h b b.2).1, compr_of_inv W W' hc _ (adjoin_compr a W W' hc h c c.2).1]`. Conclude with `congrArg Subtype.val e`.
+
+Establish `e2 : (b : Module.End ℂ V) w' = (c : Module.End ℂ V) w'`. Establish `e` using `LinearMap.congr_fun h2 ⟨w', hw'⟩`. Rewrite `e` using `[compr_of_inv W' W hc.symm _ (adjoin_compr a W' W hc.symm h' b b.2).1, compr_of_inv W' W hc.symm _ (adjoin_compr a W' W hc.symm h' c c.2).1]`. Conclude with `congrArg Subtype.val e`. Rewrite using `[map_add, map_add, e1, e2]`.
+
+Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem finrank_adjoin_le_add :
     ∀ (V : Type) [AddCommGroup V] [Module ℂ V] [FiniteDimensional ℂ V] (l : ℕ)
       (a : Fin l → Module.End ℂ V) (W W' : Submodule ℂ V), IsCompl W W' →

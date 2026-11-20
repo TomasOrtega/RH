@@ -32,6 +32,9 @@ def rowEquiv (F : Type) [Field F] (γ : SL(2, ℤ)) : (Fin 2 → F) ≃ₗ[F] (F
 open NumberField UpperHalfPlane in
 open scoped Classical MatrixGroups nonZeroDivisors in
 set_option autoImplicit false in
+/- English proof (translation)
+Simplify using `using _root_.GlobalTheory.HilbFam.iterD_const_mul_reindex I I (Equiv.refl I) u h A z`.
+-/
 private lemma iterD_const_mul {I : Type} [Fintype I] [DecidableEq I] (u : List I)
     (h : (I → ℂ) → ℂ) (A : ℂ) (z : I → ℂ) :
     _root_.GlobalTheory.IndefiniteRowSideFullHecke.DefiningCoordinates.iterD u (fun z ↦ A * h z) z =
@@ -41,6 +44,11 @@ private lemma iterD_const_mul {I : Type} [Fintype I] [DecidableEq I] (u : List I
 open NumberField UpperHalfPlane in
 open scoped Classical MatrixGroups nonZeroDivisors in
 set_option autoImplicit false in
+/- English proof (translation)
+Unfold `_root_.GlobalTheory.HilbFam.mulMat`. Rewrite using `[Submodule.mem_map]`. Prove the components needed by the constructor for the conclusion. Introduce `hx`. Conclude with `⟨x, hx, rfl⟩`.
+
+Introduce and unpack `⟨y, hy, hxy⟩`. Rewrite `hy` using `[(_root_.GlobalTheory.HilbFam.JetModular.rowEquiv F γ).injective (a₁ := y) (a₂ := x) hxy]`. Then use the resulting hypothesis.
+-/
 private lemma mem_iff_sl2_equiv_mem_mulMat (F : Type) [Field F] [NumberField F] (L : _root_.GlobalTheory.HilbFam.Lat F)
     (γ : SL(2, ℤ)) (x : Fin 2 → F) :
     x ∈ L ↔ _root_.GlobalTheory.HilbFam.JetModular.rowEquiv F γ x ∈ _root_.GlobalTheory.HilbFam.mulMat L (γ : Matrix (Fin 2) (Fin 2) ℤ) := by
@@ -55,6 +63,13 @@ private lemma mem_iff_sl2_equiv_mem_mulMat (F : Type) [Field F] [NumberField F] 
 open NumberField UpperHalfPlane in
 open scoped Classical MatrixGroups nonZeroDivisors in
 set_option autoImplicit false in
+/- English proof (translation)
+Establish `hj : ((γ : Matrix (Fin 2) (Fin 2) ℤ) 1 0 * (τ : ℂ) + (γ : Matrix (Fin 2) (Fin 2) ℤ) 1 1) ≠ 0`. Establish `h` using `denom_ne_zero (γ : GL (Fin 2) ℝ) τ`. Rewrite `h` using `[denom]`. Simplify using `using h`. Establish `hdet : ((γ : Matrix (Fin 2) (Fin 2) ℤ) 0 0 : ℂ) * (γ : Matrix (Fin 2) (Fin 2) ℤ) 1 1 - ((γ : Matrix (Fin 2) (Fin 2) ℤ) 0 1 : ℂ) * (γ : Matrix (Fin 2) (Fin 2) ℤ) 1 0 = 1`.
+
+Establish `h` using `Matrix.SpecialLinearGroup.det_coe γ`. Rewrite `h` using `[Matrix.det_fin_two]`. Conclude with `h` after adjusting the coercions. Simplify using `only [_root_.GlobalTheory.HilbFam.coord, _root_.GlobalTheory.HilbFam.JetModular.rowEquiv, LinearEquiv.ofLinear_apply, Matrix.vecMulLinear_apply, Matrix.vecMul, dotProduct, Fin.sum_univ_two, Matrix.map_apply, map_add, map_mul, map_intCast, Complex.ofReal_add, Complex.ofReal_mul, C …`. Use `set j := ((γ : Matrix (Fin 2) (Fin 2) ℤ) 1 0 * (τ : ℂ) + (γ : Matrix (Fin 2) (Fin 2) ℤ) 1 1) with hj_def`.
+
+Establish `hji : j * j⁻¹ = 1` using `mul_inv_cancel₀ hj`. Rewrite using `[div_eq_mul_inv]`. Take the linear combination `(-(((i (x 0) : ℝ) : ℂ) * z i * t + ((i (x 1) : ℝ) : ℂ) * (1 + z i * c))) * hji - ((i (x 0) : ℝ) : ℂ) * z i * t * j * j⁻¹ * hdet`.
+-/
 private lemma embeddingCoord_sl2_smul_lemma_3 (F : Type) [Field F] [NumberField F] (γ : SL(2, ℤ)) (τ : ℍ)
     (c t : ℂ) (z : _root_.GlobalTheory.IndefiniteRowSideFullHecke.OmegaFactorization.Emb F → ℂ) (x : Fin 2 → F) (i : _root_.GlobalTheory.IndefiniteRowSideFullHecke.OmegaFactorization.Emb F) :
     _root_.GlobalTheory.HilbFam.coord (fun i ↦ ((γ • τ : ℍ) : ℂ) + z i * (c * ((γ • τ : ℍ) : ℂ) + t)) (fun i ↦ 1 + z i * c) x i =
@@ -84,6 +99,11 @@ private lemma embeddingCoord_sl2_smul_lemma_3 (F : Type) [Field F] [NumberField 
 open NumberField UpperHalfPlane in
 open scoped Classical MatrixGroups nonZeroDivisors in
 set_option autoImplicit false in
+/- English proof (translation)
+Rewrite using `[← NumberField.Embeddings.card F ℂ]`. Use `Fintype.card_of_bijective (f := fun φ : F →+* ℝ ↦ Complex.ofRealHom.comp φ) ⟨?_, ?_⟩` and prove the remaining obligations. Introduce `φ ψ h`. Use extensionality with `x`. Simplify using `using congrArg (fun f : F →+* ℂ ↦ f x) h`.
+
+Introduce `ψ`. Establish `hψ : ComplexEmbedding.IsReal ψ` using `InfinitePlace.isReal_mk_iff.mp (IsTotallyReal.isReal _)`. Conclude with `⟨hψ.embedding, by ext x; simp [hψ.coe_embedding_apply]⟩`.
+-/
 private lemma card_realEmbeddings_eq_finrank (F : Type) [Field F] [NumberField F] [IsTotallyReal F] :
     Fintype.card (_root_.GlobalTheory.IndefiniteRowSideFullHecke.OmegaFactorization.Emb F) = Module.finrank ℚ F := by
   rw [← NumberField.Embeddings.card F ℂ]
@@ -99,6 +119,13 @@ open NumberField UpperHalfPlane in
 open scoped Classical MatrixGroups nonZeroDivisors in
 set_option autoImplicit false in
 
+/- English proof (translation)
+Introduce `F _ _ _ k L κ γ τ c t hk`. Establish `hj : ((γ : Matrix (Fin 2) (Fin 2) ℤ) 1 0 * (τ : ℂ) + (γ : Matrix (Fin 2) (Fin 2) ℤ) 1 1) ≠ 0`. Establish `h` using `denom_ne_zero (γ : GL (Fin 2) ℝ) τ`. Rewrite `h` using `[denom]`. Simplify using `using h`.
+
+Unfold `_root_.GlobalTheory.HilbFam.jet`. Rewrite using `[← iterD_const_mul]`. Use `congr 1`. Use function extensionality and compare the values at `z`. Rewrite using `[_root_.GlobalTheory.HilbFam.gval_linear_change F k L (_root_.GlobalTheory.HilbFam.mulMat L (γ : Matrix (Fin 2) (Fin 2) ℤ)) (_root_.GlobalTheory.HilbFam.JetModular.rowEquiv F γ) _ _ _ _ (fun _ ↦ ((γ : Matrix (Fin 2) (Fin 2) ℤ) 1 0 * (τ : ℂ) + (γ : Matrix (Fin 2) (Fin 2) ℤ) 1 1)⁻¹ …`.
+
+Rewrite using `[Finset.prod_const, Finset.card_univ, card_realEmbeddings_eq_finrank]`. Simplify using `only [inv_pow, inv_inv, ← pow_mul, mul_comm (Module.finrank ℚ F) k]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem _root_.GlobalTheory.HilbFam.JetModular.jet_smul : ∀ (F : Type) [Field F] [NumberField F] [IsTotallyReal F] (k : ℕ) (L : _root_.GlobalTheory.HilbFam.Lat F) (κ : _root_.GlobalTheory.IndefiniteRowSideFullHecke.OmegaFactorization.Emb F → ℕ) (γ : SL(2, ℤ)) (τ : ℍ) (c t : ℂ), Even k → _root_.GlobalTheory.HilbFam.jet k L κ ((γ • τ : ℍ) : ℂ) c t = (((γ : Matrix (Fin 2) (Fin 2) ℤ) 1 0 * (τ : ℂ) + (γ : Matrix (Fin 2) (Fin 2) ℤ) 1 1) : ℂ) ^ (k * Module.finrank ℚ F) * _root_.GlobalTheory.HilbFam.jet k (_root_.GlobalTheory.HilbFam.mulMat L (γ : Matrix (Fin 2) (Fin 2) ℤ)) κ τ (c - t * ((γ : Matrix (Fin 2) (Fin 2) ℤ) 1 0 : ℂ) * ((γ : Matrix (Fin 2) (Fin 2) ℤ) 1 0 * (τ : ℂ) + (γ : Matrix (Fin 2) (Fin 2) ℤ) 1 1)) (t * ((γ : Matrix (Fin 2) (Fin 2) ℤ) 1 0 * (τ : ℂ) + (γ : Matrix (Fin 2) (Fin 2) ℤ) 1 1) ^ 2) := by
   intro F _ _ _ k L κ γ τ c t hk
   have hj : ((γ : Matrix (Fin 2) (Fin 2) ℤ) 1 0 * (τ : ℂ) + (γ : Matrix (Fin 2) (Fin 2) ℤ) 1 1) ≠ 0 := by

@@ -27,6 +27,9 @@ variable (p : ℕ) (O : Type) [CommRing O]
 def modPowTr (N : ℕ) : ModPow p O (N + 1) →+* ModPow p O N :=
   Ideal.Quotient.factor (Ideal.span_singleton_le_span_singleton.2 (pow_dvd_pow _ N.le_succ))
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨N, by rw [← map_natCast (Ideal.Quotient.mk (Ideal.span {(p : O) ^ N})), ← map_pow, Ideal.Quotient.eq_zero_iff_mem] exact Ideal.mem_span_singleton_self _⟩`.
+-/
 theorem isNilpotent_modPow (N : ℕ) : IsNilpotent (p : ModPow p O N) :=
   ⟨N, by
     rw [← map_natCast (Ideal.Quotient.mk (Ideal.span {(p : O) ^ N})), ← map_pow,
@@ -44,10 +47,16 @@ abbrev bcObj (a : O →+* B) (A : Over (Sp O)) : Over (Sp B) := (Over.pullback (
 instance bcObj.instGrpObj (a : O →+* B) (A : Over (Sp O)) [GrpObj A] : GrpObj (bcObj a A) :=
   Functor.grpObjObj
 
+/- English proof (translation)
+The claim follows from `isGrpPullback_pullback A (spMap a)`.
+-/
 theorem bcObj_isGrpPullback (a : O →+* B) (A : Over (Sp O)) [GrpObj A] :
     IsGrpPullback (bcObj a A) A (spMap a) (pullback.fst _ _) :=
   isGrpPullback_pullback A (spMap a)
 
+/- English proof (translation)
+The claim follows from `GlobalTheory.isAbelianScheme_pullback_obj _ A hA`.
+-/
 theorem bcObj_isAbelianScheme (a : O →+* B) {A : Over (Sp O)} [GrpObj A] (hA : IsAbelianScheme A) :
     IsAbelianScheme (bcObj a A) :=
   GlobalTheory.isAbelianScheme_pullback_obj _ A hA
@@ -59,11 +68,17 @@ def bcHom {σ : O →+* O'} {a : O →+* B} {a' : O' →+* B'} {τ : B →+* B'}
     rw [Category.assoc, hφ, ← Category.assoc, pullback.condition, Category.assoc, Category.assoc,
       ← Cris.spMap_comp, ← Cris.spMap_comp, h])
 
+/- English proof (translation)
+The claim follows from `pullback.lift_fst _ _ _`.
+-/
 @[simp] theorem bcHom_fst {σ : O →+* O'} {a : O →+* B} {a' : O' →+* B'} {τ : B →+* B'}
     (h : a'.comp σ = τ.comp a) {A : Over (Sp O)} {A' : Over (Sp O')} {φ : A'.left ⟶ A.left}
     (hφ : φ ≫ A.hom = A'.hom ≫ spMap σ) :
     bcHom h hφ ≫ pullback.fst _ _ = pullback.fst _ _ ≫ φ := pullback.lift_fst _ _ _
 
+/- English proof (translation)
+The claim follows from `pullback.lift_snd _ _ _`.
+-/
 @[simp] theorem bcHom_snd {σ : O →+* O'} {a : O →+* B} {a' : O' →+* B'} {τ : B →+* B'}
     (h : a'.comp σ = τ.comp a) {A : Over (Sp O)} {A' : Over (Sp O')} {φ : A'.left ⟶ A.left}
     (hφ : φ ≫ A.hom = A'.hom ≫ spMap σ) :
@@ -80,6 +95,9 @@ abbrev lev (A : Over (Sp O)) (N : ℕ) : Over (Sp (ModPow p O N)) :=
 
 variable {p} {A : Over (Sp O)} [GrpObj A]
 
+/- English proof (translation)
+The claim follows from `bcObj_isAbelianScheme _ hA`.
+-/
 theorem lev_isAbelianScheme (hA : IsAbelianScheme A) (N : ℕ) : IsAbelianScheme (lev p A N) :=
   bcObj_isAbelianScheme _ hA
 

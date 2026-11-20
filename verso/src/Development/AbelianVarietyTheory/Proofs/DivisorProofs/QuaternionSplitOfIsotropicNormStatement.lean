@@ -7,5 +7,8 @@ open NumberField IsDedekindDomain Formalism.MainNotions.GlobalTheoryTheory.Genus
 open Matrix
 open scoped Quaternion Topology TensorProduct
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.quaternion_split_of_isotropic | exact GlobalTheory.quaternion_split_of_isotropic | (intros; apply GlobalTheory.quaternion_split_of_isotropic <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.quaternion_split_of_isotropic_norm : ∀ (F : Type) [Field F] [NumberField F] (a b : F), a ≠ 0 → b ≠ 0 → (∃ x : ℍ[F, a, b], x ≠ 0 ∧ nrm x = 0) → ∃ φ : ℍ[F, a, b] ≃ₐ[F] Matrix (Fin 2) (Fin 2) F, ∀ x, (φ x).det = nrm x := by
   first | exact @GlobalTheory.quaternion_split_of_isotropic | exact GlobalTheory.quaternion_split_of_isotropic | (intros; apply GlobalTheory.quaternion_split_of_isotropic <;> assumption)

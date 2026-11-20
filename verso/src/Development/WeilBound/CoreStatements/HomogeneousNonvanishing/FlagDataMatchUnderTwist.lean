@@ -8,15 +8,24 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.G
 
 namespace PositivityTheory.UnitarySelfGeneration
 
+/- English proof (translation)
+Apply the tactic sequence `ext a <;> simp [dualMap]`.
+-/
 theorem fm_dualMap_comp {R R' R'' : Type} [CommRing R] [CommRing R'] [CommRing R''] (f : R →+* R') (g : R' →+* R'') :
     dualMap (g.comp f) = (dualMap g).comp (dualMap f) := by
   ext a <;> simp [dualMap]
 
+/- English proof (translation)
+Simplify using `only [flagStep, Submodule.map_span, Set.image_image]`.
+-/
 theorem fm_flagStep_map {Ω : Type} [Field Ω] {V V' : Type} [AddCommGroup V] [Module Ω V] [AddCommGroup V']
     [Module Ω V'] (φ : V →ₗ[Ω] V') {r : ℕ} (b : Fin r → V) (k : ℕ) :
     (flagStep Ω b k).map φ = flagStep Ω (fun a => φ (b a)) k := by
   simp only [flagStep, Submodule.map_span, Set.image_image]
 
+/- English proof (translation)
+The claim follows from `Over.OverMorphism.ext (m.cart.1.hom_ext h (by rw [Over.w v, Over.w w]))`.
+-/
 theorem fm_over {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {S S' : Scheme.{0}}
     {t : SAB H S} {t' : SAB H S'} {f : S' ⟶ S} (m : SABMap t' t f) {U : Over S'} (v w : U ⟶ t'.G)
     (h : v.left ≫ m.φ = w.left ≫ m.φ) : v = w :=
@@ -27,10 +36,24 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {D : Da
   {g : HostAut H} {Φ : Xo.X ⟶ Xo.X} {n : SABMap (twistSAB Xo.univ.t g) Xo.univ.t Φ} {Y : Model Xo c β}
   {Y' : Model Xo c β'} {T T' : Scheme.{0}} {u₁ : T ⟶ Y.t.G.left} {u₂ u₂' : T ⟶ Y'.t.G.left}
 
+/- English proof (translation)
+Take `⟨u, u', h1, h2, h3, h4⟩` from `h`. Apply the tactic sequence `refine ⟨a ≫ u, a ≫ u', ?_, ?_, ?_, ?_⟩ <;> simp only [Category.assoc, h1, h2, h3, h4]`.
+-/
 theorem fm_pre (a : T' ⟶ T) (h : TwTan n Y Y' u₁ u₂) : TwTan n Y Y' (a ≫ u₁) (a ≫ u₂) := by
   obtain ⟨u, u', h1, h2, h3, h4⟩ := h
   refine ⟨a ≫ u, a ≫ u', ?_, ?_, ?_, ?_⟩ <;> simp only [Category.assoc, h1, h2, h3, h4]
 
+/- English proof (translation)
+Take `⟨u, u', h1, h2, h3, h4⟩` from `h`. Take `⟨v, v', k1, k2, k3, k4⟩` from `h'`. Establish `hmono : Mono (Y.jQ ≫ pullback.fst Y.s (spMap β))`. Establish `: IsOpenImmersion Y.jQ` using `Y.jQ_open`. Use `infer_instance`.
+
+Establish `e1 : ∀ z : T ⟶ Y.oF.t.G.left, z ≫ Y.oF.t.G.hom ≫ (Y.jQ ≫ pullback.fst Y.s (spMap β)) = (z ≫ Y.m.φ) ≫ Y.t.G.hom`. Introduce `z`. Rewrite using `[Category.assoc, Y.m.cart.1.w]`. Establish `huv : u = v`. Apply `Y.m.cart.1.hom_ext` to reduce the goal to its premises.
+
+Conclude with `h1.trans k1.symm`. Rewrite using `[← cancel_mono (Y.jQ ≫ pullback.fst Y.s (spMap β)), Category.assoc, Category.assoc, e1, e1, h1, k1]`. Substitute `huv` using the available equality. Establish `e2 : ∀ z : T ⟶ Y'.oF.t.G.left, z ≫ Y'.oF.t.G.hom ≫ pullback.fst _ _ = (z ≫ Y'.m0.φ) ≫ Xo.univ.t.G.hom`. Introduce `z`.
+
+Rewrite using `[Category.assoc, Y'.m0.cart.1.w]`. Establish `hu' : u' = v'`. Apply `Y'.m0.cart.1.hom_ext` to reduce the goal to its premises. Conclude with `h3.trans k3.symm`. Apply `pullback.hom_ext` to reduce the goal to its premises.
+
+Rewrite using `[Category.assoc, Category.assoc, e2, e2, h3, k3]`. Rewrite using `[Category.assoc, Category.assoc]`. Conclude with `h4.trans k4.symm`. Rewrite using `[← h2, ← k2, hu']`.
+-/
 theorem fm_fun (hβ : Mono (spMap β)) (h : TwTan n Y Y' u₁ u₂) (h' : TwTan n Y Y' u₁ u₂') : u₂ = u₂' := by
   obtain ⟨u, u', h1, h2, h3, h4⟩ := h
   obtain ⟨v, v', k1, k2, k3, k4⟩ := h'
@@ -60,6 +83,15 @@ theorem fm_fun (hβ : Mono (spMap β)) (h : TwTan n Y Y' u₁ u₂) (h' : TwTan 
   rw [← h2, ← k2, hu']
 end
 
+/- English proof (translation)
+Introduce `E _ _ _ H D l Xo c O O' _ _ β β' Y Y' g Φ n S Ω _ K _ J y A A' Fl Fl' ψ θ φ hβ hβ' hfn hw he`. Establish `hsp : spMap ((dualMap A.fn).comp (dualMap ψ.toRingHom)) = spMap (dualMap A.fn) ≫ spMap (dualMap ψ.toRingHom)`. Simplify using `only [spMap, CommRingCat.ofHom_comp, Spec.map_comp]`. Establish `hj : ∀ e, φ (Fl.j e) = Fl'.j (θ e)`. Introduce `e`.
+
+Apply `A'.M.inj` to reduce the goal to its premises. Apply `fm_over A'.m` to reduce the goal to its premises. Apply `fm_fun hβ (hw (Fl.j e))` to reduce the goal to its premises. Rewrite using `[Fl.j_pt e, Fl'.j_pt (θ e), ← hfn, fm_dualMap_comp, hsp, Category.assoc]`. Conclude with `fm_pre _ (he e)`.
+
+Use `⟨hj, ?_⟩` and prove the remaining obligations. Introduce `s s' r b u h1 h2 k`. Rewrite using `[h1 k, h2 k, fm_flagStep_map]`. Use `congr 1`. Use function extensionality and compare the values at `a`.
+
+Simplify using `[map_sum, map_smul, hj]`.
+-/
 theorem flag_data_match_under_twist : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (D : Datum H) (l : Level H) (Xo : Moduli D l) (c : Coeff l) (O O' : Type) [CommRing O] [CommRing O'] (β : O →+* c.F) (β' : O' →+* c.F) (Y : Model Xo c β) (Y' : Model Xo c β') (g : HostAut H) (Φ : Xo.X ≅ Xo.X) (n : SABMap (twistSAB Xo.univ.t g) Xo.univ.t Φ.hom) (S : Finset ℕ) (Ω : Type) [Field Ω] (K : Type) [Fintype K] (J : K → Type) (y : (Σ k, J k) → Ω) (A : HodgeCpt Y S y) (A' : HodgeCpt Y' S y) (Fl : A.Flag) (Fl' : A'.Flag) (ψ : A'.Ω₀ ≃+* A.Ω₀) (θ : Fl.Li₀ ≃+ Fl'.Li₀) (φ : A.Li ≃ₗ[Ω] A'.Li), Mono (spMap β) → Mono (spMap β') → A.fn.comp ψ.toRingHom = A'.fn → (∀ w, TwTan n Y Y' ((A.M.pt w).left ≫ A.m.φ) ((A'.M.pt (φ w)).left ≫ A'.m.φ)) → (∀ e, TwTan n Y Y' (Fl.M₀.pt e).left (spMap (dualMap ψ.toRingHom) ≫ (Fl'.M₀.pt (θ e)).left)) → (∀ e, φ (Fl.j e) = Fl'.j (θ e)) ∧ ∀ s s' (r : ℕ) (b : Fin r → Fl.Li₀) (u : Matrix (Fin r) (Fin r) Ω), (∀ k, flagStep Ω (Fl.b s) k = flagStep Ω (fun a => ∑ q, u q a • Fl.j (b q)) k) → (∀ k, flagStep Ω (Fl'.b s') k = flagStep Ω (fun a => ∑ q, u q a • Fl'.j (θ (b q))) k) → ∀ k, (flagStep Ω (Fl.b s) k).map φ.toLinearMap = flagStep Ω (Fl'.b s') k := by
   intro E _ _ _ H D l Xo c O O' _ _ β β' Y Y' g Φ n S Ω _ K _ J y A A' Fl Fl' ψ θ φ hβ hβ' hfn hw he
   have hsp : spMap ((dualMap A.fn).comp (dualMap ψ.toRingHom)) =

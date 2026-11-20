@@ -11,6 +11,17 @@ open scoped TensorProduct Classical
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 namespace GlobalTheory.Fam
 
+/- English proof (translation)
+Introduce `B X I l Z L hT Gi Gl Kc Yd cX ex W hW u a _ _ t J hJ j hj α γ z`. Rewrite using `[(GlobalTheory.T.finiteDatum_factors_over_twistPrimes_local I hW.tr.ok hW.tr.tw l Z u (W.P.I.tup t) J.Ch₀ J.A hJ.is).1 j hj (J.ι j α) (J.ι (j + 1) γ) z]`. Use `congr 1`. Use `symm`. Use `Finset.prod_bij (fun i _ => J.P i) ?_ ?_ ?_ ?_` and prove the remaining obligations.
+
+Introduce `i _`. Rewrite using `[Finset.mem_filter, hJ.eq i]`. Use `⟨Finset.mem_univ _, fun h => ?_⟩` and prove the remaining obligations. Conclude with `Finset.disjoint_left.1 ((GlobalTheory.PkPlaces.pk_places W hW.pk).2 t).1 ((hW.lev.2.1 _).2 h) (J.mem i)`. Introduce `i₁ _ i₂ _ h`.
+
+Conclude with `hJ.inj (((hJ.eq i₁).symm.trans (congrArg Subtype.val h)).trans (hJ.eq i₂))`. Introduce `P hP`. Establish `hv : P.1 ∉ (B.primes X).vGs` using `(Finset.mem_filter.1 hP).2`. Establish `hq : P.1 ∈ Formalism.L2.Col.QE I.sel (I.tup (W.P.I.tup t) : Formalism.L2.DIV.Chr B.fields.F B.fields.E B.fields.K)`. Break down `Finset.mem_union.1 P.2 with h | h` into its components or cases.
+
+Conclude with `absurd h hv`. Conclude with `h`. Take `⟨i, hi⟩` from `hJ.surj _ ((hW.tq.Q t P.1).2 hq)`. Conclude with `⟨i, Finset.mem_univ _, Subtype.ext ((hJ.eq i).trans hi)⟩`. Introduce `i _`.
+
+Both sides reduce to the same expression.
+-/
 theorem xi_eq_xiOff_mul_join : ∀ {B : GlobalTheory.Mem.Base} {X : PreX B.toPre} {I : TC B X} {l : I.Laws} {Z : TC.Later B (I.cols l)} {L : SizeData₂ (I.rec7 l Z)} {hT : GatTies (I.rec7 l Z)} {Gi : Formalism.MainNotions.G.Inst (I.rec7 l Z) L} {Gl : Formalism.MainNotions.G.LatInst (I.rec7 l Z)} {Kc : Formalism.MainNotions.G.Consts} {Yd : DivX (I.rec7 l Z)} {cX : ExtraC} {ex : Extra (I.rec7 l Z) L hT Gi Gl Kc Yd cX} (W : RealPack ex), AllTrue W → ∀ (u : B.Word) (a : GeoAll W u), a.Is → a.True → ∀ t (J : QJ a t), J.Reads → ∀ j (hj : j + 1 ≤ B.R.m) α γ z, J.A.xi j hj (J.ι j α) (J.ι (j + 1) γ) z = xiOff J.A j hj (J.ι j α) (J.ι (j + 1) γ) z * ∏ i, B.embLL (locXi J.A j (J.ι j α) (J.ι (j + 1) γ) (J.P i) (homOf I l Z j hj z)) := by
   intro B X I l Z L hT Gi Gl Kc Yd cX ex W hW u a _ _ t J hJ j hj α γ z
   rw [(GlobalTheory.T.finiteDatum_factors_over_twistPrimes_local I hW.tr.ok hW.tr.tw l Z u (W.P.I.tup t) J.Ch₀ J.A hJ.is).1 j hj (J.ι j α) (J.ι (j + 1) γ) z]

@@ -28,6 +28,9 @@ variable {l : ℕ} [Fact l.Prime] {K : IntermediateField ℚ_[l] (PadicAlgCl l)}
 
 def Res.w (r : Res l K) : WittVector l r.k →+* Acris l := (algebraMap (Ainf l) (Acris l)).comp (WittVector.map r.s)
 
+/- English proof (translation)
+Take `⟨m, b, e⟩` from `WittVector.exists_eq_pow_p_mul' y.1 (nonZeroDivisors.coe_ne_zero y)`. Rewrite using `[e, map_mul, map_pow, map_natCast]`. Conclude with `(h.pow m).mul (b.isUnit.map g)`.
+-/
 theorem isUnit_witt {k C : Type} [Field k] [CharP k l] [PerfectRing k l] [CommRing C] (g : WittVector l k →+* C) (h : IsUnit (l : C))
     (y : nonZeroDivisors (WittVector l k)) : IsUnit (g y) := by
   obtain ⟨m, b, e⟩ := WittVector.exists_eq_pow_p_mul' y.1 (nonZeroDivisors.coe_ne_zero y)

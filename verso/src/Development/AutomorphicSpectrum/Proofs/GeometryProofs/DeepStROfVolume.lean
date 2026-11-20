@@ -18,6 +18,21 @@ attribute [-instance] GlobalTheory.CompHt.fintypePsi
 
 namespace GlobalTheory.CompanionTheory.Ar.Plug
 
+/- English proof (translation)
+Introduce `hN hG hA hG6 hTw hV`. Take `⟨C, hC0, hC⟩` from `GlobalTheory.T.abelian_cm_comp_laws_bound hN hG hA hG6 hTw hV`. Use `⟨C, hC0, ?_⟩` and prove the remaining obligations. Introduce `D T hT hmk j hj1 hjm Y e o hY hcard`. Take `⟨⟨h, e', hCL⟩, hgood, hq, hpq, hf, hrd, hL⟩` from `GlobalTheory.T.good_datum_parameters hG D T hT j hj1 hjm Y e o hY`.
+
+Use `haveI := GlobalTheory.CompanionTheory.Ar.Rec.field_of_datum_abelian D`. Establish `hm2` using `D.R.two_le_m`. Establish `h2m : 2 * D.R.m ≤ D.R.m ^ 2` using `by nlinarith`. Establish `hr : D.R.r = D.R.k + D.R.m - 1` using `rfl`. Establish `hq1 : 1 ≤ (T.Q.Dw j).q` using `by omega`.
+
+Establish `hq3 : 3 * (T.Q.Dw j).q + 1 ≤ (T.Q.Dw j).p + (T.Q.Dw j).q` using `by omega`. Establish `hf2 : 2 ≤ Fintype.card (CMType T.Q.H)`. Rewrite using `[hf]`. Use `show 2 ≤ 2 * D.R.ord`. Use `D.R.ord_pos` as an intermediate fact.
+
+Use linear arithmetic over natural numbers and integers. Establish `hcard' : (Nat.primeFactors (2 * (discr D.host.E).natAbs) ∪ Y.d.l₂.M'.primeFactors).card ≤ 4 * Fintype.card (CMType T.Q.H) * ((T.Q.Dw j).p + (T.Q.Dw j).q) ^ 2` using `by classical`. Establish `h1` using `D.host.card_bad_gt_le Y.d.l₂.M'.primeFactors (B := (D.R.n : ℝ)) le_rfl`. Use `set S := Nat.primeFactors (2 * (discr D.host.E).natAbs) ∪ Y.d.l₂.M'.primeFactors`. Establish `h2` using `Finset.card_filter_add_card_filter_not (s := S) (fun p : ℕ => (D.R.n : ℝ) < (p : ℝ))`.
+
+Establish `h3 : (S.filter fun p : ℕ => ¬ (D.R.n : ℝ) < (p : ℝ)).card ≤ D.R.n + 1`. Use `(Finset.card_le_card (t := Finset.range (D.R.n + 1)) fun p hp => ?_).trans (by simp)` and prove the remaining obligations. Establish `: (p : ℝ) ≤ D.R.n` using `not_lt.1 (Finset.mem_filter.1 hp).2`. Establish `: p ≤ D.R.n` using `by exact_mod_cast this`. Conclude with `Finset.mem_range.2 (by omega)`.
+
+Establish `h4 : Fintype.card (CMType T.Q.H) = 2 * D.R.n` using `hf`. Establish `h5 : 16 ≤ ((T.Q.Dw j).p + (T.Q.Dw j).q) ^ 2` using `by nlinarith`. Establish `h6 : 4 * Fintype.card (CMType T.Q.H) * 16 ≤ 4 * Fintype.card (CMType T.Q.H) * ((T.Q.Dw j).p + (T.Q.Dw j).q) ^ 2` using `Nat.mul_le_mul_left _ h5`. Use linear arithmetic over natural numbers and integers. Establish `key` using `hC D.host.E T.Q.H (T.Q.Dw j) Y.d.l₂ Y.d.Xo₂ Y.d.c₂ D.R.r Y.U h e' hCL (GlobalTheory.CompanionTheory.Ar.Ref.unifAll_holds _ _) hY.geo hgood hY.lev.2 hq1 hq3 hf2 hcard' (xiR D) hY.xiAbs`.
+
+Rewrite `key` using `[hrd, hL]`. Conclude with `key`.
+-/
 theorem deepStR_of_volume : GlobalTheory.CompanionTheory.Ar.Pub.NefRR → Top.Given → ArithIntersectionSystemStatement → BirationalPullbackPushforwardFormula → Top.GoodTowerExistsX →
     Top.VolumeTheoremX → DeepStR := by
   intro hN hG hA hG6 hTw hV

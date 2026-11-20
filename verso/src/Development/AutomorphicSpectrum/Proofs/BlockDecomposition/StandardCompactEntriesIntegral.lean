@@ -14,6 +14,11 @@ namespace GlobalTheory.CompanionTheory.GodementH.StdInt
 
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
 
+/- English proof (translation)
+Establish `h1 : GlobalTheory.AdelicU.evFin F v (GlobalTheory.ThK.Dbl.finOne F) = 1`. Simplify using `only [GlobalTheory.AdelicU.evFin, GlobalTheory.ThK.Dbl.finOne, Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.sndA, LinearMap.inr_apply]`. Express the relevant statement in the definitionally equal form `(Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.evalV F v) (1 : Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.Af F) = 1`. Conclude with `map_one _`. Proceed by induction on `z using TensorProduct.induction_on with`.
+
+Consider the case `zero => simp`. Consider the case `tmul x e`. Rewrite using `[TensorProduct.smul_tmul']`. Simplify using `[GlobalTheory.AdelicU.compFin, h1]`. Consider the case `add x y hx hy => rw [smul_add, map_add, map_add, hx, hy]`.
+-/
 theorem compFin_finOne_smul' (v : HeightOneSpectrum (𝓞 F)) (z : AE F E) :
     compFin F E v (finOne F • z) = compFin F E v z := by
   have h1 : GlobalTheory.AdelicU.evFin F v (GlobalTheory.ThK.Dbl.finOne F) = 1 := by
@@ -27,6 +32,17 @@ theorem compFin_finOne_smul' (v : HeightOneSpectrum (𝓞 F)) (z : AE F E) :
     simp [GlobalTheory.AdelicU.compFin, h1]
   | add x y hx hy => rw [smul_add, map_add, map_add, hx, hy]
 
+/- English proof (translation)
+Set `S : AddSubgroup (AE F E)` to `{ carrier := {z | GlobalTheory.AdelicU.absFin F v (GlobalTheory.AdelicU.compFin F E v z) ≤ 1} add_mem' := fun {x y} hx hy => by`. Simplify using `only [Set.mem_ofPred_eq] at hx hy ⊢`. Rewrite using `[show GlobalTheory.AdelicU.compFin F E v (x + y) = GlobalTheory.AdelicU.compFin F E v x + GlobalTheory.AdelicU.compFin F E v y from map_add _ _ _]`. Conclude with `(GlobalTheory.AdelicU.absFin_add_le F v _ _).trans (max_le hx hy)`. Use the proof step `zero_mem' := by`.
+
+Simplify using `only [Set.mem_ofPred_eq]`. Rewrite using `[show GlobalTheory.AdelicU.compFin F E v 0 = 0 from map_zero _, GlobalTheory.AdelicU.absFin_zero]`. Conclude with `zero_le_one`. Use the proof step `neg_mem' := fun {x} hx => by`. Simplify using `only [Set.mem_ofPred_eq] at hx ⊢`.
+
+Rewrite using `[show GlobalTheory.AdelicU.compFin F E v (-x) = -GlobalTheory.AdelicU.compFin F E v x from map_neg _ _, GlobalTheory.AdelicU.absFin_neg]`. Conclude with `hx }`. Establish `hle : intHat F E ≤ S`. Rewrite using `[GlobalTheory.ThK.Dbl.intHat, AddSubgroup.closure_le]`. Introduce and unpack `z ⟨a, -, ha, o, rfl⟩`.
+
+Use `show GlobalTheory.AdelicU.absFin F v (GlobalTheory.AdelicU.compFin F E v _) ≤ 1`. Establish `h2 : GlobalTheory.AdelicU.compFin F E v (a • (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.inclR (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.AF F)) (o : E)) = (GlobalTheory.AdelicU.evFin F v a) ⊗ₜ[F] (o : E)`. Simplify using `[Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.inclR, GlobalTheory.AdelicU.compFin, TensorProduct.smul_tmul']`. Rewrite using `[h2]`. Use `(GlobalTheory.AdelicU.absFin_tmul_le F v _ o).trans ?_` and prove the remaining obligations.
+
+Conclude with `nnnorm_le_one_iff_mem.mpr (ha v)`. Conclude with `hle hz`.
+-/
 theorem absFin_compFin_le_one {z : AE F E} (hz : z ∈ intHat F E) (v : HeightOneSpectrum (𝓞 F)) :
     absFin F v (compFin F E v z) ≤ 1 := by
   let S : AddSubgroup (AE F E) :=
@@ -55,6 +71,9 @@ theorem absFin_compFin_le_one {z : AE F E} (hz : z ∈ intHat F E) (v : HeightOn
     exact nnnorm_le_one_iff_mem.mpr (ha v)
   exact hle hz
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ n Y B b K hK k hk v i j`. Establish `h : GlobalTheory.ThK.Dbl.finOne F • GlobalTheory.ThK.Dbl.inFrame b k i j ∈ GlobalTheory.ThK.Dbl.intHat F E` using `((hK k).1 hk).2 k (by simp) i j`. Establish `h'` using `absFin_compFin_le_one h v`. Rewrite `h'` using `[compFin_finOne_smul']`. Then use the resulting hypothesis.
+-/
 theorem absFin_inFrame_le_one : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (n : ℕ) (Y : Spc F E n) (B : Base F E) (b : GL (Fin n ⊕ Fin n) E) (K : Subgroup (G2 σ Y)),
     IsStdK (σ := σ) (Y := Y) B b K → ∀ k ∈ K, ∀ (v : Pl F) (i j : Fin n ⊕ Fin n), absFin F v (compFin F E v (inFrame b k i j)) ≤ 1 := by
   intro F E _ _ _ _ _ σ n Y B b K hK k hk v i j

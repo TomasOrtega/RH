@@ -6,6 +6,23 @@ open scoped Formalism.Per
 
 namespace GlobalTheory.PSer
 
+/- English proof (translation)
+Establish `hsymm : ∀ y : Fl l, ι ((frobeniusEquiv (Fl l) l).symm y) = (frobeniusEquiv F l).symm (ι y)` using `fun y => RingHom.map_frobeniusEquiv_symm l ι y`. Establish `hit : ∀ (n : ℕ) (y : Fl l), ι (((frobeniusEquiv (Fl l) l).symm)^[n] y) = ((frobeniusEquiv F l).symm)^[n] (ι y)`. Introduce `n`. Proceed by induction on `n with`. Consider the case `zero => intro y`.
+
+Both sides reduce to the same expression. Consider the case `succ n ih => intro y`. Rewrite using `[Function.iterate_succ_apply', Function.iterate_succ_apply', hsymm, ih]`. Establish `hpos : ∀ (n : ℕ) (y : Fl l), ((frobeniusEquiv (Fl l) l : RingAut (Fl l)) ^ n) y = y ^ l ^ n`. Introduce `n`.
+
+Proceed by induction on `n with`. Consider the case `zero => intro y`. Simplify using the standard rewrite rules. Consider the case `succ n ih`. Introduce `y`.
+
+Rewrite using `[pow_succ']`. Express the relevant statement in the definitionally equal form `(frobeniusEquiv (Fl l) l) (((frobeniusEquiv (Fl l) l : RingAut (Fl l)) ^ n) y) = _`. Rewrite using `[ih, frobeniusEquiv_apply, frobenius_def, ← pow_mul, pow_succ]`. Establish `hneg : ∀ (n : ℕ) (y : Fl l), ((frobeniusEquiv (Fl l) l : RingAut (Fl l)) ^ (-(n : ℤ))) y = ((frobeniusEquiv (Fl l) l).symm)^[n] y`. Introduce `n`.
+
+Proceed by induction on `n with`. Consider the case `zero => intro y`. Simplify using the standard rewrite rules. Consider the case `succ n ih`. Introduce `y`.
+
+Rewrite using `[Nat.cast_succ, neg_add, zpow_add, Function.iterate_succ_apply]`. Express the relevant statement in the definitionally equal form `((frobeniusEquiv (Fl l) l : RingAut (Fl l)) ^ (-(n : ℤ))) (((frobeniusEquiv (Fl l) l : RingAut (Fl l)) ^ (-1 : ℤ)) y) = _`. Rewrite using `[ih, zpow_neg_one]`. Both sides reduce to the same expression. Consider the cases of `k with`.
+
+Consider the case `ofNat n`. Simplify using `only [GlobalTheory.PSer.pw, GlobalTheory.PMonE.pw, Int.ofNat_eq_coe, zpow_natCast, hpos, map_pow]`. Simplify using the standard rewrite rules. Consider the case `negSucc n`. Establish `hk : Int.negSucc n = -((n + 1 : ℕ) : ℤ)` using `rfl`.
+
+Simplify using `only [GlobalTheory.PSer.pw, GlobalTheory.PMonE.pw]`. Rewrite using `[if_neg (by omega), hk, hneg, hit]`. Reduce the equality to equality of the corresponding arguments.
+-/
 theorem map_pw_eq_pw (l : ℕ) [Fact l.Prime] (F : Type) [NormedField F] [CharP F l] [PerfectRing F l]
     (ι : Fl l →+* F) (k : ℤ) (x : Fl l) : ι (GlobalTheory.PSer.pw k x) = GlobalTheory.PMonE.pw l k (ι x) := by
   have hsymm : ∀ y : Fl l, ι ((frobeniusEquiv (Fl l) l).symm y) = (frobeniusEquiv F l).symm (ι y) :=

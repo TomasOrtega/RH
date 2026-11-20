@@ -13,9 +13,17 @@ noncomputable section
 
 def sN {n : ℕ} (g : Matrix (Fin n) (Fin n) ℂ) : ℝ := ∑ i, ∑ j, ‖g i j‖
 
+/- English proof (translation)
+Unfold `sN`. Check the signs of the components of the expression.
+-/
 theorem sN_nonneg {n : ℕ} (g : Matrix (Fin n) (Fin n) ℂ) : 0 ≤ sN g := by
   unfold sN; positivity
 
+/- English proof (translation)
+Introduce `a b hab`. Establish `h1` using `hg a b hab`. Establish `h2 : |(Pi.single s 1 : Fin n → ℝ) a - (Pi.single s 1 : Fin n → ℝ) b| ≤ 1`. Simplify using `only [Pi.single_apply]`. Apply the tactic sequence `split_ifs <;> simp`.
+
+Establish `e : μ a - μ b = ((μ + Pi.single s 1 : Fin n → ℝ) a - (μ + Pi.single s 1 : Fin n → ℝ) b) - ((Pi.single s 1 : Fin n → ℝ) a - (Pi.single s 1 : Fin n → ℝ) b)`. Simplify using `only [Pi.add_apply]`. Expand and normalize the polynomial expressions, which then agree. Rewrite `h1` using `[e]`. Combine the linear relations using `[abs_sub ((μ + Pi.single s 1 : Fin n → ℝ) a - (μ + Pi.single s 1 : Fin n → ℝ) b) ((Pi.single s 1 : Fin n → ℝ) a - (Pi.single s 1 : Fin n → ℝ) b)]`.
+-/
 theorem gap_step {n : ℕ} {ε : Fin n → Bool} {μ : Fin n → ℝ} {h : ℝ} (hg : PI.ZuckTensor.GapAtLeast ε μ h)
     (s : Fin n) : PI.ZuckTensor.GapAtLeast ε (μ + Pi.single s 1) (h - 1) := by
   intro a b hab
@@ -30,6 +38,23 @@ theorem gap_step {n : ℕ} {ε : Fin n → Bool} {μ : Fin n → ℝ} {h : ℝ} 
   linarith [abs_sub ((μ + Pi.single s 1 : Fin n → ℝ) a - (μ + Pi.single s 1 : Fin n → ℝ) b)
     ((Pi.single s 1 : Fin n → ℝ) a - (Pi.single s 1 : Fin n → ℝ) b)]
 
+/- English proof (translation)
+Introduce `m`. Proceed by induction on `m with`. Consider the case `zero`. Introduce `h μ H _ _ _ σ _ hσ _ _ v w _ _`. Use `⟨‖w‖ * ‖v‖, fun g hg => ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[pow_zero, one_mul, ← hσ.2.2.1.2.1 g hg v]`. Conclude with `norm_inner_le_norm _ _`. Consider the case `succ m ih`. Introduce `h μ H _ _ _ σ hμ hσ hgap hlt v w hv hw`. Establish `hm : (0 : ℝ) ≤ m` using `Nat.cast_nonneg m`.
+
+Move the coercions through the operations in `at hlt`. Take `⟨X⟩` from `hZ n ε μ H σ hμ hσ h hgap (by linarith)`. Establish `key : ∀ i j : Fin n, ∃ C : ℝ, ∀ g ∈ UJset ε, sN g ^ m * (‖⟪w, σ g v⟫_ℂ‖ * ‖g i j‖) ≤ C`. Introduce `i j`. Take `⟨ι, _, sI, vI, wI, hI, hsum⟩` from `X.toSum v w (Pi.single j 1) (Pi.single i 1) hv hw`.
+
+Use `choose C hC using fun a : ι => ih (h - 1) _ (X.Hs (sI a)) (X.σs (sI a)) (X.ds _ (hI a).1).1 (X.ds _ (hI a).1).2 (gap_step hgap _) (by linarith) (vI a) (wI a) (hI a).2.1 (hI a).2.2`. Use `⟨∑ a, C a, fun g hg => ?_⟩` and prove the remaining obligations. Establish `e : star (Pi.single i 1 : Fin n → ℂ) ⬝ᵥ (g *ᵥ Pi.single j 1) = g i j`. Establish `: star (Pi.single i 1 : Fin n → ℂ) = Pi.single i 1`. Use function extensionality and compare the values at `a`.
+
+Simplify using `only [Pi.star_apply, Pi.single_apply]`. Apply the tactic sequence `split_ifs <;> simp`. Rewrite using `[this, single_one_dotProduct, Matrix.mulVec_single_one]`. Both sides reduce to the same expression. Establish `h1` using `hsum g hg`.
+
+Rewrite `h1` using `[e]`. Rewrite using `[← norm_mul, h1]`. Combine the equalities or inequalities in the displayed calculation. Use `choose C hC using key`. Use `⟨∑ i, ∑ j, C i j, fun g hg => ?_⟩` and prove the remaining obligations.
+
+Establish `e : sN g ^ (m + 1) * ‖⟪w, σ g v⟫_ℂ‖ = ∑ i, ∑ j, sN g ^ m * (‖⟪w, σ g v⟫_ℂ‖ * ‖g i j‖)`. Simplify using `only [← Finset.mul_sum]`. Rewrite using `[pow_succ]`. Unfold `sN`. Expand and normalize the polynomial expressions, which then agree.
+
+Rewrite using `[e]`. Conclude with `Finset.sum_le_sum fun i _ => Finset.sum_le_sum fun j _ => hC i j g hg`.
+-/
 theorem decay_J {t : ∀ n : ℕ, (Fin n → Bool) → ℝ} (hZ : ZuckT t) {n : ℕ} (ε : Fin n → Bool) :
     ∀ (m : ℕ) (h : ℝ) (μ : Fin n → ℝ) (H : Type) [NormedAddCommGroup H] [InnerProductSpace ℂ H] [CompleteSpace H]
       (σ : Matrix (Fin n) (Fin n) ℂ → (H →L[ℂ] H)), IsHCParam μ → IsDS ε μ σ → PI.ZuckTensor.GapAtLeast ε μ h →
@@ -78,6 +103,9 @@ theorem decay_J {t : ∀ n : ℕ, (Fin n → Bool) → ℝ} (hZ : ZuckT t) {n : 
     rw [e]
     exact Finset.sum_le_sum fun i _ => Finset.sum_le_sum fun j _ => hC i j g hg
 
+/- English proof (translation)
+Unfold `B.gN`. Rewrite using `[Real.sqrt_le_left (sN_nonneg g)]`. Unfold `sN`. Simplify using `only [Complex.normSq_eq_norm_sq]`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem gN_le_sN {k r : ℕ} (g : B.Mat k r) : B.gN g ≤ sN g := by
   unfold B.gN
   rw [Real.sqrt_le_left (sN_nonneg g)]
@@ -88,6 +116,13 @@ theorem gN_le_sN {k r : ℕ} (g : B.Mat k r) : B.gN g ≤ sN g := by
     _ ≤ (∑ i, ∑ j, ‖g i j‖) ^ 2 :=
         Finset.sum_sq_le_sq_sum_of_nonneg fun i _ => Finset.sum_nonneg fun j _ => norm_nonneg _
 
+/- English proof (translation)
+Establish `hPu : P ∈ Matrix.unitaryGroup (Fin (2 * r + k + 1)) ℂ` using `hP.2`. Establish `hsP : star P * P = 1` using `Matrix.mem_unitaryGroup_iff'.mp hPu`. Establish `hPs : P * star P = 1` using `Matrix.mem_unitaryGroup_iff.mp hPu`. Establish `hinv : P⁻¹ = star P` using `Matrix.inv_eq_left_inv hsP`. Establish `hsg : star g * g = 1` using `Matrix.mem_unitaryGroup_iff'.mp hg.1`.
+
+Rewrite using `[hinv]`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Use `show (star P * g * P)ᴴ * Hpk k r * (star P * g * P) = Hpk k r`. Rewrite using `[← hP.1.2]`. Simplify using `only [← Matrix.star_eq_conjTranspose, star_mul, star_star]`.
+
+Combine the equalities or inequalities in the displayed calculation. Conclude with `Submonoid.mul_mem _ (Submonoid.mul_mem _ (Unitary.star_mem hPu) hg.1) hPu`.
+-/
 theorem conj_back {k r : ℕ} {ε : Fin (2 * r + k + 1) → Bool} {P g : B.Mat k r} (hP : IsCayleyU k r ε P)
     (hg : g ∈ Kset ε) :
     P⁻¹ * g * P ∈ UH (Hpk k r) ∩ (Matrix.unitaryGroup (Fin (2 * r + k + 1)) ℂ : Set _) := by
@@ -107,6 +142,19 @@ theorem conj_back {k r : ℕ} {ε : Fin (2 * r + k + 1) → Bool} {P g : B.Mat k
       _ = star P * Jm ε * P := by rw [← Matrix.mul_assoc (star g), hsg, Matrix.one_mul]
   · exact Submonoid.mul_mem _ (Submonoid.mul_mem _ (Unitary.star_mem hPu) hg.1) hPu
 
+/- English proof (translation)
+Introduce `μ H _ _ _ σ hμ hσ hgap v w hv hw`. Take `⟨Q, hQ, hDS⟩` from `hσ`. Establish `tr : ∀ x : H, IsKFinHpk (k` using `k) (r := r) σ x → IsKFin ε (fun g => σ (Q⁻¹ * g * Q)) x := by`. Introduce and unpack `x ⟨S, hS, hx, hst⟩`. Conclude with `⟨S, hS, hx, fun g hg y hy => hst _ (conj_back hQ hg) y hy⟩`.
+
+Take `⟨C, hC⟩` from `decay_J hZ ε m h μ H _ hμ hDS hgap hlt v w (tr v hv) (tr w hw)`. Establish `hdet : IsUnit Q.det` using `(Matrix.isUnit_iff_isUnit_det Q).mp hQ.1.1`. Use `set c : ℝ := B.gN (Q⁻¹ : B.Mat k r) * B.gN (Q : B.Mat k r) with hc`. Establish `hc0 : 0 ≤ c` using `mul_nonneg (P.B6.gN_nonneg _) (P.B6.gN_nonneg _)`. Use `⟨c ^ m * C, fun g hg => ?_⟩` and prove the remaining obligations.
+
+Establish `key : Q⁻¹ * (Q * g * Q⁻¹) * Q = g`. Rewrite using `[← Matrix.mul_assoc, ← Matrix.mul_assoc, Matrix.nonsing_inv_mul Q hdet, Matrix.one_mul, Matrix.mul_assoc, Matrix.nonsing_inv_mul Q hdet, Matrix.mul_one]`. Establish `h1` using `hC _ (P.MatrixMultiplicationContinuity.cayley_maps hQ hg)`. Simplify using `only [key] at h1`. Establish `h2 : B.gN g ≤ c * sN (Q * g * Q⁻¹)`.
+
+Establish `a1` using `P.B6.gN_mul_le (Q⁻¹ * (Q * g * Q⁻¹)) Q`. Establish `a2` using `P.B6.gN_mul_le Q⁻¹ (Q * g * Q⁻¹)`. Establish `a3` using `gN_le_sN (Q * g * Q⁻¹)`. Rewrite `a1` using `[key]`. Establish `q0` using `P.B6.gN_nonneg (Q : B.Mat k r)`.
+
+Establish `q1` using `P.B6.gN_nonneg (Q⁻¹ : B.Mat k r)`. Combine the equalities or inequalities in the displayed calculation. Establish `hg1 : 1 ≤ B.gN g` using `P.BetaSesquilinearity.gN_ge_one hg`. Combine the equalities or inequalities in the displayed calculation. Use `mul_le_mul_of_nonneg_right ?_ (norm_nonneg _)` and prove the remaining obligations.
+
+Rewrite using `[← Real.rpow_natCast]`. Conclude with `Real.rpow_le_rpow_of_exponent_le hg1 hA`. Use `_ ≤ (c * sN (Q * g * Q⁻¹)) ^ m * ‖⟪w, σ g v⟫_ℂ‖ := mul_le_mul_of_nonneg_right (pow_le_pow_left₀ (by linarith) h2 m) (norm_nonneg _)`. Use `_ = c ^ m * (sN (Q * g * Q⁻¹) ^ m * ‖⟪w, σ g v⟫_ℂ‖) := by rw [mul_pow, mul_assoc]`. Use `_ ≤ c ^ m * C := mul_le_mul_of_nonneg_left h1 (pow_nonneg hc0 _)`.
+-/
 theorem kDecay_of_zuckT {t : ∀ n : ℕ, (Fin n → Bool) → ℝ} (hZ : ZuckT t) (k r : ℕ) (ε : Fin (2 * r + k + 1) → Bool)
     (m : ℕ) (A h : ℝ) (hA : A ≤ m) (hlt : t _ ε + m < h) : KDecay k r ε A h := by
   intro μ H _ _ _ σ hμ hσ hgap v w hv hw
@@ -145,6 +193,11 @@ theorem kDecay_of_zuckT {t : ∀ n : ℕ, (Fin n → Bool) → ℝ} (hZ : ZuckT 
     _ = c ^ m * (sN (Q * g * Q⁻¹) ^ m * ‖⟪w, σ g v⟫_ℂ‖) := by rw [mul_pow, mul_assoc]
     _ ≤ c ^ m * C := mul_le_mul_of_nonneg_left h1 (pow_nonneg hc0 _)
 
+/- English proof (translation)
+Take `⟨S, ⟨hfd, hst⟩, hwS⟩` from `PI.UnitaryGroupMassFormula.LowSmooth.exists_finStable_of_mem_sSup (Kset ε) (fun g => σ (Q⁻¹ * g * Q)) (F := {S | IsKTypeOf ε (fun g => σ (Q⁻¹ * g * Q)) (lowK ε lam) S}) (fun S hS => ⟨hS.1, hS.2.1⟩) hw`. Use `⟨S, hfd, hwS, fun g hg x hx => ?_⟩` and prove the remaining obligations. Take `⟨hK, hback⟩` from `PI.UnitaryGroupMassFormula.LowSmooth.conj_mem_Kset hQ hg`. Establish `h` using `hst _ hK x hx`. Simplify using `only at h`.
+
+Rewrite `h` using `[hback]`. Then use the resulting hypothesis.
+-/
 theorem isKFinHpk_of_low {k r : ℕ} {ε : Fin (2 * r + k + 1) → Bool} {lam : Fin (2 * r + k + 1) → ℝ}
     {H : Type} [NormedAddCommGroup H] [InnerProductSpace ℂ H] {σ : B.Mat k r → (H →L[ℂ] H)} {Q : B.Mat k r}
     (hQ : IsCayleyU k r ε Q) {w : H} (hw : w ∈ lowKSub ε lam (fun g => σ (Q⁻¹ * g * Q))) :

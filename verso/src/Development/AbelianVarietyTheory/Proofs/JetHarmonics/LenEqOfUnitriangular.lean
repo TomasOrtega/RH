@@ -18,6 +18,11 @@ section general
 
 variable {V : Type*} [NormedAddCommGroup V] [InnerProductSpace ℂ V]
 
+/- English proof (translation)
+Establish `h` using `Metric.infDist_image (isometry_add_right w) (x := x) (t := (S : Set V))`. Establish `h2 : (fun y => y + w) '' (S : Set V) = S`. Use extensionality with `v`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨y, hy, rfl⟩`.
+
+Conclude with `S.add_mem hy hw`. Introduce `hv`. Conclude with `⟨v - w, S.sub_mem hv hw, by simp⟩`. Rewrite `h` using `[h2]`. Then use the resulting hypothesis.
+-/
 theorem infDist_add_mem (S : Submodule ℂ V) (x w : V) (hw : w ∈ S) :
     Metric.infDist (x + w) (S : Set V) = Metric.infDist x (S : Set V) := by
   have h := Metric.infDist_image (isometry_add_right w) (x := x) (t := (S : Set V))
@@ -30,6 +35,19 @@ theorem infDist_add_mem (S : Submodule ℂ V) (x w : V) (hw : w ∈ S) :
       exact ⟨v - w, S.sub_mem hv hw, by simp⟩
   rwa [h2] at h
 
+/- English proof (translation)
+Establish `hrest : ∀ (S : Submodule ℂ V) (b : Fin n), (∀ c, c < b → y' c ∈ S) → ∑ c ∈ univ.erase b, U c b • y' c ∈ S`. Introduce `S b hS`. Use `S.sum_mem fun c hc => ?_` and prove the remaining obligations. Break down `lt_trichotomy c b with hcb | hcb | hcb` into its components or cases. Conclude with `S.smul_mem _ (hS c hcb)`.
+
+Conclude with `absurd hcb (Finset.ne_of_mem_erase hc)`. Rewrite using `[h0 c b hcb, zero_smul]`. Conclude with `S.zero_mem`. Establish `hy : ∀ b, y b = y' b + ∑ c ∈ univ.erase b, U c b • y' c`. Introduce `b`.
+
+Rewrite using `[h b, ← Finset.add_sum_erase _ _ (Finset.mem_univ b), h1, one_smul]`. Establish `hspan : Submodule.span ℂ (y '' {b | b < a}) = Submodule.span ℂ (y' '' {b | b < a})`. Apply `le_antisymm` to reduce the goal to its premises. Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨b, hb, rfl⟩`.
+
+Rewrite using `[hy b]`. Conclude with `Submodule.add_mem _ (Submodule.subset_span ⟨b, hb, rfl⟩) (hrest _ b fun c hc => Submodule.subset_span ⟨c, lt_trans hc hb, rfl⟩)`. Rewrite using `[Submodule.span_le]`. Establish `key : ∀ b, b < a → y' b ∈ Submodule.span ℂ (y '' {b | b < a})`. Introduce `b`.
+
+Proceed by induction on `b using WellFoundedLT.induction with`. Consider the case `ind b ih`. Introduce `hb`. Rewrite using `[eq_sub_of_add_eq (hy b).symm]`. Conclude with `Submodule.sub_mem _ (Submodule.subset_span ⟨b, hb, rfl⟩) (hrest _ b fun c hc => ih c hc (lt_trans hc hb))`.
+
+Introduce and unpack `_ ⟨b, hb, rfl⟩`. Conclude with `key b hb`. Unfold `majorantDistance`. Rewrite using `[hspan, hy a]`. Conclude with `infDist_add_mem _ _ _ (hrest _ a fun c hc => Submodule.subset_span ⟨c, hc, rfl⟩)`.
+-/
 theorem len_eq_of_unitriangular {n : ℕ} (y y' : Fin n → V) (U : Matrix (Fin n) (Fin n) ℂ)
     (h0 : ∀ c a, a < c → U c a = 0) (h1 : ∀ c, U c c = 1) (h : ∀ a, y a = ∑ c, U c a • y' c) (a : Fin n) :
     majorantDistance y a = majorantDistance y' a := by
@@ -66,6 +84,9 @@ theorem len_eq_of_unitriangular {n : ℕ} (y y' : Fin n → V) (U : Matrix (Fin 
   rw [hspan, hy a]
   exact infDist_add_mem _ _ _ (hrest _ a fun c hc => Submodule.subset_span ⟨c, hc, rfl⟩)
 
+/- English proof (translation)
+Unfold `majorantDistance`. Use `haveI : FiniteDimensional ℂ (Submodule.span ℂ (y '' {b | b < a})) := FiniteDimensional.span_of_finite ℂ (Set.toFinite _)`. Use `((Submodule.closed_of_finiteDimensional _).notMem_iff_infDist_pos ⟨0, Submodule.zero_mem _⟩).1 ?_` and prove the remaining obligations. Conclude with `hy.notMem_span_image (by simp)`.
+-/
 theorem len_pos {n : ℕ} (y : Fin n → V) (hy : LinearIndependent ℂ y) (a : Fin n) : 0 < majorantDistance y a := by
   unfold majorantDistance
   haveI : FiniteDimensional ℂ (Submodule.span ℂ (y '' {b | b < a})) :=
@@ -73,6 +94,9 @@ theorem len_pos {n : ℕ} (y : Fin n → V) (hy : LinearIndependent ℂ y) (a : 
   refine ((Submodule.closed_of_finiteDimensional _).notMem_iff_infDist_pos ⟨0, Submodule.zero_mem _⟩).1 ?_
   exact hy.notMem_span_image (by simp)
 
+/- English proof (translation)
+Unfold `majorantDistance`. Establish `: y '' {b | b < 0} = ∅` using `by simp`. Rewrite using `[this, Submodule.span_empty, Submodule.bot_coe, Metric.infDist_singleton, dist_zero_right]`.
+-/
 theorem len_zero {n : ℕ} (y : Fin (n + 1) → V) : majorantDistance y 0 = ‖y 0‖ := by
   unfold majorantDistance
   have : y '' {b | b < 0} = ∅ := by simp
@@ -80,6 +104,11 @@ theorem len_zero {n : ℕ} (y : Fin (n + 1) → V) : majorantDistance y 0 = ‖y
 
 end general
 
+/- English proof (translation)
+Use function extensionality and compare the values at `I`. Establish `h` using `Formalism.HermitianLatticeCounting.P.ge_cauchyBinet (g.submatrix (I.1.orderEmbOfFin I.2) id) (Matrix.of fun (i : Fin n) (b : Fin l) => f b i)`. Use `Eq.trans ?_ (h.symm.trans ?_)` and prove the remaining obligations. Simplify using `only [mulVec, dotProduct]`. Use `Finset.sum_congr rfl fun J _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[mul_comm]`. Both sides reduce to the same expression. Both sides reduce to the same expression.
+-/
 theorem cmp_mulVec_wedge {n l : ℕ} (g : Matrix (Fin n) (Fin n) ℂ) (f : Fin l → Fin n → ℂ) :
     BranchingSupport.cmp l g *ᵥ wedge f = wedge (fun b => g *ᵥ f b) := by
   funext I
@@ -92,6 +121,13 @@ theorem cmp_mulVec_wedge {n l : ℕ} (g : Matrix (Fin n) (Fin n) ℂ) (f : Fin l
     rfl
   · rfl
 
+/- English proof (translation)
+Establish `h` using `Formalism.HermitianLatticeCounting.P.gram_matrix_product_formula (EuclideanSpace ℂ (Fin n)) l (fun b => WithLp.toLp 2 (f b))`. Establish `h2` using `Formalism.HermitianLatticeCounting.P.ge_cauchyBinet (Matrix.of fun (i : Fin n) (b : Fin l) => f b i)ᴴ (Matrix.of fun (i : Fin n) (b : Fin l) => f b i)`. Establish `h3 : (Matrix.of fun (i : Fin n) (b : Fin l) => f b i)ᴴ * (Matrix.of fun (i : Fin n) (b : Fin l) => f b i) = Matrix.of fun a b => inner ℂ (WithLp.toLp 2 (f a) : EuclideanSpace ℂ (Fin n)) (WithLp.toLp 2 (f b))`. Use extensionality with `a b`. Simplify using `[Matrix.mul_apply, PiLp.inner_apply, mul_comm]`.
+
+Rewrite `h2` using `[h3, h]`. Apply `Complex.ofReal_injective` to reduce the goal to its premises. Rewrite using `[h2]`. Use `push_cast`. Use `Finset.sum_congr rfl fun J _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[← conjTranspose_submatrix, det_conjTranspose, RCLike.star_def, Complex.mul_conj']`. Both sides reduce to the same expression.
+-/
 theorem sum_norm_wedge {n l : ℕ} (f : Fin l → Fin n → ℂ) :
     ∑ J, ‖wedge f J‖ ^ 2 =
       ∏ a, majorantDistance (fun b => (WithLp.toLp 2 (f b) : EuclideanSpace ℂ (Fin n))) a ^ 2 := by
@@ -111,11 +147,19 @@ theorem sum_norm_wedge {n l : ℕ} (f : Fin l → Fin n → ℂ) :
   rw [← conjTranspose_submatrix, det_conjTranspose, RCLike.star_def, Complex.mul_conj']
   rfl
 
+/- English proof (translation)
+Use `push_cast`. Use `Finset.sum_congr rfl fun c _ => ?_` and prove the remaining obligations. Rewrite using `[Pi.star_apply, RCLike.star_def, Complex.mul_conj']`.
+-/
 theorem sum_norm_sq_eq {n : ℕ} (v : Fin n → ℂ) : ((∑ c, ‖v c‖ ^ 2 : ℝ) : ℂ) = v ⬝ᵥ star v := by
   push_cast
   refine Finset.sum_congr rfl fun c _ => ?_
   rw [Pi.star_apply, RCLike.star_def, Complex.mul_conj']
 
+/- English proof (translation)
+Establish `h1 : (fun c => Formalism.QuantumDeterminants.herm H (Pi.single c 1) f) = star f ᵥ* H`. Use function extensionality and compare the values at `c`. Simplify using `[Formalism.QuantumDeterminants.herm, vecMul, dotProduct]`. Establish `h2 : H * g = (g⁻¹)ᴴ * H` using `by conv_rhs => rw [← hg]`. Rewrite using `[← Matrix.mul_assoc, ← Matrix.mul_assoc, ← conjTranspose_mul, mul_nonsing_inv _ hu, conjTranspose_one, Matrix.one_mul]`.
+
+Establish `h3 : dualM g⁻¹ *ᵥ (star f ᵥ* H) = star (H *ᵥ (g⁻¹ *ᵥ f))`. Rewrite using `[dualM, nonsing_inv_nonsing_inv _ hu, mulVec_transpose, vecMul_vecMul, h2, star_mulVec, star_mulVec, vecMul_vecMul, hH]`. Rewrite using `[h1, h3]`. Apply `Complex.ofReal_injective` to reduce the goal to its premises. Rewrite using `[sum_norm_sq_eq, sum_norm_sq_eq, star_star, star_mulVec, hH, dotProduct_mulVec, vecMul_vecMul, hHH, vecMul_one, dotProduct_comm]`.
+-/
 theorem sum_norm_dual {n : ℕ} (H g : Matrix (Fin n) (Fin n) ℂ) (hH : Hᴴ = H) (hHH : H * H = 1)
     (hg : gᴴ * H * g = H) (hu : IsUnit g.det) (f : Fin n → ℂ) :
     ∑ c, ‖(dualM g⁻¹ *ᵥ (fun c => Formalism.QuantumDeterminants.herm H (Pi.single c 1) f)) c‖ ^ 2 = ∑ c, ‖(g⁻¹ *ᵥ f) c‖ ^ 2 := by
@@ -134,6 +178,19 @@ theorem sum_norm_dual {n : ℕ} (H g : Matrix (Fin n) (Fin n) ℂ) (hH : Hᴴ = 
   rw [sum_norm_sq_eq, sum_norm_sq_eq, star_star, star_mulVec, hH, dotProduct_mulVec, vecMul_vecMul, hHH,
     vecMul_one, dotProduct_comm]
 
+/- English proof (translation)
+Establish `hz0 : z ≠ 0`. Introduce and unpack `rfl`. Simplify using `[Formalism.QuantumDeterminants.Tz, Formalism.QuantumDeterminants.herm] at hT`. Take `⟨i, hi⟩` from `Function.ne_iff.1 hz0`. Establish `hir : r ≤ i.val`.
+
+Assume the negation of the conclusion as `hlt`. Conclude with `hi (hz i (Or.inl (by omega)))`. Rewrite using `[Fintype.linearIndependent_iff]`. Introduce `c hc a`. Distinguish the cases in `ha : a.val < r`.
+
+Use `congrFun hc ⟨a.val, by omega⟩` as an intermediate fact. Rewrite `this` using `[Finset.sum_apply, Finset.sum_eq_single a]`. Rewrite `this` using `[Pi.smul_apply, Formalism.QuantumDeterminants.fvec_apply_lt z hz _ _ ha]`. Simplify using `using this`. Introduce `b _ hb`.
+
+Rewrite using `[Pi.smul_apply, Formalism.QuantumDeterminants.fvec_apply_lt z hz _ _ ha, if_neg (fun h => hb (Fin.ext h)), smul_zero]`. Introduce `h`. Conclude with `absurd (Finset.mem_univ _) h`. Use `congrFun hc i` as an intermediate fact. Rewrite `this` using `[Finset.sum_apply, Finset.sum_eq_single a]`.
+
+Rewrite `this` using `[Pi.smul_apply, Formalism.QuantumDeterminants.fvec_apply_ge z _ _ hir, if_pos (by omega)]`. Conclude with `(mul_eq_zero.1 this).resolve_right hi`. Introduce `b _ hb`. Rewrite using `[Pi.smul_apply, Formalism.QuantumDeterminants.fvec_apply_ge z _ _ hir, if_neg (fun h => hb (Fin.ext (by omega))), smul_zero]`. Introduce `h`.
+
+Conclude with `absurd (Finset.mem_univ _) h`.
+-/
 theorem fvec_indep (k r : ℕ) (z : Fin (2 * r + k + 1) → ℂ) (hz : Formalism.QuantumDeterminants.inWb k r z)
     (hT : 0 < Formalism.QuantumDeterminants.Tz k r z) : LinearIndependent ℂ (Formalism.QuantumDeterminants.fvec k r z) := by
   have hz0 : z ≠ 0 := by
@@ -162,11 +219,27 @@ theorem fvec_indep (k r : ℕ) (z : Fin (2 * r + k + 1) → ℂ) (hz : Formalism
         if_neg (fun h => hb (Fin.ext (by omega))), smul_zero]
     · intro h; exact absurd (Finset.mem_univ _) h
 
+/- English proof (translation)
+Establish `h : (H * (gᴴ * H)) * g = 1` using `by rw [Matrix.mul_assoc, hg, hHH]`. Conclude with `Matrix.isUnit_det_of_left_inverse h`.
+-/
 theorem isUnit_det_of_unitary {n : ℕ} {H g : Matrix (Fin n) (Fin n) ℂ} (hHH : H * H = 1)
     (hg : gᴴ * H * g = H) : IsUnit g.det := by
   have h : (H * (gᴴ * H)) * g = 1 := by rw [Matrix.mul_assoc, hg, hHH]
   exact Matrix.isUnit_det_of_left_inverse h
 
+/- English proof (translation)
+Introduce `k r z hz hT g hg`. Take `⟨hH, hHH, -⟩` from `Formalism.QuantumDeterminants.hermitian_pos_facts_hold k r`. Establish `hu : IsUnit g.det` using `isUnit_det_of_unitary hHH hg`. Establish `hl : ∀ g a, lenA k r z g a = majorantDistance (fun b => (WithLp.toLp 2 (g⁻¹ *ᵥ Formalism.QuantumDeterminants.fvec k r z b) : EuclideanSpace ℂ (Fin (2 * r + k + 1)))) a` using `fun _ _ => rfl`. Use `⟨?_, ?_, fun a => ?_, fun s hs a => ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[cmp_mulVec_wedge, sum_norm_wedge]`. Both sides reduce to the same expression. Rewrite using `[hl, len_zero, EuclideanSpace.norm_sq_eq]`. Conclude with `sum_norm_dual _ g hH hHH hg hu _`. Rewrite using `[hl]`.
+
+Use `len_pos _ ?_ a` and prove the remaining obligations. Establish `hinj : Function.Injective (g⁻¹).mulVec` using `Matrix.mulVec_injective_iff_isUnit.2 ((Matrix.isUnit_iff_isUnit_det _).2 (isUnit_nonsing_inv_det g hu))`. Establish `h1` using `(fvec_indep k r z hz hT).map' (Matrix.mulVecLin g⁻¹) (LinearMap.ker_eq_bot.2 hinj)`. Conclude with `h1.map' (WithLp.linearEquiv 2 ℂ (Fin (2 * r + k + 1) → ℂ)).symm.toLinearMap (LinearEquiv.ker _)`. Take `⟨U, h0, h1, hF⟩` from `Formalism.QuantumDeterminants.S_F hz hs`.
+
+Establish `hsu : IsUnit s.det` using `isUnit_det_of_unitary hHH (Formalism.QuantumDeterminants.Sset_UH hs)`. Rewrite using `[hl, hl]`. Use `symm`. Use `len_eq_of_unitriangular _ _ U h0 h1 (fun b => ?_) a` and prove the remaining obligations. Establish `hcol : s *ᵥ Formalism.QuantumDeterminants.fvec k r z b = ∑ c, U c b • Formalism.QuantumDeterminants.fvec k r z c`.
+
+Use function extensionality and compare the values at `i`. Use `congrFun (congrFun hF i) b` as an intermediate fact. Simplify `this` using `[Matrix.mul_apply, Formalism.QuantumDeterminants.Fm, mulVec, dotProduct, mul_comm]`. Establish `h2 : g⁻¹ *ᵥ Formalism.QuantumDeterminants.fvec k r z b = (s * g)⁻¹ *ᵥ (s *ᵥ Formalism.QuantumDeterminants.fvec k r z b)`. Rewrite using `[mulVec_mulVec, Matrix.mul_inv_rev, Matrix.mul_assoc, nonsing_inv_mul _ hsu, Matrix.mul_one]`.
+
+Rewrite using `[h2, hcol, Matrix.mulVec_sum]`. Simplify using `only [Matrix.mulVec_smul, WithLp.toLp_sum, WithLp.toLp_smul]`.
+-/
 theorem lengths : ∀ (k r : ℕ) (z : Fin (2 * r + k + 1) → ℂ), Formalism.QuantumDeterminants.inWb k r z → 0 < Formalism.QuantumDeterminants.Tz k r z → ∀ g ∈ GG k r, (∑ J, ‖(cmp (r + 1) g⁻¹ *ᵥ (wedge (Formalism.QuantumDeterminants.fvec k r z))) J‖ ^ 2 = ∏ a, lenA k r z g a ^ 2) ∧ (∑ c, ‖(dualM g⁻¹ *ᵥ (flat k r (Formalism.QuantumDeterminants.fvec k r z 0))) c‖ ^ 2 = lenA k r z g 0 ^ 2) ∧ (∀ a, 0 < lenA k r z g a) ∧ ∀ s ∈ Formalism.QuantumDeterminants.Sset k r z, ∀ a, lenA k r z (s * g) a = lenA k r z g a := by
   intro k r z hz hT g hg
   obtain ⟨hH, hHH, -⟩ := Formalism.QuantumDeterminants.hermitian_pos_facts_hold k r

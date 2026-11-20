@@ -11,6 +11,9 @@ namespace Formalism.RepresentationBoundsCohomology.JT
 
 open Formalism.NG Formalism.RepresentationBoundsCohomology.BR Formalism.RepresentationBoundsCohomology.TorsionBoundCyclotomic
 
+/- English proof (translation)
+Introduce `ℓ _ O _ X _ _ F x B u w s m e d U h`. Take `⟨a1, a2, a3, a4, a5, hd, L, K, T, i1, i2, b1, b2, b3, b4, b5, b6, b7, b8, b9, b10, b11, b12, b13, b14, b15, b16⟩` from `h`. Establish `h'` using `B.map_f _ (tbFull ℓ u w s m e d a1 a2 a3 a4 a5 U B.D L K T i1 i2 hd b1 b2 b3 b4 b5 b6 b7 b8 b9 b10 b11 b12 b13 b14 b15 b16)`. Rewrite `h'` using `[transport O, B.map_y]`. Conclude with `h'`.
+-/
 theorem tb1Full : StatTB1Full := by
   intro ℓ _ O _ X _ _ F x B u w s m e d U h
   obtain ⟨a1, a2, a3, a4, a5, hd, L, K, T, i1, i2, b1, b2, b3, b4, b5, b6, b7, b8, b9, b10, b11,
@@ -20,6 +23,19 @@ theorem tb1Full : StatTB1Full := by
   rw [transport O, B.map_y] at h'
   exact h'
 
+/- English proof (translation)
+Introduce `O _ _ _ X _ _ Hc F deg hQ ℓ c`. Take `⟨Cy, _, _, ι, π, hι, hex, hcy⟩` from `hQ`. Use `set B : Submodule O X := Hc ⊓ divBy F ((ℓ : O) ^ c) with hB`. Set `N : Submodule O (Hc ⧸ F.comap Hc.subtype)` to `LinearMap.ker (LinearMap.lsmul O (Hc ⧸ F.comap Hc.subtype) ((ℓ : O) ^ c))`. Set `f : B →ₗ[O] (Hc ⧸ F.comap Hc.subtype)` to `(F.comap Hc.subtype).mkQ ∘ₗ Submodule.inclusion (inf_le_left : B ≤ Hc)`.
+
+Establish `hf0 : ∀ x : B, f x = 0 ↔ (x : X) ∈ F`. Introduce `x`. Simplify using `only [f, LinearMap.comp_apply, Submodule.mkQ_apply, Submodule.Quotient.mk_eq_zero, Submodule.mem_comap, Submodule.subtype_apply, Submodule.coe_inclusion]`. Establish `hN : ∀ x, f x ∈ N`. Introduce `x`.
+
+Establish `hx : ((ℓ : O) ^ c) • (x : X) ∈ F` using `x.2.2`. Use `show ((ℓ : O) ^ c) • f x = 0`. Rewrite using `[← map_smul, hf0]`. Conclude with `hx`. Set `g : (B ⧸ F.comap B.subtype) →ₗ[O] N` to `(F.comap B.subtype).liftQ (f.codRestrict N hN) (by`.
+
+Introduce `x hx`. Rewrite using `[LinearMap.mem_ker]`. Apply `Subtype.ext` to reduce the goal to its premises. Conclude with `(hf0 x).2 hx)`. Establish `hg : Function.Injective g`.
+
+Rewrite using `[← LinearMap.ker_eq_bot]`. Apply `Submodule.ker_liftQ_eq_bot` to reduce the goal to its premises. Introduce `x hx`. Rewrite `hx` using `[LinearMap.mem_ker]`. Conclude with `(hf0 x).1 (congrArg Subtype.val hx)`.
+
+Establish `h1` using `Module.length_le_of_injective g hg`. Establish `h2` using `tbLen O (Fin deg) _ Cy ι π hι hex hcy N ℓ c (fun x hx => hx)`. Use `h1.trans (h2.trans (le_of_eq ?_))` and prove the remaining obligations. Rewrite using `[Fintype.card_fin]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem tb2 : StatTB2 := by
   intro O _ _ _ X _ _ Hc F deg hQ ℓ c
   obtain ⟨Cy, _, _, ι, π, hι, hex, hcy⟩ := hQ
@@ -56,12 +72,20 @@ theorem tb2 : StatTB2 := by
   rw [Fintype.card_fin]
   ring
 
+/- English proof (translation)
+Introduce `ℓ t e what₂ s m gK U he w hw`. Establish `h1 : cTB ℓ (s w) (m w) e (gK w) (U w) ≤ cB ℓ (s w) (m w) t (gK w) (U w)` using `Finset.le_sup (f := fun e => cTB ℓ (s w) (m w) e (gK w) (U w)) (Finset.mem_range.2 he)`. Conclude with `h1.trans (Finset.le_sup (f := fun w => cB ℓ (s w) (m w) t (gK w) (U w)) hw)`.
+-/
 theorem cBle : StatCB := by
   intro ℓ t e what₂ s m gK U he w hw
   have h1 : cTB ℓ (s w) (m w) e (gK w) (U w) ≤ cB ℓ (s w) (m w) t (gK w) (U w) :=
     Finset.le_sup (f := fun e => cTB ℓ (s w) (m w) e (gK w) (U w)) (Finset.mem_range.2 he)
   exact h1.trans (Finset.le_sup (f := fun w => cB ℓ (s w) (m w) t (gK w) (U w)) hw)
 
+/- English proof (translation)
+Introduce `ℓ _ O _ _ _ A T' G _ _ _ _ _ M _ _ _ _ r χ E D what₂ deg Hc F t e u wm s m d U he h w hw`. Take `⟨h1, h2, h3⟩` from `h w hw`. Use `⟨h1, cBle ℓ t e what₂ s m (fun w => padicValNat ℓ (d w)) U he w hw, ?_, tb2 O _ (Hc w) (F w) (deg w) h3 ℓ _⟩` and prove the remaining obligations. Introduce `ψ hψ z hz`. Take `⟨B, hB⟩` from `h2 ψ hψ z hz`.
+
+Conclude with `tb1Full ℓ O _ (F w) _ B (u w) (wm w) (s w) (m w) e (d w) (U w) hB`.
+-/
 theorem rowsJ : StatRows := by
   intro ℓ _ O _ _ _ A T' G _ _ _ _ _ M _ _ _ _ r χ E D what₂ deg Hc F t e u wm s m d U he h w hw
   obtain ⟨h1, h2, h3⟩ := h w hw

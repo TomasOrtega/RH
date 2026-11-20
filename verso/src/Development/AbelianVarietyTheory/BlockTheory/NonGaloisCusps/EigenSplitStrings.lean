@@ -47,6 +47,9 @@ def PtStringAll : Prop :=
     (Ks : Type) [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] (R : RealDat D A Ks) (F : Face D A),
     GlobalTheory.LiftRows.Given R F → ∀ i t, PtString R i t
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 example : tLab 4 1 = [1, 0, 0, 0] := rfl
 
 end GlobalTheory.IndefiniteRowSideFullHecke.EigenSplitStrings

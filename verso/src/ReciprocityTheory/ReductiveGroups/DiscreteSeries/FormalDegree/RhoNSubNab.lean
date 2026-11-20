@@ -14,6 +14,17 @@ variable {n : ℕ}
 
 def nab (ε : Fin n → Bool) (a b : Fin n) : ℕ := (univ.filter fun c : Fin n => a < c ∧ c < b ∧ ε c ≠ ε a).card
 
+/- English proof (translation)
+Unfold `rhoN nab`. Simplify using `only [Finset.card_filter, Nat.cast_sum, Nat.cast_ite, Nat.cast_one, Nat.cast_zero]`. Establish `key : ∀ c : Fin n, ((if a < c ∧ ε c ≠ ε a then (1:ℝ) else 0) - (if c < a ∧ ε c ≠ ε a then 1 else 0)) - ((if b < c ∧ ε c ≠ ε b then 1 else 0) - (if c < b ∧ ε c ≠ ε b then 1 else 0)) = 2 * (if a < c ∧ c < b ∧ ε c ≠ ε a then 1 else 0)`. Introduce `c`. Distinguish the cases in `hc : ε c = ε a`.
+
+Establish `hcb : ε c = ε b` using `hc.trans he`. Simplify using `[hc, hcb, he]`. Establish `hcb : ε c ≠ ε b` using `fun h => hc (h.trans he.symm)`. Break down `lt_trichotomy c a with h1 | h1 | h1` into its components or cases. Establish `h2 : c < b` using `h1.trans hab`.
+
+Apply the tactic sequence `simp [hc, hcb, h1, h2, not_lt.mpr h1.le, not_lt.mpr h2.le] <;> norm_num`. Substitute `h1` using the available equality. Conclude with `absurd rfl hc`. Break down `lt_trichotomy c b with h3 | h3 | h3` into its components or cases. Apply the tactic sequence `simp [hc, hcb, h1, h3, not_lt.mpr h1.le, not_lt.mpr h3.le] <;> norm_num`.
+
+Substitute `h3` using the available equality. Conclude with `absurd he.symm hc`. Establish `h4 : a < c` using `hab.trans h3`. Apply the tactic sequence `simp [hc, hcb, h1, h3, h4, not_lt.mpr h1.le, not_lt.mpr h3.le] <;> norm_num`. Establish `hsum` using `Finset.sum_congr rfl (fun c (_ : c ∈ (Finset.univ : Finset (Fin n))) => key c)`.
+
+Simplify using `only [Finset.sum_sub_distrib, ← Finset.mul_sum] at hsum`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem rhoN_sub_nab (ε : Fin n → Bool) {a b : Fin n} (hab : a < b) (he : ε a = ε b) :
     rhoN ε a - rhoN ε b = (nab ε a b : ℝ) := by
   unfold rhoN nab
@@ -42,6 +53,11 @@ theorem rhoN_sub_nab (ε : Fin n → Bool) {a b : Fin n} (hab : a < b) (he : ε 
   simp only [Finset.sum_sub_distrib, ← Finset.mul_sum] at hsum
   linarith
 
+/- English proof (translation)
+Rewrite using `[HW.hwfin_weyl T]`. Use `congr 1`. Use `Finset.prod_congr rfl fun a _ => Finset.prod_congr rfl fun b hb => ?_` and prove the remaining obligations. Simplify using `only [Finset.mem_filter, Finset.mem_univ, true_and] at hb`. Establish `h` using `rhoN_sub_nab ε hb.1 hb.2`.
+
+Simplify using `only [lowK, Pi.add_apply, Pi.sub_apply]`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem lemma7 {ε : Fin n → Bool} {lam : Fin n → ℝ} (T : KType ε (lowK ε lam)) :
     (Module.finrank ℂ T.V : ℝ) =
       (∏ a : Fin n, ∏ b ∈ univ.filter (fun b : Fin n => a < b ∧ ε a = ε b), (lam a - lam b + (nab ε a b : ℝ))) /

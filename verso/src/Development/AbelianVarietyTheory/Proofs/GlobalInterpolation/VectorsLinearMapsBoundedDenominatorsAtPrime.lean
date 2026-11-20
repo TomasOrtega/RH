@@ -10,6 +10,17 @@ open NumberField IsDedekindDomain Formalism.BasicNotions Formalism.HermitianLatt
 
 namespace GlobalTheory.Proof.vectors_linearMaps_bounded_denominators_atPrime
 
+/- English proof (translation)
+Establish `e : (qOf P : E) = algebraMap (𝓞 E) E (qOf P : 𝓞 E)` using `by rw [map_natCast]`. Establish `h1 : P.valuation E (qOf P : E) < 1`. Rewrite using `[e, HeightOneSpectrum.valuation_of_algebraMap]`. Conclude with `(P.intValuation_lt_one_iff_mem _).2 (Ideal.absNorm_mem _)`. Establish `key : ∃ m : ℕ, P.valuation E ((qOf P : E) ^ m * a) ≤ 1`.
+
+Break down `eq_or_ne (P.valuation E a) 0 with ha | ha` into its components or cases. Conclude with `⟨0, by simp [ha]⟩`. Establish `hq : P.valuation E (qOf P : E) ≠ 0`. Simplify using `using GlobalTheory.Proof.NormalFormAtPrime.qOf_ne_zero P`. Use `⟨(WithZero.log (P.valuation E a)).toNat, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[map_mul, map_pow]`. Rewrite `h1` using `[← WithZero.exp_log hq, ← WithZero.exp_zero, WithZero.exp_lt_exp]`. Rewrite using `[← WithZero.exp_log hq, ← WithZero.exp_log ha, ← WithZero.exp_nsmul, ← WithZero.exp_add, ← WithZero.exp_zero, WithZero.exp_le_exp, WithZero.log_exp]`. Use `set u := WithZero.log (P.valuation E (qOf P : E))`. Use `set w := WithZero.log (P.valuation E a)`.
+
+Establish `h2 : w ≤ (w.toNat : ℤ)` using `Int.self_le_toNat w`. Establish `h3 : (0 : ℤ) ≤ (w.toNat : ℤ)` using `Int.natCast_nonneg _`. Rewrite using `[nsmul_eq_mul]`. Use the polynomial consequences of the given equalities and inequalities. Take `⟨m, h⟩` from `key`.
+
+Take `⟨n, d, hnd⟩` from `P.exists_primeCompl_mul_eq_of_integer _ h`. Conclude with `⟨m, n, d, d.2, by rw [mul_comm]; exact hnd⟩`.
+-/
 theorem exists_intAt_pow_mul {E : Type} [Field E] [NumberField E] (P : HeightOneSpectrum (𝓞 E)) (a : E) :
     ∃ m : ℕ, IntAt P ((qOf P : E) ^ m * a) := by
   have e : (qOf P : E) = algebraMap (𝓞 E) E (qOf P : 𝓞 E) := by rw [map_natCast]
@@ -36,12 +47,20 @@ theorem exists_intAt_pow_mul {E : Type} [Field E] [NumberField E] (P : HeightOne
   obtain ⟨n, d, hnd⟩ := P.exists_primeCompl_mul_eq_of_integer _ h
   exact ⟨m, n, d, d.2, by rw [mul_comm]; exact hnd⟩
 
+/- English proof (translation)
+Use `choose g hg using fun i => exists_intAt_pow_mul P (f i)`. Conclude with `⟨Finset.univ.sup g, fun m' hm i => GlobalTheory.Proof.NormalFormAtPrime.intAt_pow_mono ((Finset.le_sup (Finset.mem_univ i)).trans hm) (hg i)⟩`.
+-/
 theorem exists_intAt_family {E : Type} [Field E] [NumberField E] (P : HeightOneSpectrum (𝓞 E)) {ι : Type} [Fintype ι]
     (f : ι → E) : ∃ m : ℕ, ∀ m', m ≤ m' → ∀ i, IntAt P ((qOf P : E) ^ m' * f i) := by
   choose g hg using fun i => exists_intAt_pow_mul P (f i)
   exact ⟨Finset.univ.sup g, fun m' hm i =>
     GlobalTheory.Proof.NormalFormAtPrime.intAt_pow_mono ((Finset.le_sup (Finset.mem_univ i)).trans hm) (hg i)⟩
 
+/- English proof (translation)
+Introduce `E _ _ P a b`. Use `⟨fun v => ?_, fun y => ?_⟩` and prove the remaining obligations. Take `⟨m, hm⟩` from `exists_intAt_family P v`. Conclude with `⟨m, fun m' h l => hm m' h l⟩`. Take `⟨m, hm⟩` from `exists_intAt_family P (fun p : Fin a × Fin b => y (Pi.single p.1 1) p.2)`.
+
+Conclude with `⟨m, fun m' h => (intHom_iff _).2 fun s l => hm m' h (s, l)⟩`.
+-/
 theorem bounded_denominators : ∀ (E : Type) [Field E] [NumberField E] (P : HeightOneSpectrum (𝓞 E)) (a b : ℕ), (∀ v : Fin a → E, ∃ m : ℕ, ∀ m', m ≤ m' → IntV P (((qOf P : E) ^ m') • v)) ∧ ∀ y : (Fin a → E) →ₗ[E] (Fin b → E), ∃ m : ℕ, ∀ m', m ≤ m' → IntHom P (((qOf P : E) ^ m') • y) := by
   intro E _ _ P a b
   refine ⟨fun v => ?_, fun y => ?_⟩

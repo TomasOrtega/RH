@@ -16,12 +16,40 @@ open Formalism.L2.Th1.F (MulStable IsKerReps taylor0 pSeries)
 open Formalism.L2.Th1.E (Unif ptW inW px py IntCurve OneUnit)
 open Formalism.L2.Th1.A (fgl iSer logSer expSer wpReg g₂ g₃ IntModel xS)
 
+/- English proof (translation)
+Rewrite using `[← map_mul, Complex.mul_conj, ← h]`. Use `push_cast`. Rewrite using `[map_add, map_natCast, map_one]`.
+-/
 theorem norm_transport (ι : ℂ ≃+* ℂ_[2]) (α : ℂ) (n : ℕ) (h : ((n : ℝ) + 1) = Complex.normSq α) :
     ι α * ι (conj α) = (n : ℂ_[2]) + 1 := by
   rw [← map_mul, Complex.mul_conj, ← h]
   push_cast
   rw [map_add, map_natCast, map_one]
 
+/- English proof (translation)
+Introduce `L ι W hU hW α ω₀ b b' hα hmul hω hω2 hb hb' hnb hnb' hno hxT hxQ`. Take `⟨Sq, hSq⟩` from `hE L α ω₀ hα hmul hω hno`. Take `⟨S, hS⟩` from `Formalism.L2.Th1.F.kerRepsExist L α hα hmul`. Take `⟨hcard, hfib⟩` from `hF L α ω₀ S Sq hα hmul hS hω hω2 hSq`. Rewrite `hfib` using `[hH L ω₀ hω hω2]`.
+
+Establish `hfib'` using `hM ℂ ℂ_[2] (ι : ℂ →+* ℂ_[2]) _ _ Sq _ _ _ _ _ hfib`. Establish `hP` using `Formalism.L2.Th1.E.weierstrass_series_eq_transported 2 L ι W hU`. Establish `hpx : px W (ptW 2 L ι W (ω₀ / 2)) = ι (L.weierstrassP (ω₀ / 2)) - W.b₂ / 12` using `Formalism.L2.Th1.E.AnaSysW.px_ptW hU _ hω2`. Establish `he : px W (ptW 2 L ι W (ω₀ / 2)) + W.b₂ / 12 = ι (L.weierstrassP (ω₀ / 2))`. Rewrite using `[hpx]`.
+
+Expand and normalize the polynomial expressions, which then agree. Establish `hEq : W.toAffine.Equation (px W (ptW 2 L ι W (ω₀ / 2))) (Formalism.L2.Th1.E.AnaSysW.yc 2 L ι W (ω₀ / 2))`. Rewrite using `[hpx]`. Conclude with `(Formalism.L2.Th1.E.AnaSysW.nonsing hU _ hω2).1`. Establish `hd : L.derivWeierstrassP (ω₀ / 2) = 0` using `(Formalism.L2.Th1.F.pDerivZero L _ hω2).2 (by`.
+
+Establish `: 2 * (ω₀ / 2) = ω₀` using `by ring`. Rewrite using `[this]`. Conclude with `hω)`. Establish `h2 : 2 * Formalism.L2.Th1.E.AnaSysW.yc 2 L ι W (ω₀ / 2) + W.a₁ * px W (ptW 2 L ι W (ω₀ / 2)) + W.a₃ = 0`. Rewrite using `[hpx]`.
+
+Unfold `Formalism.L2.Th1.E.AnaSysW.yc`. Rewrite using `[hd, map_zero]`. Expand and normalize the polynomial expressions, which then agree. Establish `hy : ‖Formalism.L2.Th1.E.AnaSysW.yc 2 L ι W (ω₀ / 2)‖ ≤ 1` using `((Formalism.L2.Th1.A.bridgeTwoMore ℂ_[2] W _ _ hEq h2).2.2 hW hxT).1`. Take `⟨hLaw, hi, -⟩` from `Formalism.L2.Th1.A.bridgeLaw ℂ_[2] W hW`.
+
+Establish `hlp` using `Crv2.logPair W`. Take `⟨hEnd, hcl, h0, hne, h1, hb1, hb2⟩` from `twoAdicScalars ℂ_[2] (fgl W) (logSer W) (expSer W) b b' hLaw hlp hnb hnb'`. Establish `hQn : ∀ Q : Sq, (Q : ℂ) ∉ L.lattice`. Introduce `Q hQ`. Apply `(hSq.1 Q Q.2).2` to reduce the goal to its premises.
+
+Rewrite using `[two_mul]`. Conclude with `add_mem hQ hQ`. Establish `hcQ : ∀ Q : Sq, px W (ptW 2 L ι W (Q : ℂ)) + W.b₂ / 12 = ι (L.weierstrassP (Q : ℂ))`. Introduce `Q`. Rewrite using `[Formalism.L2.Th1.E.AnaSysW.px_ptW hU _ (hQn Q)]`.
+
+Expand and normalize the polynomial expressions, which then agree. Establish `hk : (ι : ℂ →+* ℂ_[2]) (3 * L.weierstrassP (ω₀ / 2) ^ 2 - L.g₂ / 4) = 3 * ι (L.weierstrassP (ω₀ / 2)) ^ 2 - ι L.g₂ / 4`. Simplify using `only [RingEquiv.coe_toRingHom, map_sub, map_mul, map_pow, map_div₀, map_ofNat]`. Rewrite `hfib'` using `[map_add, map_mul, PowerSeries.map_C, PowerSeries.map_C, Map.map_wOf, hk, ← hP]`. Establish `hZ : IsFibreZ (wpReg W) (PowerSeries.C (px W (ptW 2 L ι W (ω₀ / 2)) + W.b₂ / 12) + PowerSeries.C (3 * (px W (ptW 2 L ι W (ω₀ / 2)) + W.b₂ / 12) ^ 2 - g₂ W / 4) * wOf (px W (ptW 2 L ι W (ω₀ / 2)) + W.b₂ / 12) (wpReg W)) (fun Q : Sq => px W (ptW 2 L ι W (Q : ℂ)) + W.b₂ / 12) (fun Q …`.
+
+Rewrite using `[he, hU.1]`. Simplify using `only [hcQ]`. Conclude with `hfib'`. Establish `hN : ι α * ι (conj α) = 2 * (Fintype.card Sq : ℂ_[2])`. Rewrite using `[norm_transport ι α S.card (Formalism.L2.Th1.F.kerRepsCard L α S hα hmul hS), Fintype.card_coe]`.
+
+Conclude with `hcard.symm` after adjusting the coercions. Establish `hS2 : ι α * (ι α - ι (conj α)) * ι (Formalism.L2.Th1.F.s2 L) = ι (∑ P ∈ S, L.weierstrassP P)`. Rewrite using `[← Formalism.L2.Th1.F.quasiPeriodConstIsogeny L α S hα hmul hS, ← Complex.mul_conj, ← map_sub, ← map_mul, ← map_mul]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree.
+
+Establish `hal : algebraMap ℚ_[2] ℂ_[2] (b : ℚ_[2]) = ι α` using `hb.symm`. Establish `halb : algebraMap ℚ_[2] ℂ_[2] (b' : ℚ_[2]) = ι (conj α)` using `hb'.symm`. Simplify using `only [hal, halb] at hEnd hcl h0 hne h1 hb1 hb2`. Establish `hV` using `(th0Vanish ℂ_[2] (g₂ W) (g₃ W) (ι (Formalism.L2.Th1.F.s2 L)) (W.b₂ / 12) W.a₁ W.a₃ (px W (ptW 2 L ι W (ω₀ / 2))) (Formalism.L2.Th1.E.AnaSysW.yc 2 L ι W (ω₀ / 2)) (ι α) (ι (conj α)) (ι (∑ P ∈ S, L.weierstrassP P)) (wpReg W) (logSer W) (expSer W) (iSer W) (xS W) (fgl W) Sq (fun Q : …`. Establish `hV' : Simeq (ι` using `Unit) (evenSigmaLogAtTwoTorsion W (ι (Formalism.L2.Th1.F.s2 L)) (px W (ptW 2 L ι W (ω₀ / 2)))) 0 := hV`.
+
+Use `⟨hV', ?_⟩` and prove the remaining obligations. Rewrite using `[Formalism.L2.Th1.E.inWTh0 2 L ι W hU ω₀ hω hω2]`. Conclude with `Formalism.L2.Th1.E.Two.oneUnit_fExp_neg hV'`.
+-/
 theorem Th0TwoAnalytic_of (hE : HalfFibreExists) (hF : FibreZInstance) (hH : HalfShiftSeries)
     (hM : FibreMap) : ThetaZeroTwoAnalytic := by
   intro L ι W hU hW α ω₀ b b' hα hmul hω hω2 hb hb' hnb hnb' hno hxT hxQ

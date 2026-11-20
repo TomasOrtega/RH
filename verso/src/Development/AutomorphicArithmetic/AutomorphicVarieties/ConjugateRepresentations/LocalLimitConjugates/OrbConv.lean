@@ -6,6 +6,11 @@ open UpperTheory.V.Lit UpperTheory.V.Lit.Geo UpperTheory.V.Lit.Bor UpperTheory.V
 open scoped TensorProduct GlobalTheory.CuspRep.CuspidalL2GL
 open UpperTheory.V.Cj UpperTheory.V.Cj.H
 
+/- English proof (translation)
+Establish `hfin : S.Finite` using `Set.finite_of_encard_le_coe hS`. Rewrite using `[tsum_eq_sum (s := hfin.toFinset) fun i hi => h0 i (by simpa using hi)]`. Establish `hcard : hfin.toFinset.card ≤ N`. Rewrite `hS` using `[hfin.encard_eq_coe_toFinset_card]`. Conclude with `hS` after adjusting the coercions.
+
+Use `(norm_sum_le_of_le _ fun i _ => hM i).trans ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_const, nsmul_eq_mul]`. Conclude with `mul_le_mul_of_nonneg_right (by exact_mod_cast hcard) hM0`.
+-/
 private theorem norm_tsum_le_of_encard {I : Type} (u : I → ℂ) (S : Set I) (N : ℕ) (hS : S.encard ≤ N) (M : ℝ)
     (hM : ∀ i, ‖u i‖ ≤ M) (hM0 : 0 ≤ M) (h0 : ∀ i ∉ S, u i = 0) : ‖∑' i, u i‖ ≤ N * M := by
   have hfin : S.Finite := Set.finite_of_encard_le_coe hS
@@ -18,6 +23,23 @@ private theorem norm_tsum_le_of_encard {I : Type} (u : I → ℂ) (S : Set I) (N
   exact mul_le_mul_of_nonneg_right (by exact_mod_cast hcard) hM0
 
 open scoped Pointwise in
+/- English proof (translation)
+Introduce `G _ _ _ _ _ _ _ _ Γ _ μ _ _ f f' hf hc hf' hc'`. Establish `hi : Integrable f μ` using `hf.integrable_of_hasCompactSupport hc`. Establish `hq` using `GlobalTheory.AutomorphicL2KernelIntegral.integrable_descend_orbitSum (Γ := Γ) hi`. Take `⟨N, hN⟩` from `(locInt G Γ μ).2 (tsupport f) hc`. Take `⟨M, hM⟩` from `hf.bounded_above_of_compact_support hc`.
+
+Establish `hM0 : 0 ≤ M` using `(norm_nonneg _).trans (hM 1)`. Establish `hb : ∀ g, ‖GlobalTheory.AutomorphicL2Unitary.orbitSum Γ f g‖ ≤ N * M` using `fun g => norm_tsum_le_of_encard _ _ N (hN g) M (fun _ => hM _) hM0 fun γ h => image_eq_zero_of_notMem_tsupport h`. Establish `h : GlobalTheory.AutomorphicL2Unitary.MemL2Quotient Γ μ (GlobalTheory.AutomorphicL2Unitary.orbitSum Γ f)`. Use `⟨GlobalTheory.AutomorphicL2Unitary.leftInv_orbitSum f, (memLp_two_iff_integrable_sq_norm hq.1).2 ?_⟩` and prove the remaining obligations. Use `(hq.norm.const_mul (N * M)).mono' (hq.1.norm.pow 2) (Eventually.of_forall fun q => ?_)` and prove the remaining obligations.
+
+Rewrite using `[Real.norm_of_nonneg (sq_nonneg _), sq]`. Conclude with `mul_le_mul_of_nonneg_right (hb _) (norm_nonneg _)`. Use `⟨h, funext fun x => ?_⟩` and prove the remaining obligations. Establish `hae : ∀ᵐ g ∂μ, GlobalTheory.AutomorphicL2Unitary.lift Γ h.toL2 g = GlobalTheory.AutomorphicL2Unitary.orbitSum Γ f g` using `by filter_upwards [GlobalTheory.AutomorphicL2Unitary.ae_quotMeasure_iff.1 h.coeFn_toL2] with g hg`. Conclude with `hg.trans (h.1.descend_mk g)`.
+
+Establish `hk : Continuous fun y : G => f' (y⁻¹ * x)` using `by fun_prop`. Establish `hkc : HasCompactSupport fun y : G => f' (y⁻¹ * x)` using `hc'.comp_homeomorph ((Homeomorph.inv G).trans (Homeomorph.mulRight x))`. Establish `hint : ∀ γ : Γ, Integrable (fun y => f (γ * y) * f' (y⁻¹ * x)) μ` using `fun γ => Continuous.integrable_of_hasCompactSupport (by fun_prop) hkc.mul_left`. Establish `hfin : {γ : Γ | (γ : G) ∈ tsupport f * (tsupport fun y : G => f' (y⁻¹ * x))⁻¹}.Finite` using `GlobalTheory.AutomorphicL2Unitary.finite_mem_compact (IsCompact.mul hc (IsCompact.inv hkc))`. Establish `hsum : Summable fun γ : Γ => ∫ y, ‖f (γ * y) * f' (y⁻¹ * x)‖ ∂μ`.
+
+Use `summable_of_hasFiniteSupport (hfin.subset fun γ hγ => ?_)` and prove the remaining obligations. Assume the negation of the conclusion as `hn`. Use `hγ ?_` and prove the remaining obligations. Establish `: ∀ y, f (γ * y) * f' (y⁻¹ * x) = 0` using `fun y => by`. Assume the negation of the conclusion as `hy`.
+
+Conclude with `hn ⟨_, subset_tsupport f (left_ne_zero_of_mul hy), y⁻¹, Set.inv_mem_inv.2 (subset_tsupport _ (right_ne_zero_of_mul hy)), by simp⟩`. Simplify using `[this]`. Establish `e1 : ∀ γ : Γ, GlobalTheory.AutomorphicL2Unitary.conv μ f f' (γ * x) = ∫ y, f (γ * y) * f' (y⁻¹ * x) ∂μ` using `fun γ => by`. Unfold `GlobalTheory.AutomorphicL2Unitary.conv`. Rewrite using `[← integral_mul_left_eq_self _ (γ : G)]`.
+
+Simplify using `[mul_assoc]`. Unfold `cv`. Rewrite using `[GlobalTheory.AutomorphicL2Unitary.orbitSum, tsum_congr e1, integral_tsum_of_summable_integral_norm hint hsum]`. Use `integral_congr_ae ?_` and prove the remaining obligations. Use `filter_upwards [hae] with y hy`.
+
+Rewrite using `[hy, tsum_mul_right, GlobalTheory.AutomorphicL2Unitary.orbitSum]`.
+-/
 theorem UpperTheory.V.Cj.H.orbConv :
     UpperTheory.V.Cj.H.OrbConv := by
   intro G _ _ _ _ _ _ _ _ Γ _ μ _ _ f f' hf hc hf' hc'

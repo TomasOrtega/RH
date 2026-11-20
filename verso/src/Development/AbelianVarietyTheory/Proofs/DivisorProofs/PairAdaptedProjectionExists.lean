@@ -16,6 +16,11 @@ namespace GlobalTheory.DblSiegelChar
 
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
 
+/- English proof (translation)
+Simplify using `only [hTens, Matrix.vecMulVec_apply, map_mul]`. Rewrite using `[Finset.sum_mul_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_mul_sum]`.
+
+Use `Finset.sum_congr rfl fun k _ => Finset.sum_congr rfl fun l _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem hTens_vecMulVec_split {R A : Type} [CommRing R] [CommRing A] [Algebra R A] (c : A →ₐ[R] A)
     {α β : Type} [Fintype α] [Fintype β] (JA : Matrix α α A) (JB : Matrix β β A) (a a' : α → A) (x x' : β → A) :
     hTens c JA JB (Matrix.vecMulVec a x) (Matrix.vecMulVec a' x') =
@@ -28,10 +33,16 @@ theorem hTens_vecMulVec_split {R A : Type} [CommRing R] [CommRing A] [Algebra R 
   refine Finset.sum_congr rfl fun k _ => Finset.sum_congr rfl fun l _ => ?_
   ring
 
+/- English proof (translation)
+Take `⟨τ⟩ : Nonempty (E →+* ℂ)` from `inferInstance`. Conclude with `τ.injective (by rw [h.2.2.2, h.2.2.2, star_star])`.
+-/
 theorem invol {σ : E →ₐ[F] E} (h : IsCMExt F E σ) (x : E) : σ (σ x) = x := by
   obtain ⟨τ⟩ : Nonempty (E →+* ℂ) := inferInstance
   exact τ.injective (by rw [h.2.2.2, h.2.2.2, star_star])
 
+/- English proof (translation)
+Simplify using `only [form, dotProduct, Matrix.mulVec, Finset.mul_sum, map_sum, map_mul, hσ, hJ]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem form_swap {σ : E →ₐ[F] E} (hσ : ∀ z, σ (σ z) = z) {n : ℕ} {J : Matrix (Fin n) (Fin n) E}
     (hJ : ∀ i j, σ (J j i) = J i j) (x y : Fin n → E) : form σ J y x = σ (form σ J x y) := by
   simp only [form, dotProduct, Matrix.mulVec, Finset.mul_sum, map_sum, map_mul, hσ, hJ]
@@ -39,15 +50,28 @@ theorem form_swap {σ : E →ₐ[F] E} (hσ : ∀ z, σ (σ z) = z) {n : ℕ} {J
   refine Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => ?_
   ring
 
+/- English proof (translation)
+Establish `hc : ∀ x : E, cA σ (inclR (F` using `F) (AF F) x) = inclR (F := F) (AF F) (σ x) := fun x => rfl`. Simplify using `only [form, incV, incM, Matrix.map_apply, hc, dotProduct, Matrix.mulVec, Finset.mul_sum, map_sum, map_mul, mul_assoc]`.
+-/
 theorem form_inc {σ : E →ₐ[F] E} {n : ℕ} (J : Matrix (Fin n) (Fin n) E) (x y : Fin n → E) :
     ∑ j, ∑ l, incV F x j * incM F J j l * cA σ (incV F y l) = inclR (F := F) (AF F) (form σ J x y) := by
   have hc : ∀ x : E, cA σ (inclR (F := F) (AF F) x) = inclR (F := F) (AF F) (σ x) := fun x => rfl
   simp only [form, incV, incM, Matrix.map_apply, hc, dotProduct, Matrix.mulVec, Finset.mul_sum, map_sum, map_mul, mul_assoc]
 
+/- English proof (translation)
+Use `haveI : Module.Finite F E := Module.Finite.of_restrictScalars_finite ℚ F E`. Rewrite using `[Algebra.trace_apply, ← Algebra.baseChange_lmul, LinearMap.trace_baseChange, ← Algebra.trace_apply]`.
+-/
 theorem trace_one_tmul (e : E) : Algebra.trace (AF F) (AE F E) ((1 : AF F) ⊗ₜ[F] e) = algebraMap F (AF F) (Algebra.trace F E e) := by
   haveI : Module.Finite F E := Module.Finite.of_restrictScalars_finite ℚ F E
   rw [Algebra.trace_apply, ← Algebra.baseChange_lmul, LinearMap.trace_baseChange, ← Algebra.trace_apply]
 
+/- English proof (translation)
+Use `haveI : Module.Finite F E := Module.Finite.of_restrictScalars_finite ℚ F E`. Set `b` to `Module.finBasis F E`. Set `bb : Module.Basis _ (AF F) (AE F E)` to `Algebra.TensorProduct.basis (AF F) b`. Establish `hco : ∀ i, ∀ x : AE F E, Algebra.trace (AF F) (AE F E) (x * ((1 : AF F) ⊗ₜ[F] b.traceDual i)) = bb.repr x i`. Introduce `i x`.
+
+Use `conv_lhs => rw [← bb.sum_repr x]`. Rewrite using `[Finset.sum_mul, map_sum]`. Simplify using `only [smul_mul_assoc, map_smul, bb, Algebra.TensorProduct.basis_apply, Algebra.TensorProduct.tmul_mul_tmul, one_mul, trace_one_tmul, mul_comm (b _) (b.traceDual i), Module.Basis.trace_traceDual_mul]`. Simplify using the standard rewrite rules. Use `bb.ext_elem fun i => ?_` and prove the remaining obligations.
+
+Rewrite using `[map_zero, Finsupp.zero_apply]`. Apply `GlobalTheory.DiagNonvan.eq_zero_of_psi_mul hψ` to reduce the goal to its premises. Introduce `y`. Use `h (y • ((1 : AF F) ⊗ₜ[F] b.traceDual i))` as an intermediate fact. Rewrite `this` using `[mul_smul_comm, map_smul, hco, smul_eq_mul, mul_comm]`. Then use the resulting hypothesis.
+-/
 theorem eq_zero_of_psi_trace {ψ : AddChar (AF F) ℂ} (hψ : IsStd ψ) (a : AE F E)
     (h : ∀ t : AE F E, ψ (Algebra.trace (AF F) (AE F E) (a * t)) = 1) : a = 0 := by
   classical
@@ -77,6 +101,9 @@ variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algeb
 def vdiff (σ : E →ₐ[F] E) {d : ℕ} (c : Fin d ⊕ Fin d → AE F E) : Fin d → AE F E :=
   fun l => cA σ (c (Sum.inl l)) - cA σ (c (Sum.inr l))
 
+/- English proof (translation)
+Use function extensionality and compare the values at `l`. Simplify using `only [vdiff, Pi.add_apply, map_add]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem vdiff_add (σ : E →ₐ[F] E) {d : ℕ} (a b : Fin d ⊕ Fin d → AE F E) :
     vdiff σ (a + b) = vdiff σ a + vdiff σ b := by
   funext l
@@ -89,14 +116,27 @@ def pairL (σ : E →ₐ[F] E) {d : ℕ} (JW : Matrix (Fin d) (Fin d) (AE F E)) 
   map_add' u u' := by simp only [add_dotProduct, mul_add, map_add]
   map_smul' r u := by simp only [smul_dotProduct, mul_smul_comm, map_smul, RingHom.id_apply]
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem pairL_apply (σ : E →ₐ[F] E) {d : ℕ} (JW : Matrix (Fin d) (Fin d) (AE F E)) (c : Fin d ⊕ Fin d → AE F E)
     (u : Fin d → AE F E) : pairL σ JW c u = Algebra.trace (AF F) (AE F E) (-1 * (u ⬝ᵥ (JW *ᵥ vdiff σ c))) := rfl
 
+/- English proof (translation)
+Use `LinearMap.ext fun u => ?_` and prove the remaining obligations. Simplify using `only [pairL_apply, LinearMap.add_apply, vdiff_add, Matrix.mulVec_add, dotProduct_add, mul_add, map_add]`.
+-/
 theorem pairL_add (σ : E →ₐ[F] E) {d : ℕ} (JW : Matrix (Fin d) (Fin d) (AE F E)) (a b : Fin d ⊕ Fin d → AE F E) :
     pairL σ JW (a + b) = pairL σ JW a + pairL σ JW b := by
   refine LinearMap.ext fun u => ?_
   simp only [pairL_apply, LinearMap.add_apply, vdiff_add, Matrix.mulVec_add, dotProduct_add, mul_add, map_add]
 
+/- English proof (translation)
+Rewrite using `[symp, GlobalTheory.DblSiegelX.zs, hTens_vecMulVec_split, hf, one_mul, pairL_apply]`. Use `congr 2`. Establish `e1 : ((diagCols (Fin d) : Matrix (Fin d ⊕ Fin d) (Fin d) (AE F E)) *ᵥ u) = Sum.elim u u`. Rewrite using `[diagCols, Matrix.fromRows_mulVec, Matrix.one_mulVec]`. Establish `e2 : ∀ U : Fin d ⊕ Fin d → AE F E, ∑ j, ∑ l, U j * dbl (incM F JW) j l * cA σ (c l) = U ⬝ᵥ (dbl (incM F JW) *ᵥ fun l => cA σ (c l))`.
+
+Introduce `U`. Simplify using `only [dotProduct, Matrix.mulVec, Finset.mul_sum, mul_assoc]`. Establish `e3 : vdiff σ c = (fun l => cA σ (c (Sum.inl l))) - fun l => cA σ (c (Sum.inr l))` using `rfl`. Rewrite using `[e1, e2, dbl, Matrix.fromBlocks_mulVec, e3, Matrix.mulVec_sub]`. Simplify using `only [dotProduct, Fintype.sum_sum_type, Sum.elim_inl, Sum.elim_inr, Matrix.zero_mulVec, add_zero, zero_add, Matrix.neg_mulVec, Pi.neg_apply, Pi.sub_apply, Pi.add_apply, mul_neg, mul_sub, Finset.sum_sub_distrib, Finset.sum_neg_distrib, sub_eq_add_neg]`.
+
+Simplify using `only [mul_add, mul_neg, Finset.sum_add_distrib, Finset.sum_neg_distrib]`. Both sides reduce to the same expression.
+-/
 theorem symp_eq (σ : E →ₐ[F] E) {n n₁ d : ℕ} (JX : Matrix (Fin n) (Fin n) E) (JW : Matrix (Fin d) (Fin d) E)
     (H : Plane E n n₁) (hf : ∑ i, ∑ k, incV F H.y i * incM F JX i k * cA σ (incV F H.x k) = 1)
     (c : Fin d ⊕ Fin d → AE F E) (u : Fin d → AE F E) :
@@ -118,6 +158,11 @@ theorem symp_eq (σ : E →ₐ[F] E) {n n₁ d : ℕ} (JX : Matrix (Fin n) (Fin 
   simp only [mul_add, mul_neg, Finset.sum_add_distrib, Finset.sum_neg_distrib]
   rfl
 
+/- English proof (translation)
+Use function extensionality and compare the values at `j`. Use `eq_zero_of_psi_trace hψ (u j) fun t => ?_` and prove the remaining obligations. Use `h (Sum.elim (fun l => GlobalTheory.ArchTraceNondeg.cAinv σ ((JW⁻¹ *ᵥ Pi.single j (-t)) l)) 0)` as an intermediate fact. Establish `hv : vdiff σ (Sum.elim (fun l => GlobalTheory.ArchTraceNondeg.cAinv σ ((JW⁻¹ *ᵥ Pi.single j (-t)) l)) 0) = JW⁻¹ *ᵥ Pi.single j (-t)`. Use function extensionality and compare the values at `l`.
+
+Simplify using `[vdiff, GlobalTheory.ArchTraceNondeg.cA_cAinv]`. Rewrite `this` using `[pairL_apply, hv, Matrix.mulVec_mulVec, Matrix.mul_nonsing_inv _ hdet, Matrix.one_mulVec, dotProduct_single]`. Simplify `this` using `[neg_mul, mul_neg]`.
+-/
 theorem sep (σ : E →ₐ[F] E) {ψ : AddChar (AF F) ℂ} (hψ : IsStd ψ) {d : ℕ} (JW : Matrix (Fin d) (Fin d) (AE F E))
     (hdet : IsUnit JW.det) (u : Fin d → AE F E) (h : ∀ c, ψ (pairL σ JW c u) = 1) : u = 0 := by
   classical
@@ -135,6 +180,15 @@ end GlobalTheory.DblSiegelChar
 
 namespace GlobalTheory.DblSiegelChar
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ B n d X W M χX χW om r s r' s' hP n₁ X₁ H j₀ j₁ hH`. Establish `hcm : IsCMExt F E σ` using `hP.base.cm`. Establish `hψ : IsStd B.ψ` using `hP.base.std`. Establish `hf : ∑ i, ∑ k, incV F H.y i * incM F X.J i k * cA σ (incV F H.x k) = 1`. Rewrite using `[form_inc, form_swap (invol hcm) hP.herm.herm, hH.xy, map_one, map_one]`.
+
+Establish `hdet : IsUnit (incM F W.J).det`. Take `⟨w⟩ : Nonempty (InfinitePlace F)` from `inferInstance`. Establish `h1` using `GlobalTheory.ArchTraceNondeg.det_ne_zero_of_hasSig (hP.skew.sig w)`. Rewrite `h1` using `[Matrix.det_smul]`. Establish `h2 : (W.J.map (B.emb w).1).det ≠ 0` using `right_ne_zero_of_mul h1`.
+
+Establish `h3 : W.J.det ≠ 0` using `fun h0 => h2 (by`. Use `RingHom.map_det (B.emb w).1 W.J` as an intermediate fact. Rewrite `this` using `[h0, map_zero]`. Conclude with `this.symm)`. Establish `h : (incM F W.J).det = inclR (F` using `F) (AF F) W.J.det := by rw [RingHom.map_det]; rfl`.
+
+Rewrite using `[h]`. Conclude with `(isUnit_iff_ne_zero.2 h3).map _`. Conclude with `⟨pairL σ (incM F W.J), pairL_add σ _, fun c u => (symp_eq σ X.J W.J H hf c u).symm, fun u hu => sep σ hψ _ hdet u hu⟩`.
+-/
 theorem main : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E) (n d : ℕ) (X : Spc F E n) (W : Spc F E d)
     (M : Model σ X W) (χX χW : Chr F E) (om : Rep σ X W) (r s r' s' : ℕ), IsPair B M χX χW om r s r' s' →
     ∀ (n₁ : ℕ) (X₁ : Spc F E n₁) (H : Plane E n n₁) (j₀ j₁ : ℕ), H.IsAdapted σ B X X₁ j₀ j₁ →

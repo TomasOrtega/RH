@@ -7,19 +7,31 @@ open scoped ENNReal
 
 noncomputable def rotAbout {n : ℕ} (c : V n) (a : ℂ) (z : V n) : V n := c + a • (z - c)
 
+/- English proof (translation)
+Simplify using `[rotAbout, norm_smul, ha]`.
+-/
 theorem rotAbout_sub {n : ℕ} (c : V n) {a : ℂ} (ha : ‖a‖ = 1) (z : V n) :
     ‖rotAbout c a z - c‖ = ‖z - c‖ := by
   simp [rotAbout, norm_smul, ha]
 
+/- English proof (translation)
+Rewrite using `[mem_ball, mem_ball, dist_eq_norm, dist_eq_norm, rotAbout_sub c ha]`.
+-/
 theorem rotAbout_mem_ball_iff {n : ℕ} (c : V n) {a : ℂ} (ha : ‖a‖ = 1) (R : ℝ) (z : V n) :
     rotAbout c a z ∈ ball c R ↔ z ∈ ball c R := by
   rw [mem_ball, mem_ball, dist_eq_norm, dist_eq_norm, rotAbout_sub c ha]
 
+/- English proof (translation)
+The claim follows from `(measurePreserving_add_left volume c).comp ((measurePreserving_smul_unit a ha).comp (measurePreserving_sub_right volume c))`.
+-/
 theorem measurePreserving_rotAbout {n : ℕ} (c : V n) {a : ℂ} (ha : ‖a‖ = 1) :
     MeasurePreserving (rotAbout c a) volume volume :=
   (measurePreserving_add_left volume c).comp
     ((measurePreserving_smul_unit a ha).comp (measurePreserving_sub_right volume c))
 
+/- English proof (translation)
+Establish `ha0 : a ≠ 0` using `by rintro rfl; simp at ha`. Set `h : V n ≃ₜ V n` to `{ toFun := rotAbout c a invFun := fun z => c + a⁻¹ • (z - c) left_inv := fun z => by simp [rotAbout, smul_smul, inv_mul_cancel₀ ha0] right_inv := fun z => by simp [rotAbout, smul_smul, mul_inv_cancel₀ ha0] continuous_toFun := by unfold rotAbout; fun_prop continuous_invFun := by f …`. Conclude with `h.measurableEmbedding`.
+-/
 theorem measurableEmbedding_rotAbout {n : ℕ} (c : V n) {a : ℂ} (ha : ‖a‖ = 1) :
     MeasurableEmbedding (rotAbout c a) := by
   have ha0 : a ≠ 0 := by rintro rfl; simp at ha
@@ -32,6 +44,9 @@ theorem measurableEmbedding_rotAbout {n : ℕ} (c : V n) {a : ℂ} (ha : ‖a‖
       continuous_invFun := by fun_prop }
   exact h.measurableEmbedding
 
+/- English proof (translation)
+Distinguish the cases in `hz : z ∈ ball c R`. Rewrite using `[indicator_of_mem hz, indicator_of_mem ((rotAbout_mem_ball_iff c ha R z).2 hz)]`. Rewrite using `[indicator_of_notMem hz, indicator_of_notMem (fun h => hz ((rotAbout_mem_ball_iff c ha R z).1 h))]`.
+-/
 theorem indicator_rotAbout {n : ℕ} (c : V n) {a : ℂ} (ha : ‖a‖ = 1) (R : ℝ) {β : Type*}
     [Zero β] (g : V n → β) (z : V n) :
     (ball c R).indicator (fun z => g (rotAbout c a z)) z =
@@ -41,6 +56,9 @@ theorem indicator_rotAbout {n : ℕ} (c : V n) {a : ℂ} (ha : ‖a‖ = 1) (R :
   · rw [indicator_of_notMem hz,
       indicator_of_notMem (fun h => hz ((rotAbout_mem_ball_iff c ha R z).1 h))]
 
+/- English proof (translation)
+Rewrite using `[← lintegral_indicator measurableSet_ball, ← lintegral_indicator measurableSet_ball, lintegral_congr fun z => indicator_rotAbout c ha R g z]`. Conclude with `(measurePreserving_rotAbout c ha).lintegral_comp_emb (measurableEmbedding_rotAbout c ha) _`.
+-/
 theorem setLIntegral_rotAbout {n : ℕ} (c : V n) {a : ℂ} (ha : ‖a‖ = 1) (R : ℝ)
     (g : V n → ℝ≥0∞) :
     ∫⁻ z in ball c R, g (rotAbout c a z) = ∫⁻ z in ball c R, g z := by
@@ -48,6 +66,9 @@ theorem setLIntegral_rotAbout {n : ℕ} (c : V n) {a : ℂ} (ha : ‖a‖ = 1) (
     lintegral_congr fun z => indicator_rotAbout c ha R g z]
   exact (measurePreserving_rotAbout c ha).lintegral_comp_emb (measurableEmbedding_rotAbout c ha) _
 
+/- English proof (translation)
+Rewrite using `[← integral_indicator measurableSet_ball, ← integral_indicator measurableSet_ball, integral_congr_ae (Eventually.of_forall fun z => indicator_rotAbout c ha R g z)]`. Conclude with `(measurePreserving_rotAbout c ha).integral_comp (measurableEmbedding_rotAbout c ha) _`.
+-/
 theorem setIntegral_rotAbout {n : ℕ} (c : V n) {a : ℂ} (ha : ‖a‖ = 1) (R : ℝ)
     {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E] (g : V n → E) :
     ∫ z in ball c R, g (rotAbout c a z) = ∫ z in ball c R, g z := by
@@ -55,6 +76,9 @@ theorem setIntegral_rotAbout {n : ℕ} (c : V n) {a : ℂ} (ha : ‖a‖ = 1) (R
     integral_congr_ae (Eventually.of_forall fun z => indicator_rotAbout c ha R g z)]
   exact (measurePreserving_rotAbout c ha).integral_comp (measurableEmbedding_rotAbout c ha) _
 
+/- English proof (translation)
+Rewrite using `[← integrable_indicator_iff measurableSet_ball, ← integrable_indicator_iff measurableSet_ball]`. Establish `: (ball c R).indicator (fun z => g (rotAbout c a z)) = (ball c R).indicator g ∘ rotAbout c a`. Use function extensionality and compare the values at `fun z => indicator_rotAbout c ha R g z`. Rewrite using `[this]`. Conclude with `(measurePreserving_rotAbout c ha).integrable_comp_emb (measurableEmbedding_rotAbout c ha)`.
+-/
 theorem integrableOn_rotAbout_iff {n : ℕ} (c : V n) {a : ℂ} (ha : ‖a‖ = 1) (R : ℝ)
     {E : Type*} [NormedAddCommGroup E] (g : V n → E) :
     IntegrableOn (fun z => g (rotAbout c a z)) (ball c R) ↔ IntegrableOn g (ball c R) := by
@@ -65,13 +89,22 @@ theorem integrableOn_rotAbout_iff {n : ℕ} (c : V n) {a : ℂ} (ha : ‖a‖ = 
   rw [this]
   exact (measurePreserving_rotAbout c ha).integrable_comp_emb (measurableEmbedding_rotAbout c ha)
 
+/- English proof (translation)
+The claim follows from `Complex.norm_exp_ofReal_mul_I θ`.
+-/
 theorem norm_exp_mul_I_eq_one (θ : ℝ) : ‖Complex.exp ((θ : ℂ) * I)‖ = 1 :=
   Complex.norm_exp_ofReal_mul_I θ
 
+/- English proof (translation)
+Unfold `rotAbout`. Use `fun_prop`.
+-/
 theorem continuous_rotAbout_exp {n : ℕ} (c : V n) :
     Continuous (fun p : ℝ × V n => rotAbout c (Complex.exp ((p.1 : ℂ) * I)) p.2) := by
   unfold rotAbout; fun_prop
 
+/- English proof (translation)
+Use `hu.continuousOn.comp (continuous_rotAbout_exp c).continuousOn ?_` and prove the remaining obligations. Introduce and unpack `⟨θ, z⟩ ⟨_, hz⟩`. Conclude with `(rotAbout_mem_ball_iff c (norm_exp_mul_I_eq_one θ) R z).2 hz`.
+-/
 theorem continuousOn_comp_rotAbout {n : ℕ} {c : V n} {R : ℝ} {u : V n → ℂ}
     (hu : DifferentiableOn ℂ u (ball c R)) (s : Set ℝ) :
     ContinuousOn (fun p : ℝ × V n => u (rotAbout c (Complex.exp ((p.1 : ℂ) * I)) p.2))
@@ -80,6 +113,19 @@ theorem continuousOn_comp_rotAbout {n : ℕ} {c : V n} {R : ℝ} {u : V n → �
   rintro ⟨θ, z⟩ ⟨_, hz⟩
   exact (rotAbout_mem_ball_iff c (norm_exp_mul_I_eq_one θ) R z).2 hz
 
+/- English proof (translation)
+Introduce `n c R u r hu hr`. Establish `hT1` using `norm_exp_mul_I_eq_one`. Establish `hrot : ∀ θ : ℝ, ∫⁻ z in ball c R, ‖u (rotAbout c (Complex.exp ((θ : ℂ) * I)) z)‖ₑ ^ 2 * r ‖z - c‖ = ∫⁻ z in ball c R, ‖u z‖ₑ ^ 2 * r ‖z - c‖`. Introduce `θ`. Establish `h` using `setLIntegral_rotAbout c (hT1 θ) R (fun z => ‖u z‖ₑ ^ 2 * r ‖z - c‖)`.
+
+Simplify using `only [rotAbout_sub c (hT1 θ)] at h`. Conclude with `h`. Establish `hmeas : AEMeasurable (Function.uncurry fun (θ : ℝ) (z : V n) => ‖u (rotAbout c (Complex.exp ((θ : ℂ) * I)) z)‖ₑ ^ 2 * r ‖z - c‖) ((volume.restrict (Ioc 0 (2 * Real.pi))).prod (volume.restrict (ball c R)))`. Rewrite using `[Measure.prod_restrict]`. Establish `h1` using `((continuousOn_comp_rotAbout hu (Ioc 0 (2 * Real.pi))).aemeasurable (μ := volume.prod volume) (measurableSet_Ioc.prod measurableSet_ball)).enorm.pow_const 2`.
+
+Establish `h2 : Measurable fun p : ℝ × V n => r ‖p.2 - c‖` using `hr.comp ((measurable_snd.sub_const c).norm)`. Conclude with `h1.mul h2.aemeasurable`. Establish `hvol : volume (Ioc (0 : ℝ) (2 * Real.pi)) = ENNReal.ofReal (2 * Real.pi)`. Rewrite using `[Real.volume_Ioc, sub_zero]`. Establish `key : (∫⁻ z in ball c R, ‖u z‖ₑ ^ 2 * r ‖z - c‖) * ENNReal.ofReal (2 * Real.pi) = ∫⁻ z in ball c R, ∫⁻ θ in Ioc 0 (2 * Real.pi), ‖u (rotAbout c (Complex.exp ((θ : ℂ) * I)) z)‖ₑ ^ 2 * r ‖z - c‖`.
+
+Rewrite using `[← hvol, ← setLIntegral_const, ← lintegral_lintegral_swap hmeas]`. Conclude with `lintegral_congr fun θ => (hrot θ).symm`. Establish `hmr : Measurable fun z : V n => r ‖z - c‖` using `hr.comp (measurable_id.sub_const c).norm`. Establish `low : ‖u c‖ₑ ^ 2 * ENNReal.ofReal (2 * Real.pi) * ∫⁻ z in ball c R, r ‖z - c‖ ≤ ∫⁻ z in ball c R, ∫⁻ θ in Ioc 0 (2 * Real.pi), ‖u (rotAbout c (Complex.exp ((θ : ℂ) * I)) z)‖ₑ ^ 2 * r ‖z - c‖`. Rewrite using `[← lintegral_const_mul _ hmr]`.
+
+Use `setLIntegral_mono' measurableSet_ball fun z hz => ?_` and prove the remaining obligations. Establish `hw : ‖z - c‖ < R` using `by rw [mem_ball, dist_eq_norm] at hz; exact hz`. Establish `hcz : Continuous fun θ : ℝ => u (rotAbout c (Complex.exp ((θ : ℂ) * I)) z)` using `hu.continuousOn.comp_continuous (by unfold rotAbout; fun_prop) (fun θ => (rotAbout_mem_ball_iff c (hT1 θ) R z).2 hz)`. Establish `hm : Measurable fun θ : ℝ => ‖u (rotAbout c (Complex.exp ((θ : ℂ) * I)) z)‖ₑ ^ 2` using `hcz.measurable.enorm.pow_const 2`. Rewrite using `[lintegral_mul_const _ hm]`.
+
+Use `gcongr`. Conclude with `circle_mean_sq hu hw`. Establish `h0 : ENNReal.ofReal (2 * Real.pi) ≠ 0` using `(ENNReal.ofReal_pos.2 Real.two_pi_pos).ne'`. Use `(ENNReal.mul_le_mul_iff_left h0 ENNReal.ofReal_ne_top).1 ?_` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem mv : MVStatement := by
   intro n c R u r hu hr
   have hT1 := norm_exp_mul_I_eq_one
@@ -129,6 +175,25 @@ theorem mv : MVStatement := by
     _ ≤ _ := low
     _ = _ := key.symm
 
+/- English proof (translation)
+Introduce `n c R u k hu hk hF`. Establish `hT1` using `norm_exp_mul_I_eq_one`. Establish `hpi : (0 : ℝ) ≤ 2 * Real.pi` using `Real.two_pi_pos.le`. Establish `hrot : ∀ θ : ℝ, ∫ z in ball c R, u (rotAbout c (Complex.exp ((θ : ℂ) * I)) z) * (k ‖z - c‖ : ℂ) = ∫ z in ball c R, u z * (k ‖z - c‖ : ℂ)`. Introduce `θ`.
+
+Establish `h` using `setIntegral_rotAbout c (hT1 θ) R (fun z => u z * (k ‖z - c‖ : ℂ))`. Simplify using `only [rotAbout_sub c (hT1 θ)] at h`. Conclude with `h`. Establish `hrotN : ∀ θ : ℝ, ∫ z in ball c R, ‖u (rotAbout c (Complex.exp ((θ : ℂ) * I)) z) * (k ‖z - c‖ : ℂ)‖ = ∫ z in ball c R, ‖u z * (k ‖z - c‖ : ℂ)‖`. Introduce `θ`.
+
+Establish `h` using `setIntegral_rotAbout c (hT1 θ) R (fun z => ‖u z * (k ‖z - c‖ : ℂ)‖)`. Simplify using `only [rotAbout_sub c (hT1 θ)] at h`. Conclude with `h`. Establish `hrotI : ∀ θ : ℝ, IntegrableOn (fun z => u (rotAbout c (Complex.exp ((θ : ℂ) * I)) z) * (k ‖z - c‖ : ℂ)) (ball c R)`. Introduce `θ`.
+
+Establish `h` using `integrableOn_rotAbout_iff c (hT1 θ) R (fun z => u z * (k ‖z - c‖ : ℂ))`. Simplify using `only [rotAbout_sub c (hT1 θ)] at h`. Conclude with `h.2 hF`. Establish `hmeas : AEStronglyMeasurable (fun p : ℝ × V n => u (rotAbout c (Complex.exp ((p.1 : ℂ) * I)) p.2) * (k ‖p.2 - c‖ : ℂ)) ((volume.restrict (Ioc 0 (2 * Real.pi))).prod (volume.restrict (ball c R)))`. Establish `h1 : AEStronglyMeasurable (fun p : ℝ × V n => u (rotAbout c (Complex.exp ((p.1 : ℂ) * I)) p.2)) ((volume.restrict (Ioc 0 (2 * Real.pi))).prod (volume.restrict (ball c R)))`.
+
+Rewrite using `[Measure.prod_restrict]`. Conclude with `(continuousOn_comp_rotAbout hu (Ioc 0 (2 * Real.pi))).aestronglyMeasurable (measurableSet_Ioc.prod measurableSet_ball)`. Conclude with `h1.mul hk.aestronglyMeasurable.comp_snd`. Establish `hint : Integrable (Function.uncurry fun (θ : ℝ) (z : V n) => u (rotAbout c (Complex.exp ((θ : ℂ) * I)) z) * (k ‖z - c‖ : ℂ)) ((volume.restrict (Ioc 0 (2 * Real.pi))).prod (volume.restrict (ball c R)))`. Use `(integrable_prod_iff hmeas).2 ⟨Eventually.of_forall hrotI, ?_⟩` and prove the remaining obligations.
+
+Establish `hc0 : Integrable (fun _ : ℝ => ∫ z in ball c R, ‖u z * (k ‖z - c‖ : ℂ)‖) (volume.restrict (Ioc 0 (2 * Real.pi)))` using `integrableOn_const (by rw [Real.volume_Ioc]; exact ENNReal.ofReal_ne_top)`. Conclude with `hc0.congr (Eventually.of_forall fun θ => (hrotN θ).symm)`. Establish `hswap` using `integral_integral_swap hint`. Establish `hL : ∫ θ in Ioc 0 (2 * Real.pi), ∫ z in ball c R, u (rotAbout c (Complex.exp ((θ : ℂ) * I)) z) * (k ‖z - c‖ : ℂ) = ((2 * Real.pi : ℝ) : ℂ) * ∫ z in ball c R, u z * (k ‖z - c‖ : ℂ)`. Simplify using `only [hrot]`.
+
+Rewrite using `[setIntegral_const, Real.volume_real_Ioc_of_le hpi, sub_zero, Complex.real_smul]`. Establish `hR : ∫ z in ball c R, ∫ θ in Ioc 0 (2 * Real.pi), u (rotAbout c (Complex.exp ((θ : ℂ) * I)) z) * (k ‖z - c‖ : ℂ) = ((2 * Real.pi : ℝ) : ℂ) * u c * ∫ z in ball c R, (k ‖z - c‖ : ℂ)`. Rewrite using `[← integral_const_mul]`. Use `setIntegral_congr_fun measurableSet_ball (fun z hz => ?_)` and prove the remaining obligations. Establish `hw : ‖z - c‖ < R` using `by rw [mem_ball, dist_eq_norm] at hz; exact hz`.
+
+Establish `hcm` using `circle_mean hu hw`. Simplify using `only [rotAbout]`. Rewrite using `[integral_mul_const, ← intervalIntegral.integral_of_le hpi, hcm]`. Establish `h2 : ((2 * Real.pi : ℝ) : ℂ) * ∫ z in ball c R, u z * (k ‖z - c‖ : ℂ) = ((2 * Real.pi : ℝ) : ℂ) * (u c * ∫ z in ball c R, (k ‖z - c‖ : ℂ))`. Rewrite using `[← hL, hswap, hR, mul_assoc]`.
+
+Establish `hne : ((2 * Real.pi : ℝ) : ℂ) ≠ 0` using `by exact_mod_cast Real.two_pi_pos.ne'`. Conclude with `mul_left_cancel₀ hne h2`.
+-/
 theorem mvEq : MVEqStatement := by
   intro n c R u k hu hk hF
   have hT1 := norm_exp_mul_I_eq_one

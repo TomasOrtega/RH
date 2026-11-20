@@ -10,6 +10,9 @@ local notation "ℚ̄" => AlgebraicClosure ℚ
 
 noncomputable section
 
+/- English proof (translation)
+Establish `hn : addOrderOf x ≠ 0` using `hx.addOrderOf_pos.ne'`. Establish `hnm : ℓ ^ (addOrderOf x).factorization ℓ * (addOrderOf x / ℓ ^ (addOrderOf x).factorization ℓ) = addOrderOf x` using `Nat.ordProj_mul_ordCompl_eq_self _ ℓ`. Use `⟨addOrderOf x / ℓ ^ (addOrderOf x).factorization ℓ, (Nat.coprime_ordCompl hℓ hn).symm, hM _ ((addOrderOf x).factorization ℓ) ?_⟩` and prove the remaining obligations. Rewrite using `[smul_smul, hnm]`. Conclude with `addOrderOf_nsmul_eq_zero x`.
+-/
 theorem exists_coprime_nsmul_of_primary_eq_zero {M : Type*} [AddCommGroup M] {ℓ : ℕ} (hℓ : ℓ.Prime)
     (hM : ∀ y : M, ∀ k : ℕ, ℓ ^ k • y = 0 → y = 0) {x : M} (hx : IsOfFinAddOrder x) :
     ∃ m : ℕ, m.Coprime ℓ ∧ m • x = 0 := by
@@ -27,6 +30,13 @@ variable (K : FiniteSubfield) (S : Set (HeightOneSpectrum (𝓞 K.1))) (ιs : Lo
 
 include hℓ hD in
 
+/- English proof (translation)
+Establish `hX` using `divFunSequence_shortExact (gsDecomp K S ιs)`. Take `⟨p, rfl⟩ : ∃ p, q = p + 1` from `⟨q - 1, by omega⟩`. Establish `hzero : IsZero (cohomology (divFunSequence (gsDecomp K S ιs)).X₂ (p + 1))` using `isZero_cohomology_of_bijective_nsmul_ulift _ (fun n hn => bijective_nsmul_divFun_rat _ hn) (by omega)`. Establish `hs` using `ModuleCat.subsingleton_of_isZero hzero`. Set `x' : cohomology (divFunSequence (gsDecomp K S ιs)).X₁ (p + 1)` to `x`.
+
+Take `⟨y, hy⟩` from `exists_δ_eq_of_cohomologyMap_f_eq_zero hX p (p + 1) rfl x' (Subsingleton.elim _ _)`. Establish `hx' : ℓ ^ k • x' = 0` using `hx`. Establish `hk : ℓ ^ k • (δ hX p (p + 1) rfl).hom.toAddMonoidHom y = 0` using `(congrArg (fun t => ℓ ^ k • t) hy).trans hx'`. Take `⟨y', ⟨j, hj⟩, hy'⟩` from `exists_primary_map_eq (δ hX p (p + 1) rfl).hom.toAddMonoidHom hℓ (isTorsion_cohomology _ (by omega) y) hk`. Establish `h0 : y' = 0` using `hD p (by omega) y' j hj`.
+
+Establish `e : x' = (δ hX p (p + 1) rfl).hom y'` using `hy.symm.trans hy'.symm`. Rewrite `e` using `[h0, map_zero]`. Conclude with `e`.
+-/
 theorem eq_zero_of_pow_nsmul_cohomology_gsDiv_int {q : ℕ} (hq : 3 ≤ q) (x : cohomology (gsDiv K S ιs ℤ) q)
     (k : ℕ) (hx : ℓ ^ k • x = 0) : x = 0 := by
   have hX := divFunSequence_shortExact (gsDecomp K S ιs)
@@ -48,6 +58,11 @@ theorem eq_zero_of_pow_nsmul_cohomology_gsDiv_int {q : ℕ} (hq : 3 ≤ q) (x : 
 
 include hℓ hS hD in
 
+/- English proof (translation)
+Establish `hP` using `picSequence_shortExact K S ιs`. Take `⟨p, rfl⟩ : ∃ p, q = p + 1` from `⟨q - 1, by omega⟩`. Set `x' : cohomology (picSequence K S ιs).X₁ (p + 1)` to `x`. Establish `hx' : ℓ ^ k • x' = 0` using `hx`. Establish `hxD : (cohomologyMap (picSequence K S ιs).f (p + 1)).hom x' = 0` using `eq_zero_of_pow_nsmul_cohomology_gsDiv_int K S ιs hℓ hD hq _ k ((map_nsmul (cohomologyMap (picSequence K S ιs).f (p + 1)).hom (ℓ ^ k) x').symm.trans ((congrArg _ hx').trans (map_zero _)))`.
+
+Conclude with `eq_zero_of_mem_range_δ_of_coprime hP p (p + 1) rfl (exists_δ_eq_of_cohomologyMap_f_eq_zero hP p (p + 1) rfl x' hxD) ℓ (fun r => exists_coprime_smul_cohomology_eq_zero (picInfRep K S ιs) ℓ (exists_coprime_smul_picInfRep K S ιs ℓ hℓ hS) p r) k hx`.
+-/
 theorem eq_zero_of_pow_nsmul_cohomology_galUnitsModSUnits {q : ℕ} (hq : 3 ≤ q)
     (x : cohomology (galUnitsModSUnits K.1 ℚ̄ S) q) (k : ℕ) (hx : ℓ ^ k • x = 0) : x = 0 := by
   have hP := picSequence_shortExact K S ιs
@@ -65,6 +80,15 @@ theorem eq_zero_of_pow_nsmul_cohomology_galUnitsModSUnits {q : ℕ} (hq : 3 ≤ 
 
 include hℓ hS hD in
 
+/- English proof (translation)
+Establish `hQ` using `sUnitsQuotSequence_shortExact K.1 ℚ̄ S`. Establish `hP : ∀ q, 3 ≤ q → ∀ w : cohomology (galUnitsModSUnits K.1 ℚ̄ S) q, ∃ m : ℕ, m.Coprime ℓ ∧ m • w = 0` using `fun q hq w => exists_coprime_nsmul_of_primary_eq_zero hℓ (fun w' k hk => eq_zero_of_pow_nsmul_cohomology_galUnitsModSUnits K S ιs hℓ hS hD hq w' k hk) (isTorsion_cohomology _ (by omega) w)`. Take `⟨p, rfl⟩ : ∃ p, r = p + 1` from `⟨r - 1, by omega⟩`. Use `⟨fun z hz => ?_, fun y => ?_⟩` and prove the remaining obligations. Set `z' : cohomology (sUnitsQuotSequence K.1 ℚ̄ S).X₁ (p + 1)` to `z`.
+
+Take `⟨w, hw⟩` from `exists_δ_eq_of_cohomologyMap_f_eq_zero hQ p (p + 1) rfl z' hz`. Take `⟨m, hm, hmw⟩` from `hP p (by omega) w`. Use `⟨m, hm, ?_⟩` and prove the remaining obligations. Establish `e : m • z' = 0`. Rewrite using `[← hw, ← map_nsmul]`.
+
+Conclude with `(congrArg _ hmw).trans (map_zero _)`. Conclude with `e`. Set `y' : cohomology (sUnitsQuotSequence K.1 ℚ̄ S).X₂ (p + 1)` to `y`. Take `⟨m, hm, hmy⟩` from `hP (p + 1) (by omega) ((cohomologyMap (sUnitsQuotSequence K.1 ℚ̄ S).g (p + 1)).hom y')`. Establish `hg : (cohomologyMap (sUnitsQuotSequence K.1 ℚ̄ S).g (p + 1)).hom (m • y') = 0` using `(map_nsmul _ m y').trans hmy`.
+
+Take `⟨z, hz⟩` from `exists_cohomologyMap_f_eq_of_cohomologyMap_g_eq_zero hQ (p + 1) (m • y') hg`. Conclude with `⟨m, hm, z, hz⟩`.
+-/
 theorem isIsoModCoprime_sUnitsToUnits {r : ℕ} (hr : 4 ≤ r) :
     IsIsoModCoprime ℓ (cohomologyMap (sUnitsToUnits S (maxUnramifiedOutside K.1 ℚ̄ S)) r).hom.toAddMonoidHom := by
   have hQ := sUnitsQuotSequence_shortExact K.1 ℚ̄ S
@@ -93,12 +117,18 @@ theorem isIsoModCoprime_sUnitsToUnits {r : ℕ} (hr : 4 ≤ r) :
 def sUnitsInfl (r : ℕ) : cohomology (galSUnitsMax K.1 ℚ̄ S) r →+ cohomology (unitsLimitRep K) r :=
   (gsUnitsInfl K S r).comp (cohomologyMap (sUnitsToUnits S (maxUnramifiedOutside K.1 ℚ̄ S)) r).hom.toAddMonoidHom
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem sUnitsInfl_apply (r : ℕ) (y : cohomology (galSUnitsMax K.1 ℚ̄ S) r) :
     sUnitsInfl K S r y = gsUnitsInfl K S r ((cohomologyMap (sUnitsToUnits S (maxUnramifiedOutside K.1 ℚ̄ S)) r).hom y) :=
   rfl
 
 include hℓ hS hD in
 
+/- English proof (translation)
+The claim follows from `(isIsoModCoprime_gsUnitsInfl K S hℓ hS (by omega)).comp (isIsoModCoprime_sUnitsToUnits K S ιs hℓ hS hD hr)`.
+-/
 theorem isIsoModCoprime_sUnitsInfl_of_divisor {r : ℕ} (hr : 4 ≤ r) : IsIsoModCoprime ℓ (sUnitsInfl K S r) :=
   (isIsoModCoprime_gsUnitsInfl K S hℓ hS (by omega)).comp (isIsoModCoprime_sUnitsToUnits K S ιs hℓ hS hD hr)
 

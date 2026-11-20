@@ -12,11 +12,17 @@ open DCalcH DCalcBH DCalcDH
 
 variable {m n : ℕ}
 
+/- English proof (translation)
+Use `continuous_pi fun k => ?_` and prove the remaining obligations. Unfold `crd vS`. Apply the tactic sequence `split_ifs <;> fun_prop`.
+-/
 theorem crd_cont (X : Fin n → ℝ) (s : ℝ) : Continuous fun u : Fin m → Fin n → ℂ => crd (vS u X s) := by
   refine continuous_pi fun k => ?_
   unfold crd vS
   split_ifs <;> fun_prop
 
+/- English proof (translation)
+Unfold `fF fP`. Use `continuous_const.mul (Continuous.mul ?_ ?_)` and prove the remaining obligations. Simplify using `only [evX_eq]`. Conclude with `(MvPolynomial.continuous_eval Q).comp (crd_cont X s)`. Simplify using `only [gs, vS] fun_prop`.
+-/
 theorem fF_cont (c : ℝ) (X : Fin n → ℝ) (Q : PX m n) (s : ℝ) : Continuous fun u : Fin m → Fin n → ℂ => fF c X Q u s := by
   unfold fF fP
   refine continuous_const.mul (Continuous.mul ?_ ?_)
@@ -25,10 +31,26 @@ theorem fF_cont (c : ℝ) (X : Fin n → ℝ) (Q : PX m n) (s : ℝ) : Continuou
   · simp only [gs, vS]
     fun_prop
 
+/- English proof (translation)
+Simplify using `only [gs, sqN]`. Rewrite using `[← Complex.ofReal_neg, Complex.norm_exp_ofReal]`.
+-/
 theorem norm_gs (c : ℝ) (v : Fin m → Fin n → ℂ) : ‖gs c v‖ = Real.exp (-(c * sqN v)) := by
   simp only [gs, sqN]
   rw [← Complex.ofReal_neg, Complex.norm_exp_ofReal]
 
+/- English proof (translation)
+Establish `hR : 0 ≤ R` using `(abs_nonneg s).trans hs`. Establish `hX : ∀ j, |2 * s * X j| ≤ 2 * R * ∑ j, |X j|`. Introduce `j`. Establish `h1 : |X j| ≤ ∑ j, |X j|` using `Finset.single_le_sum (f := fun j => |X j|) (fun _ _ => abs_nonneg _) (Finset.mem_univ j)`. Rewrite using `[abs_mul, abs_mul, abs_two]`.
+
+Use `mul_le_mul hs h1 (abs_nonneg _) hR` as an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Establish `hterm : ∀ a j, ‖vS u X s a j‖ ^ 2 = ‖u a j‖ ^ 2 * Real.exp (2 * s * X j)`. Introduce `a j`. Rewrite using `[norm_vS, ← Real.exp_nat_mul]`.
+
+Use `push_cast`. Put the polynomial expressions in normal form. Unfold `sqN`. Simplify using `only [hterm]`. Prove the components needed by the constructor for the conclusion.
+
+Rewrite using `[Finset.mul_sum]`. Use `Finset.sum_le_sum fun a _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.mul_sum]`. Use `Finset.sum_le_sum fun j _ => ?_` and prove the remaining obligations. Rewrite using `[mul_comm]`.
+
+Use `mul_le_mul_of_nonneg_left (Real.exp_le_exp.2 ?_) (by positivity)` and prove the remaining obligations. Combine the linear relations using `[neg_abs_le (2 * s * X j), hX j]`. Rewrite using `[Finset.mul_sum]`. Use `Finset.sum_le_sum fun a _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.mul_sum]`.
+
+Use `Finset.sum_le_sum fun j _ => ?_` and prove the remaining obligations. Use `mul_le_mul_of_nonneg_left (Real.exp_le_exp.2 ?_) (by positivity) |>.trans_eq (mul_comm _ _)` and prove the remaining obligations. Combine the linear relations using `[le_abs_self (2 * s * X j), hX j]`.
+-/
 theorem sq_vS_le (u : Fin m → Fin n → ℂ) (X : Fin n → ℝ) (s R : ℝ) (hs : |s| ≤ R) :
     Real.exp (-(2 * R * ∑ j, |X j|)) * sqN u ≤ sqN (vS u X s) ∧ sqN (vS u X s) ≤ Real.exp (2 * R * ∑ j, |X j|) * sqN u := by
   have hR : 0 ≤ R := (abs_nonneg s).trans hs
@@ -58,6 +80,23 @@ theorem sq_vS_le (u : Fin m → Fin n → ℂ) (X : Fin n → ℝ) (s R : ℝ) (
     refine mul_le_mul_of_nonneg_left (Real.exp_le_exp.2 ?_) (by positivity) |>.trans_eq (mul_comm _ _)
     linarith [le_abs_self (2 * s * X j), hX j]
 
+/- English proof (translation)
+Use `set R := |s| + 1`. Use `set M := ∑ j, |X j|`. Use `set κ := Real.exp (-(2 * R * M))`. Use `set κ' := Real.exp (2 * R * M)`. Establish `hκ : 0 < κ` using `Real.exp_pos _`.
+
+Establish `hκ' : 1 ≤ κ'` using `Real.one_le_exp (by positivity)`. Take `⟨C, N, hC, hev⟩` from `evX_growth Q`. Take `⟨C2, hC2, hpe⟩` from `poly_exp N (c * κ) (by positivity)`. Use `⟨Real.exp (R * m * M) * (C * (κ' ^ N * C2)), c * κ / 2, by positivity, by positivity, fun u s' hs' => ?_⟩` and prove the remaining obligations. Establish `hs'R : |s'| ≤ R`.
+
+Apply the tactic sequence `rw [abs_le]; constructor <;> linarith [hs'.1, hs'.2, neg_abs_le s, le_abs_self s]`. Take `⟨hlo, hhi⟩` from `sq_vS_le u X s' R hs'R`. Establish `hS` using `sqN_nonneg u`. Establish `h1 : ‖((Real.exp (s' * (m : ℝ) * ∑ j, X j) : ℝ) : ℂ)‖ ≤ Real.exp (R * m * M)`. Rewrite using `[Complex.norm_real, Real.norm_eq_abs, abs_of_pos (Real.exp_pos _)]`.
+
+Use `Real.exp_le_exp.2 ?_` and prove the remaining obligations. Establish `: |∑ j, X j| ≤ M` using `Finset.abs_sum_le_sum_abs _ _`. Establish `h2 : s' * (m : ℝ) * ∑ j, X j ≤ |s'| * m * |∑ j, X j|`. Combine the equalities or inequalities in the displayed calculation. Establish `h3 : |s'| * m * |∑ j, X j| ≤ R * m * M` using `mul_le_mul (mul_le_mul_of_nonneg_right hs'R (by positivity)) this (abs_nonneg _) (by positivity)`.
+
+Combine the linear equalities and inequalities to obtain the conclusion. Establish `h2 : ‖evX Q (vS u X s')‖ ≤ C * (κ' ^ N * (1 + sqN u) ^ N)`. Use `(hev _).trans (mul_le_mul_of_nonneg_left ?_ hC)` and prove the remaining obligations. Rewrite using `[← mul_pow]`. Use `pow_le_pow_left₀ (by linarith [sqN_nonneg (vS u X s')]) ?_ N` and prove the remaining obligations.
+
+Use the polynomial consequences of the given equalities and inequalities. Establish `h3 : ‖gs c (vS u X s')‖ ≤ Real.exp (-(c * κ * sqN u))`. Rewrite using `[norm_gs]`. Use `Real.exp_le_exp.2 ?_` and prove the remaining obligations. Use `mul_le_mul_of_nonneg_left hlo hc.le` as an intermediate fact.
+
+Combine the linear equalities and inequalities to obtain the conclusion. Unfold `fF fP`. Rewrite using `[norm_mul, norm_mul]`. Combine the equalities or inequalities in the displayed calculation. Use `hpe (sqN u) hS` as an intermediate fact.
+
+Use `gcongr`. Use `_ = Real.exp (R * m * M) * (C * (κ' ^ N * C2)) * Real.exp (-(c * κ / 2 * sqN u)) := by ring`.
+-/
 theorem fF_bound (c : ℝ) (hc : 0 < c) (X : Fin n → ℝ) (Q : PX m n) (s : ℝ) :
     ∃ K a, 0 ≤ K ∧ 0 < a ∧ ∀ u, ∀ s' ∈ Set.Icc (s - 1) (s + 1), ‖fF c X Q u s'‖ ≤ K * Real.exp (-(a * sqN u)) := by
   set R := |s| + 1

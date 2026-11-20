@@ -13,12 +13,44 @@ section SlopeTestRemainingChoices
 variable {P : Type} [Group P] {Γ : Type} [Group Γ] {V : Type} [AddCommGroup V] [Module ℂ V]
   {Y : Type} [AddCommGroup Y] [Module ℂ Y]
 
+/- English proof (translation)
+Break down `h.eq_bot_or_eq_top (⟨N, fun g v hv => hN g v hv⟩ : Subrepresentation ρ) with h1 | h1` into its components or cases. Use `left`. Conclude with `congrArg Subrepresentation.toSubmodule h1`. Use `right`. Conclude with `congrArg Subrepresentation.toSubmodule h1`.
+-/
 private theorem tensIso_stable {G : Type} [Group G] (ρ : Representation ℂ G V) (h : ρ.IsIrreducible)
     (N : Submodule ℂ V) (hN : ∀ g, ∀ v ∈ N, ρ g v ∈ N) : N = ⊥ ∨ N = ⊤ := by
   rcases h.eq_bot_or_eq_top (⟨N, fun g v hv => hN g v hv⟩ : Subrepresentation ρ) with h1 | h1
   · left; exact congrArg Subrepresentation.toSubmodule h1
   · right; exact congrArg Subrepresentation.toSubmodule h1
 
+/- English proof (translation)
+Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => intro v _ j hj`. Simplify using `at hj`. Consider the case `insert a s ha ih`. Set `N : Submodule ℂ V` to `{ carrier := {u | ∃ v : κ → V, b a u + ∑ j ∈ s, b j (v j) = 0} add_mem' := by`.
+
+Introduce and unpack `u u' ⟨v, hv⟩ ⟨v', hv'⟩`. Use `⟨v + v', ?_⟩` and prove the remaining obligations. Simplify using `only [Pi.add_apply, map_add, Finset.sum_add_distrib]`. Rewrite using `[add_add_add_comm, hv, hv', add_zero]`. Use the proof step `zero_mem' := ⟨0, by simp⟩`.
+
+Use the proof step `smul_mem' := by`. Introduce and unpack `c u ⟨v, hv⟩`. Use `⟨c • v, ?_⟩` and prove the remaining obligations. Simplify using `only [Pi.smul_apply, map_smul]`. Rewrite using `[← Finset.smul_sum, ← smul_add, hv, smul_zero] }`.
+
+Establish `hmove : ∀ (p : P) (u : V) (v : κ → V), b a u + ∑ j ∈ s, b j (v j) = 0 → b a (ρ p u) + ∑ j ∈ s, b j (ρ p (v j)) = 0`. Introduce `p u v hv`. Simplify using `only [hbe]`. Rewrite using `[← map_sum, ← map_add, hv, map_zero]`. Establish `huniq : ∀ (u : V) (v v' : κ → V), b a u + ∑ j ∈ s, b j (v j) = 0 → b a u + ∑ j ∈ s, b j (v' j) = 0 → ∀ j ∈ s, v j = v' j`.
+
+Introduce `u v v' h1 h2 j hj`. Use `ih (v - v') (by` as an intermediate fact. Simplify using `only [Pi.sub_apply, map_sub, Finset.sum_sub_distrib]`. Rewrite using `[sub_eq_zero]`. Conclude with `add_left_cancel (h1.trans h2.symm)) j hj`.
+
+Conclude with `sub_eq_zero.mp this`. Break down `tensIso_stable ρ hρ N (by` into its components or cases. Introduce and unpack `p u ⟨v, hv⟩`. Conclude with `⟨fun j => ρ p (v j), hmove p u v hv⟩) with hN | hN`. Introduce `v hv`.
+
+Rewrite `hv` using `[Finset.sum_insert ha]`. Establish `h0 : v a = 0`. Establish `: v a ∈ N` using `⟨v, hv⟩`. Rewrite `this` using `[hN]`. Conclude with `this`.
+
+Rewrite `hv` using `[h0, map_zero, zero_add]`. Introduce `j hj`. Break down `Finset.mem_insert.mp hj with rfl | hj` into its components or cases. Conclude with `h0`. Conclude with `ih v hv j hj`.
+
+It suffices to derive a contradiction. Establish `hall : ∀ u : V, ∃ v : κ → V, b a u + ∑ j ∈ s, b j (v j) = 0`. Introduce `u`. Establish `: u ∈ N` using `by rw [hN]; trivial`. Conclude with `this`.
+
+Use `choose g hg using hall`. Establish `hc : ∀ j : κ, ∃ c : ℂ, j ∈ s → ∀ u, g u j = c • u`. Introduce `j`. Distinguish the cases in `hj : j ∈ s`. Set `T : V →ₗ[ℂ] V` to `{ toFun := fun u => g u j map_add' := fun u u' => huniq (u + u') _ (g u + g u') (hg _) (by`.
+
+Simplify using `only [Pi.add_apply, map_add, Finset.sum_add_distrib]`. Rewrite using `[add_add_add_comm, hg, hg, add_zero]) j hj`. Use the proof step `map_smul' := fun c u => huniq (c • u) _ (c • g u) (hg _) (by`. Simplify using `only [Pi.smul_apply, map_smul]`. Rewrite using `[← Finset.smul_sum, ← smul_add, hg, smul_zero]) j hj }`.
+
+Take `⟨c, hc⟩` from `hS T (fun p u => huniq (ρ p u) _ (fun j => ρ p (g u j)) (hg _) (hmove p u _ (hg u)) j hj)`. Conclude with `⟨c, fun _ => hc⟩`. Conclude with `⟨0, fun h => absurd h hj⟩`. Use `choose c hc using hc`. Establish `hz : ∑ j ∈ insert a s, (Function.update c a 1 j) • b j = 0`.
+
+Rewrite using `[Finset.sum_insert ha]`. Use extensionality with `u`. Simplify using `only [Function.update_self, one_smul, LinearMap.add_apply, LinearMap.sum_apply, LinearMap.smul_apply, LinearMap.zero_apply]`. Use `Eq.trans ?_ (hg u)` and prove the remaining obligations. Use `congr 1`.
+
+Use `Finset.sum_congr rfl fun j hj => ?_` and prove the remaining obligations. Establish `hne : j ≠ a` using `fun h => ha (h ▸ hj)`. Rewrite using `[Function.update_of_ne hne, hc j hj, map_smul]`. Use `linearIndependent_iff'.mp hb _ _ hz a (Finset.mem_insert_self a s)` as an intermediate fact. Simplify using `at this`.
+-/
 private theorem tensIso_dens {κ : Type} (ρ : Representation ℂ P V) (σ : P → Y →ₗ[ℂ] Y)
     (hρ : ρ.IsIrreducible) (hS : Schur ρ) (b : κ → V →ₗ[ℂ] Y) (hb : LinearIndependent ℂ b)
     (hbe : ∀ j p v, b j (ρ p v) = σ p (b j v)) (s : Finset κ) :
@@ -111,6 +143,9 @@ private def tensIso_B (ρ : Representation ℂ P V) (y : Representation ℂ (P �
     intro c a ha p v
     simp [ha p v]
 
+/- English proof (translation)
+Rewrite using `[map_mul]`. Both sides reduce to the same expression.
+-/
 private theorem tensIso_mul (y : Representation ℂ (P × Γ) Y) (a b : P × Γ) (x : Y) :
     y a (y b x) = y (a * b) x := by
   rw [map_mul]; rfl
@@ -131,6 +166,15 @@ private def tensIso_m (ρ : Representation ℂ P V) (y : Representation ℂ (P �
     ext b v
     simp [tensIso_mul]
 
+/- English proof (translation)
+Use `(tensIso_stable y hy _ ?_).resolve_left ?_` and prove the remaining obligations. Introduce and unpack `⟨p, c⟩ x hx`. Establish `: Submodule.span ℂ {x | ∃ b ∈ B', ∃ v, x = b.1 v} ≤ (Submodule.span ℂ {x | ∃ b ∈ B', ∃ v, x = b.1 v}).comap (y (p, c))`. Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨b, hb, v, rfl⟩`.
+
+Use `Submodule.subset_span ⟨_, hB c b hb, ρ p v, ?_⟩` and prove the remaining obligations. Use `show _ = y (1, c) (b.1 (ρ p v))`. Rewrite using `[b.2 p v, tensIso_mul]`. Simplify using the standard rewrite rules. Conclude with `this hx`.
+
+Introduce `h`. Apply `hne` to reduce the goal to its premises. Rewrite using `[eq_bot_iff]`. Introduce `b hb`. Establish `: b = 0`.
+
+Use extensionality with `v`. Establish `hx : b.1 v ∈ Submodule.span ℂ {x | ∃ b ∈ B', ∃ v, x = b.1 v}` using `Submodule.subset_span ⟨b, hb, v, rfl⟩`. Rewrite `hx` using `[h]`. Conclude with `hx`. Conclude with `this`.
+-/
 private theorem tensIso_span (ρ : Representation ℂ P V) (y : Representation ℂ (P × Γ) Y)
     (hy : y.IsIrreducible) (B' : Submodule ℂ (tensIso_B ρ y))
     (hB : ∀ c, ∀ b ∈ B', tensIso_m ρ y c b ∈ B') (hne : B' ≠ ⊥) :
@@ -160,6 +204,35 @@ private theorem tensIso_span (ρ : Representation ℂ P V) (y : Representation �
 
 end SlopeTestRemainingChoices
 
+/- English proof (translation)
+Introduce `P _ Γ _ V _ _ Y _ _ ρ y f hρ hS hy hf hfe`. Set `ev : V ⊗[ℂ] tensIso_B ρ y →ₗ[ℂ] Y` to `TensorProduct.lift ((tensIso_B ρ y).subtype.flip)`. Establish `hev : ∀ v b, ev (v ⊗ₜ b) = b.1 v` using `fun v b => rfl`. Establish `hf' : (⟨f, hfe⟩ : tensIso_B ρ y) ≠ 0` using `fun h => hf (congrArg Subtype.val h)`. Establish `hnt : Nontrivial (tensIso_B ρ y)` using `nontrivial_of_ne _ _ hf'`.
+
+Establish `hinj : Function.Injective ev`. Rewrite using `[injective_iff_map_eq_zero]`. Introduce `x hx`. Set `β` to `Module.Basis.ofVectorSpace ℂ (tensIso_B ρ y)`. Take `⟨c, rfl⟩` from `TensorProduct.eq_repr_basis_right β x`.
+
+Establish `hli : LinearIndependent ℂ (fun j => (β j).1)` using `β.linearIndependent.map' (tensIso_B ρ y).subtype (Submodule.ker_subtype _)`. Establish `h0` using `tensIso_dens ρ (fun p => y (p, 1)) hρ hS _ hli (fun j => (β j).2) c.support c (by`. Rewrite using `[← hx, Finsupp.sum, map_sum]`. Use the proof step `rfl)`. Use `Finset.sum_eq_zero fun j hj => ?_` and prove the remaining obligations.
+
+Use `show c j ⊗ₜ[ℂ] β j = 0`. Rewrite using `[h0 j hj, TensorProduct.zero_tmul]`. Establish `hsurj : Function.Surjective ev`. Rewrite using `[← LinearMap.range_eq_top, eq_top_iff, ← tensIso_span ρ y hy ⊤ (fun _ _ _ => trivial) top_ne_bot, Submodule.span_le]`. Introduce and unpack `_ ⟨b, -, v, rfl⟩`.
+
+Conclude with `⟨v ⊗ₜ b, rfl⟩`. Set `e` to `LinearEquiv.ofBijective ev ⟨hinj, hsurj⟩`. Establish `he : ∀ v b, e (v ⊗ₜ b) = b.1 v` using `fun v b => rfl`. Use `⟨tensIso_B ρ y, inferInstance, inferInstance, tensIso_m ρ y, e, ?_, ?_⟩` and prove the remaining obligations. Establish `hn : Nontrivial (Subrepresentation (tensIso_m ρ y))` using `⟨⊥, ⊤, fun h => (bot_ne_top : (⊥ : Submodule ℂ (tensIso_B ρ y)) ≠ ⊤) (congrArg Subrepresentation.toSubmodule h)⟩`.
+
+Use `⟨fun Q => ?_⟩` and prove the remaining obligations. Distinguish the cases in `hQ : Q.toSubmodule = ⊥`. Use `left`. Conclude with `Subrepresentation.toSubmodule_injective hQ`. Use `right`.
+
+Apply `Subrepresentation.toSubmodule_injective` to reduce the goal to its premises. Use `show Q.toSubmodule = ⊤`. Rewrite using `[eq_top_iff]`. Introduce `b _`. Assume the negation of the conclusion as `hb`.
+
+Take `⟨φ, hφ, hφ'⟩` from `Submodule.exists_dual_map_eq_bot_of_notMem hb inferInstance`. Establish `hsp` using `tensIso_span ρ y hy Q.toSubmodule (fun c b hb => Q.apply_mem_toSubmodule c hb) hQ`. Set `ψ : Y →ₗ[ℂ] V` to `(TensorProduct.rid ℂ V).toLinearMap ∘ₗ (LinearMap.lTensor V φ) ∘ₗ e.symm.toLinearMap`. Establish `hψ : ∀ (v : V) (b : tensIso_B ρ y), ψ (b.1 v) = φ b • v`. Introduce `v b`.
+
+Rewrite using `[← he]`. Simplify using `[ψ]`. Establish `hker : (⊤ : Submodule ℂ Y) ≤ LinearMap.ker ψ`. Rewrite using `[← hsp, Submodule.span_le]`. Introduce and unpack `_ ⟨b', hb', v, rfl⟩`.
+
+Establish `: φ b' = 0`. Establish `: φ b' ∈ Q.toSubmodule.map φ` using `⟨b', hb', rfl⟩`. Rewrite `this` using `[hφ']`. Conclude with `this`. Use `show ψ _ = 0`.
+
+Rewrite using `[hψ, this, zero_smul]`. Apply `hf` to reduce the goal to its premises. Use extensionality with `v`. Establish `h1 : ψ (b.1 v) = 0` using `hker trivial`. Rewrite `h1` using `[hψ]`.
+
+Rewrite using `[(smul_eq_zero.mp h1).resolve_left hφ]`. Simplify using the standard rewrite rules. Introduce `p c x`. Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => simp`.
+
+Consider the case `add a b ha hb => simp only [map_add, ha, hb]`. Consider the case `tmul v b`. Establish `: extTensor ρ (tensIso_m ρ y) (p, c) (v ⊗ₜ b) = ρ p v ⊗ₜ tensIso_m ρ y c b` using `rfl`. Rewrite using `[this, he, he]`. Use `show y (1, c) (b.1 (ρ p v)) = _`.
+
+Rewrite using `[b.2 p v, tensIso_mul]`. Simplify using the standard rewrite rules.
+-/
 theorem UpperTheory.V.Z.InvariantSubmoduleMonicPolynomial.IwahoriBlocks.tensIso :
     ∀ {P : Type} [Group P] {Γ : Type} [Group Γ] {V : Type} [AddCommGroup V] [Module ℂ V] {Y : Type} [AddCommGroup Y] [Module ℂ Y] (ρ : Representation ℂ P V) (y : Representation ℂ (P × Γ) Y) (f : V →ₗ[ℂ] Y), ρ.IsIrreducible → Schur ρ →
       y.IsIrreducible → f ≠ 0 → (∀ p v, f (ρ p v) = y (p, 1) (f v)) →

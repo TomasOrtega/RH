@@ -9,6 +9,13 @@ attribute [local instance] Over.cartesianMonoidalCategory
 
 namespace GlobalTheory.NilLift
 
+/- English proof (translation)
+Use `⟨fun (x : PrimeSpectrum R) ↦ ?_⟩` and prove the remaining obligations. Establish `: x ∈ Set.range (PrimeSpectrum.comap π)`. Rewrite using `[range_comap_of_surjective _ _ hπ]`. Take `⟨n, hn⟩` from `hn`. Introduce `a ha`.
+
+Apply `x.isPrime.mem_of_pow_mem n` to reduce the goal to its premises. Establish `: a ^ n ∈ RingHom.ker π ^ n` using `Ideal.pow_mem_pow ha n`. Rewrite `this` using `[hn]`. Rewrite using `[show a ^ n = 0 from this]`. Conclude with `zero_mem _`.
+
+Conclude with `this`.
+-/
 theorem surjective_spMap_of_isNilpotent_ker {R R₀ : Type} [CommRing R] [CommRing R₀] (π : R →+* R₀)
     (hπ : Function.Surjective π) (hn : IsNilpotent (RingHom.ker π)) : Surjective (spMap π) := by
   refine ⟨fun (x : PrimeSpectrum R) ↦ ?_⟩
@@ -23,6 +30,19 @@ theorem surjective_spMap_of_isNilpotent_ker {R R₀ : Type} [CommRing R] [CommRi
     exact zero_mem _
   exact this
 
+/- English proof (translation)
+Introduce `R R₀ _ _ π hπ hn X X₀ i hsq hsm hp hgc`. Establish `hs : Surjective (spMap π)` using `surjective_spMap_of_isNilpotent_ker π hπ hn`. Establish `hc : IsClosedImmersion (spMap π)` using `.spec_of_surjective _ hπ`. Establish `: Surjective i` using `MorphismProperty.of_isPullback (P := @Surjective) hsq.flip hs`. Establish `: IsClosedImmersion i` using `MorphismProperty.of_isPullback (P := @IsClosedImmersion) hsq.flip hc`.
+
+Establish `: IsProper (i ≫ X.hom)` using `by rw [hsq.w]; infer_instance`. Establish `: UniversallyClosed X.hom` using `UniversallyClosed.of_comp_surjective i X.hom`. Establish `: IsSeparated X.hom` using `GlobalTheory.NilProper.isSeparated_of_comp_surjective i X.hom`. Establish `: LocallyOfFiniteType X.hom` using `inferInstance`. Use `⟨{}, ⟨fun K _ y Z fst snd hz ↦ ?_⟩⟩` and prove the remaining obligations.
+
+Take `⟨φ, rfl⟩` from `Spec.map_surjective y`. Establish `hφ : RingHom.ker π ≤ RingHom.ker φ.hom`. Introduce `a ha`. Take `⟨n, hn⟩` from `hn`. Establish `: a ^ n ∈ RingHom.ker π ^ n` using `Ideal.pow_mem_pow ha n`.
+
+Rewrite `this` using `[hn]`. Establish `h0 : IsNilpotent a` using `⟨n, this⟩`. Conclude with `(h0.map φ.hom).eq_zero`. Set `ψ : R₀ →+* K` to `RingHom.liftOfSurjective π hπ ⟨φ.hom, hφ⟩`. Establish `hψ : ∀ a, ψ (π a) = φ.hom a` using `fun a ↦ RingHom.liftOfRightInverse_comp_apply π _ _ ⟨φ.hom, hφ⟩ a`.
+
+Set `y' : Spec (CommRingCat.of K) ⟶ Sp R₀` to `Spec.map (CommRingCat.ofHom ψ)`. Establish `hy : y' ≫ spMap π = Spec.map φ`. Simplify using `only [y', spMap, ← Spec.map_comp]`. Use `congr 1`. Use extensionality with `a`.
+
+Conclude with `hψ a`. Rewrite `hz` using `[← hy]`. Set `p : Z ⟶ X₀.left` to `hsq.lift fst (snd ≫ y') (by rw [hz.w, Category.assoc])`. Use `hgc.geometrically_connectedSpace y' p snd ?_` and prove the remaining obligations. Conclude with `IsPullback.of_right (by rw [hsq.lift_fst]; exact hz) (hsq.lift_snd _ _ _) hsq`.
+-/
 theorem isProper_and_geometricallyConnected_of_smooth_lift :
     ∀ (R R₀ : Type) [CommRing R] [CommRing R₀] (π : R →+* R₀), Function.Surjective π → IsNilpotent (RingHom.ker π) →
     ∀ (X : Over (Sp R)) (X₀ : Over (Sp R₀)) (i : X₀.left ⟶ X.left), IsPullback i X₀.hom X.hom (spMap π) → Smooth X.hom →

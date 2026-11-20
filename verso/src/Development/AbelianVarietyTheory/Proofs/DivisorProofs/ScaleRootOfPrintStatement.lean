@@ -7,5 +7,8 @@ import Development.AbelianVarietyTheory.PublishedTheorems.AutomorphicForms₂.Ex
 import Development.AbelianVarietyTheory.PublishedTheorems.PublishedFoundations.NonemptyAlgHomOfIsRayOfDvd
 open GlobalTheory.BigTop GlobalTheory.BigOn GlobalTheory.BigOn.Exp
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.BigOn.Exp.scaleRoot_of_hypothesis | exact GlobalTheory.BigOn.Exp.scaleRoot_of_hypothesis | (intros; apply GlobalTheory.BigOn.Exp.scaleRoot_of_hypothesis <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.scaleRoot_of_cuspRapidDecay_of_reciprocity_of_rayClassField : GlobalTheory.Published.CuspRapidDecay → GlobalTheory.Published.GlobalArtinReciprocity → GlobalTheory.Published.RayClassFieldSt → GlobalTheory.SerStd.SeriesRatS → GlobalTheory.BigOn.Exp.ScaleRoot := by
   first | exact @GlobalTheory.BigOn.Exp.scaleRoot_of_hypothesis | exact GlobalTheory.BigOn.Exp.scaleRoot_of_hypothesis | (intros; apply GlobalTheory.BigOn.Exp.scaleRoot_of_hypothesis <;> assumption)

@@ -19,6 +19,23 @@ namespace ModelEmbedding
 variable {o Ω : Type} [CommRing o] [Field Ω] [Algebra o Ω] {M : RatModel o Ω} {H : LB M.Z} {d : H.ι → Ω} {m : ℕ}
   {σ : Fin m → H.Sec} {t : Fin m → Ω}
 
+/- English proof (translation)
+Use `⟨hH, hs, fun i => ?_⟩` and prove the remaining obligations. Establish `hempty : ∀ V : M.Z.Opens, ¬ (V : Set M.Z).Nonempty → Subsingleton Γ(M.Z, V)` using `fun V hV => by`. Establish `: V = ⊥` using `SetLike.coe_injective (Set.not_nonempty_iff_eq_empty.1 hV)`. Substitute `this` using the available equality. Use `infer_instance`.
+
+Establish `key'` using `mem_nonzeroLocus_iff_div hH hd hv (PositivityTheory.UnitarySelfGeneration.UnitProductCombination.exists_unit hd hv hs) i`. Generalize the expression as in `nonzeroLocus (σ i) = W at key' ⊢`. Distinguish the cases in `hi : t i = 0`. Establish `hW : W = ⊥` using `eq_bot_iff.2 fun z hz => (((key' z).1 hz).1 hi).elim`. Substitute `hW` using the available equality.
+
+Use `⟨isAffineOpen_bot _, fun _ => 0, fun f => ⟨0, Subsingleton.elim _ _⟩, fun j l => ?_⟩` and prove the remaining obligations. Use `hempty (⊥ ⊓ H.U l) (fun ⟨z, hz⟩ => hz.1)` as an intermediate fact. Conclude with `Subsingleton.elim _ _`. Take `⟨U, hUa, hUe, hR⟩` from `hM.2 i hi`. Establish `hWU : W = U` using `SetLike.ext fun z => (key' z).trans (Set.ext_iff.1 hUe z).symm`.
+
+Substitute `hWU` using the available equality. Establish `hne : (W : Set M.Z).Nonempty` using `⟨_, (key' _).2 (div_genericPoint hi)⟩`. Establish `hr : ∀ j, ∃ f : Γ(M.Z, W), valF M.pt W f = t j / t i` using `fun j => (mem_ringOn_iff_exists hne).1 (mem_ringOn.2 fun z hz => ((key' z).1 hz).2 j)`. Use `choose r hr using hr`. Use `⟨hUa, r, fun f => ?_, fun j l => ?_⟩` and prove the remaining obligations.
+
+Establish `h1 : valF M.pt W f ∈ M.ringOn W` using `(mem_ringOn_iff_exists hne).2 ⟨f, rfl⟩`. Rewrite `h1` using `[hR, Algebra.adjoin_range_eq_range_aeval]`. Take `⟨q, hq⟩` from `h1`. Establish `e : (M.res W hne).comp (eval₂Hom (algX M.s W) r) = (aeval (R` using `o) fun j => t j / t i).toRingHom := MvPolynomial.ringHom_ext (fun a => by`. Simplify using `only [RingHom.comp_apply, eval₂Hom_C, AlgHom.toRingHom_eq_coe, RingHom.coe_coe, aeval_C]`.
+
+Conclude with `(M.res_apply W hne _).trans (M.valF_constFn hne a)) fun j => by`. Simplify using `only [RingHom.comp_apply, eval₂Hom_X', AlgHom.toRingHom_eq_coe, RingHom.coe_coe, aeval_X]`. Conclude with `(M.res_apply W hne _).trans (hr j)`. Conclude with `⟨q, M.res_injective W hne ((RingHom.congr_fun e q).trans (hq.trans (M.res_apply W hne f).symm))⟩`. Distinguish the cases in `hl : ((W ⊓ H.U l : M.Z.Opens) : Set M.Z).Nonempty`.
+
+Establish `hl' : (H.U l : Set M.Z).Nonempty` using `hl.mono fun z hz => hz.2`. Apply `M.res_injective _ hl` to reduce the goal to its premises. Rewrite using `[map_mul, res_apply, res_apply, res_apply, M.valF_resG _ hl, M.valF_resG _ hl, M.valF_resG _ hl, hv j l hl', hv i l hl', hr]`. Establish `hdl` using `hd.ne l`. Clear the denominators using the available nonvanishing facts.
+
+Use `hempty _ hl` as an intermediate fact. Conclude with `Subsingleton.elim _ _`.
+-/
 theorem emb (hM : M.IsCl t) (hH : H.IsLB) (hd : M.GenTriv H d) (hv : ∀ j, M.HasVal d (σ j) (t j))
     (hs : ⨆ k, nonzeroLocus (σ k) = ⊤) : Emb M.s σ := by
   refine ⟨hH, hs, fun i => ?_⟩
@@ -63,6 +80,9 @@ theorem emb (hM : M.IsCl t) (hH : H.IsLB) (hd : M.GenTriv H d) (hv : ∀ j, M.Ha
       · have := hempty _ hl
         exact Subsingleton.elim _ _
 
+/- English proof (translation)
+Rewrite using `[valF_eq_valR, valR_eq M.pt U (M.top_le_preimage_pt ⟨_, hV⟩), ← germ_stalkClosedPointTo_eq_valMap, ← CommRingCat.comp_apply, ← Scheme.germ_residue, Category.assoc, Scheme.residue_descResidueField]`.
+-/
 theorem desc_eval (U : M.Z.Opens) (hV : M.pt (IsLocalRing.closedPoint Ω) ∈ U) (f : Γ(M.Z, U)) :
     (Scheme.descResidueField (Scheme.stalkClosedPointTo (R := CommRingCat.of Ω) M.pt)).hom
       ((M.Z.evaluation U _ hV).hom f) = valF M.pt U f := by
@@ -74,6 +94,15 @@ end ModelEmbedding
 open ModelEmbedding
 
 attribute [local instance] MvPolynomial.algebraMvPolynomial in
+/- English proof (translation)
+Introduce `K Ω _ _ _ _ m t Z hZ H hH e he s hv hs _`. Use `⟨emb hZ hH he hv hs, ?_⟩` and prove the remaining obligations. Establish `key : ∀ (i : H.ι) (h : Z.pt (IsLocalRing.closedPoint Ω) ∈ H.U i), RingHom.ker (coneHom Z.s s _ i h) = (GlobalTheory.CompHt.coneIdeal K t).comap (MvPolynomial.map (algebraMap (𝓞 K) K))` using `fun i h => by`. Establish `hne : (H.U i : Set Z.Z).Nonempty` using `⟨_, h⟩`. Establish `e1 : (Polynomial.mapRingHom (Scheme.descResidueField (Scheme.stalkClosedPointTo (R` using `CommRingCat.of Ω) Z.pt)).hom).comp (coneHom Z.s s _ i h) = (GlobalTheory.CompHt.coneMap K ((e i)⁻¹ • t)).toRingHom.comp (MvPolynomial.map (algebraMap (𝓞 K) K)) := MvPolynomial.ringHom_ext (fun a => by`.
+
+Simplify using `only [coneHom, GlobalTheory.CompHt.coneMap, eval₂Hom_C, RingHom.comp_apply, Polynomial.coe_mapRingHom, Polynomial.map_C, map_C, AlgHom.toRingHom_eq_coe, RingHom.coe_coe, aeval_C, Polynomial.algebraMap_apply]`. Conclude with `congrArg Polynomial.C ((desc_eval _ h _).trans ((Z.valF_constFn hne a).trans (IsScalarTower.algebraMap_apply (𝓞 K) K Ω a)))) fun k => by`. Simplify using `only [coneHom, GlobalTheory.CompHt.coneMap, eval₂Hom_X', RingHom.comp_apply, Polynomial.coe_mapRingHom, Polynomial.map_C, Polynomial.map_mul, Polynomial.map_X, map_X, AlgHom.toRingHom_eq_coe, RingHom.coe_coe, aeval_X]`. Conclude with `congrArg (fun c => Polynomial.X * Polynomial.C c) ((desc_eval _ h _).trans ((hv k i hne).trans (div_eq_inv_mul _ _)))`. Rewrite using `[← GlobalTheory.CompHt.coneIdeal_smul (inv_ne_zero (he.ne i))]`.
+
+Establish `hinj : Function.Injective (Polynomial.mapRingHom (Scheme.descResidueField (Scheme.stalkClosedPointTo (R` using `CommRingCat.of Ω) Z.pt)).hom) := Polynomial.map_injective _ (RingHom.injective _)`. Conclude with `(RingHom.ker_comp_of_injective (coneHom Z.s s _ i h) hinj).symm.trans ((congrArg RingHom.ker e1).trans (RingHom.comap_ker _ _).symm)`. Establish `h2 : ptIdeal Z.s s (genericPoint Z.Z) = (GlobalTheory.CompHt.coneIdeal K t).comap (MvPolynomial.map (algebraMap (𝓞 K) K))`. Rewrite using `[← Z.pt_apply (IsLocalRing.closedPoint Ω)]`. Establish `hm : Z.pt (IsLocalRing.closedPoint Ω) ∈ ⨆ l, H.U l` using `by rw [hH.cover]; trivial`.
+
+Take `⟨l, hl⟩` from `Opens.mem_iSup.1 hm`. Conclude with `le_antisymm ((iInf₂_le l hl).trans (key l hl).le) (le_iInf₂ fun i h => (key i h).ge)`. Rewrite using `[genIdeal, h2]`. Conclude with `IsLocalization.map_comap ((nonZeroDivisors (𝓞 K)).map (C (σ := Fin m))) (MvPolynomial (Fin m) K) _`.
+-/
 theorem stModel : StModel := by
   intro K Ω _ _ _ _ m t Z hZ H hH e he s hv hs _
   refine ⟨emb hZ hH he hv hs, ?_⟩

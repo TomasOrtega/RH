@@ -23,6 +23,13 @@ namespace GlobalTheory.TripleOut
 
 open GlobalTheory.CechPic GlobalTheory.TripleExt
 
+/- English proof (translation)
+Establish `h : ∀ i, L.U i ≤ (LB.LinComb L (K` using `Fin 1) (fun _ => 𝟙 X) (fun _ => 1)).U fun _ => i := fun i x hx => Set.mem_iInter.2 fun _ => hx`. Establish `rr : ∀ {A B C : X.Opens} (e : B ≤ A) (e' : C ≤ B) (s : Γ(X, A)), resG X e' (resG X e s) = resG X (e'.trans e) s` using `fun e e' s => by`. Rewrite using `[← RingHom.comp_apply, ← CommRingCat.hom_comp, ← Functor.map_comp]`. Both sides reduce to the same expression. Use `⟨fun i => resG X (inf_le_inf_left V (h i)) (σ fun _ => i), fun i j => ?_, fun j => ?_⟩` and prove the remaining obligations.
+
+Establish `e` using `congrArg (resG X (inf_le_inf (inf_le_inf_left V (h i)) (h j))) (hσ (fun _ => i) (fun _ => j))`. Rewrite `e` using `[map_mul, rr, rr, rr]`. Rewrite using `[rr, rr, e]`. Use `congr 1`. Simplify using `only [LB.LinComb, Fin.prod_univ_one, zpow_one]`.
+
+Conclude with `rr _ _ _`. Take `⟨i, rfl⟩ : ∃ i, j = fun _ => i` from `⟨j 0, funext fun k => congrArg j (Subsingleton.elim _ _)⟩`. Introduce `x hx`. Rewrite using `[Scheme.basicOpen_res]`. Conclude with `⟨inf_le_inf_left V (LB.wchart_le L _ _ 0) (X.basicOpen_le _ hx), hx⟩`.
+-/
 theorem exists_secOn_of_pow_one {X : Scheme.{0}} (L : LB X) (V : X.Opens)
     {σ : ∀ j, Γ(X, V ⊓ (LB.LinComb L (K := Fin 1) (fun _ => 𝟙 X) (fun _ => 1)).U j)}
     (hσ : σ ∈ secOn (LB.LinComb L (K := Fin 1) (fun _ => 𝟙 X) (fun _ => 1)) V) :
@@ -44,11 +51,17 @@ theorem exists_secOn_of_pow_one {X : Scheme.{0}} (L : LB X) (V : X.Opens)
     rw [Scheme.basicOpen_res]
     exact ⟨inf_le_inf_left V (LB.wchart_le L _ _ 0) (X.basicOpen_le _ hx), hx⟩
 
+/- English proof (translation)
+The claim follows from `(GlobalTheory.Points.le_preimage_basicOpen_iff g (by_contra fun hn => h (dif_neg hn)) f).2 (isUnit_iff_ne_zero.2 h) (x := w) trivial`.
+-/
 theorem mem_basicOpen_of_valF {K : Type} [Field K] {X : Scheme.{0}} (g : Sp K ⟶ X) {U : X.Opens} (f : Γ(X, U))
     (h : valF g U f ≠ 0) (w : Sp K) : g w ∈ X.basicOpen f :=
   (GlobalTheory.Points.le_preimage_basicOpen_iff g (by_contra fun hn => h (dif_neg hn)) f).2 (isUnit_iff_ne_zero.2 h)
     (x := w) trivial
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨AlgebraicClosure (X.residueField y), inferInstance, inferInstance, Spec.map (CommRingCat.ofHom (algebraMap (X.residueField y) _)) ≫ X.fromSpecResidueField y, fun w => by rw [Scheme.Hom.comp_apply, Scheme.fromSpecResidueField_apply]⟩`.
+-/
 theorem exists_geomPoint {X : Scheme.{0}} (y : X) :
     ∃ (K : Type) (_ : Field K) (_ : IsAlgClosed K) (x : Sp K ⟶ X), ∀ w, x w = y :=
   ⟨AlgebraicClosure (X.residueField y), inferInstance, inferInstance,
@@ -58,6 +71,13 @@ theorem exists_geomPoint {X : Scheme.{0}} (y : X) :
 variable {o Ω : Type} [CommRing o] [Field Ω] [Algebra o Ω] {S : ThetaSys o Ω} {ρ : S.Real} {M : RatModel o Ω}
   {U₀ : M.Z.Opens} {EE : M.Lat S.J}
 
+/- English proof (translation)
+Introduce `z`. Establish `hN` using `S.N_ge`. Establish `hr` using `S.r_pos`. Establish `: NeZero (S.r * S.N)` using `⟨Nat.mul_ne_zero (by omega) (by omega)⟩`. Take `⟨x₀, hx₀⟩` from `h z`.
+
+Set `W : M.Z.Opens` to `⟨_, M.isOpen_setOf_div S.th x₀⟩`. Take `⟨σ, hσ, -, hne⟩` from `Z.theta W x₀ fun _ hz => hz`. Take `⟨θ, hθ, hle⟩` from `exists_secOn_of_pow_one Z.L.L _ hσ`. Use `⟨W, hx₀, θ, hθ, fun y hy => ?_⟩` and prove the remaining obligations. Take `⟨K, _, _, x, hx⟩` from `exists_geomPoint y`.
+
+Take `⟨g, j, hg, hv⟩` from `hne K x (by rintro _ ⟨w, rfl⟩; rw [hx]; exact hy)`. Use `⟨g (IsLocalRing.closedPoint K), j 0, ?_, hle j ?_⟩` and prove the remaining obligations. Conclude with `(Scheme.Hom.comp_apply g Z.G.hom _).symm.trans (hg ▸ hx _)`. Conclude with `mem_basicOpen_of_valF g (σ j) hv _`.
+-/
 theorem hasTheta (Z : ZHOut ρ M U₀ EE) (h : M.HasDiv S.th) : GlobalTheory.Models.HasTheta Z.G Z.L.L := by
   intro z
   have hN := S.N_ge
@@ -74,6 +94,11 @@ theorem hasTheta (Z : ZHOut ρ M U₀ EE) (h : M.HasDiv S.th) : GlobalTheory.Mod
   · exact (Scheme.Hom.comp_apply g Z.G.hom _).symm.trans (hg ▸ hx _)
   · exact mem_basicOpen_of_valF g (σ j) hv _
 
+/- English proof (translation)
+Introduce `z`. Use `⟨M.Z.residueField z, inferInstance, Algebra.id _, inferInstance, inferInstance, ?_⟩` and prove the remaining obligations. Establish `e : Spec.map (CommRingCat.ofHom (algebraMap (M.Z.residueField z) (M.Z.residueField z))) ≫ M.Z.fromSpecResidueField z = M.Z.fromSpecResidueField z`. Rewrite using `[Algebra.algebraMap_self, CommRingCat.ofHom_id, Spec.map_id, Category.id_comp]`. Establish `h : ∀ f : Sp (M.Z.residueField z) ⟶ M.Z, f = M.Z.fromSpecResidueField z → ∃ E : SplitExt (Sp (M.Z.residueField z)), E.IsGt ((Over.pullback f).obj Z.G)`.
+
+Introduce and unpack `_ rfl`. Conclude with `Z.split z`. Conclude with `h _ e`.
+-/
 theorem splitFib (Z : ZHOut ρ M U₀ EE) : GlobalTheory.Models.SplitFib Z.G := by
   intro z
   refine ⟨M.Z.residueField z, inferInstance, Algebra.id _, inferInstance, inferInstance, ?_⟩
@@ -92,12 +117,20 @@ variable {B U X : Scheme.{0}} {A : Over B} {A' : Over U} {G : Over X} [GrpObj A]
   [IsCommMonObj A'] [GrpObj G] [IsCommMonObj G]
 
 omit [IsCommMonObj A] [IsCommMonObj A'] in
+/- English proof (translation)
+The claim follows from `Over.OverMorphism.ext (by show (x.left ≫ _) ≫ _ = (x.left ≫ _) ≫ _ rw [Category.assoc, ha, Category.assoc])`.
+-/
 theorem pushPt_comp {u : U ⟶ B} {p : A'.left ⟶ A.left} (h : IsGrpPullback A' A u p) {a' : A' ⟶ A'} {a : A ⟶ A}
     (ha : a'.left ≫ p = p ≫ a.left) {T : Over U} (x : T ⟶ A') : pushPt h.1.w (x ≫ a') = pushPt h.1.w x ≫ a :=
   Over.OverMorphism.ext (by
     show (x.left ≫ _) ≫ _ = (x.left ≫ _) ≫ _
     rw [Category.assoc, ha, Category.assoc])
 
+/- English proof (translation)
+Set `v` to `lift (pushPt h.1.w y₁) (pushPt h.1.w y₂)`. Use `(pull_cubeCls_push h _ _ v (fun i => ?_) c).symm.trans ((congrArg (pull v.left) H).trans (pull_cubeCls_push h _ _ v (fun i => ?_) c))` and prove the remaining obligations. Use `fin_cases i`. Conclude with `(pushPt_comp h ha _).trans (by simp [v])`. Simplify using `[v]`.
+
+Use `fin_cases i`. Simplify using `[v]`. Conclude with `(pushPt_comp h hb _).trans (by simp [v])`.
+-/
 theorem adj_pull {u : U ⟶ B} {p : A'.left ⟶ A.left} (h : IsGrpPullback A' A u p) {a' b' : A' ⟶ A'} {a b : A ⟶ A}
     (ha : a'.left ≫ p = p ≫ a.left) (hb : b'.left ≫ p = p ≫ b.left) (c : Pic A.left)
     (H : cubeCls ![fst A A ≫ a, snd A A] c = cubeCls ![fst A A, snd A A ≫ b] c) {T : Over U} (y₁ y₂ : T ⟶ A') :
@@ -112,6 +145,9 @@ theorem adj_pull {u : U ⟶ B} {p : A'.left ⟶ A.left} (h : IsGrpPullback A' A 
     · simp [v]
     · exact (pushPt_comp h hb _).trans (by simp [v])
 
+/- English proof (translation)
+Establish `h₁` using `pull_cubeCls_push h ![𝟙 A', a'] ![𝟙 A, a] (pushPt h.1.w (𝟙 A')) (fun i => by fin_cases i`. Simplify using the standard rewrite rules. Conclude with `(congrArg (pushPt h.1.w) (Category.id_comp _).symm).trans (pushPt_comp h ha _)) c`. Establish `e : (pushPt h.1.w (𝟙 A')).left = p` using `Category.id_comp _`. Rewrite `h₁` using `[e]`. Then use the resulting hypothesis.
+-/
 theorem pull_graph {u : U ⟶ B} {p : A'.left ⟶ A.left} (h : IsGrpPullback A' A u p) {a' : A' ⟶ A'} {a : A ⟶ A}
     (ha : a'.left ≫ p = p ≫ a.left) (c : Pic A.left) :
     pull p (cubeCls ![𝟙 A, a] c) = cubeCls ![𝟙 A', a'] (pull p c) := by
@@ -127,6 +163,17 @@ variable [IsIntegral X] [IsLocallyNoetherian X] (hX : Geo.Tor.IsNormalScheme X) 
   [IsOpenImmersion j] (semi : IsSemiAbelian G) {φ : A'.left ⟶ G.left} (h : IsGrpPullback A' G j φ)
 include hX semi h
 
+/- English proof (translation)
+Use `semi.smooth` as an intermediate fact. Use `semi.geomConnected` as an intermediate fact. Establish `hsm : Smooth (G ⊗ G).hom` using `by show Smooth (pullback.fst G.hom G.hom ≫ G.hom) infer_instance`. Establish `hgc : GeometricallyConnected (G ⊗ G).hom` using `by show GeometricallyConnected (pullback.fst G.hom G.hom ≫ G.hom)`. Conclude with `GeometricallyConnected.comp _ _`.
+
+Set `T' : Over U` to `Over.mk (pullback.snd (G ⊗ G).hom j)`. Set `u : Over.mk (T'.hom ≫ j) ⟶ G ⊗ G` to `Over.homMk (pullback.fst (G ⊗ G).hom j) pullback.condition`. Establish `hy : ∀ y : G ⊗ G ⟶ G, ∃ y' : T' ⟶ A', pushPt h.1.w y' = u ≫ y` using `fun y => ⟨Over.homMk (h.1.lift (u ≫ y).left T'.hom (Over.w (u ≫ y))) (h.1.lift_snd _ _ _), Over.OverMorphism.ext (h.1.lift_fst _ _ _)⟩`. Take `⟨y₁, hy₁⟩` from `hy (fst G G)`. Take `⟨y₂, hy₂⟩` from `hy (snd G G)`.
+
+Set `e : 𝟙_ (Over X) ⟶ G ⊗ G` to `lift η[G] η[G]`. Use `pic_ext X hX j (G ⊗ G).hom e.left u.left T'.hom hsm (geometricallyIntegral_of_smooth_of_geometricallyConnected_fibres _) (Over.w e) (IsPullback.of_hasPullback _ _) _ _ ?_ ?_` and prove the remaining obligations. Use `(pull_cubeCls_push h _ _ u (fun i => ?_) _).trans ((H y₁ y₂).trans (pull_cubeCls_push h _ _ u (fun i => ?_) _).symm)` and prove the remaining obligations. Use `fin_cases i`. Simplify using `[pushPt_comp h ha, hy₁]`.
+
+Simplify using `[hy₂]`. Use `fin_cases i`. Simplify using `[hy₁]`. Simplify using `[pushPt_comp h hb, hy₂]`. Use `(pull_cubeCls_pre e _ _).trans (Eq.trans ?_ (pull_cubeCls_pre e _ _).symm)` and prove the remaining obligations.
+
+Use `congr 1`. Use function extensionality and compare the values at `i`. Apply the tactic sequence `fin_cases i <;> simp [e]`.
+-/
 theorem adj_extend {a' b' : A' ⟶ A'} {a b : G ⟶ G} [IsMonHom a] [IsMonHom b]
     (ha : a'.left ≫ φ = φ ≫ a.left) (hb : b'.left ≫ φ = φ ≫ b.left) (c : Pic G.left)
     (H : ∀ {T : Over U} (y₁ y₂ : T ⟶ A'), cubeCls ![y₁ ≫ a', y₂] (pull φ c) = cubeCls ![y₁, y₂ ≫ b'] (pull φ c)) :
@@ -163,6 +210,11 @@ theorem adj_extend {a' b' : A' ⟶ A'} {a b : G ⟶ G} [IsMonHom a] [IsMonHom b]
     funext i
     fin_cases i <;> simp [e]
 
+/- English proof (translation)
+Use `semi.smooth` as an intermediate fact. Use `semi.geomConnected` as an intermediate fact. Use `pic_ext X hX j G.hom (eSec G) φ A'.hom inferInstance (geometricallyIntegral_of_smooth_of_geometricallyConnected_fibres _) (Over.w η[G]) h.1 _ _ (H.trans (pull_graph h ha c).symm) ?_` and prove the remaining obligations. Use `hc.trans (Eq.trans ?_ (pull_cubeCls_pre η[G] _ _).symm)` and prove the remaining obligations. Use `(cubeCls_one (n := 2) _ hc).symm.trans ?_` and prove the remaining obligations.
+
+Use `congr 1`. Use function extensionality and compare the values at `i`. Apply the tactic sequence `fin_cases i <;> simp`.
+-/
 theorem prim_extend {a' : A' ⟶ A'} {a : G ⟶ G} [IsMonHom a] (ha : a'.left ≫ φ = φ ≫ a.left) (c : Pic G.left)
     (hc : pull (eSec G) c = 0) (H : pull φ c = cubeCls ![𝟙 A', a'] (pull φ c)) : c = cubeCls ![𝟙 G, a] c := by
   have := semi.smooth
@@ -178,6 +230,23 @@ theorem prim_extend {a' : A' ⟶ A'} {a : G ⟶ G} [IsMonHom a] (ha : a'.left �
 
 end Cube
 
+/- English proof (translation)
+Introduce `hD o Ω _ _ _ _ S ρ M U₀ EE Z E _ _ _ H act hO hadj hprim`. Use `(inferInstance : ArithBase o Ω).ft` as an intermediate fact. Use `(inferInstance : ArithBase o Ω).char` as an intermediate fact. Use `M.locallyOfFiniteType_int` as an intermediate fact. Establish `hfl` using `M.flat_int (M.s ≫ spMap (algebraMap ℤ o))`.
+
+Establish `: IsLocallyNoetherian M.Z` using `LocallyOfFiniteType.isLocallyNoetherian (M.s ≫ spMap (algebraMap ℤ o))`. Use `ρ.P.isAb.comm` as an intermediate fact. Establish `: Nonempty U₀.toScheme` using `hO.ne.to_subtype`. Establish `hd : Dense (U₀ : Set M.Z)` using `U₀.isOpen.dense hO.ne`. Take `⟨_, _⟩` from `ExtUnique.dense_open U₀ hd`.
+
+Take `⟨_, _⟩` from `ExtUnique.flat_and_isSeparated_of_isSemiAbelian Z.G Z.semi`. Set `act₀` to `Geo.Tor.OAct.pullback Z.u₀ ρ.P.A act`. Take `⟨act', hact, -⟩` from `ExtUnique.existsUnique_oAct_of_isGrpPullback Z.cart act₀ fun x => by`. Take `⟨e, he, he'⟩` from `grpPullback_iso Z.cart (isGrpPullback_pullback Z.G U₀.ι)`. Use `act₀.hom x` as an intermediate fact.
+
+Take `⟨F, ⟨-, hF⟩, -⟩` from `GlobalTheory.existsUnique_hom_extension_semiAbelian_normal hD M.Z U₀ U₀.ι ⟨hO.normal, _, inferInstance, hfl⟩ inferInstance inferInstance inferInstance inferInstance Z.G Z.G Z.semi Z.semi (e.inv ≫ act₀.act x ≫ e.hom) inferInstance`. Use `⟨F, ?_⟩` and prove the remaining obligations. Rewrite using `[← he', Category.assoc, ← ExtUnique.pullback_map_left_fst, hF, ← Category.assoc, ← Category.assoc, ← Over.comp_left, ← Over.comp_left, Iso.hom_inv_id_assoc]`. Establish `hp` using `isGrpPullback_pullback ρ.P.A Z.u₀`. Establish `ha : ∀ x, (act₀.act x).left ≫ pullback.fst ρ.P.A.hom Z.u₀ = pullback.fst ρ.P.A.hom Z.u₀ ≫ (act.act x).left` using `fun x => ExtUnique.pullback_map_left_fst _ _`.
+
+Establish `hc : pull Z.φ (cls Z.L.L Z.L.isLB) = pull (pullback.fst ρ.P.A.hom Z.u₀) (cls ρ.P.L ρ.P.isLB)` using `(cls_eq_iff (pull_isLB Z.L.isLB _) (pull_isLB ρ.P.isLB _)).2 ⟨Z.w, Z.w_gen⟩`. Use `⟨act', fun b => ?_, ?_, hact, fun h => ⟨h, splitFib Z, hasTheta Z hO.div⟩⟩` and prove the remaining obligations. Use `(cls_eq_iff (isLB_cube _ Z.L.isLB) (isLB_cube _ Z.L.isLB)).1 ?_` and prove the remaining obligations. Rewrite using `[cls_cube _ Z.L.isLB, cls_cube _ Z.L.isLB]`. Use `act'.hom b` as an intermediate fact.
+
+Use `act'.hom (H.bar b)` as an intermediate fact. Establish `h₀` using `(cls_eq_iff (isLB_cube _ ρ.P.isLB) (isLB_cube _ ρ.P.isLB)).2 (hadj b)`. Rewrite `h₀` using `[cls_cube _ ρ.P.isLB, cls_cube _ ρ.P.isLB]`. Use `adj_extend hO.normal Z.semi Z.cart (hact b) (hact (H.bar b)) _ fun y₁ y₂ => ?_` and prove the remaining obligations. Rewrite using `[hc]`.
+
+Conclude with `adj_pull hp (ha b) (ha (H.bar b)) _ h₀ y₁ y₂`. Use `(cls_eq_iff Z.L.isLB (isLB_cube _ Z.L.isLB)).1 ?_` and prove the remaining obligations. Rewrite using `[cls_cube _ Z.L.isLB]`. Use `act'.hom H.w0` as an intermediate fact. Establish `h₀` using `(cls_eq_iff ρ.P.isLB (isLB_cube _ ρ.P.isLB)).2 hprim`.
+
+Rewrite `h₀` using `[cls_cube _ ρ.P.isLB]`. Use `prim_extend hO.normal Z.semi Z.cart (hact H.w0) _ ((cls_eq_zero_iff (pull_isLB Z.L.isLB _)).2 ⟨Z.L.rig, Z.L.rigGen⟩) ?_` and prove the remaining obligations. Rewrite using `[hc]`. Conclude with `(congrArg (pull _) h₀).trans (pull_graph hp (ha H.w0) _)`.
+-/
 theorem exists_triple : (∀ (T K : Type) [CommRing T] [IsDomain T] [IsDiscreteValuationRing T] [Field K] [Algebra T K] [IsFractionRing T K] (G G' : Over (Sp T)) [GrpObj G] [GrpObj G'], IsSemiAbelian G → IsSemiAbelian G' → ∀ f : (Over.pullback (spMap (algebraMap T K))).obj G ⟶ (Over.pullback (spMap (algebraMap T K))).obj G', IsMonHom f → ∃! F : G ⟶ G', IsMonHom F ∧ (Over.pullback (spMap (algebraMap T K))).map F = f) → ∀ (o Ω : Type) [CommRing o] [Field Ω] [Algebra o Ω] [ArithBase o Ω] (S : ThetaSys o Ω) (ρ : S.Real) (M : RatModel o Ω) (U₀ : M.Z.Opens) (EE : M.Lat S.J) (Z : ZHOut ρ M U₀ EE) (E : Type) [Field E] [NumberField E] [NumberField.IsCMField E] (H : Host E) (act : OAct (NumberField.RingOfIntegers E) ρ.P.A), S.Over₀ M U₀ → (∀ a, LBIso (cubeLB ρ.P.A ![fst _ _ ≫ act.act a, snd _ _] ρ.P.L) (cubeLB ρ.P.A ![fst _ _, snd _ _ ≫ act.act (H.bar a)] ρ.P.L)) → LBIso ρ.P.L (cubeLB ρ.P.A ![𝟙 _, act.act H.w0] ρ.P.L) → ∃ (act' : OAct (NumberField.RingOfIntegers E) Z.G) (h₂ : _) (h₃ : _), (∀ a, ((Over.pullback Z.u₀).map (act.act a)).left ≫ Z.φ = Z.φ ≫ (act'.act a).left) ∧ (GlobalTheory.Models.AbOpen Z.G → GlobalTheory.Models.Good (SAB.mk (H := H) Z.G Z.semi act' Z.L Z.cub Z.sym h₂ h₃)) := by
   intro hD o Ω _ _ _ _ S ρ M U₀ EE Z E _ _ _ H act hO hadj hprim
   have := (inferInstance : ArithBase o Ω).ft

@@ -28,6 +28,9 @@ def XiEx (v : X.Pl) (j : ℕ) : Prop := ∃ Ξ : XiTy X Kc v j, IsXi X Kc ThF v 
 def xiOf (v : X.Pl) (j : ℕ) : XiTy X Kc v j := by
   classical exact if h : XiEx X Kc ThF v j then Classical.choose h else fun _ => 0
 
+/- English proof (translation)
+Rewrite using `[xiOf, dif_pos h]`. Conclude with `Classical.choose_spec h`.
+-/
 theorem xiOf_spec {v : X.Pl} {j : ℕ} (h : XiEx X Kc ThF v j) : IsXi X Kc ThF v j (xiOf X Kc ThF v j) := by
   rw [xiOf, dif_pos h]
   exact Classical.choose_spec h

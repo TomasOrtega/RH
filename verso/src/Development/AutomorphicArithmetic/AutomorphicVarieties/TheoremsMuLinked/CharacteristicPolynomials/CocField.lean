@@ -4,6 +4,13 @@ import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.CompactGroupRe
 
 open NumberField IsDedekindDomain Formalism.ConjugateSelfDual ReciprocityTheory.Gal IsLocalRing Polynomial Matrix UpperTheory.V UpperTheory.V.HV UpperTheory.V.Alg GlobalTheory.GalOfCusp
 
+/- English proof (translation)
+Establish `hn : ‖((l : ℕ) : PadicAlgCl l)‖ = (l : ℝ)⁻¹`. Establish `h` using `PadicAlgCl.valuation_coe l (l : PadicAlgCl l)`. Rewrite `h` using `[PadicAlgCl.valuation_p]`. Rewrite using `[← h]`. Simplify using the standard rewrite rules.
+
+Establish `hl1 : (1 : ℝ) < l` using `by exact_mod_cast hl.out.one_lt`. Establish `hr : ‖((l : ℕ) : PadicAlgCl l)‖ < 1`. Rewrite using `[hn]`. Conclude with `inv_lt_one_of_one_lt₀ hl1`. Break down `le_or_gt C 0 with hC | hC` into its components or cases.
+
+Conclude with `⟨0, by simp; linarith⟩`. Take `⟨N, hN⟩` from `exists_pow_lt_of_lt_one (inv_pos.mpr hC) hr`. Use `⟨N, ?_⟩` and prove the remaining obligations. Rewrite using `[norm_pow]`. Combine the equalities or inequalities in the displayed calculation.
+-/
 private theorem cf_small {l : ℕ} [hl : Fact l.Prime] (C : ℝ) : ∃ N : ℕ, ‖((l : PadicAlgCl l)) ^ N‖ * C ≤ 1 := by
   have hn : ‖((l : ℕ) : PadicAlgCl l)‖ = (l : ℝ)⁻¹ := by
     have h := PadicAlgCl.valuation_coe l (l : PadicAlgCl l)
@@ -23,6 +30,17 @@ private theorem cf_small {l : ℕ} [hl : Fact l.Prime] (C : ℝ) : ∃ N : ℕ, 
           mul_le_mul_of_nonneg_right hN.le hC.le
       _ = 1 := inv_mul_cancel₀ hC.ne'
 
+/- English proof (translation)
+Take `⟨p, hpm, hp⟩` from `hx`. Assume the negation of the conclusion as `h`. Use `push_neg at h`. Rewrite `hp` using `[← Polynomial.aeval_def, Polynomial.aeval_eq_sum_range, Finset.sum_range_succ, hpm.coeff_natDegree, one_smul]`. Establish `hn0 : p.natDegree ≠ 0`.
+
+Introduce `h0`. Rewrite `hp` using `[h0]`. Simplify using `at hp`. Establish `hxn : x ^ p.natDegree = -∑ i ∈ Finset.range p.natDegree, p.coeff i • x ^ i`. Take the linear combination `hp`.
+
+Establish `h1 : 1 ≤ ‖x‖` using `h.le`. Establish `hb : ‖∑ i ∈ Finset.range p.natDegree, p.coeff i • x ^ i‖ ≤ ‖x‖ ^ (p.natDegree - 1)`. Apply `IsUltrametricDist.norm_sum_le_of_forall_le_of_nonneg (by positivity)` to reduce the goal to its premises. Introduce `i hi`. Rewrite `hi` using `[Finset.mem_range]`.
+
+Rewrite using `[Algebra.smul_def, norm_mul, norm_pow]`. Establish `ha : ‖algebraMap ℤ_[l] (PadicAlgCl l) (p.coeff i)‖ ≤ 1`. Rewrite using `[IsScalarTower.algebraMap_apply ℤ_[l] ℚ_[l] (PadicAlgCl l), norm_algebraMap']`. Simplify using `using PadicInt.norm_le_one (p.coeff i)`. Combine the equalities or inequalities in the displayed calculation.
+
+Establish `h2 : ‖x‖ ^ p.natDegree ≤ ‖x‖ ^ (p.natDegree - 1)`. Rewrite using `[← norm_pow, hxn, norm_neg]`. Conclude with `hb`. Establish `h3 : ‖x‖ ^ (p.natDegree - 1) < ‖x‖ ^ p.natDegree` using `pow_lt_pow_right₀ h (by omega)`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 private theorem padicAlgCl_norm_le_one_of_isIntegral {l : ℕ} [Fact l.Prime] (x : PadicAlgCl l) (hx : IsIntegral ℤ_[l] x) :
     ‖x‖ ≤ 1 := by
   obtain ⟨p, hpm, hp⟩ := hx
@@ -55,6 +73,15 @@ private theorem padicAlgCl_norm_le_one_of_isIntegral {l : ℕ} [Fact l.Prime] (x
   have h3 : ‖x‖ ^ (p.natDegree - 1) < ‖x‖ ^ p.natDegree := pow_lt_pow_right₀ h (by omega)
   linarith
 
+/- English proof (translation)
+Use `haveI := c.fin`. Take `⟨S, hS⟩` from `Module.Finite.fg_top (R := ℤ_[l]) (M := c.O)`. Set `T : Set (PadicAlgCl l)` to `Subtype.val '' (S : Set c.O)`. Use `haveI : Finite T := (S.finite_toSet.image _).to_subtype`. Use `⟨IntermediateField.adjoin ℚ_[l] T, IntermediateField.finiteDimensional_adjoin (fun x _ => Algebra.IsIntegral.isIntegral x), ?_⟩` and prove the remaining obligations.
+
+Establish `key : ∀ y ∈ Submodule.span ℤ_[l] (S : Set c.O), ((y : c.O) : PadicAlgCl l) ∈ IntermediateField.adjoin ℚ_[l] T`. Introduce `y hy`. Proceed by induction on `hy using Submodule.span_induction with`. Consider the case `mem y hy => exact IntermediateField.subset_adjoin _ _ ⟨y, hy, rfl⟩`. Consider the case `zero => simp`.
+
+Consider the case `add y z _ _ hy hz => simpa using add_mem hy hz`. Consider the case `smul a y _ hy`. Rewrite using `[Subalgebra.coe_smul, Algebra.smul_def, IsScalarTower.algebraMap_apply ℤ_[l] ℚ_[l] (PadicAlgCl l)]`. Conclude with `mul_mem (IntermediateField.algebraMap_mem _ _) hy`. Introduce `x hx`.
+
+Use `⟨key ⟨x, hx⟩ (hS ▸ Submodule.mem_top), padicAlgCl_norm_le_one_of_isIntegral x ?_⟩` and prove the remaining obligations. Establish `hi` using `IsIntegral.of_finite ℤ_[l] (⟨x, hx⟩ : c.O)`. Simplify using `using hi.map c.O.val`.
+-/
 private theorem cf_field {l : ℕ} [Fact l.Prime] (c : Coef l) :
     ∃ E : IntermediateField ℚ_[l] (PadicAlgCl l), FiniteDimensional ℚ_[l] E ∧ ∀ x ∈ c.O, x ∈ E ∧ ‖x‖ ≤ 1 := by
   haveI := c.fin
@@ -79,6 +106,23 @@ private theorem cf_field {l : ℕ} [Fact l.Prime] (c : Coef l) :
   have hi := IsIntegral.of_finite ℤ_[l] (⟨x, hx⟩ : c.O)
   simpa using hi.map c.O.val
 
+/- English proof (translation)
+Set `e : Fin m ⊕ Fin 1 ≃ Fin (m + 1)` to `finSumFinEquiv`. Set `B : G → Matrix (Fin m ⊕ Fin 1) (Fin m ⊕ Fin 1) (PadicAlgCl l)` to `fun g => Matrix.fromBlocks (s g) (Matrix.replicateCol (Fin 1) (z g)) 0 1`. Establish `hz1 : z 1 = 0` using `by simpa using hc 1 1`. Establish `hB1 : B 1 = 1`. Establish `hcol : Matrix.replicateCol (Fin 1) (z 1) = 0`.
+
+Use extensionality with `i j`. Simplify using `[hz1]`. Simplify using `only [B, map_one, hcol, Matrix.fromBlocks_one]`. Establish `hBmul : ∀ g h, B (g * h) = B g * B h`. Introduce `g h`.
+
+Simplify using `only [B, Matrix.fromBlocks_multiply, map_mul]`. Use `congr 1`. Simplify using the standard rewrite rules. Use extensionality with `i j`. Simplify using `[hc, Matrix.mul_apply, Matrix.mulVec, dotProduct, add_comm]`.
+
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Set `f : G →* Matrix (Fin (m + 1)) (Fin (m + 1)) (PadicAlgCl l)` to `{ toFun := fun g => Matrix.reindexAlgEquiv ℚ_[l] (PadicAlgCl l) e (B g) map_one' := by simp only [hB1, map_one] map_mul' := fun g h => by simp only [hBmul, map_mul] }`. Take `⟨K, hK, hmem⟩` from `GlobalTheory.CompactRepField.exists_finiteDimensional_entries_mem l G (m + 1) f.toHomUnits (by`. Introduce `i j`.
+
+Express the relevant statement in the definitionally equal form `Continuous fun g => B g (e.symm i) (e.symm j)`. Generalize the expression as in `e.symm i = a`. Generalize the expression as in `e.symm j = b`. Apply the tactic sequence `rcases a with a | a <;> rcases b with b | b`. Simplify using `only [B, Matrix.fromBlocks_apply₁₁]`.
+
+Conclude with `hs.matrix_elem a b`. Simplify using `only [B, Matrix.fromBlocks_apply₁₂, Matrix.replicateCol_apply]`. Conclude with `(continuous_apply a).comp hz`. Simplify using `only [B, Matrix.fromBlocks_apply₂₁]`. Conclude with `continuous_const`.
+
+Simplify using `only [B, Matrix.fromBlocks_apply₂₂]`. Conclude with `continuous_const)`. Use `⟨K, hK, fun g i => ?_⟩` and prove the remaining obligations. Establish `h` using `hmem g (e (Sum.inl i)) (e (Sum.inr 0))`. Express the relevant statement in the definitionally equal form `B g (e.symm (e (Sum.inl i))) (e.symm (e (Sum.inr 0))) ∈ K at h`.
+
+Simplify `h` using `[B]`.
+-/
 private theorem cf_entries {l : ℕ} [Fact l.Prime] {G : Type} [Group G] [TopologicalSpace G] [IsTopologicalGroup G]
     [CompactSpace G] [T2Space G] {m : ℕ} (s : G →* Matrix (Fin m) (Fin m) (PadicAlgCl l)) (z : G → Fin m → PadicAlgCl l)
     (hs : Continuous s) (hz : Continuous z) (hc : ∀ g h, z (g * h) = z g + s g *ᵥ z h) :
@@ -126,6 +170,15 @@ private theorem cf_entries {l : ℕ} [Fact l.Prime] {G : Type} [Group G] [Topolo
   change B g (e.symm (e (Sum.inl i))) (e.symm (e (Sum.inr 0))) ∈ K at h
   simpa [B] using h
 
+/- English proof (translation)
+Introduce `l _ c G _ _ _ _ _ m σ z hσ hz hc`. Take `⟨E1, hE1, hz1⟩` from `cf_entries (W.mat σ) z (Units.continuous_val.comp hσ) hz hc`. Take `⟨E2, hE2, hO⟩` from `cf_field c`. Use `haveI := hE1`. Use `haveI := hE2`.
+
+Take `⟨c', hc'⟩` from `X.So.coefOf l (E1 ⊔ E2)`. Take `⟨C, hC⟩` from `isCompact_univ.exists_bound_of_continuousOn hz.continuousOn`. Take `⟨N, hN⟩` from `cf_small (l := l) C`. Use `⟨c', ((l : ℕ) : PadicAlgCl l) ^ N, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `x hx`.
+
+Take `⟨h1, h2⟩` from `hO x hx`. Conclude with `(hc' x).mpr ⟨(le_sup_right : E2 ≤ E1 ⊔ E2) h1, h2⟩`. Conclude with `pow_ne_zero _ (Nat.cast_ne_zero.mpr (Fact.out : l.Prime).ne_zero)`. Introduce `g i`. Rewrite using `[hc']`.
+
+Prove the components needed by the constructor for the conclusion. Conclude with `mul_mem (pow_mem (natCast_mem _ l) N) ((le_sup_left : E1 ≤ E1 ⊔ E2) (hz1 g i))`. Rewrite using `[norm_mul]`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem UpperTheory.V.Th.Det.cocField :
     ∀ {l : ℕ} [Fact l.Prime] (c : Coef l) {G : Type} [Group G] [TopologicalSpace G] [IsTopologicalGroup G] [CompactSpace G] [T2Space G] {m : ℕ} (σ : G →* GL (Fin m) (Qbar l)) (z : G → Fin m → Qbar l), Continuous σ → Continuous z → (∀ g h, z (g * h) = z g + W.mat σ g *ᵥ z h) → ∃ (c' : Coef l) (a : Qbar l), c.O ≤ c'.O ∧ a ≠ 0 ∧ ∀ g i, a * z g i ∈ c'.O := by
   intro l _ c G _ _ _ _ _ m σ z hσ hz hc

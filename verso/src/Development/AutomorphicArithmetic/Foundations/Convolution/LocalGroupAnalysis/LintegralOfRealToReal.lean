@@ -11,6 +11,9 @@ variable {X T : Type} [Group X] [TopologicalSpace X] [IsTopologicalGroup X] [Loc
   [SecondCountableTopology X] [MeasurableSpace X] [BorelSpace X] [Group T] [TopologicalSpace T] [IsTopologicalGroup T]
   [LocallyCompactSpace T] [T2Space T] [SecondCountableTopology T] [MeasurableSpace T] [BorelSpace T]
 
+/- English proof (translation)
+The claim follows from `_root_.UpperTheory.Reformulated.B.Qf2.lintegral_swap_norm μ ν i hi ha hb hΨ hinv hA hB`.
+-/
 private theorem lintegral_swap_norm (μ : Measure X) [μ.IsHaarMeasure] (ν : Measure T) [ν.IsHaarMeasure]
     [ν.IsInvInvariant] (i : T →* X) (hi : Continuous i) {a b Ψ : X → ℝ≥0∞} (ha : Measurable a) (hb : Measurable b)
     (hΨ : Measurable Ψ) (hinv : ∀ t x, Ψ (i t * x) = Ψ x) (hA : ∀ x, ∫⁻ t, a (i t * x) ∂ν = 1)
@@ -18,6 +21,19 @@ private theorem lintegral_swap_norm (μ : Measure X) [μ.IsHaarMeasure] (ν : Me
     ∫⁻ x, Ψ x * a x ∂μ = ∫⁻ x, Ψ x * b x ∂μ :=
   _root_.UpperTheory.Reformulated.B.Qf2.lintegral_swap_norm μ ν i hi ha hb hΨ hinv hA hB
 
+/- English proof (translation)
+Establish `him : Measurable i` using `hi.measurable`. Establish `hS : MeasurableSet (a ⁻¹' {⊤})` using `ha (measurableSet_singleton _)`. Use `set c : X → ℝ≥0∞ := (a ⁻¹' {⊤}).indicator 1 with hc`. Establish `hcm : Measurable c` using `measurable_one.indicator hS`. Establish `hm : Measurable (fun p : X × T => i p.2 * p.1)` using `(him.comp measurable_snd).mul measurable_fst`.
+
+Establish `hu : Measurable (Function.uncurry fun (x : X) (t : T) => c (i t * x))` using `hcm.comp hm`. Establish `h0 : ∫⁻ x, ∫⁻ t, c (i t * x) ∂ν ∂μ = 0`. Establish `: ∀ x, ∫⁻ t, c (i t * x) ∂ν = 0`. Introduce `x`. Establish `hf : ∀ᵐ t ∂ν, a (i t * x) < ⊤` using `ae_lt_top (ha.comp (him.mul_const x)) (by rw [hA x]; exact ENNReal.one_ne_top)`.
+
+Establish `hcx : Measurable (fun t => c (i t * x))` using `hcm.comp (him.mul_const x)`. Rewrite using `[lintegral_eq_zero_iff hcx]`. Use `filter_upwards [hf] with t ht`. Simplify using `[hc, ht.ne]`. Simplify using `[this]`.
+
+Establish `h1 : ∫⁻ x, ∫⁻ t, c (i t * x) ∂ν ∂μ = μ (a ⁻¹' {⊤}) * ν Set.univ`. Rewrite using `[lintegral_lintegral_swap hu.aemeasurable]`. Establish `: ∀ t, ∫⁻ x, c (i t * x) ∂μ = μ (a ⁻¹' {⊤})`. Introduce `t`. Rewrite using `[lintegral_mul_left_eq_self c (i t), hc, lintegral_indicator_one hS]`.
+
+Simplify using `[this]`. Rewrite `h0` using `[h1]`. Establish `hν : ν Set.univ ≠ 0` using `(Measure.measure_univ_pos.mpr (NeZero.ne ν)).ne'`. Establish `hμ : μ (a ⁻¹' {⊤}) = 0`. Break down `mul_eq_zero.mp h0 with h | h` into its components or cases.
+
+Conclude with `h`. Conclude with `absurd h hν`. Establish `: ∀ᵐ x ∂μ, x ∉ a ⁻¹' {⊤}` using `measure_eq_zero_iff_ae_notMem.mp hμ`. Use `filter_upwards [this] with x hx`. Conclude with `lt_top_iff_ne_top.mpr hx`.
+-/
 private theorem ae_lt_top_norm (μ : Measure X) [μ.IsHaarMeasure] (ν : Measure T) [ν.IsHaarMeasure]
     (i : T →* X) (hi : Continuous i) {a : X → ℝ≥0∞} (ha : Measurable a) (hA : ∀ x, ∫⁻ t, a (i t * x) ∂ν = 1) :
     ∀ᵐ x ∂μ, a x < ⊤ := by
@@ -53,12 +69,18 @@ private theorem ae_lt_top_norm (μ : Measure X) [μ.IsHaarMeasure] (ν : Measure
   filter_upwards [this] with x hx
   exact lt_top_iff_ne_top.mpr hx
 
+/- English proof (translation)
+Use `lintegral_congr_ae ?_` and prove the remaining obligations. Use `filter_upwards [hfin] with x hx`. Rewrite using `[ENNReal.ofReal_mul' ENNReal.toReal_nonneg, ENNReal.ofReal_toReal hx.ne]`.
+-/
 private theorem lintegral_ofReal_toReal (μ : Measure X) {a : X → ℝ≥0∞} (hfin : ∀ᵐ x ∂μ, a x < ⊤) (c : X → ℝ) :
     ∫⁻ x, ENNReal.ofReal (c x * (a x).toReal) ∂μ = ∫⁻ x, ENNReal.ofReal (c x) * a x ∂μ := by
   refine lintegral_congr_ae ?_
   filter_upwards [hfin] with x hx
   rw [ENNReal.ofReal_mul' ENNReal.toReal_nonneg, ENNReal.ofReal_toReal hx.ne]
 
+/- English proof (translation)
+Establish `fa` using `ae_lt_top_norm μ ν i hi ha hA`. Establish `fb` using `ae_lt_top_norm μ ν i hi hb hB`. Rewrite using `[integral_eq_lintegral_pos_part_sub_lintegral_neg_part h1, integral_eq_lintegral_pos_part_sub_lintegral_neg_part h2]`. Simplify using `only [← neg_mul]`. Rewrite using `[lintegral_ofReal_toReal μ fa g, lintegral_ofReal_toReal μ fa (fun x => - g x), lintegral_ofReal_toReal μ fb g, lintegral_ofReal_toReal μ fb (fun x => - g x), lintegral_swap_norm μ ν i hi ha hb hg.ennreal_ofReal (fun t x => by rw [hinv]) hA hB, lintegral_swap_norm μ ν i hi ha hb …`.
+-/
 private theorem real_eq (μ : Measure X) [μ.IsHaarMeasure] (ν : Measure T) [ν.IsHaarMeasure] [ν.IsInvInvariant]
     (i : T →* X) (hi : Continuous i) {a b : X → ℝ≥0∞} (ha : Measurable a) (hb : Measurable b)
     (hA : ∀ x, ∫⁻ t, a (i t * x) ∂ν = 1) (hB : ∀ x, ∫⁻ t, b (i t * x) ∂ν = 1) {g : X → ℝ} (hg : Measurable g)
@@ -76,6 +98,11 @@ private theorem real_eq (μ : Measure X) [μ.IsHaarMeasure] (ν : Measure T) [ν
     lintegral_swap_norm μ ν i hi ha hb (Ψ := fun x => ENNReal.ofReal (- g x)) hg.neg.ennreal_ofReal
       (fun t x => by rw [hinv]) hA hB]
 
+/- English proof (translation)
+Use `⟨(hΦ.mul (Complex.measurable_ofReal.comp ha.ennreal_toReal)).aestronglyMeasurable, ?_⟩` and prove the remaining obligations. Use `lt_of_le_of_lt (lintegral_mono fun x => ?_) hf` and prove the remaining obligations. Rewrite using `[enorm_mul]`. Use `gcongr`. Rewrite using `[← ofReal_norm, Complex.norm_real, Real.norm_of_nonneg ENNReal.toReal_nonneg]`.
+
+Conclude with `ENNReal.ofReal_toReal_le`.
+-/
 private theorem integrable_mul_toReal (μ : Measure X) {Φ : X → ℂ} {a : X → ℝ≥0∞} (hΦ : Measurable Φ)
     (ha : Measurable a) (hf : ∫⁻ x, ‖Φ x‖ₑ * a x ∂μ < ⊤) :
     Integrable (fun x => Φ x * ((a x).toReal : ℂ)) μ := by
@@ -90,6 +117,19 @@ end
 
 end UpperTheory.ConvolutionTheory.G
 
+/- English proof (translation)
+Introduce `X G T _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ μ _ ν _ _ u i hu hi Φ ρ hΦ hinv hn hfin`. Establish `hex : ∃ ρ, IsNormAlong u (fun t => u (i t)) ν ρ` using `⟨ρ, hn⟩`. Unfold `quotInt`. Rewrite using `[dif_pos hex]`. Establish `h0` using `hex.choose_spec`.
+
+Use `set ρ₀ := hex.choose`. Establish `ha : Measurable (fun x => ρ (u x))` using `hn.1.comp hu`. Establish `hb : Measurable (fun x => ρ₀ (u x))` using `h0.1.comp hu`. Establish `hA : ∀ x, ∫⁻ t, ρ (u (i t * x)) ∂ν = 1` using `fun x => by simpa [map_mul] using hn.2 x`. Establish `hB : ∀ x, ∫⁻ t, ρ₀ (u (i t * x)) ∂ν = 1` using `fun x => by simpa [map_mul] using h0.2 x`.
+
+Establish `hfin' : ∫⁻ x, ‖Φ x‖ₑ * ρ₀ (u x) ∂μ < ⊤`. Rewrite using `[← lintegral_swap_norm μ ν i hi ha hb hΦ.enorm (fun t x => by rw [hinv]) hA hB]`. Conclude with `hfin`. Establish `h1` using `integrable_mul_toReal μ hΦ ha hfin`. Establish `h2` using `integrable_mul_toReal μ hΦ hb hfin'`.
+
+Establish `hre : ∀ f : _ → ℂ, Integrable f μ → (∫ x, f x ∂μ).re = ∫ x, (f x).re ∂μ` using `fun f hf => (Complex.reCLM.integral_comp_comm hf).symm`. Establish `him : ∀ f : _ → ℂ, Integrable f μ → (∫ x, f x ∂μ).im = ∫ x, (f x).im ∂μ` using `fun f hf => (Complex.imCLM.integral_comp_comm hf).symm`. Apply `Complex.ext` to reduce the goal to its premises. Rewrite using `[hre _ h1, hre _ h2]`. Simplify using `only [Complex.re_mul_ofReal]`.
+
+Use `(real_eq μ ν i hi hb ha hB hA (Complex.measurable_re.comp hΦ) (fun t x => by simp [hinv]) ?_ ?_)` and prove the remaining obligations. Simplify `h2.re` using `[Complex.re_mul_ofReal]`. Simplify `h1.re` using `[Complex.re_mul_ofReal]`. Rewrite using `[him _ h1, him _ h2]`. Simplify using `only [Complex.im_mul_ofReal]`.
+
+Use `(real_eq μ ν i hi hb ha hB hA (Complex.measurable_im.comp hΦ) (fun t x => by simp [hinv]) ?_ ?_)` and prove the remaining obligations. Simplify `h2.im` using `[Complex.im_mul_ofReal]`. Simplify `h1.im` using `[Complex.im_mul_ofReal]`.
+-/
 theorem UpperTheory.ConvolutionTheory.G.isUnit_last_join :
     Q1 := by
   intro X G T _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ μ _ ν _ _ u i hu hi Φ ρ hΦ hinv hn hfin

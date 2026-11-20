@@ -16,15 +16,26 @@ variable {C : Type} [Field C] [CharZero C] {v : AddValuation C (WithTop ℝ)} {d
 def substSecondBlockZero (d : ℕ) : Fin d ⊕ Fin d → MvPowerSeries (Fin d) C :=
   Sum.elim (fun b => X b) (fun _ => 0)
 
+/- English proof (translation)
+Apply the tactic sequence `cases s <;> simp [substSecondBlockZero]`.
+-/
 theorem constantCoeff_substSecondBlockZero (d : ℕ) (s : Fin d ⊕ Fin d) : constantCoeff (substSecondBlockZero (C := C) d s) = 0 := by
   cases s <;> simp [substSecondBlockZero]
 
+/- English proof (translation)
+The claim follows from `hasSubst_of_constantCoeff_zero (constantCoeff_substSecondBlockZero d)`.
+-/
 theorem hasSubst_substSecondBlockZero (d : ℕ) : HasSubst (substSecondBlockZero (C := C) d) :=
   hasSubst_of_constantCoeff_zero (constantCoeff_substSecondBlockZero d)
 
 def jacEntry (G : LogFGL v d) (k l : Fin d) : MvPowerSeries (Fin d) C :=
   subst (substSecondBlockZero d) (pderiv C (Sum.inr k) (G.F l))
 
+/- English proof (translation)
+Proceed by induction on `n with`. Consider the case `zero => simp [IsIntV]`. Consider the case `succ n ih`. Unfold `IsIntV at *`. Use `push_cast`.
+
+Conclude with `le_trans (le_min ih (by rw [v.map_one])) (v.map_add _ _)`.
+-/
 theorem natCast_int (n : ℕ) : IsIntV v (n : C) := by
   induction n with
   | zero => simp [IsIntV]
@@ -33,6 +44,11 @@ theorem natCast_int (n : ℕ) : IsIntV v (n : C) := by
     push_cast
     exact le_trans (le_min ih (by rw [v.map_one])) (v.map_add _ _)
 
+/- English proof (translation)
+Introduce `n`. Unfold `IsIntV`. Rewrite using `[coeff_pderiv, v.map_mul]`. Establish `h2 : ((n i : C) + 1) = ((n i + 1 : ℕ) : C)` using `by push_cast; ring`. Rewrite using `[h2]`.
+
+Conclude with `add_nonneg (hf _) (natCast_int _)`.
+-/
 theorem mvIsInt_pderiv {σ : Type} {f : MvPowerSeries σ C} (hf : MvIsInt v f) (i : σ) :
     MvIsInt v (pderiv C i f) := by
   intro n
@@ -42,6 +58,9 @@ theorem mvIsInt_pderiv {σ : Type} {f : MvPowerSeries σ C} (hf : MvIsInt v f) (
   rw [h2]
   exact add_nonneg (hf _) (natCast_int _)
 
+/- English proof (translation)
+Introduce `n`. Unfold `IsIntV`. Consider the cases of `s with`. Consider the case `inl b => simp only [substSecondBlockZero, Sum.elim_inl]; rw [coeff_X]; split_ifs <;> simp`. Consider the case `inr b => simp [substSecondBlockZero]`.
+-/
 theorem mvIsInt_substSecondBlockZero (d : ℕ) (s : Fin d ⊕ Fin d) : MvIsInt v (substSecondBlockZero (C := C) d s) := by
   intro n
   unfold IsIntV
@@ -49,15 +68,26 @@ theorem mvIsInt_substSecondBlockZero (d : ℕ) (s : Fin d ⊕ Fin d) : MvIsInt v
   | inl b => simp only [substSecondBlockZero, Sum.elim_inl]; rw [coeff_X]; split_ifs <;> simp
   | inr b => simp [substSecondBlockZero]
 
+/- English proof (translation)
+The claim follows from `ReciprocityTheory.ChartRestriction.G.Sh.PTb.mvIsInt_subst v (mvIsInt_pderiv (G.F_int l) _) (mvIsInt_substSecondBlockZero d) (constantCoeff_substSecondBlockZero d)`.
+-/
 theorem jacEntry_int (G : LogFGL v d) (k l : Fin d) : MvIsInt v (jacEntry G k l) :=
   ReciprocityTheory.ChartRestriction.G.Sh.PTb.mvIsInt_subst v (mvIsInt_pderiv (G.F_int l) _) (mvIsInt_substSecondBlockZero d) (constantCoeff_substSecondBlockZero d)
 
+/- English proof (translation)
+Establish `: (fun _ : Fin d => (0 : MvPowerSeries (Fin d) C)) = ((0 : Fin d → C) • X)`. Use function extensionality and compare the values at `i`. Simplify using the standard rewrite rules. Rewrite using `[this, ← rescale_eq_subst, rescale_zero_apply]`.
+-/
 theorem subst_zero_eq (g : MvPowerSeries (Fin d) C) :
     subst (fun _ : Fin d => (0 : MvPowerSeries (Fin d) C)) g = MvPowerSeries.C (constantCoeff g) := by
   have : (fun _ : Fin d => (0 : MvPowerSeries (Fin d) C)) = ((0 : Fin d → C) • X) := by
     funext i; simp
   rw [this, ← rescale_eq_subst, rescale_zero_apply]
 
+/- English proof (translation)
+Rewrite using `[subst_comp_subst_apply (hasSubst_of_constantCoeff_zero (fun b => constantCoeff_X _)) (hasSubst_substSecondBlockZero d)]`. Establish `: (fun b : Fin d => subst (substSecondBlockZero (C` using `C) d) (X (Sum.inl b) : MvPowerSeries (Fin d ⊕ Fin d) C)) = fun b => X b := by`. Use function extensionality and compare the values at `b`. Rewrite using `[subst_X (hasSubst_substSecondBlockZero d)]`. Both sides reduce to the same expression.
+
+Rewrite using `[this, subst_self]`. Both sides reduce to the same expression.
+-/
 theorem subst_substSecondBlockZero_firstBlock_log (G : LogFGL v d) (a : Fin d) :
     subst (substSecondBlockZero (C := C) d) (subst (fun b => (X (Sum.inl b) : MvPowerSeries (Fin d ⊕ Fin d) C)) (G.lg a))
       = G.lg a := by
@@ -67,6 +97,11 @@ theorem subst_substSecondBlockZero_firstBlock_log (G : LogFGL v d) (a : Fin d) :
     funext b; rw [subst_X (hasSubst_substSecondBlockZero d)]; rfl
   rw [this, subst_self]; rfl
 
+/- English proof (translation)
+Rewrite using `[subst_comp_subst_apply (hasSubst_of_constantCoeff_zero (fun b => constantCoeff_X _)) (hasSubst_substSecondBlockZero d)]`. Establish `: (fun b : Fin d => subst (substSecondBlockZero (C` using `C) d) (X (Sum.inr b) : MvPowerSeries (Fin d ⊕ Fin d) C)) = fun _ => 0 := by`. Use function extensionality and compare the values at `b`. Rewrite using `[subst_X (hasSubst_substSecondBlockZero d)]`. Both sides reduce to the same expression.
+
+Rewrite using `[this, subst_zero_eq]`.
+-/
 theorem subst_substSecondBlockZero_secondBlock (G : LogFGL v d) (g : MvPowerSeries (Fin d) C) :
     subst (substSecondBlockZero (C := C) d) (subst (fun b => (X (Sum.inr b) : MvPowerSeries (Fin d ⊕ Fin d) C)) g)
       = MvPowerSeries.C (constantCoeff g) := by
@@ -76,6 +111,11 @@ theorem subst_substSecondBlockZero_secondBlock (G : LogFGL v d) (g : MvPowerSeri
     funext b; rw [subst_X (hasSubst_substSecondBlockZero d)]; rfl
   rw [this, subst_zero_eq]
 
+/- English proof (translation)
+Take `⟨⟨hE0, hlgE⟩, hElg, -⟩` from `GlobalTheory.T.formalGroupExp_twoSided_inverse_unique C v d G`. Establish `hF0c : ∀ l, constantCoeff (subst (substSecondBlockZero (C` using `C) d) (G.F l)) = 0 := fun l => constantCoeff_subst_eq_zero (hasSubst_substSecondBlockZero d) (constantCoeff_substSecondBlockZero d) (G.F_const l)`. Establish `hF0 : HasSubst (fun l => subst (substSecondBlockZero (C` using `C) d) (G.F l)) := hasSubst_of_constantCoeff_zero hF0c`. Establish `hlg : HasSubst G.lg` using `hasSubst_of_constantCoeff_zero G.lg_const`. Establish `key : ∀ a, subst (fun l => subst (substSecondBlockZero (C` using `C) d) (G.F l)) (G.lg a) = G.lg a := by`.
+
+Introduce `a`. Rewrite using `[← subst_comp_subst_apply (hasSubst_of_constantCoeff_zero G.F_const) (hasSubst_substSecondBlockZero d), G.lg_F a, subst_add (hasSubst_substSecondBlockZero d), subst_substSecondBlockZero_firstBlock_log, subst_substSecondBlockZero_secondBlock G, G.lg_const a, map_zero, add_zero]`. Establish `e1 : subst (fun l => subst (substSecondBlockZero (C` using `C) d) (G.F l)) (X l : MvPowerSeries (Fin d) C) = subst (substSecondBlockZero d) (G.F l) := subst_X hF0 l`. Rewrite using `[← e1, ← hElg l, subst_comp_subst_apply hlg hF0]`. Simplify using `only [key, hElg]`.
+-/
 theorem formalGroupLaw_subst_secondBlock_zero (G : LogFGL v d) (l : Fin d) : subst (substSecondBlockZero (C := C) d) (G.F l) = (X l : MvPowerSeries (Fin d) C) := by
   obtain ⟨⟨hE0, hlgE⟩, hElg, -⟩ := GlobalTheory.T.formalGroupExp_twoSided_inverse_unique C v d G
   have hF0c : ∀ l, constantCoeff (subst (substSecondBlockZero (C := C) d) (G.F l)) = 0 := fun l =>
@@ -91,6 +131,13 @@ theorem formalGroupLaw_subst_secondBlock_zero (G : LogFGL v d) (l : Fin d) : sub
   rw [← e1, ← hElg l, subst_comp_subst_apply hlg hF0]
   simp only [key, hElg]
 
+/- English proof (translation)
+Establish `h` using `congrArg (pderiv C (Sum.inr k)) (G.lg_F a)`. Rewrite `h` using `[ReciprocityTheory.ChartRestriction.G.TB.LogPf.pderiv_subst G.F_const, map_add, ReciprocityTheory.ChartRestriction.G.TB.LogPf.pderiv_subst (fun b => constantCoeff_X _), ReciprocityTheory.ChartRestriction.G.TB.LogPf.pderiv_subst (fun b => constantCoeff_X _)]`. Simplify using `only [pderiv_X, Pi.single_apply, reduceCtorEq, if_false, mul_zero, Finset.sum_const_zero, zero_add, Sum.inr.injEq, mul_ite, mul_one, Finset.sum_ite_eq', Finset.mem_univ, if_true] at h`. Establish `h2` using `congrArg (subst (substSecondBlockZero (C := C) d)) h`. Rewrite `h2` using `[subst_substSecondBlockZero_secondBlock G, ← coe_substAlgHom (hasSubst_substSecondBlockZero d), map_sum]`.
+
+Simplify using `only [map_mul, coe_substAlgHom] at h2`. Simplify using `only [subst_comp_subst_apply (hasSubst_of_constantCoeff_zero G.F_const) (hasSubst_substSecondBlockZero d), formalGroupLaw_subst_secondBlock_zero, subst_self, id] at h2`. Establish `hc : constantCoeff (pderiv C k (G.lg a)) = if a = k then 1 else 0`. Rewrite using `[← coeff_zero_eq_constantCoeff_apply, coeff_pderiv, zero_add, G.lg_lin]`. Simplify using the standard rewrite rules.
+
+Simplify using `only [jacEntry]`. Rewrite using `[h2, hc]`. Apply the tactic sequence `split_ifs <;> simp`.
+-/
 theorem jac_lg_mul_jacEntry (G : LogFGL v d) (a k : Fin d) :
     ∑ l, pderiv C l (G.lg a) * jacEntry G k l = if a = k then 1 else 0 := by
   classical
@@ -111,6 +158,17 @@ theorem jac_lg_mul_jacEntry (G : LogFGL v d) (a k : Fin d) :
   rw [h2, hc]
   split_ifs <;> simp
 
+/- English proof (translation)
+Take `⟨⟨hE0, hlgE⟩, -, -⟩` from `GlobalTheory.T.formalGroupExp_twoSided_inverse_unique C v d G`. Establish `hE : HasSubst (expOf G)` using `hasSubst_of_constantCoeff_zero hE0`. Set `J : Matrix (Fin d) (Fin d) (MvPowerSeries (Fin d) C)` to `Matrix.of fun a l => subst (expOf G) (pderiv C l (G.lg a))`. Set `M : Matrix (Fin d) (Fin d) (MvPowerSeries (Fin d) C)` to `Matrix.of fun l k => pderiv C k (expOf G l)`. Apply the tactic sequence `let N : Matrix (Fin d) (Fin d) (MvPowerSeries (Fin d) C) := Matrix.of fun l k => subst (expOf G) (jacEntry G k l)`.
+
+Establish `hJM : J * M = 1`. Use extensionality with `a k`. Establish `h` using `congrArg (pderiv C k) (hlgE a)`. Rewrite `h` using `[ReciprocityTheory.ChartRestriction.G.TB.LogPf.pderiv_subst hE0, pderiv_X, Pi.single_apply]`. Simplify using `only [J, M, Matrix.mul_apply, Matrix.of_apply, Matrix.one_apply, h]`.
+
+Establish `hJN : J * N = 1`. Use `Matrix.ext fun a k => ?_` and prove the remaining obligations. Apply the tactic sequence `have h := congrArg (subst (expOf G)) (jac_lg_mul_jacEntry G a k)`. Rewrite `h` using `[← coe_substAlgHom hE, map_sum]`. Simplify using `only [map_mul, coe_substAlgHom] at h`.
+
+Simplify using `only [J, N, Matrix.mul_apply, Matrix.of_apply, Matrix.one_apply, h]`. Use `split_ifs`. Rewrite using `[← substAlgHom_apply hE, map_one]`. Rewrite using `[← substAlgHom_apply hE, map_zero]`. Establish `hNJ : N * J = 1` using `mul_eq_one_comm.mp hJN`.
+
+Establish `hMN : M = N`. Combine the equalities or inequalities in the displayed calculation. Conclude with `congrFun (congrFun hMN l) k`.
+-/
 theorem pderiv_expOf (G : LogFGL v d) (l k : Fin d) :
     pderiv C k (expOf G l) = subst (expOf G) (jacEntry G k l) := by
   classical
@@ -145,6 +203,15 @@ theorem pderiv_expOf (G : LogFGL v d) (l k : Fin d) :
 
 end
 
+/- English proof (translation)
+Introduce `C _ _ v d G`. Apply the tactic sequence `refine ⟨jacEntry G, jacEntry_int G, fun f k α => ?_⟩`. Take `⟨⟨hE0, -⟩, -, -⟩` from `GlobalTheory.T.formalGroupExp_twoSided_inverse_unique C v d G`. Establish `hE : HasSubst (expOf G)` using `hasSubst_of_constantCoeff_zero hE0`. Establish `hP : ∀ l, (show MvPowerSeries (Fin d) C from fun β => ((β l : C) + 1) * coeff (β + Finsupp.single l 1) f) = pderiv C l f`.
+
+Introduce `l`. Use extensionality with `β`. Rewrite using `[coeff_pderiv, mul_comm]`. Both sides reduce to the same expression. Simplify using `only [hP]`.
+
+Rewrite using `[mul_comm, ← coeff_pderiv, ReciprocityTheory.ChartRestriction.G.TB.LogPf.pderiv_subst hE0]`. Simplify using `only [pderiv_expOf]`. Use `congr 1`. Rewrite using `[← substAlgHom_apply hE, map_sum]`. Simplify using `only [map_mul, substAlgHom_apply]`.
+
+Conclude with `Finset.sum_congr rfl fun l _ => mul_comm _ _`.
+-/
 theorem exists_integral_invariant_derivation : ∀ (C : Type) [Field C] [CharZero C] (v : AddValuation C (WithTop ℝ)) (d : ℕ) (G : LogFGL v d), ∃ D : Fin d → Fin d → MvPowerSeries (Fin d) C, (∀ k l, MvIsInt v (D k l)) ∧ ∀ (f : MvPowerSeries (Fin d) C) (k : Fin d) (α : Fin d →₀ ℕ), ((α k : C) + 1) * coeff (α + Finsupp.single k 1) (subst (expOf G) f) = coeff α (subst (expOf G) (∑ l, D k l * (show MvPowerSeries (Fin d) C from fun β => ((β l : C) + 1) * coeff (β + Finsupp.single l 1) f))) := by
   intro C _ _ v d G
   refine ⟨jacEntry G, jacEntry_int G, fun f k α => ?_⟩

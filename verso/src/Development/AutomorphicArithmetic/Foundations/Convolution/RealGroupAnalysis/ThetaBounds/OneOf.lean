@@ -5,6 +5,13 @@ open Neutral.B1 Formalism.L2.Host Formalism.ConjugateSelfDual GlobalTheory.CuspR
 open UpperTheory.ConvolutionTheory.R2 UpperTheory.ConvolutionTheory.R2.Ff
 open scoped Classical
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ _ _ D y hy`. Take `⟨u, hu, hn⟩` from `normInf F E D (Matrix.GeneralLinearGroup.det y)`. Establish `hu1 : u = 1`. Use `Units.ext (funext fun v => ?_)` and prove the remaining obligations. Rewrite using `[hu v]`.
+
+Establish `h1 : ∀ w : InfinitePlace E, ‖(Matrix.GeneralLinearGroup.det y).val w‖ = 1` using `hy`. Express the relevant statement in the definitionally equal form `_ = (1 : ℝ)`. Use `Finset.prod_eq_one fun w _ => ?_` and prove the remaining obligations. Use `split_ifs`. Rewrite using `[h1 w, one_pow]`.
+
+Both sides reduce to the same expression. Express the relevant statement in the definitionally equal form `ideleNorm F E (Matrix.GeneralLinearGroup.det (infGL E 2 y)) = 1`. Rewrite using `[det_infGL, hn, hu1, map_one]`.
+-/
 theorem UpperTheory.ConvolutionTheory.R2.Ff.oneOf :
     ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] [IsTotallyReal F] [IsTotallyComplex E] (_D : Dat F E), OneOf F E := by
   intro F E _ _ _ _ _ _ _ D y hy

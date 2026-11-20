@@ -4,6 +4,9 @@ import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.HasseOrderBound.Composi
 import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.HasseOrderBound.OrthogonalSplitPolarizationVanishes
 import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.HasseOrderBound.AddPreservesExpCongruence
 
+/- English proof (translation)
+The claim follows from `PI.HasseOrdBdW.hasseOrdBd_of PI.HasseOrdBdW.compositionalInverseSymm PI.HasseOrdBdW.orthogonalSplitPolarizationVanishes PI.HasseOrdBdW.addPreservesExpCongruence PI.HasseOrdBdW.expCongruenceExtendsToSum`.
+-/
 theorem hasse_order_bound : PI.HasseOrdBd :=
   PI.HasseOrdBdW.hasseOrdBd_of PI.HasseOrdBdW.compositionalInverseSymm PI.HasseOrdBdW.orthogonalSplitPolarizationVanishes PI.HasseOrdBdW.addPreservesExpCongruence
     PI.HasseOrdBdW.expCongruenceExtendsToSum

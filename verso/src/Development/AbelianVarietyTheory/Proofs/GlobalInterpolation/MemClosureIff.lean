@@ -21,6 +21,11 @@ section Poly
 
 variable {ι : Type} [Fintype ι] {n : ℕ}
 
+/- English proof (translation)
+Unfold `roundAct sqAct Formalism.UG.dwAct detPow`. Establish `h : Matrix.GeneralLinearGroup.det (inside₂ R n g) = (Matrix.GeneralLinearGroup.det g)⁻¹`. Rewrite using `[← map_inv]`. Apply `Units.ext` to reduce the goal to its premises. Conclude with `Matrix.det_transpose _`.
+
+Rewrite using `[h, _root_.inv_zpow', show ((inside₂ R n g : GL (Fin n) R) : Matrix (Fin n) (Fin n) R)ᵀ = _ from Matrix.transpose_transpose _]`.
+-/
 theorem roundAct_eq {R : Type} [CommRing R] (l : DomWeight n) (g : GL (Fin n) R) (f : MvPolynomial (Fin n × Fin n) R) :
     roundAct R n l g f = sqAct R n l (inside₂ R n g) f := by
   unfold roundAct sqAct Formalism.UG.dwAct detPow
@@ -30,6 +35,15 @@ theorem roundAct_eq {R : Type} [CommRing R] (l : DomWeight n) (g : GL (Fin n) R)
     exact Matrix.det_transpose _
   rw [h, _root_.inv_zpow', show ((inside₂ R n g : GL (Fin n) R) : Matrix (Fin n) (Fin n) R)ᵀ = _ from Matrix.transpose_transpose _]
 
+/- English proof (translation)
+Apply `(MvPolynomial.basisMonomials (ι × Fin n × Fin n) ℂ).ext` to reduce the goal to its premises. Introduce `m`. Unfold `blk`. Rewrite using `[Module.Basis.constr_basis]`. Establish `h` using `Formalism.MainNotions.product_first_zeroth_parts.ten_monomial (fun τ => m.comapDomain (Prod.mk τ) (Prod.mk_right_injective τ).injOn)`.
+
+Establish `e : (∑ σ, (m.comapDomain (Prod.mk σ) (Prod.mk_right_injective σ).injOn).mapDomain (Prod.mk σ)) = m`. Use extensionality with `⟨τ, x⟩`. Use `congrArg (fun f => f x) (Formalism.MainNotions.product_first_zeroth_parts.comap_sum (fun τ => m.comapDomain (Prod.mk τ) (Prod.mk_right_injective τ).injOn) τ)` as an intermediate fact. Conclude with `this`. Rewrite `h` using `[e]`.
+
+Rewrite using `[MvPolynomial.coe_basisMonomials]`. Simplify using `only []`. Rewrite using `[← h]`. Use `Eq.trans ?_ (actTen ℂ ι n lam (invTrK g) _).symm` and prove the remaining obligations. Simplify using `only [roundAct_eq]`.
+
+Both sides reduce to the same expression.
+-/
 theorem blk_roundAct (lam : ι → DomWeight n) (g : ι → GL (Fin n) ℂ) :
     blk (fun τ => roundAct ℂ n (lam τ) (g τ)) = actP lam (invTrK g) := by
   apply (MvPolynomial.basisMonomials (ι × Fin n × Fin n) ℂ).ext
@@ -50,6 +64,11 @@ theorem blk_roundAct (lam : ι → DomWeight n) (g : ι → GL (Fin n) ℂ) :
   simp only [roundAct_eq]
   rfl
 
+/- English proof (translation)
+Establish `e2 : σ (detTwK lam g) = detTwK lam (fun τ => Formalism.UG.bc σ (g τ))`. Rewrite using `[detTwK, detTwK, map_prod]`. Use `Finset.prod_congr rfl fun τ _ => ?_` and prove the remaining obligations. Simplify using `only [detPow, Units.val_zpow_eq_zpow_val, map_zpow₀, Matrix.GeneralLinearGroup.val_det_apply, RingHom.map_det]`. Both sides reduce to the same expression.
+
+Simplify using `only [actP, trAct, LinearMap.smul_apply, AlgHom.toLinearMap_apply, MvPolynomial.smul_eq_C_mul, map_mul, MvPolynomial.map_C, map_blockAct, transpose_map, e2]`. Both sides reduce to the same expression.
+-/
 theorem map_actP {K : Type} [Field K] (σ : K →+* ℂ) (lam : ι → DomWeight n) (g : ι → GL (Fin n) K) (F : Pol K ι n) :
     MvPolynomial.map σ (actP lam g F) = actP lam (fun τ => Formalism.UG.bc σ (g τ)) (MvPolynomial.map σ F) := by
   have e2 : σ (detTwK lam g) = detTwK lam (fun τ => Formalism.UG.bc σ (g τ)) := by
@@ -61,6 +80,9 @@ theorem map_actP {K : Type} [Field K] (σ : K →+* ℂ) (lam : ι → DomWeight
     MvPolynomial.map_C, map_blockAct, transpose_map, e2]
   rfl
 
+/- English proof (translation)
+Unfold `ten Formalism.MainNotions.product_first_zeroth_parts.ten Formalism.GradedWeylDivisibility.blockEmb`. Rewrite using `[map_prod]`. Use `Finset.prod_congr rfl fun τ _ => ?_` and prove the remaining obligations. Rewrite using `[MvPolynomial.map_rename, MvPolynomial.map_map, RingHom.ext_int (σ.comp (Int.castRingHom K)) (Int.castRingHom ℂ)]`.
+-/
 theorem map_ten_int {K : Type} [Field K] (σ : K →+* ℂ) (f : ι → MvPolynomial (Fin n × Fin n) ℤ) :
     MvPolynomial.map σ (ten fun τ => MvPolynomial.map (Int.castRingHom K) (f τ)) =
       Formalism.MainNotions.product_first_zeroth_parts.ten fun τ => MvPolynomial.map (Int.castRingHom ℂ) (f τ) := by
@@ -75,6 +97,27 @@ section Span
 
 variable {K ι : Type} [Field K] [NumberField K] [Fintype ι] {n : ℕ}
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce `hz`. Proceed by induction on `hz using AddSubgroup.closure_induction with`. Consider the case `mem q hq`. Take `⟨r, f, hr, hf, rfl⟩` from `hq`.
+
+Establish `h0` using `GlobalTheory.JetOpWeylLat.ten_mem_delStd (K := K) lam hf`. Establish `h1` using `GlobalTheory.JetOpWeylLat.smul_mem_localizationAt_of_valuation w ((hO r).1 hr) h0`. Use `⟨_, h1, ?_⟩` and prove the remaining obligations. Rewrite using `[MvPolynomial.smul_eq_C_mul, MvPolynomial.smul_eq_C_mul, map_mul, MvPolynomial.map_C, map_ten_int]`. Consider the case `zero => exact ⟨0, Submodule.zero_mem _, (map_zero (MvPolynomial.map σ)).symm⟩`.
+
+Consider the case `add a b _ _ ha hb`. Take `⟨a, ha, rfl⟩` from `ha`. Take `⟨b, hb, rfl⟩` from `hb`. Conclude with `⟨a + b, Submodule.add_mem _ ha hb, (map_add (MvPolynomial.map σ) _ _).symm⟩`. Consider the case `neg a _ ha`.
+
+Take `⟨a, ha, rfl⟩` from `ha`. Conclude with `⟨-a, Submodule.neg_mem _ ha, (map_neg (MvPolynomial.map σ) _).symm⟩`. Introduce and unpack `⟨z₀, hz, rfl⟩`. Generalize the expression as in `hS : (AddSubgroup.closure _ : AddSubgroup (Pol ℂ ι n)) = S`. Establish `key : ∀ y ∈ delStd K lam, ∀ r ∈ O, MvPolynomial.map σ (r • y) ∈ S`.
+
+Introduce `y hy`. Establish `hy'` using `GlobalTheory.JetOpWeylLat.delStd_le_span lam hy`. Use `clear hy`. Proceed by induction on `hy' using Submodule.span_induction with`. Consider the case `mem q hq`.
+
+Take `⟨f, hf, rfl⟩` from `hq`. Introduce `r hr`. Rewrite using `[MvPolynomial.smul_eq_C_mul, map_mul, MvPolynomial.map_C, map_ten_int, ← MvPolynomial.smul_eq_C_mul, ← hS]`. Conclude with `AddSubgroup.subset_closure ⟨r, f, hr, hf, rfl⟩`. Consider the case `zero => intro r _`.
+
+Rewrite using `[smul_zero, map_zero]`. Conclude with `S.zero_mem`. Consider the case `add a b _ _ ha hb => intro r hr`. Rewrite using `[smul_add, map_add]`. Conclude with `S.add_mem (ha r hr) (hb r hr)`.
+
+Consider the case `smul c a _ ha`. Introduce `r hr`. Rewrite using `[← algebraMap_smul K c a, smul_smul]`. Conclude with `ha _ (O.mul_mem hr ((hO _).2 (w.valuation_le_one c)))`. Take `⟨s, hs, hz⟩` from `(lc_mem_locP w _ _).1 hz`.
+
+Establish `hv : w.valuation K (algebraMap (𝓞 K) K s) = 1` using `(w.valuation_eq_one_iff_notMem).2 hs`. Establish `hs0 : algebraMap (𝓞 K) K s ≠ 0`. Introduce `h0`. Rewrite `hv` using `[h0, map_zero]`. Conclude with `zero_ne_one hv`.
+
+Use `key _ hz (algebraMap (𝓞 K) K s)⁻¹ ((hO _).2 (by rw [map_inv₀, hv, inv_one]))` as an intermediate fact. Rewrite `this` using `[← algebraMap_smul K s z₀, smul_smul, inv_mul_cancel₀ hs0, one_smul]`. Then use the resulting hypothesis.
+-/
 theorem mem_closure_iff (σ : K →+* ℂ) (w : HeightOneSpectrum (𝓞 K)) (O : Subring K) (hO : ∀ x, x ∈ O ↔ w.valuation K x ≤ 1)
     (lam : ι → DomWeight n) (z : Pol ℂ ι n) :
     z ∈ AddSubgroup.closure {p | ∃ (r : K) (f : ι → MvPolynomial (Fin n × Fin n) ℤ), r ∈ O ∧ (∀ τ, f τ ∈ delSq ℤ n (lam τ)) ∧
@@ -126,6 +169,9 @@ theorem mem_closure_iff (σ : K →+* ℂ) (w : HeightOneSpectrum (𝓞 K)) (O :
 
 end Span
 
+/- English proof (translation)
+Establish `hd : ∀ τ, delSq ℤ n (lam τ) = delSq ℤ n (lam' τ)` using `fun τ => by unfold delSq; rw [hl τ]`. Unfold `IntSpan`. Simplify using `only [hd]`. Conclude with `mem_closure_iff D.what₂.embLL (D.plEq w) (Ow D w) (D.val_nonneg_iff w) lam' z`.
+-/
 theorem mem_intSpan_iff (D : D7) (w : D.what₂.places.Pl) {n : ℕ} (lam lam' : D.what₂.Tau → DomWeight n)
     (hl : ∀ τ, (lam τ).natW = (lam' τ).natW) (z : Pol ℂ D.what₂.Tau n) :
     z ∈ IntSpan D w lam ↔ ∃ z₀ ∈ localization₂ (D.plEq w).asIdeal (delStd D.what₂.LL lam'), z = MvPolynomial.map D.what₂.embLL z₀ := by
@@ -138,6 +184,9 @@ section Lat
 
 variable {E K : Type} [Field E] [NumberField E] [Field K] [NumberField K] {ι : Type} [Fintype ι] {n : ℕ}
 
+/- English proof (translation)
+Establish `hM : ∀ τ, Submodule.IsLattice K (dualFr (tauLat emb τ L))` using `fun τ => du_dualFr_lattice basisAtEx _ (tauLatLattice E K ι n emb τ L hL)`. Establish `h1 : F ∈ localization₂ w.asIdeal (delAtr emb lam L) ↔ F.1 ∈ localization₂ w.asIdeal (delP lam fun τ => dualFr (tauLat emb τ L))` using `Iff.rfl`. Rewrite using `[h1, (nabDelLoc K ι n lam _ hM w B hB).2]`. Conclude with `⟨fun ⟨z, hz, e⟩ => ⟨z, hz, e.symm⟩, fun ⟨z, hz, e⟩ => ⟨z, hz, e.symm⟩⟩`.
+-/
 theorem mem_localization_delAtr (emb : ι → E →+* K) (lam : ι → DomWeight n) (w : HeightOneSpectrum (𝓞 K))
     {L : Submodule (𝓞 E) (Fin n → E)} (hL : Submodule.IsLattice E L) (B : ι → GL (Fin n) K)
     (hB : ∀ τ, IsBasisAt w (dualFr (tauLat emb τ L)) (B τ)) (F : Formalism.L2.DIV.VV K lam) :
@@ -149,6 +198,15 @@ theorem mem_localization_delAtr (emb : ι → E →+* K) (lam : ι → DomWeight
   rw [h1, (nabDelLoc K ι n lam _ hM w B hB).2]
   exact ⟨fun ⟨z, hz, e⟩ => ⟨z, hz, e.symm⟩, fun ⟨z, hz, e⟩ => ⟨z, hz, e.symm⟩⟩
 
+/- English proof (translation)
+Take `⟨s, hs, hz⟩` from `(lc_mem_locP w _ _).1 hz`. Establish `h1 : ∀ y ∈ delStd K lam, y ∈ Formalism.L2.DIV.VV K lam`. Introduce `y hy`. Establish `hy'` using `GlobalTheory.JetOpWeylLat.delStd_le_span lam hy`. Use `clear hy`.
+
+Proceed by induction on `hy' using Submodule.span_induction with`. Consider the case `mem q hq`. Take `⟨f, hf, rfl⟩` from `hq`. Conclude with `Submodule.subset_span ⟨_, fun τ => Formalism.GradedWeylDivisibility.weylLeDual K n n le_rfl _ (natW_anti (lam τ)) (GlobalTheory.WeylRowAll.map_mem_weyl (Int.castRingHom K) _ _ _ (hf τ)), rfl⟩`. Consider the case `zero => exact zero_mem _`.
+
+Consider the case `add a b _ _ ha hb => exact add_mem ha hb`. Consider the case `smul c a _ ha => rw [← algebraMap_smul K c a]`. Conclude with `Submodule.smul_mem _ _ ha`. Establish `hs0 : algebraMap (𝓞 K) K s ≠ 0`. Rewrite using `[Ne, FaithfulSMul.algebraMap_eq_zero_iff]`.
+
+Introduce and unpack `rfl`. Conclude with `hs (zero_mem _)`. Use `(Formalism.L2.DIV.VV K lam).smul_mem (algebraMap (𝓞 K) K s)⁻¹ (h1 _ hz)` as an intermediate fact. Rewrite `this` using `[← algebraMap_smul K s z, smul_smul, inv_mul_cancel₀ hs0, one_smul]`. Then use the resulting hypothesis.
+-/
 theorem mem_VV_of_locP (lam : ι → DomWeight n) (w : HeightOneSpectrum (𝓞 K)) {z : Pol K ι n}
     (hz : z ∈ localization₂ w.asIdeal (delStd K lam)) : z ∈ Formalism.L2.DIV.VV K lam := by
   obtain ⟨s, hs, hz⟩ := (lc_mem_locP w _ _).1 hz
@@ -171,6 +229,13 @@ theorem mem_VV_of_locP (lam : ι → DomWeight n) (w : HeightOneSpectrum (𝓞 K
   have := (Formalism.L2.DIV.VV K lam).smul_mem (algebraMap (𝓞 K) K s)⁻¹ (h1 _ hz)
   rwa [← algebraMap_smul K s z, smul_smul, inv_mul_cancel₀ hs0, one_smul] at this
 
+/- English proof (translation)
+Apply `HeightOneSpectrum.ext` to reduce the goal to its premises. Use extensionality with `r`. Rewrite using `[bc_mem_below, ← w.valuation_lt_one_iff_mem (K := K), ← P.valuation_lt_one_iff_mem (K := E)]`. Express the relevant statement in the definitionally equal form `w.valuation K (j (r : E)) < 1 ↔ P.valuation E (r : E) < 1`. Distinguish the cases in `hr : (r : E) = 0`.
+
+Simplify using `[hr]`. Establish `h1` using `h (r : E)⁻¹`. Establish `a1 : 0 < w.valuation K (j (r : E))` using `(Valuation.pos_iff _).2 ((map_ne_zero j).2 hr)`. Establish `a2 : 0 < P.valuation E (r : E)` using `(Valuation.pos_iff _).2 hr`. Rewrite `h1` using `[map_inv₀, map_inv₀, map_inv₀, inv_le_one₀ a1, inv_le_one₀ a2]`.
+
+Rewrite using `[← not_le, ← not_le, h1]`.
+-/
 theorem bcBelow_eq (j : E →+* K) (w : HeightOneSpectrum (𝓞 K)) (P : HeightOneSpectrum (𝓞 E))
     (h : ∀ x, w.valuation K (j x) ≤ 1 ↔ P.valuation E x ≤ 1) : bcBelow j w = P := by
   apply HeightOneSpectrum.ext
@@ -186,6 +251,9 @@ theorem bcBelow_eq (j : E →+* K) (w : HeightOneSpectrum (𝓞 K)) (P : HeightO
     rw [← not_le, ← not_le, h1]
 
 omit [Fintype ι] in
+/- English proof (translation)
+The claim follows from `pb_isBasisAt_dualFr w _ (tauLatLattice E K ι n emb τ L hL).fg _ (bc_isBasisAt (emb τ) w (by rw [bcBelow_eq _ w P h]; exact hg))`.
+-/
 theorem basis_seen (emb : ι → E →+* K) (τ : ι) (w : HeightOneSpectrum (𝓞 K)) (P : HeightOneSpectrum (𝓞 E))
     (h : ∀ x, w.valuation K (emb τ x) ≤ 1 ↔ P.valuation E x ≤ 1) {L : Submodule (𝓞 E) (Fin n → E)}
     (hL : Submodule.IsLattice E L) {g : GL (Fin n) E} (hg : IsBasisAt P L g) :
@@ -194,6 +262,11 @@ theorem basis_seen (emb : ι → E →+* K) (τ : ι) (w : HeightOneSpectrum (�
     (bc_isBasisAt (emb τ) w (by rw [bcBelow_eq _ w P h]; exact hg))
 
 omit [Fintype ι] in
+/- English proof (translation)
+Establish `e` using `roundLat E K ι n emb (starRingEnd E) τ (fun x => star_star x) 1 (dual (hStd E n) L) L (dual_lattice hL) (by ext a b; simp [Formalism.UG.cT, Matrix.one_apply, eq_comm]) (fun y => by conv_lhs => rw [← dual_dual hL, mem_dual]`. Use `forall₂_congr fun x _ => ?_` and prove the remaining obligations. Establish `: Formalism.UG.hform (starRingEnd E) ((1 : GL (Fin n) E) : Matrix (Fin n) (Fin n) E) x y = hStd E n x y`. Simplify using `[Formalism.UG.hform, hStd_apply, Matrix.one_apply, starRingEnd_apply]`. Rewrite using `[this, Submodule.mem_one]`.
+
+Use the proof step `rfl)`. Rewrite using `[e, inv_one, map_one, map_one, Pi.one_apply, du_gLat_one]`. Conclude with `bc_isBasisAt ((emb τ).comp (starRingEnd E)) w (by rw [bcBelow_eq _ w P h]; exact hg)`.
+-/
 theorem basis_conj [StarRing E] (emb : ι → E →+* K) (τ : ι) (w : HeightOneSpectrum (𝓞 K)) (P : HeightOneSpectrum (𝓞 E))
     (h : ∀ x, w.valuation K (emb τ (star x)) ≤ 1 ↔ P.valuation E x ≤ 1) {L : Submodule (𝓞 E) (Fin n → E)}
     (hL : Submodule.IsLattice E L) {g : GL (Fin n) E} (hg : IsBasisAt P L g) :
@@ -209,6 +282,11 @@ theorem basis_conj [StarRing E] (emb : ι → E →+* K) (τ : ι) (w : HeightOn
   rw [e, inv_one, map_one, map_one, Pi.one_apply, du_gLat_one]
   exact bc_isBasisAt ((emb τ).comp (starRingEnd E)) w (by rw [bcBelow_eq _ w P h]; exact hg)
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce `hx`. Take `⟨s, hs, h⟩` from `(lc_mem_locP P _ _).1 hx`. Take `⟨r, hr⟩` from `Submodule.mem_one.1 h`. Establish `h1 : P.valuation E (algebraMap (𝓞 E) E s) = 1` using `(P.valuation_eq_one_iff_notMem).2 hs`.
+
+Establish `h2 : P.valuation E (algebraMap (𝓞 E) E r) ≤ 1` using `P.valuation_le_one (K := E) r`. Rewrite `h2` using `[hr, Algebra.smul_def, map_mul, h1, one_mul]`. Then use the resulting hypothesis. Introduce `hx`. Use `GlobalTheory.JetOpWeylLat.smul_mem_localizationAt_of_valuation P (T := (1 : Submodule (𝓞 E) E)) hx (Submodule.one_le.1 le_rfl)` as an intermediate fact. Rewrite `this` using `[smul_eq_mul, mul_one]`. Then use the resulting hypothesis.
+-/
 theorem mem_localization_one (P : HeightOneSpectrum (𝓞 E)) (x : E) :
     x ∈ localization₂ P.asIdeal (1 : Submodule (𝓞 E) E) ↔ P.valuation E x ≤ 1 := by
   constructor
@@ -222,6 +300,13 @@ theorem mem_localization_one (P : HeightOneSpectrum (𝓞 E)) (x : E) :
     have := GlobalTheory.JetOpWeylLat.smul_mem_localizationAt_of_valuation P (T := (1 : Submodule (𝓞 E) E)) hx (Submodule.one_le.1 le_rfl)
     rwa [smul_eq_mul, mul_one] at this
 
+/- English proof (translation)
+Establish `e : ∀ x : Fin n → E, ((g⁻¹ : GL (Fin n) E) : Matrix (Fin n) (Fin n) E) *ᵥ ((g : Matrix (Fin n) (Fin n) E) *ᵥ x) = x` using `fun x => by rw [Matrix.mulVec_mulVec, ← Units.val_mul, inv_mul_cancel, Units.val_one, Matrix.one_mulVec]`. Establish `e' : ∀ x : Fin n → E, (g : Matrix (Fin n) (Fin n) E) *ᵥ (((g⁻¹ : GL (Fin n) E) : Matrix (Fin n) (Fin n) E) *ᵥ x) = x` using `fun x => by rw [Matrix.mulVec_mulVec, ← Units.val_mul, mul_inv_cancel, Units.val_one, Matrix.one_mulVec]`. Unfold `IsBasisAt`. Prove the components needed by the constructor for the conclusion. Introduce `h x`.
+
+Rewrite using `[h, mem_localized_columnLattice_iff, e]`. Simplify using `only [mem_localization_one]`. Introduce `h`. Use extensionality with `y`. Rewrite using `[mem_localized_columnLattice_iff]`.
+
+Simplify using `only [mem_localization_one]`. Rewrite using `[← h, e']`.
+-/
 theorem isBasisAt_iff (P : HeightOneSpectrum (𝓞 E)) (L : Submodule (𝓞 E) (Fin n → E)) (g : GL (Fin n) E) :
     IsBasisAt P L g ↔ ∀ x, (g : Matrix (Fin n) (Fin n) E) *ᵥ x ∈ localization₂ P.asIdeal L ↔ ∀ a, P.valuation E (x a) ≤ 1 := by
   have e : ∀ x : Fin n → E, ((g⁻¹ : GL (Fin n) E) : Matrix (Fin n) (Fin n) E) *ᵥ ((g : Matrix (Fin n) (Fin n) E) *ᵥ x) = x :=
@@ -245,6 +330,13 @@ section Deco
 
 variable {E : Type} [Field E] [NumberField E] [StarRing E] {n : ℕ} {ST : Finset (HeightOneSpectrum (𝓞 E))}
 
+/- English proof (translation)
+Establish `hex : ∀ P : ST, ∃ a : 𝓞 E, a ∈ (conjPrime₂ P.1).asIdeal ∧ ∀ Q : ST, a ∉ Q.1.asIdeal`. Introduce `P`. Assume the negation of the conclusion as `H`. Use `push Not at H`. Establish `hsub : ((conjPrime₂ P.1).asIdeal : Set (𝓞 E)) ⊆ ⋃ Q ∈ (↑(Finset.univ : Finset ST) : Set ST), (Q.1.asIdeal : Set (𝓞 E))`.
+
+Introduce `a ha`. Take `⟨Q, hQ⟩` from `H a ha`. Conclude with `Set.mem_biUnion (Finset.mem_coe.2 (Finset.mem_univ Q)) hQ`. Take `⟨Q, -, hQ⟩` from `(Ideal.subset_union_prime P P (fun Q _ _ _ => Q.1.isPrime)).1 hsub`. Conclude with `h P.1 P.2 Q.1 Q.2 (HeightOneSpectrum.ext ((conjPrime₂ P.1).isMaximal.eq_of_le Q.1.isPrime.ne_top hQ).symm)`.
+
+Use `choose a ha ha' using hex`. Use `⟨∏ P, a P, fun P => ?_, fun P hm => ?_⟩` and prove the remaining obligations. Conclude with `(mem_conjP P.1 _).1 (Ideal.mem_of_dvd _ (Finset.dvd_prod_of_mem a (Finset.mem_univ P)) (ha P))`. Take `⟨Q, -, hQ⟩` from `(Ideal.IsPrime.prod_mem_iff (hp := P.1.isPrime)).1 hm`. Conclude with `ha' Q P hQ`.
+-/
 theorem exists_sepElt (h : ∀ P ∈ ST, ∀ Q ∈ ST, Q ≠ conjPrime₂ P) : ∃ a, SepElt ST a := by
   classical
   have hex : ∀ P : ST, ∃ a : 𝓞 E, a ∈ (conjPrime₂ P.1).asIdeal ∧ ∀ Q : ST, a ∉ Q.1.asIdeal := by
@@ -263,11 +355,23 @@ theorem exists_sepElt (h : ∀ P ∈ ST, ∀ Q ∈ ST, Q ≠ conjPrime₂ P) : �
   · obtain ⟨Q, -, hQ⟩ := (Ideal.IsPrime.prod_mem_iff (hp := P.1.isPrime)).1 hm
     exact ha' Q P hQ
 
+/- English proof (translation)
+The claim follows from `le_antisymm (localization_le_of_smul_mem hQ fun _ hx => hd.smul_Lsh_mem_N (fun P => by rw [map_natCast]; exact hT P.1 P.2) hx) (localization_le_of_smul_mem (one_notMem Q) fun x hx => by rw [one_smul]; exact hd.N_le_Lsh hx)`.
+-/
 theorem locP_Lsh_off {d : Deco E n ST ∅} (hd : d.Ok) {T : ℕ} (hT : ∀ P ∈ ST, (T : 𝓞 E) ∈ P.asIdeal)
     {Q : HeightOneSpectrum (𝓞 E)} (hQ : (T : 𝓞 E) ∉ Q.asIdeal) : localization₂ Q.asIdeal d.Lsh = localization₂ Q.asIdeal d.N :=
   le_antisymm (localization_le_of_smul_mem hQ fun _ hx => hd.smul_Lsh_mem_N (fun P => by rw [map_natCast]; exact hT P.1 P.2) hx)
     (localization_le_of_smul_mem (one_notMem Q) fun x hx => by rw [one_smul]; exact hd.N_le_Lsh hx)
 
+/- English proof (translation)
+Use `(round_locP_congr emb lam w hd.Lsh_lattice hd'.Lsh_lattice fun τ => ?_).1` and prove the remaining obligations. Establish `hQ : (T : 𝓞 E) ∉ (bcBelow (emb τ) w).asIdeal` using `by rwa [bc_mem_below, map_natCast]`. Establish `e : localization₂ (bcBelow (emb τ) w).asIdeal d.Lsh = localization₂ (bcBelow (emb τ) w).asIdeal d'.Lsh`. Rewrite using `[locP_Lsh_off hd hT hQ, locP_Lsh_off hd' hT hQ]`. Use `h _ fun P hP => ⟨?_, ?_⟩` and prove the remaining obligations.
+
+Introduce and unpack `e`. Conclude with `hQ (e ▸ hT P hP)`. Introduce and unpack `e`. Apply `hQ` to reduce the goal to its premises. Rewrite using `[e, mem_conjP, map_natCast]`.
+
+Conclude with `hT P hP`. Prove the components needed by the constructor for the conclusion. Introduce `x hx`. Conclude with `(mem_locP _ _ _).1 (e ▸ le_locP _ _ hx)`. Introduce `x hx`.
+
+Conclude with `(mem_locP _ _ _).1 (e ▸ le_locP _ _ hx)`.
+-/
 theorem delAtr_off {K ι : Type} [Field K] [NumberField K] [Fintype ι] (emb : ι → E →+* K) (lam : ι → DomWeight n)
     {d d' : Deco E n ST ∅} (hd : d.Ok) (hd' : d'.Ok) {T : ℕ} (hT : ∀ P ∈ ST, (T : 𝓞 E) ∈ P.asIdeal)
     (h : SameOff ST d.N d'.N) {w : HeightOneSpectrum (𝓞 K)} (hw : (T : 𝓞 K) ∉ w.asIdeal) :
@@ -289,6 +393,11 @@ theorem delAtr_off {K ι : Type} [Field K] [NumberField K] [Fintype ι] (emb : �
   · intro x hx
     exact (mem_locP _ _ _).1 (e ▸ le_locP _ _ hx)
 
+/- English proof (translation)
+Apply `le_antisymm` to reduce the goal to its premises. Use `localization_le_of_le_localization _ fun x hx => ?_` and prove the remaining obligations. Take `⟨h1, h2⟩` from `(hd.mem_kerAt P x).1 hx`. Conclude with `(hd.mem_locP_L P x).2 ⟨le_locP _ _ h1, h2⟩`. Use `localization_mono _ fun x hx => ?_` and prove the remaining obligations.
+
+Take `⟨h1, h2⟩` from `(hd.mem_L x).1 hx`. Conclude with `(hd.mem_kerAt P x).2 ⟨h1, h2 P⟩`.
+-/
 theorem localization_kerAt_eq {d : Deco E n ST ∅} (hd : d.Ok) (P : ST) : localization₂ P.1.asIdeal (d.kerAt P) = localization₂ P.1.asIdeal d.L := by
   apply le_antisymm
   · refine localization_le_of_le_localization _ fun x hx => ?_

@@ -19,6 +19,11 @@ open GlobalTheory.ThK
 
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E}
 
+/- English proof (translation)
+Use extensionality with `i j`. Establish `e` using `congrFun hk i`. Simplify using `only [Matrix.mulVec, dotProduct, Pi.smul_apply, smul_eq_mul] at e`. Simplify using `only [partFin, shiftA, Units.val_one, one_smul, Matrix.mul_apply, Matrix.vecMulVec_apply, Matrix.smul_apply, smul_eq_mul]`. Simplify using `only [mul_smul_comm]`.
+
+Rewrite using `[← Finset.smul_sum]`. Use `congr 1`. Rewrite using `[← mul_assoc, ← e, Finset.sum_mul]`. Conclude with `Finset.sum_congr rfl fun m _ => (mul_assoc _ _ _).symm`.
+-/
 theorem mat_mul_partFin_shiftA {n d n₁ d₁ : ℕ} {J : Matrix (Fin n) (Fin n) E} (v : Pl F) (k : UA σ J)
     (H : Plane E n n₁) (H' : Plane E d d₁) (l : (AE F E)ˣ) (hk : mat k *ᵥ incV F H.x = (l : AE F E) • incV F H.x) :
     (mat k * (partFin v (shiftA H H' 1) : Matrix (Fin n) (Fin d) (AE F E)) : Matrix (Fin n) (Fin d) (AE F E)) =
@@ -34,6 +39,17 @@ theorem mat_mul_partFin_shiftA {n d n₁ d₁ : ℕ} {J : Matrix (Fin n) (Fin n)
   rw [← mul_assoc, ← e, Finset.sum_mul]
   exact Finset.sum_congr rfl fun m _ => (mul_assoc _ _ _).symm
 
+/- English proof (translation)
+Introduce `hK F E _ _ _ _ _ σ B b a' G H H' X om om' hT v k hk l hkl φ hφ`. Establish `hA : ActsEx` using `GlobalTheory.T.theta_action_exists hK.base`. Establish `hP` using `GlobalTheory.ThK.Inhab.pairV hT`. Establish `hψ : Continuous B.ψ` using `hT.base.std.1`. Establish `hS` using `hT.weil.isUSplitting`.
+
+Establish `h1 : (1 : UA σ G.W.J) ∈ UAt σ G.W (evFin F v)` using `fun u _ => by`. Rewrite using `[GlobalTheory.StabHaar.mat_one, sub_self, smul_zero]`. Use `set w₁ := partFin v (shiftA (F := F) H H' 1) with hw₁`. Use `set w := partFin v (shiftA (F := F) H H' l) with hw`. Use `set ψ₁ := locOp v (om (k, 1)) φ with hψ₁`.
+
+Use `set χ₁ := locOp v (G.M.co.rho B.ψ w₁) φ with hχ₁`. Establish `aT1 : Acts (evFin F v) (om (k, 1)) φ ψ₁` using `acts_locOp_om hA hP hk h1 hφ`. Establish `aT2' : Acts (evFin F v) (G.M.co.rho B.ψ w₁) φ χ₁` using `(locOp_rho G.M.co hψ v _ hφ).1`. Establish `hχ₁m : χ₁ ∈ SB (Fin (b + 2) × Fin (b + 2 + a') → Fv F v)` using `locOp_mem v _ φ`. Establish `hψ₁m : ψ₁ ∈ SB (Fin (b + 2) × Fin (b + 2 + a') → Fv F v)` using `locOp_mem v _ φ`.
+
+Establish `aT2 : Acts (evFin F v) (G.M.co.rho B.ψ w) ψ₁ (locOp v (G.M.co.rho B.ψ w) ψ₁)` using `(locOp_rho G.M.co hψ v _ hψ₁m).1`. Establish `aT1' : Acts (evFin F v) (om (k, 1)) χ₁ (locOp v (om (k, 1)) χ₁)` using `acts_locOp_om hA hP hk h1 hχ₁m`. Use `GlobalTheory.TensUniq.eq_of_tens_eq v φ _ _ hφ fun r hr => ?_` and prove the remaining obligations. Establish `rψ : Rest (evFin F v) ψ₁ r` using `⟨hr.1, by rw [← aT1 r hr]; exact hS.pres (k, 1) _ hr.2⟩`. Establish `rχ : Rest (evFin F v) χ₁ r` using `⟨hr.1, by rw [← aT2' r hr]; exact GlobalTheory.HeisSchA.rho_mem_schA G.M B.ψ hT.base.std _ _ hr.2⟩`.
+
+Rewrite using `[← aT2 r rψ, ← aT1 r hr, ← aT1' r rχ, ← aT2' r hr, hS.impl (k, 1) w₁ _ hr.2]`. Use `congr 2`. Establish `e1 : ((((1 : UA σ G.W.J) : GL (Fin (b + 2 + a')) (AE F E)) : Matrix (Fin (b + 2 + a')) (Fin (b + 2 + a')) (AE F E))) = 1` using `rfl`. Simplify using `only [actAB, e1, Matrix.transpose_one, Matrix.mul_one]`. Conclude with `(mat_mul_partFin_shiftA v k H H' l hkl).symm`.
+-/
 theorem locOp_rho_om_comm : GlobalTheory.ThK.KP → ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E)
     (b a' : ℕ) (G : Geo σ (b + 2) a') (H : Plane E (b + 2) b) (H' : Plane E (b + 2 + a') (b + a'))
     (X : Chars F E) (om : Rep σ G.V G.W) (om' : Rep σ G.V' G.W), IsTriple B G X om om' →

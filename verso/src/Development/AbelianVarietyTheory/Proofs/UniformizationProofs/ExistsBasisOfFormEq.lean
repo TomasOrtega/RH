@@ -16,9 +16,19 @@ attribute [local instance] Over.cartesianMonoidalCategory
 
 namespace GlobalTheory.PowBasis
 
+/- English proof (translation)
+Simplify using `only [gs_eq f y U h, map_sum]`.
+-/
 theorem gs_sum {X Y : Scheme.{0}} (f : Y ⟶ X) (y : Y) (U : X.Opens) (h : f y ∈ U) {m : ℕ} (a : Fin m → Γ(X, U)) :
     gs f y U (∑ i, a i) = ∑ i, gs f y U (a i) := by simp only [gs_eq f y U h, map_sum]
 
+/- English proof (translation)
+Establish `key : ∀ (j : K → L.ι) (y : Y) (hy : y ∈ LB.wchart L φ j), gs (𝟙 Y) y (LB.wchart L φ j) (∑ i, (Y.presheaf.map (homOfLE (le_top : (LB.LinComb L φ ε).U j ≤ ⊤)).op).hom (r i) * (b i).f j : Γ(Y, (LB.LinComb L φ ε).U j)) = ∑ i, gs (𝟙 Y) y ⊤ (r i) * gs (𝟙 Y) y (LB.wchart L φ j) ((b i).f …` using `fun j y hy => (gs_sum (𝟙 Y) y _ hy _).trans (Finset.sum_congr rfl fun i _ => (gs_mul (𝟙 Y) y _ hy _ _).trans (congrArg (· * _) (gs_res (𝟙 Y) y le_top hy _)))`. Prove the components needed by the constructor for the conclusion. Introduce `h y J hJ`. Conclude with `(congrArg (gs (𝟙 Y) y _) (h _)).trans (key _ y (hJ.mem φ (𝟙 Y)))`. Introduce `h j`.
+
+Use `fn_ext fun y hy => ?_` and prove the remaining obligations. Use `choose I hI using fun χ : Y ⟶ X => exists_chart hL (χ y)`. Use `((sec_trans s (𝟙 Y) y hy (Good.mem hI φ (𝟙 Y))).trans ((congrArg _ (h y I hI)).trans ?_)).trans (key j y hy).symm` and prove the remaining obligations. Rewrite using `[Finset.mul_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[sec_trans (b i) (𝟙 Y) y hy (Good.mem hI φ (𝟙 Y)), mul_left_comm]`. Both sides reduce to the same expression.
+-/
 theorem comb_iff {X Y : Scheme.{0}} {L : LB X} (hL : L.IsLB) {K : Type} [Fintype K] {φ : K → (Y ⟶ X)} {ε : K → ℤ}
     {m : ℕ} (s : LB.Sec (LB.LinComb L φ ε)) (b : Fin m → LB.Sec (LB.LinComb L φ ε)) (r : Fin m → Γ(Y, ⊤)) :
     (∀ j, s.f j = ∑ i, (Y.presheaf.map (homOfLE le_top).op).hom (r i) * (b i).f j) ↔
@@ -43,6 +53,11 @@ theorem comb_iff {X Y : Scheme.{0}} {L : LB X} (hL : L.IsLB) {K : Type} [Fintype
     rw [sec_trans (b i) (𝟙 Y) y hy (Good.mem hI φ (𝟙 Y)), mul_left_comm]
     rfl
 
+/- English proof (translation)
+Use `choose b' hb' using fun i => exists_sec hL h (b i)`. Use `⟨b', fun t => ?_⟩` and prove the remaining obligations. Take `⟨s, hs⟩` from `exists_sec hL (φ := φ') (ε := ε') (φ' := φ) (ε' := ε) (fun U _ g => (h U g).symm) t`. Use `(existsUnique_congr fun r => ?_).1 (hb s)` and prove the remaining obligations. Use `(comb_iff hL s b fun i => (fst T A).left.appTop.hom (r i)).trans (Iff.trans ?_ (comb_iff hL t b' fun i => (fst T A).left.appTop.hom (r i)).symm)` and prove the remaining obligations.
+
+Use `forall_congr' fun y => forall_congr' fun J => forall_congr' fun hJ => ?_` and prove the remaining obligations. Rewrite using `[hs _ _ y J hJ]`. Simplify using `only [hb' _ _ _ y J hJ]`.
+-/
 theorem exists_basis_of_formEq {S : Scheme.{0}} {A T : Over S} {X : Scheme.{0}} {L : LB X} (hL : L.IsLB)
     {K K' : Type} [Fintype K] [Fintype K'] {φ : K → ((T ⊗ A).left ⟶ X)} {ε : K → ℤ}
     {φ' : K' → ((T ⊗ A).left ⟶ X)} {ε' : K' → ℤ} (h : FormEq φ ε φ' ε') {m : ℕ}
@@ -58,11 +73,17 @@ theorem exists_basis_of_formEq {S : Scheme.{0}} {A T : Over S} {X : Scheme.{0}} 
   rw [hs _ _ y J hJ]
   simp only [hb' _ _ _ y J hJ]
 
+/- English proof (translation)
+Establish `e : translPt A (1 : T ⟶ A) = (fst T A ≫ (1 : T ⟶ A)) * snd T A` using `rfl`. Rewrite using `[e, MonObj.comp_one, _root_.one_mul]`.
+-/
 theorem translPt_one {S : Scheme.{0}} (A : Over S) [GrpObj A] (T : Over S) :
     translPt A (1 : T ⟶ A) = snd T A := by
   have e : translPt A (1 : T ⟶ A) = (fst T A ≫ (1 : T ⟶ A)) * snd T A := rfl
   rw [e, MonObj.comp_one, _root_.one_mul]
 
+/- English proof (translation)
+Take `⟨⟨b, hb⟩, -⟩` from `hT S P k hk R t 1`. Use `exists_basis_of_formEq P.isLB (fun U _ g => ?_) hb` and prove the remaining obligations. Simplify using `only [Fin.prod_univ_two, Matrix.cons_val_zero, Matrix.cons_val_one, translPt_one, Fintype.prod_unique]`. Rewrite using `[← zpow_add, sub_add_cancel]`.
+-/
 theorem exists_basis_pow (hT : SecTwistSt) {S : Scheme.{0}} (P : PolAV S) (k : ℕ) (hk : 1 ≤ k) (R : Type) [CommRing R]
     [IsLocalRing R] (t : Spec (CommRingCat.of R) ⟶ S) :
     ∃ b : Fin (k ^ P.g) → LB.Sec (LPow P.A P.L (k : ℤ) (Over.mk t)), IsSecBasis _ b := by
@@ -71,6 +92,13 @@ theorem exists_basis_pow (hT : SecTwistSt) {S : Scheme.{0}} (P : PolAV S) (k : �
   simp only [Fin.prod_univ_two, Matrix.cons_val_zero, Matrix.cons_val_one, translPt_one, Fintype.prod_unique]
   rw [← zpow_add, sub_add_cancel]
 
+/- English proof (translation)
+Introduce `hT R _ _ A F _ _ k hk`. Take `⟨b, hb⟩` from `exists_basis_pow hT A k hk F (jFK (R := R) F)`. Use `⟨b, fun t => ?_⟩` and prove the remaining obligations. Take `⟨r, hr, hu⟩` from `hb t`. Use `⟨fun i => (Scheme.ΓSpecIso (CommRingCat.of F)).hom.hom (r i), fun j => ?_, fun c hc => ?_⟩` and prove the remaining obligations.
+
+Use `(hr j).trans (Finset.sum_congr rfl fun i _ => ?_)` and prove the remaining obligations. Conclude with `congrArg (fun x => liftFun A.A _ x * (b i).f j) ((Scheme.ΓSpecIso (CommRingCat.of F)).hom_inv_id_apply (r i)).symm`. Establish `e` using `hu (fun i => (Scheme.ΓSpecIso (CommRingCat.of F)).inv.hom (c i)) hc`. Use function extensionality and compare the values at `i`. Rewrite using `[← congrFun e i]`.
+
+Conclude with `((Scheme.ΓSpecIso (CommRingCat.of F)).inv_hom_id_apply (c i)).symm`.
+-/
 theorem exists_basis_pow_field : SecTwistSt → ∀ (R : Type) [CommRing R] [IsDomain R] (A : PolAV (Spec (CommRingCat.of (FractionRing R)))) (F : Type) [Field F] [Algebra (FractionRing R) F] (k : ℕ), 1 ≤ k → ∃ b : Fin (k ^ A.g) → LB.Sec (LPow A.A A.L (k : ℤ) (TFK (R := R) F)), ∀ t : LB.Sec (LPow A.A A.L (k : ℤ) (TFK (R := R) F)), ∃! c : Fin (k ^ A.g) → F, ∀ j, t.f j = ∑ i, liftFun A.A _ ((Scheme.ΓSpecIso (CommRingCat.of F)).inv.hom (c i)) * (b i).f j := by
   intro hT R _ _ A F _ _ k hk
   obtain ⟨b, hb⟩ := exists_basis_pow hT A k hk F (jFK (R := R) F)

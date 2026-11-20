@@ -23,6 +23,9 @@ def B (K : Cx A) : ∀ n : ℕ, Submodule A (K.X n)
   | 0 => ⊥
   | n + 1 => LinearMap.range (K.d n)
 
+/- English proof (translation)
+Break down `n with _ | n` into its components or cases. Conclude with `bot_le`. Conclude with `fun _ ⟨y, hy⟩ => hy ▸ K.dd n y`.
+-/
 theorem B_le_Z (K : Cx A) (n : ℕ) : K.B n ≤ K.Z n := by
   rcases n with _ | n
   · exact bot_le
@@ -32,6 +35,9 @@ abbrev H (K : Cx A) (n : ℕ) : Type := K.Z n ⧸ (K.B n).comap (K.Z n).subtype
 
 abbrev cls (K : Cx A) {n : ℕ} (z : K.Z n) : K.H n := Submodule.Quotient.mk z
 
+/- English proof (translation)
+The claim follows from `(Submodule.Quotient.mk_eq_zero _).trans Submodule.mem_comap`.
+-/
 theorem cls_eq_zero (K : Cx A) {n : ℕ} (z : K.Z n) : K.cls z = 0 ↔ z.1 ∈ K.B n :=
   (Submodule.Quotient.mk_eq_zero _).trans Submodule.mem_comap
 
@@ -64,6 +70,11 @@ def Z (φ : Hom K L) (n : ℕ) : K.Z n →ₗ[A] L.Z n :=
     have h0 : K.d n x = 0 := hx
     exact (φ.comm n x).symm.trans (by rw [h0, map_zero])
 
+/- English proof (translation)
+Break down `n with _ | n` into its components or cases. Introduce `x hx`. Rewrite using `[(Submodule.mem_bot A).1 hx, map_zero]`. Conclude with `zero_mem _`. Introduce and unpack `_ ⟨y, rfl⟩`.
+
+Conclude with `⟨φ.f n y, (φ.comm n y).symm⟩`.
+-/
 theorem map_B (φ : Hom K L) (n : ℕ) : ∀ x ∈ K.B n, φ.f n x ∈ L.B n := by
   rcases n with _ | n
   · intro x hx
@@ -75,17 +86,32 @@ theorem map_B (φ : Hom K L) (n : ℕ) : ∀ x ∈ K.B n, φ.f n x ∈ L.B n := 
 def H (φ : Hom K L) (n : ℕ) : K.H n →ₗ[A] L.H n :=
   Submodule.mapQ _ _ (φ.Z n) fun z hz => φ.map_B n z.1 hz
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem H_cls (φ : Hom K L) {n : ℕ} (z : K.Z n) : φ.H n (K.cls z) = L.cls (φ.Z n z) := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem coe_Z (φ : Hom K L) {n : ℕ} (z : K.Z n) : (φ.Z n z).1 = φ.f n z.1 := rfl
 
+/- English proof (translation)
+The claim follows from `Submodule.Quotient.induction_on _ x fun _ => rfl`.
+-/
 theorem H_comp (ψ : Hom L N) (φ : Hom K L) (n : ℕ) (x : K.H n) :
     (ψ.comp φ).H n x = ψ.H n (φ.H n x) :=
   Submodule.Quotient.induction_on _ x fun _ => rfl
 
+/- English proof (translation)
+The claim follows from `Submodule.Quotient.induction_on _ x fun _ => rfl`.
+-/
 theorem H_id (n : ℕ) (x : K.H n) : (Hom.id K).H n x = x :=
   Submodule.Quotient.induction_on _ x fun _ => rfl
 
+/- English proof (translation)
+The claim follows from `Submodule.Quotient.induction_on _ x fun _ => rfl`.
+-/
 theorem H_smul (a : A) (φ : Hom K L) (n : ℕ) (x : K.H n) : (φ.smul a).H n x = a • φ.H n x :=
   Submodule.Quotient.induction_on _ x fun _ => rfl
 
@@ -117,6 +143,9 @@ def upD (L : Cx A) : ∀ n, L.up n →ₗ[A] L.X n
   | 0 => 0
   | n + 1 => L.d n
 
+/- English proof (translation)
+Break down `n with _ | n` into its components or cases. Conclude with `map_zero _`. Conclude with `L.dd n y`.
+-/
 theorem d_upD (L : Cx A) (n : ℕ) (y : L.up n) : L.d n (L.upD n y) = 0 := by
   rcases n with _ | n
   · exact map_zero _
@@ -132,6 +161,9 @@ def fib (φ : Hom K L) : Cx A where
     change φ.f (n + 1) (K.d n x.1) - L.d n (φ.f n x.1 - L.upD n x.2) = 0
     rw [map_sub, L.d_upD, φ.comm, sub_zero, sub_self]
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem fib_d (φ : Hom K L) (n : ℕ) (x : K.X n) (y : L.up n) :
     (fib φ).d n (x, y) = (K.d n x, show L.X n from φ.f n x - L.upD n y) := rfl
 
@@ -143,6 +175,9 @@ def upMap {L L' : Cx A} (β : Hom L L') : ∀ n, L.up n →ₗ[A] L'.up n
   | 0 => 0
   | n + 1 => β.f n
 
+/- English proof (translation)
+Break down `n with _ | n` into its components or cases. Conclude with `(map_zero _).symm`. Conclude with `(β.comm n y).symm`.
+-/
 theorem upD_upMap {L L' : Cx A} (β : Hom L L') (n : ℕ) (y : L.up n) :
     L'.upD n (upMap β n y) = β.f n (L.upD n y) := by
   rcases n with _ | n
@@ -195,10 +230,16 @@ variable {A G M : Type} [CommRing A] [Group G] [AddCommGroup M] [Module A M]
 def dInh (ρ : Representation A G M) (n : ℕ) : ((Fin n → G) → M) →ₗ[A] ((Fin (n + 1) → G) → M) :=
   (inhomogeneousCochains.d (k := A) (G := G) (Rep.of ρ) n).hom
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem dInh_apply (ρ : Representation A G M) (n : ℕ) (f : (Fin n → G) → M) (g : Fin (n + 1) → G) :
     dInh ρ n f g = ρ (g 0) (f fun i => g i.succ) +
       ∑ j : Fin (n + 1), (-1 : A) ^ ((j : ℕ) + 1) • f (Fin.contractNth j (· * ·) g) := rfl
 
+/- English proof (translation)
+The claim follows from `LinearMap.congr_fun (congrArg ModuleCat.Hom.hom (groupCohomology.inhomogeneousCochains.d_comp_d (A := Rep.of ρ) (n := n))) f`.
+-/
 theorem dInh_dInh (ρ : Representation A G M) (n : ℕ) (f : (Fin n → G) → M) :
     dInh ρ (n + 1) (dInh ρ n f) = 0 :=
   LinearMap.congr_fun
@@ -208,6 +249,9 @@ variable [TopologicalSpace G] [TopologicalSpace M]
 
 def ContAct (ρ : Representation A G M) : Prop := Continuous fun q : G × M => ρ q.1 q.2
 
+/- English proof (translation)
+The claim follows from `continuous_pi fun k => by unfold Fin.contractNth split_ifs <;> fun_prop`.
+-/
 theorem continuous_contractNth {G : Type} [Group G] [TopologicalSpace G] [IsTopologicalGroup G] {n : ℕ}
     (j : Fin (n + 1)) : Continuous fun g : Fin (n + 1) → G => Fin.contractNth j (· * ·) g :=
   continuous_pi fun k => by
@@ -225,6 +269,9 @@ def contC (n : ℕ) : Submodule A ((Fin n → G) → M) where
   zero_mem' := continuous_const
   smul_mem' a _ hf := Continuous.const_smul hf a
 
+/- English proof (translation)
+Establish `h1 : Continuous fun g : Fin (n + 1) → G => ρ (g 0) (f fun i => g i.succ)` using `Continuous.comp (f := fun g : Fin (n + 1) → G => (g 0, f fun i => g i.succ)) hρ (by fun_prop)`. Conclude with `h1.add (continuous_finset_sum _ fun j _ => (hf.comp (continuous_contractNth j)).const_smul _)`.
+-/
 theorem continuous_dInh [IsTopologicalGroup G] {ρ : Representation A G M} (hρ : ContAct ρ) (n : ℕ)
     {f : (Fin n → G) → M} (hf : Continuous f) : Continuous (dInh ρ n f) := by
   have h1 : Continuous fun g : Fin (n + 1) → G => ρ (g 0) (f fun i => g i.succ) :=
@@ -271,6 +318,9 @@ def IsTAdic {A : Type} [CommRing A] (t : A) (M : Type) [AddCommGroup M] [Module 
     [TopologicalSpace M] : Prop :=
   (nhds (0 : M)).HasBasis (fun _ : ℕ => True) fun k => Set.range fun m : M => t ^ k • m
 
+/- English proof (translation)
+The claim follows from `continuous_snd`.
+-/
 theorem contAct_trivial {A G M : Type} [CommRing A] [Group G] [AddCommGroup M] [Module A M]
     [TopologicalSpace G] [TopologicalSpace M] [IsTopologicalAddGroup M] [ContinuousConstSMul A M] :
     ContAct (Representation.trivial A G M) := continuous_snd

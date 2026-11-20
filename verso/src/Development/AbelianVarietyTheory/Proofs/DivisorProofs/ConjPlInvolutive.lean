@@ -22,26 +22,41 @@ variable {ι : Type} [Fintype ι] {n : ℕ}
 def mapF {K L : Type} [Field K] [Field L] (φ : K →+* L) (lam : ι → DomWeight n) (x : VV K lam) : VV L lam :=
   ⟨MvPolynomial.map φ x.1, GlobalTheory.Proof.TensorMapDescent.map_mem_VV φ lam _ x.2⟩
 
+/- English proof (translation)
+The claim follows from `Subtype.ext (by change MvPolynomial.map ψ (MvPolynomial.map φ x.1) = MvPolynomial.map (ψ.comp φ) x.1 rw [MvPolynomial.map_map])`.
+-/
 theorem mapVV_mapF {K L : Type} [Field K] [Field L] (φ : K →+* L) (ψ : L →+* ℂ) (lam : ι → DomWeight n) (x : VV K lam) :
     GlobalTheory.CoefModel.mapVV ψ lam (mapF φ lam x) = GlobalTheory.CoefModel.mapVV (ψ.comp φ) lam x :=
   Subtype.ext (by
     change MvPolynomial.map ψ (MvPolynomial.map φ x.1) = MvPolynomial.map (ψ.comp φ) x.1
     rw [MvPolynomial.map_map])
 
+/- English proof (translation)
+The claim follows from `Subtype.ext (by change MvPolynomial.map ψ (MvPolynomial.map φ x.1) = MvPolynomial.map (ψ.comp φ) x.1 rw [MvPolynomial.map_map])`.
+-/
 theorem mapVV_mapVV {K : Type} [Field K] (φ : K →+* ℂ) (ψ : ℂ →+* ℂ) (lam : ι → DomWeight n) (x : VV K lam) :
     GlobalTheory.CoefModel.mapVV ψ lam (GlobalTheory.CoefModel.mapVV φ lam x) = GlobalTheory.CoefModel.mapVV (ψ.comp φ) lam x :=
   Subtype.ext (by
     change MvPolynomial.map ψ (MvPolynomial.map φ x.1) = MvPolynomial.map (ψ.comp φ) x.1
     rw [MvPolynomial.map_map])
 
+/- English proof (translation)
+The claim follows from `Subtype.ext (by change MvPolynomial.map (RingHom.id ℂ) v.1 = v.1 rw [MvPolynomial.map_id])`.
+-/
 theorem mapVV_id (lam : ι → DomWeight n) (v : VV ℂ lam) : GlobalTheory.CoefModel.mapVV (RingHom.id ℂ) lam v = v :=
   Subtype.ext (by
     change MvPolynomial.map (RingHom.id ℂ) v.1 = v.1
     rw [MvPolynomial.map_id])
 
+/- English proof (translation)
+The claim follows from `RingHom.ext fun z => Complex.conj_conj z`.
+-/
 theorem conj_comp_conj : (starRingEnd ℂ).comp (starRingEnd ℂ) = RingHom.id ℂ :=
   RingHom.ext fun z => Complex.conj_conj z
 
+/- English proof (translation)
+Rewrite using `[mapVV_mapVV, conj_comp_conj, mapVV_id]`.
+-/
 theorem mapVV_conj_conj (lam : ι → DomWeight n) (v : VV ℂ lam) :
     GlobalTheory.CoefModel.mapVV (starRingEnd ℂ) lam (GlobalTheory.CoefModel.mapVV (starRingEnd ℂ) lam v) = v := by
   rw [mapVV_mapVV, conj_comp_conj, mapVV_id]
@@ -59,25 +74,43 @@ def conjPl (q : InfinitePlace K) : InfinitePlace K := InfinitePlace.mk (q.embedd
 
 variable {K}
 
+/- English proof (translation)
+The claim follows from `RingHom.ext fun x => by simp [ComplexEmbedding.conjugate_coe_eq]`.
+-/
 theorem conjugate_comp (φ : K →+* ℂ) (f : K →+* K) :
     (ComplexEmbedding.conjugate φ).comp f = ComplexEmbedding.conjugate (φ.comp f) :=
   RingHom.ext fun x => by simp [ComplexEmbedding.conjugate_coe_eq]
 
+/- English proof (translation)
+Unfold `conjPl`. Break down `InfinitePlace.embedding_mk_eq φ with h | h` into its components or cases. Rewrite using `[h]`. Rewrite using `[h, conjugate_comp, InfinitePlace.mk_conjugate_eq]`.
+-/
 theorem conjPl_mk (φ : K →+* ℂ) : conjPl K (InfinitePlace.mk φ) = InfinitePlace.mk (φ.comp (starRingEnd K)) := by
   unfold conjPl
   rcases InfinitePlace.embedding_mk_eq φ with h | h
   · rw [h]
   · rw [h, conjugate_comp, InfinitePlace.mk_conjugate_eq]
 
+/- English proof (translation)
+The claim follows from `RingHom.ext fun x => by simp`.
+-/
 theorem star_comp_star : (starRingEnd K).comp (starRingEnd K) = RingHom.id K :=
   RingHom.ext fun x => by simp
 
+/- English proof (translation)
+Express the relevant statement in the definitionally equal form `conjPl K (InfinitePlace.mk (q.embedding.comp (starRingEnd K))) = q`. Rewrite using `[conjPl_mk, RingHom.comp_assoc, star_comp_star, RingHom.comp_id, InfinitePlace.mk_embedding]`.
+-/
 theorem conjPl_conjPl (q : InfinitePlace K) : conjPl K (conjPl K q) = q := by
   change conjPl K (InfinitePlace.mk (q.embedding.comp (starRingEnd K))) = q
   rw [conjPl_mk, RingHom.comp_assoc, star_comp_star, RingHom.comp_id, InfinitePlace.mk_embedding]
 
+/- English proof (translation)
+The claim follows from `conjPl_conjPl`.
+-/
 theorem conjPl_involutive : Function.Involutive (conjPl K) := conjPl_conjPl
 
+/- English proof (translation)
+Unfold `Formalism.PairingDivisionLocalBalance.meanInf`. Use `congr 1`. Conclude with `Equiv.sum_comp (conjPl_involutive.toPerm _) g`.
+-/
 theorem meanInf_conjPl (g : InfinitePlace K → ℝ) : Formalism.PairingDivisionLocalBalance.meanInf K (fun q => g (conjPl K q)) = Formalism.PairingDivisionLocalBalance.meanInf K g := by
   unfold Formalism.PairingDivisionLocalBalance.meanInf
   congr 1
@@ -89,12 +122,20 @@ section Nrm
 
 variable {D : D7} {n : ℕ} (lam : D.what₂.Tau → DomWeight n)
 
+/- English proof (translation)
+Establish `h` using `GlobalTheory.CoefModel.pairK_mapVV (starRingEnd ℂ) lam (fun _ => rfl) (fun _ : D.what₂.Tau => (1 : Matrix (Fin n) (Fin n) ℂ)) v v`. Simplify using `only [Matrix.map_one _ (map_zero _) (map_one _)] at h`. Simplify using `only [nrm, h, Complex.conj_re]`.
+-/
 theorem nrm_conj (v : VV ℂ lam) :
     nrm lam (fun _ => 1) (GlobalTheory.CoefModel.mapVV (starRingEnd ℂ) lam v) = nrm lam (fun _ => 1) v := by
   have h := GlobalTheory.CoefModel.pairK_mapVV (starRingEnd ℂ) lam (fun _ => rfl) (fun _ : D.what₂.Tau => (1 : Matrix (Fin n) (Fin n) ℂ)) v v
   simp only [Matrix.map_one _ (map_zero _) (map_one _)] at h
   simp only [nrm, h, Complex.conj_re]
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨u, hu, hB⟩`. Use `⟨u, hu, ?_⟩` and prove the remaining obligations. Rewrite `hB` using `[← mapVV_mapVV, nrm_conj]`. Then use the resulting hypothesis. Introduce and unpack `⟨u, hu, hB⟩`.
+
+Use `⟨u, hu, ?_⟩` and prove the remaining obligations. Rewrite using `[← mapVV_mapVV, nrm_conj]` and apply the resulting hypothesis.
+-/
 theorem nrmLe_conj_iff (σ : D.what₂.LL →+* ℂ) (v : VV ℂ lam) (B : ℝ) :
     NrmLe lam ((starRingEnd ℂ).comp σ) v B ↔ NrmLe lam σ v B := by
   constructor
@@ -105,6 +146,9 @@ theorem nrmLe_conj_iff (σ : D.what₂.LL →+* ℂ) (v : VV ℂ lam) (B : ℝ) 
     refine ⟨u, hu, ?_⟩
     rwa [← mapVV_mapVV, nrm_conj]
 
+/- English proof (translation)
+Break down `InfinitePlace.embedding_mk_eq φ with h | h` into its components or cases. Rewrite using `[h]`. Establish `e : ComplexEmbedding.conjugate φ = (starRingEnd ℂ).comp φ` using `RingHom.ext fun x => by simp [ComplexEmbedding.conjugate_coe_eq]`. Rewrite using `[h, e, nrmLe_conj_iff]`.
+-/
 theorem nrmLe_mk_iff (φ : D.what₂.LL →+* ℂ) (v : VV ℂ lam) (B : ℝ) :
     NrmLe lam (InfinitePlace.mk φ).embedding v B ↔ NrmLe lam φ v B := by
   rcases InfinitePlace.embedding_mk_eq φ with h | h
@@ -119,9 +163,17 @@ section Transfer
 
 variable {D : D7} {n n' : ℕ} {lam : D.what₂.Tau → DomWeight n} {lam' : D.what₂.Tau → DomWeight n'}
 
+/- English proof (translation)
+The claim follows from `RingHom.ext fun x => D.starLL_cx x`.
+-/
 theorem embLL_comp_star : D.what₂.embLL.comp (starRingEnd D.what₂.LL) = (starRingEnd ℂ).comp D.what₂.embLL :=
   RingHom.ext fun x => D.starLL_cx x
 
+/- English proof (translation)
+Take `⟨u, hu, hB⟩` from `hv`. Establish `h1 : NrmLe lam (σ.comp (starRingEnd D.what₂.LL)) (GlobalTheory.CoefModel.mapVV (starRingEnd ℂ) lam v) B`. Use `⟨mapF (starRingEnd D.what₂.LL) lam u, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[mapVV_mapF, embLL_comp_star, ← mapVV_mapVV, hu]`. Rewrite using `[mapVV_mapF, RingHom.comp_assoc, star_comp_star, RingHom.comp_id]` and apply the resulting hypothesis.
+
+Take `⟨u', hu', hB'⟩` from `h B _ h1`. Use `⟨mapF (starRingEnd D.what₂.LL) lam' u', ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[mapVV_mapF, embLL_comp_star, ← mapVV_mapVV, hu', conjMap, mapVV_conj_conj, mapVV_conj_conj]`. Rewrite using `[mapVV_mapF]` and apply the resulting hypothesis.
+-/
 theorem nrmLe_of_conjMap (σ : D.what₂.LL →+* ℂ) (K : VV ℂ lam →ₗ[ℂ] VV ℂ lam') (c : ℝ)
     (h : ∀ B v, NrmLe lam (σ.comp (starRingEnd D.what₂.LL)) v B →
       NrmLe lam' (σ.comp (starRingEnd D.what₂.LL)) (conjMap K v) (c * B))
@@ -150,6 +202,11 @@ def PairStdAt : Prop := ∃ g : InfinitePlace D.what₂.LL → ℝ, Formalism.Pa
     ∀ (i : Fin D.R.m) B v, NrmLe _ p.embedding v B →
       NrmLe _ p.embedding (conjMap (ch.S.Z.kkMap 1 (d.2 i) (ch.S.ptRow c i) (ch.S.ptRow c (i + 1))) v) (Real.exp (g p) * B)
 
+/- English proof (translation)
+Take `⟨g, hg, h⟩` from `h`. Use `⟨fun p => g (conjPl _ p), by rwa [meanInf_conjPl], ?_⟩` and prove the remaining obligations. Introduce `p Φ β d hO c i B v hv`. Establish `key` using `(h (conjPl _ p) Φ β d hO c).2 i`. Use `nrmLe_of_conjMap p.embedding _ _ (fun B' v' hv' => ?_) B v hv` and prove the remaining obligations.
+
+Conclude with `(nrmLe_mk_iff _ (p.embedding.comp (starRingEnd D.what₂.LL)) _ _).1 (key B' v' ((nrmLe_mk_iff _ (p.embedding.comp (starRingEnd D.what₂.LL)) _ _).2 hv'))`.
+-/
 theorem infRowAt_of (h : PairStdAt ch C b) : InfRowAt ch C b := by
   obtain ⟨g, hg, h⟩ := h
   refine ⟨fun p => g (conjPl _ p), by rwa [meanInf_conjPl], ?_⟩
@@ -163,6 +220,11 @@ end Std
 
 def PairStdK : Prop := BigC fun _ ch C b => PairStdAt ch C b
 
+/- English proof (translation)
+Introduce and unpack `⟨CF0, h0⟩`. Use `⟨CF0, fun CF hCF => ?_⟩` and prove the remaining obligations. Take `⟨C0, h1⟩` from `h0 CF hCF`. Use `⟨C0, fun ε C hC => ?_⟩` and prove the remaining obligations. Take `⟨x0, h2⟩` from `h1 ε C hC`.
+
+Conclude with `⟨x0, fun D large₂ he hx Γ _ _ Pl0 T A Ks _ _ _ R F hS ch h3 h4 h5 => h F ch C large₂.sc.b (h2 D large₂ he hx Γ Pl0 T A Ks R F hS ch h3 h4 h5)⟩`.
+-/
 theorem bigC_mono {Q Q' : ChQ} (h : ∀ {D : D7} {Γ : Type} [Group Γ] [Fintype Γ] {Pl0 T : Type} {A : FamIn D.what₂.LL Γ Pl0 T D.R.m}
     {Ks : Type} [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] {R : RealDat D A Ks} (F : Face D A) (ch : Choice R) (C b : ℝ),
     Q F ch C b → Q' F ch C b) : BigC Q → BigC Q' := by
@@ -174,6 +236,9 @@ theorem bigC_mono {Q Q' : ChQ} (h : ∀ {D : D7} {Γ : Type} [Group Γ] [Fintype
   exact ⟨x0, fun D large₂ he hx Γ _ _ Pl0 T A Ks _ _ _ R F hS ch h3 h4 h5 =>
     h F ch C large₂.sc.b (h2 D large₂ he hx Γ Pl0 T A Ks R F hS ch h3 h4 h5)⟩
 
+/- English proof (translation)
+The claim follows from `bigC_mono (fun _ ch C b => infRowAt_of ch C b) h`.
+-/
 theorem infRowK_of (h : PairStdK) : InfRowK := bigC_mono (fun _ ch C b => infRowAt_of ch C b) h
 
 end GlobalTheory.SumSize.OppConj

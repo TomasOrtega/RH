@@ -4,6 +4,19 @@ open Finset Formalism.HermitianLattices.ZeroFreeRegionGL2 Formalism.HermitianLat
 
 namespace QH
 
+/- English proof (translation)
+Use `haveI : NeZero M := ⟨hM0⟩`. Establish `hf : χ.FactorsThrough M`. Rewrite using `[DirichletCharacter.factorsThrough_iff_ker_unitsMap hM]`. Introduce `u hu`. Rewrite `hu`, the goal using `[MonoidHom.mem_ker]`.
+
+Take `⟨a, ha⟩` from `ZMod.intCast_surjective (u : ZMod N)`. Establish `h1 : ((a : ℤ) : ZMod M) = ((1 : ℤ) : ZMod M)`. Establish `h` using `congrArg (fun x : (ZMod M)ˣ => (x : ZMod M)) hu`. Simplify using `only [ZMod.unitsMap_val, Units.val_one] at h`. Rewrite `h` using `[← ha, ZMod.cast_intCast hM]`.
+
+Simplify using `using h`. Rewrite `h1` using `[ZMod.intCast_eq_intCast_iff_dvd_sub]`. Take `⟨t, ht⟩` from `h1`. Take `⟨v, hv⟩` from `hsq (-t)`. Establish `ha' : a = 1 + (M : ℤ) * (-t)` using `by linarith`.
+
+Establish `huv : (u : ZMod N) = v ^ 2`. Rewrite using `[hv, ← ha, ha']`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Establish `hvu : IsUnit v`.
+
+Establish `: IsUnit (v ^ 2)` using `huv ▸ u.isUnit`. Conclude with `(isUnit_pow_iff two_ne_zero).mp this`. Use `ext`. Rewrite using `[MulChar.coe_toUnitHom, huv, map_pow, ← MulChar.pow_apply' χ two_ne_zero, h2, MulChar.one_apply hvu, Units.val_one]`. Establish `hle : χ.conductor ≤ M` using `Nat.sInf_le hf`.
+
+Rewrite `hp` using `[DirichletCharacter.isPrimitive_def]`. Use linear arithmetic over natural numbers and integers.
+-/
 private theorem conductor_le_of_quadratic_squares {N M : ℕ} [NeZero N] (χ : DirichletCharacter ℂ N) (hp : χ.IsPrimitive)
     (h2 : χ ^ 2 = 1) (hM : M ∣ N) (hM0 : M ≠ 0)
     (hsq : ∀ t : ℤ, ∃ v : ZMod N, v ^ 2 = 1 + (M : ZMod N) * (t : ZMod N)) : N ≤ M := by
@@ -34,6 +47,15 @@ private theorem conductor_le_of_quadratic_squares {N M : ℕ} [NeZero N] (χ : D
   rw [DirichletCharacter.isPrimitive_def] at hp
   omega
 
+/- English proof (translation)
+Introduce and unpack `⟨k, hk⟩`. Establish `hN : N ≠ 0` using `NeZero.ne N`. Establish `hk0 : k ≠ 0` using `by rintro rfl; simp at hk; exact hN hk`. Take `⟨r, hr⟩` from `hpp.odd_of_ne_two hodd`. Establish `hle : N ≤ p * k`.
+
+Use `conductor_le_of_quadratic_squares χ hp h2 ⟨p, by rw [hk]; ring⟩ (mul_ne_zero hpp.ne_zero hk0) fun t => ?_` and prove the remaining obligations. Use `⟨1 + (p : ZMod N) * k * t * (r + 1), ?_⟩` and prove the remaining obligations. Establish `h0 : (p : ZMod N) ^ 2 * k = 0`. Establish `h` using `congrArg (Nat.cast : ℕ → ZMod N) hk`. Rewrite `h` using `[ZMod.natCast_self]`.
+
+Move the coercions through the operations in `at h`. Take the linear combination `-h`. Establish `hr' : (p : ZMod N) = 2 * r + 1` using `by rw [hr]; push_cast; ring`. Use `push_cast`. Take the linear combination `(t + k * t ^ 2 * (r + 1) ^ 2) * h0 - (p : ZMod N) * k * t * hr'`.
+
+Establish `h1` using `hpp.one_lt`. Establish `: 0 < p * k` using `Nat.pos_of_ne_zero (mul_ne_zero hpp.ne_zero hk0)`. Use the polynomial consequences of the given equalities and inequalities.
+-/
 private theorem real_cond_odd {N p : ℕ} [NeZero N] (χ : DirichletCharacter ℂ N) (hp : χ.IsPrimitive)
     (h2 : χ ^ 2 = 1) (hpp : p.Prime) (hodd : p ≠ 2) : ¬ p ^ 2 ∣ N := by
   rintro ⟨k, hk⟩
@@ -55,6 +77,13 @@ private theorem real_cond_odd {N p : ℕ} [NeZero N] (χ : DirichletCharacter �
   have : 0 < p * k := Nat.pos_of_ne_zero (mul_ne_zero hpp.ne_zero hk0)
   nlinarith
 
+/- English proof (translation)
+Introduce and unpack `⟨k, hk⟩`. Establish `hN : N ≠ 0` using `NeZero.ne N`. Establish `hk0 : k ≠ 0` using `by rintro rfl; simp at hk; exact hN hk`. Establish `hle : N ≤ 8 * k`. Use `conductor_le_of_quadratic_squares χ hp h2 ⟨2, by rw [hk]; ring⟩ (mul_ne_zero (by norm_num) hk0) fun t => ?_` and prove the remaining obligations.
+
+Use `⟨1 + 4 * (k : ZMod N) * t, ?_⟩` and prove the remaining obligations. Establish `h0 : (16 : ZMod N) * k = 0`. Establish `h` using `congrArg (Nat.cast : ℕ → ZMod N) hk`. Rewrite `h` using `[ZMod.natCast_self]`. Move the coercions through the operations in `at h`.
+
+Take the linear combination `-h`. Use `push_cast`. Take the linear combination `(k * t ^ 2) * h0`. Use linear arithmetic over natural numbers and integers.
+-/
 private theorem real_cond_two {N : ℕ} [NeZero N] (χ : DirichletCharacter ℂ N) (hp : χ.IsPrimitive)
     (h2 : χ ^ 2 = 1) : ¬ 2 ^ 4 ∣ N := by
   rintro ⟨k, hk⟩
@@ -72,6 +101,15 @@ private theorem real_cond_two {N : ℕ} [NeZero N] (χ : DirichletCharacter ℂ 
     linear_combination (k * t ^ 2) * h0
   omega
 
+/- English proof (translation)
+Introduce `N₀ q d N _ χ hp h2 h8 hq hd hall`. Rewrite using `[Nat.dvd_iff_prime_pow_dvd_dvd]`. Introduce `p k hpp hk`. Distinguish the cases in `hp2 : p = 2`. Substitute `hp2` using the available equality.
+
+Establish `hk3 : k ≤ 3`. Assume the negation of the conclusion as `hc`. Conclude with `real_cond_two χ hp h2 ((pow_dvd_pow 2 (by omega)).trans hk)`. Establish `: 2 ^ k ∣ 8` using `pow_dvd_pow 2 hk3`. Conclude with `((this.trans h8).mul_right q).mul_right d`.
+
+Establish `hk1 : k ≤ 1`. Assume the negation of the conclusion as `hc`. Conclude with `real_cond_odd χ hp h2 hpp hp2 ((pow_dvd_pow p (by omega)).trans hk)`. Use `interval_cases k`. Simplify using the standard rewrite rules.
+
+Rewrite `hk`, the goal using `[pow_one]`. Break down `hall p hpp hk with h | rfl | rfl` into its components or cases. Conclude with `(h.mul_right q).mul_right d`. Conclude with `(Dvd.intro_left N₀ rfl).mul_right d`. Conclude with `Dvd.intro_left _ rfl`.
+-/
 theorem real_cond :
     ∀ (N₀ q d : ℕ) (N : ℕ) [NeZero N] (χ : DirichletCharacter ℂ N), χ.IsPrimitive → χ ^ 2 = 1 → 8 ∣ N₀ → q.Prime → d.Prime →
       (∀ p : ℕ, p.Prime → p ∣ N → p ∣ N₀ ∨ p = q ∨ p = d) → N ∣ N₀ * q * d := by

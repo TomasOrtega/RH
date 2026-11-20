@@ -24,6 +24,9 @@ def IsCuspIndProdChar {E : Type} [Field E] [NumberField E] (Pg : Finset (Pl E)) 
     (∀ PP : ↥Pg, @IsCuspIndChar (kP PP.1) (kField PP.1) r (θ PP)) ∧
     ∀ g : G0 Pg r, s (χ g) = ∏ PP : ↥Pg, θ PP (g PP)
 
+/- English proof (translation)
+Use `haveI : ∀ PP : ↥Pg, Finite (kP PP.1) := fun PP => Ideal.finiteQuotientOfFreeOfNeBot _ PP.1.ne_bot`. Use `haveI : ∀ PP : ↥Pg, Finite (GL (Fin r) (kP PP.1)) := fun PP => inferInstance`. Conclude with `Pi.finite`.
+-/
 theorem finite_boundedLevelClassGroupFamily {E : Type} [Field E] [NumberField E] (Pg : Finset (Pl E)) (r : ℕ) : Finite (G0 Pg r) := by
   haveI : ∀ PP : ↥Pg, Finite (kP PP.1) := fun PP => Ideal.finiteQuotientOfFreeOfNeBot _ PP.1.ne_bot
   haveI : ∀ PP : ↥Pg, Finite (GL (Fin r) (kP PP.1)) := fun PP => inferInstance
@@ -54,6 +57,9 @@ def OneWhittakerVectorDim : Prop :=
       IsCuspIndProdChar Pg r s (fun g => LinearMap.trace K (T.W t) (T.tau t g)) →
       Formalism.MainNotions.PrimeDegreeVariant.nS T ⟨(P0 Pg r ψ).H, (P0 Pg r ψ).chi⟩ t = 1
 
+/- English proof (translation)
+Unfold `lvlSum`. Use `letI := fintypeH P`. Simplify using `[h, Nat.card_eq_fintype_card]`.
+-/
 example {E : Type} [Field E] [NumberField E] {Pg : Finset (Pl E)} {r : ℕ} {K : Type} [Field K]
     (P : LevelP Pg r K) (χ : G0 Pg r → K) (h : ∀ x : P.H, χ x = (P.chi x : K)) :
     lvlSum P χ = (Nat.card P.H : K) := by
@@ -61,6 +67,9 @@ example {E : Type} [Field E] [NumberField E] {Pg : Finset (Pl E)} {r : ℕ} {K :
   letI := fintypeH P
   simp [h, Nat.card_eq_fintype_card]
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fun _ _ => 1, fun PP => absurd PP.2 (Finset.notMem_empty _), fun g => by simp⟩`.
+-/
 example {E : Type} [Field E] [NumberField E] (r : ℕ) {K : Type} [Field K] (s : K →+* ℂ) :
     IsCuspIndProdChar (∅ : Finset (Pl E)) r s (fun _ => 1) :=
   ⟨fun _ _ => 1, fun PP => absurd PP.2 (Finset.notMem_empty _), fun g => by simp⟩

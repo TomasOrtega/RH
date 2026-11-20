@@ -5,12 +5,20 @@ open scoped ComplexOrder ContDiff
 
 namespace GlobalTheory.ChernProd
 
+/- English proof (translation)
+The claim follows from `chernOne_line (n := Unit) hf hf0.ne' (Filter.Eventually.of_forall fun _ => rfl) ξ η`.
+-/
 theorem lineChern_eq_neg_ddc_log {E : Type} [NormedAddCommGroup E] [NormedSpace ℂ E]
     [NormedSpace ℝ E] [IsScalarTower ℝ ℂ E] {f : E → ℝ} {y : E} (hf : ContDiffAt ℝ 2 f y)
     (hf0 : 0 < f y) (ξ η : E) :
     lineChern f y ξ η = -ddc (fun x => Real.log (f x)) y ξ η :=
   chernOne_line (n := Unit) hf hf0.ne' (Filter.Eventually.of_forall fun _ => rfl) ξ η
 
+/- English proof (translation)
+Introduce `E _ _ _ _ T _ f y hf hpos ξ η`. Establish `hP : ContDiffAt ℝ 2 (fun x => ∏ τ, f τ x) y` using `contDiffAt_prod fun τ _ => hf τ`. Establish `hP0 : 0 < ∏ τ, f τ y` using `Finset.prod_pos fun τ _ => hpos τ`. Rewrite using `[lineChern_eq_neg_ddc_log hP hP0]`. Simplify using `only [fun τ => lineChern_eq_neg_ddc_log (hf τ) (hpos τ) ξ η]`.
+
+Establish `hev : ∀ᶠ x in nhds y, ∀ τ, 0 < f τ x` using `Filter.eventually_all.2 fun τ => (hf τ).continuousAt.eventually (lt_mem_nhds (hpos τ))`. Establish `hcongr : (fun x => Real.log (∏ τ, f τ x)) =ᶠ[nhds y] fun x => ∑ τ, Real.log (f τ x)` using `hev.mono fun x hx => Real.log_prod fun τ _ => (hx τ).ne'`. Establish `hl : ∀ τ ∈ (Finset.univ : Finset T), ContDiffAt ℝ 2 (fun x => Real.log (f τ x)) y` using `fun τ _ => (hf τ).log (hpos τ).ne'`. Simplify using `only [ddc, leviForm_congr hcongr, leviForm_sum hl]`. Simplify using `[Finset.mul_sum, ContinuousLinearMap.sum_apply]`.
+-/
 theorem lineChern_prod : ∀ (E : Type) [NormedAddCommGroup E] [NormedSpace ℂ E] [NormedSpace ℝ E]
     [IsScalarTower ℝ ℂ E]
     (T : Type) [Fintype T] (f : T → E → ℝ) (y : E),

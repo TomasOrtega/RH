@@ -24,6 +24,9 @@ def fieldDeriv (φ : Matrix (Fin n) (Fin n) ℂ → ℝ) (P : Matrix (Fin n) (Fi
     funext g
     simp only [Pi.smul_apply, RingHom.id_apply, ← map_smul, Matrix.mul_smul, Matrix.smul_mul, ← smul_neg]
 
+/- English proof (translation)
+Use `⟨(hφ.1.fderiv_right (m := ∞) (le_of_eq rfl)).clm_apply (contDiff_const.mul contDiff_id), ?_⟩` and prove the remaining obligations. Use `HasCompactSupport.intro hφ.2 fun g hg => ?_` and prove the remaining obligations. Rewrite using `[fderiv_of_notMem_tsupport ℝ hg]`. Both sides reduce to the same expression.
+-/
 theorem isTest_fderiv {φ : Matrix (Fin n) (Fin n) ℂ → ℝ} (hφ : IsTest φ) (Y : Matrix (Fin n) (Fin n) ℂ) :
     IsTest fun g => fderiv ℝ φ g (Y * g) := by
   refine ⟨(hφ.1.fderiv_right (m := ∞) (le_of_eq rfl)).clm_apply (contDiff_const.mul contDiff_id), ?_⟩
@@ -33,6 +36,23 @@ theorem isTest_fderiv {φ : Matrix (Fin n) (Fin n) ℂ → ℝ} (hφ : IsTest φ
 variable {ε : Fin n → Bool} {H : Type} [NormedAddCommGroup H] [InnerProductSpace ℂ H]
   {σ : Matrix (Fin n) (Fin n) ℂ → (H →L[ℂ] H)}
 
+/- English proof (translation)
+Take `⟨hemb, -⟩` from `Formalism.REAL.isClosedEmbeddingMatrix n ε`. Establish `hu : Continuous fun g : Formalism.REAL.UJ ε => umat g` using `continuous_umat`. Establish `hb` using `continuous_orbit hσ w`. Establish `he : ∀ (Z : Matrix (Fin n) (Fin n) ℂ) (t : ℝ), HasDerivAt (fun t : ℝ => NormedSpace.exp (t • Z)) (Z * NormedSpace.exp (t • Z)) t` using `fun Z t => hasDerivAt_exp_smul_const' Z t`. Establish `hc : ∀ Z : Matrix (Fin n) (Fin n) ℂ, Continuous fun t : ℝ => NormedSpace.exp (t • Z)` using `fun Z => continuous_iff_continuousAt.2 fun t => (he Z t).continuousAt`.
+
+Establish `hxy : ∀ t : ℝ, NormedSpace.exp (t • (-Y)) * NormedSpace.exp (t • Y) = 1` using `fun t => by`. Rewrite using `[← Matrix.exp_add_of_commute _ _ (((Commute.refl Y).neg_left.smul_left t).smul_right t), ← smul_add]`. Simplify using the standard rewrite rules. Establish `hC : IsCompact (Set.image2 (· * ·) ((fun t : ℝ => NormedSpace.exp (t • (-Y))) '' Metric.closedBall 0 1) (tsupport φ))` using `((isCompact_closedBall (0 : ℝ) 1).image (hc _)).mul hφ.2`. Establish `hK` using `hemb.isCompact_preimage hC`.
+
+Use `set K := (fun g : Formalism.REAL.UJ ε => umat g) ⁻¹' (Set.image2 (· * ·) ((fun t : ℝ => NormedSpace.exp (t • (-Y))) '' Metric.closedBall 0 1) (tsupport φ)) with hKdef`. Use `replace hK : IsCompact K := hK`. Establish `hout : ∀ t ∈ Metric.closedBall (0 : ℝ) 1, ∀ g ∉ K, NormedSpace.exp (t • Y) * umat g ∉ tsupport φ` using `fun t ht g hg hm => hg ⟨_, ⟨t, ht, rfl⟩, _, hm, by show _ * (_ * _) = umat g`. Rewrite using `[← Matrix.mul_assoc, hxy, Matrix.one_mul]⟩`. Use `set μ := Formalism.REAL.muG ε`.
+
+Set `F' : ℝ → Formalism.REAL.UJ ε → H` to `fun t g => fderiv ℝ φ (NormedSpace.exp (t • Y) * umat g) (Y * NormedSpace.exp (t • Y) * umat g) • σ (umat g) w`. Establish `hF'c : Continuous fun p : ℝ × Formalism.REAL.UJ ε => F' p.1 p.2`. Establish `h1 : Continuous fun p : ℝ × Formalism.REAL.UJ ε => NormedSpace.exp (p.1 • Y)` using `(hc Y).comp continuous_fst`. Establish `h2 : Continuous fun p : ℝ × Formalism.REAL.UJ ε => umat p.2` using `hu.comp continuous_snd`. Conclude with `(((hφ.1.continuous_fderiv (by simp)).comp (h1.mul h2)).clm_apply ((continuous_const.mul h1).mul h2)).smul (hb.comp continuous_snd)`.
+
+Take `⟨C, hCb⟩` from `((isCompact_closedBall (0 : ℝ) 1).prod hK).exists_bound_of_continuousOn hF'c.continuousOn`. Establish `hint : ∀ t ∈ Metric.closedBall (0 : ℝ) 1, Integrable (fun g : Formalism.REAL.UJ ε => φ (NormedSpace.exp (t • Y) * umat g) • σ (umat g) w) μ` using `fun t ht => Continuous.integrable_of_hasCompactSupport ((hφ.continuous.comp (continuous_const.mul hu)).smul hb) (HasCompactSupport.intro hK fun g hg => by`. Rewrite using `[image_eq_zero_of_notMem_tsupport (hout t ht g hg), zero_smul])`. Establish `e0 : F' 0 = fun g : Formalism.REAL.UJ ε => fderiv ℝ φ (umat g) (Y * umat g) • σ (umat g) w`. Use function extensionality and compare the values at `g`.
+
+Simplify using `[F']`. Establish `key` using `hasDerivAt_integral_of_dominated_loc_of_deriv_le (μ := μ) (x₀ := (0 : ℝ)) (F := fun t g => φ (NormedSpace.exp (t • Y) * umat g) • σ (umat g) w) (F' := F') (bound := K.indicator fun _ => C) (Metric.closedBall_mem_nhds (0 : ℝ) one_pos) (by filter_upwards [Metric.closedBall_mem_nhds …`. Conclude with `(hint t ht).aestronglyMeasurable)`. Use the proof step `(hint 0 (Metric.mem_closedBall_self zero_le_one))`. Use the proof step `(by rw [e0]; exact ((isTest_fderiv hφ Y).integrable hb).aestronglyMeasurable)`.
+
+Use the proof step `(Filter.Eventually.of_forall fun g t ht => by`. Distinguish the cases in `hg : g ∈ K`. Rewrite using `[Set.indicator_of_mem hg]`. Conclude with `hCb (t, g) ⟨ht, hg⟩`. Rewrite using `[Set.indicator_of_notMem hg]`.
+
+Simplify using `[F', fderiv_of_notMem_tsupport ℝ (hout t ht g hg)])`. Use the proof step `((integrable_indicator_iff hK.measurableSet).2 (integrableOn_const hK.measure_lt_top.ne))`. Use the proof step `(Filter.Eventually.of_forall fun g t _ => (((hφ.1.differentiable (by simp)) _).hasFDerivAt.comp_hasDerivAt t ((he Y t).mul_const (umat g))).smul_const _)`. Rewrite `key` using `[e0]`. Conclude with `key.2`.
+-/
 theorem hasDerivAt_integral_translate (hσ : IsURepOn (UJset ε) σ) {φ : Matrix (Fin n) (Fin n) ℂ → ℝ}
     (hφ : IsTest φ) (Y : Matrix (Fin n) (Fin n) ℂ) (w : H) :
     HasDerivAt (fun t : ℝ => ∫ g : Formalism.REAL.UJ ε, φ (NormedSpace.exp (t • Y) * umat g) • σ (umat g) w
@@ -92,6 +112,11 @@ theorem hasDerivAt_integral_translate (hσ : IsURepOn (UJset ε) σ) {φ : Matri
   rw [e0] at key
   exact key.2
 
+/- English proof (translation)
+Introduce `n ε H _ _ _ σ P G hP h hσ φ hφ`. Use `⟨fieldDeriv φ P, fun X => ⟨isTest_fderiv hφ _, fun hX w => ?_⟩⟩` and prove the remaining obligations. Use `Eq.trans ?_ (hasDerivAt_integral_translate hσ hφ (-(P * X * P⁻¹)) w).deriv` and prove the remaining obligations. Unfold `dRep`. Use `congr 1`.
+
+Use function extensionality and compare the values at `t`. Rewrite using `[gard_eq hσ hφ]`. Use `GlobalTheory.LowTypeRestriction.garding_translate hσ hφ.continuous hφ.2 w (conj_mem_UJ hP h (exp_mem_UH (gram_unit hP h) hX t)) ?_` and prove the remaining obligations. Rewrite using `[← Matrix.exp_conj _ _ hP, Matrix.mul_smul, Matrix.smul_mul, ← Matrix.exp_add_of_commute _ _ (((Commute.refl (P * X * P⁻¹)).neg_left.smul_left t).smul_right t), ← smul_add]`. Simplify using the standard rewrite rules.
+-/
 theorem dRep_gard : ∀ (n : ℕ) (ε : Fin n → Bool) (H : Type) [NormedAddCommGroup H] [InnerProductSpace ℂ H] [CompleteSpace H] (σ : Matrix (Fin n) (Fin n) ℂ → (H →L[ℂ] H)) (P G : Matrix (Fin n) (Fin n) ℂ), IsUnit P → Pᴴ * Formalism.REAL.Jm ε * P = G → IsURepOn (UJset ε) σ → ∀ φ, IsTest φ → ∃ ψ : Matrix (Fin n) (Fin n) ℂ →ₗ[ℝ] (Matrix (Fin n) (Fin n) ℂ → ℝ), ∀ X, IsTest (ψ X) ∧ (X ∈ lieG G → ∀ w, dRep (trRep σ P) X (gard ε σ φ w) = gard ε σ (ψ X) w) := by
   intro n ε H _ _ _ σ P G hP h hσ φ hφ
   refine ⟨fieldDeriv φ P, fun X => ⟨isTest_fderiv hφ _, fun hX w => ?_⟩⟩

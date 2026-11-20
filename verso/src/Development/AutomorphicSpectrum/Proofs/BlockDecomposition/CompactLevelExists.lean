@@ -23,9 +23,17 @@ namespace GlobalTheory.CompanionTheory.KExLevel
 
 variable {E : Type} [Field E] [NumberField E] [IsCMField E]
 
+/- English proof (translation)
+Introduce `g hg` and use `((mem_congSub_iff w n k g).1 hg).1`.
+-/
 theorem congSub_le_KGL (w : Pl E) (n k : ℕ) : congSub w n k ≤ KGL w n :=
   fun g hg => ((mem_congSub_iff w n k g).1 hg).1
 
+/- English proof (translation)
+Establish `hVn : (U : Set (GLw a w)) ∈ 𝓝 (1 : GLw a w)` using `hU.mem_nhds U.one_mem`. Rewrite `hVn` using `[Units.isEmbedding_embedProduct.isInducing.nhds_eq_comap]`. Take `⟨t, htn, htV⟩` from `Filter.mem_comap.1 hVn`. Take `⟨A, hA, B, hB, hAB⟩` from `mem_nhds_prod_iff.1 htn`. Establish `hB' : MulOpposite.op ⁻¹' B ∈ 𝓝 (1 : Matrix (Fin a) (Fin a) (w.adicCompletion E))` using `MulOpposite.continuous_op.continuousAt.preimage_mem_nhds hB`.
+
+Take `⟨N₀, hN₀⟩` from `exists_mat_subset w a (Filter.inter_mem hA hB')`. Use `filter_upwards [eventually_ge_atTop N₀] with m hm γ hγ`. Establish `a1` using `hN₀ m hm _ ((mem_congSub_iff w a _ _).1 hγ).2`. Establish `a2` using `hN₀ m hm _ ((mem_congSub_iff w a _ _).1 (inv_mem hγ)).2`. Conclude with `htV (hAB ⟨a1.1, a2.2⟩)`.
+-/
 theorem eventually_congSub_le (w : Pl E) (a : ℕ) (U : Subgroup (GLw a w)) (hU : IsOpen (U : Set (GLw a w))) :
     ∀ᶠ k in atTop, congSub w a k ≤ U := by
   have hVn : (U : Set (GLw a w)) ∈ 𝓝 (1 : GLw a w) := hU.mem_nhds U.one_mem
@@ -40,6 +48,11 @@ theorem eventually_congSub_le (w : Pl E) (a : ℕ) (U : Subgroup (GLw a w)) (hU 
   have a2 := hN₀ m hm _ ((mem_congSub_iff w a _ _).1 (inv_mem hγ)).2
   exact htV (hAB ⟨a1.1, a2.2⟩)
 
+/- English proof (translation)
+Use `Units.continuous_iff.2 ⟨?_, ?_⟩` and prove the remaining obligations. Conclude with `Continuous.matrix_det Units.continuous_val`. Establish `e : (fun g : GLw a w => (((GeneralLinearGroup.det g)⁻¹ : (w.adicCompletion E)ˣ) : w.adicCompletion E)) = fun g => ((g⁻¹ : GLw a w) : Matrix (Fin a) (Fin a) _).det`. Use function extensionality and compare the values at `g`. Rewrite using `[← map_inv]`.
+
+Both sides reduce to the same expression. Conclude with `e ▸ Continuous.matrix_det (Units.continuous_val.comp continuous_inv)`.
+-/
 theorem continuous_detGL (w : Pl E) (a : ℕ) :
     Continuous (GeneralLinearGroup.det : GLw a w → (w.adicCompletion E)ˣ) := by
   refine Units.continuous_iff.2 ⟨?_, ?_⟩
@@ -51,6 +64,9 @@ theorem continuous_detGL (w : Pl E) (a : ℕ) :
       rfl
     exact e ▸ Continuous.matrix_det (Units.continuous_val.comp continuous_inv)
 
+/- English proof (translation)
+Establish `hU : IsOpen ((μ.ker.comap GeneralLinearGroup.det : Subgroup (GLw a w)) : Set (GLw a w))` using `hμ.preimage (continuous_detGL w a)`. Use `filter_upwards [eventually_congSub_le w a _ hU] with k hk g hg`. Conclude with `hk hg`.
+-/
 theorem eventually_det (w : Pl E) (a : ℕ) (μ : (w.adicCompletion E)ˣ →* ℂˣ)
     (hμ : IsOpen (μ.ker : Set (w.adicCompletion E)ˣ)) :
     ∀ᶠ k in atTop, ∀ g ∈ congSub w a k, μ (GeneralLinearGroup.det g) = 1 := by
@@ -59,10 +75,28 @@ theorem eventually_det (w : Pl E) (a : ℕ) (μ : (w.adicCompletion E)ˣ →* �
   filter_upwards [eventually_congSub_le w a _ hU] with k hk g hg
   exact hk hg
 
+/- English proof (translation)
+The claim follows from `(GlobalTheory.LFun.SatCompare.isOpen_isCompact_KGL w n).2.of_isClosed_subset (Subgroup.isClosed_of_isOpen _ (isOpen_congSub w n k)) (congSub_le_KGL w n k)`.
+-/
 theorem isCompact_congSub (w : Pl E) (n k : ℕ) : IsCompact (congSub w n k : Set (GLw n w)) :=
   (GlobalTheory.LFun.SatCompare.isOpen_isCompact_KGL w n).2.of_isClosed_subset
     (Subgroup.isClosed_of_isOpen _ (isOpen_congSub w n k)) (congSub_le_KGL w n k)
 
+/- English proof (translation)
+Take `⟨hK, hc⟩` from `(mem_congSub_iff w n k _).1 hg`. Take `⟨h1, h2⟩` from `GlobalTheory.AdelicU.mem_GLint_iff.1 hK`. Establish `v` using `GlobalTheory.CompanionTheory.CtS.blk_val_eq h w m X`. Establish `iv` using `GlobalTheory.CompanionTheory.CtS.blk_inv_val h w m X`. Set `e : Fin a ⊕ Fin b ≃ Fin n` to `finSumFinEquiv.trans (finCongr h)`.
+
+Establish `v11 : ∀ i j, (blk h w m X).val (e (Sum.inl i)) (e (Sum.inl j)) = m.1.val i j` using `fun i j => by`. Rewrite using `[v]`. Simplify using `[e, reindex_apply, submatrix_apply]`. Establish `v22 : ∀ i j, (blk h w m X).val (e (Sum.inr i)) (e (Sum.inr j)) = m.2.val i j` using `fun i j => by`. Rewrite using `[v]`.
+
+Simplify using `[e, reindex_apply, submatrix_apply]`. Establish `i11 : ∀ i j, ((blk h w m X)⁻¹).val (e (Sum.inl i)) (e (Sum.inl j)) = (m.1⁻¹).val i j` using `fun i j => by`. Rewrite using `[iv]`. Simplify using `[e, reindex_apply, submatrix_apply]`. Establish `i22 : ∀ i j, ((blk h w m X)⁻¹).val (e (Sum.inr i)) (e (Sum.inr j)) = (m.2⁻¹).val i j` using `fun i j => by`.
+
+Rewrite using `[iv]`. Simplify using `[e, reindex_apply, submatrix_apply]`. Establish `o11 : ∀ i j, (1 : Matrix (Fin n) (Fin n) (w.adicCompletion E)) (e (Sum.inl i)) (e (Sum.inl j)) = (1 : Matrix (Fin a) (Fin a) (w.adicCompletion E)) i j` using `fun i j => by`. Simplify using `[Matrix.one_apply, e.injective.eq_iff]`. Establish `o22 : ∀ i j, (1 : Matrix (Fin n) (Fin n) (w.adicCompletion E)) (e (Sum.inr i)) (e (Sum.inr j)) = (1 : Matrix (Fin b) (Fin b) (w.adicCompletion E)) i j` using `fun i j => by`.
+
+Simplify using `[Matrix.one_apply, e.injective.eq_iff]`. Use `⟨(mem_congSub_iff w a k _).2 ⟨GlobalTheory.AdelicU.mem_GLint_iff.2 ⟨fun i j => ?_, fun i j => ?_⟩, fun i j => ?_⟩, (mem_congSub_iff w b k _).2 ⟨GlobalTheory.AdelicU.mem_GLint_iff.2 ⟨fun i j => ?_, fun i j => ?_⟩, fun i j => ?_⟩⟩` and prove the remaining obligations. Rewrite using `[← v11]`. Conclude with `h1 _ _`. Rewrite using `[← i11]`.
+
+Conclude with `h2 _ _`. Rewrite using `[← v11, ← o11]`. Conclude with `hc _ _`. Rewrite using `[← v22]`. Conclude with `h1 _ _`.
+
+Rewrite using `[← i22]`. Conclude with `h2 _ _`. Rewrite using `[← v22, ← o22]`. Conclude with `hc _ _`.
+-/
 theorem blocks_mem_congSub {n a b : ℕ} (h : a + b = n) (w : Pl E) (m : GLw a w × GLw b w)
     (X : Matrix (Fin a) (Fin b) (w.adicCompletion E)) {k : ℕ} (hg : blk h w m X ∈ congSub w n k) :
     m.1 ∈ congSub w a k ∧ m.2 ∈ congSub w b k := by
@@ -94,12 +128,20 @@ theorem blocks_mem_congSub {n a b : ℕ} (h : a + b = n) (w : Pl E) (m : GLw a w
   · rw [← i22]; exact h2 _ _
   · rw [← v22, ← o22]; exact hc _ _
 
+/- English proof (translation)
+Take `⟨y, hy, rfl⟩` from `hg`. Take `⟨z, rfl⟩` from `hx`. Conclude with `⟨z * y * z⁻¹, (MonoidHom.normal_ker _).conj_mem y hy z, by simp only [map_mul, map_inv]⟩`.
+-/
 theorem conj_mem_congSub (w : Pl E) (n k : ℕ) {x g : GLw n w} (hx : x ∈ KGL w n) (hg : g ∈ congSub w n k) :
     x * g * x⁻¹ ∈ congSub w n k := by
   obtain ⟨y, hy, rfl⟩ := hg
   obtain ⟨z, rfl⟩ := hx
   exact ⟨z * y * z⁻¹, (MonoidHom.normal_ker _).conj_mem y hy z, by simp only [map_mul, map_inv]⟩
 
+/- English proof (translation)
+Establish `h1` using `(mem_congSub_iff u a k _).1 hg`. Establish `h2` using `(mem_congSub_iff u a k _).1 (inv_mem hg)`. Use `(mem_congSub_iff w a k _).2 ⟨(mem_iff_invT c (map_mem_Ov_iff c hc) g).1 h1.1, fun i j => ?_⟩` and prove the remaining obligations. Establish `e : (1 : Matrix (Fin a) (Fin a) (w.adicCompletion E)) i j = c ((1 : Matrix (Fin a) (Fin a) (u.adicCompletion E)) j i)`. Distinguish the cases in `hij : i = j`.
+
+Substitute `hij` using the available equality. Simplify using the standard rewrite rules. Simplify using `[Matrix.one_apply_ne hij, Matrix.one_apply_ne (Ne.symm hij)]`. Rewrite using `[invT_val, e, ← map_sub, hc]`. Conclude with `h2.2 j i`.
+-/
 theorem invT_mem_congSub {u w : Pl E} (c : u.adicCompletion E ≃+* w.adicCompletion E)
     (hc : ∀ x, Valued.v (c x) = Valued.v x) (a k : ℕ) {g : GLw a u} (hg : g ∈ congSub u a k) :
     invT c a g ∈ congSub w a k := by
@@ -114,6 +156,9 @@ theorem invT_mem_congSub {u w : Pl E} (c : u.adicCompletion E ≃+* w.adicComple
   rw [invT_val, e, ← map_sub, hc]
   exact h2.2 j i
 
+/- English proof (translation)
+The claim follows from `((GlobalTheory.Mem.Chr.under_eq_iff_conjPl (IsCMField.complexConj E) (Algebra.IsQuadraticExtension.finrank_eq_two _ _) (IsCMField.complexConj_ne_one E) (cw w) w).2 (Or.inr (conjPl_conjSrc _ w))).symm`.
+-/
 theorem under_cw (w : Pl E) :
     (cw w).under (𝓞 (maximalRealSubfield E)) = w.under (𝓞 (maximalRealSubfield E)) :=
   ((GlobalTheory.Mem.Chr.under_eq_iff_conjPl (IsCMField.complexConj E)
@@ -124,6 +169,35 @@ end GlobalTheory.CompanionTheory.KExLevel
 
 namespace GlobalTheory.CompanionTheory.KExLevel
 
+/- English proof (translation)
+Introduce `E _ _ _ n Sec _ R _ μ hμ L hL`. Set `T : Finset (Pl E)` to `R ∪ R.image cw`. Establish `A : ∀ a ∈ Finset.range (n + 1), ∀ w ∈ R, ∀ᶠ k in atTop, ∀ m : GLw a w × GLw (n - a) w, m.1 ∈ congSub w a k → m.2 ∈ congSub w (n - a) k → m ∈ L a w`. Introduce `a ha w hw`. Take `⟨L₁, L₂, e, l1, l2⟩` from `hL a (Nat.lt_succ_iff.1 (Finset.mem_range.1 ha)) w hw`.
+
+Use `filter_upwards [eventually_congSub_le w a L₁ l1.1, eventually_congSub_le w (n - a) L₂ l2.1] with k h1 h2 m m1 m2`. Rewrite using `[e]`. Conclude with `⟨h1 m1, h2 m2⟩`. Establish `B : ∀ a ∈ Finset.range (n + 1), ∀ w ∈ T, ∀ᶠ k in atTop, ∀ m : GLw a w × GLw (n - a) w, m.1 ∈ congSub w a k → m.2 ∈ congSub w (n - a) k → μ w (GeneralLinearGroup.det m.1 ^ (n - a) * GeneralLinearGroup.det m.2 ^ a) = 1`. Introduce `a _ w _`.
+
+Use `filter_upwards [eventually_det w a (μ w) (hμ w), eventually_det w (n - a) (μ w) (hμ w)] with k h1 h2 m m1 m2`. Rewrite using `[map_mul, map_pow, map_pow, h1 _ m1, h2 _ m2, one_pow, one_pow, one_mul]`. Take `⟨M, hA, hB⟩` from `(((Filter.eventually_all_finset _).2 fun a ha => (Filter.eventually_all_finset _).2 (A a ha)).and ((Filter.eventually_all_finset _).2 fun a ha => (Filter.eventually_all_finset _).2 (B a ha))).exists`. Establish `hT : ∀ w, w ∈ T → (if w ∈ T then congSub w n M else KGL w n) = congSub w n M` using `fun w hw => if_pos hw`. Use `⟨fun w => if w ∈ T then congSub w n M else KGL w n, ⟨fun w => ?_, ?_⟩, fun w => ?_, fun w hw => ?_, fun a ha w hw m X hm => ?_, fun a ha w hw hs u hc m X hm => ?_⟩` and prove the remaining obligations.
+
+Distinguish the cases in `h : w ∈ T`. Simplify using `only [if_pos h]`. Conclude with `isOpen_congSub w n M`. Simplify using `only [if_neg h]`. Conclude with `(GlobalTheory.LFun.SatCompare.isOpen_isCompact_KGL w n).1`.
+
+Use `Filter.eventually_cofinite.2 (T.finite_toSet.subset fun w hw => ?_)` and prove the remaining obligations. Assume the negation of the conclusion as `h`. Use `hw ?_` and prove the remaining obligations. Establish `h' : w ∉ T` using `h`. Simplify using `only [if_neg h']`.
+
+Conclude with `le_rfl`. Distinguish the cases in `h : w ∈ T`. Simplify using `only [if_pos h]`. Conclude with `isCompact_congSub w n M`. Simplify using `only [if_neg h]`.
+
+Conclude with `(GlobalTheory.LFun.SatCompare.isOpen_isCompact_KGL w n).2`. Use `if_neg fun h => ?_` and prove the remaining obligations. Break down `Finset.mem_union.1 h with h | h` into its components or cases. Conclude with `hw w h rfl`. Take `⟨r, hr, rfl⟩` from `Finset.mem_image.1 h`.
+
+Conclude with `hw r hr (under_cw r).symm`. Establish `hwT : w ∈ T` using `Finset.mem_union_left _ hw`. Establish `ha' : a ∈ Finset.range (n + 1)` using `Finset.mem_range.2 (Nat.lt_succ_iff.2 ha)`. Simplify using `only [if_pos hwT] at hm`. Take `⟨b1, b2⟩` from `blocks_mem_congSub _ w m X hm`.
+
+Conclude with `⟨hA a ha' w hw m b1 b2, hB a ha' w hwT m b1 b2⟩`. Establish `hu : u = cw w` using `GlobalTheory.CompanionTheory.OneExDatum.eq_cw_of_conjPl hc`. Establish `huT : u ∈ T` using `Finset.mem_union_right _ (Finset.mem_image.2 ⟨w, hw, hu.symm⟩)`. Establish `hw' : w = cw u` using `by rw [hu]; exact (GlobalTheory.ThetaPull.conjSrc_conjSrc w).symm`. Establish `ha' : a ∈ Finset.range (n + 1)` using `Finset.mem_range.2 (Nat.lt_succ_iff.2 ha)`.
+
+Simplify using `only [if_pos huT] at hm`. Take `⟨b1, b2⟩` from `blocks_mem_congSub _ u m X hm`. Use `clear hu hc`. Substitute `hw'` using the available equality. Establish `hv : ∀ x, Valued.v ((cloc u).symm x) = Valued.v x` using `fun x => by`.
+
+Use `(GlobalTheory.CuspRep.conjLoc_spec (IsCMField.complexConj E).toRingEquiv u).2.2 ((cloc u).symm x)` as an intermediate fact. Establish `e : GlobalTheory.CuspRep.conjLoc (IsCMField.complexConj E).toRingEquiv u ((cloc u).symm x) = x` using `(cloc u).apply_symm_apply x`. Rewrite `this` using `[e]`. Conclude with `this.symm`. Set `p : ∀ c : ℕ, GLw c u → GLw c (cw u)` to `fun c g => (invT (cloc u) c).symm ((PhiU c (u.adicCompletion E))⁻¹ * g * PhiU c (u.adicCompletion E))`.
+
+Establish `hp : ∀ c (g : GLw c u), g ∈ congSub u c M → p c g ∈ congSub (cw u) c M` using `fun c g hg => by`. Establish `hk : (PhiU c (u.adicCompletion E))⁻¹ ∈ KGL u c` using `inv_mem (GlobalTheory.ThetaSatake.phiU_mem _ c)`. Establish `h1` using `conj_mem_congSub u c M hk hg`. Rewrite `h1` using `[inv_inv]`. Express the relevant statement in the definitionally equal form `(invT (cloc u) c).symm _ ∈ _`.
+
+Rewrite using `[invT_symm]`. Conclude with `invT_mem_congSub (cloc u).symm hv c M h1`. Establish `he : ∀ c (g : GLw c u), embW c u g = embT c (cw u) (p c g)` using `fun c g => by`. Rewrite using `[embT_cw]`. Simplify using `only [p, MulEquiv.apply_symm_apply]`.
+
+Use `congr 1`. Use `group`. Conclude with `⟨hB a ha' u huT m b1 b2, (p a m.1, p (n - a) m.2), hA a ha' (cw u) hw _ (hp _ _ b1) (hp _ _ b2), he _ _, he _ _⟩`.
+-/
 theorem kEx : KEx := by
   intro E _ _ _ n Sec _ R _ μ hμ L hL
   let T : Finset (Pl E) := R ∪ R.image cw

@@ -8,6 +8,15 @@ open scoped Matrix MatrixGroups
 
 namespace GlobalTheory.K4
 
+/- English proof (translation)
+Introduce `l _ Ω _ _ ρ cf ι _ cw Yx hC hP hCont hO hw`. Use `⟨?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `r s t x`. Use `fun i => hC i r s t x` as an intermediate fact. Simplify using `only [this, Finset.sum_add_distrib, smul_add, Matrix.mulVec_sum, Matrix.mulVec_smul]`.
+
+Introduce `r`. Use function extensionality and compare the values at `s y`. Simplify using `only [push]`. Use `conv_lhs => rw [show (∑ i, cw i • Yx i r s y) = ∑ i, cw i • push (redL l r) (Yx i (r + 1)) s y from by`. Simplify using `only [← hP]]`.
+
+Simplify using `only [push, Finset.smul_sum]`. Conclude with `Finset.sum_comm`. Introduce `r y j`. Simplify using `only [Finset.sum_apply, Pi.smul_apply, smul_eq_mul]`. Conclude with `continuous_finset_sum _ fun i _ => continuous_const.mul (hCont i r y j)`.
+
+Introduce `r s u j`. Simplify using `only [Finset.sum_apply, Pi.smul_apply, smul_eq_mul]`. Conclude with `Subalgebra.sum_mem _ fun i _ => Subalgebra.mul_mem _ (hw i) (hO i r s u j)`.
+-/
 theorem shCoc_wsum_props : ∀ (l : ℕ) [Fact l.Prime] (Ω : Type) [Field Ω] [Algebra ℚ Ω]
   (ρ : (Ω ≃ₐ[ℚ] Ω) → Matrix (Fin 2) (Fin 2) (Qbar l)) (cf : Coef l) (ι : Type) [Fintype ι] (cw : ι → Qbar l)
   (Yx : ι → ∀ r : ℕ, (Ω ≃ₐ[ℚ] Ω) → (ZMod (l ^ r))ˣ → Fin 2 → Qbar l),

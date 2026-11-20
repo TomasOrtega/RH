@@ -5,6 +5,11 @@ open scoped WithZero TensorProduct
 
 namespace GlobalTheory.CNorm
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce `hx i`. Use `Submodule.smul_induction_on hx (fun r hr m _ => ?_) (fun y z hy hz => ?_)` and prove the remaining obligations. Simplify using `using J.mul_mem_right _ hr`. Simplify using `using J.add_mem hy hz`.
+
+Introduce `h`. Rewrite using `[← b.sum_repr x]`. Conclude with `Submodule.sum_mem _ fun i _ => Submodule.smul_mem_smul (h i) Submodule.mem_top`.
+-/
 theorem mem_smul_top_iff_repr {R M ι : Type} [CommRing R] [AddCommGroup M] [Module R M]
     [Fintype ι] (b : Module.Basis ι R M) (J : Ideal R) (x : M) :
     x ∈ (J • ⊤ : Submodule R M) ↔ ∀ i, b.repr x i ∈ J := by
@@ -17,6 +22,17 @@ theorem mem_smul_top_iff_repr {R M ι : Type} [CommRing R] [AddCommGroup M] [Mod
     rw [← b.sum_repr x]
     exact Submodule.sum_mem _ fun i _ => Submodule.smul_mem_smul (h i) Submodule.mem_top
 
+/- English proof (translation)
+Set `b` to `Module.Free.chooseBasis R M`. Establish `key : ∀ (n : ℕ) (x y : M), x ≡ y [SMOD (I ^ n • ⊤ : Submodule R M)] ↔ ∀ i, b.repr x i ≡ b.repr y i [SMOD (I ^ n • ⊤ : Submodule R R)]`. Introduce `n x y`. Rewrite using `[SModEq.sub_mem, mem_smul_top_iff_repr b]`. Use `forall_congr' fun i => ?_` and prove the remaining obligations.
+
+Rewrite using `[SModEq.sub_mem]`. Simplify using the standard rewrite rules. Establish `hH : IsHausdorff I M`. Use `⟨fun x hx => ?_⟩` and prove the remaining obligations. Use `b.repr.injective (Finsupp.ext fun i => ?_)` and prove the remaining obligations.
+
+Use `h.toIsHausdorff.haus (b.repr x i) fun n => by` as an intermediate fact. Simplify using `using (key n x 0).1 (hx n) i`. Simplify using `using this`. Establish `hP : IsPrecomplete I M`. Use `⟨fun f hf => ?_⟩` and prove the remaining obligations.
+
+Establish `hc : ∀ i, ∃ L : R, ∀ n, b.repr (f n) i ≡ L [SMOD (I ^ n • ⊤ : Submodule R R)]` using `fun i => h.toIsPrecomplete.prec (f := fun n => b.repr (f n) i) fun {m n} hmn => (key m _ _).1 (hf hmn) i`. Use `choose L hL using hc`. Use `⟨b.equivFun.symm L, fun n => (key n _ _).2 fun i => ?_⟩` and prove the remaining obligations. Establish `: b.repr (b.equivFun.symm L) i = L i`. Rewrite using `[← b.equivFun_apply, LinearEquiv.apply_symm_apply]`.
+
+Rewrite using `[this]`. Conclude with `hL i n`. Conclude with `{ toIsHausdorff := hH, toIsPrecomplete := hP }`.
+-/
 theorem isAdicComplete_of_free_finite {R M : Type} [CommRing R] [AddCommGroup M] [Module R M]
     [Module.Free R M] [Module.Finite R M] (I : Ideal R) (h : IsAdicComplete I R) :
     IsAdicComplete I M := by
@@ -48,6 +64,11 @@ theorem isAdicComplete_of_free_finite {R M : Type} [CommRing R] [AddCommGroup M]
     exact hL i n
   exact { toIsHausdorff := hH, toIsPrecomplete := hP }
 
+/- English proof (translation)
+Introduce `R O _ _ _ _ _ t h`. Establish `h1 : IsAdicComplete (Ideal.span {t}) O` using `isAdicComplete_of_free_finite _ h`. Establish `h2 : Ideal.span {algebraMap R O t} = (Ideal.span {t}).map (algebraMap R O)`. Rewrite using `[Ideal.map_span, Set.image_singleton]`. Rewrite using `[h2]`.
+
+Conclude with `(IsAdicComplete.map_algebraMap_iff _ O).2 h1`.
+-/
 theorem isAdicComplete_span_algebraMap_of_free_finite :
     ∀ (R O : Type) [CommRing R] [CommRing O] [Algebra R O] [Module.Free R O] [Module.Finite R O]
       (t : R), IsAdicComplete (Ideal.span {t}) R →

@@ -14,6 +14,11 @@ noncomputable section
 
 namespace GlobalTheory.InertOfNoEmb
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ hc hu v hv`. Establish `hU : Formalism.MainNotions.SchurIrreducible.IsUnram (E` using `E) v := by`. Introduce `P _`. Rewrite using `[Ideal.ramificationIdx_eq_one_iff]`. Use `infer_instance`.
+
+Break down `GlobalTheory.LFun.InertChart.isSplit_or_isInertAt hU with hs | ⟨w, hw⟩` into its components or cases. Take `⟨P, Q, hne, hP, hQ⟩` from `hs`. Take `⟨τ, _⟩` from `GlobalTheory.LFun.SplitChart.exists_splitPrime_eq hc ⟨P, Q, hne, hP, hQ⟩ (w := P) (HeightOneSpectrum.ext hP)`. Conclude with `hv.elim τ`. Conclude with `⟨w, (GlobalTheory.LFun.InertChart.under_eq_iff hw w).2 rfl, hw⟩`.
+-/
 theorem exists_isInertAt : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E),
     IsCMExt F E σ → Algebra.Unramified (𝓞 F) (𝓞 E) → ∀ v : Pl F, IsEmpty (E →ₐ[F] Fv F v) →
     ∃ w : HeightOneSpectrum (𝓞 E), w.under (𝓞 F) = v ∧ Formalism.UG.IsInertAt F E v w := by

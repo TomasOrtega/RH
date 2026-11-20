@@ -13,6 +13,9 @@ section Laurent
 
 variable {R M : Type} [Field R] [AddCommGroup M] [Module R M]
 
+/- English proof (translation)
+Distinguish the cases in `h : (Function.support g).Finite`. Rewrite using `[finsum_eq_sum_of_support_subset g (s := h.toFinset) (by simp)]`. Conclude with `Submodule.sum_mem _ fun i _ => hg i`. Rewrite using `[finsum_of_infinite_support h]`. Conclude with `S.zero_mem`.
+-/
 theorem finsum_mem_sub (S : Submodule R M) {g : ℕ → M} (hg : ∀ i, g i ∈ S) : ∑ᶠ i, g i ∈ S := by
   by_cases h : (Function.support g).Finite
   · rw [finsum_eq_sum_of_support_subset g (s := h.toFinset) (by simp)]
@@ -20,6 +23,9 @@ theorem finsum_mem_sub (S : Submodule R M) {g : ℕ → M} (hg : ∀ i, g i ∈ 
   · rw [finsum_of_infinite_support h]
     exact S.zero_mem
 
+/- English proof (translation)
+Distinguish the cases in `h : (Function.support g).Finite`. Rewrite using `[finsum_eq_sum_of_support_subset g (s := h.toFinset) (by simp), Finset.smul_sum]`. Conclude with `Submodule.sum_mem _ fun i _ => hg i`. Rewrite using `[finsum_of_infinite_support h, smul_zero]`. Conclude with `S.zero_mem`.
+-/
 theorem smul_finsum_mem (S : Submodule R M) (c : R) {g : ℕ → M} (hg : ∀ i, c • g i ∈ S) :
     c • ∑ᶠ i, g i ∈ S := by
   by_cases h : (Function.support g).Finite
@@ -28,6 +34,9 @@ theorem smul_finsum_mem (S : Submodule R M) (c : R) {g : ℕ → M} (hg : ∀ i,
   · rw [finsum_of_infinite_support h, smul_zero]
     exact S.zero_mem
 
+/- English proof (translation)
+Rewrite using `[finsum_eq_sum_of_support_subset g (s := insert 0 hfin.toFinset) (fun x hx => Finset.mem_coe.mpr (Finset.mem_insert_of_mem (hfin.mem_toFinset.mpr hx))), ← Finset.add_sum_erase _ g (Finset.mem_insert_self 0 _), smul_add, Finset.smul_sum]`. Establish `hs : ∑ i ∈ (insert 0 hfin.toFinset).erase 0, c • g i ∈ S` using `Submodule.sum_mem _ fun i hi => hg i (Nat.one_le_iff_ne_zero.mpr (Finset.ne_of_mem_erase hi))`. Establish `e : c • g 0 + ∑ i ∈ (insert 0 hfin.toFinset).erase 0, c • g i - w = (c • g 0 - w) + ∑ i ∈ (insert 0 hfin.toFinset).erase 0, c • g i` using `by abel`. Rewrite using `[e]`. Conclude with `S.add_mem h0 hs`.
+-/
 theorem smul_finsum_sub_mem (S : Submodule R M) (c : R) {g : ℕ → M} (hfin : (Function.support g).Finite)
     (w : M) (h0 : c • g 0 - w ∈ S) (hg : ∀ i, 1 ≤ i → c • g i ∈ S) : c • (∑ᶠ i, g i) - w ∈ S := by
   classical
@@ -41,6 +50,11 @@ theorem smul_finsum_sub_mem (S : Submodule R M) (c : R) {g : ℕ → M} (hfin : 
   rw [e]
   exact S.add_mem h0 hs
 
+/- English proof (translation)
+Apply `(Finset.range ((k - m).toNat + 1)).finite_toSet.subset` to reduce the goal to its premises. Introduce `j hj`. Simplify using `only [Function.mem_support] at hj`. Simplify using `only [Finset.coe_range, Set.mem_Iio]`. Assume the negation of the conclusion as `hc`.
+
+Apply `hj` to reduce the goal to its premises. Establish `h1 : (((k - m).toNat : ℕ) : ℤ) + 1 ≤ (j : ℤ)` using `by exact_mod_cast (not_lt.mp hc)`. Establish `h2` using `Int.self_le_toNat (k - m)`. Rewrite using `[hm (k - j) (by omega), map_zero]`.
+-/
 theorem supp_fin {f : ℤ → M} {m : ℤ} (hm : ∀ k < m, f k = 0) (d : ℕ → M →ₗ[R] M) (k : ℤ) :
     (Function.support fun j : ℕ => d j (f (k - j))).Finite := by
   apply (Finset.range ((k - m).toNat + 1)).finite_toSet.subset
@@ -53,10 +67,24 @@ theorem supp_fin {f : ℤ → M} {m : ℤ} (hm : ∀ k < m, f k = 0) (d : ℕ �
   have h2 := Int.self_le_toNat (k - m)
   rw [hm (k - j) (by omega), map_zero]
 
+/- English proof (translation)
+The claim follows from `finsum_mem_sub _ fun j => (F k).smul_mem _ (hF (by omega) (hf (k - j)))`.
+-/
 theorem laurent_mem (F : ℤ → Submodule R M) (hF : Monotone F) {f : ℤ → M} (hf : ∀ k, f k ∈ F k)
     (u : PowerSeries R) (k : ℤ) : ∑ᶠ j : ℕ, PowerSeries.coeff j u • f (k - j) ∈ F k :=
   finsum_mem_sub _ fun j => (F k).smul_mem _ (hF (by omega) (hf (k - j)))
 
+/- English proof (translation)
+Establish `key : ∀ N : ℕ, ∀ k, k < m + N → f k ∈ F k`. Introduce `N`. Proceed by induction on `N with`. Consider the case `zero => intro k hk; rw [hm k (by omega)]; exact (F k).zero_mem`. Consider the case `succ N ih`.
+
+Introduce `k hk`. Establish `hfin` using `supp_fin hm (fun j : ℕ => (PowerSeries.coeff j u • LinearMap.id : M →ₗ[R] M)) k`. Establish `h1` using `smul_finsum_sub_mem (F k) (1 : R) hfin (PowerSeries.coeff 0 u • f k) (by simp) (fun i hi => by`. Simplify using `only [LinearMap.smul_apply, LinearMap.id_apply, one_smul]`. Conclude with `(F k).smul_mem _ (hF (by omega) (ih (k - i) (by omega))))`.
+
+Simplify using `only [LinearMap.smul_apply, LinearMap.id_apply, one_smul] at h1`. Establish `h2 : PowerSeries.coeff 0 u • f k ∈ F k`. Use `(F k).sub_mem (hg k) h1` as an intermediate fact. Rewrite `this` using `[sub_sub_cancel]`. Then use the resulting hypothesis. Establish `hu' : PowerSeries.coeff 0 u ≠ 0`.
+
+Rewrite using `[PowerSeries.coeff_zero_eq_constantCoeff_apply]` and apply the resulting hypothesis. Use `(F k).smul_mem (PowerSeries.coeff 0 u)⁻¹ h2` as an intermediate fact. Rewrite `this` using `[smul_smul, inv_mul_cancel₀ hu', one_smul]`. Then use the resulting hypothesis. Introduce `k`. Establish `h2` using `Int.self_le_toNat (k - m)`.
+
+Conclude with `key ((k - m).toNat + 1) k (by push_cast; omega)`.
+-/
 theorem laurent_div (F : ℤ → Submodule R M) (hF : Monotone F) {f : ℤ → M} {m : ℤ}
     (hm : ∀ k < m, f k = 0) (u : PowerSeries R) (hu : PowerSeries.constantCoeff u ≠ 0)
     (hg : ∀ k, ∑ᶠ j : ℕ, PowerSeries.coeff j u • f (k - j) ∈ F k) : ∀ k, f k ∈ F k := by
@@ -96,8 +124,14 @@ variable {G : Type} [Group G] [TopologicalSpace G] {Qp K₀ K : Type} [Field Qp]
     {LL : Type} [Field LL] [Algebra Qp LL]
     {V : Type} [AddCommGroup V] [Module LL V] [Module Qp V] [IsScalarTower Qp LL V]
 
+/- English proof (translation)
+The claim follows from `antitone_int_of_succ_le PD.Fil_anti`.
+-/
 theorem fil_anti : Antitone PD.Fil := antitone_int_of_succ_le PD.Fil_anti
 
+/- English proof (translation)
+Introduce `a b hab`. Establish `hle : (PD.Fil b).restrictScalars Qp ≤ (PD.Fil a).restrictScalars Qp` using `fil_anti hab`. Unfold `FilV`. Rewrite using `[← Submodule.subtype_comp_inclusion _ _ hle, ← LinearMap.id_comp (LinearMap.id : V →ₗ[LL] V), TensorProduct.AlgebraTensorModule.map_comp]`. Conclude with `LinearMap.range_comp_le_range _ _`.
+-/
 theorem filV_anti : Antitone (FilV PD (LL := LL) (V := V)) := by
   intro a b hab
   have hle : (PD.Fil b).restrictScalars Qp ≤ (PD.Fil a).restrictScalars Qp := fil_anti hab
@@ -108,9 +142,17 @@ theorem filV_anti : Antitone (FilV PD (LL := LL) (V := V)) := by
 
 variable (ρ : Representation LL G V)
 
+/- English proof (translation)
+Introduce `_ _ hab` and use `inf_le_inf_left _ (Submodule.comap_mono (filV_anti hab))`.
+-/
 theorem filCris_anti : Antitone (FilCris PD ρ) := fun _ _ hab =>
   inf_le_inf_left _ (Submodule.comap_mono (filV_anti hab))
 
+/- English proof (translation)
+Establish `h : ∀ y, ιV PD (LL` using `LL) (V := V) y = ((PD.ι.toLinearMap.restrictScalars Qp).lTensor V) y := fun y => by`. Proceed by induction on `y using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul x b => simp [ιV]`. Consider the case `add x y hx hy => rw [map_add, map_add, hx, hy]`.
+
+Establish `hi : Function.Injective (PD.ι.toLinearMap.restrictScalars Qp)` using `PD.ι_inj`. Introduce `a b hab`. Rewrite `hab` using `[h, h]`. Conclude with `Module.Flat.lTensor_preserves_injective_linearMap _ hi hab`.
+-/
 theorem ιV_inj : Function.Injective (ιV PD (LL := LL) (V := V)) := by
   have h : ∀ y, ιV PD (LL := LL) (V := V) y =
       ((PD.ι.toLinearMap.restrictScalars Qp).lTensor V) y := fun y => by
@@ -123,11 +165,17 @@ theorem ιV_inj : Function.Injective (ιV PD (LL := LL) (V := V)) := by
   rw [h, h] at hab
   exact Module.Flat.lTensor_preserves_injective_linearMap _ hi hab
 
+/- English proof (translation)
+Take `⟨y, hy, e⟩` from `h`. Rewrite `hy` using `[ιV_inj e]`. Then use the resulting hypothesis.
+-/
 theorem mem_of_map_ιV {S : Submodule LL (V ⊗[Qp] B)} {z : V ⊗[Qp] B}
     (h : ιV PD (LL := LL) (V := V) z ∈ S.map (ιV PD (LL := LL) (V := V))) : z ∈ S := by
   obtain ⟨y, hy, e⟩ := h
   rwa [ιV_inj e] at hy
 
+/- English proof (translation)
+Proceed by induction on `y using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul x b => simp [ιV, actVB, actVdR, PD.ι_comm]`. Consider the case `add x y hx hy => simp only [map_add, hx, hy]`.
+-/
 theorem ιV_act (g : G) (y : V ⊗[Qp] B) :
     ιV PD (LL := LL) (V := V) (actVB PD ρ g y) = actVdR PD ρ g (ιV PD (LL := LL) (V := V) y) := by
   induction y using TensorProduct.induction_on with
@@ -135,6 +183,9 @@ theorem ιV_act (g : G) (y : V ⊗[Qp] B) :
   | tmul x b => simp [ιV, actVB, actVdR, PD.ι_comm]
   | add x y hx hy => simp only [map_add, hx, hy]
 
+/- English proof (translation)
+Proceed by induction on `y using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul x b`. Simplify using `[ιV, mulVB, mulVdR, ← IsScalarTower.algebraMap_apply K₀ K BdR]`. Consider the case `add x y hx hy => simp only [map_add, hx, hy]`.
+-/
 theorem ιV_mul (c : K₀) (y : V ⊗[Qp] B) :
     ιV PD (LL := LL) (V := V) (mulVB (K₀ := K₀) (B := B) (V := V) (LL := LL) c y) =
       mulVdR (K := K) (BdR := BdR) (V := V) (LL := LL) (algebraMap K₀ K c)
@@ -162,23 +213,40 @@ def Phi (T : LocLat G Qp LL O) (s : ℕ) (u : ℤ) (c : ZMod n) : Submodule LL (
   (FilCris PD T.ρ u ⊓ DcrisL PD T.ρ (W.emb c)).map
     ((φVB PD (LL := LL) (V := T.V) : Module.End LL (T.V ⊗[Qp] B)) ^ s)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem filLev_eq (T : LocLat G Qp LL O) (c : ZMod n) (s : ℕ) (u : ℤ) :
     Formalism.MainNotions.WachCoordinates.FilLev W T c s u = (Phi W T s u (c - (s : ZMod n))).map (ιV PD (LL := LL) (V := T.V)) :=
   rfl
 
+/- English proof (translation)
+Introduce `_ _ hab` and use `Submodule.map_mono (inf_le_inf_right _ (filCris_anti T.ρ hab))`.
+-/
 theorem phi_anti (T : LocLat G Qp LL O) (s : ℕ) (c : ZMod n) : Antitone fun u => Phi W T s u c :=
   fun _ _ hab => Submodule.map_mono (inf_le_inf_right _ (filCris_anti T.ρ hab))
 
+/- English proof (translation)
+Introduce `_ _ hab` and use `Submodule.map_mono (phi_anti W T s _ hab)`.
+-/
 theorem filLev_anti (T : LocLat G Qp LL O) (c : ZMod n) (s : ℕ) :
     Antitone fun u => Formalism.MainNotions.WachCoordinates.FilLev W T c s u :=
   fun _ _ hab => Submodule.map_mono (phi_anti W T s _ hab)
 
+/- English proof (translation)
+Unfold `Phi at hz ⊢`. Rewrite using `[pow_succ', Module.End.mul_eq_comp, Submodule.map_comp]`. Conclude with `Submodule.mem_map_of_mem hz`.
+-/
 theorem phi_succ (T : LocLat G Qp LL O) (s : ℕ) (u : ℤ) (c : ZMod n) {z : T.V ⊗[Qp] B}
     (hz : z ∈ Phi W T s u c) : φVB PD (LL := LL) (V := T.V) z ∈ Phi W T (s + 1) u c := by
   unfold Phi at hz ⊢
   rw [pow_succ', Module.End.mul_eq_comp, Submodule.map_comp]
   exact Submodule.mem_map_of_mem hz
 
+/- English proof (translation)
+Rewrite using `[filLev_eq]`. Unfold `Phi Formalism.MainNotions.DeltaInvariantLattices.ιDi`. Simplify using `only [Nat.cast_zero, sub_zero, pow_zero, Module.End.one_eq_id, Submodule.map_id]`. Use extensionality with `x`. Simplify using `only [Submodule.mem_map, Submodule.mem_inf, FilCris, Submodule.mem_comap]`.
+
+Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨y, ⟨⟨-, hy⟩, hyc⟩, rfl⟩`. Conclude with `⟨⟨y, hyc, rfl⟩, hy⟩`. Introduce and unpack `⟨⟨y, hyc, rfl⟩, hy⟩`. Conclude with `⟨y, ⟨⟨(Submodule.mem_inf.mp hyc).1, hy⟩, hyc⟩, rfl⟩`.
+-/
 theorem filLev_zero (T : LocLat G Qp LL O) (c : ZMod n) (u : ℤ) :
     Formalism.MainNotions.WachCoordinates.FilLev W T c 0 u = Formalism.MainNotions.DeltaInvariantLattices.ιDi W T c ⊓ FilV PD (LL := LL) (V := T.V) u := by
   rw [filLev_eq]
@@ -192,11 +260,17 @@ theorem filLev_zero (T : LocLat G Qp LL O) (c : ZMod n) (u : ℤ) :
   · rintro ⟨⟨y, hyc, rfl⟩, hy⟩
     exact ⟨y, ⟨⟨(Submodule.mem_inf.mp hyc).1, hy⟩, hyc⟩, rfl⟩
 
+/- English proof (translation)
+Establish `h : W.lev c ζ (1 - letE c) = 0` using `W.lev_letter c ζ _ (by simp [letE])`. Rewrite `h` using `[map_sub, map_one, sub_eq_zero]`. Conclude with `h.symm`.
+-/
 theorem lev_letE (c : ZMod n) (ζ : LL) : W.lev c ζ (letE c : LetA O n) = 1 := by
   have h : W.lev c ζ (1 - letE c) = 0 := W.lev_letter c ζ _ (by simp [letE])
   rw [map_sub, map_one, sub_eq_zero] at h
   exact h.symm
 
+/- English proof (translation)
+Rewrite using `[W.levN_smul, lev_letE, finsum_eq_single _ 0 (fun j hj => by rw [PowerSeries.coeff_one, if_neg hj, zero_smul])]`. Simplify using the standard rewrite rules.
+-/
 theorem levN_letE (T : LocLat G Qp LL O) (c : ZMod n) (ζ : LL) (x : ↥(W.N T)) (k : ℤ) :
     W.levN T c ζ ((letE c : LetA O n) • x) k = W.levN T c ζ x k := by
   rw [W.levN_smul, lev_letE,
@@ -223,12 +297,32 @@ variable {G : Type} [Group G] [TopologicalSpace G] {Qp K₀ K : Type} [Field Qp]
     {V : Type} [AddCommGroup V] [Module LL V] [Module Qp V] [IsScalarTower Qp LL V]
     (ρ : Representation LL G V)
 
+/- English proof (translation)
+Establish `h` using `(Submodule.mem_iInf _).mp (Submodule.mem_inf.mp he).2 c`. Simplify `h` using `only [LinearMap.mem_ker, LinearMap.sub_apply, LinearMap.smul_apply, LinearMap.id_apply, sub_eq_zero]`.
+-/
 theorem eig_of_DdRE {τ : K →ₐ[Qp] LL} {e : V ⊗[Qp] BdR} (he : e ∈ DdRE PD ρ τ) (c : K) :
     mulVdR (K := K) (BdR := BdR) (V := V) (LL := LL) c e = τ c • e := by
   have h := (Submodule.mem_iInf _).mp (Submodule.mem_inf.mp he).2 c
   simpa only [LinearMap.mem_ker, LinearMap.sub_apply, LinearMap.smul_apply, LinearMap.id_apply,
     sub_eq_zero] using h
 
+/- English proof (translation)
+Proceed by induction on `S using Finset.induction_on with`. Consider the case `empty`. Introduce `d f e _ hf he hd`. Simplify using `only [Finset.notMem_empty, iSup_false, iSup_bot, Submodule.mem_bot] at he`. Rewrite using `[hd, he, add_zero]`.
+
+Conclude with `hf`. Consider the case `@insert τ₁ S _ ih`. Introduce `d f e hd hf he hde`. Rewrite `he` using `[Finset.iSup_insert, Submodule.mem_sup]`. Take `⟨e₁, he₁, e', he', rfl⟩` from `he`.
+
+Distinguish the cases in `h1 : τ₁ = τ`. Substitute `h1` using the available equality. Rewrite `he₁` using `[hPτ, Submodule.mem_bot]`. Substitute `he₁` using the available equality. Conclude with `ih d f e' hd hf he' (by rw [hde, zero_add])`.
+
+Choose the witnesses or unpack the hypotheses as in `⟨c, hc⟩ : ∃ c, τ₁ c ≠ τ c := by`. Assume the negation of the conclusion as `hcon`. Use `push Not at hcon`. Conclude with `h1 (AlgHom.ext hcon)`. Use `set A := mulVdR (K := K) (BdR := BdR) (V := V) (LL := LL) c - τ₁ c • (LinearMap.id : V ⊗[Qp] BdR →ₗ[LL] V ⊗[Qp] BdR) with hA`.
+
+Establish `hl : τ c - τ₁ c ≠ 0` using `sub_ne_zero.mpr (Ne.symm hc)`. Establish `hAS : A e' ∈ ⨆ τ' ∈ S, P τ'`. Establish `hle : (⨆ τ' ∈ S, P τ').map A ≤ ⨆ τ' ∈ S, P τ'`. Simplify using `only [Submodule.map_iSup]`. Conclude with `iSup₂_mono fun τ' _ => Submodule.map_le_iff_le_comap.mpr fun e he => by`.
+
+Simplify using `only [Submodule.mem_comap, hA, LinearMap.sub_apply, LinearMap.smul_apply, LinearMap.id_apply, hP τ' e he c, ← sub_smul]`. Conclude with `(P τ').smul_mem _ he`. Conclude with `hle (Submodule.mem_map_of_mem he')`. Establish `hAd : A d = (τ c - τ₁ c) • d`. Simplify using `only [hA, LinearMap.sub_apply, LinearMap.smul_apply, LinearMap.id_apply, hd c, sub_smul]`.
+
+Establish `hAf : A f = (τ c - τ₁ c) • f`. Simplify using `only [hA, LinearMap.sub_apply, LinearMap.smul_apply, LinearMap.id_apply, hF f hf c, sub_smul]`. Establish `hAe : A e₁ = 0`. Simplify using `only [hA, LinearMap.sub_apply, LinearMap.smul_apply, LinearMap.id_apply, hP τ₁ e₁ he₁ c, sub_self]`. Establish `key : (τ c - τ₁ c) • d = (τ c - τ₁ c) • f + A e'`.
+
+Rewrite using `[← hAd, ← hAf, hde, map_add, map_add, hAe, zero_add]`. Establish `hd'` using `ih ((τ c - τ₁ c) • d) ((τ c - τ₁ c) • f) (A e') (fun c' => by rw [map_smul, hd c', smul_comm]) (F.smul_mem _ hf) hAS key`. Use `F.smul_mem (τ c - τ₁ c)⁻¹ hd'` as an intermediate fact. Rewrite `this` using `[smul_smul, inv_mul_cancel₀ hl, one_smul]`. Then use the resulting hypothesis.
+-/
 theorem localization_quotient_separated_dvd (τ : K →ₐ[Qp] LL) (P : (K →ₐ[Qp] LL) → Submodule LL (V ⊗[Qp] BdR))
     (hP : ∀ τ' e, e ∈ P τ' → ∀ c : K, mulVdR (K := K) (BdR := BdR) (V := V) (LL := LL) c e = τ' c • e)
     (hPτ : P τ = ⊥) (F : Submodule LL (V ⊗[Qp] BdR))
@@ -282,6 +376,13 @@ theorem localization_quotient_separated_dvd (τ : K →ₐ[Qp] LL) (P : (K →�
       have := F.smul_mem (τ c - τ₁ c)⁻¹ hd'
       rwa [smul_smul, inv_mul_cancel₀ hl, one_smul] at this
 
+/- English proof (translation)
+Introduce `d hd`. Take `⟨hdE, hdC⟩` from `Submodule.mem_inf.mp hd`. Take `⟨f, hf, e, he, rfl⟩` from `Submodule.mem_sup.mp hdC`. Take `⟨S, hS⟩` from `Submodule.mem_iSup_iff_exists_finset.mp he`. Establish `hP : ∀ τ' e, e ∈ (⨆ (_ : τ' ≠ τ), DdRE PD ρ τ') → ∀ c : K, mulVdR (K` using `K) (BdR := BdR) (V := V) (LL := LL) c e = τ' c • e := by`.
+
+Introduce `τ' e he c`. Distinguish the cases in `h : τ' ≠ τ`. Rewrite `he` using `[iSup_pos h]`. Conclude with `eig_of_DdRE ρ he c`. Rewrite `he` using `[iSup_neg h, Submodule.mem_bot]`.
+
+Substitute `he` using the available equality. Simplify using the standard rewrite rules. Use `localization_quotient_separated_dvd τ (fun τ' => ⨆ (_ : τ' ≠ τ), DdRE PD ρ τ') hP (by simp) (FildR PD ρ τ a) (fun f hf c => eig_of_DdRE ρ (Submodule.mem_inf.mp hf).1 c) S (f + e) f e (eig_of_DdRE ρ hdE) hf hS rfl` as an intermediate fact. Conclude with `(Submodule.mem_inf.mp this).2`.
+-/
 theorem dR_sep (τ : K →ₐ[Qp] LL) (a : ℤ) :
     DdRE PD ρ τ ⊓ (FildR PD ρ τ a ⊔ ⨆ (τ' : K →ₐ[Qp] LL) (_ : τ' ≠ τ), DdRE PD ρ τ') ≤
       FilV PD (LL := LL) (V := V) a := by
@@ -323,9 +424,17 @@ def Lv2 (T : LocLat G Qp LL O) (c : ZMod n) (s : ℕ) (ζ : LL) : Prop :=
     (∀ j < k, a • W.levN T c ζ x j ∈ Formalism.MainNotions.WachCoordinates.FilLev W T c s (-j + 1)) ∧
     a • W.levN T c ζ x k - w ∈ Formalism.MainNotions.WachCoordinates.FilLev W T c s (-k + 1)
 
+/- English proof (translation)
+The claim follows from `h`.
+-/
 theorem level_condition_of_all_levels (h : ∀ T : LocLat G Qp LL O, IsCrys PD T.ρ → ∀ (c : ZMod n) (s : ℕ) (ζ : LL),
     IsPrimitiveRoot ζ (PD.p ^ (s + 1)) → Lv1 W T c s ζ ∧ Lv2 W T c s ζ) : Formalism.MainNotions.WachCoordinates.LevelMapHodgeFiltration W := h
 
+/- English proof (translation)
+Introduce and unpack `_ ⟨y, hy, rfl⟩`. Take `⟨hyD, hyL⟩` from `Submodule.mem_inf.mp hy`. Use `Submodule.mem_inf.mpr ⟨(Submodule.mem_iInf _).mpr fun g => ?_, (Submodule.mem_iInf _).mpr fun c' => ?_⟩` and prove the remaining obligations. Establish `h` using `(Submodule.mem_iInf _).mp hyD g`. Simplify using `only [LinearMap.mem_ker, LinearMap.sub_apply, LinearMap.id_apply, sub_eq_zero] at h ⊢`.
+
+Rewrite using `[← ιV_act, h]`. Take `⟨c₀, rfl⟩` from `hsurj c'`. Establish `h` using `(Submodule.mem_iInf _).mp hyL c₀`. Simplify using `only [LinearMap.mem_ker, LinearMap.sub_apply, LinearMap.smul_apply, LinearMap.id_apply, sub_eq_zero] at h ⊢`. Rewrite using `[← ιV_mul, h, map_smul, hover]`.
+-/
 theorem ιDi_le (T : LocLat G Qp LL O) (c : ZMod n) (τ : K →ₐ[Qp] LL)
     (hover : ∀ x : K₀, τ (algebraMap K₀ K x) = W.emb c x)
     (hsurj : Function.Surjective (algebraMap K₀ K)) : Formalism.MainNotions.DeltaInvariantLattices.ιDi W T c ≤ DdRE PD T.ρ τ := by
@@ -342,6 +451,13 @@ theorem ιDi_le (T : LocLat G Qp LL O) (c : ZMod n) (τ : K →ₐ[Qp] LL)
       sub_eq_zero] at h ⊢
     rw [← ιV_mul, h, map_smul, hover]
 
+/- English proof (translation)
+Establish `sep : ∀ (a : ℤ) z, z ∈ Formalism.MainNotions.DeltaInvariantLattices.ιDi W T c → z ∈ Formalism.MainNotions.DeltaInvariantLattices.FilC (PD` using `PD) T τ a → z ∈ Formalism.MainNotions.WachCoordinates.FilLev W T c 0 a := by`. Introduce `a z hz hC`. Rewrite using `[filLev_zero]`. Conclude with `Submodule.mem_inf.mpr ⟨hz, dR_sep T.ρ τ a (Submodule.mem_inf.mpr ⟨hτ hz, hC⟩)⟩`. Use `⟨fun x k => ?_, fun k w hw => ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[← levN_letE]`. Take `⟨h1, h2⟩` from `Submodule.mem_inf.mp (h4.1 x k)`. Conclude with `sep _ _ h1 h2`. Rewrite `hw` using `[filLev_zero]`. Take `⟨hwD, hwF⟩` from `Submodule.mem_inf.mp hw`.
+
+Take `⟨x, a, ha, hj, hk⟩` from `h4.2 k w (Submodule.mem_inf.mpr ⟨hτ hwD, hwF⟩)`. Establish `hD : ∀ j, W.levN T c ζ ((letE c : LetA O n) • x) j ∈ Formalism.MainNotions.DeltaInvariantLattices.ιDi W T c` using `fun j => (Submodule.mem_inf.mp (h4.1 x j)).1`. Conclude with `⟨(letE c : LetA O n) • x, a, ha, fun j hj' => sep _ _ ((Formalism.MainNotions.DeltaInvariantLattices.ιDi W T c).smul_mem a (hD j)) (hj j hj'), sep _ _ ((Formalism.MainNotions.DeltaInvariantLattices.ιDi W T c).sub_mem ((Formalism.MainNotions.DeltaInvariantLattices.ιDi W T c).smul_ …`.
+-/
 theorem lev0 (T : LocLat G Qp LL O) (c : ZMod n) (ζ : LL) (τ : K →ₐ[Qp] LL)
     (hτ : Formalism.MainNotions.DeltaInvariantLattices.ιDi W T c ≤ DdRE PD T.ρ τ)
     (h4 : (∀ (x : ↥(W.N T)) (k : ℤ), W.levN T c ζ ((letE c : LetA O n) • x) k ∈
@@ -398,6 +514,55 @@ def LevBφ : Prop :=
         (((PD.p : LL) ^ (k - (j : ℤ))) •
           φVB PD (LL := LL) (V := T.V) (levB T (i - 1) (ζ ^ PD.p) x (k - (j : ℤ))))
 
+/- English proof (translation)
+Use `set c' : ZMod n := c - ((s + 1 : ℕ) : ZMod n) with hc'`. Establish `hcc : c - 1 - (s : ZMod n) = c'` using `by rw [hc']; push_cast; ring`. Establish `hB1 : ∀ (y : ↥(W.N T)) (k : ℤ), levB T (c - 1) (ζ ^ PD.p) y k ∈ Phi W T s (-k) c'`. Introduce `y k`. Establish `h` using `ih1 y k`.
+
+Rewrite `h` using `[filLev_eq, hEq, hcc]`. Conclude with `mem_of_map_ιV h`. Establish `hX : ∀ (y : ↥(W.N T)) (m : ℕ) (hx : W.Q ^ m • W.φD T (y : W.DD T) ∈ W.N T) (k : ℤ), levB T c ζ ⟨_, hx⟩ k ∈ Phi W T (s + 1) (-k) c'`. Introduce `y m hx k`. Rewrite using `[hφ T hT c ζ hζ y m hx k]`.
+
+Use `finsum_mem_sub _ fun j => Submodule.smul_mem _ _ (Submodule.smul_mem _ _ ?_)` and prove the remaining obligations. Conclude with `phi_anti W T (s + 1) c' (by omega : -k ≤ -(k - (j : ℤ))) (phi_succ W T s _ c' (hB1 y _))`. Use `set F : ℤ → Submodule LL (T.V ⊗[Qp] BdR) := fun k => Formalism.MainNotions.WachCoordinates.FilLev W T c (s + 1) (-k) with hF`. Establish `hFm : Monotone F` using `fun a b hab => filLev_anti W T c (s + 1) (by omega : -b ≤ -a)`. Set `Good : ↥(W.N T) → Prop` to `fun x => ∀ k, W.levN T c ζ x k ∈ F k`.
+
+Establish `gX : ∀ (y : ↥(W.N T)) (m : ℕ) (hx : W.Q ^ m • W.φD T (y : W.DD T) ∈ W.N T), Good ⟨_, hx⟩` using `fun y m hx k => by show W.levN T c ζ _ k ∈ Formalism.MainNotions.WachCoordinates.FilLev W T c (s + 1) (-k)`. Rewrite using `[hEq, filLev_eq]`. Conclude with `Submodule.mem_map_of_mem (hX y m hx k)`. Establish `gS : ∀ (a : LetA O n) (x : ↥(W.N T)), Good x → Good (a • x)` using `fun a x hx k => by show W.levN T c ζ (a • x) k ∈ F k`. Rewrite using `[W.levN_smul]`.
+
+Conclude with `laurent_mem F hFm hx _ k`. Establish `gA : ∀ x y : ↥(W.N T), Good x → Good y → Good (x + y)` using `fun x y hx hy k => by show W.levN T c ζ (x + y) k ∈ F k`. Rewrite using `[map_add, Pi.add_apply]`. Conclude with `(F k).add_mem (hx k) (hy k)`. Establish `g0 : Good 0` using `fun k => by show W.levN T c ζ 0 k ∈ F k`.
+
+Rewrite using `[map_zero, Pi.zero_apply]`. Conclude with `(F k).zero_mem`. Establish `gD : ∀ (a : LetA O n) (x : ↥(W.N T)), PowerSeries.constantCoeff (W.lev c ζ a) ≠ 0 → Good (a • x) → Good x`. Introduce `a x ha hx`. Take `⟨m, hm⟩` from `W.levN_supp T c ζ x`.
+
+Conclude with `laurent_div F hFm hm (W.lev c ζ a) ha (fun k => by`. Use `hx k` as an intermediate fact. Rewrite using `[W.levN_smul] at this)` and apply the resulting hypothesis. Set `GoodD : W.DD T → Prop` to `fun z => ∃ h : z ∈ W.N T, Good ⟨z, h⟩`. Establish `dS : ∀ (a : LetA O n) (z : W.DD T), GoodD z → GoodD (a • z)` using `fun a z ⟨h, hz⟩ => ⟨(W.N T).smul_mem a h, gS a ⟨z, h⟩ hz⟩`.
+
+Establish `dA : ∀ z1 z2 : W.DD T, GoodD z1 → GoodD z2 → GoodD (z1 + z2)` using `fun z1 z2 ⟨h1, g1⟩ ⟨h2, g2⟩ => ⟨(W.N T).add_mem h1 h2, gA _ _ g1 g2⟩`. Establish `hspan : ∀ z ∈ Submodule.span (LetA O n) (W.φD T '' (W.N T : Set (W.DD T))), ∃ M : ℕ, GoodD (W.Q ^ M • z)`. Introduce `z hz`. Proceed by induction on `hz using Submodule.span_induction with`. Consider the case `mem z hz`.
+
+Take `⟨y, hy, rfl⟩` from `hz`. Take `⟨m, hm⟩` from `W.N_φ T y hy`. Conclude with `⟨m, hm, gX ⟨y, hy⟩ m hm⟩`. Consider the case `zero => exact ⟨0, by rw [smul_zero]; exact ⟨(W.N T).zero_mem, g0⟩⟩`. Consider the case `add z1 z2 _ _ h1 h2`.
+
+Take `⟨M1, g1⟩` from `h1`. Take `⟨M2, g2⟩` from `h2`. Use `⟨M1 + M2, ?_⟩` and prove the remaining obligations. Establish `e : W.Q ^ (M1 + M2) • (z1 + z2) = W.Q ^ M2 • (W.Q ^ M1 • z1) + W.Q ^ M1 • (W.Q ^ M2 • z2)`. Rewrite using `[smul_add, smul_smul, smul_smul, ← pow_add, ← pow_add, add_comm M2 M1]`.
+
+Rewrite using `[e]`. Conclude with `dA _ _ (dS _ _ g1) (dS _ _ g2)`. Consider the case `smul a z _ h`. Take `⟨M, g⟩` from `h`. Conclude with `⟨M, by rw [smul_comm]; exact dS a _ g⟩`.
+
+Establish `L1 : Lv1 W T c (s + 1) ζ`. Introduce `x k`. Take `⟨K', hK'⟩` from `W.N_φinv T x x.2`. Take `⟨M, hM, gM⟩` from `hspan _ hK'`. Establish `hxeq : (⟨_, hM⟩ : ↥(W.N T)) = W.Q ^ (M + K') • x` using `Subtype.ext (by rw [Submodule.coe_smul, pow_add, mul_smul]; rfl)`.
+
+Rewrite `gM` using `[hxeq]`. Conclude with `gD _ x (by rw [map_pow, map_pow]; exact pow_ne_zero _ hQ) gM k`. Use `⟨L1, fun k w hw => ?_⟩` and prove the remaining obligations. Rewrite `hw` using `[filLev_eq]`. Take `⟨z, hz, rfl⟩` from `hw`.
+
+Take `⟨b, hb, rfl⟩` from `hz`. Establish `hw' : ιV PD (LL` using `LL) (V := T.V) (((φVB PD (LL := LL) (V := T.V) : Module.End LL (T.V ⊗[Qp] B)) ^ s) b) ∈ Formalism.MainNotions.WachCoordinates.FilLev W T (c - 1) s (-k) := by`. Rewrite using `[filLev_eq, hcc]`. Conclude with `Submodule.mem_map_of_mem (Submodule.mem_map_of_mem hb)`. Take `⟨y, a, ha, hj, hk⟩` from `ih2 k _ hw'`.
+
+Establish `hj' : ∀ j < k, a • levB T (c - 1) (ζ ^ PD.p) y j ∈ Phi W T s (-j + 1) c'`. Introduce `j hjk`. Establish `h` using `hj j hjk`. Rewrite `h` using `[filLev_eq, hEq, ← map_smul, hcc]`. Conclude with `mem_of_map_ιV h`.
+
+Establish `hk' : a • levB T (c - 1) (ζ ^ PD.p) y k - ((φVB PD (LL` using `LL) (V := T.V) : Module.End LL (T.V ⊗[Qp] B)) ^ s) b ∈ Phi W T s (-k + 1) c' := by`. Establish `h` using `hk`. Rewrite `h` using `[filLev_eq, hEq, ← map_smul, ← map_sub, hcc]`. Conclude with `mem_of_map_ιV h`. Take `⟨m, hm0φ⟩` from `W.N_φ T y y.2`.
+
+Establish `hm : W.Q ^ m • W.φD T (y : W.DD T) ∈ W.N T` using `hm0φ`. Establish `hU : PowerSeries.coeff 0 (W.lev c ζ (W.Q ^ m)) ≠ 0`. Rewrite using `[PowerSeries.coeff_zero_eq_constantCoeff_apply, map_pow, map_pow]`. Conclude with `pow_ne_zero _ hQ`. Establish `hlam : PowerSeries.coeff 0 (W.lev c ζ (W.Q ^ m)) * (PD.p : LL) ^ k ≠ 0` using `mul_ne_zero hU (zpow_ne_zero _ hp)`.
+
+Take `⟨m0, hm0⟩` from `W.levN_supp T (c - 1) (ζ ^ PD.p) y`. Establish `hm0' : ∀ k' < m0, levB T (c - 1) (ζ ^ PD.p) y k' = 0` using `fun k' hk' => ιV_inj (by rw [← hEq, hm0 k' hk', map_zero])`. Establish `hexp` using `hφ T hT c ζ hζ y m hm`. Use `⟨⟨_, hm⟩, (PowerSeries.coeff 0 (W.lev c ζ (W.Q ^ m)) * (PD.p : LL) ^ k)⁻¹ * a, mul_ne_zero (inv_ne_zero hlam) ha, fun j hjk => ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[hEq, filLev_eq, ← map_smul]`.
+
+Apply `Submodule.mem_map_of_mem` to reduce the goal to its premises. Rewrite using `[hexp, mul_smul]`. Apply `Submodule.smul_mem` to reduce the goal to its premises. Apply `smul_finsum_mem` to reduce the goal to its premises. Introduce `i`.
+
+Rewrite using `[smul_comm a, smul_comm a, ← LinearMap.map_smul]`. Use `Submodule.smul_mem _ _ (Submodule.smul_mem _ _ ?_)` and prove the remaining obligations. Conclude with `phi_anti W T (s + 1) c' (by omega : -j + 1 ≤ -(j - (i : ℤ)) + 1) (phi_succ W T s _ c' (hj' _ (by omega)))`. Rewrite using `[hEq, filLev_eq, ← map_smul, ← map_sub]`. Apply `Submodule.mem_map_of_mem` to reduce the goal to its premises.
+
+Establish `e : ((PowerSeries.coeff 0 (W.lev c ζ (W.Q ^ m)) * (PD.p : LL) ^ k)⁻¹ * a) • levB T c ζ ⟨_, hm⟩ k - ((φVB PD (LL` using `LL) (V := T.V) : Module.End LL (T.V ⊗[Qp] B)) ^ (s + 1)) b = (PowerSeries.coeff 0 (W.lev c ζ (W.Q ^ m)) * (PD.p : LL) ^ k)⁻¹ • (a • levB T c ζ ⟨_, hm⟩ k - (PowerSeries.coeff 0 (W.lev c ζ (W.Q ^ m)) * (PD.p : LL) ^ k) • ((φVB PD (LL := LL) (V := T.V) : Module.End LL (T.V ⊗[Qp] B)) …`. Rewrite using `[smul_sub, smul_smul, smul_smul, inv_mul_cancel₀ hlam, one_smul]`. Rewrite using `[e]`. Apply `Submodule.smul_mem` to reduce the goal to its premises. Rewrite using `[hexp]`.
+
+Establish `hfin : (Function.support fun i : ℕ => PowerSeries.coeff i (W.lev c ζ (W.Q ^ m)) • (((PD.p : LL) ^ (k - (i : ℤ))) • φVB PD (LL` using `LL) (V := T.V) (levB T (c - 1) (ζ ^ PD.p) y (k - (i : ℤ))))).Finite := (supp_fin hm0' (fun i : ℕ => PowerSeries.coeff i (W.lev c ζ (W.Q ^ m)) • ((PD.p : LL) ^ (k - (i : ℤ))) • (φVB PD (LL := LL) (V := T.V))) k).subset (fun i hi => by simpa only [Function.mem_support, LinearMap.sm …`. Use `smul_finsum_sub_mem _ a hfin _ ?_ ?_` and prove the remaining obligations. Establish `e0 : a • (PowerSeries.coeff 0 (W.lev c ζ (W.Q ^ m)) • (((PD.p : LL) ^ (k - ((0 : ℕ) : ℤ))) • φVB PD (LL` using `LL) (V := T.V) (levB T (c - 1) (ζ ^ PD.p) y (k - ((0 : ℕ) : ℤ))))) - (PowerSeries.coeff 0 (W.lev c ζ (W.Q ^ m)) * (PD.p : LL) ^ k) • ((φVB PD (LL := LL) (V := T.V) : Module.End LL (T.V ⊗[Qp] B)) ^ (s + 1)) b = (PowerSeries.coeff 0 (W.lev c ζ (W.Q ^ m)) * (PD.p : LL) ^ k) • φVB PD …`. Rewrite using `[Nat.cast_zero, sub_zero, map_sub, map_smul, pow_succ', Module.End.mul_apply]`. Use `module`.
+
+Rewrite using `[e0]`. Conclude with `Submodule.smul_mem _ _ (phi_succ W T s _ c' hk')`. Introduce `i hi`. Rewrite using `[smul_comm a, smul_comm a, ← LinearMap.map_smul]`. Use `Submodule.smul_mem _ _ (Submodule.smul_mem _ _ ?_)` and prove the remaining obligations.
+
+Conclude with `phi_anti W T (s + 1) c' (by omega : -k + 1 ≤ -(k - (i : ℤ)) + 1) (phi_succ W T s _ c' (hj' _ (by omega)))`.
+-/
 theorem transport
     (hEq : ∀ (T : LocLat G Qp LL O) (i : ZMod n) (ζ : LL) (x : ↥(W.N T)) (k : ℤ),
       W.levN T i ζ x k = ιV PD (LL := LL) (V := T.V) (levB T i ζ x k))
@@ -559,6 +724,15 @@ theorem transport
       exact phi_anti W T (s + 1) c' (by omega : -k + 1 ≤ -(k - (i : ℤ)) + 1)
         (phi_succ W T s _ c' (hj' _ (by omega)))
 
+/- English proof (translation)
+Take `⟨E, hE0, -, hE⟩` from `W.lev_π c ζ hζ`. Establish `hq : (letπ : LetA O n) * W.q = (1 + letπ) ^ PD.p - 1`. Use function extensionality and compare the values at `i`. Simplify using `only [Pi.mul_apply, Pi.sub_apply, Pi.pow_apply, Pi.add_apply, Pi.one_apply, letπ, LocWach.q, W.q₀_def]`. Establish `h` using `congrArg (fun a => PowerSeries.constantCoeff (W.lev c ζ a)) hq`.
+
+Simplify using `only [map_mul, map_sub, map_pow, map_add, map_one] at h`. Establish `hπ : PowerSeries.constantCoeff (W.lev c ζ letπ) = ζ - 1`. Use `congrArg PowerSeries.constantCoeff hE` as an intermediate fact. Rewrite `this` using `[map_add, map_one, map_mul, PowerSeries.constantCoeff_C, hE0, mul_one]`. Take the linear combination `this`.
+
+Introduce `h0`. Rewrite `h` using `[hπ, h0, mul_zero]`. Apply `hp1` to reduce the goal to its premises. Establish `e : (1 : LL) + (ζ - 1) = ζ` using `by ring`. Rewrite `h` using `[e]`.
+
+Conclude with `(sub_eq_zero.mp h.symm)`.
+-/
 theorem cc_lev_q (c : ZMod n) (ζ : LL) (hζ : ∃ j : ℕ, IsPrimitiveRoot ζ (PD.p ^ j))
     (hp1 : ζ ^ PD.p ≠ 1) : PowerSeries.constantCoeff (W.lev c ζ W.q) ≠ 0 := by
   obtain ⟨E, hE0, -, hE⟩ := W.lev_π c ζ hζ
@@ -579,6 +753,15 @@ theorem cc_lev_q (c : ZMod n) (ζ : LL) (hζ : ∃ j : ℕ, IsPrimitiveRoot ζ (
   rw [e] at h
   exact (sub_eq_zero.mp h.symm)
 
+/- English proof (translation)
+Establish `hQq : W.Q = W.q` using `by simp [LocWach.Q, hs]`. Apply `level_condition_of_all_levels` to reduce the goal to its premises. Introduce `T hT c s`. Proceed by induction on `s generalizing c with`. Consider the case `zero => intro ζ hζ; exact h0 T hT c ζ (by simpa using hζ)`.
+
+Consider the case `succ s ih`. Introduce `ζ hζ`. Establish `hp0 : 0 < PD.p ^ (s + 1 + 1)` using `pow_pos PD.hp.pos _`. Establish `hζp : IsPrimitiveRoot (ζ ^ PD.p) (PD.p ^ (s + 1))` using `hζ.pow hp0 (by ring)`. Establish `hp1 : ζ ^ PD.p ≠ 1`.
+
+Introduce `h1`. Use `hζ.pow_eq_one_iff_dvd PD.p` as an intermediate fact. Rewrite `h1` using `[this]`. Establish `h2` using `Nat.le_of_dvd PD.hp.pos h1`. Establish `h3 : PD.p < PD.p ^ (s + 1 + 1)`.
+
+Combine the equalities or inequalities in the displayed calculation. Use linear arithmetic over natural numbers and integers. Take `⟨i1, i2⟩` from `ih (c - 1) (ζ ^ PD.p) hζp`. Conclude with `transport W levB hEq hφ T hT c s ζ ⟨_, hζ⟩ (by rw [hQq]; exact cc_lev_q W c ζ ⟨_, hζ⟩ hp1) hp i1 i2`.
+-/
 theorem level_condition_of_level_zero (hs : W.s = 1)
     (hEq : ∀ (T : LocLat G Qp LL O) (i : ZMod n) (ζ : LL) (x : ↥(W.N T)) (k : ℤ),
       W.levN T i ζ x k = ιV PD (LL := LL) (V := T.V) (levB T i ζ x k))
@@ -620,6 +803,17 @@ def PtEx (D : D7) (HW : HWOf D.loc) : Prop :=
     ∀ (c : ZMod (Module.finrank ℚ_[l] ↥(K0 K))) (ζ : ↥LL.1), IsPrimitiveRoot ζ l →
       ∃ τ : ↥K.1 →ₐ[ℚ_[l]] ↥LL.1, Formalism.MainNotions.DeltaInvariantLattices.ptK D.loc HW h.2.2 c ζ τ
 
+/- English proof (translation)
+Introduce `l _ K LL hA h5`. Establish `tie` using `((Cm l).C K 1 LL hA.2.2).tie`. Establish `hs` using `(HW l).W_s K 1 LL hA.2.2`. Establish `hp : ((((D.loc l).PD K).p : ℕ) : ↥LL.1) ≠ 0`. Introduce `h`.
+
+Establish `hv` using `((HW l).W K 1 LL hA.2.2).v_l`. Rewrite `hv` using `[h, AddValuation.map_zero]`. Conclude with `WithTop.top_ne_one hv`. Establish `hsurj : Function.Surjective (algebraMap ↥(K0 K) ↥K.1)` using `fun x => ⟨⟨x, x.2, hA.1 x.2⟩, rfl⟩`. Use `LevR.level_condition_of_level_zero _ ((Cm l).C K 1 LL hA.2.2).tie.levB hs ((Cm l).C K 1 LL hA.2.2).tie.levN_eq ((Cm l).C K 1 LL hA.2.2).tie.levB_φ hp ?_` and prove the remaining obligations.
+
+Introduce `T hT c ζ hζ`. Establish `hζl : IsPrimitiveRoot ζ l` using `by rwa [(D.loc l).PD_p] at hζ`. Take `⟨τ, hτ⟩` from `hpt l K LL hA h5 c ζ hζl`. Establish `hover : ∀ x : ↥(K0 K), τ (algebraMap ↥(K0 K) ↥K.1 x) = ((HW l).W K 1 LL hA.2.2).emb c x`. Take `⟨τs, ⟨hemb, -⟩, hres⟩` from `hτ`.
+
+Introduce `x`. Establish `hy : (x : Om l) ∈ Ks K 1` using `(le_sup_left : K0 K ≤ Ks K 1) x.2`. Rewrite using `[hres (algebraMap ↥(K0 K) ↥K.1 x) ⟨x, hy⟩ rfl]`. Conclude with `hemb x ⟨x, hy⟩ rfl`. Establish `h4'` using `((h4 l K 1 LL hA.2.2 T hT).2 c ζ τ hτ).2`.
+
+Conclude with `LevR.lev0 _ T c ζ τ (LevR.ιDi_le _ T c τ hover hsurj) h4'`.
+-/
 theorem levCoeff_of_pt (D : D7) (HW : HWOf D.loc) (F : FonOf D.loc D.locA HW)
     (Cm : CmpOf D.loc D.locA HW F) (h4 : Formalism.MainNotions.DeltaInvariantLattices.P4 D HW F Cm) (hpt : PtEx D HW) :
     LevCoeff D HW F := by
@@ -653,6 +847,19 @@ namespace Formalism.MainNotions.UnusedSlot80.LevR
 
 open Formalism.WeaklyAdmissibleFiltrations Formalism.BasicNotions Formalism.BasicNotions.Loc
 
+/- English proof (translation)
+Establish `hn : ‖t‖ ≤ 1`. Establish `e : t = (t - 1) + 1` using `by ring`. Rewrite using `[e]`. Conclude with `(Padic.nonarchimedean _ _).trans (max_le h1.le (by simp))`. Take `⟨T, rfl⟩ : ∃ T : ℤ_[l], (T : ℚ_[l]) = t` from `⟨⟨t, hn⟩, rfl⟩`.
+
+Establish `hT1 : PadicInt.toZMod (T - 1) = 0`. Rewrite using `[← RingHom.mem_ker, PadicInt.ker_toZMod, IsLocalRing.mem_maximalIdeal, PadicInt.mem_nonunits, PadicInt.norm_def, PadicInt.coe_sub, PadicInt.coe_one]`. Conclude with `h1`. Establish `hT : PadicInt.toZMod T = 1`. Rewrite `hT1` using `[map_sub, map_one, sub_eq_zero]`.
+
+Conclude with `hT1`. Establish `hS : PadicInt.toZMod (∑ i ∈ Finset.range (l - 1), T ^ i) ≠ 0`. Rewrite using `[map_sum]`. Simplify using `only [map_pow, hT, one_pow, Finset.sum_const, Finset.card_range, nsmul_eq_mul, mul_one]`. Rewrite using `[Ne, ZMod.natCast_eq_zero_iff]`.
+
+Introduce `hd`. Establish `h2` using `(Fact.out : l.Prime).two_le`. Use `Nat.le_of_dvd (by omega) hd` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish `hTl : T ^ (l - 1) = 1`.
+
+Apply `Subtype.ext` to reduce the goal to its premises. Rewrite using `[PadicInt.coe_pow, PadicInt.coe_one]`. Conclude with `ht`. Establish `hprod` using `geom_sum_mul T (l - 1)`. Rewrite `hprod` using `[hTl, sub_self]`.
+
+Establish `hS0 : (∑ i ∈ Finset.range (l - 1), T ^ i) ≠ 0` using `fun h => hS (by rw [h, map_zero])`. Establish `h3 : T - 1 = 0` using `(mul_eq_zero.mp hprod).resolve_left hS0`. Rewrite using `[sub_eq_zero.mp h3, PadicInt.coe_one]`.
+-/
 theorem root_eq_one {l : ℕ} [Fact l.Prime] (t : ℚ_[l]) (ht : t ^ (l - 1) = 1) (h1 : ‖t - 1‖ < 1) :
     t = 1 := by
   have hn : ‖t‖ ≤ 1 := by
@@ -689,6 +896,9 @@ section Trans
 
 variable (D : D7) (HW : HWOf D.loc) (F : FonOf D.loc D.locA HW)
 
+/- English proof (translation)
+Establish `h1 : (D.loc l).ζQ 1 ^ l = 1`. Rewrite using `[(D.loc l).ζQ_succ 0, (D.loc l).ζQ_zero]`. Establish `ho` using `orderOf_eq_prime h1 (D.loc l).ζQ_one`. Use `IsPrimitiveRoot.orderOf ((D.loc l).ζQ 1)` as an intermediate fact. Rewrite `this` using `[ho]`. Then use the resulting hypothesis.
+-/
 theorem root_of_unity_primitive (l : ℕ) [Fact l.Prime] : IsPrimitiveRoot ((D.loc l).ζQ 1) l := by
   have h1 : (D.loc l).ζQ 1 ^ l = 1 := by
     rw [(D.loc l).ζQ_succ 0, (D.loc l).ζQ_zero]
@@ -696,6 +906,11 @@ theorem root_of_unity_primitive (l : ℕ) [Fact l.Prime] : IsPrimitiveRoot ((D.l
   have := IsPrimitiveRoot.orderOf ((D.loc l).ζQ 1)
   rwa [ho] at this
 
+/- English proof (translation)
+Establish `: FiniteDimensional ℚ_[l] ↥LL.1` using `LL.2`. Establish `hc` using `Formalism.MainNotions.LiftingTheory.gen_one_crys ((HW l).W K 1 LL hA.2.2)`. Establish `hs : ((HW l).W K 1 LL hA.2.2).s = 1` using `(HW l).W_s K 1 LL hA.2.2`. Establish `hp : ((D.loc l).PD K).p ≠ 2` using `by rw [(D.loc l).PD_p]; exact hA.2.1`. Establish `h` using `((h9 l K 1 LL hA.2.2 _ hc) hs hp).1`.
+
+Rewrite using `[h, Formalism.MainNotions.UnusedSlot80.finrank_K0_eq_one_of_le_Kur hA.1, Nat.div_one, (D.loc l).PD_p]`.
+-/
 theorem card_delF (h9 : Formalism.MainNotions.DeltaInvariantLattices.P9 D HW F) (l : ℕ) [Fact l.Prime] (K LL : FinExt l)
     (hA : CaseA K LL) : ((HW l).W K 1 LL hA.2.2).DelF.card = l - 1 := by
   have : FiniteDimensional ℚ_[l] ↥LL.1 := LL.2
@@ -711,6 +926,57 @@ section TransW
 
 set_option maxHeartbeats 800000 in
 
+/- English proof (translation)
+Establish `hl2` using `(Fact.out : l.Prime).two_le`. Take `⟨H, hH⟩ : ∃ H : Subgroup W.Gam, (H : Set W.Gam) = ↑W.DelF` from `⟨ { carrier := ↑W.DelF mul_mem' := by`. Introduce `a b ha hb`. Simplify using `only [Finset.mem_coe, W.DelF_def] at ha hb ⊢`. Take `⟨k, hk, hak⟩` from `ha`.
+
+Take `⟨k', hk', hbk⟩` from `hb`. Conclude with `⟨k * k', Nat.mul_pos hk hk', by`. Rewrite using `[mul_pow, pow_mul, hak, one_pow, one_mul, mul_comm, pow_mul, hbk, one_pow]⟩`. Use the proof step `one_mem' := by`. Simplify using `only [Finset.mem_coe, W.DelF_def]`.
+
+Conclude with `⟨1, one_pos, one_pow _⟩`. Use the proof step `inv_mem' := by`. Introduce `a ha`. Simplify using `only [Finset.mem_coe, W.DelF_def] at ha ⊢`. Take `⟨k, hk, hak⟩` from `ha`.
+
+Conclude with `⟨k, hk, by rw [inv_pow, hak, inv_one]⟩ }, rfl⟩`. Establish `memH : ∀ x, x ∈ H ↔ x ∈ W.DelF` using `fun x => by`. Rewrite using `[← SetLike.mem_coe, hH, Finset.mem_coe]`. Establish `hHcard : Nat.card H = l - 1`. Rewrite using `[← hcard, ← Nat.card_eq_finsetCard]`.
+
+Conclude with `Nat.card_congr (Equiv.subtypeEquivRight memH)`. Establish `hexp : ∀ δ ∈ W.DelF, δ ^ (l - 1) = 1`. Introduce `δ hδ`. Establish `h : (⟨δ, (memH δ).mpr hδ⟩ : H) ^ (l - 1) = 1`. Rewrite using `[← hHcard]`.
+
+Conclude with `pow_card_eq_one'`. Establish `h2` using `congrArg (fun y : H => (y : W.Gam)) h`. Simplify `h2` using `only [Subgroup.coe_pow, Subgroup.coe_one]`. Establish `hζpow : P.ζQ 1 ^ (l ^ 1) = 1` using `by rw [pow_one]; exact hζ₁.pow_eq_one`. Establish `key : ∀ g : ↥(GK K), (g : GQ l) (P.ζQ 1) = P.ζQ 1 → W.resΓ g ∈ W.DelF → W.resΓ g = 1`.
+
+Introduce `g hg hΔ`. Take `⟨a, ha, hga⟩` from `P.χQ_cyc (g : GQ l) 1 (P.ζQ 1) (by rw [pow_one]; exact hζ₁.pow_eq_one)`. Rewrite `hga` using `[hg]`. Establish `ha0 : a ≠ 0`. Introduce and unpack `rfl`.
+
+Rewrite `hga` using `[pow_zero]`. Conclude with `P.ζQ_one hga`. Establish `hdvd : (l : ℤ) ∣ (a : ℤ) - 1`. Establish `e : P.ζQ 1 ^ (a - 1) = 1`. Establish `h0 : P.ζQ 1 ≠ 0` using `hζ₁.ne_zero (by omega)`.
+
+Apply `mul_right_cancel₀ h0` to reduce the goal to its premises. Rewrite using `[← pow_succ, Nat.sub_add_cancel (Nat.one_le_iff_ne_zero.mpr ha0), ← hga, one_mul]`. Use `(hζ₁.pow_eq_one_iff_dvd (a - 1)).mp e` as an intermediate fact. Establish `h' : ((a - 1 : ℕ) : ℤ) = (a : ℤ) - 1`. Rewrite using `[Nat.cast_sub (Nat.one_le_iff_ne_zero.mpr ha0)]`.
+
+Simplify using the standard rewrite rules. Rewrite using `[← h']`. Conclude with `this` after adjusting the coercions. Establish `hna : ‖((a : ℚ_[l]) - 1)‖ ≤ (l : ℝ) ^ (-((1 : ℕ) : ℤ))`. Use `(Padic.norm_int_le_pow_iff_dvd ((a : ℤ) - 1) 1).mpr (by simpa using hdvd)` as an intermediate fact.
+
+Simplify using `using this`. Establish `ht1 : ‖(P.χQ (g : GQ l) : ℚ_[l]) - 1‖ < 1`. Establish `e : (P.χQ (g : GQ l) : ℚ_[l]) - 1 = ((P.χQ (g : GQ l) : ℚ_[l]) - a) + ((a : ℚ_[l]) - 1)`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e]`.
+
+Use `lt_of_le_of_lt ((Padic.nonarchimedean _ _).trans (max_le ha hna)) ?_` and prove the remaining obligations. Establish `hl1 : (1 : ℝ) < l` using `by exact_mod_cast (Fact.out : l.Prime).one_lt`. Rewrite using `[zpow_neg, zpow_natCast, pow_one]`. Conclude with `inv_lt_one_of_one_lt₀ hl1`. Establish `hres` using `W.χΓ_res g`.
+
+Establish `hPD` using `P.PD_χ K g`. Establish `htl : (P.χQ (g : GQ l) : ℚ_[l]) ^ (l - 1) = 1`. Establish `e1 : (W.χΓ (W.resΓ g)) ^ (l - 1) = 1` using `by rw [← map_pow, hexp _ hΔ, map_one]`. Establish `e2 : algebraMap ↥(OL LL) ↥LL.1 ((W.χΓ (W.resΓ g) : ↥(OL LL))) ^ (l - 1) = 1`. Rewrite using `[← map_pow, ← Units.val_pow_eq_pow_val, e1, Units.val_one, map_one]`.
+
+Rewrite `e2` using `[hres, ← map_pow]`. Establish `e3 : ((((P.PD K).χ g : ℚ_[l]ˣ) : ℚ_[l])) ^ (l - 1) = 1` using `(algebraMap ℚ_[l] ↥LL.1).injective (by rw [e2, map_one])`. Rewrite `e3` using `[hPD]`. Then use the resulting hypothesis. Establish `ht` using `root_eq_one _ htl ht1`. Establish `e4 : algebraMap ↥(OL LL) ↥LL.1 ((W.χΓ (W.resΓ g) : ↥(OL LL))) = 1`.
+
+Rewrite using `[hres, hPD, ht, map_one]`. Establish `e5 : (W.χΓ (W.resΓ g) : ↥(OL LL)) = 1` using `Subtype.val_injective (by simpa using e4)`. Conclude with `W.χΓ_inj (by rw [map_one]; exact Units.ext e5)`. Establish `hlift : ∀ δ : ↥W.DelF, ∃ g : ↥(GK K), W.resΓ g = δ` using `fun δ => W.resΓ_onto δ`. Use `choose gδ hgδ using hlift`.
+
+Establish `hcyc : ∀ δ : ↥W.DelF, ∃ a : ℕ, ((gδ δ : ↥(GK K)) : GQ l) (P.ζQ 1) = P.ζQ 1 ^ a` using `fun δ => by`. Take `⟨a, -, h⟩` from `P.χQ_cyc ((gδ δ : ↥(GK K)) : GQ l) 1 (P.ζQ 1) (by rw [pow_one]; exact hζ₁.pow_eq_one)`. Conclude with `⟨a, h⟩`. Use `choose aδ haδ using hcyc`. Establish `hne : ∀ δ, ((aδ δ : ℕ) : ZMod l) ≠ 0`.
+
+Introduce `δ h`. Rewrite `h` using `[ZMod.natCast_eq_zero_iff]`. Establish `h1 : P.ζQ 1 ^ aδ δ = 1` using `(hζ₁.pow_eq_one_iff_dvd _).mpr h`. Rewrite `h1` using `[← haδ δ]`. Establish `h2 : ((gδ δ : ↥(GK K)) : GQ l) (P.ζQ 1) = ((gδ δ : ↥(GK K)) : GQ l) 1` using `by rw [h1, map_one]`.
+
+Conclude with `P.ζQ_one (((gδ δ : ↥(GK K)) : GQ l).injective h2)`. Set `U : ↥W.DelF → (ZMod l)ˣ` to `fun δ => Units.mk0 _ (hne δ)`. Establish `hpowmod : ∀ n : ℕ, P.ζQ 1 ^ n = P.ζQ 1 ^ (n % l)` using `fun n => by conv_lhs => rw [← Nat.mod_add_div n l, pow_add, pow_mul, hζ₁.pow_eq_one, one_pow, mul_one]`. Establish `hUinj : Function.Injective U`. Introduce `δ δ' h`.
+
+Establish `h1 : ((aδ δ : ℕ) : ZMod l) = ((aδ δ' : ℕ) : ZMod l)` using `congrArg Units.val h`. Rewrite `h1` using `[ZMod.natCast_eq_natCast_iff]`. Establish `h2 : ((gδ δ : ↥(GK K)) : GQ l) (P.ζQ 1) = ((gδ δ' : ↥(GK K)) : GQ l) (P.ζQ 1)`. Rewrite using `[haδ, haδ, hpowmod (aδ δ), hpowmod (aδ δ'), h1]`. Use `set g := (gδ δ')⁻¹ * gδ δ`.
+
+Establish `hg : (g : GQ l) (P.ζQ 1) = P.ζQ 1`. Simplify using `only [g, Subgroup.coe_mul, Subgroup.coe_inv, AlgEquiv.mul_apply, h2]`. Conclude with `AlgEquiv.symm_apply_apply _ _`. Establish `hgΔ : W.resΓ g = (δ' : W.Gam)⁻¹ * δ` using `by simp [g, hgδ]`. Establish `hmem : W.resΓ g ∈ W.DelF`.
+
+Rewrite using `[hgΔ]`. Conclude with `(memH _).mp (H.mul_mem (H.inv_mem ((memH _).mpr δ'.2)) ((memH _).mpr δ.2))`. Use `key g hg hmem` as an intermediate fact. Rewrite `this` using `[hgΔ, inv_mul_eq_one]`. Conclude with `Subtype.ext this.symm`.
+
+Establish `hUbij : Function.Bijective U`. Rewrite using `[Fintype.bijective_iff_injective_and_card]`. Conclude with `⟨hUinj, by rw [Fintype.card_coe, hcard, ZMod.card_units]⟩`. Take `⟨i, hi, hζi⟩` from `hζ₁.eq_pow_of_pow_eq_one hζ'.pow_eq_one`. Establish `hi0 : ((i : ℕ) : ZMod l) ≠ 0`.
+
+Rewrite using `[Ne, ZMod.natCast_eq_zero_iff]`. Introduce `hd`. Establish `: i = 0` using `Nat.eq_zero_of_dvd_of_lt hd hi`. Substitute `this` using the available equality. Rewrite `hζi` using `[pow_zero]`.
+
+Conclude with `hζ'.ne_one (Fact.out : l.Prime).one_lt hζi.symm`. Take `⟨δ, hδ⟩` from `hUbij.2 (Units.mk0 _ hi0)`. Establish `h1 : ((aδ δ : ℕ) : ZMod l) = ((i : ℕ) : ZMod l)` using `congrArg Units.val hδ`. Rewrite `h1` using `[ZMod.natCast_eq_natCast_iff]`. Use `⟨gδ δ, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[haδ, hpowmod, h1, ← hpowmod, hζi]`.
+-/
 theorem trans_prim {l : ℕ} [Fact l.Prime] (P : LocPrime l) {K LL : FinExt l}
     (W : LocWach (P.PD K) ↥LL.1 ↥(OL LL) (P.v LL) (Module.finrank ℚ_[l] ↥(K0 K)))
     (hcard : W.DelF.card = l - 1) (hζ₁ : IsPrimitiveRoot (P.ζQ 1) l)
@@ -855,6 +1121,19 @@ namespace Formalism.MainNotions.UnusedSlot80
 
 open Formalism.WeaklyAdmissibleFiltrations Formalism.BasicNotions Formalism.BasicNotions.Loc
 
+/- English proof (translation)
+Introduce `l _ K LL hA h5 c ζ hζ`. Establish `: Algebra.IsAlgebraic ↥(K0 K) (Om l)` using `Algebra.IsAlgebraic.tower_top (K := ℚ_[l]) _`. Take `⟨σ, hσ⟩` from `IsAlgClosed.surjective_domRestrict_of_isAlgebraic (K := ℚ_[l]) (L := ↥(K0 K)) (M := Om l) (E := Om l) ((LL.1.val).comp (((HW l).W K 1 LL hA.2.2).emb c))`. Establish `hσx : ∀ x : ↥(K0 K), σ (x : Om l) = ((((HW l).W K 1 LL hA.2.2).emb c x : ↥LL.1) : Om l)` using `fun x => by`. Use `congrArg (fun f => f x) hσ` as an intermediate fact.
+
+Simplify `this` using `[AlgHom.domRestrict]`. Establish `hζ₁` using `LevR.root_of_unity_primitive D l`. Establish `hσinj : Function.Injective σ` using `σ.toRingHom.injective`. Establish `hζO : IsPrimitiveRoot ((ζ : ↥LL.1) : Om l) l` using `hζ.map_of_injective (f := LL.1.val) Subtype.val_injective`. Establish `hσζ₁ : IsPrimitiveRoot (σ ((D.loc l).ζQ 1)) l` using `hζ₁.map_of_injective hσinj`.
+
+Establish `: NeZero l` using `⟨(Fact.out : l.Prime).ne_zero⟩`. Take `⟨b, -, hb⟩` from `hσζ₁.eq_pow_of_pow_eq_one hζO.pow_eq_one`. Establish `hβ : IsPrimitiveRoot ((D.loc l).ζQ 1 ^ b) l`. Apply `IsPrimitiveRoot.of_map_of_injective (f := σ) _ hσinj` to reduce the goal to its premises. Rewrite using `[map_pow, hb]`.
+
+Conclude with `hζO`. Take `⟨g, hg⟩` from `LevR.trans_prim (D.loc l) ((HW l).W K 1 LL hA.2.2) (LevR.card_delF D HW F h9 l K LL hA) hζ₁ _ hβ`. Establish `hmem : ∀ y, ((σ.comp (g : GQ l).toAlgHom).comp (Ks K 1).val) y ∈ LL.1` using `hA.2.2.2.2.2 _`. Set `τs : ↥(Ks K 1) →ₐ[ℚ_[l]] ↥LL.1` to `((σ.comp (g : GQ l).toAlgHom).comp (Ks K 1).val).codRestrict LL.1.toSubalgebra hmem`. Use `⟨τs.comp (IntermediateField.inclusion hA.2.2.2.2.1), τs, ⟨fun x y hxy => ?_, fun y hy => ?_⟩, fun x y hxy => ?_⟩` and prove the remaining obligations.
+
+Apply `Subtype.ext show σ ((g : GQ l) (y : Om l)) = _` to reduce the goal to its premises. Establish `hgx : (g : GQ l) (x : Om l) = x` using `(IntermediateField.mem_fixingSubgroup_iff K.1 (g : GQ l)).mp g.2 _ ((inf_le_left : K0 K ≤ K.1) x.2)`. Rewrite using `[hxy, hgx, hσx]`. Apply `Subtype.ext show σ ((g : GQ l) (y : Om l)) = _` to reduce the goal to its premises. Rewrite using `[hy, hg, map_pow, hb]`.
+
+Use `show τs _ = τs y`. Use `congr 1`. Conclude with `Subtype.ext hxy.symm`.
+-/
 theorem points_exist_of_ring_condition (D : D7) (HW : HWOf D.loc) (F : FonOf D.loc D.locA HW)
     (h9 : Formalism.MainNotions.DeltaInvariantLattices.P9 D HW F) : PtEx D HW := by
   intro l _ K LL hA h5 c ζ hζ
@@ -897,10 +1176,16 @@ theorem points_exist_of_ring_condition (D : D7) (HW : HWOf D.loc) (F : FonOf D.l
     congr 1
     exact Subtype.ext hxy.symm
 
+/- English proof (translation)
+The claim follows from `levCoeff_of_pt D HW F Cm h.2.1 (points_exist_of_ring_condition D HW F h.2.2)`.
+-/
 theorem levCoeff_of (D : D7) (HW : HWOf D.loc) (F : FonOf D.loc D.locA HW)
     (Cm : CmpOf D.loc D.locA HW F) (h : AdmTools D HW F Cm) : LevCoeff D HW F :=
   levCoeff_of_pt D HW F Cm h.2.1 (points_exist_of_ring_condition D HW F h.2.2)
 
+/- English proof (translation)
+Introduce `h` and use `tools_unramified_of_level_coeff D HW F Cm (levCoeff_of D HW F Cm h) h`.
+-/
 theorem tools_unramified_statement (D : D7) (HW : HWOf D.loc) (F : FonOf D.loc D.locA HW)
     (Cm : CmpOf D.loc D.locA HW F) : FiltrationPropertiesTheorem D HW F Cm := fun h =>
   tools_unramified_of_level_coeff D HW F Cm (levCoeff_of D HW F Cm h) h

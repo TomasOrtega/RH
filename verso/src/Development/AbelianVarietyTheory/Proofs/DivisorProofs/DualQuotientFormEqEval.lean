@@ -4,6 +4,11 @@ open CategoryTheory TensorProduct MvPowerSeries GlobalTheory GlobalTheory.PDiv G
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Introduce `O M _ _ _ _ _ I u`. Take `⟨v, hv⟩` from `Module.projective_lifting_property (Submodule.mkQ I) u (Submodule.mkQ_surjective I)`. Use `⟨(Module.evalEquiv O M).symm v, fun φ => ?_⟩` and prove the remaining obligations. Establish `h1 : φ ((Module.evalEquiv O M).symm v) = v φ`. Use `congrArg (fun w : Module.Dual O (Module.Dual O M) => w φ) ((Module.evalEquiv O M).apply_symm_apply v)` as an intermediate fact.
+
+Simplify using `using this`. Rewrite using `[h1, ← hv]`. Both sides reduce to the same expression.
+-/
 theorem dual_quotient_form_eq_eval :
     ∀ (O M : Type) [CommRing O] [AddCommGroup M] [Module O M] [Module.Finite O M]
       [Module.Projective O M] (I : Ideal O) (u : Module.Dual O M →ₗ[O] O ⧸ I),

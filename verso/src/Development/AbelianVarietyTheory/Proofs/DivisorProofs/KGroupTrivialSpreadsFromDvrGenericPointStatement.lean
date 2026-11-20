@@ -20,5 +20,8 @@ open GlobalTheory.IndefiniteRowSideFullHecke.SiegelFamilyZetaUnit GlobalTheory.S
 open GlobalTheory.PrincSubring
 
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.KTrivDvrSpread.trivAlong_of_generic | exact GlobalTheory.KTrivDvrSpread.trivAlong_of_generic | (intros; apply GlobalTheory.KTrivDvrSpread.trivAlong_of_generic <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.kGroup_trivial_spreads_from_dvr_generic_point : ∀ {S : Scheme.{0}} (G : Over S) [GrpObj G] [IsCommMonObj G] (L : LB G.left), IsAbelianScheme G → L.IsLB → Out.RelAmple G L → Out.Rigidified G L → Out.Sym G L → ∀ (V : Type) [CommRing V] [IsDomain V] [IsDiscreteValuationRing V] (g : Sp V ⟶ S), GlobalTheory.KTrivSpread.TrivAlong G L (spMap (algebraMap V (FractionRing V)) ≫ g) → GlobalTheory.KTrivSpread.TrivAlong G L g := by
   first | exact @GlobalTheory.KTrivDvrSpread.trivAlong_of_generic | exact GlobalTheory.KTrivDvrSpread.trivAlong_of_generic | (intros; apply GlobalTheory.KTrivDvrSpread.trivAlong_of_generic <;> assumption)

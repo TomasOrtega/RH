@@ -15,6 +15,15 @@ open GlobalTheory.CompanionTheory.GL2Factorization
 
 namespace GlobalTheory.CompanionTheory.GL2Factorization
 
+/- English proof (translation)
+Introduce `x₃ x₂ s A B C m T N hA hB h3 h2`. Establish `hA1 : 0 < 1 + A` using `by linarith`. Establish `hB1 : 0 < 1 + B` using `by linarith`. Establish `e1 : ‖(A : ℂ) ^ (s - 3 / 2)‖ = A ^ (s.re - 3 / 2)`. Rewrite using `[Complex.norm_cpow_eq_rpow_re_of_pos hA]`.
+
+Simplify using the standard rewrite rules. Establish `e2 : ‖(B : ℂ) ^ (2 * s - 1)‖ = B ^ (2 * s.re - 1)`. Rewrite using `[Complex.norm_cpow_eq_rpow_re_of_pos hB]`. Simplify using the standard rewrite rules. Establish `key : ‖x₃‖ * ‖x₂‖ ≤ (C / (A * B) ^ T / ((1 + A) * (1 + B)) ^ N) * A ^ m` using `mul_le_mul h3 h2 (norm_nonneg _) ((norm_nonneg _).trans h3)`.
+
+Establish `hP : 0 ≤ A ^ (s.re - 3 / 2) * B ^ (2 * s.re - 1)` using `mul_nonneg (Real.rpow_nonneg hA.le _) (Real.rpow_nonneg hB.le _)`. Establish `hR : C * (A ^ (s.re - 3 / 2 + m - T) * (1 + A) ^ (-(N : ℝ))) * (B ^ (2 * s.re - 1 - T) * (1 + B) ^ (-(N : ℝ))) = (C / (A * B) ^ T / ((1 + A) * (1 + B)) ^ N) * A ^ m * (A ^ (s.re - 3 / 2) * B ^ (2 * s.re - 1))`. Rewrite using `[Real.rpow_sub hA, Real.rpow_add hA, Real.rpow_sub hB, Real.rpow_neg hA1.le, Real.rpow_neg hB1.le, Real.rpow_natCast, Real.rpow_natCast, Real.rpow_natCast, Real.rpow_natCast, mul_pow, mul_pow]`. Clear the denominators using the available nonvanishing facts. Rewrite using `[norm_mul, norm_mul, norm_mul, e1, e2, hR, mul_assoc (‖x₃‖ * ‖x₂‖)]`.
+
+Conclude with `mul_le_mul_of_nonneg_right key hP`.
+-/
 theorem real_integrand_norm_le_ptw : ∀ (x₃ x₂ s : ℂ) (A B C m : ℝ) (T N : ℕ), 0 < A → 0 < B → ‖x₃‖ ≤ C / (A * B) ^ T / ((1 + A) * (1 + B)) ^ N → ‖x₂‖ ≤ A ^ m → ‖x₃ * x₂ * ((A : ℂ) ^ (s - 3 / 2)) * ((B : ℂ) ^ (2 * s - 1))‖ ≤ C * (A ^ (s.re - 3 / 2 + m - T) * (1 + A) ^ (-(N : ℝ))) * (B ^ (2 * s.re - 1 - T) * (1 + B) ^ (-(N : ℝ))) := by
   intro x₃ x₂ s A B C m T N hA hB h3 h2
   have hA1 : 0 < 1 + A := by linarith

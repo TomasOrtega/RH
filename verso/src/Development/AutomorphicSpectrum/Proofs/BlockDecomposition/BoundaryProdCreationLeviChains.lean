@@ -15,14 +15,25 @@ namespace GlobalTheory.CompanionTheory.LvChain.BdProdL
 
 variable {n : ℕ} {V : Type} [AddCommGroup V] [Module ℂ V]
 
+/- English proof (translation)
+Use `LinearMap.ext fun x => funext fun A => ?_` and prove the remaining obligations. Simplify using `only [Module.End.mul_apply, LinearMap.zero_apply, Pi.zero_apply, creL_apply]`. Apply the tactic sequence `by_cases h : k ∈ A <;> simp [h]`.
+-/
 theorem creL_sq (k : Lt n) : (creL k * creL k : Module.End ℂ (Cq n V)) = 0 := by
   refine LinearMap.ext fun x => funext fun A => ?_
   simp only [Module.End.mul_apply, LinearMap.zero_apply, Pi.zero_apply, creL_apply]
   by_cases h : k ∈ A <;> simp [h]
 
+/- English proof (translation)
+The claim follows from `eq_neg_of_add_eq_zero_left (creL_creL i j)`.
+-/
 theorem creL_anti (i j : Lt n) : (creL i * creL j : Module.End ℂ (Cq n V)) = -(creL j * creL i) :=
   eq_neg_of_add_eq_zero_left (creL_creL i j)
 
+/- English proof (translation)
+Proceed by induction on `l with`. Consider the case `nil => simp at h`. Consider the case `cons g t ih`. Rewrite using `[List.map_cons, List.prod_cons]`. Distinguish the cases in `hk : k = g`.
+
+Substitute `hk` using the available equality. Rewrite using `[← mul_assoc, creL_sq, zero_mul]`. Establish `h1` using `ih ((List.mem_cons.1 h).resolve_left hk)`. Rewrite using `[← mul_assoc, creL_anti, neg_mul, mul_assoc, h1, mul_zero, neg_zero]`.
+-/
 theorem creL_mul_prod_of_mem {k : Pos n} {l : List (Pos n)} (h : k ∈ l) :
     (creL (false, k) * (l.map fun i => (creL (false, i) : Module.End ℂ (Cq n V))).prod : Module.End ℂ (Cq n V)) = 0 := by
   induction l with
@@ -35,6 +46,9 @@ theorem creL_mul_prod_of_mem {k : Pos n} {l : List (Pos n)} (h : k ∈ l) :
     · have h1 := ih ((List.mem_cons.1 h).resolve_left hk)
       rw [← mul_assoc, creL_anti, neg_mul, mul_assoc, h1, mul_zero, neg_zero]
 
+/- English proof (translation)
+Rewrite using `[GlobalTheory.CompanionTheory.Cartan.anticommutator_triple_product _ _ _ _ _ _ (annL_creL l e) (annL_creL m e) (creL_creL k e)]`. Use `congr 1`. Apply the tactic sequence `split_ifs <;> simp`. Apply the tactic sequence `split_ifs <;> simp`.
+-/
 theorem tri_antiL (l m k e : Lt n) :
     (creL k * annL m * annL l * creL e + creL e * (creL k * annL m * annL l) : Module.End ℂ (Cq n V)) =
       (if l = e then creL k * annL m else 0) - (if m = e then creL k * annL l else 0) := by
@@ -45,6 +59,13 @@ theorem tri_antiL (l m k e : Lt n) :
 
 open Classical in
 
+/- English proof (translation)
+Rewrite using `[Finset.sum_mul, Finset.mul_sum, ← Finset.sum_add_distrib]`. Establish `h : ∀ l : Lt n, ((if S l then (liftL n (xL E1 E2 l) : Module.End ℂ (Cq n V)) * annL l else 0) * creL e + creL e * (if S l then (liftL n (xL E1 E2 l) : Module.End ℂ (Cq n V)) * annL l else 0) : Module.End ℂ (Cq n V)) = if l = e then (liftL n (xL E1 E2 e) : Module.End ℂ (Cq n V)) e …`. Introduce `l`. Distinguish the cases in `hl : S l`. Rewrite using `[if_pos hl, ← mul_assoc (creL e), ← liftL_creL, mul_assoc, mul_assoc, ← mul_add, annL_creL]`.
+
+Distinguish the cases in `hi : l = e`. Substitute `hi` using the available equality. Simplify using the standard rewrite rules. Simplify using `[hi]`. Establish `hne : l ≠ e` using `fun c => hl (c ▸ he)`.
+
+Simplify using `[hl, hne]`. Rewrite using `[Finset.sum_congr rfl fun l _ => h l]`. Simplify using the standard rewrite rules.
+-/
 theorem part_oneL (S : Lt n → Prop) (E1 E2 : Fin n → Fin n → Module.End ℂ V) {e : Lt n} (he : S e) :
     ((∑ l : Lt n, if S l then (liftL n (xL E1 E2 l) : Module.End ℂ (Cq n V)) * annL l else 0) * creL e +
       creL e * ∑ l : Lt n, if S l then (liftL n (xL E1 E2 l) : Module.End ℂ (Cq n V)) * annL l else 0 :
@@ -65,6 +86,9 @@ theorem part_oneL (S : Lt n → Prop) (E1 E2 : Fin n → Fin n → Module.End �
   rw [Finset.sum_congr rfl fun l _ => h l]
   simp
 
+/- English proof (translation)
+Simplify using `only [Finset.sum_mul, Finset.mul_sum, ← Finset.sum_add_distrib, h, Finset.sum_sub_distrib]`.
+-/
 theorem sum_antiL {R : Type*} [Ring R] (T P Q : Lt n → Lt n → Lt n → R) (c : R)
     (h : ∀ i j k, T i j k * c + c * T i j k = P i j k - Q i j k) :
     (∑ i, ∑ j, ∑ k, T i j k) * c + c * ∑ i, ∑ j, ∑ k, T i j k =
@@ -73,6 +97,25 @@ theorem sum_antiL {R : Type*} [Ring R] (T P Q : Lt n → Lt n → Lt n → R) (c
 
 open Classical in
 
+/- English proof (translation)
+Establish `h : ∀ l m k : Lt n, ((if S l ∧ S m ∧ l.2.1.2 = m.2.1.1 ∧ k.1 = xor l.1 m.1 ∧ k.2.1.1 = l.2.1.1 ∧ k.2.1.2 = m.2.1.2 then creL k * annL m * annL l else 0) * creL e + creL e * (if S l ∧ S m ∧ l.2.1.2 = m.2.1.1 ∧ k.1 = xor l.1 m.1 ∧ k.2.1.1 = l.2.1.1 ∧ k.2.1.2 = m.2.1.2 then creL k * …`. Introduce `l m k`. Distinguish the cases in `ht : S l ∧ S m ∧ l.2.1.2 = m.2.1.1 ∧ k.1 = xor l.1 m.1 ∧ k.2.1.1 = l.2.1.1 ∧ k.2.1.2 = m.2.1.2`. Rewrite using `[if_pos ht, tri_antiL]`. Take `⟨t0, t0', t1, t2, t3, t4⟩` from `ht`.
+
+Use `congr 1`. Distinguish the cases in `hi : l = e`. Substitute `hi` using the available equality. Rewrite using `[if_pos rfl, if_pos ⟨rfl, t0', t1, t2, Prod.ext t3 t4⟩]`. Rewrite using `[if_neg hi, if_neg fun c => hi c.1]`.
+
+Distinguish the cases in `hj : m = e`. Substitute `hj` using the available equality. Rewrite using `[if_pos rfl, if_pos ⟨rfl, t0, t1, by rw [t2, Bool.xor_comm], Prod.ext t3 t4⟩]`. Rewrite using `[if_neg hj, if_neg fun c => hj c.1]`. Rewrite using `[if_neg ht, zero_mul, mul_zero, add_zero, if_neg, if_neg, sub_zero]`.
+
+Introduce and unpack `⟨rfl, c0, c1, c2, c3⟩`. Conclude with `ht ⟨c0, he, c1, by rw [c2, Bool.xor_comm], by rw [c3], by rw [c3]⟩`. Introduce and unpack `⟨rfl, c0, c1, c2, c3⟩`. Conclude with `ht ⟨he, c0, c1, c2, by rw [c3], by rw [c3]⟩`. Rewrite using `[sum_antiL _ _ _ _ h]`.
+
+Establish `s₁ : (∑ l : Lt n, ∑ m : Lt n, ∑ k : Lt n, (if l = e ∧ S m ∧ e.2.1.2 = m.2.1.1 ∧ k.1 = xor e.1 m.1 ∧ k.2.1 = (e.2.1.1, m.2.1.2) then creL k * annL m else 0 : Module.End ℂ (Cq n V))) = ∑ m : Lt n, ∑ k : Lt n, (if S m ∧ e.2.1.2 = m.2.1.1 ∧ k.1 = xor e.1 m.1 ∧ k.2.1 = (e.2.1.1, m.2.1 …`. Rewrite using `[Finset.sum_eq_single e]`. Simplify using the standard rewrite rules. Introduce `i _ hi`. Simplify using `[hi]`.
+
+Simplify using the standard rewrite rules. Establish `s₂ : (∑ l : Lt n, ∑ m : Lt n, ∑ k : Lt n, (if m = e ∧ S l ∧ l.2.1.2 = e.2.1.1 ∧ k.1 = xor e.1 l.1 ∧ k.2.1 = (l.2.1.1, e.2.1.2) then creL k * annL l else 0 : Module.End ℂ (Cq n V))) = ∑ l : Lt n, ∑ k : Lt n, (if S l ∧ l.2.1.2 = e.2.1.1 ∧ k.1 = xor e.1 l.1 ∧ k.2.1 = (l.2.1.1, e.2.1 …`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_eq_single e]`. Simplify using the standard rewrite rules.
+
+Introduce `j _ hj`. Simplify using `[hj]`. Simplify using the standard rewrite rules. Rewrite using `[s₁, s₂, ← Finset.sum_sub_distrib]`. Unfold `adS`.
+
+Use `Finset.sum_congr rfl fun l _ => ?_` and prove the remaining obligations. Rewrite using `[← Finset.sum_sub_distrib]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Distinguish the cases in `hl : S l`. Simplify using `only [hl, true_and, if_true, adCL, sub_smul, ite_smul, one_smul, zero_smul]`.
+
+Simplify using `[hl]`.
+-/
 theorem part_twoL (S : Lt n → Prop) {e : Lt n} (he : S e) :
     ((∑ l : Lt n, ∑ m : Lt n, ∑ k : Lt n,
         if S l ∧ S m ∧ l.2.1.2 = m.2.1.1 ∧ k.1 = xor l.1 m.1 ∧ k.2.1.1 = l.2.1.1 ∧ k.2.1.2 = m.2.1.2 then
@@ -140,6 +183,9 @@ theorem part_twoL (S : Lt n → Prop) {e : Lt n} (he : S e) :
   · simp only [hl, true_and, if_true, adCL, sub_smul, ite_smul, one_smul, zero_smul]
   · simp [hl]
 
+/- English proof (translation)
+Establish `h₁` using `part_oneL S E1 E2 he`. Establish `h₂` using `part_twoL (V := V) S he`. Unfold `bdL`. Rewrite using `[add_mul, mul_add, add_add_add_comm, h₁, h₂]`.
+-/
 theorem cartanL (S : Lt n → Prop) (E1 E2 : Fin n → Fin n → Module.End ℂ V) {e : Lt n} (he : S e) :
     (bdL S E1 E2 * creL e + creL e * bdL S E1 E2 : Module.End ℂ (Cq n V)) =
       liftL n (xL E1 E2 e) + adS S e.1 e.2.1.1 e.2.1.2 := by
@@ -148,6 +194,9 @@ theorem cartanL (S : Lt n → Prop) (E1 E2 : Fin n → Fin n → Module.End ℂ 
   unfold bdL
   rw [add_mul, mul_add, add_add_add_comm, h₁, h₂]
 
+/- English proof (translation)
+Establish `h1` using `annL_creL (V := V) i g`. Rewrite using `[mul_assoc, eq_sub_of_add_eq h1, mul_sub, ← mul_assoc (creL k) (creL g), creL_anti k g, neg_mul, mul_assoc (creL g), sub_neg_eq_add, add_sub_cancel_right]`. Apply the tactic sequence `split_ifs <;> simp`.
+-/
 theorem term_commL (k i g : Lt n) :
     (creL k * annL i * creL g - creL g * (creL k * annL i) : Module.End ℂ (Cq n V)) =
       if i = g then creL k else 0 := by
@@ -158,6 +207,13 @@ theorem term_commL (k i g : Lt n) :
 
 open Classical in
 
+/- English proof (translation)
+Establish `h : (adS S s p q * creL g - creL g * adS S s p q : Module.End ℂ (Cq n V)) = ∑ i : Lt n, ∑ k : Lt n, if S i then adCL s p q i k • (creL k * annL i * creL g - creL g * (creL k * annL i)) else 0`. Unfold `adS`. Simplify using `only [Finset.sum_mul, Finset.mul_sum, ← Finset.sum_sub_distrib]`. Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Distinguish the cases in `hi : S i`.
+
+Simplify using `only [hi, if_true, smul_mul_assoc, mul_smul_comm, smul_sub]`. Simplify using `[hi]`. Rewrite using `[h]`. Simplify using `only [term_commL]`. Rewrite using `[Finset.sum_eq_single g]`.
+
+Apply the tactic sequence `by_cases hg : S g <;> simp [hg]`. Introduce `i _ hi`. Simplify using `[hi]`. Simplify using the standard rewrite rules.
+-/
 theorem adS_creL (S : Lt n → Prop) (s : Bool) (p q : Fin n) (g : Lt n) :
     (adS S s p q * creL g - creL g * adS S s p q : Module.End ℂ (Cq n V)) =
       if S g then ∑ k : Lt n, adCL s p q g k • creL k else 0 := by
@@ -181,6 +237,9 @@ theorem adS_creL (S : Lt n → Prop) (s : Bool) (p q : Fin n) (g : Lt n) :
 def lK (lev : Fin n → ℕ) (E1 E2 : Fin n → Fin n → Module.End ℂ V) (p q : Fin n) : Module.End ℂ (Cq n V) :=
   (liftL n (kA E1 E2 p q) : Module.End ℂ (Cq n V)) + adS (inRR lev) false p q
 
+/- English proof (translation)
+Establish `h` using `adS_creL (V := V) (inRR lev) false p q (false, g)`. Rewrite `h` using `[if_pos (Or.inl rfl)]`. Rewrite using `[← h, lK, add_mul, mul_add, liftL_creL]`. Normalize the expressions using the abelian group laws.
+-/
 theorem lK_creL (lev : Fin n → ℕ) (E1 E2 : Fin n → Fin n → Module.End ℂ V) (p q : Fin n) (g : Pos n) :
     (lK lev E1 E2 p q * creL (false, g) : Module.End ℂ (Cq n V)) =
       creL (false, g) * lK lev E1 E2 p q + ∑ k : Lt n, adCL false p q (false, g) k • creL k := by
@@ -189,13 +248,28 @@ theorem lK_creL (lev : Fin n → ℕ) (E1 E2 : Fin n → Fin n → Module.End �
   rw [← h, lK, add_mul, mul_add, liftL_creL]
   abel
 
+/- English proof (translation)
+Simplify using `[adCL, CompanionTheory.RgExh.U.adC]`.
+-/
 theorem adCL_false (p q : Fin n) (g k : Pos n) :
     adCL false p q (false, g) (false, k) = CompanionTheory.RgExh.U.adC p q g k := by
   simp [adCL, CompanionTheory.RgExh.U.adC]
 
+/- English proof (translation)
+Simplify using `[adCL]`.
+-/
 theorem adCL_true (p q : Fin n) (g k : Pos n) : adCL false p q (false, g) (true, k) = 0 := by
   simp [adCL]
 
+/- English proof (translation)
+Proceed by induction on `l with`. Consider the case `nil => simp`. Consider the case `cons g t ih`. Establish `ht` using `ih fun pre f post e k hk => h (g :: pre) f post (by rw [e]; rfl) k hk`. Establish `hz : ((∑ k : Lt n, adCL false p q (false, g) k • creL k) * (t.map fun i => (creL (false, i) : Module.End ℂ (Cq n V))).prod : Module.End ℂ (Cq n V)) = 0`.
+
+Rewrite using `[Finset.sum_mul]`. Use `Finset.sum_eq_zero fun k _ => ?_` and prove the remaining obligations. Take `⟨b, k⟩` from `k`. Consider the cases of `b with`. Consider the case `true => rw [adCL_true, zero_smul, zero_mul]`.
+
+Consider the case `false`. Rewrite using `[adCL_false]`. Distinguish the cases in `hk : CompanionTheory.RgExh.U.adC p q g k = 0`. Rewrite using `[hk, zero_smul, zero_mul]`. Rewrite using `[smul_mul_assoc, creL_mul_prod_of_mem (h [] g t rfl k hk), smul_zero]`.
+
+Rewrite using `[List.map_cons, List.prod_cons, ← mul_assoc, lK_creL, add_mul, hz, add_zero, mul_assoc, ht, mul_assoc]`.
+-/
 theorem lK_prod (lev : Fin n → ℕ) (E1 E2 : Fin n → Fin n → Module.End ℂ V) (p q : Fin n) (l : List (Pos n))
     (h : ∀ (pre : List (Pos n)) (f : Pos n) (post : List (Pos n)), l = pre ++ f :: post → ∀ k : Pos n,
       CompanionTheory.RgExh.U.adC p q f k ≠ 0 → k ∈ post) :
@@ -219,6 +293,11 @@ theorem lK_prod (lev : Fin n → ℕ) (E1 E2 : Fin n → Fin n → Module.End �
         · rw [smul_mul_assoc, creL_mul_prod_of_mem (h [] g t rfl k hk), smul_zero]
     rw [List.map_cons, List.prod_cons, ← mul_assoc, lK_creL, add_mul, hz, add_zero, mul_assoc, ht, mul_assoc]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `A`. Rewrite using `[annL_apply]`. Distinguish the cases in `hA : l ∈ A`. Simplify using `[hA]`. Establish `h0 : x (insert l A) = 0`.
+
+Assume the negation of the conclusion as `h0`. Conclude with `hl (h _ h0 l (Finset.mem_insert_self _ _))`. Simplify using `[hA, h0]`.
+-/
 theorem annL_of_supp {P : Lt n → Prop} {l : Lt n} {x : Cq n V} (h : SuppL P x) (hl : ¬P l) : annL l x = 0 := by
   funext A
   rw [annL_apply]
@@ -229,6 +308,11 @@ theorem annL_of_supp {P : Lt n → Prop} {l : Lt n} {x : Cq n V} (h : SuppL P x)
       exact hl (h _ h0 l (Finset.mem_insert_self _ _))
     simp [hA, h0]
 
+/- English proof (translation)
+Unfold `adS adLL`. Simplify using `only [LinearMap.sum_apply]`. Use `Finset.sum_congr rfl fun l _ => Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Distinguish the cases in `hl : inUU lev l`. Rewrite using `[if_pos (Or.inr hl), if_pos hl]`.
+
+Rewrite using `[if_neg hl] split_ifs`. Simplify using `[Module.End.mul_apply, annL_of_supp hx hl]`. Both sides reduce to the same expression.
+-/
 theorem adS_eq_adLL (lev : Fin n → ℕ) (s : Bool) (p q : Fin n) {x : Cq n V} (hx : SuppL (inUU lev) x) :
     adS (inRR lev) s p q x = adLL lev s p q x := by
   unfold adS adLL
@@ -241,16 +325,29 @@ theorem adS_eq_adLL (lev : Fin n → ℕ) (s : Bool) (p q : Fin n) {x : Cq n V} 
     · simp [Module.End.mul_apply, annL_of_supp hx hl]
     · rfl
 
+/- English proof (translation)
+Simplify using `only [lK, Lv, LinearMap.add_apply, adS_eq_adLL lev false p q hx]`.
+-/
 theorem lK_eq_Lv (lev : Fin n → ℕ) (E1 E2 : Fin n → Fin n → Module.End ℂ V) (p q : Fin n) {x : Cq n V}
     (hx : SuppL (inUU lev) x) : lK lev E1 E2 p q x = Lv lev E1 E2 p q x := by
   simp only [lK, Lv, LinearMap.add_apply, adS_eq_adLL lev false p q hx]
 
+/- English proof (translation)
+Rewrite using `[cartanL (inRR lev) E1 E2 (e := (false, f)) (Or.inl rfl)]`. Simplify using `[lK, xL]`.
+-/
 theorem cartanK (lev : Fin n → ℕ) (E1 E2 : Fin n → Fin n → Module.End ℂ V) (f : Pos n) :
     (bdL (inRR lev) E1 E2 * creL (false, f) + creL (false, f) * bdL (inRR lev) E1 E2 : Module.End ℂ (Cq n V)) =
       lK lev E1 E2 f.1.1 f.1.2 := by
   rw [cartanL (inRR lev) E1 E2 (e := (false, f)) (Or.inl rfl)]
   simp [lK, xL]
 
+/- English proof (translation)
+Proceed by induction on `l with`. Consider the case `nil => intro _ _`. Simplify using the standard rewrite rules. Consider the case `cons f t ih`. Introduce `hcl hx`.
+
+Establish `ih'` using `ih (fun pre g post e a ha k hk => hcl (f :: pre) g post (by rw [e]; rfl) a (List.mem_cons_of_mem _ ha) k hk) (fun e he => hx e (List.mem_cons_of_mem _ he))`. Establish `hf : lK lev E1 E2 f.1.1 f.1.2 (((t.map fun i => (creL (false, i) : Module.End ℂ (Cq n V))).prod : Module.End ℂ (Cq n V)) x) = 0`. Establish `h1` using `lK_prod lev E1 E2 f.1.1 f.1.2 t (fun pre g post e k hk => hcl (f :: pre) g post (by rw [e]; rfl) f List.mem_cons_self k hk)`. Establish `h2` using `LinearMap.congr_fun h1 x`. Simplify using `only [Module.End.mul_apply] at h2`.
+
+Rewrite using `[h2, lK_eq_Lv lev E1 E2 _ _ hs, hx f List.mem_cons_self, map_zero]`. Establish `h3` using `LinearMap.congr_fun (cartanK lev E1 E2 f) (((t.map fun i => (creL (false, i) : Module.End ℂ (Cq n V))).prod : Module.End ℂ (Cq n V)) x)`. Simplify using `only [LinearMap.add_apply, Module.End.mul_apply, hf, ih'] at h3`. Simplify using `only [List.map_cons, List.prod_cons, Module.End.mul_apply, List.length_cons, pow_succ, map_smul]`. Rewrite using `[eq_neg_of_add_eq_zero_left h3, mul_neg_one, neg_smul, map_smul]`.
+-/
 theorem boundary_prod_creation_levi_vanish (lev : Fin n → ℕ) (E1 E2 : Fin n → Fin n → Module.End ℂ V) (x : Cq n V)
     (hs : SuppL (inUU lev) x) (l : List (Pos n)) :
     (∀ (pre : List (Pos n)) (f : Pos n) (post : List (Pos n)), l = pre ++ f :: post → ∀ e ∈ l, ∀ k : Pos n,
@@ -279,6 +376,9 @@ theorem boundary_prod_creation_levi_vanish (lev : Fin n → ℕ) (E1 E2 : Fin n 
     simp only [List.map_cons, List.prod_cons, Module.End.mul_apply, List.length_cons, pow_succ, map_smul]
     rw [eq_neg_of_add_eq_zero_left h3, mul_neg_one, neg_smul, map_smul]
 
+/- English proof (translation)
+Introduce `_ lev _ _ _ E1 E2 l x _ hcl hs hx` and use `boundary_prod_creation_levi_vanish lev E1 E2 x hs l hcl hx`.
+-/
 theorem bd_prodL : ∀ (n : ℕ) (lev : Fin n → ℕ) (V : Type) [AddCommGroup V] [Module ℂ V] (E1 E2 : Fin n → Fin n → Module.End ℂ V)
     (l : List (Pos n)) (x : Cq n V), (∀ e ∈ l, lev e.1.1 = lev e.1.2) →
     (∀ (pre : List (Pos n)) (f : Pos n) (post : List (Pos n)), l = pre ++ f :: post → ∀ e ∈ l, ∀ k : Pos n,

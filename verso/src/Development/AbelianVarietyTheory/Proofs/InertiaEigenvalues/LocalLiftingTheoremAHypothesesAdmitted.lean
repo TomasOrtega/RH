@@ -18,6 +18,9 @@ open Formalism Formalism.BasicNotions Formalism.BasicNotions.Loc Formalism.MainN
 
 namespace GlobalTheory.AdmittedPartOne
 
+/- English proof (translation)
+Introduce `hBK hTD hEC D HW F Cm`. Establish `hU` using `(GlobalTheory.T.wachModuleLocalConclusions_usedForms D HW F Cm).1`. Establish `h54` using `GlobalTheory.T.localConstants_from_admitted_local_Galois_statements hBK hTD hEC D HW F Cm`. Establish `hA` using `(GlobalTheory.T.liftingTheorem_wachModuleLemma_hypotheses_admitted D HW F Cm).1`. Use `⟨hU.1, hU.2.2.1, GlobalTheory.T.restriction_corestriction_H1f D HW F, hA.2.2.2.2.2.2.2.2.2.2.2.2.2.2.2.2.1, GlobalTheory.AdmHerrLocal.main D HW F, hU.2.2.2, archimedean_signature_matching_of_liftingTheory D HW F 23 32 32 10 h54, lifting_input_five_of_lifting D HW F 10 23 32 32 h5 …` and prove the remaining obligations.
+-/
 theorem all_admitted : GlobalTheory.Published.BlochKatoLocal → Formalism.GaloisCohomology.LocalTateDualityK → Formalism.GaloisCohomology.LocalEulerCharK →
     ∀ (D : D7) (HW : HWOf D.loc) (F : FonOf D.loc D.locA HW) (Cm : CmpOf D.loc D.locA HW F),
       ElementDenominator.Adm1 D HW F Cm 23 32 32 := by

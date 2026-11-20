@@ -9,11 +9,19 @@ namespace GroundTheory.Heights₂.Heights.TheoremB
 
 open MvPolynomial Finset Filter Topology
 
+/- English proof (translation)
+Unfold `flagNormalisation`. Use `div_ne_zero (pow_ne_zero _ (by norm_num)) (pow_ne_zero _ ?_)` and prove the remaining obligations. Conclude with `Finset.prod_ne_zero_iff.mpr fun i _ => Nat.cast_ne_zero.mpr (Nat.factorial_ne_zero _)`.
+-/
 theorem flagNormalisation_ne_zero (f N : ℕ) : flagNormalisation f N ≠ 0 := by
   unfold flagNormalisation
   refine div_ne_zero (pow_ne_zero _ (by norm_num)) (pow_ne_zero _ ?_)
   exact Finset.prod_ne_zero_iff.mpr fun i _ => Nat.cast_ne_zero.mpr (Nat.factorial_ne_zero _)
 
+/- English proof (translation)
+Unfold `RestTerms.flagIntegral`. Establish `hne : (RestTerms.blockVandermonde f N).support.Nonempty`. Rewrite using `[Finset.nonempty_iff_ne_empty, Ne, MvPolynomial.support_eq_empty]`. Conclude with `RestTerms.Flag.blockVandermonde_ne_zero f N`. Use `Finset.sum_pos (fun α hα => ?_) hne` and prove the remaining obligations.
+
+Establish `hc : coeff α (RestTerms.blockVandermonde f N) ≠ 0` using `MvPolynomial.mem_support_iff.mp hα`. Use `mul_pos (mul_self_pos.mpr hc) ?_` and prove the remaining obligations. Conclude with `Finset.prod_pos fun i _ => by dsimp only; exact_mod_cast Nat.factorial_pos _`.
+-/
 theorem flagIntegral_blockVandermonde_pos (f N : ℕ) :
     0 < RestTerms.flagIntegral f N (RestTerms.blockVandermonde f N) := by
   unfold RestTerms.flagIntegral
@@ -25,6 +33,11 @@ theorem flagIntegral_blockVandermonde_pos (f N : ℕ) :
   refine mul_pos (mul_self_pos.mpr hc) ?_
   exact Finset.prod_pos fun i _ => by dsimp only; exact_mod_cast Nat.factorial_pos _
 
+/- English proof (translation)
+Use `set Δ : XPoly d := RestTerms.blockVandermonde d.f d.N`. Establish `hΔ : Δ.IsHomogeneous d.D` using `RestTerms.FlagVandermondeHomogeneous.proof d.f d.N`. Establish `hval : intFl d Δ = flagNormalisation d.f d.N * RestTerms.flagIntegral d.f d.N Δ` using `rfl`. Establish `hc : intFl d Δ ≠ 0`. Rewrite using `[hval]`.
+
+Conclude with `mul_ne_zero (flagNormalisation_ne_zero _ _) (flagIntegral_blockVandermonde_pos d.f d.N).ne'`. Use `⟨(intFl d Δ)⁻¹ • Δ, ?_, ?_⟩` and prove the remaining obligations. Establish `hm : Δ ∈ homogeneousSubmodule (Idx d) ℚ d.D` using `(mem_homogeneousSubmodule _ _).mpr hΔ`. Conclude with `(mem_homogeneousSubmodule _ _).mp (Submodule.smul_mem _ _ hm)`. Rewrite using `[map_smul, smul_eq_mul, inv_mul_cancel₀ hc]`.
+-/
 theorem exists_intFl_eq_one (d : IndexData) :
     ∃ Q : XPoly d, Q.IsHomogeneous d.D ∧ intFl d Q = 1 := by
   set Δ : XPoly d := RestTerms.blockVandermonde d.f d.N
@@ -39,6 +52,13 @@ theorem exists_intFl_eq_one (d : IndexData) :
     exact (mem_homogeneousSubmodule _ _).mp (Submodule.smul_mem _ _ hm)
   · rw [map_smul, smul_eq_mul, inv_mul_cancel₀ hc]
 
+/- English proof (translation)
+Introduce `d S h82 hfl B0 A0 b0 hA hb hF`. Take `⟨Q, hQ, hQ1⟩` from `exists_intFl_eq_one d`. Establish `e` using `h₁ d S h82 hfl B0 A0 b0 hA hb (tau0 S) Q hQ hQ1`. Establish `hv : S.vol ≠ 0` using `S.vol_pos.ne'`. Establish `hval : (d.j : ℝ) * A0 + (d.N : ℝ) * b0 = -S.hB B0`.
+
+Rewrite using `[e, hF.1 (tau0 S) Q hQ, hQ1]`. Clear the denominators using the available nonvanishing facts. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hval, abs_neg]`.
+
+Conclude with `hF.2`.
+-/
 theorem TermC.proof (h₁ : HeightLimitIdentity.Statement) : TermC.Statement := by
   intro d S h82 hfl B0 A0 b0 hA hb hF
   obtain ⟨Q, hQ, hQ1⟩ := exists_intFl_eq_one d

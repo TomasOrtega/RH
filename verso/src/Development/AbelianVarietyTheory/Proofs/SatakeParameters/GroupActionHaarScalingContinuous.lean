@@ -11,6 +11,13 @@ open scoped TensorProduct
 
 namespace GlobalTheory.IndEtaleComp
 
+/- English proof (translation)
+Establish `h1` using `GlobalTheory.IndEtaleCancel.isIndEtale_of_etale_of_isIndEtale X E Y h`. Establish `h2` using `GlobalTheory.isIndEtale_tensorProduct_left E Y G h1`. Use `letI : Algebra G F := ((e : Y ⊗[E] G →+* F).comp (Algebra.TensorProduct.includeRight : G →ₐ[E] Y ⊗[E] G).toRingHom).toAlgebra`. Set `e' : G ⊗[E] Y ≃ₐ[G] F` to `AlgEquiv.ofRingEquiv (f := (Algebra.TensorProduct.comm E G Y).toRingEquiv.trans e.toRingEquiv) (fun g => rfl)`. Establish `h3` using `GlobalTheory.StrictHensUnion.indEtale_of_algEquiv e' h2`.
+
+Establish `h4 : RingHom.Etale ((algebraMap E G).comp (algebraMap X E))` using `RingHom.Etale.stableUnderComposition _ _ (RingHom.etale_algebraMap.2 inferInstance) (RingHom.etale_algebraMap.2 inferInstance)`. Establish `h5` using `GlobalTheory.EtC.isIndEtale_comp_etale _ h4 _ h3`. Establish `h6 : (algebraMap Y F).comp (algebraMap X Y) = (algebraMap G F).comp ((algebraMap E G).comp (algebraMap X E))`. Use extensionality with `x`. Express the relevant statement in the definitionally equal form `_ = e ((1 : Y) ⊗ₜ[E] algebraMap E G (algebraMap X E x))`.
+
+Rewrite using `[← Algebra.TensorProduct.algebraMap_apply', IsScalarTower.algebraMap_apply E Y (Y ⊗[E] G), e.commutes, ← IsScalarTower.algebraMap_apply X E Y]`. Both sides reduce to the same expression. Rewrite using `[h6]`. Conclude with `h5`.
+-/
 theorem isIndEtale_of_model (X E Y G F : Type) [CommRing X] [CommRing E] [CommRing Y] [CommRing G]
     [CommRing F] [Algebra X E] [Algebra X Y] [Algebra E Y] [IsScalarTower X E Y]
     [Algebra.Etale X E] [Algebra E G] [Algebra.Etale E G] [Algebra Y F]
@@ -38,6 +45,13 @@ theorem isIndEtale_of_model (X E Y G F : Type) [CommRing X] [CommRing E] [CommRi
   rw [h6]
   exact h5
 
+/- English proof (translation)
+Establish `hf'` using `hf`. Take `⟨J, _, _, D, s, t, hs, hj⟩` from `hf'`. Use `letI : Algebra Y F := g.toAlgebra`. Use `haveI : Algebra.Etale Y F := hg`. Take `⟨i, G, _, _, hG, ⟨e⟩⟩` from `GlobalTheory.EtaleDescent.exists_etale_model_of_isColimit J D (Cocone.mk (CommRingCat.of Y) t) hs F`.
+
+Use `letI : Algebra (D.obj i) Y := (t.app i).hom.toAlgebra`. Use `letI : Algebra X (D.obj i) := (s.app i).hom.toAlgebra`. Use `letI : Algebra X Y := f.toAlgebra`. Use `haveI : Algebra.Etale X (D.obj i) := (hj i).1`. Use `haveI : IsScalarTower X (D.obj i) Y := IsScalarTower.of_algebraMap_eq (fun x => (congrArg (fun φ : CommRingCat.of X ⟶ CommRingCat.of Y => φ.hom x) (hj i).2).symm)`.
+
+Conclude with `isIndEtale_of_model X (D.obj i) Y G F e hf`.
+-/
 theorem isIndEtale_etale_comp {X Y F : Type} [CommRing X] [CommRing Y] [CommRing F]
     (f : X →+* Y) (g : Y →+* F) (hf : GlobalTheory.IndefiniteRowSideFullHecke.ProjectiveSpaceOverSpec.IsIndEtale f) (hg : g.Etale) :
     GlobalTheory.IndefiniteRowSideFullHecke.ProjectiveSpaceOverSpec.IsIndEtale (g.comp f) := by
@@ -55,6 +69,13 @@ theorem isIndEtale_etale_comp {X Y F : Type} [CommRing X] [CommRing Y] [CommRing
     (congrArg (fun φ : CommRingCat.of X ⟶ CommRingCat.of Y => φ.hom x) (hj i).2).symm)
   exact isIndEtale_of_model X (D.obj i) Y G F e hf
 
+/- English proof (translation)
+Introduce `X Y Z _ _ _ f g hf hg`. Establish `hp : RingHom.toMorphismProperty @RingHom.Etale ≤ MorphismProperty.isFinitelyPresentable.{0} CommRingCat.{0}`. Introduce `X Y f hf`. Use `CommRingCat.isFinitelyPresentable_hom f ?_` and prove the remaining obligations. Use `letI := f.hom.toAlgebra`.
+
+Use `haveI : Algebra.Etale X Y := hf`. Conclude with `RingHom.finitePresentation_algebraMap.2 inferInstance`. Take `⟨J, _, _, D, s, t, hs, hj⟩` from `hg`. Unfold `GlobalTheory.IndefiniteRowSideFullHecke.ProjectiveSpaceOverSpec.IsIndEtale`. Rewrite using `[← MorphismProperty.ind_ind hp]`.
+
+Use `⟨J, inferInstance, inferInstance, D, (Functor.const J).map (CommRingCat.ofHom f) ≫ s, t, hs, fun j => ⟨?_, ?_⟩⟩` and prove the remaining obligations. Conclude with `isIndEtale_etale_comp (F := D.obj j) f (s.app j).hom hf (hj j).1`. Establish `h2` using `(hj j).2 show CommRingCat.ofHom f ≫ s.app j ≫ t.app j = CommRingCat.ofHom (g.comp f)`. Rewrite using `[h2]`. Both sides reduce to the same expression.
+-/
 theorem isIndEtale_comp : ∀ (X Y Z : Type) [CommRing X] [CommRing Y] [CommRing Z] (f : X →+* Y) (g : Y →+* Z), GlobalTheory.IndefiniteRowSideFullHecke.ProjectiveSpaceOverSpec.IsIndEtale f → GlobalTheory.IndefiniteRowSideFullHecke.ProjectiveSpaceOverSpec.IsIndEtale g → GlobalTheory.IndefiniteRowSideFullHecke.ProjectiveSpaceOverSpec.IsIndEtale (g.comp f) := by
   intro X Y Z _ _ _ f g hf hg
   have hp : RingHom.toMorphismProperty @RingHom.Etale ≤

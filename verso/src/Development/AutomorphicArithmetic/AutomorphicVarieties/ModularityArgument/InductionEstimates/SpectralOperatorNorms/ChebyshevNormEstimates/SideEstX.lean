@@ -9,6 +9,9 @@ open GroundTheory.Automorphic GroundTheory.Automorphic.Reduction GroundTheory.Au
 open GroundTheory.Automorphic.AutomorphicForm GroundTheory.Automorphic.CuspidalSpectrum UpperTheory.ConvolutionTheory UpperTheory.ConvolutionTheory.C UpperTheory.ConvolutionTheory.Ci PositivityTheory.Rg.Fx
 open PositivityTheory.Rg.Tf.Core PositivityTheory.Rg.Tf.Adel PositivityTheory.Rg.Tf.IntegralApplyAeEq UpperTheory.V.Z.IntegralApplyAeEq UpperTheory.V.Z.InvariantSubmoduleMonicPolynomial
 
+/- English proof (translation)
+Establish `hR : 0 ≤ R` using `(abs_nonneg _).trans hM`. Establish `h2 : a ≤ R ^ (d + 1)` using `ha.trans ((le_abs_self _).trans (by rw [abs_pow]; exact pow_le_pow_left₀ (abs_nonneg _) hM _))`. Rewrite using `[mul_pow]`. Conclude with `mul_le_mul h2 (hb.trans (le_self_pow₀ h1 (Nat.succ_ne_zero d))) hb0 (by positivity)`.
+-/
 private theorem pw_mul {a b M R b' : ℝ} {d : ℕ} (ha : a ≤ M ^ (d + 1)) (hb0 : 0 ≤ b) (hb : b ≤ b') (h1 : 1 ≤ b')
     (hM : |M| ≤ R) : a * b ≤ (R * b') ^ (d + 1) := by
   have hR : 0 ≤ R := (abs_nonneg _).trans hM
@@ -17,6 +20,11 @@ private theorem pw_mul {a b M R b' : ℝ} {d : ℕ} (ha : a ≤ M ^ (d + 1)) (hb
   rw [mul_pow]
   exact mul_le_mul h2 (hb.trans (le_self_pow₀ h1 (Nat.succ_ne_zero d))) hb0 (by positivity)
 
+/- English proof (translation)
+Use `(pow_le_pow_left₀ hB0 hB _).trans ?_` and prove the remaining obligations. Rewrite using `[← Real.exp_nat_mul, ← Real.exp_add]`. Use `Real.exp_le_exp.mpr ?_` and prove the remaining obligations. Establish `: (m' : ℝ) ≤ s₀` using `by exact_mod_cast hm`. Use `push_cast`.
+
+Use the polynomial consequences of the given equalities and inequalities.
+-/
 private theorem exp_grow {B c₁ : ℝ} {j m' s₀ : ℕ} (hB0 : 0 ≤ B) (hB : B ≤ Real.exp c₁) (hc : 0 ≤ c₁) (hm : m' ≤ s₀) :
     B ^ (j + m') ≤ Real.exp (c₁ * s₀) * Real.exp (c₁ * j) := by
   refine (pow_le_pow_left₀ hB0 hB _).trans ?_
@@ -26,6 +34,35 @@ private theorem exp_grow {B c₁ : ℝ} {j m' s₀ : ℕ} (hB0 : 0 ≤ B) (hB : 
   push_cast
   nlinarith
 
+/- English proof (translation)
+Establish `hW : 0 ≤ W` using `h10.trans h1`. Establish `hq : 1 ≤ 4 / η` using `by rw [le_div_iff₀ hη]; linarith`. Establish `hr : 1 ≤ M₁ / 4` using `by linarith`. Establish `hrq : M₁ / η = M₁ / 4 * (4 / η)` using `by field_simp`. Rewrite using `[hrq]`.
+
+Generalize the expression as in `4 / η = q at *`. Generalize the expression as in `M₁ / 4 = r at *`. Establish `hrq1 : 1 ≤ r * q` using `one_le_mul_of_one_le_of_one_le hr hq`. Establish `hR1 : (r * q) ^ m ≤ (r * q) ^ s₀` using `pow_le_pow_right₀ hrq1 hm`. Establish `hR2 : q ^ m ≤ (r * q) ^ s₀` using `(pow_le_pow_left₀ (by linarith) (by nlinarith) m).trans hR1`.
+
+Establish `hR3 : 1 ≤ (r * q) ^ s₀` using `one_le_pow₀ hrq1`. Establish `a1 : cU ^ (j + m') * Real.exp (N₀ * (C₂ * ((j + m' : ℕ) : ℝ))) ≤ Real.exp (c₁ * s₀) * Real.exp (c₁ * j)`. Use `le_trans (le_of_eq ?_) (exp_grow (by positivity) hA hc hm')` and prove the remaining obligations. Rewrite using `[mul_pow, ← Real.exp_nat_mul]`. Use `congr 2`.
+
+Expand and normalize the polynomial expressions, which then agree. Establish `a2 : cU ^ (j + m') * r ^ k * Real.exp (-2 * (C₂ * ((j + m' : ℕ) : ℝ))) ≤ Real.exp (-N * j)`. Establish `b1 : r ^ k ≤ r ^ (j + m')` using `pow_le_pow_right₀ hr (by omega)`. Establish `b2 : (cU * r * Real.exp (-2 * C₂)) ^ (j + m') ≤ Real.exp (-|N|) ^ (j + m')` using `pow_le_pow_left₀ (by positivity) hB _`. Establish `b3 : Real.exp (-|N|) ^ (j + m') ≤ Real.exp (-N * j)`.
+
+Rewrite using `[← Real.exp_nat_mul]`. Use `Real.exp_le_exp.mpr ?_` and prove the remaining obligations. Use `le_abs_self N` as an intermediate fact. Use `abs_nonneg N` as an intermediate fact. Establish `: (0 : ℝ) ≤ j` using `by positivity`.
+
+Establish `: (0 : ℝ) ≤ m'` using `by positivity`. Use `push_cast`. Use the polynomial consequences of the given equalities and inequalities. Use `le_trans ?_ (b2.trans b3)` and prove the remaining obligations. Rewrite using `[mul_pow, mul_pow, ← Real.exp_nat_mul]`.
+
+Establish `: ((j + m' : ℕ) : ℝ) * (-2 * C₂) = -2 * (C₂ * ((j + m' : ℕ) : ℝ))` using `by ring`. Rewrite using `[this]`. Use `gcongr`. Establish `hE : 1 ≤ Real.exp (c₁ * s₀)` using `Real.one_le_exp (by positivity)`. Establish `e : -(((2 : ℕ) : ℝ) * (C₂ * ((j + m' : ℕ) : ℝ))) = -2 * (C₂ * ((j + m' : ℕ) : ℝ))` using `by push_cast; ring`.
+
+Rewrite using `[e]`. Establish `p1` using `Real.exp_pos (N₀ * (C₂ * ((j + m' : ℕ) : ℝ)))`. Establish `p2` using `Real.exp_pos (-2 * (C₂ * ((j + m' : ℕ) : ℝ)))`. Establish `p3` using `Real.exp_pos (c₁ * j)`. Establish `p4` using `Real.exp_pos (-N * j)`.
+
+Generalize the expression as in `Real.exp (N₀ * (C₂ * ((j + m' : ℕ) : ℝ))) = x1 at *`. Generalize the expression as in `Real.exp (-2 * (C₂ * ((j + m' : ℕ) : ℝ))) = x2 at *`. Generalize the expression as in `Real.exp (c₁ * j) = x3 at *`. Generalize the expression as in `Real.exp (-N * j) = x4 at *`. Generalize the expression as in `Real.exp (c₁ * s₀) = E at *`.
+
+Establish `hu : 0 ≤ cU ^ (j + m')` using `by positivity`. Generalize the expression as in `cU ^ (j + m') = u at *`. Establish `hrk : 1 ≤ r ^ k` using `one_le_pow₀ hr`. Establish `hrqm : 0 ≤ (r * q) ^ m` using `by positivity`. Rewrite using `[pow_add q, pow_add (r * q), mul_pow r q k]`.
+
+Establish `hqk : 0 ≤ q ^ k` using `by positivity`. Establish `hqm : 0 ≤ q ^ m` using `by positivity`. Generalize the expression as in `q ^ k = qk at *`. Generalize the expression as in `q ^ m = qm at *`. Generalize the expression as in `r ^ k = rk at *`.
+
+Generalize the expression as in `(r * q) ^ m = Rm at *`. Generalize the expression as in `(r * q) ^ s₀ = R at *`. Establish `a3 : u * x2 ≤ x4` using `le_trans (by nlinarith [mul_nonneg hu p2.le]) a2`. Establish `t1 : u * x1 * (e1 + qk * qm * e2) ≤ E * x3 * (R * W + qk * R * (W / D))`. Establish `: e1 ≤ R * W` using `h1.trans (le_mul_of_one_le_left hW hR3)`.
+
+Use `gcongr`. Establish `t2 : u * x2 * (qk * qm * e1) ≤ x4 * (qk * R * W)` using `by gcongr`. Establish `t3 : u * rk * x2 * (qk * Rm * W) ≤ x4 * (qk * R * W)` using `by gcongr`. Establish `t4 : x4 * (qk * R * W) ≤ E * (x4 * (qk * R * W))` using `le_mul_of_one_le_left (by positivity) hE`. Establish `t5 : 0 ≤ E * x3 * (R * W + qk * R * (W / D))` using `by positivity`.
+
+Combine the equalities or inequalities in the displayed calculation.
+-/
 private theorem main_est {C₁ cU M₁ C₂ N c₁ η e1 e2 W D : ℝ} {N₀ j k m m' s₀ : ℕ} (hcU : 1 ≤ cU) (hM₁ : 4 ≤ M₁)
     (hη : 0 < η) (hη1 : η ≤ 1) (hk : k ≤ j) (hm : m ≤ s₀) (hm' : m' ≤ s₀) (h10 : 0 ≤ e1) (h1 : e1 ≤ W) (h20 : 0 ≤ e2)
     (h2 : e2 ≤ W / D) (hD : 0 < D) (hc : 0 ≤ c₁) (hA : cU * Real.exp (N₀ * C₂) ≤ Real.exp c₁)
@@ -108,6 +145,15 @@ private theorem main_est {C₁ cU M₁ C₂ N c₁ η e1 e2 W D : ℝ} {N₀ j k
       mul_le_mul_of_nonneg_left (by linarith) (abs_nonneg _)
     _ = _ := by ring
 
+/- English proof (translation)
+Set `Ψ : (Eu 𝔣.d' →L[ℂ] Eu 𝔣.d') →ₗ[ℂ] ℂ` to `{ toFun := fun a => LinearMap.trace ℂ (Eu 𝔣.d) ((N.toLinearEquiv : Eu 𝔣.d' →ₗ[ℂ] Eu 𝔣.d) ∘ₗ ((eigP 𝔣.a₀ x ∘L a ∘L symb 𝔣.βg 0 : Eu 𝔣.d' →L[ℂ] Eu 𝔣.d') : Eu 𝔣.d' →ₗ[ℂ] Eu 𝔣.d') ∘ₗ (𝔣.s.toLinearEquiv : Eu 𝔣.d →ₗ[ℂ] Eu 𝔣.d')) map_add' := fun a b => by`. Rewrite using `[← map_add]`. Use `congr 1`. Use extensionality with `v`. Simplify using the standard rewrite rules.
+
+Use the proof step `map_smul' := fun c a => by`. Rewrite using `[RingHom.id_apply, ← map_smul]`. Use `congr 1`. Use extensionality with `v`. Simplify using `}`.
+
+Use `⟨‖LinearMap.toContinuousLinearMap Ψ‖, norm_nonneg _, fun j => ?_⟩` and prove the remaining obligations. Use `((LinearMap.toContinuousLinearMap Ψ).le_opNorm (𝔣.u 0 0 ^ j)).trans (mul_le_mul_of_nonneg_left ?_ (norm_nonneg _))` and prove the remaining obligations. Proceed by induction on `j with`. Consider the case `zero => rw [pow_zero, pow_zero]`. Conclude with `ContinuousLinearMap.norm_id_le`.
+
+Consider the case `succ j ih`. Rewrite using `[pow_succ, pow_succ]`. Conclude with `(norm_mul_le _ _).trans (mul_le_mul ih (by linarith) (norm_nonneg _) (by positivity))`.
+-/
 private theorem tr_bd {E : Type} [Field E] [NumberField E] {μ : Measure (normOneGL E (2 + 2))} [μ.IsHaarMeasure] {θ : Twist μ}
     {𝔢 : Side θ 2} (𝔣 : Fam 𝔢) (N : Eu 𝔣.d' ≃ₗᵢ[ℂ] Eu 𝔣.d) (x : ℝ) :
     ∃ Ct : ℝ, 0 ≤ Ct ∧ ∀ j, ‖𝔣.tr N x j‖ ≤ Ct * (‖𝔣.u 0 0‖ + 1) ^ j := by
@@ -129,6 +175,69 @@ private theorem tr_bd {E : Type} [Field E] [NumberField E] {μ : Measure (normOn
     exact (norm_mul_le _ _).trans (mul_le_mul ih (by linarith) (norm_nonneg _) (by positivity))
 
 set_option maxHeartbeats 6000000 in
+/- English proof (translation)
+Introduce `h1 hV hT K _ _ _ μ _ θ 𝔰 𝔵 ev evz Nn Cf hev hin hz hF sp hsp C₀ N`. Take `⟨c, cU, M₁, N₀, hc, hcU, hM₁, H⟩` from `h1 K μ θ 𝔰 𝔵 ev evz Nn Cf hev hin hz hF sp hsp`. Choose the witnesses or unpack the hypotheses as in `⟨C₂, hC1, hC2, hC3⟩ : ∃ C₂ : ℝ, 1 ≤ C₂ ∧ C₀ ≤ c * C₂ ∧ cU * (M₁ / 4) * Real.exp (-2 * C₂) ≤ Real.exp (-|N|) := by`. Establish `hpos : 0 < cU * (M₁ / 4)` using `by positivity`. Establish `q1 : 0 ≤ |C₀| / c` using `by positivity`.
+
+Establish `q2` using `abs_nonneg N`. Use `⟨1 + |C₀| / c + |N| + cU * (M₁ / 4), by linarith, ?_, ?_⟩` and prove the remaining obligations. Establish `: c * (|C₀| / c) = |C₀|` using `by field_simp`. Use `le_abs_self C₀` as an intermediate fact. Use the polynomial consequences of the given equalities and inequalities.
+
+Establish `q3 : cU * (M₁ / 4) ≤ Real.exp (cU * (M₁ / 4))` using `by linarith [Real.add_one_le_exp (cU * (M₁ / 4))]`. Use `(mul_le_mul_of_nonneg_right q3 (Real.exp_pos _).le).trans ?_` and prove the remaining obligations. Rewrite using `[← Real.exp_add]`. Conclude with `Real.exp_le_exp.mpr (by linarith)`. Choose the witnesses or unpack the hypotheses as in `⟨c₁, hc0, hcA, hcB⟩ : ∃ c₁ : ℝ, 0 ≤ c₁ ∧ cU * Real.exp (N₀ * C₂) ≤ Real.exp c₁ ∧ ‖𝔵.u 0 0‖ + 1 ≤ Real.exp c₁ := by`.
+
+Establish `q1 : 0 ≤ cU * Real.exp (N₀ * C₂)` using `by positivity`. Establish `q2` using `norm_nonneg (𝔵.u 0 0)`. Establish `q3` using `Real.add_one_le_exp (cU * Real.exp (N₀ * C₂) + ‖𝔵.u 0 0‖)`. Conclude with `⟨cU * Real.exp (N₀ * C₂) + ‖𝔵.u 0 0‖, by linarith, by linarith, by linarith⟩`. Use `⟨c₁, fun η hη hη1 χ hχ hχ1 hχ2 => ?_⟩` and prove the remaining obligations.
+
+Take `⟨s, hs, hfin, H⟩` from `H η hη hη1 χ hχ hχ1 hχ2`. Take `⟨C₁, T₁, H⟩` from `H 2`. Use `⟨s, hs, hfin, fun Φ G hΦ hG hC P hP => ?_⟩` and prove the remaining obligations. Take `⟨Ck, hC⟩` from `hC`. Take `⟨⟨κ, D, hκ, hBd⟩, hval', hnorm⟩` from `(hT K (2 + 2) 𝔰.S Φ hΦ).2 G hG`.
+
+Take `⟨Me, hMe⟩` from `hnorm (LL μ) ev hev.const`. Establish `hSB : ∀ R : PR K (2 + 2), (∀ y ∈ R.vars, y.1 ∉ 𝔰.S) → ∃ M, SB (fun z => evz z R) M` using `fun R hR => ((actLaws 𝔵.A'.J).2.2.1 _ _ (hz.act R hR)).1`. Take `⟨Mt, hMt⟩` from `truncSB evz hz.const 𝔰.S hSB Φ G hΦ hG`. Take `⟨KP, hKP⟩` from `hSB P hP`. Establish `htv : ∀ d, ∀ y ∈ (trunc d G).vars, y.1 ∉ 𝔰.S` using `fun d y hy => hκ _ ((hBd d).1 y hy)`.
+
+Establish `hQv : ∀ d, ∀ y ∈ (trunc d G * P).vars, y.1 ∉ 𝔰.S` using `fun d y hy => by`. Break down `Finset.mem_union.mp (vars_mul _ _ hy) with h | h` into its components or cases. Conclude with `htv d y h`. Conclude with `hP y h`. Establish `hV'` using `fun y (hy : y ∈ s) => hV K (2 + 2) (by norm_num) μ 𝔰.toAmp y.2 y.1 (hη.trans ((hs y).1 hy).1) ((hs y).1 hy).2.1`.
+
+Establish `hex : ∀ y : ℝ × Submodule ℂ (LL μ), ∃ Λ t, y ∈ s → At μ 𝔰.S y.2 Λ t` using `fun y => by`. Distinguish the cases in `hy : y ∈ s`. Take `⟨Λ, t, h⟩` from `(hV' y hy).1 ((hs y).1 hy).2.2.2`. Conclude with `⟨Λ, t, fun _ => h⟩`. Conclude with `⟨fun _ => 0, fun _ => 0, fun h => absurd h hy⟩`.
+
+Use `choose Λ t hΛ using hex`. Establish `huniq : ∀ y ∈ s, ∀ Λ' t', At μ 𝔰.S y.2 Λ' t' → ∀ R : PR K (2 + 2), (∀ y ∈ R.vars, y.1 ∉ 𝔰.S) → val y.1 (Λ y) (t y) R = val y.1 Λ' t' R` using `fun y hy Λ' t' h R hR => by`. Take `⟨v, hv, hv0⟩` from `Submodule.exists_mem_ne_zero_of_ne_bot ((hs y).1 hy).2.2.2`. Establish `e1` using `(hV' y hy).2.2 ev hev _ _ (hΛ y hy) R hR v hv`. Establish `e2` using `(hV' y hy).2.2 ev hev _ _ h R hR v hv`.
+
+Conclude with `smul_left_injective ℂ hv0 (e1.symm.trans e2)`. Use `⟨fun y d => y.1 * val y.1 (Λ y) (t y) P * (val y.1 (Λ y) (t y) (trunc d G) / (y.1 : ℂ) ^ d), fun x d => x * val x 𝔵.Λ 𝔵.t P * (val x 𝔵.Λ 𝔵.t (trunc d G) / (x : ℂ) ^ d), ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `y hy L t' h`. Take `⟨u, hu, hu'⟩` from `hval' L t'`. Establish `hy0 : (y.1 : ℂ) ≠ 0` using `by exact_mod_cast (hη.trans ((hs y).1 hy).1).ne'`.
+
+Use `(hu.const_mul _).congr fun d => ?_` and prove the remaining obligations. Use `beta_reduce`. Rewrite using `[huniq y hy _ _ h P hP, huniq y hy _ _ h _ (htv d), hu', mul_div_cancel_left₀ _ (pow_ne_zero d hy0)]`. Introduce `x L hL`. Take `⟨u, hu, hu'⟩` from `hval' L 𝔵.t`.
+
+Rewrite `hu'` using `[hL]`. Use `(hu.const_mul _).congr fun d => ?_` and prove the remaining obligations. Use `beta_reduce`. Distinguish the cases in `hx : (x : ℂ) = 0`. Simplify using `[hx]`.
+
+Rewrite using `[hu', mul_div_cancel_left₀ _ (pow_ne_zero d hx)]`. Introduce `p hp s₀`. Use `choose Ct hCt0 hCt using fun x => tr_bd 𝔵 Nn x`. Take `⟨M₀, hM₀0, hM₀⟩ : ∃ M₀ : ℝ, 0 ≤ M₀ ∧ ∀ {a b M : ℝ} {d : ℕ}, a ≤ M ^ (d + 1) → 0 ≤ b → b ≤ ‖ev P‖ + |KP| + 1 → |M| ≤ |Me| + |Ck| + |Mt| + 1 → a * b ≤ M₀ ^ (d + 1)` from `⟨(|Me| + |Ck| + |Mt| + 1) * (‖ev P‖ + |KP| + 1), by positivity, fun ha hb hb' hM => pw_mul ha hb hb' (by linarith [norm_nonneg (ev P), abs_nonneg KP]) hM⟩`. Take `⟨K₁, hK₁⟩ : ∃ K₁ : ℝ, K₁ = 2 * |C₁| * Real.exp (c₁ * s₀) * (M₁ / η) ^ s₀` from `⟨_, rfl⟩`.
+
+Take `⟨K₂, hK₂⟩ : ∃ K₂ : ℝ, K₂ = (∑ x ∈ sp, Ct x) * Real.exp (c₁ * s₀)` from `⟨_, rfl⟩`. Establish `hK₁0 : 0 ≤ K₁`. Establish `: 0 ≤ M₁` using `by linarith`. Rewrite using `[hK₁]`. Check the signs of the components of the expression.
+
+Establish `hS0 : 0 ≤ ∑ x ∈ sp, Ct x` using `Finset.sum_nonneg fun x _ => hCt0 x`. Establish `hK₂0 : 0 ≤ K₂` using `by rw [hK₂]; positivity`. Use `⟨(K₁ + K₂ + 1) * M₀, by positivity, ?_⟩` and prove the remaining obligations. Use `filter_upwards [eventually_ge_atTop ⌈T₁⌉₊] with j hj d m hm m' hm' f hf`. Establish `n1` using `abs_nonneg Me`.
+
+Establish `n2` using `abs_nonneg Ck`. Establish `n3` using `abs_nonneg Mt`. Establish `n4` using `abs_nonneg KP`. Establish `n5` using `norm_nonneg (ev P)`. Establish `hW0 : 0 ≤ M₀ ^ (d + 1)` using `by positivity`.
+
+Establish `hfac : (0 : ℝ) < d.factorial` using `by exact_mod_cast Nat.factorial_pos d`. Establish `b1 : ‖ev (trunc d G * P)‖ ≤ M₀ ^ (d + 1)`. Rewrite using `[map_mul]`. Conclude with `(norm_mul_le _ _).trans (hM₀ (hMe d) n5 (by linarith) (by linarith))`. Establish `b2 : ‖ev (trunc d G * P) ∘L fcalc χ 𝔰.toAmp.A ∘L (1 - Pc μ - 𝔵.P)‖ ≤ M₀ ^ (d + 1) / d.factorial`.
+
+Rewrite using `[mul_comm, map_mul, ContinuousLinearMap.mul_def, ContinuousLinearMap.comp_assoc, le_div_iff₀ hfac]`. Use `(le_div_iff₀ hfac).mp (hC d)` as an intermediate fact. Use `le_trans ?_ (hM₀ this n5 (by linarith) (by linarith))` and prove the remaining obligations. Rewrite using `[mul_right_comm, mul_comm _ ‖ev P‖]`. Conclude with `mul_le_mul_of_nonneg_right (ContinuousLinearMap.opNorm_comp_le _ _) hfac.le`.
+
+Establish `b3 : SB (fun z => evz z (trunc d G * P)) (M₀ ^ (d + 1))` using `fun z hz' => by`. Simplify using `only [map_mul]`. Conclude with `(norm_mul_le _ _).trans (hM₀ (hMt d z hz') (norm_nonneg _) ((hKP z hz').trans (by linarith [le_abs_self KP])) (by linarith))`. Establish `hj0 : (0 : ℝ) ≤ ((j + m' : ℕ) : ℝ)` using `by positivity`. Establish `hT₁ : T₁ ≤ C₂ * ((j + m' : ℕ) : ℝ)`.
+
+Establish `q1 : T₁ ≤ ((j + m' : ℕ) : ℝ)` using `(Nat.le_ceil T₁).trans (by exact_mod_cast hj.trans (Nat.le_add_right _ _))`. Use the polynomial consequences of the given equalities and inequalities. Establish `hf' : 𝔰.Rep (ev (chebP η (j / p + m) * (trunc d G * P))) (j + m') (Real.exp (c * (C₂ * ((j + m' : ℕ) : ℝ)))) f` using `⟨hf.1, fun x hx => hf.2 x (lt_of_le_of_lt (Real.exp_le_exp.mpr (by nlinarith)) hx)⟩`. Establish `E1` using `(H (trunc d G * P) (fun y => val y.1 (Λ y) (t y) (trunc d G * P)) _ (hQv d) b3 (fun y hy v hv => (hV' y hy).2.2 ev hev _ _ (hΛ y hy) _ (hQv d) v hv) (j / p + m) (j + m') _ f hT₁ hf').trans (main_est hcU hM₁ hη hη1 (Nat.div_le_self j p) hm hm' (norm_nonneg _) b1 (norm_nonneg _) b2 …`. Establish `E2 : ‖(1 / 2 : ℂ) * ∑ x ∈ sp.filter (fun x => ¬ η < x), (cheb η (j / p + m) x : ℂ) * (x * val x 𝔵.Λ 𝔵.t (trunc d G * P) * 𝔵.tr Nn x (j + m'))‖ ≤ K₂ * M₀ ^ (d + 1) * Real.exp (c₁ * j)`.
+
+Establish `g1 : ∀ x ∈ sp.filter (fun x => ¬ η < x), ‖(cheb η (j / p + m) x : ℂ) * (x * val x 𝔵.Λ 𝔵.t (trunc d G * P) * 𝔵.tr Nn x (j + m'))‖ ≤ Ct x * (M₀ ^ (d + 1) * (Real.exp (c₁ * s₀) * Real.exp (c₁ * j)))`. Introduce `x hx`. Take `⟨hx, hxη⟩` from `Finset.mem_filter.mp hx`. Take `⟨hx0, hx⟩` from `(hsp x).1 hx`. Establish `hxη : x ≤ η` using `not_lt.mp hxη`.
+
+Take `⟨v, hv, hv0⟩` from `Submodule.exists_mem_ne_zero_of_ne_bot hx`. Establish `r1 : ‖(cheb η (j / p + m) x : ℂ)‖ ≤ 1`. Rewrite using `[Complex.norm_real]`. Conclude with `(UpperTheory.ConvolutionTheory.FX.cheb_bound η _ hη hη1).1 x ⟨hx0.le, hxη⟩`. Establish `r2 : ‖(x : ℂ)‖ ≤ 1`.
+
+Rewrite using `[Complex.norm_real, Real.norm_of_nonneg hx0.le]`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `r3 : ‖val x 𝔵.Λ 𝔵.t (trunc d G * P)‖ ≤ M₀ ^ (d + 1)`. Establish `q1` using `(evz 0 (trunc d G * P)).le_of_opNorm_le (b3 0 (by simp)) v`. Rewrite `q1` using `[hz.zero _ (hQv d) x hx0 v hv, norm_smul]`.
+
+Conclude with `le_of_mul_le_mul_right q1 (norm_pos_iff.mpr hv0)`. Establish `r4 : ‖𝔵.tr Nn x (j + m')‖ ≤ Ct x * (Real.exp (c₁ * s₀) * Real.exp (c₁ * j))` using `(hCt x _).trans (mul_le_mul_of_nonneg_left (exp_grow (by positivity) hcB hc0 hm') (hCt0 x))`. Use `hCt0 x` as an intermediate fact. Rewrite using `[norm_mul, norm_mul, norm_mul]`. Combine the equalities or inequalities in the displayed calculation.
+
+Establish `g2` using `(norm_sum_le _ _).trans (Finset.sum_le_sum g1)`. Rewrite `g2` using `[← Finset.sum_mul]`. Establish `g3 : ∑ x ∈ sp.filter (fun x => ¬ η < x), Ct x ≤ ∑ x ∈ sp, Ct x` using `Finset.sum_le_sum_of_subset_of_nonneg (Finset.filter_subset _ _) fun x _ _ => hCt0 x`. Rewrite using `[norm_mul]`. Establish `g4 : ‖(1 / 2 : ℂ)‖ ≤ 1` using `by norm_num`.
+
+Combine the equalities or inequalities in the displayed calculation. Establish `s1 : ∑ y ∈ s, y.1 * val y.1 (Λ y) (t y) P * (val y.1 (Λ y) (t y) (trunc d G) / (y.1 : ℂ) ^ d) * (y.1 : ℂ) ^ d * (cheb η (j / p + m) y.1 : ℂ) * trOn (eigIn y.2 𝔰.toAmp.A y.1) ((𝔰.Uq 0 ^ (j + m')) ∘L Rop μ 𝔰.g ∘L θ.U) = ∑ y ∈ s, (cheb η (j / p + m) y.1 : ℂ) * (y.1 * val y.1 (Λ y) ( …`. Use `Finset.sum_congr rfl fun y hy => ?_` and prove the remaining obligations. Establish `hy0 : (y.1 : ℂ) ≠ 0` using `by exact_mod_cast (hη.trans ((hs y).1 hy).1).ne'`. Rewrite using `[map_mul]`.
+
+Clear the denominators using the available nonvanishing facts. Establish `s2 : ∑ x ∈ sp.filter (η < ·), x * val x 𝔵.Λ 𝔵.t P * (val x 𝔵.Λ 𝔵.t (trunc d G) / (x : ℂ) ^ d) * (x : ℂ) ^ d * (cheb η (j / p + m) x : ℂ) * ((1 / 2 : ℂ) * 𝔵.tr Nn x (j + m')) = (1 / 2 : ℂ) * ∑ x ∈ sp.filter (η < ·), (cheb η (j / p + m) x : ℂ) * (x * val x 𝔵.Λ 𝔵.t (trunc d G * P) * …`. Rewrite using `[Finset.mul_sum]`. Use `Finset.sum_congr rfl fun x hx => ?_` and prove the remaining obligations. Establish `hx0 : (x : ℂ) ≠ 0` using `by exact_mod_cast (hη.trans (Finset.mem_filter.mp hx).2).ne'`.
+
+Rewrite using `[map_mul]`. Clear the denominators using the available nonvanishing facts. Rewrite `E1` using `[← Finset.sum_filter_add_sum_filter_not sp (η < ·), mul_add, ← sub_sub, ← hK₁]`. Use `beta_reduce`. Rewrite using `[s1, s2]`.
+
+Establish `hq : 0 ≤ (4 / η) ^ (j / p)` using `by positivity`. Establish `x3` using `Real.exp_pos (c₁ * j)`. Establish `x4` using `Real.exp_pos (-N * j)`. Establish `F0 : Real.exp (c₁ * j) ≤ Real.exp (c₁ * j) * (1 + (4 / η) ^ (j / p) / d.factorial) + (4 / η) ^ (j / p) * Real.exp (-N * j)`. Establish `: 0 ≤ Real.exp (c₁ * j) * ((4 / η) ^ (j / p) / d.factorial)` using `by positivity`.
+
+Establish `: 0 ≤ (4 / η) ^ (j / p) * Real.exp (-N * j)` using `by positivity`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `F1` using `x3.le.trans F0`. Use `(norm_le_norm_sub_add _ _).trans ((add_le_add E1 (E2.trans (mul_le_mul_of_nonneg_left F0 (by positivity)))).trans ?_)` and prove the remaining obligations. Rewrite using `[← add_mul, ← add_mul, mul_pow]`.
+
+Establish `F2 : K₁ + K₂ ≤ (K₁ + K₂ + 1) ^ (d + 1)` using `le_trans (by linarith) (le_self_pow₀ (by linarith) (Nat.succ_ne_zero d))`. Use `gcongr`.
+-/
 theorem UpperTheory.V.Z.InvariantSubmoduleMonicPolynomial.sideEstX :
     OneSideX → EvVal → TruncSpec → ∀ (K : Type) [Field K] [NumberField K] [IsTotallyComplex K]
       (μ : Measure (normOneGL K (2 + 2))) [μ.IsHaarMeasure] (θ : Twist μ) (𝔰 : Side θ 2) (𝔵 : Fam 𝔰)

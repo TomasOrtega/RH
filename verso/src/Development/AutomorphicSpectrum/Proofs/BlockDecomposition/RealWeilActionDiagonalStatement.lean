@@ -12,6 +12,9 @@ open GroundTheory.Global.AdicLiesOver
 open GlobalTheory.CompanionTheory.FexTheta
 
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.CompanionTheory.FexTheta.RealSim.piRc_sim | exact GlobalTheory.CompanionTheory.FexTheta.RealSim.piRc_sim | (intros; apply GlobalTheory.CompanionTheory.FexTheta.RealSim.piRc_sim <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.real_weil_action_diagonal : ∀ (n : ℤ) (t : ℝ) (z : ℂˣ) (a : ℝˣ), (a : ℝ) = ‖(z : ℂ)‖ ^ 2 → ∀ (g : GL (Fin 2) ℝ) (x : ℂ),
   piRc (chC n (Complex.I * t)) (dg2 a 1 * g) (PhiInf n) x =
     chC n (Complex.I * t) z * ((‖(z : ℂ)‖ : ℝ) : ℂ) * piRc (chC n (Complex.I * t)) g (PhiInf n) (x * z) := by

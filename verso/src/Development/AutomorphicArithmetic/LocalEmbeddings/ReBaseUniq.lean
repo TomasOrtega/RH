@@ -16,6 +16,11 @@ open GlobalTheory.RealActs GlobalTheory.ThK.RealUniq
 
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E} {B : Base F E}
 
+/- English proof (translation)
+Take `⟨w⟩ : Nonempty (InfinitePlace F)` from `inferInstance`. Establish `hY : Y.J.det ≠ 0` using `fun h0 => det_ne_zero_of_sig (h.herm.sig w) (by`. Rewrite using `[← RingHom.mapMatrix_apply, ← RingHom.map_det, h0, map_zero])`. Establish `hW : W.J.det ≠ 0` using `fun h0 => det_ne_zero_of_sig (h.skew.sig w) (by`. Rewrite using `[Matrix.det_smul, ← RingHom.mapMatrix_apply, ← RingHom.map_det, h0, map_zero, mul_zero])`.
+
+Conclude with `(hKP.howeDualityReal F E σ h.base.cm n d Y W M B.ψ χY χW o h.base.std h.herm.herm hY h.skew.skew hW h.resX h.resW h.hX h.hW h.weil B.emb h.herm.cartan h.skew.cartan).2`.
+-/
 theorem howe_sup_pr (hKP : GlobalTheory.FunPr.Hypotheses₂) {n d r s r' s' : ℕ} {Y : Spc F E n} {W : Spc F E d} {M : Model σ Y W} {χY χW : Chr F E}
     {o : Rep σ Y W} (h : IsPair B M χY χW o r s r' s') :
     ∀ N N', GlobalTheory.Published.ThetaSubInf M B.ψ B.emb o N → GlobalTheory.Published.ThetaSubInf M B.ψ B.emb o N' → N ≠ M.Pol B.ψ B.emb →
@@ -28,6 +33,51 @@ theorem howe_sup_pr (hKP : GlobalTheory.FunPr.Hypotheses₂) {n d r s r' s' : �
   exact (hKP.howeDualityReal F E σ h.base.cm n d Y W M B.ψ χY χW o h.base.std h.herm.herm hY h.skew.skew hW h.resX h.resW
     h.hX h.hW h.weil B.emb h.herm.cartan h.skew.cartan).2
 
+/- English proof (translation)
+Introduce `hKP F E _ _ _ _ _ σ B a a' G X om om' R Rf hM R₃ hR₃`. Establish `hR` using `hM.real`. Establish `hPV` using `isPair_V hM.triple`. Establish `hPV'` using `isPair_V' hM.triple`. Establish `actV` using `GlobalTheory.T.polynomial_datum_action_of_pair hKP _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ hPV`.
+
+Establish `actV'` using `GlobalTheory.T.polynomial_datum_action_of_pair hKP _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ hPV'`. Establish `ks_p : ∀ R' : RealMaps F a a', IsRealMaps B G om om' R' → KerStab B G.M om R'.p` using `fun R' h => ⟨fun γ hγ f hf f₁ h1 h0 => by`. Use `h.lie γ hγ f hf 0 (zero_mem _) f₁ 0 h1 (actsD_zero _) (by rw [h0, map_zero])` as an intermediate fact. Rewrite using `[map_zero] at this,` and apply the resulting hypothesis. Use `fun k hk f hf f₁ h1 h0 => by`.
+
+Use `h.cpt k hk f hf 0 (zero_mem _) f₁ 0 h1 (acts_zero _) (by rw [h0, map_zero])` as an intermediate fact. Rewrite using `[map_zero] at this⟩` and apply the resulting hypothesis. Establish `ks_p' : ∀ R' : RealMaps F a a', IsRealMaps B G om om' R' → KerStab B G.M' om' R'.p'` using `fun R' h => ⟨fun γ hγ f hf f₁ h1 h0 => by`. Use `h.lie γ hγ 0 (zero_mem _) f hf 0 f₁ (actsD_zero _) h1 (by rw [h0, map_zero])` as an intermediate fact. Rewrite `this` using `[map_zero]`.
+
+Conclude with `this.symm,`. Use `fun k hk f hf f₁ h1 h0 => by`. Use `h.cpt k hk 0 (zero_mem _) f hf 0 f₁ (acts_zero _) h1 (by rw [h0, map_zero])` as an intermediate fact. Rewrite `this` using `[map_zero]`. Conclude with `this.symm⟩`.
+
+Establish `onto' : ∀ R' : RealMaps F a a', IsRealMaps B G om om' R' → ∀ y, ∃ f' ∈ G.M'.Pol B.ψ B.emb, R'.p' f' = y` using `fun R' h y => by`. Establish `: y ∈ (G.M'.Pol B.ψ B.emb).map R'.p'` using `h.quot'.onto ▸ Submodule.mem_top`. Conclude with `Submodule.mem_map.1 this`. Establish `onto : ∀ R' : RealMaps F a a', IsRealMaps B G om om' R' → ∀ y, ∃ f ∈ G.M.Pol B.ψ B.emb, R'.p f = y` using `fun R' h y => by`. Establish `: y ∈ (G.M.Pol B.ψ B.emb).map R'.p` using `h.quot.onto ▸ Submodule.mem_top`.
+
+Conclude with `Submodule.mem_map.1 this`. Establish `irr_p' : ∀ R' : RealMaps F a a', IsRealMaps B G om om' R' → Irred B G.M' om' R'.p'` using `fun R' h N h1 h2 => by`. Apply `h.irred N` to reduce the goal to its premises. Introduce `γ hγ f hf f₁ hf₁ hN`. Take `⟨f', hf', e⟩` from `onto' R' h (R'.p f)`.
+
+Take `⟨D, -, hDi⟩` from `actV'.2.2.1 γ hγ`. Establish `h1'` using `(hDi f' hf' (D f')).2 rfl`. Rewrite using `[h.lie γ hγ f hf f' hf' f₁ (D f') hf₁ h1' e.symm]`. Conclude with `h1 γ hγ f' hf' (D f') h1' (e ▸ hN)`. Introduce `k hk f hf f₁ hf₁ hN`.
+
+Take `⟨f', hf', e⟩` from `onto' R' h (R'.p f)`. Take `⟨D, -, hDi⟩` from `actV'.2.2.2 k hk`. Establish `h1'` using `(hDi f' hf' (D f')).2 rfl`. Rewrite using `[h.cpt k hk f hf f' hf' f₁ (D f') hf₁ h1' e.symm]`. Conclude with `h2 k hk f' hf' (D f') h1' (e ▸ hN)`.
+
+Take `⟨ψ, hψ⟩` from `GlobalTheory.T.exists_equiv_howeDuality_realPlaces F E σ B _ _ _ _ G.M om _ _ R.p R₃.p actV (howe_sup_pr hKP hPV) hR.quot hR₃.quot hR.nontriv hR₃.nontriv (ks_p R hR) (ks_p R₃ hR₃) hR.irred hR₃.irred`. Take `⟨ψ₁, hψ₁⟩` from `GlobalTheory.T.exists_equiv_howeDuality_realPlaces F E σ B _ _ _ _ G.M' om' _ _ R.p' R₃.p' actV' (howe_sup_pr hKP hPV') hR.quot' hR₃.quot' hR.nontriv hR₃.nontriv (ks_p' R hR) (ks_p' R₃ hR₃) (irr_p' R hR) (irr_p' R₃ hR₃)`. Use `choose DL hDLm hDLi using actV.2.2.1`. Use `choose DK hDKm hDKi using actV.2.2.2`. Use `choose DL' hDLm' hDLi' using actV'.2.2.1`.
+
+Use `choose DK' hDKm' hDKi' using actV'.2.2.2`. Set `ι : Type` to `{γ // γ ∈ Lines σ G.W} ⊕ {k // k ∈ KInf σ G.W B.emb}`. Set `D : ι → SInf F (Fin a × Fin (a + a')) →ₗ[ℂ] SInf F (Fin a × Fin (a + a'))` to `Sum.elim (fun γ => DL γ.1 γ.2) (fun k => DK k.1 k.2)`. Set `D' : ι → SInf F (Fin a' × Fin (a + a')) →ₗ[ℂ] SInf F (Fin a' × Fin (a + a'))` to `Sum.elim (fun γ => DL' γ.1 γ.2) (fun k => DK' k.1 k.2)`. Establish `Dm : ∀ i, ∀ f ∈ G.M.Pol B.ψ B.emb, D i f ∈ G.M.Pol B.ψ B.emb`.
+
+Introduce and unpack `(γ | k) f hf`. Use `exacts [hDLm _ _ f hf, hDKm _ _ f hf]`. Establish `Dm' : ∀ i, ∀ f ∈ G.M'.Pol B.ψ B.emb, D' i f ∈ G.M'.Pol B.ψ B.emb`. Introduce and unpack `(γ | k) f hf`. Use `exacts [hDLm' _ _ f hf, hDKm' _ _ f hf]`.
+
+Establish `joint : ∀ R' : RealMaps F a a', IsRealMaps B G om om' R' → ∀ i, ∀ f ∈ G.M.Pol B.ψ B.emb, ∀ f' ∈ G.M'.Pol B.ψ B.emb, R'.p f = R'.p' f' → R'.p (D i f) = R'.p' (D' i f')`. Introduce and unpack `R' h (γ | k) f hf f' hf' e`. Conclude with `h.lie γ.1 γ.2 f hf f' hf' _ _ ((hDLi _ _ f hf _).2 rfl) ((hDLi' _ _ f' hf' _).2 rfl) e`. Conclude with `h.cpt k.1 k.2 f hf f' hf' _ _ ((hDKi _ _ f hf _).2 rfl) ((hDKi' _ _ f' hf' _).2 rfl) e`. Establish `ker0 : ∀ i, ∀ f ∈ G.M.Pol B.ψ B.emb, R.p f = 0 → R.p (D i f) = 0`.
+
+Introduce and unpack `(γ | k) f hf h0`. Conclude with `(ks_p R hR).1 γ.1 γ.2 f hf _ ((hDLi _ _ f hf _).2 rfl) h0`. Conclude with `(ks_p R hR).2 k.1 k.2 f hf _ ((hDKi _ _ f hf _).2 rfl) h0`. Set `π : G.M.Pol B.ψ B.emb →ₗ[ℂ] R.Pi` to `R.p ∘ₗ (G.M.Pol B.ψ B.emb).subtype`. Establish `hπ : Function.Surjective π` using `fun y => by`.
+
+Take `⟨f, hf, e⟩` from `onto R hR y`. Conclude with `⟨⟨f, hf⟩, e⟩`. Set `ρ : ι → Module.End ℂ R.Pi` to `fun i => induced π hπ ((D i).restrict (Dm i)) (fun u hu => ker0 i u.1 u.2 hu)`. Establish `hρ : ∀ i, ∀ f (hf : f ∈ G.M.Pol B.ψ B.emb), ρ i (R.p f) = R.p (D i f)` using `fun i f hf => induced_apply π hπ _ _ ⟨f, hf⟩`. Establish `irrρ : ∀ N : Submodule ℂ R.Pi, (∀ i, ∀ x ∈ N, ρ i x ∈ N) → N = ⊥ ∨ N = ⊤` using `fun N hN => by`.
+
+Apply `hR.irred N` to reduce the goal to its premises. Introduce `γ hγ f hf f₁ h1 hx`. Rewrite using `[(hDLi γ hγ f hf f₁).1 h1]`. Use `hN (Sum.inl ⟨γ, hγ⟩) _ hx` as an intermediate fact. Rewrite `this` using `[hρ _ f hf]`. Then use the resulting hypothesis.
+
+Introduce `k hk f hf f₁ h1 hx`. Rewrite using `[(hDKi k hk f hf f₁).1 h1]`. Use `hN (Sum.inr ⟨k, hk⟩) _ hx` as an intermediate fact. Rewrite `this` using `[hρ _ f hf]`. Then use the resulting hypothesis. Set `T : Module.End ℂ R.Pi` to `ψ.symm.toLinearMap ∘ₗ ψ₁.toLinearMap`.
+
+Establish `comm : ∀ i, T * ρ i = ρ i * T` using `fun i => by`. Use `LinearMap.ext fun x => ?_` and prove the remaining obligations. Take `⟨f', hf', rfl⟩` from `onto' R hR x`. Take `⟨f, hf, e⟩` from `onto R hR (R.p' f')`. Take `⟨g, hg, eg⟩` from `onto R₃ hR₃ (R₃.p' f')`.
+
+Establish `j1` using `joint R hR i f hf f' hf' e`. Establish `j3` using `joint R₃ hR₃ i g hg f' hf' eg`. Establish `lhs : T (ρ i (R.p' f')) = R.p (D i g)`. Combine the equalities or inequalities in the displayed calculation. Use `_ = ψ.symm (R₃.p' (D' i f')) := by rw [← hψ₁ _ (Dm' i f' hf')]`.
+
+Use `_ = R.p (D i g) := by rw [← j3, hψ _ (Dm i g hg), LinearEquiv.symm_apply_apply]`. Establish `rhs : ρ i (T (R.p' f')) = R.p (D i g)`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[← hψ₁ f' hf']`. Use `_ = ρ i (R.p g) := by rw [← eg, hψ g hg, LinearEquiv.symm_apply_apply]`.
+
+Use `_ = R.p (D i g) := hρ i g hg`. Rewrite using `[Module.End.mul_apply, Module.End.mul_apply, lhs, rhs]`. Establish `hrank : Module.rank ℂ R.Pi ≤ Cardinal.aleph0` using `(LinearMap.rank_le_of_surjective π hπ).trans (GlobalTheory.T.polynomial_data_countable_rank hKP _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ hPV)`. Take `⟨c, hc⟩` from `GlobalTheory.T.eq_smul_one_of_commute_irreducible_of_countable_rank R.Pi ι ρ T hR.nontriv hrank irrρ comm`. Establish `hT : ∀ x, T x = c • x` using `fun x => by rw [hc]; rfl`.
+
+Use `⟨ψ, c, ?_, hψ, fun f hf => ?_⟩` and prove the remaining obligations. Introduce and unpack `rfl haveI := hR.nontriv`. Take `⟨x, hx⟩` from `exists_ne (0 : R.Pi)`. Establish `h0 : ψ.symm (ψ₁ x) = 0` using `by rw [← zero_smul ℂ x, ← hT x]; rfl`. Conclude with `hx (ψ₁.injective (ψ.symm.injective (h0.trans (map_zero _).symm) |>.trans (map_zero _).symm))`.
+
+Rewrite using `[hψ₁ f hf]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[LinearEquiv.apply_symm_apply]`. Use `_ = c • ψ (R.p' f) := by rw [hT, map_smul]`.
+-/
 theorem realMaps_unique : GlobalTheory.FunPr.Hypotheses₂ → ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E) (a a' : ℕ) (G : Geo σ a a') (X : Chars F E)
     (om : Rep σ G.V G.W) (om' : Rep σ G.V' G.W) (R : RealMaps F a a') (Rf : FinMaps F a a'), IsMatched B G X om om' R Rf →
     ∀ R₃ : RealMaps F a a', IsRealMaps B G om om' R₃ → ∃ (ψ : R.Pi ≃ₗ[ℂ] R₃.Pi) (l : ℂ), l ≠ 0 ∧
@@ -161,6 +211,53 @@ section Fin
 
 open GlobalTheory.FinUniq
 
+/- English proof (translation)
+Introduce `hK F E _ _ _ _ _ σ B a a' G X om om' R Rf hM V V' W Rf₃ h₃ v`. Establish `hT` using `hM.triple`. Establish `hf` using `hM.fin`. Establish `hP` using `GlobalTheory.ThK.Inhab.pairV hT`. Establish `hP'` using `GlobalTheory.ThK.Inhab.pairV' hT`.
+
+Establish `hAE` using `GlobalTheory.ThK.LocalOps.actsEx hK`. Establish `h1V : (1 : UA σ G.V.J) ∈ UAt σ G.V (evFin F v)` using `fun u _ => by show u • ((1 : UA σ G.V.J).1.1 - 1) = 0`. Rewrite using `[show (1 : UA σ G.V.J).1.1 = 1 from rfl, sub_self, smul_zero]`. Establish `h1V' : (1 : UA σ G.V'.J) ∈ UAt σ G.V' (evFin F v)` using `fun u _ => by show u • ((1 : UA σ G.V'.J).1.1 - 1) = 0`. Rewrite using `[show (1 : UA σ G.V'.J).1.1 = 1 from rfl, sub_self, smul_zero]`.
+
+Establish `exV : ∀ h ∈ UAt σ G.W (evFin F v), ∀ φ ∈ SB (Fin a × Fin (a + a') → Fv F v), ∃ φ₁ ∈ SB (Fin a × Fin (a + a') → Fv F v), Acts (evFin F v) (om (1, h)) φ φ₁` using `fun h hh φ hφ => by`. Take `⟨φ₁, ⟨h1, h2⟩, -⟩` from `(hAE F E σ B _ _ _ _ _ _ _ om _ _ _ _ hP v).1 1 h1V h hh φ hφ`. Conclude with `⟨φ₁, h1, h2⟩`. Establish `exV' : ∀ h ∈ UAt σ G.W (evFin F v), ∀ φ ∈ SB (Fin a' × Fin (a + a') → Fv F v), ∃ φ₁ ∈ SB (Fin a' × Fin (a + a') → Fv F v), Acts (evFin F v) (om' (1, h)) φ φ₁` using `fun h hh φ hφ => by`. Take `⟨φ₁, ⟨h1, h2⟩, -⟩` from `(hAE F E σ B _ _ _ _ _ _ _ om' _ _ _ _ hP' v).1 1 h1V' h hh φ hφ`.
+
+Conclude with `⟨φ₁, h1, h2⟩`. Establish `props : ∀ Q : FinMaps F a a', (SB (Fin a' × Fin (a + a') → Fv F v)).map (Q.p' v) = ⊤ → (∀ h ∈ UAt σ G.W (evFin F v), ∀ φ ∈ SB (Fin a × Fin (a + a') → Fv F v), ∀ φ' ∈ SB (Fin a' × Fin (a + a') → Fv F v), ∀ φ₁ ∈ SB (Fin a × Fin (a + a') → Fv F v), ∀ φ₁' ∈ SB (Fin a' × Fin (a + a') …`. Introduce `Q onto' eqv irr`. Use `⟨fun h hh φ hφ φ₁ hφ₁ hact e => ?_, fun h hh φ hφ φ₁ hφ₁ hact e => ?_, fun N hN => irr N ?_⟩` and prove the remaining obligations. Rewrite using `[eqv h hh φ hφ 0 (zero_mem _) φ₁ hφ₁ 0 (zero_mem _) hact (acts_zero_zero v _) (by rw [e, map_zero]), map_zero]`.
+
+Rewrite using `[← eqv h hh 0 (zero_mem _) φ hφ 0 (zero_mem _) φ₁ hφ₁ (acts_zero_zero v _) hact (by rw [e, map_zero]), map_zero]`. Introduce `h hh φ hφ φ₁ hφ₁ hact hmem`. Choose the witnesses or unpack the hypotheses as in `⟨φ', hφ', e⟩ : ∃ φ' ∈ SB (Fin a' × Fin (a + a') → Fv F v), Q.p' v φ' = Q.p v φ := by`. Establish `: Q.p v φ ∈ (SB (Fin a' × Fin (a + a') → Fv F v)).map (Q.p' v)` using `by rw [onto']; trivial`. Conclude with `this`.
+
+Take `⟨φ₁', hφ₁', hact'⟩` from `exV' h hh φ' hφ'`. Rewrite using `[eqv h hh φ hφ φ' hφ' φ₁ hφ₁ φ₁' hφ₁' hact hact' e.symm]`. Conclude with `hN h hh φ' hφ' φ₁' hφ₁' hact' (e ▸ hmem)`. Take `⟨sV, sV', iV'⟩` from `props Rf (hf.onto' v) (hf.equiv v) (hf.irred v)`. Take `⟨tV, tV', jV'⟩` from `props Rf₃ (h₃.onto' v) (h₃.equiv v) (h₃.irred v)`.
+
+Use `haveI := hf.nontriv v`. Use `haveI := h₃.nontriv v`. Establish `mV` using `ker_maximal om v (Rf.p v) (hf.onto v) (hf.inv v) sV (hf.irred v)`. Establish `mV₃` using `ker_maximal (Y := G.V) (Z := G.W) om v (Rf₃.p v) (h₃.onto v) (h₃.inv v) tV (h₃.irred v)`. Establish `mV'` using `ker_maximal om' v (Rf.p' v) (hf.onto' v) (hf.inv' v) sV' iV'`.
+
+Establish `mV₃'` using `ker_maximal (Y := G.V') (Z := G.W) om' v (Rf₃.p' v) (h₃.onto' v) (h₃.inv' v) tV' jV'`. Establish `howe` using `GlobalTheory.T.weil_representation_cm_extension hK hK.howeDualityUnitary hK.minguezThetaGL F E σ hT.base.cm`. Establish `eV` using `howe a (a + a') G.V G.W G.M B.ψ X.β (X.β / X.α) om hT.base.std hP.herm.herm (det_ne_zero_herm hP.herm) hP.skew.skew (det_ne_zero_skew hP.skew) hP.resX hP.resW hP.hX hP.hW hP.weil v _ _ mV mV₃`. Establish `eV'` using `howe a' (a + a') G.V' G.W G.M' B.ψ X.α (X.α / X.β) om' hT.base.std hP'.herm.herm (det_ne_zero_herm hP'.herm) hP'.skew.skew (det_ne_zero_skew hP'.skew) hP'.resX hP'.resW hP'.hX hP'.hW hP'.weil v _ _ mV' mV₃'`. Take `⟨ψ, hψ⟩` from `equiv_of_ker_eq' (Rf.p v) (Rf₃.p v) (hf.onto v) (h₃.onto v) eV`.
+
+Take `⟨ψ', hψ'⟩` from `equiv_of_ker_eq' (Rf.p' v) (Rf₃.p' v) (hf.onto' v) (h₃.onto' v) eV'`. Use `set T : Module.End ℂ (Rf.Pi v) := ψ.symm.toLinearMap ∘ₗ ψ'.toLinearMap with hTdef`. Establish `hTapp : ∀ x, T x = ψ.symm (ψ' x)` using `fun x => rfl`. Establish `comm : ∀ h ∈ UAt σ G.W (evFin F v), ∀ χ ∈ SB (Fin a × Fin (a + a') → Fv F v), ∀ χ₁ ∈ SB (Fin a × Fin (a + a') → Fv F v), Acts (evFin F v) (om (1, h)) χ χ₁ → ∀ φ ∈ SB (Fin a × Fin (a + a') → Fv F v), ∀ φ₁ ∈ SB (Fin a × Fin (a + a') → Fv F v), Acts (evFin F v) (om (1, h)) φ φ₁ → Rf …`. Introduce `h hh χ hχ χ₁ hχ₁ hc φ hφ φ₁ hφ₁ ha e`.
+
+Choose the witnesses or unpack the hypotheses as in `⟨χ', hχ', e1⟩ : ∃ χ' ∈ SB (Fin a' × Fin (a + a') → Fv F v), Rf.p' v χ' = Rf.p v χ := by`. Establish `: Rf.p v χ ∈ (SB (Fin a' × Fin (a + a') → Fv F v)).map (Rf.p' v)` using `by rw [hf.onto' v]; trivial`. Conclude with `this`. Take `⟨χ₁', hχ₁', hc'⟩` from `exV' h hh χ' hχ'`. Establish `e2 : Rf.p v χ₁ = Rf.p' v χ₁'` using `hf.equiv v h hh χ hχ χ' hχ' χ₁ hχ₁ χ₁' hχ₁' hc hc' e1.symm`.
+
+Establish `e3 : Rf₃.p v φ = Rf₃.p' v χ'`. Rewrite using `[hψ φ hφ, e, hTapp, ← e1, LinearEquiv.apply_symm_apply, ← hψ' χ' hχ']`. Establish `e4 : Rf₃.p v φ₁ = Rf₃.p' v χ₁'` using `h₃.equiv v h hh φ hφ χ' hχ' φ₁ hφ₁ χ₁' hχ₁' ha hc' e3`. Rewrite using `[hTapp, e2, ← hψ' χ₁' hχ₁', ← e4, hψ φ₁ hφ₁, LinearEquiv.symm_apply_apply]`. Establish `hrank : Module.rank ℂ (Rf.Pi v) ≤ Cardinal.aleph0` using `by haveI := sc_Fv v`.
+
+Establish `sp : Function.Surjective ((Rf.p v).comp (SB (Fin a × Fin (a + a') → Fv F v)).subtype)` using `fun y => by`. Establish `: y ∈ (SB (Fin a × Fin (a + a') → Fv F v)).map (Rf.p v)` using `by rw [hf.onto v]; trivial`. Take `⟨x, hx, rfl⟩` from `this`. Conclude with `⟨⟨x, hx⟩, rfl⟩`. Conclude with `(LinearMap.rank_le_of_surjective _ sp).trans (rank_SB_le _)`.
+
+Establish `hker : ∀ c : ℂ, ∀ h ∈ UAt σ G.W (evFin F v), ∀ φ ∈ SB (Fin a × Fin (a + a') → Fv F v), ∀ φ₁ ∈ SB (Fin a × Fin (a + a') → Fv F v), Acts (evFin F v) (om (1, h)) φ φ₁ → Rf.p v φ ∈ LinearMap.ker (T - c • 1) → Rf.p v φ₁ ∈ LinearMap.ker (T - c • 1)`. Introduce `c h hh φ hφ φ₁ hφ₁ hact hmem`. Rewrite `hmem`, the goal using `[LinearMap.mem_ker]`. Simplify using `only [LinearMap.sub_apply, LinearMap.smul_apply, Module.End.one_apply, sub_eq_zero] at hmem ⊢`. Establish `hsc` using `GlobalTheory.ThK.LocalOps.acts_lin v (om (1, h)) (exV h hh) hφ hφ hact hact c 0`.
+
+Rewrite `hsc` using `[zero_smul, zero_smul, add_zero, add_zero]`. Establish `e : Rf.p v (c • φ) = T (Rf.p v φ)` using `by rw [map_smul, hmem]`. Use `comm h hh φ hφ φ₁ hφ₁ hact (c • φ) ((SB (Fin a × Fin (a + a') → Fv F v)).smul_mem c hφ) (c • φ₁) ((SB (Fin a × Fin (a + a') → Fv F v)).smul_mem c hφ₁) hsc e` as an intermediate fact. Rewrite using `[← this, map_smul]`. Establish `hran : ∀ c : ℂ, ∀ h ∈ UAt σ G.W (evFin F v), ∀ φ ∈ SB (Fin a × Fin (a + a') → Fv F v), ∀ φ₁ ∈ SB (Fin a × Fin (a + a') → Fv F v), Acts (evFin F v) (om (1, h)) φ φ₁ → Rf.p v φ ∈ LinearMap.range (T - c • 1) → Rf.p v φ₁ ∈ LinearMap.range (T - c • 1)`.
+
+Introduce `c h hh φ hφ φ₁ hφ₁ hact hmem`. Take `⟨y, hy⟩` from `hmem`. Choose the witnesses or unpack the hypotheses as in `⟨χ, hχ, rfl⟩ : ∃ χ ∈ SB (Fin a × Fin (a + a') → Fv F v), Rf.p v χ = y := by`. Establish `: y ∈ (SB (Fin a × Fin (a + a') → Fv F v)).map (Rf.p v)` using `by rw [hf.onto v]; trivial`. Conclude with `this`.
+
+Take `⟨χ₁, hχ₁, hc⟩` from `exV h hh χ hχ`. Establish `hsum` using `GlobalTheory.ThK.LocalOps.acts_lin v (om (1, h)) (exV h hh) hφ hχ hact hc 1 c`. Rewrite `hsum` using `[one_smul, one_smul]`. Simplify using `only [LinearMap.sub_apply, LinearMap.smul_apply, Module.End.one_apply] at hy`. Establish `e : Rf.p v (φ + c • χ) = T (Rf.p v χ)`.
+
+Rewrite using `[map_add, map_smul, ← hy]`. Normalize the expressions using the abelian group laws. Use `comm h hh χ hχ χ₁ hχ₁ hc (φ + c • χ) (add_mem hφ ((SB (Fin a × Fin (a + a') → Fv F v)).smul_mem c hχ)) (φ₁ + c • χ₁) (add_mem hφ₁ ((SB (Fin a × Fin (a + a') → Fv F v)).smul_mem c hχ₁)) hsum e` as an intermediate fact. Use `⟨Rf.p v χ₁, ?_⟩` and prove the remaining obligations. Simplify using `only [LinearMap.sub_apply, LinearMap.smul_apply, Module.End.one_apply]`.
+
+Rewrite using `[← this, map_add, map_smul]`. Normalize the expressions using the abelian group laws. Take `⟨l, hl⟩` from `scalar_of_irred (fun N => ∀ h ∈ UAt σ G.W (evFin F v), ∀ φ ∈ SB (Fin a × Fin (a + a') → Fv F v), ∀ φ₁ ∈ SB (Fin a × Fin (a + a') → Fv F v), Acts (evFin F v) (om (1, h)) φ φ₁ → Rf.p v φ ∈ N → Rf.p v φ₁ ∈ N) hrank (hf.irred v) T hker hran`. Establish `hTl : ∀ x, ψ' x = l • ψ x` using `fun x => by`. Use `congrArg (fun f : Module.End ℂ (Rf.Pi v) => f x) hl` as an intermediate fact.
+
+Simplify using `only [hTapp, LinearMap.smul_apply, Module.End.one_apply] at this`. Rewrite using `[← map_smul, ← this, LinearEquiv.apply_symm_apply]`. Establish `hl0 : l ≠ 0`. Introduce and unpack `rfl`. Take `⟨x, hx⟩` from `exists_ne (0 : Rf.Pi v)`.
+
+Use `hTl x` as an intermediate fact. Rewrite `this` using `[zero_smul, LinearEquiv.map_eq_zero_iff]`. Conclude with `hx this`. Use `⟨ψ, l, hl0, hψ, fun φ hφ => by rw [hψ' φ hφ, hTl], fun hv => ?_⟩` and prove the remaining obligations. Take `⟨s1, s2⟩` from `hf.sph v hv`.
+
+Take `⟨s3, -⟩` from `h₃.sph v hv`. Establish `hvac` using `(hT.geo.hM.vac v).1`. Establish `hvac'` using `(hT.geo.hM'.vac v).1`. Express the relevant statement in the definitionally equal form `Rf₃.p v (G.M.vac v) = Rf₃.p' v (G.M'.vac v) at s3`. Establish `e1 : Rf₃.p' v (G.M'.vac v) = l • Rf₃.p v (G.M.vac v)`.
+
+Rewrite using `[hψ' _ hvac', hTl, ← s1, ← hψ _ hvac]`. Establish `hne : Rf₃.p v (G.M.vac v) ≠ 0`. Rewrite using `[hψ _ hvac]`. Conclude with `(LinearEquiv.map_ne_zero_iff ψ).2 s2`. Rewrite `e1` using `[← s3]`.
+
+Establish `: (l - 1) • Rf₃.p v (G.M.vac v) = 0` using `by rw [sub_smul, one_smul, ← e1, sub_self]`. Break down `smul_eq_zero.1 this with h | h` into its components or cases. Conclude with `sub_eq_zero.1 h`. Conclude with `absurd h hne`.
+-/
 theorem finMaps_unique : GlobalTheory.FunPr.Hypotheses₂ → ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E) (a a' : ℕ) (G : Geo σ a a') (X : Chars F E)
     (om : Rep σ G.V G.W) (om' : Rep σ G.V' G.W) (R : RealMaps F a a') (Rf : FinMaps F a a'), IsMatched B G X om om' R Rf →
     ∀ (V : Spc F E a) (V' : Spc F E a') (W : Spc F E (a + a')) (Rf₃ : FinMaps F a a'), IsFinMaps B (reG G V V' W) X om om' Rf₃ →

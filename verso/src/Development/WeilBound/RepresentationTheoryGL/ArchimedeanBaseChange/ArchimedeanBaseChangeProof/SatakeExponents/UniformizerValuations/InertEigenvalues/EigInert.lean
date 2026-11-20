@@ -5,6 +5,9 @@ import Development.WeilBound.RepresentationTheoryGL.ArchimedeanBaseChange.Archim
 
 namespace PositivityTheory.Rg.BcB.F.Eig
 
+/- English proof (translation)
+The claim follows from `eigInertOf absEig heckeSum indexU`.
+-/
 theorem eigInert : EigInert := eigInertOf absEig heckeSum indexU
 
 end PositivityTheory.Rg.BcB.F.Eig

@@ -16,8 +16,16 @@ namespace GlobalTheory.TwistGoodCompare
 
 variable {D : D7}
 
+/- English proof (translation)
+Unfold both sides. The equivalence is reflexive.
+-/
 theorem twisted_iff (w : D.what₂.places.Pl) : Twisted D w ↔ TwistedAt D w := Iff.rfl
 
+/- English proof (translation)
+Break down `eq_or_ne x 0 with rfl | h0` into its components or cases. Simplify using the standard rewrite rules. Rewrite using `[D.val_eq w x h0]`. Establish `h1 : (D.plEq w).valuation D.what₂.LL x ≤ 1` using `(D.plEq w).valuation_le_one (⟨x, hx⟩ : 𝓞 D.what₂.LL)`. Establish `h2 : (D.plEq w).valuation D.what₂.LL x ≠ 0` using `by simpa using h0`.
+
+Establish `h3 : WithZero.log ((D.plEq w).valuation D.what₂.LL x) ≤ 0`. Rewrite using `[← WithZero.log_one, WithZero.log_le_log h2 one_ne_zero]`. Conclude with `h1`. Establish `: 0 ≤ vAdd (D.plEq w) x` using `by unfold vAdd; omega`. Conclude with `this` after adjusting the coercions.
+-/
 theorem val_int_nonneg (w : D.what₂.places.Pl) {x : D.what₂.LL} (hx : IsIntegral ℤ x) :
     0 ≤ D.what₂.places.val w x := by
   rcases eq_or_ne x 0 with rfl | h0
@@ -30,6 +38,9 @@ theorem val_int_nonneg (w : D.what₂.places.Pl) {x : D.what₂.LL} (hx : IsInte
   have : 0 ≤ vAdd (D.plEq w) x := by unfold vAdd; omega
   exact_mod_cast this
 
+/- English proof (translation)
+The claim follows from `(RingOfIntegers.isIntegral_coe x).map (D.LL0.val.toRingHom.toIntAlgHom)`.
+-/
 theorem isIntegral_coe (x : 𝓞 ↥D.LL0) : IsIntegral ℤ ((x : ↥D.LL0) : D.what₂.LL) :=
   (RingOfIntegers.isIntegral_coe x).map (D.LL0.val.toRingHom.toIntAlgHom)
 
@@ -72,13 +83,28 @@ def below (w : D.what₂.places.Pl) : HeightOneSpectrum (𝓞 ↥D.LL0) where
     rw [Ideal.mem_bot] at h1
     exact (D.what₂.places.resChar_prime w).ne_zero (by exact_mod_cast h1)
 
+/- English proof (translation)
+Unfold both sides. The equivalence is reflexive.
+-/
 theorem mem_below (w : D.what₂.places.Pl) (x : 𝓞 ↥D.LL0) :
     x ∈ (below w).asIdeal ↔ 0 < D.what₂.places.val w ((x : ↥D.LL0) : D.what₂.LL) := Iff.rfl
 
+/- English proof (translation)
+The claim follows from `le_antisymm (not_lt.1 hx) (val_int_nonneg w (isIntegral_coe x))`.
+-/
 theorem val_eq_zero_of_not_mem (w : D.what₂.places.Pl) {x : 𝓞 ↥D.LL0} (hx : x ∉ (below w).asIdeal) :
     D.what₂.places.val w ((x : ↥D.LL0) : D.what₂.LL) = 0 :=
   le_antisymm (not_lt.1 hx) (val_int_nonneg w (isIntegral_coe x))
 
+/- English proof (translation)
+Take `⟨n, ⟨d, hd⟩, e | e⟩` from `(below w).exists_primeCompl_mul_eq_or_mul_eq (K := ↥D.LL0) x`. Establish `e' : (x : D.what₂.LL) * ((d : ↥D.LL0) : D.what₂.LL) = ((n : ↥D.LL0) : D.what₂.LL)`. Conclude with `congrArg Subtype.val e` after adjusting the coercions. Establish `h1` using `(D.what₂.places.val w').map_mul (x : D.what₂.LL) ((d : ↥D.LL0) : D.what₂.LL)`. Rewrite `h1` using `[e', val_eq_zero_of_not_mem w' (x := d) (h ▸ hd), add_zero]`.
+
+Rewrite using `[← h1]`. Conclude with `val_int_nonneg w' (isIntegral_coe n)`. Establish `e' : (x : D.what₂.LL) * ((n : ↥D.LL0) : D.what₂.LL) = ((d : ↥D.LL0) : D.what₂.LL)`. Conclude with `congrArg Subtype.val e` after adjusting the coercions. Establish `h1` using `(D.what₂.places.val w).map_mul (x : D.what₂.LL) ((n : ↥D.LL0) : D.what₂.LL)`.
+
+Rewrite `h1` using `[e', val_eq_zero_of_not_mem w hd]`. Establish `hn : n ∉ (below w).asIdeal` using `fun hn => by`. Use `lt_of_lt_of_le ((mem_below w n).1 hn) (le_add_of_nonneg_left hx)` as an intermediate fact. Rewrite `this` using `[← h1]`. Conclude with `lt_irrefl _ this`.
+
+Establish `h2` using `(D.what₂.places.val w').map_mul (x : D.what₂.LL) ((n : ↥D.LL0) : D.what₂.LL)`. Rewrite `h2` using `[e', val_eq_zero_of_not_mem w' (x := d) (h ▸ hd), val_eq_zero_of_not_mem w' (x := n) (h ▸ hn), add_zero]`. Conclude with `h2.le`.
+-/
 theorem nonneg_of_below {w w' : D.what₂.places.Pl} (h : below w = below w') (x : ↥D.LL0)
     (hx : 0 ≤ D.what₂.places.val w (x : D.what₂.LL)) : 0 ≤ D.what₂.places.val w' (x : D.what₂.LL) := by
   obtain ⟨n, ⟨d, hd⟩, e | e⟩ := (below w).exists_primeCompl_mul_eq_or_mul_eq (K := ↥D.LL0) x
@@ -100,6 +126,9 @@ theorem nonneg_of_below {w w' : D.what₂.places.Pl} (h : below w = below w') (x
     rw [e', val_eq_zero_of_not_mem w' (x := d) (h ▸ hd), val_eq_zero_of_not_mem w' (x := n) (h ▸ hn), add_zero] at h2
     exact h2.le
 
+/- English proof (translation)
+Establish `e : below w = below w'`. Use extensionality with `x`. Rewrite using `[mem_below, mem_below, ← h x, ← h' x]`. Conclude with `fun x => ⟨nonneg_of_below e x, nonneg_of_below e.symm x⟩`.
+-/
 theorem sameBelow_of_liesUnder {i : D.ntw.Tw} {w w' : D.what₂.places.Pl} (h : LiesUnder D i w)
     (h' : LiesUnder D i w') : SameBelow D w w' := by
   have e : below w = below w' := by
@@ -116,6 +145,9 @@ def GoodPowers (I : TwIn D) (t : TwDatum D) : Prop :=
 
 def ConstantTermsFinite (i : D.ntw.Tw) : Prop := ∀ lam : D.ntw.abelian₂ i, (∑ δ, D.ntw.th i ∅ lam δ) ≠ 0
 
+/- English proof (translation)
+Unfold `GoodPowers TwIn.Ok TwGoodOne at *`. Simplify using `only at hg ⊢`. Rewrite using `[← h]`. Conclude with `hg`.
+-/
 theorem goodPowers_congr {E : IntegralHeckeForms.XD D} {N0 S S'} {t : TwDatum D} (h : S t.1 = S' t.1)
     (hg : GoodPowers ⟨E, N0, S⟩ t) : GoodPowers ⟨E, N0, S'⟩ t := by
   unfold GoodPowers TwIn.Ok TwGoodOne at *
@@ -134,6 +166,13 @@ def DisjointPairs (t : D.what₂.places.Pl → TwDatum D) : Prop :=
     ∀ P ∈ (t w).2.1, ∀ P' ∈ (t w').2.1, ∀ p : ℕ, p.Prime →
       ¬ (P ∈ placesOver D.host.E p ∧ P' ∈ placesOver D.host.E p)
 
+/- English proof (translation)
+Establish `cw` using `(GlobalTheory.IndefiniteRowSideFullHecke.GoodPairSystems.twisted_conj w).2 hw`. Establish `cw'` using `(GlobalTheory.IndefiniteRowSideFullHecke.GoodPairSystems.twisted_conj w').2 hw'`. Establish `ew` using `h2 _ _ hw cw (GlobalTheory.IndefiniteRowSideFullHecke.GoodPairSystems.samePair_conj w)`. Establish `ew'` using `h2 _ _ hw' cw' (GlobalTheory.IndefiniteRowSideFullHecke.GoodPairSystems.samePair_conj w')`. Apply the tactic sequence `rcases h1 w hw with a | a <;> rcases h1 w' hw' with b | b <;> rw [← e] at b <;>`.
+
+Establish `s` using `sameBelow_of_liesUnder a b`. Conclude with `h2 _ _ hw hw' (Or.inl s)`. Rewrite using `[ew']`. Conclude with `h2 _ _ hw cw' (Or.inl s)`. Rewrite using `[ew]`.
+
+Conclude with `h2 _ _ cw hw' (Or.inl s)`. Rewrite using `[ew, ew']`. Conclude with `h2 _ _ cw cw' (Or.inl s)`.
+-/
 theorem eq_of_setting_eq {t : D.what₂.places.Pl → TwDatum D} (h1 : AtPlace t) (h2 : OnePerPair t)
     {w w' : D.what₂.places.Pl} (hw : Twisted D w) (hw' : Twisted D w') (e : (t w).1 = (t w').1) : t w = t w' := by
   have cw := (GlobalTheory.IndefiniteRowSideFullHecke.GoodPairSystems.twisted_conj w).2 hw
@@ -147,6 +186,11 @@ theorem eq_of_setting_eq {t : D.what₂.places.Pl → TwDatum D} (h1 : AtPlace t
   · rw [ew]; exact h2 _ _ cw hw' (Or.inl s)
   · rw [ew, ew']; exact h2 _ _ cw cw' (Or.inl s)
 
+/- English proof (translation)
+Establish `key : ∀ i : D.ntw.Tw, ∃ S, ∀ w, Twisted D w → (t w).1 = i → GoodPowers ⟨E, N0, S⟩ (t w)`. Introduce `i`. Distinguish the cases in `hi : ∃ w, Twisted D w ∧ (t w).1 = i`. Take `⟨w0, hw0, e0⟩` from `hi`. Take `⟨S, hS⟩` from `h w0 hw0`.
+
+Conclude with `⟨S, fun w hw e => eq_of_setting_eq h1 h2 hw0 hw (e0.trans e.symm) ▸ hS⟩`. Conclude with `⟨fun _ _ _ => ∅, fun w hw e => absurd ⟨w, hw, e⟩ hi⟩`. Use `choose S hS using key`. Conclude with `⟨fun i => S i i, fun w hw => goodPowers_congr rfl (hS _ w hw rfl)⟩`.
+-/
 theorem exists_series {E : IntegralHeckeForms.XD D} {N0} {t : D.what₂.places.Pl → TwDatum D} (h1 : AtPlace t) (h2 : OnePerPair t)
     (h : ∀ w, Twisted D w → ∃ S, GoodPowers ⟨E, N0, S⟩ (t w)) :
     ∃ S, ∀ w, Twisted D w → GoodPowers ⟨E, N0, S⟩ (t w) := by
@@ -164,6 +208,9 @@ def TwGoodAllAt (c : NChoice D) (I : TwIn D) : Prop :=
   ∀ w, TwistedAt D w → I.Ok (c.twI w) ∧ ∀ a : ℤ, IsCoprime a (D.ntw.l (c.twI w) : ℤ) →
     TwGoodOne D I (c.twI w) (c.sd w) (c.Q w) (c.k' w) (c.psi' w ^ a)
 
+/- English proof (translation)
+Introduce `w hw` and use `by have := (h w hw).2 1 isCoprime_one_left rw [zpow_one] at this exact ⟨(h w hw).1, this⟩`.
+-/
 theorem TwGoodAllAt.twGoodAt {c : NChoice D} {I : TwIn D} (h : TwGoodAllAt c I) : TwGoodAt D c I := fun w hw => by
   have := (h w hw).2 1 isCoprime_one_left
   rw [zpow_one] at this
@@ -175,6 +222,15 @@ def Surplus (c : NChoice D) : Prop :=
   (∀ w, TwistedAt D w → ConstantTermsFinite (c.twI w)) ∧ AtPlace (recorded c) ∧ OnePerPair (recorded c) ∧
     DisjointPairs (recorded c)
 
+/- English proof (translation)
+Use `haveI := c.Oe_loc w`. Establish `h1` using `(isUnit_map_iff _ _).1 h`. Use `clear h`. Generalize the expression as in `c.k' w = k at h1`. Generalize the expression as in `c.twI w = i at y k h1`.
+
+Use `haveI := D.ntw.Ok_fin i k`. Use `haveI : FaithfulSMul (D.ntw.O i) (D.ntw.Ok i k) := (faithfulSMul_iff_algebraMap_injective _ _).2 (D.ntw.Ok_inj i _)`. Establish `h2` using `(isUnit_map_iff (algebraMap (D.ntw.O i) (D.ntw.Ok i k)) _).1 h1`. Assume the negation of the conclusion as `hy`. Establish `hl : ((D.ntw.l i : ℕ) : D.ntw.O0 i) ≠ 0` using `fun h0 => by`.
+
+Use `congrArg (algebraMap (D.ntw.O0 i) (FractionRing (D.ntw.O0 i))) h0` as an intermediate fact. Rewrite `this` using `[map_natCast, map_zero, ← map_natCast (D.ntw.emb0 i), map_eq_zero]`. Conclude with `(D.ntw.lPrime i).out.ne_zero (by exact_mod_cast this)`. Establish `hP : ((IsLocalRing.maximalIdeal (D.ntw.O i)).comap (algebraMap (D.ntw.O0 i) (D.ntw.O i))).IsMaximal`. Use `Ideal.IsPrime.isMaximal inferInstance fun h0 => hl ?_` and prove the remaining obligations.
+
+Rewrite using `[← Ideal.mem_bot, ← h0, Ideal.mem_comap, map_natCast]`. Conclude with `D.ntw.O_l i`. Establish `hm : y ∈ IsLocalRing.maximalIdeal (D.ntw.O0 i)` using `hy`. Rewrite `hm` using `[← IsLocalRing.eq_maximalIdeal hP, Ideal.mem_comap]`. Conclude with `hm h2`.
+-/
 theorem isUnit_of_toOe (c : NChoice D) (w : D.what₂.places.Pl) (y : D.ntw.O0 (c.twI w))
     (h : IsUnit (algebraMap (D.ntw.Ok (c.twI w) (c.k' w)) (c.Oe w)
       (algebraMap (D.ntw.O (c.twI w)) (D.ntw.Ok (c.twI w) (c.k' w))
@@ -201,6 +257,15 @@ theorem isUnit_of_toOe (c : NChoice D) (w : D.what₂.places.Pl) (y : D.ntw.O0 (
   rw [← IsLocalRing.eq_maximalIdeal hP, Ideal.mem_comap] at hm
   exact hm h2
 
+/- English proof (translation)
+Break down `eq_or_ne x 0 with rfl | h0` into its components or cases. Establish `: z = 0` using `IsFractionRing.injective (c.Oe w) (FractionRing (c.Oe w)) (by rw [← h, map_zero, map_zero])`. Simplify using `[this]`. Establish `hx : 0 ≤ D.what₂.places.val w x` using `(c.embW_w w x).2 ⟨z, h.symm⟩`. Establish `hmul` using `(D.what₂.places.val w).map_mul x x⁻¹`.
+
+Rewrite `hmul` using `[mul_inv_cancel₀ h0, AddValuation.map_one]`. Establish `e1 : 0 < D.what₂.places.val w x ↔ ¬ 0 ≤ D.what₂.places.val w x⁻¹`. Rewrite `*` using `[D.val_eq w x h0, D.val_eq w _ (inv_ne_zero h0)]`. Normalize the coercions in `at *`. Use linear arithmetic over natural numbers and integers.
+
+Rewrite using `[e1, c.embW_w, not_iff_not]`. Establish `hz : c.embW w x ≠ 0` using `by simpa using h0`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨u, hu⟩`. Use `IsUnit.of_mul_eq_one u (IsFractionRing.injective (c.Oe w) (FractionRing (c.Oe w)) ?_)` and prove the remaining obligations.
+
+Rewrite using `[map_mul, hu, ← h, map_one, ← map_mul, mul_inv_cancel₀ h0, map_one]`. Introduce and unpack `⟨u, rfl⟩`. Use `⟨((u⁻¹ : (c.Oe w)ˣ) : c.Oe w), ?_⟩` and prove the remaining obligations. Rewrite using `[map_inv₀, h]`. Conclude with `eq_inv_of_mul_eq_one_left (by rw [← map_mul, Units.inv_mul, map_one])`.
+-/
 theorem pos_iff_not_isUnit (c : NChoice D) (w : D.what₂.places.Pl) (x : D.what₂.LL) (z : c.Oe w)
     (h : c.embW w x = algebraMap (c.Oe w) (FractionRing (c.Oe w)) z) :
     0 < D.what₂.places.val w x ↔ ¬ IsUnit z := by
@@ -225,10 +290,24 @@ theorem pos_iff_not_isUnit (c : NChoice D) (w : D.what₂.places.Pl) (x : D.what
     rw [map_inv₀, h]
     exact eq_inv_of_mul_eq_one_left (by rw [← map_mul, Units.inv_mul, map_one])
 
+/- English proof (translation)
+Set `σ : D.what₂.LL →ₐ[ℚ] D.what₂.LL` to `(starRingEnd D.what₂.LL).toRatAlgHom`. Conclude with `⟨σ.restrictNormal ↥D.LL0 x, σ.restrictNormal_commutes ↥D.LL0 x⟩`.
+-/
 theorem exists_star (hG : IsGalois ℚ ↥D.LL0) (x : ↥D.LL0) : ∃ x' : ↥D.LL0, (x' : D.what₂.LL) = star (x : D.what₂.LL) := by
   let σ : D.what₂.LL →ₐ[ℚ] D.what₂.LL := (starRingEnd D.what₂.LL).toRatAlgHom
   exact ⟨σ.restrictNormal ↥D.LL0 x, σ.restrictNormal_commutes ↥D.LL0 x⟩
 
+/- English proof (translation)
+Introduce `x`. Establish `hint : IsIntegral (D.ntw.O0 (c.twI w)) (D.ntw.emb0 (c.twI w) (x : ↥D.LL0))` using `(RingOfIntegers.isIntegral_coe x).map_of_comp_eq (Int.castRingHom _) (D.ntw.emb0 (c.twI w)) (RingHom.ext_int _ _)`. Take `⟨y, hy⟩` from `IsIntegrallyClosed.algebraMap_eq_of_integral hint`. Establish `hleft : (∃ y' ∈ IsLocalRing.maximalIdeal (D.ntw.O0 (c.twI w)), algebraMap _ (FractionRing (D.ntw.O0 (c.twI w))) y' = D.ntw.emb0 (c.twI w) (x : ↥D.LL0)) ↔ ¬ IsUnit y`. Use `⟨fun ⟨y', h1, h2⟩ => ?_, fun h1 => ⟨y, h1, hy⟩⟩` and prove the remaining obligations.
+
+Rewrite using `[← IsFractionRing.injective _ _ (h2.trans hy.symm)]`. Conclude with `h1`. Establish `key : ∀ x' : ↥D.LL0, (if c.sd w then D.ntw.emb0 (c.twI w) else D.ntw.emb0b (c.twI w)) x' = D.ntw.emb0 (c.twI w) (x : ↥D.LL0) → (0 < D.what₂.places.val w (x' : D.what₂.LL) ↔ ¬ IsUnit y)`. Introduce `x' hx'`. Establish `e` using `h.embedding_baseField_condition w x' y 1 one_ne_zero (by rw [hx', map_one, mul_one, hy])`.
+
+Simplify using `only [map_one, mul_one] at e`. Rewrite using `[pos_iff_not_isUnit c w _ _ e, not_iff_not]`. Conclude with `⟨isUnit_of_toOe c w y, fun hu => ((hu.map _).map _).map _⟩`. Rewrite using `[hleft]`. Consider the cases of `hs : c.sd w`.
+
+Take `⟨x', hx'⟩` from `exists_star hG (x : ↥D.LL0)`. Rewrite using `[if_neg (by simp), D.conj_val, ← hx']`. Use `(key x' ?_).symm` and prove the remaining obligations. Rewrite using `[hs, if_neg (by simp)]`. Conclude with `D.ntw.restX_coefficientEmbedding_conj _ _ _ (by rw [hx', star_star])`.
+
+Rewrite using `[if_pos rfl]`. Conclude with `(key x (by rw [hs, if_pos rfl])).symm`.
+-/
 theorem liesUnder_of_tie (hG : IsGalois ℚ ↥D.LL0) {c : NChoice D} (h : NChTie D c) (w : D.what₂.places.Pl) :
     LiesUnder D (c.twI w) (if c.sd w then w else D.what₂.places.conj w) := by
   intro x
@@ -258,12 +337,18 @@ theorem liesUnder_of_tie (hG : IsGalois ℚ ↥D.LL0) {c : NChoice D} (h : NChTi
   · rw [if_pos rfl]
     exact (key x (by rw [hs, if_pos rfl])).symm
 
+/- English proof (translation)
+Introduce `w _`. Use `liesUnder_of_tie hG h w` as an intermediate fact. Use `split_ifs at this`. Use `exacts [Or.inl this, Or.inr this]`.
+-/
 theorem atPlace_of_tie (hG : IsGalois ℚ ↥D.LL0) {c : NChoice D} (h : NChTie D c) : AtPlace (recorded c) := by
   intro w _
   have := liesUnder_of_tie hG h w
   split_ifs at this
   exacts [Or.inl this, Or.inr this]
 
+/- English proof (translation)
+Break down `h w hw with h1 | h1` into its components or cases. Use `exacts [⟨w, hw, h1⟩, ⟨_, (GlobalTheory.IndefiniteRowSideFullHecke.GoodPairSystems.twisted_conj w).2 hw, h1⟩]`.
+-/
 theorem AtPlace.inW1 {t : D.what₂.places.Pl → TwDatum D} (h : AtPlace t) {w : D.what₂.places.Pl} (hw : Twisted D w) :
     D.ntw.NonzeroIndexPlace (t w).1 := by
   rcases h w hw with h1 | h1
@@ -279,6 +364,9 @@ def TwGoodAll {eps : ℝ} (Fm : FamP eps) : Prop :=
   Eventually Fm fun x hx i => TwConjAt (Fm.D x i) (Fm.ex x hx i).nch ∧
     ∃ N0 S, TwGoodAllAt (Fm.ex x hx i).nch ⟨twE Fm x hx i, N0, S⟩
 
+/- English proof (translation)
+Take `⟨a, ha⟩` from `h`. Use `⟨a, fun x e hx i => ?_⟩` and prove the remaining obligations. Take `⟨h1, N0, S, h2⟩` from `ha x e hx i`. Conclude with `⟨h1, N0, S, h2.twGoodAt⟩`.
+-/
 theorem TwGoodAll.twGood {eps : ℝ} {Fm : FamP eps} (h : TwGoodAll Fm) : TwGood Fm := by
   obtain ⟨a, ha⟩ := h
   refine ⟨a, fun x e hx i => ?_⟩

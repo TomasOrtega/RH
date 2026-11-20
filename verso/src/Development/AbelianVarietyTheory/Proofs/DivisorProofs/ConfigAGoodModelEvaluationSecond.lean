@@ -17,6 +17,11 @@ noncomputable section
 
 namespace GlobalTheory.ThK.ConeInfDerivMeas
 
+/- English proof (translation)
+Use `continuous_iff_continuousAt.2 fun f₀ => ?_` and prove the remaining obligations. Rewrite using `[ContinuousAt, tendsto_iff_norm_sub_tendsto_zero]`. Establish `h : Continuous fun f : SInf F κ => SchwartzMap.seminorm ℂ 0 n (f - f₀)` using `((schwartz_withSeminorms ℂ _ ℂ).continuous_seminorm (0, n)).comp (continuous_id.sub continuous_const)`. Establish `h'` using `h.tendsto f₀`. Rewrite `h'` using `[sub_self, map_zero]`.
+
+Use `squeeze_zero (fun _ => norm_nonneg _) (fun f => ?_) h'` and prove the remaining obligations. Rewrite using `[← iteratedFDeriv_sub_apply ((f.smooth n).contDiffAt) ((f₀.smooth n).contDiffAt)]`. Conclude with `SchwartzMap.norm_iteratedFDeriv_le_seminorm ℂ (f - f₀) n y`.
+-/
 theorem continuous_iteratedFDeriv_apply {F : Type} [Field F] [NumberField F] {κ : Type} [Fintype κ] (n : ℕ)
     (y : κ → mixedEmbedding.mixedSpace F) : Continuous fun f : SInf F κ => iteratedFDeriv ℝ n (⇑f) y := by
   refine continuous_iff_continuousAt.2 fun f₀ => ?_
@@ -29,6 +34,9 @@ theorem continuous_iteratedFDeriv_apply {F : Type} [Field F] [NumberField F] {κ
   rw [← iteratedFDeriv_sub_apply ((f.smooth n).contDiffAt) ((f₀.smooth n).contDiffAt)]
   exact SchwartzMap.norm_iteratedFDeriv_le_seminorm ℂ (f - f₀) n y
 
+/- English proof (translation)
+Use `haveI : FiniteDimensional ℝ (V [×n]→L[ℝ] ℂ) := Module.Finite.of_injective (ContinuousMultilinearMap.toMultilinearMapLinear (R' := ℝ)) ContinuousMultilinearMap.toMultilinearMap_injective`. Use `haveI := FiniteDimensional.proper_real (V [×n]→L[ℝ] ℂ)`. Use `infer_instance`.
+-/
 theorem secondCountable_multilinear_forms (V : Type) [NormedAddCommGroup V] [NormedSpace ℝ V] [FiniteDimensional ℝ V]
     (n : ℕ) : SecondCountableTopology (V [×n]→L[ℝ] ℂ) := by
   haveI : FiniteDimensional ℝ (V [×n]→L[ℝ] ℂ) := Module.Finite.of_injective
@@ -36,6 +44,17 @@ theorem secondCountable_multilinear_forms (V : Type) [NormedAddCommGroup V] [Nor
   haveI := FiniteDimensional.proper_real (V [×n]→L[ℝ] ℂ)
   infer_instance
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ hP B b a' G G₁ H H' X om om' _ hT _ e _ ei ev _ _ _ K _ z f n y`. Use `haveI : IsTopologicalRing (AE F E) := IsModuleTopology.isTopologicalRing (AF F) (AE F E)`. Establish `hM` using `hT.geo.hM`. Establish `hψ` using `hT.base.std`. Establish `hΦ : Continuous fun k : KAt K (evI F) => locOpInf (om (k.1, 1)) f` using `(GlobalTheory.ArchWeilCont.continuousOn_locOpInf hP G.M hT.base.cm hψ hT.weil f).comp_continuous continuous_subtype_val fun k => k.2.2`.
+
+Establish `hl : Continuous fun q : KAt K (evI F) × idelesAt E (evI F) => q.2.1` using `continuous_subtype_val.comp continuous_snd`. Establish `hν : Continuous X.ν` using `hT.chars.heckeα.1.div' hT.chars.heckeβ.1`. Establish `hc : Continuous fun p : KAt K (evI F) × idelesAt E (evI F) => coneInfInt B G.M om ei (shiftA H H') X.ν z f p.1.1 p.2.1`. Simplify using `only [coneInfInt, GlobalTheory.ConeInfCont.locOpInf_rho_eq hψ hM]`. Use `(((continuous_subtype_val.comp hν).comp hl).mul ((Complex.continuous_ofReal.comp (NNReal.continuous_coe.comp (GlobalTheory.Doubling.continuous_absE.comp hl))).pow z)).smul (ei.continuous.comp (GlobalTheory.ConeInfCont.continuous_archOp (hΦ.comp continuous_fst) ?_))` and prove the remaining obligations.
+
+Set `L` to `G.M.co.e.toLinearMap ∘ₗ (realAd F 1 • ((LinearMap.toSpanSingleton (AE F E) _ (Matrix.vecMulVec (incV F H.x) (incV F H'.y))).restrictScalars (AF F)))`. Establish `hL : Continuous fun q : KAt K (evI F) × idelesAt E (evI F) => G.M.co.e (partInf F (shiftA H H' q.2.1))` using `(IsModuleTopology.continuous_of_linearMap L).comp (Units.continuous_val.comp hl)`. Conclude with `(continuous_pi fun i => GlobalTheory.ConeInfCont.continuous_qA.comp ((continuous_apply i).comp hL.fst)).prodMk (continuous_pi fun i => GlobalTheory.ConeInfCont.continuous_qA.comp ((continuous_apply i).comp hL.snd))`. Establish `hd` using `(continuous_iteratedFDeriv_apply n y).comp hc`. Take `⟨t1, t2, t3, t4⟩` from `GlobalTheory.UnitaryAdelicTop.lcsc_UA F E σ _ G.V.J`.
+
+Take `⟨_, _, _, _, _⟩` from `idelesAt_facts E (evI F)`. Use `haveI : BorelSpace (UA σ G.V.J) := ⟨rfl⟩`. Use `haveI : SecondCountableTopology (KAt K (evI F)) := Topology.IsEmbedding.subtypeVal.secondCountableTopology`. Use `haveI : BorelSpace (KAt K (evI F)) := Subtype.borelSpace _`. Use `haveI := secondCountable_multilinear_forms (Fin b × Fin (b + a') → mixedEmbedding.mixedSpace F) n`.
+
+Conclude with `hd.stronglyMeasurable`.
+-/
 theorem stronglyMeasurable_iteratedFDeriv_coneInfInt : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E), GlobalTheory.FunPr.Hypotheses₂ →
     ∀ (B : Base F E) (b a' : ℕ) (G : Geo σ (b + 2) a') (G₁ : Geo σ b a') (H : Plane E (b + 2) b) (H' : Plane E (b + 2 + a') (b + a'))
     (X : Chars F E) (om : Rep σ G.V G.W) (om' : Rep σ G.V' G.W),

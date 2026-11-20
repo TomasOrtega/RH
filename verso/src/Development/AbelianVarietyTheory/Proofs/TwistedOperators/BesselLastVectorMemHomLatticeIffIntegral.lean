@@ -26,6 +26,15 @@ open GlobalTheory.GoodPos GlobalTheory.FinPl.LatMem
 
 variable {D : D7}
 
+/- English proof (translation)
+Use `⟨fun hu => ⟨latO_mxAt hu, fun y hy => latO_maps hS hu hy⟩, fun ⟨hP, hmap⟩ => ?_⟩` and prove the remaining obligations. Take `⟨m, s, s', hs, hs', hdual⟩` from `exists_dualBasis S hS`. Set `yv : Fin m → Fin S.rank → AE D` to `fun i l => pairA D.host.F 0 (indP D.host.F P) ⊗ₜ[D.host.F] (1 * s i l)`. Establish `hyv : ∀ i, yv i ∈ latV S LS P` using `fun i => AddSubgroup.subset_closure ⟨indP D.host.F P, indicatorAdele_mem_integralAdeles' _ _, indicatorAdele_supported _ _, 1, rfl, s i, hs i, rfl⟩`. Establish `hu : u = ∑ i, rowMul S T (s' i) (u *ᵥ yv i)`.
+
+Use extensionality with `k j`. Simplify using `only [Matrix.sum_apply, rowMul, Matrix.of_apply, Matrix.mulVec, dotProduct, Finset.sum_mul, yv]`. Simplify using `only [mul_assoc, Algebra.TensorProduct.tmul_mul_tmul, mul_one, one_mul]`. Rewrite using `[Finset.sum_comm]`. Simplify using `only [← Finset.mul_sum, ← TensorProduct.tmul_sum, hdual]`.
+
+Rewrite using `[Finset.sum_eq_single j]`. Rewrite using `[if_pos rfl]`. Conclude with `(mul_indP (hP k j)).symm`. Introduce `l _ hl`. Rewrite using `[if_neg hl, TensorProduct.tmul_zero, mul_zero]`.
+
+Introduce `h`. Conclude with `absurd (Finset.mem_univ j) h`. Rewrite using `[hu]`. Conclude with `sum_mem fun i _ => rowMul_mem (hs' i) (hmap _ (hyv i))`.
+-/
 theorem mem_completedHomLattice_iff_selfDual_source {S T : HSp D} {LS : Lat S} (LT : Lat T) (hS : IsSelfDualC S LS) (P : Pl D → Prop) (u : WO S T) :
     u ∈ latO S T (LS : Set _) (LT : Set _) P ↔
       MxAt P u ∧ ∀ y ∈ latV S LS P, Matrix.mulVec (show Matrix (Fin T.rank) (Fin S.rank) (AE D) from u) y ∈ latA T LT P := by
@@ -47,6 +56,9 @@ theorem mem_completedHomLattice_iff_selfDual_source {S T : HSp D} {LS : Lat S} (
   rw [hu]
   exact sum_mem fun i _ => rowMul_mem (hs' i) (hmap _ (hyv i))
 
+/- English proof (translation)
+Introduce `a ha` and use `by have hsd := GlobalTheory.IwaPlace.LocSD.isSDAt_latV D V₀ M x hM have hmx : MxAt (· = x) (d.incAdj V₀ (a • yZero V₀ ρ z)) := mxAt_mul _ (mxAt_smul _ (mxAt_mul' _ (mxAt_adj fun i j => Ideal.mul_mem_right _ _ ha))) rw [mem_completedHomLattice_iff_selfDual_source LW hM, and_iff_ri …`.
+-/
 theorem last_of_line {V₀ W W₀ : HSp D} {ρ : ℕ} (d : HypDec W W₀ ρ) (z : Fin V₀.rank → D.host.E) {M : Lat V₀} (LW : Lat W)
     (hM : IsSelfDualC V₀ M) {x : Pl D} {m : (AE D)ˣ} (r : Fin ρ) (hr : r.1 + 1 = ρ)
     (hW : ∀ t ∈ idAt D (· = x), colMul d.jY r t ∈ latA W LW (· = x) ↔
@@ -72,6 +84,15 @@ theorem last_of_line {V₀ W W₀ : HSp D} {ρ : ℕ} (d : HypDec W W₀ ρ) (z 
   refine iff_of_eq (congrArg (· ∈ _) ?_)
   linear_combination (cA D m * GlobalTheory.IwaPlace.hermAt V₀ y (a • ratV z)) * e3
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce `hy`. Establish `key : ∀ y ∈ latV S (latPi S I) (· = v), y i₀ ∈ idV I v` using `fun y hy => by`. Proceed by induction on `hy using AddSubgroup.closure_induction with`. Consider the case `mem y hy`.
+
+Take `⟨α, hα, h0, a, rfl, z, hz, rfl⟩` from `hy`. Conclude with `AddSubgroup.subset_closure ⟨α, hα, h0, z i₀, mem_latPi.1 hz i₀, by simp only [one_mul]⟩`. Consider the case `zero => exact zero_mem _`. Consider the case `add a b _ _ ha hb => exact add_mem ha hb`. Consider the case `neg a _ ha => exact neg_mem ha`.
+
+Conclude with `key _ hy`. Introduce `hs`. Proceed by induction on `hs using AddSubgroup.closure_induction with`. Consider the case `mem y hy`. Take `⟨α, hα, h0, z, hz, rfl⟩` from `hy`.
+
+Conclude with `AddSubgroup.subset_closure ⟨α, hα, h0, 1, rfl, fun _ => z, mem_latPi.2 fun _ => hz,`. Use function extensionality and compare the values at `fun i => by rw [one_mul]⟩`. Consider the case `zero => exact zero_mem _`. Consider the case `add a b _ _ ha hb => exact add_mem ha hb`. Consider the case `neg a _ ha => exact neg_mem ha`.
+-/
 theorem const_mem_latPi {S : HSp D} (i₀ : Fin S.rank) (I : FI D) (v : Pl D) (s : AE D) :
     (fun _ => s) ∈ latV S (latPi S I) (· = v) ↔ s ∈ idV I v := by
   constructor
@@ -95,6 +116,11 @@ theorem const_mem_latPi {S : HSp D} (i₀ : Fin S.rank) (I : FI D) (v : Pl D) (s
     | add a b _ _ ha hb => exact add_mem ha hb
     | neg a _ ha => exact neg_mem ha
 
+/- English proof (translation)
+Establish `hodd : Odd (j + 1)`. Take `⟨k, hk⟩` from `D.R.m_even`. Conclude with `⟨k - τ - 2, by omega⟩`. Unfold `rowId tiltSc lineId stairId`. Rewrite using `[if_pos hodd, if_neg (by omega), show D.R.m - 1 - (j + 1) - 1 - p.1 = τ by omega, show D.R.m - 1 - (j + 1) - p.1 = τ + 1 by omega, show (D.R.m - 2 - j) / 2 = τ + 1 by omega, hp, pow_succ D.host.AA (τ + 1)]`.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem AA_mul_rowId (j τ : ℕ) (hj : j + 2 * (τ + 1) + 2 = D.R.m) (p : Fin (D.R.m - 1 - (j + 1))) (hp : p.1 = τ + 1) :
     D.host.AA * rowId D (j + 1) p = FractionalIdeal.spanSingleton _ (star (D.host.xi0 ^ τ)) * lineId D j := by
   have hodd : Odd (j + 1) := by
@@ -108,6 +134,21 @@ theorem AA_mul_rowId (j τ : ℕ) (hj : j + 2 * (τ + 1) + 2 = D.R.m) (p : Fin (
 
 variable {T : Type} {L : LevCh D T} {sc : Consts}
 
+/- English proof (translation)
+Take `⟨τ, rfl⟩ : ∃ τ, σ = τ + 1` from `⟨σ - 1, by omega⟩`. Establish `hξ : D.host.xi0 ≠ 0` using `GlobalTheory.ChiGrid.cmHost_imaginaryGenerator_ne_zero`. Establish `hL : IsSelfDualC _ (lineL D j)` using `isSelfDualC_latPi (GlobalTheory.RowShape.nLine_gram D) (lineId_ne_zero D j) (lineId_mul_conj D j)`. Establish `hX : IsSelfDualC _ (G.Λ (.top j))` using `(G.isV (X := .top j) (show j ≤ D.R.m by omega) (fun _ h => by cases h)).sd`. Establish `hM : IsSelfDualC _ (coreL G j)` using `GlobalTheory.Core.Rk.SumBox.selfDual_sumLatO D _ _ _ _ _ _ hX hL`.
+
+Establish `ho : OrthAt (GlobalTheory.OrthSumExists.orthDecHsum D (G.V (.top j)) (GlobalTheory.SeeSaw.Model.nLine D)) (coreL G j) (G.Λ (.top j)) (lineL D j) v` using `GlobalTheory.Core.Rk.SumSplit.orthAt_sumLatO D _ _ _ _ _ _ v`. Take `⟨g, hg, hgen⟩` from `GlobalTheory.IdVGen.idV_gen D v (lineId D j) (lineId_ne_zero D j)`. Establish `hx : D.host.xi0 ^ (τ + 1) ≠ 0` using `pow_ne_zero _ hξ`. Establish `hm0 : g * (D.host.xi0 ^ (τ + 1))⁻¹ ≠ 0` using `mul_ne_zero hg (inv_ne_zero hx)`. Establish `hline : ∀ a ∈ idAt D (· = v), a • ratV (fun _ : Fin (GlobalTheory.SeeSaw.Model.nLine D).rank => D.host.xi0 ^ (τ + 1)) ∈ latV (GlobalTheory.SeeSaw.Model.nLine D) (lineL D j) (· = v) ↔ (((inU _ hm0)⁻¹ : (AE D)ˣ) : AE D) * a ∈ intAt D (· = v)` using `fun a ha => by`.
+
+Use `(const_mem_latPi (S := GlobalTheory.SeeSaw.Model.nLine D) (0 : Fin 1) (lineId D j) v (a * incA D (D.host.xi0 ^ (τ + 1)))).trans ?_` and prove the remaining obligations. Rewrite using `[hgen, and_iff_left (Ideal.mul_mem_right _ _ ha), inU_inv, mul_inv, inv_inv, RingHom.map_mul, mul_assoc, mul_comm a]`. Establish `hU` using `line_norm (GlobalTheory.SeeSaw.Model.isLineVec_nLine hx) hL hline`. Establish `hN : star (fun _ : Fin (GlobalTheory.SeeSaw.Model.nLine D).rank => D.host.xi0 ^ (τ + 1)) ⬝ᵥ (GlobalTheory.SeeSaw.Model.nLine D).gram *ᵥ (fun _ => D.host.xi0 ^ (τ + 1)) = -(star (D.host.xi0 ^ (τ + 1)) * D.host.xi0 ^ (τ + 1))`. Rewrite using `[GlobalTheory.RowShape.nLine_gram, neg_mulVec, one_mulVec, dotProduct_neg]`.
+
+Conclude with `congrArg Neg.neg (Fin.sum_univ_one (fun _ : Fin 1 => star (D.host.xi0 ^ (τ + 1)) * D.host.xi0 ^ (τ + 1)))`. Rewrite `hU` using `[hN]`. Use `last_of_line _ _ _ hM (m := inU _ hm0) (Fin.last τ) rfl (fun t ht => ?_) (fun a ha => (orth_line _ ho _ a).symm.trans (hline a ha))` and prove the remaining obligations. Establish `hc : colMul (rowJac G (j + 1) (by omega) (τ + 1) (by omega)).jY (Fin.last τ) t = fun k => t * incA D ((G.rowDec (j + 1) (by omega)).a k (Fin.castLE (by omega : τ + 1 ≤ D.R.m - 1 - (j + 1)) (Fin.last τ)).rev)`. Use function extensionality and compare the values at `k`.
+
+Both sides reduce to the same expression. Establish `hs : star (D.host.xi0 ^ τ) ≠ 0` using `star_ne_zero.2 (pow_ne_zero _ hξ)`. Rewrite using `[hc, rowN, dif_pos (by omega), (GlobalTheory.AscFin.UnitaryEmbeddingLine.embedding_line_mem_lattice_iff _ (neg_ne_zero.2 one_ne_zero) _ _ _ v t).2, AA_mul_rowId j τ hj _ (by simp only [Fin.val_rev, Fin.val_castLE, Fin.val_last]; omega), idV_spanSingleton_mul_iff D v _ _ hs t, and …`. Establish `e : g * (D.host.xi0 ^ (τ + 1))⁻¹ * -(star (D.host.xi0 ^ (τ + 1)) * D.host.xi0 ^ (τ + 1)) * (g⁻¹ * (star (D.host.xi0 ^ τ))⁻¹) = D.host.xi0`. Rewrite using `[pow_succ D.host.xi0 τ, star_mul, GlobalTheory.DualPairCheck.star_purely_imaginary_eq_neg]`.
+
+Use `pow_ne_zero τ hξ` as an intermediate fact. Clear the denominators using the available nonvanishing facts. Establish `e'` using `congrArg (incA D) e`. Rewrite `e'` using `[RingHom.map_mul, RingHom.map_mul, RingHom.map_mul (incA D) g⁻¹]`. Use `iff_of_eq (congrArg (· ∈ _) ?_)` and prove the remaining obligations.
+
+Take the linear combination `(cA D (incA D (g * (D.host.xi0 ^ (τ + 1))⁻¹)) * t) * e'`.
+-/
 theorem last_rowN (G : GridData L sc) (j σ : ℕ) (hj : j + 2 * σ + 2 = D.R.m) (v : Pl D) (hσ : 0 < σ) :
     ∀ a ∈ idAt D (· = v),
     (rowJac G (j + 1) (by omega) σ (by omega)).incAdj (GlobalTheory.Doubling.hsum (G.V (.top j)) (GlobalTheory.SeeSaw.Model.nLine D))
@@ -165,6 +206,9 @@ theorem last_rowN (G : GridData L sc) (j σ : ℕ) (hj : j + 2 * σ + 2 = D.R.m)
 
 end GlobalTheory.RowShape.LastBF
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨0, fun _ _ _ => ⟨0, fun D _ _ _ Γ _ _ Pl0 T A Ks _ _ _ R F _ ch _ _ j σ hj v hσ => GlobalTheory.RowShape.LastBF.last_rowN ch.G j σ hj v hσ⟩⟩`.
+-/
 theorem GlobalTheory.RowShape.big_last_rowN : Big fun {D} {Γ} _ _ {Pl0 T} {A} {Ks} _ _ _ {R} ch => ∀ j σ (hj : j + 2 * σ + 2 = D.R.m) v, 0 < σ → ∀ a ∈ GlobalTheory.FinPl.idAt D (· = v),
     (rowJac ch.G (j + 1) (by omega) σ (by omega)).incAdj (GlobalTheory.Doubling.hsum (ch.G.V (.top j)) (GlobalTheory.SeeSaw.Model.nLine D))
       (a • yZero (GlobalTheory.Doubling.hsum (ch.G.V (.top j)) (GlobalTheory.SeeSaw.Model.nLine D)) σ

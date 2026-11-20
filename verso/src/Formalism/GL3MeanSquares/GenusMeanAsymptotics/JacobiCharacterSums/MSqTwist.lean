@@ -15,6 +15,9 @@ namespace Formalism.HermitianLattices.Ext.LogarithmicIntegralBounds
 open Formalism.HermitianLattices.ZeroFreeRegionGL2
 
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+The claim follows from `|∑ q ∈ PPset m₀ a₀ X, (jacobiSym (q : ℤ) s : ℝ)| ≤ x ^ (-3 : ℝ) * ((PPset m₀ a₀ X).card : ℝ) := by obtain ⟨x₁, hx₁⟩ := count_a hP hE ε hε obtain ⟨c₀, hc₀, hpage⟩ := page_across hZ obtain ⟨c₃, A₀, C₀, hc₃, H⟩ := hP have H' : ∀ M : ℕ, ∃ e : Option (DirichletCharacter ℂ M × ℝ), ∀ (h …`.
+-/
 theorem twist_bound (hP : PNTAPRelW) (hZ : Formalism.ZeroFreeDirichlet.ZFRDirichlet) (hE : Formalism.ZeroFreeDirichlet.ExcBound) (ε : ℝ) (hε : 0 < ε) :
     ∃ x₀ : ℝ, ∀ (x X : ℝ) (m₀ a₀ : ℕ),
     x₀ ≤ x → 0 < m₀ → 8 ∣ m₀ → a₀.Coprime m₀ →

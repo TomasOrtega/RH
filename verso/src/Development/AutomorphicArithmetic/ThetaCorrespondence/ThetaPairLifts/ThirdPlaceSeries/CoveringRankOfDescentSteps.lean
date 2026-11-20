@@ -17,6 +17,11 @@ open GlobalTheory.IndefiniteRowSideFullHecke.LevelStructureAutomorphisms (LevelA
 open GlobalTheory.BadCount
 open scoped TensorProduct
 namespace GlobalTheory.CovTop
+/- English proof (translation)
+Introduce `hX h1 h2 h3 hS hT hL h4 h5 h6 h7 h8`. Use `Formalism.MainNotions.Closed.imp (_root_.GlobalTheory.T.rank_growth_bound_small_scale_alt_alt hX h1 hS hT h2 h3 hL h4 h5 h6 h7 h8) ?_` and prove the remaining obligations. Introduce and unpack `_ Fm _ _ ⟨C, h0, a, h⟩`. Use `⟨C, h0, a, fun x hx hle ι p hp i hi Y hY => ?_⟩` and prove the remaining obligations. Establish `H` using `h x hx hle ι p hp i hi Y hY 1 le_rfl (by norm_num)`.
+
+Rewrite `H` using `[Nat.cast_one, one_mul]`. Use `H.trans (mul_le_mul_of_nonneg_right ?_ (Nat.cast_nonneg _))` and prove the remaining obligations. Conclude with `add_le_add le_rfl (min_le_right _ _)`.
+-/
 theorem covering_rank_of_descent_steps_alt : GlobalTheory.CovTop.HypothesesX → _root_.GlobalTheory.CovTop.PublishedHodgeBundleTheorems → GlobalTheory.Published.GrothendieckDeformation → GlobalTheory.HSCore.Quoted →
     GlobalTheory.Published.SiegelToroidalIntegral → GlobalTheory.Published.ToroidalForFanKS → GlobalTheory.Published.SemiAbelianLieSeminegative →
     _root_.GlobalTheory.CovTop.DeepGoodness → _root_.GlobalTheory.CovTop.SizeCondition → _root_.GlobalTheory.CovTop.FlatDegreeCondition → _root_.GlobalTheory.CovTop.CoverDegree → _root_.GlobalTheory.CovTop.ShareCondition → _root_.GlobalTheory.CovTop.CoverRank := by
@@ -41,6 +46,9 @@ open GlobalTheory.IndefiniteRowSideFullHecke.LevelStructureAutomorphisms (LevelA
 open GlobalTheory.BadCount
 open scoped TensorProduct
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @_root_.GlobalTheory.CovTop.covering_rank_of_descent_steps_alt | exact _root_.GlobalTheory.CovTop.covering_rank_of_descent_steps_alt | (intros; apply _root_.GlobalTheory.CovTop.covering_rank_of_descent_steps_alt <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.coverRank_of_coverDegree_and_share : GlobalTheory.CovTop.HypothesesX → _root_.GlobalTheory.CovTop.PublishedHodgeBundleTheorems → GlobalTheory.Published.GrothendieckDeformation → GlobalTheory.HSCore.Quoted → GlobalTheory.Published.SiegelToroidalIntegral → GlobalTheory.Published.ToroidalForFanKS → GlobalTheory.Published.SemiAbelianLieSeminegative → _root_.GlobalTheory.CovTop.DeepGoodness → _root_.GlobalTheory.CovTop.SizeCondition → _root_.GlobalTheory.CovTop.FlatDegreeCondition → _root_.GlobalTheory.CovTop.CoverDegree → _root_.GlobalTheory.CovTop.ShareCondition → _root_.GlobalTheory.CovTop.CoverRank := by
   first | exact @_root_.GlobalTheory.CovTop.covering_rank_of_descent_steps_alt | exact _root_.GlobalTheory.CovTop.covering_rank_of_descent_steps_alt | (intros; apply _root_.GlobalTheory.CovTop.covering_rank_of_descent_steps_alt <;> assumption)
 end

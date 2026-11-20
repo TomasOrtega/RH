@@ -82,9 +82,15 @@ def twoCoboundariesTwist : Submodule O (G × G → LL) :=
 def TateDualityH2Integral : Prop :=
   Nonempty ((↥(twoCocyclesTwist PD LL O) ⧸ (twoCoboundariesTwist PD LL O).submoduleOf (twoCocyclesTwist PD LL O)) ≃ₗ[O] O)
 
+/- English proof (translation)
+The claim follows from `h LL O hO`.
+-/
 theorem bkBAt_of_core [TopologicalSpace Qp] (h : bkBCore PD) (hO : GoodO (Qp := Qp) LL O) :
     bkBAt PD LL O := h LL O hO
 
+/- English proof (translation)
+The claim follows from `h LL O hO`.
+-/
 theorem tate_duality_h2_of_all_coefficients [TopologicalSpace Qp] (h : LocalTateTopDegree PD) (hO : GoodO (Qp := Qp) LL O) :
     TateDualityH2Torsion PD LL O := h LL O hO
 
@@ -126,11 +132,28 @@ abbrev chi1C : Br.G D.nbr i w hw →* (↥C.LL.1)ˣ :=
 
 def CoefExt.IsGood : Prop := GoodCoef D.host.condN C.LL
 
+/- English proof (translation)
+The claim follows from `C.le ((D.nbr i w hw).LL_split τ x)`.
+-/
 theorem CoefExt.split (τ : ↥(D.nbr i w hw).Kw.1 →ₐ[ℚ_[D.nd.l i]] Om (D.nd.l i)) (x : ↥(D.nbr i w hw).Kw.1) :
     τ x ∈ C.LL.1 := C.le ((D.nbr i w hw).LL_split τ x)
 
+/- English proof (translation)
+The claim follows from `(D.self_good i w hw).mono C.le`.
+-/
 theorem CoefExt.isGood : C.IsGood := (D.self_good i w hw).mono C.le
 
+/- English proof (translation)
+Use `set S : IntermediateField ℚ_[l] ↥(Ks K 1) := (LL.1).comap τ with hSdef`. Establish `hT : Ks K 1 ≤ S.map (Ks K 1).val`. Establish `hK : K.1 ≤ S.map (Ks K 1).val`. Introduce `y hy`. Conclude with `⟨⟨y, hle hy⟩, hsp (τ.comp (IntermediateField.inclusion hle)) ⟨y, hy⟩, rfl⟩`.
+
+Establish `hA : IntermediateField.adjoin ℚ_[l] {x : Om l | x ^ (l ^ 1) = 1} ≤ S.map (Ks K 1).val`. Rewrite using `[IntermediateField.adjoin_le_iff]`. Introduce `y hy`. Establish `hyK : y ∈ Ks K 1` using `(le_sup_right : IntermediateField.adjoin ℚ_[l] {x : Om l | x ^ (l ^ 1) = 1} ≤ K0 K ⊔ _) (IntermediateField.subset_adjoin _ _ hy)`. Establish `hy' : y ^ l = 1` using `by simpa using hy`.
+
+Establish `h1 : (⟨y, hyK⟩ : ↥(Ks K 1)) ^ l = 1` using `Subtype.ext (by simpa using hy')`. Establish `hpow : (τ ⟨y, hyK⟩) ^ Nat.lcm l N = 1`. Take `⟨c, hc⟩` from `Nat.dvd_lcm_left l N`. Rewrite using `[hc, pow_mul, ← map_pow τ, h1, map_one, one_pow]`. Conclude with `⟨⟨y, hyK⟩, hg _ hpow, rfl⟩`.
+
+Use `show K0 K ⊔ IntermediateField.adjoin ℚ_[l] {x : Om l | x ^ (l ^ 1) = 1} ≤ _`. Conclude with `sup_le ((inf_le_left : K0 K ≤ K.1).trans hK) hA`. Take `⟨z, hz, hzx⟩` from `hT x.2`. Establish `hzx' : z = x` using `Subtype.ext hzx`. Rewrite using `[← hzx']`.
+
+Conclude with `hz`.
+-/
 private lemma mem_LL_of_GoodCoef_of_le_Ks {l : ℕ} [Fact l.Prime] (K LL : FinExt l) (N : ℕ)
     (hg : GoodCoef N LL) (hsp : ∀ (τ : ↥K.1 →ₐ[ℚ_[l]] Om l) (x : ↥K.1), τ x ∈ LL.1)
     (hle : K.1 ≤ Ks K 1) (τ : ↥(Ks K 1) →ₐ[ℚ_[l]] Om l) (x : ↥(Ks K 1)) : τ x ∈ LL.1 := by
@@ -158,6 +181,9 @@ private lemma mem_LL_of_GoodCoef_of_le_Ks {l : ℕ} [Fact l.Prime] (K LL : FinEx
   rw [← hzx']
   exact hz
 
+/- English proof (translation)
+Use `delta Good`. Use `⟨le_rfl, fun h' => absurd h' h2, hle, ?_⟩` and prove the remaining obligations. Introduce `τ x`. Conclude with `mem_LL_of_GoodCoef_of_le_Ks _ _ _ h C.split hle τ x`.
+-/
 theorem CoefExt.IsGood.good_one {C : CoefExt D i w hw} (h : C.IsGood) (h2 : D.nd.l i ≠ 2)
     (hle : (D.nbr i w hw).Kw.1 ≤ Ks (D.nbr i w hw).Kw 1) : Good (D.nbr i w hw).Kw 1 C.LL := by
   delta Good

@@ -42,6 +42,9 @@ include hD hc in
 set_option maxHeartbeats 4000000 in
 set_option synthInstance.maxHeartbeats 400000 in
 
+/- English proof (translation)
+The claim follows from `haveI := Topo.finite_RD i r π g0 eB e₁ s Dd hD TBb.trivial_bound_target_of_psi i dc r ρ π g0 eB e₁ s Dd cB hD hN hc (TB.trivialBoundAtRows_of_admTB i dc r π cB hG hTB) hTie (fun _w hw _ c _ Cd => TBa.ytTarget_of π ρ (Topo.finite_RD i r π g0 eB e₁ s Dd hD) hF hG2 hw (TBa.ytEmbW_of …`.
+-/
 theorem tbTarget_row (hN : RepresentationBoundsCohomology.NormAt D.nd r ρ π) (hTB : EmbeddingTypes.admTB i r π dc cB) (hG : K.SelfGood i)
     (hTie : TruncatedSeriesCountingIdentities.LocalCoefficientCompatibility i) (hF : TruncatedSeriesCountingIdentities.FontaineAtPlacesOverL i) (hG2 : TruncatedSeriesCountingIdentities.admG2 i r ρ π) (hdec : TruncatedSeriesCountingIdentities.SemisimpleDecomposition i r ρ π) :
     TB.TBTarget i dc Dd cB :=
@@ -71,6 +74,11 @@ variable {D : D7} (i : D.nd.Loc) (r : D.nd.X i → (GE D.nd →* GL (Fin D.R.nV)
 set_option maxHeartbeats 4000000 in
 set_option synthInstance.maxHeartbeats 400000 in
 
+/- English proof (translation)
+Establish `hN` using `Norm.normAt_rN i r ρ π`. Establish `g4'` using `Norm.admG4_rN i r ρ π dcm g4`. Establish `g5'` using `Norm.admG5_rN i r ρ π dcm g5`. Establish `g2'` using `Norm.admG2_rN i r ρ π dcm g2`. Establish `dcm'` using `Norm.decomposes_normalized i r ρ π`.
+
+Use `⟨StB.hRho_rN i r ρ π dc g0 eB e₁ s Dd hD hc hT hrk g4 dcm fin, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Conclude with `StC.tb_of_target i (Norm.rN i r ρ π) π dc g0 eB e₁ s Dd hD hc cB (tbTarget_row i (Norm.rN i r ρ π) ρ π dc g0 eB e₁ s Dd hD hc cB hN hTB hG tie font g2' dcm')`. Conclude with `StC.chi_of i (Norm.rN i r ρ π) ρ π dc g0 eB e₁ s Dd hD hc hN g4' dcm' g5' g5x hQP`. Conclude with `StC.first_local_clause_of i (Norm.rN i r ρ π) ρ π dc g0 eB e₁ s Dd hD hc hN g4' dcm' g5' g5x hQP`. Conclude with `KRowA.rowTieIn_of i (Norm.rN i r ρ π) ρ π dc g0 eB e₁ s Dd hD hc (RowB.rowMat_SN i r ρ π dc g0 eB e₁ s Dd hD hc) (RowB.orbC_S i (Norm.rN i r ρ π) π dc g0 eB e₁ s Dd hD hc)`.
+-/
 theorem open_inputs_at_normalized (g2 : TruncatedSeriesCountingIdentities.admG2 i r ρ π) (g4 : TruncatedSeriesCountingIdentities.admG4 i r) (g5 : TruncatedSeriesCountingIdentities.admG5 i r) (g5x : TruncatedSeriesCountingIdentities.TameGeneratorConditions i)
     (dcm : TruncatedSeriesCountingIdentities.SemisimpleDecomposition i r ρ π) (font : TruncatedSeriesCountingIdentities.FontaineAtPlacesOverL i) (fin : LargeLevelLemmas.tateH1FinitenessAtPlacesOver i) (tie : TruncatedSeriesCountingIdentities.LocalCoefficientCompatibility i)
     (hG : K.SelfGood i) (hQP : QS.QPow i) (hTB : EmbeddingTypes.admTB i (Norm.rN i r ρ π) π dc cB) :
@@ -96,6 +104,17 @@ end PlugN
 
 section Inputs
 
+/- English proof (translation)
+Introduce `E Ω _ _ _ _ _ l hl v A hA hv M _ φ hker htors σ hσ`. Unfold `IsPlaceOver at hA`. Use `haveI := v.isPrime`. Use `haveI : Finite (𝓞 E ⧸ v.asIdeal) := Ideal.finiteQuotientOfFreeOfNeBot v.asIdeal v.ne_bot`. Take `⟨p, hp⟩ : ∃ p, CharP (𝓞 E ⧸ v.asIdeal) p` from `⟨ringChar _, ringChar.charP _⟩`.
+
+Establish `hpp : p.Prime` using `CharP.char_is_prime (𝓞 E ⧸ v.asIdeal) p`. Establish `hpv : ((p : ℕ) : 𝓞 E) ∈ v.asIdeal`. Rewrite using `[← Ideal.Quotient.eq_zero_iff_mem, map_natCast]`. Conclude with `CharP.cast_eq_zero _ p`. Establish `hpl : p ≠ l`.
+
+Introduce and unpack `rfl`. Conclude with `hv hpv`. Establish `hval : A.valuation ((p : ℕ) : Ω) < 1`. Establish `h` using `(hA (p : 𝓞 E)).mpr hpv`. Simplify `h` using `[map_natCast]`.
+
+Take `⟨k, hk⟩` from `Formalism.MainNotions.N.KillingConditions.WildPf.wildProP E Ω A p hpp hval σ hσ φ.ker hker`. Take `⟨n, hn⟩` from `htors σ`. Establish `h1 : φ σ ^ (p ^ k) = 1`. Rewrite using `[← map_pow]`. Conclude with `MonoidHom.mem_ker.mp hk`.
+
+Establish `hcop : Nat.Coprime (p ^ k) (l ^ n)` using `Nat.Coprime.pow k n ((Nat.coprime_primes hpp hl).mpr hpl)`. Establish `hc2 : Nat.Coprime (orderOf (φ σ)) (l ^ n)` using `Nat.Coprime.coprime_dvd_left (orderOf_dvd_of_pow_eq_one h1) hcop`. Conclude with `orderOf_eq_one_iff.mp (Nat.Coprime.eq_one_of_dvd hc2 (orderOf_dvd_of_pow_eq_one hn))`.
+-/
 theorem wildTriv_holds : Formalism.MainNotions.N.WildTriv := by
   intro E Ω _ _ _ _ _ l hl v A hA hv M _ φ hker htors σ hσ
   unfold IsPlaceOver at hA
@@ -122,9 +141,15 @@ theorem wildTriv_holds : Formalism.MainNotions.N.WildTriv := by
     Nat.Coprime.coprime_dvd_left (orderOf_dvd_of_pow_eq_one h1) hcop
   exact orderOf_eq_one_iff.mp (Nat.Coprime.eq_one_of_dvd hc2 (orderOf_dvd_of_pow_eq_one hn))
 
+/- English proof (translation)
+Introduce `w hw` and use `D.self_good i w hw`.
+-/
 theorem selfGood_rec {D : D7} (i : D.nd.Loc) : K.SelfGood i :=
   fun w hw => D.self_good i w hw
 
+/- English proof (translation)
+The claim follows from `Formalism.MainNotions.N.qpow_of_tw wildTriv_holds D i`.
+-/
 theorem qPow_rec {D : D7} (i : D.nd.Loc) : QS.QPow i :=
   Formalism.MainNotions.N.qpow_of_tw wildTriv_holds D i
 
@@ -139,6 +164,17 @@ variable {D : D7} (i : D.nd.Loc) (r : D.nd.X i → (GE D.nd →* GL (Fin D.R.nV)
 set_option maxHeartbeats 4000000 in
 set_option synthInstance.maxHeartbeats 400000 in
 
+/- English proof (translation)
+Introduce `hROW hLIFT hTB`. Use `Final.theorem_n5_of_open_b (i := i) (r := r) (ρ := ρ) (π := π) (dc := dc) (lenRow := lenRow) (e' := e') (cB := cB) g1 g2 g3 g5x g6 bk bka ct dcm font fin a51 unr (selfGood_rec i) ?_ hROW hLIFT hTB` and prove the remaining obligations. Introduce `_ _ hTB' _ g0 eB e₁ s Dd _ hD hc hT hrk`. Use `haveI : ∀ k, IsScalarTower Dd.T' Dd.R' (blockRestrictedRepresentationType (RepresentationBoundsCohomology.blk D.R) Dd.ρk k) := by`. Introduce `k`.
+
+Use `⟨fun f a m => ?_⟩` and prove the remaining obligations. Establish `hD'` using `hD`. Simplify using `only [RingDef] at hD'`. Take `⟨-, -, -, -, -, -, -, -, h9, -, h11, -, -, -, -, -, h17, h18, -, -, -, -⟩` from `hD'`. Establish `hπ : Dd.ρπ (f • a) = ((f : Dd.X' → D.nd.O i) Dd.π') • Dd.ρπ a`.
+
+Apply `Matrix.map_injective (IsFractionRing.injective (D.nd.O i) (FractionRing (D.nd.O i)))` to reduce the goal to its premises. Simplify using `only`. Rewrite using `[h17, h9, ← h17 a]`. Use extensionality with `u v`. Simplify using `[map_mul]`.
+
+Establish `hk : Dd.ρk k (f • a) = ((f : Dd.X' → D.nd.O i) Dd.π') • Dd.ρk k a`. Rewrite using `[← h18, ← h18, hπ]`. Use extensionality with `u v`. Both sides reduce to the same expression. Rewrite using `[h11 f k (a • m)]`.
+
+Use `funext fun j => ?_` and prove the remaining obligations. Use `show (∑ x, (Dd.ρk k (f • a)) j x • m x) = ((f : Dd.X' → D.nd.O i) Dd.π') • ∑ x, (Dd.ρk k a) j x • m x`. Rewrite using `[hk]`. Simplify using `only [Matrix.smul_apply, smul_eq_mul, mul_smul, Finset.smul_sum]`. Conclude with `open_inputs_at_normalized (i := i) (r := r) (ρ := ρ) (π := π) (dc := dc) (g0 := g0) (eB := eB) (e₁ := e₁) (s := s) (Dd := Dd) (hD := hD) (hc := hc) (hT := hT) (hrk := hrk) (cB := cB) g2 g4 g5 g5x dcm font fin tie (selfGood_rec i) (qPow_rec i) hTB'`.
+-/
 theorem theorem_n5_from_inputs (g1 : TruncatedSeriesCountingIdentities.admG1 i r) (g2 : TruncatedSeriesCountingIdentities.admG2 i r ρ π) (g3 : TruncatedSeriesCountingIdentities.admG3 i r ρ π) (g4 : TruncatedSeriesCountingIdentities.admG4 i r)
     (g5 : TruncatedSeriesCountingIdentities.admG5 i r) (g5x : TruncatedSeriesCountingIdentities.TameGeneratorConditions i) (g6 : TruncatedSeriesCountingIdentities.admG6 i r) (bk : TruncatedSeriesCountingIdentities.admBK i) (bka : LargeLevelLemmas.BlochKatoAnnihilators i)
     (ct : TruncatedSeriesCountingIdentities.FamilyContinuous i r) (dcm : TruncatedSeriesCountingIdentities.SemisimpleDecomposition i r ρ π) (font : TruncatedSeriesCountingIdentities.FontaineAtPlacesOverL i) (fin : LargeLevelLemmas.tateH1FinitenessAtPlacesOver i)

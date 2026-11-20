@@ -41,6 +41,11 @@ def RatLeviC : Prop := ∀ (D : D7) (X : HidaSetting D) (u : D.what₂.Word), Ra
 
 def PsiDdC : Prop := ∀ (D : D7) (X : HidaSetting D), PsiDd X
 
+/- English proof (translation)
+Rewrite using `[Formalism.L2.SG.PoincareInHH.Cut.sfin_iff]`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Introduce `a`. Establish `e` using `h.2 (X.eR a) (by simp [fixSet])`. Apply the tactic sequence `try beta_reduce`.
+
+Rewrite using `[Matrix.sub_mulVec, Matrix.one_mulVec, e, sub_self]`. Conclude with `Submodule.zero_mem _`. Establish `e` using `h.2 (X.zR u) (by simp [fixSet])`. Rewrite using `[Matrix.sub_mulVec, Matrix.one_mulVec, e, sub_self]`. Conclude with `Submodule.zero_mem _`.
+-/
 theorem hfin_sfin {D : D7} (X : HidaSetting D) (u : D.what₂.Word) (h : Hfin X u) :
     (h : X.B.I.Gf) ∈ SfinU X u := by
   rw [Formalism.L2.SG.PoincareInHH.Cut.sfin_iff]
@@ -54,6 +59,13 @@ theorem hfin_sfin {D : D7} (X : HidaSetting D) (u : D.what₂.Word) (h : Hfin X 
     rw [Matrix.sub_mulVec, Matrix.one_mulVec, e, sub_self]
     exact Submodule.zero_mem _
 
+/- English proof (translation)
+Take `⟨h1, h2⟩` from `hγ`. Take `⟨h21, h22⟩` from `h2`. Use `⟨h1, Subgroup.subset_closure ⟨?_, hfin_sfin X u ⟨γ.2, h22⟩⟩⟩` and prove the remaining obligations. Rewrite using `[Formalism.L2.SG.PoincareInHH.Cut.sinf_iff]`. Introduce `v`.
+
+Use `⟨?_, ?_⟩` and prove the remaining obligations. Introduce `a`. Establish `e` using `h21 v (X.eR a) (by simp [fixSet])`. Apply the tactic sequence `try beta_reduce`. Rewrite using `[Matrix.sub_mulVec, Matrix.one_mulVec, e, sub_self]`.
+
+Conclude with `Submodule.zero_mem _`. Establish `e` using `h21 v (X.zR u) (by simp [fixSet])`. Rewrite using `[Matrix.sub_mulVec, Matrix.one_mulVec, e, sub_self]`. Conclude with `Submodule.zero_mem _`.
+-/
 theorem gam_srat {D : D7} (X : HidaSetting D) (u : D.what₂.Word) (γ : X.B.I.GA) (hγ : γ ∈ Gam X u) :
     γ ∈ Srat X u := by
   obtain ⟨h1, h2⟩ := hγ
@@ -71,6 +83,9 @@ theorem gam_srat {D : D7} (X : HidaSetting D) (u : D.what₂.Word) (γ : X.B.I.G
     rw [Matrix.sub_mulVec, Matrix.one_mulVec, e, sub_self]
     exact Submodule.zero_mem _
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem iotaF_coe {D : D7} (X : HidaSetting D) (u : D.what₂.Word) (γ : Gam X u) :
     ((iotaF X u γ : Hfin X u) : X.B.I.Gf) = (γ : X.B.I.GA).2 := rfl
 

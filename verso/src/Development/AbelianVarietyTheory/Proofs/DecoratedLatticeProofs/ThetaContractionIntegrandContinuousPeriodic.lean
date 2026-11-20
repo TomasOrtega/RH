@@ -8,6 +8,15 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 noncomputable section
 namespace GlobalTheory.ContrComb
 
+/- English proof (translation)
+Use `haveI : Subsingleton (Fin m) := ⟨hm⟩`. Establish `key : ∀ (M : Matrix (Fin m) (Fin m) D.host.E) (i : Fin m), star ζ' ⬝ᵥ M *ᵥ ζ' = star (ζ' i) * (M i i * ζ' i)`. Introduce `M i`. Simplify using `only [dotProduct, Matrix.mulVec, Fintype.sum_subsingleton _ i, Pi.star_apply]`. Establish `hζ : ζ = -(τ *ᵥ ζ')` using `by rw [hmap, neg_neg]`.
+
+Establish `h1 : star ζ ⬝ᵥ G *ᵥ ζ = star ζ' ⬝ᵥ (τᴴ * (G * τ)) *ᵥ ζ'`. Rewrite using `[hζ, star_neg, Matrix.mulVec_neg, dotProduct_neg, neg_dotProduct, neg_neg, Matrix.star_mulVec, Matrix.mulVec_mulVec, Matrix.dotProduct_mulVec, Matrix.vecMul_vecMul, ← Matrix.dotProduct_mulVec]`. Use `Matrix.ext fun i j => ?_` and prove the remaining obligations. Take `rfl` from `hm i j`. Rewrite `hnorm` using `[h1, key _ i, key _ i]`.
+
+Rewrite `hne` using `[key _ i]`. Establish `hz : star (ζ' i) * ζ' i ≠ 0`. Introduce `h0`. Apply `hne` to reduce the goal to its premises. Rewrite using `[mul_left_comm, h0, mul_zero]`.
+
+Establish `: star (ζ' i) * ζ' i * ((τᴴ * (G * τ)) i i - c * G' i i) = 0`. Rewrite using `[mul_sub]; rw [show star (ζ' i) * ζ' i * (τᴴ * (G * τ)) i i = star (ζ' i) * ((τᴴ * (G * τ)) i i * ζ' i) by ring, hnorm]; ring`. Rewrite using `[Matrix.smul_apply, smul_eq_mul]`. Establish `h3` using `sub_eq_zero.1 ((mul_eq_zero.1 this).resolve_left hz)`. Conclude with `h3`.
+-/
 theorem gram_of_lineMap {D : D7} {n m : ℕ} (hm : ∀ i j : Fin m, i = j) (τ : Matrix (Fin n) (Fin m) D.host.E)
     (G : Matrix (Fin n) (Fin n) D.host.E) (G' : Matrix (Fin m) (Fin m) D.host.E) (ζ : Fin n → D.host.E)
     (ζ' : Fin m → D.host.E) (c : D.host.E) (hmap : τ *ᵥ ζ' = -ζ)
@@ -39,12 +48,30 @@ end
 noncomputable section
 namespace GlobalTheory.ContrComb
 
+/- English proof (translation)
+Rewrite using `[Int.cast_one, one_mul]`. Use `gram_of_lineMap (fun i j => Fin.ext (by have := i.isLt; have := j.isLt; have := B'.line.1; omega)) l.τ B.L.gram B'.L.gram B.ζ B'.ζ _ l.map l.norm B'.line.2` and prove the remaining obligations.
+-/
 theorem link_gram {D : D7} {ρ σ : ℕ} {B : BesLev D ρ} {B' : BesLev D σ} (l : Link B B'.L B'.ζ) :
     l.τᴴ ⬝ (B.L.gram ⬝ l.τ) = (((1 : ℤ) : D.host.E) * (D.host.xi0 * star D.host.xi0)) • B'.L.gram := by
   rw [Int.cast_one, one_mul]
   refine gram_of_lineMap (fun i j => Fin.ext (by have := i.isLt; have := j.isLt; have := B'.line.1; omega))
     l.τ B.L.gram B'.L.gram B.ζ B'.ζ _ l.map l.norm B'.line.2
 
+/- English proof (translation)
+Introduce `D ρ σ B B' l S ψ f₁ f₂ h₁ h₂`. Take `⟨hadd, hcont, hrat, -, hsym, -⟩` from `GlobalTheory.LinkKappa.kappa_props D B.L B'.L S l.τ 1 (link_gram l) (l.κ S) (fun _ => rfl)`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Conclude with `(h₂.cont.comp ((B'.o.continuous_resT_symm S).comp ((continuous_snd.comp continuous_snd).prodMk continuous_fst))).mul (h₁.cont.comp ((B.o.continuous_resS_symm S).comp ((continuous_fst.comp continuous_snd).prodMk (hcont.comp continuous_fst))))`. Introduce `γ hγ w u v`.
+
+Take `⟨c₀, hc₀⟩` from `hrat γ hγ`. Take `⟨γ₀, hγ₀⟩` from `hγ`. Establish `e₂ : (B'.o.resT S).symm (v, γ + w) = (B'.o.resT S).symm (0, γ) + (B'.o.resT S).symm (v, w)`. Rewrite using `[← map_add]`. Simplify using the standard rewrite rules.
+
+Establish `q₂ : (B'.o.resT S).symm (0, γ) = ratW B'.V₀ S (B'.o.iB * γ₀)`. Rewrite using `[OrthDec.resT_symm_apply, Matrix.mul_zero, zero_add, ← hγ₀]`. Use `show _ = rat _`. Rewrite using `[rat_mul]`. Both sides reduce to the same expression.
+
+Establish `e₁ : (B.o.resS S).symm (u, l.κ S (γ + w)) = (B.o.resS S).symm (0, l.κ S γ) + (B.o.resS S).symm (u, l.κ S w)`. Rewrite using `[hadd, ← map_add]`. Simplify using the standard rewrite rules. Establish `q₁ : (B.o.resS S).symm (0, l.κ S γ) = ratW S B.V₀ (c₀ * B.o.qB)`. Rewrite using `[OrthDec.resS_symm_apply, Matrix.zero_mul, zero_add, ← hc₀]`.
+
+Use `show _ = rat _`. Rewrite using `[rat_mul]`. Both sides reduce to the same expression. Establish `hph : symplOH B.L S (l.κ S γ) (l.κ S w) = -(symplOH S B'.L γ w)`. Simplify using `only [symplOH, hsym]`.
+
+Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e₂, e₁, q₂, q₁, h₂.quasi, h₁.quasi, ← q₂, ← q₁, B'.o.symplOH_resT, B.o.symplOH_resS, AddEquiv.apply_symm_apply, AddEquiv.apply_symm_apply, AddEquiv.apply_symm_apply, AddEquiv.apply_symm_apply, symplOH_zero_left, symplOH_zero_left, zero_add, zero_add, hph, neg_neg]`. Establish `hψ : ψ (-(symplOH S B'.L γ w)) * ψ (symplOH S B'.L γ w) = 1`. Rewrite using `[← AddChar.map_add_eq_mul, neg_add_cancel, AddChar.map_zero_eq_one]`.
+
+Take the linear combination `(f₂ ((B'.o.resT S).symm (v, w)) * f₁ ((B.o.resS S).symm (u, l.κ S w))) * hψ`.
+-/
 theorem integrand_cont_per : ∀ (D : D7) (ρ σ : ℕ) (B : BesLev D ρ) (B' : BesLev D σ) (l : Link B B'.L B'.ζ) (S : HSp D) (ψ : AddChar (AF D.host.F) ℂ) (f₁ : WO B.V₀ S → ℂ) (f₂ : WO S B'.V₀ → ℂ), IsThetaFunO ψ B.V₀ S f₁ → IsThetaFunO ψ S B'.V₀ f₂ → Continuous (fun p : Mx D B'.L.rank S.rank × (WO B.A S × WO S B'.A) => f₂ ((B'.o.resT S).symm (p.2.2, p.1)) * f₁ ((B.o.resS S).symm (p.2.1, l.κ S p.1))) ∧ ∀ γ ∈ ratMx D B'.L.rank S.rank, ∀ (w : Mx D B'.L.rank S.rank) (u : WO B.A S) (v : WO S B'.A), f₂ ((B'.o.resT S).symm (v, γ + w)) * f₁ ((B.o.resS S).symm (u, l.κ S (γ + w))) = f₂ ((B'.o.resT S).symm (v, w)) * f₁ ((B.o.resS S).symm (u, l.κ S w)) := by
   intro D ρ σ B B' l S ψ f₁ f₂ h₁ h₂
   obtain ⟨hadd, hcont, hrat, -, hsym, -⟩ :=

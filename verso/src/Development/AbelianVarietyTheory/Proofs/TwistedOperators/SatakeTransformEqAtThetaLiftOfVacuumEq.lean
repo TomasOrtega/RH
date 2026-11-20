@@ -17,6 +17,15 @@ open scoped TensorProduct
 
 namespace GlobalTheory.SphTheta
 
+/- English proof (translation)
+Introduce `n qu Y hY α d`. Establish `hq` using `qu.ne_zero`. Establish `hα : ∀ k, (α k : ℂ) ≠ 0` using `fun k => (α k).ne_zero`. Rewrite using `[← Equiv.prod_comp Fin.revPerm]`. Use `conv_rhs => rw [← Equiv.prod_comp Fin.revPerm]`.
+
+Simplify using `only [Fin.revPerm_apply]`. Rewrite using `[← Finset.prod_mul_distrib]`. Use `Finset.prod_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[_root_.zpow_neg, ← div_eq_mul_inv, ← div_zpow]`. Use `congr 1`.
+
+Establish `e : ((n / 2 : ℕ) : ℤ) - 1 - ((k : ℕ) : ℤ) = ((k.rev : ℕ) : ℤ)`. Use `k.isLt` as an intermediate fact. Rewrite using `[Fin.val_rev]`. Use linear arithmetic over natural numbers and integers. Rewrite using `[e, _root_.zpow_neg]`.
+
+Use `hα k.rev` as an intermediate fact. Use `zpow_ne_zero ((n : ℤ) - 1 - 2 * ((k.rev : ℕ) : ℤ)) hq` as an intermediate fact. Clear the denominators using the available nonvanishing facts.
+-/
 theorem prodId1 : ∀ (n : ℕ) (qu : ℂˣ) (Y : ℂ), Y ≠ 0 → ∀ (α : Fin (n / 2) → ℂˣ) (d : Fin (n / 2) → ℤ), (∏ k, Y ^ d k) * ∏ r : Fin (n / 2), (Y * (qu : ℂ) ^ ((n : ℤ) - 1 - 2 * (((n / 2 : ℕ) : ℤ) - 1 - (r : ℤ))) / (α r.rev : ℂ)) ^ (-d r.rev) = ∏ k, ((α k : ℂ) * (qu : ℂ) ^ (-((n : ℤ) - 1 - 2 * (k : ℤ)))) ^ d k := by
   intro n qu Y hY α d
   have hq := qu.ne_zero
@@ -36,6 +45,21 @@ theorem prodId1 : ∀ (n : ℕ) (qu : ℂˣ) (Y : ℂ), Y ≠ 0 → ∀ (α : Fi
   have := zpow_ne_zero ((n : ℤ) - 1 - 2 * ((k.rev : ℕ) : ℤ)) hq
   field_simp
 
+/- English proof (translation)
+Introduce `n n' hn qu α d`. Establish `hq` using `qu.ne_zero`. Establish `hfac : ∀ k : Fin (n' / 2), ((liftPar qu n n' α k : ℂ) * (qu : ℂ) ^ (-((n' : ℤ) - 1 - 2 * (k : ℤ)))) = ((-1) ^ n * (qu : ℂ) ^ (-(n : ℤ))) * (if h : n' / 2 - n / 2 ≤ k.1 then ((-1) ^ n' * (qu : ℂ) ^ (2 * ((n' / 2 : ℕ) : ℤ) - n') * (qu : ℂ) ^ ((n : ℤ) - 1 - 2 * (((n / 2 : ℕ) : ℤ) - …`. Introduce `k`. Unfold `liftPar`.
+
+Use `split_ifs with h1 h2 h2`. Use linear arithmetic over natural numbers and integers. Use `push_cast`. Rewrite using `[mul_one, mul_assoc, ← zpow_add₀ hq]`. Use `congr 2`.
+
+Expand and normalize the polynomial expressions, which then agree. Establish `e : (Fin.rev ⟨k.1 - (n' / 2 - n / 2), by omega⟩ : Fin (n / 2)) = ⟨n' / 2 - 1 - k.1, by omega⟩` using `Fin.ext (by simp only [Fin.val_rev]; omega)`. Rewrite using `[e]`. Establish `e2 : (qu : ℂ) ^ (-((n' : ℤ) - 1 - 2 * (k : ℤ))) = (qu : ℂ) ^ (-(n : ℤ)) * ((qu : ℂ) ^ (2 * ((n' / 2 : ℕ) : ℤ) - n') * (qu : ℂ) ^ ((n : ℤ) - 1 - 2 * (((n / 2 : ℕ) : ℤ) - 1 - ((k.1 - (n' / 2 - n / 2) : ℕ) : ℤ))))`. Rewrite using `[← zpow_add₀ hq, ← zpow_add₀ hq]`.
+
+Use `congr 1`. Use `k.isLt` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Rewrite using `[e2]`. Use `push_cast`.
+
+Rewrite using `[pow_add]`. Use `(α ⟨n' / 2 - 1 - k.1, by omega⟩).ne_zero` as an intermediate fact. Clear the denominators using the available nonvanishing facts. Use linear arithmetic over natural numbers and integers. Simplify using `only [hfac, mul_zpow, Finset.prod_mul_distrib]`.
+
+Use `congr 1`. Use `symm`. Rewrite using `[← Fin.prod_congr' _ (show n' / 2 - n / 2 + n / 2 = n' / 2 by omega), Fin.prod_univ_add]`. Rewrite using `[Finset.prod_eq_one (fun i _ => ?_), one_mul]`. Use `Finset.prod_congr rfl fun r _ => ?_` and prove the remaining obligations.
+
+Establish `e : Fin.cast (show n' / 2 - n / 2 + n / 2 = n' / 2 by omega) (Fin.natAdd (n' / 2 - n / 2) r) = ⟨n' / 2 - n / 2 + r.1, by omega⟩` using `Fin.ext (by simp)`. Rewrite using `[e, dif_pos (by simp)]`. Simplify using `only [Fin.val_mk, Nat.add_sub_cancel_left, Fin.eta]`. Rewrite using `[dif_neg (by simp; omega), _root_.one_zpow]`.
+-/
 theorem prodId2 : ∀ (n n' : ℕ) (hn : n ≤ n') (qu : ℂˣ) (α : Fin (n / 2) → ℂˣ) (d : Fin (n' / 2) → ℤ), (∏ k, ((-1) ^ n * (qu : ℂ) ^ (-(n : ℤ))) ^ d k) * ∏ r : Fin (n / 2), ((-1) ^ n' * (qu : ℂ) ^ (2 * ((n' / 2 : ℕ) : ℤ) - n') * (qu : ℂ) ^ ((n : ℤ) - 1 - 2 * (((n / 2 : ℕ) : ℤ) - 1 - (r : ℤ))) / (α r.rev : ℂ)) ^ d ⟨n' / 2 - n / 2 + r.1, by omega⟩ = ∏ k, ((liftPar qu n n' α k : ℂ) * (qu : ℂ) ^ (-((n' : ℤ) - 1 - 2 * (k : ℤ)))) ^ d k := by
   intro n n' hn qu α d
   have hq := qu.ne_zero
@@ -78,6 +102,41 @@ theorem prodId2 : ∀ (n n' : ℕ) (hn : n ≤ n') (qu : ℂˣ) (α : Fin (n / 2
     simp only [Fin.val_mk, Nat.add_sub_cancel_left, Fin.eta]
   · rw [dif_neg (by simp; omega), _root_.one_zpow]
 
+/- English proof (translation)
+Introduce `L _ _ _ ϖ σ q δ ψ n n' M _ _ ρ ω s hS hC hC' hnn h hh h' hh' hE qu hqu α`. Establish `hU` using `hS.1.unr`. Take `⟨ℓ, hℓs, hℓa, hℓ0, hℓu, hℓz⟩` from `GlobalTheory.T.exists_mixedModelSelfDualLattice_invariant_linearForm L ϖ σ q δ ψ n n' M ρ ω s hS`. Establish `hvac : LocVac ρ s` using `hS.2.2.1`. Establish `hb1 : ∀ {N : ℕ}, IsBorelU (1 : GU σ N)` using `fun i j hij => by`.
+
+Simplify using `[Matrix.one_apply_ne (ne_of_gt hij)]`. Establish `hmix` using `GlobalTheory.T.mixedModelInvariantForm_upperTriangular_pair_action L ϖ σ q δ ψ n n' M ρ ω s hS ℓ hℓa hℓu`. Establish `hμ : ∀ b : GU σ n, IsBorelU b → ℓ (ω (b, 1) s) = ∏ k, ((-1) ^ n' * (qu : ℂ) ^ (2 * ((n' / 2 : ℕ) : ℤ) - n')) ^ ordL (b.1.1 (lo n k) (lo n k))`. Use `GlobalTheory.T.borelMultiplicative_eq_prod_diagonal_valuations L ϖ σ q hU n (fun g => ℓ (ω (g, 1) s)) ?_ ?_ _ ?_` and prove the remaining obligations. Introduce `b b' hb hb'`.
+
+Establish `: ω (b * b', 1) s = ω (b, 1) (ω (b', 1) s)`. Rewrite using `[show ((b * b', 1) : GU σ n × GU σ n') = (b, 1) * (b', 1) by simp, map_mul, Module.End.mul_apply]`. Simplify using `only [this]`. Conclude with `(hmix b 1 hb hb1).1 _`. Introduce `k hk _`.
+
+Conclude with `(congrArg ℓ (hS.1.fix k 1 (mem_KU_iff.1 hk) (by simpa using one_mem _) s hvac)).trans hℓs`. Introduce `k t ht`. Rewrite using `[GlobalTheory.T.mixedModelForm_value_torusGenerator_firstGroup L ϖ σ q δ ψ n n' M ρ ω s hS hC ℓ hℓs hℓa hℓ0 k t ht, hqu]`. Establish `hμ' : ∀ b : GU σ n', IsBorelU b → ℓ (ω (1, b) s) = ∏ k, ((-1) ^ n * (qu : ℂ) ^ (-(n : ℤ))) ^ ordL (b.1.1 (lo n' k) (lo n' k))`. Use `GlobalTheory.T.borelMultiplicative_eq_prod_diagonal_valuations L ϖ σ q hU n' (fun g => ℓ (ω (1, g) s)) ?_ ?_ _ ?_` and prove the remaining obligations.
+
+Introduce `b b' hb hb'`. Establish `: ω (1, b * b') s = ω (1, b) (ω (1, b') s)`. Rewrite using `[show ((1, b * b') : GU σ n × GU σ n') = (1, b) * (1, b') by simp, map_mul, Module.End.mul_apply]`. Simplify using `only [this]`. Conclude with `(hmix 1 b hb1 hb).1 _`.
+
+Introduce `k hk _`. Conclude with `(congrArg ℓ (hS.1.fix 1 k (by simpa using one_mem _) (mem_KU_iff.1 hk) s hvac)).trans hℓs`. Introduce `k t ht`. Rewrite using `[GlobalTheory.T.mixedForm_torusTranslate_vacuum_value L ϖ σ q δ ψ n n' M ρ ω s hS hC' ℓ hℓs hℓa hℓ0 k t ht, hqu]`. Take `⟨ι, _, b, hb, hvec, hsat⟩` from `GlobalTheory.T.heckeVec_satake_sum_unitaryBorel_representatives L ϖ σ q hU n h hh`.
+
+Take `⟨κ, _, b', hb', hvec', hsat'⟩` from `GlobalTheory.T.heckeVec_satake_sum_unitaryBorel_representatives L ϖ σ q hU n' h' hh'`. Establish `E` using `hE`. Rewrite `E` using `[hvec M (ω.comp (MonoidHom.inl _ _)) s (fun k hk => hS.1.fix k 1 (mem_KU_iff.1 hk) (by simpa using one_mem _) s hvac), hvec' M (ω.comp (MonoidHom.inr _ _)) s (fun k hk => hS.1.fix 1 k (by simpa using one_mem _) (mem_KU_iff.1 hk) s hvac)]`. Simplify using `only [MonoidHom.comp_apply, MonoidHom.inl_apply, MonoidHom.inr_apply] at E`. Take `⟨hbl1, hbl2⟩` from `GlobalTheory.T.upperTriangularUnitary_lowerHalfBlock_triangular L ϖ σ q hU n n' hnn`.
+
+Use `choose U hU1 hU2 hU3 using fun i => hbl1 (b i) (hb i)`. Use `choose V hVt hV2 hV3 using fun j => hbl2 (b' j) (hb' j)`. Take `⟨Z, hZ⟩ : ∃ Z : Matrix (Fin (n / 2)) (Fin (n / 2)) L → Matrix (Fin (n' / 2)) (Fin (n / 2)) L, ∀ t, Z t = Matrix.of fun (r : Fin (n' / 2)) (c : Fin (n / 2)) => if e : r.1 < n / 2 then t ⟨r.1, e⟩ c else 0` from `⟨_, fun _ => rfl⟩`. Establish `hZmul : ∀ t A, Z t * A = Z (t * A)`. Introduce `t A`.
+
+Use extensionality with `r c`. Simplify using `only [hZ, Matrix.mul_apply, Matrix.of_apply]`. Apply the tactic sequence `split_ifs <;> simp`. Establish `hZint : ∀ t, Z t ∈ intMat L (Fin (n' / 2)) (Fin (n / 2)) ↔ t ∈ intMat L (Fin (n / 2)) (Fin (n / 2))`. Introduce `t`.
+
+Prove the components needed by the constructor for the conclusion. Introduce `ht i j`. Use `ht ⟨i.1, by omega⟩ j` as an intermediate fact. Simplify `this` using `[hZ]`. Introduce `ht i j`.
+
+Simplify using `only [hZ, Matrix.of_apply]`. Use `split_ifs`. Use `exacts [ht _ _, zero_mem _]`. Establish `hlow1 : ∀ N : ℕ, lowBlock (((1 : GU σ N) : GL (Fin N) L) : Matrix (Fin N) (Fin N) L) = 1`. Introduce `N`.
+
+Simplify using `only [OneMemClass.coe_one, Units.val_one, lowBlock]`. Conclude with `Matrix.submatrix_one _ (fun a b e => by simp [hi, Fin.ext_iff] at e; exact Fin.ext (by omega))`. Establish `key : ∀ t : GL (Fin (n / 2)) L, ∑ i, (h (b i) * ℓ (ω (b i, 1) s)) * (if t.1 * (U i).1 ∈ intMat L (Fin (n / 2)) (Fin (n / 2)) then 1 else 0) = ∑ j, (h' (b' j) * ℓ (ω (1, b' j) s)) * (if (V j).1 * t.1 ∈ intMat L (Fin (n / 2)) (Fin (n / 2)) then 1 else 0)`. Introduce `t`. Establish `l1 : ∀ i, ℓ (ρ (embLow n' n (Z t.1)) (ω (b i, 1) s)) = ℓ (ω (b i, 1) s) * (if t.1 * (U i).1 ∈ intMat L (Fin (n / 2)) (Fin (n / 2)) then 1 else 0)`.
+
+Introduce `i`. Rewrite using `[(hmix (b i) 1 (hb i) hb1).2, inv_one, hlow1, Matrix.one_mul, ← hU1 i, hZmul, hℓz, hZint]`. Establish `l2 : ∀ j, ℓ (ρ (embLow n' n (Z t.1)) (ω (1, b' j) s)) = ℓ (ω (1, b' j) s) * (if (V j).1 * t.1 ∈ intMat L (Fin (n / 2)) (Fin (n / 2)) then 1 else 0)`. Introduce `j`. Establish `e3` using `hV3 j t.1`.
+
+Simplify using `only [← hZ] at e3`. Rewrite using `[(hmix 1 (b' j) hb1 (hb' j)).2, hlow1, Matrix.mul_one, e3, hℓz, hZint]`. Use `congrArg (fun v => ℓ (ρ (embLow n' n (Z t.1)) v)) E` as an intermediate fact. Simplify using `only [map_sum, map_smul, smul_eq_mul, l1, l2] at this`. Simplify `this` using `only [mul_assoc]`.
+
+Establish `G` using `GlobalTheory.T.sum_diag_order_eq_of_integralTranslateIndicator_relation L ϖ σ q hU (n / 2) ι κ _ _ U V hU2 hVt key (fun d => ∏ r : Fin (n / 2), ((-1) ^ n' * (qu : ℂ) ^ (2 * ((n' / 2 : ℕ) : ℤ) - n') * (qu : ℂ) ^ ((n : ℤ) - 1 - 2 * (((n / 2 : ℕ) : ℤ) - 1 - (r : ℤ))) / (α r.rev : ℂ) …`. Establish `hY : ((-1) ^ n' * (qu : ℂ) ^ (2 * ((n' / 2 : ℕ) : ℤ) - n') : ℂ) ≠ 0`. Use `qu.ne_zero` as an intermediate fact. Conclude with `mul_ne_zero (pow_ne_zero _ (by norm_num)) (zpow_ne_zero _ this)`. Rewrite using `[hsat α, hsat' (liftPar qu n n' α)]`.
+
+Simplify using `only [← hqu]`. Combine the equalities or inequalities in the displayed calculation. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[hμ _ (hb i), mul_assoc, ← prodId1 n qu _ hY α]`. Simplify using `only [hU3]`.
+
+Use `_ = _ := G`. Use `_ = _ := by`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[hμ' _ (hb' j), mul_assoc, ← prodId2 n n' hnn qu α]`. Simplify using `only [hV2]`.
+-/
 theorem satU_eq_satU_liftPar_of_heckeVec_eq : ∀ (L : Type) [Field L] [Valued L (WithZero (Multiplicative ℤ))] [CompleteSpace L] (ϖ : L) (σ : L →+* L) (q : ℕ) (δ : L) (ψ : AddChar L ℂ) (n n' : ℕ) (M : Type) [AddCommGroup M] [Module ℂ M] (ρ : Matrix (Fin n') (Fin n) L → Module.End ℂ M) (ω : GU σ n × GU σ n' →* Module.End ℂ M) (s : M), IsStd ϖ σ q δ ψ ρ ω s → CayleyRule q n' ρ (ω.comp (MonoidHom.inl _ _)) s → CayleyRule q n ρ (ω.comp (MonoidHom.inr _ _)) s → n ≤ n' → ∀ h ∈ Hecke ℂ (KU σ n), ∀ h' ∈ Hecke ℂ (KU σ n'), heckeVec (ω.comp (MonoidHom.inl _ _)) (KU σ n) h s = heckeVec (ω.comp (MonoidHom.inr _ _)) (KU σ n') h' s → ∀ qu : ℂˣ, (qu : ℂ) = q → ∀ α : Fin (n / 2) → ℂˣ, SatU ϖ q h (fun i => (α i : ℂ)) = SatU ϖ q h' (fun i => (liftPar qu n n' α i : ℂ)) := by
   intro L _ _ _ ϖ σ q δ ψ n n' M _ _ ρ ω s hS hC hC' hnn h hh h' hh' hE qu hqu α
   have hU := hS.1.unr

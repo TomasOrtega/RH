@@ -14,35 +14,73 @@ open scoped NumberField.AdeleRing ValuativeRel ENNReal ComplexConjugate Schwartz
 namespace GlobalTheory.CompanionTheory.FundamentalDomainCentralCharacter
 open Ad3.R Ad3
 
+/- English proof (translation)
+Use `haveI : Countable (Matrix (Fin 2) (Fin 2) ℚ) := inferInstanceAs (Countable (Fin 2 → Fin 2 → ℚ))`. Use `haveI : Countable (GL (Fin 2) ℚ) := Function.Injective.countable (f := fun u : GL (Fin 2) ℚ => (u.val, u.inv)) (fun a b h => Units.ext (congrArg Prod.fst h))`. Conclude with `(Set.countable_range (AdelicGLn.diagonal ℚ 2)).to_subtype`.
+-/
 theorem countable_range : Countable (AdelicGLn.diagonal ℚ 2).range := by
   haveI : Countable (Matrix (Fin 2) (Fin 2) ℚ) := inferInstanceAs (Countable (Fin 2 → Fin 2 → ℚ))
   haveI : Countable (GL (Fin 2) ℚ) := Function.Injective.countable (f := fun u : GL (Fin 2) ℚ => (u.val, u.inv)) (fun a b h => Units.ext (congrArg Prod.fst h))
   exact (Set.countable_range (AdelicGLn.diagonal ℚ 2)).to_subtype
 
+/- English proof (translation)
+The claim follows from `(IdeleGroup.ideleModule ℚ a).2`.
+-/
 theorem md_pos (a : Jd) : 0 < md a := (IdeleGroup.ideleModule ℚ a).2
+/- English proof (translation)
+Simplify using `[md, map_mul]`.
+-/
 theorem md_mul (a b : Jd) : md (a * b) = md a * md b := by
   simp [md, map_mul]
+/- English proof (translation)
+Simplify using `[md]`.
+-/
 theorem md_one : md 1 = 1 := by simp [md]
+/- English proof (translation)
+The claim follows from `continuous_subtype_val.comp IdeleGroup.continuous_ideleModule`.
+-/
 theorem continuous_md : Continuous md := continuous_subtype_val.comp IdeleGroup.continuous_ideleModule
+/- English proof (translation)
+The claim follows from `continuous_md.comp (AdelicGLn.continuous_det ℚ 2)`.
+-/
 theorem continuous_Dt : Continuous Dt := continuous_md.comp (AdelicGLn.continuous_det ℚ 2)
+/- English proof (translation)
+The claim follows from `md_pos _`.
+-/
 theorem Dt_pos (g : G2) : 0 < Dt g := md_pos _
+/- English proof (translation)
+Simplify using `[Dt, map_mul, md_mul]`.
+-/
 theorem Dt_mul (g h : G2) : Dt (g * h) = Dt g * Dt h := by
   simp [Dt, map_mul, md_mul]
+/- English proof (translation)
+Use `Dt_mul g g⁻¹` as an intermediate fact. Establish `h1 : Dt (1 : G2) = 1` using `by simp [Dt, md_one]`. Rewrite `this` using `[mul_inv_cancel, h1]`. Conclude with `eq_inv_of_mul_eq_one_right this.symm`.
+-/
 theorem Dt_inv (g : G2) : Dt g⁻¹ = (Dt g)⁻¹ := by
   have := Dt_mul g g⁻¹
   have h1 : Dt (1 : G2) = 1 := by simp [Dt, md_one]
   rw [mul_inv_cancel, h1] at this
   exact eq_inv_of_mul_eq_one_right this.symm
+/- English proof (translation)
+Use `Reduction.rationalGL_le_normOneGL (K := ℚ) (n := 2) ⟨γ, rfl⟩` as an intermediate fact. Rewrite `this` using `[Reduction.mem_normOneGL]`. Conclude with `this`.
+-/
 theorem Dt_dia (γ : GL (Fin 2) ℚ) : Dt (dia2 γ) = 1 := by
   have := Reduction.rationalGL_le_normOneGL (K := ℚ) (n := 2) ⟨γ, rfl⟩
   rw [Reduction.mem_normOneGL] at this
   exact this
+/- English proof (translation)
+Establish `: GeneralLinearGroup.det (dg2 z z) = z * z`. Use `ext`. Simplify using `[dg2, Matrix.det_fin_two]`. Rewrite using `[Dt, this, md_mul, sq]`.
+-/
 theorem Dt_central (z : Jd) : Dt (dg2 z z) = md z ^ 2 := by
   have : GeneralLinearGroup.det (dg2 z z) = z * z := by
     ext
     simp [dg2, Matrix.det_fin_two]
   rw [Dt, this, md_mul, sq]
 
+/- English proof (translation)
+Assume the negation of the conclusion as `hc`. Use `push_neg at hc`. Apply `h` to reduce the goal to its premises. Use extensionality with `x`. Take `⟨z, rfl⟩` from `QuotientGroup.mk_surjective x`.
+
+Use `hc z` as an intermediate fact. Rewrite `this` using `[HeckeCharacter.toIdele_apply]`. Use `show ((η (IdeleClassGroup.mk ℚ z) : Circle) : ℂ) = ((1 : Circle) : ℂ)`. Rewrite using `[this]`.
+-/
 theorem exists_ne_one {η : HeckeCharacter ℚ} (h : η ≠ 1) : ∃ z : Jd, η.toIdele z ≠ 1 := by
   by_contra hc
   push_neg at hc
@@ -56,15 +94,70 @@ theorem exists_ne_one {η : HeckeCharacter ℚ} (h : η ≠ 1) : ∃ z : Jd, η.
 
 open scoped Pointwise
 
+/- English proof (translation)
+Establish `: band = Dt ⁻¹' Set.Ico 1 2`. Use extensionality with `g`. Simplify using `[band]`. Rewrite using `[this]`. Conclude with `continuous_Dt.measurable measurableSet_Ico`.
+-/
 theorem measurableSet_band : MeasurableSet band := by
   have : band = Dt ⁻¹' Set.Ico 1 2 := by
     ext g; simp [band]
   rw [this]
   exact continuous_Dt.measurable measurableSet_Ico
 
+/- English proof (translation)
+Simplify using `[band, Dt_mul, Dt_dia]`.
+-/
 theorem mem_band_dia {γ : GL (Fin 2) ℚ} {g : G2} : dia2 γ * g ∈ band ↔ g ∈ band := by
   simp [band, Dt_mul, Dt_dia]
 
+/- English proof (translation)
+Introduce `hA μ 𝓕 mK 𝓓 hS F hF hB hL`. Use `haveI := hS.haar`. Use `haveI := hS.right`. Take `⟨-, hz, hT⟩` from `hA μ 𝓕 mK 𝓓 hS`. Establish `hbM` using `measurableSet_band`.
+
+Establish `Fm : Measurable F` using `hF.measurable`. Establish `hIndL : LInv (band.indicator F)`. Introduce `γ g`. Distinguish the cases in `hg : g ∈ band`. Rewrite using `[Set.indicator_of_mem hg, Set.indicator_of_mem (mem_band_dia.2 hg), hL]`.
+
+Rewrite using `[Set.indicator_of_notMem hg, Set.indicator_of_notMem (fun h => hg (mem_band_dia.1 h))]`. Establish `hIndM : Measurable (band.indicator F)` using `Fm.indicator hbM`. Establish `hI : ∀ f : G2 → ℂ, ∫ g in 𝓕 ∩ band, f g ∂μ = ∫ g in 𝓕, band.indicator f g ∂μ` using `fun f => (setIntegral_indicator hbM).symm`. Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `hC h`.
+
+Take `⟨z, hz1, -⟩` from `hz (Dt h)⁻¹ (inv_pos.2 (Dt_pos h))`. Use `set Bh : Set G2 := {g | g * h⁻¹ ∈ band} with hBh`. Establish `hBhM : MeasurableSet Bh` using `hbM.preimage (continuous_id.mul continuous_const).measurable`. Establish `hBhL : LInv (Bh.indicator F)`. Introduce `γ g`.
+
+Establish `hm : dia2 γ * g ∈ Bh ↔ g ∈ Bh`. Simplify using `only [hBh, Set.mem_setOf_eq, mul_assoc, mem_band_dia]`. Distinguish the cases in `hg : g ∈ Bh`. Rewrite using `[Set.indicator_of_mem hg, Set.indicator_of_mem (hm.2 hg), hL]`. Rewrite using `[Set.indicator_of_notMem hg, Set.indicator_of_notMem (fun h => hg (hm.1 h))]`.
+
+Establish `e1 : ∀ g, Bh.indicator F (g * h) = band.indicator (fun g => F (g * h)) g`. Introduce `g`. Establish `hm : g * h ∈ Bh ↔ g ∈ band` using `by simp [hBh]`. Distinguish the cases in `hg : g ∈ band`. Rewrite using `[Set.indicator_of_mem hg, Set.indicator_of_mem (hm.2 hg)]`.
+
+Rewrite using `[Set.indicator_of_notMem hg, Set.indicator_of_notMem (fun h => hg (hm.1 h))]`. Establish `e2 : ∀ g, band.indicator F (dg2 z z * g) = Bh.indicator F g`. Introduce `g`. Establish `hm : dg2 z z * g ∈ band ↔ g ∈ Bh`. Establish `: Dt (dg2 z z * g) = Dt (g * h⁻¹)`.
+
+Rewrite using `[Dt_mul, Dt_mul, Dt_central, hz1, Dt_inv, mul_comm]`. Simplify using `only [hBh, Set.mem_setOf_eq, band, this]`. Distinguish the cases in `hg : g ∈ Bh`. Rewrite using `[Set.indicator_of_mem hg, Set.indicator_of_mem (hm.2 hg), hC]`. Rewrite using `[Set.indicator_of_notMem hg, Set.indicator_of_notMem (fun h => hg (hm.1 h))]`.
+
+Rewrite using `[hI, hI]`. Repeatedly rewrite using `[← e1]`. Rewrite using `[(hT (fun g => g * h) (Or.inr (Or.inl ⟨h, rfl⟩))).2 _ (Fm.indicator hBhM) hBhL]`. Repeatedly rewrite using `[← e2]`. Conclude with `(hT (fun g => dg2 z z * g) (Or.inr (Or.inr ⟨z, rfl⟩))).2 _ hIndM hIndL`.
+
+Introduce `η hη hc hne`. Take `⟨z0, h0⟩` from `exists_ne_one hne`. Take `⟨z1, hz1, hz1'⟩` from `hz ((md z0) ^ 2)⁻¹ (inv_pos.2 (pow_pos (md_pos _) 2))`. Use `set z : Jd := z0 * z1 with hzdef`. Establish `hmd : md z ^ 2 = 1`.
+
+Rewrite using `[hzdef, md_mul, mul_pow, hz1]`. Conclude with `mul_inv_cancel₀ (pow_pos (md_pos _) 2).ne'`. Establish `hηz : η.toIdele z ≠ 1`. Rewrite using `[hzdef, map_mul, hz1' η hη, mul_one]`. Conclude with `h0`.
+
+Establish `hηz' : (η.toIdele z : ℂ) ≠ 1` using `fun h => hηz (Circle.ext (by simpa using h))`. Establish `e : ∀ g, band.indicator F (dg2 z z * g) = (η.toIdele z : ℂ) * band.indicator F g`. Introduce `g`. Establish `hm : dg2 z z * g ∈ band ↔ g ∈ band`. Establish `: Dt (dg2 z z * g) = Dt g` using `by rw [Dt_mul, Dt_central, hmd, one_mul]`.
+
+Simplify using `only [band, Set.mem_setOf_eq, this]`. Distinguish the cases in `hg : g ∈ band`. Rewrite using `[Set.indicator_of_mem hg, Set.indicator_of_mem (hm.2 hg), hc]`. Rewrite using `[Set.indicator_of_notMem hg, Set.indicator_of_notMem (fun h => hg (hm.1 h)), mul_zero]`. Establish `key` using `(hT (fun g => dg2 z z * g) (Or.inr (Or.inr ⟨z, rfl⟩))).2 _ hIndM hIndL`.
+
+Rewrite `key` using `[e]`. Rewrite `key` using `[integral_const_mul]`. Rewrite using `[hI]`. Establish `: ((η.toIdele z : ℂ) - 1) * ∫ g in 𝓕, band.indicator F g ∂μ = 0`. Rewrite using `[sub_mul, one_mul, key, sub_self]`.
+
+Conclude with `(mul_eq_zero.1 this).resolve_left (sub_ne_zero.2 hηz')`. Introduce `hC hne hI0`. Apply `hne` to reduce the goal to its premises. Establish `hn : ∀ g, F g * conj (F g) = ((Complex.normSq (F g) : ℝ) : ℂ)` using `fun g => Complex.mul_conj _`. Rewrite `hI0` using `[hn]`.
+
+Rewrite `hI0` using `[integral_complex_ofReal]`. Establish `hI1 : ∫ g in 𝓕 ∩ band, Complex.normSq (F g) ∂μ = 0` using `by exact_mod_cast hI0`. Take `⟨C, hCb⟩` from `hB`. Establish `hmeas : MeasurableSet (𝓕 ∩ band)` using `hS.meas.inter hbM`. Establish `hint : IntegrableOn (fun g => Complex.normSq (F g)) (𝓕 ∩ band) μ`.
+
+Use `Measure.integrableOn_of_bounded (M := C ^ 2) hS.vol.ne (Complex.continuous_normSq.comp hF).aestronglyMeasurable ?_` and prove the remaining obligations. Use `Eventually.of_forall fun g => ?_` and prove the remaining obligations. Rewrite using `[Real.norm_of_nonneg (Complex.normSq_nonneg _), Complex.normSq_eq_norm_sq]`. Conclude with `pow_le_pow_left₀ (norm_nonneg _) (hCb g) 2`. Establish `hae` using `(setIntegral_eq_zero_iff_of_nonneg_ae (Eventually.of_forall fun g => Complex.normSq_nonneg (F g)) hint).1 hI1`.
+
+Use `set t : Set G2 := band ∩ {g | F g ≠ 0} with ht`. Establish `h0 : μ (t ∩ 𝓕) = 0`. Establish `h1` using `(ae_iff.1 ((ae_restrict_iff' hmeas).1 hae))`. Use `measure_mono_null ?_ h1` and prove the remaining obligations. Introduce and unpack `g ⟨⟨hb, hf⟩, hg⟩`.
+
+Simplify using `only [Set.mem_setOf_eq, not_forall]`. Conclude with `⟨⟨hg, hb⟩, by simpa using hf⟩`. Establish `hinv : ∀ γ ∈ (AdelicGLn.diagonal ℚ 2).range, ∀ x : G2, γ * x ∈ t ↔ x ∈ t`. Introduce and unpack `_ ⟨δ, rfl⟩ x`. Establish `e1` using `hL δ x`.
+
+Simplify using `only [ht, Set.mem_inter_iff, Set.mem_setOf_eq]`. Rewrite using `[show AdelicGLn.diagonal ℚ 2 δ * x = dia2 δ * x from rfl, mem_band_dia, e1]`. Establish `hts : ∀ γ : (AdelicGLn.diagonal ℚ 2).range, γ • t = t`. Introduce `γ`. Use extensionality with `x`.
+
+Rewrite using `[Set.mem_smul_set_iff_inv_smul_mem, Subgroup.smul_def, smul_eq_mul]`. Conclude with `hinv _ (γ⁻¹).2 x`. Use `haveI := countable_range`. Establish `hμt : μ t = 0` using `hS.fd.measure_zero_of_invariant t hts h0`. Use `set U : Set G2 := {g | 1 < Dt g ∧ Dt g < 2 ∧ F g ≠ 0} with hU`.
+
+Establish `hUo : IsOpen U`. Use `(isOpen_lt continuous_const continuous_Dt).inter ((isOpen_lt continuous_Dt continuous_const).inter (isOpen_ne_fun hF continuous_const))` and prove the remaining obligations. Establish `hU0 : U = ∅` using `hUo.eq_empty_of_measure_zero (measure_mono_null (show U ⊆ t from fun g hg => ⟨⟨hg.1.le, hg.2.1⟩, hg.2.2⟩) hμt)`. Use function extensionality and compare the values at `g`. Assume the negation of the conclusion as `hg`.
+
+Take `⟨z, hz1, -⟩` from `hz (3 / 2 / Dt g) (div_pos (by norm_num) (Dt_pos g))`. Establish `hD : Dt (dg2 z z * g) = 3 / 2`. Rewrite using `[Dt_mul, Dt_central, hz1, div_mul_cancel₀ _ (Dt_pos g).ne']`. Establish `hmem : dg2 z z * g ∈ U`. Use `⟨by rw [hD]; norm_num, by rw [hD]; norm_num, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[hC]`. Conclude with `hg`. Rewrite `hmem` using `[hU0]`. Conclude with `hmem`.
+-/
 theorem fundamental_domain_integral_central_vanishing : Ad3.R.G1a → Ad3.R.G1 := by
   intro hA μ 𝓕 mK 𝓓 hS F hF hB hL
   haveI := hS.haar

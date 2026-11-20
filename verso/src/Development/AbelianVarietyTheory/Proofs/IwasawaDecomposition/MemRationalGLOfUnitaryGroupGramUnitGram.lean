@@ -12,6 +12,11 @@ namespace GlobalTheory.MtInRat
 
 variable {D : D7}
 
+/- English proof (translation)
+Introduce `a b h`. Establish `h1 : finHom V (P.ψ a) = finHom V (P.ψ b)` using `congrArg Subtype.val h`. Establish `h2 : Formalism.IndefR.Lev.finE V (P.ψ a) = Formalism.IndefR.Lev.finE V (P.ψ b)`. Simplify using `only [Formalism.IndefR.Lev.finE, MonoidHom.comp_apply, h1]`. Rewrite `h2` using `[hU, hU]`.
+
+Conclude with `Subtype.ext h2`.
+-/
 theorem toGf_injective {V : HSp D} (P : principalLevelFrame.RowPsi V V.rank) (hU : UnitFr P) : Function.Injective (toGf P) := by
   intro a b h
   have h1 : finHom V (P.ψ a) = finHom V (P.ψ b) := congrArg Subtype.val h
@@ -20,6 +25,11 @@ theorem toGf_injective {V : HSp D} (P : principalLevelFrame.RowPsi V V.rank) (hU
   rw [hU, hU] at h2
   exact Subtype.ext h2
 
+/- English proof (translation)
+Introduce and unpack `⟨_, x, rfl⟩`. Take `⟨k, k1, k2⟩` from `GlobalTheory.UnitarySplit.ga_glue V 1 _ (one_mem _) (GlobalTheory.UnitarySplit.finHom_mem V x)`. Take `⟨h, hh⟩` from `P.onto k k1`. Use `⟨h, Subtype.ext ?_⟩` and prove the remaining obligations. Use `show finHom V (P.ψ h) = finHom V x`.
+
+Rewrite using `[hh, k2]`.
+-/
 theorem toGf_surjective {V : HSp D} (P : principalLevelFrame.RowPsi V V.rank) : Function.Surjective (toGf P) := by
   rintro ⟨_, x, rfl⟩
   obtain ⟨k, k1, k2⟩ := GlobalTheory.UnitarySplit.ga_glue V 1 _ (one_mem _) (GlobalTheory.UnitarySplit.finHom_mem V x)
@@ -28,6 +38,11 @@ theorem toGf_surjective {V : HSp D} (P : principalLevelFrame.RowPsi V V.rank) : 
   show finHom V (P.ψ h) = finHom V x
   rw [hh, k2]
 
+/- English proof (translation)
+Take `⟨I, hbot, htop⟩` from `Ring.not_isField_iff_exists_ideal_bot_lt_and_lt_top.mp (NumberField.RingOfIntegers.not_isField (maximalRealSubfield D.host.E))`. Take `⟨M, hM, hIM⟩` from `Ideal.exists_le_maximal I htop.ne`. Set `v : HeightOneSpectrum (𝓞 (maximalRealSubfield D.host.E))` to `⟨M, hM.isPrime, fun h => by`. Rewrite `hIM` using `[h]`. Conclude with `hbot.ne' (le_bot_iff.mp hIM)⟩`.
+
+Use `⟨⟨0, 1, fun h => ?_⟩⟩` and prove the remaining obligations. Use `congrArg (ReciprocityTheory.Aut.evalAt D.host.E v) h` as an intermediate fact. Rewrite `this` using `[map_zero, map_one]`. Conclude with `zero_ne_one this`.
+-/
 theorem af_nontrivial : Nontrivial (ReciprocityTheory.Aut.AFplus D.host.E) := by
   obtain ⟨I, hbot, htop⟩ := Ring.not_isField_iff_exists_ideal_bot_lt_and_lt_top.mp
     (NumberField.RingOfIntegers.not_isField (maximalRealSubfield D.host.E))
@@ -40,6 +55,9 @@ theorem af_nontrivial : Nontrivial (ReciprocityTheory.Aut.AFplus D.host.E) := by
   rw [map_zero, map_one] at this
   exact zero_ne_one this
 
+/- English proof (translation)
+Use `haveI := af_nontrivial (D := D)`. Use `haveI : Nontrivial (ReciprocityTheory.Aut.AL D.host.E) := Algebra.TensorProduct.nontrivial_of_algebraMap_injective_of_flat_left _ _ _ (algebraMap (maximalRealSubfield D.host.E) (ReciprocityTheory.Aut.AFplus D.host.E)).injective`. Conclude with `(Algebra.TensorProduct.includeLeftRingHom : D.host.E →+* ReciprocityTheory.Aut.AL D.host.E).injective`.
+-/
 theorem inclL_injective :
     Function.Injective (Algebra.TensorProduct.includeLeftRingHom : D.host.E →+* ReciprocityTheory.Aut.AL D.host.E) := by
   haveI := af_nontrivial (D := D)
@@ -48,15 +66,26 @@ theorem inclL_injective :
       (algebraMap (maximalRealSubfield D.host.E) (ReciprocityTheory.Aut.AFplus D.host.E)).injective
   exact (Algebra.TensorProduct.includeLeftRingHom : D.host.E →+* ReciprocityTheory.Aut.AL D.host.E).injective
 
+/- English proof (translation)
+The claim follows from `Algebra.TensorProduct.includeRight_injective (NumberField.AdeleRing.algebraMap_injective (𝓞 D.host.F) D.host.F)`.
+-/
 theorem inclA_injective : Function.Injective (inclR (F := D.host.F) (E := D.host.E) (AF D.host.F)) :=
   Algebra.TensorProduct.includeRight_injective (NumberField.AdeleRing.algebraMap_injective (𝓞 D.host.F) D.host.F)
 
 def glL (n : ℕ) : GL (Fin n) D.host.E →* GL (Fin n) (ReciprocityTheory.Aut.AL D.host.E) :=
   Matrix.GeneralLinearGroup.map Algebra.TensorProduct.includeLeftRingHom
 
+/- English proof (translation)
+Introduce `a b h` and use `Units.ext (Matrix.map_injective inclL_injective (congrArg Units.val h))`.
+-/
 theorem glL_injective (n : ℕ) : Function.Injective (glL (D := D) n) := fun a b h =>
   Units.ext (Matrix.map_injective inclL_injective (congrArg Units.val h))
 
+/- English proof (translation)
+Establish `h : (x : Matrix (Fin n) (Fin n) D.host.E) * ReciprocityTheory.Aut.conjT (IsCMField.complexConj D.host.E : D.host.E →+* D.host.E) x = 1` using `hx`. Establish `h2` using `congrArg (fun M => Matrix.map M (Algebra.TensorProduct.includeLeftRingHom : D.host.E →+* ReciprocityTheory.Aut.AL D.host.E)) h`. Simplify using `only [Matrix.map_mul, Matrix.map_one _ (map_zero _) (map_one _)] at h2`. Use `show (x : Matrix (Fin n) (Fin n) D.host.E).map _ * ReciprocityTheory.Aut.conjT (ReciprocityTheory.Aut.conjAL D.host.E) ((x : Matrix (Fin n) (Fin n) D.host.E).map _) = 1`. Rewrite using `[← h2]`.
+
+Use `congr 1`.
+-/
 theorem glL_mem (n : ℕ) (x : GL (Fin n) D.host.E) (hx : x ∈ ReciprocityTheory.Aut.GQ0 D.host.E n) :
     glL n x ∈ ReciprocityTheory.Aut.GA D.host.E n := by
   have h : (x : Matrix (Fin n) (Fin n) D.host.E) *
@@ -74,6 +103,9 @@ def toStd (n : ℕ) : ReciprocityTheory.Aut.GQ0 D.host.E n →* ReciprocityTheor
   map_one' := by ext1; ext1; exact map_one _
   map_mul' a b := by ext1; ext1; exact map_mul _ _ _
 
+/- English proof (translation)
+Use `⟨fun a b h => Subtype.ext (glL_injective n (congrArg (fun y => y.1.1) h)), fun γ => ?_⟩` and prove the remaining obligations. Take `⟨x, hx, he⟩` from `Subgroup.mem_map.1 (Subgroup.mem_subgroupOf.1 γ.2)`. Conclude with `⟨⟨x, hx⟩, Subtype.ext (Subtype.ext he)⟩`.
+-/
 theorem toStd_bij (n : ℕ) : Function.Bijective (toStd (D := D) n) := by
   refine ⟨fun a b h => Subtype.ext (glL_injective n (congrArg (fun y => y.1.1) h)), fun γ => ?_⟩
   obtain ⟨x, hx, he⟩ := Subgroup.mem_map.1 (Subgroup.mem_subgroupOf.1 γ.2)
@@ -83,10 +115,16 @@ section V
 
 variable {V : HSp D}
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem cT_eq {n : ℕ} (M : Matrix (Fin n) (Fin n) D.host.E) :
     Formalism.UG.cT (D.sp.cm.sig : D.host.E →+* D.host.E) M =
       ReciprocityTheory.Aut.conjT (IsCMField.complexConj D.host.E : D.host.E →+* D.host.E) M := rfl
 
+/- English proof (translation)
+Establish `h : (x : Matrix (Fin V.rank) (Fin V.rank) D.host.E) * ReciprocityTheory.Aut.conjT (IsCMField.complexConj D.host.E : D.host.E →+* D.host.E) x = 1` using `hx`. Use `show Formalism.UG.cT _ (x : Matrix (Fin V.rank) (Fin V.rank) D.host.E) * V.gram * x = V.gram`. Rewrite using `[hV, Matrix.mul_one, cT_eq]`. Conclude with `mul_eq_one_comm.1 h`.
+-/
 theorem mem_UJ (hV : V.gram = 1) (x : GL (Fin V.rank) D.host.E) (hx : x ∈ ReciprocityTheory.Aut.GQ0 D.host.E V.rank) :
     x ∈ Formalism.UG.UJ (D.sp.cm.sig : D.host.E →+* D.host.E) V.gram := by
   have h : (x : Matrix (Fin V.rank) (Fin V.rank) D.host.E) *
@@ -95,6 +133,9 @@ theorem mem_UJ (hV : V.gram = 1) (x : GL (Fin V.rank) D.host.E) (hx : x ∈ Reci
   rw [hV, Matrix.mul_one, cT_eq]
   exact mul_eq_one_comm.1 h
 
+/- English proof (translation)
+Establish `h : Formalism.UG.cT (D.sp.cm.sig : D.host.E →+* D.host.E) (x : Matrix (Fin V.rank) (Fin V.rank) D.host.E) * V.gram * x = V.gram` using `hx`. Rewrite `h` using `[hV, Matrix.mul_one, cT_eq]`. Conclude with `mul_eq_one_comm.1 h`.
+-/
 theorem mem_rationalGL_of_unitaryGroupGram_unitGram (hV : V.gram = 1) (x : GL (Fin V.rank) D.host.E)
     (hx : x ∈ Formalism.UG.UJ (D.sp.cm.sig : D.host.E →+* D.host.E) V.gram) : x ∈ ReciprocityTheory.Aut.GQ0 D.host.E V.rank := by
   have h : Formalism.UG.cT (D.sp.cm.sig : D.host.E →+* D.host.E) (x : Matrix (Fin V.rank) (Fin V.rank) D.host.E) * V.gram * x =
@@ -102,6 +143,9 @@ theorem mem_rationalGL_of_unitaryGroupGram_unitGram (hV : V.gram = 1) (x : GL (F
   rw [hV, Matrix.mul_one, cT_eq] at h
   exact mul_eq_one_comm.1 h
 
+/- English proof (translation)
+Establish `h : Formalism.UG.cT (D.sp.cm.sig : D.host.E →+* D.host.E) (x : Matrix (Fin V.rank) (Fin V.rank) D.host.E) * V.gram * x = V.gram` using `hx`. Establish `h2` using `GlobalTheory.UnitarySplit.map_cond (inclR (F := D.host.F) (AF D.host.F)) (D.sp.cm.sig : D.host.E →+* D.host.E) (sigR (AF D.host.F) D.sp.cm.sig) (fun y => rfl) V.gram x.1`. Rewrite `h2` using `[h]`. Conclude with `h2.symm`.
+-/
 theorem mem_HR (x : GL (Fin V.rank) D.host.E) (hx : x ∈ Formalism.UG.UJ (D.sp.cm.sig : D.host.E →+* D.host.E) V.gram) :
     Formalism.UG.bc (inclR (F := D.host.F) (AF D.host.F)) x ∈ HR (AF D.host.F) D.sp.cm.sig V.gram := by
   have h : Formalism.UG.cT (D.sp.cm.sig : D.host.E →+* D.host.E) (x : Matrix (Fin V.rank) (Fin V.rank) D.host.E) * V.gram * x =
@@ -123,6 +167,9 @@ def toV (hV : V.gram = 1) : ReciprocityTheory.Aut.GQ0 D.host.E V.rank →* Forma
     apply Subtype.ext (p := fun g => g ∈ HR (AF D.host.F) D.sp.cm.sig V.gram)
     exact map_mul _ _ _
 
+/- English proof (translation)
+Use `⟨fun a b h => Subtype.ext (Units.ext (Matrix.map_injective inclA_injective (congrArg (fun y : Formalism.L2.Theta.GQ V => Units.val (y.1 : HR (AF D.host.F) D.sp.cm.sig V.gram).1) h))), fun δ => ?_⟩` and prove the remaining obligations. Take `⟨x, hx, he⟩` from `Subgroup.mem_map.1 (Subgroup.mem_subgroupOf.1 δ.2)`. Conclude with `⟨⟨x, mem_rationalGL_of_unitaryGroupGram_unitGram hV x hx⟩, Subtype.ext (Subtype.ext he)⟩`.
+-/
 theorem toV_bij (hV : V.gram = 1) : Function.Bijective (toV hV) := by
   refine ⟨fun a b h => Subtype.ext (Units.ext (Matrix.map_injective inclA_injective
     (congrArg (fun y : Formalism.L2.Theta.GQ V => Units.val (y.1 : HR (AF D.host.F) D.sp.cm.sig V.gram).1) h))), fun δ => ?_⟩
@@ -132,16 +179,28 @@ theorem toV_bij (hV : V.gram = 1) : Function.Bijective (toV hV) := by
 def ratE (hV : V.gram = 1) : ReciprocityTheory.Aut.GQ D.host.E V.rank ≃* Formalism.L2.Theta.GQ V :=
   (MulEquiv.ofBijective (toStd (D := D) V.rank) (toStd_bij V.rank)).symm.trans (MulEquiv.ofBijective (toV hV) (toV_bij hV))
 
+/- English proof (translation)
+The claim follows from `congrArg (toV hV) ((MulEquiv.ofBijective (toStd (D := D) V.rank) (toStd_bij V.rank)).symm_apply_apply x)`.
+-/
 theorem ratE_toStd (hV : V.gram = 1) (x : ReciprocityTheory.Aut.GQ0 D.host.E V.rank) : ratE hV (toStd V.rank x) = toV hV x :=
   congrArg (toV hV) ((MulEquiv.ofBijective (toStd (D := D) V.rank) (toStd_bij V.rank)).symm_apply_apply x)
 
+/- English proof (translation)
+The claim follows from `(Algebra.TensorProduct.comm D.host.F (Af D.host.F) D.host.E).injective`.
+-/
 theorem swapAE_injective : Function.Injective (swapAE D) :=
   (Algebra.TensorProduct.comm D.host.F (Af D.host.F) D.host.E).injective
 
+/- English proof (translation)
+The claim follows from `Units.ext (Matrix.map_injective swapAE_injective (congrArg Units.val e))`.
+-/
 theorem finHom_eq_of_finE {g h : GA D V} (e : Formalism.IndefR.Lev.finE V g = Formalism.IndefR.Lev.finE V h) :
     finHom V g = finHom V h :=
   Units.ext (Matrix.map_injective swapAE_injective (congrArg Units.val e))
 
+/- English proof (translation)
+Apply `Units.ext` to reduce the goal to its premises. Use extensionality with `i j`. Use `show swapAE D ((Algebra.TensorProduct.map (sndA D.host.F) (AlgHom.id D.host.F D.host.E)) ((1 : AF D.host.F) ⊗ₜ[D.host.F] (x.1 : Matrix (Fin V.rank) (Fin V.rank) D.host.E) i j)) = _`. Simplify using `[Algebra.TensorProduct.map_tmul, swapAE, glL]`. Both sides reduce to the same expression.
+-/
 theorem finE_toV (hV : V.gram = 1) (x : ReciprocityTheory.Aut.GQ0 D.host.E V.rank) :
     Formalism.IndefR.Lev.finE V ((toV hV x : Formalism.L2.Theta.GQ V) : GA D V) = km D V.rank (toStd V.rank x).1 := by
   apply Units.ext
@@ -151,6 +210,11 @@ theorem finE_toV (hV : V.gram = 1) (x : ReciprocityTheory.Aut.GQ0 D.host.E V.ran
   simp [Algebra.TensorProduct.map_tmul, swapAE, glL]
   rfl
 
+/- English proof (translation)
+Introduce `γ`. Take `⟨x, rfl⟩` from `(toStd_bij (D := D) V.rank).2 γ`. Establish `hr` using `ratE_toStd hV x`. Use `⟨(congrArg (Bridge.ratF V) hr).trans (Subtype.ext ?_), fun γ₀ h => ?_⟩` and prove the remaining obligations. Conclude with `finHom_eq_of_finE ((finE_toV hV x).trans (hU (toStd V.rank x).1).symm)`.
+
+Establish `hx : x.1 = γ₀` using `glL_injective V.rank (Units.ext h)`. Establish `key : Bridge.IsRatMat V (toV hV x) γ₀` using `by show Formalism.L2.Theta.matHom V ((toV hV x : Formalism.L2.Theta.GQ V) : GA D V) = Formalism.UG.bc (incA D) γ₀`. Rewrite using `[← hx]`. Both sides reduce to the same expression. Conclude with `hr ▸ key`.
+-/
 theorem ratIso_ratE (hV : V.gram = 1) (P : principalLevelFrame.RowPsi V V.rank) (hU : UnitFr P) : RatIso P (ratE hV) := by
   intro γ
   obtain ⟨x, rfl⟩ := (toStd_bij (D := D) V.rank).2 γ
@@ -166,6 +230,9 @@ theorem ratIso_ratE (hV : V.gram = 1) (P : principalLevelFrame.RowPsi V V.rank) 
 
 end V
 
+/- English proof (translation)
+Introduce `D V P hV hU`. Conclude with `⟨⟨toGf_injective P hU, toGf_surjective P⟩, ratE hV, ratIso_ratE hV P hU⟩`.
+-/
 theorem toGf_bij_ratIso : ∀ (D : D7) (V : HSp D) (P : principalLevelFrame.RowPsi V V.rank), V.gram = 1 → UnitFr P →
     Function.Bijective (toGf P) ∧ ∃ e, RatIso P e := by
   intro D V P hV hU

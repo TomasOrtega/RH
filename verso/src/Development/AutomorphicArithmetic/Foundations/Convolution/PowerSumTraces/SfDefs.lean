@@ -18,8 +18,14 @@ def fixU (π : UnitaryRep G H) (U : Subgroup G) : Submodule ℂ H where
   zero_mem' u _ := map_zero _
   smul_mem' c v hv u hu := by rw [map_smul, hv u hu]
 
+/- English proof (translation)
+Unfold both sides. The equivalence is reflexive.
+-/
 theorem mem_fixU {π : UnitaryRep G H} {U : Subgroup G} {v : H} : v ∈ fixU π U ↔ ∀ u ∈ U, π u v = v := Iff.rfl
 
+/- English proof (translation)
+Establish `: (fixU π U : Set H) = ⋂ u ∈ U, {v | π u v = v}`. Use extensionality with `v`. Simplify using `[mem_fixU]`. Rewrite using `[this]`. Conclude with `isClosed_biInter fun u _ => isClosed_eq (π u).continuous continuous_id`.
+-/
 theorem isClosed_fixU (π : UnitaryRep G H) (U : Subgroup G) : IsClosed (fixU π U : Set H) := by
   have : (fixU π U : Set H) = ⋂ u ∈ U, {v | π u v = v} := by
     ext v

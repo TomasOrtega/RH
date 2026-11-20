@@ -9,6 +9,19 @@ namespace UpperTheory.Esk.UnipotentTermsContribution
 
 open UpperTheory.Esk
 
+/- English proof (translation)
+Take `⟨h, hh⟩ : ∃ h : GL (Fin 2) F, h = δ1 * g * δ1⁻¹` from `⟨_, rfl⟩`. Establish `hv : ![0, 1] ᵥ* (h : Matrix (Fin 2) (Fin 2) F) = c • ![0, 1]`. Rewrite using `[hh, Units.val_mul, Units.val_mul, ← Matrix.vecMul_vecMul, ← Matrix.vecMul_vecMul, h1, hs, Matrix.smul_vecMul, ← h1, Matrix.vecMul_vecMul, ← Units.val_mul, mul_inv_cancel, Units.val_one, Matrix.vecMul_one]`. Establish `e10 : h 1 0 = 0`. Use `congrFun hv 0` as an intermediate fact.
+
+Simplify `this` using `[Matrix.vecMul, dotProduct, Fin.sum_univ_two]`. Establish `htr : (h : Matrix (Fin 2) (Fin 2) F).trace = (g : Matrix (Fin 2) (Fin 2) F).trace`. Rewrite using `[hh, Units.val_mul, Units.val_mul, Matrix.trace_mul_cycle, ← Units.val_mul, inv_mul_cancel, Units.val_one, Matrix.one_mul]`. Establish `hdet : (h : Matrix (Fin 2) (Fin 2) F).det = (g : Matrix (Fin 2) (Fin 2) F).det`. Rewrite using `[hh, Units.val_mul, Units.val_mul, Matrix.det_mul, Matrix.det_mul, mul_right_comm, ← Matrix.det_mul, ← Units.val_mul, mul_inv_cancel, Units.val_one, Matrix.det_one, one_mul]`.
+
+Establish `hne : h 0 0 - h 1 1 ≠ 0`. Introduce `e`. Apply `hd` to reduce the goal to its premises. Rewrite using `[← htr, ← hdet, Matrix.trace_fin_two, Matrix.det_fin_two]`. Express the relevant statement in the definitionally equal form `(h 0 0 + h 1 1) ^ 2 = 4 * (h 0 0 * h 1 1 - h 0 1 * h 1 0)`.
+
+Rewrite using `[e10]`. Take the linear combination `(h 0 0 - h 1 1) * e`. Take `⟨t, ht0⟩ : ∃ t : F, t = h 0 1 / (h 0 0 - h 1 1)` from `⟨_, rfl⟩`. Establish `ht : t * (h 0 0 - h 1 1) = h 0 1` using `by rw [ht0]; exact div_mul_cancel₀ _ hne`. Take `⟨u, hu, hu'⟩ : ∃ u : GL (Fin 2) F, (u : Matrix (Fin 2) (Fin 2) F) = !![1, t; 0, 1] ∧ ((u⁻¹ : GL (Fin 2) F) : Matrix (Fin 2) (Fin 2) F) = !![1, -t; 0, 1]` from `⟨⟨!![1, t; 0, 1], !![1, -t; 0, 1], by simp [Matrix.one_fin_two], by simp [Matrix.one_fin_two]⟩, rfl, rfl⟩`.
+
+Establish `hc : u * δ1 * g * (u * δ1)⁻¹ = u * h * u⁻¹` using `by rw [hh]; group`. Establish `hM : ((u * δ1 * g * (u * δ1)⁻¹ : GL (Fin 2) F) : Matrix (Fin 2) (Fin 2) F) = !![1, t; 0, 1] * !![h 0 0, h 0 1; 0, h 1 1] * !![1, -t; 0, 1]`. Rewrite using `[hc, Units.val_mul, Units.val_mul, hu, hu', Matrix.eta_fin_two (h : Matrix (Fin 2) (Fin 2) F), e10]`. Both sides reduce to the same expression. Use `⟨u * δ1, ?_, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[hM]`. Simplify using the standard rewrite rules. Take the linear combination `-ht`. Rewrite using `[hM]`. Simplify using the standard rewrite rules.
+-/
 theorem diag {F : Type} [Field F] (g : GL (Fin 2) F) (s : Fin 2 → F) (c : F)
     (hs : s ᵥ* (g : Matrix (Fin 2) (Fin 2) F) = c • s)
     (hd : (g : Matrix (Fin 2) (Fin 2) F).trace ^ 2 ≠ 4 * (g : Matrix (Fin 2) (Fin 2) F).det)
@@ -54,6 +67,25 @@ theorem diag {F : Type} [Field F] (g : GL (Fin 2) F) (s : Fin 2 → F) (c : F)
 
 variable {F I Gf : Type} [Field F] [Group Gf] [Fintype I] (D : Dat F I Gf)
 
+/- English proof (translation)
+Substitute `hγ'` using the available equality. Use `set p : D.Cj × D.Om := (γ, ω) with hp`. Establish `hq : δ • p = ((δ * γ * δ⁻¹ : PG F), δ • ω)` using `rfl`. Establish `mem : ∀ g : PG F, g ∈ MulAction.stabilizer (PG F) (δ • p) ↔ δ⁻¹ * g * δ ∈ MulAction.stabilizer (PG F) p`. Introduce `g`.
+
+Simplify using `only [MulAction.mem_stabilizer_iff, mul_smul]`. Rewrite using `[inv_smul_eq_iff]`. Set `φ : MulAction.stabilizer (PG F) p ≃ MulAction.stabilizer (PG F) (δ • p)` to `{ toFun := fun x => ⟨δ * x * δ⁻¹, (mem _).2 (by`. Establish `e : δ⁻¹ * (δ * (x : PG F) * δ⁻¹) * δ = x` using `by group`. Rewrite using `[e]`.
+
+Conclude with `x.2)⟩`. Use `invFun := fun g => ⟨δ⁻¹ * g * δ, (mem _).1 g.2⟩`. Use `left_inv := fun x => Subtype.ext (by change δ⁻¹ * (δ * (x : PG F) * δ⁻¹) * δ = x; group)`. Use `right_inv := fun g => Subtype.ext (by change δ * (δ⁻¹ * (g : PG F) * δ) * δ⁻¹ = g; group) }`. Set `e : D.Xs ≃ᵐ D.Xs` to `{ toEquiv := MulAction.toPerm δ⁻¹ measurable_toFun := (hP δ⁻¹).measurable measurable_invFun := (hP δ⁻¹⁻¹).measurable }`.
+
+Establish `hme : MeasurePreserving e volume volume` using `hP δ⁻¹`. Establish `he : ∀ w, e w = δ⁻¹ • w` using `fun _ => rfl`. Use `set f : D.Xs → ℂ := fun z => β z • (D.LamF T γ).indicator (D.kk k a γ) (ω, z) with hf`. Establish `key : ∀ w, f (e w) = β (δ⁻¹ • w) • (D.LamF T (δ * γ * δ⁻¹)).indicator (D.kk k a (δ * γ * δ⁻¹)) (δ • ω, w)`. Introduce `w`.
+
+Establish `hy : ((δ • ω, w) : D.Y) = δ • ((ω, δ⁻¹ • w) : D.Y)`. Rewrite using `[Prod.smul_mk, smul_inv_smul]`. Rewrite using `[hy, hf, he]`. Use `beta_reduce`. Use `congr 1`.
+
+Distinguish the cases in `hm : ((ω, δ⁻¹ • w) : D.Y) ∈ D.LamF T γ`. Rewrite using `[Set.indicator_of_mem hm, Set.indicator_of_mem ((hLam γ δ _).2 hm), hkk]`. Rewrite using `[Set.indicator_of_notMem hm, Set.indicator_of_notMem (fun h' => hm ((hLam γ δ _).1 h'))]`. Set `β' : D.Xs → ℝ` to `fun w => β (δ⁻¹ • w)`. Establish `hβ' : IsCut (MulAction.stabilizer (PG F) (δ • p)) β'`.
+
+Use `⟨hβ.meas.comp (hP δ⁻¹).measurable, fun w => hβ.nonneg _, fun w => ?_⟩` and prove the remaining obligations. Rewrite using `[← φ.hasSum_iff]`. Use `hβ.sum (δ⁻¹ • w) using 2 with x` and compare the differences between its conclusion and the goal. Express the relevant statement in the definitionally equal form `β (δ⁻¹ • (δ * (x : PG F) * δ⁻¹) • w) = β ((x : PG F) • δ⁻¹ • w)`. Simplify using `only [smul_smul, show δ⁻¹ * (δ * (x : PG F) * δ⁻¹) = (x : PG F) * δ⁻¹ by group]`.
+
+Establish `hint' : Integrable (fun w => β' w • (D.LamF T (δ * γ * δ⁻¹)).indicator (D.kk k a (δ * γ * δ⁻¹)) (δ • ω, w))`. Use `(hme.integrable_comp_emb e.measurableEmbedding).2 hint` as an intermediate fact. Use `this.congr (Filter.Eventually.of_forall fun w => ?_)` and prove the remaining obligations. Conclude with `key w`. Establish `h0` using `h β' (hq ▸ hβ') hint'`.
+
+Rewrite using `[← hme.integral_comp' f]`. Rewrite using `[← h0]`. Conclude with `integral_congr_ae (Filter.Eventually.of_forall key)`.
+-/
 theorem transport (hP : Pres (PG F) (volume : Measure D.Xs))
     {ι : Type} [Fintype ι] (k : I → ℕ) (a : ι → Gf) (T : ℝ)
     (hkk : ∀ (δ γ : PG F) y, D.kk k a (δ * γ * δ⁻¹) (δ • y) = D.kk k a γ y)
@@ -115,6 +147,15 @@ theorem transport (hP : Pres (PG F) (volume : Measure D.Xs))
 end UpperTheory.Esk.UnipotentTermsContribution
 
 open UpperTheory.Esk.UnipotentTermsContribution in
+/- English proof (translation)
+Introduce `_ hE0a hE0c hE0d hF6b F I Gf ι _ _ _ _ D k a hH T hT γ ω hγ β hβ hint`. Distinguish the cases in `hTe : D.Te a γ.out (D.rep ω) = 0`. Establish `hz : ∀ z, β z • (D.LamF T γ).indicator (D.kk k a γ) (ω, z) = 0`. Introduce `z`. Simplify using `[Dat.kk, Dat.kt, hTe]`.
+
+Simplify using `[hz]`. Take `⟨-, -, hP, -⟩` from `hE0a F I Gf D hH.ax`. Take `⟨-, hkk, -, -, h5, h6⟩` from `hE0c F I Gf ι D k a hH`. Take `⟨-, -, -, -, -, -, -, hLamF, -, hex, -⟩` from `hE0d F I Gf D hH.ax`. Take `⟨i, hi⟩` from `h5 γ ω hTe`.
+
+Take `⟨-, hdisc⟩` from `h6 γ ω i hi`. Simplify using `only [IsEll, not_forall, not_not] at hγ`. Take `⟨s, hs0, c, hc⟩` from `hγ`. Take `⟨δ1, hδ1⟩` from `hex s hs0`. Take `⟨δ0, h01, h10⟩` from `diag γ.out s c hc hdisc δ1 hδ1`.
+
+Use `transport D hP k a T hkk (fun γ δ y => (hLamF T γ).2 δ y) γ ω (δ0 : PG F) ((δ0 * γ.out * δ0⁻¹ : GL (Fin 2) F) : PG F) ?_ ?_ β hβ hint` and prove the remaining obligations. Rewrite using `[QuotientGroup.mk_mul, QuotientGroup.mk_mul, QuotientGroup.mk_inv, QuotientGroup.out_eq']`. Introduce `β' hβ' hint'`. Conclude with `hF6b F I Gf ι D k a hH T hT (δ0 * γ.out * δ0⁻¹) ((δ0 : PG F) • ω) h01 h10 β' hβ' hint'`.
+-/
 theorem UpperTheory.Esk.unipotent_terms_contribution_proof : UpperTheory.Esk.C1 → UpperTheory.Esk.E0a → UpperTheory.Esk.KernelTermsInvariantBounded → UpperTheory.Esk.E0d → UpperTheory.Esk.DiagonalTruncatedIntegralZero → UpperTheory.Esk.F6 := by
   intro _ hE0a hE0c hE0d hF6b F I Gf ι _ _ _ _ D k a hH T hT γ ω hγ β hβ hint
   by_cases hTe : D.Te a γ.out (D.rep ω) = 0

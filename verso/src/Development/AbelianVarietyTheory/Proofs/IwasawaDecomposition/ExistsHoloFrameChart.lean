@@ -18,6 +18,19 @@ open ReciprocityTheory.ChartRestriction.G.FD (Frame mat)
 
 namespace GlobalTheory.LieBase.HoloFrame
 
+/- English proof (translation)
+Introduce `E _ _ _ H Dw l Xo c O _ β Y T σ r U hU y hy`. Establish `hr : Set.range y.1 ⊆ Set.range T.Z.jQ`. Introduce and unpack `_ ⟨p, rfl⟩`. Establish `hp : p = IsLocalRing.closedPoint ℂ` using `Subsingleton.elim _ _`. Substitute `hp` using the available equality.
+
+Conclude with `not_not.1 hy`. Use `haveI := T.Z.jQ_open`. Set `xF` to `IsOpenImmersion.lift T.Z.jQ y.1 hr`. Establish `hxF : xF ≫ T.Z.jQ = y.1` using `IsOpenImmersion.lift_fac _ _ _`. Establish `hs : xF ≫ Limits.pullback.snd _ _ = spMap (algebraMap c.F (CAt σ))`.
+
+Establish `h2` using `y.2`. Rewrite `h2` using `[← hxF, Category.assoc, T.Z.jQ_over]`. Conclude with `h2`. Establish `hover : (xF ≫ Limits.pullback.fst _ _) ≫ Xo.s = sOf c (CAt σ)`. Rewrite using `[Category.assoc, Limits.pullback.condition, ← Category.assoc, hs]`.
+
+Conclude with `GlobalTheory.ShFam.OpenReg.spMap_comp _ _`. Use `haveI : IsLocalRing (CAt σ) := inferInstanceAs (IsLocalRing ℂ)`. Take `⟨z, hz⟩ : ∃ z : FrPt Xo c (CAt σ), z.x = xF ≫ Limits.pullback.fst _ _` from `GlobalTheory.FlagTan.exists_frPt _ hover`. Take `⟨k, f, t, hb⟩` from `hU.2.2.1 z`. Use `⟨k, f, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[cxPt_congr hb.1.symm]`. Use `Subtype.ext ?_` and prove the remaining obligations. Use `show GlobalTheory.AllWt.ptF (S := CAt σ) z ≫ T.Z.jQ = y.1`. Rewrite using `[← hxF]`. Use `congr 1`.
+
+Apply `Limits.pullback.hom_ext` to reduce the goal to its premises. Conclude with `(ptF_fst z).trans hz`. Conclude with `(ptF_snd z).trans hs.symm`.
+-/
 theorem exists_un : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l) (O : Type) [CommRing O] (β : O →+* c.F) (Y : Model Xo c β) (T : TorModel Y) (σ : c.F →+* ℂ) (r : ℕ) (U : Formalism.L2.PjFree.Unf Xo c σ r), Formalism.L2.PjFree.IsUnf U → ∀ (y : CxPts (genStr T.Z) σ), ¬ LiesIn y (genBd T.Z) → ∃ (k : U.Comp) (x : (U.X k).dom), cxPt T.Z (U.un k x) = y := by
   intro E _ _ _ H Dw l Xo c O _ β Y T σ r U hU y hy
   have hr : Set.range y.1 ⊆ Set.range T.Z.jQ := by
@@ -49,6 +62,23 @@ theorem exists_un : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : 
   · exact (ptF_fst z).trans hz
   · exact (ptF_snd z).trans hs.symm
 
+/- English proof (translation)
+Introduce `E _ _ _ H Dw l Xo c O _ β Y T F _ e σ U hσ hU X j hjo hj y hy c' hyc`. Establish `hnb : ¬ LiesIn (cxOf e σ hj y) (genBd T.Z)`. Introduce `h`. Establish `h1 : IsLocalRing.closedPoint ℂ ∈ y.1 ⁻¹ᵁ openPart j` using `hy (Set.mem_univ _)`. Conclude with `h1 h`.
+
+Take `⟨k, x₀, hx₀⟩` from `exists_un E H Dw l Xo c O β Y T σ _ U hU _ hnb`. Establish `hn` using `GlobalTheory.T.dim_openly_immersed_variety_eq_cmType_card_mul_pq E H Dw l Xo c O β Y T F e σ U hσ hU X j hjo hj ⟨y, hy⟩ k`. Take `⟨W, a, ψ, hWo, haW, hψd, hψh, hψa, hinj⟩` from `GlobalTheory.T.exists_holomorphic_frame_slice_componentUniformisation E H Dw l Xo c σ U hσ hU k x₀ X.dim hn`. Take `⟨q, hOo, hq, hqd⟩` from `GlobalTheory.T.holomorphic_frameFamily_chart_coordinates_holomorphic E H Dw l Xo c O β Y T F e σ U hσ hU X j hjo hj c' k X.dim W ψ hWo hψd hψh`. Use `haveI := T.Z.jQ_open`.
+
+Establish `hxeq : ∀ {z z' : FrPt Xo c (CAt σ)}, cxPt T.Z z = cxPt T.Z z' → z.x = z'.x`. Introduce `z z' h`. Establish `h1 : GlobalTheory.AllWt.ptF (S` using `CAt σ) z = GlobalTheory.AllWt.ptF (S := CAt σ) z' := (cancel_mono T.Z.jQ).1 (congrArg Subtype.val h)`. Rewrite using `[← ptF_fst z, h1, ptF_fst]`. Establish `hcxinj : Function.Injective (cxOf e σ hj)`.
+
+Introduce `y1 y2 h`. Apply `Subtype.ext` to reduce the goal to its premises. Conclude with `(cancel_mono j).1 (congrArg Subtype.val h)`. Establish `hya : cxOf e σ hj y = cxPt T.Z (U.un k ⟨ψ a, hψd a haW⟩)` using `hx₀.symm.trans (cxPt_congr (hψa _).symm)`. Establish `haO : a ∈ {w | w ∈ W ∧ ∃ h : ψ w ∈ (U.X k).dom, ∃ y' ∈ c'.e.source, cxOf e σ hj y' = cxPt T.Z (U.un k ⟨ψ w, h⟩)}` using `⟨haW, hψd a haW, y, hyc, hya⟩`.
+
+Establish `hqa : q a = y` using `hcxinj ((hq a haW _ ⟨y, hyc, hya⟩).2.trans hya.symm)`. Establish `hinjg : Set.InjOn (fun w => c'.e (q w)) {w | w ∈ W ∧ ∃ h : ψ w ∈ (U.X k).dom, ∃ y' ∈ c'.e.source, cxOf e σ hj y' = cxPt T.Z (U.un k ⟨ψ w, h⟩)}`. Introduce and unpack `w ⟨hw, hwd, hw'⟩ w' ⟨hw2, hwd', hw2'⟩ hg`. Establish `h1` using `hq w hw hwd hw'`. Establish `h2` using `hq w' hw2 hwd' hw2'`.
+
+Establish `hqq : q w = q w'` using `c'.e.injOn h1.1 h2.1 hg`. Use `hinj w hw w' hw2 hwd hwd' (hxeq ?_)` and prove the remaining obligations. Rewrite using `[← h1.2, ← h2.2, hqq]`. Take `⟨h, hev⟩` from `GlobalTheory.T.exists_holomorphic_local_inverse_of_injOn X.dim _ _ a hOo haO hqd hinjg`. Use `⟨k, fun u => ψ (h u), ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[show c'.e y = c'.e (q a) by rw [hqa]]`. Use `filter_upwards [hev] with u ⟨⟨huW, hud, hux⟩, hgu, hdu⟩`. Use `⟨hψd _ huW, ?_, fun τ' i i' => ?_⟩` and prove the remaining obligations. Establish `h1` using `hq _ huW (hψd _ huW) hux`. Rewrite using `[← h1.2]`.
+
+Use `congr 1`. Conclude with `(c'.e.left_inv h1.1).symm.trans (congrArg c'.e.symm hgu)`. Conclude with `((hψh τ' i i' _ huW).differentiableAt (hWo.mem_nhds huW)).comp u hdu`.
+-/
 theorem exists_holo_frame_chart : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l) (O : Type) [CommRing O] (β : O →+* c.F) (Y : Model Xo c β) (T : TorModel Y) (F : Type) [Field F] (e : F ≃+* c.F) (σ : c.F →+* ℂ) (U : Formalism.L2.PjFree.Unf Xo c σ (Dw.p + Dw.q)), Formalism.L2.PjFree.GoodEmb c σ → Formalism.L2.PjFree.IsUnf U → ∀ (X : Var F) (j : X.X ⟶ gen T.Z), IsOpenImmersion j → ∀ (hj : j ≫ genStr T.Z ≫ spMap e.toRingHom = X.str), ∀ y ∈ ptsIn X.str (σ.comp e.toRingHom) (openPart j), ∀ c' : AlgChart X.str (σ.comp e.toRingHom) X.dim, y ∈ c'.e.source → ∃ (k : U.Comp) (Fr : V X.dim → Frame (U.X k).Ψ (Dw.p + Dw.q)), ∀ᶠ u in 𝓝 (c'.e y), ∃ h : Fr u ∈ (U.X k).dom, cxPt T.Z (U.un k ⟨Fr u, h⟩) = cxOf e σ hj (c'.e.symm u) ∧ ∀ τ' a b, DifferentiableAt ℂ (fun u => mat (Fr u) τ' a b) u := by
   intro E _ _ _ H Dw l Xo c O _ β Y T F _ e σ U hσ hU X j hjo hj y hy c' hyc
   have hnb : ¬ LiesIn (cxOf e σ hj y) (genBd T.Z) := by

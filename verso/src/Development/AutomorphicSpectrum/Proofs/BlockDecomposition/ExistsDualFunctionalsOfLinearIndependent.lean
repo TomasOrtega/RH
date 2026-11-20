@@ -4,6 +4,11 @@ open CategoryTheory TensorProduct GlobalTheory.CatCoh MainStatements.Hodge Globa
 
 namespace GlobalTheory.CompanionTheory.HopfLe
 
+/- English proof (translation)
+Introduce `R V ι _ _ _ _ hR x hx`. Use `letI : Field R := hR.toField`. Take `⟨b, hb⟩ : ∃ b : Module.Basis ι R (Submodule.span R (Set.range x)), ∀ k, (b k : V) = x k` from `⟨Module.Basis.span hx, fun k => by rw [Module.Basis.span_apply hx k]⟩`. Establish `hext : ∀ i : ι, ∃ g : V →ₗ[R] R, g ∘ₗ (Submodule.span R (Set.range x)).subtype = b.coord i` using `fun i => LinearMap.exists_extend _`. Use `choose l hl using hext`.
+
+Use `⟨l, fun i j => ?_⟩` and prove the remaining obligations. Establish `h : l i (b j : V) = b.coord i (b j)` using `LinearMap.congr_fun (hl i) (b j)`. Rewrite `h` using `[hb j]`. Rewrite using `[h, Module.Basis.coord_apply, Module.Basis.repr_self, Finsupp.single_apply]`. Simplify using `only [eq_comm]`.
+-/
 theorem exists_dual_functionals_of_linearIndependent :
     ∀ {R V ι : Type} [CommRing R] [AddCommGroup V] [Module R V] [DecidableEq ι], IsField R →
       ∀ x : ι → V, LinearIndependent R x →

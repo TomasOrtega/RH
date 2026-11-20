@@ -55,6 +55,9 @@ def PPAssemble : Prop :=
         y ∈ Submodule.span (Ap I p) (Set.range e ∪ Set.range f ∪ Set.range wd)) →
     Concl I (p ^ m) r k θ e f M
 
+/- English proof (translation)
+Introduce `I p m r k θ e f M hp hm hH`. Take `⟨_, _, _, hn, hee, hff, hef, hM, hL⟩` from `id hH`. Establish `hMp : Nat.Coprime M p` using `Nat.Coprime.coprime_dvd_right (dvd_pow_self p (by omega)) hM`. Take `⟨w, wd, hw, horth, hdual, hspan⟩` from `h1 I p r k e f M hp hn hee hff hef hMp hL`. Conclude with `h2 I p m r k θ e f M w wd hp hm hH hw horth hdual hspan`.
+-/
 theorem gwpp_of (h1 : WFrame) (h2 : PPAssemble) : GWpp := by
   intro I p m r k θ e f M hp hm hH
   obtain ⟨_, _, _, hn, hee, hff, hef, hM, hL⟩ := id hH

@@ -17,6 +17,17 @@ attribute [local instance] Matrix.normedAddCommGroup Matrix.normedSpace
 
 namespace GlobalTheory.CompanionTheory.WaveMult.WaveSymm
 
+/- English proof (translation)
+Establish `hq : ∀ t s, (A t s - B t s) + (A s t - B s t) = 0`. Introduce `t s`. Establish `e1` using `h2 (t - s) 0 s`. Establish `e2` using `h2 0 (t - s) s`. Establish `e3` using `h3 0 (t - s) (t - s)`.
+
+Simplify using `only [sub_add_cancel, zero_add, sub_self] at e1 e2 e3`. Rewrite using `[e1, e2]`. Rewrite `e3`, the goal using `[hB, hA]`. Take the linear combination `e3`. Establish `hd : ∀ r, HasDerivAt (fun r => Φ r (T - r) - Φ (T - r) (T - (T - r))) 0 r`.
+
+Introduce `r`. Establish `a1` using `h1 T r`. Establish `a2` using `HasDerivAt.comp_const_sub (f := fun r => Φ r (T - r)) T r (h1 T (T - r))`. Establish `a3 : HasDerivAt (fun r => Φ r (T - r) - Φ (T - r) (T - (T - r))) (A r (T - r) - B r (T - r) - -(A (T - r) (T - (T - r)) - B (T - r) (T - (T - r)))) r` using `a1.sub a2`. Establish `e : A r (T - r) - B r (T - r) - -(A (T - r) (T - (T - r)) - B (T - r) (T - (T - r))) = 0`.
+
+Rewrite using `[sub_sub_cancel]`. Take the linear combination `hq r (T - r)`. Rewrite `a3` using `[e]`. Then use the resulting hypothesis. Establish `hc` using `is_const_of_deriv_eq_zero (f := fun r => Φ r (T - r) - Φ (T - r) (T - (T - r))) (fun r => (hd r).differentiableAt) (fun r => (hd r).deriv) 0 T`. Simplify using `only [sub_zero, sub_self] at hc`.
+
+Take the linear combination `(-1 / 2 : ℂ) * hc`.
+-/
 theorem one_dim (Φ A B : ℝ → ℝ → ℂ)
     (h1 : ∀ T r, HasDerivAt (fun r => Φ r (T - r)) (A r (T - r) - B r (T - r)) r)
     (h2 : ∀ t s r, A (t + r) (s + r) - B (t + r) (s + r) = A t s - B t s)
@@ -48,22 +59,44 @@ theorem one_dim (Φ A B : ℝ → ℝ → ℂ)
 
 variable {n : ℕ}
 
+/- English proof (translation)
+Establish `h : IsUnit (y.val.det)` using `(Matrix.isUnit_iff_isUnit_det _).mp y.isUnit`. Conclude with `h.ne_zero`.
+-/
 theorem val_mem_GLs (y : G n) : y.val ∈ GLs n := by
   have h : IsUnit (y.val.det) := (Matrix.isUnit_iff_isUnit_det _).mp y.isUnit
   exact h.ne_zero
 
+/- English proof (translation)
+The claim follows from `Units.continuous_val`.
+-/
 theorem continuous_val : Continuous (fun y : G n => y.val) := Units.continuous_val
 
 section Int
 
 variable [MeasurableSpace (G n)] [BorelSpace (G n)] (μ : Measure (G n)) [μ.IsHaarMeasure]
 
+/- English proof (translation)
+Establish `hK : IsCompact {y : G n | lg y.val ≤ R}` using `((hL n).2.2.2.2.1 R)`. Use `hf.integrable_of_hasCompactSupport (HasCompactSupport.intro hK fun y hy => h y ?_)` and prove the remaining obligations. Simplify using `using hy`.
+-/
 theorem integrable_of_vanish (hL : LgFacts) (f : G n → ℂ) (hf : Continuous f) (R : ℝ)
     (h : ∀ y : G n, R < lg y.val → f y = 0) : Integrable f μ := by
   have hK : IsCompact {y : G n | lg y.val ≤ R} := ((hL n).2.2.2.2.1 R)
   refine hf.integrable_of_hasCompactSupport (HasCompactSupport.intro hK fun y hy => h y ?_)
   simpa using hy
 
+/- English proof (translation)
+Take `⟨R, hR⟩` from `hs (|r| + 1)`. Establish `hK : IsCompact {y : G n | lg y.val ≤ R}` using `((hL n).2.2.2.2.1 R)`. Establish `cont2 : ∀ {f : ℝ → Mat n → ℂ}, ContinuousOn (Function.uncurry f) (Set.univ ×ˢ GLs n) → Continuous (fun p : ℝ × G n => f p.1 p.2.val)`. Introduce `f hf`. Conclude with `hf.comp_continuous (continuous_fst.prodMk (continuous_val.comp continuous_snd)) fun p => ⟨Set.mem_univ _, val_mem_GLs p.2⟩`.
+
+Establish `contc` using `cont2 hc`. Establish `contc'` using `cont2 hc'`. Establish `cont1 : ∀ {f : ℝ → Mat n → ℂ}, Continuous (fun p : ℝ × G n => f p.1 p.2.val) → ∀ x, Continuous (fun y : G n => f x y.val)`. Introduce `f hf x`. Conclude with `hf.comp (continuous_const.prodMk continuous_id)`.
+
+Take `⟨C, hC⟩` from `((isCompact_Icc (a := r - 1) (b := r + 1)).prod hK).exists_bound_of_continuousOn contc'.continuousOn`. Establish `hball : ∀ x ∈ Metric.ball r 1, |x| ≤ |r| + 1 ∧ x ∈ Set.Icc (r - 1) (r + 1)`. Introduce `x hx`. Establish `hx' : |x - r| < 1` using `by simpa [Real.dist_eq] using hx`. Use `abs_lt.mp hx'` as an intermediate fact.
+
+Apply the tactic sequence `refine ⟨?_, by constructor <;> linarith [this.1, this.2]⟩`. Combine the equalities or inequalities in the displayed calculation. Establish `hfar : ∀ y : G n, R < lg y.val → ∀ x, |x| ≤ |r| + 1 → c x y.val = 0 ∧ c' x y.val = 0` using `fun y hy x hx => hR x hx _ (val_mem_GLs y) hy`. Establish `hr0 : |r| ≤ |r| + 1` using `by linarith`. Establish `hbound : Integrable ({y : G n | lg y.val ≤ R}.indicator fun _ => C) μ`.
+
+Use `IntegrableOn.integrable_indicator ?_ hK.measurableSet` and prove the remaining obligations. Conclude with `integrableOn_const hK.measure_lt_top.ne`. Use `(hasDerivAt_integral_of_dominated_loc_of_deriv_le (μ := μ) (F := fun r (y : G n) => c r y.val) (F' := fun r (y : G n) => c' r y.val) (s := Metric.ball r 1) (bound := {y : G n | lg y.val ≤ R}.indicator fun _ => C) (Metric.ball_mem_nhds r one_pos) (Filter.Eventually.of_forall fun x …` and prove the remaining obligations. Use `Filter.Eventually.of_forall fun y x hx => ?_` and prove the remaining obligations. Distinguish the cases in `hy : lg y.val ≤ R`.
+
+Rewrite using `[Set.indicator_of_mem (by exact hy)]`. Conclude with `hC (x, y) ⟨(hball x hx).2, hy⟩`. Rewrite using `[Set.indicator_of_notMem (by exact hy), (hfar y (not_le.mp hy) x (hball x hx).1).2]`. Simplify using the standard rewrite rules. Conclude with `Filter.Eventually.of_forall fun y x _ => hd x _ (val_mem_GLs y)`.
+-/
 theorem hasDerivAt_integral (hL : LgFacts) (c c' : ℝ → Mat n → ℂ)
     (hc : ContinuousOn (Function.uncurry c) (Set.univ ×ˢ GLs n))
     (hc' : ContinuousOn (Function.uncurry c') (Set.univ ×ˢ GLs n))
@@ -115,6 +148,13 @@ theorem hasDerivAt_integral (hL : LgFacts) (c c' : ℝ → Mat n → ℂ)
 
 end Int
 
+/- English proof (translation)
+Establish `hO : IsOpen ((Set.univ : Set ℝ) ×ˢ S)` using `isOpen_univ.prod hS`. Establish `hf : ∀ t, ∀ y ∈ S, HasDerivAt (fun s => a s y) (fderiv ℝ (Function.uncurry a) (t, y) ((1 : ℝ), (0 : X))) t`. Introduce `t y hy`. Establish `hd : HasFDerivAt (Function.uncurry a) (fderiv ℝ (Function.uncurry a) (t, y)) (t, y)` using `((h.contDiffAt (hO.mem_nhds ⟨Set.mem_univ _, hy⟩)).differentiableAt (by simp)).hasFDerivAt`. Establish `hl : HasDerivAt (fun s : ℝ => (s, y)) ((1 : ℝ), (0 : X)) t` using `(hasDerivAt_id t).prodMk (hasDerivAt_const t y)`.
+
+Conclude with `hd.comp_hasDerivAt t hl`. Prove the components needed by the constructor for the conclusion. Establish `h1 : ContDiffOn ℝ ∞ (fderiv ℝ (Function.uncurry a)) (Set.univ ×ˢ S)` using `ContDiffOn.fderiv_of_isOpen h hO (by simp)`. Establish `h2 : ContDiffOn ℝ ∞ (fun p => fderiv ℝ (Function.uncurry a) p ((1 : ℝ), (0 : X))) (Set.univ ×ˢ S)` using `h1.clm_apply contDiffOn_const`. Use `h2.congr ?_` and prove the remaining obligations.
+
+Introduce and unpack `⟨t, y⟩ ⟨-, hy⟩`. Conclude with `(hf t y hy).deriv`. Introduce `t y hy`. Rewrite using `[(hf t y hy).deriv]`. Conclude with `hf t y hy`.
+-/
 theorem smooth_deriv_gen {X V : Type} [NormedAddCommGroup X] [NormedSpace ℝ X] [NormedAddCommGroup V] [NormedSpace ℝ V]
     (a : ℝ → X → V) {S : Set X} (hS : IsOpen S) (h : ContDiffOn ℝ ∞ (Function.uncurry a) (Set.univ ×ˢ S)) :
     ContDiffOn ℝ ∞ (Function.uncurry fun t y => deriv (fun s => a s y) t) (Set.univ ×ˢ S) ∧
@@ -143,6 +183,9 @@ section Time
 
 variable {V : Type} [NormedAddCommGroup V] [InnerProductSpace ℂ V]
 
+/- English proof (translation)
+Establish `hc : Continuous (fun y : Mat n => y.det)` using `Continuous.matrix_det continuous_id`. Conclude with `isOpen_ne.preimage hc`.
+-/
 theorem isOpen_GLs (n : ℕ) : IsOpen (GLs n) := by
   have hc : Continuous (fun y : Mat n => y.det) := Continuous.matrix_det continuous_id
   exact isOpen_ne.preimage hc
@@ -153,19 +196,33 @@ def Sm (a : ℝ → Mat n → V) : Prop := ContDiffOn ℝ ∞ (Function.uncurry 
 
 def Sp (a : ℝ → Mat n → V) : Prop := ∀ B : ℝ, ∃ R : ℝ, ∀ t, |t| ≤ B → ∀ y ∈ GLs n, R < lg y → a t y = 0
 
+/- English proof (translation)
+The claim follows from `(smooth_deriv_gen a (isOpen_GLs n) h).2 t y hy`.
+-/
 theorem hasDerivAt_dt {a : ℝ → Mat n → V} (h : Sm a) (t : ℝ) {y : Mat n} (hy : y ∈ GLs n) :
     HasDerivAt (fun s => a s y) (dt a t y) t :=
   (smooth_deriv_gen a (isOpen_GLs n) h).2 t y hy
 
+/- English proof (translation)
+The claim follows from `(smooth_deriv_gen a (isOpen_GLs n) h).1`.
+-/
 theorem sm_dt {a : ℝ → Mat n → V} (h : Sm a) : Sm (dt a) :=
   (smooth_deriv_gen a (isOpen_GLs n) h).1
 
+/- English proof (translation)
+Establish `h1 : ContDiff ℝ ∞ (fun y : Mat n => (t, y))` using `contDiff_const.prodMk contDiff_id`. Establish `h2` using `ContDiffOn.comp (g := Function.uncurry a) (f := fun y : Mat n => (t, y)) (s := GLs n) (t := Set.univ ×ˢ GLs n) h h1.contDiffOn fun y hy => ⟨Set.mem_univ _, hy⟩`. Conclude with `h2`.
+-/
 theorem sm_at {a : ℝ → Mat n → V} (h : Sm a) (t : ℝ) : ContDiffOn ℝ ∞ (a t) (GLs n) := by
   have h1 : ContDiff ℝ ∞ (fun y : Mat n => (t, y)) := contDiff_const.prodMk contDiff_id
   have h2 := ContDiffOn.comp (g := Function.uncurry a) (f := fun y : Mat n => (t, y)) (s := GLs n)
     (t := Set.univ ×ˢ GLs n) h h1.contDiffOn fun y hy => ⟨Set.mem_univ _, hy⟩
   exact h2
 
+/- English proof (translation)
+Introduce `B`. Take `⟨R, hR⟩` from `h (|B| + 1)`. Use `⟨R, fun t ht y hy hl => ?_⟩` and prove the remaining obligations. Establish `hlt : |t| < |B| + 1` using `by linarith [le_abs_self B]`. Establish `h1 : ∀ᶠ s in nhds t, |s| < |B| + 1` using `(continuous_abs.tendsto t).eventually (gt_mem_nhds hlt)`.
+
+Establish `h2 : (fun s => a s y) =ᶠ[nhds t] fun _ => 0` using `by filter_upwards [h1] with s hs using hR s hs.le y hy hl`. Express the relevant statement in the definitionally equal form `deriv (fun s => a s y) t = 0`. Rewrite using `[h2.deriv_eq]`. Simplify using the standard rewrite rules.
+-/
 theorem sp_dt {a : ℝ → Mat n → V} (h : Sp a) : Sp (dt a) := by
   intro B
   obtain ⟨R, hR⟩ := h (|B| + 1)
@@ -179,6 +236,9 @@ theorem sp_dt {a : ℝ → Mat n → V} (h : Sp a) : Sp (dt a) := by
   rw [h2.deriv_eq]
   simp
 
+/- English proof (translation)
+Establish `h1 : Continuous (fun p : ℝ × Mat n => (t + α * p.1, p.2))` using `by fun_prop`. Conclude with `ContinuousOn.comp (ContDiffOn.continuousOn h) h1.continuousOn fun p hp => ⟨Set.mem_univ _, hp.2⟩`.
+-/
 theorem contOn_shift {a : ℝ → Mat n → V} (h : Sm a) (t α : ℝ) :
     ContinuousOn (fun p : ℝ × Mat n => a (t + α * p.1) p.2) (Set.univ ×ˢ GLs n) := by
   have h1 : Continuous (fun p : ℝ × Mat n => (t + α * p.1, p.2)) := by fun_prop
@@ -186,6 +246,9 @@ theorem contOn_shift {a : ℝ → Mat n → V} (h : Sm a) (t α : ℝ) :
 
 variable [MeasurableSpace (G n)] [BorelSpace (G n)] (μ : Measure (G n)) [μ.IsHaarMeasure]
 
+/- English proof (translation)
+Use `integrable_of_vanish μ hL _ ?_ R fun y hy => hv _ (val_mem_GLs y) hy` and prove the remaining obligations. Conclude with `(hf.comp_continuous continuous_val val_mem_GLs).inner (hh.comp_continuous continuous_val val_mem_GLs)`.
+-/
 theorem integrable_inner (hL : LgFacts) {f h : Mat n → V} (hf : ContinuousOn f (GLs n)) (hh : ContinuousOn h (GLs n))
     (R : ℝ) (hv : ∀ y ∈ GLs n, R < lg y → ⟪f y, h y⟫_ℂ = 0) :
     Integrable (fun y : G n => ⟪f y.val, h y.val⟫_ℂ) μ := by
@@ -194,6 +257,23 @@ theorem integrable_inner (hL : LgFacts) {f h : Mat n → V} (hf : ContinuousOn f
 
 def Pr (a b : ℝ → Mat n → V) (t s : ℝ) : ℂ := ∫ y : G n, ⟪a t y.val, b s y.val⟫_ℂ ∂μ
 
+/- English proof (translation)
+Establish `c1 : ContinuousOn (fun p : ℝ × Mat n => ⟪a (t + α * p.1) p.2, b (s + β * p.1) p.2⟫_ℂ) (Set.univ ×ˢ GLs n)` using `(contOn_shift ha t α).inner (contOn_shift hb s β)`. Establish `c2 : ContinuousOn (fun p : ℝ × Mat n => (α : ℂ) * ⟪dt a (t + α * p.1) p.2, b (s + β * p.1) p.2⟫_ℂ + (β : ℂ) * ⟪a (t + α * p.1) p.2, dt b (s + β * p.1) p.2⟫_ℂ) (Set.univ ×ˢ GLs n)` using `(continuousOn_const.mul ((contOn_shift (sm_dt ha) t α).inner (contOn_shift hb s β))).add (continuousOn_const.mul ((contOn_shift ha t α).inner (contOn_shift (sm_dt hb) s β)))`. Establish `key` using `hasDerivAt_integral μ hL (fun r y => ⟪a (t + α * r) y, b (s + β * r) y⟫_ℂ) (fun r y => (α : ℂ) * ⟪dt a (t + α * r) y, b (s + β * r) y⟫_ℂ + (β : ℂ) * ⟪a (t + α * r) y, dt b (s + β * r) y⟫_ℂ) c1 c2 ?_ ?_ r`. Establish `e : ∫ y : G n, ((α : ℂ) * ⟪dt a (t + α * r) y.val, b (s + β * r) y.val⟫_ℂ + (β : ℂ) * ⟪a (t + α * r) y.val, dt b (s + β * r) y.val⟫_ℂ) ∂μ = (α : ℂ) * Pr μ (dt a) b (t + α * r) (s + β * r) + (β : ℂ) * Pr μ a (dt b) (t + α * r) (s + β * r)`. Take `⟨Ra, hRa⟩` from `hsa |t + α * r|`.
+
+Take `⟨Rb, hRb⟩` from `hsb |s + β * r|`. Establish `i1` using `integrable_inner μ hL (sm_at (sm_dt ha) (t + α * r)).continuousOn (sm_at hb (s + β * r)).continuousOn Rb (fun y hy hl => by rw [hRb _ le_rfl y hy hl, inner_zero_right])`. Establish `i2` using `integrable_inner μ hL (sm_at ha (t + α * r)).continuousOn (sm_at (sm_dt hb) (s + β * r)).continuousOn Ra (fun y hy hl => by rw [hRa _ le_rfl y hy hl, inner_zero_left])`. Rewrite using `[integral_add (i1.const_mul _) (i2.const_mul _), integral_const_mul, integral_const_mul]`. Both sides reduce to the same expression.
+
+Rewrite using `[← e]`. Conclude with `key`. Introduce `r y hy`. Establish `l1 : HasDerivAt (fun r : ℝ => t + α * r) α r`. Simplify using `using ((hasDerivAt_id r).const_mul α).const_add t`.
+
+Establish `l2 : HasDerivAt (fun r : ℝ => s + β * r) β r`. Simplify using `using ((hasDerivAt_id r).const_mul β).const_add s`. Establish `da0 : HasDerivAt (fun τ => a τ y) (dt a (t + α * r) y) ((fun r : ℝ => t + α * r) r)` using `hasDerivAt_dt ha (t + α * r) hy`. Establish `db0 : HasDerivAt (fun τ => b τ y) (dt b (s + β * r) y) ((fun r : ℝ => s + β * r) r)` using `hasDerivAt_dt hb (s + β * r) hy`. Establish `da : HasDerivAt (fun r => a (t + α * r) y) (α • dt a (t + α * r) y) r` using `HasDerivAt.scomp (g₁ := fun τ => a τ y) (h := fun r : ℝ => t + α * r) r da0 l1`.
+
+Establish `db : HasDerivAt (fun r => b (s + β * r) y) (β • dt b (s + β * r) y) r` using `HasDerivAt.scomp (g₁ := fun τ => b τ y) (h := fun r : ℝ => s + β * r) r db0 l2`. Use `(da.inner ℂ db).congr_deriv ?_` and prove the remaining obligations. Rewrite using `[← Complex.coe_smul, ← Complex.coe_smul, inner_smul_left, inner_smul_right, Complex.conj_ofReal]`. Expand and normalize the polynomial expressions, which then agree. Introduce `B`.
+
+Take `⟨Ra, hRa⟩` from `hsa (|t| + |α| * |B|)`. Take `⟨Rb, hRb⟩` from `hsb (|s| + |β| * |B|)`. Use `⟨max Ra Rb, fun r hr y hy hl => ?_⟩` and prove the remaining obligations. Establish `hrB : |r| ≤ |B|` using `hr.trans (le_abs_self B)`. Establish `b1 : |t + α * r| ≤ |t| + |α| * |B|`.
+
+Combine the equalities or inequalities in the displayed calculation. Establish `b2 : |s + β * r| ≤ |s| + |β| * |B|`. Combine the equalities or inequalities in the displayed calculation. Establish `z1` using `hRa _ b1 y hy (lt_of_le_of_lt (le_max_left _ _) hl)`. Establish `z2` using `hRb _ b2 y hy (lt_of_le_of_lt (le_max_right _ _) hl)`.
+
+Simplify using `[z1, z2]`.
+-/
 theorem Pr_hasDeriv (hL : LgFacts) {a b : ℝ → Mat n → V} (ha : Sm a) (hb : Sm b) (hsa : Sp a) (hsb : Sp b)
     (t s α β r : ℝ) :
     HasDerivAt (fun r => Pr μ a b (t + α * r) (s + β * r))
@@ -259,6 +339,9 @@ section Gel
 
 variable {V : Type} [NormedAddCommGroup V] [NormedSpace ℂ V]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `g`. Establish `: fderiv ℝ (0 : Mat n → V) g = 0`. Express the relevant statement in the definitionally equal form `fderiv ℝ (fun _ : Mat n => (0 : V)) g = 0`. Simplify using the standard rewrite rules. Simplify using `[Rd, this]`.
+-/
 theorem Rd_zero (X : Mat n) : Rd X (0 : Mat n → V) = 0 := by
   funext g
   have : fderiv ℝ (0 : Mat n → V) g = 0 := by
@@ -266,9 +349,17 @@ theorem Rd_zero (X : Mat n) : Rd X (0 : Mat n → V) = 0 := by
     simp
   simp [Rd, this]
 
+/- English proof (translation)
+Simplify using `[Eu, Rd_zero]`.
+-/
 theorem Eu_zero (s : Bool) (a b : Fin n) : Eu s a b (0 : Mat n → V) = 0 := by
   simp [Eu, Rd_zero]
 
+/- English proof (translation)
+Simplify using `only [Epow]`. Rewrite using `[Finset.sum_eq_single b]`. Simplify using the standard rewrite rules. Introduce `d _ hd`. Simplify using `[hd, Eu_zero]`.
+
+Simplify using the standard rewrite rules.
+-/
 theorem Epow_one (s : Bool) (c b : Fin n) (f : Mat n → V) : Epow s 1 c b f = Eu s c b f := by
   simp only [Epow]
   rw [Finset.sum_eq_single b]
@@ -277,6 +368,11 @@ theorem Epow_one (s : Bool) (c b : Fin n) (f : Mat n → V) : Epow s 1 c b f = E
     simp [hd, Eu_zero]
   · simp
 
+/- English proof (translation)
+Simplify using `only [EpowT]`. Rewrite using `[Finset.sum_eq_single b]`. Simplify using the standard rewrite rules. Introduce `d _ hd`. Simplify using `[hd, Eu_zero]`.
+
+Simplify using the standard rewrite rules.
+-/
 theorem EpowT_one (s : Bool) (c b : Fin n) (f : Mat n → V) : EpowT s 1 c b f = Eu s b c f := by
   simp only [EpowT]
   rw [Finset.sum_eq_single b]
@@ -285,12 +381,20 @@ theorem EpowT_one (s : Bool) (c b : Fin n) (f : Mat n → V) : EpowT s 1 c b f =
     simp [hd, Eu_zero]
   · simp
 
+/- English proof (translation)
+Unfold `gel`. Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `(∑ c, Eu s a c (Epow s 1 c a f)) = _`. Simplify using `only [Epow_one]`.
+-/
 theorem gel_two (s : Bool) (f : Mat n → V) : gel s 2 f = ∑ a, ∑ c, Eu s a c (Eu s c a f) := by
   unfold gel
   refine Finset.sum_congr rfl fun a _ => ?_
   change (∑ c, Eu s a c (Epow s 1 c a f)) = _
   simp only [Epow_one]
 
+/- English proof (translation)
+Establish `h : gelT s 2 f = ∑ a, ∑ c, Eu s c a (Eu s a c f)`. Unfold `gelT`. Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `(∑ c, Eu s c a (EpowT s 1 c a f)) = _`. Simplify using `only [EpowT_one]`.
+
+Rewrite using `[h, gel_two, Finset.sum_comm]`.
+-/
 theorem gelT_eq_gel (s : Bool) (f : Mat n → V) : gelT s 2 f = gel s 2 f := by
   have h : gelT s 2 f = ∑ a, ∑ c, Eu s c a (Eu s a c f) := by
     unfold gelT
@@ -305,11 +409,19 @@ section Om
 
 variable {V : Type} [NormedAddCommGroup V] [InnerProductSpace ℂ V]
 
+/- English proof (translation)
+Establish `h` using `((hR n).1 V f hf).1`. Conclude with `((h _).add ((h _).const_smul _)).const_smul _`.
+-/
 theorem Eu_smooth (hR : RCalc) {f : Mat n → V} (hf : ContDiffOn ℝ ∞ f (GLs n)) (s : Bool) (a b : Fin n) :
     ContDiffOn ℝ ∞ (Eu s a b f) (GLs n) := by
   have h := ((hR n).1 V f hf).1
   exact ((h _).add ((h _).const_smul _)).const_smul _
 
+/- English proof (translation)
+Establish `e : gel s 2 f = fun x => ∑ a, ∑ c, Eu s a c (Eu s c a f) x`. Use function extensionality and compare the values at `x`. Rewrite using `[gel_two]`. Simplify using `[Finset.sum_apply]`. Rewrite using `[e]`.
+
+Conclude with `ContDiffOn.sum fun a _ => ContDiffOn.sum fun c _ => Eu_smooth hR (Eu_smooth hR hf s c a) s a c`.
+-/
 theorem gel_smooth (hR : RCalc) {f : Mat n → V} (hf : ContDiffOn ℝ ∞ f (GLs n)) (s : Bool) :
     ContDiffOn ℝ ∞ (gel s 2 f) (GLs n) := by
   have e : gel s 2 f = fun x => ∑ a, ∑ c, Eu s a c (Eu s c a f) x := by
@@ -321,6 +433,17 @@ theorem gel_smooth (hR : RCalc) {f : Mat n → V} (hf : ContDiffOn ℝ ∞ f (GL
 
 variable [CompleteSpace V] [MeasurableSpace (G n)] [BorelSpace (G n)] (μ : Measure (G n)) [μ.IsHaarMeasure]
 
+/- English proof (translation)
+Establish `I : ∀ s : Bool, ∫ y : G n, ⟪gel s 2 f y.val, h y.val⟫_ℂ ∂μ = ∫ y : G n, ⟪f y.val, gel (!s) 2 h y.val⟫_ℂ ∂μ`. Introduce `s`. Use `GlobalTheory.T.gelfand_operator_adjoint hL hR n μ V s 2 f h hf hh cf ch` as an intermediate fact. Rewrite `this` using `[gelT_eq_gel]`. Simplify using `using this`.
+
+Take `⟨Rf, hRf⟩` from `cf`. Take `⟨Rh, hRh⟩` from `ch`. Establish `i1 : ∀ s, Integrable (fun y : G n => ⟪gel s 2 f y.val, h y.val⟫_ℂ) μ` using `fun s => integrable_inner μ hL (gel_smooth hR hf s).continuousOn hh.continuousOn Rh (fun y hy hl => by rw [hRh y hy hl, inner_zero_right])`. Establish `i2 : ∀ s, Integrable (fun y : G n => ⟪f y.val, gel s 2 h y.val⟫_ℂ) μ` using `fun s => integrable_inner μ hL hf.continuousOn (gel_smooth hR hh s).continuousOn Rf (fun y hy hl => by rw [hRf y hy hl, inner_zero_left])`. Establish `e1 : ∫ y : G n, ⟪Om f y.val, h y.val⟫_ℂ ∂μ = 2 * (∫ y : G n, ⟪gel true 2 f y.val, h y.val⟫_ℂ ∂μ + ∫ y : G n, ⟪gel false 2 f y.val, h y.val⟫_ℂ ∂μ)`.
+
+Rewrite using `[← integral_add (i1 true) (i1 false), ← integral_const_mul]`. Use `integral_congr_ae (Filter.Eventually.of_forall fun y => ?_)` and prove the remaining obligations. Simplify using `[Om, inner_add_left, inner_smul_left]`. Expand and normalize the polynomial expressions, which then agree. Establish `e2 : ∫ y : G n, ⟪f y.val, Om h y.val⟫_ℂ ∂μ = 2 * (∫ y : G n, ⟪f y.val, gel true 2 h y.val⟫_ℂ ∂μ + ∫ y : G n, ⟪f y.val, gel false 2 h y.val⟫_ℂ ∂μ)`.
+
+Rewrite using `[← integral_add (i2 true) (i2 false), ← integral_const_mul]`. Use `integral_congr_ae (Filter.Eventually.of_forall fun y => ?_)` and prove the remaining obligations. Simplify using `[Om, inner_add_right, inner_smul_right]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e1, e2, I true, I false]`.
+
+Simplify using `only [Bool.not_true, Bool.not_false]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem Om_symm (hL : LgFacts) (hR : RCalc) {f h : Mat n → V} (hf : ContDiffOn ℝ ∞ f (GLs n))
     (hh : ContDiffOn ℝ ∞ h (GLs n)) (cf : Cpt f) (ch : Cpt h) :
     ∫ y : G n, ⟪Om f y.val, h y.val⟫_ℂ ∂μ = ∫ y : G n, ⟪f y.val, Om h y.val⟫_ℂ ∂μ := by
@@ -359,14 +482,25 @@ section Wave
 
 variable [MeasurableSpace (G n)] [BorelSpace (G n)] (μ : Measure (G n)) [μ.IsHaarMeasure]
 
+/- English proof (translation)
+Rewrite using `[← hu.2.2.1 t y hy, iteratedDeriv_succ, iteratedDeriv_one]`. Both sides reduce to the same expression.
+-/
 theorem dt_dt {E : KMod n} {u : ℝ → Mat n → E.V} (hu : IsWave E u) (t : ℝ) {y : Mat n} (hy : y ∈ GLs n) :
     dt (dt u) t y = Om (u t) y := by
   rw [← hu.2.2.1 t y hy, iteratedDeriv_succ, iteratedDeriv_one]
   rfl
 
+/- English proof (translation)
+The claim follows from `hu.2.2.2 y hy`.
+-/
 theorem dt_zero {E : KMod n} {u : ℝ → Mat n → E.V} (hu : IsWave E u) {y : Mat n} (hy : y ∈ GLs n) :
     dt u 0 y = 0 := hu.2.2.2 y hy
 
+/- English proof (translation)
+Use `haveI := FiniteDimensional.complete ℂ E.V`. Take `⟨Ru, hRu⟩` from `su |t|`. Take `⟨Rv, hRv⟩` from `sv |s|`. Establish `h` using `Om_symm μ hL hR (sm_at (a := u) hu.1 t) (sm_at (a := v) hv.1 s) ⟨Ru, hRu t le_rfl⟩ ⟨Rv, hRv s le_rfl⟩`. Unfold `Pr`.
+
+Combine the equalities or inequalities in the displayed calculation. Simplify using `only [dt_dt hu t (val_mem_GLs y)])`. Use `_ = ∫ y : G n, ⟪u t y.val, Om (v s) y.val⟫_ℂ ∂μ := h`. Use `_ = _ := integral_congr_ae (Filter.Eventually.of_forall fun y => by`. Simplify using `only [dt_dt hv s (val_mem_GLs y)])`.
+-/
 theorem wave_pairing_second_time_derivative (hL : LgFacts) (hR : RCalc) {E : KMod n} {u v : ℝ → Mat n → E.V} (hu : IsWave E u) (hv : IsWave E v)
     (su : Sp u) (sv : Sp v) (t s : ℝ) : Pr μ (dt (dt u)) v t s = Pr μ u (dt (dt v)) t s := by
   haveI := FiniteDimensional.complete ℂ E.V
@@ -381,6 +515,13 @@ theorem wave_pairing_second_time_derivative (hL : LgFacts) (hR : RCalc) {E : KMo
     _ = _ := integral_congr_ae (Filter.Eventually.of_forall fun y => by
           simp only [dt_dt hv s (val_mem_GLs y)])
 
+/- English proof (translation)
+Establish `hd : ∀ r, HasDerivAt (fun r => Pr μ (dt u) v (t + 1 * r) (s + β * r) - (β : ℂ) * Pr μ u (dt v) (t + 1 * r) (s + β * r)) 0 r`. Introduce `r`. Establish `d1` using `Pr_hasDeriv μ hL (sm_dt (a := u) hu.1) hv.1 (sp_dt su) sv t s 1 β r`. Establish `d2` using `Pr_hasDeriv μ hL hu.1 (sm_dt (a := v) hv.1) su (sp_dt sv) t s 1 β r`. Establish `d3` using `d1.sub (d2.const_mul (β : ℂ))`.
+
+Establish `hβ' : (β : ℂ) * β = 1` using `by exact_mod_cast hβ`. Establish `e` using `wave_pairing_second_time_derivative μ hL hR hu hv su sv (t + 1 * r) (s + β * r)`. Establish `z : ((1 : ℝ) : ℂ) * Pr μ (dt (dt u)) v (t + 1 * r) (s + β * r) + (β : ℂ) * Pr μ (dt u) (dt v) (t + 1 * r) (s + β * r) - (β : ℂ) * (((1 : ℝ) : ℂ) * Pr μ (dt u) (dt v) (t + 1 * r) (s + β * r) + (β : ℂ) * Pr μ u (dt (dt v)) (t + 1 * r) (s + β * r)) = 0`. Rewrite using `[e]`. Use `push_cast`.
+
+Take the linear combination `(-Pr μ u (dt (dt v)) (t + 1 * r) (s + β * r)) * hβ'`. Rewrite `d3` using `[z]`. Conclude with `d3`. Establish `hc` using `is_const_of_deriv_eq_zero (f := fun r => Pr μ (dt u) v (t + 1 * r) (s + β * r) - (β : ℂ) * Pr μ u (dt v) (t + 1 * r) (s + β * r)) (fun r => (hd r).differentiableAt) (fun r => (hd r).deriv) r 0`. Simplify using `using hc`.
+-/
 theorem line_const (hL : LgFacts) (hR : RCalc) {E : KMod n} {u v : ℝ → Mat n → E.V} (hu : IsWave E u) (hv : IsWave E v)
     (su : Sp u) (sv : Sp v) (β : ℝ) (hβ : β * β = 1) (t s r : ℝ) :
     Pr μ (dt u) v (t + 1 * r) (s + β * r) - (β : ℂ) * Pr μ u (dt v) (t + 1 * r) (s + β * r) =
@@ -406,6 +547,19 @@ theorem line_const (hL : LgFacts) (hR : RCalc) {E : KMod n} {u v : ℝ → Mat n
 
 end Wave
 
+/- English proof (translation)
+Introduce `hL hR hS n _ _ μ _ E u v hu hv cu cv t`. Establish `su : Sp u` using `wave_cpt_bounded_time hL hS n E u hu cu`. Establish `sv : Sp v` using `wave_cpt_bounded_time hL hS n E v hv cv`. Use `one_dim (Pr μ u v) (Pr μ (dt u) v) (Pr μ u (dt v)) ?_ ?_ ?_ ?_ ?_ t` and prove the remaining obligations. Introduce `T r`.
+
+Establish `h` using `Pr_hasDeriv μ hL hu.1 hv.1 su sv 0 T 1 (-1) r`. Establish `e1 : ∀ r : ℝ, (0 : ℝ) + 1 * r = r` using `fun r => by ring`. Establish `e2 : ∀ r : ℝ, T + -1 * r = T - r` using `fun r => by ring`. Simplify using `only [e1, e2] at h`. Use `h.congr_deriv ?_` and prove the remaining obligations.
+
+Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Introduce `t s r`. Establish `h` using `line_const μ hL hR hu hv su sv 1 (by norm_num) t s r`. Simplify using `using h`.
+
+Introduce `t s r`. Establish `h` using `line_const μ hL hR hu hv su sv (-1) (by norm_num) t s r`. Simplify `h` using `[sub_eq_add_neg]`. Introduce `s`. Unfold `Pr`.
+
+Establish `: ∀ y : G n, ⟪dt u 0 y.val, v s y.val⟫_ℂ = 0` using `fun y => by`. Rewrite using `[dt_zero hu (val_mem_GLs y), inner_zero_left]`. Simplify using `[this]`. Introduce `t`. Unfold `Pr`.
+
+Establish `: ∀ y : G n, ⟪u t y.val, dt v 0 y.val⟫_ℂ = 0` using `fun y => by`. Rewrite using `[dt_zero hv (val_mem_GLs y), inner_zero_right]`. Simplify using `[this]`.
+-/
 theorem _root_.GlobalTheory.CompanionTheory.WaveMult.wave_symm : LgFacts → RCalc → WaveSpeed → ∀ (n : ℕ) [MeasurableSpace (G n)] [BorelSpace (G n)] (μ : Measure (G n)) [μ.IsHaarMeasure] (E : KMod n) (u v : ℝ → Mat n → E.V), IsWave E u → IsWave E v → Cpt (u 0) → Cpt (v 0) → ∀ t, ∫ y : G n, ⟪u t y.val, v 0 y.val⟫_ℂ ∂μ = ∫ y : G n, ⟪u 0 y.val, v t y.val⟫_ℂ ∂μ := by
   intro hL hR hS n _ _ μ _ E u v hu hv cu cv t
   have su : Sp u := wave_cpt_bounded_time hL hS n E u hu cu

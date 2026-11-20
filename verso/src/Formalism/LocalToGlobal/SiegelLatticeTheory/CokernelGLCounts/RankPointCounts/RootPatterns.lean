@@ -14,6 +14,9 @@ open Formalism.L2.SG.RealConjugatorData
 
 variable {D : D7}
 
+/- English proof (translation)
+The claim follows from `| [], _, _ => rfl | (t, s) :: bs, a, i => by simp only [locBlocksFrom, blockIdx, Formalism.L2.SG.RealObj.blkOf] split_ifs · rfl · rw [blockIdx_loc ρ v bs (a + s) (i - s), add_comm]`.
+-/
 theorem blockIdx_loc (ρ : ℕ → ℕ → ℝ) (v : D.what₂.Tau) :
     ∀ (bs : List (D.host.E × ℕ)) (a i : ℕ), blockIdx (locBlocksFrom D ρ v a bs) i = Formalism.L2.SG.RealObj.blkOf bs i
   | [], _, _ => rfl
@@ -23,6 +26,9 @@ theorem blockIdx_loc (ρ : ℕ → ℕ → ℝ) (v : D.what₂.Tau) :
     · rfl
     · rw [blockIdx_loc ρ v bs (a + s) (i - s), add_comm]
 
+/- English proof (translation)
+Simplify using `only [rootPat, ptLoc, ptLocS, locBlocks, Set.mem_setOf_eq, blockIdx_loc]`. Simplify using `[Set.mem_toFinset, Finset.mem_filter, Finset.mem_univ]`.
+-/
 theorem mem_rootPat_iff (τ : D.what₂.Tau) (w : Point D.host.E (D.R.rS + 1)) (q : Fin (D.R.rS + 1) × Fin (D.R.rS + 1)) :
     q ∈ rootPat (ptLoc D τ w) ↔ q.1 < q.2 ∧ Formalism.L2.SG.RealObj.blkOf w.1 q.1.1 = Formalism.L2.SG.RealObj.blkOf w.1 q.2.1 := by
   simp only [rootPat, ptLoc, ptLocS, locBlocks, Set.mem_setOf_eq, blockIdx_loc]
@@ -34,6 +40,11 @@ def idxF (τ : D.what₂.Tau) (w : Point D.host.E (D.R.rS + 1)) : ↥(rootPat (p
   left_inv _ := rfl
   right_inv _ := rfl
 
+/- English proof (translation)
+Unfold `Formalism.MainNotions.S.rootCoords`. Use `continuous_pi (fun q => ?_)` and prove the remaining obligations. Unfold `flagMat`. Use `first`. Consider the case `fun_prop`.
+
+Consider the case `(simp only [Matrix.mul_apply, Matrix.of_apply]; fun_prop)`. Consider the case `continuity`. Consider the case `(exact ((continuous_apply _).comp (continuous_apply _)).comp (Continuous.matrix_mul (Continuous.matrix_mul continuous_const continuous_id) continuous_const))`.
+-/
 theorem rootCoords_cont (k r : ℕ) (z : Fin (2 * r + k + 1) → ℂ) (p : Point ℂ (r + 1)) :
     Continuous (rootCoords k r z p) := by
   unfold Formalism.MainNotions.S.rootCoords
@@ -49,6 +60,11 @@ theorem rootCoords_cont (k r : ℕ) (z : Fin (2 * r + k + 1) → ℂ) (p : Point
 variable {X : HidaSetting D} {θ : ℝ} (C : Choice X θ) (u u' : D.what₂.Word) (w : Point D.host.E (D.R.rS + 1))
   (γ : X.B.I.Ginf) (τ : D.what₂.Tau)
 
+/- English proof (translation)
+Use function extensionality and compare the values at `y q`. Establish `ha : q.1.1.1 < D.R.rS` using `by have := q.2.1; have := q.1.2.isLt; omega`. Establish `hpc : ∀ x : ↥(rootPat (ptLoc D τ w)) → ℂ, MeasurableEquiv.piCongrLeft (fun _ : Formalism.L2.SG.RealObj.FreeE w => ℂ) (idxF τ w) x q = x ((idxF τ w).symm q)` using `fun x => by simp [MeasurableEquiv.piCongrLeft, Equiv.piCongrLeft_apply_eq_cast]`. Simplify using `only [Function.comp_apply]`. Rewrite using `[hpc, Formalism.L2.SG.RealFrameCoordinates.stCoordV_eq C u' w γ τ y q]`.
+
+Unfold `rootCoords flagMat`. Rewrite using `[dif_pos (show ((idxF τ w).symm q).1.1.val < D.R.rS from ha), ← cMr_eq]`. Both sides reduce to the same expression.
+-/
 theorem stCoordV_comp :
     Formalism.L2.SG.NGPin.stCoordV X u' w γ (vOf X τ) =
       (MeasurableEquiv.piCongrLeft (fun _ : Formalism.L2.SG.RealObj.FreeE w => ℂ) (idxF τ w)) ∘
@@ -66,6 +82,27 @@ theorem stCoordV_comp :
 
 include C in
 
+/- English proof (translation)
+Take `⟨hzW, hTz⟩` from `Formalism.L2.SG.Pf.zTr C u τ`. Take `⟨hzW', hTz'⟩` from `Formalism.L2.SG.Pf.zTr C u' τ`. Establish `hT : ∀ u0 : D.what₂.Word, 0 < Tr D u0` using `fun u0 => by`. Unfold `Tr`. Conclude with `Nat.cast_pos.2 (D.mem u0).A.T_prime.pos`.
+
+Establish `hk : 1 ≤ D.R.k` using `by have := D.R.m_add_three_le_k; omega`. Establish `hg0 : Formalism.L2.SG.RealFrameCoordinates.g0 C γ τ ∈ Formalism.QuantumDeterminants.UH (Formalism.QuantumDeterminants.Hpk D.R.k D.R.rS)` using `Formalism.L2.SG.Pf.LTL.trG_mem _ _ _ (C.isT τ).2.1 (C.isT τ).2.2.1 _`. Take `⟨μ₀, c, hHaar, hc0, hctop, hmap⟩` from `hLoc D.R.k D.R.rS hk _ _ hzW (by rw [hTz]; exact hT u) hzW' (by rw [hTz']; exact hT u') (ptLoc D τ w) _ hg0 (Formalism.L2.SG.RealFrameCoordinates.zhat_conjugator_eq_point C u u' w γ hrep τ)`. Establish `hemb` using `cMr_measEmb C γ τ`. Use `set μ := Measure.comap (cMr C γ τ) μ₀ with hμ`.
+
+Establish `hconc : μ₀ (Set.range (cMr C γ τ))ᶜ = 0`. Use `measure_mono_null (fun x hx => ?_) hHaar.2.2.1` and prove the remaining obligations. Introduce `hR`. Conclude with `hx (rset_range C γ τ x hR)`. Establish `hres : μ₀.restrict (Set.range (cMr C γ τ)) = μ₀` using `Measure.restrict_eq_self_of_ae_mem (ae_iff.2 hconc)`.
+
+Establish `hmapc : μ.map (cMr C γ τ) = μ₀` using `by rw [hμ, hemb.map_comap, hres]`. Establish `: SigmaFinite μ₀` using `hHaar.1`. Use `⟨μ, c, ⟨?_, ?_, ?_, fun s hs => ?_⟩, hc0, hctop, ?_⟩` and prove the remaining obligations. Conclude with `SigmaFinite.of_map μ hemb.measurable.aemeasurable (by rw [hmapc]; infer_instance)`. Introduce `h0`.
+
+Apply `hHaar.2.1` to reduce the goal to its premises. Rewrite using `[← hmapc, h0, Measure.map_zero]`. Rewrite using `[hμ, hemb.comap_apply]`. Use `measure_mono_null ?_ hHaar.2.2.1` and prove the remaining obligations. Introduce and unpack `_ ⟨y, hy, rfl⟩ hR`.
+
+Conclude with `hy ((stV_iff C γ τ u u' y).2 hR)`. Establish `hs0` using `(stV_iff C γ τ u u' s).1 hs`. Establish `hfun : cMr C γ τ ∘ (fun x => s * x) = Formalism.QuantumDeterminants.lmulM (cMr C γ τ s) ∘ cMr C γ τ`. Use function extensionality and compare the values at `x`. Take `⟨hQiQ, hQQi, _, _⟩` from `C.isT τ`.
+
+Use `show C.Qi τ * (uMat (γ (vOf X τ)))⁻¹ * uMat (s * x) * (uMat (γ (vOf X τ)) * C.Q τ) = (C.Qi τ * (uMat (γ (vOf X τ)))⁻¹ * uMat s * (uMat (γ (vOf X τ)) * C.Q τ)) * (C.Qi τ * (uMat (γ (vOf X τ)))⁻¹ * uMat x * (uMat (γ (vOf X τ)) * C.Q τ))`. Rewrite using `[show uMat (s * x) = uMat s * uMat x from rfl]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[hQQi, Matrix.mul_one, uMat_mul_inv, Matrix.one_mul]`. Simplify using `only [Matrix.mul_assoc]`.
+
+Use `_ = _ := by simp only [Matrix.mul_assoc]`. Establish `hmeas_s : Measurable (fun x : Formalism.REAL.UJ (X.B.I.ε (vOf X τ)) => s * x)` using `measurable_const_mul s`. Establish `hmeas_l : Measurable (Formalism.QuantumDeterminants.lmulM (k` using `D.R.k) (r := D.R.rS) (cMr C γ τ s)) := by`. Use `Continuous.measurable ?_` and prove the remaining obligations. Unfold `Formalism.QuantumDeterminants.lmulM`.
+
+Use `Continuous.matrix_mul continuous_const ?_` and prove the remaining obligations. Conclude with `continuous_id`. Establish `key : (μ.map (fun x => s * x)).map (cMr C γ τ) = μ.map (cMr C γ τ)`. Rewrite using `[Measure.map_map hemb.measurable hmeas_s, hfun, ← Measure.map_map hmeas_l hemb.measurable, hmapc]`. Conclude with `hHaar.2.2.2 _ hs0`.
+
+Combine the equalities or inequalities in the displayed calculation. Rewrite using `[stCoordV_comp C u' w γ τ, ← Measure.map_map (MeasurableEquiv.piCongrLeft _ _).measurable ((rootCoords_cont _ _ _ _).measurable.comp hemb.measurable), ← Measure.map_map (rootCoords_cont _ _ _ _).measurable hemb.measurable, hmapc, hmap, Measure.map_smul, (volume_measurePreserving_ …`. Both sides reduce to the same expression.
+-/
 theorem place (hLoc : Formalism.L2.SG.NGPin.LocRootHaar) (hrep : Formalism.L2.SG.RealObj.IsPtRep X u u' w γ) :
     ∃ (μ : Measure (Formalism.REAL.UJ (X.B.I.ε (vOf X τ)))) (c : ℝ≥0∞),
       Formalism.L2.SG.RealObj.IsHaarLoc (Formalism.L2.SG.NGPin.StV X u u' γ (vOf X τ)) μ ∧ c ≠ 0 ∧ c ≠ ⊤ ∧
@@ -131,6 +168,9 @@ theorem place (hLoc : Formalism.L2.SG.NGPin.LocRootHaar) (hrep : Formalism.L2.SG
       (volume_measurePreserving_piCongrLeft (fun _ : Formalism.L2.SG.RealObj.FreeE w => ℂ) (idxF τ w)).map_eq]
     rfl
 
+/- English proof (translation)
+Introduce `D X u u' w γ hrep v`. Establish `: Nonempty D.what₂.Word` using `⟨u⟩`. Take `⟨C⟩` from `Formalism.L2.SG.Pf.choiceExists X 1 one_pos`. Take `⟨τ, rfl⟩ : ∃ τ, vOf X τ = v` from `⟨X.pl v, X.pl.symm_apply_apply v⟩`. Conclude with `place C u u' w γ τ hLoc hrep`.
+-/
 theorem placeHaar_of_loc (hLoc : Formalism.L2.SG.NGPin.LocRootHaar) : Formalism.L2.SG.NGPin.PlaceHaar := by
   intro D X u u' w γ hrep v
   have : Nonempty D.what₂.Word := ⟨u⟩

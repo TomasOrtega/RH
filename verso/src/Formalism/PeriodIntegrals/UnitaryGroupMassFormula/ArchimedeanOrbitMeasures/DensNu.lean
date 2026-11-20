@@ -19,6 +19,11 @@ def matCoord : (Fin (D.R.rS + 1 + D.R.rS) → Fin (D.R.rS + 1 + D.R.rS) → Ainf
     (tensCoord (F := X.B.I.F) (E := X.B.I.E) (Ainf X.B.I.F)).trans
       (Homeomorph.piCongrRight fun _ => ainfReal (totReal_of X))).trans (flat4 _ _ _ _)
 
+/- English proof (translation)
+Use `haveI : FiniteDimensional X.B.I.F X.B.I.E := fd_of X`. Simplify using `only [matCoord, Homeomorph.trans_apply]`. Rewrite using `[← flatten_four_add]`. Use `congr 1`. Use function extensionality and compare the values at `a i k`.
+
+Simplify using `only [Homeomorph.piCongrRight_apply, Homeomorph.trans_apply, Pi.add_apply]`. Rewrite using `[tensCoord_add]`. Conclude with `ainfReal_add (totReal_of X) _ _`.
+-/
 theorem matCoord_add (x y : (Fin (D.R.rS + 1 + D.R.rS) → Fin (D.R.rS + 1 + D.R.rS) → Ainf X.B.I.F ⊗[X.B.I.F] X.B.I.E)) : matCoord X (x + y) = matCoord X x + matCoord X y := by
   haveI : FiniteDimensional X.B.I.F X.B.I.E := fd_of X
   simp only [matCoord, Homeomorph.trans_apply]
@@ -31,6 +36,15 @@ theorem matCoord_add (x y : (Fin (D.R.rS + 1 + D.R.rS) → Fin (D.R.rS + 1 + D.R
 
 def scalI (t : ℝ) : Ainf X.B.I.F := (ainfReal (totReal_of X)).symm fun _ => t
 
+/- English proof (translation)
+Use `haveI : FiniteDimensional X.B.I.F X.B.I.E := fd_of X`. Simplify using `only [matCoord, Homeomorph.trans_apply]`. Establish `hf : ∀ f : Fin (D.R.rS + 1 + D.R.rS) → Fin (D.R.rS + 1 + D.R.rS) → Module.Free.ChooseBasisIndex (Ainf X.B.I.F) (Ainf X.B.I.F ⊗[X.B.I.F] X.B.I.E) → InfinitePlace X.B.I.F → ℝ, flat4 _ _ _ _ (t • f) = t • flat4 _ _ _ _ f`. Introduce `f`. Use `show (EuclideanSpace.equiv _ ℝ).symm _ = t • (EuclideanSpace.equiv _ ℝ).symm _`.
+
+Rewrite using `[← map_smul]`. Both sides reduce to the same expression. Rewrite using `[← hf]`. Use `congr 1`. Use function extensionality and compare the values at `a i k v`.
+
+Simplify using `only [Homeomorph.piCongrRight_apply, Homeomorph.trans_apply, Pi.smul_apply, smul_eq_mul]`. Rewrite using `[← Algebra.smul_def]`. Establish `h1 : tensCoord (F` using `X.B.I.F) (E := X.B.I.E) (Ainf X.B.I.F) (scalI X t • S a i) = scalI X t • tensCoord (F := X.B.I.F) (E := X.B.I.E) (Ainf X.B.I.F) (S a i) := map_smul (Module.Free.chooseBasis (Ainf X.B.I.F) (Ainf X.B.I.F ⊗[X.B.I.F] X.B.I.E)).equivFun _ _`. Rewrite using `[h1]`. Use `show complReal v ((totReal_of X) v) ((scalI X t) v * _) = t * _`.
+
+Rewrite using `[show complReal v ((totReal_of X) v) ((scalI X t) v * tensCoord (F := X.B.I.F) (E := X.B.I.E) (Ainf X.B.I.F) (S a i) k v) = complReal v ((totReal_of X) v) ((scalI X t) v) * complReal v ((totReal_of X) v) (tensCoord (F := X.B.I.F) (E := X.B.I.E) (Ainf X.B.I.F) (S a i) k v) from ma …`. Use `congr 1`. Use `show ainfReal (totReal_of X) (scalI X t) v = t`. Simplify using `[scalI]`.
+-/
 theorem matCoord_scal (t : ℝ) (S : (Fin (D.R.rS + 1 + D.R.rS) → Fin (D.R.rS + 1 + D.R.rS) → Ainf X.B.I.F ⊗[X.B.I.F] X.B.I.E)) :
     matCoord X (fun a b => algebraMap (Ainf X.B.I.F) (Ainf X.B.I.F ⊗[X.B.I.F] X.B.I.E) (scalI X t) * S a b) =
       t • matCoord X S := by
@@ -60,6 +74,11 @@ theorem matCoord_scal (t : ℝ) (S : (Fin (D.R.rS + 1 + D.R.rS) → Fin (D.R.rS 
   show ainfReal (totReal_of X) (scalI X t) v = t
   simp [scalI]
 
+/- English proof (translation)
+Introduce `a b`. Establish `hS` using `S.2 a b`. Simplify using `only [Matrix.of_apply, map_mul]`. Rewrite using `[hS]`. Use `congr 1`.
+
+Simplify using `[sigR, Algebra.TensorProduct.algebraMap_apply]`.
+-/
 theorem herm_scal (t : ℝ) (S : HermR (Ainf X.B.I.F) X.B.I.cm.sig (D.R.rS + 1 + D.R.rS)) :
     Matrix.of (fun a b => algebraMap (Ainf X.B.I.F) (Ainf X.B.I.F ⊗[X.B.I.F] X.B.I.E) (scalI X t) * (S : Matrix (Fin (D.R.rS + 1 + D.R.rS)) (Fin (D.R.rS + 1 + D.R.rS)) (Ainf X.B.I.F ⊗[X.B.I.F] X.B.I.E)) a b) ∈ HermR (Ainf X.B.I.F) X.B.I.cm.sig (D.R.rS + 1 + D.R.rS) := by
   intro a b
@@ -69,10 +88,16 @@ theorem herm_scal (t : ℝ) (S : HermR (Ainf X.B.I.F) X.B.I.cm.sig (D.R.rS + 1 +
   congr 1
   simp [sigR, Algebra.TensorProduct.algebraMap_apply]
 
+/- English proof (translation)
+Apply `(matCoord X).injective` to reduce the goal to its premises. Rewrite using `[matCoord_add]`. Simplify using the standard rewrite rules.
+-/
 theorem matCoord_symm_add (c c' : EuclideanSpace ℝ (Fin (D.R.rS + 1 + D.R.rS) × Fin (D.R.rS + 1 + D.R.rS) × Module.Free.ChooseBasisIndex (Ainf X.B.I.F) (Ainf X.B.I.F ⊗[X.B.I.F] X.B.I.E) × InfinitePlace X.B.I.F)) :
     (matCoord X).symm (c + c') = (matCoord X).symm c + (matCoord X).symm c' := by
   apply (matCoord X).injective; rw [matCoord_add]; simp
 
+/- English proof (translation)
+Apply `(matCoord X).injective` to reduce the goal to its premises. Establish `h` using `matCoord_add X 0 0`. Simplify using `only [add_zero] at h`. Rewrite using `[Homeomorph.apply_symm_apply]`. Conclude with `(by simpa using h : matCoord X 0 = 0).symm`.
+-/
 theorem matCoord_symm_zero : (matCoord X).symm 0 = 0 := by
   apply (matCoord X).injective
   have h := matCoord_add X 0 0
@@ -80,6 +105,9 @@ theorem matCoord_symm_zero : (matCoord X).symm 0 = 0 := by
   rw [Homeomorph.apply_symm_apply]
   exact (by simpa using h : matCoord X 0 = 0).symm
 
+/- English proof (translation)
+Apply `(matCoord X).injective` to reduce the goal to its premises. Rewrite using `[matCoord_scal]`. Simplify using the standard rewrite rules.
+-/
 theorem matCoord_symm_smul (t : ℝ) (c : EuclideanSpace ℝ (Fin (D.R.rS + 1 + D.R.rS) × Fin (D.R.rS + 1 + D.R.rS) × Module.Free.ChooseBasisIndex (Ainf X.B.I.F) (Ainf X.B.I.F ⊗[X.B.I.F] X.B.I.E) × InfinitePlace X.B.I.F)) :
     (matCoord X).symm (t • c) = fun a b => algebraMap (Ainf X.B.I.F) (Ainf X.B.I.F ⊗[X.B.I.F] X.B.I.E) (scalI X t) * (matCoord X).symm c a b := by
   apply (matCoord X).injective; rw [matCoord_scal]; simp
@@ -101,6 +129,9 @@ def Wh : Submodule ℝ (EuclideanSpace ℝ (Fin (D.R.rS + 1 + D.R.rS) × Fin (D.
     rw [matCoord_symm_smul]
     exact herm_scal X t ⟨_, hc⟩
 
+/- English proof (translation)
+Use `show Matrix.of ((matCoord X).symm (matCoord X (Matrix.of.symm (S : Matrix (Fin (D.R.rS + 1 + D.R.rS)) (Fin (D.R.rS + 1 + D.R.rS)) (Ainf X.B.I.F ⊗[X.B.I.F] X.B.I.E))))) ∈ HermR (Ainf X.B.I.F) X.B.I.cm.sig (D.R.rS + 1 + D.R.rS)`. Rewrite using `[Homeomorph.symm_apply_apply, Equiv.apply_symm_apply]`. Conclude with `S.2`.
+-/
 theorem hermCoord_mem (S : HermR (Ainf X.B.I.F) X.B.I.cm.sig (D.R.rS + 1 + D.R.rS)) : matCoord X (Matrix.of.symm (S : Matrix (Fin (D.R.rS + 1 + D.R.rS)) (Fin (D.R.rS + 1 + D.R.rS)) (Ainf X.B.I.F ⊗[X.B.I.F] X.B.I.E))) ∈ Wh X := by
   show Matrix.of ((matCoord X).symm (matCoord X (Matrix.of.symm (S : Matrix (Fin (D.R.rS + 1 + D.R.rS)) (Fin (D.R.rS + 1 + D.R.rS)) (Ainf X.B.I.F ⊗[X.B.I.F] X.B.I.E))))) ∈ HermR (Ainf X.B.I.F) X.B.I.cm.sig (D.R.rS + 1 + D.R.rS)
   rw [Homeomorph.symm_apply_apply, Equiv.apply_symm_apply]; exact S.2
@@ -113,10 +144,16 @@ def hermCoord : HermR (Ainf X.B.I.F) X.B.I.cm.sig (D.R.rS + 1 + D.R.rS) ≃ₜ W
   continuous_toFun := ((matCoord X).continuous.comp continuous_subtype_val).subtype_mk _
   continuous_invFun := ((matCoord X).symm.continuous.comp continuous_subtype_val).subtype_mk _
 
+/- English proof (translation)
+Apply `Subtype.ext` to reduce the goal to its premises. Conclude with `matCoord_add X (Matrix.of.symm (S : Matrix (Fin (D.R.rS + 1 + D.R.rS)) (Fin (D.R.rS + 1 + D.R.rS)) (Ainf X.B.I.F ⊗[X.B.I.F] X.B.I.E))) (Matrix.of.symm (T : Matrix (Fin (D.R.rS + 1 + D.R.rS)) (Fin (D.R.rS + 1 + D.R.rS)) (Ainf X.B.I.F ⊗[X.B.I.F] X.B.I.E)))`.
+-/
 theorem hermCoord_add (S T : HermR (Ainf X.B.I.F) X.B.I.cm.sig (D.R.rS + 1 + D.R.rS)) : hermCoord X (S + T) = hermCoord X S + hermCoord X T := by
   apply Subtype.ext
   exact matCoord_add X (Matrix.of.symm (S : Matrix (Fin (D.R.rS + 1 + D.R.rS)) (Fin (D.R.rS + 1 + D.R.rS)) (Ainf X.B.I.F ⊗[X.B.I.F] X.B.I.E))) (Matrix.of.symm (T : Matrix (Fin (D.R.rS + 1 + D.R.rS)) (Fin (D.R.rS + 1 + D.R.rS)) (Ainf X.B.I.F ⊗[X.B.I.F] X.B.I.E)))
 
+/- English proof (translation)
+Apply `(hermCoord X).injective` to reduce the goal to its premises. Rewrite using `[hermCoord_add]`. Simplify using the standard rewrite rules.
+-/
 theorem hermCoord_symm_add (x y : Wh X) :
     (hermCoord X).symm (x + y) = (hermCoord X).symm x + (hermCoord X).symm y := by
   apply (hermCoord X).injective; rw [hermCoord_add]; simp
@@ -127,16 +164,25 @@ section Pair
 
 variable {D : D7} (X : HidaSetting D)
 
+/- English proof (translation)
+Simplify using `only [pairHerm, AddSubgroup.coe_add, Matrix.add_apply, add_mul, Finset.sum_add_distrib, map_add, mul_add]`.
+-/
 theorem pairHerm_addL (S S' T : HermR (Ainf X.B.I.F) X.B.I.cm.sig (D.R.rS + 1 + D.R.rS)) :
     pairHerm (Ainf X.B.I.F) X.B.I.cm.sig _ (S + S') T =
       pairHerm (Ainf X.B.I.F) X.B.I.cm.sig _ S T + pairHerm (Ainf X.B.I.F) X.B.I.cm.sig _ S' T := by
   simp only [pairHerm, AddSubgroup.coe_add, Matrix.add_apply, add_mul, Finset.sum_add_distrib, map_add, mul_add]
 
+/- English proof (translation)
+Simplify using `only [pairHerm, AddSubgroup.coe_add, Matrix.add_apply, mul_add, Finset.sum_add_distrib, map_add]`.
+-/
 theorem pairHerm_addR (S T T' : HermR (Ainf X.B.I.F) X.B.I.cm.sig (D.R.rS + 1 + D.R.rS)) :
     pairHerm (Ainf X.B.I.F) X.B.I.cm.sig _ S (T + T') =
       pairHerm (Ainf X.B.I.F) X.B.I.cm.sig _ S T + pairHerm (Ainf X.B.I.F) X.B.I.cm.sig _ S T' := by
   simp only [pairHerm, AddSubgroup.coe_add, Matrix.add_apply, mul_add, Finset.sum_add_distrib, map_add]
 
+/- English proof (translation)
+Simplify using `only [pairHerm]`. Use `congr 2`. Rewrite using `[Finset.sum_comm]`. Conclude with `Finset.sum_congr rfl fun a _ => Finset.sum_congr rfl fun b _ => mul_comm _ _`.
+-/
 theorem pairHerm_symm (S T : HermR (Ainf X.B.I.F) X.B.I.cm.sig (D.R.rS + 1 + D.R.rS)) :
     pairHerm (Ainf X.B.I.F) X.B.I.cm.sig _ S T = pairHerm (Ainf X.B.I.F) X.B.I.cm.sig _ T S := by
   simp only [pairHerm]
@@ -144,6 +190,9 @@ theorem pairHerm_symm (S T : HermR (Ainf X.B.I.F) X.B.I.cm.sig (D.R.rS + 1 + D.R
   rw [Finset.sum_comm]
   exact Finset.sum_congr rfl fun a _ => Finset.sum_congr rfl fun b _ => mul_comm _ _
 
+/- English proof (translation)
+Use `haveI : FiniteDimensional X.B.I.F X.B.I.E := fd_of X`. Use `show Continuous fun S : HermR (Ainf X.B.I.F) X.B.I.cm.sig (D.R.rS + 1 + D.R.rS) => algebraMap X.B.I.F (Ainf X.B.I.F) (1 / 2) * Algebra.trace (Ainf X.B.I.F) (Ainf X.B.I.F ⊗[X.B.I.F] X.B.I.E) (∑ a, ∑ b, (S : Matrix (Fin (D.R.rS + 1 + D.R.rS)) (Fin (D.R.rS + 1 + D.R.rS)) (Ainf X.B.I …`. Use `continuous_const.mul ((continuous_traceP X).comp ?_)` and prove the remaining obligations. Use `continuous_finsetSum _ fun a _ => continuous_finsetSum _ fun b _ => ?_` and prove the remaining obligations. Conclude with `(Continuous.matrix_elem continuous_subtype_val a b).mul continuous_const`.
+-/
 theorem continuous_pairHerm_leftP (T : HermR (Ainf X.B.I.F) X.B.I.cm.sig (D.R.rS + 1 + D.R.rS)) :
     Continuous fun S : HermR (Ainf X.B.I.F) X.B.I.cm.sig (D.R.rS + 1 + D.R.rS) => pairHerm (Ainf X.B.I.F) X.B.I.cm.sig _ S T := by
   haveI : FiniteDimensional X.B.I.F X.B.I.E := fd_of X
@@ -157,12 +206,18 @@ theorem continuous_pairHerm_leftP (T : HermR (Ainf X.B.I.F) X.B.I.cm.sig (D.R.rS
 def sumReI (a : Ainf X.B.I.F) : ℝ :=
   ∑ w : InfinitePlace X.B.I.F, (InfinitePlace.Completion.extensionEmbedding w (a w)).re
 
+/- English proof (translation)
+Simplify using `only [sumReI]`. Rewrite using `[← Finset.sum_add_distrib]`. Use `Finset.sum_congr rfl fun w _ => ?_` and prove the remaining obligations. Rewrite using `[show (a + b) w = a w + b w from rfl, map_add, Complex.add_re]`.
+-/
 theorem sumReI_add (a b : Ainf X.B.I.F) : sumReI X (a + b) = sumReI X a + sumReI X b := by
   simp only [sumReI]
   rw [← Finset.sum_add_distrib]
   refine Finset.sum_congr rfl fun w _ => ?_
   rw [show (a + b) w = a w + b w from rfl, map_add, Complex.add_re]
 
+/- English proof (translation)
+The claim follows from `continuous_finsetSum _ fun w _ => Complex.continuous_re.comp ((InfinitePlace.Completion.isometry_extensionEmbedding (v := w)).continuous.comp (continuous_apply w))`.
+-/
 theorem continuous_sumReI : Continuous (sumReI X) :=
   continuous_finsetSum _ fun w _ => Complex.continuous_re.comp
     ((InfinitePlace.Completion.isometry_extensionEmbedding (v := w)).continuous.comp (continuous_apply w))
@@ -176,6 +231,19 @@ def DensNu : Prop := ∀ {D : D7} (X : HidaSetting D) (u' : D.what₂.Word) (ψ 
     νinf.map (hermCoord X) = ENNReal.ofReal (Real.sqrt |(Matrix.of fun i j =>
       betaH X (stdOrthonormalBasis ℝ (Wh X) i) (stdOrthonormalBasis ℝ (Wh X) j)).det|) • volume
 
+/- English proof (translation)
+Introduce `D X u' ψ hT μinf νinf fibInf hP`. Use `haveI : FiniteDimensional X.B.I.F X.B.I.E := fd_of X`. Use `haveI : BorelSpace (HermR (Ainf X.B.I.F) X.B.I.cm.sig (D.R.rS + 1 + D.R.rS)) := ⟨rfl⟩`. Establish `hS` using `hP.2.2.1`. Establish `hν : SelfDual νinf (fun S T : HermR (Ainf X.B.I.F) X.B.I.cm.sig (D.R.rS + 1 + D.R.rS) => psiInf X.B.I.F ψ (pairHerm (Ainf X.B.I.F) X.B.I.cm.sig (D.R.rS + 1 + D.R.rS) S T))` using `hP.2.2.2.2.2.1`.
+
+Establish `h1 : ∀ x y : Wh X, (fun S T : HermR (Ainf X.B.I.F) X.B.I.cm.sig (D.R.rS + 1 + D.R.rS) => psiInf X.B.I.F ψ (pairHerm (Ainf X.B.I.F) X.B.I.cm.sig (D.R.rS + 1 + D.R.rS) S T)) ((hermCoord X).symm x) ((hermCoord X).symm y) = ((𝐞 (betaH X x y) : Circle) : ℂ)`. Introduce `x y`. Simplify using `only [betaH, sumReI]`. Rewrite using `[psiInf_eq ψ hS, Real.fourierChar_apply]`. Use `push_cast`.
+
+Put the polynomial expressions in normal form. Establish `h2 : ∀ x x' y : Wh X, betaH X (x + x') y = betaH X x y + betaH X x' y`. Introduce `x x' y`. Simplify using `only [betaH, hermCoord_symm_add, pairHerm_addL, sumReI_add]`. Establish `h3 : ∀ x y y' : Wh X, betaH X x (y + y') = betaH X x y + betaH X x y'`.
+
+Introduce `x y y'`. Simplify using `only [betaH, hermCoord_symm_add, pairHerm_addR, sumReI_add]`. Establish `h4 : ∀ y : Wh X, Continuous fun x => betaH X x y` using `fun y => (continuous_sumReI X).comp ((continuous_pairHerm_leftP X _).comp (hermCoord X).symm.continuous)`. Establish `h6 : ∀ x y : Wh X, betaH X x y = betaH X y x`. Introduce `x y`.
+
+Simplify using `only [betaH]`. Rewrite using `[pairHerm_symm]`. Establish `h5 : ∀ x : Wh X, Continuous fun y => betaH X x y`. Introduce `x`. Establish `e : (fun y => betaH X x y) = fun y => betaH X y x` using `funext fun y => h6 x y`.
+
+Rewrite using `[e]`. Conclude with `h4 x`. Conclude with `PI.AprimeInfW.GenericDensity.dens_generic νinf (fun S T : HermR (Ainf X.B.I.F) X.B.I.cm.sig (D.R.rS + 1 + D.R.rS) => psiInf X.B.I.F ψ (pairHerm (Ainf X.B.I.F) X.B.I.cm.sig (D.R.rS + 1 + D.R.rS) S T)) hν (hermCoord X) (hermCoord_add X) (betaH X) h1 h2 h3 h4 h5 h6 (stdOrthonormalBa …`.
+-/
 theorem densNu_holds : DensNu := by
   intro D X u' ψ hT μinf νinf fibInf hP
   haveI : FiniteDimensional X.B.I.F X.B.I.E := fd_of X

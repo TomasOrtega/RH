@@ -3,6 +3,11 @@ open Polynomial
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Use `haveI : Fintype K := Fintype.ofFinite K`. Use `haveI : FiniteDimensional (ZMod l) K := Module.Finite.of_finite`. Set `pb` to `Field.powerBasisOfFiniteOfSeparable (ZMod l) K`. Use `⟨pb.gen, minpoly (ZMod l) pb.gen, minpoly.monic pb.isIntegral_gen, minpoly.irreducible pb.isIntegral_gen, minpoly.aeval _ _, ?_, ?_, ?_⟩` and prove the remaining obligations. Conclude with `(Algebra.IsSeparable.isSeparable (ZMod l) pb.gen).aeval_derivative_ne_zero (minpoly.aeval _ _)`.
+
+Introduce `y`. Take `⟨q, -, hq⟩` from `pb.exists_eq_aeval y`. Conclude with `⟨q, hq.symm⟩`. Rewrite using `[Nat.card_eq_fintype_card, Module.card_eq_pow_finrank (K := ZMod l) (V := K), ZMod.card, pb.natDegree_minpoly, pb.finrank]`.
+-/
 theorem finiteField_exists_generator_minpoly (l : ℕ) [Fact l.Prime] (K : Type) [Field K] [Finite K]
     [Algebra (ZMod l) K] :
     ∃ (a : K) (p : (ZMod l)[X]), p.Monic ∧ Irreducible p ∧ aeval a p = 0 ∧

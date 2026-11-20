@@ -20,6 +20,19 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 namespace GlobalTheory.RegSch
 
+/- English proof (translation)
+Introduce `D T T₀ r d b hb hIw l hl`. Establish `hL0 : GlobalTheory.EisCont.IsLevel T (AdelicU.frameLat T) b` using `⟨AdelicU.SelfDual.isLattice_frameLat T, AdelicU.SelfDual.isSelfDualAt_frameLat D T, hb⟩`. Establish `hL : GlobalTheory.EisCont.IsLevel T l.L l.c` using `⟨hl.1, hl.2.1, hl.2.2⟩`. Take `⟨g, hg⟩` from `GlobalTheory.T.exists_adelic_unitary_conj_selfDual_majorant_levels D T (AdelicU.frameLat T) l.L b l.c hL0 hL`. Take `⟨q, k₀, hk₀, hgq⟩` from `hIw g`.
+
+Establish `hconj : ConjBy (q : GA D T) l.K (Kmax T b)`. Introduce `k`. Establish `h1 : k ∈ l.K ↔ g⁻¹ * k * g ∈ Kmax T b` using `hg k`. Rewrite using `[h1, hgq]`. Prove the components needed by the constructor for the conclusion.
+
+Introduce `h`. Use `(Kmax T b).mul_mem (hk₀) ((Kmax T b).mul_mem h ((Kmax T b).inv_mem hk₀))` as an intermediate fact. Simplify `this` using `[mul_assoc]`. Introduce `h`. Use `(Kmax T b).mul_mem ((Kmax T b).inv_mem hk₀) ((Kmax T b).mul_mem h hk₀)` as an intermediate fact.
+
+Simplify `this` using `[mul_assoc]`. Use `haveI : Submodule.IsLattice D.host.E l.L := hl.1`. Use `⟨?_, isCompact_levelAll (AdelicU.isCMExt_host D) _ _ _, q, hconj⟩` and prove the remaining obligations. Introduce `h`. Take `⟨q₁, k₁, hk₁, e⟩` from `hIw (h * q)`.
+
+Use `⟨q₁ * q⁻¹, (q : GA D T) * k₁ * (q : GA D T)⁻¹, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[hconj]`. Simplify `hk₁` using `[mul_assoc]`. Establish `: h = (q₁ : GA D T) * k₁ * (q : GA D T)⁻¹` using `by rw [← e]; group`. Rewrite using `[this]`.
+
+Simplify using `[mul_assoc]`.
+-/
 theorem good_level_conj_stab : ∀ (D : D7) (T T₀ : HSp D) (r : ℕ) (d : HypDec T T₀ r) (b : GL (Fin T.rank) (AE D)), IsMaj T b → HasIw d (Kmax T b) → ∀ l : Lvl T, l.Good → HasIw d l.K ∧ IsCompact (l.K : Set (GA D T)) ∧ ∃ q : stab d, ConjBy (q : GA D T) l.K (Kmax T b) := by
   intro D T T₀ r d b hb hIw l hl
   have hL0 : GlobalTheory.EisCont.IsLevel T (AdelicU.frameLat T) b :=

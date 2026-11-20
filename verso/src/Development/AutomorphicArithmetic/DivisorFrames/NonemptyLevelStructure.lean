@@ -7,6 +7,13 @@ open AlgebraicGeometry CategoryTheory Limits NumberField IsLocalRing
 open ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Geo.Tor Formalism.L2.Pj GlobalTheory.LocM GlobalTheory.Toroidal GlobalTheory.ShFam GlobalTheory.ShFam.Pad
 open GlobalTheory GlobalTheory.CechPic GlobalTheory.Cartier GlobalTheory.ConsGeo
 
+/- English proof (translation)
+Introduce `E _ _ _ H Dw Xo p W Y i₀ O _ β Z T hpq`. Take `⟨π, hπ, hpb, -⟩` from `(GlobalTheory.LevelCompare.levelMaps_iff hpq).1 (GlobalTheory.moduliScheme_levelMaps_heckePoints.2 E H Dw hpq).1 _ _ Z.dvd (Xo i₀.l) (Xo Z.i.l)`. Establish `w : (pullback.fst _ _ ≫ π : (Xo Z.i.l).XF Z.i.c ⟶ _) ≫ (Xo i₀.l).s = (pullback.snd _ _ ≫ spMap (incl Z)) ≫ spMap (IntermediateField.inclusion i₀.c.le).toRingHom`. Rewrite using `[Category.assoc, hπ, ← Category.assoc, pullback.condition, Category.assoc, Category.assoc, GlobalTheory.IndefiniteRowSideFullHecke.RelativeGroupHatForm.spMap_inclusion_comp]`. Conclude with `congrArg _ (GlobalTheory.IndefiniteRowSideFullHecke.RelativeGroupHatForm.spMap_inclusion_comp _ _).symm`.
+
+Set `r : (Xo Z.i.l).XF Z.i.c ⟶ (Xo i₀.l).XF i₀.c` to `pullback.lift _ _ w`. Establish `hr : r ≫ pullback.fst _ _ = pullback.fst _ _ ≫ π` using `pullback.lift_fst _ _ _`. Take `⟨m, hm⟩` from `hpb`. Take `⟨n, -⟩` from `GlobalTheory.ObjMaps.exists_sab_comp m (Y Z.i).m0.toSABMap`. Take `⟨ν, -⟩` from `GlobalTheory.ObjMaps.exists_sab_cancel (g := r) T.m0.toSABMap (hr.symm ▸ n)`.
+
+Conclude with `⟨⟨r, ν, pullback.lift_snd _ _ _, π, hπ, ⟨m, hm⟩, hr⟩⟩`.
+-/
 theorem UpperTheory.nonempty_level_structure :
     ∀ {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E} {Dw : Datum H} {Xo : ∀ l : Level H, Moduli Dw l} {p : ℕ} {W : ValuationSubring ℂ} {Y : LocalSystem Xo p W} {i₀ : Idx H p} {O : Type} [CommRing O] {β : O →+* i₀.c.F} (Z : LocM.Mdl Y i₀) (T : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Model (Xo i₀.l) i₀.c β), 1 ≤ Dw.p + Dw.q → Nonempty (Lev Z T) := by
   intro E _ _ _ H Dw Xo p W Y i₀ O _ β Z T hpq

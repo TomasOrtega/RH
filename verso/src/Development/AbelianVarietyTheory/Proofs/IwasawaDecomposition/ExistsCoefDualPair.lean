@@ -23,6 +23,13 @@ section Local
 
 open Formalism.BasicNotions Formalism.BasicNotions.TH Formalism.MainNotions.S Formalism.L2.DIV Formalism.L2.Theta Formalism.IndefR Formalism.IndefR.Mult Matrix
 
+/- English proof (translation)
+Take `⟨H', _, _, π', e, h1, h2, h3, h4⟩` from `GlobalTheory.NablaType.exists_isHCTypeU_nablaSq n lam`. Establish `h5` using `Conj.isHCTypeU_conj h1`. Rewrite `h5` using `[← funext hu]`. Take `⟨A, hA⟩` from `GlobalTheory.UnitaryHighestWeightUnique.exists_equiv_of_isHCTypeU n u H H' π _ h h5`. Use `⟨e ∘ₗ A.toLinearMap, h2.comp A.injective, fun x => h3 _, fun k hk x => ?_⟩` and prove the remaining obligations.
+
+Establish `hk' : (inside₂ ℂ n k : Matrix (Fin n) (Fin n) ℂ) = (k : Matrix (Fin n) (Fin n) ℂ).map star`. Establish `: ((k⁻¹ : GL (Fin n) ℂ) : Matrix (Fin n) (Fin n) ℂ) = (k : Matrix (Fin n) (Fin n) ℂ)ᴴ` using `Units.inv_eq_of_mul_eq_one_left (Matrix.mem_unitaryGroup_iff'.1 hk)`. Use `show ((k⁻¹ : GL (Fin n) ℂ) : Matrix (Fin n) (Fin n) ℂ)ᵀ = _`. Rewrite using `[this]`. Both sides reduce to the same expression.
+
+Establish `hk2 : (inside₂ ℂ n k : Matrix (Fin n) (Fin n) ℂ) ∈ Matrix.unitaryGroup (Fin n) ℂ`. Rewrite using `[hk']`. Conclude with `Matrix.transpose_mem_unitaryGroup_iff.2 (Unitary.star_mem hk)`. Use `show e (A (π k x)) = sqAct ℂ n lam (inside₂ ℂ n k) (e (A x))`. Rewrite using `[hA _ hk, ← h4 _ hk2, hk']`.
+-/
 theorem exists_dual_model {n : ℕ} (lam : DomWeight n) (u : Fin n → ℝ)
     (hu : ∀ i, u i = -((lam.w (Fin.rev i) : ℝ) + ((rhoVec n (Fin.rev i) : ℚ) : ℝ)))
     {H : Type} [NormedAddCommGroup H] [InnerProductSpace ℂ H] {π : Matrix (Fin n) (Fin n) ℂ → (H →L[ℂ] H)}
@@ -47,6 +54,17 @@ theorem exists_dual_model {n : ℕ} (lam : DomWeight n) (u : Fin n → ℝ)
   show e (A (π k x)) = sqAct ℂ n lam (inside₂ ℂ n k) (e (A x))
   rw [hA _ hk, ← h4 _ hk2, hk']
 
+/- English proof (translation)
+Take `⟨-, c, hc, hm, hw⟩` from `h`. Take `⟨hu, q, hq, hS⟩` from `he`. Establish `hq' : StrictAnti q` using `fun a b hab => by`. Use `hu hab` as an intermediate fact. Rewrite `this` using `[hq, hq]`.
+
+Conclude with `this` after adjusting the coercions. Establish `hc' : StrictAnti fun a => -c (Fin.rev a)` using `fun a b hab => neg_lt_neg (hc (Fin.rev_lt_rev.2 hab))`. Establish `hsub : Finset.univ.image (fun a => -c (Fin.rev a)) ⊆ Finset.univ.image q`. Introduce `x hx`. Take `⟨a, -, rfl⟩` from `Finset.mem_image.1 hx`.
+
+Take `⟨s, hs⟩` from `hm (Fin.rev a)`. Establish `: (-c (Fin.rev a), s) ∈ dualPar S` using `Finset.mem_image.2 ⟨_, hs, rfl⟩`. Rewrite `this` using `[hS]`. Take `⟨b, -, hb⟩` from `Finset.mem_image.1 this`. Conclude with `Finset.mem_image.2 ⟨b, Finset.mem_univ _, congrArg Prod.fst hb⟩`.
+
+Establish `heq` using `Finset.eq_of_subset_of_card_le hsub (by`. Rewrite using `[Finset.card_image_of_injective _ hq'.injective, Finset.card_image_of_injective _ hc'.injective])`. Establish `hr : Set.range (fun a => -c (Fin.rev a)) = Set.range q`. Simplify using `using congrArg (fun s : Finset ℚ => (s : Set ℚ)) heq`. Use `congrFun ((hc'.range_inj hq').1 hr) i` as an intermediate fact.
+
+Establish `h2 : c (Fin.rev i) = lam.w (Fin.rev i) + rhoVec n (Fin.rev i)` using `by rw [hw]; ring`. Rewrite using `[hq, ← this, h2]`. Use `push_cast`. Both sides reduce to the same expression.
+-/
 theorem enum_dual {n : ℕ} {lam : DomWeight n} {S : SPar} (h : Bridge.IsWtOfPar lam S) {u : Fin n → ℝ} {ε : Fin n → Bool}
     (he : IsEnum (dualPar S) u ε) (i : Fin n) :
     u i = -((lam.w (Fin.rev i) : ℝ) + ((rhoVec n (Fin.rev i) : ℚ) : ℝ)) := by
@@ -75,6 +93,11 @@ theorem enum_dual {n : ℕ} {lam : DomWeight n} {S : SPar} (h : Bridge.IsWtOfPar
   push_cast
   rfl
 
+/- English proof (translation)
+Take `⟨y, hy, rfl⟩` from `Finset.mem_image.1 hx`. Take `⟨z, hz, rfl⟩` from `Finset.mem_image.1 hy`. Simplify using `only [Finset.mem_union, Finset.mem_image, Finset.mem_biUnion] at hz`. Break down `hz with (⟨i, -, rfl⟩ | ⟨i, -, rfl⟩) | ⟨i, -, w, -, rfl⟩` into its components or cases. Both sides reduce to the same expression.
+
+Conclude with `decide_eq_true (Or.inl i.2.le)`. Both sides reduce to the same expression.
+-/
 theorem sign_last {D : D7} (P : TPar D) (τ : D.what₂.Tau) {x : ℚ × Bool} (hx : x ∈ parB P D.R.m τ) : x.2 = true := by
   obtain ⟨y, hy, rfl⟩ := Finset.mem_image.1 hx
   obtain ⟨z, hz, rfl⟩ := Finset.mem_image.1 hy
@@ -84,6 +107,9 @@ theorem sign_last {D : D7} (P : TPar D) (τ : D.what₂.Tau) {x : ℚ × Bool} (
   · exact decide_eq_true (Or.inl i.2.le)
   · rfl
 
+/- English proof (translation)
+Establish `h : (g : Matrix (Fin n) (Fin n) ℂ)ᴴ * ((B : Matrix (Fin n) (Fin n) ℂ)ᴴ * B) * g = (B : Matrix (Fin n) (Fin n) ℂ)ᴴ * B` using `hg`. Rewrite using `[Matrix.mem_unitaryGroup_iff', Matrix.star_eq_conjTranspose]`. Simplify using `only [Units.val_mul, Matrix.conjTranspose_mul]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[h, ← Matrix.mul_assoc, ← Matrix.conjTranspose_mul, Units.mul_inv, Matrix.conjTranspose_one, Matrix.one_mul, Units.mul_inv]`.
+-/
 theorem conj_unitary {n : ℕ} {B g : GL (Fin n) ℂ}
     (hg : (g : Matrix (Fin n) (Fin n) ℂ) ∈
       Formalism.QuantumDeterminants.UH ((B : Matrix (Fin n) (Fin n) ℂ)ᴴ * (B : Matrix (Fin n) (Fin n) ℂ))) :
@@ -98,6 +124,9 @@ theorem conj_unitary {n : ℕ} {B g : GL (Fin n) ℂ}
       rw [h, ← Matrix.mul_assoc, ← Matrix.conjTranspose_mul, Units.mul_inv, Matrix.conjTranspose_one, Matrix.one_mul,
         Units.mul_inv]
 
+/- English proof (translation)
+Establish `h : (k : Matrix (Fin n) (Fin n) ℂ)ᴴ * k = 1` using `Matrix.mem_unitaryGroup_iff'.1 hk`. Establish `e : (B : Matrix (Fin n) (Fin n) ℂ) * ((B⁻¹ * k * B : GL (Fin n) ℂ) : Matrix (Fin n) (Fin n) ℂ) = k * B`. Rewrite using `[← Units.val_mul, ← mul_assoc, ← mul_assoc, mul_inv_cancel, one_mul, Units.val_mul]`. Use `show _ * _ * _ = _`. Rewrite using `[← Matrix.mul_assoc, ← Matrix.conjTranspose_mul, Matrix.mul_assoc, e, Matrix.conjTranspose_mul, Matrix.mul_assoc, ← Matrix.mul_assoc _ (k : Matrix (Fin n) (Fin n) ℂ), h, Matrix.one_mul]`.
+-/
 theorem conj_UH {n : ℕ} {B k : GL (Fin n) ℂ}
     (hk : (k : Matrix (Fin n) (Fin n) ℂ) ∈ Matrix.unitaryGroup (Fin n) ℂ) :
     ((B⁻¹ * k * B : GL (Fin n) ℂ) : Matrix (Fin n) (Fin n) ℂ) ∈
@@ -109,13 +138,30 @@ theorem conj_UH {n : ℕ} {B k : GL (Fin n) ℂ}
   rw [← Matrix.mul_assoc, ← Matrix.conjTranspose_mul, Matrix.mul_assoc, e, Matrix.conjTranspose_mul, Matrix.mul_assoc,
     ← Matrix.mul_assoc _ (k : Matrix (Fin n) (Fin n) ℂ), h, Matrix.one_mul]
 
+/- English proof (translation)
+Rewrite using `[map_mul, Module.End.mul_apply]`.
+-/
 theorem rhoK_mul {ι : Type} [Fintype ι] {n : ℕ} (lam : ι → DomWeight n) (g h : ι → GL (Fin n) ℂ) (x : VV ℂ lam) :
     rhoK lam g (rhoK lam h x) = rhoK lam (g * h) x := by
   rw [map_mul, Module.End.mul_apply]
 
+/- English proof (translation)
+Rewrite using `[map_one, Module.End.one_apply]`.
+-/
 theorem rhoK_one {ι : Type} [Fintype ι] {n : ℕ} (lam : ι → DomWeight n) (x : VV ℂ lam) : rhoK lam 1 x = x := by
   rw [map_one, Module.End.one_apply]
 
+/- English proof (translation)
+Establish `hinv : ∀ x : VV ℂ lam, rhoK lam B⁻¹ (rhoK lam B x) = x` using `fun x => by`. Rewrite using `[rhoK_mul, inv_mul_cancel, rhoK_one]`. Establish `hst` using `GlobalTheory.CoefIrred.vv_irreducible_unitary _ _ lam (U.comap (rhoK lam B⁻¹)) fun k hk x hx => by`. Use `hU (B⁻¹ * k * B) (fun τ => conj_UH (B := B τ) (hk τ)) _ (Submodule.mem_comap.1 hx)` as an intermediate fact. Rewrite `this` using `[rhoK_mul, mul_inv_cancel_right, ← rhoK_mul]`.
+
+Conclude with `Submodule.mem_comap.2 this`. Break down `hst with h | h` into its components or cases. Use `left`. Use `eq_bot_iff.2 fun x hx => ?_` and prove the remaining obligations. Establish `h1 : rhoK lam B x ∈ U.comap (rhoK lam B⁻¹)`.
+
+Rewrite using `[Submodule.mem_comap, hinv]`. Conclude with `hx`. Rewrite `h1` using `[h, Submodule.mem_bot]`. Establish `h2` using `hinv x`. Rewrite `h2` using `[h1, map_zero]`.
+
+Conclude with `(Submodule.mem_bot ℂ).2 h2.symm`. Use `right`. Use `eq_top_iff.2 fun x _ => ?_` and prove the remaining obligations. Establish `h1 : rhoK lam B x ∈ U.comap (rhoK lam B⁻¹)`. Rewrite using `[h]`.
+
+Conclude with `Submodule.mem_top`. Rewrite `h1` using `[Submodule.mem_comap, hinv]`. Then use the resulting hypothesis.
+-/
 theorem irred_gram {ι : Type} [Fintype ι] {n : ℕ} (lam : ι → DomWeight n) (B : ι → GL (Fin n) ℂ)
     (U : Submodule ℂ (VV ℂ lam))
     (hU : ∀ g : ι → GL (Fin n) ℂ, (∀ τ, (g τ : Matrix (Fin n) (Fin n) ℂ) ∈ Formalism.QuantumDeterminants.UH (gramOf B τ)) →
@@ -158,6 +204,9 @@ variable {D : D7} (θ : InfFam D) (V : HSp D)
 def infGL : GA D V →* (D.what₂.Tau → GL (Fin V.rank) ℂ) :=
   (MonoidHom.pi fun τ => Formalism.UG.bc (θ τ)).comp (infHom V)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem infGL_coe (h : GA D V) (τ : D.what₂.Tau) :
     (infGL θ V h τ : Matrix (Fin V.rank) (Fin V.rank) ℂ) = infMat D.sp.cm.sig V.gram (θ τ) h := rfl
 
@@ -169,6 +218,9 @@ def coefA : CoefA V where
 
 variable {θ V}
 
+/- English proof (translation)
+Establish `h1 : infHom V h = 1` using `hh`. Establish `h2 : infGL θ V h = 1`. Rewrite using `[infGL, MonoidHom.comp_apply, h1, map_one]`. Establish `h3 : rhoK lam (infGL θ V h) = 1` using `by rw [h2, map_one]`. Conclude with `h3`.
+-/
 theorem coefA_fin {h : GA D V} (hh : h ∈ GfC V) : (coefA θ V lam B).ρ h = 1 := by
   have h1 : infHom V h = 1 := hh
   have h2 : infGL θ V h = 1 := by
@@ -176,17 +228,26 @@ theorem coefA_fin {h : GA D V} (hh : h ∈ GfC V) : (coefA θ V lam B).ρ h = 1 
   have h3 : rhoK lam (infGL θ V h) = 1 := by rw [h2, map_one]
   exact h3
 
+/- English proof (translation)
+Use `pairInv ℂ _ _ lam (gramOf B) (infGL θ V h) (fun τ => ?_) x y` and prove the remaining obligations. Rewrite using `[hB, infGL_coe]`. Conclude with `GlobalTheory.FockCompare.RealAction.infMat_mem_UH hθ V h τ`.
+-/
 theorem coefA_unitary (hθ : IsInfFam θ) (hB : ∀ τ, gramOf B τ = gramAt D V τ) (h : GA D V) (x y : HV lam B) :
     inner ℂ ((coefA θ V lam B).ρ h x) ((coefA θ V lam B).ρ h y) = inner ℂ x y := by
   refine pairInv ℂ _ _ lam (gramOf B) (infGL θ V h) (fun τ => ?_) x y
   rw [hB, infGL_coe]
   exact GlobalTheory.FockCompare.RealAction.infMat_mem_UH hθ V h τ
 
+/- English proof (translation)
+The claim follows from `continuous_HV lam B (infGL θ V) (fun τ => by simp only [infGL_coe] exact GlobalTheory.Mem.VolExists.continuous_infMat V.gram (hθ τ)) x`.
+-/
 theorem coefA_cont (hθ : IsInfFam θ) (x : HV lam B) : Continuous fun h => (coefA θ V lam B).ρ h x :=
   continuous_HV lam B (infGL θ V) (fun τ => by
     simp only [infGL_coe]
     exact GlobalTheory.Mem.VolExists.continuous_infMat V.gram (hθ τ)) x
 
+/- English proof (translation)
+The claim follows from `irred_gram lam B U fun g hg x hx => by obtain ⟨h, -, hh⟩ := (GlobalTheory.SmoothForms.RealPts.glue θ hθ V).2 (fun τ => g τ) fun τ => hB τ ▸ hg τ have e : infGL θ V h = g := funext fun τ => Units.ext ((infGL_coe θ V h τ).trans (hh τ)) exact e ▸ hU h x hx`.
+-/
 theorem coefA_irred (hθ : IsInfFam θ) (hB : ∀ τ, gramOf B τ = gramAt D V τ) (U : Submodule ℂ (VV ℂ lam))
     (hU : ∀ h, ∀ x ∈ U, rhoK lam (infGL θ V h) x ∈ U) : U = ⊥ ∨ U = ⊤ :=
   irred_gram lam B U fun g hg x hx => by
@@ -194,14 +255,27 @@ theorem coefA_irred (hθ : IsInfFam θ) (hB : ∀ τ, gramOf B τ = gramAt D V �
     have e : infGL θ V h = g := funext fun τ => Units.ext ((infGL_coe θ V h τ).trans (hh τ))
     exact e ▸ hU h x hx
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fun _ hh => coefA_fin lam B hh, coefA_unitary lam B hθ hB, coefA_cont lam B hθ, inferInstanceAs (Nontrivial (HV lam B)), fun U hU => coefA_irred lam B hθ hB U fun h x hx => hU h ⟨x, hx, rfl⟩⟩`.
+-/
 theorem coefA_is (hθ : IsInfFam θ) (hB : ∀ τ, gramOf B τ = gramAt D V τ) : (coefA θ V lam B).Is :=
   ⟨fun _ hh => coefA_fin lam B hh, coefA_unitary lam B hθ hB, coefA_cont lam B hθ,
     inferInstanceAs (Nontrivial (HV lam B)),
     fun U hU => coefA_irred lam B hθ hB U fun h x hx => hU h ⟨x, hx, rfl⟩⟩
 
+/- English proof (translation)
+The claim follows from `DFunLike.congr_fun D.embE_φ₀ (D.host.sigmaOf (D.eTau τ).1 x)`.
+-/
 theorem embLL_labLL (τ : D.what₂.Tau) (x : D.host.E) : D.what₂.embLL (labLL D τ x) = tauE D τ x :=
   DFunLike.congr_fun D.embE_φ₀ (D.host.sigmaOf (D.eTau τ).1 x)
 
+/- English proof (translation)
+Use `⟨fun γ γE hγ v => Subtype.ext ?_, bcVV_indep _ lam, bcVV_span _ lam⟩` and prove the remaining obligations. Establish `e : infGL θ V γ = fun τ => Formalism.UG.bc D.what₂.embLL (embGL (labLL D) γE τ)`. Use function extensionality and compare the values at `τ`. Use `Units.ext (Matrix.ext fun a b => ?_)` and prove the remaining obligations. Establish `h1 : ((matHom V (γ : GA D V)).1 a b) = incA D (γE.1 a b)`.
+
+Rewrite using `[show matHom V (γ : GA D V) = _ from hγ]`. Both sides reduce to the same expression. Use `show θ τ (Algebra.TensorProduct.map (fstA D.host.F) (AlgHom.id D.host.F D.host.E) ((matHom V (γ : GA D V)).1 a b)) = D.what₂.embLL (labLL D τ (γE.1 a b))`. Rewrite using `[h1, embLL_labLL, ← (hθ τ).1]`. Conclude with `congrArg (θ τ) ((Algebra.TensorProduct.map_tmul _ _ _ _).trans (by rw [map_one]; rfl))`.
+
+Use `show MvPolynomial.map D.what₂.embLL (actP lam (embGL (labLL D) γE) v.1) = actP lam (infGL θ V γ) (MvPolynomial.map D.what₂.embLL v.1)`. Rewrite using `[map_actP, e]`.
+-/
 theorem coefA_tie (hθ : IsInfFam θ) :
     Bridge.CoefMapTie V (coefA θ V lam B).coef (bcVV D.what₂.embLL lam) (rhoV (labLL D) lam) := by
   refine ⟨fun γ γE hγ v => Subtype.ext ?_, bcVV_indep _ lam, bcVV_span _ lam⟩
@@ -219,6 +293,11 @@ theorem coefA_tie (hθ : IsInfFam θ) :
     actP lam (infGL θ V γ) (MvPolynomial.map D.what₂.embLL v.1)
   rw [map_actP, e]
 
+/- English proof (translation)
+Establish `e : gramOf B = fun τ => (gramK (labLL D) V.gram τ).map D.what₂.embLL`. Use function extensionality and compare the values at `τ`. Rewrite using `[hB]`. Conclude with `Matrix.ext fun a b => (embLL_labLL τ _).symm`. Use `(inner_HV lam B _ _).trans ?_` and prove the remaining obligations.
+
+Rewrite using `[pairV, pairK_apply, pairK_apply, map_pairP _ D.starLL_cx, e]`. Both sides reduce to the same expression.
+-/
 theorem coefA_inner (hB : ∀ τ, gramOf B τ = gramAt D V τ) (x y : VV D.what₂.LL lam) :
     inner ℂ (E := HV lam B) (bcVV D.what₂.embLL lam x) (bcVV D.what₂.embLL lam y) =
       D.what₂.embLL (pairV (labLL D) lam V.gram x y) := by
@@ -230,6 +309,31 @@ theorem coefA_inner (hB : ∀ τ, gramOf B τ = gramAt D V τ) (x y : VV D.what�
   rw [pairV, pairK_apply, pairK_apply, map_pairP _ D.starLL_cx, e]
   rfl
 
+/- English proof (translation)
+Set `T : SmT M →ₗ[ℂ] Pol ℂ D.what₂.Tau V.rank` to `PiTensorProduct.lift ((MultilinearMap.mkPiAlgebra ℂ D.what₂.Tau _).compLinearMap fun τ => (Formalism.GradedWeylDivisibility.blockEmb ℂ τ).toLinearMap ∘ₗ A τ ∘ₗ (M.sm τ).subtype)`. Establish `hT : ∀ v : M.Vec, T (PiTensorProduct.tprod ℂ v) = ten fun τ => A τ (v τ)` using `fun v => by`. Simplify using `[T, ten]`. Set `pr : VV ℂ lam →ₗ[ℂ] SmT M →ₗ[ℂ] ℂ` to `(pairB lam).flip.compl₁₂ (actP lam B ∘ₗ (VV ℂ lam).subtype) T`. Establish `hpr : ∀ w t, pr w t = pairB lam (T t) (actP lam B w.1)` using `fun _ _ => rfl`.
+
+Use `⟨pr, fun h0 => ?_, fun τ g hg (w : VV ℂ lam) v u hu => ?_⟩` and prove the remaining obligations. Establish `hv : ∀ τ, ∃ v : M.sm τ, (v : M.H τ) ≠ 0` using `fun τ => by`. Use `(M.ds τ).1` as an intermediate fact. Use `(M.ds τ).2.1` as an intermediate fact. Take `⟨v, hv, hs⟩` from `GlobalTheory.GardingVec.exists_smoothVec (M.ds τ).2.2.1 (M.fr_unit τ) (M.fr_gram τ)`.
+
+Conclude with `⟨⟨v, Submodule.subset_span hs⟩, hv⟩`. Use `choose v hv using hv`. Use `GlobalTheory.Proof.TensorMapDescent.ten_ne_zero (fun τ => A τ (v τ)) (fun τ h => hv τ (h1 τ (h.trans (map_zero _).symm))) ?_` and prove the remaining obligations. Use `congrArg Subtype.val ((pairingBNondegenerate_holds ℂ _ _ lam).1 ⟨_, GlobalTheory.Proof.TensorMapDescent.ten_mem lam _ fun τ => h2 τ (v τ)⟩ fun y => ?_)` and prove the remaining obligations. Establish `h4 : pr (rhoK lam B⁻¹ y) (PiTensorProduct.tprod ℂ v) = 0`.
+
+Rewrite using `[show pr = 0 from h0]`. Both sides reduce to the same expression. Establish `h5 : rhoK lam B (rhoK lam B⁻¹ y) = y`. Rewrite using `[rhoK_mul, mul_inv_cancel, rhoK_one]`. Rewrite `h4` using `[hpr, hT, ← rhoK_coe, h5]`.
+
+Rewrite using `[pairBK_apply]`. Conclude with `h4`. Establish `ha : IsAtTau θ V τ g (atTau θ V τ g)`. Establish `hex` using `(GlobalTheory.PointAtPlace.existsUnique_isAtTau V τ θ hθ g hg).exists`. Rewrite using `[atTau, dif_pos hex]`.
+
+Conclude with `hex.choose_spec`. Use `set G := infGL θ V (atTau θ V τ g) with hGd`. Set `k` to `B * G * B⁻¹`. Establish `hk : ∀ ρ, (k ρ : Matrix (Fin V.rank) (Fin V.rank) ℂ) ∈ Matrix.unitaryGroup _ ℂ` using `fun ρ => conj_unitary (by`. Use `GlobalTheory.FockCompare.RealAction.infMat_mem_UH hθ V (atTau θ V τ g) ρ` as an intermediate fact.
+
+Rewrite using `[← hG] at this)` and apply the resulting hypothesis. Establish `hup : ∀ ρ, (Function.update v τ u ρ : M.H ρ) = M.σ ρ (k ρ : Matrix (Fin V.rank) (Fin V.rank) ℂ) (v ρ)`. Introduce `ρ`. Distinguish the cases in `hρ : ρ = τ`. Substitute `hρ` using the available equality.
+
+Establish `e : (k ρ : Matrix (Fin V.rank) (Fin V.rank) ℂ) = M.fr ρ * g * (M.fr ρ)⁻¹` using `by show ((B ρ * G ρ * (B ρ)⁻¹ : GL (Fin V.rank) ℂ) : Matrix (Fin V.rank) (Fin V.rank) ℂ) = _`. Rewrite using `[Units.val_mul, Units.val_mul, Matrix.coe_units_inv, hB, infGL_coe, ha.2.1]`. Rewrite using `[Function.update_self, hu, e]`. Both sides reduce to the same expression. Establish `e : k ρ = 1`.
+
+Establish `: G ρ = 1` using `Units.ext (ha.2.2 ρ hρ)`. Use `show B ρ * G ρ * (B ρ)⁻¹ = 1`. Rewrite using `[this, mul_one, mul_inv_cancel]`. Rewrite using `[Function.update_of_ne hρ, e, Units.val_one, (M.ds ρ).2.2.1.1.1]`. Both sides reduce to the same expression.
+
+Establish `e1 : T (PiTensorProduct.tprod ℂ (Function.update v τ u)) = actP lam (invTrK k) (T (PiTensorProduct.tprod ℂ v))`. Rewrite using `[hT, hT, actTen]`. Use `congr 1`. Use function extensionality and compare the values at `ρ`. Rewrite using `[hup, h3 ρ _ (hk ρ)]`.
+
+Both sides reduce to the same expression. Establish `e2 : rhoK lam B (rhoK lam G w) = rhoK lam k (rhoK lam B w)`. Rewrite using `[rhoK_mul, rhoK_mul, inv_mul_cancel_right]`. Use `show pr (rhoK lam G w) _ = pr w _`. Rewrite using `[hpr, hpr, ← rhoK_coe, e2, e1]`.
+
+Conclude with `pairingBInvariantK_holds ℂ _ _ lam k _ _`.
+-/
 theorem coefA_dual (hθ : IsInfFam θ) {S : D.what₂.Tau → SPar} (M : DSModel V S)
     (hB : ∀ τ, (B τ : Matrix (Fin V.rank) (Fin V.rank) ℂ) = M.fr τ) (hG : ∀ τ, gramOf B τ = gramAt D V τ)
     (A : ∀ τ, M.H τ →ₗ[ℂ] MvPolynomial (Fin V.rank × Fin V.rank) ℂ) (h1 : ∀ τ, Function.Injective (A τ))
@@ -301,6 +405,13 @@ theorem coefA_dual (hθ : IsInfFam θ) {S : D.what₂.Tau → SPar} (M : DSModel
     rw [hpr, hpr, ← rhoK_coe, e2, e1]
     exact pairingBInvariantK_holds ℂ _ _ lam k _ _
 
+/- English proof (translation)
+Introduce `D θ M hθ`. Establish `hε : ∀ τ, M.ε τ = fun _ => true` using `fun τ => funext fun a => by`. Take `⟨-, q, -, hS⟩` from `M.enum τ`. Conclude with `sign_last (Ptw D) τ (x := (q a, M.ε τ a)) (hS ▸ Finset.mem_image.2 ⟨a, Finset.mem_univ _, rfl⟩)`. Set `B : D.what₂.Tau → GL (Fin D.sp.X'.rank) ℂ` to `fun τ => (M.fr_unit τ).unit`.
+
+Establish `hG : ∀ τ, gramOf B τ = gramAt D D.sp.X' τ` using `fun τ => by`. Rewrite using `[← M.fr_gram τ, hε]`. Simplify using `[gramOf, B, Formalism.REAL.Jm]`. Establish `hds : ∀ τ, IsHCTypeU _ (M.lam τ) (M.σ τ)` using `fun τ => (GlobalTheory.RealPar.isDS_const_iff true _ _).1 (hε τ ▸ M.ds τ)`. Use `choose A h1 h2 h3 using fun τ => exists_dual_model (Bridge.lamRdef (Ptw D) τ) (M.lam τ) (enum_dual ((GlobalTheory.ForcedWeights.lam_forced D).1 τ) (M.enum τ)) (hds τ)`.
+
+Take `⟨pr, hpr⟩` from `coefA_dual (fun τ => Bridge.lamRdef (Ptw D) τ) B hθ M (fun _ => rfl) hG A h1 h2 h3`. Conclude with `⟨coefA θ _ _ B, pr, bcVV D.what₂.embLL _, _, coefA_is _ B hθ hG, hpr, Or.inl rfl, coefA_tie _ B hθ, coefA_inner _ B hG⟩`.
+-/
 theorem exists_coef_dualPair : ∀ (D : D7) (θ : InfFam D) (M : DSModel D.sp.X' (parB (Ptw D) D.R.m)), IsInfFam θ → ∃ (c : CoefA D.sp.X') (pr : c.W →ₗ[ℂ] SmT M →ₗ[ℂ] ℂ) (c0 : VV D.what₂.LL (fun τ => Bridge.lamRdef (Ptw D) τ) →ₛₗ[D.what₂.embLL] c.W) (g : Matrix (Fin D.sp.X'.rank) (Fin D.sp.X'.rank) D.host.E), c.Is ∧ IsDualPair θ M c pr ∧ (g = D.sp.X'.gram ∨ g = -D.sp.X'.gram) ∧ Bridge.CoefMapTie D.sp.X' c.coef c0 (rhoV (labLL D) _) ∧ ∀ x y, inner ℂ (c0 x) (c0 y) = D.what₂.embLL (pairV (labLL D) _ g x y) := by
   intro D θ M hθ
   have hε : ∀ τ, M.ε τ = fun _ => true := fun τ => funext fun a => by

@@ -3,20 +3,36 @@ import Development.AutomorphicArithmetic.Foundations.GaloisRepresentations.PAdic
 open NumberField IsDedekindDomain Matrix GlobalTheory.UPel.HT GlobalTheory.LKTrip GlobalTheory.LKMid GlobalTheory.LKDef GlobalTheory.CuspRep GlobalTheory.UnitaryBC UpperTheory.Gal.W2.Seed UpperTheory.Gal.G1
 open scoped TensorProduct
 
+/- English proof (translation)
+The claim follows from `le_antisymm (PadicInt.norm_le_one _) (not_lt.mp fun hlt => h ((PadicInt.norm_int_lt_one_iff_dvd n).mp hlt))`.
+-/
 private lemma UpperTheory.Gal.G1.normInt_eq_one {q : ℕ} [Fact q.Prime] {n : ℤ} (h : ¬ (q : ℤ) ∣ n) :
     ‖(n : ℤ_[q])‖ = 1 :=
   le_antisymm (PadicInt.norm_le_one _)
     (not_lt.mp fun hlt => h ((PadicInt.norm_int_lt_one_iff_dvd n).mp hlt))
 
+/- English proof (translation)
+Rewrite using `[← RingHom.mem_ker, PadicInt.ker_toZMod, IsLocalRing.mem_maximalIdeal, PadicInt.mem_nonunits]`.
+-/
 private lemma UpperTheory.Gal.G1.norm_lt_one_iff_toZMod {q : ℕ} [Fact q.Prime] (x : ℤ_[q]) :
     ‖x‖ < 1 ↔ PadicInt.toZMod x = 0 := by
   rw [← RingHom.mem_ker, PadicInt.ker_toZMod, IsLocalRing.mem_maximalIdeal, PadicInt.mem_nonunits]
 
+/- English proof (translation)
+The claim follows from `le_antisymm (PadicInt.norm_le_one _) (not_lt.mp fun hlt => h ((UpperTheory.Gal.G1.norm_lt_one_iff_toZMod x).mp hlt))`.
+-/
 private lemma UpperTheory.Gal.G1.norm_eq_one_of_toZMod {q : ℕ} [Fact q.Prime] {x : ℤ_[q]}
     (h : PadicInt.toZMod x ≠ 0) : ‖x‖ = 1 :=
   le_antisymm (PadicInt.norm_le_one _)
     (not_lt.mp fun hlt => h ((UpperTheory.Gal.G1.norm_lt_one_iff_toZMod x).mp hlt))
 
+/- English proof (translation)
+Set `F : Polynomial ℤ_[q]` to `Polynomial.C c * Polynomial.X ^ 2 + Polynomial.C d`. Establish `hF : ∀ t, Polynomial.aeval t F = c * t ^ 2 + d`. Introduce `t`. Simplify using `[F]`. Establish `hF' : ∀ t, Polynomial.aeval t (Polynomial.derivative F) = c * (2 * t)`.
+
+Introduce `t`. Simplify using `[F]`. Conclude with `Or.inl (Or.inl one_add_one_eq_two)`. Establish `hn : ‖Polynomial.aeval a (Polynomial.derivative F)‖ = 1`. Rewrite using `[hF', norm_mul, norm_mul, hc, h2, ha]`.
+
+Simplify using the standard rewrite rules. Take `⟨z, hz, -⟩` from `hensels_lemma (F := F) (a := a) (by rw [hn, hF]; simpa using h)`. Conclude with `⟨z, by rwa [hF] at hz⟩`.
+-/
 private lemma UpperTheory.Gal.G1.hens {q : ℕ} [Fact q.Prime] (c d a : ℤ_[q]) (h2 : ‖(2 : ℤ_[q])‖ = 1)
     (hc : ‖c‖ = 1) (ha : ‖a‖ = 1) (h : ‖c * a ^ 2 + d‖ < 1) : ∃ z : ℤ_[q], c * z ^ 2 + d = 0 := by
   let F : Polynomial ℤ_[q] := Polynomial.C c * Polynomial.X ^ 2 + Polynomial.C d
@@ -31,6 +47,31 @@ private lemma UpperTheory.Gal.G1.hens {q : ℕ} [Fact q.Prime] (c d a : ℤ_[q])
   obtain ⟨z, hz, -⟩ := hensels_lemma (F := F) (a := a) (by rw [hn, hF]; simpa using h)
   exact ⟨z, by rwa [hF] at hz⟩
 
+/- English proof (translation)
+Introduce `q _ D hqD u hu`. Establish `hq2 : ¬ (q : ℤ) ∣ 2` using `fun h => hqD (Dvd.dvd.mul_right h D)`. Establish `hqd : ¬ (q : ℤ) ∣ D` using `fun h => hqD (Dvd.dvd.mul_left h 2)`. Establish `h2 : ‖(2 : ℤ_[q])‖ = 1`. Use `UpperTheory.Gal.G1.normInt_eq_one (q := q) hq2` as an intermediate fact.
+
+Simplify using `using this`. Establish `hD : ‖(D : ℤ_[q])‖ = 1` using `UpperTheory.Gal.G1.normInt_eq_one hqd`. Establish `hodd : Fintype.card (ZMod q) % 2 = 1`. Rewrite using `[ZMod.card]`. Break down `(Fact.out : q.Prime).eq_two_or_odd with h | h` into its components or cases.
+
+Substitute `h; exact absurd (by norm_num) hq2` using the available equality. Conclude with `h`. Set `U : ℤ_[q]` to `⟨u, hu.le⟩`. Establish `hU : ‖U‖ = 1` using `hu`. Establish `hUc : ((U : ℤ_[q]) : ℚ_[q]) = u` using `rfl`.
+
+Establish `hub : PadicInt.toZMod U ≠ 0` using `fun h0 => absurd hU ((UpperTheory.Gal.G1.norm_lt_one_iff_toZMod U).mpr h0).ne`. Establish `hDb : -(D : ZMod q) ≠ 0`. Simplify `hqd` using `[ZMod.intCast_zmod_eq_zero_iff_dvd]`. Take `⟨a, b, hab⟩` from `FiniteField.exists_root_sum_quadratic (f := Polynomial.X ^ 2) (g := Polynomial.C (-(D : ZMod q)) * Polynomial.X ^ 2 + Polynomial.C 0 * Polynomial.X + Polynomial.C (-PadicInt.toZMod U)) (by simp) (Polynomial.degree_quadratic hDb) hodd`. Establish `hab' : a ^ 2 - (D : ZMod q) * b ^ 2 - PadicInt.toZMod U = 0`.
+
+Simplify using `at hab`. Take the linear combination `hab`. Set `x0 : ℤ_[q]` to `(a.val : ℤ_[q])`. Set `y0 : ℤ_[q]` to `(b.val : ℤ_[q])`. Establish `hx : PadicInt.toZMod x0 = a` using `by simp [x0]`.
+
+Establish `hy : PadicInt.toZMod y0 = b` using `by simp [y0]`. Establish `hDz : PadicInt.toZMod (D : ℤ_[q]) = (D : ZMod q)` using `by simp`. Establish `key : ‖x0 ^ 2 - (D : ℤ_[q]) * y0 ^ 2 - U‖ < 1`. Rewrite using `[UpperTheory.Gal.G1.norm_lt_one_iff_toZMod]`. Simplify using `only [map_sub, map_mul, map_pow, hx, hy, hDz]`.
+
+Conclude with `hab'`. Establish `hor : a ≠ 0 ∨ b ≠ 0`. Assume the negation of the conclusion as `hcon`. Use `push_neg at hcon`. Take `⟨ha0, hb0⟩` from `hcon`.
+
+Apply `hub` to reduce the goal to its premises. Rewrite `hab'` using `[ha0, hb0]`. Simplify using `using hab'`. Break down `hor with ha | hb` into its components or cases. Establish `hx1 : ‖x0‖ = 1` using `UpperTheory.Gal.G1.norm_eq_one_of_toZMod (by rwa [hx])`.
+
+Take `⟨z, hz⟩` from `UpperTheory.Gal.G1.hens 1 (-((D : ℤ_[q]) * y0 ^ 2 + U)) x0 h2 (by simp) hx1 (by`. Establish `e : 1 * x0 ^ 2 + -((D : ℤ_[q]) * y0 ^ 2 + U) = x0 ^ 2 - (D : ℤ_[q]) * y0 ^ 2 - U` using `by ring`. Rewrite using `[e]`. Conclude with `key)`. Use `⟨z, y0, ?_⟩` and prove the remaining obligations.
+
+Establish `h3` using `congrArg (fun t : ℤ_[q] => (t : ℚ_[q])) hz`. Simplify using `only [PadicInt.coe_add, PadicInt.coe_mul, PadicInt.coe_pow, PadicInt.coe_neg, PadicInt.coe_one, PadicInt.coe_zero, PadicInt.coe_intCast, hUc] at h3`. Take the linear combination `-h3`. Establish `hy1 : ‖y0‖ = 1` using `UpperTheory.Gal.G1.norm_eq_one_of_toZMod (by rwa [hy])`. Take `⟨z, hz⟩` from `UpperTheory.Gal.G1.hens (D : ℤ_[q]) (U - x0 ^ 2) y0 h2 hD hy1 (by`.
+
+Establish `e : (D : ℤ_[q]) * y0 ^ 2 + (U - x0 ^ 2) = -(x0 ^ 2 - (D : ℤ_[q]) * y0 ^ 2 - U)` using `by ring`. Rewrite using `[e, norm_neg]`. Conclude with `key)`. Use `⟨x0, z, ?_⟩` and prove the remaining obligations. Establish `h3` using `congrArg (fun t : ℤ_[q] => (t : ℚ_[q])) hz`.
+
+Simplify using `only [PadicInt.coe_add, PadicInt.coe_sub, PadicInt.coe_mul, PadicInt.coe_pow, PadicInt.coe_zero, PadicInt.coe_intCast, hUc] at h3`. Take the linear combination `h3`.
+-/
 theorem UpperTheory.Gal.G1.pPadicUnitNorm :
     PadicUnitNorm := by
   intro q _ D hqD u hu

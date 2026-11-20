@@ -24,6 +24,9 @@ namespace Shape
 
 variable (S : Shape)
 
+/- English proof (translation)
+Break down `Nat.eq_zero_or_pos S.f with h | h` into its components or cases. Use `S.two_lt` as an intermediate fact. Rewrite `this` using `[h, zero_mul]`. Use linear arithmetic over natural numbers and integers. Conclude with `h`.
+-/
 theorem f_pos : 0 < S.f := by
   rcases Nat.eq_zero_or_pos S.f with h | h
   · have := S.two_lt; rw [h, zero_mul] at this; omega
@@ -440,9 +443,15 @@ def HostPrimes.ex : HostPrimes Shape.ex where
     have h' : ¬ p % 4 = 1 := by simpa using h
     simp [h', conjSwap]
 
+/- English proof (translation)
+Use `⟨⟨by norm_num, by decide⟩, by decide⟩` and prove the remaining obligations.
+-/
 theorem HostPrimes.ex_good_split : HostPrimes.ex.good 5 ∧ HostPrimes.ex.splits 5 = true := by
   refine ⟨⟨by norm_num, by decide⟩, by decide⟩
 
+/- English proof (translation)
+Use `⟨⟨by norm_num, by decide⟩, by decide⟩` and prove the remaining obligations.
+-/
 theorem HostPrimes.ex_good_inert : HostPrimes.ex.good 3 ∧ HostPrimes.ex.splits 3 = false := by
   refine ⟨⟨by norm_num, by decide⟩, by decide⟩
 
@@ -466,6 +475,15 @@ def EndData.ex : EndData Shape.ex where
 
 def Shape.exWeight : Shape.ex.Var → ℝ := fun v => if (v.2 : ℕ) = 0 then 1 else 0
 
+/- English proof (translation)
+Use `⟨by norm_num, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `τ a b hab`. Establish `ha : (a : ℕ) = 0`. Establish `: (b : ℕ) < 2` using `b.isLt`. Establish `: (a : ℕ) < (b : ℕ)` using `hab`.
+
+Use linear arithmetic over natural numbers and integers. Establish `hb : (b : ℕ) ≠ 0`. Establish `: (a : ℕ) < (b : ℕ)` using `hab`. Use linear arithmetic over natural numbers and integers. Simplify using `[Shape.exWeight, ha, hb]`.
+
+Introduce `τ`. Simplify using `[Shape.gapAt, Shape.exWeight, Shape.ex]`. Introduce `τ i hi l hl`. Rewrite `hi` using `[show Shape.ex.small = Shape.ex.top from if_pos (by decide)]`. Establish `hi' : (i : ℕ) < 1` using `(Finset.mem_filter.mp hi).2`.
+
+Establish `hi0 : (i : ℕ) = 0` using `by omega`. Establish `hl0 : (l : ℕ) ≠ 0`. Introduce `h; exact hl (Fin.ext (by omega))`. Simplify using `[Shape.exWeight, hi0, hl0]`.
+-/
 theorem Shape.exWeight_hyp : Shape.ex.WeightHyp Shape.exWeight 1 := by
   refine ⟨by norm_num, ?_, ?_, ?_⟩
   · intro τ a b hab
@@ -490,6 +508,11 @@ theorem Shape.exWeight_hyp : Shape.ex.WeightHyp Shape.exWeight 1 := by
 def Shape.exDecompQ : Fin Shape.ex.N → Fin Shape.ex.f → Shape.ex.Poly :=
   fun k τ => if (k : ℕ) = 0 then X (τ, ⟨0, by decide⟩) ^ Shape.ex.D else 0
 
+/- English proof (translation)
+Use `⟨fun k τ => ?_, rfl⟩` and prove the remaining obligations. Distinguish the cases in `hk : (k : ℕ) = 0`. Simplify using `only [Shape.exDecompQ, hk, Nat.sub_zero, if_true]`. Simplify using `using (isHomogeneous_X ℝ (τ, (⟨0, by decide⟩ : Fin Shape.ex.N))).pow Shape.ex.D`. Simplify using `only [Shape.exDecompQ, hk]`.
+
+Conclude with `isHomogeneous_zero _ _ _`.
+-/
 theorem Shape.exDecomp :
     Shape.ex.IsDecomp
       (∑ k : Fin Shape.ex.N, ∑ τ, Shape.ex.pSum ((k : ℕ) + 1) τ * Shape.exDecompQ k τ)
@@ -501,13 +524,22 @@ theorem Shape.exDecomp :
   · simp only [Shape.exDecompQ, hk]
     exact isHomogeneous_zero _ _ _
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨ℝ, inferInstance, inferInstance, LinearMap.id, 0, fun _ => rfl, fun _ => by simp⟩`.
+-/
 theorem EndData.ex_hfl : EndData.ex.HFlInput :=
   ⟨ℝ, inferInstance, inferInstance, LinearMap.id, 0, fun _ => rfl, fun _ => by simp⟩
 
+/- English proof (translation)
+Apply the tactic sequence `refine ⟨fun u _ _ => ?_, fun u _ => ?_⟩ <;>`. Simplify using `[EndData.ex, Shape.Fu, Shape.linForm]`.
+-/
 theorem EndData.example_flag_height_vanishes : EndData.ex.FlagHeightVanishesAtWalls := by
   refine ⟨fun u _ _ => ?_, fun u _ => ?_⟩ <;>
     simp [EndData.ex, Shape.Fu, Shape.linForm]
 
+/- English proof (translation)
+Introduce `τ Q _ _`. Establish `h3 : (0 : ℝ) ≤ Real.log (1 * 3)` using `Real.log_nonneg (by norm_num)`. Simplify using `only [EndData.ex, LinearMap.zero_apply, abs_zero]`. Establish `: (0 : ℝ) ≤ 4 * (Shape.ex.N : ℝ) * (Real.log (1 * 3) + 1)` using `by positivity`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem EndData.ex_propF : EndData.ex.PropF 1 := by
   intro τ Q _ _
   have h3 : (0 : ℝ) ≤ Real.log (1 * 3) := Real.log_nonneg (by norm_num)
@@ -515,6 +547,11 @@ theorem EndData.ex_propF : EndData.ex.PropF 1 := by
   have : (0 : ℝ) ≤ 4 * (Shape.ex.N : ℝ) * (Real.log (1 * 3) + 1) := by positivity
   linarith
 
+/- English proof (translation)
+Introduce `A0 hA`. Establish `h0 : EndData.ex.aB ⌊(1 : ℝ)⌋₊ = fun _ => 0`. Use function extensionality and compare the values at `B`. Simplify using `[EndData.aB, EndData.goodIoc, EndData.ex]`. Rewrite `hA` using `[h0]`.
+
+Establish `: A0 = 0` using `tendsto_nhds_unique hA tendsto_const_nhds`. Substitute `this` using the available equality. Establish `: (0 : ℝ) ≤ Real.log 1` using `by simp`. Establish `: (0 : ℝ) ≤ |r0|` using `abs_nonneg _`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem EndData.ex_prop7cB (r0 : ℝ) : EndData.ex.Prop7cB r0 1 := by
   intro A0 hA
   have h0 : EndData.ex.aB ⌊(1 : ℝ)⌋₊ = fun _ => 0 := by
@@ -529,12 +566,21 @@ theorem EndData.ex_prop7cB (r0 : ℝ) : EndData.ex.Prop7cB r0 1 := by
 
 def LimitData.ex : LimitData Shape.ex := ⟨fun _ _ => 0, fun _ _ => 0, 0⟩
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨⟨0, fun _ _ => by simp [LimitData.ex]⟩, fun _ => by simp [LimitData.ex, EndData.ex]⟩`.
+-/
 theorem LimitData.example_limit_polynomial_hypothesis (B0 : ℕ) : LimitData.ex.LimitPolynomialHypothesis EndData.ex B0 :=
   ⟨⟨0, fun _ _ => by simp [LimitData.ex]⟩, fun _ => by simp [LimitData.ex, EndData.ex]⟩
 
+/- English proof (translation)
+Introduce `_` and use `⟨0, 1, by norm_num, fun _ _ _ _ _ _ => by simp [LimitData.ex]⟩`.
+-/
 theorem LimitData.example_uniform_small_shift_bound : LimitData.ex.UniformSmallShiftDominance :=
   fun _ => ⟨0, 1, by norm_num, fun _ _ _ _ _ _ => by simp [LimitData.ex]⟩
 
+/- English proof (translation)
+Introduce `v`. Distinguish the cases in `h : (v.2 : ℕ) = 0`. Conclude with `⟨1, by simp [Shape.exWeight, h]⟩`. Conclude with `⟨0, by simp [Shape.exWeight, h]⟩`.
+-/
 theorem Shape.exWeight_rat : ∀ v, ∃ q : ℚ, Shape.exWeight v = q := by
   intro v
   by_cases h : (v.2 : ℕ) = 0

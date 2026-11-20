@@ -17,6 +17,13 @@ set_option backward.isDefEq.respectTransparency false
 
 namespace GlobalTheory.ChainPts.KerTens
 
+/- English proof (translation)
+Use `letI := appLEAlgebra w hw`. Use `letI := appLEModule w ((Scheme.Modules.pullback w).obj Q) hw`. Use `haveI := appLE_isScalarTower w ((Scheme.Modules.pullback w).obj Q) hw`. Establish `h` using `isBaseChange_pullbackSections w Q (isAffineOpen_top _) hV hw`. Set `φ : R ≃ₐ[Γ(X, V)] Γ(Sp R, ⊤)` to `{ (Scheme.ΓSpecIso (CommRingCat.of R)).symm.commRingCatIsoToRingEquiv with commutes' := halg }`.
+
+Establish `key : h.equiv (TensorProduct.congr φ.toLinearEquiv (LinearEquiv.refl _ _) (∑ l, c l ⊗ₜ[Γ(X, V)] q l)) = ∑ l, (Scheme.ΓSpecIso (CommRingCat.of R)).inv.hom (c l) • pullbackSections w Q hw (q l)`. Rewrite using `[map_sum, map_sum]`. Use `Finset.sum_congr rfl fun l _ => ?_` and prove the remaining obligations. Rewrite using `[TensorProduct.congr_tmul, IsBaseChange.equiv_tmul]`. Both sides reduce to the same expression.
+
+Rewrite using `[← key, LinearEquiv.map_eq_zero_iff, LinearEquiv.map_eq_zero_iff]`.
+-/
 theorem sum_pullback_eq_zero_iff {X : Scheme.{0}} {R : Type} [CommRing R] (w : Sp R ⟶ X) (Q : X.Modules)
     [Q.IsQuasicoherent] {V : X.Opens} (hV : IsAffineOpen V) (hw : ⊤ ≤ w ⁻¹ᵁ V) [Algebra Γ(X, V) R]
     (halg : ∀ a, (Scheme.ΓSpecIso (CommRingCat.of R)).inv.hom (algebraMap Γ(X, V) R a) = w.appLE V ⊤ hw a)
@@ -37,12 +44,20 @@ theorem sum_pullback_eq_zero_iff {X : Scheme.{0}} {R : Type} [CommRing R] (w : S
     rfl
   rw [← key, LinearEquiv.map_eq_zero_iff, LinearEquiv.map_eq_zero_iff]
 
+/- English proof (translation)
+Simplify using `only [kerAt, Set.mem_setOf_eq, map_sum, Scheme.Modules.Hom.app_smul, pullback_map_app_pullbackSections]`.
+-/
 theorem mem_kerAt_iff {X : Scheme.{0}} {R : Type} [CommRing R] (w : Sp R ⟶ X) {F Q : X.Modules} (u : F ⟶ Q)
     {V : X.Opens} (hw : ⊤ ≤ w ⁻¹ᵁ V) {r : ℕ} (e : Fin r → Γ(F, V)) (c : Fin r → R) :
     c ∈ kerAt w u hw e ↔
       ∑ l, (Scheme.ΓSpecIso (CommRingCat.of R)).inv.hom (c l) • pullbackSections w Q hw (u.app V (e l)) = 0 := by
   simp only [kerAt, Set.mem_setOf_eq, map_sum, Scheme.Modules.Hom.app_smul, pullback_map_app_pullbackSections]
 
+/- English proof (translation)
+Assume the negation of the conclusion as `hx`. Establish `hI : Ideal.comap φ.toRingHom (LinearMap.ker (LinearMap.toSpanSingleton S N x)) ≠ ⊤` using `fun k => hx (by simpa using (Ideal.eq_top_iff_one _).1 k)`. Take `⟨𝔪, hm, hle⟩` from `Ideal.exists_le_maximal _ hI`. Use `letI : Algebra S (Localization.AtPrime 𝔪) := ((algebraMap R (Localization.AtPrime 𝔪)).comp φ.symm.toRingHom).toAlgebra`. Use `haveI := IsLocalization.isLocalization_of_base_ringEquiv 𝔪.primeCompl (Localization.AtPrime 𝔪) φ`.
+
+Take `⟨⟨_, s, hs, rfl⟩, h0⟩` from `(IsLocalizedModule.eq_zero_iff (𝔪.primeCompl.map φ) (TensorProduct.mk S (Localization.AtPrime 𝔪) N 1)).1 (h 𝔪)`. Conclude with `hs (hle h0)`.
+-/
 theorem eq_zero_of_tmul {R S N : Type} [CommRing R] [CommRing S] [AddCommGroup N] [Module S N] (φ : R ≃+* S) (x : N)
     (h : ∀ (𝔪 : Ideal R) [𝔪.IsMaximal],
       letI : Algebra S (Localization.AtPrime 𝔪) :=
@@ -59,6 +74,27 @@ theorem eq_zero_of_tmul {R S N : Type} [CommRing R] [CommRing S] [AddCommGroup N
     (TensorProduct.mk S (Localization.AtPrime 𝔪) N 1)).1 (h 𝔪)
   exact hs (hle h0)
 
+/- English proof (translation)
+Introduce `X R _ F Q _ u V r e c`. Use `⟨fun hV _ hw => ?_, fun w hw => ?_, fun w hw V' hle hw' => ?_⟩` and prove the remaining obligations. Rewrite using `[mem_kerAt_iff]`. Use `sum_pullback_eq_zero_iff _ Q hV hw (fun a => ?_) _ c` and prove the remaining obligations. Establish `h1 : hV.fromSpec.appLE V ⊤ hV.fromSpec_preimage_self.ge = (Scheme.ΓSpecIso Γ(X, V)).inv`.
+
+Rewrite using `[Scheme.Hom.appLE, hV.fromSpec_app_self, Category.assoc, ← Functor.map_comp]`. Simplify using the standard rewrite rules. Establish `h2` using `Scheme.Hom.appLE_comp_appLE (spMap (algebraMap Γ(X, V) R)) hV.fromSpec V ⊤ ⊤ hV.fromSpec_preimage_self.ge le_rfl`. Rewrite `h2` using `[h1]`. Establish `h3` using `Scheme.ΓSpecIso_inv_naturality (CommRingCat.ofHom (algebraMap Γ(X, V) R))`.
+
+Conclude with `(congr($h3 a)).trans (congr($h2 a))`. Set `φ : R ≃+* Γ(Sp R, ⊤)` to `(Scheme.ΓSpecIso (CommRingCat.of R)).symm.commRingCatIsoToRingEquiv`. Establish `loc : ∀ (𝔪 : Ideal R) [𝔪.IsMaximal] (hw' : ⊤ ≤ (spMap (algebraMap R (Localization.AtPrime 𝔪)) ≫ w) ⁻¹ᵁ V),`. Use `letI : Algebra Γ(Sp R, ⊤) (Localization.AtPrime 𝔪) := ((algebraMap R (Localization.AtPrime 𝔪)).comp φ.symm.toRingHom).toAlgebra`. Use the proof step `(fun l => algebraMap R (Localization.AtPrime 𝔪) (c l)) ∈ kerAt (spMap (algebraMap R (Localization.AtPrime 𝔪)) ≫ w) u hw' e ↔`.
+
+Use the proof step `(1 : Localization.AtPrime 𝔪) ⊗ₜ[Γ(Sp R, ⊤)] (∑ l, φ (c l) • pullbackSections w Q hw (u.app V (e l))) = 0 := by`. Introduce `𝔪 _ hw'`. Use `letI : Algebra Γ(Sp R, ⊤) (Localization.AtPrime 𝔪) := ((algebraMap R (Localization.AtPrime 𝔪)).comp φ.symm.toRingHom).toAlgebra`. Establish `H` using `sum_pullback_eq_zero_iff (spMap (algebraMap R (Localization.AtPrime 𝔪))) ((Scheme.Modules.pullback w).obj Q) (V := ⊤) (isAffineOpen_top _) le_rfl (fun a => ?_) (fun l => pullbackSections w Q hw (u.app V (e l))) (fun l => algebraMap R (Localization.AtPrime 𝔪) (c l))`. Establish `hsum : ∑ l, algebraMap R (Localization.AtPrime 𝔪) (c l) ⊗ₜ[Γ(Sp R, ⊤)] pullbackSections w Q hw (u.app V (e l)) = (1 : Localization.AtPrime 𝔪) ⊗ₜ[Γ(Sp R, ⊤)] (∑ l, φ (c l) • pullbackSections w Q hw (u.app V (e l)))`.
+
+Rewrite using `[TensorProduct.tmul_sum]`. Use `Finset.sum_congr rfl fun l _ => ?_` and prove the remaining obligations. Rewrite using `[← TensorProduct.smul_tmul, Algebra.smul_def, mul_one]`. Use `congr 1`. Conclude with `congrArg (algebraMap R (Localization.AtPrime 𝔪)) (φ.symm_apply_apply _).symm`.
+
+Rewrite using `[← hsum, ← H, mem_kerAt_iff]`. Set `I` to `(Scheme.Modules.pullbackComp (spMap (algebraMap R (Localization.AtPrime 𝔪))) w).app Q`. Establish `hx : I.inv.app ⊤ (∑ l, (Scheme.ΓSpecIso (CommRingCat.of (Localization.AtPrime 𝔪))).inv.hom (algebraMap R (Localization.AtPrime 𝔪) (c l)) • pullbackSections _ Q hw' (u.app V (e l))) = ∑ l, (Scheme.ΓSpecIso (CommRingCat.of (Localization.AtPrime 𝔪))).inv.hom (algebraMap R (Localizat …`. Simplify using `only [map_sum, Scheme.Modules.Hom.app_smul]`. Use `Finset.sum_congr rfl fun l _ => ?_` and prove the remaining obligations.
+
+Use `congr 1`. Conclude with `GlobalTheory.Vert.DivPull.pullbackComp_inv_app _ w Q hw le_rfl hw' _`. Rewrite using `[← hx]`. Generalize the expression as in `(∑ l, (Scheme.ΓSpecIso (CommRingCat.of (Localization.AtPrime 𝔪))).inv.hom (algebraMap R (Localization.AtPrime 𝔪) (c l)) • pullbackSections _ Q hw' (u.app V (e l))) = t`. Use `⟨fun h0 => by rw [h0, map_zero], fun h0 => ?_⟩` and prove the remaining obligations.
+
+Establish `h1 : I.hom.app ⊤ (I.inv.app ⊤ t) = t` using `congr(($(I.inv_hom_id)).app ⊤ t)`. Rewrite using `[← h1, h0, map_zero]`. Take `⟨b, rfl⟩` from `φ.surjective a`. Establish `h3` using `Scheme.ΓSpecIso_inv_naturality (CommRingCat.ofHom (algebraMap R (Localization.AtPrime 𝔪)))`. Use `Eq.trans ?_ (congr($h3 b))` and prove the remaining obligations.
+
+Conclude with `congrArg (fun t => (Scheme.ΓSpecIso (CommRingCat.of (Localization.AtPrime 𝔪))).inv.hom (algebraMap R (Localization.AtPrime 𝔪) t)) (φ.symm_apply_apply b)`. Rewrite using `[mem_kerAt_iff]`. Use `⟨fun h0 𝔪 _ hw' => (loc 𝔪 hw').2 ?_, fun h0 => eq_zero_of_tmul φ _ fun 𝔪 _ => ?_⟩` and prove the remaining obligations. Use `letI : Algebra Γ(Sp R, ⊤) (Localization.AtPrime 𝔪) := ((algebraMap R (Localization.AtPrime 𝔪)).comp φ.symm.toRingHom).toAlgebra`. Conclude with `(congrArg _ h0).trans (TensorProduct.tmul_zero _ _)`.
+
+Establish `hw' : ⊤ ≤ (spMap (algebraMap R (Localization.AtPrime 𝔪)) ≫ w) ⁻¹ᵁ V` using `(spMap (algebraMap R (Localization.AtPrime 𝔪))).preimage_mono hw`. Conclude with `(loc 𝔪 hw').1 (h0 𝔪 hw')`. Unfold `kerAt`. Establish `: ∀ l, pullbackSections w F hw' (resM F hle (e l)) = pullbackSections w F hw (e l)` using `fun l => pullbackSections_res w F hw' hle (e l)`. Simplify using `only [this]`.
+-/
 theorem main : ∀ (X : Scheme.{0}) (R : Type) [CommRing R] (F Q : X.Modules) [Q.IsQuasicoherent] (u : F ⟶ Q) (V : X.Opens) (r : ℕ) (e : Fin r → Γ(F, V)) (c : Fin r → R), (∀ (hV : IsAffineOpen V) [Algebra Γ(X, V) R] (hw : ⊤ ≤ (spMap (algebraMap Γ(X, V) R) ≫ hV.fromSpec) ⁻¹ᵁ V), c ∈ kerAt (spMap (algebraMap Γ(X, V) R) ≫ hV.fromSpec) u hw e ↔ ∑ l, c l ⊗ₜ[Γ(X, V)] (u.app V (e l) : Γ(Q, V)) = 0) ∧ (∀ (w : Sp R ⟶ X) (hw : ⊤ ≤ w ⁻¹ᵁ V), c ∈ kerAt w u hw e ↔ ∀ (𝔪 : Ideal R) [𝔪.IsMaximal] (hw' : ⊤ ≤ (spMap (algebraMap R (Localization.AtPrime 𝔪)) ≫ w) ⁻¹ᵁ V), (fun l => algebraMap R (Localization.AtPrime 𝔪) (c l)) ∈ kerAt (spMap (algebraMap R (Localization.AtPrime 𝔪)) ≫ w) u hw' e) ∧ ∀ (w : Sp R ⟶ X) (hw : ⊤ ≤ w ⁻¹ᵁ V) (V' : X.Opens) (hle : V' ≤ V) (hw' : ⊤ ≤ w ⁻¹ᵁ V'), kerAt w u hw e = kerAt w u hw' fun l => resM F hle (e l) := by
   intro X R _ F Q _ u V r e c
   refine ⟨fun hV _ hw => ?_, fun w hw => ?_, fun w hw V' hle hw' => ?_⟩

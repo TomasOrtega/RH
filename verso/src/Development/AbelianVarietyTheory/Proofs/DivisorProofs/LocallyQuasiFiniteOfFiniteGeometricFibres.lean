@@ -6,6 +6,11 @@ open ReciprocityTheory.ChartRestriction.G.Geo.Tor
 
 namespace GlobalTheory.GeomFibre
 
+/- English proof (translation)
+Use `LocallyOfFiniteType.jacobsonSpace g` as an intermediate fact. Establish `h1 : (closedPoints P).Finite` using `Set.finite_coe_iff.mp ((pointEquivClosedPoint g).finite_iff.mp h)`. Establish `hc : IsClosed (closedPoints P)`. Rewrite using `[← Set.biUnion_of_singleton (closedPoints P)]`. Conclude with `h1.isClosed_biUnion fun x hx ↦ hx`.
+
+Establish `h2` using `JacobsonSpace.closure_inter_closedPoints (isClosed_univ (X := P))`. Rewrite `h2` using `[Set.univ_inter, hc.closure_eq]`. Conclude with `Set.finite_univ_iff.mp (h2 ▸ h1)`.
+-/
 theorem finite_of_finite_sections {K : Type} [Field K] [IsAlgClosed K] {P : Scheme.{0}}
     (g : P ⟶ Spec (CommRingCat.of K)) [LocallyOfFiniteType g]
     (h : Finite {p : Spec (CommRingCat.of K) ⟶ P // p ≫ g = 𝟙 _}) : Finite P := by
@@ -19,6 +24,17 @@ theorem finite_of_finite_sections {K : Type} [Field K] [IsAlgClosed K] {P : Sche
   rw [Set.univ_inter, hc.closure_eq] at h2
   exact Set.finite_univ_iff.mp (h2 ▸ h1)
 
+/- English proof (translation)
+Introduce `X Y f _ H`. Use `LocallyQuasiFinite.of_finite_preimage_singleton f fun y ↦ ?_` and prove the remaining obligations. Break down `(f ⁻¹' {y}).eq_empty_or_nonempty with h | ⟨x₀, hx₀⟩` into its components or cases. Rewrite using `[h]`. Conclude with `Set.finite_empty`.
+
+Take `rfl : f x₀ = y` from `hx₀`. Set `K` to `AlgebraicClosure (X.residueField x₀)`. Set `x : Sp K ⟶ X` to `Spec.map (CommRingCat.ofHom (algebraMap (X.residueField x₀) K)) ≫ X.fromSpecResidueField x₀`. Establish `hx : ∀ z, x z = x₀` using `fun z ↦ by`. Simplify using `only [x, Scheme.Hom.comp_apply]`.
+
+Conclude with `Scheme.fromSpecResidueField_apply _ _`. Establish `hfin : Finite ↥(pullback f (x ≫ f))`. Use `finite_of_finite_sections (pullback.snd f (x ≫ f)) ?_` and prove the remaining obligations. Use `(H K x).to_subtype` as an intermediate fact. Use `Finite.of_injective (β := {y : Sp K ⟶ X | y ≫ f = x ≫ f}) (fun p ↦ ⟨p.1 ≫ pullback.fst f (x ≫ f), ?_⟩) fun a b hab ↦ ?_` and prove the remaining obligations.
+
+Express the relevant statement in the definitionally equal form `(p.1 ≫ _) ≫ f = x ≫ f`. Rewrite using `[Category.assoc, pullback.condition, reassoc_of% p.2]`. Conclude with `Subtype.ext (pullback.hom_ext (congrArg Subtype.val hab) (a.2.trans b.2.symm))`. Use `(Set.finite_range (pullback.fst f (x ≫ f))).subset fun z hz ↦ ?_` and prove the remaining obligations. Rewrite using `[Scheme.Pullback.range_fst]`.
+
+Conclude with `⟨IsLocalRing.closedPoint K, ((Scheme.Hom.comp_apply x f _).trans (congrArg f (hx _))).trans hz.symm⟩`.
+-/
 theorem locallyQuasiFinite_of_finite_geometric_fibres :
     ∀ (X Y : Scheme.{0}) (f : X ⟶ Y), LocallyOfFiniteType f →
       (∀ (K : Type) [Field K] [IsAlgClosed K] (x : Sp K ⟶ X),

@@ -52,28 +52,43 @@ private def uliftFinAddEquivUliftSum (n m : ℕ) :
     ULift.{u, 0} (Fin (n + m)) ≃ ULift.{u, 0} (Fin n ⊕ Fin m) :=
   Equiv.ulift.trans (finSumFinEquiv.symm.trans Equiv.ulift.symm)
 
+/- English proof (translation)
+Unfold `affineSpaceIndexedByToSpec`. Use `infer_instance`.
+-/
 private theorem locallyOfFiniteType_affineSpaceIndexedByToSpec (k : Type u) [Field k] (N : Type u)
     [Finite N] : AlgebraicGeometry.LocallyOfFiniteType (affineSpaceIndexedByToSpec k N) := by
   unfold affineSpaceIndexedByToSpec
   infer_instance
 
+/- English proof (translation)
+Unfold `affineSpaceIndexedByToSpec`. Use `infer_instance`.
+-/
 private theorem quasiCompact_affineSpaceIndexedByToSpec (k : Type u) [Field k] (N : Type u) :
     AlgebraicGeometry.QuasiCompact (affineSpaceIndexedByToSpec k N) := by
   unfold affineSpaceIndexedByToSpec
   infer_instance
 
+/- English proof (translation)
+Establish `: IrreducibleSpace ↥(Spec (CommRingCat.of k))` using `inferInstanceAs (IrreducibleSpace (PrimeSpectrum k))`. Use `infer_instance`.
+-/
 private theorem irreducibleSpace_affineSpaceIndexedBy (k : Type u) [Field k] (N : Type u) :
     IrreducibleSpace ↥(affineSpaceIndexedBy k N) := by
   have : IrreducibleSpace ↥(Spec (CommRingCat.of k)) :=
     inferInstanceAs (IrreducibleSpace (PrimeSpectrum k))
   infer_instance
 
+/- English proof (translation)
+Use `hf` as an intermediate fact. Establish `: AlgebraicGeometry.IsOpenImmersion f` using `inferInstance`. Use `infer_instance`.
+-/
 private theorem flat_of_isIso {X Y : Scheme.{u}} (f : X ⟶ Y) (hf : CategoryTheory.IsIso f) :
     AlgebraicGeometry.Flat f := by
   have := hf
   have : AlgebraicGeometry.IsOpenImmersion f := inferInstance
   infer_instance
 
+/- English proof (translation)
+Substitute `hIJ` using the available equality. Substitute `hEF` using the available equality. Both sides reduce to the same expression.
+-/
 private theorem principalizationAlgorithm_toSequenceOfBlowups_congr (Alg : PrincipalizationAlgorithm.{u}) (k : Type u) [Field k]
     [CharZero k] (X : Scheme.{u}) (q : X ⟶ Spec (CommRingCat.of k))
     [AlgebraicGeometry.Smooth q] [AlgebraicGeometry.LocallyOfFiniteType q]
@@ -85,6 +100,11 @@ private theorem principalizationAlgorithm_toSequenceOfBlowups_congr (Alg : Princ
   subst hEF
   rfl
 
+/- English proof (translation)
+Establish `hs : AlgebraicGeometry.Smooth (affineSpaceIndexedByToSpec k (ULift.{u, 0} (Fin (n + m))))` using `hsm k (n + m)`. Establish `h : AffineSpace.reindex (uliftFinAddEquivUliftSum n m) (Spec (CommRingCat.of k)) ≫ affineSpaceIndexedByToSpec k (ULift.{u, 0} (Fin (n + m))) = affineSpaceIndexedByToSpec k (ULift.{u, 0} (Fin n ⊕ Fin m))`. Simplify using `[affineSpaceIndexedByToSpec]`. Establish `: CategoryTheory.IsIso (AffineSpace.reindex (uliftFinAddEquivUliftSum n m) (Spec (CommRingCat.of k)))` using `⟨AffineSpace.reindex (uliftFinAddEquivUliftSum n m).symm (Spec (CommRingCat.of k)), (affineSpaceIndexedByIsoOfEquiv k (uliftFinAddEquivUliftSum n m)).hom_inv_id, (affineSpaceIndexedByIsoOfEquiv k (uliftFinAddEquivUliftSum n m)).inv_hom_id⟩`. Establish `hiso : AlgebraicGeometry.Smooth (AffineSpace.reindex (uliftFinAddEquivUliftSum n m) (Spec (CommRingCat.of k)))` using `inferInstance`.
+
+Rewrite using `[← h]`. Conclude with `MorphismProperty.comp_mem (@AlgebraicGeometry.Smooth) _ _ hiso hs`.
+-/
 theorem smooth_affineSpaceIndexedByToSpec_finSumFin (hsm : AffineSpaceIsSmooth.{u}) (k : Type u)
     [Field k] (n m : ℕ) :
     AlgebraicGeometry.Smooth (affineSpaceIndexedByToSpec k (ULift.{u, 0} (Fin n ⊕ Fin m))) := by
@@ -104,6 +124,17 @@ theorem smooth_affineSpaceIndexedByToSpec_finSumFin (hsm : AffineSpaceIsSmooth.{
   rw [← h]
   exact MorphismProperty.comp_mem (@AlgebraicGeometry.Smooth) _ _ hiso hs
 
+/- English proof (translation)
+Establish `: AlgebraicGeometry.QuasiCompact D.emb` using `inferInstance`. Establish `: AlgebraicGeometry.QuasiCompact D'.emb` using `inferInstance`. Establish `hiso : CategoryTheory.IsIso Φ.inv` using `⟨Φ.hom, Φ.inv_hom_id, Φ.hom_inv_id⟩`. Establish `: AlgebraicGeometry.Flat Φ.inv` using `flat_of_isIso Φ.inv hiso`. Establish `: AlgebraicGeometry.Smooth Φ.inv` using `inferInstance`.
+
+Establish `hsq : D'.emb ≫ Φ.inv = D.emb`. Rewrite using `[← hemb, Category.assoc, Φ.hom_inv_id, Category.comp_id]`. Establish `hpbk : IsPullback (𝟙 Y) D'.emb D.emb Φ.inv` using `IsPullback.of_horiz_isIso ⟨by rw [Category.id_comp, hsq]⟩`. Establish `hker : D'.emb.ker = D.emb.ker.comap Φ.inv` using `ker_eq_comap_ker_of_isPullback_of_flat hpbk`. Establish `hφp : Φ.inv ≫ D.ambientStruct = D'.ambientStruct`.
+
+Rewrite using `[← hΦ, ← Category.assoc, Φ.inv_hom_id, Category.id_comp]`. Establish `hI' : NonzeroOnComponents (D.emb.ker.comap Φ.inv)`. Rewrite using `[← hker]`. Conclude with `D'.nonzeroOnComponents_ker`. Establish `hpbseq` using `hAlg.smooth_pullback k D.ambient D.ambientStruct D.emb.ker D.nonzeroOnComponents_ker ([] : List D.ambient.IdealSheafData) D.sncEmpty D'.ambient D'.ambientStruct Φ.inv hφp hI' D'.sncEmpty`.
+
+Establish `hseq : (Alg k D'.ambient D'.ambientStruct D'.emb.ker D'.nonzeroOnComponents_ker ([] : List D'.ambient.IdealSheafData) D'.sncEmpty).toSequenceOfBlowups = (Alg k D'.ambient D'.ambientStruct (D.emb.ker.comap Φ.inv) hI' (List.map (fun Z => Z.comap Φ.inv) ([] : List D.ambient.IdealShe …` using `principalizationAlgorithm_toSequenceOfBlowups_congr Alg k D'.ambient D'.ambientStruct _ _ _ _ _ _ _ _ hker rfl`. Establish `hpb2 : IsPullbackBlowupSequence Φ.inv (D'.toEmbeddedBlowupSequence Alg).ambientSeq (D.toEmbeddedBlowupSequence Alg).ambientSeq`. Rewrite using `[EmbeddingDatum.ambientBlowups_eq_toSequenceOfBlowups, EmbeddingDatum.ambientBlowups_eq_toSequenceOfBlowups, hseq]`. Conclude with `hpbseq`. Establish `hpbemb : IsPullback (𝟙 Y) (D'.toEmbeddedBlowupSequence Alg).emb (D.toEmbeddedBlowupSequence Alg).emb Φ.inv` using `hpbk`.
+
+Establish `hisoC : CategoryTheory.IsIso (show (D'.toEmbeddedBlowupSequence Alg).ambient ⟶ (D.toEmbeddedBlowupSequence Alg).ambient from Φ.inv)` using `⟨Φ.hom, Φ.inv_hom_id, Φ.hom_inv_id⟩`. Establish `hflatC : AlgebraicGeometry.Flat (show (D'.toEmbeddedBlowupSequence Alg).ambient ⟶ (D.toEmbeddedBlowupSequence Alg).ambient from Φ.inv)` using `flat_of_isIso _ hisoC`. Establish `hres : IsPullbackBlowupSequence (𝟙 Y) (embeddedResolutionRuleOfPrincipalization Alg hw k Y p D') (embeddedResolutionRuleOfPrincipalization Alg hw k Y p D)` using `ChartFlatBaseChange.isPullbackBlowupSequence_inducedBlowupsWithoutIso (chartFlatBaseChangeOfIsPullbackSeq (D.toEmbeddedBlowupSequence Alg) (D'.toEmbeddedBlowupSequence Alg) Φ.inv (𝟙 Y) hpbemb hpb2) (hw k Y p D) (hw k Y p D')`. Conclude with `(isomorphic_of_isPullbackSequenceOfBlowups_id _ _ hres (hasProperCenters_embeddedResolutionRuleOfPrincipalization Alg hw k Y p D)).symm`.
+-/
 theorem isomorphic_embeddedResolutionRuleOfPrincipalization_of_iso (Alg : PrincipalizationAlgorithm.{u}) (hAlg : IsFunctorialPrincipalization Alg)
     (hw : TransitionsAreBlowupsForEmbeddings Alg) (k : Type u) [Field k] [CharZero k] (Y : Scheme.{u})
     [AlgebraicGeometry.IsAffine Y] [AlgebraicGeometry.IsReduced Y]
@@ -168,6 +199,25 @@ def LinearEmbeddingsHaveLocallyConstCodim : Prop :=
       HasSmoothCoordCodim (affineSpaceIndexedByToSpec k (ULift.{u, 0} (Fin n ⊕ Fin m)))
         (affineSpaceInrEmbedding k n m) n
 
+/- English proof (translation)
+Establish `hsA : AlgebraicGeometry.Smooth (affineSpaceIndexedByToSpec k (ULift.{u, 0} (Fin P.dim)))` using `hsm k P.dim`. Establish `hsA' : AlgebraicGeometry.Smooth (affineSpaceIndexedByToSpec k (ULift.{u, 0} (Fin P'.dim)))` using `hsm k P'.dim`. Establish `hsB : AlgebraicGeometry.Smooth (affineSpaceIndexedByToSpec k (ULift.{u, 0} (Fin P.dim ⊕ Fin P'.dim)))` using `smooth_affineSpaceIndexedByToSpec_finSumFin hsm k P.dim P'.dim`. Use `locallyOfFiniteType_affineSpaceIndexedByToSpec k (ULift.{u, 0} (Fin P.dim))` as an intermediate fact. Use `locallyOfFiniteType_affineSpaceIndexedByToSpec k (ULift.{u, 0} (Fin P'.dim))` as an intermediate fact.
+
+Use `locallyOfFiniteType_affineSpaceIndexedByToSpec k (ULift.{u, 0} (Fin P.dim ⊕ Fin P'.dim))` as an intermediate fact. Use `quasiCompact_affineSpaceIndexedByToSpec k (ULift.{u, 0} (Fin P.dim))` as an intermediate fact. Use `quasiCompact_affineSpaceIndexedByToSpec k (ULift.{u, 0} (Fin P'.dim))` as an intermediate fact. Use `quasiCompact_affineSpaceIndexedByToSpec k (ULift.{u, 0} (Fin P.dim ⊕ Fin P'.dim))` as an intermediate fact. Use `irreducibleSpace_affineSpaceIndexedBy k (ULift.{u, 0} (Fin P.dim))` as an intermediate fact.
+
+Use `irreducibleSpace_affineSpaceIndexedBy k (ULift.{u, 0} (Fin P'.dim))` as an intermediate fact. Use `irreducibleSpace_affineSpaceIndexedBy k (ULift.{u, 0} (Fin P.dim ⊕ Fin P'.dim))` as an intermediate fact. Establish `hciL : AlgebraicGeometry.IsClosedImmersion (affineSpaceInl k P.dim P'.dim)` using `isClosedImmersion_affineSpaceInl k P.dim P'.dim`. Establish `hciR : AlgebraicGeometry.IsClosedImmersion (affineSpaceInrEmbedding k P.dim P'.dim)` using `isClosedImmersion_affineSpaceInrEmbedding k P.dim P'.dim`. Establish `: AlgebraicGeometry.IsClosedImmersion (D.emb ≫ P.toAffine)` using `inferInstance`.
+
+Establish `: AlgebraicGeometry.IsClosedImmersion (D'.emb ≫ P'.toAffine)` using `inferInstance`. Establish `hker1 : NonzeroOnComponents (Scheme.Hom.ker (D.emb ≫ P.toAffine))` using `nonzeroOnComponents_ker_comp D.emb P.toAffine D.nonzeroOnComponents_ker`. Establish `hker1' : NonzeroOnComponents (Scheme.Hom.ker (D'.emb ≫ P'.toAffine))` using `nonzeroOnComponents_ker_comp D'.emb P'.toAffine D'.nonzeroOnComponents_ker`. Establish `hsnc1 : InStrictNormalCrossingPosition (affineSpaceIndexedByToSpec k (ULift.{u, 0} (Fin P.dim))) ([] : List (affineSpaceIndexedBy k (ULift.{u, 0} (Fin P.dim))).IdealSheafData)` using `inStrictNormalCrossingPosition_nil (affineSpaceIndexedByToSpec k (ULift.{u, 0} (Fin P.dim)))`. Establish `hsnc1' : InStrictNormalCrossingPosition (affineSpaceIndexedByToSpec k (ULift.{u, 0} (Fin P'.dim))) ([] : List (affineSpaceIndexedBy k (ULift.{u, 0} (Fin P'.dim))).IdealSheafData)` using `inStrictNormalCrossingPosition_nil (affineSpaceIndexedByToSpec k (ULift.{u, 0} (Fin P'.dim)))`.
+
+Establish `hsncB : InStrictNormalCrossingPosition (affineSpaceIndexedByToSpec k (ULift.{u, 0} (Fin P.dim ⊕ Fin P'.dim))) ([] : List (affineSpaceIndexedBy k (ULift.{u, 0} (Fin P.dim ⊕ Fin P'.dim))).IdealSheafData)` using `inStrictNormalCrossingPosition_nil (affineSpaceIndexedByToSpec k (ULift.{u, 0} (Fin P.dim ⊕ Fin P'.dim)))`. Establish `hcd1 : HasEtaleCoordCodim (affineSpaceIndexedByToSpec k (ULift.{u, 0} (Fin P.dim))) P.toAffine P.codimBound` using `hcod k D.ambient (affineSpaceIndexedBy k (ULift.{u, 0} (Fin P.dim))) (affineSpaceIndexedByToSpec k (ULift.{u, 0} (Fin P.dim))) P.toAffine P.codimBound P.locallyConstCodim`. Establish `hcd1' : HasEtaleCoordCodim (affineSpaceIndexedByToSpec k (ULift.{u, 0} (Fin P'.dim))) P'.toAffine P'.codimBound` using `hcod k D'.ambient (affineSpaceIndexedBy k (ULift.{u, 0} (Fin P'.dim))) (affineSpaceIndexedByToSpec k (ULift.{u, 0} (Fin P'.dim))) P'.toAffine P'.codimBound P'.locallyConstCodim`. Establish `hker2 : NonzeroOnComponents (Scheme.Hom.ker ((D.emb ≫ P.toAffine) ≫ affineSpaceInl k P.dim P'.dim))` using `nonzeroOnComponents_ker_comp (D.emb ≫ P.toAffine) (affineSpaceInl k P.dim P'.dim) hker1`. Establish `hker2' : NonzeroOnComponents (Scheme.Hom.ker ((D'.emb ≫ P'.toAffine) ≫ affineSpaceInrEmbedding k P.dim P'.dim))` using `nonzeroOnComponents_ker_comp (D'.emb ≫ P'.toAffine) (affineSpaceInrEmbedding k P.dim P'.dim) hker1'`.
+
+Establish `hcd2 : HasEtaleCoordCodim (affineSpaceIndexedByToSpec k (ULift.{u, 0} (Fin P.dim ⊕ Fin P'.dim))) (affineSpaceInl k P.dim P'.dim) P'.dim` using `hcod k (affineSpaceIndexedBy k (ULift.{u, 0} (Fin P.dim))) (affineSpaceIndexedBy k (ULift.{u, 0} (Fin P.dim ⊕ Fin P'.dim))) (affineSpaceIndexedByToSpec k (ULift.{u, 0} (Fin P.dim ⊕ Fin P'.dim))) (affineSpaceInl k P.dim P'.dim) P'.dim (hlin k P.dim P'.dim).1`. Establish `hcd2' : HasEtaleCoordCodim (affineSpaceIndexedByToSpec k (ULift.{u, 0} (Fin P.dim ⊕ Fin P'.dim))) (affineSpaceInrEmbedding k P.dim P'.dim) P.dim` using `hcod k (affineSpaceIndexedBy k (ULift.{u, 0} (Fin P'.dim))) (affineSpaceIndexedBy k (ULift.{u, 0} (Fin P.dim ⊕ Fin P'.dim))) (affineSpaceIndexedByToSpec k (ULift.{u, 0} (Fin P.dim ⊕ Fin P'.dim))) (affineSpaceInrEmbedding k P.dim P'.dim) P.dim (hlin k P.dim P'.dim).2`. Establish `hciL2 : AlgebraicGeometry.IsClosedImmersion (show (D.enlargeAmbient (affineSpaceIndexedBy k (ULift.{u, 0} (Fin P.dim))) (affineSpaceIndexedByToSpec k (ULift.{u, 0} (Fin P.dim))) P.toAffine P.toAffine_comp hker1 hsnc1).ambient ⟶ affineSpaceIndexedBy k (ULift.{u, 0} (Fin P.dim ⊕ Fi …` using `isClosedImmersion_affineSpaceInl k P.dim P'.dim`. Establish `hciR2 : AlgebraicGeometry.IsClosedImmersion (show (D'.enlargeAmbient (affineSpaceIndexedBy k (ULift.{u, 0} (Fin P'.dim))) (affineSpaceIndexedByToSpec k (ULift.{u, 0} (Fin P'.dim))) P'.toAffine P'.toAffine_comp hker1' hsnc1').ambient ⟶ affineSpaceIndexedBy k (ULift.{u, 0} (Fin P.d …` using `isClosedImmersion_affineSpaceInrEmbedding k P.dim P'.dim`. Establish `e1` using `D.isomorphic_embeddedResolutionRule_enlargeAmbient Alg hAlg hw (affineSpaceIndexedBy k (ULift.{u, 0} (Fin P.dim))) (affineSpaceIndexedByToSpec k (ULift.{u, 0} (Fin P.dim))) P.toAffine P.toAffine_comp hker1 hsnc1 P.codimBound P.one_le_codimBound hcd1`.
+
+Establish `e2` using `(D.enlargeAmbient (affineSpaceIndexedBy k (ULift.{u, 0} (Fin P.dim))) (affineSpaceIndexedByToSpec k (ULift.{u, 0} (Fin P.dim))) P.toAffine P.toAffine_comp hker1 hsnc1).isomorphic_embeddedResolutionRule_enlargeAmbient Alg hAlg hw (affineSpaceIndexedBy k (ULift.{u, 0} (Fin P.dim ⊕ …`. Establish `e1'` using `D'.isomorphic_embeddedResolutionRule_enlargeAmbient Alg hAlg hw (affineSpaceIndexedBy k (ULift.{u, 0} (Fin P'.dim))) (affineSpaceIndexedByToSpec k (ULift.{u, 0} (Fin P'.dim))) P'.toAffine P'.toAffine_comp hker1' hsnc1' P'.codimBound P'.one_le_codimBound hcd1'`. Establish `e2'` using `(D'.enlargeAmbient (affineSpaceIndexedBy k (ULift.{u, 0} (Fin P'.dim))) (affineSpaceIndexedByToSpec k (ULift.{u, 0} (Fin P'.dim))) P'.toAffine P'.toAffine_comp hker1' hsnc1').isomorphic_embeddedResolutionRule_enlargeAmbient Alg hAlg hw (affineSpaceIndexedBy k (ULift.{u, 0} (Fin P …`. Establish `hc1 : (D.emb ≫ P.toAffine) ≫ affineSpaceIndexedByToSpec k (ULift.{u, 0} (Fin P.dim)) = p`. Rewrite using `[Category.assoc, P.toAffine_comp, D.comp_eq]`.
+
+Establish `hc2 : (D'.emb ≫ P'.toAffine) ≫ affineSpaceIndexedByToSpec k (ULift.{u, 0} (Fin P'.dim)) = p`. Rewrite using `[Category.assoc, P'.toAffine_comp, D'.comp_eq]`. Take `⟨Φ, hΦ1, hΦ2⟩` from `hcmp k Y p P.dim P'.dim (D.emb ≫ P.toAffine) (D'.emb ≫ P'.toAffine) hc1 hc2`. Establish `hembL : (D.emb ≫ P.toAffine) ≫ affineSpaceInl k P.dim P'.dim = AffineSpace.homOfVector p (coordVectorInl P.dim P'.dim (D.emb ≫ P.toAffine))` using `comp_affineSpaceInl P.dim P'.dim p (D.emb ≫ P.toAffine) hc1`. Establish `hembR : (D'.emb ≫ P'.toAffine) ≫ affineSpaceInrEmbedding k P.dim P'.dim = AffineSpace.homOfVector p (coordVectorInr P.dim P'.dim (D'.emb ≫ P'.toAffine))` using `comp_affineSpaceInrEmbedding P.dim P'.dim p (D'.emb ≫ P'.toAffine) hc2`.
+
+Establish `hfin : ((D.emb ≫ P.toAffine) ≫ affineSpaceInl k P.dim P'.dim) ≫ Φ.hom = (D'.emb ≫ P'.toAffine) ≫ affineSpaceInrEmbedding k P.dim P'.dim`. Rewrite using `[hembL, hembR]`. Conclude with `hΦ2`. Establish `e3` using `isomorphic_embeddedResolutionRuleOfPrincipalization_of_iso Alg hAlg hw k Y p ((D.enlargeAmbient (affineSpaceIndexedBy k (ULift.{u, 0} (Fin P.dim))) (affineSpaceIndexedByToSpec k (ULift.{u, 0} (Fin P.dim))) P.toAffine P.toAffine_comp hker1 hsnc1).enlargeAmbient (affineSpaceIndexed …`. Conclude with `e1.trans (e2.trans (e3.trans (e1'.trans e2').symm))`.
+-/
 theorem isomorphic_embeddedResolutionRuleOfPrincipalization (Alg : PrincipalizationAlgorithm.{u}) (hAlg : IsFunctorialPrincipalization Alg)
     (hw : TransitionsAreBlowupsForEmbeddings Alg) (hsm : AffineSpaceIsSmooth.{u})
     (hcmp : ClosedEmbeddingsRelatedByAutomorphism.{u}) (hcod : LocallyConstCodimImpliesConstantCodim.{u})
@@ -309,6 +359,9 @@ theorem isomorphic_embeddedResolutionRuleOfPrincipalization (Alg : Principalizat
     Φ hΦ1 hfin
   exact e1.trans (e2.trans (e3.trans (e1'.trans e2').symm))
 
+/- English proof (translation)
+Introduce `k _ _ Y p _ _ _ _ D D' P P'`. Conclude with `isomorphic_embeddedResolutionRuleOfPrincipalization Alg hAlg hw hsm hcmp hcod hlin k Y p D D' P P'`.
+-/
 theorem isIndependentOfPresentedEmbedding_of_locallyConstCodim (Alg : PrincipalizationAlgorithm.{u}) (hAlg : IsFunctorialPrincipalization Alg)
     (hw : TransitionsAreBlowupsForEmbeddings Alg) (hsm : AffineSpaceIsSmooth.{u})
     (hcmp : ClosedEmbeddingsRelatedByAutomorphism.{u}) (hcod : LocallyConstCodimImpliesConstantCodim.{u})

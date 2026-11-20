@@ -18,6 +18,13 @@ namespace Formalism.MainNotions.N.Ln17.PCutBoundRep
 variable (W : LocWach PD LL O v n) {T : LocLat G Qp LL O} {c' : ZMod n} {e M : ℕ} {Λ : LetA O n} {d : ℕ}
   {b : Fin d → W.DD T} {sol : Fin d → ℕ → Fin d → LL}
 
+/- English proof (translation)
+Take `⟨κ, κ', Hh, a, hH, ha, y, hy, hxy⟩` from `h`. Use `⟨κ, κ', Hh, fun k => a₀ * a k, hH, fun k => ⟨W.AΔ.mul_mem ha₀ (ha k).1, ?_⟩, a₀ • y, Formalism.MainNotions.N.FrobeniusPowerSeries.TypesA.Pp_smul W ha₀ hy, ?_⟩` and prove the remaining obligations. Rewrite using `[map_mul, ← (ha k).2]`. Expand and normalize the polynomial expressions, which then agree. Establish `hsum : ∑ k, (a₀ * a k) • ((W.φD T) ^ e) (Hh k) = a₀ • ∑ k, a k • ((W.φD T) ^ e) (Hh k)`.
+
+Rewrite using `[Finset.smul_sum]`. Simplify using `only [smul_smul]`. Rewrite using `[hsum]`. Establish `e1 : lA W ^ κ' • (lA W ^ κ • Λ • a₀ • x - a₀ • ∑ k, a k • ((W.φD T) ^ e) (Hh k)) = a₀ • (lA W ^ κ' • (lA W ^ κ • Λ • x - ∑ k, a k • ((W.φD T) ^ e) (Hh k)))`. Rewrite using `[smul_comm Λ a₀ x, smul_comm (lA W ^ κ) a₀, ← smul_sub, smul_comm (lA W ^ κ') a₀]`.
+
+Rewrite using `[e1, hxy, smul_comm]`.
+-/
 theorem RepVV_smulA {a₀ : LetA O n} (ha₀ : a₀ ∈ W.AΔ) {x : W.DD T} {f : Fin d → W.EE}
     (h : RepVV W T c' e M Λ b sol x f) :
     RepVV W T c' e M Λ b sol (a₀ • x) (fun k => algebraMap (LetA O n) W.EE a₀ * f k) := by
@@ -35,6 +42,11 @@ theorem RepVV_smulA {a₀ : LetA O n} (ha₀ : a₀ ∈ W.AΔ) {x : W.DD T} {f :
       rw [smul_comm Λ a₀ x, smul_comm (lA W ^ κ) a₀, ← smul_sub, smul_comm (lA W ^ κ') a₀]
     rw [e1, hxy, smul_comm]
 
+/- English proof (translation)
+Establish `h1` using `RepVV_smulA W (W.AΔ.algebraMap_mem o) h`. Establish `hx : o • x = algebraMap O (LetA O n) o • x` using `(algebraMap_smul (LetA O n) o x).symm`. Establish `hf : (fun k => algebraMap O W.EE o * f k) = fun k => algebraMap (LetA O n) W.EE (algebraMap O (LetA O n) o) * f k`. Use function extensionality and compare the values at `k`. Rewrite using `[← IsScalarTower.algebraMap_apply]`.
+
+Rewrite using `[hx, hf]`. Conclude with `h1`.
+-/
 theorem RepVV_smulO (o : O) {x : W.DD T} {f : Fin d → W.EE} (h : RepVV W T c' e M Λ b sol x f) :
     RepVV W T c' e M Λ b sol (o • x) (fun k => algebraMap O W.EE o * f k) := by
   have h1 := RepVV_smulA W (W.AΔ.algebraMap_mem o) h
@@ -46,12 +58,18 @@ theorem RepVV_smulO (o : O) {x : W.DD T} {f : Fin d → W.EE} (h : RepVV W T c' 
   rw [hx, hf]
   exact h1
 
+/- English proof (translation)
+Take `⟨κ, κ', Hh, a, hH, ha, y, hy, hxy⟩` from `h`. Use `⟨κ, κ', Hh, fun _ => 0, hH, fun k => ⟨W.AΔ.zero_mem, by simp⟩, (0 : LetA O n) • y, Formalism.MainNotions.N.FrobeniusPowerSeries.TypesA.Pp_smul W W.AΔ.zero_mem hy, by simp⟩` and prove the remaining obligations.
+-/
 theorem RepVV_zero {x : W.DD T} {f : Fin d → W.EE} (h : RepVV W T c' e M Λ b sol x f) :
     RepVV W T c' e M Λ b sol 0 (fun _ => 0) := by
   obtain ⟨κ, κ', Hh, a, hH, ha, y, hy, hxy⟩ := h
   refine ⟨κ, κ', Hh, fun _ => 0, hH, fun k => ⟨W.AΔ.zero_mem, by simp⟩,
     (0 : LetA O n) • y, Formalism.MainNotions.N.FrobeniusPowerSeries.TypesA.Pp_smul W W.AΔ.zero_mem hy, by simp⟩
 
+/- English proof (translation)
+Use `revert h`. Use `Finset.induction_on s (fun _ => by simpa using h0) ?_` and prove the remaining obligations. Introduce `j s hj ih h`. Use `Formalism.MainNotions.N.FrobeniusPowerSeries.TypesA.RepVV_add W (h j (Finset.mem_insert_self j s)) (ih fun i hi => h i (Finset.mem_insert_of_mem hi))` as an intermediate fact. Simplify `this` using `[Finset.sum_insert hj]`.
+-/
 theorem RepVV_sum (h0 : RepVV W T c' e M Λ b sol 0 (fun _ => 0)) {ι : Type} (s : Finset ι)
     (x : ι → W.DD T) (f : ι → Fin d → W.EE) (h : ∀ i ∈ s, RepVV W T c' e M Λ b sol (x i) (f i)) :
     RepVV W T c' e M Λ b sol (∑ i ∈ s, x i) (fun k => ∑ i ∈ s, f i k) := by
@@ -63,6 +81,27 @@ theorem RepVV_sum (h0 : RepVV W T c' e M Λ b sol 0 (fun _ => 0)) {ι : Type} (s
     (ih fun i hi => h i (Finset.mem_insert_of_mem hi))
   simpa [Finset.sum_insert hj] using this
 
+/- English proof (translation)
+Take `⟨κ, κ', Hh, a, hH, ha, y, hy, hxy⟩` from `h`. Take `⟨R, hR, R', hR', hRR', hΛR⟩` from `hΛ`. Take `⟨u, hu, hu'⟩` from `hpi0`. Take `⟨u₂, hu₂, hM'⟩` from `hM`. Establish `hγH : ∀ k, ∃ z, Formalism.MainNotions.LiftingTheory.InNΔi W T c' z ∧ W.γ T (Hh k) = Hh k + W.π₀ ^ M • z`.
+
+Introduce `k`. Take `⟨yy, hyy, hHk⟩` from `hH k`. Take `⟨z, hz, hzeq⟩` from `(hb.2 k).1 M κ yy hyy`. Use `⟨z, hz, ?_⟩` and prove the remaining obligations. Rewrite using `[hHk]`.
+
+Rewrite `hzeq` using `[smul_zero, sub_zero, sub_eq_iff_eq_add]`. Rewrite using `[hzeq, add_comm]`. Use `choose z hz hγz using hγH`. Establish `hZ : ∑ k, W.γA W.gam (a k) • ((W.φA ^ e) (W.π₀ ^ M) • ((W.φD T) ^ e) (z k)) = (W.π₀ * Λ ^ 2) • ∑ k, (W.γA W.gam (a k) * u₂) • ((W.φD T) ^ e) (z k)`. Rewrite using `[Finset.smul_sum]`.
+
+Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[map_pow, hM', smul_smul, smul_smul]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree. Establish `h1` using `congrArg (W.γ T) hxy`.
+
+Simplify using `only [γ_smul W, map_sub, map_sum, γA_lA W, γ_φpow W, hγz, map_add, φpow_smulA W, smul_add, Finset.sum_add_distrib, hΛR] at h1`. Rewrite `h1` using `[hZ, map_mul, map_pow, hu', hΛR]`. Establish `hlA : lA W ∈ W.AΔ`. Unfold `lA`. Conclude with `W.AΔ.natCast_mem _`.
+
+Use `⟨κ, κ', Hh, fun k => R' * W.γA W.gam (a k), hH, fun k => ⟨W.AΔ.mul_mem hR' (Formalism.MainNotions.N.FrobeniusPowerSeries.GS.γA_mem W _ (ha k).1), ?_⟩, (R' * u * R ^ 2) • W.γ T y + lA W ^ κ' • R' • ∑ k, (W.γA W.gam (a k) * u₂) • ((W.φD T) ^ e) (z k), AddSubgroup.add_mem _ (Formali …` and prove the remaining obligations. Establish `h2` using `congrArg (W.γE W.gam) (ha k).2`. Rewrite `h2` using `[map_mul, Formalism.MainNotions.N.FrobeniusPowerSeries.GS.γE_ι W, Formalism.MainNotions.N.FrobeniusPowerSeries.GS.γE_ι W, hΛR, map_mul]`. Establish `h3 : algebraMap (LetA O n) W.EE R' * algebraMap (LetA O n) W.EE R = 1`. Rewrite using `[← map_mul, mul_comm, hRR', map_one]`.
+
+Rewrite using `[map_mul, ← h2]`. Take the linear combination `(-(algebraMap (LetA O n) W.EE Λ * W.γE W.gam (f k))) * h3`. Establish `hsH : ∑ k, (R' * W.γA W.gam (a k)) • ((W.φD T) ^ e) (Hh k) = R' • ∑ k, W.γA W.gam (a k) • ((W.φD T) ^ e) (Hh k)`. Rewrite using `[Finset.smul_sum]`. Simplify using `only [smul_smul]`.
+
+Establish `hΛ1 : lA W ^ κ • Λ • W.γ T x = lA W ^ κ • ((R' * R) * Λ) • W.γ T x`. Rewrite using `[mul_comm R' R, hRR', one_mul]`. Rewrite using `[hsH, hΛ1]`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [smul_sub, smul_add, smul_smul]`.
+
+Put the polynomial expressions in normal form. Normalize the expressions using the abelian group laws. Use `_ = _ := by`. Rewrite using `[h1]`. Simplify using `only [smul_add, smul_smul]`.
+
+Put the polynomial expressions in normal form.
+-/
 theorem RepVV_γ (hT : IsCrys PD T.ρ) (hP2 : Formalism.MainNotions.DeltaInvariantLattices.P2W W)
     (hpi0 : ∃ u ∈ W.AΔ, W.γA W.gam W.π₀ = W.π₀ * u) (hb : IsHor W T c' b sol)
     (hΛ : ∃ R ∈ W.AΔ, ∃ R' ∈ W.AΔ, R * R' = 1 ∧ W.γA W.gam Λ = R * Λ)
@@ -131,6 +170,9 @@ theorem RepVV_γ (hT : IsCrys PD T.ρ) (hP2 : Formalism.MainNotions.DeltaInvaria
           simp only [smul_add, smul_smul]
           ring_nf
 
+/- English proof (translation)
+Proceed by induction on `i with`. Consider the case `zero => simpa using h`. Consider the case `succ i ih`. Use `RepVV_γ W hT hP2 hpi0 hb hΛ hM ih` as an intermediate fact. Simplify `this` using `[Function.iterate_succ_apply']`.
+-/
 theorem RepVV_iter (hT : IsCrys PD T.ρ) (hP2 : Formalism.MainNotions.DeltaInvariantLattices.P2W W)
     (hpi0 : ∃ u ∈ W.AΔ, W.γA W.gam W.π₀ = W.π₀ * u) (hb : IsHor W T c' b sol)
     (hΛ : ∃ R ∈ W.AΔ, ∃ R' ∈ W.AΔ, R * R' = 1 ∧ W.γA W.gam Λ = R * Λ)
@@ -143,6 +185,11 @@ theorem RepVV_iter (hT : IsCrys PD T.ρ) (hP2 : Formalism.MainNotions.DeltaInvar
     have := RepVV_γ W hT hP2 hpi0 hb hΛ hM ih
     simpa [Function.iterate_succ_apply'] using this
 
+/- English proof (translation)
+Rewrite using `[aeval_eq W P x]`. Establish `hf : (fun k => Polynomial.aeval ((W.γE W.gam).toLinearMap : Module.End O W.EE) P (f k)) = fun k => ∑ i ∈ Finset.range (P.natDegree + 1), algebraMap O W.EE (P.coeff i) * (W.γE W.gam)^[i] (f k)`. Use function extensionality and compare the values at `k`. Rewrite using `[Polynomial.aeval_eq_sum_range, LinearMap.sum_apply]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[LinearMap.smul_apply, Module.End.pow_apply, Algebra.smul_def]`. Both sides reduce to the same expression. Rewrite using `[hf]`. Conclude with `RepVV_sum W (RepVV_zero W h) _ _ (fun i k => algebraMap O W.EE (P.coeff i) * (W.γE W.gam)^[i] (f k)) fun i _ => RepVV_smulO W (P.coeff i) (RepVV_iter W hT hP2 hpi0 hb hΛ hM h i)`.
+-/
 theorem RepVV_aeval (hT : IsCrys PD T.ρ) (hP2 : Formalism.MainNotions.DeltaInvariantLattices.P2W W)
     (hpi0 : ∃ u ∈ W.AΔ, W.γA W.gam W.π₀ = W.π₀ * u) (hb : IsHor W T c' b sol)
     (hΛ : ∃ R ∈ W.AΔ, ∃ R' ∈ W.AΔ, R * R' = 1 ∧ W.γA W.gam Λ = R * Λ)

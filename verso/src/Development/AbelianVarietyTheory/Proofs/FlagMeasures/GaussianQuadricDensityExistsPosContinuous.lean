@@ -7,6 +7,11 @@ noncomputable section
 
 namespace GlobalTheory.GaussMean.Density
 
+/- English proof (translation)
+Rewrite using `[integral_fun_norm_addHaar (volume : Measure ℂ) (fun r => f (r ^ 2)), ← integral_comp_rpow_Ioi f (p := 2) two_ne_zero]`. Establish `: ∫ x in Set.Ioi (0 : ℝ), (|(2 : ℝ)| * x ^ ((2 : ℝ) - 1)) • f (x ^ (2 : ℝ)) = 2 * ∫ y in Set.Ioi (0 : ℝ), y ^ (Module.finrank ℝ ℂ - 1) • f (y ^ 2)`. Rewrite using `[← integral_const_mul]`. Use `setIntegral_congr_fun measurableSet_Ioi fun x _ => ?_` and prove the remaining obligations. Evaluate the numerical expressions using `[mul_assoc]`.
+
+Rewrite using `[this]`. Simplify using `[Measure.real, Complex.volume_ball]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem integral_norm_sq (f : ℝ → ℝ) :
     ∫ z : ℂ, f (‖z‖ ^ 2) = Real.pi * ∫ r in Set.Ioi (0 : ℝ), f r := by
   rw [integral_fun_norm_addHaar (volume : Measure ℂ) (fun r => f (r ^ 2)),
@@ -22,6 +27,19 @@ theorem integral_norm_sq (f : ℝ → ℝ) :
 
 def expAvg (G : ℝ → ℝ) (σ t : ℝ) : ℝ := ∫ r in Set.Ioi (0 : ℝ), Real.exp (-r) * G (t - σ * r)
 
+/- English proof (translation)
+Establish `hint : ∀ s : ℝ, IntegrableOn (fun u => Real.exp u * G u) (Set.Iic s)` using `fun s => (integrableOn_exp_Iic s).mul_bdd hm.aestronglyMeasurable (Filter.Eventually.of_forall hb)`. Establish `hE : ∀ s : ℝ, expAvg G 1 s = Real.exp (-s) * ∫ u in Set.Iic s, Real.exp u * G u`. Introduce `s`. Establish `h1` using `integral_comp_neg_Iic s (fun x => Real.exp (-x) * G (-x))`. Establish `h2` using `integral_sub_right_eq_self ((Set.Ioi (-s)).indicator fun x => Real.exp (-x) * G (-x)) s (μ := volume)`.
+
+Simplify using `only [neg_neg] at h1`. Rewrite using `[h1, ← integral_indicator measurableSet_Ioi, ← h2, ← integral_const_mul, expAvg, ← integral_indicator measurableSet_Ioi]`. Use `integral_congr_ae (Filter.Eventually.of_forall fun x => ?_)` and prove the remaining obligations. Establish `: x - s ∈ Set.Ioi (-s) ↔ x ∈ Set.Ioi 0`. Apply the tactic sequence `simp only [Set.mem_Ioi]; constructor <;> intro h <;> linarith`.
+
+Simplify using `only [Set.indicator, this]`. Use `split_ifs`. Apply the tactic sequence `rw [← mul_assoc, ← Real.exp_add]; congr 2 <;> ring`. Simplify using the standard rewrite rules. Establish `hI : HasDerivAt (fun s => ∫ u in Set.Iic s, Real.exp u * G u) (Real.exp t * G t) t`.
+
+Establish `h1 : (fun s => ∫ u in Set.Iic s, Real.exp u * G u) = fun s => (∫ u in Set.Iic t, Real.exp u * G u) + ∫ u in t..s, Real.exp u * G u`. Use function extensionality and compare the values at `s`. Rewrite using `[← intervalIntegral.integral_Iic_sub_Iic (hint t) (hint s)]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[h1]`.
+
+Use `HasDerivAt.const_add _ (intervalIntegral.integral_hasDerivAt_right (by simp) ?_ ?_)` and prove the remaining obligations. Conclude with `(Real.measurable_exp.mul hm).stronglyMeasurable.stronglyMeasurableAtFilter`. Conclude with `Real.continuous_exp.continuousAt.mul hc`. Establish `h` using `((hasDerivAt_id t).neg.exp).mul hI`. Rewrite using `[funext hE]`.
+
+Use `HasDerivAt.congr_deriv h ?_` and prove the remaining obligations. Simplify using `only [Pi.neg_apply, id]`. Rewrite using `[← mul_assoc, ← Real.exp_add]`. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem hasDerivAt_expAvg_one {G : ℝ → ℝ} (hm : Measurable G) {C : ℝ} (hb : ∀ u, |G u| ≤ C) {t : ℝ}
     (hc : ContinuousAt G t) : HasDerivAt (expAvg G 1) (G t - expAvg G 1 t) t := by
   have hint : ∀ s : ℝ, IntegrableOn (fun u => Real.exp u * G u) (Set.Iic s) := fun s =>
@@ -56,6 +74,15 @@ theorem hasDerivAt_expAvg_one {G : ℝ → ℝ} (hm : Measurable G) {C : ℝ} (h
   simp only [Pi.neg_apply, id]
   rw [← mul_assoc, ← Real.exp_add]; simp; ring
 
+/- English proof (translation)
+Consider the cases of `s`. Establish `h1 : ∀ u, expAvg G (-1) u = expAvg (fun x => G (-x)) 1 (-u)`. Introduce `u`. Unfold `expAvg`. Use `congr 1`.
+
+Use function extensionality and compare the values at `r`. Use `congr 2`. Expand and normalize the polynomial expressions, which then agree. Establish `hc' : ContinuousAt (fun x => G (-x)) (-t)` using `ContinuousAt.comp (f := fun x : ℝ => -x) (by simpa using hc) continuous_neg.continuousAt`. Establish `h` using `(hasDerivAt_expAvg_one (G := fun x => G (-x)) (hm.comp measurable_neg) (fun u => hb _) hc').comp t (hasDerivAt_neg t)`.
+
+Establish `hs : sgn ℝ false = -1` using `by simp [sgn]`. Rewrite using `[hs, funext h1]`. Use `HasDerivAt.congr_deriv h ?_` and prove the remaining obligations. Simplify using the standard rewrite rules. Establish `hs : sgn ℝ true = 1` using `by simp [sgn]`.
+
+Rewrite using `[hs, one_mul]`. Conclude with `hasDerivAt_expAvg_one hm hb hc`.
+-/
 theorem hasDerivAt_expAvg {G : ℝ → ℝ} (hm : Measurable G) {C : ℝ} (hb : ∀ u, |G u| ≤ C) (s : Bool) {t : ℝ}
     (hc : ContinuousAt G t) :
     HasDerivAt (expAvg G (sgn ℝ s)) (sgn ℝ s * (G t - expAvg G (sgn ℝ s) t)) t := by
@@ -74,6 +101,23 @@ theorem hasDerivAt_expAvg {G : ℝ → ℝ} (hm : Measurable G) {C : ℝ} (hb : 
     rw [hs, one_mul]
     exact hasDerivAt_expAvg_one hm hb hc
 
+/- English proof (translation)
+Use `set σ := sgn ℝ s with hσ`. Establish `he : IntegrableOn (fun r => Real.exp (-r)) (Set.Ioi (0 : ℝ))` using `integrableOn_exp_neg_Ioi 0`. Establish `h1 : IntegrableOn (fun r => Real.exp (-r) * G (σ - σ * r)) (Set.Ioi (0 : ℝ))` using `he.mul_bdd (hm.measurable.comp (by fun_prop)).aestronglyMeasurable (Filter.Eventually.of_forall fun _ => hb _)`. Establish `h2 : σ * (G σ - expAvg G σ σ) = ∫ r in Set.Ioi (0 : ℝ), σ * (Real.exp (-r) * G σ - Real.exp (-r) * G (σ - σ * r))`. Rewrite using `[integral_const_mul, integral_sub (he.mul_const _) h1, integral_mul_const, integral_exp_neg_Ioi_zero, one_mul, expAvg]`.
+
+Establish `hle : ∀ r, 0 ≤ r → 0 ≤ σ * (G σ - G (σ - σ * r))`. Introduce `r hr`. Consider the cases of `s`. Establish `: σ = -1` using `by simp [hσ, sgn]`. Rewrite using `[this]`.
+
+Use `hm (show (-1 : ℝ) ≤ -1 - -1 * r by linarith)` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish `: σ = 1` using `by simp [hσ, sgn]`. Rewrite using `[this]`. Use `hm (show (1 : ℝ) - 1 * r ≤ 1 by linarith)` as an intermediate fact.
+
+Combine the linear equalities and inequalities to obtain the conclusion. Establish `hlt : ∀ r, 2 < r → 0 < σ * (G σ - G (σ - σ * r))`. Introduce `r hr`. Consider the cases of `s`. Establish `: σ = -1` using `by simp [hσ, sgn]`.
+
+Rewrite using `[this]`. Use `hm (show (1 : ℝ) ≤ -1 - -1 * r by linarith)` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish `: σ = 1` using `by simp [hσ, sgn]`. Rewrite using `[this]`.
+
+Use `hm (show (1 : ℝ) - 1 * r ≤ -1 by linarith)` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish `e : ∀ r, σ * (Real.exp (-r) * G σ - Real.exp (-r) * G (σ - σ * r)) = Real.exp (-r) * (σ * (G σ - G (σ - σ * r)))` using `fun r => by ring`. Rewrite using `[h2, setIntegral_pos_iff_support_of_nonneg_ae]`. Use `lt_of_lt_of_le (show 0 < volume (Set.Ioi (2 : ℝ)) by simp) (measure_mono fun r hr => ⟨?_, ?_⟩)` and prove the remaining obligations.
+
+Rewrite using `[Function.mem_support, e]`. Conclude with `(mul_pos (Real.exp_pos _) (hlt r hr)).ne'`. Conclude with `(lt_trans two_pos (show (2 : ℝ) < r from hr) : (0 : ℝ) < r)`. Use `filter_upwards [ae_restrict_mem measurableSet_Ioi] with r hr`. Rewrite using `[e]`.
+
+Conclude with `mul_nonneg (Real.exp_pos _).le (hle r (le_of_lt hr))`. Conclude with `((he.mul_const _).sub h1).const_mul _`.
+-/
 theorem expAvg_pos {G : ℝ → ℝ} (hm : Monotone G) {C : ℝ} (hb : ∀ u, |G u| ≤ C) (s : Bool)
     (h : G (-1) < G 1) : 0 < sgn ℝ s * (G (sgn ℝ s) - expAvg G (sgn ℝ s) (sgn ℝ s)) := by
   set σ := sgn ℝ s with hσ
@@ -120,13 +164,24 @@ theorem expAvg_pos {G : ℝ → ℝ} (hm : Monotone G) {C : ℝ} (hb : ∀ u, |G
 
 def cdf {n : ℕ} (ε : Fin n → Bool) (t : ℝ) : ℝ := ∫ y in {y : Fin n → ℂ | qEps ε y ≤ t}, gauss y
 
+/- English proof (translation)
+Unfold `qEps`. Use `fun_prop`.
+-/
 theorem continuous_qEps {n : ℕ} (ε : Fin n → Bool) : Continuous (qEps ε) := by
   unfold qEps; fun_prop
 
+/- English proof (translation)
+The claim follows from `measurableSet_le (continuous_qEps ε).measurable measurable_const`.
+-/
 theorem measurableSet_qEps {n : ℕ} (ε : Fin n → Bool) (t : ℝ) :
     MeasurableSet {y : Fin n → ℂ | qEps ε y ≤ t} :=
   measurableSet_le (continuous_qEps ε).measurable measurable_const
 
+/- English proof (translation)
+Establish `h1 : Integrable fun z : ℂ => Real.exp (-‖z‖ ^ 2)`. Establish `h` using `(GaussianFourier.integrable_cexp_neg_mul_sq_norm_add (V := ℂ) (b := 1) (by simp) 0 0).norm`. Use `h.congr (Filter.Eventually.of_forall fun z => ?_)` and prove the remaining obligations. Simplify using `[Complex.norm_exp, ← Complex.ofReal_pow]`. Establish `h2` using `Integrable.fintype_prod (ι := Fin n) (f := fun _ (z : ℂ) => Real.exp (-‖z‖ ^ 2)) fun _ => h1`.
+
+Use `h2.congr (Filter.Eventually.of_forall fun y => ?_)` and prove the remaining obligations. Simplify using `only [gauss, ← Real.exp_sum, Finset.sum_neg_distrib]`.
+-/
 theorem integrable_gauss (n : ℕ) : Integrable (gauss : (Fin n → ℂ) → ℝ) := by
   have h1 : Integrable fun z : ℂ => Real.exp (-‖z‖ ^ 2) := by
     have h := (GaussianFourier.integrable_cexp_neg_mul_sq_norm_add (V := ℂ) (b := 1) (by simp) 0 0).norm
@@ -136,15 +191,26 @@ theorem integrable_gauss (n : ℕ) : Integrable (gauss : (Fin n → ℂ) → ℝ
   refine h2.congr (Filter.Eventually.of_forall fun y => ?_)
   simp only [gauss, ← Real.exp_sum, Finset.sum_neg_distrib]
 
+/- English proof (translation)
+Introduce `_ _ h` and use `setIntegral_mono_set (integrable_gauss n).integrableOn (Filter.Eventually.of_forall fun y => (gauss_pos y).le) (HasSubset.Subset.eventuallyLE fun _ hy => le_trans hy h)`.
+-/
 theorem cdf_mono {n : ℕ} (ε : Fin n → Bool) : Monotone (cdf ε) := fun _ _ h =>
   setIntegral_mono_set (integrable_gauss n).integrableOn
     (Filter.Eventually.of_forall fun y => (gauss_pos y).le)
     (HasSubset.Subset.eventuallyLE fun _ hy => le_trans hy h)
 
+/- English proof (translation)
+Rewrite using `[abs_of_nonneg (show 0 ≤ cdf ε t from integral_nonneg fun y => (gauss_pos y).le)]`. Conclude with `setIntegral_le_integral (integrable_gauss n) (Filter.Eventually.of_forall fun y => (gauss_pos y).le)`.
+-/
 theorem abs_cdf_le {n : ℕ} (ε : Fin n → Bool) (t : ℝ) : |cdf ε t| ≤ ∫ y : Fin n → ℂ, gauss y := by
   rw [abs_of_nonneg (show 0 ≤ cdf ε t from integral_nonneg fun y => (gauss_pos y).le)]
   exact setIntegral_le_integral (integrable_gauss n) (Filter.Eventually.of_forall fun y => (gauss_pos y).le)
 
+/- English proof (translation)
+Establish `h` using `integral_diff (measurableSet_qEps ε (-1)) ((integrable_gauss n).integrableOn (s := {y | qEps ε y ≤ 1})) (fun y (hy : qEps ε y ≤ -1) => show qEps ε y ≤ 1 by linarith)`. Rewrite using `[← sub_pos, cdf, cdf, ← h, setIntegral_pos_iff_support_of_nonneg_ae (Filter.Eventually.of_forall fun y => (gauss_pos y).le) (integrable_gauss n).integrableOn]`. Establish `ho : IsOpen (qEps ε ⁻¹' Set.Ioo (-1) 1)` using `isOpen_Ioo.preimage (continuous_qEps ε)`. Use `lt_of_lt_of_le (ho.measure_pos volume ⟨0, by simp [qEps]⟩) (measure_mono fun y hy => ⟨?_, ?_, ?_⟩)` and prove the remaining obligations. Conclude with `(gauss_pos y).ne'`.
+
+Conclude with `hy.2.le`. Conclude with `not_le.2 hy.1`.
+-/
 theorem cdf_lt {n : ℕ} (ε : Fin n → Bool) : cdf ε (-1) < cdf ε 1 := by
   have h := integral_diff (measurableSet_qEps ε (-1))
     ((integrable_gauss n).integrableOn (s := {y | qEps ε y ≤ 1}))
@@ -157,6 +223,13 @@ theorem cdf_lt {n : ℕ} (ε : Fin n → Bool) : cdf ε (-1) < cdf ε 1 := by
   · exact hy.2.le
   · exact not_le.2 hy.1
 
+/- English proof (translation)
+Establish `hp` using `(volume_preserving_piFinSuccAbove (fun _ : Fin (n + 1) => ℂ) a).symm`. Establish `hi` using `(integrable_gauss (n + 1)).indicator (measurableSet_qEps ε t)`. Establish `hi'` using `(hp.integrable_comp_emb (MeasurableEquiv.measurableEmbedding _)).2 hi`. Rewrite using `[cdf, ← integral_indicator (measurableSet_qEps ε t), ← hp.integral_comp', expAvg, ← integral_norm_sq fun r => Real.exp (-r) * cdf (fun i => ε (a.succAbove i)) (t - sgn ℝ (ε a) * r)]`. Use `(integral_prod _ hi').trans ?_` and prove the remaining obligations.
+
+Use `integral_congr_ae (Filter.Eventually.of_forall fun z => ?_)` and prove the remaining obligations. Simplify using `only [cdf]`. Rewrite using `[← integral_indicator (measurableSet_qEps _ _), ← integral_const_mul]`. Use `integral_congr_ae (Filter.Eventually.of_forall fun y => ?_)` and prove the remaining obligations. Simplify using `only [Function.comp, Set.indicator, Set.mem_setOf_eq, qEps, gauss, Fin.sum_univ_succAbove _ a, MeasurableEquiv.piFinSuccAbove_symm_apply, Fin.insertNthEquiv, Equiv.coe_fn_mk, Fin.insertNth_apply_same, Fin.insertNth_apply_succAbove, sgn, le_sub_iff_add_le']`.
+
+Apply the tactic sequence `split_ifs <;> simp [Real.exp_add, mul_comm]`.
+-/
 theorem cdf_succ {n : ℕ} (ε : Fin (n + 1) → Bool) (a : Fin (n + 1)) (t : ℝ) :
     cdf ε t = Real.pi * expAvg (cdf fun i => ε (a.succAbove i)) (sgn ℝ (ε a)) t := by
   have hp := (volume_preserving_piFinSuccAbove (fun _ : Fin (n + 1) => ℂ) a).symm
@@ -174,6 +247,9 @@ theorem cdf_succ {n : ℕ} (ε : Fin (n + 1) → Bool) (a : Fin (n + 1)) (t : �
     Fin.insertNth_apply_succAbove, sgn, le_sub_iff_add_le']
   split_ifs <;> simp [Real.exp_add, mul_comm]
 
+/- English proof (translation)
+Rewrite using `[funext (cdf_succ ε a)]`. Conclude with `(hasDerivAt_expAvg (cdf_mono _).measurable (abs_cdf_le _) (ε a) hc).const_mul _`.
+-/
 theorem hasDerivAt_cdf_succ {n : ℕ} (ε : Fin (n + 1) → Bool) (a : Fin (n + 1)) {t : ℝ}
     (hc : ContinuousAt (cdf fun i => ε (a.succAbove i)) t) :
     HasDerivAt (cdf ε) (Real.pi * (sgn ℝ (ε a) * (cdf (fun i => ε (a.succAbove i)) t -
@@ -181,6 +257,9 @@ theorem hasDerivAt_cdf_succ {n : ℕ} (ε : Fin (n + 1) → Bool) (a : Fin (n + 
   rw [funext (cdf_succ ε a)]
   exact (hasDerivAt_expAvg (cdf_mono _).measurable (abs_cdf_le _) (ε a) hc).const_mul _
 
+/- English proof (translation)
+Break down `ht.lt_or_gt with h | h` into its components or cases. Use `filter_upwards [Iio_mem_nhds h] with u (hu : u < 0)`. Simplify using `[cdf, qEps, not_le.2 h, not_le.2 hu]`. Use `filter_upwards [Ioi_mem_nhds h] with u (hu : 0 < u)`. Simplify using `[cdf, qEps, h.le, hu.le]`.
+-/
 theorem cdf_zero_eventually (ε : Fin 0 → Bool) {t : ℝ} (ht : t ≠ 0) : cdf ε =ᶠ[nhds t] fun _ => cdf ε t := by
   rcases ht.lt_or_gt with h | h
   · filter_upwards [Iio_mem_nhds h] with u (hu : u < 0)
@@ -188,10 +267,16 @@ theorem cdf_zero_eventually (ε : Fin 0 → Bool) {t : ℝ} (ht : t ≠ 0) : cdf
   · filter_upwards [Ioi_mem_nhds h] with u (hu : 0 < u)
     simp [cdf, qEps, h.le, hu.le]
 
+/- English proof (translation)
+The claim follows from `| 0, ε, _, ht => (differentiableAt_const _).congr_of_eventuallyEq (cdf_zero_eventually ε ht) | _ + 1, ε, _, ht => (hasDerivAt_cdf_succ ε 0 (differentiableAt_cdf _ ht).continuousAt).differentiableAt`.
+-/
 theorem differentiableAt_cdf : ∀ {n : ℕ} (ε : Fin n → Bool) {t : ℝ}, t ≠ 0 → DifferentiableAt ℝ (cdf ε) t
   | 0, ε, _, ht => (differentiableAt_const _).congr_of_eventuallyEq (cdf_zero_eventually ε ht)
   | _ + 1, ε, _, ht => (hasDerivAt_cdf_succ ε 0 (differentiableAt_cdf _ ht).continuousAt).differentiableAt
 
+/- English proof (translation)
+The claim follows from `| 0, ε => (continuousOn_const (c := (0 : ℝ))).congr fun t ht => by show deriv (cdf ε) t = 0 rw [(cdf_zero_eventually ε ht).deriv_eq]; simp | n + 1, ε => by have hc : ∀ t : ℝ, t ≠ 0 → ContinuousAt (cdf fun i => ε ((0 : Fin (n + 1)).succAbove i)) t := fun t ht => (differentiableAt_ …`.
+-/
 theorem continuousOn_gaussDens : ∀ {n : ℕ} (ε : Fin n → Bool), ContinuousOn (gaussDens ε) {β | β ≠ 0}
   | 0, ε => (continuousOn_const (c := (0 : ℝ))).congr fun t ht => by
       show deriv (cdf ε) t = 0
@@ -204,6 +289,11 @@ theorem continuousOn_gaussDens : ∀ {n : ℕ} (ε : Fin n → Bool), Continuous
       exact continuousAt_const.mul (continuousAt_const.mul ((hc t ht).sub
         (hasDerivAt_expAvg (cdf_mono _).measurable (abs_cdf_le _) (ε 0) (hc t ht)).continuousAt))
 
+/- English proof (translation)
+Use `⟨fun β hβ => ⟨(differentiableAt_cdf ε hβ).hasDerivAt, (cdf_mono ε).deriv_nonneg⟩, continuousOn_gaussDens ε, ?_⟩` and prove the remaining obligations. Introduce and unpack `s ⟨a, rfl⟩`. Take `_ | n` from `n`. Conclude with `a.elim0`. Apply the tactic sequence `have hs : sgn ℝ (ε a) ≠ 0 := by unfold sgn; split_ifs <;> simp`.
+
+Use `show 0 < deriv (cdf ε) _`. Rewrite using `[(hasDerivAt_cdf_succ ε a (differentiableAt_cdf _ hs).continuousAt).deriv]`. Conclude with `mul_pos Real.pi_pos (expAvg_pos (cdf_mono _) (abs_cdf_le _) _ (cdf_lt _))`.
+-/
 theorem gaussDens_spec (n : ℕ) (ε : Fin n → Bool) :
     (∀ β : ℝ, β ≠ 0 → HasDerivAt (fun t : ℝ => ∫ y in {y : Fin n → ℂ | qEps ε y ≤ t}, gauss y) (gaussDens ε β) β ∧
       0 ≤ gaussDens ε β) ∧ ContinuousOn (gaussDens ε) {β | β ≠ 0} ∧

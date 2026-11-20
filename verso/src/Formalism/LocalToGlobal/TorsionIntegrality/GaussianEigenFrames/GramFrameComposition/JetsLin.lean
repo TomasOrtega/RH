@@ -13,10 +13,16 @@ open Formalism.DworkPowerSeriesWeights (JetsIntegral)
 
 namespace JL
 
+/- English proof (translation)
+The claim follows from `IsUltrametricDist.norm_sum_le_of_forall_le_of_nonneg zero_le_one h`.
+-/
 theorem norm_sum_le_one {K : Type} [NormedField K] [IsUltrametricDist K] {α : Type} (s : Finset α)
     (f : α → K) (h : ∀ i ∈ s, ‖f i‖ ≤ 1) : ‖∑ i ∈ s, f i‖ ≤ 1 :=
   IsUltrametricDist.norm_sum_le_of_forall_le_of_nonneg zero_le_one h
 
+/- English proof (translation)
+Rewrite using `[norm_mul]`. Conclude with `mul_le_one₀ ha (norm_nonneg _) hb`.
+-/
 theorem norm_mul_le_one {K : Type} [NormedField K] {a b : K} (ha : ‖a‖ ≤ 1) (hb : ‖b‖ ≤ 1) :
     ‖a * b‖ ≤ 1 := by
   rw [norm_mul]
@@ -26,6 +32,13 @@ section Lin
 
 variable {K : Type} [Field K]
 
+/- English proof (translation)
+Establish `e : ∀ i : n, linSub B (∑ j, MvPowerSeries.C (A i j) * MvPowerSeries.X j) = ∑ x, MvPowerSeries.C (∑ j, A i j * B j x) * MvPowerSeries.X x`. Introduce `i`. Rewrite using `[← linSubHom_apply, map_sum]`. Simplify using `only [map_mul, linSubHom_apply, linSub_C, linSub_X, map_sum, Finset.mul_sum, Finset.sum_mul]`. Rewrite using `[Finset.sum_comm]`.
+
+Use `Finset.sum_congr rfl fun x _ => Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[mul_assoc]`. Unfold `linSub at e ⊢`. Rewrite using `[MvPowerSeries.subst_comp_subst_apply (hasSubst_lin A) (hasSubst_lin B)]`. Use `congr 1`.
+
+Use function extensionality and compare the values at `i`. Conclude with `e i`.
+-/
 theorem linSub_linSub {n m p : Type} [Fintype n] [Fintype m] [Fintype p] (A : n → m → K)
     (B : m → p → K) (f : MvPowerSeries n K) :
     linSub B (linSub A f) = linSub (fun i x => ∑ j, A i j * B j x) f := by
@@ -44,6 +57,9 @@ theorem linSub_linSub {n m p : Type} [Fintype n] [Fintype m] [Fintype p] (A : n 
   funext i
   exact e i
 
+/- English proof (translation)
+The claim follows from `MvPowerSeries.hasSubst_of_constantCoeff_zero fun _ => MvPowerSeries.constantCoeff_X _`.
+-/
 theorem hasSubst_block {n B : Type} [Finite n] (k : B) :
     MvPowerSeries.HasSubst (fun i : n => (MvPowerSeries.X (k, i) : MvPowerSeries (B × n) K)) :=
   MvPowerSeries.hasSubst_of_constantCoeff_zero fun _ => MvPowerSeries.constantCoeff_X _
@@ -51,6 +67,11 @@ theorem hasSubst_block {n B : Type} [Finite n] (k : B) :
 def four {n ν : Type} (M : n → ν → K) : Fin 4 × n → Fin 4 × ν → K :=
   fun w x => if w.1 = x.1 then M w.2 x.2 else 0
 
+/- English proof (translation)
+Rewrite using `[Fintype.sum_prod_type, Finset.sum_eq_single k]`. Simplify using `[four]`. Introduce `b _ hb`. Simplify using `[four, Ne.symm hb]`. Introduce `h`.
+
+Conclude with `absurd (Finset.mem_univ k) h`.
+-/
 theorem four_form {n ν : Type} [Fintype ν] (M : n → ν → K) (k : Fin 4) (i : n) :
     (∑ y, MvPowerSeries.C (four M (k, i) y) * MvPowerSeries.X y : MvPowerSeries (Fin 4 × ν) K) =
       ∑ x, MvPowerSeries.C (M i x) * MvPowerSeries.X (k, x) := by
@@ -61,6 +82,11 @@ theorem four_form {n ν : Type} [Fintype ν] (M : n → ν → K) (k : Fin 4) (i
   · intro h
     exact absurd (Finset.mem_univ k) h
 
+/- English proof (translation)
+Unfold `linSub inBlock`. Rewrite using `[MvPowerSeries.subst_comp_subst_apply (hasSubst_block k) (hasSubst_lin (four M)), MvPowerSeries.subst_comp_subst_apply (hasSubst_lin M) (hasSubst_block k)]`. Use `congr 1`. Use function extensionality and compare the values at `i`. Rewrite using `[MvPowerSeries.subst_X (hasSubst_lin (four M)), four_form, ← MvPowerSeries.coe_substAlgHom (hasSubst_block k), map_sum]`.
+
+Use `Finset.sum_congr rfl fun x _ => ?_` and prove the remaining obligations. Rewrite using `[map_mul, MvPowerSeries.coe_substAlgHom, MvPowerSeries.subst_C, MvPowerSeries.subst_X (hasSubst_block k)]`.
+-/
 theorem linSub_inBlock {n ν : Type} [Fintype n] [Fintype ν] (M : n → ν → K) (k : Fin 4)
     (T : MvPowerSeries n K) : linSub (four M) (inBlock k T) = inBlock k (linSub M T) := by
   unfold linSub inBlock
@@ -74,6 +100,9 @@ theorem linSub_inBlock {n ν : Type} [Fintype n] [Fintype ν] (M : n → ν → 
   rw [map_mul, MvPowerSeries.coe_substAlgHom, MvPowerSeries.subst_C,
     MvPowerSeries.subst_X (hasSubst_block k)]
 
+/- English proof (translation)
+Unfold `tens4`. Rewrite using `[← linSubHom_apply, map_prod]`. Conclude with `Finset.prod_congr rfl fun k _ => by rw [linSubHom_apply, linSub_inBlock]`.
+-/
 theorem linSub_tens4 {n ν : Type} [Fintype n] [Fintype ν] (M : n → ν → K)
     (T : MvPowerSeries n K) : linSub (four M) (tens4 T) = tens4 (linSub M T) := by
   unfold tens4
@@ -82,6 +111,9 @@ theorem linSub_tens4 {n ν : Type} [Fintype n] [Fintype ν] (M : n → ν → K)
 
 end Lin
 
+/- English proof (translation)
+Express the relevant statement in the definitionally equal form `‖c‖ ≤ 1`. Establish `h' : ‖c ^ 4‖ ≤ 1` using `h`. Rewrite `h'` using `[norm_pow]`. Conclude with `(pow_le_one_iff_of_nonneg (norm_nonneg c) (by norm_num)).1 h'`.
+-/
 theorem fourth_root_mem {K : Type} [NormedField K] [IsUltrametricDist K] (c : K)
     (h : c ^ 4 ∈ unitBall K) : c ∈ unitBall K := by
   change ‖c‖ ≤ 1
@@ -93,6 +125,23 @@ end JL
 
 open JL
 
+/- English proof (translation)
+Introduce `K _ _ m n J X _ _ _ γ D V W th0 q0 A hD hq hA hγ hG`. Use `⟨fun w x => ∑ j, D w (x.1, j) * A j x.2, fun x y => ∑ j, ∑ k, A j x.2 * q0 (x.1, j) (y.1, k) * A k y.2, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `w x`. Conclude with `norm_sum_le_one _ _ fun j _ => norm_mul_le_one (hD _ _) (hA _ _)`. Introduce `x y`.
+
+Conclude with `norm_sum_le_one _ _ fun j _ => norm_sum_le_one _ _ fun k _ => norm_mul_le_one (norm_mul_le_one (hA _ _) (hq _ _)) (hA _ _)`. Introduce `a i b x`. Establish `e : ∑ w, γ (a, i) w * ∑ j, D w (b, j) * A j x = ∑ j, (∑ w, γ (a, i) w * D w (b, j)) * A j x`. Simplify using `only [Finset.mul_sum, Finset.sum_mul]`. Rewrite using `[Finset.sum_comm]`.
+
+Use `Finset.sum_congr rfl fun j _ => Finset.sum_congr rfl fun w _ => ?_` and prove the remaining obligations. Rewrite using `[mul_assoc]`. Express the relevant statement in the definitionally equal form `∑ w, γ (a, i) w * ∑ j, D w (b, j) * A j x = _`. Rewrite using `[e]`. Simplify using `only [hγ]`.
+
+Use `split_ifs with h`. Both sides reduce to the same expression. Simplify using the standard rewrite rules. Introduce `x y`. Establish `e : ∑ w, (∑ j, D w (x.1, j) * A j x.2) * (∑ k, D w (y.1, k) * A k y.2) = ∑ j, ∑ k, A j x.2 * (∑ w, D w (x.1, j) * D w (y.1, k)) * A k y.2`.
+
+Establish `e1 : ∀ w, (∑ j, D w (x.1, j) * A j x.2) * (∑ k, D w (y.1, k) * A k y.2) = ∑ j, ∑ k, (D w (x.1, j) * A j x.2) * (D w (y.1, k) * A k y.2)` using `fun w => Finset.sum_mul_sum _ _ _ _`. Establish `e2 : ∀ j k, A j x.2 * (∑ w, D w (x.1, j) * D w (y.1, k)) * A k y.2 = ∑ w, (D w (x.1, j) * A j x.2) * (D w (y.1, k) * A k y.2)` using `fun j k => by`. Rewrite using `[Finset.mul_sum, Finset.sum_mul]`. Conclude with `Finset.sum_congr rfl fun w _ => by ring`. Simplify using `only [e1, e2]`.
+
+Rewrite using `[Finset.sum_comm]`. Conclude with `Finset.sum_congr rfl fun j _ => Finset.sum_comm`. Express the relevant statement in the definitionally equal form `∑ w, (∑ j, D w (x.1, j) * A j x.2) * (∑ k, D w (y.1, k) * A k y.2) = _`. Rewrite using `[e]`. Simplify using `only [hG, Finset.mul_sum]`.
+
+Use `split_ifs with h`. Rewrite using `[← Finset.sum_add_distrib]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[← Finset.sum_add_distrib]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations.
+
+Expand and normalize the polynomial expressions, which then agree. Rewrite using `[zero_add]`. Use `Finset.sum_congr rfl fun j _ => Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem FrameCompose_proof : FrameCompose := by
   intro K _ _ m n J X _ _ _ γ D V W th0 q0 A hD hq hA hγ hG
   refine ⟨fun w x => ∑ j, D w (x.1, j) * A j x.2,
@@ -141,6 +190,13 @@ theorem FrameCompose_proof : FrameCompose := by
       refine Finset.sum_congr rfl fun j _ => Finset.sum_congr rfl fun k _ => ?_
       ring
 
+/- English proof (translation)
+Introduce `K _ _ _ l linv ph hlp hu hph hj h2 n _ T γ G hG hT ν _ M Cm hC hM`. Take `⟨J, hJ, hJe⟩` from `shape_orthogonal_holds K l linv ph 1 hlp hu hph (InflationOneCocycles.shapeAt_one hlp hph hj) (Fin 4 × n) (fun _ => (1 : K)) (fun _ => by rw [norm_one]) G hG`. Establish `hq : JetsIn (unitBall K) (MvPowerSeries.C (jet l ph 2 / 2) * sqSum (fun _ : Fin 4 × n => (1 : K)))` using `InflationOneCocycles.jetsIn_half_sqSum (hj 2 (by norm_num)) fun _ => (unitBall K).one_mem`. Establish `c0 : MvPowerSeries.constantCoeff (-(MvPowerSeries.C (jet l ph 2 / 2) * sqSum (fun _ : Fin 4 × n => (1 : K)))) = 0`. Rewrite using `[map_neg, map_mul, cc_sqSum, mul_zero, neg_zero]`.
+
+Establish `k1 : JetsIn (unitBall K) (linSub γ (tens4 T))`. Rewrite using `[hT, hJe]`. Conclude with `jetsIn_mul (jetsIn_mvExp c0 (jetsIn_neg hq)) hJ`. Establish `k2 : JetsIn (unitBall K) (linSub Cm (linSub γ (tens4 T)))` using `jetsIn_linSub hC k1`. Establish `e : (fun (w : Fin 4 × n) (x : Fin 4 × ν) => ∑ w', γ w w' * Cm w' x) = four M`.
+
+Use function extensionality and compare the values at `w x`. Conclude with `hM w.1 w.2 x.1 x.2`. Rewrite `k2` using `[linSub_linSub, e, linSub_tens4]`. Conclude with `jets_fourth_holds K (unitBall K) ν (linSub M T) fourth_root_mem k2`.
+-/
 theorem JetsLin_proof : JetsLin := by
   intro K _ _ _ l linv ph hlp hu hph hj h2 n _ T γ G hG hT ν _ M Cm hC hM
   obtain ⟨J, hJ, hJe⟩ := shape_orthogonal_holds K l linv ph 1 hlp hu hph (InflationOneCocycles.shapeAt_one hlp hph hj)

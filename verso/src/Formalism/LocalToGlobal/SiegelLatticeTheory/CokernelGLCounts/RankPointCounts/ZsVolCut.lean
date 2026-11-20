@@ -45,6 +45,11 @@ def ProdE (C : PairVal.MatR D → PairVal.MatR D → Subgroup (PairVal.GLR D)) :
       ∏ᶠ p, wtL M δ (D.mem u).A.T (D.mem u').A.T p w
         (CntLocal.ZZP (M := M) δ u u' p (ZhatL (lf D F0) F') * sgnP p)
 
+/- English proof (translation)
+Introduce `hA hT hR γ w F' L U hE hN`. Establish `hH : HypE M δ u u' F0 what₂ γ w F' L U` using `⟨hA, hT, hR, hP, hE, hN⟩`. Take `⟨hle, hidx, hne⟩` from `h1 γ w F' L U hH`. Establish `hne' : (PairVal.stabAut D u u' F0 what₂ γ F' L).relIndex (C (ZhatL (lf D F0) F') L) ≠ 0`. Rewrite using `[hidx]`.
+
+Conclude with `hne`. Establish `hco` using `Formalism.L2.SG.Pf.IndexCocycleOrbits.idxCocycle (PairVal.GLR D) (PairVal.stabInt D u u' δ M w) (PairVal.stabAut D u u' F0 what₂ γ F' L) (C (ZhatL (lf D F0) F') L) hle hne'`. Establish `hv : PairVal.volIdx D u u' F0 what₂ δ M γ w F' L = IdxRatio (PairVal.stabInt D u u' δ M w) (PairVal.stabAut D u u' F0 what₂ γ F' L)` using `by rfl`. Rewrite using `[hv, hco, hidx, h2 γ w F' L U hH]`.
+-/
 theorem volIdxProd_of (hP : PrimeHyp D u (Tu D u')) (C : PairVal.MatR D → PairVal.MatR D → Subgroup (PairVal.GLR D))
     (h1 : OrbStabE M δ u u' F0 what₂ C) (h2 : ProdE M δ u u' F0 what₂ C) : VolIdxProd M δ u u' F0 what₂ := by
   intro hA hT hR γ w F' L U hE hN

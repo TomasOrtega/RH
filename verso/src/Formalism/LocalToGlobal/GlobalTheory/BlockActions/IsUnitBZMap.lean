@@ -8,6 +8,11 @@ open MvPolynomial Formalism.BasicNotions Formalism.MainNotions.product_first_zer
 
 variable {D : D7} {u : D.what₂.Word} {Ch : ℕ → Type} {chOf : ∀ i, (D.mem u).C.cls i → Ch i}
 
+/- English proof (translation)
+Use function extensionality and compare the values at `τ`. Apply `RingHom.ext` to reduce the goal to its premises. Introduce `x`. Use `show D.what₂.embLL (D.embE (D.host.sigmaOf (D.eTau τ : D.R.GG) x)) = D.host.φ₀ (D.host.sigmaOf (D.eTau τ : D.R.GG) x)`. Rewrite using `[← D.embE_φ₀]`.
+
+Both sides reduce to the same expression.
+-/
 theorem embS_embLLF : embS D D.what₂.embLL = Formalism.L2.Forms.embT D := by
   funext τ
   apply RingHom.ext
@@ -17,6 +22,13 @@ theorem embS_embLLF : embS D D.what₂.embLL = Formalism.L2.Forms.embT D := by
   rw [← D.embE_φ₀]
   rfl
 
+/- English proof (translation)
+Take `⟨⟨oN, -⟩, -⟩` from `framesAt D u Ch chOf Tf D.what₂.embLL`. Rewrite `oN` using `[embS_embLLF]`. Establish `hx` using `((Tf.val D.R.m le_rfl (Or.inr rfl)).rat ((D.fm u).emb D.R.m x)).1 ⟨x, rfl⟩`. Take `⟨P1, hP1, hP1z⟩` from `hx.2 c'`. Establish `hP1e : P1 = MvPolynomial.map D.what₂.embLL (Pc c')`.
+
+Apply `Formalism.L2.Col.fnOf_injective _ _ 1 (fun τ => by simp) oN` to reduce the goal to its premises. Use function extensionality and compare the values at `y`. Take `⟨z, rfl⟩` from `(Tf.val D.R.m le_rfl (Or.inr rfl)).eY.surjective y`. Rewrite using `[← hP1z, hPc]`. Rewrite using `[← hP1e]`.
+
+Conclude with `hP1`.
+-/
 theorem pc_rat (Tf : FormsTiedSym D u Ch chOf) (x : Vl D u D.R.m)
     (Pc : (D.mem u).C.cls D.R.m → MvPolynomial (D.what₂.Tau × Fin (D.R.N D.R.m) × Fin (D.R.N D.R.m)) D.what₂.LL)
     (hPc : ∀ c z, (D.fm u).emb D.R.m x c z = fnOf _ (shiftOf (lamT u D.R.m)) 1 (MvPolynomial.map D.what₂.embLL (Pc c))
@@ -34,6 +46,9 @@ theorem pc_rat (Tf : FormsTiedSym D u Ch chOf) (x : Vl D u D.R.m)
   rw [← hP1e]
   exact hP1
 
+/- English proof (translation)
+Use `(bZ_isUnitS Tf).map (Formalism.L2.Forms.embT D τ)` as an intermediate fact. Rewrite `this` using `[RingHom.map_det]`. Conclude with `this`.
+-/
 theorem isUnit_bZ_map (Tf : FormsTiedSym D u Ch chOf) (τ : D.what₂.Tau) :
     IsUnit ((bZ u Tf.til.z0).map (Formalism.L2.Forms.embT D τ)).det := by
   have := (bZ_isUnitS Tf).map (Formalism.L2.Forms.embT D τ)
@@ -42,6 +57,23 @@ theorem isUnit_bZ_map (Tf : FormsTiedSym D u Ch chOf) (τ : D.what₂.Tau) :
 
 set_option maxHeartbeats 1000000 in
 
+/- English proof (translation)
+Establish `hB` using `bZ_isUnitS Tf`. Establish `hmZ` using `mZ_isUnit hB`. Take `⟨-, ⟨oP, -⟩⟩` from `framesAt D u Ch chOf Tf D.what₂.embLL`. Rewrite `oP` using `[embS_embLLF]`. Establish `hP0 : MvPolynomial.map D.what₂.embLL (Pc ((D.fm u).til c)) ∈ Formalism.L2.Forms.CSpan ((D.fm u).lam D.R.m)` using `map_mem_CSpan_of_rat _ _ (pc_rat Tf x Pc hPc _) D.what₂.embLL`.
+
+Set `ginv : GL (Fin (D.R.N D.R.m)) D.host.E` to `((Tf.til.ga c).1)⁻¹`. Set `M' : D.what₂.Tau → Matrix (Fin (D.R.N D.R.m)) (Fin (D.R.N D.R.m)) ℂ` to `atInf (Formalism.L2.Forms.embT D) (ginv : Matrix _ _ D.host.E)`. Set `A0 : D.what₂.Tau → Matrix (Fin (D.R.N D.R.m)) (Fin (D.R.N D.R.m)) ℂ` to `fun τ => M' τ * (mZ u Tf.til.z0 τ)⁻¹`. Establish `hA0 : ∀ τ, (AL Tf c τ).map D.what₂.embLL = A0 τ`. Introduce `τ`.
+
+Rewrite using `[AL_map, embS_embLLF]`. Use `show ((ginv : Matrix _ _ D.host.E) * bZ u Tf.til.z0).map (Formalism.L2.Forms.embT D τ) = (ginv : Matrix _ _ D.host.E).map (Formalism.L2.Forms.embT D τ) * (((bZ u Tf.til.z0)⁻¹).map (Formalism.L2.Forms.embT D τ))⁻¹`. Rewrite using `[Matrix.map_mul, Formalism.L2.Col.map_inv_matrix, Matrix.nonsing_inv_nonsing_inv _ (isUnit_bZ_map Tf τ)]`. Establish `hA0u : ∀ τ, IsUnit (A0 τ).det` using `fun τ => by rw [← hA0]; exact isUnit_AL_map Tf c _ τ`. Establish `hmapPL : MvPolynomial.map D.what₂.embLL (PL Tf c (Pc ((D.fm u).til c))) = (∏ τ, (A0 τ).det ^ shiftOf (lamT u D.R.m) τ) • blkRow A0 (MvPolynomial.map D.what₂.embLL (Pc ((D.fm u).til c)))`.
+
+Rewrite using `[map_PL]`. Simplify using `only [hA0]`. Use `set χ : ℂ := ((((Tf.cls D.R.m le_rfl (Or.inr rfl)).lev.chi (Tf.tilAd.ka c) : ℂˣ) : ℂ)) with hχ`. Establish `hPbmem : χ⁻¹ • MvPolynomial.map D.what₂.embLL (PL Tf c (Pc ((D.fm u).til c))) ∈ Formalism.L2.Forms.CSpan ((D.fm u).lam D.R.m)`. Rewrite using `[hmapPL]`.
+
+Conclude with `Submodule.smul_mem _ _ (Submodule.smul_mem _ _ (blkRow_mem_CSpan _ A0 hA0u _ hP0))`. Establish `hPb : ∀ s, Tf.eWz ((D.mem u).P.evz ((D.fm u).emb D.R.m x)) c s = fnOf _ (shiftOf (lamT u D.R.m)) (mZ u Tf.til.z0) (χ⁻¹ • MvPolynomial.map D.what₂.embLL (PL Tf c (Pc ((D.fm u).til c)))) ((Tf.val D.R.m le_rfl (Or.inr rfl)).eY s)`. Introduce `s`. Rewrite using `[Tf.evz ((D.fm u).emb D.R.m x) c s ((Tf.val D.R.m le_rfl (Or.inr rfl)).eY.symm (((Tf.val D.R.m le_rfl (Or.inr rfl)).eY s).tr M' (isUnit_det_atInf (Formalism.L2.Forms.embT D) ginv)))]`. Rewrite using `[hPc, Equiv.apply_symm_apply, fnOf_trG]`.
+
+Establish `e1 : (fun τ => (1 : D.what₂.Tau → Matrix (Fin (D.R.N D.R.m)) (Fin (D.R.N D.R.m)) ℂ) τ * M' τ) = M'`. Use function extensionality and compare the values at `fun τ => by simp`. Rewrite using `[e1, fnOf_change _ _ (mZ u Tf.til.z0) M' hmZ, hmapPL]`. Simplify using `only [map_smul, LinearMap.smul_apply, Pi.smul_apply, smul_eq_mul, Units.val_inv_eq_inv_val]`. Both sides reduce to the same expression.
+
+Introduce `τ`. Simplify using `only [Equiv.apply_symm_apply]`. Use `show ((Tf.val D.R.m le_rfl (Or.inr rfl)).eY s).1 τ = atInf (Formalism.L2.Forms.embT D) (Tf.til.ga c).1.1 τ * (M' τ * ((Tf.val D.R.m le_rfl (Or.inr rfl)).eY s).1 τ)`. Rewrite using `[← Matrix.mul_assoc, atInf_mul_inv, Matrix.one_mul]`. Establish `h3` using `hL hB ((D.mem u).P.evz ((D.fm u).emb D.R.m x)) c _ hPbmem hPb`.
+
+Establish `h4 : fnOf (gramC (gramP D) (Formalism.L2.Forms.embT D)) (shiftOf (sgT u)) 1 (MvPolynomial.map D.what₂.embLL (Qc c)) = fnOf (gramC (gramP D) (Formalism.L2.Forms.embT D)) (shiftOf (sgT u)) 1 (Formalism.L2.Ker.brTen D u (χ⁻¹ • MvPolynomial.map D.what₂.embLL (PL Tf c (Pc ((D.fm u).ti …`. Rewrite using `[← hQc c, (D.fm u).PtL_spec h x, h3]`. Establish `h5` using `Formalism.L2.Col.fnOf_injective _ _ 1 (fun τ => by simp) oP h4`. Rewrite using `[h5, map_smul, map_brTenL]`.
+-/
 theorem base_eq (Tf : FormsTiedSym D u Ch chOf) (hL : Formalism.L2.Rows.LowerMapTieS Tf) (h : (D.fm u).PRat) (x : Vl D u D.R.m)
     (Pc : (D.mem u).C.cls D.R.m → MvPolynomial (D.what₂.Tau × Fin (D.R.N D.R.m) × Fin (D.R.N D.R.m)) D.what₂.LL)
     (hPc : ∀ c z, (D.fm u).emb D.R.m x c z = fnOf _ (shiftOf (lamT u D.R.m)) 1 (MvPolynomial.map D.what₂.embLL (Pc c))

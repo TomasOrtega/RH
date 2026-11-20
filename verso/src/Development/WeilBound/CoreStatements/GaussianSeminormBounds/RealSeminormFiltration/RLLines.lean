@@ -11,6 +11,21 @@ section Banach
 
 variable {𝔸 : Type} [NormedRing 𝔸] [NormedAlgebra ℝ 𝔸] [CompleteSpace 𝔸]
 
+/- English proof (translation)
+Set `C : ℝ → 𝔸` to `fun x => ∫ s in (0 : ℝ)..x, A s`. Establish `hC : ∀ x, HasDerivAt C (A x) x` using `fun x => intervalIntegral.integral_hasDerivAt_right (hc.intervalIntegrable _ _) hc.stronglyMeasurable.stronglyMeasurableAtFilter hc.continuousAt`. Establish `hC0 : C 0 = 0` using `by simp [C]`. Choose the witnesses or unpack the hypotheses as in `⟨ε, hε, hu⟩ : ∃ ε : ℝ, ε ≠ 0 ∧ IsUnit (C ε) := by`. Establish `hs` using `hasDerivAt_iff_tendsto_slope.1 (hC 0)`.
+
+Rewrite `hs` using `[h0]`. Establish `hU : ∀ᶠ x in nhdsWithin (0 : ℝ) {0}ᶜ, IsUnit (slope C 0 x)` using `hs.eventually (Units.isOpen.mem_nhds isUnit_one)`. Establish `hne : ∀ᶠ x in nhdsWithin (0 : ℝ) {0}ᶜ, x ≠ 0` using `eventually_mem_nhdsWithin`. Take `⟨x, hx, hx0⟩` from `(hU.and hne).exists`. Use `⟨x, hx0, ?_⟩` and prove the remaining obligations.
+
+Establish `e : C x = x • slope C 0 x`. Simplify using `only [slope, hC0, sub_zero, vsub_eq_sub, smul_smul]`. Rewrite using `[mul_inv_cancel₀ hx0, one_smul]`. Rewrite using `[e]`. Establish `hxu : IsUnit (algebraMap ℝ 𝔸 x)` using `(IsUnit.mk0 x hx0).map (algebraMap ℝ 𝔸)`.
+
+Rewrite using `[Algebra.smul_def]`. Conclude with `hxu.mul hx`. Take `⟨u, hu⟩` from `hu`. Establish `key : ∀ t, A t * C ε = C (t + ε) - C t` using `fun t => by`. Establish `e1 : A t * C ε = ∫ s in (0 : ℝ)..ε, A t * A s` using `((ContinuousLinearMap.mul ℝ 𝔸 (A t)).intervalIntegral_comp_comm (hc.intervalIntegrable _ _)).symm`.
+
+Establish `e2 : (∫ s in (0 : ℝ)..ε, A t * A s) = ∫ s in t..(t + ε), A s`. Use `intervalIntegral.integral_comp_add_left (a := 0) (b := ε) A t` as an intermediate fact. Simplify using `only [add_zero] at this`. Rewrite using `[← this]`. Conclude with `intervalIntegral.integral_congr fun s _ => (hm t s).symm`.
+
+Rewrite using `[e1, e2]`. Conclude with `(intervalIntegral.integral_interval_sub_left (hc.intervalIntegrable _ _) (hc.intervalIntegrable _ _)).symm`. Establish `hA : A = fun t => (C (t + ε) - C t) * (↑u⁻¹ : 𝔸)`. Use function extensionality and compare the values at `t`. Rewrite using `[← key, ← hu, mul_assoc, Units.mul_inv, mul_one]`.
+
+Establish `hd : HasDerivAt (fun t => C (t + ε) - C t) (A (0 + ε) - A 0) 0` using `((hC (0 + ε)).comp_add_const 0 ε).sub (hC 0)`. Conclude with `⟨_, (hd.mul_const (↑u⁻¹ : 𝔸)).congr_of_eventuallyEq (Filter.Eventually.of_forall fun t => congrFun hA t)⟩`.
+-/
 theorem hasDerivAt_oneParam (A : ℝ → 𝔸) (hc : Continuous A) (h0 : A 0 = 1)
     (hm : ∀ s t, A (s + t) = A s * A t) : ∃ Y : 𝔸, HasDerivAt A Y 0 := by
   let C : ℝ → 𝔸 := fun x => ∫ s in (0 : ℝ)..x, A s
@@ -51,6 +66,13 @@ theorem hasDerivAt_oneParam (A : ℝ → 𝔸) (hc : Continuous A) (h0 : A 0 = 1
     ((hC (0 + ε)).comp_add_const 0 ε).sub (hC 0)
   exact ⟨_, (hd.mul_const (↑u⁻¹ : 𝔸)).congr_of_eventuallyEq (Filter.Eventually.of_forall fun t => congrFun hA t)⟩
 
+/- English proof (translation)
+Set `: NormedAlgebra ℚ 𝔸` to `NormedAlgebra.restrictScalars ℚ ℝ 𝔸`. Establish `hd : ∀ s, HasDerivAt A (A s * Y) s` using `fun s => by`. Establish `h1 : HasDerivAt (fun x => A (x - s)) Y s`. Establish `: HasDerivAt A Y (s - s)` using `by rw [sub_self]; exact hY`. Conclude with `this.comp_sub_const s s`.
+
+Use `(h1.const_mul (A s)).congr_of_eventuallyEq (Filter.Eventually.of_forall fun x => ?_)` and prove the remaining obligations. Use `show A x = A s * A (x - s)`. Rewrite using `[← hm, add_sub_cancel]`. Establish `hf : ∀ s, HasDerivAt (fun x : ℝ => A x * NormedSpace.exp (x • (-Y))) 0 s` using `fun s => by`. Use `(hd s).mul (hasDerivAt_exp_smul_const' (𝕂 := ℝ) (-Y) s)` as an intermediate fact.
+
+Conclude with `this.congr_deriv (by simp [mul_assoc])`. Establish `hk` using `is_const_of_deriv_eq_zero (fun s => (hf s).differentiableAt) (fun s => (hf s).deriv) t 0`. Simplify using `only [zero_smul, NormedSpace.exp_zero, h0, mul_one] at hk`. Establish `hc : Commute (t • (-Y)) (t • Y)` using `((Commute.refl Y).neg_left.smul_left t).smul_right t`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem eq_exp_of_hasDerivAt (A : ℝ → 𝔸) (h0 : A 0 = 1) (hm : ∀ s t, A (s + t) = A s * A t) {Y : 𝔸}
     (hY : HasDerivAt A Y 0) (t : ℝ) : A t = NormedSpace.exp (t • Y) := by
   let : NormedAlgebra ℚ 𝔸 := NormedAlgebra.restrictScalars ℚ ℝ 𝔸
@@ -70,6 +92,11 @@ theorem eq_exp_of_hasDerivAt (A : ℝ → 𝔸) (h0 : A 0 = 1) (hm : ∀ s t, A 
   calc A t = A t * NormedSpace.exp (t • (-Y) + t • Y) := by simp
     _ = NormedSpace.exp (t • Y) := by rw [NormedSpace.exp_add_of_commute hc, ← mul_assoc, hk, one_mul]
 
+/- English proof (translation)
+Take `⟨Y, hY⟩` from `hasDerivAt_oneParam A hc h0 hm`. Use `⟨Y, ?_, eq_exp_of_hasDerivAt A h0 hm hY⟩` and prove the remaining obligations. Establish `h1` using `(hY.star.mul_const J).mul hY`. Establish `h2 : HasDerivAt (fun t => star (A t) * J * A t) 0 0`. Simplify using `only [hJ]`.
+
+Conclude with `hasDerivAt_const _ _`. Establish `h3` using `h1.unique h2`. Simplify `h3` using `[h0]`.
+-/
 theorem exists_gen [StarRing 𝔸] [ContinuousStar 𝔸] [StarModule ℝ 𝔸] (A : ℝ → 𝔸) (hc : Continuous A) (h0 : A 0 = 1)
     (hm : ∀ s t, A (s + t) = A s * A t) (J : 𝔸) (hJ : ∀ t, star (A t) * J * A t = J) :
     ∃ Y : 𝔸, star Y * J + J * Y = 0 ∧ ∀ t : ℝ, A t = NormedSpace.exp (t • Y) := by
@@ -89,6 +116,9 @@ section Mat
 variable {ι : Type} [Fintype ι] [DecidableEq ι]
 
 attribute [local instance] Matrix.linftyOpNormedRing Matrix.linftyOpNormedAlgebra in
+/- English proof (translation)
+Establish `: CompleteSpace (Matrix ι ι ℂ)` using `FiniteDimensional.complete ℝ _`. Establish `: @ContinuousStar (Matrix ι ι ℂ) PseudoMetricSpace.toUniformSpace.toTopologicalSpace _` using `⟨continuous_id.matrix_conjTranspose⟩`. Conclude with `exists_gen A hc h0 hm J hJ`.
+-/
 theorem exists_gen_matrix (A : ℝ → Matrix ι ι ℂ) (hc : Continuous A) (h0 : A 0 = 1)
     (hm : ∀ s t, A (s + t) = A s * A t) (J : Matrix ι ι ℂ) (hJ : ∀ t, (A t)ᴴ * J * A t = J) :
     ∃ Y : Matrix ι ι ℂ, Yᴴ * J + J * Y = 0 ∧ ∀ t : ℝ, A t = NormedSpace.exp (t • Y) := by
@@ -98,18 +128,30 @@ theorem exists_gen_matrix (A : ℝ → Matrix ι ι ℂ) (hc : Continuous A) (h0
   exact exists_gen A hc h0 hm J hJ
 
 attribute [local instance] Matrix.linftyOpNormedRing Matrix.linftyOpNormedAlgebra in
+/- English proof (translation)
+Establish `: CompleteSpace (Matrix ι ι ℂ)` using `FiniteDimensional.complete ℝ _`. Conclude with `continuous_iff_continuousAt.2 fun t => (hasDerivAt_exp_smul_const' (𝕂 := ℝ) Y t).continuousAt`.
+-/
 theorem continuous_exp_smul (Y : Matrix ι ι ℂ) : Continuous fun t : ℝ => NormedSpace.exp (t • Y) := by
   have : CompleteSpace (Matrix ι ι ℂ) := FiniteDimensional.complete ℝ _
   exact continuous_iff_continuousAt.2 fun t => (hasDerivAt_exp_smul_const' (𝕂 := ℝ) Y t).continuousAt
 
+/- English proof (translation)
+Rewrite using `[add_smul, Matrix.exp_add_of_commute _ _ (((Commute.refl Y).smul_left s).smul_right t)]`.
+-/
 theorem exp_add_smul (Y : Matrix ι ι ℂ) (s t : ℝ) :
     NormedSpace.exp ((s + t) • Y) = NormedSpace.exp (s • Y) * NormedSpace.exp (t • Y) := by
   rw [add_smul, Matrix.exp_add_of_commute _ _ (((Commute.refl Y).smul_left s).smul_right t)]
 
 attribute [local instance] Matrix.linftyOpNormedRing Matrix.linftyOpNormedAlgebra in
+/- English proof (translation)
+The claim follows from `SemiconjBy.exp_right (𝔸 := Matrix ι ι ℂ) h`.
+-/
 theorem semiconjBy_exp {J X Y : Matrix ι ι ℂ} (h : SemiconjBy J X Y) : J * NormedSpace.exp X = NormedSpace.exp Y * J :=
   SemiconjBy.exp_right (𝔸 := Matrix ι ι ℂ) h
 
+/- English proof (translation)
+Establish `hs : SemiconjBy J (-Y) Yᴴ` using `by show J * -Y = Yᴴ * J`. Rewrite using `[Matrix.mul_neg, eq_neg_of_add_eq_zero_left h]`. Establish `he : J * NormedSpace.exp (-Y) = NormedSpace.exp Yᴴ * J` using `semiconjBy_exp hs`. Rewrite using `[← Matrix.exp_conjTranspose, ← he, Matrix.mul_assoc, ← Matrix.exp_add_of_commute _ _ (Commute.refl Y).neg_left]`. Simplify using the standard rewrite rules.
+-/
 theorem exp_preserves {Y J : Matrix ι ι ℂ} (h : Yᴴ * J + J * Y = 0) :
     (NormedSpace.exp Y)ᴴ * J * NormedSpace.exp Y = J := by
   have hs : SemiconjBy J (-Y) Yᴴ := by
@@ -121,6 +163,25 @@ theorem exp_preserves {Y J : Matrix ι ι ℂ} (h : Yᴴ * J + J * Y = 0) :
 
 open scoped Matrix.Norms.L2Operator in
 
+/- English proof (translation)
+Establish `hku : k ∈ unitary (Matrix ι ι ℂ)` using `Matrix.mem_unitaryGroup_iff'.2 hk`. Choose the witnesses or unpack the hypotheses as in `⟨θ, hθ⟩ : ∃ θ : ℝ, -Complex.exp (θ * Complex.I) ∉ spectrum ℂ k := by`. Assume the negation of the conclusion as `hall`. Use `push Not at hall`. Establish `hinj : Set.InjOn (fun θ : ℝ => -Complex.exp (θ * Complex.I)) (Set.Ioo 0 1)`.
+
+Introduce `x hx y hy hxy`. Establish `h1` using `congrArg Complex.re (neg_injective hxy)`. Rewrite `h1` using `[Complex.exp_ofReal_mul_I_re, Complex.exp_ofReal_mul_I_re]`. Use `Real.pi_gt_three` as an intermediate fact. Conclude with `Real.injOn_cos ⟨hx.1.le, by linarith [hx.2]⟩ ⟨hy.1.le, by linarith [hy.2]⟩ h1`.
+
+Conclude with `Set.Ioo_infinite (zero_lt_one' ℝ) (Set.Finite.of_injOn (fun θ _ => hall θ) hinj (Matrix.finite_spectrum k))`. Use `set z : ℂ := Complex.exp (θ * Complex.I) with hz`. Establish `hz0 : z ≠ 0` using `Complex.exp_ne_zero _`. Establish `hz1 : star z * z = 1`. Rewrite using `[Complex.star_def, Complex.conj_mul', hz, Complex.norm_exp_ofReal_mul_I]`.
+
+Simplify using the standard rewrite rules. Establish `hzi : star z⁻¹ * z⁻¹ = 1` using `by rw [star_inv₀, ← mul_inv, hz1, inv_one]`. Establish `huu : z⁻¹ • k ∈ unitary (Matrix ι ι ℂ)`. Use `Matrix.mem_unitaryGroup_iff'.2 ?_` and prove the remaining obligations. Rewrite using `[star_smul, smul_mul_smul_comm, hzi, one_smul]`.
+
+Conclude with `hk`. Set `u : unitary (Matrix ι ι ℂ)` to `⟨z⁻¹ • k, huu⟩`. Establish `hsp : (-1 : ℂ) ∉ spectrum ℂ (u : Matrix ι ι ℂ)` using `fun h => hθ (by`. Use `(spectrum.smul_mem_smul_iff (a := (u : Matrix ι ι ℂ)) (s := (-1 : ℂ)) (r := Units.mk0 z hz0)).2 h` as an intermediate fact. Simplify `this)` using `[u, Units.smul_def, smul_smul, mul_inv_cancel₀ hz0]`.
+
+Establish `hn : ‖(u : Matrix ι ι ℂ) - 1‖ < 2` using `(Unitary.norm_sub_one_lt_two_iff huu).2 hsp`. Establish `he` using `congrArg Subtype.val (expUnitary_argSelfAdjoint hn)`. Use `set X := Unitary.argSelfAdjoint u with hX`. Establish `hXs : (X : Matrix ι ι ℂ)ᴴ = X` using `X.2`. Establish `hc1 : Commute (u : Matrix ι ι ℂ) J` using `hc.smul_left _`.
+
+Establish `hc2 : Commute (star (u : Matrix ι ι ℂ)) J`. Use `hc1.star_star` as an intermediate fact. Rewrite `this` using `[Matrix.star_eq_conjTranspose J, hJ]`. Then use the resulting hypothesis. Establish `hXc : Commute (X : Matrix ι ι ℂ) J` using `hc1.cfc hc2 _`. Use `⟨Complex.I • (X : Matrix ι ι ℂ) + (θ * Complex.I : ℂ) • 1, ?_, ?_, ?_⟩` and prove the remaining obligations.
+
+Simplify using `[Matrix.conjTranspose_add, Matrix.conjTranspose_smul, hXs, add_comm]`. Conclude with `(hXc.smul_left _).add_left ((Commute.one_left J).smul_left _)`. Rewrite using `[Matrix.exp_add_of_commute _ _ ((Commute.one_right _).smul_right _)]`. Establish `e1 : NormedSpace.exp (Complex.I • (X : Matrix ι ι ℂ)) = z⁻¹ • k` using `he`. Establish `e2 : NormedSpace.exp ((θ * Complex.I : ℂ) • (1 : Matrix ι ι ℂ)) = z • 1`.
+
+Rewrite using `[Matrix.smul_one_eq_diagonal, Matrix.exp_diagonal, Matrix.smul_one_eq_diagonal]`. Use `congr 1`. Use function extensionality and compare the values at `i`. Rewrite using `[Pi.coe_exp, hz, Complex.exp_eq_exp_ℂ]`. Rewrite using `[e1, e2, smul_mul_smul_comm, inv_mul_cancel₀ hz0, one_smul, mul_one]`.
+-/
 theorem exists_log_unitary {k J : Matrix ι ι ℂ} (hk : kᴴ * k = 1) (hJ : Jᴴ = J) (hc : Commute k J) :
     ∃ Y : Matrix ι ι ℂ, Yᴴ = -Y ∧ Commute Y J ∧ NormedSpace.exp Y = k := by
   have hku : k ∈ unitary (Matrix ι ι ℂ) := Matrix.mem_unitaryGroup_iff'.2 hk
@@ -175,25 +236,42 @@ section Frame
 
 variable {R S : ℕ} {β : Type} [Fintype β] [DecidableEq β]
 
+/- English proof (translation)
+Establish `h : Jm R S = Matrix.fromBlocks 1 0 0 (-1)` using `rfl`. Rewrite using `[h, ← Matrix.fromBlocks_diagonal, Matrix.diagonal_one, ← Matrix.diagonal_neg, Matrix.diagonal_one]`.
+-/
 theorem Jm_eq : Jm R S = Matrix.diagonal (Sum.elim (fun _ => (1 : ℂ)) fun _ => -1) := by
   have h : Jm R S = Matrix.fromBlocks 1 0 0 (-1) := rfl
   rw [h, ← Matrix.fromBlocks_diagonal, Matrix.diagonal_one, ← Matrix.diagonal_neg, Matrix.diagonal_one]
 
+/- English proof (translation)
+Rewrite using `[Jm_eq, Matrix.diagonal_mul_diagonal, ← Matrix.diagonal_one]`. Use `congr 1`. Use function extensionality and compare the values at `a`. Apply the tactic sequence `rcases a with a | a <;> simp`.
+-/
 theorem Jm_mul_self : Jm R S * Jm R S = 1 := by
   rw [Jm_eq, Matrix.diagonal_mul_diagonal, ← Matrix.diagonal_one]
   congr 1
   funext a
   rcases a with a | a <;> simp
 
+/- English proof (translation)
+Rewrite using `[Jm_eq, Matrix.diagonal_map (star_zero _)]`. Use `congr 1`. Use function extensionality and compare the values at `a`. Apply the tactic sequence `rcases a with a | a <;> simp`.
+-/
 theorem Jm_map_star : (Jm R S).map star = Jm R S := by
   rw [Jm_eq, Matrix.diagonal_map (star_zero _)]
   congr 1
   funext a
   rcases a with a | a <;> simp
 
+/- English proof (translation)
+Rewrite using `[Matrix.conjTranspose, Jm_eq, Matrix.diagonal_transpose, ← Jm_eq, Jm_map_star]`.
+-/
 theorem Jm_conjTranspose : (Jm R S)ᴴ = Jm R S := by
   rw [Matrix.conjTranspose, Jm_eq, Matrix.diagonal_transpose, ← Jm_eq, Jm_map_star]
 
+/- English proof (translation)
+Introduce `a b hab`. Establish `e` using `congrFun (congrFun h.eq a) b`. Rewrite `e` using `[Jm_eq, Matrix.mul_diagonal, Matrix.diagonal_mul]`. Apply the tactic sequence `rcases a with a | a <;> rcases b with b | b`. Conclude with `absurd trivial hab`.
+
+Simplify using `only [Sum.elim_inl, Sum.elim_inr] at e`. Take the linear combination `(-1 / 2) * e`. Simplify using `only [Sum.elim_inl, Sum.elim_inr] at e`. Take the linear combination `(1 / 2) * e`. Conclude with `absurd trivial hab`.
+-/
 theorem isKC_of_commute {Y : Mat R S} (h : Commute Y (Jm R S)) : IsKC Y := by
   intro a b hab
   have e := congrFun (congrFun h.eq a) b
@@ -206,12 +284,23 @@ theorem isKC_of_commute {Y : Mat R S} (h : Commute Y (Jm R S)) : IsKC Y := by
     linear_combination (1 / 2) * e
   · exact absurd trivial hab
 
+/- English proof (translation)
+The claim follows from `Matrix.map_mul (f := starRingEnd ℂ)`.
+-/
 theorem map_star_mul {l m n : Type} [Fintype m] (A : Matrix l m ℂ) (B : Matrix m n ℂ) :
     (A * B).map star = A.map star * B.map star := Matrix.map_mul (f := starRingEnd ℂ)
 
+/- English proof (translation)
+The claim follows from `Matrix.map_one _ (star_zero _) (star_one _)`.
+-/
 theorem map_star_one {n : Type} [DecidableEq n] : (1 : Matrix n n ℂ).map star = 1 :=
   Matrix.map_one _ (star_zero _) (star_one _)
 
+/- English proof (translation)
+Take `⟨h1, C', h2⟩` from `h`. Use `⟨C', h2, ?_⟩` and prove the remaining obligations. Establish `h3 : (M * C.map star * Jm R S)ᵀ * C = 1`. Establish `: Cᵀ * (M * C.map star * Jm R S) = 1`. Rewrite using `[← Matrix.mul_assoc, ← Matrix.mul_assoc, h1, Jm_mul_self]`.
+
+Rewrite using `[← Matrix.transpose_one, ← this, Matrix.transpose_mul Cᵀ, Matrix.transpose_transpose]`. Establish `h4 : C' = (M * C.map star * Jm R S)ᵀ`. Rewrite using `[← Matrix.one_mul C', ← h3, Matrix.mul_assoc, h2, Matrix.mul_one]`. Rewrite using `[h4, h3]`.
+-/
 theorem frame_inv {M : Matrix β β ℂ} {C : Matrix β (Ix R S) ℂ} (h : IsFrame M C) :
     ∃ C' : Matrix (Ix R S) β ℂ, C * C' = 1 ∧ C' * C = 1 := by
   obtain ⟨h1, C', h2⟩ := h
@@ -224,12 +313,24 @@ theorem frame_inv {M : Matrix β β ℂ} {C : Matrix β (Ix R S) ℂ} (h : IsFra
     rw [← Matrix.one_mul C', ← h3, Matrix.mul_assoc, h2, Matrix.mul_one]
   rw [h4, h3]
 
+/- English proof (translation)
+Rewrite using `[map_star_mul, map_star_mul, Jm_map_star]`. Use `congr 2`. Use extensionality with `i j`. Simplify using the standard rewrite rules.
+-/
 theorem conj_form (h : Mat R S) : (hᴴ * Jm R S * h).map star = hᵀ * Jm R S * h.map star := by
   rw [map_star_mul, map_star_mul, Jm_map_star]
   congr 2
   ext i j
   simp
 
+/- English proof (translation)
+Take `⟨C', h1, -⟩` from `frame_inv hC`. Establish `key : Cᵀ * (gᵀ * M * g.map star) * C.map star = (hᴴ * Jm R S * h).map star`. Rewrite using `[conj_form, ← hC.1]`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [Matrix.transpose_mul, map_star_mul, Matrix.mul_assoc]`.
+
+Use `_ = _ := by`. Rewrite using `[hg]`. Simplify using `only [Matrix.transpose_mul, map_star_mul, Matrix.mul_assoc]`. Prove the components needed by the constructor for the conclusion. Introduce `e`.
+
+Rewrite `key` using `[e, hC.1]`. Conclude with `Matrix.map_injective star_injective (key.symm.trans Jm_map_star.symm)`. Introduce `e`. Rewrite `key` using `[e, Jm_map_star, ← hC.1]`. Establish `can : ∀ X : Matrix β β ℂ, C'ᵀ * (Cᵀ * X * C.map star) * C'.map star = X` using `fun X => by`.
+
+Combine the equalities or inequalities in the displayed calculation. Simplify using `only [Matrix.transpose_mul, map_star_mul, Matrix.mul_assoc]`. Use `_ = X := by rw [h1, Matrix.transpose_one, map_star_one, Matrix.one_mul, Matrix.mul_one]`. Rewrite using `[← can (gᵀ * M * g.map star), key, can]`.
+-/
 theorem frame_iff {M : Matrix β β ℂ} {C : Matrix β (Ix R S) ℂ} (hC : IsFrame M C) {g : Matrix β β ℂ} {h : Mat R S}
     (hg : g * C = C * h) : gᵀ * M * g.map star = M ↔ hᴴ * Jm R S * h = Jm R S := by
   obtain ⟨C', h1, -⟩ := frame_inv hC
@@ -252,6 +353,13 @@ theorem frame_iff {M : Matrix β β ℂ} {C : Matrix β (Ix R S) ℂ} (hC : IsFr
         _ = X := by rw [h1, Matrix.transpose_one, map_star_one, Matrix.one_mul, Matrix.mul_one]
     rw [← can (gᵀ * M * g.map star), key, can]
 
+/- English proof (translation)
+Rewrite using `[← frame_iff hC hg, Matrix.mul_smul, Matrix.smul_mul]`. Use `⟨fun e => by rw [e], fun e => ?_⟩` and prove the remaining obligations. Distinguish the cases in `hb : b = 0`. Take `⟨h1, C', h2⟩` from `hC`. Establish `h3 : (1 : Mat R S) = 0`.
+
+Rewrite using `[← Jm_mul_self, ← h1, hb]`. Simplify using the standard rewrite rules. Establish `h4 : (1 : Matrix β β ℂ) = 0`. Rewrite using `[← h2, ← Matrix.mul_one C, h3]`. Simplify using the standard rewrite rules.
+
+Rewrite using `[← Matrix.mul_one M, h4]`. Simplify using the standard rewrite rules. Conclude with `smul_right_injective _ hb e`.
+-/
 theorem frame_iff_smul {b : ℂ} {M : Matrix β β ℂ} {C : Matrix β (Ix R S) ℂ} (hC : IsFrame (b • M) C) {g : Matrix β β ℂ}
     {h : Mat R S} (hg : g * C = C * h) : gᵀ * M * g.map star = M ↔ hᴴ * Jm R S * h = Jm R S := by
   rw [← frame_iff hC hg, Matrix.mul_smul, Matrix.smul_mul]
@@ -274,6 +382,11 @@ section Adele
 
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
 
+/- English proof (translation)
+Assume the negation of the conclusion as `hne`. Use `push Not at hne`. Use `h.2.1` as an intermediate fact. Take `⟨τ⟩ : Nonempty (E →+* ℂ)` from `inferInstance`. Use `IsTotallyComplex.complexEmbedding_not_isReal τ ?_` and prove the remaining obligations.
+
+Rewrite using `[ComplexEmbedding.isReal_iff]`. Use extensionality with `y`. Use `h.2.2.2 τ y` as an intermediate fact. Rewrite `this` using `[hne y]`. Simplify using `using this.symm`.
+-/
 theorem exists_moved {σ : E →ₐ[F] E} (h : IsCMExt F E σ) : ∃ β : E, σ β ≠ β := by
   by_contra hne
   push Not at hne
@@ -286,6 +399,9 @@ theorem exists_moved {σ : E →ₐ[F] E} (h : IsCMExt F E σ) : ∃ β : E, σ 
   rw [hne y] at this
   simpa using this.symm
 
+/- English proof (translation)
+Introduce `h0`. Apply `hβ` to reduce the goal to its premises. Apply `τ.injective` to reduce the goal to its premises. Rewrite using `[h.2.2.2 τ β]`. Conclude with `Complex.conj_eq_iff_im.2 h0`.
+-/
 theorem im_ne_zero {σ : E →ₐ[F] E} (h : IsCMExt F E σ) {β : E} (hβ : σ β ≠ β) (τ : E →+* ℂ) : (τ β).im ≠ 0 := by
   intro h0
   apply hβ
@@ -293,6 +409,15 @@ theorem im_ne_zero {σ : E →ₐ[F] E} (h : IsCMExt F E σ) {β : E} (hβ : σ 
   rw [h.2.2.2 τ β]
   exact Complex.conj_eq_iff_im.2 h0
 
+/- English proof (translation)
+Establish `hfin : FiniteDimensional F E` using `Module.finite_of_finrank_pos (by rw [h.2.2.1]; omega)`. Establish `hli : LinearIndependent F ![(1 : E), β]`. Rewrite using `[LinearIndependent.pair_iff]`. Introduce `s t hst`. Establish `ht : t = 0`.
+
+Assume the negation of the conclusion as `ht`. Apply `hβ` to reduce the goal to its premises. Establish `e : β = algebraMap F E (-(s / t))`. Establish `ht' : algebraMap F E t ≠ 0` using `by simpa using ht`. Rewrite `hst` using `[Algebra.smul_def, Algebra.smul_def, mul_one]`.
+
+Rewrite using `[map_neg, map_div₀]`. Clear the denominators using the available nonvanishing facts. Take the linear combination `hst`. Rewrite using `[e, AlgHom.commutes]`. Substitute `ht` using the available equality.
+
+Simplify using `using hst`. Apply the tactic sequence `refine ⟨basisOfLinearIndependentOfCardEqFinrank hli (by simp [h.2.2.1]), ?_, ?_⟩ <;> simp`.
+-/
 theorem exists_basis {σ : E →ₐ[F] E} (h : IsCMExt F E σ) {β : E} (hβ : σ β ≠ β) :
     ∃ B : Module.Basis (Fin 2) F E, B 0 = 1 ∧ B 1 = β := by
   have hfin : FiniteDimensional F E := Module.finite_of_finrank_pos (by rw [h.2.2.1]; omega)
@@ -314,6 +439,9 @@ theorem exists_basis {σ : E →ₐ[F] E} (h : IsCMExt F E σ) {β : E} (hβ : �
   refine ⟨basisOfLinearIndependentOfCardEqFinrank hli (by simp [h.2.2.1]), ?_, ?_⟩ <;> simp
 
 omit [NumberField E] in
+/- English proof (translation)
+Use `conv_lhs => rw [← (Algebra.TensorProduct.basis (AF F) B).sum_repr x]`. Simplify using `[Fin.sum_univ_two, Algebra.TensorProduct.basis_apply, TensorProduct.smul_tmul']`.
+-/
 theorem eq_add_tmul (B : Module.Basis (Fin 2) F E) (x : AF F ⊗[F] E) :
     x = (Algebra.TensorProduct.basis (AF F) B).repr x 0 ⊗ₜ[F] B 0 +
       (Algebra.TensorProduct.basis (AF F) B).repr x 1 ⊗ₜ[F] B 1 := by
@@ -321,15 +449,26 @@ theorem eq_add_tmul (B : Module.Basis (Fin 2) F E) (x : AF F ⊗[F] E) :
   simp [Fin.sum_univ_two, Algebra.TensorProduct.basis_apply, TensorProduct.smul_tmul']
 
 omit [NumberField E] in
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem piInf_tmul {w : InfinitePlace F} (τ : EmbOver E w) (a : AF F) (y : E) :
     piInf τ (a ⊗ₜ[F] y) = InfinitePlace.Completion.extensionEmbedding w (a.1 w) * τ.1 y := rfl
 
 omit [NumberField F] in
+/- English proof (translation)
+Rewrite using `[← InfinitePlace.Completion.extensionEmbeddingOfIsReal_apply (IsTotallyReal.isReal w) z]`. Conclude with `Complex.ofReal_im _`.
+-/
 theorem im_extension (hF : IsTotallyReal F) (w : InfinitePlace F) (z : w.Completion) :
     (InfinitePlace.Completion.extensionEmbedding w z).im = 0 := by
   rw [← InfinitePlace.Completion.extensionEmbeddingOfIsReal_apply (IsTotallyReal.isReal w) z]
   exact Complex.ofReal_im _
 
+/- English proof (translation)
+Proceed by induction on `z using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `add a b ha hb => simp only [map_add, ha, hb, star_add]`. Consider the case `tmul a e => show piInf τ (a ⊗ₜ[F] σ e) = _`. Rewrite using `[piInf_tmul, piInf_tmul, h.2.2.2, star_mul']`.
+
+Use `congr 1`. Conclude with `(Complex.conj_eq_iff_im.2 (im_extension h.1 w _)).symm`.
+-/
 theorem piInf_cA {σ : E →ₐ[F] E} (h : IsCMExt F E σ) {w : InfinitePlace F} (τ : EmbOver E w) (z : AE F E) :
     piInf τ (cA σ z) = star (piInf τ z) := by
   induction z using TensorProduct.induction_on with
@@ -342,6 +481,11 @@ theorem piInf_cA {σ : E →ₐ[F] E} (h : IsCMExt F E σ) {w : InfinitePlace F}
     exact (Complex.conj_eq_iff_im.2 (im_extension h.1 w _)).symm
 
 omit [NumberField E] in
+/- English proof (translation)
+Set `φ : AF F →+* ℂ` to `(InfinitePlace.Completion.extensionEmbedding w).comp (evInf F w : AF F →+* w.Completion)`. Establish `hφ : Continuous φ` using `(InfinitePlace.Completion.isometry_extensionEmbedding w).continuous.comp ((continuous_apply w).comp continuous_fst)`. Set `: Algebra (AF F) ℂ` to `φ.toAlgebra`. Establish `: ContinuousSMul (AF F) ℂ` using `⟨(hφ.comp continuous_fst).mul continuous_snd⟩`. Set `L : AE F E →ₗ[AF F] ℂ` to `{ toFun := piInf τ map_add' := map_add _ map_smul' := fun c y => by`.
+
+Establish `: c • y = (c ⊗ₜ[F] (1 : E)) * y` using `by rw [Algebra.smul_def]; rfl`. Rewrite using `[this, map_mul, piInf_tmul, map_one, mul_one]`. Use `rfl }`. Conclude with `IsModuleTopology.continuous_of_linearMap L`.
+-/
 theorem continuous_piInf {w : InfinitePlace F} (τ : EmbOver E w) : Continuous (piInf τ) := by
   let φ : AF F →+* ℂ := (InfinitePlace.Completion.extensionEmbedding w).comp (evInf F w : AF F →+* w.Completion)
   have hφ : Continuous φ := (InfinitePlace.Completion.isometry_extensionEmbedding w).continuous.comp
@@ -356,6 +500,23 @@ theorem continuous_piInf {w : InfinitePlace F} (τ : EmbOver E w) : Continuous (
         rw [this, map_mul, piInf_tmul, map_one, mul_one]; rfl }
   exact IsModuleTopology.continuous_of_linearMap L
 
+/- English proof (translation)
+Take `⟨β, hβ⟩` from `exists_moved h`. Take `⟨B, hB0, hB1⟩` from `exists_basis h hβ`. Establish `hdec` using `eq_add_tmul B x`. Use `set C := Algebra.TensorProduct.basis (AF F) B with hC`. Establish `hu : pairA F 0 1 • x = 0` using `hx _ (map_zero (InfiniteAdeleRing.ringEquiv_mixedSpace F))`.
+
+Establish `hfin : ∀ i, (C.repr x i).2 = 0` using `fun i => by`. Establish `h1 : C.repr (pairA F 0 1 • x) i = 0` using `by rw [hu]; simp`. Rewrite `h1` using `[map_smul]`. Establish `h2 : pairA F 0 1 * C.repr x i = 0` using `h1`. Establish `h3` using `congrArg (sndA F) h2`.
+
+Rewrite `h3` using `[map_mul, map_zero]`. Conclude with `(one_mul _).symm.trans h3`. Establish `hre : ∀ w i, (C.repr x i).1 w = 0` using `fun w => by`. Establish `e` using `hinf w`. Rewrite `e` using `[hdec, map_add, piInf_tmul, piInf_tmul, hB0, hB1, map_one, mul_one]`.
+
+Establish `hi` using `congrArg Complex.im e`. Establish `him` using `im_ne_zero h hβ (τ w).1`. Use `set p := InfinitePlace.Completion.extensionEmbedding w ((C.repr x 0).1 w) with hp`. Use `set q := InfinitePlace.Completion.extensionEmbedding w ((C.repr x 1).1 w) with hq`. Establish `hpi : p.im = 0` using `im_extension h.1 w _`.
+
+Establish `hqi : q.im = 0` using `im_extension h.1 w _`. Simplify using `only [Complex.add_im, Complex.mul_im, Complex.zero_im, hpi, hqi, zero_mul, add_zero, zero_add] at hi`. Establish `hq0 : q.re = 0` using `(mul_eq_zero.1 hi).resolve_right him`. Establish `hq1 : q = 0` using `Complex.ext hq0 hqi`. Rewrite `e` using `[hq1, zero_mul, add_zero]`.
+
+Establish `inj` using `(InfinitePlace.Completion.extensionEmbedding w).injective`. Introduce `i`. Use `fin_cases i`. Use `show (C.repr x 0).1 w = 0`. Conclude with `inj (e.trans (map_zero _).symm)`.
+
+Use `show (C.repr x 1).1 w = 0`. Conclude with `inj (hq1.trans (map_zero _).symm)`. Establish `hz : C.repr x = 0`. Use extensionality with `i`. Use `show C.repr x i = 0`.
+
+Conclude with `Prod.ext (funext fun w => hre w i) (hfin i)`. Simplify using `using hz`.
+-/
 theorem eq_zero_of_piInf {σ : E →ₐ[F] E} (h : IsCMExt F E σ) (τ : ∀ w : InfinitePlace F, EmbOver E w) (x : AE F E)
     (hx : At (evI F) x) (hinf : ∀ w, piInf (τ w) x = 0) : x = 0 := by
   obtain ⟨β, hβ⟩ := exists_moved h
@@ -398,8 +559,16 @@ theorem eq_zero_of_piInf {σ : E →ₐ[F] E} (h : IsCMExt F E σ) (τ : ∀ w :
 
 def ofInf (c : ∀ w : InfinitePlace F, w.Completion) : AF F := ((c : Ainf F), (0 : Af F))
 
+/- English proof (translation)
+The claim follows from `continuous_id.prodMk continuous_const`.
+-/
 theorem continuous_ofInf : Continuous (ofInf (F := F)) := continuous_id.prodMk continuous_const
 
+/- English proof (translation)
+Establish `h1 : u.1 = 0` using `(InfiniteAdeleRing.ringEquiv_mixedSpace F).injective (by rw [map_zero]; exact hu)`. Use `Prod.ext ?_ ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `u.1 * _ = 0`. Rewrite using `[h1, zero_mul]`. Express the relevant statement in the definitionally equal form `u.2 * 0 = 0`.
+
+Rewrite using `[mul_zero]`.
+-/
 theorem mul_ofInf (u : AF F) (hu : evI F u = 0) (c : ∀ w : InfinitePlace F, w.Completion) : u * ofInf c = 0 := by
   have h1 : u.1 = 0 := (InfiniteAdeleRing.ringEquiv_mixedSpace F).injective (by rw [map_zero]; exact hu)
   refine Prod.ext ?_ ?_
@@ -408,6 +577,19 @@ theorem mul_ofInf (u : AF F) (hu : evI F u = 0) (c : ∀ w : InfinitePlace F, w.
   · change u.2 * 0 = 0
     rw [mul_zero]
 
+/- English proof (translation)
+Establish `hF` using `h.1`. Take `⟨β, hβ⟩` from `exists_moved h`. Establish `him : ∀ w, ((τ w).1 β).im ≠ 0` using `fun w => im_ne_zero h hβ _`. Set `e : ∀ w : InfinitePlace F, w.Completion ≃ᵢ ℝ` to `fun w => InfinitePlace.Completion.isometryEquivRealOfIsReal (IsTotallyReal.isReal w)`. Establish `he : ∀ w a, InfinitePlace.Completion.extensionEmbedding w a = ((e w a : ℝ) : ℂ)` using `fun w a => (InfinitePlace.Completion.extensionEmbeddingOfIsReal_apply (IsTotallyReal.isReal w) a).symm`.
+
+Set `s : (InfinitePlace F → ℂ) → InfinitePlace F → ℝ` to `fun z w => (z w).im / ((τ w).1 β).im`. Set `r : (InfinitePlace F → ℂ) → InfinitePlace F → ℝ` to `fun z w => (z w).re - s z w * ((τ w).1 β).re`. Establish `hs : ∀ w, Continuous fun z => s z w` using `fun w => by fun_prop`. Establish `hr : ∀ w, Continuous fun z => r z w` using `fun w => by fun_prop`. Use `⟨fun z => ofInf (fun w => (e w).symm (r z w)) • ((1 : AF F) ⊗ₜ[F] (1 : E)) + ofInf (fun w => (e w).symm (s z w)) • ((1 : AF F) ⊗ₜ[F] β), ?_, fun z => ⟨?_, fun w => ?_⟩⟩` and prove the remaining obligations.
+
+Establish `: ContinuousAdd (AE F E)` using `IsModuleTopology.toContinuousAdd (AF F) _`. Establish `: ContinuousSMul (AF F) (AE F E)` using `inferInstance`. Establish `c1 : Continuous fun z => ofInf (fun w => (e w).symm (r z w))` using `continuous_ofInf.comp (continuous_pi fun w => (e w).symm.continuous.comp (hr w))`. Establish `c2 : Continuous fun z => ofInf (fun w => (e w).symm (s z w))` using `continuous_ofInf.comp (continuous_pi fun w => (e w).symm.continuous.comp (hs w))`. Conclude with `(c1.smul (continuous_const (y := ((1 : AF F) ⊗ₜ[F] (1 : E) : AE F E)))).add (c2.smul (continuous_const (y := ((1 : AF F) ⊗ₜ[F] β : AE F E))))`.
+
+Introduce `u hu`. Rewrite using `[smul_add, smul_smul, smul_smul, mul_ofInf u hu, mul_ofInf u hu, zero_smul, zero_smul, add_zero]`. Establish `hc : ∀ (c : ∀ w : InfinitePlace F, w.Completion) (y : E), piInf (τ w) (ofInf c • ((1 : AF F) ⊗ₜ[F] y)) = ((e w (c w) : ℝ) : ℂ) * (τ w).1 y` using `fun c y => by`. Rewrite using `[← he, TensorProduct.smul_tmul', smul_eq_mul, mul_one]`. Both sides reduce to the same expression.
+
+Rewrite using `[map_add, hc, hc]`. Simplify using `only [(e w).apply_symm_apply, map_one, mul_one]`. Apply `Complex.ext` to reduce the goal to its premises. Simplify using `only [Complex.add_re, Complex.ofReal_re, Complex.re_ofReal_mul, r]`. Expand and normalize the polynomial expressions, which then agree.
+
+Simplify using `only [Complex.add_im, Complex.ofReal_im, Complex.im_ofReal_mul, s]`. Use `him w` as an intermediate fact. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem exists_section {σ : E →ₐ[F] E} (h : IsCMExt F E σ) (τ : ∀ w : InfinitePlace F, EmbOver E w) :
     ∃ s : (InfinitePlace F → ℂ) → AE F E, Continuous s ∧ ∀ z, At (evI F) (s z) ∧ ∀ w, piInf (τ w) (s z) = z w := by
   have hF := h.1
@@ -450,6 +632,9 @@ variable {β : Type} [Fintype β] [DecidableEq β]
 
 omit [Fintype β] [DecidableEq β] in
 
+/- English proof (translation)
+Use extensionality with `i j`. Use `sub_eq_zero.1 (eq_zero_of_piInf h τ _ (fun u hu => congrFun (congrFun (hx u hu) i) j) fun w => ?_)` and prove the remaining obligations. Rewrite using `[map_sub, sub_eq_zero]`. Conclude with `congrFun (congrFun (hinf w) i) j`.
+-/
 theorem mat_ext {σ : E →ₐ[F] E} (h : IsCMExt F E σ) (τ : ∀ w : InfinitePlace F, EmbOver E w) {X X' : Matrix β β (AE F E)}
     (hx : At (evI F) (X - X')) (hinf : ∀ w, X.map (piInf (τ w)) = X'.map (piInf (τ w))) : X = X' := by
   ext i j
@@ -459,6 +644,9 @@ theorem mat_ext {σ : E →ₐ[F] E} (h : IsCMExt F E σ) (τ : ∀ w : Infinite
 
 omit [DecidableEq β] in
 
+/- English proof (translation)
+Rewrite using `[Matrix.map_mul, Matrix.map_mul, Matrix.transpose_map]`. Use `congr 1`. Use extensionality with `i j`. Conclude with `piInf_cA h τ _`.
+-/
 theorem map_form {σ : E →ₐ[F] E} (h : IsCMExt F E σ) {w : InfinitePlace F} (τ : EmbOver E w) (g J : Matrix β β (AE F E)) :
     (gᵀ * J * g.map (cA σ)).map (piInf τ) = (g.map (piInf τ))ᵀ * J.map (piInf τ) * (g.map (piInf τ)).map star := by
   rw [Matrix.map_mul, Matrix.map_mul, Matrix.transpose_map]
@@ -468,6 +656,17 @@ theorem map_form {σ : E →ₐ[F] E} (h : IsCMExt F E σ) {w : InfinitePlace F}
 
 end Adele
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ β _ _ R S τ J b C hcm hC γ hγ`. Establish `key : ∀ w, ∃ Y : Mat R S, Y ∈ upq R S ∧ ∀ t : ℝ, ((γ (Multiplicative.ofAdd t)).1 : Matrix β β (AE F E)).map (piInf (τ w)) * C w = C w * NormedSpace.exp (t • Y)` using `fun w => by`. Take `⟨C', h1, h2⟩` from `frame_inv (hC w)`. Set `g : ℝ → Matrix β β ℂ` to `fun t => ((γ (Multiplicative.ofAdd t)).1 : Matrix β β (AE F E)).map (piInf (τ w))`. Establish `hg : Continuous g` using `((Units.continuous_val.comp continuous_subtype_val).comp (hγ.1.comp continuous_ofAdd)).matrix_map (continuous_piInf (τ w))`.
+
+Establish `hg0 : g 0 = 1`. Simplify using `only [g, ofAdd_zero, map_one]`. Conclude with `Matrix.map_one _ (map_zero _) (map_one _)`. Establish `hgm : ∀ s t, g (s + t) = g s * g t` using `fun s t => by`. Simplify using `only [g, ofAdd_add, map_mul]`.
+
+Conclude with `Matrix.map_mul`. Establish `hgC : ∀ t, g t * C w = C w * (C' * g t * C w)` using `fun t => by`. Rewrite using `[← Matrix.mul_assoc, ← Matrix.mul_assoc, h1, Matrix.one_mul]`. Take `⟨Y, hY, hA⟩` from `exists_gen_matrix (fun t => C' * g t * C w) ((continuous_const.matrix_mul hg).matrix_mul continuous_const) (by rw [hg0, Matrix.mul_one, h2]) (fun s t => by`. Rewrite using `[hgm, Matrix.mul_assoc C' (g s), Matrix.mul_assoc C' (g s * C w), Matrix.mul_assoc (g s) (C w), ← hgC]`.
+
+Simplify using `only [Matrix.mul_assoc])`. Use the proof step `(Jm R S) fun t => (frame_iff_smul (hC w) (hgC t)).1 (by`. Rewrite using `[← map_form hcm]`. Conclude with `congrArg (fun X : Matrix β β (AE F E) => X.map (piInf (τ w))) (γ (Multiplicative.ofAdd t)).2)`. Conclude with `⟨Y, hY, fun t => by rw [← hA t]; exact hgC t⟩`.
+
+Use `choose Y hY hgen using key`. Conclude with `⟨Y, hY, fun t w => hgen w t⟩`.
+-/
 theorem genEx : GlobalTheory.RealLift.GenEx := by
   intro F E _ _ _ _ _ σ β _ _ R S τ J b C hcm hC γ hγ
   have key : ∀ w, ∃ Y : Mat R S, Y ∈ upq R S ∧ ∀ t : ℝ,
@@ -499,6 +698,31 @@ theorem genEx : GlobalTheory.RealLift.GenEx := by
   choose Y hY hgen using key
   exact ⟨Y, hY, fun t w => hgen w t⟩
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ β _ _ R S τ J b C hcm hC Y hY`. Take `⟨s, hs, hs'⟩` from `exists_section hcm τ`. Use `choose C' h1 h2 using fun w => frame_inv (hC w)`. Establish `: ContinuousAdd (AE F E)` using `IsModuleTopology.toContinuousAdd (AF F) _`. Set `g : InfinitePlace F → ℝ → Matrix β β ℂ` to `fun w t => C w * NormedSpace.exp (t • Y w) * C' w`.
+
+Establish `hg : ∀ w, Continuous (g w)` using `fun w => (continuous_const.matrix_mul (continuous_exp_smul (Y w))).matrix_mul continuous_const`. Establish `hgC : ∀ w t, g w t * C w = C w * NormedSpace.exp (t • Y w)` using `fun w t => by`. Simplify using `only [g]`. Rewrite using `[Matrix.mul_assoc, h2, Matrix.mul_one]`. Set `N : ℝ → Matrix β β (AE F E)` to `fun t => Matrix.of fun i j => s fun w => (g w t - 1) i j`.
+
+Establish `hN : ∀ t u, evI F u = 0 → u • N t = 0` using `fun t u hu => by`. Use extensionality with `i j`. Conclude with `(hs' _).1 u hu`. Establish `hNc : Continuous N` using `continuous_matrix fun i j => hs.comp (continuous_pi fun w => ((hg w).sub continuous_const).matrix_elem i j)`. Set `G : ℝ → Matrix β β (AE F E)` to `fun t => 1 + N t`.
+
+Establish `hGc : Continuous G` using `continuous_const.add hNc`. Establish `hG : ∀ t w, (G t).map (piInf (τ w)) = g w t` using `fun t w => by`. Establish `e : (N t).map (piInf (τ w)) = g w t - 1`. Use extensionality with `i j`. Conclude with `(hs' _).2 w`.
+
+Simplify using `only [G]`. Rewrite using `[Matrix.map_add _ (map_add _), Matrix.map_one _ (map_zero _) (map_one _), e, add_sub_cancel]`. Establish `hG0 : G 0 = 1` using `mat_ext hcm τ (fun u hu => by simp only [G, add_sub_cancel_left]; exact hN 0 u hu) fun w => by`. Rewrite using `[hG, Matrix.map_one _ (map_zero _) (map_one _)]`. Simplify using `[g, h1]`.
+
+Establish `hGm : ∀ a c, G (a + c) = G a * G c` using `fun a c => by`. Use `mat_ext hcm τ (fun u hu => ?_) fun w => ?_` and prove the remaining obligations. Establish `e : G (a + c) - G a * G c = N (a + c) - N c - N a * G c`. Simplify using `only [G]`. Use `noncomm_ring`.
+
+Rewrite using `[e, smul_sub, smul_sub, ← Matrix.smul_mul, hN _ u hu, hN _ u hu, hN _ u hu]`. Simplify using the standard rewrite rules. Rewrite using `[Matrix.map_mul, hG, hG, hG] conv_rhs => rw [show g w c = C w * NormedSpace.exp (c • Y w) * C' w from rfl, ← Matrix.mul_assoc, ← Matrix.mul_assoc, hgC, Matrix.mul_assoc (C w), ← exp_add_smul]`. Establish `hGU : ∀ t, (G t)ᵀ * J * (G t).map (cA σ) = J` using `fun t => by`. Use `mat_ext hcm τ (fun u hu => ?_) fun w => ?_` and prove the remaining obligations.
+
+Establish `e0 : (G t).map (cA σ) = 1 + (N t).map (cA σ)`. Simplify using `only [G]`. Rewrite using `[Matrix.map_add _ (map_add _), Matrix.map_one _ (map_zero _) (map_one _)]`. Establish `e : (G t)ᵀ * J * (G t).map (cA σ) - J = (N t)ᵀ * (J * (G t).map (cA σ)) + J * (N t).map (cA σ)`. Rewrite using `[e0]`.
+
+Simplify using `only [G, Matrix.transpose_add, Matrix.transpose_one]`. Use `noncomm_ring`. Establish `e1 : u • (N t).map (cA σ) = 0`. Use extensionality with `i j`. Use `congrArg (cA σ) (congrFun (congrFun (hN t u hu) i) j)` as an intermediate fact.
+
+Simplify using `using this`. Rewrite using `[e, smul_add, ← Matrix.smul_mul, ← Matrix.mul_smul, e1, ← Matrix.transpose_smul, hN t u hu]`. Simplify using the standard rewrite rules. Rewrite using `[map_form hcm, hG]`. Use `(frame_iff_smul (hC w) (hgC w t)).2 (exp_preserves ?_)` and prove the remaining obligations.
+
+Establish `hY' : (Y w)ᴴ * Jm R S + Jm R S * Y w = 0` using `hY w`. Rewrite using `[Matrix.conjTranspose_smul, star_trivial, Matrix.smul_mul, Matrix.mul_smul, ← smul_add, hY', smul_zero]`. Set `U : ℝ → GL β (AE F E)` to `fun t => ⟨G t, G (-t), by rw [← hGm, add_neg_cancel, hG0], by rw [← hGm, neg_add_cancel, hG0]⟩`. Establish `hU : Continuous U` using `Units.continuous_iff.2 ⟨hGc, hGc.comp continuous_neg⟩`. Set `γ : Multiplicative ℝ →* UG (cA σ) J` to `{ toFun := fun t => ⟨U t.toAdd, hGU _⟩ map_one' := Subtype.ext (Units.ext hG0) map_mul' := fun a c => Subtype.ext (Units.ext (hGm _ _)) }`.
+
+Use `⟨γ, ⟨(hU.comp continuous_toAdd).subtype_mk _, fun t u hu => ?_⟩, fun t w => ?_⟩` and prove the remaining obligations. Use `show u • (1 + N t.toAdd - 1) = 0`. Rewrite using `[add_sub_cancel_left, hN _ u hu]`. Use `show (G t).map (piInf (τ w)) * C w = _`. Rewrite using `[hG, hgC]`.
+-/
 theorem lineEx : GlobalTheory.RealLift.LineEx := by
   intro F E _ _ _ _ _ σ β _ _ R S τ J b C hcm hC Y hY
   obtain ⟨s, hs, hs'⟩ := exists_section hcm τ
@@ -569,6 +793,19 @@ theorem lineEx : GlobalTheory.RealLift.LineEx := by
   · show (G t).map (piInf (τ w)) * C w = _
     rw [hG, hgC]
 
+/- English proof (translation)
+Introduce `hL F E _ _ _ _ _ σ β _ _ R S τ J b C θ hcm hC hθ k hk hkθ`. Use `choose C' h1 h2 using fun w => frame_inv (hC w)`. Establish `key : ∀ w, ∃ Y : Mat R S, Y ∈ upq R S ∧ IsKC Y ∧ (k.1 : Matrix β β (AE F E)).map (piInf (τ w)) * C w = C w * NormedSpace.exp Y` using `fun w => by set g := (k.1 : Matrix β β (AE F E)).map (piInf (τ w)) with hgdef`. Take `⟨h, hg⟩ : ∃ h : Mat R S, g * C w = C w * h` from `⟨C' w * g * C w, by rw [← Matrix.mul_assoc, ← Matrix.mul_assoc, h1, Matrix.one_mul]⟩`. Establish `hf : hᴴ * Jm R S * h = Jm R S` using `(frame_iff_smul (hC w) hg).1 (by`.
+
+Rewrite using `[hgdef, ← map_form hcm]`. Conclude with `congrArg (fun X : Matrix β β (AE F E) => X.map (piInf (τ w))) k.2)`. Establish `hc : Commute h (Jm R S)`. Establish `e : C w * (h * Jm R S) = C w * (Jm R S * h)`. Rewrite using `[← Matrix.mul_assoc, ← hg, Matrix.mul_assoc, ← hθ, ← Matrix.mul_assoc, (hkθ w).eq, Matrix.mul_assoc, hg, ← Matrix.mul_assoc, hθ, Matrix.mul_assoc]`.
+
+Establish `e'` using `congrArg (fun X => C' w * X) e`. Simplify using `only [← Matrix.mul_assoc, h2, Matrix.one_mul] at e'`. Conclude with `e'`. Establish `hu : hᴴ * h = 1`. Rewrite `hf` using `[Matrix.mul_assoc, ← hc.eq, ← Matrix.mul_assoc]`.
+
+Rewrite using `[← Matrix.mul_one (hᴴ * h), ← Jm_mul_self, ← Matrix.mul_assoc, hf]`. Take `⟨Y, hY, hYc, hYe⟩` from `exists_log_unitary hu Jm_conjTranspose hc`. Use `⟨Y, ?_, isKC_of_commute hYc, by rw [hYe, hg]⟩` and prove the remaining obligations. Use `show Yᴴ * Jm R S + Jm R S * Y = 0`. Rewrite using `[hY, Matrix.neg_mul, hYc.eq, neg_add_cancel]`.
+
+Use `choose Y hY hK hkY using key`. Take `⟨γ, hγ, hgen⟩` from `hL F E σ β R S τ J b C hcm hC Y hY`. Use `⟨γ, hγ, Y, hgen, hK, Subtype.ext (Units.ext (mat_ext hcm τ (fun u hu => ?_) fun w => ?_))⟩` and prove the remaining obligations. Rewrite using `[← sub_sub_sub_cancel_right _ _ 1, smul_sub, hγ.2 _ u hu, hk u hu, sub_zero]`. Establish `e` using `hgen 1 w`.
+
+Rewrite `e` using `[one_smul, ← hkY]`. Establish `e'` using `congrArg (fun X => X * C' w) e`. Simplify using `only [Matrix.mul_assoc, h1, Matrix.mul_one] at e'`. Conclude with `e'`.
+-/
 theorem kLine : GlobalTheory.RealLift.LineEx → GlobalTheory.RealLift.KLine := by
   intro hL F E _ _ _ _ _ σ β _ _ R S τ J b C θ hcm hC hθ k hk hkθ
   choose C' h1 h2 using fun w => frame_inv (hC w)

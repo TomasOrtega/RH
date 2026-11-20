@@ -11,6 +11,11 @@ noncomputable section
 
 namespace UpperTheory.Gal.TP.Chr
 
+/- English proof (translation)
+Establish `hc` using `(InfinitePlace.Completion.isometry_extensionEmbedding (InfinitePlace.mk φ)).continuous`. Establish `he : ∀ x : E, InfinitePlace.Completion.extensionEmbedding (InfinitePlace.mk φ) (algebraMap E (InfinitePlace.mk φ).Completion x) = (InfinitePlace.mk φ).embedding x` using `fun x => InfinitePlace.Completion.extensionEmbedding_coe (InfinitePlace.mk φ) (WithAbs.toAbs _ x)`. Break down `InfinitePlace.embedding_mk_eq φ with h | h` into its components or cases. Conclude with `⟨_, hc, fun x => (he x).trans (by rw [h])⟩`. Use `⟨(starRingEnd ℂ).comp (InfinitePlace.Completion.extensionEmbedding (InfinitePlace.mk φ)), Complex.continuous_conj.comp hc, fun x => ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[RingHom.comp_apply, he, h, ComplexEmbedding.conjugate_coe_eq, Complex.conj_conj]`.
+-/
 private theorem exists_read {E : Type} [Field E] [NumberField E] (φ : E →+* ℂ) :
     ∃ ρ : (InfinitePlace.mk φ).Completion →+* ℂ, Continuous ρ ∧
       ∀ x : E, ρ (algebraMap E (InfinitePlace.mk φ).Completion x) = φ x := by
@@ -24,6 +29,21 @@ private theorem exists_read {E : Type} [Field E] [NumberField E] (φ : E →+* �
       Complex.continuous_conj.comp hc, fun x => ?_⟩
     rw [RingHom.comp_apply, he, h, ComplexEmbedding.conjugate_coe_eq, Complex.conj_conj]
 
+/- English proof (translation)
+Establish `hne : ∀ (i) (u : (InfiniteAdeleRing E)ˣ), ρ i ((u : InfiniteAdeleRing E) (InfinitePlace.mk (φ i))) ≠ 0`. Introduce `i u e`. Establish `h1 : (u : InfiniteAdeleRing E) (InfinitePlace.mk (φ i)) * ((u⁻¹ : (InfiniteAdeleRing E)ˣ) : InfiniteAdeleRing E) (InfinitePlace.mk (φ i)) = 1` using `congrFun u.mul_inv (InfinitePlace.mk (φ i))`. Establish `h2` using `congrArg (ρ i) h1`. Rewrite `h2` using `[map_mul, map_one, e, zero_mul]`.
+
+Conclude with `zero_ne_one h2`. Establish `hci : ∀ i, Continuous fun u : (InfiniteAdeleRing E)ˣ => ρ i ((u : InfiniteAdeleRing E) (InfinitePlace.mk (φ i)))` using `fun i => (hc i).comp ((continuous_apply _).comp Units.continuous_val)`. Establish `hL : Continuous fun u : (InfiniteAdeleRing E)ˣ => ((μ.1 (GlobalTheory.CompanionTheory.HeckeFin.infIdele E u) : ℂˣ) : ℂ)` using `Units.continuous_val.comp (μ.2.1.comp (GlobalTheory.CompanionTheory.HeckeFin.continuous_infIdele E))`. Establish `hR : Continuous fun u : (InfiniteAdeleRing E)ˣ => ∏ i, (ρ i ((u : InfiniteAdeleRing E) (InfinitePlace.mk (φ i))) / ‖ρ i ((u : InfiniteAdeleRing E) (InfinitePlace.mk (φ i)))‖) ^ m i`. Use `continuous_finset_prod _ fun i _ => ?_` and prove the remaining obligations.
+
+Use `Continuous.zpow₀ ((hci i).div (Complex.continuous_ofReal.comp (hci i).norm) fun u => ?_) _ fun u => Or.inl ?_` and prove the remaining obligations. Conclude with `Complex.ofReal_ne_zero.2 (norm_ne_zero_iff.2 (hne i u))`. Conclude with `div_ne_zero (hne i u) (Complex.ofReal_ne_zero.2 (norm_ne_zero_iff.2 (hne i u)))`. Use `congrFun ((GlobalTheory.CompanionTheory.HeckeFin.denseRange_units E).equalizer hL hR (funext fun k => ?_)) y` and prove the remaining obligations. Establish `e1 : GlobalTheory.CompanionTheory.HeckeFin.infIdele E (Units.map (algebraMap E (InfiniteAdeleRing E)).toMonoidHom k) = infDiag k` using `by classical`.
+
+Use `Units.ext ?_` and prove the remaining obligations. Rewrite using `[infDiag, MonoidHom.finsetProd_apply, Units.coe_prod]`. Set `p1 : AdeleRing (𝓞 E) E →+* InfiniteAdeleRing E` to `RingHom.fst _ _`. Set `p2 : AdeleRing (𝓞 E) E →+* FiniteAdeleRing (𝓞 E) E` to `RingHom.snd _ _`. Use `Prod.ext ?_ ?_` and prove the remaining obligations.
+
+Express the relevant statement in the definitionally equal form `_ = p1 _`. Rewrite using `[map_prod]`. Express the relevant statement in the definitionally equal form `_ = ∏ w : InfinitePlace E, Pi.mulSingle w (algebraMap E w.Completion (k : E))`. Conclude with `(Finset.univ_prod_mulSingle _).symm`. Express the relevant statement in the definitionally equal form `_ = p2 _`.
+
+Rewrite using `[map_prod]`. Conclude with `(Finset.prod_eq_one fun _ _ => rfl).symm`. Simplify using `only [Function.comp_apply]`. Rewrite using `[e1]`. Use `(h k).trans (Finset.prod_congr rfl fun i _ => ?_)` and prove the remaining obligations.
+
+Establish `e2 : ρ i (((Units.map (algebraMap E (InfiniteAdeleRing E)).toMonoidHom k : (InfiniteAdeleRing E)ˣ) : InfiniteAdeleRing E) (InfinitePlace.mk (φ i))) = φ i (k : E)` using `hρ i k`. Rewrite using `[e2]`.
+-/
 private theorem inf_formula {E ι : Type} [Field E] [NumberField E] [Fintype ι] (μ : HChar E) (φ : ι → E →+* ℂ)
     (m : ι → ℤ) (ρ : ∀ i, (InfinitePlace.mk (φ i)).Completion →+* ℂ) (hc : ∀ i, Continuous (ρ i))
     (hρ : ∀ i x, ρ i (algebraMap E _ x) = φ i x)
@@ -72,6 +92,17 @@ private theorem inf_formula {E ι : Type} [Field E] [NumberField E] [Fintype ι]
       (InfinitePlace.mk (φ i))) = φ i (k : E) := hρ i k
   rw [e2]
 
+/- English proof (translation)
+Establish `key : (fun b : InfiniteAdeleRing F => InfinitePlace.Completion.extensionEmbedding w (b w)) = fun b => ρ (GlobalTheory.IndefiniteRowSideFullHecke.UnitaryHeckeCharacterIdele.infiniteAdeleMap F E b (InfinitePlace.mk τ.1))`. Use `(InfiniteAdeleRing.denseRange_algebraMap F).equalizer ((InfinitePlace.Completion.isometry_extensionEmbedding w).continuous.comp (continuous_apply _)) (hc.comp ((continuous_apply _).comp (GlobalTheory.UnitaryHeckeBaseChange.continuous_infiniteAdeleMap F E))) (funext fun x => ?_)` and prove the remaining obligations. Establish `h1 : InfinitePlace.Completion.extensionEmbedding w (algebraMap F w.Completion x) = w.embedding x` using `InfinitePlace.Completion.extensionEmbedding_coe w (WithAbs.toAbs _ x)`. Establish `h2 : GlobalTheory.IndefiniteRowSideFullHecke.UnitaryHeckeCharacterIdele.infiniteAdeleMap F E (algebraMap F _ x) (InfinitePlace.mk τ.1) = algebraMap E (InfinitePlace.mk τ.1).Completion (algebraMap F E x)` using `congrFun (congrArg Prod.fst (GlobalTheory.IndefiniteRowSideFullHecke.UnitaryHeckeCharacterIdele.adeleMap_algebraMap F E x)) _`. Simplify using `only [Function.comp_apply]`.
+
+Express the relevant statement in the definitionally equal form `InfinitePlace.Completion.extensionEmbedding w (algebraMap F w.Completion x) = ρ _`. Rewrite using `[h1, h2, hρ]`. Conclude with `(RingHom.congr_fun τ.2 x).symm`. Proceed by induction on `z using TensorProduct.induction_on with`. Consider the case `zero`.
+
+Rewrite using `[map_zero, map_zero]`. Conclude with `(map_zero ρ).symm`. Consider the case `add x y hx hy`. Rewrite using `[map_add, hx, hy, map_add, ← map_add]`. Both sides reduce to the same expression.
+
+Consider the case `tmul a e`. Rewrite using `[GlobalTheory.UnitaryHeckeBaseChange.toAdele_tmul]`. Establish `h3 : InfinitePlace.Completion.extensionEmbedding w (a.1 w) = ρ (GlobalTheory.IndefiniteRowSideFullHecke.UnitaryHeckeCharacterIdele.infiniteAdeleMap F E a.1 (InfinitePlace.mk τ.1))` using `congrFun key a.1`. Establish `h4 : (GlobalTheory.IndefiniteRowSideFullHecke.UnitaryHeckeCharacterIdele.adeleMap F E a * algebraMap E (AdeleRing (𝓞 E) E) e).1 (InfinitePlace.mk τ.1) = GlobalTheory.IndefiniteRowSideFullHecke.UnitaryHeckeCharacterIdele.infiniteAdeleMap F E a.1 (InfinitePlace.mk τ.1) * algebraMap …` using `rfl`. Rewrite using `[h4, map_mul, ← h3, hρ]`.
+
+Both sides reduce to the same expression.
+-/
 private theorem piInf_read {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
     {w : InfinitePlace F} (τ : EmbOver E w) (ρ : (InfinitePlace.mk τ.1).Completion →+* ℂ) (hc : Continuous ρ)
     (hρ : ∀ x, ρ (algebraMap E _ x) = τ.1 x) (z : AE F E) :
@@ -107,6 +138,17 @@ private theorem piInf_read {F E : Type} [Field F] [NumberField F] [Field E] [Num
     rw [h4, map_mul, ← h3, hρ]
     rfl
 
+/- English proof (translation)
+Introduce `E _ _ _ emb μ χ m hR hI z hz`. Establish `hcm` using `GlobalTheory.GalOfCusp.isCMExt_real E`. Use `set x : Ideles E := Units.map (GlobalTheory.UnitaryHeckeBaseChange.adeleEquiv hcm).toRingHom.toMonoidHom z with hx`. Establish `hx1 : (x : AdeleRing (𝓞 E) E) = GlobalTheory.UnitaryHeckeBaseChange.toAdele _ E (z : AE (maximalRealSubfield E) E)` using `rfl`. Establish `hfin : (x : AdeleRing (𝓞 E) E).2 = 1`.
+
+Set `u : AF (maximalRealSubfield E)` to `(0, 1)`. Establish `h0 : u • ((z : AE (maximalRealSubfield E) E) - 1) = 0` using `hz u (map_zero _)`. Establish `h1` using `congrArg (GlobalTheory.UnitaryHeckeBaseChange.toAdele (maximalRealSubfield E) E) h0`. Rewrite `h1` using `[Algebra.smul_def, map_mul, GlobalTheory.UnitaryHeckeBaseChange.toAdele_algebraMap, map_sub, map_one, map_zero, ← hx1]`. Establish `h2` using `congrArg Prod.snd h1`.
+
+Establish `h3 : (GlobalTheory.IndefiniteRowSideFullHecke.UnitaryHeckeCharacterIdele.adeleMap (maximalRealSubfield E) E u).2 = 1` using `map_one (GlobalTheory.IndefiniteRowSideFullHecke.UnitaryHeckeCharacterIdele.finiteAdeleMap (maximalRealSubfield E) E)`. Express the relevant statement in the definitionally equal form `(GlobalTheory.IndefiniteRowSideFullHecke.UnitaryHeckeCharacterIdele.adeleMap (maximalRealSubfield E) E u).2 * ((x : AdeleRing (𝓞 E) E).2 - 1) = 0 at h2`. Rewrite `h2` using `[h3, one_mul]`. Conclude with `sub_eq_zero.1 h2`. Set `y : (InfiniteAdeleRing E)ˣ` to `Units.map (RingHom.fst (InfiniteAdeleRing E) (FiniteAdeleRing (𝓞 E) E)).toMonoidHom x`.
+
+Establish `hxy : x = GlobalTheory.CompanionTheory.HeckeFin.infIdele E y` using `Units.ext (Prod.ext rfl hfin)`. Use `choose ρ hc hρ using fun w => exists_read (emb w).1`. Establish `hf` using `inf_formula μ (fun w => (emb w).1) m ρ hc hρ hI y`. Rewrite using `[hR z]`. Express the relevant statement in the definitionally equal form `((μ.1 x : ℂˣ) : ℂ) = _`.
+
+Rewrite using `[hxy, hf]`. Use `Finset.prod_congr rfl fun w _ => ?_` and prove the remaining obligations. Rewrite using `[piInf_read (emb w) (ρ w) (hc w) (hρ w) z]`. Both sides reduce to the same expression.
+-/
 theorem readExp : ReadExp := by
   intro E _ _ _ emb μ χ m hR hI z hz
   have hcm := GlobalTheory.GalOfCusp.isCMExt_real E

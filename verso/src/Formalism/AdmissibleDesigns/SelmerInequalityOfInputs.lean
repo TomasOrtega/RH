@@ -65,6 +65,11 @@ def FirstBlockLocalConditions (w : ℕ) : Submodule (D.nd.O i) (H1z (QS.resU i d
 
 abbrev FS := QS.Fall i dc Dd (FirstBlockLocalConditions i r π dc g0 eB e₁ s Dd hD hc)
 
+/- English proof (translation)
+Take `⟨c', rfl⟩` from `Fin.exists_succ_eq.2 hc0`. Unfold `FS QS.Fall`. Use `first`. Consider the case `rfl`. Consider the case `simp only [Fin.cases_succ]`.
+
+Consider the case `exact Fin.cases_succ _`.
+-/
 theorem FS_pos (c : Fin (D.R.t + 1)) (hc0 : c ≠ 0) (w : ℕ) : FS i r π dc g0 eB e₁ s Dd hD hc c w = QS.Fpos i dc Dd c w := by
   obtain ⟨c', rfl⟩ := Fin.exists_succ_eq.2 hc0
   unfold FS QS.Fall
@@ -87,6 +92,21 @@ def rowLenS (w : ℕ) : ℕ∞ :=
 set_option maxHeartbeats 4000000 in
 set_option synthInstance.maxHeartbeats 400000 in
 
+/- English proof (translation)
+Use `haveI := Topo.rTop_addGroup_RD i r π g0 eB e₁ s Dd hD`. Use `haveI := Topo.rTop_mul_RD i r π g0 eB e₁ s Dd hD`. Use `letI := modS i r π dc g0 eB e₁ s Dd hD hc`. Use `haveI := KLat.towerT Dd.r Dd.χ (RepresentationBoundsCohomology.blk D.R) Dd.ρk (epsU D.nd i) (Aw i dc) (hKm i) (hEps i) (hM0 i r π g0 eB e₁ s Dd hD hc)`. Use `letI := modS' i r π dc g0 eB e₁ s Dd hD hc`.
+
+Use `haveI := KLat.towerT' Dd.r Dd.χ (RepresentationBoundsCohomology.blk D.R) Dd.ρk (epsU D.nd i) (Aw i dc) (hKm i) (hEps i) (hM0 i r π g0 eB e₁ s Dd hD hc)`. Take `⟨t1, t2, t3, t4, t5, t6, t7, t8, t9, t10, t11, t12⟩` from `Topo.topoHyps i r π dc g0 eB e₁ s Dd hD hc u0 hcyc`. Establish `hA` using `tensor_lattice_facts Dd (D.nd.T i) (RepresentationBoundsCohomology.one_le_letterBlockLength D.R) hT hrk (epsU D.nd i)`. Establish `hL` using `fun w => KLat.rowLat Dd.r Dd.χ (RepresentationBoundsCohomology.blk D.R) Dd.ρk (epsU D.nd i) (Aw i dc) (hKm i) (hEps i) (hM0 i r π g0 eB e₁ s Dd hD hc) (D.nd.l i) (Topo.padicCoeff_O i) (Topo.fracTop_O i) w`. Establish `H` using `hK (Col i dc) (colIdx i dc) (colIdx_inj i dc) (Aw i dc) (plOf i dc) (Av (D := D)) (jN i ρ π dc) (e'N i dc e') (rowsN i dc) (qsN i dc) (sN i ρ π) (invariantsLengthSup i dc) (ShaN i) cB (fun _ _ => cB) (Lr i Dd) (tensM _ _ _) (v1S i Dd hT hrk) κ (Vr i Dd) (iLM _ _ _) (qVM _ _ _) (f …`.
+
+Establish `hrows : ∀ w ∈ rowsN i dc, FS i r π dc g0 eB e₁ s Dd hD hc 0 w = (((HfWS i r π dc g0 eB e₁ s Dd hD hc w).restrictScalars (D.nd.O i)).map (DatS i r π dc g0 eB e₁ s Dd hD hc w).q).map (kRow (DatS i r π dc g0 eB e₁ s Dd hD hc w) _ (uDS i r π dc g0 eB e₁ s Dd hD hc w) (huDS i r π dc g …`. Introduce `w hw`. Use `show FirstBlockLocalConditions i r π dc g0 eB e₁ s Dd hD hc w = _`. Unfold `FirstBlockLocalConditions KHf.Fρ`. Rewrite using `[if_pos hw]`.
+
+Take `⟨hineq, hv, -⟩` from `H t1 t2 t3 t4 t5 (inc_cont (O := D.nd.O i) Dd.e₁) t6 t7 t8 t9 t10 t11 hA.2.2.1 hA.2.2.2.2.1 hA.2.2.2.2.2.1 hA.2.2.2.2.2.2.1 hUz hUnr hL1 hL2 (fun x' hx => ⟨hG6 x' hx, hLx x' hx⟩) hRho (fun w hw => ⟨(t12 w hw).1, (t12 w hw).2, (hL w).1, (hL w).2.1, (hL w).2.2.1, (hL w).2.2.2, hBKa …`. Establish `hc0 : c ≠ 0` using `fun h => by rw [h] at hc2; simp at hc2`. Establish `hc1 : (c : ℕ) ≠ 1` using `by omega`. Rewrite using `[FS_pos i r π dc g0 eB e₁ s Dd hD hc c hc0 w]`. Unfold `QS.Fpos`.
+
+Rewrite using `[if_neg (hRQ w hw), if_pos hw, if_neg hc1], le_rfl, hTB c (by omega) w hw⟩, hChi c hc2⟩)`. Use the proof step `⟨hU1.1, hU1.2, fun l => by`. Rewrite using `[FS_pos i r π dc g0 eB e₁ s Dd hD hc _ (by intro h; have := congrArg Fin.val h; simp at this) _]`. Unfold `QS.Fpos`. Distinguish the cases in `hq : colIdx i dc l ∈ qsN i dc`.
+
+Apply the tactic sequence `rw [if_pos hq] <;> exact le_rfl`. Apply the tactic sequence `rw [if_neg hq, if_neg (hCR l), if_pos rfl] <;> exact le_rfl,`. Use `fun w hw => ⟨by`. Rewrite using `[FS_pos i r π dc g0 eB e₁ s Dd hD hc _ (by intro h; have := congrArg Fin.val h; simp at this) _]`. Unfold `QS.Fpos`.
+
+Rewrite using `[if_neg (hRQ w hw), if_pos hw, if_pos rfl], le_rfl, hTB QS.c1 le_rfl w hw⟩, hLoc1, hCover⟩`. Conclude with `⟨rowLenS i r π dc g0 eB e₁ s Dd hD hc hT hrk, H0.h0d i dc Dd, IsDiscreteValuationRing.addVal (D.nd.O i) Dd.δO, Fintype.card {a // RepresentationBoundsCohomology.blk D.R a = 0}, hv, card_first_block (D := D), hineq, hTie, H0.invariants_display_match i r ρ π dc g0 eB e₁ s Dd hD hN⟩`.
+-/
 theorem selmer_inequality_of_inputs [IsNoetherian Dd.R' Dd.R']
     [∀ x', IsScalarTower Dd.T' Dd.R' (EvalSp (D.nd.O i) (Fin D.R.nV) Dd.R' x')]
     [∀ k, IsScalarTower Dd.T' Dd.R' (blockRestrictedRepresentationType (RepresentationBoundsCohomology.blk D.R) Dd.ρk k)]

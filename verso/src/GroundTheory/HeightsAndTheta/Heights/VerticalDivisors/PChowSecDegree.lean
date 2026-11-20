@@ -9,6 +9,15 @@ open MvPolynomial
 
 noncomputable section
 
+/- English proof (translation)
+Rewrite using `[specRest, g.as_sum, eval₂_sum]`. Use `IsHomogeneous.sum _ _ _ fun m hm => ?_` and prove the remaining obligations. Rewrite using `[eval₂_monomial, Finsupp.prod]`. Establish `hdeg : ∀ ij : Fin (e + 1) × Fin n, (Fin.cases (motive` using `fun _ => MvPolynomial (Fin n) S) (X ij.2) (fun i => C (y (.inl (i, ij.2)))) ij.1 : MvPolynomial (Fin n) S).IsHomogeneous (groupWeight (e + 1) n ij 0) := by`. Introduce and unpack `⟨i, j⟩`.
+
+Use `Fin.cases ?_ (fun i => ?_) i` and prove the remaining obligations. Simplify `isHomogeneous_X (R := S) j` using `[groupWeight]`. Establish `h0 : groupWeight (e + 1) n (i.succ, j) 0 = 0` using `by simp [groupWeight]`. Rewrite using `[h0]`. Conclude with `isHomogeneous_C _ _`.
+
+Establish `hsum : ∑ ij ∈ m.support, groupWeight (e + 1) n ij 0 * m ij = d`. Establish `hw` using `hg (mem_support_iff.mp hm)`. Establish `h0` using `congrFun hw 0`. Rewrite `h0` using `[Finsupp.weight_apply, Finsupp.sum, Finset.sum_apply]`. Rewrite using `[← h0]`.
+
+Use `Finset.sum_congr rfl fun ij _ => ?_` and prove the remaining obligations. Rewrite using `[Pi.smul_apply, smul_eq_mul, mul_comm]`. Establish `h` using `(isHomogeneous_C (σ := Fin n) (φ (coeff m g))).mul (IsHomogeneous.prod m.support _ _ fun ij _ => (hdeg ij).pow (m ij))`. Rewrite `h` using `[zero_add, hsum]`. Conclude with `h`.
+-/
 theorem isHomogeneous_specRest {R S : Type*} [CommRing R] [CommRing S] (φ : R →+* S) {n e d : ℕ}
     {g : MvPolynomial (Fin (e + 1) × Fin n) R} (hg : IsMultiHomog d g) (y : Par e n → S) :
     (specRest φ g y).IsHomogeneous d := by
@@ -38,6 +47,11 @@ theorem isHomogeneous_specRest {R S : Type*} [CommRing R] [CommRing S] (φ : R �
   rw [zero_add, hsum] at h
   exact h
 
+/- English proof (translation)
+Rewrite using `[Matrix.det_apply]`. Use `IsHomogeneous.sum _ _ _ fun τ _ => ?_` and prove the remaining obligations. Establish `hp` using `IsHomogeneous.prod Finset.univ (fun i => N (τ i) i) (fun _ => 1) fun i _ => hN (τ i) i`. Simplify using `only [Finset.sum_const, Finset.card_univ, smul_eq_mul, mul_one] at hp`. Rewrite using `[Units.smul_def, zsmul_eq_mul, ← map_intCast (C : R →+* MvPolynomial σ R)]`.
+
+Simplify using `using (isHomogeneous_C σ ((τ.sign : ℤ) : R)).mul hp`.
+-/
 theorem isHomogeneous_det_linear {R : Type*} [CommRing R] {σ ι : Type*} [Fintype ι] [DecidableEq ι]
     (N : Matrix ι ι (MvPolynomial σ R)) (hN : ∀ i k, (N i k).IsHomogeneous 1) :
     N.det.IsHomogeneous (Fintype.card ι) := by
@@ -48,6 +62,19 @@ theorem isHomogeneous_det_linear {R : Type*} [CommRing R] {σ ι : Type*} [Finty
   rw [Units.smul_def, zsmul_eq_mul, ← map_intCast (C : R →+* MvPolynomial σ R)]
   simpa using (isHomogeneous_C σ ((τ.sign : ℤ) : R)).mul hp
 
+/- English proof (translation)
+Introduce `k E _ _ _ _ n e Q g y hy hQ hg`. Take `⟨hfin, c, hc, heq⟩` from `h1 k E n e Q g y hy hQ hg`. Use `set QE := Q.map (MvPolynomial.map (algebraMap k E))`. Establish `: Module.Finite E (SecAlg QE y)` using `hfin`. Establish `: Module.Free E (SecAlg QE y)` using `Module.Free.of_divisionRing E (SecAlg QE y)`.
+
+Set `b : Module.Basis (Module.Free.ChooseBasisIndex E (SecAlg QE y)) E (SecAlg QE y)` to `Module.Free.chooseBasis E (SecAlg QE y)`. Establish `hN : (normForm (R` using `E) (SecAlg QE y) (secCoord QE y)).IsHomogeneous (Module.finrank E (SecAlg QE y)) := by`. Rewrite using `[normForm_eq_det b, Module.finrank_eq_card_chooseBasisIndex]`. Use `isHomogeneous_det_linear _ fun i k' => ?_` and prove the remaining obligations. Simplify using `only [Matrix.sum_apply, Matrix.smul_apply, Matrix.map_apply, smul_eq_mul]`.
+
+Conclude with `IsHomogeneous.sum _ _ _ fun j _ => by`. Simplify using `using (isHomogeneous_X E j).mul (isHomogeneous_C (Fin n) _)`. Establish `hone : (∑ j, algebraMap E (SecAlg QE y) (y (.inr j)) * secCoord QE y j) = 1`. Establish `hmem : chartForm y - 1 ∈ secIdeal QE y` using `Ideal.mem_sup_right (Ideal.subset_span rfl)`. Establish `h` using `Ideal.Quotient.eq.mpr hmem`.
+
+Rewrite `h` using `[map_one]`. Rewrite using `[← h]`. Simplify using `[chartForm, linForm, secCoord, map_sum, map_mul]`. Both sides reduce to the same expression. Establish `hN0 : normForm (R` using `E) (SecAlg QE y) (secCoord QE y) ≠ 0 := by`.
+
+Introduce `h0`. Establish `hv` using `h3 E (SecAlg QE y) n (secCoord QE y) (fun j => y (.inr j))`. Rewrite `hv` using `[h0, map_zero, hone, map_one]`. Conclude with `zero_ne_one hv`. Establish `hG : (specRest (algebraMap k E) g y).IsHomogeneous (chowDegree Q (e + 1))` using `isHomogeneous_specRest _ (h2 k n (e + 1) Q g hg) y`.
+
+Rewrite `hG` using `[heq]`. Establish `hCN : (C c * normForm (R` using `E) (SecAlg QE y) (secCoord QE y)).IsHomogeneous (Module.finrank E (SecAlg QE y)) := by`. Simplify using `using hN.C_mul c`. Conclude with `hCN.inj_right hG (mul_ne_zero (C_ne_zero.mpr hc) hN0)`.
+-/
 theorem ChowSecDegree.proof (h1 : ChowNormForm.Statement) (h2 : ChowFormHomog.Statement)
     (h3 : NormFormEval.Statement) : ChowSecDegree.Statement := by
   intro k E _ _ _ _ n e Q g y hy hQ hg

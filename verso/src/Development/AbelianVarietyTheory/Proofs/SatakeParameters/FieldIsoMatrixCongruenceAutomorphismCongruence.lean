@@ -7,6 +7,13 @@ noncomputable section
 
 namespace GlobalTheory.SeamCong
 
+/- English proof (translation)
+Establish `hI : (seamP s P).asIdeal = P.asIdeal.map (RingOfIntegers.mapRingEquiv s.iE)`. Use extensionality with `y`. Rewrite using `[← (RingOfIntegers.mapRingEquiv s.iE).apply_symm_apply y, mem_seamP, Ideal.mem_map_of_equiv]`. Prove the components needed by the constructor for the conclusion. Introduce `hy`.
+
+Conclude with `⟨_, hy, rfl⟩`. Introduce and unpack `⟨z, hz, e⟩`. Rewrite `hz` using `[(RingOfIntegers.mapRingEquiv s.iE).injective e]`. Conclude with `hz`. Unfold `qOf`.
+
+Rewrite using `[Ideal.absNorm_apply, Ideal.absNorm_apply, Submodule.cardQuot_apply, Submodule.cardQuot_apply]`. Conclude with `(Nat.card_congr (Ideal.quotientEquiv P.asIdeal (seamP s P).asIdeal (RingOfIntegers.mapRingEquiv s.iE) hI).toEquiv).symm`.
+-/
 theorem qOf_seamP {D : D7} {X : Fields} (s : Seam D X) (P : HeightOneSpectrum (𝓞 X.E)) : qOf (seamP s P) = qOf P := by
   have hI : (seamP s P).asIdeal = P.asIdeal.map (RingOfIntegers.mapRingEquiv s.iE) := by
     ext y
@@ -20,6 +27,13 @@ theorem qOf_seamP {D : D7} {X : Fields} (s : Seam D X) (P : HeightOneSpectrum (�
   rw [Ideal.absNorm_apply, Ideal.absNorm_apply, Submodule.cardQuot_apply, Submodule.cardQuot_apply]
   exact (Nat.card_congr (Ideal.quotientEquiv P.asIdeal (seamP s P).asIdeal (RingOfIntegers.mapRingEquiv s.iE) hI).toEquiv).symm
 
+/- English proof (translation)
+Establish `hc : ∀ y : 𝓞 X.E, algebraMap (𝓞 D.host.E) D.host.E (RingOfIntegers.mapRingEquiv s.iE y) = s.iE (algebraMap (𝓞 X.E) X.E y)` using `fun y => rfl`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨r, c, hc', h⟩`. Use `⟨(RingOfIntegers.mapRingEquiv s.iE).symm r, (RingOfIntegers.mapRingEquiv s.iE).symm c, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[← mem_seamP s, RingEquiv.apply_symm_apply]`.
+
+Conclude with `hc'`. Apply `s.iE.injective` to reduce the goal to its premises. Rewrite using `[map_mul, ← hc, ← hc, RingEquiv.apply_symm_apply, RingEquiv.apply_symm_apply]`. Conclude with `h`. Introduce and unpack `⟨r, c, hc', h⟩`.
+
+Use `⟨RingOfIntegers.mapRingEquiv s.iE r, RingOfIntegers.mapRingEquiv s.iE c, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[mem_seamP s]`. Conclude with `hc'`. Rewrite using `[hc, hc, ← map_mul, h]`.
+-/
 theorem intAt_seamP_iff {D : D7} {X : Fields} (s : Seam D X) (P : HeightOneSpectrum (𝓞 X.E)) (e : X.E) :
     IntAt (seamP s P) (s.iE e) ↔ IntAt P e := by
   have hc : ∀ y : 𝓞 X.E, algebraMap (𝓞 D.host.E) D.host.E (RingOfIntegers.mapRingEquiv s.iE y) = s.iE (algebraMap (𝓞 X.E) X.E y) :=
@@ -36,6 +50,11 @@ theorem intAt_seamP_iff {D : D7} {X : Fields} (s : Seam D X) (P : HeightOneSpect
     · rw [mem_seamP s]; exact hc'
     · rw [hc, hc, ← map_mul, h]
 
+/- English proof (translation)
+Introduce `s' l`. Establish `h1` using `h l s'`. Establish `hM : ((seamGL s g : GL (Fin N) D.host.E) : Matrix (Fin N) (Fin N) D.host.E) = (LinearMap.toMatrix' g.toLinearMap).map (s.iE : X.E →+* D.host.E)` using `rfl`. Rewrite using `[← intAt_seamP_iff s P]`. Establish `e : s.iE (((qOf P : X.E) ^ n)⁻¹ * (g (Pi.single s' (1 : X.E)) l - (Pi.single s' (1 : X.E) : Sp X.E N) l)) = (((qOf (seamP s P) : ℕ) : D.host.E) ^ n)⁻¹ * (((seamGL s g : GL (Fin N) D.host.E) : Matrix (Fin N) (Fin N) D.host.E) - 1) l s'`.
+
+Rewrite using `[hM, qOf_seamP, Matrix.sub_apply, Matrix.map_apply, LinearMap.toMatrix'_apply, map_mul, map_inv₀, map_pow, map_natCast, map_sub, Matrix.one_apply, Pi.single_apply]`. Apply the tactic sequence `split_ifs <;> simp`. Rewrite using `[e]`. Conclude with `h1`.
+-/
 theorem cong_seam {D : D7} {X : Fields} (s : Seam D X) {N : ℕ} (P : HeightOneSpectrum (𝓞 X.E)) (n : ℕ)
     (g : Sp X.E N ≃ₗ[X.E] Sp X.E N)
     (h : ∀ a b, IntAt (seamP s P) ((((qOf (seamP s P) : ℕ) : D.host.E) ^ n)⁻¹ *

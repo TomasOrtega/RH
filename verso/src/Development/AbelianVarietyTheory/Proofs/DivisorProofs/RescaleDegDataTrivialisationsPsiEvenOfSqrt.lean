@@ -12,6 +12,13 @@ noncomputable section
 
 namespace GlobalTheory.PolDeg
 
+/- English proof (translation)
+Introduce `R _ _ D h eta hD hadd hsq`. Establish `h0 : eta 0 = 1`. Establish `e` using `hadd 0 0`. Rewrite `e` using `[add_zero]`. Conclude with `mul_eq_left.1 e.symm`.
+
+Establish `key : ∀ χ : D.X, eta (-χ) * h χ = eta χ` using `fun χ => by`. Rewrite using `[← hsq, pow_two, ← _root_.mul_assoc, ← hadd, neg_add_cancel, h0, _root_.one_mul]`. Establish `hu : ∀ a b : (FractionRing R)ˣ, unitOn (a * b) = unitOn a * unitOn b` using `fun a b => map_mul _ a b`. Use `fun (χ : D.X) => corr_of_val D.P.isLB fun y J hJ => ?_` and prove the remaining obligations. Use `show val (LB.mulGen D.P.L _ _ _ _ (GlobalTheory.UU.scaleGen (unitOn (eta (-χ))) (D.psi (-χ))) (LB.pullGen D.P.L _ _ D.sym (D.xK χ))) (𝟙 _) y J = val (GlobalTheory.UU.scaleGen (unitOn (eta χ)) (D.psi χ)) (𝟙 _) y J`.
+
+Use `(val_mul hJ _ _ _).trans ?_` and prove the remaining obligations. Use `(congrArg₂ (· * ·) (GlobalTheory.UU.val_scaleGen _ _ _ hJ) ((val_pull hJ _ _ _).trans (congrArg (fun r => val D.sym r y J) (Category.id_comp _)))).trans ?_` and prove the remaining obligations. Use `(_root_.mul_assoc _ _ _).trans ((congrArg (_ * ·) (hD χ y J hJ)).trans ?_)` and prove the remaining obligations. Use `(_root_.mul_assoc _ _ _).symm.trans ((congrArg (· * _) ((map_mul _ _ _).symm.trans (congrArg (gm _ y ⊤) ((hu _ _).symm.trans (congrArg unitOn (key χ)))))).trans (GlobalTheory.UU.val_scaleGen _ _ _ hJ).symm)` and prove the remaining obligations.
+-/
 theorem rescale_psiEven : ∀ (R : Type) [CommRing R] [IsDomain R] (D : DegPre R) (h eta : D.X → (FractionRing R)ˣ),
     EvenDefect D h → (∀ a b, eta (a + b) = eta a * eta b) → (∀ a, eta a ^ 2 = h a) → (rescale D eta).PsiEven := by
   intro R _ _ D h eta hD hadd hsq

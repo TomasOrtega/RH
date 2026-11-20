@@ -6,6 +6,27 @@ namespace Formalism.IndefR.Rat
 
 open Matrix
 
+/- English proof (translation)
+Introduce `l`. Use `choose A'' hA' using hfr`. Use `choose b' hb' using hc`. Use `set A' : Matrix κ ι K := Matrix.of A''`. Establish `hfc : ∀ y : ι → ℂ, f y = ∑ m, y m • f (Pi.single m 1)`.
+
+Introduce `y`. Use `conv_lhs => rw [← Finset.univ_sum_single y]`. Rewrite using `[map_sum]`. Conclude with `Finset.sum_congr rfl fun m _ => by`. Rewrite using `[← map_smul, ← Pi.single_smul, smul_eq_mul, mul_one]`.
+
+Establish `hmul : ∀ y : ι → ℂ, ((A'.map σ) *ᵥ y) = fun i => ψ i (f y)`. Introduce `y`. Use function extensionality and compare the values at `i`. Rewrite using `[hfc y, map_sum]`. Simplify using `only [Matrix.mulVec, dotProduct, Matrix.map_apply, A', Matrix.of_apply, hA', map_smul, smul_eq_mul]`.
+
+Conclude with `Finset.sum_congr rfl (fun m _ => mul_comm _ _)`. Establish `hinj : Function.Injective (Matrix.toLin' A')`. Rewrite using `[← LinearMap.ker_eq_bot, LinearMap.ker_eq_bot']`. Introduce `x hx`. Establish `h1 : (A'.map σ) *ᵥ (σ ∘ x) = 0`.
+
+Use function extensionality and compare the values at `i`. Rewrite using `[← RingHom.map_mulVec σ A' x i]`. Establish `hx' : (A' *ᵥ x) i = 0`. Use `congrFun hx i` as an intermediate fact. Simplify using `using this`.
+
+Simplify using `[hx']`. Rewrite `h1` using `[hmul]`. Establish `h2 : f (σ ∘ x) = 0` using `hψ _ (fun i => congrFun h1 i)`. Establish `h3 : (σ ∘ x) = 0` using `hf (by rw [h2, map_zero])`. Use function extensionality and compare the values at `m`.
+
+Use `congrFun h3 m` as an intermediate fact. Simplify using `using this`. Take `⟨g, hg⟩` from `LinearMap.exists_leftInverse_of_injective (Matrix.toLin' A') (LinearMap.ker_eq_bot.mpr hinj)`. Use `set L' : Matrix ι κ K := LinearMap.toMatrix' g`. Establish `hLA : L' * A' = 1`.
+
+Establish `: LinearMap.toMatrix' (g.comp (Matrix.toLin' A')) = L' * A'`. Rewrite using `[LinearMap.toMatrix'_comp, LinearMap.toMatrix'_toLin']`. Rewrite using `[← this, hg, LinearMap.toMatrix'_id]`. Establish `hLA' : (L'.map σ) * (A'.map σ) = 1`. Rewrite using `[← Matrix.map_mul, hLA, Matrix.map_one _ (map_zero σ) (map_one σ)]`.
+
+Establish `hb : (A'.map σ) *ᵥ c = σ ∘ b'`. Rewrite using `[hmul]`. Use function extensionality and compare the values at `i`. Simplify using `[hb']`. Establish `hcL : c = (L'.map σ) *ᵥ (σ ∘ b')`.
+
+Rewrite using `[← hb, Matrix.mulVec_mulVec, hLA', Matrix.one_mulVec]`. Rewrite using `[hcL]`. Conclude with `⟨(L' *ᵥ b') l, RingHom.map_mulVec σ L' b' l⟩`.
+-/
 theorem coord_rat {K : Type} [Field K] (σ : K →+* ℂ) {E : Type} [AddCommGroup E] [Module ℂ E] {κ : Type} [Fintype κ]
     [DecidableEq κ] {ι : Type} [Fintype ι] [DecidableEq ι]
     (ψ : κ → Module.Dual ℂ E) (hψ : ∀ e, (∀ i, ψ i e = 0) → e = 0)

@@ -13,6 +13,15 @@ open Formalism.REAL (GlRel)
 
 variable {n : ℕ} {ε : Fin n → Bool}
 
+/- English proof (translation)
+Distinguish the cases in `hp : P`. Rewrite using `[if_pos hp]`. Set `k0 : NC ε` to `⟨(a, b), hP hp⟩`. Rewrite using `[Finset.sum_eq_single k0]`. Rewrite using `[if_pos ((hQ k0).mpr ⟨hp, rfl, rfl⟩), one_smul]`.
+
+Introduce `k _ hk`. Rewrite using `[if_neg, zero_smul]`. Introduce `hq`. Take `⟨_, h1, h2⟩` from `(hQ k).mp hq`. Conclude with `hk (Subtype.ext (Prod.ext h1 h2))`.
+
+Introduce `h`. Conclude with `absurd (Finset.mem_univ _) h`. Rewrite using `[if_neg hp]`. Apply `Finset.sum_eq_zero` to reduce the goal to its premises. Introduce `k _`.
+
+Rewrite using `[if_neg (fun hq => hp ((hQ k).mp hq).1), zero_smul]`.
+-/
 theorem sum_pick {R : Type} [AddCommGroup R] [Module ℂ R] (f : Fin n → Fin n → R) (a b : Fin n) (P : Prop)
     [Decidable P] (hP : P → ε a = true ∧ ε b = false) (Q : NC ε → Prop) [DecidablePred Q]
     (hQ : ∀ k, Q k ↔ P ∧ k.1.1 = a ∧ k.1.2 = b) :
@@ -39,6 +48,17 @@ section Abstract
 variable {ι R : Type} [Fintype ι] [DecidableEq ι] [Ring R] [Algebra ℂ R]
 
 omit [DecidableEq ι] in
+/- English proof (translation)
+Establish `key : (∑ i, L i * A i) * (∑ i, L i * A i) = ∑ i, ∑ j, L i * L j * (A i * A j)`. Rewrite using `[Finset.sum_mul_sum]`. Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[mul_assoc, mul_assoc, ← mul_assoc (A i) (L j) (A j), ← (hLA j i).eq, mul_assoc]`. Establish `hS : ∑ i, ∑ j, L i * L j * (A i * A j) + ∑ i, ∑ j, L i * L j * (A j * A i) = 0`.
+
+Rewrite using `[← Finset.sum_add_distrib]`. Use `Finset.sum_eq_zero fun i _ => ?_` and prove the remaining obligations. Rewrite using `[← Finset.sum_add_distrib]`. Use `Finset.sum_eq_zero fun j _ => ?_` and prove the remaining obligations. Rewrite using `[← mul_add, hAA i j, mul_zero]`.
+
+Establish `hS' : ∑ i, ∑ j, L i * L j * (A j * A i) = ∑ i, ∑ j, L i * L j * (A i * A j)`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[(hLL j i).eq]`. Rewrite using `[key]`.
+
+Rewrite `hS` using `[hS']`. Establish `h2 : (2 : ℂ) • ∑ i, ∑ j, L i * L j * (A i * A j) = 0`. Rewrite using `[two_smul]`. Conclude with `hS`. Establish `h3` using `congrArg (fun x => (2 : ℂ)⁻¹ • x) h2`.
+
+Simplify `h3` using `[smul_smul]`.
+-/
 theorem sq_zero (L A : ι → R) (hLL : ∀ i j, Commute (L i) (L j)) (hLA : ∀ i j, Commute (L i) (A j))
     (hAA : ∀ i j, A i * A j + A j * A i = 0) : (∑ i, L i * A i) * (∑ i, L i * A i) = 0 := by
   have key : (∑ i, L i * A i) * (∑ i, L i * A i) = ∑ i, ∑ j, L i * L j * (A i * A j) := by
@@ -65,6 +85,13 @@ theorem sq_zero (L A : ι → R) (hLL : ∀ i j, Commute (L i) (L j)) (hLA : ∀
 
 omit [DecidableEq ι] [Algebra ℂ R] in
 
+/- English proof (translation)
+Establish `e : (T + G) * (∑ k, L k * A k) - (∑ k, L k * A k) * (T + G) = ∑ k, (T * L k - L k * T) * A k + ∑ k, L k * (G * A k - A k * G)`. Rewrite using `[Finset.mul_sum, Finset.sum_mul, ← Finset.sum_sub_distrib, ← Finset.sum_add_distrib]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Establish `hG : G * (L k * A k) = L k * (G * A k)` using `by rw [← mul_assoc, (hGL k).eq, mul_assoc]`. Establish `hT : L k * A k * T = L k * T * A k` using `by rw [mul_assoc, ← (hTA k).eq, ← mul_assoc]`.
+
+Combine the equalities or inequalities in the displayed calculation. Rewrite using `[add_mul, mul_add]`. Use `_ = T * (L k * A k) + L k * (G * A k) - (L k * T * A k + L k * A k * G) := by rw [hG, hT]`. Use `_ = (T * L k - L k * T) * A k + L k * (G * A k - A k * G) := by noncomm_ring`. Use `show (T + G) * _ = _ * (T + G)`.
+
+Rewrite using `[← sub_eq_zero, e]`. Conclude with `h`.
+-/
 theorem commute_of_unitary_conjugate (T G : R) (L A : ι → R) (hTA : ∀ k, Commute T (A k)) (hGL : ∀ k, Commute G (L k))
     (h : ∑ k, (T * L k - L k * T) * A k + ∑ k, L k * (G * A k - A k * G) = 0) :
     Commute (T + G) (∑ k, L k * A k) := by
@@ -83,6 +110,15 @@ theorem commute_of_unitary_conjugate (T G : R) (L A : ι → R) (hTA : ∀ k, Co
   rw [← sub_eq_zero, e]
   exact h
 
+/- English proof (translation)
+Establish `hterm : ∀ i j, (q i j • (C i * A j)) * A k - A k * (q i j • (C i * A j)) = -(if k = i then q i j • A j else 0)`. Introduce `i j`. Establish `h1 : A j * A k = -(A k * A j)` using `eq_neg_of_add_eq_zero_left (hAA j k)`. Establish `h2 : A k * C i = (if k = i then 1 else 0) - C i * A k` using `eq_sub_of_add_eq (hAC k i)`. Establish `h3 : C i * A j * A k - A k * (C i * A j) = -(if k = i then A j else 0)`.
+
+Rewrite using `[mul_assoc, h1, ← mul_assoc (A k), h2]`. Apply the tactic sequence `split_ifs <;> noncomm_ring`. Rewrite using `[smul_mul_assoc, mul_smul_comm, ← smul_sub, h3]`. Apply the tactic sequence `split_ifs <;> simp`. Establish `hrow : ∀ i, (∑ j, q i j • (C i * A j)) * A k - A k * (∑ j, q i j • (C i * A j)) = ∑ j, -(if k = i then q i j • A j else 0)`.
+
+Introduce `i`. Rewrite using `[Finset.sum_mul, Finset.mul_sum, ← Finset.sum_sub_distrib]`. Conclude with `Finset.sum_congr rfl fun j _ => hterm i j`. Rewrite using `[Finset.sum_mul, Finset.mul_sum, ← Finset.sum_sub_distrib, Finset.sum_congr rfl fun i _ => hrow i]`. Rewrite using `[Finset.sum_eq_single k]`.
+
+Simplify using `[Finset.sum_neg_distrib]`. Introduce `i _ hik`. Simplify using `[Ne.symm hik]`. Introduce `h`. Conclude with `absurd (Finset.mem_univ k) h`.
+-/
 theorem comm_ann (A C : ι → R) (q : ι → ι → ℂ) (hAA : ∀ i j, A i * A j + A j * A i = 0)
     (hAC : ∀ i j, A i * C j + C j * A i = if i = j then 1 else 0) (k : ι) :
     (∑ i, ∑ j, q i j • (C i * A j)) * A k - A k * (∑ i, ∑ j, q i j • (C i * A j)) = -∑ j, q k j • A j := by
@@ -109,6 +145,13 @@ theorem comm_ann (A C : ι → R) (q : ι → ι → ℂ) (hAA : ∀ i j, A i * 
   · intro h
     exact absurd (Finset.mem_univ k) h
 
+/- English proof (translation)
+Establish `hterm : ∀ i j, (q i j • (C i * A j)) * C k - C k * (q i j • (C i * A j)) = if j = k then q i j • C i else 0`. Introduce `i j`. Establish `h1 : C k * C i = -(C i * C k)` using `eq_neg_of_add_eq_zero_left (hCC k i)`. Establish `h2 : A j * C k = (if j = k then 1 else 0) - C k * A j` using `eq_sub_of_add_eq (hAC j k)`. Establish `h3 : C i * A j * C k - C k * (C i * A j) = if j = k then C i else 0`.
+
+Rewrite using `[mul_assoc, h2, ← mul_assoc (C k), h1]`. Apply the tactic sequence `split_ifs <;> noncomm_ring`. Rewrite using `[smul_mul_assoc, mul_smul_comm, ← smul_sub, h3]`. Apply the tactic sequence `split_ifs <;> simp`. Establish `hrow : ∀ i, (∑ j, q i j • (C i * A j)) * C k - C k * (∑ j, q i j • (C i * A j)) = q i k • C i`.
+
+Introduce `i`. Rewrite using `[Finset.sum_mul, Finset.mul_sum, ← Finset.sum_sub_distrib, Finset.sum_congr rfl fun j _ => hterm i j]`. Simplify using the standard rewrite rules. Rewrite using `[Finset.sum_mul, Finset.mul_sum, ← Finset.sum_sub_distrib]`. Conclude with `Finset.sum_congr rfl fun i _ => hrow i`.
+-/
 theorem comm_cre (A C : ι → R) (q : ι → ι → ℂ) (hCC : ∀ i j, C i * C j + C j * C i = 0)
     (hAC : ∀ i j, A i * C j + C j * A i = if i = j then 1 else 0) (k : ι) :
     (∑ i, ∑ j, q i j • (C i * A j)) * C k - C k * (∑ i, ∑ j, q i j • (C i * A j)) = ∑ i, q i k • C i := by
@@ -133,6 +176,11 @@ end Abstract
 
 variable {V : Type} [AddCommGroup V] [Module ℂ V]
 
+/- English proof (translation)
+Use `LinearMap.ext fun x => funext fun A => ?_` and prove the remaining obligations. Use `show T (ann i x A) = ann i (lift ε T x) A`. Simplify using `only [ann, LinearMap.coe_mk, AddHom.coe_mk, lift_apply]`. Use `split_ifs`. Conclude with `map_zero T`.
+
+Conclude with `map_smul T _ _`.
+-/
 theorem lift_ann (T : Module.End ℂ V) (i : NC ε) :
     Commute (lift ε T : Module.End ℂ (Ch ε V)) (ann i) := by
   refine LinearMap.ext fun x => funext fun A => ?_
@@ -142,6 +190,11 @@ theorem lift_ann (T : Module.End ℂ V) (i : NC ε) :
   · exact map_zero T
   · exact map_smul T _ _
 
+/- English proof (translation)
+Use `LinearMap.ext fun x => funext fun A => ?_` and prove the remaining obligations. Use `show T (cre i x A) = cre i (lift ε T x) A`. Simplify using `only [cre, LinearMap.coe_mk, AddHom.coe_mk, lift_apply]`. Use `split_ifs`. Conclude with `map_smul T _ _`.
+
+Conclude with `map_zero T`.
+-/
 theorem lift_cre (T : Module.End ℂ V) (i : NC ε) :
     Commute (lift ε T : Module.End ℂ (Ch ε V)) (cre i) := by
   refine LinearMap.ext fun x => funext fun A => ?_
@@ -151,12 +204,20 @@ theorem lift_cre (T : Module.End ℂ V) (i : NC ε) :
   · exact map_smul T _ _
   · exact map_zero T
 
+/- English proof (translation)
+Unfold `Gop`. Use `Commute.sum_left _ _ _ fun i _ => Commute.sum_left _ _ _ fun j _ => ?_` and prove the remaining obligations. Conclude with `((lift_cre T i).symm.mul_left (lift_ann T j).symm).smul_left _`.
+-/
 theorem lift_Gop (T : Module.End ℂ V) (c d : Fin n) :
     Commute (Gop ε c d) (lift ε T : Module.End ℂ (Ch ε V)) := by
   unfold Gop
   refine Commute.sum_left _ _ _ fun i _ => Commute.sum_left _ _ _ fun j _ => ?_
   exact ((lift_cre T i).symm.mul_left (lift_ann T j).symm).smul_left _
 
+/- English proof (translation)
+Establish `hm : ∀ S U : Module.End ℂ V, (lift ε S : Module.End ℂ (Ch ε V)) * lift ε U = lift ε (S * U)` using `fun S U => LinearMap.ext fun x => funext fun A => rfl`. Establish `hs : ∀ S U : Module.End ℂ V, (lift ε S : Module.End ℂ (Ch ε V)) - lift ε U = lift ε (S - U)` using `fun S U => LinearMap.ext fun x => funext fun A => rfl`. Establish `h0 : (lift ε (0 : Module.End ℂ V) : Module.End ℂ (Ch ε V)) = 0` using `LinearMap.ext fun x => funext fun A => rfl`. Introduce `a b c d`. Apply the tactic sequence `try dsimp only`.
+
+Rewrite using `[hm, hm, hs, hE a b c d]`. Apply the tactic sequence `split_ifs <;> simp only [← h0, hs]`.
+-/
 theorem glRel_lift (E : Fin n → Fin n → Module.End ℂ V) (hE : GlRel E) :
     GlRel (fun a b => (lift ε (E a b) : Module.End ℂ (Ch ε V))) := by
   have hm : ∀ S U : Module.End ℂ V, (lift ε S : Module.End ℂ (Ch ε V)) * lift ε U = lift ε (S * U) :=
@@ -170,6 +231,35 @@ theorem glRel_lift (E : Fin n → Fin n → Module.End ℂ V) (hE : GlRel E) :
   rw [hm, hm, hs, hE a b c d]
   split_ifs <;> simp only [← h0, hs]
 
+/- English proof (translation)
+Introduce `hCAR n ε V _ _ E hE`. Establish `hAA : ∀ i j : NC ε, ann i * ann j + ann j * ann i = (0 : Module.End ℂ (Ch ε V))` using `fun i j => (hCAR n ε V i j).1`. Establish `hCC : ∀ i j : NC ε, cre i * cre j + cre j * cre i = (0 : Module.End ℂ (Ch ε V))` using `fun i j => (hCAR n ε V i j).2.1`. Establish `hAC : ∀ i j : NC ε, ann i * cre j + cre j * ann i = (if i = j then 1 else 0 : Module.End ℂ (Ch ε V))` using `fun i j => (hCAR n ε V i j).2.2`. Establish `hGl` using `glRel_lift (ε := ε) E hE`.
+
+Establish `hLL : ∀ i j : NC ε, Commute (lift ε (E i.1.1 i.1.2) : Module.End ℂ (Ch ε V)) (lift ε (E j.1.1 j.1.2))`. Introduce `i j`. Establish `h1 : i.1.2 ≠ j.1.1`. Introduce `h'`. Establish `a` using `i.2.2`.
+
+Rewrite `a` using `[h', j.2.1]`. Conclude with `absurd a (by decide)`. Establish `h2 : j.1.2 ≠ i.1.1`. Introduce `h'`. Establish `a` using `j.2.2`.
+
+Rewrite `a` using `[h', i.2.1]`. Conclude with `absurd a (by decide)`. Establish `h` using `hGl i.1.1 i.1.2 j.1.1 j.1.2`. Rewrite `h` using `[if_neg h1, if_neg h2, sub_zero, sub_eq_zero]`. Conclude with `h`.
+
+Use `⟨sq_zero (fun i : NC ε => (lift ε (E i.1.1 i.1.2) : Module.End ℂ (Ch ε V))) ann hLL (fun i j => lift_ann _ j) hAA, ?_⟩` and prove the remaining obligations. Introduce `c d hcd`. Set `qG : NC ε → NC ε → ℂ` to `fun i j => (if i.1.1 = c ∧ j.1.1 = d ∧ i.1.2 = j.1.2 then 1 else 0) - (if i.1.2 = d ∧ j.1.2 = c ∧ i.1.1 = j.1.1 then 1 else 0)`. Establish `hGop : Gop ε c d = ∑ i, ∑ j, qG i j • (cre i * ann j : Module.End ℂ (Ch ε V))` using `rfl`. Establish `hdiff : ∀ X Y : Module.End ℂ (Ch ε V), X - Y + (Y - X) = 0` using `fun X Y => by abel`.
+
+Prove the components needed by the constructor for the conclusion. Use `show Commute (lift ε (E c d) + Gop ε c d) (∑ i, lift ε (E i.1.1 i.1.2) * ann i)`. Use `commute_of_unitary_conjugate (lift ε (E c d)) (Gop ε c d) (fun k : NC ε => (lift ε (E k.1.1 k.1.2) : Module.End ℂ (Ch ε V))) ann (fun k => lift_ann _ k) (fun k => lift_Gop _ c d) ?_` and prove the remaining obligations. Use `beta_reduce`. Establish `hrow : ∀ k : NC ε, (lift ε (E c d) : Module.End ℂ (Ch ε V)) * lift ε (E k.1.1 k.1.2) - lift ε (E k.1.1 k.1.2) * lift ε (E c d) = (if d = k.1.1 then lift ε (E c k.1.2) else 0) - (if k.1.2 = c then lift ε (E k.1.1 d) else 0)` using `fun k => hGl c d k.1.1 k.1.2`.
+
+Establish `hcomm : ∀ k : NC ε, (Gop ε c d : Module.End ℂ (Ch ε V)) * ann k - ann k * Gop ε c d = -∑ j, qG k j • ann j`. Introduce `k`. Rewrite using `[hGop]`. Conclude with `comm_ann ann cre qG hAA hAC k`. Establish `hsecond : ∑ k : NC ε, (lift ε (E k.1.1 k.1.2) : Module.End ℂ (Ch ε V)) * -∑ j : NC ε, qG k j • ann j = -∑ j : NC ε, (∑ k : NC ε, qG k j • (lift ε (E k.1.1 k.1.2) : Module.End ℂ (Ch ε V))) * ann j`.
+
+Repeatedly rewrite using `[mul_neg, Finset.mul_sum, Finset.sum_neg_distrib, Finset.sum_mul, mul_smul_comm, smul_mul_assoc]`. Rewrite using `[Finset.sum_comm]`. Establish `hpick : ∀ j : NC ε, ∑ k : NC ε, qG k j • (lift ε (E k.1.1 k.1.2) : Module.End ℂ (Ch ε V)) = (if d = j.1.1 then lift ε (E c j.1.2) else 0) - (if j.1.2 = c then lift ε (E j.1.1 d) else 0)`. Introduce `j`. Simplify using `only [qG, sub_smul, Finset.sum_sub_distrib]`.
+
+Use `congr 1`. Conclude with `sum_pick (fun x y => (lift ε (E x y) : Module.End ℂ (Ch ε V))) c j.1.2 (d = j.1.1) (fun h => ⟨hcd.trans (h ▸ j.2.1), j.2.2⟩) _ (fun k => ⟨fun h => ⟨h.2.1.symm, h.1, h.2.2⟩, fun h => ⟨h.2.1, h.1.symm, h.2.2⟩⟩)`. Conclude with `sum_pick (fun x y => (lift ε (E x y) : Module.End ℂ (Ch ε V))) j.1.1 d (j.1.2 = c) (fun h => ⟨j.2.1, hcd.symm.trans (h ▸ j.2.2)⟩) _ (fun k => ⟨fun h => ⟨h.2.1, h.2.2, h.1⟩, fun h => ⟨h.2.2, h.1, h.2.1⟩⟩)`. Repeatedly rewrite using `[hrow, hcomm]`. Rewrite using `[hsecond]`.
+
+Repeatedly rewrite using `[hpick]`. Conclude with `add_neg_cancel _`. Use `show Commute (lift ε (E c d) + Gop ε c d) (∑ i, lift ε (E i.1.2 i.1.1) * cre i)`. Use `commute_of_unitary_conjugate (lift ε (E c d)) (Gop ε c d) (fun k : NC ε => (lift ε (E k.1.2 k.1.1) : Module.End ℂ (Ch ε V))) cre (fun k => lift_cre _ k) (fun k => lift_Gop _ c d) ?_` and prove the remaining obligations. Use `beta_reduce`.
+
+Establish `hrow : ∀ k : NC ε, (lift ε (E c d) : Module.End ℂ (Ch ε V)) * lift ε (E k.1.2 k.1.1) - lift ε (E k.1.2 k.1.1) * lift ε (E c d) = (if d = k.1.2 then lift ε (E c k.1.1) else 0) - (if k.1.1 = c then lift ε (E k.1.2 d) else 0)` using `fun k => hGl c d k.1.2 k.1.1`. Establish `hcomm : ∀ k : NC ε, (Gop ε c d : Module.End ℂ (Ch ε V)) * cre k - cre k * Gop ε c d = ∑ i, qG i k • cre i`. Introduce `k`. Rewrite using `[hGop]`. Conclude with `comm_cre ann cre qG hCC hAC k`.
+
+Establish `hsecond : ∑ k : NC ε, (lift ε (E k.1.2 k.1.1) : Module.End ℂ (Ch ε V)) * ∑ i : NC ε, qG i k • cre i = ∑ i : NC ε, (∑ k : NC ε, qG i k • (lift ε (E k.1.2 k.1.1) : Module.End ℂ (Ch ε V))) * cre i`. Repeatedly rewrite using `[Finset.mul_sum, Finset.sum_mul, mul_smul_comm, smul_mul_assoc]`. Rewrite using `[Finset.sum_comm]`. Establish `hpick : ∀ i : NC ε, ∑ k : NC ε, qG i k • (lift ε (E k.1.2 k.1.1) : Module.End ℂ (Ch ε V)) = (if i.1.1 = c then lift ε (E i.1.2 d) else 0) - (if d = i.1.2 then lift ε (E c i.1.1) else 0)`. Introduce `i`.
+
+Simplify using `only [qG, sub_smul, Finset.sum_sub_distrib]`. Use `congr 1`. Conclude with `sum_pick (fun x y => (lift ε (E y x) : Module.End ℂ (Ch ε V))) d i.1.2 (i.1.1 = c) (fun h => ⟨hcd.symm.trans (h ▸ i.2.1), i.2.2⟩) _ (fun k => ⟨fun h => ⟨h.1, h.2.1, h.2.2.symm⟩, fun h => ⟨h.1, h.2.1, h.2.2.symm⟩⟩)`. Conclude with `sum_pick (fun x y => (lift ε (E y x) : Module.End ℂ (Ch ε V))) i.1.1 c (d = i.1.2) (fun h => ⟨i.2.1, hcd.trans (h ▸ i.2.2)⟩) _ (fun k => ⟨fun h => ⟨h.1.symm, h.2.2.symm, h.2.1⟩, fun h => ⟨h.1.symm, h.2.2, h.2.1.symm⟩⟩)`. Repeatedly rewrite using `[hrow, hcomm]`.
+
+Rewrite using `[hsecond]`. Repeatedly rewrite using `[hpick]`. Rewrite using `[← Finset.sum_add_distrib]`. Use `Finset.sum_eq_zero fun i _ => ?_` and prove the remaining obligations. Rewrite using `[← add_mul, hdiff, zero_mul]`.
+-/
 theorem bdFacts : CAR → BdFacts := by
   intro hCAR n ε V _ _ E hE
   have hAA : ∀ i j : NC ε, ann i * ann j + ann j * ann i = (0 : Module.End ℂ (Ch ε V)) :=

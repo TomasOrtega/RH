@@ -18,12 +18,22 @@ variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchim
   {E Ω : Type} [Field E] [NumberField E] [Field Ω] [Algebra E Ω] [IsAlgClosure E Ω]
   {B : ValuationSubring Ω} {w : HeightOneSpectrum (𝓞 E)} {h : IsPlaceOver B w}
 
+/- English proof (translation)
+Rewrite using `[← LinearMap.charpoly_toMatrix _ (Module.finBasis ℂ V), map_smul, LinearMap.toMatrix_one, Matrix.smul_one_eq_diagonal, Matrix.charpoly_diagonal]`. Simplify using the standard rewrite rules.
+-/
 theorem charpoly_smul_one {V : Type*} [AddCommGroup V] [Module ℂ V] [FiniteDimensional ℂ V] (c : ℂ) :
     (c • (1 : Module.End ℂ V)).charpoly = (X - C c) ^ Module.finrank ℂ V := by
   rw [← LinearMap.charpoly_toMatrix _ (Module.finBasis ℂ V), map_smul, LinearMap.toMatrix_one,
     Matrix.smul_one_eq_diagonal, Matrix.charpoly_diagonal]
   simp
 
+/- English proof (translation)
+Establish `hd : χ.lpDim = 1` using `by rw [← WD.charPol_natDegree χ (ineIncl h σ), hc, natDegree_X_sub_C]`. Proceed by induction on `a using WD.ind with`. Consider the case `hP n a`. Proceed by induction on `χ using WD.ind with`. Consider the case `hP m b`.
+
+Rewrite `ha` using `[WD.unr_mk]`. Rewrite `hd` using `[WD.lpDim_mk]`. Rewrite `hc` using `[WD.charPol_mk]`. Establish `h3` using `LinearMap.aeval_self_charpoly (b.ρ (ineIncl h σ))`. Rewrite `h3` using `[hc, map_sub, aeval_X, aeval_C, sub_eq_zero, Algebra.algebraMap_eq_smul_one]`.
+
+Rewrite using `[WD.lpChar_mk, WD.charPol_mk, WD.lpDim_mk, GlobalTheory.WeilDeligne.WDRep.tensor_ρ, ha.2, h3, TensorProduct.map_smul_right, TensorProduct.map_one, charpoly_smul_one, Module.finrank_tensorProduct, hd, mul_one]`.
+-/
 theorem charPol_lpChar_of_unr (a χ : WD h) (ha : a.unr) (σ : Ine (F := E) B) (c : ℂ)
     (hc : χ.charPol (ineIncl h σ) = X - C c) :
     (a.lpChar χ).charPol (ineIncl h σ) = (X - C c) ^ a.lpDim := by
@@ -41,6 +51,9 @@ theorem charPol_lpChar_of_unr (a χ : WD h) (ha : a.unr) (σ : Ine (F := E) B) (
       TensorProduct.map_smul_right, TensorProduct.map_one, charpoly_smul_one, Module.finrank_tensorProduct, hd,
       mul_one]
 
+/- English proof (translation)
+The claim follows from `OrderIso.isSimpleOrder_iff (α := Subrepresentation (twist ρ χ)) (β := Subrepresentation ρ) { toFun := fun S => ⟨S.toSubmodule, fun g v hv => by have := S.toSubmodule.smul_mem (((χ g)⁻¹ : ℂˣ) : ℂ) (S.apply_mem_toSubmodule g hv) simpa [smul_smul] using this⟩ invFun := fun S => ⟨S.t …`.
+-/
 theorem irreducible_twist {Γ V : Type} [Group Γ] [AddCommGroup V] [Module ℂ V] {ρ : Representation ℂ Γ V}
     (hρ : ρ.IsIrreducible) (χ : Γ →* ℂˣ) : (twist ρ χ).IsIrreducible :=
   OrderIso.isSimpleOrder_iff (α := Subrepresentation (twist ρ χ)) (β := Subrepresentation ρ)
@@ -64,6 +77,11 @@ def twistIrr {n : ℕ} (π : Irr k n) (χ : kˣ →* ℂˣ) (hχ : IsSmoothChar 
   smooth := isSmooth_twist π.smooth hχ.detChar
   irr := irreducible_twist π.irr _
 
+/- English proof (translation)
+Substitute `hn` using the available equality. Set `u : Irr k 1` to `detIrr 1 (unrChar k α) (isSmoothChar_of_isUnram (isUnram_unrChar k α))`. Establish `he : detRep (Fin 1) (χ * unrChar k α) = twist u.π (detChar (Fin 1) χ)` using `by show _ = twist (detRep (Fin 1) (unrChar k α)) (detChar (Fin 1) χ)`. Unfold `detRep ofChar`. Rewrite using `[twist_twist]`.
+
+Both sides reduce to the same expression. Establish `h1` using `hrc.twist 1 χ (detIrr 1 χ hχ) u π ⟨.refl _⟩ (he ▸ e)`. Rewrite using `[h1, charPol_lpChar_of_unr _ _ ((hrc.sph 1 u).2 (isSpherical_detRep (isUnram_unrChar k α))) σ c hc, hrc.dim, pow_one]`.
+-/
 theorem charPol_unr_twist {rc : ∀ n, Irr k n → WD h} (hrc : RecLaws rc) {χ : kˣ →* ℂˣ} (hχ : IsSmoothChar χ)
     (σ : Ine (F := E) B) (c : ℂ) (hc : (rc 1 (detIrr 1 χ hχ)).charPol (ineIncl h σ) = X - C c)
     (n : ℕ) (π : Irr k n) (hn : n = 1) (α : ℂˣ)
@@ -80,6 +98,15 @@ theorem charPol_unr_twist {rc : ∀ n, Irr k n → WD h} (hrc : RecLaws rc) {χ 
   rw [h1, charPol_lpChar_of_unr _ _ ((hrc.sph 1 u).2 (isSpherical_detRep (isUnram_unrChar k α))) σ c hc,
     hrc.dim, pow_one]
 
+/- English proof (translation)
+Break down `hB r t χ π v hχ ht hv hvb with ⟨π₁, π₂, hsph, e⟩ | ⟨s, d, σ, hsupp, hcard⟩` into its components or cases. Establish `h1` using `hrc.twist t χ (detIrr 1 χ hχ) π₂ (twistIrr π₂ χ hχ) ⟨.refl _⟩ ⟨.refl _⟩`. Establish `hu` using `(hrc.sph t π₂).2 hsph`. Use `⟨rc r π₁, rc t (twistIrr π₂ χ hχ), hrc.prod r t π₁ _ π e, hrc.dim _ _, hrc.dim _ _, ?_, fun σ => ?_⟩` and prove the remaining obligations. Rewrite using `[h1, WD.monomial_char_iff _ _ (hrc.dim _ _)]`.
+
+Conclude with `WD.unr_mono0 _ hu`. Rewrite using `[h1, charPol_lpChar_of_unr _ _ hu σ _ (hc σ), hrc.dim]`. Use `exfalso set U := {a | d a = 1 ∧ ∃ α : ℂˣ, Nonempty ((σ a).π.Equiv (detRep (Fin (d a)) (χ * unrChar k α)))} with hU`. Establish `hdvd : (X - C (c γ)) ^ U.toFinset.card ∣ (rc _ π).charPol (ineIncl h γ)`. Rewrite using `[hs _ s π d σ hsupp, ← Finset.prod_const]`.
+
+Use `dvd_trans (dvd_of_eq (Finset.prod_congr rfl fun a ha => ?_)) (Finset.prod_dvd_prod_of_subset _ _ _ (Finset.subset_univ U.toFinset))` and prove the remaining obligations. Take `⟨h1, α, e⟩` from `Set.mem_toFinset.1 ha`. Conclude with `(charPol_unr_twist hrc hχ γ _ (hc γ) _ _ h1 α e).symm`. Use `(le_rootMultiplicity_iff (WD.charPol_monic _ _).ne_zero).2 hdvd` as an intermediate fact. Rewrite `hcard` using `[Set.ncard_eq_toFinset_card']`.
+
+Use linear arithmetic over natural numbers and integers.
+-/
 theorem split_local {rc : ∀ n, Irr k n → WD h} (hB : BlockSplit k) (hrc : RecLaws rc) (hs : RecSupp rc)
     {r t : ℕ} {χ : kˣ →* ℂˣ} (hχ : IsSmoothChar χ) (ht : IsTame χ) (π : Irr k (r + t)) (v : π.V) (hv : v ≠ 0)
     (hvb : IsBlockVec χ π.π v) (c : Ine (F := E) B → ℂ)
@@ -111,6 +138,13 @@ end Local
 
 attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField
 
+/- English proof (translation)
+Introduce `R H what₂ N A T S i w hw hB hL hS hT hchi P hm`. Take `⟨v, hv, hvb⟩` from `hT.2 P`. Establish `hμ` using `(S i w hw).mu_ok.1`. Rewrite `hm` using `[T.inePol w _ _ (N.locNd_chebotarevPlace_mem i w), (S i w hw).locV, WD.inePol_of_mem_Ine _ (N.locNd_chebotarevPlace_mem i w)]`. Take `⟨a, b, h1, h2, h3, h4, h5⟩` from `split_local (hB w) (hL i w hw) (hS i w hw) hμ hT.1 _ v hv hvb (fun σ => iotaO N A i (chi1 N i σ.1)) (fun σ => by`.
+
+Rewrite using `[← hchi σ.1 σ.2, T.inePol w _ _ σ.2, (S i w hw).locMu (detIrr 1 _ hμ) ⟨.refl _⟩, WD.inePol_of_mem_Ine _ σ.2]) ⟨_, N.locNd_chebotarevPlace_mem i w⟩ hm`. Take `⟨a, rfl⟩` from `(T.e w).surjective a`. Take `⟨b, rfl⟩` from `(T.e w).surjective b`. Use `⟨a, b, (T.e w).injective ?_, ?_, ?_, (T.mono0 w b).2 h4, fun σ hσ => ?_⟩` and prove the remaining obligations. Rewrite using `[(S i w hw).locV, h1, T.sum]`.
+
+Rewrite using `[← T.dim, h2]`. Rewrite using `[← T.dim, h3]`. Rewrite using `[T.inePol w _ _ hσ, WD.inePol_of_mem_Ine _ hσ, h5]`.
+-/
 theorem split_param : ∀ (R : Ranks) (H : Host R) (what₂ : Rows.Data R) (N : NData R H what₂) (A : NAut N) (T : WDTie N A) (S : Reading T) (i : N.Loc) (w : PlE H) (hw : IsSplitPl H w), BlockSplitAll H.E → Laws S → SuppLaws S → TypeBlock S i w hw → (∀ σ ∈ Ine (F := H.E) (N.plOm.1 w), A.inePol (A.locG (A.muC i) w) σ = X - C (iotaO N A i (chi1 N i σ))) → ∀ P : A.AV i, (A.inePol (A.locV i P w) (N.gam0 i w)).rootMultiplicity (iotaO N A i (chi1 N i (N.gam0 i w))) ≤ R.t → ∃ a b : A.LP w, A.locV i P w = A.lpSum a b ∧ A.lpDim a = R.r ∧ A.lpDim b = R.t ∧ A.mono0 b ∧ ∀ σ ∈ Ine (F := H.E) (N.plOm.1 w), A.inePol b σ = (X - C (iotaO N A i (chi1 N i σ))) ^ R.t := by
   intro R H what₂ N A T S i w hw hB hL hS hT hchi P hm
   obtain ⟨v, hv, hvb⟩ := hT.2 P

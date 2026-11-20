@@ -31,12 +31,18 @@ section Fin
 
 variable {E : Type} [CommRing E] {r : ℕ}
 
+/- English proof (translation)
+Rewrite using `[dlast, Matrix.det_diagonal, Finset.prod_eq_single (Fin.last r)]`. Simplify using the standard rewrite rules. Introduce `b _ hb`. Simplify using `[hb]`. Simplify using the standard rewrite rules.
+-/
 theorem det_dlast (α : E) : (dlast r α).det = α := by
   rw [dlast, Matrix.det_diagonal, Finset.prod_eq_single (Fin.last r)]
   · simp
   · intro b _ hb; simp [hb]
   · simp
 
+/- English proof (translation)
+Use extensionality with `a b`. Simplify using `[dlast, Matrix.mul_diagonal, Fin.castSucc_ne_last]`.
+-/
 theorem head_dlast (Zh : Matrix (Fin (r + 1)) (Fin (r + 1)) E) (α : E) :
     (Zh * dlast r α).submatrix Fin.castSucc Fin.castSucc = Zh.submatrix Fin.castSucc Fin.castSucc := by
   ext a b
@@ -44,6 +50,15 @@ theorem head_dlast (Zh : Matrix (Fin (r + 1)) (Fin (r + 1)) E) (α : E) :
 
 end Fin
 
+/- English proof (translation)
+Introduce `F _ _ _ E _ _ _ _ M g hs r T T' hT hq Zh₁ Zh₂ Z₁ Z₂ e₁ e₂ u₁ u₂ hrel hG₁ hG₂ hT0`. Take `⟨α, hα, hαO, hβO, Z₁', Z₂', e₁', e₂', d₁, d₂, s₁, s₂, hcard⟩` from `Formalism.L2.SG.LocalCountModules.AlgGSplit.scaleChoice_holds F E M g hs r T T' hT hq hT0 Zh₁ Zh₂ Z₁ Z₂ e₁ e₂ u₁ u₂ hrel`. Establish `hαu : IsUnit α` using `⟨⟨α, M.L.cj α, hα, by rw [mul_comm]; exact hα⟩, rfl⟩`. Establish `hcj : ∀ x : E, (M.L.cj : E →+* E) ((M.L.cj : E →+* E) x) = x` using `M.L.cj_cj`. Establish `hH : ScHyp M.L.O (M.L.cj : E →+* E) (algebraMap F E ((g.q : F)⁻¹)) (algebraMap F E T) (algebraMap F E T') α` using `{ cjcj := hcj cjO := fun x hx => cj_mem_O M.L hx qic := AlgEquiv.commutes _ _ Tc := AlgEquiv.commutes _ _ T'c := AlgEquiv.commutes _ _ αO := hαO αn := hα βO := hβO }`.
+
+Establish `hqq : algebraMap F E (g.q : F) * algebraMap F E ((g.q : F)⁻¹) = 1`. Rewrite using `[← map_mul, mul_inv_cancel₀ (q_ne g), map_one]`. Establish `hqO : algebraMap F E (g.q : F) ∈ M.L.O` using `mem_O_of_comp g _ (by rw [AlgEquiv.commutes]; exact g.q.2) (by rw [AlgEquiv.commutes]; exact g.q.2)`. Establish `hdet : ∀ Zh : Matrix (Fin (r + 1)) (Fin (r + 1)) E, (Zh * dlast r α).det = Zh.det * α` using `fun Zh => by`. Rewrite using `[Matrix.det_mul, det_dlast]`.
+
+Establish `hN : ∀ Zh : Matrix (Fin (r + 1)) (Fin (r + 1)) E, (Zh * dlast r α).det * M.L.cj (Zh * dlast r α).det = Zh.det * M.L.cj Zh.det` using `fun Zh => by`. Rewrite using `[hdet, map_mul]`. Take the linear combination `(Zh.det * M.L.cj Zh.det) * hα`. Establish `key` using `Formalism.L2.SG.LocalCountModules.AlgGSplit.algGAllNS_holds F E M g hs r T T' hT hq (Zh₁ * dlast r α) (Zh₂ * dlast r α) Z₁' Z₂' e₁' e₂' (by rw [hdet]; exact u₁.mul hαu) (by rw [hdet]; exact u₂.mul hαu) (by rw [hdet, hdet, head_dlast, head_dlast]; linear_combination α * hrel) (by …`. Rewrite `key` using `[card_thetaGC_scale _ hH hqq hqO, hcard]`.
+
+Conclude with `key`.
+-/
 theorem algGAllT_holds : AlgGAllT := by
   intro F _ _ _ E _ _ _ _ M g hs r T T' hT hq Zh₁ Zh₂ Z₁ Z₂ e₁ e₂ u₁ u₂ hrel hG₁ hG₂ hT0
   obtain ⟨α, hα, hαO, hβO, Z₁', Z₂', e₁', e₂', d₁, d₂, s₁, s₂, hcard⟩ :=

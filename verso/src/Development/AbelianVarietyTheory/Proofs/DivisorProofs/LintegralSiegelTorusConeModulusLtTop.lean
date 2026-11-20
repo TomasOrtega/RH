@@ -10,6 +10,11 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 namespace GlobalTheory.SiegelSet
 
+/- English proof (translation)
+Introduce `F _ _ m r n c hc h`. Break down `h with h | h` into its components or cases. Substitute `h` using the available equality. Simplify using `only [GlobalTheory.SiegelSet.modulus, Finset.univ_eq_empty, Finset.prod_empty, mul_one, inv_one, ENNReal.ofReal_one, lintegral_const, one_mul]`. Rewrite using `[Measure.restrict_apply MeasurableSet.univ]`.
+
+Express the relevant statement in the definitionally equal form `Measure.pi (fun _ : Fin 0 => (volume : Measure ℝ)) _ < ⊤`. Rewrite using `[Measure.pi_of_empty]`. Conclude with `measure_lt_top _ _`. Conclude with `GlobalTheory.SiegelSet.lintegral_cone_modulus_lt_top F m r (2 * n) hc (by omega)`.
+-/
 theorem lintegral_cone_modulus_lt_top_of_witt : ∀ (F : Type) [Field F] [NumberField F] (m r n : ℕ) (c : ℝ), 0 < c → (r = 0 ∨ n + r < m) → ∫⁻ t in GlobalTheory.SiegelSet.cone r c, ENNReal.ofReal (∏ i, t i ^ (Module.finrank ℚ F * (2 * n))) * ENNReal.ofReal ((GlobalTheory.SiegelSet.modulus F m t * ∏ i, t i)⁻¹) < ⊤ := by
   intro F _ _ m r n c hc h
   rcases h with h | h

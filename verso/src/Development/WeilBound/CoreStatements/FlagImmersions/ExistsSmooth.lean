@@ -15,15 +15,32 @@ namespace RootFieldNumerics.EffN
 
 variable {K : Type} [Fintype K] {ι : K → Type} [∀ k, Fintype (ι k)]
 
+/- English proof (translation)
+Use `show ContDiffOn ℝ ((⊤ : ℕ∞) : WithTop ℕ∞) (fun z => ∏ j, (ℓ j).h z ^ n j) {z : (k : K) × ι k → ℂ | ∀ k, ∃ i, z ⟨k, i⟩ ≠ 0}`. Conclude with `contDiffOn_prod (fun j _ => RootFieldNumerics.Ii.contDiffOn_zpow_h (ℓ j) (hℓ j) (n j))`.
+-/
 theorem smooth_comb {J : Type} [Fintype J] {ℓ : J → HermLine ι} (hℓ : ∀ j, IsSmoothHerm (ℓ j))
     (n : J → ℤ) : IsSmoothHerm (combLine ℓ n) := by
   show ContDiffOn ℝ ((⊤ : ℕ∞) : WithTop ℕ∞) (fun z => ∏ j, (ℓ j).h z ^ n j)
     {z : (k : K) × ι k → ℂ | ∀ k, ∃ i, z ⟨k, i⟩ ≠ 0}
   exact contDiffOn_prod (fun j _ => RootFieldNumerics.Ii.contDiffOn_zpow_h (ℓ j) (hℓ j) (n j))
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem comb_a {J : Type} [Fintype J] (ℓ : J → HermLine ι) (n : J → ℤ) :
     (combLine ℓ n).a = ∑ j, n j • (ℓ j).a := rfl
 
+/- English proof (translation)
+Set `ℓ : K → HermLine ι` to `fun k => { a := Pi.single k 1 h := fun z => Real.sqrt (∑ i, ‖z ⟨k, i⟩‖ ^ 2) pos := by`. Introduce `z hz`. Take `⟨i, hi⟩` from `hz k`. Apply `Real.sqrt_pos.mpr` to reduce the goal to its premises. Conclude with `Finset.sum_pos' (fun _ _ => by positivity) ⟨i, Finset.mem_univ _, pow_pos (norm_pos_iff.mpr hi) 2⟩`.
+
+Use `smul := by`. Introduce `c z hc`. Establish `hprod : ∏ k', ‖c k'‖ ^ ((Pi.single k (1 : ℤ) : K → ℤ) k') = ‖c k‖`. Rewrite using `[Fintype.prod_eq_single k]`. Simplify using the standard rewrite rules.
+
+Introduce `k' hk'`. Simplify using `[Pi.single_apply, hk']`. Rewrite using `[hprod]`. Simplify using `only [norm_mul, mul_pow]`. Rewrite using `[← Finset.mul_sum, Real.sqrt_mul (by positivity), Real.sqrt_sq (norm_nonneg _)] }`.
+
+Use `⟨combLine ℓ b, smooth_comb (fun k => ?_) b, ?_⟩` and prove the remaining obligations. Use `show ContDiffOn ℝ ((⊤ : ℕ∞) : WithTop ℕ∞) (fun z : (k : K) × ι k → ℂ => Real.sqrt (∑ i, ‖z ⟨k, i⟩‖ ^ 2)) {z : (k : K) × ι k → ℂ | ∀ k, ∃ i, z ⟨k, i⟩ ≠ 0}`. Apply `ContDiffOn.sqrt` to reduce the goal to its premises. Conclude with `(ContDiff.sum (fun i _ => (contDiff_norm_sq ℂ).comp (contDiff_apply (𝕜 := ℝ) (E := ℂ) (⟨k, i⟩ : (k : K) × ι k)))).contDiffOn`. Introduce `z hz`.
+
+Take `⟨i, hi⟩` from `hz k`. Conclude with `(Finset.sum_pos' (fun _ _ => by positivity) ⟨i, Finset.mem_univ _, pow_pos (norm_pos_iff.mpr hi) 2⟩).ne'`. Rewrite using `[comb_a]`. Use function extensionality and compare the values at `k'`. Simplify using `[ℓ, Finset.sum_apply, Pi.single_apply]`.
+-/
 theorem exists_smooth (b : K → ℤ) : ∃ B : HermLine ι, IsSmoothHerm B ∧ B.a = b := by
   classical
   let ℓ : K → HermLine ι := fun k =>
@@ -60,6 +77,9 @@ theorem exists_smooth (b : K → ℤ) : ∃ B : HermLine ι, IsSmoothHerm B ∧ 
     funext k'
     simp [ℓ, Finset.sum_apply, Pi.single_apply]
 
+/- English proof (translation)
+Use `Fin.lastCases ?_ (fun i => ?_) j` and prove the remaining obligations. Simplify using `using hX`. Simplify using `using hL i`.
+-/
 theorem smooth_snoc {e : ℕ} {L : Fin e → HermLine ι} {X : HermLine ι} (hL : ∀ j, IsSmoothHerm (L j))
     (hX : IsSmoothHerm X) (j : Fin (e + 1)) :
     IsSmoothHerm ((Fin.snoc L X : Fin (e + 1) → HermLine ι) j) := by
@@ -67,6 +87,29 @@ theorem smooth_snoc {e : ℕ} {L : Fin e → HermLine ι} {X : HermLine ι} (hL 
   · simpa using hX
   · simpa using hL i
 
+/- English proof (translation)
+Set `ℓ : Fin e ⊕ Bool → HermLine ι` to `Sum.elim L (fun t => if t then A else B)`. Establish `hℓ : ∀ j, IsSmoothHerm (ℓ j)`. Apply the tactic sequence `rintro (i | _ | _) <;> simp [ℓ, hL, hA, hB]`. Set `n : Fin (e + 1) → Fin e ⊕ Bool → ℤ` to `Fin.snoc (fun i => Pi.single (Sum.inl i) 1) (Pi.single (Sum.inr false) 1 + m • Pi.single (Sum.inr true) 1)`. Take `⟨hexp, hperm⟩` from `GlobalTheory.T.log_integral_multilinear II hII K ι P (e + 1) (Fin e ⊕ Bool) ℓ n hP hℓ`.
+
+Establish `h1` using `hperm (fun k => combLine ℓ (n k)) (Fin.snoc L C) 1 (fun k => smooth_comb hℓ _) (smooth_snoc hL hC) (by`. Introduce `k`. Simplify using `only [Equiv.Perm.coe_one, id]`. Rewrite using `[comb_a]`. Use `Fin.lastCases ?_ (fun i => ?_) k` and prove the remaining obligations.
+
+Simplify using `[n, ℓ, Fintype.sum_sum_type, Pi.single_apply, hdeg]`. Normalize the expressions using the abelian group laws. Simplify using `[n, ℓ, Fintype.sum_sum_type, Pi.single_apply])`. Set `w0 : Fin (e + 1) → Fin e ⊕ Bool` to `Fin.snoc (fun i => Sum.inl i) (Sum.inr false)`. Set `w1 : Fin (e + 1) → Fin e ⊕ Bool` to `Fin.snoc (fun i => Sum.inl i) (Sum.inr true)`.
+
+Establish `hne : w0 ≠ w1`. Introduce `h`. Use `congrFun h (Fin.last e)` as an intermediate fact. Simplify using `[w0, w1] at this`. Establish `hzero : ∀ w : Fin (e + 1) → Fin e ⊕ Bool, w ≠ w0 ∧ w ≠ w1 → (∏ k, (n k (w k) : ℝ)) * ptsIntegral P (fun k z => Real.log ((ℓ (w k)).h z)) (fun _ => 1) = 0`.
+
+Introduce and unpack `w ⟨hw0, hw1⟩`. Apply `mul_eq_zero_of_left` to reduce the goal to its premises. Assume the negation of the conclusion as `hprod`. Establish `hf : ∀ k, (n k (w k) : ℝ) ≠ 0` using `fun k => Finset.prod_ne_zero_iff.mp hprod k (Finset.mem_univ _)`. Establish `hcs : ∀ i : Fin e, w (Fin.castSucc i) = Sum.inl i`.
+
+Introduce `i`. Use `hf (Fin.castSucc i)` as an intermediate fact. Simplify using `[n, Pi.single_apply] at this`. Conclude with `this`. Establish `hl` using `hf (Fin.last e)`.
+
+Break down `hw : w (Fin.last e) with i | (_ | _)` into its components or cases. Rewrite `hl` using `[hw]`. Simplify using `[n, Pi.single_apply] at hl`. Conclude with `hw0 (funext fun k => by`. Use `Fin.lastCases ?_ (fun i => ?_) k` and prove the remaining obligations.
+
+Simplify using `[w0, hw]`. Simplify using `[w0, hcs i])`. Conclude with `hw1 (funext fun k => by`. Use `Fin.lastCases ?_ (fun i => ?_) k` and prove the remaining obligations. Simplify using `[w1, hw]`.
+
+Simplify using `[w1, hcs i])`. Establish `e0 : ∀ k, ℓ (w0 k) = (Fin.snoc L B : Fin (e + 1) → HermLine ι) k`. Introduce `k`. Apply the tactic sequence `refine Fin.lastCases ?_ (fun i => ?_) k <;> simp [ℓ, w0]`. Establish `e1 : ∀ k, ℓ (w1 k) = (Fin.snoc L A : Fin (e + 1) → HermLine ι) k`.
+
+Introduce `k`. Apply the tactic sequence `refine Fin.lastCases ?_ (fun i => ?_) k <;> simp [ℓ, w1]`. Establish `p0 : ∏ k, (n k (w0 k) : ℝ) = 1`. Rewrite using `[Fin.prod_univ_castSucc]`. Simplify using `[n, w0]`.
+
+Establish `p1 : ∏ k, (n k (w1 k) : ℝ) = m`. Rewrite using `[Fin.prod_univ_castSucc]`. Simplify using `[n, w1]`. Rewrite using `[h1, hexp, Fintype.sum_eq_add w0 w1 hne hzero, p0, p1]`. Simplify using `only [e0, e1, one_mul]`.
+-/
 theorem last_lin (II : IntersectionSystem) (hII : IsFullIntersectionSystem II) (P : Ideal (MRing ι)) (e : ℕ)
     (hP : IsArithVar P (e + 2)) (L : Fin e → HermLine ι) (A B C : HermLine ι) (m : ℤ)
     (hL : ∀ j, IsSmoothHerm (L j)) (hA : IsSmoothHerm A) (hB : IsSmoothHerm B) (hC : IsSmoothHerm C)

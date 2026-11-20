@@ -16,6 +16,9 @@ open scoped Matrix
 
 namespace GlobalTheory.CoefSchur
 
+/- English proof (translation)
+Establish `hb` using `(Formalism.GradedWeylDivisibility.blockActTensor K K ι n n (fun τ => ((h τ : GL (Fin n) K) : Matrix (Fin n) (Fin n) K)ᵀ)).1`. Simplify using `only [actP, ten, detTwK, trAct, sqAct, LinearMap.smul_apply, AlgHom.toLinearMap_apply, map_prod, hb, map_smul]`. Rewrite using `[Finset.prod_smul]`.
+-/
 theorem polyAction_ten (K : Type) [Field K] {ι : Type} [Fintype ι] {n : ℕ} (lam : ι → DomWeight n)
     (h : ι → GL (Fin n) K) (f : ι → MvPolynomial (Fin n × Fin n) K) :
     actP lam h (ten f) = ten fun τ => sqAct K n (lam τ) (h τ) (f τ) := by
@@ -23,17 +26,36 @@ theorem polyAction_ten (K : Type) [Field K] {ι : Type} [Fintype ι] {n : ℕ} (
   simp only [actP, ten, detTwK, trAct, sqAct, LinearMap.smul_apply, AlgHom.toLinearMap_apply, map_prod, hb, map_smul]
   rw [Finset.prod_smul]
 
+/- English proof (translation)
+Introduce `i j hij`. Use `lam.anti hij` as an intermediate fact. Unfold `DomWeight.natW`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem natW_anti {n : ℕ} (lam : DomWeight n) : Antitone lam.natW := by
   intro i j hij
   have := lam.anti hij
   unfold DomWeight.natW
   omega
 
+/- English proof (translation)
+The claim follows from `Submodule.subset_span ⟨fun τ => extremal K n (lam τ), fun τ => Formalism.GradedWeylDivisibility.hwMem K n n le_rfl _ (natW_anti (lam τ)), rfl⟩`.
+-/
 theorem ten_ext_mem (K : Type) [Field K] {ι : Type} [Fintype ι] {n : ℕ} (lam : ι → DomWeight n) :
     (ten fun τ => extremal K n (lam τ)) ∈ VV K lam :=
   Submodule.subset_span ⟨fun τ => extremal K n (lam τ),
     fun τ => Formalism.GradedWeylDivisibility.hwMem K n n le_rfl _ (natW_anti (lam τ)), rfl⟩
 
+/- English proof (translation)
+Introduce `K _ _ ι _ n lam g hg`. Use `set v0 : VV K lam := ⟨_, ten_ext_mem K lam⟩ with hv0`. Establish `hw0` using `(GlobalTheory.T.weightSpace_coefficientSpace_eq_extremalTensorLine K lam).1`. Establish `hgw` using `GlobalTheory.T.weylTensorCoefSpace_endomorphism_preserves_torus_weight K lam g hg v0 hw0`. Take `⟨a, ha⟩` from `(GlobalTheory.T.weightSpace_coefficientSpace_eq_extremalTensorLine K lam).2 _ (g v0).2 hgw`.
+
+Establish `ha' : g v0 = a • v0` using `Subtype.ext ha`. Use `⟨a, ?_⟩` and prove the remaining obligations. Set `W : Submodule K (Pol K ι n)` to `Submodule.map (VV K lam).subtype (LinearMap.ker (g - a • LinearMap.id))`. Establish `hS : ∀ τ, nablaSq K n (lam τ) ≤ Submodule.span K (Set.range fun x : GL (Fin n) K => sqAct K n (lam τ) x (extremal K n (lam τ)))` using `fun τ => GlobalTheory.T.dualWeylModule_le_span_extremalTranslates K n (lam τ)`. Establish `hle` using `GlobalTheory.T.weylTensorCoefSpace_le_span_pure_tensors K lam _ hS`.
+
+Establish `hW : VV K lam ≤ W`. Use `hle.trans (Submodule.span_le.2 ?_)` and prove the remaining obligations. Introduce and unpack `P ⟨f, hf, rfl⟩`. Use `choose h hh using hf`. Establish `e : ten f = ten fun τ => sqAct K n (lam τ) (h τ) (extremal K n (lam τ))`.
+
+Use `congr 1`. Use function extensionality and compare the values at `τ`. Conclude with `(hh τ).symm`. Use `⟨rhoK lam h v0, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[SetLike.mem_coe, LinearMap.mem_ker, LinearMap.sub_apply, LinearMap.smul_apply, LinearMap.id_apply, hg, ha', map_smul, sub_self]`.
+
+Rewrite using `[e, ← polyAction_ten]`. Both sides reduce to the same expression. Introduce `v`. Take `⟨w, hw, hwv⟩` from `hW v.2`. Establish `: w = v` using `Subtype.ext hwv`.
+
+Substitute `this` using the available equality. Simplify `hw` using `[sub_eq_zero]`.
+-/
 theorem endo_scalar : ∀ (K : Type) [Field K] [CharZero K] {ι : Type} [Fintype ι] {n : ℕ} (lam : ι → DomWeight n)
     (g : Module.End K (VV K lam)),
     (∀ (h : ι → GL (Fin n) K) v, g (rhoK lam h v) = rhoK lam h (g v)) → ∃ a : K, ∀ v, g v = a • v := by

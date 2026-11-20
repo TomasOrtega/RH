@@ -10,6 +10,11 @@ noncomputable section
 
 variable {K : Type*} [Field K] [NumberField K]
 
+/- English proof (translation)
+Use extensionality with `y`. Simplify using `only [Subgroup.mem_map, MonoidHom.mem_range, powMonoidHom_apply]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨_, ⟨x, rfl⟩, rfl⟩`. Conclude with `⟨e x, by simp [map_pow]⟩`.
+
+Introduce and unpack `⟨x, rfl⟩`. Conclude with `⟨e.symm x ^ n, ⟨e.symm x, rfl⟩, by simp [map_pow]⟩`.
+-/
 theorem map_range_powMonoidHom {G H : Type*} [CommGroup G] [CommGroup H] (e : G ≃* H) (n : ℕ) :
     (powMonoidHom n : G →* G).range.map (e : G →* H) = (powMonoidHom n : H →* H).range := by
   ext y
@@ -20,6 +25,9 @@ theorem map_range_powMonoidHom {G H : Type*} [CommGroup G] [CommGroup H] (e : G 
   · rintro ⟨x, rfl⟩
     exact ⟨e.symm x ^ n, ⟨e.symm x, rfl⟩, by simp [map_pow]⟩
 
+/- English proof (translation)
+Rewrite using `[← map_range_powMonoidHom e n, Subgroup.index_map_equiv]`.
+-/
 theorem index_range_powMonoidHom_of_mulEquiv {G H : Type*} [CommGroup G] [CommGroup H]
     (e : G ≃* H) (n : ℕ) :
     (powMonoidHom n : G →* G).range.index = (powMonoidHom n : H →* H).range.index := by
@@ -28,6 +36,11 @@ theorem index_range_powMonoidHom_of_mulEquiv {G H : Type*} [CommGroup G] [CommGr
 omit [NumberField K] in
 open Classical in
 
+/- English proof (translation)
+Break down `w.isReal_or_isComplex with hw | hw` into its components or cases. Rewrite using `[index_range_powMonoidHom_of_mulEquiv (Units.mapEquiv (InfinitePlace.Completion.ringEquivRealOfIsReal hw).toMulEquiv) n, index_range_powMonoidHom_real hn]`. Apply the tactic sequence `by_cases he : Even n <;> simp [hw, he]`. Rewrite using `[index_range_powMonoidHom_of_mulEquiv (Units.mapEquiv (InfinitePlace.Completion.ringEquivComplexOfIsComplex hw).toMulEquiv) n, index_range_powMonoidHom_complex hn]`. Establish `hw' : ¬w.IsReal` using `InfinitePlace.not_isReal_iff_isComplex.2 hw`.
+
+Simplify using `[hw']`.
+-/
 theorem index_range_powMonoidHom_infinitePlaceCompletion (w : InfinitePlace K) {n : ℕ}
     (hn : n ≠ 0) :
     (powMonoidHom n : (w.Completion)ˣ →* (w.Completion)ˣ).range.index =
@@ -46,15 +59,24 @@ theorem index_range_powMonoidHom_infinitePlaceCompletion (w : InfinitePlace K) {
 namespace IdeleGroup
 
 @[simp]
+/- English proof (translation)
+The claim follows from `Units.ext rfl @[simp]`.
+-/
 theorem finiteProj_infiniteEmbedding (v : HeightOneSpectrum (𝓞 K)) (w : InfinitePlace K)
     (x : (w.Completion)ˣ) : finiteProj v (infiniteEmbedding w x) = 1 :=
   Units.ext rfl
 
 @[simp]
+/- English proof (translation)
+The claim follows from `Units.ext rfl`.
+-/
 theorem infiniteProj_finiteEmbedding (w : InfinitePlace K) (v : HeightOneSpectrum (𝓞 K))
     (x : (v.adicCompletion K)ˣ) : infiniteProj w (finiteEmbedding v x) = 1 :=
   Units.ext rfl
 
+/- English proof (translation)
+Rewrite using `[mem_standardOpenSubgroup]`. Introduce `v`. Rewrite using `[← map_inv]`. Simplify using `only [coe_infiniteEmbedding]`. Conclude with `⟨one_mem _, one_mem _⟩`.
+-/
 theorem infiniteEmbedding_mem_standardOpenSubgroup (w : InfinitePlace K) (x : (w.Completion)ˣ) :
     infiniteEmbedding w x ∈ standardOpenSubgroup K := by
   rw [mem_standardOpenSubgroup]
@@ -81,11 +103,17 @@ variable (S T : Set (HeightOneSpectrum (𝓞 K)))
   (H : ∀ v : HeightOneSpectrum (𝓞 K), Subgroup (v.adicCompletion K)ˣ)
   (H' : ∀ w : InfinitePlace K, Subgroup (w.Completion)ˣ)
 
+/- English proof (translation)
+Unfold both sides. The equivalence is reflexive.
+-/
 theorem mem_localSubgroup {x : IdeleGroup K} :
     x ∈ localSubgroup S T H H' ↔ (∀ v ∈ S, finiteProj v x ∈ H v) ∧
       (∀ w, infiniteProj w x ∈ H' w) ∧ ∀ v ∉ S ∪ T, ord v x = 0 :=
   Iff.rfl
 
+/- English proof (translation)
+The claim follows from `fun _ hx ↦ hx.2.2`.
+-/
 theorem localSubgroup_le_sIdeles : localSubgroup S T H H' ≤ sIdeles (S ∪ T) :=
   fun _ hx ↦ hx.2.2
 
@@ -96,6 +124,9 @@ def localQuotientMap (S : Finset (HeightOneSpectrum (𝓞 K))) :
     (MonoidHom.pi fun v ↦ (QuotientGroup.mk' (H v.1)).comp ((finiteProj v.1).comp (sIdeles _).subtype))
     (MonoidHom.pi fun w ↦ (QuotientGroup.mk' (H' w)).comp ((infiniteProj w).comp (sIdeles _).subtype))
 
+/- English proof (translation)
+Use extensionality with `x`. Rewrite using `[MonoidHom.mem_ker, Subgroup.mem_subgroupOf, mem_localSubgroup]`. Simplify using `only [localQuotientMap, MonoidHom.prod_apply, Prod.mk_eq_one, funext_iff, Pi.one_apply, MonoidHom.pi_apply, MonoidHom.comp_apply, QuotientGroup.mk'_apply, QuotientGroup.eq_one_iff, Subgroup.coe_subtype, Subtype.forall, Finset.mem_coe]`. Conclude with `⟨fun h ↦ ⟨h.1, h.2, x.2⟩, fun h ↦ ⟨h.1, h.2.1⟩⟩`.
+-/
 theorem ker_localQuotientMap (S : Finset (HeightOneSpectrum (𝓞 K))) :
     (localQuotientMap T H H' S).ker =
       (localSubgroup S T H H').subgroupOf (sIdeles ((S : Set (HeightOneSpectrum (𝓞 K))) ∪ T)) := by
@@ -106,6 +137,15 @@ theorem ker_localQuotientMap (S : Finset (HeightOneSpectrum (𝓞 K))) :
     Subgroup.coe_subtype, Subtype.forall, Finset.mem_coe]
   exact ⟨fun h ↦ ⟨h.1, h.2, x.2⟩, fun h ↦ ⟨h.1, h.2.1⟩⟩
 
+/- English proof (translation)
+Introduce and unpack `⟨a, b⟩`. Use `choose α hα using fun v : S ↦ QuotientGroup.mk_surjective (a v)`. Use `choose β hβ using fun w ↦ QuotientGroup.mk_surjective (b w)`. Set `x : IdeleGroup K` to `(∏ v : S, finiteEmbedding v.1 (α v)) * ∏ w, infiniteEmbedding w (β w)`. Establish `hx : x ∈ sIdeles ((S : Set (HeightOneSpectrum (𝓞 K))) ∪ T)`.
+
+Use `mul_mem (prod_mem fun v _ ↦ ?_) (prod_mem fun w _ ↦ ?_)` and prove the remaining obligations. Introduce `u hu`. Conclude with `ord_finiteEmbedding_of_ne (fun h ↦ hu (Or.inl (by rw [h]; exact Finset.mem_coe.2 v.2))) _`. Conclude with `standardOpenSubgroup_le_sIdeles _ (infiniteEmbedding_mem_standardOpenSubgroup w _)`. Establish `hfin : ∀ v : S, finiteProj v.1 x = α v`.
+
+Introduce `v`. Simplify using `only [x, map_mul, map_prod, finiteProj_infiniteEmbedding, Finset.prod_const_one, mul_one]`. Rewrite using `[Finset.prod_eq_single v (fun u _ hu ↦ finiteProj_finiteEmbedding_of_ne (fun h ↦ hu (Subtype.ext h.symm)) _) (by simp), finiteProj_finiteEmbedding]`. Establish `hinf : ∀ w : InfinitePlace K, infiniteProj w x = β w`. Introduce `w`.
+
+Simplify using `only [x, map_mul, map_prod, infiniteProj_finiteEmbedding, Finset.prod_const_one, one_mul]`. Rewrite using `[Finset.prod_eq_single w (fun u _ hu ↦ infiniteProj_infiniteEmbedding_of_ne (fun h ↦ hu h.symm) _) (by simp), infiniteProj_infiniteEmbedding]`. Use `⟨⟨x, hx⟩, Prod.ext (funext fun v ↦ ?_) (funext fun w ↦ ?_)⟩` and prove the remaining obligations. Conclude with `(congrArg (QuotientGroup.mk (s := H v.1)) (hfin v)).trans (hα v)`. Conclude with `(congrArg (QuotientGroup.mk (s := H' w)) (hinf w)).trans (hβ w)`.
+-/
 theorem localQuotientMap_surjective (S : Finset (HeightOneSpectrum (𝓞 K))) :
     Function.Surjective (localQuotientMap T H H' S) := by
   classical
@@ -134,6 +174,9 @@ theorem localQuotientMap_surjective (S : Finset (HeightOneSpectrum (𝓞 K))) :
   · exact (congrArg (QuotientGroup.mk (s := H v.1)) (hfin v)).trans (hα v)
   · exact (congrArg (QuotientGroup.mk (s := H' w)) (hinf w)).trans (hβ w)
 
+/- English proof (translation)
+Establish `hk` using `Subgroup.index_ker (G' := (∀ v : S, (v.1.adicCompletion K)ˣ ⧸ H v.1) × (∀ w : InfinitePlace K, (w.Completion)ˣ ⧸ H' w)) (localQuotientMap T H H' S)`. Rewrite using `[Subgroup.relIndex, ← ker_localQuotientMap, hk, MonoidHom.range_eq_top_of_surjective _ (localQuotientMap_surjective T H H' S), Subgroup.card_top, Nat.card_prod, Nat.card_pi, Nat.card_pi, ← Finset.prod_coe_sort S]`. Both sides reduce to the same expression.
+-/
 theorem relIndex_localSubgroup (S : Finset (HeightOneSpectrum (𝓞 K))) :
     (localSubgroup S T H H').relIndex (sIdeles ((S : Set (HeightOneSpectrum (𝓞 K))) ∪ T)) =
       (∏ v ∈ S, (H v).index) * ∏ w : InfinitePlace K, (H' w).index := by
@@ -148,15 +191,24 @@ def powerSubgroup (n : ℕ) (S T : Set (HeightOneSpectrum (𝓞 K))) : Subgroup 
   localSubgroup S T (fun v ↦ (powMonoidHom n : (v.adicCompletion K)ˣ →* _).range)
     (fun w ↦ (powMonoidHom n : (w.Completion)ˣ →* _).range)
 
+/- English proof (translation)
+The claim follows from `localSubgroup_le_sIdeles S T _ _`.
+-/
 theorem powerSubgroup_le_sIdeles (n : ℕ) : powerSubgroup n S T ≤ sIdeles (S ∪ T) :=
   localSubgroup_le_sIdeles S T _ _
 
+/- English proof (translation)
+The claim follows from `relIndex_localSubgroup T _ _ S`.
+-/
 theorem relIndex_powerSubgroup (n : ℕ) (S : Finset (HeightOneSpectrum (𝓞 K))) :
     (powerSubgroup n S T).relIndex (sIdeles ((S : Set (HeightOneSpectrum (𝓞 K))) ∪ T)) =
       (∏ v ∈ S, (powMonoidHom n : (v.adicCompletion K)ˣ →* _).range.index) *
         ∏ w : InfinitePlace K, (powMonoidHom n : (w.Completion)ˣ →* _).range.index :=
   relIndex_localSubgroup T _ _ S
 
+/- English proof (translation)
+Establish `h` using `relIndex_powerSubgroup (K := K) ∅ n S`. Rewrite `h` using `[Set.union_empty]`. Then use the resulting hypothesis.
+-/
 theorem relIndex_powerSubgroup_empty (n : ℕ) (S : Finset (HeightOneSpectrum (𝓞 K))) :
     (powerSubgroup n S ∅).relIndex (sIdeles (S : Set (HeightOneSpectrum (𝓞 K)))) =
       (∏ v ∈ S, (powMonoidHom n : (v.adicCompletion K)ˣ →* _).range.index) *

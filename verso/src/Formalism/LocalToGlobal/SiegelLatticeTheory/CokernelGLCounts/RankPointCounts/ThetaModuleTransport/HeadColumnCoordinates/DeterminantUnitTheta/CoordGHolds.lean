@@ -13,11 +13,23 @@ variable {E : Type} [CommRing E] [Algebra F E] [TopologicalSpace E] [MeasurableS
 variable {M : Model F E} {V : Type} [AddCommGroup V] [Module E V] (H : HermSp M V)
 variable {r : ℕ}
 
+/- English proof (translation)
+Rewrite using `[Set.Sum.elim_range, Set.union_comm, ← Set.Sum.elim_range]` and apply the resulting hypothesis.
+-/
 private theorem mem_span_sum_elim_swap (f f' : Fin (r + 1) → V) (u : V)
     (hu : u ∈ Submodule.span E (Set.range (Sum.elim f f'))) :
     u ∈ Submodule.span E (Set.range (Sum.elim f' f)) := by
   rwa [Set.Sum.elim_range, Set.union_comm, ← Set.Sum.elim_range]
 
+/- English proof (translation)
+Introduce `p hp p₂ hp₂ e1 e2`. Take `⟨u, u', u'', hu, hu', -, rfl⟩` from `hp`. Take `⟨v, v', v'', hv, hv', -, rfl⟩` from `hp₂`. Simplify using `only [PcG, PcG', coordW_mk, Prod.mk.injEq] at e1 e2`. Take `⟨a1, a2⟩` from `e1`.
+
+Take `⟨b1, b2⟩` from `e2`. Establish `D1` using `mkW_decomp H t₁.f t₁.f' t₁.T t₁.T' hg₁.2.1 hg₁.2.2.1 hg₁.2.2.2.1 hD0₁ ⟨u, hu⟩ (mem_span_of_sharpG H hg₁ u)`. Establish `D2` using `mkW_decomp H t₂.f t₂.f' t₂.T t₂.T' hg₂.2.1 hg₂.2.2.1 hg₂.2.2.2.1 hD0₂ ⟨v, hv⟩ (mem_span_of_sharpG H hg₂ v)`. Establish `D1'` using `mkW_decomp H t₁.f' t₁.f t₁.T' t₁.T hg₁.2.2.1 hg₁.2.1 (unit_swap H t₁.f t₁.f' hg₁.2.2.2.1) (by rw [dl_swap_r, hD0₁, map_zero]) ⟨u', hu'⟩ (mem_span_sum_elim_swap t₁.f t₁.f' _ (mem_span_of_sharpG H hg₁ u'))`. Establish `D2'` using `mkW_decomp H t₂.f' t₂.f t₂.T' t₂.T hg₂.2.2.1 hg₂.2.1 (unit_swap H t₂.f t₂.f' hg₂.2.2.2.1) (by rw [dl_swap_r, hD0₂, map_zero]) ⟨v', hv'⟩ (mem_span_sum_elim_swap t₂.f t₂.f' _ (mem_span_of_sharpG H hg₂ v'))`.
+
+Simplify using `only at D1 D2 D1' D2'`. Establish `eT : algebraMap F E t₂.T = algebraMap F E t₁.T` using `by rw [hT]`. Establish `eT' : algebraMap F E t₂.T' = algebraMap F E t₁.T'` using `by rw [hT']`. Prove the components needed by the constructor for the conclusion. Use `show H.mkW t₂.f ⟨v, hv⟩ = φ (H.mkW t₁.f ⟨u, hu⟩)`.
+
+Rewrite using `[D1, D2, map_add, map_smul, map_smul, hz, ho, a1, a2, eT]`. Use `show H.mkW t₂.f' ⟨v', hv'⟩ = φ' (H.mkW t₁.f' ⟨u', hu'⟩)`. Rewrite using `[D1', D2', map_add, map_smul, map_smul, hz', ho', b1, b2, eT']`.
+-/
 theorem gamR_sep {g : SplitG M.L} {t₁ t₂ : Term V M r} (hg₁ : GoodG H g t₁) (hg₂ : GoodG H g t₂)
     (hD0₁ : H.Dl t₁.f t₁.f' r = 0) (hD0₂ : H.Dl t₂.f t₂.f' r = 0) (hT : t₂.T = t₁.T) (hT' : t₂.T' = t₁.T') (φ : H.Wb t₁.f ≃ₗ[E] H.Wb t₂.f)
     (φ' : H.Wb t₁.f' ≃ₗ[E] H.Wb t₂.f')
@@ -56,6 +68,15 @@ theorem gamR_sep {g : SplitG M.L} {t₁ t₂ : Term V M r} (hg₁ : GoodG H g t�
   · show H.mkW t₂.f' ⟨v', hv'⟩ = φ' (H.mkW t₁.f' ⟨u', hu'⟩)
     rw [D1', D2', map_add, map_smul, map_smul, hz', ho', b1, b2, eT']
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce `hI Y W Y₂ W₂ h1 h2`. Rewrite `h1`, `h2` using `[PsiG_symm_mk]`. Establish `e1 : θ (ddMk H t₁ ((sharpEquiv H t₁ (unit_gramHG H hg₁)).symm Y)) = ddMk H t₂ ((sharpEquiv H t₂ (unit_gramHG H hg₂)).symm Y₂)`. Rewrite using `[← PsiG_symm_mk H hg₂, ← h1, LinearEquiv.symm_apply_apply]`.
+
+Establish `e2 : θ (ddMk H t₁ ((sharpEquiv H t₁ (unit_gramHG H hg₁)).symm W)) = ddMk H t₂ ((sharpEquiv H t₂ (unit_gramHG H hg₂)).symm W₂)`. Rewrite using `[← PsiG_symm_mk H hg₂, ← h2, LinearEquiv.symm_apply_apply]`. Establish `k` using `hI _ _ _ _ e1 e2`. Rewrite `k` using `[h_eq_formG H hg₂, h_eq_formG H hg₁]`. Rewrite `k` using `[LinearEquiv.apply_symm_apply, LinearEquiv.apply_symm_apply, LinearEquiv.apply_symm_apply, LinearEquiv.apply_symm_apply]`.
+
+Conclude with `k`. Introduce `hI x y x₂ y₂ h1 h2`. Establish `k1 : PsiG H hg₂ (θ ((PsiG H hg₁).symm (Submodule.Quotient.mk (sharpEquiv H t₁ (unit_gramHG H hg₁) x)))) = Submodule.Quotient.mk (sharpEquiv H t₂ (unit_gramHG H hg₂) x₂)`. Rewrite using `[PsiG_symm_mk, LinearEquiv.symm_apply_apply, h1, PsiG_mk]`. Establish `k2 : PsiG H hg₂ (θ ((PsiG H hg₁).symm (Submodule.Quotient.mk (sharpEquiv H t₁ (unit_gramHG H hg₁) y)))) = Submodule.Quotient.mk (sharpEquiv H t₂ (unit_gramHG H hg₂) y₂)`.
+
+Rewrite using `[PsiG_symm_mk, LinearEquiv.symm_apply_apply, h2, PsiG_mk]`. Establish `k` using `hI _ _ _ _ k1 k2`. Rewrite using `[h_eq_formG H hg₂ x₂ y₂, h_eq_formG H hg₁ x y]`. Conclude with `k`.
+-/
 theorem isomD_iffG {g : SplitG M.L} {t₁ t₂ : Term V M r} (hg₁ : GoodG H g t₁) (hg₂ : GoodG H g t₂)
     (θ : DDt H t₁ ≃ₗ[M.L.O] DDt H t₂) :
     IsomD H t₁ t₂ θ ↔ ∀ Y W Y₂ W₂ : Ix r → M.L.O,
@@ -94,6 +115,25 @@ theorem isomD_iffG {g : SplitG M.L} {t₁ t₂ : Term V M r} (hg₁ : GoodG H g 
 
 end Parts
 
+/- English proof (translation)
+Unfold `CoordG`. Introduce `F _ _ _ E _ _ _ _ M g hsplit r n V _ _ H _ t₁ f₂ f₂' φ φ' hyp hD0 hDu hZZ`. Take `⟨hGen, hF₂, hF₂', hId, hS, hS'⟩` from `hyp`. Establish `hTerm` using `hGen.1`. Establish `hFr` using `hTerm.2.1`.
+
+Establish `hFr'` using `hTerm.2.2.1`. Establish `hF₁ : MainNotions.ThinScalesBound.FrameK H t₁.f t₁.T` using `⟨hFr.2.1, hFr.2.2.1⟩`. Establish `hF₁' : MainNotions.ThinScalesBound.FrameK H t₁.f' t₁.T'` using `⟨hFr'.2.1, hFr'.2.2.1⟩`. Establish `hDu₁ : IsUnit (H.Dl t₁.f t₁.f' (r + 1))` using `hTerm.2.2.2.1`. Establish `hg₁ : GoodG H g t₁` using `⟨hsplit, hF₁, hF₁', hDu₁, unit_gramH_of H hsplit hF₁ hF₁' hDu₁ hD0⟩`.
+
+Establish `hD0₂ : H.Dl f₂ f₂' r = 0`. Establish `e` using `hId.2.2.2.2.2`. Rewrite `e` using `[hD0, zero_mul]`. Conclude with `(hDu₁.mul_left_eq_zero).mp e.symm`. Use `set t₂ : Term V M r := { abelian₂ := ⊥, f := f₂, f' := f₂', T := t₁.T, T' := t₁.T' } with ht₂`.
+
+Establish `hg₂ : GoodG H g t₂` using `⟨hsplit, hF₂, hF₂', hDu, unit_gramH_of H hsplit (t := t₂) hF₂ hF₂' hDu hD0₂⟩`. Establish `hMM : MMInt H t₂` using `mmInt_G H hg₂ hFr.2.2.2.1 (hTerm.2.2.2.2.2 g hsplit).2.1 hZZ`. Establish `hz : φ (H.mkW t₁.f ⟨_, z_mem H t₁.f t₁.T hg₁.2.1⟩) = H.mkW t₂.f ⟨_, z_mem H t₂.f t₂.T hg₂.2.1⟩`. Establish `e` using `hS ⟨_, z_mem H t₁.f t₁.T hg₁.2.1⟩ ⟨_, z_mem H t₂.f t₂.T hg₂.2.1⟩ rfl rfl`. Rewrite `e` using `[one_smul, one_smul]`. Then use the resulting hypothesis.
+
+Establish `hz' : φ' (H.mkW t₁.f' ⟨_, z_mem H t₁.f' t₁.T' hg₁.2.2.1⟩) = H.mkW t₂.f' ⟨_, z_mem H t₂.f' t₂.T' hg₂.2.2.1⟩`. Establish `e` using `hS' ⟨_, z_mem H t₁.f' t₁.T' hg₁.2.2.1⟩ ⟨_, z_mem H t₂.f' t₂.T' hg₂.2.2.1⟩ rfl rfl`. Rewrite `e` using `[one_smul, one_smul]`. Then use the resulting hypothesis. Establish `ho` using `sends_omP H φ hDu₁ hDu hId.2.2.2.1`. Establish `ho'` using `sends_omP' H φ' hDu₁ hDu hId.2.2.2.2.1`.
+
+Establish `hP : ∀ w, PcG H hg₂ (φ w) = PcG H hg₁ w` using `fun w => coordW_comp H φ hId.1 _ _ _ _ _ _ _ _ hz ho w`. Establish `hP' : ∀ w, PcG' H hg₂ (φ' w) = PcG' H hg₁ w` using `fun w => coordW_comp H φ' hId.2.1 _ _ _ _ _ _ _ _ ho' hz' w`. Establish `hinj` using `gamR_sep H hg₁ hg₂ hD0 hD0₂ rfl rfl φ φ' hz ho hz' ho'`. Apply `Nat.card_congr` to reduce the goal to its premises. Use `Equiv.subtypeEquiv ⟨fun θ => (PsiG H hg₁).symm.trans (θ.trans (PsiG H hg₂)), fun ψ => (PsiG H hg₁).trans (ψ.trans (PsiG H hg₂).symm), fun θ => by ext x; simp, fun ψ => by ext x; simp⟩ ?_` and prove the remaining obligations.
+
+Introduce `θ`. Establish `hGR` using `graph_transport4 (PsiG H hg₁).toEquiv (PsiG H hg₂).toEquiv θ.toEquiv φ φ' (PcG H hg₁) (PcG H hg₂) (PcG' H hg₁) (PcG' H hg₂) _ _ _ _ (gamR_image H hg₁) (gamR_image H hg₂) hP hP' hinj`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨-, -, hI, -, hG⟩`. Conclude with `⟨(isomD_iffG H hg₁ hg₂ θ).1 hI, hGR.1 (hG g hsplit)⟩`.
+
+Introduce and unpack `⟨hI, hG⟩`. Use `⟨hDu, hMM, (isomD_iffG H hg₁ hg₂ θ).2 hI, fun h => (Option.some_ne_none g (hsplit.symm.trans h)).elim, ?_⟩` and prove the remaining obligations. Introduce `g' hg'`. Rewrite `hg'` using `[hsplit]`. Take `rfl` from `Option.some.inj hg'`.
+
+Conclude with `hGR.2 hG`.
+-/
 theorem coordG_holds : CoordG := by
   unfold CoordG
   intro F _ _ _ E _ _ _ _ M g hsplit r n V _ _ H _ t₁ f₂ f₂' φ φ' hyp hD0 hDu hZZ

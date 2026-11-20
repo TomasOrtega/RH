@@ -26,10 +26,18 @@ variable {D : D7} {θ : D.what₂.Tau → (Ainf D.host.F ⊗[D.host.F] D.host.E 
   {W : D.what₂.Tau → Type} [∀ τ, AddCommGroup (W τ)] [∀ τ, Module ℂ (W τ)]
   {ρ : ∀ τ, Representation ℂ (Formalism.REAL.KG (ε τ)) (W τ)} {c : D.what₂.Tau → ℕ → ℂ}
 
+/- English proof (translation)
+The claim follows from `let h := GlobalTheory.Mem.Vol.cmData_isCMExt_and_gram_isHermND D.host.F D.host.E D.sp.cm ⟨h.1, h.2 V⟩`.
+-/
 theorem host_facts (D : D7) (V : HSp D) : IsCMExt D.host.F D.host.E D.sp.cm.sig ∧ IsHermND D.sp.cm.sig V.gram :=
   let h := GlobalTheory.Mem.Vol.cmData_isCMExt_and_gram_isHermND D.host.F D.host.E D.sp.cm
   ⟨h.1, h.2 V⟩
 
+/- English proof (translation)
+Introduce and unpack `φ ⟨h1, h2, h3, h4⟩`. Establish `hle : (leftSub V X Y ∅ : Set (GA D V)) ⊆ GlobalTheory.AdelicU.ratPts D.sp.cm.sig V.gram`. Establish `: leftSub V X Y ∅ ≤ GQ V`. Use `sup_le ?_ inf_le_left` and prove the remaining obligations. Rewrite using `[unip_empty]`.
+
+Conclude with `bot_le`. Conclude with `this`. Conclude with `⟨IsSmModOn.of_isSmoothModerate (GlobalTheory.SiegelSet.isSmoothModerate_of_isAutFunSm hθ h1) hle, h2, h3, h4⟩`.
+-/
 theorem forms_subset_formsOn_empty (hθ : IsInfFam θ) :
     forms θ V U ε fr ρ c ⊆ formsOn θ V X Y ∅ U ε fr ρ c := by
   rintro φ ⟨h1, h2, h3, h4⟩
@@ -41,6 +49,15 @@ theorem forms_subset_formsOn_empty (hθ : IsInfFam θ) :
     exact this
   exact ⟨IsSmModOn.of_isSmoothModerate (GlobalTheory.SiegelSet.isSmoothModerate_of_isAutFunSm hθ h1) hle, h2, h3, h4⟩
 
+/- English proof (translation)
+Take `⟨h1, h2, h3, h4⟩` from `hφ`. Take `⟨hcm, hJ⟩` from `host_facts D V`. Establish `st` using `constAlong_cocompact_unique_stages hcm hJ hW`. Take `⟨m1, m2⟩` from `GlobalTheory.T.constant_term_moderate_growth_inherited D V m X Y hW S T hST hT φ a h1 ha`. Take `⟨-, μ, 𝓕, b1, b2, b3⟩` from `st.1 T`.
+
+Establish `hleft : IsSmModOn D.sp.cm.sig V.gram ((GQ V ⊓ unip D.sp.cm.sig V.gram X T : Subgroup (GA D V)) : Set (GA D V)) φ` using `⟨fun γ hγ g => h1.left γ (GlobalTheory.T.rational_unipotent_le_parabolic D V m X Y hW S T hST hγ) g, h1.level, h1.cont, h1.smooth, h1.growth⟩`. Use `⟨m1, fun u hu hu' g => ?_, fun τ => GlobalTheory.T.constant_term_parabolic_K_finite D θ V m X Y hW S T hST τ (ε τ) (fr τ) (W τ) (ρ τ) φ a h1 (h3 τ) ha, fun τ k => ?_⟩` and prove the remaining obligations. Rewrite using `[ha μ 𝓕 b1 b2 b3 (g * u), ha μ 𝓕 b1 b2 b3 g]`. Use `MeasureTheory.integral_congr_ae (.of_forall fun x => ?_)` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `φ (_ * (g * u)) = φ (_ * g)`.
+
+Rewrite using `[← mul_assoc, h2 u hu hu']`. Establish `g1` using `GlobalTheory.T.constant_term_smooth_moderate_growth D θ hθ V m X Y hW T φ a hleft m1.smooth m2 τ k`. Rewrite `g1` using `[h4 τ k]`. Establish `g2 : IsConstAlong D.sp.cm.sig V.gram X T (c τ k • φ) (c τ k • a)` using `fun μ 𝓕 b1 b2 b3 g => by`. Simplify using `only [Pi.smul_apply, smul_eq_mul]`.
+
+Rewrite using `[ha μ 𝓕 b1 b2 b3 g, MeasureTheory.integral_const_mul]`. Conclude with `st.2.2.1 T _ _ _ g1 g2`.
+-/
 theorem constAlong_mem_formsOn [∀ τ, FiniteDimensional ℂ (W τ)] (hθ : IsInfFam θ)
     (hW : GlobalTheory.SiegelSet.IsWittFrame D.sp.cm.sig V.gram X Y) {S T : Finset (Fin m)} (hST : S ⊆ T) (hT : T.Nonempty)
     {φ a : GA D V → ℂ} (hφ : φ ∈ formsOn θ V X Y S U ε fr ρ c) (ha : IsConstAlong D.sp.cm.sig V.gram X T φ a) :
@@ -65,6 +82,25 @@ theorem constAlong_mem_formsOn [∀ τ, FiniteDimensional ℂ (W τ)] (hθ : IsI
       rw [ha μ 𝓕 b1 b2 b3 g, MeasureTheory.integral_const_mul]
     exact st.2.2.1 T _ _ _ g1 g2
 
+/- English proof (translation)
+Take `⟨hcm, hJ⟩` from `host_facts D V`. Establish `st` using `constAlong_cocompact_unique_stages hcm hJ hW`. Introduce `j`. Proceed by induction on `j using Nat.strong_induction_on with`. Consider the case `_ j ih`.
+
+Introduce `T hT hj`. Use `set A := Submodule.span ℂ (formsOn θ V X Y T U ε fr ρ c) with hA`. Establish `hmem : ∀ f : A, f.1 ∈ formsOn θ V X Y T U ε fr ρ c` using `fun f => mem_formsOn_of_mem_span hθ f.2`. Establish `hl : ∀ f : A, ∀ T' : Finset (Fin m), T ⊆ T' → GlobalTheory.AutomorphicL2Unitary.LeftInv (GlobalTheory.AdelicU.ratPts D.sp.cm.sig V.gram ⊓ unip D.sp.cm.sig V.gram X T') f.1` using `fun f T' h γ hγ g => (hmem f).1.left γ (GlobalTheory.T.rational_unipotent_le_parabolic D V m X Y hW T T' h hγ) g`. Establish `key : ∀ k : {k // k ∉ T}, ∃ L : A →ₗ[ℂ] Submodule.span ℂ (formsOn θ V X Y (insert k.1 T) U ε fr ρ c), ∀ f : A, IsConstAlong D.sp.cm.sig V.gram X (insert k.1 T) f.1 (L f).1`.
+
+Introduce `k`. Establish `hsub : T ⊆ insert k.1 T` using `Finset.subset_insert _ _`. Use `haveI := locallyCompact_unip hcm hJ hW (insert k.1 T)`. Establish `cS` using `cocompact_unip_std hcm hJ hW (insert k.1 T)`. Establish `cS'` using `cocompact_ratPts_inf le_rfl cS`.
+
+Establish `hc : ∀ f : A, IsConstAlong D.sp.cm.sig V.gram X (insert k.1 T) f.1 (GlobalTheory.Cusp.constTermOn (GlobalTheory.AdelicU.ratPts D.sp.cm.sig V.gram ⊓ unip D.sp.cm.sig V.gram X (insert k.1 T)) (unip D.sp.cm.sig V.gram X (insert k.1 T)) f.1)` using `fun f => (isConstTermOn_iff_ratPts_inf le_rfl cS (hl f _ hsub)).2 rfl`. Use `⟨{ toFun := fun f => ⟨_, Submodule.subset_span (constAlong_mem_formsOn hθ hW hsub (Finset.insert_nonempty _ _) (hmem f) (hc f))⟩ map_add' := fun a b => Subtype.ext (funext fun x => cS'.constTermOn_add (hl a _ hsub) (hmem a).1.cont (hl b _ hsub) (hmem b).1.cont x) map_smul' := fun …` and prove the remaining obligations. Use `choose L hL using key`. Establish `hfin : ∀ k : {k // k ∉ T}, FiniteDimensional ℂ (Submodule.span ℂ (formsOn θ V X Y (insert k.1 T) U ε fr ρ c))` using `fun k => by`. Establish `hlt : (insert k.1 T)ᶜ.card < j`.
+
+Rewrite using `[← hj]`. Use `Finset.card_lt_card ⟨fun x hx => ?_, fun h => ?_⟩` and prove the remaining obligations. Simplify using `only [Finset.mem_compl, Finset.mem_insert, not_or] at hx ⊢`. Conclude with `hx.2`. Use `h (Finset.mem_compl.2 k.2)` as an intermediate fact.
+
+Simplify using `at this`. Conclude with `ih _ hlt _ (Finset.insert_nonempty _ _) rfl`. Set `Ψ : A →ₗ[ℂ] (∀ k : {k // k ∉ T}, Submodule.span ℂ (formsOn θ V X Y (insert k.1 T) U ε fr ρ c))` to `LinearMap.pi L`. Establish `hker : ∀ f : A, Ψ f = 0 → ∀ T' : Finset (Fin m), T ⊂ T' → IsConstAlong D.sp.cm.sig V.gram X T' f.1 0`. Introduce `f hf T' hT'`.
+
+Take `⟨k, hk, hkT⟩` from `Finset.exists_of_ssubset hT'`. Establish `h0 : (L ⟨k, hkT⟩ f).1 = 0` using `congrArg Subtype.val (congrFun hf ⟨k, hkT⟩)`. Establish `h1` using `hL ⟨k, hkT⟩ f`. Rewrite `h1` using `[h0]`. Conclude with `st.2.2.2.2 T' (insert k T) f.1 0 0 (Finset.insert_subset hk hT'.1) (hmem f).1.cont (fun γ hγ hγ' g => hl f T' hT'.1 γ ⟨hγ, hγ'⟩ g) h1 (isConstAlong_const _ _ _ _ 0)`.
+
+Use `haveI := GlobalTheory.CompanionTheory.Hypotheses₂.LeviPart.Rg.finite_cuspOn D θ hθ V U hU ε fr hfr W ρ hρ c m X Y hW T hT`. Use `haveI : FiniteDimensional ℂ (LinearMap.ker Ψ) := by`. Set `ι : LinearMap.ker Ψ →ₗ[ℂ] Submodule.span ℂ {φ | φ ∈ formsOn θ V X Y T U ε fr ρ c ∧ ∀ T' : Finset (Fin m), T ⊂ T' → IsConstAlong D.sp.cm.sig V.gram X T' φ 0}` to `{ toFun := fun f => ⟨f.1.1, Submodule.subset_span ⟨hmem f.1, hker f.1 f.2⟩⟩ map_add' := fun _ _ => rfl map_smul' := fun _ _ => rfl }`. Conclude with `FiniteDimensional.of_injective ι fun a b h => Subtype.ext (Subtype.ext (congrArg (fun z => z.1) h))`. Use `haveI := hfin`.
+
+Use `haveI : FiniteDimensional ℂ (LinearMap.range Ψ) := inferInstance`. Use `haveI : FiniteDimensional ℂ (A ⧸ LinearMap.ker Ψ) := Module.Finite.equiv Ψ.quotKerEquivRange.symm`. Conclude with `Module.Finite.of_submodule_quotient (LinearMap.ker Ψ)`.
+-/
 theorem finite_formsOn [∀ τ, FiniteDimensional ℂ (W τ)] (hθ : IsInfFam θ) (hU : IsOpen (U : Set (GA D V)))
     (hfr : IsFrameFam V ε fr) (hρ : ∀ τ, IsContRep (ρ τ)) (hW : GlobalTheory.SiegelSet.IsWittFrame D.sp.cm.sig V.gram X Y) :
     ∀ (j : ℕ) (T : Finset (Fin m)), T.Nonempty → Tᶜ.card = j →
@@ -134,6 +170,15 @@ theorem finite_formsOn [∀ τ, FiniteDimensional ℂ (W τ)] (hθ : IsInfFam θ
 
 end Main
 
+/- English proof (translation)
+Introduce `D θ hθ V U hU ε fr hfr W _ _ _ ρ hρ c r C hC`. Take `⟨hcm, hJ⟩` from `host_facts D V`. Take `⟨hr, hi, hg⟩` from `id hC`. Take `⟨r, rfl⟩ : ∃ r', r = r' + 1` from `⟨r - 1, by omega⟩`. Take `⟨m, hm, X, Y, hW, hX⟩` from `GlobalTheory.WittExt.exists_isWittFrame_initCols D.host.F D.host.E D.sp.cm.sig hcm V.rank V.gram hJ r C hi hg`.
+
+Establish `hfin` using `finite_formsOn (c := c) (U := U) hθ hU hfr hρ hW _ {(⟨r, hm⟩ : Fin m)} (Finset.singleton_nonempty _) rfl`. Use `haveI := hfin`. Use `Submodule.finiteDimensional_of_le (S₂ := Submodule.span ℂ (formsOn θ V X Y {(⟨r, hm⟩ : Fin m)} U ε fr ρ c)) (Submodule.span_le.2 ?_)` and prove the remaining obligations. Introduce and unpack `_ ⟨φ, hφ, rfl⟩`. Use `Submodule.subset_span ?_` and prove the remaining obligations.
+
+Establish `h0` using `forms_subset_formsOn_empty (X := X) (Y := Y) hθ hφ`. Use `constAlong_mem_formsOn hθ hW (Finset.empty_subset _) (Finset.singleton_nonempty _) h0 ?_` and prove the remaining obligations. Rewrite using `[isConstAlong_singleton hW, hX, GlobalTheory.UAut.isConstTerm_iff]`. Establish `e : GlobalTheory.Cusp.NA (GlobalTheory.Cusp.frameFlag hC) = GlobalTheory.SiegelSet.unipRad D.sp.cm.sig V.gram C` using `GlobalTheory.Cusp.NA_frameFlag hC`. Establish `h1 : GlobalTheory.UAut.IsConstTermOn D.sp.cm.sig V.gram (GlobalTheory.Cusp.NA (GlobalTheory.Cusp.frameFlag hC)) φ (GlobalTheory.Cusp.constTerm (GlobalTheory.Cusp.frameFlag hC) φ)` using `fun μ 𝓕 b1 b2 b3 g => by`.
+
+Rewrite using `[GlobalTheory.Cusp.constTerm_eq b2 hφ.1.left g, MeasureTheory.Measure.real, b3]`. Simplify using the standard rewrite rules. Conclude with `e ▸ h1`.
+-/
 theorem finite_constTerm : ∀ (D : D7) (θ : D.what₂.Tau → (Ainf D.host.F ⊗[D.host.F] D.host.E →+* ℂ)), IsInfFam θ → ∀ (V : HSp D) (U : Subgroup (GA D V)), IsOpen (U : Set (GA D V)) → ∀ (ε : D.what₂.Tau → Fin V.rank → Bool) (fr : D.what₂.Tau → Matrix (Fin V.rank) (Fin V.rank) ℂ), GlobalTheory.Published.AutFin.IsFrameFam V ε fr → ∀ (W : D.what₂.Tau → Type) [∀ τ, AddCommGroup (W τ)] [∀ τ, Module ℂ (W τ)] [∀ τ, FiniteDimensional ℂ (W τ)] (ρ : ∀ τ, Representation ℂ (Formalism.REAL.KG (ε τ)) (W τ)), (∀ τ, GlobalTheory.Published.AutFin.IsContRep (ρ τ)) → ∀ c : D.what₂.Tau → ℕ → ℂ, ∀ (r : ℕ) (C : Matrix (Fin V.rank) (Fin r) D.host.E) (hC : IsIsoFrame V C), FiniteDimensional ℂ (Submodule.span ℂ (GlobalTheory.Cusp.constTerm (GlobalTheory.Cusp.frameFlag hC) '' GlobalTheory.Published.AutFin.forms θ V U ε fr ρ c)) := by
   intro D θ hθ V U hU ε fr hfr W _ _ _ ρ hρ c r C hC
   obtain ⟨hcm, hJ⟩ := host_facts D V

@@ -11,6 +11,19 @@ open GlobalTheory GlobalTheory.CM
 noncomputable section
 namespace GlobalTheory.CM.FamDesc
 
+/- English proof (translation)
+Take `⟨e, he, he'⟩` from `grpPullback_iso hP (isGrpPullback_pullback P.A _)`. Take `⟨d, hd, hd'⟩` from `grpPullback_iso hQ (isGrpPullback_pullback Q.A _)`. Take `⟨K, f₁, j, hK, -, j₁, j₂, j₃⟩` from `hom_descends_to_numberField hT hB k P Q (e.inv ≫ f ≫ d.hom) inferInstance`. Establish `: IsScalarTower ℚ k K` using `IsScalarTower.of_algebraMap_eq' (Subsingleton.elim _ _)`. Establish `hfin : FiniteDimensional ℚ K` using `Module.Finite.trans k K`.
+
+Use `⟨K.restrictScalars ℚ, hfin, fun k₂ h₂ h₁ G₂ H₂ φ₂ m₂ φ₃ m₃ w₂ c₂ w₃ v₃ e₃ d₃ => ?_⟩` and prove the remaining obligations. Set `q : K →+* k₂` to `(IntermediateField.inclusion h₁).toRingHom`. Establish `s₁ : spMap q ≫ spMap (algebraMap k K) = spMap (IntermediateField.inclusion h₂).toRingHom` using `(spMap_comp_spMap _ _).trans (congrArg spMap (RingHom.ext fun _ => rfl))`. Establish `s₂ : spMap (algebraMap k₂ ℂ) ≫ spMap q = spMap K.val.toRingHom` using `(spMap_comp_spMap _ _).trans (congrArg spMap (RingHom.ext fun _ => rfl))`. Take `⟨i, i₁, i₂⟩ : ∃ i : G₂.left ⟶ pullback P.A.hom (spMap (algebraMap k K)), i ≫ pullback.fst _ _ = φ₂ ∧ i ≫ pullback.snd _ _ = G₂.hom ≫ spMap q` from `⟨pullback.lift φ₂ (G₂.hom ≫ spMap q) (by rw [w₂, Category.assoc, s₁]), pullback.lift_fst _ _ _, pullback.lift_snd _ _ _⟩`.
+
+Establish `fw : f₁.left ≫ pullback.snd Q.A.hom (spMap (algebraMap k K)) = pullback.snd _ _` using `Over.w f₁`. Establish `ew : e.hom.left ≫ pullback.snd P.A.hom (spMap (algebraMap k ℂ)) = G.hom` using `Over.w e.hom`. Establish `w : (i ≫ f₁.left ≫ pullback.fst _ _) ≫ Q.A.hom = G₂.hom ≫ spMap (IntermediateField.inclusion h₂).toRingHom`. Establish `h : f₁.left ≫ pullback.fst Q.A.hom (spMap (algebraMap k K)) ≫ Q.A.hom = pullback.snd _ _ ≫ spMap (algebraMap k K)` using `(congrArg (f₁.left ≫ ·) pullback.condition).trans ((Category.assoc _ _ _).symm.trans (congrArg (· ≫ _) fw))`. Use `(Category.assoc _ _ _).trans ((congrArg (i ≫ ·) ((Category.assoc _ _ _).trans h)).trans ?_)` and prove the remaining obligations.
+
+Rewrite using `[← Category.assoc, i₂, Category.assoc, s₁]`. Establish `key : φ₃ ≫ i = e.hom.left ≫ j`. Apply `pullback.hom_ext` to reduce the goal to its premises. Conclude with `((Category.assoc _ _ _).trans ((congrArg (φ₃ ≫ ·) i₁).trans e₃)).trans ((Category.assoc _ _ _).trans ((congrArg (e.hom.left ≫ ·) j₁).trans he')).symm`. Use `((Category.assoc _ _ _).trans ((congrArg (φ₃ ≫ ·) i₂).trans ?_)).trans ((Category.assoc _ _ _).trans ((congrArg (e.hom.left ≫ ·) j₂).trans ((Category.assoc _ _ _).symm.trans (congrArg (· ≫ _) ew)))).symm` and prove the remaining obligations.
+
+Rewrite using `[← Category.assoc, w₃, Category.assoc, s₂]`. Take `⟨f₂, hf₂⟩ : ∃ f₂ : G₂ ⟶ H₂, f₂.left ≫ m₂ = i ≫ f₁.left ≫ pullback.fst _ _` from `⟨Over.homMk (c₂.lift _ G₂.hom w) (c₂.lift_snd _ _ _), c₂.lift_fst _ _ _⟩`. Use `⟨f₂, c₂.hom_ext ?_ ?_⟩` and prove the remaining obligations. Establish `r : e.hom.left ≫ (e.inv ≫ f ≫ d.hom).left = f.left ≫ d.hom.left`. Rewrite using `[← Over.comp_left, e.hom_inv_id_assoc, Over.comp_left]`.
+
+Establish `a₁ : (φ₃ ≫ f₂.left) ≫ m₂ = e.hom.left ≫ j ≫ f₁.left ≫ pullback.fst _ _` using `(Category.assoc _ _ _).trans ((congrArg (φ₃ ≫ ·) hf₂).trans ((Category.assoc _ _ _).symm.trans ((congrArg (· ≫ _) key).trans (Category.assoc _ _ _))))`. Rewrite using `[a₁, Category.assoc, d₃, ← hd', ← Category.assoc, ← r, Category.assoc]`. Conclude with `congrArg (e.hom.left ≫ ·) j₃.symm`. Rewrite using `[Category.assoc, Category.assoc, Over.w, v₃, w₃, ← Category.assoc, Over.w]`.
+-/
 theorem exists_field (hT : ThetaUnifAV) (hB : Out.PolBaseChangeSt) (k : IntermediateField ℚ ℂ)
     [FiniteDimensional ℚ k] (P Q : Out.PolAV (Sp k)) {G H : Over (Sp ℂ)} [GrpObj G] [GrpObj H]
     {φ : G.left ⟶ P.A.left} {m : H.left ⟶ Q.A.left} (hP : IsGrpPullback G P.A (spMap (algebraMap k ℂ)) φ)
@@ -66,6 +79,9 @@ theorem exists_field (hT : ThetaUnifAV) (hB : Out.PolBaseChangeSt) (k : Intermed
     exact congrArg (e.hom.left ≫ ·) j₃.symm
   · rw [Category.assoc, Category.assoc, Over.w, v₃, w₃, ← Category.assoc, Over.w]
 
+/- English proof (translation)
+Set `φ₀ : Over.mk (G'.hom ≫ j) ⟶ G` to `Over.homMk φ w`. Establish `h` using `hm.2 G' x' y' (φ₀ ≫ x) (φ₀ ≫ y) hx.symm hy.symm`. Rewrite `h` using `[← MonObj.comp_mul]`. Rewrite using `[← h]`. Both sides reduce to the same expression.
+-/
 theorem exists_mul {S S' : Scheme.{0}} {j : S' ⟶ S} {G H : Over S} [GrpObj H] {G' H' : Over S'} [GrpObj H']
     {φ : G'.left ⟶ G.left} {m : H'.left ⟶ H.left} (w : φ ≫ G.hom = G'.hom ≫ j) (hm : IsGrpPullback H' H j m)
     {x' y' : G' ⟶ H'} {x y : G ⟶ H} (hx : x'.left ≫ m = φ ≫ x.left) (hy : y'.left ≫ m = φ ≫ y.left) :
@@ -81,6 +97,17 @@ end GlobalTheory.CM.FamDesc
 namespace GlobalTheory.CM
 open FamDesc in
 
+/- English proof (translation)
+Introduce `hT hL E _ _ _ H k _ ω C D h T L ω' C' φ T' m ψ' hC hF`. Establish `hfin` using `D.fin`. Establish `: Module.Finite (𝓞 E) L` using `inferInstance`. Establish `: Module.Finite ℤ L` using `Module.Finite.trans (𝓞 E) L`. Establish `hg : AddMonoid.FG L` using `AddGroup.fg_iff_addMonoid_fg.1 (Module.Finite.iff_addGroup_fg.1 inferInstance)`.
+
+Take `⟨S, hS⟩` from `hg.fg_top`. Use `choose K hK hK' using fun a : L => @exists_field hT hL.polBaseChange k _ C.P T.pol _ _ _ _ _ _ hC.2.1.2.1 m.cart (ψ' a) (hF.1 a).isMonHom`. Use `⟨k ⊔ (K 0 ⊔ ⨆ a : S, K a), ?_, le_sup_left, ?_⟩` and prove the remaining obligations. Use `hK` as an intermediate fact. Establish `: FiniteDimensional ℚ (⨆ a : S, K a : IntermediateField ℚ ℂ)` using `IntermediateField.finiteDimensional_iSup_of_finite`.
+
+Use `infer_instance`. Introduce `k₂ h₂ h₁ ω₂ C₂ φ₂ φ₃ T₂ m₂ m₃ e₂ e₃ eφ em`. Establish `gen : ∀ a : L, K a ≤ k₂ → ∃ f₂ : C₂.P.A ⟶ T₂.t.G, (ψ' a).left ≫ m₃.φ = φ₃ ≫ f₂.left` using `fun a ha => hK' a k₂ h₂ ha C₂.P.A T₂.t.G φ₂ m₂.φ φ₃ m₃.φ e₂.2.1.2.1.1.w m₂.cart.1 e₃.2.1.2.1.1.w m₃.cart.1.w eφ em`. Establish `all : ∀ a : L, ∃ f₂ : C₂.P.A ⟶ T₂.t.G, (ψ' a).left ≫ m₃.φ = φ₃ ≫ f₂.left`. Introduce `a`.
+
+Establish `ha : a ∈ AddSubmonoid.closure (S : Set L)` using `hS ▸ AddSubmonoid.mem_top a`. Proceed by induction on `ha using AddSubmonoid.closure_induction with`. Consider the case `mem a ha => exact gen a (((le_iSup (fun a : S => K a) ⟨a, ha⟩).trans (le_sup_right.trans le_sup_right)).trans h₁)`. Consider the case `zero => exact gen 0 ((le_sup_left.trans le_sup_right).trans h₁)`. Consider the case `add a b _ _ ha hb`.
+
+Take `⟨x, hx⟩` from `ha`. Take `⟨y, hy⟩` from `hb`. Conclude with `⟨x * y, by rw [hF.2.1]; exact exists_mul e₃.2.1.2.1.1.w m₃.cart hx hy⟩`. Use `choose ψ hψ using all`. Conclude with `⟨ψ, GlobalTheory.T.family_identities_descend_field_to_dedekind hL E H k₂ ω₂ C₂ D h T₂ L ψ ℂ ω' C' (algebraMap k₂ ℂ) φ₃ T' m₃ ψ' (algebraMap k₂ ℂ).injective e₃ hψ hF, hψ⟩`.
+-/
 theorem isFam_descends_to_numberField : ThetaUnifAV → Out.Laws → ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (k : IntermediateField ℚ ℂ) [FiniteDimensional ℚ k] (ω : k) (C : Ell H k ω) (D : Datum H) (h : D.La → D.La → OK H) (T : PAT H (Sp k)) (L : Submodule (𝓞 E) D.La) (ω' : ℂ) (C' : Ell H ℂ ω') (φ : C'.P.A.left ⟶ C.P.A.left) (T' : PAT H (Sp ℂ)) (m : SABMap T'.t T.t (spMap (algebraMap k ℂ))) (ψ' : L → (C'.P.A ⟶ T'.t.G)), EllMap C' C (algebraMap k ℂ) φ → IsFam C' T' h L ψ' →
   ∃ k₁ : IntermediateField ℚ ℂ, FiniteDimensional ℚ k₁ ∧ k ≤ k₁ ∧ ∀ (k₂ : IntermediateField ℚ ℂ) (h₂ : k ≤ k₂), k₁ ≤ k₂ → ∀ (ω₂ : k₂) (C₂ : Ell H k₂ ω₂) (φ₂ : C₂.P.A.left ⟶ C.P.A.left) (φ₃ : C'.P.A.left ⟶ C₂.P.A.left) (T₂ : PAT H (Sp k₂)) (m₂ : SABMap T₂.t T.t (spMap (IntermediateField.inclusion h₂).toRingHom)) (m₃ : SABMap T'.t T₂.t (spMap (algebraMap k₂ ℂ))),
     EllMap C₂ C (IntermediateField.inclusion h₂).toRingHom φ₂ → EllMap C' C₂ (algebraMap k₂ ℂ) φ₃ → φ₃ ≫ φ₂ = φ → m₃.φ ≫ m₂.φ = m.φ → ∃ ψ : L → (C₂.P.A ⟶ T₂.t.G), IsFam C₂ T₂ h L ψ ∧ ∀ a, (ψ' a).left ≫ m₃.φ = φ₃ ≫ (ψ a).left := by

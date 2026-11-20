@@ -14,6 +14,33 @@ noncomputable section
 
 namespace GlobalTheory.PeriodLattice
 
+/- English proof (translation)
+Introduce `hPC E _ _ _ I _ φ L 𝔠 X U`. Take `⟨ε, hε⟩` from `hPC`. Take `⟨P₀, hspan, -, -, hend, -⟩` from `hε X.A (Module.finrank ℚ (FR E)) X.ab X.dim (X.diag U.c) (LB.isLB_pull (X.isLB _) _) U.u`. Set `em : E →ₗ[ℚ] (Fin (Module.finrank ℚ (FR E)) → ℂ)` to `{ toFun := fun x j => φ (U.e j) x map_add' := fun x x' => by funext j; simp map_smul' := fun q x => by funext j; simp [Rat.smul_def] }`. Establish `hem : ∀ x j, em x j = φ (U.e j) x` using `fun _ _ => rfl`.
+
+Establish `hdc : ∀ x, (fun j => GlobalTheory.IndefiniteRowSideFullHecke.DefiningCoordinates.defCoord φ 0 x (U.e j)) = em x` using `fun x => by`. Use function extensionality and compare the values at `j`. Simplify using `[GlobalTheory.IndefiniteRowSideFullHecke.DefiningCoordinates.defCoord, hem]`. Set `S : AddSubgroup E` to `{ carrier := {x | em x ∈ U.u.Λ} add_mem' := fun {a b} ha hb => by show em (a + b) ∈ U.u.Λ`. Rewrite using `[map_add]`.
+
+Conclude with `add_mem ha hb`. Use the proof step `zero_mem' := by show em 0 ∈ U.u.Λ`. Rewrite using `[map_zero]`. Conclude with `zero_mem _`. Use the proof step `neg_mem' := fun {a} ha => by show em (-a) ∈ U.u.Λ`.
+
+Rewrite using `[map_neg]`. Conclude with `neg_mem ha }`. Establish `hemL : ∀ x ∈ S, em x ∈ U.u.Λ` using `fun x hx => hx`. Set `Q : S →+ HdR X.A` to `{ toFun := fun x => P₀ ⟨em x, hemL x x.2⟩ map_zero' := by`. Rewrite using `[show (⟨em ((0 : S) : E), hemL _ (0 : S).2⟩ : U.u.Λ) = 0 from Subtype.ext (by simp), map_zero]`.
+
+Use the proof step `map_add' := fun x x' => by`. Rewrite using `[← map_add]`. Use `congr 1`. Use `ext`. Simplify using `}`.
+
+Establish `hsur : ∀ w ∈ U.u.Λ, ∃ x, em x = w` using `fun w hw => by`. Take `⟨x, -, rfl⟩` from `(U.lat w).1 hw`. Conclude with `⟨x, (hdc x).symm⟩`. Establish `hΛ : (U.u.Λ : Set (Fin (Module.finrank ℚ (FR E)) → ℂ)) = em '' (S : Set E)`. Use extensionality with `w`.
+
+Prove the components needed by the constructor for the conclusion. Introduce `hw`. Take `⟨x, rfl⟩` from `hsur w hw`. Conclude with `⟨x, hw, rfl⟩`. Introduce and unpack `⟨x, hx, rfl⟩`.
+
+Conclude with `hemL x hx`. Establish `hdim : Module.finrank ℚ E ≤ 2 * Module.finrank ℚ (FR E)`. Rewrite using `[← Module.finrank_mul_finrank ℚ (FR E) E, Algebra.IsQuadraticExtension.finrank_eq_two (FR E) E, mul_comm]`. Establish `full : ∀ x : E, ∃ n : ℕ, 0 < n ∧ n • x ∈ S` using `exists_nsmul_mem S em hdim (hΛ ▸ U.u.full)`. Take `⟨P, hP⟩` from `exists_ext S full Q`.
+
+Establish `hP1 : ∀ x (hx : x ∈ S), P x = P₀ ⟨em x, hemL x hx⟩` using `fun x hx => by`. Rewrite using `[hP x 1 one_pos (by rw [one_smul]; exact hx), Nat.cast_one, inv_one, one_smul]`. Use `show P₀ _ = P₀ _`. Use `congr 2`. Simplify using the standard rewrite rules.
+
+Use `⟨P, ?_, ?_⟩` and prove the remaining obligations. Use `top_unique (hspan ▸ Submodule.span_mono ?_)` and prove the remaining obligations. Introduce and unpack `_ ⟨⟨w, hw⟩, rfl⟩`. Take `⟨x, rfl⟩` from `hsur w hw`. Conclude with `⟨x, hP1 x hw⟩`.
+
+Introduce `a α _ hα x`. Take `⟨n, hn, hnx⟩` from `full x`. Take `⟨m, hm, hmx⟩` from `full (a * x)`. Establish `hpos : 0 < n * m` using `Nat.mul_pos hn hm`. Establish `hNx : (n * m) • x ∈ S`.
+
+Rewrite using `[mul_comm, mul_smul]`. Conclude with `S.nsmul_mem hnx _`. Establish `hNax : (n * m) • (a * x) ∈ S`. Rewrite using `[mul_smul]`. Conclude with `S.nsmul_mem hmx _`.
+
+Set `M : (Fin (Module.finrank ℚ (FR E)) → ℂ) →ₗ[ℂ] (Fin (Module.finrank ℚ (FR E)) → ℂ)` to `{ toFun := fun w j => φ (U.e j) a * w j map_add' := fun w w' => by funext j; simp [mul_add] map_smul' := fun r w => by funext j; simp; ring }`. Rewrite using `[hP x _ hpos hNx, hP (a * x) _ hpos hNax, map_smul]`. Use `congr 1`. Conclude with `hend α M (fun w => hα w) ⟨em ((n * m) • x), hemL _ hNx⟩ ⟨em ((n * m) • (a * x)), hemL _ hNax⟩ (by funext j; simp only [hem, M, LinearMap.coe_mk, AddHom.coe_mk, map_nsmul, nsmul_eq_mul, map_mul]; ring)`.
+-/
 theorem periods_unif : GlobalTheory.Published.PeriodComparison →
   ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (I : Type) [Fintype I] (φ : I → E →+* ℂ) (L : Set E)
     (𝔠 : FracId (FR E)) (X : Obj (FR E) 𝔠 (Sp ℂ)) (U : Unif φ L 0 X),

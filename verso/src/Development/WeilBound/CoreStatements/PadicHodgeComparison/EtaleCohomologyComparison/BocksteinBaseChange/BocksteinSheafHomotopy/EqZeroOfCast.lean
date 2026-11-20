@@ -15,21 +15,36 @@ open GlobalTheory.EtC
 
 namespace RootOfUnityLemmas
 
+/- English proof (translation)
+Unfold `pick`. Rewrite using `[dif_neg h]`.
+-/
 theorem pick_neg {α : Type*} [Zero α] {P : α → Prop} (h : ¬ ∃ a, P a) : pick P = 0 := by
   unfold pick
   rw [dif_neg h]
 
+/- English proof (translation)
+Substitute `hn` using the available equality. Substitute `hi` using the available equality. Both sides reduce to the same expression.
+-/
 theorem cast_zero' {q : ℕ} {E : Spc} {n i n' i' : ℤ} (hn : n = n') (hi : i = i') :
     (0 : Ht q E n i).cast hn hi = 0 := by
   subst hn; subst hi; rfl
 
+/- English proof (translation)
+Substitute `hn` using the available equality. Substitute `hi` using the available equality. Conclude with `h`.
+-/
 theorem eq_zero_of_cast {q : ℕ} {E : Spc} {n i n' i' : ℤ} (hn : n = n') (hi : i = i') (x : Ht q E n i)
     (h : x.cast hn hi = 0) : x = 0 := by
   subst hn; subst hi; exact h
 
+/- English proof (translation)
+Simplify using `[Sec.res]`.
+-/
 theorem res_id {R : Type} [CommRing R] {F : Shv R} {X : Scheme.{0}} (a : Sec F X) : Sec.res (𝟙 X) a = a := by
   simp [Sec.res]
 
+/- English proof (translation)
+Take `⟨-, e, -, he⟩` from `hF.a9 (ZMod q) (tw q s)`. Take `⟨α, -, hα⟩` from `he X (twGen s ζ)`. Establish `h` using `((hF.et.sch (ZMod q) X (res _ (tw q s)) (-1) 0 1 (by norm_num) (by norm_num)).2 α).1`. Rewrite `h` using `[hα]`. Conclude with `h`.
+-/
 theorem resGen_closed (hF : FormalIn) (q : ℕ) (s : ℤ) {X : Scheme.{0}} (ζ : Prim q Γ(X, ⊤)) :
     Sec.map ((res _ (tw q s)).d 0 1) (resGen s ζ) = 0 := by
   obtain ⟨-, e, -, he⟩ := hF.a9 (ZMod q) (tw q s)
@@ -38,6 +53,9 @@ theorem resGen_closed (hF : FormalIn) (q : ℕ) (s : ℤ) {X : Scheme.{0}} (ζ :
   rw [hα] at h
   exact h
 
+/- English proof (translation)
+Introduce `p hp`. Take `⟨p', rfl⟩` from `Nat.exists_eq_succ_of_ne_zero hp`. Conclude with `fun s h' U x => h p' s h' U x`.
+-/
 theorem ev_vanish {R : Type} [CommRing R] {X : Scheme.{0}} {I : GlobalTheory.EtC.Cx R} {n : ℤ}
     (α : Cochain ((chains R).obj (sch.obj X)) I n)
     (h : ∀ (p : ℕ) (s : ℤ) (h : -((p + 1 : ℕ) : ℤ) + n = s) (U : Scheme.{0}) (x : U ⟶ X), ev α (p + 1) s h U x = 0) :
@@ -46,6 +64,15 @@ theorem ev_vanish {R : Type} [CommRing R] {X : Scheme.{0}} {I : GlobalTheory.EtC
   obtain ⟨p', rfl⟩ := Nat.exists_eq_succ_of_ne_zero hp
   exact fun s h' U x => h p' s h' U x
 
+/- English proof (translation)
+Introduce `N w h U x`. Consider the cases of `N with`. Consider the case `zero`. Substitute `h` using the available equality. Rewrite using `[Fin.sum_univ_one]`.
+
+Establish `e1 : ev γ 0 (-((0 : ℕ) : ℤ) + (0 + 0)) rfl U x = μ.mul U 0 0 0 (add_zero 0) (ev α 0 0 (by simp) U x) (ev β 0 0 (by simp) U x)`. Rewrite using `[hα0, hβ0, ← μ.nat, hc]`. Conclude with `hγ0 U x`. Rewrite using `[e1]`. Simplify using `only [Fin.val_zero, Nat.cast_zero, mul_zero, Int.negOnePow_zero, one_smul]`.
+
+Both sides reduce to the same expression. Consider the case `succ N`. Rewrite using `[hγ1 N w h U x]`. Use `(Finset.sum_eq_zero fun p _ => ?_).symm` and prove the remaining obligations. Distinguish the cases in `hp : (p : ℕ) = 0`.
+
+Rewrite using `[ev_vanish β hβ1 (N + 1 - p) (by omega)]`. Simplify using the standard rewrite rules. Rewrite using `[ev_vanish α hα1 p hp]`. Simplify using the standard rewrite rules.
+-/
 theorem isAW_conc {R : Type} [CommRing R] {I J K : GlobalTheory.EtC.Cx R} (μ : Pair I J K) {X : Scheme.{0}}
     (α : Cochain ((chains R).obj (sch.obj X)) I 0) (β : Cochain ((chains R).obj (sch.obj X)) J 0)
     (γ : Cochain ((chains R).obj (sch.obj X)) K (0 + 0)) (a : Sec (I.X 0) X) (b : Sec (J.X 0) X) (c : Sec (K.X 0) X)
@@ -78,6 +105,13 @@ theorem isAW_conc {R : Type} [CommRing R] {I J K : GlobalTheory.EtC.Cx R} (μ : 
     · rw [ev_vanish α hα1 p hp]
       simp
 
+/- English proof (translation)
+Substitute `ht` using the available equality. Distinguish the cases in `hw : ∃ c' : Ht q (sch.obj X) 0 0, ∃ α : Cocycle _ _ 0, CohomologyClass.mk α = c' ∧ ∀ (U : Scheme.{0}) (x : Sx (sch.obj X) 0 U) (ζ' : Prim q Γ(U, ⊤)), ev α.1 0 0 (by simp) U x = resGen 0 ζ'`. Take `⟨α, hα, hα'⟩ : ∃ α : Cocycle ((chains (ZMod q)).obj (sch.obj X)) (res _ (tw q 0)) 0, CohomologyClass.mk α = one q (sch.obj X) ∧ ∀ (U : Scheme.{0}) (x : Sx (sch.obj X) 0 U) (ζ' : Prim q Γ(U, ⊤)), ev α.1 0 0 (by simp) U x = resGen 0 ζ'` from `pick_spec hw`. Rewrite using `[← hα]`. Express the relevant statement in the definitionally equal form `CohomologyClass.mk c = CohomologyClass.mk α`.
+
+Conclude with `WeightedPowerFormIntegrability.mk_eq_of_ev hF.et.sch c α (hc.trans (hα' X (𝟙 X) ζ).symm)`. Establish `h1 : one q (sch.obj X) = 0` using `pick_neg hw`. Establish `hinv : Inv q (sch.obj X)` using `fun U ⟨x⟩ => (Prim.map (show U ⟶ X from x).appTop.hom ζ).2.1`. Establish `h2` using `(hF.a6ring q (sch.obj X)).1 hinv (CohomologyClass.mk c)`. Rewrite `h2` using `[h1, map_zero, AddMonoidHom.zero_apply]`.
+
+Rewrite using `[h1, cast_zero', eq_zero_of_cast _ _ _ h2.symm]`.
+-/
 theorem conc_eq_one (hF : FormalIn) (q : ℕ) [NeZero q] (X : Scheme.{0}) (ζ : Prim q Γ(X, ⊤)) (t : ℤ) (ht : (0 : ℤ) = t)
     (c : Cocycle ((chains (ZMod q)).obj (sch.obj X)) (res _ (tw q t)) (0 + 0))
     (hc : ev c.1 0 (0 + 0) (by simp) X (𝟙 X) = resGen t ζ) (hn : (0 : ℤ) = 0 + 0) :
@@ -102,6 +136,11 @@ end RootOfUnityLemmas
 
 open RootOfUnityLemmas in
 
+/- English proof (translation)
+Introduce `hF q _ X ⟨ζ⟩ i`. Establish `hS` using `hF.et.sch`. Take `⟨v, hv0, hv1⟩` from `(hS (ZMod q) X (res _ (tw q (-i))) (-1) 0 1 (by norm_num) (by norm_num)).1 (resGen (-i) ζ) (resGen_closed hF q (-i) ζ)`. Take `⟨u, hu0, hu1⟩` from `(hS (ZMod q) X (res _ (tw q i)) (-1) 0 1 (by norm_num) (by norm_num)).1 (resGen i ζ) (resGen_closed hF q i ζ)`. Take `⟨c, hc0, hc1⟩` from `(hS (ZMod q) X (res _ (tw q (-i + i))) (-1) (0 + 0) 1 (by norm_num) (by norm_num)).1 (resGen (-i + i) ζ) (resGen_closed hF q (-i + i) ζ)`.
+
+Use `⟨CohomologyClass.mk u, CohomologyClass.mk v, ?_⟩` and prove the remaining obligations. Establish `hcup : cup q (CohomologyClass.mk v) (CohomologyClass.mk u) = CohomologyClass.mk c` using `Pair.cup_spec (twPair q (-i) i) (sch.obj X) rfl v u c (isAW_conc (twPair q (-i) i) v.1 u.1 c.1 (resGen (-i) ζ) (resGen i ζ) (resGen (-i + i) ζ) (hF.et.tw q (-i) i X ζ) hv0 hv1 hu0 hu1 hc0 hc1)`. Rewrite using `[hcup]`. Conclude with `conc_eq_one hF q X ζ (-i + i) (by ring) c ((hc0 X (𝟙 X)).trans (res_id _)) (by ring)`.
+-/
 theorem root : RootsOfUnityFormal := by
   intro hF q _ X ⟨ζ⟩ i
   have hS := hF.et.sch

@@ -10,14 +10,23 @@ open scoped TensorProduct
 
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
 
+/- English proof (translation)
+Take `⟨τ⟩` from `(inferInstance : Nonempty (E →+* ℂ))`. Apply `τ.injective` to reduce the goal to its premises. Rewrite using `[h.2.2.2, h.2.2.2, star_star]`.
+-/
 theorem sigma_sigma {σ : E →ₐ[F] E} (h : IsCMExt F E σ) (x : E) : σ (σ x) = x := by
   obtain ⟨τ⟩ := (inferInstance : Nonempty (E →+* ℂ))
   apply τ.injective
   rw [h.2.2.2, h.2.2.2, star_star]
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem sigR_tmul (R : Type) [CommRing R] [Algebra F R] (σ : E →ₐ[F] E) (a : R) (e : E) :
     sigR R σ (a ⊗ₜ[F] e) = a ⊗ₜ[F] σ e := rfl
 
+/- English proof (translation)
+Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => rw [map_zero, map_zero]`. Consider the case `tmul a e => rw [sigR_tmul, sigR_tmul, sigma_sigma h]`. Consider the case `add y z hy hz => rw [map_add, map_add, hy, hz]`.
+-/
 theorem sigR_sigR {σ : E →ₐ[F] E} (h : IsCMExt F E σ) (R : Type) [CommRing R] [Algebra F R] (x : R ⊗[F] E) :
     sigR R σ (sigR R σ x) = x := by
   induction x using TensorProduct.induction_on with
@@ -25,16 +34,27 @@ theorem sigR_sigR {σ : E →ₐ[F] E} (h : IsCMExt F E σ) (R : Type) [CommRing
   | tmul a e => rw [sigR_tmul, sigR_tmul, sigma_sigma h]
   | add y z hy hz => rw [map_add, map_add, hy, hz]
 
+/- English proof (translation)
+Rewrite using `[Algebra.TensorProduct.algebraMap_apply, sigR_tmul]`. Simplify using the standard rewrite rules.
+-/
 theorem sigR_algebraMap (R : Type) [CommRing R] [Algebra F R] (σ : E →ₐ[F] E) (c : R) :
     sigR R σ (algebraMap R (R ⊗[F] E) c) = algebraMap R (R ⊗[F] E) c := by
   rw [Algebra.TensorProduct.algebraMap_apply, sigR_tmul]
   simp
 
+/- English proof (translation)
+Establish `h0 : Ideal.absNorm v.asIdeal ≠ 0` using `fun h => v.ne_bot (Ideal.absNorm_eq_zero_iff.1 h)`. Establish `h1 : Ideal.absNorm v.asIdeal ≠ 1` using `fun h => v.isPrime.ne_top (Ideal.absNorm_eq_one_iff.1 h)`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem one_lt_absNorm (v : HeightOneSpectrum (𝓞 F)) : 1 < Ideal.absNorm v.asIdeal := by
   have h0 : Ideal.absNorm v.asIdeal ≠ 0 := fun h => v.ne_bot (Ideal.absNorm_eq_zero_iff.1 h)
   have h1 : Ideal.absNorm v.asIdeal ≠ 1 := fun h => v.isPrime.ne_top (Ideal.absNorm_eq_one_iff.1 h)
   omega
 
+/- English proof (translation)
+Assume the negation of the conclusion as `hne`. Take `⟨j, hj⟩` from `exists_pow_lt_of_lt_one (norm_pos_iff.2 hne) h1`. Establish `h2 : ‖(ϖ⁻¹) ^ j * c‖ ≤ 1` using `Valued.toNormedField.norm_le_one_iff.2 (hc j)`. Rewrite `h2` using `[norm_mul, norm_pow, norm_inv, inv_pow]`. Establish `h3 : 0 < ‖ϖ‖ ^ j` using `pow_pos (norm_pos_iff.2 h0) j`.
+
+Rewrite `h2` using `[inv_mul_le_iff₀ h3, mul_one]`. Conclude with `absurd hj (not_lt.2 h2)`.
+-/
 theorem eq_zero_of_forall_pow {v : HeightOneSpectrum (𝓞 F)} {ϖ c : Fv F v} (h0 : ϖ ≠ 0) (h1 : ‖ϖ‖ < 1)
     (hc : ∀ j : ℕ, (ϖ⁻¹) ^ j * c ∈ v.adicCompletionIntegers F) : c = 0 := by
   by_contra hne
@@ -45,6 +65,19 @@ theorem eq_zero_of_forall_pow {v : HeightOneSpectrum (𝓞 F)} {ϖ c : Fv F v} (
   rw [inv_mul_le_iff₀ h3, mul_one] at h2
   exact absurd hj (not_lt.2 h2)
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ d bs v S σS ϖ hH hϖ`. Take `⟨hσ, -, hcar, hsig, h0, h1, -, -⟩` from `hH`. Use `⟨fun a => Subtype.ext ?_, Subtype.ext ?_, ?_, ?_, one_lt_absNorm v⟩` and prove the remaining obligations. Rewrite using `[hsig, hsig, sigR_sigR hσ]`. Rewrite using `[hsig, sigR_algebraMap]`.
+
+Introduce `x y hxy`. Establish `e : algebraMap (Fv F v) (Fv F v ⊗[F] E) ϖ * (x : Fv F v ⊗[F] E) = algebraMap (Fv F v) (Fv F v ⊗[F] E) ϖ * (y : Fv F v ⊗[F] E)` using `congrArg Subtype.val hxy`. Rewrite `e` using `[← Algebra.smul_def, ← Algebra.smul_def]`. Conclude with `Subtype.ext (smul_right_injective _ h0 e)`. Introduce `hu`.
+
+Take `⟨b, hb⟩` from `hu.exists_right_inv`. Establish `hb1 : algebraMap (Fv F v) (Fv F v ⊗[F] E) ϖ * (b : Fv F v ⊗[F] E) = 1` using `congrArg Subtype.val hb`. Establish `hb2 : (b : Fv F v ⊗[F] E) = algebraMap (Fv F v) (Fv F v ⊗[F] E) (ϖ : Fv F v)⁻¹`. Establish `e : algebraMap (Fv F v) (Fv F v ⊗[F] E) (ϖ : Fv F v)⁻¹ * algebraMap (Fv F v) (Fv F v ⊗[F] E) ϖ = 1`. Rewrite using `[← map_mul, inv_mul_cancel₀ h0, map_one]`.
+
+Combine the equalities or inequalities in the displayed calculation. Establish `hc : ∀ k, (Algebra.TensorProduct.basis (Fv F v) bs).repr 1 k = 0` using `fun k => by`. Use `eq_zero_of_forall_pow h0 h1 fun j => ?_` and prove the remaining obligations. Establish `hm : ((b ^ j : S) : Fv F v ⊗[F] E) ∈ Rv bs v`. Rewrite using `[← hcar]`.
+
+Conclude with `(b ^ j).2`. Establish `e : ((b ^ j : S) : Fv F v ⊗[F] E) = ((ϖ : Fv F v)⁻¹ ^ j) • (1 : Fv F v ⊗[F] E)`. Rewrite using `[Subring.coe_pow, hb2, ← map_pow, Algebra.algebraMap_eq_smul_one]`. Use `hm k` as an intermediate fact. Rewrite `this` using `[e, map_smul, Finsupp.smul_apply, smul_eq_mul]`.
+
+Conclude with `this`. Establish `h10 : (1 : Fv F v ⊗[F] E) = 0` using `(Algebra.TensorProduct.basis (Fv F v) bs).repr.map_eq_zero_iff.1 (Finsupp.ext hc)`. Conclude with `one_ne_zero h10`.
+-/
 theorem q1 : PositivityTheory.SiegelWeilFormula.Gunr.Q1 := by
   intro F E _ _ _ _ _ σ d bs v S σS ϖ hH hϖ
   obtain ⟨hσ, -, hcar, hsig, h0, h1, -, -⟩ := hH

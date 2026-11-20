@@ -146,19 +146,38 @@ def setTu {eps : ℝ} (Fm : FamP eps) (t : ℝ) : FamP eps := { Fm with CTu := t
 
 def thrTu (K : TransportedAlt) (t : ℝ) : TransportedAlt := ⟨K.pre, K.t, fun l => K.mid (l.set 13 t), fun l => K.last (l.set 13 t)⟩
 
+/- English proof (translation)
+Unfold both sides. The equivalence is reflexive.
+-/
 theorem setTu_large {eps : ℝ} (Fm : FamP eps) (K : TransportedAlt) (t CH : ℝ) :
     (setTu Fm t).Large K CH ↔ Fm.Large (thrTu K t) CH := Iff.rfl
 
+/- English proof (translation)
+Unfold both sides. The equivalence is reflexive.
+-/
 theorem setTu_cls (Q : PtProp) {eps : ℝ} (Fm : FamP eps) (t : ℝ) : cls Q (setTu Fm t) ↔ cls Q Fm := Iff.rfl
 
+/- English proof (translation)
+Take `⟨hc, hf, hw⟩` from `h`. Use `⟨hf, hw, fun x hx i => (hc x hx i).1.1.1.2, ⟨Fm.x1 + 1, fun x hx i => ?_⟩, fun x hx i => (hc x hx i).2⟩` and prove the remaining obligations. Conclude with `(hc x (by linarith) i).1.1.2.1`.
+-/
 theorem duty_of_cls (Q : PtProp) {eps : ℝ} (Fm : FamP eps) (h : cls Q Fm) : Duty Fm := by
   obtain ⟨hc, hf, hw⟩ := h
   refine ⟨hf, hw, fun x hx i => (hc x hx i).1.1.1.2, ⟨Fm.x1 + 1, fun x hx i => ?_⟩, fun x hx i => (hc x hx i).2⟩
   exact (hc x (by linarith) i).1.1.2.1
 
+/- English proof (translation)
+Introduce `x hx i` and use `(h.1 x hx i).1.1.1.1`.
+-/
 theorem classOf_of_cls (Q : PtProp) {eps : ℝ} (Fm : FamP eps) (h : cls Q Fm) : classOf Q Fm :=
   fun x hx i => (h.1 x hx i).1.1.1.1
 
+/- English proof (translation)
+Take `⟨ε0, h0, h⟩` from `h`. Use `⟨ε0, h0, fun eps C8 C5 c6 Cb a1 a2 a3 a4 => ?_⟩` and prove the remaining obligations. Take `⟨K0, h⟩` from `h eps C8 C5 c6 Cb a1 a2 a3 a4`. Use `⟨K0, fun C b1 b2 b3 => ?_⟩` and prove the remaining obligations. Take `⟨c1, h⟩` from `h C b1 b2 b3`.
+
+Use `⟨c1, fun cD hcD => ?_⟩` and prove the remaining obligations. Take `⟨c2, h⟩` from `h cD hcD`. Use `⟨c2, fun ch hch => ?_⟩` and prove the remaining obligations. Take `⟨x0, h⟩` from `h ch hch`. Use `⟨x0, fun s R H q0 a b M c u0 d1 d2 d3 d4 d5 d0 d6 d7 d8 d9 => ?_⟩` and prove the remaining obligations.
+
+Take `⟨p, e1, e2, e3, e4, e5, e6⟩` from `h s R H q0 a b M c u0 d1 d2 d3 d4 d5 d0 d6 d7 d8 d9`. Conclude with `⟨p, e1, e2, e3, e4, e5, hQ C p e6⟩`.
+-/
 theorem ObjC.imp {Q Q' : PtProp} (h : ObjC Q) (hQ : ∀ (C : FC) (p : Pt C), p.Has Q → p.Has Q') : ObjC Q' := by
   obtain ⟨ε0, h0, h⟩ := h
   refine ⟨ε0, h0, fun eps C8 C5 c6 Cb a1 a2 a3 a4 => ?_⟩
@@ -173,10 +192,20 @@ theorem ObjC.imp {Q Q' : PtProp} (h : ObjC Q) (hQ : ∀ (C : FC) (p : Pt C), p.H
   obtain ⟨p, e1, e2, e3, e4, e5, e6⟩ := h s R H q0 a b M c u0 d1 d2 d3 d4 d5 d0 d6 d7 d8 d9
   exact ⟨p, e1, e2, e3, e4, e5, hQ C p e6⟩
 
+/- English proof (translation)
+The claim follows from `HostExW.imp h fun _ _ _ _ _ c => ⟨c.1, hP _ _ _ _ _ c.2⟩`.
+-/
 theorem HostExQW.imp {la : ℝ} {P P' : HostReq} (h : HostExQW la P)
     (hP : ∀ C5 s R H q0, P C5 s R H q0 → P' C5 s R H q0) : HostExQW la P' :=
   HostExW.imp h fun _ _ _ _ _ c => ⟨c.1, hP _ _ _ _ _ c.2⟩
 
+/- English proof (translation)
+Take `⟨ε0, h0, h⟩` from `h`. Use `⟨ε0, h0, fun eps h1 h2 h3 => ?_⟩` and prove the remaining obligations. Take `⟨CT2, C8, C5, c6, Cb, K0, a1, a2, a3, a4, h⟩` from `h eps h1 h2 h3`. Use `⟨CT2, C8, C5, c6, Cb, K0, a1, a2, a3, a4, fun C a b c d => ?_⟩` and prove the remaining obligations. Take `⟨c1, h⟩` from `h C a b c d`.
+
+Use `⟨c1, fun cD hcD => ?_⟩` and prove the remaining obligations. Take `⟨c2, h⟩` from `h cD hcD`. Use `⟨c2, fun ch hch => ?_⟩` and prove the remaining obligations. Take `⟨x0, S, h⟩` from `h ch hch`. Use `⟨x0, S, fun s b1 b2 b3 => ?_⟩` and prove the remaining obligations.
+
+Take `⟨R, H, q0, u, v, e1, e2, e3, e4, e5, e6, e7, e8⟩` from `h s b1 b2 b3`. Conclude with `⟨R, H, q0, u, v, e1, e2, e3, e4, e5, e6, e7, hP _ _ _ _ _ e8⟩`.
+-/
 theorem HostWW.imp {la : ℝ} {P P' : HostReq} (h : HostWW la P)
     (hP : ∀ C5 s R H q0, P C5 s R H q0 → P' C5 s R H q0) : HostWW la P' := by
   obtain ⟨ε0, h0, h⟩ := h
@@ -196,14 +225,25 @@ section Primes
 
 variable {R : Ranks} (H : Host R)
 
+/- English proof (translation)
+Establish `h1` using `H.QS_pos`. Establish `h2` using `H.hyp.1.pos`. Establish `h3` using `H.hyp.2.1.pos`. Check the signs of the components of the expression.
+-/
 theorem cond_pos : 0 < H.QS * H.q * H.d := by
   have h1 := H.QS_pos
   have h2 := H.hyp.1.pos
   have h3 := H.hyp.2.1.pos
   positivity
 
+/- English proof (translation)
+Introduce `h` and use `H.ccK_ne_bot (Ideal.absNorm_eq_zero_iff.1 h)`.
+-/
 theorem absNorm_ccK_ne_zero : Ideal.absNorm H.ccK ≠ 0 := fun h => H.ccK_ne_bot (Ideal.absNorm_eq_zero_iff.1 h)
 
+/- English proof (translation)
+Use `Nat.sInf_mem (s := {p : ℕ | p.Prime ∧ ¬ p ∣ H.QS * H.q * H.d * (H.pde - 1) * (H.pde' - 1) * Ideal.absNorm H.ccK}) ?_` and prove the remaining obligations. Establish `h1` using `cond_pos H`. Establish `h2 : 0 < H.pde - 1` using `Nat.sub_pos_of_lt H.pde_prime.one_lt`. Establish `h3 : 0 < H.pde' - 1` using `Nat.sub_pos_of_lt H.pde'_prime.one_lt`. Establish `h4` using `Nat.pos_of_ne_zero (absNorm_ccK_ne_zero H)`.
+
+Take `⟨p, hp, hpp⟩` from `Nat.exists_infinite_primes (H.QS * H.q * H.d * (H.pde - 1) * (H.pde' - 1) * Ideal.absNorm H.ccK + 1)`. Conclude with `⟨p, hpp, Nat.not_dvd_of_pos_of_lt (by positivity) hp⟩`.
+-/
 theorem rPrH_spec : (rPrH H).Prime ∧
     ¬ rPrH H ∣ H.QS * H.q * H.d * (H.pde - 1) * (H.pde' - 1) * Ideal.absNorm H.ccK := by
   refine Nat.sInf_mem (s := {p : ℕ | p.Prime ∧
@@ -216,13 +256,22 @@ theorem rPrH_spec : (rPrH H).Prime ∧
     (H.QS * H.q * H.d * (H.pde - 1) * (H.pde' - 1) * Ideal.absNorm H.ccK + 1)
   exact ⟨p, hpp, Nat.not_dvd_of_pos_of_lt (by positivity) hp⟩
 
+/- English proof (translation)
+The claim follows from `Nat.sInf_le ⟨hp, h⟩`.
+-/
 theorem rPrH_le {p : ℕ} (hp : p.Prime)
     (h : ¬ p ∣ H.QS * H.q * H.d * (H.pde - 1) * (H.pde' - 1) * Ideal.absNorm H.ccK) : rPrH H ≤ p :=
   Nat.sInf_le ⟨hp, h⟩
 
+/- English proof (translation)
+The claim follows from `(rPrH_spec H).1.one_lt.trans_le (Nat.le_mul_of_pos_right _ (cond_pos H))`.
+-/
 theorem one_lt_rPrH_mul : 1 < rPrH H * (H.QS * H.q * H.d) :=
   (rPrH_spec H).1.one_lt.trans_le (Nat.le_mul_of_pos_right _ (cond_pos H))
 
+/- English proof (translation)
+Use `Nat.sInf_mem (s := {p : ℕ | p.Prime ∧ p % (rPrH H * (H.QS * H.q * H.d)) = 1 ∧ ¬ p ∣ Ideal.absNorm H.ccK}) ?_` and prove the remaining obligations. Establish `h1` using `one_lt_rPrH_mul H`. Take `⟨p, hp, hlt, hm⟩` from `Nat.exists_prime_gt_modEq_one (k := rPrH H * (H.QS * H.q * H.d)) (Ideal.absNorm H.ccK) (by omega)`. Conclude with `⟨p, hp, Eq.trans hm (Nat.mod_eq_of_lt h1), Nat.not_dvd_of_pos_of_lt (Nat.pos_of_ne_zero (absNorm_ccK_ne_zero H)) hlt⟩`.
+-/
 theorem globalTwisting_spec_fact : (q0H H).Prime ∧ q0H H % (rPrH H * (H.QS * H.q * H.d)) = 1 ∧ ¬ q0H H ∣ Ideal.absNorm H.ccK := by
   refine Nat.sInf_mem (s := {p : ℕ | p.Prime ∧ p % (rPrH H * (H.QS * H.q * H.d)) = 1 ∧ ¬ p ∣ Ideal.absNorm H.ccK}) ?_
   have h1 := one_lt_rPrH_mul H
@@ -230,24 +279,39 @@ theorem globalTwisting_spec_fact : (q0H H).Prime ∧ q0H H % (rPrH H * (H.QS * H
   exact ⟨p, hp, Eq.trans hm (Nat.mod_eq_of_lt h1),
     Nat.not_dvd_of_pos_of_lt (Nat.pos_of_ne_zero (absNorm_ccK_ne_zero H)) hlt⟩
 
+/- English proof (translation)
+The claim follows from `Nat.sInf_le ⟨hp, h, by rw [hc, Ideal.absNorm_top, Nat.dvd_one]; exact hp.ne_one⟩`.
+-/
 theorem globalTwisting_le_fact (hc : H.ccK = ⊤) {p : ℕ} (hp : p.Prime) (h : p % (rPrH H * (H.QS * H.q * H.d)) = 1) : q0H H ≤ p :=
   Nat.sInf_le ⟨hp, h, by rw [hc, Ideal.absNorm_top, Nat.dvd_one]; exact hp.ne_one⟩
 
+/- English proof (translation)
+Rewrite using `[← Nat.mod_mul_left_mod (q0H H) (rPrH H), (globalTwisting_spec_fact H).2.1]`. Use `Nat.mod_eq_of_lt ?_` and prove the remaining obligations. Conclude with `H.hyp.2.1.one_lt.trans_le (Nat.le_mul_of_pos_left _ (Nat.mul_pos H.QS_pos H.hyp.1.pos))`.
+-/
 theorem mod_cond : q0H H % (H.QS * H.q * H.d) = 1 := by
   rw [← Nat.mod_mul_left_mod (q0H H) (rPrH H), (globalTwisting_spec_fact H).2.1]
   refine Nat.mod_eq_of_lt ?_
   exact H.hyp.2.1.one_lt.trans_le (Nat.le_mul_of_pos_left _ (Nat.mul_pos H.QS_pos H.hyp.1.pos))
 
+/- English proof (translation)
+The claim follows from `(Dvd.intro _ rfl).trans ((Nat.modEq_iff_dvd' (globalTwisting_spec_fact H).1.one_le).1 (((globalTwisting_spec_fact H).2.1.trans (Nat.mod_eq_of_lt (one_lt_rPrH_mul H)).symm).symm))`.
+-/
 theorem rPrH_dvd : rPrH H ∣ q0H H - 1 :=
   (Dvd.intro _ rfl).trans ((Nat.modEq_iff_dvd' (globalTwisting_spec_fact H).1.one_le).1
     (((globalTwisting_spec_fact H).2.1.trans (Nat.mod_eq_of_lt (one_lt_rPrH_mul H)).symm).symm))
 
+/- English proof (translation)
+Establish `h` using `rPrH_dvd H`. Apply the tactic sequence `constructor <;> intro e <;> rw [e] at h <;> apply (rPrH_spec H).2`. Conclude with `((h.mul_left _).mul_right _).mul_right _`. Conclude with `(h.mul_left _).mul_right _`.
+-/
 theorem q0H_ne_pde_and_ne_pde' : q0H H ≠ H.pde ∧ q0H H ≠ H.pde' := by
   have h := rPrH_dvd H
   constructor <;> intro e <;> rw [e] at h <;> apply (rPrH_spec H).2
   · exact ((h.mul_left _).mul_right _).mul_right _
   · exact (h.mul_left _).mul_right _
 
+/- English proof (translation)
+Unfold `q0H rPrH`. Rewrite using `[h0, h1, h2, h3, h4, h5]`.
+-/
 theorem globalTwisting_congr_fact {H' : Host R} (h0 : H.QS = H'.QS) (h1 : H.q = H'.q) (h2 : H.d = H'.d) (h3 : H.pde = H'.pde)
     (h4 : H.pde' = H'.pde') (h5 : Ideal.absNorm H.ccK = Ideal.absNorm H'.ccK) : q0H H = q0H H' := by
   unfold q0H rPrH
@@ -255,6 +319,9 @@ theorem globalTwisting_congr_fact {H' : Host R} (h0 : H.QS = H'.QS) (h1 : H.q = 
 
 end Primes
 
+/- English proof (translation)
+Establish `eS : p.D.host.QS = H.QS` using `hF.QS_eq`. Take `⟨eR, -, -, eq, ed, -, ep, ep', -⟩` from `hF`. Substitute `eR` using the available equality. Conclude with `globalTwisting_congr_fact p.D.host eS eq ed ep ep' (by rw [h1, h2, Ideal.absNorm_top, Ideal.absNorm_top])`.
+-/
 theorem eq_of_from {C : FC} (p : Pt C) {R : Ranks} {H : Host R} {a b : R.A → ℤ} {M : ℕ}
     {c : Fin M → Fin (R.k - 2) → Bool} {u0 : ℕ} (hF : p.From H a b c u0) (h1 : p.D.host.ccK = ⊤) (h2 : H.ccK = ⊤) :
     q0Av p.D = q0H H := by
@@ -263,15 +330,30 @@ theorem eq_of_from {C : FC} (p : Pt C) {R : Ranks} {H : Host R} {a b : R.A → �
   subst eR
   exact globalTwisting_congr_fact p.D.host eS eq ed ep ep' (by rw [h1, h2, Ideal.absNorm_top, Ideal.absNorm_top])
 
+/- English proof (translation)
+Establish `h : q0Av D ≠ 0` using `(globalTwisting_spec_fact D.host).1.ne_zero`. Simplify using `[avPrimes, h]`.
+-/
 theorem auxiliaryPrime_mem_avoidedPrimes (D : D7) : q0Av D ∈ avPrimes D := by
   have h : q0Av D ≠ 0 := (globalTwisting_spec_fact D.host).1.ne_zero
   simp [avPrimes, h]
 
+/- English proof (translation)
+Introduce `hd` and use `by have := hd.1 (a₁ := some (j, true)) (a₂ := some (j, false)) h simp at this`.
+-/
 theorem not_tameDistinct_of_eq_inv {r g m : ℕ} [Fact g.Prime] (χ : Fin m → (ZMod g)ˣ) (j : Fin m) (h : χ j = (χ j)⁻¹) :
     ¬ TameDistinct r g χ := fun hd => by
   have := hd.1 (a₁ := some (j, true)) (a₂ := some (j, false)) h
   simp at this
 
+/- English proof (translation)
+Establish `hd : orderOf x ∣ 3` using `orderOf_dvd_of_pow_eq_one hx`. Establish `hf : (orderOf x).factorization l = 0`. Apply `Nat.factorization_eq_zero_of_not_dvd` to reduce the goal to its premises. Introduce `h`. Conclude with `h3 ((Nat.prime_dvd_prime_iff_eq hl Nat.prime_three).1 (h.trans hd))`.
+
+Unfold `Formalism.CyclotomicNorms.primeToPart`. Rewrite using `[hf]`. Break down `(Nat.dvd_prime Nat.prime_three).1 hd with h | h` into its components or cases. Rewrite using `[orderOf_eq_one_iff.1 h]`. Simplify using the standard rewrite rules.
+
+Establish `e : ∀ n, n = 3 → (((l ^ 0 : ℕ) : ZMod (n / l ^ 0))⁻¹).val = 1`. Introduce and unpack `n rfl`. Establish `e2 : ∀ m, m = 3 → (((1 : ℕ) : ZMod m)⁻¹).val = 1`. Introduce and unpack `m rfl`. Use `decide +kernel`.
+
+Rewrite using `[show ((l ^ 0 : ℕ) : ZMod (3 / l ^ 0)) = ((1 : ℕ) : ZMod (3 / l ^ 0)) by rw [pow_zero l]]`. Conclude with `e2 _ (by simp)`. Rewrite using `[e _ h]`. Simplify using the standard rewrite rules.
+-/
 theorem primeToPart_of_cube {M : Type} [Monoid M] (l : ℕ) (hl : l.Prime) (h3 : l ≠ 3) (x : M) (hx : x ^ 3 = 1) :
     Formalism.CyclotomicNorms.primeToPart l x = x := by
   have hd : orderOf x ∣ 3 := orderOf_dvd_of_pow_eq_one hx
@@ -294,6 +376,17 @@ theorem primeToPart_of_cube {M : Type} [Monoid M] (l : ℕ) (hl : l.Prime) (h3 :
 
 local instance factPrimeSeven : Fact (Nat.Prime 7) := ⟨by norm_num⟩
 
+/- English proof (translation)
+Establish `hinj : Function.Injective (tameList (fun _ : Fin 1 => (⟨2, 4, by decide, by decide⟩ : (ZMod 7)ˣ)))` using `by decide`. Use `⟨hinj, fun l hl hB => ?_, fun _ => ⟨⟨3, 5, by decide, by decide⟩, Units.ext (by show (2 : ZMod 7) = 3 * 3; decide)⟩⟩` and prove the remaining obligations. Establish `h3 : l ≠ 3`. Introduce and unpack `rfl`. Apply `hB` to reduce the goal to its premises.
+
+Use `right`. Use `⟨1, le_rfl, le_rfl, Nat.prime_three, ?_⟩` and prove the remaining obligations. Establish `: padicValNat 3 (7 ^ 1 - 1) = 1`. Establish `: (7 ^ 1 - 1 : ℕ) = 3 * 2` using `by norm_num`. Rewrite using `[this, padicValNat.mul (by norm_num) (by norm_num), padicValNat_self, padicValNat.eq_zero_of_not_dvd (by norm_num)]`.
+
+Rewrite using `[this]`. Evaluate the numerical expressions. Establish `hc : ∀ o, tameList (fun _ : Fin 1 => (⟨2, 4, by decide, by decide⟩ : (ZMod 7)ˣ)) o ^ 3 = 1` using `by decide`. Introduce `a b hab`. Simplify using `only at hab`.
+
+Rewrite `hab` using `[primeToPart_of_cube l hl h3, primeToPart_of_cube l hl h3]`. Conclude with `hinj (Units.ext ((algebraMap (ZMod 7) (Formalism.CyclotomicNorms.Fbar 7)).injective hab))`. Rewrite using `[← map_pow, ← Units.val_pow_eq_pow_val, hc]`. Simplify using the standard rewrite rules. Rewrite using `[← map_pow, ← Units.val_pow_eq_pow_val, hc]`.
+
+Simplify using the standard rewrite rules.
+-/
 example : TameDistinct 1 7 (fun _ : Fin 1 => (⟨2, 4, by decide, by decide⟩ : (ZMod 7)ˣ)) := by
   have hinj : Function.Injective (tameList (fun _ : Fin 1 => (⟨2, 4, by decide, by decide⟩ : (ZMod 7)ˣ))) := by decide
   refine ⟨hinj, fun l hl hB => ?_, fun _ => ⟨⟨3, 5, by decide, by decide⟩, Units.ext (by show (2 : ZMod 7) = 3 * 3; decide)⟩⟩
@@ -314,16 +407,28 @@ example : TameDistinct 1 7 (fun _ : Fin 1 => (⟨2, 4, by decide, by decide⟩ :
   · rw [← map_pow, ← Units.val_pow_eq_pow_val, hc]; simp
   · rw [← map_pow, ← Units.val_pow_eq_pow_val, hc]; simp
 
+/- English proof (translation)
+The claim follows from `not_tameDistinct_of_eq_inv _ 0 inv_one.symm`.
+-/
 example {r g : ℕ} [Fact g.Prime] : ¬ TameDistinct r g (fun _ : Fin 1 => 1) :=
   not_tameDistinct_of_eq_inv _ 0 inv_one.symm
 
+/- English proof (translation)
+Apply the tactic sequence `refine ⟨?_, ?_, ?_⟩ <;> decide +kernel`.
+-/
 example : minkM 1 = 2 ∧ minkM 2 = 24 ∧ minkM 4 = 5760 := by
   refine ⟨?_, ?_, ?_⟩ <;> decide +kernel
 
+/- English proof (translation)
+Introduce `h` and use `let ⟨x, _, hx, _, ⟨i⟩⟩ := Fm.exists_pt 0 classOf_of_cls _ Fm h x hx i`.
+-/
 example {eps : ℝ} (Fm : FamP eps) : ¬ cls (fun _ _ _ _ _ _ _ _ _ => False) Fm := fun h =>
   let ⟨x, _, hx, _, ⟨i⟩⟩ := Fm.exists_pt 0
   classOf_of_cls _ Fm h x hx i
 
+/- English proof (translation)
+Introduce and unpack `⟨e, he, h⟩`. Take `⟨_, _, _, _, h, _⟩` from `h e he le_rfl ⟨0, fun _ => 0, fun _ => 0, fun _ => 0⟩`. Conclude with `h`.
+-/
 example (C0 : ℝ) (cT : ℝ → ℝ → ℝ) : ¬ DesignChoices (fun _ => False) C0 cT := by
   rintro ⟨e, he, h⟩
   obtain ⟨_, _, _, _, h, _⟩ := h e he le_rfl ⟨0, fun _ => 0, fun _ => 0, fun _ => 0⟩

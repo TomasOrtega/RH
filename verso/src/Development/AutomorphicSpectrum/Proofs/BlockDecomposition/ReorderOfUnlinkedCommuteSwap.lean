@@ -7,6 +7,11 @@ open GlobalTheory.PRep GlobalTheory.SmGL GlobalTheory.LocGL
 
 namespace GlobalTheory.CompanionTheory.BZSegReorder
 
+/- English proof (translation)
+Establish `ex : ∃ d : ℕ, ∃ a b : Fin h, a < b ∧ R a b ∧ b.1 - a.1 = d`. Take `⟨a, b, hab, hR⟩` from `hex`. Conclude with `⟨_, a, b, hab, hR, rfl⟩`. Take `⟨d, ⟨a, b, hab, hR, hd⟩, hmin⟩ : ∃ d : ℕ, (∃ a b : Fin h, a < b ∧ R a b ∧ b.1 - a.1 = d) ∧ ∀ m < d, ¬ ∃ a b : Fin h, a < b ∧ R a b ∧ b.1 - a.1 = m` from `⟨Nat.find ex, Nat.find_spec ex, fun m hm => Nat.find_min ex hm⟩`. Use `⟨a, b, hab, hR, fun c hac hcb hc => hmin (b.1 - c.1) ?_ ⟨c, b, hcb, hc, rfl⟩⟩` and prove the remaining obligations.
+
+Establish `h1 : a.1 < c.1` using `hac`. Establish `h2 : c.1 < b.1` using `hcb`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem exists_minimal_pair {h : ℕ} (R : Fin h → Fin h → Prop) (hex : ∃ a b, a < b ∧ R a b) :
     ∃ a b, a < b ∧ R a b ∧ ∀ c, a < c → c < b → ¬ R c b := by
   classical
@@ -22,16 +27,27 @@ theorem exists_minimal_pair {h : ℕ} (R : Fin h → Fin h → Prop) (hex : ∃ 
   have h2 : c.1 < b.1 := hcb
   omega
 
+/- English proof (translation)
+Use linear arithmetic over natural numbers and integers.
+-/
 theorem arith_step {a b t h : ℕ} (ht : a + (t + 1) < b) (hb : b < h) :
     b - (t + 1) + 1 < h ∧ b - (t + 1) + 1 = b - t ∧ b - (t + 1) < b - t ∧ a < b - (t + 1) ∧ b - (t + 1) < b ∧ a + t < b := by
   omega
 
+/- English proof (translation)
+Use linear arithmetic over natural numbers and integers.
+-/
 theorem arith_end {a b h : ℕ} (hab : a < b) (hb : b < h) :
     a + (b - a - 1) < b ∧ a + 1 < h ∧ b - (b - a - 1) = a + 1 ∧ a < b - (b - a - 1) := by
   omega
 
 variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
 
+/- English proof (translation)
+Take `⟨i, j, hij⟩` from `hlk`. Establish `hne : i ≠ j` using `fun e => Segment.not_linked_self (Δ j) (e ▸ hij)`. Establish `ex : ∃ a b : Fin h, a < b ∧ (Δ a).Linked (Δ b)`. Break down `lt_or_gt_of_ne hne with hlt | hlt` into its components or cases. Conclude with `⟨i, j, hlt, hij⟩`.
+
+Conclude with `⟨j, i, hlt, hij.symm⟩`. Take `⟨a, b, hab, hlink, hmin⟩` from `exists_minimal_pair (fun a b => (Δ a).Linked (Δ b)) ex`. Conclude with `⟨a, b, hab, (Segment.linked_iff_precedes.1 hlink).resolve_left (hord a b hab), hmin⟩`.
+-/
 theorem exists_pair {h : ℕ} (Δ : Fin h → Segment k) (hord : ∀ i j, i < j → ¬ (Δ i).Precedes (Δ j))
     (hlk : ∃ i j, (Δ i).Linked (Δ j)) :
     ∃ a b : Fin h, a < b ∧ (Δ b).Precedes (Δ a) ∧ ∀ c, a < c → c < b → ¬ (Δ c).Linked (Δ b) := by
@@ -44,6 +60,9 @@ theorem exists_pair {h : ℕ} (Δ : Fin h → Segment k) (hord : ∀ i j, i < j 
   obtain ⟨a, b, hab, hlink, hmin⟩ := exists_minimal_pair (fun a b => (Δ a).Linked (Δ b)) ex
   exact ⟨a, b, hab, (Segment.linked_iff_precedes.1 hlink).resolve_left (hord a b hab), hmin⟩
 
+/- English proof (translation)
+Take `⟨a⟩` from `a`. Take `⟨b⟩` from `b`. Conclude with `⟨a.trans b⟩`.
+-/
 theorem ntrans {V W U : Type} [AddCommGroup V] [Module ℂ V] [AddCommGroup W] [Module ℂ W] [AddCommGroup U] [Module ℂ U]
     {G : Type} [Monoid G] {ρ : Representation ℂ G V} {σ : Representation ℂ G W} {τ : Representation ℂ G U}
     (a : Nonempty (ρ.Equiv σ)) (b : Nonempty (σ.Equiv τ)) : Nonempty (ρ.Equiv τ) := by
@@ -51,11 +70,17 @@ theorem ntrans {V W U : Type} [AddCommGroup V] [Module ℂ V] [AddCommGroup W] [
   obtain ⟨b⟩ := b
   exact ⟨a.trans b⟩
 
+/- English proof (translation)
+Substitute `e` using the available equality. Conclude with `⟨Representation.Equiv.refl _⟩`.
+-/
 theorem equiv_of_eq {h N : ℕ} {y y' : Fin h → IrrGL k} (e : y = y') (hy : ∑ a, (y a).1 = N)
     (hy' : ∑ a, (y' a).1 = N) : Nonempty ((prodIrr y hy).Equiv (prodIrr y' hy')) := by
   subst e
   exact ⟨Representation.Equiv.refl _⟩
 
+/- English proof (translation)
+The claim follows from `hswap h N y hy j hj M hd2 hd2' hd' (hcomm (D ⟨j, p⟩) (D ⟨j + 1, hj⟩) (y ⟨j, p⟩) (y ⟨j + 1, hj⟩) M hd2 hd2' hu (hL ⟨j, p⟩) (hL ⟨j + 1, hj⟩))`.
+-/
 theorem segment_swap_unlinked_adjacent (hcomm : GlobalTheory.BZSeg.LUnlinkedComm k) (hswap : GlobalTheory.BZSeg.SwapProd k) {h N : ℕ} (D : Fin h → Segment k)
     (y : Fin h → IrrGL k) (hy : ∑ a, (y a).1 = N) (hL : ∀ i, IsLSeg (D i) (y i).rep)
     (j : ℕ) (hj : j + 1 < h) (p : j < h) (hu : ¬ (D ⟨j, p⟩).Linked (D ⟨j + 1, hj⟩))
@@ -65,6 +90,9 @@ theorem segment_swap_unlinked_adjacent (hcomm : GlobalTheory.BZSeg.LUnlinkedComm
   hswap h N y hy j hj M hd2 hd2' hd'
     (hcomm (D ⟨j, p⟩) (D ⟨j + 1, hj⟩) (y ⟨j, p⟩) (y ⟨j + 1, hj⟩) M hd2 hd2' hu (hL ⟨j, p⟩) (hL ⟨j + 1, hj⟩))
 
+/- English proof (translation)
+The claim follows from `segment_swap_unlinked_adjacent hcomm hswap D y hy hL j hj p hu hd' _ rfl (by simp [Fin.sum_univ_two, add_comm])`.
+-/
 theorem step0 (hcomm : GlobalTheory.BZSeg.LUnlinkedComm k) (hswap : GlobalTheory.BZSeg.SwapProd k) {h N : ℕ} (D : Fin h → Segment k)
     (y : Fin h → IrrGL k) (hy : ∑ a, (y a).1 = N) (hL : ∀ i, IsLSeg (D i) (y i).rep)
     (j : ℕ) (hj : j + 1 < h) (p : j < h) (hu : ¬ (D ⟨j, p⟩).Linked (D ⟨j + 1, hj⟩))
@@ -75,6 +103,11 @@ theorem step0 (hcomm : GlobalTheory.BZSeg.LUnlinkedComm k) (hswap : GlobalTheory
 def Reach {h N : ℕ} (x : Fin h → IrrGL k) (hd : ∑ a, (x a).1 = N) (σ : Equiv.Perm (Fin h)) : Prop :=
   ∀ hd' : ∑ a, (x (σ a)).1 = N, Nonempty ((prodIrr x hd).Equiv (prodIrr (x ∘ σ) hd'))
 
+/- English proof (translation)
+Introduce `hd'`. Establish `h1 : ∑ a, (x (σ a)).1 = N` using `(Equiv.sum_comp σ (fun a => (x a).1)).trans hd`. Establish `h2 : ∑ a, (x (σ (Equiv.swap (⟨j, p⟩ : Fin h) ⟨j + 1, hj⟩ a))).1 = N` using `(Equiv.sum_comp (Equiv.swap (⟨j, p⟩ : Fin h) ⟨j + 1, hj⟩) (fun a => (x (σ a)).1)).trans h1`. Establish `F` using `step0 hcomm hswap (fun a => Δ (σ a)) (fun a => x (σ a)) h1 (fun i => hL (σ i)) j hj p hu h2`. Establish `G` using `equiv_of_eq (N := N) (y := fun a => x (σ (Equiv.swap (⟨j, p⟩ : Fin h) ⟨j + 1, hj⟩ a))) (y' := x ∘ ⇑(σ * Equiv.swap (⟨j, p⟩ : Fin h) ⟨j + 1, hj⟩)) rfl h2 hd'`.
+
+Establish `E` using `equiv_of_eq (N := N) (y := x ∘ σ) (y' := fun a => x (σ a)) rfl h1 h1`. Conclude with `ntrans (ntrans (ntrans (hσ h1) E) F) G`.
+-/
 theorem step (hcomm : GlobalTheory.BZSeg.LUnlinkedComm k) (hswap : GlobalTheory.BZSeg.SwapProd k) {h N : ℕ} {Δ : Fin h → Segment k}
     {x : Fin h → IrrGL k} (hd : ∑ a, (x a).1 = N) (hL : ∀ i, IsLSeg (Δ i) (x i).rep) (σ : Equiv.Perm (Fin h))
     (hσ : Reach x hd σ) (j : ℕ) (hj : j + 1 < h) (p : j < h)
@@ -90,6 +123,15 @@ theorem step (hcomm : GlobalTheory.BZSeg.LUnlinkedComm k) (hswap : GlobalTheory.
   have E := equiv_of_eq (N := N) (y := x ∘ σ) (y' := fun a => x (σ a)) rfl h1 h1
   exact ntrans (ntrans (ntrans (hσ h1) E) F) G
 
+/- English proof (translation)
+Proceed by induction on `t with`. Consider the case `zero => exact ⟨1, fun hd' => equiv_of_eq rfl hd hd', rfl, fun _ _ => rfl⟩`. Consider the case `succ t ih`. Take `⟨q1, q2, q3, q4, q5, q6⟩` from `arith_step ht hb`. Take `⟨σ, hE, hp, hfix⟩` from `ih q6`.
+
+Establish `e1 : (⟨b - (t + 1) + 1, q1⟩ : Fin h) = ⟨b - t, lt_of_le_of_lt (Nat.sub_le b t) hb⟩` using `Fin.ext q2`. Establish `s0 : σ ⟨b - (t + 1), Nat.lt_of_succ_lt q1⟩ = ⟨b - (t + 1), Nat.lt_of_succ_lt q1⟩` using `hfix _ q3`. Establish `s1 : σ ⟨b - (t + 1) + 1, q1⟩ = ⟨b, hb⟩` using `by rw [e1]; exact hp`. Use `⟨σ * Equiv.swap (⟨b - (t + 1), Nat.lt_of_succ_lt q1⟩ : Fin h) ⟨b - (t + 1) + 1, q1⟩, ?_, ?_, ?_⟩` and prove the remaining obligations. Use `step hcomm hswap hd hL σ hE _ q1 _ ?_` and prove the remaining obligations.
+
+Rewrite using `[s0, s1]`. Conclude with `hun _ _ q4 q5`. Rewrite using `[Equiv.Perm.mul_apply, Equiv.swap_apply_left, s1]`. Introduce `i hi`. Establish `n0 : i ≠ ⟨b - (t + 1), Nat.lt_of_succ_lt q1⟩` using `fun e => by rw [e] at hi; exact lt_irrefl _ hi`.
+
+Establish `n1 : i ≠ ⟨b - (t + 1) + 1, q1⟩` using `fun e => by`. Rewrite `hi` using `[e]`. Conclude with `absurd hi (Nat.not_lt.2 (Nat.le_succ _))`. Rewrite using `[Equiv.Perm.mul_apply, Equiv.swap_apply_of_ne_of_ne n0 n1]`. Conclude with `hfix i (lt_of_lt_of_le hi (Nat.sub_le_sub_left (Nat.le_succ t) b))`.
+-/
 theorem descend (hcomm : GlobalTheory.BZSeg.LUnlinkedComm k) (hswap : GlobalTheory.BZSeg.SwapProd k) {h N : ℕ} {Δ : Fin h → Segment k}
     {x : Fin h → IrrGL k} (hd : ∑ a, (x a).1 = N) (hL : ∀ i, IsLSeg (Δ i) (x i).rep) (a b : ℕ) (hb : b < h)
     (hun : ∀ (c : ℕ) (hc : c < h), a < c → c < b → ¬ (Δ ⟨c, hc⟩).Linked (Δ ⟨b, hb⟩))
@@ -117,6 +159,11 @@ theorem descend (hcomm : GlobalTheory.BZSeg.LUnlinkedComm k) (hswap : GlobalTheo
       rw [Equiv.Perm.mul_apply, Equiv.swap_apply_of_ne_of_ne n0 n1]
       exact hfix i (lt_of_lt_of_le hi (Nat.sub_le_sub_left (Nat.le_succ t) b))
 
+/- English proof (translation)
+Take `⟨a, b, hab, hpre, hmin⟩` from `exists_pair Δ hord hlk`. Take `⟨q1, q2, q3, q4⟩` from `arith_end (show a.1 < b.1 from hab) b.2`. Take `⟨σ, hE, hp, hfix⟩` from `descend hcomm hswap hd hL a.1 b.1 b.2 (fun c hc h1 h2 => hmin ⟨c, hc⟩ h1 h2) (b.1 - a.1 - 1) q1`. Establish `e1 : (⟨a.1 + 1, q2⟩ : Fin h) = ⟨b.1 - (b.1 - a.1 - 1), lt_of_le_of_lt (Nat.sub_le _ _) b.2⟩` using `Fin.ext q3.symm`. Establish `s0 : σ ⟨a.1, Nat.lt_of_succ_lt q2⟩ = a` using `hfix a q4`.
+
+Establish `s1 : σ ⟨a.1 + 1, q2⟩ = b` using `by rw [e1]; exact hp`. Use `⟨σ, a.1, q2, Nat.lt_of_succ_lt q2, ?_, hE⟩` and prove the remaining obligations. Rewrite using `[s0, s1]`. Conclude with `hpre`.
+-/
 theorem segment_reorder_linked_precedes (hcomm : GlobalTheory.BZSeg.LUnlinkedComm k) (hswap : GlobalTheory.BZSeg.SwapProd k) {h N : ℕ} {Δ : Fin h → Segment k}
     {x : Fin h → IrrGL k} (hd : ∑ a, (x a).1 = N) (hL : ∀ i, IsLSeg (Δ i) (x i).rep)
     (hord : ∀ i j, i < j → ¬ (Δ i).Precedes (Δ j)) (hlk : ∃ i j, (Δ i).Linked (Δ j)) :
@@ -133,6 +180,9 @@ theorem segment_reorder_linked_precedes (hcomm : GlobalTheory.BZSeg.LUnlinkedCom
   rw [s0, s1]
   exact hpre
 
+/- English proof (translation)
+Introduce `_ _ _ _ _ hcomm hswap _ _ _ _ hd hL hord hlk` and use `(segment_reorder_linked_precedes hcomm hswap hd hL hord hlk).elim fun σ H => H.elim fun j H => H.elim fun hj H => H.elim fun _ H => ⟨σ, j, hj, H.1, H.2⟩`.
+-/
 theorem reorder : ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k],
     GlobalTheory.BZSeg.LUnlinkedComm k → GlobalTheory.BZSeg.SwapProd k → GlobalTheory.BZSeg.Reorder k :=
   fun _ _ _ _ _ hcomm hswap _ _ _ _ hd hL hord hlk =>

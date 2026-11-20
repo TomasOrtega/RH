@@ -21,6 +21,9 @@ noncomputable def polyPres (k : Type) [CommRing k] (N : ℕ) :
     rw [Matrix.det_isEmpty, map_one]
     exact isUnit_one
 
+/- English proof (translation)
+The claim follows from `(polyPres k N).isStandardSmoothOfRelativeDimension (by simp [Algebra.Presentation.dimension])`.
+-/
 theorem poly_ssmooth (k : Type) [CommRing k] (N : ℕ) :
     Algebra.IsStandardSmoothOfRelativeDimension N k (MvPolynomial (Fin N) k) :=
   (polyPres k N).isStandardSmoothOfRelativeDimension (by simp [Algebra.Presentation.dimension])
@@ -28,6 +31,9 @@ theorem poly_ssmooth (k : Type) [CommRing k] (N : ℕ) :
 open CategoryTheory AlgebraicGeometry LateralTheory.EtaleTrace.LPdCut
 attribute [local instance] MvPolynomial.gradedAlgebra
 
+/- English proof (translation)
+Rewrite using `[HasRingHomProperty.Spec_iff (P := @SmoothOfRelativeDimension N)]`. Use `RingHom.locally_of RingHom.isStandardSmoothOfRelativeDimension_respectsIso _ ?_` and prove the remaining obligations. Conclude with `(RingHom.isStandardSmoothOfRelativeDimension_algebraMap (n := N) (R := k) (S := MvPolynomial (Fin N) k)).mpr (poly_ssmooth k N)`.
+-/
 theorem spec_C_smooth (k : Type) [Field k] (N : ℕ) :
     SmoothOfRelativeDimension N (Spec.map (CommRingCat.ofHom (MvPolynomial.C : k →+* MvPolynomial (Fin N) k))) := by
   rw [HasRingHomProperty.Spec_iff (P := @SmoothOfRelativeDimension N)]
@@ -35,6 +41,13 @@ theorem spec_C_smooth (k : Type) [Field k] (N : ℕ) :
   exact (RingHom.isStandardSmoothOfRelativeDimension_algebraMap (n := N) (R := k) (S := MvPolynomial (Fin N) k)).mpr
     (poly_ssmooth k N)
 
+/- English proof (translation)
+Apply `Proj.iSup_basicOpen_eq_top'` to reduce the goal to its premises. Introduce `i`. Conclude with `⟨1, MvPolynomial.isHomogeneous_X k i⟩`. Rewrite using `[eq_top_iff]`. Introduce `p _hp`.
+
+Use `clear _hp`. Proceed by induction on `p using MvPolynomial.induction_on with`. Consider the case `C a`. Establish `ha : MvPolynomial.C a ∈ MvPolynomial.homogeneousSubmodule (Fin (N + 1)) k 0` using `MvPolynomial.isHomogeneous_C _ a`. Establish `: MvPolynomial.C a = algebraMap (MvPolynomial.homogeneousSubmodule (Fin (N + 1)) k 0) (MvPolynomial (Fin (N + 1)) k) ⟨_, ha⟩` using `rfl`.
+
+Rewrite using `[this]`. Conclude with `Subalgebra.algebraMap_mem _ _`. Consider the case `add p q hp hq => exact Subalgebra.add_mem _ hp hq`. Consider the case `mul_X p i hp => exact Subalgebra.mul_mem _ hp (Algebra.subset_adjoin ⟨i, rfl⟩)`.
+-/
 theorem Dp_cover (k : Type) [Field k] (N : ℕ) : ⨆ i, Dp k N i = ⊤ := by
   apply Proj.iSup_basicOpen_eq_top'
   · intro i; exact ⟨1, MvPolynomial.isHomogeneous_X k i⟩
@@ -50,6 +63,15 @@ theorem Dp_cover (k : Type) [Field k] (N : ℕ) : ⨆ i, Dp k N i = ⊤ := by
     | add p q hp hq => exact Subalgebra.add_mem _ hp hq
     | mul_X p i hp => exact Subalgebra.mul_mem _ hp (Algebra.subset_adjoin ⟨i, rfl⟩)
 
+/- English proof (translation)
+Introduce `k _ N`. Use `choose j hj hc hr using fun i => hC k N i`. Set `𝒰 : (PN k N).OpenCover` to `Scheme.Cover.mkOfCovers (Fin (N + 1)) _ j (fun x => by`. Establish `hx : x ∈ (⊤ : (PN k N).Opens)` using `trivial`. Rewrite `hx` using `[← Dp_cover k N]`.
+
+Take `⟨i, hi⟩` from `TopologicalSpace.Opens.mem_iSup.mp hx`. Establish `: x ∈ Set.range (j i)` using `by rw [hr i]; exact hi`. Take `⟨y, hy⟩` from `this`. Conclude with `⟨i, y, hy⟩) hj`. Establish `hA : ∀ i, IsAffine (𝒰.X i)` using `fun i => by`.
+
+Express the relevant statement in the definitionally equal form `IsAffine (Spec (CommRingCat.of (MvPolynomial (Fin N) k)))`. Use `infer_instance`. Use `HasRingHomProperty.of_source_openCover (P := @SmoothOfRelativeDimension.{0} N) 𝒰 (fun i => ?_)` and prove the remaining obligations. Establish `h : SmoothOfRelativeDimension N (𝒰.f i ≫ PNto k N)`. Express the relevant statement in the definitionally equal form `SmoothOfRelativeDimension N (j i ≫ PNto k N)`.
+
+Rewrite using `[hc i]`. Conclude with `spec_C_smooth k N`. Conclude with `(HasRingHomProperty.iff_of_isAffine (P := @SmoothOfRelativeDimension.{0} N)).mp h`.
+-/
 theorem LSmooth_of (hC : LChart) : LSmooth := by
   intro k _ N
   choose j hj hc hr using fun i => hC k N i

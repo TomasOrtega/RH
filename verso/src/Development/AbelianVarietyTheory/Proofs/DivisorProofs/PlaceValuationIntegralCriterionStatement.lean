@@ -10,6 +10,9 @@ open CategoryTheory Limits AlgebraicGeometry IsLocalRing MvPolynomial
 open ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Geo.Tor Formalism.BasicNotions Formalism.MainNotions Formalism.BasicNotions.DV Formalism.DegreeFormula Formalism.MainNotions.LatticeTransfer Formalism.MainNotions.WeightThresholdDefs
 open GlobalTheory GlobalTheory.QCoh GlobalTheory.CechPic GlobalTheory.Vert GlobalTheory.ShFam GlobalTheory.ShFam.Pad GlobalTheory.Mean4O GlobalTheory.MixedLocalChains
 
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.OmTerm.arMix_dRt_om | exact GlobalTheory.OmTerm.arMix_dRt_om | (intros; apply GlobalTheory.OmTerm.arMix_dRt_om <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.place_valuation_integral_criterion : GlobalTheory.Published.RegularAlteration → GlobalTheory.CovTop.Hypotheses2 → GlobalTheory.CovHt.HypothesesH → ∀ (D : D7) (O : Setup D), O.Core → ∀ (p : ℕ) [Fact p.Prime], p ≠ 2 →
     UnramE D p → p ∉ O.Y.lev → ∀ (W : Formalism.L2.Geo.PlL D p → ValuationSubring ℂ) (hW : ∀ la, (p : ℂ) ∈ (W la).nonunits)
     (jc : Formalism.L2.Geo.PlL D p → (KW p →+* ℂ)), (∀ la, Pin (W la) (jc la)) →

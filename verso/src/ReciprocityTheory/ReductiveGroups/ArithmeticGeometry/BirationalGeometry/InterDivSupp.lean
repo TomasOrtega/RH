@@ -11,6 +11,15 @@ section Dim
 
 variable {σ : Type*} [Finite σ]
 
+/- English proof (translation)
+Establish `hWp : W.IsPrime` using `hW.1.1`. Establish `hPW : P ≤ W` using `le_sup_left.trans hW.1.2`. Establish `hsW : s ∈ W` using `hW.1.2 (Ideal.mem_sup_right (Ideal.mem_span_singleton_self s))`. Establish `hq : W.map (Ideal.Quotient.mk P) ∈ (Ideal.span {Ideal.Quotient.mk P s}).minimalPrimes`. Establish `e : Ideal.span {Ideal.Quotient.mk P s} = (Ideal.span {s}).map (Ideal.Quotient.mk P)`.
+
+Rewrite using `[Ideal.map_span, Set.image_singleton]`. Rewrite using `[e, Ideal.minimalPrimes_map_of_surjective Ideal.Quotient.mk_surjective, Ideal.mk_ker, sup_comm]`. Conclude with `⟨W, hW, rfl⟩`. Establish `: (W.map (Ideal.Quotient.mk P)).IsPrime` using `hq.1.1`. Establish `: (Ideal.span {Ideal.Quotient.mk P s}).IsPrincipal` using `⟨⟨_, rfl⟩⟩`.
+
+Establish `hh : (W.map (Ideal.Quotient.mk P)).height = 1`. Use `le_antisymm (Ideal.height_le_one_of_isPrincipal_of_mem_minimalPrimes _ _ hq) ?_` and prove the remaining obligations. Rewrite using `[Order.one_le_iff_ne_zero, Ne, Ideal.height_eq_zero_iff_eq_bot]`. Introduce `h0`. Establish `: Ideal.Quotient.mk P s ∈ W.map (Ideal.Quotient.mk P)` using `Ideal.mem_map_of_mem _ hsW`.
+
+Rewrite `this` using `[h0, Ideal.mem_bot, Ideal.Quotient.eq_zero_iff_mem]`. Conclude with `hs this`. Establish `key` using `mvPolynomialInt_dimFormula P W hPW`. Rewrite `key` using `[hh]`. Conclude with `key` after adjusting the coercions.
+-/
 theorem dim_quot_minimal_add_one (P W : Ideal (MvPolynomial σ ℤ)) [P.IsPrime]
     (s : MvPolynomial σ ℤ) (hs : s ∉ P) (hW : W ∈ (P ⊔ Ideal.span {s}).minimalPrimes) :
     ringKrullDim (MvPolynomial σ ℤ ⧸ W) + 1 = ringKrullDim (MvPolynomial σ ℤ ⧸ P) := by
@@ -37,6 +46,9 @@ theorem dim_quot_minimal_add_one (P W : Ideal (MvPolynomial σ ℤ)) [P.IsPrime]
   rw [hh] at key
   exact_mod_cast key
 
+/- English proof (translation)
+Apply the tactic sequence `first | exact Bl.general_b_fact_ter_form.goal1 .. | (apply Bl.general_b_fact_ter_form.goal1 <;> assumption) | (intros; apply Bl.general_b_fact_ter_form.goal1 <;> assumption)`.
+-/
 theorem withBot_eq_of_add_one {x : WithBot ℕ∞} {m : ℕ} (h : x + 1 = ((m + 1 : ℕ) : WithBot ℕ∞)) :
     x = (m : WithBot ℕ∞) := by
   first | exact Bl.general_b_fact_ter_form.goal1 .. | (apply Bl.general_b_fact_ter_form.goal1 <;> assumption) | (intros; apply Bl.general_b_fact_ter_form.goal1 <;> assumption)
@@ -49,6 +61,9 @@ variable {K : Type*} [Fintype K] {ι : K → Type*} [∀ k, Fintype (ι k)]
 
 def blockWeight [DecidableEq K] (k : K) : (Σ k, ι k) → ℕ := fun p => if p.1 = k then 1 else 0
 
+/- English proof (translation)
+Rewrite using `[Finsupp.weight_apply, Finsupp.sum_fintype _ _ (by intro; simp), Fintype.sum_sigma, Finset.sum_eq_single k]`. Simplify using `[blockWeight]`. Introduce `b _ hb`. Simplify using `[blockWeight, hb]`. Simplify using the standard rewrite rules.
+-/
 theorem weight_blockWeight [DecidableEq K] (k : K) (m : (Σ k, ι k) →₀ ℕ) :
     Finsupp.weight (blockWeight (ι := ι) k) m = ∑ i, m ⟨k, i⟩ := by
   rw [Finsupp.weight_apply, Finsupp.sum_fintype _ _ (by intro; simp), Fintype.sum_sigma,
@@ -58,6 +73,9 @@ theorem weight_blockWeight [DecidableEq K] (k : K) (m : (Σ k, ι k) →₀ ℕ)
     simp [blockWeight, hb]
   · simp
 
+/- English proof (translation)
+Introduce `d hd`. Rewrite using `[weight_blockWeight]`. Conclude with `h d (mem_support_iff.mpr hd) k`.
+-/
 theorem isWeightedHomogeneous_of_isMultiHomog [DecidableEq K] {s : MRing ι} {a : K → ℕ}
     (h : IsMultiHomog s a) (k : K) : IsWeightedHomogeneous (blockWeight (ι := ι) k) s (a k) := by
   intro d hd
@@ -66,6 +84,9 @@ theorem isWeightedHomogeneous_of_isMultiHomog [DecidableEq K] {s : MRing ι} {a 
 
 attribute [local instance] MvPolynomial.weightedGradedAlgebra
 
+/- English proof (translation)
+Take `⟨S, hS, rfl⟩` from `h`. Use `Ideal.homogeneous_span _ S fun x hx => ?_` and prove the remaining obligations. Take `⟨a, ha⟩` from `hS x hx`. Conclude with `⟨a k, (mem_weightedHomogeneousSubmodule _ _ _ _).mpr (isWeightedHomogeneous_of_isMultiHomog ha k)⟩`.
+-/
 theorem isHomogeneous_of_isMultiHomogIdeal [DecidableEq K] {P : Ideal (MRing ι)}
     (h : IsMultiHomogIdeal P) (k : K) :
     P.IsHomogeneous (weightedHomogeneousSubmodule ℤ (blockWeight (ι := ι) k)) := by
@@ -75,6 +96,11 @@ theorem isHomogeneous_of_isMultiHomogIdeal [DecidableEq K] {P : Ideal (MRing ι)
   exact ⟨a k, (mem_weightedHomogeneousSubmodule _ _ _ _).mpr
     (isWeightedHomogeneous_of_isMultiHomog ha k)⟩
 
+/- English proof (translation)
+Establish `hWp : W.IsPrime` using `hW.1.1`. Establish `h1 : (W.homogeneousCore 𝒜).toIdeal.IsPrime` using `hWp.homogeneousCore`. Establish `h2 : I ≤ (W.homogeneousCore 𝒜).toIdeal` using `hI.toIdeal_homogeneousCore_eq_self.symm.trans_le (Ideal.homogeneousCore_mono _ hW.1.2)`. Establish `h3` using `hW.2 ⟨h1, h2⟩ (Ideal.toIdeal_homogeneousCore_le _ _)`. Establish `e : (W.homogeneousCore 𝒜).toIdeal = W` using `le_antisymm (Ideal.toIdeal_homogeneousCore_le _ _) h3`.
+
+Conclude with `e ▸ (W.homogeneousCore 𝒜).isHomogeneous`.
+-/
 theorem isHomogeneous_of_mem_minimalPrimes {A : Type*} [CommRing A] (𝒜 : ℕ → Submodule ℤ A)
     [GradedRing 𝒜] {I W : Ideal A} (hI : I.IsHomogeneous 𝒜) (hW : W ∈ I.minimalPrimes) :
     W.IsHomogeneous 𝒜 := by
@@ -87,6 +113,11 @@ theorem isHomogeneous_of_mem_minimalPrimes {A : Type*} [CommRing A] (𝒜 : ℕ 
     le_antisymm (Ideal.toIdeal_homogeneousCore_le _ _) h3
   exact e ▸ (W.homogeneousCore 𝒜).isHomogeneous
 
+/- English proof (translation)
+Proceed by induction on `T using Finset.induction_on with`. Consider the case `empty => exact ⟨f, hf, fun m => by simp⟩`. Consider the case `@insert k T hk ih`. Take `⟨g, hgW, hg⟩` from `ih`. Use `⟨weightedHomogeneousComponent (blockWeight k) (a k) g, weightedHomogeneousComponent_mem_of_mem ℤ (blockWeight k) (hW k) hgW (a k), fun m => ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[coeff_weightedHomogeneousComponent, weight_blockWeight, hg]`. Apply the tactic sequence `by_cases h1 : ∑ i, m ⟨k, i⟩ = a k <;> by_cases h2 : ∀ k' ∈ T, ∑ i, m ⟨k', i⟩ = a k' <;>`. Simplify using `[h1, h2]`.
+-/
 theorem exists_blockComponent [DecidableEq K] {W : Ideal (MRing ι)}
     (hW : ∀ k, W.IsHomogeneous (weightedHomogeneousSubmodule ℤ (blockWeight (ι := ι) k)))
     (a : K → ℕ) (T : Finset K) {f : MRing ι} (hf : f ∈ W) :
@@ -101,6 +132,17 @@ theorem exists_blockComponent [DecidableEq K] {W : Ideal (MRing ι)}
     by_cases h1 : ∑ i, m ⟨k, i⟩ = a k <;> by_cases h2 : ∀ k' ∈ T, ∑ i, m ⟨k', i⟩ = a k' <;>
       simp [h1, h2]
 
+/- English proof (translation)
+Use `⟨{f | f ∈ W ∧ ∃ a, IsMultiHomog f a}, fun f hf => hf.2, le_antisymm (fun f hf => ?_) (Ideal.span_le.mpr fun f hf => hf.1)⟩` and prove the remaining obligations. Use `choose g hgW hg using fun a : K → ℕ => exists_blockComponent hW a Finset.univ hf`. Establish `hsum : f = ∑ a ∈ f.support.image (fun m k => ∑ i, m ⟨k, i⟩), g a`. Use extensionality with `m`. Rewrite using `[coeff_sum]`.
+
+Establish `e : ∀ a : K → ℕ, coeff m (g a) = if (fun k => ∑ i, m ⟨k, i⟩) = a then coeff m f else 0`. Introduce `a`. Rewrite using `[hg a]`. Distinguish the cases in `h : (fun k => ∑ i, m ⟨k, i⟩) = a`. Substitute `h` using the available equality.
+
+Simplify using the standard rewrite rules. Rewrite using `[if_neg h, if_neg]`. Introduce `h'`. Conclude with `h (funext fun k => h' k (Finset.mem_univ k))`. Repeatedly rewrite using `[e]`.
+
+Rewrite using `[Finset.sum_ite_eq]`. Use `split_ifs with hm`. Both sides reduce to the same expression. Assume the negation of the conclusion as `hne`. Conclude with `hm (Finset.mem_image_of_mem _ (mem_support_iff.mpr hne))`.
+
+Rewrite using `[hsum]`. Use `Ideal.sum_mem _ fun a _ => Ideal.subset_span ⟨hgW a, a, fun m hm k => ?_⟩` and prove the remaining obligations. Rewrite `hm` using `[mem_support_iff, hg a]`. Assume the negation of the conclusion as `hk`. Conclude with `hm (if_neg fun h => hk (h k (Finset.mem_univ k)))`.
+-/
 theorem isMultiHomogIdeal_of_isHomogeneous [DecidableEq K] {W : Ideal (MRing ι)}
     (hW : ∀ k, W.IsHomogeneous (weightedHomogeneousSubmodule ℤ (blockWeight (ι := ι) k))) :
     IsMultiHomogIdeal W := by
@@ -132,6 +174,9 @@ theorem isMultiHomogIdeal_of_isHomogeneous [DecidableEq K] {W : Ideal (MRing ι)
   by_contra hk
   exact hm (if_neg fun h => hk (h k (Finset.mem_univ k)))
 
+/- English proof (translation)
+Use `isMultiHomogIdeal_of_isHomogeneous fun k => isHomogeneous_of_mem_minimalPrimes _ ((isHomogeneous_of_isMultiHomogIdeal hP k).sup (Ideal.homogeneous_span _ _ ?_)) hW` and prove the remaining obligations. Introduce `x hx`. Rewrite `hx` using `[Set.mem_singleton_iff]`. Substitute `hx` using the available equality. Conclude with `⟨a k, (mem_weightedHomogeneousSubmodule _ _ _ _).mpr (isWeightedHomogeneous_of_isMultiHomog hs k)⟩`.
+-/
 theorem isMultiHomogIdeal_of_mem_minimalPrimes {P W : Ideal (MRing ι)} {s : MRing ι} {a : K → ℕ}
     (hP : IsMultiHomogIdeal P) (hs : IsMultiHomog s a)
     (hW : W ∈ (P ⊔ Ideal.span {s}).minimalPrimes) : IsMultiHomogIdeal W := by
@@ -144,6 +189,11 @@ theorem isMultiHomogIdeal_of_mem_minimalPrimes {P W : Ideal (MRing ι)} {s : MRi
   exact ⟨a k, (mem_weightedHomogeneousSubmodule _ _ _ _).mpr
     (isWeightedHomogeneous_of_isMultiHomog hs k)⟩
 
+/- English proof (translation)
+Use `hW` as an intermediate fact. Establish `hJ : (W.comap (C : ℤ →+* MRing ι)).IsPrime` using `inferInstance`. Establish `hg : Submodule.IsPrincipal.generator (W.comap (C : ℤ →+* MRing ι)) ≠ 0` using `fun h0 => hv ((Submodule.IsPrincipal.eq_bot_iff_generator_eq_zero _).mpr h0)`. Unfold `charOf`. Rewrite using `[← Int.prime_iff_natAbs_prime, ← Ideal.span_singleton_prime hg, Ideal.span_singleton_generator]`.
+
+Conclude with `hJ`.
+-/
 theorem charOf_prime {W : Ideal (MRing ι)} (hW : W.IsPrime) (hv : ¬ IsHorizontal W) :
     (charOf W).Prime := by
   have := hW
@@ -157,6 +207,13 @@ theorem charOf_prime {W : Ideal (MRing ι)} (hW : W.IsPrime) (hv : ¬ IsHorizont
 
 end Blocks
 
+/- English proof (translation)
+Introduce `K _ ι _ P n A s W hP hs hW`. Take `⟨hK, ⟨hPp, hPh, -⟩, -, hPdim⟩` from `hP`. Take `⟨a, -, hsa, hsP⟩` from `hs`. Take `⟨hWmin, hWrel⟩` from `hW`. Establish `hWp : W.IsPrime` using `hWmin.1.1`.
+
+Establish `hWmh : IsMultiHomogIdeal W` using `isMultiHomogIdeal_of_mem_minimalPrimes hPh hsa hWmin`. Use `hPp` as an intermediate fact. Establish `h1` using `dim_quot_minimal_add_one P W s hsP hWmin`. Rewrite `h1` using `[hPdim]`. Establish `hdim : ringKrullDim (MRing ι ⧸ W) = ((n + Fintype.card K : ℕ) : WithBot ℕ∞)` using `withBot_eq_of_add_one (by rw [h1, show n + 1 + Fintype.card K = n + Fintype.card K + 1 by omega])`.
+
+Conclude with `⟨fun hh => ⟨hK, ⟨hWp, hWmh, hWrel⟩, hh, hdim⟩, fun hv => ⟨⟨hWp, hWmh, hWrel⟩, charOf_prime hWp hv, hdim⟩⟩`.
+-/
 theorem divSuppArith : DivSuppArithStatement := by
   intro K _ ι _ P n A s W hP hs hW
   obtain ⟨hK, ⟨hPp, hPh, -⟩, -, hPdim⟩ := hP

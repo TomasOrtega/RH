@@ -9,6 +9,11 @@ namespace GlobalTheory
 
 open Classical in
 
+/- English proof (translation)
+Unfold `Mult at hT`. Proceed by induction on `hT using Submodule.span_induction with`. Consider the case `mem T hT => exact hT.equiv τ g hg v w hw`. Consider the case `zero => rfl`. Consider the case `add T T' _ _ h h'`.
+
+Use function extensionality and compare the values at `z`. Simplify using `only [MultilinearMap.add_apply, Pi.add_apply, h, h', rTr]`. Consider the case `smul r T _ h`. Use function extensionality and compare the values at `z`. Simplify using `only [MultilinearMap.smul_apply, Pi.smul_apply, h, rTr]`.
+-/
 theorem mult_equiv_update {D : D7} {V : HSp D} {S : D.what₂.Tau → SPar} (θ : InfFam D) (M : DSModel V S)
     (J : Set (GA D V)) (χ : GA D V → ℂ) (T : MMap M) (hT : T ∈ Mult θ M J χ) (τ : D.what₂.Tau)
     (g : Matrix (Fin V.rank) (Fin V.rank) ℂ) (hg : g ∈ Formalism.QuantumDeterminants.UH (gramAt D V τ)) (v : M.Vec) (w : M.sm τ)
@@ -25,6 +30,21 @@ theorem mult_equiv_update {D : D7} {V : HSp D} {S : D.what₂.Tau → SPar} (θ 
     funext z
     simp only [MultilinearMap.smul_apply, Pi.smul_apply, h, rTr]
 
+/- English proof (translation)
+Introduce `D θ V S M π J χ hp hsm hinj hπ L hL x`. Rewrite `hL` using `[mem_multT]`. Establish `hv : ∀ v, L (PiTensorProduct.tprod ℂ v) = PiTensorProduct.lift.symm L v` using `fun v => rfl`. Proceed by induction on `x using PiTensorProduct.induction_on with`. Consider the case `smul_tprod r v`.
+
+Take `⟨a, b, -⟩` from `mult_value_left_cont_level θ M J χ _ hL v`. Use `⟨?_, fun γ hγ h => ?_, fun τ u => ?_⟩` and prove the remaining obligations. Rewrite using `[map_smul, hv]`. Conclude with `b.const_smul r`. Rewrite using `[map_smul, hv]`.
+
+Simplify using `only [Pi.smul_apply, a γ hγ h]`. Set `w : M.sm τ` to `⟨M.rep τ (unfr M τ u) (v τ), Submodule.eq_top_iff'.1 (hsm τ) _⟩`. Establish `e : π τ u (PiTensorProduct.tprod ℂ v) = PiTensorProduct.tprod ℂ (Function.update v τ w)`. Apply `hinj` to reduce the goal to its premises. Rewrite using `[hπ]`.
+
+Unfold `inclT actT`. Simplify using `only [PiTensorProduct.map_tprod]`. Use `congr 1`. Use function extensionality and compare the values at `ρ`. Distinguish the cases in `hρ : ρ = τ`.
+
+Substitute `hρ` using the available equality. Simplify using `[w]`. Simplify using `[Function.update_of_ne hρ]`. Rewrite using `[map_smul, map_smul, map_smul, e, hv, hv, mult_equiv_update θ M J χ _ hL τ _ (hp.unfr_mem τ u) v w rfl]`. Both sides reduce to the same expression.
+
+Consider the case `add x y hx hy`. Take `⟨a, b, c⟩` from `hx`. Take `⟨a', b', c'⟩` from `hy`. Use `⟨?_, fun γ hγ h => ?_, fun τ u => ?_⟩` and prove the remaining obligations. Rewrite using `[map_add]`.
+
+Conclude with `a.add a'`. Simplify using `only [map_add, Pi.add_apply, b γ hγ h, b' γ hγ h]`. Rewrite using `[map_add, map_add, map_add, c, c']`. Both sides reduce to the same expression.
+-/
 theorem multT_cont_left_equiv :
     ∀ (D : D7) (θ : InfFam D) (V : HSp D) (S : D.what₂.Tau → SPar) (M : DSModel V S) (π : D.what₂.Tau → Matrix.unitaryGroup (Fin V.rank) ℂ → Module.End ℂ (SmT M)) (J : Set (GA D V)) (χ : GA D V → ℂ), AllPlus M → (∀ τ, M.sm τ = ⊤) → Function.Injective (inclT M) → IsTensAct M π → ∀ L ∈ MultT θ M J χ, ∀ x, Continuous (L x) ∧ (∀ γ ∈ GQ V, ∀ h, L x (γ * h) = L x h) ∧ ∀ τ u, L (π τ u x) = rTr V (atTau θ V τ (unfr M τ u)) (L x) := by
   classical

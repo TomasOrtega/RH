@@ -24,6 +24,13 @@ namespace GlobalTheory.PeriodPoint
 
 open CechPic
 
+/- English proof (translation)
+Set `φ : M ≃ₗ[ℤ] Λ` to `LinearEquiv.ofBijective (P.toIntLinearMap.codRestrict Λ fun a => (hΛ _).2 ⟨a, rfl⟩) ⟨fun a b h => hP (congrArg Subtype.val h), fun z => by`. Take `⟨a, ha⟩` from `(hΛ z).1 z.2`. Conclude with `⟨a, Subtype.ext ha⟩⟩`. Use `⟨LinearMap.BilinForm.congr φ B, ?_, fun a b ha hb => ?_⟩` and prove the remaining obligations. Establish `: ⇑(LinearMap.BilinForm.congr φ B) = φ.symm.dualMap ∘ B ∘ φ.symm`.
+
+Use function extensionality and compare the values at `x`. Use extensionality with `y`. Simplify using the standard rewrite rules. Rewrite using `[this]`. Conclude with `φ.symm.dualMap.bijective.comp (hB.comp φ.symm.bijective)`.
+
+Establish `e : ∀ a (ha : P a ∈ Λ), φ.symm ⟨P a, ha⟩ = a` using `fun a _ => φ.symm_apply_apply a`. Rewrite using `[LinearMap.BilinForm.congr_apply, e, e]`.
+-/
 theorem exists_form {M V : Type} [AddCommGroup M] [AddCommGroup V] (P : M →+ V) (hP : Function.Injective P)
     (B : LinearMap.BilinForm ℤ M) (hB : Function.Bijective B) (Λ : Submodule ℤ V) (hΛ : ∀ z, z ∈ Λ ↔ z ∈ P.range) :
     ∃ Ef : LinearMap.BilinForm ℤ Λ, Function.Bijective Ef ∧
@@ -41,6 +48,9 @@ theorem exists_form {M V : Type} [AddCommGroup M] [AddCommGroup V] (P : M →+ V
   · have e : ∀ a (ha : P a ∈ Λ), φ.symm ⟨P a, ha⟩ = a := fun a _ => φ.symm_apply_apply a
     rw [LinearMap.BilinForm.congr_apply, e, e]
 
+/- English proof (translation)
+Substitute `hg` using the available equality. Establish `hval` using `@valAt'_rules`. Establish `hvalaff` using `@existsUnique_point_of_ringHom`. Conclude with `WeilExp.weilIs_exp_riemannForm laws.weil hval (@eq_of_valAt'_eq hval hvalaff) @isReduced_of_smooth_complex (ThetaGroupFrame.thetaGrp_in_frame hval (@holFamily_lift hval)) Q u Hm χ Ef ⟨h.1, h.2.2.1, hE, h.2.2.2⟩ k a b c hk hc`.
+-/
 theorem weilIs_of_isAH (laws : Out.Laws) (Q : Out.PolAV (Sp ℂ)) {g : ℕ} (hg : Q.g = g) (u : HolUnif Q.A Q.L g)
     {Hm : Matrix (Fin g) (Fin g) ℂ} {χ : u.Λ → ℂ} (h : u.IsAH Hm χ) (Ef : LinearMap.BilinForm ℤ u.Λ)
     (hE : ∀ a b : u.Λ, (Ef a b : ℝ) = (hermForm Hm a b).im) (k : ℕ) (a b : u.Λ) (c : ℂˣ) (hk : 0 < k)
@@ -52,6 +62,27 @@ theorem weilIs_of_isAH (laws : Out.Laws) (Q : Out.PolAV (Sp ℂ)) {g : ℕ} (hg 
   exact WeilExp.weilIs_exp_riemannForm laws.weil hval (@eq_of_valAt'_eq hval hvalaff) @isReduced_of_smooth_complex
     (ThetaGroupFrame.thetaGrp_in_frame hval (@holFamily_lift hval)) Q u Hm χ Ef ⟨h.1, h.2.2.1, hE, h.2.2.2⟩ k a b c hk hc
 
+/- English proof (translation)
+Use `set l := cls Q.L Q.isLB with hl`. Use `set p := cls PP.L PP.isLB with hp`. Establish `hlam : ∀ x y : Q.A ⟶ Q.A, lam p x y = lam l x y` using `fun x y => by`. Establish `h₁` using `(cls_eq_iff (LB.isLB_linComb PP.isLB _ _) (LB.isLB_linComb Q.isLB _ _)).2 h`. Establish `h₂` using `congrArg (pull (lift x y).left) ((cls_cube_two PP.isLB _ _ _).symm.trans (h₁.trans (cls_cube_two Q.isLB _ _ _)))`.
+
+Simplify `h₂` using `only [pull_lam, lift_fst, lift_snd]`. Establish `hz : ∀ (M : LB Q.A.left) (hM : M.IsLB), Out.Rigidified Q.A M → pull (1 : Q.A ⟶ Q.A).left (cls M hM) = 0`. Introduce `M hM hr`. Establish `h₀` using `(cls_eq_zero_iff (pull_isLB hM (eSec Q.A))).2 hr`. Rewrite `h₀` using `[cls_pull hM]`.
+
+Rewrite using `[Hom.one_def, Over.comp_left, pull_comp]`. Conclude with `(congrArg _ h₀).trans (map_zero _)`. Establish `hl0 : pull (1 : Q.A ⟶ Q.A).left l = 0` using `hz Q.L Q.isLB Q.rigid`. Establish `hp0 : pull (1 : Q.A ⟶ Q.A).left p = 0` using `hz PP.L PP.isLB ⟨PP.rig, PP.rigGen⟩`. Establish `hl2 : pull ((𝟙 Q.A : Q.A ⟶ Q.A) * 𝟙 Q.A).left l = 4 • l`.
+
+Establish `h₀` using `(cls_eq_zero_iff (LB.isLB_linComb Q.isLB _ _)).2 (laws.mulPull S Q 2)`. Rewrite `h₀` using `[cls_linComb Q.isLB, Fin.sum_univ_two]`. Simplify using `only [Matrix.cons_val_zero, Matrix.cons_val_one, pull_id] at h₀`. Establish `e : Out.mulA Q.A 2 = 𝟙 Q.A * 𝟙 Q.A` using `by rw [← pow_two]`. Rewrite `h₀` using `[e, ← hl]`.
+
+Evaluate the numerical expressions using `at h₀`. Rewrite `h₀` using `[add_neg_eq_zero]`. Rewrite using `[← h₀]`. Both sides reduce to the same expression. Establish `hpi : pull ((𝟙 Q.A : Q.A ⟶ Q.A)⁻¹).left p = p`.
+
+Take `⟨_, w, hw, -⟩` from `hs`. Establish `e` using `(cls_eq_iff PP.isLB (pull_isLB PP.isLB _)).2 ⟨w, hw⟩`. Rewrite `e` using `[cls_pull PP.isLB]`. Rewrite using `[Hom.inv_def, Category.id_comp]`. Conclude with `e.symm`.
+
+Establish `e₁ : lam l (𝟙 Q.A) (𝟙 Q.A) = 2 • l`. Simplify using `only [lam, hl2, Over.id_left, pull_id, hl0]`. Normalize the expressions using the abelian group laws. Establish `e₂ : lam l (𝟙 Q.A)⁻¹ (𝟙 Q.A) = -(2 • l)`. Use `lam_mul_left Q.isLB hΘ (𝟙 Q.A) (𝟙 Q.A)⁻¹ (𝟙 Q.A)` as an intermediate fact.
+
+Rewrite `this` using `[mul_inv_cancel, lam_one_left, ← hl, e₁]`. Conclude with `(neg_eq_of_add_eq_zero_right this.symm).symm`. Establish `e₃ : lam p (𝟙 Q.A)⁻¹ (𝟙 Q.A) = -(2 • p)`. Simplify using `only [lam, inv_mul_cancel, hpi, Over.id_left, pull_id, hp0]`. Normalize the expressions using the abelian group laws.
+
+Establish `e₄ : 2 • p = 2 • l` using `neg_injective (e₃.symm.trans ((hlam _ _).trans e₂))`. Use `⟨e₄, ?_⟩` and prove the remaining obligations. Establish `e₅` using `(hlam (𝟙 Q.A) (𝟙 Q.A)).trans e₁`. Simplify using `only [lam, Over.id_left, pull_id, hp0] at e₅`. Rewrite using `[pow_two]`.
+
+Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem cls_of_lam_eq {S : Scheme.{0}} [IsLocallyNoetherian S] (laws : Out.Laws) (Q : Out.PolAV S) [IsCommMonObj Q.A]
     (hΘ : ∃ t : LB.Gen (Theta Q.A Q.L), t.IsGen) (PP : RigLB Q.A) (hs : PP.IsSymmetric)
     (h : LBIso (abelian₂ Q.A PP.L) (abelian₂ Q.A Q.L)) :
@@ -103,6 +134,9 @@ theorem cls_of_lam_eq {S : Scheme.{0}} [IsLocallyNoetherian S] (laws : Out.Laws)
   calc _ = (pull ((𝟙 Q.A : Q.A ⟶ Q.A) * 𝟙 Q.A).left p - p - p + 0) + 2 • p := by abel
     _ = 4 • l := by rw [e₅, e₄]; abel
 
+/- English proof (translation)
+Take `⟨c', hc', -⟩` from `(laws.weil _ Q' k _).1 _ _ hx hy`. Establish `h₁` using `(weilIs_along_hom laws.globalFns _ Q.A Q'.A ψ Q.L Q'.L 4 k _ x y c' c' Q.isAb Q'.isAb Q.isLB Q'.isLB inferInstance h hc').1`. Rewrite `hc` using `[Nat.cast_mul]`. Rewrite using `[CommutatorPairing.weilIs_unique laws.globalFns Q.isAb Q.isLB hc h₁]` and apply the resulting hypothesis.
+-/
 theorem weilIs_of_double (laws : Out.Laws) (Q Q' : Out.PolAV (Sp ℂ)) [IsCommMonObj Q.A] (ψ : Q.A ⟶ Q'.A) [IsMonHom ψ]
     (h : LBIso (lbPow Q.L 4) (Q'.L.pull ψ.left)) (k : ℕ) (x y : 𝟙_ (Over (Sp ℂ)) ⟶ Q.A) (c : Γ((𝟙_ (Over (Sp ℂ))).left, ⊤)ˣ)
     (hx : (x ≫ ψ) ^ k = 1) (hy : (y ≫ ψ) ^ k = 1) (hc : Out.WeilIs Q.A Q.L ((k * 4 : ℕ) : ℤ) x y c) :
@@ -115,6 +149,17 @@ theorem weilIs_of_double (laws : Out.Laws) (Q Q' : Out.PolAV (Sp ℂ)) [IsCommMo
 
 variable {E : Type} [Field E] [NumberField E] [IsCMField E]
 
+/- English proof (translation)
+Establish `h : ∀ a : 𝓞 E, ∃ f : Q.A ⟶ Q.A, IsMonHom f ∧ ∀ z, u.ex (fun k => ty k (a : E) * z k) = u.ex z ≫ f` using `fun a => hom Q Q g u u (LinearMap.pi fun k => ty k (a : E) • LinearMap.proj (R := ℂ) (φ := fun _ => ℂ) k) hg hg fun z hz => hΛ a z hz`. Use `choose f hf hex using h`. Use `Q.isAb.smooth` as an intermediate fact. Use `Q.isAb.proper` as an intermediate fact. Establish `: IsReduced Q.A.left` using `isReduced_of_smooth_complex _ Q.A.hom inferInstance`.
+
+Establish `ext : ∀ f f' : Q.A ⟶ Q.A, (∀ z, u.ex z ≫ f = u.ex z ≫ f') → f = f'` using `fun f f' h => ComplexPoints.over_hom_ext_of_complexPoints fun x => by`. Take `⟨z, rfl⟩` from `u.ex_onto x`. Conclude with `h z`. Use `⟨⟨f, hf, ext _ _ fun z => ?_, fun a b => ext _ _ fun z => ?_, fun a b => ext _ _ fun z => ?_⟩, hex⟩` and prove the remaining obligations. Rewrite using `[← hex, Category.comp_id]`.
+
+Simplify using the standard rewrite rules. Rewrite using `[← Category.assoc, ← hex, ← hex, ← hex]`. Use `congr 1`. Use function extensionality and compare the values at `k`. Use `push_cast`.
+
+Rewrite using `[map_mul]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[MonObj.comp_mul, ← hex, ← hex, ← hex, ← u.ex_add]`. Use `congr 1`. Use function extensionality and compare the values at `k`.
+
+Use `push_cast`. Rewrite using `[map_add, Pi.add_apply]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem exists_act (hom : (∀ (P P' : Out.PolAV (Sp ℂ)) (g : ℕ) (u : HolUnif P.A P.L g) (u' : HolUnif P'.A P'.L g) (F : (Fin g → ℂ) →ₗ[ℂ] (Fin g → ℂ)), P.g = g → P'.g = g → (∀ z ∈ u.Λ, F z ∈ u'.Λ) → ∃ f : P.A ⟶ P'.A, IsMonHom f ∧ ∀ z, u'.ex (F z) = u.ex z ≫ f)) (Q : Out.PolAV (Sp ℂ)) {g : ℕ} (hg : Q.g = g) (u : HolUnif Q.A Q.L g)
     (ty : Fin g → (E →+* ℂ)) (hΛ : ∀ (a : 𝓞 E), ∀ z ∈ u.Λ, (fun k => ty k (a : E) * z k) ∈ u.Λ) :
     ∃ act : OAct (𝓞 E) Q.A, ∀ (a : 𝓞 E) z, u.ex (fun k => ty k (a : E) * z k) = u.ex z ≫ act.act a := by
@@ -135,12 +180,52 @@ theorem exists_act (hom : (∀ (P P' : Out.PolAV (Sp ℂ)) (g : ℕ) (u : HolUni
   · rw [MonObj.comp_mul, ← hex, ← hex, ← hex, ← u.ex_add]
     congr 1; funext k; push_cast; rw [map_add, Pi.add_apply]; ring
 
+/- English proof (translation)
+Proceed by induction on `n with`. Consider the case `zero => rw [pow_zero, zero_smul, (u.ker 0).2 (zero_mem _)]`. Consider the case `succ n ih => rw [pow_succ, ih, succ_nsmul, u.ex_add]`.
+-/
 theorem ex_pow {A : Over (Sp ℂ)} [GrpObj A] {L : LB A.left} {g : ℕ} (u : HolUnif A L g) (n : ℕ) (z : Fin g → ℂ) :
     u.ex z ^ n = u.ex (n • z) := by
   induction n with
   | zero => rw [pow_zero, zero_smul, (u.ker 0).2 (zero_mem _)]
   | succ n ih => rw [pow_succ, ih, succ_nsmul, u.ex_add]
 
+/- English proof (translation)
+Take `⟨hlin, hinj, hdisc, hspan, Hm, hH, hpos, him⟩` from `hP`. Establish `hE : ∀ (Λ : Submodule ℤ (Fin g → ℂ)), (∀ z, z ∈ Λ ↔ z ∈ P.range) → ∃ Ef : LinearMap.BilinForm ℤ Λ, Function.Bijective Ef ∧ (∀ a b : Λ, (Ef a b : ℝ) = (hermForm Hm a b).im) ∧ ∀ a b (ha : P a ∈ Λ) (hb : P b ∈ Λ), Ef ⟨P a, ha⟩ ⟨P b, hb⟩ = D.EF a b` using `fun Λ hΛ => by`. Take `⟨Ef, h₁, h₂⟩` from `exists_form P hinj D.EF D.unimod Λ hΛ`. Use `⟨Ef, h₁, ?_, h₂⟩` and prove the remaining obligations. Introduce and unpack `⟨a, ha⟩ ⟨b, hb⟩`.
+
+Take `⟨a, rfl⟩` from `(hΛ a).1 ha`. Take `⟨b, rfl⟩` from `(hΛ b).1 hb`. Rewrite using `[h₂, him]`. Take `⟨Ef₀, hb₀, hi₀, -⟩` from `hE P.range.toIntSubmodule fun _ => Iff.rfl`. Take `⟨Q, u, χ, hg, hΛ, hAH, ht₁, ht₂⟩` from `tor g P.range.toIntSubmodule Hm Ef₀ hdisc hspan hH hpos hi₀ hb₀`.
+
+Establish `hmem : ∀ z, z ∈ u.Λ ↔ z ∈ P.range` using `fun z => by rw [hΛ]; rfl`. Take `⟨Ef, -, hi, hEf⟩` from `hE u.Λ hmem`. Establish `hker : ∀ z, u.ex z = 1 ↔ z ∈ P.range` using `fun z => (u.ker z).trans (hmem z)`. Establish `hW : ∀ (k : ℕ) (a b : D.La) (c : ℂˣ), 0 < k → (c : ℂ) = Complex.exp (-(2 * Real.pi * Complex.I) * (D.EF a b : ℂ) / k) → Out.WeilIs Q.A Q.L k (u.ex ((k : ℂ)⁻¹ • P a)) (u.ex ((k : ℂ)⁻¹ • P b)) (unitOn c)` using `fun k a b c hk hc => weilIs_of_isAH laws Q hg u hAH Ef hi k ⟨P a, (hmem _).2 ⟨a, rfl⟩⟩ ⟨P b, (hmem _).2 ⟨b, rfl⟩⟩ c hk (by rwa [hEf])`. Take `⟨act, hact⟩` from `exists_act hom Q hg u ty fun a z hz => by`.
+
+Take `⟨x, rfl⟩` from `(hmem z).1 hz`. Conclude with `(hmem _).2 ⟨a • x, funext (hlin a x)⟩`. Establish `hact' : ∀ (a : 𝓞 E) (s : ℂ) x, u.ex (s • P x) ≫ act.act a = u.ex (s • P (a • x))` using `fun a s x => by`. Rewrite using `[← hact]`. Use `congr 1`.
+
+Use function extensionality and compare the values at `k`. Simplify using `only [Pi.smul_apply, hlin, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree. Establish `htors : ∀ (n : ℕ) (x : 𝟙_ (Over (Sp ℂ)) ⟶ Q.A), 0 < n → x ^ n = 1 → ∃ a, x = u.ex ((n : ℂ)⁻¹ • P a)`. Introduce `n x hn hx`.
+
+Take `⟨z, rfl⟩` from `u.ex_onto x`. Rewrite `hx` using `[ex_pow, hker]`. Take `⟨a, ha⟩` from `hx`. Use `⟨a, ?_⟩` and prove the remaining obligations. Rewrite using `[ha, ← Nat.cast_smul_eq_nsmul ℂ, inv_smul_smul₀ (Nat.cast_ne_zero.2 hn.ne')]`.
+
+Establish `hA` using `Q.isAb`. Use `hA.comm` as an intermediate fact. Establish `adj : ∀ a, LBIso (cubeLB Q.A ![fst Q.A Q.A ≫ act.act a, snd Q.A Q.A] Q.L) (cubeLB Q.A ![fst Q.A Q.A, snd Q.A Q.A ≫ act.act (H.bar a)] Q.L)` using `fun a => by`. Use `adjW ℂ Q _ _ (act.hom a) (act.hom _) fun n x y c hn hx hy hc => ?_` and prove the remaining obligations. Take `⟨x, rfl⟩` from `htors n x hn hx`.
+
+Take `⟨y, rfl⟩` from `htors n y hn hy`. Rewrite `hc`, the goal using `[hact']`. Set `c₀ : ℂˣ` to `Units.mk0 _ (Complex.exp_ne_zero (-(2 * Real.pi * Complex.I) * (D.EF (a • x) y : ℂ) / n))`. Rewrite using `[CommutatorPairing.weilIs_unique laws.globalFns hA Q.isLB hc (hW n _ _ c₀ hn rfl)]`. Conclude with `hW n _ _ c₀ hn (by rw [← D.adj]; rfl)`.
+
+Establish `hΘ` using `cube _ Q Q.L Q.isLB`. Take `⟨PP, cub, hsym, -, hlam, hprim, hadj⟩` from `prim E H _ Q.A act Q.L hA Q.isLB hΘ adj`. Take `⟨h₂, h₄⟩` from `cls_of_lam_eq laws Q hΘ PP hsym hlam`. Establish `hL` using `Q.isLB`. Establish `hP'` using `PP.isLB`.
+
+Establish `hid : IsFinite (𝟙 Q.A : Q.A ⟶ Q.A).left` using `by rw [Over.id_left]; infer_instance`. Establish `hpow : ∀ (M : LB Q.A.left), M.IsLB → ∀ n, (lbPow M n).IsLB` using `fun M hM n => LB.isLB_linComb hM _ _`. Establish `a₁ : Out.RelAmple Q.A (lbPow Q.L 2)` using `(amp _ Q.A Q.A (𝟙 _) Q.L 2 two_pos hA hA hL hid).2.1.2 Q.ample`. Establish `a₂ : Out.RelAmple Q.A (lbPow PP.L 2)` using `(amp _ Q.A Q.A (𝟙 _) _ 1 one_pos hA hA (hpow _ hL 2) hid).2.2.2 _ (hpow _ hP' 2) (by rw [← cls_eq_iff (hpow _ hL 2) (hpow _ hP' 2), cls_lbPow hL, cls_lbPow hP', h₂]) a₁`. Establish `a₃ : Out.RelAmple Q.A PP.L` using `(amp _ Q.A Q.A (𝟙 _) PP.L 2 two_pos hA hA hP' hid).2.1.1 a₂`.
+
+Establish `a₄ : Out.KTriv Q.A PP.L`. Use `princ ℂ Q 1 Q.A (𝟙 _) PP.L one_pos hA hP' inferInstance hid (by rw [Over.id_left]; infer_instance) (by rw [Over.id_left]; infer_instance) (by simp) ?_` and prove the remaining obligations. Use `(cls_eq_iff (LB.isLB_linComb (hpow _ hL 1) _ _) (LB.isLB_linComb (pull_isLB hP' _) _ _)).1 ?_` and prove the remaining obligations. Use `(cls_cube_two (hpow _ hL 1) _ _ _).trans (Eq.trans ?_ (cls_cube_two (pull_isLB hP' _) _ _ _).symm)` and prove the remaining obligations. Rewrite using `[cls_lbPow hL, cls_pull hP', Over.id_left, pull_id, one_nsmul]`.
+
+Establish `h₁` using `(cls_eq_iff (LB.isLB_linComb hP' _ _) (LB.isLB_linComb hL _ _)).2 hlam`. Conclude with `((cls_cube_two hP' _ _ _).symm.trans (h₁.trans (cls_cube_two hL _ _ _))).symm`. Set `Q' : Out.PolAV (Sp ℂ)` to `{ A := Q.A, isAb := hA, g := Q.g, smoothDim := Q.smoothDim, L := PP.L, isLB := hP', rigid := ⟨PP.rig, PP.rigGen⟩, sym := sym_of_isSymmetric PP hsym, ample := a₃, ktriv := a₄ }`. Use `⟨{ G := Q.A, semi := isSemiAbelian_of_isAbelianScheme Q.A hA, act := act, PP := PP, cub := cub, sym := hsym, adj := hadj, prim := hprim }, Q.L, u, hA, hg ▸ Q.smoothDim, a₃, a₄, ht₁, ht₂, hker, hact, fun k a b c hk hc => ?_⟩` and prove the remaining obligations. Establish `hk' : (k : ℂ) ≠ 0` using `Nat.cast_ne_zero.2 hk.ne'`.
+
+Establish `hdbl : IsMonHom ((𝟙 Q.A : Q.A ⟶ Q.A) ^ 2)` using `laws.rigidity _ _ _ hA hA _ (by`. Establish `e₁ : (η[Q.A] : 𝟙_ _ ⟶ Q.A) = 1` using `by rw [Hom.one_def]; simp`. Rewrite using `[MonObj.comp_pow, Category.comp_id, e₁, one_pow])`. Establish `hx : ∀ a, u.ex (((k * 4 : ℕ) : ℂ)⁻¹ • P (2 • a)) ≫ (𝟙 Q.A : Q.A ⟶ Q.A) ^ 2 = u.ex ((k : ℂ)⁻¹ • P a)` using `fun a => by`. Rewrite using `[MonObj.comp_pow, Category.comp_id, ex_pow, map_nsmul]`.
+
+Use `congr 1`. Rewrite using `[← Nat.cast_smul_eq_nsmul ℂ, ← Nat.cast_smul_eq_nsmul ℂ, smul_smul, smul_smul]`. Use `congr 1`. Use `clear * - hk'`. Use `push_cast`.
+
+Clear the denominators using the available nonvanishing facts. Evaluate the numerical expressions. Establish `hx' : ∀ a, u.ex ((k : ℂ)⁻¹ • P a) ^ k = 1` using `fun a => by`. Rewrite using `[ex_pow, hker, ← Nat.cast_smul_eq_nsmul ℂ, smul_inv_smul₀ hk']`. Conclude with `⟨a, rfl⟩`.
+
+Use `weilIs_of_double laws Q Q' ((𝟙 Q.A : Q.A ⟶ Q.A) ^ 2) (by rw [← cls_eq_iff (hpow _ hL 4) (pull_isLB hP' _), cls_lbPow hL, cls_pull hP', h₄]) k _ _ (unitOn c) ((congrArg (· ^ k) (hx a)).trans (hx' a)) ((congrArg (· ^ k) (hx b)).trans (hx' b)) (hW (k * 4) (2 • a) (2 • b) c (by posit …` as an intermediate fact. Rewrite using `[hc]`. Use `congr 1`. Rewrite using `[map_nsmul, map_nsmul, LinearMap.smul_apply]`. Use `clear * - hk'`.
+
+Simplify using `only [nsmul_eq_mul]`. Use `push_cast`. Clear the denominators using the available nonvanishing facts. Use the proof step `ring))`. Rewrite `this` using `[hx, hx]`.
+
+Conclude with `this`.
+-/
 theorem exists_triple (laws : Out.Laws) (cube : (∀ (S : Scheme.{0}) (P : Out.PolAV S) (M : LB P.A.left), M.IsLB → ∃ t : LB.Gen (Theta P.A M), t.IsGen)) (tor : (∀ (g : ℕ) (Λ : Submodule ℤ (Fin g → ℂ)) (Hm : Matrix (Fin g) (Fin g) ℂ) (Ef : LinearMap.BilinForm ℤ Λ), DiscreteTopology Λ → Submodule.span ℝ (Λ : Set (Fin g → ℂ)) = ⊤ → Hm.IsHermitian → (∀ z : Fin g → ℂ, z ≠ 0 → 0 < (hermForm Hm z z).re) → (∀ a b : Λ, (Ef a b : ℝ) = (hermForm Hm a b).im) → Function.Bijective Ef → ∃ (P : Out.PolAV (Sp ℂ)) (u : HolUnif P.A P.L g) (χ : u.Λ → ℂ), P.g = g ∧ u.Λ = Λ ∧ u.IsAH Hm χ ∧ (∀ v, IsTangent v → ∃! w, u.IsDiff w v) ∧ (∀ w, ∃! v, IsTangent v ∧ u.IsDiff w v))) (hom : (∀ (P P' : Out.PolAV (Sp ℂ)) (g : ℕ) (u : HolUnif P.A P.L g) (u' : HolUnif P'.A P'.L g) (F : (Fin g → ℂ) →ₗ[ℂ] (Fin g → ℂ)), P.g = g → P'.g = g → (∀ z ∈ u.Λ, F z ∈ u'.Λ) → ∃ f : P.A ⟶ P'.A, IsMonHom f ∧ ∀ z, u'.ex (F z) = u.ex z ≫ f))
     (adjW : (∀ (k : Type) [Field k] [IsAlgClosed k] [CharZero k] (P : Out.PolAV (Sp k)) (a a' : P.A ⟶ P.A), IsMonHom a → IsMonHom a' → (∀ (n : ℕ) (x y : 𝟙_ (Over (Sp k)) ⟶ P.A) (c : Γ((𝟙_ (Over (Sp k))).left, ⊤)ˣ), 0 < n → x ^ n = 1 → y ^ n = 1 → Out.WeilIs P.A P.L n (x ≫ a) y c → Out.WeilIs P.A P.L n x (y ≫ a') c) → LBIso (cubeLB P.A ![fst P.A P.A ≫ a, snd P.A P.A] P.L) (cubeLB P.A ![fst P.A P.A, snd P.A P.A ≫ a'] P.L))) (prim : (∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (S : Scheme.{0}) (B : Over S) [GrpObj B] [IsCommMonObj B] (act : OAct (𝓞 E) B) (M : LB B.left), IsAbelianScheme B → M.IsLB → (∃ t : LB.Gen (Theta B M), t.IsGen) → (∀ a, LBIso (cubeLB B ![fst B B ≫ act.act a, snd B B] M) (cubeLB B ![fst B B, snd B B ≫ act.act (H.bar a)] M)) → ∃ (PP : RigLB B) (_ : CubicalStr B PP), PP.IsSymmetric ∧ LBIso PP.L (cubeLB B ![𝟙 B, act.act H.w0] M) ∧ LBIso (abelian₂ B PP.L) (abelian₂ B M) ∧ LBIso PP.L (cubeLB B ![𝟙 B, act.act H.w0] PP.L) ∧ ∀ a, LBIso (cubeLB B ![fst B B ≫ act.act a, snd B B] PP.L) (cubeLB B ![fst B B, snd B B ≫ act.act (H.bar a)] PP.L))) (princ : (∀ (k : Type) [Field k] [IsAlgClosed k] [CharZero k] (P : Out.PolAV (Sp k)) (n : ℕ) (B : Over (Sp k)) [GrpObj B] (ψ : P.A ⟶ B) (M : LB B.left), 0 < n → IsAbelianScheme B → M.IsLB → IsMonHom ψ → IsFinite ψ.left → Etale ψ.left → Surjective ψ.left → Nat.card {x : 𝟙_ (Over (Sp k)) ⟶ P.A // x ≫ ψ = 1} = n ^ P.g → LBIso (abelian₂ P.A (lbPow P.L n)) (abelian₂ P.A (M.pull ψ.left)) → Out.KTriv B M)) (amp : (∀ (S : Scheme.{0}) [IsLocallyNoetherian S] (A B : Over S) [GrpObj A] [GrpObj B] (ψ : A ⟶ B) (M : LB B.left) (n : ℕ), 0 < n → IsAbelianScheme A → IsAbelianScheme B → M.IsLB → IsFinite ψ.left → (Out.RelAmple B M → Out.RelAmple A (M.pull ψ.left)) ∧ (Out.RelAmple B (lbPow M n) ↔ Out.RelAmple B M) ∧ (Flat ψ.left → Surjective ψ.left → Out.RelAmple A (M.pull ψ.left) → Out.RelAmple B M) ∧ ∀ M' : LB B.left, M'.IsLB → LBIso M M' → Out.RelAmple B M → Out.RelAmple B M'))
     {H : Host E} (D : Datum H) {g : ℕ} (ty : Fin g → (E →+* ℂ)) (P : D.La →+ (Fin g → ℂ)) (hP : IsPeriod D ty P) :

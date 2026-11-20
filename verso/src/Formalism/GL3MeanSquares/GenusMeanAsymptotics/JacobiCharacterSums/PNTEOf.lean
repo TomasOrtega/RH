@@ -8,12 +8,21 @@ namespace Formalism.HermitianLattices.Ext.PrimesInProgressions
 
 open Formalism.HermitianLattices.Ext.LogarithmicIntegralBounds Formalism.ZeroFreeDirichlet
 
+/- English proof (translation)
+The claim follows from `lt_min (Classical.choose_spec Formalism.ZeroFreeDirichlet.zFRDirichlet).1 (by norm_num)`.
+-/
 theorem cZ_pos : 0 < cZ :=
   lt_min (Classical.choose_spec Formalism.ZeroFreeDirichlet.zFRDirichlet).1 (by norm_num)
 
+/- English proof (translation)
+The claim follows from `min_le_right _ _`.
+-/
 theorem cZ_le : cZ ≤ 1 / 20 :=
   min_le_right _ _
 
+/- English proof (translation)
+Unfold `InRegion at hs ⊢`. Establish `hq : (1 : ℝ) ≤ q` using `by exact_mod_cast Nat.one_le_iff_ne_zero.mpr (NeZero.ne q)`. Establish `hlog : 0 < Real.log ((q : ℝ) * (|s.im| + 2))` using `Real.log_pos (by nlinarith [abs_nonneg s.im])`. Establish `h1 : c / Real.log ((q : ℝ) * (|s.im| + 2)) ≤ c' / Real.log ((q : ℝ) * (|s.im| + 2))` using `div_le_div_of_nonneg_right hc hlog.le`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem inRegion_mono {c c' : ℝ} (hc : c ≤ c') (q : ℕ) [NeZero q] (s : ℂ) (hs : InRegion c q s) :
     InRegion c' q s := by
   unfold InRegion at hs ⊢
@@ -24,6 +33,9 @@ theorem inRegion_mono {c c' : ℝ} (hc : c ≤ c') (q : ℕ) [NeZero q] (s : ℂ
     div_le_div_of_nonneg_right hc hlog.le
   linarith
 
+/- English proof (translation)
+Establish `hZ` using `Classical.choose_spec Formalism.ZeroFreeDirichlet.zFRDirichlet`. Establish `hle : cZ ≤ Classical.choose Formalism.ZeroFreeDirichlet.zFRDirichlet` using `min_le_left _ _`. Take `⟨h1, h2, h3, h4, h5⟩` from `hZ.2 q χ s (inRegion_mono hle q s hs) hz`. Conclude with `⟨h1, h2, h3, h4, fun χ' s' hs' hz' => h5 χ' s' (inRegion_mono hle q s' hs') hz'⟩`.
+-/
 theorem zfr_cZ (q : ℕ) [NeZero q] (χ : DirichletCharacter ℂ q) (s : ℂ) (hs : InRegion cZ q s)
     (hz : IsLZero χ s) :
     χ ^ 2 = 1 ∧ χ ≠ 1 ∧ s.im = 0 ∧ deriv (DirichletCharacter.LFunction χ) s ≠ 0 ∧
@@ -33,6 +45,9 @@ theorem zfr_cZ (q : ℕ) [NeZero q] (χ : DirichletCharacter ℂ q) (s : ℂ) (h
   obtain ⟨h1, h2, h3, h4, h5⟩ := hZ.2 q χ s (inRegion_mono hle q s hs) hz
   exact ⟨h1, h2, h3, h4, fun χ' s' hs' hz' => h5 χ' s' (inRegion_mono hle q s' hs') hz'⟩
 
+/- English proof (translation)
+Unfold `eOf`. Use `split_ifs with h h'`. Conclude with `Or.inl ⟨h.choose, rfl, h.choose_spec.1, h.choose_spec.2⟩`. Conclude with `Or.inr (Or.inl ⟨h'.choose, rfl, h'.choose_spec, fun p' hp' hr => h ⟨p', hp', hr⟩⟩)`. Conclude with `Or.inr (Or.inr ⟨rfl, fun p' hp' => h' ⟨p', hp'⟩⟩)`.
+-/
 theorem eOf_cases (M : ℕ) [NeZero M] :
     (∃ p : DirichletCharacter ℂ M × ℝ, eOf M = some p ∧ IsExcPair p.1 p.2 ∧ InRegion cZ M (p.2 : ℂ)) ∨
     (∃ p : DirichletCharacter ℂ M × ℝ, eOf M = some p ∧ IsExcPair p.1 p.2 ∧
@@ -44,6 +59,11 @@ theorem eOf_cases (M : ℕ) [NeZero M] :
   · exact Or.inr (Or.inl ⟨h'.choose, rfl, h'.choose_spec, fun p' hp' hr => h ⟨p', hp', hr⟩⟩)
   · exact Or.inr (Or.inr ⟨rfl, fun p' hp' => h' ⟨p', hp'⟩⟩)
 
+/- English proof (translation)
+Break down `eOf_cases M with ⟨q, hq, hex, _⟩ | ⟨q, hq, hex, _⟩ | ⟨hn, _⟩` into its components or cases. Rewrite `hq` using `[h]`. Consider the cases of `hq`. Conclude with `hex`. Rewrite `hq` using `[h]`.
+
+Consider the cases of `hq`. Conclude with `hex`. Rewrite `hn` using `[h]`. Consider the cases of `hn`.
+-/
 theorem eOf_exc (M : ℕ) [NeZero M] (p : DirichletCharacter ℂ M × ℝ) (h : eOf M = some p) :
     IsExcPair p.1 p.2 := by
   rcases eOf_cases M with ⟨q, hq, hex, _⟩ | ⟨q, hq, hex, _⟩ | ⟨hn, _⟩
@@ -56,6 +76,11 @@ theorem eOf_exc (M : ℕ) [NeZero M] (p : DirichletCharacter ℂ M × ℝ) (h : 
   · rw [h] at hn
     cases hn
 
+/- English proof (translation)
+Break down `eOf_cases M with ⟨q, hq, _, _⟩ | ⟨q, hq, _, _⟩ | ⟨_, hno⟩` into its components or cases. Rewrite `hq` using `[h]`. Consider the cases of `hq`. Rewrite `hq` using `[h]`. Consider the cases of `hq`.
+
+Conclude with `hno (χ₁, β₁)`.
+-/
 theorem eOf_none (M : ℕ) [NeZero M] (h : eOf M = none) (χ₁ : DirichletCharacter ℂ M) (β₁ : ℝ) :
     ¬ IsExcPair χ₁ β₁ := by
   rcases eOf_cases M with ⟨q, hq, _, _⟩ | ⟨q, hq, _, _⟩ | ⟨_, hno⟩
@@ -65,21 +90,37 @@ theorem eOf_none (M : ℕ) [NeZero M] (h : eOf M = none) (χ₁ : DirichletChara
     cases hq
   · exact hno (χ₁, β₁)
 
+/- English proof (translation)
+Unfold `InRegion`. Rewrite using `[Complex.ofReal_im, Complex.ofReal_re, abs_zero, zero_add]`.
+-/
 theorem inRegion_ofReal (c : ℝ) (q : ℕ) (β : ℝ) :
     InRegion c q (β : ℂ) ↔ 1 - c / Real.log ((q : ℝ) * 2) ≤ β := by
   unfold InRegion
   rw [Complex.ofReal_im, Complex.ofReal_re, abs_zero, zero_add]
 
+/- English proof (translation)
+Establish `hM' : (2 : ℝ) ≤ M` using `by exact_mod_cast hM`. Rewrite using `[Real.log_mul (by positivity) (by norm_num)]`. Establish `h1 : Real.log 2 ≤ Real.log M` using `Real.log_le_log (by norm_num) hM'`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem log_two_mul_le (M : ℕ) (hM : 2 ≤ M) : Real.log ((M : ℝ) * 2) ≤ 2 * Real.log M := by
   have hM' : (2 : ℝ) ≤ M := by exact_mod_cast hM
   rw [Real.log_mul (by positivity) (by norm_num)]
   have h1 : Real.log 2 ≤ Real.log M := Real.log_le_log (by norm_num) hM'
   linarith
 
+/- English proof (translation)
+Apply `Real.log_pos` to reduce the goal to its premises. Conclude with `(show 1 < M by omega)` after adjusting the coercions.
+-/
 theorem log_pos_of_two_le (M : ℕ) (hM : 2 ≤ M) : 0 < Real.log M := by
   apply Real.log_pos
   exact_mod_cast (show 1 < M by omega)
 
+/- English proof (translation)
+Use `⟨h2, h1, hz, ?_, ?_⟩` and prove the remaining obligations. Rewrite `hr` using `[inRegion_ofReal]`. Establish `hlogM` using `log_pos_of_two_le M hM`. Establish `hM' : (2 : ℝ) ≤ M` using `by exact_mod_cast hM`. Establish `hlogge : Real.log M ≤ Real.log ((M : ℝ) * 2)` using `Real.log_le_log (by positivity) (by nlinarith)`.
+
+Establish `hcz` using `cZ_le`. Establish `hcz0` using `cZ_pos`. Establish `hlog2pos : 0 < Real.log ((M : ℝ) * 2)` using `lt_of_lt_of_le hlogM hlogge`. Establish `h3 : cZ / Real.log ((M : ℝ) * 2) < 1 / (8 * Real.log M)`. Rewrite using `[div_lt_div_iff₀ hlog2pos (by positivity)]`.
+
+Use polynomial arithmetic with `[mul_le_mul_of_nonneg_right hcz hlogM.le]`. Combine the linear equalities and inequalities to obtain the conclusion. Assume the negation of the conclusion as `hge push_neg at hge`. Conclude with `DirichletCharacter.LFunction_ne_zero_of_one_le_re χ (Or.inl h1) (by simpa using hge) hz`.
+-/
 theorem isExcPair_of_region (M : ℕ) [NeZero M] (hM : 2 ≤ M) (χ : DirichletCharacter ℂ M) (β : ℝ)
     (h2 : χ ^ 2 = 1) (h1 : χ ≠ 1) (hz : DirichletCharacter.LFunction χ (β : ℂ) = 0)
     (hr : InRegion cZ M (β : ℂ)) : IsExcPair χ β := by
@@ -99,6 +140,13 @@ theorem isExcPair_of_region (M : ℕ) [NeZero M] (hM : 2 ≤ M) (χ : DirichletC
     push_neg at hge
     exact DirichletCharacter.LFunction_ne_zero_of_one_le_re χ (Or.inl h1) (by simpa using hge) hz
 
+/- English proof (translation)
+Take `⟨h2, h1, him, hder, huniq⟩` from `zfr_cZ M χ s hs hz`. Establish `hs' : s = ((s.re : ℝ) : ℂ)` using `Complex.ext (by simp) (by simp [him])`. Establish `hzr : DirichletCharacter.LFunction χ ((s.re : ℝ) : ℂ) = 0` using `by rw [← hs']; exact hz.2`. Establish `hrr : InRegion cZ M ((s.re : ℝ) : ℂ)` using `by rw [← hs']; exact hs`. Establish `hex : IsExcPair χ s.re` using `isExcPair_of_region M hM χ s.re h2 h1 hzr hrr`.
+
+Break down `eOf_cases M with ⟨p, hp, hpex, hpr⟩ | ⟨p, hp, hpex, hno⟩ | ⟨hn, hno⟩` into its components or cases. Establish `hz' : IsLZero p.1 (p.2 : ℂ)` using `⟨Or.inl hpex.2.1, hpex.2.2.1⟩`. Take `⟨e1, e2⟩` from `huniq p.1 (p.2 : ℂ) hpr hz'`. Use `⟨p.2, ?_, e2.symm, hder⟩` and prove the remaining obligations. Rewrite using `[hp, ← e1]`.
+
+Conclude with `absurd hrr (hno (χ, s.re) hex)`. Conclude with `absurd hex (hno (χ, s.re))`.
+-/
 theorem zero_in_region (M : ℕ) [NeZero M] (hM : 2 ≤ M) (χ : DirichletCharacter ℂ M) (s : ℂ)
     (hs : InRegion cZ M s) (hz : IsLZero χ s) :
     ∃ β₁ : ℝ, eOf M = some (χ, β₁) ∧ s = (β₁ : ℂ) ∧ deriv (DirichletCharacter.LFunction χ) s ≠ 0 := by
@@ -115,15 +163,26 @@ theorem zero_in_region (M : ℕ) [NeZero M] (hM : 2 ≤ M) (χ : DirichletCharac
   · exact absurd hrr (hno (χ, s.re) hex)
   · exact absurd hex (hno (χ, s.re))
 
+/- English proof (translation)
+Unfold `etaOf`. Rewrite using `[h]`.
+-/
 theorem etaOf_some (M : ℕ) [NeZero M] (χ₁ : DirichletCharacter ℂ M) (β₁ : ℝ) (h : eOf M = some (χ₁, β₁)) :
     etaOf M = min 1 ((1 - β₁) * Real.log M) := by
   unfold etaOf
   rw [h]
 
+/- English proof (translation)
+Unfold `etaOf`. Rewrite using `[h]`.
+-/
 theorem etaOf_none (M : ℕ) [NeZero M] (h : eOf M = none) : etaOf M = 1 := by
   unfold etaOf
   rw [h]
 
+/- English proof (translation)
+Break down `hE : eOf M with _ | ⟨χ₁, β₁⟩` into its components or cases. Rewrite using `[etaOf_none M hE]`. Conclude with `one_pos`. Rewrite using `[etaOf_some M χ₁ β₁ hE]`. Establish `hex` using `eOf_exc M (χ₁, β₁) hE`.
+
+Conclude with `lt_min one_pos (mul_pos (by linarith [hex.2.2.2.2]) (log_pos_of_two_le M hM))`.
+-/
 theorem etaOf_pos (M : ℕ) [NeZero M] (hM : 2 ≤ M) : 0 < etaOf M := by
   rcases hE : eOf M with _ | ⟨χ₁, β₁⟩
   · rw [etaOf_none M hE]
@@ -132,12 +191,24 @@ theorem etaOf_pos (M : ℕ) [NeZero M] (hM : 2 ≤ M) : 0 < etaOf M := by
     have hex := eOf_exc M (χ₁, β₁) hE
     exact lt_min one_pos (mul_pos (by linarith [hex.2.2.2.2]) (log_pos_of_two_le M hM))
 
+/- English proof (translation)
+Break down `hE : eOf M with _ | ⟨χ₁, β₁⟩` into its components or cases. Rewrite using `[etaOf_none M hE]`. Rewrite using `[etaOf_some M χ₁ β₁ hE]`. Conclude with `min_le_left _ _`.
+-/
 theorem etaOf_le_one (M : ℕ) [NeZero M] : etaOf M ≤ 1 := by
   rcases hE : eOf M with _ | ⟨χ₁, β₁⟩
   · rw [etaOf_none M hE]
   · rw [etaOf_some M χ₁ β₁ hE]
     exact min_le_left _ _
 
+/- English proof (translation)
+Take `⟨c, hc, hb⟩` from `Formalism.ZeroFreeDirichlet.excBound ε hε`. Use `⟨min 1 (c * Real.log 3), lt_min one_pos (mul_pos hc (Real.log_pos (by norm_num))), fun M _ hM => ?_⟩` and prove the remaining obligations. Establish `hM1 : (1 : ℝ) ≤ M` using `by exact_mod_cast (show 1 ≤ M by omega)`. Establish `hpow : (M : ℝ) ^ (-ε) ≤ 1` using `Real.rpow_le_one_of_one_le_of_nonpos hM1 (by linarith)`. Establish `hpow0 : 0 < (M : ℝ) ^ (-ε)` using `Real.rpow_pos_of_pos (by linarith) _`.
+
+Establish `hle1 : min 1 (c * Real.log 3) * (M : ℝ) ^ (-ε) ≤ 1`. Combine the equalities or inequalities in the displayed calculation. Break down `hE : eOf M with _ | ⟨χ₁, β₁⟩` into its components or cases. Rewrite using `[etaOf_none M hE]`. Conclude with `hle1`.
+
+Rewrite using `[etaOf_some M χ₁ β₁ hE]`. Establish `hex` using `eOf_exc M (χ₁, β₁) hE`. Establish `hβ` using `hb M χ₁ β₁ hex.1 hex.2.1 hex.2.2.1`. Establish `hlog3 : Real.log 3 ≤ Real.log M` using `Real.log_le_log (by norm_num) (by exact_mod_cast hM)`. Establish `hlogM : 0 ≤ Real.log M` using `le_trans (Real.log_nonneg (by norm_num)) hlog3`.
+
+Establish `h1 : c * (M : ℝ) ^ (-ε) ≤ 1 - β₁` using `by linarith`. Apply `le_min hle1` to reduce the goal to its premises. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem etaOf_lower (ε : ℝ) (hε : 0 < ε) :
     ∃ c : ℝ, 0 < c ∧ ∀ (M : ℕ) [NeZero M], 3 ≤ M → c * (M : ℝ) ^ (-ε) ≤ etaOf M := by
   obtain ⟨c, hc, hb⟩ := Formalism.ZeroFreeDirichlet.excBound ε hε
@@ -166,6 +237,15 @@ theorem etaOf_lower (ε : ℝ) (hε : 0 < ε) :
       _ = (c * (M : ℝ) ^ (-ε)) * Real.log M := by ring
       _ ≤ (1 - β₁) * Real.log M := mul_le_mul_of_nonneg_right h1 hlogM
 
+/- English proof (translation)
+Rewrite using `[etaOf_some M χ₁ β₁ h]`. Rewrite `hr` using `[inRegion_ofReal]`. Use `push_neg at hr`. Establish `hlogM` using `log_pos_of_two_le M hM`. Establish `hlog2` using `log_two_mul_le M hM`.
+
+Establish `hM' : (2 : ℝ) ≤ M` using `by exact_mod_cast hM`. Establish `hlogge : Real.log M ≤ Real.log ((M : ℝ) * 2)` using `Real.log_le_log (by positivity) (by nlinarith)`. Establish `hlog2pos : 0 < Real.log ((M : ℝ) * 2)` using `lt_of_lt_of_le hlogM hlogge`. Establish `hcz` using `cZ_le`. Establish `hcz0` using `cZ_pos`.
+
+Establish `h1 : cZ / Real.log ((M : ℝ) * 2) < 1 - β₁` using `by linarith`. Establish `hb : 0 < 1 - β₁` using `lt_trans (div_pos hcz0 hlog2pos) h1`. Rewrite `h1` using `[div_lt_iff₀ hlog2pos]`. Establish `h2 : cZ / 2 ≤ (1 - β₁) * Real.log M`. Use polynomial arithmetic with `[mul_le_mul_of_nonneg_left hlog2 hb.le]`.
+
+Conclude with `le_min (by linarith) h2`.
+-/
 theorem etaOf_far (M : ℕ) [NeZero M] (hM : 2 ≤ M) (χ₁ : DirichletCharacter ℂ M) (β₁ : ℝ)
     (h : eOf M = some (χ₁, β₁)) (hr : ¬ InRegion cZ M (β₁ : ℂ)) : cZ / 2 ≤ etaOf M := by
   rw [etaOf_some M χ₁ β₁ h]
@@ -185,6 +265,11 @@ theorem etaOf_far (M : ℕ) [NeZero M] (hM : 2 ≤ M) (χ₁ : DirichletCharacte
     nlinarith [mul_le_mul_of_nonneg_left hlog2 hb.le]
   exact le_min (by linarith) h2
 
+/- English proof (translation)
+Establish `hex` using `eOf_exc M (χ₁, β₁) h`. Establish `h2 : (χ₁ ^ 2) b = 1`. Rewrite using `[hex.1]`. Conclude with `MulChar.one_apply hb`. Rewrite `h2` using `[MulChar.pow_apply' χ₁ (by norm_num)]`.
+
+Conclude with `mul_self_eq_one_iff.mp (by rw [← sq]; exact h2)`.
+-/
 theorem eOf_char_sq (M : ℕ) [NeZero M] (χ₁ : DirichletCharacter ℂ M) (β₁ : ℝ) (h : eOf M = some (χ₁, β₁))
     (b : ZMod M) (hb : IsUnit b) : χ₁ b = 1 ∨ χ₁ b = -1 := by
   have hex := eOf_exc M (χ₁, β₁) h

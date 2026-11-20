@@ -17,6 +17,15 @@ attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalDat
 
 namespace GlobalTheory.CompanionTheory.MatchUnit
 
+/- English proof (translation)
+Distinguish the cases in `hy : y ∈ K`. Establish `e : (fun z => (K : Set H).indicator (1 : H → ℂ) z * (K : Set H).indicator (1 : H → ℂ) (z⁻¹ * y)) = (K : Set H).indicator (1 : H → ℂ)`. Use function extensionality and compare the values at `z`. Distinguish the cases in `hz : z ∈ K`. Establish `hzy : z⁻¹ * y ∈ K` using `mul_mem (inv_mem hz) hy`.
+
+Simplify using `[Set.indicator_of_mem (show z ∈ (K : Set H) from hz), Set.indicator_of_mem (show z⁻¹ * y ∈ (K : Set H) from hzy)]`. Simplify using `[Set.indicator_of_notMem (show z ∉ (K : Set H) from hz)]`. Rewrite using `[e, GlobalTheory.CompanionTheory.FamClP.hint_ind, Set.indicator_of_mem (show y ∈ (K : Set H) from hy)]`. Both sides reduce to the same expression. Establish `e : (fun z => (K : Set H).indicator (1 : H → ℂ) z * (K : Set H).indicator (1 : H → ℂ) (z⁻¹ * y)) = fun _ => (0 : ℂ)`.
+
+Use function extensionality and compare the values at `z`. Distinguish the cases in `hz : z ∈ K`. Establish `hzy : z⁻¹ * y ∉ K` using `fun h => hy (by simpa using mul_mem hz h)`. Simplify using `[Set.indicator_of_notMem (show z⁻¹ * y ∉ (K : Set H) from hzy)]`. Simplify using `[Set.indicator_of_notMem (show z ∉ (K : Set H) from hz)]`.
+
+Rewrite using `[e, GlobalTheory.CompanionTheory.FamClP.hint_zero, Set.indicator_of_notMem (show y ∉ (K : Set H) from hy)]`.
+-/
 theorem hint_ind_conv {H : Type} [Group H] (K : Subgroup H) (y : H) :
     hint K (fun z => (K : Set H).indicator (1 : H → ℂ) z * (K : Set H).indicator (1 : H → ℂ) (z⁻¹ * y)) =
       (K : Set H).indicator (1 : H → ℂ) y := by
@@ -42,6 +51,17 @@ theorem hint_ind_conv {H : Type} [Group H] (K : Subgroup H) (y : H) :
 
 variable {E : Type} [Field E] [NumberField E] [IsCMField E]
 
+/- English proof (translation)
+Take `⟨hN, hM⟩` from `GlobalTheory.CompanionTheory.LeviInt.comap_uN_and_map_sM E a b n h w`. Establish `hdiag : ∀ c ∈ K2 a b w, blk h w c 0 ∈ GlobalTheory.LFun.KGL w n` using `fun c hc => hM ⟨c, hc, rfl⟩`. Establish `hNK : ∀ Z, Z ∈ intMat a b w ↔ blk h w 1 (Multiplicative.toAdd Z) ∈ GlobalTheory.LFun.KGL w n`. Introduce `Z`. Rewrite using `[← hN, Subgroup.mem_comap, Subgroup.mem_subgroupOf, GlobalTheory.LeviFubini.uN_val]`.
+
+Establish `hsplit : blk h w m (Multiplicative.toAdd X) = blk h w m 0 * blk h w 1 (Multiplicative.toAdd X)`. Use `GlobalTheory.CompanionTheory.IntDec.blk_add h w m 0 (Multiplicative.toAdd X)` as an intermediate fact. Simplify using `using this`. Prove the components needed by the constructor for the conclusion. Introduce `hb`.
+
+Establish `hm : m ∈ K2 a b w`. Establish `h2` using `GlobalTheory.LeviFubini.levH_mem_KGL_of_mem E a b n h w ⟨blk h w m (Multiplicative.toAdd X), GlobalTheory.LeviFubini.blk_mem h w m _⟩ hb`. Rewrite `h2` using `[GlobalTheory.LeviFubini.levH_blk]`. Conclude with `Subgroup.mem_prod.2 h2`. Use `⟨hm, (hNK X).2 ?_⟩` and prove the remaining obligations.
+
+Establish `e : blk h w 1 (Multiplicative.toAdd X) = (blk h w m 0)⁻¹ * blk h w m (Multiplicative.toAdd X)`. Rewrite using `[hsplit]`. Use `group`. Rewrite using `[e]`. Conclude with `mul_mem (inv_mem (hdiag m hm)) hb`.
+
+Introduce and unpack `⟨hm, hX⟩`. Rewrite using `[hsplit]`. Conclude with `mul_mem (hdiag m hm) ((hNK X).1 hX)`.
+-/
 theorem blk_mem_KGL_iff {a b n : ℕ} (h : a + b = n) (w : Pl E) (m : GLw a w × GLw b w)
     (X : Multiplicative (Matrix (Fin a) (Fin b) (w.adicCompletion E))) :
     blk h w m (Multiplicative.toAdd X) ∈ GlobalTheory.LFun.KGL w n ↔ m ∈ K2 a b w ∧ X ∈ intMat a b w := by
@@ -72,10 +92,20 @@ theorem blk_mem_KGL_iff {a b n : ℕ} (h : a + b = n) (w : Pl E) (m : GLw a w ×
 
 variable {n : ℕ}
 
+/- English proof (translation)
+Establish `hy : y ∈ UL n w` using `hU ▸ Subgroup.mem_top y`. Simplify using `[toSub, hy]`.
+-/
 theorem val_toSub {w : Pl E} (hU : UL n w = ⊤) (y : GLw n w) : ((toSub (UL n w) y : UL n w) : GLw n w) = y := by
   have hy : y ∈ UL n w := hU ▸ Subgroup.mem_top y
   simp [toSub, hy]
 
+/- English proof (translation)
+Rewrite using `[GlobalTheory.CompanionTheory.UnitaryWord.lone_KL]`. Unfold `GlobalTheory.CompanionTheory.UnitaryWord.unitFn`. Distinguish the cases in `hy : y ∈ GlobalTheory.LFun.KGL w n`. Establish `: toSub (UL n w) y ∈ (KL n w : Set (UL n w))` using `by show toSub (UL n w) y ∈ KL n w`. Rewrite using `[KL, Subgroup.mem_subgroupOf, val_toSub hU]`.
+
+Conclude with `hy`. Rewrite using `[if_pos hy, Set.indicator_of_mem this]`. Both sides reduce to the same expression. Establish `: toSub (UL n w) y ∉ (KL n w : Set (UL n w))`. Introduce `h'`.
+
+Establish `h'' : toSub (UL n w) y ∈ KL n w` using `h'`. Rewrite `h''` using `[KL, Subgroup.mem_subgroupOf, val_toSub hU]`. Conclude with `hy h''`. Rewrite using `[if_neg hy, Set.indicator_of_notMem this]`.
+-/
 theorem lone_toSub {w : Pl E} (hU : UL n w = ⊤) (y : GLw n w) :
     lone (KL n w) (toSub (UL n w) y) = if y ∈ GlobalTheory.LFun.KGL w n then 1 else 0 := by
   rw [GlobalTheory.CompanionTheory.UnitaryWord.lone_KL]
@@ -94,6 +124,21 @@ theorem lone_toSub {w : Pl E} (hU : UL n w = ⊤) (y : GLw n w) :
       exact hy h''
     rw [if_neg hy, Set.indicator_of_notMem this]
 
+/- English proof (translation)
+Establish `hk : ∀ X : Multiplicative (Matrix (Fin a) (Fin b) (w.adicCompletion E)), GlobalTheory.BCT.avg (fun k : GlobalTheory.LFun.KGL w n => lone (KL n w) (toSub (UL n w) ((k : GLw n w)⁻¹ * blk h w m (Multiplicative.toAdd X) * k))) = if m ∈ K2 a b w ∧ X ∈ intMat a b w then 1 else 0`. Introduce `X`. Establish `e : (fun k : GlobalTheory.LFun.KGL w n => lone (KL n w) (toSub (UL n w) ((k : GLw n w)⁻¹ * blk h w m (Multiplicative.toAdd X) * k))) = fun _ => if m ∈ K2 a b w ∧ X ∈ intMat a b w then (1 : ℂ) else 0`. Use function extensionality and compare the values at `k`. Rewrite using `[lone_toSub hU]`.
+
+Establish `hiff : (k : GLw n w)⁻¹ * blk h w m (Multiplicative.toAdd X) * k ∈ GlobalTheory.LFun.KGL w n ↔ m ∈ K2 a b w ∧ X ∈ intMat a b w`. Rewrite using `[← blk_mem_KGL_iff h w m X, Subgroup.mul_mem_cancel_right _ k.2, Subgroup.mul_mem_cancel_left _ (inv_mem k.2)]`. Simplify using `only [hiff]`. Rewrite using `[e]`. Conclude with `GlobalTheory.CompanionTheory.CtS.avg_const _`.
+
+Unfold `ct`. Simplify using `only [hk]`. Distinguish the cases in `hm : m ∈ K2 a b w`. Take `⟨h1, h2⟩` from `Subgroup.mem_prod.1 hm`. Establish `hv : Valued.v (m.1.val.det ^ b / m.2.val.det ^ a) = 1`.
+
+Rewrite using `[map_div₀, map_pow, map_pow, GlobalTheory.CompanionTheory.CtHecke.v_det h1, GlobalTheory.CompanionTheory.CtHecke.v_det h2]`. Simplify using the standard rewrite rules. Establish `habs : absHalf w (m.1.val.det ^ b / m.2.val.det ^ a) = 1`. Unfold `absHalf`. Rewrite using `[GlobalTheory.CompanionTheory.CtHecke.ordL_eq_zero hv]`.
+
+Simplify using the standard rewrite rules. Establish `e : (fun X : Multiplicative (Matrix (Fin a) (Fin b) (w.adicCompletion E)) => if m ∈ K2 a b w ∧ X ∈ intMat a b w then (1 : ℂ) else 0) = (intMat a b w : Set _).indicator 1`. Use function extensionality and compare the values at `X`. Distinguish the cases in `hX : X ∈ intMat a b w`. Simplify using `[hm, hX, Set.indicator_of_mem (show X ∈ (intMat a b w : Set _) from hX)]`.
+
+Simplify using `[hX, Set.indicator_of_notMem (show X ∉ (intMat a b w : Set _) from hX)]`. Rewrite using `[e, GlobalTheory.CompanionTheory.FamClP.hint_ind, habs, if_pos hm, mul_one]`. Establish `e : (fun X : Multiplicative (Matrix (Fin a) (Fin b) (w.adicCompletion E)) => if m ∈ K2 a b w ∧ X ∈ intMat a b w then (1 : ℂ) else 0) = fun _ => 0`. Use function extensionality and compare the values at `X`. Simplify using `[hm]`.
+
+Rewrite using `[e, GlobalTheory.CompanionTheory.FamClP.hint_zero, if_neg hm, mul_zero]`.
+-/
 theorem ct_lone {a b : ℕ} (h : a + b = n) {w : Pl E} (hU : UL n w = ⊤) (m : GLw a w × GLw b w) :
     ct h w (fun y => lone (KL n w) (toSub (UL n w) y)) m = if m ∈ K2 a b w then 1 else 0 := by
   have hk : ∀ X : Multiplicative (Matrix (Fin a) (Fin b) (w.adicCompletion E)),
@@ -138,6 +183,15 @@ theorem ct_lone {a b : ℕ} (h : a + b = n) {w : Pl E} (hU : UL n w = ⊤) (m : 
       simp [hm]
     rw [e, GlobalTheory.CompanionTheory.FamClP.hint_zero, if_neg hm, mul_zero]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `m`. Unfold `ctMu`. Rewrite using `[ct_lone h hU]`. Distinguish the cases in `hm : m ∈ K2 a b w`. Establish `h1 : μ (-1) = 1`.
+
+Use `hμ _ (GlobalTheory.CompanionTheory.CtHecke.ordL_eq_zero ?_)` and prove the remaining obligations. Simplify using the standard rewrite rules. Establish `hu` using `GlobalTheory.CompanionTheory.CtHecke.mu_unit hμ hm`. Establish `e : μ ((-1) ^ (a * b) * GeneralLinearGroup.det m.1 ^ b * GeneralLinearGroup.det m.2 ^ a) = 1`. Rewrite using `[mul_assoc, map_mul, hu, map_pow, h1]`.
+
+Simplify using the standard rewrite rules. Rewrite using `[e, if_pos hm]`. Unfold `idem`. Rewrite using `[Set.indicator_of_mem (show m ∈ (K2 a b w : Set _) from hm), Subgroup.relIndex_self]`. Simplify using the standard rewrite rules.
+
+Rewrite using `[if_neg hm, mul_zero]`. Unfold `idem`. Rewrite using `[Set.indicator_of_notMem (show m ∉ (K2 a b w : Set _) from hm)]`.
+-/
 theorem ctMu_lone {a b : ℕ} (h : a + b = n) {w : Pl E} (hU : UL n w = ⊤) (μ : (w.adicCompletion E)ˣ →* ℂˣ)
     (hμ : ∀ u : (w.adicCompletion E)ˣ, ordL (u : w.adicCompletion E) = 0 → μ u = 1) :
     ctMu h w μ (lone (KL n w)) = idem (K2 a b w) := by
@@ -160,12 +214,20 @@ theorem ctMu_lone {a b : ℕ} (h : a + b = n) {w : Pl E} (hU : UL n w = ⊤) (μ
     unfold idem
     rw [Set.indicator_of_notMem (show m ∉ (K2 a b w : Set _) from hm)]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `y`. Use `show lconv (lone (KL n w)) (lone (KL n w)) y = _`. Rewrite using `[GlobalTheory.CompanionTheory.UnitaryWord.lone_KL]`. Conclude with `hint_ind_conv (KL n w) y`.
+-/
 theorem lpow_lone_one {w : Pl E} : lpow (KL n w) (lone (KL n w)) 1 = (KL n w : Set (UL n w)).indicator 1 := by
   funext y
   show lconv (lone (KL n w)) (lone (KL n w)) y = _
   rw [GlobalTheory.CompanionTheory.UnitaryWord.lone_KL]
   exact hint_ind_conv (KL n w) y
 
+/- English proof (translation)
+Rewrite using `[GlobalTheory.CompanionTheory.UnitaryWord.lone_KL]`. Use `⟨HasCompactSupport.intro (GlobalTheory.CompanionTheory.SphLine.isCompact_KL hE n w) fun x hx => Set.indicator_of_notMem hx _, fun k hk x => ?_⟩` and prove the remaining obligations. Establish `h1 : k * x ∈ KL n w ↔ x ∈ KL n w` using `Subgroup.mul_mem_cancel_left _ hk`. Establish `h2 : x * k ∈ KL n w ↔ x ∈ KL n w` using `Subgroup.mul_mem_cancel_right _ hk`. Unfold `GlobalTheory.CompanionTheory.UnitaryWord.unitFn`.
+
+Distinguish the cases in `hx : x ∈ KL n w`. Conclude with `⟨by rw [Set.indicator_of_mem (show k * x ∈ (KL n w : Set _) from h1.2 hx), Set.indicator_of_mem (show x ∈ (KL n w : Set _) from hx)]; rfl, by rw [Set.indicator_of_mem (show x * k ∈ (KL n w : Set _) from h2.2 hx), Set.indicator_of_mem (show x ∈ (KL n w : Set _) from hx)]; rfl⟩`. Conclude with `⟨by rw [Set.indicator_of_notMem (show k * x ∉ (KL n w : Set _) from fun h => hx (h1.1 h)), Set.indicator_of_notMem (show x ∉ (KL n w : Set _) from hx)], by rw [Set.indicator_of_notMem (show x * k ∉ (KL n w : Set _) from fun h => hx (h2.1 h)), Set.indicator_of_notMem (show x ∉ (KL …`.
+-/
 theorem isHecke_lone_KL (hE : Unr E) {w : Pl E} : IsHecke (KL n w) (lone (KL n w)) := by
   rw [GlobalTheory.CompanionTheory.UnitaryWord.lone_KL]
   refine ⟨HasCompactSupport.intro (GlobalTheory.CompanionTheory.SphLine.isCompact_KL hE n w) fun x hx =>
@@ -183,12 +245,26 @@ theorem isHecke_lone_KL (hE : Unr E) {w : Pl E} : IsHecke (KL n w) (lone (KL n w
       by rw [Set.indicator_of_notMem (show x * k ∉ (KL n w : Set _) from fun h => hx (h2.1 h)),
       Set.indicator_of_notMem (show x ∉ (KL n w : Set _) from hx)]⟩
 
+/- English proof (translation)
+Establish `e : (K2 a b w : Set (GLw a w × GLw b w)) = (GlobalTheory.LFun.KGL w a : Set (GLw a w)) ×ˢ (GlobalTheory.LFun.KGL w b : Set (GLw b w))` using `rfl`. Rewrite using `[e]`. Conclude with `(GlobalTheory.LFun.SatCompare.isOpen_isCompact_KGL w a).1.prod (GlobalTheory.LFun.SatCompare.isOpen_isCompact_KGL w b).1`.
+-/
 theorem isOpen_levelSubgroup' (a b : ℕ) (w : Pl E) : IsOpen (K2 a b w : Set (GLw a w × GLw b w)) := by
   have e : (K2 a b w : Set (GLw a w × GLw b w)) =
       (GlobalTheory.LFun.KGL w a : Set (GLw a w)) ×ˢ (GlobalTheory.LFun.KGL w b : Set (GLw b w)) := rfl
   rw [e]
   exact (GlobalTheory.LFun.SatCompare.isOpen_isCompact_KGL w a).1.prod (GlobalTheory.LFun.SatCompare.isOpen_isCompact_KGL w b).1
 
+/- English proof (translation)
+Introduce `hI hS hId E _ _ _ hE n d _ a ha w hwB hgood`. Establish `hT : w ∉ d.T` using `fun h => hwB (by simp [LocData.B, h])`. Establish `hS₀ : w ∉ d.S₀` using `fun h => hwB (by simp [LocData.B, h])`. Establish `hBad : w ∉ d.Bad` using `fun h => hwB (by simp [LocData.B, h])`. Establish `hP : w ∉ d.P` using `by simp [LocData.P, hT, hS₀]`.
+
+Establish `hlev : d.lev a w = K2 a (n - a) w`. Unfold `LocData.lev`. Rewrite using `[if_neg hT, if_neg (by simp [hS₀, hBad])]`. Establish `htr : (d.eL a).tr d.P d.one w = idem (K2 a (n - a) w)`. Unfold `LM.tr`.
+
+Rewrite using `[if_neg hP]`. Use `show idem (d.lev a w) = _`. Rewrite using `[hlev]`. Rewrite using `[htr]`. Distinguish the cases in `hw : IsSplitAt w`.
+
+Rewrite using `[if_pos hw]`. Take `⟨-, -, -, -, hμ⟩` from `hgood hw`. Establish `hU : UL n w = ⊤` using `if_pos hw`. Establish `hc` using `ctMu_lone (Nat.add_sub_cancel' ha) hU (d.μ w) hμ`. Establish `h : Match n a (n - a) w (d.μ w) (lpow (KL n w) (lone (KL n w)) 1) (mconv (ctMu (Nat.add_sub_cancel' ha) w (d.μ w) (lone (KL n w))) (ctMu (Nat.add_sub_cancel' ha) w (d.μ w) (lone (KL n w))))` using `hS E n a ha w hw (d.μ w) hμ (lone (KL n w)) (isHecke_lone_KL hE) 1 le_rfl`.
+
+Take `⟨hH, -, hU'⟩` from `hId E a (n - a) w (K2 a (n - a) w) (isOpen_levelSubgroup' a (n - a) w) le_rfl`. Rewrite `h` using `[hc, (hU' _ hH).1, lpow_lone_one]`. Conclude with `h`. Rewrite using `[if_neg hw]`. Conclude with `hI E hE w hw n a ha`.
+-/
 theorem matchLMUnitOf : PositivityTheory.Rg.BcB.F.MLM.MatchLMUnitOf := by
   intro hI hS hId E _ _ _ hE n d _ a ha w hwB hgood
   have hT : w ∉ d.T := fun h => hwB (by simp [LocData.B, h])

@@ -9,20 +9,36 @@ open MvPolynomial ReciprocityTheory.ChartRestriction.G.Geo ReciprocityTheory.Cha
 
 namespace CurveEmbedOrbit
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fun _ => 1, fun _ => one_ne_zero, by simp⟩`.
+-/
 theorem sameOrbit_refl {K : Type} {ι : K → Type} (z : (Σ k, ι k) → ℂ) : SameOrbit z z :=
   ⟨fun _ => 1, fun _ => one_ne_zero, by simp⟩
 
+/- English proof (translation)
+Take `⟨c, hc, rfl⟩` from `h`. Use `⟨fun k => (c k)⁻¹, fun k => inv_ne_zero (hc k), funext fun p => ?_⟩` and prove the remaining obligations. Rewrite using `[← mul_assoc, inv_mul_cancel₀ (hc p.1), one_mul]`.
+-/
 theorem sameOrbit_symm {K : Type} {ι : K → Type} {z w : (Σ k, ι k) → ℂ} (h : SameOrbit z w) : SameOrbit w z := by
   obtain ⟨c, hc, rfl⟩ := h
   refine ⟨fun k => (c k)⁻¹, fun k => inv_ne_zero (hc k), funext fun p => ?_⟩
   rw [← mul_assoc, inv_mul_cancel₀ (hc p.1), one_mul]
 
+/- English proof (translation)
+Take `⟨c, hc, rfl⟩` from `h1`. Take `⟨d, hd, rfl⟩` from `h2`. Conclude with `⟨fun k => c k * d k, fun k => mul_ne_zero (hc k) (hd k), funext fun p => by simp only; ring⟩`.
+-/
 theorem sameOrbit_trans {K : Type} {ι : K → Type} {z w u : (Σ k, ι k) → ℂ} (h1 : SameOrbit z w)
     (h2 : SameOrbit w u) : SameOrbit z u := by
   obtain ⟨c, hc, rfl⟩ := h1
   obtain ⟨d, hd, rfl⟩ := h2
   exact ⟨fun k => c k * d k, fun k => mul_ne_zero (hc k) (hd k), funext fun p => by simp only; ring⟩
 
+/- English proof (translation)
+Take `⟨c, hc, hcy⟩` from `hst`. Use extensionality with `s`. Take `⟨d, g, h, hg, hh, hh0, hgs⟩` from `hB s`. Establish `key : ∀ ρ : Ω →+* ℂ, ρ s * eval (fun p => ρ (y p)) (map (Int.castRingHom ℂ) h) = eval (fun p => ρ (y p)) (map (Int.castRingHom ℂ) g)` using `fun ρ => by`. Rewrite using `[CurveOrbit.eval_comp, CurveOrbit.eval_comp, hgs, map_mul]`.
+
+Establish `e1` using `key σ`. Establish `e2` using `key τ`. Rewrite `e1` using `[hcy, CurveOrbit.eval_smul _ _ hh, CurveOrbit.eval_smul _ _ hg]`. Establish `hE : eval (fun p => τ (y p)) (map (Int.castRingHom ℂ) h) ≠ 0`. Rewrite using `[CurveOrbit.eval_comp]`.
+
+Conclude with `(map_ne_zero τ).mpr hh0`. Establish `hC : (∏ k, c k ^ d k) ≠ 0` using `Finset.prod_ne_zero_iff.mpr fun k _ => pow_ne_zero _ (hc k)`. Apply `mul_right_cancel₀ (mul_ne_zero hC hE)` to reduce the goal to its premises. Take the linear combination `e1 - (∏ k, c k ^ d k) * e2`.
+-/
 theorem eq_of_sameOrbit {K : Type} [Fintype K] {ι : K → Type} [∀ k, Fintype (ι k)] {Ω : Type} [Field Ω]
     {y : (Σ k, ι k) → Ω} (hB : Birational y) {σ τ : Ω →+* ℂ}
     (hst : SameOrbit (fun p => σ (y p)) (fun p => τ (y p))) : σ = τ := by
@@ -46,6 +62,13 @@ end CurveEmbedOrbit
 
 open CurveEmbedOrbit in
 
+/- English proof (translation)
+Introduce `K _ ι _ Ω _ y R hP hB hR hRu`. Take `⟨j, -, hj⟩` from `exists_chart hP`. Establish `hex : ∀ t : R, ∃ σ : Ω →+* ℂ, SameOrbit (t : (Σ k, ι k) → ℂ) (fun p => σ (y p))` using `fun t => CurveOrbit.exists_sameOrbit hP hB (hR t t.2)`. Use `choose f hf using hex`. Establish `hinj : Function.Injective f`.
+
+Introduce `t s hts`. Establish `h1 : SameOrbit (t : (Σ k, ι k) → ℂ) s` using `sameOrbit_trans (hf t) (by rw [hts]; exact sameOrbit_symm (hf s))`. Conclude with `Subtype.ext ((hRu t (hR t t.2)).unique ⟨t.2, sameOrbit_refl _⟩ ⟨s.2, h1⟩)`. Establish `hsurj : Function.Surjective f`. Introduce `τ`.
+
+Take `⟨t, ⟨htR, hzt⟩, -⟩` from `hRu _ (CurveOrbit.mem_mcPts τ y hj)`. Conclude with `⟨⟨t, htR⟩, eq_of_sameOrbit hB (sameOrbit_trans (sameOrbit_symm (hf ⟨t, htR⟩)) (sameOrbit_symm hzt))⟩`. Conclude with `⟨Equiv.ofBijective f ⟨hinj, hsurj⟩, hf⟩`.
+-/
 theorem CurveEmbedOrbit.proof : CurveEmbedOrbit.Statement := by
   intro K _ ι _ Ω _ y R hP hB hR hRu
   classical

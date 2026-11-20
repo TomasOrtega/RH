@@ -12,6 +12,11 @@ noncomputable section
 
 namespace GlobalTheory.TwistIsom
 
+/- English proof (translation)
+Simplify using `only [map_sum, map_mul, map_intCast, Finset.mul_sum, Finset.sum_smul, Finset.smul_sum]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[← Int.cast_smul_eq_zsmul R, smul_smul]`. Use `congr 1`.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem sum_twist_coord {ι κ R M : Type} [Fintype ι] [Fintype κ] [CommRing R] [AddCommGroup M] [Module R M]
     (σ : R ≃+* R) (x : R) (α : κ → ℤ) (ck : κ → ι → R) (e : ι → M) :
     ∑ k, α k • ∑ i, (x * σ (ck k i)) • e i = ∑ i, (x * σ (∑ k, (α k : R) * ck k i)) • e i := by
@@ -21,6 +26,9 @@ theorem sum_twist_coord {ι κ R M : Type} [Fintype ι] [Fintype κ] [CommRing R
   rw [← Int.cast_smul_eq_zsmul R, smul_smul]
   congr 1; ring
 
+/- English proof (translation)
+Simplify using `only [smul_sub, Finset.smul_sum, smul_smul, Finset.sum_sub_distrib, Finset.sum_smul]`. Rewrite using `[Finset.sum_comm (f := fun i k => ((α k : R) * ck k i) • e i)]`. Simplify using `only [Int.cast_smul_eq_zsmul]`.
+-/
 theorem sum_coord_sub {ι κ R M : Type} [Fintype ι] [Fintype κ] [CommRing R] [AddCommGroup M] [Module R M]
     (α : κ → ℤ) (b : κ → M) (ck : κ → ι → R) (e : ι → M) :
     ∑ k, α k • b k - ∑ i, (∑ k, (α k : R) * ck k i) • e i = ∑ k, (α k : R) • (b k - ∑ i, ck k i • e i) := by
@@ -34,6 +42,11 @@ namespace GlobalTheory.TwistIsom
 
 variable {E : Type} [Field E] [NumberField E] [IsCMField E]
 
+/- English proof (translation)
+Take `⟨φ⟩ : Nonempty (E →+* ℂ)` from `inferInstance`. Set `s : E ≃+* E` to `IsFractionRing.ringEquivOfRingEquiv σ`. Establish `hs : ∀ x : 𝓞 E, ((σ x : 𝓞 E) : E) = s x` using `fun x => (IsFractionRing.ringEquivOfRingEquiv_algebraMap σ x).symm`. Apply `RingOfIntegers.ext` to reduce the goal to its premises. Apply `φ.injective` to reduce the goal to its premises.
+
+Rewrite using `[H.bar_eq, hs, hs, H.bar_eq, IsCMField.complexEmbedding_complexConj]`. Conclude with `IsCMField.complexEmbedding_complexConj E (φ.comp s.toRingHom) _`.
+-/
 theorem bar_comm (H : Host E) (σ : 𝓞 E ≃+* 𝓞 E) (a : 𝓞 E) : σ (H.bar a) = H.bar (σ a) := by
   obtain ⟨φ⟩ : Nonempty (E →+* ℂ) := inferInstance
   let s : E ≃+* E := IsFractionRing.ringEquivOfRingEquiv σ
@@ -50,18 +63,30 @@ variable {H : Host E} (D : Datum H)
 
 def multSub (n : ℕ) : Submodule (𝓞 E) D.La := LinearMap.range (n • LinearMap.id : D.La →ₗ[𝓞 E] D.La)
 
+/- English proof (translation)
+Simplify using `only [Datum.ModN, multSub, LinearMap.mem_range, LinearMap.smul_apply, LinearMap.id_apply]`. Conclude with `⟨fun ⟨b, h⟩ => ⟨b, h.symm⟩, fun ⟨b, h⟩ => ⟨b, h.symm⟩⟩`.
+-/
 theorem modN_iff {n : ℕ} {x : D.La} : D.ModN n x ↔ x ∈ multSub D n := by
   simp only [Datum.ModN, multSub, LinearMap.mem_range, LinearMap.smul_apply, LinearMap.id_apply]
   exact ⟨fun ⟨b, h⟩ => ⟨b, h.symm⟩, fun ⟨b, h⟩ => ⟨b, h.symm⟩⟩
 
+/- English proof (translation)
+Take `⟨b, rfl⟩` from `hx`. Conclude with `⟨D.EF b y, by rw [map_nsmul, LinearMap.smul_apply, nsmul_eq_mul]⟩`.
+-/
 theorem EF_left {n : ℕ} {x : D.La} (hx : D.ModN n x) (y : D.La) : (n : ℤ) ∣ D.EF x y := by
   obtain ⟨b, rfl⟩ := hx
   exact ⟨D.EF b y, by rw [map_nsmul, LinearMap.smul_apply, nsmul_eq_mul]⟩
 
+/- English proof (translation)
+Take `⟨b, rfl⟩` from `hy`. Conclude with `⟨D.EF x b, by rw [map_nsmul, nsmul_eq_mul]⟩`.
+-/
 theorem EF_right (x : D.La) {n : ℕ} {y : D.La} (hy : D.ModN n y) : (n : ℤ) ∣ D.EF x y := by
   obtain ⟨b, rfl⟩ := hy
   exact ⟨D.EF x b, by rw [map_nsmul, nsmul_eq_mul]⟩
 
+/- English proof (translation)
+Establish `: D.EF x' y' - D.EF x y = D.EF (x' - x) y' + D.EF x (y' - y)`. Simplify using `only [map_sub, LinearMap.sub_apply]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[this]`. Conclude with `dvd_add (EF_left D hx _) (EF_right D _ hy)`.
+-/
 theorem EF_congr {n : ℕ} {x x' y y' : D.La} (hx : D.ModN n (x' - x)) (hy : D.ModN n (y' - y)) :
     (n : ℤ) ∣ D.EF x' y' - D.EF x y := by
   have : D.EF x' y' - D.EF x y = D.EF (x' - x) y' + D.EF x (y' - y) := by
@@ -70,6 +95,61 @@ theorem EF_congr {n : ℕ} {x x' y y' : D.La} (hx : D.ModN n (x' - x)) (hy : D.M
 
 end ModN
 
+/- English proof (translation)
+Take `⟨T, hTs, hTp⟩` from `GlobalTheory.T.trace_form_divisibility_criterion H N hN`. Take `⟨e, hsp, hEF⟩` from `GlobalTheory.T.hermitian_lattice_basis_mod_n H D N hN T hTs hTp`. Set `T₂ : 𝓞 E →+ ℤ` to `T.comp σ.symm.toRingHom.toAddMonoidHom`. Establish `hT₂ : ∀ c, T₂ c = T (σ.symm c)` using `fun c => rfl`. Establish `hT₂s : ∀ c, T₂ (H.bar c) = - T₂ c`.
+
+Introduce `c`. Rewrite using `[hT₂, hT₂, bar_comm H σ.symm, hTs]`. Establish `hT₂p : ∀ c : 𝓞 E, (∀ d : 𝓞 E, (N : ℤ) ∣ T₂ (c * d)) → ∃ b : 𝓞 E, c = N • b`. Introduce `c hc`. Take `⟨b, hb⟩` from `hTp (σ.symm c) (fun d => by simpa [hT₂] using hc (σ d))`.
+
+Conclude with `⟨σ b, by rw [← map_nsmul, ← hb, RingEquiv.apply_symm_apply]⟩`. Take `⟨μ, ν, ⟨b₁, hμν⟩, hμbar, hμT⟩` from `GlobalTheory.T.simultaneous_units_mod_n H N hN T T₂ hTs hT₂s hTp hT₂p`. Take `⟨x, b₂, hx⟩` from `GlobalTheory.T.norm_equation_mod_n H N hN μ hμbar ⟨ν, b₁, hμν⟩`. Establish `hxT : ∀ z : 𝓞 E, (N : ℤ) ∣ T (x * H.bar x * z) - T₂ z`. Introduce `z`.
+
+Establish `h1 : x * H.bar x * z = μ * z + N • (b₂ * z)`. Rewrite `hx`, the goal using `[nsmul_eq_mul]`. Take the linear combination `z * hx`. Rewrite using `[h1, map_add, map_nsmul, nsmul_eq_mul]`. Use `hμT z` as an intermediate fact.
+
+Establish `h2 : T (μ * z) + (N : ℤ) * T (b₂ * z) - T₂ z = (T (μ * z) - T₂ z) + (N : ℤ) * T (b₂ * z)` using `by ring`. Rewrite using `[h2]`. Conclude with `dvd_add this (dvd_mul_right _ _)`. Use `set y := H.bar x * ν with hy`. Establish `hxy : ∃ b : 𝓞 E, x * y - 1 = N • b` using `⟨b₂ * ν + b₁, by`.
+
+Rewrite `hx`, `hμν`, the goal using `[nsmul_eq_mul]`. Rewrite using `[hy]`. Take the linear combination `ν * hx + hμν⟩`. Establish `huq : ∀ δ : Fin (D.p + D.q) → 𝓞 E, D.ModN N (∑ i, δ i • e i) → ∀ i, ∃ b : 𝓞 E, δ i = N • b`. Introduce `δ hδ i`.
+
+Apply `hTp` to reduce the goal to its premises. Introduce `d`. Use `set s : Fin (D.p + D.q) → 𝓞 E := Pi.single i (H.bar.symm d) with hs`. Establish `h1` using `hEF δ s`. Establish `h2 : ∑ j, T (δ j * H.bar (s j)) = T (δ i * d)`.
+
+Rewrite using `[Finset.sum_eq_single i (fun j _ hj => by rw [hs, Pi.single_eq_of_ne hj, map_zero, mul_zero, map_zero]) (fun h => absurd (Finset.mem_univ i) h), hs, Pi.single_eq_same, RingEquiv.apply_symm_apply]`. Rewrite `h1` using `[h2]`. Establish `h3` using `EF_left D hδ (∑ j, s j • e j)`. Establish `: T (δ i * d) = D.EF (∑ j, δ j • e j) (∑ j, s j • e j) - (D.EF (∑ j, δ j • e j) (∑ j, s j • e j) - T (δ i * d))` using `by ring`. Rewrite using `[this]`.
+
+Conclude with `dvd_sub h3 h1`. Use `D.fin` as an intermediate fact. Use `D.proj` as an intermediate fact. Establish `: Module.Finite ℤ D.La` using `Module.Finite.trans (𝓞 E) D.La`. Establish `: Module.IsTorsionFree ℤ D.La` using `Module.IsTorsionFree.trans_faithfulSMul ℤ (𝓞 E) D.La`.
+
+Establish `: Module.Free ℤ D.La` using `Module.free_of_finite_type_torsion_free'`. Set `bs` to `Module.Free.chooseBasis ℤ D.La`. Use `choose ck hck using fun k => hsp (bs k)`. Set `v : Module.Free.ChooseBasisIndex ℤ D.La → D.La` to `fun k => ∑ i, (x * σ (ck k i)) • e i`. Set `g : D.La →+ D.La` to `(bs.constr ℤ v).toAddMonoidHom`.
+
+Establish `hg : ∀ a, g a = ∑ k, bs.equivFun a k • v k` using `fun a => bs.constr_apply_fintype ℤ v a`. Establish `key : ∀ (a : D.La) (c : Fin (D.p + D.q) → 𝓞 E), D.ModN N (a - ∑ i, c i • e i) → D.ModN N (g a - ∑ i, (x * σ (c i)) • e i)`. Introduce `a c hc`. Set `α` to `bs.equivFun a`. Set `c' : Fin (D.p + D.q) → 𝓞 E` to `fun i => ∑ k, (α k : 𝓞 E) * ck k i`.
+
+Establish `ha : a = ∑ k, α k • bs k` using `(bs.sum_equivFun a).symm`. Establish `h1 : a - ∑ i, c' i • e i = ∑ k, (α k : 𝓞 E) • (bs k - ∑ i, ck k i • e i)` using `by conv_lhs => rw [ha]`. Conclude with `sum_coord_sub α bs ck e`. Establish `hc' : D.ModN N (a - ∑ i, c' i • e i)`. Rewrite using `[h1, modN_iff]`.
+
+Conclude with `Submodule.sum_mem _ fun k _ => Submodule.smul_mem _ _ ((modN_iff D).1 (hck k))`. Establish `hδ : D.ModN N (∑ i, (c' i - c i) • e i)`. Establish `: ∑ i, (c' i - c i) • e i = (a - ∑ i, c i • e i) - (a - ∑ i, c' i • e i)`. Simplify using `only [sub_smul, Finset.sum_sub_distrib]`. Normalize the expressions using the abelian group laws.
+
+Rewrite using `[this, modN_iff]`. Conclude with `Submodule.sub_mem _ ((modN_iff D).1 hc) ((modN_iff D).1 hc')`. Use `choose β hβ using huq _ hδ`. Establish `h2 : g a = ∑ i, (x * σ (c' i)) • e i`. Rewrite using `[hg]`.
+
+Conclude with `sum_twist_coord σ x α ck e`. Establish `h3 : g a - ∑ i, (x * σ (c i)) • e i = ∑ i, N • ((x * σ (β i)) • e i)`. Rewrite using `[h2, ← Finset.sum_sub_distrib]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Establish `hci : c' i = c i + N • β i` using `by rw [← hβ i]; abel`.
+
+Rewrite using `[hci, map_add, map_nsmul, ← sub_smul, mul_add, add_sub_cancel_left, mul_smul_comm, smul_assoc]`. Rewrite using `[h3, modN_iff]`. Conclude with `Submodule.sum_mem _ fun i _ => (modN_iff D).1 ⟨_, rfl⟩`. Take `⟨bxy, hbxy⟩` from `hxy`. Use `⟨g, ?_, ?_, ?_⟩` and prove the remaining obligations.
+
+Introduce `c a`. Take `⟨ca, hca⟩` from `hsp a`. Establish `h1` using `key a ca hca`. Establish `h2` using `key (c • a) (fun i => c * ca i) (by`. Establish `: c • a - ∑ i, (c * ca i) • e i = c • (a - ∑ i, ca i • e i)`.
+
+Rewrite using `[smul_sub, Finset.smul_sum]`. Simplify using `only [smul_smul]`. Rewrite using `[this, modN_iff]`. Conclude with `Submodule.smul_mem _ _ ((modN_iff D).1 hca))`. Establish `h3 : ∑ i, (x * σ (c * ca i)) • e i = σ c • ∑ i, (x * σ (ca i)) • e i`.
+
+Rewrite using `[Finset.smul_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[smul_smul, map_mul]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree.
+
+Establish `: g (c • a) - σ c • g a = (g (c • a) - ∑ i, (x * σ (c * ca i)) • e i) - σ c • (g a - ∑ i, (x * σ (ca i)) • e i)` using `by rw [smul_sub, h3]; abel`. Rewrite using `[this, modN_iff]`. Conclude with `Submodule.sub_mem _ ((modN_iff D).1 h2) (Submodule.smul_mem _ _ ((modN_iff D).1 h1))`. Introduce `a`. Take `⟨ca, hca⟩` from `hsp a`.
+
+Use `⟨∑ i, (σ.symm (y * ca i)) • e i, ?_⟩` and prove the remaining obligations. Establish `h1` using `key (∑ i, (σ.symm (y * ca i)) • e i) (fun i => σ.symm (y * ca i)) ⟨0, by simp⟩`. Establish `h4 : ∀ i, (x * σ (σ.symm (y * ca i))) • e i = ca i • e i + N • ((bxy * ca i) • e i)`. Introduce `i`. Establish `hxy' : x * y = 1 + N • bxy` using `by rw [← hbxy]; abel`.
+
+Rewrite using `[RingEquiv.apply_symm_apply, ← mul_assoc, hxy', add_mul, one_mul, add_smul, smul_mul_assoc, smul_assoc]`. Establish `: g (∑ i, (σ.symm (y * ca i)) • e i) - a = (g (∑ i, (σ.symm (y * ca i)) • e i) - ∑ i, (x * σ (σ.symm (y * ca i))) • e i) + ∑ i, N • ((bxy * ca i) • e i) - (a - ∑ i, ca i • e i)`. Rewrite using `[Finset.sum_congr rfl (fun i _ => h4 i), Finset.sum_add_distrib]`. Normalize the expressions using the abelian group laws. Rewrite using `[this, modN_iff]`.
+
+Conclude with `Submodule.sub_mem _ (Submodule.add_mem _ ((modN_iff D).1 h1) (Submodule.sum_mem _ fun i _ => (modN_iff D).1 ⟨_, rfl⟩)) ((modN_iff D).1 hca)`. Introduce `a b`. Take `⟨ca, hca⟩` from `hsp a`. Take `⟨cb, hcb⟩` from `hsp b`. Establish `e1` using `EF_congr D (key a ca hca) (key b cb hcb)`.
+
+Establish `e2` using `hEF (fun i => x * σ (ca i)) (fun i => x * σ (cb i))`. Use `beta_reduce at e2`. Establish `e3 : (N : ℤ) ∣ ∑ i, T (x * σ (ca i) * H.bar (x * σ (cb i))) - ∑ i, T (ca i * H.bar (cb i))`. Rewrite using `[← Finset.sum_sub_distrib]`. Use `Finset.dvd_sum fun i _ => ?_` and prove the remaining obligations.
+
+Establish `: x * σ (ca i) * H.bar (x * σ (cb i)) = x * H.bar x * σ (ca i * H.bar (cb i))`. Simplify using `only [map_mul, ← bar_comm H σ]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[this]`. Establish `h` using `hxT (σ (ca i * H.bar (cb i)))`.
+
+Rewrite `h` using `[hT₂, RingEquiv.symm_apply_apply]`. Then use the resulting hypothesis. Establish `e4` using `hEF ca cb`. Establish `e5` using `EF_congr D hca hcb`. Use `dvd_sub (dvd_sub (dvd_add (dvd_add e1 e2) e3) e4) e5` as an intermediate fact. Take `⟨k, hk⟩` from `this`.
+
+Conclude with `⟨k, by linear_combination hk⟩`.
+-/
 theorem exists_modN (H : Host E) (D : Datum H) (σ : 𝓞 E ≃+* 𝓞 E) (N : ℕ) (hN : 0 < N) :
     ∃ g : D.La →+ D.La,
       (∀ (c : 𝓞 E) (a : D.La), D.ModN N (g (c • a) - σ c • g a)) ∧
@@ -209,6 +289,27 @@ end GlobalTheory.TwistIsom
 
 namespace GlobalTheory.TwistIsom
 
+/- English proof (translation)
+Introduce `E _ _ _ H D σ _`. Use `D.fin` as an intermediate fact. Use `D.proj` as an intermediate fact. Establish `: Module.Finite ℤ D.La` using `Module.Finite.trans (𝓞 E) D.La`. Establish `: Module.IsTorsionFree ℤ D.La` using `Module.IsTorsionFree.trans_faithfulSMul ℤ (𝓞 E) D.La`.
+
+Establish `: Module.Free ℤ D.La` using `Module.free_of_finite_type_torsion_free'`. Set `P : ℕ → (D.La →+ D.La) → Prop` to `fun n g => (∀ (c : 𝓞 E) (a : D.La), D.ModN n (g (c • a) - σ c • g a)) ∧ (∀ a : D.La, ∃ b : D.La, D.ModN n (g b - a)) ∧ (∀ a b : D.La, (n : ℤ) ∣ D.EF (g a) (g b) - D.EF a b)`. Establish `hmod : ∀ (n : ℕ) (g g' : D.La →+ D.La), 0 < n → P n g → (∀ a, ∃ b, g' a - g a = n • b) → P n g'`. Introduce `n g g' _ ⟨h1, h2, h3⟩ hgg`. Use `⟨fun c a => ?_, fun a => ?_, fun a b => ?_⟩` and prove the remaining obligations.
+
+Establish `: g' (c • a) - σ c • g' a = (g (c • a) - σ c • g a) + (g' (c • a) - g (c • a)) - σ c • (g' a - g a)` using `by rw [smul_sub]; abel`. Rewrite using `[this, modN_iff]`. Conclude with `Submodule.sub_mem _ (Submodule.add_mem _ ((modN_iff D).1 (h1 c a)) ((modN_iff D).1 (hgg _))) (Submodule.smul_mem _ _ ((modN_iff D).1 (hgg a)))`. Take `⟨b, hb⟩` from `h2 a`. Use `⟨b, ?_⟩` and prove the remaining obligations.
+
+Establish `: g' b - a = (g b - a) + (g' b - g b)` using `by abel`. Rewrite using `[this, modN_iff]`. Conclude with `Submodule.add_mem _ ((modN_iff D).1 hb) ((modN_iff D).1 (hgg b))`. Rewrite using `[← sub_add_sub_cancel _ (D.EF (g a) (g b))]`. Conclude with `dvd_add (EF_congr D (hgg a) (hgg b)) (h3 a b)`.
+
+Establish `hdiv : ∀ (n m : ℕ) (g : D.La →+ D.La), 0 < n → 0 < m → P (n * m) g → P n g`. Introduce `n m g _ _ ⟨h1, h2, h3⟩`. Establish `hr : ∀ x : D.La, D.ModN (n * m) x → D.ModN n x` using `fun x ⟨b, hb⟩ => ⟨m • b, by rw [hb, mul_smul]⟩`. Use `⟨fun c a => hr _ (h1 c a), fun a => ?_, fun a b => ?_⟩` and prove the remaining obligations. Take `⟨b, hb⟩` from `h2 a`.
+
+Conclude with `⟨b, hr _ hb⟩`. Conclude with `dvd_trans ⟨(m : ℤ), by push_cast; ring⟩ (h3 a b)`. Take `⟨f, hfP, hft⟩` from `GlobalTheory.T.compatible_system_of_lattice_maps D.La P hmod hdiv (fun n hn => exists_modN H D σ n hn)`. Use `⟨f, fun n hn => (hfP n hn).1, hft, fun n hn => (hfP n hn).2.1, ?_, fun n hn => (hfP n hn).2.2⟩` and prove the remaining obligations. Introduce `n hn a ha`.
+
+Establish `hall : ∀ b, (n : ℤ) ∣ D.EF a b`. Introduce `b`. Establish `h` using `(hfP n hn).2.2 a b`. Establish `h'` using `EF_left D ha (f n b)`. Establish `: D.EF a b = D.EF (f n a) (f n b) - (D.EF (f n a) (f n b) - D.EF a b)` using `by ring`.
+
+Rewrite using `[this]`. Conclude with `dvd_sub h' h`. Set `bs` to `Module.Free.chooseBasis ℤ D.La`. Set `ψ : D.La →ₗ[ℤ] ℤ` to `bs.constr ℤ (fun k => D.EF a (bs k) / n)`. Establish `hψ : n • ψ = D.EF a`.
+
+Use `bs.ext fun k => ?_` and prove the remaining obligations. Rewrite using `[LinearMap.smul_apply, Module.Basis.constr_basis, nsmul_eq_mul]`. Conclude with `Int.mul_ediv_cancel' (hall (bs k))`. Take `⟨a', ha'⟩` from `D.unimod.2 ψ`. Establish `h0 : D.EF (a - n • a') = D.EF 0`.
+
+Rewrite using `[map_sub, map_nsmul, ha', hψ, sub_self, map_zero]`. Conclude with `⟨a', sub_eq_zero.mp (D.unimod.1 h0)⟩`.
+-/
 theorem exists_semilinear_isometry : ∀ {E : Type} [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (D : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Datum H) (σ : 𝓞 E ≃+* 𝓞 E), σ H.w0 = H.w0 →
   ∃ f : ℕ → D.La →+ D.La,
     (∀ n : ℕ, 0 < n → ∀ (c : 𝓞 E) (a : D.La), D.ModN n (f n (c • a) - σ c • f n a)) ∧

@@ -12,6 +12,9 @@ open GroundTheory.Global.AdicLiesOver
 open GlobalTheory.CompanionTheory.FexTheta
 
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.CompanionTheory.FexTheta.HeckeUnit.cW_finprod_mul_chC | exact GlobalTheory.CompanionTheory.FexTheta.HeckeUnit.cW_finprod_mul_chC | (intros; apply GlobalTheory.CompanionTheory.FexTheta.HeckeUnit.cW_finprod_mul_chC <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.product_formula_global_character : ∀ (K : Type) [Field K] [NumberField K], Module.finrank ℚ K = 2 → IsTotallyComplex K →
   ∀ (DK : DatK K) (c : HeckeCharacter K) (n : ℤ) (t : ℝ) (S : Finset (PlK K)), AdmK DK c n t S →
   ∀ M : ∀ v : Pl, LM c v, (∀ v, (M v).ok) → ∀ κ : Kˣ,

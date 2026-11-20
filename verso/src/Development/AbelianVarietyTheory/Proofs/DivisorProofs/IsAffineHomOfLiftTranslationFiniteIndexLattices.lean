@@ -21,16 +21,25 @@ namespace GlobalTheory.LiftAffine
 section
 variable {A : Over (Sp ℂ)} [GrpObj A] {L : LB A.left} {g : ℕ} (u : HolUnif A L g)
 
+/- English proof (translation)
+Establish `e` using `u.ex_add (z - w) w`. Rewrite `e` using `[sub_add_cancel, h]`. Conclude with `(u.ker _).1 (mul_eq_right.1 e.symm)`.
+-/
 theorem sub_mem_of_ex_eq {z w : Fin g → ℂ} (h : u.ex z = u.ex w) : z - w ∈ u.Λ := by
   have e := u.ex_add (z - w) w
   rw [sub_add_cancel, h] at e
   exact (u.ker _).1 (mul_eq_right.1 e.symm)
 
+/- English proof (translation)
+Establish `e` using `u.ex_add (z - w) w`. Rewrite `e` using `[sub_add_cancel, (u.ker _).2 h, _root_.one_mul]`. Conclude with `e`.
+-/
 theorem ex_eq_of_sub_mem {z w : Fin g → ℂ} (h : z - w ∈ u.Λ) : u.ex z = u.ex w := by
   have e := u.ex_add (z - w) w
   rw [sub_add_cancel, (u.ker _).2 h, _root_.one_mul] at e
   exact e
 
+/- English proof (translation)
+Take `⟨z, hz⟩` from `u.ex_onto (Over.homMk (U := 𝟙_ (Over (Sp ℂ))) (V := A) (pointOfClosedPoint A.hom x hx) ((pointOfClosedPoint_comp A.hom x hx).trans rfl))`. Conclude with `⟨z, by rw [hz]; exact pointOfClosedPoint_apply A.hom x hx _⟩`.
+-/
 theorem exists_ex_apply_eq [LocallyOfFiniteType A.hom] (x : A.left) (hx : IsClosed ({x} : Set A.left)) :
     ∃ z, (u.ex z).left (IsLocalRing.closedPoint ℂ) = x := by
   obtain ⟨z, hz⟩ := u.ex_onto (Over.homMk (U := 𝟙_ (Over (Sp ℂ))) (V := A) (pointOfClosedPoint A.hom x hx)
@@ -39,6 +48,25 @@ theorem exists_ex_apply_eq [LocallyOfFiniteType A.hom] (x : A.left) (hx : IsClos
 
 end
 
+/- English proof (translation)
+Introduce `g A _ hA B _ hB L L' u u' a N hN hle hN' ψ hψ hex`. Use `hA.proper` as an intermediate fact. Use `hB.proper` as an intermediate fact. Establish `: IsProper (ψ ≫ B.hom)` using `by rw [hψ]; infer_instance`. Establish `: IsProper ψ` using `IsProper.of_comp ψ B.hom`.
+
+Establish `: JacobsonSpace A.left` using `LocallyOfFiniteType.jacobsonSpace A.hom`. Use `haveI := u'.discrete`. Use `haveI := holUnif_isZLattice u'`. Use `haveI : Module.Finite ℤ u'.Λ := ZLattice.module_finite ℝ u'.Λ`. Set `K : Submodule ℤ u'.Λ` to `u.Λ.comap u'.Λ.subtype`.
+
+Establish `hQ : Finite (u'.Λ ⧸ K)`. Use `Module.finite_of_fg_torsion _ fun q => ?_` and prove the remaining obligations. Proceed by induction on `q using Submodule.Quotient.induction_on with`. Consider the case `H l`. Use `⟨⟨(N : ℤ), mem_nonZeroDivisors_of_ne_zero (by exact_mod_cast hN.ne')⟩, ?_⟩` and prove the remaining obligations.
+
+Express the relevant statement in the definitionally equal form `((N : ℤ) • Submodule.Quotient.mk l : u'.Λ ⧸ K) = 0`. Rewrite using `[← Submodule.Quotient.mk_smul, Submodule.Quotient.mk_eq_zero]`. Express the relevant statement in the definitionally equal form `((((N : ℤ) • l : u'.Λ)) : Fin g → ℂ) ∈ u.Λ`. Rewrite using `[Submodule.coe_smul, natCast_zsmul]`. Conclude with `hN' _ l.2`.
+
+Establish `hLQF : LocallyQuasiFinite ψ`. Use `GlobalTheory.locallyQuasiFinite_of_finite_fibres_closedPoints ψ fun y hy => ?_` and prove the remaining obligations. Establish `hcl : IsClosed ({ψ y} : Set B.left)` using `by simpa using ψ.isClosedMap _ hy`. Use `GlobalTheory.finite_of_isClosed_of_finite_inter_closedPoints (hcl.preimage ψ.continuous) ?_` and prove the remaining obligations. Take `⟨z₀, rfl⟩` from `exists_ex_apply_eq u y hy`.
+
+Set `r` to `Function.surjInv (Submodule.Quotient.mk_surjective K)`. Establish `hr : ∀ q, Submodule.Quotient.mk (r q) = q` using `Function.surjInv_eq (Submodule.Quotient.mk_surjective K)`. Use `(Set.finite_range fun q : u'.Λ ⧸ K => (u.ex (z₀ + ((r q : u'.Λ) : Fin g → ℂ))).left (IsLocalRing.closedPoint ℂ)).subset ?_` and prove the remaining obligations. Introduce and unpack `x ⟨hx, hxc⟩`. Take `⟨z, rfl⟩` from `exists_ex_apply_eq u x hxc`.
+
+Apply the tactic sequence `have hx' : ((u.ex z).left ≫ ψ) (IsLocalRing.closedPoint ℂ) = ((u.ex z₀).left ≫ ψ) (IsLocalRing.closedPoint ℂ) := by first | exact hx | simpa using hx | (simp only [Scheme.Hom.comp_apply]; exact hx)`. Rewrite `hx'` using `[hex, hex]`. Establish `e1 : u'.ex (z + a) = u'.ex (z₀ + a)` using `Over.OverMorphism.ext (ext_of_apply_closedPoint_eq B.hom (Over.w _) (Over.w _) hx')`. Establish `hl : z - z₀ ∈ u'.Λ`. Simplify `sub_mem_of_ex_eq u' e1` using `[add_sub_add_right_eq_sub]`.
+
+Use `⟨Submodule.Quotient.mk ⟨z - z₀, hl⟩, ?_⟩` and prove the remaining obligations. Establish `h2 : (r (Submodule.Quotient.mk ⟨z - z₀, hl⟩) - ⟨z - z₀, hl⟩ : u'.Λ) ∈ K` using `(Submodule.Quotient.eq K).1 (hr _)`. Establish `h3 : ((r (Submodule.Quotient.mk ⟨z - z₀, hl⟩) : u'.Λ) : Fin g → ℂ) - (z - z₀) ∈ u.Λ` using `h2`. Simplify using `only`. Rewrite using `[ex_eq_of_sub_mem u (z := z₀ + _) (w := z) (by convert h3 using 1; abel)]`.
+
+Establish `: IsFinite ψ` using `.of_isProper_of_locallyQuasiFinite _`. Use `infer_instance`.
+-/
 theorem isAffineHom_of_lift : ∀ (g : ℕ) (A : Over (Sp ℂ)) [GrpObj A], IsAbelianScheme A → ∀ (B : Over (Sp ℂ)) [GrpObj B], IsAbelianScheme B →
     ∀ (L : LB A.left) (L' : LB B.left) (u : HolUnif A L g) (u' : HolUnif B L' g) (a : Fin g → ℂ) (N : ℕ),
     0 < N → u.Λ ≤ u'.Λ → (∀ x ∈ u'.Λ, N • x ∈ u.Λ) →

@@ -23,6 +23,13 @@ noncomputable section
 
 namespace GlobalTheory.ChainOnto
 
+/- English proof (translation)
+Establish `hT` using `(GlobalTheory.MultMem.mem_mult_iff D c.θ s.V _ s.M _ _ _).1 ((mem_multT _ _ _ _ _).1 u.2)`. Establish `key : ∀ y : SmT s.M, PiLocalization₂.val u y = (PiTensorProduct.lift (PiTensorProduct.lift.symm (u : SmT s.M →ₗ[ℂ] (GA D s.V → ℂ)))) y`. Introduce `y`. Rewrite using `[LinearEquiv.apply_symm_apply]`. Proceed by induction on `x using PiTensorProduct.induction_on with`.
+
+Consider the case `smul_tprod r f`. Rewrite using `[key, map_smul, PiTensorProduct.lift.tprod]`. Conclude with `⟨GlobalTheory.MultMem.isAutFunSm_smul r (hT.aut f), GlobalTheory.MultMem.isCuspFun_smul r (hT.cusp f)⟩`. Consider the case `add x y hx hy`. Establish `e : PiLocalization₂.val u (x + y) = PiLocalization₂.val u x + PiLocalization₂.val u y` using `map_add _ _ _`.
+
+Rewrite using `[e]`. Conclude with `⟨GlobalTheory.MultMem.isAutFunSm_add hx.1 hy.1, GlobalTheory.MultMem.isCuspFun_add hx.1.toIsAutFun hy.1.toIsAutFun hx.2 hy.2⟩`.
+-/
 theorem PiLocalization₂.val_autCusp {D : D7} (c : Com D) (s : PiLocalization₂ D) (u : s.CC c) (x : SmT s.M) :
     IsAutFunSm c.θ s.V (PiLocalization₂.val u x) ∧ IsCuspFun s.V (PiLocalization₂.val u x) := by
   have hT := (GlobalTheory.MultMem.mem_mult_iff D c.θ s.V _ s.M _ _ _).1 ((mem_multT _ _ _ _ _).1 u.2)
@@ -39,10 +46,26 @@ theorem PiLocalization₂.val_autCusp {D : D7} (c : Com D) (s : PiLocalization�
     exact ⟨GlobalTheory.MultMem.isAutFunSm_add hx.1 hy.1,
       GlobalTheory.MultMem.isCuspFun_add hx.1.toIsAutFun hy.1.toIsAutFun hx.2 hy.2⟩
 
+/- English proof (translation)
+Use `show D.R.r + (k + 1) * D.R.t = D.R.r + k * D.R.t + D.R.t`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem rankY_succ {D : D7} (k : ℕ) : D.R.rankY (k + 1) = D.R.rankY k + D.R.t := by
   show D.R.r + (k + 1) * D.R.t = D.R.r + k * D.R.t + D.R.t
   ring
 
+/- English proof (translation)
+Introduce `hRD hHowe D _ hND c hc k hk s s' hs hs' p hp u B φ hu v _ hne`. Establish `hlat'` using `(GlobalTheory.T.thetaChainStage_lattice_stabilizer_params_off_set D c hc (k + 1) hk s' hs').2`. Establish `hlat` using `(GlobalTheory.T.thetaChainStage_lattice_stabilizer_params_off_set D c hc k hk.le s hs).2`. Use `set y := PiLocalization₂.val u v with hy`. Establish `hy0 : y ≠ 0`.
+
+Introduce `h`. Apply `hne` to reduce the goal to its premises. Use function extensionality and compare the values at `x`. Simplify using `[Step.up, h]`. Establish `hyB : IsParamFunV s.V c.S (fun g => conj (y g)) B` using `(hlat _ B).1 (hu.2 v hy0)`.
+
+Establish `hconj : (fun x => conj (p.up φ y x)) = fun x => ∫ g in s.fd, thetaKO p.ω g x (p.pt φ) * conj (y g) ∂s.ν`. Use function extensionality and compare the values at `x`. Simplify using `only [Step.up]`. Rewrite using `[← integral_conj]`. Use `congr 1`.
+
+Use function extensionality and compare the values at `g`. Simplify using `[map_mul]`. Establish `hne' : (fun x => ∫ g in s.fd, thetaKO p.ω g x (p.pt φ) * conj (y g) ∂s.ν) ≠ 0`. Rewrite using `[← hconj]`. Introduce `h`.
+
+Apply `hne` to reduce the goal to its premises. Use function extensionality and compare the values at `x`. Simplify using `using congrFun h x`. Establish `hrank : s'.V.rank = s.V.rank + D.R.t` using `by rw [hs'.rank, hs.rank, rankY_succ]`. Establish `hYA` using `PiLocalization₂.val_autCusp c s u v`.
+
+Unfold `ParFun`. Rewrite using `[hlat', hconj]`. Introduce `w0 hw0 w h`. Establish `hw0' : w0 ∉ c.S` using `by simpa using hw0`. Conclude with `GlobalTheory.T.thetaIntegral_conjCuspForm_parameterTransfer hRD D (GlobalTheory.T.sphericalParameterTransfer_all_finitePlaces hHowe D) c.ψ c.θ s.V s'.V _ _ p.ω hc.inf hp.weil D.R.t hrank s.ν s.fd hs.haar hs.fund w0 (fun w' hw' => GlobalTheory.T.thetaChain_step_chars_unramified_of …`.
+-/
 theorem upPar_of_transfer : GlobalTheory.Published.CuspRapidDecay → GlobalTheory.Hk3.HoweUnram → ∀ D : D7, LevFacts D → UpPar D := by
   intro hRD hHowe D _ hND c hc k hk s s' hs hs' p hp u B φ hu v _ hne
   have hlat' := (GlobalTheory.T.thetaChainStage_lattice_stabilizer_params_off_set D c hc (k + 1) hk s' hs').2

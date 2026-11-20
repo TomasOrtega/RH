@@ -15,6 +15,9 @@ namespace GlobalTheory.RamZero
 
 open GlobalTheory.Mem.Col2.TwAtStd
 
+/- English proof (translation)
+Use `show ψ₀ ((I.eCls0 l u a).symm (I.eCls0 l u a c)) = ψ₀ c`. Rewrite using `[Equiv.symm_apply_apply]`.
+-/
 theorem levelZero_classTransport_values {B : GlobalTheory.Mem.Base} {X : PreX B.toPre} (I : TC B X) (l : I.Laws) (Z : TC.Later B (I.cols l))
     (u : B.Word) (a : I.ι) (ψ₀ : ((I.rec7 l Z).mem u).C.cls 0 → ((I.rec7 l Z).mem u).C.Y 0 → ℂ)
     (c : (I.stp u I.mu0 0).Cl) :
@@ -22,6 +25,23 @@ theorem levelZero_classTransport_values {B : GlobalTheory.Mem.Base} {X : PreX B.
   show ψ₀ ((I.eCls0 l u a).symm (I.eCls0 l u a c)) = ψ₀ c
   rw [Equiv.symm_apply_apply]
 
+/- English proof (translation)
+Introduce `B X I hI l Z _ u a ψ₀`. Establish `hval` using `levelZero_classTransport_values I l Z u a ψ₀`. Establish `e1` using `mem_Fi_of_free (I.stp u I.mu0 0) B.fields.emb B.embLL (lamT (B.hcW u) 0) (l.lev u I.mu0).free0 ψ₀`. Establish `e2` using `mem_Fi_of_free (I.stp u a 0) B.fields.emb B.embLL (lamT (B.hcW u) 0) (l.lev u a).free0 ((I.rec7 l Z).e0Tw u a ψ₀)`. Establish `hFi : ψ₀ ∈ ((I.rec7 l Z).mem u).A.Mu0 ↔ (I.rec7 l Z).e0Tw u a ψ₀ ∈ (I.fm l u a).Fi 0`.
+
+Use `e1.trans (Iff.trans ⟨fun h c' => ?_, fun h c => ?_⟩ e2.symm)` and prove the remaining obligations. Take `⟨c, rfl⟩` from `(I.eCls0 l u a).surjective c'`. Use `h c` as an intermediate fact. Rewrite `this` using `[← hval c]`. Conclude with `this`.
+
+Use `h (I.eCls0 l u a c)` as an intermediate fact. Rewrite `this` using `[hval c]`. Conclude with `this`. Establish `hN : ∀ (v : ((I.rec7 l Z).mem u).A.vT) (c : (I.stp u I.mu0 0).Cl), ∑ᶠ s : ((I.atT l u a).Fv v)ˣ, (I.fm l u a).dilT 0 v s (I.eCls0 l u a c) ((I.rec7 l Z).e0Tw u a ψ₀ ((I.fm l u a).dil 0 v s (I.eCls0 l u a c))) = ((I.rec7 l Z).mem u).A.Nm v ψ₀ c`. Introduce `v c`.
+
+Establish `eR : ∀ c' : ((I.rec7 l Z).mem u).C.cls 0, ((I.rec7 l Z).mem u).A.Nm v ψ₀ c' = ∑ s, (((I.rec7 l Z).fm u).dilT 0 v s c') (ψ₀ (((I.rec7 l Z).fm u).dil 0 v s c'))` using `fun c' => by`. Unfold `ColumnsAtT.Nm`. Rewrite using `[LinearMap.sum_apply, Finset.sum_apply]`. Conclude with `Finset.sum_congr rfl fun x _ => ((I.rec7 l Z).fm u).rhoT_dil v x ψ₀ c'`. Rewrite using `[eR c]`.
+
+Use `letI := (I.atT l u a).FvFin v`. Use `letI := (I.atT l u a).FvDec v`. Rewrite using `[finsum_eq_sum_of_fintype]`. Use `Fintype.sum_equiv (Equiv.refl _) _ _ fun s => ?_` and prove the remaining obligations. Use `show (I.atIn u a).dilT B.fields.emb B.embLL 0 v s (I.eCls0 l u a c) ((I.rec7 l Z).e0Tw u a ψ₀ ((I.atIn u a).dil 0 v s (I.eCls0 l u a c))) = (I.atIn u I.mu0).dilT B.fields.emb B.embLL 0 v s c (ψ₀ ((I.atIn u I.mu0).dil 0 v s c))`.
+
+Rewrite using `[dil_eCls0 B X I hI l u a v s c, dilT_eCls0 B X I hI l u a v s c, hval]`. Unfold `ColumnsAtT.Mram GlobalTheory.AdForm.RamT`. Rewrite using `[Submodule.mem_inf, Submodule.mem_iInf]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨h1, h2⟩`.
+
+Use `⟨hFi.1 h1, fun v c' => ?_⟩` and prove the remaining obligations. Take `⟨c, rfl⟩` from `(I.eCls0 l u a).surjective c'`. Use `(hN v c).trans ?_` and prove the remaining obligations. Conclude with `congrFun (LinearMap.mem_ker.1 (h2 v)) c`. Introduce and unpack `⟨h1, h2⟩`.
+
+Conclude with `⟨hFi.2 h1, fun v => LinearMap.mem_ker.2 (funext fun c => (hN v c).symm.trans (h2 v (I.eCls0 l u a c)))⟩`.
+-/
 theorem mram_iff_ramT : ∀ {B : GlobalTheory.Mem.Base} {X : PreX B.toPre} (I : TC B X), I.Ok → ∀ (l : I.Laws) (Z : TC.Later B (I.cols l)), I.Law0 l → ∀ (u : B.Word) (a : I.ι) (ψ₀ : ((I.rec7 l Z).mem u).C.cls 0 → ((I.rec7 l Z).mem u).C.Y 0 → ℂ), ψ₀ ∈ ((I.rec7 l Z).mem u).A.Mram ↔ GlobalTheory.AdForm.RamT (I := I) (l := l) (u := u) (a := a) 0 ((I.rec7 l Z).e0Tw u a ψ₀) := by
   intro B X I hI l Z _ u a ψ₀
   have hval := levelZero_classTransport_values I l Z u a ψ₀

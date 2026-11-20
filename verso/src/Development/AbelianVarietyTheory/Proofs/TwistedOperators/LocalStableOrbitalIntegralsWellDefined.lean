@@ -19,6 +19,17 @@ namespace GlobalTheory.TrPhiOK
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E} {r n : ℕ}
   {P : PPol σ r} {J : Matrix (Fin n) (Fin n) E}
 
+/- English proof (translation)
+Use `⟨Set.toFinite _, fun x φ h => ?_⟩` and prove the remaining obligations. Use `haveI := hU μ hμ`. Use `set q : XSet P k J := ⟨QuotientGroup.mk x, x, φ, rfl, h⟩ with hq`. Take `⟨hx0, h0⟩` from `q.2.choose_spec.choose_spec`. Use `set x0 := q.2.choose`.
+
+Use `set φ0 := q.2.choose_spec.choose`. Express the relevant statement in the definitionally equal form `HasOrbInt μ (gam h) (centMeas h dt) f (orbInt μ (gam h0) (centMeas h0 dt) f)`. Establish `halg0` using `GlobalTheory.T.torusElement_charpoly_regular_centralizer F E σ hσ r n P J hJ k x0 φ0 h0`. Take `⟨e0, he0, hm0⟩` from `GlobalTheory.T.unitaryTorus_equiv_centralizer_with_measure F E σ hσ r n P J hJ k x0 φ0 h0`. Take `⟨e, he, hm⟩` from `GlobalTheory.T.unitaryTorus_equiv_centralizer_with_measure F E σ hσ r n P J hJ k x φ h`.
+
+Use `haveI : (centMeas h0 dt).IsHaarMeasure := by rw [hm0]; exact e0.isHaarMeasure_map dt`. Use `haveI : (centMeas h0 dt).IsMulRightInvariant := isMulRightInvariant_cent (isMulCommutative_cent_HA halg0.2.1) _`. Establish `H0 : HasOrbInt μ (gam h0) (centMeas h0 dt) f (orbInt μ (gam h0) (centMeas h0 dt) f)` using `(hpr _ halg0.2.1).hasOrbInt hf hc`. Take `⟨g, hg⟩` from `(GlobalTheory.T.normClasses_iff_conj_unitaryTorusEllipticElements F E σ hσ r n P J hJ k x0 φ0 h0 x φ h).1 (by rw [hx0])`. Establish `hgam : g * gam h0 * g⁻¹ = gam h` using `(hg _).symm`.
+
+Establish `hmeas : centMeas h dt = (centMeas h0 dt).map (centEquiv (conjEquiv g) (gam h0) hgam)`. Rewrite using `[hm, hm0, Measure.map_map (map_continuous _).measurable (map_continuous _).measurable]`. Use `congr 1`. Use function extensionality and compare the values at `t`. Apply `Subtype.ext` to reduce the goal to its premises.
+
+Express the relevant statement in the definitionally equal form `(e t).1 = g * (e0 t).1 * g⁻¹`. Rewrite using `[he, he0, hg]`. Rewrite using `[hmeas]`. Conclude with `((hasOrbInt_conj (dh := μ) (dt := centMeas h0 dt) g hgam f _).1).2 H0`.
+-/
 theorem phiOK_of (hσ : IsCMExt F E σ) (hJ : IsHermND σ J) (k : Type) [Field k] [Algebra F k] [TopologicalSpace k]
     [IsTopologicalRing k] [T2Space k] [LocallyCompactSpace (HA k σ J)] [SecondCountableTopology (HA k σ J)]
     [T2Space (HA k σ J)] (hfin : Finite (Cls P k))
@@ -59,6 +70,11 @@ end GlobalTheory.TrPhiOK
 
 open GlobalTheory.TrPhiOK in
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ hσ r n P J hJ`. Establish `hfin` using `GlobalTheory.T.finite_unitaryTorusNormClasses_at_all_places F E σ hσ r P`. Use `⟨fun v μ dt f hμ hdt hf hc => ?_, fun w μ dt f hμ hdt hf hc => ?_⟩` and prove the remaining obligations. Establish `hU` using `(GlobalTheory.LocalUnitaryUnimod.unimodularOver_adicCompletion F E σ hσ n J hJ v).1`. Conclude with `phiOK_of hσ hJ (Fv F v) (hfin.1 v) hU.2.2.2.2.2.2 (fun g hg => isProperOrbit_GLoc hσ hJ hg) μ dt f hf hc`.
+
+Use `haveI : SecondCountableTopology w.Completion := (InfinitePlace.Completion.isometry_extensionEmbedding w).isEmbedding.secondCountableTopology`. Establish `hU` using `(GlobalTheory.ArchUnitaryUnimod.unimodularOver_of_artinian (σ := σ) w.Completion hσ hJ).1`. Conclude with `phiOK_of hσ hJ w.Completion (hfin.2 w) hU.2.2.2.2.2.2 (fun g hg => isProperOrbit_GArch hσ hJ hg) μ dt f hf hc`.
+-/
 theorem GlobalTheory.TrPhiOK.phiOK_local : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E), IsCMExt F E σ → ∀ (r n : ℕ) (P : PPol σ r) (J : Matrix (Fin n) (Fin n) E), IsHermND σ J → (∀ (v : HeightOneSpectrum (𝓞 F)) (μ : Measure (GLoc σ J v)) (dt : Measure (Tor P (Fv F v))) (f : GLoc σ J v → ℂ), μ.IsHaarMeasure → dt.IsHaarMeasure → Continuous f → HasCompactSupport f → PhiOK (J := J) μ dt f) ∧ ∀ (w : InfinitePlace F) (μ : Measure (GArch σ J w)) (dt : Measure (Tor P w.Completion)) (f : GArch σ J w → ℂ), μ.IsHaarMeasure → dt.IsHaarMeasure → Continuous f → HasCompactSupport f → PhiOK (J := J) μ dt f := by
   intro F E _ _ _ _ _ σ hσ r n P J hJ
   have hfin := GlobalTheory.T.finite_unitaryTorusNormClasses_at_all_places F E σ hσ r P

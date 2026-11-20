@@ -7,6 +7,9 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 namespace GlobalTheory.ArchRec
 
+/- English proof (translation)
+The claim follows from `GlobalTheory.T.realThetaIntertwiners_proportional_of_discreteSeries`.
+-/
 theorem itLine_of_hypotheses :
     GlobalTheory.Published.DiscreteSeriesCover → GlobalTheory.Published.HarishChandraModules → ∀ D : D7, GlobalTheory.Chain.ItLine D :=
   GlobalTheory.T.realThetaIntertwiners_proportional_of_discreteSeries

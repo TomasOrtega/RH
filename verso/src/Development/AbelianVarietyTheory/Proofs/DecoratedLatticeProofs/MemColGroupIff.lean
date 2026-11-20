@@ -22,6 +22,11 @@ variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algeb
 
 def IsInt (m : GL (Fin n) (AfE F E)) : Prop := (∀ i j, m.1 i j ∈ RInt F E) ∧ ∀ i j, (m⁻¹).1 i j ∈ RInt F E
 
+/- English proof (translation)
+Establish `h1 : ∀ j i, (Pi.single j 1 : Fin n → AfE F E) i ∈ RInt F E` using `fun j i => by`. Rewrite using `[Pi.single_apply]`. Use `split_ifs`. Use `exacts [one_mem _, zero_mem _]`. Use `⟨fun i j => by simpa using (h _).1 (h1 j) i, fun i j => ?_⟩` and prove the remaining obligations.
+
+Use `(h ((m⁻¹).1 *ᵥ Pi.single j 1)).2 (by` as an intermediate fact. Rewrite using `[Matrix.mulVec_mulVec, ← Units.val_mul, mul_inv_cancel, Units.val_one, Matrix.one_mulVec]`. Conclude with `h1 j) i`. Simplify using `using this`.
+-/
 theorem isInt_of {m : GL (Fin n) (AfE F E)} (h : ∀ z : Fin n → AfE F E, (∀ i, z i ∈ RInt F E) ↔ ∀ i, (m.1 *ᵥ z) i ∈ RInt F E) :
     IsInt m := by
   have h1 : ∀ j i, (Pi.single j 1 : Fin n → AfE F E) i ∈ RInt F E := fun j i => by
@@ -68,6 +73,19 @@ section Adelic
 
 variable {D : D7}
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce `h i`. Proceed by induction on `h using AddSubgroup.closure_induction with`. Consider the case `mem y hy`. Take `⟨a, ha, x, hx, rfl⟩` from `hy`.
+
+Conclude with `AddSubgroup.subset_closure ⟨a, ha, ⟨x i, (hL x).1 hx i⟩, rfl⟩`. Consider the case `zero => exact zero_mem _`. Consider the case `add y z _ _ hy hz => exact add_mem hy hz`. Consider the case `neg y _ hy => exact neg_mem hy`. Introduce `h`.
+
+Rewrite using `[← Finset.univ_sum_single z]`. Use `sum_mem fun i _ => ?_` and prove the remaining obligations. Establish `hi` using `h i`. Generalize the expression as in `z i = c at hi`. Proceed by induction on `hi using AddSubgroup.closure_induction with`.
+
+Consider the case `mem y hy`. Take `⟨a, ha, x, rfl⟩` from `hy`. Use `AddSubgroup.subset_closure ⟨a, ha, Pi.single i (x : D.host.E), (hL _).2 fun j => ?_, funext fun j => ?_⟩` and prove the remaining obligations. Rewrite using `[Pi.single_apply] split_ifs exacts [x.isIntegral_coe, isIntegral_zero]`. Rewrite using `[Pi.single_apply, Pi.single_apply] split_ifs exacts [rfl, (TensorProduct.tmul_zero _ _).symm]`.
+
+Consider the case `zero => rw [Pi.single_zero]`. Conclude with `zero_mem _`. Consider the case `add y z _ _ hy hz => rw [Pi.single_add]`. Conclude with `add_mem hy hz`. Consider the case `neg y _ hy => rw [Pi.single_neg]`.
+
+Conclude with `neg_mem hy`.
+-/
 theorem mem_latHat_iff {n : ℕ} {L : Set (Fin n → D.host.E)} (hL : ∀ z, z ∈ L ↔ z ∈ intVec D n)
     (z : Fin n → Af D.host.F ⊗[D.host.F] D.host.E) : z ∈ latHat D.host.F D.host.E L ↔ ∀ i, z i ∈ intAE D := by
   constructor
@@ -100,6 +118,17 @@ theorem mem_latHat_iff {n : ℕ} {L : Set (Fin n → D.host.E)} (hL : ∀ z, z �
 
 set_option maxHeartbeats 1000000 in
 
+/- English proof (translation)
+Substitute `hn` using the available equality. Establish `h1 : ∀ a : Fin V.rank → AE D, (∀ i, a i ∈ GlobalTheory.FinPl.idAt D fun _ => True) → (a ∈ GlobalTheory.FinPl.latV V L (fun _ => True) ↔ ∀ i, toEAf D (a i) ∈ Formalism.L2.DIV.RInt D.host.F D.host.E)` using `fun a ha => (GlobalTheory.FinPl.KOpen.mem_latV_iff V L _ a ha).trans ((mem_latHat_iff hL _).trans (forall_congr' fun i => GlobalTheory.IdemSupport.mem_intAE_iff _))`. Establish `h2 : ∀ (a : Fin V.rank → AE D) i, toEAf D ((mt V κ *ᵥ a) i) = (y.1 *ᵥ fun j => toEAf D (a j)) i` using `fun a i => by`. Rewrite using `[← hy]`. Conclude with `RingHom.map_mulVec (toEAf D) _ a i`.
+
+Prove the components needed by the constructor for the conclusion. Introduce `h`. Use `isInt_of fun z => ?_` and prove the remaining obligations. Set `sw` to `(Algebra.TensorProduct.comm D.host.F (Af D.host.F) D.host.E)`. Use `choose a ha ha' using fun i => GlobalTheory.KStabBridge.exists_fin_lift (D := D) (sw.symm (z i))`.
+
+Establish `hz : ∀ i, toEAf D (a i) = z i` using `fun i => (congrArg sw (ha' i)).trans (sw.apply_symm_apply _)`. Establish `hi : ∀ i, a i ∈ GlobalTheory.FinPl.idAt D fun _ => True` using `fun i => Submodule.mem_inf.2 ⟨ha i, (Submodule.mem_iInf _).2 fun u => absurd trivial u.2⟩`. Use `h a hi` as an intermediate fact. Rewrite `this` using `[h1 a hi, h1 _ (GlobalTheory.FinPl.KOpen.supp_mulVec V _ κ hi)]`. Simplify using `only [h2, hz] at this`.
+
+Conclude with `this`. Introduce `h a ha`. Rewrite using `[h1 a ha, h1 _ (GlobalTheory.FinPl.KOpen.supp_mulVec V _ κ ha)]`. Simplify using `only [h2]`. Use `⟨PtExist.mulVec_int h.1, fun h' i => ?_⟩` and prove the remaining obligations.
+
+Use `PtExist.mulVec_int h.2 h' i` as an intermediate fact. Rewrite `this` using `[Matrix.mulVec_mulVec, Units.inv_mul, Matrix.one_mulVec]`. Then use the resulting hypothesis.
+-/
 theorem moves_iff {V : HSp D} {L : GlobalTheory.FinPl.Lat V} (hL : ∀ z, z ∈ L ↔ z ∈ intVec D V.rank) {κ : GA D V} {n : ℕ} (hn : V.rank = n)
     {y : GL (Fin n) (EF D)} (hy : finM V hn κ = y.1) :
     GlobalTheory.FinPl.Moves V κ L L (fun _ => True) ↔ IsInt (F := D.host.F) (E := D.host.E) y := by

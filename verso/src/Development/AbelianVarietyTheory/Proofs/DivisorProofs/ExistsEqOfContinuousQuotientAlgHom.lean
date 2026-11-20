@@ -12,6 +12,13 @@ namespace GlobalTheory
 
 open AffinePoints in
 
+/- English proof (translation)
+Establish `: IsNoetherianRing A` using `Algebra.FiniteType.isNoetherianRing ℂ A`. Establish `key (s r : A) (h : b * s = a * r) (e : A →ₐ[ℂ] ℂ) : e s = ψ e * e r`. Use `congrFun (Continuous.ext_on (dense_nonvanishing hb) (continuous_eval s) (hψ.mul (continuous_eval r)) fun w hw => mul_left_cancel₀ hw ?_) e` and prove the remaining obligations. Establish `h1` using `congrArg w h`. Rewrite `h1` using `[map_mul, map_mul, ← hab w]`.
+
+Conclude with `h1.trans (_root_.mul_assoc _ _ _)`. Distinguish the cases in `H : b ∣ a`. Take `⟨c, hc⟩` from `H`. Conclude with `⟨c, fun e => by rw [key c 1 (by rw [hc, _root_.mul_one]) e, map_one, _root_.mul_one]⟩`. Take `⟨p, hp, s, r, hs, hr, h⟩` from `ContinuousQuotient.exists_prime_of_not_dvd hb H`.
+
+Establish `h0 : Ideal.Quotient.mkₐ ℂ p s ≠ 0` using `fun h => hs (Ideal.Quotient.eq_zero_iff_mem.mp h)`. Take `⟨e, he⟩` from `not_forall.mp fun h => h0 (eq_zero_of_forall_algHom_complex _ h)`. Use `(he ((key s r h (e.comp (Ideal.Quotient.mkₐ ℂ p))).trans ?_)).elim` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `_ * e (Ideal.Quotient.mk p r) = 0`. Rewrite using `[Ideal.Quotient.eq_zero_iff_mem.mpr hr, map_zero, mul_zero]`.
+-/
 theorem exists_eq_of_continuous_quotient_algHom {A : Type} [CommRing A] [IsDomain A] [Algebra ℂ A]
     [Algebra.FiniteType ℂ A] [IsIntegrallyClosed A] {ψ : (A →ₐ[ℂ] ℂ) → ℂ} (hψ : Continuous ψ)
     {a b : A} (hb : b ≠ 0) (hab : ∀ e : A →ₐ[ℂ] ℂ, e b * ψ e = e a) :
@@ -33,6 +40,11 @@ theorem exists_eq_of_continuous_quotient_algHom {A : Type} [CommRing A] [IsDomai
   change _ * e (Ideal.Quotient.mk p r) = 0
   rw [Ideal.Quotient.eq_zero_iff_mem.mpr hr, map_zero, mul_zero]
 
+/- English proof (translation)
+Use `IsIntegrallyClosed.of_localization_maximal fun p _ hp ↦ ?_` and prove the remaining obligations. Set `P : Spec Γ(Y, U)` to `⟨p, hp.isPrime⟩`. Establish `hy : hU.fromSpec P ∈ U` using `hU.range_fromSpec.le ⟨P, rfl⟩`. Use `letI : Algebra Γ(Y, U) (Y.presheaf.stalk (hU.fromSpec P)) := Y.presheaf.algebra_section_stalk (U := U) ⟨_, hy⟩`. Establish `h : IsLocalization p.primeCompl (Y.presheaf.stalk (hU.fromSpec P))` using `hU.isLocalization_stalk' P hy`.
+
+Use `hY (hU.fromSpec P)` as an intermediate fact. Conclude with `IsIntegrallyClosed.of_equiv (R := Y.presheaf.stalk (hU.fromSpec P)) (IsLocalization.algEquiv p.primeCompl (Y.presheaf.stalk (hU.fromSpec P)) (Localization.AtPrime p)).toRingEquiv`.
+-/
 theorem isIntegrallyClosed_sections_of_isDomain {Y : Scheme.{0}}
     (hY : ∀ y : Y, IsIntegrallyClosed (Y.presheaf.stalk y)) {U : Y.Opens} (hU : IsAffineOpen U)
     [IsDomain Γ(Y, U)] : IsIntegrallyClosed Γ(Y, U) := by
@@ -50,6 +62,17 @@ theorem isIntegrallyClosed_sections_of_isDomain {Y : Scheme.{0}}
 
 open AffinePoints in
 
+/- English proof (translation)
+Introduce `Y p D hp U hU hdom φ hφ a b hb hab`. Establish `hsm : Smooth p` using `SmoothOfRelativeDimension.smooth D p`. Establish `hN` using `(isReduced_isNormalScheme_isLocallyNoetherian_of_smooth_over_field ℂ Y p hsm).2.1`. Use `isIntegrallyClosed_sections_of_isDomain (fun y => (hN y).2) hU` as an intermediate fact. Establish `hc : (algX p U).FiniteType`.
+
+Establish `h1 : (p.appLE ⊤ U (fun _ _ => trivial)).hom.FiniteType` using `HasRingHomProperty.appLE @LocallyOfFiniteType p inferInstance ⟨⊤, isAffineOpen_top _⟩ ⟨U, hU⟩ _`. Conclude with `h1.comp (RingHom.FiniteType.of_surjective _ (ConcreteCategory.bijective_of_isIso (Scheme.ΓSpecIso (CommRingCat.of ℂ)).inv).2)`. Set `: Algebra ℂ Γ(Y, U)` to `(algX p U).toAlgebra`. Establish `: Algebra.FiniteType ℂ Γ(Y, U)` using `hc`. Set `s (e : Γ(Y, U) →ₐ[ℂ] ℂ) : CxPts p (RingHom.id ℂ)` to `ofHom hU e.toRingHom fun c => e.commutes c`.
+
+Establish `hm (e) : s e ∈ ptsIn p (RingHom.id ℂ) U` using `ofHom_mem _ _ _`. Establish `hv (e) (f) : ev p (RingHom.id ℂ) U f (s e) = e f` using `ev_ofHom _ _ _ _`. Establish `hs : Continuous s` using `continuous_iff_continuousAt.2 fun e => tendsto_subtype_rng.2 (Points.tendsto_of_isAffineOpen hU (hm e) (Filter.Eventually.of_forall hm) fun f => by`. Establish `h : Continuous fun w => ev p (RingHom.id ℂ) U f (s w)`. Simplify using `only [hv]`.
+
+Conclude with `continuous_eval f`. Conclude with `h.continuousAt)`. Take `⟨c, hc⟩` from `exists_eq_of_continuous_quotient_algHom (hφ.comp_continuous hs hm) (a := a) hb fun e => by rw [← hv, ← hv]; exact hab _ (hm e)`. Use `⟨c, fun y hy => ?_⟩` and prove the remaining obligations. Set `e : Γ(Y, U) →ₐ[ℂ] ℂ` to `{ evHom hy with commutes' := fun t => (ev_eq hy _).symm.trans (ev_algX hy t) }`.
+
+Establish `he : s e = y` using `Subtype.ext (Points.ext_of_valR hU (hm e) hy fun f => (hv e f).trans (ev_eq hy f).symm)`. Rewrite using `[← he, hv]`. Conclude with `hc e`.
+-/
 theorem exists_ev_eq_of_continuousOn_quotient :
     ∀ (Y : Scheme.{0}) (p : Y ⟶ Sp ℂ) (D : ℕ), SmoothOfRelativeDimension D p → ∀ (V : Y.Opens), IsAffineOpen V → IsDomain Γ(Y, V) → ∀ φ : CxPts p (RingHom.id ℂ) → ℂ, ContinuousOn φ (ptsIn p (RingHom.id ℂ) V) → ∀ a b : Γ(Y, V), b ≠ 0 → (∀ y ∈ ptsIn p (RingHom.id ℂ) V, ev p (RingHom.id ℂ) V b y * φ y = ev p (RingHom.id ℂ) V a y) → ∃ c : Γ(Y, V), ∀ y ∈ ptsIn p (RingHom.id ℂ) V, ev p (RingHom.id ℂ) V c y = φ y := by
   intro Y p D hp U hU hdom φ hφ a b hb hab

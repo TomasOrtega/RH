@@ -22,6 +22,25 @@ open GlobalTheory.UU
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Introduce `V _ _ _ hV D A G _ _ U θ f hθ h0 hR n`. Use `haveI := hV.1`. Take `⟨ga, a, hS⟩` from `exists_psiScal V D`. Take `⟨m, hm⟩` from `exists_order_translates V hV D 1 (f 0) h0`. Take `⟨s, hs⟩` from `LevelVanishing.main V hV D A G U 1 θ f hθ.1 (m + n)`.
+
+Use `s.finite_toSet.subset fun χ hχ => ?_` and prove the remaining obligations. Assume the negation of the conclusion as `hn`. Apply `hχ` to reduce the goal to its premises. Establish `hne : IsLocalRing.maximalIdeal V ^ n ≠ ⊥` using `pow_ne_zero n (IsDiscreteValuationRing.not_a_field V)`. Use `(psiIn_iff_scalar_mem V D ga a hS χ _ hne).2 ?_` and prove the remaining obligations.
+
+Take `⟨⟨p, q⟩, hpq⟩` from `IsLocalization.surj (nonZeroDivisors V) (a χ).val`. Take `⟨z, J, hJ, hz⟩` from `hm χ`. Establish `hq : (q : V) ≠ 0` using `nonZeroDivisors.coe_ne_zero q`. Establish `e` using `PsiInt.psiRel_integral V D ga a f hS hR χ p q (by rw [mul_comm]; exact hpq) (𝟙_ _ ⊗ D.P.A) (snd _ _) z J hJ`. Establish `e₁ : lift (toUnit (𝟙_ _ ⊗ D.P.A)) (snd (𝟙_ _) D.P.A) = 𝟙 _` using `by ext1`.
+
+Conclude with `toUnit_unique _ _`. Simplify using the standard rewrite rules. Establish `e₂ : toUnit (𝟙_ _ ⊗ D.P.A) = fst (𝟙_ _) D.P.A` using `toUnit_unique _ _`. Use `haveI : Flat D.P.A.hom := by haveI := D.P.isAb.smooth infer_instance`. Use `haveI : Flat (𝟙_ _ ⊗ D.P.A).hom := by`.
+
+Establish `h : (𝟙_ _ ⊗ D.P.A).hom = (λ_ D.P.A).hom.left ≫ D.P.A.hom` using `(Over.w _).symm`. Use `haveI : IsIso (λ_ D.P.A).hom.left := inferInstanceAs (IsIso ((Over.forget _).map (λ_ D.P.A).hom))`. Rewrite using `[h]`. Use `infer_instance`. Set `io` to `(((𝟙_ _ ⊗ D.P.A).left.presheaf.germ ⊤ z trivial).hom.comp (((𝟙_ _ ⊗ D.P.A).hom.appTop.hom).comp (Scheme.ΓSpecIso (CommRingCat.of V)).inv.hom))`.
+
+Establish `hio : ∀ v : V, gs (𝟙 _) z ⊤ (scal (𝟙_ _ ⊗ D.P.A).hom v) = io v` using `fun v => gs_eq _ _ ⊤ trivial _`. Establish `hio' : ∀ v : V, cst (𝟙_ _ ⊗ D.P.A).hom z v = io v` using `fun v => gs_eq _ _ ⊤ trivial _`. Rewrite `e` using `[hio, hio, e₁]`. Establish `hf` using `hs χ hn z J hJ`. Establish `hf'` using `Ideal.map_mono (f := io) (Ideal.pow_le_pow_right (Nat.le_succ (m + n))) hf`.
+
+Take `⟨r, hr, hp⟩` from `exists_mem_pow_of_ratio_of_torsionFree V _ io (fun v hv x hx => by`. Use `cst_regular (𝟙_ _ ⊗ D.P.A).hom z hv` as an intermediate fact. Rewrite `this` using `[hio']`. Conclude with `this (hx.trans (mul_zero _).symm))`. Use `_ _ p q m n hq e hf' (fun h => hz (by`.
+
+Rewrite using `[← e₂]`. Conclude with `(Ideal.unit_mul_mem_iff_mem _ (Units.isUnit _)).1 h))`. Use `⟨r, hr, ?_⟩` and prove the remaining obligations. Establish `hq' : algebraMap V (FractionRing V) q ≠ 0` using `(IsLocalization.map_units _ q).ne_zero`. Apply `mul_right_cancel₀ hq'` to reduce the goal to its premises.
+
+Rewrite using `[← map_mul, ← hp]`. Conclude with `hpq.symm`.
+-/
 theorem psi_tendsto_zero : (AllPre fun {V} _ _ _ {D} {A} {G} _ _ U => ∀ θ f, U.Theta θ f → (∃ j, (f 0).f j ≠ 0) → PsiRel D (𝟙_ _) f → ∀ n : ℕ, {χ : D.X | ¬ D.PsiIn χ (IsLocalRing.maximalIdeal V ^ n)}.Finite) := by
   intro V _ _ _ hV D A G _ _ U θ f hθ h0 hR n
   haveI := hV.1

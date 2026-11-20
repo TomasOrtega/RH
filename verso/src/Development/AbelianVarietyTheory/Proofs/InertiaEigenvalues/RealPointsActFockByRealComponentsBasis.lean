@@ -36,6 +36,25 @@ section Gen
 
 variable {S T : HSp D}
 
+/- English proof (translation)
+Establish `hθ` using `hF.vac.2.inf`. Establish `hS` using `fun τ => GlobalTheory.FockBasis.isCartanInv_one (onb_posDef (hF.onbS τ))`. Establish `hT` using `hF.cartT`. Establish `one : ∀ τ, compAt B.F.θ τ (Formalism.L2.Theta.mt T 1) = 1` using `fun τ => GlobalTheory.PointAtPlaceHom.infMat_one T _`. Establish `hpq : ∀ τ, B.w.p τ + B.w.q τ = T.rank` using `fun τ => by`.
+
+Take `⟨e, -⟩` from `hsigOK (tauE D τ)`. Rewrite `e` using `[← hsig τ]`. Simplify using `using (Fintype.card_congr e).symm`. Take `⟨x, hx, hxv⟩` from `exists_root hθ S (fun τ => by`. Use `(hS τ).2.2.det_pos.ne'` as an intermediate fact.
+
+Rewrite using `[Matrix.mul_one] at this) u hu` and apply the resulting hypothesis. Establish `hy : IsDetRoot T 1 1` using `by show _ = _`. Rewrite using `[Units.val_one, RingHom.map_one, mul_one]`. Conclude with `(Matrix.det_one).symm`. Use `choose p hp hd using fun τ => detPlus_one (n := S.rank) (B.F.sT τ) (hT τ).1`.
+
+Establish `ep : ∀ τ, p τ = B.w.p τ` using `fun τ => by`. Establish `h1` using `hF.onbT τ`. Rewrite `h1` using `[← hsig τ]`. Establish `h2` using `(onb_laws h1 (hpq τ ▸ Nat.le_add_right _ _)).2`. Rewrite `h2` using `[hp]`.
+
+Establish `h3 : (p τ : ℂ) = B.w.p τ` using `by linear_combination h2 / 2`. Conclude with `h3` after adjusting the coercions. Rewrite using `[GlobalTheory.T.weilDatum_realPlaces_fockVacuum_character D B.F.ψ hω.std S T B.F.θ hθ _ _ ω B.eta heta hω (fun _ => 1) B.F.sT hS hT u hu 1 (one_mem _) (fun τ => by rw [one_mul, mul_one]) (fun τ => by rw [one, one_mul, mul_one]) x 1 hx hy f hf hv]`. Use `congr 1`. Establish `hexp : ∀ τ, HasInfExp D (B.mu * ψ.chi * B.eta⁻¹ * (B.eta ^ T.rank)⁻¹) τ ((B.w.c τ - p τ : ℤ) : ℚ)` using `fun τ => by`.
+
+Establish `h1` using `hasInfExp_twist (hasInfExp_twist (hinf τ) (heta.2.2.2 τ) 1) (heta.2.2.2 τ) T.rank`. Rewrite `h1` using `[pow_one]`. Use `h1 using 1` and compare the differences between its conclusion and the goal. Rewrite using `[← hpq τ, ep]`. Use `push_cast`.
+
+Expand and normalize the polynomial expressions, which then agree. Rewrite using `[MonoidHom.map_one, mul_one, Circle.coe_inv, hxv _ _ hexp, ← Finset.prod_inv_distrib, ← Finset.prod_mul_distrib, Units.val_inv_eq_inv_val]`. Simplify using `only [detFam, MonoidHom.coe_mk, OneHom.coe_mk, Units.coe_prod, Units.val_zpow_eq_zpow_val, GeneralLinearGroup.val_det_apply]`. Rewrite using `[← Finset.prod_inv_distrib]`. Use `Finset.prod_congr rfl fun τ _ => ?_` and prove the remaining obligations.
+
+Establish `inv` using `congrArg Matrix.det (GlobalTheory.OrientedHeis.compAt_mt_mul_inv (θ := B.F.θ) τ u)`. Rewrite `inv` using `[Matrix.det_mul, Matrix.det_one]`. Establish `g0` using `left_ne_zero_of_mul_eq_one inv`. Rewrite using `[one, (hd τ _ 1 (by rw [one_mul, mul_one])).1, eq_inv_of_mul_eq_one_right inv, mul_one, ← smul_add, add_add_sub_cancel, ← two_smul ℂ, smul_smul, show (1 / 2 * 2 : ℂ) = 1 by norm_num, one_smul, Matrix.det_one, one_pow, one_mul, show (realGL B.F.θ S u τ).val = compAt B.F.θ τ (Forma …`. Use `pow_ne_zero (p τ) g0` as an intermediate fact.
+
+Use `zpow_ne_zero (B.w.c τ) g0` as an intermediate fact. Clear the denominators using the available nonvanishing facts.
+-/
 theorem om_vac_of {B : Base S T} {ψ : Twist D Circle} {ω : PairRep S T} (hF : B.F.Good)
     (hsig : ∀ τ, (B.w.p τ, B.w.q τ) = T.sig (tauE D τ)) (hsigOK : T.SigOK) (heta : GlobalTheory.WeilParts.IsEtaTilde D B.eta)
     (hinf : ∀ τ, HasInfExp D (B.mu * ψ.chi) τ ((B.w.c τ : ℚ) - ((B.w.p τ : ℚ) - B.w.q τ) / 2 + 1 / 2))
@@ -92,6 +111,13 @@ theorem om_vac_of {B : Base S T} {ψ : Twist D Circle} {ω : PairRep S T} (hF : 
   have := zpow_ne_zero (B.w.c τ) g0
   field_simp
 
+/- English proof (translation)
+Establish `hθ` using `hF.vac.2.inf`. Establish `hBS` using `fun τ => onb_posDef (hF.onbS τ)`. Establish `one : ∀ τ, compAt B.F.θ τ (Formalism.L2.Theta.mt T 1) = 1` using `fun τ => GlobalTheory.PointAtPlaceHom.infMat_one T _`. Establish `eu : ∀ τ, (inBasis B.F.BS (realGL B.F.θ S u) τ).val = (B.F.BS τ).val⁻¹ * compAt B.F.θ τ (Formalism.L2.Theta.mt S u) * (B.F.BS τ).val` using `fun τ => by`. Rewrite using `[← Matrix.coe_units_inv]`.
+
+Both sides reduce to the same expression. Establish `hle : ∀ τ, B.w.p τ ≤ T.rank` using `fun τ => by`. Take `⟨e, -⟩` from `hsigOK (tauE D τ)`. Rewrite `e` using `[← hsig τ]`. Use `Fintype.card_congr e` as an intermediate fact.
+
+Simplify using `only [Fintype.card_fin, Fintype.card_sum] at this`. Use linear arithmetic over natural numbers and integers. Unfold `Frame.fock`. Rewrite using `[(GlobalTheory.OrientedHeis.om_pureTensorO D _ _ S T _ _ ω hω hθ (fun _ => 1) (fun _ => 1) (fun τ => (B.F.BS τ).val) (fun τ => (B.F.BS τ).val * (inBasis B.F.BS (realGL B.F.θ S u) τ).val) B.F.sT B.F.sT B.F.BT B.F.BT u 1 (fun τ => by rw [Matrix.one_mul, Matrix.mul_one]) (fun τ => b …`.
+-/
 theorem om_fock_of {B : Base S T} {ψ : Twist D Circle} {ω : PairRep S T} (hF : B.F.Good)
     (hsig : ∀ τ, (B.w.p τ, B.w.q τ) = T.sig (tauE D τ)) (hsigOK : T.SigOK) (heta : GlobalTheory.WeilParts.IsEtaTilde D B.eta)
     (hinf : ∀ τ, HasInfExp D (B.mu * ψ.chi) τ ((B.w.c τ : ℚ) - ((B.w.p τ : ℚ) - B.w.q τ) / 2 + 1 / 2))
@@ -124,6 +150,13 @@ theorem om_fock_of {B : Base S T} {ψ : Twist D Circle} {ω : PairRep S T} (hF :
       (fun τ => by rw [eu]; exact conj_unitary (hBS τ) (GlobalTheory.FockCompare.RealAction.infMat_mem_UH hθ S u τ)) hf,
     Base.act, MonoidHom.comp_apply, fockGL_apply, LinearMap.map_smul]
 
+/- English proof (translation)
+Establish `h1 : B * B⁻¹ = 1` using `Matrix.mul_nonsing_inv B hB`. Establish `h2 : B⁻¹ * B = 1` using `Matrix.nonsing_inv_mul B hB`. Establish `h3 : Bᴴ * (B⁻¹)ᴴ = 1` using `by rw [← Matrix.conjTranspose_mul, h2, Matrix.conjTranspose_one]`. Establish `hU : (B⁻¹ * g * B)ᴴ * (B⁻¹ * g * B) = 1`. Use `Matrix.mem_unitaryGroup_iff'.1 hg` as an intermediate fact.
+
+Rewrite `this` using `[Matrix.star_eq_conjTranspose]`. Then use the resulting hypothesis. Establish `hG : G = (B⁻¹)ᴴ * B⁻¹`. Combine the equalities or inequalities in the displayed calculation. Establish `hgB : g = B * (B⁻¹ * g * B) * B⁻¹`. Simplify using `only [← Matrix.mul_assoc, h1, Matrix.one_mul]`.
+
+Rewrite using `[Matrix.mul_assoc, h1, Matrix.mul_one]`. Use `show gᴴ * G * g = G`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [Matrix.conjTranspose_mul, Matrix.mul_assoc]`. Use `_ = G := by rw [h3, h2, Matrix.mul_one, Matrix.mul_one, hU, Matrix.mul_one, ← hG]`.
+-/
 theorem mem_UH_of_conj {n : ℕ} {G B g : Matrix (Fin n) (Fin n) ℂ} (h : Bᴴ * G * B = 1) (hB : IsUnit B.det)
     (hg : B⁻¹ * g * B ∈ Matrix.unitaryGroup (Fin n) ℂ) : g ∈ Formalism.QuantumDeterminants.UH G := by
   have h1 : B * B⁻¹ = 1 := Matrix.mul_nonsing_inv B hB
@@ -150,6 +183,17 @@ end Gen
 variable {G : Type} [Group G] [Fintype G] {Pl0 T0 : Type} {A : FamIn D.what₂.LL G Pl0 T0 D.R.m}
   {Ks : Type} [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] {R : RealDat D A Ks} {F : Face D A} {i : Fin D.R.m}
 
+/- English proof (translation)
+Establish `hL` using `hC.lev`. Establish `hW` using `hC.thP.ωP i A.μ0`. Establish `rV : (Vc D i).rank = D.R.r + D.R.t` using `D.sp.V_rank _ (Nat.le_add_left _ _) i.2`. Establish `rW : (Wc D i).rank = D.R.r` using `D.sp.W_rank _ (Nat.le_add_left _ _) i.2`. Establish `hev : Even (Vc D i).rank` using `rV ▸ (GlobalTheory.ConjTwist.Test.odd_r D).add_odd D.R.t_odd`.
+
+Take `⟨hf, hv, -⟩` from `GlobalTheory.CoefActIo.thetaVector_laws (i := i) hC t`. Establish `hω` using `h.isWeil hC.thP.ωP ht`. Establish `hpt : ∀ P, R.ptP i t P = B.F.fock (R.vP i t) P` using `fun P => by rw [h.fock_eq]; rfl`. Establish `hf' : IsThetaFunO B.F.ψ (Vc D i) (Wc D i) (R.vP i t)` using `by rw [h.ψ]; exact hf`. Establish `hv' : ∀ τ, IsFockVacAt (heisO B.F.ψ (Vc D i) (Wc D i)) B.F.θ τ (cplxO 1 (B.F.sT τ)) (R.vP i t)`.
+
+Rewrite using `[h.ψ, h.θ, h.sT]`. Conclude with `hv`. Establish `hsig : ∀ τ, (B.w.p τ, B.w.q τ) = (Wc D i).sig (tauE D τ)` using `fun τ => by rw [h.p, h.q]`. Establish `heta : GlobalTheory.WeilParts.IsEtaTilde D B.eta`. Rewrite using `[h.eta]`.
+
+Conclude with `GlobalTheory.EtaTildeOddParity.isEtaTilde_of_odd D _ _ hL.eta R.C.isEta _ _ _ hW.resS hW.resT (hev.add_odd (rW ▸ GlobalTheory.ConjTwist.Test.odd_r D))`. Establish `hinf : ∀ τ, HasInfExp D (B.mu * ψ.chi) τ ((B.w.c τ : ℚ) - ((B.w.p τ : ℚ) - B.w.q τ) / 2 + 1 / 2)` using `fun τ => by`. Rewrite using `[h.mu_mul ht, h.exponent]`. Conclude with `(GlobalTheory.PairInfTypes.infTypesAt D T0 R.toLevCh A.μ0 hL i t τ).mu`. Rewrite using `[hpt, hpt]`.
+
+Conclude with `om_fock_of (GlobalTheory.ConjTwist.Test.frame_good hC h) hsig (D.sp.W_sig _) heta hinf hω hf' hv' hu P`.
+-/
 theorem om_ptP (hC : GlobalTheory.Hk3.Core R F) {B : Base (Vc D i) (Wc D i)} (h : BaseOf R i B) {ψ : Twist D Circle} {t : T0}
     (ht : IsTupOf R B ψ t) {u : GA D (Vc D i)} (hu : u ∈ GinfC (Vc D i)) (P : PolF D (Wc D i).rank (Vc D i).rank) :
     R.ωP i t (u, 1) (R.ptP i t P) = R.ptP i t (B.act u P) := by
@@ -175,6 +219,17 @@ theorem om_ptP (hC : GlobalTheory.Hk3.Core R F) {B : Base (Vc D i) (Wc D i)} (h 
   rw [hpt, hpt]
   exact om_fock_of (GlobalTheory.ConjTwist.Test.frame_good hC h) hsig (D.sp.W_sig _) heta hinf hω hf' hv' hu P
 
+/- English proof (translation)
+Introduce `D G _ _ Pl0 T A Ks _ _ _ R F hG _ i t`. Establish `hC` using `hG.core`. Take `⟨B, hb, ht, rfl⟩ : ∃ B : Base (Vc D i) (Wc D i), BaseOf R i B ∧ IsTupOf R B (tupTwist R t) t ∧ B = baseAt R i hC.models.BV (Twist.triv Circle ∅) ⟨⊥, 1⟩` from `⟨_, baseOf_baseAt R hC.models.BV _ _, isTupOf_tupTwist R hC.models.BV t _, rfl⟩`. Establish `hF` using `GlobalTheory.ConjTwist.Test.frame_good hC hb`. Establish `hθ : IsInfFam R.θ` using `hF.vac.2.inf`.
+
+Establish `hBS : ∀ τ, (R.BV i τ)ᴴ * gramAt D (Vc D i) τ * R.BV i τ = 1` using `fun τ => onb_posDef (hC.models.BV i τ)`. Establish `eu : ∀ (g : GLR D (Vc D i).rank) τ, (inBasis (baseAt R i hC.models.BV (Twist.triv Circle ∅) ⟨⊥, 1⟩).F.BS g τ).val = (R.BV i τ)⁻¹ * (g τ).val * R.BV i τ` using `fun g τ => by`. Rewrite using `[← hb.BS τ, ← Matrix.coe_units_inv]`. Both sides reduce to the same expression. Use `⟨liftWeight D i, (baseAt R i hC.models.BV (Twist.triv Circle ∅) ⟨⊥, 1⟩).F.BS, (realGL R.θ (Vc D i)).comp (GinfC (Vc D i)).subtype, fun u P => om_ptP hC hb ht u.2 P, fun u τ => ?_, fun g hg => ?_, fun τ j => hC.models.order i τ j⟩` and prove the remaining obligations.
+
+Rewrite using `[eu]`. Conclude with `conj_unitary (hBS τ) (GlobalTheory.FockCompare.RealAction.infMat_mem_UH hθ _ (u : GA D (Vc D i)) τ)`. Establish `hU : ∀ τ, (g τ).val ∈ Formalism.QuantumDeterminants.UH (gramAt D (Vc D i) τ)` using `fun τ => by`. Use `mem_UH_of_conj (hBS τ) ?_ (by rw [← eu]; exact hg τ)` and prove the remaining obligations. Rewrite using `[← hb.BS τ]`.
+
+Conclude with `(Matrix.isUnit_iff_isUnit_det _).1 (Units.isUnit _)`. Use `⟨⟨GlobalTheory.AdelicScalar.realElt R.θ (Vc D i) (fun τ => (g τ).val), list_prod_mem fun x hx => ?_⟩, ?_⟩` and prove the remaining obligations. Take `⟨τ, -, rfl⟩` from `List.mem_map.1 hx`. Conclude with `GlobalTheory.PointAtPlaceHom.atTau_mem _ τ _`. Use function extensionality and compare the values at `ρ`.
+
+Use `Units.ext ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `infMat D.sp.cm.sig (Vc D i).gram (R.θ ρ) (GlobalTheory.AdelicScalar.realElt R.θ (Vc D i) fun τ => (g τ).val) = (g ρ).val`. Rewrite using `[GlobalTheory.AdelicScalar.realElt, GlobalTheory.RealTransSm.infMat_list_prod hθ _ hU ρ _ (Finset.nodup_toList _), if_pos (Finset.mem_toList.2 (Finset.mem_univ ρ))]`.
+-/
 theorem real_points_fock : ∀ (D : D7) (G : Type) [Group G] [Fintype G] (Pl0 T : Type) (A : FamIn D.what₂.LL G Pl0 T D.R.m) (Ks : Type) [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] (R : RealDat D A Ks) (F : Face D A), GlobalTheory.LiftRows.Given R F → R.FullP → ∀ (i : Fin D.R.m) (t : T), ∃ (w : GlobalTheory.ExportSeries.Weight D (Vc D i).rank) (BS : GlobalTheory.ExportSeries.GLR D (Vc D i).rank) (r : ↥(GinfC (Vc D i)) →* GlobalTheory.ExportSeries.GLR D (Vc D i).rank), (∀ (u : ↥(GinfC (Vc D i))) (P : PolF D (Wc D i).rank (Vc D i).rank), R.ωP i t ((u : GA D (Vc D i)), 1) (R.ptP i t P) = R.ptP i t (GlobalTheory.ExportSeries.fockGL (Wc D i).rank w BS (r u) P)) ∧ (∀ (u : ↥(GinfC (Vc D i))) (τ : D.what₂.Tau), ((GlobalTheory.ExportSeries.inBasis BS (r u) τ : GL (Fin (Vc D i).rank) ℂ) : Matrix (Fin (Vc D i).rank) (Fin (Vc D i).rank) ℂ) ∈ Matrix.unitaryGroup (Fin (Vc D i).rank) ℂ) ∧ (∀ g : GlobalTheory.ExportSeries.GLR D (Vc D i).rank, (∀ τ, ((GlobalTheory.ExportSeries.inBasis BS g τ : GL (Fin (Vc D i).rank) ℂ) : Matrix (Fin (Vc D i).rank) (Fin (Vc D i).rank) ℂ) ∈ Matrix.unitaryGroup (Fin (Vc D i).rank) ℂ) → ∃ u, r u = g) ∧ (∀ (τ : D.what₂.Tau) (j : Fin (Wc D i).rank), (R.MW i (sg0 D A)).ε τ j = decide ((j : ℕ) < w.p τ)) := by
   intro D G _ _ Pl0 T A Ks _ _ _ R F hG _ i t
   have hC := hG.core

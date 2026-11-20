@@ -32,35 +32,59 @@ def sgn : Ix R S → ℂ
   | .inl _ => 1
   | .inr _ => -1
 
+/- English proof (translation)
+Apply the tactic sequence `ext (i | i) (j | j) <;> simp [Jm, Formalism.UG.Jpq, sgn, Matrix.one_apply, Matrix.diagonal_apply] <;> split_ifs <;> simp`.
+-/
 theorem jm_eq : Jm R S = Matrix.diagonal sgn := by
   ext (i | i) (j | j) <;> simp [Jm, Formalism.UG.Jpq, sgn, Matrix.one_apply, Matrix.diagonal_apply] <;> split_ifs <;> simp
 
+/- English proof (translation)
+Apply the tactic sequence `cases c <;> rfl`.
+-/
 theorem sgn_skipIx (r₀ : Fin (R + 1)) (s₀ : Fin (S + 1)) (c : Ix R S) : sgn (skipIx r₀ s₀ c) = sgn c := by
   cases c <;> rfl
 
+/- English proof (translation)
+Apply the tactic sequence `cases c <;> simp [skipIx, Fin.succAbove_ne]`.
+-/
 theorem skipIx_ne (r₀ : Fin (R + 1)) (s₀ : Fin (S + 1)) (c : Ix R S) :
     skipIx r₀ s₀ c ≠ .inl r₀ ∧ skipIx r₀ s₀ c ≠ .inr s₀ := by
   cases c <;> simp [skipIx, Fin.succAbove_ne]
 
+/- English proof (translation)
+Rewrite using `[jm_eq, Matrix.diagonal_mul_diagonal, ← Matrix.diagonal_one]`. Apply the tactic sequence `congr 1; funext c; cases c <;> simp [sgn]`.
+-/
 theorem jm_mul_jm : Jm R S * Jm R S = 1 := by
   rw [jm_eq, Matrix.diagonal_mul_diagonal, ← Matrix.diagonal_one]
   congr 1; funext c; cases c <;> simp [sgn]
 
+/- English proof (translation)
+Rewrite using `[jm_eq, jm_eq, Matrix.submatrix_diagonal _ _ (skipIx_injective r₀ s₀)]`. Use `congr 1`. Use function extensionality and compare the values at `c`. Conclude with `sgn_skipIx r₀ s₀ c`.
+-/
 theorem jm_submatrix (r₀ : Fin (R + 1)) (s₀ : Fin (S + 1)) :
     (Jm (R + 1) (S + 1)).submatrix (skipIx r₀ s₀) (skipIx r₀ s₀) = Jm R S := by
   rw [jm_eq, jm_eq, Matrix.submatrix_diagonal _ _ (skipIx_injective r₀ s₀)]
   congr 1; funext c; exact sgn_skipIx r₀ s₀ c
 
+/- English proof (translation)
+Establish `e : Ix R S ≃ Fin n` using `Fintype.equivFinOfCardEq (by simp [h])`. Conclude with `(Matrix.mul_eq_one_comm_of_equiv e).1 hY`.
+-/
 theorem mul_eq_one_of_mul_eq_one {n : ℕ} (h : R + S = n) (C : Matrix (Fin n) (Ix R S) ℂ)
     (Y : Matrix (Ix R S) (Fin n) ℂ) (hY : Y * C = 1) : C * Y = 1 := by
   have e : Ix R S ≃ Fin n := Fintype.equivFinOfCardEq (by simp [h])
   exact (Matrix.mul_eq_one_comm_of_equiv e).1 hY
 
+/- English proof (translation)
+Use extensionality with `i j`. Simplify using `[Matrix.mul_apply, star_sum, mul_comm]`.
+-/
 theorem map_star_mul {m n o : Type} [Fintype n] (X : Matrix m n ℂ) (Y : Matrix n o ℂ) :
     (X * Y).map star = X.map star * Y.map star := by
   ext i j
   simp [Matrix.mul_apply, star_sum, mul_comm]
 
+/- English proof (translation)
+Use extensionality with `i`. Simplify using `[Matrix.mulVec, dotProduct, star_sum, mul_comm]`.
+-/
 theorem map_star_mulVec {m n : Type} [Fintype n] (K : Matrix m n ℂ) (u : n → ℂ) :
     K.map star *ᵥ star u = star (K *ᵥ u) := by
   ext i
@@ -68,6 +92,23 @@ theorem map_star_mulVec {m n : Type} [Fintype n] (K : Matrix m n ℂ) (u : n →
 
 variable {d d₁ : ℕ}
 
+/- English proof (translation)
+Establish `hG : C₁ᵀ * M₁ * C₁.map star = Jm R S`. Rewrite using `[← hgram]`. Establish `e1 : C₁ᵀ * (Kᵀ * M * K.map star) * C₁.map star = (K * C₁)ᵀ * M * (K * C₁).map star`. Rewrite using `[Matrix.transpose_mul, map_star_mul]`. Simplify using `only [Matrix.mul_assoc]`.
+
+Rewrite using `[e1, hK, ← jm_submatrix r₀ s₀, ← hC.1]`. Use extensionality with `i j`. Simplify using `[Matrix.mul_apply, Matrix.submatrix_apply, Matrix.transpose_apply]`. Establish `hinj : ∀ u : Fin d₁ → ℂ, K *ᵥ u = 0 → u = 0`. Introduce `u hu`.
+
+Assume the negation of the conclusion as `hne`. Establish `hp` using `hcart.2.2 u hne`. Establish `h0 : (θ₁ *ᵥ u) ⬝ᵥ M₁ *ᵥ star u = 0`. Rewrite using `[← hgram, ← Matrix.mulVec_mulVec, map_star_mulVec, hu, star_zero, Matrix.mulVec_zero, dotProduct_zero]`. Rewrite `hp` using `[h0]`.
+
+Simplify using `at hp`. Use `⟨⟨hG, (Jm R S * C₁ᵀ * M₁).map star, mul_eq_one_of_mul_eq_one hd _ _ ?_⟩, ?_⟩` and prove the remaining obligations. Establish `h1 : (Jm R S * C₁ᵀ * M₁) * C₁.map star = 1`. Rewrite using `[Matrix.mul_assoc, Matrix.mul_assoc, ← Matrix.mul_assoc C₁ᵀ, hG, jm_mul_jm]`. Establish `h2` using `congrArg (Matrix.map · star) h1`.
+
+Rewrite `h2` using `[map_star_mul (Jm R S * C₁ᵀ * M₁)]`. Establish `h3 : (C₁.map star).map star = C₁` using `by ext i j; simp`. Rewrite `h2` using `[h3]`. Rewrite using `[h2]`. Use extensionality with `i j`.
+
+Simplify using `[Matrix.one_apply]`. Establish `hX : K * (θ₁ * C₁ - C₁ * Jm R S) = 0`. Rewrite using `[Matrix.mul_sub, ← Matrix.mul_assoc, ← hθK, Matrix.mul_assoc, ← Matrix.mul_assoc K C₁, hK, sub_eq_zero]`. Use extensionality with `i c`. Use `congrFun (congrFun hθ i) (skipIx r₀ s₀ c)` as an intermediate fact.
+
+Simplify using `only [jm_eq, Matrix.mul_diagonal] at this ⊢`. Simplify using `only [Matrix.mul_apply, Matrix.submatrix_apply, id] at this ⊢`. Rewrite using `[this, sgn_skipIx]`. Use extensionality with `j c`. Establish `h` using `hinj (fun j => (θ₁ * C₁ - C₁ * Jm R S) j c) (by`.
+
+Use function extensionality and compare the values at `i`. Use `congrFun (congrFun hX i) c` as an intermediate fact. Simplify `this)` using `[Matrix.mul_apply, Matrix.mulVec, dotProduct]`. Use `congrFun h j` as an intermediate fact. Simplify `this` using `[sub_eq_zero]`.
+-/
 theorem small_frame (M : Matrix (Fin d) (Fin d) ℂ) (M₁ θ₁ : Matrix (Fin d₁) (Fin d₁) ℂ) (θ : Matrix (Fin d) (Fin d) ℂ)
     (K : Matrix (Fin d) (Fin d₁) ℂ) (C : Matrix (Fin d) (Ix (R + 1) (S + 1)) ℂ) (C₁ : Matrix (Fin d₁) (Ix R S) ℂ)
     (r₀ : Fin (R + 1)) (s₀ : Fin (S + 1)) (hd : R + S = d₁)
@@ -121,11 +162,35 @@ end GlobalTheory.FockFrames
 
 namespace GlobalTheory.FockFrames
 
+/- English proof (translation)
+Use extensionality with `i j`. Simplify using `[incM, piInf, compInf, inclR, infEmb_tmul]`.
+-/
 theorem incM_map {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {n m : Type}
     (J : Matrix n m E) {w : InfinitePlace F} (τ : EmbOver E w) : (incM F J).map (piInf τ) = J.map τ.1 := by
   ext i j
   simp [incM, piInf, compInf, inclR, infEmb_tmul]
 
+/- English proof (translation)
+Introduce `_ F E _ _ _ _ _ σ B a b G G₁ H H' hCfg X om om' R Rf om₁ om₁' R₁ Rf₁ hM hM₁`. Establish `hb` using `hM.triple.base`. Establish `hg` using `hM.triple.geo`. Establish `hg₁` using `hM₁.triple.geo`. Establish `hep` using `hCfg.ep`.
+
+Establish `heq` using `hCfg.eq`. Establish `hbig` using `hg₁.aBig`. Establish `hW : G.W.IsSkew σ B (a + b - (G₁.p + G₁.q) + 1) (G₁.p + G₁.q + 1)`. Establish `e1 : a + (b + 2) - (G.p + G.q) = a + b - (G₁.p + G₁.q) + 1` using `by omega`. Establish `e2 : G.p + G.q = G₁.p + G₁.q + 1` using `by omega`.
+
+Establish `h` using `hg.hW`. Rewrite `h` using `[e1, e2]`. Conclude with `h`. Take `⟨r₀, s₀, C, hC, hCθ, hAd⟩` from `GlobalTheory.T.adapted_real_frame_exists F E σ B _ _ _ _ _ _ (a + b - (G₁.p + G₁.q)) (G₁.p + G₁.q) G.W G₁.W H' hb hW hg₁.hW hCfg.hH' rfl rfl`. Establish `hz : ∀ w (c : Ix (a + b - (G₁.p + G₁.q)) (G₁.p + G₁.q)), ∃ z : Fin (a + b) → ℂ, ∀ i, C w i (skipIx r₀ s₀ c) = (H'.ι.map (B.emb w).1 *ᵥ z) i` using `fun w c => (hAd w).2.2 _ (skipIx_ne r₀ s₀ c).1 (skipIx_ne r₀ s₀ c).2`.
+
+Use `choose z hz using hz`. Take `⟨C₁, hC₁⟩ : ∃ C₁ : InfinitePlace F → Matrix (Fin (a + b)) (Ix (a + b - (G₁.p + G₁.q)) (G₁.p + G₁.q)) ℂ, ∀ w j c, C₁ w j c = z w c j` from `⟨fun w => Matrix.of fun j c => z w c j, fun _ _ _ => rfl⟩`. Establish `hcomp : IsCompat B H' C C₁ r₀ s₀`. Introduce `w i c`. Rewrite using `[hz w c i]`.
+
+Simplify using `[hC₁, Matrix.mul_apply, Matrix.mulVec, dotProduct]`. Establish `hK : ∀ w, H'.ι.map (B.emb w).1 * C₁ w = (C w).submatrix id (skipIx r₀ s₀)`. Introduce `w`. Use extensionality with `i c`. Conclude with `(hcomp w i c).symm`.
+
+Establish `hgram : ∀ w, (H'.ι.map (B.emb w).1)ᵀ * (Complex.I • G.W.J.map (B.emb w).1) * (H'.ι.map (B.emb w).1).map star = Complex.I • G₁.W.J.map (B.emb w).1`. Introduce `w`. Establish `h` using `congrArg (fun Z => Matrix.map Z (B.emb w).1) hCfg.hH'.gram`. Simplify using `only [Matrix.map_mul, Matrix.transpose_map] at h`. Establish `hσ : (H'.ι.map σ).map (B.emb w).1 = (H'.ι.map (B.emb w).1).map star`.
+
+Use extensionality with `i j`. Simplify using `[hb.cm.2.2.2]`. Rewrite `h` using `[hσ]`. Rewrite using `[Matrix.mul_smul, Matrix.smul_mul, h]`. Establish `hC₁f : ∀ w, IsFrame (Complex.I • G₁.W.J.map (B.emb w).1) (C₁ w) ∧ G₁.W.θ w * C₁ w = C₁ w * Jm (a + b - (G₁.p + G₁.q)) (G₁.p + G₁.q)` using `fun w => small_frame _ _ _ _ _ _ _ r₀ s₀ (by omega) (hgram w) (hK w) (by have := hC w; rwa [incM_map] at this) (hCθ w) (hCfg.hH'.cartan w).1 (hg₁.hW.cartan w)`.
+
+Use `choose A hA hAθ using fun w => frameEx_holds _ _ _ _ _ (hg.hV.sig w) (hg.hV.cartan w)`. Establish `hA1 : ∀ w, IsFrame ((1 : ℂ) • (incM F G.V.J).map (piInf (B.emb w))) (A w)` using `fun w => by`. Rewrite using `[incM_map, one_smul]`. Conclude with `hA w`. Establish `fr : Framed B.emb (incM F G.V.J) (incM F G.W.J) 1 Complex.I A C` using `⟨one_mul _, hA1, hC⟩`.
+
+Establish `fr₁ : Framed B.emb (incM F G₁.V.J) (incM F G₁.W.J) 1 Complex.I A C₁` using `⟨one_mul _, by rw [hCfg.eV]; exact hA1, fun w => by rw [incM_map]; exact (hC₁f w).1⟩`. Take `⟨Φ, hΦ⟩` from `GlobalTheory.FockMapEx.fockEx_of_derEx GlobalTheory.HeisDer.derEx F E σ _ _ _ _ _ _ _ B.ψ B.emb _ _ G.M.co 1 Complex.I A C hb.cm hb.std fr`. Take `⟨Φ₁, hΦ₁⟩` from `GlobalTheory.FockMapEx.fockEx_of_derEx GlobalTheory.HeisDer.derEx F E σ _ _ _ _ _ _ _ B.ψ B.emb _ _ G₁.M.co 1 Complex.I A C₁ hb.cm hb.std fr₁`. Use `⟨_, _, _, _, A, C₁, C, Φ₁, Φ, r₀, s₀, ⟨⟨fr₁, ?_, fun w => (hC₁f w).2⟩, hΦ₁⟩, ⟨⟨fr, hAθ, hCθ⟩, hΦ⟩, hAd, hcomp⟩` and prove the remaining obligations. Rewrite using `[hCfg.eV]`.
+
+Conclude with `hAθ`.
+-/
 theorem frames_beta : GlobalTheory.ThK.KP → ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E)
     (B : Base F E) (a b : ℕ) (G : Geo σ a (b + 2)) (G₁ : Geo σ a b) (H : Plane E (b + 2) b)
     (H' : Plane E (a + (b + 2)) (a + b)), CfgB B G G₁ H H' →

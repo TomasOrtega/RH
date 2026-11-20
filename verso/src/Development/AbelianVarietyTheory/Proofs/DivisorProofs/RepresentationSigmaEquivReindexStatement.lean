@@ -14,6 +14,9 @@ open NumberField IsDedekindDomain Formalism.MainNotions.GlobalTheoryTheory.Genus
   GlobalTheory.UAut GlobalTheory.SiegelSet GlobalTheory.ThK.SquareIntegrability GlobalTheory.CuspBlock GlobalTheory.LFun.SplitTie
 attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.CellColumn.exists_subquotient_column | exact GlobalTheory.CellColumn.exists_subquotient_column | (intros; apply GlobalTheory.CellColumn.exists_subquotient_column <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.representation_sigma_equiv_reindex : ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
     {α β : Type} [Fintype α] [LinearOrder α] [Fintype β] [LinearOrder β] [DecidableEq β]
     {m' : β → Type} [∀ j, Fintype (m' j)] [∀ j, DecidableEq (m' j)]

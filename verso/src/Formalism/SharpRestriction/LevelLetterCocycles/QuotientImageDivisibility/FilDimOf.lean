@@ -15,6 +15,11 @@ variable {G : Type} [Group G] [TopologicalSpace G] {Qp K₀ K : Type} [Field Qp]
     {PD : PeriodData G Qp K₀ K B BdR} {LL O : Type} [Field LL] [Algebra Qp LL] [TopologicalSpace LL]
     [CommRing O] [Algebra O LL] {v : AddValuation LL (WithTop ℚ)} {n : ℕ}
 
+/- English proof (translation)
+Introduce `hCA T hT i τ hOv`. Establish `hK : Function.Bijective (algebraMap K₀ K)` using `hCA.1`. Establish `hτ : τ.comp (IsScalarTower.toAlgHom Qp K₀ K) = W.emb i` using `hOv`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Rewrite using `[rk_ιDi_eq W hK hQ T hT i τ hτ]`.
+
+Conclude with `((hQ hK T.V T.ρ hT).2 τ).2.1`. Introduce `a b hab`. Rewrite using `[rk_filLev_eq W hK hQ T hT i τ hτ a, rk_filLev_eq W hK hQ T hT i τ hτ b]`. Conclude with `(rk_sum_multV (PD := PD) (ρ := T.ρ) (τ := τ) (m := a) (k := b) (hmk := hab)).symm`.
+-/
 theorem filDim_of [NeZero n] (W : LocWach PD LL O v n) (hQ : Formalism.MainNotions.RamifiedCoefficientChains.DdREqDcris PD LL) :
     Formalism.MainNotions.RamifiedCoefficientChains.Sh.FilDim W := by
   intro hCA T hT i τ hOv

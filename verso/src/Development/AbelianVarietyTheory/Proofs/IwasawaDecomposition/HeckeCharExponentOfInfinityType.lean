@@ -12,6 +12,13 @@ variable {E : Type} [Field E] [NumberField E] [IsTotallyComplex E]
 def diagInf (E : Type) [Field E] [NumberField E] [IsTotallyComplex E] : E →+* Cinf E :=
   (pInf E).comp (algebraMap E (Ad E))
 
+/- English proof (translation)
+Establish `h : ((infDiag k : Ideles E) : AdeleRing (𝓞 E) E) = (algebraMap E (InfiniteAdeleRing E) k, 1)`. Unfold `infDiag`. Rewrite using `[MonoidHom.finsetProd_apply, Units.coe_prod]`. Set `ι : (∀ w : InfinitePlace E, w.Completion) →* AdeleRing (𝓞 E) E` to `MonoidHom.inl (InfiniteAdeleRing E) (FiniteAdeleRing (𝓞 E) E)`. Express the relevant statement in the definitionally equal form `∏ w : InfinitePlace E, ι (Pi.mulSingle w (algebraMap E w.Completion k)) = ι (fun w => algebraMap E w.Completion k)`.
+
+Rewrite using `[← map_prod, Finset.univ_prod_mulSingle]`. Apply `Units.ext` to reduce the goal to its premises. Rewrite using `[h]`. Use `Prod.ext ?_ ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `_ = 1 - infEq E 1 + infEq E ((infEq E).symm (algebraMap E (InfiniteAdeleRing E) k))`.
+
+Simplify using the standard rewrite rules. Express the relevant statement in the definitionally equal form `(1 : Af E) = 1 - 0 + 0`. Simplify using the standard rewrite rules.
+-/
 theorem infDiag_eq (k : Eˣ) : infDiag k = infId E (Units.map (diagInf E).toMonoidHom k) := by
   classical
   have h : ((infDiag k : Ideles E) : AdeleRing (𝓞 E) E) = (algebraMap E (InfiniteAdeleRing E) k, 1) := by
@@ -30,12 +37,20 @@ theorem infDiag_eq (k : Eˣ) : infDiag k = infId E (Units.map (diagInf E).toMono
   · change (1 : Af E) = 1 - 0 + 0
     simp
 
+/- English proof (translation)
+Establish `hc : Continuous (infEq E).symm` using `continuous_pi fun w => (InfinitePlace.Completion.isometryEquivComplexOfIsComplex (IsTotallyComplex.isComplex w)).continuous.comp (continuous_apply w)`. Conclude with `(infEq E).symm.surjective.denseRange.comp (InfiniteAdeleRing.denseRange_algebraMap E) hc`.
+-/
 theorem denseRange_diagInf : DenseRange (diagInf E) := by
   have hc : Continuous (infEq E).symm := continuous_pi fun w =>
     (InfinitePlace.Completion.isometryEquivComplexOfIsComplex (IsTotallyComplex.isComplex w)).continuous.comp
       (continuous_apply w)
   exact (infEq E).symm.surjective.denseRange.comp (InfiniteAdeleRing.denseRange_algebraMap E) hc
 
+/- English proof (translation)
+Use `dense_iff_inter_open.2 fun U hU ⟨u, hu⟩ => ?_` and prove the remaining obligations. Take `⟨k, v, hv, hk⟩` from `denseRange_diagInf.exists_mem_open (Units.isOpenEmbedding_val.isOpenMap U hU) ⟨_, u, hu, rfl⟩`. Establish `h0 : k ≠ 0`. Introduce and unpack `rfl`. Conclude with `v.ne_zero (hk.trans (map_zero _))`.
+
+Conclude with `⟨v, hv, Units.mk0 k h0, Units.ext hk.symm⟩`.
+-/
 theorem denseRange_units : DenseRange (Units.map (diagInf E).toMonoidHom) := by
   refine dense_iff_inter_open.2 fun U hU ⟨u, hu⟩ => ?_
   obtain ⟨k, v, hv, hk⟩ := denseRange_diagInf.exists_mem_open (Units.isOpenEmbedding_val.isOpenMap U hU) ⟨_, u, hu, rfl⟩
@@ -46,6 +61,9 @@ theorem denseRange_units : DenseRange (Units.map (diagInf E).toMonoidHom) := by
 
 omit [NumberField E] [IsTotallyComplex E] in
 
+/- English proof (translation)
+Unfold `coord`. Use `split_ifs`. Conclude with `continuous_apply _`. Conclude with `Complex.continuous_conj.comp (continuous_apply _)`.
+-/
 theorem continuous_coord (τ : E →+* ℂ) : Continuous (coord τ) := by
   unfold coord
   split_ifs
@@ -54,6 +72,9 @@ theorem continuous_coord (τ : E →+* ℂ) : Continuous (coord τ) := by
 
 omit [NumberField E] [IsTotallyComplex E] in
 
+/- English proof (translation)
+Unfold `coord`. Use `split_ifs`. Both sides reduce to the same expression. Conclude with `(Complex.exp_conj _).symm`.
+-/
 theorem coord_expU (τ : E →+* ℂ) (x : Cinf E) : coord τ (expU x : (Cinf E)ˣ) = Complex.exp (coord τ x) := by
   unfold coord
   split_ifs
@@ -62,6 +83,9 @@ theorem coord_expU (τ : E →+* ℂ) (x : Cinf E) : coord τ (expU x : (Cinf E)
 
 omit [NumberField E] in
 
+/- English proof (translation)
+Introduce `h` and use `InfinitePlace.not_isReal_iff_isComplex.2 (IsTotallyComplex.isComplex (InfinitePlace.mk τ)) (InfinitePlace.isReal_mk_iff.2 (ComplexEmbedding.isReal_iff.2 h))`.
+-/
 theorem conj_ne (τ : E →+* ℂ) : ComplexEmbedding.conjugate τ ≠ τ := fun h =>
   InfinitePlace.not_isReal_iff_isComplex.2 (IsTotallyComplex.isComplex (InfinitePlace.mk τ))
     (InfinitePlace.isReal_mk_iff.2 (ComplexEmbedding.isReal_iff.2 h))
@@ -69,6 +93,15 @@ theorem conj_ne (τ : E →+* ℂ) : ComplexEmbedding.conjugate τ ≠ τ := fun
 omit [NumberField E] in
 open Classical in
 
+/- English proof (translation)
+Distinguish the cases in `h1 : σ = τ`. Substitute `h1` using the available equality. Rewrite using `[if_pos rfl, if_neg (conj_ne σ).symm, add_zero, coord_atEmb]`. Distinguish the cases in `h2 : σ = ComplexEmbedding.conjugate τ`. Substitute `h2` using the available equality.
+
+Rewrite using `[if_neg h1, if_pos rfl, zero_add]`. Use `atEmb_conj τ (starRingEnd ℂ z)` as an intermediate fact. Rewrite `this` using `[Complex.conj_conj]`. Rewrite using `[← this, coord_atEmb]`. Establish `h : InfinitePlace.mk σ ≠ InfinitePlace.mk τ` using `fun h => by`.
+
+Break down `InfinitePlace.mk_eq_iff.1 h with h | h` into its components or cases. Conclude with `h1 h`. Conclude with `h2 (by rw [← h]; ext; simp)`. Rewrite using `[if_neg h1, if_neg h2, add_zero]`. Unfold `coord atEmb`.
+
+Distinguish the cases in `h3 : (InfinitePlace.mk σ).embedding = σ`. Rewrite using `[if_pos h3]`. Simplify using `[h]`. Rewrite using `[if_neg h3]`. Simplify using `[h]`.
+-/
 theorem coord_atEmb' (σ τ : E →+* ℂ) (z : ℂ) : coord σ (atEmb τ z) =
     (if σ = τ then z else 0) + (if σ = ComplexEmbedding.conjugate τ then starRingEnd ℂ z else 0) := by
   by_cases h1 : σ = τ
@@ -90,6 +123,11 @@ theorem coord_atEmb' (σ τ : E →+* ℂ) (z : ℂ) : coord σ (atEmb τ z) =
     · rw [if_pos h3]; simp [h]
     · rw [if_neg h3]; simp [h]
 
+/- English proof (translation)
+Use `congrFun (denseRange_units.equalizer (g := fun u => ((chiInf χ u : ℂˣ) : ℂ)) (h := fun u : (Cinf E)ˣ => ∏ i, f i (coord (φ i) u)) (Units.continuous_val.comp (continuous_chiInf χ)) (continuous_finsetProd _ fun i _ => continuous_iff_continuousAt.2 fun v => ?_) (funext fun k => ?_)) …` and prove the remaining obligations. Conclude with `ContinuousAt.comp (g := f i) (f := fun u : (Cinf E)ˣ => coord (φ i) u) (hf i _ (v.isUnit.map (coord (φ i))).ne_zero) ((continuous_coord (φ i)).comp Units.continuous_val).continuousAt`. Establish `e` using `h k`. Simplify using `only [← coord_algebraMap (φ _) (k : E)] at e`. Rewrite `e` using `[HChar.inf, MonoidHom.comp_apply, infDiag_eq]`.
+
+Conclude with `e`.
+-/
 theorem chiInf_eq (χ : HChar E) {I : Type} [Fintype I] (φ : I → E →+* ℂ) (f : I → ℂ → ℂ)
     (hf : ∀ i z, z ≠ 0 → ContinuousAt (f i) z)
     (h : ∀ k : Eˣ, ((χ.inf k : ℂˣ) : ℂ) = ∏ i, f i (φ i k)) (u : (Cinf E)ˣ) :
@@ -107,6 +145,11 @@ theorem chiInf_eq (χ : HChar E) {I : Type} [Fintype I] (φ : I → E →+* ℂ)
 
 open Classical in
 
+/- English proof (translation)
+Use `expo_eq_of_exp χ τ _ (∑ i, ((if φ i = τ then b i else 0) + (if φ i = ComplexEmbedding.conjugate τ then a i else 0))) fun z => ?_` and prove the remaining obligations. Rewrite using `[chiInf_eq χ φ f hf h]`. Simplify using `only [coord_expU, he, coord_atEmb']`. Rewrite using `[← Complex.exp_sum, Finset.sum_mul, Finset.sum_mul, ← Finset.sum_add_distrib]`. Use `congrArg _ (Finset.sum_congr rfl fun i _ => ?_)` and prove the remaining obligations.
+
+Apply the tactic sequence `split_ifs <;> simp <;> ring`.
+-/
 theorem expo_eq_sum (χ : HChar E) {I : Type} [Fintype I] (φ : I → E →+* ℂ) (f : I → ℂ → ℂ) (a b : I → ℂ)
     (hf : ∀ i z, z ≠ 0 → ContinuousAt (f i) z)
     (he : ∀ i z, f i (Complex.exp z) = Complex.exp (a i * z + b i * starRingEnd ℂ z))
@@ -120,6 +163,19 @@ theorem expo_eq_sum (χ : HChar E) {I : Type} [Fintype I] (φ : I → E →+* �
   refine congrArg _ (Finset.sum_congr rfl fun i _ => ?_)
   split_ifs <;> simp <;> ring
 
+/- English proof (translation)
+Introduce `E _ _ _ χ`. Use `⟨fun n h τ => ?_, fun s h τ => ?_, fun I _ φ n hφ h i => ?_⟩` and prove the remaining obligations. Rewrite using `[expo_eq_sum χ (fun σ => σ) (fun σ z => z ^ n σ) (fun σ => n σ) (fun _ => 0) (fun σ z hz => continuousAt_zpow₀ z _ (Or.inl hz)) (fun σ z => by simp [Complex.exp_int_mul]) h τ]`. Simplify using the standard rewrite rules. Rewrite using `[expo_eq_sum χ (fun σ => σ) (fun σ z => ((‖z‖ : ℝ) : ℂ) ^ (s : ℂ)) (fun _ => s / 2) (fun _ => s / 2) (fun σ z hz => ?_) (fun σ z => ?_) h.2.2 τ]`.
+
+Simplify using `[Finset.sum_add_distrib]`. Use `ContinuousAt.cpow (Complex.continuous_ofReal.comp continuous_norm).continuousAt continuousAt_const ?_` and prove the remaining obligations. Conclude with `Complex.ofReal_mem_slitPlane.2 (norm_pos_iff.2 hz)`. Rewrite using `[← Complex.ofReal_cpow (norm_nonneg _), Complex.norm_exp, ← Real.exp_mul, Complex.ofReal_exp]`. Use `congr 1`.
+
+Rewrite using `[← mul_add, Complex.add_conj]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Establish `key` using `expo_eq_sum χ φ (fun i z => (z / ((‖z‖ : ℝ) : ℂ)) ^ n i) (fun i => n i / 2) (fun i => -(n i : ℂ) / 2) (fun i z hz => ?_) (fun i z => ?_) h`. Establish `h1 : ∀ j, φ j = φ i ↔ j = i` using `fun j => ⟨fun e => hφ (congrArg InfinitePlace.mk e), fun e => by rw [e]⟩`.
+
+Establish `h2 : ∀ j, φ j ≠ ComplexEmbedding.conjugate (φ i)` using `fun j e => by`. Establish `: j = i` using `hφ ((congrArg InfinitePlace.mk e).trans (InfinitePlace.mk_conjugate_eq _))`. Substitute `this` using the available equality. Conclude with `conj_ne _ e.symm`. Establish `h3 : ComplexEmbedding.conjugate (ComplexEmbedding.conjugate (φ i)) = φ i` using `by ext; simp`.
+
+Rewrite using `[key, key]`. Simplify using `[h1, h2, h3]`. Establish `hn : ((‖z‖ : ℝ) : ℂ) ≠ 0` using `by simpa using hz`. Conclude with `(continuousAt_id.div (Complex.continuous_ofReal.comp continuous_norm).continuousAt hn).zpow₀ _ (Or.inl (div_ne_zero hz hn))`. Rewrite using `[Complex.norm_exp, Complex.ofReal_exp, ← Complex.exp_sub, ← Complex.exp_int_mul]`.
+
+Use `congr 1`. Use `Complex.add_conj z` as an intermediate fact. Move the coercions through the operations in `at this`. Take the linear combination `((n i : ℂ) / 2) * this`.
+-/
 theorem expo_of_infType : ∀ (E : Type) [Field E] [NumberField E] [IsTotallyComplex E] (χ : HChar E), (∀ n : (E →+* ℂ) → ℤ, χ.IsAlg n → ∀ τ, expo χ τ = n τ) ∧ (∀ s : ℝ, χ.IsAbsPow s → ∀ τ, expo χ τ = s) ∧ ∀ (I : Type) [Fintype I] (φ : I → E →+* ℂ) (n : I → ℤ), Function.Injective (fun i => InfinitePlace.mk (φ i)) → χ.HasInf φ n → ∀ i, expo χ (φ i) = (n i : ℂ) / 2 ∧ expo χ (ComplexEmbedding.conjugate (φ i)) = -(n i : ℂ) / 2 := by
   intro E _ _ _ χ
   classical

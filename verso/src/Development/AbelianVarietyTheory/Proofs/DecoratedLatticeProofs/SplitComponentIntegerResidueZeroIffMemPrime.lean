@@ -12,6 +12,19 @@ noncomputable section
 
 namespace GlobalTheory.PhiOneVal
 
+/- English proof (translation)
+Introduce `D k _ _ _ _ p P hP c`. Establish `h : p.pr (incA D (c : D.host.E)) ∈ 𝒪[k]` using `GlobalTheory.LocMod.FullLatFrame.pr_int_mem p c`. Use `⟨h, ?_⟩` and prove the remaining obligations. Rewrite using `[IsLocalRing.residue_eq_zero_iff, IsLocalRing.mem_maximalIdeal, mem_nonunits_iff]`. Distinguish the cases in `hc : c = 0`.
+
+Substitute `hc` using the available equality. Establish `h0 : (⟨_, h⟩ : 𝒪[k]) = 0`. Apply `Subtype.ext` to reduce the goal to its premises. Simplify using the standard rewrite rules. Use `⟨fun _ => zero_mem _, fun _ hu => ?_⟩` and prove the remaining obligations.
+
+Conclude with `not_isUnit_zero (h0 ▸ hu)`. Establish `hc' : (c : D.host.E) ≠ 0` using `fun h0 => hc (Subtype.ext h0)`. Establish `hinv : p.pr (incA D (c : D.host.E)) * p.pr (incA D (c : D.host.E)⁻¹) = 1`. Rewrite using `[← RingHom.map_mul, ← map_mul (incA D), mul_inv_cancel₀ hc', map_one, map_one]`. Rewrite using `[hP.2 c hc, ← p.sec_pr, ← p.int_iff]`.
+
+Apply `not_congr` to reduce the goal to its premises. Prove the components needed by the constructor for the conclusion. Introduce `hu`. Take `⟨y, hy⟩` from `hu.exists_right_inv`. Establish `hy' : p.pr (incA D (c : D.host.E)) * (y : k) = 1` using `congrArg Subtype.val hy`.
+
+Establish `hne : p.pr (incA D (c : D.host.E)) ≠ 0` using `left_ne_zero_of_mul_eq_one hinv`. Establish `: p.pr (incA D (c : D.host.E)⁻¹) = y` using `mul_left_cancel₀ hne (hinv.trans hy'.symm)`. Rewrite using `[this]`. Conclude with `y.2`. Introduce `hi`.
+
+Conclude with `IsUnit.of_mul_eq_one (⟨_, hi⟩ : 𝒪[k]) (Subtype.ext hinv)`.
+-/
 theorem residue_pr_int_eq_zero_iff : ∀ {D : D7} {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] (p : SplitPt D k)
     (P : HeightOneSpectrum (𝓞 D.host.E)), Formalism.L2.NTheta.IsIdemAt p.e P → ∀ c : 𝓞 D.host.E,
     ∃ h : p.pr (incA D (algebraMap (𝓞 D.host.E) D.host.E c)) ∈ 𝒪[k], (residue 𝒪[k] ⟨_, h⟩ = 0 ↔ c ∈ P.asIdeal) := by

@@ -23,20 +23,45 @@ noncomputable section
 
 namespace GlobalTheory.GenFields
 
+/- English proof (translation)
+Simplify using `only [spMap, CommRingCat.ofHom_comp, Spec.map_comp]`.
+-/
 theorem sp_comp {A B C : Type} [CommRing A] [CommRing B] [CommRing C] (f : A →+* B) (g : B →+* C) :
     spMap g ≫ spMap f = spMap (g.comp f) := by
   simp only [spMap, CommRingCat.ofHom_comp, Spec.map_comp]
 
+/- English proof (translation)
+The claim follows from `RingHom.ext fun z => by ext <;> simp [dualMap]`.
+-/
 theorem dualMap_comp {A B C : Type} [CommRing A] [CommRing B] [CommRing C] (f : A →+* B) (g : B →+* C) :
     (dualMap g).comp (dualMap f) = dualMap (g.comp f) :=
   RingHom.ext fun z => by ext <;> simp [dualMap]
 
+/- English proof (translation)
+The claim follows from `RingHom.ext fun z => by ext <;> simp [dualMap, Chart.dualMapR]`.
+-/
 theorem dualMapR_eq {A B : Type} [CommRing A] [CommRing B] (f : A →+* B) : Chart.dualMapR f = dualMap f :=
   RingHom.ext fun z => by ext <;> simp [dualMap, Chart.dualMapR]
 
+/- English proof (translation)
+Rewrite using `[Hom.one_def]`. Both sides reduce to the same expression.
+-/
 theorem one_left {S : Scheme.{0}} (X G : Over S) [GrpObj G] : (1 : X ⟶ G).left = X.hom ≫ η[G].left := by
   rw [Hom.one_def]; rfl
 
+/- English proof (translation)
+Take `⟨g', v', h₁, h₂, rfl⟩` from `h`. Establish `e0 : spMap (TrivSqZeroExt.fstHom S S S).toRingHom ≫ spMap (algebraMap S (DualNumber S)) = 𝟙 _`. Rewrite using `[sp_comp]`. Establish `: (TrivSqZeroExt.fstHom S S S).toRingHom.comp (algebraMap S (DualNumber S)) = RingHom.id S`. Use extensionality with `r`.
+
+Simplify using `[TrivSqZeroExt.algebraMap_eq_inl]`. Rewrite using `[this]`. Conclude with `Spec.map_id _`. Set `red : Over.mk (g ≫ G.hom) ⟶ tEpsG (g ≫ G.hom)` to `Over.homMk (spMap (TrivSqZeroExt.fstHom S S S).toRingHom) (by`. Express the relevant statement in the definitionally equal form `_ ≫ spMap (algebraMap S (DualNumber S)) ≫ g ≫ G.hom = g ≫ G.hom`.
+
+Rewrite using `[← Category.assoc, e0, Category.id_comp])`. Establish `ef : (TrivSqZeroExt.fstHom S S S).toRingHom.comp (dualMap φ) = φ.comp (TrivSqZeroExt.fstHom R R R).toRingHom`. Conclude with `RingHom.ext fun z => by simp [dualMap]`. Establish `hv : red ≫ v' = 1`. Apply `Over.OverMorphism.ext` to reduce the goal to its premises.
+
+Establish `hr` using `congrArg (fun q => q.left) (GlobalTheory.InvFieldBase.redPt_tv G v)`. Simplify using `only [Over.comp_left] at hr`. Rewrite using `[Over.comp_left, one_left, h₂, ← Category.assoc]`. Express the relevant statement in the definitionally equal form `(spMap (TrivSqZeroExt.fstHom S S S).toRingHom ≫ spMap (dualMap φ)) ≫ _ = _`. Rewrite using `[sp_comp, ef, ← sp_comp, Category.assoc]`.
+
+Express the relevant statement in the definitionally equal form `spMap φ ≫ ((GlobalTheory.InvFieldBase.redPt R).left ≫ (tv v).left) = _`. Rewrite using `[hr, one_left]`. Express the relevant statement in the definitionally equal form `spMap φ ≫ 𝟙 _ ≫ _ = (g ≫ G.hom) ≫ _`. Rewrite using `[Category.id_comp, hg]`. Establish `k` using `congrArg (fun q => q.left) (MonObj.comp_mul red g' v')`.
+
+Simplify using `only [hv, _root_.mul_one, Over.comp_left] at k`. Express the relevant statement in the definitionally equal form `red.left ≫ _ = g`. Rewrite using `[k, h₁, ← Category.assoc]`. Express the relevant statement in the definitionally equal form `(spMap (TrivSqZeroExt.fstHom S S S).toRingHom ≫ spMap (algebraMap S (DualNumber S))) ≫ g = g`. Rewrite using `[e0, Category.id_comp]`.
+-/
 theorem red_of_isTr {R : Type} [CommRing R] {G : Over (Sp R)} [GrpObj G] [IsCommMonObj G] {S : Type} [CommRing S]
     {φ : R →+* S} {g : Sp S ⟶ G.left} {v : TanM (𝟙 (Sp R)) G} {w : Sp (DualNumber S) ⟶ G.left}
     (hg : g ≫ G.hom = spMap φ) (h : IsTr G φ g v w) :
@@ -71,6 +96,11 @@ theorem red_of_isTr {R : Type} [CommRing R] {G : Over (Sp R)} [GrpObj G] [IsComm
   change (spMap (TrivSqZeroExt.fstHom S S S).toRingHom ≫ spMap (algebraMap S (DualNumber S))) ≫ g = g
   rw [e0, Category.id_comp]
 
+/- English proof (translation)
+Take `⟨g', v', h₁, h₂, rfl⟩` from `hy`. Take `⟨p, q, hp, hq, hpq⟩` from `GlobalTheory.CechKS.exists_mul_of_isGrpPullback hm (tEpsG (x ≫ A.hom)) g' v' (spMap (algebraMap B (DualNumber B)) ≫ (x ≫ m) ≫ G.hom) (by`. Express the relevant statement in the definitionally equal form `_ = (spMap (algebraMap B (DualNumber B)) ≫ x ≫ A.hom) ≫ spMap x₀`. Rewrite using `[Category.assoc x m, hm.1.w]`. Simplify using `only [Category.assoc])`.
+
+Use `⟨p, q, ?_, ?_, hpq⟩` and prove the remaining obligations. Simplify using `only [hp, h₁, Category.assoc]`. Rewrite using `[hq, h₂, Category.assoc (spMap (dualMap φ)), hv, ← Category.assoc, sp_comp, dualMap_comp]`.
+-/
 theorem isTr_push {R K : Type} [CommRing R] [CommRing K] (x₀ : R →+* K) {G : Over (Sp R)} [GrpObj G]
     [IsCommMonObj G] {A : Over (Sp K)} [GrpObj A] [IsCommMonObj A] (m : A.left ⟶ G.left)
     (hm : IsGrpPullback A G (spMap x₀) m) (w₀ : TanM (𝟙 (Sp R)) G) (v : TanM (𝟙 (Sp K)) A)
@@ -97,6 +127,15 @@ def epsOf {L : Type} [CommRing L] (D : L → L) (h1 : D 1 = 0) (ha : ∀ x y, D 
   map_add' a b := by ext <;> simp [ha]
   map_mul' a b := by ext <;> simp [hm]; ring
 
+/- English proof (translation)
+Establish `r1` using `red_of_isTr hy hw`. Establish `e1 : spMap (TrivSqZeroExt.fstHom L L L).toRingHom ≫ spMap (epsOf D h1 ha hm) = 𝟙 _`. Rewrite using `[sp_comp]`. Establish `: (TrivSqZeroExt.fstHom L L L).toRingHom.comp (epsOf D h1 ha hm) = RingHom.id L`. Use extensionality with `r`.
+
+Simplify using `[epsOf]`. Rewrite using `[this]`. Conclude with `Spec.map_id _`. Establish `r2 : spMap (TrivSqZeroExt.fstHom L L L).toRingHom ≫ (spMap (epsOf D h1 ha hm) ≫ y) = y`. Rewrite using `[← Category.assoc, e1, Category.id_comp]`.
+
+Establish `hwU` using `GlobalTheory.CechKS.le_preimage_of_red r1 hyU`. Use `GlobalTheory.Points.ext_of_valR hU hwU (GlobalTheory.CechKS.le_preimage_of_red r2 hyU) fun f => ?_` and prove the remaining obligations. Rewrite using `[GlobalTheory.Points.valR_spMap_comp _ _ _ hyU]`. Establish `h0` using `GlobalTheory.Points.valR_spMap_comp (TrivSqZeroExt.fstHom L L L).toRingHom w U hwU f`. Rewrite `h0` using `[r1]`.
+
+Use `ext`. Rewrite using `[h0]`. Simplify using `[epsOf]`. Rewrite using `[hd.2 L φ y w U f hy hyU hw, hD]`. Simplify using `[epsOf]`.
+-/
 theorem eq_of_isTr {R : Type} [CommRing R] {G : Over (Sp R)} [GrpObj G] [IsCommMonObj G]
     {v : TanM (𝟙 (Sp R)) G} {dd : Fld G.left} (hd : IsInv G v dd) {L : Type} [CommRing L] (φ : R →+* L)
     (y : Sp L ⟶ G.left) (hy : y ≫ G.hom = spMap φ) (D : L → L) (h1 : D 1 = 0) (ha : ∀ x y, D (x + y) = D x + D y)
@@ -120,6 +159,9 @@ theorem eq_of_isTr {R : Type} [CommRing R] {G : Over (Sp R)} [GrpObj G] [IsCommM
   · rw [h0]; simp [epsOf]
   · rw [hd.2 L φ y w U f hy hyU hw, hD]; simp [epsOf]
 
+/- English proof (translation)
+Take `⟨U, hU, hx, -⟩` from `TopologicalSpace.Opens.isBasis_iff_nbhd.1 X.isBasis_affineOpens (show x.base (IsLocalRing.closedPoint Ω) ∈ (⊤ : X.Opens) from trivial)`. Use `⟨U, hU, fun p _ => ?_⟩` and prove the remaining obligations. Conclude with `((IsLocalRing.specializes_closedPoint (R := Ω) p).map x.base.hom.continuous).mem_open U.isOpen hx`.
+-/
 theorem exists_affine {Ω : Type} [CommRing Ω] [IsLocalRing Ω] {X : Scheme.{0}} (x : Sp Ω ⟶ X) :
     ∃ U : X.Opens, IsAffineOpen U ∧ ⊤ ≤ x ⁻¹ᵁ U := by
   obtain ⟨U, hU, hx, -⟩ := TopologicalSpace.Opens.isBasis_iff_nbhd.1 X.isBasis_affineOpens
@@ -127,6 +169,17 @@ theorem exists_affine {Ω : Type} [CommRing Ω] [IsLocalRing Ω] {X : Scheme.{0}
   refine ⟨U, hU, fun p _ => ?_⟩
   exact ((IsLocalRing.specializes_closedPoint (R := Ω) p).map x.base.hom.continuous).mem_open U.isOpen hx
 
+/- English proof (translation)
+Take `⟨u', hu', hu'l⟩` from `GlobalTheory.Heat.CoeffWt.exists_isLieBasis v'`. Take `⟨u, hu, hul⟩` from `GlobalTheory.exists_isLieBasis_baseChange R K x₀ G A m hm hs n u' hu'`. Establish `h` using `GlobalTheory.Heat.CoeffWt.isGrpPullback_self A`. Set `b : Fin n → TanM (𝟙 (Sp K)) A` to `fun j => PullbackSections.mkT (pushHom h (epsR K) (u j)) ((PullbackSections.isTangent_iff h _).1 (hu.1 j))`. Establish `ts : ∀ f : Fin n → TanM (𝟙 (Sp K)) A, tv (∑ i, f i) = ∏ i, tv (f i)` using `fun f => by`.
+
+Simplify using `only [tv, toMul_sum, Subgroup.val_finset_prod]`. Establish `hcomb : ∀ (c : Fin n → K) (w : epsR K ⟶ A), IsLieComb c u w ↔ pushHom h (epsR K) w = tv (∑ i, c i • b i)` using `fun c w => by`. Rewrite using `[PullbackSections.isLieComb_iff h, ts]`. Both sides reduce to the same expression. Establish `hbij : Function.Bijective (Fintype.linearCombination K b)`.
+
+Rewrite using `[Function.bijective_iff_existsUnique]`. Introduce `W`. Take `⟨p, hp⟩` from `PullbackSections.push_surj h (tv W)`. Establish `ht : IsTangent p` using `(PullbackSections.isTangent_iff h p).2 (by rw [hp]; exact PullbackSections.tv_mem W)`. Use `(existsUnique_congr fun c => ?_).1 (hu.2 p ht)` and prove the remaining obligations.
+
+Rewrite using `[hcomb, hp, Fintype.linearCombination_apply]`. Conclude with `⟨fun e => (PullbackSections.tanM_ext e).symm, fun e => by rw [e]⟩`. Use `⟨(Pi.basisFun K (Fin n)).map (LinearEquiv.ofBijective _ hbij), fun a => ?_⟩` and prove the remaining obligations. Establish `e : (Pi.basisFun K (Fin n)).map (LinearEquiv.ofBijective _ hbij) a = b a`. Simplify using `[Module.Basis.map_apply, Fintype.linearCombination_apply_single]`.
+
+Rewrite using `[e]`. Express the relevant statement in the definitionally equal form `((u a).left ≫ 𝟙 _) ≫ m = _`. Rewrite using `[Category.comp_id, hul a, hu'l a, dualMapR_eq]`.
+-/
 theorem exists_basis_bc {R K : Type} [CommRing R] [CommRing K] (x₀ : R →+* K) (G : Over (Sp R)) [GrpObj G]
     [IsCommMonObj G] (A : Over (Sp K)) [GrpObj A] [IsCommMonObj A] (m : A.left ⟶ G.left)
     (hm : IsGrpPullback A G (spMap x₀) m) (hs : Smooth G.hom) {n : ℕ}
@@ -159,6 +212,11 @@ theorem exists_basis_bc {R K : Type} [CommRing R] [CommRing K] (x₀ : R →+* K
   change ((u a).left ≫ 𝟙 _) ≫ m = _
   rw [Category.comp_id, hul a, hu'l a, dualMapR_eq]
 
+/- English proof (translation)
+Take `⟨x, y, hy, rfl⟩` from `IsFractionRing.div_surjective (A := R) k`. Establish `hy0 : algebraMap R (FractionRing R) y ≠ 0` using `IsFractionRing.to_map_ne_zero_of_mem_nonZeroDivisors hy`. Establish `hψ0 : ψ (algebraMap R (FractionRing R) y) ≠ 0` using `(map_ne_zero ψ).2 hy0`. Establish `e : ψ (algebraMap R (FractionRing R) x / algebraMap R (FractionRing R) y) * ψ (algebraMap R (FractionRing R) y) = ψ (algebraMap R (FractionRing R) x)` using `by rw [← map_mul, div_mul_cancel₀ _ hy0]`. Establish `k2` using `congrArg D e`.
+
+Rewrite `k2` using `[hl, h, h, mul_zero, zero_add]`. Conclude with `(mul_eq_zero.1 k2).resolve_left hψ0`.
+-/
 theorem der_frac {R : Type} [CommRing R] [IsDomain R] {L : Type} [Field L] (ψ : FractionRing R →+* L)
     (D : L → L) (hl : ∀ x y, D (x * y) = x * D y + y * D x) (h : ∀ r, D (ψ (algebraMap R (FractionRing R) r)) = 0)
     (k : FractionRing R) :
@@ -172,6 +230,23 @@ theorem der_frac {R : Type} [CommRing R] [IsDomain R] {L : Type} [Field L] (ψ :
   rw [hl, h, h, mul_zero, zero_add] at k2
   exact (mul_eq_zero.1 k2).resolve_left hψ0
 
+/- English proof (translation)
+Introduce `E _ _ _ H R _ _ _ _ _ _ t P m tt gam _ _ _ n v' D Ω _ _ _ φ x' δ dd' _ hx' hinv hδ hval _ g _ δL hδL ψ ξ hψ hξA hξ _`. Establish `hm : IsGrpPullback P.A.A t.G (spMap (algebraMap R (FractionRing R))) (P.U.gen.inv.left ≫ pullback.fst t.G.hom (jK R))` using `GlobalTheory.ThetaBaseChange.grp_generic P.U.toUnifPre`. Take `⟨v, hv⟩` from `exists_basis_bc (algebraMap R (FractionRing R)) t.G P.A.A _ hm t.semi.smooth v'`. Use `choose dd hdd using fun a => GlobalTheory.InvFieldBase.exists_isInv (FractionRing R) P.A.A (v a)`. Use `⟨v, dd, hdd, fun a O f hO => ?_⟩` and prove the remaining obligations.
+
+Take `⟨U, hU, hxU⟩` from `exists_affine x'`. Establish `hyU : ⊤ ≤ (ξ ≫ P.U.gen.inv.left ≫ pullback.fst t.G.hom (jK R)) ⁻¹ᵁ U`. Rewrite using `[hξ]`. Conclude with `fun p _ => hxU (Set.mem_univ ((spMap (algebraMap Ω (FractionRing Ω))).base p))`. Establish `hyG : (ξ ≫ P.U.gen.inv.left ≫ pullback.fst t.G.hom (jK R)) ≫ t.G.hom = spMap (ψ.comp (algebraMap R (FractionRing R)))`.
+
+Rewrite using `[Category.assoc, hm.1.w, ← Category.assoc, hξA, sp_comp]`. Establish `hl : ∀ x y, δL a (x * y) = x * δL a y + y * δL a x` using `fun x y => by`. Rewrite using `[(δL a).leibniz, smul_eq_mul, smul_eq_mul]`. Establish `hDy : ∀ f, valR (ξ ≫ P.U.gen.inv.left ≫ pullback.fst t.G.hom (jK R)) U (dd' a U f) = δL a (valR (ξ ≫ P.U.gen.inv.left ≫ pullback.fst t.G.hom (jK R)) U f)`. Introduce `f`.
+
+Rewrite using `[hξ, GlobalTheory.Points.valR_spMap_comp _ _ _ hxU, GlobalTheory.Points.valR_spMap_comp _ _ _ hxU, hval a U _ hxU, hδL]`. Establish `hc : ∀ k, δL a (ψ k) = 0` using `der_frac ψ (δL a) hl fun r => by rw [hψ, hδL, hδ, map_zero]`. Establish `hdual : (dualMap ψ).comp (algebraMap (FractionRing R) (DualNumber (FractionRing R))) = (algebraMap (FractionRing Ω) (DualNumber (FractionRing Ω))).comp ψ`. Apply the tactic sequence `ext k <;> simp [dualMap, TrivSqZeroExt.algebraMap_eq_inl]`. Set `g' : tEpsG (ξ ≫ P.A.A.hom) ⟶ P.A.A` to `Over.homMk (spMap (algebraMap (FractionRing Ω) (DualNumber (FractionRing Ω))) ≫ ξ) (Category.assoc _ _ _)`.
+
+Set `w' : tEpsG (ξ ≫ P.A.A.hom) ⟶ P.A.A` to `Over.homMk (spMap (dualMap ψ) ≫ (tv (v a)).left) (by`. Rewrite using `[Category.assoc, Over.w (tv (v a)), hξA]`. Express the relevant statement in the definitionally equal form `spMap (dualMap ψ) ≫ spMap (algebraMap _ _) ≫ 𝟙 _ = spMap _ ≫ spMap ψ`. Rewrite using `[Category.comp_id, sp_comp, sp_comp, hdual])`. Establish `htr : IsTr P.A.A ψ ξ (v a) (g' * w').left` using `⟨g', w', rfl, rfl, rfl⟩`.
+
+Establish `key : (g' * w').left = spMap (epsOf (δL a) (δL a).map_one_eq_zero (map_add _) hl) ≫ ξ`. Use `hm.1.hom_ext ?_ ?_` and prove the remaining obligations. Rewrite using `[eq_of_isTr (hinv a) _ _ hyG (δL a) (δL a).map_one_eq_zero (map_add _) hl U hU hyU hDy (isTr_push _ _ hm (v' a) (v a) (hv a) ψ ξ _ htr), Category.assoc]`. Rewrite using `[Over.w (g' * w')]`. Express the relevant statement in the definitionally equal form `spMap (algebraMap (FractionRing Ω) (DualNumber (FractionRing Ω))) ≫ ξ ≫ P.A.A.hom = (spMap _ ≫ ξ) ≫ P.A.A.hom`.
+
+Rewrite using `[Category.assoc, hξA, sp_comp, sp_comp]`. Use `congr 1`. Use extensionality with `k`. Simplify using `[epsOf, TrivSqZeroExt.algebraMap_eq_inl]`. Simplify using `[epsOf, TrivSqZeroExt.algebraMap_eq_inl, hc]`.
+
+Rewrite using `[← (hdd a).2 (FractionRing Ω) ψ ξ _ O f hξA hO htr, key, GlobalTheory.Points.valR_spMap_comp _ _ _ hO]`. Simplify using `[epsOf]`.
+-/
 theorem main : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (R : Type) [CommRing R] [IsDomain R] [IsLocalRing R] [IsNoetherianRing R] [IsAdicComplete (maximalIdeal R) R] [Algebra ℚ R] (t : SAB H (Sp R)) (P : PELUnif (maximalIdeal R) t) (m : ℕ) (tt : Fin m → R) (gam : Fin m → LinearMap.BilinForm ℤ P.D.toPre.X), IsMonomial P.D.toPre tt gam → (∀ i, tt i ≠ 0) → (∀ p : Sp R, p ∈ abLocus t.G ↔ ∏ i, tt i ∉ p.asIdeal) → ∀ (n : ℕ) (v' : Module.Basis (Fin n) R (TanM (𝟙 (Sp R)) t.G)) (D : Derivation ℤ R R), ∀ (Ω : Type) [CommRing Ω] [IsDomain Ω] [IsLocalRing Ω] (φ : R →+* Ω) (x' : Sp Ω ⟶ t.G.left) (δ : Fin n → Derivation ℤ Ω Ω) (dd' : Fin n → Fld t.G.left), IsAdicComplete ((maximalIdeal R).map φ) Ω → x' ≫ t.G.hom = spMap φ → (∀ a, IsInv t.G (v' a) (dd' a)) → (∀ a r, δ a (φ r) = 0) → (∀ a O f, ⊤ ≤ x' ⁻¹ᵁ O → valR x' O (dd' a O f) = δ a (valR x' O f)) → (∀ O (f : Γ(t.G.left, O)), ⊤ ≤ x' ⁻¹ᵁ O → valR x' O f = 0 → f = 0) → ∀ (g : GlobalTheory.RayEv.Transport.Frame t.PP.L (x' ≫ 𝟙 t.G.left)), g.IsGen → ∀ (δL : Fin n → Derivation ℤ (FractionRing Ω) (FractionRing Ω)), (∀ a ω, δL a ((algebraMap Ω (FractionRing Ω)) ω) = (algebraMap Ω (FractionRing Ω)) (δ a ω)) → ∀ (ψ : FractionRing R →+* FractionRing Ω) (ξ : Sp (FractionRing Ω) ⟶ P.A.A.left), (∀ r, ψ (algebraMap R (FractionRing R) r) = algebraMap Ω (FractionRing Ω) (φ r)) → ξ ≫ P.A.A.hom = spMap ψ → ξ ≫ P.U.gen.inv.left ≫ pullback.fst t.G.hom (jK R) = spMap (algebraMap Ω (FractionRing Ω)) ≫ x' → (∀ O (f : Γ(P.A.A.left, O)), ⊤ ≤ ξ ⁻¹ᵁ O → valR ξ O f = 0 → f = 0) → ∃ (v : Module.Basis (Fin n) (FractionRing R) (TanM (𝟙 (Sp (FractionRing R))) P.A.A)) (dd : Fin n → Fld P.A.A.left), (∀ a, IsInv P.A.A (v a) (dd a)) ∧ ∀ a O f, ⊤ ≤ ξ ⁻¹ᵁ O → valR ξ O (dd a O f) = δL a (valR ξ O f) := by
   intro E _ _ _ H R _ _ _ _ _ _ t P m tt gam _ _ _ n v' D Ω _ _ _ φ x' δ dd' _ hx' hinv hδ hval _ g _ δL hδL ψ ξ
     hψ hξA hξ _

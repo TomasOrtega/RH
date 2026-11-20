@@ -4,6 +4,9 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.AutomorphicForms.T
 open NumberField IsDedekindDomain Formalism.ConjugateSelfDual ReciprocityTheory.Gal Formalism.BasicNotions Formalism.BasicNotions.Loc Formalism.MainNotions.N Module
 open GlobalTheory.WeilDeligne GlobalTheory.Pst GlobalTheory.GalOfCusp UpperTheory.V UpperTheory.V.Af UpperTheory.V.Af.Wd
 
+/- English proof (translation)
+Take `⟨g, hg⟩` from `hf`. Establish `h1 : Continuous fun s : ↥H => (g * r s * g⁻¹ : GL (Fin n) (Qbar l))` using `(continuous_const.mul (hr.comp continuous_subtype_val)).mul continuous_const`. Conclude with `((Units.continuous_val.comp h1).matrix_elem i i).congr fun s => (hg s).2 i`.
+-/
 private theorem cont_diag {Γ : Type} [Group Γ] [TopologicalSpace Γ] {l : ℕ} [Fact l.Prime] {n : ℕ}
     {r : Γ →* GL (Fin n) (Qbar l)} (hr : Continuous r) {H : Subgroup Γ} {κ : Fin n → ↥H →* (Qbar l)ˣ}
     (hf : IsFlagOn r H κ) (i : Fin n) : Continuous fun s => (κ i s : Qbar l) := by
@@ -13,6 +16,37 @@ private theorem cont_diag {Γ : Type} [Group Γ] [TopologicalSpace Γ] {l : ℕ}
   exact ((Units.continuous_val.comp h1).matrix_elem i i).congr fun s => (hg s).2 i
 
 set_option maxHeartbeats 800000 in
+/- English proof (translation)
+Introduce and unpack `F Ω _ _ _ _ _ l _ ι n M hM m r hr w A h O _ _ _ Bw hj κ ⟨χ, hχ, hfl, hI⟩ hp`. Establish `hκc` using `cont_diag hr hfl`. Take `⟨L, ρ, κL, χL, hV, e, htri, hκ, hχL⟩` from `UpperTheory.galois_representation_model_over_finite_extension F Ω l ι n r w A h O Bw hj κ χ (fun i => UpperTheory.galois_rep_values_in_finite_extension F Ω _ M hM _ (hχ i)) hfl hp`. Take `⟨-, hcyc, hK⟩` from `UpperTheory.crystalline_period_ring_properties F Ω l w A h O Bw hj`. Take `⟨K', hK'⟩` from `hK M hM`.
+
+Set `inc` to `Subgroup.inclusion (Weil_le_Dec h)`. Set `ε : ↥(Dec (F` to `F) A) →* (Qbar l)ˣ := (cycBar F Ω l).comp (Dec (F := F) A).subtype`. Set `ψ : Fin n → ↥(Dec (F` to `F) A) →* (Qbar l)ˣ := fun i => κ i * ε ^ (-m i)`. Set `μ : ↥(Weil h) → Fin n → ℂ` to `fun σ i => ((normV w : ℕ) : ℂ) ^ (m i * deg σ) * ι (ψ i (inc σ) : Qbar l)`. Establish `hεc : Continuous fun s => (ε s : Qbar l)`.
+
+Establish `h0 : Continuous fun g : GQ l => (((Loc.PP l).χQ g : ℚ_[l]ˣ) : ℚ_[l])`. Take `⟨hc, -, hq⟩` from `Loc.cycFacts l l`. Simplify using `only [hq]`. Establish `h0 : Continuous fun g : GQ l => ((Loc.cyc l l g : ℤ_[l]ˣ) : ℤ_[l])` using `Units.continuous_val.comp hc`. Conclude with `continuous_subtype_val.comp h0`.
+
+Conclude with `((continuous_algebraMap ℚ_[l] (Om l)).comp (h0.comp (continuous_subtype_val.comp Bw.e_cont))).congr fun s => hcyc L s`. Establish `hψc : ∀ i, Continuous fun s => (ψ i s : Qbar l)` using `fun i => by`. Use `((hκc i).mul (hεc.zpow₀ (-m i) fun s => Or.inl (Units.ne_zero _))).congr fun s => ?_` and prove the remaining obligations. Simplify using `[ψ]`. Use `haveI := hV.finite`.
+
+Establish `T` using `UpperTheory.weilDeligne_triangularizable F Ω l ι w A h O Bw hj L n _ ρ κL μ htri (fun i hi σ y => by`. Use `(UpperTheory.cyclotomicWeilChar_properties F Ω l ι w A h O Bw hj L (κL i) (χL i) (m i) ?_ ⟨K', fun g hg => ?_⟩ (fun g hg => ?_) hi σ y).trans ?_` and prove the remaining obligations. Use `((hκc i).comp Bw.e_symm_cont).congr fun g => ?_` and prove the remaining obligations. Rewrite using `[Function.comp_apply, ← hκ, MulEquiv.apply_symm_apply]`. Take `⟨s, rfl⟩` from `Bw.e.surjective g`.
+
+Use `Units.ext (Subtype.ext ?_)` and prove the remaining obligations. Rewrite using `[hχL, hχ i s (hK' s hg)]`. Both sides reduce to the same expression. Take `⟨s, rfl⟩` from `GlobalTheory.PstLaws.exists_ine_of_fix Bw h hj g hg`. Use `Units.ext (Subtype.ext ?_)` and prove the remaining obligations.
+
+Establish `h1` using `congrArg Units.val (hI i (inc (ineIncl h s)) s.2)`. Rewrite `h1` using `[Units.val_mul, Units.val_zpow_eq_zpow_val, ← hκ, ← hχL, ← hcyc L]`. Rewrite using `[Units.val_mul, Units.val_zpow_eq_zpow_val, MulMemClass.coe_mul]`. Conclude with `h1.trans (by congr 1)`. Use `congr 3`.
+
+Establish `h1 : (ψ i (inc σ) : Qbar l) = (κ i (inc σ) : Qbar l) * (cycBar F Ω l (inc σ) : Qbar l) ^ (-m i)`. Simplify using `[ψ, ε]`. Rewrite using `[h1, ← hκ, ← hcyc L, Units.val_mul, Units.val_zpow_eq_zpow_val, MulMemClass.coe_mul]`. Use `congr 1) hV`. Establish `hq : ((normV w : ℕ) : ℂ) ≠ 0` using `Nat.cast_ne_zero.mpr (one_lt_normV w).ne_bot`.
+
+Establish `hμ0 : ∀ σ i, μ σ i ≠ 0` using `fun σ i => mul_ne_zero (zpow_ne_zero _ hq) ((map_ne_zero ι).mpr (Units.ne_zero _))`. Establish `hμm : ∀ i σ τ, μ (σ * τ) i = μ σ i * μ τ i` using `fun i σ τ => by`. Simplify using `only [μ, deg_mul, mul_add, zpow_add₀ hq, map_mul, Units.val_mul]`. Expand and normalize the polynomial expressions, which then agree. Set `ν : Fin n → ↥(Weil h) →* ℂˣ` to `fun i => MonoidHom.mk' (fun σ => Units.mk0 (μ σ i) (hμ0 σ i)) fun σ τ => Units.ext (hμm i σ τ)`.
+
+Establish `hν : ∀ i σ, (ν i σ : ℂ) = μ σ i` using `fun _ _ => rfl`. Take `⟨b, hb⟩` from `T`. Use `⟨ν, fun s => ?_, fun i s hs => Units.ext ?_, fun i j hij => Or.inl ?_⟩` and prove the remaining obligations. Rewrite using `[e, DpstMap.charPol_wdPst _ ι Bw h hj _ hV, ← LinearMap.charpoly_toMatrix _ b]`. Use `(Matrix.charpoly_of_upperTriangular _ (fun i j hlt => (hb (some s)).1 i j hlt)).trans ?_` and prove the remaining obligations.
+
+Conclude with `Finset.prod_congr rfl fun i _ => congrArg (fun c => Polynomial.X - Polynomial.C c) ((hb (some s)).2 i)`. Establish `h2` using `hI i (inc (ineIncl h s)) s.2`. Establish `h3 : ψ i (inc (ineIncl h s)) = χ i s`. Establish `h6 : κ i (inc (ineIncl h s)) = cycBar F Ω l s ^ m i * χ i s` using `h2`. Establish `h7 : ε (inc (ineIncl h s)) = cycBar F Ω l s` using `rfl`.
+
+Simplify using `only [ψ, MonoidHom.mul_apply, MonoidHom.zpow_apply]`. Rewrite using `[h6, h7, mul_right_comm, ← zpow_add, add_neg_cancel, zpow_zero, one_mul]`. Rewrite using `[hν]`. Simplify using `[μ, h3, hχ i s hs]`. Simplify using `only [hν] at hij`.
+
+Take `⟨ha, h1⟩` from `UpperTheory.continuous_character_compact_unit_values F Ω l ι w A h (hj.mem_placesOver h) (ψ i * (ψ j)⁻¹) (1 + m j - m i) (by`. Use `((hψc i).mul ((hψc j).inv₀ fun s => Units.ne_zero _)).congr fun s => ?_` and prove the remaining obligations. Use the proof step `simp) (fun σ => by`. Establish `h2` using `hij σ`. Establish `h3 : ι (ψ j (inc σ) : Qbar l) ≠ 0` using `(map_ne_zero ι).mpr (Units.ne_zero _)`.
+
+Establish `h4 : ((normV w : ℕ) : ℂ) ^ (m i * deg σ) ≠ 0` using `zpow_ne_zero _ hq`. Express the relevant statement in the definitionally equal form `ι ((ψ i (inc σ) * (ψ j (inc σ))⁻¹ : (Qbar l)ˣ) : Qbar l) = _`. Rewrite using `[Units.val_mul, Units.val_inv_eq_inv_val, map_mul, map_inv₀, sub_mul, add_mul, one_mul, zpow_sub₀ hq, zpow_add₀ hq, mul_inv_eq_iff_eq_mul₀ h3, div_mul_eq_mul_div, eq_div_iff h4, mul_comm, mul_assoc]`. Conclude with `h2)`. Establish `h5 : ψ i = ψ j` using `mul_inv_eq_one.mp h1`.
+
+Establish `h6 : -m j = 1 + -m i` using `by omega`. Simplify using `only [ψ] at h5`. Rewrite `h5` using `[h6, zpow_add, zpow_one, ← mul_assoc]`. Conclude with `mul_right_cancel h5`.
+-/
 theorem UpperTheory.V.Lev.flagPol :
     UpperTheory.V.Lev.FlagPol := by
   rintro F Ω _ _ _ _ _ l _ ι n M hM m r hr w A h O _ _ _ Bw hj κ ⟨χ, hχ, hfl, hI⟩ hp

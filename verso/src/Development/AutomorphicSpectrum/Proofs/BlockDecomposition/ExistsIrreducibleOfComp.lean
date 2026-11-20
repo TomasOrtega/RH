@@ -26,6 +26,9 @@ noncomputable def iterLevi (n : ℕ) : (j : ℕ) → (GL (Fin n) k →* Mir k (n
 
 abbrev dd (n j : ℕ) : Fin 2 → ℕ := ![n, j + 1]
 
+/- English proof (translation)
+Simplify using `[dd, Fin.sum_univ_two, add_assoc]`.
+-/
 theorem sum_dd (n j : ℕ) : ∑ a, dd n j a = n + j + 1 := by
   simp [dd, Fin.sum_univ_two, add_assoc]
 

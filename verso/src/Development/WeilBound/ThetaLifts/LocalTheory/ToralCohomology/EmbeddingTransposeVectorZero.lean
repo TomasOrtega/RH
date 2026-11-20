@@ -13,6 +13,11 @@ section Exp
 
 variable {I J : Type} [Fintype I] [DecidableEq I] [Fintype J] [DecidableEq J]
 
+/- English proof (translation)
+Use `letI := Matrix.linftyOpNormedRing (n := I) (α := ℂ)`. Use `letI := Matrix.linftyOpNormedAlgebra (n := I) (R := ℂ) (α := ℂ)`. Establish `h` using `NormedSpace.exp_series_hasSum_exp' (𝕂 := ℂ) A`. Set `L : Matrix I I ℂ →ₗ[ℂ] (I → ℂ)` to `(Matrix.mulVecBilin ℂ ℂ).flip v`. Use `h.map L L.continuous_of_finiteDimensional` as an intermediate fact.
+
+Use `this using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `n`. Conclude with `(Matrix.smul_mulVec _ _ _).symm`. Both sides reduce to the same expression.
+-/
 theorem hasSum_exp (A : Matrix I I ℂ) (v : I → ℂ) :
     HasSum (fun n : ℕ => ((n.factorial : ℂ))⁻¹ • (A ^ n *ᵥ v)) (NormedSpace.exp A *ᵥ v) := by
   letI := Matrix.linftyOpNormedRing (n := I) (α := ℂ)
@@ -25,6 +30,11 @@ theorem hasSum_exp (A : Matrix I I ℂ) (v : I → ℂ) :
     exact (Matrix.smul_mulVec _ _ _).symm
   · rfl
 
+/- English proof (translation)
+Establish `hn : ∀ n : ℕ, A ^ n * P = P * B ^ n` using `fun n => by`. Proceed by induction on `n with`. Consider the case `zero => simp`. Consider the case `succ n ih => rw [pow_succ, Matrix.mul_assoc, h, ← Matrix.mul_assoc, ih, pow_succ, Matrix.mul_assoc]`. Establish `h2` using `(hasSum_exp B u).map P.mulVecLin P.mulVecLin.continuous_of_finiteDimensional`.
+
+Use `(hasSum_exp A _).unique ?_` and prove the remaining obligations. Simplify `h2` using `[Function.comp_def, hn, Matrix.mulVec_smul]`.
+-/
 theorem exp_int {A : Matrix I I ℂ} {B : Matrix J J ℂ} {P : Matrix I J ℂ} (h : A * P = P * B) (u : J → ℂ) :
     NormedSpace.exp A *ᵥ (P *ᵥ u) = P *ᵥ (NormedSpace.exp B *ᵥ u) := by
   have hn : ∀ n : ℕ, A ^ n * P = P * B ^ n := fun n => by
@@ -35,6 +45,11 @@ theorem exp_int {A : Matrix I I ℂ} {B : Matrix J J ℂ} {P : Matrix I J ℂ} (
   refine (hasSum_exp A _).unique ?_
   simpa [Function.comp_def, hn, Matrix.mulVec_smul] using h2
 
+/- English proof (translation)
+Establish `hn : ∀ n : ℕ, A ^ n *ᵥ v = c ^ n • v` using `fun n => by`. Proceed by induction on `n with`. Consider the case `zero => simp`. Consider the case `succ n ih => rw [pow_succ, ← Matrix.mulVec_mulVec, h, Matrix.mulVec_smul, ih, smul_smul, pow_succ']`. Use `(hasSum_exp A v).unique ?_` and prove the remaining obligations.
+
+Use `(NormedSpace.exp_series_hasSum_exp' (𝕂 := ℂ) c).smul_const v` as an intermediate fact. Rewrite `this` using `[← Complex.exp_eq_exp_ℂ]`. Simplify `this` using `[hn, smul_smul]`.
+-/
 theorem exp_eig {A : Matrix I I ℂ} {v : I → ℂ} {c : ℂ} (h : A *ᵥ v = c • v) : NormedSpace.exp A *ᵥ v = Complex.exp c • v := by
   have hn : ∀ n : ℕ, A ^ n *ᵥ v = c ^ n • v := fun n => by
     induction n with
@@ -45,6 +60,9 @@ theorem exp_eig {A : Matrix I I ℂ} {v : I → ℂ} {c : ℂ} (h : A *ᵥ v = c
   rw [← Complex.exp_eq_exp_ℂ] at this
   simpa [hn, smul_smul] using this
 
+/- English proof (translation)
+Use `(hasSum_exp A v).unique ?_` and prove the remaining obligations. Use `hasSum_sum_of_ne_finset_zero (L := SummationFilter.unconditional ℕ) (f := fun n : ℕ => ((n.factorial : ℂ))⁻¹ • (A ^ n *ᵥ v)) (s := Finset.range 2) (fun n hn => by` as an intermediate fact. Take `⟨k, rfl⟩` from `Nat.exists_eq_add_of_le' (show 2 ≤ n from not_lt.1 (mt Finset.mem_range.2 hn))`. Rewrite using `[pow_succ, pow_succ, ← Matrix.mulVec_mulVec, ← Matrix.mulVec_mulVec, h, Matrix.mulVec_zero, smul_zero])`. Simplify `this` using `[Finset.sum_range_succ]`.
+-/
 theorem exp_nil {A : Matrix I I ℂ} {v : I → ℂ} (h : A *ᵥ (A *ᵥ v) = 0) : NormedSpace.exp A *ᵥ v = v + A *ᵥ v := by
   refine (hasSum_exp A v).unique ?_
   have := hasSum_sum_of_ne_finset_zero (L := SummationFilter.unconditional ℕ)
@@ -59,10 +77,19 @@ variable {R S R₁ S₁ : ℕ}
 
 def sg : Ix R S → ℂ := Sum.elim (fun _ => 1) fun _ => -1
 
+/- English proof (translation)
+The claim follows from `Jm_eq r s`.
+-/
 theorem Jm_sg (r s : ℕ) : Jm r s = Matrix.diagonal sg := Jm_eq r s
 
+/- English proof (translation)
+Apply the tactic sequence `cases a <;> simp [sg]`.
+-/
 theorem star_sg (a : Ix R S) : star (sg a) = sg a := by cases a <;> simp [sg]
 
+/- English proof (translation)
+Apply the tactic sequence `cases a <;> simp [sg]`.
+-/
 theorem sg_sq (a : Ix R S) : sg a * sg a = 1 := by cases a <;> simp [sg]
 
 def Emb.P (m : Emb R S R₁ S₁) : Matrix (Ix R S) (Ix R₁ S₁) ℂ := fun a b => if a = m.e b then 1 else 0
@@ -103,32 +130,59 @@ def embB (R S : ℕ) : Emb (R + 1) (S + 1) R S where
   pos := by rintro (a | a) (b | b) <;> simp [posC]
   ext := by rintro a (b | b) (rfl | rfl) <;> simp [posC, sameBlock, Fin.castSucc_lt_last] <;> norm_num
 
+/- English proof (translation)
+Apply the tactic sequence `cases b <;> rfl`.
+-/
 theorem sg_embA (R S : ℕ) (b) : sg ((embA R S).e b) = sg b := by cases b <;> rfl
 
+/- English proof (translation)
+Apply the tactic sequence `cases b <;> rfl`.
+-/
 theorem sg_embB (R S : ℕ) (b) : sg ((embB R S).e b) = sg b := by cases b <;> rfl
 
+/- English proof (translation)
+Apply the tactic sequence `refine ⟨?_, ?_, fun b => ?_⟩ <;> simp [Emb.P, Matrix.mulVec, dotProduct, (m.ne_i _).symm, (m.ne_j _).symm, m.inj.eq_iff]`.
+-/
 theorem Emb.embeddingMatrix_mulVec (m : Emb R S R₁ S₁) (u : Ix R₁ S₁ → ℂ) :
     (m.P *ᵥ u) (.inl m.i) = 0 ∧ (m.P *ᵥ u) (.inr m.j) = 0 ∧ ∀ b, (m.P *ᵥ u) (m.e b) = u b := by
   refine ⟨?_, ?_, fun b => ?_⟩ <;> simp [Emb.P, Matrix.mulVec, dotProduct, (m.ne_i _).symm, (m.ne_j _).symm, m.inj.eq_iff]
 
+/- English proof (translation)
+Simplify using `[Emb.P, Matrix.mulVec, dotProduct]`.
+-/
 theorem Emb.tP (m : Emb R S R₁ S₁) (v : Ix R S → ℂ) (b) : (m.Pᵀ *ᵥ v) b = v (m.e b) := by
   simp [Emb.P, Matrix.mulVec, dotProduct]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `b`. Simplify using `[m.tP, Emb.x, Pi.single_eq_of_ne (m.ne_i b), Pi.single_eq_of_ne (m.ne_j b)]`.
+-/
 theorem Emb.embedding_transpose_vector_zero (m : Emb R S R₁ S₁) : m.Pᵀ *ᵥ m.x = 0 := by
   funext b; simp [m.tP, Emb.x, Pi.single_eq_of_ne (m.ne_i b), Pi.single_eq_of_ne (m.ne_j b)]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `b`. Simplify using `[m.tP, Emb.y, Pi.single_eq_of_ne (m.ne_i b), Pi.single_eq_of_ne (m.ne_j b)]`.
+-/
 theorem Emb.transpose_mulVec_y_eq_zero (m : Emb R S R₁ S₁) : m.Pᵀ *ᵥ m.y = 0 := by
   funext b; simp [m.tP, Emb.y, Pi.single_eq_of_ne (m.ne_i b), Pi.single_eq_of_ne (m.ne_j b)]
 
+/- English proof (translation)
+Use extensionality with `a b`. Simplify using `[Emb.P, Matrix.mul_apply, m.inj.eq_iff, Matrix.one_apply, eq_comm]`.
+-/
 theorem Emb.tPP (m : Emb R S R₁ S₁) : m.Pᵀ * m.P = 1 := by
   ext a b; simp [Emb.P, Matrix.mul_apply, m.inj.eq_iff, Matrix.one_apply, eq_comm]
 
+/- English proof (translation)
+Use extensionality with `c d`. Simplify using `only [Matrix.mul_apply, Matrix.single_apply, Emb.P, Matrix.transpose_apply]`. Apply the tactic sequence `rw [Finset.sum_eq_single b, Finset.sum_eq_single a] <;> simp +contextual [eq_comm, ite_and]`. Apply the tactic sequence `split_ifs <;> rfl`.
+-/
 theorem Emb.conj_single (m : Emb R S R₁ S₁) (a b) : m.P * Matrix.single a b (1 : ℂ) * m.Pᵀ = Matrix.single (m.e a) (m.e b) 1 := by
   ext c d
   simp only [Matrix.mul_apply, Matrix.single_apply, Emb.P, Matrix.transpose_apply]
   rw [Finset.sum_eq_single b, Finset.sum_eq_single a] <;> simp +contextual [eq_comm, ite_and]
   split_ifs <;> rfl
 
+/- English proof (translation)
+Use extensionality with `a b`. Rewrite using `[Jm_sg, Jm_sg, Matrix.diagonal_mul, Matrix.mul_diagonal, Emb.P]`. Use `split_ifs with h`. Rewrite using `[h, hs, mul_comm]`. Simplify using the standard rewrite rules.
+-/
 theorem Emb.JP (m : Emb R S R₁ S₁) (hs : ∀ b, sg (m.e b) = sg b) : Jm R S * m.P = m.P * Jm R₁ S₁ := by
   ext a b
   rw [Jm_sg, Jm_sg, Matrix.diagonal_mul, Matrix.mul_diagonal, Emb.P]
@@ -136,6 +190,13 @@ theorem Emb.JP (m : Emb R S R₁ S₁) (hs : ∀ b, sg (m.e b) = sg b) : Jm R S 
   · rw [h, hs, mul_comm]
   · simp
 
+/- English proof (translation)
+Establish `h1 : m.Pᴴ = m.Pᵀ` using `by ext a b; simp [Emb.P]`. Establish `h2 : m.Pᵀᴴ = m.P` using `by ext a b; simp [Emb.P]`. Establish `h3 : m.Pᵀ * Jm R S = Jm R₁ S₁ * m.Pᵀ`. Use `congrArg Matrix.conjTranspose (m.JP hs)` as an intermediate fact. Rewrite `this` using `[Matrix.conjTranspose_mul, Matrix.conjTranspose_mul, Jm_star, Jm_star, h1]`. Then use the resulting hypothesis.
+
+Establish `h4 : Yᴴ * Jm R₁ S₁ + Jm R₁ S₁ * Y = 0` using `h`. Express the relevant statement in the definitionally equal form `(m.P * Y * m.Pᵀ)ᴴ * _ + _ = 0`. Rewrite using `[Matrix.conjTranspose_mul, Matrix.conjTranspose_mul, h1, h2]`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [Matrix.mul_add, Matrix.add_mul, Matrix.mul_assoc, h3]`.
+
+Rewrite using `[← Matrix.mul_assoc (Jm R S), m.JP hs, Matrix.mul_assoc]`. Use `_ = 0 := by rw [h4]; simp`.
+-/
 theorem Emb.conj_upq (m : Emb R S R₁ S₁) (hs : ∀ b, sg (m.e b) = sg b) {Y : Mat R₁ S₁} (h : Y ∈ upq R₁ S₁) :
     m.P * Y * m.Pᵀ ∈ upq R S := by
   have h1 : m.Pᴴ = m.Pᵀ := by ext a b; simp [Emb.P]
@@ -151,28 +212,91 @@ theorem Emb.conj_upq (m : Emb R S R₁ S₁) (hs : ∀ b, sg (m.e b) = sg b) {Y 
         rw [← Matrix.mul_assoc (Jm R S), m.JP hs, Matrix.mul_assoc]
     _ = 0 := by rw [h4]; simp
 
+/- English proof (translation)
+Use function extensionality and compare the values at `c`. Distinguish the cases in `e : c = a`. Substitute `e` using the available equality. Simplify using `[Matrix.mulVec, dotProduct, Matrix.single_apply]`. Simplify using `[Matrix.mulVec, dotProduct, Matrix.single_apply, Ne.symm e, Pi.single_eq_of_ne e]`.
+-/
 theorem single_mulVec' (a b : Ix R S) (v : Ix R S → ℂ) : Matrix.single a b (1 : ℂ) *ᵥ v = v b • Pi.single a 1 := by
   funext c
   by_cases e : c = a
   · subst e; simp [Matrix.mulVec, dotProduct, Matrix.single_apply]
   · simp [Matrix.mulVec, dotProduct, Matrix.single_apply, Ne.symm e, Pi.single_eq_of_ne e]
 
+/- English proof (translation)
+Apply the tactic sequence `ext c d; rw [Jm_sg, Matrix.diagonal_mul]; simp only [Matrix.smul_apply, Matrix.single_apply]; split_ifs with h <;> simp [h]`.
+-/
 theorem J_single (a b : Ix R S) : Jm R S * Matrix.single a b (1 : ℂ) = sg a • Matrix.single a b 1 := by
   ext c d; rw [Jm_sg, Matrix.diagonal_mul]; simp only [Matrix.smul_apply, Matrix.single_apply]; split_ifs with h <;> simp [h]
 
+/- English proof (translation)
+Apply the tactic sequence `ext c d; rw [Jm_sg, Matrix.mul_diagonal]; simp only [Matrix.smul_apply, Matrix.single_apply]; split_ifs with h <;> simp [h]`.
+-/
 theorem single_J (a b : Ix R S) : Matrix.single a b (1 : ℂ) * Jm R S = sg b • Matrix.single a b 1 := by
   ext c d; rw [Jm_sg, Matrix.mul_diagonal]; simp only [Matrix.smul_apply, Matrix.single_apply]; split_ifs with h <;> simp [h]
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem sg_l (i : Fin R) : sg (.inl i : Ix R S) = 1 := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem sg_r (i : Fin S) : sg (.inr i : Ix R S) = -1 := rfl
 
 def hf {d : ℕ} (M : Matrix (Fin d) (Fin d) ℂ) (u v : Fin d → ℂ) : ℂ := u ⬝ᵥ M *ᵥ star v
 
+/- English proof (translation)
+Rewrite using `[Matrix.mul_assoc]`. Both sides reduce to the same expression.
+-/
 theorem gram_apply {d : ℕ} {I : Type} (M : Matrix (Fin d) (Fin d) ℂ) (C : Matrix (Fin d) I ℂ) (a b : I) :
     (Cᵀ * M * C.map star) a b = hf M (fun r => C r a) (fun r => C r b) := by
   rw [Matrix.mul_assoc]; rfl
 
+/- English proof (translation)
+Establish `herm : ∀ u v, hf M v u = star (hf M u v)` using `fun u v => by`. Simplify using `only [hf, dotProduct, Matrix.mulVec, star_sum, star_mul', Pi.star_apply, star_star, Finset.mul_sum, ← hM]`. Rewrite using `[Finset.sum_comm]`. Conclude with `Finset.sum_congr rfl fun _ _ => Finset.sum_congr rfl fun _ _ => by ring`. Establish `iso : ∀ u v, hf M (θ *ᵥ u) (θ *ᵥ v) = hf M u v` using `fun u v => by conv_rhs => rw [← hθ.2.1]`.
+
+Rewrite using `[hf, hf, show star (θ *ᵥ v) = θ.map star *ᵥ star v by`. Use function extensionality and compare the values at `i`. Simplify using `[Matrix.mulVec, dotProduct, star_sum], Matrix.mul_assoc, ← Matrix.mulVec_mulVec, ← Matrix.mulVec_mulVec,`. Use the proof step `Matrix.dotProduct_mulVec u, Matrix.vecMul_transpose]`. Establish `θθ : ∀ u, θ *ᵥ (θ *ᵥ u) = u` using `fun u => by rw [Matrix.mulVec_mulVec, hθ.1, Matrix.one_mulVec]`.
+
+Establish `addl : ∀ u u' v (s : ℂ), hf M (u + s • u') v = hf M u v + s * hf M u' v` using `fun u u' v s => by simp [hf]`. Establish `addr : ∀ u v v' (s : ℂ), hf M u (v + s • v') = hf M u v + star s * hf M u v'` using `fun u v v' s => by`. Simplify using `[hf, Matrix.mulVec_add, Matrix.mulVec_smul]`. Establish `sml : ∀ u v (s : ℂ), hf M (s • u) v = s * hf M u v` using `fun u v s => by simp [hf]`. Establish `smr : ∀ u v (s : ℂ), hf M u (s • v) = star s * hf M u v` using `fun u v s => by simp [hf, Matrix.mulVec_smul]`.
+
+Use `set z := θ *ᵥ x with hz`. Establish `zz : hf M z z = 0` using `(iso x x).trans xx`. Establish `zx : hf M x z = hf M z x` using `by rw [← iso x z, hz, θθ]`. Use `set k := (hf M z x).re with hk`. Establish `k0 : 0 < k` using `hθ.2.2 x x0`.
+
+Establish `zk : hf M z x = k`. Use `herm z x` as an intermediate fact. Rewrite `this` using `[zx]`. Conclude with `(Complex.conj_eq_iff_re.1 this.symm).symm`. Use `set N : ℂ := (((Real.sqrt (2 * k))⁻¹ : ℝ) : ℂ) with hN`.
+
+Establish `sN : star N = N` using `Complex.conj_ofReal _`. Establish `NN : N * N * (2 * k) = 1`. Rewrite using `[hN]`. Use `norm_cast`. Rewrite using `[← mul_inv, Real.mul_self_sqrt (by positivity), inv_mul_cancel₀ (by positivity)]`.
+
+Establish `N0 : N ≠ 0` using `fun e => by rw [e] at NN; simp at NN`. Establish `oz : ∀ k, hf M (fun r => ι r k) z = 0` using `fun k => by`. Use `oy k` as an intermediate fact. Rewrite `this` using `[hy, smr, mul_eq_zero]`. Conclude with `this.resolve_left (star_ne_zero.2 c0)`.
+
+Establish `col : ∀ (v) (b), (∀ k, hf M (fun r => ι r k) v = 0) → hf M (fun r => (ι * C₁) r b) v = 0` using `fun v b h => by`. Establish `: hf M (fun r => (ι * C₁) r b) v = ∑ k, C₁ k b * hf M (fun r => ι r k) v`. Simplify using `only [hf, dotProduct, Matrix.mul_apply, Finset.sum_mul, Finset.mul_sum]`. Rewrite using `[Finset.sum_comm]`. Conclude with `Finset.sum_congr rfl fun _ _ => Finset.sum_congr rfl fun _ _ => by ring`.
+
+Simplify using `[this, h]`. Set `cl : Ix R S → Fin d → ℂ` to `fun a => if a = .inl m.i then N • (x + (1 : ℂ) • z) else if a = .inr m.j then N • (x + (-1 : ℂ) • z) else Function.extend m.e (fun b r => (ι * C₁) r b) 0 a`. Establish `ci : cl (.inl m.i) = N • (x + (1 : ℂ) • z)` using `if_pos rfl`. Establish `cj : cl (.inr m.j) = N • (x + (-1 : ℂ) • z)` using `by simp [cl]`. Establish `ce : ∀ b, cl (m.e b) = fun r => (ι * C₁) r b` using `fun b => by`.
+
+Simplify using `only [cl, if_neg (m.ne_i b), if_neg (m.ne_j b), m.inj.extend_apply]`. Establish `o1 : ∀ b (s : ℂ), hf M (fun r => (ι * C₁) r b) (N • (x + s • z)) = 0` using `fun b s => by`. Rewrite using `[smr, addr, col _ b ox, col _ b oz]`. Simplify using the standard rewrite rules. Establish `gram : (Matrix.of fun r a => cl a r)ᵀ * M * (Matrix.of fun r a => cl a r).map star = Jm R S`.
+
+Use extensionality with `a b`. Rewrite using `[gram_apply, Jm_sg]`. Express the relevant statement in the definitionally equal form `hf M (cl a) (cl b) = _`. Apply the tactic sequence `rcases m.cover a with rfl | rfl | ⟨a, rfl⟩ <;> rcases m.cover b with rfl | rfl | ⟨b, rfl⟩ <;>`. Simplify using `only [ci, cj, ce]`.
+
+Simplify using `only [sml, smr, addl, addr, xx, zz, zx, zk, sN, Matrix.diagonal_apply_eq, sg_l, star_one]`. Take the linear combination `NN`. Simplify using `only [sml, smr, addl, addr, xx, zz, zx, zk, sN, star_neg, star_one]`. Rewrite using `[Matrix.diagonal_apply_ne _ (by simp)]; ring`. Rewrite using `[herm, o1, Matrix.diagonal_apply_ne _ (m.ne_i b).symm, star_zero]`.
+
+Simplify using `only [sml, smr, addl, addr, xx, zz, zx, zk, sN, star_neg, star_one]`. Rewrite using `[Matrix.diagonal_apply_ne _ (by simp)]; ring`. Simplify using `only [sml, smr, addl, addr, xx, zz, zx, zk, sN, Matrix.diagonal_apply_eq, sg_r, star_neg, star_one]`. Take the linear combination `-NN`. Rewrite using `[herm, o1, Matrix.diagonal_apply_ne _ (m.ne_j b).symm, star_zero]`.
+
+Rewrite using `[o1, Matrix.diagonal_apply_ne _ (m.ne_i a)]`. Rewrite using `[o1, Matrix.diagonal_apply_ne _ (m.ne_j a)]`. Rewrite using `[← gram_apply, Matrix.transpose_mul, show (ι * C₁).map star = ι.map star * C₁.map star from Matrix.map_mul (f := starRingEnd ℂ), show C₁ᵀ * ιᵀ * M * (ι.map star * C₁.map star) = C₁ᵀ * (ιᵀ * M * ι.map star) * C₁.map star by simp only [Matrix.mul_assoc], hg, hC₁.1, Jm_sg]`. Distinguish the cases in `e : a = b`. Substitute `e` using the available equality.
+
+Simplify using `[hs]`. Rewrite using `[Matrix.diagonal_apply_ne _ e, Matrix.diagonal_apply_ne _ (m.inj.ne e)]`. Use `⟨Matrix.of fun r a => cl a r, (2 * N)⁻¹, c * (2 * N)⁻¹, ⟨gram, ?_⟩, ?_, by simp [N0], ?_, ?_, ?_⟩` and prove the remaining obligations. Use `set C : Matrix (Fin d) (Ix R S) ℂ := Matrix.of fun r a => cl a r`. Establish `h1 : (Jm R S * (Cᵀ * M)) * C.map star = 1` using `by rw [Matrix.mul_assoc, gram, Jm_sq]`.
+
+Establish `h2` using `(Matrix.mul_eq_one_comm_of_card_eq _ _ ℂ (by simp [hd])).1 h1`. Use `⟨(Jm R S * (Cᵀ * M)).map star, ?_⟩` and prove the remaining obligations. Establish `h3` using `congrArg (fun A : Matrix (Fin d) (Fin d) ℂ => A.map (starRingEnd ℂ)) h2`. Simplify using `only [Matrix.map_mul, Matrix.map_one _ (map_zero _) (map_one _)] at h3`. Rewrite using `[← h3, ← Matrix.map_mul, ← Matrix.map_mul]`.
+
+Use `congr 1`. Use `ext`. Simplify using the standard rewrite rules. Use extensionality with `r a`. Rewrite using `[Jm_sg, Matrix.mul_diagonal]`.
+
+Express the relevant statement in the definitionally equal form `(θ *ᵥ cl a) r = cl a r * sg a`. Break down `m.cover a with rfl | rfl | ⟨a, rfl⟩` into its components or cases. Rewrite using `[ci, Matrix.mulVec_smul, Matrix.mulVec_add, Matrix.mulVec_smul, θθ]`. Simplify using `only [sg_l, hz, Pi.smul_apply, Pi.add_apply, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree.
+
+Rewrite using `[cj, Matrix.mulVec_smul, Matrix.mulVec_add, Matrix.mulVec_smul, θθ]`. Simplify using `[sg_r, hz]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[ce, hs]`. Express the relevant statement in the definitionally equal form `(θ * (ι * C₁)) r a = _`.
+
+Rewrite using `[← Matrix.mul_assoc, hθι, Matrix.mul_assoc, hθ₁, ← Matrix.mul_assoc, Jm_sg, Matrix.mul_diagonal]`. Use function extensionality and compare the values at `r`. Simplify using `only [Emb.x, Matrix.mulVec_add, Matrix.mulVec_single_one, Pi.smul_apply, Pi.add_apply, Matrix.col_apply, Matrix.of_apply, ci, cj, smul_eq_mul]`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
+
+Use function extensionality and compare the values at `r`. Simplify using `only [hy, Emb.y, Matrix.mulVec_sub, Matrix.mulVec_single_one, Pi.smul_apply, Pi.add_apply, Pi.sub_apply, Matrix.col_apply, Matrix.of_apply, ci, cj, smul_eq_mul]`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Use extensionality with `r b`.
+
+Simplify using `[Matrix.mul_apply (M := Matrix.of _), Emb.P, ce]`.
+-/
 theorem exists_frame (m : Emb R S R₁ S₁) (hs : ∀ b, sg (m.e b) = sg b) {d d₁ : ℕ} (hd : d = R + S)
     {M θ : Matrix (Fin d) (Fin d) ℂ} {M₁ θ₁ : Matrix (Fin d₁) (Fin d₁) ℂ} (hM : ∀ i j, M j i = star (M i j)) (hθ : IsCartan M θ)
     {x y : Fin d → ℂ} {ι : Matrix (Fin d) (Fin d₁) ℂ} (x0 : x ≠ 0) (xx : hf M x x = 0) {c : ℂ} (c0 : c ≠ 0) (hy : y = c • θ *ᵥ x)

@@ -18,14 +18,41 @@ section Abstract
 
 variable {l : ℕ} [Fact l.Prime] {G : Type} [Group G] [TopologicalSpace G] [ContinuousMul G]
 
+/- English proof (translation)
+The claim follows from `PadicInt.isOpenEmbedding_coe.isInducing.continuous_iff`.
+-/
 theorem continuous_iff_coe {X : Type} [TopologicalSpace X] (f : X → ℤ_[l]) :
     Continuous f ↔ Continuous fun x => (f x : ℚ_[l]) :=
   PadicInt.isOpenEmbedding_coe.isInducing.continuous_iff
 
+/- English proof (translation)
+The claim follows from `(hψ.comp continuous_fst).mul continuous_snd`.
+-/
 theorem contAction_charRep {R : Type} [CommRing R] [TopologicalSpace R] [ContinuousMul R]
     (ψ : G →* Rˣ) (hψ : Continuous fun g => (ψ g : R)) : ContAction (charRep ψ) :=
   (hψ.comp continuous_fst).mul continuous_snd
 
+/- English proof (translation)
+Establish `hl : l.Prime` using `Fact.out`. Establish `hl0 : (l : ℤ_[l]) ≠ 0` using `by exact_mod_cast hl.ne_zero`. Establish `hl0' : (l : ℚ_[l]) ≠ 0` using `by exact_mod_cast hl.ne_zero`. Establish `step : ∀ d : Z2 (charRep ψ), ∃ (b : G → ℤ_[l]) (d' : Z2 (charRep ψ)), Continuous b ∧ ∀ p, (l : ℤ_[l]) ^ N * d.1 p - d1 (charRep ψ) b p = (l : ℤ_[l]) ^ (N + 1) * d'.1 p`. Introduce `d`.
+
+Take `⟨b, hb, hd⟩` from `H d.1 d.2`. Use `choose d' hd' using hd`. Establish `hz : ((l : ℤ_[l]) ^ N • d.1 - d1 (charRep ψ) b) ∈ Z2 (charRep ψ)` using `sub_mem (Submodule.smul_mem _ _ d.2) (coboundaries2_le_cocycles2 _ (contAction_charRep ψ hψ) ⟨b, hb, rfl⟩)`. Establish `he : ((l : ℤ_[l]) ^ N • d.1 - d1 (charRep ψ) b) = fun p => (l : ℤ_[l]) ^ (N + 1) * d' p`. Use function extensionality and compare the values at `hd'`.
+
+Rewrite `hz` using `[he]`. Use `⟨b, ⟨d', ?_, fun g h k => ?_⟩, hb, hd'⟩` and prove the remaining obligations. Rewrite using `[continuous_iff_coe]`. Establish `h1` using `((continuous_iff_coe _).1 hz.1).div_const ((l : ℚ_[l]) ^ (N + 1))`. Use `h1.congr fun p => ?_` and prove the remaining obligations.
+
+Use `push_cast`. Clear the denominators using the available nonvanishing facts. Establish `h2` using `hz.2 g h k`. Simplify using `only [charRep_apply] at h2 ⊢`. Apply `mul_left_cancel₀ (pow_ne_zero (N + 1) hl0)` to reduce the goal to its premises.
+
+Take the linear combination `h2`. Use `choose B T hB hT using step`. Introduce `d hd`. Set `D : ℕ → Z2 (charRep ψ)` to `fun n => T^[n] ⟨d, hd⟩`. Establish `hD : ∀ n, D (n + 1) = T (D n)` using `fun n => Function.iterate_succ_apply' _ _ _`.
+
+Establish `hlt : ‖(l : ℤ_[l])‖ < 1`. Rewrite using `[PadicInt.norm_p]; exact inv_lt_one_of_one_lt₀ (by exact_mod_cast hl.one_lt)`. Establish `hbd : ∀ (n : ℕ) (x : ℤ_[l]), ‖(l : ℤ_[l]) ^ n * x‖ ≤ ‖(l : ℤ_[l])‖ ^ n` using `fun n x => by`. Rewrite using `[norm_mul, norm_pow]`. Conclude with `mul_le_of_le_one_right (by positivity) x.norm_le_one`.
+
+Establish `hsum : Summable fun n : ℕ => ‖(l : ℤ_[l])‖ ^ n` using `summable_geometric_of_lt_one (norm_nonneg _) hlt`. Use `⟨fun g => ∑' n : ℕ, (l : ℤ_[l]) ^ n * B (D n) g, continuous_tsum (fun n => continuous_const.mul (hB _)) hsum (fun n g => hbd n _), ?_⟩` and prove the remaining obligations. Introduce and unpack `⟨g, h⟩`. Establish `hS : ∀ x, Tendsto (fun n => ∑ k ∈ Finset.range n, (l : ℤ_[l]) ^ k * B (D k) x) atTop (𝓝 (∑' n : ℕ, (l : ℤ_[l]) ^ n * B (D n) x))` using `fun x => (Summable.of_norm_bounded hsum (fun n => hbd n _)).hasSum.tendsto_sum_nat`. Establish `h1` using `(((hS h).const_mul (ψ g : ℤ_[l])).sub (hS (g * h))).add (hS g)`.
+
+Establish `h2 : ∀ n, (ψ g : ℤ_[l]) * (∑ k ∈ Finset.range n, (l : ℤ_[l]) ^ k * B (D k) h) - (∑ k ∈ Finset.range n, (l : ℤ_[l]) ^ k * B (D k) (g * h)) + (∑ k ∈ Finset.range n, (l : ℤ_[l]) ^ k * B (D k) g) = (l : ℤ_[l]) ^ N * d (g, h) - (l : ℤ_[l]) ^ n * ((l : ℤ_[l]) ^ N * (D n).1 (g, h))`. Introduce `n`. Proceed by induction on `n with`. Consider the case `zero => simp [D]`. Consider the case `succ n ih`.
+
+Establish `h3` using `hT (D n) (g, h)`. Rewrite `h3` using `[← hD, d1_apply, charRep_apply]`. Simplify using `only [Finset.sum_range_succ]`. Take the linear combination `ih - (l : ℤ_[l]) ^ n * h3`. Establish `h4 : Tendsto (fun n : ℕ => (l : ℤ_[l]) ^ n * ((l : ℤ_[l]) ^ N * (D n).1 (g, h))) atTop (𝓝 0)` using `squeeze_zero_norm (fun n => hbd n _) (tendsto_pow_atTop_nhds_zero_of_lt_one (norm_nonneg _) hlt)`.
+
+Establish `h5` using `h4.const_sub ((l : ℤ_[l]) ^ N * d (g, h))`. Rewrite `h5` using `[sub_zero]`. Simplify using `only [h2] at h1`. Rewrite using `[d1_apply, charRep_apply]`. Conclude with `tendsto_nhds_unique h1 h5`.
+-/
 theorem kill_of_step (ψ : G →* ℤ_[l]ˣ) (hψ : Continuous fun g => (ψ g : ℤ_[l])) (N : ℕ)
     (H : ∀ d ∈ Z2 (charRep ψ), ∃ b : G → ℤ_[l], Continuous b ∧
       ∀ p, (l : ℤ_[l]) ^ (N + 1) ∣ (l : ℤ_[l]) ^ N * d p - d1 (charRep ψ) b p) :
@@ -95,6 +122,9 @@ theorem kill_of_step (ψ : G →* ℤ_[l]ˣ) (hψ : Continuous fun g => (ψ g : 
   rw [d1_apply, charRep_apply]
   exact tendsto_nhds_unique h1 h5
 
+/- English proof (translation)
+Use `⟨fun x => Classical.epsilon fun y => ‖y - x‖ ≤ 1, fun x => Classical.epsilon_spec (p := fun y => ‖y - x‖ ≤ 1) ⟨x, by simp⟩, fun x y h => ?_⟩` and prove the remaining obligations. Establish `: (fun z => ‖z - x‖ ≤ 1) = fun z => ‖z - y‖ ≤ 1`. Use function extensionality and compare the values at `z`. Conclude with `propext ⟨fun h' => padic_norm_sub_le_trans h' h, fun h' => padic_norm_sub_le_trans h' (by rwa [norm_sub_rev])⟩`. Simplify using `only [this]`.
+-/
 theorem exists_rep : ∃ rep : ℚ_[l] → ℚ_[l], (∀ x, ‖rep x - x‖ ≤ 1) ∧
     ∀ x y, ‖x - y‖ ≤ 1 → rep x = rep y := by
   refine ⟨fun x => Classical.epsilon fun y => ‖y - x‖ ≤ 1,
@@ -105,6 +135,25 @@ theorem exists_rep : ∃ rep : ℚ_[l] → ℚ_[l], (∀ x, ‖rep x - x‖ ≤ 
       fun h' => padic_norm_sub_le_trans h' (by rwa [norm_sub_rev])⟩
   simp only [this]
 
+/- English proof (translation)
+Take `⟨rep, hr1, hr2⟩` from `exists_rep (l := l)`. Establish `hadd : ∀ x y : ℚ_[l], ‖x‖ ≤ 1 → ‖y‖ ≤ 1 → ‖x + y‖ ≤ 1` using `fun x y hx hy => (IsUltrametricDist.norm_add_le_max _ _).trans (max_le hx hy)`. Establish `hmul : ∀ (x : ℤ_[l]) (y : ℚ_[l]), ‖y‖ ≤ 1 → ‖(x : ℚ_[l]) * y‖ ≤ 1` using `fun x y hy => by`. Rewrite using `[norm_mul]`. Conclude with `mul_le_one₀ x.2 (norm_nonneg _) hy`.
+
+Use `set c' : G → ℚ_[l] := fun σ => rep (c σ) with hc'`. Establish `hcont : Continuous c'`. Rewrite using `[continuous_iff_continuousAt]`. Introduce `σ`. Use `(continuousAt_const (y := c' σ)).congr ?_` and prove the remaining obligations.
+
+Use `filter_upwards [hloc σ] with τ hτ`. Conclude with `(hr2 _ _ hτ).symm`. Establish `hψ' : Continuous fun g => ((ψ g : ℤ_[l]) : ℚ_[l])` using `PadicInt.isOpenEmbedding_coe.continuous.comp hψ`. Establish `hint : ∀ p : G × G, ‖((ψ p.1 : ℤ_[l]) : ℚ_[l]) * c' p.2 - c' (p.1 * p.2) + c' p.1‖ ≤ 1`. Introduce and unpack `⟨σ, τ⟩`.
+
+Establish `e : ((ψ σ : ℤ_[l]) : ℚ_[l]) * c' τ - c' (σ * τ) + c' σ = -(c (σ * τ) - c σ - ((ψ σ : ℤ_[l]) : ℚ_[l]) * c τ) + (((ψ σ : ℤ_[l]) : ℚ_[l]) * (c' τ - c τ) + (-(c' (σ * τ) - c (σ * τ)) + (c' σ - c σ)))`. Expand and normalize the polynomial expressions, which then agree. Simplify using `only`. Rewrite using `[e]`. Use `hadd _ _ (by rw [norm_neg]; exact hc σ τ) (hadd _ _ (hmul _ _ (hr1 _)) (hadd _ _ (by rw [norm_neg]; exact hr1 _) (hr1 _)))` and prove the remaining obligations.
+
+Set `d : G × G → ℤ_[l]` to `fun p => ⟨_, hint p⟩`. Establish `hdv : ∀ σ τ, ((d (σ, τ) : ℤ_[l]) : ℚ_[l]) = ((ψ σ : ℤ_[l]) : ℚ_[l]) * c' τ - c' (σ * τ) + c' σ` using `fun _ _ => rfl`. Establish `hd : d ∈ Z2 (charRep ψ)`. Use `⟨?_, fun g h k => ?_⟩` and prove the remaining obligations. Rewrite using `[continuous_iff_coe]`.
+
+Conclude with `(((hψ'.comp continuous_fst).mul (hcont.comp continuous_snd)).sub (hcont.comp continuous_mul)).add (hcont.comp continuous_fst)`. Apply `Subtype.ext` to reduce the goal to its premises. Rewrite using `[charRep_apply]`. Use `push_cast`. Simplify using `only [hdv, map_mul, Units.val_mul, PadicInt.coe_mul, mul_assoc]`.
+
+Expand and normalize the polynomial expressions, which then agree. Take `⟨b, hb, hbd⟩` from `H d hd`. Use `⟨fun σ => (l : ℚ_[l]) ^ N * c' σ - (b σ : ℚ_[l]), (continuous_const.mul hcont).sub (PadicInt.isOpenEmbedding_coe.continuous.comp hb), fun σ τ => ?_, fun σ => ?_⟩` and prove the remaining obligations. Establish `h1` using `congrArg (fun x : ℤ_[l] => (x : ℚ_[l])) (hbd (σ, τ))`. Simplify using `only [d1_apply, charRep_apply] at h1`.
+
+Move the coercions through the operations in `at h1`. Rewrite `h1` using `[hdv]`. Take the linear combination `h1`. Establish `e : (l : ℚ_[l]) ^ N * c' σ - (b σ : ℚ_[l]) - (l : ℚ_[l]) ^ N * c σ = (((l : ℤ_[l]) ^ N : ℤ_[l]) : ℚ_[l]) * (c' σ - c σ) + ((-b σ : ℤ_[l]) : ℚ_[l])` using `by push_cast; ring dsimp only`. Rewrite using `[e]`.
+
+Conclude with `hadd _ _ (hmul _ _ (hr1 _)) (-b σ).2`.
+-/
 theorem lift_of_kill (ψ : G →* ℤ_[l]ˣ) (hψ : Continuous fun g => (ψ g : ℤ_[l])) (N : ℕ)
     (H : ∀ d ∈ Z2 (charRep ψ), ∃ b : G → ℤ_[l], Continuous b ∧
       ∀ p, d1 (charRep ψ) b p = (l : ℤ_[l]) ^ N * d p) (c : G → ℚ_[l])
@@ -170,9 +219,17 @@ noncomputable def redChar (χ : G →* ℤ_[l]ˣ) (r : ℕ) : G →* (ZMod (l ^ 
   (Units.map (PadicInt.toZModPow r : ℤ_[l] →+* ZMod (l ^ r)).toMonoidHom).comp χ
 
 omit [TopologicalSpace G] [ContinuousMul G] in
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem redChar_apply (χ : G →* ℤ_[l]ˣ) (r : ℕ) (g : G) :
     (redChar χ r g : ZMod (l ^ r)) = PadicInt.toZModPow r (χ g : ℤ_[l]) := rfl
 
+/- English proof (translation)
+Establish `hl : l.Prime` using `Fact.out`. Rewrite using `[continuous_iff_continuousAt]`. Introduce `x`. Use `(continuousAt_const (y := PadicInt.toZModPow r x)).congr ?_` and prove the remaining obligations. Establish `hpos : (0 : ℝ) < (l : ℝ) ^ (-(r : ℤ))` using `zpow_pos (by exact_mod_cast hl.pos) _`.
+
+Use `filter_upwards [Metric.closedBall_mem_nhds x hpos] with y hy`. Rewrite `hy` using `[Metric.mem_closedBall, dist_eq_norm, PadicInt.norm_le_pow_iff_mem_span_pow, ← PadicInt.ker_toZModPow, RingHom.mem_ker, map_sub, sub_eq_zero]`. Conclude with `hy.symm`.
+-/
 theorem continuous_toZModPow (r : ℕ) :
     Continuous (PadicInt.toZModPow r : ℤ_[l] → ZMod (l ^ r)) := by
   have hl : l.Prime := Fact.out
@@ -185,6 +242,25 @@ theorem continuous_toZModPow (r : ℕ) :
     ← PadicInt.ker_toZModPow, RingHom.mem_ker, map_sub, sub_eq_zero] at hy
   exact hy.symm
 
+/- English proof (translation)
+Establish `hl : l.Prime` using `Fact.out`. Use `haveI : NeZero (l ^ (N + 1)) := ⟨pow_ne_zero _ hl.ne_zero⟩`. Introduce `d hd`. Use `set π : ℤ_[l] →+* ZMod (l ^ (N + 1)) := PadicInt.toZModPow (N + 1) with hπ`. Take `⟨w, hw⟩ : (χ g₀ : ℤ_[l]) * (ψ g₀⁻¹ : ℤ_[l]) - 1 ∣ (l : ℤ_[l]) ^ N` from `by set a := (χ g₀ : ℤ_[l]) * (ψ g₀⁻¹ : ℤ_[l]) - 1`.
+
+Establish `hpos : 0 < ‖(a : ℚ_[l])‖`. Rewrite using `[← PadicInt.norm_def, hg]; exact zpow_pos (by exact_mod_cast hl.pos) _`. Establish `ha : (a : ℚ_[l]) ≠ 0` using `norm_pos_iff.1 hpos`. Use `⟨⟨(l : ℚ_[l]) ^ N / a, ?_⟩, Subtype.ext ?_⟩` and prove the remaining obligations. Rewrite using `[norm_div, div_le_one hpos, ← PadicInt.norm_def, hg, Padic.norm_p_pow]`.
+
+Express the relevant statement in the definitionally equal form `(((l : ℤ_[l]) ^ N : ℤ_[l]) : ℚ_[l]) = (a : ℚ_[l]) * ((l : ℚ_[l]) ^ N / a)`. Use `push_cast`. Clear the denominators using the available nonvanishing facts. Establish `hkill : ∀ φ : H0 ((twDual (redChar χ (N + 1)) (charRep (redChar ψ (N + 1)))).comp (MonoidHom.id G)), (π ((l : ℤ_[l]) ^ N)) • φ = 0`. Introduce `φ`.
+
+Apply `Subtype.ext` to reduce the goal to its premises. Apply `TDual.ext` to reduce the goal to its premises. Introduce `m`. Establish `h1` using `congrArg (fun f : TDual (ZMod (l ^ (N + 1))) (ZMod (l ^ (N + 1))) => f m) (φ.2 g₀)`. Establish `h2 : ∀ a : ZMod (l ^ (N + 1)), φ.1 (a * m) = a * φ.1 m` using `fun a => LinearMap.map_smul (show ZMod (l ^ (N + 1)) →ₗ[ZMod (l ^ (N + 1))] ZMod (l ^ (N + 1)) from φ.1) a m`.
+
+Express the relevant statement in the definitionally equal form `π (χ g₀ : ℤ_[l]) * φ.1 (π (ψ g₀⁻¹ : ℤ_[l]) * m) = φ.1 m at h1`. Rewrite `h1` using `[h2]`. Express the relevant statement in the definitionally equal form `π ((l : ℤ_[l]) ^ N) * φ.1 m = 0`. Rewrite using `[hw, map_mul, map_sub, map_mul, map_one]`. Take the linear combination `π w * h1`.
+
+Establish `hz : (fun p => π (d p)) ∈ Z2 ((charRep (redChar ψ (N + 1))).comp (MonoidHom.id G))`. Use `⟨(continuous_toZModPow _).comp hd.1, fun g h k => ?_⟩` and prove the remaining obligations. Establish `h1` using `congrArg π (hd.2 g h k)`. Simplify using `only [charRep_apply, map_sub, map_add, map_mul, map_zero] at h1`. Conclude with `h1`.
+
+Establish `hx : (π ((l : ℤ_[l]) ^ N)) • (Submodule.Quotient.mk ⟨_, hz⟩ : H2 ((charRep (redChar ψ (N + 1))).comp (MonoidHom.id G))) = 0`. Apply `hinj` to reduce the goal to its premises. Use extensionality with `φ`. Rewrite using `[map_smul, LinearMap.smul_apply, ← map_smul, hkill, map_zero, map_zero, LinearMap.zero_apply]`. Rewrite `hx` using `[← Submodule.Quotient.mk_smul, Submodule.Quotient.mk_eq_zero]`.
+
+Take `⟨c, hc, hcd⟩` from `(separated_dvr_second_cohomology_mem _ _).1 hx`. Establish `hc' : Continuous c` using `hc`. Use `⟨fun g => (((c g).val : ℕ) : ℤ_[l]), (continuous_of_discreteTopology (f := fun a : ZMod (l ^ (N + 1)) => ((a.val : ℕ) : ℤ_[l]))).comp hc', ?_⟩` and prove the remaining obligations. Introduce and unpack `⟨g, h⟩`. Rewrite using `[← Ideal.mem_span_singleton, ← PadicInt.ker_toZModPow, RingHom.mem_ker, ← hπ]`.
+
+Establish `h1` using `congrFun hcd (g, h)`. Express the relevant statement in the definitionally equal form `π (ψ g : ℤ_[l]) * c h - c (g * h) + c g = π ((l : ℤ_[l]) ^ N) * π (d (g, h)) at h1`. Simplify using `only [d1_apply, charRep_apply, map_sub, map_add, map_mul π, map_natCast, ZMod.natCast_zmod_val]`. Rewrite using `[h1, sub_self]`.
+-/
 theorem step_of_duality (χ ψ : G →* ℤ_[l]ˣ) (N : ℕ)
     (hinj : Function.Injective
       (cup20 (redChar χ (N + 1)) (charRep (redChar ψ (N + 1))) (MonoidHom.id G)))
@@ -249,6 +325,11 @@ end Abstract
 
 variable {l : ℕ} [Fact l.Prime]
 
+/- English proof (translation)
+Use `haveI := K.2`. Use `haveI : FiniteDimensional ℚ_[l] (K0 K) := Module.Finite.of_injective (IntermediateField.inclusion (inf_le_left : K0 K ≤ K.1)).toLinearMap (IntermediateField.inclusion_injective (inf_le_left : K0 K ≤ K.1))`. Establish `hf : {x : Om l | x ^ (l ^ j) = 1}.Finite`. Use `(Polynomial.nthRootsFinset (l ^ j) (1 : Om l)).finite_toSet.subset fun x hx => ?_` and prove the remaining obligations. Conclude with `Finset.mem_coe.2 ((Polynomial.mem_nthRootsFinset (pow_pos (Fact.out : l.Prime).pos _) _).2 hx)`.
+
+Use `haveI := hf.to_subtype`. Use `haveI : FiniteDimensional ℚ_[l] (IntermediateField.adjoin ℚ_[l] {x : Om l | x ^ (l ^ j) = 1}) := IntermediateField.finiteDimensional_adjoin fun x _ => Algebra.IsIntegral.isIntegral x`. Conclude with `IntermediateField.finiteDimensional_sup _ _`.
+-/
 theorem finite_Ks (K : FinExt l) (j : ℕ) : FiniteDimensional ℚ_[l] (Ks K j) := by
   haveI := K.2
   haveI : FiniteDimensional ℚ_[l] (K0 K) :=
@@ -264,6 +345,15 @@ theorem finite_Ks (K : FinExt l) (j : ℕ) : FiniteDimensional ℚ_[l] (Ks K j) 
     IntermediateField.finiteDimensional_adjoin fun x _ => Algebra.IsIntegral.isIntegral x
   exact IntermediateField.finiteDimensional_sup _ _
 
+/- English proof (translation)
+Use extensionality with `g`. Rewrite using `[← sub_eq_zero, ← norm_le_zero_iff]`. Assume the negation of the conclusion as `hne`. Take `⟨m, hm⟩` from `exists_zpow_neg_lt (l := l) (not_le.1 hne)`. Take `⟨ζ, hζ⟩` from `exists_primRoot_pow (l := l) m`.
+
+Take `⟨a, ha, hga⟩` from `h g m ζ hζ.pow_eq_one`. Take `⟨a', ha', hga'⟩` from `h' g m ζ hζ.pow_eq_one`. Establish `h0 : ζ ≠ 0` using `hζ.ne_zero (pow_ne_zero _ (Fact.out : l.Prime).ne_zero)`. Establish `h1 : ζ ^ ((a : ℤ) - a') = 1`. Rewrite using `[zpow_sub₀ h0, zpow_natCast, zpow_natCast, ← hga, ← hga', div_self]`.
+
+Conclude with `(map_ne_zero g).2 h0`. Establish `h2` using `(hζ.zpow_eq_one_iff_dvd _).1 h1`. Establish `h3 : ‖(a : ℚ_[l]) - a'‖ ≤ (l : ℝ) ^ (-(m : ℤ))`. Use `(Padic.norm_int_le_pow_iff_dvd (p := l) ((a : ℤ) - a') m).2 (by exact_mod_cast h2)` as an intermediate fact. Conclude with `this` after adjusting the coercions.
+
+Rewrite `ha'` using `[norm_sub_rev]`. Conclude with `absurd (padic_norm_sub_le_trans ha (padic_norm_sub_le_trans h3 ha')) (not_le.2 hm)`.
+-/
 theorem isCyc_unique {χ χ' : GQ l →* ℚ_[l]ˣ} (h : IsCyc χ) (h' : IsCyc χ') : χ = χ' := by
   ext g
   rw [← sub_eq_zero, ← norm_le_zero_iff]
@@ -283,6 +373,15 @@ theorem isCyc_unique {χ χ' : GQ l →* ℚ_[l]ˣ} (h : IsCyc χ) (h' : IsCyc �
   rw [norm_sub_rev] at ha'
   exact absurd (padic_norm_sub_le_trans ha (padic_norm_sub_le_trans h3 ha')) (not_le.2 hm)
 
+/- English proof (translation)
+Establish `h1 : Continuous L.fixingSubgroupEquiv.symm`. Use `Continuous.subtype_mk ?_ _` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `Continuous (L.fixingSubgroup.subtype.comp L.fixingSubgroupEquiv.symm.toMonoidHom)`. Apply `continuous_of_continuousAt_one` to reduce the goal to its premises. Rewrite using `[ContinuousAt, map_one]`.
+
+Introduce `U hU`. Take `⟨E, hE, hEU⟩` from `(krullTopology_mem_nhds_one_iff _ _ _).1 hU`. Take `⟨S, hS⟩ : E.FG` from `IntermediateField.essFiniteType_iff.1 inferInstance`. Rewrite using `[Filter.mem_map, krullTopology_mem_nhds_one_iff]`. Use `⟨IntermediateField.adjoin L (S : Set (Om l)), IntermediateField.finiteDimensional_adjoin fun x _ => Algebra.IsIntegral.isIntegral x, ?_⟩` and prove the remaining obligations.
+
+Introduce `g hg`. Apply `hEU` to reduce the goal to its premises. Rewrite using `[← hS, SetLike.mem_coe, mem_fixingSubgroup_adjoin_iff]`. Introduce `x hx`. Conclude with `(IntermediateField.mem_fixingSubgroup_iff _ _).1 hg x (IntermediateField.subset_adjoin _ _ hx)`.
+
+Conclude with `⟨h1, (h1.homeoOfEquivCompactToT2 (f := L.fixingSubgroupEquiv.symm.toEquiv)).symm.continuous⟩`.
+-/
 theorem continuous_fixingSubgroupEquiv (L : IntermediateField ℚ_[l] (Om l)) :
     Continuous L.fixingSubgroupEquiv.symm ∧ Continuous L.fixingSubgroupEquiv := by
   have h1 : Continuous L.fixingSubgroupEquiv.symm := by
@@ -304,6 +403,31 @@ theorem continuous_fixingSubgroupEquiv (L : IntermediateField ℚ_[l] (Om l)) :
       (IntermediateField.subset_adjoin _ _ hx)
   exact ⟨h1, (h1.homeoOfEquivCompactToT2 (f := L.fixingSubgroupEquiv.symm.toEquiv)).symm.continuous⟩
 
+/- English proof (translation)
+Use `set L := Ks K s with hL`. Use `set N := s + padicValNat l (e + 1) with hN`. Take `⟨hΦ1, hΦ2⟩` from `continuous_fixingSubgroupEquiv L`. Use `set Φ := L.fixingSubgroupEquiv with hΦ`. Set `χZ : Formalism.GaloisCohomology.GK l L →* ℤ_[l]ˣ` to `(cyclotomicCharacter (PadicAlgCl l) l).comp (MulSemiringAction.toRingAut (Formalism.GaloisCohomology.GK l L) (PadicAlgCl l))`.
+
+Establish `hχZ : ∀ g, ((χZ g : ℤ_[l]) : ℚ_[l]) = (χ (Φ.symm g : GQ l) : ℚ_[l])` using `fun g => by`. Rewrite using `[isCyc_unique hχ (isCyc_cycChar l)]`. Both sides reduce to the same expression. Set `ψ : Formalism.GaloisCohomology.GK l L →* ℤ_[l]ˣ` to `χZ ^ (-(e : ℤ))`. Establish `hψ : ∀ g, ((ψ g : ℤ_[l]) : ℚ_[l]) = ((χ (Φ.symm g : GQ l) ^ (-(e : ℤ)) : ℚ_[l]ˣ) : ℚ_[l])` using `fun g => by`.
+
+Rewrite using `[Units.val_zpow_eq_zpow_val, ← hχZ]`. Establish `h1 : ψ g = χZ g ^ (-(e : ℤ))` using `rfl`. Establish `h2` using `map_zpow (Units.map (PadicInt.Coe.ringHom (p := l)).toMonoidHom) (χZ g) (-(e : ℤ))`. Establish `h3` using `congrArg Units.val h2`. Rewrite `h3` using `[Units.val_zpow_eq_zpow_val]`.
+
+Rewrite using `[h1]`. Conclude with `h3`. Establish `hψc : Continuous fun g => (ψ g : ℤ_[l])`. Rewrite using `[continuous_iff_coe]`. Simplify using `only [hψ, Units.val_zpow_eq_zpow_val]`.
+
+Conclude with `(hχ.continuous.comp (continuous_subtype_val.comp hΦ1)).zpow₀ _ fun g => Or.inl (Units.ne_zero _)`. Take `⟨g₀, hg₀, hg₁⟩` from `(gen_dense l _ χ (GlobalTheory.InertiaEigenvalues.isActC_galActC l) hχ K s hs).1`. Establish `hg : ‖(χZ (Φ ⟨g₀, hg₀⟩) : ℤ_[l]) * (ψ (Φ ⟨g₀, hg₀⟩)⁻¹ : ℤ_[l]) - 1‖ = (l : ℝ) ^ (-(N : ℤ))`. Establish `h1` using `LiftExp.norm_zpow_sub_one l s hs _ hg₁ ((e + 1 : ℕ) : ℤ) (by omega)`. Rewrite `h1` using `[padicValInt.of_nat]`.
+
+Rewrite using `[PadicInt.norm_def]`. Use `push_cast`. Rewrite using `[hχZ, hψ, hN]`. Move the coercions through the operations in `at h1 ⊢`. Rewrite using `[← h1]`.
+
+Use `congr 2`. Simplify using `only [map_inv, MulEquiv.symm_apply_apply, Subgroup.coe_inv, Units.val_inv_eq_inv_val, inv_zpow', neg_neg]`. Rewrite using `[zpow_add_one₀ (Units.ne_zero _), mul_comm]`. Establish `hcont : ContAction (charRep (redChar ψ (N + 1)))` using `contAction_charRep _ ((continuous_toZModPow _).comp hψc)`. Use `haveI : NeZero (l ^ (N + 1)) := ⟨pow_ne_zero _ (Fact.out : l.Prime).ne_zero⟩`.
+
+Establish `hdual` using `(hT l L (finite_Ks K s) (N + 1) (ZMod (l ^ (N + 1))) (charRep (redChar ψ (N + 1))) (Nat.succ_pos _) hcont).2.2.2.2.1`. Establish `hkill` using `kill_of_step ψ hψc N (step_of_duality χZ ψ N hdual _ hg)`. Take `⟨z, hz1, hz2, hz3⟩` from `lift_of_kill ψ hψc N hkill (fun g => c (Φ.symm g : GQ l)) (fun σ τ => by`. Rewrite using `[hψ, map_mul]`. Conclude with `hc _ (Φ.symm σ).2 _ (Φ.symm τ).2)`.
+
+Use the proof step `(fun σ => by`. Establish `h1` using `hloc _ (Φ.symm σ).2`. Establish `h2 : Tendsto (fun g => (Φ.symm g : GQ l)) (𝓝 σ) (nhdsWithin (Φ.symm σ : GQ l) (Gj K s))` using `tendsto_nhdsWithin_iff.2 ⟨(continuous_subtype_val.comp hΦ1).tendsto σ, Eventually.of_forall fun g => (Φ.symm g).2⟩`. Conclude with `h2.eventually h1)`. Set `z' : GQ l → ℚ_[l]` to `fun σ => if h : σ ∈ L.fixingSubgroup then z (Φ ⟨σ, h⟩) else 0`.
+
+Establish `hz' : ∀ σ (h : σ ∈ Gj K s), z' σ = z (Φ ⟨σ, h⟩)` using `fun σ h => dif_pos h`. Use `⟨z', ⟨?_, fun _ _ => trivial, fun σ hσ τ hτ => ?_⟩, fun σ hσ => ?_⟩` and prove the remaining obligations. Rewrite using `[continuousOn_iff_continuous_restrict]`. Conclude with `(hz1.comp hΦ2).congr fun σ => (hz' σ.1 σ.2).symm`. Rewrite using `[hz' _ (mul_mem hσ hτ), hz' _ hσ, hz' _ hτ]`.
+
+Establish `h1` using `hz2 (Φ ⟨σ, hσ⟩) (Φ ⟨τ, hτ⟩)`. Rewrite `h1` using `[hψ, ← map_mul, MulEquiv.symm_apply_apply]`. Conclude with `h1`. Establish `h1` using `hz3 (Φ ⟨σ, hσ⟩)`. Rewrite `h1` using `[MulEquiv.symm_apply_apply]`.
+
+Rewrite using `[hz' _ hσ]`. Conclude with `h1`.
+-/
 theorem lift_cocycle_of_duality (hT : Formalism.GaloisCohomology.LocalTateDualityK) (χ : GQ l →* ℚ_[l]ˣ)
     (hχ : IsCyc χ) (K : FinExt l) (s : ℕ) (hs : Lev l s) (e : ℕ) (c : GQ l → ℚ_[l])
     (hc : ∀ σ ∈ Gj K s, ∀ τ ∈ Gj K s,
@@ -381,6 +505,9 @@ theorem lift_cocycle_of_duality (hT : Formalism.GaloisCohomology.LocalTateDualit
     rw [hz' _ hσ]
     exact h1
 
+/- English proof (translation)
+Introduce `D h2 _ l _ K s hs e _ c _ hc hloc` and use `lift_cocycle_of_duality h2 (D.loc l).χQ (D.loc l).χQ_cyc K s hs e c hc hloc`.
+-/
 theorem lift_cocycle : ∀ (D : Formalism.BasicNotions.D7), adm2 D → ArchimedeanSignatureMatching D → ∀ (l : ℕ) [Fact l.Prime] (K : FinExt l) (s : ℕ), Lev l s → ∀ (e r : ℕ) (c : GQ l → ℚ_[l]), (∀ σ ∈ Gj K s, ‖c σ‖ ≤ (l : ℝ) ^ r) → (∀ σ ∈ Gj K s, ∀ τ ∈ Gj K s, ‖c (σ * τ) - c σ - (((D.loc l).χQ σ ^ (-(e : ℤ)) : ℚ_[l]ˣ) : ℚ_[l]) * c τ‖ ≤ 1) → (∀ σ ∈ Gj K s, ∀ᶠ τ in nhdsWithin σ (Gj K s), ‖c τ - c σ‖ ≤ 1) → ∃ z : GQ l → ℚ_[l], CocOn (Gj K s) (fun σ y => (((D.loc l).χQ σ ^ (-(e : ℤ)) : ℚ_[l]ˣ) : ℚ_[l]) * y) Set.univ z ∧ ∀ σ ∈ Gj K s, ‖z σ - (l : ℚ_[l]) ^ (s + padicValNat l (e + 1)) * c σ‖ ≤ 1 :=
   fun D h2 _ l _ K s hs e _ c _ hc hloc =>
     lift_cocycle_of_duality h2 (D.loc l).χQ (D.loc l).χQ_cyc K s hs e c hc hloc

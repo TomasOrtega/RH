@@ -19,6 +19,19 @@ open GlobalTheory.RatMoveJets
 
 namespace GlobalTheory.RatMoveJets
 
+/- English proof (translation)
+Take `⟨γ, hγ, hf⟩` from `hr`. Take `⟨γ', h1, h2⟩` from `id hγ`. Establish `hG : star γ'.1 * (G.V X).gram * γ'.1 = (G.V X).gram` using `h1`. Establish `hmt : Formalism.L2.Theta.mt (G.V X) γ = γ'.1.map (incA D)` using `congrArg Units.val h2.symm`. Use `set F := (S.N.fr X).1 with hFdef`.
+
+Use `set Fi := ((S.N.fr X)⁻¹ : GL (Fin (G.V X).rank) D.host.E).1 with hFidef`. Establish `hF : star F * (G.V X).gram * F = 1` using `S.N.fr_on X hX`. Establish `e1 : Fi * F = 1` using `by rw [hFdef, hFidef]; exact Units.inv_mul _`. Establish `e2 : F * Fi = 1` using `by rw [hFdef, hFidef]; exact Units.mul_inv _`. Establish `hGram : star Fi * Fi = (G.V X).gram`.
+
+Establish `: star Fi * (star F * (G.V X).gram * F) * Fi = (G.V X).gram`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[star_mul]`. Simplify using `only [Matrix.mul_assoc]`. Use `_ = (G.V X).gram := by rw [e2, star_one, Matrix.one_mul, Matrix.mul_one]`.
+
+Rewrite `this` using `[hF, Matrix.mul_one]`. Conclude with `this`. Establish `hU : star (Fi * γ'.1 * F) * (Fi * γ'.1 * F) = 1`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [star_mul, Matrix.mul_assoc]`.
+
+Use `_ = 1 := by rw [hGram, hG]; exact hF`. Use `⟨⟨Fi * γ'.1 * F, Matrix.mem_unitaryGroup_iff'.2 hU⟩, γ, hγ, hf, ?_⟩` and prove the remaining obligations. Rewrite using `[hmt]`. Use `congr 1`. Express the relevant statement in the definitionally equal form `γ'.1 = F * (Fi * γ'.1 * F) * Fi`.
+
+Simplify using `only [← Matrix.mul_assoc, e2, Matrix.one_mul]`. Rewrite using `[Matrix.mul_assoc, e2, Matrix.mul_one]`.
+-/
 theorem exists_unitary_ratCoord {D : D7} {T : Type} {L : LevCh D T} {sc : Consts} {G : GlobalTheory.ChiGrid.GridData L sc} {W : G.Weil}
     (S : GridChoice W Set.univ) (X : Node) (hX : DefNode D.R.m X) (r : FinPt G X) (hr : GlobalTheory.MovedKappaEx.RatFin (G.V X) r) :
     ∃ U : Matrix.unitaryGroup (Fin (G.V X).rank) D.host.E, GlobalTheory.RatMoveJets.RatCoord (G.V X) (S.N.fr X) r U := by

@@ -15,6 +15,9 @@ open GlobalTheory.IndefiniteRowSideFullHecke.ClassZetaValuationBounds (a0)
 
 namespace GlobalTheory.HilbFam.AdeleDen
 
+/- English proof (translation)
+Rewrite using `[← HeightOneSpectrum.valuedAdicCompletion_eq_valuation' w]`. Use `congr 1`. Rewrite using `[map_natCast]`. Conclude with `(map_natCast (algebraMap E (w.adicCompletion E)) n).symm`.
+-/
 theorem val_nat {E : Type} [Field E] [NumberField E] (w : HeightOneSpectrum (𝓞 E)) (n : ℕ) :
     Valued.v ((n : w.adicCompletion E)) = w.valuation E (algebraMap (𝓞 E) E (n : 𝓞 E)) := by
   rw [← HeightOneSpectrum.valuedAdicCompletion_eq_valuation' w]
@@ -22,10 +25,18 @@ theorem val_nat {E : Type} [Field E] [NumberField E] (w : HeightOneSpectrum (�
   rw [map_natCast]
   exact (map_natCast (algebraMap E (w.adicCompletion E)) n).symm
 
+/- English proof (translation)
+Rewrite using `[val_nat]`. Conclude with `w.valuation_le_one _`.
+-/
 theorem val_nat_le {E : Type} [Field E] [NumberField E] (w : HeightOneSpectrum (𝓞 E)) (n : ℕ) :
     Valued.v ((n : w.adicCompletion E)) ≤ 1 := by
   rw [val_nat]; exact w.valuation_le_one _
 
+/- English proof (translation)
+Establish `h0 : Ideal.absNorm w.asIdeal ≠ 0` using `fun h => w.ne_bot (Ideal.absNorm_eq_zero_iff.mp h)`. Take `⟨k, m, hm, e⟩` from `Nat.exists_eq_pow_mul_and_not_dvd h0 l hl.ne_one`. Use `⟨m, hm, ?_⟩` and prove the remaining obligations. Establish `h` using `Ideal.absNorm_mem w.asIdeal`. Rewrite `h` using `[e]`.
+
+Move the coercions through the operations in `at h`. Break down `w.isPrime.mem_or_mem h with h | h` into its components or cases. Conclude with `absurd (w.isPrime.mem_of_pow_mem _ h) hw`. Conclude with `h`.
+-/
 theorem exists_nat_mem {E : Type} [Field E] [NumberField E] {l : ℕ} (hl : l.Prime)
     (w : HeightOneSpectrum (𝓞 E)) (hw : (l : 𝓞 E) ∉ w.asIdeal) :
     ∃ m : ℕ, ¬ l ∣ m ∧ (m : 𝓞 E) ∈ w.asIdeal := by
@@ -39,6 +50,11 @@ theorem exists_nat_mem {E : Type} [Field E] [NumberField E] {l : ℕ} (hl : l.Pr
   · exact absurd (w.isPrime.mem_of_pow_mem _ h) hw
   · exact h
 
+/- English proof (translation)
+Take `⟨m, hm, hmw⟩` from `exists_nat_mem hl w hw`. Distinguish the cases in `hx : Valued.v x = 0`. Conclude with `⟨m, hm, by simp [hx]⟩`. Establish `h1 : Valued.v ((m : w.adicCompletion E)) < 1`. Rewrite using `[val_nat]`.
+
+Conclude with `(w.valuation_lt_one_iff_mem _).mpr hmw`. Take `⟨n, hn⟩` from `exists_pow_lt₀ h1 (Units.mk0 _ (inv_ne_zero hx))`. Use `⟨m ^ n, fun h => hm (hl.dvd_of_dvd_pow h), ?_⟩` and prove the remaining obligations. Rewrite using `[Nat.cast_pow, map_mul, map_pow]`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem exists_local {E : Type} [Field E] [NumberField E] {l : ℕ} (hl : l.Prime)
     (w : HeightOneSpectrum (𝓞 E)) (hw : (l : 𝓞 E) ∉ w.asIdeal) (x : w.adicCompletion E) :
     ∃ m : ℕ, ¬ l ∣ m ∧ Valued.v ((m : w.adicCompletion E) * x) ≤ 1 := by
@@ -53,6 +69,17 @@ theorem exists_local {E : Type} [Field E] [NumberField E] {l : ℕ} (hl : l.Prim
   calc _ ≤ (Valued.v x)⁻¹ * Valued.v x := mul_le_mul_left hn.le _
     _ = 1 := inv_mul_cancel₀ hx
 
+/- English proof (translation)
+Introduce `E _ _ l z hl hz`. Establish `key : ∀ w : HeightOneSpectrum (𝓞 E), ∃ m : ℕ, ¬ l ∣ m ∧ Valued.v ((m : w.adicCompletion E) * z w) ≤ 1`. Introduce `w`. Distinguish the cases in `hw : (l : 𝓞 E) ∈ w.asIdeal`. Conclude with `⟨1, hl.not_dvd_one, by simpa using hz w hw⟩`.
+
+Conclude with `exists_local hl w hw _`. Use `choose m hm hmz using key`. Establish `hfin : {w : HeightOneSpectrum (𝓞 E) | ¬ z w ∈ w.adicCompletionIntegers E}.Finite` using `Filter.eventually_cofinite.mp z.2`. Use `⟨∏ w ∈ hfin.toFinset, m w, ?_, fun w => ?_⟩` and prove the remaining obligations. Rewrite using `[hl.prime.dvd_finset_prod_iff]`.
+
+Introduce and unpack `⟨w, -, h⟩`. Conclude with `hm w h`. Establish `e : ∀ M : ℕ, (algebraMap E (Af E) (M : E) * z) w = (M : w.adicCompletion E) * z w`. Introduce `M`. Rewrite using `[← map_natCast (algebraMap E (w.adicCompletion E)) M]`.
+
+Both sides reduce to the same expression. Rewrite using `[e]`. Distinguish the cases in `hw : w ∈ hfin.toFinset`. Rewrite using `[← Finset.prod_erase_mul _ _ hw, Nat.cast_mul, mul_assoc, map_mul]`. Conclude with `mul_le_one' (val_nat_le _ _) (hmz w)`.
+
+Establish `: z w ∈ w.adicCompletionIntegers E` using `by simpa using hw`. Rewrite using `[map_mul]`. Conclude with `mul_le_one' (val_nat_le _ _) this`.
+-/
 theorem exists_den_prime_to : ∀ (E : Type) [Field E] [NumberField E] (l : ℕ) (z : Af E), l.Prime → (∀ w : HeightOneSpectrum (𝓞 E), (l : 𝓞 E) ∈ w.asIdeal → Valued.v (z w) ≤ 1) → ∃ M : ℕ, ¬ l ∣ M ∧ ∀ w : HeightOneSpectrum (𝓞 E), Valued.v ((algebraMap E (Af E) (M : E) * z) w) ≤ 1 := by
   intro E _ _ l z hl hz
   have key : ∀ w : HeightOneSpectrum (𝓞 E), ∃ m : ℕ, ¬ l ∣ m ∧

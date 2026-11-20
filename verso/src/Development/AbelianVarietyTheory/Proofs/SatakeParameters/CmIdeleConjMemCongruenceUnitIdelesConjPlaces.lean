@@ -9,6 +9,11 @@ open GlobalTheory.IndefiniteRowSideFullHecke.UnitaryHeckeCharacterIdele (ideleMa
 
 namespace GlobalTheory.HeckeConjLev
 
+/- English proof (translation)
+Establish `hc : ∀ w : HeightOneSpectrum (𝓞 L), (ideleMap K L y).val.2 w = finiteCompletionMap K L w (y.val.2 (w.under (𝓞 K)))` using `fun w => rfl`. Use `⟨fun w => ?_, fun w hw => ?_⟩` and prove the remaining obligations. Use `show Valued.v ((ideleMap K L y).val.2 w) = 1`. Establish `h : Valued.v (y.val.2 (w.under (𝓞 K))) = 1` using `hy.1 _`. Rewrite using `[hc, GlobalTheory.UpIdeleMod.valued_finiteCompletionMap, h, one_pow]`.
+
+Use `show Valued.v ((ideleMap K L y).val.2 w - 1) ≤ Valued.v (N : w.adicCompletion L)`. Rewrite using `[hc, ← map_one (finiteCompletionMap K L w), ← map_sub, ← map_natCast (finiteCompletionMap K L w), GlobalTheory.UpIdeleMod.valued_finiteCompletionMap, GlobalTheory.UpIdeleMod.valued_finiteCompletionMap]`. Conclude with `pow_le_pow_left₀ zero_le (hy.2 _ (hT w hw)) _`.
+-/
 theorem ideleMap_mem_levT (K L : Type) [Field K] [NumberField K] [Field L] [NumberField L] [Algebra K L]
     (T : Set (HeightOneSpectrum (𝓞 K))) (T' : Set (HeightOneSpectrum (𝓞 L)))
     (hT : ∀ w ∈ T', w.under (𝓞 K) ∈ T) (N : ℕ) (y : Ideles K) (hy : y ∈ levT K T N) :
@@ -24,6 +29,9 @@ theorem ideleMap_mem_levT (K L : Type) [Field K] [NumberField K] [Field L] [Numb
       GlobalTheory.UpIdeleMod.valued_finiteCompletionMap, GlobalTheory.UpIdeleMod.valued_finiteCompletionMap]
     exact pow_le_pow_left₀ zero_le (hy.2 _ (hT w hw)) _
 
+/- English proof (translation)
+Use `haveI : IsScalarTower F K L := IsScalarTower.of_algebraMap_eq fun x => (h x).symm`. Conclude with `HeightOneSpectrum.ext (Ideal.under_under w.asIdeal)`.
+-/
 theorem under_under (F K L : Type) [Field F] [NumberField F] [Field K] [NumberField K] [Field L] [NumberField L]
     [Algebra F K] [Algebra K L] [Algebra F L]
     (h : ∀ x : F, algebraMap K L (algebraMap F K x) = algebraMap F L x) (w : HeightOneSpectrum (𝓞 L)) :
@@ -31,6 +39,9 @@ theorem under_under (F K L : Type) [Field F] [NumberField F] [Field K] [NumberFi
   haveI : IsScalarTower F K L := IsScalarTower.of_algebraMap_eq fun x => (h x).symm
   exact HeightOneSpectrum.ext (Ideal.under_under w.asIdeal)
 
+/- English proof (translation)
+The claim follows from `@ideleMap_mem_levT E E _ _ _ _ (GlobalTheory.IndefiniteRowSideFullHecke.UnitaryHeckeCharacterIdele.conj (maximalRealSubfield E) E).toRingEquiv.toRingHom.toAlgebra T {w | ∀ w' : HeightOneSpectrum (𝓞 E), w'.under (𝓞 (maximalRealSubfield E)) = w.under (𝓞 (maximalRealSubfield E)) → w …`.
+-/
 theorem ideleConj_mem_levT (E : Type) [Field E] [NumberField E] [IsCMField E]
     (T : Set (HeightOneSpectrum (𝓞 E))) (N : ℕ) (u : Ideles E) (hu : u ∈ levT E T N) :
     ideleConj (maximalRealSubfield E) E u ∈ levT E {w | ∀ w' : HeightOneSpectrum (𝓞 E),

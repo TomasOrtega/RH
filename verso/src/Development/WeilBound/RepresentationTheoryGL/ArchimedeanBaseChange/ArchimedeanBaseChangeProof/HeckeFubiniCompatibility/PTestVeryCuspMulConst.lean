@@ -23,20 +23,35 @@ instance pTest_t2Ad : T2Space (Ad E) := inferInstanceAs (T2Space (InfiniteAdeleR
 
 instance pTest_t2GA : T2Space (GA E n) := Units.isEmbedding_embedProduct.t2Space
 
+/- English proof (translation)
+The claim follows from `continuous_pi fun w => ((InfinitePlace.Completion.isometryEquivComplexOfIsComplex (IsTotallyComplex.isComplex w)).continuous.comp (continuous_apply w)).comp continuous_fst`.
+-/
 theorem pTest_continuous_pInf : Continuous (pInf E : Ad E → Cinf E) :=
   continuous_pi fun w =>
     ((InfinitePlace.Completion.isometryEquivComplexOfIsComplex (IsTotallyComplex.isComplex w)).continuous.comp
       (continuous_apply w)).comp continuous_fst
 
+/- English proof (translation)
+The claim follows from `Continuous.units_map _ (continuous_id.matrix_map ((continuous_apply v).comp pTest_continuous_pInf))`.
+-/
 theorem pTest_continuous_gInf (v : InfinitePlace E) : Continuous (gInf (E := E) (n := n) v) :=
   Continuous.units_map _ (continuous_id.matrix_map ((continuous_apply v).comp pTest_continuous_pInf))
 
+/- English proof (translation)
+The claim follows from `Continuous.units_map _ (continuous_id.matrix_map (continuous_snd : Continuous (pFin E)))`.
+-/
 theorem pTest_continuous_gFin : Continuous (gFin (E := E) (n := n)) :=
   Continuous.units_map _ (continuous_id.matrix_map (continuous_snd : Continuous (pFin E)))
 
+/- English proof (translation)
+The claim follows from `(pTest_continuous_gFin.comp continuous_fst).prodMk (pTest_continuous_gFin.comp continuous_snd)`.
+-/
 theorem pTest_continuous_hFin : Continuous (hFin : H E a b → Hf E a b) :=
   (pTest_continuous_gFin.comp continuous_fst).prodMk (pTest_continuous_gFin.comp continuous_snd)
 
+/- English proof (translation)
+Use `Continuous.units_map _ ?_` and prove the remaining obligations. Establish `hs : Continuous (sFin E : Af E → Ad E)` using `(continuous_const.prodMk continuous_id : Continuous fun x : Af E => ((0, x) : InfiniteAdeleRing E × Af E))`. Conclude with `(continuous_const.add (continuous_id.matrix_map hs) : Continuous fun x : Matrix (Fin n) (Fin n) (Af E) => 1 - matN n (sFin E) 1 + x.map (sFin E))`.
+-/
 theorem pTest_continuous_finGL : Continuous (finGL E n) := by
   refine Continuous.units_map _ ?_
   have hs : Continuous (sFin E : Af E → Ad E) :=
@@ -44,6 +59,9 @@ theorem pTest_continuous_finGL : Continuous (finGL E n) := by
   exact (continuous_const.add (continuous_id.matrix_map hs) :
     Continuous fun x : Matrix (Fin n) (Fin n) (Af E) => 1 - matN n (sFin E) 1 + x.map (sFin E))
 
+/- English proof (translation)
+Use `Continuous.units_map _ ?_` and prove the remaining obligations. Establish `hs : Continuous (sInf E : Cinf E → Ad E)` using `((continuous_infEq E).prodMk continuous_const : Continuous fun x : Cinf E => ((infEq E x, 0) : InfiniteAdeleRing E × Af E))`. Conclude with `(continuous_const.add (continuous_id.matrix_map hs) : Continuous fun x : Matrix (Fin n) (Fin n) (Cinf E) => 1 - matN n (sInf E) 1 + x.map (sInf E))`.
+-/
 theorem pTest_continuous_infGL : Continuous (infGL E n) := by
   refine Continuous.units_map _ ?_
   have hs : Continuous (sInf E : Cinf E → Ad E) :=
@@ -51,6 +69,9 @@ theorem pTest_continuous_infGL : Continuous (infGL E n) := by
   exact (continuous_const.add (continuous_id.matrix_map hs) :
     Continuous fun x : Matrix (Fin n) (Fin n) (Cinf E) => 1 - matN n (sInf E) 1 + x.map (sInf E))
 
+/- English proof (translation)
+Use `continuous_iff_continuousAt.2 fun x => ?_` and prove the remaining obligations. Establish `hm : (fun y => y * x⁻¹) ⁻¹' (U : Set K) ∈ 𝓝 x` using `(hU.preimage (continuous_mul_const _)).mem_nhds (by simp [U.one_mem])`. Conclude with `continuousAt_const.congr (Filter.eventually_of_mem hm fun y hy => by`. Simplify `(h _ hy x).symm)` using `[mul_assoc]`.
+-/
 theorem pTest_continuous_of_inv {K : Type} [TopologicalSpace K] [Group K] [ContinuousMul K] (ψ : K → ℂ)
     (U : Subgroup K) (hU : IsOpen (U : Set K)) (h : ∀ u ∈ U, ∀ x, ψ (u * x) = ψ x) : Continuous ψ := by
   refine continuous_iff_continuousAt.2 fun x => ?_
@@ -75,11 +96,19 @@ def pTestY (y : InfinitePlace E → G n) : GL (Fin n) (Cinf E) where
     simp only [Matrix.mul_apply, Matrix.one_apply, Finset.sum_apply, Pi.mul_apply, Matrix.of_apply]
     rw [h]; split_ifs <;> rfl
 
+/- English proof (translation)
+Use `Units.continuous_iff.2 ⟨continuous_matrix fun i j => continuous_pi fun v => (Units.continuous_val.comp (continuous_apply v)).matrix_elem i j, continuous_matrix fun i j => continuous_pi fun v => ((Units.continuous_val.comp continuous_inv).comp (continuous_apply v)).matrix_elem i j …` and prove the remaining obligations.
+-/
 theorem pTest_continuous_pTestY : Continuous (pTestY (E := E) (n := n)) := by
   refine Units.continuous_iff.2 ⟨continuous_matrix fun i j => continuous_pi fun v =>
     (Units.continuous_val.comp (continuous_apply v)).matrix_elem i j, continuous_matrix fun i j => continuous_pi fun v =>
     ((Units.continuous_val.comp continuous_inv).comp (continuous_apply v)).matrix_elem i j⟩
 
+/- English proof (translation)
+Establish `h : ∀ x : Cinf E, cV v (sInf E x) = Pi.evalRingHom (fun _ : InfinitePlace E => ℂ) v x` using `fun x => by show (infEq E).symm (infEq E x) v = x v`. Rewrite using `[RingEquiv.symm_apply_apply]`. Use `show GeneralLinearGroup.map (cV v) (cornerGL n (sInf E) (pTestY y)) = y v`. Rewrite using `[map_cornerGL_of_hom (sInf E) (cV v) _ h]`. Use extensionality with `i j`.
+
+Both sides reduce to the same expression.
+-/
 theorem pTest_gInf_infGL (y : InfinitePlace E → G n) (v : InfinitePlace E) : gInf v (infGL E n (pTestY y)) = y v := by
   have h : ∀ x : Cinf E, cV v (sInf E x) = Pi.evalRingHom (fun _ : InfinitePlace E => ℂ) v x := fun x => by
     show (infEq E).symm (infEq E x) v = x v
@@ -88,47 +117,84 @@ theorem pTest_gInf_infGL (y : InfinitePlace E → G n) (v : InfinitePlace E) : g
   rw [map_cornerGL_of_hom (sInf E) (cV v) _ h]
   ext i j; rfl
 
+/- English proof (translation)
+The claim follows from `pFin_infGL y`.
+-/
 theorem pTest_gFin_infGL (y : GL (Fin n) (Cinf E)) : gFin (infGL E n y) = 1 := pFin_infGL y
 
+/- English proof (translation)
+The claim follows from `map_cornerGL_of_zero (sFin E) (cV v) (fun x => by show (infEq E).symm 0 v = 0 rw [map_zero]; rfl) k`.
+-/
 theorem pTest_gInf_finGL (v : InfinitePlace E) (k : GL (Fin n) (Af E)) : gInf v (finGL E n k) = 1 :=
   map_cornerGL_of_zero (sFin E) (cV v) (fun x => by
     show (infEq E).symm 0 v = 0
     rw [map_zero]; rfl) k
 
+/- English proof (translation)
+The claim follows from `pFin_finGL k`.
+-/
 theorem pTest_gFin_finGL (k : GL (Fin n) (Af E)) : gFin (finGL E n k) = k := pFin_finGL k
 
+/- English proof (translation)
+Establish `e : (pTestY fun v => gInf v x) = GeneralLinearGroup.map (pInf E) x` using `by ext i j v; rfl`. Rewrite using `[e]`. Conclude with `infGL_mul_finGL x`.
+-/
 theorem pTest_decomp (x : GA E n) : infGL E n (pTestY fun v => gInf v x) * finGL E n (gFin x) = x := by
   have e : (pTestY fun v => gInf v x) = GeneralLinearGroup.map (pInf E) x := by ext i j v; rfl
   rw [e]; exact infGL_mul_finGL x
 
 open Classical in
+/- English proof (translation)
+Simplify using `only [embInf, MonoidHom.comp_apply]`. Use `congr 1`.
+-/
 theorem pTest_embInf (v : InfinitePlace E) (d : G n) : embInf n v d = infGL E n (pTestY (Pi.mulSingle (M := fun _ : InfinitePlace E => G n) v d)) := by
   simp only [embInf, MonoidHom.comp_apply]
   congr 1
 
 open Classical in
+/- English proof (translation)
+Rewrite using `[pTest_embInf, pTest_gInf_infGL]`.
+-/
 theorem pTest_gInf_embInf (v w : InfinitePlace E) (d : G n) : gInf w (embInf n v d) = Pi.mulSingle (M := fun _ : InfinitePlace E => G n) v d w := by
   rw [pTest_embInf, pTest_gInf_infGL]
 
+/- English proof (translation)
+Rewrite using `[pTest_embInf, pTest_gFin_infGL]`.
+-/
 theorem pTest_gFin_embInf (v : InfinitePlace E) (d : G n) : gFin (embInf n v d) = 1 := by
   classical
   rw [pTest_embInf, pTest_gFin_infGL]
 
+/- English proof (translation)
+Use `⟨fun k d hk => by simp only [hf.1 k d hk], ?_⟩` and prove the remaining obligations. Introduce `d W₁ W₂ h1 h2 h3 h4 u hu _ _ ν _`. Rewrite using `[integral_mul_const, hf.2 d W₁ W₂ h1 h2 h3 h4 u hu ν, zero_mul]`.
+-/
 theorem pTest_veryCusp_mul_const {f : G n → ℂ} (hf : VeryCusp f) (C : ℂ) : VeryCusp fun d => f d * C := by
   refine ⟨fun k d hk => by simp only [hf.1 k d hk], ?_⟩
   intro d W₁ W₂ h1 h2 h3 h4 u hu _ _ ν _
   rw [integral_mul_const, hf.2 d W₁ W₂ h1 h2 h3 h4 u hu ν, zero_mul]
 
+/- English proof (translation)
+The claim follows from `HasCompactSupport.intro (hf.isCompact.image continuous_fst) fun x hx => by by_contra h; exact hx ⟨(x, y), subset_tsupport _ h, rfl⟩`.
+-/
 theorem pTest_supp_fst {X Y : Type} [TopologicalSpace X] [TopologicalSpace Y] [T2Space X] {f : X × Y → ℂ}
     (hf : HasCompactSupport f) (y : Y) : HasCompactSupport fun x => f (x, y) :=
   HasCompactSupport.intro (hf.isCompact.image continuous_fst) fun x hx => by
     by_contra h; exact hx ⟨(x, y), subset_tsupport _ h, rfl⟩
 
+/- English proof (translation)
+The claim follows from `HasCompactSupport.intro (hf.isCompact.image continuous_snd) fun y hy => by by_contra h; exact hy ⟨(x, y), subset_tsupport _ h, rfl⟩`.
+-/
 theorem pTest_supp_snd {X Y : Type} [TopologicalSpace X] [TopologicalSpace Y] [T2Space Y] {f : X × Y → ℂ}
     (hf : HasCompactSupport f) (x : X) : HasCompactSupport fun y => f (x, y) :=
   HasCompactSupport.intro (hf.isCompact.image continuous_snd) fun y hy => by
     by_contra h; exact hy ⟨(x, y), subset_tsupport _ h, rfl⟩
 
+/- English proof (translation)
+Use `⟨⟨hFc, hFs, U, hU, fun u hu g => ⟨?_, ?_⟩⟩, fun d x h => hreg d x ?_, fun v g hg => ?_⟩` and prove the remaining obligations. Simplify using `only [hF, map_mul, pTest_gInf_finGL, pTest_gFin_finGL, one_mul, (hχU u hu _).1]`. Simplify using `only [hF, map_mul, pTest_gInf_finGL, pTest_gFin_finGL, mul_one, (hχU u hu _).2]`. Rewrite `h` using `[hF]`. Conclude with `right_ne_zero_of_mul h`.
+
+Establish `hg' : gInf v g = 1` using `hg`. Establish `e : (fun d => F (embInf n v d * g)) = fun d => f v d * (c * (∏ w ∈ Finset.univ.erase v, f w (gInf w g)) * χ (gFin g))`. Use function extensionality and compare the values at `d`. Rewrite using `[hF, map_mul, pTest_gFin_embInf, one_mul, ← Finset.mul_prod_erase Finset.univ _ (Finset.mem_univ v)]`. Simplify using `only [map_mul, pTest_gInf_embInf, Pi.mulSingle_eq_same, hg', mul_one]`.
+
+Rewrite using `[Finset.prod_congr rfl fun w hw => by`. Rewrite using `[Pi.mulSingle_eq_of_ne (Finset.ne_of_mem_erase hw), one_mul]]`. Expand and normalize the polynomial expressions, which then agree. Conclude with `e ▸ pTest_veryCusp_mul_const (hf v) _`.
+-/
 theorem pTest_slice (f : InfinitePlace E → G n → ℂ) (hf : ∀ v, VeryCusp (f v)) (χ : GL (Fin n) (Af E) → ℂ) (c : ℂ)
     (F : GA E n → ℂ) (hF : ∀ g, F g = c * (∏ v, f v (gInf v g)) * χ (gFin g)) (hFc : Continuous F)
     (hFs : HasCompactSupport F) (U : Subgroup (GL (Fin n) (Af E))) (hU : IsOpen (U : Set (GL (Fin n) (Af E))))
@@ -151,6 +217,11 @@ theorem pTest_slice (f : InfinitePlace E → G n → ℂ) (hf : ∀ v, VeryCusp 
       ring
     exact e ▸ pTest_veryCusp_mul_const (hf v) _
 
+/- English proof (translation)
+Establish `hinv : (y⁻¹ : G n).val = y.val⁻¹` using `Matrix.coe_units_inv y`. Use `set S : ℝ := 1 + ∑ a, ∑ b, (‖y.val a b‖ ^ 2 + ‖y.val⁻¹ a b‖ ^ 2) with hS`. Establish `h0 : 0 ≤ ∑ a, ∑ b, (‖y.val a b‖ ^ 2 + ‖y.val⁻¹ a b‖ ^ 2)` using `Finset.sum_nonneg fun a _ => Finset.sum_nonneg fun b _ => by positivity`. Establish `hpos : 0 < S` using `by rw [hS]; linarith`. Establish `hSR : S ≤ Real.exp R` using `(Real.log_le_iff_le_exp hpos).1 h`.
+
+Establish `h1 : ‖y.val i j‖ ^ 2 + ‖y.val⁻¹ i j‖ ^ 2 ≤ ∑ b, (‖y.val i b‖ ^ 2 + ‖y.val⁻¹ i b‖ ^ 2)` using `Finset.single_le_sum (f := fun b => ‖y.val i b‖ ^ 2 + ‖y.val⁻¹ i b‖ ^ 2) (fun b _ => by positivity) (Finset.mem_univ j)`. Establish `h2 : ∑ b, (‖y.val i b‖ ^ 2 + ‖y.val⁻¹ i b‖ ^ 2) ≤ ∑ a, ∑ b, (‖y.val a b‖ ^ 2 + ‖y.val⁻¹ a b‖ ^ 2)` using `Finset.single_le_sum (f := fun a => ∑ b, (‖y.val a b‖ ^ 2 + ‖y.val⁻¹ a b‖ ^ 2)) (fun a _ => Finset.sum_nonneg fun b _ => by positivity) (Finset.mem_univ i)`. Rewrite using `[hinv]`. Apply the tactic sequence `constructor <;> nlinarith [sq_nonneg ‖y.val i j‖, sq_nonneg ‖y.val⁻¹ i j‖]`.
+-/
 theorem pTest_entry_le {y : G n} {R : ℝ} (h : lg y.val ≤ R) (i j : Fin n) :
     ‖y.val i j‖ ^ 2 ≤ Real.exp R ∧ ‖(y⁻¹).val i j‖ ^ 2 ≤ Real.exp R := by
   have hinv : (y⁻¹ : G n).val = y.val⁻¹ := Matrix.coe_units_inv y
@@ -168,6 +239,9 @@ theorem pTest_entry_le {y : G n} {R : ℝ} (h : lg y.val ≤ R) (i j : Fin n) :
   rw [hinv]
   constructor <;> nlinarith [sq_nonneg ‖y.val i j‖, sq_nonneg ‖y.val⁻¹ i j‖]
 
+/- English proof (translation)
+Establish `h` using `Real.posLog_le_posLog (Real.iSup_nonneg hf0) (Real.iSup_le hf (Real.exp_pos R).le)`. Establish `e : Real.posLog (Real.exp R) = R` using `by simp [Real.posLog, hR]`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem pTest_posLog_sup_le {ι : Type} (f : ι → ℝ) (hf0 : ∀ i, 0 ≤ f i) {R : ℝ} (hR : 0 ≤ R)
     (hf : ∀ i, f i ≤ Real.exp R) : Real.posLog (⨆ i, f i) ≤ R := by
   have h := Real.posLog_le_posLog (Real.iSup_nonneg hf0) (Real.iSup_le hf (Real.exp_pos R).le)
@@ -176,6 +250,11 @@ theorem pTest_posLog_sup_le {ι : Type} (f : ι → ℝ) (hf0 : ∀ i, 0 ≤ f i
 
 def pTestInfPart (x : GA E n) : ℝ := ∑ v, Real.posLog (⨆ p : Fin n × Fin n, ‖cV v (x.val p.1 p.2)‖ ^ 2)
 
+/- English proof (translation)
+Establish `hB : ∀ w : HeightOneSpectrum (𝓞 E), (⨆ p : Fin n × Fin n, ‖cW w (x.val p.1 p.2)‖) = ⨆ p : Fin n × Fin n, ‖cW w ((finGL E n (gFin x)).val p.1 p.2)‖` using `fun w => by`. Use `congr 1`. Use function extensionality and compare the values at `p`. Use `show ‖pLoc E w ((gFin x).val p.1 p.2)‖ = ‖pLoc E w ((gFin (finGL E n (gFin x))).val p.1 p.2)‖`. Rewrite using `[pTest_gFin_finGL]`.
+
+Establish `h0 : 0 ≤ ∑ v, Real.posLog (⨆ p : Fin n × Fin n, ‖cV v ((finGL E n (gFin x)).val p.1 p.2)‖ ^ 2)` using `Finset.sum_nonneg fun _ _ => Real.posLog_nonneg`. Unfold `logSizeM pTestInfPart`. Rewrite using `[finsum_congr fun w => congrArg Real.posLog (hB w)]`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem pTest_logSizeM_le (x : GA E n) : logSizeM x.val ≤ pTestInfPart x + logSizeM (finGL E n (gFin x)).val := by
   have hB : ∀ w : HeightOneSpectrum (𝓞 E), (⨆ p : Fin n × Fin n, ‖cW w (x.val p.1 p.2)‖) =
       ⨆ p : Fin n × Fin n, ‖cW w ((finGL E n (gFin x)).val p.1 p.2)‖ := fun w => by
@@ -188,6 +267,11 @@ theorem pTest_logSizeM_le (x : GA E n) : logSizeM x.val ≤ pTestInfPart x + log
   rw [finsum_congr fun w => congrArg Real.posLog (hB w)]
   linarith
 
+/- English proof (translation)
+Establish `key : ∀ y : GA E n, (∀ v, ∀ i j, ‖(gInf v y).val i j‖ ^ 2 ≤ Real.exp R) → pTestInfPart y ≤ Fintype.card (InfinitePlace E) * R` using `fun y hy => by`. Unfold `pTestInfPart`. Combine the equalities or inequalities in the displayed calculation. Use `⟨key x fun v i j => (pTest_entry_le (h v) i j).1, key x⁻¹ fun v i j => ?_⟩` and prove the remaining obligations. Rewrite using `[map_inv]`.
+
+Conclude with `(pTest_entry_le (h v) i j).2`.
+-/
 theorem pTest_inf_le (x : GA E n) {R : ℝ} (hR : 0 ≤ R) (h : ∀ v, lg (gInf v x).val ≤ R) :
     pTestInfPart x ≤ Fintype.card (InfinitePlace E) * R ∧ pTestInfPart x⁻¹ ≤ Fintype.card (InfinitePlace E) * R := by
   have key : ∀ y : GA E n, (∀ v, ∀ i j, ‖(gInf v y).val i j‖ ^ 2 ≤ Real.exp R) →
@@ -199,6 +283,11 @@ theorem pTest_inf_le (x : GA E n) {R : ℝ} (hR : 0 ≤ R) (h : ∀ v, lg (gInf 
   refine ⟨key x fun v i j => (pTest_entry_le (h v) i j).1, key x⁻¹ fun v i j => ?_⟩
   rw [map_inv]; exact (pTest_entry_le (h v) i j).2
 
+/- English proof (translation)
+Establish `h1` using `pTest_logSizeM_le x`. Establish `h2` using `pTest_logSizeM_le x⁻¹`. Establish `h3` using `pTest_inf_le x hR h`. Rewrite `h2` using `[map_inv, map_inv]`. Unfold `logSize`.
+
+Combine the linear relations using `[h3.1, h3.2]`.
+-/
 theorem pTest_logSize_le (x : GA E n) {R : ℝ} (hR : 0 ≤ R) (h : ∀ v, lg (gInf v x).val ≤ R) :
     logSize x ≤ 2 * Fintype.card (InfinitePlace E) * R + logSize (finGL E n (gFin x)) := by
   have h1 := pTest_logSizeM_le x
@@ -208,15 +297,40 @@ theorem pTest_logSize_le (x : GA E n) {R : ℝ} (hR : 0 ≤ R) (h : ∀ v, lg (g
   unfold logSize
   linarith [h3.1, h3.2]
 
+/- English proof (translation)
+The claim follows from `Finset.prod_ne_zero_iff.1 h v (Finset.mem_univ v)`.
+-/
 theorem pTest_prod_ne {f : InfinitePlace E → G n → ℂ} {x : GA E n} (h : ∏ v, f v (gInf v x) ≠ 0) (v : InfinitePlace E) :
     f v (gInf v x) ≠ 0 :=
   Finset.prod_ne_zero_iff.1 h v (Finset.mem_univ v)
 
+/- English proof (translation)
+Simplify using `only [map_mul, pTest_gInf_finGL, one_mul, mul_one, and_self]`.
+-/
 theorem pTest_prod_finGL (f : InfinitePlace E → G n → ℂ) (u : GL (Fin n) (Af E)) (x : GA E n) :
     (∏ v, f v (gInf v (finGL E n u * x))) = ∏ v, f v (gInf v x) ∧
       (∏ v, f v (gInf v (x * finGL E n u))) = ∏ v, f v (gInf v x) := by
   simp only [map_mul, pTest_gInf_finGL, one_mul, mul_one, and_self]
 
+/- English proof (translation)
+Use `set φ : H E a b → ℂ := fun g => (∏ v, fa v (gInf v g.1)) * (∏ v, fb v (gInf v g.2)) * ψ (hFin g) with hφ`. Establish `hψc : Continuous ψ` using `pTest_continuous_of_inv ψ U hUo fun u hu h => (hψU u hu h).1`. Establish `hcont : Continuous φ`. Use `(Continuous.mul ?_ ?_).mul (hψc.comp pTest_continuous_hFin)` and prove the remaining obligations. Conclude with `continuous_finsetProd _ fun v _ => (ha v).1.comp ((pTest_continuous_gInf v).comp continuous_fst)`.
+
+Conclude with `continuous_finsetProd _ fun v _ => (hb v).1.comp ((pTest_continuous_gInf v).comp continuous_snd)`. Establish `hne : ∀ g, φ g ≠ 0 → (∀ v, fa v (gInf v g.1) ≠ 0) ∧ (∀ v, fb v (gInf v g.2) ≠ 0) ∧ ψ (hFin g) ≠ 0` using `fun g h => by`. Take `⟨h12, h3⟩` from `mul_ne_zero_iff.1 h`. Take `⟨h1, h2⟩` from `mul_ne_zero_iff.1 h12`. Conclude with `⟨pTest_prod_ne h1, pTest_prod_ne h2, h3⟩`.
+
+Establish `hsupp : HasCompactSupport φ` using `by haveI : T2Space (H E a b) := inferInstanceAs (T2Space (GA E a × GA E b))`. Set `Ka : Set (InfinitePlace E → G a)` to `Set.pi Set.univ fun _ => {y : G a | lg y.val ≤ R}`. Set `Kb : Set (InfinitePlace E → G b)` to `Set.pi Set.univ fun _ => {y : G b | lg y.val ≤ R}`. Establish `hKa : IsCompact Ka` using `isCompact_univ_pi fun _ => GlobalTheory.CompanionTheory.SobGL.isCompact_lg_le R`. Establish `hKb : IsCompact Kb` using `isCompact_univ_pi fun _ => GlobalTheory.CompanionTheory.SobGL.isCompact_lg_le R`.
+
+Set `Φ : ((InfinitePlace E → G a) × (InfinitePlace E → G b)) × Hf E a b → H E a b` to `fun t => (infGL E a (pTestY t.1.1) * finGL E a t.2.1, infGL E b (pTestY t.1.2) * finGL E b t.2.2)`. Establish `hΦ : Continuous Φ` using `(((pTest_continuous_infGL.comp pTest_continuous_pTestY).comp (continuous_fst.comp continuous_fst)).mul (pTest_continuous_finGL.comp (continuous_fst.comp continuous_snd))).prodMk (((pTest_continuous_infGL.comp pTest_continuous_pTestY).comp (continuous_snd.comp continuous_fst)).mul …`. Establish `hK` using `((hKa.prod hKb).prod hψs.isCompact).image hΦ`. Use `HasCompactSupport.intro' hK hK.isClosed fun g hg => ?_` and prove the remaining obligations. Assume the negation of the conclusion as `h`.
+
+Take `⟨h1, h2, h3⟩` from `hne g h`. Use `hg ⟨((fun v => gInf v g.1, fun v => gInf v g.2), hFin g), ⟨⟨fun v _ => (ha v).2.2 _ (h1 v), fun v _ => (hb v).2.2 _ (h2 v)⟩, subset_tsupport _ h3⟩, ?_⟩` and prove the remaining obligations. Conclude with `Prod.ext (pTest_decomp g.1) (pTest_decomp g.2)`. Establish `hU₁ : IsOpen ((U.comap (MonoidHom.inl _ _) : Subgroup (GL (Fin a) (Af E))) : Set (GL (Fin a) (Af E)))` using `hUo.preimage (continuous_id.prodMk continuous_const)`. Establish `hU₂ : IsOpen ((U.comap (MonoidHom.inr _ _) : Subgroup (GL (Fin b) (Af E))) : Set (GL (Fin b) (Af E)))` using `hUo.preimage (continuous_const.prodMk continuous_id)`.
+
+Use `⟨⟨hcont, hsupp, fun g hg => ?_, fun g₂ => ?_, fun g₁ => ?_⟩, U.comap (MonoidHom.inl _ _), U.comap (MonoidHom.inr _ _), hU₁, hU₂, fun u₁ hu₁ u₂ hu₂ g => ?_⟩` and prove the remaining obligations. Take `⟨h1, h2, h3⟩` from `hne g hg`. Establish `e1 : logSize (finGL E a (gFin g.1)) ≤ r` using `(hsz _ h3).1`. Establish `e2 : logSize (finGL E b (gFin g.2)) ≤ r` using `(hsz _ h3).2`. Conclude with `⟨(pTest_logSize_le g.1 hR fun v => (ha v).2.2 _ (h1 v)).trans (by linarith), (pTest_logSize_le g.2 hR fun v => (hb v).2.2 _ (h2 v)).trans (by linarith)⟩`.
+
+Use `pTest_slice fa (fun v => (ha v).2.1) (fun k => ψ (k, gFin g₂)) (∏ v, fb v (gInf v g₂)) (fun g => φ (g, g₂)) (fun g => by simp only [hφ, hFin]; ring) (hcont.comp (continuous_id.prodMk continuous_const)) (pTest_supp_fst hsupp g₂) _ hU₁ (fun u hu k => ⟨?_, ?_⟩) fun d x h => hr₁ d x …` and prove the remaining obligations. Simplify `(hψU _ hu (k, gFin g₂)).1` using `[Prod.mk_mul_mk]`. Simplify `(hψU _ hu (k, gFin g₂)).2` using `[Prod.mk_mul_mk]`. Use `pTest_slice fb (fun v => (hb v).2.1) (fun k => ψ (gFin g₁, k)) (∏ v, fa v (gInf v g₁)) (fun g => φ (g₁, g)) (fun g => by simp only [hφ, hFin]) (hcont.comp (continuous_const.prodMk continuous_id)) (pTest_supp_snd hsupp g₁) _ hU₂ (fun u hu k => ⟨?_, ?_⟩) fun d x h => hr₂ d x _ h` and prove the remaining obligations. Simplify `(hψU _ hu (gFin g₁, k)).1` using `[Prod.mk_mul_mk]`.
+
+Simplify `(hψU _ hu (gFin g₁, k)).2` using `[Prod.mk_mul_mk]`. Establish `hu₁' : ((u₁, 1) : Hf E a b) ∈ U` using `hu₁`. Establish `hu₂' : ((1, u₂) : Hf E a b) ∈ U` using `hu₂`. Establish `k₁ : ψ ((u₁, 1) * ((1, u₂) * hFin g)) = ψ (hFin g)`. Rewrite using `[(hψU _ hu₁' _).1, (hψU _ hu₂' _).1]`.
+
+Establish `k₂ : ψ (hFin g * (1, u₂) * (u₁, 1)) = ψ (hFin g)`. Rewrite using `[(hψU _ hu₁' _).2, (hψU _ hu₂' _).2]`. Simplify using `only [(pTest_prod_finGL fa u₁ g.1).1, (pTest_prod_finGL fb u₂ g.2).1, (pTest_prod_finGL fa u₁ g.1).2, (pTest_prod_finGL fb u₂ g.2).2]`. Simplify using `only [hFin, map_mul, pTest_gFin_finGL, Prod.mk_mul_mk, one_mul, mul_one] at k₁ k₂ ⊢`. Conclude with `⟨by rw [k₁], by rw [k₂]⟩`.
+-/
 theorem pTest_main {E : Type} [Field E] [NumberField E] [IsCMField E] {a b : ℕ}
     (fa : InfinitePlace E → G a → ℂ) (fb : InfinitePlace E → G b → ℂ) (ψ : Hf E a b → ℂ) (R r : ℝ)
     (U : Subgroup (Hf E a b)) (hR : 0 ≤ R)
@@ -300,6 +414,9 @@ theorem pTest_main {E : Type} [Field E] [NumberField E] [IsCMField E] {a b : ℕ
     simp only [hFin, map_mul, pTest_gFin_finGL, Prod.mk_mul_mk, one_mul, mul_one] at k₁ k₂ ⊢
     exact ⟨by rw [k₁], by rw [k₂]⟩
 
+/- English proof (translation)
+Introduce `E _ _ _ a b fa fb ψ R r U hR ha hb hψs hUo hψU hsz hr₁ hr₂` and use `(pTest_main fa fb ψ R r U hR ha hb hψs hUo hψU hsz hr₁ hr₂).1`.
+-/
 theorem test2 : Test2 := fun E _ _ _ a b fa fb ψ R r U hR ha hb hψs hUo hψU hsz hr₁ hr₂ =>
   (pTest_main fa fb ψ R r U hR ha hb hψs hUo hψU hsz hr₁ hr₂).1
 

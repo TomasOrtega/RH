@@ -15,6 +15,9 @@ def innerAut (u : Aˣ) : A ≃ₐ[R] A where
   map_add' x y := by simp [mul_add, add_mul]
   commutes' r := by rw [← Algebra.commutes, mul_assoc, Units.mul_inv, mul_one]
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem innerAut_apply (u : Aˣ) (x : A) :
     innerAut R u x = (u : A) * x * ((u⁻¹ : Aˣ) : A) := rfl
 
@@ -27,10 +30,18 @@ variable {K n : Type*} [NormedField K]
 def EntriesBounded (M : Matrix n n K) (c : ℝ) : Prop :=
   ∀ i j, ‖M i j‖ ≤ c
 
+/- English proof (translation)
+Introduce `i j` and use `(h i j).trans hcd`.
+-/
 theorem EntriesBounded.mono {M : Matrix n n K} {c d : ℝ} (h : EntriesBounded M c)
     (hcd : c ≤ d) : EntriesBounded M d :=
   fun i j => (h i j).trans hcd
 
+/- English proof (translation)
+Introduce `i j`. Establish `hc : 0 ≤ c` using `(norm_nonneg _).trans (hM i j)`. Establish `hd : 0 ≤ d` using `(norm_nonneg _).trans (hN i j)`. Rewrite using `[Matrix.mul_apply]`. Use `IsUltrametricDist.norm_sum_le_of_forall_le_of_nonneg (mul_nonneg hc hd) ?_` and prove the remaining obligations.
+
+Introduce `k _`. Rewrite using `[norm_mul]`. Conclude with `mul_le_mul (hM i k) (hN k j) (norm_nonneg _) hc`.
+-/
 theorem EntriesBounded.mul [IsUltrametricDist K] [Fintype n] {M N : Matrix n n K} {c d : ℝ}
     (hM : EntriesBounded M c) (hN : EntriesBounded N d) :
     EntriesBounded (M * N) (c * d) := by
@@ -54,6 +65,9 @@ def dropLast : (Fin (d + 1) → K) →ₗ[K] (Fin d → K) where
   map_add' _ _ := rfl
   map_smul' _ _ := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem dropLast_apply (x : Fin (d + 1) → K) (i : Fin d) :
     dropLast K d x i = x i.castSucc := rfl
 
@@ -76,9 +90,15 @@ def sigmaSplit (j : ι) : (Σ i, F i) ≃ F j ⊕ (Σ i : {i // i ≠ j}, F i.1)
     · simp
     · simp [show ¬ i = j from hi]
 
+/- English proof (translation)
+The claim follows from `(Equiv.apply_eq_iff_eq_symm_apply _).2 rfl`.
+-/
 theorem sigmaSplit_self (j : ι) (x : F j) : sigmaSplit F j ⟨j, x⟩ = Sum.inl x :=
   (Equiv.apply_eq_iff_eq_symm_apply _).2 rfl
 
+/- English proof (translation)
+The claim follows from `(Equiv.apply_eq_iff_eq_symm_apply _).2 rfl`.
+-/
 theorem sigmaSplit_of_ne {i j : ι} (h : i ≠ j) (x : F i) :
     sigmaSplit F j ⟨i, x⟩ = Sum.inr ⟨⟨i, h⟩, x⟩ :=
   (Equiv.apply_eq_iff_eq_symm_apply _).2 rfl

@@ -38,6 +38,19 @@ attribute [local instance] Over.cartesianMonoidalCategory
 
 section Linear
 
+/- English proof (translation)
+Use `set w := NormedField.toAbsoluteValue K with hw`. Establish `hwa : ∀ x, w x = ‖x‖` using `fun _ => rfl`. Establish `hna : IsNonarchimedean w` using `fun a b => IsUltrametricDist.norm_add_le_max a b`. Take `⟨hpos, hq⟩` from `(GlobalTheory.ConstLat.MinorQuot.colMinor_pos_and_quotient w hna M).2 hM`. Take `⟨hle, u, hu1, hu, he⟩` from `hq S i hi`.
+
+Prove the components needed by the constructor for the conclusion. Establish `hne : M.mulVec u ≠ 0`. Introduce `h0`. Establish `: u = 0` using `hM (by rw [h0, Matrix.mulVec_zero])`. Rewrite `hu1` using `[this]`.
+
+Conclude with `zero_ne_one hu1`. Take `⟨r, hr⟩` from `Function.ne_iff.1 hne`. Use `haveI : Nonempty (Fin n) := ⟨r⟩`. Take `⟨m₀, hm₀⟩` from `exists_eq_ciSup_of_finite (f := fun m => w (M.mulVec u m))`. Establish `hs : supN w (M.mulVec u) = ‖M.mulVec u m₀‖` using `hm₀.symm`.
+
+Establish `h0 : 0 < ‖M.mulVec u m₀‖` using `hs ▸ (w.pos hr).trans_le (le_supN w _ r)`. Establish `h0' : M.mulVec u m₀ ≠ 0` using `norm_pos_iff.1 h0`. Use `⟨(M.mulVec u m₀)⁻¹ • u, by simp [hu1, h0'], fun l h1 h2 => by simp [hu l h1 h2], fun m => ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[Matrix.mulVec_smul, Pi.smul_apply, smul_eq_mul, norm_mul, norm_inv, inv_mul_le_iff₀ h0, _root_.mul_one, ← hs]`. Conclude with `le_supN w _ m`.
+
+Rewrite using `[he, hs, mul_div_cancel_left₀ _ (hpos S).ne']`. Simplify using `[hu1]`. Introduce and unpack `r ⟨cf, h1, h2, h3, rfl⟩`. Rewrite using `[div_le_iff₀ (hpos S), mul_comm]`. Use `(hle ((cf i)⁻¹ • cf) (by simp [h1]) fun l a b => by simp [h2 l a b]).trans (mul_le_mul_of_nonneg_left (supN_le w (inv_nonneg.2 (norm_nonneg _)) fun m => ?_) (hpos S).le)` and prove the remaining obligations.
+
+Rewrite using `[hwa, Matrix.mulVec_smul, Pi.smul_apply, smul_eq_mul, norm_mul, norm_inv]`. Conclude with `mul_le_of_le_one_right (inv_nonneg.2 (norm_nonneg _)) (h3 m)`.
+-/
 theorem isLeast_ball {K : Type} [NormedField K] [IsUltrametricDist K] {n g : ℕ} (M : Matrix (Fin n) (Fin g) K)
     (hM : Function.Injective M.mulVec) (S : Finset (Fin g)) (i : Fin g) (hi : i ∉ S) :
     IsLeast {r : ℝ | ∃ cf : Fin g → K, cf i ≠ 0 ∧ (∀ l, l ∉ S → l ≠ i → cf l = 0) ∧ (∀ m, ‖M.mulVec cf m‖ ≤ 1) ∧
@@ -72,6 +85,15 @@ theorem isLeast_ball {K : Type} [NormedField K] [IsUltrametricDist K] {n g : ℕ
     rw [hwa, Matrix.mulVec_smul, Pi.smul_apply, smul_eq_mul, norm_mul, norm_inv]
     exact mul_le_of_le_one_right (inv_nonneg.2 (norm_nonneg _)) (h3 m)
 
+/- English proof (translation)
+Establish `hd : ∀ σ : S → Fin n, io (M.submatrix σ Subtype.val).det = ((M.map io).submatrix σ Subtype.val).det` using `fun σ => by`. Rewrite using `[RingHom.map_det]`. Both sides reduce to the same expression. Rewrite using `[← Real.log_rpow h]`. Use `congr 1`.
+
+Unfold `colMinor at h ⊢`. Break down `isEmpty_or_nonempty (S → Fin n) with h0 | h0` into its components or cases. Rewrite `h` using `[Real.iSup_of_isEmpty]`. Conclude with `absurd h (lt_irrefl _)`. Take `⟨σ, hσ⟩` from `exists_eq_ciSup_of_finite (f := fun σ : S → Fin n => NormedField.toAbsoluteValue L ((M.map io).submatrix σ Subtype.val).det)`.
+
+Use `le_antisymm (ciSup_le fun τ => ?_) ?_` and prove the remaining obligations. Rewrite using `[hw, hd]`. Conclude with `Real.rpow_le_rpow (norm_nonneg _) (le_ciSup (f := fun σ : S → Fin n => NormedField.toAbsoluteValue L ((M.map io).submatrix σ Subtype.val).det) (Set.finite_range _).bddAbove τ) hc.le`. Rewrite using `[← hσ]`. Use `le_of_eq_of_le ?_ (le_ciSup (f := fun σ : S → Fin n => w (M.submatrix σ Subtype.val).det) (Set.finite_range _).bddAbove σ)` and prove the remaining obligations.
+
+Rewrite using `[hw, hd]`. Both sides reduce to the same expression.
+-/
 theorem log_colMinor {K L : Type} [Field K] [NormedField L] (w : AbsoluteValue K ℝ) (io : K →+* L) {c : ℝ} (hc : 0 < c)
     (hw : ∀ z, w z = ‖io z‖ ^ c) {n g : ℕ} (M : Matrix (Fin n) (Fin g) K) (S : Finset (Fin g))
     (h : 0 < colMinor (NormedField.toAbsoluteValue L) (M.map io) S) :
@@ -105,6 +127,11 @@ section Ball
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E} {X : Scheme.{0}}
   {t : SAB H X}
 
+/- English proof (translation)
+Use `haveI := GlobalTheory.LatDRFree.intO_isLocalRing ℂ_[p]`. Take `⟨⟨V, hV⟩, g, e, hz, he⟩` from `GlobalTheory.T.exists_affine_tangent_basis_locally E H X t X (𝟙 X) (x (IsLocalRing.closedPoint _))`. Take `⟨φ, hφ⟩` from `GlobalTheory.ShFam.Pad.Pull.exists_fromSpec hV x (Scheme.preimage_eq_top_of_closedPoint_mem x hz).ge`. Establish `h` using `GlobalTheory.LineNorm.WedgeMax.isTanBasis_map t φ he`. Rewrite `h` using `[Category.comp_id, hφ]`.
+
+Conclude with `⟨g, _, h⟩`.
+-/
 theorem exists_basis {p : ℕ} [Fact p.Prime] (x : Sp ↥(intO ℂ_[p]) ⟶ X) :
     ∃ (g : ℕ) (e : Fin g → (Sp (DualNumber ↥(intO ℂ_[p])) ⟶ t.G.left)), IsTanBasis t x e := by
   haveI := GlobalTheory.LatDRFree.intO_isLocalRing ℂ_[p]
@@ -114,6 +141,33 @@ theorem exists_basis {p : ℕ} [Fact p.Prime] (x : Sp ↥(intO ℂ_[p]) ⟶ X) :
   rw [Category.comp_id, hφ] at h
   exact ⟨g, _, h⟩
 
+/- English proof (translation)
+Take `⟨g', e, he⟩` from `exists_basis (t := t) x`. Establish `heC` using `GlobalTheory.LineNorm.WedgeMax.isTanBasis_map t (intO ℂ_[p]).subtype he`. Use `choose b hb using fun i => hspan _ (heC.1 i)`. Use `choose h hh hh' using fun i m => hM (e i) (b i) (he.1 i) (hb i) m`. Establish `hval : ∀ (a : Fin g' → ℂ_[p]) m, Mc.mulVec (∑ i, a i • b i) m = ∑ i, (h i m : ℂ_[p]) * a i` using `fun a m => by`.
+
+Rewrite using `[Matrix.mulVec_sum, Finset.sum_apply]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[Matrix.mulVec_smul, Pi.smul_apply, smul_eq_mul, hh, mul_comm]`. Both sides reduce to the same expression. Establish `hD : ∀ m, DlogIs t p n (χ m) e fun i => h i m` using `fun m a v hav w hw => by`.
+
+Take `⟨r, hr, hr'⟩` from `hM v _ (GlobalTheory.LineNorm.Chart.comb_tan he.1 hav) (GlobalTheory.LineNorm.Chart.comb_comb hu hb (GlobalTheory.LatDRFree.comb_map t (intO ℂ_[p]).subtype hav)) m`. Rewrite using `[hr' w hw]`. Use `congr 1`. Apply `Subtype.ext` to reduce the goal to its premises. Rewrite using `[hr]`.
+
+Use `(hval _ m).trans ?_` and prove the remaining obligations. Use `push_cast`. Both sides reduce to the same expression. Set `χ₂ : Fin N → TorsChar t x (p ^ 2)` to `fun m => GlobalTheory.HTLevel.res (pow_dvd_pow p hn) (χ m)`. Establish `hχ₂ : Gens χ₂` using `fun c' => by`.
+
+Take `⟨c'', hc''⟩` from `GlobalTheory.T.torsionChar_extends_divisible_level E H X t ℂ_[p] x (p ^ 2) (p ^ n) (pow_ne_zero _ hp.out.ne_zero) (pow_dvd_pow p hn) c'`. Take `⟨k, hk⟩` from `hχ c''`. Use `⟨k, fun B _ _ _ w hw => ?_⟩` and prove the remaining obligations. Take `⟨s, hs⟩` from `pow_dvd_pow p hn`. Rewrite using `[← hc'' B w hw]`.
+
+Conclude with `hk B w (by rw [hs, pow_mul, hw, one_pow])`. Establish `hD₂ : ∀ m, DlogIs t p 2 (χ₂ m) e fun i => h i m` using `fun m => GlobalTheory.HTLevel.dlog_down hn (χ m) (χ₂ m) (fun _ _ _ _ _ _ => rfl) he.1 (hD m)`. Take `⟨N', c', nn, kk, hall, hkk, hF⟩` from `GlobalTheory.HalfGeo.fullSt E H X t p x N χ₂ hχ₂`. Establish `hlat` using `GlobalTheory.HTLevelSq.mem_latHT_iff_sq E H X t hX p x g' e he N' c' _ hall (hF g' e _ he.1 hD₂)`. Establish `hco : ∀ cf w, IsCombAtG t (spMap (intO ℂ_[p]).subtype ≫ x) u cf w → ∃ a, IsCombAtG t (spMap (intO ℂ_[p]).subtype ≫ x) (fun i => spMap (dualMap (intO ℂ_[p]).subtype) ≫ e i) a w ∧ cf = ∑ i, a i • b i` using `fun cf w hw => by`.
+
+Take `⟨a, ha, -⟩` from `he.2 _ (intO ℂ_[p]).subtype w (GlobalTheory.LineNorm.Chart.comb_tan hu hw)`. Conclude with `⟨a, ha, hind _ _ w hw (GlobalTheory.LineNorm.Chart.comb_comb hu hb ha)⟩`. Establish `main : ∀ cf w, IsCombAtG t (spMap (intO ℂ_[p]).subtype ≫ x) u cf w → (w ∈ latHT t p (spMap (intO ℂ_[p]).subtype ≫ x) ↔ ∀ m, ‖Mc.mulVec cf m‖ ≤ 1)` using `fun cf w hw => by`. Take `⟨a, ha, rfl⟩` from `hco cf w hw`. Rewrite using `[(hlat a w ha).1]`.
+
+Simplify using `only [GlobalTheory.HalfGeo.PointClauses.val_comb, hval]`. Use `⟨fun H m => ?_, fun H j => ?_⟩` and prove the remaining obligations. Simplify `H (kk m)` using `[hkk, Pi.single_apply]`. Use `IsUltrametricDist.norm_sum_le_of_forall_le_of_nonneg zero_le_one fun m _ => ?_` and prove the remaining obligations. Rewrite using `[norm_mul]`.
+
+Conclude with `mul_le_one₀ (IsUltrametricDist.norm_natCast_le_one _ _) (norm_nonneg _) (H m)`. Use `⟨main, fun cf cf' hcf => ?_⟩` and prove the remaining obligations. Rewrite using `[← sub_eq_zero]`. Establish `h0 : Mc.mulVec (cf - cf') = 0` using `by rw [Matrix.mulVec_sub, hcf, sub_self]`. Take `⟨w, -, hw⟩` from `GlobalTheory.LineNorm.WedgeMax.exists_comb t hu (cf - cf')`.
+
+Take `⟨a, ha, hab⟩` from `hco _ w hw`. Rewrite using `[hab]`. Use `Finset.sum_eq_zero fun i _ => ?_` and prove the remaining obligations. Assume the negation of the conclusion as `hne`. Establish `hai : a i ≠ 0` using `fun h => hne (by rw [h, zero_smul])`.
+
+Establish `hp0 : (p : ℂ_[p]) ≠ 0` using `Nat.cast_ne_zero.2 hp.out.ne_zero`. Take `⟨y, hy⟩` from `NormedField.exists_one_lt_norm ℂ_[p]`. Establish `h1` using `Guard.comb_smul hu hw (y / ((p : ℂ_[p]) * a i))`. Establish `h2` using `Guard.comb_smul heC.1 ha (y / ((p : ℂ_[p]) * a i))`. Establish `h3` using `(main _ _ h1).2 fun m => by`.
+
+Establish `: Mc.mulVec (fun k => y / ((p : ℂ_[p]) * a i) * (cf - cf') k) = (y / ((p : ℂ_[p]) * a i)) • Mc.mulVec (cf - cf')` using `Matrix.mulVec_smul Mc (y / ((p : ℂ_[p]) * a i)) (cf - cf')`. Rewrite using `[this, h0]`. Simplify using the standard rewrite rules. Establish `h4` using `(hlat _ _ h2).2 h3 i`. Establish `: (p : ℂ_[p]) * (y / ((p : ℂ_[p]) * a i) * a i) = y` using `by field_simp`.
+
+Rewrite `h4` using `[this]`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem ball [IsLocallyNoetherian X] (hX : X.IsSeparated) {p : ℕ} [hp : Fact p.Prime] (x : Sp ↥(intO ℂ_[p]) ⟶ X)
     {n N g : ℕ} (hn : 2 ≤ n) (χ : Fin N → TorsChar t x (p ^ n)) (hχ : Gens χ)
     (u : Fin g → (Sp (DualNumber ℂ_[p]) ⟶ t.G.left)) (hu : ∀ l, IsTanAtG t (spMap (intO ℂ_[p]).subtype ≫ x) (u l))
@@ -198,6 +252,9 @@ section Frame
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E} {Dw : Datum H}
   {l : Level H} {c : Coeff l} {X : Scheme.{0}} {t : SAB H X}
 
+/- English proof (translation)
+Rewrite using `[← Equiv.sum_comp (Equiv.ofBijective _ (GlobalTheory.Proof.frame_combination_coeff_unique.get_bijective Dw))]`. Conclude with `GlobalTheory.LineNorm.Chart.comb_iff (fun i => hu _ _) _ w`.
+-/
 theorem comb_concat {k : Type} [CommRing k] {x : Sp k ⟶ X} {u : GlobalTheory.LocM.Vecs Dw t k} (hu : ∀ τ i, IsTanAtG t x (u τ i))
     (a : Letter Dw → k) (w : Sp (DualNumber k) ⟶ t.G.left) :
     IsCombAtG t x (fun i : Fin (letters Dw).length => u ((letters Dw).get i).1 ((letters Dw).get i).2)
@@ -205,6 +262,13 @@ theorem comb_concat {k : Type} [CommRing k] {x : Sp k ⟶ X} {u : GlobalTheory.L
   rw [← Equiv.sum_comp (Equiv.ofBijective _ (GlobalTheory.Proof.frame_combination_coeff_unique.get_bijective Dw))]
   exact GlobalTheory.LineNorm.Chart.comb_iff (fun i => hu _ _) _ w
 
+/- English proof (translation)
+Set `_ : Algebra c.F k` to `f.toAlgebra`. Establish `: CharZero c.F` using `RingHom.charZero c.F.val.toRingHom`. Take `⟨α, hinj, ⟨P, hP, hPs⟩, hN⟩` from `exists_sepElt (E := E) (F := c.F) c.F.val.toRingHom (embK c) (fun τ a => embK_coe c τ a)`. Set `ρ` to `actR (x0 := x) (S := k) t.act`. Set `m : TanM x t.G` to `GlobalTheory.LieMet.tanOf hw`.
+
+Establish `hsum : ∑ τ, proj ρ (embK c) α τ m = m`. Use `congrArg (fun e : Module.End k (TanM x t.G) => e m) (sum_proj ρ (embK c) α hinj)` as an intermediate fact. Simplify `this` using `[LinearMap.sum_apply]`. Establish `hE : ∀ τ, ReciprocityTheory.ChartRestriction.G.PullbackSections.IsEigV ρ (embK c τ) (proj ρ (embK c) α τ m)` using `fun τ => eig_of_alpha ρ (embK c) α hN τ (proj_eig_alpha ρ (embK c) α hinj P hP hPs τ m)`. Use `choose a ha using fun τ => (hu.2 τ _ (GlobalTheory.LieMet.isTan_tv (proj ρ (embK c) α τ m)) fun s => congrArg (fun z => (tv z).left) (hE τ s)).exists`.
+
+Use `⟨_, (comb_concat (fun τ i => (hu.1 τ i).1) (fun y => a y.1 y.2) w).2 ?_⟩` and prove the remaining obligations. Rewrite using `[Fintype.sum_sigma, Finset.sum_congr rfl fun τ _ => (GlobalTheory.LieMet.tan_ext ((GlobalTheory.LineNorm.Chart.comb_iff (fun i => (hu.1 τ i).1) _ _).1 (ha τ))).symm, hsum]`. Both sides reduce to the same expression.
+-/
 theorem span_concat {k : Type} [Field k] {f : c.F →+* k} {x : Sp k ⟶ X} {u : GlobalTheory.LocM.Vecs Dw t k}
     (hu : GlobalTheory.LocM.IsFrame t f x u) (w : Sp (DualNumber k) ⟶ t.G.left) (hw : IsTanAtG t x w) :
     ∃ cf, IsCombAtG t x (fun i : Fin (letters Dw).length => u ((letters Dw).get i).1 ((letters Dw).get i).2) cf w := by
@@ -226,6 +290,9 @@ theorem span_concat {k : Type} [Field k] {f : c.F →+* k} {x : Sp k ⟶ X} {u :
     (GlobalTheory.LieMet.tan_ext ((GlobalTheory.LineNorm.Chart.comb_iff (fun i => (hu.1 τ i).1) _ _).1 (ha τ))).symm, hsum]
   rfl
 
+/- English proof (translation)
+Rewrite using `[comb_concat hu, GlobalTheory.LineNorm.Chart.comb_iff (hu τ), Fintype.sum_sigma, Finset.sum_eq_single τ (fun σ _ hσ => Finset.sum_eq_zero fun i _ => by rw [ha ⟨σ, i⟩ hσ, zero_smul]) (fun h => absurd (Finset.mem_univ _) h)]`.
+-/
 theorem comb_block {k : Type} [CommRing k] {x : Sp k ⟶ X} {u : GlobalTheory.LocM.Vecs Dw t k} (hu : ∀ τ i, IsTanAtG t x (u τ i))
     (τ : E →+* ℂ) (a : Letter Dw → k) (ha : ∀ y, y.1 ≠ τ → a y = 0) (w : Sp (DualNumber k) ⟶ t.G.left) :
     IsCombAtG t x (u τ) (fun j => a ⟨τ, j⟩) w ↔
@@ -234,6 +301,11 @@ theorem comb_block {k : Type} [CommRing k] {x : Sp k ⟶ X} {u : GlobalTheory.Lo
   rw [comb_concat hu, GlobalTheory.LineNorm.Chart.comb_iff (hu τ), Fintype.sum_sigma, Finset.sum_eq_single τ
     (fun σ _ hσ => Finset.sum_eq_zero fun i _ => by rw [ha ⟨σ, i⟩ hσ, zero_smul]) (fun h => absurd (Finset.mem_univ _) h)]
 
+/- English proof (translation)
+Establish `hp` using `List.pairwise_iff_get.1 (GlobalTheory.Proof.frame_combination_coeff_unique.pairwise_letters Dw)`. Use `⟨fun hij => hp i j hij h, fun hij => ?_⟩` and prove the remaining obligations. Break down `lt_trichotomy i j with h1 | rfl | h1` into its components or cases. Conclude with `h1`. Conclude with `absurd hij (lt_irrefl _)`.
+
+Conclude with `absurd (hp j i h1 h.symm) (not_lt.2 hij.le)`.
+-/
 theorem lt_iff {i j : Fin (letters Dw).length} (h : ((letters Dw).get i).1 = ((letters Dw).get j).1) :
     i < j ↔ (((letters Dw).get i).2 : ℕ) < ((letters Dw).get j).2 := by
   have hp := List.pairwise_iff_get.1 (GlobalTheory.Proof.frame_combination_coeff_unique.pairwise_letters Dw)
@@ -243,6 +315,27 @@ theorem lt_iff {i j : Fin (letters Dw).length} (h : ((letters Dw).get i).1 = ((l
   · exact absurd hij (lt_irrefl _)
   · exact absurd (hp j i h1 h.symm) (not_lt.2 hij.le)
 
+/- English proof (translation)
+Establish `hi : i ∉ blkLt β i` using `by simp [blkLt]`. Establish `hins : blkLe β i = insert i (blkLt β i)`. Use extensionality with `j`. Simplify using `only [blkLe, blkLt, Finset.mem_filter, Finset.mem_univ, true_and, Finset.mem_insert]`. Prove the components needed by the constructor for the conclusion.
+
+Introduce and unpack `⟨h1, h2⟩`. Conclude with `h1.eq_or_lt.imp id fun h => ⟨h, h2⟩`. Introduce and unpack `(rfl | ⟨h1, h2⟩)`. Conclude with `⟨le_rfl, rfl⟩`. Conclude with `⟨h1.le, h2⟩`.
+
+Rewrite using `[hins, ← (isLeast_ball Mc hM _ i hi).csInf_eq]`. Unfold `GlobalTheory.ShFam.Pad.grNorm`. Use `congr 1`. Set `e` to `Equiv.ofBijective _ (GlobalTheory.Proof.frame_combination_coeff_unique.get_bijective Dw)`. Establish `he : ∀ y, (letters Dw).get (e.symm y) = y` using `e.apply_symm_apply`.
+
+Establish `hS : ∀ j, (j ∉ blkLt β i ∧ j ≠ i) ↔ (((letters Dw).get j).1 = ((letters Dw).get i).1 → (((letters Dw).get i).2 : ℕ) < ((letters Dw).get j).2)` using `fun j => by`. Simplify using `only [blkLt, Finset.mem_filter, Finset.mem_univ, true_and, hβ]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨h1, h2⟩ h3`. Conclude with `(lt_iff h3.symm).1 (lt_of_le_of_ne (not_lt.1 fun h => h1 ⟨h, h3⟩) h2.symm)`.
+
+Introduce `h`. Use `⟨fun h1 => absurd ((lt_iff h1.2.symm).2 (h h1.2)) (not_lt.2 h1.1.le), ?_⟩` and prove the remaining obligations. Introduce and unpack `rfl`. Conclude with `lt_irrefl _ (h rfl)`. Use extensionality with `r`.
+
+Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨cf, h1, h2, ⟨w, hw, hc⟩, rfl⟩`. Set `a : Letter Dw → C` to `fun y => if h : y.1 = ((letters Dw).get i).1 then cf (h ▸ y.2) else 0`. Establish `ha : (fun j => a ⟨((letters Dw).get i).1, j⟩) = cf` using `funext fun j => dif_pos rfl`. Establish `hai : a ((letters Dw).get i) = cf ((letters Dw).get i).2` using `dif_pos rfl`.
+
+Use `⟨fun j => a ((letters Dw).get j), fun h => h1 (hai.symm.trans h), fun j hj hj' => ?_, (hΛ _ w ?_).1 hw, congrArg (fun z => ‖z‖⁻¹) hai.symm⟩` and prove the remaining obligations. Establish `h3` using `(hS j).1 ⟨hj, hj'⟩ show a ((letters Dw).get j) = 0 revert h3`. Generalize the expression as in `(letters Dw).get j = y`. Take `⟨τ, s⟩` from `y`. Introduce `h3`.
+
+Distinguish the cases in `hy : τ = ((letters Dw).get i).1`. Substitute `hy` using the available equality. Conclude with `(dif_pos rfl).trans (h2 _ (h3 rfl))`. Conclude with `dif_neg hy`. Conclude with `(comb_block hu _ a (fun y hy => dif_neg hy) w).1 (ha.symm ▸ hc)`.
+
+Introduce and unpack `⟨cg, h1, h2, h3, rfl⟩`. Set `a : Letter Dw → C` to `fun y => cg (e.symm y)`. Establish `ha : (fun j => a ((letters Dw).get j)) = cg` using `funext fun j => congrArg cg (e.symm_apply_apply j)`. Establish `hai : a ((letters Dw).get i) = cg i` using `congrFun ha i`. Establish `h0 : ∀ y : Letter Dw, (y.1 = ((letters Dw).get i).1 → (((letters Dw).get i).2 : ℕ) < y.2) → a y = 0` using `fun y hy => by`.
+
+Establish `h4` using `(hS (e.symm y)).2 (by rw [he]; exact hy)`. Conclude with `h2 _ h4.1 h4.2`. Take `⟨w, -, hw⟩` from `GlobalTheory.LineNorm.WedgeMax.exists_comb t (hu ((letters Dw).get i).1) fun j => a ⟨_, j⟩`. Use `⟨fun j => a ⟨_, j⟩, fun h => h1 (hai.symm.trans h), fun k hk => h0 _ fun _ => hk, ⟨w, (hΛ cg w ?_).2 h3, hw⟩, congrArg (fun z => ‖z‖⁻¹) hai.symm⟩` and prove the remaining obligations. Conclude with `ha ▸ (comb_block hu _ a (fun y hy => h0 y fun h => absurd h hy) w).1 hw`.
+-/
 theorem grNorm_block {C : Type} [NontriviallyNormedField C] [IsUltrametricDist C] {x : Sp C ⟶ X}
     {u : GlobalTheory.LocM.Vecs Dw t C} (hu : ∀ τ i, IsTanAtG t x (u τ i)) (Λ : Set (Sp (DualNumber C) ⟶ t.G.left)) {N : ℕ}
     (Mc : Matrix (Fin N) (Fin (letters Dw).length) C) (hM : Function.Injective Mc.mulVec)
@@ -312,6 +405,11 @@ section Point
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E} {Dw : Datum H}
   {l : Level H} {c : Coeff l} {X : Scheme.{0}} {t : SAB H X}
 
+/- English proof (translation)
+Substitute `hg hx` using the available equality. Take `⟨h1, h2⟩` from `ball hX x hn χ hχ _ (fun i => (hu.1 _ _).1) (GlobalTheory.Proof.frame_combination_coeff_unique.concat_frame E H Dw l c X t _ f _ u hu).1 (span_concat hu) Mc hM`. Establish `hpos` using `GlobalTheory.ConstLat.MinorQuot.colMinor_pos (NormedField.toAbsoluteValue ℂ_[p]) Mc h2`. Use `⟨hpos, ?_⟩` and prove the remaining obligations. Rewrite using `[← Real.log_div (hpos _).ne' (hpos _).ne']`.
+
+Conclude with `congrArg Real.log (grNorm_block (fun τ i => (hu.1 τ i).1) _ Mc h2 h1 β hβ i)`.
+-/
 theorem log_grNorm [IsLocallyNoetherian X] (hX : X.IsSeparated) {p : ℕ} [Fact p.Prime] (x : Sp ↥(intO ℂ_[p]) ⟶ X)
     {xC : Sp ℂ_[p] ⟶ X} (hx : spMap (intO ℂ_[p]).subtype ≫ x = xC) {n N g : ℕ} (hn : 2 ≤ n)
     (χ : Fin N → TorsChar t x (p ^ n)) (hχ : Gens χ) {f : c.F →+* ℂ_[p]} {u : GlobalTheory.LocM.Vecs Dw t ℂ_[p]}
@@ -332,6 +430,9 @@ theorem log_grNorm [IsLocallyNoetherian X] (hX : X.IsSeparated) {p : ℕ} [Fact 
   rw [← Real.log_div (hpos _).ne' (hpos _).ne']
   exact congrArg Real.log (grNorm_block (fun τ i => (hu.1 τ i).1) _ Mc h2 h1 β hβ i)
 
+/- English proof (translation)
+Substitute `hb` using the available equality. Use `(dif_pos k.2).trans ?_` and prove the remaining obligations. Simplify using `only [true_and, ite_mul, zero_mul]`. Both sides reduce to the same expression.
+-/
 theorem lnStep_inl {C : Type} [NontriviallyNormedField C] [IsUltrametricDist C] (x : Sp C ⟶ X) (u : GlobalTheory.LocM.Vecs Dw t C)
     (p : ℕ) {b : Bool} (hb : b = true) (τ : E →+* ℂ) (k : Fin (Dw.mult τ)) :
     lnStep t x u p b (.inl (τ, (k : ℕ))) = Real.log (GlobalTheory.ShFam.Pad.grNorm t x (latHT t p x) (u τ) k) -
@@ -349,6 +450,15 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheo
   {l : Level H} {Xo : Moduli Dw l} {c : Coeff l} {O : Type} [CommRing O] {β₀ : O →+* c.F}
   {Z : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Model Xo c β₀} {F : Type} [Field F] [NumberField F] {ε : F ≃+* c.F} (Y : FlagCpt Z ε)
 
+/- English proof (translation)
+Take `rfl : L = fun i => (letters Dw).get (Fin.cast hg.symm i)` from `funext hL`. Take `⟨hpos, hgr⟩` from `log_grNorm hX x hx hn χ hχ (isFrame_fr Y (below y.1) ψ) hg _ hM β hβ i`. Establish `hw0 : 0 < e.w ((resP v : ℕ) : AlgebraicClosure F)` using `e.w.pos (Nat.cast_ne_zero.2 hp.out.ne_zero)`. Establish `hw1 : e.w ((resP v : ℕ) : AlgebraicClosure F) < 1`. Establish `e1 : ((resP v : ℕ) : AlgebraicClosure F) = algebraMap F _ (algebraMap (𝓞 F) F ((resP v : ℕ) : 𝓞 F))` using `by simp`.
+
+Rewrite using `[e1, e.w_alg]`. Conclude with `(v.adicAbv_coe_lt_one_iff (HeightOneSpectrum.one_lt_absNorm_nnreal v) _).2 (residueCharacteristic_mem v)`. Establish `hlp : 0 < Real.log (resP v)` using `Real.log_pos (by exact_mod_cast hp.out.one_lt)`. Establish `hc` using `div_pos (neg_pos.2 (Real.log_neg hw0 hw1)) hlp`. Establish `hcv` using `fun S => log_colMinor e.w (ioOf (resP v) e) hc (GlobalTheory.CovHt.Link.w_eq_norm_ioOf_rpow (resP v) v (residueCharacteristic_mem v) e) M S (hpos S)`.
+
+Establish `hsym : eigSym Dw a R (Sum.inl i : Fin g ⊕ Fin g) = Finsupp.single (a, R, .inl (((letters Dw).get (Fin.cast hg.symm i)).1, (((letters Dw).get (Fin.cast hg.symm i)).2 : ℕ))) 1` using `eigAt_of_lt Dw _ _ 1 (Fin.cast hg.symm i).2`. Establish `hlg` using `(GlobalTheory.CovHt.RootFirst.lgOf_single_inl Y _ _ _ _ _ hsym v e y).2`. Rewrite `hlg` using `[← hψ]`. Establish `hst` using `(lnStep_inl _ (GlobalTheory.LocM.Vecs.bc ψ (fr Y (below y.1)).v) (resP v) ha _ _).trans (congrArg (· - _) hgr)`. Use `hlg.trans ((congrArg₂ (· + ·) (congrArg (fun z => Real.log (e.w (valAt y.1 z))) ((Units.val_mul _ _).trans (mul_comm _ _))) (congrArg (_ * ·) hst)).trans ?_)` and prove the remaining obligations.
+
+Rewrite using `[hcv, hcv]`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem lgOf_eig [IsLocallyNoetherian Z.X] (hX : Z.X.IsSeparated) {v : HeightOneSpectrum (𝓞 F)} [hp : Fact (resP v).Prime]
     (e : Ext v) (y : AlgPt Y.Y) (x : Sp ↥(intO ℂ_[resP v]) ⟶ Z.X) {n N g : ℕ} (hn : 2 ≤ n)
     (χ : Fin N → TorsChar Z.t x (resP v ^ n)) (hχ : Gens χ) (hg : (letters Dw).length = g)
@@ -395,6 +505,9 @@ section Setup
 
 variable {D : D7} (O : Setup D)
 
+/- English proof (translation)
+Establish `h : (letters O.S.Dw)[(i : ℕ)]? = some (letterAt O i)` using `List.getElem?_eq_getElem (Fin.cast (length_letters O).symm i).2`. Unfold `letterEmb`. Rewrite using `[h]`. Simplify using the standard rewrite rules.
+-/
 theorem coe_letterEmb (i : Fin (D.R.f * O.N)) (z : D.host.E) :
     ((O.κ.e (letterEmb O i z) : O.κ.c.F) : ℂ) = (letterAt O i).1 z := by
   have h : (letters O.S.Dw)[(i : ℕ)]? = some (letterAt O i) :=
@@ -403,11 +516,17 @@ theorem coe_letterEmb (i : Fin (D.R.f * O.N)) (z : D.host.E) :
   rw [h]
   simp
 
+/- English proof (translation)
+Use `⟨fun h => RingHom.ext fun z => ?_, fun h => RingHom.ext fun z => O.κ.e.injective (Subtype.ext ?_)⟩` and prove the remaining obligations. Rewrite using `[← coe_letterEmb, h, coe_letterEmb]`. Rewrite using `[coe_letterEmb, h, coe_letterEmb]`.
+-/
 theorem letterEmb_eq_iff (i j : Fin (D.R.f * O.N)) : letterEmb O i = letterEmb O j ↔ (letterAt O i).1 = (letterAt O j).1 := by
   refine ⟨fun h => RingHom.ext fun z => ?_, fun h => RingHom.ext fun z => O.κ.e.injective (Subtype.ext ?_)⟩
   · rw [← coe_letterEmb, h, coe_letterEmb]
   · rw [coe_letterEmb, h, coe_letterEmb]
 
+/- English proof (translation)
+Rewrite using `[← coe_letterEmb]`. Both sides reduce to the same expression.
+-/
 theorem letterEmb_mem_iff (i : Fin (D.R.f * O.N)) :
     letterEmb O i ∈ cmSet O ↔ (letterAt O i).1 (O.A.H.rt : D.host.E) = O.A.H.rt0 := by
   rw [← coe_letterEmb]
@@ -415,6 +534,13 @@ theorem letterEmb_mem_iff (i : Fin (D.R.f * O.N)) :
 
 end Setup
 
+/- English proof (translation)
+Introduce `_ _ _ _ _ D O _ T R _ p _ hpT c b n hn v hp e y Ch inC M hv hD a ha i`. Use `haveI : Fact (resP v).Prime := ⟨hp⟩`. Substitute `hv` using the available equality. Take `⟨xO, χ, hx, hχ, -, -, hM⟩` from `hD`. Take `⟨hX, hN, -⟩` from `GlobalTheory.T.exists_normal_model_over_projective D.what₂.LL (O.Φ.C c).Y (𝓞 O.κ.c.F) (RingOfIntegers.mapRingEquiv O.κ.e) O.s.T.Z.X O.s.T.Z.s ((O.Φ.C c).π ≫ GlobalTheory.Toroidal.genι O.s.T.Z) O.s.T.Z.proj (by`.
+
+Rewrite using `[← (O.Φ.C c).π_str]`. Simplify using `only [Category.assoc]`. Rewrite using `[Limits.pullback.condition_assoc, ← Spec.map_comp, ← Spec.map_comp]`. Use the proof step `rfl)`. Establish `hMa` using `hM a ha`.
+
+Rewrite `hMa` using `[funext fun l => uAt.eq_1 O c e y l, frAt.eq_1]`. Rewrite `hx` using `[ptAt.eq_1]`. Rewrite using `[dgOf.eq_1, if_congr (letterEmb_mem_iff O i) rfl rfl]`. Conclude with `lgOf_eig (O.Φ.C c) hX e y xO (le_trans (by norm_num) hn) χ hχ (length_letters O) (M a) _ (psiAt.eq_1 O c e y) hx (letterAt O) (letterAt.eq_1 O) hMa _ (letterEmb_eq_iff O) _ (decide_eq_true hpT) _ i`.
+-/
 theorem lg_eigA : Hypotheses2 → HypothesesH → GlobalTheory.Published.RegularAlteration → GlobalTheory.Published.ScholzeWeinsteinB → GlobalTheory.Published.PrismaticDieudonnePerfd →
     ∀ (D : D7) (O : Setup D), O.Core → ∀ (T : Finset ℕ) (R : ℝ), 2 ≤ R → ∀ p : ℕ, p.Prime → p ∈ T → ∀ (c : O.s.Comp)
     (b : Module.Basis (Fin (D.R.f * O.N + D.R.f * O.N)) ℤ O.S.Dw.La) (n : ℕ), 3 ≤ n →

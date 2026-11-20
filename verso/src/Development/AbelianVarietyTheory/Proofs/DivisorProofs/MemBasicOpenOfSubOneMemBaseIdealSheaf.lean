@@ -7,6 +7,13 @@ open ReciprocityTheory.ChartRestriction.G.Out GlobalTheory.AbLaw GlobalTheory.Fo
 
 namespace GlobalTheory.FormalAlg
 
+/- English proof (translation)
+Establish `hs : z ∈ (baseIdeal p I).support` using `(mem_support_baseIdeal p I z).2 hI`. Rewrite `hs` using `[Scheme.IdealSheafData.mem_support_iff_of_mem (U := ⟨V, hV⟩) hz]`. Establish `h1 : z ∉ Z.basicOpen (r - 1)`. Rewrite `hs` using `[Scheme.mem_zeroLocus_iff]`. Conclude with `hs _ hr`.
+
+Rewrite `h1`, the goal using `[Scheme.mem_basicOpen _ _ _ hz]`. Establish `hsum : Z.presheaf.germ V z hz r + (-(Z.presheaf.germ V z hz (r - 1))) = 1`. Simplify using `[map_sub]`. Break down `IsLocalRing.isUnit_or_isUnit_of_add_one hsum with h | h` into its components or cases. Conclude with `h`.
+
+Conclude with `absurd (by simpa using h.neg) h1`.
+-/
 theorem mem_basicOpen_of_sub_one_mem_baseIdeal (R : Type) [CommRing R] (I : Ideal R) (Z : Scheme.{0})
     (p : Z ⟶ Spec (CommRingCat.of R)) (V : Z.Opens) (hV : IsAffineOpen V) (r : Γ(Z, V)) (z : Z)
     (hz : z ∈ V) (hI : I ≤ (p z).asIdeal) (hr : r - 1 ∈ (baseIdeal p I).ideal ⟨V, hV⟩) :

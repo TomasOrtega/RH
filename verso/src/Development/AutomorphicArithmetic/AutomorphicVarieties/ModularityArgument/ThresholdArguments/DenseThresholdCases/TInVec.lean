@@ -12,6 +12,19 @@ open UpperTheory.V.W (Plc Lp)
 open UpperTheory.V.Z.Sym UpperTheory.V.Z.Sym.Dict
 attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField
 open UpperTheory.V.Z.Sym.Al
+/- English proof (translation)
+Proceed by induction on `T using Finset.induction_on with`. Consider the case `empty => exact ⟨S, subset_rfl, hinj, fun t h h' => absurd h h', by simp⟩`. Consider the case `insert a T₀ _ ih`. Take `⟨T', h1, h2, h3, h4⟩` from `ih`. Distinguish the cases in `h : ∃ t' ∈ T', f t' = f a`.
+
+Use `⟨T', h1, h2, h3, fun t ht => ?_⟩` and prove the remaining obligations. Break down `Finset.mem_insert.1 ht with rfl | ht` into its components or cases. Conclude with `h`. Conclude with `h4 t ht`. Use `push_neg at h`.
+
+Use `⟨insert a T', h1.trans (Finset.subset_insert _ _), ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `x hx y hy hxy`. Apply the tactic sequence `rcases Finset.mem_insert.1 (Finset.mem_coe.1 hx) with h₁ | h₁ <;>`. Break down `Finset.mem_insert.1 (Finset.mem_coe.1 hy) with h₂ | h₂` into its components or cases. Rewrite using `[h₁, h₂]`.
+
+Substitute `h₁` using the available equality. Conclude with `absurd hxy.symm (h y h₂)`. Substitute `h₂` using the available equality. Conclude with `absurd hxy (h x h₁)`. Conclude with `h2 h₁ h₂ hxy`.
+
+Introduce `t ht htS s hs`. Break down `Finset.mem_insert.1 ht with rfl | ht` into its components or cases. Conclude with `h s (h1 hs)`. Conclude with `h3 t ht htS s hs`. Introduce `t ht`.
+
+Break down `Finset.mem_insert.1 ht with rfl | ht` into its components or cases. Conclude with `⟨_, Finset.mem_insert_self _ _, rfl⟩`. Take `⟨t', a', b⟩` from `h4 t ht`. Conclude with `⟨t', Finset.mem_insert_of_mem a', b⟩`.
+-/
 private theorem thinOut {α β : Type} [DecidableEq α] (f : α → β) (S T : Finset α) (hinj : Set.InjOn f (S : Set α)) :
     ∃ T' : Finset α, S ⊆ T' ∧ Set.InjOn f (T' : Set α) ∧ (∀ t ∈ T', t ∉ S → ∀ s ∈ S, f s ≠ f t) ∧
       ∀ t ∈ T, ∃ t' ∈ T', f t' = f t := by
@@ -46,13 +59,32 @@ private theorem thinOut {α β : Type} [DecidableEq α] (f : α → β) (S T : F
           exact ⟨t', Finset.mem_insert_of_mem a', b⟩
 section
 variable {L : Type} [Field L] [NumberField L] [IsCMField L]
+/- English proof (translation)
+Simplify using `only [away, h]`.
+-/
 private theorem away_congr {n : ℕ} {w w' : Plc L} (h : w.under (𝓞 (Lp L)) = w'.under (𝓞 (Lp L))) :
     away n w = away n w' := by
   simp only [away, h]
+/- English proof (translation)
+The claim follows from `Subgroup.mem_iInf.1 (Subgroup.mem_iInf.1 hy w) rfl`.
+-/
 private theorem cLoc_away {n : ℕ} {w : Plc L} {y : UA L n} (hy : y ∈ away n w) : cLoc w y = 1 :=
   Subgroup.mem_iInf.1 (Subgroup.mem_iInf.1 hy w) rfl
 private noncomputable def AT (S : Finset (Plc L)) (W : ∀ w : Plc L, Sig.Lev (Kw w)) (T : Finset (Plc L)) : Subgroup (UA L 2) :=
   lev (Kall L 2) S W ⊓ ⨅ w ∈ T, away 2 w
+/- English proof (translation)
+Establish `h1 : AT S W (insert w T₀) ≤ away 2 w` using `inf_le_right.trans (iInf₂_le w (Finset.mem_insert_self _ _))`. Establish `h2` using `(spanKeep L 2 V w φ φ' hspan).2.1 R _ h1 hAF`. Use `⟨h2.left, h2.inf, ?_⟩` and prove the remaining obligations. Introduce `u hu g`. Take `⟨x, hx, y, hy, rfl⟩` from `(factor L 2 w).2.1 u`.
+
+Take `⟨hlev, hTa⟩` from `Subgroup.mem_inf.1 hu`. Take `⟨hK, hJ⟩` from `Subgroup.mem_inf.1 hlev`. Establish `hxy` using `((factor L 2 w).2.2.2.2.2 x hx y hy).1 hK`. Establish `hJ' : ∀ v ∈ S, cLoc v (x * y) ∈ (W v).J 2` using `fun v hv => Subgroup.mem_iInf.1 (Subgroup.mem_iInf.1 hJ v) hv`. Establish `hyw : cLoc w y = 1` using `cLoc_away hy`.
+
+Establish `hyA : y ∈ AT S W (insert w T₀)`. Use `Subgroup.mem_inf.2 ⟨Subgroup.mem_inf.2 ⟨hxy.2, ?_⟩, ?_⟩` and prove the remaining obligations. Use `Subgroup.mem_iInf.2 fun v => Subgroup.mem_iInf.2 fun hv => ?_ show cLoc v y ∈ (W v).J 2` and prove the remaining obligations. Distinguish the cases in `hvw : v = w`. Substitute `hvw` using the available equality.
+
+Rewrite using `[hyw]`. Conclude with `one_mem _`. Establish `hxv : cLoc v x = 1` using `cLoc_away ((factor L 2 v).2.2.1 w (hS v hv hvw).symm hx)`. Use `hJ' v hv` as an intermediate fact. Rewrite `this` using `[map_mul, hxv, one_mul]`. Then use the resulting hypothesis.
+
+Use `Subgroup.mem_iInf.2 fun t => Subgroup.mem_iInf.2 fun ht => ?_` and prove the remaining obligations. Break down `Finset.mem_insert.1 ht with rfl | ht` into its components or cases. Conclude with `hy`. Establish `hxt : x ∈ away 2 t` using `(factor L 2 t).2.2.1 w (hT t ht).symm hx`. Establish `hxyt : x * y ∈ away 2 t` using `Subgroup.mem_iInf.1 (Subgroup.mem_iInf.1 hTa t) ht`.
+
+Conclude with `(Subgroup.mul_mem_cancel_left _ hxt).1 hxyt`. Rewrite using `[← mul_assoc, h2.level y hyA, hinv x hx hxy.1 ?_]`. Introduce `hwS`. Use `hJ' w hwS` as an intermediate fact. Rewrite `this` using `[map_mul, hyw, mul_one]`. Then use the resulting hypothesis.
+-/
 private theorem step [DecidableEq (Plc L)] {V : Type} [AddCommGroup V] [Module ℂ V] (S T₀ : Finset (Plc L))
     (W : ∀ w : Plc L, Sig.Lev (Kw w)) (w : Plc L)
     (hS : ∀ v ∈ S, v ≠ w → v.under (𝓞 (Lp L)) ≠ w.under (𝓞 (Lp L)))
@@ -96,6 +128,31 @@ private theorem step [DecidableEq (Plc L)] {V : Type} [AddCommGroup V] [Module �
   have := hJ' w hwS
   rwa [map_mul, hyw, mul_one] at this
 end
+/- English proof (translation)
+Introduce `hN L _ _ _ π hπ j hwt S hS hun W ψ hψ`. Use `haveI : FiniteDimensional ℂ (Wt.VD (InfinitePlace L) j) := Wt.finMH (InfinitePlace L) 2 _`. Take `⟨e, φ₀, hne, hco, hAF⟩` from `infVec L π hπ j hwt`. Take `⟨U, hUo, hUi⟩` from `openLev L 2 _ π hπ φ₀ hco`. Take `⟨T, hT⟩` from `(cof L 2).1 U hUo`.
+
+Take `⟨T', hST, hthin, hsep, hcov⟩` from `thinOut (fun w : Plc L => w.under (𝓞 (Lp L))) S T hS.inj`. Establish `key : ∀ D : Finset (Plc L), D ⊆ T' → ∃ φ : UA L 2 → Wt.VD (InfinitePlace L) j, φ ≠ 0 ∧ CoefIn φ π ∧ IsAF (repE j e) (AT S W (T' \ D)) φ ∧ ∀ w ∈ S, w ∉ T' \ D → EigT φ w (W w) (ψ w)`. Introduce `D`. Proceed by induction on `D using Finset.induction_on with`. Consider the case `empty`.
+
+Introduce `_`. Use `⟨φ₀, hne, hco, ⟨hAF.left, hAF.inf, fun u hu g => hUi u ?_ g⟩, fun w hw hw' => ?_⟩` and prove the remaining obligations. Take `⟨hlev, hTa⟩` from `Subgroup.mem_inf.1 hu`. Use `hT (Subgroup.mem_inf.2 ⟨(Subgroup.mem_inf.1 hlev).1, ?_⟩)` and prove the remaining obligations. Use `Subgroup.mem_iInf.2 fun t => Subgroup.mem_iInf.2 fun ht => ?_` and prove the remaining obligations.
+
+Take `⟨t', ht', hf⟩` from `hcov t ht`. Rewrite using `[← away_congr hf]`. Conclude with `Subgroup.mem_iInf.1 (Subgroup.mem_iInf.1 hTa t') (by simpa using ht')`. Conclude with `absurd (by simpa using hST hw) hw'`. Consider the case `insert w D₀ hwD ih`.
+
+Introduce `hsub`. Establish `hwT : w ∈ T'` using `hsub (Finset.mem_insert_self _ _)`. Take `⟨φ, hφ, hc, hA, hE⟩` from `ih ((Finset.subset_insert _ _).trans hsub)`. Establish `hins : T' \ D₀ = insert w (T' \ insert w D₀)`. Use extensionality with `t`.
+
+Distinguish the cases in `h : t = w`. Substitute `h` using the available equality. Simplify using `[hwT, hwD]`. Simplify using `[h]`. Establish `hTs : ∀ t ∈ T' \ insert w D₀, t.under (𝓞 (Lp L)) ≠ w.under (𝓞 (Lp L))`.
+
+Introduce `t ht hf`. Establish `ht'` using `Finset.mem_sdiff.1 ht`. Conclude with `ht'.2 (by rw [hthin (Finset.mem_coe.2 ht'.1) (Finset.mem_coe.2 hwT) hf]; exact Finset.mem_insert_self _ _)`. Rewrite `hA` using `[hins]`. Establish `hE' : ∀ v ∈ S, v ≠ w → v ∉ T' \ insert w D₀ → EigT φ v (W v) (ψ v)`.
+
+Introduce `v hv hvw hvT`. Use `hE v hv ?_` and prove the remaining obligations. Rewrite using `[hins]`. Simplify using `[hvw, hvT]`. Distinguish the cases in `hwS : w ∈ S`.
+
+Establish `hSs : ∀ v ∈ S, v ≠ w → v.under (𝓞 (Lp L)) ≠ w.under (𝓞 (Lp L))` using `fun v hv hvw hf => hvw (hS.inj (Finset.mem_coe.2 hv) (Finset.mem_coe.2 hwS) hf)`. Take `⟨φ', hφ', hspan, hinv, hEig⟩` from `_root_.UpperTheory.V.Z.Sym.Al.exists_eigenvector_in_span_of_comp_eq_trivial hN L 2 _ π hπ w (hS.split w hwS) (W w) (ψ w) (hψ w hwS).1 (hψ w hwS).2 φ hφ hc`. Establish `hk` using `spanKeep L 2 _ w φ φ' hspan`. Use `⟨φ', hφ', hk.1 π hπ hc, step S _ W w hSs hTs _ φ φ' hspan hA (fun x hx _ hJ g => hinv x hx (hJ hwS) g), fun v hv hvT => ?_⟩` and prove the remaining obligations. Distinguish the cases in `hvw : v = w`.
+
+Substitute `hvw` using the available equality. Conclude with `hEig`. Conclude with `fun d hd => hk.2.2 v (hS.split v hv) (hSs v hv hvw) _ d _ (hE' v hv hvw hvT d hd)`. Establish `hSs : ∀ v ∈ S, v ≠ w → v.under (𝓞 (Lp L)) ≠ w.under (𝓞 (Lp L))` using `fun v hv _ => hsep w hwT hwS v hv`. Take `⟨φ', hφ', hspan, hinv⟩` from `spanSph L 2 _ π hπ w (hun w (hsep w hwT hwS)) φ hφ hc`.
+
+Establish `hk` using `spanKeep L 2 _ w φ φ' hspan`. Use `⟨φ', hφ', hk.1 π hπ hc, step S _ W w hSs hTs _ φ φ' hspan hA (fun x hx hK _ g => hinv x ⟨hx, hK⟩ g), fun v hv hvT => ?_⟩` and prove the remaining obligations. Establish `hvw : v ≠ w` using `fun h => hwS (h ▸ hv)`. Conclude with `fun d hd => hk.2.2 v (hS.split v hv) (hSs v hv hvw) _ d _ (hE' v hv hvw hvT d hd)`. Take `⟨φ, hφ, -, hA, hE⟩` from `key T' subset_rfl`.
+
+Use `⟨e, φ, hφ, ⟨hA.left, hA.inf, fun u hu g => hA.level u ?_ g⟩, fun w hw => hE w hw (by simp)⟩` and prove the remaining obligations. Conclude with `Subgroup.mem_inf.2 ⟨hu, by simp⟩`.
+-/
 theorem UpperTheory.V.Z.Sym.Al.inVec_alt :
     _root_.GlobalTheory.Mem.LiteralAutomorphy.LiteratureRankNHypothesis → ∀ (L : Type) [Field L] [NumberField L] [IsCMField L] (π : Submodule ℂ (UA L 2 → ℂ)), IsAutRepU π → ∀ j : ℕ,
         (∀ v : InfinitePlace L, ∃ lam, HasWeightAt π v.embedding lam ∧ lam.w 0 - lam.w 1 = j) →

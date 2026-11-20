@@ -10,6 +10,13 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.S
 
 namespace GlobalTheory.Reg
 
+/- English proof (translation)
+Introduce `E _ _ _ H Dw l Xo c O _ β Y M R S _ _ _ _ f ψ u y z hT hF`. Take `⟨Λ, hL, hS⟩` from `hT`. Take `⟨hx, hu, pm, h1, h2, h3⟩` from `hF`. Take `⟨Λ', hV, hTh⟩` from `GlobalTheory.T.lift_baseChange_alt E H Dw l Xo c O β Y M R f y.x Λ S ψ`. Break down `z with ⟨zx⟩` into its components or cases.
+
+Simplify using `only at hx hu h1 h2 h3 ⊢`. Substitute `hx` using the available equality. Use `⟨Λ', fun τ i => ?_, hTh _ _ pm h1 h2 h3 hS⟩` and prove the remaining obligations. Establish `hv` using `hV _ _ (hL τ i)`. Rewrite `hv` using `[← hu τ i]`.
+
+Conclude with `hv`.
+-/
 theorem MChart.tie_baseChange : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l), ∀ (O : Type) [CommRing O] (β : O →+* c.F) (Y : Model Xo c β) (M : MChart Y), ∀ (R S : Type) [CommRing R] [Algebra c.F R] [CommRing S] [Algebra c.F S] (f : Γ(Y.X, M.U) →+* R) (ψ : R →ₐ[c.F] S) (u : ∀ τ : E →+* ℂ, Matrix (Fin M.n) (Fin (Dw.mult τ)) R) (y : FrPt Xo c R) (z : FrPt Xo c S), M.Comparison₂ f u y → FrMap ψ y z → M.Comparison₂ (ψ.toRingHom.comp f) (fun τ => (u τ).map ψ) z := by
   intro E _ _ _ H Dw l Xo c O _ β Y M R S _ _ _ _ f ψ u y z hT hF
   obtain ⟨Λ, hL, hS⟩ := hT

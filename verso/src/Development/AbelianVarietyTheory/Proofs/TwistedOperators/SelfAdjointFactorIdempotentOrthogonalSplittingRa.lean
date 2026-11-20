@@ -25,6 +25,11 @@ variable {F E : Type} [Field F] [Field E] [Algebra F E] {n : ℕ} {σ : E →ₐ
   {J : Matrix (Fin n) (Fin n) E} {γ : Matrix (Fin n) (Fin n) E} {k : ℕ} {K : Fin k → Type}
   [∀ i, Field (K i)] [∀ i, Algebra F (K i)]
 
+/- English proof (translation)
+Establish `h : e.symm (Pi.single i 1) * p = e.symm (Pi.single i (e p i))`. Apply `e.injective` to reduce the goal to its premises. Rewrite using `[map_mul, AlgEquiv.apply_symm_apply, AlgEquiv.apply_symm_apply]`. Use function extensionality and compare the values at `j`. Distinguish the cases in `hj : j = i`.
+
+Substitute `hj` using the available equality. Simplify using the standard rewrite rules. Simplify using `[Pi.single_apply, hj]`. Rewrite using `[← h]`. Both sides reduce to the same expression.
+-/
 theorem factorIdem_mul (e : plusAlg σ J γ ≃ₐ[F] ∀ i, K i) (i : Fin k) (p : plusAlg σ J γ) :
     factorIdem e i * ((p : genAlg γ) : Matrix (Fin n) (Fin n) E) =
       ((e.symm (Pi.single i (e p i)) : plusAlg σ J γ) : genAlg γ) := by
@@ -37,22 +42,34 @@ theorem factorIdem_mul (e : plusAlg σ J γ ≃ₐ[F] ∀ i, K i) (i : Fin k) (p
     · simp [Pi.single_apply, hj]
   rw [← h]; rfl
 
+/- English proof (translation)
+Use `factorIdem_mul e i (e.symm (Pi.single i 1))` as an intermediate fact. Rewrite `this` using `[AlgEquiv.apply_symm_apply, Pi.single_eq_same]`. Conclude with `this`.
+-/
 theorem factorIdem_mul_self (e : plusAlg σ J γ ≃ₐ[F] ∀ i, K i) (i : Fin k) :
     factorIdem e i * factorIdem e i = factorIdem e i := by
   have := factorIdem_mul e i (e.symm (Pi.single i 1))
   rw [AlgEquiv.apply_symm_apply, Pi.single_eq_same] at this
   exact this
 
+/- English proof (translation)
+Introduce `h`. Establish `h1 : e.symm (Pi.single i 1) = 0` using `Subtype.ext (Subtype.ext h)`. Establish `h2` using `congrFun (e.symm_apply_eq.1 h1) i`. Simplify using `at h2`.
+-/
 theorem factorIdem_ne_zero (e : plusAlg σ J γ ≃ₐ[F] ∀ i, K i) (i : Fin k) : factorIdem e i ≠ 0 := by
   intro h
   have h1 : e.symm (Pi.single i 1) = 0 := Subtype.ext (Subtype.ext h)
   have h2 := congrFun (e.symm_apply_eq.1 h1) i
   simp at h2
 
+/- English proof (translation)
+The claim follows from `(e.symm (Pi.single i 1)).2`.
+-/
 theorem factorIdem_selfAdj (e : plusAlg σ J γ ≃ₐ[F] ∀ i, K i) (i : Fin k) :
     cT (σ : E →+* E) (factorIdem e i) * J = J * factorIdem e i :=
   (e.symm (Pi.single i 1)).2
 
+/- English proof (translation)
+Establish `hq : cT (σ : E →+* E) (((1 - e.symm (Pi.single i 1) : plusAlg σ J γ) : genAlg γ) : Matrix (Fin n) (Fin n) E) * J = J * (((1 - e.symm (Pi.single i 1) : plusAlg σ J γ) : genAlg γ) : Matrix (Fin n) (Fin n) E)` using `(1 - e.symm (Pi.single i 1)).2`. Establish `hc : (((1 - e.symm (Pi.single i 1) : plusAlg σ J γ) : genAlg γ) : Matrix (Fin n) (Fin n) E) = 1 - factorIdem e i` using `rfl`. Rewrite `hq` using `[hc]`. Rewrite using `[hq, Matrix.mul_assoc, Matrix.sub_mul, Matrix.one_mul, factorIdem_mul_self, sub_self, Matrix.mul_zero]`.
+-/
 theorem factorIdem_orth (e : plusAlg σ J γ ≃ₐ[F] ∀ i, K i) (i : Fin k) :
     cT (σ : E →+* E) (1 - factorIdem e i) * J * factorIdem e i = 0 := by
   have hq : cT (σ : E →+* E) (((1 - e.symm (Pi.single i 1) : plusAlg σ J γ) : genAlg γ) : Matrix (Fin n) (Fin n) E) * J =
@@ -63,6 +80,9 @@ theorem factorIdem_orth (e : plusAlg σ J γ ≃ₐ[F] ∀ i, K i) (i : Fin k) :
   rw [hc] at hq
   rw [hq, Matrix.mul_assoc, Matrix.sub_mul, Matrix.one_mul, factorIdem_mul_self, sub_self, Matrix.mul_zero]
 
+/- English proof (translation)
+Introduce `l hl`. Conclude with `congrArg Subtype.val (mul_comm (⟨l, hl⟩ : genAlg γ) (e.symm (Pi.single i 1) : plusAlg σ J γ))`.
+-/
 theorem factorIdem_comm (e : plusAlg σ J γ ≃ₐ[F] ∀ i, K i) (i : Fin k) :
     ∀ l ∈ genAlg γ, l * factorIdem e i = factorIdem e i * l := by
   intro l hl
@@ -77,6 +97,31 @@ variable {F E : Type} [Field F] [Field E] [Algebra F E] {n : ℕ} {σ : E →ₐ
   {J : Matrix (Fin n) (Fin n) E} {k : ℕ} {K : Fin k → Type}
   [∀ i, Field (K i)] [∀ i, Algebra F (K i)]
 
+/- English proof (translation)
+Take `⟨-, -, -, ⟨v, hv⟩, -⟩` from `hA`. Take `⟨-, -, hbij⟩` from `hP`. Set `L` to `genAlg (γ : Matrix (Fin n) (Fin n) E)`. Set `P` to `plusAlg σ J (γ : Matrix (Fin n) (Fin n) E)`. Set `φ : L →ₗ[E] (Fin n → E)` to `{ toFun := fun l => (l : Matrix (Fin n) (Fin n) E) *ᵥ v map_add' := fun a b => Matrix.add_mulVec _ _ _ map_smul' := fun c a => Matrix.smul_mulVec _ _ _ }`.
+
+Set `incl : P →ₗ[F] L` to `P.val.toLinearMap`. Set `ψ : E ⊗[F] P →ₗ[E] L` to `LinearMap.liftBaseChange E incl`. Set `ι : K i →ₗ[F] P` to `e.symm.toLinearMap ∘ₗ LinearMap.single F K i`. Set `Φ : E ⊗[F] K i →ₗ[E] (Fin n → E)` to `φ ∘ₗ ψ ∘ₗ ι.baseChange E`. Establish `hψ : ∀ t, ψ t = plusTensor σ J (γ : Matrix (Fin n) (Fin n) E) (TensorProduct.comm F E P t)`.
+
+Introduce `t`. Proceed by induction on `t using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul a p`. Simplify using `[ψ, incl, plusTensor, Algebra.TensorProduct.productMap_apply_tmul, Algebra.smul_def, mul_comm]`.
+
+Both sides reduce to the same expression. Consider the case `add x y hx hy => simp only [map_add, hx, hy]`. Establish `hψb : Function.Bijective ψ`. Establish `: (ψ : E ⊗[F] P → L) = plusTensor σ J (γ : Matrix (Fin n) (Fin n) E) ∘ TensorProduct.comm F E P`. Use function extensionality and compare the values at `hψ`.
+
+Rewrite using `[this]`. Conclude with `hbij.comp (TensorProduct.comm F E P).bijective`. Establish `hι : Function.Injective (ι.baseChange E)`. Establish `h0 : Function.Injective ι` using `e.symm.injective.comp (Pi.single_injective i)`. Rewrite using `[LinearMap.baseChange_eq_ltensor]`.
+
+Conclude with `Module.Flat.lTensor_preserves_injective_linearMap ι h0`. Establish `hΦ : Function.Injective Φ` using `hv.1.comp (hψb.1.comp hι)`. Establish `hΦt : ∀ (a : E) (x : K i), Φ (a ⊗ₜ x) = a • ((((e.symm (Pi.single i x) : P) : L) : Matrix (Fin n) (Fin n) E) *ᵥ v)`. Introduce `a x`. Simplify using `[Φ, φ, ψ, ι, incl, LinearMap.liftBaseChange_tmul, Matrix.smul_mulVec]`.
+
+Establish `hrange : LinearMap.range Φ = LinearMap.range (factorIdem e i).mulVecLin`. Apply `le_antisymm` to reduce the goal to its premises. Introduce and unpack `_ ⟨t, rfl⟩`. Proceed by induction on `t using TensorProduct.induction_on with`. Consider the case `zero => simp`.
+
+Consider the case `tmul a x`. Use `⟨a • ((((e.symm (Pi.single i x) : P) : L) : Matrix (Fin n) (Fin n) E) *ᵥ v), ?_⟩` and prove the remaining obligations. Rewrite using `[hΦt, Matrix.mulVecLin_apply, Matrix.mulVec_smul, Matrix.mulVec_mulVec, factorIdem_mul]`. Simplify using the standard rewrite rules. Consider the case `add x y hx hy => rw [map_add]`.
+
+Conclude with `add_mem hx hy`. Introduce and unpack `_ ⟨w, rfl⟩`. Take `⟨l, rfl⟩` from `hv.2 w`. Take `⟨s, rfl⟩` from `hψb.2 l`. Express the relevant statement in the definitionally equal form `(factorIdem e i).mulVecLin (φ (ψ s)) ∈ LinearMap.range Φ`.
+
+Proceed by induction on `s using TensorProduct.induction_on with`. Consider the case `zero => simp [φ]`. Consider the case `tmul a p`. Use `⟨a ⊗ₜ (e p i), ?_⟩` and prove the remaining obligations. Rewrite using `[hΦt]`.
+
+Simplify using `only [ψ, incl, LinearMap.liftBaseChange_tmul, Matrix.mulVecLin_apply]`. Establish `hc : (((a • (p : L)) : L) : Matrix (Fin n) (Fin n) E) = a • ((p : L) : Matrix (Fin n) (Fin n) E)` using `rfl`. Express the relevant statement in the definitionally equal form `_ = factorIdem e i *ᵥ ((((a • (p : L)) : L) : Matrix (Fin n) (Fin n) E) *ᵥ v)`. Rewrite using `[hc, Matrix.smul_mulVec, Matrix.mulVec_smul, Matrix.mulVec_mulVec, factorIdem_mul]`. Consider the case `add x y hx hy`.
+
+Rewrite using `[map_add, map_add, map_add]`. Conclude with `add_mem hx hy`. Rewrite using `[Matrix.rank, ← hrange, LinearMap.finrank_range_of_inj hΦ]`.
+-/
 theorem rank_factorIdem {γ : GL (Fin n) E} (hA : ClauseAlg σ J γ) (hP : ClausePlus σ J γ)
     (e : plusAlg σ J (γ : Matrix (Fin n) (Fin n) E) ≃ₐ[F] ∀ i, K i) (i : Fin k) :
     (factorIdem e i).rank = Module.finrank E (E ⊗[F] K i) := by
@@ -148,11 +193,17 @@ variable {F E : Type} [Field F] [Field E] [Algebra F E] {n : ℕ} {σ : E →ₐ
   {J : Matrix (Fin n) (Fin n) E} {γ : Matrix (Fin n) (Fin n) E} {k : ℕ} {K : Fin k → Type}
   [∀ i, Field (K i)] [∀ i, Algebra F (K i)]
 
+/- English proof (translation)
+Use extensionality with `a b`. Use `congrFun (h (Pi.single b 1)) a` as an intermediate fact. Simplify `this` using `[Matrix.mulVec_single_one]`.
+-/
 theorem eq_zero_of_mulVec {M : Matrix (Fin n) (Fin n) E} (h : ∀ w, M *ᵥ w = 0) : M = 0 := by
   ext a b
   have := congrFun (h (Pi.single b 1)) a
   simpa [Matrix.mulVec_single_one] using this
 
+/- English proof (translation)
+Use `Nat.pos_of_ne_zero fun h => hM (eq_zero_of_mulVec fun w => ?_)` and prove the remaining obligations. Rewrite `h` using `[Matrix.rank, Submodule.finrank_eq_zero]`. Establish `: M.mulVecLin w ∈ LinearMap.range M.mulVecLin` using `⟨w, rfl⟩`. Rewrite `this` using `[h]`. Conclude with `(Submodule.mem_bot E).1 this`.
+-/
 theorem rank_pos_of_ne_zero {M : Matrix (Fin n) (Fin n) E} (hM : M ≠ 0) : 0 < M.rank := by
   refine Nat.pos_of_ne_zero fun h => hM (eq_zero_of_mulVec fun w => ?_)
   rw [Matrix.rank, Submodule.finrank_eq_zero] at h
@@ -160,6 +211,11 @@ theorem rank_pos_of_ne_zero {M : Matrix (Fin n) (Fin n) E} (hM : M ≠ 0) : 0 < 
   rw [h] at this
   exact (Submodule.mem_bot E).1 this
 
+/- English proof (translation)
+Establish `htop : LinearMap.range M.mulVecLin = ⊤`. Apply `Submodule.eq_top_of_finrank_eq` to reduce the goal to its premises. Rewrite using `[← Matrix.rank, hr, Module.finrank_fin_fun]`. Establish `hu : ∀ u, M *ᵥ u = u`. Introduce `u`.
+
+Take `⟨w, hw⟩ : u ∈ LinearMap.range M.mulVecLin` from `htop ▸ Submodule.mem_top`. Rewrite using `[← hw, Matrix.mulVecLin_apply, Matrix.mulVec_mulVec, hM]`. Establish `h0` using `eq_zero_of_mulVec (M := M - 1) fun w => by rw [Matrix.sub_mulVec, hu, Matrix.one_mulVec, sub_self]`. Conclude with `sub_eq_zero.1 h0`.
+-/
 theorem eq_one_of_idem_rank {M : Matrix (Fin n) (Fin n) E} (hM : M * M = M) (hr : M.rank = n) : M = 1 := by
   have htop : LinearMap.range M.mulVecLin = ⊤ := by
     apply Submodule.eq_top_of_finrank_eq
@@ -171,6 +227,15 @@ theorem eq_one_of_idem_rank {M : Matrix (Fin n) (Fin n) E} (hM : M * M = M) (hr 
   have h0 := eq_zero_of_mulVec (M := M - 1) fun w => by rw [Matrix.sub_mulVec, hu, Matrix.one_mulVec, sub_self]
   exact sub_eq_zero.1 h0
 
+/- English proof (translation)
+Assume the negation of the conclusion as `hne`. Simplify using `only [not_exists, ne_eq, not_not] at hne`. Set `a : Fin k'` to `⟨0, by omega⟩`. Set `b : Fin k'` to `⟨1, by omega⟩`. Establish `hab : a ≠ b` using `by simp [a, b, Fin.ext_iff]`.
+
+Set `q : P` to `e'.symm (Pi.single a 1)`. Establish `hqq : q * q = q`. Apply `e'.injective` to reduce the goal to its premises. Rewrite using `[map_mul, AlgEquiv.apply_symm_apply, ← Pi.single_mul, one_mul]`. Establish `hq : IsIdempotentElem (e q i)` using `by show e q i * e q i = e q i`.
+
+Rewrite using `[← Pi.mul_apply, ← map_mul, hqq]`. Break down `IsIdempotentElem.iff_eq_zero_or_one.1 hq with h | h` into its components or cases. Establish `: e q = 0` using `funext fun j => by rw [hne j]; exact h`. Establish `h2` using `congrFun (e'.symm_apply_eq.1 (e.map_eq_zero_iff.1 this)) a`. Simplify using `at h2`.
+
+Establish `: e q = 1` using `funext fun j => by rw [hne j]; exact h`. Establish `h1 : q = 1` using `by rw [← map_one e] at this; exact e.injective this`. Establish `h2` using `congrFun (e'.symm_apply_eq.1 h1) b`. Simplify using `[Pi.single_apply, hab.symm] at h2`.
+-/
 theorem two_le_of_decomp {P : Type} [CommRing P] [Algebra F P] {k' : ℕ} {K' : Fin k' → Type}
     [∀ i, Field (K' i)] [∀ i, Algebra F (K' i)] (e' : P ≃ₐ[F] ∀ i, K' i) (hk' : 2 ≤ k')
     (e : P ≃ₐ[F] ∀ i, K i) (i : Fin k) : ∃ j, j ≠ i := by
@@ -195,6 +260,9 @@ theorem two_le_of_decomp {P : Type} [CommRing P] [Algebra F P] {k' : ℕ} {K' : 
     have h2 := congrFun (e'.symm_apply_eq.1 h1) b
     simp [Pi.single_apply, hab.symm] at h2
 
+/- English proof (translation)
+Introduce `h`. Take `⟨j, hj⟩` from `hj`. Establish `h1 : e.symm (Pi.single i 1) = 1` using `Subtype.ext (Subtype.ext h)`. Establish `h2` using `congrFun (e.symm_apply_eq.1 h1) j`. Simplify using `[Pi.single_apply, hj] at h2`.
+-/
 theorem factorIdem_ne_one (e : plusAlg σ J γ ≃ₐ[F] ∀ i, K i) (i : Fin k) (hj : ∃ j, j ≠ i) :
     factorIdem e i ≠ 1 := by
   intro h
@@ -208,6 +276,11 @@ end GlobalTheory.FactorSplit
 namespace GlobalTheory.FactorSplit
 open GlobalTheory.IndefiniteRowSideFullHecke.NonFieldTypeVanishingAlt
 
+/- English proof (translation)
+Introduce `hRS D V γ hss k Kf _ _ e i hnf`. Establish `hreg` using `GlobalTheory.ConjLevi.RegularData.isRegular_of_isRegSS γ hss`. Take `⟨hA, hP, -⟩` from `hRS.1 D.host.F D.host.E (Fin V.rank) D.sp.cm.sig V.gram γ.1 hreg`. Take `⟨-, k', K', _, _, ⟨e'⟩, hk', -⟩` from `hnf`. Establish `hj` using `two_le_of_decomp e' hk' e i`.
+
+Use `⟨⟨factorIdem_mul_self e i, factorIdem_selfAdj e i, factorIdem_orth e i, factorIdem_comm e i, rank_pos_of_ne_zero (factorIdem_ne_zero e i), lt_of_le_of_ne (Matrix.rank_le_width _) fun h => factorIdem_ne_one e i hj (eq_one_of_idem_rank (factorIdem_mul_self e i) h)⟩, rank_factorIdem …` and prove the remaining obligations.
+-/
 theorem factorIdem_orthSplit_rank : GlobalTheory.IndefiniteRowSideFullHecke.CentralizerTensorForms.RegularSemisimple → ∀ (D : D7) (V : HSp D) (γ : GF V), IsRegSS γ.1.1 → ∀ (k : ℕ) (Kf : Fin k → Type) [∀ i, Field (Kf i)] [∀ i, Algebra D.host.F (Kf i)] (e : GlobalTheory.IndefiniteRowSideFullHecke.CentralizerTensorForms.plusAlg D.sp.cm.sig V.gram γ.1.1 ≃ₐ[D.host.F] ∀ i, Kf i) (i : Fin k), GlobalTheory.IndefiniteRowSideFullHecke.NonFieldTypeVanishingAlt.IsNonFieldAniso D.sp.cm.sig V.gram γ.1.1 → GlobalTheory.IndefiniteRowSideFullHecke.NonFieldTypeVanishingAlt.IsOrthSplit D.sp.cm.sig V.gram γ.1.1 (GlobalTheory.IndefiniteRowSideFullHecke.NonFieldTypeVanishingAlt.factorIdem e i) ∧ (GlobalTheory.IndefiniteRowSideFullHecke.NonFieldTypeVanishingAlt.factorIdem e i).rank = Module.finrank D.host.E (TensorProduct D.host.F D.host.E (Kf i)) := by
   intro hRS D V γ hss k Kf _ _ e i hnf
   have hreg := GlobalTheory.ConjLevi.RegularData.isRegular_of_isRegSS γ hss

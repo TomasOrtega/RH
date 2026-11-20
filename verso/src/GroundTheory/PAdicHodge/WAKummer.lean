@@ -25,6 +25,9 @@ variable {R : Type*} [CommRing R]
 
 omit hp in
 
+/- English proof (translation)
+Rewrite using `[map_sub, map_sum, hy, mul_sub, Finset.mul_sum]`. Use `congr 1`. Conclude with `Finset.sum_congr rfl fun i _ => by rw [map_mul, ha, hL]; ring`.
+-/
 theorem map_sub_sum_eq_of_eq (F : R →+* R) {n : ℕ} (a L : Fin n → R) (ha : ∀ i, F (a i) = a i)
     (hL : ∀ i, F (L i) = (p : R) * L i) {y : R} (hy : F y = (p : R) * y) :
     F (y - ∑ i, a i * L i) = (p : R) * (y - ∑ i, a i * L i) := by
@@ -32,6 +35,13 @@ theorem map_sub_sum_eq_of_eq (F : R →+* R) {n : ℕ} (a L : Fin n → R) (ha :
   congr 1
   exact Finset.sum_congr rfl fun i _ => by rw [map_mul, ha, hL]; ring
 
+/- English proof (translation)
+Establish `h1 : g (y - ∑ i, A (f i) * L i) - (y - ∑ i, A (f i) * L i) = A (c - ∑ i, f i * κ i) * t`. Establish `e : ∀ i, g (A (f i) * L i) = A (f i) * L i + A (f i * κ i) * t` using `fun i => by`. Rewrite using `[map_mul, hgA, hgL, map_mul]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[map_sub g, map_sum g, Finset.sum_congr rfl fun i _ => e i, Finset.sum_add_distrib, map_sub A, map_sum A, sub_mul, Finset.sum_mul]`.
+
+Take the linear combination `hy`. Establish `h2 : g (y - ∑ i, A (f i) * L i) - (y - ∑ i, A (f i) * L i) = A (l * (χ - 1)) * t`. Rewrite using `[hl, map_mul, hgA, hgt, map_mul, map_sub, map_one]`. Expand and normalize the polynomial expressions, which then agree. Establish `h3 : A ((c - ∑ i, f i * κ i) - l * (χ - 1)) * t = 0`.
+
+Rewrite using `[map_sub]`. Take the linear combination `h1.symm.trans h2`. Establish `h4` using `ht.mul_left_eq_zero.1 h3`. Rewrite `h4` using `[← map_zero A]`. Take the linear combination `hA h4`.
+-/
 theorem eq_sum_of_sub_sum_eq (A : ℚ_[p] →+* R) (hA : Function.Injective A) (g : R →+* R)
     (hgA : ∀ q, g (A q) = A q) {t : R} (ht : IsUnit t) {χ c : ℚ_[p]} (hgt : g t = A χ * t)
     {y : R} (hy : g y - y = A c * t) {n : ℕ} (f κ : Fin n → ℚ_[p]) (L : Fin n → R)
@@ -58,6 +68,13 @@ end Abstract
 
 set_option maxHeartbeats 4000000 in
 
+/- English proof (translation)
+Establish `hper : ∀ μ : BCris hε, (∀ σ : Gal(PadicAlgCl p/K), galB hε σ μ = μ) → ∃ n d, 0 < d ∧ (phiB hε)^[n + d] μ = (phiB hε)^[n] μ`. Introduce `μ hμ`. Take `⟨k, -, hk⟩` from `bCris_fixed_mem_maxUnramified hε hζ μ hμ`. Set `ιA : BCris hε →ₐ[ℚ_[p]] 𝔹dR` to `{ toRingHom := iotaB hε hζ, commutes' := iotaB_algebraMap_padic hε hζ }`. Set `φA : BCris hε →ₐ[ℚ_[p]] BCris hε` to `{ toRingHom := phiB hε, commutes' := phiB_algebraMap_padic' hε }`.
+
+Establish `halg : IsAlgebraic ℚ_[p] (ιA μ)`. Express the relevant statement in the definitionally equal form `IsAlgebraic ℚ_[p] (iotaB hε hζ μ)`. Rewrite using `[hk]`. Conclude with `(Algebra.IsAlgebraic.isAlgebraic k).algHom ((IsScalarTower.toAlgHom ℚ_[p] 𝔹 𝔹dR).comp (algClToBdR p))`. Conclude with `exists_iterate_eq_of_algebraic ιA (iotaB_injective hε hζ) φA halg`.
+
+Conclude with `exists_eq_p_mul_of_sub_eq (phiB hε) (phiB_algebraMap_padic' hε) (fun σ : Gal(PadicAlgCl p/K) => galB hε σ) (fun σ q => galB_algebraMap_padic hε σ q) (fun σ x => (phiB_galB hε σ x).symm) (phiB_periodTCris hε) hper c hu`.
+-/
 theorem exists_phiB_eq_of_galB_sub_eq [FiniteDimensional ℚ_[p] K] {ε : 𝒪♭}
     (hε : PreTilt.untilt ε = 1) (hζ : PreTilt.untilt ((_root_.frobeniusEquiv 𝒪♭ p).symm ε) ≠ 1)
     (c : Gal(PadicAlgCl p/K) → ℚ_[p]) {u : BCris hε}
@@ -84,6 +101,15 @@ theorem exists_phiB_eq_of_galB_sub_eq [FiniteDimensional ℚ_[p] K] {ε : 𝒪�
 
 set_option maxHeartbeats 16000000 in
 
+/- English proof (translation)
+Establish `hιt : iotaB hε hζ (periodTCris hε) = algebraMap 𝔹 𝔹dR (fontaineT ε hε)` using `(iotaB_periodTCris hε hζ).trans (congrArg _ (iota_periodT hε))`. Establish `hιA : ∀ q : ℚ_[p], iotaB hε hζ (algebraMap ℚ_[p] (BCris hε) q) = algebraMap 𝔹 𝔹dR (algebraMap ℚ_[p] 𝔹 q)` using `fun q => (iotaB_algebraMap_padic hε hζ q).trans (IsScalarTower.algebraMap_apply ℚ_[p] 𝔹 𝔹dR q)`. Establish `hfixw : ∀ σ : Gal(PadicAlgCl p/K), σ • (iotaB hε hζ u - algebraMap 𝔹 𝔹dR (uBdR p)) = iotaB hε hζ u - algebraMap 𝔹 𝔹dR (uBdR p)`. Introduce `σ`. Establish `hgy : galB hε σ u = u + algebraMap ℚ_[p] (BCris hε) (kummerC hε hζ σ : ℚ_[p]) * periodTCris hε`.
+
+Take the linear combination `hu σ`. Establish `h1 : σ • iotaB hε hζ u = iotaB hε hζ u + algebraMap 𝔹 𝔹dR (algebraMap ℚ_[p] 𝔹 (kummerC hε hζ σ : ℚ_[p]) * fontaineT ε hε)`. Rewrite using `[← iotaB_galB, hgy, map_add, map_mul, hιA, hιt, map_mul]`. Establish `h2 : σ • algebraMap 𝔹 𝔹dR (uBdR p) = algebraMap 𝔹 𝔹dR (uBdR p) + algebraMap 𝔹 𝔹dR (algebraMap ℚ_[p] 𝔹 (kummerC hε hζ σ : ℚ_[p]) * fontaineT ε hε)`. Rewrite using `[gal_smul_algebraMap_bDeRham, gal_smul_uBdR_eq hε hζ σ, map_add]`.
+
+Rewrite using `[smul_sub, h1, h2]`. Expand and normalize the polynomial expressions, which then agree. Take `⟨k, hk⟩` from `bDeRham_fixed K _ hfixw`. Rewrite `hk` using `[algebraMap_intermediateField_bDeRham]`. Use `⟨k, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[map_add]`. Take the linear combination `-hk`.
+-/
 theorem exists_iotaB_eq_uBdR_add [FiniteDimensional ℚ_[p] K] {ε : 𝒪♭}
     (hε : PreTilt.untilt ε = 1) (hζ : PreTilt.untilt ((_root_.frobeniusEquiv 𝒪♭ p).symm ε) ≠ 1)
     {u : BCris hε}
@@ -117,6 +143,21 @@ theorem exists_iotaB_eq_uBdR_add [FiniteDimensional ℚ_[p] K] {ε : 𝒪♭}
 
 set_option maxHeartbeats 4000000 in
 
+/- English proof (translation)
+Establish `: IsDomain (BCris hε)` using `isDomain_bCris hε hζ`. Establish `hιt : iotaB hε hζ (periodTCris hε) = algebraMap 𝔹 𝔹dR (fontaineT ε hε)` using `(iotaB_periodTCris hε hζ).trans (congrArg _ (iota_periodT hε))`. Establish `hbm : b ∈ maximalIdeal 𝔹`. Rewrite using `[IsPerfectoidField.maximalIdeal_bDeRhamPlus, RingHom.mem_ker, ← thetaAlgHom_apply]`. Conclude with `hθb`.
+
+Rewrite `hbm` using `[maximalIdeal_eq_span_fontaineT hε hζ, Ideal.mem_span_singleton']`. Take `⟨a, ha⟩` from `hbm`. Establish `htu` using `isUnit_periodTCris hε`. Take `⟨z, hz⟩ : ∃ z, z = y * ↑htu.unit⁻¹` from `⟨_, rfl⟩`. Establish `hzt : z * periodTCris hε = y` using `by rw [hz, mul_assoc, IsUnit.val_inv_mul, mul_one]`.
+
+Establish `hpu : IsUnit ((p : BCris hε) * periodTCris hε)`. Use `IsUnit.mul ?_ htu` and prove the remaining obligations. Establish `e : (p : BCris hε) = algebraMap ℚ_[p] (BCris hε) (p : ℚ_[p])` using `by rw [map_natCast]`. Rewrite using `[e]`. Conclude with `(isUnit_iff_ne_zero.2 (by exact_mod_cast hp.out.ne_zero : (p : ℚ_[p]) ≠ 0)).map _`.
+
+Establish `hφz : phiB hε z = z`. Apply `hpu.mul_right_cancel` to reduce the goal to its premises. Establish `e : phiB hε z * phiB hε (periodTCris hε) = phiB hε y` using `by rw [← map_mul, hzt]`. Establish `hφt : phiB hε (periodTCris hε) = (p : BCris hε) * periodTCris hε` using `phiB_periodTCris hε`. Take the linear combination `e + hφ - phiB hε z * hφt - (p : BCris hε) * hzt`.
+
+Establish `hιz : iotaB hε hζ z = algebraMap 𝔹 𝔹dR a`. Establish `hιt0 : iotaB hε hζ (periodTCris hε) ≠ 0`. Rewrite using `[hιt]`. Conclude with `fun h => fontaineT_ne_zero hε hζ (IsFractionRing.injective 𝔹 𝔹dR (h.trans (map_zero _).symm))`. Apply `mul_right_cancel₀ hιt0` to reduce the goal to its premises.
+
+Establish `e1 : iotaB hε hζ z * iotaB hε hζ (periodTCris hε) = iotaB hε hζ y` using `by rw [← map_mul, hzt]`. Establish `e2 : algebraMap 𝔹 𝔹dR b = algebraMap 𝔹 𝔹dR a * algebraMap 𝔹 𝔹dR (fontaineT ε hε)`. Rewrite using `[← ha, map_mul]`. Take the linear combination `e1 + hιy + e2 - algebraMap 𝔹 𝔹dR a * hιt`. Take `⟨l, hl⟩` from `(iotaB_mem_range_iff hε hζ hφz).1 ⟨a, hιz.symm⟩`.
+
+Conclude with `⟨l, by rw [← hzt, hl]⟩`.
+-/
 theorem exists_eq_mul_periodTCris {ε : 𝒪♭} (hε : PreTilt.untilt ε = 1)
     (hζ : PreTilt.untilt ((_root_.frobeniusEquiv 𝒪♭ p).symm ε) ≠ 1) {y : BCris hε}
     (hφ : phiB hε y = (p : BCris hε) * y) {b : 𝔹} (hιy : iotaB hε hζ y = algebraMap 𝔹 𝔹dR b)
@@ -158,6 +199,13 @@ theorem exists_eq_mul_periodTCris {ε : 𝒪♭} (hε : PreTilt.untilt ε = 1)
 
 set_option maxHeartbeats 8000000 in
 
+/- English proof (translation)
+Use `⟨uBdR p + algClToBdR p k - ∑ i, algebraMap ℚ_[p] 𝔹 (f i) * iota ℂ_[p] p (logTeich (hx i)), ?_, ?_⟩` and prove the remaining obligations. Establish `hterm : ∀ i, iotaB hε hζ (algebraMap ℚ_[p] (BCris hε) (f i) * logTeichB hε (hx i)) = algebraMap 𝔹 𝔹dR (algebraMap ℚ_[p] 𝔹 (f i) * iota ℂ_[p] p (logTeich (hx i)))` using `fun i => by`. Rewrite using `[map_mul, iotaB_algebraMap_padic, IsScalarTower.algebraMap_apply ℚ_[p] 𝔹 𝔹dR, logTeichB, iotaB_algebraMap, iotaPlus_algebraMap, map_mul]`. Rewrite using `[map_sub, map_sum, hk, Finset.sum_congr rfl fun i _ => hterm i, ← map_sum, ← map_sub]`. Establish `h1 : thetaAlgHom p (uBdR p) = 0`.
+
+Rewrite using `[thetaAlgHom_apply, ← RingHom.mem_ker, ← IsPerfectoidField.maximalIdeal_bDeRhamPlus]`. Conclude with `uBdR_mem`. Establish `h2 : ∀ i, thetaAlgHom p (algebraMap ℚ_[p] 𝔹 (f i) * iota ℂ_[p] p (logTeich (hx i))) = algebraMap ℚ_[p] ℂ_[p] (f i) * ((g i : PadicAlgCl p) : ℂ_[p])` using `fun i => by`. Rewrite using `[map_mul, AlgHom.commutes, thetaAlgHom_apply, thetaField_iota, hθ]`. Establish `h3 : ((k : PadicAlgCl p) : ℂ_[p]) = ∑ i, algebraMap ℚ_[p] ℂ_[p] (f i) * ((g i : PadicAlgCl p) : ℂ_[p])`.
+
+Rewrite using `[← hfg, coe_padicAlgCl_eq, map_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[Algebra.smul_def, map_mul, ← IsScalarTower.algebraMap_apply, coe_padicAlgCl_eq]`. Rewrite using `[map_sub, map_add, h1, thetaAlgHom_algClToBdR, map_sum, Finset.sum_congr rfl fun i _ => h2 i, h3, zero_add, sub_self]`.
+-/
 theorem exists_iotaB_sub_sum_eq {ε : 𝒪♭} (hε : PreTilt.untilt ε = 1)
     (hζ : PreTilt.untilt ((_root_.frobeniusEquiv 𝒪♭ p).symm ε) ≠ 1) {y : BCris hε} {k : PadicAlgCl p}
     (hk : iotaB hε hζ y = algebraMap 𝔹 𝔹dR (uBdR p + algClToBdR p k)) {n : ℕ} (f : Fin n → ℚ_[p])
@@ -189,6 +237,9 @@ theorem exists_iotaB_sub_sum_eq {ε : 𝒪♭} (hε : PreTilt.untilt ε = 1)
 
 set_option maxHeartbeats 8000000 in
 
+/- English proof (translation)
+Establish `: IsDomain (BCris hε)` using `isDomain_bCris hε hζ`. Conclude with `eq_sum_of_sub_sum_eq (algebraMap ℚ_[p] (BCris hε)) (algebraMap ℚ_[p] (BCris hε)).injective (galB hε σ) (galB_algebraMap_padic hε σ) (isUnit_periodTCris hε) (galB_periodTCris hε hζ σ) (hy σ) f (fun i => (kummerCocycle hε hζ (hx0 i) (hfix i) σ : ℚ_[p])) (fun i => logTeichB hε (hx i …`.
+-/
 theorem eq_sum_kummerCocycle_of_sub_sum_eq {ε : 𝒪♭} (hε : PreTilt.untilt ε = 1)
     (hζ : PreTilt.untilt ((_root_.frobeniusEquiv 𝒪♭ p).symm ε) ≠ 1) (c : Gal(PadicAlgCl p/K) → ℚ_[p])
     {y : BCris hε}
@@ -209,6 +260,13 @@ theorem eq_sum_kummerCocycle_of_sub_sum_eq {ε : 𝒪♭} (hε : PreTilt.untilt 
 
 set_option maxHeartbeats 4000000 in
 
+/- English proof (translation)
+Introduce `hu`. Take `⟨y, hφy, hy⟩` from `exists_phiB_eq_of_galB_sub_eq hε hζ (fun σ => (kummerC hε hζ σ : ℚ_[p])) hu`. Take `⟨k, hk⟩` from `exists_iotaB_eq_uBdR_add hε hζ hy`. Take `⟨n, f, g, hfg⟩` from `Submodule.mem_span_set'.1 (mem_span_thetaLogSet (K := K) k.2)`. Use `choose x hx hrest using fun i => (g i).2.2`.
+
+Establish `hx0 : ∀ i, x i ≠ 0` using `fun i => (hrest i).1`. Establish `hfix : ∀ i, ∀ σ : Gal(PadicAlgCl p/K), σ • ((PreTilt.untilt (x i) : 𝒪) : ℂ_[p]) = ((PreTilt.untilt (x i) : 𝒪) : ℂ_[p])` using `fun i => (hrest i).2.1`. Establish `hθ : ∀ i, ((theta ℂ_[p] p (logTeich (hx i)) : 𝒪) : ℂ_[p]) = ((g i : PadicAlgCl p) : ℂ_[p])` using `fun i => (hrest i).2.2`. Establish `hφy' : phiB hε (y - ∑ i, algebraMap ℚ_[p] (BCris hε) (f i) * logTeichB hε (hx i)) = (p : BCris hε) * (y - ∑ i, algebraMap ℚ_[p] (BCris hε) (f i) * logTeichB hε (hx i))`. Conclude with `map_sub_sum_eq_of_eq (phiB hε) (fun i => algebraMap ℚ_[p] (BCris hε) (f i)) (fun i => logTeichB hε (hx i)) (fun i => phiB_algebraMap_padic' hε (f i)) (fun i => phiB_logTeichB hε (hx i)) hφy`.
+
+Take `⟨b, hιb, hθb⟩` from `exists_iotaB_sub_sum_eq hε hζ hk f (fun i => (g i : PadicAlgCl p)) hfg x hx hθ`. Take `⟨l, hl⟩` from `exists_eq_mul_periodTCris hε hζ hφy' hιb hθb`. Conclude with `false_of_kummerC_eq hε hζ f l x hx0 hfix (fun i => norm_eq_one_of_sub_one_mem (hx i)) (eq_sum_kummerCocycle_of_sub_sum_eq hε hζ _ hy f x hx0 hfix hx l hl)`.
+-/
 theorem not_forall_galB_sub_eq_kummerC [FiniteDimensional ℚ_[p] K] {ε : 𝒪♭}
     (hε : PreTilt.untilt ε = 1) (hζ : PreTilt.untilt ((_root_.frobeniusEquiv 𝒪♭ p).symm ε) ≠ 1)
     (u : BCris hε) :
@@ -237,6 +295,9 @@ theorem not_forall_galB_sub_eq_kummerC [FiniteDimensional ℚ_[p] K] {ε : 𝒪�
 
 set_option maxHeartbeats 1600000 in
 
+/- English proof (translation)
+Introduce `hu`. Use `not_forall_galB_sub_eq_kummerC (K := K) hε hζ (-u) fun σ => ?_` and prove the remaining obligations. Establish `e` using `map_neg (galB hε σ) u`. Take the linear combination `e - hu σ`.
+-/
 theorem not_forall_galB_sub_eq_neg_kummerC [FiniteDimensional ℚ_[p] K] {ε : 𝒪♭}
     (hε : PreTilt.untilt ε = 1) (hζ : PreTilt.untilt ((_root_.frobeniusEquiv 𝒪♭ p).symm ε) ≠ 1)
     (u : BCris hε) :

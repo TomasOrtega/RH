@@ -70,6 +70,9 @@ abbrev Marked (g₁ : G ℚ Ω) : Prop := Marks D.η D.Ψ D.cc g₁
 def rhoK {κ : Type} [CommRing κ] (r : G ℚ Ω →* GG 3 κ) (hr : HasMult D.η r) : G K Ω →* GL (Fin 3) κ :=
   (glPart D.η r hr).comp ((galEmb ℚ K Ω).codRestrict D.η.ker fun s => D.η_ker ▸ galEmb_mem ℚ K Ω s)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem rhoK_apply {κ : Type} [CommRing κ] (r : G ℚ Ω →* GG 3 κ) (hr : HasMult D.η r) (s : G K Ω) :
     D.rhoK r hr s = (r (galEmb ℚ K Ω s)).left := rfl
 

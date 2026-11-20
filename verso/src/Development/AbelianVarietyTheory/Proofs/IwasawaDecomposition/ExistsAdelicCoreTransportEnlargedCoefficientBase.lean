@@ -29,6 +29,9 @@ def enlEmb (hR : Set.range B.embLL ⊆ Set.range B'.embLL) : B.LL →+* B'.LL :=
       ⟨fun x y h => B'.embLL.injective (congrArg Subtype.val h), B'.embLL.rangeRestrict_surjective⟩).symm.toRingHom.comp
     ((Subring.inclusion fun x hx => RingHom.mem_range.2 (hR (RingHom.mem_range.1 hx))).comp B.embLL.rangeRestrict)
 
+/- English proof (translation)
+Establish `h` using `congrArg Subtype.val ((RingEquiv.ofBijective B'.embLL.rangeRestrict ⟨fun x y h => B'.embLL.injective (congrArg Subtype.val h), B'.embLL.rangeRestrict_surjective⟩).apply_symm_apply ((Subring.inclusion fun x hx => RingHom.mem_range.2 (hR (RingHom.mem_range.1 hx))) (B.embLL.rangeRes …`. Conclude with `h`.
+-/
 theorem enlEmb_spec (hR : Set.range B.embLL ⊆ Set.range B'.embLL) (x : B.LL) :
     B'.embLL (enlEmb hR x) = B.embLL x := by
   have h := congrArg Subtype.val ((RingEquiv.ofBijective B'.embLL.rangeRestrict
@@ -39,6 +42,11 @@ theorem enlEmb_spec (hR : Set.range B.embLL ⊆ Set.range B'.embLL) (x : B.LL) :
 def ksEquiv (hK : B'.Ks.map B'.embLL.toRatAlgHom = B.Ks.map B.embLL.toRatAlgHom) : B.Ks ≃ₐ[ℚ] B'.Ks :=
   (B.Ks.equivMap B.embLL.toRatAlgHom).trans ((IntermediateField.equivOfEq (F := ℚ) (E := ℂ) (S := B.Ks.map B.embLL.toRatAlgHom) (T := B'.Ks.map B'.embLL.toRatAlgHom) hK.symm).trans (B'.Ks.equivMap B'.embLL.toRatAlgHom).symm)
 
+/- English proof (translation)
+Establish `h3 : (B'.Ks.equivMap B'.embLL.toRatAlgHom) (ksEquiv hK x) = IntermediateField.equivOfEq (F` using `ℚ) (E := ℂ) (S := B.Ks.map B.embLL.toRatAlgHom) (T := B'.Ks.map B'.embLL.toRatAlgHom) hK.symm (B.Ks.equivMap B.embLL.toRatAlgHom x) := by`. Conclude with `(B'.Ks.equivMap B'.embLL.toRatAlgHom).apply_symm_apply _`. Establish `h4` using `congrArg Subtype.val h3`. Rewrite `h4` using `[IntermediateField.coe_equivMap_apply]`. Rewrite `h4` using `[RingHom.toRatAlgHom_apply]`.
+
+Rewrite using `[h4]`. Express the relevant statement in the definitionally equal form `((B.Ks.equivMap B.embLL.toRatAlgHom x : B.Ks.map B.embLL.toRatAlgHom) : ℂ) = _`. Rewrite using `[IntermediateField.coe_equivMap_apply]`. Both sides reduce to the same expression.
+-/
 theorem ksEquiv_spec (hK : B'.Ks.map B'.embLL.toRatAlgHom = B.Ks.map B.embLL.toRatAlgHom) (x : B.Ks) : B'.embLL ((ksEquiv hK x : B'.Ks) : B'.LL) = B.embLL (x : B.LL) := by
   have h3 : (B'.Ks.equivMap B'.embLL.toRatAlgHom) (ksEquiv hK x) =
       IntermediateField.equivOfEq (F := ℚ) (E := ℂ) (S := B.Ks.map B.embLL.toRatAlgHom) (T := B'.Ks.map B'.embLL.toRatAlgHom) hK.symm (B.Ks.equivMap B.embLL.toRatAlgHom x) := by
@@ -53,6 +61,9 @@ theorem ksEquiv_spec (hK : B'.Ks.map B'.embLL.toRatAlgHom = B.Ks.map B.embLL.toR
 
 def oEquiv (hK : B'.Ks.map B'.embLL.toRatAlgHom = B.Ks.map B.embLL.toRatAlgHom) : B.O ≃+* B'.O := RingOfIntegers.mapRingEquiv (ksEquiv hK).toRingEquiv
 
+/- English proof (translation)
+Establish `h` using `RingOfIntegers.mapRingEquiv_apply (ksEquiv hK).toRingEquiv x`. Express the relevant statement in the definitionally equal form `B'.embLL (((oEquiv hK x : B'.Ks)) : B'.LL) = B.embLL ((x : B.Ks) : B.LL)`. Rewrite using `[show (oEquiv hK x : B'.Ks) = ksEquiv hK (x : B.Ks) from h]`. Conclude with `ksEquiv_spec hK x`.
+-/
 theorem oEquiv_spec (hK : B'.Ks.map B'.embLL.toRatAlgHom = B.Ks.map B.embLL.toRatAlgHom) (x : B.O) : B'.embLL (B'.OtoLL (oEquiv hK x)) = B.embLL (B.OtoLL x) := by
   have h := RingOfIntegers.mapRingEquiv_apply (ksEquiv hK).toRingEquiv x
   change B'.embLL (((oEquiv hK x : B'.Ks)) : B'.LL) = B.embLL ((x : B.Ks) : B.LL)
@@ -65,6 +76,9 @@ section EnlAux2
 
 variable {B B' : Base}
 
+/- English proof (translation)
+Take `⟨x', hx', he⟩ : B.embLL x ∈ B'.embLL '' (B'.LL0 : Set B'.LL)` from `hL ▸ ⟨x, hx, rfl⟩`. Establish `: enlEmb hR x = x'` using `B'.embLL.injective (by rw [enlEmb_spec, he])`. Rewrite using `[this]`. Conclude with `hx'`.
+-/
 theorem enlEmb_LL0 (hR : Set.range B.embLL ⊆ Set.range B'.embLL)
     (hL : B'.embLL '' (B'.LL0 : Set B'.LL) = B.embLL '' (B.LL0 : Set B.LL)) {x : B.LL} (hx : x ∈ B.LL0) :
     enlEmb hR x ∈ B'.LL0 := by
@@ -73,12 +87,18 @@ theorem enlEmb_LL0 (hR : Set.range B.embLL ⊆ Set.range B'.embLL)
   rw [this]
   exact hx'
 
+/- English proof (translation)
+Take `⟨x₀, hx₀, he⟩ : B'.embLL x ∈ B.embLL '' (B.Ks : Set B.LL)` from `hK ▸ ⟨x, hx, rfl⟩`. Conclude with `⟨x₀, hx₀, B'.embLL.injective (by rw [enlEmb_spec, he])⟩`.
+-/
 theorem enlEmb_Ks (hR : Set.range B.embLL ⊆ Set.range B'.embLL)
     (hK : B'.embLL '' (B'.Ks : Set B'.LL) = B.embLL '' (B.Ks : Set B.LL)) {x : B'.LL} (hx : x ∈ B'.Ks) :
     ∃ x₀ ∈ B.Ks, enlEmb hR x₀ = x := by
   obtain ⟨x₀, hx₀, he⟩ : B'.embLL x ∈ B.embLL '' (B.Ks : Set B.LL) := hK ▸ ⟨x, hx, rfl⟩
   exact ⟨x₀, hx₀, B'.embLL.injective (by rw [enlEmb_spec, he])⟩
 
+/- English proof (translation)
+Take `⟨x', hx', he⟩ : B.embLL x ∈ B'.embLL '' (B'.LL0 : Set B'.LL)` from `hL ⟨x, hx, rfl⟩`. Establish `: enlEmb hR x = x'` using `B'.embLL.injective (by rw [enlEmb_spec, he])`. Rewrite using `[this]`. Conclude with `hx'`.
+-/
 theorem coefficientFieldEnlarge_mem_larger_fixedField (hR : Set.range B.embLL ⊆ Set.range B'.embLL)
     (hL : B.embLL '' (B.LL0 : Set B.LL) ⊆ B'.embLL '' (B'.LL0 : Set B'.LL)) {x : B.LL} (hx : x ∈ B.LL0) :
     enlEmb hR x ∈ B'.LL0 := by
@@ -97,17 +117,26 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheo
   {Dw : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Datum H} {l : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Level H} {Xo : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Moduli Dw l}
   {c : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Coeff l} {r : ℕ}
 
+/- English proof (translation)
+Substitute `h` using the available equality. Both sides reduce to the same expression.
+-/
 theorem finVol_withCd (D : D7) (c₀ : CDHaar) (h : D.cd = c₀) (V : HSp D) :
     Formalism.L2.Pj.FinVol (D := withCd D c₀) V ↔ Formalism.L2.Pj.FinVol (D := D) V := by
   subst h
   rfl
 
+/- English proof (translation)
+Substitute `h` using the available equality. Both sides reduce to the same expression.
+-/
 theorem cuspL2_withCd (D : D7) (c₀ : CDHaar) (h : D.cd = c₀) (U : ∀ σ : c.F →+* ℂ, Formalism.L2.Pj.Unf Xo c σ r)
     (σ : c.F →+* ℂ) (V : HSp D) (dict : GA D V → Σ k, ReciprocityTheory.ChartRestriction.G.FD.Frame ((U σ).X k).Ψ r) (mu : GA D V → ℂ) :
     Formalism.L2.Pj.CuspL2 (D := withCd D c₀) U σ V dict mu ↔ Formalism.L2.Pj.CuspL2 (D := D) U σ V dict mu := by
   subst h
   rfl
 
+/- English proof (translation)
+Substitute `h` using the available equality. Both sides reduce to the same expression.
+-/
 theorem peterssonDefinite_iff_of_eq_compactDualHaar (D : D7) (c₀ : CDHaar) (h : D.cd = c₀) (U : ∀ σ : c.F →+* ℂ, Formalism.L2.Pj.Unf Xo c σ r)
     (σ : c.F →+* ℂ) (V : HSp D) (dict : GA D V → Σ k, ReciprocityTheory.ChartRestriction.G.FD.Frame ((U σ).X k).Ψ r) (mu : GA D V → ℂ)
     (h₁ : Formalism.L2.Pj.CuspL2 (D := withCd D c₀) U σ V dict mu) (h₂ : Formalism.L2.Pj.CuspL2 (D := D) U σ V dict mu) :
@@ -117,6 +146,17 @@ theorem peterssonDefinite_iff_of_eq_compactDualHaar (D : D7) (c₀ : CDHaar) (h 
 
 end CdAux
 
+/- English proof (translation)
+Introduce `B B' f f' T T' w w' Z Z' hX Wt z hE hf hC`. Establish `hK : B'.Ks.map B'.embLL.toRatAlgHom = B.Ks.map B.embLL.toRatAlgHom` using `SetLike.coe_injective hE.2.1`. Take `⟨h1, hKs, hLL0, hR⟩` from `hE`. Establish `hι` using `enlEmb_spec hR`. Establish `hι0` using `fun x (hx : x ∈ B.LL0) => coefficientFieldEnlarge_mem_larger_fixedField hR hLL0 hx`.
+
+Establish `hιK` using `fun x (hx : x ∈ B'.Ks) => enlEmb_Ks hR hKs hx`. Establish `hO` using `oEquiv_spec hK`. Break down `B' with ⟨P'⟩` into its components or cases. Express the relevant statement in the definitionally equal form `P' = B.toPre at h1`. Substitute `h1` using the available equality.
+
+Establish `hff` using `eq_of_heq hf`. Substitute `hff` using the available equality. Take `⟨hL, hCa, hDim, hpb⟩` from `hC`. Establish `hcd : (w'.st Z').toD7.cd = (w.st Z).toD7.cd` using `Tr.cd_eq _ _`. Set `g : z.core.Q.c.F →+* _` to `(enlEmb hR).comp ((algebraMap (↥z.core.Q.c.F) (w.st Z).toD7.what₂.LL) : z.core.Q.c.F →+* B.LL)`.
+
+Set `Q' : Formalism.L2.Pj.Par (w'.st Z').toD7` to `{ H := (z.core.Q.H), l := (z.core.Q.l), c := (z.core.Q.c), Dw := (z.core.Q.Dw), Xo := (z.core.Q.Xo), eO := (by with_unfolding_all exact ((z.core.Q.eO.trans (oEquiv hK)) :)) }`. Set `core' : Formalism.L2.Pj.CoreJ (w'.st Z').toD7` to `{ toCore := { Q := Q', U := (z.core.U), V := (z.core.V), dict := (z.core.dict), mu := (z.core.mu), Kf := (z.core.Kf), pb := (z.core.pb) } cE := (z.core.cE), chiW := (z.core.chiW), x₀ := (z.core.x₀), iota := (z.core.iota) }`. Use `⟨core', (g.toAlgebra), ?_⟩` and prove the remaining obligations. Use `⟨fun y => (hι _).trans (z.alg_eq y), fun y => hι0 _ (z.fieldValues_mem_fixedField y), fun x hx => ?_, (HEq.refl z.core.Q.H), (HEq.refl z.core.Q.l), (HEq.refl z.core.Q.c), (HEq.refl z.core.Q.Dw), (HEq.refl z.core.Q.Xo), (HEq.refl z.core.U), (HEq.refl z.core.V), (HEq.refl z.core.di …` and prove the remaining obligations. Take `⟨x₀, hx₀, he⟩` from `hιK x hx`.
+
+Take `⟨y, hy⟩` from `z.Ks_le x₀ hx₀`. Conclude with `⟨y, (congrArg (enlEmb hR) hy).trans he⟩`. Establish `hPF : Q'.PinField` using `fun x => (hO (z.core.Q.eO x)).trans (hL.pins.2.2.1 x)`. Conclude with `{ pins := ⟨(hL.pins.left), (hL.pins.right.left), hPF, (hL.pins.right.right.right)⟩ half := (hL.half) evalWD := (hL.evalWD) unf := (hL.unf) unTest := (hL.unTest) chiTriv := (hL.chiTriv) dictU := (hL.dictU) spaceW := (hL.spaceW) levelK := (hL.levelK) xiAbs := (hL.xiAbs) muUnit := ( …`.
+-/
 theorem exists_adelicCore_transport_enlargedCoefficientBase : ∀ {B B' : Base} {f : Fr B.toPre} {f' : Fr B'.toPre} {T : TwDat B} {T' : TwDat B'} (w : ColW B f T) (w' : ColW B' f' T')
     (Z : w.Lt) (Z' : w'.Lt) (hX : B.fields.Ok) (Wt : Set B.places.Pl) (z : Dat (w.st Z) w.I hX T Wt),
     Enl0 B B' → HEq f' f → CoreP z →
@@ -189,6 +229,9 @@ theorem exists_adelicCore_transport_enlargedCoefficientBase : ∀ {B B' : Base} 
         cuNe := (hL.cuNe)
         expo := (hL.expo) }
 
+/- English proof (translation)
+Introduce `w w' Z Z' hX Wt z hE` and use `exists_adelicCore_transport_enlargedCoefficientBase w w' Z Z' hX Wt z (isBaseEnlargementFixedCoefField_of_coeffEnlargement hE)`.
+-/
 theorem exists_coreJ_of_enl : ∀ {B B' : Base} {f : Fr B.toPre} {f' : Fr B'.toPre} {T : TwDat B} {T' : TwDat B'} (w : ColW B f T) (w' : ColW B' f' T')
     (Z : w.Lt) (Z' : w'.Lt) (hX : B.fields.Ok) (Wt : Set B.places.Pl) (z : Dat (w.st Z) w.I hX T Wt),
     Enl B B' → HEq f' f → CoreP z →

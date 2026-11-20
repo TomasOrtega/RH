@@ -17,59 +17,115 @@ namespace BaseA
 
 variable (l : ℕ) [Fact l.Prime]
 
+/- English proof (translation)
+Introduce `x` and use `Loc2.lift_mk₀ _ _ _ x`.
+-/
 theorem isCrisDR_ι : IsCrisDR l (ι l) := fun x => Loc2.lift_mk₀ _ _ _ x
 
+/- English proof (translation)
+The claim follows from `(PositivityTheory.LocInh.isCrisDR_iff _).1 (isCrisDR_ι l)`.
+-/
 theorem ι_eq : ι l = PositivityTheory.LocInh.ιCD l := (PositivityTheory.LocInh.isCrisDR_iff _).1 (isCrisDR_ι l)
 
+/- English proof (translation)
+The claim follows from `IsLocalization.ringHom_ext (nonZeroDivisors ℤ_[l]) (RingHom.ext fun z => by rw [RingHom.comp_apply, RingHom.comp_apply, qB, IsLocalization.lift_eq] exact (PositivityTheory.LocInh.qB_coe z).symm)`.
+-/
 theorem qB_eq : qB l = PositivityTheory.LocInh.qB l :=
   IsLocalization.ringHom_ext (nonZeroDivisors ℤ_[l]) (RingHom.ext fun z => by
     rw [RingHom.comp_apply, RingHom.comp_apply, qB, IsLocalization.lift_eq]
     exact (PositivityTheory.LocInh.qB_coe z).symm)
 
+/- English proof (translation)
+The claim follows from `Loc2.lift_mk₀ _ _ _ y`.
+-/
 theorem ι_cB (y : ACris.ACris ℂ_[l] l) : ι l (cB l y) = iC l y := Loc2.lift_mk₀ _ _ _ y
 
 end BaseA
 
 open BaseA
 
+/- English proof (translation)
+Rewrite using `[ι_eq]`. Conclude with `PositivityTheory.LocInh.ιCD_injective`.
+-/
 theorem base_ι_inj (l : ℕ) [Fact l.Prime] : Function.Injective (ι l) := by
   rw [ι_eq]; exact PositivityTheory.LocInh.ιCD_injective
 
+/- English proof (translation)
+The claim follows from `Function.Injective.isDomain (ι l) (base_ι_inj l)`.
+-/
 theorem base_dom (l : ℕ) [Fact l.Prime] : IsDomain (B l) :=
   Function.Injective.isDomain (ι l) (base_ι_inj l)
 
+/- English proof (translation)
+The claim follows from `RingHom.ext fun b => PositivityTheory.LocInh.σB_one b`.
+-/
 theorem base_σ_one (l : ℕ) [Fact l.Prime] : σB (1 : GQ l) = RingHom.id _ :=
   RingHom.ext fun b => PositivityTheory.LocInh.σB_one b
 
+/- English proof (translation)
+Introduce `g h` and use `RingHom.ext fun b => PositivityTheory.LocInh.σB_mul g h b`.
+-/
 theorem base_σ_mul (l : ℕ) [Fact l.Prime] : ∀ g h : GQ l, σB (g * h) = (σB g).comp (σB h) :=
   fun g h => RingHom.ext fun b => PositivityTheory.LocInh.σB_mul g h b
 
+/- English proof (translation)
+Introduce `g x` and use `PositivityTheory.LocInh.φB_σB g x`.
+-/
 theorem base_φ_σ (l : ℕ) [Fact l.Prime] : ∀ (g : GQ l) x, φ l (σB g x) = σB g (φ l x) :=
   fun g x => PositivityTheory.LocInh.φB_σB g x
 
+/- English proof (translation)
+Introduce `g x`. Rewrite using `[ι_eq]`. Conclude with `PositivityTheory.LocInh.ιCD_σB g x`.
+-/
 theorem base_ι_σ (l : ℕ) [Fact l.Prime] : ∀ (g : GQ l) x, ι l (σB g x) = σD g (ι l x) := by
   intro g x; rw [ι_eq]; exact PositivityTheory.LocInh.ιCD_σB g x
 
+/- English proof (translation)
+Introduce `q`. Rewrite using `[qB_eq]`. Conclude with `PositivityTheory.LocInh.φB_qB q`.
+-/
 theorem base_φ_q (l : ℕ) [Fact l.Prime] : ∀ q, φ l (qB l q) = qB l q := by
   intro q; rw [qB_eq]; exact PositivityTheory.LocInh.φB_qB q
 
+/- English proof (translation)
+Introduce `g q`. Apply `base_ι_inj l` to reduce the goal to its premises. Rewrite using `[base_ι_σ, ι_eq, qB_eq, PositivityTheory.LocInh.ιCD_qB, PositivityTheory.LocInh.σD_oD, AlgEquiv.commutes]`.
+-/
 theorem base_σ_q (l : ℕ) [Fact l.Prime] : ∀ (g : GQ l) q, σB g (qB l q) = qB l q := by
   intro g q
   apply base_ι_inj l
   rw [base_ι_σ, ι_eq, qB_eq, PositivityTheory.LocInh.ιCD_qB, PositivityTheory.LocInh.σD_oD, AlgEquiv.commutes]
 
+/- English proof (translation)
+Introduce `q`. Rewrite using `[ι_eq, qB_eq]`. Conclude with `PositivityTheory.LocInh.fund_ιCD_qB q`.
+-/
 theorem base_ι_q (l : ℕ) [Fact l.Prime] : ∀ q, ι l (qB l q) = qQ l q := by
   intro q; rw [ι_eq, qB_eq]; exact PositivityTheory.LocInh.fund_ιCD_qB q
 
+/- English proof (translation)
+The claim follows from `ι_cB l (tA l)`.
+-/
 theorem period_image_eq (l : ℕ) [Fact l.Prime] : ι l (t l) = tQ l := ι_cB l (tA l)
 
+/- English proof (translation)
+The claim follows from `Loc2.isUnit_right _ _`.
+-/
 theorem base_t_unit (l : ℕ) [Fact l.Prime] : IsUnit (t l) := Loc2.isUnit_right _ _
 
+/- English proof (translation)
+The claim follows from `PositivityTheory.LocInh.φB_tB`.
+-/
 theorem frobenius_period_holds (l : ℕ) [Fact l.Prime] : φ l (t l) = (l : B l) * t l := PositivityTheory.LocInh.φB_tB
 
+/- English proof (translation)
+Introduce `g`. Rewrite using `[qB_eq]`. Conclude with `PositivityTheory.LocInh.σB_tB g`.
+-/
 theorem galois_period_cyclotomic (l : ℕ) [Fact l.Prime] : ∀ g : GQ l, σB g (t l) = qB l (χ g) * t l := by
   intro g; rw [qB_eq]; exact PositivityTheory.LocInh.σB_tB g
 
+/- English proof (translation)
+Establish `h1 : Continuous (fun g : GQ l => ((DeRhamTwist.Twist.chi0 l g : ℤ_[l]ˣ) : ℤ_[l]))` using `Units.continuous_val.comp (DeRhamTwist.Twist.continuous_cyclotomic_character (l := l))`. Establish `h2 : Continuous (fun x : ℤ_[l] => (x : ℚ_[l]))` using `by first`. Consider the case `exact PadicInt.continuous_coe`. Consider the case `exact continuous_subtype_val`. Consider the case `exact (Isometry.of_dist_eq fun _ _ => rfl).continuous`.
+
+Conclude with `h2.comp h1`.
+-/
 theorem base_χ_cont (l : ℕ) [Fact l.Prime] : Continuous (χ : GQ l → ℚ_[l]) :=
   by
   have h1 : Continuous (fun g : GQ l => ((DeRhamTwist.Twist.chi0 l g : ℤ_[l]ˣ) : ℤ_[l])) :=
@@ -81,6 +137,15 @@ theorem base_χ_cont (l : ℕ) [Fact l.Prime] : Continuous (χ : GQ l → ℚ_[l
     | exact (Isometry.of_dist_eq fun _ _ => rfl).continuous
   exact h2.comp h1
 
+/- English proof (translation)
+Introduce `x`. Take `⟨m, n, y, h⟩` from `PositivityTheory.LocInh.bcris_surj x`. Establish `h1` using `congrArg (ι l) h`. Establish `hl : ι l (cB l (l : ACris.ACris ℂ_[l] l)) = (l : BdR l)` using `by rw [map_natCast, map_natCast]`. Rewrite `h1` using `[map_mul, map_mul, map_pow, map_pow, hl, ι_cB, ι_cB]`.
+
+Establish `htq : iC l (tA l) = tQ l` using `rfl`. Rewrite `h1` using `[htq]`. Establish `hl0 : (l : BdR l) ≠ 0`. Use `(isUnit_l l).map (ι l)` as an intermediate fact. Rewrite `this` using `[map_natCast]`.
+
+Conclude with `this.ne_zero`. Establish `ht0 : tQ l ≠ 0` using `DeRhamTwist.Twist.tQ_ne`. Establish `e : ι l x = iC l y * ((l : BdR l)⁻¹) ^ m * ((tQ l)⁻¹) ^ n`. Rewrite using `[← h1, inv_pow, inv_pow]`. Clear the denominators using the available nonvanishing facts.
+
+Rewrite using `[e]`. Establish `mem : ∀ z ∈ ({((l : BdR l))⁻¹, (tQ l)⁻¹, uQ l} : Set (BdR l)), z ∈ Bst l` using `fun z hz => Subring.subset_closure (Or.inr hz)`. Conclude with `Subring.mul_mem _ (Subring.mul_mem _ (Subring.subset_closure (Or.inl ⟨y, rfl⟩)) (Subring.pow_mem _ (mem _ (by simp)) _)) (Subring.pow_mem _ (mem _ (by simp)) _)`.
+-/
 theorem base_ι_Bst (l : ℕ) [Fact l.Prime] : ∀ x, ι l x ∈ Bst l := by
   intro x
   obtain ⟨m, n, y, h⟩ := PositivityTheory.LocInh.bcris_surj x
@@ -103,9 +168,15 @@ theorem base_ι_Bst (l : ℕ) [Fact l.Prime] : ∀ x, ι l x ∈ Bst l := by
   exact Subring.mul_mem _ (Subring.mul_mem _ (Subring.subset_closure (Or.inl ⟨y, rfl⟩))
     (Subring.pow_mem _ (mem _ (by simp)) _)) (Subring.pow_mem _ (mem _ (by simp)) _)
 
+/- English proof (translation)
+The claim follows from `Subring.subset_closure (Or.inr (by simp))`.
+-/
 theorem base_u_Bst (l : ℕ) [Fact l.Prime] : uQ l ∈ Bst l :=
   Subring.subset_closure (Or.inr (by simp))
 
+/- English proof (translation)
+Introduce `x hφ hx`. Take `⟨z, hz⟩` from `RingHom.mem_range.1 hx`. Rewrite `hz` using `[ι_eq]`. Take `⟨q, hq⟩` from `PositivityTheory.LocInh.fund x hφ ((IsPerfectoidField.mem_fil_zero_iff ℂ_[l] l).2 ⟨z, hz.symm⟩)`. Conclude with `⟨q, by rw [qB_eq]; exact hq.symm⟩`.
+-/
 theorem base_fs_ker (l : ℕ) [Fact l.Prime] : ∀ x, φ l x = x → ι l x ∈ Plus l → ∃ q, x = qB l q := by
   intro x hφ hx
   obtain ⟨z, hz⟩ := RingHom.mem_range.1 hx
@@ -113,6 +184,9 @@ theorem base_fs_ker (l : ℕ) [Fact l.Prime] : ∀ x, φ l x = x → ι l x ∈ 
   obtain ⟨q, hq⟩ := PositivityTheory.LocInh.fund x hφ ((IsPerfectoidField.mem_fil_zero_iff ℂ_[l] l).2 ⟨z, hz.symm⟩)
   exact ⟨q, by rw [qB_eq]; exact hq.symm⟩
 
+/- English proof (translation)
+Introduce `z`. Take `⟨x, hφ, c, hc⟩` from `PositivityTheory.LocInh.fund_onto z`. Conclude with `⟨x, hφ, RingHom.mem_range.2 ⟨c, by rw [ι_eq]; exact hc.symm⟩⟩`.
+-/
 theorem base_fs_surj (l : ℕ) [Fact l.Prime] : ∀ z : BdR l, ∃ x, φ l x = x ∧ ι l x - z ∈ Plus l := by
   intro z
   obtain ⟨x, hφ, c, hc⟩ := PositivityTheory.LocInh.fund_onto z

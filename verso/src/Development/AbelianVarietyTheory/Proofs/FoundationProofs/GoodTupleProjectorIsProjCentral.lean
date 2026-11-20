@@ -7,6 +7,11 @@ open Polynomial Classical GlobalTheory.BadShare
 
 namespace GlobalTheory.BadShare
 
+/- English proof (translation)
+Use function extensionality and compare the values at `x`. Simplify using `only [conv]`. Use `Fintype.sum_equiv ((Equiv.inv G).trans (Equiv.mulRight x)) _ _ fun y => ?_` and prove the remaining obligations. Simplify using `only [Equiv.trans_apply, Equiv.inv_apply, Equiv.coe_mulRight]`. Rewrite using `[mul_comm, he (y⁻¹ * x)⁻¹ x]`.
+
+Use `congr 2`. Use `group`.
+-/
 theorem conv_comm_of_classFun {G : Type} [Group G] [Fintype G] (e : G → ℂ) (he : ∀ x y, e (x * y) = e (y * x))
     (a : G → ℂ) : conv e a = conv a e := by
   funext x
@@ -17,6 +22,9 @@ theorem conv_comm_of_classFun {G : Type} [Group G] [Fintype G] (e : G → ℂ) (
   congr 2
   group
 
+/- English proof (translation)
+Use function extensionality and compare the values at `x`. Simplify using `only [conv, Finset.sum_apply, Finset.sum_mul_sum]`. Rewrite using `[Finset.sum_comm]`. Conclude with `Finset.sum_congr rfl fun i _ => Finset.sum_comm`.
+-/
 theorem conv_finsetSum_finsetSum {G κ : Type} [Group G] [Fintype G] (s t : Finset κ) (a b : κ → G → ℂ) :
     conv (∑ i ∈ s, a i) (∑ j ∈ t, b j) = ∑ i ∈ s, ∑ j ∈ t, conv (a i) (b j) := by
   funext x
@@ -24,6 +32,11 @@ theorem conv_finsetSum_finsetSum {G κ : Type} [Group G] [Fintype G] (s t : Fins
   rw [Finset.sum_comm]
   exact Finset.sum_congr rfl fun i _ => Finset.sum_comm
 
+/- English proof (translation)
+Use `⟨?_, fun x => ?_⟩` and prove the remaining obligations. Rewrite using `[conv_finsetSum_finsetSum]`. Use `Finset.sum_congr rfl fun i hi => ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_eq_single_of_mem i hi fun j hj hne => ho i hi j hj hne.symm, (h i hi).1]`. Simplify using `only [Finset.sum_apply, map_sum]`.
+
+Conclude with `Finset.sum_congr rfl fun i hi => (h i hi).2 x`.
+-/
 theorem isProj_finsetSum {G κ : Type} [Group G] [Fintype G] (s : Finset κ) (a : κ → G → ℂ) (h : ∀ i ∈ s, IsProj (a i))
     (ho : ∀ i ∈ s, ∀ j ∈ s, i ≠ j → conv (a i) (a j) = 0) : IsProj (∑ i ∈ s, a i) := by
   refine ⟨?_, fun x => ?_⟩
@@ -33,6 +46,17 @@ theorem isProj_finsetSum {G κ : Type} [Group G] [Fintype G] (s : Finset κ) (a 
   · simp only [Finset.sum_apply, map_sum]
     exact Finset.sum_congr rfl fun i hi => (h i hi).2 x
 
+/- English proof (translation)
+Introduce `g _ N m ι _ τ ch hτ`. Establish `hmem : ∀ F ∈ goodSet g N ch, ∀ v, F v ∈ sqSet g N` using `fun F hF => (good_iff.1 (mem_goodSet_iff_good.1 hF)).1`. Use `⟨isProj_finsetSum _ _ (fun F hF => ?_) fun F hF F' hF' hne => ?_, conv_comm_of_classFun _ fun x y => ?_⟩` and prove the remaining obligations. Use `(tens_calculus ι (GG g N) (GG g N)).2.1 _ fun v => ?_` and prove the remaining obligations. Take `⟨V, hV, hχ, -⟩` from `(hτ v).2 _ (hmem F hF v)`.
+
+Rewrite using `[← hχ]`. Conclude with `(GlobalTheory.T.centralIdempotent_irreducible_character_props _ V).1`. Rewrite using `[conv_tens]`. Take `⟨v, hv⟩` from `Function.ne_iff.1 hne`. Take `⟨V, hV, hχ, -⟩` from `(hτ v).2 _ (hmem F hF v)`.
+
+Take `⟨V', hV', hχ', -⟩` from `(hτ v).2 _ (hmem F' hF' v)`. Establish `h0 : conv (zc (τ v (F v))) (zc (τ v (F' v))) = 0`. Rewrite using `[← hχ, ← hχ']`. Use `(GlobalTheory.T.centralIdempotent_irreducible_character_props _ V).2.2.1 V' ?_` and prove the remaining obligations. Rewrite using `[hχ, hχ']`.
+
+Conclude with `fun h => hv ((hτ v).1 (hmem F hF v) (hmem F' hF' v) h)`. Use function extensionality and compare the values at `x`. Conclude with `Finset.prod_eq_zero (Finset.mem_univ v) (congrFun h0 (x v))`. Simplify using `only [eGood, Finset.sum_apply, tens]`. Use `Finset.sum_congr rfl fun F hF => Finset.prod_congr rfl fun v _ => ?_` and prove the remaining obligations.
+
+Take `⟨V, -, hχ, -⟩` from `(hτ v).2 _ (hmem F hF v)`. Simplify using `only [zc, ← hχ, Pi.mul_apply, mul_inv_rev]`. Rewrite using `[FDRep.char_mul_comm]`.
+-/
 theorem eGood_isProj_central : ∀ (g : ℕ) [Fact g.Prime] (N : ℕ), ∀ (m : ℕ) (ι : Type) [Fintype ι] (τ : ι → (ZMod g)[X] → GG g N → ℂ) (ch : ι → Fin m → (ZMod g)ˣ), (∀ v, IsSeries (τ v)) → IsProj (eGood τ ch) ∧ ∀ a, conv (eGood τ ch) a = conv a (eGood τ ch) := by
   intro g _ N m ι _ τ ch hτ
   have hmem : ∀ F ∈ goodSet g N ch, ∀ v, F v ∈ sqSet g N := fun F hF =>

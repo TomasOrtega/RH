@@ -6,6 +6,11 @@ open GlobalTheory GlobalTheory.Cartier GlobalTheory.TopForm GlobalTheory.Discrep
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Set `ψ : X.presheaf.stalk y →+* V` to `(algebraMap (X.presheaf.stalk y) X.functionField).codRestrict V.toSubring fun a ↦ hV _ ⟨a, rfl⟩`. Set `l : Spec (.of V) ⟶ X` to `Spec.map (CommRingCat.ofHom ψ) ≫ X.fromSpecStalk y`. Establish `hl : specAlgebraMap V X.functionField ≫ l = genericFieldPoint X`. Rewrite using `[← specAlgebraMap_fromSpecStalk y, ← Category.assoc, ← Spec.map_comp, ← CommRingCat.ofHom_comp]`. Both sides reduce to the same expression.
+
+Use `⟨l (IsLocalRing.closedPoint V), ?_, dominatesStalk_iff_exists_hom.mpr ⟨l, hl, rfl⟩⟩` and prove the remaining obligations. Establish `h` using `((IsLocalRing.specializes_closedPoint ((Spec.map (CommRingCat.ofHom ψ)) (IsLocalRing.closedPoint V))).map (X.fromSpecStalk y).continuous)`. Rewrite `h` using `[Scheme.fromSpecStalk_closedPoint]`. Conclude with `h`.
+-/
 theorem exists_specializes_dominatesStalk_of_regAt (X : Scheme.{0}) [IsIntegral X]
     (V : ValuationSubring X.functionField) (y : X) (hV : ∀ g, RegAt y g → g ∈ V) :
     ∃ z, z ⤳ y ∧ DominatesStalk V z := by

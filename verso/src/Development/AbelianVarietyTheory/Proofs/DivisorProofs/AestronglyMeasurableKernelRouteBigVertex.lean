@@ -12,6 +12,11 @@ open GlobalTheory.FunObj GlobalTheory.ChiGrid GlobalTheory.SplitFlip GlobalTheor
 attribute [local instance] Formalism.BasicNotions.Host.cmStar GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField borelKw borelSpaceKw
 namespace GlobalTheory.BigRoute
 
+/- English proof (translation)
+Introduce `D T L sc G W B ρ t i j Θ Θ' hΘ d hd`. Take `⟨a, b, τ, τ', n, Φ, -, -, ⟨e, -, -, ⟨φ₁, φ₂, hloc, -⟩⟩, rfl, -⟩` from `hΘ`. Take `⟨d₀, hd₀, P, rfl⟩` from `GlobalTheory.SmallRoute.mem_support_tensT W hd`. Take `⟨h1, h2⟩` from `hloc d₀ hd₀`. Establish `v1` using `ρ.vX_is i (j + 1) i.2 j.2`.
+
+Establish `v2` using `ρ.vT_is t (i + 1) j i.2 j.2`. Establish `t1` using `GlobalTheory.VecTheta.isThetaFunO_of_thetaAt W.ψ_std W.θ_is h1.2 v1.2.theta`. Establish `t2` using `GlobalTheory.VecTheta.isThetaFunO_of_thetaAt W.ψ_std W.θ_is h2.2 v2.2.theta`. Conclude with `⟨GlobalTheory.GalLift.Vec.theta_pureTensorO W.ψ_std W.θ_is _ _ _ _ t1 _, GlobalTheory.GalLift.Vec.theta_pureTensorO W.ψ_std W.θ_is _ _ _ _ t2 _⟩`.
+-/
 theorem theta_of_matched_big : ∀ {D : D7} {T : Type} {L : LevCh D T} {sc : Consts} {G : GridData L sc} {W : G.Weil}
     {B : Frames G} {ρ : RealMatch W} {t : T} {i j : Fin D.R.m}
     {Θ : TotT G (routeBig t i j)} {Θ' : TotT G (routeSmall t i j)} (_ : IsMatched B t ρ i j Θ Θ')
@@ -29,6 +34,13 @@ theorem theta_of_matched_big : ∀ {D : D7} {T : Type} {L : LevCh D T} {sc : Con
   exact ⟨GlobalTheory.GalLift.Vec.theta_pureTensorO W.ψ_std W.θ_is _ _ _ _ t1 _,
     GlobalTheory.GalLift.Vec.theta_pureTensorO W.ψ_std W.θ_is _ _ _ _ t2 _⟩
 
+/- English proof (translation)
+Introduce `D T L sc G W B ρ t i j Θ Θ' hΘ g₁`. Establish `hc` using `W.om_is (.chi (i : ℕ) (j + 1)) ⟨i.2, j.2⟩`. Establish `hm` using `W.om_is (.mu t ((i : ℕ) + 1) j) ⟨i.2, j.2⟩`. Establish `hK : ∀ d ∈ Θ.support, Continuous (fun q : GA D (G.V (.grid i (j + 1))) × GA D (G.V (.grid (i + 1) (j + 1))) => W.kerA (.right i (j + 1)) d.1.2 q.1 q.2 * W.kerA (.down t (i + 1) j) d.2 q.2 g₁)`. Introduce `d hd`.
+
+Take `⟨h1, h2⟩` from `theta_of_matched_big hΘ hd`. Use `Continuous.mul ?_ ?_` and prove the remaining obligations. Use `show Continuous fun q : GA D (G.V (.grid i (j + 1))) × GA D (G.V (.grid (i + 1) (j + 1))) => thetaKO (W.om (.chi (i : ℕ) (j + 1))) (negGA _ q.2) q.1 d.1.2`. Conclude with `(hc.om_cont _ h1 0).comp (((continuous_negGA _).comp continuous_snd).prodMk continuous_fst)`. Use `show Continuous fun q : GA D (G.V (.grid i (j + 1))) × GA D (G.V (.grid (i + 1) (j + 1))) => thetaKO (W.om (.mu t ((i : ℕ) + 1) j)) g₁ q.2 d.2`.
+
+Conclude with `(hm.om_cont _ h2 0).comp (continuous_const.prodMk continuous_snd)`. Unfold `kerBig`. Simplify using `only [Finsupp.sum]`. Conclude with `continuous_finset_sum _ fun d hd => continuous_const.mul (hK d hd)`.
+-/
 theorem continuous_kerBig : ∀ {D : D7} {T : Type} {L : LevCh D T} {sc : Consts} {G : GridData L sc}
     (W : G.Weil) (B : Frames G) (ρ : RealMatch W) (t : T) (i j : Fin D.R.m) (Θ : TotT G (routeBig t i j))
     (Θ' : TotT G (routeSmall t i j)) (_ : IsMatched B t ρ i j Θ Θ') (g₁ : GA D (G.V (.grid (i + 1) j))),
@@ -52,6 +64,9 @@ theorem continuous_kerBig : ∀ {D : D7} {T : Type} {L : LevCh D T} {sc : Consts
   simp only [Finsupp.sum]
   exact continuous_finset_sum _ fun d hd => continuous_const.mul (hK d hd)
 
+/- English proof (translation)
+Introduce `D T L sc G μ₀ hL W B ρ t i j M hM Θ Θ' hΘ g₁`. Conclude with `(continuous_kerBig W B ρ t i j Θ Θ' hΘ g₁).aestronglyMeasurable`.
+-/
 theorem aestronglyMeasurable_kerBig : ∀ {D : D7} {T : Type} {L : LevCh D T} {sc : Consts} {G : GridData L sc} {μ₀ : T} (hL : L.Is μ₀)
     (W : G.Weil) (B : Frames G) (ρ : RealMatch W) (t : T) (i j : Fin D.R.m)
     (M : Vol G) (hM : M.Is t) (Θ : TotT G (routeBig t i j)) (Θ' : TotT G (routeSmall t i j)) (hΘ : IsMatched B t ρ i j Θ Θ') (g₁ : GA D (G.V (.grid (i + 1) j))),

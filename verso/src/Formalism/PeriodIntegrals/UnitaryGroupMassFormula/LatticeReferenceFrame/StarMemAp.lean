@@ -12,55 +12,100 @@ namespace PI.ScRefExists.WF
 
 variable (I : Formalism.MainNotions.S.AutInst)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem hG_def (x y : Fin I.n → I.E) : hG I x y = ∑ i, ∑ j, star (x i) * I.J i j * y j := rfl
 
+/- English proof (translation)
+Simplify using `only [hG_def, Pi.add_apply, star_add, add_mul, Finset.sum_add_distrib]`.
+-/
 theorem hG_add_left (x y z : Fin I.n → I.E) : hG I (x + y) z = hG I x z + hG I y z := by
   simp only [hG_def, Pi.add_apply, star_add, add_mul, Finset.sum_add_distrib]
 
+/- English proof (translation)
+Simplify using `only [hG_def, Pi.add_apply, mul_add, Finset.sum_add_distrib]`.
+-/
 theorem hG_add_right (x y z : Fin I.n → I.E) : hG I x (y + z) = hG I x y + hG I x z := by
   simp only [hG_def, Pi.add_apply, mul_add, Finset.sum_add_distrib]
 
+/- English proof (translation)
+Simplify using `only [hG_def, Pi.smul_apply, smul_eq_mul, star_mul', Finset.mul_sum]`. Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem hG_smul_left (c : I.E) (x y : Fin I.n → I.E) : hG I (c • x) y = star c * hG I x y := by
   simp only [hG_def, Pi.smul_apply, smul_eq_mul, star_mul', Finset.mul_sum]
   refine Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => ?_
   ring
 
+/- English proof (translation)
+Simplify using `only [hG_def, Pi.smul_apply, smul_eq_mul, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem hG_smul_right (c : I.E) (x y : Fin I.n → I.E) : hG I x (c • y) = c * hG I x y := by
   simp only [hG_def, Pi.smul_apply, smul_eq_mul, Finset.mul_sum]
   refine Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => ?_
   ring
 
+/- English proof (translation)
+Simplify using `[hG_def]`.
+-/
 theorem hG_zero_left (y : Fin I.n → I.E) : hG I 0 y = 0 := by
   simp [hG_def]
 
+/- English proof (translation)
+Simplify using `[hG_def]`.
+-/
 theorem hG_zero_right (x : Fin I.n → I.E) : hG I x 0 = 0 := by
   simp [hG_def]
 
+/- English proof (translation)
+Simplify using `only [hG_def, Pi.neg_apply, star_neg, neg_mul, Finset.sum_neg_distrib]`.
+-/
 theorem hG_neg_left (x y : Fin I.n → I.E) : hG I (-x) y = - hG I x y := by
   simp only [hG_def, Pi.neg_apply, star_neg, neg_mul, Finset.sum_neg_distrib]
 
+/- English proof (translation)
+Simplify using `only [hG_def, Pi.neg_apply, mul_neg, Finset.sum_neg_distrib]`.
+-/
 theorem hG_neg_right (x y : Fin I.n → I.E) : hG I x (-y) = - hG I x y := by
   simp only [hG_def, Pi.neg_apply, mul_neg, Finset.sum_neg_distrib]
 
+/- English proof (translation)
+Rewrite using `[sub_eq_add_neg, hG_add_left, hG_neg_left, ← sub_eq_add_neg]`.
+-/
 theorem hG_sub_left (x y z : Fin I.n → I.E) : hG I (x - y) z = hG I x z - hG I y z := by
   rw [sub_eq_add_neg, hG_add_left, hG_neg_left, ← sub_eq_add_neg]
 
+/- English proof (translation)
+Rewrite using `[sub_eq_add_neg, hG_add_right, hG_neg_right, ← sub_eq_add_neg]`.
+-/
 theorem hG_sub_right (x y z : Fin I.n → I.E) : hG I x (y - z) = hG I x y - hG I x z := by
   rw [sub_eq_add_neg, hG_add_right, hG_neg_right, ← sub_eq_add_neg]
 
+/- English proof (translation)
+Conclude with `map_sum (AddMonoidHom.mk' (hG I x) (hG_add_right I x)) y s`.
+-/
 theorem hG_sum_right {ι : Type*} (s : Finset ι) (x : Fin I.n → I.E) (y : ι → Fin I.n → I.E) :
     hG I x (∑ t ∈ s, y t) = ∑ t ∈ s, hG I x (y t) := by
   exact map_sum (AddMonoidHom.mk' (hG I x) (hG_add_right I x)) y s
 
+/- English proof (translation)
+Conclude with `map_sum (AddMonoidHom.mk' (fun x => hG I x y) (fun a b => hG_add_left I a b y)) x s`.
+-/
 theorem hG_sum_left {ι : Type*} (s : Finset ι) (x : ι → Fin I.n → I.E) (y : Fin I.n → I.E) :
     hG I (∑ t ∈ s, x t) y = ∑ t ∈ s, hG I (x t) y := by
   exact map_sum (AddMonoidHom.mk' (fun x => hG I x y) (fun a b => hG_add_left I a b y)) x s
 
+/- English proof (translation)
+Establish `h : Formalism.UG.cT (starRingEnd I.E) I.J = I.J` using `I.J_herm`. Establish `h2` using `congrFun (congrFun h i) j`. Simplify `h2` using `[Formalism.UG.cT, starRingEnd_apply]`.
+-/
 theorem J_entry (i j : Fin I.n) : star (I.J j i) = I.J i j := by
   have h : Formalism.UG.cT (starRingEnd I.E) I.J = I.J := I.J_herm
   have h2 := congrFun (congrFun h i) j
   simpa [Formalism.UG.cT, starRingEnd_apply] using h2
 
+/- English proof (translation)
+Simplify using `only [hG_def, star_sum, star_mul', star_star]`. Use `conv_rhs => rw [Finset.sum_comm]`. Use `Finset.sum_congr rfl fun a _ => Finset.sum_congr rfl fun b _ => ?_` and prove the remaining obligations. Apply the tactic sequence `rw [J_entry I a b]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem hG_symm (x y : Fin I.n → I.E) : hG I y x = star (hG I x y) := by
   simp only [hG_def, star_sum, star_mul', star_star]
   conv_rhs => rw [Finset.sum_comm]
@@ -68,6 +113,9 @@ theorem hG_symm (x y : Fin I.n → I.E) : hG I y x = star (hG I x y) := by
   rw [J_entry I a b]
   ring
 
+/- English proof (translation)
+Rewrite using `[hG_def, Finset.sum_eq_single i]`. Simplify using `[Matrix.mulVec, dotProduct]`. Introduce `b _ hb`. Simplify using `[Pi.single_apply, hb]`. Simplify using the standard rewrite rules.
+-/
 theorem hG_single (i : Fin I.n) (v : Fin I.n → I.E) :
     hG I (Pi.single i 1) v = (I.J *ᵥ v) i := by
   rw [hG_def, Finset.sum_eq_single i]
@@ -76,12 +124,24 @@ theorem hG_single (i : Fin I.n) (v : Fin I.n → I.E) :
     simp [Pi.single_apply, hb]
   · simp
 
+/- English proof (translation)
+Establish `h1 : I.J *ᵥ v = 0` using `funext fun i => by`. Rewrite using `[← hG_single I i v]`. Conclude with `h _`. Conclude with `Matrix.eq_zero_of_mulVec_eq_zero I.J_det h1`.
+-/
 theorem hG_nondeg (v : Fin I.n → I.E) (h : ∀ x, hG I x v = 0) : v = 0 := by
   have h1 : I.J *ᵥ v = 0 := funext fun i => by
     rw [← hG_single I i v]
     exact h _
   exact Matrix.eq_zero_of_mulVec_eq_zero I.J_det h1
 
+/- English proof (translation)
+Set `w : Fin I.n → I.E` to `fun j => c (Pi.single j 1)`. Use `⟨fun i => star ((w ᵥ* I.J⁻¹) i), fun x => ?_⟩` and prove the remaining obligations. Establish `hJ : I.J⁻¹ * I.J = 1` using `Matrix.nonsing_inv_mul _ (isUnit_iff_ne_zero.mpr I.J_det)`. Establish `hx : x = ∑ j, x j • Pi.single j (1 : I.E)`. Use extensionality with `k`.
+
+Simplify using `[Finset.sum_apply, Pi.single_apply]`. Establish `hc : c x = ∑ j, x j * w j` using `by conv_lhs => rw [hx]`. Simplify using `[map_sum, map_smul, w]`. Establish `hw : (w ᵥ* I.J⁻¹) ᵥ* I.J = w`. Rewrite using `[Matrix.vecMul_vecMul, hJ, Matrix.vecMul_one]`.
+
+Rewrite using `[hc, hG_def]`. Simplify using `only [star_star]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Finset.sum_comm]`. Simplify using `only [Matrix.vecMul, dotProduct, Finset.sum_mul]`.
+
+Use `_ = ∑ j, x j * w j := by`. Rewrite using `[hw]`. Simplify using `only [mul_comm]`.
+-/
 theorem riesz (c : (Fin I.n → I.E) →ₗ[I.E] I.E) : ∃ u : Fin I.n → I.E, ∀ x, hG I u x = c x := by
   let w : Fin I.n → I.E := fun j => c (Pi.single j 1)
   refine ⟨fun i => star ((w ᵥ* I.J⁻¹) i), fun x => ?_⟩
@@ -105,11 +165,22 @@ theorem riesz (c : (Fin I.n → I.E) →ₗ[I.E] I.E) : ∃ u : Fin I.n → I.E,
 
 variable {I}
 
+/- English proof (translation)
+Unfold both sides. The equivalence is reflexive.
+-/
 theorem mem_Ap {p : ℕ} {x : I.E} :
     x ∈ Ap I p ↔ ∃ s : ℕ, Nat.Coprime s p ∧ ∃ a : 𝓞 I.E, (s : I.E) * x = (a : I.E) := Iff.rfl
 
+/- English proof (translation)
+The claim follows from `mem_Ap.mpr ⟨1, Nat.coprime_one_left p, a, by simp⟩`.
+-/
 theorem int_mem_Ap (p : ℕ) (a : 𝓞 I.E) : (a : I.E) ∈ Ap I p := mem_Ap.mpr ⟨1, Nat.coprime_one_left p, a, by simp⟩
 
+/- English proof (translation)
+Establish `hs0 : (s : I.E) ≠ 0`. Use `Nat.cast_ne_zero.mpr ?_` and prove the remaining obligations. Introduce and unpack `rfl`. Rewrite `hs` using `[Nat.coprime_zero_left]`. Conclude with `hp.one_lt.ne' hs`.
+
+Conclude with `mem_Ap.mpr ⟨s, hs, 1, by rw [mul_inv_cancel₀ hs0]; simp⟩`.
+-/
 theorem inv_mem_Ap {p s : ℕ} (hp : p.Prime) (hs : Nat.Coprime s p) : ((s : I.E))⁻¹ ∈ Ap I p := by
   have hs0 : (s : I.E) ≠ 0 := by
     refine Nat.cast_ne_zero.mpr ?_
@@ -118,6 +189,11 @@ theorem inv_mem_Ap {p s : ℕ} (hp : p.Prime) (hs : Nat.Coprime s p) : ((s : I.E
     exact hp.one_lt.ne' hs
   exact mem_Ap.mpr ⟨s, hs, 1, by rw [mul_inv_cancel₀ hs0]; simp⟩
 
+/- English proof (translation)
+Take `⟨s, hs, a, ha⟩` from `mem_Ap.mp hx`. Establish `hint : IsIntegral ℤ (star (a : I.E))`. Use `map_isIntegral_int (starRingEnd I.E) (RingOfIntegers.isIntegral_coe a)` as an intermediate fact. Simplify `this` using `[starRingEnd_apply]`. Use `mem_Ap.mpr ⟨s, hs, ⟨star (a : I.E), hint⟩, ?_⟩` and prove the remaining obligations.
+
+Use `show (s : I.E) * star x = star (a : I.E)`. Rewrite using `[← ha, star_mul', star_natCast]`.
+-/
 theorem star_mem_Ap {p : ℕ} {x : I.E} (hx : x ∈ Ap I p) : star x ∈ Ap I p := by
   obtain ⟨s, hs, a, ha⟩ := mem_Ap.mp hx
   have hint : IsIntegral ℤ (star (a : I.E)) := by

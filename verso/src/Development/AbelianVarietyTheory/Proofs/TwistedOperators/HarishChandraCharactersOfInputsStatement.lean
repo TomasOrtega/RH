@@ -10,5 +10,8 @@ import Development.AbelianVarietyTheory.PublishedTheorems.TwistedTraceFormula.In
 import Development.AbelianVarietyTheory.PublishedTheorems.TwistedTraceFormula.InducedAdmissibleFiniteLength
 import Development.AbelianVarietyTheory.PublishedTheorems.DiscreteSeriesUnitary₂.DiscreteSeriesSUIff
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.HarishChandraCharacterSU.harishChandraCharacters_SU_of_hypotheses | exact GlobalTheory.HarishChandraCharacterSU.harishChandraCharacters_SU_of_hypotheses | (intros; apply GlobalTheory.HarishChandraCharacterSU.harishChandraCharacters_SU_of_hypotheses <;> …`.
+-/
 theorem _root_.GlobalTheory.T.harish_chandra_characters_of_inputs : GlobalTheory.Published.IrreducibleUnitaryAdmissible → GlobalTheory.Published.KFiniteCoefficientsAnalytic → GlobalTheory.Published.DiscreteSeriesSU → GlobalTheory.Published.CharacterRegularityFiniteLength → GlobalTheory.Published.DiscreteSeriesCharacterSU → GlobalTheory.Published.WeylIntegrationSum → GlobalTheory.Published.InducedCharacterVanishing → GlobalTheory.Published.InducedAdmissibleFiniteLength → GlobalTheory.Published.HarishChandraCharacters := by
   first | exact @GlobalTheory.HarishChandraCharacterSU.harishChandraCharacters_SU_of_hypotheses | exact GlobalTheory.HarishChandraCharacterSU.harishChandraCharacters_SU_of_hypotheses | (intros; apply GlobalTheory.HarishChandraCharacterSU.harishChandraCharacters_SU_of_hypotheses <;> assumption)

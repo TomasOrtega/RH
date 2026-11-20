@@ -18,24 +18,39 @@ namespace PositivityTheory.Rg.Rsw.L.LFixW
 
 variable {D : D7} {n : ℕ}
 
+/- English proof (translation)
+Simplify using `only [blk4, Matrix.submatrix_apply, Equiv.symm_apply_apply, Matrix.fromBlocks_apply₁₁]`.
+-/
 theorem block_matrix_apply_inl_inl_alt {R : Type} (a b c d : Matrix (Fin n) (Fin n) R) (i j : Fin n) :
     blk4 a b c d (finSumFinEquiv (Sum.inl i)) (finSumFinEquiv (Sum.inl j)) = a i j := by
   simp only [blk4, Matrix.submatrix_apply, Equiv.symm_apply_apply, Matrix.fromBlocks_apply₁₁]
 
+/- English proof (translation)
+Simplify using `only [blk4, Matrix.submatrix_apply, Equiv.symm_apply_apply, Matrix.fromBlocks_apply₁₂]`.
+-/
 theorem block_matrix_apply_inl_inr_alt {R : Type} (a b c d : Matrix (Fin n) (Fin n) R) (i j : Fin n) :
     blk4 a b c d (finSumFinEquiv (Sum.inl i)) (finSumFinEquiv (Sum.inr j)) = b i j := by
   simp only [blk4, Matrix.submatrix_apply, Equiv.symm_apply_apply, Matrix.fromBlocks_apply₁₂]
 
+/- English proof (translation)
+Simplify using `only [blk4, Matrix.submatrix_apply, Equiv.symm_apply_apply, Matrix.fromBlocks_apply₂₂]`.
+-/
 theorem block_matrix_apply_inr_inr_alt {R : Type} (a b c d : Matrix (Fin n) (Fin n) R) (i j : Fin n) :
     blk4 a b c d (finSumFinEquiv (Sum.inr i)) (finSumFinEquiv (Sum.inr j)) = d i j := by
   simp only [blk4, Matrix.submatrix_apply, Equiv.symm_apply_apply, Matrix.fromBlocks_apply₂₂]
 
+/- English proof (translation)
+Rewrite using `[blk4, blk4, Matrix.submatrix_mul_equiv, Matrix.fromBlocks_multiply]`. Both sides reduce to the same expression.
+-/
 theorem block_matrix_mul_comm_ring {R : Type} [CommRing R] (a b c d a' b' c' d' : Matrix (Fin n) (Fin n) R) :
     blk4 a b c d * blk4 a' b' c' d' =
       blk4 (a * a' + b * c') (a * b' + b * d') (c * a' + d * c') (c * b' + d * d') := by
   rw [blk4, blk4, Matrix.submatrix_mul_equiv, Matrix.fromBlocks_multiply]
   rfl
 
+/- English proof (translation)
+Distinguish the cases in `h : i = j`. Substitute `h` using the available equality. Simplify using the standard rewrite rules. Rewrite using `[Matrix.one_apply_ne (fun h' => h (Sum.inl_injective (finSumFinEquiv.injective h'))), Matrix.one_apply_ne h]`.
+-/
 theorem one_ll {R : Type} [Zero R] [One R] (i j : Fin n) :
     (1 : Matrix (Fin (n + n)) (Fin (n + n)) R) (finSumFinEquiv (Sum.inl i)) (finSumFinEquiv (Sum.inl j)) =
       (1 : Matrix (Fin n) (Fin n) R) i j := by
@@ -43,12 +58,20 @@ theorem one_ll {R : Type} [Zero R] [One R] (i j : Fin n) :
   · subst h; simp
   · rw [Matrix.one_apply_ne (fun h' => h (Sum.inl_injective (finSumFinEquiv.injective h'))), Matrix.one_apply_ne h]
 
+/- English proof (translation)
+The claim follows from `Matrix.one_apply_ne fun h => Sum.inl_ne_inr (finSumFinEquiv.injective h)`.
+-/
 theorem one_lr {R : Type} [Zero R] [One R] (i j : Fin n) :
     (1 : Matrix (Fin (n + n)) (Fin (n + n)) R) (finSumFinEquiv (Sum.inl i)) (finSumFinEquiv (Sum.inr j)) = 0 :=
   Matrix.one_apply_ne fun h => Sum.inl_ne_inr (finSumFinEquiv.injective h)
 
 variable {S : Finset (Pl D)}
 
+/- English proof (translation)
+Introduce `i j`. Establish `e : b i j = mat g (finSumFinEquiv (Sum.inl i)) (finSumFinEquiv (Sum.inr j))` using `by rw [hb, block_matrix_apply_inl_inr_alt]`. Use `⟨fun w => ?_, fun v hv => ?_, fun v hv => ?_⟩` and prove the remaining obligations. Rewrite using `[e, LFixTh.kOff_inf hg, one_lr]`. Rewrite using `[e, LFixTh.kOff_at hg hv, one_lr]`.
+
+Rewrite using `[e]`. Conclude with `(LFixTh.kOff_int hg hv _ _).1`.
+-/
 theorem offM_of_N {g : G D n} (hg : g ∈ KOff D n S) {b : Mx D n n} (hb : mat g = blk4 1 b 0 1) : OffM S b := by
   intro i j
   have e : b i j = mat g (finSumFinEquiv (Sum.inl i)) (finSumFinEquiv (Sum.inr j)) := by rw [hb, block_matrix_apply_inl_inr_alt]
@@ -57,10 +80,20 @@ theorem offM_of_N {g : G D n} (hg : g ∈ KOff D n S) {b : Mx D n n} (hb : mat g
   · rw [e, LFixTh.kOff_at hg hv, one_lr]
   · rw [e]; exact (LFixTh.kOff_int hg hv _ _).1
 
+/- English proof (translation)
+The claim follows from `intS_mul (adj_intS ((intOff_iff x).1 hx)) (intS_mul hQ ((intOff_iff x).1 hx)) i j`.
+-/
 theorem intS_inner (V : HSp D) {S : Finset (Pl D)} (hQ : ∀ i j, IntS S (rat V.gram i j)) {x : Mx D V.rank n}
     (hx : IntOff S x) (i j : Fin n) : IntS S (inner V x x i j) :=
   intS_mul (adj_intS ((intOff_iff x).1 hx)) (intS_mul hQ ((intOff_iff x).1 hx)) i j
 
+/- English proof (translation)
+Take `⟨S₁, hS₁⟩` from `psi_off hψ`. Take `⟨S₂, hS₂⟩` from `exists_rat_int V.gram`. Use `⟨S₁ ∪ S₂, fun S hS n θ μ ω χ hω g hg hN Ψ hΨ => ?_⟩` and prove the remaining obligations. Take `⟨b, hb⟩` from `hN`. Establish `hQ` using `hS₂ S (fun v h => hS (Finset.mem_union_right _ h))`.
+
+Use `Subtype.ext (funext fun x => ?_)` and prove the remaining obligations. Rewrite using `[hω.unip g b hb Ψ x]`. Distinguish the cases in `hx : IntOff S x`. Establish `h` using `(hS₁ S (fun v h => hS (Finset.mem_union_left _ h)) _ (offS_trace (offS_mul_right (offM_of_N hg hb) (intS_inner V hQ hx)))).2`. Rewrite using `[h, one_mul]`.
+
+Rewrite using `[hΨ x hx, mul_zero]`.
+-/
 theorem fixN (V : HSp D) {ψ : AddChar (AF D.host.F) ℂ} (hψ : IsCharAF D.host.F ψ) :
     ∃ S₀ : Finset (Pl D), ∀ S, S₀ ⊆ S → ∀ (n : ℕ) (θ : InfFam D) (μ : Measure (Mx D V.rank n))
       (ω : G D n →* Module.End ℂ (schwartzA θ V.rank n)) (χ : (AE D)ˣ →* Circle), IsWeilSch ψ χ θ V μ ω →

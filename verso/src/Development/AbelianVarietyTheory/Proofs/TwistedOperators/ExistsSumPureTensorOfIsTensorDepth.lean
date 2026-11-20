@@ -9,9 +9,19 @@ open scoped Pointwise
 
 variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
 
+/- English proof (translation)
+Simplify using `[Units.val_inv_eq_inv_val, Units.val_pow_eq_pow_val]`.
+-/
 theorem unitsPowInv_val (ϖ : kˣ) (e : ℕ) : (((ϖ ^ e)⁻¹ : kˣ) : k) = ((ϖ : k) ^ e)⁻¹ := by
   simp [Units.val_inv_eq_inv_val, Units.val_pow_eq_pow_val]
 
+/- English proof (translation)
+Establish `h0 : (ϖ : k) ^ e ≠ 0` using `pow_ne_zero _ ϖ.ne_zero`. Rewrite using `[Ideal.Quotient.eq, hϖ.maximalIdeal_eq, Ideal.span_singleton_pow, Ideal.mem_span_singleton, unitsPowInv_val]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨c, hc⟩`. Establish `h1 : (a : k) - b = (ϖ : k) ^ e * c`.
+
+Use `congrArg Subtype.val hc` as an intermediate fact. Simplify using `using this`. Rewrite using `[h1, ← mul_assoc, inv_mul_cancel₀ h0, one_mul]`. Conclude with `c.2`. Introduce `h`.
+
+Use `⟨⟨_, h⟩, Subtype.ext ?_⟩` and prove the remaining obligations. Use `push_cast`. Rewrite using `[← mul_assoc, mul_inv_cancel₀ h0, one_mul]`.
+-/
 theorem resMk_eq_iff {ϖ : kˣ} (hϖ : IsUnif ϖ) (e : ℕ) (a b : 𝒪[k]) :
     Ideal.Quotient.mk (IsLocalRing.maximalIdeal 𝒪[k] ^ e) a = Ideal.Quotient.mk _ b ↔
       (((ϖ ^ e)⁻¹ : kˣ) : k) * ((a : k) - b) ∈ 𝒪[k] := by
@@ -30,6 +40,9 @@ theorem resMk_eq_iff {ϖ : kˣ} (hϖ : IsUnif ϖ) (e : ℕ) (a b : 𝒪[k]) :
     push_cast
     rw [← mul_assoc, mul_inv_cancel₀ h0, one_mul]
 
+/- English proof (translation)
+Establish `hx : x = (ϖ : k) ^ e * ((((ϖ ^ e)⁻¹ : kˣ) : k) * x)`. Rewrite using `[unitsPowInv_val, ← mul_assoc, mul_inv_cancel₀ (pow_ne_zero _ ϖ.ne_zero), one_mul]`. Rewrite using `[hx]`. Conclude with `mul_mem (pow_mem hϖ.mem _) h`.
+-/
 theorem mem_of_inv_mul_mem {ϖ : kˣ} (hϖ : IsUnif ϖ) (e : ℕ) {x : k}
     (h : (((ϖ ^ e)⁻¹ : kˣ) : k) * x ∈ 𝒪[k]) : x ∈ 𝒪[k] := by
   have hx : x = (ϖ : k) ^ e * ((((ϖ ^ e)⁻¹ : kˣ) : k) * x) := by
@@ -37,6 +50,9 @@ theorem mem_of_inv_mul_mem {ϖ : kˣ} (hϖ : IsUnif ϖ) (e : ℕ) {x : k}
   rw [hx]
   exact mul_mem (pow_mem hϖ.mem _) h
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fun h i j => mem_stdLat.1 ((mem_smul_lat _ _ _).1 (h i)) j, fun h i => (mem_smul_lat _ _ _).2 (mem_stdLat.2 fun j => h i j)⟩`.
+-/
 theorem mem_matLat_pow_smul_iff (ϖ : kˣ) (e : ℕ) {m n : ℕ} {Z : Matrix (Fin m) (Fin n) k} :
     Z ∈ matLat (Fin m) (ϖ ^ e • stdLat k (Fin n)) ↔ ∀ i j, (((ϖ ^ e)⁻¹ : kˣ) : k) * Z i j ∈ 𝒪[k] :=
   ⟨fun h i j => mem_stdLat.1 ((mem_smul_lat _ _ _).1 (h i)) j,
@@ -45,6 +61,11 @@ theorem mem_matLat_pow_smul_iff (ϖ : kˣ) (e : ℕ) {m n : ℕ} {Z : Matrix (Fi
 def resClass (ϖ : kˣ) {e : ℕ} {m n : ℕ} (c : Fin m → Fin n → Res k e) : Set (Matrix (Fin m) (Fin n) k) :=
   {X | ∀ i j, X i j ∈ 𝒪[k] ∧ (((ϖ ^ e)⁻¹ : kˣ) : k) * (X i j - liftRes c i j) ∈ 𝒪[k]}
 
+/- English proof (translation)
+Use `⟨fun X hX => Set.indicator_of_notMem (fun h => hX (mem_matLat_stdLat.2 fun i j => (h i j).1)) _, fun X Z hZ => ?_⟩` and prove the remaining obligations. Establish `hZ'` using `(mem_matLat_pow_smul_iff ϖ e).1 hZ`. Establish `hiff : X + Z ∈ resClass ϖ c ↔ X ∈ resClass ϖ c`. Use `forall_congr' fun i => forall_congr' fun j => ?_` and prove the remaining obligations. Establish `hz : Z i j ∈ 𝒪[k]` using `mem_of_inv_mul_mem hϖ e (hZ' i j)`.
+
+Establish `h1 : (((ϖ ^ e)⁻¹ : kˣ) : k) * (X i j + Z i j - liftRes c i j) = (((ϖ ^ e)⁻¹ : kˣ) : k) * (X i j - liftRes c i j) + (((ϖ ^ e)⁻¹ : kˣ) : k) * Z i j` using `by ring`. Use `show (X i j + Z i j ∈ 𝒪[k] ∧ (((ϖ ^ e)⁻¹ : kˣ) : k) * (X i j + Z i j - liftRes c i j) ∈ 𝒪[k]) ↔ (X i j ∈ 𝒪[k] ∧ (((ϖ ^ e)⁻¹ : kˣ) : k) * (X i j - liftRes c i j) ∈ 𝒪[k])`. Rewrite using `[h1, add_mem_cancel_right hz, add_mem_cancel_right (hZ' i j)]`. Simplify using `only [Set.indicator_apply, hiff, Pi.one_apply]`.
+-/
 theorem isNatDatum_resClass {ϖ : kˣ} (hϖ : IsUnif ϖ) (e : ℕ) {m n : ℕ} (c : Fin m → Fin n → Res k e) :
     IsNatDatum ϖ e ((resClass ϖ c).indicator (1 : Matrix (Fin m) (Fin n) k → ℂ)) := by
   classical
@@ -61,6 +82,37 @@ theorem isNatDatum_resClass {ϖ : kˣ} (hϖ : IsUnif ϖ) (e : ℕ) {m n : ℕ} (
     rw [h1, add_mem_cancel_right hz, add_mem_cancel_right (hZ' i j)]
   simp only [Set.indicator_apply, hiff, Pi.one_apply]
 
+/- English proof (translation)
+Introduce `k _ _ _ _ G ϖ hϖ e γ T hT`. Set `L` to `γ.toFinset`. Set `I` to `∀ b : L, Fin (G.rank b.1.tgt) → Fin (G.rank b.1.src) → Res k e`. Set `rep : I → G.Args` to `fun c b => if h : b ∈ L then liftRes (c ⟨b, h⟩) else 0`. Set `ψ : I → ∀ b : Edge, Matrix (Fin (G.rank b.tgt)) (Fin (G.rank b.src)) k → ℂ` to `fun c b => if h : b ∈ L then (resClass ϖ (c ⟨b, h⟩)).indicator 1 else 1`.
+
+Establish `key : ∀ z, T z = ∑ c, T (rep c) * G.lines₂ γ (ψ c) z`. Introduce `z`. Simplify using `only [Grid.lines₂]`. Distinguish the cases in `hint : ∀ b ∈ γ, z b ∈ matLat _ (stdLat k _)`. Set `c0 : I` to `fun b i j => Ideal.Quotient.mk _ ⟨z b.1 i j, mem_matLat_stdLat.1 (hint b.1 (List.mem_toFinset.1 b.2)) i j⟩`.
+
+Establish `hmem : ∀ (c : I) (b : L), z b.1 ∈ resClass ϖ (c b) ↔ c b = c0 b`. Introduce `c b`. Establish `hz` using `mem_matLat_stdLat.1 (hint b.1 (List.mem_toFinset.1 b.2))`. Prove the components needed by the constructor for the conclusion. Introduce `h`.
+
+Use function extensionality and compare the values at `i j`. Use `(resMk_eq_iff hϖ e ⟨z b.1 i j, hz i j⟩ (Quotient.out (c b i j))).2 (h i j).2` as an intermediate fact. Rewrite `this` using `[Ideal.Quotient.mk_out]`. Conclude with `this.symm`. Introduce and unpack `h i j`.
+
+Use `⟨hz i j, ?_⟩` and prove the remaining obligations. Conclude with `(resMk_eq_iff hϖ e ⟨z b.1 i j, hz i j⟩ (Quotient.out (c b i j))).1 (by rw [Ideal.Quotient.mk_out, h])`. Rewrite using `[Finset.sum_eq_single c0]`. Establish `hprod : (γ.map fun b => ψ c0 b (z b)).prod = 1`. Use `List.prod_eq_one fun x hx => ?_` and prove the remaining obligations.
+
+Take `⟨b, hb, rfl⟩` from `List.mem_map.1 hx`. Establish `hb' : b ∈ L` using `List.mem_toFinset.2 hb`. Simplify using `only [ψ, dif_pos hb']`. Conclude with `Set.indicator_of_mem ((hmem c0 ⟨b, hb'⟩).2 rfl) _`. Rewrite using `[hprod, mul_one]`.
+
+Set `w : G.Args` to `fun b => if b ∈ γ then z b - rep c0 b else 0`. Establish `hw : ∀ b, w b ∈ matLat _ (ϖ ^ e • stdLat k _)`. Introduce `b`. Distinguish the cases in `hb : b ∈ γ`. Establish `hb' : b ∈ L` using `List.mem_toFinset.2 hb`.
+
+Establish `h2` using `(hmem c0 ⟨b, hb'⟩).2 rfl`. Use `(mem_matLat_pow_smul_iff ϖ e).2 fun i j => ?_` and prove the remaining obligations. Simplify using `only [w, if_pos hb, rep, dif_pos hb', Matrix.sub_apply]`. Conclude with `(h2 i j).2`. Simplify using `only [w, if_neg hb]`.
+
+Conclude with `zero_mem _`. Rewrite using `[← hT.2.2 (rep c0) w hw]`. Use `hT.1 fun b hb => ?_` and prove the remaining obligations. Establish `hb : b ∈ γ` using `hb`. Simplify using `[w, hb]`.
+
+Introduce `c _ hc`. Choose the witnesses or unpack the hypotheses as in `⟨b, hb⟩ : ∃ b : L, c b ≠ c0 b := by`. Assume the negation of the conclusion as `hne`. Use `push_neg at hne`. Conclude with `hc (funext hne)`.
+
+Rewrite using `[List.prod_eq_zero (List.mem_map.2 ⟨b.1, List.mem_toFinset.1 b.2, ?_⟩), mul_zero]`. Simplify using `only [ψ, dif_pos b.2]`. Conclude with `Set.indicator_of_notMem (mt (hmem c b).1 hb) _`. Introduce `h`. Conclude with `absurd (Finset.mem_univ _) h`.
+
+Use `push_neg at hint`. Take `⟨b, hb, hz⟩` from `hint`. Rewrite using `[hT.2.1 z b hb hz]`. Use `(Finset.sum_eq_zero fun c _ => ?_).symm` and prove the remaining obligations. Rewrite using `[List.prod_eq_zero (List.mem_map.2 ⟨b, hb, ?_⟩), mul_zero]`.
+
+Establish `hb' : b ∈ L` using `List.mem_toFinset.2 hb`. Simplify using `only [ψ, dif_pos hb']`. Establish `hn : z b ∉ resClass ϖ (c ⟨b, hb'⟩)` using `fun h => hz (mem_matLat_stdLat.2 fun i j => (h i j).1)`. Conclude with `Set.indicator_of_notMem hn _`. Use `⟨Fintype.card I, fun i => T (rep ((Fintype.equivFin I).symm i)), fun i => ψ ((Fintype.equivFin I).symm i), ?_, ?_⟩` and prove the remaining obligations.
+
+Introduce `i b hb`. Establish `hb' : b ∈ L` using `List.mem_toFinset.2 hb`. Simplify using `only [ψ, dif_pos hb']`. Conclude with `isNatDatum_resClass hϖ e _`. Introduce `z`.
+
+Rewrite using `[key z]`. Conclude with `(Equiv.sum_comp (Fintype.equivFin I).symm (fun c => T (rep c) * G.lines₂ γ (ψ c) z)).symm`.
+-/
 theorem exists_sum_pureTensor : ∀ {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] (G : GlobalTheory.SplitFlip.Grid k) (ϖ : kˣ), GlobalTheory.SplitFlip.IsUnif ϖ → ∀ (e : ℕ) (γ : List GlobalTheory.SplitFlip.Edge) (T : G.Args → ℂ), G.IsTensor ϖ e γ T → ∃ (n : ℕ) (x : Fin n → ℂ) (φ : Fin n → ∀ b : GlobalTheory.SplitFlip.Edge, Matrix (Fin (G.rank b.tgt)) (Fin (G.rank b.src)) k → ℂ), (∀ i, ∀ b ∈ γ, GlobalTheory.SplitFlip.IsNatDatum ϖ e (φ i b)) ∧ ∀ z, T z = ∑ i, x i * G.lines₂ γ (φ i) z := by
   intro k _ _ _ _ G ϖ hϖ e γ T hT
   classical

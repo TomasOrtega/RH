@@ -10,6 +10,17 @@ open scoped Real ContDiff
 
 namespace GlobalTheory.TorsionForm.Hadamard
 
+/- English proof (translation)
+Establish `key : ∀ {F : Type} [NormedAddCommGroup F] [NormedSpace ℝ F] [CompleteSpace F] (Ψ : P × E → F), ContDiff ℝ ∞ Ψ → ∀ p₀, HasFDerivAt (fun p => ∫ x in K, Ψ (p, a x) ∂μ) (∫ x in K, (fderiv ℝ Ψ (p₀, a x)).comp (ContinuousLinearMap.inl ℝ P E) ∂μ) p₀`. Introduce `F _ _ _ Ψ hΨ p₀`. Establish `hc : Continuous fun z => (fderiv ℝ Ψ z).comp (ContinuousLinearMap.inl ℝ P E)` using `(hΨ.continuous_fderiv (by simp)).clm_comp continuous_const`. Establish `: ProperSpace P` using `FiniteDimensional.proper ℝ P`. Take `⟨C, hC⟩` from `((isCompact_closedBall p₀ 1).prod (hK.image ha)).exists_bound_of_continuousOn hc.continuousOn`.
+
+Establish `hi : ∀ p, IntegrableOn (fun x => Ψ (p, a x)) K μ` using `fun p => (hΨ.continuous.comp (continuous_const.prodMk ha)).continuousOn.integrableOn_compact hK`. Establish `hi' : IntegrableOn (fun x => (fderiv ℝ Ψ (p₀, a x)).comp (ContinuousLinearMap.inl ℝ P E)) K μ` using `(hc.comp (continuous_const.prodMk ha)).continuousOn.integrableOn_compact hK`. Establish `: IsFiniteMeasure (μ.restrict K)` using `isFiniteMeasure_restrict.2 hK.measure_lt_top.ne`. Use `hasFDerivAt_integral_of_dominated_of_fderiv_le (s := Metric.closedBall p₀ 1) (F' := fun p x => (fderiv ℝ Ψ (p, a x)).comp (ContinuousLinearMap.inl ℝ P E)) (bound := fun _ => C) (Metric.closedBall_mem_nhds _ one_pos) (Filter.Eventually.of_forall fun p => (hi p).1) (hi p₀) hi'.1 ?_ …` and prove the remaining obligations. Use `filter_upwards [ae_restrict_mem hK.measurableSet] with x hx p hp`.
+
+Conclude with `hC (p, a x) ⟨hp, ⟨x, hx, rfl⟩⟩`. Use `Filter.Eventually.of_forall fun x p _ => ?_` and prove the remaining obligations. Conclude with `((hΨ.differentiable (by simp)) (p, a x)).hasFDerivAt.comp p (hasFDerivAt_prodMk_left p (a x))`. Proceed by induction on `m with`. Consider the case `zero`.
+
+Introduce `F _ _ _ Ψ hΨ`. Conclude with `contDiff_zero.2 (continuous_iff_continuousAt.2 fun p => (key Ψ hΨ p).continuousAt)`. Consider the case `succ m ih`. Introduce `F _ _ _ Ψ hΨ`. Rewrite using `[Nat.cast_succ, contDiff_succ_iff_hasFDerivAt]`.
+
+Use `⟨_, ih (fun z => (fderiv ℝ Ψ z).comp (ContinuousLinearMap.inl ℝ P E)) ?_, key Ψ hΨ⟩` and prove the remaining obligations. Conclude with `(hΨ.fderiv_right (m := ∞) (by simp)).clm_comp contDiff_const`.
+-/
 theorem contDiff_setIntegral_nat {X P E : Type} [TopologicalSpace X] [T2Space X] [MeasurableSpace X] [BorelSpace X]
     [NormedAddCommGroup P] [NormedSpace ℝ P] [FiniteDimensional ℝ P] [NormedAddCommGroup E] [NormedSpace ℝ E]
     (μ : Measure X) [IsFiniteMeasureOnCompacts μ] {K : Set X} (hK : IsCompact K) {a : X → E} (ha : Continuous a)
@@ -51,6 +62,9 @@ def meanD {V F : Type} [NormedAddCommGroup V] [NormedSpace ℝ V] [NormedAddComm
     (f : V → F) (p : V × V) : V →L[ℝ] F :=
   ∫ t in Icc (0 : ℝ) 1, fderiv ℝ f (p.1 + t • p.2)
 
+/- English proof (translation)
+Establish `h1 : ContDiff ℝ ∞ (fderiv ℝ f)` using `hf.fderiv_right (m := ∞) (by simp)`. Establish `hΨ : ContDiff ℝ ∞ (fun z : (V × V) × ℝ => fderiv ℝ f (z.1.1 + z.2 • z.1.2))` using `h1.comp (contDiff_fst.fst.add (contDiff_snd.smul contDiff_fst.snd))`. Conclude with `contDiff_infty.2 fun m => contDiff_setIntegral_nat (volume : Measure ℝ) isCompact_Icc continuous_id m _ hΨ`.
+-/
 theorem contDiff_meanD {V F : Type} [NormedAddCommGroup V] [NormedSpace ℝ V] [FiniteDimensional ℝ V]
     [NormedAddCommGroup F] [NormedSpace ℝ F] [CompleteSpace F] {f : V → F} (hf : ContDiff ℝ ∞ f) :
     ContDiff ℝ ∞ (meanD f) := by
@@ -60,6 +74,11 @@ theorem contDiff_meanD {V F : Type} [NormedAddCommGroup V] [NormedSpace ℝ V] [
   exact contDiff_infty.2 fun m =>
     contDiff_setIntegral_nat (volume : Measure ℝ) isCompact_Icc continuous_id m _ hΨ
 
+/- English proof (translation)
+Establish `hc : Continuous fun t : ℝ => fderiv ℝ f (y + t • δ)` using `(hf.continuous_fderiv (by simp)).comp (by fun_prop)`. Establish `hd : ∀ t : ℝ, HasDerivAt (fun t : ℝ => f (y + t • δ)) (fderiv ℝ f (y + t • δ) δ) t`. Introduce `t`. Establish `h2 : HasDerivAt (fun t : ℝ => y + t • δ) δ t`. Simplify using `using ((hasDerivAt_id t).smul_const δ).const_add y`.
+
+Conclude with `((hf.differentiable (by simp)) _).hasFDerivAt.comp_hasDerivAt t h2`. Establish `h3` using `intervalIntegral.integral_eq_sub_of_hasDerivAt (a := (0 : ℝ)) (b := 1) (fun t _ => hd t) ((hc.clm_apply continuous_const).intervalIntegrable _ _)`. Simplify using `only [one_smul, zero_smul, add_zero] at h3`. Rewrite using `[← h3, meanD, ContinuousLinearMap.integral_apply (hc.continuousOn.integrableOn_compact isCompact_Icc), intervalIntegral.integral_of_le zero_le_one, integral_Icc_eq_integral_Ioc]`.
+-/
 theorem sub_eq_meanD {V F : Type} [NormedAddCommGroup V] [NormedSpace ℝ V]
     [NormedAddCommGroup F] [NormedSpace ℝ F] [CompleteSpace F] {f : V → F} (hf : ContDiff ℝ ∞ f) (y δ : V) :
     f (y + δ) - f y = meanD f (y, δ) δ := by
@@ -76,11 +95,23 @@ theorem sub_eq_meanD {V F : Type} [NormedAddCommGroup V] [NormedSpace ℝ V]
   rw [← h3, meanD, ContinuousLinearMap.integral_apply (hc.continuousOn.integrableOn_compact isCompact_Icc),
     intervalIntegral.integral_of_le zero_le_one, integral_Icc_eq_integral_Ioc]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `j`. Simplify using `[Finset.sum_apply, Pi.single_apply]`.
+-/
 theorem eq_sum_single {g : ℕ} (δ : Fin g → ℂ) :
     δ = ∑ a, (δ a).re • (Pi.single a 1 : Fin g → ℂ) + ∑ a, (δ a).im • (Pi.single a Complex.I : Fin g → ℂ) := by
   funext j
   simp [Finset.sum_apply, Pi.single_apply]
 
+/- English proof (translation)
+Introduce `E _ _ g n _ B _ ψ hψ b _ m f hf`. Establish `hM` using `contDiff_meanD hf`. Establish `hδ : ContDiffOn ℝ ∞ (fun b' => ψ b' - ψ b) B` using `hψ.sub contDiffOn_const`. Establish `hδa : ∀ a, ContDiffOn ℝ ∞ (fun b' => (ψ b' - ψ b) a) B` using `fun a => contDiffOn_pi.1 hδ a`. Establish `hS : ContDiffOn ℝ ∞ (fun P : Pt E g => meanD f (P.2 + ψ b, ψ P.1 - ψ b)) (cov B g)` using `hM.comp_contDiffOn ((contDiff_snd.contDiffOn.add contDiffOn_const).prodMk (hδ.comp contDiff_fst.contDiffOn fun P hP => hP.1))`.
+
+Use `⟨Sum.elim (fun a b' => (((ψ b' - ψ b) a).re : ℂ)) (fun a b' => (((ψ b' - ψ b) a).im : ℂ)), Sum.elim (fun a P => meanD f (P.2 + ψ b, ψ P.1 - ψ b) (Pi.single a 1)) (fun a P => meanD f (P.2 + ψ b, ψ P.1 - ψ b) (Pi.single a Complex.I)), ?_, ?_⟩` and prove the remaining obligations. Introduce and unpack `(a | a)`. Use `⟨?_, by simp, hS.clm_apply contDiffOn_const⟩` and prove the remaining obligations. Conclude with `(Complex.ofRealCLM.contDiff.comp Complex.reCLM.contDiff).comp_contDiffOn (hδa a)`. Use `⟨?_, by simp, hS.clm_apply contDiffOn_const⟩` and prove the remaining obligations.
+
+Conclude with `(Complex.ofRealCLM.contDiff.comp Complex.imCLM.contDiff).comp_contDiffOn (hδa a)`. Introduce `P _`. Establish `h` using `sub_eq_meanD hf (P.2 + ψ b) (ψ P.1 - ψ b)`. Rewrite `h` using `[show P.2 + ψ b + (ψ P.1 - ψ b) = P.2 + ψ P.1 by abel]`. Rewrite using `[h, Fintype.sum_sum_type]`.
+
+Simplify using `only [Sum.elim_inl, Sum.elim_inr]`. Generalize the expression as in `meanD f (P.2 + ψ b, ψ P.1 - ψ b) = L`. Generalize the expression as in `ψ P.1 - ψ b = δ`. Use `conv_lhs => rw [eq_sum_single δ]`. Simplify using `only [map_add, map_sum, map_smul, Complex.coe_smul]`.
+-/
 theorem hadamard : ∀ {E : Type} [NormedAddCommGroup E] [NormedSpace ℂ E] {g n : ℕ} [FiniteDimensional ℂ E] {B : Set E}, IsOpen B → ∀ {ψ : E → Fin g → ℂ}, ContDiffOn ℝ ∞ ψ B → ∀ {b : E}, b ∈ B → ∀ {m : ℕ} {f : (Fin g → ℂ) → Ext m}, ContDiff ℝ ∞ f → ∃ (φ : Fin g ⊕ Fin g → E → ℂ) (σ : Fin g ⊕ Fin g → Pt E g → Ext m), (∀ k, ContDiffOn ℝ ∞ (φ k) B ∧ φ k b = 0 ∧ ContDiffOn ℝ ∞ (σ k) (cov B g)) ∧ ∀ P ∈ cov B g, f (P.2 + ψ P.1) - f (P.2 + ψ b) = ∑ k, φ k P.1 • σ k P := by
   intro E _ _ g n _ B _ ψ hψ b _ m f hf
   have hM := contDiff_meanD hf

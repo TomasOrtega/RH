@@ -29,6 +29,13 @@ def IndefiniteRealisationMultiplicityCondition {R : _root_.Formalism.L2.RecTAlt 
 end At
 variable {𝒜 : FamClass} {sel : _root_.Formalism.L2.TwistSelection 𝒜} {selS : _root_.Formalism.L2.Top4.SelectionSpectralCondition 𝒜 sel} {selP : _root_.Formalism.L2.Top4.BaseLevelTiedChoiceAlt 𝒜 sel} {selDH : _root_.Formalism.L2.Top3.SelectionDefiniteHeightCondition 𝒜 sel}
   {selC : _root_.Formalism.L2.Top4.ColumnChoiceCompatibleSelection 𝒜 sel selP} {selK : _root_.Formalism.L2.Top4.KernelSelection 𝒜 sel} {selI : _root_.Formalism.L2.Top4.IndefiniteRealisationChoice' 𝒜 sel selS selP selDH selC selK}
+/- English proof (translation)
+Take `⟨ε1, hε1, H⟩` from `(hM.and hFX).and hon`. Use `⟨ε1, hε1, fun eps he hle => ?_⟩` and prove the remaining obligations. Take `⟨K, hK⟩` from `H eps he hle`. Use `⟨K, fun Fm CH hc hL => ?_⟩` and prove the remaining obligations. Take `⟨⟨hM', hF'⟩, ⟨y0, hY⟩⟩` from `hK Fm CH hc hL`.
+
+Take `⟨a0, hA⟩` from `hM' hc`. Take `⟨b0, hB⟩` from `hF' hc`. Use `⟨max (max a0 b0) (max y0 (max (sel Fm hc).1 (Fm.x1 + 1))), fun x hxge i => ?_⟩` and prove the remaining obligations. Establish `h1 : max a0 b0 ≤ x` using `le_trans (le_max_left _ _) hxge`. Establish `h2 : max y0 (max (sel Fm hc).1 (Fm.x1 + 1)) ≤ x` using `le_trans (le_max_right _ _) hxge`.
+
+Establish `hx : Fm.x1 < x`. Use `le_trans (le_max_right _ _) (le_trans (le_max_right _ _) h2)` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish `h : (sel Fm hc).1 ≤ x` using `le_trans (le_max_left _ _) (le_trans (le_max_right _ _) h2)`. Conclude with `_root_.Formalism.L2.SG.JoinSI.adm13_of_kernel_join (hA x hx h (le_trans (le_max_left _ _) h1) i) (selJ Fm hc x hx h i) (hB x hx h (le_trans (le_max_right _ _) h1) i) (hY x (le_trans (le_max_left _ _) h2) i)`.
+-/
 theorem complementFive_closed_of_image_v0 (selJ : _root_.Formalism.L2.SG.JoinSISel.IndefiniteRealisationSelection 𝒜 sel selS selP selDH selC selK selI)
     (hM : Closed 𝒜 fun Fm _ => ∀ hc : 𝒜 Fm, _root_.Formalism.L2.Top4.EventuallyAlongSelection sel Fm hc fun x hx h i => _root_.Formalism.L2.SG.JoinSISel.IndefiniteRealisationMultiplicityCondition (selI Fm hc x hx h i))
     (hFX : Closed 𝒜 fun Fm _ => ∀ hc : 𝒜 Fm, _root_.Formalism.L2.Top4.EventuallyAlongSelection sel Fm hc fun x hx h i => FinX (selS Fm hc x hx h i).Y)

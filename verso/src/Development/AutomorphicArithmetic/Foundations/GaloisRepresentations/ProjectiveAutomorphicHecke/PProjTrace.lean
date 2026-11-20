@@ -4,6 +4,11 @@ import Development.AutomorphicArithmetic.Foundations.GaloisRepresentations.Proje
 open Module
 universe u v
 
+/- English proof (translation)
+Introduce `F _ W _ _ _ U p u hp h`. Use `set q : W →ₗ[F] U := LinearMap.codRestrict U p hp.map_mem with hq`. Establish `h1 : u * p = U.subtype ∘ₗ ((LinearMap.restrict u h) ∘ₗ q)`. Use extensionality with `x`. Simplify using `[q, LinearMap.restrict_apply]`.
+
+Establish `h2 : q ∘ₗ U.subtype = LinearMap.id`. Use extensionality with `x`. Simplify using `[q, hp.map_id x x.2]`. Rewrite using `[h1, LinearMap.trace_comp_comm', LinearMap.comp_assoc, h2, LinearMap.comp_id]`.
+-/
 theorem UpperTheory.Gal.CertificateRingHomMap.pProjTrace_holds :
     UpperTheory.Gal.CertificateRingHomMap.ProjTrace.{u} := by
   intro F _ W _ _ _ U p u hp h

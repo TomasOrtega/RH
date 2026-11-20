@@ -17,6 +17,15 @@ noncomputable section
 
 namespace GlobalTheory.GSep
 
+/- English proof (translation)
+Introduce `I X₁ z₁ act V _ _ _ ev X _ t δ 𝔪`. Establish `hj : (TFK (R` using `V) (FractionRing V)).hom = 𝟙 _ := by show Spec.map (CommRingCat.ofHom (algebraMap (FractionRing V) (FractionRing V))) = _`. Rewrite using `[Algebra.algebraMap_self]`. Conclude with `Spec.map_id _`. Establish `gp` using `𝔪.cart`.
+
+Establish `hsq : ∀ a, (spMap 𝔪.yK ≫ (X₁.ρ.pt a).left) ≫ X₁.ρ.P.A.hom = (TFK (R` using `V) (FractionRing V)).hom ≫ spMap 𝔪.yK := by`. Introduce `a`. Rewrite using `[Category.assoc, Over.w (X₁.ρ.pt a), hj]`. Simplify using the standard rewrite rules. Set `x : X₁.S.Gam → (TFK (R` to `V) (FractionRing V) ⟶ 𝔪.A.A) := fun a => Over.homMk (gp.1.lift _ _ (hsq a)) (gp.1.lift_snd _ _ _)`.
+
+Establish `hx : ∀ a, (x a).left ≫ 𝔪.φ = spMap 𝔪.yK ≫ (X₁.ρ.pt a).left` using `fun a => gp.1.lift_fst _ _ _`. Take `⟨rig, fr, hrig, -, hfr⟩` from `GlobalTheory.exists_frames_move_through (T := baseOver (Sp X₁.S.R)) (T' := TFK (R := V) (FractionRing V)) (h := spMap 𝔪.yK) gp 𝔪.wl_gen X₁.ρ.rig_gen hx X₁.ρ.fr_tors`. Use `⟨x, fr, hx, fun a => ⟨(hfr a).1.2.1, fun z J J' hJ hJ' => ?_⟩⟩` and prove the remaining obligations. Establish `e` using `(hfr a).2 _ (𝟙 _) z J J' hJ hJ'`. Rewrite `e` using `[Fin.prod_univ_one, zpow_one, Category.id_comp, Category.id_comp]`.
+
+Conclude with `e.symm`.
+-/
 theorem exists_points_frames : ∀ {I : Type} (X₁ : GlobalTheory.GSep.GSet) (z₁ : X₁.M.Z) (act : I → (X₁.ρ.P.A ⟶ X₁.ρ.P.A)) (V : Type) [CommRing V] [IsDomain V]
     [IsLocalRing V] (ev : X₁.M.Z.presheaf.stalk z₁ →+* V) (X : Type) [AddCommGroup X] (t : X → V) (δ : I → X → X)
     (𝔪 : GlobalTheory.GSep.GMem X₁ z₁ act V ev X t δ), ∃ (x : X₁.S.Gam → (TFK (R := V) (FractionRing V) ⟶ 𝔪.A.A)) (fr : ∀ a, FrAt (x a)),

@@ -4,6 +4,13 @@ open MeasureTheory Pointwise
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Establish `hΦ : MeasurePreserving (fun z : H × G => (id z.1, (z.1 : G) * z.2)) (ν.prod μ) (ν.prod μ)`. Use `MeasurePreserving.skew_product (g := fun (p : H) (x : G) => (p : G) * x) (MeasurePreserving.id ν) ?_ ?_` and prove the remaining obligations. Conclude with `(measurable_subtype_coe.comp measurable_fst).mul measurable_snd`. Conclude with `Filter.Eventually.of_forall fun p => map_mul_left_eq_self μ (p : G)`. Establish `h1 : ∀ᵐ z ∂(ν.prod μ), P z.2`.
+
+Rewrite using `[ae_iff]`. Establish `: {z : H × G | ¬ P z.2} = Set.univ ×ˢ {x | ¬ P x}` using `by ext z; simp`. Rewrite using `[this, Measure.prod_prod, (ae_iff).1 hP, mul_zero]`. Establish `h2 : ∀ᵐ z ∂(ν.prod μ), P ((z.1 : G) * z.2)` using `hΦ.quasiMeasurePreserving.ae h1`. Establish `h3 : ∀ᵐ w ∂(μ.prod ν), P ((w.2 : G) * w.1)` using `(Measure.measurePreserving_swap (μ := μ) (ν := ν)).quasiMeasurePreserving.ae h2`.
+
+Conclude with `Measure.ae_ae_of_ae_prod h3`.
+-/
 theorem ae_ae_subgroup_mul_of_ae {G : Type} [Group G] [MeasurableSpace G] [MeasurableMul₂ G]
     (μ : Measure G) [SFinite μ] [μ.IsMulLeftInvariant] (H : Subgroup G) (ν : Measure H)
     [SFinite ν] {P : G → Prop} (hP : ∀ᵐ x ∂μ, P x) :
@@ -23,6 +30,31 @@ theorem ae_ae_subgroup_mul_of_ae {G : Type} [Group G] [MeasurableSpace G] [Measu
     (Measure.measurePreserving_swap (μ := μ) (ν := ν)).quasiMeasurePreserving.ae h2
   exact Measure.ae_ae_of_ae_prod h3
 
+/- English proof (translation)
+Use `haveI : Countable (Γ.subgroupOf H) := by`. Use `Function.Injective.countable (f := fun x : Γ.subgroupOf H => (⟨((x : H) : G), Subgroup.mem_subgroupOf.1 x.2⟩ : Γ)) ?_` and prove the remaining obligations. Introduce `x y hxy`. Apply `Subtype.ext` to reduce the goal to its premises. Apply `Subtype.ext` to reduce the goal to its premises.
+
+Simplify using `using congrArg Subtype.val hxy`. Use `haveI : MeasurableConstSMul (Γ.subgroupOf H) H := ⟨fun c => (measurable_subtype_coe.const_mul ((c : H) : G)).subtype_mk⟩`. Use `haveI : SMulInvariantMeasure (Γ.subgroupOf H) H ν := ⟨fun c s hs => (hinv c c.2).measure_preimage hs.nullMeasurableSet⟩`. Take `⟨t, hts, ht, htD⟩` from `h𝓓.nullMeasurableSet.exists_measurable_subset_ae_eq`. Establish `hcov` using `ae_ae_subgroup_mul_of_ae μ H ν h𝓓.ae_covers`.
+
+Establish `hdisj0 : ∀ᵐ x ∂μ, ∀ γ δ : Γ, γ ≠ δ → ¬ (x ∈ γ • 𝓓 ∧ x ∈ δ • 𝓓)`. Rewrite using `[ae_all_iff]`. Introduce `γ`. Rewrite using `[ae_all_iff]`. Introduce `δ`.
+
+Distinguish the cases in `hγδ : γ = δ`. Conclude with `Filter.Eventually.of_forall fun x h => absurd hγδ h`. Use `h𝓓.aedisjoint hγδ` as an intermediate fact. Establish `h0 : μ ((γ • 𝓓) ∩ (δ • 𝓓)) = 0` using `this`. Rewrite `h0` using `[measure_eq_zero_iff_ae_notMem]`.
+
+Conclude with `h0.mono fun x hx _ hm => hx hm`. Establish `hdisj` using `ae_ae_subgroup_mul_of_ae μ H ν hdisj0`. Establish `hmeas` using `ae_ae_subgroup_mul_of_ae μ H ν (htD.mem_iff)`. Use `filter_upwards [hcov, hdisj, hmeas] with g h1 h2 h3`. Establish `hA : IsFundamentalDomain (Γ.subgroupOf H) {p : H | (p : G) * g ∈ 𝓓} ν`.
+
+Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Establish `hA' : MeasurableSet {p : H | (p : G) * g ∈ t}` using `(measurable_subtype_coe.mul_const g) ht`. Use `hA'.nullMeasurableSet.congr ?_` and prove the remaining obligations. Conclude with `h3.mono fun p hp => propext hp`. Use `h1.mono fun p hp => ?_` and prove the remaining obligations.
+
+Take `⟨γ, hγ⟩` from `hp`. Use `⟨⟨⟨(γ : G), hΓH γ.2⟩, Subgroup.mem_subgroupOf.2 γ.2⟩, ?_⟩` and prove the remaining obligations. Use `show (((γ : G) * p) * g) ∈ 𝓓`. Rewrite using `[mul_assoc]`. Conclude with `hγ`.
+
+Introduce `γ δ hγδ show ν ((γ • {p : H | (p : G) * g ∈ 𝓓}) ∩ (δ • {p : H | (p : G) * g ∈ 𝓓})) = 0`. Rewrite using `[measure_eq_zero_iff_ae_notMem]`. Use `h2.mono fun q hq hm => ?_` and prove the remaining obligations. Establish `hne : (⟨((γ : H) : G), Subgroup.mem_subgroupOf.1 γ.2⟩ : Γ) ≠ ⟨((δ : H) : G), Subgroup.mem_subgroupOf.1 δ.2⟩`. Introduce `h`.
+
+Apply `hγδ` to reduce the goal to its premises. Apply `Subtype.ext` to reduce the goal to its premises. Apply `Subtype.ext` to reduce the goal to its premises. Simplify using `using congrArg Subtype.val h`. Apply `hq _ _ hne` to reduce the goal to its premises.
+
+Take `⟨h1', h2'⟩` from `hm`. Rewrite `h1'`, `h2'` using `[Set.mem_smul_set_iff_inv_smul_mem]`. Rewrite using `[Set.mem_smul_set_iff_inv_smul_mem, Set.mem_smul_set_iff_inv_smul_mem]`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Establish `: ((((γ⁻¹ • q : H)) : G) * g) ∈ 𝓓` using `h1' show ((γ : H) : G)⁻¹ * ((q : G) * g) ∈ 𝓓`.
+
+Rewrite using `[← mul_assoc]`. Simplify `this` using `[Subgroup.smul_def]`. Establish `: ((((δ⁻¹ • q : H)) : G) * g) ∈ 𝓓` using `h2' show ((δ : H) : G)⁻¹ * ((q : G) * g) ∈ 𝓓`. Rewrite using `[← mul_assoc]`. Simplify `this` using `[Subgroup.smul_def]`.
+
+Conclude with `hA.measure_eq hE`.
+-/
 theorem ae_measure_subgroup_slice_fundamentalDomain {G : Type} [Group G] [MeasurableSpace G]
     [MeasurableMul₂ G] [MeasurableInv G] (μ : Measure G) [SFinite μ] [μ.IsMulLeftInvariant]
     (H : Subgroup G) (ν : Measure H) [SFinite ν] (Γ : Subgroup G) [Countable Γ]

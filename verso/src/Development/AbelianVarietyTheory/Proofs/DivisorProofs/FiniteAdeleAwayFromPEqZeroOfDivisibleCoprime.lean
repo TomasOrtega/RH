@@ -13,10 +13,16 @@ open scoped RestrictedProduct
 
 namespace GlobalTheory.AfPZero
 
+/- English proof (translation)
+The claim follows from `(map_natCast (algebraMap ℤ (v.adicCompletion ℚ)) n).symm`.
+-/
 theorem natCast_eq_algebraMap (v : HeightOneSpectrum ℤ) (n : ℕ) :
     (n : v.adicCompletion ℚ) = algebraMap ℤ (v.adicCompletion ℚ) (n : ℤ) :=
   (map_natCast (algebraMap ℤ (v.adicCompletion ℚ)) n).symm
 
+/- English proof (translation)
+Rewrite using `[natCast_eq_algebraMap]`. Use `valuedAdicCompletion_eq_valuation (K := ℚ) v (n : ℤ)` as an intermediate fact. Rewrite using `[← valuation_of_algebraMap (K := ℚ)]`. Conclude with `this`.
+-/
 theorem valued_natCast (v : HeightOneSpectrum ℤ) (n : ℕ) :
     Valued.v (n : v.adicCompletion ℚ) = v.intValuation (n : ℤ) := by
   rw [natCast_eq_algebraMap]
@@ -24,6 +30,11 @@ theorem valued_natCast (v : HeightOneSpectrum ℤ) (n : ℕ) :
   rw [← valuation_of_algebraMap (K := ℚ)]
   exact this
 
+/- English proof (translation)
+Assume the negation of the conclusion as `hx`. Establish `hγ : Valued.v x ≠ 0` using `by simpa using hx`. Use `set L : ℤ := log (Valued.v x) with hL`. Take `⟨n, hn, y, hy, hxe⟩` from `h ((-L).toNat + 1)`. Establish `h1 : Valued.v x ≤ exp (-(((-L).toNat + 1 : ℕ) : ℤ))`.
+
+Rewrite using `[hxe, map_mul]`. Combine the equalities or inequalities in the displayed calculation. Rewrite `h1` using `[← exp_log hγ, ← hL]`. Establish `h2` using `exp_le_exp.1 h1`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem eq_zero_of_dvd (v : HeightOneSpectrum ℤ) (x : v.adicCompletion ℚ)
     (h : ∀ k : ℕ, ∃ n : ℕ, (n : ℤ) ∈ v.asIdeal ^ k ∧
       ∃ y ∈ v.adicCompletionIntegers ℚ, x = (n : v.adicCompletion ℚ) * y) : x = 0 := by
@@ -43,6 +54,15 @@ theorem eq_zero_of_dvd (v : HeightOneSpectrum ℤ) (x : v.adicCompletion ℚ)
 
 open GlobalTheory.LKTrip GlobalTheory.LKGeo
 
+/- English proof (translation)
+Use `set q : ℤ := Submodule.IsPrincipal.generator v.1.asIdeal with hq`. Establish `hspan : v.1.asIdeal = Ideal.span {q}` using `(Submodule.IsPrincipal.span_singleton_generator v.1.asIdeal).symm`. Establish `hq0 : q ≠ 0`. Introduce `h0`. Apply `v.1.ne_bot` to reduce the goal to its premises.
+
+Rewrite using `[hspan, h0, Ideal.span_singleton_eq_bot]`. Establish `hqp : Prime q`. Use `v.1.isPrime` as an intermediate fact. Rewrite `this` using `[hspan]`. Conclude with `(Ideal.span_singleton_prime hq0).1 this`.
+
+Establish `hl : q.natAbs.Prime` using `Int.prime_iff_natAbs_prime.1 hqp`. Establish `hspan' : v.1.asIdeal = Ideal.span {((q.natAbs : ℕ) : ℤ)}`. Rewrite using `[hspan, Int.span_natAbs]`. Use `⟨q.natAbs, hl, (Nat.coprime_primes hl (Fact.out)).2 ?_, ?_⟩` and prove the remaining obligations. Introduce `he`.
+
+Apply `v.2` to reduce the goal to its premises. Rewrite using `[hspan', he]`. Rewrite using `[hspan']`. Conclude with `Ideal.subset_span rfl`.
+-/
 theorem exists_prime (p : ℕ) [Fact p.Prime] (v : AwayP p) :
     ∃ l : ℕ, l.Prime ∧ l.Coprime p ∧ (l : ℤ) ∈ v.1.asIdeal := by
   set q : ℤ := Submodule.IsPrincipal.generator v.1.asIdeal with hq
@@ -65,6 +85,11 @@ theorem exists_prime (p : ℕ) [Fact p.Prime] (v : AwayP p) :
   · rw [hspan']
     exact Ideal.subset_span rfl
 
+/- English proof (translation)
+Introduce `p _ α h`. Establish `hloc : ∀ v : AwayP p, AfP.eval v α = 0`. Introduce `v`. Take `⟨l, hl, hlp, hlv⟩` from `exists_prime p v`. Apply `eq_zero_of_dvd v.1` to reduce the goal to its premises.
+
+Introduce `k`. Take `⟨β, hβ, hαβ⟩` from `h (l ^ k) (pow_pos hl.pos k) (Nat.Coprime.pow_left k hlp)`. Use `⟨l ^ k, by push_cast; exact Ideal.pow_mem_pow hlv k, AfP.eval v β, hβ v, ?_⟩` and prove the remaining obligations. Rewrite using `[hαβ, map_nsmul, nsmul_eq_mul]`. Conclude with `Subtype.ext (funext fun v => hloc v)`.
+-/
 theorem main : ∀ (p : ℕ) [Fact p.Prime] (α : AfP p),
     (∀ n : ℕ, 0 < n → n.Coprime p → ∃ β : AfP p, IsIntAf β ∧ α = n • β) → α = 0 := by
   intro p _ α h

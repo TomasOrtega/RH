@@ -8,6 +8,11 @@ open CategoryTheory Limits AlgebraicGeometry Opposite CochainComplex CochainComp
 namespace UpperTheory.Kun
 variable {R : Type} [CommRing R]
 
+/- English proof (translation)
+Establish `e : SimplexCategory.subinterval 0 N h = 𝟙 _`. Use extensionality with `i`. Simplify using `[SimplexCategory.subinterval]`. Unfold `Sx.sub`. Rewrite using `[e]`.
+
+Simplify using the standard rewrite rules.
+-/
 private theorem sub_self_all {E : Spc} {N : ℕ} {U : Scheme.{0}} (x : Sx E N U) (h : 0 + N ≤ N) : x.sub 0 N h = x := by
   have e : SimplexCategory.subinterval 0 N h = 𝟙 _ := by
     ext i
@@ -16,6 +21,15 @@ private theorem sub_self_all {E : Spc} {N : ℕ} {U : Scheme.{0}} (x : Sx E N U)
   rw [e]
   simp
 
+/- English proof (translation)
+Establish `term : ∀ (r l : ℕ) (hrl : r + l = N) (t u : ℤ) (ht : -(r : ℤ) + m = t) (hu : -(l : ℤ) + 1 = u) (hw' : t + u = w), μ.mul U t u w hw' (ev A r t ht U (x.sub 0 r (by omega))) (ev B l u hu U (x.sub r l (by omega))) = if l = 0 then μ.mul U (w + -1) 1 w (by omega) (ev A N (w + -1) (by o …`. Introduce `r l hrl t u ht hu hw'`. Break down `l with _ | l` into its components or cases. Take `rfl : r = N` from `by omega`. Take `rfl : u = 1` from `by simpa using hu.symm`.
+
+Take `rfl : t = w + -1` from `by omega`. Simplify using `only [if_true]`. Rewrite using `[sub_self_all]`. Rewrite using `[hB]`. Simplify using the standard rewrite rules.
+
+Rewrite using `[hγ N w hw U x, Fin.sum_univ_castSucc, Finset.sum_eq_zero, zero_add]`. Rewrite using `[term _ _ (by simp) _ _ rfl rfl]`. Simplify using the standard rewrite rules. Introduce `i _`. Apply the tactic sequence `rw [term _ _ (by simp <;> omega) _ _ rfl rfl, if_neg (by simp <;> omega)]`.
+
+Simplify using the standard rewrite rules.
+-/
 private theorem aw_conc {Q P I : Cx R} (μ : Pair Q P I) {X : Spc} {m n : ℤ} (h : m + 1 = n)
     (A : Cochain ((chains R).obj X) Q m) (B : Cochain ((chains R).obj X) P 1)
     (γ : Cochain ((chains R).obj X) I n) (hγ : μ.IsAW h A B γ)
@@ -48,6 +62,11 @@ end UpperTheory.Kun
 namespace UpperTheory.Kun
 variable {R : Type} [CommRing R]
 
+/- English proof (translation)
+Establish `e : (α.rightShift (-1) n (by omega)).1.v (-(p : ℤ)) s hs = (show _ ⟶ (sh Q).X s from α.1.v (-(p : ℤ)) (s + -1) (by omega))`. Use `(Cochain.rightShift_v α.1 (-1) n (by omega) (-(p : ℤ)) s hs (s + -1) (by omega)).trans ?_` and prove the remaining obligations. Simplify using `[CochainComplex.shiftFunctorObjXIso]`. Both sides reduce to the same expression. Unfold `ev`.
+
+Rewrite using `[e]`. Both sides reduce to the same expression.
+-/
 private theorem ev_rightShift {E : Spc} {Q : Cx R} {m n : ℤ} (h : m + 1 = n)
     (α : Cocycle ((chains R).obj E) Q m) (p : ℕ) (s : ℤ) (hs : -(p : ℤ) + n = s) (U : Scheme.{0}) (x : Sx E p U) :
     (ev (α.rightShift (-1) n (by omega)).1 p s hs U x : Sec ((sh Q).X s) U) = (ev α.1 p (s + -1) (by omega) U x : Sec (Q.X (s + -1)) U) := by
@@ -60,6 +79,11 @@ private theorem ev_rightShift {E : Spc} {Q : Cx R} {m n : ℤ} (h : m + 1 = n)
   rw [e]
   rfl
 
+/- English proof (translation)
+Establish `b` using `GlobalTheory.T.etaleCochainEvalOnSimplex_basic_properties R (E := E) (I := LL I Q) (n := n)`. Establish `e₁ : (inL h α₁ α₂).1 = α₁.1.comp (Cochain.ofHom (biprod.inl : I ⟶ LL I Q)) (add_zero n) + ((n.negOnePow : ℤˣ) : ℤ) • (α₂.rightShift (-1) n (by omega)).1.comp (Cochain.ofHom (biprod.inr : sh Q ⟶ LL I Q)) (add_zero n)` using `rfl`. Rewrite using `[e₁, (b.1 _ _ p s hs U x).1, (b.1 ((α₂.rightShift (-1) n (by omega)).1.comp (Cochain.ofHom (biprod.inr : sh Q ⟶ LL I Q)) (add_zero n)) 0 p s hs U x).2.2.2, (GlobalTheory.T.etaleCochainEvalOnSimplex_basic_properties R (E := E) (I := I) (n := n)).2.2.2.2 _ α₁.1 p s hs U x, (GlobalT …`. Unfold `cc`. Use `congr 1`.
+
+Rewrite using `[Units.smul_def]`. Conclude with `(map_zsmul ((((biprod.inr : sh Q ⟶ LL I Q).f s).hom.app (op U)).hom) _ _).symm`.
+-/
 private theorem ev_inL {E : Spc} {I Q : Cx R} {m n : ℤ} (h : m + 1 = n) (α₁ : Cocycle ((chains R).obj E) I n)
     (α₂ : Cocycle ((chains R).obj E) Q m) (p : ℕ) (s : ℤ) (hs : -(p : ℤ) + n = s) (U : Scheme.{0}) (x : Sx E p U) :
     ev (inL h α₁ α₂).1 p s hs U x =
@@ -75,20 +99,32 @@ private theorem ev_inL {E : Spc} {I Q : Cx R} {m n : ℤ} (h : m + 1 = n) (α₁
   rw [Units.smul_def]
   exact (map_zsmul ((((biprod.inr : sh Q ⟶ LL I Q).f s).hom.app (op U)).hom) _ _).symm
 
+/- English proof (translation)
+Rewrite using `[ev_inL, c₁_cc]`.
+-/
 private theorem c₁_ev_inL {E : Spc} {I Q : Cx R} {m n : ℤ} (h : m + 1 = n) (α₁ : Cocycle ((chains R).obj E) I n)
     (α₂ : Cocycle ((chains R).obj E) Q m) (p : ℕ) (s : ℤ) (hs : -(p : ℤ) + n = s) (U : Scheme.{0}) (x : Sx E p U) :
     c₁ (ev (inL h α₁ α₂).1 p s hs U x) = ev α₁.1 p s hs U x := by
   rw [ev_inL, c₁_cc]
 
+/- English proof (translation)
+Rewrite using `[ev_inL, c₂_cc]`.
+-/
 private theorem c₂_ev_inL {E : Spc} {I Q : Cx R} {m n : ℤ} (h : m + 1 = n) (α₁ : Cocycle ((chains R).obj E) I n)
     (α₂ : Cocycle ((chains R).obj E) Q m) (p : ℕ) (s : ℤ) (hs : -(p : ℤ) + n = s) (U : Scheme.{0}) (x : Sx E p U) :
     c₂ (ev (inL h α₁ α₂).1 p s hs U x) = n.negOnePow • ev α₂.1 p (s + -1) (by omega) U x := by
   rw [ev_inL, c₂_cc]
 
+/- English proof (translation)
+Conclude with `ConcreteCategory.congr_hom (NatTrans.congr_app (f.naturality (SimplexCategory.subinterval p 0 h).op) (op T)) y`.
+-/
 private theorem sub_map_sch {W : Scheme.{0}} {X : Spc} (f : X ⟶ sch.obj W) {p : ℕ} {T : Scheme.{0}} (y : Sx X p T)
     (h : p + 0 ≤ p) : (show T ⟶ W from (y.sub p 0 h).map f) = (show T ⟶ W from y.map f) := by
   exact ConcreteCategory.congr_hom (NatTrans.congr_app (f.naturality (SimplexCategory.subinterval p 0 h).op) (op T)) y
 
+/- English proof (translation)
+Express the relevant statement in the definitionally equal form `Sec.res (prod.lift f (𝟙 T)) (Sec.res (prod.snd : W ⨯ T ⟶ T) (c₁ a) + s.negOnePow • μ.mul (W ⨯ T) (s + -1) 1 s (by omega) (Sec.res (prod.snd : W ⨯ T ⟶ T) (c₂ a)) (Sec.res (prod.fst : W ⨯ T ⟶ W) z)) = _`. Rewrite using `[res_add, res_units, μ.nat, res_res, res_res, res_res, prod.lift_snd, prod.lift_fst, res_id, res_id]`.
+-/
 private theorem psi_read (W : Scheme.{0}) {I Q P : Cx R} (μ : Pair Q P I) (z : Sec (P.X 1) W) {T : Scheme.{0}} (s : ℤ)
     (f : T ⟶ W) (a : Sec ((LL I Q).X s) T) :
     Sec.res (prod.lift f (𝟙 T)) (psi W μ z T s a) =
@@ -99,6 +135,23 @@ private theorem psi_read (W : Scheme.{0}) {I Q P : Cx R} (μ : Pair Q P I) (z : 
 
 end UpperTheory.Kun
 
+/- English proof (translation)
+Introduce `R _ W I Q P μ κ E m n h α₁ α₂ β hβ`. Establish `hS` using `GlobalTheory.T.cocycle_ev_d_eq_zero_and_mk_eq_zero_iff R W P 0 1 2 (by norm_num) (by norm_num)`. Take `⟨z', hz0, hz1⟩` from `hS.1 (sg κ) (hS.2 κ).1`. Establish `hκ : CohomologyClass.mk κ = CohomologyClass.mk z'`. Rewrite using `[← sub_eq_zero, ← CohomologyClass.mk_sub]`.
+
+Use `(hS.2 (κ - z')).2.2 ⟨0, ?_⟩` and prove the remaining obligations. Establish `e : sg (κ - z') = 0`. Rewrite using `[sg_sub]`. Establish `e' : sg z' = sg κ`. Use `hz0 W (𝟙 W)` as an intermediate fact.
+
+Rewrite `this` using `[res_id]`. Conclude with `this`. Rewrite using `[e', sub_self]`. Conclude with `(map_zero ((P.d 0 1).hom.app (op W)).hom).trans e.symm`. Set `A : Cocycle ((chains R).obj (sch.obj W ⨯ E)) Q m` to `zcomp (Cocycle.ofHom ((chains R).map (prod.snd : sch.obj W ⨯ E ⟶ E))) α₂ (zero_add m)`.
+
+Set `B : Cocycle ((chains R).obj (sch.obj W ⨯ E)) P 1` to `zcomp (Cocycle.ofHom ((chains R).map (prod.fst : sch.obj W ⨯ E ⟶ _))) z' (zero_add 1)`. Take `⟨γ, hγ⟩` from `(GlobalTheory.T.cup_eq_class_of_isAW R μ h).1 A B`. Establish `hc` using `(GlobalTheory.T.cup_eq_class_of_isAW R μ h).2 A B γ hγ`. Establish `evA : ∀ (p : ℕ) s hs (T : Scheme.{0}) (y : Sx (sch.obj W ⨯ E) p T), ev A.1 p s hs T y = ev α₂.1 p s hs T (y.map prod.snd)` using `fun p s hs T y => (GlobalTheory.T.etaleCochainEvalOnSimplex_basic_properties R (E := E) (I := Q) (n := m)).2.2.2.1 prod.snd α₂.1 p s hs T y`. Establish `evB : ∀ (p : ℕ) s hs (T : Scheme.{0}) (y : Sx (sch.obj W ⨯ E) p T), ev B.1 p s hs T y = ev z'.1 p s hs T (y.map prod.fst)` using `fun p s hs T y => (GlobalTheory.T.etaleCochainEvalOnSimplex_basic_properties R (E := sch.obj W) (I := P) (n := 1)).2.2.2.1 prod.fst z'.1 p s hs T y`.
+
+Establish `hβ' : β = zcomp (Cocycle.ofHom ((chains R).map (prod.snd : sch.obj W ⨯ E ⟶ E))) α₁ (zero_add n) + γ`. Apply `Cocycle.ext` to reduce the goal to its premises. Use `(GlobalTheory.T.etaleCochainEvalOnSimplex_basic_properties R (E := sch.obj W ⨯ E) (I := I) (n := n)).2.2.1 _ _ fun p s hs T y => ?_` and prove the remaining obligations. Establish `e₁ : (zcomp (Cocycle.ofHom ((chains R).map (prod.snd : sch.obj W ⨯ E ⟶ E))) α₁ (zero_add n) + γ).1 = (Cochain.ofHom ((chains R).map (prod.snd : sch.obj W ⨯ E ⟶ E))).comp α₁.1 (zero_add n) + γ.1` using `rfl`. Rewrite using `[e₁, ((GlobalTheory.T.etaleCochainEvalOnSimplex_basic_properties R (E := sch.obj W ⨯ E) (I := I) (n := n)).1 _ _ p s hs T y).1, (GlobalTheory.T.etaleCochainEvalOnSimplex_basic_properties R (E := E) (I := I) (n := n)).2.2.2.1 prod.snd α₁.1 p s hs T y, hβ p s hs T y, psi_read, c₁_e …`.
+
+Use `congr 1`. Establish `e₂ : ev z'.1 0 1 (by simp) T ((y.sub p 0 (by omega)).map prod.fst) = Sec.res (show T ⟶ W from y.map prod.fst) (sg κ)`. Rewrite using `[← sub_map_sch prod.fst y (by omega)]`. Conclude with `hz0 T _`. Rewrite using `[e₂]`.
+
+Establish `hsign : s.negOnePow * n.negOnePow = (p : ℤ).negOnePow`. Rewrite using `[← hs, Int.negOnePow_add, Int.negOnePow_neg, mul_assoc, Int.units_mul_self, mul_one]`. Establish `key : ∀ (ε : ℤˣ) (a : Sec (Q.X (s + -1)) T) (b : Sec (P.X 1) T), μ.mul T (s + -1) 1 s (by omega) (ε • a) b = ε • μ.mul T (s + -1) 1 s (by omega) a b`. Introduce `ε a b`. Apply the tactic sequence `rcases Int.units_eq_one_or ε with rfl | rfl <;> simp`.
+
+Rewrite using `[key, smul_smul, hsign]`. Rewrite using `[hκ, hβ', CohomologyClass.mk_add, cpre_mk, cpre_mk, cpre_mk]`. Conclude with `congrArg (fun c => _ + c) hc.symm`.
+-/
 theorem UpperTheory.exteriorCup_cocycle_exists_of_pairing :
     ∀ (R : Type) [CommRing R] (W : Scheme.{0}) {I Q P : Cx R} (μ : Pair Q P I) (κ : Cocycle ((chains R).obj (sch.obj W)) P 1) {E : Spc} {m n : ℤ}
         (h : m + 1 = n) (α₁ : Cocycle ((chains R).obj E) I n) (α₂ : Cocycle ((chains R).obj E) Q m)

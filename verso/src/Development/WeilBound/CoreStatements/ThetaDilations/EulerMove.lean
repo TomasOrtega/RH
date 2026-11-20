@@ -10,6 +10,23 @@ noncomputable section
 
 namespace PositivityTheory.PlacePermOperatorBicommutantSpan
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ hcm d b n M I mi mi' m m' e ei ev me mei mev hpr hG ci c hc h1 h2 hf ⟨_, hs, S₀, H⟩`. Take `⟨S₁, hS₁⟩` from `up_fin.1 hc`. Establish `hG'` using `Filter.eventually_cofinite.1 hG`. Take `⟨r1, r2, r3, r4, r5, -⟩` from `GlobalTheory.T.adelic_tuple_projections F E σ hcm d b n M`. Establish `hBv : ∀ v, BorelSpace (Fin n → Fin M → Fv F v ⊗[F] E)` using `fun v => by`.
+
+Take `⟨_, _, _, _, -⟩` from `GlobalTheory.T.completion_is_local_ring F v`. Conclude with `(GlobalTheory.T.tensor_locally_compact_ring F E σ hcm (Fv F v)).2.2.2.2.2.2.2.1 n M`. Establish `gd : ∀ v, v ∉ S₁ ∪ hG'.toFinset → ∀ X, ev v X ∈ latV b v ↔ X ∈ latV b v` using `fun v hv => not_not.1 (mt hG'.mem_toFinset.2 fun h => hv (Finset.mem_union_right _ h))`. Establish `hoff : ∀ v, v ∉ S₁ ∪ hG'.toFinset → m' v (latV b v) = m v (latV b v)` using `fun v hv => by`. Establish `e1` using `congrArg (fun μ => μ (latV b v)) (h2 v)`.
+
+Simplify using `only [(hS₁ _ Finset.subset_union_left).1 v hv, one_smul, Measure.map_apply (mev v) (r4 v).2.measurableSet] at e1`. Rewrite using `[← e1]`. Conclude with `congrArg _ (Set.ext (gd v hv))`. Use `⟨hf, hs.congr_cofinite ((S₁ ∪ hG'.toFinset).eventually_cofinite_notMem.mono fun v hv => by simp only [hoff v hv]), S₀ ∪ (S₁ ∪ hG'.toFinset), fun S hS φi φ hφi hφ => ?_⟩` and prove the remaining obligations. Establish `hS' : ∀ v, v ∉ S → v ∉ S₁ ∪ hG'.toFinset` using `fun v h h' => h (hS (Finset.mem_union_right _ h'))`.
+
+Take `⟨-, u2⟩` from `hS₁ S ((Finset.subset_union_left.trans Finset.subset_union_right).trans hS)`. Take `⟨⟨_, _, _⟩, _, _, _⟩` from `GlobalTheory.T.adeles_locally_compact_second_countable F`. Use `(GlobalTheory.T.tensor_locally_compact_ring F E σ hcm (AF F)).2.2.2.2.2.2.2.1 n M` as an intermediate fact. Establish `hm : Measurable (pureL b S φi φ)`. Establish `h3 : Measurable (projInf : (Fin n → Fin M → AF F ⊗[F] E) → _)`.
+
+Establish `: BorelSpace (Ainf F ⊗[F] E)` using `⟨rfl⟩`. Establish `: BorelSpace (AF F ⊗[F] E)` using `⟨rfl⟩`. Conclude with `measurable_pi_lambda _ fun a => measurable_pi_lambda _ fun i => ((continuous_apply_apply a i).comp r1).measurable`. Conclude with `((hφi.comp h3).mul (Finset.measurable_fun_prod _ fun v _ => (hφ v).comp ((r3 v).comp r2).measurable)).indicator (r5 S).measurableSet`. Establish `e1 : ∀ X, pureL b S φi φ (e X) = pureL b S (fun X => φi (ei X)) (fun v X => φ v (ev v X)) X` using `fun X => by`.
+
+Establish `e2 : e X ∈ intOff b S ↔ X ∈ intOff b S` using `forall₂_congr fun v hv => by rw [(hpr X).2, gd v (hS' v hv)]`. Rewrite using `[pureL, pureL]`. Distinguish the cases in `hX : X ∈ intOff b S`. Rewrite using `[Set.indicator_of_mem hX, Set.indicator_of_mem (e2.2 hX)]`. Simplify using `only [(hpr X).1, (hpr X).2]`.
+
+Rewrite using `[Set.indicator_of_notMem hX, Set.indicator_of_notMem (mt e2.1 hX)]`. Rewrite using `[lintegral_map hm me]`. Simplify using `only [e1]`. Rewrite using `[H S (Finset.subset_union_left.trans hS) (fun X => φi (ei X)) (fun v X => φ v (ev v X)) (hφi.comp mei) fun v => (hφ v).comp (mev v), ← lintegral_map hφi mei, h1, Finset.prod_congr rfl fun v _ => (lintegral_map (hφ v) (mev v)).symm, tprod_congr fun v : {v // v ∉ S} => congrArg ENN …`. Simplify using `only [h2, ENNReal.smul_def, lintegral_smul_measure, smul_eq_mul, Finset.prod_mul_distrib]`.
+
+Rewrite using `[mul_mul_mul_comm, ← ENNReal.coe_finsetProd, ← ENNReal.coe_mul, u2, ENNReal.coe_one]`. Simplify using the standard rewrite rules.
+-/
 theorem euler_move : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E), IsCMExt F E σ → ∀ (d : ℕ) (b : Module.Basis (Fin d) F E) (n M : ℕ) (I : Measure (Fin n → Fin M → AF F ⊗[F] E)) (minf minf' : Measure (Fin n → Fin M → Ainf F ⊗[F] E)) (m m' : ∀ v : HeightOneSpectrum (𝓞 F), Measure (Fin n → Fin M → Fv F v ⊗[F] E)) (e : (Fin n → Fin M → AF F ⊗[F] E) → (Fin n → Fin M → AF F ⊗[F] E)) (einf : (Fin n → Fin M → Ainf F ⊗[F] E) → (Fin n → Fin M → Ainf F ⊗[F] E)) (ev : ∀ v : HeightOneSpectrum (𝓞 F), (Fin n → Fin M → Fv F v ⊗[F] E) → (Fin n → Fin M → Fv F v ⊗[F] E)), Measurable e → Measurable einf → (∀ v, Measurable (ev v)) → (∀ X, projInf (e X) = einf (projInf X) ∧ ∀ v, projV v (projFin (e X)) = ev v (projV v (projFin X))) → (∀ᶠ v in Filter.cofinite, ∀ X, ev v X ∈ latV b v ↔ X ∈ latV b v) → ∀ (cinf : ℝ≥0) (c : HeightOneSpectrum (𝓞 F) → ℝ≥0), IsUnitProd cinf c → minf.map einf = cinf • minf' → (∀ v, (m v).map (ev v) = c v • m' v) → (∀ v, m' v (latV b v) < ⊤) → IsEulerProd b I 1 minf m → IsEulerProd b (I.map e) 1 minf' m' := by
   intro F E _ _ _ _ _ σ hcm d b n M I mi mi' m m' e ei ev me mei mev hpr hG ci c hc h1 h2 hf ⟨_, hs, S₀, H⟩
   classical

@@ -3,6 +3,9 @@ import Development.WeilBound.CoreStatements.PadicHodgeComparison.EtaleCohomology
 
 namespace CrystallineSemistableComparison.crystallineComparison
 
+/- English proof (translation)
+The claim follows from `endEx_of Pb.pSeam`.
+-/
 theorem endEx : EndEx := endEx_of Pb.pSeam
 
 end CrystallineSemistableComparison.crystallineComparison

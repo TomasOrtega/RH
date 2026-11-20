@@ -17,6 +17,9 @@ open scoped nonZeroDivisors ContDiff
 open GlobalTheory.AscFin
 open ValuativeRel
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.ChiGrid.GridData.modul_witness | exact GlobalTheory.ChiGrid.GridData.modul_witness | (intros; apply GlobalTheory.ChiGrid.GridData.modul_witness <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.gridModulus_exact_order_witness : ∀ {D : D7} {T : Type} {L : LevCh D T} {sc : Consts} (G : GridData L sc), ∀ v ∈ G.pl.S0,
   (∃ m ∈ G.modul, m ∉ (G.pl.w v).asIdeal ^ (G.pl.depth sc v + 1)) ∧ ∃ m ∈ G.modul, m ∉ (Formalism.DivisionValues.conjPl (G.pl.w v)).asIdeal := by
   first | exact @GlobalTheory.ChiGrid.GridData.modul_witness | exact GlobalTheory.ChiGrid.GridData.modul_witness | (intros; apply GlobalTheory.ChiGrid.GridData.modul_witness <;> assumption)

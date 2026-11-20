@@ -4,6 +4,17 @@ open NumberField MeasureTheory GlobalTheory.CuspRep GlobalTheory.HCF Topology
 
 namespace GlobalTheory.HCF
 
+/- English proof (translation)
+Establish `hd : ∀ t : ℝ, HasDerivAt (fun s : ℝ => Complex.exp (-c * s)) (-c * Complex.exp (-c * t)) t`. Introduce `t`. Establish `h1 : HasDerivAt (fun s : ℝ => -c * (s : ℂ)) (-c * 1) t` using `(hasDerivAt_id t).ofReal_comp.const_mul (-c)`. Use `h1.cexp` as an intermediate fact. Simplify `this` using `[mul_comm]`.
+
+Use `set g : ℝ → ℂ := fun t => Complex.exp (-c * t) * f t with hg`. Establish `hgd : ∀ t, HasDerivAt g 0 t`. Introduce `t`. Establish `h2` using `(hd t).mul (hf t).hasDerivAt`. Establish `e : deriv f t = c * f t`.
+
+Use `congrFun h t` as an intermediate fact. Simplify using `using this`. Rewrite `h2` using `[e]`. Establish `h3` using `h2.congr_deriv (show _ = (0:ℂ) by ring)`. Conclude with `h3`.
+
+Establish `hgdiff : Differentiable ℝ g` using `fun t => (hgd t).differentiableAt`. Establish `hc` using `is_const_of_deriv_eq_zero hgdiff (fun t => (hgd t).deriv)`. Use function extensionality and compare the values at `t`. Establish `h0` using `hc t 0`. Simplify using `only [hg, Complex.ofReal_zero, mul_zero, Complex.exp_zero, one_mul] at h0`.
+
+Simplify using `only [Pi.smul_apply, smul_eq_mul]`. Rewrite using `[← h0, mul_comm (Complex.exp _) (f t), mul_assoc, ← Complex.exp_add]`. Establish `e2 : -c * (t : ℂ) + c * t = 0` using `by ring`. Rewrite using `[e2, Complex.exp_zero, mul_one]`.
+-/
 theorem eq_smul_exp_of_deriv_eq {c : ℂ} {f : ℝ → ℂ} (hf : Differentiable ℝ f)
     (h : deriv f = c • f) : f = f 0 • (fun t : ℝ => Complex.exp (c * t)) := by
   have hd : ∀ t : ℝ, HasDerivAt (fun s : ℝ => Complex.exp (-c * s)) (-c * Complex.exp (-c * t)) t := by
@@ -31,6 +42,9 @@ theorem eq_smul_exp_of_deriv_eq {c : ℂ} {f : ℝ → ℂ} (hf : Differentiable
   have e2 : -c * (t : ℂ) + c * t = 0 := by ring
   rw [e2, Complex.exp_zero, mul_one]
 
+/- English proof (translation)
+The claim follows from `| [] => by have : expSol [] = ⊥ := rfl rw [this]; infer_instance | c :: l => by haveI := expSol_finiteDimensional l let φ : expSol (c :: l) →ₗ[ℂ] expSol l := { toFun := fun f => ⟨deriv (f : ℝ → ℂ) - c • (f : ℝ → ℂ), (mem_expSol_cons.1 f.2).2⟩ map_add' := fun f g => by apply Subty …`.
+-/
 theorem expSol_finiteDimensional : ∀ l : List ℂ, FiniteDimensional ℂ (expSol l)
   | [] => by
       have : expSol [] = ⊥ := rfl

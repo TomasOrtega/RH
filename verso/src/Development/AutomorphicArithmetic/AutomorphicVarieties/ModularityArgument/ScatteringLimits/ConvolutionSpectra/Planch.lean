@@ -6,6 +6,13 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.ModularityArgument
 open MeasureTheory GroundTheory.Automorphic PositivityTheory.Rg.Tf.IntegralApplyAeEq Set Filter Topology UpperTheory.V.Z.IntegralApplyAeEq
 open scoped InnerProductSpace FourierTransform ComplexConjugate
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Use `integrable_inv_one_add_sq.mono' (Continuous.aestronglyMeasurable (Continuous.inv₀ (by fun_prop) fun y => by positivity)) (Eventually.of_forall fun y => ?_)` and prove the remaining obligations. Rewrite using `[Real.norm_of_nonneg (by positivity)]`. Use `inv_anti₀ (by positivity) ?_` and prove the remaining obligations. Use polynomial arithmetic with `[abs_nonneg y, sq_abs y]`.
+
+Rewrite using `[integral_comp_abs (f := fun y => ((1 + y) ^ 2)⁻¹)]`. Establish `h` using `integral_Ioi_of_hasDerivAt_of_nonneg' (a := 0) (g := fun y : ℝ => -(1 + y)⁻¹) (g' := fun y => ((1 + y) ^ 2)⁻¹) (l := 0) (fun y hy => by`. Establish `h0 : (1 + y) ≠ 0` using `by have : 0 ≤ y := hy; positivity`. Use `(((hasDerivAt_id y).const_add 1).inv h0).neg` as an intermediate fact. Conclude with `this.congr_deriv (by simp only [id]; rw [neg_div, neg_neg, one_div]))`.
+
+Use the proof step `(fun y _ => by positivity)`. Use the proof step `(by simpa using (tendsto_inv_atTop_zero.comp (tendsto_atTop_add_const_left _ (1 : ℝ) tendsto_id)).neg)`. Rewrite using `[h]`. Evaluate the numerical expressions.
+-/
 private theorem r_int : Integrable (fun y : ℝ => ((1 + |y|) ^ 2)⁻¹) ∧ ∫ y : ℝ, ((1 + |y|) ^ 2)⁻¹ = 2 := by
   constructor
   · refine integrable_inv_one_add_sq.mono' (Continuous.aestronglyMeasurable (Continuous.inv₀ (by fun_prop) fun y => by positivity))
@@ -23,6 +30,9 @@ private theorem r_int : Integrable (fun y : ℝ => ((1 + |y|) ^ 2)⁻¹) ∧ ∫
       (by simpa using (tendsto_inv_atTop_zero.comp (tendsto_atTop_add_const_left _ (1 : ℝ) tendsto_id)).neg)
     rw [h]; norm_num
 
+/- English proof (translation)
+Establish `c1 : Continuous fun t : ℝ => Complex.exp (z * t) • κ t` using `(Complex.continuous_exp.comp (continuous_const.mul Complex.continuous_ofReal)).smul hk.1`. Establish `s1 : HasCompactSupport fun t : ℝ => Complex.exp (z * t) • κ t` using `hk.2.mono fun t ht h => ht (by simp [h])`. Conclude with `ContinuousLinearMap.integral_apply (c1.integrable_of_hasCompactSupport s1) e`.
+-/
 private theorem symb_app {V : Type} [NormedAddCommGroup V] [InnerProductSpace ℂ V] {W : Type} [NormedAddCommGroup W]
     [InnerProductSpace ℂ W] [CompleteSpace W] (κ : ℝ → V →L[ℂ] W) (hk : Ker κ) (z : ℂ) (e : V) :
     symb κ z e = ∫ t : ℝ, Complex.exp (z * t) • κ t e := by
@@ -31,6 +41,25 @@ private theorem symb_app {V : Type} [NormedAddCommGroup V] [InnerProductSpace �
   have s1 : HasCompactSupport fun t : ℝ => Complex.exp (z * t) • κ t := hk.2.mono fun t ht h => ht (by simp [h])
   exact ContinuousLinearMap.integral_apply (c1.integrable_of_hasCompactSupport s1) e
 
+/- English proof (translation)
+Introduce `V _ _ _ _ W _ _ _ _ κ K hk hb e`. Set `f : ℝ → W` to `fun t => (Real.exp t : ℂ) • κ t e`. Establish `fc : Continuous f` using `(Complex.continuous_ofReal.comp Real.continuous_exp).smul (hk.1.clm_apply continuous_const)`. Establish `fs : HasCompactSupport f` using `hk.2.mono fun t ht h => ht (by simp [f, h])`. Establish `fm : MemLp f 2 volume` using `fc.memLp_of_hasCompactSupport fs`.
+
+Establish `fi : Integrable f` using `fc.integrable_of_hasCompactSupport fs`. Establish `e1 : ∀ᵐ x : ℝ, ‖f (-x)‖ ^ 2 = Real.exp (-2 * x) * ‖kv κ e x‖ ^ 2` using `by filter_upwards [((kvSpec κ hk).1 e).1] with x hx`. Rewrite using `[hx, norm_smul, mul_pow, Complex.norm_real, Real.norm_of_nonneg (Real.exp_pos _).le, ← Real.exp_nat_mul]`. Use `congr 2`. Use `push_cast`.
+
+Expand and normalize the polynomial expressions, which then agree. Establish `i2 : Integrable fun x => ‖f x‖ ^ 2` using `(memLp_two_iff_integrable_sq_norm fc.aestronglyMeasurable).1 fm`. Use `⟨i2.comp_neg.congr e1, ?_⟩` and prove the remaining obligations. Rewrite using `[← integral_congr_ae e1, integral_neg_eq_self fun x => ‖f x‖ ^ 2]`. Establish `nn : ∀ u : L W, ‖u‖ ^ 2 = ∫ x, ‖u x‖ ^ 2` using `fun u => by`.
+
+Rewrite using `[← inner_self_eq_norm_sq (𝕜 := ℂ), L2.inner_def, ← integral_re (L2.integrable_inner u u)]`. Simplify using `only [inner_self_eq_norm_sq]`. Establish `e2 : ∫ x, ‖f x‖ ^ 2 = ‖Lp.fourierTransformₗᵢ ℝ W (fm.toLp f)‖ ^ 2`. Rewrite using `[LinearIsometryEquiv.norm_map, nn]`. Conclude with `integral_congr_ae (fm.coeFn_toLp.mono fun x hx => by simp only [hx])`.
+
+Establish `hF : ∀ ξ : ℝ, 𝓕 f ξ = symb κ (1 + ((-(2 * Real.pi * ξ) : ℝ) : ℂ) * Complex.I) e` using `fun ξ => by`. Rewrite using `[Real.fourier_real_eq_integral_exp_smul, symb_app κ hk]`. Use `integral_congr_ae (Eventually.of_forall fun t => ?_)` and prove the remaining obligations. Simplify using `only [f, smul_smul, Complex.ofReal_exp, ← Complex.exp_add]`. Use `congr 2`.
+
+Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Take `⟨ri, rv⟩` from `r_int`. Rewrite using `[e2, nn]`. Combine the equalities or inequalities in the displayed calculation.
+
+Use `integral_mono_of_nonneg (Eventually.of_forall fun _ => sq_nonneg _) ((ri.comp_mul_left' (R := 2 * Real.pi) (by positivity)).const_mul _) ?_` and prove the remaining obligations. Use `filter_upwards [fourAe (fm.toLp f) (fi.congr fm.coeFn_toLp.symm)] with ξ hξ`. Rewrite using `[hξ, Real.fourier_congr_ae fm.coeFn_toLp, hF]`. Establish `h1` using `(symb κ _).le_of_opNorm_le (hb (-(2 * Real.pi * ξ))) e`. Rewrite `h1` using `[abs_neg]`.
+
+Use `(pow_le_pow_left₀ (norm_nonneg _) h1 2).trans_eq ?_` and prove the remaining obligations. Clear the denominators using the available nonvanishing facts. Use `_ = (K * ‖e‖) ^ 2 * (|(2 * Real.pi)⁻¹| * 2) := by`. Rewrite using `[integral_const_mul, Measure.integral_comp_mul_left (fun y : ℝ => ((1 + |y|) ^ 2)⁻¹), smul_eq_mul, rv]`. Use `_ ≤ _ := by`.
+
+Rewrite using `[div_mul_eq_mul_div, div_pow, Real.sq_sqrt (by norm_num), div_eq_mul_inv, abs_of_pos (by positivity)]`. Use `gcongr`. Rewrite using `[mul_inv, mul_right_comm, inv_mul_cancel₀ two_ne_zero, one_mul]`. Conclude with `inv_anti₀ (by norm_num) Real.pi_gt_three.le`.
+-/
 theorem UpperTheory.V.Z.IntegralApplyAeEq.planch :
     ∀ {V : Type} [NormedAddCommGroup V] [InnerProductSpace ℂ V] [FiniteDimensional ℂ V] [CompleteSpace V] {W : Type} [NormedAddCommGroup W] [InnerProductSpace ℂ W] [FiniteDimensional ℂ W] [CompleteSpace W] (κ : ℝ → V →L[ℂ] W) (K : ℝ), Ker κ → (∀ y : ℝ, ‖symb κ (1 + y * Complex.I)‖ ≤ K / (1 + |y|)) →
       ∀ e, WLe (-2) (kv κ e) (K / √3 * ‖e‖) := by

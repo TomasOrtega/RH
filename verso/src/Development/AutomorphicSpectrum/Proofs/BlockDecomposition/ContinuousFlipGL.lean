@@ -17,6 +17,9 @@ namespace GlobalTheory.CompanionTheory.ConjSat
 
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {n : ℕ}
 
+/- English proof (translation)
+Simplify using `only [locU, h]`.
+-/
 theorem locU_eq_of_under {w u : HeightOneSpectrum (𝓞 E)}
     (h : u.under (𝓞 (maximalRealSubfield E)) = w.under (𝓞 (maximalRealSubfield E))) : locU n u = locU n w := by
   simp only [locU, h]
@@ -25,10 +28,16 @@ abbrev flipGL (w : HeightOneSpectrum (𝓞 E)) :
     GL (Fin n) ((GlobalTheory.ThetaSatake.cw w).adicCompletion E) ≃* GL (Fin n) (w.adicCompletion E) :=
   GlobalTheory.LFun.ConjPlace.invT (GlobalTheory.ThetaSatake.cloc w) n
 
+/- English proof (translation)
+The claim follows from `Units.ext (Matrix.ext fun i j => GlobalTheory.LFun.ConjPlace.invT_val _ g i j)`.
+-/
 theorem flipGL_eq (w : HeightOneSpectrum (𝓞 E)) (g : GL (Fin n) ((GlobalTheory.ThetaSatake.cw w).adicCompletion E)) :
     flipGL w g = GlobalTheory.CuspRep.invT n _ (GeneralLinearGroup.map (conjLoc (IsCMField.complexConj E).toRingEquiv w) g) :=
   Units.ext (Matrix.ext fun i j => GlobalTheory.LFun.ConjPlace.invT_val _ g i j)
 
+/- English proof (translation)
+Establish `: (flipGL (n` using `n) w : _ → _) = fun g => GlobalTheory.CuspRep.invT n _ (GeneralLinearGroup.map (conjLoc (IsCMField.complexConj E).toRingEquiv w) g) :=`. Use function extensionality and compare the values at `(flipGL_eq w)`. Rewrite using `[this]`. Conclude with `(GlobalTheory.SplitPts.continuous_invT _).comp (Continuous.units_map _ (continuous_id.matrix_map (conjLoc_spec _ w).1))`.
+-/
 theorem continuous_flipGL (w : HeightOneSpectrum (𝓞 E)) : Continuous (flipGL (n := n) w) := by
   have : (flipGL (n := n) w : _ → _) = fun g => GlobalTheory.CuspRep.invT n _ (GeneralLinearGroup.map (conjLoc (IsCMField.complexConj E).toRingEquiv w) g) :=
     funext (flipGL_eq w)
@@ -36,6 +45,9 @@ theorem continuous_flipGL (w : HeightOneSpectrum (𝓞 E)) : Continuous (flipGL 
   exact (GlobalTheory.SplitPts.continuous_invT _).comp
     (Continuous.units_map _ (continuous_id.matrix_map (conjLoc_spec _ w).1))
 
+/- English proof (translation)
+The claim follows from `(GlobalTheory.BCT.LocCpt.cLoc_eq_invT x w).trans (flipGL_eq w _).symm`.
+-/
 theorem cLoc_eq_flipGL (x : UA E n) (w : HeightOneSpectrum (𝓞 E)) :
     cLoc w x = flipGL w (cLoc (GlobalTheory.ThetaSatake.cw w) x) :=
   (GlobalTheory.BCT.LocCpt.cLoc_eq_invT x w).trans (flipGL_eq w _).symm
@@ -46,6 +58,9 @@ def flipIrr {w : HeightOneSpectrum (𝓞 E)} (σ : SmIrr (GLw n w)) : SmIrr (GLw
   smooth v := (σ.smooth v).preimage (continuous_flipGL w)
   irred := GlobalTheory.ConjPairLoc.irred_comp _ _ (flipGL w).surjective σ.irred
 
+/- English proof (translation)
+Use `GlobalTheory.ThetaSatake.hasSatGL_of_invT (GlobalTheory.ThetaSatake.cloc w).symm (fun a => ?_) (GlobalTheory.ThetaSatake.absNorm_cw w) (LinearEquiv.refl ℂ σ.V) (fun g x => ?_) h` and prove the remaining obligations. Use `(conjLoc_spec (IsCMField.complexConj E).toRingEquiv w).2.2 ((GlobalTheory.ThetaSatake.cloc w).symm a)` as an intermediate fact. Conclude with `(this.symm.trans (congrArg _ ((GlobalTheory.ThetaSatake.cloc w).apply_symm_apply a)))`. Express the relevant statement in the definitionally equal form `σ.ρ (flipGL w ((flipGL w).symm g)) x = σ.ρ g x`. Rewrite using `[MulEquiv.apply_symm_apply]`.
+-/
 theorem hasSatGL_flipIrr {w : HeightOneSpectrum (𝓞 E)} (σ : SmIrr (GLw n w)) {B : Multiset ℂˣ}
     (h : HasSatGL w σ.ρ B) : HasSatGL (GlobalTheory.ThetaSatake.cw w) (flipIrr σ).ρ (B.map (·⁻¹)) := by
   refine GlobalTheory.ThetaSatake.hasSatGL_of_invT (GlobalTheory.ThetaSatake.cloc w).symm (fun a => ?_)
@@ -59,6 +74,11 @@ end GlobalTheory.CompanionTheory.ConjSat
 
 open GlobalTheory.CompanionTheory.ConjSat in
 
+/- English proof (translation)
+Introduce `E _ _ _ n π w u B _ _ hc ⟨σ, ⟨hirr, f, f0, hf, hfx⟩, hB⟩`. Take `rfl` from `GlobalTheory.CompanionTheory.OneExDatum.eq_cw_of_conjPl hc`. Use `⟨flipIrr σ, ⟨(flipIrr σ).irred, f, f0, hf, fun x v => ?_⟩, hasSatGL_flipIrr σ hB⟩` and prove the remaining obligations. Establish `hx : (x : UA E n) ∈ locU n w` using `locU_eq_of_under hc.1 ▸ x.2`. Use `hfx ⟨x, hx⟩ v` as an intermediate fact.
+
+Rewrite `this` using `[MonoidHom.comp_apply]`. Express the relevant statement in the definitionally equal form `f (σ.ρ (flipGL w (cLoc _ x.1)) v) = _`. Rewrite using `[← cLoc_eq_flipGL]`. Conclude with `this`.
+-/
 theorem GlobalTheory.CompanionTheory.ConjSat.satConj : PositivityTheory.Rg.BcB.F.RS.SatConj := by
   intro E _ _ _ n π w u B _ _ hc ⟨σ, ⟨hirr, f, f0, hf, hfx⟩, hB⟩
   obtain rfl := GlobalTheory.CompanionTheory.OneExDatum.eq_cw_of_conjPl hc

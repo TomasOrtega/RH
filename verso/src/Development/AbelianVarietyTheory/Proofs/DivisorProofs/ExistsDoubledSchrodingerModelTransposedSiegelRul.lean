@@ -24,6 +24,17 @@ namespace GlobalTheory.WeilSchrodinger.DblTarget
 
 set_option maxHeartbeats 1000000
 
+/- English proof (translation)
+Introduce `D ψ hψ S T χS χT hS hT rS rT JA JB ξ hA hB κ _ co hrat ω hω om hom`. Establish `h1S` using `isHeckeChar_one (D := D)`. Establish `r1` using `resEta_one_dblSp T rT`. Take `⟨ωd, hωd⟩` from `GlobalTheory.weilRepresentationUnitaryPair D ψ S (GlobalTheory.Doubling.dblSp T) χS 1 hψ hS h1S rS r1`. Establish `hrat'` using `coDbl_rat hA co hrat`.
+
+Take `⟨omp, hmp⟩` from `GlobalTheory.T.exists_weilDatum_transport_adelicSchwartz_thetaTransform D ψ hψ S (GlobalTheory.Doubling.dblSp T) χS 1 hS h1S rS r1 _ JB ξ rfl hB (κ ⊕ κ) (coDbl hA co) hrat' ωd hωd`. Establish `h2` using `GlobalTheory.T.transportedWeil_preserves_schwartz_heisenberg_equivariant D ψ hψ S (GlobalTheory.Doubling.dblSp T) χS 1 hS h1S rS r1 _ JB ξ rfl hB (κ ⊕ κ) (coDbl hA co) hrat' ωd hωd omp hmp`. Establish `h3` using `GlobalTheory.T.transportedWeilDatum_keeps_admissible_forms D ψ hψ S (GlobalTheory.Doubling.dblSp T) χS 1 hS h1S rS r1 _ JB ξ rfl hB (κ ⊕ κ) (coDbl hA co) hrat' ωd hωd omp hmp`. Establish `h4` using `GlobalTheory.T.transportedWeilDatum_isUnitary_adelicSchwartz D ψ hψ S (GlobalTheory.Doubling.dblSp T) χS 1 hS h1S rS r1 _ JB ξ rfl hB (κ ⊕ κ) (coDbl hA co) hrat' ωd hωd omp hmp`. Establish `h5` using `GlobalTheory.T.continuous_transported_weilDatum_adelicSchwartz D ψ hψ S (GlobalTheory.Doubling.dblSp T) χS 1 hS h1S rS r1 _ JB ξ rfl hB (κ ⊕ κ) (coDbl hA co) hrat' ωd hωd omp hmp`.
+
+Establish `hsp : GlobalTheory.WeilM.IsUSplitting (GlobalTheory.WeilM.adeleClass D.host.F) ψ (coDbl hA co) (GlobalTheory.WeilM.actAB (GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.cA D.sp.cm.sig)) omp` using `⟨⟨h2.1, h2.2, h3⟩, h4, h5⟩`. Establish `hsg` using `GlobalTheory.T.siegelRule_transported_weilDatum_doubledTarget D ψ hψ S T χS hS rS JB ξ hB (κ ⊕ κ) (coDbl hA co) hrat' ωd hωd omp hmp`. Establish `t1` using `isDblCoord_transD co`. Establish `t2 : GlobalTheory.WeilM.IsLagr (GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.cA D.sp.cm.sig) (GlobalTheory.WeilM.dbl (incM D.host.F JA)) (GlobalTheory.WeilM.diagCols (Fin T.rank))` using `GlobalTheory.WeilM.isLagr_diagCols _ _`. Establish `t4 : GlobalTheory.WeilM.IsUSplitting (GlobalTheory.WeilM.adeleClass D.host.F) ψ (transD _ (dblRows co)) (GlobalTheory.WeilM.actB _) ((omp.comp (MonoidHom.inl _ _)).comp (ugDbl T hA))` using `isUSplitting_reindex finSumFinEquiv (dblRows co) _ (reindex_dbl_incM T hA) (isUSplitting_inl hsp)`.
+
+Establish `t5 : GlobalTheory.WeilM.SiegelRule _ (GlobalTheory.WeilM.adeleClass D.host.F) ψ ξ (incM D.host.F JB) _ (transD _ (dblRows co)) χS (GlobalTheory.WeilM.diagCols (Fin T.rank)) ((omp.comp (MonoidHom.inl _ _)).comp (ugDbl T hA))` using `siegelRule_reindex finSumFinEquiv (dblRows co) _ (reindex_dbl_incM T hA) χS _ hsg`. Use `⟨_, _, t1, ⟨t2, t4, t5⟩, ?_⟩` and prove the remaining obligations. Introduce `g gd hgd φ₁ hφ₁ φ₂ hφ₂`. Establish `key` using `GlobalTheory.T.transportedWeilDatum_doubledTarget_restrict_boxTensor D ψ hψ S T χS χT hS hT rS rT JA JB ξ hA hB κ co hrat ω hω om hom ωd hωd omp hmp g (ugDbl T hA gd) (by rw [ugDbl_coe, hgd]) φ₁ hφ₁ φ₂ hφ₂`. Rewrite using `[MonoidHom.comp_apply, MonoidHom.comp_apply, MonoidHom.inl_apply]`.
+
+Conclude with `key`.
+-/
 theorem exists_dbl_target : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ), IsStdChar D ψ (-1) →
     ∀ (S T : HSp D) (χS χT : (AE D)ˣ →* Circle), IsHeckeChar D χS → IsHeckeChar D χT →
       ResEta D χS S.rank → ResEta D χT T.rank →

@@ -15,6 +15,9 @@ namespace GlobalTheory.RelAmpleQProjNoeth
 
 open GlobalTheory.RelAmpleQProj
 
+/- English proof (translation)
+Introduce and unpack `K _ _ X s A L ⟨N, i, _, _, rfl⟩ hL hA`. Take `⟨_, B, hB⟩` from `isProper_and_exists_isAmpleLB A hL hA ((isAmple_projective_O_one K N).pull_of_isImmersion i)`. Use `isProper_str K N` as an intermediate fact. Conclude with `hB.isQProjOver _`.
+-/
 theorem isQProjOver_of_relAmple_noeth : ∀ (K : Type) [CommRing K] [IsNoetherianRing K] (X : Scheme.{0})
     (s : X ⟶ Sp K) (A : Over X) (L : LB A.left), IsQProjOver s → L.IsLB → Out.RelAmple A L →
     IsQProjOver (A.hom ≫ s) := by

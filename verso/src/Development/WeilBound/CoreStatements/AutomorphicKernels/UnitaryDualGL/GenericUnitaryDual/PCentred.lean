@@ -10,6 +10,9 @@ namespace PositivityTheory.Gud.Pf
 
 variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
 
+/- English proof (translation)
+Introduce `_ hω z` and use `PositivityTheory.RgUd.UOrder.log_norm_centralChar_u hL hU hω z`.
+-/
 theorem isCentred_of_unitCC {Δ : Segment k} {δ : IrrGL k} (hL : IsLSeg Δ δ.rep)
     (hU : PositivityTheory.RgUd.UOrder.UnitCC δ.rep) : PositivityTheory.UdReth2.IsCentred Δ :=
   fun _ hω z => PositivityTheory.RgUd.UOrder.log_norm_centralChar_u hL hU hω z

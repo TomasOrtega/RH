@@ -13,6 +13,21 @@ open MvPolynomial ReciprocityTheory.ChartRestriction.G.Geo
 
 noncomputable section
 
+/- English proof (translation)
+Introduce `F _ Ω _ _ K _ _ ι _ y e hy hdim M i G hi hG c a H hc hH hGH Φ _ _ s hs`. Establish `hprime : IsMultiProjPrime (projIdeal F y (Pi.basisFun Ω (Fin i)) (fun l => LinearMap.proj l ∘ₗ (Matrix.of G).mulVecLin) s)`. Set `: Algebra F Φ` to `((algebraMap Ω Φ).comp (algebraMap F Ω)).toAlgebra`. Use `h F Φ (Option K) (bundleIdx ι M) _ ?_` and prove the remaining obligations. Introduce and unpack `(_ | k)`.
+
+Take `⟨l, hl⟩ : ∃ l, G l ⟨0, hi⟩ ≠ 0` from `by by_contra! h0`. Conclude with `hG.ne_zero ⟨0, hi⟩ (funext h0)`. Use `⟨l, fun h0 => hl ?_⟩` and prove the remaining obligations. Establish `hsum : ∑ j, G l j • s j = 0`. Rewrite using `[← h0]`.
+
+Simplify using `only [projCoord]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Simplify using `[Algebra.smul_def, mul_comm, Matrix.mulVec, dotProduct, Pi.single_apply]`. Conclude with `Fintype.linearIndependent_iff.1 hs.linearIndependent _ hsum ⟨0, hi⟩`. Take `⟨j, hj⟩` from `hy.relevant k`.
+
+Use `⟨j, fun h0 => hj ?_⟩` and prove the remaining obligations. Establish `hy0 : y ⟨k, j⟩ = 0` using `(FaithfulSMul.algebraMap_injective Ω Φ) (by simpa [projCoord] using h0)`. Simplify using `[pointIdeal, RingHom.mem_ker, pointConeMap, hy0]`. Use `⟨hprime, ?_⟩` and prove the remaining obligations. Use `hprime.isPrime` as an intermediate fact.
+
+Use `hy.isPrime` as an intermediate fact. Establish `hty : Algebra.trdeg F (MRing ι F ⧸ pointIdeal F y) = ((e + Fintype.card K : ℕ) : Cardinal)`. Rewrite `hdim` using `[GroundTheory.Arith.Abelian.Jacobian.ringKrullDim_eq_trdeg F]`. Conclude with `Cardinal.toENat_eq_natCast.1 (WithBot.coe_injective (by simpa using hdim))`. Establish `htz : Algebra.trdeg F (MRing (bundleIdx ι M) F ⧸ projIdeal F y (Pi.basisFun Ω (Fin i)) (fun l => LinearMap.proj l ∘ₗ (Matrix.of G).mulVecLin) s) = ((e + Fintype.card K + i : ℕ) : Cardinal)`.
+
+Apply `le_antisymm` to reduce the goal to its premises. Simplify `hle F Ω K ι y M i G c a H hc hH hGH Φ s` using `[hty]`. Simplify `hge F Ω K ι y M i G hG Φ s hs` using `[hty]`. Apply `(FieldNumbers.CutRegular.relDim_eq_natCast_iff _ (e + i - 1)).2` to reduce the goal to its premises. Rewrite using `[GroundTheory.Arith.Abelian.Jacobian.ringKrullDim_eq_trdeg F, htz, Fintype.card_option, show e + i - 1 + (Fintype.card K + 1) = e + Fintype.card K + i by omega]`.
+
+Simplify using the standard rewrite rules.
+-/
 theorem SpanBundleDim.proof (h : PointIdealMultiProj.Statement) (hge : SpanBundleTrdegGe.Statement)
     (hle : SpanBundleTrdegLe.Statement) : SpanBundleDim.Statement := by
   intro F _ Ω _ _ K _ _ ι _ y e hy hdim M i G hi hG c a H hc hH hGH Φ _ _ s hs

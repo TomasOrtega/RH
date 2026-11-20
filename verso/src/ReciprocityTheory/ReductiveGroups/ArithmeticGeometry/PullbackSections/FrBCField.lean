@@ -39,11 +39,17 @@ def bcPtAny (hS : ReciprocityTheory.ChartRestriction.G.Out.SecBaseChangeAnySt) (
   s := secCP (cpS ψ.toRingHom y.x) y.s
   gen := genBC_frame y.x hS hT ψ.toRingHom y.s y.gen
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨rfl, fun _ _ => rfl, bcPm ψ.toRingHom y.x, bcPm_snd _ _, bcPm_fst _ _, fun _ _ => rfl⟩`.
+-/
 theorem frMap_bcPtAny (hS : ReciprocityTheory.ChartRestriction.G.Out.SecBaseChangeAnySt) (hT : ReciprocityTheory.ChartRestriction.G.Out.SecTwistSt)
     (hL : BcLieAnySt Xo c) {S : Type} [CommRing S] [Algebra c.F S] {K : Type} [Field K] [Algebra c.F K]
     (ψ : S →ₐ[c.F] K) (y : FrPt Xo c S) : FrMap ψ y (bcPtAny hS hT hL ψ y) :=
   ⟨rfl, fun _ _ => rfl, bcPm ψ.toRingHom y.x, bcPm_snd _ _, bcPm_fst _ _, fun _ _ => rfl⟩
 
+/- English proof (translation)
+Introduce `S _ _ y K _ _ ψ`. Conclude with `⟨bcPtAny hS hT hL ψ y, frMap_bcPtAny hS hT hL ψ y⟩`.
+-/
 theorem frBCField_of (hS : ReciprocityTheory.ChartRestriction.G.Out.SecBaseChangeAnySt) (hT : ReciprocityTheory.ChartRestriction.G.Out.SecTwistSt)
     (hL : BcLieAnySt Xo c) : FrBCFieldSt Xo c := by
   intro S _ _ y K _ _ ψ

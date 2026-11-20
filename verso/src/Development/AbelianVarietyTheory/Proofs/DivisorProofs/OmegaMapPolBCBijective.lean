@@ -19,6 +19,15 @@ section Rings
 
 variable {A A' R : Type} [CommRing A] [CommRing A'] [CommRing R]
 
+/- English proof (translation)
+Set `I : Ideal A` to `Ideal.span {(p : A)}`. Set `J : Ideal A'` to `Ideal.span {(p : A')}`. Establish `hle : ∀ n : ℕ, I ^ n ≤ (J ^ n).comap φ` using `fun n => by`. Rewrite using `[← Ideal.map_le_iff_le_comap, Ideal.map_pow, Ideal.map_span, Set.image_singleton, map_natCast]`. Set `g : ∀ n : ℕ, AdicCompletion I A →+* A' ⧸ J ^ n` to `fun n => (Ideal.quotientMap (J ^ n) φ (hle n)).comp (AdicCompletion.evalₐ I n : AdicCompletion I A →+* A ⧸ I ^ n)`.
+
+Establish `hg : ∀ {m n : ℕ} (h : m ≤ n), (Ideal.Quotient.factorPow J h).comp (g n) = g m`. Introduce `m n h`. Use `RingHom.ext fun x => ?_` and prove the remaining obligations. Take `⟨x, rfl⟩` from `AdicCompletion.mk_surjective I A x`. Simplify using `only [g, RingHom.comp_apply, RingHom.coe_coe]`.
+
+Rewrite using `[AdicCompletion.evalₐ_mk, AdicCompletion.evalₐ_mk, ← AdicCompletion.Ideal.mk_eq_mk I h x]`. Both sides reduce to the same expression. Use `⟨AdicCompletion.liftRingHom J g hg, fun b => AdicCompletion.ext_evalₐ fun n => ?_⟩` and prove the remaining obligations. Rewrite using `[AdicCompletion.evalₐ_liftRingHom]`. Express the relevant statement in the definitionally equal form `Ideal.quotientMap (J ^ n) φ (hle n) (AdicCompletion.evalₐ I n (algebraMap A _ b)) = _`.
+
+Rewrite using `[AdicCompletion.algebraMap_apply, AdicCompletion.evalₐ_of, AdicCompletion.algebraMap_apply, AdicCompletion.evalₐ_of]`. Both sides reduce to the same expression.
+-/
 theorem exists_completion_map (p : ℕ) (φ : A →+* A') :
     ∃ g : AdicCompletion (Ideal.span {(p : A)}) A →+* AdicCompletion (Ideal.span {(p : A')}) A',
       ∀ a, g (algebraMap A _ a) = algebraMap A' _ (φ a) := by
@@ -41,6 +50,13 @@ theorem exists_completion_map (p : ℕ) (φ : A →+* A') :
   rw [AdicCompletion.algebraMap_apply, AdicCompletion.evalₐ_of, AdicCompletion.algebraMap_apply, AdicCompletion.evalₐ_of]
   rfl
 
+/- English proof (translation)
+Take `⟨t, ht⟩` from `ha`. Use `⟨fun r => ?_, fun x ⟨r, hr⟩ => ?_⟩` and prove the remaining obligations. Take `⟨x, y, hy⟩` from `LatDescent.adic_surj A q (ec.symm r)`. Establish `h1` using `congrArg ec hy`. Rewrite `h1` using `[ec.apply_symm_apply, map_add, map_mul, he, he]`.
+
+Conclude with `⟨x, algebraMap A R t * ec y, by rw [h1, ← mul_assoc, ← map_mul, ← ht]; ring⟩`. Take `⟨x', y, hy⟩` from `LatDescent.adic_surj A q (ec.symm r)`. Take `⟨b, hb⟩` from `LatDescent.adic_inj A q (x - a * x') (algebraMap A _ a * y) (ec.injective (by`. Establish `h1` using `congrArg ec hy`. Rewrite `h1` using `[ec.apply_symm_apply, map_add, map_mul, he, he]`.
+
+Rewrite using `[map_mul, map_mul, he, he, he, map_sub, map_mul, hr, h1]`. Use the proof step `ring))`. Conclude with `⟨x' + t * b, by rw [mul_add, ← mul_assoc, ← ht, ← hb]; ring⟩`.
+-/
 theorem modIso_completion [Algebra A R] {q : A} (ec : AdicCompletion (Ideal.span {q}) A ≃+* R)
     (he : ∀ a, ec (algebraMap A _ a) = algebraMap A R a) {a : A} (ha : a ∣ q) : ModIso R a := by
   obtain ⟨t, ht⟩ := ha
@@ -56,9 +72,19 @@ theorem modIso_completion [Algebra A R] {q : A} (ec : AdicCompletion (Ideal.span
       rw [map_mul, map_mul, he, he, he, map_sub, map_mul, hr, h1]; ring))
     exact ⟨x' + t * b, by rw [mul_add, ← mul_assoc, ← ht, ← hb]; ring⟩
 
+/- English proof (translation)
+Rewrite using `[mv, Matrix.map_one _ Int.cast_zero Int.cast_one, Matrix.one_mulVec]`.
+-/
 theorem mv_one (φ : A →+* A') {h : ℕ} (x : Fin h → A) : mv φ 1 x = fun i => φ (x i) := by
   rw [mv, Matrix.map_one _ Int.cast_zero Int.cast_one, Matrix.one_mulVec]
 
+/- English proof (translation)
+Establish `hu : IsUnit π'` using `isUnit_of_dvd_unit (by rw [hπ, ← map_natCast φ]; exact map_dvd φ hd) hp`. Establish `top : ∀ (M : Type) [AddCommGroup M] [Module A' M] (u : A'), IsUnit u → ∀ x : M, x ∈ u • (⊤ : Submodule A' M)`. Introduce and unpack `M _ _ _ ⟨u, rfl⟩ x`. Conclude with `(Submodule.mem_smul_pointwise_iff_exists _ _ _).2 ⟨(↑u⁻¹ : A') • x, trivial, by rw [smul_smul]; simp⟩`. Establish `hL : ∀ k x, x ∈ C'.L k` using `fun k x => C'.base_le k (top _ _ hu x)`.
+
+Establish `hQ : ∀ k, Subsingleton (Qt (C'.L k) (baseOf π' h))` using `fun k => Submodule.Quotient.subsingleton_iff.2 (eq_top_iff.2 fun x _ => top _ _ hu x.1)`. Establish `hK : Subsingleton (Lie' ⧸ (p : A') • (⊤ : Submodule A' Lie'))` using `Submodule.Quotient.subsingleton_iff.2 (eq_top_iff.2 fun x _ => top _ _ hp x)`. Use `⟨fun k => le_antisymm (fun x _ => ?_) fun x _ => hL k x, fun n x _ => hL n _, fun _ _ _ _ _ => Subsingleton.elim _ _, fun _ _ _ _ _ => Subsingleton.elim _ _, fun _ _ _ _ _ _ _ _ _ => Subsingleton.elim _ _, fun _ _ _ _ _ _ _ => Subsingleton.elim _ _⟩` and prove the remaining obligations. Take `⟨y, -, rfl⟩` from `(Submodule.mem_smul_pointwise_iff_exists _ _ _).1 (top _ _ hu x)`. Rewrite using `[pi_eq_sum_univ' y, Finset.smul_sum]`.
+
+Use `Submodule.sum_mem _ fun i _ => ?_` and prove the remaining obligations. Rewrite using `[smul_comm]`. Use `Submodule.smul_mem _ _ (Submodule.subset_span ⟨π • Pi.single i 1, C.base_le k (Submodule.smul_mem_pointwise_smul _ _ _ trivial), funext fun j => ?_⟩)` and prove the remaining obligations. Simplify using `[hπ, Pi.single_apply, apply_ite φ]`.
+-/
 theorem of_isUnit {p h o : ℕ} {π : A} {γ : ℕ → A} {Lie Om : Type} [AddCommGroup Lie] [Module A Lie] [AddCommGroup Om]
     [Module A Om] {π' : A'} {γ' : ℕ → A'} {Lie' Om' : Type} [AddCommGroup Lie'] [Module A' Lie'] [AddCommGroup Om']
     [Module A' Om'] (C : RChain p A h o π γ Lie Om) (C' : RChain p A' h o π' γ' Lie' Om') (φ : A →+* A') (l : Lie → Lie')
@@ -90,18 +116,30 @@ section Groups
 
 variable {p : ℕ} [Fact p.Prime] {A A' : Type} [CommRing A] [CommRing A'] {GG : PDivGroup p A} {GG' : PDivGroup p A'}
 
+/- English proof (translation)
+The claim follows from `TateOver.ext (funext fun n => AlgHom.ext fun φ => by rw [← apply_charElem, ← apply_charElem, h])`.
+-/
 theorem char_ext {χ ψ : GG.dual.Tate} (h : ∀ n, charElem χ n = charElem ψ n) : χ = ψ :=
   TateOver.ext (funext fun n => AlgHom.ext fun φ => by rw [← apply_charElem, ← apply_charElem, h])
 
+/- English proof (translation)
+The claim follows from `Function.bijective_iff_has_inverse.2 ⟨omegaMap _ _ e.inv, fun x => by rw [← LinearMap.comp_apply, ← omegaMap_comp, e.inv_hom_id, omegaMap_id, LinearMap.id_apply], fun x => by rw [← LinearMap.comp_apply, ← omegaMap_comp, e.hom_inv_id, omegaMap_id, LinearMap.id_apply]⟩`.
+-/
 theorem omegaMap_bijective {G H : PDivGroup p A} (e : G ≅ H) : Function.Bijective (omegaMap _ _ e.hom) :=
   Function.bijective_iff_has_inverse.2 ⟨omegaMap _ _ e.inv,
     fun x => by rw [← LinearMap.comp_apply, ← omegaMap_comp, e.inv_hom_id, omegaMap_id, LinearMap.id_apply],
     fun x => by rw [← LinearMap.comp_apply, ← omegaMap_comp, e.hom_inv_id, omegaMap_id, LinearMap.id_apply]⟩
 
+/- English proof (translation)
+The claim follows from `omegaMap_bijective ((baseChangeFunctor p A R).mapIso pol ≪≫ (dualBaseChange R GG).symm)`.
+-/
 theorem omegaMap_polBC_bijective (pol : GG ≅ GG.dual) (R : Type) [CommRing R] [Algebra A R] :
     Function.Bijective (omegaMap _ _ (polBC pol R)) :=
   omegaMap_bijective ((baseChangeFunctor p A R).mapIso pol ≪≫ (dualBaseChange R GG).symm)
 
+/- English proof (translation)
+The claim follows from `Subtype.ext (funext fun n => by rw [omegaMap_val, hodgeTate_val, cotMap_d, SemiHom.omega_val, hodgeTate_val, SemiBialgHom.cot_d, toBase_app] refine congrArg _ ((CartierDual.baseChange A R (GG.A n)).injective ?_) refine ((CartierDual.baseChange A R (GG.A n)).apply_symm_apply _).tr …`.
+-/
 theorem hodgeTate_bcTate (R : Type) [CommRing R] [Algebra A R] (t : GG.Tate) :
     omegaMap _ _ (dualBaseChange R GG).inv (hodgeTate _ (bcTate R t)) = (GG.dual.toBase R).omega (hodgeTate GG t) :=
   Subtype.ext (funext fun n => by
@@ -116,6 +154,9 @@ theorem hodgeTate_bcTate (R : Type) [CommRing R] [Algebra A R] (t : GG.Tate) :
       change r * algebraMap A R (t.pt n a) = _
       simp [Algebra.smul_def, mul_comm])
 
+/- English proof (translation)
+Rewrite using `[polBC, omegaMap_comp, LinearMap.comp_apply, hodgeTate_bcTate, ← (GG.toBase R).omega_naturality (GG.dual.toBase R) pol.hom _ (fun _ _ => rfl), hodgeTate_apply, ← dlog_tateMap, ← tateMap_comp, skew, map_neg, LinearMap.neg_apply, map_neg, map_neg, dlog_bcChar]`.
+-/
 theorem omegaMap_polBC_hodgeTate (pol : GG ≅ GG.dual) (skew : GG.bidual.hom ≫ dualHom GG GG.dual pol.hom = -pol.hom)
     (R : Type) [CommRing R] [Algebra A R] (t : GG.Tate) :
     omegaMap _ _ (polBC pol R) (hodgeTate _ (bcTate R t)) = -dlog _ (bcChar R (tateMap _ _ A pol.hom t)) := by
@@ -125,6 +166,9 @@ theorem omegaMap_polBC_hodgeTate (pol : GG ≅ GG.dual) (skew : GG.bidual.hom �
 
 variable [Algebra A A'] (f : GG' ≅ GG.baseChange A')
 
+/- English proof (translation)
+Establish `h1 : tateMap _ _ A' (dualBaseChange A' GG).hom (bcChar A' (tateMap GG GG.dual A pol.hom t)) = tateMap _ _ A' (dualBaseChange A' GG).hom (tateMap _ _ A' (pol'.hom ≫ dualHom _ _ f.inv) t')`. Rewrite using `[tateMap_dualBaseChange, ← tateMap_bcTate, ← ht, ← tateMap_comp, ← tateMap_comp, Category.assoc, hpol]`. Establish `h2` using `congrArg (tateMap _ _ A' (dualBaseChange A' GG).inv) h1`. Rewrite `h2` using `[← tateMap_comp, ← tateMap_comp, Iso.hom_inv_id, tateMap_id, tateMap_id]`. Rewrite using `[← charElem_bcChar, h2, ← charElem_tateMap, ← tateMap_comp, Category.assoc, ← dualHom_comp, Iso.hom_inv_id, dualHom_id, Category.comp_id]`.
+-/
 theorem charElem_pol (pol : GG ≅ GG.dual) (pol' : GG' ≅ GG'.dual)
     (hpol : pol'.hom ≫ dualHom _ _ f.inv ≫ (dualBaseChange A' GG).hom = f.hom ≫ PDivGroup.baseChangeMap A' pol.hom)
     {t : GG.Tate} {t' : GG'.Tate} (ht : tateMap _ _ A' f.hom t' = bcTate A' t) (n : ℕ) :
@@ -139,6 +183,19 @@ theorem charElem_pol (pol : GG ≅ GG.dual) (pol' : GG' ≅ GG'.dual)
 
 omit [Fact p.Prime] in
 
+/- English proof (translation)
+Set `s : SemiHom (algebraMap R R') (GG'.baseChange R') (GG.baseChange R)` to `((GG'.toBase R').comp ((SemiHom.ofHom f.hom).comp (GG.toBase A'))).liftOver _ fun a => (hσ a).symm`. Establish `hs : ∀ n r a, s.app n (r ⊗ₜ a) = algebraMap R R' r • (1 : R') ⊗ₜ[A'] f.hom.app n (1 ⊗ₜ a)` using `fun n r a => SemiHom.liftOver_app _ _ _ n r a`. Set `k₀ : SemiHom (algebraMap A' R') ((GG.baseChange R).baseChange R') (GG.baseChange A')` to `(((GG.baseChange R).toBase R').comp (GG.toBase R)).liftOver _ hσ`. Establish `hk : ∀ n r a, k₀.app n (r ⊗ₜ a) = algebraMap A' R' r • (1 : R') ⊗ₜ[R] ((1 : R) ⊗ₜ[A] a)` using `fun n r a => SemiHom.liftOver_app _ _ _ n r a`. Establish `hF : ∀ n a, (k₀.lift ≫ PDivGroup.baseChangeMap R' f.inv).app n (1 ⊗ₜ f.hom.app n (1 ⊗ₜ a)) = 1 ⊗ₜ (1 ⊗ₜ a)` using `fun n a => by`.
+
+Express the relevant statement in the definitionally equal form `k₀.lift.app n (1 ⊗ₜ (f.inv ≫ f.hom).app n (1 ⊗ₜ a)) = _`. Rewrite using `[f.inv_hom_id]`. Conclude with `(k₀.lift_app n 1 (1 ⊗ₜ a)).trans ((one_smul _ _).trans ((hk n 1 a).trans (by rw [map_one, one_smul])))`. Use `⟨s, k₀.lift ≫ PDivGroup.baseChangeMap R' f.inv, ⟨s.lift, baseChange_hom_ext fun n y => ?_, baseChange_hom_ext fun n y => ?_⟩, fun n a => (hs n 1 a).trans (by rw [map_one, one_smul]), hF⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `(k₀.lift ≫ PDivGroup.baseChangeMap R' f.inv).app n (s.lift.app n (1 ⊗ₜ y)) = 1 ⊗ₜ y`.
+
+Rewrite using `[SemiHom.lift_app, one_smul]`. Proceed by induction on `y using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `add x y hx hy => simp only [map_add, TensorProduct.tmul_add, hx, hy]`. Consider the case `tmul r a`.
+
+Rewrite using `[hs, map_smul, hF, algebraMap_smul, ← TensorProduct.tmul_smul, TensorProduct.smul_tmul', smul_eq_mul, mul_one]`. Establish `key : ∀ x, s.lift.app n (k₀.app n x) = 1 ⊗ₜ f.hom.app n x` using `fun x => by`. Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `add x y hx hy => simp only [map_add, TensorProduct.tmul_add, hx, hy]`.
+
+Consider the case `tmul r a`. Rewrite using `[hk, map_smul, SemiHom.lift_app, one_smul, hs, map_one, one_smul, algebraMap_smul, ← TensorProduct.tmul_smul, ← map_smul, TensorProduct.smul_tmul', smul_eq_mul, mul_one]`. Express the relevant statement in the definitionally equal form `s.lift.app n (k₀.lift.app n (1 ⊗ₜ f.inv.app n y)) = 1 ⊗ₜ y`. Rewrite using `[SemiHom.lift_app, one_smul, key]`. Express the relevant statement in the definitionally equal form `1 ⊗ₜ (f.hom ≫ f.inv).app n y = _`.
+
+Rewrite using `[f.hom_inv_id]`. Both sides reduce to the same expression.
+-/
 theorem exists_square (R R' : Type) [CommRing R] [CommRing R'] [Algebra A R] [Algebra A' R'] [Algebra R R']
     (hσ : ∀ a, algebraMap R R' (algebraMap A R a) = algebraMap A' R' (algebraMap A A' a)) :
     ∃ (s : SemiHom (algebraMap R R') (GG'.baseChange R') (GG.baseChange R))
@@ -180,6 +237,9 @@ theorem exists_square (R R' : Type) [CommRing R] [CommRing R'] [Algebra A R] [Al
     rw [f.hom_inv_id]
     rfl
 
+/- English proof (translation)
+The claim follows from `Subtype.ext (funext fun k => by obtain ⟨a, ha⟩ := AugCot.d_surjective _ (w.1 k) have ha' : dUnit A a = w.1 k := ha rw [SemiHom.omega_val, SemiHom.omega_val, SemiHom.omega_val, omegaMap_val, SemiHom.omega_val, ← ha', SemiBialgHom.cot_d, SemiBialgHom.cot_d, SemiBialgHom.cot_d, cotM …`.
+-/
 theorem omega_square {R R' : Type} [CommRing R] [CommRing R'] [Algebra A R] [Algebra A' R'] {σ : R →+* R'}
     (s : SemiHom σ (GG'.baseChange R') (GG.baseChange R)) (hs : ∀ n a, s.app n (1 ⊗ₜ a) = 1 ⊗ₜ f.hom.app n (1 ⊗ₜ a))
     (w : GG.omega) :
@@ -192,6 +252,9 @@ theorem omega_square {R R' : Type} [CommRing R] [CommRing R'] [Algebra A R] [Alg
 
 end Groups
 
+/- English proof (translation)
+Establish `h : (b.reindex e).coord (e j) = b.coord j` using `LinearMap.ext fun x => by simp`. Conclude with `congrArg (fun u => -(Dw.unimod.2 u).choose) h`.
+-/
 theorem dualVec_reindex {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {Dw : Datum H} {J J' : Type}
     (b : Module.Basis J ℤ Dw.La) (e : J ≃ J') (j : J) : dualVec (b.reindex e) (e j) = dualVec b j := by
   have h : (b.reindex e).coord (e j) = b.coord j := LinearMap.ext fun x => by simp
@@ -199,6 +262,27 @@ theorem dualVec_reindex {E : Type} [Field E] [NumberField E] [IsCMField E] {H : 
 
 set_option maxHeartbeats 400000 in
 
+/- English proof (translation)
+Introduce `E _ _ _ H Dw p _ D A A' _ _ _ t GG act pol θ ε τ hP t' GG' act' pol' θ' ε' τ' hP' n o e e' b π γ π' γ' Lie Om Lie' Om' _ _ _ _ _ _ _ _ cω pr cω' pr' C C' f l m hC hC' hε hpol hτ hω hpr hd hπ`. Distinguish the cases in `hp' : IsUnit (p : A')`. Conclude with `of_isUnit C C' _ l m hp' hd hπ`. Establish `hp : ¬ IsUnit (p : A)` using `fun h => hp' (map_natCast (algebraMap A A') p ▸ h.map _)`. Take `⟨S, _, ec, hec, kε, eL, eO, hL, hO, hI⟩` from `hC hp`.
+
+Take `⟨S', _, ec', hec', kε', eL', eO', hL', hO', hI'⟩` from `hC' hp'`. Take `⟨g, hg⟩` from `exists_completion_map p (algebraMap A A')`. Use `letI : Algebra S.R S'.R := (ec'.toRingHom.comp (g.comp ec.symm.toRingHom)).toAlgebra`. Establish `hσ : ∀ a, algebraMap S.R S'.R (algebraMap A S.R a) = algebraMap A' S'.R (algebraMap A A' a)` using `fun a => by`. Express the relevant statement in the definitionally equal form `ec' (g (ec.symm _)) = _`.
+
+Rewrite using `[← hec, ec.symm_apply_apply, hg, hec']`. Take `⟨s, F, hF, hs, hF'⟩` from `exists_square f S.R S'.R hσ`. Establish `hz : ∀ k, GlobalTheory.IndefiniteRowSideFullHecke.EpsilonPairingZeta.zeta S'.ε k = algebraMap S.R S'.R (GlobalTheory.IndefiniteRowSideFullHecke.EpsilonPairingZeta.zeta S.ε k)` using `fun k => by`. Rewrite using `[← muRoot_eps, ← muRoot_eps, kε, kε', hε, hσ]`. Establish `hch` using `fun x => charElem_pol f pol pol' hpol (hτ x)`.
+
+Establish `hdl : ∀ x, s.omega (dlog _ (bcChar S.R (tateMap _ _ A pol.hom (τ x)))) = dlog _ (bcChar S'.R (tateMap _ _ A' pol'.hom (τ' x)))` using `fun x => Subtype.ext (funext fun k => by`. Rewrite using `[SemiHom.omega_val, dlog_val, dlog_val, SemiBialgHom.cot_d, charElem_bcChar, charElem_bcChar, hs, hch])`. Establish `hom : ∀ w, s.omega ((GG.toBase S.R).omega (cω w)) = (GG'.toBase S'.R).omega (cω' (m w))` using `fun w => by`. Rewrite using `[hω, omega_square f s hs]`. Establish `hlie : ∀ y u, eL' (1 ⊗ₜ l y) (s.omega u) = algebraMap S.R S'.R (eL (1 ⊗ₜ y) u)` using `fun y u => by`.
+
+Take `⟨u, rfl⟩` from `(omegaMap_polBC_bijective pol S.R).2 u`. Take `⟨u, rfl⟩` from `eO.surjective u`. Proceed by induction on `u using TensorProduct.induction_on with`. Consider the case `zero => simp only [map_zero]`. Consider the case `add u v hu hv => simp only [map_add, hu, hv]`.
+
+Consider the case `tmul r w`. Rewrite using `[← mul_one r, ← smul_eq_mul, ← TensorProduct.smul_tmul', map_smul, map_smul, hO, map_smulₛₗ, map_smul, map_smul, hom, hL, hL', hpr, smul_eq_mul, smul_eq_mul, map_mul, hσ]`. Establish `ht' : ∀ j, (ct hP e b).t' (Fin.cast e.symm j) = tateMap _ _ A pol.hom (τ (dualVec b j))` using `fun j => congrArg (fun x => tateMap _ _ A pol.hom (τ x)) (dualVec_reindex b (finCongr e.symm) j)`. Establish `ht'' : ∀ j, (ct hP' e' b).t' (Fin.cast e'.symm j) = tateMap _ _ A' pol'.hom (τ' (dualVec b j))` using `fun j => congrArg (fun x => tateMap _ _ A' pol'.hom (τ' x)) (dualVec_reindex b (finCongr e'.symm) j)`. Establish `key` using `hM p D S S' _ _ _ _ A A' (algebraMap A A') n o e e' π π' γ γ' Lie Om Lie' Om' _ _ _ _ C C' F 1 l m hI hI' hσ hz`.
+
+Use `(key (fun j => ?_) (fun y j => ?_) fun w x hx => ?_).elim fun h1 h2 => ⟨h2 hF rfl hπ.symm (modIso_completion ec hec hd) (modIso_completion ec' hec' (by rw [hπ, ← map_natCast (algebraMap A A')]; exact map_dvd _ hd)), h1⟩` and prove the remaining obligations. Rewrite using `[Finset.sum_eq_single j (fun i _ hi => by rw [Matrix.one_apply_ne' hi, zero_smul]) (fun h => absurd (Finset.mem_univ _) h), Matrix.one_apply_eq, one_smul]`. Use `char_ext fun k => ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `charElem (tateMap _ _ _ (dualHom _ _ F) (bcChar S'.R ((ct hP' e' b).t' _))) k = charElem (bcChar S'.R (bcChar S.R ((ct hP e b).t' _))) k`. Rewrite using `[charElem_tateMap, charElem_bcChar, charElem_bcChar, charElem_bcChar, ht', ht'', hch, hF']`.
+
+Rewrite using `[mv_one]`. Express the relevant statement in the definitionally equal form `eL' (1 ⊗ₜ l y) (dlog _ (bcChar S'.R ((ct hP' e' b).t' _))) = algebraMap S.R S'.R (eL (1 ⊗ₜ y) (dlog _ (bcChar S.R ((ct hP e b).t' _))))`. Rewrite using `[ht', ht'', ← hdl, hlie]`. Apply `(omegaMap_polBC_bijective pol' S'.R).1` to reduce the goal to its premises. Establish `h3` using `congrArg (fun u => s.omega (omegaMap _ _ (polBC pol S.R) u)) hx`.
+
+Use `beta_reduce at h3`. Rewrite `h3` using `[map_smul, hO, map_smulₛₗ, hom, map_sub, map_one, ← hz, ConstTate.al_apply, map_sum, map_sum]`. Rewrite using `[map_smul, hO', h3, mv_one, ConstTate.al_apply, map_sum]`. Use `Fintype.sum_equiv (finCongr (e.trans e'.symm)) _ _ fun i => ?_` and prove the remaining obligations. Rewrite using `[map_smul (omegaMap _ _ (polBC pol S.R)), map_smul (omegaMap _ _ (polBC pol' S'.R)), map_smulₛₗ s.omega]`.
+
+Use `congrArg₂ _ rfl ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `s.omega (omegaMap _ _ (polBC pol S.R) (hodgeTate _ (bcTate S.R (τ (b.reindex (finCongr e.symm) i))))) = omegaMap _ _ (polBC pol' S'.R) (hodgeTate _ (bcTate S'.R (τ' (b.reindex (finCongr e'.symm) _))))`. Rewrite using `[omegaMap_polBC_hodgeTate pol hP.skew, omegaMap_polBC_hodgeTate pol' hP'.skew, map_neg, hdl, b.reindex_apply, b.reindex_apply]`. Both sides reduce to the same expression.
+-/
 theorem ringRes (hM : GlobalTheory.RingChain.MapSt) : GlobalTheory.ChainPts.SysB.RingResSt := by
   intro E _ _ _ H Dw p _ D A A' _ _ _ t GG act pol θ ε τ hP t' GG' act' pol' θ' ε' τ' hP' n o e e' b π γ π' γ' Lie Om Lie' Om'
     _ _ _ _ _ _ _ _ cω pr cω' pr' C C' f l m hC hC' hε hpol hτ hω hpr hd hπ

@@ -13,18 +13,27 @@ namespace GlobalTheory.JetOnto
 
 variable {R : Type} [CommRing R] {G : Over (Spec (CommRingCat.of R))} [GrpObj G]
 
+/- English proof (translation)
+Rewrite using `[← spMap_comp, Category.assoc, Category.assoc, h]`.
+-/
 theorem comp_eq_of_factor {A B C : Type} [CommRing A] [Algebra R A] [CommRing B] [Algebra R B]
     [CommRing C] [Algebra R C] {X : Over (Spec (CommRingCat.of R))} (p : A →ₐ[R] B) (q : B →ₐ[R] C)
     {y y' : sp (R₀ := R) A ⟶ X} (h : spMap p ≫ y = spMap p ≫ y') :
     spMap (q.comp p) ≫ y = spMap (q.comp p) ≫ y' := by
   rw [← spMap_comp, Category.assoc, Category.assoc, h]
 
+/- English proof (translation)
+The claim follows from `jet_ext fun j => by rw [AlgHom.comp_apply, jetLift_zR, jetAug_zR]; exact hb j`.
+-/
 theorem aug_comp_jetLift {A : Type} [CommRing A] [Algebra R A] (aug : A →ₐ[R] R) {d m : ℕ}
     (h : (RingHom.ker aug) ^ (m + 1) = ⊥) (b : Fin d → A) (hb : ∀ j, b j ∈ RingHom.ker aug) :
     aug.comp (jetLift R _ h b hb) = jetAug R (Fin d) m :=
   jet_ext fun j => by
     rw [AlgHom.comp_apply, jetLift_zR, jetAug_zR]; exact hb j
 
+/- English proof (translation)
+Establish `e : jetAug R (Fin d) m = (jetAug R (Fin d) 0).comp (jetZeroR R (Fin d) m)` using `(jet_ext fun j => by rw [AlgHom.comp_apply, jetAug_zR]; exact (jetAug_zR (R := R) 0 j).symm)`. Rewrite using `[e, ← spMap_comp, Category.assoc, h0 m, comp_one']`.
+-/
 theorem spMap_jetAug {d : ℕ} (x : ∀ m : ℕ, sp (R₀ := R) (JetR R (Fin d) m) ⟶ G)
     (h0 : ∀ m, spMap (jetZeroR R (Fin d) m) ≫ x m = 1) (m : ℕ) :
     spMap (jetAug R (Fin d) m) ≫ x m = 1 := by
@@ -38,6 +47,33 @@ namespace GlobalTheory
 
 open JetOnto
 
+/- English proof (translation)
+Introduce `R _ G _ _ hG d v hv x ht h0 h1 A _ _ aug m hN y hy`. Establish `key : ∀ k : ℕ, ∃ (b : Fin d → A) (hb : ∀ j, b j ∈ RingHom.ker aug), spMap (Ideal.Quotient.mkₐ R ((RingHom.ker aug) ^ (k + 1))) ≫ y = spMap (Ideal.Quotient.mkₐ R ((RingHom.ker aug) ^ (k + 1))) ≫ spMap (jetLift R _ hN b hb) ≫ x m`. Introduce `k`. Proceed by induction on `k with`. Consider the case `zero`.
+
+Use `⟨fun _ => 0, fun _ => zero_mem _, ?_⟩` and prove the remaining obligations. Establish `e : Ideal.Quotient.mkₐ R ((RingHom.ker aug) ^ (0 + 1)) = (Algebra.ofId R _).comp aug`. Use extensionality with `a`. Express the relevant statement in the definitionally equal form `Ideal.Quotient.mk _ a = Ideal.Quotient.mk _ (algebraMap R A (aug a))`. Rewrite using `[Ideal.Quotient.eq, zero_add, pow_one, RingHom.mem_ker, map_sub, AlgHom.commutes, Algebra.algebraMap_self, RingHom.id_apply, sub_self]`.
+
+Rewrite using `[e]`. Use `comp_eq_of_factor _ _ ?_` and prove the remaining obligations. Rewrite using `[hy, ← Category.assoc, spMap_comp, aug_comp_jetLift, spMap_jetAug x h0]`. Consider the case `succ k ih`. Take `⟨b, hb, ih⟩` from `ih`.
+
+Use `set N := RingHom.ker aug with hNdef`. Set `B` to `A ⧸ N ^ (k + 1 + 1)`. Set `π : A →ₐ[R] B` to `Ideal.Quotient.mkₐ R (N ^ (k + 1 + 1))`. Establish `hπ : Function.Surjective π` using `Ideal.Quotient.mk_surjective`. Set `augB : B →ₐ[R] R` to `Ideal.Quotient.liftₐ _ aug (fun a ha => (Ideal.pow_le_self (by omega) ha : a ∈ N))`.
+
+Establish `haug : augB.comp π = aug` using `by ext a; rfl`. Establish `hker : RingHom.ker augB = N.map π`. Apply `le_antisymm` to reduce the goal to its premises. Introduce `z hz`. Take `⟨a, rfl⟩` from `hπ z`.
+
+Conclude with `Ideal.mem_map_of_mem _ hz`. Conclude with `Ideal.map_le_iff_le_comap.2 fun a ha => ha`. Set `J : Ideal B` to `(N ^ (k + 1)).map π`. Establish `hJN : J * RingHom.ker augB = ⊥`. Rewrite using `[hker, ← Ideal.map_mul, ← pow_succ]`.
+
+Conclude with `Ideal.map_quotient_self _`. Establish `hJle : J ≤ RingHom.ker augB`. Rewrite using `[hker]`. Conclude with `Ideal.map_mono (Ideal.pow_le_self (by omega))`. Establish `hJ : J ^ 2 = ⊥`.
+
+Rewrite using `[← le_bot_iff, pow_two, ← hJN]`. Conclude with `Ideal.mul_mono_right hJle`. Set `q : (A ⧸ N ^ (k + 1)) →ₐ[R] B ⧸ J` to `Ideal.Quotient.liftₐ _ ((Ideal.Quotient.mkₐ R J).comp π) (fun a ha => Ideal.Quotient.eq_zero_iff_mem.2 (Ideal.mem_map_of_mem _ ha))`. Establish `hq : q.comp (Ideal.Quotient.mkₐ R (N ^ (k + 1))) = (Ideal.Quotient.mkₐ R J).comp π`. Use extensionality with `a`.
+
+Both sides reduce to the same expression. Establish `h2` using `comp_eq_of_factor _ q ih`. Rewrite `h2` using `[hq, ← spMap_comp, Category.assoc, Category.assoc]`. Use `haveI := hG`. Take `⟨c, hc, -⟩` from `SqZero.existsUnique_eq_lieExp_mul hv hJ h2.symm`.
+
+Use `choose δ hδ hδc using fun j => (Ideal.mem_map_iff_of_surjective π hπ).1 (c j).2`. Establish `hb' : ∀ j, b j + δ j ∈ N` using `fun j => add_mem (hb j) (Ideal.pow_le_self (by omega) (hδ j))`. Use `⟨fun j => b j + δ j, hb', ?_⟩` and prove the remaining obligations. Establish `h3` using `GlobalTheory.T.jetPoint_add_sqZero_eq_prod_mul_tangent R G hG d v hv x ht h0 h1 B augB J hJN hJle m (π.comp (jetLift R _ hN b hb)) (π.comp (jetLift R _ hN (fun j => b j + δ j) hb')) (by rw [← AlgHom.comp_assoc, haug, aug_comp_jetLift]) (by rw [← AlgHom.comp_assoc, haug, aug_comp_ …`. Rewrite using `[AlgHom.comp_apply, AlgHom.comp_apply, jetLift_zR, jetLift_zR, map_add, hδc])`.
+
+Express the relevant statement in the definitionally equal form `spMap π ≫ y = spMap π ≫ _`. Rewrite using `[hc, ← Category.assoc, spMap_comp, ← Category.assoc, spMap_comp, h3]`. Both sides reduce to the same expression. Take `⟨b, hb, h⟩` from `key m`. Use `⟨jetLift R _ hN b hb, aug_comp_jetLift aug hN b hb, ?_⟩` and prove the remaining obligations.
+
+Set `q : (A ⧸ (RingHom.ker aug) ^ (m + 1)) →ₐ[R] A` to `Ideal.Quotient.liftₐ _ (AlgHom.id R A) (fun a ha => by rw [hN] at ha; exact ha)`. Establish `hq : q.comp (Ideal.Quotient.mkₐ R ((RingHom.ker aug) ^ (m + 1))) = AlgHom.id R A`. Use extensionality with `a`. Both sides reduce to the same expression. Establish `h2` using `comp_eq_of_factor _ q h`.
+
+Rewrite `h2` using `[hq, spMap_id, Category.id_comp, Category.id_comp]`. Then use the resulting hypothesis.
+-/
 theorem exists_jet_coordinates : ∀ (R : Type) [CommRing R] (G : Over (Spec (CommRingCat.of R))) [GrpObj G] [IsCommMonObj G], Smooth G.hom → ∀ (d : ℕ) (v : Fin d → (epsR R ⟶ G)), IsLieBasis v → ∀ (x : ∀ m : ℕ, sp (R₀ := R) (JetR R (Fin d) m) ⟶ G), (∀ m, spMap (jetTruncR R (Fin d) m) ≫ x (m + 1) = x m) → (∀ m, spMap (jetZeroR R (Fin d) m) ≫ x m = 1) → (∀ j, spMap (dualLift (Pi.single j (1 : R))) ≫ x 1 = v j) → ∀ (A : Type) [CommRing A] [Algebra R A] (aug : A →ₐ[R] R) (m : ℕ), (RingHom.ker aug) ^ (m + 1) = ⊥ → ∀ y : sp (R₀ := R) A ⟶ G, spMap aug ≫ y = 1 → ∃ ψ : JetR R (Fin d) m →ₐ[R] A, aug.comp ψ = jetAug R (Fin d) m ∧ y = spMap ψ ≫ x m := by
   intro R _ G _ _ hG d v hv x ht h0 h1 A _ _ aug m hN y hy
   have key : ∀ k : ℕ, ∃ (b : Fin d → A) (hb : ∀ j, b j ∈ RingHom.ker aug),

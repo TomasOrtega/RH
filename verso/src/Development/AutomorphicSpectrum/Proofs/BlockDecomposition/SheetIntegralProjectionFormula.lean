@@ -15,6 +15,19 @@ noncomputable section
 
 namespace GlobalTheory.CompanionTheory.MixZ.ArchEq
 
+/- English proof (translation)
+Use `choose a ha using hz`. Establish `hs : ∀ b : ∀ k, κ k, ∏ k, z ⟨k, b k⟩ = ∏ k, z' ⟨k, b k⟩` using `fun b => congrFun h b`. Establish `hpa : ∏ k, z ⟨k, a k⟩ ≠ 0` using `Finset.prod_ne_zero_iff.2 fun k _ => ha k`. Establish `ha' : ∀ k, z' ⟨k, a k⟩ ≠ 0` using `fun k => by`. Establish `h' : ∏ k, z' ⟨k, a k⟩ ≠ 0` using `hs a ▸ hpa`.
+
+Conclude with `Finset.prod_ne_zero_iff.1 h' k (Finset.mem_univ _)`. Use `⟨fun k => z ⟨k, a k⟩ / z' ⟨k, a k⟩, fun k => div_ne_zero (ha k) (ha' k), ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `p`. Break down `p with ⟨k, j⟩` into its components or cases. Use `show z ⟨k, j⟩ = z ⟨k, a k⟩ / z' ⟨k, a k⟩ * z' ⟨k, j⟩`.
+
+Establish `split : ∀ w : (Σ k, κ k) → ℂ, ∏ l, w ⟨l, Function.update a k j l⟩ = w ⟨k, j⟩ * ∏ l ∈ Finset.univ.erase k, w ⟨l, a l⟩`. Introduce `w`. Rewrite using `[← Finset.mul_prod_erase Finset.univ _ (Finset.mem_univ k)]`. Use `congr 1`. Simplify using the standard rewrite rules.
+
+Conclude with `Finset.prod_congr rfl fun l hl => by rw [Function.update_of_ne (Finset.ne_of_mem_erase hl)]`. Establish `split0 : ∀ w : (Σ k, κ k) → ℂ, ∏ l, w ⟨l, a l⟩ = w ⟨k, a k⟩ * ∏ l ∈ Finset.univ.erase k, w ⟨l, a l⟩` using `fun w => (Finset.mul_prod_erase Finset.univ _ (Finset.mem_univ k)).symm`. Establish `e1` using `hs (Function.update a k j)`. Rewrite `e1` using `[split z, split z']`. Establish `e2` using `hs a`.
+
+Rewrite `e2` using `[split0 z, split0 z']`. Establish `hP : ∏ l ∈ Finset.univ.erase k, z ⟨l, a l⟩ ≠ 0`. Rewrite `hpa` using `[split0 z]`. Conclude with `right_ne_zero_of_mul hpa`. Rewrite using `[div_mul_eq_mul_div, eq_div_iff (ha' k)]`.
+
+Apply `mul_right_cancel₀ hP` to reduce the goal to its premises. Take the linear combination `z' ⟨k, a k⟩ * e1 - z' ⟨k, j⟩ * e2`.
+-/
 theorem sameOrbit_of_segre_eq {K : Type*} [Fintype K] {κ : K → Type*} [∀ k, Fintype (κ k)]
     {z z' : (Σ k, κ k) → ℂ} (hz : ∀ k, ∃ a, z ⟨k, a⟩ ≠ 0) (h : segre z = segre z') :
     SameOrbit z z' := by
@@ -50,6 +63,33 @@ theorem sameOrbit_of_segre_eq {K : Type*} [Fintype K] {κ : K → Type*} [∀ k,
   apply mul_right_cancel₀ hP
   linear_combination z' ⟨k, a k⟩ * e1 - z' ⟨k, j⟩ * e2
 
+/- English proof (translation)
+Use `set P := ptIdeal (i (genericPoint X)) with hPdef`. Set `Lv : Set ι` to `{l | v ∈ (e l) '' S l}`. Set `f : ι → (((k : Fin (m + 1)) → Bk n k) → ℂ)` to `fun l => segre (Γ l v)`. Establish `hy : ∀ l ∈ Lv, (e l).symm v ∈ S l ∧ v ∈ (e l).target`. Introduce and unpack `l ⟨y, hyS, rfl⟩`.
+
+Conclude with `⟨by rw [(e l).left_inv (hS l hyS)]; exact hyS, (e l).map_source (hS l hyS)⟩`. Establish `hpc' : ∀ l ∈ Lv, Over i ((e l).symm v) (Γ l v) ∧ Γ l v ∈ mcPts P ∧ Ψ (segre (Γ l v)) = Fin.cons 1 v`. Introduce `l hl`. Take `⟨_, _, hp⟩` from `hpc l`. Take `⟨h1, h2, h3, -⟩` from `hp v (hy l hl).2`.
+
+Conclude with `⟨h1, h2, h3⟩`. Establish `himg : fibre P Ψ v = f '' Lv`. Use extensionality with `w`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨z, hz, rfl, hzv⟩`.
+
+Take `⟨y, hyz, hyS⟩` from `hcov z hz hzv`. Take `⟨l, hl⟩` from `Set.mem_iUnion.1 hyS`. Establish `hys` using `hS l hl`. Establish `hvt : (e l) y ∈ (e l).target` using `(e l).map_source hys`. Take `⟨_, _, hp⟩` from `hpc l`.
+
+Take `⟨o1, o2, o3, -⟩` from `hp ((e l) y) hvt`. Rewrite `o1` using `[(e l).left_inv hys]`. Establish `hso : SameOrbit z (Γ l ((e l) y))` using `(GlobalTheory.CompanionTheory.MixZ.Orbit.eq_iff_sameOrbit m n X i y y z _ hyz o1).1 rfl`. Establish `hvv : v = (e l) y`. Establish `r1` using `ratios_of_proj Ψ hzv`.
+
+Establish `r2` using `ratios_of_proj Ψ o3`. Establish `r3` using `ratios_eq_of_sameOrbit Ψ hso (by rw [o3]; simp)`. Rewrite using `[← r1, r3, r2]`. Use `⟨l, ⟨y, hl, hvv.symm⟩, ?_⟩` and prove the remaining obligations. Use `show segre (Γ l v) = segre z`.
+
+Rewrite using `[hvv]`. Take `⟨c, hc, hzc⟩` from `hso`. Establish `hseg` using `segre_orbit hzc`. Establish `h1 : (∏ k, c k) = 1`. Establish `h0` using `congrArg (fun u => u 0) (congrArg Ψ hseg)`.
+
+Simplify using `only [map_smul, hzv, o3, Pi.smul_apply, Fin.cons_zero, smul_eq_mul, mul_one] at h0`. Conclude with `h0.symm`. Rewrite using `[hseg, h1, one_smul]`. Introduce and unpack `⟨l, hl, rfl⟩`. Take `⟨_, h2, h3⟩` from `hpc' l hl`.
+
+Conclude with `⟨Γ l v, h2, rfl, h3⟩`. Establish `hinj : Set.InjOn f Lv`. Introduce `l hl l' hl' hll`. Take `⟨o1, o2, -⟩` from `hpc' l hl`. Take `⟨o1', -, -⟩` from `hpc' l' hl'`.
+
+Establish `hso` using `sameOrbit_of_segre_eq o2.1 hll`. Establish `hyy` using `(GlobalTheory.CompanionTheory.MixZ.Orbit.eq_iff_sameOrbit m n X i _ _ _ _ o1 o1').2 hso`. Assume the negation of the conclusion as `hne`. Conclude with `Set.disjoint_left.1 (hd hne) (hy l hl).1 (by rw [hyy]; exact (hy l' hl').1)`. Establish `hfin : (fibre P Ψ v).Finite` using `ReciprocityTheory.ChartRestriction.G.Geo.fibreFinite _ _ _ _ Ψ hP hΨ v`.
+
+Establish `hLfin : Lv.Finite` using `Set.Finite.of_finite_image (himg ▸ hfin) hinj`. Rewrite using `[himg, finsum_mem_image hinj]`. Establish `hind : ∀ l, ((e l) '' S l).indicator (fun _ => T l) v = Lv.indicator T l`. Introduce `l`. Distinguish the cases in `hl : l ∈ Lv`.
+
+Establish `hl' : v ∈ (e l) '' S l` using `hl`. Simplify using `[hl, hl']`. Establish `hl' : v ∉ (e l) '' S l` using `hl`. Simplify using `[hl, hl']`. Repeatedly rewrite using `[hind]`.
+
+Rewrite using `[tsum_eq_finsum (hLfin.subset Set.support_indicator_subset), ← finsum_mem_def]`. Conclude with `finsum_mem_congr rfl fun l hl => hT l hl`.
+-/
 theorem finsum_fibre_eq (m : ℕ) (n : Fin (m + 1) → ℕ) (X : Scheme.{0}) [IsIntegral X] (i : X ⟶ MP ℤ m n)
     [IsClosedImmersion i] (D : ℕ) (Ψ : LinProj n D) (N : Pol n)
     (hP : ReciprocityTheory.ChartRestriction.G.Geo.IsArithVar (ptIdeal (i (genericPoint X))) (D + 1))

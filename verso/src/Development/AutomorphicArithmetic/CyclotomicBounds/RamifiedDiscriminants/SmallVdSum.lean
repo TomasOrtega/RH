@@ -4,6 +4,25 @@ import Development.AutomorphicArithmetic.CMTraceForms.CmDatumDiscriminantDepthBo
 
 open NumberField Formalism.HC
 
+/- English proof (translation)
+Introduce `φ H`. Take `⟨hsm, -, -, -, -⟩` from `UpperTheory.cmDatum_discriminantDepth_bounds H`. Use `⟨?_, H.two_mem_small, ?_⟩` and prove the remaining obligations. Establish `hQ0 : H.QS ≠ 0` using `H.QS_ne_zero`. Establish `hlogQ : Real.log (H.QS : ℝ) = ∑ p ∈ H.small, (padicValNat p H.QS : ℝ) * Real.log p` using `by show _ = ∑ p ∈ H.QS.primeFactors, (padicValNat p H.QS : ℝ) * Real.log p`.
+
+Establish `hprod : (H.QS : ℝ) = ∏ p ∈ H.QS.primeFactors, (p : ℝ) ^ (H.QS.factorization p)` using `by conv_lhs => rw [← Nat.factorization_prod_pow_eq_self hQ0]`. Rewrite using `[Finsupp.prod, Nat.support_factorization]`. Use `push_cast`. Both sides reduce to the same expression. Rewrite using `[hprod, Real.log_prod]`.
+
+Apply `Finset.sum_congr rfl` to reduce the goal to its premises. Introduce `p hp`. Rewrite using `[Real.log_pow, Nat.factorization_def _ (Nat.prime_of_mem_primeFactors hp)]`. Introduce `p hp`. Conclude with `pow_ne_zero _ (Nat.cast_ne_zero.mpr (Nat.prime_of_mem_primeFactors hp).ne_zero)`.
+
+Establish `hlog2 : Real.log (H.QS : ℝ) ≤ Real.logb 2 H.QS`. Rewrite using `[Real.logb]`. Establish `hl0 : 0 ≤ Real.log (H.QS : ℝ)` using `Real.log_natCast_nonneg _`. Establish `h2 : 0 < Real.log 2` using `Real.log_pos (by norm_num)`. Establish `h2' : Real.log 2 < 1`.
+
+Use `Real.log_two_lt_d9` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite using `[le_div_iff₀ h2]`. Use the polynomial consequences of the given equalities and inequalities. Combine the equalities or inequalities in the displayed calculation.
+
+Apply `Finset.sum_le_sum` to reduce the goal to its premises. Introduce `p hp`. Take `⟨hpp, hpd⟩` from `(H.mem_small_iff).mp hp`. Use `haveI := Fact.mk hpp`. Establish `hv1 : (1 : ℝ) ≤ padicValNat p H.QS`.
+
+Conclude with `one_le_padicValNat_of_dvd hQ0 hpd` after adjusting the coercions. Establish `hvd` using `(hsm p hp).1`. Establish `hlp : 0 ≤ Real.log p` using `Real.log_natCast_nonneg p`. Use polynomial arithmetic with `[mul_nonneg (by linarith : (0 : ℝ) ≤ 3 / 2 * padicValNat p H.QS - 1 - H.vdH p / 2) hlp]`. Use `_ = 3 / 2 * Real.log H.QS := by rw [hlogQ, Finset.mul_sum]`.
+
+Use `_ ≤ 3 / 2 * Real.logb 2 H.QS := by linarith`. Introduce `r hr hrs hrq hrd hdvd`. Establish `h : r ∣ H.QS * H.q * H.d` using `(H.der.discr_primes).1 r hr hdvd`. Break down `(Nat.Prime.dvd_mul hr).mp h with h1 | h1` into its components or cases. Break down `(Nat.Prime.dvd_mul hr).mp h1 with h2 | h2` into its components or cases.
+
+Conclude with `hrs ((H.mem_small_iff).mpr ⟨hr, h2⟩)`. Conclude with `hrq ((Nat.prime_dvd_prime_iff_eq hr H.q_prime).mp h2)`. Conclude with `hrd ((Nat.prime_dvd_prime_iff_eq hr H.d_prime).mp h1)`.
+-/
 theorem UpperTheory.KR.small_vd_sum :
     ∀ {φ : Frame} (H : HostAx φ), (∑ p ∈ H.small, (1 + H.vdH p / 2) * Real.log p ≤ 3 / 2 * Real.logb 2 H.QS) ∧ 2 ∈ H.small ∧
       ∀ r : ℕ, r.Prime → r ∉ H.small → r ≠ H.q → r ≠ H.d → ¬ (r : ℤ) ∣ discr H.E := by

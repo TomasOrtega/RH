@@ -22,5 +22,8 @@ open GlobalTheory.IndefiniteRowSideFullHecke.LevelPlusSubgroup (coefPlus Cols Si
 open GlobalTheory.SepRows GlobalTheory.CoreOnto
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.IdemSumUniq.idemSum_unique | exact GlobalTheory.IdemSumUniq.idemSum_unique | (intros; apply GlobalTheory.IdemSumUniq.idemSum_unique <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.idempotentSum_over_finite_places_unique : ∀ {D : D7} (P : Finset (Formalism.L2.DIV.Pl D.host.E)) (e e' : AE D), IsIdemSum e P → IsIdemSum e' P → e = e' := by
   first | exact @GlobalTheory.IdemSumUniq.idemSum_unique | exact GlobalTheory.IdemSumUniq.idemSum_unique | (intros; apply GlobalTheory.IdemSumUniq.idemSum_unique <;> assumption)

@@ -22,6 +22,15 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar GlobalTheory.TypeR
 noncomputable section
 namespace GlobalTheory.RowTriple.Lay.EigCopy
 set_option maxHeartbeats 4000000 in
+/- English proof (translation)
+Introduce `hN hS hL`. Use `_root_.GlobalTheory.GalLoc.atMem_mono (_root_.GlobalTheory.GalLoc.atMem_and' (_root_.GlobalTheory.T.exists_superset_low_heckeRd_of_subset_S0 hN hS hL) (_root_.GlobalTheory.T.exists_theta_heq_lvlPsi_at_members hN hS hL)) ?_` and prove the remaining obligations. Introduce `K B f T w Z Wt p0 t nch n xd c hE H S hL' eig θ hS' hhL heig hθ`. Take `⟨H2, H3⟩` from `H`. Take `⟨e⟩` from `hE`.
+
+Establish `e' : _root_.GlobalTheory.HeightCounting.RealExpansionExtraData (D` using `(w.st Z).toD7) c.row t.r.z.geo xd := e`. Take `⟨Sb, eg, hSb, heq, hAd⟩` from `e'.eig`. Take `⟨Sb', hsub, hS0, hlow, hrd⟩` from `H2 Sb hSb`. Take `⟨θ0, hθ0, hψ⟩` from `H3`. Take `⟨Rw0, hRw0, ⟨hpar⟩⟩` from `_root_.GlobalTheory.RowTriple.Lay.EigCopy.parIn_built_alt c.a.nt _ c.row.rep_eq`.
+
+Establish `hT` using `_root_.GlobalTheory.TwInputs.Eig.eigTrue_of_read hL t.r.Y t.r.z.pins.char.base.lev hpar.T Rw0 hpar.row hAd hsub hlow`. Establish `hO` using `GlobalTheory.TwInputs.Eig.eigOcc t.r.Y t.r.z.pins.char.base.lev t.r.intersectionNumber_baseChange.prim.unif t.r.z.pins.char.base.models.HW t.r.z.good.2 hψ hAd hsub hlow hrd`. Rewrite `hT` using `[t.r.z.lev.C]`. Take `rfl : S = _` from `eq_of_heq (hS'.trans c.row.S_eq)`. Take `rfl : hL' = c.row.hecke.hL` from `eq_of_heq (hhL.trans c.row.hL_eq)`.
+
+Take `rfl : eig = eg` from `eq_of_heq (heig.trans heq)`. Take `rfl : θ = θ0` from `eq_of_heq (hθ.trans hθ0.symm)`. Use `⟨Sb', hS0, fun Rw hRw => ⟨eigTrue_congr ?_ hT, hO⟩⟩` and prove the remaining obligations. Conclude with `eq_of_heq (hRw0.trans hRw.symm)`.
+-/
 theorem eigenvalues_at_member_tripleLayer_alt : _root_.GlobalTheory.HeightCounting.Up.PublishedInputsThirdLayerAlt → SerN → ∀ hL : _root_.UpperTheory.Zero.LLC.RecTExists, _root_.GlobalTheory.HeightCounting.Up.MemberAtLayerPoint hL fun _ _ _ _ w Z _ _ _ _ _ c => ∀ (S : RatDat (w.D Z).ntw) (hL' : ∀ j, ℕ → PlE (w.D Z).host → Module.End (w.D Z).what₂.LL (S.WL j)) (eig : ℕ → (w.D Z).what₂.FT → ℕ → PlE (w.D Z).host → ↥(w.D Z).LL0) (θ : ∀ kk : Fin 2, Multiplicative (ZMod ((w.D Z).host.g kk)) →* (↥(w.D Z).LL0)ˣ), HEq S (ratL c.a.nt.L c.a.nt.S) → HEq hL' c.a.nt.hL → HEq eig c.a.nt.eig → HEq θ c.a.nt.θ → ∃ Sb : Finset (PlE (w.D Z).host), (∀ i, Sb ⊆ (w.D Z).ntw.S0 i) ∧ ∀ Rw : RowSide (w.D Z), HEq Rw.locR c.a.nt.A.row.locR → GlobalTheory.TwInputs.EigTrue (w.D Z) (TC.cf w.I w.l Z) Rw Sb eig ∧ GlobalTheory.TwInputs.EigOcc (w.D Z) S θ hL' Sb eig := by
   intro hN hS hL
   refine _root_.GlobalTheory.GalLoc.atMem_mono (_root_.GlobalTheory.GalLoc.atMem_and' (_root_.GlobalTheory.T.exists_superset_low_heckeRd_of_subset_S0 hN hS hL) (_root_.GlobalTheory.T.exists_theta_heq_lvlPsi_at_members hN hS hL)) ?_
@@ -50,6 +59,9 @@ section
 open Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotions.N Formalism.L2 Formalism.L2.Host Formalism.L2.NT Formalism.IndefR.NX NumberField IsDedekindDomain GlobalTheory.Mem GlobalTheory.Mem.Col2 GlobalTheory.Mem.Top GlobalTheory.Mem.Top.GroupRetwisting GlobalTheory.Mem.Top.Bl GlobalTheory.Mem.R3 GlobalTheory.Mem.R3.Rw GlobalTheory.HeightCounting GlobalTheory.HeightCounting.Up
 attribute [local instance] Formalism.BasicNotions.Host.cmStar GlobalTheory.TypeRec.factG
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @_root_.GlobalTheory.RowTriple.Lay.EigCopy.eigenvalues_at_member_tripleLayer_alt | exact _root_.GlobalTheory.RowTriple.Lay.EigCopy.eigenvalues_at_member_tripleLayer_alt | (intros; apply _root_.GlobalTheory.RowTriple.Lay.EigCopy.eigenvalues_at_member_tripleLayer_alt …`.
+-/
 theorem _root_.GlobalTheory.T.compatibleSystem_tripleLayer_eigenvalues_alt : _root_.GlobalTheory.HeightCounting.Up.PublishedInputsThirdLayerAlt → SerN → ∀ hL : _root_.UpperTheory.Zero.LLC.RecTExists, _root_.GlobalTheory.HeightCounting.Up.MemberAtLayerPoint hL fun _ _ _ _ w Z _ _ _ _ _ c => ∀ (S : RatDat (w.D Z).ntw) (hL' : ∀ j, ℕ → PlE (w.D Z).host → Module.End (w.D Z).what₂.LL (S.WL j)) (eig : ℕ → (w.D Z).what₂.FT → ℕ → PlE (w.D Z).host → ↥(w.D Z).LL0) (θ : ∀ kk : Fin 2, Multiplicative (ZMod ((w.D Z).host.g kk)) →* (↥(w.D Z).LL0)ˣ), HEq S (ratL c.a.nt.L c.a.nt.S) → HEq hL' c.a.nt.hL → HEq eig c.a.nt.eig → HEq θ c.a.nt.θ → ∃ Sb : Finset (PlE (w.D Z).host), (∀ i, Sb ⊆ (w.D Z).ntw.S0 i) ∧ ∀ Rw : RowSide (w.D Z), HEq Rw.locR c.a.nt.A.row.locR → GlobalTheory.TwInputs.EigTrue (w.D Z) (TC.cf w.I w.l Z) Rw Sb eig ∧ GlobalTheory.TwInputs.EigOcc (w.D Z) S θ hL' Sb eig := by
   first | exact @_root_.GlobalTheory.RowTriple.Lay.EigCopy.eigenvalues_at_member_tripleLayer_alt | exact _root_.GlobalTheory.RowTriple.Lay.EigCopy.eigenvalues_at_member_tripleLayer_alt | (intros; apply _root_.GlobalTheory.RowTriple.Lay.EigCopy.eigenvalues_at_member_tripleLayer_alt <;> assumption)
 end

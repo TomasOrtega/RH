@@ -26,6 +26,13 @@ open GlobalTheory.PairLift (adjO)
 noncomputable section
 namespace GlobalTheory.ExchLatPf
 
+/- English proof (translation)
+Introduce `D hOff T L μ0 hLi sc G W M hM hEx hLat i hi r r' hr hr' g hg`. Establish `hAdj` using `GlobalTheory.AdjLawPf.adjLaw D W.ψ W.ψ_std (G.V (.core i)) (G.V (.core (i+1)))`. Establish `hE` using `(hEx W.ψ (G.V (.core i)) (G.V (.core (i+1))) W.ψ_std).2.1`. Establish `hL` using `hLat D hOff T L μ0 hLi sc G W M hM i hi r r' hr hr' (fun _ => True)`. Use `⟨fun u hu => ?_, fun e he u hu hue => ?_⟩` and prove the remaining obligations.
+
+Use `(hE _ _).trans (congrArg _ ?_)` and prove the remaining obligations. Establish `h2 : adjO (G.V (.core i)) (G.V (.core (i+1))) (2 • u) = 2 • adjO (G.V (.core i)) (G.V (.core (i+1))) u`. Rewrite using `[two_smul, two_smul, hAdj.add]`. Rewrite using `[h2]`. Conclude with `hg.1 _ ((hL u).1 hu)`.
+
+Use `(hE _ _).trans (congrArg _ ?_)` and prove the remaining obligations. Conclude with `hg.2 (cA D e) (Formalism.IndefR.Fin.LevelGroupLemmas.Lat.isSplitIdem_cA he) _ ((hL u).1 hu) (hAdj.half e u hue)`.
+-/
 theorem exchLat : All fun {D} _ _ _ {G} W _ => ExchLaw D → LatExch → ∀ i, i < D.R.m → ∀ r r', IsCoreLat G i r → IsCoreLat G (i + 1) r' → ∀ g : WO r.sp r'.sp → ℂ, IsLatVac (heisO W.ψ r.sp r'.sp) (latO r.sp r'.sp (GlobalTheory.AdelicU.frameLat r.sp : Set _) (GlobalTheory.AdelicU.frameLat r'.sp : Set _) fun _ => True) g → IsLatVac (heisO W.ψ (G.pS (.core i)) (G.pT (.core i))) (latO (G.pS (.core i)) (G.pT (.core i)) (G.latS (.core i) : Set _) (G.latT (.core i) : Set _) fun _ => True) (exch (G.V (.core i)) (G.V (.core (i + 1))) g) := by
   intro D hOff T L μ0 hLi sc G W M hM hEx hLat i hi r r' hr hr' g hg
   have hAdj := GlobalTheory.AdjLawPf.adjLaw D W.ψ W.ψ_std (G.V (.core i)) (G.V (.core (i+1)))

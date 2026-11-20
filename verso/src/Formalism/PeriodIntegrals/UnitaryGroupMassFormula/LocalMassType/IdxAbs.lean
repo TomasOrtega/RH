@@ -6,6 +6,29 @@ namespace PI.LocMassTypW
 
 open MeasureTheory
 
+/- English proof (translation)
+Establish `hI : ∀ q : {q : V ⧸ B | ∃ x ∈ N, (QuotientAddGroup.mk (φ x) : V ⧸ B) = q}, ∃ x ∈ N, (QuotientAddGroup.mk (φ x) : V ⧸ B) = q` using `fun q => q.2`. Use `choose x hxN hxq using hI`. Establish `hmk : ∀ a b : V, -a + b ∈ B ↔ (QuotientAddGroup.mk a : V ⧸ B) = QuotientAddGroup.mk b` using `fun a b => QuotientAddGroup.eq.symm`. Establish `hC : C = ⋃ q, (fun v => -φ (x q) + v) ⁻¹' (B : Set V)`. Use extensionality with `v`.
+
+Simplify using `only [Set.mem_iUnion, Set.mem_preimage, SetLike.mem_coe]`. Prove the components needed by the constructor for the conclusion. Introduce `hv`. Take `⟨y, hy, hyB⟩` from `hsur v hv`. Use `⟨⟨QuotientAddGroup.mk (φ y), y, hy, rfl⟩, ?_⟩` and prove the remaining obligations.
+
+Rewrite `hyB`, the goal using `[hmk]`. Rewrite using `[hxq]`. Conclude with `hyB`. Introduce and unpack `⟨q, hq⟩`. Establish `hc` using `hCB _ (hφ _ (hxN q)) _ hq`.
+
+Simplify using `using hc`. Establish `hN : N = ⋃ q, (fun y => (x q)⁻¹ * y) ⁻¹' (K : Set G)`. Use extensionality with `y`. Simplify using `only [Set.mem_iUnion, Set.mem_preimage, SetLike.mem_coe]`. Prove the components needed by the constructor for the conclusion.
+
+Introduce `hy`. Use `⟨⟨QuotientAddGroup.mk (φ y), y, hy, rfl⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[hco _ (hxN _) _ hy, hmk, hxq]`. Introduce and unpack `⟨q, hq⟩`. Establish `hc` using `hNK _ (hxN q) _ hq`.
+
+Simplify using `using hc`. Establish `hdC : Pairwise (Function.onFun Disjoint fun q => (fun v => -φ (x q) + v) ⁻¹' (B : Set V))`. Introduce `q q' hqq`. Rewrite using `[Function.onFun, Set.disjoint_left]`. Introduce `v h1 h2`.
+
+Apply `hqq` to reduce the goal to its premises. Apply `Subtype.ext` to reduce the goal to its premises. Simplify using `only [Set.mem_preimage, SetLike.mem_coe, hmk] at h1 h2`. Rewrite using `[← hxq q, ← hxq q', h1, h2]`. Establish `hdN : Pairwise (Function.onFun Disjoint fun q => (fun y => (x q)⁻¹ * y) ⁻¹' (K : Set G))`.
+
+Introduce `q q' hqq`. Rewrite using `[Function.onFun, Set.disjoint_left]`. Introduce `y h1 h2`. Apply `hqq` to reduce the goal to its premises. Apply `Subtype.ext` to reduce the goal to its premises.
+
+Simplify using `only [Set.mem_preimage, SetLike.mem_coe] at h1 h2`. Establish `hy : y ∈ N` using `by simpa using hNK _ (hxN q) _ h1`. Rewrite `h1` using `[hco _ (hxN q) _ hy, hmk]`. Rewrite `h2` using `[hco _ (hxN q') _ hy, hmk]`. Rewrite using `[← hxq q, ← hxq q', h1, h2]`.
+
+Establish `e1 : μ N = ∑' q : {q : V ⧸ B | ∃ x ∈ N, (QuotientAddGroup.mk (φ x) : V ⧸ B) = q}, μ K` using `by conv_lhs => rw [hN]`. Rewrite using `[measure_iUnion hdN fun q => (measurable_const_mul _) hK]`. Conclude with `tsum_congr fun q => measure_preimage_mul μ _ _`. Establish `e2 : ν C = ∑' q : {q : V ⧸ B | ∃ x ∈ N, (QuotientAddGroup.mk (φ x) : V ⧸ B) = q}, ν B`. Rewrite using `[hC, measure_iUnion hdC fun q => (measurable_const_add _) hB]`.
+
+Conclude with `tsum_congr fun q => measure_preimage_add ν _ _`. Rewrite using `[e1, e2, ← ENNReal.tsum_mul_right, ← ENNReal.tsum_mul_left]`.
+-/
 theorem idx_abs {G V : Type*} [Group G] [MeasurableSpace G] [MeasurableMul G]
     [AddCommGroup V] [MeasurableSpace V] [MeasurableAdd V]
     (μ : Measure G) [μ.IsMulLeftInvariant] (ν : Measure V) [ν.IsAddLeftInvariant]

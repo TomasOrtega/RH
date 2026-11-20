@@ -13,6 +13,31 @@ namespace ReciprocityTheory.ChartRestriction.DS.G2
 variable {n : ℕ} {H : Type*} [NormedAddCommGroup H] [InnerProductSpace ℂ H] [CompleteSpace H] {ε : Fin n → Bool}
   {σ : Matrix (Fin n) (Fin n) ℂ → (H →L[ℂ] H)} {D : Submodule ℂ H} {E : Fin n → Fin n → Module.End ℂ D}
 
+/- English proof (translation)
+Take `⟨Φ, hΦ, hΦE⟩` from `tf_phi dual hσ hD hsm hgap hV hc hVK hW hy`. Take `⟨q, hq⟩` from `Submodule.exists_isCompl (tensSub (n := n) (genSub E V))`. Set `π` to `Submodule.linearProjOfIsCompl _ q hq`. Set `Ψ : D →ₗ[ℂ] smD ε (tfRdiag ε)` to `Φ ∘ₗ π ∘ₗ ι`. Establish `hΨ : ∀ x (hx : x ∈ genSub E V'), Ψ x = Φ ⟨ι x, hι.1 x hx⟩`.
+
+Introduce `x hx`. Use `show Φ (π (ι x)) = _`. Use `congr 1`. Conclude with `Submodule.linearProjOfIsCompl_apply_left hq ⟨ι x, hι.1 x hx⟩`. Establish `hΨc : ∀ x ∈ genSub E V', (Ψ x : tfL2n ε) = tfPh dual ε σ (y : H) (fun c => ((ι x c : D) : H))` using `fun x hx => by rw [hΨ x hx, hΦ]`.
+
+Establish `hΨE : ∀ a b, ∀ x ∈ genSub E V', Ψ (E a b x) = smE ε (tfRdiag ε) a b (Ψ x)`. Introduce `a b x hx`. Rewrite using `[hΨ _ (tset_genSub_E E V' a b hx), hΨ x hx, hΦE]`. Use `congr 1`. Conclude with `Subtype.ext (hι.2.2.1 a b x hx)`.
+
+Establish `hV'le : V' ≤ genSub E V'` using `fun x hx => Submodule.mem_sInf.mpr fun _ hT => hT.1 hx`. Establish `hinj : ∀ x ∈ genSub E V', Ψ x = 0 → x = 0`. Introduce `x hx h`. Establish `h1 : tfPh dual ε σ (y : H) (fun c => ((ι x c : D) : H)) = 0`. Rewrite using `[← hΨc x hx, h]`.
+
+Both sides reduce to the same expression. Conclude with `hι.2.1 x hx (tf_ph_inj dual hσ hD hsm hgap hV hc hVK hW hd hy hy0 (hι.1 x hx) h1)`. Establish `hK2` using `tf_kirr_map hV' Ψ (fun a b x hx => hΨE a b x (hV'le hx)) (fun x hx => hinj x (hV'le hx))`. Use `⟨V'.map Ψ, hK2, ?_, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce and unpack `_ ⟨x, hx, rfl⟩`.
+
+Establish `hxG` using `hV'le hx`. Establish `e : casimir (smE ε (tfRdiag ε)) (Ψ x) = Ψ (casimir E x)`. Simplify using `only [casimir, LinearMap.sum_apply, Module.End.mul_apply, map_sum]`. Use `sum_congr rfl fun a _ => sum_congr rfl fun b _ => ?_` and prove the remaining obligations. Rewrite using `[hΨE a b _ (tset_genSub_E E V' b a hxG), hΨE b a x hxG]`.
+
+Rewrite using `[e, hc' x hx, map_smul]`. Introduce and unpack `k hk _ ⟨x, hx, rfl⟩`. Take `⟨x', hx', hxx'⟩` from `hVK' k hk x hx`. Use `⟨Ψ x', ⟨x', hx', rfl⟩, ?_⟩` and prove the remaining obligations. Establish `hk' : k ∈ UJset ε` using `closure_inUJ_of_mem_Kset hk`.
+
+Rewrite using `[hΨc x' (hV'le hx'), hΨc x (hV'le hx), tfRdiag_tfPh dual hσ hk', tf_tensGrp_kDiag dual hk, ← hι.2.2.2 k hk x (hV'le hx) x' (hV'le hx') hxx']`. Introduce `h`. Take `⟨w, hw, hw0, -⟩` from `hK2.2.2.2`. Apply `hw0` to reduce the goal to its premises. Establish `hwb : w ∈ (⊥ : Submodule ℂ (smD ε (tfRdiag ε)))` using `h ▸ hw`.
+
+Conclude with `(Submodule.mem_bot ℂ).1 hwb`. Introduce `v hv`. Establish `hle : genSub (smE ε (tfRdiag ε)) (V'.map Ψ) ≤ (genSub E V').map Ψ`. Use `sInf_le ⟨Submodule.map_mono hV'le, ?_⟩` and prove the remaining obligations. Introduce and unpack `a b _ ⟨x, hx, rfl⟩`.
+
+Conclude with `⟨E a b x, tset_genSub_E E V' a b hx, hΨE a b x hx⟩`. Take `⟨x, hx, rfl⟩` from `hle hv`. Conclude with `⟨x, hx, hΨc x hx⟩`. Introduce `x hx`. Establish `hle : genSub E V' ≤ (genSub (smE ε (tfRdiag ε)) (V'.map Ψ)).comap Ψ ⊓ genSub E V'`.
+
+Use `sInf_le ⟨fun z hz => ⟨Submodule.mem_sInf.mpr fun _ hT => hT.1 ⟨z, hz, rfl⟩, hV'le hz⟩, ?_⟩` and prove the remaining obligations. Introduce and unpack `a b z ⟨hz1, hz2⟩`. Use `⟨?_, tset_genSub_E E V' a b hz2⟩` and prove the remaining obligations. Use `show Ψ (E a b z) ∈ genSub (smE ε (tfRdiag ε)) (V'.map Ψ)`. Rewrite using `[hΨE a b z hz2]`.
+
+Conclude with `tset_genSub_E _ _ a b hz1`. Conclude with `⟨Ψ x, (hle hx).1, hΨc x hx⟩`.
+-/
 theorem tf_datum2 (dual : Bool) {lam lam' : Fin n → ℝ} (hσ : IsURepOn (UJset ε) σ) (hD : IsDerivedOn ε σ D E)
     (hsm : ∀ v : D, IsSmoothVecU ε σ v) {V : Submodule ℂ D} (hgap : StdGap ε lam)
     (hV : IsKIrrHW ε E (lowK ε lam) V) (hc : ∀ v ∈ V, casimir E v = (casVal lam : ℂ) • v)
@@ -91,6 +116,21 @@ theorem tf_datum2 (dual : Bool) {lam lam' : Fin n → ℝ} (hσ : IsURepOn (UJse
       exact tset_genSub_E _ _ a b hz1
     exact ⟨Ψ x, (hle hx).1, hΨc x hx⟩
 
+/- English proof (translation)
+Take `⟨Φ, hΦ, -⟩` from `tf_phi dual hσ hD hsm hgap hV hc hVK hW hy`. Introduce `f hf`. Take `⟨W, hWf, hfW, hWle, hWK⟩` from `tf_kfin_tens dual hσ hD hV.1 hV.2.1 hf`. Set `P' : Module.End ℂ (tensSub (n` to `n) (genSub E V)) := P.restrict hP.1`. Set `W' : Submodule ℂ (tensSub (n` to `n) (genSub E V)) := W.comap (tensSub (genSub E V)).subtype`.
+
+Establish `hW'f : FiniteDimensional ℂ W'` using `Module.Finite.equiv (Submodule.comapSubtypeEquivOfLe hWle).symm`. Set `S0 : Submodule ℂ (tfL2n ε)` to `W'.map ((smD ε (tfRdiag ε)).subtype ∘ₗ Φ ∘ₗ P')`. Establish `hS0v : ∀ w : tensSub (n` using `n) (genSub E V), ((smD ε (tfRdiag ε)).subtype ∘ₗ Φ ∘ₗ P') w = tfPh dual ε σ (y : H) (fun c => ((P w.1 c : D) : H)) := fun w => hΦ (P' w)`. Establish `hS0 : S0 ≤ closGen (smE ε (tfRdiag ε)) V₂`. Introduce and unpack `_ ⟨w, -, rfl⟩`.
+
+Rewrite using `[hS0v]`. Conclude with `hin w.1 w.2`. Establish `hS0f : FiniteDimensional ℂ S0` using `Module.Finite.map _ _`. Establish `hS0K : ∀ k ∈ Kset ε, ∀ x ∈ S0, tfRdiag ε k x ∈ S0`. Introduce and unpack `k hk _ ⟨w, hw, rfl⟩`.
+
+Take `⟨w', hw', hww'⟩` from `hWK k hk w.1 hw`. Use `⟨⟨w', hWle hw'⟩, hw', ?_⟩` and prove the remaining obligations. Rewrite using `[hS0v, hS0v, tfRdiag_tfPh dual hσ (closure_inUJ_of_mem_Kset hk), tf_tensGrp_kDiag dual hk, hP.2.2 k hk w.1 w.2 w' (hWle hw') hww']`. Establish `hkf` using `data_kfin_le hgap' (tfRdiag_isURepOn ε) (isDerivedOn_smE (tfRdiag_isURepOn ε)) hV₂ hc₂ hVK₂ S0 hS0 hS0f hS0K`. Establish `hfS0 : tfPh dual ε σ (y : H) (fun c => ((P f c : D) : H)) ∈ S0` using `⟨⟨f, hf⟩, hfW, hS0v ⟨f, hf⟩⟩`.
+
+Take `⟨v, hv, hve⟩` from `hkf hfS0`. Take `⟨x, hx, hxe⟩` from `hgen v hv`. Use `⟨x, hx, ?_⟩` and prove the remaining obligations. Establish `hd0 : (P f - ι x) ∈ tensSub (genSub E V)` using `Submodule.sub_mem _ (hP.1 f hf) (hι x hx)`. Establish `e1 : Φ ⟨P f - ι x, hd0⟩ = Φ ⟨P f, hP.1 f hf⟩ - Φ ⟨ι x, hι x hx⟩`.
+
+Rewrite using `[← map_sub]`. Both sides reduce to the same expression. Establish `h0 : tfPh dual ε σ (y : H) (fun c => (((P f - ι x) c : D) : H)) = 0`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[sub_eq_zero]`.
+
+Conclude with `((hΦ ⟨P f, hP.1 f hf⟩).trans hve.symm).trans (hxe.trans (hΦ ⟨ι x, hι x hx⟩).symm)`. Conclude with `sub_eq_zero.1 (tf_ph_inj dual hσ hD hsm hgap hV hc hVK hW hd hy hy0 hd0 h0)`.
+-/
 theorem tf_eq_case (dual : Bool) {lam lam' : Fin n → ℝ} (hσ : IsURepOn (UJset ε) σ) (hD : IsDerivedOn ε σ D E)
     (hsm : ∀ v : D, IsSmoothVecU ε σ v) {V : Submodule ℂ D} (hgap : StdGap ε lam)
     (hV : IsKIrrHW ε E (lowK ε lam) V) (hc : ∀ v ∈ V, casimir E v = (casVal lam : ℂ) • v)

@@ -8,6 +8,45 @@ open GlobalTheory.AbDual (evc IsAdditive swap)
 attribute [local instance] Ideal.Quotient.field
 open UpperTheory.Gal.crystallineComparison UpperTheory.Gal.crystallineComparison.Mod
 
+/- English proof (translation)
+Introduce `hC κ B B' Λ _ _ _ _ _ _ _ _ _ π ε' _ q hπ hq hex εΛ g hg`. Take `⟨t, ht, htm⟩` from `hex`. Use `set m : Ideal B := RingHom.ker (ε'.comp π).toRingHom with hm`. Use `set m' : Ideal B' := RingHom.ker ε'.toRingHom with hm'`. Use `haveI : m.IsPrime := RingHom.ker_isPrime _`.
+
+Use `haveI : IsArtinianRing B := IsArtinianRing.of_finite κ B`. Use `haveI : Module.Finite κ B' := Module.Finite.of_surjective π.toLinearMap hπ`. Use `haveI : IsArtinianRing B' := IsArtinianRing.of_finite κ B'`. Establish `hsurj : Function.Surjective (algebraMap B (Localization.AtPrime m))` using `IsArtinianRing.localization_surjective m.primeCompl _`. Establish `hsurj' : Function.Surjective (algebraMap B' (Localization.AtPrime m'))` using `IsArtinianRing.localization_surjective m'.primeCompl _`.
+
+Use `haveI : Module.Finite κ (Localization.AtPrime m) := Module.Finite.of_surjective (IsScalarTower.toAlgHom κ B (Localization.AtPrime m)).toLinearMap hsurj`. Use `haveI : IsArtinianRing (Localization.AtPrime m) := IsArtinianRing.of_finite κ _`. Establish `hmem : ∀ x, x ∈ m ↔ ε' (π x) = 0` using `fun x => by simp [m, RingHom.mem_ker]`. Establish `hmem' : ∀ y, y ∈ m' ↔ ε' y = 0` using `fun y => by simp [m', RingHom.mem_ker]`. Establish `hunit : ∀ s, ε' (π s) ≠ 0 → IsUnit (g s)`.
+
+Introduce `s hs`. Assume the negation of the conclusion as `hns`. Establish `hker : (RingHom.ker εΛ.toRingHom).IsMaximal` using `RingHom.ker_isMaximal_of_surjective _ (fun c => ⟨algebraMap κ Λ c, by simp⟩)`. Establish `heq : RingHom.ker εΛ.toRingHom = IsLocalRing.maximalIdeal Λ` using `IsLocalRing.eq_maximalIdeal hker`. Establish `hin : g s ∈ RingHom.ker εΛ.toRingHom`.
+
+Rewrite using `[heq]`. Conclude with `(IsLocalRing.mem_maximalIdeal _).2 hns`. Establish `h2 : εΛ (g s) = ε' (π s)`. Simplify using `using congrArg (fun f : B →ₐ[κ] κ => f s) hg`. Apply `hs` to reduce the goal to its premises.
+
+Rewrite using `[← h2]`. Simplify `hin` using `[RingHom.mem_ker]`. Establish `hφu : ∀ y : m.primeCompl, IsUnit (((IsScalarTower.toAlgHom κ B' (Localization.AtPrime m')).comp π) y)`. Introduce and unpack `⟨y, hy⟩`. Establish `hy' : π y ∈ m'.primeCompl` using `by show π y ∉ m'`.
+
+Rewrite using `[hmem']`. Conclude with `fun h => hy ((hmem y).2 h)`. Conclude with `IsLocalization.map_units (Localization.AtPrime m') (⟨π y, hy'⟩ : m'.primeCompl)`. Set `φ : Localization.AtPrime m →ₐ[κ] Localization.AtPrime m'` to `IsLocalization.liftAlgHom hφu`. Establish `hφ : ∀ x, φ (algebraMap B _ x) = algebraMap B' (Localization.AtPrime m') (π x)` using `fun x => by`.
+
+Simplify using `[φ, IsLocalization.lift_eq]`. Establish `hφs : Function.Surjective φ`. Introduce `z`. Take `⟨y, rfl⟩` from `hsurj' z`. Take `⟨x, rfl⟩` from `hπ y`.
+
+Conclude with `⟨_, hφ x⟩`. Establish `hεu : ∀ y : m.primeCompl, IsUnit ((ε'.comp π) y)`. Introduce and unpack `⟨y, hy⟩`. Conclude with `isUnit_iff_ne_zero.2 (fun h => hy ((hmem y).2 h))`. Set `ε : Localization.AtPrime m →ₐ[κ] κ` to `IsLocalization.liftAlgHom hεu`.
+
+Establish `hmapm : m.map (algebraMap B (Localization.AtPrime m)) = IsLocalRing.maximalIdeal (Localization.AtPrime m)` using `Localization.AtPrime.map_eq_maximalIdeal`. Establish `hmax : IsLocalRing.maximalIdeal (Localization.AtPrime m) = Ideal.span {algebraMap B (Localization.AtPrime m) t}`. Apply `le_antisymm` to reduce the goal to its premises. Apply `Submodule.le_of_le_smul_of_le_jacobson_bot (I := IsLocalRing.maximalIdeal (Localization.AtPrime m)) (IsNoetherian.noetherian _)` to reduce the goal to its premises. Conclude with `(IsLocalRing.jacobson_eq_maximalIdeal ⊥ bot_ne_top).ge`.
+
+Rewrite using `[Ideal.smul_eq_mul, ← hmapm]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Ideal.span_le, Set.singleton_subset_iff, ← hmapm]`. Conclude with `Ideal.mem_map_of_mem _ ht`. Establish `hJ : RingHom.ker φ = Ideal.span {(algebraMap B (Localization.AtPrime m) t) ^ q}`.
+
+Apply `hC κ (Localization.AtPrime m) ε (algebraMap B _ t) hmax (RingHom.ker φ) q` to reduce the goal to its premises. Rewrite using `[← hq]`. Conclude with `LinearEquiv.finrank_eq (Ideal.quotientKerAlgEquivOfSurjective hφs).toLinearEquiv`. Establish `hfac : ∀ x y : B, algebraMap B (Localization.AtPrime m) x = algebraMap B _ y → g x = g y`. Introduce `x y h`.
+
+Rewrite `h` using `[← sub_eq_zero, ← map_sub]`. Take `⟨⟨u, hu⟩, hu0⟩` from `(IsLocalization.map_eq_zero_iff m.primeCompl (Localization.AtPrime m) (x - y)).1 h`. Establish `hu' : ε' (π u) ≠ 0` using `fun h0 => hu ((hmem u).2 h0)`. Establish `h1` using `congrArg g hu0`. Rewrite `h1` using `[map_mul, map_sub, map_zero]`.
+
+Conclude with `sub_eq_zero.1 ((hunit u hu').mul_right_eq_zero.1 h1)`. Prove the components needed by the constructor for the conclusion. Introduce `hker x hx`. Establish `ht1 : (algebraMap B (Localization.AtPrime m) t) ^ q ∈ RingHom.ker φ`. Rewrite using `[hJ]`.
+
+Conclude with `Ideal.mem_span_singleton_self _`. Rewrite `ht1` using `[RingHom.mem_ker, ← map_pow, hφ, map_pow]`. Rewrite `ht1` using `[← map_pow]`. Take `⟨⟨u', hu'⟩, hu0⟩` from `(IsLocalization.map_eq_zero_iff m'.primeCompl (Localization.AtPrime m') _).1 ht1`. Take `⟨v, rfl⟩` from `hπ u'`.
+
+Establish `hv : ε' (π v) ≠ 0` using `fun h0 => hu' ((hmem' _).2 h0)`. Establish `h1 : g (v * t ^ q) = 0` using `hker _ (by rw [map_mul]; exact hu0)`. Rewrite `h1` using `[map_mul, map_pow]`. Establish `hgt : g t ^ q = 0` using `(hunit v hv).mul_right_eq_zero.1 h1`. Establish `hx' : algebraMap B (Localization.AtPrime m) x ∈ Ideal.span {algebraMap B (Localization.AtPrime m) t}`.
+
+Rewrite using `[← hmax, ← hmapm]`. Conclude with `Ideal.mem_map_of_mem _ ((hmem x).2 hx)`. Take `⟨z, hz⟩` from `Ideal.mem_span_singleton'.1 hx'`. Take `⟨y, rfl⟩` from `hsurj z`. Establish `he` using `hfac x (y * t) (by rw [map_mul, hz])`.
+
+Rewrite using `[he, map_mul, mul_pow, hgt, mul_zero]`. Introduce `hq' x hx`. Establish `hgt : g t ^ q = 0` using `hq' t ((hmem t).1 ht)`. Establish `hx' : algebraMap B (Localization.AtPrime m) x ∈ RingHom.ker φ`. Rewrite using `[RingHom.mem_ker, hφ, hx, map_zero]`.
+
+Rewrite `hx'` using `[hJ]`. Take `⟨z, hz⟩` from `Ideal.mem_span_singleton'.1 hx'`. Take `⟨y, rfl⟩` from `hsurj z`. Establish `he` using `hfac x (y * t ^ q) (by rw [map_mul, map_pow, hz])`. Rewrite using `[he, map_mul, map_pow, hgt, mul_zero]`.
+-/
 theorem UpperTheory.Gal.crystallineComparison.Mod.chainRing_of :
     ChainLoc → ChainRing := by
   intro hC κ B B' Λ _ _ _ _ _ _ _ _ _ π ε' _ q hπ hq hex εΛ g hg

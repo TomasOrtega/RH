@@ -12,6 +12,17 @@ noncomputable section
 
 namespace GlobalTheory.LogU
 
+/- English proof (translation)
+Use `choose A hAS hA using ha`. Use `choose B hBS hB using hb`. Establish `hD : ∀ d : Fin 2 →₀ ℕ, ∃ D : ℤ, (((d 0).factorial * (d 1).factorial : ℕ) : ℤ) * MvPolynomial.coeff d (logDefect n) = ((n.factorial * ((n - 1) / 2).factorial : ℕ) : ℤ) * D`. Introduce `d`. Establish `hd : Finsupp.single 0 (d 0) + Finsupp.single 1 (d 1) = d`.
+
+Apply the tactic sequence `ext x; fin_cases x <;> simp`. Distinguish the cases in `h : d 0 + d 1 < n`. Use `GlobalTheory.T.coeff_logDefect_eq_zero_of_add_lt n (d 0) (d 1) h` as an intermediate fact. Rewrite `this` using `[hd]`. Conclude with `⟨0, by rw [this]; simp⟩`.
+
+Take `⟨D, hD⟩` from `GlobalTheory.T.factorialTruncatedLogAdditivityDefect_coeff_dvd n (d 0) (d 1) (by omega)`. Rewrite `hD` using `[hd]`. Conclude with `⟨D, hD⟩`. Use `choose D hD using hD`. Use `⟨∑ d ∈ (logDefect n).support, (D d : R) * (A (d 0) * B (d 1)), Subring.sum_mem _ fun d _ => Subring.mul_mem _ (intCast_mem S _) (Subring.mul_mem _ (hAS _) (hBS _)), ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[← aeval_logDefect, MvPolynomial.aeval_def, MvPolynomial.eval₂_eq', Finset.mul_sum]`. Use `Finset.sum_congr rfl fun d _ => ?_` and prove the remaining obligations. Establish `hc` using `congrArg (Int.cast : ℤ → R) (hD d)`. Move the coercions through the operations in `at hc`. Simplify using `only [Fin.prod_univ_two, Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.head_cons, eq_intCast]`.
+
+Rewrite using `[← hA, ← hB]`. Use `push_cast`. Take the linear combination `(A (d 0) * B (d 1)) * hc`.
+-/
 theorem defect_mem {R : Type} [CommRing R] (S : Subring R) (a b : R)
     (ha : ∀ i : ℕ, ∃ g ∈ S, ((i.factorial : ℕ) : R) * g = a ^ i)
     (hb : ∀ j : ℕ, ∃ g ∈ S, ((j.factorial : ℕ) : R) * g = b ^ j) (n : ℕ) :
@@ -44,6 +55,21 @@ theorem defect_mem {R : Type} [CommRing R] (S : Subring R) (a b : R)
   push_cast
   linear_combination (A (d 0) * B (d 1)) * hc
 
+/- English proof (translation)
+Introduce `l _ a b y y' ha hb hy hy' r`. Establish `hl : l.Prime` using `Fact.out`. Take `⟨N1, hN1⟩` from `hy r`. Take `⟨N2, hN2⟩` from `hy' r`. Use `⟨max (max N1 N2) (2 * l ^ r + 1), fun n hn => ?_⟩` and prove the remaining obligations.
+
+Take `⟨sa, hsa, za, hza⟩` from `hN1 n (le_of_max_le_left (le_of_max_le_left hn))`. Take `⟨sb, hsb, zb, hzb⟩` from `hN2 n (le_of_max_le_right (le_of_max_le_left hn))`. Establish `hn' : 2 * l ^ r + 1 ≤ n` using `le_of_max_le_right hn`. Establish `hA : ∀ i : ℕ, ∃ g ∈ (Per.Acris0 l).toSubring, ((i.factorial : ℕ) : Per.AinfP l) * g = algebraMap (Per.Ainf l) (Per.AinfP l) a ^ i` using `fun i => by`. Take `⟨g, hg⟩` from `exists_divPow ha i`.
+
+Conclude with `⟨g, g.2, hg⟩`. Establish `hB : ∀ i : ℕ, ∃ g ∈ (Per.Acris0 l).toSubring, ((i.factorial : ℕ) : Per.AinfP l) * g = algebraMap (Per.Ainf l) (Per.AinfP l) b ^ i` using `fun i => by`. Take `⟨g, hg⟩` from `exists_divPow hb i`. Conclude with `⟨g, g.2, hg⟩`. Take `⟨e, he, hE⟩` from `defect_mem _ _ _ hA hB n`.
+
+Establish `hdvd : l ^ r ∣ ((n - 1) / 2).factorial`. Use `Nat.dvd_factorial (pow_pos hl.pos r) ?_` and prove the remaining obligations. Generalize the expression as in `l ^ r = L at hn' ⊢`. Use linear arithmetic over natural numbers and integers. Take `⟨q, hq⟩` from `hdvd`.
+
+Set `E : Per.Acris0 l` to `⟨e, he⟩`. Use `⟨sa + sb + ((l ^ r * q : ℕ) : Per.Acris0 l) * E, ?_, za + zb - (q : Per.Acris l) * algebraMap (Per.Acris0 l) (Per.Acris l) E, ?_⟩` and prove the remaining obligations. Rewrite `hE` using `[hq]`. Simplify using `only [truncLogF] at hE`. Establish `hEe : ((E : Per.Acris0 l) : Per.AinfP l) = e` using `rfl`.
+
+Establish `hc : (((sa + sb + ((l ^ r * q : ℕ) : Per.Acris0 l) * E : Per.Acris0 l)) : Per.AinfP l) = (sa : Per.AinfP l) + (sb : Per.AinfP l) + ((l ^ r * q : ℕ) : Per.AinfP l) * e`. Simplify using `[hEe]`. Rewrite using `[hc]`. Simplify using `only [map_add, map_mul]`. Move the coercions through the operations in `at hE ⊢`.
+
+Take the linear combination `hsa + hsb - hE`. Simplify using `only [map_add, map_mul, map_natCast]`. Use `push_cast`. Take the linear combination `hza + hzb`.
+-/
 theorem isLogJ_add : ∀ (l : ℕ) [Fact l.Prime] (a b : Per.Ainf l) (y y' : Per.Acris l), GlobalTheory.LogU.InJ a →
     GlobalTheory.LogU.InJ b → GlobalTheory.LogU.IsLogJ a y → GlobalTheory.LogU.IsLogJ b y' → GlobalTheory.LogU.IsLogJ (a + b + a * b) (y + y') := by
   intro l _ a b y y' ha hb hy hy' r

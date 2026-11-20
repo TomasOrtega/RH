@@ -19,11 +19,22 @@ namespace GlobalTheory.ResW.CexLetter
 
 variable {E : Type} [Field E] [NumberField E] [IsTotallyComplex E]
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem zc_eq_act (a : ℕ) : zc E a = act (Op.lie (fun i j => if i = j then 1 else 0) : Op E a) := rfl
 
+/- English proof (translation)
+Introduce `φ hφ` and use `by rw [zc_eq_act]; exact π.stable _ φ hφ`.
+-/
 theorem zc_mapsTo {a : ℕ} (π : CuspSub E a) : ∀ φ ∈ π.V, zc E a φ ∈ π.V := fun φ hφ => by
   rw [zc_eq_act]; exact π.stable _ φ hφ
 
+/- English proof (translation)
+Take `⟨c, hc⟩` from `GlobalTheory.T.cuspidalRep_endomorphism_scalar_schur E x.1 x.2 ((zc E x.1).restrict (zc_mapsTo x.2)) (by`. Introduce `o φ`. Apply `Subtype.ext` to reduce the goal to its premises. Use `congrArg (fun f : Module.End ℂ (Sm E x.1) => f φ.1) ((GlobalTheory.T.splitCentreDerivative_commute_central_eigen E x.1).1 o)` as an intermediate fact. Simplify `this)` using `[LinearMap.restrict_apply, CuspSub.op]`.
+
+Conclude with `⟨c, fun φ hφ => by simpa using congrArg Subtype.val (hc ⟨φ, hφ⟩)⟩`.
+-/
 theorem exists_scalar (x : Letter E) : ∃ c : ℂ, ∀ φ ∈ x.2.V, zc E x.1 φ = c • φ := by
   obtain ⟨c, hc⟩ := GlobalTheory.T.cuspidalRep_endomorphism_scalar_schur E x.1 x.2 ((zc E x.1).restrict (zc_mapsTo x.2)) (by
     intro o φ
@@ -32,15 +43,28 @@ theorem exists_scalar (x : Letter E) : ∃ c : ℂ, ∀ φ ∈ x.2.V, zc E x.1 �
     simpa [LinearMap.restrict_apply, CuspSub.op] using this)
   exact ⟨c, fun φ hφ => by simpa using congrArg Subtype.val (hc ⟨φ, hφ⟩)⟩
 
+/- English proof (translation)
+Unfold `cex`. Conclude with `Classical.epsilon_spec (exists_scalar x)`.
+-/
 theorem cex_spec (x : Letter E) : ∀ φ ∈ x.2.V, zc E x.1 φ = cex x • φ := by
   unfold cex; exact Classical.epsilon_spec (exists_scalar x)
 
+/- English proof (translation)
+Take `⟨φ, hφ, hne, hc⟩` from `h`. Establish `h1` using `cex_spec x φ hφ`. Rewrite `h1` using `[hc]`. Conclude with `(smul_left_injective ℂ hne h1).symm`.
+-/
 theorem cex_unique (x : Letter E) (c : ℂ) (h : ∃ φ ∈ x.2.V, φ ≠ 0 ∧ zc E x.1 φ = c • φ) : cex x = c := by
   obtain ⟨φ, hφ, hne, hc⟩ := h
   have h1 := cex_spec x φ hφ
   rw [hc] at h1
   exact (smul_left_injective ℂ hne h1).symm
 
+/- English proof (translation)
+Take `⟨χ, h1, -, -, h4⟩` from `GlobalTheory.T.exists_idelic_absValue_cpow_character E (t : ℂ)`. Establish `hχ : χ = nu E t` using `by have := h4 (Complex.ofReal_im t); rwa [Complex.ofReal_re] at this`. Substitute `hχ` using the available equality. Take `⟨φ, hφ, hne⟩` from `Submodule.exists_mem_ne_zero_of_ne_bot x.2.ne_bot`. Apply `cex_unique` to reduce the goal to its premises.
+
+Use `⟨mulChi x.1 (nu E t) φ, ?_, ?_, ?_⟩` and prove the remaining obligations. Conclude with `⟨φ, hφ, rfl⟩`. Conclude with `fun h0 => hne ((mulChi x.1 (nu E t)).injective (h0.trans (map_zero _).symm))`. Use `show zc E x.1 (mulChi x.1 (nu E t) φ) = _`. Rewrite using `[h1, cex_spec x φ hφ, ← add_smul, map_smul]`.
+
+Both sides reduce to the same expression.
+-/
 theorem cex_tw (x : Letter E) (t : ℝ) : cex (tw x t) = cex x + x.1 * (Module.finrank ℚ E : ℂ) * t := by
   obtain ⟨χ, h1, -, -, h4⟩ := GlobalTheory.T.exists_idelic_absValue_cpow_character E (t : ℂ)
   have hχ : χ = nu E t := by have := h4 (Complex.ofReal_im t); rwa [Complex.ofReal_re] at this
@@ -54,6 +78,11 @@ theorem cex_tw (x : Letter E) (t : ℝ) : cex (tw x t) = cex x + x.1 * (Module.f
     rw [h1, cex_spec x φ hφ, ← add_smul, map_smul]
     rfl
 
+/- English proof (translation)
+Establish `hd : (0:ℝ) < Module.finrank ℚ E` using `by exact_mod_cast Module.finrank_pos`. Establish `ha : (0:ℝ) < x.1` using `by exact_mod_cast hx`. Establish `hne : (x.1 : ℝ) * Module.finrank ℚ E ≠ 0` using `(mul_pos ha hd).ne'`. Unfold `rexp`. Rewrite using `[cex_tw]`.
+
+Use `show (cex x + (x.1 : ℂ) * (Module.finrank ℚ E : ℂ) * (t : ℂ)).re / ((x.1:ℝ) * Module.finrank ℚ E) = _`. Rewrite using `[show (x.1 : ℂ) * (Module.finrank ℚ E : ℂ) * (t : ℂ) = (((x.1:ℝ) * Module.finrank ℚ E * t : ℝ) : ℂ) by push_cast; ring, Complex.add_re, Complex.ofReal_re]`. Clear the denominators using the available nonvanishing facts.
+-/
 theorem rexp_tw (x : Letter E) (hx : 1 ≤ x.1) (t : ℝ) : rexp (tw x t) = rexp x + t := by
   have hd : (0:ℝ) < Module.finrank ℚ E := by exact_mod_cast Module.finrank_pos
   have ha : (0:ℝ) < x.1 := by exact_mod_cast hx
@@ -65,6 +94,11 @@ theorem rexp_tw (x : Letter E) (hx : 1 ≤ x.1) (t : ℝ) : rexp (tw x t) = rexp
     push_cast; ring, Complex.add_re, Complex.ofReal_re]
   field_simp
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce `h φ hφ t g`. Use `((GlobalTheory.T.splitCentreDerivative_commute_central_eigen E x.1).2.2 φ 0).1 (by rw [← h]; exact cex_spec x φ hφ) t g` as an intermediate fact. Simplify using `using this`. Introduce `hN`.
+
+Take `⟨φ, hφ, hne⟩` from `Submodule.exists_mem_ne_zero_of_ne_bot x.2.ne_bot`. Conclude with `cex_unique x 0 ⟨φ, hφ, hne, ((GlobalTheory.T.splitCentreDerivative_commute_central_eigen E x.1).2.2 φ 0).2 (fun t g => by simpa using hN φ hφ t g)⟩`.
+-/
 theorem cex_eq_zero_iff (x : Letter E) : cex x = 0 ↔ IsNormalised x.2 := by
   constructor
   · intro h φ hφ t g
@@ -78,6 +112,9 @@ end GlobalTheory.ResW.CexLetter
 
 open GlobalTheory.ResW.CexLetter in
 
+/- English proof (translation)
+Introduce `E _ _ _ x`. Conclude with `⟨cex_spec x, cex_tw x, rexp_tw x, cex_eq_zero_iff x, fun c h => cex_unique x c h⟩`.
+-/
 theorem GlobalTheory.ResW.letter_centralExponent : ∀ (E : Type) [Field E] [NumberField E] [IsTotallyComplex E] (x : Letter E), (∀ φ ∈ x.2.V, zc E x.1 φ = cex x • φ) ∧ (∀ t : ℝ, cex (tw x t) = cex x + x.1 * (Module.finrank ℚ E : ℂ) * t) ∧ (1 ≤ x.1 → ∀ t : ℝ, rexp (tw x t) = rexp x + t) ∧ (cex x = 0 ↔ IsNormalised x.2) ∧ ∀ c : ℂ, (∃ φ ∈ x.2.V, φ ≠ 0 ∧ zc E x.1 φ = c • φ) → cex x = c := by
   intro E _ _ _ x
   exact ⟨cex_spec x, cex_tw x, rexp_tw x, cex_eq_zero_iff x, fun c h => cex_unique x c h⟩

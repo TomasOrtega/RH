@@ -12,5 +12,8 @@ open GlobalTheory.CuspRep GlobalTheory.WeilDeligne GlobalTheory.Pst GlobalTheory
 attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField
 open GlobalTheory.Published GlobalTheory.TheRec GlobalTheory.ContraPair
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.CMRealAlg.isAlgPos_of_compNorm | exact GlobalTheory.CMRealAlg.isAlgPos_of_compNorm | (intros; apply GlobalTheory.CMRealAlg.isAlgPos_of_compNorm <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.heckeChar_realSubfield_algebraic_of_comp_norm_integral : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (χ : HChar (maximalRealSubfield E)), (∀ τ : E →+* ℂ, ∃ k : ℤ, expo (compNorm E χ) τ = k) → ∃ n : (maximalRealSubfield E →+* ℂ) → ℤ, IsAlgPos χ n := by
   first | exact @GlobalTheory.CMRealAlg.isAlgPos_of_compNorm | exact GlobalTheory.CMRealAlg.isAlgPos_of_compNorm | (intros; apply GlobalTheory.CMRealAlg.isAlgPos_of_compNorm <;> assumption)

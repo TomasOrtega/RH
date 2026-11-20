@@ -9,6 +9,9 @@ open GlobalTheory.CuspRep GlobalTheory.PRep Formalism.UG Formalism.BasicNotions 
 
 namespace PositivityTheory.Rg.BcB.F.Rig.B
 
+/- English proof (translation)
+Introduce `E _ _ _ hE n π hπ w hw hu`. Conclude with `GlobalTheory.BcSpehCompare.exists_hasSatAt (fun v => hE v) hπ hw hu`.
+-/
 theorem inertSatEx : InertSatEx := by
   intro E _ _ _ hE n π hπ w hw hu
   exact GlobalTheory.BcSpehCompare.exists_hasSatAt (fun v => hE v) hπ hw hu

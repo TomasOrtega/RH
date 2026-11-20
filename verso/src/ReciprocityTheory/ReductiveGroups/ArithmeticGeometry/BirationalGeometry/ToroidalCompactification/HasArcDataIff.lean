@@ -45,6 +45,9 @@ structure ArcWit (Y : Model Xo c β) {O' : Type} [CommRing O'] [IsDomain O'] {b 
             x.left ≫ P.U.gen.inv.left ≫ pullback.fst t.G.hom (Out.jK R) ≫ m.φ = yF ≫ σ.left ≫ Y.m.φ →
             P.ToA F k q x
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fun ⟨t, m, P, φ, he, w, e, h⟩ => ⟨⟨t, m, P, φ, he, w, e, h⟩⟩, fun ⟨⟨t, m, P, φ, he, w, e, h⟩⟩ => ⟨t, m, P, φ, he, w, e, h⟩⟩`.
+-/
 theorem Model.hasArcData_iff (Y : Model Xo c β) {O' : Type} [CommRing O'] [IsDomain O'] {b : O →+* O'}
     (a : ArcIn D l β O' b) {R : Type} [CommRing R] [IsDomain R] (I : Ideal R) (f : O' →+* R) (u : R) (χ : Sp R ⟶ Y.X) :
     Y.HasArcData a I f u χ ↔ Nonempty (ArcWit Y a I f u χ) :=

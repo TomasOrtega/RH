@@ -5,6 +5,15 @@ open UpperTheory.ConvolutionTheory.R2 UpperTheory.ConvolutionTheory.RankTwoDesce
 open scoped Classical ENNReal NNReal
 open UpperTheory.ConvolutionTheory.R2.G (FS2 Rw nE row)
 
+/- English proof (translation)
+Introduce `E _ _ D ω φ hφ x g`. Establish `h1 : em E (Matrix.GeneralLinearGroup.scalar (Fin 2) x) = Matrix.GeneralLinearGroup.scalar (Fin 2) (ideleEmbedding ℚ E x)`. Use `Units.ext (Matrix.ext fun i j => ?_)` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `AdeleBaseChange.adeleMap ℚ E (Matrix.scalar (Fin 2) (x : A ℚ) i j) = Matrix.scalar (Fin 2) (AdeleBaseChange.adeleMap ℚ E (x : A ℚ)) i j`. Simplify using `only [Matrix.scalar_apply, Matrix.diagonal_apply]`.
+
+Apply the tactic sequence `split_ifs <;> simp`. Establish `h2 : ∀ (z : (A E)ˣ) (n : GL (Fin 2) (A E)), n * (Matrix.GeneralLinearGroup.scalar (Fin 2) z * g) = Matrix.GeneralLinearGroup.scalar (Fin 2) z * (n * g)`. Introduce `z n`. Rewrite using `[← mul_assoc, ← mul_assoc]`. Use `congr 1`.
+
+Conclude with `Units.ext (Matrix.scalar_commute (z : A E) (fun _ => Commute.all _ _) n.val).symm.eq`. Establish `h3 : ideleNorm ℚ E (ideleEmbedding ℚ E x) = x ^ 2`. Rewrite using `[ideleNorm_ideleEmbedding, Module.finrank_eq_card_basis D.b, Fintype.card_fin]`. Unfold `Wo`. Rewrite using `[h1, ← integral_const_mul]`.
+
+Use `congr 1`. Use function extensionality and compare the values at `u`. Rewrite using `[h2, hφ.cen, h3, map_pow, Units.val_pow_eq_pow_val, mul_assoc]`.
+-/
 theorem UpperTheory.whittaker_scalar_mul_eq_centralChar_sq_mul :
     ∀ (E : Type) [Field E] [NumberField E] (D : Dat ℚ E) (ω : HChar ℚ) (φ : GL (Fin 2) (A E) → ℂ), admitted D ω φ → ∀ (x : IdeleGroup ℚ) (g : GL (Fin 2) (A E)),
         Wo D φ (em E (Matrix.GeneralLinearGroup.scalar (Fin 2) x) * g) = ((ω.1 x : ℂˣ) : ℂ) ^ 2 * Wo D φ g := by

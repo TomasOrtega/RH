@@ -6,6 +6,49 @@ noncomputable section
 
 namespace Formalism.HermitianLattices.Ext.PrimitiveCharacterCasts.ZD
 
+/- English proof (translation)
+Introduce `ι κ S I b v Δ hΔ hrow`. Establish `hz : ∀ z : ℂ, ((‖z‖ ^ 2 : ℝ) : ℂ) = z * (starRingEnd ℂ) z`. Introduce `z`. Rewrite using `[Complex.mul_conj, Complex.normSq_eq_norm_sq]`. Take `⟨s, hs⟩ : ∃ s : ι → ℂ, s = fun i => ∑ n ∈ I, b n * v i n` from `⟨_, rfl⟩`.
+
+Take `⟨w, hw⟩ : ∃ w : κ → ℂ, w = fun n => ∑ i ∈ S, (starRingEnd ℂ) (s i) * v i n` from `⟨_, rfl⟩`. Take `⟨G, hG⟩ : ∃ G : ι → ι → ℂ, G = fun i j => ∑ n ∈ I, v i n * (starRingEnd ℂ) (v j n)` from `⟨_, rfl⟩`. Establish `hs' : ∀ i, ∑ n ∈ I, b n * v i n = s i` using `fun i => by rw [hs]`. Establish `hG' : ∀ i j, ∑ n ∈ I, v i n * (starRingEnd ℂ) (v j n) = G i j` using `fun i j => by rw [hG]`. Repeatedly rewrite using `[hs']`.
+
+Rewrite `hrow` using `[hG']`. Take `⟨X, hX⟩ : ∃ X : ℝ, X = ∑ i ∈ S, ‖s i‖ ^ 2` from `⟨_, rfl⟩`. Take `⟨B, hB⟩ : ∃ B : ℝ, B = ∑ n ∈ I, ‖b n‖ ^ 2` from `⟨_, rfl⟩`. Rewrite using `[← hX, ← hB]`. Establish `hXnn : 0 ≤ X` using `by rw [hX]; positivity`.
+
+Establish `hBnn : 0 ≤ B` using `by rw [hB]; positivity`. Establish `h1 : ((X : ℝ) : ℂ) = ∑ n ∈ I, b n * w n`. Rewrite using `[hX, Complex.ofReal_sum]`. Repeatedly rewrite using `[hz]`. Simplify using `only [hw, Finset.mul_sum]`.
+
+Use `conv_lhs => enter [2, i]`. Rewrite using `[hs]`. Simplify using `only [Finset.sum_mul]`. Rewrite using `[Finset.sum_comm]`. Apply `Finset.sum_congr rfl` to reduce the goal to its premises.
+
+Introduce `n _`. Apply `Finset.sum_congr rfl` to reduce the goal to its premises. Introduce `i _`. Rewrite using `[hs]`. Expand and normalize the polynomial expressions, which then agree.
+
+Establish `h2 : X ≤ ∑ n ∈ I, ‖b n‖ * ‖w n‖`. Combine the equalities or inequalities in the displayed calculation. Establish `h3` using `Finset.sum_mul_sq_le_sq_mul_sq I (fun n => ‖b n‖) (fun n => ‖w n‖)`. Establish `hGsym : ∀ i j, ‖G i j‖ = ‖G j i‖`. Introduce `i j`.
+
+Establish `e : G j i = (starRingEnd ℂ) (G i j)`. Rewrite using `[hG]`. Simplify using `only [map_sum, map_mul, Complex.conj_conj]`. Apply `Finset.sum_congr rfl` to reduce the goal to its premises. Introduce `n _`.
+
+Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e, Complex.norm_conj]`. Establish `e : ((∑ n ∈ I, ‖w n‖ ^ 2 : ℝ) : ℂ) = ∑ i ∈ S, ∑ j ∈ S, (starRingEnd ℂ) (s i) * s j * G i j` using `by conv_rhs => rw [Finset.sum_comm]`. Rewrite using `[Complex.ofReal_sum]`. Repeatedly rewrite using `[hz]`.
+
+Simplify using `only [hw, hG, map_sum, map_mul, Complex.conj_conj, Finset.sum_mul, Finset.mul_sum]`. Rewrite using `[Finset.sum_comm (s := I) (t := S)]`. Apply `Finset.sum_congr rfl` to reduce the goal to its premises. Introduce `i _`. Rewrite using `[Finset.sum_comm (s := I) (t := S)]`.
+
+Apply `Finset.sum_congr rfl` to reduce the goal to its premises. Introduce `j _`. Apply `Finset.sum_congr rfl` to reduce the goal to its premises. Introduce `n _`. Expand and normalize the polynomial expressions, which then agree.
+
+Establish `hle : ∑ n ∈ I, ‖w n‖ ^ 2 ≤ ∑ i ∈ S, ∑ j ∈ S, ‖s i‖ * ‖s j‖ * ‖G i j‖`. Establish `hnn : (0 : ℝ) ≤ ∑ n ∈ I, ‖w n‖ ^ 2` using `by positivity`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Complex.norm_real, Real.norm_of_nonneg hnn]`. Use `_ = ‖∑ i ∈ S, ∑ j ∈ S, (starRingEnd ℂ) (s i) * s j * G i j‖ := by rw [e]`.
+
+Use `_ ≤ ∑ i ∈ S, ‖∑ j ∈ S, (starRingEnd ℂ) (s i) * s j * G i j‖ := norm_sum_le _ _`. Use `_ ≤ ∑ i ∈ S, ∑ j ∈ S, ‖s i‖ * ‖s j‖ * ‖G i j‖ := by`. Apply `Finset.sum_le_sum` to reduce the goal to its premises. Introduce `i _`. Use `(norm_sum_le _ _).trans (le_of_eq ?_)` and prove the remaining obligations.
+
+Apply `Finset.sum_congr rfl` to reduce the goal to its premises. Introduce `j _`. Rewrite using `[norm_mul, norm_mul, Complex.norm_conj]`. Establish `hsplit : ∑ i ∈ S, ∑ j ∈ S, (‖s i‖ ^ 2 * ‖G i j‖ / 2 + ‖s j‖ ^ 2 * ‖G j i‖ / 2) = ∑ i ∈ S, ∑ j ∈ S, ‖s i‖ ^ 2 * ‖G i j‖`. Simplify using `only [Finset.sum_add_distrib]`.
+
+Rewrite using `[Finset.sum_comm (f := fun i j => ‖s j‖ ^ 2 * ‖G j i‖ / 2), ← Finset.sum_add_distrib]`. Apply `Finset.sum_congr rfl` to reduce the goal to its premises. Introduce `i _`. Rewrite using `[← Finset.sum_add_distrib]`. Apply `Finset.sum_congr rfl` to reduce the goal to its premises.
+
+Introduce `j _`. Expand and normalize the polynomial expressions, which then agree. Establish `hamgm : ∑ i ∈ S, ∑ j ∈ S, ‖s i‖ * ‖s j‖ * ‖G i j‖ ≤ Δ * X`. Combine the equalities or inequalities in the displayed calculation. Apply `Finset.sum_le_sum` to reduce the goal to its premises.
+
+Introduce `i _`. Apply `Finset.sum_le_sum` to reduce the goal to its premises. Introduce `j _`. Rewrite using `[← hGsym i j]`. Establish `h0` using `sq_nonneg (‖s i‖ - ‖s j‖)`.
+
+Establish `hg` using `norm_nonneg (G i j)`. Use the polynomial consequences of the given equalities and inequalities. Use `_ = ∑ i ∈ S, ∑ j ∈ S, ‖s i‖ ^ 2 * ‖G i j‖ := hsplit`. Use `_ = ∑ i ∈ S, ‖s i‖ ^ 2 * ∑ j ∈ S, ‖G i j‖ := by simp_rw [Finset.mul_sum]`. Use `_ ≤ ∑ i ∈ S, ‖s i‖ ^ 2 * Δ := by`.
+
+Apply `Finset.sum_le_sum` to reduce the goal to its premises. Introduce `i hi`. Conclude with `mul_le_mul_of_nonneg_left (hrow i hi) (sq_nonneg _)`. Use `_ = Δ * X := by rw [hX, Finset.mul_sum]; simp_rw [mul_comm]`. Establish `hXsq : X ^ 2 ≤ B * (Δ * X)`.
+
+Establish `hY : 0 ≤ ∑ n ∈ I, ‖b n‖ * ‖w n‖` using `by positivity`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[← hB]`. Conclude with `mul_le_mul_of_nonneg_left (hle.trans hamgm) hBnn`. Break down `hXnn.eq_or_lt with h0 | hpos` into its components or cases.
+
+Rewrite using `[← h0]`. Check the signs of the components of the expression. Use the polynomial consequences of the given equalities and inequalities.
+-/
 theorem duality_inequality : DualIneq := by
   intro ι κ S I b v Δ hΔ hrow
   classical

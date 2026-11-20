@@ -19,6 +19,13 @@ namespace GlobalTheory.SplitLinear
 
 open GlobalTheory.PlaceModel GlobalTheory.PlaceDatum GlobalTheory.SplitHecke GlobalTheory.ThetaMove MeasureTheory
 
+/- English proof (translation)
+Use `letI := Fintype.ofFinite (B ⧸ A.addSubgroupOf B)`. Establish `key : ∀ (w : B) (q : B ⧸ A.addSubgroupOf B), (w : G) - (q.out : B) ∈ A ↔ q = QuotientAddGroup.mk w` using `fun w q => by conv_rhs => rw [← q.out_eq', QuotientAddGroup.eq, AddSubgroup.mem_addSubgroupOf]`. Rewrite using `[AddSubgroup.coe_add, AddSubgroup.coe_neg, neg_add_eq_sub]`. Use `⟨Finset.univ.image fun q : B ⧸ A.addSubgroupOf B => ((q.out : B) : G), ?_, fun u hu => ?_, fun w hw => ?_⟩` and prove the remaining obligations. Use `(Finset.card_image_of_injective _ fun _ _ h => Quotient.out_injective (Subtype.ext h)).trans ?_` and prove the remaining obligations.
+
+Rewrite using `[Finset.card_univ, ← Nat.card_eq_fintype_card]`. Both sides reduce to the same expression. Take `⟨q, -, rfl⟩` from `Finset.mem_image.1 hu`. Conclude with `q.out.2`. Use `⟨_, ⟨Finset.mem_image_of_mem _ (Finset.mem_univ (QuotientAddGroup.mk ⟨w, hw⟩)), (key ⟨w, hw⟩ _).2 rfl⟩, ?_⟩` and prove the remaining obligations.
+
+Introduce and unpack `_ ⟨hu, h⟩`. Take `⟨q, -, rfl⟩` from `Finset.mem_image.1 hu`. Rewrite using `[(key ⟨w, hw⟩ q).1 h]`.
+-/
 theorem exists_reps {G : Type} [AddCommGroup G] (A B : AddSubgroup G) [Finite (B ⧸ A.addSubgroupOf B)] :
     ∃ R : Finset G, R.card = A.relIndex B ∧ (∀ u ∈ R, u ∈ B) ∧ ∀ w ∈ B, ∃! v, v ∈ R ∧ w - v ∈ A := by
   classical
@@ -37,6 +44,11 @@ theorem exists_reps {G : Type} [AddCommGroup G] (A B : AddSubgroup G) [Finite (B
     obtain ⟨q, -, rfl⟩ := Finset.mem_image.1 hu
     rw [(key ⟨w, hw⟩ q).1 h]
 
+/- English proof (translation)
+Establish `hP : ((fun t : B => N • (t : G)) ⁻¹' R).Finite` using `hR.preimage (tf.comp Subtype.val_injective).injOn`. Rewrite using `[← Set.finite_univ_iff]`. Use `(hP.image QuotientAddGroup.mk).subset fun q _ => ?_` and prove the remaining obligations. Take `⟨p, rfl⟩` from `QuotientAddGroup.mk_surjective q`. Take `⟨r, hr, u, hu, e⟩` from `h _ p.2`.
+
+Use `⟨p - ⟨u, hAB hu⟩, ?_, ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `N • ((p : G) - u) ∈ R`. Rewrite using `[smul_sub, e, add_sub_cancel_right]` and apply the resulting hypothesis. Rewrite using `[QuotientAddGroup.mk_sub, (QuotientAddGroup.eq_zero_iff (N := A.addSubgroupOf B) (⟨u, hAB hu⟩ : B)).2 hu, sub_zero]`.
+-/
 theorem finite_quot {G : Type} [AddCommGroup G] (A B : AddSubgroup G) (hAB : A ≤ B) {N : ℕ}
     (tf : Function.Injective fun t : G => N • t) {R : Set G} (hR : R.Finite)
     (h : ∀ w ∈ B, ∃ r ∈ R, ∃ u ∈ A, N • w = r + N • u) : Finite (B ⧸ A.addSubgroupOf B) := by
@@ -52,6 +64,13 @@ theorem finite_quot {G : Type} [AddCommGroup G] (A B : AddSubgroup G) (hAB : A �
 
 variable {D : D7} {S T : HSp D} {ψ : AddChar (AF D.host.F) ℂ}
 
+/- English proof (translation)
+Establish `hy` using `(isHalf_iff S T).1 hy'`. Establish `hb` using `isBichar_symplO S T ψ`. Take `⟨k, hk, hk'⟩` from `hden y hy`. Take `⟨a1, k', hk1, a2, a3⟩` from `s0`. Use `⟨fun t ht => a1 t (right_ne_zero_of_mul ht), k * k', Nat.mul_pos hk hk1, fun u hu hh t => ?_, fun t ht => ?_⟩` and prove the remaining obligations.
+
+Establish `e1 : Φ (t + (k * k') • u) = Φ t`. Rewrite using `[mul_nsmul]`. Conclude with `a2 _ (nsmul_mem hu k) ((isHalf_iff S T).2 (nsmul_mem ((isHalf_iff S T).1 hh) k)) t`. Establish `e2 : ψ (symplO S T ((k * k') • u) y) = 1`. Rewrite using `[mul_nsmul']`.
+
+Conclude with `(hb.nsmul k _ y).trans (hLL' _ (nsmul_mem (AddSubgroup.mem_inf.2 ⟨hu, (isHalf_iff S T).1 hh⟩) k') _ ⟨hk', nsmul_mem hy k⟩)`. Simplify using `only [e1, symplO_add_left, AddChar.map_add_eq_mul, e2, mul_one]`. Rewrite using `[mul_nsmul']`. Conclude with `nsmul_mem (a3 t (right_ne_zero_of_mul ht)) k`.
+-/
 theorem isSBHalf_modul {e : AE D} {Λ : AddSubgroup (WO S T)}
     (hLL' : ∀ u ∈ Λ ⊓ half S T e, ∀ y ∈ Λ ⊓ half S T (cA D e), ψ (symplO S T u y) = 1)
     (hden : ∀ y ∈ half S T (cA D e), ∃ k : ℕ, 0 < k ∧ k • y ∈ Λ) {Φ : WO S T → ℂ} (s0 : IsSBHalf e Λ Φ) {y : WO S T}
@@ -73,6 +92,9 @@ theorem isSBHalf_modul {e : AE D} {Λ : AddSubgroup (WO S T)}
   · rw [mul_nsmul']
     exact nsmul_mem (a3 t (right_ne_zero_of_mul ht)) k
 
+/- English proof (translation)
+Use function extensionality and compare the values at `t`. Use `beta_reduce`. Rewrite using `[← symplO_actO S T g⁻¹ h⁻¹, act_add, actO_inv_actO, actO_inv_actO, halfInd_eq_ind]`. Both sides reduce to the same expression.
+-/
 theorem wave_act (e : AE D) (Λ : AddSubgroup (WO S T)) (g : GA D S) (h : GA D T) (x y : WO S T) :
     (fun t => wave (fun x y : WO S T => ψ (symplO S T x y)) (Λ ⊓ half S T e) x y (actO S T g⁻¹ h⁻¹ t)) =
       fun t => (fun t => ψ (symplO S T t (actO S T g h y)) * halfInd e Λ (actO S T g⁻¹ h⁻¹ t)) (t + actO S T g h x) := by
@@ -81,6 +103,27 @@ theorem wave_act (e : AE D) (Λ : AddSubgroup (WO S T)) (g : GA D S) (h : GA D T
   rw [← symplO_actO S T g⁻¹ h⁻¹, act_add, actO_inv_actO, actO_inv_actO, halfInd_eq_ind]
   rfl
 
+/- English proof (translation)
+Introduce `D ψ S T χS χT om ΛS ΛT e f₀ Tm hW hS hT he hinf hf hTm g h c hc Φ hΦ`. Establish `hdual` using `(GlobalTheory.LatVac.latO_selfDual_approx_sign D ψ S T _ _ hW.std hS hT).1`. Establish `hfin0` using `GlobalTheory.LatFinMod.latO_finite_mod D S T _ _ hS.1.fg hT.1.fg fun _ => True`. Establish `he' : cA D e * cA D e = cA D e` using `by rw [← RingHom.map_mul, he]`. Establish `hsm : ∀ a : AE D, a * a = a → ∀ u ∈ latO S T ΛS ΛT fun _ => True, a • u ∈ (latO S T ΛS ΛT fun _ => True) ⊓ half S T a` using `fun a ha u hu => AddSubgroup.mem_inf.2 ⟨GlobalTheory.SplitScalar.idem_smul_mem ha u hu, by rw [mem_half, smul_smul, ha]⟩`.
+
+Establish `hden : ∀ y ∈ half S T (cA D e), ∃ k : ℕ, 0 < k ∧ k • y ∈ latO S T ΛS ΛT fun _ => True` using `fun y hy => exists_nsmul_mem_latO' hS.1 hT.1 y (infPart_of_half (infPart_cA hinf) ((isHalf_iff S T).2 hy))`. Establish `s0` using `isSBHalf_actO hS.1 hT.1 g⁻¹ h⁻¹ (GlobalTheory.isSBHalf_halfInd e _)`. Generalize the expression as in `latO S T ΛS ΛT (fun _ => True) = Λ at *`. Establish `hLL' : ∀ u ∈ Λ ⊓ half S T e, ∀ y ∈ Λ ⊓ half S T (cA D e), ψ (symplO S T u y) = 1` using `fun u hu y hy => (hdual u (infPart_of_half hinf ((isHalf_iff S T).2 hu.2))).1 hu.1 y hy.1`. Establish `hX : ∀ x ∈ half S T e, (∀ y ∈ Λ ⊓ half S T (cA D e), ψ (symplO S T x y) = 1) → x ∈ Λ ⊓ half S T e`.
+
+Introduce `x hx h`. Use `⟨(hdual x (infPart_of_half hinf ((isHalf_iff S T).2 hx))).2 fun u hu => ?_, hx⟩` and prove the remaining obligations. Use `h _ (hsm _ he' u hu)` as an intermediate fact. Rewrite `this` using `[← symplO_smul, (mem_half S T).1 hx]`. Then use the resulting hypothesis. Establish `hfin : ∀ k : ℕ, 0 < k → ∃ R : Set (WO S T), R.Finite ∧ ∀ t ∈ Λ ⊓ half S T e, ∃ r ∈ R, ∃ u ∈ Λ ⊓ half S T e, t = r + k • u`.
+
+Introduce `k hk`. Take `⟨R, hR, h⟩` from `hfin0 k hk`. Use `⟨(fun r => e • r) '' R, hR.image _, fun t ht => ?_⟩` and prove the remaining obligations. Take `⟨r, hr, u, hu, htr⟩` from `h t ht.1`. Use `⟨_, ⟨r, hr, rfl⟩, e • u, hsm e he u hu, ?_⟩` and prove the remaining obligations.
+
+Use `(mem_half S T).1 ht.2` as an intermediate fact. Rewrite using `[← this, htr, smul_add, smul_comm e k u]`. Establish `tf : ∀ k : ℕ, 0 < k → Function.Injective fun t : WO S T => k • t` using `fun k hk a b hab => by`. Rewrite using `[← inv_smul_nsmul S T hk a, ← inv_smul_nsmul S T hk b]`. Conclude with `congrArg _ hab`.
+
+Establish `hb` using `isBichar_symplO S T ψ`. Establish `hm : Φ ∈ waveSpan (fun x y : WO S T => ψ (symplO S T x y)) (half S T e) (half S T (cA D e)) (Λ ⊓ half S T e)`. Take `⟨h1, k, hk, h2, h3⟩` from `hΦ`. Conclude with `mem_waveSpan hb inf_le_right inf_le_right hLL' hX (half_div S T e) (half_div S T _) tf hfin Φ (fun t ht => (isHalf_iff S T).1 (h1 t ht)) k hk (fun u hu => h2 u hu.1 ((isHalf_iff S T).2 hu.2)) fun t ht => ⟨h3 t ht, (half S T e).nsmul_mem ((isHalf_iff S T).1 (h1 t ht)) _⟩`. Use `clear hΦ`.
+
+Proceed by induction on `hm using Submodule.span_induction with`. Consider the case `mem _ hh`. Take `⟨x, hx, y, hy, rfl⟩` from `hh`. Establish `hx'` using `(isHalf_iff S T).2 hx`. Establish `hy'` using `(isHalf_iff S T).2 hy`.
+
+Establish `hth` using `GlobalTheory.FinTranslate.isTheta_heisO_fin hW.std.1 (infPart_of_half (infPart_cA hinf) hy') hf`. Rewrite using `[wave_act, GlobalTheory.SchrodSubst.placeModel_wave hLL' hden hTm hx' hy', hTm.trans _ (isSBHalf_modul hLL' hden s0 (isHalf_actO g h hy')) _ (isHalf_actO g h hx'), hTm.modul _ s0 _ (isHalf_actO g h hy'), hW.om_heis _ _ _ _ hth, hW.om_heis _ _ _ _ hf, hc, heisO_smul', heisO_smul']`. Consider the case `zero`. Express the relevant statement in the definitionally equal form `_ = c • Tm 0`. Rewrite using `[LinearMap.map_zero, LinearMap.map_zero, smul_zero]`.
+
+Consider the case `add f f' _ _ h1 h2`. Express the relevant statement in the definitionally equal form `_ = c • Tm ((fun x => f (actO S T g⁻¹ h⁻¹ x)) + fun x => f' (actO S T g⁻¹ h⁻¹ x))`. Rewrite using `[LinearMap.map_add, LinearMap.map_add, LinearMap.map_add, h1, h2, smul_add]`. Consider the case `smul d f _ h1`. Express the relevant statement in the definitionally equal form `_ = c • Tm (d • fun x => f (actO S T g⁻¹ h⁻¹ x))`.
+
+Rewrite using `[LinearMap.map_smul, LinearMap.map_smul, LinearMap.map_smul, h1, smul_comm]`.
+-/
 theorem om_model_of_base : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ) (S T : HSp D) (χS χT : (AE D)ˣ →* Circle) (om : GA D S × GA D T →* Module.End ℂ (WO S T → ℂ)) (ΛS : Submodule (𝓞 D.host.E) (Fin S.rank → D.host.E)) (ΛT : Submodule (𝓞 D.host.E) (Fin T.rank → D.host.E)) (a : AE D) (f₀ : WO S T → ℂ) (Tm : (WO S T → ℂ) →ₗ[ℂ] (WO S T → ℂ)), IsWeilDatumO ψ S T χS χT om → IsSelfDualC S ΛS → IsSelfDualC T ΛT → a * a = a → infPart D a = 0 → IsThetaFunO ψ S T f₀ → IsPlaceModel ψ (symplO S T) (heisO ψ S T) a (latO S T (ΛS : Set (Fin S.rank → D.host.E)) (ΛT : Set (Fin T.rank → D.host.E)) fun _ => True) 1 f₀ Tm → ∀ (g : GA D S) (h : GA D T) (c : ℂ), om (g, h) f₀ = c • Tm (fun t => halfInd a (latO S T (ΛS : Set (Fin S.rank → D.host.E)) (ΛT : Set (Fin T.rank → D.host.E)) fun _ => True) (actO S T g⁻¹ h⁻¹ t)) → ∀ Φ, IsSBHalf a (latO S T (ΛS : Set (Fin S.rank → D.host.E)) (ΛT : Set (Fin T.rank → D.host.E)) fun _ => True) Φ → om (g, h) (Tm Φ) = c • Tm fun t => Φ (actO S T g⁻¹ h⁻¹ t) := by
   intro D ψ S T χS χT om ΛS ΛT e f₀ Tm hW hS hT he hinf hf hTm g h c hc Φ hΦ
   have hdual := (GlobalTheory.LatVac.latO_selfDual_approx_sign D ψ S T _ _ hW.std hS hT).1
@@ -142,6 +185,23 @@ variable {ΛS : Submodule (𝓞 D.host.E) (Fin S.rank → D.host.E)} {ΛT : Subm
 
 open GlobalTheory.SplitScalar in
 
+/- English proof (translation)
+Distinguish the cases in `hf0 : f = 0`. Substitute `hf0` using the available equality. Establish `: ∀ u, heisO ψ S T u 0 = 0` using `fun u => (GlobalTheory.SplitScalar.heisL ψ S T u).map_zero`. Simplify using `only [map_zero, this, Finset.sum_const_zero, smul_zero]`. Establish `he'` using `isSplitIdem_conj he`.
+
+Establish `hψ` using `hW.std.1`. Establish `hdual` using `(GlobalTheory.LatVac.latO_selfDual_approx_sign D ψ S T _ _ hW.std hS hT).1`. Establish `hst` using `@GlobalTheory.SplitScalar.idem_smul_mem D S T (ΛS : Set _) (ΛT : Set _) _ he.1`. Establish `hstc` using `@GlobalTheory.SplitScalar.idem_smul_mem D S T (ΛS : Set _) (ΛT : Set _) _ he'.1`. Establish `hfin` using `@latO_fin D S T (ΛS : Set _) (ΛT : Set _)`.
+
+Generalize the expression as in `latO S T (ΛS : Set _) (ΛT : Set _) (fun _ => True) = Λ at *`. Establish `hd : ∀ y, IsHalf e y → y ∉ Λ → ∃ l ∈ Λ, IsHalf (cA D e) l ∧ ψ (symplO S T l y) ≠ 1` using `fun y hy hn => exists_dual_half he hdual hstc hy hn`. Establish `hd' : ∀ y, IsHalf (cA D e) y → y ∉ Λ → ∃ l ∈ Λ, IsHalf e l ∧ ψ (symplO S T l y) ≠ 1` using `fun y hy hn => by`. Use `exists_dual_half he' hdual (by rw [GlobalTheory.DualPairCheck.cA_cA]; exact hst) hy hn` as an intermediate fact. Rewrite `this` using `[GlobalTheory.DualPairCheck.cA_cA]`. Then use the resulting hypothesis.
+
+Take `⟨r, hr, hom⟩` from `om_eq_smul_sum hW he (fun u hu => (hdual u (hfin hu)).1 hu) hd hd' hg hh hx hy hR hRu hle`. Take `⟨i1, i2, i3, i4, i5, K, hK, hKc⟩` from `GlobalTheory.AdelicMatrixLattice.lattice D T S`. Use `haveI : BorelSpace (WO S T) := ⟨rfl⟩`. Take `⟨⟨μ, 𝓕, hμ⟩, c, hc⟩` from `GlobalTheory.exists_normalise_meanSquare_of_cocompact (WO S T) (ratL T S) K hK hKc f hf.cont hf0 (by`. Introduce and unpack `_ ⟨γ, rfl⟩ w`.
+
+Conclude with `(congrArg norm (hf.quasi γ w)).trans (by rw [norm_mul, hψ.2.1, one_mul]))`. Establish `hn : nrm2 μ 𝓕 (c • f) = 1` using `hc μ 𝓕 hμ.1 hμ.2.1 hμ.2.2`. Establish `hcf` using `GlobalTheory.WeilVacMove.isTheta_smul c hf`. Establish `hfix' : ∀ u ∈ Λ, IsHalf e u ∨ IsHalf (cA D e) u → heisO ψ S T u (c • f) = c • f` using `fun u hu hh => by`. Rewrite using `[heisO_smul', hfix u hu hh]`.
+
+Establish `h1` using `hom _ hcf (fun u hu hh => hfix' u hu (Or.inl hh)) fun u hu hh => hfix' u hu (Or.inr hh)`. Establish `h2 : nrm2 μ 𝓕 (om (g, h) (c • f)) = 1`. Rewrite using `[← hn, nrm2, nrm2, integral_normSq_eq _ (hW.om_pres _ _ hcf).cont.measurable, integral_normSq_eq _ hcf.cont.measurable, hW.om_unit μ 𝓕 hμ.1 hμ.2.1 _ _ hcf]`. Establish `h3` using `GlobalTheory.HeisOrtho.thetaNormSq_sum_heisenbergTranslates_distinctChars D ψ S T hψ μ 𝓕 hμ _ hcf hn _ R (fun u => u) (fun _ => (splitFacO χS χT x y : ℂ)) (fun _ _ => Circle.norm_coe _) (fun u hu u' hu' hne => by`. Establish `hn : u - u' ∉ Λ` using `fun hm => hne ((hRu u (hR u hu).1 (hR u hu).2).unique ⟨hu, by rw [sub_self]; exact zero_mem _⟩ ⟨hu', hm⟩)`.
+
+Take `⟨l, hl, hlh, hlne⟩` from `hd _ (isHalf_sub (hR u hu).2 (hR u' hu').2) hn`. Conclude with `⟨l, 1, norm_one, by rw [hfix' l hl (Or.inr hlh), one_smul], psi_skew_ne hlne⟩)`. Rewrite `h2` using `[h1, mul_smul, pairNorm_smul, Finset.smul_sum, h3]`. Establish `h4 : r = (Real.sqrt (R.card : ℝ))⁻¹`. Rewrite using `[← Real.sqrt_inv, ← eq_inv_of_mul_eq_one_left h2, Real.sqrt_sq hr.le]`.
+
+Rewrite using `[hom f hf (fun u hu hh => hfix u hu (Or.inl hh)) (fun u hu hh => hfix u hu (Or.inr hh)), h4, mul_comm, Complex.ofReal_inv]`.
+-/
 theorem om_eq_sum_lattice {χS χT : (AE D)ˣ →* Circle} {om : GA D S × GA D T →* Module.End ℂ (WO S T → ℂ)}
     (hW : IsWeilDatumO ψ S T χS χT om) (hS : IsSelfDualC S ΛS) (hT : IsSelfDualC T ΛT) {e : AE D} (he : IsSplitIdem D e)
     {f : WO S T → ℂ} (hf : IsThetaFunO ψ S T f)
@@ -196,22 +256,37 @@ theorem om_eq_sum_lattice {χS χT : (AE D)ˣ →* Circle} {om : GA D S × GA D 
   rw [hom f hf (fun u hu hh => hfix u hu (Or.inl hh)) (fun u hu hh => hfix u hu (Or.inr hh)), h4, mul_comm,
     Complex.ofReal_inv]
 
+/- English proof (translation)
+Take the linear combination `e' * h1 - a * h2`.
+-/
 theorem block_frame_conjugation_identity {R : Type} [CommRing R] {a a' e e' : R} (h1 : a * a' = 0) (h2 : a' * e' = e') :
     (1 - e) * a = (1 - (e + e')) * a := by
   linear_combination e' * h1 - a * h2
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fun hs => ⟨by rw [sub_smul, one_smul]; exact sub_mem hs (h1 s hs), h1 s hs⟩, fun hs => by have := add_mem hs.1 hs.2 rwa [← add_smul, sub_add_cancel, one_smul] at this⟩`.
+-/
 theorem mem_iff_parts {Λ : AddSubgroup (WO S T)} {e : AE D} (h1 : ∀ u ∈ Λ, e • u ∈ Λ) (s : WO S T) :
     s ∈ Λ ↔ (1 - e) • s ∈ Λ ∧ e • s ∈ Λ :=
   ⟨fun hs => ⟨by rw [sub_smul, one_smul]; exact sub_mem hs (h1 s hs), h1 s hs⟩, fun hs => by
     have := add_mem hs.1 hs.2
     rwa [← add_smul, sub_add_cancel, one_smul] at this⟩
 
+/- English proof (translation)
+Introduce `i j` and use `by rw [Matrix.smul_apply, smul_eq_mul, ← mul_assoc, he]`.
+-/
 theorem isHalf_smul' {e : AE D} (he : e * e = e) (u : WO S T) : IsHalf e (e • u) := fun i j => by
   rw [Matrix.smul_apply, smul_eq_mul, ← mul_assoc, he]
 
+/- English proof (translation)
+Introduce `i j` and use `by rw [← hu i j, ← mul_assoc, hae]`.
+-/
 theorem isHalf_mono {a e : AE D} (hae : a * e = e) {u : WO S T} (hu : IsHalf e u) : IsHalf a u := fun i j => by
   rw [← hu i j, ← mul_assoc, hae]
 
+/- English proof (translation)
+Establish `hu'` using `(mem_half S T).1 ((isHalf_iff S T).1 hu)`. Establish `h0 : (1 - e) • u = 0` using `by rw [sub_smul, one_smul, hu', sub_self]`. Rewrite using `[mem_iff_parts h1, smul_add, smul_add, hu', h0, add_zero, isHalf_iff, isHalf_iff, AddSubgroup.add_mem_cancel_right _ ((isHalf_iff S T).1 (isHalf_mono hae hu))]`. Conclude with `⟨fun h => ⟨⟨h.2, h.1.1⟩, h.1.2⟩, fun h => ⟨⟨h.1.2, h.2⟩, h.1.1⟩⟩`.
+-/
 theorem add_mem_parts {Λ : AddSubgroup (WO S T)} {a e : AE D} (hae : a * e = e) (h1 : ∀ u ∈ Λ, e • u ∈ Λ) (t : WO S T)
     {u : WO S T} (hu : IsHalf e u) :
     (t + u ∈ Λ ∧ IsHalf a (t + u)) ↔ (IsHalf a t ∧ (1 - e) • t ∈ Λ) ∧ e • t + u ∈ Λ := by
@@ -221,11 +296,19 @@ theorem add_mem_parts {Λ : AddSubgroup (WO S T)} {a e : AE D} (hae : a * e = e)
     AddSubgroup.add_mem_cancel_right _ ((isHalf_iff S T).1 (isHalf_mono hae hu))]
   exact ⟨fun h => ⟨⟨h.2, h.1.1⟩, h.1.2⟩, fun h => ⟨⟨h.1.2, h.2⟩, h.1.1⟩⟩
 
+/- English proof (translation)
+Establish `h` using `block_frame_conjugation_identity (e := e) hc ((RingHom.map_mul (cA D) a e).symm.trans (congrArg (cA D) hae))`. Rewrite using `[← (mem_half S T).1 ((isHalf_iff S T).1 hs), smul_smul, smul_smul, h]`.
+-/
 theorem off_half {a e : AE D} (hc : a * cA D a = 0) (hae : a * e = e) {s : WO S T} (hs : IsHalf a s) :
     (1 - e) • s = (1 - (e + cA D e)) • s := by
   have h := block_frame_conjugation_identity (e := e) hc ((RingHom.map_mul (cA D) a e).symm.trans (congrArg (cA D) hae))
   rw [← (mem_half S T).1 ((isHalf_iff S T).1 hs), smul_smul, smul_smul, h]
 
+/- English proof (translation)
+Establish `k2 : e • actO S T g h t = actO S T g h (e • t)`. Unfold `actO`. Rewrite using `[Matrix.mul_smul, Matrix.smul_mul]`. Distinguish the cases in `ht : IsHalf a t`. Rewrite using `[mem_iff_parts h1, off_half hc hae (isHalf_actO g h ht), GlobalTheory.SplitScalar.off_smul_actO hg hh, ← off_half hc hae ht, k2]`.
+
+Conclude with `⟨fun h => ⟨⟨ht, h.1.1⟩, h.1.2⟩, fun h' => ⟨⟨h'.1.2, h'.2⟩, isHalf_actO g h ht⟩⟩`. Conclude with `iff_of_false (fun hh => ht (isHalf_of_act g h hh.2)) fun hh => ht hh.1.1`.
+-/
 theorem act_mem_parts {Λ : AddSubgroup (WO S T)} {a e : AE D} (hc : a * cA D a = 0) (hae : a * e = e)
     (h1 : ∀ u ∈ Λ, e • u ∈ Λ) {g : GA D S} {h : GA D T} (hg : SuppAt e S g) (hh : SuppAt e T h) (t : WO S T) :
     (actO S T g h t ∈ Λ ∧ IsHalf a (actO S T g h t)) ↔
@@ -239,6 +322,11 @@ theorem act_mem_parts {Λ : AddSubgroup (WO S T)} {a e : AE D} (hc : a * cA D a 
     exact ⟨fun h => ⟨⟨ht, h.1.1⟩, h.1.2⟩, fun h' => ⟨⟨h'.1.2, h'.2⟩, isHalf_actO g h ht⟩⟩
   · exact iff_of_false (fun hh => ht (isHalf_of_act g h hh.2)) fun hh => ht hh.1.1
 
+/- English proof (translation)
+Distinguish the cases in `hc : q`. Take `⟨v, ⟨hv, hv'⟩, hu⟩` from `hRu (-s) (by rw [map_neg]; exact neg_mem (hq.1 hc).2) (neg_mem hs)`. Establish `k : ∀ u : G, -s - u ∈ Λ ↔ s + u ∈ Λ` using `fun u => by rw [← neg_add', neg_mem_iff]`. Rewrite using `[if_pos hc, Finset.sum_eq_single_of_mem v hv fun u hu' hne => if_neg fun hh => hne (hu u ⟨hu', (k u).2 ((hp u hu').1 hh).2⟩), if_pos ((hp v hv).2 ⟨(hq.1 hc).1, (k v).1 hv'⟩)]`. Rewrite using `[if_neg hc]`.
+
+Use `Finset.sum_eq_zero fun u hu => if_neg fun hh => hc (hq.2 ⟨((hp u hu).1 hh).1, ?_⟩)` and prove the remaining obligations. Use `sub_mem (hle _ ((hp u hu).1 hh).2 (add_mem hs (hR u hu).2)) (hR u hu).1` as an intermediate fact. Rewrite `this` using `[map_add, add_sub_cancel_right]`. Then use the resulting hypothesis.
+-/
 theorem sum_ite_reps {G : Type} [AddCommGroup G] {Λ X : AddSubgroup G} (A : G →+ G) {R : Finset G}
     (hR : ∀ u ∈ R, A u ∈ Λ ∧ u ∈ X) (hRu : ∀ w, A w ∈ Λ → w ∈ X → ∃! v, v ∈ R ∧ w - v ∈ Λ)
     (hle : ∀ w ∈ Λ, w ∈ X → A w ∈ Λ) {s : G} (hs : s ∈ X) (c : Prop) (p : G → Prop) (q : Prop) [DecidablePred p]
@@ -254,6 +342,9 @@ theorem sum_ite_reps {G : Type} [AddCommGroup G] {Λ X : AddSubgroup G} (A : G �
     have := sub_mem (hle _ ((hp u hu).1 hh).2 (add_mem hs (hR u hu).2)) (hR u hu).1
     rwa [map_add, add_sub_cancel_right] at this
 
+/- English proof (translation)
+Use function extensionality and compare the values at `t`. Rewrite using `[Finset.sum_apply]`. Unfold `halfInd`. Conclude with `sum_ite_reps (X := half S T e) (actAdd S T g h) (fun u hu => ⟨(hR u hu).1, (isHalf_iff S T).1 (hR u hu).2⟩) (fun w hw hw' => hRu w hw ((isHalf_iff S T).2 hw')) (fun w hw hw' => hle w hw ((isHalf_iff S T).2 hw')) ((isHalf_iff S T).1 (isHalf_smul' he t)) _ (fun u => t + u ∈ Λ ∧ IsH …`.
+-/
 theorem sum_halfInd {Λ : AddSubgroup (WO S T)} {a e : AE D} (he : e * e = e) (hc : a * cA D a = 0) (hae : a * e = e)
     (h1 : ∀ u ∈ Λ, e • u ∈ Λ) {g : GA D S} {h : GA D T} (hg : SuppAt e S g) (hh : SuppAt e T h) {R : Finset (WO S T)}
     (hR : ∀ u ∈ R, actO S T g h u ∈ Λ ∧ IsHalf e u)
@@ -269,6 +360,13 @@ theorem sum_halfInd {Λ : AddSubgroup (WO S T)} {a e : AE D} (he : e * e = e) (h
     ((isHalf_iff S T).1 (isHalf_smul' he t)) _ (fun u => t + u ∈ Λ ∧ IsHalf a (t + u)) _
     (fun u hu => add_mem_parts hae h1 t (hR u hu).2) (act_mem_parts hc hae h1 hg hh t)
 
+/- English proof (translation)
+Take `⟨N, hN, h1⟩` from `exists_nsmul_actO hS hT g h`. Take `⟨R₀, hR₀, h2⟩` from `GlobalTheory.LatFinMod.latO_finite_mod D S T _ _ hS.fg hT.fg (fun _ => True) N hN`. Establish `hst` using `@GlobalTheory.SplitScalar.idem_smul_mem D S T (ΛS : Set _) (ΛT : Set _) _ he`. Use `finite_quot _ _ (fun w hw => ⟨hle w hw.1 ((isHalf_iff S T).2 hw.2), hw.2⟩) (N := N) (fun a b hab => ?_) (hR₀.image fun r => e • r) fun w hw => ?_` and prove the remaining obligations. Rewrite using `[← inv_smul_nsmul S T hN a, ← inv_smul_nsmul S T hN b]`.
+
+Conclude with `congrArg _ hab`. Establish `h3` using `h1 _ hw.1`. Express the relevant statement in the definitionally equal form `N • actO S T g h (actO S T g⁻¹ h⁻¹ w) ∈ _ at h3`. Rewrite `h3` using `[act_act_inv]`. Take `⟨r, hr, u, hu, e1⟩` from `h2 _ h3`.
+
+Use `⟨_, ⟨r, hr, rfl⟩, e • u, ⟨hst u hu, (isHalf_iff S T).1 (isHalf_smul' he u)⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[← (mem_half S T).1 hw.2, smul_comm N e, e1, smul_add, smul_comm e N u]`.
+-/
 theorem finite_enlarge (hS : Submodule.IsLattice D.host.E ΛS) (hT : Submodule.IsLattice D.host.E ΛT) {e : AE D}
     (he : e * e = e) {g : GA D S} {h : GA D T}
     (hle : ∀ w ∈ latO S T ΛS ΛT (fun _ => True), IsHalf e w → actO S T g⁻¹ h⁻¹ w ∈ latO S T ΛS ΛT (fun _ => True)) :
@@ -289,15 +387,24 @@ theorem finite_enlarge (hS : Submodule.IsLattice D.host.E ΛS) (hT : Submodule.I
     refine ⟨_, ⟨r, hr, rfl⟩, e • u, ⟨hst u hu, (isHalf_iff S T).1 (isHalf_smul' he u)⟩, ?_⟩
     rw [← (mem_half S T).1 hw.2, smul_comm N e, e1, smul_add, smul_comm e N u]
 
+/- English proof (translation)
+Rewrite `h` using `[← sub_eq_zero, ← smul_sub, sub_smul, one_smul, sub_eq_zero]`. Conclude with `fun i j => (congrFun (congrFun h i) j).symm`.
+-/
 theorem suppAt_of {e : AE D} {V : HSp D} {g : GA D V}
     (h : (1 - (e + cA D e)) • mt V g = (1 - (e + cA D e)) • (1 : Matrix (Fin V.rank) (Fin V.rank) (AE D))) :
     SuppAt e V g := by
   rw [← sub_eq_zero, ← smul_sub, sub_smul, one_smul, sub_eq_zero] at h
   exact fun i j => (congrFun (congrFun h i) j).symm
 
+/- English proof (translation)
+The claim follows from `suppAt_of (GlobalTheory.SplitScalar.off_smul_mt_inv h)`.
+-/
 theorem suppAt_inv {e : AE D} {V : HSp D} {g : GA D V} (h : SuppAt e V g) : SuppAt e V g⁻¹ :=
   suppAt_of (GlobalTheory.SplitScalar.off_smul_mt_inv h)
 
+/- English proof (translation)
+Establish `v` using `hTm.vac`. Rewrite `v` using `[one_smul]`. Rewrite using `[map_sum, ← v]`. Conclude with `Finset.sum_congr rfl fun u hu => (hTm.trans _ (GlobalTheory.isSBHalf_halfInd a _) u (hR u hu)).symm`.
+-/
 theorem model_sum {Λ : AddSubgroup (WO S T)} {a : AE D} {f₀ : WO S T → ℂ} {Tm : (WO S T → ℂ) →ₗ[ℂ] (WO S T → ℂ)}
     (hTm : IsPlaceModel ψ (symplO S T) (heisO ψ S T) a Λ 1 f₀ Tm) {R : Finset (WO S T)} (hR : ∀ u ∈ R, IsHalf a u) :
     ∑ u ∈ R, heisO ψ S T u f₀ = Tm (∑ u ∈ R, fun t => halfInd a Λ (t + u)) := by
@@ -306,6 +413,11 @@ theorem model_sum {Λ : AddSubgroup (WO S T)} {a : AE D} {f₀ : WO S T → ℂ}
   rw [map_sum, ← v]
   exact Finset.sum_congr rfl fun u hu => (hTm.trans _ (GlobalTheory.isSBHalf_halfInd a _) u (hR u hu)).symm
 
+/- English proof (translation)
+Introduce `D ψ S T χS χT om ΛS ΛT a f₀ Tm hW hS hT ha hinf hf hTm hc hv e he hae g h hg hh x y hx hy hle`. Use `haveI := finite_enlarge hS.1 hT.1 he.1 hle`. Take `⟨R, r1, r2, r3⟩` from `exists_reps ((latO S T ΛS ΛT fun _ => True) ⊓ half S T e) ((latO S T ΛS ΛT fun _ => True).comap (actAdd S T g⁻¹ h⁻¹) ⊓ half S T e)`. Establish `hR : ∀ u ∈ R, actO S T g⁻¹ h⁻¹ u ∈ latO S T ΛS ΛT (fun _ => True) ∧ IsHalf e u` using `fun u hu => ⟨(r2 u hu).1, (isHalf_iff S T).2 (r2 u hu).2⟩`. Establish `hRu : ∀ w, actO S T g⁻¹ h⁻¹ w ∈ latO S T ΛS ΛT (fun _ => True) → IsHalf e w → ∃! v, v ∈ R ∧ w - v ∈ latO S T ΛS ΛT (fun _ => True)` using `fun w hw hwe => (existsUnique_congr fun v => and_congr_right fun hv => ⟨fun h => h.1, fun h => ⟨h, (isHalf_iff S T).1 (GlobalTheory.SplitScalar.isHalf_sub hwe (hR v hv).2)⟩⟩).1 (r3 w ⟨hw, (isHalf_iff S T).1 hwe⟩)`.
+
+Rewrite using `[om_eq_sum_lattice hW hS hT he hf (fun u hu hh => hh.elim (hv.2 e he u hu) (hv.2 _ (GlobalTheory.SplitScalar.isSplitIdem_conj he) u hu)) hg hh hx hy hR hRu hle, r1, model_sum hTm fun u hu => isHalf_mono hae (hR u hu).2, sum_halfInd he.1 hc hae (GlobalTheory.SplitScalar.idem_smul_ …`.
+-/
 theorem om_base_enlarge : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ) (S T : HSp D) (χS χT : (AE D)ˣ →* Circle) (om : GA D S × GA D T →* Module.End ℂ (WO S T → ℂ)) (ΛS : Submodule (𝓞 D.host.E) (Fin S.rank → D.host.E)) (ΛT : Submodule (𝓞 D.host.E) (Fin T.rank → D.host.E)) (a : AE D) (f₀ : WO S T → ℂ) (Tm : (WO S T → ℂ) →ₗ[ℂ] (WO S T → ℂ)), IsWeilDatumO ψ S T χS χT om → IsSelfDualC S ΛS → IsSelfDualC T ΛT → a * a = a → infPart D a = 0 → IsThetaFunO ψ S T f₀ → IsPlaceModel ψ (symplO S T) (heisO ψ S T) a (latO S T (ΛS : Set (Fin S.rank → D.host.E)) (ΛT : Set (Fin T.rank → D.host.E)) fun _ => True) 1 f₀ Tm → a * cA D a = 0 → IsLatVac (heisO ψ S T) (latO S T (ΛS : Set (Fin S.rank → D.host.E)) (ΛT : Set (Fin T.rank → D.host.E)) fun _ => True) f₀ → ∀ e : AE D, IsSplitIdem D e → a * e = e → ∀ (g : GA D S) (h : GA D T), SuppAt e S g → SuppAt e T h → ∀ x y : (AE D)ˣ, IsDetAt e S g x → IsDetAt e T h y → (∀ w ∈ (latO S T (ΛS : Set (Fin S.rank → D.host.E)) (ΛT : Set (Fin T.rank → D.host.E)) fun _ => True), IsHalf e w → actO S T g⁻¹ h⁻¹ w ∈ (latO S T (ΛS : Set (Fin S.rank → D.host.E)) (ΛT : Set (Fin T.rank → D.host.E)) fun _ => True)) → om (g, h) f₀ = ((splitFacO χS χT x y : ℂ) * ((Real.sqrt ((((latO S T (ΛS : Set (Fin S.rank → D.host.E)) (ΛT : Set (Fin T.rank → D.host.E)) fun _ => True) ⊓ GlobalTheory.PlaceModel.half S T e).relIndex ((latO S T (ΛS : Set (Fin S.rank → D.host.E)) (ΛT : Set (Fin T.rank → D.host.E)) fun _ => True).comap (GlobalTheory.SplitHecke.actAdd S T g⁻¹ h⁻¹) ⊓ GlobalTheory.PlaceModel.half S T e) : ℕ) : ℝ) : ℝ) : ℂ)⁻¹) • Tm fun t => halfInd a (latO S T (ΛS : Set (Fin S.rank → D.host.E)) (ΛT : Set (Fin T.rank → D.host.E)) fun _ => True) (actO S T g⁻¹ h⁻¹ t) := by
   intro D ψ S T χS χT om ΛS ΛT a f₀ Tm hW hS hT ha hinf hf hTm hc hv e he hae g h hg hh x y hx hy hle
   haveI := finite_enlarge hS.1 hT.1 he.1 hle

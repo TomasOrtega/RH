@@ -19,6 +19,15 @@ namespace GlobalTheory.LocSW
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E} {n m : ℕ}
   {Q : Matrix (Fin (n + n)) (Fin (n + n)) E}
 
+/- English proof (translation)
+Take `⟨a, ha, hξ⟩` from `exists_integer_conj_eq_neg h`. Establish `hξ0 : (a : E) ≠ 0` using `RingOfIntegers.coe_ne_zero_iff.2 ha`. Generalize the expression as in `(a : E) = ξ at hξ hξ0`. Establish `hli : LinearIndependent F ![(1 : E), ξ]`. Rewrite using `[LinearIndependent.pair_iff]`.
+
+Introduce `s u hsu`. Simplify using `only [Algebra.smul_def, mul_one] at hsu`. Establish `h2` using `congrArg σ hsu`. Simplify using `only [map_add, map_mul, AlgHom.commutes, hξ, map_zero] at h2`. Establish `h3 : algebraMap F E u * ξ = 0` using `by linear_combination (hsu - h2) / 2`.
+
+Take `rfl : u = 0` from `(map_eq_zero (algebraMap F E)).mp ((mul_eq_zero.mp h3).resolve_right hξ0)`. Conclude with `⟨(map_eq_zero (algebraMap F E)).mp (by simpa using hsu), rfl⟩`. Set `b` to `basisOfLinearIndependentOfCardEqFinrank hli (by rw [h.2.2.1]; rfl)`. Establish `hb : ∀ i, b i = ![(1 : E), ξ] i` using `fun i => by simp [b]`. Use `⟨(1 : R) ⊗ₜ[F] ξ, (IsUnit.mk0 ξ hξ0).map (inclR (F := F) R), ?_, Algebra.TensorProduct.basis R b, ?_, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[conjR_tmul, hξ, TensorProduct.tmul_neg]`. Rewrite using `[Algebra.TensorProduct.basis_apply, hb]`. Both sides reduce to the same expression. Rewrite using `[Algebra.TensorProduct.basis_apply, hb]`. Both sides reduce to the same expression.
+-/
 theorem exists_isQuad_conjR (h : IsCMExt F E σ) (R : Type) [CommRing R] [Algebra F R] : ∃ δ, IsQuad (conjR R σ) δ := by
   obtain ⟨a, ha, hξ⟩ := exists_integer_conj_eq_neg h
   have hξ0 : (a : E) ≠ 0 := RingOfIntegers.coe_ne_zero_iff.2 ha
@@ -39,9 +48,15 @@ theorem exists_isQuad_conjR (h : IsCMExt F E σ) (R : Type) [CommRing R] [Algebr
   · rw [Algebra.TensorProduct.basis_apply, hb]; rfl
   · rw [Algebra.TensorProduct.basis_apply, hb]; rfl
 
+/- English proof (translation)
+The claim follows from `hψ.comp (continuous_const.prodMk (continuous_singleFin v))`.
+-/
 theorem continuous_psiAt {ψ : AddChar (AF F) ℂ} (hψ : Continuous ψ) (v : HeightOneSpectrum (𝓞 F)) :
     Continuous (LatVac.psiAt ψ v) := hψ.comp (continuous_const.prodMk (continuous_singleFin v))
 
+/- English proof (translation)
+Introduce `h` and use `by obtain ⟨a, -, ha⟩ := StdRescale.exists_isStd_mulShift F hF ψ hψ obtain ⟨t, ht⟩ := PsiNontrivAt.exists_psiAt_ne_one _ ha v refine ht ?_ have h1 := DFunLike.congr_fun h (a • t) change ψ (LatVac.liftV v (a • t)) = 1 at h1 change ψ (algebraMap F (AF F) a * LatVac.liftV v t) = 1 rw …`.
+-/
 theorem psiAt_ne_one (hF : IsTotallyReal F) {ψ : AddChar (AF F) ℂ} (hψ : IsCharAF F ψ) (v : HeightOneSpectrum (𝓞 F)) :
     LatVac.psiAt ψ v ≠ 1 := fun h => by
   obtain ⟨a, -, ha⟩ := StdRescale.exists_isStd_mulShift F hF ψ hψ
@@ -64,6 +79,11 @@ def AlmostUnit {κ : Type} (φf : ∀ v : HeightOneSpectrum (𝓞 F), (κ → Fv
 
 attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField in
 
+/- English proof (translation)
+Use `letI := invTwo F (Fv F v)`. Take `⟨δ, hq⟩` from `exists_isQuad_conjR hc (Fv F v)`. Take `⟨d, co, om, l, h1, h2, ⟨φ, hφ, h0⟩, h3⟩` from `Lin.exists_model hq (continuous_psiAt hψ.1 v) (psiAt_ne_one hc.1 hψ v) hQ`. Establish `e : JR (F` using `F) (Fv F v) (!![0, 1; 1, 0] : Matrix (Fin 2) (Fin 2) E) = !![0, 1; 1, 0] := by`. Apply the tactic sequence `ext i j; fin_cases i <;> fin_cases j <;> simp [JR]`.
+
+Establish `h4` using `(h3 φ hφ).comp_continuous (continuous_toUG hQ)`. Establish `hf : coefMap (om.comp (toUG _ σ hQ).toMonoidHom) l φ ∈ secFin σ hQ ψ 1 !![0, 1; 1, 0] v`. Rewrite using `[secFin_eq, e]`. Conclude with `secOf_le_secLoc h1 h2 ⟨φ, mem_kFin_of_isLocallyConstant (isCompact_KUpFin v) hφ h4, rfl⟩`. Conclude with `⟨_, hf, by simpa using h0, mem_psUp_fin hf (h4.comp l).continuous⟩`.
+-/
 theorem exists_mem_secFin_hyperbolic (hc : IsCMExt F E σ) (hQ : Q = StdUnn.blk4 0 1 (-1) 0) {ψ : AddChar (AF F) ℂ}
     (hψ : IsCharAF F ψ) (v : HeightOneSpectrum (𝓞 F)) :
     ∃ f ∈ secFin σ hQ ψ 1 !![0, 1; 1, 0] v, f 1 ≠ 0 ∧
@@ -80,14 +100,23 @@ theorem exists_mem_secFin_hyperbolic (hc : IsCMExt F E σ) (hQ : Q = StdUnn.blk4
     exact secOf_le_secLoc h1 h2 ⟨φ, mem_kFin_of_isLocallyConstant (isCompact_KUpFin v) hφ h4, rfl⟩
   exact ⟨_, hf, by simpa using h0, mem_psUp_fin hf (h4.comp l).continuous⟩
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fun i j => by fin_cases i <;> fin_cases j <;> simp, by simp⟩`.
+-/
 example : IsHermND σ !![0, 1; 1, 0] :=
   ⟨fun i j => by fin_cases i <;> fin_cases j <;> simp, by simp⟩
 
+/- English proof (translation)
+Simplify `law_of_mem_secFin hf ⟨_, mLoc_mem_upP _ σ hσ hQ a⟩ 1` using `[charAt, npow]`.
+-/
 example (hσ : ∀ x, σ (σ x) = x) (hQ : Q = StdUnn.blk4 0 1 (-1) 0) (ψ : AddChar (AF F) ℂ) (v : HeightOneSpectrum (𝓞 F))
     (f : GLoc σ Q v → ℂ) (hf : f ∈ secFin σ hQ ψ 1 !![0, 1; 1, 0] v) (a : GL (Fin n) (Fv F v ⊗[F] E)) :
     f (mLoc _ σ hσ hQ a) = (absEv F E v (Matrix.GeneralLinearGroup.det a) : ℝ) * f 1 := by
   simpa [charAt, npow] using law_of_mem_secFin hf ⟨_, mLoc_mem_upP _ σ hσ hQ a⟩ 1
 
+/- English proof (translation)
+Simplify using `using law_of_mem_secArch hf ⟨_, nLoc_mem_upP hQ b⟩ g`.
+-/
 example (hQ : Q = StdUnn.blk4 0 1 (-1) 0) (ψ : AddChar (AF F) ℂ) (χ : (AF F ⊗[F] E)ˣ →* Circle)
     (JA : Matrix (Fin m) (Fin m) E) (w : InfinitePlace F) (hw : w.IsReal) (f : GArch σ Q w → ℂ)
     (hf : f ∈ secArch σ hQ ψ χ JA w hw) (b : HermR w.Completion σ n) (g : GArch σ Q w) : f (nLoc _ σ hQ b * g) = f g := by

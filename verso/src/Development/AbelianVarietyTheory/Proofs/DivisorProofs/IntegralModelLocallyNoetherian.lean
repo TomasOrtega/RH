@@ -19,6 +19,11 @@ attribute [local instance] algPadicInt algPadicField towerPadic factPadic Global
 
 namespace GlobalTheory.ModelNoeth
 
+/- English proof (translation)
+Introduce `E _ _ _ H Dw l' Xo' c' W Y p _ _`. Take `⟨⟨_, hD⟩, -, -⟩` from `(GlobalTheory.CoeffValuation.isDedFrac_and_isOpenImmersion E H l' c' (c'.V W)).1`. Use `haveI : IsNoetherianRing (c'.V W) := hD.toIsNoetherian`. Take `⟨N, i, hi, hcomp⟩` from `Y.proj`. Use `haveI := hi`.
+
+Use `haveI := isProper_str (c'.V W) N`. Use `haveI : LocallyOfFiniteType (i ≫ PSpace.str (c'.V W) N) := inferInstance`. Use `haveI : LocallyOfFiniteType Y.s := hcomp ▸ this`. Conclude with `LocallyOfFiniteType.isLocallyNoetherian Y.s`.
+-/
 theorem isLocallyNoetherian_model : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (Dw : Datum H) (l' : Level H)
     (Xo' : Moduli Dw l') (c' : Coeff l') (W : ValuationSubring ℂ) (Y : Model Xo' c' (c'.V W).subtype) (p : ℕ),
     p.Prime → (p : ℂ) ∈ W.nonunits → IsLocallyNoetherian Y.X := by

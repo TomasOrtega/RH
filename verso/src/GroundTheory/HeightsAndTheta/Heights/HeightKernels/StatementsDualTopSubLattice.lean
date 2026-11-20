@@ -41,6 +41,11 @@ def HermLattice.twiceStandardExample : HermLattice ℚ 1 where
   posDef := fun _ => Matrix.PosDef.one
   conj := fun _ => by simp
 
+/- English proof (translation)
+Use `show Submodule.span (𝓞 ℚ) {twoVecExample} ≤ _`. Rewrite using `[Submodule.span_le, Set.singleton_subset_iff]`. Establish `h : twoVecExample = (2 : 𝓞 ℚ) • (Pi.single 0 1 : Fin 1 → ℚ)`. Use function extensionality and compare the values at `j`. Use `fin_cases j`.
+
+Simplify using `[twoVecExample, Algebra.smul_def, map_ofNat]`. Rewrite using `[h]`. Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span ⟨0, rfl⟩)`.
+-/
 theorem twiceStandardExample_le :
     HermLattice.twiceStandardExample.lattice ≤ (HermLattice.standard ℚ 1).lattice := by
   show Submodule.span (𝓞 ℚ) {twoVecExample} ≤ _
@@ -52,6 +57,9 @@ theorem twiceStandardExample_le :
   rw [h]
   exact Submodule.smul_mem _ _ (Submodule.subset_span ⟨0, rfl⟩)
 
+/- English proof (translation)
+Take `⟨T, hT, hdT, ⟨b'⟩⟩` from `DualLatticeBasisExists.proof ℚ 1 HermLattice.twiceStandardExample`. Conclude with `⟨T, hT, hdT, b', DualEmbBijective.proof ℚ 1 _ T b', dualEmbMatrix_standard_bijective, twiceStandardExample_le, le_rfl⟩`.
+-/
 example : ∃ (T : Type) (_ : Fintype T) (_ : DecidableEq T)
     (b' : Module.Basis T ℤ (dualLattice HermLattice.twiceStandardExample)),
     Function.Bijective (Matrix.mulVecLin (dualEmbMatrix b')) ∧

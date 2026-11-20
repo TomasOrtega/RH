@@ -11,6 +11,13 @@ noncomputable section
 
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {r : ℕ}
 
+/- English proof (translation)
+Assume the negation of the conclusion as `hcon`. Use `push_neg at hcon`. Establish `hu0 : u 0 ≠ 0` using `hu.ne_zero 0`. Choose the witnesses or unpack the hypotheses as in `⟨a, ha⟩ : ∃ a, u 0 a ≠ 0 := by`. Assume the negation of the conclusion as `h`.
+
+Use `push_neg at h`. Conclude with `hu0 (funext h)`. Establish `key` using `Fintype.linearIndependent_iff.1 hu ![u 1 a, -(u 0 a)] (by`. Use function extensionality and compare the values at `b`. Establish `hb` using `hcon a b`.
+
+Simplify using `only [Fin.sum_univ_two, Finset.sum_apply, Pi.add_apply, Pi.smul_apply, smul_eq_mul, Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.head_cons, Pi.zero_apply]`. Take the linear combination `-hb)`. Conclude with `ha (by simpa using key 1)`.
+-/
 lemma exists_minor {u : Fin 2 → Fin r → E} (hu : LinearIndependent E u) :
     ∃ a b : Fin r, u 0 a * u 1 b - u 0 b * u 1 a ≠ 0 := by
   by_contra hcon
@@ -28,6 +35,15 @@ lemma exists_minor {u : Fin 2 → Fin r → E} (hu : LinearIndependent E u) :
     linear_combination -hb)
   exact ha (by simpa using key 1)
 
+/- English proof (translation)
+Take `⟨a, b, hab⟩` from `exists_minor hu`. Establish `hd : τ (u 0 a * u 1 b - u 0 b * u 1 a) ≠ 0`. Rewrite using `[map_ne_zero_iff _ τ.injective]`. Conclude with `hab`. Simplify using `only [map_sub, map_mul] at hd`.
+
+Establish `ea` using `congrFun hc a`. Establish `eb` using `congrFun hc b`. Simplify using `only [Finset.sum_apply, Fin.sum_univ_two, Pi.smul_apply, smul_eq_mul, Data.emb, Pi.zero_apply] at ea eb`. Establish `h0 : c 0 * (τ (u 0 a) * τ (u 1 b) - τ (u 0 b) * τ (u 1 a)) = 0`. Take the linear combination `τ (u 1 b) * ea - τ (u 1 a) * eb`.
+
+Establish `h1 : c 1 * (τ (u 0 a) * τ (u 1 b) - τ (u 0 b) * τ (u 1 a)) = 0`. Take the linear combination `τ (u 0 a) * eb - τ (u 0 b) * ea`. Establish `h0'` using `(mul_eq_zero.1 h0).resolve_right hd`. Establish `h1'` using `(mul_eq_zero.1 h1).resolve_right hd`. Use function extensionality and compare the values at `i`.
+
+Use `fin_cases i`. Simplify using `using h0'`. Simplify using `using h1'`.
+-/
 lemma emb_li {u : Fin 2 → Fin r → E} (hu : LinearIndependent E u) (τ : E →+* ℂ) (c : Fin 2 → ℂ)
     (hc : ∑ i, c i • Data.emb τ (u i) = 0) : c = 0 := by
   obtain ⟨a, b, hab⟩ := exists_minor hu
@@ -52,9 +68,17 @@ lemma emb_li {u : Fin 2 → Fin r → E} (hu : LinearIndependent E u) (τ : E �
 
 variable (X : Data E r)
 
+/- English proof (translation)
+Introduce `h0` and use `ha (emb_li hu τ.1 (a τ) h0)`.
+-/
 lemma uvec_ne {u : Fin 2 → Fin r → E} (hu : LinearIndependent E u) {a : X.Ψ → Fin 2 → ℂ} {τ : X.Ψ}
     (ha : a τ ≠ 0) : X.uvec u a τ ≠ 0 := fun h0 => ha (emb_li hu τ.1 (a τ) h0)
 
+/- English proof (translation)
+Establish `key : hermC τ.1 X.Gm (X.uvec u a τ) (X.uvec u b τ) = ∑ i, ∑ k, a τ i * conj (b τ k) * τ.1 (herm X.Gm (u i) (u k))`. Simplify using `only [hermC, herm, Data.uvec, Data.emb, Finset.sum_apply, Pi.smul_apply, smul_eq_mul, map_sum, map_mul, emb_cc, Fin.sum_univ_two, map_add, Finset.mul_sum, ← Finset.sum_add_distrib]`. Use `Finset.sum_congr rfl fun x _ => Finset.sum_congr rfl fun y _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[key]`.
+
+Simplify using `[hu]`.
+-/
 lemma hermC_uvec {u : Fin 2 → Fin r → E} (hu : ∀ i k, herm X.Gm (u i) (u k) = 0)
     (a b : X.Ψ → Fin 2 → ℂ) (τ : X.Ψ) :
     hermC τ.1 X.Gm (X.uvec u a τ) (X.uvec u b τ) = 0 := by
@@ -68,15 +92,26 @@ lemma hermC_uvec {u : Fin 2 → Fin r → E} (hu : ∀ i k, herm X.Gm (u i) (u k
   rw [key]
   simp [hu]
 
+/- English proof (translation)
+Introduce `τ` and use `⟨hermC_uvec X hu.1 a a τ, uvec_ne X hu.2 (ha τ)⟩`.
+-/
 lemma isIsoV_uvec {u : Fin 2 → Fin r → E} (hu : IsIsoPair X.Gm u) {a : X.Ψ → Fin 2 → ℂ}
     (ha : ∀ τ, a τ ≠ 0) : X.IsIsoV (X.uvec u a) := fun τ => ⟨hermC_uvec X hu.1 a a τ, uvec_ne X hu.2 (ha τ)⟩
 
+/- English proof (translation)
+Introduce `τ i k`. Simplify using `only [map_mul, Complex.conj_ofReal, Complex.conj_conj]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 lemma herm_rank1 (s : X.Ψ → ℝ) (a : X.Ψ → Fin 2 → ℂ) :
     IsHermFam (fun τ i k => (s τ : ℂ) * a τ i * conj (a τ k)) := by
   intro τ i k
   simp only [map_mul, Complex.conj_ofReal, Complex.conj_conj]
   ring
 
+/- English proof (translation)
+Unfold `Data.pairR Data.chiAt`. Rewrite using `[Complex.re_sum]`. Use `Finset.sum_congr rfl fun τ _ => ?_` and prove the remaining obligations. Rewrite using `[← Complex.re_ofReal_mul, Finset.mul_sum]`. Use `congr 1`.
+
+Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.mul_sum]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+-/
 lemma pairR_rank1 (χ : X.Ψ → Fin 2 → Fin 2 → ℂ) (s : X.Ψ → ℝ) (a : X.Ψ → Fin 2 → ℂ) :
     X.pairR χ (fun τ i k => (s τ : ℂ) * a τ i * conj (a τ k)) = ∑ τ, s τ * (X.chiAt χ a τ).re := by
   unfold Data.pairR Data.chiAt
@@ -89,6 +124,15 @@ lemma pairR_rank1 (χ : X.Ψ → Fin 2 → Fin 2 → ℂ) (s : X.Ψ → ℝ) (a 
   refine Finset.sum_congr rfl fun k _ => ?_
   ring
 
+/- English proof (translation)
+Establish `hH : (Matrix.of (χ τ0)).IsHermitian`. Use extensionality with `i k`. Simplify using `[Matrix.conjTranspose_apply, hχ τ0 k i]`. Rewrite using `[Matrix.posSemidef_iff_dotProduct_mulVec]`. Use `⟨hH, fun x => ?_⟩` and prove the remaining obligations.
+
+Establish `hre : (star x ⬝ᵥ (Matrix.of (χ τ0)).mulVec x) = ∑ i, ∑ k, χ τ0 i k * conj (x i) * x k`. Simplify using `only [dotProduct, Matrix.mulVec, Matrix.of_apply, Pi.star_apply, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Simplify using `only [RCLike.star_def]`. Expand and normalize the polynomial expressions, which then agree.
+
+Establish `him` using `hH.im_star_dotProduct_mulVec_self x`. Rewrite using `[hre, Complex.nonneg_iff]`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Distinguish the cases in `hx : x = 0`. Simplify using `[hx]`.
+
+Conclude with `h x hx`. Rewrite using `[← hre]`. Conclude with `him.symm`.
+-/
 lemma posSemidef_of {χ : X.Ψ → Fin 2 → Fin 2 → ℂ} (hχ : IsHermFam χ) (τ0 : X.Ψ)
     (h : ∀ x : Fin 2 → ℂ, x ≠ 0 → 0 ≤ (∑ i, ∑ k, χ τ0 i k * conj (x i) * x k).re) :
     (Matrix.of (χ τ0)).PosSemidef := by
@@ -112,16 +156,25 @@ lemma posSemidef_of {χ : X.Ψ → Fin 2 → Fin 2 → ℂ} (hχ : IsHermFam χ)
   · rw [← hre]
     exact him.symm
 
+/- English proof (translation)
+Simplify using `only [Data.chiAt, Data.embH, map_sum, map_mul, emb_cc]`.
+-/
 lemma chiAt_embH (β : Matrix (Fin 2) (Fin 2) E) (c : Fin 2 → E) (τ : X.Ψ) :
     X.chiAt (X.embH β) (fun σ i => σ.1 (c i)) τ = τ.1 (∑ i, ∑ k, β i k * c i * cc (c k)) := by
   simp only [Data.chiAt, Data.embH, map_sum, map_mul, emb_cc]
 
+/- English proof (translation)
+Take `⟨β, hβ, -, rfl⟩` from `hb`. Introduce `τ i k`. Simplify using `only [Data.embH]`. Rewrite using `[← hβ i k, emb_cc]`.
+-/
 lemma herm_of_LZ {g : ℕ} {b : X.Ψ → Fin 2 → Fin 2 → ℂ} (hb : b ∈ X.LZ g) : IsHermFam b := by
   obtain ⟨β, hβ, -, rfl⟩ := hb
   intro τ i k
   simp only [Data.embH]
   rw [← hβ i k, emb_cc]
 
+/- English proof (translation)
+Introduce `τ i k`. Simplify using `only [Finset.sum_apply, Pi.smul_apply, smul_eq_mul, map_sum, map_mul, Complex.conj_ofReal]`. Conclude with `Finset.sum_congr rfl fun j _ => by rw [hω j τ i k]`.
+-/
 lemma herm_comb {N : ℕ} {ω : Fin N → X.Ψ → Fin 2 → Fin 2 → ℂ} (hω : ∀ j, IsHermFam (ω j))
     (t : Fin N → ℝ) : IsHermFam (∑ j, (t j : ℂ) • ω j) := by
   intro τ i k

@@ -6,6 +6,21 @@ open GlobalTheory.CuspRep GlobalTheory.WeilDeligne GlobalTheory.Pst GlobalTheory
 
 attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField
 
+/- English proof (translation)
+Introduce `h2 hred E Ω _ _ _ _ _ l _ ι c hc`. Take `⟨c, rfl⟩ : ∃ c', c = c' + 1` from `⟨c - 1, by omega⟩`. Use `clear hc`. Proceed by induction on `c with`. Consider the case `zero`.
+
+Introduce `N hN n hn r p HT H`. Establish `hn' : N 0 = n` using `by simpa using hn`. Substitute `hn'` using the available equality. Use `⟨r 0, ⟨(H 0).cont, (H 0).ss, ?_, fun w => ((H 0).par w).congr fun A h rc _ => ?_⟩, fun hi => ⟨rfl, fun i => ?_⟩⟩` and prove the remaining obligations. Establish `e : (fun τ => ∑ i, HT i τ) = HT 0`.
+
+Use function extensionality and compare the values at `τ`. Simplify using the standard rewrite rules. Rewrite using `[e]`. Conclude with `(H 0).ht`. Simplify using `[sumList, WD.lpSum_zero]`.
+
+Take `rfl : i = 0` from `Subsingleton.elim (α := Fin 1) _ _`. Conclude with `hi`. Consider the case `succ c ih`. Introduce `N hN n hn r p HT H`. Rewrite `hn` using `[Fin.sum_univ_succ]`.
+
+Substitute `hn` using the available equality. Take `⟨R, hR, -⟩` from `ih (fun i => N i.succ) (fun i => hN i.succ) _ rfl (fun i => r i.succ) (fun i => p i.succ) (fun i => HT i.succ) (fun i => H i.succ)`. Establish `hS` using `h2 E Ω l ι _ _ (r 0) R _ _ _ _ (H 0) hR`. Use `⟨Formalism.MainNotions.SumRepresentations.At.sumRep (r 0) R, ⟨hS.cont, hS.ss, ?_, fun w => (hS.par w).congr fun A h rc _ => ?_⟩, fun hi => ?_⟩` and prove the remaining obligations. Establish `e : (fun τ => ∑ i, HT i τ) = fun τ => HT 0 τ + ∑ i : Fin (c + 1), HT i.succ τ`.
+
+Use function extensionality and compare the values at `τ`. Rewrite using `[Fin.sum_univ_succ]`. Rewrite using `[e]`. Conclude with `hS.ht`. Rewrite using `[List.ofFn_succ (f := fun i => p i w A h rc)]`.
+
+Both sides reduce to the same expression. Use `absurd hi (hred _ _ _ _ _ _ (hN 0) ?_)` and prove the remaining obligations. Conclude with `le_trans (hN (Fin.succ 0)) (Finset.single_le_sum (f := fun i : Fin (c + 1) => N i.succ) (fun _ _ => Nat.zero_le _) (Finset.mem_univ 0))`.
+-/
 theorem UpperTheory.sum_family_of_reductions :
     SumTwo → SumRed → SumFam := by
   intro h2 hred E Ω _ _ _ _ _ l _ ι c hc

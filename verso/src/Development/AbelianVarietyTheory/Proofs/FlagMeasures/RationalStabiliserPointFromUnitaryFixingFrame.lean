@@ -10,6 +10,15 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 namespace GlobalTheory.GamRat
 
+/- English proof (translation)
+Introduce `D X u γ`. Take `⟨hGF, hH⟩` from `Subgroup.mem_inf.1 γ.2`. Take `⟨γ₀, hU, h1, h2⟩` from `(Formalism.MainNotions.LeviCoordinates.rr_mem_GF _ _).1 hGF`. Use `⟨γ₀, hU, h1, h2, ?_⟩` and prove the remaining obligations. Introduce `x hx`.
+
+Establish `hf` using `(Subgroup.mem_prod.1 hH).2 x hx`. Rewrite `hf` using `[h2]`. Establish `: Nontrivial (Af X.B.I.F)`. Take `⟨P, hP⟩` from `Ideal.exists_maximal (𝓞 X.B.I.F)`. Set `w : IsDedekindDomain.HeightOneSpectrum (𝓞 X.B.I.F)` to `⟨P, hP.isPrime, Ring.ne_bot_of_isMaximal_of_not_isField hP (RingOfIntegers.not_isField _)⟩`.
+
+Use `⟨0, 1, fun h => ?_⟩` and prove the remaining obligations. Establish `h0 : (0 : w.adicCompletion X.B.I.F) = 1` using `congrArg (fun a : Af X.B.I.F => a w) h`. Conclude with `zero_ne_one h0`. Use function extensionality and compare the values at `i`. Apply `Formalism.UG.P.inclE_injective X.B.I.F X.B.I.E (Af X.B.I.F)` to reduce the goal to its premises.
+
+Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem gam_rat : ∀ (D : D7) (X : HidaSetting D) (u : D.what₂.Word) (γ : Gam X u), ∃ γ₀ : GL (Fin X.B.I.n) X.B.I.E, γ₀ ∈ Formalism.UG.UJ (starRingEnd X.B.I.E) X.B.I.J ∧ (∀ v, uMat ((γ : X.B.I.GA).1 v) = (X.B.I.P v)⁻¹ * (γ₀ : Matrix (Fin X.B.I.n) (Fin X.B.I.n) X.B.I.E).map (X.B.I.φ v) * X.B.I.P v) ∧ X.B.I.fmat (γ : X.B.I.GA).2 = (γ₀ : Matrix (Fin X.B.I.n) (Fin X.B.I.n) X.B.I.E).map (Formalism.UG.inclE (F := X.B.I.F) (Af X.B.I.F)) ∧ ∀ x ∈ fixSet X u, (γ₀ : Matrix (Fin X.B.I.n) (Fin X.B.I.n) X.B.I.E) *ᵥ x = x := by
   intro D X u γ
   obtain ⟨hGF, hH⟩ := Subgroup.mem_inf.1 γ.2

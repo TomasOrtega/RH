@@ -9,6 +9,13 @@ open Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotions.N Formal
 
 namespace GlobalTheory.DesignFromSize
 
+/- English proof (translation)
+Introduce `hC D hT i _ _ r ρ π dc lenRow e' cB hr hA hπ`. Take `⟨_, _, hG3, _, _, _, _, _, _, _, _, _, _, hDec, _⟩` from `hA`. Establish `hdec : ∃ e, GlobalTheory.IndefiniteRowSideFullHecke.CongruenceModuleMatrices.IsDecomp (t` using `D.R.t) (r π) (ρ π) (D.nd.chi i) e := hDec`. Establish `hpos : 0 < D.R.r`. Use `D.R.two_le_m` as an intermediate fact.
+
+Use `D.R.m_add_three_le_k` as an intermediate fact. Unfold `Ranks.r`. Use linear arithmetic over natural numbers and integers. Establish `habs : AbsIrrSub (mapRep (IsLocalRing.residue (D.nd.O i)) (ρ π)) ⊤` using `GlobalTheory.Proof.AbsoluteIrreducibilitySpan.absIrr_of_span hpos _ _ (fun _ => 1) (fun g => by rw [one_smul]; rfl) hG3.2.2`. Establish `hlive : Live D.nd i` using `⟨π, hπ, r π, ρ π, hr π, hdec, habs⟩`.
+
+Take `⟨r₀, ρ₀, hr₀, hw⟩` from `hT i hlive`. Take `⟨S, hS, _⟩` from `GlobalTheory.T.exists_globalObjects_every_family_wild hC D.nd i r₀ ρ₀ hr₀ hw r ρ hr π hπ hdec`. Conclude with `⟨S, hS⟩`.
+-/
 theorem main : GlobalTheory.TwSys.Cheb → ∀ D : D7, TakenAll D → Formalism.MainNotions.N.K.Rows.AllDesignConditions D := by
   intro hC D hT i _ _ r ρ π dc lenRow e' cB hr hA hπ
   obtain ⟨_, _, hG3, _, _, _, _, _, _, _, _, _, _, hDec, _⟩ := hA

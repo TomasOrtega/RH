@@ -14,6 +14,11 @@ open GlobalTheory.Ex.AbPartIso
 
 namespace GlobalTheory.Ex.FibIso
 
+/- English proof (translation)
+Take `⟨h1, h2, h3⟩` from `H`. Use `⟨h1, h2, fun p => ?_⟩` and prove the remaining obligations. Take `⟨V, hV, th, s1, α, τ, U, s2, w, u, a1, a2, a3, a4, a5, a6, a7, a8⟩` from `h3 p`. Take `⟨c', hc'⟩` from `hc.map V.ι.appTop.hom`. Use `⟨V, hV, th, s1, α, τ, U, s2, w, (c' * (show Γ(V.toScheme, ⊤)ˣ from u) : Γ(V.toScheme, ⊤)ˣ), a1, a2, a3, a4, a5, a6, a7, fun i => ?_⟩` and prove the remaining obligations.
+
+Establish `aux : ∀ (a : Γ(T.left, ⊤)) (u₀ : Γ(V.toScheme, ⊤)ˣ) (w₀ : Γ(V.toScheme, ⊤)), V.ι.appTop.hom a = u₀.val * w₀ → V.ι.appTop.hom (c * a) = (c' * u₀).val * w₀`. Introduce `a u₀ w₀ h`. Rewrite using `[map_mul, h, Units.val_mul, hc', _root_.mul_assoc]`. Conclude with `aux (v i) u (w i) (a8 i)`.
+-/
 theorem isThetaPt_mul {S : Scheme.{0}} {P : PolAV S} {k : ℕ} {T : Over S} {I : Type}
     {x : I → (T ⟶ P.A)} {v : I → Γ(T.left, ⊤)} (c : Γ(T.left, ⊤)) (hc : IsUnit c)
     (H : IsThetaPt P k x v) : IsThetaPt P k x (fun i => c * v i) := by
@@ -35,6 +40,13 @@ def Reads {F : Type} [Field F] (B : NumB F) (Q : PolAV (Sp F)) (E : B.A ≃* (ba
   ∀ m : ℕ, Odd m → (m : F) ≠ 0 → ∀ (Ix : Type) (b : Ix → B.A), (∀ i, b i ^ m ^ 2 = 1) →
     IsThetaPt Q m (fun i => E (b i)) (fun i => fnOf (B.uth m (b i) 1))
 
+/- English proof (translation)
+Take `⟨e, he⟩` from `exists_mulEquiv_of_isGrpPullback hΦ.1 (𝟙 (Sp F)) (TF (R := R) F).hom (Category.id_comp _).symm`. Take `⟨w, t⟩` from `hU R D h₁ h₂ F N ν`. Establish `hE : ∀ b, (ν.eA b).left = ((ν.eA.trans e.symm) b).left ≫ Φ` using `fun b => (congrArg (fun z => z.left) (e.apply_symm_apply (ν.eA b)).symm).trans (he _)`. Use `⟨ν.eA.trans e.symm, hE, fun k hk b b' hb hb' => ?_, fun m hm hm' Ix b hb => ?_⟩` and prove the remaining obligations. Establish `key : ∀ (s : Sp F ⟶ Sp R) (_ : s = 𝟙 _ ≫ (TF (R` using `R) F).hom) (x y : baseOver (Sp F) ⟶ Q.A) (x₀ y₀ : Over.mk s ⟶ D.P.A) (c : Γ(Sp F, ⊤)ˣ), x₀.left = x.left ≫ Φ → y₀.left = y.left ≫ Φ → WeilIs D.P.A D.P.L k x₀ y₀ c → WeilIs Q.A Q.L k x y c := by`.
+
+Introduce and unpack `s rfl x y x₀ y₀ c hx hy h`. Use `Q.isAb.comm` as an intermediate fact. Conclude with `(weilIs_grpPullback_of_comm' _ _ _ _ _ Φ _ _ D.P.isLB Q.isLB hΦ.1 hΦ.2.1 (baseOver _) k x y x₀ y₀ c hx hy).2 h`. Conclude with `key _ (Category.id_comp _).symm _ _ _ _ _ (hE b) (hE b') (w k hk b b' hb hb')`. Establish `key : ∀ (s : Sp F ⟶ Sp R) (_ : s = 𝟙 _ ≫ (TF (R` using `R) F).hom) (x : Ix → (baseOver (Sp F) ⟶ Q.A)) (x₀ : Ix → (Over.mk s ⟶ D.P.A)) (v : Ix → Γ(Sp F, ⊤)), (∀ i, (x₀ i).left = (x i).left ≫ Φ) → (∀ i, x i ^ m ^ 2 = 1) → IsThetaPt D.P m x₀ v → IsThetaPt Q m x v := by`.
+
+Introduce and unpack `s rfl x x₀ v hx hp h`. Conclude with `(ThetaPtUp.isThetaPt_iff (T := baseOver (Sp F)) hΦ.1 hΦ.2.1 hx hp _).2 h`. Conclude with `key _ (Category.id_comp _).symm _ _ _ (fun i => hE (b i)) (fun i => by rw [← map_pow, hb, map_one]) (t m hm hm' Ix b hb).1`.
+-/
 theorem exists_reads (hU : BrUthSt) {R : Type} [CommRing R] [IsDomain R] {D : DegPre R} (h₁ : D.PsiEven)
     (h₂ : D.TauBimult) {F : Type} [Field F] [IsAlgClosed F] [Algebra (FractionRing R) F] {N : NumD F}
     (ν : NumOf D F N) {Q : PolAV (Sp F)} {Φ : Q.A.left ⟶ D.P.A.left} (hΦ : IsFib D F Q Φ) :
@@ -60,12 +72,20 @@ theorem exists_reads (hU : BrUthSt) {R : Type} [CommRing R] [IsDomain R] {D : De
     exact key _ (Category.id_comp _).symm _ _ _ (fun i => hE (b i))
       (fun i => by rw [← map_pow, hb, map_one]) (t m hm hm' Ix b hb).1
 
+/- English proof (translation)
+Rewrite using `[map_list_prod, List.map_ofFn]`. Conclude with `congrArg List.prod (congrArg List.ofFn (funext fun i => (map_pow f (y i) (a i)).symm))`.
+-/
 theorem linComb_map {S : Scheme.{0}} {A T : Over S} [GrpObj A] {G : Type} [Group G] (f : G →* (T ⟶ A)) {r : ℕ}
     (y : Fin r → G) (a : Fin r → ℕ) :
     linComb (fun i => f (y i)) a = f (List.ofFn fun i => y i ^ a i).prod := by
   rw [map_list_prod, List.map_ofFn]
   exact congrArg List.prod (congrArg List.ofFn (funext fun i => (map_pow f (y i) (a i)).symm))
 
+/- English proof (translation)
+Substitute `hg` using the available equality. Establish `inj : Function.Injective (Scheme.ΓSpecIso (CommRingCat.of F)).inv.hom` using `(Scheme.ΓSpecIso (CommRingCat.of F)).symm.commRingCatIsoToRingEquiv.injective`. Use `exists_level_of_pairing hL.globalFns hL.weil hL.mulN _ Q M _ (hζ.map_of_injective (Units.map_injective inj)) (fun K _ s => ⟨?_, ?_⟩) x hx hp` and prove the remaining obligations. Rewrite using `[← map_natCast (Spec.preimage s).hom]`. Conclude with `(map_ne_zero _).2 hM`.
+
+Establish `: Nontrivial Γ(Spec (CommRingCat.of K), ⊤)` using `(Scheme.ΓSpecIso (CommRingCat.of K)).symm.commRingCatIsoToRingEquiv.injective.nontrivial`. Conclude with `hζ.map_of_injective (Units.map_injective (s.appTop.hom.comp (Scheme.ΓSpecIso (CommRingCat.of F)).inv.hom).injective)`.
+-/
 theorem exists_level (hL : Laws) {F : Type} [Field F] (Q : PolAV (Sp F)) {g : ℕ} (hg : Q.g = g) {M : ℕ}
     (hM : (M : F) ≠ 0) {ζ : Fˣ} (hζ : IsPrimitiveRoot ζ M) (x : Fin (2 * g) → (baseOver (Sp F) ⟶ Q.A))
     (hx : ∀ i, x i ^ M = 1) (hp : ∀ i j, WeilIs Q.A Q.L M (x i) (x j) (unitOn ζ ^ stdSymp g i j)) :
@@ -82,6 +102,29 @@ theorem exists_level (hL : Laws) {F : Type} [Field F] (Q : PolAV (Sp F)) {g : �
     exact hζ.map_of_injective (Units.map_injective
       (s.appTop.hom.comp (Scheme.ΓSpecIso (CommRingCat.of F)).inv.hom).injective)
 
+/- English proof (translation)
+Use `⟨((n ^ 2) ^ 2) ^ Q.g * Q.g.factorial + 4, fun J hJ c ρ hc hρ => ?_⟩` and prove the remaining obligations. Take `⟨j, rfl⟩ : ∃ j, J = j + 4` from `⟨J - 4, by omega⟩`. Establish `hB : ((n ^ 2) ^ 2) ^ Q.g * Q.g.factorial < n ^ (j + 4)` using `lt_of_le_of_lt (by omega) (Nat.lt_pow_self hn.one_lt)`. Establish `hm : ((n ^ (j + 4) : ℕ) : F) ≠ 0` using `by rw [Nat.cast_pow]; exact pow_ne_zero _ hF`. Establish `hM : (((n ^ (j + 4)) ^ 2 : ℕ) : F) ≠ 0` using `by rw [Nat.cast_pow]; exact pow_ne_zero _ hm`.
+
+Establish `hM1 : 1 ≤ (n ^ (j + 4)) ^ 2` using `pow_pos (pow_pos hn.pos _) _`. Establish `hlev` using `nonempty_level_prime_pow hL F Q n ((j + 4) * 2) hn hF`. Rewrite `hlev` using `[pow_mul]`. Establish `hT'` using `hT Q.g n 2 j _ (n ^ (j + 4)) hn ho le_rfl rfl (by ring) hB F hF Q Q' rfl hg`. Establish `hom : Odd (n ^ (j + 4))` using `ho.pow`.
+
+Generalize the expression as in `n ^ (j + 4) = m at *`. Establish `: NeZero ((m ^ 2 : ℕ) : F)` using `⟨hM⟩`. Establish `: NeZero (m ^ 2)` using `⟨by omega⟩`. Take `⟨z, hz⟩` from `HasEnoughRootsOfUnity.exists_primitiveRoot F (m ^ 2)`. Establish `hζ` using `hz.isUnit_unit (NeZero.ne _)`.
+
+Generalize the expression as in `(hz.isUnit (NeZero.ne _)).unit = ζ at hζ`. Establish `inj : Function.Injective (Scheme.ΓSpecIso (CommRingCat.of F)).inv.hom` using `(Scheme.ΓSpecIso (CommRingCat.of F)).symm.commRingCatIsoToRingEquiv.injective`. Take `⟨lev⟩` from `hlev (unitOn ζ) (hζ.map_of_injective (Units.map_injective inj))`. Set `T : Subgroup B.A` to `(powMonoidHom (m ^ 2)).ker`. Set `f : T →* (baseOver (Sp F) ⟶ Q.A)` to `E.toMonoidHom.comp T.subtype`.
+
+Set `f' : T →* (baseOver (Sp F) ⟶ Q'.A)` to `E'.toMonoidHom.comp (MonoidHom.mk' (fun t => ρ t.1) fun s t => (hρ.1 s.1 t.1 s.2 t.2).1)`. Set `b : Fin (2 * Q.g) → T` to `fun i => ⟨E.symm (lev.pt i), by show E.symm (lev.pt i) ^ m ^ 2 = 1`. Rewrite using `[← map_pow, lev.torsion, map_one]⟩`. Establish `hb : lev.pt = fun i => f (b i)` using `funext fun i => (E.apply_symm_apply _).symm`. Take `⟨lev', hb'⟩` from `exists_level hL Q' hg hM hζ (fun i => f' (b i)) (fun i => by show E' (ρ (b i).1) ^ m ^ 2 = 1`.
+
+Rewrite using `[← map_pow, (hρ.2 _ (b i).2).1, map_one])`. Use the proof step `(fun i k => by`. Establish `p₁` using `hE.1 _ hM1 _ _ (b i).2 (b k).2`. Establish `p₂` using `hE'.1 _ hM1 _ _ (hρ.2 _ (b i).2).1 (hρ.2 _ (b k).2).1`. Rewrite `p₂` using `[(hρ.1 _ _ (b i).2 (b k).2).2]`.
+
+Simplify using `only [b, MulEquiv.apply_symm_apply] at p₁`. Rewrite using `[← ((hL.weil _ Q (m ^ 2) (baseOver _)).1 _ _ (lev.torsion i) (lev.torsion k)).unique p₁ (lev.pairing i k)]`. Conclude with `p₂)`. Set `t : (Fin (2 * Q.g) → ℕ) → T` to `fun a => (List.ofFn fun i => b i ^ a i).prod`. Establish `e : ∀ a, linComb lev.pt a = E (t a).1` using `fun a => by rw [hb]; exact linComb_map f b a`.
+
+Establish `e' : ∀ a, linComb (levelBasis lev' hg) a = E' (ρ (t a).1)` using `fun a => by rw [hb']; exact linComb_map f' b a`. Set `u : (Fin (2 * Q.g) → ZMod (m ^ 2)) → B.A` to `fun a => (t fun i => (a i).val).1`. Establish `hu : ∀ a, u a ^ m ^ 2 = 1` using `fun a => (t _).2`. Establish `v₁` using `isThetaPt_mul (fnOf c) ((IsUnit.mk0 c hc).map _) (hE.2 m hom hm _ u hu)`. Establish `v₂` using `hE'.2 m hom hm _ (fun a => ρ (u a)) fun a => (hρ.2 _ (hu a)).1`.
+
+Establish `q : (fun a => fnOf (B'.uth m (ρ (u a)) 1)) = fun a => fnOf c * fnOf (B.uth m (u a) 1)`. Use function extensionality and compare the values at `fun a => by rw [(hρ.2 _ (hu a)).2]; exact map_mul _ _ _`. Rewrite `v₂` using `[q]`. Establish `l : levelPoint lev rfl = fun a => E (u a)` using `funext fun a => e _`. Establish `l' : levelPoint lev' hg = fun a => E' (ρ (u a))` using `funext fun a => (ThetaPtDet.levelPoint_eq _ _ _).trans (e' _)`.
+
+Take `⟨σ, hσ, hσb⟩` from `hT' _ lev lev' _ (l ▸ v₁) (l' ▸ v₂)`. Use `⟨σ, hσ, fun x hx => ?_⟩` and prove the remaining obligations. Use `hσ.1` as an intermediate fact. Take `⟨d, hd⟩` from `lev.span F (𝟙 _) (E x) (by rw [← map_pow, hx, map_one])`. Establish `hd' : linComb lev.pt (fun i => (d i : ℕ)) = E x` using `(congrArg (linComb · _) (funext fun i => (Category.id_comp (lev.pt i)).symm)).trans hd`.
+
+Establish `hx' : x = (t fun i => (d i : ℕ)).1` using `E.injective (hd'.symm.trans (e _))`. Rewrite using `[← hd', ThetaPtDet.linComb_comp, hx', ← e']`. Conclude with `congrArg (linComb · _) (funext hσb)`.
+-/
 theorem exists_iso_of_reads (hL : Laws) (hT : ThetaPtDeterminesSt) {F : Type} [Field F] [IsAlgClosed F]
     {B B' : NumB F} {Q Q' : PolAV (Sp F)} (hg : Q'.g = Q.g) {E : B.A ≃* (baseOver (Sp F) ⟶ Q.A)}
     {E' : B'.A ≃* (baseOver (Sp F) ⟶ Q'.A)} (hE : Reads B Q E) (hE' : Reads B' Q' E') {n : ℕ} (hn : n.Prime)
@@ -150,6 +193,11 @@ theorem exists_iso_of_reads (hL : Laws) (hT : ThetaPtDeterminesSt) {F : Type} [F
   rw [← hd', ThetaPtDet.linComb_comp, hx', ← e']
   exact congrArg (linComb · _) (funext hσb)
 
+/- English proof (translation)
+Introduce `hL hT hU R _ _ D D' a₁ a₂ a₃ a₄ hg F _ _ _ N N' ν ν' Q Q' Φ Φ' hΦ hΦ' n hn ho hF`. Take `⟨E, hE, rE⟩` from `exists_reads hU a₁ a₂ ν hΦ`. Take `⟨E', hE', rE'⟩` from `exists_reads hU a₃ a₄ ν' hΦ'`. Take `⟨j₀, h⟩` from `exists_iso_of_reads hL hT (hΦ'.2.2.trans (hg.symm.trans hΦ.2.2.symm)) rE rE' hn ho hF`. Use `⟨j₀, fun j hj c ρ hc hρ => ?_⟩` and prove the remaining obligations.
+
+Take `⟨σ, hσ, hb⟩` from `h j hj c ρ hc hρ`. Use `⟨σ, hσ, fun x b hb' hx => ?_⟩` and prove the remaining obligations. Take `rfl : x = E b` from `Over.OverMorphism.ext (hΦ.1.1.hom_ext (hx.symm.trans (hE b)) (by rw [Over.w, Over.w]))`. Rewrite using `[hb b hb', hE']`.
+-/
 theorem exists_iso_fib : Laws → ThetaPtDeterminesSt → BrUthSt → ∀ (R : Type) [CommRing R] [IsDomain R] (D D' : DegPre R), D.PsiEven → D.TauBimult → D'.PsiEven → D'.TauBimult → D.P.g = D'.P.g → ∀ (F : Type) [Field F] [IsAlgClosed F] [Algebra (FractionRing R) F] (N N' : NumD F) (ν : NumOf D F N) (ν' : NumOf D' F N') (Q Q' : PolAV (Sp F)) (Φ : Q.A.left ⟶ D.P.A.left) (Φ' : Q'.A.left ⟶ D'.P.A.left), IsFib D F Q Φ → IsFib D' F Q' Φ' → ∀ n : ℕ, n.Prime → Odd n → (n : F) ≠ 0 → ∃ j₀ : ℕ, ∀ j, j₀ ≤ j → ∀ (c : F) (ρ : N.A → N'.A), c ≠ 0 → TorsMap N.toNumB N'.toNumB (n ^ j) c ρ → ∃ σ : Q.A ≅ Q'.A, IsPolIso Q Q' σ ∧ ∀ (x : baseOver (Sp F) ⟶ Q.A) (b : N.A), b ^ (n ^ j) ^ 2 = 1 → (ν.eA b).left = x.left ≫ Φ → (ν'.eA (ρ b)).left = (x ≫ σ.hom).left ≫ Φ' := by
   intro hL hT hU R _ _ D D' a₁ a₂ a₃ a₄ hg F _ _ _ N N' ν ν' Q Q' Φ Φ' hΦ hΦ' n hn ho hF
   obtain ⟨E, hE, rE⟩ := exists_reads hU a₁ a₂ ν hΦ

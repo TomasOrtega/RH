@@ -18,10 +18,18 @@ namespace GlobalTheory.CuspFormApprox
 
 variable {D : D7} {V : HSp D} {μ : Measure (GA D V)} {𝓕 : Set (GA D V)}
 
+/- English proof (translation)
+Simplify using `using GlobalTheory.Size.integrableOn_inv_quotHeight_pow (V := V) 0 hμ h𝓕`.
+-/
 theorem integrableOn_one (hμ : μ.IsHaarMeasure) (h𝓕 : IsFundamentalDomain (GQ V) 𝓕 μ) :
     IntegrableOn (fun _ => (1 : ℝ)) 𝓕 μ := by
   simpa using GlobalTheory.Size.integrableOn_inv_quotHeight_pow (V := V) 0 hμ h𝓕
 
+/- English proof (translation)
+Establish `h1` using `integrableOn_one hμ h𝓕`. Establish `hC' : IntegrableOn (fun _ => C * (1 : ℝ)) 𝓕 μ` using `h1.const_mul C`. Establish `hi : IntegrableOn f 𝓕 μ`. Use `Integrable.mono' hC' hf.aestronglyMeasurable (.of_forall fun g => ?_)` and prove the remaining obligations. Rewrite using `[Real.norm_of_nonneg (h0 g), mul_one]`.
+
+Conclude with `hC g`. Use `⟨hi, ?_⟩` and prove the remaining obligations. Rewrite using `[← integral_const_mul]`. Conclude with `integral_mono_of_nonneg (.of_forall fun g => h0 g) hC' (.of_forall fun g => by simpa using hC g)`.
+-/
 theorem integrableOn_of_le (hμ : μ.IsHaarMeasure) (h𝓕 : IsFundamentalDomain (GQ V) 𝓕 μ) {f : GA D V → ℝ}
     (hf : Continuous f) (h0 : ∀ g, 0 ≤ f g) {C : ℝ} (hC : ∀ g, f g ≤ C) :
     IntegrableOn f 𝓕 μ ∧ ∫ g in 𝓕, f g ∂μ ≤ C * ∫ _g in 𝓕, (1 : ℝ) ∂μ := by
@@ -35,6 +43,9 @@ theorem integrableOn_of_le (hμ : μ.IsHaarMeasure) (h𝓕 : IsFundamentalDomain
   rw [← integral_const_mul]
   exact integral_mono_of_nonneg (.of_forall fun g => h0 g) hC' (.of_forall fun g => by simpa using hC g)
 
+/- English proof (translation)
+Establish `hr` using `(GlobalTheory.Size.rapidDecSm_of_cuspForm hP hθ hφ.1 hφ.2.1).rapidDec`. Take `⟨C, hC⟩` from `hr.decay b`. Use `(integrableOn_of_le hμ h𝓕 (((GlobalTheory.Grow.continuous_quotHeight N.V).pow b).mul hr.continuous.norm) (fun g => mul_nonneg (pow_nonneg (GlobalTheory.Grow.quotHeight_pos N.V g).le b) (norm_nonneg _)) (C := C) (fun g => by rw [mul_comm]; exact hC g)).1` and prove the remaining obligations.
+-/
 theorem integrableOn_quotHeight_pow_mul_norm (hP : GlobalTheory.Published.CuspRapidDecay) {θ : InfFam D} (hθ : IsInfFam θ)
     {N : GlobalTheory.Grid.Node D} {μ : Measure (GA D N.V)} {𝓕 : Set (GA D N.V)} (hμ : μ.IsHaarMeasure)
     (h𝓕 : IsFundamentalDomain (GQ N.V) 𝓕 μ) {φ : GA D N.V → ℂ} (hφ : GlobalTheory.IndefiniteRowSideFullHecke.CuspAlongSmoothLifts.IsCuspOfType θ N φ) (b : ℕ) :
@@ -45,6 +56,13 @@ theorem integrableOn_quotHeight_pow_mul_norm (hP : GlobalTheory.Published.CuspRa
     (fun g => mul_nonneg (pow_nonneg (GlobalTheory.Grow.quotHeight_pos N.V g).le b) (norm_nonneg _)) (C := C)
     (fun g => by rw [mul_comm]; exact hC g)).1
 
+/- English proof (translation)
+Introduce `ε hε`. Use `set I := ∫ _g in 𝓕, (1 : ℝ) ∂μ`. Establish `hI : 0 ≤ I` using `integral_nonneg fun _ => zero_le_one`. Take `⟨n, F, v, hF, h⟩` from `hu (ε / (I + 1)) (div_pos hε (by linarith))`. Establish `hcs : Continuous fun g => ∑ l, F l (v l) g`.
+
+Use `continuous_finset_sum Finset.univ fun l _ => GlobalTheory.BaseChain.multT_apply_continuous θ N.M ∅ 1 (F l) (hF l) (v l)` as an intermediate fact. Simplify using `using this`. Establish `hcf : Continuous fun g => GlobalTheory.Grow.quotHeight N.V g ^ b * ‖(∑ l, F l (v l) g) - φ g‖` using `((GlobalTheory.Grow.continuous_quotHeight N.V).pow b).mul (hcs.sub hc).norm`. Take `⟨hi, hle⟩` from `integrableOn_of_le hμ h𝓕 hcf (fun g => mul_nonneg (pow_nonneg (GlobalTheory.Grow.quotHeight_pos N.V g).le b) (norm_nonneg _)) (C := ε / (I + 1)) (fun g => by rw [mul_comm, norm_sub_rev]; exact h g)`. Use `⟨n, F, v, hF, hi, hle.trans ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[div_mul_eq_mul_div, div_le_iff₀ (by linarith)]`. Use the polynomial consequences of the given equalities and inequalities.
+-/
 theorem weighted_uniform_approx_cusp_forms {θ : InfFam D} {N : GlobalTheory.Grid.Node D} {μ : Measure (GA D N.V)} {𝓕 : Set (GA D N.V)}
     (hμ : μ.IsHaarMeasure) (h𝓕 : IsFundamentalDomain (GQ N.V) 𝓕 μ) {φ : GA D N.V → ℂ} (hc : Continuous φ) (b : ℕ)
     (hu : ∀ ε : ℝ, 0 < ε → ∃ (n : ℕ) (F : Fin n → N.Maps) (v : Fin n → SmT N.M), (∀ l, F l ∈ N.Cusp θ) ∧

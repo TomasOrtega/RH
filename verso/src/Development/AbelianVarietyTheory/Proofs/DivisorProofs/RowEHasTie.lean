@@ -20,6 +20,9 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 namespace GlobalTheory.Fc.TieOfLink
 
+/- English proof (translation)
+Establish `key : ∀ z : RPk b.R b.S, z = rpkX y → ∃ Rr : RealRec z.B.Q, PsiPPTie D z.P.P0 z.P.ψ0 z.P.Ps z.P.ψs z.P.I.eG ∧ RealPins3 z.B.Q ∧ ∃ pins : RealPins z.B.Q, RealRecPins pins Rr`. Introduce and unpack `z rfl`. Conclude with `⟨realRecOf r, hpsi, h3, hp⟩`. Take `⟨Rr, h⟩` from `key _ e`. Conclude with `⟨⟨Rr, h⟩⟩`.
+-/
 theorem tie_of_rpk {D : D7} {O : Obj D} {c : ℝ} (b : Bundle D O c) {x : TwIn O.ex} (y : RealIn x b.R b.S) (r : RecIn y)
     (e : rpkB b = rpkX y)
     (hpsi : PsiPPTie D (divisionPairOfAdelicFormsFaceColumnsData x).P0 (divisionPairOfAdelicFormsFaceColumnsData x).ψ0 (divisionPairOfAdelicFormsFaceColumnsData x).Ps (divisionPairOfAdelicFormsFaceColumnsData x).ψs (divisionPairOfAdelicFormsFaceColumnsData x).I.eG)
@@ -34,6 +37,11 @@ theorem tie_of_rpk {D : D7} {O : Obj D} {c : ℝ} (b : Bundle D O c) {x : TwIn O
 
 variable {hL : GlobalTheory.Published.LocalLanglandsGL} {p : Prm hL} {K : Ctx}
 
+/- English proof (translation)
+Establish `hI` using `GlobalTheory.T.recursion_local_row_condition _ _ _ _ _ _ _ _ q.O.ex w.x b.R b.S w.y.y w.y.r`. Establish `h3 : RealPins3 (realTOf w.y.y)`. Take `⟨x, a, ax, y⟩` from `w`. Consider the cases of `ax`. Conclude with `realPins3_realTOf _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ q.x.what₂ a b.R b.S y.y hF0`.
+
+Conclude with `tie_of_rpk b w.y.y w.y.r w.y.eq hI.2.2 h3 ⟨hp, hI.1 hp hloc⟩`.
+-/
 theorem tie_of_wit (q : WPt p.s K) {c : ℝ} (b : Bundle (q.w.D q.Z) q.O c) (w : BWit q b)
     (hF0 : HEq (w.a.Zsc (zsOf q.x.what₂.r.z.R q.x.what₂.r.z.F)).F0 (F0K K.s (q.w.D q.Z)))
     (hp : RealPins (realTOf w.y.y))
@@ -48,6 +56,13 @@ theorem tie_of_wit (q : WPt p.s K) {c : ℝ} (b : Bundle (q.w.D q.Z) q.O c) (w :
     exact realPins3_realTOf _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ q.x.what₂ a b.R b.S y.y hF0
   exact tie_of_rpk b w.y.y w.y.r w.y.eq hI.2.2 h3 ⟨hp, hI.1 hp hloc⟩
 
+/- English proof (translation)
+Establish `hH` using `EvP.of_ev GlobalTheory.Mem.HostFrames.hostHyp_frames_ev`. Use `((((((GlobalTheory.T.bundle_witness_zero_section_eq_local hL p).and (GlobalTheory.T.bundle_witness_constant_eq hL p)).and (GlobalTheory.T.bundle_witness_places_eq_image hL p)).and (GlobalTheory.T.theta_level_conjugate_character hL p)).and (GlobalTheory.T.row_local_level_character …` and prove the remaining obligations. Take `⟨⟨⟨⟨⟨h0, hc⟩, hg⟩, ht⟩, hl'⟩, hh⟩` from `h`. Take `⟨q, b', ⟨w⟩, e⟩` from `hl`. Establish `eO : (⟨β.D, β.O⟩ : Σ D : D7, Obj D) = ⟨q.w.D q.Z, q.O⟩` using `congrArg (fun s => (⟨s.1, s.2.1⟩ : Σ D : D7, Obj D)) e`.
+
+Establish `hsc : q.O.L.sc = K.s`. Use `congrArg (fun s : Σ D : D7, Obj D => s.2.L.sc) eO` as an intermediate fact. Conclude with `this.symm.trans β.sc`. Establish `hfd` using `(hh (q.w.st q.Z) q.x.isOver).2.2.1`. Establish `hp : RealPins (realTOf w.y.y)` using `realPins_realTOf _ _ _ _ _ _ _ _ q.O.ex w.x b'.R b'.S w.y.y (hc q c b' w hsc) hfd (hg q c b' w hsc) (ht q c b' w hsc).1 (ht q c b' w hsc).2.1 (ht q c b' w hsc).2.2`.
+
+Establish `h' : HasTie _ _ c b'` using `tie_of_wit q b' w (h0 q c b' w hsc) hp (hl' q c b' w hsc)`. Establish `tr : ∀ s : Σ (D : D7) (O : Obj D), Bundle D O c, s = ⟨q.w.D q.Z, q.O, b'⟩ → HasTie s.1 s.2.1 c s.2.2`. Introduce and unpack `s rfl`. Conclude with `h'`. Conclude with `tr _ e`.
+-/
 theorem rowE_hasTie {hL : GlobalTheory.Published.LocalLanglandsGL} (p : Prm hL) (Q : V4.Slot) :
     RowE Q (IsLinked p) fun _ => HasTie := by
   have hH := EvP.of_ev GlobalTheory.Mem.HostFrames.hostHyp_frames_ev

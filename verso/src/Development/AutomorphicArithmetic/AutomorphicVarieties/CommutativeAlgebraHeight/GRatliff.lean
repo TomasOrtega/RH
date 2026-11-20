@@ -3,6 +3,25 @@ import ReciprocityTheory.CommutativeAlgebra.SaturatedChains.IsSaturatedChain
 
 open IsLocalRing
 
+/- English proof (translation)
+Introduce `P Q _ _ _ _ _ _ n hP hQ dP dQ q _ Q' hQ'`. Establish `hprime : Q'.IsPrime` using `hQ'.1.1`. Establish `hle : q.map (algebraMap P Q) ≤ Q'` using `hQ'.1.2`. Establish `hle' : q ≤ Q'.under P` using `Ideal.map_le_iff_le_comap.mp hle`. Take `⟨P₁, h1, h2, h3⟩` from `Ideal.exists_ideal_le_liesOver_of_le (p := q) (q := Q'.under P) Q' hle'`.
+
+Establish `h4 : q.map (algebraMap P Q) ≤ P₁` using `Ideal.map_le_iff_le_comap.mpr h3.over.le`. Establish `h5 : P₁ = Q'` using `le_antisymm h1 (hQ'.2 ⟨h2, h4⟩ h1)`. Substitute `h5` using the available equality. Use `⟨h3.over.symm, ?_⟩` and prove the remaining obligations. Establish `hh` using `Ideal.height_eq_height_add_of_liesOver_of_hasGoingDown q P₁`.
+
+Establish `hpm : (P₁.map (Ideal.Quotient.mk (q.map (algebraMap P Q)))).IsPrime` using `Ideal.map_isPrime_of_surjective Ideal.Quotient.mk_surjective (by simpa using h4)`. Establish `h0 : (P₁.map (Ideal.Quotient.mk (q.map (algebraMap P Q)))).height = 0`. Rewrite using `[Ideal.height_eq_zero_iff]`. Use `Ideal.minimalPrimes_map_of_surjective (f := Ideal.Quotient.mk (q.map (algebraMap P Q))) Ideal.Quotient.mk_surjective ⊥` as an intermediate fact. Rewrite `this` using `[Ideal.map_bot, bot_sup_eq, Ideal.mk_ker]`.
+
+Express the relevant statement in the definitionally equal form `_ ∈ (⊥ : Ideal _).minimalPrimes`. Rewrite using `[this]`. Conclude with `⟨P₁, hQ', rfl⟩`. Rewrite `hh` using `[h0, add_zero]`. Establish `e1` using `hP q`.
+
+Establish `e2` using `hQ P₁`. Rewrite `e1` using `[dP]`. Rewrite `e2` using `[dQ, hh, ← e1]`. Establish `hne : q.height ≠ ⊤` using `Ideal.height_ne_top (Ideal.IsPrime.ne_top inferInstance)`. Take `⟨k, hk⟩` from `ENat.ne_top_iff_exists.mp hne`.
+
+Rewrite `e2` using `[← hk]`. Generalize the expression as in `ringKrullDim (Q ⧸ P₁) = a at e2`. Generalize the expression as in `ringKrullDim (P ⧸ q) = b at e2`. Proceed by induction on `a using WithBot.recBotCoe with`. Consider the case `bot`.
+
+Proceed by induction on `b using WithBot.recBotCoe with`. Consider the case `bot => rfl`. Consider the case `coe b`. Rewrite `e2` using `[WithBot.add_bot, ← WithBot.coe_add]`. Conclude with `absurd e2 WithBot.bot_ne_coe`.
+
+Consider the case `coe a`. Proceed by induction on `b using WithBot.recBotCoe with`. Consider the case `bot`. Rewrite `e2` using `[WithBot.add_bot, ← WithBot.coe_add]`. Conclude with `absurd e2 WithBot.coe_ne_bot`.
+
+Consider the case `coe b`. Rewrite `e2` using `[← WithBot.coe_add, ← WithBot.coe_add, WithBot.coe_inj]`. Rewrite using `[WithTop.add_left_cancel (ENat.coe_ne_top k) e2]`.
+-/
 theorem UpperTheory.V.CA.g_ratliff :
     ∀ (P Q : Type) [CommRing P] [CommRing Q] [IsNoetherianRing P] [IsNoetherianRing Q] [Algebra P Q] [Module.Flat P Q] (n : ℕ),
       ReciprocityTheory.CA.DimFormula P → ReciprocityTheory.CA.DimFormula Q → ringKrullDim P = n → ringKrullDim Q = n →

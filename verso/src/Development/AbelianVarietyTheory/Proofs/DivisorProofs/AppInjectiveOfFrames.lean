@@ -13,6 +13,13 @@ open GlobalTheory.QCoh (appLinear appLinear_apply)
 
 namespace GlobalTheory.SubPull
 
+/- English proof (translation)
+Establish `li : LinearIndependent Γ(X, V) (appLinear φ V ∘ he.basis h)`. Use `(hb.basis h).linearIndependent.comp Sum.inl Sum.inl_injective` as an intermediate fact. Use `this using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `j`. Simplify using `only [Function.comp_apply, IsFrame.basis_apply, appLinear_apply, app_resM, hφ]`.
+
+Establish `: Function.Injective (appLinear φ V)`. Use `(injective_iff_map_eq_zero _).2 fun x hx => ?_` and prove the remaining obligations. Establish `h0` using `Fintype.linearIndependent_iff.1 li ((he.basis h).repr x) (by`. Rewrite using `[← hx]`. Use `conv_rhs => rw [← (he.basis h).sum_repr x]`.
+
+Simplify using `only [map_sum, map_smul, Function.comp_apply])`. Conclude with `(he.basis h).ext_elem fun j => by simp [h0 j]`. Conclude with `this`.
+-/
 theorem app_injective_of_frames {X : Scheme.{0}} {F E : X.Modules} (φ : F ⟶ E) {U V : X.Opens}
     {ι κ : Type} [Fintype ι] [Fintype κ] {e : ι → Γ(F, U)} {b : ι ⊕ κ → Γ(E, U)}
     (he : IsFrame e) (hb : IsFrame b) (hφ : ∀ j, φ.app U (e j) = b (.inl j)) (h : V ≤ U) :
@@ -31,6 +38,11 @@ theorem app_injective_of_frames {X : Scheme.{0}} {F E : X.Modules} (φ : F ⟶ E
     exact (he.basis h).ext_elem fun j => by simp [h0 j]
   exact this
 
+/- English proof (translation)
+Introduce `X Y f F E i r hF ⟨hm, s, hs⟩`. Establish `hS : (ShortComplex.mk i (cokernel.π i) (cokernel.condition i)).ShortExact` using `{ exact := ShortComplex.exact_cokernel i }`. Use `⟨QCoh.mono_of_locally_app_injective _ fun W y hy => ?_, s, (hs.pullback f).of_iso (PreservesCokernel.iso (Scheme.Modules.pullback f) i)⟩` and prove the remaining obligations. Establish `h₁ : SheafOfModules.IsQuasicoherent (ShortComplex.mk i (cokernel.π i) (cokernel.condition i)).X₁` using `hF.isQuasicoherent`. Establish `h₂ : SheafOfModules.IsQuasicoherent (ShortComplex.mk i (cokernel.π i) (cokernel.condition i)).X₂` using `(VBExt.isVB_and_cls_det_of_shortExact X _ r s hS hF hs).1.isQuasicoherent`.
+
+Take `⟨c, hc⟩` from `VBExt.exists_adaptedChart hS hF hs (f y)`. Use `⟨W ⊓ f ⁻¹ᵁ c.U, ⟨hy, hc⟩, inf_le_left, ?_⟩` and prove the remaining obligations. Conclude with `app_injective_of_frames _ (c.he.pullback f) ((VBExt.isFrame_sumElim hS c.he c.ht).pullback f) (fun j => QCoh.pullback_map_app_pullbackSections f i _ _) inf_le_right`.
+-/
 theorem isSubbundle_pullback : ∀ (X Y : Scheme.{0}) (f : Y ⟶ X) (F E : X.Modules) (i : F ⟶ E) (r : ℕ), IsVB F r → IsSubbundle i → IsSubbundle ((Scheme.Modules.pullback f).map i) := by
   intro X Y f F E i r hF ⟨hm, s, hs⟩
   have hS : (ShortComplex.mk i (cokernel.π i) (cokernel.condition i)).ShortExact :=

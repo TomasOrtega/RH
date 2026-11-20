@@ -27,6 +27,9 @@ section Normal
 
 variable {X : Scheme.{0}} {Ω : Type} [Field Ω] {ξ : Spec (CommRingCat.of Ω) ⟶ X}
 
+/- English proof (translation)
+Establish `hg : InChart ξ x c (TieArith.genCpt ξ)` using `⟨hc.1, fun c' => (RegAtMono.regAt_mono X Ω ξ q (TieArith.genCpt ξ) q.2).1 (hc.2 c')⟩`. Take `⟨s, hs, hu, hsa⟩` from `(GlobalTheory.T.regAt_iff_chart_localization X Ω ξ ℤ _ _ ht c (TieArith.genCpt ξ) hg a).1 (TieArith.mem_regAt_genCpt ξ ht.gen a)`. Conclude with `⟨s * a, hsa, s, hs, hu.1, by field_simp [hu.1]⟩`.
+-/
 theorem exists_div_of_tie {κ : Type} {x : κ → Ω} (ht : CoordTie ℤ ξ x) {c : κ} {q : Cpt ξ} (hc : InChart ξ x c q)
     (a : Ω) : ∃ u ∈ Algebra.adjoin ℤ (Set.range fun j => x j / x c),
       ∃ v ∈ Algebra.adjoin ℤ (Set.range fun j => x j / x c), v ≠ 0 ∧ a = u / v := by
@@ -38,6 +41,13 @@ theorem exists_div_of_tie {κ : Type} {x : κ → Ω} (ht : CoordTie ℤ ξ x) {
 
 variable [CharZero Ω]
 
+/- English proof (translation)
+Take `⟨c, hc⟩` from `ht.cover (TieArith.genCpt ξ)`. Use `set s : Set Ω := Set.range fun j => x j / x c with hs`. Use `haveI : Algebra.IsAlgebraic (Algebra.adjoin ℤ s) Ω := by`. Use `⟨fun a => ?_⟩` and prove the remaining obligations. Take `⟨u, hu, v, hv, hv0, rfl⟩` from `exists_div_of_tie ht hc a`.
+
+Establish `h1 : IsAlgebraic (Algebra.adjoin ℤ s) u` using `isAlgebraic_algebraMap (⟨u, hu⟩ : Algebra.adjoin ℤ s)`. Establish `h2 : IsAlgebraic (Algebra.adjoin ℤ s) v` using `isAlgebraic_algebraMap (⟨v, hv⟩ : Algebra.adjoin ℤ s)`. Rewrite using `[div_eq_mul_inv]`. Conclude with `h1.mul h2.inv`. Take `⟨t, hts, hb⟩` from `exists_isTranscendenceBasis_subset (R := ℤ) s`.
+
+Establish `hfin : t.Finite` using `(Set.finite_range _).subset hts`. Use `haveI := hfin.to_subtype`. Use `haveI := Fintype.ofFinite t`. Conclude with `⟨Fintype.card t, by rw [← hb.cardinalMk_eq_trdeg, Cardinal.mk_fintype]⟩`.
+-/
 theorem exists_trdeg_eq {κ : Type} [Finite κ] {x : κ → Ω} (ht : CoordTie ℤ ξ x) :
     ∃ d : ℕ, Algebra.trdeg ℤ Ω = d := by
   obtain ⟨c, hc⟩ := ht.cover (TieArith.genCpt ξ)
@@ -57,6 +67,25 @@ theorem exists_trdeg_eq {κ : Type} [Finite κ] {x : κ → Ω} (ht : CoordTie �
 
 variable {K : Type} [Fintype K] {J : K → Type} [∀ k, Fintype (J k)] {y : (Σ k, J k) → Ω}
 
+/- English proof (translation)
+Take `⟨c, hc⟩` from `ht.cover q`. Establish `hne : ∀ k, y ⟨k, c k⟩ ≠ 0` using `fun k => (Finset.prod_ne_zero_iff.1 hc.1) k (Finset.mem_univ k)`. Use `set A : Subalgebra ℚ Ω := Algebra.adjoin ℚ (Set.range fun p : Σ k, J k => y p / y ⟨p.1, c p.1⟩) with hA`. Use `haveI : Algebra.Smooth ℚ A := hs c hne`. Set `R : Subalgebra ℚ Ω` to `{ (regAt ξ q) with algebraMap_mem' := fun r => by`.
+
+Establish `e : algebraMap ℚ Ω r = (r.num : Ω) * ((r.den : ℕ) : Ω)⁻¹`. Rewrite using `[eq_ratCast, Rat.cast_def, div_eq_mul_inv]`. Rewrite using `[e]`. Conclude with `mul_mem (intCast_mem _ _) (hq r.den r.den_pos).2.2 }`. Establish `hAR : ∀ b ∈ A, b ∈ regAt ξ q`.
+
+Establish `: A ≤ R`. Use `Algebra.adjoin_le ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨⟨k, j⟩, rfl⟩`. Conclude with `Lat.block_ratio_mem hc k j`. Conclude with `fun b hb => this hb`.
+
+Establish `hBA : ∀ b ∈ Algebra.adjoin ℤ (Set.range fun j : (k : K) → J k => (∏ k, y ⟨k, j k⟩) / ∏ k, y ⟨k, c k⟩), b ∈ A`. Introduce `b hb`. Establish `: Algebra.adjoin ℤ (Set.range fun j : (k : K) → J k => (∏ k, y ⟨k, j k⟩) / ∏ k, y ⟨k, c k⟩) ≤ A.restrictScalars ℤ`. Use `Algebra.adjoin_le ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨j, rfl⟩`.
+
+Use `show (∏ k, y ⟨k, j k⟩) / ∏ k, y ⟨k, c k⟩ ∈ A`. Rewrite using `[← Finset.prod_div_distrib]`. Conclude with `prod_mem fun k _ => Algebra.subset_adjoin ⟨⟨k, j k⟩, rfl⟩`. Conclude with `this hb`. Establish `hfr : ∀ r ∈ regAt ξ q, ∃ u ∈ A, ∃ v ∈ A, v ≠ 0 ∧ v⁻¹ ∈ regAt ξ q ∧ r = u / v`.
+
+Introduce `r hr`. Take `⟨s, hsB, hsu, hsr⟩` from `(GlobalTheory.T.regAt_iff_chart_localization X Ω ξ ℤ _ _ ht c q hc r).1 hr`. Use `⟨s * r, hBA _ hsr, s, hBA _ hsB, hsu.1, hsu.2.2, ?_⟩` and prove the remaining obligations. Clear denominators, using `[hsu.1]` for the nonvanishing conditions. Take `⟨v, hvA, hv0, hvR, hint⟩` from `GlobalTheory.CompanionTheory.Ggeo.ClearDenominators.exists_mul_isIntegral A (regAt ξ q) hAR hfr a ha`.
+
+Use `haveI : IsFractionRing A Ω := IsFractionRing.of_field A Ω fun z => by`. Take `⟨u, hu, w, hw, -, rfl⟩` from `exists_div_of_tie ht hc z`. Conclude with `⟨⟨u, hBA u hu⟩, ⟨w, hBA w hw⟩, rfl⟩`. Use `haveI : IsIntegrallyClosed A := by`. Establish `h1 : IsIntegrallyClosed (A ⧸ (⊥ : Ideal A))` using `GlobalTheory.isIntegrallyClosed_quotient_minimalPrime_of_smooth ℚ A ⊥ (by`.
+
+Rewrite using `[IsDomain.minimalPrimes_eq_singleton_bot]`. Use the proof step `rfl)`. Conclude with `IsIntegrallyClosed.of_equiv (RingEquiv.quotientBot A)`. Take `⟨b, hb⟩` from `IsIntegrallyClosed.isIntegral_iff.1 hint`. Establish `e : a = b * v⁻¹`.
+
+Establish `: (b : Ω) = v * a` using `hb`. Rewrite using `[this]`. Clear denominators, using `[hv0]` for the nonvanishing conditions. Rewrite using `[e]`. Conclude with `mul_mem (hAR _ b.2) hvR`.
+-/
 theorem mem_regAt_of_isIntegral (ht : CoordTie ℤ ξ (fun c' : (k : K) → J k => ∏ k, y ⟨k, c' k⟩))
     (hs : SmoothGenericFibreM y) (q : Cpt ξ) (hq : q ∈ genFib ξ) (a : Ω)
     (ha : IsIntegral (regAt ξ q) a) : a ∈ regAt ξ q := by
@@ -125,6 +154,9 @@ def joinEquiv : ((k : K ⊕ Unit) → Cmp.joinIdx J (fun _ : Unit => κ) k) ≃ 
 
 variable {J} [Fintype K] {Ω : Type} [Field Ω]
 
+/- English proof (translation)
+Rewrite using `[Fintype.prod_sum_type]`. Simplify using `only [Finset.univ_unique, Finset.prod_singleton]`. Both sides reduce to the same expression.
+-/
 theorem segre_joinVec (x : (Σ k, J k) → Ω) (v : (Σ _ : Unit, κ) → Ω)
     (c : (k : K ⊕ Unit) → Cmp.joinIdx J (fun _ : Unit => κ) k) :
     ∏ k, Cmp.joinVec x v ⟨k, c k⟩ = (∏ k, x ⟨k, (joinEquiv J c).1 k⟩) * v ⟨(), (joinEquiv J c).2⟩ := by
@@ -132,6 +164,9 @@ theorem segre_joinVec (x : (Σ k, J k) → Ω) (v : (Σ _ : Unit, κ) → Ω)
   simp only [Finset.univ_unique, Finset.prod_singleton]
   rfl
 
+/- English proof (translation)
+Establish `e : (fun c : (k : K ⊕ Unit) → Cmp.joinIdx J (fun _ : Unit => κ) k => ∏ k, Cmp.joinVec x v ⟨k, c k⟩) = fun c => (fun q : ((k : K) → J k) × κ => (∏ k, x ⟨k, q.1 k⟩) * v ⟨(), q.2⟩) (joinEquiv J c)`. Use function extensionality and compare the values at `fun c => segre_joinVec x v c`. Rewrite using `[e]`. Conclude with `ExtraBlocks.coordTie_equiv (joinEquiv J) h`.
+-/
 theorem tie_joinVec {X : Scheme.{0}} {ξ : Spec (CommRingCat.of Ω) ⟶ X} {o : Type} [CommRing o] [Algebra o Ω]
     (x : (Σ k, J k) → Ω) (v : (Σ _ : Unit, κ) → Ω)
     (h : CoordTie o ξ (fun q : ((k : K) → J k) × κ => (∏ k, x ⟨k, q.1 k⟩) * v ⟨(), q.2⟩)) :
@@ -148,6 +183,9 @@ end GlobalTheory.CompanionTheory.Ar.ChangeModel
 
 namespace GlobalTheory.CompanionTheory.Ar.ChangeModel
 
+/- English proof (translation)
+Unfold `GlobalTheory.CompanionTheory.Ar.Dominates at *`. Rewrite using `[← Category.assoc, hg, Category.assoc, hf, ← Category.assoc, ← Spec.map_comp]`. Both sides reduce to the same expression.
+-/
 theorem dominates_comp {X₁ X₂ X₃ : Scheme.{0}} {Ω₁ Ω₂ Ω₃ : Type} [Field Ω₁] [Field Ω₂] [Field Ω₃]
     {ξ₁ : Spec (CommRingCat.of Ω₁) ⟶ X₁} {ξ₂ : Spec (CommRingCat.of Ω₂) ⟶ X₂} {ξ₃ : Spec (CommRingCat.of Ω₃) ⟶ X₃}
     {f : X₂ ⟶ X₁} {g : X₃ ⟶ X₂} {i : Ω₁ →+* Ω₂} {j : Ω₂ →+* Ω₃}
@@ -157,6 +195,13 @@ theorem dominates_comp {X₁ X₂ X₃ : Scheme.{0}} {Ω₁ Ω₂ Ω₃ : Type} 
   rw [← Category.assoc, hg, Category.assoc, hf, ← Category.assoc, ← Spec.map_comp]
   rfl
 
+/- English proof (translation)
+Use `letI := i.toAlgebra`. Use `haveI := hfin`. Set `b` to `Module.finBasis Ω₁ Ω`. Use `⟨_, fun l => l.elim 1 b, one_ne_zero, ?_⟩` and prove the remaining obligations. Rewrite using `[eq_top_iff]`.
+
+Introduce `a _`. Rewrite using `[← b.sum_repr a]`. Use `sum_mem fun j _ => ?_` and prove the remaining obligations. Rewrite using `[Algebra.smul_def]`. Use `mul_mem (Subfield.subset_closure (Or.inl ⟨_, rfl⟩)) (Subfield.subset_closure (Or.inr ⟨some j, none, ?_⟩))` and prove the remaining obligations.
+
+Simplify using the standard rewrite rules.
+-/
 theorem closure_eq_top_of_basis {Ω₁ Ω : Type} [Field Ω₁] [Field Ω] (i : Ω₁ →+* Ω)
     (hfin : letI := i.toAlgebra; FiniteDimensional Ω₁ Ω) :
     ∃ (n : ℕ) (w : Option (Fin n) → Ω), w none ≠ 0 ∧
@@ -173,6 +218,25 @@ theorem closure_eq_top_of_basis {Ω₁ Ω : Type} [Field Ω₁] [Field Ω] (i : 
   refine mul_mem (Subfield.subset_closure (Or.inl ⟨_, rfl⟩)) (Subfield.subset_closure (Or.inr ⟨some j, none, ?_⟩))
   simp
 
+/- English proof (translation)
+Introduce `hRes K _ J _ Ω₁ Ω _ _ _ i y X ξ hfin hall htie`. Set `M₀ : PModel ℤ (fun c' : (k : K) → J k => ∏ k, y ⟨k, c' k⟩)` to `{ X := X, ξ := ξ, s := specZIsTerminal.from X, hover := specZIsTerminal.hom_ext _ _, all := hall, tie := htie }`. Take `⟨n, w, hw0, hclo⟩` from `closure_eq_top_of_basis i hfin`. Take `⟨M₁, f₁, hf₁⟩` from `GlobalTheory.T.exists_join_model_dominates ℤ Ω₁ _ _ M₀ Ω i (Option (Fin n)) w (fun a => by simp) ⟨none, hw0⟩ hclo`. Set `y₁ : (Σ k, Cmp.joinIdx J (fun _ : Unit => Option (Fin n)) k) → Ω` to `Cmp.joinVec (fun p => i (y p)) (fun p : Σ _ : Unit, Option (Fin n) => w p.2)`.
+
+Establish `ht₁ : CoordTie ℤ M₁.ξ (fun c' : (k : K ⊕ Unit) → Cmp.joinIdx J (fun _ : Unit => Option (Fin n)) k => ∏ k, y₁ ⟨k, c' k⟩)`. Use `tie_joinVec _ _ ?_` and prove the remaining obligations. Establish `e : (fun q : ((k : K) → J k) × Option (Fin n) => (∏ k, i (y ⟨k, q.1 k⟩)) * w q.2) = joinCo i (fun c' : (k : K) → J k => ∏ k, y ⟨k, c' k⟩) w`. Use function extensionality and compare the values at `q`. Simplify using `[joinCo, map_prod]`.
+
+Use `show CoordTie ℤ M₁.ξ (fun q : ((k : K) → J k) × Option (Fin n) => (∏ k, i (y ⟨k, q.1 k⟩)) * w q.2)`. Rewrite using `[e]`. Conclude with `M₁.tie`. Take `⟨d, hd⟩` from `exists_trdeg_eq ht₁`. Take `⟨-, hAr⟩` from `GlobalTheory.CompanionTheory.Ar.coordTie_birational_isArithVar M₁.X Ω M₁.ξ (K ⊕ Unit) _ y₁ d ht₁ hd`.
+
+Take `⟨m, y₂, Jb, ⟨l₀, hl₀⟩, -, -, -, hsnc, -⟩` from `SncRes.exists_snc_model hRes (K ⊕ Unit) _ Ω y₁ d 1 0 hAr (by intro a ha k; simp [MvPolynomial.support_one] at ha; simp [ha]) (by`. Introduce `h`. Establish `: mConeMap y₁ 1 = 0` using `h`. Simplify using `at this)`. Set `M₁' : PModel ℤ (fun c' : (k : K ⊕ Unit) → Cmp.joinIdx J (fun _ : Unit => Option (Fin n)) k => ∏ k, y₁ ⟨k, c' k⟩)` to `{ X := M₁.X, ξ := M₁.ξ, s := M₁.s, hover := M₁.hover, all := M₁.all, tie := ht₁ }`.
+
+Establish `hclo₂ : Subfield.closure (Set.range (RingHom.id Ω) ∪ {a | ∃ l l', a = y₂ ⟨(), l⟩ / y₂ ⟨(), l'⟩}) = ⊤`. Rewrite using `[eq_top_iff]`. Introduce `a _`. Conclude with `Subfield.subset_closure (Or.inl ⟨a, rfl⟩)`. Take `⟨M₂, f₂, hf₂⟩` from `GlobalTheory.T.exists_join_model_dominates ℤ Ω _ _ M₁' Ω (RingHom.id Ω) (Fin m) (fun l => y₂ ⟨(), l⟩) (fun a => rfl) ⟨l₀, hl₀⟩ hclo₂`.
+
+Set `z` to `Cmp.joinVec y₁ y₂`. Establish `ht₂ : CoordTie ℤ M₂.ξ (fun c' : (k : (K ⊕ Unit) ⊕ Unit) → Cmp.joinIdx (Cmp.joinIdx J (fun _ : Unit => Option (Fin n))) (fun _ : Unit => Fin m) k => ∏ k, z ⟨k, c' k⟩)` using `tie_joinVec _ _ M₂.tie`. Establish `hsm : SmoothGenericFibreM z` using `GlobalTheory.CompanionTheory.Ar.Cmp.SncSmooth.smoothGenericFibreM_of_isSncModel _ _ Ω z d Jb hsnc`. Set `M₂' : PModel ℤ (fun c' : (k : (K ⊕ Unit) ⊕ Unit) → Cmp.joinIdx (Cmp.joinIdx J (fun _ : Unit => Option (Fin n))) (fun _ : Unit => Fin m) k => ∏ k, z ⟨k, c' k⟩)` to `{ X := M₂.X, ξ := M₂.ξ, s := M₂.s, hover := M₂.hover, all := M₂.all, tie := ht₂ }`. Take `⟨κ₃, _, y₃, M₃, f₃, hf₃, hN, -, hNorm⟩` from `GlobalTheory.T.exists_normal_dominating_model ℤ Ω _ _ M₂' Ω`.
+
+Establish `hf₃' : GlobalTheory.CompanionTheory.Ar.Dominates M₃.ξ M₂.ξ f₃ (RingHom.id Ω)` using `hf₃`. Establish `hchart : ∀ p : Cpt M₃.ξ, ∃ c₀, InChart M₃.ξ (fun c' : (k : (K ⊕ Unit) ⊕ Unit) → Cmp.joinIdx (Cmp.joinIdx J (fun _ : Unit => Option (Fin n))) (fun _ : Unit => Fin m) k => ∏ k, z ⟨k, c' k⟩) c₀ p`. Introduce `p`. Take `⟨h, hreg, -⟩` from `RegAtDom.regAt_dominates M₂.X Ω M₂.ξ M₃.X Ω M₃.ξ f₃ _ hf₃' p`. Take `⟨c, hc⟩` from `ht₂.cover ⟨f₃ p.1, h⟩`.
+
+Conclude with `⟨c, hc.1, fun c' => hreg _ (hc.2 c')⟩`. Take `⟨K', _, J', _, y', bk, bx, -, hinj, heq, ht', -⟩` from `ExtraBlocks.exists_blocks_of_lines ℤ Ω _ y₃ M₃ _ _ z Empty (fun a => a.elim) hchart (fun a => a.elim)`. Establish `hsm' : SmoothGenericFibreM y'` using `GlobalTheory.T.smoothGenericFibre_of_dominates Ω _ _ z K' J' y' M₂.X M₃.X M₂.ξ M₃.ξ f₃ M₂.all M₃.all ht₂ ht' hf₃' hsm fun q hq => GlobalTheory.T.normal_iso_of_integrally_closed M₂.X Ω M₂.ξ M₃.X M₃.ξ f₃ q (hNorm q) (mem_regAt_of_isIntegral ht₂ hsm q hq)`. Use `⟨K', inferInstance, J', inferInstance, y', fun k => bk (.inl (.inl k)), fun k => bx (.inl (.inl k)), { X := M₃.X, ξ := M₃.ξ, s := M₃.s, hover := M₃.hover, all := M₃.all, tie := ht' }, f₃ ≫ f₂ ≫ f₁, fun a b e => ?_, fun k a => heq (.inl (.inl k)) a, ?_, hN, hsm'⟩` and prove the remaining obligations. Simplify using `using hinj e`.
+
+Establish `h1` using `dominates_comp (dominates_comp hf₁ hf₂) hf₃'`. Conclude with `h1`.
+-/
 theorem exists_normal_model : ReciprocityTheory.ChartRestriction.G.Geo.ResK.ResKStatement → ∀ (K : Type) [Fintype K] (J : K → Type) [∀ k, Fintype (J k)] (Ω₁ Ω : Type) [Field Ω₁] [Field Ω] [CharZero Ω] (i : Ω₁ →+* Ω) (y : (Σ k, J k) → Ω₁) (X : Scheme.{0}) (ξ : Spec (CommRingCat.of Ω₁) ⟶ X), (letI := i.toAlgebra; FiniteDimensional Ω₁ Ω) → (∀ q : X, GlobalTheory.CompanionTheory.Ar.genPt ξ ⤳ q) → CoordTie ℤ ξ (fun c' : (k : K) → J k => ∏ k, y ⟨k, c' k⟩) → ∃ (K' : Type) (_ : Fintype K') (J' : K' → Type) (_ : ∀ k, Fintype (J' k)) (y' : (Σ k, J' k) → Ω) (bk : K → K') (bx : ∀ k, J k ≃ J' (bk k)) (M : PModel ℤ (fun c' : (k : K') → J' k => ∏ k, y' ⟨k, c' k⟩)) (h : M.X ⟶ X), Function.Injective bk ∧ (∀ k a, y' ⟨bk k, bx k a⟩ = i (y ⟨k, a⟩)) ∧ GlobalTheory.CompanionTheory.Ar.Dominates M.ξ ξ h i ∧ Flat.NormalCpt M.ξ ∧ SmoothGenericFibreM y' := by
   intro hRes K _ J _ Ω₁ Ω _ _ _ i y X ξ hfin hall htie
   classical

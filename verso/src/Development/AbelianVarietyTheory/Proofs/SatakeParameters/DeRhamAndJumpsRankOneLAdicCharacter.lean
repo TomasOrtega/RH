@@ -15,6 +15,23 @@ namespace GlobalTheory.CharAboveRead
 
 open scoped TensorProduct
 
+/- English proof (translation)
+Set `jE : E →+* Om l` to `Bw.j.comp (algebraMap E Ω)`. Establish `hjE : ∀ x : 𝓞 E, ‖jE (x : E)‖ < 1 ↔ x ∈ w.asIdeal` using `fun x => (hj.valuation_lt_one_iff _).symm.trans (hA x)`. Establish `iso` using `GlobalTheory.GalFirstClause.Emb.norm_eq_of_samePlace τ jE w hw hτ hjE`. Establish `hker : ∀ t ∈ RingHom.ker (GlobalTheory.GalFirstClause.Emb.tensLift jE), GlobalTheory.GalFirstClause.Emb.tensLift τ t = 0` using `fun t ht => norm_eq_zero.1 (le_antisymm ((GlobalTheory.GalFirstClause.Emb.norm_tensLift_le jE τ (fun x => (iso x).symm) t).trans (by rw [RingHom.mem_ker.1 ht, norm_zero])) (norm_nonneg _))`. Establish `hrange : (GlobalTheory.GalFirstClause.Emb.tensLift jE).range ≤ Bw.Kw.1.toSubalgebra`.
+
+Introduce and unpack `_ ⟨t, rfl⟩`. Proceed by induction on `t using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul a y`. Express the relevant statement in the definitionally equal form `GlobalTheory.GalFirstClause.Emb.tensLift jE (a ⊗ₜ y) ∈ _`.
+
+Rewrite using `[GlobalTheory.GalFirstClause.Emb.tensLift_tmul]`. Conclude with `mul_mem (Bw.Kw.1.algebraMap_mem a) (Bw.j_E y)`. Consider the case `add t₁ t₂ h₁ h₂ => rw [map_add]`. Conclude with `add_mem h₁ h₂`. Establish `hfin : FiniteDimensional ℚ_[l] (Subalgebra.toSubmodule (GlobalTheory.GalFirstClause.Emb.tensLift jE).range)` using `by haveI : FiniteDimensional ℚ_[l] (Subalgebra.toSubmodule Bw.Kw.1.toSubalgebra) := Bw.Kw.2`.
+
+Conclude with `Submodule.finiteDimensional_of_le (Subalgebra.toSubmodule.monotone hrange)`. Establish `hclosed : IsClosed ((GlobalTheory.GalFirstClause.Emb.tensLift jE).range : Set (Om l))` using `Submodule.closed_of_finiteDimensional (Subalgebra.toSubmodule (GlobalTheory.GalFirstClause.Emb.tensLift jE).range)`. Establish `hle : Bw.Kw.1.toSubalgebra ≤ (GlobalTheory.GalFirstClause.Emb.tensLift jE).range`. Introduce `y hy`. Use `closure_minimal ?_ hclosed (Bw.j_dense hy)` and prove the remaining obligations.
+
+Introduce and unpack `_ ⟨x, rfl⟩`. Conclude with `⟨1 ⊗ₜ x, by`. Express the relevant statement in the definitionally equal form `GlobalTheory.GalFirstClause.Emb.tensLift jE (1 ⊗ₜ x) = jE x`. Rewrite using `[GlobalTheory.GalFirstClause.Emb.tensLift_tmul, map_one, one_mul]⟩`. Set `σ : ↥Bw.Kw.1 →ₐ[ℚ_[l]] Om l` to `((Ideal.Quotient.liftₐ (RingHom.ker (GlobalTheory.GalFirstClause.Emb.tensLift jE)) (GlobalTheory.GalFirstClause.Emb.tensLift τ) hker).comp (Ideal.quotientKerEquivRange (GlobalTheory.GalFirstClause.Emb.tensLift jE)).symm.toAlgHom).comp (Subalgebra.inclusion hle)`.
+
+Use `⟨σ.codRestrict Bw.LL.1.toSubalgebra (fun y => Bw.LL_split σ y), fun x => ?_⟩` and prove the remaining obligations. Establish `key : (Ideal.quotientKerEquivRange (GlobalTheory.GalFirstClause.Emb.tensLift jE)).symm (Subalgebra.inclusion hle ⟨jE x, Bw.j_E x⟩) = Ideal.Quotient.mk _ (1 ⊗ₜ x)`. Rewrite using `[AlgEquiv.symm_apply_eq]`. Apply `Subtype.ext` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `jE x = GlobalTheory.GalFirstClause.Emb.tensLift jE (1 ⊗ₜ x)`.
+
+Rewrite using `[GlobalTheory.GalFirstClause.Emb.tensLift_tmul, map_one, one_mul]`. Express the relevant statement in the definitionally equal form `τ x = σ ⟨jE x, Bw.j_E x⟩`. Express the relevant statement in the definitionally equal form `τ x = Ideal.Quotient.liftₐ _ (GlobalTheory.GalFirstClause.Emb.tensLift τ) hker ((Ideal.quotientKerEquivRange (GlobalTheory.GalFirstClause.Emb.tensLift jE)).symm (Subalgebra.inclusion hle ⟨jE x, Bw.j_E x⟩))`. Rewrite using `[key, Ideal.Quotient.liftₐ_apply]`. Express the relevant statement in the definitionally equal form `τ x = GlobalTheory.GalFirstClause.Emb.tensLift τ (1 ⊗ₜ x)`.
+
+Rewrite using `[GlobalTheory.GalFirstClause.Emb.tensLift_tmul, map_one, one_mul]`.
+-/
 theorem exists_isInduced_of {l : ℕ} [Fact l.Prime] {E Ω : Type} [Field E] [NumberField E] [Field Ω] [Algebra E Ω]
     [IsAlgClosure E Ω] (τ : E →+* Om l) (w : HeightOneSpectrum (𝓞 E)) (hw : w ∈ placesOver E l)
     (hτ : ∀ x : 𝓞 E, ‖τ (x : E)‖ < 1 ↔ x ∈ w.asIdeal) (A : ValuationSubring Ω) (hA : IsPlaceOver A w)
@@ -64,6 +81,9 @@ theorem exists_isInduced_of {l : ℕ} [Fact l.Prime] {E Ω : Type} [Field E] [Nu
   change τ x = GlobalTheory.GalFirstClause.Emb.tensLift τ (1 ⊗ₜ x)
   rw [GlobalTheory.GalFirstClause.Emb.tensLift_tmul, map_one, one_mul]
 
+/- English proof (translation)
+Establish `hv : Continuous fun g => ((μ g : Kˣ) : K)` using `Units.continuous_val.comp hμ`. Use `continuous_pi fun i => continuous_pi fun k => ?_` and prove the remaining obligations. Establish `e : ∀ g, ((rk1 μ g : GL (Fin 1) K) : Matrix (Fin 1) (Fin 1) K) i k = ((μ g : Kˣ) : K)` using `fun g => by fin_cases i; fin_cases k; simp [rk1]`. Simplify using `only [e]`. Conclude with `hv`.
+-/
 theorem continuous_rankOneOperator {Γ K : Type} [Group Γ] [TopologicalSpace Γ] [Field K] [TopologicalSpace K] [IsTopologicalRing K]
     (μ : Γ →* Kˣ) (hμ : Continuous μ) : Continuous fun g => ((rk1 μ g : GL (Fin 1) K) : Matrix (Fin 1) (Fin 1) K) := by
   have hv : Continuous fun g => ((μ g : Kˣ) : K) := Units.continuous_val.comp hμ
@@ -79,6 +99,21 @@ namespace GlobalTheory.CharAboveRead
 
 set_option maxHeartbeats 1000000 in
 
+/- English proof (translation)
+Introduce `D T W l _ ι μ hμ J w hw H`. Establish `hcont : Continuous fun g => (rk1 μ g : Matrix (Fin 1) (Fin 1) (Qbar l))` using `continuous_rankOneOperator μ hμ`. Take `⟨K, ρ, hρc, hρ⟩` from `GlobalTheory.GalFirstClause.finextRep l D.host.E D.nd.Om 1 (rk1 μ) hcont`. Take `⟨j, L0, hj, hLL⟩` from `GlobalTheory.PlaceBridge.exists_locBridge l D.host.E D.nd.Om w (D.nd.plOm.1 w) hw (D.nd.plOm.2 w)`. Take `⟨Bw, hBj, hBLL, -, hBto⟩` from `hLL L0 le_rfl`.
+
+Establish `hind : Induces Bw` using `fun x => by rw [hBj]; exact hj x`. Set `LL' : FinExt l` to `supExt K Bw.LL`. Establish `hK : K.1 ≤ LL'.1` using `le_sup_left`. Establish `hB : Bw.LL.1 ≤ LL'.1` using `le_sup_right`. Set `ρ' : G D.host.E D.nd.Om →* GL (Fin 1) ↥LL'.1` to `mapRep (IntermediateField.inclusion hK).toRingHom ρ`.
+
+Establish `hρ' : mapRep (algebraMap ↥LL'.1 (Om l)) ρ' = rk1 μ`. Rewrite using `[← hρ]`. Use extensionality with `g i k`. Both sides reduce to the same expression. Establish `hρ'c : Continuous fun g => (ρ' g : Matrix (Fin 1) (Fin 1) ↥LL'.1)`.
+
+Establish `hi : Continuous (IntermediateField.inclusion hK)` using `continuous_induced_rng.2 continuous_subtype_val`. Conclude with `hρc.matrix_map hi`. Establish `hmodel : IsModel Bw (resDec D.nd.plOm.1 (rk1 μ) w) LL' (ρ'.comp (Dec (F` using `D.host.E) (D.nd.plOm.1 w)).subtype) := ⟨hB, by rw [← hρ']; rfl⟩`. Set `φ : ↥(OL L0) →+* Qbar l` to `L0.1.val.toRingHom.comp (OL L0).val.toRingHom`. Establish `hφ : ∀ x, φ x = ((Bw.toLL x : ↥Bw.LL.1) : Om l)` using `fun x => (hBto x).symm`.
+
+Establish `hcl` using `(W.loc l ι w hw _ Bw hind φ hφ).2 LL' hB 1 ρ' hρ'c`. Rewrite `hcl` using `[hρ']`. Establish `hab` using `H _ Bw hind`. Establish `hdR : Bw.IsdRE (D.loc l) LL' (ρ'.comp (Dec (F` using `D.host.E) (D.nd.plOm.1 w)).subtype) := (hmodel.isdRAt_iff (D.loc l)).1 hab.1`. Use `⟨hcl.2.1.2 hdR, fun τ hτ => ?_⟩` and prove the remaining obligations.
+
+Take `⟨τ₀, hτ₀⟩` from `exists_isInduced_of τ w hw hτ _ (D.nd.plOm.2 w) _ Bw hind`. Set `τ'' : ↥Bw.Kw.1 →ₐ[ℚ_[l]] ↥LL'.1` to `(IntermediateField.inclusion hB).comp τ₀`. Establish `hτ'' : IsInduced Bw τ τ''` using `fun x => hτ₀ x`. Establish `hJ` using `hab.2 τ LL' τ'' hτ''`. Use extensionality with `n`.
+
+Apply `Nat.cast_injective (R := ℤ)` to reduce the goal to its premises. Rewrite using `[(hcl.2.2.2 τ τ'' hτ'').2 hdR n, IsJumpsAt.count_eq (D.loc l) hmodel hτ'' hJ n]`.
+-/
 theorem deRham_and_jumps_rankOne_lAdic_character : ∀ (D : D7) (T : WDTie D.nd D.naut) (W : WDSide D T) (l : ℕ) [Fact l.Prime] (ι : Qbar l ≃+* ℂ)
     (μ : G D.host.E D.nd.Om →* (Qbar l)ˣ), Continuous μ → ∀ (J : (D.host.E →+* Qbar l) → Multiset ℤ)
     (w : HeightOneSpectrum (𝓞 D.host.E)), w ∈ placesOver D.host.E l →

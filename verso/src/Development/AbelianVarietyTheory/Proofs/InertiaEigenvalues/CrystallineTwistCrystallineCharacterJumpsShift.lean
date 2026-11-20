@@ -29,6 +29,9 @@ variable {G : Type} [Group G] {Qp K₀ K : Type} [Field Qp] [Field K₀] [Field 
     {V : Type} [AddCommGroup V] [Module LL V] [Module Qp V] [IsScalarTower Qp LL V]
     {V' : Type} [AddCommGroup V'] [Module LL V'] [Module Qp V'] [IsScalarTower Qp LL V']
 
+/- English proof (translation)
+Rewrite using `[GlobalTheory.HTW.FildR_eq_comap PD ρ ρ' e.toLinearMap e.injective he τ a]`. Conclude with `(LinearEquiv.ofSubmodule' (AlgebraTensorModule.congr e (LinearEquiv.refl Qp BdR)) (FildR PD ρ' τ a)).finrank_eq`.
+-/
 theorem finrank_fildR_of_equiv {ρ : Representation LL G V} {ρ' : Representation LL G V'}
     (e : V ≃ₗ[LL] V') (he : ∀ g x, e (ρ g x) = ρ' g (e x)) (τ : K →ₐ[Qp] LL) (a : ℤ) :
     finrank LL (FildR PD ρ τ a) = finrank LL (FildR PD ρ' τ a) := by
@@ -36,11 +39,23 @@ theorem finrank_fildR_of_equiv {ρ : Representation LL G V} {ρ' : Representatio
   exact (LinearEquiv.ofSubmodule'
     (AlgebraTensorModule.congr e (LinearEquiv.refl Qp BdR)) (FildR PD ρ' τ a)).finrank_eq
 
+/- English proof (translation)
+Rewrite using `[multV, multV, finrank_fildR_of_equiv PD e he, finrank_fildR_of_equiv PD e he]`.
+-/
 theorem multV_of_equiv {ρ : Representation LL G V} {ρ' : Representation LL G V'}
     (e : V ≃ₗ[LL] V') (he : ∀ g x, e (ρ g x) = ρ' g (e x)) (τ : K →ₐ[Qp] LL) (a : ℤ) :
     multV PD ρ τ a = multV PD ρ' τ a := by
   rw [multV, multV, finrank_fildR_of_equiv PD e he, finrank_fildR_of_equiv PD e he]
 
+/- English proof (translation)
+Use `haveI : ∀ a, FiniteDimensional LL (FildR PD ρ τ a) := fun a => Submodule.finiteDimensional_of_le (S₂ := DdRE PD ρ τ) inf_le_left`. Establish `anti : Antitone (FildR PD ρ τ)` using `fun a a' haa => inf_le_inf_left _ (GlobalTheory.Cmp.SmallJumps.filV_anti PD haa)`. Establish `mono : ∀ a a', a ≤ a' → finrank LL (FildR PD ρ τ a') ≤ finrank LL (FildR PD ρ τ a)` using `fun a a' h => Submodule.finrank_mono (anti h)`. Establish `le1 : ∀ a, finrank LL (FildR PD ρ τ a) ≤ 1` using `fun a => (Submodule.finrank_mono (inf_le_left : FildR PD ρ τ a ≤ DdRE PD ρ τ)).trans h1`. Establish `lt : finrank LL (FildR PD ρ τ (b + 1)) < finrank LL (FildR PD ρ τ b)` using `Submodule.finrank_lt_finrank_of_lt (lt_of_le_of_ne (anti (by omega)) hb)`.
+
+Use `le1 a` as an intermediate fact. Use `le1 b` as an intermediate fact. Rewrite using `[multV]`. Break down `lt_trichotomy a b with h | h | h` into its components or cases. Use `mono (a + 1) b (by omega)` as an intermediate fact.
+
+Use `mono a (a + 1) (by omega)` as an intermediate fact. Rewrite using `[if_neg h.ne]`. Use linear arithmetic over natural numbers and integers. Substitute `h` using the available equality. Rewrite using `[if_pos rfl]`.
+
+Use linear arithmetic over natural numbers and integers. Use `mono (b + 1) a (by omega)` as an intermediate fact. Use `mono a (a + 1) (by omega)` as an intermediate fact. Rewrite using `[if_neg h.ne']`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem multV_of_le_one (ρ : Representation LL G V) (τ : K →ₐ[Qp] LL)
     [FiniteDimensional LL (DdRE PD ρ τ)] (h1 : finrank LL (DdRE PD ρ τ) ≤ 1) {b : ℤ}
     (hb : IsJumpV PD ρ τ b) (a : ℤ) : multV PD ρ τ a = if a = b then 1 else 0 := by
@@ -76,12 +91,24 @@ def transport (e : V ≃ₗ[LL] V') (ρ' : Representation LL G V') : Representat
   map_mul' g h := by ext; simp
 
 omit [Module Qp V] [IsScalarTower Qp LL V] [Module Qp V'] [IsScalarTower Qp LL V'] in
+/- English proof (translation)
+Simplify using `[transport]`.
+-/
 theorem transport_apply (e : V ≃ₗ[LL] V') (ρ' : Representation LL G V') (g : G) (x : V) :
     e (transport e ρ' g x) = ρ' g (e x) := by
   simp [transport]
 
 end Generic
 
+/- English proof (translation)
+Introduce `l _ P AI T K LL V _ _ _ _ _ ρ V' _ _ _ _ _ ρ' χ ⟨e, he⟩ cχ cρ`. Set `f : (Fin 1 → ↥LL.1) ≃ₗ[↥LL.1] ↥LL.1` to `LinearEquiv.funUnique (Fin 1) ↥LL.1 ↥LL.1`. Set `ν` to `transport f (charRep χ)`. Establish `hν : ∀ g x, ν g x = ((χ g : (↥LL.1)ˣ) : ↥LL.1) • x` using `fun g x => by`. Apply `f.injective` to reduce the goal to its premises.
+
+Rewrite using `[transport_apply, map_smul]`. Both sides reduce to the same expression. Establish `hρ : ∀ g x, transport e ρ' g x = ((χ g : (↥LL.1)ˣ) : ↥LL.1) • ρ g x` using `fun g x => by`. Apply `e.injective` to reduce the goal to its premises. Rewrite using `[transport_apply, he, map_smul]`.
+
+Establish `cν : IsCrys (P.PD K) ν` using `GlobalTheory.Cmp.WachMonoidal.isCrys_of_equiv (P.PD K) f.symm (fun g x => by`. Apply `f.injective` to reduce the goal to its premises. Rewrite using `[transport_apply, f.apply_symm_apply, f.apply_symm_apply]) cχ`. Use `⟨GlobalTheory.Cmp.WachMonoidal.isCrys_of_equiv (P.PD K) e (transport_apply e ρ') ((GlobalTheory.TwistCrys.isCrys_iff_of_twist GlobalTheory.MemLoc.fontaineBcris l P AI T K LL V ρ _ ν _ hν hρ cν).1 cρ), fun τ a b hb => ?_⟩` and prove the remaining obligations. Take `⟨hfin, hle, -⟩` from `(GlobalTheory.T.deRhamComponents_crystallineLetters_finrank l P AI T K LL ↥LL.1 (charRep χ)).1 τ`.
+
+Rewrite `hle` using `[finrank_self]`. Rewrite using `[← multV_of_equiv (P.PD K) e (transport_apply e ρ')]`. Use `GlobalTheory.TwistJump.multV_twist_char l P AI T K LL V ρ _ ν _ hν hρ (GlobalTheory.Per.CrisDR.isDR_of_isCrys l P AI T K LL _ ν cν).1 τ b (fun c => ?_) a` and prove the remaining obligations. Rewrite using `[multV_of_equiv (P.PD K) f (transport_apply f (charRep χ))]`. Conclude with `multV_of_le_one (P.PD K) (charRep χ) τ hle hb c`.
+-/
 theorem isCrys_and_multV_twist : ∀ (l : ℕ) [Fact l.Prime] (P : LocPrime l) (AI : LocAinf l P), LocTied l P AI → ∀ (K LL : FinExt l) (V : Type) [AddCommGroup V] [Module ↥LL.1 V] [Module ℚ_[l] V] [IsScalarTower ℚ_[l] ↥LL.1 V] [FiniteDimensional ↥LL.1 V] (ρ : Representation ↥LL.1 ↥(GK K) V) (V' : Type) [AddCommGroup V'] [Module ↥LL.1 V'] [Module ℚ_[l] V'] [IsScalarTower ℚ_[l] ↥LL.1 V'] [FiniteDimensional ↥LL.1 V'] (ρ' : Representation ↥LL.1 ↥(GK K) V') (χ : ↥(GK K) →* (↥LL.1)ˣ), IsTwistRep χ ρ ρ' → IsCrys (P.PD K) (charRep χ) → IsCrys (P.PD K) ρ → IsCrys (P.PD K) ρ' ∧ ∀ (τ : ↥K.1 →ₐ[ℚ_[l]] ↥LL.1) (a b : ℤ), IsJumpV (P.PD K) (charRep χ) τ b → multV (P.PD K) ρ' τ (a + b) = multV (P.PD K) ρ τ a := by
   intro l _ P AI T K LL V _ _ _ _ _ ρ V' _ _ _ _ _ ρ' χ ⟨e, he⟩ cχ cρ
   let f : (Fin 1 → ↥LL.1) ≃ₗ[↥LL.1] ↥LL.1 := LinearEquiv.funUnique (Fin 1) ↥LL.1 ↥LL.1

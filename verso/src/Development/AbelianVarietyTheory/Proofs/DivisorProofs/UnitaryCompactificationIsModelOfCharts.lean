@@ -13,6 +13,27 @@ noncomputable section
 
 namespace GlobalTheory.UChart
 
+/- English proof (translation)
+Introduce `E _ _ _ H Dw l Xo c φ hpq hfan hsi Z zs i OZ N d J S π j _ BD hU hSep hPre`. Take `⟨oF, ⟨m0⟩⟩` from `GlobalTheory.LevelQuotRep.obj_pull_same Xo.univ (pullback.fst Xo.s (spMap (IntermediateField.inclusion c.le).toRingHom))`. Take `⟨G, _, _, e, hGs, hGp, hGab, hGc⟩` from `GlobalTheory.T.exists_semiAbelian_descent_of_toricCharts_corrected_sep Xo c φ hpq hfan hsi zs i OZ N d J π j BD hU hSep hPre oF.t m0.toSABMap`. Take `⟨t, htab, ⟨mt⟩, htc⟩` from `GlobalTheory.T.exists_triple_on_descended_group Xo c φ hpq hfan hsi zs i OZ N d J π j BD hU hSep hPre oF.t m0.toSABMap G e hGs hGp hGc`. Take `⟨⟨-, -, -, -, hiz, -, -⟩, -, -, -, ⟨hNB, hproj, -, hjd, hji, -, -, -⟩, -⟩` from `hU`.
+
+Establish `eid : spMap (RingHom.id c.F) = 𝟙 _` using `by simp [spMap]`. Establish `hid : IsIso (spMap (RingHom.id c.F))` using `by rw [eid]; infer_instance`. Set `g` to `pullback.fst (π ≫ zs) (spMap (RingHom.id c.F))`. Establish `hg : IsIso g` using `inferInstance`. Set `jQ : Xo.XF c ⟶ pullback (π ≫ zs) (spMap (RingHom.id c.F))` to `j ≫ inv g`.
+
+Establish `hjQ : jQ ≫ g = j` using `by simp [jQ]`. Establish `hab : abLocus t.G = Set.range j` using `htab.trans hGab`. Set `Y : Model Xo c (RingHom.id c.F)` to `{ X := S s := π ≫ zs normal := (GlobalTheory.isNormalScheme_iff S).1 hNB.1 proj := hproj flat := inferInstance jQ := jQ jQ_over := by`. Rewrite using `[← cancel_mono (spMap (RingHom.id c.F)), Category.assoc, ← pullback.condition, ← Category.assoc, hjQ, ← Category.assoc, hji, hiz, eid, Category.comp_id]`. Use `jQ_open := inferInstance`.
+
+Use `jQ_dense := by`. Establish `hc : (⇑jQ) = (⇑(inv g)) ∘ ⇑j`. Use function extensionality and compare the values at `x`. Simplify using `[jQ]`. Establish `h1 : DenseRange (⇑(inv g))` using `(inv g).surjective.denseRange`.
+
+Use `show DenseRange (⇑jQ)`. Rewrite using `[hc]`. Conclude with `h1.comp hjd (inv g).continuous`. Use `t := t`. Use `oF := oF`.
+
+Use `m0 := m0`. Use `m := hjQ ▸ mt`. Use `ab_gen := by show g ⁻¹' abLocus t.G = Set.range jQ`. Rewrite using `[hab]`. Use extensionality with `x`.
+
+Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨y, hy⟩`. Use `⟨y, ?_⟩` and prove the remaining obligations. Establish `h2 : (inv g) (g x) = x`. Rewrite using `[← Scheme.Hom.comp_apply, IsIso.hom_inv_id]`.
+
+Both sides reduce to the same expression. Rewrite using `[← h2, ← hy]`. Simplify using `[jQ]`. Introduce and unpack `⟨y, rfl⟩`. Use `⟨y, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[← Scheme.Hom.comp_apply, hjQ] }`. Use `⟨Y, Iso.refl S, ?_, ?_, ?_⟩` and prove the remaining obligations. Use `show (jQ ≫ g) ≫ 𝟙 S = j`. Rewrite using `[hjQ, Category.comp_id]`. Use `show π ≫ zs = 𝟙 S ≫ π ≫ zs`.
+
+Rewrite using `[Category.id_comp]`. Introduce `k _ m n C hC ξ hξ`. Use `htc C hC ξ hξ` as an intermediate fact. Simplify using `using this`.
+-/
 theorem exists_model_of_charts : ∀ {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {Dw : Datum H} {l : Geo.Tor.Level H} (Xo : Moduli Dw l) (c : Coeff l) (φ : InvFun (𝓞 E)), 1 ≤ Dw.p + Dw.q → IsPolFan H.bar (min Dw.p Dw.q) φ → NoSelfInt H.bar (min Dw.p Dw.q) φ → ∀ {Z : Scheme.{0}} (zs : Z ⟶ Sp c.F) (i : Xo.XF c ⟶ Z) (OZ : LB Z) (N d : ℕ) (J : Z.IdealSheafData) {S : Scheme.{0}} (π : S ⟶ Z) (j : Xo.XF c ⟶ S) [IsOpenImmersion j] (BD : EffCartierData S), GlobalTheory.UPoinc.UPoinOnX Xo c φ zs i OZ N d J π j BD → SepB Xo c φ j → (∀ x : S, x ∉ Set.range j → UPre Xo c φ j BD d x) → ∃ (Y : Model Xo c (RingHom.id c.F)) (ε : Y.X ≅ S), Y.j ≫ ε.hom = j ∧ Y.s = ε.hom ≫ π ≫ zs ∧ ∀ {k : Type} [Field k] {m e : ℕ} (C : MonoFam Xo c φ (ChartRing k m e)), IsTaut C → ∀ ξ : Sp (ChartRing k m e) ⟶ S, C.y ≫ j = jK _ ≫ ξ → Nonempty (SABMap C.t Y.t (ξ ≫ ε.inv)) := by
   intro E _ _ _ H Dw l Xo c φ hpq hfan hsi Z zs i OZ N d J S π j _ BD hU hSep hPre
   obtain ⟨oF, ⟨m0⟩⟩ := GlobalTheory.LevelQuotRep.obj_pull_same Xo.univ

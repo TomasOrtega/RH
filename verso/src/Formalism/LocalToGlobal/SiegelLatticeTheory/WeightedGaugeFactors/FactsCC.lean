@@ -12,6 +12,27 @@ open Formalism.L2.SG.Pf.Carrier Formalism.L2.SG.Pf.BaseOf Formalism.L2.SG.Pf.Bui
 
 variable {D : D7} (X : Formalism.L2.SG.HidaSetting.HidaSetting D) {θ : ℝ} (C : Choice X θ)
 
+/- English proof (translation)
+Introduce `j0 Y g hg`. Take `⟨j, rfl⟩ : ∃ j : Fin (nfE D), j = j0` from `⟨j0, rfl⟩`. Take `⟨g, rfl⟩ : ∃ g' : Matrix (Fin (2 * D.R.rS + D.R.k + 1)) (Fin (2 * D.R.rS + D.R.k + 1)) ℂ, g' = g` from `⟨g, rfl⟩`. Use `set w := tauE X e j with hw`. Use `set τ := e (plE D j) with hτ`.
+
+Establish `hpl : X.pl w = τ` using `by show X.pl (X.pl.symm (e (plE D j))) = _`. Conclude with `Equiv.apply_symm_apply _ _`. Take `⟨hQP, hPQ, hH, -⟩` from `isTransp_Qcs X C w`. Rewrite `hQP`, `hPQ`, `hH` using `[hpl]`. Use `set P := Qcs C τ`.
+
+Use `set Q := Qics C τ`. Use `set σ := X.B.σ w`. Use `set ε := X.B.I.ε w`. Establish `hσ : ReciprocityTheory.ChartRestriction.DS.IsURepOn (ReciprocityTheory.ChartRestriction.DS.UJset ε) σ` using `(X.ds w).2.2.1`. Establish `hbm : (b j : X.B.H w) ∈ ReciprocityTheory.ChartRestriction.DS.smD ε σ` using `Formalism.MainNotions.BesselDiscreteSeries.mem_smD_of_smoothVecs (hb j)`.
+
+Use `set T0 : X.Vloc u' w →L[ℂ] X.Vloc u w := (innerSL ℂ (ξ' j)).smulRight (ξ j)`. Establish `hF : ∀ h : Matrix (Fin (2 * D.R.rS + D.R.k + 1)) (Fin (2 * D.R.rS + D.R.k + 1)) ℂ, hᴴ * (Pᴴ * ReciprocityTheory.ChartRestriction.DS.Jm ε * P) * h = Pᴴ * ReciprocityTheory.ChartRestriction.DS.Jm ε * P → fcT X C e u u' a b ξ ξ' cc j h = (inner ℂ (a j) (σ (P * h * Q) ((⟨b j, hbm⟩ : …`. Introduce `h _`. Rewrite using `[fcT_eq]`. Unfold `Formalism.MainNotions.S.Pv.BetaCut.coefM`.
+
+Rewrite using `[smul_smul, mul_comm, ← smul_smul]`. Use `congr 1`. Use extensionality with `y`. Simplify using `[T0, smul_smul, mul_comm]`. Both sides reduce to the same expression.
+
+Establish `hg' : gᴴ * (Pᴴ * ReciprocityTheory.ChartRestriction.DS.Jm ε * P) * g = Pᴴ * ReciprocityTheory.ChartRestriction.DS.Jm ε * P`. Establish `: gᴴ * Formalism.QuantumDeterminants.Hpk D.R.k D.R.rS * g = Formalism.QuantumDeterminants.Hpk D.R.k D.R.rS` using `hg`. Rewrite `this` using `[← hH]`. Conclude with `this`. Take `⟨hh, hgapw, hthr⟩` from `hgap w`.
+
+Establish `hcap` using `Formalism.MainNotions.BesselDiscreteSeries.gapped_infinitesimal_character X.B.I.n ε (X.B.lam w) (X.B.H w) σ (hHC w) (X.ds w) hh hgapw hthr (b j) (hb j) (Y : ℂ)`. Rewrite `hcap` using `[Formalism.MainNotions.BesselDiscreteSeries.actU_qdet hσ _ (b j) hbm]`. Establish `hn : (X.B.I.n : ℂ) = ((Formalism.FourierDecayAlt.Q.mdim D.R.k D.R.rS 0 : ℕ) : ℂ)`. Rewrite using `[X.n_eq, ← Formalism.MainNotions.S.dimS_eq D.R]`. Unfold `Formalism.FourierDecayAlt.Q.mdim`.
+
+Simplify using the standard rewrite rules. Use `show Formalism.QuantumDeterminants.capelliH (Formalism.QuantumDeterminants.Hpk D.R.k D.R.rS) (Formalism.FourierDecayAlt.Q.uC D.R.k D.R.rS 0 (Y : ℂ)) (fcT X C e u u' a b ξ ξ' cc j) g = _`. Rewrite using `[← hH]`. Use `(Formalism.L2.SG.Pf.CapCoef.capelliH_cf_rect (ε := ε) (σ := σ) hσ hQP hPQ (a j) (cc j • T0) ⟨b j, hbm⟩ _ hF _ hg').trans ?_` and prove the remaining obligations. Establish `hu : Formalism.FourierDecayAlt.Q.uC D.R.k D.R.rS 0 (Y : ℂ) = (Y : ℂ) + ((X.B.I.n : ℂ) - 1) / 2`.
+
+Unfold `Formalism.FourierDecayAlt.Q.uC`. Rewrite using `[hn]`. Rewrite using `[hu, hcap, map_smul, inner_smul_right, ← smul_smul, ← hF g hg']`. Use `congr 1`. Rewrite using `[Formalism.MainNotions.BridgeLemma.capelliPoly_ofReal]`.
+
+Use `congr 1`. Use `show ∏ s, ((Y : ℝ) + X.B.lam w s) = ((Formalism.L2.SG.SpectralTiesReal.gOf D e).place (plE D j)).P Y`. Rewrite using `[Formalism.L2.SG.Pf.SzHypOf.gOf_place, Formalism.MainNotions.BridgeLemma.cfg_P]`. Simplify using `only [X.lam_eq w, hpl]`. Conclude with `Fintype.prod_equiv (finCongr X.n_eq) _ _ (fun i => rfl)`.
+-/
 theorem coefCap_carrierInT_own (u u' : D.what₂.Word) (e : InfinitePlace D.host.E ≃ D.what₂.Tau) (he : PlaceTie X e)
     (hv : D.host.v = Formalism.FourierDecayAlt.S6.rd D.host.E / 2) (CA : ℝ) (de de' : ℕ → ℝ) (l : ℕ)
     (grid : Fin (nfE D) → ℕ → Finset ℝ) (grid1 : Fin (nfE D) → Finset ℝ)

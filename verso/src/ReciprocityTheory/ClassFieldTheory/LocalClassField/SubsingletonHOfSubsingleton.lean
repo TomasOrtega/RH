@@ -14,6 +14,11 @@ universe u
 variable {R : Type u} [CommRing R] {G : Type u} [Group G] [TopologicalSpace G] [IsTopologicalGroup G]
   {G' : Type u} [Group G'] [TopologicalSpace G'] [IsTopologicalGroup G']
 
+/- English proof (translation)
+Use `shp_qi_of_bij P.hom (fun n => ⟨hom_f_injective P hφ.surjective hu.injective n, fun t' => ?_⟩) n` and prove the remaining obligations. Set `eφ` to `IsHomeomorph.homeomorph _ hφ`. Set `eu` to `IsHomeomorph.homeomorph _ hu`. Establish `hc : Continuous fun v : Fin n → G => eu.symm (t'.1 fun i => eφ.symm (v i))` using `eu.symm.continuous.comp ((show Continuous t'.1 from t'.2).comp (continuous_pi fun i => eφ.symm.continuous.comp (continuous_apply i)))`. Use `⟨⟨_, hc⟩, Subtype.ext (funext fun g => ?_)⟩` and prove the remaining obligations.
+
+Use `show eu (eu.symm (t'.1 fun i => eφ.symm (eφ (g i)))) = t'.1 g`. Rewrite using `[eu.apply_symm_apply]`. Conclude with `congrArg t'.1 (funext fun i => eφ.symm_apply_apply (g i))`.
+-/
 theorem pair_bij {M : TRep R G} {M' : TRep R G'} (P : Pair M M') (hφ : IsHomeomorph P.φ)
     (hu : IsHomeomorph P.u) (n : ℕ) : Bijective (P.hom.H n) := by
   refine shp_qi_of_bij P.hom (fun n => ⟨hom_f_injective P hφ.surjective hu.injective n, fun t' => ?_⟩) n
@@ -27,6 +32,13 @@ theorem pair_bij {M : TRep R G} {M' : TRep R G'} (P : Pair M M') (hφ : IsHomeom
   rw [eu.apply_symm_apply]
   exact congrArg t'.1 (funext fun i => eφ.symm_apply_apply (g i))
 
+/- English proof (translation)
+Take `⟨k, hk⟩` from `IsPGroup.iff_card.1 hH`. Establish `hk0 : k ≠ 0`. Introduce and unpack `rfl`. Rewrite `hk` using `[pow_zero]`. Conclude with `absurd hk (Finite.one_lt_card (α := H)).ne'`.
+
+Take `⟨j, rfl⟩` from `Nat.exists_eq_succ_of_ne_zero hk0`. Take `⟨K, hK⟩` from `Sylow.exists_subgroup_card_pow_prime (G := H) l (n := j) (by rw [hk]; exact pow_dvd_pow _ (Nat.le_succ j))`. Establish `hidx : K.index = l`. Use `K.card_mul_index` as an intermediate fact. Rewrite `this` using `[hK, hk, pow_succ]`.
+
+Conclude with `Nat.eq_of_mul_eq_mul_left (pow_pos hl.1.pos j) this`. Use `⟨K, Subgroup.normal_of_index_eq_minFac_card ?_, hidx⟩` and prove the remaining obligations. Rewrite using `[hidx, hk, Nat.Prime.pow_minFac hl.1 (Nat.succ_ne_zero j)]`.
+-/
 theorem exists_normal_index {H : Type*} [Group H] [Finite H] [Nontrivial H] (l : ℕ) [hl : Fact l.Prime]
     (hH : IsPGroup l H) : ∃ N : Subgroup H, N.Normal ∧ N.index = l := by
   obtain ⟨k, hk⟩ := IsPGroup.iff_card.1 hH

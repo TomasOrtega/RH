@@ -29,20 +29,32 @@ def mulProdEquiv {G G₁ G₂ : Subgroup H} (hc : ∀ a ∈ G₁, ∀ b ∈ G₂
 variable {G G₁ G₂ R : Subgroup H} (hc : ∀ a ∈ G₁, ∀ b ∈ G₂, a * b = b * a) (e : (G₁ × G₂) ≃ₜ G)
     (he : ∀ p, (e p : H) = p.1 * p.2)
 
+/- English proof (translation)
+The claim follows from `he p`.
+-/
 theorem mulProdEquiv_apply (p : G₁ × G₂) : (mulProdEquiv hc e he p : H) = p.1 * p.2 := he p
 
+/- English proof (translation)
+Rewrite using `[← mulProdEquiv_apply hc e he, ContinuousMulEquiv.apply_symm_apply]`.
+-/
 theorem mulProdEquiv_symm_mul (g : G) :
     (((mulProdEquiv hc e he).symm g).1 : H) * ((mulProdEquiv hc e he).symm g).2 = g := by
   rw [← mulProdEquiv_apply hc e he, ContinuousMulEquiv.apply_symm_apply]
 
 include e he in
 
+/- English proof (translation)
+The claim follows from `e.injective (Subtype.ext (by rw [he, he, h]))`.
+-/
 theorem eq_of_mul_eq {p q : G₁ × G₂} (h : (p.1 : H) * p.2 = q.1 * q.2) : p = q :=
   e.injective (Subtype.ext (by rw [he, he, h]))
 
 variable (hRm : ∀ a ∈ G₁, ∀ b ∈ G₂, a * b ∈ R → a ∈ R ∧ b ∈ R)
 
 include hRm in
+/- English proof (translation)
+The claim follows from `hRm _ (Subtype.property _) _ (Subtype.property _) (by rw [mulProdEquiv_symm_mul]; exact Subgroup.mem_subgroupOf.1 g.2)`.
+-/
 theorem symm_mem (g : R.subgroupOf G) :
     (((mulProdEquiv hc e he).symm g.1).1 : H) ∈ R ∧ (((mulProdEquiv hc e he).symm g.1).2 : H) ∈ R :=
   hRm _ (Subtype.property _) _ (Subtype.property _)
@@ -65,6 +77,9 @@ def mulProdEquivR (hRm : ∀ a ∈ G₁, ∀ b ∈ G₂, a * b ∈ R → a ∈ R
     · exact continuous_fst.comp ((mulProdEquiv hc e he).symm.continuous.comp continuous_subtype_val)
     · exact continuous_snd.comp ((mulProdEquiv hc e he).symm.continuous.comp continuous_subtype_val)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem mulProdEquivR_apply (p : R.subgroupOf G₁ × R.subgroupOf G₂) :
     (mulProdEquivR hc e he hRm p : G) = mulProdEquiv hc e he (p.1.1, p.2.1) := rfl
 
@@ -74,6 +89,9 @@ section Fn
 variable {H : Type} [Group H] [TopologicalSpace H] [IsTopologicalGroup H]
   {G G₁ G₂ R K₂ : Subgroup H} {f : H → ℂ}
 
+/- English proof (translation)
+Establish `e1 : x * y = (x * b⁻¹) * (b * y)` using `by group`. Rewrite using `[e1, hf2 _ hby _ (G.mul_mem (h1 hx) (G.inv_mem (h2 hb))), hc _ hx _ (G₂.inv_mem hb), hf1 _ (R.inv_mem hbR) (G.inv_mem (h2 hb)) _ (h1 hx)]`.
+-/
 theorem f_mul_of_mem (hc : ∀ a ∈ G₁, ∀ b ∈ G₂, a * b = b * a) (h1 : G₁ ≤ G) (h2 : G₂ ≤ G)
     (hf1 : ∀ r ∈ R, r ∈ G → ∀ g ∈ G, f (r * g) = f g) (hf2 : ∀ k ∈ K₂, ∀ g ∈ G, f (g * k) = f g)
     {x y b : H} (hx : x ∈ G₁) (hbR : b ∈ R) (hb : b ∈ G₂) (hby : b * y ∈ K₂) : f (x * y) = f x := by
@@ -81,6 +99,13 @@ theorem f_mul_of_mem (hc : ∀ a ∈ G₁, ∀ b ∈ G₂, a * b = b * a) (h1 : 
   rw [e1, hf2 _ hby _ (G.mul_mem (h1 hx) (G.inv_mem (h2 hb))), hc _ hx _ (G₂.inv_mem hb),
     hf1 _ (R.inv_mem hbR) (G.inv_mem (h2 hb)) _ (h1 hx)]
 
+/- English proof (translation)
+Assume the negation of the conclusion as `hne`. Take `⟨r, hr, hrG, x', hx', k, hk, hxy⟩` from `hf3 _ (G.mul_mem (h1 hx) (h2 hy)) hne`. Use `set p := (mulProdEquiv hc e he).symm ⟨r, hrG⟩`. Establish `hab : (p.1 : H) * p.2 = r` using `mulProdEquiv_symm_mul hc e he ⟨r, hrG⟩`. Establish `hb : (p.2 : H) ∈ R` using `(hRm _ p.1.2 _ p.2.2 (hab ▸ hr)).2`.
+
+Establish `key : ((⟨x, hx⟩ : G₁), (⟨y, hy⟩ : G₂)) = (p.1 * ⟨x', hx'⟩, p.2 * ⟨k, hK₂ hk⟩)`. Use `eq_of_mul_eq e he ?_` and prove the remaining obligations. Simplify using `only [Subgroup.coe_mul]`. Rewrite using `[hxy, ← hab, mul_assoc (p.1 : H) (p.2 : H) x', ← hc _ hx' _ p.2.2]`. Simplify using `only [mul_assoc]`.
+
+Establish `hy' : y = p.2 * k` using `congrArg Subtype.val (congrArg Prod.snd key)`. Use `hno _ (R.inv_mem hb) (G₂.inv_mem p.2.2) ?_` and prove the remaining obligations. Rewrite using `[hy', ← mul_assoc, inv_mul_cancel, one_mul]`. Conclude with `hk`.
+-/
 theorem f_mul_eq_zero (hc : ∀ a ∈ G₁, ∀ b ∈ G₂, a * b = b * a) (e : (G₁ × G₂) ≃ₜ G)
     (he : ∀ p, (e p : H) = p.1 * p.2) (hRm : ∀ a ∈ G₁, ∀ b ∈ G₂, a * b ∈ R → a ∈ R ∧ b ∈ R)
     (h1 : G₁ ≤ G) (h2 : G₂ ≤ G) (hK₂ : K₂ ≤ G₂)
@@ -106,6 +131,9 @@ end Fn
 section Meas
 open scoped NNReal ENNReal
 
+/- English proof (translation)
+Establish `: (ν.map e.symm).IsHaarMeasure` using `e.symm.isHaarMeasure_map ν`. Use `⟨(ν.map e.symm).haarScalarFactor (νA.prod νB), Measure.haarScalarFactor_pos_of_isHaarMeasure _ _, ?_⟩` and prove the remaining obligations. Rewrite using `[← Measure.isMulLeftInvariant_eq_smul, Measure.map_map (show Measurable (e : A × B → P) from e.continuous.measurable) (show Measurable (e.symm : P → A × B) from e.symm.continuous.measurable)]`. Simplify using the standard rewrite rules.
+-/
 theorem exists_eq_map_smul_prod {A B P : Type} [Group A] [TopologicalSpace A] [IsTopologicalGroup A]
     [LocallyCompactSpace A] [SecondCountableTopology A] [MeasurableSpace A] [BorelSpace A]
     [Group B] [TopologicalSpace B] [IsTopologicalGroup B]
@@ -119,6 +147,11 @@ theorem exists_eq_map_smul_prod {A B P : Type} [Group A] [TopologicalSpace A] [I
     (show Measurable (e.symm : P → A × B) from e.symm.continuous.measurable)]
   simp
 
+/- English proof (translation)
+Rewrite using `[Subtype.isCompact_iff]`. Use `hK.inter_right hS using 1` and compare the differences between its conclusion and the goal. Use extensionality with `x`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨y, hy, rfl⟩`.
+
+Conclude with `⟨hy, y.2⟩`. Introduce and unpack `⟨hx, hxS⟩`. Conclude with `⟨⟨x, hxS⟩, hx, rfl⟩`.
+-/
 theorem isCompact_setOf_val {X : Type} [TopologicalSpace X] {S K : Set X} (hK : IsCompact K) (hS : IsClosed S) :
     IsCompact {x : S | (x : X) ∈ K} := by
   rw [Subtype.isCompact_iff]
@@ -133,6 +166,17 @@ end Meas
 section Inv
 open scoped NNReal ENNReal
 
+/- English proof (translation)
+Set `me` to `e.toHomeomorph.toMeasurableEquiv`. Establish `hν' : ν = (c • νA.prod νB).map me` using `hν`. Establish `key : ∀ T : Set (A × B), (c • νA.prod νB) T⁻¹ = (c • νA.prod νB) T`. Introduce `T`. Establish `h1 : ∀ T : Set (A × B), (c • νA.prod νB) T = ν (me.symm ⁻¹' T)`.
+
+Introduce `T`. Rewrite using `[hν', me.map_apply, ← Set.preimage_comp]`. Simplify using the standard rewrite rules. Rewrite using `[h1, h1, ← Measure.measure_inv (μ := ν) (me.symm ⁻¹' T)]`. Use `congr 1`.
+
+Use extensionality with `x`. Simplify using `[me, Set.mem_inv, map_inv]`. Prove the components needed by the constructor for the conclusion. Use extensionality with `S -`. Rewrite using `[Measure.inv_apply]`.
+
+Establish `h2` using `key (U ×ˢ S)`. Establish `h3 : (U ×ˢ S)⁻¹ = U ×ˢ S⁻¹`. Use extensionality with `p`. Simplify using `only [Set.mem_inv, Set.mem_prod, Prod.fst_inv, Prod.snd_inv]`. Rewrite using `[← Set.mem_inv (s := U), hUi]`.
+
+Rewrite `h2` using `[h3, Measure.smul_apply, Measure.smul_apply, Measure.prod_prod, Measure.prod_prod, hU1, one_mul, one_mul]`. Establish `hc0 : (c : ℝ≥0∞) ≠ 0` using `by exact_mod_cast hc.ne'`. Simplify `h2` using `[smul_eq_mul, ENNReal.mul_right_inj hc0 ENNReal.coe_ne_top]`.
+-/
 theorem isInvInvariant_of_prod {A B P : Type} [Group A] [TopologicalSpace A] [IsTopologicalGroup A]
     [SecondCountableTopology A] [MeasurableSpace A] [BorelSpace A]
     [Group B] [TopologicalSpace B] [IsTopologicalGroup B] [SecondCountableTopology B] [MeasurableSpace B] [BorelSpace B]
@@ -164,6 +208,11 @@ theorem isInvInvariant_of_prod {A B P : Type} [Group A] [TopologicalSpace A] [Is
   have hc0 : (c : ℝ≥0∞) ≠ 0 := by exact_mod_cast hc.ne'
   simpa [smul_eq_mul, ENNReal.mul_right_inj hc0 ENNReal.coe_ne_top] using h2
 
+/- English proof (translation)
+Establish `h : {b | b * b₀ ∈ V} = ((fun b => b₀⁻¹ * b) ⁻¹' V)⁻¹`. Use extensionality with `b`. Establish `hinv : ∀ x, x⁻¹ ∈ V ↔ x ∈ V` using `fun x => by rw [← Set.mem_inv, hV]`. Simplify using `only [Set.mem_setOf_eq, Set.mem_inv, Set.mem_preimage]`. Rewrite using `[← _root_.mul_inv_rev, hinv]`.
+
+Rewrite using `[h, Measure.measure_inv, measure_preimage_mul, ← Measure.measure_inv, hV]`.
+-/
 theorem measure_setOf_mul_mem {B : Type} [Group B] [MeasurableSpace B] [MeasurableMul B] [MeasurableInv B]
     (ν : Measure B) [ν.IsMulLeftInvariant] [ν.IsInvInvariant] {V : Set B} (hV : V⁻¹ = V) (b₀ : B) :
     ν {b | b * b₀ ∈ V} = ν V := by
@@ -178,6 +227,65 @@ end Inv
 
 open scoped NNReal ENNReal in
 
+/- English proof (translation)
+Introduce `H _ _ _ _ _ _ _ _ G G₁ G₂ R K₁ K₂ hG hG₁ hG₂ hR h1 h2 hc he0 hRm hK₁ hK₂ hK₁c hK₂c hK₁o hK₂o ρ μ ρ₁ μ₁ _ _ _ _ _ hμ₁ hρ₁ f z hf1 hf2 hf3 hq`. Take `⟨e, he⟩` from `he0`. Use `haveI : LocallyCompactSpace G := hG.locallyCompactSpace`. Use `haveI : LocallyCompactSpace G₁ := hG₁.locallyCompactSpace`. Use `haveI : LocallyCompactSpace G₂ := hG₂.locallyCompactSpace`.
+
+Establish `hRc : ∀ S : Subgroup H, IsClosed ((R.subgroupOf S : Subgroup S) : Set S)` using `fun S => hR.preimage continuous_subtype_val`. Use `haveI : LocallyCompactSpace (R.subgroupOf G) := (hRc G).locallyCompactSpace`. Use `haveI : LocallyCompactSpace (R.subgroupOf G₁) := (hRc G₁).locallyCompactSpace`. Use `haveI : LocallyCompactSpace (R.subgroupOf G₂) := (hRc G₂).locallyCompactSpace`. Use `set E := mulProdEquiv hc e he with hE`.
+
+Use `set ER := mulProdEquivR hc e he hRm with hER`. Set `K₂' : Set G₂` to `{g | (g : H) ∈ K₂}`. Establish `hK₂'o : IsOpen K₂'` using `hK₂o`. Establish `hK₂'c : IsCompact K₂'` using `isCompact_setOf_val hK₂c hG₂`. Set `P₂ : TopologicalSpace.PositiveCompacts G₂` to `⟨⟨K₂', hK₂'c⟩, ⟨1, by rw [hK₂'o.interior_eq]; exact K₂.one_mem⟩⟩`.
+
+Set `μ₂ : Measure G₂` to `Measure.haarMeasure P₂`. Establish `hμ₂ : μ₂ K₂' = 1` using `Measure.haarMeasure_self`. Set `U₂ : Set (R.subgroupOf G₂)` to `{b | ((b : G₂) : H) ∈ K₂}`. Establish `hU₂o : IsOpen U₂` using `hK₂'o.preimage continuous_subtype_val`. Establish `hU₂c : IsCompact U₂` using `isCompact_setOf_val hK₂'c (hRc G₂)`.
+
+Set `Q₂ : TopologicalSpace.PositiveCompacts (R.subgroupOf G₂)` to `⟨⟨U₂, hU₂c⟩, ⟨1, by rw [hU₂o.interior_eq]; exact K₂.one_mem⟩⟩`. Set `ρ₂ : Measure (R.subgroupOf G₂)` to `Measure.haarMeasure Q₂`. Establish `hρ₂ : ρ₂ U₂ = 1` using `Measure.haarMeasure_self`. Take `⟨cμ, hcμ, hμe⟩` from `exists_eq_map_smul_prod E μ μ₁ μ₂`. Take `⟨cρ, hcρ, hρe⟩` from `exists_eq_map_smul_prod ER ρ ρ₁ ρ₂`.
+
+Set `ME` to `E.toHomeomorph.toMeasurableEquiv`. Set `MR` to `ER.toHomeomorph.toMeasurableEquiv`. Establish `hμe' : μ = (cμ • μ₁.prod μ₂).map ME` using `hμe`. Establish `hρe' : ρ = (cρ • ρ₁.prod ρ₂).map MR` using `hρe`. Establish `hvμ : μ.real {g | ∃ a ∈ K₁, ∃ b ∈ K₂, g.1 = a * b} = cμ`.
+
+Establish `hpre : ME ⁻¹' {g : G | ∃ a ∈ K₁, ∃ b ∈ K₂, g.1 = a * b} = {x : G₁ | (x : H) ∈ K₁} ×ˢ K₂'`. Use extensionality with `p`. Express the relevant statement in the definitionally equal form `(∃ a ∈ K₁, ∃ b ∈ K₂, ((E p : G) : H) = a * b) ↔ ((p.1 : H) ∈ K₁ ∧ (p.2 : H) ∈ K₂)`. Rewrite using `[mulProdEquiv_apply]`. Prove the components needed by the constructor for the conclusion.
+
+Introduce and unpack `⟨a, ha, b, hb, hab⟩`. Use `eq_of_mul_eq e he (p := p) (q := (⟨a, hK₁ ha⟩, ⟨b, hK₂ hb⟩)) hab` as an intermediate fact. Substitute `this` using the available equality. Conclude with `⟨ha, hb⟩`. Introduce and unpack `⟨ha, hb⟩`.
+
+Conclude with `⟨_, ha, _, hb, rfl⟩`. Rewrite using `[Measure.real, hμe', ME.map_apply, hpre, Measure.smul_apply, Measure.prod_prod, hμ₁, hμ₂]`. Simplify using the standard rewrite rules. Establish `hvρ : ρ.real {g | ∃ a ∈ K₁, ∃ b ∈ K₂, g.1.1 = a * b} = cρ`. Establish `hpre : MR ⁻¹' {g : R.subgroupOf G | ∃ a ∈ K₁, ∃ b ∈ K₂, g.1.1 = a * b} = {a : R.subgroupOf G₁ | ((a : G₁) : H) ∈ K₁} ×ˢ U₂`.
+
+Use extensionality with `p`. Express the relevant statement in the definitionally equal form `(∃ a ∈ K₁, ∃ b ∈ K₂, (((ER p : R.subgroupOf G) : G) : H) = a * b) ↔ (((p.1 : G₁) : H) ∈ K₁ ∧ ((p.2 : G₂) : H) ∈ K₂)`. Rewrite using `[mulProdEquivR_apply, mulProdEquiv_apply]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨a, ha, b, hb, hab⟩`.
+
+Establish `h3` using `eq_of_mul_eq e he (p := ((p.1 : G₁), (p.2 : G₂))) (q := (⟨a, hK₁ ha⟩, ⟨b, hK₂ hb⟩)) hab`. Establish `h4` using `congrArg (fun q : G₁ × G₂ => ((q.1 : H), (q.2 : H))) h3`. Simplify using `only [Prod.mk.injEq] at h4`. Rewrite using `[h4.1, h4.2]`. Conclude with `⟨ha, hb⟩`.
+
+Introduce and unpack `⟨ha, hb⟩`. Conclude with `⟨_, ha, _, hb, rfl⟩`. Rewrite using `[Measure.real, hρe', MR.map_apply, hpre, Measure.smul_apply, Measure.prod_prod, hρ₁, hρ₂]`. Simplify using the standard rewrite rules. Use `haveI : ρ₂.IsInvInvariant := by`.
+
+Use `isInvInvariant_of_prod ER ρ ρ₁ ρ₂ cρ hcρ hρe (U := {a : R.subgroupOf G₁ | ((a : G₁) : H) ∈ K₁}) ?_ hρ₁` and prove the remaining obligations. Use extensionality with `a`. Simplify using `[Set.mem_inv]`. Set `T : G₂ → Set (R.subgroupOf G₂)` to `fun y => {b | (b : G₂) * y ∈ K₂'}`. Establish `hTm : ∀ y, MeasurableSet (T y)` using `fun y => (hK₂'o.preimage (continuous_subtype_val.mul continuous_const)).measurableSet`.
+
+Establish `hT1 : ∀ y (b₀ : R.subgroupOf G₂), (b₀ : G₂) * y ∈ K₂' → ρ₂ (T y) = 1`. Introduce `y b₀ hb₀`. Establish `hk : ((b₀ : G₂) : H) * (y : H) ∈ K₂` using `hb₀`. Establish `hTy : T y = {b | b * b₀⁻¹ ∈ U₂}`. Use extensionality with `b`.
+
+Express the relevant statement in the definitionally equal form `((b : G₂) : H) * (y : H) ∈ K₂ ↔ ((b : G₂) : H) * ((b₀ : G₂) : H)⁻¹ ∈ K₂`. Rewrite using `[← K₂.mul_mem_cancel_right (K₂.inv_mem hk)]`. Rewrite using `[show ((b : G₂) : H) * (y : H) * (((b₀ : G₂) : H) * (y : H))⁻¹ = ((b : G₂) : H) * ((b₀ : G₂) : H)⁻¹ by group]`. Rewrite using `[hTy, measure_setOf_mul_mem ρ₂ ?_ b₀⁻¹, hρ₂]`. Use extensionality with `b`.
+
+Simplify using `[U₂, Set.mem_inv]`. Establish `hT0 : ∀ y, (¬ ∃ b₀ : R.subgroupOf G₂, (b₀ : G₂) * y ∈ K₂') → T y = ∅` using `fun y hy => by`. Use extensionality with `b`. Simplify using `only [Set.mem_empty_iff_false, iff_false]`. Conclude with `fun hb => hy ⟨b, hb⟩`.
+
+Establish `hTfin : ∀ y, ρ₂ (T y) ≠ ⊤`. Introduce `y`. Distinguish the cases in `hy : ∃ b₀ : R.subgroupOf G₂, (b₀ : G₂) * y ∈ K₂'`. Rewrite using `[hT1 y _ hy.choose_spec]`. Simplify using the standard rewrite rules.
+
+Rewrite using `[hT0 y hy]`. Simplify using the standard rewrite rules. Establish `hfv : ∀ h : G, f h.1 = f ((E.symm h).1 : H) * (ρ₂.real (T (E.symm h).2) : ℂ)`. Introduce `h`. Establish `hxy : (h : H) = ((E.symm h).1 : H) * ((E.symm h).2 : H)` using `(mulProdEquiv_symm_mul hc e he h).symm`.
+
+Distinguish the cases in `hex : ∃ b₀ : R.subgroupOf G₂, (b₀ : G₂) * (E.symm h).2 ∈ K₂'`. Take `⟨b₀, hb₀⟩` from `hex`. Rewrite using `[Measure.real, hT1 _ b₀ hb₀, hxy]`. Simplify using `only [ENNReal.toReal_one, Complex.ofReal_one, mul_one]`. Conclude with `f_mul_of_mem hc h1 h2 hf1 hf2 (E.symm h).1.2 (Subgroup.mem_subgroupOf.1 b₀.2) (b₀ : G₂).2 hb₀`.
+
+Rewrite using `[Measure.real, hT0 _ hex, hxy]`. Simplify using `only [measure_empty, ENNReal.toReal_zero, Complex.ofReal_zero, mul_zero]`. Conclude with `f_mul_eq_zero hc e he hRm h1 h2 hK₂ hf3 (E.symm h).1.2 (E.symm h).2.2 fun b hbR hb hby => hex ⟨⟨⟨b, hb⟩, Subgroup.mem_subgroupOf.2 hbR⟩, hby⟩`. Take `⟨φ₁, hφi, hφr, hφf, hz⟩` from `hq`. Set `ind : G₂ → ℂ` to `K₂'.indicator (fun _ => 1)`.
+
+Set `Ψ : G₁ × G₂ → ℂ` to `fun p => ((cρ : ℂ)⁻¹ * φ₁ p.1) * ind p.2`. Establish `hindi : Integrable ind μ₂` using `(integrableOn_const (C := (1 : ℂ)) (by rw [hμ₂]; simp) (by simp)).integrable_indicator hK₂'o.measurableSet`. Establish `hΨ : Integrable Ψ (μ₁.prod μ₂)` using `(hφi.const_mul _).mul_prod hindi`. Establish `hΨE : ((fun g => Ψ (E.symm g)) ∘ ME) = Ψ`. Use function extensionality and compare the values at `p`.
+
+Simplify using `only [Function.comp]`. Conclude with `congrArg Ψ (E.symm_apply_apply p)`. Establish `hΨR : ∀ (h : G) (p : R.subgroupOf G₁ × R.subgroupOf G₂), Ψ (E.symm (((MR p : R.subgroupOf G) : G) * h)) = ((cρ : ℂ)⁻¹ * φ₁ ((p.1 : G₁) * (E.symm h).1)) * (T (E.symm h).2).indicator (fun _ => (1 : ℂ)) p.2`. Introduce `h p`. Establish `h5 : E.symm (((MR p : R.subgroupOf G) : G) * h) = ((p.1 : G₁) * (E.symm h).1, (p.2 : G₂) * (E.symm h).2)`.
+
+Rewrite using `[map_mul]`. Establish `h6 : E.symm ((MR p : R.subgroupOf G) : G) = ((p.1 : G₁), (p.2 : G₂))` using `E.symm_apply_apply _`. Rewrite using `[h6]`. Both sides reduce to the same expression. Rewrite using `[h5]`.
+
+Both sides reduce to the same expression. Use `⟨fun g => Ψ (E.symm g), ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[hμe', integrable_map_equiv, hΨE]`. Conclude with `hΨ.smul_measure ENNReal.coe_ne_top`. Introduce `h`.
+
+Rewrite using `[hρe', integrable_map_equiv]`. Simplify using `only [Function.comp_def, hΨR]`. Use `(Integrable.mul_prod ((hφr _).const_mul _) ?_).smul_measure ENNReal.coe_ne_top` and prove the remaining obligations. Conclude with `(integrableOn_const (C := (1 : ℂ)) (hTfin _) (by simp)).integrable_indicator (hTm _)`. Introduce `h`.
+
+Rewrite using `[hρe', integral_map_equiv, integral_smul_nnreal_measure]`. Simplify using `only [hΨR]`. Rewrite using `[integral_prod_mul (fun a : R.subgroupOf G₁ => (cρ : ℂ)⁻¹ * φ₁ ((a : G₁) * (E.symm h).1)) (fun b => (T (E.symm h).2).indicator (fun _ => (1 : ℂ)) b)]`. Rewrite using `[integral_const_mul, ← hφf, integral_indicator_const _ (hTm _), hfv h]`. Establish `hc0 : (cρ : ℂ) ≠ 0` using `by exact_mod_cast hcρ.ne'`.
+
+Simplify using `only [NNReal.smul_def, Complex.real_smul, mul_one]`. Clear the denominators using the available nonvanishing facts. Establish `hΨE' : ∀ p, Ψ (E.symm (ME p)) = Ψ p` using `fun p => congrArg Ψ (E.symm_apply_apply p)`. Rewrite using `[hvμ, hvρ, hμe', integral_map_equiv, integral_smul_nnreal_measure]`. Simplify using `only [hΨE']`.
+
+Use `show _ = cμ • ∫ p, ((cρ : ℂ)⁻¹ * φ₁ p.1) * ind p.2 ∂(μ₁.prod μ₂)`. Rewrite using `[integral_prod_mul (fun a : G₁ => (cρ : ℂ)⁻¹ * φ₁ a) ind, integral_const_mul, ← hz, integral_indicator_const _ hK₂'o.measurableSet, Measure.real, hμ₂]`. Establish `hc0 : (cρ : ℂ) ≠ 0` using `by exact_mod_cast hcρ.ne'`. Simplify using `only [NNReal.smul_def, Complex.real_smul, ENNReal.toReal_one, one_smul, mul_one]`. Use `push_cast`.
+
+Clear the denominators using the available nonvanishing facts.
+-/
 theorem collapse_factor : ∀ (H : Type) [Group H] [TopologicalSpace H] [IsTopologicalGroup H] [SecondCountableTopology H] [LocallyCompactSpace H] [T2Space H] [MeasurableSpace H] [BorelSpace H] (G G₁ G₂ R K₁ K₂ : Subgroup H), IsClosed (G : Set H) → IsClosed (G₁ : Set H) → IsClosed (G₂ : Set H) → IsClosed (R : Set H) → G₁ ≤ G → G₂ ≤ G → (∀ a ∈ G₁, ∀ b ∈ G₂, a * b = b * a) → (∃ e : (G₁ × G₂) ≃ₜ G, ∀ p, (e p : H) = p.1 * p.2) → (∀ a ∈ G₁, ∀ b ∈ G₂, a * b ∈ R → a ∈ R ∧ b ∈ R) → K₁ ≤ G₁ → K₂ ≤ G₂ → IsCompact (K₁ : Set H) → IsCompact (K₂ : Set H) → IsOpen ((K₁.subgroupOf G₁ : Subgroup G₁) : Set G₁) → IsOpen ((K₂.subgroupOf G₂ : Subgroup G₂) : Set G₂) → ∀ (ρ : Measure (R.subgroupOf G)) (μ : Measure G) (ρ₁ : Measure (R.subgroupOf G₁)) (μ₁ : Measure G₁), ρ.IsHaarMeasure → μ.IsHaarMeasure → ρ₁.IsHaarMeasure → μ₁.IsHaarMeasure → ρ.IsInvInvariant → μ₁ {g | g.1 ∈ K₁} = 1 → ρ₁ {g | g.1.1 ∈ K₁} = 1 → ∀ (f : H → ℂ) (z : ℂ), (∀ r ∈ R, r ∈ G → ∀ g ∈ G, f (r * g) = f g) → (∀ k ∈ K₂, ∀ g ∈ G, f (g * k) = f g) → (∀ g ∈ G, f g ≠ 0 → ∃ r ∈ R, r ∈ G ∧ ∃ x ∈ G₁, ∃ k ∈ K₂, g = r * x * k) → IsQuotIntL1 ρ₁ μ₁ (fun x => f x.1) z → IsQuotIntL1 ρ μ (fun g => f g.1) (((μ.real {g | ∃ a ∈ K₁, ∃ b ∈ K₂, g.1 = a * b} / ρ.real {g | ∃ a ∈ K₁, ∃ b ∈ K₂, g.1.1 = a * b} : ℝ) : ℂ) * z) := by
   intro H _ _ _ _ _ _ _ _ G G₁ G₂ R K₁ K₂ hG hG₁ hG₂ hR h1 h2 hc he0 hRm hK₁ hK₂ hK₁c hK₂c hK₁o hK₂o ρ μ ρ₁ μ₁
     _ _ _ _ _ hμ₁ hρ₁ f z hf1 hf2 hf3 hq

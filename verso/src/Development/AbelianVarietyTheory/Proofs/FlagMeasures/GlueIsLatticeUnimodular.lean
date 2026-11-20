@@ -10,6 +10,17 @@ namespace GlobalTheory.RowsOrb.Glue
 
 open GlobalTheory.LoopC.RowGlue
 
+/- English proof (translation)
+Introduce `D large₂ X _ L hL hU`. Establish `H : IsHypFrame (VS D).hT X.eX X.fY` using `⟨(VS D).herm, X.ee, X.ff, X.ef⟩`. Establish `h0 : ∀ a, aaD D a ≠ 0` using `fun a => zpow_ne_zero _ (ddS_ne_zero D)`. Establish `hs : ∀ a, StarStable (aaD D a)` using `fun a => (ddS_stable D).zpow (ddS_ne_zero D) _`. Establish `hmid : ∀ w ∈ L.map ((GlobalTheory.RowsOrb.Wb X).subtype.restrictScalars (𝓞 D.host.E)), Mid (VS D).hT X.eX X.fY w`.
+
+Introduce and unpack `_ ⟨w, -, rfl⟩`. Conclude with `w.2`. Use `⟨H.isLattice (A := fun a => aaD D a) (B := fun a => (aaD D a)⁻¹) h0 (fun a => inv_ne_zero (h0 a)) (hL.fg.map _) ?_, (H.unimodular_iff (A := fun a => aaD D a) (B := fun a => (aaD D a)⁻¹) hmid (fun a => inv_ne_zero (h0 a)) (fun a => (hs a).inv (h0 a)) (fun a => (inv_inv _).symm)).2 …` and prove the remaining obligations. Introduce `w hw`. Establish `h1 : (⟨w, hw⟩ : GlobalTheory.RowsOrb.Wb X) ∈ Submodule.span D.host.E (L : Set (GlobalTheory.RowsOrb.Wb X))`.
+
+Rewrite using `[hL.span_eq_top]`. Discharge the goal by the elementary cases of `trivial`. Establish `h2` using `Submodule.mem_map_of_mem (f := (GlobalTheory.RowsOrb.Wb X).subtype) h1`. Rewrite `h2` using `[Submodule.map_span]`. Conclude with `h2`.
+
+Introduce `w hw`. Establish `key : (⟨w, hw⟩ : GlobalTheory.RowsOrb.Wb X) ∈ Formalism.HermitianLatticesTheory.dual (GlobalTheory.RowsOrb.hb X) L ↔ (⟨w, hw⟩ : GlobalTheory.RowsOrb.Wb X) ∈ L`. Rewrite using `[show Formalism.HermitianLatticesTheory.dual (GlobalTheory.RowsOrb.hb X) L = L from hU]`. Simplify using `only [Formalism.HermitianLatticesTheory.dual, Formalism.E.hdual, Submodule.mem_iInf, Submodule.mem_comap] at key ⊢`. Prove the components needed by the constructor for the conclusion.
+
+Introduce `h`. Conclude with `⟨⟨w, hw⟩, key.1 fun y hy => h y ⟨y, hy, rfl⟩, rfl⟩`. Introduce and unpack `⟨w', hw', e⟩ _ ⟨y, hy, rfl⟩`. Establish `e' : (⟨w, hw⟩ : GlobalTheory.RowsOrb.Wb X) = w'` using `Subtype.ext e.symm`. Conclude with `key.2 (e' ▸ hw') y hy`.
+-/
 theorem glue_isLattice_unimodular : ∀ (D : D7) (large₂ : SizeData₂ D) (X : HidaSetting D), GlobalTheory.TypeAsm.Std D large₂ → ∀ L : Submodule (𝓞 D.host.E) (GlobalTheory.RowsOrb.Wb X), Submodule.IsLattice D.host.E L → Formalism.HermitianLatticesTheory.IsUnimodular (GlobalTheory.RowsOrb.hb X) L → Submodule.IsLattice D.host.E (latSpanS (fun a => aaD D a) X.eX ⊔ L.map ((GlobalTheory.RowsOrb.Wb X).subtype.restrictScalars (𝓞 D.host.E)) ⊔ latSpanS (fun a => (aaD D a)⁻¹) X.fY) ∧ Formalism.HermitianLatticesTheory.IsUnimodular (VS D).hT (latSpanS (fun a => aaD D a) X.eX ⊔ L.map ((GlobalTheory.RowsOrb.Wb X).subtype.restrictScalars (𝓞 D.host.E)) ⊔ latSpanS (fun a => (aaD D a)⁻¹) X.fY) := by
   intro D large₂ X _ L hL hU
   have H : IsHypFrame (VS D).hT X.eX X.fY := ⟨(VS D).herm, X.ee, X.ff, X.ef⟩

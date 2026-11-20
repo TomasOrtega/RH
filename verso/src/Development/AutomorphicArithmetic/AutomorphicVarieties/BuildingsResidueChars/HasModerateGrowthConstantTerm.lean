@@ -4,6 +4,13 @@ open NumberField NumberField.mixedEmbedding Matrix MeasureTheory GroundTheory.Au
 open scoped TensorProduct
 attribute [local instance 100] LieRing.ofAssociativeRing
 
+/- English proof (translation)
+Introduce `K _ _ n r φ ⟨C, N, hφ⟩`. Take `⟨D, hD, hsub⟩` from `exists_isCompact_superset_unipFundamentalDomain (K := K) (n := n) (r := r)`. Take `⟨M, hM⟩` from `CuspidalSpectrum.exists_height_le_of_isCompact (hD.image continuous_unipGL)`. Establish `hc0 : 0 ≤ heightConst K n` using `le_trans zero_le_one one_le_heightConst`. Establish `hfin : unipMeasure K n r (unipFundamentalDomain K n r) < ⊤` using `(measure_mono hsub).trans_lt hD.measure_lt_top`.
+
+Use `⟨|C| * (heightConst K n * |M|) ^ N * (unipMeasure K n r).real (unipFundamentalDomain K n r), N, fun g => ?_⟩` and prove the remaining obligations. Establish `hg` using `(height_pos g).le`. Establish `hb : ∀ X ∈ unipFundamentalDomain K n r, ‖φ (unipGL X * g)‖ ≤ |C| * (heightConst K n * |M| * AutomorphicForm.height g) ^ N`. Introduce `X hX`. Establish `h1 : AutomorphicForm.height (unipGL X * g) ≤ heightConst K n * |M| * AutomorphicForm.height g` using `(height_mul_le _ _).trans (mul_le_mul_of_nonneg_right (mul_le_mul_of_nonneg_left ((hM _ ⟨X, hsub hX, rfl⟩).trans (le_abs_self M)) hc0) hg)`.
+
+Conclude with `(hφ _).trans (mul_le_mul (le_abs_self C) (pow_le_pow_left₀ (height_pos _).le h1 N) (pow_nonneg (height_pos _).le N) (abs_nonneg C))`. Use `(norm_setIntegral_le_of_norm_le_const hfin hb).trans (le_of_eq ?_)` and prove the remaining obligations. Rewrite using `[mul_pow (heightConst K n * |M|)]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem UpperTheory.hasModerateGrowth_constantTerm :
     ∀ (K : Type) [Field K] [NumberField K] (n r : ℕ) (φ : AdelicGLn.AdelicGL K n → ℂ), HasModerateGrowth φ → HasModerateGrowth (constantTerm r φ) := by
   intro K _ _ n r φ ⟨C, N, hφ⟩

@@ -17,6 +17,9 @@ def AllLinks {eps : ℝ} (Fm : FamP eps) (CV Cabs CH C0 eD eL : ℝ) : Prop :=
 
 abbrev WithTw (𝒞 : FamClass) : FamClass := fun Fm => 𝒞 Fm ∧ TwGood Fm
 
+/- English proof (translation)
+Take `⟨a, ha, h⟩` from `h`. Use `⟨a, ha, fun e he hle => ?_⟩` and prove the remaining obligations. Take `⟨K, hK⟩` from `h e he hle`. Conclude with `⟨K, fun Fm CH hc hL => hK Fm CH hc.1 hL⟩`.
+-/
 theorem Closed.withTw {𝒞 : FamClass} {P : ∀ {eps : ℝ}, FamP eps → ℝ → Prop} (h : Closed 𝒞 P) :
     Closed (WithTw 𝒞) P := by
   obtain ⟨a, ha, h⟩ := h
@@ -24,6 +27,13 @@ theorem Closed.withTw {𝒞 : FamClass} {P : ∀ {eps : ℝ}, FamP eps → ℝ �
   obtain ⟨K, hK⟩ := h e he hle
   exact ⟨K, fun Fm CH hc hL => hK Fm CH hc.1 hL⟩
 
+/- English proof (translation)
+Take `⟨x0, h⟩` from `h`. Establish `ht : Filter.Tendsto (fun x : ℝ => x ^ (eps / 100)) Filter.atTop Filter.atTop` using `tendsto_rpow_atTop (by positivity)`. Take `⟨x2, hx2⟩` from `Filter.eventually_atTop.1 (ht.eventually_ge_atTop Fm.CTu)`. Use `J.muTu_of_sizeTu Fm ⟨max (max x0 x2) (Fm.x1 + 1), fun x hx i u => ?_⟩` and prove the remaining obligations. Establish `a0 : x ≥ x0` using `((le_max_left _ _).trans (le_max_left _ _)).trans hx`.
+
+Establish `a2 : x ≥ x2` using `((le_max_right _ _).trans (le_max_left _ _)).trans hx`. Establish `a1 : Fm.x1 < x` using `lt_of_lt_of_le (by linarith) ((le_max_right _ _).trans hx)`. Use `((h x a0 i).2 u).trans ?_` and prove the remaining obligations. Establish `hL : 0 ≤ (Fm.L x i).sc.L` using `Real.rpow_nonneg (zero_lt_one.trans (Fm.L x i).sc.one_lt_alt).le _`. Establish `hC : Fm.CTu ≤ (Fm.L x i).sc.x ^ szTh (Fm.L x i)`.
+
+Unfold `szTh`. Rewrite using `[Fm.L_x x i a1, Fm.L_eps x i]`. Conclude with `hx2 x a2`. Conclude with `mul_le_mul_of_nonneg_right (mul_le_mul_of_nonneg_right hC (Nat.cast_nonneg _)) hL`.
+-/
 theorem muTu_of_tuSize {eps : ℝ} (Fm : FamP eps) (h0 : 0 < eps) (h : TuSize Fm) : J.MuTu Fm := by
   obtain ⟨x0, h⟩ := h
   have ht : Filter.Tendsto (fun x : ℝ => x ^ (eps / 100)) Filter.atTop Filter.atTop :=

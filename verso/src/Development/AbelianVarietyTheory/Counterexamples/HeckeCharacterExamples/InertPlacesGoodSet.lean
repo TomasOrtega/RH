@@ -11,6 +11,9 @@ namespace GlobalTheory.Survey.InertPlacesGoodSet
 
 open NumberField IsDedekindDomain Formalism.BasicNotions Formalism.BasicNotions.Loc Formalism.WeaklyAdmissibleFiltrations Formalism.MainNotions Formalism.MainNotions.N Module
 
+/- English proof (translation)
+Unfold `TwistedPlaces.InertK Host.cls primeClass at h`. Use `split_ifs at h with h1 h3 h4 h5`. Apply the tactic sequence `all_goals first`. Consider the case `exact ⟨h1, h3, h4, h5⟩`. Consider the case `simp at h`.
+-/
 theorem inert_jacobi {D : D7} {l : ℕ} (h : TwistedPlaces.InertK D l) :
     l ∉ D.host.small ∧ l ≠ D.host.q ∧ l ≠ D.host.d ∧ jacobiSym (-(D.host.d : ℤ)) l ≠ 1 := by
   unfold TwistedPlaces.InertK Host.cls primeClass at h
@@ -19,6 +22,9 @@ theorem inert_jacobi {D : D7} {l : ℕ} (h : TwistedPlaces.InertK D l) :
     | exact ⟨h1, h3, h4, h5⟩
     | simp at h
 
+/- English proof (translation)
+Assume the negation of the conclusion as `hlt`. Conclude with `(inert_jacobi h).2.2.2 (D.host.split_small l hl (fun e => (inert_jacobi h).1 (e ▸ D.host.two_mem_small)) (by omega))`.
+-/
 theorem eleven_le {D : D7} {l : ℕ} (hl : l.Prime) (h : TwistedPlaces.InertK D l) (hs : 10 ≤ D.host.splitBound) : 11 ≤ l := by
   by_contra hlt
   exact (inert_jacobi h).2.2.2 (D.host.split_small l hl (fun e => (inert_jacobi h).1 (e ▸ D.host.two_mem_small)) (by omega))
@@ -32,6 +38,11 @@ variable {D : D7} {L : SizeData₂ D} {HW : HWOf D.loc} {i : D.nd.Loc}
 
 attribute [local instance] nLet_neZero
 
+/- English proof (translation)
+Introduce `T₁ T₂ F h2 h1 hF`. Establish `hp : ((D.loc (D.nd.l i)).PD (D.nbr i w hw).Kw).p = D.nd.l i` using `(D.loc _).PD_p _`. Establish `hcA` using `caseA_of_unram (D.loc (D.nd.l i)) (HW (D.nd.l i)) hG hb.unram (by omega)`. Establish `hrk : finrank ↥Cx.LL.1 T₂.V = D.R.r`. Take `⟨e, -⟩` from `h2`.
+
+Rewrite using `[e.finrank_eq]`. Simplify using the standard rewrite rules. Use `hA (D.nd.l i) (D.nbr i w hw).Kw Cx.LL (nLet i w hw) (WW HW i w hw Cx hG).emb ⟨hcA.1, Cx.LL.2, rfl, (WW HW i w hw Cx hG).emb_bij, (WW HW i w hw Cx hG).emb_σ, (WW HW i w hw Cx hG).v_l⟩ (by rw [hp]; exact h11) T₁ T₂ F ⟨hb.split _, T₁.mtop, hb.dvr⟩ ⟨T₁.fdim, T₁.mtop, T₁.cont, (hb.t1 …` as an intermediate fact. Rewrite `this` using `[hp]`. Conclude with `this`.
+-/
 theorem rowL_of_wordsB {C₂ : ℝ} (hA : WachCoordinates.Conclusion2 D C₂) (h11 : 11 ≤ D.nd.l i) {Wd : WordDat (nLet i w hw)}
     (hb : WordBase L HW i r ρ π w hw Cx hG Wd) (hB : WordsB L C₂ (D.nd.l i) Wd) :
     RowL i r ρ π w hw Cx (C₂ * ((nLet i w hw : ℝ) + 1) * D.R.r *
@@ -53,6 +64,9 @@ theorem rowL_of_wordsB {C₂ : ℝ} (hA : WachCoordinates.Conclusion2 D C₂) (h
   rw [hp] at this
   exact this
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨caseA_of_unram (D.loc (D.nd.l i)) (HW (D.nd.l i)) hG hb.unram h2l, ⟨(hb.t1 T₁ h1).1, (hb.t2 T₂ h2).1, hF⟩, hN.eta_lt, (hb.t1 T₁ h1).2.1, (hb.t2 T₂ h2).2 ft, fun a ha => (hb.thick_or a).resolve_left ha, (hb.t1 T₁ h1).2.2⟩`.
+-/
 theorem setting_of_wordsNT (h2l : D.nd.l i ≠ 2) {Wd : WordDat (nLet i w hw)}
     (hb : WordBase L HW i r ρ π w hw Cx hG Wd) (hN : WordsNT Wd)
     (ft : Fintype (↥(D.nbr i w hw).Kw.1 →ₐ[ℚ_[D.nd.l i]] ↥Cx.LL.1))
@@ -64,6 +78,15 @@ theorem setting_of_wordsNT (h2l : D.nd.l i ≠ 2) {Wd : WordDat (nLet i w hw)}
     ⟨(hb.t1 T₁ h1).1, (hb.t2 T₂ h2).1, hF⟩, hN.eta_lt, (hb.t1 T₁ h1).2.1, (hb.t2 T₂ h2).2 ft,
     fun a ha => (hb.thick_or a).resolve_left ha, (hb.t1 T₁ h1).2.2⟩
 
+/- English proof (translation)
+Establish `hp : ((D.loc (D.nd.l i)).PD (D.nbr i w hw).Kw).p = D.nd.l i` using `(D.loc _).PD_p _`. Use `⟨caseA_of_unram (D.loc (D.nd.l i)) (HW (D.nd.l i)) hG hb.unram (by omega), by rw [hp]; exact h11, hA.even, hb.dvr, by rw [hp]; exact hC.zeta, ⟨(hb.t1 T₁ h1).1, (hb.t2 T₂ h2).1, hF⟩, fun a τ hτ => ?_, hC.mult T₂ h2, fun a => by rw [hp]; exact hA.big1 a, hA.big2⟩` and prove the remaining obligations. Establish `h` using `(hb.t1 T₁ h1).2.1 a τ hτ`. Introduce `z hz`. Establish `hz'` using `h z hz`.
+
+Establish `ht` using `hA.typ a`. Unfold `WordDat.win at hz'`. Unfold `RamifiedCoefficientChains.JumpWinS`. Distinguish the cases in `e : (a.val + d) % 2 = 0`. Establish `hu : ¬ Wd.up a = true` using `fun h => ht.1 h e`.
+
+Rewrite `hz'` using `[if_neg hu]`. Rewrite using `[if_pos e]`. Simplify using `only [Set.mem_union, Set.mem_Icc] at hz' ⊢`. Use `push_cast`. Use linear arithmetic over natural numbers and integers.
+
+Rewrite `hz'` using `[if_pos (ht.2 e)]`. Rewrite using `[if_neg e]`. Simplify using `only [Set.mem_union, Set.mem_Icc] at hz' ⊢`. Use `push_cast`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem setCS_of_wordsAT (h11 : 11 ≤ D.nd.l i) {Wd : WordDat (nLet i w hw)} {d : ℕ}
     (hb : WordBase L HW i r ρ π w hw Cx hG Wd) (hC : WordBaseC (HW := HW) ρ π hG Wd)
     (hA : WordsAT (D.nd.l i) Wd d)

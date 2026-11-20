@@ -8,6 +8,17 @@ noncomputable section
 
 namespace GlobalTheory.Jet.VminusK
 
+/- English proof (translation)
+Set `b` to `Module.finBasis ℂ S`. Set `M : Matrix (Fin (Module.finrank ℂ S)) (Fin (Module.finrank ℂ S)) ℂ` to `Matrix.of fun i j => b.repr ⟨A (b i), hA _ (b i).2⟩ j`. Set `L : (Fin (Module.finrank ℂ S) → ℂ) →L[ℂ] (Fin (Module.finrank ℂ S) → ℂ)` to `LinearMap.toContinuousLinearMap (Matrix.toLin' M)`. Establish `hexp : ∀ t (x : S), φ t x = ∑ j, b.repr x j * φ t (b j)`. Introduce `t x`.
+
+Establish `h` using `congrArg (φ t ∘ₗ S.subtype) (b.sum_repr x)`. Rewrite `h` using `[map_sum]`. Simplify using `only [map_smul, smul_eq_mul] at h`. Conclude with `h.symm`. Establish `key : (fun t i => φ t (b i)) = fun _ => 0`.
+
+Use `ODE_solution_unique_univ (v := fun _ y => L y) (s := fun _ => Set.univ) (K := ‖L‖₊) (t₀ := 0) (fun _ => L.lipschitz.lipschitzOnWith) (fun t => ⟨?_, trivial⟩) (fun t => ⟨?_, trivial⟩) ?_` and prove the remaining obligations. Use `hasDerivAt_pi.2 fun i => ?_` and prove the remaining obligations. Use `(hφ t (b i)).congr_deriv ?_` and prove the remaining obligations. Rewrite using `[hexp t ⟨A (b i), hA _ (b i).2⟩]`. Simplify using `[L, M, Matrix.mulVec, dotProduct]`.
+
+Simplify using `using hasDerivAt_const t (0 : Fin (Module.finrank ℂ S) → ℂ)`. Use function extensionality and compare the values at `i`. Conclude with `h0 _ (b i).2`. Introduce `t x hx`. Rewrite using `[hexp t ⟨x, hx⟩]`.
+
+Use `Finset.sum_eq_zero fun j _ => ?_` and prove the remaining obligations. Use `congrFun (congrFun key t) j` as an intermediate fact. Simplify using `only [Pi.zero_apply] at this`. Rewrite using `[this, mul_zero]`.
+-/
 theorem flow_vanish {W : Type} [AddCommGroup W] [Module ℂ W] (S : Submodule ℂ W) [FiniteDimensional ℂ S]
     (A : W →ₗ[ℂ] W) (hA : ∀ x ∈ S, A x ∈ S) (φ : ℝ → W →ₗ[ℂ] ℂ)
     (hφ : ∀ t x, HasDerivAt (fun s => φ s x) (φ t (A x)) t) (h0 : ∀ x ∈ S, φ 0 x = 0) :
@@ -43,6 +54,9 @@ theorem flow_vanish {W : Type} [AddCommGroup W] [Module ℂ W] (S : Submodule �
 section Linfty
 attribute [local instance] Matrix.linftyOpNormedRing Matrix.linftyOpNormedAlgebra
 
+/- English proof (translation)
+Establish `h` using `hasDerivAt_exp_smul_const (𝕂 := ℂ) Y (s : ℂ)`. Set `L : Matrix (Fin n) (Fin n) ℂ →L[ℂ] ℂ` to `LinearMap.toContinuousLinearMap (Matrix.entryLinearMap ℂ ℂ i j)`. Establish `h1 : HasDerivAt (fun u : ℂ => NormedSpace.exp (u • Y) i j) ((NormedSpace.exp ((s : ℂ) • Y) * Y) i j) (s : ℂ)` using `L.hasFDerivAt.comp_hasDerivAt (s : ℂ) h`. Conclude with `h1.comp_ofReal`.
+-/
 theorem deriv_exp_entry {n : ℕ} (Y : Matrix (Fin n) (Fin n) ℂ) (s : ℝ) (i j : Fin n) :
     HasDerivAt (fun u : ℝ => NormedSpace.exp ((u : ℂ) • Y) i j)
       ((NormedSpace.exp ((s : ℂ) • Y) * Y) i j) s := by
@@ -54,6 +68,9 @@ theorem deriv_exp_entry {n : ℕ} (Y : Matrix (Fin n) (Fin n) ℂ) (s : ℝ) (i 
     L.hasFDerivAt.comp_hasDerivAt (s : ℂ) h
   exact h1.comp_ofReal
 
+/- English proof (translation)
+Establish `h` using `hasDerivAt_exp_smul_const' (𝕂 := ℂ) Y (s : ℂ)`. Set `L : Matrix (Fin n) (Fin n) ℂ →L[ℂ] ℂ` to `LinearMap.toContinuousLinearMap (Matrix.entryLinearMap ℂ ℂ i j)`. Establish `h1 : HasDerivAt (fun u : ℂ => NormedSpace.exp (u • Y) i j) ((Y * NormedSpace.exp ((s : ℂ) • Y)) i j) (s : ℂ)` using `L.hasFDerivAt.comp_hasDerivAt (s : ℂ) h`. Conclude with `h1.comp_ofReal`.
+-/
 theorem deriv_exp_entry' {n : ℕ} (Y : Matrix (Fin n) (Fin n) ℂ) (s : ℝ) (i j : Fin n) :
     HasDerivAt (fun u : ℝ => NormedSpace.exp ((u : ℂ) • Y) i j)
       ((Y * NormedSpace.exp ((s : ℂ) • Y)) i j) s := by
@@ -67,6 +84,9 @@ theorem deriv_exp_entry' {n : ℕ} (Y : Matrix (Fin n) (Fin n) ℂ) (s : ℝ) (i
 
 end Linfty
 
+/- English proof (translation)
+Use `HasDerivAt.fun_sum (u := Finset.univ) (fun k _ => (hG i k).fun_mul (hH k j))` as an intermediate fact. Simplify `this` using `only [Matrix.mul_apply, Matrix.add_apply, Finset.sum_add_distrib]`.
+-/
 theorem deriv_mul_entry {r : ℕ} (G H : ℝ → Matrix (Fin r) (Fin r) ℂ)
     (G' H' : Matrix (Fin r) (Fin r) ℂ) (t : ℝ)
     (hG : ∀ i j, HasDerivAt (fun s => G s i j) (G' i j) t)
@@ -75,6 +95,13 @@ theorem deriv_mul_entry {r : ℕ} (G H : ℝ → Matrix (Fin r) (Fin r) ℂ)
   have := HasDerivAt.fun_sum (u := Finset.univ) (fun k _ => (hG i k).fun_mul (hH k j))
   simpa only [Matrix.mul_apply, Matrix.add_apply, Finset.sum_add_distrib] using this
 
+/- English proof (translation)
+Establish `h1` using `hD.2.2.1 Y hY v`. Establish `h2 : HasDerivAt (fun s : ℝ => σ (NormedSpace.exp (((s - t : ℝ) : ℂ) • Y)) (v : H)) ((∑ a, ∑ b, Y a b • E a b v : V) : H) t`. Establish `h3 : HasDerivAt (fun s : ℝ => σ (NormedSpace.exp ((s : ℂ) • Y)) (v : H)) ((∑ a, ∑ b, Y a b • E a b v : V) : H) (t - t)` using `by rw [sub_self]; exact h1`. Conclude with `h3.comp_sub_const t t`. Establish `h4` using `((σ (NormedSpace.exp ((t : ℂ) • Y))).restrictScalars ℝ).hasFDerivAt.comp_hasDerivAt t h2`.
+
+Use `h4.congr_of_eventuallyEq (Filter.Eventually.of_forall fun s => ?_)` and prove the remaining obligations. Use `beta_reduce`. Establish `h5` using `oneParam n Y t (s - t)`. Rewrite `h5` using `[add_sub_cancel]`. Rewrite using `[h5, hσ.1.2 _ (expUJ n ε Y hY t) _ (expUJ n ε Y hY (s - t))]`.
+
+Both sides reduce to the same expression.
+-/
 theorem deriv_orbit {n : ℕ} {ε : Fin n → Bool} {H : Type} [NormedAddCommGroup H] [InnerProductSpace ℂ H]
     {σ : Matrix (Fin n) (Fin n) ℂ → (H →L[ℂ] H)} {V : Submodule ℂ H} {E : Fin n → Fin n → Module.End ℂ V}
     (hσ : IsURepOn (UJset ε) σ) (hD : IsDer ε σ V E) {Y : Matrix (Fin n) (Fin n) ℂ} (hY : inG ε Y)
@@ -105,6 +132,13 @@ def matOf {n : ℕ} {V : Type} [AddCommGroup V] [Module ℂ V] (ℓ : V →ₗ[�
     ext a b
     simp [at1]
 
+/- English proof (translation)
+Establish `h : ∀ c d a b, matOf ℓ (arrE E 1 c d G) a b = (if a = c then matOf ℓ G d b else 0) - (if b = d then matOf ℓ G a c else 0) + ℓ (E c d (at1 G a b))`. Introduce `c d a b`. Use `congrArg ℓ (arr_operator_one_apply E c d G a b)` as an intermediate fact. Rewrite `this` using `[map_add, map_sub, apply_ite ℓ, apply_ite ℓ, map_zero]`. Conclude with `this`.
+
+Use extensionality with `a b`. Simplify using `only [LinearMap.sum_apply, LinearMap.smul_apply, map_sum, map_smul, Matrix.sum_apply, Matrix.smul_apply, h, smul_eq_mul, mul_add, mul_sub, Finset.sum_add_distrib, Finset.sum_sub_distrib, Matrix.add_apply, Matrix.sub_apply, Matrix.of_apply, Matrix.mul_apply, mul_ite, mul_zero]`. Use `congr 2`. Rewrite using `[Finset.sum_comm]`. Simplify using the standard rewrite rules.
+
+Simplify using `[mul_comm]`.
+-/
 theorem matOf_act {n : ℕ} {V : Type} [NormedAddCommGroup V] [InnerProductSpace ℂ V]
     (E : Fin n → Fin n → Module.End ℂ V) (ℓ : V →ₗ[ℂ] ℂ) (Y : Matrix (Fin n) (Fin n) ℂ) (G : Arr V n 1) :
     matOf ℓ ((∑ c, ∑ d, Y c d • arrE E 1 c d) G) =
@@ -125,6 +159,9 @@ theorem matOf_act {n : ℕ} {V : Type} [NormedAddCommGroup V] [InnerProductSpace
     simp
   · simp [mul_comm]
 
+/- English proof (translation)
+Establish `h1` using `congrFun (congrFun hY.2 c) d`. Simplify using `only [Jm, Matrix.mul_diagonal, Matrix.diagonal_mul] at h1`. Apply the tactic sequence `cases hc : ε c <;> cases hd : ε d <;> simp [hc, hd] at h h1`. Take the linear combination `h1 / 2`. Take the linear combination `-h1 / 2`.
+-/
 theorem inK_entry {n : ℕ} {ε : Fin n → Bool} {Y : Matrix (Fin n) (Fin n) ℂ} (hY : inK ε Y) {c d : Fin n}
     (h : ε c ≠ ε d) : Y c d = 0 := by
   have h1 := congrFun (congrFun hY.2 c) d
@@ -133,6 +170,31 @@ theorem inK_entry {n : ℕ} {ε : Fin n → Bool} {Y : Matrix (Fin n) (Fin n) �
   · linear_combination h1 / 2
   · linear_combination -h1 / 2
 
+/- English proof (translation)
+Introduce `n ε H _ _ _ σ V E abelian₂ u hσ hD hΛ hfd G hG k hk c d hcd`. Take `⟨hst, -, hfm, hvan⟩` from `VminusComp.vminus_comp V n ε E abelian₂ u hD.1 hD.2.1 hΛ hfd`. Establish `hks` using `Kset_star ε hk`. Establish `hinv : k⁻¹ = star k` using `Matrix.inv_eq_left_inv hk.1.1`. Take `⟨Y, hY, hexp, -⟩` from `compact_exponential_surjective n ε _ hks`.
+
+Establish `hexp' : NormedSpace.exp (-Y) = k`. Rewrite using `[Matrix.exp_neg, hexp]`. Conclude with `Matrix.inv_eq_left_inv hk.1.2`. Set `ℓ : ℝ → V →ₗ[ℂ] ℂ` to `fun t => (innerₛₗ ℂ (u : H)) ∘ₗ (σ (NormedSpace.exp ((t : ℂ) • Y))).toLinearMap ∘ₗ V.subtype`. Establish `hℓ : ∀ t (v : V), ℓ t v = ⟪(u : H), σ (NormedSpace.exp ((t : ℂ) • Y)) v⟫_ℂ` using `fun _ _ => rfl`.
+
+Set `φ : ℝ → Arr V n 1 →ₗ[ℂ] ℂ` to `fun t => Matrix.entryLinearMap ℂ ℂ c d ∘ₗ LinearMap.mulRight ℂ (NormedSpace.exp ((t : ℂ) • (-Y))) ∘ₗ LinearMap.mulLeft ℂ (NormedSpace.exp ((t : ℂ) • Y)) ∘ₗ matOf (ℓ t)`. Establish `hφ : ∀ t G, φ t G = (NormedSpace.exp ((t : ℂ) • Y) * matOf (ℓ t) G * NormedSpace.exp ((t : ℂ) • (-Y))) c d` using `fun _ _ => rfl`. Establish `main` using `flow_vanish (Vminus ε E abelian₂ u) (∑ c, ∑ d, Y c d • arrE E 1 c d) ?_ φ ?_ ?_ 1 G hG`. Rewrite `main` using `[hφ, Complex.ofReal_one, one_smul, one_smul, hexp, hexp', ← hinv]`. Rewrite using `[← main]`.
+
+Simplify using `only [Matrix.mul_apply, Finset.sum_mul]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun b _ => Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Establish `e1 : matOf (ℓ 1) G a b = ⟪σ k (u : H), (at1 G a b : V)⟫_ℂ` using `by show ℓ 1 (at1 G a b) = _`. Rewrite using `[hℓ, Complex.ofReal_one, one_smul, hexp]`.
+
+Establish `hkU : k ∈ UJset ε` using `(kFacts n ε).1 k hk`. Establish `hsU : star k ∈ UJset ε` using `(kFacts n ε).1 _ hks`. Establish `h1 : σ k (σ (star k) (at1 G a b : V)) = (at1 G a b : V)`. Use `hσ.1.2 k hkU _ hsU` as an intermediate fact. Rewrite `this` using `[hk.1.2, hσ.1.1]`.
+
+Conclude with `(congrArg (fun T : H →L[ℂ] H => T (at1 G a b : V)) this).symm`. Set `I : H →ₗᵢ[ℂ] H` to `⟨(σ k).toLinearMap, hσ.2.1 k hkU⟩`. Establish `h2` using `I.inner_map_map (u : H) (σ (star k) (at1 G a b : V))`. Rewrite using `[← h2]`. Use `show ⟪σ k (u : H), σ k (σ (star k) (at1 G a b : V))⟫_ℂ = _`.
+
+Rewrite using `[h1]`. Rewrite using `[e1]`. Expand and normalize the polynomial expressions, which then agree. Introduce `x hx`. Simplify using `only [LinearMap.sum_apply, LinearMap.smul_apply]`.
+
+Use `Submodule.sum_mem _ fun a _ => Submodule.sum_mem _ fun b _ => ?_` and prove the remaining obligations. Distinguish the cases in `h : ε a = ε b`. Conclude with `Submodule.smul_mem _ _ (hst a b h x hx)`. Apply the tactic sequence `rw [inK_entry hY h, zero_smul]`. Conclude with `Submodule.zero_mem _`.
+
+Introduce `t x`. Establish `hM : ∀ a b, HasDerivAt (fun s => matOf (ℓ s) x a b) ((Matrix.of fun a b => ℓ t (∑ c, ∑ d, Y c d • E c d (at1 x a b))) a b) t`. Introduce `a b`. Conclude with `((innerSL ℂ (u : H)).restrictScalars ℝ).hasFDerivAt.comp_hasDerivAt t (deriv_orbit hσ hD hY.1 (at1 x a b) t)`. Apply the tactic sequence `have h1 := deriv_mul_entry _ _ _ _ t (deriv_mul_entry _ _ _ _ t (deriv_exp_entry Y t) hM) (deriv_exp_entry' (-Y) t) c d`.
+
+Simplify using `only [hφ]`. Use `h1.congr_deriv ?_` and prove the remaining obligations. Rewrite using `[matOf_act]`. Use `congrFun (congrFun ?_ c) d` and prove the remaining obligations. Use `noncomm_ring`.
+
+Introduce `x hx`. Rewrite using `[hφ]`. Simplify using `only [Complex.ofReal_zero, zero_smul, NormedSpace.exp_zero, Matrix.one_mul, Matrix.mul_one]`. Use `show ℓ 0 (at1 x c d) = 0`. Rewrite using `[hℓ, Complex.ofReal_zero, zero_smul, NormedSpace.exp_zero, hσ.1.1]`.
+
+Conclude with `hvan x hx c d hcd`.
+-/
 theorem vminus_K : ∀ (n : ℕ) (ε : Fin n → Bool) (H : Type) [NormedAddCommGroup H] [InnerProductSpace ℂ H] [CompleteSpace H] (σ : Matrix (Fin n) (Fin n) ℂ → (H →L[ℂ] H)) (V : Submodule ℂ H) (E : Fin n → Fin n → Module.End ℂ V) (abelian₂ : Fin n → ℝ) (u : V), IsURepOn (UJset ε) σ → IsDer ε σ V E → KHighest ε E abelian₂ u → FiniteDimensional ℂ (kSpan ε E u) → ∀ G ∈ Vminus ε E abelian₂ u, ∀ k ∈ Kset ε, ∀ c d : Fin n, ¬ d < c → ∑ a, ∑ b, k⁻¹ c a * k b d * ⟪σ k (u : H), (at1 G a b : V)⟫_ℂ = 0 := by
   intro n ε H _ _ _ σ V E abelian₂ u hσ hD hΛ hfd G hG k hk c d hcd
   obtain ⟨hst, -, hfm, hvan⟩ := VminusComp.vminus_comp V n ε E abelian₂ u hD.1 hD.2.1 hΛ hfd

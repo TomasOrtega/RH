@@ -11,6 +11,9 @@ namespace BesselUnitaryEquiv
 
 variable {k r : ℕ}
 
+/- English proof (translation)
+Unfold `lmulM`. Use `first`. Consider the case `fun_prop`. Consider the case `exact continuous_const.matrix_mul continuous_id`. Consider the case `continuity`.
+-/
 theorem continuous_lmulM (a : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ) :
     Continuous (lmulM (k := k) (r := r) a) := by
   unfold lmulM
@@ -19,6 +22,9 @@ theorem continuous_lmulM (a : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1))
   | exact continuous_const.matrix_mul continuous_id
   | continuity
 
+/- English proof (translation)
+Unfold `conjM`. Use `first`. Consider the case `fun_prop`. Consider the case `exact (continuous_const.matrix_mul continuous_id).matrix_mul continuous_const`. Consider the case `continuity`.
+-/
 theorem continuous_conjM (a : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ) :
     Continuous (conjM (k := k) (r := r) a) := by
   unfold conjM
@@ -57,6 +63,9 @@ def conjE (a : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ) (ha : IsU
   measurable_toFun := (continuous_conjM a).measurable
   measurable_invFun := (continuous_conjM a⁻¹).measurable
 
+/- English proof (translation)
+Rewrite using `[← hf.integral_comp hfe I₁, integral_congr_ae h]`. Conclude with `L.integral_comp_comm I₀`.
+-/
 theorem integral_transfer {α E F : Type*} [MeasurableSpace α] {μ : Measure α}
     [NormedAddCommGroup E] [NormedSpace ℂ E] [NormedSpace ℝ E]
     [NormedAddCommGroup F] [NormedSpace ℂ F] [NormedSpace ℝ F]
@@ -66,6 +75,9 @@ theorem integral_transfer {α E F : Type*} [MeasurableSpace α] {μ : Measure α
   rw [← hf.integral_comp hfe I₁, integral_congr_ae h]
   exact L.integral_comp_comm I₀
 
+/- English proof (translation)
+Unfold `IsCRepOn at hπ`. Rewrite using `[← ContinuousLinearMap.comp_apply, ← hπ.2 a ha b hb, hab, hπ.1]`. Apply the tactic sequence `try rfl`.
+-/
 theorem rep_inv {W : Type*} [NormedAddCommGroup W] [NormedSpace ℂ W] {m : ℕ}
     {U : Set (Matrix (Fin m) (Fin m) ℂ)} {π : Matrix (Fin m) (Fin m) ℂ → (W →L[ℂ] W)}
     (hπ : IsCRepOn U π) {a b : Matrix (Fin m) (Fin m) ℂ} (ha : a ∈ U) (hb : b ∈ U)
@@ -77,6 +89,29 @@ theorem rep_inv {W : Type*} [NormedAddCommGroup W] [NormedSpace ℂ W] {m : ℕ}
 end BesselUnitaryEquiv
 
 open BesselUnitaryEquiv in
+/- English proof (translation)
+Introduce `Wp Wq _ _ _ _ _ _ k r z z' c π π' μW μN μW' _ _ _ F hz hz' hN hW hW' hWl hW'l hNc hπ hπ' g h₀ hh₀ h₀' hh₀'`. Establish `hu₀` using `WeylGroupFacts.isUnit_of_uh hh₀.1`. Establish `hu₀'` using `WeylGroupFacts.isUnit_of_uh hh₀'.1`. Establish `hi₀ : h₀⁻¹ ∈ UWset k r z` using `WeylGroupFacts.uw_inv hh₀`. Establish `hi₀' : h₀'⁻¹ ∈ UWset k r z'` using `WeylGroupFacts.uw_inv hh₀'`.
+
+Establish `hui₀' : IsUnit (h₀'⁻¹).det` using `WeylGroupFacts.isUnit_of_uh hi₀'.1`. Set `Φ : (Mt k r × Mt k r) × (Mt k r × Mt k r) ≃ᵐ (Mt k r × Mt k r) × (Mt k r × Mt k r)` to `((lmulE h₀ hu₀).prodCongr (conjE h₀ hu₀)).prodCongr ((lmulE h₀'⁻¹ hui₀').prodCongr (conjE h₀'⁻¹ hui₀'))`. Establish `hΦe : MeasurableEmbedding (Prod.map (Prod.map (lmulM h₀) (conjM h₀)) (Prod.map (lmulM h₀'⁻¹) (conjM h₀'⁻¹)) : (Mt k r × Mt k r) × (Mt k r × Mt k r) → (Mt k r × Mt k r) × (Mt k r × Mt k r))` using `Φ.measurableEmbedding`. Establish `hΦ : MeasurePreserving (Prod.map (Prod.map (lmulM h₀) (conjM h₀)) (Prod.map (lmulM h₀'⁻¹) (conjM h₀'⁻¹)) : (Mt k r × Mt k r) × (Mt k r × Mt k r) → (Mt k r × Mt k r) × (Mt k r × Mt k r)) ((μW.prod μN).prod (μW'.prod μN)) ((μW.prod μN).prod (μW'.prod μN))`. Use `MeasurePreserving.prod (MeasurePreserving.prod ?_ ?_) (MeasurePreserving.prod ?_ ?_)` and prove the remaining obligations.
+
+Conclude with `⟨(lmulE h₀ hu₀).measurable, hWl h₀ hh₀⟩`. Conclude with `⟨(conjE h₀ hu₀).measurable, hNc h₀ (Or.inl hh₀)⟩`. Conclude with `⟨(lmulE h₀'⁻¹ hui₀').measurable, hW'l _ hi₀'⟩`. Conclude with `⟨(conjE h₀'⁻¹ hui₀').measurable, hNc _ (Or.inr hi₀')⟩`. Establish `aW : ∀ᵐ x ∂μW, Matrix.of x ∈ UWset k r z` using `ae_iff.2 hW`.
+
+Establish `aW' : ∀ᵐ x ∂μW', Matrix.of x ∈ UWset k r z'` using `ae_iff.2 hW'`. Establish `aN : ∀ᵐ x ∂μN, Matrix.of x ∈ Nset k r` using `ae_iff.2 hN`. Establish `q11 : ∀ᵐ p ∂((μW.prod μN).prod (μW'.prod μN)), Matrix.of p.1.1 ∈ UWset k r z` using `(Measure.quasiMeasurePreserving_fst.comp Measure.quasiMeasurePreserving_fst).ae aW`. Establish `q12 : ∀ᵐ p ∂((μW.prod μN).prod (μW'.prod μN)), Matrix.of p.1.2 ∈ Nset k r` using `(Measure.quasiMeasurePreserving_snd.comp Measure.quasiMeasurePreserving_fst).ae aN`. Establish `q21 : ∀ᵐ p ∂((μW.prod μN).prod (μW'.prod μN)), Matrix.of p.2.1 ∈ UWset k r z'` using `(Measure.quasiMeasurePreserving_fst.comp Measure.quasiMeasurePreserving_snd).ae aW'`.
+
+Establish `q22 : ∀ᵐ p ∂((μW.prod μN).prod (μW'.prod μN)), Matrix.of p.2.2 ∈ Nset k r` using `(Measure.quasiMeasurePreserving_snd.comp Measure.quasiMeasurePreserving_snd).ae aN`. Set `e₂ : Wp ≃L[ℂ] Wp` to `ContinuousLinearEquiv.equivOfInverse (π h₀) (π h₀⁻¹) (fun x => rep_inv hπ hi₀ hh₀ (Matrix.nonsing_inv_mul _ hu₀) x) (fun x => rep_inv hπ hh₀ hi₀ (Matrix.mul_nonsing_inv _ hu₀) x)`. Set `e₁ : Wq ≃L[ℂ] Wq` to `ContinuousLinearEquiv.equivOfInverse (π' h₀'⁻¹) (π' h₀') (fun x => rep_inv hπ' hh₀' hi₀' (Matrix.mul_nonsing_inv _ hu₀') x) (fun x => rep_inv hπ' hi₀' hh₀' (Matrix.nonsing_inv_mul _ hu₀') x)`. Set `L : (Wq →L[ℂ] Wp) ≃L[ℂ] (Wq →L[ℂ] Wp)` to `e₁.arrowCongr e₂`. Establish `hL : ∀ X : Wq →L[ℂ] Wp, L X = (π h₀).comp (X.comp (π' h₀'))`.
+
+Introduce `X`. Use extensionality with `y`. Both sides reduce to the same expression. Rewrite using `[← hL]`. Unfold `besselJ`.
+
+Use `integral_transfer _ hΦ hΦe L _ _ ?_` and prove the remaining obligations. Use `filter_upwards [q11, q12, q21, q22] with p hK hM hK' hM'`. Take `⟨⟨a, b⟩, ⟨a', b'⟩⟩` from `p`. Rewrite using `[hL]`. Use `set K : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ := Matrix.of a`.
+
+Use `set M : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ := Matrix.of b`. Use `set K' : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ := Matrix.of a'`. Use `set M' : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ := Matrix.of b'`. Establish `ep : psi k r z c (h₀ * M * h₀⁻¹) = psi k r z c M`. Unfold `psi`.
+
+Rewrite using `[(unitary_weyl_normal_holds k r z hz h₀ hh₀ M hM).2]`. Establish `ep' : psi k r z' c (h₀'⁻¹ * M' * h₀'⁻¹⁻¹) = psi k r z' c M'`. Unfold `psi`. Rewrite using `[(unitary_weyl_normal_holds k r z' hz' h₀'⁻¹ hi₀' M' hM').2]`. Establish `earg : (h₀ * K)⁻¹ * (h₀ * M * h₀⁻¹)⁻¹ * (h₀ * g * h₀') * (h₀'⁻¹ * M' * h₀'⁻¹⁻¹) * (h₀'⁻¹ * K') = K⁻¹ * M⁻¹ * g * M' * K'`.
+
+Simplify using `only [Matrix.mul_inv_rev, Matrix.nonsing_inv_nonsing_inv _ hu₀, Matrix.nonsing_inv_nonsing_inv _ hu₀', Matrix.mul_assoc, Matrix.nonsing_inv_mul_cancel_left _ _ hu₀, Matrix.mul_nonsing_inv_cancel_left _ _ hu₀']`. Establish `eπ : π (h₀ * K) = (π h₀).comp (π K)` using `hπ.2 h₀ hh₀ K hK`. Establish `einv : (h₀'⁻¹ * K')⁻¹ = K'⁻¹ * h₀'`. Rewrite using `[Matrix.mul_inv_rev, Matrix.nonsing_inv_nonsing_inv _ hu₀']`. Establish `eπ' : π' (K'⁻¹ * h₀') = (π' K'⁻¹).comp (π' h₀')` using `hπ'.2 _ (WeylGroupFacts.uw_inv hK') _ hh₀'`.
+
+Use `show (psi k r z c (h₀ * M * h₀⁻¹) * star (psi k r z' c (h₀'⁻¹ * M' * h₀'⁻¹⁻¹))) • ((π (h₀ * K)).comp ((F ((h₀ * K)⁻¹ * (h₀ * M * h₀⁻¹)⁻¹ * (h₀ * g * h₀') * (h₀'⁻¹ * M' * h₀'⁻¹⁻¹) * (h₀'⁻¹ * K'))).comp (π' (h₀'⁻¹ * K')⁻¹))) = (π h₀).comp (((psi k r z c M * star (psi k r z' c M')) …`. Rewrite using `[ep, ep', earg, eπ, einv, eπ']`. Use extensionality with `y`. Simplify using `only [ContinuousLinearMap.comp_apply, _root_.smul_apply, map_smul]`.
+-/
 theorem bessel_unitary_equiv_holds : BesselUEquiv := by
   intro Wp Wq _ _ _ _ _ _ k r z z' c π π' μW μN μW' _ _ _ F hz hz' hN hW hW' hWl hW'l hNc hπ hπ'
     g h₀ hh₀ h₀' hh₀'

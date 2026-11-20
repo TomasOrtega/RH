@@ -7,6 +7,35 @@ namespace Formalism.MainNotions
 
 open Formalism.BasicNotions Formalism.MainNotions.Pk
 
+/- English proof (translation)
+Unfold `Des at hc`. Take `⟨⟨⟨_, hsm⟩, _⟩, _, hTu, _⟩` from `hc`. Take `⟨xs, hs⟩` from `hsm`. Take `⟨xt, ht⟩` from `hTu`. Use `⟨max xs xt, fun x hx hx1 i => ?_⟩` and prove the remaining obligations.
+
+Unfold `WeightDegreeSizes.LevelPrimeCoprimeStabiliser`. Introduce `u hdvd`. Establish `hTp` using `((Fm.D x i).mem u).A.T_prime`. Establish `hle` using `hs x (le_of_max_le_left hx) i u _ hTp hdvd`. Establish `hge` using `(ht x (le_of_max_le_right hx) i).1 u`.
+
+Establish `hsz : SizesAt (Fm.L x i)` using `Fm.sizes x hx1 i`. Unfold `SizesAt at hsz`. Take `⟨_, _, _, _, _, hC, _⟩` from `hsz`. Unfold `SizeCond szCond at hC`. Establish `h3m` using `(Fm.D x i).R.three_m_lt_t`.
+
+Establish `hkt` using `(Fm.D x i).R.rank_add_five_le`. Establish `hm2` using `(Fm.D x i).R.two_le_m`. Establish `hf : (Fm.D x i).R.f ≤ (Fm.D x i).R.k` using `(Fm.D x i).R.f_le_k`. Establish `hN : (Fm.D x i).R.N (Fm.D x i).R.m = (Fm.D x i).R.k + (Fm.D x i).R.m * ((Fm.D x i).R.t + 1)` using `rfl`. Establish `hf' : (Fm.D x i).R.f ≤ (Fm.D x i).R.t` using `by omega`.
+
+Establish `hm' : (Fm.D x i).R.m ≤ (Fm.D x i).R.t` using `by omega`. Establish `hk' : (Fm.D x i).R.k ≤ (Fm.D x i).R.t` using `by omega`. Establish `ht7 : 7 ≤ (Fm.D x i).R.t` using `by omega`. Establish `key : 2 * (Fm.D x i).R.f * (Fm.D x i).R.N (Fm.D x i).R.m + 1 < (Fm.D x i).R.t ^ 5`. Rewrite using `[hN]`.
+
+Establish `e1 : (Fm.D x i).R.k + (Fm.D x i).R.m * ((Fm.D x i).R.t + 1) ≤ (Fm.D x i).R.t + (Fm.D x i).R.t * ((Fm.D x i).R.t + 1)` using `Nat.add_le_add hk' (Nat.mul_le_mul_right _ hm')`. Establish `e2 : 2 * (Fm.D x i).R.f * ((Fm.D x i).R.k + (Fm.D x i).R.m * ((Fm.D x i).R.t + 1)) ≤ 2 * (Fm.D x i).R.t * ((Fm.D x i).R.t + (Fm.D x i).R.t * ((Fm.D x i).R.t + 1))` using `Nat.mul_le_mul (Nat.mul_le_mul_left 2 hf') e1`. Establish `e3 : 2 * (Fm.D x i).R.t * ((Fm.D x i).R.t + (Fm.D x i).R.t * ((Fm.D x i).R.t + 1)) + 1 < (Fm.D x i).R.t ^ 5`. Generalize the expression as in `(Fm.D x i).R.t = s at ht7 ⊢`. Establish `h49 : 49 ≤ s ^ 2` using `by nlinarith`.
+
+Establish `h5 : 49 * s ^ 3 ≤ s ^ 5`. Combine the equalities or inequalities in the displayed calculation. Establish `h23 : s ^ 2 ≤ s ^ 3` using `Nat.pow_le_pow_right (by omega) (by omega)`. Establish `h13 : 1 ≤ s ^ 3` using `Nat.one_le_pow _ _ (by omega)`. Use the polynomial consequences of the given equalities and inequalities.
+
+Conclude with `lt_of_le_of_lt (Nat.add_le_add_right e2 1) e3`. Establish `hQS : (Fm.D x i).host.QS ≠ 0`. Introduce `h0`. Establish `hcop` using `(Fm.D x i).host.level_coprimeS _ ((Fm.D x i).T_level u)`. Rewrite `hcop` using `[h0, Nat.coprime_zero_right]`.
+
+Conclude with `hTp.one_lt.ne' hcop`. Establish `hqd` using `(Fm.D x i).host.qd_big`. Establish `hq1 : (1 : ℝ) ≤ (Fm.D x i).host.q` using `by exact_mod_cast (show 1 ≤ (Fm.D x i).host.q by omega)`. Establish `hd1 : (1 : ℝ) ≤ (Fm.D x i).host.d` using `by exact_mod_cast (show 1 ≤ (Fm.D x i).host.d by omega)`. Establish `hQ1 : (1 : ℝ) ≤ (Fm.D x i).host.QS` using `by exact_mod_cast Nat.one_le_iff_ne_zero.mpr hQS`.
+
+Establish `hsc : (1 : ℝ) ≤ ((Fm.D x i).host.QS : ℝ) * (Fm.D x i).host.q * (Fm.D x i).host.d` using `one_le_mul_of_one_le_of_one_le (one_le_mul_of_one_le_of_one_le hQ1 hq1) hd1`. Establish `hsc36 : (1 : ℝ) ≤ (((Fm.D x i).host.QS : ℝ) * (Fm.D x i).host.q * (Fm.D x i).host.d) ^ 36` using `one_le_pow₀ hsc`. Establish `htR : (7 : ℝ) ≤ (Fm.D x i).R.t` using `by exact_mod_cast ht7`. Establish `ht150 : ((Fm.D x i).R.t : ℝ) ^ 150 ≤ Real.sqrt (Fm.L x i).sc.b` using `le_trans (le_mul_of_one_le_left (by positivity) hsc36) hC`. Establish `hbpos : 0 < (Fm.L x i).sc.b` using `Real.sqrt_pos.mp (lt_of_lt_of_le (by positivity) ht150)`.
+
+Establish `ht300 : ((Fm.D x i).R.t : ℝ) ^ 300 ≤ (Fm.L x i).sc.b`. Establish `hmul` using `mul_le_mul ht150 ht150 (by positivity) (Real.sqrt_nonneg _)`. Rewrite `hmul` using `[Real.mul_self_sqrt hbpos.le]`. Combine the equalities or inequalities in the displayed calculation. Establish `ht5 : ((Fm.D x i).R.t : ℝ) ^ 5 ≤ ((Fm.D x i).R.t : ℝ) ^ 300` using `pow_le_pow_right₀ (by linarith) (by norm_num)`.
+
+Establish `hb1 : (1 : ℝ) ≤ (Fm.L x i).sc.b`. Establish `: (1 : ℝ) ≤ ((Fm.D x i).R.t : ℝ) ^ 5` using `one_le_pow₀ (by linarith)`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hm2R : (2 : ℝ) ≤ (Fm.D x i).R.m` using `by exact_mod_cast hm2`. Establish `hbm : (Fm.L x i).sc.b ≤ (Fm.L x i).sc.b ^ (((Fm.D x i).R.m : ℝ) / 2)`.
+
+Combine the equalities or inequalities in the displayed calculation. Establish `hleR : (((Fm.D x i).mem u).A.T : ℝ) ≤ ((2 * (Fm.D x i).R.f * (Fm.D x i).R.N (Fm.D x i).R.m + 1 : ℕ) : ℝ)` using `Nat.cast_le.mpr hle`. Establish `hkeyR : ((2 * (Fm.D x i).R.f * (Fm.D x i).R.N (Fm.D x i).R.m + 1 : ℕ) : ℝ) < ((Fm.D x i).R.t : ℝ) ^ 5`. Use `Nat.cast_lt (α := ℝ) |>.mpr key` as an intermediate fact. Rewrite `this` using `[Nat.cast_pow]`.
+
+Conclude with `this`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem eventually_level_prime_coprime_stabiliser_of_design {𝒞 : FamClass} {C0 eps : ℝ} {Fm : FamP eps} (hc : Des 𝒞 C0 Fm) :
     ∃ x0 : ℝ, ∀ x, x0 ≤ x → ∀ (_ : Fm.x1 < x) (i : Fm.Ix x), WeightDegreeSizes.LevelPrimeCoprimeStabiliser (Fm.D x i) := by
   unfold Des at hc
@@ -99,6 +128,9 @@ theorem eventually_level_prime_coprime_stabiliser_of_design {𝒞 : FamClass} {C
     exact this
   linarith
 
+/- English proof (translation)
+Use `⟨1, one_pos, fun eps _ _ => ⟨⟨0, fun _ => 0, fun _ => 0, fun _ => 0⟩, ?_⟩⟩` and prove the remaining obligations. Introduce `Fm CH hc _`. Conclude with `eventually_level_prime_coprime_stabiliser_of_design hc`.
+-/
 theorem closed_eventually_levelPrimeCoprimeStabiliser (𝒞 : FamClass) (C0 : ℝ) :
     Closed (Des 𝒞 C0) fun Fm _ => ∃ x0 : ℝ, ∀ x, x0 ≤ x → ∀ (_ : Fm.x1 < x) (i : Fm.Ix x), WeightDegreeSizes.LevelPrimeCoprimeStabiliser (Fm.D x i) := by
   refine ⟨1, one_pos, fun eps _ _ => ⟨⟨0, fun _ => 0, fun _ => 0, fun _ => 0⟩, ?_⟩⟩

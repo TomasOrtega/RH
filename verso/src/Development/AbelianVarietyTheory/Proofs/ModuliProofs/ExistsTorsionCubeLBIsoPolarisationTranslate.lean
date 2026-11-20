@@ -22,11 +22,27 @@ open Out CommutatorPairing PrimCocycle CechPic
 
 variable {S : Scheme.{0}} {A : Over S} [GrpObj A] [IsCommMonObj A]
 
+/- English proof (translation)
+Rewrite using `[← Over.comp_left, mulA, MonObj.comp_pow, Category.comp_id, mul_pow, ← MonObj.comp_pow, hy, MonObj.comp_one, _root_.one_mul]`.
+-/
 theorem transl_mulA (k : ℕ) (y : 𝟙_ (Over S) ⟶ A) (hy : y ^ k = 1) :
     ((toUnit A ≫ y) * 𝟙 A).left ≫ (mulA A k).left = (mulA A k).left := by
   rw [← Over.comp_left, mulA, MonObj.comp_pow, Category.comp_id, mul_pow, ← MonObj.comp_pow, hy,
     MonObj.comp_one, _root_.one_mul]
 
+/- English proof (translation)
+Establish `he : (1 : 𝟙_ (Over S) ⟶ A).left ≫ (toUnit A).left = 𝟙 _`. Rewrite using `[← Over.comp_left, comp_toUnit, toUnit_unit]`. Both sides reduce to the same expression. Establish `hp : Function.Surjective (toUnit A).left.appTop.hom`. Establish `e : (toUnit A).left = A.hom` using `(Category.comp_id _).symm.trans (Over.w (toUnit A))`.
+
+Rewrite using `[e]`. Conclude with `(hG _ _ hA).2`. Establish `H : ∀ y : {y : 𝟙_ (Over S) ⟶ A // y ^ k = 1}, ∃ c : Γ((𝟙_ (Over S)).left, ⊤)ˣ, ∀ (Z : Scheme.{0}) (r : Z ⟶ A.left) (z : Z) (J), Good M z J → val u (r ≫ ((toUnit A ≫ y.1) * 𝟙 A).left) z J = val u r z J * gm (r ≫ (toUnit A).left) z ⊤ c`. Introduce `y`. Take `⟨c, hc⟩` from `exists_ratio hM (fun U _ h => Finset.prod_congr rfl fun i _ => by`.
+
+Rewrite using `[← Category.assoc, transl_mulA k y.1 y.2]) (toUnit A).left _ he hp`. Use the proof step `(DVR.pullGen_isGen _ _ _ u hu ((toUnit A ≫ y.1) * 𝟙 A).left) hu`. Conclude with `⟨c, fun Z r z J hJ => (val_pull hJ _ _ _).symm.trans (hc Z r z J hJ)⟩`. Use `choose χ hχ using H`. Use `⟨χ, fun x y => unit_ext fun z _ => ?_, fun y z J hJ => ?_⟩` and prove the remaining obligations.
+
+Use `choose J hJ using fun ψ : (𝟙_ (Over S)).left ⟶ X => exists_chart hM (ψ z)`. Establish `a` using `hχ ⟨x.1 * y.1, by rw [mul_pow, x.2, y.2, _root_.one_mul]⟩ _ (1 : 𝟙_ (Over S) ⟶ A).left z J hJ`. Establish `b` using `hχ x _ (1 : 𝟙_ (Over S) ⟶ A).left z J hJ`. Establish `c` using `hχ y _ ((1 : 𝟙_ (Over S) ⟶ A).left ≫ ((toUnit A ≫ x.1) * 𝟙 A).left) z J hJ`. Establish `e₁ : ((toUnit A ≫ x.1) * 𝟙 A).left ≫ ((toUnit A ≫ y.1) * 𝟙 A).left = ((toUnit A ≫ (x.1 * y.1)) * 𝟙 A).left`.
+
+Rewrite using `[← Over.comp_left, MonObj.comp_mul, MonObj.comp_mul, comp_toUnit_assoc, Category.comp_id, ← _root_.mul_assoc, mul_comm (toUnit A ≫ y.1)]`. Establish `e₂ : ((toUnit A ≫ x.1) * 𝟙 A).left ≫ (toUnit A).left = (toUnit A).left`. Rewrite using `[← Over.comp_left, comp_toUnit]`. Rewrite `c` using `[b, Category.assoc, Category.assoc, e₁, e₂, a, he, _root_.mul_assoc, ← map_mul]`. Conclude with `mul_left_cancel c`.
+
+Use `hχ y _ (𝟙 _) z J hJ` as an intermediate fact. Rewrite `this` using `[Category.id_comp, Category.id_comp]`. Then use the resulting hypothesis.
+-/
 theorem exists_character (hG : GlobalFnsSt) (hA : IsAbelianScheme A) {X : Scheme.{0}} {M : LB X} (hM : M.IsLB)
     {I : Type} [Fintype I] (φ : I → (A.left ⟶ X)) (ε : I → ℤ) (k : ℕ)
     (u : LB.Gen (LB.LinComb M (fun i => (mulA A k).left ≫ φ i) ε)) (hu : u.IsGen) :
@@ -65,6 +81,11 @@ theorem exists_character (hG : GlobalFnsSt) (hA : IsAbelianScheme A) {X : Scheme
   · have := hχ y _ (𝟙 _) z J hJ
     rwa [Category.id_comp, Category.id_comp] at this
 
+/- English proof (translation)
+Use `(cls_eq_zero_iff (LB.isLB_linComb hM _ _)).1 ?_` and prove the remaining obligations. Establish `h₁ : (cubeLB A ![toUnit A ≫ x, 𝟙 A] M).IsLB` using `LB.isLB_linComb hM _ _`. Establish `e` using `congrArg (CechPic.pull (mulA A k).left) ((cls_linComb hM _ _ h₁).symm.trans (cls_cube_two hM _ _ h₁))`. Rewrite `e` using `[pull_lam, comp_toUnit_assoc, Category.comp_id, map_sum]`. Establish `e' : lam (cls M hM) (toUnit A ≫ x) (mulA A k) = 0`.
+
+Rewrite using `[mulA, lam_pow_right hM hΘ, ← lam_pow_left hM hΘ, ← MonObj.comp_pow, hx, MonObj.comp_one, lam_one_left]`. Rewrite using `[cls_linComb hM]`. Use `Eq.trans (Finset.sum_congr rfl fun I _ => ?_) (e.trans e')` and prove the remaining obligations. Rewrite using `[map_zsmul, pull_comp]`.
+-/
 theorem exists_gen_mulA {M : LB A.left} (hM : M.IsLB) (hΘ : ∃ t : LB.Gen (Theta A M), t.IsGen) (k : ℕ)
     (x : 𝟙_ (Over S) ⟶ A) (hx : x ^ k = 1) :
     ∃ u : LB.Gen (LB.LinComb M (fun I : ULift.{0} (Finset (Fin 2)) =>
@@ -85,6 +106,17 @@ namespace GlobalTheory
 
 open TorsionTranslation PairingDetermines IsoDescent PrimCocycle
 
+/- English proof (translation)
+Introduce `hL hL' K _ _ P M k x hM hk hx`. Use `haveI : IsCommMonObj P.A := P.isAb.comm`. Take `⟨u, hu⟩` from `exists_gen_mulA hM (AbLaw.CubeAssembly.cube_gen _ P M hM) k x hx`. Take `⟨χ, hχ, vχ⟩` from `exists_character hL.globalFns P.isAb hM _ _ k u hu`. Take `⟨y, ⟨hy, hw⟩, -⟩` from `hL'.charPair K P k hk (fun δ => (χ δ)⁻¹) (fun a b => (congrArg (·⁻¹) (hχ a b)).trans (mul_inv _ _))`.
+
+Use `⟨y, hy, ?_⟩` and prove the remaining obligations. Take `⟨u₀, hu₀, v₀⟩` from `exists_gen_lam hL.globalFns hL.cube P (𝟙 P.A) 1 k y hy`. Take `⟨u', hu', v'⟩` from `exists_gen P.isLB (φ' := fun I : ULift.{0} (Finset (Fin 2)) => (Out.mulA P.A k).left ≫ (psum P.A ![toUnit P.A ≫ y, 𝟙 P.A] I.down).left) (ε' := lamε) (fun U _ h => Finset.prod_congr rfl fun I _ => by`. Apply the tactic sequence `have e : (lift (toUnit P.A ≫ y) (𝟙 P.A)).left ≫ lamφ P.A I = (psum P.A ![toUnit P.A ≫ y, 𝟙 P.A] I.down).left := congrArg (fun q => q.left) ((psum_hom (preHom (lift (toUnit P.A ≫ y) (𝟙 P.A))) (x2 P.A) I.down).trans (congrArg (fun q => psum P.A q I.down) (funext fun i => by fin_cas …`. Rewrite using `[Over.id_left, Category.comp_id, e, Nat.cast_one, _root_.mul_one]) u₀ hu₀`.
+
+Use `lbIso_of_invariant hM P.isLB _ _ _ _ (Out.mulA P.A k).left (I := {y : 𝟙_ (Over (Sp K)) ⟶ P.A // y ^ k = 1}) (fun y => ((toUnit P.A ≫ y.1) * 𝟙 P.A).left) (fun δ => transl_mulA k δ.1 δ.2) (fun U f hf => torsion_invariant_descends (fun S _ P n hn => by` and prove the remaining obligations. Take `⟨a, b, c, e, -⟩` from `hL.mulN S P n hn`. Conclude with `⟨a, b, c, e⟩) K P k hk U f fun y hy => hf ⟨y, hy⟩) u hu u' hu'`. Use the proof step `(fun δ z J J' hJ hJ' => ?_)`. Establish `w` using `CommPairing.weilIs_symm P.isLB (hw δ)`.
+
+Rewrite `w` using `[inv_inv]`. Establish `h₁` using `vχ δ z J hJ`. Establish `h₂` using `v₀ δ.1 (χ δ) δ.2 (by rw [Category.comp_id, Category.comp_id]; exact w) z J' hJ'`. Rewrite `h₂` using `[pow_one, ← v' _ _ z J' hJ', ← v' _ _ z J' hJ']`. Use `(congrArg₂ (fun a b => a * b⁻¹) h₂ h₁).trans ?_` and prove the remaining obligations.
+
+Conclude with `mul_div_mul_right_eq_div _ _ _ |> fun h => by simpa only [div_eq_mul_inv] using h`.
+-/
 theorem exists_torsion_lbIso_cubeLB : Out.Laws → Out.Laws2 → ∀ (K : Type) [Field K] [IsAlgClosed K] (P : Out.PolAV (Sp K)) (M : LB P.A.left) (k : ℕ) (x : 𝟙_ (Over (Sp K)) ⟶ P.A), M.IsLB → (k : K) ≠ 0 → x ^ k = 1 → ∃ y : 𝟙_ (Over (Sp K)) ⟶ P.A, y ^ k = 1 ∧ LBIso (cubeLB P.A ![toUnit P.A ≫ x, 𝟙 P.A] M) (cubeLB P.A ![toUnit P.A ≫ y, 𝟙 P.A] P.L) := by
   intro hL hL' K _ _ P M k x hM hk hx
   haveI : IsCommMonObj P.A := P.isAb.comm

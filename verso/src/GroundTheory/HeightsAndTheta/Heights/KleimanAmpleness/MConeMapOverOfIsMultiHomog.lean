@@ -18,6 +18,9 @@ variable {F : Type} [Field F] {K : Type} [Fintype K] {ι : K → Type} [∀ k, F
 
 omit [Fintype K] in
 
+/- English proof (translation)
+Introduce `m hm k`. Break down `Finset.mem_union.mp (MvPolynomial.support_sub _ f g hm) with h | h` into its components or cases. Use `exacts [hf m h k, hg m h k]`.
+-/
 theorem isMultiHomog_sub {f g : MRingOver F ι} {a : K → ℕ} (hf : IsMultiHomog f a) (hg : IsMultiHomog g a) :
     IsMultiHomog (f - g) a := by
   classical
@@ -27,6 +30,9 @@ theorem isMultiHomog_sub {f g : MRingOver F ι} {a : K → ℕ} (hf : IsMultiHom
 
 omit [Fintype K] in
 
+/- English proof (translation)
+Introduce `m hm k`. Establish `hm0 : m = 0` using `Finset.mem_singleton.mp (MvPolynomial.support_monomial_subset hm)`. Substitute `hm0` using the available equality. Simplify using the standard rewrite rules.
+-/
 theorem isMultiHomog_C (r : F) : IsMultiHomog (C r : MRingOver F ι) 0 := by
   classical
   intro m hm k
@@ -36,6 +42,13 @@ theorem isMultiHomog_C (r : F) : IsMultiHomog (C r : MRingOver F ι) 0 := by
 
 omit [Fintype K] in
 
+/- English proof (translation)
+Introduce `e he k'`. Rewrite `he` using `[support_rename_of_injective sigma_mk_injective]`. Take `⟨d, hd, rfl⟩` from `Finset.mem_image.mp he`. Establish `hdeg : ∑ i, d i = m`. Establish `h1` using `hf (mem_support_iff.mp hd)`.
+
+Rewrite `h1` using `[Finsupp.weight_apply, Finsupp.sum_fintype _ _ (by simp)]`. Simplify using `using h1`. Distinguish the cases in `hk : k' = k`. Substitute `hk` using the available equality. Rewrite using `[Pi.single_eq_same, ← hdeg]`.
+
+Conclude with `Finset.sum_congr rfl fun i _ => Finsupp.mapDomain_apply sigma_mk_injective d i`. Rewrite using `[Pi.single_eq_of_ne hk]`. Use `Finset.sum_eq_zero fun i _ => ?_` and prove the remaining obligations. Conclude with `Finsupp.mapDomain_of_notMem_range _ _ (by rintro ⟨j, hj⟩; exact hk (congrArg Sigma.fst hj).symm)`.
+-/
 theorem isMultiHomog_rename [DecidableEq K] (k : K) {f : MvPolynomial (ι k) F} {m : ℕ} (hf : f.IsHomogeneous m) :
     IsMultiHomog (rename (fun i : ι k => (⟨k, i⟩ : Σ k, ι k)) f) (Pi.single k m) := by
   classical
@@ -57,6 +70,9 @@ theorem isMultiHomog_rename [DecidableEq K] (k : K) {f : MvPolynomial (ι k) F} 
 
 omit [Fintype K] [∀ k, Fintype (ι k)] in
 
+/- English proof (translation)
+Rewrite using `[aeval_rename]`. Both sides reduce to the same expression.
+-/
 theorem aeval_rename_block {A : Type} [CommRing A] [Algebra F A] (z : (Σ k, ι k) → A) (k : K)
     (p : MvPolynomial (ι k) F) :
     aeval z (rename (fun i : ι k => (⟨k, i⟩ : Σ k, ι k)) p) = aeval (IndefiniteRowSideFullHecke.Kleiman2.blockVec z k) p := by
@@ -64,6 +80,13 @@ theorem aeval_rename_block {A : Type} [CommRing A] [Algebra F A] (z : (Σ k, ι 
 
 variable {Ω : Type} [Field Ω] [Algebra F Ω]
 
+/- English proof (translation)
+Use `conv_lhs => rw [g.as_sum]`. Use `conv_rhs => rw [g.as_sum]`. Rewrite using `[map_sum, map_sum, map_sum, Finset.sum_mul]`. Use `Finset.sum_congr rfl fun m hm => ?_` and prove the remaining obligations. Establish `hX : ∏ p : (Σ k, ι k), (MvPolynomial.X p.1 : MvPolynomial K Ω) ^ m p = ∏ k, MvPolynomial.X k ^ d k`.
+
+Rewrite using `[Fintype.prod_sigma]`. Use `Finset.prod_congr rfl fun k _ => ?_` and prove the remaining obligations. Use `show ∏ i, (MvPolynomial.X k : MvPolynomial K Ω) ^ m ⟨k, i⟩ = _`. Rewrite using `[Finset.prod_pow_eq_pow_sum, hg m hm k]`. Simplify using `only [mConeMapOver, aeval_monomial]`.
+
+Rewrite using `[Finsupp.prod_fintype _ _ (fun i => by simp), Finsupp.prod_fintype _ _ (fun i => by simp)]`. Simplify using `only [mul_pow, Finset.prod_mul_distrib, hX, map_mul, map_prod, map_pow, MvPolynomial.algebraMap_apply]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem mConeMapOver_of_isMultiHomog (y : (Σ k, ι k) → Ω) {g : MRingOver F ι} {d : K → ℕ}
     (hg : IsMultiHomog g d) :
     mConeMapOver F y g = MvPolynomial.C (aeval y g) * ∏ k, (MvPolynomial.X k : MvPolynomial K Ω) ^ d k := by
@@ -83,6 +106,9 @@ theorem mConeMapOver_of_isMultiHomog (y : (Σ k, ι k) → Ω) {g : MRingOver F 
     MvPolynomial.algebraMap_apply]
   ring
 
+/- English proof (translation)
+Rewrite using `[mIdealOver, RingHom.mem_ker, mConeMapOver_of_isMultiHomog y hg]`. Establish `hP : (∏ k, (MvPolynomial.X k : MvPolynomial K Ω) ^ d k) ≠ 0` using `Finset.prod_ne_zero_iff.mpr fun k _ => pow_ne_zero _ (MvPolynomial.X_ne_zero k)`. Rewrite using `[mul_eq_zero, or_iff_left hP, MvPolynomial.C_eq_zero]`.
+-/
 theorem mem_mIdealOver_iff (y : (Σ k, ι k) → Ω) {g : MRingOver F ι} {d : K → ℕ} (hg : IsMultiHomog g d) :
     g ∈ mIdealOver F y ↔ aeval y g = 0 := by
   rw [mIdealOver, RingHom.mem_ker, mConeMapOver_of_isMultiHomog y hg]
@@ -92,14 +118,25 @@ theorem mem_mIdealOver_iff (y : (Σ k, ι k) → Ω) {g : MRingOver F ι} {d : K
 
 variable {K' : Type} [Field K'] [Algebra F K']
 
+/- English proof (translation)
+The claim follows from `(mem_mIdealOver_iff y' hg).mp (hle ((mem_mIdealOver_iff y hg).mpr h))`.
+-/
 theorem vanish {y : (Σ k, ι k) → Ω} {y' : (Σ k, ι k) → K'} (hle : mIdealOver F y ≤ mIdealOver F y')
     {g : MRingOver F ι} {d : K → ℕ} (hg : IsMultiHomog g d) (h : aeval y g = 0) : aeval y' g = 0 :=
   (mem_mIdealOver_iff y' hg).mp (hle ((mem_mIdealOver_iff y hg).mpr h))
 
+/- English proof (translation)
+Introduce `h` and use `hg' (vanish hle hg h)`.
+-/
 theorem ne_zero_of {y : (Σ k, ι k) → Ω} {y' : (Σ k, ι k) → K'} (hle : mIdealOver F y ≤ mIdealOver F y')
     {g : MRingOver F ι} {d : K → ℕ} (hg : IsMultiHomog g d) (hg' : aeval y' g ≠ 0) : aeval y g ≠ 0 :=
   fun h => hg' (vanish hle hg h)
 
+/- English proof (translation)
+Rewrite `h` using `[div_eq_div_iff (ne_zero_of hle hg hg') (ne_zero_of hle hg₂ hg₂')]`. Rewrite using `[div_eq_div_iff hg' hg₂']`. Establish `h2 : IsMultiHomog (f₂ * g) (n + n₂)`. Rewrite using `[add_comm]`. Conclude with `isMultiHomog_mul hf₂ hg`.
+
+Establish `hp` using `isMultiHomog_sub (isMultiHomog_mul hf hg₂) h2`. Establish `h0` using `vanish hle hp (by rw [map_sub, map_mul, map_mul, h, sub_self])`. Rewrite `h0` using `[map_sub, map_mul, map_mul, sub_eq_zero]`. Conclude with `h0`.
+-/
 theorem wd {y : (Σ k, ι k) → Ω} {y' : (Σ k, ι k) → K'} (hle : mIdealOver F y ≤ mIdealOver F y')
     {f g f₂ g₂ : MRingOver F ι} {n n₂ : K → ℕ} (hf : IsMultiHomog f n) (hg : IsMultiHomog g n)
     (hf₂ : IsMultiHomog f₂ n₂) (hg₂ : IsMultiHomog g₂ n₂) (hg' : aeval y' g ≠ 0) (hg₂' : aeval y' g₂ ≠ 0)
@@ -137,6 +174,9 @@ def locR {y : (Σ k, ι k) → Ω} {y' : (Σ k, ι k) → K'} (hle : mIdealOver 
     ring
   algebraMap_mem' r := ⟨C r, 1, 0, isMultiHomog_C r, isMultiHomog_one, by simp, by simp⟩
 
+/- English proof (translation)
+The claim follows from `hx`.
+-/
 theorem exists_of_mem {y : (Σ k, ι k) → Ω} {y' : (Σ k, ι k) → K'} {hle : mIdealOver F y ≤ mIdealOver F y'}
     {x : Ω} (hx : x ∈ locR hle) :
     ∃ (f g : MRingOver F ι) (n : K → ℕ), IsMultiHomog f n ∧ IsMultiHomog g n ∧ aeval y' g ≠ 0 ∧
@@ -146,6 +186,9 @@ def sigmaFun {y : (Σ k, ι k) → Ω} {y' : (Σ k, ι k) → K'} (hle : mIdealO
     (x : locR hle) : K' :=
   aeval y' (exists_of_mem x.2).choose / aeval y' (exists_of_mem x.2).choose_spec.choose
 
+/- English proof (translation)
+Take `⟨hf0, hg0, hg0', hx0⟩` from `(exists_of_mem x.2).choose_spec.choose_spec.choose_spec`. Conclude with `wd hle hf0 hg0 hf hg hg0' hg' (hx0.symm.trans hx)`.
+-/
 theorem sigmaFun_eq {y : (Σ k, ι k) → Ω} {y' : (Σ k, ι k) → K'} (hle : mIdealOver F y ≤ mIdealOver F y')
     (x : locR hle) {f g : MRingOver F ι} {n : K → ℕ} (hf : IsMultiHomog f n) (hg : IsMultiHomog g n)
     (hg' : aeval y' g ≠ 0) (hx : (x : Ω) = aeval y f / aeval y g) :
@@ -184,9 +227,15 @@ def sigma {y : (Σ k, ι k) → Ω} {y' : (Σ k, ι k) → K'} (hle : mIdealOver
     show sigmaFun hle (algebraMap F (locR hle) r) = _
     rw [sigmaFun_eq hle _ (isMultiHomog_C r) isMultiHomog_one (by simp) (by simp)]; simp
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem sigma_apply {y : (Σ k, ι k) → Ω} {y' : (Σ k, ι k) → K'} (hle : mIdealOver F y ≤ mIdealOver F y')
     (x : locR hle) : sigma hle x = sigmaFun hle x := rfl
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨⟨f, g, n, hf, hg, hg', hx⟩, (sigma_apply hle _).trans (sigmaFun_eq hle _ hf hg hg' hx)⟩`.
+-/
 theorem frac_spec {y : (Σ k, ι k) → Ω} {y' : (Σ k, ι k) → K'} (hle : mIdealOver F y ≤ mIdealOver F y')
     {f g : MRingOver F ι} {n : K → ℕ} (hf : IsMultiHomog f n) (hg : IsMultiHomog g n)
     (hg' : aeval y' g ≠ 0) (x : Ω) (hx : x = aeval y f / aeval y g) :
@@ -197,6 +246,21 @@ end ResidueMap
 
 open ResidueMap in
 
+/- English proof (translation)
+Introduce `F _ K _ ι _ Ω _ _ y K' _ _ y' hle`. Use `⟨locR hle, sigma hle, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `f g n hf hg hg'`. Conclude with `frac_spec hle hf hg hg' _ rfl`. Introduce `k f g m hf hg hg'`.
+
+Establish `hg'' : aeval y' (rename (fun i : ι k => (⟨k, i⟩ : Σ k, ι k)) g) ≠ 0`. Rewrite using `[aeval_rename_block]` and apply the resulting hypothesis. Take `⟨h, hσ⟩` from `frac_spec hle (isMultiHomog_rename k hf) (isMultiHomog_rename k hg) hg'' (aeval (IndefiniteRowSideFullHecke.Kleiman2.blockVec y k) f / aeval (IndefiniteRowSideFullHecke.Kleiman2.blockVec y k) g) (by rw [aeval_rename_block, aeval_rename_block])`. Use `⟨h, ?_⟩` and prove the remaining obligations. Rewrite using `[hσ, aeval_rename_block, aeval_rename_block]`.
+
+Introduce `d hd z hz`. Proceed by induction on `hz using Algebra.adjoin_induction with`. Consider the case `mem x hx`. Take `⟨⟨k, i⟩, rfl⟩` from `hx`. Take `⟨h, hσ⟩` from `frac_spec hle (isMultiHomog_X (F := F) k i) (isMultiHomog_X (F := F) k (d k)) (by rw [aeval_X]; exact hd k) _ (by rw [aeval_X, aeval_X])`.
+
+Use `⟨h, ?_⟩` and prove the remaining obligations. Rewrite using `[hσ, aeval_X, aeval_X]`. Conclude with `Algebra.subset_adjoin ⟨⟨k, i⟩, rfl⟩`. Consider the case `algebraMap r`. Use `⟨Subalgebra.algebraMap_mem _ r, ?_⟩` and prove the remaining obligations.
+
+Use `show sigma hle (algebraMap F (locR hle) r) ∈ _`. Rewrite using `[AlgHom.commutes]`. Conclude with `Subalgebra.algebraMap_mem _ r`. Consider the case `add x x' _ _ ih ih'`. Take `⟨h, hσ⟩` from `ih`.
+
+Take `⟨h', hσ'⟩` from `ih'`. Use `⟨add_mem h h', ?_⟩` and prove the remaining obligations. Rewrite using `[show (⟨x + x', add_mem h h'⟩ : locR hle) = ⟨x, h⟩ + ⟨x', h'⟩ from rfl, map_add]`. Conclude with `add_mem hσ hσ'`. Consider the case `mul x x' _ _ ih ih'`.
+
+Take `⟨h, hσ⟩` from `ih`. Take `⟨h', hσ'⟩` from `ih'`. Use `⟨mul_mem h h', ?_⟩` and prove the remaining obligations. Rewrite using `[show (⟨x * x', mul_mem h h'⟩ : locR hle) = ⟨x, h⟩ * ⟨x', h'⟩ from rfl, map_mul]`. Conclude with `mul_mem hσ hσ'`.
+-/
 theorem ResidueMap.proof : ResidueMap.Statement := by
   intro F _ K _ ι _ Ω _ _ y K' _ _ y' hle
   classical

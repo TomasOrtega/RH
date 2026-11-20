@@ -6,6 +6,15 @@ open IsLocalRing GlobalTheory.Pat
 
 namespace GlobalTheory.Pat
 
+/- English proof (translation)
+Use `algebraize [φ]`. Establish `h1 : (algebraMap (R ⧸ I) (TensorProduct R (R ⧸ I) S)).Flat` using `RingHom.flat_algebraMap_iff.2 inferInstance`. Set `e : TensorProduct R (R ⧸ I) S ≃+* S ⧸ I.map φ` to `(Algebra.TensorProduct.comm R (R ⧸ I) S).toRingEquiv.trans (Algebra.TensorProduct.quotIdealMapEquivTensorQuot S I).symm.toRingEquiv`. Establish `h2 : (e : TensorProduct R (R ⧸ I) S →+* S ⧸ I.map φ).Flat` using `RingHom.Flat.of_bijective e.bijective`. Establish `h3` using `h1.comp h2`.
+
+Use `h3 using 1` and compare the differences between its conclusion and the goal. Use `Ideal.Quotient.ringHom_ext (RingHom.ext fun r => ?_)` and prove the remaining obligations. Establish `: (Ideal.Quotient.mk I r) ⊗ₜ[R] (1 : S) = (1 : R ⧸ I) ⊗ₜ[R] (φ r)`. Use `TensorProduct.smul_tmul (R := R) r (1 : R ⧸ I) (1 : S)` as an intermediate fact. Simplify using `only [Algebra.smul_def, mul_one] at this`.
+
+Conclude with `this`. Simplify using `only [RingHom.comp_apply, Ideal.quotientMap_mk, Algebra.TensorProduct.algebraMap_apply, Algebra.algebraMap_self, RingHom.id_apply, RingHom.coe_coe]`. Rewrite using `[this]`. Apply `(Algebra.TensorProduct.quotIdealMapEquivTensorQuot S I).injective` to reduce the goal to its premises. Simplify using `[e]`.
+
+Conclude with `Algebra.TensorProduct.quotIdealMapEquivTensorQuot_mk S I (φ r)`.
+-/
 theorem flat_quotientMap_map {R S : Type} [CommRing R] [CommRing S] (φ : R →+* S) (hφ : φ.Flat)
     (I : Ideal R) : (Ideal.quotientMap (I.map φ) φ Ideal.le_comap_map).Flat := by
   algebraize [φ]
@@ -29,6 +38,25 @@ theorem flat_quotientMap_map {R S : Type} [CommRing R] [CommRing S] (φ : R →+
   simp [e]
   exact Algebra.TensorProduct.quotIdealMapEquivTensorQuot_mk S I (φ r)
 
+/- English proof (translation)
+Introduce `R R' S S' _ _ _ _ _ _ _ π q' _ φ φ' hπ h h'`. Use `set J : Ideal S := (RingHom.ker π).map φ with hJ`. Establish `hJm : J ≤ maximalIdeal S`. Rewrite using `[h.max_eq]`. Conclude with `Ideal.map_mono (Ideal.ker_le_comap π)`.
+
+Establish `hJt : J ≠ ⊤` using `fun ht => (maximalIdeal.isMaximal S).ne_top (top_le_iff.1 (ht ▸ hJm))`. Use `haveI : Nontrivial (S ⧸ J) := Ideal.Quotient.nontrivial_iff.2 hJt`. Use `haveI : IsLocalRing (S ⧸ J) := IsLocalRing.of_surjective' _ Ideal.Quotient.mk_surjective`. Use `haveI := h.noeth`. Use `haveI := h.complete`.
+
+Set `ε : R' ≃+* R ⧸ RingHom.ker π` to `(RingHom.quotientKerEquivOfSurjective hπ).symm`. Set `ψ : R' →+* S ⧸ J` to `(Ideal.quotientMap J φ Ideal.le_comap_map).comp (ε : R' →+* R ⧸ RingHom.ker π)`. Establish `hψ : ∀ r, ψ (π r) = Ideal.Quotient.mk J (φ r)`. Introduce `r`. Establish `: ε (π r) = Ideal.Quotient.mk _ r`.
+
+Apply `ε.symm.injective` to reduce the goal to its premises. Simplify using `[ε]`. Simplify using `[ψ, this]`. Establish `hψ' : ψ.comp π = (Ideal.Quotient.mk J).comp φ` using `RingHom.ext hψ`. Establish `hm : maximalIdeal (S ⧸ J) = (maximalIdeal S).map (Ideal.Quotient.mk J)` using `(IsLocalRing.map_maximalIdeal_of_surjective _ Ideal.Quotient.mk_surjective).symm`.
+
+Establish `hmc : (maximalIdeal (S ⧸ J)).comap (Ideal.Quotient.mk J) = maximalIdeal S`. Rewrite using `[hm, Ideal.comap_map_of_surjective _ Ideal.Quotient.mk_surjective, ← RingHom.ker_eq_comap_bot, Ideal.mk_ker, sup_eq_left.2 hJm]`. Establish `hc : IsCplAt q' ψ` using `{ noeth := inferInstance complete := by`. Use `GlobalTheory.isAdicComplete_map_of_finite (maximalIdeal S) (S ⧸ J)` as an intermediate fact. Rewrite `this` using `[show algebraMap S (S ⧸ J) = Ideal.Quotient.mk J from rfl, ← hm]`. Then use the resulting hypothesis.
+
+Use `flat := (RingHom.Flat.of_bijective ε.bijective).comp (flat_quotientMap_map φ h.flat _)`. Use `max_eq := by`. Rewrite using `[hm, h.max_eq, Ideal.map_map, ← hψ', ← Ideal.map_map, Ideal.map_comap_of_surjective π hπ]`. Use `comap_eq := by`. Use extensionality with `x`.
+
+Take `⟨r, rfl⟩` from `hπ x`. Rewrite using `[Ideal.mem_comap, hψ, ← Ideal.mem_comap, hmc, ← Ideal.mem_comap, h.comap_eq, Ideal.mem_comap]`. Use `res := by`. Introduce `s`. Take `⟨s, rfl⟩` from `Ideal.Quotient.mk_surjective s`.
+
+Take `⟨a, b, hb, hab⟩` from `h.res s`. Use `⟨π a, π b, hb, ?_⟩` and prove the remaining obligations. Rewrite using `[hψ, hψ, ← map_mul, ← map_sub, ← Ideal.mem_comap, hmc]`. Conclude with `hab }`. Take `⟨e, he⟩` from `GlobalTheory.T.completion_unique_up_to_iso R' (S ⧸ J) S' q' ψ φ' hc h'`.
+
+Establish `hs : Function.Surjective ((e : S ⧸ J →+* S').comp (Ideal.Quotient.mk J))` using `e.surjective.comp Ideal.Quotient.mk_surjective`. Use `⟨(e : S ⧸ J →+* S').comp (Ideal.Quotient.mk J), IsLocalHom.of_surjective _ hs, ?_, hs, ?_⟩` and prove the remaining obligations. Rewrite using `[RingHom.comp_assoc, ← hψ', ← RingHom.comp_assoc, he]`. Use extensionality with `s`. Simplify using `[RingHom.mem_ker, Ideal.Quotient.eq_zero_iff_mem]`.
+-/
 theorem exists_surjective_of_isCplAt : ∀ (R R' S S' : Type) [CommRing R] [IsNoetherianRing R] [CommRing R'] [CommRing S] [IsLocalRing S] [CommRing S'] [IsLocalRing S'] (π : R →+* R') (q' : Ideal R') [q'.IsPrime] (φ : R →+* S) (φ' : R' →+* S'), Function.Surjective π → IsCplAt (q'.comap π) φ → IsCplAt q' φ' → ∃ θ : S →+* S', IsLocalHom θ ∧ θ.comp φ = φ'.comp π ∧ Function.Surjective θ ∧ RingHom.ker θ = (RingHom.ker π).map φ := by
   intro R R' S S' _ _ _ _ _ _ _ π q' _ φ φ' hπ h h'
   set J : Ideal S := (RingHom.ker π).map φ with hJ

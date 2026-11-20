@@ -16,6 +16,9 @@ namespace GlobalTheory.ThK.EvAt0.ZPartArc
 
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
 
+/- English proof (translation)
+Simplify using `[piInf, inclR, compInf, infEmb_tmul]`.
+-/
 theorem piInf_inclR' {w : InfinitePlace F} (τ : EmbOver E w) (x : E) : piInf τ (inclR (F := F) (AF F) x) = τ.1 x := by
   simp [piInf, inclR, compInf, infEmb_tmul]
 

@@ -21,6 +21,13 @@ def SaSpanSt : Prop :=
       P ∈ Submodule.span T.Q.c.F {Q | Q ∈ harmA (Dw := T.Q.Dw j) T.Q.c (wtA w) w.n ∧
         ∀ σ' : T.Q.c.F →+* ℂ, Real.log (∑ m ∈ Q.support, ‖σ' (Q.coeff m)‖) ≤ 140 * D.R.r * large₂.sc.L * absA w}
 
+/- English proof (translation)
+Use `choose P hP hg using X.signature`. Apply the tactic sequence `have hs : ∀ a : ℕ, sgn X.p0 a ≠ 0 := fun a => by unfold sgn; split_ifs <;> norm_num`. Use `⟨fun τ => P τ, fun τ => ⟨hP τ, fun i => ?_⟩⟩` and prove the remaining obligations. Establish `e : dmin X.Gm (fun τ => P τ) τ i = ((psgn X.p0 i : ℝ) : ℂ)`. Unfold `dmin lminor`.
+
+Rewrite using `[show gram τ.1 X.Gm (mat (fun τ => P τ) τ) = gram τ.1 X.Gm (P τ) from rfl, hg τ, Matrix.submatrix_diagonal _ _ (Fin.castLE_injective _), Matrix.det_diagonal]`. Unfold `psgn`. Use `push_cast`. Conclude with `Fin.prod_univ_eq_prod_range (fun a => ((sgn X.p0 a : ℝ) : ℂ)) (i : ℕ)`. Rewrite using `[e, Complex.ofReal_re]`.
+
+Establish `h0 : psgn X.p0 i ≠ 0` using `Finset.prod_ne_zero_iff.2 fun a _ => hs a`. Conclude with `mul_self_pos.2 h0`.
+-/
 theorem noBase_dom_nonempty {E : Type} [Field E] [NumberField E] [IsCMField E] {r : ℕ}
     (X : ReciprocityTheory.ChartRestriction.G.FD.Data E r) : ∃ x, x ∈ X.dom := by
   choose P hP hg using X.signature

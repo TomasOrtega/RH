@@ -18,6 +18,27 @@ noncomputable section
 
 namespace GlobalTheory.Div
 
+/- English proof (translation)
+Introduce `K _ _ _ G _ _ Pl0 I0 Ty T m s A3 h x f hf0 hfZ hfx`. Establish `hB : (A3.A.fam.R A3.A.μ0).Ok s` using `h.ok2.what₂ A3.A.μ0`. Establish `hD : (A3.rowI A3.A.μ0).Ok3` using `h.what₂ A3.A.μ0`. Establish `hs` using `(A3.rowI A3.A.μ0).splitOver_opAll hB hD`. Establish `hfZH : f ∈ Formalism.L2.Col.eigSum (A3.rowI A3.A.μ0).opAll fun y => Formalism.L2.Col.HasBlocks (A3.A.fam.R A3.A.μ0).n (A3.A.fam.R A3.A.μ0).q (A3.A.fam.R A3.A.μ0).t (A3.A.fam.R A3.A.μ0).bl (fun i => y (Sum.inl i))` using `le_eigSum_elim (A3.A.fam.R A3.A.μ0).op (A3.rowI A3.A.μ0).opI hD.comm hs _ (by exact hfZ.1)`.
+
+Establish `hHB : Formalism.L2.Col.HasBlocks (A3.A.fam.R A3.A.μ0).n (A3.A.fam.R A3.A.μ0).q (A3.A.fam.R A3.A.μ0).t (A3.A.fam.R A3.A.μ0).bl (fun i => x (Sum.inl i))`. Assume the negation of the conclusion as `hn`. Establish `hf2 : f ∈ Formalism.L2.Col.eigSum (A3.rowI A3.A.μ0).opAll fun y => ¬ Formalism.L2.Col.HasBlocks (A3.A.fam.R A3.A.μ0).n (A3.A.fam.R A3.A.μ0).q (A3.A.fam.R A3.A.μ0).t (A3.A.fam.R A3.A.μ0).bl (fun i => y (Sum.inl i))` using `Formalism.L2.Col.eigAt_le_eigSum (C := fun y => ¬ Formalism.L2.Col.HasBlocks (A3.A.fam.R A3.A.μ0).n (A3.A.fam.R A3.A.μ0).q (A3.A.fam.R A3.A.μ0).t (A3.A.fam.R A3.A.μ0).bl (fun i => y (Sum.inl i))) hn hfx`. Conclude with `hf0 (Submodule.disjoint_def.1 (Formalism.L2.Col.disjoint_eigSum hD.comm fun y h1 h2 => h2 h1) f hfZH hf2)`. Use `choose c hc using hHB`.
+
+Set `Sg : Pl0 → K[X]` to `fun P0 => if hP : ∃ P, (A3.A.fam.R A3.A.μ0).pl P = P0 then c hP.choose else 1`. Establish `hSg : ∀ P, Sg ((A3.A.fam.R A3.A.μ0).pl P) = c P`. Introduce `P`. Establish `hP : ∃ P', (A3.A.fam.R A3.A.μ0).pl P' = (A3.A.fam.R A3.A.μ0).pl P` using `⟨P, rfl⟩`. Simplify using `only [Sg, dif_pos hP]`.
+
+Rewrite using `[hB.pl_inj hP.choose_spec]`. Set `e : I0 × Ty → K` to `fun k0 => if hP : ∃ P, (A3.rowI A3.A.μ0).plI P = k0.1 then x (Sum.inr (hP.choose, k0.2)) else 0`. Establish `he : ∀ (P : (A3.rowI A3.A.μ0).PlI) (y : Ty), e ((A3.rowI A3.A.μ0).plI P, y) = x (Sum.inr (P, y))`. Introduce `P y`. Establish `hP : ∃ P', (A3.rowI A3.A.μ0).plI P' = (A3.rowI A3.A.μ0).plI P` using `⟨P, rfl⟩`.
+
+Simplify using `only [e, dif_pos hP]`. Rewrite using `[hD.plI_inj hP.choose_spec]`. Establish `hres : (A3.rowI A3.A.μ0).HasRes3 (Sg, e) x`. Use `⟨fun P => ?_, fun k => (he k.1 k.2).symm⟩` and prove the remaining obligations. Use `show _ = Sg ((A3.A.fam.R A3.A.μ0).pl P) * (A3.A.fam.R A3.A.μ0).blockProd P`.
+
+Rewrite using `[hSg P, mul_comm]`. Conclude with `hc P`. Use `set a0 := goodAt A3.A.fam.X (⊥ : Subgroup G) 1 with ha0`. Establish `hidem : a0 * a0 = a0` using `(good_at_spec K A3.A.fam.v0 h.ok2.conj G A3.A.fam.X h.ok2.irr (⊥ : Subgroup G) 1).idem`. Establish `hfix : (A3.A.fam.R A3.A.μ0).S.gaOp (A3.A.fam.R A3.A.μ0).r a0 f = f`.
+
+Take `⟨g, hg⟩` from `LinearMap.mem_range.1 hfZ.2`. Establish `hid' : a0 * goodAt A3.A.X (⊥ : Subgroup G) 1 = goodAt A3.A.X (⊥ : Subgroup G) 1` using `hidem`. Rewrite using `[← hg, ← BlockDat.gaOp_mul, hid']`. Take `⟨u0, hu0⟩` from `(A3.A.fam.R A3.A.μ0).exists_vE_of_fix (Lvl.full A3.A.fam.X) hfix`. Establish `hmem : (Sg, e) ∈ (A3.rowI A3.A.μ0).ixFin3 A3.A.fam.X`.
+
+Rewrite using `[(A3.rowI A3.A.μ0).mem_ixFin3 hD.comm]`. Use `⟨fun P0 hP0 => ?_, fun P0 hP0 y => ?_, ?_⟩` and prove the remaining obligations. Establish `hP : ¬ ∃ P, (A3.A.fam.R A3.A.μ0).pl P = P0` using `fun ⟨P, hP⟩ => hP0 ⟨P, hP⟩ show Sg P0 = 1`. Simplify using `only [Sg, dif_neg hP]`. Establish `hP : ¬ ∃ P, (A3.rowI A3.A.μ0).plI P = P0` using `fun ⟨P, hP⟩ => hP0 ⟨P, hP⟩ show e (P0, y) = 0`.
+
+Simplify using `only [e, dif_neg hP]`. Introduce `hbot`. Establish `hu0mem : u0 ∈ (A3.A.fam.R A3.A.μ0).inV0 (Lvl.full A3.A.fam.X) ((A3.rowI A3.A.μ0).inertTypeEigenspaceSum (Sg, e))`. Rewrite using `[BlockDat.mem_goodPart_iff, hu0]`. Conclude with `Formalism.L2.Col.eigAt_le_eigSum (C := (A3.rowI A3.A.μ0).HasRes3 (Sg, e)) hres hfx`.
+
+Rewrite `hu0mem` using `[hbot, Submodule.mem_bot]`. Apply `hf0` to reduce the goal to its premises. Rewrite using `[← hu0, hu0mem, Matrix.mulVec_zero, map_zero]`. Conclude with `⟨⟨(Sg, e), hmem⟩, hres⟩`.
+-/
 theorem exists_ix_of_mem_eigAt : ∀ {K : Type} [Field K] [NumberField K] [StarRing K] {G : Type} [Group G] [Fintype G] {Pl0 I0 Ty T : Type} {m s : ℕ} (A3 : FamIn3 K G Pl0 I0 Ty T m), A3.fam3.Ok3 s → ∀ (x : (A3.rowI A3.A.μ0).OpIx → K) (f : (A3.A.fam.R A3.A.μ0).S.Forms), f ≠ 0 → f ∈ (A3.A.fam.R A3.A.μ0).ZHg A3.A.X → f ∈ Formalism.L2.Col.eigAt (A3.rowI A3.A.μ0).opAll x → ∃ p : A3.fam3.base3.Ix, (A3.rowI A3.A.μ0).HasRes3 p.1 x := by
   classical
   intro K _ _ _ G _ _ Pl0 I0 Ty T m s A3 h x f hf0 hfZ hfx

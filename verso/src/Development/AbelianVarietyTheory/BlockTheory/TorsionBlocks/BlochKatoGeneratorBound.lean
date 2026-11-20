@@ -17,6 +17,9 @@ variable {G : Type} [Group G] {LL : Type} [Field LL] {O : Type} [CommRing O] [Al
 def latAct (L : Lattice (O := O) ρ) (g : G) : ↥L.T →ₗ[O] ↥L.T :=
   ((ρ g).restrictScalars O).restrict (fun x hx => L.stable g x hx)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem coe_latAct (L : Lattice (O := O) ρ) (g : G) (x : ↥L.T) :
     (latAct L g x : V) = ρ g (x : V) := rfl
 
@@ -44,6 +47,9 @@ variable {G : Type} [Group G] {LL : Type} [Field LL] {O : Type} [CommRing O] [Al
   {V : Type} [AddCommGroup V] [Module LL V] [Module O V] [IsScalarTower O LL V]
   {ρ : Representation LL G V} in
 
+/- English proof (translation)
+Express the relevant statement in the definitionally equal form `(∀ g : G, _root_.GlobalTheory.IndefiniteRowSideFullHecke.GaloisLatticeModuleActions.latModAct L I g (Submodule.Quotient.mk x) = Submodule.Quotient.mk x) ↔ _`. Simplify using `only [_root_.GlobalTheory.IndefiniteRowSideFullHecke.GaloisLatticeModuleActions.latModAct, Submodule.mapQ_apply, Submodule.Quotient.eq]`.
+-/
 theorem _root_.GlobalTheory.IndefiniteRowSideFullHecke.GaloisLatticeModuleActions.mk_mem_H0Mod (L : _root_.Formalism.WeaklyAdmissibleFiltrations.Lattice (O := O) ρ) (I : Ideal O)
     (x : ↥L.T) :
     (Submodule.Quotient.mk x : _root_.GlobalTheory.IndefiniteRowSideFullHecke.GaloisLatticeModuleActions.LatMod L I) ∈ _root_.GlobalTheory.IndefiniteRowSideFullHecke.GaloisLatticeModuleActions.galoisLatticeModIdealInvariants L I ↔
@@ -60,6 +66,9 @@ variable {G : Type} [Group G] {LL : Type} [Field LL] {O : Type} [CommRing O] [Al
   {ρ : Representation LL G V} in
 omit [Algebra O LL] [IsScalarTower O LL V] in
 
+/- English proof (translation)
+Use `haveI : Module.Finite O ↥L.T := Module.Finite.iff_fg.mpr L.fg`. Conclude with `Module.Finite.of_restrictScalars_finite O (O ⧸ I) _`.
+-/
 theorem _root_.GlobalTheory.IndefiniteRowSideFullHecke.GaloisLatticeModuleActions.finite_latMod (L : _root_.Formalism.WeaklyAdmissibleFiltrations.Lattice (O := O) ρ) (I : Ideal O) :
     Module.Finite (O ⧸ I) (_root_.GlobalTheory.IndefiniteRowSideFullHecke.GaloisLatticeModuleActions.LatMod L I) := by
   haveI : Module.Finite O ↥L.T := Module.Finite.iff_fg.mpr L.fg
@@ -86,6 +95,9 @@ def GeneratorBound (PD : PeriodData G Qp K₀ K B BdR) (T : LocLat G Qp LL O) (�
     Module.finrank Qp K * Module.finrank O ↥T.L.T + h0ModResidueDim T.L ϖ ≤
       (Module.finrank Qp K + 1) * Module.finrank O ↥T.L.T
 
+/- English proof (translation)
+Take `⟨⟨s, hs, hc⟩, h2⟩` from `h`. Conclude with `⟨s, hs, hc.trans h2⟩`.
+-/
 theorem GeneratorBound.le {PD : PeriodData G Qp K₀ K B BdR} {T : LocLat G Qp LL O} {ϖ : O}
     (h : GeneratorBound PD T ϖ) :
     GeneratedByAtMost (latticeFiniteCohomology PD T.L) ((Module.finrank Qp K + 1) * Module.finrank O ↥T.L.T) := by

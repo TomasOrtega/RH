@@ -36,6 +36,11 @@ def PartDiag : Prop := ∀ (q : ℕ) (B : Type) [CommRing B] [IsDomain B] (I : I
       ∃ (j' : J) (f : j ⟶ j') (a : D.obj j'), (p.map (D.map f).hom).IsRoot a ∧
         a - (D.map f).hom a₀ ∈ I.map (β.app j').hom)
 
+/- English proof (translation)
+Introduce `q B _ _ I hB hq`. Take `⟨J, _, _, D, β, hst, ha, hb, hc⟩` from `hD q B I hB hq`. Take `⟨K, hK, he⟩` from `hC B I J D β (colimit.cocone D) (colimit.isColimit D) ha hb hc`. Use `⟨J, inferInstance, inferInstance, D, colimit.cocone D, colimit.isColimit D, hst, ?_, K, hK, he⟩` and prove the remaining obligations. Take `⟨j⟩` from `IsFiltered.nonempty (C := J)`.
+
+Establish `h1 : IsUnit ((q : B))` using `hq`. Establish `h2` using `h1.map ((β.app j) ≫ (colimit.cocone D).ι.app j).hom`. Simplify using `using h2`.
+-/
 theorem goal_of (_hL : LocAIC) (_hM : MonicSplits) (_hI : IdemPart) (hC : ColimHens) (hD : PartDiag) :
     LateralTheory.E.QuotAcycCut.Hens := by
   intro q B _ _ I hB hq

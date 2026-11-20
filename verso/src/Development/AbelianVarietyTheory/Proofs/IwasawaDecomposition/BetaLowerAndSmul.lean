@@ -14,14 +14,25 @@ section General
 
 variable {E : Type} [NormedAddCommGroup E] [NormedSpace ℝ E]
 
+/- English proof (translation)
+The claim follows from `((hF.fderiv_right (m := 1) (by norm_num)).differentiableAt (by norm_num)).clm_apply (differentiableAt_const a)`.
+-/
 theorem diff_fderiv_apply {F : E → ℝ} {x : E} (hF : ContDiffAt ℝ 2 F x) (a : E) :
     DifferentiableAt ℝ (fun v => fderiv ℝ F v a) x :=
   ((hF.fderiv_right (m := 1) (by norm_num)).differentiableAt (by norm_num)).clm_apply (differentiableAt_const a)
 
+/- English proof (translation)
+The claim follows from `(hF.eventually (by simp)).mono fun _ hv => hv.differentiableAt (by norm_num)`.
+-/
 theorem eventually_diff {F : E → ℝ} {x : E} (hF : ContDiffAt ℝ 2 F x) :
     ∀ᶠ v in 𝓝 x, DifferentiableAt ℝ F v :=
   (hF.eventually (by simp)).mono fun _ hv => hv.differentiableAt (by norm_num)
 
+/- English proof (translation)
+Establish `e : (fun v => (fderiv ℝ (fun u => (F u : ℂ)) v a + Complex.I * fderiv ℝ (fun u => (F u : ℂ)) v b) / 2) =ᶠ[𝓝 x] fun v => (((fderiv ℝ F v a : ℝ) : ℂ) + Complex.I * ((fderiv ℝ F v b : ℝ) : ℂ)) * (2 : ℂ)⁻¹` using `by filter_upwards [eventually_diff hF] with v hv`. Establish `h : HasFDerivAt (fun u => (F u : ℂ)) (Complex.ofRealCLM.comp (fderiv ℝ F v)) v` using `Complex.ofRealCLM.hasFDerivAt.comp v hv.hasFDerivAt`. Rewrite using `[h.fderiv]`. Simplify using `[div_eq_mul_inv]`. Establish `h1 : HasFDerivAt (fun v => ((fderiv ℝ F v a : ℝ) : ℂ)) (Complex.ofRealCLM.comp (fderiv ℝ (fun v => fderiv ℝ F v a) x)) x` using `Complex.ofRealCLM.hasFDerivAt.comp x (diff_fderiv_apply hF a).hasFDerivAt`.
+
+Establish `h2 : HasFDerivAt (fun v => ((fderiv ℝ F v b : ℝ) : ℂ)) (Complex.ofRealCLM.comp (fderiv ℝ (fun v => fderiv ℝ F v b) x)) x` using `Complex.ofRealCLM.hasFDerivAt.comp x (diff_fderiv_apply hF b).hasFDerivAt`. Rewrite using `[e.fderiv_eq, ((h1.fun_add (h2.const_mul Complex.I)).mul_const (2 : ℂ)⁻¹).fderiv]`. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem fderiv_anti {F : E → ℝ} {x : E} (hF : ContDiffAt ℝ 2 F x) (a b c : E) :
     fderiv ℝ (fun v => (fderiv ℝ (fun u => (F u : ℂ)) v a + Complex.I * fderiv ℝ (fun u => (F u : ℂ)) v b) / 2) x c =
       ((fderiv ℝ (fun v => fderiv ℝ F v a) x c : ℝ) + Complex.I * (fderiv ℝ (fun v => fderiv ℝ F v b) x c : ℝ)) / 2 := by
@@ -46,6 +57,9 @@ end General
 
 variable {ι : Type} [Fintype ι] {p q : ℕ}
 
+/- English proof (translation)
+Use `isOpen_iff_mem_nhds.2 fun x0 hx0 => ?_` and prove the remaining obligations. Use `Filter.eventually_all.2 fun τ => ExhB.posDef_eventually (fun v : ι × Fin p × Fin q → ℂ => 1 - (unflat v τ)ᴴ * unflat v τ) (fun i j => ?_) (fun v => isHermitian_one.sub (isHermitian_conjTranspose_mul_self _)) x0 (hx0 τ)` and prove the remaining obligations. Simplify using `only [Matrix.sub_apply, Matrix.mul_apply, conjTranspose_apply, unflat, Matrix.of_apply]`. Use `fun_prop`.
+-/
 theorem isOpen_domFlat : IsOpen (DomFlat ι p q) := by
   refine isOpen_iff_mem_nhds.2 fun x0 hx0 => ?_
   refine Filter.eventually_all.2 fun τ => ExhB.posDef_eventually
@@ -54,6 +68,9 @@ theorem isOpen_domFlat : IsOpen (DomFlat ι p q) := by
   simp only [Matrix.sub_apply, Matrix.mul_apply, conjTranspose_apply, unflat, Matrix.of_apply]
   fun_prop
 
+/- English proof (translation)
+Establish `e : ∀ ζ, dR (fun w => dAnti (fun u => (f u : ℂ)) w ξ) z ζ = _` using `fun ζ => fderiv_anti hf (flat ξ) (flat (Complex.I • ξ)) (flat ζ)`. Rewrite using `[ddc, dHol, e, e]`. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem ddc_eq {f : Pt ι p q → ℝ} {z : Pt ι p q} (hf : ContDiffAt ℝ 2 (fun v => f (unflat v)) (flat z))
     (ξ : Pt ι p q) : ddc f z ξ =
       (fderiv ℝ (fun v => fderiv ℝ (fun u => f (unflat u)) v (flat ξ)) (flat z) (flat ξ) +

@@ -30,6 +30,11 @@ set_option maxHeartbeats 1000000
 
 namespace GlobalTheory.SkewLevel
 
+/- English proof (translation)
+Establish `h1 : ∀ q, χ (Z (q + π m)) = χ m * χ (Z q)` using `fun q => by`. Establish `e : Z (q + π m) = (Z (q + π m) - (m + Z q)) + (m + Z q)` using `by abel`. Rewrite using `[e, hadd, hker _ (by rw [map_sub, map_add, hZ, hZ]; abel), one_mul, hadd]`. Establish `h2 : ∑ q, χ (Z q) = χ m * ∑ q, χ (Z q)`. Rewrite using `[Finset.mul_sum, ← Equiv.sum_comp (Equiv.addRight (π m)) (fun q => χ (Z q))]`.
+
+Conclude with `Finset.sum_congr rfl fun q _ => h1 q`. Establish `h3 : (χ m - 1) * ∑ q, χ (Z q) = 0` using `by linear_combination -h2`. Conclude with `(mul_eq_zero.1 h3).resolve_left (sub_ne_zero.2 hm)`.
+-/
 theorem sum_section {M Q : Type} [AddCommGroup M] [AddCommGroup Q] [Fintype Q] (π : M →+ Q) (Z : Q → M) (hZ : ∀ q, π (Z q) = q)
     (χ : M → ℂ) (hadd : ∀ x y, χ (x + y) = χ x * χ y) (hker : ∀ x, π x = 0 → χ x = 1) {m : M} (hm : χ m ≠ 1) :
     ∑ q, χ (Z q) = 0 := by
@@ -44,6 +49,11 @@ theorem sum_section {M Q : Type} [AddCommGroup M] [AddCommGroup Q] [Fintype Q] (
 
 variable {D : D7}
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce `hy`. Establish `h : La D (tor0 D ⊤ δ) L L' ≤ (YYl D L L').toAddSubgroup.map (GlobalTheory.ThetaLatticePoints.ptHom D ⊤ δ a d)`. Use `(AddSubgroup.closure_le _).2 ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨w, hw, A, hA, rfl⟩`.
+
+Take `⟨c, -, rfl⟩` from `(GlobalTheory.CurveLattice.mem_lamOf D ⊤ δ w).1 hw`. Conclude with `⟨((c : D.host.K) : D.host.E) • A, (YYl D L L').smul_mem (algebraMap (𝓞 D.host.K) (𝓞 D.host.E) c) hA, GlobalTheory.ThetaLatticePoints.ptHom_smul D ⊤ δ a d c A⟩`. Conclude with `h hy`. Introduce and unpack `⟨z, hz, rfl⟩`. Conclude with `AddSubgroup.subset_closure ⟨δ, AddSubgroup.subset_closure ⟨1, trivial, by simp⟩, z, hz, rfl⟩`.
+-/
 theorem pt_mem_iff {δ : ℂ} {a d : ℕ} (L : Submodule (𝓞 D.host.E) (Fin a → D.host.E))
     (L' : Submodule (𝓞 D.host.E) (Fin d → D.host.E)) (y : VC D a d) :
     y ∈ La D (tor0 D ⊤ δ) L L' ↔ ∃ z ∈ YYl D L L', GlobalTheory.ThetaLatticePoints.ptHom D ⊤ δ a d z = y := by
@@ -59,6 +69,9 @@ theorem pt_mem_iff {δ : ℂ} {a d : ℕ} (L : Submodule (𝓞 D.host.E) (Fin a 
   · rintro ⟨z, hz, rfl⟩
     exact AddSubgroup.subset_closure ⟨δ, AddSubgroup.subset_closure ⟨1, trivial, by simp⟩, z, hz, rfl⟩
 
+/- English proof (translation)
+Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => exact ⟨(GlobalTheory.FinWeilO.thetaSub ψ S T).zero_mem, fun w _ => by simp⟩`. Consider the case `insert i s hi ih`. Rewrite using `[Finset.sum_insert hi, Finset.sum_insert hi]`. Conclude with `(h i).add ih`.
+-/
 theorem reads_sum {ψ : AddChar (AF D.host.F) ℂ} {θ : InfFam D} {S T : HSp D} {a d : ℕ} {hS : S.rank = a} {hT : T.rank = d}
     {cc : Ideal (𝓞 D.host.K)} {δ : ℂ} {r : D.host.E} {ι : Type} (s : Finset ι) (G : ι → VC D a d → ℂ) (f : ι → WO S T → ℂ)
     (h : ∀ i, Reads ψ θ hS hT cc δ r (G i) (f i)) : Reads ψ θ hS hT cc δ r (∑ i ∈ s, G i) (∑ i ∈ s, f i) := by
@@ -68,6 +81,51 @@ theorem reads_sum {ψ : AddChar (AF D.host.F) ℂ} {θ : InfFam D} {S T : HSp D}
     rw [Finset.sum_insert hi, Finset.sum_insert hi]
     exact (h i).add ih
 
+/- English proof (translation)
+Introduce `D ψ θ S T a d hS hT δ hcc hset LS LT hLS hLT hSd hTd e P c he _ κ e0 vac he0 hread hvac Tm hTm`. Substitute `hS hT` using the available equality. Establish `hc` using `hset.crv`. Establish `hψ` using `hset.std`. Establish `gS` using `hset.gS`.
+
+Establish `hG` using `(GlobalTheory.InducedType.induced_type D).1`. Establish `hne` using `conj_ne_bot P c`. Establish `hidx` using `GlobalTheory.SkewIndex.index_inter_skew D δ hc _ hne (by rw [conj_conj_smul]; exact isCoprime_conj he.1 c) S.rank T.rank`. Establish `hN0 : 0 < Ideal.absNorm (D.host.conj • modul P c)` using `Nat.pos_of_ne_zero (Ideal.absNorm_eq_zero_iff.not.2 hne)`. Establish `kp : KLat D (tor0 D ⊤ δ) (La D (tor0 D ⊤ δ) (stdL D S.rank) (skewLat D (D.host.conj • modul P c) T.rank))` using `Or.inr ⟨_, _, GlobalTheory.NormSum.VacMove.sd_of_moves (GlobalTheory.NormSum.VacMove.moves_one D S.rank), GlobalTheory.SkewLatSD.skewLat_sd D _ T.rank hne, rfl⟩`.
+
+Take `⟨-, -, hIm, -, -, -, hq⟩` from `GlobalTheory.ThetaLine.theta_line D hG ⊤ δ hc S.rank T.rank _ kp`. Establish `hrep` using `GlobalTheory.ThetaConj.repInd_of_thSp D _ _ _ (La0 D (tor0 D ⊤ δ) S.rank T.rank) _ e0 hq (fun x hx y hy => hIm _ (GlobalTheory.GalTheta.weilElement_smul_mem_thetaLattice D hG ⊤ δ _ _ x hx) y hy) he0`. Establish `hmem0` using `pt_mem_iff (δ := δ) (stdL D S.rank) (stdL D T.rank)`. Establish `hmem2` using `pt_mem_iff (δ := δ) (stdL D S.rank) (skewLat D (D.host.conj • modul P c) T.rank)`. Establish `hinj` using `GlobalTheory.ThetaLatticePoints.ptHom_injective D ⊤ (delta_ne_zero hc) S.rank T.rank`.
+
+Establish `hkI` using `fun t ht htΛ hk => inId_of_kill hψ hcc gS hLS hLT hSd hTd he c (t := t) ht htΛ hk`. Establish `hsm` using `fun z hz => smul_finRat_mem hψ hcc gS hLS hLT hSd hTd P c (z := z) hz`. Establish `hhalf` using `fun z hz => heisO_eq_half hψ hcc gS hLS hLT hSd hTd he.1 c hvac (z := z) hz`. Establish `hsk` using `fun z hz m hm => smul_skew_mem (conj_conj_ne_bot P c) (a := S.rank) (d := T.rank) (z := z) hz (m := m) hm`. Rewrite `hsk` using `[conj_conj_smul]`.
+
+Use `set I := D.host.conj • modul P c with hI`. Use `set p := GlobalTheory.ThetaLatticePoints.ptHom D ⊤ δ S.rank T.rank with hp`. Use `set Y := YYl D (stdL D S.rank) (skewLat D I T.rank) with hY`. Use `set A₁ := La0 D (tor0 D ⊤ δ) S.rank T.rank with hA₁`. Use `set A₂ := La D (tor0 D ⊤ δ) (stdL D S.rank) (skewLat D I T.rank) with hA₂`.
+
+Use `haveI : Finite (A₂ ⧸ A₁.addSubgroupOf A₂) := AddSubgroup.index_ne_zero_iff_finite.1 (by rw [hidx]; positivity)`. Use `letI : Fintype (A₂ ⧸ A₁.addSubgroupOf A₂) := Fintype.ofFinite _`. Establish `hcard : Fintype.card (A₂ ⧸ A₁.addSubgroupOf A₂) = Ideal.absNorm I ^ (S.rank * T.rank)`. Rewrite using `[← hidx, AddSubgroup.index_eq_card, Nat.card_eq_fintype_card]`. Take `⟨m, hm, u, hmu⟩` from `exists_add_two he c`.
+
+Establish `hz : ∀ q : A₂ ⧸ A₁.addSubgroupOf A₂, ∃ z ∈ Y, ((Quotient.out q : A₂) : VC D S.rank T.rank) - p (2 • z) ∈ A₁` using `fun q => by`. Take `⟨z, hz, ez⟩` from `(hmem2 _).1 (Quotient.out q).2`. Use `⟨u • z, Y.smul_mem u hz, (hmem0 _).2 ⟨m • z, hsk z hz m hm, ?_⟩⟩` and prove the remaining obligations. Rewrite using `[← ez, ← map_sub, two_nsmul, ← add_smul, ← mul_two, eq_sub_of_add_eq hmu, sub_smul, one_smul]`. Use `choose z hzY hzq using hz`.
+
+Establish `hp2 : ∀ w ∈ Y, p w ∈ A₂` using `fun w hw => (hmem2 _).2 ⟨w, hw, rfl⟩`. Set `π : Y →+ A₂ ⧸ A₁.addSubgroupOf A₂` to `(QuotientAddGroup.mk' _).comp ((p.comp Y.toAddSubgroup.subtype).codRestrict A₂ fun w => hp2 w w.2)`. Establish `hπ : ∀ q, π ⟨2 • z q, nsmul_mem (hzY q) 2⟩ = q` using `fun q => by conv_rhs => rw [← QuotientAddGroup.out_eq' q]`. Use `QuotientAddGroup.eq.2 ?_` and prove the remaining obligations. Rewrite using `[AddSubgroup.mem_addSubgroupOf, neg_add_eq_sub]`.
+
+Conclude with `hzq q`. Establish `hπ0 : ∀ w : Y, π w = 0 → GlobalTheory.VacUnique.finRat S T (-w.1) ∈ latO S T LS LT (fun _ => True)` using `fun w hw => by`. Take `⟨w', hw', ew⟩` from `(hmem0 (p w.1)).1 ((QuotientAddGroup.eq_zero_iff (N := A₁.addSubgroupOf A₂) (⟨p w.1, hp2 w w.2⟩ : A₂)).1 hw)`. Rewrite using `[finRat_mem_iff hψ hcc gS hLS hLT hSd hTd, ← hinj ew]`. Conclude with `neg_mem hw'`.
+
+Establish `hn : ((Ideal.absNorm I ^ (S.rank * T.rank) : ℕ) : ℂ) ≠ 0` using `Nat.cast_ne_zero.2 (by positivity)`. Establish `hfun : cosetFn (cA D e) I (0 : WO S T) = ∑ q, ((Ideal.absNorm I ^ (S.rank * T.rank) : ℕ) : ℂ)⁻¹ • fun t => ψ (symplO S T t (e • GlobalTheory.VacUnique.finRat S T (2 • -z q))) * halfInd (cA D e) (latO S T LS LT fun _ => True) t`. Use function extensionality and compare the values at `t`. Rewrite using `[Finset.sum_apply]`. Simplify using `only [Pi.smul_apply, smul_eq_mul]`.
+
+Rewrite using `[← Finset.mul_sum, ← Finset.sum_mul]`. Simplify using `only [cosetFn, halfInd, Matrix.zero_apply, sub_zero]`. Distinguish the cases in `h1 : t ∈ latO S T LS LT (fun _ => True) ∧ IsHalf (cA D e) t`. Establish `e1 : ∀ y, symplO S T t (e • y) = symplO S T t y` using `fun y => by`. Rewrite using `[← cA_cA e, ← GlobalTheory.PlaceModel.symplO_smul, (GlobalTheory.PlaceModel.mem_half S T).1 ((GlobalTheory.PlaceModel.isHalf_iff S T).1 h1.2)]`.
+
+Simplify using `only [e1]`. Rewrite using `[if_pos h1, mul_one]`. Distinguish the cases in `h2 : ∀ i j, GlobalTheory.IndefiniteRowSideFullHecke.UnitCharTriangle.InId I (toEAf D (t i j))`. Rewrite using `[if_pos ⟨h1.2, h2⟩, Finset.sum_congr rfl fun q _ => kill_of_inId hψ hcc hLS hLT hSd hTd he h1.2 h2 (hsm _ (nsmul_mem (neg_mem (hzY q)) 2)), Finset.sum_const, Finset.card_univ, hcard, nsmul_eq_mul, mul_one, inv_mul_cancel₀ hn]`. Rewrite using `[if_neg fun h => h2 h.2]`.
+
+Choose the witnesses or unpack the hypotheses as in `⟨w, hw, hw1⟩ : ∃ w ∈ Y, ψ (symplO S T t (GlobalTheory.VacUnique.finRat S T w)) ≠ 1 := by`. Assume the negation of the conclusion as `h`. Use `push_neg at h`. Conclude with `h2 (hkI t h1.2 h1.1 h)`. Establish `h3` using `sum_section π (fun q => ⟨2 • z q, nsmul_mem (hzY q) 2⟩) hπ (fun w => ψ (symplO S T t (GlobalTheory.VacUnique.finRat S T (-w.1)))) (fun x y => by`.
+
+Rewrite using `[Submodule.coe_add, neg_add, map_add, GlobalTheory.PlaceModel.symplO_add_right, AddChar.map_add_eq_mul])`. Use the proof step `(fun x hx => GlobalTheory.LatVac.char_sympl_eq_one hψ hSd hTd h1.1 (hπ0 x hx)) (m := ⟨-w, neg_mem hw⟩)`. Use the proof step `(by simpa only [neg_neg] using hw1)`. Simplify using `only [smul_neg]`. Rewrite using `[h3, mul_zero]`.
+
+Rewrite using `[if_neg h1, mul_zero, mul_zero, if_neg fun h => h1 ⟨(half_mem_iff hcc hLS hLT hSd hTd he t h.1).2 fun i j => (h.2 i j).1, h.1⟩]`. Establish `hv : Tm (halfInd (cA D e) (latO S T LS LT fun _ => True)) = vac` using `by simpa using hTm.vac`. Establish `hee` using `GlobalTheory.PlaceVec.idemSum_mul_self he.1`. Establish `hTmΦ : Tm (cosetFn (cA D e) I 0) = ((Ideal.absNorm I ^ (S.rank * T.rank) : ℕ) : ℂ)⁻¹ • ∑ q, heisO ψ S T (finPt rfl rfl 1 (2 • z q)) vac`. Rewrite using `[hfun, map_sum, Finset.smul_sum]`.
+
+Use `Finset.sum_congr rfl fun q _ => ?_` and prove the remaining obligations. Establish `e1 : finPt (rfl : S.rank = S.rank) (rfl : T.rank = T.rank) 1 (2 • z q) = GlobalTheory.VacUnique.finRat S T (2 • -z q)`. Unfold `finPt`. Use `congr 1`. Use `Matrix.ext fun i j => ?_` and prove the remaining obligations.
+
+Simplify using the standard rewrite rules. Rewrite using `[map_smul, hTm.modul _ (GlobalTheory.isSBHalf_halfInd _ _) _ (fun i j => by`. Express the relevant statement in the definitionally equal form `cA D (cA D e) * (e * _) = e * _`. Rewrite using `[cA_cA, ← mul_assoc, hee]), hv, hhalf _ (neg_mem (hzY q)), e1]`. Establish `hR` using `(reads_sum Finset.univ _ _ fun q => heisO_finPt_reads ψ θ S T rfl rfl ⊤ δ 1 hset _ _ hread (2 • z q)).smul ((Ideal.absNorm I ^ (S.rank * T.rank) : ℕ) : ℂ)⁻¹`.
+
+Use `⟨1, IsRootOne.one, ?_⟩` and prove the remaining obligations. Rewrite using `[hTmΦ]`. Use `hR using 1` and compare the differences between its conclusion and the goal. Establish `hU : ∀ q : A₂ ⧸ A₁.addSubgroupOf A₂, ∀ y, al D (tor0 D ⊤ δ) ((Quotient.out q : A₂) : VC D S.rank T.rank) * U D (tor0 D ⊤ δ) ((Quotient.out q : A₂) : VC D S.rank T.rank) e0 y = U D (tor0 D ⊤ δ) (pt D (tor0 D ⊤ δ) δ (2 • z q)) e0 y` using `fun q y => by`. Establish `h1` using `congrFun (hrep _ (Quotient.out q).2 _ (hp2 _ (nsmul_mem (hzY q) 2)) (hzq q)) y`.
+
+Take `⟨k, hk⟩` from `hq _ (hp2 _ (hzY q))`. Establish `h2 : al D (tor0 D ⊤ δ) (p (2 • z q)) = 1`. Rewrite using `[GlobalTheory.ThetaConj.al_of_qH D _ _ (2 * (2 * k)) (by`. Rewrite using `[map_nsmul, GlobalTheory.NormSum.Expand.qH_nsmul, hk]`. Use `push_cast`.
+
+Use the proof step `ring), zpow_mul]`. Evaluate the numerical expressions. Simplify using `only [GlobalTheory.ThetaConj.aU, h2, one_mul] at h1`. Conclude with `h1`. Establish `hs : ((Real.sqrt ((Ideal.absNorm I : ℝ) ^ (S.rank * T.rank)) : ℂ))⁻¹ * ((Real.sqrt (((Ideal.absNorm I ^ (S.rank * T.rank) : ℕ) : ℝ)) : ℂ))⁻¹ = ((Ideal.absNorm I ^ (S.rank * T.rank) : ℕ) : ℂ)⁻¹`.
+
+Establish `h1 : (((Ideal.absNorm I ^ (S.rank * T.rank) : ℕ) : ℝ)) = (Ideal.absNorm I : ℝ) ^ (S.rank * T.rank)` using `by push_cast; rfl`. Rewrite using `[h1, ← mul_inv, ← Complex.ofReal_mul, Real.mul_self_sqrt (by positivity)]`. Use `push_cast`. Both sides reduce to the same expression. Use function extensionality and compare the values at `y`.
+
+Simplify using `only [Pi.smul_apply, smul_eq_mul, Iop, finsum_eq_sum_of_fintype, hidx, hU, Finset.sum_apply]`. Rewrite using `[← hs]`. Simplify using `only [U, Pi.smul_apply, smul_eq_mul, Finset.mul_sum]`. Conclude with `Finset.sum_congr rfl fun q _ => by ring`.
+-/
 theorem reads_level : ∀ {D : D7} (ψ : AddChar (AF D.host.F) ℂ) (θ : InfFam D) (S T : HSp D) {a d : ℕ} (hS : S.rank = a) (hT : T.rank = d) (δ : ℂ),
     D.host.ccK = ⊤ → Setup ψ θ S T ⊤ δ 1 →
     ∀ (LS : Submodule (𝓞 D.host.E) (Fin S.rank → D.host.E)) (LT : Submodule (𝓞 D.host.E) (Fin T.rank → D.host.E)),

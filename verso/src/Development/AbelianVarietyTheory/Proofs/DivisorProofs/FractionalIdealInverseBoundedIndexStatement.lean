@@ -3,6 +3,9 @@ import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FractionalIdealInve
 import Mathlib
 
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.exists_principal_mul_integral_ideal_contains_int | exact GlobalTheory.exists_principal_mul_integral_ideal_contains_int | (intros; apply GlobalTheory.exists_principal_mul_integral_ideal_contains_int <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.fractional_ideal_inverse_bounded_index : ∀ (A K : Type) [CommRing A] [IsDomain A] [CharZero A] [Module.Finite ℤ A]
     [Field K] [Algebra A K] [IsFractionRing A K],
     ∃ M : ℤ, M ≠ 0 ∧ ∀ I J : Submodule A K, I * J = 1 →

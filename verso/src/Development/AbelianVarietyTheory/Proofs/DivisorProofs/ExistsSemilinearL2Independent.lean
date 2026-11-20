@@ -37,6 +37,29 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheo
 
 set_option maxHeartbeats 2000000 in
 
+/- English proof (translation)
+Establish `hhol : ∀ f : GlobalTheory.AllWt.cuspW Xo c U G, rdU (U σ) (f : Rul Xo c) ∈ holSub (U σ).X (GlobalTheory.AllWt.modelWt (U σ) G)` using `fun f => (GlobalTheory.AllWt.mem_cuspW.1 f.2).2 σ hσ`. Establish `heq : ∀ P : FDSec (U σ).X, eLpNorm (onQ V (adel V dict mu P)) 2 (muQ1 V) = GlobalTheory.AllWt.petE V dict (muQ1 V) (GlobalTheory.AllWt.modelWt (U σ) G) P`. Introduce `P`. Unfold `GlobalTheory.AllWt.petE`. Use `eLpNorm_congr_norm_ae (Filter.Eventually.of_forall fun q => ?_)` and prove the remaining obligations.
+
+Use `show ‖mu q.out * P (dict q.out).1 (dict q.out).2‖ = _`. Rewrite using `[norm_mul, hmu1, one_mul, Real.norm_of_nonneg (GlobalTheory.AllWt.ptN_nonneg _ _ _), GlobalTheory.AllWt.ptN, pnorm_eq_of_unit _ _ _ _ (hunit q.out)]`. Establish `hmem : ∀ P : holSub (U σ).X (GlobalTheory.AllWt.modelWt (U σ) G), MemLp (onQ V (adel V dict mu (P : FDSec (U σ).X))) 2 (muQ1 V)` using `fun P => ⟨aesm_of_holSub hm _ P.2, by`. Rewrite using `[heq]`. Conclude with `lt_top_iff_ne_top.2 (GlobalTheory.AllWt.petE_ne_top V dict (muQ1 V) prob_le_one hd P.2)⟩`.
+
+Set `L : holSub (U σ).X (GlobalTheory.AllWt.modelWt (U σ) G) →ₗ[ℂ] Lp ℂ 2 (muQ1 V)` to `{ toFun := fun P => (hmem P).toLp _ map_add' := fun P Q => by`. Rewrite using `[← MemLp.toLp_add]`. Conclude with `MemLp.toLp_congr _ _ (Filter.EventuallyEq.of_eq (by rw [Submodule.coe_add, map_add, map_add]))`. Use the proof step `map_smul' := fun a P => by`. Rewrite using `[RingHom.id_apply, ← MemLp.toLp_const_smul]`.
+
+Conclude with `MemLp.toLp_congr _ _ (Filter.EventuallyEq.of_eq (by rw [Submodule.coe_smul, map_smul, map_smul])) }`. Establish `hL : ∀ P, L P = (hmem P).toLp _` using `fun _ => rfl`. Set `R : GlobalTheory.AllWt.cuspW Xo c U G → holSub (U σ).X (GlobalTheory.AllWt.modelWt (U σ) G)` to `fun f => ⟨_, hhol f⟩`. Establish `hRadd : ∀ f g, R (f + g) = R f + R g` using `fun f g => Subtype.ext (by show rdU (U σ) ((f + g : GlobalTheory.AllWt.cuspW Xo c U G) : Rul Xo c) = rdU (U σ) (f : Rul Xo c) + rdU (U σ) (g : Rul Xo c)`. Rewrite using `[Submodule.coe_add, map_add])`.
+
+Establish `hRsm : ∀ (a : c.F) f, R (a • f) = σ a • R f` using `fun a f => Subtype.ext (by show rdU (U σ) ((a • f : GlobalTheory.AllWt.cuspW Xo c U G) : Rul Xo c) = σ a • rdU (U σ) (f : Rul Xo c)`. Rewrite using `[Submodule.coe_smul, map_smulₛₗ])`. Set `cf : ℝ` to `GlobalTheory.AllWt.lieFacZ Dw x G`. Establish `hcf : 0 < cf` using `GlobalTheory.AllWt.lieFacZ_pos x G`. Use `⟨AddMonoidHom.mk' (fun f => (cf : ℂ) • L (R f)) (fun f g => by rw [hRadd, map_add, smul_add]), fun a f => ?_, fun f => ?_, fun n e he => ?_⟩` and prove the remaining obligations.
+
+Use `show (cf : ℂ) • L (R (a • f)) = σ a • ((cf : ℂ) • L (R f))`. Rewrite using `[hRsm, map_smul, smul_comm]`. Use `show _ = ‖(cf : ℂ) • L (R f)‖`. Rewrite using `[norm_smul, hL, Lp.norm_toLp, heq, Complex.norm_real, Real.norm_of_nonneg hcf.le]`. Both sides reduce to the same expression.
+
+Establish `hb : LinearIndependent c.F (fun i => (e i : Rul Xo c))` using `he.map' (GlobalTheory.AllWt.cuspW Xo c U G).subtype (Submodule.ker_subtype _)`. Establish `hc` using `GlobalTheory.reading_linearIndependent_secZ hS (U σ) hU _ n _ (fun i => GlobalTheory.AllWt.cuspW_le_secZ G (e i).2) hb`. Rewrite `hc`, the goal using `[Fintype.linearIndependent_iff]`. Introduce `w hw`. Use `hc w ?_` and prove the remaining obligations.
+
+Establish `h1 : (cf : ℂ) • L (∑ i, w i • R (e i)) = 0`. Establish `hw' : ∑ i, w i • ((cf : ℂ) • L (R (e i))) = 0` using `hw`. Rewrite using `[map_sum, Finset.smul_sum, ← hw']`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[L.map_smul]`.
+
+Conclude with `smul_comm _ _ _`. Establish `h2 : L (∑ i, w i • R (e i)) = 0` using `(smul_eq_zero.1 h1).resolve_left (Complex.ofReal_ne_zero.2 hcf.ne')`. Establish `h3 : onQ V (adel V dict mu ((∑ i, w i • R (e i) : holSub (U σ).X (GlobalTheory.AllWt.modelWt (U σ) G)) : FDSec (U σ).X)) =ᵐ[muQ1 V] 0`. Use `(MemLp.coeFn_toLp (hmem _)).symm.trans ?_` and prove the remaining obligations. Rewrite using `[← hL, h2]`.
+
+Conclude with `Lp.coeFn_zero _ _ _`. Establish `h4` using `hae _ _ (∑ i, w i • R (e i)).2 h3`. Establish `h5 : ((∑ i, w i • R (e i) : holSub (U σ).X (GlobalTheory.AllWt.modelWt (U σ) G)) : FDSec (U σ).X) = ∑ i, w i • rdU (U σ) (e i : Rul Xo c)`. Rewrite using `[Submodule.coe_sum]`. Both sides reduce to the same expression.
+
+Rewrite `h4` using `[h5]`. Use function extensionality and compare the values at `k z`. Distinguish the cases in `hz : z ∈ ((U σ).X k).dom`. Conclude with `h4 k z hz`. Simplify using `[Finset.sum_apply, rdU, hz]`.
+-/
 theorem exists_semilinear_L2_independent (hS : Out.SecBaseChangeSt) (U : ∀ σ : c.F →+* ℂ, Unf Xo c σ r) (σ : c.F →+* ℂ)
     (hσ : GoodEmb c σ) (hU : IsUnf (U σ)) (V : HSp D)
     (dict : Formalism.L2.Theta.GA D V → Σ k, Frame ((U σ).X k).Ψ r) (mu : Formalism.L2.Theta.GA D V → ℂ)
@@ -124,6 +147,13 @@ end Gen
 
 set_option maxHeartbeats 2000000 in
 
+/- English proof (translation)
+Use `haveI := GlobalTheory.Deep.finiteDimensional_V_of_good D T j Y e o hY G`. Use `GlobalTheory.HSApp.hasGram_of_inner Y.d.c₂.F (Y.V G) (Y.nrm G) fun v => ?_` and prove the remaining obligations. Establish `hσ' : GoodEmb Y.d.c₂ (Formalism.L2.Pj.goodOf Y.d.c₂ v.embedding)` using `Formalism.L2.Pj.goodEmb_goodOf _ _`. Establish `hd : ∀ g, (Y.dict (Formalism.L2.Pj.goodOf Y.d.c₂ v.embedding) g).2 ∈ ((Y.U (Formalism.L2.Pj.goodOf Y.d.c₂ v.embedding)).X (Y.dict (Formalism.L2.Pj.goodOf Y.d.c₂ v.embedding) g).1).dom` using `fun g => ((hY.dictU _ hσ').choose_spec.choose_spec.2).2.2.2.1 g`. Establish `hex` using `exists_semilinear_L2_independent GlobalTheory.abelianSchemeLaws_all.1.secBaseChange Y.U _ hσ' (hY.unf _ hσ') (D.sp.W j) (Y.dict _) (fun _ => (1 : ℂ)) (fun _ => norm_one) (GlobalTheory.CovTop.PetRep.adelMeas_one_of_good Y hY _ hσ') (GlobalTheory.PetDef.aeDom_good Y hY _ hσ') hd (h …`.
+
+Use `⟨_, inferInstance, inferInstance, Classical.choose hex, ?_, fun x => (Classical.choose_spec hex).2.1 x, (Classical.choose_spec hex).2.2⟩` and prove the remaining obligations. Distinguish the cases in `h : GoodEmb Y.d.c₂ v.embedding`. Use `left`. Introduce `a x`. Use `((Classical.choose_spec hex).1 a x).trans ?_` and prove the remaining obligations.
+
+Conclude with `congrArg (· • Classical.choose hex x) (congrArg (fun τ : Y.d.c₂.F →+* ℂ => τ a) (if_pos h))`. Use `right`. Introduce `a x`. Use `((Classical.choose_spec hex).1 a x).trans ?_` and prove the remaining obligations. Conclude with `congrArg (· • Classical.choose hex x) (congrArg (fun τ : Y.d.c₂.F →+* ℂ => τ a) (if_neg h))`.
+-/
 theorem hasGram_nrm_of_good (D : D7) (T : Core D) (j : ℕ) (Y : Deep T j) (e : ℕ) (o : ℝ) (hY : Y.Good e o)
     (G : WTZ D.host.E) : GlobalTheory.AllWt.HasGram (Y.nrm G) := by
   haveI := GlobalTheory.Deep.finiteDimensional_V_of_good D T j Y e o hY G
@@ -149,6 +179,9 @@ theorem hasGram_nrm_of_good (D : D7) (T : Core D) (j : ℕ) (Y : Deep T j) (e : 
 
 set_option maxHeartbeats 1000000 in
 
+/- English proof (translation)
+Introduce `hP D T j Y e o hY hf la hla`. Establish `hfd` using `GlobalTheory.Deep.finiteDimensional_V_of_good D T j Y e o hY (wtOf _ la 0)`. Conclude with `⟨hasGram_nrm_of_good D T j Y e o hY _, GlobalTheory.T.weight_lattice_finitely_generated hP D T j Y e o hY hf la hla hfd, GlobalTheory.T.weight_lattice_span_eq_top hP D T j Y e o hY hf la hla hfd⟩`.
+-/
 theorem goodAt_of_gapGe : GlobalTheory.CovTop.Hypotheses2 → ∀ (D : D7) (T : Core D) (j : ℕ) (Y : Deep T j) (e : ℕ) (o : ℝ), Y.Good e o →
     2 < Module.finrank ℚ D.host.E / 2 → ∀ la : GlobalTheory.AllWt.Weight (T.Q.Dw j), GapGe 1 la → Y.GoodAt (wtOf _ la 0) := by
   intro hP D T j Y e o hY hf la hla
@@ -156,6 +189,9 @@ theorem goodAt_of_gapGe : GlobalTheory.CovTop.Hypotheses2 → ∀ (D : D7) (T : 
   exact ⟨hasGram_nrm_of_good D T j Y e o hY _, GlobalTheory.T.weight_lattice_finitely_generated hP D T j Y e o hY hf la hla hfd,
     GlobalTheory.T.weight_lattice_span_eq_top hP D T j Y e o hY hf la hla hfd⟩
 
+/- English proof (translation)
+Introduce `hP D T j Y e o hY hf P hB`. Take `⟨h1, h2, h3⟩` from `GlobalTheory.HSApp.GapArith.gaps_main _ _ _ P hB`. Conclude with `⟨goodAt_of_gapGe hP D T j Y e o hY hf _ h1, goodAt_of_gapGe hP D T j Y e o hY hf _ h2, fun i _ => goodAt_of_gapGe hP D T j Y e o hY hf _ (h3 i)⟩`.
+-/
 theorem goodAt_hs : GlobalTheory.CovTop.Hypotheses2 → ∀ (D : D7) (T : Core D) (j : ℕ) (Y : Deep T j) (e : ℕ) (o : ℝ), Y.Good e o →
     2 < Module.finrank ℚ D.host.E / 2 → ∀ P : WtPar (T.Q.Dw j), WtBig P →
       Y.GoodAt (wtOf _ P.u₁ 0) ∧ Y.GoodAt (wtOf _ P.u₂ 0) ∧ ∀ i ≤ P.T, Y.GoodAt (wtOf _ (P.wt i) 0) := by

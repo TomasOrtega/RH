@@ -26,9 +26,17 @@ def Alin : EuclideanSpace ℝ (KapI X) →ₗ[ℝ] EuclideanSpace ℝ (KapI X) :
     ((EuclideanSpace.equiv (KapI X) ℝ).toLinearEquiv.symm.symm : EuclideanSpace ℝ (KapI X) →ₗ[ℝ] (KapI X → ℝ))
 
 open Classical in
+/- English proof (translation)
+Rewrite using `[Alin, LinearMap.det_conj, LinearMap.det_toLin']`.
+-/
 theorem det_Alin : LinearMap.det (Alin X) = (matI X).det := by
   rw [Alin, LinearMap.det_conj, LinearMap.det_toLin']
 
+/- English proof (translation)
+Rewrite using `[betaI_expand]`. Simplify using `only [Alin, PiLp.inner_apply, LinearMap.coe_comp, Function.comp_apply, Matrix.toLin'_apply, LinearEquiv.coe_coe]`. Simplify using the standard rewrite rules. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Simplify using `only [Matrix.mulVec, dotProduct]`.
+
+Establish `hy : ∀ j, (EuclideanSpace.equiv (KapI X) ℝ) y j = y j` using `fun j => rfl`. Simplify using `only [hy]`. Rewrite using `[Finset.sum_mul]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem inner_Alin (x y : EuclideanSpace ℝ (KapI X)) : ⟪x, Alin X y⟫ = betaI X x y := by
   classical
   rw [betaI_expand]
@@ -46,6 +54,19 @@ theorem inner_Alin (x y : EuclideanSpace ℝ (KapI X)) : ⟪x, Alin X y⟫ = bet
 end
 
 open Classical in
+/- English proof (translation)
+Introduce `D X u' ψ hT μinf νinf fibInf hP`. Use `haveI : FiniteDimensional X.B.I.F X.B.I.E := fd_of X`. Establish `hdet : IsUnit (LinearMap.det (Alin X))` using `by rw [det_Alin]; exact isUnit_iff_ne_zero.2 (hN X)`. Set `A : EuclideanSpace ℝ (KapI X) ≃L[ℝ] EuclideanSpace ℝ (KapI X)` to `(LinearMap.equivOfIsUnitDet hdet).toContinuousLinearEquiv`. Establish `hAapp : ∀ y, A y = Alin X y` using `fun y => by simp [A, LinearMap.equivOfIsUnitDet_apply]`.
+
+Establish `hAl : (A : EuclideanSpace ℝ (KapI X) →ₗ[ℝ] EuclideanSpace ℝ (KapI X)) = Alin X` using `LinearMap.ext hAapp`. Establish `hAd : LinearMap.det (A : EuclideanSpace ℝ (KapI X) →ₗ[ℝ] EuclideanSpace ℝ (KapI X)) = (matI X).det`. Rewrite using `[hAl, det_Alin]`. Establish `hsym : ∀ x y, ⟪x, A y⟫ = ⟪A x, y⟫`. Introduce `x y`.
+
+Rewrite using `[hAapp, hAapp, inner_Alin, real_inner_comm, inner_Alin, hS]`. Establish `hν` using `FSD.selfDual_lin A hsym`. Rewrite `hν` using `[hAd]`. Establish `hμ : SelfDual μinf (fun x y : TupI X => psiInf X.B.I.F ψ (BR (Ainf X.B.I.F) X.B.I.cm.sig X.B.I.J x y))` using `hP.2.2.2.2.1`. Establish `hμ'` using `selfDual_transport μinf _ (tupCoord X) (tupCoord_add X) hμ`.
+
+Establish `hχ : (fun x y : EuclideanSpace ℝ (KapI X) => psiInf X.B.I.F ψ (BR (Ainf X.B.I.F) X.B.I.cm.sig X.B.I.J ((tupCoord X).symm x) ((tupCoord X).symm y))) = fun x y => ((𝐞 ⟪x, A y⟫ : Circle) : ℂ)`. Use function extensionality and compare the values at `x y`. Rewrite using `[hAapp, inner_Alin, psiInf_eq ψ hP.2.2.1, Real.fourierChar_apply]`. Simplify using `only [betaI]`. Use `push_cast`.
+
+Put the polynomial expressions in normal form. Rewrite `hμ'` using `[hχ]`. Use `haveI := hν.1`. Establish `hB : ST.IsBichar (fun x y : EuclideanSpace ℝ (KapI X) => ((𝐞 ⟪x, A y⟫ : Circle) : ℂ))` using `{ addL := fun x x' y => by simp only [inner_add_left, AddChar.map_add_eq_mul, Circle.coe_mul] addR := fun x y y' => by simp only [map_add, inner_add_right, AddChar.map_add_eq_mul, Circle.coe_mul] norm1 := fun x y => Circle.norm_coe _ contL := fun y => (continuous_subtype_val.comp …`. Take `⟨Φ, hc, hs, hI, z, hz⟩` from `ST.testEx_bichar (ENNReal.ofReal (Real.sqrt |(matI X).det|) • (volume : Measure (EuclideanSpace ℝ (KapI X)))) hB`.
+
+Conclude with `SelfDual.eq_of_test hν hμ' Φ hc hs hI z hz`.
+-/
 theorem densMu_of (hS : BetaSym) (hN : MatND) : DensMu := by
   intro D X u' ψ hT μinf νinf fibInf hP
   haveI : FiniteDimensional X.B.I.F X.B.I.E := fd_of X

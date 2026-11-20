@@ -15,6 +15,15 @@ section Lin
 variable {T : Type} {D : D7} {L : LevCh D T} {sc : Consts} {G : GridData L sc} {W : G.Weil} {M : Vol G}
   {ρ : RealMatch W} {t : T}
 end Lin
+/- English proof (translation)
+Introduce `hP hL`. Take `⟨a0, ha⟩` from `Big.and (Big.and (_root_.GlobalTheory.T.flipRun_cusp_transition hL hP) (_root_.GlobalTheory.EndCusp.leadingForm_mem_cuspList hP)) colFn_cont_left`. Use `⟨a0, fun ε CF hC => ?_⟩` and prove the remaining obligations. Take `⟨x, hx⟩` from `ha ε CF hC`. Use `⟨x, fun D large₂ he hxx Γ _ _ Pl0 T A Ks _ _ _ R F hS ch hch hsc => ?_⟩` and prove the remaining obligations.
+
+Take `⟨⟨hstep, htop⟩, hcol⟩` from `hx D large₂ he hxx Γ Pl0 T A Ks R F hS ch hch hsc`. Establish `hθ : IsInfFam ch.W.θ`. Rewrite using `[hch.toIsBase.weil.θ]`. Conclude with `hS.core.models.inf`. Introduce `t a τ hτ M hM τi y`.
+
+Take `⟨e, he', φ, hφ, -⟩` from `hτ`. Establish `hca : GlobalTheory.Unf.IsContAut _ (colFn ch a)` using `⟨(hcol a).2, (hcol a).1⟩`. Establish `hFP : ∀ P : PolRow ch.G × PolDown ch.G, GlobalTheory.Unf.IsContAut _ (∑ d ∈ τ.support, τ d • liftP ch.W M (oppPath t D.R.m) (oppPure ch.W t P d) (formTop ch t y))` using `fun P => GlobalTheory.SeeSaw.TrcProof.contAut_sum _ _ _ fun d hd => opp_contAut hP.cuspRapidDecay hθ (hstep t M hM) he' (htop t y) P d (φ d) (hφ d hd)`. Simplify using `only [lhs, liftT_oppTens]`. Rewrite using `[bplus_fsum hch.toIsBase.vol hM hca _ _ _ fun P _ => hFP P, Finsupp.sum]`.
+
+Use `Finset.sum_congr rfl fun P _ => ?_` and prove the remaining obligations. Rewrite using `[Finsupp.support_single_ne_zero _ one_ne_zero, Finset.sum_singleton, Finsupp.single_eq_same, one_smul]`.
+-/
 theorem placeValuation_linAt_large : _root_.GlobalTheory.FunPr.ThetaLocalInputs → GlobalTheory.IndefiniteRowSideFullHecke.CuspAlongSmoothLifts.LiftsCuspidal → Big fun ch => LinAt ch := by
   intro hP hL
   obtain ⟨a0, ha⟩ := Big.and (Big.and (_root_.GlobalTheory.T.flipRun_cusp_transition hL hP) (_root_.GlobalTheory.EndCusp.leadingForm_mem_cuspList hP)) colFn_cont_left

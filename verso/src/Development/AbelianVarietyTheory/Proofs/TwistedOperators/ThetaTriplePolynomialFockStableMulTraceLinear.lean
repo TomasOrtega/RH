@@ -30,9 +30,17 @@ variable (F) in
 def liftInf (z : mixedEmbedding.mixedSpace F) : AF F :=
   LinearMap.inl F (Ainf F) (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.Af F) ((InfiniteAdeleRing.ringEquiv_mixedSpace F).symm z)
 
+/- English proof (translation)
+Simplify using `[evI, liftInf]`.
+-/
 theorem evI_liftInf (z : mixedEmbedding.mixedSpace F) : evI F (liftInf F z) = z := by
   simp [evI, liftInf]
 
+/- English proof (translation)
+Establish `h1 : a.1 = 0` using `(InfiniteAdeleRing.ringEquiv_mixedSpace F).injective (by rw [map_zero]; exact ha)`. Use `Prod.ext ?_ ?_` and prove the remaining obligations. Use `show a.1 * ((InfiniteAdeleRing.ringEquiv_mixedSpace F).symm z) = 0`. Rewrite using `[h1, zero_mul]`. Use `show a.2 * 0 = 0`.
+
+Rewrite using `[mul_zero]`.
+-/
 theorem mul_liftInf_eq_zero {a : AF F} (ha : evI F a = 0) (z : mixedEmbedding.mixedSpace F) :
     a * liftInf F z = 0 := by
   have h1 : a.1 = 0 := (InfiniteAdeleRing.ringEquiv_mixedSpace F).injective (by rw [map_zero]; exact ha)
@@ -42,6 +50,19 @@ theorem mul_liftInf_eq_zero {a : AF F} (ha : evI F a = 0) (z : mixedEmbedding.mi
   · show a.2 * 0 = 0
     rw [mul_zero]
 
+/- English proof (translation)
+Introduce `r _ x`. Establish `he : ∀ t : ℝ, M.co.e (realAd F t • u) = (0, realAd F t • y)`. Introduce `t`. Rewrite using `[LinearEquiv.map_smul, hu]`. Apply the tactic sequence `refine Prod.ext ?_ ?_ <;> simp`.
+
+Use `set a : AF F := x ⬝ᵥ y with ha`. Use `set K : ℂ := tens (evI F) (⇑f) r x with hK`. Use `set c : ℝ := Algebra.trace ℝ (mixedEmbedding.mixedSpace F) (evI F a) with hc`. Establish `hT : ∀ t : ℝ, M.heisLine ψ u t (tens (evI F) (⇑f) r) x = ψ (realAd F t * a) * K`. Introduce `t`.
+
+Simplify using `only [Model.heisLine, Darboux.rho, he t, schr, zero_dotProduct, mul_zero, add_zero, dotProduct_smul, smul_eq_mul, ha, hK]`. Establish `hAt : ∀ t : ℝ, At (evI F) (realAd F t * a)`. Introduce `t v hv`. Rewrite using `[smul_eq_mul, ← mul_assoc, mul_realAd_eq_zero hv, zero_mul]`. Establish `hψt : ∀ t : ℝ, ψ (realAd F t * a) = Complex.exp (-(2 * Real.pi * Complex.I) * (((t * c : ℝ)) : ℂ))`.
+
+Introduce `t`. Rewrite using `[hψ.2.2 _ (hAt t), evI_mul, evI_realAd, ← Algebra.smul_def, LinearMap.map_smul, smul_eq_mul]`. Establish `hfun : (fun t : ℝ => M.heisLine ψ u t (tens (evI F) (⇑f) r) x) = fun t : ℝ => Complex.exp (-(2 * Real.pi * Complex.I) * (((t * c : ℝ)) : ℂ)) * K`. Use function extensionality and compare the values at `t`. Rewrite using `[hT t, hψt t]`.
+
+Establish `h0 : HasDerivAt (fun t : ℝ => ((t * c : ℝ) : ℂ)) ((1 * c : ℝ) : ℂ) 0` using `((hasDerivAt_id (0 : ℝ)).mul_const c).ofReal_comp`. Establish `h2` using `((h0.const_mul (-(2 * Real.pi * Complex.I))).cexp).mul_const K`. Establish `htr : trForm F y (fun i => evI F (x i)) = c`. Rewrite using `[trForm_apply, hc, ha, dotProduct, evI_sum]`. Simplify using `only [evI_mul]`.
+
+Rewrite using `[hfun]`. Use `h2.congr_deriv ?_` and prove the remaining obligations. Simplify using `only [tens, hK, SchwartzMap.smulLeftCLM_apply_apply (mult F y).hasTemperateGrowth, mult_apply, htr, zero_mul, Complex.ofReal_zero, mul_zero, Complex.exp_zero, one_mul, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem actsD_mult {E : Type} [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E}
     {n d : ℕ} {X : Spc F E n} {W : Spc F E d} (M : Model σ X W) (ψ : AddChar (AF F) ℂ) (hψ : IsStd ψ)
     (u : Matrix (Fin n) (Fin d) (AE F E)) (y : Fin n × Fin d → AF F) (hu : M.co.e u = (0, y))
@@ -86,6 +107,17 @@ theorem actsD_mult {E : Type} [Field E] [NumberField E] [Algebra F E] {σ : E �
     Complex.ofReal_zero, mul_zero, Complex.exp_zero, one_mul, smul_eq_mul]
   ring
 
+/- English proof (translation)
+Use `set y : Fin n × Fin d → AF F := fun i => liftInf F (q i) with hy`. Use `set u := M.co.e.symm (0, y) with hu`. Establish `hue : M.co.e u = (0, y)` using `by simp [hu]`. Establish `hat : At (evI F) u`. Introduce `v hv`.
+
+Rewrite using `[← LinearEquiv.map_eq_zero_iff M.co.e, LinearEquiv.map_smul, hue]`. Use `Prod.ext ?_ ?_` and prove the remaining obligations. Simplify using the standard rewrite rules. Use function extensionality and compare the values at `i`. Simplify using `[hy, mul_liftInf_eq_zero hv]`.
+
+Establish `hmem : SchwartzMap.smulLeftCLM ℂ (⇑(mult F y)) f ∈ M.Pol ψ τ`. Rewrite `hf`, the goal using `[Model.Pol, Submodule.mem_sInf]`. Introduce `N hN`. Conclude with `hN.2 u hat f (hf N hN) _ (actsD_mult M ψ hψ u y hue f)`. Establish `hne : (-(2 * Real.pi * Complex.I) : ℂ) ≠ 0`.
+
+Simplify using `[Real.pi_ne_zero, Complex.I_ne_zero]`. Use `⟨(-(2 * Real.pi * Complex.I))⁻¹ • SchwartzMap.smulLeftCLM ℂ (⇑(mult F y)) f, Submodule.smul_mem _ _ hmem, fun x => ?_⟩` and prove the remaining obligations. Establish `htr : trForm F y x = GlobalTheory.GaussLine.pairInf F (Fin n × Fin d) x q`. Rewrite using `[trForm_apply, GlobalTheory.GaussLine.pairInf_apply]`. Simplify using `only [hy, evI_liftInf]`.
+
+Rewrite using `[SchwartzMap.smul_apply, SchwartzMap.smulLeftCLM_apply_apply (mult F y).hasTemperateGrowth, mult_apply, htr, smul_eq_mul, smul_eq_mul, ← mul_assoc, ← mul_assoc, inv_mul_cancel₀ hne, one_mul]`.
+-/
 theorem model_mul {E : Type} [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E}
     {n d : ℕ} {X : Spc F E n} {W : Spc F E d} (M : Model σ X W) (ψ : AddChar (AF F) ℂ) (hψ : IsStd ψ)
     (τ : ∀ w : InfinitePlace F, GlobalTheory.AdelicU.EmbOver (F := F) E w)
@@ -118,6 +150,9 @@ theorem model_mul {E : Type} [Field E] [NumberField E] [Algebra F E] {σ : E →
 
 end GlobalTheory.PolMul
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ a a' B G X om om' hT q f hf`. Conclude with `GlobalTheory.PolMul.model_mul G.M B.ψ hT.base.std B.emb q f hf`.
+-/
 theorem GlobalTheory.PolMul.pol_mul_pairInf : ∀ {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E}
     {a a' : ℕ} (B : Base F E) (G : Geo σ a a') (X : Chars F E) (om : Rep σ G.V G.W) (om' : Rep σ G.V' G.W),
     GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.IsTriple B G X om om' → ∀ (q : Fin a × Fin (a + a') → mixedEmbedding.mixedSpace F),

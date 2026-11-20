@@ -23,12 +23,20 @@ section Abstract
 
 variable {R : Type} [CommRing R]
 
+/- English proof (translation)
+The claim follows from `(CrystallineSemistableComparison.P.upTo_alg f (LinearMap.id : N →ₗ[R] N) 1 1).2.2.2.2`.
+-/
 theorem upTo_one_iff {M : Type w} {N : Type w'} [AddCommGroup M] [AddCommGroup N] [Module R M] [Module R N]
     (f : M →ₗ[R] N) : UpTo (1 : R) f ↔ Function.Bijective f :=
   (CrystallineSemistableComparison.P.upTo_alg f (LinearMap.id : N →ₗ[R] N) 1 1).2.2.2.2
 
 variable {C C' : Type 1} [Category.{0} C] [Category.{0} C'] {F : C ⥤ ModuleCat.{0} R} {F' : C' ⥤ ModuleCat.{0} R}
 
+/- English proof (translation)
+Establish `hle : U ⊓ Q ≤ U` using `fun T hT => hT.1`. Establish `hle' : U' ⊓ Q' ≤ U'` using `fun T hT => hT.1`. Set `ι0 : Cx.Hom (RC F U hQ) (CH.cx (U.ι ⋙ F)) (RingHom.id R)` to `⟨fun n => (relS (U.ι ⋙ F) (fun T => Q T.obj) n).subtype, fun n x => rfl⟩`. Set `ι1 : Cx.Hom (RC F' U' hQ') (CH.cx (U'.ι ⋙ F')) (RingHom.id R)` to `⟨fun n => (relS (U'.ι ⋙ F') (fun T => Q' T.obj) n).subtype, fun n x => rfl⟩`. Establish `key` using `(CrystallineSemistableComparison.P.five ι0 (resU F hle).hom (fun n x y hxy => Subtype.ext hxy) (fun n => AffineRelativeForms.res_exact F U Q hQ hle ι0 (fun _ _ => rfl) n) (fun n => AffineRelativeForms.res_surj F U Q hQ hle n) ι1 (resU F' hle').hom (fun n x y hxy => Subtype.ext hx …`.
+
+Use `key (fun n => (upTo_one_iff _).2 (hb n)) (fun n => (upTo_one_iff _).2 (hc n)) n` as an intermediate fact. Rewrite `this` using `[one_pow]`. Conclude with `(upTo_one_iff _).1 this`.
+-/
 theorem rel_bij (m : CH.Mor F F' (RingHom.id R)) {U Q : ObjectProperty C} {U' Q' : ObjectProperty C'}
     (hQ : Cosieve Q) (hQ' : Cosieve Q') (h : ∀ T, U' T → U (m.G.obj T)) (h' : ∀ T, Q' T → Q (m.G.obj T))
     (hb : ∀ n, Function.Bijective ((morU m h).pull n))
@@ -62,6 +70,9 @@ section Geo
 
 variable {K : Type} [CommRing K] {Z Y : Scheme.{0}}
 
+/- English proof (translation)
+Rewrite using `[Scheme.Opens.range_ι]`. Introduce and unpack `_ ⟨x, rfl⟩`. Conclude with `hz (show x ∈ (⊤ : S.Opens) from trivial)`.
+-/
 theorem range_sub {S X : Scheme.{0}} (z : S ⟶ X) (V : X.Opens) (hz : ⊤ ≤ z ⁻¹ᵁ V) :
     Set.range z ⊆ Set.range V.ι := by
   rw [Scheme.Opens.range_ι]
@@ -73,10 +84,18 @@ variable (π : Y ⟶ Z) (U : Z.Opens) [IsIso (π ∣_ U)]
 def liftPt {S : Scheme.{0}} (z : S ⟶ Z) (hz : ⊤ ≤ z ⁻¹ᵁ U) : S ⟶ Y :=
   IsOpenImmersion.lift U.ι z (range_sub z U hz) ≫ inv (π ∣_ U) ≫ (π ⁻¹ᵁ U).ι
 
+/- English proof (translation)
+Unfold `liftPt`. Rewrite using `[Category.assoc, Category.assoc, ← morphismRestrict_ι, IsIso.inv_hom_id_assoc, IsOpenImmersion.lift_fac]`.
+-/
 theorem liftPt_fac {S : Scheme.{0}} (z : S ⟶ Z) (hz : ⊤ ≤ z ⁻¹ᵁ U) : liftPt π U z hz ≫ π = z := by
   unfold liftPt
   rw [Category.assoc, Category.assoc, ← morphismRestrict_ι, IsIso.inv_hom_id_assoc, IsOpenImmersion.lift_fac]
 
+/- English proof (translation)
+Establish `e : IsOpenImmersion.lift (π ⁻¹ᵁ U).ι a (range_sub a _ ha) ≫ (π ⁻¹ᵁ U).ι = a` using `IsOpenImmersion.lift_fac _ _ _`. Establish `e2 : IsOpenImmersion.lift U.ι (a ≫ π) (range_sub _ U hz) = IsOpenImmersion.lift (π ⁻¹ᵁ U).ι a (range_sub a _ ha) ≫ (π ∣_ U)`. Use `symm`. Apply `IsOpenImmersion.lift_uniq` to reduce the goal to its premises. Rewrite using `[Category.assoc, morphismRestrict_ι, ← Category.assoc, e]`.
+
+Unfold `liftPt`. Rewrite using `[e2, Category.assoc, IsIso.hom_inv_id_assoc, e]`.
+-/
 theorem liftPt_self {S : Scheme.{0}} (a : S ⟶ Y) (ha : ⊤ ≤ a ⁻¹ᵁ (π ⁻¹ᵁ U)) (hz : ⊤ ≤ (a ≫ π) ⁻¹ᵁ U) :
     liftPt π U (a ≫ π) hz = a := by
   have e : IsOpenImmersion.lift (π ⁻¹ᵁ U).ι a (range_sub a _ ha) ≫ (π ⁻¹ᵁ U).ι = a := IsOpenImmersion.lift_fac _ _ _
@@ -88,10 +107,16 @@ theorem liftPt_self {S : Scheme.{0}} (a : S ⟶ Y) (ha : ⊤ ≤ a ⁻¹ᵁ (π 
   unfold liftPt
   rw [e2, Category.assoc, IsIso.hom_inv_id_assoc, e]
 
+/- English proof (translation)
+Substitute `e` using the available equality. Both sides reduce to the same expression.
+-/
 theorem liftPt_congr {S : Scheme.{0}} (z z' : S ⟶ Z) (e : z = z') (hz : ⊤ ≤ z ⁻¹ᵁ U) (hz' : ⊤ ≤ z' ⁻¹ᵁ U) :
     liftPt π U z hz = liftPt π U z' hz' := by
   subst e; rfl
 
+/- English proof (translation)
+Establish `hz : ⊤ ≤ (a ≫ π) ⁻¹ᵁ U` using `by rwa [Scheme.Hom.comp_preimage]`. Establish `hz' : ⊤ ≤ (b ≫ π) ⁻¹ᵁ U` using `by rwa [Scheme.Hom.comp_preimage]`. Rewrite using `[← liftPt_self π U a ha hz, ← liftPt_self π U b hb hz']`. Conclude with `liftPt_congr π U _ _ h hz hz'`.
+-/
 theorem pt_mono {S : Scheme.{0}} (a b : S ⟶ Y) (ha : ⊤ ≤ a ⁻¹ᵁ (π ⁻¹ᵁ U)) (hb : ⊤ ≤ b ⁻¹ᵁ (π ⁻¹ᵁ U))
     (h : a ≫ π = b ≫ π) : a = b := by
   have hz : ⊤ ≤ (a ≫ π) ⁻¹ᵁ U := by rwa [Scheme.Hom.comp_preimage]
@@ -101,6 +126,9 @@ theorem pt_mono {S : Scheme.{0}} (a b : S ⟶ Y) (ha : ⊤ ≤ a ⁻¹ᵁ (π �
 
 variable (q : Z ⟶ Spec (CommRingCat.of K))
 
+/- English proof (translation)
+Introduce `hT x hx` and use `h (hT hx)`.
+-/
 theorem inU_mono {X : Scheme.{0}} (p : X ⟶ Spec (CommRingCat.of K)) {V V' : X.Opens} (h : V ≤ V')
     (T : Thick (smFun X p)) : inU p V T → inU p V' T := fun hT x hx => h (hT hx)
 
@@ -110,6 +138,9 @@ def liftT (T : Thick (smFun Z q)) (hT : ⊤ ≤ CosieveSiteLaws.ptZ q T ⁻¹ᵁ
       rw [← Category.assoc, liftPt_fac]
       exact (show PtOver Z q (Ideal.Quotient.mk (⊥ : Ideal K)) (T.B ⧸ T.J) from T.y).2⟩ T.w
 
+/- English proof (translation)
+Establish `hq : Ideal.quotientMap J (RingHom.id B) h = RingHom.id _` using `by ext; rfl`. Rewrite using `[hq, CommRingCat.ofHom_id, CategoryTheory.Functor.map_id]`. Both sides reduce to the same expression.
+-/
 theorem ptMap_id {X : Scheme.{0}} (p : X ⟶ Spec (CommRingCat.of K)) {B : Type} [CommRing B] (J : Ideal B) (h)
     (z : PtOver X p (Ideal.Quotient.mk (⊥ : Ideal K)) (B ⧸ J)) :
     (ptFun X p (Ideal.Quotient.mk (⊥ : Ideal K))).map (CommRingCat.ofHom (Ideal.quotientMap J (RingHom.id B) h)) z = z := by
@@ -117,10 +148,16 @@ theorem ptMap_id {X : Scheme.{0}} (p : X ⟶ Spec (CommRingCat.of K)) {B : Type}
   rw [hq, CommRingCat.ofHom_id, CategoryTheory.Functor.map_id]
   rfl
 
+/- English proof (translation)
+The claim follows from `Thick.Hom.ext (RingHom.ext h) (funext fun j => j.elim)`.
+-/
 theorem comp_eq_id {X : Scheme.{0}} {p : X ⟶ Spec (CommRingCat.of K)} {T0 T1 : Thick (smFun X p)} (f : T0 ⟶ T1)
     (g : T1 ⟶ T0) (h : ∀ x, g.φ (f.φ x) = x) : f ≫ g = 𝟙 T0 :=
   Thick.Hom.ext (RingHom.ext h) (funext fun j => j.elim)
 
+/- English proof (translation)
+The claim follows from `Subtype.ext (Prod.ext rfl (liftPt_fac π U _ hT))`.
+-/
 theorem liftT_y (T : Thick (smFun Z q)) (hT : ⊤ ≤ CosieveSiteLaws.ptZ q T ⁻¹ᵁ U) :
     ((smS π rfl).G.obj (liftT π U q T hT)).y = T.y :=
   Subtype.ext (Prod.ext rfl (liftPt_fac π U _ hT))
@@ -143,10 +180,16 @@ def liftInv (T : Thick (smFun Z q)) (hT : ⊤ ≤ CosieveSiteLaws.ptZ q T ⁻¹�
     (by exact fun _ h => h)
     (by exact (ptMap_id q T.J _ _).trans (liftT_y π U q T hT).symm)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem liftHom_φ (T : Thick (smFun Z q)) (hT : ⊤ ≤ CosieveSiteLaws.ptZ q T ⁻¹ᵁ U) (x : T.B) :
     (liftHom π U q T hT).φ x = x := rfl
 
 set_option maxHeartbeats 2000000 in
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem liftInv_φ (T : Thick (smFun Z q)) (hT : ⊤ ≤ CosieveSiteLaws.ptZ q T ⁻¹ᵁ U) (x : T.B) :
     (liftInv π U q T hT).φ x = x := rfl
 
@@ -184,6 +227,13 @@ variable (V : Z.Opens) (hV : V ≤ U)
 
 include hV in
 
+/- English proof (translation)
+Establish `hY : ∀ T, P' T → inU (π ≫ q) (π ⁻¹ᵁ U) T` using `fun T hT => inU_mono (π ≫ q) (Scheme.Hom.preimage_mono π hV) T ((CosieveSiteLaws.inU_pull q π V T).2 (hPV _ (hP' T hT)))`. Use `{ faithful := ⟨fun {X X'} f f' hf => ?_⟩, full := ⟨fun {X X'} g => ?_⟩, essSurj := ⟨fun X => ?_⟩ }` and prove the remaining obligations. Apply `ObjectProperty.hom_ext` to reduce the goal to its premises. Conclude with `Thick.Hom.ext (congrArg (fun k => k.hom.φ) hf) (funext fun j => j.elim)`. Use `⟨ObjectProperty.homMk (pre π U q (hY _ X.property) (hY _ X'.property) g.hom), ?_⟩` and prove the remaining obligations.
+
+Apply `ObjectProperty.hom_ext` to reduce the goal to its premises. Conclude with `Thick.Hom.ext rfl (funext fun j => j.elim)`. Take `⟨T, hT⟩` from `X`. Establish `hTU : ⊤ ≤ CosieveSiteLaws.ptZ q T ⁻¹ᵁ U` using `inU_mono q hV T (hPV T hT)`. Establish `hL : P' (liftT π U q T hTU)` using `hP'' _ (hP (liftIso π U q T hTU).inv hT)`.
+
+Conclude with `⟨⟨liftT π U q T hTU, hL⟩, ⟨P.isoMk (liftIso π U q T hTU)⟩⟩`.
+-/
 theorem isEquiv (P : ObjectProperty (Thick (smFun Z q))) (P' : ObjectProperty (Thick (smFun Y (π ≫ q))))
     (hP : Cosieve P) (hPV : ∀ T, P T → inU q V T) (hP' : ∀ T, P' T → P ((smS π rfl).G.obj T))
     (hP'' : ∀ T, P ((smS π rfl).G.obj T) → P' T) :
@@ -201,6 +251,11 @@ theorem isEquiv (P : ObjectProperty (Thick (smFun Z q))) (P' : ObjectProperty (T
     have hL : P' (liftT π U q T hTU) := hP'' _ (hP (liftIso π U q T hTU).inv hT)
     exact ⟨⟨liftT π U q T hTU, hL⟩, ⟨P.isoMk (liftIso π U q T hTU)⟩⟩
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨x, hx⟩ ⟨y, hy⟩ hxy`. Take `⟨x, rfl⟩` from `Ideal.Quotient.mk_surjective x`. Take `⟨y, rfl⟩` from `Ideal.Quotient.mk_surjective y`. Use `congrArg Subtype.val hxy` as an intermediate fact.
+
+Conclude with `Subtype.ext this`. Introduce and unpack `⟨y, hy⟩`. Take `⟨z, hz, rfl⟩` from `(Ideal.mem_map_iff_of_surjective _ Ideal.Quotient.mk_surjective).1 hy`. Conclude with `⟨⟨Ideal.Quotient.mk _ z, Ideal.mem_map_of_mem _ hz⟩, rfl⟩`.
+-/
 theorem tau_bij (a : ℕ) (T : Thick (smFun Y (π ≫ q))) : Function.Bijective ((morG π rfl a).τ T) := by
   constructor
   · rintro ⟨x, hx⟩ ⟨y, hy⟩ hxy
@@ -217,6 +272,11 @@ end Geo
 end IsoBijectionLift
 
 open IsoBijectionLift in
+/- English proof (translation)
+Introduce `K _ Z Y q π U V hiso hV Q Q' hQ hQ' hQQ a h h' n`. Use `hiso` as an intermediate fact. Establish `hb : ∀ n, Function.Bijective ((morU (morG π rfl a) h).pull n)`. Establish `: (morU (morG π rfl a) h).G.IsEquivalence` using `isEquiv π U q V hV (inU q V) (inU (π ≫ q) (π ⁻¹ᵁ V)) (CosieveSiteLaws.inU_cosieve q V) (fun T hT => hT) h (fun T hT => (CosieveSiteLaws.inU_pull q π V T).2 hT)`. Conclude with `CrystallineSemistableComparison.P.adj_mor _ (fun T => tau_bij π q a T.obj)`.
+
+Establish `hc : ∀ n, Function.Bijective ((morU (morG π rfl a) (U` using `inU q V ⊓ Q) (U' := inU (π ≫ q) (π ⁻¹ᵁ V) ⊓ Q') (fun T hT => ⟨h T hT.1, h' T hT.2⟩)).pull n) := by`. Establish `: (morU (morG π rfl a) (U` using `inU q V ⊓ Q) (U' := inU (π ≫ q) (π ⁻¹ᵁ V) ⊓ Q') (fun T hT => ⟨h T hT.1, h' T hT.2⟩)).G.IsEquivalence := isEquiv π U q V hV (inU q V ⊓ Q) (inU (π ≫ q) (π ⁻¹ᵁ V) ⊓ Q') (fun T T' f hT => ⟨CosieveSiteLaws.inU_cosieve q V f hT.1, hQ f hT.2⟩) (fun T hT => hT.1) (fun T hT => ⟨h T hT.1, …`. Conclude with `CrystallineSemistableComparison.P.adj_mor _ (fun T => tau_bij π q a T.obj)`. Conclude with `rel_bij (morG π rfl a) hQ hQ' h h' hb hc n`.
+-/
 theorem isoBij_pf : IsoBij := by
   intro K _ Z Y q π U V hiso hV Q Q' hQ hQ' hQQ a h h' n
   have := hiso

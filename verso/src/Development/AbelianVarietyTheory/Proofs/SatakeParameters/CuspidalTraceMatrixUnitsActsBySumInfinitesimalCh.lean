@@ -23,6 +23,25 @@ namespace GlobalTheory
 
 open Polynomial in
 
+/- English proof (translation)
+Introduce `φ hφ`. Take `⟨hcard, hcap⟩` from `h`. Break down `Nat.eq_zero_or_pos a with rfl | ha` into its components or cases. Rewrite using `[Multiset.card_eq_zero.1 hcard]`. Simplify using the standard rewrite rules.
+
+Use `set c : ℂ := ((a : ℂ) - 1) / 2 with hc`. Use `set P := GroundTheory.BlockD.FourierDecayAlt.GaugeExists.qdetPoly (GlobalTheory.CuspRep.Eop (a := a) τ) with hPdef`. Establish `hP : P.coeff (a - 1) = ∑ i, GlobalTheory.CuspRep.Eop τ i i - algebraMap ℂ (Module.End ℂ (GlobalTheory.CuspRep.Sm E a)) (((a : ℂ) * ((a : ℂ) - 1)) / 2)`. Take `⟨-, -, hsub⟩` from `GroundTheory.BlockD.FourierDecayAlt.GaugeExists.prod_linear a fun k => GlobalTheory.CuspRep.Eop (a := a) τ k k - algebraMap ℂ (Module.End ℂ (GlobalTheory.CuspRep.Sm E a)) ((k : ℕ) : ℂ)`. Rewrite using `[hPdef, GroundTheory.BlockD.FourierDecayAlt.GaugeExists.coeff_qdetPoly_top _ (a - 1) (by omega), hsub (a - 1) (by omega), Finset.sum_sub_distrib, ← map_sum, GroundTheory.BlockD.FourierDecayAlt.GaugeExists.sum_fin_cast]`.
+
+Rewrite using `[← sub_eq_zero]`. Use `(Module.forall_dual_apply_eq_zero_iff ℂ _).1 fun ℓ => ?_` and prove the remaining obligations. Set `Q : ℂ[X]` to `∑ j ∈ Finset.range (a + 1), C (ℓ (P.coeff j φ)) * X ^ j`. Set `R : ℂ[X]` to `C (ℓ φ) * (m.map fun z => X + C (z - c)).prod`. Establish `hdeg : P.natDegree < a + 1` using `Nat.lt_succ_of_le (GroundTheory.BlockD.FourierDecayAlt.GaugeExists.natDegree_qdetPoly_le _)`.
+
+Establish `hQ : ∀ v : ℂ, Q.eval v = ℓ ((GroundTheory.BlockD.FourierDecayAlt.GaugeExists.evU v P) φ)`. Introduce `v`. Rewrite using `[GroundTheory.BlockD.FourierDecayAlt.GaugeExists.evU_apply, eval₂_eq_sum_range' _ hdeg, LinearMap.sum_apply, map_sum, eval_finset_sum]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[eval_mul, eval_C, eval_pow, eval_X, RingHom.id_apply, Module.End.mul_apply, ← map_pow, Module.algebraMap_end_apply, map_smul, map_smul, smul_eq_mul, mul_comm]`.
+
+Establish `hQR : Q = R`. Use `Polynomial.funext fun v => ?_` and prove the remaining obligations. Rewrite using `[hQ, GroundTheory.BlockD.FourierDecayAlt.GaugeExists.evU_qdetPoly]`. Establish `e` using `hcap (v - c) φ hφ`. Rewrite `e` using `[GlobalTheory.CuspRep.cap, show v - c + ((a : ℂ) - 1) / 2 = v by rw [hc]; ring]`.
+
+Rewrite using `[e, map_smul, smul_eq_mul]`. Simplify using `only [R, eval_mul, eval_C, eval_multiset_prod, Multiset.map_map, Function.comp_def, eval_add, eval_X]`. Rewrite using `[mul_comm]`. Use `congr 2`. Use `Multiset.map_congr rfl fun z _ => ?_` and prove the remaining obligations.
+
+Expand and normalize the polynomial expressions, which then agree. Establish `hco` using `congrArg (fun p : ℂ[X] => p.coeff (a - 1)) hQR`. Establish `hlt : a - 1 ∈ Finset.range (a + 1)` using `Finset.mem_range.2 (by omega)`. Simplify using `only [Q, R, finset_sum_coeff, coeff_C_mul, coeff_X_pow, mul_ite, mul_one, mul_zero, Finset.sum_ite_eq, Finset.sum_ite_eq', if_pos hlt] at hco`. Establish `hm : (m.map fun z => X + C (z - c)).prod = ((m.map fun z => z - c).map fun r => X + C r).prod` using `by rw [Multiset.map_map]; rfl`.
+
+Rewrite `hco` using `[hm, Multiset.prod_X_add_C_coeff _ (by simp [hcard]), Multiset.card_map, hcard, show a - (a - 1) = 1 by omega, Multiset.esymm, Multiset.powersetCard_one, Multiset.map_map]`. Simplify using `only [Function.comp_def, Multiset.prod_singleton, Multiset.map_id', Multiset.sum_map_sub, Multiset.map_const', Multiset.sum_replicate, hcard, nsmul_eq_mul] at hco`. Rewrite `hco` using `[hP]`. Simplify using `only [LinearMap.sub_apply, map_sub, Module.algebraMap_end_apply, map_smul, smul_eq_mul] at hco ⊢`. Rewrite `hco` using `[hc]`.
+
+Take the linear combination `hco`.
+-/
 theorem trace_Eop_of_hasInfChar (E : Type) [Field E] [NumberField E] [IsTotallyComplex E] (a : ℕ)
     (π : GlobalTheory.CuspRep.CuspSub E a) (τ : E →+* ℂ) (m : Multiset ℂ) (h : π.HasInfChar τ m) :
     ∀ φ ∈ π.V, (∑ i : Fin a, GlobalTheory.CuspRep.Eop τ i i) φ = m.sum • φ := by

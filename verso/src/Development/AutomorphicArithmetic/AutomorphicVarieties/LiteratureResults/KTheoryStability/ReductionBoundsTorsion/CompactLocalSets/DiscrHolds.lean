@@ -6,6 +6,17 @@ open NumberField Matrix UpperTheory.V.KT
 
 namespace PositivityTheory.KB.LocalOverlapAverage
 
+/- English proof (translation)
+Unfold `Discr`. Introduce `L _ _ N K hK`. Establish `hc : Continuous (fun γ : Sp L N => fun (w : InfinitePlace L) (i j : Fin N) => ((γ w : Matrix.SpecialLinearGroup (Fin N) ℂ) : Matrix (Fin N) (Fin N) ℂ) i j)` using `by fun_prop`. Take `⟨C, hC⟩` from `hK.exists_bound_of_continuousOn hc.continuousOn`. Use `set S : Set (𝓞 L) := {x | ∀ w : InfinitePlace L, ‖w.embedding (x : L)‖ ≤ C} with hS`.
+
+Establish `hSfin : S.Finite`. Establish `h0` using `Embeddings.finite_of_norm_le L ℂ C`. Use `(h0.preimage (Set.injOn_of_injective (f := fun x : 𝓞 L => (x : L)) RingOfIntegers.coe_injective)).subset ?_` and prove the remaining obligations. Introduce `x hx`. Use `⟨RingOfIntegers.isIntegral_coe x, fun φ => ?_⟩` and prove the remaining obligations.
+
+Establish `h1` using `hx (InfinitePlace.mk φ)`. Rewrite `h1` using `[InfinitePlace.norm_embedding_eq, InfinitePlace.apply]`. Conclude with `h1`. Establish `hT : (Set.univ.pi fun _ : Fin N => Set.univ.pi fun _ : Fin N => S).Finite` using `Set.Finite.pi fun _ => Set.Finite.pi fun _ => hSfin`. Establish `hU : {A : Matrix.SpecialLinearGroup (Fin N) (𝓞 L) | (A : Matrix (Fin N) (Fin N) (𝓞 L)) ∈ Set.univ.pi fun _ : Fin N => Set.univ.pi fun _ : Fin N => S}.Finite` using `hT.preimage (Set.injOn_of_injective Subtype.val_injective)`.
+
+Use `(hU.image (MonoidHom.pi fun w => Matrix.SpecialLinearGroup.map (embO w))).subset ?_` and prove the remaining obligations. Introduce and unpack `γ ⟨⟨A, rfl⟩, hγK⟩`. Use `⟨A, ?_, rfl⟩` and prove the remaining obligations. Introduce `i _ j _ w`. Establish `h2` using `hC _ hγK`.
+
+Establish `h3 : ‖(fun (w : InfinitePlace L) (i j : Fin N) => ((((MonoidHom.pi fun w => Matrix.SpecialLinearGroup.map (embO w)) A) w : Matrix.SpecialLinearGroup (Fin N) ℂ) : Matrix (Fin N) (Fin N) ℂ) i j) w i j‖ ≤ C` using `(norm_le_pi_norm _ j).trans ((norm_le_pi_norm _ i).trans ((norm_le_pi_norm _ w).trans h2))`. Conclude with `h3`.
+-/
 theorem discr_holds : Discr := by
   unfold Discr
   intro L _ _ N K hK

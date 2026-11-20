@@ -23,16 +23,25 @@ def glue (hc : IsColimit c) (y : ∀ a, Cochain (K a) L n) : Cochain c.pt L n :=
   Cochain.mk fun p q hpq => (hcp hc p).desc
     ⟨L.X q, Discrete.natTrans fun j => (y j.as).v p q hpq⟩
 
+/- English proof (translation)
+Simplify using `only [glue]`. Conclude with `(hcp hc p).fac _ ⟨a⟩`.
+-/
 theorem glue_v (hc : IsColimit c) (y : ∀ a, Cochain (K a) L n) (a : A) (p q : ℤ) (hpq : p + n = q) :
     (c.inj a).f p ≫ (glue hc y).v p q hpq = (y a).v p q hpq := by
   simp only [glue]
   exact (hcp hc p).fac _ ⟨a⟩
 
+/- English proof (translation)
+Use extensionality with `p q hpq`. Rewrite using `[Cochain.zero_cochain_comp_v, Cochain.ofHom_v, glue_v]`.
+-/
 theorem comp_glue (hc : IsColimit c) (y : ∀ a, Cochain (K a) L n) (a : A) :
     (Cochain.ofHom (c.inj a)).comp (glue hc y) (zero_add n) = y a := by
   ext p q hpq
   rw [Cochain.zero_cochain_comp_v, Cochain.ofHom_v, glue_v]
 
+/- English proof (translation)
+Use `Cochain.ext _ _ fun p q hpq => ?_` and prove the remaining obligations. Use `(hcp hc p).hom_ext fun ⟨a⟩ => ?_` and prove the remaining obligations. Use `congrArg (fun z => z.v p q hpq) (h a)` as an intermediate fact. Simplify using `only [Cochain.zero_cochain_comp_v, Cochain.ofHom_v] at this`. Conclude with `this`.
+-/
 theorem ext_cochain (hc : IsColimit c) {z₁ z₂ : Cochain c.pt L n}
     (h : ∀ a, (Cochain.ofHom (c.inj a)).comp z₁ (zero_add n) = (Cochain.ofHom (c.inj a)).comp z₂ (zero_add n)) :
     z₁ = z₂ := by
@@ -47,6 +56,21 @@ end LateralTheory.CohomologicalPurity.TubeCut.SumCut.HKSumPf
 namespace LateralTheory.CohomologicalPurity.TubeCut.SumCut
 open HKSumPf
 
+/- English proof (translation)
+Introduce `R _ F A K c hc' n`. Take `⟨hc⟩` from `hc'`. Establish `key : ∀ (a : A) (z : Cocycle c.pt (res R F) n), HK.pull R (c.inj a) F n (CohomologyClass.mk z) = CohomologyClass.mk (zcomp (Cocycle.ofHom (c.inj a)) z (zero_add n))` using `fun _ _ => rfl`. Prove the components needed by the constructor for the conclusion. Set `Φ : HK R c.pt F n →+ (∀ a, HK R (K a) F n)` to `AddMonoidHom.pi fun a => HK.pull R (c.inj a) F n`.
+
+Express the relevant statement in the definitionally equal form `Function.Injective Φ`. Rewrite using `[injective_iff_map_eq_zero]`. Introduce `x hx`. Take `⟨z, rfl⟩` from `x.mk_surjective`. Establish `h1 : ∀ a, ∃ β : Cochain (K a) (res R F) (n - 1), δ (n - 1) n β = (Cochain.ofHom (c.inj a)).comp z.1 (zero_add n)`.
+
+Introduce `a`. Use `congrFun hx a` as an intermediate fact. Express the relevant statement in the definitionally equal form `HK.pull R (c.inj a) F n (CohomologyClass.mk z) = 0 at this`. Rewrite `this` using `[key, CohomologyClass.mk_eq_zero_iff, mem_coboundaries_iff _ (n - 1) (by omega)]`. Conclude with `this`.
+
+Use `choose β hβ using h1`. Rewrite using `[CohomologyClass.mk_eq_zero_iff, mem_coboundaries_iff _ (n - 1) (by omega)]`. Use `⟨glue hc β, ext_cochain hc fun a => ?_⟩` and prove the remaining obligations. Rewrite using `[← δ_ofHom_comp, comp_glue, hβ]`. Introduce `f`.
+
+Establish `h1 : ∀ a, ∃ z : Cocycle (K a) (res R F) n, CohomologyClass.mk z = f a` using `fun a => (f a).mk_surjective`. Use `choose z hz using h1`. Establish `hcoc : δ n (n + 1) (glue hc fun a => (z a).1) = 0`. Use `ext_cochain hc fun a => ?_` and prove the remaining obligations. Rewrite using `[← δ_ofHom_comp, comp_glue, Cochain.comp_zero]`.
+
+Conclude with `Cocycle.δ_eq_zero _ _`. Use `⟨CohomologyClass.mk (Cocycle.mk _ (n + 1) rfl hcoc), funext fun a => ?_⟩` and prove the remaining obligations. Use `show HK.pull R (c.inj a) F n _ = _`. Rewrite using `[key, ← hz a]`. Use `congr 1`.
+
+Conclude with `Cocycle.ext (comp_glue hc _ a)`.
+-/
 theorem LeafHKSum_of : LeafHKSum := by
   intro R _ F A K c hc' n
   obtain ⟨hc⟩ := hc'

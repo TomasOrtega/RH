@@ -12,6 +12,11 @@ section NabAux
 
 variable {k : Type} [CommRing k] {d : ℕ}
 
+/- English proof (translation)
+Establish `hs : MvPowerSeries.HasSubst (fun p : Fin m × Fin d => a p.1 p.2)` using `by first`. Consider the case `exact MvPowerSeries.hasSubst_of_constantCoeff_zero (fun p => ha p.1 p.2)`. Consider the case `exact ⟨fun p => by rw [ha p.1 p.2]; exact IsNilpotent.zero, fun e => Set.toFinite _⟩`. Unfold `ev`. Use `first`.
+
+Consider the case `exact MvPowerSeries.subst_smul hs r f`. Consider the case `(rw [← MvPowerSeries.coe_substAlgHom hs]; exact map_smul _ r f)`.
+-/
 theorem nt_ev_smul {m n : ℕ} (a : Fin m → Pt k n d) (ha : ∀ j, GP (a j)) (r : k) (f : PS k m d) :
     ev a (r • f) = r • ev a f := by
   have hs : MvPowerSeries.HasSubst (fun p : Fin m × Fin d => a p.1 p.2) := by
@@ -23,6 +28,19 @@ theorem nt_ev_smul {m n : ℕ} (a : Fin m → Pt k n d) (ha : ∀ j, GP (a j)) (
   | exact MvPowerSeries.subst_smul hs r f
   | (rw [← MvPowerSeries.coe_substAlgHom hs]; exact map_smul _ r f)
 
+/- English proof (translation)
+Establish `hdvd : (PowerSeries.X : PowerSeries k) ^ 1 ∣ PowerSeries.exp k - 1`. Rewrite using `[PowerSeries.X_pow_dvd_iff]`. Introduce `j hj`. Establish `hj0 : j = 0` using `by omega`. Substitute `hj0` using the available equality.
+
+Use `first`. Consider the case `(simp [PowerSeries.coeff_exp]; done)`. Consider the case `(simp only [map_sub, PowerSeries.coeff_exp, PowerSeries.coeff_one, if_true, Nat.factorial_zero, Nat.cast_one, div_one, map_one, sub_self]; done)`. Take `⟨R, hR⟩` from `hdvd`. Establish `hexp : PowerSeries.exp k = 1 + PowerSeries.X ^ 1 * R`.
+
+Rewrite using `[← hR]`. Expand and normalize the polynomial expressions, which then agree. Establish `hc : constantCoeff (0 : PS k n d) = 0` using `map_zero _`. Establish `hs : PowerSeries.HasSubst (0 : PS k n d)` using `by first`. Consider the case `exact PowerSeries.HasSubst.of_constantCoeff_zero hc`.
+
+Consider the case `exact PowerSeries.HasSubst.of_constantCoeff_zero' hc`. Consider the case `(show IsNilpotent _; rw [hc]; exact IsNilpotent.zero)`. Establish `key : ∀ f : PowerSeries k, PowerSeries.subst (0 : PS k n d) f = PowerSeries.substAlgHom hs f`. Introduce `f`. Use `first`.
+
+Consider the case `rw [PowerSeries.coe_substAlgHom]`. Consider the case `rfl`. Establish `hX : PowerSeries.substAlgHom hs (PowerSeries.X : PowerSeries k) = 0` using `by first`. Consider the case `exact PowerSeries.substAlgHom_X hs`. Consider the case `(rw [← key]; exact PowerSeries.subst_X hs)`.
+
+Unfold `FB.expS`. Rewrite using `[hexp, key]`. Simplify using `[hX]`.
+-/
 theorem nt_expS_zero [Algebra ℚ k] {n : ℕ} : FB.expS k (0 : PS k n d) = 1 := by
   have hdvd : (PowerSeries.X : PowerSeries k) ^ 1 ∣ PowerSeries.exp k - 1 := by
     rw [PowerSeries.X_pow_dvd_iff]
@@ -56,11 +74,33 @@ theorem nt_expS_zero [Algebra ℚ k] {n : ℕ} : FB.expS k (0 : PS k n d) = 1 :=
   rw [hexp, key]
   simp [hX]
 
+/- English proof (translation)
+Rewrite using `[MvPowerSeries.smul_eq_C_mul, map_mul, MvPowerSeries.constantCoeff_C]`.
+-/
 theorem nt_const_smul {n : ℕ} (r : k) (f : PS k n d) : constantCoeff (r • f) = r * constantCoeff f := by
   rw [MvPowerSeries.smul_eq_C_mul, map_mul, MvPowerSeries.constantCoeff_C]
 
 end NabAux
 
+/- English proof (translation)
+Introduce `k _ _ d O _ _ B B' φ φi lam hinv hl0 hl1 hF0 hF hA h hh w0 m f ι _ u P`. Establish `hφ : GP φ` using `hinv.1`. Establish `hp : ∀ {n : ℕ} (j : Fin n), GP (pt k (n` using `n) d j) := fun j => gp_pt j`. Establish `hcφ : ∀ {n : ℕ} (a : Pt k n d), GP a → GP (comp1 φ a)` using `fun a ha => gp_comp1 φ a hφ ha`. Establish `hBF : ∀ i, constantCoeff (B.G.F i) = 0` using `B.G.const`.
+
+Establish `fk : B.FK k = B.G.F` using `funext fun i => gt_map_id _`. Establish `fk' : B'.FK k = transF B.G.F φ φi` using `funext fun i => (gt_map_id _).trans (hF i)`. Establish `ak : ∀ a, B.actK k a = B.A.act a` using `fun a => funext fun i => gt_map_id _`. Establish `ak' : ∀ a, B'.actK k a = B'.A.act a` using `fun a => funext fun i => gt_map_id _`. Establish `hz0 : ∀ {n : ℕ}, GP (0 : Pt k n d)` using `gp_zero₂`.
+
+Establish `hh0 : constantCoeff h = 0`. Use `congrArg constantCoeff hh` as an intermediate fact. Rewrite `this` using `[gt_const_ev_eq _ (pair_points_zero_constant hz0 (hp 0)), map_zero]`. Then use the resulting hypothesis. Establish `hlam0 : constantCoeff lam = 0`. Use `congrArg constantCoeff hl0` as an intermediate fact.
+
+Rewrite `this` using `[gt_const_ev_eq _ (pair_points_zero_constant hz0 (hp 0)), map_zero]`. Then use the resulting hypothesis. Establish `hΦ2 : ∀ j, GP (![comp1 φ (pt k (n` using `2) d 0), comp1 φ (pt k (n := 2) d 1)] j) := pair_points_zero_constant (hcφ _ (hp 0)) (hcφ _ (hp 1))`. Establish `hBa : GP (B.A.act w0)` using `B.A.const w0`. Establish `hB'a : GP (B'.A.act w0)` using `B'.A.const w0`. Establish `hx'` using `gp_comp1 _ _ hB'a (hp (n := 1) 0)`.
+
+Establish `hx` using `gp_comp1 _ _ hBa (hp (n := 1) 0)`. Establish `Ha : comp1 φ (comp1 (B'.A.act w0) (pt k (n` using `1) d 0)) = comp1 (B.A.act w0) φ := by`. Rewrite using `[hA w0, gt_comp1_comp1 φi _ (gp_comp1 _ φ hBa hφ) _ (hp 0), gt_comp1_comp1 (B.A.act w0) φ hφ _ (hp 0), gt_comp_inv hinv _ (gp_comp1 _ _ hBa (hcφ _ (hp 0))), gt_comp1_pt_right]`. Establish `hL : B'.hL k (ev ![comp1 φ (pt k (n` using `2) d 0), comp1 φ (pt k (n := 2) d 1)] h + lam) w0 = ev ![φ] (B.hL k h w0) + ev ![pt k (n := 1) d 0, comp1 (B'.A.act w0) (pt k (n := 1) d 0)] lam := by`. Unfold `FB.hL`.
+
+Rewrite using `[ak', ak, gt_ev_add _ (pair_points_zero_constant (hp 0) hx'), gt_ev_ev' _ _ (pair_points_zero_constant (hp 0) hx') hΦ2, eval_pair_points, evP_comp1 _ (pair_points_zero_constant (hp 0) hx') φ _ (hp 0), evP_comp1 _ (pair_points_zero_constant (hp 0) hx') φ _ (hp 1), evP_pt _ (pair_p …`. Use `congr 2`. Express the relevant statement in the definitionally equal form `![comp1 φ (pt k (n := 1) d 0), comp1 φ (comp1 (B'.A.act w0) (pt k (n := 1) d 0))] = ![φ, comp1 (B.A.act w0) φ]`. Rewrite using `[gt_comp1_pt_right, Ha]`. Establish `cL : constantCoeff (ev ![pt k (n` using `1) d 0, comp1 (B'.A.act w0) (pt k (n := 1) d 0)] lam) = 0 := gt_const_ev _ (pair_points_zero_constant (hp 0) hx') lam hlam0`.
+
+Establish `chL : constantCoeff (B.hL k h w0) = 0`. Unfold `FB.hL`. Rewrite using `[ak]`. Conclude with `gt_const_ev _ (pair_points_zero_constant (hp 0) hx) h hh0`. Establish `hG : ev ![φ] f * FB.expS k (-((m : k) • ev ![pt k (n` using `1) d 0, comp1 (B'.actK k w0) (pt k (n := 1) d 0)] lam)) * FB.expS k ((m : k) • B'.hL k (ev ![comp1 φ (pt k (n := 2) d 0), comp1 φ (pt k (n := 2) d 1)] h + lam) w0) = ev ![φ] (f * FB.expS k ((m : k) • B.hL k h w0)) := by`.
+
+Rewrite using `[hL, ak', smul_add, gt_expS_add _ _ (by rw [nt_const_smul, gt_const_ev _ (single_point_zero_constant hφ) _ chL, mul_zero]) (by rw [nt_const_smul, cL, mul_zero]), gt_ev_mul _ (single_point_zero_constant hφ), gt_ev_expS _ (single_point_zero_constant hφ) _ (by rw [nt_const_smul, chL …`. Establish `e : FB.expS k (-((m : k) • ev ![pt k (n` using `1) d 0, comp1 (B'.A.act w0) (pt k (n := 1) d 0)] lam)) * FB.expS k ((m : k) • ev ![pt k (n := 1) d 0, comp1 (B'.A.act w0) (pt k (n := 1) d 0)] lam) = 1 := by`. Rewrite using `[← gt_expS_add _ _ (by rw [map_neg, nt_const_smul, cL, mul_zero, neg_zero]) (by rw [nt_const_smul, cL, mul_zero]), neg_add_cancel, nt_expS_zero]`. Combine the equalities or inequalities in the displayed calculation. Unfold `FB.nabVal`.
+
+Rewrite using `[hG, fk', hTP k d B.G.F hBF (by intro i; rw [← fk]; exact hF0 i) φ φi hinv ι u P, fk, gt_const_ev_eq _ (single_point_zero_constant hφ)]`.
+-/
 theorem connection_translation_of_poly (hTP : TransPolySt) : NabTransSt := by
   intro k _ _ d O _ _ B B' φ φi lam hinv hl0 hl1 hF0 hF hA h hh w0 m f ι _ u P
   have hφ : GP φ := hinv.1

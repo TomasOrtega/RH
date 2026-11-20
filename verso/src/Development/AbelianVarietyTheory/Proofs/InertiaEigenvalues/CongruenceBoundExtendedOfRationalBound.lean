@@ -24,6 +24,35 @@ namespace GlobalTheory.Proof.congruenceBound_extended_of_rationalBound
 
 open GlobalTheory.IndefiniteRowSideFullHecke
 
+/- English proof (translation)
+Introduce `D i π ρ hπ hζ h`. Take `⟨he0, het⟩` from `GlobalTheory.Proof.QuotientLengthInfimum.ramLen_ne D i`. Use `(GlobalTheory.Proof.QuotientLengthInfimum.conclusion_iff D i π ρ).2 ?_` and prove the remaining obligations. Distinguish the cases in `hs : Br.sFin D.loc D.nbr i (fun _ => ρ) π`. Use `swap`.
+
+Establish `h1 : SelmerSumLargePrime.selLen D i ρ π = ⊤` using `not_lt_top_iff.mp hs`. Rewrite using `[h1]`. Simplify using the standard rewrite rules. Distinguish the cases in `hsh : ∀ e ∈ Finset.Ioo 0 D.R.t, Formalism.GaloisCohomology.shaLen (D.nd.ldat (D.nd.l i)) (e : ℤ) < ⊤`. Use `swap`.
+
+Use `push Not at hsh`. Take `⟨k, hk, hk'⟩` from `hsh`. Establish `h1 : SelmerSumLargePrime.shaSum D i = ⊤`. Unfold `SelmerSumLargePrime.shaSum`. Use `top_le_iff.mp (le_trans hk' ?_)` and prove the remaining obligations.
+
+Conclude with `Finset.single_le_sum (f := fun e : ℕ => Formalism.GaloisCohomology.shaLen (D.nd.ldat (D.nd.l i)) (e : ℤ)) (fun _ _ => zero_le) hk`. Rewrite using `[h1, ENat.mul_top he0]`. Simplify using the standard rewrite rules. Establish `hr` using `h hs hsh`. Establish `hc : SelmerSumLargePrime.ccLen D i π ≠ ⊤`.
+
+Unfold `SelmerSumLargePrime.ccLen`. Rewrite using `[Formalism.MainNotions.TruncatedSeriesCountingIdentities.Br.length_ccAt]`. Conclude with `Formalism.MainNotions.TruncatedSeriesCountingIdentities.Br.vcc_ne_top _ (D.nd.T_sep i) _ _ hπ`. Establish `hs' : SelmerSumLargePrime.selLen D i ρ π ≠ ⊤` using `hs.ne`. Establish `hq : ∀ P ∈ D.nd.Q i, Module.length (D.nd.O i) (D.nd.O i ⧸ Ideal.span {SelmerSumLargePrime.zetaP D i P - 1}) ≠ ⊤`.
+
+Introduce `P hP`. Establish `h0 : SelmerSumLargePrime.zetaP D i P - 1 ≠ 0`. Rewrite using `[← GlobalTheory.Proof.QuotientLengthInfimum.zetaP_eq, BaseSizes.zetaP_eq D i P hP]`. Conclude with `sub_ne_zero.mpr (hζ P hP)`. Conclude with `Module.length_ne_top_iff.2 (isFiniteLength_quotient_span_singleton _ (mem_nonZeroDivisors_of_ne_zero h0))`.
+
+Establish `hrow : ∀ k ∈ Finset.Ioo 0 D.R.t, (D.what₂.shaLen (D.nd.l i) k : ℚ) = ((Formalism.GaloisCohomology.shaLen (D.nd.ldat (D.nd.l i)) (k : ℤ)).toNat : ℚ)` using `fun k hk => D.nd.sha_eq _ k (Finset.mem_Ioo.mp hk).1 (Finset.mem_Ioo.mp hk).2 _ (ENat.natCast_toNat (hsh k hk).ne).symm`. Establish `hlq : ∀ P ∈ D.nd.Q i, lenUnit (O` using `D.nd.O i) (D.nd.l i) (D.nd.O i ⧸ Ideal.span {D.nd.zeta i P - 1}) = ((Module.length (D.nd.O i) (D.nd.O i ⧸ Ideal.span {SelmerSumLargePrime.zetaP D i P - 1})).toNat : ℚ) / ((SelmerSumLargePrime.ramLen D i).toNat : ℚ) := by`. Introduce `P hP`. Rewrite using `[← BaseSizes.zetaP_eq D i P hP, GlobalTheory.Proof.QuotientLengthInfimum.zetaP_eq]`. Both sides reduce to the same expression.
+
+Establish `hv : D.nd.vcc i π = ((SelmerSumLargePrime.ccLen D i π).toNat : ℚ) / ((SelmerSumLargePrime.ramLen D i).toNat : ℚ)` using `rfl`. Establish `hsp : Br.sPi D.loc D.nbr i (fun _ => ρ) π = ((SelmerSumLargePrime.selLen D i ρ π).toNat : ℚ) / ((SelmerSumLargePrime.ramLen D i).toNat : ℚ)` using `rfl`. Rewrite `hr` using `[hv, hsp, Finset.sum_congr rfl hrow, Finset.sum_congr rfl hlq, ← Finset.sum_div]`. Establish `hE0 : (0 : ℚ) < ((SelmerSumLargePrime.ramLen D i).toNat : ℚ)`. Establish `: (SelmerSumLargePrime.ramLen D i).toNat ≠ 0`.
+
+Rewrite using `[Ne, ENat.toNat_eq_zero]`. The claim follows by propositional logic. Conclude with `Nat.pos_of_ne_zero this` after adjusting the coercions. Use `set E := (SelmerSumLargePrime.ramLen D i).toNat with hEdef`. Use `set c := (SelmerSumLargePrime.ccLen D i π).toNat`.
+
+Use `set s := (SelmerSumLargePrime.selLen D i ρ π).toNat`. Use `set A := ∑ k ∈ Finset.Ioo 0 D.R.t, (Formalism.GaloisCohomology.shaLen (D.nd.ldat (D.nd.l i)) (k : ℤ)).toNat with hA`. Use `set B := ∑ P ∈ D.nd.Q i, (Module.length (D.nd.O i) (D.nd.O i ⧸ Ideal.span {SelmerSumLargePrime.zetaP D i P - 1})).toNat with hB`. Use `set v := padicValNat (D.nd.l i) (hE D.host)`. Establish `key : (c : ℚ) ≤ s + E * A + E * v + D.R.t * B`.
+
+Establish `h2 : ((s : ℚ) / E + (A : ℚ) + (v : ℚ) + (D.R.t : ℚ) * ((B : ℚ) / E)) * E = s + E * A + E * v + D.R.t * B`. Clear the denominators using the available nonvanishing facts. Rewrite using `[← h2, ← div_le_iff₀ hE0]`. Move the coercions through the operations in `[hA, hB]`. Conclude with `hr`.
+
+Establish `knat : c ≤ s + E * A + E * v + D.R.t * B` using `by exact_mod_cast key`. Establish `hsum : SelmerSumLargePrime.shaSum D i = (A : ℕ∞)`. Unfold `SelmerSumLargePrime.shaSum`. Rewrite using `[hA, Nat.cast_sum]`. Conclude with `Finset.sum_congr rfl fun k hk => (ENat.natCast_toNat (hsh k hk).ne).symm`.
+
+Establish `htw : SelmerSumLargePrime.twistLen D i = ((D.R.t * B : ℕ) : ℕ∞)`. Unfold `SelmerSumLargePrime.twistLen`. Rewrite using `[hB, Nat.cast_mul, Nat.cast_sum]`. Conclude with `congrArg _ (Finset.sum_congr rfl fun P hP => (ENat.natCast_toNat (hq P hP)).symm)`. Rewrite using `[hsum, htw, ← ENat.natCast_toNat hc, ← ENat.natCast_toNat hs', ← ENat.natCast_toNat het]`.
+
+Conclude with `knat` after adjusting the coercions.
+-/
 theorem congBound_of_rational : ∀ (D : D7) (i : D.nd.Loc) (π : D.nd.X i) (ρ : GE D.nd →* GL (Fin D.R.r) (D.nd.O i)), π ∈ D.nd.Z i → (∀ v ∈ D.nd.Q i, D.nd.zeta i v ≠ 1) → (Br.sFin D.loc D.nbr i (fun _ => ρ) π → (∀ e ∈ Finset.Ioo 0 D.R.t, Formalism.GaloisCohomology.shaLen (D.nd.ldat (D.nd.l i)) (e : ℤ) < ⊤) → D.nd.vcc i π ≤ Br.sPi D.loc D.nbr i (fun _ => ρ) π + (∑ e ∈ Finset.Ioo 0 D.R.t, (D.what₂.shaLen (D.nd.l i) e : ℚ)) + (padicValNat (D.nd.l i) (hE D.host) : ℚ) + (D.R.t : ℚ) * ∑ q ∈ D.nd.Q i, lenUnit (O := D.nd.O i) (D.nd.l i) (D.nd.O i ⧸ Ideal.span {D.nd.zeta i q - 1})) → GlobalTheory.IndefiniteRowSideFullHecke.BaseSizes.vCC D i π ≤ GlobalTheory.IndefiniteRowSideFullHecke.BaseSizes.sPi D i π ρ + GlobalTheory.IndefiniteRowSideFullHecke.BaseSizes.shaSum D i + GlobalTheory.IndefiniteRowSideFullHecke.BaseSizes.vClass D i + GlobalTheory.IndefiniteRowSideFullHecke.BaseSizes.epsQ D i := by
   intro D i π ρ hπ hζ h
   classical

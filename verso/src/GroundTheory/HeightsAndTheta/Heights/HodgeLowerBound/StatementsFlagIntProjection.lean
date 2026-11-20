@@ -12,8 +12,14 @@ def FlagIntProjection.Statement : Prop :=
     flagInt Ψ N (muPoly Ψ N j ^ dimN Ψ N j * P) =
       (-1) ^ dimN Ψ N j * grassProdDeg (Fintype.card Ψ) j (N - j) * blockInt Ψ N j P
 
+/- English proof (translation)
+Evaluate the numerical expressions.
+-/
 example : (1 : ℕ) ≤ 2 := by norm_num
 
+/- English proof (translation)
+Establish `h` using `Jint_line 1`. Unfold `Jint fib at h`. Rewrite `h` using `[map_one, one_mul]`. Rewrite using `[h, ← fdeg, fdeg_line, dimN_line]`. Simplify using `[grassProdDeg, grassDeg]`.
+-/
 example : flagInt Unit 2 (muPoly Unit 2 1 ^ dimN Unit 2 1 * vandBlocks Unit 2 1) =
     (-1) ^ dimN Unit 2 1 * grassProdDeg (Fintype.card Unit) 1 (2 - 1) * blockInt Unit 2 1 (vandBlocks Unit 2 1) := by
   have h := Jint_line 1

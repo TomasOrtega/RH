@@ -6,6 +6,9 @@ import Development.AbelianVarietyTheory.PublishedTheorems.GaloisCohomology₂.St
 open NumberField IsDedekindDomain
 attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.JSPrinBound.jsBound_no_map | exact GlobalTheory.JSPrinBound.jsBound_no_map | (intros; apply GlobalTheory.JSPrinBound.jsBound_no_map <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.unramified_principal_series_irreducible : ∀ (E : Type) [Field E] [NumberField E] [IsTotallyComplex E] (τ : GlobalTheory.CuspRep.CuspSub E (1 + 1))
     (w : HeightOneSpectrum (𝓞 E)) (χ₁ χ₂ : (w.adicCompletion E)ˣ →* ℂˣ) (s₁ s₂ : ℝ), GlobalTheory.Published.JacquetShalikaBound →
     GlobalTheory.SplitWeil.IsUnram χ₁ → GlobalTheory.SplitWeil.IsUnram χ₂ → (∀ u, ‖(χ₁ u : ℂ)‖ = 1) → (∀ u, ‖(χ₂ u : ℂ)‖ = 1) →

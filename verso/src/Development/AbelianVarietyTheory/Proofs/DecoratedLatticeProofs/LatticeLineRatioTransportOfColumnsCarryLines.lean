@@ -13,19 +13,33 @@ namespace GlobalTheory.FinPl.RatioAA
 
 variable {D : D7}
 
+/- English proof (translation)
+Use `show (1 ⊗ₜ[D.host.F] b) * (p ⊗ₜ[D.host.F] z) = _`. Rewrite using `[Algebra.TensorProduct.tmul_mul_tmul, one_mul]`.
+-/
 theorem incA_mul_tmul (b : D.host.E) (p : AF D.host.F) (z : D.host.E) :
     incA D b * (p ⊗ₜ[D.host.F] z) = p ⊗ₜ[D.host.F] (b * z) := by
   show (1 ⊗ₜ[D.host.F] b) * (p ⊗ₜ[D.host.F] z) = _
   rw [Algebra.TensorProduct.tmul_mul_tmul, one_mul]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `k`. Simplify using `[colMul, add_mul]`.
+-/
 theorem colMul_add {m n : ℕ} (x : Mx D m n) (l : Fin n) (c c' : AE D) :
     colMul x l (c + c') = colMul x l c + colMul x l c' := by
   funext k; simp [colMul, add_mul]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `k`. Simplify using `[colMul, mul_assoc]`.
+-/
 theorem colMul_mul {m n : ℕ} (x : Mx D m n) (l : Fin n) (b c : AE D) :
     (fun k => b * colMul x l c k) = colMul x l (b * c) := by
   funext k; simp [colMul, mul_assoc]
 
+/- English proof (translation)
+Set `f : (Fin S.rank → AE D) →+ (Fin S.rank → AE D)` to `(AddMonoidHom.mulLeft (incA D b)).compLeft (Fin S.rank)`. Establish `hle : latMul S 𝔞 L P ≤ (latMul S 𝔟 L' P).comap f`. Use `(AddSubgroup.closure_le _).2 ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨α, hα, hs, a, ha, x, hx, rfl⟩`. Take `⟨a', ha', x', hx', e⟩` from `h a ha x hx`.
+
+Use `AddSubgroup.subset_closure ⟨α, hα, hs, a', ha', x', hx', ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `i`. Use `show incA D b * _ = _`. Rewrite using `[incA_mul_tmul, e]`. Conclude with `hle hy`.
+-/
 theorem mul_mem_latMul {S : HSp D} {𝔞 𝔟 : Set D.host.E} {L L' : Lat S} {P : Pl D → Prop} (b : D.host.E)
     (h : ∀ a ∈ 𝔞, ∀ x ∈ L, ∃ a' ∈ 𝔟, ∃ x' ∈ L', ∀ i, b * (a * x i) = a' * x' i)
     {y : Fin S.rank → AE D} (hy : y ∈ latMul S 𝔞 L P) : (fun i => incA D b * y i) ∈ latMul S 𝔟 L' P := by
@@ -40,10 +54,18 @@ theorem mul_mem_latMul {S : HSp D} {𝔞 𝔟 : Set D.host.E} {L L' : Lat S} {P 
     rw [incA_mul_tmul, e]
   exact hle hy
 
+/- English proof (translation)
+The claim follows from `mul_mem_latMul α (fun a ha x hx => ⟨α, hα, x, hx, fun i => by rw [Set.mem_singleton_iff.1 ha]; ring⟩) hy`.
+-/
 theorem latV_to_latA {S : HSp D} {L : Lat S} {P : Pl D → Prop} {α : D.host.E} (hα : α ∈ D.host.AA)
     {y : Fin S.rank → AE D} (hy : y ∈ latV S L P) : (fun i => incA D α * y i) ∈ latA S L P :=
   mul_mem_latMul α (fun a ha x hx => ⟨α, hα, x, hx, fun i => by rw [Set.mem_singleton_iff.1 ha]; ring⟩) hy
 
+/- English proof (translation)
+Use `mul_mem_latMul β (fun a ha x hx => ?_) hy` and prove the remaining obligations. Establish `hm : β * a ∈ (1 : FractionalIdeal (nonZeroDivisors (𝓞 D.host.E)) D.host.E)`. Rewrite using `[← inv_mul_cancel₀ hAA]`. Conclude with `FractionalIdeal.mul_mem_mul hβ ha`. Take `⟨o, ho⟩` from `(FractionalIdeal.mem_one_iff _).1 hm`.
+
+Use `⟨1, rfl, o • x, L.smul_mem o hx, fun i => ?_⟩` and prove the remaining obligations. Rewrite using `[Pi.smul_apply, Algebra.smul_def, ho]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem latA_to_latV {S : HSp D} {L : Lat S} {P : Pl D → Prop} (hAA : D.host.AA ≠ 0) {β : D.host.E}
     (hβ : β ∈ D.host.AA⁻¹) {y : Fin S.rank → AE D} (hy : y ∈ latA S L P) : (fun i => incA D β * y i) ∈ latV S L P := by
   refine mul_mem_latMul β (fun a ha x hx => ?_) hy
@@ -53,6 +75,11 @@ theorem latA_to_latV {S : HSp D} {L : Lat S} {P : Pl D → Prop} (hAA : D.host.A
   refine ⟨1, rfl, o • x, L.smul_mem o hx, fun i => ?_⟩
   rw [Pi.smul_apply, Algebra.smul_def, ho]; ring
 
+/- English proof (translation)
+Establish `hle : latA S L P ≤ ⊥`. Use `(AddSubgroup.closure_le _).2 ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨α, hα, hs, a, ha, x, hx, rfl⟩`. Establish `ha0 : a = 0`. Establish `: a ∈ D.host.AA` using `ha`.
+
+Rewrite `this` using `[hAA]`. Conclude with `(FractionalIdeal.mem_zero_iff _).1 this`. Use function extensionality and compare the values at `i`. Simplify using `[ha0]`. Simplify using `using hle hy`.
+-/
 theorem latA_eq_zero (hAA : D.host.AA = 0) {S : HSp D} {L : Lat S} {P : Pl D → Prop} {y : Fin S.rank → AE D}
     (hy : y ∈ latA S L P) : y = 0 := by
   have hle : latA S L P ≤ ⊥ := by
@@ -65,6 +92,25 @@ theorem latA_eq_zero (hAA : D.host.AA = 0) {S : HSp D} {L : Lat S} {P : Pl D →
     simp [ha0]
   simpa using hle hy
 
+/- English proof (translation)
+Establish `hs` using `GlobalTheory.LatAlmostStd.intSupp_single_mul v (α := 1) (fun w => by rw [map_one]; exact one_mem _)`. Rewrite `hs` using `[mul_one]`. Establish `hp : IsPlaceIdem D v (pairA D.host.F 0 (singleV D.host.F v 1))` using `⟨_, rfl, GlobalTheory.LatAlmostStd.evalV_single_same v 1, fun w hw => GlobalTheory.LatAlmostStd.evalV_single_ne v 1 hw⟩`. Use `set ε := pairA D.host.F 0 (singleV D.host.F v 1) with hεdef`. Take `⟨N, hN, -, hNL⟩` from `GlobalTheory.LatAlmostStd.exists_commensurable LV hsdV.1`.
+
+Take `⟨b, hb⟩` from `IsLocalization.exist_integer_multiples_of_finite (nonZeroDivisors (𝓞 D.host.E)) (fun k => dV.e k i)`. Use `choose o ho using hb`. Use `set x : Fin V.rank → D.host.E := ∑ k, Pi.single k (N • ((o k : 𝓞 D.host.E) : D.host.E)) with hxdef`. Establish `hx : x ∈ LV` using `sum_mem fun k _ => hNL k (o k)`. Establish `hxk : ∀ k, x k = N • (((b : 𝓞 D.host.E) : D.host.E) * dV.e k i)`.
+
+Introduce `k`. Rewrite using `[hxdef, Finset.sum_apply, Finset.sum_eq_single k (fun l _ hl => Pi.single_eq_of_ne' hl _) (fun hk => absurd (Finset.mem_univ k) hk), Pi.single_eq_same]`. Use `congr 1`. Rewrite using `[show ((o k : 𝓞 D.host.E) : D.host.E) = algebraMap (𝓞 D.host.E) D.host.E (o k) from rfl, ho k]`. Apply the tactic sequence `first | rfl | exact Algebra.smul_def _ _`.
+
+Use `set t : D.host.E := N • ((b : 𝓞 D.host.E) : D.host.E) with htdef`. Use `set c : AE D := ε ⊗ₜ[D.host.F] t with hcdef`. Establish `hc : c ∈ idAt D (· = v)` using `GlobalTheory.FinPl.LatMem.tmul_mem_idAt hs.2 _`. Establish `hyc : colMul dV.jX i c ∈ latV V LV (· = v)`. Use `AddSubgroup.subset_closure ⟨_, hs.1, hs.2, 1, rfl, x, hx, ?_⟩` and prove the remaining obligations.
+
+Use function extensionality and compare the values at `k`. Rewrite using `[one_mul, hxk k]`. Use `show c * incA D (dV.e k i) = _`. Rewrite using `[mul_comm, incA_mul_tmul, htdef]`. Use `congr 1`.
+
+Rewrite using `[mul_smul_comm, mul_comm (dV.e k i)]`. Establish `hW` using `latA_eq_zero hAA ((hC i c hc).1 hyc)`. Establish `hc0 : c = 0`. Establish `h1` using `congrFun (congrFun dW.pX_jX i) i`. Rewrite `h1` using `[Matrix.one_apply_eq, Matrix.mul_apply]`.
+
+Rewrite using `[← mul_one c, ← h1, Finset.mul_sum]`. Use `Finset.sum_eq_zero fun k _ => ?_` and prove the remaining obligations. Use `congrFun hW k` as an intermediate fact. Simplify using `only [colMul, Pi.zero_apply] at this`. Rewrite using `[mul_comm (dW.pX i k), ← mul_assoc, this, zero_mul]`.
+
+Establish `ht : t ≠ 0`. Rewrite using `[htdef]`. Use `smul_ne_zero hN ?_` and prove the remaining obligations. Conclude with `nonZeroDivisors.coe_ne_zero b` after adjusting the coercions. Establish `hεc : algebraMap (AF D.host.F) (AE D) ε = c * incA D t⁻¹`.
+
+Rewrite using `[hcdef, mul_comm, incA_mul_tmul, inv_mul_cancel₀ ht]`. Both sides reduce to the same expression. Rewrite using `[← ((placeIdem_acts D v ε hp).1 a).1 ha, hεc, hc0, zero_mul, zero_mul]`.
+-/
 theorem idAt_eq_zero_of_AA (hAA : D.host.AA = 0) {V V₀ W W₀ : HSp D} {ρ : ℕ} (dV : HypDec V V₀ ρ) (dW : HypDec W W₀ ρ)
     (LV : Lat V) (LW : Lat W) (v : Pl D) (hsdV : IsSelfDualC V LV) (hC : ColsAt dV dW.jX LV LW v) (i : Fin ρ)
     (a : AE D) (ha : a ∈ idAt D (· = v)) : a = 0 := by
@@ -118,6 +164,17 @@ end GlobalTheory.FinPl.RatioAA
 
 open GlobalTheory.FinPl.RatioAA in
 
+/- English proof (translation)
+Introduce `D V V₀ W W₀ ρ dV dW LV LV₀ LW LW₀ v _ hsdV _ _ _ hC i j r hr H a ha hja`. Distinguish the cases in `hAA : D.host.AA = 0`. Rewrite using `[idAt_eq_zero_of_AA hAA dV dW LV LW v hsdV hC i a ha, mul_zero]`. Establish `: colMul dW.jX i (0 : AE D) = 0` using `by funext k; simp [colMul]`. Rewrite using `[this]`.
+
+Conclude with `zero_mem _`. Establish `key : ∀ t ∈ D.host.AA * D.host.AA⁻¹, colMul dW.jX i (incA D t * (r * a)) ∈ latV W LW (· = v)`. Introduce `t ht`. Use `FractionalIdeal.mul_induction_on ht (fun α hα β hβ => ?_) (fun x y hx hy => ?_)` and prove the remaining obligations. Establish `h1` using `latV_to_latA hα hja`.
+
+Rewrite `h1` using `[colMul_mul]`. Establish `hαa : incA D α * a ∈ idAt D (· = v)` using `Ideal.mul_mem_left _ _ ha`. Establish `h2` using `(hC j _ hαa).2 h1`. Establish `h3` using `H _ h2`. Establish `h4` using `(hC i _ (Ideal.mul_mem_left _ r hαa)).1 h3`.
+
+Establish `h5` using `latA_to_latV hAA hβ h4`. Rewrite `h5` using `[colMul_mul]`. Use `h5 using 2` and compare the differences between its conclusion and the goal. Rewrite using `[map_mul]`. Expand and normalize the polynomial expressions, which then agree.
+
+Rewrite using `[map_add, add_mul, colMul_add]`. Conclude with `add_mem hx hy`. Use `key 1 (by rw [mul_inv_cancel₀ hAA]; exact FractionalIdeal.one_mem_one _)` as an intermediate fact. Simplify using `using this`.
+-/
 theorem GlobalTheory.FinPl.ratio_of_colsAt : ∀ (D : D7) (V V₀ W W₀ : HSp D) (ρ : ℕ) (dV : HypDec V V₀ ρ) (dW : HypDec W W₀ ρ) (LV : Lat V) (LV₀ : Lat V₀) (LW : Lat W) (LW₀ : Lat W₀) (v : Pl D), Tame D v → IsSelfDualC V LV → IsSelfDualC W LW → MonoAt dV LV LV₀ v → MonoAt dW LW LW₀ v → ColsAt dV dW.jX LV LW v → ∀ (i j : Fin ρ) (r : AE D), r ∈ idAt D (· = v) → (∀ a : AE D, colMul dV.jX j a ∈ latV V LV (· = v) → colMul dV.jX i (r * a) ∈ latV V LV (· = v)) → ∀ a ∈ idAt D (· = v), colMul dW.jX j a ∈ latV W LW (· = v) → colMul dW.jX i (r * a) ∈ latV W LW (· = v) := by
   intro D V V₀ W W₀ ρ dV dW LV LV₀ LW LW₀ v _ hsdV _ _ _ hC i j r hr H a ha hja
   by_cases hAA : D.host.AA = 0

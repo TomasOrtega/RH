@@ -6,6 +6,17 @@ set_option autoImplicit false
 
 namespace GlobalTheory.CompanionTheory.PerfVB.ContrBC
 
+/- English proof (translation)
+Establish `hgj' : ∀ y, j y ∈ LinearMap.ker g` using `fun y => LinearMap.mem_ker.2 (LinearMap.congr_fun hgj y)`. Establish `hπj' : ∀ y, π (j y) = y` using `fun y => LinearMap.congr_fun hπj y`. Establish `hπf' : ∀ x, π (f x) = 0` using `fun x => LinearMap.congr_fun hπf x`. Establish `hc' : ∀ b, j (π b) + f (h b) + h' (g b) = b` using `fun b => LinearMap.congr_fun hc b`. Establish `hle : Submodule.comap (LinearMap.ker g).subtype (LinearMap.range f) ≤ LinearMap.ker (π ∘ₗ (LinearMap.ker g).subtype)`.
+
+Introduce and unpack `⟨z, hz⟩ hzN`. Take `⟨x, rfl⟩ : ∃ x, f x = z` from `LinearMap.mem_range.1 (Submodule.mem_comap.1 hzN)`. Rewrite using `[LinearMap.mem_ker]`. Conclude with `hπf' x`. Use `⟨LinearEquiv.ofLinear (Submodule.liftQ _ (π ∘ₗ (LinearMap.ker g).subtype) hle) ((Submodule.comap (LinearMap.ker g).subtype (LinearMap.range f)).mkQ ∘ₗ LinearMap.codRestrict (LinearMap.ker g) j hgj') ?_ ?_⟩` and prove the remaining obligations.
+
+Use `LinearMap.ext fun y => ?_` and prove the remaining obligations. Conclude with `hπj' y`. Use `LinearMap.ext fun q => ?_` and prove the remaining obligations. Take `⟨⟨z, hz⟩, rfl⟩` from `Submodule.Quotient.mk_surjective (Submodule.comap (LinearMap.ker g).subtype (LinearMap.range f)) q`. Establish `hz' : g z = 0` using `LinearMap.mem_ker.1 hz`.
+
+Establish `e : z = j (π z) + f (h z)`. Use `hc' z` as an intermediate fact. Rewrite `this` using `[hz', map_zero, add_zero]`. Conclude with `this.symm`. Establish `key : (⟨j (π z), hgj' (π z)⟩ : LinearMap.ker g) - ⟨z, hz⟩ ∈ Submodule.comap (LinearMap.ker g).subtype (LinearMap.range f)`.
+
+Use `Submodule.mem_comap.2 (LinearMap.mem_range.2 ⟨-h z, ?_⟩)` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `f (-h z) = j (π z) - z`. Combine the equalities or inequalities in the displayed calculation. Conclude with `(Submodule.Quotient.eq _).2 key`.
+-/
 theorem nonempty_Hc_equiv_of_contraction {S A B C H : Type} [CommRing S] [AddCommGroup A]
     [AddCommGroup B] [AddCommGroup C] [AddCommGroup H] [Module S A] [Module S B] [Module S C]
     [Module S H] (f : A →ₗ[S] B) (g : B →ₗ[S] C) (j : H →ₗ[S] B) (π : B →ₗ[S] H)
@@ -44,6 +55,9 @@ theorem nonempty_Hc_equiv_of_contraction {S A B C H : Type} [CommRing S] [AddCom
         _ = j (π z) - z := by rw [← e]
     exact (Submodule.Quotient.eq _).2 key
 
+/- English proof (translation)
+Use `nonempty_Hc_equiv_of_contraction (f.baseChange S) (g.baseChange S) (j.baseChange S) (π.baseChange S) (h.baseChange S) (h'.baseChange S) ?_ ?_ ?_ ?_` and prove the remaining obligations. Rewrite using `[← LinearMap.baseChange_comp, hπj, LinearMap.baseChange_id]`. Rewrite using `[← LinearMap.baseChange_comp, hgj, LinearMap.baseChange_zero]`. Rewrite using `[← LinearMap.baseChange_comp, hπf, LinearMap.baseChange_zero]`. Rewrite using `[← LinearMap.baseChange_comp, ← LinearMap.baseChange_comp, ← LinearMap.baseChange_comp, ← LinearMap.baseChange_add, ← LinearMap.baseChange_add, hc, LinearMap.baseChange_id]`.
+-/
 theorem nonempty_Hc_baseChange_equiv (R A B C H S : Type) [CommRing R] [AddCommGroup A]
     [AddCommGroup B] [AddCommGroup C] [AddCommGroup H] [Module R A] [Module R B] [Module R C]
     [Module R H] [CommRing S] [Algebra R S] (f : A →ₗ[R] B) (g : B →ₗ[R] C) (j : H →ₗ[R] B)

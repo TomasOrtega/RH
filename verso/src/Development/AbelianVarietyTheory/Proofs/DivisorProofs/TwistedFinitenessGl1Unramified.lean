@@ -7,6 +7,9 @@ open scoped TensorProduct Classical
 
 namespace GlobalTheory.TwFinGL1
 
+/- English proof (translation)
+Introduce `p _ r hr δ N E`. Use `⟨{1}, fun t _ _ => ?_⟩` and prove the remaining obligations. Take `⟨u, hu, k, hk, htk⟩` from `GlobalTheory.LKLoc.GLOneUnit.exists_decomp p (Q0 p) r inferInstance hr δ t`. Conclude with `⟨u, hu, 1, Finset.mem_singleton_self _, k, hk, by rw [htk, mul_one]⟩`.
+-/
 theorem twisted_finiteness_gl1 : ∀ (p : ℕ) [Fact p.Prime] (r : ℕ), 0 < r → ∀ δ N : GL (Fin 1) (Qr p r),
     GlobalTheory.TwFin.TwFin (GlobalTheory.LKLoc.sig p (Q0 p) 1 r) (GlobalTheory.LKLoc.Kint p (Q0 p) 1 r) δ N := by
   intro p _ r hr δ N E

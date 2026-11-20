@@ -9,14 +9,31 @@ section a5
 
 open Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotions.S Formalism.MainNotions.S.Bridge Formalism.MainNotions.S.ThB
 
+/- English proof (translation)
+Use `first`. Consider the case `exact D.eTau.nonempty`. Consider the case `exact ⟨D.eTau.symm 1⟩`.
+-/
 theorem tau_index_set_nonempty (D : D7) : Nonempty D.what₂.Tau := by
   first
   | exact D.eTau.nonempty
   | exact ⟨D.eTau.symm 1⟩
 
+/- English proof (translation)
+Conclude with `Formalism.MainNotions.sc_one_lt_b large₂`.
+-/
 theorem one_lt_scale_base (D : D7) (large₂ : SizeData₂ D) : 1 < large₂.sc.b := by
   exact Formalism.MainNotions.sc_one_lt_b large₂
 
+/- English proof (translation)
+Establish `hb` using `Formalism.MainNotions.sc_one_lt_b large₂`. Take `⟨-, -, -, -, -, -, -, -, -, -, -, hg1, -, hg2, -, -, -, -, hv, -⟩` from `h`. Establish `hk2 : (2 : ℝ) ≤ (D.R.k : ℝ)`. Establish `h1` using `D.R.m_add_three_le_k`. Establish `h2` using `D.R.two_le_m`.
+
+Conclude with `(show 2 ≤ D.R.k by omega)` after adjusting the coercions. Establish `hpi` using `Real.pi_le_four`. Establish `hpi0` using `Real.pi_pos`. Establish `hb0 : 0 < large₂.sc.b` using `by linarith`. Establish `hv0 : (0 : ℝ) < D.host.v` using `by linarith`.
+
+Establish `hc : 2 * large₂.sc.b ≤ (D.R.k : ℝ) * large₂.sc.b` using `by nlinarith`. Establish `h8 : (2 * large₂.sc.b) ^ 8 ≤ ((D.R.k : ℝ) * large₂.sc.b) ^ 8` using `by first`. Consider the case `exact pow_le_pow_left₀ (by linarith) hc 8`. Consider the case `exact pow_le_pow_left (by linarith) hc 8`. Establish `hgg` using `mul_le_mul hg1 hg2 (by positivity) (le_trans (by positivity) hg1)`.
+
+Establish `e16 : large₂.sc.b ^ (16 : ℝ) = large₂.sc.b ^ (16 : ℕ)`. Rewrite using `[show (16 : ℝ) = ((16 : ℕ) : ℝ) by norm_num, Real.rpow_natCast]`. Rewrite using `[e16]`. Unfold `kaS gg`. Rewrite using `[show D.host.ka = Real.pi / D.host.v from rfl, inv_div]`.
+
+Establish `hpv : Real.pi / D.host.v ≤ 4` using `le_trans (div_le_self hpi0.le hv) hpi`. Establish `hpos : 0 < Real.pi / D.host.v` using `div_pos hpi0 hv0`. Rewrite using `[le_div_iff₀ hpos]`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem scale_base_pow_sixteen_le (D : D7) (large₂ : SizeData₂ D) (C' Cl Cg cb Cu cT CT : ℝ)
     (h : StandingHypotheses D large₂ C' Cl Cg cb Cu cT CT) : large₂.sc.b ^ (16 : ℝ) ≤ (kaS D)⁻¹ := by
   have hb := Formalism.MainNotions.sc_one_lt_b large₂
@@ -51,6 +68,11 @@ theorem scale_base_pow_sixteen_le (D : D7) (large₂ : SizeData₂ D) (C' Cl Cg 
         mul_le_mul h8 h8 (by positivity) (by positivity)
     _ ≤ _ := hgg
 
+/- English proof (translation)
+Establish `hb` using `Formalism.MainNotions.sc_one_lt_b large₂`. Establish `hy'` using `hy`. Take `⟨hS0, -, -⟩` from `hy'`. Establish `h16` using `scale_base_pow_sixteen_le D large₂ C' Cl Cg cb Cu cT CT hS0`. Take `⟨τ⟩` from `tau_index_set_nonempty D`.
+
+Take `⟨hs, -⟩` from `h hy τ D.u₀ D.u₀`. Take `⟨-, -, -, -, -, hka, -⟩` from `hs`. Rewrite `hka` using `[← Real.rpow_mul (by linarith : (0 : ℝ) ≤ large₂.sc.b)]`. Conclude with `(Real.rpow_le_rpow_left_iff hb).mp (le_trans h16 hka)`.
+-/
 theorem sixteen_le_mul_of_stdOfHyp_of_hyp0 (D : D7) (large₂ : SizeData₂ D) (C' Cl Cg cb Cu cT CT C0 Ch Cs Cs' Cβ : ℝ)
     (h : StdOfHyp D large₂ C' Cl Cg cb Cu cT CT C0 Ch Cs Cs' Cβ) (hy : Cnt.Hyp0 D large₂ C' Cl Cg cb Cu cT CT C0) :
     16 ≤ Cβ * Ch := by
@@ -64,6 +86,23 @@ theorem sixteen_le_mul_of_stdOfHyp_of_hyp0 (D : D7) (large₂ : SizeData₂ D) (
   rw [← Real.rpow_mul (by linarith : (0 : ℝ) ≤ large₂.sc.b)] at hka
   exact (Real.rpow_le_rpow_left_iff hb).mp (le_trans h16 hka)
 
+/- English proof (translation)
+Take `⟨τ⟩` from `tau_index_set_nonempty D`. Establish `hk` using `D.R.m_add_three_le_k`. Establish `hA : StrictAnti (lamD D τ)` using `Formalism.MainNotions.S.Inh.amp_lamSH_strictAnti D.R (D.hc τ)`. Establish `h0d : l1dist (lamD D τ) (lamD D τ) = 0`. Simplify using `only [l1dist, sub_self, abs_zero, Finset.sum_const_zero]`.
+
+Take `⟨-, hup⟩` from `h hy τ (lamD D τ) (by rw [h0d]; norm_num) 0`. Establish `hfac : ∀ s' ∈ (Finset.univ.erase (0 : Fin (2 * D.R.rS + D.R.k + 1))), 1 < (lamD D τ 0 + 1 - lamD D τ s') / (lamD D τ 0 - lamD D τ s')`. Introduce `s' hs'`. Establish `hne` using `(Finset.mem_erase.mp hs').1`. Establish `hlt : (0 : Fin (2 * D.R.rS + D.R.k + 1)) < s'`.
+
+Rewrite using `[Fin.lt_iff_val_lt_val, Fin.val_zero]`. Conclude with `Nat.pos_of_ne_zero (fun h0 => hne (Fin.ext (by rw [h0, Fin.val_zero])))`. Establish `hμ` using `hA hlt`. Rewrite using `[one_lt_div (sub_pos.mpr hμ)]`. Combine the linear equalities and inequalities to obtain the conclusion.
+
+Establish `hlast : Fin.last (2 * D.R.rS + D.R.k) ∈ (Finset.univ.erase (0 : Fin (2 * D.R.rS + D.R.k + 1)))`. Use `Finset.mem_erase.mpr ⟨?_, Finset.mem_univ _⟩` and prove the remaining obligations. Introduce `h0`. Establish `h1` using `congrArg Fin.val h0`. Rewrite `h1` using `[Fin.val_last, Fin.val_zero]`.
+
+Use linear arithmetic over natural numbers and integers. Establish `hrest : 1 ≤ ∏ s' ∈ (Finset.univ.erase (0 : Fin (2 * D.R.rS + D.R.k + 1))).erase (Fin.last (2 * D.R.rS + D.R.k)), (lamD D τ 0 + 1 - lamD D τ s') / (lamD D τ 0 - lamD D τ s')`. Use `Finset.prod_le_prod (s := (Finset.univ.erase (0 : Fin (2 * D.R.rS + D.R.k + 1))).erase (Fin.last (2 * D.R.rS + D.R.k))) (f := fun _ => (1 : ℝ)) (g := fun s' => (lamD D τ 0 + 1 - lamD D τ s') / (lamD D τ 0 - lamD D τ s')) (fun _ _ => zero_le_one) (fun s' hs' => (hfac s' (Finset.me …` as an intermediate fact. Simplify using `only [Finset.prod_const_one] at this`. Conclude with `this`.
+
+Establish `hprod : 1 < ∏ s' ∈ Finset.univ.erase (0 : Fin (2 * D.R.rS + D.R.k + 1)), (lamD D τ 0 + 1 - lamD D τ s') / (lamD D τ 0 - lamD D τ s')`. Establish `h1` using `hfac _ hlast`. Combine the equalities or inequalities in the displayed calculation. Assume the negation of the conclusion as `hC`. Use `push_neg at hC`.
+
+Establish `hr1 : (D.R.r : ℝ) ^ C ≤ 1`. Break down `Nat.eq_zero_or_pos D.R.r with h0 | hpos` into its components or cases. Rewrite using `[h0, Nat.cast_zero] first`. Consider the case `exact Real.zero_rpow_le_one C`. Consider the case `(rcases eq_or_ne C 0 with hc0 | hc0`.
+
+Rewrite using `[hc0, Real.rpow_zero]`. Rewrite using `[Real.zero_rpow hc0]`. Use the proof step `norm_num)`. Conclude with `Real.rpow_le_one_of_one_le_of_nonpos (Nat.one_le_cast.mpr hpos) hC`. Conclude with `absurd (lt_of_lt_of_le hprod (le_trans hup hr1)) (lt_irrefl 1)`.
+-/
 theorem product_bound_forces_pos (D : D7) (large₂ : SizeData₂ D) (C' Cl Cg cb Cu cT CT C0 C : ℝ)
     (h : ProdBound D large₂ C' Cl Cg cb Cu cT CT C0 0 C) (hy : Cnt.Hyp0 D large₂ C' Cl Cg cb Cu cT CT C0) : 0 < C := by
   obtain ⟨τ⟩ := tau_index_set_nonempty D
@@ -127,6 +166,13 @@ theorem product_bound_forces_pos (D : D7) (large₂ : SizeData₂ D) (C' Cl Cg c
 
 variable {eps : ℝ}
 
+/- English proof (translation)
+Establish `h0` using `standing_hypotheses_hold_family (Fm := Fm) C0 h1 hR`. Unfold `StandingHypothesesWithConstants OwnEv at h0`. Take `⟨x0, hx0⟩` from `h0`. Establish `h2` using `pStd 0 0`. Unfold `OwnEv at h2`.
+
+Take `⟨x1, hx1⟩` from `h2`. Use `⟨max x0 x1, fun x hx i hw => ?_⟩` and prove the remaining obligations. Take `⟨hD, hS, hc⟩` from `hx0 x (le_of_max_le_left hx) i hw`. Establish `hy0 : Cnt.Hyp0 (Fm.D x i) (Fm.L x i) (sC' Fm) (sCl Fm) (Fm.CYL + 1) (1 / 4) 3 (1 / 2) Fm.CTu C0` using `⟨hS, hD, hc⟩`. Establish `h3` using `sixteen_le_mul_of_stdOfHyp_of_hyp0 (Fm.D x i) (Fm.L x i) (sC' Fm) (sCl Fm) (Fm.CYL + 1) (1 / 4) 3 (1 / 2) Fm.CTu C0 Ch 0 0 Cβ (hx1 x (le_of_max_le_right hx) i) hy0`.
+
+Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem no_window_of_standard_hyp (Fm : FamP eps) (C0 Ch Cβ : ℝ) (h1 : 1 ≤ C0) (hR : ResidualStandingConditions Fm) (hs : Cβ * Ch < 16)
     (pStd : PX.StdHypS Fm (Fm.CYL + 1) (1 / 4) 3 (1 / 2) Fm.CTu C0 Ch Cβ) :
     ∃ x0 : ℝ, ∀ x ≥ x0, ∀ i : Fm.Ix x, ¬ Win Fm C0 x i := by
@@ -144,6 +190,13 @@ theorem no_window_of_standard_hyp (Fm : FamP eps) (C0 Ch Cβ : ℝ) (h1 : 1 ≤ 
     (hx1 x (le_of_max_le_right hx) i) hy0
   linarith
 
+/- English proof (translation)
+Establish `h0` using `standing_hypotheses_hold_family (Fm := Fm) C0 h1 hR`. Unfold `StandingHypothesesWithConstants OwnEv at h0`. Take `⟨x0, hx0⟩` from `h0`. Establish `h2` using `pProd 0`. Unfold `OwnEv at h2`.
+
+Take `⟨x1, hx1⟩` from `h2`. Use `⟨max x0 x1, fun x hx i hw => ?_⟩` and prove the remaining obligations. Take `⟨hD, hS, hc⟩` from `hx0 x (le_of_max_le_left hx) i hw`. Establish `hy0 : Cnt.Hyp0 (Fm.D x i) (Fm.L x i) (sC' Fm) (sCl Fm) (Fm.CYL + 1) (1 / 4) 3 (1 / 2) Fm.CTu C0` using `⟨hS, hD, hc⟩`. Establish `h3` using `product_bound_forces_pos (Fm.D x i) (Fm.L x i) (sC' Fm) (sCl Fm) (Fm.CYL + 1) (1 / 4) 3 (1 / 2) Fm.CTu C0 C (hx1 x (le_of_max_le_right hx) i) hy0`.
+
+Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem no_window_of_product_bound (Fm : FamP eps) (C0 C : ℝ) (h1 : 1 ≤ C0) (hR : ResidualStandingConditions Fm) (hs : C ≤ 0)
     (pProd : PX.PieriProductBound Fm (Fm.CYL + 1) (1 / 4) 3 (1 / 2) Fm.CTu C0 C) :
     ∃ x0 : ℝ, ∀ x ≥ x0, ∀ i : Fm.Ix x, ¬ Win Fm C0 x i := by
@@ -161,6 +214,25 @@ theorem no_window_of_product_bound (Fm : FamP eps) (C0 C : ℝ) (h1 : 1 ≤ C0) 
     (hx1 x (le_of_max_le_right hx) i) hy0
   linarith
 
+/- English proof (translation)
+Establish `h0` using `standing_hypotheses_hold_family (Fm := Fm) C0 h1 hR`. Unfold `StandingHypothesesWithConstants OwnEv at h0`. Take `⟨x0, hx0⟩` from `h0`. Establish `h2` using `pTF`. Unfold `OwnEv at h2`.
+
+Take `⟨x1, hx1⟩` from `h2`. Establish `h3` using `hR.2.1`. Unfold `TuSize at h3`. Take `⟨x2, hx2⟩` from `h3`. Use `⟨max x0 (max x1 x2), fun x hx i hw => ?_⟩` and prove the remaining obligations.
+
+Establish `hxa : x0 ≤ x` using `le_trans (le_max_left _ _) hx`. Establish `hxb : x1 ≤ x` using `le_trans (le_trans (le_max_left _ _) (le_max_right _ _)) hx`. Establish `hxc : x2 ≤ x` using `le_trans (le_trans (le_max_right _ _) (le_max_right _ _)) hx`. Take `⟨hD, hS, hc⟩` from `hx0 x hxa i hw`. Establish `hy0 : Cnt.Hyp0 (Fm.D x i) (Fm.L x i) (sC' Fm) (sCl Fm) (Fm.CYL + 1) (1 / 4) 3 (1 / 2) Fm.CTu C0` using `⟨hS, hD, hc⟩`.
+
+Establish `hT1` using `hx1 x hxb i hy0 (Fm.D x i).u₀`. Establish `hTs` using `(hx2 x hxc i).2 (Fm.D x i).u₀`. Establish `h16` using `scale_base_pow_sixteen_le (Fm.D x i) (Fm.L x i) (sC' Fm) (sCl Fm) (Fm.CYL + 1) (1 / 4) 3 (1 / 2) Fm.CTu hS`. Establish `hTr : Tr (Fm.D x i) (Fm.D x i).u₀ = ((((Fm.D x i).mem (Fm.D x i).u₀).A.T : ℕ) : ℝ)` using `rfl`. Rewrite `hT1` using `[hTr]`.
+
+Establish `hb0 : 0 < (Fm.L x i).sc.b` using `Real.exp_pos _`. Establish `hbpos : 0 < (Fm.L x i).sc.b ^ (16 : ℝ)` using `Real.rpow_pos_of_pos hb0 _`. Establish `hκ : 0 < kaS (Fm.D x i)` using `inv_pos.mp (lt_of_lt_of_le hbpos h16)`. Establish `hP : 0 < kaS (Fm.D x i) ^ (2 * (Fm.D x i).R.rS)` using `pow_pos hκ _`. Establish `hT : 0 < ((((Fm.D x i).mem (Fm.D x i).u₀).A.T : ℕ) : ℝ)`.
+
+Assume the negation of the conclusion as `hT0`. Use `push_neg at hT0`. Use the polynomial consequences of the given equalities and inequalities. Establish `hlog1` using `Real.log_nonneg hT1`. Rewrite `hlog1` using `[Real.log_mul hT.ne' hP.ne', Real.log_pow]`.
+
+Establish `hlk : 16 * (Fm.L x i).sc.L ≤ -Real.log (kaS (Fm.D x i))`. Establish `h5` using `Real.log_le_log hbpos h16`. Rewrite `h5` using `[Real.log_inv, show (Fm.L x i).sc.b = Real.exp (Fm.L x i).sc.L from rfl, Real.log_rpow (Real.exp_pos _), Real.log_exp]`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hL : 0 < (Fm.L x i).sc.L` using `Real.rpow_pos_of_pos (by linarith [(Fm.L x i).sc.one_lt_alt]) _`.
+
+Establish `hn : (0 : ℝ) ≤ ((Fm.D x i).R.rS : ℝ)` using `Nat.cast_nonneg _`. Establish `hm6` using `mul_le_mul_of_nonneg_left hlk hn`. Move the coercions through the operations in `at hlog1`. Establish `key : 32 * ((Fm.D x i).R.rS : ℝ) * (Fm.L x i).sc.L ≤ Fm.CTu * ((Fm.D x i).R.m : ℝ) * (Fm.L x i).sc.L`. Combine the linear equalities and inequalities to obtain the conclusion.
+
+Use `push_cast`. Establish `h7` using `le_of_mul_le_mul_right key hL`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem level_frame_forces_rank_bound (Fm : FamP eps) (C0 : ℝ) (h1 : 1 ≤ C0) (hR : ResidualStandingConditions Fm)
     (pTF : PX.TFrame Fm (Fm.CYL + 1) (1 / 4) 3 (1 / 2) Fm.CTu C0) :
     ∃ x0 : ℝ, ∀ x ≥ x0, ∀ i : Fm.Ix x, Win Fm C0 x i →

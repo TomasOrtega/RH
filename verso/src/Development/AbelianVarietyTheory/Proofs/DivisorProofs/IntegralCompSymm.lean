@@ -12,6 +12,13 @@ open scoped Matrix Pointwise NNReal
 
 namespace GlobalTheory.ChangeVarPi
 
+/- English proof (translation)
+Establish `hc : Continuous M.symm` using `(M.symm : (ι → k) →ₗ[k] (ι → k)).continuous_on_pi`. Use extensionality with `s hs`. Rewrite using `[Measure.map_apply hc.measurable hs, Measure.smul_apply, ← GroundTheory.Automorphic.Measures.distribHaarChar_pi_eq, ENNReal.smul_def, smul_eq_mul, distribHaarChar_mul μ M s]`. Establish `: (M.symm : (ι → k) → (ι → k)) ⁻¹' s = M • s`. Use extensionality with `x`.
+
+Simplify using `only [Set.mem_preimage]`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Conclude with `⟨M.symm x, h, by simp [LinearEquiv.smul_def]⟩`. Introduce and unpack `⟨y, hy, rfl⟩`.
+
+Simplify `hy` using `[LinearEquiv.smul_def]`. Rewrite using `[this]`.
+-/
 theorem map_symm_eq_smul (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k]
     [IsNonarchimedeanLocalField k] [MeasurableSpace k] [BorelSpace k] (ι : Type) [Fintype ι]
     (μ : Measure (ι → k)) [μ.IsAddHaarMeasure] (M : (ι → k) ≃ₗ[k] (ι → k)) :

@@ -19,6 +19,25 @@ attribute [local instance] Over.cartesianMonoidalCategory
 
 namespace GlobalTheory.WeilKernel
 
+/- English proof (translation)
+Introduce `S A _ _ P hA hL h1 h2 k _ _ p n hn a ha hpair`. Establish `hB : IsAbelianScheme (A ⊗ A)` using `AbelianSchemeGerms.isAbelianScheme_tensor A A hA hA`. Establish `ht2 : Triv (AbDual.ev P (𝟙 A) (1 : A ⟶ A))` using `h2`. Choose the witnesses or unpack the hypotheses as in `⟨r, hr⟩ : Triv (P.pull (eSec (A ⊗ A))) := by`. Establish `e` using `(AbDual.triv_ev_iff hL _ _).2 (AbDual.evc_one_right hL ht2 (1 : 𝟙_ (Over S) ⟶ A))`.
+
+Establish `e' : lift (1 : 𝟙_ (Over S) ⟶ A) (1 : 𝟙_ (Over S) ⟶ A) = η[A ⊗ A]`. Apply the tactic sequence `ext <;> simp [Hom.one_def]`. Rewrite `e` using `[AbDual.ev, e']`. Conclude with `e`. Take `⟨t, ht⟩` from `WeilIntegral.triv_theta CubeTop.cubeTheorem hB hL`.
+
+Take `⟨t', ht', hn'⟩` from `AbLaw.Cube.exists_normalised hL t ht`. Set `M : RigLB (A ⊗ A)` to `⟨P, r, hL, hr⟩`. Establish `c : CubicalStr (A ⊗ A) M` using `AbLaw.Cube.cubicalOfNormalised globalFns_holds hB M t' ht' hn'`. Establish `ha' : (lift a (1 : Over.mk p ⟶ A)) ^ n = 1` using `WeilIntegral.lift_pow ha (one_pow n)`. Establish `s1 : ∀ b : Over.mk p ⟶ A, b ^ n = 1 → CubWeil c n (lift a 1) (lift 1 b) 1` using `fun b hb => (cubWeil_iff_weilIs (c := c) globalFns_holds hB ha' (WeilIntegral.lift_pow (one_pow n) hb) 1).2 (hpair b hb)`.
+
+Establish `s2 : ∀ b : Over.mk p ⟶ A, b ^ n = 1 → CubWeil c n (lift b 1) (lift a 1) 1`. Introduce `b hb`. Establish `h` using `RaynaudAxis.cubWeil_one_of_triv_pull S (A ⊗ A) A (lift (𝟙 A) 1) hA inferInstance M c h2 n (Over.mk p) b a hb ha`. Simplify using `using h`. Establish `s3 : ∀ z : Over.mk p ⟶ A ⊗ A, z ^ n = 1 → CubWeil c n (lift a 1) z 1`.
+
+Introduce `z hz`. Establish `e : lift (z ≫ fst A A) 1 * lift 1 (z ≫ snd A A) = z`. Apply the tactic sequence `ext <;> simp [MonObj.mul_comp]`. Establish `hz1 : (z ≫ fst A A) ^ n = 1` using `by rw [← MonObj.pow_comp, hz]; simp`. Establish `hz2 : (z ≫ snd A A) ^ n = 1` using `by rw [← MonObj.pow_comp, hz]; simp`.
+
+Establish `h` using `((s2 _ hz1).mul_left (s1 _ hz2).symm).symm`. Rewrite `h` using `[e]`. Simplify using `using h`. Establish `ht` using `OrthKer.mem_kernel_of_cubWeil_orthogonal k S p (A ⊗ A) hB M c n hn (lift a 1) ha' s3`. Establish `hD : (translDiff (A ⊗ A) P (lift a 1)).IsLB` using `LB.isLB_linComb hL _ _`.
+
+Establish `h0 : CechPic.cls _ hD = 0` using `(CechPic.cls_eq_zero_iff hD).2 ht`. Establish `e` using `AbDual.pull_translDiff hL (lift a 1) hD (snd A (Over.mk p)) (lift 1 (fst A (Over.mk p)))`. Rewrite `e` using `[h0, map_zero]`. Establish `k1 : (snd A (Over.mk p) ≫ lift a 1) * lift 1 (fst A (Over.mk p)) = lift (snd A (Over.mk p) ≫ a) (fst A (Over.mk p))`. Apply the tactic sequence `ext <;> simp [MonObj.mul_comp]`.
+
+Establish `k2 : CechPic.pull (lift (1 : A ⊗ Over.mk p ⟶ A) (fst A (Over.mk p))).left (CechPic.cls P hL) = 0`. Establish `e1 : AbDual.evc hL (1 : A ⟶ A) (𝟙 A) = 0` using `(AbDual.triv_ev_iff hL _ _).1 h1`. Establish `e2 : lift (1 : A ⊗ Over.mk p ⟶ A) (fst A (Over.mk p)) = fst A (Over.mk p) ≫ lift (1 : A ⟶ A) (𝟙 A)`. Apply the tactic sequence `ext <;> simp`. Establish `e3 : CechPic.pull (lift (1 : A ⟶ A) (𝟙 A)).left (CechPic.cls P hL) = 0` using `e1`.
+
+Rewrite using `[e2, Over.comp_left, CechPic.pull_comp, e3, map_zero]`. Rewrite `e` using `[k1, k2, sub_zero]`. Conclude with `(AbDual.triv_ev_iff hL _ _).2 e.symm`.
+-/
 theorem triv_slice_of_forall_weilIs_one : ∀ (S : Scheme.{0}) (A : Over S) [GrpObj A] [IsCommMonObj A] (P : LB (G2 A).left), IsAbelianScheme A → P.IsLB → (∃ t : (P.pull (lift (1 : A ⟶ A) (𝟙 A)).left).Gen, t.IsGen) → (∃ t : (P.pull (lift (𝟙 A) (1 : A ⟶ A)).left).Gen, t.IsGen) → ∀ (k : Type) [Field k] [IsAlgClosed k] (x : Sp k ⟶ S) (n : ℕ), (n : k) ≠ 0 → ∀ a : Over.mk x ⟶ A, a ^ n = 1 → (∀ b : Over.mk x ⟶ A, b ^ n = 1 → Out.WeilIs (G2 A) P (n : ℤ) (lift a 1) (lift 1 b) 1) → (∃ t : (P.pull (lift (snd A (Over.mk x) ≫ a) (fst A (Over.mk x))).left).Gen, t.IsGen) := by
   intro S A _ _ P hA hL h1 h2 k _ _ p n hn a ha hpair
   have hB : IsAbelianScheme (A ⊗ A) := AbelianSchemeGerms.isAbelianScheme_tensor A A hA hA

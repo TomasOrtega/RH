@@ -4,10 +4,18 @@ namespace Formalism.InvariantFactorPaths.PW
 
 open MvPolynomial Finset Formalism.GM.M Formalism.GM
 
+/- English proof (translation)
+Unfold `kapC`. Conclude with `Nat.mul_le_mul (Nat.choose_le_choose 2 hn) (Nat.log_mono_right (by omega))`.
+-/
 theorem kapC_mono {p n n' d d' : ℕ} (hn : n ≤ n') (hd : d ≤ d') : kapC p n d ≤ kapC p n' d' := by
   unfold kapC
   exact Nat.mul_le_mul (Nat.choose_le_choose 2 hn) (Nat.log_mono_right (by omega))
 
+/- English proof (translation)
+Establish `h` using `L.smul_mem ((p : ℤ_[p]) ^ (e - k)) hy`. Rewrite `h` using `[← algebraMap_smul ℚ_[p] ((p : ℤ_[p]) ^ (e - k)), smul_smul]`. Establish `e2 : ((p : ℚ_[p]) ^ e) = algebraMap ℤ_[p] ℚ_[p] ((p : ℤ_[p]) ^ (e - k)) * (p : ℚ_[p]) ^ k`. Rewrite using `[map_pow, map_natCast, ← pow_add, Nat.sub_add_cancel hke]`. Rewrite using `[e2]`.
+
+Conclude with `h`.
+-/
 theorem pow_smul_mem_of_le {p : ℕ} [Fact p.Prime] {σ : Type} (L : Submodule ℤ_[p] (MvPolynomial σ ℚ_[p]))
     {k e : ℕ} (hke : k ≤ e) {y : MvPolynomial σ ℚ_[p]} (hy : ((p : ℚ_[p]) ^ k) • y ∈ L) :
     ((p : ℚ_[p]) ^ e) • y ∈ L := by
@@ -18,6 +26,11 @@ theorem pow_smul_mem_of_le {p : ℕ} [Fact p.Prime] {σ : Type} (L : Submodule �
   rw [e2]
   exact h
 
+/- English proof (translation)
+Introduce `p _ N r LL ρ e1 he`. Unfold `Formalism.GM.M.HypP`. Use `⟨fun j _ Cs _ T hT => ?_, fun j j' Cs Cs' T T' P P' hj hC _ _ hP hP' => h2 p N r LL j j' Cs Cs' T T' P P' hj hC hP hP'⟩` and prove the remaining obligations. Take `⟨P, hP, hsym⟩` from `h1 p N r LL j Cs T hT`. Use `⟨P, hP, hsym, fun F hF => ?_⟩` and prove the remaining obligations.
+
+Establish `hcard : Cs.card ≤ r` using `by simpa using Finset.card_le_univ Cs`. Conclude with `pow_smul_mem_of_le _ ((kapC_mono hcard le_rfl).trans he) (h3 p N r LL j Cs T P hT hP F hF)`.
+-/
 theorem dischargeP_of (h1 : ProjP) (h2 : CommP) (h3 : IntP) : DischargeP := by
   intro p _ N r LL ρ e1 he
   unfold Formalism.GM.M.HypP
@@ -28,6 +41,9 @@ theorem dischargeP_of (h1 : ProjP) (h2 : CommP) (h3 : IntP) : DischargeP := by
   have hcard : Cs.card ≤ r := by simpa using Finset.card_le_univ Cs
   exact pow_smul_mem_of_le _ ((kapC_mono hcard le_rfl).trans he) (h3 p N r LL j Cs T P hT hP F hF)
 
+/- English proof (translation)
+Introduce `p _ N r LL e1 he`. Establish `h0` using `h p N r LL`. Unfold `Formalism.GM.M.HypW at h0 ⊢`. Introduce `j hj la x hx hxI`. Conclude with `pow_smul_mem_of_le _ he (h0 j hj la x hx hxI)`.
+-/
 theorem dischargeW_of (h : WeylP) : DischargeW := by
   intro p _ N r LL e1 he
   have h0 := h p N r LL
@@ -35,6 +51,11 @@ theorem dischargeW_of (h : WeylP) : DischargeW := by
   intro j hj la x hx hxI
   exact pow_smul_mem_of_le _ he (h0 j hj la x hx hxI)
 
+/- English proof (translation)
+Introduce `p _ N r LL ρ e1 he`. Establish `h0` using `h p N r LL ρ`. Unfold `Formalism.GM.M.HypE at h0 ⊢`. Introduce `j hj la`. Take `⟨P, h1, h2, h3, h4, h5⟩` from `h0 j hj la`.
+
+Establish `hk : kapC p (r - 1) LL.total ≤ e1` using `(kapC_mono (Nat.sub_le r 1) le_rfl).trans he`. Conclude with `⟨P, h1, h2, h3, h4, fun F hF hW => pow_smul_mem_of_le _ hk (h5 F hF hW)⟩`.
+-/
 theorem dischargeE_of (h : ExtP) : DischargeE := by
   intro p _ N r LL ρ e1 he
   have h0 := h p N r LL ρ
@@ -44,11 +65,31 @@ theorem dischargeE_of (h : ExtP) : DischargeE := by
   have hk : kapC p (r - 1) LL.total ≤ e1 := (kapC_mono (Nat.sub_le r 1) le_rfl).trans he
   exact ⟨P, h1, h2, h3, h4, fun F hF hW => pow_smul_mem_of_le _ hk (h5 F hF hW)⟩
 
+/- English proof (translation)
+Unfold `Letters.total`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem total_le {N : ℕ} (LL : Letters N) (b : ℕ) (h : ∀ x, LL.deg x ≤ b) : LL.total ≤ b * N := by
   unfold Letters.total
   calc ∑ i, LL.deg i ≤ ∑ _i : Fin N, b := Finset.sum_le_sum (fun i _ => h i)
     _ = b * N := by simp [mul_comm]
 
+/- English proof (translation)
+Break down `Nat.eq_zero_or_pos r with hr | hr` into its components or cases. Substitute `hr` using the available equality. Simplify using `[kapC]`. Establish `hp1 : (1 : ℝ) < p` using `by exact_mod_cast (Fact.out : p.Prime).one_lt`. Establish `hx : (1 : ℝ) ≤ 8 * a + r` using `by exact_mod_cast (by omega : 1 ≤ 8 * a + r)`.
+
+Establish `hlg : 0 ≤ lgV2 p a r`. Unfold `lgV2`. Use `Real.logb_nonneg hp1 hx` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hL : ((Nat.log p (d + r - 1) : ℕ) : ℝ) ≤ 2 * lgV2 p a r`.
+
+Distinguish the cases in `hD : d + r - 1 = 0`. Rewrite using `[hD, Nat.log_zero_right]`. Simplify using `only [CharP.cast_eq_zero]`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hpos : (0 : ℝ) < ((d + r - 1 : ℕ) : ℝ)` using `by exact_mod_cast Nat.pos_of_ne_zero hD`.
+
+Establish `hpow : (p : ℝ) ^ (Nat.log p (d + r - 1)) ≤ ((d + r - 1 : ℕ) : ℝ)`. Conclude with `Nat.pow_log_le_self p hD` after adjusting the coercions. Establish `h1 : ((Nat.log p (d + r - 1) : ℕ) : ℝ) ≤ Real.logb p ((d + r - 1 : ℕ) : ℝ)`. Rewrite using `[Real.le_logb_iff_rpow_le hp1 hpos, Real.rpow_natCast]`. Conclude with `hpow`.
+
+Establish `h2 : ((d + r - 1 : ℕ) : ℝ) ≤ (p : ℝ) ^ 2 * (8 * a + r) ^ 2`. Conclude with `(Nat.sub_le _ _).trans h` after adjusting the coercions. Establish `h3` using `Real.logb_le_logb_of_le hp1 hpos h2`. Establish `h4 : Real.logb p ((p : ℝ) ^ 2 * (8 * a + r) ^ 2) = 2 + 2 * Real.logb p (8 * a + r)`. Rewrite using `[Real.logb_mul (by positivity) (by positivity), Real.logb_pow, Real.logb_pow, Real.logb_self_eq_one hp1]`.
+
+Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Unfold `lgV2`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hc : ((r.choose 2 : ℕ) : ℝ) * 2 ≤ (r : ℝ) ^ 2`.
+
+Establish `hn : r.choose 2 * 2 ≤ r ^ 2`. Rewrite using `[Nat.choose_two_right]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[sq]`. Conclude with `Nat.mul_le_mul_left _ (Nat.sub_le _ _)`.
+
+Conclude with `hn` after adjusting the coercions. Unfold `kapC`. Use `push_cast`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem kapC_le_real (p : ℕ) [Fact p.Prime] (r d a : ℕ) (h : d + r ≤ p ^ 2 * (8 * a + r) ^ 2) :
     (kapC p r d : ℝ) ≤ (r : ℝ) ^ 2 * lgV2 p a r := by
   rcases Nat.eq_zero_or_pos r with hr | hr
@@ -96,6 +137,11 @@ theorem kapC_le_real (p : ℕ) [Fact p.Prime] (r d a : ℕ) (h : d + r ≤ p ^ 2
     _ = (((r.choose 2 : ℕ) : ℝ) * 2) * lgV2 p a r := by ring
     _ ≤ (r : ℝ) ^ 2 * lgV2 p a r := mul_le_mul_of_nonneg_right hc hlg
 
+/- English proof (translation)
+Introduce `p _ N r LL a κ hdeg hpa hκ`. Establish `htot` using `total_le LL (2 * a) hdeg`. Establish `hk` using `kapC_le_real p r LL.total a (le_trans (Nat.add_le_add_right htot r) hpa)`. Establish `hpos : (0 : ℝ) < (N : ℝ) + 2` using `by positivity`. Establish `hb : (r : ℝ) ^ 2 * lgV2 p a r ≤ κ / ((N : ℝ) + 2)`.
+
+Rewrite using `[le_div_iff₀ hpos]`. Combine the equalities or inequalities in the displayed calculation. Conclude with `Nat.cast_le.1 ((hk.trans hb).trans (Nat.le_ceil _))`.
+-/
 theorem kappa_le_height_bound : ∀ (p : ℕ) [Fact p.Prime] (N r : ℕ) (LL : Letters N) (a : ℕ) (κ : ℝ),
     (∀ x, LL.deg x ≤ 2 * a) → 2 * a * N + r ≤ p ^ 2 * (8 * a + r) ^ 2 →
     ((N + 2) * r ^ 2 : ℝ) * lgV2 p a r ≤ κ → kapC p r LL.total ≤ ⌈κ / (N + 2)⌉₊ := by
@@ -109,6 +155,9 @@ theorem kappa_le_height_bound : ∀ (p : ℕ) [Fact p.Prime] (N r : ℕ) (LL : L
       _ ≤ κ := hκ
   exact Nat.cast_le.1 ((hk.trans hb).trans (Nat.le_ceil _))
 
+/- English proof (translation)
+Introduce `p _ N r LL ρ a κ hdeg hpa hκ`. Establish `hk` using `kappa_le_height_bound p N r LL a κ hdeg hpa hκ`. Conclude with `⟨hP p N r LL ρ _ hk, hW p N r LL _ hk, hE p N r LL ρ _ hk⟩`.
+-/
 theorem discharge_of_pwe (hP : DischargeP) (hW : DischargeW) (hE : DischargeE) : HeightBoundImplication := by
   intro p _ N r LL ρ a κ hdeg hpa hκ
   have hk := kappa_le_height_bound p N r LL a κ hdeg hpa hκ

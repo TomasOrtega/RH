@@ -10,6 +10,25 @@ attribute [local instance] Over.cartesianMonoidalCategory
 noncomputable section
 namespace GlobalTheory.CompanionTheory.Ar.Coc
 
+/- English proof (translation)
+Introduce `E _ _ _ H X0 t k _ x p y hy κ hκ τ hτ`. Establish `hpow : (fst (Tm x p) t.G ≫ y) ^ p = 1`. Establish `e` using `map_pow (preHom (fst (Tm x p) t.G)) y p`. Rewrite `e` using `[hy, map_one]`. Conclude with `e.symm`.
+
+Establish `e₁ : ∀ I : ULift.{0} (Finset (Fin 2)), (lift (fst (Tm x p) t.G ≫ y) (snd (Tm x p) t.G)).left ≫ cφG t ![fst t.G t.G ^ p, snd t.G t.G] I = (psum t.G ![1, snd (Tm x p) t.G] I.down).left`. Introduce `I`. Use `congrArg (fun q => q.left) ((psum_hom (preHom (lift (fst (Tm x p) t.G ≫ y) (snd (Tm x p) t.G))) _ I.down).trans (congrArg (fun q => psum t.G q I.down) (funext fun i => ?_)))` and prove the remaining obligations. Use `fin_cases i`. Simplify using `only [Fin.zero_eta, Matrix.cons_val_zero]`.
+
+Use `(map_pow (preHom _) _ p).trans ?_` and prove the remaining obligations. Simplify `hpow` using `[preHom]`. Simplify using `[preHom]`. Establish `e₂ : ∀ I : ULift.{0} (Finset (Fin 2)), (lift (fst (Tm x p) t.G ≫ y) (snd (Tm x p) t.G)).left ≫ cφG t ![fst t.G t.G, snd t.G t.G] I = (psum t.G ![fst (Tm x p) t.G ≫ y, snd (Tm x p) t.G] I.down).left`. Introduce `I`.
+
+Use `congrArg (fun q => q.left) ((psum_hom (preHom (lift (fst (Tm x p) t.G ≫ y) (snd (Tm x p) t.G))) _ I.down).trans (congrArg (fun q => psum t.G q I.down) (funext fun i => ?_)))` and prove the remaining obligations. Apply the tactic sequence `fin_cases i <;> simp [preHom]`. Use `Exists.elim (exists_gen t.PP.isLB (φ' := ![pa t.G x y, pb t.G x p]) (ε' := ![(p : ℤ), -(p : ℤ)]) ?_ (LB.mulGen t.PP.L _ _ _ _ (LB.invGen t.PP.L _ _ (LB.pullGen t.PP.L _ _ κ (lift (fst (Tm x p) t.G ≫ y) (snd (Tm x p) t.G)).left)) (genPowG t _ _ (LB.pullGen t.PP.L _ _ τ (fst (Tm x …` and prove the remaining obligations. Introduce `U _ f`. Simplify using `only [Fintype.prod_sum_type, Sum.elim_inl, Sum.elim_inr]`.
+
+Establish `h₁ : ∏ a₁ : ULift.{0} (Finset (Fin 2)), f ((lift (fst (Tm x p) t.G ≫ y) (snd (Tm x p) t.G)).left ≫ cφG t ![fst t.G t.G ^ p, snd t.G t.G] a₁) ^ (-cε 2 a₁) = (∏ I : ULift.{0} (Finset (Fin 2)), f (psum t.G ![1, snd (Tm x p) t.G] I.down).left ^ ((-1 : ℤ) ^ (2 - I.down.card)))⁻¹`. Rewrite using `[← Finset.prod_inv_distrib]`. Use `Finset.prod_congr rfl fun I _ => ?_` and prove the remaining obligations. Rewrite using `[e₁ I, zpow_neg]`. Both sides reduce to the same expression.
+
+Establish `h₂ : ∏ a₂ : ULift.{0} (Finset (Fin 2)), f ((lift (fst (Tm x p) t.G ≫ y) (snd (Tm x p) t.G)).left ≫ cφG t ![fst t.G t.G, snd t.G t.G] a₂) ^ (- -((p : ℤ) * cε 2 a₂)) = (∏ I : ULift.{0} (Finset (Fin 2)), f (psum t.G ![fst (Tm x p) t.G ≫ y, snd (Tm x p) t.G] I.down).left ^ ((-1 : ℤ) …`. Rewrite using `[← Finset.prod_zpow]`. Use `Finset.prod_congr rfl fun I _ => ?_` and prove the remaining obligations. Rewrite using `[e₂ I, neg_neg, _root_.mul_comm, zpow_mul]`. Both sides reduce to the same expression.
+
+Establish `h₃ : (fst (Tm x p) t.G).left ≫ (1 : Tm x p ⟶ t.G).left = (1 : Tm x p ⊗ t.G ⟶ t.G).left`. Establish `e : fst (Tm x p) t.G ≫ (1 : Tm x p ⟶ t.G) = 1` using `map_one (preHom (fst (Tm x p) t.G))`. Rewrite using `[← Over.comp_left, e]`. Establish `h₄ : pa t.G x y = (fst (Tm x p) t.G ≫ y * snd (Tm x p) t.G).left` using `rfl`. Establish `h₅ : pb t.G x p = (snd (Tm x p) t.G).left` using `rfl`.
+
+Rewrite using `[h₁, h₂, prod_cube₂, prod_cube₂, Fin.prod_univ_two, Fin.prod_univ_two]`. Simplify using `only [Matrix.cons_val_zero, Matrix.cons_val_one, _root_.one_mul, h₃, h₄, h₅, ← Over.comp_left]`. Apply `Additive.ofMul.injective` to reduce the goal to its premises. Simplify using `only [ofMul_mul, ofMul_inv, ofMul_zpow]`. Use `module`.
+
+Introduce and unpack `C ⟨hC, hv⟩`. Use `⟨C, hC, fun Z' r z J hJ => ?_⟩` and prove the remaining obligations. Rewrite using `[hv Z' r z J hJ, val_mul hJ, val_inv, val_pull hJ, GermD.val_genPowG, val_pull hJ]`.
+-/
 theorem exists_gen_pfold : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (X0 : Scheme.{0}) (t : SAB H X0) (k : Type) [Field k] (x : Sp k ⟶ X0) (p : ℕ) (y : Tm x p ⟶ t.G), y ^ p = 1 → ∀ (κ : LB.Gen (LB.LinComb t.PP.L (Sum.elim (cφG t ![fst t.G t.G ^ p, snd t.G t.G]) (cφG t ![fst t.G t.G, snd t.G t.G])) (Sum.elim (cε 2) fun I => -((p : ℤ) * cε 2 I)))), κ.IsGen → ∀ (τ : LB.Gen (LB.LinComb t.PP.L (K := Fin 2) ![y.left, (1 : Tm x p ⟶ t.G).left] ![1, -1])), τ.IsGen → ∃ C : LB.Gen (LB.LinComb t.PP.L (K := Fin 2) ![pa t.G x y, pb t.G x p] ![(p : ℤ), -(p : ℤ)]), C.IsGen ∧ ∀ (Z' : Scheme.{0}) (r : Z' ⟶ Ym t.G x p) (z : Z') (J : (Z' ⟶ t.G.left) → t.PP.L.ι), Good t.PP.L z J → val C r z J = (val κ (r ≫ (lift (fst (Tm x p) t.G ≫ y) (snd (Tm x p) t.G)).left) z J)⁻¹ * val τ (r ≫ (fst (Tm x p) t.G).left) z J ^ p := by
   intro E _ _ _ H X0 t k _ x p y hy κ hκ τ hτ
   have hpow : (fst (Tm x p) t.G ≫ y) ^ p = 1 := by

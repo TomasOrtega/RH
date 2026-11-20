@@ -7,6 +7,11 @@ open ReciprocityTheory.ChartRestriction.G.PullbackSections (TanM tv mkT tanM_ext
 attribute [local instance] Over.cartesianMonoidalCategory
 
 namespace GlobalTheory
+/- English proof (translation)
+Introduce `S _ X x V q hq`. Take `⟨_, ⟨f₀, rfl⟩, hqf, hsub⟩` from `PrimeSpectrum.isTopologicalBasis_basic_opens.exists_subset_of_mem_open (a := q) (u := (show Set (PrimeSpectrum S) from (x ⁻¹ᵁ V).1)) hq (x ⁻¹ᵁ V).2`. Use `⟨f₀, hqf, ?_⟩` and prove the remaining obligations. Introduce `y _`. Use `show x ((Spec.map (CommRingCat.ofHom (algebraMap S (Localization.Away f₀)))).base y) ∈ V`.
+
+Apply `hsub` to reduce the goal to its premises. Use `show f₀ ∉ (PrimeSpectrum.comap (algebraMap S (Localization.Away f₀)) y).asIdeal`. Introduce `h`. Conclude with `y.isPrime.ne_top (Ideal.eq_top_of_isUnit_mem _ h (IsLocalization.Away.algebraMap_isUnit f₀))`.
+-/
 theorem nbhd_basicOpen_of_mem : ∀ (S : Type) [CommRing S] (X : Scheme.{0}) (x : Sp S ⟶ X) (V : X.Opens) (q : PrimeSpectrum S), x q ∈ V → ∃ f₀ : S, f₀ ∉ q.asIdeal ∧ ⊤ ≤ (spMap (algebraMap S (Localization.Away f₀)) ≫ x) ⁻¹ᵁ V := by
   intro S _ X x V q hq
   obtain ⟨_, ⟨f₀, rfl⟩, hqf, hsub⟩ :=

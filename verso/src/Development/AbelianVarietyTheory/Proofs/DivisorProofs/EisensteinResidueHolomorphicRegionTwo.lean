@@ -29,19 +29,31 @@ variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algeb
 
 section General
 
+/- English proof (translation)
+Use `isRealLine_add F E σ hCM n J γ hγ 0 0` as an intermediate fact. Rewrite `this` using `[add_zero]`. Conclude with `left_eq_mul.1 this`.
+-/
 theorem line_zero (hCM : IsCMExt F E σ) {γ : ℝ → GAd σ J} (hγ : IsRealLine σ J γ) : γ 0 = 1 := by
   have := isRealLine_add F E σ hCM n J γ hγ 0 0
   rw [add_zero] at this
   exact left_eq_mul.1 this
 
+/- English proof (translation)
+The claim follows from `smoothLines_lineDer hφ hγ`.
+-/
 theorem isSm_lineDer {φ : GAd σ J → ℂ} (hφ : IsSm σ J φ) {γ : ℝ → GAd σ J} (hγ : IsRealLine σ J γ) :
     IsSm σ J (lineDer γ φ) := smoothLines_lineDer hφ hγ
 
+/- English proof (translation)
+The claim follows from `| [], _ => hφ | γ :: l, hl => isSm_lineDer (isSm_foldr hφ l fun δ hδ => hl δ (List.mem_cons_of_mem _ hδ)) (hl γ List.mem_cons_self)`.
+-/
 theorem isSm_foldr {φ : GAd σ J → ℂ} (hφ : IsSm σ J φ) :
     ∀ l : List (ℝ → GAd σ J), (∀ γ ∈ l, IsRealLine σ J γ) → IsSm σ J (l.foldr lineDer φ)
   | [], _ => hφ
   | γ :: l, hl => isSm_lineDer (isSm_foldr hφ l fun δ hδ => hl δ (List.mem_cons_of_mem _ hδ)) (hl γ List.mem_cons_self)
 
+/- English proof (translation)
+Establish `h1` using `hφ 1 (fun _ => γ) (fun _ => hγ) g`. Establish `h2 : ContDiff ℝ ∞ fun t : ℝ => (fun _ : Fin 1 => t)` using `contDiff_pi.2 fun _ => contDiff_id`. Establish `h3` using `(h1.comp h2).differentiable (by simp)`. Simplify `h3` using `[Function.comp_def]`.
+-/
 theorem diff_line {φ : GAd σ J → ℂ} (hφ : IsSm σ J φ) {γ : ℝ → GAd σ J} (hγ : IsRealLine σ J γ) (g : GAd σ J) :
     Differentiable ℝ fun t => φ (g * γ t) := by
   have h1 := hφ 1 (fun _ => γ) (fun _ => hγ) g
@@ -49,6 +61,11 @@ theorem diff_line {φ : GAd σ J → ℂ} (hφ : IsSm σ J φ) {γ : ℝ → GAd
   have h3 := (h1.comp h2).differentiable (by simp)
   simpa [Function.comp_def] using h3
 
+/- English proof (translation)
+Establish `e : lineDer γ φ (g * γ u) = deriv (fun t => φ (g * γ t)) u`. Use `deriv_comp_const_add (fun t => φ (g * γ t)) u 0` as an intermediate fact. Rewrite `this` using `[add_zero]`. Rewrite using `[← this]`. Simplify using `only [lineDer, isRealLine_add F E σ hCM n J γ hγ, mul_assoc]`.
+
+Rewrite using `[e]`. Conclude with `(diff_line hφ hγ g u).hasDerivAt`.
+-/
 theorem hasDerivAt_line (hCM : IsCMExt F E σ) {φ : GAd σ J → ℂ} (hφ : IsSm σ J φ) {γ : ℝ → GAd σ J}
     (hγ : IsRealLine σ J γ) (g : GAd σ J) (u : ℝ) :
     HasDerivAt (fun t => φ (g * γ t)) (lineDer γ φ (g * γ u)) u := by
@@ -62,12 +79,18 @@ theorem hasDerivAt_line (hCM : IsCMExt F E σ) {φ : GAd σ J → ℂ} (hφ : Is
 
 omit [NumberField E] in
 
+/- English proof (translation)
+The claim follows from `| [], g => hφ g | γ :: l, g => by simp only [List.foldr_cons, lineDer, mul_assoc, foldr_left hφ l, deriv_const_mul_field']`.
+-/
 theorem foldr_left {φ : GAd σ J → ℂ} {p : GAd σ J} {c : ℂ} (hφ : ∀ g, φ (p * g) = c * φ g) :
     ∀ (l : List (ℝ → GAd σ J)) (g : GAd σ J), l.foldr lineDer φ (p * g) = c * l.foldr lineDer φ g
   | [], g => hφ g
   | γ :: l, g => by
     simp only [List.foldr_cons, lineDer, mul_assoc, foldr_left hφ l, deriv_const_mul_field']
 
+/- English proof (translation)
+The claim follows from `| [], _, g => hΦ g | γ :: l, hl, g => by have hl' : ∀ δ ∈ l, IsRealLine σ J δ := fun δ hδ => hl δ (List.mem_cons_of_mem _ hδ) have hγ := hl γ List.mem_cons_self have ih := hasSum_foldr hCM t hf hb hw hs hΦ l hl' obtain ⟨C, hC0, hC⟩ := hb _ hl obtain ⟨K, hK⟩ := hw _ ((isCompact_Ic …`.
+-/
 theorem hasSum_foldr (hCM : IsCMExt F E σ) {ι : Type} (t : ι → GAd σ J) {f Φ : GAd σ J → ℂ} {w : GAd σ J → ℝ}
     (hf : IsSm σ J f)
     (hb : ∀ l : List (ℝ → GAd σ J), (∀ γ ∈ l, IsRealLine σ J γ) → ∃ C : ℝ, 0 ≤ C ∧ ∀ g, ‖l.foldr lineDer f g‖ ≤ C * w g)
@@ -102,6 +125,27 @@ theorem hasSum_foldr (hCM : IsCMExt F E σ) {ι : Type} (t : ι → GAd σ J) {f
     simp only [mul_one] at this
     exact this
 
+/- English proof (translation)
+Set `S : AddSubmonoid (ℂ → GAd σ J → ℂ)` to `AddSubmonoid.closure {Φ | ∃ (e : ℂ → ℂ) (a : GAd σ J → ℂ), Differentiable ℂ e ∧ IsSm σ J a ∧ Φ = fun s y => e s * (a y * Complex.exp (lam y * s))}`. Establish `h1 : ∀ Φ ∈ S, (∀ s, IsSm σ J (Φ s)) ∧ ∀ y, Differentiable ℂ fun s => Φ s y`. Introduce `Φ hΦ`. Proceed by induction on `hΦ using AddSubmonoid.closure_induction with`. Consider the case `mem Φ hΦ`.
+
+Take `⟨e, a, he, ha, rfl⟩` from `hΦ`. Use `⟨fun s k γ hγ y => contDiff_const.mul ((ha k γ hγ y).mul ((hlam k γ hγ y).mul contDiff_const).cexp), fun y => ?_⟩` and prove the remaining obligations. Use `fun_prop`. Consider the case `zero => exact ⟨fun s k γ hγ y => contDiff_const, fun y => differentiable_const _⟩`. Consider the case `add Φ Ψ _ _ hΦ hΨ`.
+
+Conclude with `⟨fun s k γ hγ y => (hΦ.1 s k γ hγ y).add (hΨ.1 s k γ hγ y), fun y => (hΦ.2 y).add (hΨ.2 y)⟩`. Establish `h2 : ∀ γ, IsRealLine σ J γ → ∀ Φ ∈ S, (fun s => lineDer γ (Φ s)) ∈ S`. Introduce `γ hγ Φ hΦ`. Proceed by induction on `hΦ using AddSubmonoid.closure_induction with`. Consider the case `mem Φ hΦ`.
+
+Take `⟨e, a, he, ha, rfl⟩` from `hΦ`. Establish `e1 : (fun s => lineDer γ fun y => e s * (a y * Complex.exp (lam y * s))) = (fun s y => e s * (lineDer γ a y * Complex.exp (lam y * s))) + fun s y => (e s * s) * ((a y * lineDer γ lam y) * Complex.exp (lam y * s))`. Use function extensionality and compare the values at `s y`. Establish `d1` using `hasDerivAt_line hCM ha hγ y 0`. Establish `d2` using `hasDerivAt_line hCM hlam hγ y 0`.
+
+Establish `d3` using `(d1.mul (d2.mul_const s).cexp).const_mul (e s)`. Establish `d4` using `d3.deriv`. Simplify using `only [line_zero hCM hγ, mul_one] at d4`. Use `Eq.trans d4 ?_` and prove the remaining obligations. Simplify using `only [Pi.add_apply]`.
+
+Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e1]`. Conclude with `add_mem (AddSubmonoid.subset_closure ⟨e, _, he, isSm_lineDer ha hγ, rfl⟩) (AddSubmonoid.subset_closure ⟨fun s => e s * s, fun y => a y * lineDer γ lam y, he.mul differentiable_id, fun k δ hδ y => (ha k δ hδ y).mul (isSm_lineDer hlam hγ k δ hδ y), rfl⟩)`. Consider the case `zero`. Establish `e1 : (fun s => lineDer γ ((0 : ℂ → GAd σ J → ℂ) s)) = 0`.
+
+Use function extensionality and compare the values at `s y`. Simplify using `[lineDer]`. Rewrite using `[e1]`. Conclude with `zero_mem _`. Consider the case `add Φ Ψ hΦ' hΨ' hΦ hΨ`.
+
+Establish `e1 : (fun s => lineDer γ ((Φ + Ψ) s)) = (fun s => lineDer γ (Φ s)) + fun s => lineDer γ (Ψ s)`. Use function extensionality and compare the values at `s y`. Conclude with `deriv_add (diff_line ((h1 Φ hΦ').1 s) hγ y 0) (diff_line ((h1 Ψ hΨ').1 s) hγ y 0)`. Rewrite using `[e1]`. Conclude with `add_mem hΦ hΨ`.
+
+Establish `h3 : ∀ l : List (ℝ → GAd σ J), (∀ γ ∈ l, IsRealLine σ J γ) → (fun s : ℂ => l.foldr lineDer (fun y => Complex.exp (lam y * s))) ∈ S`. Introduce `l hl`. Proceed by induction on `l with`. Consider the case `nil`. Conclude with `AddSubmonoid.subset_closure ⟨fun _ => 1, fun _ => 1, differentiable_const _, fun k γ hγ y => contDiff_const, by funext s y; simp⟩`.
+
+Consider the case `cons γ l ih`. Conclude with `h2 γ (hl γ List.mem_cons_self) _ (ih fun δ hδ => hl δ (List.mem_cons_of_mem _ hδ))`. Conclude with `(h1 _ (h3 l hl)).2 g`.
+-/
 theorem differentiable_foldr_exp (hCM : IsCMExt F E σ) {lam : GAd σ J → ℂ} (hlam : IsSm σ J lam)
     (l : List (ℝ → GAd σ J)) (hl : ∀ γ ∈ l, IsRealLine σ J γ) (g : GAd σ J) :
     Differentiable ℂ fun s : ℂ => l.foldr lineDer (fun y => Complex.exp (lam y * s)) g := by
@@ -181,14 +225,25 @@ def adLineStab : Subgroup (GAd σ J) where
 variable (hI : IsIwaHtG σ J x L a h)
 include hI
 
+/- English proof (translation)
+Simplify using `using hI.2 1 1 (by simp) k hk`.
+-/
 theorem ht_level {k : GAd σ J} (hk : k ∈ levelAll σ J L a) : h k = 1 := by
   simpa using hI.2 1 1 (by simp) k hk
 
+/- English proof (translation)
+Take `⟨p, l, hp, k, hk, rfl⟩` from `hI.1 g`. Rewrite using `[hI.2 p l hp k hk]`. Conclude with `GlobalTheory.Doubling.hom_pos _ l` after adjusting the coercions.
+-/
 theorem ht_pos (g : GAd σ J) : 0 < h g := by
   obtain ⟨p, l, hp, k, hk, rfl⟩ := hI.1 g
   rw [hI.2 p l hp k hk]
   exact_mod_cast GlobalTheory.Doubling.hom_pos _ l
 
+/- English proof (translation)
+Take `⟨l, hl⟩` from `hp`. Take `⟨q, l', hq, k, hk, rfl⟩` from `hI.1 g`. Establish `e` using `hI.2 p l hl 1 (one_mem _)`. Rewrite `e` using `[mul_one]`. Establish `hpq : (matHom _ σ J (p * q)).1 * adMat F x = (l * l').1 • adMat F x`.
+
+Rewrite using `[map_mul, Units.val_mul, Matrix.mul_assoc, hq, Matrix.mul_smul, hl, smul_smul, Units.val_mul, mul_comm (l' : AF F ⊗[F] E)]`. Rewrite using `[← mul_assoc, hI.2 (p * q) (l * l') hpq k hk, e, hI.2 q l' hq k hk, map_mul, NNReal.coe_mul]`.
+-/
 theorem ht_left {p : GAd σ J} (hp : p ∈ adLineStab σ J x) (g : GAd σ J) : h (p * g) = h p * h g := by
   obtain ⟨l, hl⟩ := hp
   obtain ⟨q, l', hq, k, hk, rfl⟩ := hI.1 g
@@ -199,14 +254,23 @@ theorem ht_left {p : GAd σ J} (hp : p ∈ adLineStab σ J x) (g : GAd σ J) : h
       mul_comm (l' : AF F ⊗[F] E)]
   rw [← mul_assoc, hI.2 (p * q) (l * l') hpq k hk, e, hI.2 q l' hq k hk, map_mul, NNReal.coe_mul]
 
+/- English proof (translation)
+Take `⟨p, l, hpl, k', hk', rfl⟩` from `hI.1 g`. Rewrite using `[mul_assoc, hI.2 p l hpl _ (Subgroup.mul_mem _ hk' hk), hI.2 p l hpl k' hk']`.
+-/
 theorem ht_right (g : GAd σ J) {k : GAd σ J} (hk : k ∈ levelAll σ J L a) : h (g * k) = h g := by
   obtain ⟨p, l, hpl, k', hk', rfl⟩ := hI.1 g
   rw [mul_assoc, hI.2 p l hpl _ (Subgroup.mul_mem _ hk' hk), hI.2 p l hpl k' hk']
 
+/- English proof (translation)
+The claim follows from `let ⟨p, l, hp, k, hk, e⟩ := hI.1 g ⟨⟨p, l, hp⟩, k, hk, e⟩`.
+-/
 theorem exists_iwa (g : GAd σ J) : ∃ p : adLineStab σ J x, ∃ k ∈ levelAll σ J L a, g = p * k :=
   let ⟨p, l, hp, k, hk, e⟩ := hI.1 g
   ⟨⟨p, l, hp⟩, k, hk, e⟩
 
+/- English proof (translation)
+Rewrite using `[ht_left hI hp, Complex.ofReal_mul, Complex.mul_cpow_ofReal_nonneg (ht_pos hI p).le (ht_pos hI g).le]`.
+-/
 theorem pow_left {p : GAd σ J} (hp : p ∈ adLineStab σ J x) (t : ℂ) (g : GAd σ J) :
     (h (p * g) : ℂ) ^ t = (h p : ℂ) ^ t * (h g : ℂ) ^ t := by
   rw [ht_left hI hp, Complex.ofReal_mul, Complex.mul_cpow_ofReal_nonneg (ht_pos hI p).le (ht_pos hI g).le]
@@ -216,6 +280,9 @@ def htHom : adLineStab σ J x →* ℝ≥0 where
   map_one' := Subtype.ext (ht_level hI (one_mem _))
   map_mul' p q := Subtype.ext (ht_left hI p.2 q)
 
+/- English proof (translation)
+Use `GlobalTheory.EisCont.Smooth.isSm_of_mem hCM hJ (δ := htHom hI) (χ := 1) (t := t) (exists_iwa hI) ⟨fun p g => ?_, ?_, .of_invariant fun g k hk => by simp only [ht_right hI g hk]⟩` and prove the remaining obligations. Conclude with `(pow_left hI p.2 t g).trans (congrArg (· * (h g : ℂ) ^ t) (one_mul ((h p : ℂ) ^ t)).symm)`. Conclude with `(Complex.continuous_ofReal.comp hc).cpow continuous_const fun g => Or.inl (by simpa using ht_pos hI g)`.
+-/
 theorem isSm_pow (hCM : IsCMExt F E σ) (hJ : IsHermND σ J) (hc : Continuous h) (t : ℂ) :
     IsSm σ J (fun g => (h g : ℂ) ^ t) ∧ ∀ l : List (ℝ → GAd σ J), (∀ γ ∈ l, IsRealLine σ J γ) →
       Continuous (l.foldr lineDer fun g => (h g : ℂ) ^ t) := by
@@ -224,6 +291,9 @@ theorem isSm_pow (hCM : IsCMExt F E σ) (hJ : IsHermND σ J) (hc : Continuous h)
   · exact (pow_left hI p.2 t g).trans (congrArg (· * (h g : ℂ) ^ t) (one_mul ((h p : ℂ) ^ t)).symm)
   · exact (Complex.continuous_ofReal.comp hc).cpow continuous_const fun g => Or.inl (by simpa using ht_pos hI g)
 
+/- English proof (translation)
+Take `⟨B, hB⟩` from `hK.exists_bound_of_continuousOn ((isSm_pow hI hCM hJ hc t).2 l hl).continuousOn`. Use `⟨B, (norm_nonneg _).trans (hB 1 (one_mem _)), fun g => ?_⟩` and prove the remaining obligations. Take `⟨p, k, hk, rfl⟩` from `exists_iwa hI g`. Rewrite using `[foldr_left (φ := fun g => (h g : ℂ) ^ t) (pow_left hI p.2 t), norm_mul, ht_right hI _ hk, mul_comm]`. Conclude with `mul_le_mul_of_nonneg_right (hB k hk) (norm_nonneg _)`.
+-/
 theorem norm_foldr_le (hCM : IsCMExt F E σ) (hJ : IsHermND σ J) (hc : Continuous h)
     (hK : IsCompact (levelAll σ J L a : Set (GAd σ J))) (t : ℂ) (l : List (ℝ → GAd σ J))
     (hl : ∀ γ ∈ l, IsRealLine σ J γ) :
@@ -234,6 +304,15 @@ theorem norm_foldr_le (hCM : IsCMExt F E σ) (hJ : IsHermND σ J) (hc : Continuo
   rw [foldr_left (φ := fun g => (h g : ℂ) ^ t) (pow_left hI p.2 t), norm_mul, ht_right hI _ hk, mul_comm]
   exact mul_le_mul_of_nonneg_right (hB k hk) (norm_nonneg _)
 
+/- English proof (translation)
+Use `⟨fun t => dop z (fun g => (h g : ℂ) ^ t) 1, ?_, fun t g => ?_⟩` and prove the remaining obligations. Establish `hlam : IsSm σ J fun g => ((Real.log (h g) : ℝ) : ℂ)` using `fun k γ hγ g => by`. Establish `h1` using `Complex.reCLM.contDiff.comp ((isSm_pow hI hCM hJ hc 1).1 k γ hγ g)`. Establish `h2 : ContDiff ℝ ∞ fun t : Fin k → ℝ => h (g * (List.ofFn fun i => γ i (t i)).prod)`. Simplify `h1` using `[Function.comp_def]`.
+
+Conclude with `Complex.ofRealCLM.contDiff.comp (h2.log fun t => (ht_pos hI _).ne')`. Establish `e : ∀ t : ℂ, (fun g => (h g : ℂ) ^ t) = fun g => Complex.exp (((Real.log (h g) : ℝ) : ℂ) * t)` using `fun t =>`. Use function extensionality and compare the values at `fun g => by`. Rewrite using `[Complex.cpow_def_of_ne_zero (by exact_mod_cast (ht_pos hI g).ne'), Complex.ofReal_log (ht_pos hI g).le]`. Simplify using `only [e, dop, Finsupp.sum]`.
+
+Conclude with `Differentiable.fun_sum fun l hl => (differentiable_foldr_exp hCM hlam l (hz.1 l hl) 1).const_mul _`. Take `⟨p, k, hk, rfl⟩` from `exists_iwa hI g`. Establish `e1 : dop z (fun g => (h g : ℂ) ^ t) (p * k) = (h p : ℂ) ^ t * dop z (fun g => (h g : ℂ) ^ t) k`. Simplify using `only [dop, Finsupp.sum, foldr_left (φ := fun g => (h g : ℂ) ^ t) (pow_left hI p.2 t), Finset.mul_sum]`. Conclude with `Finset.sum_congr rfl fun _ _ => by ring`.
+
+Establish `e2` using `GlobalTheory.EisCont.CentreFinite.dop_mul_right hCM hz (isSm_pow hI hCM hJ hc t).1 k 1`. Simplify using `only [one_mul, ht_right hI _ hk] at e2`. Rewrite using `[e1, e2, ht_right hI _ hk, mul_comm]`.
+-/
 theorem dop_pow (hCM : IsCMExt F E σ) (hJ : IsHermND σ J) (hc : Continuous h) {z : List (ℝ → GAd σ J) →₀ ℂ}
     (hz : IsCentral σ J z) : ∃ χ : ℂ → ℂ, Differentiable ℂ χ ∧
       ∀ t g, dop z (fun g => (h g : ℂ) ^ t) g = χ t * (h g : ℂ) ^ t := by
@@ -258,6 +337,29 @@ theorem dop_pow (hCM : IsCMExt F E σ) (hJ : IsHermND σ J) (hc : Continuous h) 
 
 end Height
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ n J r X Y L a h Eis c hS hP k₀ U₀ H₀ hU₀ hH hsm hhol`. Use `set ρ : ℂ := ((n : ℂ) - 1) / 2 with hρ`. Establish `hρre : ρ.re = ((n : ℝ) - 1) / 2` using `by simp [hρ]`. Establish `hc : Continuous h` using `HtCont.continuous_iwaHt F E σ n J r X Y L a h hS`. Establish `hcmp` using `iwaHt_mul_le_of_isCompact F E σ n J r X Y L a h hS`.
+
+Take `⟨hCM, -, hJ, hn, -, hA, hI⟩` from `hS`. Use `haveI := hA.lat`. Establish `hK : IsCompact (levelAll σ J L a : Set (GAd σ J))` using `GlobalTheory.Doubling.isCompact_levelAll hCM J L a`. Take `⟨T, hT⟩` from `exists_reps σ J (col0 X)`. Establish `heig : ∀ z, GlobalTheory.UAut.IsCentral σ J z → ∃ χ : ℂ → ℂ, Differentiable ℂ χ ∧ ∀ s : ℂ, ρ.re < s.re → GlobalTheory.UAut.dop z (Eis s) = χ s • Eis s`.
+
+Introduce `z hz`. Take `⟨χ, hχd, hχ⟩` from `dop_pow hI hCM hJ hc hz`. Use `⟨fun s => χ (s + ρ), hχd.comp (differentiable_id.add_const ρ), fun s hs => funext fun g => ?_⟩` and prove the remaining obligations. Establish `hn' : (4 : ℝ) ≤ n` using `by exact_mod_cast hn`. Establish `hre : 0 ≤ (s + ρ).re` using `by rw [Complex.add_re]; rw [hρre] at hs ⊢; linarith`.
+
+Rewrite `hs` using `[hρre]`. Establish `hcmp' : ∀ C : Set (GAd σ J), IsCompact C → ∃ K : ℝ, ∀ γ g, g ∈ C → ‖(h (γ * g) : ℂ) ^ (s + ρ)‖ ≤ K * ‖(h γ : ℂ) ^ (s + ρ)‖` using `fun C hC => by`. Take `⟨K, hK0, hK⟩` from `hcmp C hC`. Use `⟨K ^ (s + ρ).re, fun γ g hg => ?_⟩` and prove the remaining obligations. Rewrite using `[Complex.norm_cpow_eq_rpow_re_of_pos (ht_pos hI _), Complex.norm_cpow_eq_rpow_re_of_pos (ht_pos hI _), ← Real.mul_rpow hK0 (ht_pos hI _).le]`.
+
+Conclude with `Real.rpow_le_rpow (ht_pos hI _).le (hK γ g hg) hre`. Establish `hw : ∀ l ∈ z.support, HasSum (fun t : T => z l * l.foldr lineDer (fun y => (h y : ℂ) ^ (s + ρ)) (t.1.1 * g)) (z l * l.foldr lineDer (Eis s) g)` using `fun l hl => (hasSum_foldr hCM (fun t : T => t.1.1) (w := fun y => ‖(h y : ℂ) ^ (s + ρ)‖) (isSm_pow hI hCM hJ hc _).1 (norm_foldr_le hI hCM hJ hc hK _) hcmp' (fun g => summable_norm_iff.2 (hP.1 T hT s hs g).summable) (hP.1 T hT s hs) l (hz.1 l hl) g).mul_left (z l)`. Establish `h1` using `hasSum_sum hw`. Establish `h2 : HasSum (fun t : T => χ (s + ρ) * (h (t.1.1 * g) : ℂ) ^ (s + ρ)) (χ (s + ρ) * Eis s g)` using `(hP.1 T hT s hs g).mul_left _`. Establish `e : (fun t : T => ∑ l ∈ z.support, z l * l.foldr lineDer (fun y => (h y : ℂ) ^ (s + ρ)) (t.1.1 * g)) = fun t : T => χ (s + ρ) * (h (t.1.1 * g) : ℂ) ^ (s + ρ)` using `funext fun t => hχ (s + ρ) (t.1.1 * g)`.
+
+Rewrite `h1` using `[e]`. Conclude with `h1.unique h2`. Take `⟨ε, hε, hball⟩` from `Metric.mem_nhds_iff.1 hU₀`. Use `⟨Metric.ball ρ ε, Metric.ball_mem_nhds ρ hε, fun z hz => ?_⟩` and prove the remaining obligations. Take `⟨χ, hχd, hχ⟩` from `heig z hz`.
+
+Use `⟨χ, hχd.differentiableOn, fun s hs => funext fun g => ?_⟩` and prove the remaining obligations. Rewrite using `[Pi.smul_apply, smul_eq_mul]`. Establish `hwd : ∀ l ∈ z.support, DifferentiableOn ℂ (fun s => z l * l.foldr lineDer (H₀ s) g) (Metric.ball ρ ε)` using `fun l hl => ((GlobalTheory.WeakHolFamily.word_holomorphic_and_uniform F E σ n J H₀ (Metric.ball ρ ε) ∅ Metric.isOpen_ball isCompact_empty (Set.empty_subset _) (fun s hs => hsm s (hball hs)) (fun μ hμ => (hhol μ hμ).mono hball) l (hz.1 l hl)).1 g).const_mul _`. Establish `hA : DifferentiableOn ℂ (fun s => GlobalTheory.UAut.dop z (H₀ s) g) (Metric.ball ρ ε)` using `DifferentiableOn.fun_sum hwd`. Establish `hd : DifferentiableOn ℂ (fun s => H₀ s g) (Metric.ball ρ ε)` using `(hhol _ (GlobalTheory.EisLine.isModerateForm_proj σ J g)).mono hball`.
+
+Establish `hB : DifferentiableOn ℂ (fun s => χ s * H₀ s g) (Metric.ball ρ ε)` using `hχd.differentiableOn.mul hd`. Establish `a1` using `hA.analyticOnNhd Metric.isOpen_ball`. Establish `a2` using `hB.analyticOnNhd Metric.isOpen_ball`. Use `set z₀ : ℂ := ρ + ((ε / 2 : ℝ) : ℂ) with hz₀`. Establish `hz₀b : z₀ ∈ Metric.ball ρ ε`.
+
+Rewrite using `[Metric.mem_ball, hz₀, dist_eq_norm, add_sub_cancel_left, Complex.norm_real, Real.norm_eq_abs, abs_of_pos (half_pos hε)]`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hz₀re : ρ.re < z₀.re` using `by simp [hz₀, hε]`. Establish `hopen : IsOpen (Metric.ball ρ ε ∩ {s : ℂ | ρ.re < s.re})` using `Metric.isOpen_ball.inter (isOpen_lt continuous_const Complex.continuous_re)`. Establish `hev : (fun s => GlobalTheory.UAut.dop z (H₀ s) g) =ᶠ[𝓝 z₀] fun s => χ s * H₀ s g` using `by filter_upwards [hopen.mem_nhds ⟨hz₀b, hz₀re⟩] with s hs'`.
+
+Establish `hsU : s ∈ U₀` using `hball hs'.1`. Establish `hne : s ≠ ρ` using `by rintro rfl; exact lt_irrefl ρ.re hs'.2`. Establish `eH : H₀ s = (s - ρ) ^ k₀ • Eis s` using `funext fun g' => by rw [hH s hsU hne g', Pi.smul_apply, smul_eq_mul]`. Rewrite using `[eH, GlobalTheory.UAut.dop_smul, hχ s hs'.2]`. Simplify using `only [Pi.smul_apply, smul_eq_mul]`.
+
+Expand and normalize the polynomial expressions, which then agree. Conclude with `a1.eqOn_of_preconnected_of_eventuallyEq a2 (convex_ball ρ ε).isPreconnected hz₀b hev hs`.
+-/
 theorem dop_eigen_near_rho : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (n : ℕ)
     (J : Matrix (Fin n) (Fin n) E) (r : ℕ) (X Y : Matrix (Fin n) (Fin (r + 1)) E) (L : Submodule (𝓞 E) (Fin n → E))
     (a : GL (Fin n) (AF F ⊗[F] E)) (h : GAd σ J → ℝ) (Eis : ℂ → GAd σ J → ℂ) (c : ℂ → ℂ),

@@ -11,6 +11,15 @@ namespace GlobalTheory.SymAmple
 
 open GlobalTheory.CechPic
 
+/- English proof (translation)
+Use `set i : G.left ⟶ G.left := (GrpObj.inv : G ⟶ G).left with hi_def`. Establish `hii : i ≫ i = 𝟙 G.left`. Rewrite using `[hi_def, ← Over.comp_left, GrpObj.inv_comp_inv G, Over.id_left]`. Establish `: IsIso i` using `⟨⟨i, hii, hii⟩⟩`. Establish `hL` using `h₀.isLB`.
+
+Establish `h₁ : IsAmpleLB (M₀.pull i)` using `h₀.pull_of_isAffineHom i`. Set `M : LB G.left` to `LB.LinComb M₀ (K := Fin 2) ![𝟙 G.left, i] ![1, 1]`. Establish `hM : M.IsLB` using `LB.isLB_linComb hL _ _`. Establish `hc : cls M hM = cls M₀ hL + pull i (cls M₀ hL)`. Rewrite using `[cls_linComb hL]`.
+
+Simplify using `only [Fin.sum_univ_two, Matrix.cons_val_zero, Matrix.cons_val_one, one_zsmul, pull_id]`. Use `⟨M, h₀.tensor h₁ hM ?_, ?_⟩` and prove the remaining obligations. Establish `hd₁` using `LB.isLB_div hM hL`. Establish `hd₂` using `LB.isLB_div hd₁ (pull_isLB hL i)`. Use `(cls_eq_zero_iff hd₂).1 ?_` and prove the remaining obligations.
+
+Rewrite using `[cls_div hd₁ (pull_isLB hL i), cls_div hM hL, hc, cls_pull hL]`. Normalize the expressions using the abelian group laws. Use `(cls_eq_iff (pull_isLB hM i) hM).1 ?_` and prove the remaining obligations. Rewrite using `[cls_pull hM, hc, map_add, ← pull_comp, hii, pull_id]`. Conclude with `add_comm _ _`.
+-/
 theorem exists_isAmpleLB_symm (S : Scheme.{0}) (G : Over S) [GrpObj G] (M₀ : LB G.left) (h₀ : IsAmpleLB M₀) :
     ∃ M : LB G.left, IsAmpleLB M ∧ LBIso (M.pull (GrpObj.inv : G ⟶ G).left) M := by
   set i : G.left ⟶ G.left := (GrpObj.inv : G ⟶ G).left with hi_def

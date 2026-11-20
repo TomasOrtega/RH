@@ -33,6 +33,9 @@ abbrev LHom.ker {R S : LAlg R₀} (π : LHom R S) : Submodule R₀ R :=
 def LHom.SqZero {R S : LAlg R₀} (π : LHom R S) : Prop :=
   Function.Surjective π.1 ∧ RingHom.ker π.1 ^ 2 = ⊥
 
+/- English proof (translation)
+Unfold `ReciprocityTheory.PGsh.LHom.SqZero`. Use `⟨hs, ?_⟩` and prove the remaining obligations. Rewrite using `[hk, Ideal.span_singleton_pow, pow_two, hξ]`. Conclude with `Ideal.span_singleton_eq_bot.mpr rfl`.
+-/
 lemma LHom.sqZero_of_span {R S : LAlg R₀} (π : LHom R S) (ξ : (R : Type u))
     (hs : Function.Surjective π.1) (hk : RingHom.ker π.1 = Ideal.span {ξ}) (hξ : ξ * ξ = 0) :
     π.SqZero := by

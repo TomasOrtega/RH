@@ -13,11 +13,20 @@ variable {B A : Type} [CommRing B] [CommRing A] [Algebra B A] {k : ℕ} (N : Fin
 
 def lat (m : Fin k →₀ ℕ) : Submodule B A := ∏ i, N i ^ m i
 
+/- English proof (translation)
+Simplify using `[lat, pow_add, Finset.prod_mul_distrib]`.
+-/
 theorem lat_add (m m' : Fin k →₀ ℕ) : lat N (m + m') = lat N m * lat N m' := by
   simp [lat, pow_add, Finset.prod_mul_distrib]
 
+/- English proof (translation)
+Simplify using `[lat]`.
+-/
 theorem lat_zero : lat N 0 = 1 := by simp [lat]
 
+/- English proof (translation)
+Apply the tactic sequence `rw [lat, Finset.prod_eq_single i] <;> simp +contextual [Finsupp.single_apply, eq_comm]`.
+-/
 theorem lat_single (i : Fin k) : lat N (Finsupp.single i 1) = N i := by
   rw [lat, Finset.prod_eq_single i] <;> simp +contextual [Finsupp.single_apply, eq_comm]
 
@@ -49,9 +58,15 @@ def sec (i : Fin k) (f : A) (hf : f ∈ N i) : rees N := mono N (Finsupp.single 
 
 def toDeg (m : Fin k →₀ ℕ) : Deg k := fun i => (m i : ℤ)
 
+/- English proof (translation)
+Use function extensionality and compare the values at `i`. Simplify using `[toDeg]`.
+-/
 theorem toDeg_add (m m' : Fin k →₀ ℕ) : toDeg (m + m') = toDeg m + toDeg m' := by
   funext i; simp [toDeg]
 
+/- English proof (translation)
+Introduce `m m' h` and use `Finsupp.ext fun i => Int.ofNat_inj.1 (congrFun h i)`.
+-/
 theorem toDeg_injective : Function.Injective (toDeg (k := k)) := fun m m' h =>
   Finsupp.ext fun i => Int.ofNat_inj.1 (congrFun h i)
 
@@ -65,6 +80,9 @@ def reesGr (d : Deg k) : Submodule B (rees N) where
     show MvPolynomial.coeff m (c • p.1) = 0
     rw [MvPolynomial.coeff_smul, hp m hm, smul_zero]
 
+/- English proof (translation)
+Introduce `n hn` and use `by classical show MvPolynomial.coeff n (MvPolynomial.monomial m f) = 0 rw [MvPolynomial.coeff_monomial, if_neg] rintro rfl exact hn rfl`.
+-/
 theorem mono_mem (m : Fin k →₀ ℕ) (f : A) (hf : f ∈ lat N m) : mono N m f hf ∈ reesGr N (toDeg m) := fun n hn => by
   classical
   show MvPolynomial.coeff n (MvPolynomial.monomial m f) = 0
@@ -72,6 +90,9 @@ theorem mono_mem (m : Fin k →₀ ℕ) (f : A) (hf : f ∈ lat N m) : mono N m 
   rintro rfl
   exact hn rfl
 
+/- English proof (translation)
+Establish `: e i = toDeg (Finsupp.single i 1)`. Use function extensionality and compare the values at `j`. Simplify using `[e, toDeg, Pi.single_apply, Finsupp.single_apply, eq_comm]`. Rewrite using `[this]`. Conclude with `mono_mem N _ _ _`.
+-/
 theorem sec_mem (i : Fin k) (f : A) (hf : f ∈ N i) : sec N i f hf ∈ reesGr N (e i) := by
   have : e i = toDeg (Finsupp.single i 1) := by
     funext j; simp [e, toDeg, Pi.single_apply, Finsupp.single_apply, eq_comm]
@@ -95,11 +116,27 @@ instance : SetLike.GradedMonoid (reesGr N) where
       exact hm (by rw [← Finset.HasAntidiagonal.mem_antidiagonal.1 hc, toDeg_add, h1, h2])
     · rw [hp _ h1, zero_mul]
 
+/- English proof (translation)
+Apply `Subtype.ext` to reduce the goal to its premises. Rewrite using `[AddSubmonoidClass.coe_finset_sum]`. Conclude with `p.1.as_sum`.
+-/
 theorem eq_sum_mono (p : rees N) : p = ∑ m ∈ p.1.support, mono N m (MvPolynomial.coeff m p.1) (p.2 m) := by
   apply Subtype.ext
   rw [AddSubmonoidClass.coe_finset_sum]
   exact p.1.as_sum
 
+/- English proof (translation)
+Rewrite using `[DirectSum.isInternal_submodule_iff_iSupIndep_and_iSup_eq_top]`. Prove the components needed by the constructor for the conclusion. Introduce `d`. Rewrite using `[Submodule.disjoint_def]`. Introduce `p hp hq`.
+
+Establish `key : ∀ m, toDeg m = d → MvPolynomial.coeff m p.1 = 0`. Introduce `m hm`. Use `Submodule.iSup_induction (motive := fun q : rees N => MvPolynomial.coeff m q.1 = 0) _ hq ?_ rfl ?_` and prove the remaining obligations. Introduce `j q hq`. Distinguish the cases in `hj : j = d`.
+
+Establish `: q = 0` using `by simpa [hj] using hq`. Rewrite using `[this]`. Both sides reduce to the same expression. Establish `hq' : q ∈ reesGr N j` using `by simpa [hj] using hq`. Conclude with `hq' m (by rw [hm]; exact Ne.symm hj)`.
+
+Introduce `a b ha hb show MvPolynomial.coeff m (a.1 + b.1) = 0`. Rewrite using `[MvPolynomial.coeff_add, ha, hb, add_zero]`. Apply `Subtype.ext` to reduce the goal to its premises. Use extensionality with `m`. Distinguish the cases in `hm : toDeg m = d`.
+
+Conclude with `key m hm`. Conclude with `hp m hm`. Rewrite using `[eq_top_iff]`. Introduce `p _`. Rewrite using `[eq_sum_mono N p]`.
+
+Conclude with `Submodule.sum_mem _ fun m _ => Submodule.mem_iSup_of_mem _ (mono_mem N m _ _)`.
+-/
 theorem rees_internal : DirectSum.IsInternal (reesGr N) := by
   classical
   rw [DirectSum.isInternal_submodule_iff_iSupIndep_and_iSup_eq_top]
@@ -174,6 +211,9 @@ def oz (j : ℤ) : Submodule (𝒜 0) A where
     have := SetLike.GradedMul.mul_mem c.2 hf
     rwa [zero_add] at this
 
+/- English proof (translation)
+Unfold both sides. The equivalence is reflexive.
+-/
 @[simp] theorem mem_oz {j : ℤ} {f : A} : f ∈ oz 𝒜 j ↔ f ∈ 𝒜 j := Iff.rfl
 
 def aPiece (J : Ideal A) (j : ℤ) : Submodule (𝒜 0) (A ⧸ J) :=
@@ -189,9 +229,15 @@ def mN (F : A) : Fin 3 → Submodule (𝒜 0) A :=
 
 def idD : Ideal (𝒜 0) := Ideal.span {b | ∃ f ∈ 𝒜 (-2), ∃ g ∈ 𝒜 2, (b : A) = f * g}
 
+/- English proof (translation)
+Rewrite using `[sq]`. Conclude with `SetLike.GradedMul.mul_mem hf hf`.
+-/
 theorem sq_mem_neg {f : A} (hf : f ∈ 𝒜 (-1)) : f ^ 2 ∈ 𝒜 (-2) := by
   rw [sq]; exact SetLike.GradedMul.mul_mem hf hf
 
+/- English proof (translation)
+Rewrite using `[sq]`. Conclude with `SetLike.GradedMul.mul_mem hf hf`.
+-/
 theorem sq_mem_pos {f : A} (hf : f ∈ 𝒜 1) : f ^ 2 ∈ 𝒜 2 := by
   rw [sq]; exact SetLike.GradedMul.mul_mem hf hf
 

@@ -12,6 +12,19 @@ noncomputable section
 
 namespace GlobalTheory.HeckeGenBound
 
+/- English proof (translation)
+Establish `hF : 0 < ‖f (h w)‖` using `norm_pos_iff.2 hf`. Establish `hs : star (p : ℂ) = p` using `by simp`. Establish `key : ∀ m, ‖f (h w + h (wm m))‖ * Real.exp (-(Real.pi / 2) * (hermForm Hm' (h w) (h w)).re) = ‖f (h w)‖ * Real.exp (-(Real.pi / 2) * (hermForm Hm ((p : ℂ) • w + (p : ℂ) • wm m) ((p : ℂ) • w + (p : ℂ) • wm m)).re)`. Introduce `m`. Establish `e1 : hermForm Hm ((p : ℂ) • w + (p : ℂ) • wm m) ((p : ℂ) • w + (p : ℂ) • wm m) = hermForm Hm' (h w + h (wm m)) (h w + h (wm m))`.
+
+Rewrite using `[← map_add, hHH, ← smul_add, GlobalTheory.UnitFrameGen.hermForm_smul_left, GlobalTheory.UnitFrameGen.hermForm_smul_right, hs]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e1, hfa m, GlobalTheory.UnitFrameGen.hermForm_add_left, GlobalTheory.UnitFrameGen.hermForm_add_right, GlobalTheory.UnitFrameGen.hermForm_add_right]`. Simplify using `only [Complex.add_re, GlobalTheory.UnitFrameGen.hermForm_swap_re hH' (h (wm m)) (h w)]`. Rewrite using `[mul_comm (Real.exp _) ‖_‖, _root_.mul_assoc, ← Real.exp_add]`.
+
+Use `congr 2`. Expand and normalize the polynomial expressions, which then agree. Establish `h1 : ‖T‖ * ‖θ' (h w)‖ * ‖f (h w)‖ ≤ ∑ m, ‖θ ((p : ℂ) • (w + wm m))‖ * ‖f (h w + h (wm m))‖`. Rewrite using `[← norm_mul, ← norm_mul, hid]`. Use `(norm_sum_le _ _).trans (le_of_eq ?_)` and prove the remaining obligations.
+
+Simplify using `only [norm_mul]`. Use `le_of_mul_le_mul_right ?_ hF` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Finset.sum_mul]`. Use `Finset.sum_congr rfl fun m _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[smul_add]`. Expand and normalize the polynomial expressions, which then agree. Use `_ = _ := by`. Rewrite using `[Finset.sum_mul]`. Use `Finset.sum_congr rfl fun m _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[key m]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem norm_le_of_valueId {g n : ℕ} (Hm Hm' : Matrix (Fin g) (Fin g) ℂ) (hH' : Hm'.IsHermitian)
     (h : (Fin g → ℂ) ≃ₗ[ℂ] (Fin g → ℂ)) (p : ℕ)
     (hHH : ∀ z w, hermForm Hm' (h z) (h w) = ((p : ℂ) ^ 2) * hermForm Hm z w)
@@ -61,6 +74,33 @@ theorem norm_le_of_valueId {g n : ℕ} (Hm Hm' : Matrix (Fin g) (Fin g) ℂ) (hH
       refine Finset.sum_congr rfl fun m _ => ?_
       rw [key m]; ring
 
+/- English proof (translation)
+Introduce `E _ _ _ H Dw l Xo c σ r U hG hU P p i k k' x x' C z t hAd hK hHk hb hx hx'`. Establish `hU0` using `hU`. Take `⟨-, -, -, -, -, g, e, F, ik, φ, -, hP⟩` from `hU`. Take `⟨Pm, -, hp, hu, -, hA⟩` from `hP k x`. Take `⟨Pm', -, hp', hu', -, hA'⟩` from `hP k' x'`.
+
+Take `⟨Hm, χ, fr, θ, Fd, hH, hpos, him, hd, hn, hc, h0, ha, hv, hF, hI⟩` from `hA hx`. Take `⟨Hm', χ', fr', θ', Fd', hH', hpos', him', hd', hn', hc', h0', ha', hv', hF', hI'⟩` from `hA' hx'`. Take `⟨h, wm, hlat, hHH, hwm, hid⟩` from `GlobalTheory.T.hecke_theta_value_identity_unitFrames E H Dw l Xo c σ r U hG hU0 P p i k k' x x' C z t hAd hK hHk hb g e F ik Pm Pm' hp hp' hu hu' Hm χ fr θ hH hpos him hd hn hc h0 ha hv Hm' χ' fr' θ' hH' hpos' him' hd' hn' hc' h0' ha' hv'`. Use `clear hP`. Establish `per : ∀ (kk : U.Comp) (xx : (U.X kk).dom) (Q : (F.Di (ik kk)).La →+ (Fin g → ℂ)) (Hq : Matrix (Fin g) (Fin g) ℂ) (χq : (Fin g → ℂ) → ℂ) (frq : Xo.univ.t.PP.L.ι → (Fin g → ℂ) → ℂ) (θq : (Fin g → ℂ) → ℂ), IsPeriod (F.Di (ik kk)) (fun j => Formalism.L2.PjFree.relab c σ (e j).1) Q → …`.
+
+Introduce `kk xx Q Hq χq frq θq hQ hQu hHq hnq haq hvq`. Establish `hexp : ∀ a ∈ Q.range, ∀ z, F.ex (ik kk) Q (z + a) = F.ex (ik kk) Q z` using `fun a ha z => by`. Rewrite using `[F.ex_add (ik kk) Q hQ, (F.ex_ker (ik kk) Q hQ a).2 ha]`. Conclude with `@_root_.mul_one _ (CategoryTheory.Hom.monoid).toMulOneClass _`. Establish `hw0 : ∀ z, (F.ex (ik kk) Q z).left ≫ Xo.univ.t.G.hom = ((U.un kk xx).x : Sp ℂ ⟶ Xo.X)` using `fun z => (Over.w (F.ex (ik kk) Q z)).trans hQu.symm`.
+
+Introduce `a ha z`. Take `⟨j, hj⟩` from `GlobalTheory.ThetaPtChg.exists_chart_point Xo.univ.t.PP.isLB (F.ex (ik kk) Q z).left`. Establish `hj' : ⊤ ≤ (F.ex (ik kk) Q (z + a)).left ⁻¹ᵁ Xo.univ.t.PP.L.U j` using `by rw [hexp a ha]; exact hj`. Set `q : Over.mk ((U.un kk xx).x : Sp ℂ ⟶ Xo.X) ⟶ Xo.univ.t.G` to `Over.homMk (F.ex (ik kk) Q z).left (hw0 z)`. Establish `e1` using `congrArg CommaMorphism.left (CartesianMonoidalCategory.lift_snd (𝟙 _) q)`.
+
+Establish `e2` using `congrArg CommaMorphism.left (CartesianMonoidalCategory.lift_fst (𝟙 _) q)`. Establish `v1` using `hvq j z _ e1 e2 hj`. Establish `v2` using `hvq j (z + a) _ (by rw [hexp a ha]; exact e1) e2 hj'`. Establish `hm : ‖frq j z‖ = Real.exp (Real.pi * (hermForm Hq z a).re + Real.pi / 2 * (hermForm Hq a a).re) * ‖frq j (z + a)‖`. Take `⟨b, rfl⟩` from `ha`.
+
+Conclude with `GlobalTheory.UnitFrameGen.norm_factor Hq _ _ _ _ _ (haq b j z).1 ((haq b j z).2 hj)`. Establish `hsq` using `GlobalTheory.UnitFrameGen.normSq_periodic hHq _ _ _ _ z a (hnq j _ hj') (v2.symm.trans v1) hm`. Establish `hsq' : ∀ w : Fin g → ℂ, (‖θq w‖ * Real.exp (-(Real.pi / 2) * (hermForm Hq w w).re)) ^ 2 = ‖θq w‖ ^ 2 * Real.exp (-Real.pi * (hermForm Hq w w).re)` using `fun w => by`. Rewrite using `[mul_pow, ← Real.exp_nat_mul]`. Use `congr 2`.
+
+Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Use `(pow_left_inj₀ (by positivity) (by positivity) two_ne_zero).1 ?_` and prove the remaining obligations. Rewrite using `[hsq', hsq', hsq]`. Establish `hsq' : ∀ (Hq : Matrix (Fin g) (Fin g) ℂ) (θq : (Fin g → ℂ) → ℂ) (w : Fin g → ℂ), (‖θq w‖ * Real.exp (-(Real.pi / 2) * (hermForm Hq w w).re)) ^ 2 = ‖θq w‖ ^ 2 * Real.exp (-Real.pi * (hermForm Hq w w).re)` using `fun Hq θq w => by`.
+
+Rewrite using `[mul_pow, ← Real.exp_nat_mul]`. Use `congr 2`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Use `⟨g, Pm.range, Pm'.range, Fd, Fd', h, fun z => ‖θ z‖ * Real.exp (-(Real.pi / 2) * (hermForm Hm z z).re), fun z => ‖θ' z‖ * Real.exp (-(Real.pi / 2) * (hermForm Hm' z z).re), fun m => (p : ℂ) • wm m, ?_, ?_, hF, hF', ?_, fun z => by positivity, fun z => by positivity, ?_, ?_, ?_, ? …` and prove the remaining obligations.
+
+Use `haveI := hp.2.2.1`. Conclude with `TopologicalSpace.separableSpace_iff_countable.1 inferInstance`. Use `haveI := hp'.2.2.1`. Conclude with `TopologicalSpace.separableSpace_iff_countable.1 inferInstance`. Introduce and unpack `_ ⟨a, rfl⟩`.
+
+Take `⟨b, hb'⟩` from `hlat a`. Conclude with `⟨b, hb'.symm⟩`. Introduce `a ha0 z`. Conclude with `per k x Pm Hm χ fr θ hp hu hH hn ha hv a ha0 z`. Introduce `a ha0 z`.
+
+Conclude with `per k' x' Pm' Hm' χ' fr' θ' hp' hu' hH' hn' ha' hv' a ha0 z`. Simplify using `only [hsq']`. Conclude with `hI`. Simplify using `only [hsq']`. Conclude with `hI'`.
+
+Introduce `w`. Take `⟨j, hj, hval⟩` from `hid w`. Establish `hfa : ∀ m, ‖fr' j (h w)‖ = Real.exp (Real.pi * (hermForm Hm' (h w) (h (wm m))).re + Real.pi / 2 * (hermForm Hm' (h (wm m)) (h (wm m))).re) * ‖fr' j (h w + h (wm m))‖` using `fun m => by`. Take `⟨b, hb'⟩` from `hwm m`. Rewrite using `[hb']`.
+
+Conclude with `GlobalTheory.UnitFrameGen.norm_factor Hm' _ _ _ _ _ (ha' b j (h w)).1 ((ha' b j (h w)).2 hj)`. Use `norm_le_of_valueId Hm Hm' hH' h p hHH θ θ' (fr' j) (Formalism.L2.PjFree.toC (t none : CAt σ)) wm w (hn' j _ hj) hfa hval` as an intermediate fact. Conclude with `this`.
+-/
 theorem exists_pointwise_bound : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l) (σ : c.F →+* ℂ) (r : ℕ) (U : Formalism.L2.PjFree.Unf Xo c σ r), Formalism.L2.PjFree.GoodEmb c σ → Formalism.L2.PjFree.IsUnf U → ∀ (P : Ideal (𝓞 E)) (p i : ℕ) (k k' : U.Comp) (x : (U.X k).dom) (x' : (U.X k').dom) (C : Subgroup (Over.mk (U.un k x).x ⟶ Xo.univ.t.G)) (z : FrPt Xo c (CAt σ)) (t : Ix Dw → (CAt σ)ˣ), admitted l P p → Xo.univ.t.HeckeKer (Over.mk (U.un k x).x) Dw P p i C → HkPtC p (U.un k x) C z → FrBor t (U.un k' x') z → IsUnitFr (U.X k) x.1 → IsUnitFr (U.X k') x'.1 → ∃ (g : ℕ) (Λ Λ' : AddSubgroup (Fin g → ℂ)) (Fd Fd' : Set (Fin g → ℂ)) (h : (Fin g → ℂ) ≃ₗ[ℂ] (Fin g → ℂ)) (u u' : (Fin g → ℂ) → ℝ) (v : Fin (Ideal.absNorm P ^ i) → (Fin g → ℂ)), Countable Λ ∧ Countable Λ' ∧ MeasureTheory.IsAddFundamentalDomain Λ Fd MeasureTheory.volume ∧ MeasureTheory.IsAddFundamentalDomain Λ' Fd' MeasureTheory.volume ∧ (∀ a ∈ Λ, h a ∈ Λ') ∧ (∀ z, 0 ≤ u z) ∧ (∀ z, 0 ≤ u' z) ∧ (∀ a ∈ Λ, ∀ z, u (z + a) = u z) ∧ (∀ a ∈ Λ', ∀ z, u' (z + a) = u' z) ∧ (∫ z in Fd, u z ^ 2) / (MeasureTheory.volume Fd).toReal = 1 ∧ (∫ z in Fd', u' z ^ 2) / (MeasureTheory.volume Fd').toReal = 1 ∧ ∀ w, cabs (t none : CAt σ) * u' (h w) ≤ ∑ m, u ((p : ℂ) • w + v m) := by
   intro E _ _ _ H Dw l Xo c σ r U hG hU P p i k k' x x' C z t hAd hK hHk hb hx hx'
   have hU0 := hU

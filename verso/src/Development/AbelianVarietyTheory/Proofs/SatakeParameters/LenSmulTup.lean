@@ -7,6 +7,9 @@ open Formalism.BasicNotions NumberField IsDedekindDomain Formalism.MainNotions F
 
 namespace GlobalTheory.TwV.Xc
 
+/- English proof (translation)
+Introduce `p _ X j c γ L hL v`. Conclude with `Formalism.L2.G.Pend.len_smul X j c γ L hL v`.
+-/
 theorem len_smul_tup : ∀ (p : ℕ) [Fact p.Prime] (X : Sys p) (j : ℕ) (c : X.Lv.comp j) (γ : (X.Lv.lev j c).Γ) (L : (X.Pj j).Tup), (X.Pj j).IsLatTup L → ∀ v, len X v j ((X.Lv.lev j c).smul γ L) = len X v j L - ordP (X.G.P.W v) p (gamAt X j c γ v : Matrix (Fin ((X.Pj j).m + 1)) (Fin ((X.Pj j).m + 1)) (X.G.P.Qq v)).det := by
   intro p _ X j c γ L hL v
   exact Formalism.L2.G.Pend.len_smul X j c γ L hL v

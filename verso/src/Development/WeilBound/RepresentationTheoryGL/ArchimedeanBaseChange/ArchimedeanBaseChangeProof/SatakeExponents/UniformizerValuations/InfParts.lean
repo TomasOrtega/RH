@@ -21,6 +21,9 @@ def LemD : Prop := ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (N : �
   (τ : E →+* ℂ) (m : Multiset ℂ), t.Good → t.Untw → TreeParts t P → HasInfCharGL t.space τ m → t.space ≠ ⊥ →
     ∑ i, P.m i τ = m
 
+/- English proof (translation)
+Introduce `E _ _ _ N t P τ m hg hu hp hm h0`. Conclude with `h1 E N t.space τ _ _ h0 (h3 E N t τ _ (h2 E N t P τ hg hu hp)) hm`.
+-/
 theorem lemD_of (h1 : InfUniq) (h2 : InfParts) (h3 : InfTree) : LemD := by
   intro E _ _ _ N t P τ m hg hu hp hm h0
   exact h1 E N t.space τ _ _ h0 (h3 E N t τ _ (h2 E N t P τ hg hu hp)) hm

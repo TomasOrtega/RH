@@ -16,9 +16,15 @@ def galOC (σ : Gal(PadicAlgCl l/K)) : OC l →+* OC l := integerMap (galCp σ :
 
 def galOb (σ : Gal(PadicAlgCl l/K)) : Ob l →+* Ob l := preTiltMap l (galCp σ : ℂ_[l] →+* ℂ_[l]) (AInf.norm_galCp_toRingHom σ)
 
+/- English proof (translation)
+The claim follows from `(IsPerfectoidField.isUnit_iff_norm_untilt l).2 (by rw [untilt_kummerEta]; simp)`.
+-/
 theorem isUnit_kummerEta (σ : Gal(PadicAlgCl l/K)) : IsUnit (kummerEta σ) :=
   (IsPerfectoidField.isUnit_iff_norm_untilt l).2 (by rw [untilt_kummerEta]; simp)
 
+/- English proof (translation)
+The claim follows from `fontaineTheta_map_preTiltMap _ _ x`.
+-/
 theorem theta0_gal (σ : Gal(PadicAlgCl l/K)) (x : Ainf l) :
     theta0 l (WittVector.map (galOb σ) x) = galOC σ (theta0 l x) := fontaineTheta_map_preTiltMap _ _ x
 
@@ -37,10 +43,16 @@ def tw (σ : Gal(PadicAlgCl l/K)) (A : PAlg l) : PAlg l where
     rw [RingHom.comp_apply, galOb, pFlat_mul_kummerEta, map_mul]
     exact mul_mem A.tf ((isUnit_kummerEta σ).map A.s).mem_nonZeroDivisors
 
+/- English proof (translation)
+Express the relevant statement in the definitionally equal form `A.s (galOb σ (pFlat l)) = _`. Rewrite using `[galOb, pFlat_mul_kummerEta, map_mul]`. Both sides reduce to the same expression.
+-/
 theorem tw_pi (σ : Gal(PadicAlgCl l/K)) (A : PAlg l) : (tw σ A).pi = A.pi * A.s (kummerEta σ) := by
   change A.s (galOb σ (pFlat l)) = _
   rw [galOb, pFlat_mul_kummerEta, map_mul]; rfl
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨h.1, fun f g ⟨N, hN⟩ => h.2 f g ⟨N, by rw [tw_pi, mul_pow] at hN exact (Ideal.mul_unit_mem_iff_mem _ (((isUnit_kummerEta σ).map A.s).pow N)).1 hN⟩⟩`.
+-/
 theorem IsTest.tw (σ : Gal(PadicAlgCl l/K)) {A : PAlg l} (h : A.IsTest) : (tw σ A).IsTest :=
   ⟨h.1, fun f g ⟨N, hN⟩ => h.2 f g ⟨N, by
     rw [tw_pi, mul_pow] at hN
@@ -48,13 +60,22 @@ theorem IsTest.tw (σ : Gal(PadicAlgCl l/K)) {A : PAlg l} (h : A.IsTest) : (tw �
 
 def twId (σ : Gal(PadicAlgCl l/K)) (A : PAlg l) : (tw σ A).A →+* A.A := RingHom.id A.A
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem galois_twist_identity_section (σ : Gal(PadicAlgCl l/K)) (A : PAlg l) : (twId σ A).comp (tw σ A).s = A.s.comp (galOb σ) := rfl
 
+/- English proof (translation)
+The claim follows from `pdOk_of_over (galois_twist_identity_section σ A) fun k => ACris.dpow_mem (ACris.gal_smul_mem_ker σ xi0_mem) k`.
+-/
 theorem pdOk_twId (σ : Gal(PadicAlgCl l/K)) (A : PAlg l) : PdOk (twId σ A) :=
   pdOk_of_over (galois_twist_identity_section σ A) fun k => ACris.dpow_mem (ACris.gal_smul_mem_ker σ xi0_mem) k
 
 def twAcr (σ : Gal(PadicAlgCl l/K)) (A : PAlg l) (n : ℕ) : (tw σ A).Acr n →+* A.Acr n := (pdOk_twId σ A).acr n
 
+/- English proof (translation)
+The claim follows from `(pdOk_twId σ A).acr_cris (galois_twist_identity_section σ A) (ACris.galZero σ) (fun y => RingHom.congr_fun (f := ACris.galAway σ) (awayW_ext fun x => by rw [ACris.galAway_algebraMap, awayW_algebraMap]; rfl) y.1) n a`.
+-/
 theorem twAcr_cris (σ : Gal(PadicAlgCl l/K)) (A : PAlg l) (n : ℕ) (a : Acris l) :
     twAcr σ A n ((tw σ A).cris n a) = A.cris n (ACris.galCris σ a) :=
   (pdOk_twId σ A).acr_cris (galois_twist_identity_section σ A) (ACris.galZero σ) (fun y => RingHom.congr_fun (f := ACris.galAway σ)
@@ -68,13 +89,26 @@ def twU (σ : Gal(PadicAlgCl l/K)) (A : PAlg l) : (tw σ A).U →+* A.U :=
     rw [map_mul, RingHom.comp_apply _ _ (tw σ A).xi, e, ← oC_theta0, theta0_gal, RingHom.mem_ker.1 xi0_mem, map_zero,
       map_zero, mul_zero]
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem twU_th (σ : Gal(PadicAlgCl l/K)) (A : PAlg l) (x : (tw σ A).W) :
     twU σ A ((tw σ A).th x) = A.th (WittVector.map (twId σ A) x) := rfl
 
+/- English proof (translation)
+Take `⟨y, rfl⟩` from `IsPerfectoidField.surjective_fontaineTheta (K := ℂ_[l]) l x`. Rewrite using `[oC_theta0, twU_th, ← theta0_gal, oC_theta0, sW, sW, ← wmap_comp, galois_twist_identity_section, wmap_comp]`.
+-/
 theorem twU_oC (σ : Gal(PadicAlgCl l/K)) (A : PAlg l) (x : OC l) : twU σ A ((tw σ A).oC x) = A.oC (galOC σ x) := by
   obtain ⟨y, rfl⟩ := IsPerfectoidField.surjective_fontaineTheta (K := ℂ_[l]) l x
   rw [oC_theta0, twU_th, ← theta0_gal, oC_theta0, sW, sW, ← wmap_comp, galois_twist_identity_section, wmap_comp]
 
+/- English proof (translation)
+Use `⟨(injective_iff_map_eq_zero _).2 fun x hx => ?_, fun y => ?_⟩` and prove the remaining obligations. Take `⟨y, rfl⟩` from `Ideal.Quotient.mk_surjective x`. Take `⟨c, hc⟩` from `Ideal.mem_span_singleton'.1 (Ideal.Quotient.eq_zero_iff_mem.1 hx)`. Establish `hy : WittVector.map (twId σ A) y = y` using `wmap_id (R := A.A) y`. Establish `e : (A.xi : WittVector l A.A) = (tw σ A).sW (σ⁻¹ • xi0 l)`.
+
+Establish `: WittVector.map (galOb σ) (σ⁻¹ • xi0 l) = xi0 l` using `smul_inv_smul σ (xi0 l)`. Conclude with `(congrArg (WittVector.map A.s) this.symm).trans (wmap_comp _ _ _).symm`. Establish `h0 : (tw σ A).th ((tw σ A).sW (σ⁻¹ • xi0 l)) = 0`. Rewrite using `[← oC_theta0, RingHom.mem_ker.1 (ACris.gal_smul_mem_ker σ⁻¹ xi0_mem), map_zero]`. Rewrite `hc` using `[hy, e]`.
+
+Express the relevant statement in the definitionally equal form `(tw σ A).th y = 0`. Rewrite using `[← hc]`. Conclude with `(map_mul (tw σ A).th c _).trans ((congrArg (_ * ·) h0).trans (mul_zero _))`. Take `⟨x, rfl⟩` from `Ideal.Quotient.mk_surjective y`. Conclude with `⟨(tw σ A).th x, congrArg A.th (wmap_id (R := A.A) x)⟩`.
+-/
 theorem twU_bijective (σ : Gal(PadicAlgCl l/K)) (A : PAlg l) : Function.Bijective (twU σ A) := by
   refine ⟨(injective_iff_map_eq_zero _).2 fun x hx => ?_, fun y => ?_⟩
   · obtain ⟨y, rfl⟩ := Ideal.Quotient.mk_surjective x
@@ -97,12 +131,18 @@ def twUEquiv (σ : Gal(PadicAlgCl l/K)) (A : PAlg l) : (tw σ A).U ≃+* A.U := 
 def twMap (σ : Gal(PadicAlgCl l/K)) {A B : PAlg l} (f : A ⟶ B) : tw σ A ⟶ tw σ B :=
   ⟨(Hom.f f : A.A →+* B.A), by change (Hom.f f).comp (A.s.comp _) = B.s.comp _; rw [← RingHom.comp_assoc, Hom.comm f]⟩
 
+/- English proof (translation)
+Take `⟨y, rfl⟩` from `Ideal.Quotient.mk_surjective x`. Express the relevant statement in the definitionally equal form `B.th (WittVector.map _ (WittVector.map _ y)) = B.th (WittVector.map _ (WittVector.map _ y))`. Rewrite using `[← wmap_comp, ← wmap_comp]`. Both sides reduce to the same expression.
+-/
 theorem twU_mapU (σ : Gal(PadicAlgCl l/K)) {A B : PAlg l} (f : A ⟶ B) (x : (tw σ A).U) :
     twU σ B (mapU (twMap σ f) x) = mapU f (twU σ A x) := by
   obtain ⟨y, rfl⟩ := Ideal.Quotient.mk_surjective x
   change B.th (WittVector.map _ (WittVector.map _ y)) = B.th (WittVector.map _ (WittVector.map _ y))
   rw [← wmap_comp, ← wmap_comp]; rfl
 
+/- English proof (translation)
+Take `⟨y, rfl⟩` from `Ideal.Quotient.mk_surjective x`. Use `congrArg (B.mkAcr n) (Subtype.ext ?_)` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `awayW (twId σ B) (awayW (Hom.f (twMap σ f)) y.1) = awayW (Hom.f f) (awayW (twId σ A) y.1)`. Rewrite using `[← RingHom.comp_apply, ← awayW_comp, ← RingHom.comp_apply, ← awayW_comp]`. Both sides reduce to the same expression.
+-/
 theorem twAcr_mapAcr (σ : Gal(PadicAlgCl l/K)) {A B : PAlg l} (f : A ⟶ B) (n : ℕ) (x : (tw σ A).Acr n) :
     twAcr σ B n (mapAcr (twMap σ f) n x) = mapAcr f n (twAcr σ A n x) := by
   obtain ⟨y, rfl⟩ := Ideal.Quotient.mk_surjective x

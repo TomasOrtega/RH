@@ -5,6 +5,25 @@ open scoped Pointwise
 
 namespace GlobalTheory.HaarCosetSum
 
+/- English proof (translation)
+Introduce `k _ _ _ _ _ _ a K hKo hKle F hF R hR hsupp`. Use `set μ := haarVol (KO k (Fin a)) with hμ`. Establish `hKm : MeasurableSet (K : Set (GL (Fin a) k))` using `hKo.measurableSet`. Establish `hval : ∀ r g, r⁻¹ * g ∈ K → F g = F r`. Introduce `r g h`.
+
+Use `hF r (r⁻¹ * g) h` as an intermediate fact. Rewrite `this` using `[mul_inv_cancel_left]`. Then use the resulting hypothesis. Establish `hpt : ∀ g, F g = ∑ r ∈ R, ((r • (K : Set (GL (Fin a) k))).indicator (fun _ => F r) g)`. Introduce `g`. Distinguish the cases in `hg : F g = 0`.
+
+Rewrite using `[hg]`. Use `(Finset.sum_eq_zero fun r _ => ?_).symm` and prove the remaining obligations. Distinguish the cases in `hm : g ∈ r • (K : Set (GL (Fin a) k))`. Rewrite using `[Set.indicator_of_mem hm, ← hval r g ((mem_leftCoset_iff r).1 hm), hg]`. Rewrite using `[Set.indicator_of_notMem hm]`.
+
+Take `⟨r₀, hr₀, hg₀⟩` from `hsupp g hg`. Rewrite using `[Finset.sum_eq_single r₀]`. Rewrite using `[Set.indicator_of_mem ((mem_leftCoset_iff r₀).2 hg₀), hval r₀ g hg₀]`. Introduce `r hr hne`. Rewrite using `[Set.indicator_of_notMem]`.
+
+Introduce `hm`. Establish `h1 : r⁻¹ * g ∈ K` using `(mem_leftCoset_iff r).1 hm`. Establish `h2 : r⁻¹ * r₀ ∈ K`. Use `K.mul_mem h1 (K.inv_mem hg₀)` as an intermediate fact. Simplify `this` using `[mul_assoc]`.
+
+Conclude with `hne (hR r hr r₀ hr₀ h2)`. Introduce `h`. Conclude with `absurd hr₀ h`. Establish `hfin : μ (K : Set (GL (Fin a) k)) ≠ ⊤` using `((measure_mono hKle).trans_lt isCompact_KO.measure_lt_top).ne`. Establish `hcos : ∀ r : GL (Fin a) k, μ (r • (K : Set (GL (Fin a) k))) = μ K` using `fun r => measure_smul μ r _`.
+
+Establish `hint : ∀ r ∈ R, Integrable ((r • (K : Set (GL (Fin a) k))).indicator (fun _ => F r)) μ`. Introduce `r _`. Rewrite using `[integrable_indicator_iff (hKm.const_smul r)]`. Conclude with `integrableOn_const (by rw [hcos]; exact hfin)`. Combine the equalities or inequalities in the displayed calculation.
+
+Use `congr 1`. Use function extensionality and compare the values at `g`. Conclude with `hpt g`. Use `_ = ∑ r ∈ R, ∫ g, ((r • (K : Set (GL (Fin a) k))).indicator (fun _ => F r) g) ∂μ := integral_finset_sum R hint`. Use `_ = ∑ r ∈ R, (μ.real (K : Set (GL (Fin a) k)) : ℂ) * F r := by`.
+
+Use `Finset.sum_congr rfl fun r _ => ?_` and prove the remaining obligations. Rewrite using `[integral_indicator_const _ (hKm.const_smul r), Measure.real, hcos, ← Measure.real, Complex.real_smul]`. Use `_ = _ := by rw [Finset.mul_sum]`.
+-/
 theorem integral_eq_vol_mul_sum_of_cosets :
     ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] [MeasurableSpace k] [BorelSpace k] (a : ℕ) (K : Subgroup (GL (Fin a) k)),
     IsOpen (K : Set (GL (Fin a) k)) → K ≤ KO k (Fin a) → ∀ F : GL (Fin a) k → ℂ,

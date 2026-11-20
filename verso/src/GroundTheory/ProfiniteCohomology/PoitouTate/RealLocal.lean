@@ -19,6 +19,13 @@ section NormClassMap
 
 variable {k F : Type} [CommRing k] [Group F] [TopologicalSpace F] [IsTopologicalGroup F] [Fintype F]
 
+/- English proof (translation)
+Take `⟨z, hz, hiz⟩` from `exists_normClass_cycle B m`. Take `⟨z', hz', hiz'⟩` from `exists_normClass_cycle B' (f.hom m)`. Rewrite using `[hz, hz']`. Express the relevant statement in the definitionally equal form `(HomologicalComplex.homologyMap (cochainsMap f) 0).hom _ = _`. Rewrite using `[homologyMap_homologyπ_apply]`.
+
+Use `congr 1`. Apply `iCycles_hom_injective` to reduce the goal to its premises. Rewrite using `[iCycles_cyclesMap_apply, hiz, hiz']`. Apply `cochainOf_injective` to reduce the goal to its premises. Use function extensionality and compare the values at `σ`.
+
+Express the relevant statement in the definitionally equal form `f.hom ((∑ g, B.ρ g) m) = (∑ g, B'.ρ g) (f.hom m)`. Rewrite using `[LinearMap.sum_apply, LinearMap.sum_apply, map_sum]`. Conclude with `Finset.sum_congr rfl fun g _ => Rep.hom_comm_apply f g m`.
+-/
 theorem cohomologyMap_normClass {B B' : Rep k F} [IsDiscreteRep B] [IsDiscreteRep B'] (f : B ⟶ B')
     (m : B) : (cohomologyMap f 0).hom (normClass B m) = normClass B' (f.hom m) := by
   obtain ⟨z, hz, hiz⟩ := exists_normClass_cycle B m
@@ -53,6 +60,13 @@ def dualToCartier :
   resDualPost ψ.toMonoidHom D M _ ρ
 
 omit [IsTopologicalGroup G] [IsDiscreteRep D] [IsDiscreteRep M] in
+/- English proof (translation)
+Establish `: Finite D` using `finite_of_nonempty_addEquiv hD`. Establish `: Finite (galRootsOfUnity.{0} K L n)` using `finite_of_nonempty_addEquiv hL`. Establish `: Finite (dualRep D M)` using `finite_dualRep`. Establish `: Finite (dualRep D (dualRep D M))` using `finite_dualRep`. Establish `: Finite (Rep.res ψ.toMonoidHom M)` using `inferInstanceAs (Finite M)`.
+
+Establish `: Finite (dualRep (galRootsOfUnity.{0} K L n) (Rep.res ψ.toMonoidHom M))` using `finite_dualRep`. Use `set e := dualRepRootsOfUnityIso K L (Rep.res ψ.toMonoidHom M) n hM`. Establish `he : Function.Injective e.inv.hom` using `fun a b hab => by`. Establish `h` using `congrArg e.hom.hom hab`. Rewrite `h` using `[← ConcreteCategory.comp_apply, ← ConcreteCategory.comp_apply, e.inv_hom_id]`. Then use the resulting hypothesis.
+
+Establish `: Finite (cartierDual K L (Rep.res ψ.toMonoidHom M))` using `Finite.of_injective _ he`. Use `Function.Injective.bijective_of_nat_card_le ?_ ?_` and prove the remaining obligations. Introduce `f f' hff'`. Conclude with `LinearMap.ext fun m => hρ (LinearMap.congr_fun hff' m)`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem bijective_dualToCartier {n : ℕ} [NeZero n] (hL : Nonempty (galRootsOfUnity.{0} K L n ≃+ ZMod n))
     (hD : Nonempty (D ≃+ ZMod n)) (hρ : Function.Injective ρ.hom) [Finite M] (hM : ∀ m : M, n • m = 0) :
     Function.Bijective (dualToCartier ψ D ρ M).hom := by
@@ -79,6 +93,9 @@ theorem bijective_dualToCartier {n : ℕ} [NeZero n] (hL : Nonempty (galRootsOfU
 
 omit [IsTopologicalGroup G] [IsDiscreteRep D] [IsDiscreteRep M] in
 
+/- English proof (translation)
+Use `Rep.Hom.ext (Representation.IntertwiningMap.ext (LinearMap.ext fun x => ?_))` and prove the remaining obligations. Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => simp only [map_zero]`. Consider the case `tmul a f => rfl`. Consider the case `add x y hx hy => simp only [map_add, hx, hy]`.
+-/
 theorem tensorHom_dualToCartier_cartierPairing :
     (𝟙 (Rep.res ψ.toMonoidHom M) ⊗ₘ dualToCartier ψ D ρ M) ≫
         cartierPairing K L (Rep.res ψ.toMonoidHom M) =
@@ -89,6 +106,9 @@ theorem tensorHom_dualToCartier_cartierPairing :
   | tmul a f => rfl
   | add x y hx hy => simp only [map_add, hx, hy]
 
+/- English proof (translation)
+Establish `hc` using `cupPairing_cohomologyMap (cartierPairing K L (Rep.res ψ.toMonoidHom M)) (𝟙 _) (dualToCartier ψ D ρ M) h ξ η`. Rewrite `hc` using `[cohomologyMap_id, ModuleCat.id_apply]`. Rewrite using `[hc, tensorHom_dualToCartier_cartierPairing, cohomologyMap_cupPairing]`.
+-/
 theorem cupPairing_dualToCartier [Finite M] [IsDiscreteRep (galUnits.{0} K L)]
     [IsDiscreteRep (cartierDual K L (Rep.res ψ.toMonoidHom M))] {r s : ℕ} (h : r + s = 2)
     (ξ : cohomology (Rep.res ψ.toMonoidHom M) r)
@@ -118,6 +138,13 @@ variable [FiniteDimensional K L] [IsGalois K L] (h2 : Module.finrank K L ≤ 2)
 
 include hG hc hneg hconj hroots hinv in
 
+/- English proof (translation)
+Establish `hf` using `bijective_dualToCartier ψ D ρ M (hroots n (Nat.pos_of_ne_zero (NeZero.ne n))) hD hρ hM`. Set `e` to `cohomologyAddEquivOfIso (Rep.isoOfBijective _ hf) 2`. Take `⟨x, hx⟩` from `(real_local_duality_of_orderTwo h2 hN hG hc hneg hconj hroots (Rep.res ψ.toMonoidHom M)).1.1.2 (χ.comp e.symm.toAddMonoidHom)`. Take `⟨x, rfl⟩` from `Submodule.Quotient.mk_surjective _ x`. Use `⟨x, fun η => ?_⟩` and prove the remaining obligations.
+
+Establish `e1` using `DFunLike.congr_fun hx (e η)`. Rewrite `e1` using `[realDualityPairingZeroTwo_mk, realDualityPairing_apply]`. Rewrite using `[hinv, ← cupPairing_dualToCartier]`. Use `e1.trans ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `χ (e.symm (e η)) = χ η`.
+
+Rewrite using `[AddEquiv.symm_apply_apply]`.
+-/
 theorem exists_orderTwo_pairing_zero {n : ℕ} [NeZero n] (hD : Nonempty (D ≃+ ZMod n))
     (hρ : Function.Injective ρ.hom) (hM : ∀ m : M, n • m = 0)
     (χ : cohomology (Rep.res ψ.toMonoidHom (dualRep D M)) 2 →+ QZ) :
@@ -138,6 +165,17 @@ theorem exists_orderTwo_pairing_zero {n : ℕ} [NeZero n] (hD : Nonempty (D ≃+
 
 include hG hc hneg hconj hroots hinv in
 
+/- English proof (translation)
+Use `set f := dualToCartier ψ D ρ M`. Establish `hf` using `bijective_dualToCartier ψ D ρ M (hroots n (Nat.pos_of_ne_zero (NeZero.ne n))) hD hρ hM`. Set `e` to `cohomologyAddEquivOfIso (Rep.isoOfBijective f hf) 0`. Set `χ'` to `χ.comp e.symm.toAddMonoidHom`. Establish `hχ' : ∀ y ∈ normClasses (cartierDual K L (Rep.res ψ.toMonoidHom M)), χ' y = 0` using `fun y hy => by`.
+
+Take `⟨m', rfl⟩` from `exists_normClass_eq_of_mem _ y hy`. Take `⟨m, rfl⟩` from `hf.2 m'`. Establish `hem : e (normClass _ m) = normClass _ (f.hom m)`. Rewrite using `[cohomologyAddEquivOfIso_apply]`. Conclude with `cohomologyMap_normClass f m`.
+
+Rewrite using `[← hem]`. Express the relevant statement in the definitionally equal form `χ (e.symm (e (normClass _ m))) = 0`. Rewrite using `[AddEquiv.symm_apply_apply]`. Conclude with `hχ _ (normClass_mem_normClasses _ m)`. Take `⟨ξ, hξ⟩` from `(real_local_duality_of_orderTwo h2 hN hG hc hneg hconj hroots (Rep.res ψ.toMonoidHom M)).2.2.1.2 (QuotientAddGroup.lift _ χ' hχ')`.
+
+Use `⟨ξ, fun η => ?_⟩` and prove the remaining obligations. Establish `e1` using `DFunLike.congr_fun hξ (Submodule.Quotient.mk (e η))`. Rewrite `e1` using `[realDualityPairingTwoZero_mk, realDualityPairing_apply]`. Rewrite using `[hinv, ← cupPairing_dualToCartier]`. Use `e1.trans ?_` and prove the remaining obligations.
+
+Express the relevant statement in the definitionally equal form `χ (e.symm (e η)) = χ η`. Rewrite using `[AddEquiv.symm_apply_apply]`.
+-/
 theorem exists_orderTwo_pairing_two {n : ℕ} [NeZero n] (hD : Nonempty (D ≃+ ZMod n))
     (hρ : Function.Injective ρ.hom) (hM : ∀ m : M, n • m = 0)
     (χ : cohomology (Rep.res ψ.toMonoidHom (dualRep D M)) 0 →+ QZ)
@@ -192,6 +230,11 @@ def gsRealRootsToUnits (w : {v : InfinitePlace K.1 // v.IsReal}) :
           (((Additive.toMul ζ : rootsOfUnity n _) : (maxUnramifiedOutside K.1 ℚ̄ S)ˣ) :
             maxUnramifiedOutside K.1 ℚ̄ S)))⟩
 
+/- English proof (translation)
+Introduce `a b hab`. Establish `h` using `congrArg (fun x => ((Additive.toMul x : (AlgebraicClosure w.1.Completion)ˣ) : AlgebraicClosure w.1.Completion)) hab`. Express the relevant statement in the definitionally equal form `ιr w _ = ιr w _ at h`. Apply `Additive.toMul.injective` to reduce the goal to its premises. Apply `Subtype.ext` to reduce the goal to its premises.
+
+Apply `Units.ext` to reduce the goal to its premises. Apply `Subtype.ext` to reduce the goal to its premises. Conclude with `(ιr w).toRingHom.injective h`.
+-/
 theorem gsRealRootsToUnits_injective (w : {v : InfinitePlace K.1 // v.IsReal}) :
     Function.Injective (gsRealRootsToUnits S ιr n w).hom := by
   intro a b hab
@@ -210,6 +253,9 @@ def gsRealInvRootsQZ (w : {v : InfinitePlace K.1 // v.IsReal}) :
     (infAlgClosure_mul_mem_range_norm w.1)).comp
       (cohomologyMap (gsRealRootsToUnits S ιr n w) 2).hom.toAddMonoidHom
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem gsRealInvRootsQZ_apply (w : {v : InfinitePlace K.1 // v.IsReal})
     (z : cohomology (Rep.res (gsRealFamily S ιr w).toMonoidHom (gsRoots S n)) 2) :
     gsRealInvRootsQZ S ιr n w z =
@@ -224,6 +270,9 @@ variable [NeZero n] (hD : Nonempty (gsRoots S n ≃+ ZMod n)) (hM : ∀ m : M, n
 set_option maxHeartbeats 400000 in
 include hD hM in
 
+/- English proof (translation)
+Introduce `χ` and use `by have : IsDiscreteRep (galUnits.{0} w.1.Completion (AlgebraicClosure w.1.Completion)) := isDiscreteRep_galUnits have : IsDiscreteRep (cartierDual w.1.Completion (AlgebraicClosure w.1.Completion) (Rep.res (gsRealFamily S ιr w).toMonoidHom M)) := isDiscreteRep_cartierDual _ have …`.
+-/
 theorem surjective_gsRealPairing_zero (w : {v : InfinitePlace K.1 // v.IsReal}) :
     Function.Surjective
       (ptLocalPairing (gsRealFamily S ιr) (gsRoots S n) M (gsRealInvRootsQZ S ιr n) w
@@ -250,6 +299,13 @@ theorem surjective_gsRealPairing_zero (w : {v : InfinitePlace K.1 // v.IsReal}) 
 set_option maxHeartbeats 400000 in
 include hD hM in
 
+/- English proof (translation)
+Establish `: IsDiscreteRep (galUnits.{0} w.1.Completion (AlgebraicClosure w.1.Completion))` using `isDiscreteRep_galUnits`. Establish `: IsDiscreteRep (cartierDual w.1.Completion (AlgebraicClosure w.1.Completion) (Rep.res (gsRealFamily S ιr w).toMonoidHom M))` using `isDiscreteRep_cartierDual _`. Establish `key` using `exists_orderTwo_pairing_two (gsRealFamily S ιr w) (gsRoots S n) (gsRealRootsToUnits S ιr n w) M ?h2 ?hN (c := realConj w.1 w.2) ?hG ?hc ?hneg ?hconj ?hroots (gsRealInvRootsQZ S ιr n w) ?hinv hD ?hρ hM χ hχ`. Use `case h2 => exact infAlgClosure_finrank_le_two w.1`. Use `case hN => exact infAlgClosure_mul_mem_range_norm w.1`.
+
+Use `case hG => exact eq_one_or_eq_realConj w.1 w.2`. Use `case hc => exact realConj_ne_one w.1 w.2`. Use `case hneg => exact neg_one_not_mem_range_norm_infAlgClosure w.1 w.2`. Use `case hconj => exact realConj_galUnits_of_torsion w.1 w.2`. Use `case hroots => exact nonempty_addEquiv_galRootsOfUnity_infAlgClosure w.1`.
+
+Use `case hinv => exact gsRealInvRootsQZ_apply S ιr n w`. Use `case hρ => exact gsRealRootsToUnits_injective S ιr n w`. Take `⟨ξ, hξ⟩` from `key`. Conclude with `⟨ξ, AddMonoidHom.ext fun η => (ptLocalPairing_apply _ _ _ _ _ _ _ _).trans (hξ η)⟩`.
+-/
 theorem exists_gsRealPairing_two (w : {v : InfinitePlace K.1 // v.IsReal})
     (χ : cohomology (Rep.res (gsRealFamily S ιr w).toMonoidHom (dualRep (gsRoots S n) M)) 0 →+ QZ)
     (hχ : ∀ x ∈ normClasses (Rep.res (gsRealFamily S ιr w).toMonoidHom (dualRep (gsRoots S n) M)),

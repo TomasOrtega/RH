@@ -9,6 +9,15 @@ open MvPolynomial MeasureTheory Filter Topology Matrix ComplexSets
 
 noncomputable section
 
+/- English proof (translation)
+Introduce `n d J A u m f F φ hJ hdim hA hu hf hint`. Establish `hnull` using `hCN n d J J A A u u Set.univ Set.univ id id hJ hdim hJ hdim hu hu hA hA isOpen_univ isOpen_univ (Set.subset_univ _) (Set.subset_univ _) differentiableOn_id differentiableOn_id (fun x hx => hx) (fun x hx => hx) (fun x _ => rfl) (fun x _ => rfl)`. Establish `hae : ∀ᵐ y ∂(volume : Measure (Fin d → ℂ)), chartDens J A f φ y = ∑ b, chartDens J A (F b) φ y` using `by filter_upwards [measure_eq_zero_iff_ae_notMem.1 hnull] with y hy`. Establish `hfin : (fibre J A y).Finite` using `(hFB n d J A hJ hdim hA y).2.1`. Simplify using `only [chartDens, sheetSum]`.
+
+Rewrite using `[finsum_mem_eq_finite_toFinset_sum _ hfin]`. Repeatedly rewrite using `[finsum_mem_eq_finite_toFinset_sum _ hfin]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun x hx => ?_` and prove the remaining obligations. Rewrite `hx` using `[Set.Finite.mem_toFinset]`.
+
+Use `split_ifs with hs`. Establish `hux : linEval u x ≠ 0`. Assume the negation of the conclusion as `h0`. Conclude with `hy ⟨x, ⟨hx.1, hs, fun h => h.1 h0⟩, hx.2⟩`. Rewrite using `[hf x hx.1 hux, Finset.sum_mul]`.
+
+Simplify using the standard rewrite rules. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem ChartIntSumOffHyperplane.proof (hFB : FibreBound.Statement)
     (hCN : ChartChangeSheetNull.Statement) : ChartIntSumOffHyperplane.Statement := by
   intro n d J A u m f F φ hJ hdim hA hu hf hint

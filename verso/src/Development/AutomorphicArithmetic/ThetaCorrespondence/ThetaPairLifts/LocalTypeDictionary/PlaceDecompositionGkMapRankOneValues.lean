@@ -11,6 +11,27 @@ open GlobalTheory.Grow GlobalTheory.Size
 open Formalism.REAL Formalism.MainNotions.S GlobalTheory.SmoothGlob GlobalTheory.LowTypeDetermined GlobalTheory.TypeSum GlobalTheory.SeriesToClosure GlobalTheory.PlaceDecomp GlobalTheory.KFinDecomp Matrix
 open scoped InnerProductSpace
 namespace GlobalTheory.PlaceDecomp
+/- English proof (translation)
+Introduce `D θ hθ hp N τ φ S v ℓ C hS hc h c ψ hψ`. Establish `hσ : Std (N.M.ε τ) (N.M.σ τ)` using `std_of_isDS hp.harishChandraModules (N.M.ds τ)`. Establish `hP` using `N.M.fr_unit τ`. Use `haveI : CompleteSpace (N.M.H τ) := (N.M.ds τ).1`. Establish `hJ` using `N.M.fr_gram τ`.
+
+Establish `hb` using `fun x => (h x).sobFun (hS x) c`. Establish `hsm : ∀ u : GlobalTheory.IndefiniteRowSideFullHecke.KTypeExtension.kFin N.M τ, Sm (N.M.ε τ) (N.M.σ τ) u` using `fun u => hσ.2.2.1 _ u.2`. Establish `key : ∀ u x, ∀ y ∈ UJset (N.M.ε τ), res θ N.V τ (N.M.fr τ) (ψ u) x y = ∑' i, ⟪c, v x i⟫_ℂ * ℓ x i (N.M.σ τ y u)`. Introduce `u x y hy`. Use `(hψ u x _ _ _ _ (hS x) (hc x) (h x)).1.2.2.2.2 y hy` as an intermediate fact.
+
+Simplify using `only [map_smul, smul_eq_mul] at this`. Conclude with `this.tsum_eq.symm`. Establish `hval : ∀ u x, ψ u x = ∑' i, ⟪c, v x i⟫_ℂ * ℓ x i u`. Introduce `u x`. Use `key u x 1 (one_mem_UJ _)` as an intermediate fact.
+
+Rewrite `this` using `[res_one hθ hP, sigma_one hσ.1]`. Then use the resulting hypothesis. Use `⟨hval, fun u u' => funext fun x => ?_, fun z u => funext fun x => ?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[Pi.add_apply, hval, hval, hval, Submodule.coe_add]`. Conclude with `(hb x).1 _ _ (hsm u) (hsm u')`. Rewrite using `[Pi.smul_apply, hval, hval, Submodule.coe_smul, smul_eq_mul]`.
+
+Conclude with `(hb x).2.1 z _ (hsm u)`. Introduce `k hk u w hw`. Use function extensionality and compare the values at `x`. Rewrite using `[rTr, ← res_conj hP (ψ u) x k, key u x _ (K_le_UJ hk), hval, hw]`. Both sides reduce to the same expression.
+
+Introduce `X hX u w hw`. Use function extensionality and compare the values at `x`. Establish `hd` using `(isUnit_iff_isUnit_det _).1 hP`. Establish `hY : N.M.fr τ * X * (N.M.fr τ)⁻¹ ∈ lieSet (N.M.ε τ)`. Use `Transport.conj_lie (G := gramAt D N.V τ) (Matrix.nonsing_inv_mul _ hd) ?_ hX` and prove the remaining obligations.
+
+Rewrite using `[← hJ]`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [conjTranspose_mul, Matrix.mul_assoc]`. Use `_ = _ := by rw [Matrix.mul_nonsing_inv _ hd]; simp`. Establish `e : (w : N.M.H τ) = dRep (N.M.σ τ) (N.M.fr τ * X * (N.M.fr τ)⁻¹) u`.
+
+Rewrite using `[hw]`. Unfold `dRep`. Use `congr 1`. Use function extensionality and compare the values at `t`. Rewrite using `[Transport.exp_smul_conj hP]`.
+
+Both sides reduce to the same expression. Establish `h1` using `(hσ.hasDerivAt_sobFun (hb x) (hsm u) hY).deriv`. Rewrite `h1` using `[← e]`. Rewrite using `[hval]`. Use `h1.symm.trans ?_` and prove the remaining obligations.
+
+Unfold `Rder oneP`. Use `congr 1`. Use function extensionality and compare the values at `t`. Rewrite using `[← res_conj hP (ψ u) x, ← Transport.exp_smul_conj hP, key u x _ (exp_mem_UJ hY t)]`.
+-/
 theorem placeDecomposition_gkMap_rankOne_values : ∀ (D : D7) (θ : InfFam D), IsInfFam θ → _root_.GlobalTheory.FunPr.ThetaLocalInputs → ∀ (N : GlobalTheory.Grid.Node D) (τ : D.what₂.Tau) (φ : GA D N.V → ℂ) (S : GA D N.V → List (List (Mx N.V.rank))) (v : GA D N.V → ℕ → N.M.H τ) (ℓ : GA D N.V → ℕ → (N.M.H τ →ₗ[ℂ] ℂ)) (C : GA D N.V → ℕ → ℝ), (∀ x, Words (lieSet (N.M.ε τ)) (S x)) → (∀ x, Ctrl (lieSet (N.M.ε τ)) (UJset (N.M.ε τ)) (N.M.σ τ) (S x)) → (∀ x, Expn (N.M.ε τ) (N.M.σ τ) (S x) (v x) (ℓ x) (C x) (res θ N.V τ (N.M.fr τ) φ x)) → ∀ (c : N.M.H τ) (ψ : GlobalTheory.IndefiniteRowSideFullHecke.KTypeExtension.kFin N.M τ → GA D N.V → ℂ), (∀ u : GlobalTheory.IndefiniteRowSideFullHecke.KTypeExtension.kFin N.M τ, Moves θ N.V τ (N.M.ε τ) (N.M.σ τ) (N.M.fr τ) (fun w => ⟪c, w⟫_ℂ • (u : N.M.H τ)) φ (ψ u)) → (∀ u x, ψ u x = ∑' i, ⟪c, v x i⟫_ℂ * ℓ x i u) ∧ (∀ u u', ψ (u + u') = ψ u + ψ u') ∧ (∀ (z : ℂ) u, ψ (z • u) = z • ψ u) ∧ (∀ k ∈ GlobalTheory.IndefiniteRowSideFullHecke.KTypeExtension.maxCpt N.M τ, ∀ u w : GlobalTheory.IndefiniteRowSideFullHecke.KTypeExtension.kFin N.M τ, (w : N.M.H τ) = N.M.rep τ k u → ψ w = rTr N.V (atTau θ N.V τ k) (ψ u)) ∧ (∀ X ∈ lieAt N.V τ, ∀ u w : GlobalTheory.IndefiniteRowSideFullHecke.KTypeExtension.kFin N.M τ, (w : N.M.H τ) = dRep (N.M.rep τ) X u → ψ w = Rder θ N.V τ X (ψ u)) := by
   intro D θ hθ hp N τ φ S v ℓ C hS hc h c ψ hψ
   have hσ : Std (N.M.ε τ) (N.M.σ τ) := std_of_isDS hp.harishChandraModules (N.M.ds τ)
@@ -73,6 +94,9 @@ open GlobalTheory.Grow GlobalTheory.Size
 open Formalism.REAL Formalism.MainNotions.S GlobalTheory.SmoothGlob GlobalTheory.LowTypeDetermined GlobalTheory.TypeSum GlobalTheory.SeriesToClosure GlobalTheory.PlaceDecomp GlobalTheory.KFinDecomp Matrix
 open scoped InnerProductSpace
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @_root_.GlobalTheory.PlaceDecomp.placeDecomposition_gkMap_rankOne_values | exact _root_.GlobalTheory.PlaceDecomp.placeDecomposition_gkMap_rankOne_values | (intros; apply _root_.GlobalTheory.PlaceDecomp.placeDecomposition_gkMap_rankOne_values <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.twist_gkMap_rankOne_values : ∀ (D : D7) (θ : InfFam D), IsInfFam θ → _root_.GlobalTheory.FunPr.ThetaLocalInputs → ∀ (N : GlobalTheory.Grid.Node D) (τ : D.what₂.Tau) (φ : GA D N.V → ℂ) (S : GA D N.V → List (List (Mx N.V.rank))) (v : GA D N.V → ℕ → N.M.H τ) (ℓ : GA D N.V → ℕ → (N.M.H τ →ₗ[ℂ] ℂ)) (C : GA D N.V → ℕ → ℝ), (∀ x, Words (lieSet (N.M.ε τ)) (S x)) → (∀ x, Ctrl (lieSet (N.M.ε τ)) (UJset (N.M.ε τ)) (N.M.σ τ) (S x)) → (∀ x, Expn (N.M.ε τ) (N.M.σ τ) (S x) (v x) (ℓ x) (C x) (res θ N.V τ (N.M.fr τ) φ x)) → ∀ (c : N.M.H τ) (ψ : GlobalTheory.IndefiniteRowSideFullHecke.KTypeExtension.kFin N.M τ → GA D N.V → ℂ), (∀ u : GlobalTheory.IndefiniteRowSideFullHecke.KTypeExtension.kFin N.M τ, Moves θ N.V τ (N.M.ε τ) (N.M.σ τ) (N.M.fr τ) (fun w => ⟪c, w⟫_ℂ • (u : N.M.H τ)) φ (ψ u)) → (∀ u x, ψ u x = ∑' i, ⟪c, v x i⟫_ℂ * ℓ x i u) ∧ (∀ u u', ψ (u + u') = ψ u + ψ u') ∧ (∀ (z : ℂ) u, ψ (z • u) = z • ψ u) ∧ (∀ k ∈ GlobalTheory.IndefiniteRowSideFullHecke.KTypeExtension.maxCpt N.M τ, ∀ u w : GlobalTheory.IndefiniteRowSideFullHecke.KTypeExtension.kFin N.M τ, (w : N.M.H τ) = N.M.rep τ k u → ψ w = rTr N.V (atTau θ N.V τ k) (ψ u)) ∧ (∀ X ∈ lieAt N.V τ, ∀ u w : GlobalTheory.IndefiniteRowSideFullHecke.KTypeExtension.kFin N.M τ, (w : N.M.H τ) = dRep (N.M.rep τ) X u → ψ w = Rder θ N.V τ X (ψ u)) := by
   first | exact @_root_.GlobalTheory.PlaceDecomp.placeDecomposition_gkMap_rankOne_values | exact _root_.GlobalTheory.PlaceDecomp.placeDecomposition_gkMap_rankOne_values | (intros; apply _root_.GlobalTheory.PlaceDecomp.placeDecomposition_gkMap_rankOne_values <;> assumption)
 end

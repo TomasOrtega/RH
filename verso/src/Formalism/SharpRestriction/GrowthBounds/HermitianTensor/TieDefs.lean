@@ -8,6 +8,9 @@ namespace Formalism.MainNotions.flipOneThree.Pf
 
 open Formalism.MainNotions.G Formalism.MainNotions.flipOneThree Formalism.CountingSumsFrames Formalism.GradedWeylDivisibility MvPolynomial
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem covY_eq (K : Type) [Field K] (m : ℕ) : ShapeCovering.covY K m = covY K m := rfl
 
 def ExplicitMapInjective : Prop := ∀ (K : Type) [Field K] (m : ℕ), 1 ≤ m → Function.Injective (PsiXY K m)

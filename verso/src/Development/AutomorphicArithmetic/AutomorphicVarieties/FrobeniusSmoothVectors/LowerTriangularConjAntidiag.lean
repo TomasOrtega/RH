@@ -3,12 +3,18 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.FrobeniusSmoothVec
 
 open IsLocalRing Matrix UpperTheory.V.Alg UpperTheory.V.U3 UpperTheory.V.Fr
 
+/- English proof (translation)
+Simplify using `only [Matrix.mul_apply, Jmat]`. Simplify using `[Fin.rev_eq_iff]`. Simplify using `[eq_comm (a := j), Fin.rev_eq_iff]`.
+-/
 private theorem jconj {K : Type} [CommRing K] {n : ℕ} (M : Matrix (Fin n) (Fin n) K) (i j : Fin n) :
     (Jmat K n * Mᵀ * Jmat K n) i j = M j.rev i.rev := by
   simp only [Matrix.mul_apply, Jmat]
   simp [Fin.rev_eq_iff]
   simp [eq_comm (a := j), Fin.rev_eq_iff]
 
+/- English proof (translation)
+Use extensionality with `i j`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;>`. Apply the tactic sequence `simp [Matrix.mul_apply, Fin.sum_univ_three, Matrix.one_apply] <;> ring`.
+-/
 private theorem ord3 {K : Type} [CommRing K] (α β γ p₀ q₀ p₁ q₁ p₂ q₂ : K) :
     (!![p₀, 0, 0; (p₀ - 1) * α, 1, 0; (p₀ - q₀) * γ - (1 - q₀) * (α * β), (1 - q₀) * β, q₀] -
         p₀ • (1 : Matrix (Fin 3) (Fin 3) K)) *
@@ -20,26 +26,71 @@ private theorem ord3 {K : Type} [CommRing K] (α β γ p₀ q₀ p₁ q₁ p₂ 
   fin_cases i <;> fin_cases j <;>
     simp [Matrix.mul_apply, Fin.sum_univ_three, Matrix.one_apply] <;> ring
 
+/- English proof (translation)
+Use extensionality with `i j`. Rewrite using `[jconj]`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;> rfl`.
+-/
 private theorem low_pol {K : Type} [CommRing K] (p q y z a : K) :
     !![q, 0, 0; z, 1, 0; a, y, p] = Jmat K 3 * (!![p, 0, 0; y, 1, 0; a, z, q])ᵀ * Jmat K 3 := by
   ext i j
   rw [jconj]
   fin_cases i <;> fin_cases j <;> rfl
 
+/- English proof (translation)
+Use extensionality with `i j`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;> simp [Matrix.mul_apply, Fin.sum_univ_three]`.
+-/
 private theorem low_mul {K : Type} [CommRing K] (p q y z a p' q' y' z' a' : K) :
     !![p * p', 0, 0; y * p' + y', 1, 0; a * p' + z * y' + q * a', z + q * z', q * q'] =
       !![p, 0, 0; y, 1, 0; a, z, q] * !![p', 0, 0; y', 1, 0; a', z', q'] := by
   ext i j
   fin_cases i <;> fin_cases j <;> simp [Matrix.mul_apply, Fin.sum_univ_three]
 
+/- English proof (translation)
+Apply the tactic sequence `fin_cases i <;> fin_cases j <;> simp at h ⊢`.
+-/
 private theorem low_diag {K : Type} [CommRing K] (p q p' q' y a : K) (i j : Fin 3) (h : i ≠ j) :
     (!![p, 0, 0; y, 1, 0; a, y, q] - !![p', 0, 0; y, 1, 0; a, y, q'] : Matrix (Fin 3) (Fin 3) K) i j = 0 := by
   fin_cases i <;> fin_cases j <;> simp at h ⊢
 
+/- English proof (translation)
+Apply the tactic sequence `fin_cases i <;> fin_cases j <;> simp at h ⊢`.
+-/
 private theorem low_up {K : Type} [CommRing K] (p q y z a : K) (i j : Fin 3) (h : i < j) :
     (!![p, 0, 0; y, 1, 0; a, z, q] : Matrix (Fin 3) (Fin 3) K) i j = 0 := by
   fin_cases i <;> fin_cases j <;> simp at h ⊢
 
+/- English proof (translation)
+Introduce `l _ k _ _ F C₀ hF Q _ _ y a h`. Take `⟨s1, s2, s3, s4, -⟩` from `UpperTheory.V.Fr.star hF`. Establish `y1 : y 1 = 0`. Use `h.muly 1 1` as an intermediate fact. Simplify using `using this`.
+
+Establish `st1 : F.star 1 = 1` using `by simp [Frame.star]`. Establish `a1 : a 1 = 0`. Use `h.mula 1 1` as an intermediate fact. Simplify `this` using `[y1]`. Set `p : F.G0 → Q` to `fun g => algebraMap k Q (F.Ψ g : k)`.
+
+Set `q : F.G0 → Q` to `fun g => algebraMap k Q (((F.Ψ g)⁻¹ : kˣ) : k)`. Establish `pm : ∀ g g', p (g * g') = p g * p g'` using `fun g g' => by simp [p]`. Establish `qm : ∀ g g', q (g * g') = q g * q g'` using `fun g g' => by simp [q, mul_comm]`. Establish `ps : ∀ g, p (F.star g) = q g` using `fun g => by simp only [p, q, s3]`. Establish `qs : ∀ g, q (F.star g) = p g` using `fun g => by simp only [p, q, s3, inv_inv]`.
+
+Establish `ym : ∀ g g', y (g * g') = y g * p g' + y g'` using `fun g g' => by`. Rewrite using `[h.muly, Algebra.smul_def, mul_comm]`. Establish `am : ∀ g g', a (g * g') = a g * p g' + y (F.star g) * y g' + q g * a g'` using `fun g g' => by`. Rewrite using `[h.mula, Algebra.smul_def, Algebra.smul_def, mul_comm _ (a g)]`. Establish `zm : ∀ g g', y (F.star (g * g')) = y (F.star g) + q g * y (F.star g')` using `fun g g' => by`.
+
+Rewrite using `[s2, ym, ps]`. Expand and normalize the polynomial expressions, which then agree. Set `r : F.G0 →* Matrix (Fin 3) (Fin 3) Q` to `{ toFun := fun g => !![p g, 0, 0; y g, 1, 0; a g, y (F.star g), q g] map_one' := by`. Use extensionality with `i j`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;> simp [p, q, y1, a1, st1]`.
+
+Use the proof step `map_mul' := fun g g' => by`. Rewrite using `[zm, pm, qm, ym, am, low_mul] }`. Establish `hr : ∀ g, r g = !![p g, 0, 0; y g, 1, 0; a g, y (F.star g), q g]` using `fun _ => rfl`. Establish `w0 : w 3 0 = 1` using `rfl`. Establish `w1 : w 3 1 = 0` using `rfl`.
+
+Establish `w2 : w 3 2 = -1` using `rfl`. Set `ψ : ∀ v, Fin 3 → F.Gv v →* Qˣ` to `fun v i => (Units.map (algebraMap k Q).toMonoidHom).comp ((zpowGroupHom (w 3 i)).comp (F.Ψ.comp (F.loc v)))`. Establish `hψ : ∀ v i g, (ψ v i g : Q) = algebraMap k Q ((F.Ψ (F.loc v g) ^ w 3 i : kˣ) : k)` using `fun _ _ _ => rfl`. Establish `hΨ : IsLocallyConstant fun g : F.G0 => F.Ψ g`. Use `(IsLocallyConstant.iff_eventually_eq _).2 fun g => ?_` and prove the remaining obligations.
+
+Establish `hc : Continuous fun x : F.G0 => (g : F.Γ)⁻¹ * (x : F.Γ)` using `by fun_prop`. Establish `: ∀ᶠ x : F.G0 in nhds g, (g : F.Γ)⁻¹ * (x : F.Γ) ∈ (F.Ψ.ker : Set F.Γ)` using `(hF.Ψ_open.preimage hc).mem_nhds (by simp)`. Use `this.mono fun x hx => ?_` and prove the remaining obligations. Establish `hx' : F.Ψ ((g : F.Γ)⁻¹ * (x : F.Γ)) = 1` using `hx`. Rewrite `hx'` using `[map_mul, map_inv, inv_mul_eq_one]`.
+
+Conclude with `hx'.symm`. Establish `lp : IsLocallyConstant p` using `hΨ.comp fun u : kˣ => algebraMap k Q (u : k)`. Establish `lq : IsLocallyConstant q` using `hΨ.comp fun u : kˣ => algebraMap k Q ((u⁻¹ : kˣ) : k)`. Establish `lz : IsLocallyConstant fun g => y (F.star g)` using `h.lcy.comp_continuous s4`. Use `⟨⟨r, ψ, fun g => ?_, fun i j hij => ?_, fun v g => ?_⟩, ⟨fun g i => ?_, hψ⟩, ?_, fun i j => ?_, fun g => rfl, fun g => rfl⟩` and prove the remaining obligations.
+
+Rewrite using `[hr, hr, ps, qs, s1, h.pol, ← low_pol]`. Rewrite using `[hr, hr, s1, h.pol, ← h.nor]`. Conclude with `low_diag _ _ _ _ _ _ i j hij`. Take `⟨α, β, γ, H⟩` from `h.loc v`. Establish `e : ∀ s, r (F.loc0 v s) = !![p (F.loc0 v s), 0, 0; (p (F.loc0 v s) - 1) * α, 1, 0; (p (F.loc0 v s) - q (F.loc0 v s)) * γ - (1 - q (F.loc0 v s)) * (α * β), (1 - q (F.loc0 v s)) * β, q (F.loc0 v s)]` using `fun s => by`.
+
+Take `⟨h1, h2, h3⟩` from `H s`. Rewrite using `[hr, h1, h2, h3]`. Simplify using `only [Algebra.smul_def, map_sub, map_one]`. Both sides reduce to the same expression. Establish `e0 : ∀ s, (ψ v 0 s : Q) = p (F.loc0 v s)` using `fun s => by rw [hψ, w0, zpow_one]; rfl`.
+
+Establish `e1 : ∀ s, (ψ v 1 s : Q) = 1` using `fun s => by rw [hψ, w1, zpow_zero]; simp`. Establish `e2 : ∀ s, (ψ v 2 s : Q) = q (F.loc0 v s)` using `fun s => by rw [hψ, w2, _root_.zpow_neg_one]; rfl`. Use `ord3 α β γ (p (F.loc0 v (g 0))) (q (F.loc0 v (g 0))) (p (F.loc0 v (g 1))) (q (F.loc0 v (g 1))) (p (F.loc0 v (g 2))) (q (F.loc0 v (g 2)))` as an intermediate fact. Rewrite `this` using `[← e, ← e, ← e]`. Rewrite using `[ordProd, List.ofFn_succ, List.ofFn_succ, List.ofFn_succ, List.ofFn_zero, List.prod_cons, List.prod_cons, List.prod_cons, List.prod_nil, mul_one]`.
+
+Use `show (r _ - (ψ v 0 (g 0) : Q) • 1) * ((r _ - (ψ v 1 (g 1) : Q) • 1) * (r _ - (ψ v 2 (g 2) : Q) • 1)) = 0`. Rewrite using `[e0, e1, e2]`. Conclude with `this`. Use `show r g i i = _`. Rewrite using `[hr]`.
+
+Use `fin_cases i`. Simplify using `[w0, p]`. Simplify using `[w1]`. Simplify using `[w2, q]`. Use `Ideal.span_eq_bot.2 ?_` and prove the remaining obligations.
+
+Introduce and unpack `x ⟨g, i, j, hij, rfl⟩`. Use `show r g i j = 0`. Rewrite using `[hr]`. Conclude with `low_up _ _ _ _ _ i j hij`. Use `show IsLocallyConstant fun g => r g i j`.
+
+Simplify using `only [hr]`. Apply the tactic sequence `fin_cases i <;> fin_cases j`. Use `exacts [lp, IsLocallyConstant.const 0, IsLocallyConstant.const 0, h.lcy, IsLocallyConstant.const 1, IsLocallyConstant.const 0, h.lca, lz, lq]`.
+-/
 theorem UpperTheory.lowerTriangular_conj_antidiag :
     ∀ {l : ℕ} [Fact l.Prime] {k : Type} [Field k] [CharP k l] {F : Frame l k} {C₀ : ℕ}, F.Ok C₀ → ∀ (Q : Type) [CommRing Q] [Algebra k Q] (y a : F.G0 → Q), F.Low Q y a → ∃ ρ : NRep F 3 Q, ρ.IsBar (algebraMap k Q) ∧ ρ.triM = ⊥ ∧ (∀ i j, IsLocallyConstant fun g => ρ.r g i j) ∧ (∀ g, ρ.r g 1 0 = y g) ∧ ∀ g, ρ.r g 2 0 = a g := by
   intro l _ k _ _ F C₀ hF Q _ _ y a h

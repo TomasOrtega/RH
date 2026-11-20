@@ -5,11 +5,25 @@ import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.ChebyshevPrimeBounds.Ps
 
 namespace PI.PrimesDyadicRS.W
 
+/- English proof (translation)
+Establish `e : (2 * y) / ((2 : ℕ) : ℝ) = y` using `by push_cast; ring`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem floor_half (y : ℝ) : ⌊y⌋₊ = ⌊2 * y⌋₊ / 2 := by
   have e : (2 * y) / ((2 : ℕ) : ℝ) = y := by push_cast; ring
   calc ⌊y⌋₊ = ⌊(2 * y) / ((2 : ℕ) : ℝ)⌋₊ := by rw [e]
     _ = ⌊2 * y⌋₊ / 2 := Nat.floor_div_natCast _ _
 
+/- English proof (translation)
+Introduce `y h1 h2`. Establish `hy0 : 0 ≤ 2 * y` using `by linarith`. Establish `h41 : 41 ≤ ⌊2 * y⌋₊` using `Nat.le_floor (by push_cast; linarith)`. Establish `hlt : ⌊2 * y⌋₊ < 131072` using `(Nat.floor_lt hy0).2 (by push_cast; linarith)`. Establish `key` using `hS _ h41 hlt`.
+
+Establish `hhy : (⌊2 * y⌋₊ : ℝ) ≤ 2 * y` using `Nat.floor_le hy0`. Establish `hyh : 2 * y < ⌊2 * y⌋₊ + 1` using `Nat.lt_floor_add_one _`. Establish `h41r : (41 : ℝ) ≤ ⌊2 * y⌋₊` using `by exact_mod_cast h41`. Establish `hh2 : (0 : ℝ) < (⌊2 * y⌋₊ : ℝ) / 2` using `by linarith`. Establish `hlog0 : 0 < Real.log ((⌊2 * y⌋₊ : ℝ) / 2)` using `Real.log_pos (by linarith)`.
+
+Establish `hlog : Real.log ((⌊2 * y⌋₊ : ℝ) / 2) ≤ Real.log y` using `Real.log_le_log hh2 (by linarith)`. Establish `hlogy : 0 < Real.log y` using `lt_of_lt_of_le hlog0 hlog`. Unfold `At`. Rewrite using `[floor_half y]`. Use `set D := (Nat.primeCounting ⌊2 * y⌋₊ : ℝ) - (Nat.primeCounting (⌊2 * y⌋₊ / 2) : ℝ) with hDdef`.
+
+Establish `hD : 0 < D`. Assume the negation of the conclusion as `hc`. Use `push_neg at hc`. Use polynomial arithmetic with `[mul_le_mul_of_nonneg_right hc hlog0.le]`. Rewrite using `[div_lt_iff₀ (by positivity)]`.
+
+Use polynomial arithmetic with `[mul_le_mul_of_nonneg_left hlog hD.le]`.
+-/
 theorem small_of (hS : SmallNat) : ∀ y : ℝ, 41 / 2 ≤ y → y < 65536 → At y := by
   intro y h1 h2
   have hy0 : 0 ≤ 2 * y := by linarith
@@ -33,6 +47,15 @@ theorem small_of (hS : SmallNat) : ∀ y : ℝ, 41 / 2 ≤ y → y < 65536 → A
   rw [div_lt_iff₀ (by positivity)]
   nlinarith [mul_le_mul_of_nonneg_left hlog hD.le]
 
+/- English proof (translation)
+Introduce `y hy`. Establish `h1` using `PI.PC.psiLowerBound_holds (2 * y) (by linarith)`. Establish `h2` using `PI.PC.psiUpperBound_holds y (by linarith)`. Establish `h3` using `hP (2 * y) (by linarith)`. Establish `hs : (1 : ℝ) ≤ Real.sqrt (2 * y)`.
+
+Rewrite using `[show (1 : ℝ) = Real.sqrt 1 by simp]`. Conclude with `Real.sqrt_le_sqrt (by linarith)`. Establish `h4` using `PI.PC.psiUpperBound_holds (Real.sqrt (2 * y)) hs`. Establish `h5` using `Chebyshev.theta_le_psi y`. Establish `h6` using `hT y (by linarith)`.
+
+Establish `h7` using `hR y hy`. Establish `hL : 0 < Real.log (2 * y)` using `Real.log_pos (by linarith)`. Unfold `At`. Establish `h8 : 3 * y / (5 * Real.log y) * Real.log (2 * y) < ((Nat.primeCounting ⌊2 * y⌋₊ : ℝ) - (Nat.primeCounting ⌊y⌋₊ : ℝ)) * Real.log (2 * y)`. Combine the linear equalities and inequalities to obtain the conclusion.
+
+Conclude with `lt_of_mul_lt_mul_right h8 hL.le`.
+-/
 theorem large_of (hT : ThetaDiff) (hP : PsiTheta) (hR : RealIneq) :
     ∀ y : ℝ, 65536 ≤ y → At y := by
   intro y hy
@@ -53,6 +76,9 @@ theorem large_of (hT : ThetaDiff) (hP : PsiTheta) (hR : RealIneq) :
     linarith
   exact lt_of_mul_lt_mul_right h8 hL.le
 
+/- English proof (translation)
+Introduce `y hy`. Break down `lt_or_ge y 65536 with h | h` into its components or cases. Conclude with `small_of hS y hy h`. Conclude with `large_of hT hP hR y h`.
+-/
 theorem claim_of (hS : SmallNat) (hT : ThetaDiff) (hP : PsiTheta) (hR : RealIneq) :
     PI.PrimesDyadicRS.Claim := by
   intro y hy

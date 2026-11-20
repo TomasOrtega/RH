@@ -16,6 +16,21 @@ set_option synthInstance.maxHeartbeats 400000
 
 namespace GlobalTheory.SingleDatum
 
+/- English proof (translation)
+Introduce `D H l`. Establish `hbar : ∀ x : 𝓞 D.host.E, H.bar x = GlobalTheory.IdemSupport.cO D x` using `fun x => RingOfIntegers.ext (by rw [H.bar_eq, GlobalTheory.IdemSupport.cO_coe]; rfl)`. Establish `key : ∀ Q : HeightOneSpectrum (𝓞 D.host.E), l.Mb ≤ Q.asIdeal → ¬ l.Mb ≤ (GlobalTheory.IdemSupport.cP Q).asIdeal`. Introduce `Q h1 h2`. Apply `Q.isPrime.ne_top` to reduce the goal to its premises.
+
+Rewrite using `[eq_top_iff, ← l.coprime]`. Use `sup_le h1 (Ideal.map_le_iff_le_comap.2 fun x hx => ?_)` and prove the remaining obligations. Establish `h3` using `h2 hx`. Rewrite `h3` using `[GlobalTheory.IdemSupport.mem_cP]`. Rewrite using `[Ideal.mem_comap, RingHom.coe_coe, hbar]`.
+
+Conclude with `h3`. Establish `hne : l.Mb ≠ ⊥`. Introduce `h`. Establish `h1` using `l.prod`. Rewrite `h1` using `[h, Ideal.bot_mul, eq_comm, Ideal.span_singleton_eq_bot]`.
+
+Establish `h2 : (l.M : 𝓞 D.host.E) ≠ 0` using `Nat.cast_ne_zero.2 (by have := l.three_le; omega)`. Conclude with `h2 h1`. Establish `hfin : {Q : HeightOneSpectrum (𝓞 D.host.E) | l.Mb ≤ Q.asIdeal}.Finite` using `(Ideal.finite_factors (I := l.Mb) (by rwa [Ideal.zero_eq_bot])).subset fun Q hQ => Ideal.dvd_iff_le.2 hQ`. Use `(GlobalTheory.GridIdem.exists_isIdemSum hfin.toFinset ?_ ?_).imp fun e he => ⟨hfin.toFinset, he, fun PP => hfin.mem_toFinset⟩` and prove the remaining obligations. Introduce `Q hQ`.
+
+Rewrite `hQ` using `[Set.Finite.mem_toFinset]`. Use `GlobalTheory.Hk3.SplitMatch.exists_isIdemAt fun h => key Q hQ fun x hx => ?_` and prove the remaining obligations. Rewrite using `[GlobalTheory.IdemSupport.mem_cP]`. Establish `h4 : Formalism.DivisionValues.cO D.host.E x ∈ (Formalism.DivisionValues.conjPl Q).asIdeal` using `Ideal.mem_map_of_mem _ (hQ hx)`. Rewrite `h4` using `[h]`.
+
+Conclude with `h4`. Introduce `Q hQ Q' hQ' hu`. Rewrite `hQ`, `hQ'` using `[Set.Finite.mem_toFinset]`. Break down `GlobalTheory.IdemSupport.eq_or_eq_cP hu with h | h` into its components or cases. Conclude with `h`.
+
+Conclude with `absurd (by rw [← h]; exact hQ) (key Q' hQ')`.
+-/
 theorem exists_isHalfIdem : ∀ (D : D7) (H : Geo.Tor.Host D.host.E) (l : Geo.Tor.Level H), ∃ e : AE D, IsHalfIdem l e := by
   intro D H l
   classical

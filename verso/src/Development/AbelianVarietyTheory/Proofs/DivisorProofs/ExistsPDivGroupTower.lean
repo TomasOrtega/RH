@@ -18,6 +18,11 @@ namespace GlobalTheory.AbelianTower
 open TensorProduct
 open scoped CategoryTheory.Obj
 
+/- English proof (translation)
+Take `⟨R, _, _, y, h1, h2, h⟩` from `AbelianPDiv.exists_isPullback (N := N) hA (Nat.one_le_iff_ne_zero.2 hN)`. Use `⟨R, inferInstance, inferInstance, y, h1, h2, AbelianPDiv.isUnivTorsion_of_isPullback y h, fun q => ?_⟩` and prove the remaining obligations. Set `K` to `q.asIdeal.ResidueField`. Take `⟨y', h'⟩` from `AbelianPDiv.exists_isPullback_baseChange y h K`. Set `B : AV.AbVar K` to `{ X := (Over.pullback (spMap (algebraMap O K))).obj A ab := ReciprocityTheory.ChartRestriction.G.Out.TLinPf.isAb_pullback _ A hA dim := g smooth := (smoothOfRelativeDimension_isStableUnderBaseChange g).of_isPullback (IsPullback.of_hasPullback A.hom (spMap (algebraMap O K))) hg }`.
+
+Establish `hr` using `AVTower.finrank_torsion B hN (S := K ⊗[O] R) y' h'`. Establish `hq : PrimeSpectrum.comap (algebraMap O K) ⊥ = q` using `PrimeSpectrum.ext ((RingHom.ker_eq_comap_bot _).symm.trans (Ideal.ker_algebraMap_residueField _))`. Rewrite using `[← hq, ← Module.rankAtStalk_baseChange, Module.rankAtStalk_eq_finrank_of_free, hr]`. Both sides reduce to the same expression.
+-/
 theorem exists_isUnivTorsion {O : Type} [CommRing O] {A : Over (Sp O)} [GrpObj A] (hA : IsAbelianScheme A) {g : ℕ}
     (hg : SmoothOfRelativeDimension g A.hom) {N : ℕ} (hN : N ≠ 0) :
     ∃ (R : Type) (_ : CommRing R) (_ : Algebra O R) (y : SpAlg O R ⟶ A), Module.Finite O R ∧
@@ -39,6 +44,9 @@ theorem exists_isUnivTorsion {O : Type} [CommRing O] {A : Over (Sp O)} [GrpObj A
   rw [← hq, ← Module.rankAtStalk_baseChange, Module.rankAtStalk_eq_finrank_of_free, hr]
   rfl
 
+/- English proof (translation)
+Use `hA.comm` as an intermediate fact. Use `choose R _ _ y h1 h2 h hr using fun n : ℕ => exists_isUnivTorsion (N := p ^ n) hA hg (pow_ne_zero _ hp.out.ne_zero)`. Use `choose r r1 r2 r3 using fun n : ℕ => (h n).exists_res (h (n + 1)) (by rw [pow_succ, pow_mul, (h n).1, one_pow])`. Set `G : PDivGroup p O` to `{ height := 2 * g A := R hopf := fun n => (h n).hopfAlgebra cocomm := fun n => (h n).isCocomm finite := h1 projective := h2 rank_eq := fun n q => (hr n q).trans (pow_mul _ _ _).symm res := r res_surjective := r1 ker_res := r2 }`. Conclude with `⟨G, { y := y mul := fun n B _ _ => (h n).mul_y inj := fun n B _ _ _ _ => (h n).inj surj := fun n B _ _ z hz => ((h n).2 B z hz).exists res := r3 }, rfl⟩`.
+-/
 theorem exists_pDivGroup (p : ℕ) [hp : Fact p.Prime] (O : Type) [CommRing O] (A : Over (Sp O)) [GrpObj A]
     (hA : IsAbelianScheme A) (g : ℕ) (hg : SmoothOfRelativeDimension g A.hom) :
     ∃ (G : PDivGroup p O) (_ : G.TorsionTower A), G.height = 2 * g := by
@@ -65,6 +73,9 @@ theorem exists_pDivGroup (p : ℕ) [hp : Fact p.Prime] (O : Type) [CommRing O] (
     surj := fun n B _ _ z hz => ((h n).2 B z hz).exists
     res := r3 }, rfl⟩
 
+/- English proof (translation)
+Introduce `p _ R _ _ A _ g hA hg` and use `exists_pDivGroup p R A hA g hg`.
+-/
 theorem exists_pDivGroup_tower : ∀ (p : ℕ) [Fact p.Prime] (R : Type) [CommRing R], IsNilpotent (p : R) → ∀ (A : Over (Sp R)) [GrpObj A] (g : ℕ), IsAbelianScheme A → SmoothOfRelativeDimension g A.hom → ∃ (G : PDivGroup p R) (_ : G.TorsionTower A), G.height = 2 * g :=
   fun p _ R _ _ A _ g hA hg => exists_pDivGroup p R A hA g hg
 

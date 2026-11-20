@@ -19,12 +19,23 @@ def glEquiv (γ : GL (Fin n) E) : Sp E n ≃ₗ[E] Sp E n :=
     (by rw [← Matrix.toLin'_mul, ← Units.val_mul, mul_inv_cancel, Units.val_one, Matrix.toLin'_one])
     (by rw [← Matrix.toLin'_mul, ← Units.val_mul, inv_mul_cancel, Units.val_one, Matrix.toLin'_one])
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem glEquiv_apply (γ : GL (Fin n) E) (x : Sp E n) : glEquiv γ x = (γ : Matrix (Fin n) (Fin n) E) *ᵥ x := rfl
 
+/- English proof (translation)
+Rewrite using `[glEquiv_apply, Matrix.mulVec_single_one]`. Both sides reduce to the same expression.
+-/
 theorem glEquiv_single (γ : GL (Fin n) E) (i j : Fin n) : glEquiv γ (Pi.single j 1) i = (γ : Matrix (Fin n) (Fin n) E) i j := by
   rw [glEquiv_apply, Matrix.mulVec_single_one]
   rfl
 
+/- English proof (translation)
+Use `set M : Matrix (Fin n) (Fin n) (P.adicCompletion E) := (g : Matrix (Fin n) (Fin n) (AfE F E)).map (adAt F P) with hM`. Establish `hM' : M = (γ : Matrix (Fin n) (Fin n) E).map (algebraMap E (P.adicCompletion E))` using `Matrix.ext fun a b => h a b`. Establish `h1 : ((g⁻¹ : GL (Fin n) (AfE F E)) : Matrix (Fin n) (Fin n) (AfE F E)).map (adAt F P) * M = 1`. Rewrite using `[hM, ← Matrix.map_mul, ← Units.val_mul, inv_mul_cancel, Units.val_one]`. Conclude with `Matrix.map_one _ (map_zero _) (map_one _)`.
+
+Establish `h2 : ((γ⁻¹ : GL (Fin n) E) : Matrix (Fin n) (Fin n) E).map (algebraMap E (P.adicCompletion E)) * M = 1`. Rewrite using `[hM', ← Matrix.map_mul, ← Units.val_mul, inv_mul_cancel, Units.val_one]`. Conclude with `Matrix.map_one _ (map_zero _) (map_one _)`. Establish `e` using `(Matrix.inv_eq_left_inv h1).symm.trans (Matrix.inv_eq_left_inv h2)`. Conclude with `congrFun (congrFun e r) s`.
+-/
 theorem adAt_inv {P : HeightOneSpectrum (𝓞 E)} {g : GL (Fin n) (AfE F E)} {γ : GL (Fin n) E}
     (h : ∀ r s, adAt F P ((g : Matrix (Fin n) (Fin n) (AfE F E)) r s) = algebraMap E (P.adicCompletion E) ((γ : Matrix (Fin n) (Fin n) E) r s))
     (r s : Fin n) : adAt F P (((g⁻¹ : GL (Fin n) (AfE F E)) : Matrix (Fin n) (Fin n) (AfE F E)) r s) =
@@ -42,6 +53,23 @@ theorem adAt_inv {P : HeightOneSpectrum (𝓞 E)} {g : GL (Fin n) (AfE F E)} {γ
 
 variable [StarRing E]
 
+/- English proof (translation)
+Establish `hi` using `adAt_inv h`. Prove the components needed by the constructor for the conclusion. Introduce `hx`. Rewrite using `[GlobalTheory.Mem.ColAd.mem_stdAt_val]`. Introduce `i`.
+
+Establish `h1` using `valued_pullV_le g hx i`. Establish `e : adAt F P (Formalism.L2.Col.pullV g (glEquiv γ x) i) = algebraMap E (P.adicCompletion E) (x i)`. Establish `e2 : ((γ⁻¹ : GL (Fin n) E) : Matrix (Fin n) (Fin n) E) *ᵥ glEquiv γ x = x`. Rewrite using `[glEquiv_apply, Matrix.mulVec_mulVec, ← Units.val_mul, inv_mul_cancel, Units.val_one, Matrix.one_mulVec]`. Use `conv_rhs => rw [← e2]`.
+
+Simplify using `only [Formalism.L2.Col.pullV, Matrix.mulVec, dotProduct, map_sum, map_mul, hi, adAt_inclE]`. Rewrite `h1` using `[e]`. Then use the resulting hypothesis. Introduce `hx`. Take `⟨f, hf⟩` from `CharValCompare.exists_isFr P hN`. Establish `hy : f.symm (glEquiv γ x) ∈ stdAt E n P`.
+
+Rewrite using `[GlobalTheory.Mem.ColAd.mem_stdAt_val]`. Introduce `i`. Use `set A : Matrix (Fin n) (Fin n) E := mat f.symm * (γ : Matrix (Fin n) (Fin n) E) with hA`. Establish `hA1 : ∀ j, Valued.v (algebraMap E (P.adicCompletion E) (A i j)) ≤ 1`. Introduce `j`.
+
+Establish `h2` using `valued_symm_le (u := fun l => (g : Matrix (Fin n) (Fin n) (AfE F E)) l j) hf ((carries_globLat g _).2 ((mem_latS_std _).2 fun l => ?_)) i`. Simplify using `only [h, ← map_mul, ← map_sum] at h2`. Rewrite using `[hA, Matrix.mul_apply]`. Conclude with `h2`. Simplify using `only [Matrix.mulVec, dotProduct]`.
+
+Rewrite using `[← Matrix.mul_apply, Units.inv_mul, Matrix.one_apply]`. Use `split_ifs`. Use `exacts [one_mem _, zero_mem _]`. Establish `e3 : f.symm (glEquiv γ x) = A *ᵥ x`. Use function extensionality and compare the values at `i`.
+
+Rewrite using `[← mat_mulVec, hA, ← Matrix.mulVec_mulVec, glEquiv_apply]`. Both sides reduce to the same expression. Rewrite using `[e3]`. Simplify using `only [Matrix.mulVec, dotProduct, map_sum, map_mul]`. Use `Valuation.map_sum_le _ fun j _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[map_mul]`. Conclude with `mul_le_one' (hA1 j) ((GlobalTheory.Mem.ColAd.mem_stdAt_val.1 hx) j)`. Use `(hf _).2 hy` as an intermediate fact. Rewrite `this` using `[f.apply_symm_apply]`. Then use the resulting hypothesis.
+-/
 theorem glEquiv_mem_iff {P : HeightOneSpectrum (𝓞 E)} {g : GL (Fin n) (AfE F E)} {γ : GL (Fin n) E}
     (hN : Submodule.IsLattice E (Formalism.UG.CS.globLat g (stdLat E n)))
     (h : ∀ r s, adAt F P ((g : Matrix (Fin n) (Fin n) (AfE F E)) r s) = algebraMap E (P.adicCompletion E) ((γ : Matrix (Fin n) (Fin n) E) r s))
@@ -88,6 +116,19 @@ theorem glEquiv_mem_iff {P : HeightOneSpectrum (𝓞 E)} {g : GL (Fin n) (AfE F 
     rwa [f.apply_symm_apply] at this
 end
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ _ hc n _ ST SG Q g hg hQ`. Use `choose! γ hγ using hQ`. Take `⟨p₀, hd, -⟩` from `GlobalTheory.Mem.ColAd.exists_near (ST := ST) (SG := SG) (Q := Q) hc 0 hg`. Establish `hN : Formalism.UG.CS.globLat g (stdLat E n) = p₀.deco.1.N` using `congrArg Deco.N hd`. Establish `hlat : Submodule.IsLattice E (Formalism.UG.CS.globLat g (stdLat E n))` using `hN ▸ p₀.deco.2.lat`.
+
+Set `p : DecoF E n ST SG Q` to `⟨(p₀.deco, fun P => glEquiv (γ P.1)), fun P x => by show glEquiv (γ P.1) x ∈ Formalism.HermitianLatticesTheory.localization₂ P.1.asIdeal p₀.deco.1.N ↔ _`. Rewrite using `[← hN]`. Conclude with `glEquiv_mem_iff hlat (hγ P.1 P.2) x⟩`. Use `⟨p, hg, hN ▸ carries_globLat g, fun P v hv i hi => ?_, fun P v hv i => ?_, fun P i j => ?_⟩` and prove the remaining obligations. Establish `e : lastIdx n = i` using `Fin.ext (by simp [lastIdx]; omega)`.
+
+Express the relevant statement in the definitionally equal form `v ∈ p₀.deco.1.N at hv`. Express the relevant statement in the definitionally equal form `HasRes P.1 _ (p₀.deco.1.f P v)`. Rewrite `hv` using `[← hN]`. Rewrite using `[← hd]`. Simplify using `only [decoRaw]`.
+
+Rewrite using `[if_pos (le_locP _ _ hv), e]`. Conclude with `hasRes_redA _ ((mem_globLat g v).1 hv i)`. Express the relevant statement in the definitionally equal form `v ∈ p₀.deco.1.N at hv`. Express the relevant statement in the definitionally equal form `HasRes P.1 _ (p₀.deco.1.be P v i)`. Rewrite `hv` using `[← hN]`.
+
+Rewrite using `[← hd]`. Simplify using `only [decoRaw]`. Rewrite using `[if_pos (le_locP _ _ hv)]`. Conclude with `hasRes_redA _ ((mem_globLat g v).1 hv i)`. Use `show _ = algebraMap E _ (glEquiv (γ P.1) (Pi.single j 1) i)`.
+
+Rewrite using `[glEquiv_single]`. Conclude with `hγ P.1 P.2 i j`.
+-/
 theorem exists_isPtOf_of_rat : ∀ {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] [StarRing E] (hc : Formalism.BasicNotions.CMData F E) {n : ℕ} [NeZero n] (ST SG Q : Finset (HeightOneSpectrum (𝓞 E))) (g : GL (Fin n) (AfE F E)), g ∈ UAd hc n → (∀ P ∈ Q, ∃ γ : GL (Fin n) E, ∀ r s, adAt F P ((g : Matrix (Fin n) (Fin n) (AfE F E)) r s) = algebraMap E (P.adicCompletion E) ((γ : Matrix (Fin n) (Fin n) E) r s)) → ∃ p : DecoF E n ST SG Q, IsPtOf hc g p := by
   classical
   intro F E _ _ _ _ _ _ hc n _ ST SG Q g hg hQ

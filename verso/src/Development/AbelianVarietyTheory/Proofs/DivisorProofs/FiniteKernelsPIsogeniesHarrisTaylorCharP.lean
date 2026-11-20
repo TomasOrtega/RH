@@ -19,6 +19,43 @@ noncomputable section
 
 namespace GlobalTheory.UPel.HT.ES.KerFin
 
+/- English proof (translation)
+Use `set JG := J₁ ⊔ Je with hJG`. Distinguish the cases in `htop : JG = ⊤`. Use `(Set.finite_singleton ⊤).subset ?_` and prove the remaining obligations. Introduce `I hI`. Simplify using `only [Set.mem_setOf_eq] at hI`.
+
+Rewrite `hI` using `[htop, top_le_iff]`. Conclude with `hI`. Use `haveI : Nontrivial (A.left.presheaf.stalk x₀ ⧸ JG) := Ideal.Quotient.nontrivial_iff.2 htop`. Use `haveI : IsLocalRing (A.left.presheaf.stalk x₀ ⧸ JG) := IsLocalRing.of_surjective' (Ideal.Quotient.mk JG) Ideal.Quotient.mk_surjective`. Establish `hJGm : JG ≤ IsLocalRing.maximalIdeal _` using `IsLocalRing.le_maximalIdeal htop`.
+
+Take `⟨M, hM⟩` from `GlobalTheory.KerIdeal.maximalIdeal_pow_le k A A π₀ d hA hA inferInstance hd x₀ hx₀ J₁ hJ₁`. Establish `hunit : ∀ a : A.left.presheaf.stalk x₀, IsUnit (Ideal.Quotient.mk JG a) → IsUnit a`. Introduce `a hu`. Take `⟨y, hy⟩` from `hu.exists_right_inv`. Take `⟨y, rfl⟩` from `Ideal.Quotient.mk_surjective y`.
+
+Rewrite `hy` using `[← map_mul, ← map_one (Ideal.Quotient.mk JG), Ideal.Quotient.eq]`. Establish `h1 : a * y - 1 ∈ IsLocalRing.maximalIdeal _` using `hJGm hy`. Establish `h2 : IsUnit (a * y)`. Assume the negation of the conclusion as `hn`. Establish `h3 : a * y ∈ IsLocalRing.maximalIdeal _` using `hn`.
+
+Establish `h4 : (1 : A.left.presheaf.stalk x₀) ∈ IsLocalRing.maximalIdeal _`. Simplify using `using Ideal.sub_mem _ h3 h1`. Conclude with `(IsLocalRing.maximalIdeal.isMaximal _).ne_top ((Ideal.eq_top_iff_one _).2 h4)`. Conclude with `isUnit_of_mul_isUnit_left h2`. Establish `hmS : IsLocalRing.maximalIdeal (A.left.presheaf.stalk x₀ ⧸ JG) ≤ (IsLocalRing.maximalIdeal _).map (Ideal.Quotient.mk JG)`.
+
+Introduce `a ha`. Take `⟨a, rfl⟩` from `Ideal.Quotient.mk_surjective a`. Use `Ideal.mem_map_of_mem _ ?_` and prove the remaining obligations. Rewrite `ha`, the goal using `[IsLocalRing.mem_maximalIdeal, mem_nonunits_iff]`. Conclude with `fun hu => ha (hu.map _)`.
+
+Establish `hnil : IsNilpotent (IsLocalRing.maximalIdeal (A.left.presheaf.stalk x₀ ⧸ JG))`. Use `⟨M, le_bot_iff.1 ?_⟩` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation. Take `⟨jk, hres, htan, hinjT⟩` from `GlobalTheory.TangentStalk.tangent_eq_stalk_dual k A x₀ hx₀`. Use `letI : Algebra k (A.left.presheaf.stalk x₀ ⧸ JG) := ((Ideal.Quotient.mk JG).comp jk).toAlgebra`.
+
+Establish `halg : ∀ c : k, algebraMap k (A.left.presheaf.stalk x₀ ⧸ JG) c = Ideal.Quotient.mk JG (jk c)` using `fun c => rfl`. Establish `hpt : ∀ (ψ : A.left.presheaf.stalk x₀ →+* DualNumber k) (v : epsR k ⟶ A), v.left = Spec.map (CommRingCat.ofHom ψ) ≫ A.left.fromSpecStalk x₀ → JG ≤ RingHom.ker ψ → v ≫ g = 1`. Introduce `ψ v hv hJ`. Rewrite using `[KerDet.comp_eq_one_iff, hv]`. Conclude with `(hJe _ ψ).2 (le_sup_right.trans hJ)`.
+
+Establish `hprin : (IsLocalRing.maximalIdeal (A.left.presheaf.stalk x₀ ⧸ JG)).IsPrincipal`. Use `GlobalTheory.LocalTangent.maximalIdeal_isPrincipal k _ ?_ hnil ?_` and prove the remaining obligations. Introduce `a`. Take `⟨a, rfl⟩` from `Ideal.Quotient.mk_surjective a`. Take `⟨c, hc⟩` from `hres a`.
+
+Use `⟨c, ?_⟩` and prove the remaining obligations. Rewrite using `[halg, ← map_sub, IsLocalRing.mem_maximalIdeal, mem_nonunits_iff]`. Conclude with `fun hu => (IsLocalRing.mem_maximalIdeal _).1 hc (hunit _ hu)`. Introduce `χ₁ χ₂`. Establish `hcomp : ∀ χ : (A.left.presheaf.stalk x₀ ⧸ JG) →ₐ[k] DualNumber k, ((χ : (A.left.presheaf.stalk x₀ ⧸ JG) →+* DualNumber k).comp (Ideal.Quotient.mk JG)).comp jk = algebraMap k (DualNumber k)`.
+
+Introduce `χ`. Use `RingHom.ext fun c => ?_` and prove the remaining obligations. Simplify using `only [RingHom.comp_apply, RingHom.coe_coe]`. Rewrite using `[← halg]`. Conclude with `χ.commutes c`.
+
+Establish `hker : ∀ χ : (A.left.presheaf.stalk x₀ ⧸ JG) →ₐ[k] DualNumber k, JG ≤ RingHom.ker ((χ : (A.left.presheaf.stalk x₀ ⧸ JG) →+* DualNumber k).comp (Ideal.Quotient.mk JG))`. Introduce `χ a ha`. Rewrite using `[RingHom.mem_ker, RingHom.comp_apply, Ideal.Quotient.eq_zero_iff_mem.2 ha, map_zero]`. Take `⟨v₁, hv₁t, hv₁⟩` from `htan _ (hcomp χ₁)`. Take `⟨v₂, hv₂t, hv₂⟩` from `htan _ (hcomp χ₂)`.
+
+Establish `k₁` using `hpt _ v₁ hv₁ (hker χ₁)`. Establish `k₂` using `hpt _ v₂ hv₂ (hker χ₂)`. Take `⟨c, hc⟩` from `hline v₁ v₂ hv₁t hv₂t k₁ k₂`. Use `⟨c, ?_⟩` and prove the remaining obligations. Establish `hscale : ∀ ψ : A.left.presheaf.stalk x₀ →+* DualNumber k, ψ.comp jk = algebraMap k _ → ((epsScaleR c).comp ψ).comp jk = algebraMap k _`.
+
+Introduce `ψ hψ`. Rewrite using `[RingHom.comp_assoc, hψ]`. Use `RingHom.ext fun x => ?_` and prove the remaining obligations. Simplify using `[epsScaleR]`. Establish `hsp : ∀ ψ : A.left.presheaf.stalk x₀ →+* DualNumber k, spMap (epsScaleR c) ≫ Spec.map (CommRingCat.ofHom ψ) ≫ A.left.fromSpecStalk x₀ = Spec.map (CommRingCat.ofHom ((epsScaleR c).comp ψ)) ≫ A.left.fromSpecStalk x₀`.
+
+Introduce `ψ`. Rewrite using `[← Category.assoc, spMap, ← Spec.map_comp, CommRingCat.ofHom_comp]`. Establish `hdesc : ∀ χ χ' : (A.left.presheaf.stalk x₀ ⧸ JG) →ₐ[k] DualNumber k, (χ : (A.left.presheaf.stalk x₀ ⧸ JG) →+* DualNumber k).comp (Ideal.Quotient.mk JG) = (epsScaleR c).comp ((χ' : (A.left.presheaf.stalk x₀ ⧸ JG) →+* DualNumber k).comp (Ideal.Quotient.mk JG)) → (χ : (A.left.preshe …`. Introduce `χ χ' h`. Apply `Ideal.Quotient.ringHom_ext` to reduce the goal to its premises.
+
+Rewrite using `[RingHom.comp_assoc]`. Conclude with `h`. Break down `hc with hc | hc` into its components or cases. Use `left`. Use `hdesc _ _ (hinjT _ _ (hcomp χ₁) (hscale _ (hcomp χ₂)) ?_)` and prove the remaining obligations.
+
+Rewrite using `[← hv₁, hc, hv₂, hsp]`. Use `right`. Use `hdesc _ _ (hinjT _ _ (hcomp χ₂) (hscale _ (hcomp χ₁)) ?_)` and prove the remaining obligations. Rewrite using `[← hv₂, hc, hv₁, hsp]`. Use `((GlobalTheory.localRing_finite_ideals_of_maximalIdeal_principal_nilpotent _ hprin hnil).image (fun I => I.comap (Ideal.Quotient.mk JG))).subset ?_` and prove the remaining obligations.
+
+Introduce `I hI`. Use `⟨I.map (Ideal.Quotient.mk JG), trivial, ?_⟩` and prove the remaining obligations. Simplify using `only`. Rewrite using `[Ideal.comap_map_of_surjective _ Ideal.Quotient.mk_surjective, ← RingHom.ker_eq_comap_bot, Ideal.mk_ker]`. Conclude with `sup_eq_left.2 hI`.
+-/
 theorem finite_ideals {k : Type} [Field k] [IsAlgClosed k] {A B₁ : Over (Sp k)} [GrpObj A] [IsCommMonObj A]
     [GrpObj B₁] (hA : IsAbelianScheme A) (π₀ : A ⟶ A) [IsMonHom π₀] {d : ℕ} (hd : IsIsogDeg π₀ d) (g : A ⟶ B₁)
     (hline : ∀ v₁ v₂ : epsR k ⟶ A, IsTangent v₁ → IsTangent v₂ → v₁ ≫ g = 1 → v₂ ≫ g = 1 →
@@ -137,6 +174,11 @@ theorem finite_ideals {k : Type} [Field k] [IsAlgClosed k] {A B₁ : Over (Sp k)
   rw [Ideal.comap_map_of_surjective _ Ideal.Quotient.mk_surjective, ← RingHom.ker_eq_comap_bot, Ideal.mk_ker]
   exact sup_eq_left.2 hI
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce `h`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Simplify using `using congrArg (· ≫ fst B C) h`. Simplify using `using congrArg (· ≫ snd B C) h`.
+
+Introduce and unpack `⟨h₁, h₂⟩`. Apply the tactic sequence `apply CartesianMonoidalCategory.hom_ext <;> simp [h₁, h₂]`.
+-/
 theorem comp_lift_eq_one {S : Scheme.{0}} {A B C T : Over S} [GrpObj B] [GrpObj C] (f : A ⟶ B) (g : A ⟶ C)
     (x : T ⟶ A) : x ≫ lift f g = 1 ↔ x ≫ f = 1 ∧ x ≫ g = 1 := by
   constructor
@@ -147,6 +189,25 @@ theorem comp_lift_eq_one {S : Scheme.{0}} {A B C T : Over S} [GrpObj B] [GrpObj 
   · rintro ⟨h₁, h₂⟩
     apply CartesianMonoidalCategory.hom_ext <;> simp [h₁, h₂]
 
+/- English proof (translation)
+Set `x₀ : A.left` to `(η[A]).left.base (IsLocalRing.closedPoint k)`. Establish `hx₀ : x₀ ∈ Set.range (η[A]).left.base` using `⟨_, rfl⟩`. Take `⟨J₁, hJ₁⟩` from `GlobalTheory.KerIdeal.kernel_ideal k A A π₀ hA x₀`. Take `⟨Je, hJe⟩` from `GlobalTheory.KerIdeal.kernel_ideal k A B₁ g hB₁ x₀`. Establish `hfinI` using `finite_ideals hA π₀ hd g hline x₀ hx₀ J₁ Je hJ₁ hJe`.
+
+Establish `hfinP` using `finite_points_ker k A A π₀ d hd`. Set `pt : ∀ (R' : Type) (_ : CommRing R') (φ : A.left.presheaf.stalk x₀ →+* R'), Over.mk ((Spec.map (CommRingCat.ofHom φ) ≫ A.left.fromSpecStalk x₀) ≫ A.hom) ⟶ A` to `fun R' _ φ => Over.homMk (Spec.map (CommRingCat.ofHom φ) ≫ A.left.fromSpecStalk x₀) rfl`. Set `f : (∀ T : Over (Sp k), (T ⟶ A) → Prop) → Set (𝟙_ (Over (Sp k)) ⟶ A) × (∀ (R' : Type) (_ : CommRing R') (φ : A.left.presheaf.stalk x₀ →+* R'), Prop)` to `fun P => ({a | P _ a}, fun R' i φ => P _ (pt R' i φ))`. Set `G : Ideal (A.left.presheaf.stalk x₀) → (∀ (R' : Type) (_ : CommRing R') (φ : A.left.presheaf.stalk x₀ →+* R'), Prop)` to `fun I R' _ φ => I ≤ RingHom.ker φ`. Use `Set.Finite.of_finite_image (f := f) ((hfinP.finite_subsets.prod (hfinI.image G)).subset ?_) ?_` and prove the remaining obligations.
+
+Introduce and unpack `_ ⟨P, ⟨B, _, ψ, hB, hψ, rfl⟩, rfl⟩`. Take `⟨J, hJ⟩` from `GlobalTheory.KerIdeal.kernel_ideal k A B ψ hB x₀`. Use `⟨fun a ha => ha.1, J₁ ⊔ Je ⊔ J, (le_sup_left : J₁ ⊔ Je ≤ _), ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `R' _ φ`. Apply `propext` to reduce the goal to its premises.
+
+Simplify using `only [G, f, sup_le_iff, KerDet.comp_eq_one_iff, and_assoc]`. Conclude with `(and_congr (hJ₁ R' φ) (and_congr (hJe R' φ) (hJ R' φ))).symm`. Establish `key : ∀ (B : Over (Sp k)) [GrpObj B] (ψ : A ⟶ B) [IsMonHom ψ] (B' : Over (Sp k)) [GrpObj B'] (ψ' : A ⟶ B') [IsMonHom ψ'], IsAbelianScheme B → f (fun T x => x ≫ π₀ = 1 ∧ x ≫ g = 1 ∧ x ≫ ψ = 1) = f (fun T x => x ≫ π₀ = 1 ∧ x ≫ g = 1 ∧ x ≫ ψ' = 1) → ∀ (T : Over (Sp k)) (x : T ⟶ A), …`. Introduce `B _ ψ _ B' _ ψ' _ hB e T x hx`. Establish `hAB` using `AbelianSchemeGerms.isAbelianScheme_tensor A _ hA (AbelianSchemeGerms.isAbelianScheme_tensor B₁ B hB₁ hB)`.
+
+Use `hAB.proper` as an intermediate fact. Establish `: IsSeparated ((fst A (B₁ ⊗ B)).left ≫ A.hom)` using `by rw [Over.w]; infer_instance`. Establish `: IsSeparated (fst A (B₁ ⊗ B)).left` using `IsSeparated.of_comp _ A.hom`. Establish `: IsFinite ((lift π₀ (lift g ψ)).left ≫ (fst A (B₁ ⊗ B)).left)`. Rewrite using `[← Over.comp_left, lift_fst]`.
+
+Conclude with `hd.fin`. Establish `: IsFinite (lift π₀ (lift g ψ)).left` using `IsFinite.of_comp _ (fst A (B₁ ⊗ B)).left`. Rewrite using `[KerDet.comp_eq_one_iff]`. Use `KerDet.inK_of_inK (lift π₀ (lift g ψ)) ψ' (fun a ha => ?_) x₀ hx₀ (fun R' i φ hφ => ?_) _ ?_` and prove the remaining obligations. Rewrite `ha` using `[comp_lift_eq_one, comp_lift_eq_one]`.
+
+Establish `e₁ : {a : 𝟙_ (Over (Sp k)) ⟶ A | a ≫ π₀ = 1 ∧ a ≫ g = 1 ∧ a ≫ ψ = 1} = {a | a ≫ π₀ = 1 ∧ a ≫ g = 1 ∧ a ≫ ψ' = 1}` using `congrArg Prod.fst e`. Conclude with `((Set.ext_iff.1 e₁ a).1 ha).2.2`. Establish `h` using `(KerDet.comp_eq_one_iff _ (pt R' i φ)).2 hφ`. Rewrite `h` using `[comp_lift_eq_one, comp_lift_eq_one]`. Establish `e₂` using `congrFun (congrFun (congrFun (congrArg Prod.snd e) R') i) φ`.
+
+Conclude with `(KerDet.comp_eq_one_iff _ (pt R' i φ)).1 (e₂.mp h).2.2`. Rewrite using `[← KerDet.comp_eq_one_iff, comp_lift_eq_one, comp_lift_eq_one]`. Conclude with `hx`. Introduce and unpack `_ ⟨B, _, ψ, hB, hψ, rfl⟩ _ ⟨B', _, ψ', hB', hψ', rfl⟩ e`. Use function extensionality and compare the values at `T x`.
+
+Conclude with `propext ⟨fun h => ⟨h.1, h.2.1, key B ψ B' ψ' hB e T x h⟩, fun h => ⟨h.1, h.2.1, key B' ψ' B ψ hB' e.symm T x h⟩⟩`.
+-/
 theorem finite_subgroups {k : Type} [Field k] [IsAlgClosed k] {A B₁ : Over (Sp k)} [GrpObj A] [IsCommMonObj A]
     [GrpObj B₁] (hA : IsAbelianScheme A) (hB₁ : IsAbelianScheme B₁) (π₀ : A ⟶ A) [IsMonHom π₀] {d : ℕ}
     (hd : IsIsogDeg π₀ d) (g : A ⟶ B₁) [IsMonHom g]
@@ -212,6 +273,29 @@ namespace GlobalTheory.UPel.HT.ES.KerFin
 
 open GlobalTheory.HTLieFix
 
+/- English proof (translation)
+Set `Q` to `B ⧸ Ideal.span {c}`. Set `π : B →+* Q` to `Ideal.Quotient.mk _`. Establish `hπ : Function.Surjective π` using `Ideal.Quotient.mk_surjective`. Use `letI : Fintype (MaximalSpectrum Q) := Fintype.ofFinite _`. Take `⟨n, hn⟩` from `IsArtinianRing.isNilpotent_nilradical (R := Q)`.
+
+Establish `hinf : (⨅ I : MaximalSpectrum Q, I.asIdeal ^ (n + 1)) = ⊥`. Rewrite using `[← IsArtinianRing.nilradical_pow_eq_iInf, pow_succ, hn]`. Simplify using the standard rewrite rules. Establish `hz : ∀ x : Q, (∀ I : MaximalSpectrum Q, x ∈ I.asIdeal ^ (n + 1)) → x = 0` using `fun x hx => by`. Rewrite using `[← Ideal.mem_bot, ← hinf, Ideal.mem_iInf]`.
+
+Conclude with `hx`. Establish `hcop : Pairwise (Function.onFun IsCoprime fun I : MaximalSpectrum Q => I.asIdeal ^ (n + 1))` using `fun I J h => (MaximalSpectrum.isCoprime_of_ne h).pow`. Establish `hex : ∀ I : MaximalSpectrum Q, ∃ x : B, ∀ J : MaximalSpectrum Q, π x - (if J = I then 1 else 0) ∈ J.asIdeal ^ (n + 1)` using `fun I => by`. Take `⟨x, hx⟩` from `Ideal.exists_forall_sub_mem_ideal hcop (fun J => if J = I then (1 : Q) else 0)`. Take `⟨y, rfl⟩` from `hπ x`.
+
+Conclude with `⟨y, hx⟩`. Use `choose e he using hex`. Use `⟨MaximalSpectrum Q, inferInstance, e, ?_, fun I => ?_, fun I P P' hP hP' hc hc' h h' => ?_⟩` and prove the remaining obligations. Rewrite using `[← Ideal.Quotient.eq_zero_iff_mem]`. Use `hz _ fun J => ?_` and prove the remaining obligations.
+
+Use `Ideal.sum_mem (J.asIdeal ^ (n + 1)) (t := Finset.univ) fun I _ => he I J` as an intermediate fact. Rewrite `this` using `[Finset.sum_sub_distrib, Finset.sum_ite_eq, if_pos (Finset.mem_univ _), ← map_sum]`. Simplify using `using this`. Rewrite using `[← Ideal.Quotient.eq_zero_iff_mem]`. Use `hz _ fun J => ?_` and prove the remaining obligations.
+
+Use `he I J` as an intermediate fact. Express the relevant statement in the definitionally equal form `π _ ∈ _`. Rewrite using `[map_mul, map_sub, map_one]`. Use `split_ifs at this`. Use `Ideal.mul_mem_right _ _ ?_` and prove the remaining obligations.
+
+Rewrite using `[← neg_sub]`. Conclude with `neg_mem this`. Rewrite `this` using `[sub_zero]`. Conclude with `Ideal.mul_mem_left _ _ this`. Establish `key : ∀ P : Ideal B, P.IsPrime → c ∈ P → e I ∉ P → P = I.asIdeal.comap π`.
+
+Introduce `P hP hc h`. Establish `hk : RingHom.ker π ≤ P`. Rewrite using `[Ideal.mk_ker, Ideal.span_le, Set.singleton_subset_iff]`. Conclude with `hc`. Establish `hpr : (P.map π).IsPrime` using `Ideal.map_isPrime_of_surjective hπ hk`.
+
+Establish `hcm : (P.map π).comap π = P`. Rewrite using `[Ideal.comap_map_of_surjective _ hπ, ← RingHom.ker_eq_comap_bot]`. Conclude with `sup_eq_left.2 hk`. Set `J : MaximalSpectrum Q` to `⟨P.map π, IsArtinianRing.isMaximal_of_isPrime _⟩`. Distinguish the cases in `hJ : J = I`.
+
+Rewrite using `[← hJ]`. Conclude with `hcm.symm`. Use `he I J` as an intermediate fact. Rewrite `this` using `[if_neg hJ, sub_zero]`. Conclude with `(h (hcm ▸ (Ideal.pow_le_self (Nat.succ_ne_zero n) this : π (e I) ∈ P.map π))).elim`.
+
+Rewrite using `[key P hP hc h, key P' hP' hc' h']`.
+-/
 theorem exists_local_idempotents {B : Type} [CommRing B] (c : B) [Finite (B ⧸ Ideal.span {c})] :
     ∃ (κ : Type) (_ : Fintype κ) (e : κ → B), (∑ i, e i) - 1 ∈ Ideal.span {c} ∧
       (∀ i, (1 - e i) * e i ∈ Ideal.span {c}) ∧
@@ -265,6 +349,63 @@ theorem exists_local_idempotents {B : Type} [CommRing B] (c : B) [Finite (B ⧸ 
         exact (h (hcm ▸ (Ideal.pow_le_self (Nat.succ_ne_zero n) this : π (e I) ∈ P.map π))).elim
     rw [key P hP hc h, key P' hP' hc' h']
 
+/- English proof (translation)
+Take `⟨n, M, hM⟩` from `GlobalTheory.LieCoordR.exists_coords_baseChange k o.A (@IsAbelianScheme.smooth _ _ _ o.ab)`. Take `⟨T, Tinj, Trng, Tadd, Tsm, Tu⟩` from `hM k (RingHom.id k)`. Establish `hid : spMap (RingHom.id k) = 𝟙 (Sp k)` using `Spec.map_id _`. Establish `hx : spMap (RingHom.id k) ≫ spMap β = spMap β` using `by rw [hid, Category.id_comp]`. Establish `T0 : T 0 = 1`.
+
+Establish `h` using `Tadd 0 0`. Rewrite `h` using `[add_zero]`. Conclude with `mul_eq_left.mp h.symm`. Set `fa : D.O → Matrix (Fin n) (Fin n) k` to `fun a => (M (o.act.act a)).map (RingHom.id k)`. Establish `key : ∀ a v, T v ≫ o.act.act a = T ((fa a).mulVec v)` using `fun a v => Tu _ (o.act.hom a) v`.
+
+Establish `f1 : fa 1 = 1` using `mat_ext' fun v => Tinj (by`. Rewrite using `[← key, o.act.one, Category.comp_id, Matrix.one_mulVec])`. Establish `fmul : ∀ a c, fa (a * c) = fa a * fa c` using `fun a c => mat_ext' fun v => Tinj (by`. Rewrite using `[← key, o.act.mul, ← Category.assoc, key, key, Matrix.mulVec_mulVec])`. Establish `fadd : ∀ a c, fa (a + c) = fa a + fa c` using `fun a c => mat_ext' fun v => Tinj (by`.
+
+Rewrite using `[← key, o.act.add, MonObj.comp_mul, key, key, ← Tadd, Matrix.add_mulVec])`. Establish `f0 : fa 0 = 0`. Establish `h` using `fadd 0 0`. Rewrite `h` using `[add_zero]`. Conclude with `add_left_cancel (h.symm.trans (add_zero _).symm)`.
+
+Set `f : D.O →+* Matrix (Fin n) (Fin n) k` to `{ toFun := fa, map_one' := f1, map_mul' := fmul, map_zero' := f0, map_add' := fadd }`. Establish `keyf : ∀ a v, T v ≫ o.act.act a = T ((f a).mulVec v)` using `key`. Establish `hw : ∀ v : epsR k ⟶ o.A, v.left ≫ o.A.hom = (GlobalTheory.UPel.HT.epsPtR (spMap (RingHom.id k))).hom` using `fun v => by show v.left ≫ o.A.hom = spMap (algebraMap k (DualNumber k)) ≫ spMap (RingHom.id k)`. Rewrite using `[hid, Category.comp_id]`. Conclude with `Over.w v`.
+
+Set `cv : (epsR k ⟶ o.A) → (GlobalTheory.UPel.HT.epsPtR (spMap (RingHom.id k)) ⟶ o.A)` to `fun v => Over.homMk v.left (hw v)`. Establish `cvl : ∀ v, (cv v).left = v.left` using `fun v => Over.homMk_left _ _`. Establish `coord : ∀ v : epsR k ⟶ o.A, IsTangent v → ∃ c, cv v = T c` using `fun v hv => by`. Establish `h1 : spMap (TrivSqZeroExt.fstHom k k k).toRingHom ≫ (cv v).left = (1 : Over.mk (spMap (RingHom.id k)) ⟶ o.A).left`. Rewrite using `[one_left', cvl]`.
+
+Express the relevant statement in the definitionally equal form `_ = spMap (RingHom.id k) ≫ η[o.A].left`. Rewrite using `[hid, Category.id_comp]`. Conclude with `hv`. Take `⟨c, hc⟩` from `(Trng (cv v)).1 h1`. Conclude with `⟨c, hc.symm⟩`.
+
+Establish `kill : ∀ (v : epsR k ⟶ o.A) (c : Fin n → k) (a : D.O), cv v = T c → v ≫ o.act.act a = 1 → (f a).mulVec c = 0`. Introduce `v c a hc h`. Apply `Tinj` to reduce the goal to its premises. Rewrite using `[← keyf, ← hc, T0]`. Apply `Over.OverMorphism.ext` to reduce the goal to its premises.
+
+Establish `h'` using `congrArg Over.Hom.left h`. Rewrite `h'` using `[Over.comp_left, one_left']`. Rewrite using `[Over.comp_left, one_left', cvl, h']`. Express the relevant statement in the definitionally equal form `spMap (algebraMap k (DualNumber k)) ≫ η[o.A].left = (spMap (algebraMap k (DualNumber k)) ≫ spMap (RingHom.id k)) ≫ η[o.A].left`. Rewrite using `[hid, Category.comp_id]`.
+
+Set `φ : 𝓞 D.F →+* Matrix (Fin n) (Fin n) k` to `f.comp (algebraMap (𝓞 D.F) D.O)`. Establish `hρk : (r : k) ^ 2 - D.tr * r + D.nm = 0`. Use `congrArg β b.ρ_root` as an intermediate fact. Simplify `this` using `[hr]`. Establish `hδ : ((D.tr - 2 * r : ℤ) : k) ≠ 0` using `fun h => by`.
+
+Use `D.disc_p ((CharP.intCast_eq_zero_iff k p _).1 ?_)` and prove the remaining obligations. Move the coercions through the operations in `at h ⊢`. Take the linear combination `(D.tr - 2 * r : k) * h - 4 * hρk`. Take `⟨q, hq⟩ : (p : ℤ) ∣ r ^ 2 - D.tr * r + D.nm` from `(CharP.intCast_eq_zero_iff k p _).1 (by push_cast; exact hρk)`. Establish `hsq : ∀ l : ℕ, φ ((D.ω - r) ^ (l + 1)) = (((D.tr - 2 * r : ℤ) : k) ^ l) • φ (D.ω - r)`.
+
+Establish `hq' : (r : 𝓞 D.F) ^ 2 - D.tr * r + D.nm = p * q` using `by exact_mod_cast congrArg (Int.cast : ℤ → 𝓞 D.F) hq`. Establish `e₁ : (D.ω - r) * (D.ω - r) = ((D.tr - 2 * r : ℤ) : 𝓞 D.F) * (D.ω - r) - (p : 𝓞 D.F) * q`. Use `push_cast`. Take the linear combination `D.ω * D.tr_eq - D.nm_eq - hq'`. Establish `hp0 : φ (p : 𝓞 D.F) = 0`.
+
+Rewrite using `[map_natCast, ← map_natCast (algebraMap k (Matrix (Fin n) (Fin n) k)), CharP.cast_eq_zero, map_zero]`. Establish `e₂ : φ (D.ω - r) * φ (D.ω - r) = ((D.tr - 2 * r : ℤ) : k) • φ (D.ω - r)`. Rewrite using `[← map_mul, e₁, map_sub φ (_ * _), map_mul, map_mul φ (p : 𝓞 D.F), hp0, zero_mul, sub_zero, map_intCast, Int.cast_smul_eq_zsmul, zsmul_eq_mul]`. Introduce `l`. Proceed by induction on `l with`.
+
+Consider the case `zero => simp`. Consider the case `succ l ih => rw [pow_succ, map_mul, ih, smul_mul_assoc, e₂, smul_smul, pow_succ]`. Set `Eig : Fin D.a → Submodule k (Fin n → k)` to `fun i => ⨅ c, LinearMap.ker (Matrix.mulVecLin (φ c) - β.comp (b.t i) c • LinearMap.id)`. Establish `memE : ∀ i x, x ∈ Eig i ↔ ∀ c, (φ c).mulVec x = β (b.t i c) • x`. Introduce `i x`.
+
+Simplify using `[Eig, Submodule.mem_iInf, sub_eq_zero]`. Establish `hdim : ∀ i, Module.finrank k (Eig i) = D.m` using `fun i => (GlobalTheory.LieCoordMult.lieMult_iff_finrank_eig k o.A (𝓞 D.F) (o.act.toF D) n k (RingHom.id k) T φ Tinj Trng Tadd Tsm (fun c v => keyf _ v) (β.comp (b.t i)) D.m).1 (o.lieRank k (spMap (RingHom.id k)) β hx i)`. Establish `dec : ∀ (v : epsR k ⟶ o.A) (c : Fin n → k), cv v = T c → v ≫ o.act.act (algebraMap (𝓞 D.F) D.O ((D.ω - r) ^ L)) = 1 → v ≫ o.act.act (algebraMap (𝓞 D.F) D.O (1 - e)) = 1 → ∃ u : Fin D.a → Fin n → k, (∀ j, u j ∈ Eig j) ∧ c = ∑ j, β (b.t j e) • u j`. Introduce `v c hc h₁ h₂`. Establish `hωc : (f (algebraMap (𝓞 D.F) D.O D.ω)).mulVec c = β b.ρ • c`.
+
+Establish `h0 : (φ ((D.ω - r) ^ L)).mulVec c = 0` using `kill v c _ hc h₁`. Establish `h1 : (φ ((D.ω - r) ^ (L + 1))).mulVec c = 0`. Rewrite using `[pow_succ', map_mul, ← Matrix.mulVec_mulVec, h0, Matrix.mulVec_zero]`. Rewrite `h1` using `[hsq, Matrix.smul_mulVec, smul_eq_zero, or_iff_right (pow_ne_zero _ hδ), map_sub, Matrix.sub_mulVec, sub_eq_zero, map_intCast]`. Use `h1.trans ?_` and prove the remaining obligations.
+
+Rewrite using `[hr]`. Simplify using the standard rewrite rules. Establish `htan : IsTanScal o.act (spMap (RingHom.id k)) (algebraMap (𝓞 D.F) D.O D.ω) (β b.ρ) (T c)`. Use `⟨(Trng _).2 ⟨c, rfl⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[keyf, hωc, Tsm]`.
+
+Take `⟨wv, hwv, hprod⟩` from `o.lie k β (spMap (RingHom.id k)) hx (T c) htan`. Use `choose u hu using fun j => (Trng (wv j)).1 (hwv j 0).1`. Establish `hc' : c = ∑ j, u j`. Apply `Tinj` to reduce the goal to its premises. Rewrite using `[hprod, ← prod_ofFn_eq' T T0 Tadd]`.
+
+Simplify using `only [hu]`. Establish `hE : ∀ j, u j ∈ Eig j` using `fun j => by`. Rewrite using `[memE]`. Introduce `c'`. Apply `Tinj` to reduce the goal to its premises.
+
+Apply `Over.OverMorphism.ext` to reduce the goal to its premises. Rewrite using `[Tsm]`. Express the relevant statement in the definitionally equal form `(T ((f _).mulVec _)).left = _`. Rewrite using `[← keyf, hu j]`. Conclude with `(hwv j c').2`.
+
+Use `⟨u, hE, ?_⟩` and prove the remaining obligations. Establish `h0 : (φ (1 - e)).mulVec c = 0` using `kill v c _ hc h₂`. Rewrite `h0` using `[map_sub, map_one, Matrix.sub_mulVec, Matrix.one_mulVec, sub_eq_zero]`. Rewrite using `[h0, hc', Matrix.mulVec_sum]`. Conclude with `Finset.sum_congr rfl fun j _ => (memE j _).1 (hE j) e`.
+
+Take `⟨c₁, hc₁⟩` from `coord v₁ ht₁`. Take `⟨c₂, hc₂⟩` from `coord v₂ ht₂`. Take `⟨u₁, hu₁, e₁⟩` from `dec v₁ c₁ hc₁ hk₁ hf₁`. Take `⟨u₂, hu₂, e₂⟩` from `dec v₂ c₂ hc₂ hk₂ hf₂`. Choose the witnesses or unpack the hypotheses as in `⟨c, hc⟩ : ∃ c : k, c₁ = c • c₂ ∨ c₂ = c • c₁ := by`.
+
+Distinguish the cases in `h : ∃ i, β (b.t i e) ≠ 0`. Take `⟨i, hi⟩` from `h`. Establish `mem : ∀ u : Fin D.a → Fin n → k, (∀ j, u j ∈ Eig j) → ∑ j, β (b.t j e) • u j ∈ Eig i`. Introduce `u hu`. Use `Submodule.sum_mem _ fun j _ => ?_` and prove the remaining obligations.
+
+Distinguish the cases in `hj : β (b.t j e) = 0`. Rewrite using `[hj, zero_smul]`. Conclude with `Submodule.zero_mem _`. Take `rfl` from `he i j hi hj`. Conclude with `Submodule.smul_mem _ _ (hu _)`.
+
+Take `⟨z, hz⟩` from `finrank_le_one_iff.mp ((hdim i).trans hm).le`. Take `⟨a₁, ha₁⟩` from `hz ⟨c₁, e₁ ▸ mem u₁ hu₁⟩`. Take `⟨a₂, ha₂⟩` from `hz ⟨c₂, e₂ ▸ mem u₂ hu₂⟩`. Establish `f₁ : a₁ • (z : Fin n → k) = c₁` using `congrArg Subtype.val ha₁`. Establish `f₂ : a₂ • (z : Fin n → k) = c₂` using `congrArg Subtype.val ha₂`.
+
+Distinguish the cases in `h : a₂ = 0`. Use `⟨0, Or.inr ?_⟩` and prove the remaining obligations. Rewrite using `[← f₂, h, zero_smul, zero_smul]`. Use `⟨a₁ / a₂, Or.inl ?_⟩` and prove the remaining obligations. Rewrite using `[← f₁, ← f₂, smul_smul, div_mul_cancel₀ _ h]`.
+
+Use `push Not at h`. Use `⟨0, Or.inl ?_⟩` and prove the remaining obligations. Rewrite using `[e₁]`. Simplify using `[h]`. Use `⟨c, hc.imp (fun h => ?_) (fun h => ?_)⟩` and prove the remaining obligations.
+
+Rewrite using `[← cvl v₁, ← cvl v₂, hc₁, hc₂, h, Tsm]`. Rewrite using `[← cvl v₁, ← cvl v₂, hc₁, hc₂, h, Tsm]`.
+-/
 theorem tangent_line {p : ℕ} [Fact p.Prime] {D : Datum p} {R : Type} [CommRing R] {b : Base D R} {N : ℕ}
     (hm : D.m = 1) {k : Type} [Field k] [IsAlgClosed k] [CharP k p] (β : R →+* k) (o : Obj b N (spMap β))
     (r : ℤ) (hr : β b.ρ = r) (L : ℕ) (e : 𝓞 D.F) (he : ∀ i j, β (b.t i e) ≠ 0 → β (b.t j e) ≠ 0 → i = j)
@@ -435,11 +576,17 @@ namespace GlobalTheory.UPel.HT.ES.KerFin
 variable {p : ℕ} [Fact p.Prime] {D : Datum p} {R : Type} [CommRing R] {b : Base D R} {N : ℕ} {S : Scheme.{0}}
   {s : S ⟶ Sp R}
 
+/- English proof (translation)
+Establish `h` using `o.act.add 0 0`. Rewrite `h` using `[add_zero]`. Conclude with `mul_eq_left.1 h.symm`.
+-/
 theorem act_zero (o : Obj b N s) : o.act.act 0 = 1 := by
   have h := o.act.add 0 0
   rw [add_zero] at h
   exact mul_eq_left.1 h.symm
 
+/- English proof (translation)
+Proceed by induction on `n with`. Consider the case `zero => rw [Nat.cast_zero, act_zero, pow_zero]`. Consider the case `succ n ih => rw [Nat.cast_succ, o.act.add, ih, o.act.one, pow_succ]`.
+-/
 theorem act_natCast (o : Obj b N s) (n : ℕ) : o.act.act (n : D.O) = (𝟙 o.A) ^ n := by
   induction n with
   | zero => rw [Nat.cast_zero, act_zero, pow_zero]
@@ -462,10 +609,16 @@ def transp {o o' : Obj b N s} (ψ : o.A ⟶ o'.A) (hψ : IsMonHom ψ)
     rw [smul_eq_mul, map_mul, o.act.mul, ← Category.assoc, Category.assoc _ _ ψ, hlin, ← Category.assoc, hz,
       MonObj.one_comp]
 
+/- English proof (translation)
+Unfold both sides. The equivalence is reflexive.
+-/
 theorem mem_transp {o o' : Obj b N s} {ψ : o.A ⟶ o'.A} (hψ : IsMonHom ψ)
     (hlin : ∀ c' : D.O, o.act.act c' ≫ ψ = ψ ≫ o'.act.act c') {T : Over S} (x : T ⟶ o.A) (z : 𝓞 D.F) :
     z ∈ transp ψ hψ hlin x ↔ (x ≫ o.act.act (algebraMap (𝓞 D.F) D.O z)) ≫ ψ = 1 := Iff.rfl
 
+/- English proof (translation)
+Take `⟨φ, hφ, e, -⟩` from `h.2.2.2.2.2`. Take `⟨y, rfl⟩` from `hz`. Use `o.act.hom (algebraMap (𝓞 D.F) D.O y)` as an intermediate fact. Rewrite using `[mul_comm, map_mul, o.act.mul, ← Nat.cast_pow, map_natCast, act_natCast, ← e, ← Category.assoc, ← Category.assoc, hx, MonObj.one_comp, MonObj.one_comp]`.
+-/
 theorem kill_of_dvd {n : ℕ} {o o' : Obj b N s} {ψ : o.A ⟶ o'.A} (h : IsPIsog (p ^ n) o o' ψ) {T : Over S}
     (x : T ⟶ o.A) (hx : x ≫ ψ = 1) (z : 𝓞 D.F) (hz : (p : 𝓞 D.F) ^ n ∣ z) :
     x ≫ o.act.act (algebraMap (𝓞 D.F) D.O z) = 1 := by
@@ -479,6 +632,51 @@ end GlobalTheory.UPel.HT.ES.KerFin
 
 open GlobalTheory.UPel.HT.ES.KerFin in
 
+/- English proof (translation)
+Introduce `p _ D R _ b N _ _ hm c k _ _ _ s o`. Take `⟨β, rfl⟩ : ∃ β : R →+* k, spMap β = s` from `⟨(Spec.preimage s).hom, by simp [spMap]⟩`. Distinguish the cases in `hc : ∃ n : ℕ, c = p ^ n`. Use `swap`. Use `Set.finite_empty.subset ?_` and prove the remaining obligations.
+
+Introduce and unpack `P ⟨o', ψ, h, -⟩`. Conclude with `(hc h.1).elim`. Take `⟨n, rfl⟩` from `hc`. Establish `hp : (p : ℕ).Prime` using `Fact.out`. Establish `hρk : (β b.ρ) ^ 2 - D.tr * β b.ρ + D.nm = 0`.
+
+Use `congrArg β b.ρ_root` as an intermediate fact. Simplify using `using this`. Choose the witnesses or unpack the hypotheses as in `⟨r, hr⟩ : ∃ r : ℤ, β b.ρ = r := by`. Take `⟨r, hq⟩` from `D.split`. Establish `h1` using `(CharP.intCast_eq_zero_iff k p _).2 hq`.
+
+Move the coercions through the operations in `at h1`. Establish `hprod : (β b.ρ - r) * (β b.ρ - (D.tr - r)) = 0` using `by linear_combination hρk - h1`. Break down `mul_eq_zero.1 hprod with h | h` into its components or cases. Conclude with `⟨r, sub_eq_zero.1 h⟩`. Conclude with `⟨D.tr - r, by push_cast; exact sub_eq_zero.1 h⟩`.
+
+Take `⟨q, hq⟩ : (p : ℤ) ∣ r ^ 2 - D.tr * r + D.nm` from `(CharP.intCast_eq_zero_iff k p _).1 (by push_cast; rw [← hr]; exact hρk)`. Establish `hq' : (r : 𝓞 D.F) ^ 2 - D.tr * r + D.nm = p * q` using `by exact_mod_cast congrArg (Int.cast : ℤ → 𝓞 D.F) hq`. Set `u : 𝓞 D.F` to `D.ω - r`. Set `u' : 𝓞 D.F` to `D.ω - (D.tr - r)`. Establish `huu : u * u' = p * (-q)`.
+
+Simplify using `only [u, u']`. Take the linear combination `D.ω * D.tr_eq - D.nm_eq - hq'`. Establish `hbar : D.bar u' = -u`. Simplify using `only [u, u', map_sub, map_intCast]`. Take the linear combination `D.tr_eq`.
+
+Set `Q : 𝓞 D.F` to `(p : 𝓞 D.F) ^ (n + 1)`. Establish `hQ0 : Q ≠ 0` using `pow_ne_zero _ (Nat.cast_ne_zero.2 hp.ne_zero)`. Establish `hQn : (p : 𝓞 D.F) ^ n ∣ Q` using `pow_dvd_pow _ (Nat.le_succ n)`. Use `haveI : Finite (𝓞 D.F ⧸ Ideal.span {Q}) := Ideal.finiteQuotientOfFreeOfNeBot _ (by rwa [Ne, Ideal.span_singleton_eq_bot])`. Take `⟨κ, _, e, hsum, hidem, hloc⟩` from `exists_local_idempotents Q`.
+
+Rewrite `hsum` using `[Ideal.mem_span_singleton]`. Simplify using `only [Ideal.mem_span_singleton] at hidem`. Set `ac : 𝓞 D.F → (o.A ⟶ o.A)` to `fun z => o.act.act (algebraMap (𝓞 D.F) D.O z)`. Use `haveI hac : ∀ z, IsMonHom (ac z) := fun z => o.act.hom _`. Establish `acmul : ∀ z z', ac z ≫ ac z' = ac (z' * z)` using `fun z z' => by`.
+
+Simplify using `only [ac]`. Rewrite using `[map_mul, o.act.mul]`. Set `g : κ → (o.A ⟶ o.A ⊗ o.A)` to `fun i => lift (ac (u ^ n)) (ac (1 - e i))`. Use `haveI hg : ∀ i, IsMonHom (g i) := fun i => by simp only [g]; infer_instance`. Establish `hfin` using `fun i => finite_subgroups o.ab (AbelianSchemeGerms.isAbelianScheme_tensor _ _ o.ab o.ab) (ac Q) (GlobalTheory.HTTors.isIsogDeg_intAct p D R b N _ _ o Q hQ0) (g i) (fun v₁ v₂ h₁ h₂ k₁ k₂ => by`.
+
+Rewrite `k₁`, `k₂` using `[comp_lift_eq_one]`. Use `tangent_line hm β o r hr n (e i) (fun j j' hj hj' => ?_) v₁ v₂ h₁ h₂ k₁.1 k₂.1 k₁.2 k₂.2` and prove the remaining obligations. Assume the negation of the conclusion as `hne`. Establish `hQ : ∀ l, Q ∈ RingHom.ker (β.comp (b.t l))` using `fun l => by`. Rewrite using `[RingHom.mem_ker, map_pow, map_natCast, CharP.cast_eq_zero, zero_pow (Nat.succ_ne_zero n)]`.
+
+Conclude with `b.apart j j' hne k β (hloc i _ _ (RingHom.ker_isPrime _) (RingHom.ker_isPrime _) (hQ j) (hQ j') hj hj'))`. Set `f : (∀ T : Over (Sp k), (T ⟶ o.A) → Prop) → κ → (∀ T : Over (Sp k), (T ⟶ o.A) → Prop)` to `fun P i T x => x ≫ ac Q = 1 ∧ x ≫ g i = 1 ∧ P T x`. Use `Set.Finite.of_finite_image (f := f) ((Set.Finite.pi' hfin).subset ?_) ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨P, ⟨o', ψ, h, rfl⟩, rfl⟩ i`. Conclude with `⟨o'.A, inferInstance, ψ, o'.ab, h.2.1, rfl⟩`.
+
+Establish `step : ∀ (o₁ o₂ : Obj b N (spMap β)) (ψ₁ : o.A ⟶ o₁.A) (ψ₂ : o.A ⟶ o₂.A), IsPIsog (p ^ n) o o₁ ψ₁ → IsPIsog (p ^ n) o o₂ ψ₂ → f (fun T x => x ≫ ψ₁ = 1) = f (fun T x => x ≫ ψ₂ = 1) → ∀ (T : Over (Sp k)) (x : T ⟶ o.A), x ≫ ψ₁ = 1 → (x ≫ ac (u' ^ n)) ≫ ψ₂ = 1`. Introduce `o₁ o₂ ψ₁ ψ₂ h₁ h₂ heq T x hx`. Use `haveI := h₁.2.1`. Use `haveI := h₂.2.1`. Establish `hi : ∀ i, e i * u' ^ n ∈ transp ψ₂ h₂.2.1 h₂.2.2.1 x` using `fun i => by`.
+
+Use `((congrFun (congrFun (congrFun heq i) T) (x ≫ ac (e i * u' ^ n))).mp ⟨?_, ?_, ?_⟩).2.2` and prove the remaining obligations. Rewrite using `[Category.assoc, acmul]`. Conclude with `kill_of_dvd h₁ x hx _ (hQn.mul_right _)`. Rewrite using `[comp_lift_eq_one, Category.assoc, Category.assoc, acmul, acmul]`. Use `⟨kill_of_dvd h₁ x hx _ ⟨(-q) ^ n * e i, ?_⟩, kill_of_dvd h₁ x hx _ ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[mul_left_comm, ← mul_pow, huu, mul_pow]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[← _root_.mul_assoc]`. Conclude with `(hQn.trans (hidem i)).mul_right _`. Express the relevant statement in the definitionally equal form `(x ≫ o.act.act _) ≫ ψ₁ = 1 haveI := o₁.act.hom (algebraMap (𝓞 D.F) D.O (e i * u' ^ n))`.
+
+Rewrite using `[Category.assoc, h₁.2.2.1, ← Category.assoc, hx, MonObj.one_comp]`. Establish `h0 : ((∑ i, e i) - 1) * u' ^ n ∈ transp ψ₂ h₂.2.1 h₂.2.2.1 x`. Rewrite using `[mem_transp, kill_of_dvd h₁ x hx _ ((hQn.trans hsum).mul_right _), MonObj.one_comp]`. Use `Ideal.sub_mem _ (Ideal.sum_mem _ (t := Finset.univ) fun i _ => hi i) h0` as an intermediate fact. Rewrite `this` using `[← Finset.sum_mul, ← sub_mul, sub_sub_cancel, _root_.one_mul]`.
+
+Conclude with `this`. Establish `key : ∀ (o₁ o₂ : Obj b N (spMap β)) (ψ₁ : o.A ⟶ o₁.A) (ψ₂ : o.A ⟶ o₂.A), IsPIsog (p ^ n) o o₁ ψ₁ → IsPIsog (p ^ n) o o₂ ψ₂ → f (fun T x => x ≫ ψ₁ = 1) = f (fun T x => x ≫ ψ₂ = 1) → ∀ (T : Over (Sp k)) (x : T ⟶ o.A), x ≫ ψ₁ = 1 → x ≫ ψ₂ = 1`. Introduce `o₁ o₂ ψ₁ ψ₂ h₁ h₂ heq T x hx`. Use `haveI := h₂.2.1`. Establish `a₁ : u' ^ n ∈ transp ψ₂ h₂.2.1 h₂.2.2.1 x` using `step o₁ o₂ ψ₁ ψ₂ h₁ h₂ heq T x hx`.
+
+Establish `a₂ : (-u) ^ n ∈ transp ψ₂ h₂.2.1 h₂.2.2.1 x`. Use `star_ker_le h₁ h₂ _ (step o₂ o₁ ψ₂ ψ₁ h₂ h₁ heq.symm) T x hx` as an intermediate fact. Rewrite `this` using `[D.star_F, MulOpposite.unop_op, map_pow, hbar]`. Conclude with `this`. Establish `a₃ : (p : 𝓞 D.F) ^ n ∈ transp ψ₂ h₂.2.1 h₂.2.2.1 x`.
+
+Rewrite using `[mem_transp, kill_of_dvd h₁ x hx _ dvd_rfl, MonObj.one_comp]`. Establish `htop : transp ψ₂ h₂.2.1 h₂.2.2.1 x = ⊤`. Assume the negation of the conclusion as `hne`. Take `⟨𝔪, h𝔪, hle⟩` from `Ideal.exists_le_maximal _ hne`. Establish `b₁` using `h𝔪.isPrime.mem_of_pow_mem n (hle a₁)`.
+
+Establish `b₂` using `h𝔪.isPrime.mem_of_pow_mem n (hle a₂)`. Establish `b₃` using `h𝔪.isPrime.mem_of_pow_mem n (hle a₃)`. Take `⟨y, z, hyz⟩` from `((Nat.prime_iff_prime_int.1 hp).coprime_iff_not_dvd.2 D.disc_p)`. Establish `hyz' : (y : 𝓞 D.F) * p + z * (D.tr ^ 2 - 4 * D.nm) = 1`. Conclude with `congrArg (Int.cast : ℤ → 𝓞 D.F) hyz` after adjusting the coercions.
+
+Use `h𝔪.ne_top ((Ideal.eq_top_iff_one _).2 ?_)` and prove the remaining obligations. Establish `: (1 : 𝓞 D.F) = (y - 4 * z * q) * p + z * (u' + -u) * (u' + -u)`. Simplify using `only [u, u']`. Take the linear combination `-hyz' - 4 * z * hq'`. Rewrite using `[this]`.
+
+Conclude with `Ideal.add_mem _ (Ideal.mul_mem_left _ _ b₃) (Ideal.mul_mem_left _ _ (Ideal.add_mem _ b₁ b₂))`. Establish `h1 : (1 : 𝓞 D.F) ∈ transp ψ₂ h₂.2.1 h₂.2.2.1 x` using `htop ▸ Submodule.mem_top`. Rewrite `h1` using `[mem_transp, map_one, o.act.one, Category.comp_id]`. Then use the resulting hypothesis. Introduce and unpack `_ ⟨o₁, ψ₁, h₁, rfl⟩ _ ⟨o₂, ψ₂, h₂, rfl⟩ heq`. Use function extensionality and compare the values at `T x`.
+
+Conclude with `propext ⟨key o₁ o₂ ψ₁ ψ₂ h₁ h₂ heq T x, key o₂ o₁ ψ₂ ψ₁ h₂ h₁ heq.symm T x⟩`.
+-/
 theorem GlobalTheory.UPel.HT.ES.KerFin.finite_kernels : ∀ (p : ℕ) [Fact p.Prime] (D : Datum p) (R : Type) [CommRing R] (b : Base D R) (N : ℕ), 3 ≤ N → N.Coprime p → D.m = 1 → ∀ (c : ℕ) (k : Type) [Field k] [IsAlgClosed k] [CharP k p] (s : Sp k ⟶ Sp R) (o : Obj b N s), Set.Finite {P : ∀ T : Over (Sp k), (T ⟶ o.A) → Prop | ∃ (o' : Obj b N s) (ψ : o.A ⟶ o'.A), IsPIsog c o o' ψ ∧ P = fun T x => x ≫ ψ = 1} := by
   intro p _ D R _ b N _ _ hm c k _ _ _ s o
   classical

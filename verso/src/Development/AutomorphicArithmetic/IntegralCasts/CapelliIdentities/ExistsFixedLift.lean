@@ -9,6 +9,9 @@ noncomputable def UpperTheory.Reformulated.B.Gwa5.IsSmooth :
         (ρ : Representation k G V) ↦
       ∀ (v : V), IsOpen {g : G | ((ρ : G → V →ₗ[k] V) g : V → V) v = v}
 
+/- English proof (translation)
+Introduce `k G V _ _ _ _ ρ H χ a b ha hb h`. Rewrite using `[map_add, smul_add, ha h, hb h]`.
+-/
 theorem UpperTheory.Reformulated.B.Gwa5.aux2 :
     ∀ {k G V : Type} [inst : Field k] [inst_1 : Group G] [inst_2 : AddCommGroup V] [inst_3 : _root_.Module k V]
       (ρ : Representation k G V) (H : Subgroup G) (χ : ↥H →* kˣ) {a b : V},
@@ -18,6 +21,9 @@ theorem UpperTheory.Reformulated.B.Gwa5.aux2 :
   intro k G V _ _ _ _ ρ H χ a b ha hb h
   rw [map_add, smul_add, ha h, hb h]
 
+/- English proof (translation)
+Introduce `k G V _ _ _ _ ρ H χ h`. Rewrite using `[map_zero, smul_zero]`.
+-/
 theorem UpperTheory.Reformulated.B.Gwa5.aux3 :
     ∀ {k G V : Type} [inst : Field k] [inst_1 : Group G] [inst_2 : AddCommGroup V] [inst_3 : _root_.Module k V]
       (ρ : Representation k G V) (H : Subgroup G) (χ : ↥H →* kˣ) (h : ↥H),
@@ -25,6 +31,9 @@ theorem UpperTheory.Reformulated.B.Gwa5.aux3 :
   intro k G V _ _ _ _ ρ H χ h
   rw [map_zero, smul_zero]
 
+/- English proof (translation)
+Introduce `k G V _ _ _ _ ρ H χ c v hv h`. Rewrite using `[map_smul, hv h, smul_comm]`.
+-/
 theorem UpperTheory.Reformulated.B.Gwa5.aux4 :
     ∀ {k G V : Type} [inst : Field k] [inst_1 : Group G] [inst_2 : AddCommGroup V] [inst_3 : _root_.Module k V]
       (ρ : Representation k G V) (H : Subgroup G) (χ : ↥H →* kˣ) (c : k) {v : V},
@@ -54,6 +63,29 @@ noncomputable def UpperTheory.Reformulated.B.Gwa5.fixed :
         (H : Subgroup G) ↦
       UpperTheory.Reformulated.B.Gwa5.eig ρ H (1 : ↥H →* kˣ)
 
+/- English proof (translation)
+Introduce `G V _ _ _ _ _ J L A _ hJc π hπ q u _ hL hAJ hA hdec`. Establish `hmul : ∀ (x y : G) (w : V), π x (π y w) = π (x * y) w`. Introduce `x y w`. Rewrite using `[map_mul, Module.End.mul_apply]`. Establish `hq : ∀ y ∈ J, π y u - u ∈ q`.
+
+Introduce `y hy`. Take `⟨a, ha, hl⟩` from `hdec y hy`. Establish `h1 : π y u = π a u` using `by conv_rhs => rw [← hL _ hl, hmul, mul_inv_cancel_left]`. Rewrite using `[h1]`. Conclude with `hA a ha`.
+
+Establish `hfin : ((fun g : G => π g u) '' (J : Set G)).Finite`. Establish `hU : ∀ x ∈ (J : Set G), {g : G | π g u = π x u} ∈ nhds x`. Introduce `x _`. Establish `ho : IsOpen ((fun g : G => x⁻¹ * g) ⁻¹' {g : G | π g u = u})` using `(hπ u).preimage (continuous_const.mul continuous_id)`. Use `Filter.mem_of_superset (ho.mem_nhds ?_) ?_` and prove the remaining obligations.
+
+Simplify using the standard rewrite rules. Introduce `g hg`. Establish `hg' : π (x⁻¹ * g) u = u` using `hg`. Use `show π g u = π x u`. Use `conv_rhs => rw [← hg', hmul, mul_inv_cancel_left]`.
+
+Take `⟨t, -, ht⟩` from `hJc.elim_nhds_subcover _ hU`. Use `(t.finite_toSet.image (fun g : G => π g u)).subset ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨g, hg, rfl⟩`. Take `⟨x, hx, hgx⟩` from `Set.mem_iUnion₂.1 (ht hg)`. Conclude with `⟨x, hx, hgx.symm⟩`.
+
+Use `set O : Finset V := hfin.toFinset with hO`. Establish `hmem : ∀ w, w ∈ O ↔ ∃ g ∈ J, π g u = w`. Introduce `w`. Rewrite using `[hO, Set.Finite.mem_toFinset]`. Both sides reduce to the same expression.
+
+Establish `hstab : ∀ h ∈ J, ∀ w ∈ O, π h w ∈ O`. Introduce `h hh w hw`. Take `⟨g, hg, rfl⟩` from `(hmem w).1 hw`. Conclude with `(hmem _).2 ⟨h * g, J.mul_mem hh hg, (hmul h g u).symm⟩`. Establish `hne : (O.card : ℂ) ≠ 0`.
+
+Establish `: O.Nonempty` using `⟨π 1 u, (hmem _).2 ⟨1, J.one_mem, rfl⟩⟩`. Conclude with `this.card_pos.ne'` after adjusting the coercions. Use `⟨(O.card : ℂ)⁻¹ • ∑ w ∈ O, w, ?_, ?_⟩` and prove the remaining obligations. Introduce `h`. Establish `hs : ∑ w ∈ O, π (h : G) w = ∑ w ∈ O, w`.
+
+Use `Finset.sum_nbij' (fun w => π (h : G) w) (fun w => π (h : G)⁻¹ w) (fun w hw => hstab _ h.2 w hw) (fun w hw => hstab _ (J.inv_mem h.2) w hw) ?_ ?_ (fun _ _ => rfl)` and prove the remaining obligations. Introduce `w _`. Simplify using `only [hmul, inv_mul_cancel, map_one, Module.End.one_apply]`. Introduce `w _`. Simplify using `only [hmul, mul_inv_cancel, map_one, Module.End.one_apply]`.
+
+Rewrite using `[map_smul, map_sum, hs, MonoidHom.one_apply, Units.val_one, one_smul]`. Establish `h2 : (O.card : ℂ)⁻¹ • ∑ w ∈ O, w - u = (O.card : ℂ)⁻¹ • ∑ w ∈ O, (w - u)`. Rewrite using `[Finset.sum_sub_distrib, Finset.sum_const, smul_sub, ← Nat.cast_smul_eq_nsmul ℂ, smul_smul, inv_mul_cancel₀ hne, one_smul]`. Rewrite using `[h2]`. Use `q.smul_mem _ (q.sum_mem ?_)` and prove the remaining obligations.
+
+Introduce `w hw`. Take `⟨g, hg, rfl⟩` from `(hmem w).1 hw`. Conclude with `hq g hg`.
+-/
 theorem UpperTheory.Reformulated.B.Gwa5.exists_fixed_lift :
     ∀ {G V : Type} [inst : Group G] [inst_1 : TopologicalSpace G] [IsTopologicalGroup G] [inst_3 : AddCommGroup V]
       [inst_4 : _root_.Module ℂ V] (J L A : Subgroup G),

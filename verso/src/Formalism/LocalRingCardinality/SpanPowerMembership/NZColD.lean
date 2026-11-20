@@ -25,13 +25,24 @@ def locS (w : HeightOneSpectrum (𝓞 K)) (B : Submodule (𝓞 K) V) : Submodule
     rintro r a ⟨s, hs, h1⟩
     exact ⟨s, hs, by rw [smul_comm]; exact B.smul_mem r h1⟩
 
+/- English proof (translation)
+Unfold both sides. The equivalence is reflexive.
+-/
 theorem mem_locS (w : HeightOneSpectrum (𝓞 K)) (B : Submodule (𝓞 K) V) (x : V) : x ∈ locS w B ↔ InLoc w B x := Iff.rfl
 
+/- English proof (translation)
+Take `⟨t, ht, h1⟩` from `h`. Conclude with `⟨t * s, fun h => (w.isPrime.mem_or_mem h).elim ht hs, by rwa [mul_smul]⟩`.
+-/
 theorem locS_sat (w : HeightOneSpectrum (𝓞 K)) (B : Submodule (𝓞 K) V) (s : 𝓞 K) (hs : s ∉ w.asIdeal) (x : V)
     (h : s • x ∈ locS w B) : x ∈ locS w B := by
   obtain ⟨t, ht, h1⟩ := h
   exact ⟨t * s, fun h => (w.isPrime.mem_or_mem h).elim ht hs, by rwa [mul_smul]⟩
 
+/- English proof (translation)
+Use `⟨(Associates.mk v.asIdeal).count (Associates.mk (Ideal.span {b} : Ideal (𝓞 K))).factors, fun a ha => ?_⟩` and prove the remaining obligations. Rewrite using `[map_div₀, v.valuation_of_algebraMap, v.valuation_of_algebraMap]`. Establish `h0 : 0 < v.intValuation b`. Rewrite using `[v.intValuation_if_neg hb]`. Conclude with `WithZero.exp_pos`.
+
+Rewrite using `[div_le_one₀ h0, v.intValuation_if_neg hb]`. Conclude with `(v.intValuation_le_pow_iff_mem a _).mpr ha`.
+-/
 theorem exists_pow_val (v : HeightOneSpectrum (𝓞 K)) (b : 𝓞 K) (hb : b ≠ 0) :
     ∃ m : ℕ, ∀ a ∈ v.asIdeal ^ m, v.valuation K (algebraMap (𝓞 K) K a / algebraMap (𝓞 K) K b) ≤ 1 := by
   refine ⟨(Associates.mk v.asIdeal).count (Associates.mk (Ideal.span {b} : Ideal (𝓞 K))).factors, fun a ha => ?_⟩
@@ -41,12 +52,18 @@ theorem exists_pow_val (v : HeightOneSpectrum (𝓞 K)) (b : 𝓞 K) (hb : b ≠
   rw [div_le_one₀ h0, v.intValuation_if_neg hb]
   exact (v.intValuation_le_pow_iff_mem a _).mpr ha
 
+/- English proof (translation)
+Establish `h : Ideal.span {t} ≠ 0` using `by rw [Ne, Ideal.zero_eq_bot, Ideal.span_singleton_eq_bot]; exact ht`. Conclude with `(Ideal.finite_factors h).subset fun v hv => Ideal.dvd_span_singleton.mpr hv`.
+-/
 theorem finite_over (t : 𝓞 K) (ht : t ≠ 0) : {v : HeightOneSpectrum (𝓞 K) | t ∈ v.asIdeal}.Finite := by
   have h : Ideal.span {t} ≠ 0 := by rw [Ne, Ideal.zero_eq_bot, Ideal.span_singleton_eq_bot]; exact ht
   exact (Ideal.finite_factors h).subset fun v hv => Ideal.dvd_span_singleton.mpr hv
 
 variable [Module K V] [IsScalarTower (𝓞 K) K V]
 
+/- English proof (translation)
+Establish `hbK : algebraMap (𝓞 K) K b ≠ 0` using `(map_ne_zero_iff _ (IsFractionRing.injective (𝓞 K) K)).mpr hb`. Rewrite using `[← algebraMap_smul K b, smul_smul, div_mul_cancel₀ _ hbK, algebraMap_smul]`.
+-/
 theorem smul_eq_div (a b : 𝓞 K) (hb : b ≠ 0) (x : V) :
     a • x = (algebraMap (𝓞 K) K a / algebraMap (𝓞 K) K b) • (b • x) := by
   have hbK : algebraMap (𝓞 K) K b ≠ 0 := (map_ne_zero_iff _ (IsFractionRing.injective (𝓞 K) K)).mpr hb
@@ -70,6 +87,9 @@ structure NuData (c : LatCmp D) where
 
 variable {c} (N : NuData c)
 
+/- English proof (translation)
+The claim follows from `(D.val_nonneg_iff w _).2 ((D.plEq w).valuation_le_one r)`.
+-/
 theorem int_mem_intW (w : D.what₂.places.Pl) (r : 𝓞 D.what₂.LL) : (r : D.what₂.LL) ∈ intW D.what₂.places w :=
   (D.val_nonneg_iff w _).2 ((D.plEq w).valuation_le_one r)
 
@@ -115,6 +135,11 @@ def cond (u : D.what₂.Word) (w : D.what₂.places.Pl) : Submodule (𝓞 D.what
 def nuLat (u : D.what₂.Word) : Submodule (𝓞 D.what₂.LL) (D.div.Nu u).V :=
   glue fun v => cond N u (D.plEq.symm v)
 
+/- English proof (translation)
+Establish `hv : (D.plEq w).valuation D.what₂.LL (algebraMap (𝓞 D.what₂.LL) D.what₂.LL s) = 1` using `((D.plEq w).valuation_eq_one_iff_notMem).2 hs`. Establish `hs0 : algebraMap (𝓞 D.what₂.LL) D.what₂.LL s ≠ 0`. Introduce `h0`. Rewrite `hv` using `[h0, map_zero]`. Conclude with `zero_ne_one hv`.
+
+Conclude with `⟨(D.val_nonneg_iff w _).2 (by rw [map_inv₀, hv, inv_one]), hs0⟩`.
+-/
 theorem inv_mem_intW (w : D.what₂.places.Pl) (s : 𝓞 D.what₂.LL) (hs : s ∉ (D.plEq w).asIdeal) :
     (algebraMap (𝓞 D.what₂.LL) D.what₂.LL s)⁻¹ ∈ intW D.what₂.places w ∧ algebraMap (𝓞 D.what₂.LL) D.what₂.LL s ≠ 0 := by
   have hv : (D.plEq w).valuation D.what₂.LL (algebraMap (𝓞 D.what₂.LL) D.what₂.LL s) = 1 :=
@@ -125,6 +150,13 @@ theorem inv_mem_intW (w : D.what₂.places.Pl) (s : 𝓞 D.what₂.LL) (hs : s �
     exact zero_ne_one hv
   exact ⟨(D.val_nonneg_iff w _).2 (by rw [map_inv₀, hv, inv_one]), hs0⟩
 
+/- English proof (translation)
+Take `⟨hinv, hs0⟩` from `inv_mem_intW w s hs`. Establish `hx : x = (algebraMap (𝓞 D.what₂.LL) D.what₂.LL s)⁻¹ • (s • x)`. Rewrite using `[← algebraMap_smul D.what₂.LL s, smul_smul, inv_mul_cancel₀ hs0, one_smul]`. Unfold `cond at h ⊢`. Use `split_ifs at h ⊢ with h1 h2`.
+
+Use `show D.nuIn u x ∈ LT.Nlam D u w`. Rewrite using `[hx, map_smul]`. Conclude with `(LT.Nlam D u w).smul_mem (⟨_, hinv⟩ : intW D.what₂.places w) h`. Use `show c.cmpN u w h2.1 x ∈ N.NPf u w h2.1`. Take `⟨o, ho⟩` from `(c.embW_val u w h2.1 _).1 ((D.val_nonneg_iff w _).1 hinv)`.
+
+Rewrite using `[hx, c.cmpN_smul, ← ho, algebraMap_smul]`. Conclude with `Submodule.smul_mem _ o h`. Conclude with `locS_sat _ _ s hs x h`.
+-/
 theorem cond_sat (u : D.what₂.Word) (w : D.what₂.places.Pl) (s : 𝓞 D.what₂.LL) (hs : s ∉ (D.plEq w).asIdeal)
     (x : (D.div.Nu u).V) (h : s • x ∈ cond N u w) : x ∈ cond N u w := by
   obtain ⟨hinv, hs0⟩ := inv_mem_intW w s hs
@@ -141,6 +173,9 @@ theorem cond_sat (u : D.what₂.Word) (w : D.what₂.places.Pl) (s : 𝓞 D.what
     exact Submodule.smul_mem _ o h
   · exact locS_sat _ _ s hs x h
 
+/- English proof (translation)
+Rewrite using `[← (D.plEq w).valuation_lt_one_iff_mem (K := D.what₂.LL), D.val_resChar' w, ← WithZero.exp_zero, WithZero.exp_lt_exp]`. Use `D.what₂.places.ramIdx_pos w` as an intermediate fact. Use linear arithmetic over natural numbers and integers.
+-/
 theorem resChar_mem (w : D.what₂.places.Pl) : ((D.what₂.places.resChar w : ℕ) : 𝓞 D.what₂.LL) ∈ (D.plEq w).asIdeal := by
   rw [← (D.plEq w).valuation_lt_one_iff_mem (K := D.what₂.LL), D.val_resChar' w, ← WithZero.exp_zero, WithZero.exp_lt_exp]
   have := D.what₂.places.ramIdx_pos w
@@ -148,11 +183,17 @@ theorem resChar_mem (w : D.what₂.places.Pl) : ((D.what₂.places.resChar w : �
 
 variable (hspan : ∀ u, Submodule.span D.what₂.LL (DV.MramL D u : Set (D.div.Nu u).V) = ⊤)
 
+/- English proof (translation)
+Unfold `DV.LocLe InLoc`. Rewrite using `[pow_zero, Ideal.one_eq_top, Submodule.top_smul]`.
+-/
 theorem locLe_zero_iff {K : Type} [Field K] [NumberField K] {V : Type} [AddCommGroup V] [Module (𝓞 K) V]
     (w : HeightOneSpectrum (𝓞 K)) (A B : Submodule (𝓞 K) V) : DV.LocLe w 0 A B ↔ ∀ x ∈ A, InLoc w B x := by
   unfold DV.LocLe InLoc
   rw [pow_zero, Ideal.one_eq_top, Submodule.top_smul]
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨1, fun h => w.isPrime.ne_top ((Ideal.eq_top_iff_one _).2 h), by rwa [one_smul]⟩`.
+-/
 theorem inLoc_of_mem {K : Type} [Field K] [NumberField K] {V : Type} [AddCommGroup V] [Module (𝓞 K) V]
     (w : HeightOneSpectrum (𝓞 K)) (A : Submodule (𝓞 K) V) {x : V} (h : x ∈ A) : InLoc w A x :=
   ⟨1, fun h => w.isPrime.ne_top ((Ideal.eq_top_iff_one _).2 h), by rwa [one_smul]⟩

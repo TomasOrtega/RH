@@ -8,6 +8,13 @@ open Polynomial Classical GlobalTheory.BadShare
 
 namespace GlobalTheory.BadShare
 
+/- English proof (translation)
+Establish `hP0 : P ≠ 0` using `hP.ne_zero`. Establish `: Fact (Irreducible P)` using `⟨hP⟩`. Establish `hxr : aeval x P = 0` using `(Polynomial.mem_aroots.mp hx).2`. Establish `: Module.Finite (ZMod g) (AdjoinRoot P)` using `(AdjoinRoot.powerBasis hP0).finite`. Establish `: Finite (AdjoinRoot P)` using `Module.finite_of_finite (ZMod g)`.
+
+Set `_ : Fintype (AdjoinRoot P)` to `Fintype.ofFinite _`. Establish `hcard : Fintype.card (AdjoinRoot P) = g ^ P.natDegree`. Rewrite using `[Module.card_eq_pow_finrank (K := ZMod g), ZMod.card, (AdjoinRoot.powerBasis hP0).finrank, AdjoinRoot.powerBasis_dim]`. Establish `h` using `FiniteField.pow_card (AdjoinRoot.root P)`. Rewrite `h` using `[hcard]`.
+
+Establish `hxr' : P.eval₂ (algebraMap (ZMod g) (AlgebraicClosure (ZMod g))) x = 0`. Rewrite `hxr` using `[aeval_def]`. Then use the resulting hypothesis. Establish `h'` using `congrArg (AdjoinRoot.lift (algebraMap (ZMod g) (AlgebraicClosure (ZMod g))) x hxr') h`. Rewrite `h'` using `[map_pow, AdjoinRoot.lift_root]`. Then use the resulting hypothesis.
+-/
 private theorem pow_card_pow_natDegree_eq_self_of_mem_aroots {g : ℕ} [Fact g.Prime] {P : (ZMod g)[X]} (hP : Irreducible P)
     {x : AlgebraicClosure (ZMod g)} (hx : x ∈ P.aroots (AlgebraicClosure (ZMod g))) :
     x ^ (g ^ P.natDegree) = x := by
@@ -27,6 +34,19 @@ private theorem pow_card_pow_natDegree_eq_self_of_mem_aroots {g : ℕ} [Fact g.P
   have h' := congrArg (AdjoinRoot.lift (algebraMap (ZMod g) (AlgebraicClosure (ZMod g))) x hxr') h
   rwa [map_pow, AdjoinRoot.lift_root] at h'
 
+/- English proof (translation)
+Establish `hcard : (P.aroots (AlgebraicClosure (ZMod g))).card = P.natDegree` using `IsAlgClosed.card_aroots_eq_natDegree`. Establish `h2 : 2 ≤ P.natDegree`. Rewrite using `[← hcard]`. Establish `hsub : ({x, y} : Finset (AlgebraicClosure (ZMod g))) ⊆ (P.aroots (AlgebraicClosure (ZMod g))).toFinset`. Introduce `z hz`.
+
+Rewrite `hz` using `[Finset.mem_insert, Finset.mem_singleton]`. Rewrite using `[Multiset.mem_toFinset]`. Break down `hz with rfl | rfl` into its components or cases. Conclude with `hx`. Conclude with `hy`.
+
+Combine the equalities or inequalities in the displayed calculation. Use `⟨h2, ?_⟩` and prove the remaining obligations. Establish `hgp : g.Prime` using `Fact.out`. Establish `hx0` using `root_ne_zero h0 hx`. Establish `hy0` using `root_ne_zero h0 hy`.
+
+Establish `hM0 : g ^ P.natDegree - 1 ≠ 0`. Establish `: 2 ≤ g ^ P.natDegree` using `le_trans hgp.two_le (Nat.le_self_pow (by omega) g)`. Use linear arithmetic over natural numbers and integers. Establish `hpow : ∀ z ∈ P.aroots (AlgebraicClosure (ZMod g)), z ≠ 0 → z ^ (g ^ P.natDegree - 1) = 1`. Introduce `z hz hz0`.
+
+Establish `h` using `pow_card_pow_natDegree_eq_self_of_mem_aroots hP hz`. Establish `hg1 : 1 ≤ g ^ P.natDegree` using `Nat.one_le_pow _ _ hgp.pos`. Apply `mul_left_cancel₀ hz0` to reduce the goal to its premises. Rewrite using `[← pow_succ', Nat.sub_add_cancel hg1, h, mul_one]`. Assume the negation of the conclusion as `hnd`.
+
+Establish `hcop : (g ^ P.natDegree - 1).Coprime l` using `Nat.Coprime.symm ((Nat.Prime.coprime_iff_not_dvd hl).mpr hnd)`. Take `⟨a, ha⟩` from `(samePart_iff_of_ne_zero hl hx0 hy0).mp hs`. Conclude with `hxy (eq_of_pow_eq hcop (hpow x hx hx0) (hpow y hy hy0) hM0 ha)`.
+-/
 theorem dvd_of_samePart_roots {g : ℕ} [Fact g.Prime] {P : (ZMod g)[X]} (hP : Irreducible P) (h0 : P.coeff 0 ≠ 0)
     {l : ℕ} (hl : l.Prime) {x y : AlgebraicClosure (ZMod g)} (hx : x ∈ P.aroots (AlgebraicClosure (ZMod g)))
     (hy : y ∈ P.aroots (AlgebraicClosure (ZMod g))) (hxy : x ≠ y) (hs : SamePart l x y) :
@@ -65,6 +85,11 @@ theorem dvd_of_samePart_roots {g : ℕ} [Fact g.Prime] {P : (ZMod g)[X]} (hP : I
   obtain ⟨a, ha⟩ := (samePart_iff_of_ne_zero hl hx0 hy0).mp hs
   exact hxy (eq_of_pow_eq hcop (hpow x hx hx0) (hpow y hy hy0) hM0 ha)
 
+/- English proof (translation)
+Establish `hgd : 2 ≤ g ^ d` using `le_trans hg (Nat.le_self_pow (by omega) g)`. Establish `hn0 : 0 < g ^ d - 1` using `by omega`. Establish `h2k : 2 ^ (g ^ d - 1).primeFactors.card ≤ g ^ d`. Combine the equalities or inequalities in the displayed calculation. Establish `hreal : (2 : ℝ) ^ (((g ^ d - 1).primeFactors.card : ℕ) : ℝ) ≤ (g : ℝ) ^ d`.
+
+Rewrite using `[Real.rpow_natCast]`. Conclude with `h2k` after adjusting the coercions. Establish `hgpos : (0 : ℝ) < (g : ℝ) ^ d` using `pow_pos (by exact_mod_cast (by omega : 0 < g)) d`. Use `(Real.le_logb_iff_rpow_le (by norm_num : (1 : ℝ) < 2) hgpos).mpr hreal` as an intermediate fact. Rewrite `this` using `[Real.logb_pow]`. Then use the resulting hypothesis.
+-/
 theorem card_primeFactors_pow_sub_one_le {g d : ℕ} (hg : 2 ≤ g) (hd : 1 ≤ d) :
     ((g ^ d - 1).primeFactors.card : ℝ) ≤ d * Real.logb 2 g := by
   have hgd : 2 ≤ g ^ d := le_trans hg (Nat.le_self_pow (by omega) g)
@@ -81,6 +106,15 @@ theorem card_primeFactors_pow_sub_one_le {g d : ℕ} (hg : 2 ≤ g) (hd : 1 ≤ 
   have := (Real.le_logb_iff_rpow_le (by norm_num : (1 : ℝ) < 2) hgpos).mpr hreal
   rwa [Real.logb_pow] at this
 
+/- English proof (translation)
+Establish `hIcc : Finset.Icc 2 N = Finset.Ico 2 (N + 1)`. Use extensionality with `d`. Simplify using `only [Finset.mem_Icc, Finset.mem_Ico]`. Use linear arithmetic over natural numbers and integers. Rewrite using `[hIcc, Finset.sum_Ico_eq_sum_range]`.
+
+Combine the equalities or inequalities in the displayed calculation. Apply `Finset.sum_le_sum` to reduce the goal to its premises. Introduce `k _`. Establish `hk : ((2 + k : ℕ) : ℝ) ≤ 3 * 4 ^ k`. Establish `h1 : k < 4 ^ k` using `Nat.lt_pow_self (by norm_num)`.
+
+Establish `h2 : 1 ≤ 4 ^ k` using `Nat.one_le_pow _ _ (by norm_num)`. Conclude with `(by omega : 2 + k ≤ 3 * 4 ^ k)` after adjusting the coercions. Establish `hu : u ^ k ≤ (1 / 8 : ℝ) ^ k` using `pow_le_pow_left₀ h0 h1 k`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[show (1 / 2 : ℝ) = 4 * (1 / 8) by norm_num, mul_pow]`.
+
+Expand and normalize the polynomial expressions, which then agree. Use `_ = 3 * u ^ 2 * ∑ k ∈ Finset.range (N + 1 - 2), (1 / 2 : ℝ) ^ k := by rw [Finset.mul_sum]`. Use `_ ≤ 3 * u ^ 2 * 2 := by gcongr`. Conclude with `sum_geometric_two_le _`. Use `_ = 6 * u ^ 2 := by ring`.
+-/
 theorem sum_mul_pow_le {u : ℝ} (h0 : 0 ≤ u) (h1 : u ≤ 1 / 8) (N : ℕ) :
     ∑ d ∈ Finset.Icc 2 N, (d : ℝ) * u ^ d ≤ 6 * u ^ 2 := by
   have hIcc : Finset.Icc 2 N = Finset.Ico 2 (N + 1) := by
@@ -108,6 +142,45 @@ theorem sum_mul_pow_le {u : ℝ} (h0 : 0 ≤ u) (h1 : u ≤ 1 / 8) (N : ℕ) :
         exact sum_geometric_two_le _
     _ = 6 * u ^ 2 := by ring
 
+/- English proof (translation)
+Introduce `g _ N hg`. Establish `hg2 : 2 ≤ g` using `le_trans (by norm_num) hg`. Take `⟨-, -, hunion, -⟩` from `GlobalTheory.T.squarefreeLabelTorusMass_union_bounds g N`. Take `⟨S, hS⟩ : ∃ S : ℕ → ℕ → Finset (ZMod g)[X], S = fun d l => (sqSet g d).filter fun P => Irreducible P ∧ ∃ x ∈ P.aroots (AlgebraicClosure (ZMod g)), ∃ y ∈ P.aroots (AlgebraicClosure (ZMod g)), x ≠ y ∧ SamePart l x y` from `⟨_, rfl⟩`. Take `⟨L, hL⟩ : ∃ L : ℕ → Finset ℕ, L = fun d => (g ^ d - 1).primeFactors.filter fun l => ¬ BB g N l` from `⟨_, rfl⟩`.
+
+Take `⟨r, hr⟩ : ∃ r : ℝ, r = (g : ℝ) ^ ((1 : ℝ) / 4)` from `⟨_, rfl⟩`. Establish `hgpos : (0 : ℝ) < g` using `by exact_mod_cast (by omega : 0 < g)`. Establish `hr0 : 0 < r` using `hr ▸ Real.rpow_pos_of_pos hgpos _`. Establish `hr4 : r ^ 4 = g`. Rewrite using `[hr, ← Real.rpow_natCast, ← Real.rpow_mul hgpos.le]`.
+
+Evaluate the numerical expressions. Establish `hr8 : 8 ≤ r`. Assume the negation of the conclusion as `h`. Establish `h1 : r ^ 4 < 8 ^ 4` using `pow_lt_pow_left₀ (lt_of_not_ge h) hr0.le (by norm_num)`. Establish `h2' : 4096 ≤ g` using `by simpa using hg`.
+
+Establish `h2 : (4096 : ℝ) ≤ (g : ℝ)` using `by exact_mod_cast h2'`. Evaluate the numerical expressions using `at h1`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hlog : 0 ≤ Real.logb 2 g` using `Real.logb_nonneg (by norm_num) (by exact_mod_cast (by omega : 1 ≤ g))`. Establish `hstep3 : ∀ d ∈ Finset.Icc 2 N, ∀ l ∈ L d, mass g N (fun f => ∃ P ∈ S d l, P ∣ f) ≤ (g : ℝ) ^ ((3 * d : ℝ) / 4) * (((g ^ d - 1 : ℕ) : ℝ))⁻¹`.
+
+Introduce `d hd l hl`. Rewrite `hd` using `[Finset.mem_Icc]`. Simplify using `only [hL, Finset.mem_filter, Nat.mem_primeFactors] at hl`. Combine the equalities or inequalities in the displayed calculation. Apply `Finset.sum_le_sum` to reduce the goal to its premises.
+
+Introduce `P hP`. Simplify using `only [hS, Finset.mem_filter] at hP`. Establish `h1` using `(GlobalTheory.T.squarefreeLabelTorusMass_divisor_bound g).2 N d P hP.1`. Rewrite `h1` using `[torusCard_irreducible hP.2.1, (mem_sqSet.mp hP.1).2.1]`. Conclude with `h1`.
+
+Use `_ = ((S d l).card : ℝ) * (((g ^ d - 1 : ℕ) : ℝ))⁻¹ := by`. Rewrite using `[Finset.sum_const, nsmul_eq_mul]`. Use `_ ≤ (g : ℝ) ^ ((3 * d : ℝ) / 4) * (((g ^ d - 1 : ℕ) : ℝ))⁻¹ := by gcongr`. Use `GlobalTheory.T.card_irreducible_samePrimeToPart_roots_le g N d l hd.1 hd.2 hl.1.1 hl.2` as an intermediate fact. Rewrite using `[hS]`.
+
+Conclude with `this`. Establish `hstep2 : ∀ d ∈ Finset.Icc 2 N, mass g N (fun f => ∃ l ∈ L d, ∃ P ∈ S d l, P ∣ f) ≤ ((d : ℝ) * Real.logb 2 g) * ((g : ℝ) ^ ((3 * d : ℝ) / 4) * (((g ^ d - 1 : ℕ) : ℝ))⁻¹)`. Introduce `d hd`. Establish `hd'` using `Finset.mem_Icc.mp hd`. Combine the equalities or inequalities in the displayed calculation.
+
+Rewrite using `[Finset.sum_const, nsmul_eq_mul]`. Use `_ ≤ ((d : ℝ) * Real.logb 2 g) * ((g : ℝ) ^ ((3 * d : ℝ) / 4) * (((g ^ d - 1 : ℕ) : ℝ))⁻¹) := by gcongr`. Combine the equalities or inequalities in the displayed calculation. Conclude with `Finset.card_le_card (by rw [hL]; exact Finset.filter_subset _ _)` after adjusting the coercions. Use `_ ≤ d * Real.logb 2 g := card_primeFactors_pow_sub_one_le hg2 (by omega)`.
+
+Establish `hstep1 : (mass g N fun f => ∃ l : ℕ, l.Prime ∧ ¬ BB g N l ∧ ∃ P : (ZMod g)[X], P.Monic ∧ Irreducible P ∧ P ∣ f ∧ ∃ x ∈ P.aroots (AlgebraicClosure (ZMod g)), ∃ y ∈ P.aroots (AlgebraicClosure (ZMod g)), x ≠ y ∧ SamePart l x y) ≤ ∑ d ∈ Finset.Icc 2 N, mass g N (fun f => ∃ l ∈ L d, ∃ …`. Apply `hunion` to reduce the goal to its premises. Introduce and unpack `f hf ⟨l, hl, hBB, P, hPm, hPi, hPf, x, hx, y, hy, hxy, hs⟩`. Establish `hfm` using `mem_sqSet.mp hf`. Establish `hP0 : P.coeff 0 ≠ 0`.
+
+Introduce `h0`. Conclude with `hfm.2.2.2 (Polynomial.X_dvd_iff.mp (dvd_trans (Polynomial.X_dvd_iff.mpr h0) hPf))`. Take `⟨hd2, hldvd⟩` from `dvd_of_samePart_roots hPi hP0 hl hx hy hxy hs`. Establish `hdN : P.natDegree ≤ N` using `hfm.2.1 ▸ Polynomial.natDegree_le_of_dvd hPf hfm.1.ne_zero`. Use `⟨P.natDegree, Finset.mem_Icc.mpr ⟨hd2, hdN⟩, l, ?_, P, ?_, hPf⟩` and prove the remaining obligations.
+
+Simplify using `only [hL, Finset.mem_filter, Nat.mem_primeFactors]`. Use `⟨⟨hl, hldvd, ?_⟩, hBB⟩` and prove the remaining obligations. Establish `: 2 ≤ g ^ P.natDegree` using `le_trans hg2 (Nat.le_self_pow (by omega) g)`. Use linear arithmetic over natural numbers and integers. Simplify using `only [hS, Finset.mem_filter]`.
+
+Conclude with `⟨mem_sqSet.mpr ⟨hPm, rfl, hPi.squarefree, hP0⟩, hPi, x, hx, y, hy, hxy, hs⟩`. Establish `hE : ∀ d ∈ Finset.Icc 2 N, (g : ℝ) ^ ((3 * d : ℝ) / 4) * (((g ^ d - 1 : ℕ) : ℝ))⁻¹ ≤ 2 * r⁻¹ ^ d`. Introduce `d hd`. Establish `hd'` using `Finset.mem_Icc.mp hd`. Establish `h1 : (g : ℝ) ^ ((3 * d : ℝ) / 4) = (r ^ d) ^ 3`.
+
+Rewrite using `[hr, ← pow_mul, ← Real.rpow_natCast, ← Real.rpow_mul hgpos.le]`. Use `congr 1`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Establish `h2 : (((g ^ d - 1 : ℕ) : ℝ)) = (r ^ d) ^ 4 - 1`.
+
+Establish `: 1 ≤ g ^ d` using `Nat.one_le_pow _ _ (by omega)`. Rewrite using `[Nat.cast_sub this, Nat.cast_pow, Nat.cast_one, ← hr4, ← pow_mul, ← pow_mul, mul_comm]`. Establish `hR : 8 ≤ r ^ d` using `le_trans hr8 (le_self_pow₀ (by linarith) (by omega))`. Rewrite using `[h1, h2, inv_pow]`. Generalize the expression as in `r ^ d = R at hR ⊢`.
+
+Establish `h4 : (8 : ℝ) ^ 4 ≤ R ^ 4` using `pow_le_pow_left₀ (by norm_num) hR 4`. Rewrite using `[← div_eq_mul_inv, ← div_eq_mul_inv, div_le_div_iff₀ (by linarith) (by linarith)]`. Use the polynomial consequences of the given equalities and inequalities. Combine the equalities or inequalities in the displayed calculation. Apply `Finset.sum_le_sum` to reduce the goal to its premises.
+
+Introduce `d hd`. Combine the equalities or inequalities in the displayed calculation. Use `_ = 2 * Real.logb 2 g * ∑ d ∈ Finset.Icc 2 N, (d : ℝ) * r⁻¹ ^ d := by rw [Finset.mul_sum]`. Use `_ ≤ 2 * Real.logb 2 g * (6 * r⁻¹ ^ 2) := by gcongr`. Use `sum_mul_pow_le (inv_nonneg.mpr hr0.le) ?_ N` and prove the remaining obligations.
+
+Rewrite using `[one_div]`. Conclude with `inv_anti₀ (by norm_num) hr8`. Use `_ = 12 * Real.logb 2 g / Real.sqrt g := by`. Establish `hsq : Real.sqrt g = r ^ 2`. Rewrite using `[← hr4, show r ^ 4 = (r ^ 2) ^ 2 by ring]`.
+
+Conclude with `Real.sqrt_sq (by positivity)`. Rewrite using `[hsq]`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem mass_samePart_one_factor : ∀ (g : ℕ) [Fact g.Prime], ∀ N : ℕ, 2 ^ 12 ≤ g → (mass g N fun f => ∃ l : ℕ, l.Prime ∧ ¬ BB g N l ∧ ∃ P : (ZMod g)[X], P.Monic ∧ Irreducible P ∧ P ∣ f ∧ ∃ x ∈ P.aroots (AlgebraicClosure (ZMod g)), ∃ y ∈ P.aroots (AlgebraicClosure (ZMod g)), x ≠ y ∧ SamePart l x y) ≤ 12 * Real.logb 2 g / Real.sqrt g := by
   intro g _ N hg
   have hg2 : 2 ≤ g := le_trans (by norm_num) hg

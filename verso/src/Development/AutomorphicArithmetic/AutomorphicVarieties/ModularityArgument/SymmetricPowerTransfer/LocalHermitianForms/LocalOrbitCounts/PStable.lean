@@ -9,6 +9,57 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.BuildingsResidueCh
 
 open QuadraticAlgebra UpperTheory.V.Z.Sym UpperTheory.V.Z.Sym.Loc
 
+/- English proof (translation)
+Introduce `O K _ _ _ _ _ Δ τ L hr j χ hj hχ a ha`. Use `haveI := L.frac`. Establish `hnω : QuadraticAlgebra.norm (a : Etau K τ) = 1`. Rewrite using `[ha, QuadraticAlgebra.norm_def]`. Simplify using the standard rewrite rules.
+
+Establish `hR : gOrb O j χ a = ((PS.Fv O τ).ncard : ℂ)`. Rewrite using `[gLat O K Δ τ L hr j χ hj hχ a 1 1 (by rw [hnω]; simp), ← PS.vcount_eq L hr]`. Simplify using `[ha]`. Rewrite using `[hR]`. Take `⟨π, hπ⟩` from `IsDiscreteValuationRing.exists_irreducible O`.
+
+Establish `hp0 : algebraMap O K π ≠ 0`. Rewrite using `[Ne, map_eq_zero_iff _ (IsFractionRing.injective O K)]`. Conclude with `hπ.ne_zero`. Use `set p : Kˣ := Units.mk0 _ hp0 with hpdef`. Establish `hpv : ((p : Kˣ) : K) = algebraMap O K π` using `rfl`.
+
+Establish `hpe : ¬ EvenVal O ((p : Kˣ) : K)`. Rewrite using `[hpv]`. Conclude with `PS.not_even_irr L hπ`. Establish `hfv : ∀ t : Kˣ, (PS.Fv O τ).ncard = (PS.Gs O τ (↑t) 1).ncard + (PS.Gs O τ (↑(t * p)) 1).ncard` using `fun t => PS.fv_card L hr t p hpe`. Distinguish the cases in `hD : IsSquare (τ ^ 2 - 4)`.
+
+Establish `hI` using `UpperTheory.evenValuation_norm_compactUnits_of_split O K Δ τ L hr hD`. Establish `hall : ∀ x : Kˣ, x ∈ NE τ` using `fun x => (hsNE O K Δ τ L hr x).2 ((hsLaw O K Δ L).2.2.2 (τ ^ 2 - 4) x hr hD)`. Take `⟨r, hrr⟩` from `hD`. Establish `hr0 : r ≠ 0`. Introduce and unpack `rfl`.
+
+Apply `hr` to reduce the goal to its premises. Rewrite using `[hrr, mul_zero]`. Establish `h2 : (2 : K) ≠ 0`. Establish `h` using `L.two.map (algebraMap O K)`. Rewrite `h` using `[map_ofNat]`.
+
+Conclude with `h.ne_zero`. Use `set β : K := (τ - r) / 2 with hβdef`. Use `set u : K := (((p : Kˣ) : K) - 1) / r with hudef`. Establish `hb : β ^ 2 - τ * β + 1 = 0`. Rewrite using `[hβdef]`.
+
+Clear the denominators using the available nonvanishing facts. Take the linear combination `(-1 : K) * hrr`. Establish `hτβ : τ - 2 * β = r`. Rewrite using `[hβdef]`. Clear the denominators using the available nonvanishing facts.
+
+Expand and normalize the polynomial expressions, which then agree. Establish `hru : r * u = ((p : Kˣ) : K) - 1`. Rewrite using `[hudef]`. Clear the denominators using the available nonvanishing facts. Use `set w : Etau K τ := ⟨1 - β * u, u⟩ with hwdef`.
+
+Establish `hw : QuadraticAlgebra.norm w = ((p : Kˣ) : K)`. Rewrite using `[QuadraticAlgebra.norm_def, hwdef]`. Simplify using `only`. Take the linear combination `u ^ 2 * hb + u * hτβ + hru`. Take `⟨y0, hy0⟩ : IsUnit w` from `QuadraticAlgebra.isUnit_iff_norm_isUnit.2 (by rw [hw]; exact p.isUnit)`.
+
+Establish `hy0n : QuadraticAlgebra.norm (y0 : Etau K τ) = ((p : Kˣ) : K)` using `by rw [hy0, hw]`. Establish `hy0u : PS.nU y0 = p` using `Units.ext (by rw [PS.nU_val, hy0n])`. Establish `hy0C : y0 ∉ Cint O τ`. Introduce `h`. Use `hI.1 y0 h` as an intermediate fact.
+
+Rewrite `this` using `[hy0n]`. Conclude with `hpe this`. Establish `hpc : ∀ t : Kˣ, pcount O τ ↑t = ((PS.Fv O τ).ncard : ℂ)`. Introduce `t`. Establish `c1 : ∀ y : (Etau K τ)ˣ, ∃ z, ∃ c ∈ Cint O τ, y = 1 * c * z ^ 2 ∨ y = y0 * c * z ^ 2`.
+
+Introduce `y`. Establish `hyne : QuadraticAlgebra.norm (y : Etau K τ) ≠ 0`. Rewrite using `[← PS.nU_val]`. Conclude with `Units.ne_zero _`. Break down `PS.even_or L hyne hp0 hpe with he | he` into its components or cases.
+
+Take `⟨z, c, hc, hyc⟩` from `hI.2 y he`. Conclude with `⟨z, c, hc, Or.inl (by rw [one_mul, hyc])⟩`. Establish `e : QuadraticAlgebra.norm ((y * y0⁻¹ : (Etau K τ)ˣ) : Etau K τ) = QuadraticAlgebra.norm (y : Etau K τ) / ((p : Kˣ) : K)`. Rewrite using `[← PS.nU_val, map_mul, map_inv, hy0u, Units.val_mul, Units.val_inv_eq_inv_val, PS.nU_val, div_eq_mul_inv]`. Take `⟨z, c, hc, hyc⟩` from `hI.2 (y * y0⁻¹) (e ▸ he)`.
+
+Use `⟨z, c, hc, Or.inr ?_⟩` and prove the remaining obligations. Rewrite using `[mul_assoc, ← hyc, mul_comm, inv_mul_cancel_right]`. Establish `c2 : ∀ z : (Etau K τ)ˣ, z ^ 2 * 1 * y0⁻¹ ∈ Cint O τ → z ∈ Cint O τ`. Introduce `z hz`. It suffices to derive a contradiction.
+
+Establish `hE` using `hI.1 _ hz`. Establish `hzn : ((PS.nU z : Kˣ) : K) ≠ 0` using `Units.ne_zero _`. Establish `e : QuadraticAlgebra.norm ((z ^ 2 * 1 * y0⁻¹ : (Etau K τ)ˣ) : Etau K τ) = ((PS.nU z : Kˣ) : K) ^ 2 / ((p : Kˣ) : K)`. Rewrite using `[← PS.nU_val, map_mul, map_mul, map_pow, map_one, mul_one, map_inv, hy0u, Units.val_mul, Units.val_pow_eq_pow_val, Units.val_inv_eq_inv_val, div_eq_mul_inv]`. Rewrite `hE` using `[e]`.
+
+Establish `hsq : EvenVal O (((PS.nU z : Kˣ) : K) ^ 2)` using `⟨1, (PS.nU z : K), hzn, by simp⟩`. Apply `hpe` to reduce the goal to its premises. Use `PS.even_mul hsq (PS.even_inv hE)` as an intermediate fact. Establish `hp' : ((PS.nU z : Kˣ) : K) ^ 2 * (((PS.nU z : Kˣ) : K) ^ 2 / ((p : Kˣ) : K))⁻¹ = ((p : Kˣ) : K)`. Clear the denominators using the available nonvanishing facts.
+
+Rewrite `this` using `[hp']`. Then use the resulting hypothesis. Rewrite using `[PS.pcount_eq L hr t 1 y0 c1 c2]`. Establish `hdisj : Disjoint (PS.Gs O τ (↑t) 1) (PS.Gs O τ (↑t) y0)`. Rewrite using `[Set.disjoint_left]`. Introduce and unpack `S ⟨-, c, hc, hg⟩ ⟨-, c', hc', hg'⟩`.
+
+Establish `hu` using `PS.gen_uniq hg hg'`. Apply `hy0C` to reduce the goal to its premises. Establish `e : y0 = (1 * c) * ((1 * c)⁻¹ * (y0 * c')) * c'⁻¹` using `by group`. Rewrite using `[e]`. Conclude with `mul_mem (mul_mem (by rw [one_mul]; exact hc) hu) (inv_mem hc')`.
+
+Rewrite using `[Set.ncard_union_eq hdisj (PS.gs_fin L hr t 1) (PS.gs_fin L hr t y0), PS.gs_ncard ((t : Kˣ) : K) y0, hy0u, hfv t, Units.val_mul]`. Rewrite using `[finsum_eq_single _ (QuotientGroup.mk 1 : Kˣ ⧸ NE τ), hpc]`. Introduce `t ht`. It suffices to derive a contradiction. Take `⟨x, rfl⟩` from `QuotientGroup.mk_surjective t`.
+
+Conclude with `ht (QuotientGroup.eq.2 (hall _))`. Establish `hC` using `UpperTheory.compactTorusUnits_eq_top_of_nonsplit O K Δ τ L hr hD`. Establish `hpc : ∀ (t : Kˣ) (b : (Etau K τ)ˣ), pcount O τ ↑t = ((PS.Gs O τ (↑t) b).ncard : ℂ)`. Introduce `t b`. Rewrite using `[PS.pcount_eq L hr t b b (fun y => ⟨1, b⁻¹ * y, by rw [hC]; trivial, Or.inl (by group)⟩) (fun z _ => by rw [hC]; trivial), Set.union_self]`.
+
+Establish `hinv : ∀ t ∈ NE τ, ∀ x : Kˣ, pcount O τ ↑(t * x) = pcount O τ ↑x`. Introduce and unpack `t ⟨b, rfl⟩ x`. Rewrite using `[hpc x b, PS.gs_ncard, hpc _ 1, Units.val_mul, mul_comm]`. Both sides reduce to the same expression. Take `⟨⟨g0, hg0⟩, hsum⟩` from `UpperTheory.finsum_quotient_norms_of_nonsplit O K Δ τ L hr hD`.
+
+Establish `e : ∀ t : Kˣ, ((PS.Fv O τ).ncard : ℂ) = pcount O τ ↑t + pcount O τ ↑(t * p)`. Introduce `t`. Rewrite using `[hfv t, Nat.cast_add, hpc t 1, hpc (t * p) 1]`. Distinguish the cases in `hpN : p ∈ NE τ`. Establish `hS : ∑ᶠ t : Kˣ ⧸ NE τ, pcount O τ ↑(Quotient.out t) = pcount O τ ↑(1 : Kˣ) + pcount O τ ↑g0` using `hsum (fun x : Kˣ => pcount O τ ↑x) hinv g0 hg0`.
+
+Rewrite using `[hS]`. Establish `e1` using `e 1`. Establish `e2` using `e g0`. Rewrite `e1`, `e2` using `[mul_comm, hinv p hpN]`. Take the linear combination `(-1 / 2 : ℂ) * e1 + (-1 / 2 : ℂ) * e2`.
+
+Establish `hS : ∑ᶠ t : Kˣ ⧸ NE τ, pcount O τ ↑(Quotient.out t) = pcount O τ ↑(1 : Kˣ) + pcount O τ ↑p` using `hsum (fun x : Kˣ => pcount O τ ↑x) hinv p hpN`. Rewrite using `[hS, e 1, one_mul]`.
+-/
 theorem UpperTheory.V.Z.Sym.Loc.pStable :
     UpperTheory.V.Z.Sym.Loc.PStable := by
   intro O K _ _ _ _ _ Δ τ L hr j χ hj hχ a ha

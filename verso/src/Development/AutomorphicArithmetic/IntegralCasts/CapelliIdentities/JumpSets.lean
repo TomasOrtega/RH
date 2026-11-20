@@ -24,11 +24,17 @@ noncomputable def UpperTheory.Reformulated.B.JumpSetsAlt.hostE.{u_1} :
     {L : Type u_1} → [inst : Field L] → [inst_1 : Algebra ℚ L] → L → L → L → IntermediateField ℚ L :=
     fun {L : Type u_1} [Field L] [Algebra ℚ L] (ζ a b : L) ↦ UpperTheory.Reformulated.B.JumpSetsAlt.E0 a b ⊔ UpperTheory.Reformulated.B.JumpSetsAlt.F1 ζ
 
+/- English proof (translation)
+Introduce `L _ _ ζ a b`. Use `infer_instance`.
+-/
 theorem UpperTheory.Reformulated.B.JumpSetsAlt.aux6 :
     ∀ (L : Type) [inst : Field L] [inst_1 : NumberField L] (ζ a b : L), CharZero ↥(UpperTheory.Reformulated.B.JumpSetsAlt.hostE ζ a b) := by
   intro L _ _ ζ a b
   infer_instance
 
+/- English proof (translation)
+Introduce `L _ _`. Use `infer_instance`.
+-/
 theorem UpperTheory.Reformulated.B.JumpSetsAlt.aux7 :
     ∀ (L : Type) [inst : Field L] [inst_1 : NumberField L], IsScalarTower ℚ ℚ L := by
   intro L _ _
@@ -50,6 +56,9 @@ noncomputable def UpperTheory.Reformulated.B.JumpSetsAlt.sgn.{u_1} :
     {L : Type u_1} → [inst : Field L] → [inst_1 : Algebra ℚ L] → Gal(L/ℚ) → L → ℤˣ :=
     fun {L : Type u_1} [Field L] [Algebra ℚ L] (σ : Gal(L/ℚ)) (x : L) ↦ if (σ : L → L) x = x then (1 : ℤˣ) else (-1 : ℤˣ)
 
+/- English proof (translation)
+Introduce `L _ _ ζ a b`. Conclude with `(le_sup_left : UpperTheory.Reformulated.B.JumpSetsAlt.E0 a b ≤ _) (IntermediateField.subset_adjoin ℚ _ (by simp))`.
+-/
 theorem UpperTheory.Reformulated.B.JumpSetsAlt.algebra_smulCommClass_complex.{u_1} :
     ∀ {L : Type u_1} [inst : Field L] [inst_1 : Algebra ℚ L] (ζ a b : L), a ∈ UpperTheory.Reformulated.B.JumpSetsAlt.hostE ζ a b := by
   intro L _ _ ζ a b
@@ -60,6 +69,9 @@ noncomputable def UpperTheory.Reformulated.B.JumpSetsAlt.aE.{u_1} :
     fun {L : Type u_1} [Field L] [Algebra ℚ L] (ζ a b : L) ↦
       (⟨a, UpperTheory.Reformulated.B.JumpSetsAlt.algebra_smulCommClass_complex ζ a b⟩ : ↥(UpperTheory.Reformulated.B.JumpSetsAlt.hostE ζ a b))
 
+/- English proof (translation)
+Introduce `L _ _ ζ a b`. Conclude with `(le_sup_left : UpperTheory.Reformulated.B.JumpSetsAlt.E0 a b ≤ _) (IntermediateField.subset_adjoin ℚ _ (by simp))`.
+-/
 theorem UpperTheory.Reformulated.B.JumpSetsAlt.sign_action_map_comm.{u_1} :
     ∀ {L : Type u_1} [inst : Field L] [inst_1 : Algebra ℚ L] (ζ a b : L), b ∈ UpperTheory.Reformulated.B.JumpSetsAlt.hostE ζ a b := by
   intro L _ _ ζ a b
@@ -70,6 +82,9 @@ noncomputable def UpperTheory.Reformulated.B.JumpSetsAlt.bE.{u_1} :
     fun {L : Type u_1} [Field L] [Algebra ℚ L] (ζ a b : L) ↦
       (⟨b, UpperTheory.Reformulated.B.JumpSetsAlt.sign_action_map_comm ζ a b⟩ : ↥(UpperTheory.Reformulated.B.JumpSetsAlt.hostE ζ a b))
 
+/- English proof (translation)
+Introduce `L _ _ ζ a b`. Conclude with `(le_sup_right : UpperTheory.Reformulated.B.JumpSetsAlt.F1 ζ ≤ _) (IntermediateField.subset_adjoin ℚ _ (by simp))`.
+-/
 theorem UpperTheory.Reformulated.B.JumpSetsAlt.complex_normed_instance_compat.{u_1} :
     ∀ {L : Type u_1} [inst : Field L] [inst_1 : Algebra ℚ L] (ζ a b : L), ζ + ζ⁻¹ ∈ UpperTheory.Reformulated.B.JumpSetsAlt.hostE ζ a b := by
   intro L _ _ ζ a b
@@ -132,6 +147,9 @@ noncomputable def UpperTheory.Reformulated.B.JumpSetsAlt.galMap.{u_1} :
       ((IsPrimitiveRoot.autToPow ℚ hζ : Gal(L/ℚ) → (ZMod ((2 : ℕ) ^ n))ˣ) σ, UpperTheory.Reformulated.B.JumpSetsAlt.sgn σ a,
         UpperTheory.Reformulated.B.JumpSetsAlt.sgn σ b)
 
+/- English proof (translation)
+Introduce `e q d L _ _ ζ a b h`. Conclude with `h.1`.
+-/
 theorem UpperTheory.Reformulated.B.JumpSetsAlt.glEmbMat_one_eq_one :
     ∀ (e q d : ℕ) (L : Type) [inst : Field L] [inst_1 : NumberField L] (ζ a b : L),
       UpperTheory.Reformulated.B.JumpSetsAlt.IsLayer (e + (2 : ℕ)) q d ζ a b → IsPrimitiveRoot ζ ((2 : ℕ) ^ (e + (2 : ℕ))) := by
@@ -202,6 +220,49 @@ noncomputable def UpperTheory.Reformulated.B.JumpSetsAlt.HostReal :
                         (σ : ↥(UpperTheory.Reformulated.B.JumpSetsAlt.hostE ζ a b) → ↥(UpperTheory.Reformulated.B.JumpSetsAlt.hostE ζ a b)) x = x) ∧
                   (x ∈ UpperTheory.Reformulated.B.JumpSetsAlt.hostF ζ a b ↔ (↑x : L) ∈ ℚ⟮a * b, ζ + ζ⁻¹⟯)
 
+/- English proof (translation)
+Introduce `hG hS hC e q d hqd L _ _ ζ a b hL`. Take `⟨hgal, hfin, hmul, hbij⟩` from `hG e q d hqd L ζ a b hL`. Take `⟨hCM, hconj⟩` from `hC e q d hqd L ζ a b hL`. Establish `hspec` using `hS e q d hqd L ζ a b hL`. Take `⟨σ₀, hσ₀⟩` from `hbij.2 (UpperTheory.Reformulated.B.JumpSetsAlt.cc e)`.
+
+Establish `hone : UpperTheory.Reformulated.B.JumpSetsAlt.galE e ζ a b 1 = 1`. Establish `h` using `hmul 1 1`. Rewrite `h` using `[mul_one]`. Conclude with `left_eq_mul.mp h`. Establish `hfix : ∀ x : ↥(UpperTheory.Reformulated.B.JumpSetsAlt.hostE ζ a b), x ∈ UpperTheory.Reformulated.B.JumpSetsAlt.hostF ζ a b ↔ σ₀ x = x`.
+
+Introduce `x`. Rewrite using `[NumberField.mem_maximalRealSubfield_iff]`. Prove the components needed by the constructor for the conclusion. Introduce `hx`. Take `⟨φ⟩ : Nonempty (↥(UpperTheory.Reformulated.B.JumpSetsAlt.hostE ζ a b) →+* ℂ)` from `inferInstance`.
+
+Apply `φ.injective` to reduce the goal to its premises. Rewrite using `[(hconj φ σ₀).mpr hσ₀ x]`. Conclude with `hx φ`. Introduce `hx φ`. Establish `h` using `(hconj φ σ₀).mpr hσ₀ x`.
+
+Rewrite `h` using `[hx]`. Conclude with `h.symm`. Establish `hval : ((1 : (ZMod (2 ^ (e + 2)))ˣ) : ZMod (2 ^ (e + 2))).val = 1` using `by haveI : Fact (1 < 2 ^ (e + 2)) := ⟨Nat.one_lt_two_pow (by omega)⟩`. Rewrite using `[Units.val_one, ZMod.val_one]`. Establish `hth : ∀ σ : Gal(↥(UpperTheory.Reformulated.B.JumpSetsAlt.hostE ζ a b)/ℚ), (UpperTheory.Reformulated.B.JumpSetsAlt.galE e ζ a b σ).2 = 1 ↔ σ (UpperTheory.Reformulated.B.JumpSetsAlt.thE ζ a b) = UpperTheory.Reformulated.B.JumpSetsAlt.thE ζ a b`.
+
+Introduce `σ`. Establish `h` using `(hspec σ).2.2.1 1`. Rewrite `h` using `[hval, pow_one, pow_one]`. Conclude with `h.trans ⟨fun h => Subtype.ext h, fun h => congrArg Subtype.val h⟩`. Establish `hab : ∀ σ : Gal(↥(UpperTheory.Reformulated.B.JumpSetsAlt.hostE ζ a b)/ℚ), ((σ (UpperTheory.Reformulated.B.JumpSetsAlt.aE ζ a b * UpperTheory.Reformulated.B.JumpSetsAlt.bE ζ a b) : ↥(UpperTheory.Reformulated.B.JumpSetsAlt.hostE ζ a b)) : L) = ((((UpperTheory.Reformulated.B.JumpSet …`.
+
+Introduce `σ`. Rewrite using `[map_mul, IntermediateField.coe_mul, (hspec σ).1, (hspec σ).2.1]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Establish `ha : a ≠ 0`.
+
+Introduce and unpack `rfl`. Establish `h` using `hL.2.1`. Establish `hq : (q : L) ≠ 0` using `Nat.cast_ne_zero.mpr hqd.1.ne_zero`. Conclude with `hq (by simpa using h)`. Establish `hb : b ≠ 0`.
+
+Introduce and unpack `rfl`. Establish `h` using `hL.2.2.1`. Establish `hd : (d : L) ≠ 0` using `Nat.cast_ne_zero.mpr hqd.2.1.ne_zero`. Conclude with `hd (by simpa using h)`. Use `⟨?_, fun x => ⟨?_, ?_⟩⟩` and prove the remaining obligations.
+
+Establish `h` using `Module.finrank_mul_finrank ℚ ↥(UpperTheory.Reformulated.B.JumpSetsAlt.hostF ζ a b) ↥(UpperTheory.Reformulated.B.JumpSetsAlt.hostE ζ a b)`. Rewrite `h` using `[Algebra.IsQuadraticExtension.finrank_eq_two ↥(UpperTheory.Reformulated.B.JumpSetsAlt.hostF ζ a b) ↥(UpperTheory.Reformulated.B.JumpSetsAlt.hostE ζ a b), hfin, show 2 ^ (e + 2) = 2 ^ (e + 1) * 2 from pow_succ 2 (e + 1)]`. Conclude with `Nat.eq_of_mul_eq_mul_right two_pos h`. Rewrite using `[hfix]`. Conclude with `⟨fun hx σ hσ => by rw [hbij.1 (hσ.trans hσ₀.symm)]; exact hx, fun hx => hx σ₀ hσ₀⟩`.
+
+Use `set K : IntermediateField ℚ ↥(UpperTheory.Reformulated.B.JumpSetsAlt.hostE ζ a b) := ℚ⟮UpperTheory.Reformulated.B.JumpSetsAlt.aE ζ a b * UpperTheory.Reformulated.B.JumpSetsAlt.bE ζ a b, UpperTheory.Reformulated.B.JumpSetsAlt.thE ζ a b⟯ with hK`. Establish `hlift : (x : L) ∈ ℚ⟮a * b, ζ + ζ⁻¹⟯ ↔ x ∈ K`. Establish `h1` using `IntermediateField.lift_adjoin ℚ (UpperTheory.Reformulated.B.JumpSetsAlt.hostE ζ a b) {UpperTheory.Reformulated.B.JumpSetsAlt.aE ζ a b * UpperTheory.Reformulated.B.JumpSetsAlt.bE ζ a b, UpperTheory.Reformulated.B.JumpSetsAlt.thE ζ a b}`. Rewrite `h1` using `[Set.image_pair]`. Establish `h2` using `IntermediateField.mem_lift (F := UpperTheory.Reformulated.B.JumpSetsAlt.hostE ζ a b) (E := ℚ⟮UpperTheory.Reformulated.B.JumpSetsAlt.aE ζ a b * UpperTheory.Reformulated.B.JumpSetsAlt.bE ζ a b, UpperTheory.Reformulated.B.JumpSetsAlt.thE ζ a b⟯) x`.
+
+Conclude with `(SetLike.ext_iff.mp h1 (x : L)).symm.trans h2`. Rewrite using `[hlift, hfix]`. Prove the components needed by the constructor for the conclusion. Introduce `hx`. Rewrite using `[← IsGalois.fixedField_fixingSubgroup K, IntermediateField.mem_fixedField_iff]`.
+
+Introduce `σ hσ`. Rewrite `hσ` using `[IntermediateField.mem_fixingSubgroup_iff]`. Establish `h1` using `hab σ`. Rewrite `h1` using `[hσ _ (IntermediateField.subset_adjoin ℚ _ (by simp))]`. Establish `h2` using `(hth σ).mpr (hσ _ (IntermediateField.subset_adjoin ℚ _ (by simp)))`.
+
+Establish `h3 : (UpperTheory.Reformulated.B.JumpSetsAlt.galE e ζ a b σ).1.1 * (UpperTheory.Reformulated.B.JumpSetsAlt.galE e ζ a b σ).1.2 = 1`. Establish `h4 : a * b = ((((UpperTheory.Reformulated.B.JumpSetsAlt.galE e ζ a b σ).1.1 * (UpperTheory.Reformulated.B.JumpSetsAlt.galE e ζ a b σ).1.2 : ℤˣ) : ℤ) : L) * (a * b)` using `h1`. Establish `h5` using `(right_eq_mul₀ (mul_ne_zero ha hb)).mp h4`. Conclude with `Units.ext (Int.cast_injective (α := L) (by simpa using h5))`. Establish `h6 : UpperTheory.Reformulated.B.JumpSetsAlt.galE e ζ a b σ = 1 ∨ UpperTheory.Reformulated.B.JumpSetsAlt.galE e ζ a b σ = UpperTheory.Reformulated.B.JumpSetsAlt.cc e`.
+
+Generalize the expression as in `UpperTheory.Reformulated.B.JumpSetsAlt.galE e ζ a b σ = g at h2 h3`. Take `⟨⟨s, t⟩, u⟩` from `g`. Simplify using `only at h2 h3`. Substitute `h2` using the available equality. Break down `Int.units_eq_one_or s with rfl | rfl` into its components or cases.
+
+Use `left`. Rewrite `h3` using `[one_mul]`. Rewrite using `[h3]`. Both sides reduce to the same expression. Use `right`.
+
+Establish `: t = -1`. Rewrite `h3` using `[neg_mul, one_mul, neg_eq_iff_eq_neg]`. Conclude with `h3`. Rewrite using `[this]`. Both sides reduce to the same expression.
+
+Break down `h6 with h6 | h6` into its components or cases. Rewrite using `[hbij.1 (h6.trans hone.symm)]`. Both sides reduce to the same expression. Rewrite using `[hbij.1 (h6.trans hσ₀.symm)]`. Conclude with `hx`.
+
+Introduce `hx`. Establish `hle : K ≤ IntermediateField.fixedField (Subgroup.zpowers σ₀)`. Rewrite using `[hK, IntermediateField.adjoin_le_iff]`. Establish `hgen : ∀ y, σ₀ y = y → y ∈ IntermediateField.fixedField (Subgroup.zpowers σ₀)`. Introduce `y hy`.
+
+Rewrite using `[IntermediateField.mem_fixedField_iff, Subgroup.forall_mem_zpowers]`. Conclude with `(MulAction.mem_fixedBy_zpowers_iff_mem_fixedBy (g := σ₀)).mpr hy`. Introduce and unpack `y (rfl | rfl)`. Use `hgen _ (Subtype.ext ?_)` and prove the remaining obligations. Rewrite using `[hab σ₀, hσ₀]`.
+
+Simplify using `[UpperTheory.Reformulated.B.JumpSetsAlt.cc, UpperTheory.Reformulated.B.JumpSetsAlt.c0, UpperTheory.Reformulated.B.JumpSetsAlt.aE, UpperTheory.Reformulated.B.JumpSetsAlt.bE]`. Conclude with `hgen _ ((hth σ₀).mp (by rw [hσ₀]; rfl))`. Conclude with `(IntermediateField.mem_fixedField_iff _ x).mp (hle hx) σ₀ (Subgroup.mem_zpowers σ₀)`.
+-/
 theorem UpperTheory.Reformulated.B.JumpSetsAlt.hostReal_of :
     UpperTheory.Reformulated.B.JumpSetsAlt.HostGalois → UpperTheory.Reformulated.B.JumpSetsAlt.HostGalSpec → UpperTheory.Reformulated.B.JumpSetsAlt.HostConj → UpperTheory.Reformulated.B.JumpSetsAlt.HostReal := by
   intro hG hS hC e q d hqd L _ _ ζ a b hL

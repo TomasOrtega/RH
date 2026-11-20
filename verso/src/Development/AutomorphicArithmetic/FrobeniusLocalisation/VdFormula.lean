@@ -9,6 +9,23 @@ open UpperTheory.HF
 open NumberField Ideal Formalism.HC Formalism.FrobeniusOrbits
 open scoped Pointwise
 
+/- English proof (translation)
+Repeatedly rewrite using `[Finset.sum_mul]`. Rewrite using `[Finset.sum_sigma', ← Finset.sum_filter_add_sum_filter_not N.divisors IsPrimePow, Finset.sum_eq_zero (s := N.divisors.filter fun m => ¬ IsPrimePow m) (fun m hm => by`. Rewrite using `[ArithmeticFunction.vonMangoldt_eq_zero_iff.2 (Finset.mem_filter.1 hm).2, zero_mul]), add_zero]`. Use `symm`. Use `Finset.sum_bij (fun x _ => x.1 ^ (N.factorization x.1 - x.2)) ?_ ?_ ?_ ?_` and prove the remaining obligations.
+
+Introduce and unpack `⟨l, j⟩ hx`. Simplify using `only [Finset.mem_sigma, Finset.mem_range, Nat.mem_primeFactors] at hx`. Use `Finset.mem_filter.2 ⟨Nat.mem_divisors.2 ⟨?_, hN⟩, ?_⟩` and prove the remaining obligations. Conclude with `(pow_dvd_pow l (Nat.sub_le _ _)).trans (Nat.ordProj_dvd N l)`. Conclude with `hx.1.1.isPrimePow.pow (by dsimp only; omega)`.
+
+Introduce and unpack `⟨l, j⟩ hx ⟨l', j'⟩ hy h`. Simplify using `only [Finset.mem_sigma, Finset.mem_range, Nat.mem_primeFactors] at hx hy`. Simplify using `only at h`. Establish `h1 : l = l'`. Use `(Nat.prime_dvd_prime_iff_eq hx.1.1 hy.1.1).1 (hx.1.1.dvd_of_dvd_pow (n := N.factorization l' - j') ?_)` and prove the remaining obligations.
+
+Rewrite using `[← h]; exact dvd_pow_self l (by omega)`. Substitute `h1` using the available equality. Establish `h2` using `Nat.pow_right_injective hx.1.1.two_le h`. Take `rfl : j = j'` from `by omega`. Both sides reduce to the same expression.
+
+Introduce `m hm`. Take `⟨hm1, hm2⟩` from `Finset.mem_filter.1 hm`. Take `⟨p, k, hp, hk, rfl⟩` from `(isPrimePow_nat_iff m).1 hm2`. Establish `hd` using `Nat.dvd_of_mem_divisors hm1`. Establish `hle : k ≤ N.factorization p` using `(hp.pow_dvd_iff_le_factorization hN).1 hd`.
+
+Use `⟨⟨p, N.factorization p - k⟩, ?_, ?_⟩` and prove the remaining obligations. Simplify using `only [Finset.mem_sigma, Finset.mem_range, Nat.mem_primeFactors]`. Conclude with `⟨⟨hp, (dvd_pow_self p hk.ne').trans hd, hN⟩, by omega⟩`. Simplify using `only`. Use `congr 1`.
+
+Use linear arithmetic over natural numbers and integers. Introduce and unpack `⟨l, j⟩ hx`. Simplify using `only [Finset.mem_sigma, Finset.mem_range, Nat.mem_primeFactors] at hx`. Simplify using `only`. Establish `hl` using `hx.1.1`.
+
+Establish `h4 : N / l ^ (N.factorization l - j) = ordCompl[l] N * l ^ j`. Use `Nat.div_eq_of_eq_mul_right (pow_pos hl.pos _) ?_` and prove the remaining obligations. Rewrite using `[mul_comm (ordCompl[l] N), ← mul_assoc, ← pow_add, Nat.sub_add_cancel hx.2.le]`. Conclude with `(Nat.ordProj_mul_ordCompl_eq_self N l).symm`. Rewrite using `[ArithmeticFunction.vonMangoldt_apply_pow (by omega), ArithmeticFunction.vonMangoldt_apply_prime hl, h4, mul_comm]`.
+-/
 private theorem regroup {N : ℕ} (hN : N ≠ 0) (f : ℕ → ℝ) :
     ∑ m ∈ N.divisors, ArithmeticFunction.vonMangoldt m * f (N / m) =
       ∑ l ∈ N.primeFactors, (∑ j ∈ Finset.range (N.factorization l), f (ordCompl[l] N * l ^ j)) * Real.log l := by
@@ -54,6 +71,19 @@ private theorem regroup {N : ℕ} (hN : N ≠ 0) (f : ℕ → ℝ) :
       exact (Nat.ordProj_mul_ordCompl_eq_self N l).symm
     rw [ArithmeticFunction.vonMangoldt_apply_pow (by omega), ArithmeticFunction.vonMangoldt_apply_prime hl, h4, mul_comm]
 
+/- English proof (translation)
+Introduce `φ H l hl`. Establish `hN : H.condN ≠ 0` using `NeZero.ne _`. Take `⟨-, h2, h3, -⟩` from `UpperTheory.HF.log_rd_sum H`. Distinguish the cases in `hlN : l ∈ H.condN.primeFactors`. Establish `h4` using `Formalism.HC.Der.Rd.log_rd_eq H.toHostRaw`.
+
+Rewrite `h4` using `[Formalism.HC.Der.Rd.SS, regroup hN (Formalism.HC.Der.Rd.rho H.art.ker), h2]`. Set `a : ℕ → ℚ` to `fun p => (padicValNat p (NumberField.discr H.E).natAbs : ℚ) / (Module.finrank ℚ H.E : ℚ)`. Set `b : ℕ → ℚ` to `fun p => ∑ j ∈ Finset.range (H.condN.factorization p), (1 - 1 / (Nat.card (H.imgOne (ordCompl[p] H.condN * p ^ j)) : ℚ))`. Establish `ha : ∀ p, (a p : ℝ) = H.vdH p` using `fun p => by`. Simplify using `only [a, HostRaw.vdH]`.
+
+Use `push_cast`. Both sides reduce to the same expression. Establish `hb : ∀ p, (b p : ℝ) = ∑ j ∈ Finset.range (H.condN.factorization p), (1 - 1 / (Nat.card (H.imgOne (ordCompl[p] H.condN * p ^ j)) : ℝ))` using `fun p => by`. Simplify using `only [b]`. Use `push_cast`.
+
+Both sides reduce to the same expression. Establish `h5` using `UpperTheory.HF.log_prime_indep H.condN.primeFactors a b (fun p hp => Nat.prime_of_mem_primeFactors hp) (by`. Repeatedly rewrite using `[ha, hb]`. Rewrite using `[h4]`. Use `Finset.sum_congr rfl fun p _ => ?_` and prove the remaining obligations.
+
+Use `congr 1`. Use `Finset.sum_congr rfl fun j hj => ?_` and prove the remaining obligations. Use `UpperTheory.HF.rho_art H.toHostRaw ?_` and prove the remaining obligations. Use `conv_rhs => rw [← Nat.ordProj_mul_ordCompl_eq_self H.condN p, mul_comm]`. Conclude with `mul_dvd_mul_left _ (pow_dvd_pow p (Finset.mem_range.1 hj).le)) l hlN`.
+
+Rewrite using `[← ha, ← hb, h5]`. Establish `h6 : H.condN.factorization l = 0`. Rewrite `hlN` using `[← Nat.support_factorization, Finsupp.notMem_support_iff]`. Then use the resulting hypothesis. Establish `h7 : ¬ l ∣ (NumberField.discr H.E).natAbs` using `fun hd => hlN (h3 (Nat.mem_primeFactors.2 ⟨hl, hd, Int.natAbs_ne_zero.2 (discr_ne_zero H.E)⟩))`. Rewrite using `[h6, Finset.sum_range_zero, HostRaw.vdH, padicValNat.eq_zero_of_not_dvd h7, Nat.cast_zero, zero_div]`.
+-/
 theorem UpperTheory.HF.vd_formula :
     ∀ {φ : Frame} (H : HostAx φ) {l : ℕ}, l.Prime → H.vdH l = ∑ j ∈ Finset.range (H.condN.factorization l), (1 - 1 / (Nat.card (H.imgOne (ordCompl[l] H.condN * l ^ j)) : ℝ)) := by
   intro φ H l hl

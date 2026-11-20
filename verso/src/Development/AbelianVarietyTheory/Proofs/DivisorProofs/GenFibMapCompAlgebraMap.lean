@@ -10,6 +10,9 @@ namespace GlobalTheory.GenFibMap
 variable {A A' A'' X X' X'' : Type} [CommRing A] [CommRing A'] [CommRing A''] [CommRing X]
   [CommRing X'] [CommRing X''] [Algebra A X] [Algebra A' X'] [Algebra A'' X'']
 
+/- English proof (translation)
+Introduce and unpack `_ ⟨a, ha, rfl⟩`. Use `⟨φ a, hφ a ha, ?_⟩` and prove the remaining obligations. Simplify using `only [IsScalarTower.algebraMap_apply A X (Localization.AtPrime P), IsScalarTower.algebraMap_apply A' X' (Localization.AtPrime P'), Localization.localRingHom_to_map, hc]`.
+-/
 theorem submonoid_le (φ : A →+* A') (χ : X →+* X')
     (hc : ∀ a, χ (algebraMap A X a) = algebraMap A' X' (φ a))
     (hφ : ∀ a ∈ nonZeroDivisors A, φ a ∈ nonZeroDivisors A')
@@ -32,6 +35,9 @@ def genFibMap (φ : A →+* A') (χ : X →+* X')
     (GlobalTheory.LocAcyc.GenFib A' (Localization.AtPrime P')) (Localization.localRingHom P P' χ hP)
     (submonoid_le φ χ hc hφ P P' hP)
 
+/- English proof (translation)
+The claim follows from `IsLocalization.map_comp _`.
+-/
 theorem genFibMap_comp_algebraMap (φ : A →+* A') (χ : X →+* X')
     (hc : ∀ a, χ (algebraMap A X a) = algebraMap A' X' (φ a))
     (hφ : ∀ a ∈ nonZeroDivisors A, φ a ∈ nonZeroDivisors A')
@@ -42,6 +48,9 @@ theorem genFibMap_comp_algebraMap (φ : A →+* A') (χ : X →+* X')
         (Localization.localRingHom P P' χ hP) :=
   IsLocalization.map_comp _
 
+/- English proof (translation)
+Rewrite using `[genFibMap, IsLocalization.map_eq, Localization.localRingHom_to_map]`.
+-/
 theorem genFibMap_apply (φ : A →+* A') (χ : X →+* X')
     (hc : ∀ a, χ (algebraMap A X a) = algebraMap A' X' (φ a))
     (hφ : ∀ a ∈ nonZeroDivisors A, φ a ∈ nonZeroDivisors A')
@@ -53,6 +62,9 @@ theorem genFibMap_apply (φ : A →+* A') (χ : X →+* X')
           (algebraMap X' (Localization.AtPrime P') (χ y)) := by
   rw [genFibMap, IsLocalization.map_eq, Localization.localRingHom_to_map]
 
+/- English proof (translation)
+Apply `IsLocalization.ringHom_ext (Algebra.algebraMapSubmonoid (Localization.AtPrime P) (nonZeroDivisors A))` to reduce the goal to its premises. Apply `IsLocalization.ringHom_ext P.primeCompl` to reduce the goal to its premises. Conclude with `RingHom.ext h`.
+-/
 theorem ext {C : Type} [CommRing C] (P : Ideal X) [P.IsPrime]
     {u v : GlobalTheory.LocAcyc.GenFib A (Localization.AtPrime P) →+* C}
     (h : ∀ y : X, u (algebraMap (Localization.AtPrime P) _ (algebraMap X (Localization.AtPrime P) y)) =
@@ -61,6 +73,9 @@ theorem ext {C : Type} [CommRing C] (P : Ideal X) [P.IsPrime]
   apply IsLocalization.ringHom_ext P.primeCompl
   exact RingHom.ext h
 
+/- English proof (translation)
+Use `ext P (fun y => ?_)` and prove the remaining obligations. Simplify using `only [RingHom.comp_apply, genFibMap_apply, hχ]`.
+-/
 theorem genFibMap_comp (φ₁ : A →+* A') (χ₁ : X →+* X')
     (hc₁ : ∀ a, χ₁ (algebraMap A X a) = algebraMap A' X' (φ₁ a))
     (hφ₁ : ∀ a ∈ nonZeroDivisors A, φ₁ a ∈ nonZeroDivisors A')
@@ -78,6 +93,9 @@ theorem genFibMap_comp (φ₁ : A →+* A') (χ₁ : X →+* X')
   refine ext P (fun y => ?_)
   simp only [RingHom.comp_apply, genFibMap_apply, hχ]
 
+/- English proof (translation)
+Use `ext P (fun y => ?_)` and prove the remaining obligations. Simplify using `only [RingHom.id_apply, genFibMap_apply, hχ]`.
+-/
 theorem genFibMap_id (φ : A →+* A) (χ : X →+* X)
     (hc : ∀ a, χ (algebraMap A X a) = algebraMap A X (φ a))
     (hφ : ∀ a ∈ nonZeroDivisors A, φ a ∈ nonZeroDivisors A)

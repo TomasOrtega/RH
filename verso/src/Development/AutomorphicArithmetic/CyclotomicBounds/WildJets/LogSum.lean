@@ -1,5 +1,14 @@
 import Mathlib
 
+/- English proof (translation)
+Introduce `y hy`. Use `set S := (Finset.range (⌊y⌋₊ + 1)).filter Nat.Prime with hS`. Establish `hlogy : 0 ≤ Real.log y` using `Real.log_nonneg hy`. Establish `hterm : ∀ l ∈ S, Real.logb l y * Real.log l = Real.log y`. Introduce `l hl`.
+
+Establish `hp : Nat.Prime l` using `(Finset.mem_filter.1 hl).2`. Establish `h1 : (1:ℝ) < l` using `by exact_mod_cast hp.one_lt`. Establish `hlog : Real.log l ≠ 0` using `(Real.log_pos h1).ne'`. Rewrite using `[Real.logb, div_mul_cancel₀ _ hlog]`. Rewrite using `[Finset.sum_congr rfl hterm, Finset.sum_const, nsmul_eq_mul]`.
+
+Apply `mul_le_mul_of_nonneg_right _ hlogy` to reduce the goal to its premises. Establish `hsub : S ⊆ (Finset.range (⌊y⌋₊ + 1)).erase 0`. Introduce `l hl`. Rewrite `hl` using `[hS, Finset.mem_filter]`. Conclude with `Finset.mem_erase.2 ⟨hl.2.ne_zero, hl.1⟩`.
+
+Establish `hcard` using `Finset.card_le_card hsub`. Rewrite `hcard` using `[Finset.card_erase_of_mem (by simp), Finset.card_range]`. Establish `h2 : S.card ≤ ⌊y⌋₊` using `by omega`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem UpperTheory.WildA.logSum :
     ∀ y : ℝ, 1 ≤ y → ∑ l ∈ (Finset.range (⌊y⌋₊ + 1)).filter Nat.Prime, Real.logb l y * Real.log l ≤ y * Real.log y := by
   intro y hy

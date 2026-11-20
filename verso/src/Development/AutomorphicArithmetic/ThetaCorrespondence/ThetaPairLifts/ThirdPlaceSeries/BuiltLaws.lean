@@ -11,6 +11,15 @@ noncomputable section
 namespace GlobalTheory.LocCoincide
 set_option maxHeartbeats 4000000 in
 set_option synthInstance.maxHeartbeats 400000 in
+/- English proof (translation)
+Introduce `hL D b`. Take `⟨D0, cf, jE, A, cg, au, rep, row, low, Pq, S, hLm, eig, θ, Bs, M, C, tp, ch, mt, big, L, Sp, Au, ss, eq⟩` from `b`. Substitute `eq` using the available equality. Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Conclude with `(GlobalTheory.RowLaws.main _ _ _ _ _ A.wdT).2.1`.
+
+Introduce `i i' σ v _`. Conclude with `(Au.locW i σ v).trans (Au.locW i' σ v).symm`. Introduce `i i' hj hw`. Establish `hj' : L.X.nd.j i = L.X.nd.j i'` using `hj`. Establish `hw' : L.X.nd.w i = L.X.nd.w i'` using `hw`.
+
+Establish `hjr : 1 ≤ L.X.nd.j i ∧ L.X.nd.j i ≤ D0.R.m` using `L.X.nd.j_range i`. Establish `hmu : L.X.nd.mu i = L.X.nd.mu i'` using `(L.X.nd.mu_w i).trans ((congrArg _ hw').trans (L.X.nd.mu_w i').symm)`. Establish `e1 : L.X.nd.j i - 1 + 1 = L.X.nd.j i` using `by omega`. Establish `e2 : L.X.nd.j i - 1 + 1 = L.X.nd.j i'` using `by omega`. Establish `h1` using `Au.muC i ⟨L.X.nd.j i - 1, by omega⟩ e1`.
+
+Establish `h2` using `Au.muC i' ⟨L.X.nd.j i - 1, by omega⟩ e2`. Use `show L.Y.muC i = L.Y.muC i'`. Apply `A.chr.e1.injective` to reduce the goal to its premises. Apply `Subtype.ext` to reduce the goal to its premises. Conclude with `h1.trans ((congrArg (fun μ => tp.tup μ ⟨L.X.nd.j i - 1, by omega⟩) hmu).trans h2.symm)`.
+-/
 theorem built_laws_alt : ∀ (hL : _root_.UpperTheory.Zero.LLC.RecTExists) (D : D7), _root_.GlobalTheory.HeightCounting.NormChoiceConstructed hL D →
     GlobalTheory.RowTie.CharLaws D.nd D.naut ∧
     (∀ (i i' : D.nd.Loc) (σ : D.what₂.FT) (v : PlE D.host), IsSplitPl D.host v → D.naut.locW i σ v = D.naut.locW i' σ v) ∧
@@ -36,6 +45,9 @@ theorem built_laws_alt : ∀ (hL : _root_.UpperTheory.Zero.LLC.RecTExists) (D : 
     apply A.chr.e1.injective
     apply Subtype.ext
     exact h1.trans ((congrArg (fun μ => tp.tup μ ⟨L.X.nd.j i - 1, by omega⟩) hmu).trans h2.symm)
+/- English proof (translation)
+Introduce `hL D M b hT` and use `have h := _root_.GlobalTheory.LocCoincide.built_laws_alt hL D b GlobalTheory.T.localization_eq_of_heckeAgreement_twistLaws D M hT h.1 h.2.1 h.2.2`.
+-/
 theorem main_alt_alt : ∀ (hL : _root_.UpperTheory.Zero.LLC.RecTExists) (D : D7) (M : Formalism.L2.MtFam D), _root_.GlobalTheory.HeightCounting.NormChoiceConstructed hL D →
     Formalism.L2.HeckeTied D M → KillingConditions.LocalisationUniqueness D := fun hL D M b hT =>
   have h := _root_.GlobalTheory.LocCoincide.built_laws_alt hL D b

@@ -16,10 +16,18 @@ variable {K V ι : Type} [Field K] [NumberField K] [StarRing K]
   [AddCommGroup V] [Module K V] [Module (𝓞 K) V] [IsScalarTower (𝓞 K) K V]
   [Fintype ι] [DecidableEq ι]
 
+/- English proof (translation)
+Unfold `Formalism.HN.rkK`. Simplify using the standard rewrite rules.
+-/
 theorem ms_rkK_bot : rkK (⊥ : Submodule (𝓞 K) V) = 0 := by
   unfold Formalism.HN.rkK
   simp
 
+/- English proof (translation)
+Use `haveI : FiniteDimensional K V := Module.Finite.of_basis b`. Take `⟨x, hxL, hx0⟩` from `Submodule.exists_mem_ne_zero_of_ne_bot hL`. Unfold `Formalism.HN.rkK`. Rewrite using `[Module.finrank_pos_iff_exists_ne_zero]`. Use `⟨⟨x, Submodule.subset_span hxL⟩, ?_⟩` and prove the remaining obligations.
+
+Introduce `h`. Conclude with `hx0 (congrArg Subtype.val h)`.
+-/
 theorem ms_rkK_pos (b : Basis ι K V) {L : Submodule (𝓞 K) V} (hL : L ≠ ⊥) : 0 < rkK L := by
   haveI : FiniteDimensional K V := Module.Finite.of_basis b
   obtain ⟨x, hxL, hx0⟩ := Submodule.exists_mem_ne_zero_of_ne_bot hL
@@ -29,10 +37,24 @@ theorem ms_rkK_pos (b : Basis ι K V) {L : Submodule (𝓞 K) V} (hL : L ≠ ⊥
   intro h
   exact hx0 (congrArg Subtype.val h)
 
+/- English proof (translation)
+Unfold `Formalism.HN.nPl`. Conclude with `Fintype.card_pos`.
+-/
 theorem ms_nPl_pos : 0 < nPl K := by
   unfold Formalism.HN.nPl
   exact Fintype.card_pos
 
+/- English proof (translation)
+Establish `hz : zl (Formalism.HermitianLatticesTheory.realize b X) (⊥ : Submodule (𝓞 K) V) = ⊥`. Unfold `Formalism.HN.zl`. Simplify using the standard rewrite rules. Establish `hq : ∀ L : Submodule ℤ (EuclideanSpace ℝ (InfinitePlace K × ι × Fin 2)), Formalism.F.quot L ⊥ = L`. Introduce `L`.
+
+Unfold `Formalism.F.quot`. Establish `hp : ∀ y : EuclideanSpace ℝ (InfinitePlace K × ι × Fin 2), (Submodule.span ℝ ((⊥ : Submodule ℤ (EuclideanSpace ℝ (InfinitePlace K × ι × Fin 2))) : Set (EuclideanSpace ℝ (InfinitePlace K × ι × Fin 2))))ᗮ.starProjection y = y`. Introduce `y`. Simplify using `only [Submodule.bot_coe, Submodule.span_zero_singleton, Submodule.bot_orthogonal_eq_top]`. Use `first`.
+
+Consider the case `(rw [Submodule.starProjection_eq_self_iff]; exact Submodule.mem_top)`. Consider the case `simp [Submodule.starProjection_top]`. Consider the case `exact Submodule.starProjection_top_apply y`. Use extensionality with `x`. Simplify using `only [Submodule.mem_map, LinearMap.coe_restrictScalars, ContinuousLinearMap.coe_coe, hp]`.
+
+Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨y, hy, rfl⟩`. Conclude with `hy`. Introduce `hx`. Conclude with `⟨x, hx, rfl⟩`.
+
+Unfold `Formalism.HN.htQ Formalism.HN.ht`. Rewrite using `[ms_rkK_bot, hz, hq]`. Simplify using `only [Nat.cast_zero, sub_zero]`. Use `congr 2`. Rewrite using `[← Real.rpow_natCast, Nat.cast_mul]`.
+-/
 theorem ms_htQ_bot (b : Basis ι K V) (X : InfinitePlace K → Matrix ι ι ℂ)
     (A : Submodule (𝓞 K) V) : htQ b X A ⊥ = ht b X A := by
   have hz : zl (Formalism.HermitianLatticesTheory.realize b X) (⊥ : Submodule (𝓞 K) V) = ⊥ := by
@@ -64,6 +86,11 @@ theorem ms_htQ_bot (b : Basis ι K V) (X : InfinitePlace K → Matrix ι ι ℂ)
   congr 2
   rw [← Real.rpow_natCast, Nat.cast_mul]
 
+/- English proof (translation)
+Establish `h` using `size_maximal_slope K V ι b X hX L hfg hL`. Take `⟨-, h2, -⟩` from `h`. Take `⟨-, -, hpos⟩` from `place_lattice_structure K V ι b X hX L hfg`. Establish `hf : (0 : ℝ) < nPl K` using `by exact_mod_cast ms_nPl_pos`. Establish `hj : (0 : ℝ) < rkK L` using `by exact_mod_cast ms_rkK_pos b hL`.
+
+Rewrite using `[h2]`. Unfold `size`. Rewrite using `[Real.log_rpow hpos]`. Clear the denominators using the available nonvanishing facts.
+-/
 theorem ms_mu_eq [IsTotallyComplex K] (b : Basis ι K V) (X : InfinitePlace K → Matrix ι ι ℂ)
     (hX : ∀ v, IsUnit (X v).det) {L : Submodule (𝓞 K) V} (hfg : L.FG) (hL : L ≠ ⊥) :
     muDef b X L = -(Real.log (ht b X L) / ((nPl K : ℝ) * (rkK L : ℝ))) := by
@@ -77,6 +104,17 @@ theorem ms_mu_eq [IsTotallyComplex K] (b : Basis ι K V) (X : InfinitePlace K �
   rw [Real.log_rpow hpos]
   field_simp
 
+/- English proof (translation)
+Establish `h1 : (LinearMap.toMatrix b b ((n : K) • (LinearMap.id : V →ₗ[K] V))).map v.embedding = (n : ℂ) • (1 : Matrix ι ι ℂ)`. Use extensionality with `i j`. Apply the tactic sequence `by_cases h : i = j <;> simp [LinearMap.toMatrix_id, Matrix.one_apply, h]`. Establish `hM : (X v)⁻¹ * (LinearMap.toMatrix b b ((n : K) • (LinearMap.id : V →ₗ[K] V))).map v.embedding * X v = (n : ℂ) • (1 : Matrix ι ι ℂ)`. Rewrite using `[h1, Matrix.mul_smul, Matrix.mul_one, Matrix.smul_mul, Matrix.nonsing_inv_mul _ (hX v)]`.
+
+Establish `h3 : Matrix.toEuclideanLin (1 : Matrix ι ι ℂ) = LinearMap.id` using `by first`. Consider the case `exact Matrix.toEuclideanLin_one`. Consider the case `(ext x i; simp [Matrix.toEuclideanLin_apply])`. Consider the case `(simp [Matrix.toEuclideanLin, Matrix.toLin'_one])`. Establish `h4 : LinearMap.toContinuousLinearMap (Matrix.toEuclideanLin ((n : ℂ) • (1 : Matrix ι ι ℂ))) = (n : ℂ) • ContinuousLinearMap.id ℂ (EuclideanSpace ℂ ι)`.
+
+Rewrite using `[map_smul, h3, map_smul]`. Use `congr 1`. Unfold `Formalism.HN.opNormAt`. Rewrite using `[hM, h4, norm_smul]`. Take `⟨i⟩` from `(inferInstance : Nonempty ι)`.
+
+Establish `hid : ‖ContinuousLinearMap.id ℂ (EuclideanSpace ℂ ι)‖ = 1` using `by first`. Consider the case `exact ContinuousLinearMap.norm_id`. Consider the case `(apply ContinuousLinearMap.norm_id_of_nontrivial_seminorm`. Conclude with `⟨EuclideanSpace.single i 1, by simp⟩)`. Rewrite using `[hid, mul_one]`.
+
+Simplify using the standard rewrite rules.
+-/
 theorem ms_opNorm_nat [Nonempty ι] (b : Basis ι K V) (X : InfinitePlace K → Matrix ι ι ℂ)
     (hX : ∀ v, IsUnit (X v).det) (n : ℕ) (v : InfinitePlace K) :
     opNormAt b X b X v ((n : K) • (LinearMap.id : V →ₗ[K] V)) = n := by
@@ -107,6 +145,11 @@ theorem ms_opNorm_nat [Nonempty ι] (b : Basis ι K V) (X : InfinitePlace K → 
   rw [hid, mul_one]
   simp
 
+/- English proof (translation)
+Unfold `Formalism.HN.htMap`. Repeatedly rewrite using `[ms_opNorm_nat b X hX n]`. Rewrite using `[Finset.sum_const, Finset.card_univ, nsmul_eq_mul, Real.log_pow]`. Establish `hc : (0 : ℝ) < (Fintype.card (InfinitePlace K) : ℝ)` using `by exact_mod_cast Fintype.card_pos`. Simplify using `only [Formalism.HN.nPl]`.
+
+Clear the denominators using the available nonvanishing facts. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem ms_htMap_nat [Nonempty ι] (b : Basis ι K V) (X : InfinitePlace K → Matrix ι ι ℂ)
     (hX : ∀ v, IsUnit (X v).det) (n : ℕ) :
     htMap b X b X ((n : K) • (LinearMap.id : V →ₗ[K] V)) = 2 * Real.log n := by
@@ -121,6 +164,33 @@ theorem ms_htMap_nat [Nonempty ι] (b : Basis ι K V) (X : InfinitePlace K → M
 
 end SlopeTestRemainingChoices
 
+/- English proof (translation)
+Introduce `K V ι W κ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ b X b' X' hX hX' φ A B hA hB hA0 hinj hAB hrk`. Establish `: FiniteDimensional K V` using `Module.Finite.of_basis b`. Establish `hker : A ⊓ (LinearMap.ker φ).restrictScalars (𝓞 K) = ⊥`. Rewrite using `[eq_bot_iff]`. Introduce and unpack `x ⟨hxA, hxk⟩`.
+
+Establish `hx0 : φ x = 0` using `hxk`. Conclude with `(Submodule.mem_bot _).2 (hinj hxA A.zero_mem (by rw [hx0, map_zero]))`. Establish `hrkI : rkK (A.map (φ.restrictScalars (𝓞 K))) = rkK A`. Establish `h` using `sizeIneq_rk φ A`. Rewrite `h` using `[hker, ms_rkK_bot, add_zero]`.
+
+Conclude with `h`. Take `⟨-, hht⟩` from `height_image_formula K V ι W κ b X b' X' hX hX' φ A hA`. Rewrite `hht` using `[hker, ms_htQ_bot, hrkI]`. Use `set I := A.map (φ.restrictScalars (𝓞 K)) with hI`. Establish `hIfg : I.FG` using `hA.map _`.
+
+Establish `hI0 : I ≠ ⊥`. Introduce `h`. Establish `h0` using `ms_rkK_pos b hA0`. Rewrite `h0` using `[← hrkI, h, ms_rkK_bot]`. Conclude with `lt_irrefl _ h0`.
+
+Establish `hB0 : B ≠ ⊥` using `fun h => hI0 (le_bot_iff.mp (h ▸ hAB))`. Establish `hmono : ht b' X' B ≤ ht b' X' I` using `(size_maximal_slope K W κ b' X' hX' I hIfg hI0).2.2.2.2.2 B hAB hB (hrk.trans hrkI.symm)`. Take `⟨-, -, hposA⟩` from `place_lattice_structure K V ι b X hX A hA`. Take `⟨-, -, hposB⟩` from `place_lattice_structure K W κ b' X' hX' B hB`. Take `⟨-, -, hposI⟩` from `place_lattice_structure K W κ b' X' hX' I hIfg`.
+
+Establish `hj : 0 < rkK A` using `ms_rkK_pos b hA0`. Establish `hop : ∀ v, 0 < opNormAt b X b' X' v φ`. Introduce `v`. Establish `hnn : 0 ≤ opNormAt b X b' X' v φ` using `norm_nonneg _`. Break down `hnn.lt_or_eq with h | h` into its components or cases.
+
+Conclude with `h`. It suffices to derive a contradiction. Establish `hz : (∏ v, opNormAt b X b' X' v φ ^ (2 * rkK A)) = 0`. Apply `Finset.prod_eq_zero (Finset.mem_univ v)` to reduce the goal to its premises. Rewrite using `[← h]`.
+
+Conclude with `zero_pow (by omega)`. Rewrite `hht` using `[hz, zero_mul]`. Conclude with `absurd hposI (not_lt.2 hht)`. Establish `hlog : Real.log (ht b' X' B) ≤ (rkK A : ℝ) * (∑ v, Real.log (opNormAt b X b' X' v φ ^ 2)) + Real.log (ht b X A)`. Establish `h1 : Real.log (ht b' X' B) ≤ Real.log ((∏ v, opNormAt b X b' X' v φ ^ (2 * rkK A)) * ht b X A)` using `Real.log_le_log hposB (hmono.trans hht)`.
+
+Establish `hpp : (∏ v, opNormAt b X b' X' v φ ^ (2 * rkK A)) ≠ 0` using `Finset.prod_ne_zero_iff.2 fun v _ => pow_ne_zero _ (hop v).ne'`. Rewrite `h1` using `[Real.log_mul hpp hposA.ne', Real.log_prod (fun v _ => pow_ne_zero _ (hop v).ne')]`. Establish `h2 : (∑ v, Real.log (opNormAt b X b' X' v φ ^ (2 * rkK A))) = (rkK A : ℝ) * (∑ v, Real.log (opNormAt b X b' X' v φ ^ 2))`. Rewrite using `[Finset.mul_sum]`. Use `Finset.sum_congr rfl fun v _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[Real.log_pow, Real.log_pow]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Rewrite `h1` using `[h2]`. Conclude with `h1`.
+
+Rewrite using `[ms_mu_eq b X hX hA hA0, ms_mu_eq b' X' hX' hB hB0, hrk]`. Unfold `htMap`. Establish `hf : (0 : ℝ) < nPl K` using `by exact_mod_cast ms_nPl_pos`. Establish `hj' : (0 : ℝ) < rkK A` using `by exact_mod_cast hj`. Use `set S := ∑ v, Real.log (opNormAt b X b' X' v φ ^ 2) with hS`.
+
+Establish `key : (Real.log (ht b' X' B) - Real.log (ht b X A)) / ((nPl K : ℝ) * (rkK A : ℝ)) ≤ 1 / (nPl K : ℝ) * S`. Rewrite using `[div_le_iff₀ (mul_pos hf hj')]`. Establish `: 1 / (nPl K : ℝ) * S * ((nPl K : ℝ) * (rkK A : ℝ)) = (rkK A : ℝ) * S`. Clear the denominators using the available nonvanishing facts. Rewrite using `[this]`.
+
+Combine the linear equalities and inequalities to obtain the conclusion. Rewrite `key` using `[sub_div]`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem map_slope_mu : MapMu := by
   intro K V ι W κ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ b X b' X' hX hX' φ A B hA hB hA0 hinj hAB hrk
   have : FiniteDimensional K V := Module.Finite.of_basis b
@@ -192,6 +262,35 @@ theorem map_slope_mu : MapMu := by
   rw [sub_div] at key
   linarith
 
+/- English proof (translation)
+Introduce `K V ι _ _ _ _ _ _ _ _ _ _ b X hX A B n hA hA0 hn hBA hnA`. Establish `hne : Nonempty ι`. Assume the negation of the conclusion as `h`. Rewrite `h` using `[not_nonempty_iff]`. Apply `hA0` to reduce the goal to its premises.
+
+Rewrite using `[eq_bot_iff]`. Introduce `x _`. Establish `: x = 0` using `b.repr.injective (by ext i; exact (h.false i).elim)`. Conclude with `(Submodule.mem_bot _).2 this`. Establish `hBfg : B.FG`.
+
+Establish `: IsNoetherian (𝓞 K) A` using `isNoetherian_of_fg_of_noetherian A hA`. Conclude with `(isNoetherian_submodule.1 this) B hBA`. Use `set φ : V →ₗ[K] V := (n : K) • (LinearMap.id : V →ₗ[K] V) with hφ`. Establish `hφx : ∀ x, φ x = (n : 𝓞 K) • x`. Introduce `x`.
+
+Simplify using `[hφ, Nat.cast_smul_eq_nsmul]`. Establish `hnK : (n : K) ≠ 0` using `by exact_mod_cast hn.ne'`. Establish `hinj : Function.Injective φ`. Introduce `x y hxy`. Simplify using `only [hφ, LinearMap.smul_apply, LinearMap.id_apply] at hxy`.
+
+Conclude with `smul_right_injective V hnK hxy`. Establish `hmap : A.map (φ.restrictScalars (𝓞 K)) ≤ B`. Introduce and unpack `_ ⟨x, hx, rfl⟩`. Use `show φ x ∈ B`. Rewrite using `[hφx]`.
+
+Conclude with `hnA x hx`. Establish `hmap0 : A.map (φ.restrictScalars (𝓞 K)) ≠ ⊥`. Introduce `h`. Apply `hA0` to reduce the goal to its premises. Rewrite using `[eq_bot_iff]`.
+
+Introduce `x hx`. Establish `h1 : φ x ∈ A.map (φ.restrictScalars (𝓞 K))` using `⟨x, hx, rfl⟩`. Rewrite `h1` using `[h, Submodule.mem_bot]`. Conclude with `(Submodule.mem_bot _).2 (hinj (by rw [h1, map_zero]))`. Establish `hB0 : B ≠ ⊥` using `fun h => hmap0 (le_bot_iff.mp (h ▸ hmap))`.
+
+Establish `hrk : rkK B = rkK A`. Establish `hspan : Submodule.span K (B : Set V) = Submodule.span K (A : Set V)`. Apply `le_antisymm (Submodule.span_mono hBA)` to reduce the goal to its premises. Rewrite using `[Submodule.span_le]`. Introduce `x hx`.
+
+Establish `h1 : (n : K) • x ∈ Submodule.span K (B : Set V)`. Apply `Submodule.subset_span` to reduce the goal to its premises. Use `hnA x hx` as an intermediate fact. Rewrite `this` using `[Nat.cast_smul_eq_nsmul, ← Nat.cast_smul_eq_nsmul K]`. Then use the resulting hypothesis. Establish `h2` using `Submodule.smul_mem _ ((n : K)⁻¹) h1`.
+
+Rewrite `h2` using `[smul_smul, inv_mul_cancel₀ hnK, one_smul]`. Then use the resulting hypothesis. Unfold `rkK`. Rewrite using `[hspan]`. Establish `hht` using `ms_htMap_nat b X hX n`. Establish `hht1 : htMap b X b X (LinearMap.id : V →ₗ[K] V) = 0`.
+
+Use `ms_htMap_nat b X hX 1` as an intermediate fact. Simplify using `using this`. Establish `hmapid : B.map ((LinearMap.id : V →ₗ[K] V).restrictScalars (𝓞 K)) = B`. Use extensionality with `x`. Simplify using the standard rewrite rules.
+
+Use `⟨hrk, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Use `map_slope_mu K V ι V ι b X b X hX hX LinearMap.id B A hBfg hA hB0 (Function.injective_id.injOn) (by rw [hmapid]; exact hBA) hrk.symm` as an intermediate fact. Rewrite `this` using `[hht1]`. Combine the linear equalities and inequalities to obtain the conclusion. Use `map_slope_mu K V ι V ι b X b X hX hX φ A B hA hBfg hA0 hinj.injOn hmap hrk` as an intermediate fact.
+
+Rewrite `this` using `[hht]`. Conclude with `this`. Use `((slope_inequality_mean K V ι V ι b X b X hX hX LinearMap.id B hBfg (by rw [hmapid]; exact hB0)).2 A hA (by rw [hmapid]; exact hBA)).2 Function.injective_id.injOn` as an intermediate fact. Rewrite `this` using `[hht1]`. Combine the linear equalities and inequalities to obtain the conclusion.
+
+Use `((slope_inequality_mean K V ι V ι b X b X hX hX φ A hA hmap0).2 B hBfg hmap).2 hinj.injOn` as an intermediate fact. Rewrite `this` using `[hht]`. Conclude with `this`.
+-/
 theorem scale_sandwich_bound : ScaleSandwich := by
   intro K V ι _ _ _ _ _ _ _ _ _ _ b X hX A B n hA hA0 hn hBA hnA
   have hne : Nonempty ι := by
@@ -264,6 +363,17 @@ theorem scale_sandwich_bound : ScaleSandwich := by
     rw [hht] at this
     exact this
 
+/- English proof (translation)
+Introduce `K V ι _ _ _ _ _ _ _ _ _ _ b X hX R R' h hR hR'0 hh hle hhR`. Establish `hR0 : R ≠ ⊥` using `fun e => hR'0 (le_bot_iff.mp (e ▸ hle))`. Establish `hR'fg : R'.FG`. Establish `: IsNoetherian (𝓞 K) R` using `isNoetherian_of_fg_of_noetherian R hR`. Conclude with `(isNoetherian_submodule.1 this) R' hle`.
+
+Take `⟨-, h1, h2, h3, h4⟩` from `scale_sandwich_bound K V ι b X hX R R' h hR hR0 hh hle hhR`. Establish `hh' : (0 : ℝ) < h` using `by exact_mod_cast hh`. Establish `hs : 0 < Real.sqrt h` using `Real.sqrt_pos.2 hh'`. Establish `htw` using `twist K V ι b X (fun _ => Real.sqrt h) hX (fun _ => hs) R' hR'fg`. Take `⟨e1, e2, -⟩` from `htw.2.2.1 hR'0`.
+
+Establish `hf : (0 : ℝ) < nPl K` using `by exact_mod_cast ms_nPl_pos`. Establish `ht : 2 * ((1 / (nPl K : ℝ)) * ∑ _v : InfinitePlace K, Real.log (Real.sqrt h)) = Real.log h`. Rewrite using `[Finset.sum_const, Finset.card_univ, nsmul_eq_mul, Real.log_sqrt hh'.le]`. Unfold `nPl at hf ⊢`. Clear the denominators using the available nonvanishing facts.
+
+Establish `e1' : muDef b (scaleFrame (Real.sqrt h) X) R' = muDef b X R' + Real.log h`. Rewrite using `[← ht]`. Conclude with `e1`. Establish `e2' : muMaxDef b (scaleFrame (Real.sqrt h) X) R' = muMaxDef b X R' + Real.log h`. Rewrite using `[← ht]`.
+
+Conclude with `e2`. Rewrite using `[e1', e2']`. Apply the tactic sequence `constructor <;> rw [abs_le] <;> constructor <;> linarith`.
+-/
 theorem levelCompare_statement : LevelCompare := by
   intro K V ι _ _ _ _ _ _ _ _ _ _ b X hX R R' h hR hR'0 hh hle hhR
   have hR0 : R ≠ ⊥ := fun e => hR'0 (le_bot_iff.mp (e ▸ hle))

@@ -9,6 +9,19 @@ open UpperTheory.ConvolutionTheory.R2.G (FS2 Rw nE row)
 open UpperTheory.V.Af.Smo (EigAt)
 open scoped ComplexOrder
 
+/- English proof (translation)
+Introduce `E _ _ θ`. Take `⟨y, hy0, hy⟩` from `((IsFractionRing.isAlgebraic_iff ℤ ℚ E).2 (Algebra.IsAlgebraic.isAlgebraic (R := ℚ) θ)).exists_integral_multiple`. Establish `hy' : IsIntegral ℤ ((y : E) * θ)`. Simplify `hy` using `[zsmul_eq_mul]`. Establish `h1 : IsIntegral ℤ ((y.natAbs : E) * θ)`.
+
+Break down `Int.natAbs_eq y with h | h` into its components or cases. Establish `hc : ((y.natAbs : E)) = (y : E)` using `by conv_rhs => rw [h]`. Simplify using the standard rewrite rules. Rewrite using `[hc]`. Conclude with `hy'`.
+
+Establish `hc : ((y.natAbs : E)) = -(y : E)` using `by conv_rhs => rw [h]`. Simplify using the standard rewrite rules. Rewrite using `[hc, neg_mul]`. Conclude with `hy'.neg`. Use `⟨y.natAbs, Int.natAbs_pos.2 hy0, ?_⟩` and prove the remaining obligations.
+
+Introduce and unpack `e ⟨k, rfl⟩ w`. Establish `hint : IsIntegral ℤ (((y.natAbs * k : ℕ) : E) * θ)`. Establish `he : (((y.natAbs * k : ℕ) : E) * θ) = (k : E) * ((y.natAbs : E) * θ)`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+
+Rewrite using `[he]`. Establish `hk : IsIntegral ℤ (k : E)`. Simplify using `using isIntegral_algebraMap (R := ℤ) (A := E) (x := (k : ℤ))`. Conclude with `hk.mul h1`. Establish `hm` using `coe_algebraMap_mem_adicCompletionIntegers w (⟨_, hint⟩ : 𝓞 E)`.
+
+Conclude with `(HeightOneSpectrum.mem_adicCompletionIntegers _ _ _).mp hm`.
+-/
 theorem UpperTheory.exists_nat_mul_integral_at_all_finite_places :
     ∀ (E : Type) [Field E] [NumberField E] (θ : E), ∃ d : ℕ, 0 < d ∧ ∀ e : ℕ, d ∣ e → ∀ w : H.P E, Valued.v (H.cp w (rt ((e : E) * θ))) ≤ 1 := by
   intro E _ _ θ

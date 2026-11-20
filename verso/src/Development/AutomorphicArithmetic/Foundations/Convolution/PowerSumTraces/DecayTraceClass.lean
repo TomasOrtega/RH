@@ -7,31 +7,54 @@ section
 
 variable {K : Type} [Field K] [NumberField K] {n : ℕ} (μ : Measure (G1 K n)) [μ.IsHaarMeasure]
 
+/- English proof (translation)
+The claim follows from `UnitaryRep.IsInvariant.integrated_mem _ μ (isClosed_cuspidalL2 μ) (isInvariant_cuspidalL2 μ) _ hv`.
+-/
 private theorem rop_mem (f : CC K n) (v : L2 μ) (hv : v ∈ cuspidalL2 μ) : Rop μ f v ∈ cuspidalL2 μ :=
   UnitaryRep.IsInvariant.integrated_mem _ μ (isClosed_cuspidalL2 μ) (isInvariant_cuspidalL2 μ) _ hv
 
+/- English proof (translation)
+The claim follows from `ContinuousLinearMap.ext fun v => Submodule.starProjection_eq_self_iff.2 (rop_mem μ f _ ((cuspidalL2 μ).starProjection_apply_mem v))`.
+-/
 private theorem pc_rop_pc (f : CC K n) : Pc μ ∘L Rop μ f ∘L Pc μ = Rop μ f ∘L Pc μ :=
   ContinuousLinearMap.ext fun v => Submodule.starProjection_eq_self_iff.2
     (rop_mem μ f _ ((cuspidalL2 μ).starProjection_apply_mem v))
 
+/- English proof (translation)
+The claim follows from `(isSelfAdjoint_starProjection (cuspidalL2 μ)).adjoint_eq`.
+-/
 private theorem adjoint_pc : ContinuousLinearMap.adjoint (Pc μ) = Pc μ :=
   (isSelfAdjoint_starProjection (cuspidalL2 μ)).adjoint_eq
 
+/- English proof (translation)
+Use `isInvInvariant_of_isMulRightInvariant μ` as an intermediate fact. Conclude with `((rightRegularRep (Gam K n) μ).adjoint_integrated μ (UnitaryRep.ccToL1 μ f)).trans (congrArg _ (CuspidalProjection.ccToL1_ccStar μ f).symm)`.
+-/
 private theorem adjoint_rop (f : CC K n) :
     ContinuousLinearMap.adjoint (Rop μ f) = Rop μ (CuspidalProjection.ccStar f) := by
   have := isInvInvariant_of_isMulRightInvariant μ
   exact ((rightRegularRep (Gam K n) μ).adjoint_integrated μ (UnitaryRep.ccToL1 μ f)).trans
     (congrArg _ (CuspidalProjection.ccToL1_ccStar μ f).symm)
 
+/- English proof (translation)
+Rewrite using `[← adjoint_rop, ContinuousLinearMap.adjoint_adjoint]`.
+-/
 private theorem adjoint_rop_star (f : CC K n) :
     ContinuousLinearMap.adjoint (Rop μ (CuspidalProjection.ccStar f)) = Rop μ f := by
   rw [← adjoint_rop, ContinuousLinearMap.adjoint_adjoint]
 
+/- English proof (translation)
+Establish `h` using `congrArg ContinuousLinearMap.adjoint (pc_rop_pc μ (CuspidalProjection.ccStar f))`. Simplify using `only [ContinuousLinearMap.adjoint_comp, adjoint_pc, adjoint_rop_star] at h`. Rewrite using `[← pc_rop_pc μ f, ← h, ContinuousLinearMap.comp_assoc]`.
+-/
 private theorem pc_comm (f : CC K n) : Pc μ ∘L Rop μ f = Rop μ f ∘L Pc μ := by
   have h := congrArg ContinuousLinearMap.adjoint (pc_rop_pc μ (CuspidalProjection.ccStar f))
   simp only [ContinuousLinearMap.adjoint_comp, adjoint_pc, adjoint_rop_star] at h
   rw [← pc_rop_pc μ f, ← h, ContinuousLinearMap.comp_assoc]
 
+/- English proof (translation)
+Take `⟨C, hC⟩` from `h 0`. Establish `hT` using `CuspidalProjection.isHilbertSchmidt_cuspRep_of_bound μ f C (fun φ hφ x => by simpa using hC φ hφ x)`. Establish `e : Rop μ f ∘L Pc μ = (cuspidalL2 μ).subtypeL ∘L ((cuspRep μ).integrated μ (UnitaryRep.ccToL1 μ f)) ∘L (cuspidalL2 μ).orthogonalProjectionOnto`. Rewrite using `[← ContinuousLinearMap.comp_assoc, subtypeL_comp_integrated μ _]`. Both sides reduce to the same expression.
+
+Rewrite using `[e]`. Conclude with `(hT.comp_right _).comp_left _`.
+-/
 private theorem hs_of_decay (f : CC K n) (h : PositivityTheory.Rg.Tf.Core.CuspDecay μ f) :
     IsHilbertSchmidt (Rop μ f ∘L Pc μ) := by
   obtain ⟨C, hC⟩ := h 0
@@ -47,6 +70,11 @@ private theorem hs_of_decay (f : CC K n) (h : PositivityTheory.Rg.Tf.Core.CuspDe
 
 end
 
+/- English proof (translation)
+Introduce `K _ _ n μ _ a g M ha hg _`. Establish `hA` using `hs_of_decay μ a ha`. Establish `hB : IsHilbertSchmidt (Rop μ g ∘L Pc μ)`. Establish `h` using `(hs_of_decay μ _ hg).adjoint`. Rewrite `h` using `[ContinuousLinearMap.adjoint_comp, adjoint_pc, adjoint_rop_star, pc_comm]`.
+
+Conclude with `h`. Establish `e : Pc μ ∘L (Rop μ a ∘L M ∘L Rop μ g) ∘L Pc μ = (Rop μ a ∘L Pc μ) ∘L (M ∘L (Rop μ g ∘L Pc μ))` using `ContinuousLinearMap.ext fun v => DFunLike.congr_fun (pc_comm μ a) (M (Rop μ g (Pc μ v)))`. Rewrite using `[e]`. Conclude with `isTraceClass_comp hA (hB.comp_left M)`.
+-/
 theorem UpperTheory.ConvolutionTheory.C.decayTraceClass :
     UpperTheory.ConvolutionTheory.C.DecayTraceClass := by
   intro K _ _ n μ _ a g M ha hg _

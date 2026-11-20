@@ -25,6 +25,9 @@ local notation "Γ₁" => Reduction.rationalGLOne K n
 
 variable (μ : Measure (normOneGL K n)) [μ.IsHaarMeasure]
 
+/- English proof (translation)
+Unfold `rconv`. Use `integral_congr_ae (Eventually.of_forall fun y => ?_)` and prove the remaining obligations. Use `show f ((x * u)⁻¹ * y) * _ = f (x⁻¹ * y) * _`. Rewrite using `[mul_inv_rev, mul_assoc, hf]`.
+-/
 theorem rconv_mul_of_left_inv {f : normOneGL K n → ℂ} {u : normOneGL K n}
     (hf : ∀ x, f (u⁻¹ * x) = f x) (φ : Lp ℂ 2 (quotientMeasure Γ₁ μ)) (x : normOneGL K n) :
     rconv Γ₁ μ f φ (x * u) = rconv Γ₁ μ f φ x := by
@@ -33,6 +36,9 @@ theorem rconv_mul_of_left_inv {f : normOneGL K n → ℂ} {u : normOneGL K n}
   show f ((x * u)⁻¹ * y) * _ = f (x⁻¹ * y) * _
   rw [mul_inv_rev, mul_assoc, hf]
 
+/- English proof (translation)
+The claim follows from `archProj_of_mem (Reduction.maxCompact_le_normOneGL k.2)`.
+-/
 theorem archimedeanProjection_maximalCompact (k : archCompact K n) :
     archP K n (k : archGroup K n) =
       ⟨infEmb K n (k : archGroup K n), Reduction.maxCompact_le_normOneGL k.2⟩ :=
@@ -40,16 +46,25 @@ theorem archimedeanProjection_maximalCompact (k : archCompact K n) :
 
 variable {μ} in
 
+/- English proof (translation)
+The claim follows from `e ▸ h`.
+-/
 theorem IsContRep.of_eq {φ ψ : Lp ℂ 2 (quotientMeasure Γ₁ μ)} {F : normOneGL K n → ℂ}
     (h : IsContRep μ φ F) (e : φ = ψ) : IsContRep μ ψ F := e ▸ h
 
 variable {μ} in
 
+/- English proof (translation)
+The claim follows from `e ▸ h`.
+-/
 theorem IsContRep.of_eq_fun {φ : Lp ℂ 2 (quotientMeasure Γ₁ μ)} {F G : normOneGL K n → ℂ}
     (h : IsContRep μ φ F) (e : F = G) : IsContRep μ φ G := e ▸ h
 
 omit [μ.IsHaarMeasure] in
 
+/- English proof (translation)
+Simplify using `only [smul_smul, ← add_smul]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem smul_comb {E : Type*} [AddCommGroup E] [Module ℂ E] (X : E) (r i c : ℂ) :
     r • (c • X) + Complex.I • (i • (c • X)) = c • ((r + i * Complex.I) • X) := by
   simp only [smul_smul, ← add_smul]
@@ -60,6 +75,41 @@ variable (ν : Measure (archGroup K n)) [ν.IsHaarMeasure]
 
 set_option maxHeartbeats 1000000 in
 
+/- English proof (translation)
+Use `isFiniteMeasure_quotientMeasure (K := K) (n := n) μ` as an intermediate fact. Establish `hKarch : FiniteDimensional ℂ (Submodule.span ℂ (Set.range fun k : archCompact K n => archRepT μ (k : archGroup K n) v))`. Establish `hle : Set.range (fun k : archCompact K n => archRepT μ (k : archGroup K n) v) ⊆ Set.range fun k : (Reduction.maxCompact : Subgroup (AdelicGLn.AdelicGL K n)) => cuspRepT μ ⟨k, Reduction.maxCompact_le_normOneGL k.2⟩ v`. Introduce and unpack `_ ⟨k, rfl⟩`. Conclude with `⟨⟨_, k.2⟩, (congrArg (fun g => cuspRepT μ g v) (archimedeanProjection_maximalCompact k)).symm⟩`.
+
+Conclude with `Submodule.finiteDimensional_of_le (Submodule.span_mono hle)`. Take `⟨d, b, ε, B, hε, horth, hsymm, hinv, hKc⟩` from `exists_archCartanData K n`. Take `⟨κ, hκt, -, hκv⟩` from `(isExpLieAlgebra K n).exists_integrated_eq_of_zkFinite (archRepT μ) ν (archCompact K n) B b ε hε horth hsymm hinv hKc ⟨v, hs⟩ hKarch hZ Filter.univ_mem`. Take `⟨U, hU, hUv⟩` from `exists_isOpen_forall_cuspRepT_finOne_eq μ v hK`. Take `⟨F₀, c, hc, hF₀U, hF₀⟩` from `exists_cc_integral_mul_eq μ ν U hU κ hκt.continuous hκt.2`.
+
+Establish `hc0 : (c : ℂ) ≠ 0` using `Complex.ofReal_ne_zero.2 hc.ne'`. Establish `hint : Integrable (fun a => κ a • archRepT μ a v) ν` using `integrable_smul_archRepT μ ν hκt.continuous hκt.2 v`. Establish `hRv : (cuspRepT μ).integrated μ (UnitaryRep.ccToL1 μ F₀) v = (c : ℂ) • v`. Use `ext_inner_left ℂ fun w => ?_` and prove the remaining obligations. Establish `hΘc : Continuous fun x : normOneGL K n => ⟪w, cuspRepT μ x v⟫_ℂ` using `continuous_const.inner ((cuspRepT μ).continuous_orbit v)`.
+
+Establish `hΘU : ∀ u ∈ U, ∀ x, ⟪w, cuspRepT μ (x * finOne K n u) v⟫_ℂ = ⟪w, cuspRepT μ x v⟫_ℂ` using `fun u hu x => congrArg (fun z => ⟪w, z⟫_ℂ) (((cuspRepT μ).map_mul_apply x _ v).trans (congrArg (fun z => cuspRepT μ x z) (hUv u hu)))`. Establish `e1 : ∫ a, κ a * ⟪w, cuspRepT μ (archP K n a) v⟫_ℂ ∂ν = ⟪w, v⟫_ℂ`. Combine the equalities or inequalities in the displayed calculation. Combine the equalities or inequalities in the displayed calculation. Establish `hsub : ∀ f : CompactlySupportedContinuousMap (normOneGL K n) ℂ, (rightRegularRep Γ₁ μ).integrated μ (UnitaryRep.ccToL1 μ f) (toLp μ v) = toLp μ ((cuspRepT μ).integrated μ (UnitaryRep.ccToL1 μ f) v)` using `fun f => (toLp_integrated μ (UnitaryRep.ccToL1 μ f) v).symm`.
+
+Establish `hrep0 : IsContRep μ ((c : ℂ) • toLp μ v) (rconv Γ₁ μ F₀ (toLp μ v))` using `(isContRep_rconv μ F₀ (toLp μ v)).of_eq ((hsub F₀).trans ((congrArg (toLp μ) hRv).trans ((toLp μ).map_smul (c : ℂ) v)))`. Establish `hcancel : ∀ x : Lp ℂ 2 (quotientMeasure Γ₁ μ), (c : ℂ)⁻¹ • (c : ℂ) • x = x` using `fun x => by`. Rewrite using `[smul_smul, inv_mul_cancel₀ hc0, one_smul]`. Take `⟨Φ, hΦ⟩ : ∃ Φ : normOneGL K n → ℂ, Φ = (c : ℂ)⁻¹ • rconv Γ₁ μ F₀ (toLp μ v)` from `⟨_, rfl⟩`. Establish `hrep : IsContRep μ (toLp μ v) Φ` using `((hrep0.smul (c : ℂ)⁻¹).of_eq (hcancel _)).of_eq_fun hΦ.symm`.
+
+Take `⟨βr, βi, hr, hrc, hru, hi, hic, hiu, hκβ⟩` from `exists_real_parts_of_isTestFunction hκt`. Take `⟨νA, hνA⟩ : ∃ νA : Measure (ArchUnits K n), νA = ν.map (fun a : archGroup K n => (a : ArchUnits K n))` from `⟨_, rfl⟩`. Establish `: νA.IsHaarMeasure` using `hνA ▸ isHaarMeasure_map_val ν`. Take `⟨Br, hBr⟩` from `exists_norm_rconv_le_uniform μ νA hr hrc hru U hU F₀`. Take `⟨Bi, hBi⟩` from `exists_norm_rconv_le_uniform μ νA hi hic hiu U hU F₀`.
+
+Take `⟨fr, hfr⟩ : ∃ fr, fr = archConv νA hr.continuous hrc hru (finAvg U hU F₀)` from `⟨_, rfl⟩`. Take `⟨fi, hfi⟩ : ∃ fi, fi = archConv νA hi.continuous hic hiu (finAvg U hU F₀)` from `⟨_, rfl⟩`. Establish `hfin : (cuspRepT μ).integrated μ (UnitaryRep.ccToL1 μ (finAvg U hU F₀)) v = (c : ℂ) • v` using `(congrArg (fun g => (cuspRepT μ).integrated μ (UnitaryRep.ccToL1 μ g) v) (finAvg_eq_self U hU hF₀U)).trans hRv`. Establish `hpart : ∀ {β : ArchMatrix K n → ℝ} (hβ : Continuous β) (hβc : HasCompactSupport β) (hβu : tsupport β ⊆ Set.range (Units.val : ArchUnits K n → ArchMatrix K n)), (cuspRepT μ).integrated μ (UnitaryRep.ccToL1 μ (archConv νA hβ hβc hβu (finAvg U hU F₀))) v = ∫ A, (β A : ℂ) • cuspRepT …`. Introduce `β hβ hβc hβu`.
+
+Conclude with `(integrated_archConv (cuspRepT μ) μ νA hβ hβc hβu (finAvg U hU F₀) v).trans (integral_congr_ae (Eventually.of_forall fun A => congrArg (fun z => (β A : ℂ) • cuspRepT μ (archProj K n A) z) hfin))`. Establish `hIr` using `integrable_smul_archProj (cuspRepT μ) νA hr.continuous hrc hru ((c : ℂ) • v)`. Establish `hIi` using `integrable_smul_archProj (cuspRepT μ) νA hi.continuous hic hiu ((c : ℂ) • v)`. Establish `hpt : ∀ A : ArchUnits K n, (βr A : ℂ) • cuspRepT μ (archProj K n A) ((c : ℂ) • v) + Complex.I • ((βi A : ℂ) • cuspRepT μ (archProj K n A) ((c : ℂ) • v)) = (c : ℂ) • (((βr A : ℂ) + (βi A : ℂ) * Complex.I) • cuspRepT μ (archProj K n A) v)`. Introduce `A`.
+
+Establish `hms : cuspRepT μ (archProj K n A) ((c : ℂ) • v) = (c : ℂ) • cuspRepT μ (archProj K n A) v` using `(cuspRepT μ (archProj K n A)).map_smul (c : ℂ) v`. Conclude with `(congrArg₂ (fun s t => (βr A : ℂ) • s + Complex.I • ((βi A : ℂ) • t)) hms hms).trans (smul_comb _ _ _ _)`. Establish `hcomb : (cuspRepT μ).integrated μ (UnitaryRep.ccToL1 μ fr) v + Complex.I • (cuspRepT μ).integrated μ (UnitaryRep.ccToL1 μ fi) v = (c : ℂ) • v`. Establish `e1 : (cuspRepT μ).integrated μ (UnitaryRep.ccToL1 μ fr) v + Complex.I • (cuspRepT μ).integrated μ (UnitaryRep.ccToL1 μ fi) v = ∫ A, (βr A : ℂ) • cuspRepT μ (archProj K n A) ((c : ℂ) • v) ∂νA + Complex.I • ∫ A, (βi A : ℂ) • cuspRepT μ (archProj K n A) ((c : ℂ) • v) ∂νA`. Rewrite using `[hfr, hfi]`.
+
+Conclude with `congrArg₂ (fun s t => s + Complex.I • t) (hpart hr.continuous hrc hru) (hpart hi.continuous hic hiu)`. Establish `e2 : ∫ A, (βr A : ℂ) • cuspRepT μ (archProj K n A) ((c : ℂ) • v) ∂νA + Complex.I • ∫ A, (βi A : ℂ) • cuspRepT μ (archProj K n A) ((c : ℂ) • v) ∂νA = ∫ A, (c : ℂ) • (((βr A : ℂ) + (βi A : ℂ) * Complex.I) • cuspRepT μ (archProj K n A) v) ∂νA` using `(congrArg (fun s => ∫ A, (βr A : ℂ) • cuspRepT μ (archProj K n A) ((c : ℂ) • v) ∂νA + s) (integral_smul Complex.I _).symm).trans ((integral_add hIr (hIi.smul Complex.I)).symm.trans (integral_congr_ae (Eventually.of_forall hpt)))`. Establish `e3 : ∫ A, (c : ℂ) • (((βr A : ℂ) + (βi A : ℂ) * Complex.I) • cuspRepT μ (archProj K n A) v) ∂νA = ∫ a, (c : ℂ) • (κ a • archRepT μ a v) ∂ν`. Rewrite using `[hνA]`. Use `(integral_map_val ν (fun A => (c : ℂ) • (((βr A : ℂ) + (βi A : ℂ) * Complex.I) • cuspRepT μ (archProj K n A) v))).trans ?_` and prove the remaining obligations.
+
+Conclude with `integral_congr_ae (Eventually.of_forall fun a => congrArg (fun t => (c : ℂ) • (t • archRepT μ a v)) (hκβ a).symm)`. Establish `e4 : ∫ a, (c : ℂ) • (κ a • archRepT μ a v) ∂ν = (c : ℂ) • v` using `(integral_smul (c : ℂ) _).trans (congrArg (fun z => (c : ℂ) • z) hκv)`. Conclude with `e1.trans (e2.trans (e3.trans e4))`. Establish `hrepr : IsContRep μ ((c : ℂ) • toLp μ v) (rconv Γ₁ μ fr (toLp μ v) + Complex.I • rconv Γ₁ μ fi (toLp μ v))`. Use `((isContRep_rconv μ fr (toLp μ v)).add ((isContRep_rconv μ fi (toLp μ v)).smul Complex.I)).of_eq ?_` and prove the remaining obligations.
+
+Use `(congrArg₂ (fun s t => s + Complex.I • t) (hsub fr) (hsub fi)).trans ?_` and prove the remaining obligations. Use `((congrArg (fun t => toLp μ ((cuspRepT μ).integrated μ (UnitaryRep.ccToL1 μ fr) v) + t) ((toLp μ).map_smul Complex.I ((cuspRepT μ).integrated μ (UnitaryRep.ccToL1 μ fi) v)).symm).trans ((toLp μ).map_add _ _).symm).trans ?_` and prove the remaining obligations. Conclude with `(congrArg (toLp μ) hcomb).trans ((toLp μ).map_smul (c : ℂ) v)`. Establish `hΦ2 : Φ = (c : ℂ)⁻¹ • (rconv Γ₁ μ fr (toLp μ v) + Complex.I • rconv Γ₁ μ fi (toLp μ v))` using `hrep.unique ((hrepr.smul (c : ℂ)⁻¹).of_eq (hcancel _))`. Use `⟨κ, U, Φ, ‖(c : ℂ)⁻¹‖ * (Br * ‖toLp μ v‖ + Bi * ‖toLp μ v‖), hκt, hκv, hU, hrep, fun y => ?_, ?_, ?_⟩` and prove the remaining obligations.
+
+Establish `h1` using `hBr _ (toLp_mem μ v) y`. Establish `h2` using `hBi _ (toLp_mem μ v) y`. Rewrite `h1` using `[← hfr]`. Rewrite `h2` using `[← hfi]`. Rewrite using `[hΦ2]`.
+
+Use `show ‖(c : ℂ)⁻¹ • (rconv Γ₁ μ fr (toLp μ v) y + Complex.I • rconv Γ₁ μ fi (toLp μ v) y)‖ ≤ _`. Rewrite using `[norm_smul]`. Use `mul_le_mul_of_nonneg_left ((norm_add_le _ _).trans (add_le_add h1 ?_)) (norm_nonneg _)` and prove the remaining obligations. Rewrite using `[norm_smul, Complex.norm_I, one_mul]`. Conclude with `h2`.
+
+Introduce `u hu x`. Rewrite using `[hΦ]`. Simplify using `only [Pi.smul_apply]`. Use `congr 1`. Use `rconv_mul_of_left_inv μ (fun z => ?_) _ x` and prove the remaining obligations.
+
+Rewrite using `[← map_inv]`. Conclude with `hF₀U _ (U.inv_mem hu) z`. Introduce `r hr0 hrn x`. Rewrite using `[hΦ]`. Simplify using `only [Pi.smul_apply, smul_eq_mul]`.
+
+Rewrite using `[integral_const_mul, integral_rconv_unip_eq_zero μ F₀ (toLp_mem μ v) hr0 hrn x, mul_zero]`.
+-/
 theorem exists_contRep_of_zkFinite (v : CuspL2 μ)
     (hs : (isExpLieAlgebra K n).IsSmoothVector (archRepT μ) v)
     (hK : FiniteDimensional ℂ (Submodule.span ℂ (Set.range fun k :

@@ -13,6 +13,11 @@ open GlobalTheory.UT GlobalTheory.ZH
 
 namespace GlobalTheory.ZH
 
+/- English proof (translation)
+Establish `f₁ : (lift (fst T A) m).left ≫ (fst T A).left = (fst T A).left`. Rewrite using `[← Over.comp_left, lift_fst]`. Establish `key : (SecM.ofSec A t : SecM A L a T) = SecM.ofSec A (SecM.toSec A (c • SecM.ofSec A t₀))` using `VVRank.ofSec_ext A hL fun y J hJ => by`. Rewrite using `[ThetaPtMove.sv_of_eq_mul (s := SecM.toSec A (c • SecM.ofSec A t₀)) (t := t₀) (c := c) (fun j => rfl) _ y hJ, VVRank.sv_of_isTwistPull A h _ y hJ, VVRank.sv_of_isTwistPull A h₀ _ y hJ, ThetaPtMove.sv_of_eq_mul e _ y hJ]`. Simplify using `only [Category.assoc, f₁]`.
+
+Expand and normalize the polynomial expressions, which then agree. Conclude with `congrArg (fun q => q.1 j) key`.
+-/
 theorem eq_mul_of_isTwistPull {S : Scheme.{0}} {A : Over S} [GrpObj A] {L : LB A.left} (hL : L.IsLB) {T : Over S}
     {m : T ⊗ A ⟶ A} {a b : ℤ} {α : LB.Gen (LB.LinComb L (K := Fin 2) ![(snd T A).left, m.left] ![a, -b])}
     {s s₀ : LB.Sec (LPow A L b T)} {t t₀ : LB.Sec (LPow A L a T)} {c : Γ(T.left, ⊤)}
@@ -31,6 +36,17 @@ theorem eq_mul_of_isTwistPull {S : Scheme.{0}} {A : Over S} [GrpObj A] {L : LB A
       ring
   exact congrArg (fun q => q.1 j) key
 
+/- English proof (translation)
+Introduce `hLL hBC hVR hTW hUU V _ _ _ _ hc ϖ hϖ D Q hQ F _ _ _ v hv A G _ _ hG U w₀ ρ hN th₀ ϑ hth hprim m N hNm hm hmu c r th hr eth α hα hn s₁ t x θ s hs₁ hx hθ ht hs`. Substitute `hNm` using the available equality. Establish `hA : AdmBase V (maximalIdeal V)` using `⟨inferInstance, inferInstance, inferInstance, hc⟩`. Establish `hN1 : 1 ≤ m ^ 2` using `Nat.one_le_pow _ _ hm.pos`. Take `⟨hB, hlin⟩` from `expBijF_and_expandsF_lin hLL V _ hA D A G hG U`.
+
+Take `⟨hB₁, -⟩` from `hB F (m ^ 2) hN1 w₀ hN.1`. Set `T` to `TFK (R := V) F`. Set `κ : F ≃+* Γ(T.left, ⊤)` to `(Scheme.ΓSpecIso (CommRingCat.of F)).symm.commRingCatIsoToRingEquiv`. Take `⟨u₁, hu₁⟩` from `VVRank.exists_isTwistPull A.A (ψ := mulT A.A T m) (hm := lift_snd _ _) A.isLB hα th₀`. Take `⟨t₀, ht₀⟩` from `VVRank.exists_isTwistPull A.A (ψ := translT A.A θ.pt) (hm := lift_snd _ _) A.isLB θ.isGen u₁`.
+
+Take `⟨c₀, hc₀⟩` from `NormTheta.exists_value A.isLB hN.2.1 _ t₀`. Take `⟨c', rfl⟩` from `κ.surjective c₀`. Take `⟨s₀, hs₀, -⟩` from `hB₁ t₀`. Establish `hP` using `GlobalTheory.T.primitive_expansion_thetaPullback_heisenbergTranslates hLL hBC hVR hTW hUU V hc ϖ hϖ D Q hQ F v hv A G hG U w₀ ρ hN th₀ ϑ hth hprim m hm hmu x t₀ c' s₀ hx ⟨α, u₁, θ, hα, hn, hu₁, hθ, ht₀, hc₀⟩ hs₀`. Establish `e₁` using `eq_mul_of_isTwistPull (c := κ c) A.isLB eth hs₁ hu₁`.
+
+Establish `e₂` using `eq_mul_of_isTwistPull (c := κ c) A.isLB e₁ ht ht₀`. Establish `h₁` using `hlin F (m ^ 2) w₀ t₀ t₀ t s₀ s₀ (c - 1) hs₀ hs₀ fun j => by`. Use `(e₂ j).trans ?_` and prove the remaining obligations. Establish `: κ c • SecM.ofSec A.A t₀ = κ (c - 1) • SecM.ofSec A.A t₀ + SecM.ofSec A.A t₀`. Rewrite using `[map_sub, map_one, sub_smul, one_smul, sub_add_cancel]`.
+
+Conclude with `congrArg (fun q => q.1 j) this`. Rewrite `h₁` using `[sub_smul, one_smul, sub_add_cancel]`. Use `NuGe.smul Q hr ((isSmul_iff c s₀ s).2 ((hB₁ t).unique hs h₁)) hP.1` as an intermediate fact. Rewrite `this` using `[zero_add]`. Then use the resulting hypothesis.
+-/
 theorem nuGe_translate_pull_smul : LL → TwistBCSpanStatement → TWM.VRatioGtStatement → TWStatement → UUStatement → AllUV fun {V} _ _ _ {ϖ} hϖ {D} Q {F} _ _ {v} hv {A} {G} _ _ U => ∀ w₀ ρ, NormW U.toUnifPre w₀ ρ → ∀ (th₀ : SecA A F 1) (ϑ : Fam D.toPre F 1), U.ExpandsF F 1 w₀ th₀ ϑ → Prim D Q v ϑ → ∀ (m N : ℕ), N = m ^ 2 → Odd m → IsUnit (m : V) → ∀ (c : F) (r : ℚ) (th : SecA A F 1), (r : WithTop ℚ) ≤ v c → (∀ j, th.f j = liftFun A.A _ ((Scheme.ΓSpecIso (CommRingCat.of F)).inv.hom c) * th₀.f j) → ∀ (α : LB.Gen (LB.LinComb A.L (K := Fin 2) ![(snd (TFK (R := V) F) A.A).left, (snd (TFK (R := V) F) A.A ^ m).left] ![(N : ℤ), -((1 : ℕ) : ℤ)])), α.IsGen → LB.Gen.Corr A.L _ _ _ _ (LB.pullGen A.L _ _ α (ptSecT A.A 1).left) (rigT A.A A.L ρ (TFK (R := V) F) ((N : ℤ) - 1)) → ∀ (s₁ t : SecA A F N) (x : TFK (R := V) F ⟶ A.A) (θ : ThetaGrp A.A A.L N (TFK (R := V) F)) (s : Fam D.toPre F N), IsTwistPull A.A A.L (mulT A.A _ m) (snd _ A.A ^ m) (lift_snd _ _) (N : ℤ) ((1 : ℕ) : ℤ) α th s₁ → x ^ N = 1 → SymLift A.A A.L N N x θ → IsActOf A.A A.L N θ s₁ t → U.ExpandsF F N w₀ t s → NuGe D Q F v N s r := by
   intro hLL hBC hVR hTW hUU V _ _ _ _ hc ϖ hϖ D Q hQ F _ _ _ v hv A G _ _ hG U w₀ ρ hN th₀ ϑ hth hprim m N hNm hm hmu
     c r th hr eth α hα hn s₁ t x θ s hs₁ hx hθ ht hs

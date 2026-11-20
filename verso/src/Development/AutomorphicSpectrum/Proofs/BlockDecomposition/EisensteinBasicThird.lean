@@ -22,6 +22,9 @@ instance compactSpace_KA : CompactSpace KA :=
 instance secondCountable_KV (v : Pl) : SecondCountableTopology (KV v) :=
   TopologicalSpace.Subtype.secondCountableTopology _
 
+/- English proof (translation)
+The claim follows from `(RestrictedProduct.continuous_eval v).comp (continuous_snd.comp (AdelicGLn.restrictedProductEquiv ℚ 2).continuous)`.
+-/
 theorem continuous_finAt (v : Pl) : Continuous (finAt v : G2 → GL (Fin 2) (Qv v)) :=
   (RestrictedProduct.continuous_eval v).comp
     (continuous_snd.comp (AdelicGLn.restrictedProductEquiv ℚ 2).continuous)
@@ -35,10 +38,22 @@ def proj (S : Finset Pl) : KA →* ∀ v : S, KV v.1 where
     funext v
     exact Subtype.ext (finAt_mul v.1 a.1 b.1)
 
+/- English proof (translation)
+The claim follows from `continuous_pi fun v => Continuous.subtype_mk ((continuous_finAt v.1).comp continuous_subtype_val) _`.
+-/
 theorem continuous_proj (S : Finset Pl) : Continuous (proj S) :=
   continuous_pi fun v =>
     Continuous.subtype_mk ((continuous_finAt v.1).comp continuous_subtype_val) _
 
+/- English proof (translation)
+Proceed by induction on `T using Finset.induction_on with`. Consider the case `empty => exact ⟨1, by simp, fun v _ => finAt_one v, fun w => infAt_one w⟩`. Consider the case `insert a T ha ih`. Take `⟨h, h1, h2, h3⟩` from `ih`. Take `⟨l, l1, l2, l3⟩` from `hL a (y a)`.
+
+Use `⟨h * l, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `v hv`. Rewrite using `[finAt_mul]`. Break down `Finset.mem_insert.1 hv with rfl | hvT` into its components or cases. Rewrite using `[h2 _ ha, l1, one_mul]`.
+
+Rewrite using `[h1 v hvT, l2 v (by rintro rfl; exact ha hvT), mul_one]`. Introduce `v hv`. Establish `hv' : v ≠ a ∧ v ∉ T` using `by simpa [Finset.mem_insert, not_or] using hv`. Rewrite using `[finAt_mul, h2 v hv'.2, l2 v hv'.1, mul_one]`. Introduce `w`.
+
+Rewrite using `[infAt_mul, h3, l3, mul_one]`.
+-/
 theorem exists_lift (hL : ∀ (v : Pl) (x : GL (Fin 2) (Qv v)), ∃ h, IsLoc2 v x h)
     (y : ∀ v : Pl, GL (Fin 2) (Qv v)) (T : Finset Pl) :
     ∃ h : G2, (∀ v ∈ T, finAt v h = y v) ∧ (∀ v ∉ T, finAt v h = 1) ∧ ∀ w, infAt w h = 1 := by
@@ -60,6 +75,15 @@ theorem exists_lift (hL : ∀ (v : Pl) (x : GL (Fin 2) (Qv v)), ∃ h, IsLoc2 v 
     · intro w
       rw [infAt_mul, h3, l3, mul_one]
 
+/- English proof (translation)
+Introduce `y`. Take `⟨h, h1, h2, h3⟩` from `exists_lift hL (fun v => if hv : v ∈ S then (y ⟨v, hv⟩).1 else 1) S`. Establish `hK : h ∈ (maxCompact : Subgroup G2)`. Use `⟨fun w => ?_, fun v => ?_⟩` and prove the remaining obligations. Rewrite using `[h3]`.
+
+Conclude with `one_mem _`. Distinguish the cases in `hv : v ∈ S`. Rewrite using `[h1 v hv, dif_pos hv]`. Conclude with `(y ⟨v, hv⟩).2`. Rewrite using `[h2 v hv]`.
+
+Conclude with `one_mem _`. Use `⟨⟨h, hK⟩, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `v`. Use `Subtype.ext ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `finAt v.1 h = (y v).1`.
+
+Rewrite using `[h1 v.1 v.2, dif_pos v.2]`.
+-/
 theorem proj_surjective (hL : ∀ (v : Pl) (x : GL (Fin 2) (Qv v)), ∃ h, IsLoc2 v x h)
     (S : Finset Pl) : Function.Surjective (proj S) := by
   classical
@@ -81,6 +105,13 @@ theorem proj_surjective (hL : ∀ (v : Pl) (x : GL (Fin 2) (Qv v)), ∃ h, IsLoc
   change finAt v.1 h = (y v).1
   rw [h1 v.1 v.2, dif_pos v.2]
 
+/- English proof (translation)
+Introduce `hB mK _ _ m hm S A hA`. Establish `hL : ∀ (v : Pl) (x : GL (Fin 2) (Qv v)), ∃ h, IsLoc2 v x h` using `fun v => (hB.1 v).2.2.2.2.2.1`. Use `haveI : ∀ v : S, (m v.1).IsHaarMeasure := fun v => (hm v.1).1`. Use `haveI : ∀ v : S, IsProbabilityMeasure (m v.1) := fun v => (hm v.1).2`. Establish `hc` using `continuous_proj S`.
+
+Use `haveI : (Measure.map (proj S) mK).IsHaarMeasure := Measure.isHaarMeasure_map mK (proj S) hc (proj_surjective hL S) (by`. Rewrite using `[Filter.cocompact_eq_bot]`. Conclude with `Filter.tendsto_bot)`. Use `haveI : IsProbabilityMeasure (Measure.map (proj S) mK) := Measure.isProbabilityMeasure_map hc.aemeasurable`. Establish `hmap : Measure.map (proj S) mK = Measure.pi fun v : S => m v.1` using `Measure.isHaarMeasure_eq_of_isProbabilityMeasure _ _`.
+
+Establish `hF : Continuous fun y : (∀ v : S, KV v.1) => ∏ v : S, A v (y v).1` using `continuous_finset_prod _ fun v _ => (hA v).continuous.comp (continuous_subtype_val.comp (continuous_apply v))`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem integral_prod_finAt : Ad3.R.B0 → Ad3.R.E3 := by
   intro hB mK _ _ m hm S A hA
   have hL : ∀ (v : Pl) (x : GL (Fin 2) (Qv v)), ∃ h, IsLoc2 v x h :=

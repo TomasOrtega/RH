@@ -13,6 +13,9 @@ variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchim
 def lift {n : ℕ} (g : ↥(KO k (Fin n))) : GL (Fin n) 𝒪[k] := Classical.choose g.2
 
 omit [TopologicalSpace k] [IsNonarchimedeanLocalField k] in
+/- English proof (translation)
+The claim follows from `Classical.choose_spec g.2`.
+-/
 lemma lift_spec {n : ℕ} (g : ↥(KO k (Fin n))) :
     Matrix.GeneralLinearGroup.map (algebraMap 𝒪[k] k) (lift g) = (g : GL (Fin n) k) :=
   Classical.choose_spec g.2
@@ -27,6 +30,15 @@ instance finQuot (r : ℕ) : Finite (𝒪[k] ⧸ IsLocalRing.maximalIdeal 𝒪[k
 instance finRed (n r : ℕ) : Finite (Matrix (Fin n) (Fin n) (𝒪[k] ⧸ IsLocalRing.maximalIdeal 𝒪[k] ^ r)) :=
   inferInstanceAs (Finite (Fin n → Fin n → (𝒪[k] ⧸ IsLocalRing.maximalIdeal 𝒪[k] ^ r)))
 
+/- English proof (translation)
+Use `⟨(g⁻¹ * g').2, fun i j => ?_⟩` and prove the remaining obligations. Establish `hu : ((g⁻¹ * g' : ↥(KO k (Fin n))) : GL (Fin n) k) = Matrix.GeneralLinearGroup.map (algebraMap 𝒪[k] k) ((lift g)⁻¹ * lift g')`. Rewrite using `[map_mul, map_inv, lift_spec, lift_spec]`. Both sides reduce to the same expression. Establish `hd : ∀ l m, ((lift g' : GL (Fin n) 𝒪[k]) : Matrix (Fin n) (Fin n) 𝒪[k]) l m - ((lift g : GL (Fin n) 𝒪[k]) : Matrix (Fin n) (Fin n) 𝒪[k]) l m ∈ IsLocalRing.maximalIdeal 𝒪[k] ^ r`.
+
+Introduce `l m`. Use `congrFun (congrFun h l) m` as an intermediate fact. Simplify using `only [red, Matrix.map_apply] at this`. Conclude with `Ideal.Quotient.eq.mp this.symm`. Establish `hM : (((lift g)⁻¹ * lift g' : GL (Fin n) 𝒪[k]) : Matrix (Fin n) (Fin n) 𝒪[k]) = 1 + ((lift g)⁻¹ : GL (Fin n) 𝒪[k]).val * ((lift g' : GL (Fin n) 𝒪[k]).val - (lift g : GL (Fin n) 𝒪[k]).val)`.
+
+Rewrite using `[Units.val_mul, Matrix.mul_sub, Units.inv_mul]`. Normalize the expressions using the abelian group laws. Use `⟨(((lift g)⁻¹ * lift g' : GL (Fin n) 𝒪[k]) : Matrix (Fin n) (Fin n) 𝒪[k]) i j - if i = j then 1 else 0, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[hM, Matrix.add_apply, Matrix.one_apply, add_sub_cancel_left, Matrix.mul_apply]`. Conclude with `Ideal.sum_mem _ fun l _ => Ideal.mul_mem_left _ _ (hd l j)`.
+
+Rewrite using `[hu]`. Express the relevant statement in the definitionally equal form `_ = ((((lift g)⁻¹ * lift g' : GL (Fin n) 𝒪[k]) : Matrix (Fin n) (Fin n) 𝒪[k]).map (algebraMap 𝒪[k] k)) i j - _`. Simplify using `only [Matrix.map_apply, map_sub, apply_ite (algebraMap 𝒪[k] k), map_one, map_zero]`.
+-/
 lemma mem_KC_of_red_eq {n : ℕ} (r : ℕ) (g g' : ↥(KO k (Fin n))) (h : red r g = red r g') :
     ((g⁻¹ * g' : ↥(KO k (Fin n))) : GL (Fin n) k) ∈ KC k n r := by
   refine ⟨(g⁻¹ * g').2, fun i j => ?_⟩
@@ -56,6 +68,13 @@ end P_V0fin
 
 variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
 
+/- English proof (translation)
+Introduce `_ _`. Set `φ` to `P_V0fin.red (k := k) (n := n) G.lev`. Establish `hle : G.V0sp ≤ LinearMap.range (LinearMap.funLeft ℂ ℂ φ)`. Introduce `f hf`. Use `⟨fun q => if hq : ∃ g, φ g = q then f (Classical.choose hq) else 0, ?_⟩` and prove the remaining obligations.
+
+Use function extensionality and compare the values at `g`. Establish `hq : ∃ g', φ g' = φ g` using `⟨g, rfl⟩`. Simplify using `only [LinearMap.funLeft_apply, dif_pos hq]`. Establish `hk` using `P_V0fin.mem_KC_of_red_eq G.lev (Classical.choose hq) g (Classical.choose_spec hq)`. Use `hf.2 (Classical.choose hq) ((Classical.choose hq)⁻¹ * g) hk` as an intermediate fact.
+
+Rewrite `this` using `[mul_inv_cancel_left]`. Conclude with `this.symm`. Establish `: FiniteDimensional ℂ (LinearMap.range (LinearMap.funLeft ℂ ℂ φ))` using `LinearMap.finiteDimensional_range _`. Conclude with `Submodule.finiteDimensional_of_le hle`.
+-/
 theorem step_V0fin {n : ℕ} (G : Grp k n) : FixedSubspaceFiniteProp G := by
   intro _ _
   let φ := P_V0fin.red (k := k) (n := n) G.lev

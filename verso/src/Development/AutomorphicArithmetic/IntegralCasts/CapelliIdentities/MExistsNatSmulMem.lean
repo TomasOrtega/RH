@@ -1,6 +1,13 @@
 import Mathlib
 import Formalism.LocalRingCardinality.DataSpaces
 
+/- English proof (translation)
+Establish `hq : IsAlgebraic ℚ a` using `Algebra.IsAlgebraic.isAlgebraic a`. Establish `hz : IsAlgebraic ℤ a` using `(IsFractionRing.isAlgebraic_iff ℤ ℚ E).2 hq`. Take `⟨y, hy, hi⟩` from `hz.exists_integral_multiple`. Use `⟨y.natAbs, Int.natAbs_pos.2 hy, ?_⟩` and prove the remaining obligations. Rewrite `hi` using `[zsmul_eq_mul]`.
+
+Break down `Int.natAbs_eq y with h | h` into its components or cases. Establish `h2 : ((y.natAbs : ℕ) : E) = (y : E)` using `by conv_rhs => rw [h]`. Conclude with `(Int.cast_natCast _).symm`. Rewrite using `[h2]`. Conclude with `hi`.
+
+Establish `h2 : ((y.natAbs : ℕ) : E) = -(y : E)` using `by conv_rhs => rw [h]`. Rewrite using `[Int.cast_neg, neg_neg, Int.cast_natCast]`. Rewrite using `[h2, neg_mul]`. Conclude with `hi.neg`.
+-/
 private theorem UpperTheory.Reformulated.B.Qh47.exists_nat_mul_integral {E : Type} [Field E] [NumberField E]
     (a : E) : ∃ n : ℕ, 0 < n ∧ IsIntegral ℤ ((n : E) * a) := by
   have hq : IsAlgebraic ℚ a := Algebra.IsAlgebraic.isAlgebraic a
@@ -18,6 +25,17 @@ private theorem UpperTheory.Reformulated.B.Qh47.exists_nat_mul_integral {E : Typ
       rw [Int.cast_neg, neg_neg, Int.cast_natCast]
     rw [h2, neg_mul]; exact hi.neg
 
+/- English proof (translation)
+Introduce `E _ _ _ S M x hx`. Proceed by induction on `hx using Submodule.span_induction with`. Consider the case `mem x hx => exact ⟨1, one_pos, by rw [one_smul]; exact hx⟩`. Consider the case `zero => exact ⟨1, one_pos, by rw [one_smul]; exact M.zero_mem⟩`. Consider the case `add x y _ _ hx hy`.
+
+Take `⟨m, hm, hmx⟩` from `hx`. Take `⟨n, hn, hny⟩` from `hy`. Use `⟨m * n, Nat.mul_pos hm hn, ?_⟩` and prove the remaining obligations. Rewrite using `[smul_add]`. Use `M.add_mem ?_ ?_` and prove the remaining obligations.
+
+Rewrite using `[mul_comm, mul_smul]`. Conclude with `nsmul_mem hmx n`. Rewrite using `[mul_smul]`. Conclude with `nsmul_mem hny m`. Consider the case `smul a x _ hx`.
+
+Take `⟨m, hm, hmx⟩` from `hx`. Take `⟨n, hn, hi⟩` from `UpperTheory.Reformulated.B.Qh47.exists_nat_mul_integral a`. Use `⟨n * m, Nat.mul_pos hn hm, ?_⟩` and prove the remaining obligations. Take `⟨b, hb⟩ : ∃ b : NumberField.RingOfIntegers E, algebraMap _ E b = (n : E) * a` from `⟨⟨(n : E) * a, hi⟩, rfl⟩`. Establish `e : (n * m) • a • x = b • m • x`.
+
+Rewrite using `[mul_smul n m, smul_comm m a x, ← algebraMap_smul E b, hb, mul_smul, Nat.cast_smul_eq_nsmul]`. Rewrite using `[e]`. Conclude with `M.smul_mem b hmx`.
+-/
 theorem UpperTheory.Reformulated.B.Qh47.m_exists_nat_smul_mem :
     ∀ {E : Type} [inst : Field E] [inst_1 : NumberField E] [inst_2 : StarRing E] {S : Formalism.BasicNotions.HSpace E}
       (M : Submodule (NumberField.RingOfIntegers E) S.V) {x : S.V},

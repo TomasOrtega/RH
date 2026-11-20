@@ -9,6 +9,9 @@ abbrev MP (C : Type) [Field C] (N : ℕ) := MvPolynomial (Fin N × Fin N) C
 
 section defs
 variable {C : Type} [Field C] {N n : ℕ} {Γ : Type} [Group Γ]
+/- English proof (translation)
+Introduce `i j hij` and use `by by_contra hne exact h {i} {j} (by simp) (by simp) (by simpa using hne) (by simp [hij])`.
+-/
 theorem isLac_inj {e : Fin n → C} (h : IsLac e) : Function.Injective e := fun i j hij => by
   by_contra hne
   exact h {i} {j} (by simp) (by simp) (by simpa using hne) (by simp [hij])

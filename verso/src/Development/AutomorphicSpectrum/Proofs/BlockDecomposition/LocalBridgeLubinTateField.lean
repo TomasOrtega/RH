@@ -18,6 +18,19 @@ open scoped GroundTheory.PAdicHodge.CyclNorms
 
 namespace GlobalTheory.CompanionTheory.LTLink
 
+/- English proof (translation)
+Establish `hv : v ξ ≤ 1`. Establish `e : ξ = (ξ - 1) + 1` using `by ring`. Rewrite using `[e]`. Conclude with `(v.map_add _ _).trans (max_le h.le (by simp))`. Establish `hp : ∀ i : ℕ, v (ξ ^ i - 1) < 1`.
+
+Introduce `i`. Proceed by induction on `i with`. Consider the case `zero => simp`. Consider the case `succ i ih`. Establish `e : ξ ^ (i + 1) - 1 = ξ * (ξ ^ i - 1) + (ξ - 1)` using `by ring`.
+
+Rewrite using `[e]`. Use `Valuation.map_add_lt v ?_ h` and prove the remaining obligations. Rewrite using `[map_mul]`. Conclude with `lt_of_le_of_lt (mul_le_of_le_one_left' hv) ih`. Establish `hs : v ((∑ i ∈ Finset.range m, ξ ^ i) - (m : K)) < 1`.
+
+Establish `e : (∑ i ∈ Finset.range m, ξ ^ i) - (m : K) = ∑ i ∈ Finset.range m, (ξ ^ i - 1)`. Simplify using `[Finset.sum_sub_distrib]`. Rewrite using `[e]`. Conclude with `Valuation.map_sum_lt v one_ne_zero fun i _ => hp i`. Establish `hsum : (∑ i ∈ Finset.range m, ξ ^ i) ≠ 0`.
+
+Introduce `h0`. Rewrite `hs` using `[h0, zero_sub, Valuation.map_neg, hm]`. Conclude with `lt_irrefl _ hs`. Use `mul_geom_sum ξ m` as an intermediate fact. Rewrite `this` using `[hξ, sub_self]`.
+
+Conclude with `sub_eq_zero.mp ((mul_eq_zero.mp this).resolve_right hsum)`.
+-/
 theorem eq_one_of_pow_eq_one_of_valuation_sub_lt {K Γ : Type*} [Field K]
     [LinearOrderedCommGroupWithZero Γ] (v : Valuation K Γ) {m : ℕ} {ξ : K}
     (hm : v (m : K) = 1) (hξ : ξ ^ m = 1) (h : v (ξ - 1) < 1) : ξ = 1 := by
@@ -48,6 +61,13 @@ theorem eq_one_of_pow_eq_one_of_valuation_sub_lt {K Γ : Type*} [Field K]
   rw [hξ, sub_self] at this
   exact sub_eq_zero.mp ((mul_eq_zero.mp this).resolve_right hsum)
 
+/- English proof (translation)
+Establish `hnl : ¬ ((1 : F) ≤ᵥ (l : F))`. Introduce `h`. Establish `h2` using `(ValuativeExtension.vle_iff_vle (A := F) (B := Om l) 1 (l : F)).2 h`. Rewrite `h2` using `[map_one, map_natCast, GroundTheory.PAdicHodge.CyclNorms.vle_iff_norm_le, norm_one, ← map_natCast (algebraMap ℚ_[l] (Om l)), PadicAlgCl.norm_extends]`. Conclude with `absurd (Padic.norm_natCast_lt_one_iff.mpr (dvd_refl l)) (not_lt.mpr h2)`.
+
+Establish `hlt : valuation F (((l : 𝒪[F]) : 𝒪[F]) : F) < 1`. Use `not_le.mp fun h => hnl ?_` and prove the remaining obligations. Rewrite using `[Valuation.Compatible.vle_iff_le (v := valuation F), map_one]`. Simplify using `using h`. Establish `hmem : (l : 𝒪[F]) ∈ IsLocalRing.maximalIdeal 𝒪[F]`.
+
+Rewrite using `[IsLocalRing.mem_maximalIdeal, mem_nonunits_iff, (Valuation.integer.integers (valuation F)).isUnit_iff_valuation_eq_one]`. Conclude with `ne_of_lt hlt`. Rewrite using `[← map_natCast (IsLocalRing.residue 𝒪[F]), IsLocalRing.residue_eq_zero_iff]`. Conclude with `hmem`.
+-/
 theorem natCast_residue_eq_zero {l : ℕ} [Fact l.Prime] {F : Type} [Field F] [ValuativeRel F]
     [TopologicalSpace F] [IsNonarchimedeanLocalField F] [Algebra F (Om l)]
     [ValuativeExtension F (Om l)] : (l : 𝓀[F]) = 0 := by
@@ -68,6 +88,27 @@ theorem natCast_residue_eq_zero {l : ℕ} [Fact l.Prime] {F : Type} [Field F] [V
   rw [← map_natCast (IsLocalRing.residue 𝒪[F]), IsLocalRing.residue_eq_zero_iff]
   exact hmem
 
+/- English proof (translation)
+Introduce `l _ E Ω _ _ _ _ _ A O _ _ _ Bw hj F _ _ _ _ _ _ _ σ hσ g hg`. Rewrite using `[GroundTheory.LocalField.unramifiedDegree_eq_one_iff]`. Introduce `ζ hζ`. Take `⟨m, hm, hζm⟩` from `mem_unramifiedRoots_iff.1 hζ`. Establish `hm0 : m ≠ 0`.
+
+Introduce and unpack `rfl`. Simplify using `at hm`. Establish `hcop : ¬ l ∣ m`. Introduce and unpack `⟨k, rfl⟩`. Apply `hm` to reduce the goal to its premises.
+
+Rewrite using `[Nat.cast_mul, natCast_residue_eq_zero (l := l) (F := F), zero_mul]`. Establish `: IsAlgClosed Ω` using `IsAlgClosure.isAlgClosed E`. Establish `: CharZero Ω` using `charZero_of_injective_algebraMap (algebraMap E Ω).injective`. Establish `: NeZero m` using `⟨hm0⟩`. Establish `: NeZero (m : Ω)` using `⟨Nat.cast_ne_zero.mpr hm0⟩`.
+
+Take `⟨ζ₀, h₀⟩ : ∃ z : Ω, IsPrimitiveRoot z m` from `HasEnoughRootsOfUnity.exists_primitiveRoot Ω m`. Establish `hj0` using `h₀.map_of_injective Bw.j.injective`. Take `⟨i, -, hi⟩` from `hj0.eq_pow_of_pow_eq_one hζm`. Take `⟨z, hz, hzm⟩ : ∃ z : Ω, Bw.j z = ζ ∧ z ^ m = 1` from `⟨ζ₀ ^ i, by rw [map_pow, hi], by rw [← pow_mul, mul_comm, pow_mul, h₀.pow_eq_one, one_pow]⟩`. Establish `hz0 : z ≠ 0`.
+
+Introduce and unpack `rfl`. Simplify using `[hm0] at hzm`. Set `s : G E Ω` to `(σ : G E Ω)`. Establish `hgz : g ζ = Bw.j (s z)`. Rewrite using `[hg, ← hz]`.
+
+Conclude with `Bw.e_comm σ z`. Establish `hnorm : ‖Bw.j z‖ = 1`. Use `(pow_eq_one_iff_of_nonneg (norm_nonneg _) hm0).mp ?_` and prove the remaining obligations. Rewrite using `[← norm_pow, ← map_pow, hzm, map_one, norm_one]`. Establish `hzA : A.valuation z ≤ 1`.
+
+Rewrite using `[A.valuation_le_one_iff]`. Conclude with `(hj z).mpr hnorm.le`. Establish `hzunit : A.valuation z = 1` using `le_antisymm hzA (not_lt.mp fun h => ((hj.valuation_lt_one_iff z).mp h).ne hnorm)`. Establish `hlt : A.valuation (s z - z) < 1` using `hσ.2 z hzA`. Establish `hmn : ‖Bw.j (m : Ω)‖ = 1`.
+
+Rewrite using `[map_natCast, ← map_natCast (algebraMap ℚ_[l] (Om l)), PadicAlgCl.norm_extends, Padic.norm_natCast_eq_one_iff]`. Conclude with `(Nat.Prime.coprime_iff_not_dvd Fact.out).2 hcop`. Establish `hmv : A.valuation (m : Ω) = 1`. Use `le_antisymm ?_ (not_lt.mp fun h => ((hj.valuation_lt_one_iff _).mp h).ne hmn)` and prove the remaining obligations. Rewrite using `[A.valuation_le_one_iff]`.
+
+Conclude with `(hj _).mpr hmn.le`. Establish `hsz : (s z / z) ^ m = 1`. Rewrite using `[div_pow, ← map_pow, hzm, map_one, div_one]`. Establish `hone : s z / z = 1`. Use `eq_one_of_pow_eq_one_of_valuation_sub_lt A.valuation hmv hsz ?_` and prove the remaining obligations.
+
+Establish `e : s z / z - 1 = (s z - z) / z` using `by field_simp`. Rewrite using `[e, map_div₀, hzunit, div_one]`. Conclude with `hlt`. Rewrite using `[hgz, (div_eq_one_iff_eq hz0).mp hone, hz]`.
+-/
 theorem unramifiedDegree_eq_one_of_mem_inertia : ∀ {l : ℕ} [Fact l.Prime] {E Ω : Type} [Field E] [NumberField E] [Field Ω] [Algebra E Ω] [IsAlgClosure E Ω]
     {A : ValuationSubring Ω} {O : Type} [CommRing O] [Algebra ℤ_[l] O] [TopologicalSpace O]
     (Bw : LocBridge l E Ω (Dec (F := E) A) O), GlobalTheory.Pst.Induces Bw →

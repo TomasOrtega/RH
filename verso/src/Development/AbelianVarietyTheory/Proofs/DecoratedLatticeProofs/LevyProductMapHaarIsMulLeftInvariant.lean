@@ -10,6 +10,33 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 attribute [local instance high] GlobalTheory.SplitWeil.matrixMeasurableSpace
 open GlobalTheory.HaarR
 
+/- English proof (translation)
+Introduce `k _ _ _ _ _ _ n _ _ c p h1 hp ν hν m hm`. Use `haveI := hν`. Use `haveI := hm`. Use `haveI : BorelSpace (GL n k) := GlobalTheory.SplitFlip.borel_GL`. Use `haveI : BorelSpace (GL (n ⊕ Fin c) k) := GlobalTheory.SplitFlip.borel_GL`.
+
+Take `⟨hNc, -, hH, -, -⟩` from `GlobalTheory.RootEx.VolN.volN_haar_and_modulus k n c p h1 hp ν`. Use `haveI := hH`. Use `haveI : LocallyCompactSpace (N k n c p) := hNc.isClosedEmbedding_subtypeVal.locallyCompactSpace`. Use `haveI : SecondCountableTopology (N k n c p) := TopologicalSpace.Subtype.secondCountableTopology _`. Use `haveI : SigmaFinite m := inferInstance`.
+
+Use `haveI : SigmaFinite (volN ν n c p) := inferInstance`. Establish `hE : Continuous (embX c : GL n k → GL (n ⊕ Fin c) k)` using `GlobalTheory.RootEx.QuotStep.continuous_embX`. Establish `hφ : Measurable (prodR (k` using `k) (n := n) (c := c) p) := (Continuous.subtype_mk ((hE.comp continuous_fst).mul (continuous_subtype_val.comp continuous_snd)) _).measurable`. Establish `hmulJ : ∀ g : R k n c p, Measurable (fun y : R k n c p => g * y)` using `fun g => (continuous_mul_left g).measurable`. Establish `hmulH : ∀ g : GL n k, Measurable (fun y : GL n k => g * y)` using `fun g => (continuous_mul_left g).measurable`.
+
+Set `μR : Measure (R k n c p)` to `(m.prod (volN ν n c p)).map (prodR p)`. Set `K : Subgroup (GL (n ⊕ Fin c) k)` to `{ carrier := {x | ∃ hx : x ∈ R k n c p, μR.map (fun y => (⟨x, hx⟩ : R k n c p) * y) = μR} one_mem' := ⟨one_mem _, by`. Simplify using `only [show (⟨1, one_mem _⟩ : R k n c p) = 1 from rfl, one_mul]`. Conclude with `Measure.map_id'⟩`. Use the proof step `mul_mem' := by`.
+
+Introduce and unpack `a b ⟨ha, Ha⟩ ⟨hb, Hb⟩`. Use `⟨mul_mem ha hb, ?_⟩` and prove the remaining obligations. Establish `: (fun y : R k n c p => (⟨a * b, mul_mem ha hb⟩ : R k n c p) * y) = (fun y => (⟨a, ha⟩ : R k n c p) * y) ∘ (fun y => (⟨b, hb⟩ : R k n c p) * y)`. Use function extensionality and compare the values at `fun y => mul_assoc (⟨a, ha⟩ : R k n c p) ⟨b, hb⟩ y`. Rewrite using `[this, ← Measure.map_map (hmulJ _) (hmulJ _), Hb, Ha]`.
+
+Use the proof step `inv_mem' := by`. Introduce and unpack `a ⟨ha, Ha⟩`. Use `⟨inv_mem ha, ?_⟩` and prove the remaining obligations. Use `conv_lhs => rw [← Ha]`. Rewrite using `[Measure.map_map (hmulJ _) (hmulJ _)]`.
+
+Establish `: (fun y : R k n c p => (⟨a⁻¹, inv_mem ha⟩ : R k n c p) * y) ∘ (fun y => (⟨a, ha⟩ : R k n c p) * y) = id`. Use function extensionality and compare the values at `fun y => inv_mul_cancel_left (⟨a, ha⟩ : R k n c p) y`. Rewrite using `[this, Measure.map_id] }`. Establish `hXK : (embX c : GL n k →* GL (n ⊕ Fin c) k).range ≤ K`. Introduce and unpack `_ ⟨g₀, rfl⟩`.
+
+Use `⟨Subgroup.mem_sup_left ⟨g₀, rfl⟩, ?_⟩` and prove the remaining obligations. Use `show Measure.map _ (Measure.map _ _) = _`. Rewrite using `[Measure.map_map (hmulJ _) hφ]`. Establish `: (fun y : R k n c p => (⟨embX c g₀, Subgroup.mem_sup_left ⟨g₀, rfl⟩⟩ : R k n c p) * y) ∘ prodR p = prodR p ∘ Prod.map (fun y : GL n k => g₀ * y) id`. Use function extensionality and compare the values at `q`.
+
+Apply `Subtype.ext` to reduce the goal to its premises. Simplify using `[mul_assoc]`. Rewrite using `[this, ← Measure.map_map hφ ((hmulH _).prodMap measurable_id), ← Measure.map_prod_map m (volN ν n c p) (hmulH _) measurable_id, map_mul_left_eq_self, Measure.map_id]`. Establish `hNK : N k n c p ≤ K`. Introduce `u₀ hu₀`.
+
+Use `⟨Subgroup.mem_sup_right hu₀, ?_⟩` and prove the remaining obligations. Use `show Measure.map _ (Measure.map _ _) = _`. Rewrite using `[Measure.map_map (hmulJ _) hφ]`. Set `cg : GL n k → N k n c p` to `fun g => ⟨(embX c g)⁻¹ * u₀ * embX c g, GlobalTheory.RootEx.Model.conj_mem hu₀ g⟩`. Establish `hcg : Continuous cg` using `Continuous.subtype_mk (((hE.inv).mul continuous_const).mul hE) _`.
+
+Set `F : GL n k → N k n c p → N k n c p` to `fun g u => cg g * u`. Establish `hF : Measurable (Function.uncurry F)` using `(((hcg.comp continuous_fst).mul continuous_snd)).measurable`. Establish `hFm : ∀ g, Measure.map (F g) (volN ν n c p) = volN ν n c p` using `fun g => map_mul_left_eq_self _ _`. Establish `hmp` using `(MeasurePreserving.id m).skew_product hF (Filter.Eventually.of_forall hFm)`. Establish `: (fun y : R k n c p => (⟨u₀, Subgroup.mem_sup_right hu₀⟩ : R k n c p) * y) ∘ prodR p = prodR p ∘ (fun q : GL n k × N k n c p => (id q.1, F q.1 q.2))`.
+
+Use function extensionality and compare the values at `q`. Apply `Subtype.ext` to reduce the goal to its premises. Simplify using `[F, cg, mul_assoc]`. Rewrite using `[this, ← Measure.map_map hφ hmp.measurable, hmp.map_eq]`. Use `⟨fun g => ?_⟩` and prove the remaining obligations.
+
+Take `⟨hx, H⟩` from `(sup_le hXK hNK) g.2`. Conclude with `H`.
+-/
 theorem GlobalTheory.HaarR.map_prodR_isMulLeftInvariant : ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] [MeasurableSpace k] [BorelSpace k] (n : Type) [Fintype n] [DecidableEq n] (c p : ℕ), 1 ≤ p → p ≤ c → ∀ (ν : Measure k), ν.IsAddHaarMeasure → ∀ m : Measure (GL n k), m.IsHaarMeasure → ((m.prod (volN ν n c p)).map (prodR p)).IsMulLeftInvariant := by
   intro k _ _ _ _ _ _ n _ _ c p h1 hp ν hν m hm
   haveI := hν

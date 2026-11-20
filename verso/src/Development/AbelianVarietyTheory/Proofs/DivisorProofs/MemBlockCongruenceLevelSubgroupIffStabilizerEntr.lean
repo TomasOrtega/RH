@@ -13,6 +13,11 @@ namespace GlobalTheory.FunObj.StdDatum.BlockMem
 
 variable {D : D7}
 
+/- English proof (translation)
+Proceed by induction on `hx using AddSubgroup.closure_induction with`. Consider the case `mem z hz`. Take `⟨b, hb, s, hs, rfl⟩` from `hz`. Conclude with `AddSubgroup.subset_closure ⟨b, hb, s * y, mul_mem hs hy, by ring⟩`. Consider the case `zero => simp [zero_mem]`.
+
+Consider the case `add u v _ _ hu hv => rw [add_mul]`. Conclude with `add_mem hu hv`. Consider the case `neg u _ hu => rw [neg_mul]`. Conclude with `neg_mem hu`.
+-/
 theorem hatId_mul_mem (𝔪 : Ideal (𝓞 D.host.E)) {x y : AE D} (hx : x ∈ hatId D 𝔪) (hy : y ∈ OhE D) :
     x * y ∈ hatId D 𝔪 := by
   induction hx using AddSubgroup.closure_induction with
@@ -39,15 +44,26 @@ def liftM {d : ℕ} (g : Matrix (Fin d) (Fin d) (AE D)) (hg : ∀ i j, g i j ∈
     Matrix (Fin d) (Fin d) (OhE D) :=
   Matrix.of fun i j => ⟨g i j, hg i j⟩
 
+/- English proof (translation)
+Use extensionality with `i j`. Both sides reduce to the same expression.
+-/
 theorem liftM_map {d : ℕ} (g : Matrix (Fin d) (Fin d) (AE D)) (hg : ∀ i j, g i j ∈ OhE D) :
     (liftM g hg).map (OhE D).subtype = g := by
   ext i j; rfl
 
 def blk (a : ℕ) {d : ℕ} (i : Fin d) : ℕ := if a ≤ i.1 then 1 else 0
 
+/- English proof (translation)
+Apply the tactic sequence `unfold blk; split_ifs <;> omega`.
+-/
 theorem blk_lt {a d : ℕ} (i j : Fin d) : blk a j < blk a i ↔ j.1 < a ∧ a ≤ i.1 := by
   unfold blk; split_ifs <;> omega
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce `h i j hij`. Rewrite `hij` using `[blk_lt]`. Simplify using `only [Matrix.map_apply]`. Rewrite using `[Ideal.Quotient.eq_zero_iff_mem]`.
+
+Conclude with `h i j hij.1 hij.2`. Introduce `h i j hj hi`. Use `h ((blk_lt i j).2 ⟨hj, hi⟩)` as an intermediate fact. Simplify using `only [Matrix.map_apply] at this`. Conclude with `(Ideal.Quotient.eq_zero_iff_mem).1 this`.
+-/
 theorem cond_iff {d : ℕ} (𝔪 : Ideal (𝓞 D.host.E)) (a : ℕ) (g : Matrix (Fin d) (Fin d) (AE D))
     (hg : ∀ i j, g i j ∈ OhE D) :
     (∀ i j : Fin d, j.1 < a → a ≤ i.1 → g i j ∈ hatId D 𝔪) ↔
@@ -63,6 +79,9 @@ theorem cond_iff {d : ℕ} (𝔪 : Ideal (𝓞 D.host.E)) (a : ℕ) (g : Matrix 
     simp only [Matrix.map_apply] at this
     exact (Ideal.Quotient.eq_zero_iff_mem).1 this
 
+/- English proof (translation)
+Establish `h' : Y.map f * X.map f = 1`. Rewrite using `[← Matrix.map_mul, h, Matrix.map_one _ f.map_zero f.map_one]`. Use `letI : Invertible (X.map f) := ⟨Y.map f, h', mul_eq_one_comm.mp h'⟩`. Use `Matrix.blockTriangular_inv_of_blockTriangular hX` as an intermediate fact. Rewrite `this` using `[Matrix.inv_eq_left_inv h']`. Then use the resulting hypothesis.
+-/
 theorem bt_transfer {R S : Type} [CommRing R] [CommRing S] (f : R →+* S) {d : ℕ}
     {X Y : Matrix (Fin d) (Fin d) R} (h : Y * X = 1) (b : Fin d → ℕ) (hX : (X.map f).BlockTriangular b) :
     (Y.map f).BlockTriangular b := by
@@ -72,6 +91,21 @@ theorem bt_transfer {R S : Type} [CommRing R] [CommRing S] (f : R →+* S) {d : 
   have := Matrix.blockTriangular_inv_of_blockTriangular hX
   rwa [Matrix.inv_eq_left_inv h'] at this
 
+/- English proof (translation)
+Use `⟨fun hh => ?_, fun hh => Subgroup.subset_closure hh⟩` and prove the remaining obligations. Proceed by induction on `hh using Subgroup.closure_induction with`. Consider the case `mem x hx => exact hx`. Consider the case `one`. Use `⟨one_mem _, fun i j hj hi => ?_⟩` and prove the remaining obligations.
+
+Establish `hne : i ≠ j` using `fun e => by subst e; omega`. Simplify using `[Matrix.one_apply_ne hne, zero_mem]`. Consider the case `mul x y _ _ hx hy`. Use `⟨mul_mem hx.1 hy.1, fun i j hj hi => ?_⟩` and prove the remaining obligations. Establish `ix` using `(GlobalTheory.NormSum.mem_intG x).1 hx.1`.
+
+Establish `iy` using `(GlobalTheory.NormSum.mem_intG y).1 hy.1`. Simplify using `only [Subgroup.coe_mul, Units.val_mul, Matrix.mul_apply]`. Use `sum_mem fun l _ => ?_` and prove the remaining obligations. Distinguish the cases in `hl : l.1 < a`. Conclude with `hatId_mul_mem 𝔪 (hx.2 i l hl hi) (iy l j).1`.
+
+Rewrite using `[mul_comm]`. Conclude with `hatId_mul_mem 𝔪 (hy.2 l j hj (not_lt.1 hl)) (ix i l).1`. Consider the case `inv x _ hx`. Use `⟨inv_mem hx.1, ?_⟩` and prove the remaining obligations. Establish `ix` using `(GlobalTheory.NormSum.mem_intG x).1 hx.1`.
+
+Establish `hX : ∀ i j, ((x : GL (Fin d) (AE D)) : Matrix (Fin d) (Fin d) (AE D)) i j ∈ OhE D` using `fun i j => (ix i j).1`. Establish `hY : ∀ i j, (((x⁻¹ : GA D d) : GL (Fin d) (AE D)) : Matrix (Fin d) (Fin d) (AE D)) i j ∈ OhE D` using `fun i j => by simpa using (ix i j).2`. Rewrite using `[cond_iff 𝔪 a _ hY]`. Establish `hXc` using `(cond_iff 𝔪 a _ hX).1 hx.2`. Use `set X := liftM _ hX`.
+
+Use `set Y := liftM _ hY`. Establish `hYX : Y * X = 1`. Establish `key : (Y * X).map (OhE D).subtype = (1 : Matrix (Fin d) (Fin d) (OhE D)).map (OhE D).subtype`. Rewrite using `[Matrix.map_mul, liftM_map, liftM_map, Matrix.map_one _ (map_zero _) (map_one _)]`. Rewrite using `[← Units.val_mul, ← Subgroup.coe_mul, inv_mul_cancel]`.
+
+Both sides reduce to the same expression. Conclude with `Matrix.map_injective (fun u v huv => Subtype.ext huv) key`. Conclude with `bt_transfer (Ideal.Quotient.mk (hatIdeal D 𝔪)) hYX (blk a) hXc`.
+-/
 theorem mem_iff (D : D7) (𝔪 : Ideal (𝓞 D.host.E)) (d a : ℕ) (h : GA D d) :
     h ∈ blockLev D 𝔪 d a ↔ h ∈ intG D d ∧ ∀ i j : Fin d, j.1 < a → a ≤ i.1 →
       ((h : GL (Fin d) (AE D)) : Matrix (Fin d) (Fin d) (AE D)) i j ∈ hatId D 𝔪 := by

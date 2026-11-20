@@ -12,6 +12,9 @@ variable {K F : Type} [Field K] [NumberField K] [StarRing K] [Field F] [NumberFi
 variable {V : Type} [AddCommGroup V] [Module K V] [FiniteDimensional K V] [Module (𝓞 K) V]
   [IsScalarTower (𝓞 K) K V]
 
+/- English proof (translation)
+Rewrite using `[← IsScalarTower.algebraMap_apply]`. Use `first`. Consider the case `exact IsScalarTower.algebraMap_apply (𝓞 F) F K n`. Consider the case `(rw [IsScalarTower.algebraMap_apply (𝓞 F) F K]; rfl)`. Consider the case `simp`.
+-/
 private theorem algebraMap_int_F_to_K_eq_algebraMap_F_K (n : 𝓞 F) :
     algebraMap (𝓞 K) K (algebraMap (𝓞 F) (𝓞 K) n) = algebraMap F K (n : F) := by
   rw [← IsScalarTower.algebraMap_apply]
@@ -20,6 +23,11 @@ private theorem algebraMap_int_F_to_K_eq_algebraMap_F_K (n : 𝓞 F) :
   | (rw [IsScalarTower.algebraMap_apply (𝓞 F) F K]; rfl)
   | simp
 
+/- English proof (translation)
+Establish `hp : 𝔭.IsPrime` using `h𝔭.isPrime`. Take `⟨v, hv⟩` from `Cell.exists_near (𝔭 := 𝔭) h𝔭 hF hs hA₀ hA₀i hn (by obtain ⟨b, hb⟩ := hrep; exact ⟨b, by rw [algebraMap_int_F_to_K_eq_algebraMap_F_K]; exact hb⟩)`. Use `⟨v + 1, fun k hk x hx hc => ?_⟩` and prove the remaining obligations. Rewrite `hc` using `[Cell.congrP_iff_inI]`. Take `⟨y, hy0, hyy, hyx⟩` from `hv (k - v) (by omega) x ((WCA.inL_zero_iff hp).2 hx) (by rw [algebraMap_int_F_to_K_eq_algebraMap_F_K, show v + (k - v) = k by omega]; exact hc)`.
+
+Use `⟨y, (WCA.inL_zero_iff hp).1 hy0, by rw [hyy, algebraMap_int_F_to_K_eq_algebraMap_F_K], ?_⟩` and prove the remaining obligations. Conclude with `(WCA.InL.mono (by omega) hyx).mem hp`.
+-/
 theorem exists_exact_near (hK : Formalism.HermitianLatticesTheory.IsCMUnram K) (hF : IsFixF K F)
     {h : V →ₗ⋆[K] V →ₗ[K] K} (hs : h.IsSymm) (hd : IsTotPosDef h) {A₀ : Submodule (𝓞 K) V}
     (hA₀ : Submodule.IsLattice K A₀) (hA₀i : Formalism.HermitianLatticesTheory.IsIntegralLat h A₀) {𝔭 : Ideal (𝓞 F)}
@@ -38,6 +46,9 @@ theorem exists_exact_near (hK : Formalism.HermitianLatticesTheory.IsCMUnram K) (
   refine ⟨y, (WCA.inL_zero_iff hp).1 hy0, by rw [hyy, algebraMap_int_F_to_K_eq_algebraMap_F_K], ?_⟩
   exact (WCA.InL.mono (by omega) hyx).mem hp
 
+/- English proof (translation)
+Conclude with `Cell.exists_lattice (𝔭 := 𝔭) hK hF hs hd h𝔭 (by rw [algebraMap_int_F_to_K_eq_algebraMap_F_K]; exact hx) hn`.
+-/
 theorem exists_lattice_vd_le_one (hK : Formalism.HermitianLatticesTheory.IsCMUnram K) (hF : IsFixF K F)
     {h : V →ₗ⋆[K] V →ₗ[K] K} (hs : h.IsSymm) (hd : IsTotPosDef h) {𝔭 : Ideal (𝓞 F)}
     (h𝔭 : 𝔭.IsMaximal) {x₀ : V} {n : 𝓞 F} (hx : h x₀ x₀ = algebraMap F K (n : F)) (hn : n ∉ 𝔭) :

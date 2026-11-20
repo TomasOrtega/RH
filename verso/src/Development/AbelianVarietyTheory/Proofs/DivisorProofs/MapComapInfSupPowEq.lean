@@ -12,6 +12,17 @@ noncomputable section
 
 namespace GlobalTheory.FormalAlg
 
+/- English proof (translation)
+Introduce `W W' _ _ π U hqc hiso K τ hK`. Set `T : W.affineOpens` to `⟨⊤, isAffineOpen_top W⟩`. Use `haveI : IsNoetherianRing Γ(W, T.1) := IsLocallyNoetherian.component_noetherian T`. Establish `hle : τ ≤ (τ.comap π).map π` using `Scheme.IdealSheafData.le_map_comap τ π`. Establish `htor : ∀ b ∈ ((τ.comap π).map π).ideal T, ∀ f ∈ K.ideal T, ∃ m : ℕ, f ^ m * b ∈ τ.ideal T`.
+
+Introduce `b hb f hf`. Establish `hV : (W.affineBasicOpen f).1 ≤ U`. Introduce `x hx`. Assume the negation of the conclusion as `hxU`. Establish `hxK : x ∈ K.support` using `by_contra fun h => hxU (hK x h)`.
+
+Rewrite `hxK` using `[Scheme.IdealSheafData.mem_support_iff]`. Conclude with `(Scheme.mem_zeroLocus_iff W _ x).1 (hxK T) f hf hx`. Establish `heq` using `GlobalTheory.T.map_comap_idealSheaf_eq_of_isIso_restrict W W' π U hqc hiso τ (W.affineBasicOpen f) hV`. Rewrite `heq` using `[← Scheme.IdealSheafData.map_ideal_basicOpen, ← Scheme.IdealSheafData.map_ideal_basicOpen]`. Establish `hloc` using `T.2.isLocalization_basicOpen f`.
+
+Establish `hb'` using `Ideal.mem_map_of_mem (W.presheaf.map (homOfLE (W.basicOpen_le f)).op).hom hb`. Rewrite `hb'` using `[heq]`. Take `⟨_, ⟨m, rfl⟩, hm⟩` from `(IsLocalization.algebraMap_mem_map_algebraMap_iff (Submonoid.powers f) Γ(W, W.basicOpen f) (τ.ideal T) b).1 hb'`. Conclude with `⟨m, hm⟩`. Take `⟨k₀, hk₀⟩` from `GlobalTheory.T.inf_sup_pow_eq_of_torsion_artinRees Γ(W, T.1) (K.ideal T) (τ.ideal T) (((τ.comap π).map π).ideal T) (hle T) htor`.
+
+Use `⟨k₀, fun k hk => Scheme.IdealSheafData.ext_of_isAffine ?_⟩` and prove the remaining obligations. Conclude with `hk₀ k hk`.
+-/
 theorem map_comap_inf_sup_pow_eq : ∀ (W W' : Scheme.{0}) [IsAffine W] [IsLocallyNoetherian W] (π : W' ⟶ W)
     (U : W.Opens), QuasiCompact π → IsIso (π ∣_ U) → ∀ (K τ : W.IdealSheafData),
     (∀ x, x ∉ K.support → x ∈ U) →

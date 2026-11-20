@@ -12,10 +12,16 @@ import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IrrCharOneMulFinsum
 open Polynomial GlobalTheory.CuspGL GlobalTheory.BI
 namespace GlobalTheory.IrrPi
 
+/- English proof (translation)
+Take `⟨n, ρ, _, h⟩` from `h`. Conclude with `⟨n, ρ, h⟩`.
+-/
 theorem isChar_of_irr {G : Type} [Group G] {χ : G → ℂ} (h : IsIrrChar ℂ ℂ χ) : IsChar ℂ ℂ χ := by
   obtain ⟨n, ρ, _, h⟩ := h
   exact ⟨n, ρ, h⟩
 
+/- English proof (translation)
+Use `fun i => Fintype.ofFinite (G i)` as an intermediate fact. Simplify using `only [pair, finsum_eq_sum_of_fintype, Finset.prod_mul_distrib, Nat.card_pi, Nat.cast_prod, Finset.prod_inv_distrib, Finset.prod_univ_sum, Fintype.piFinset_univ, Pi.inv_apply]`.
+-/
 theorem pair_prod {ι : Type} [Fintype ι] {G : ι → Type} [∀ i, Group (G i)] [∀ i, Finite (G i)]
     (a b : ∀ i, G i → ℂ) :
     pair (fun x : ∀ i, G i => ∏ i, a i (x i)) (fun x => ∏ i, b i (x i)) = ∏ i, pair (a i) (b i) := by
@@ -24,6 +30,9 @@ theorem pair_prod {ι : Type} [Fintype ι] {G : ι → Type} [∀ i, Group (G i)
   simp only [pair, finsum_eq_sum_of_fintype, Finset.prod_mul_distrib, Nat.card_pi, Nat.cast_prod,
     Finset.prod_inv_distrib, Finset.prod_univ_sum, Fintype.piFinset_univ, Pi.inv_apply]
 
+/- English proof (translation)
+Take `⟨n, hn, h0⟩` from `(isChar_restrict_conj_one ℂ ℂ G χ (isChar_of_irr h)).2.2`. Use `⟨n, fun h1 => ?_, hn⟩` and prove the remaining obligations. Use `pair_self_of_isIrrChar_algClosed ℂ G χ h` as an intermediate fact. Rewrite `this` using `[h0 h1]`. Simplify using `[pair] at this`.
+-/
 theorem irr_one {G : Type} [Group G] [Finite G] {χ : G → ℂ} (h : IsIrrChar ℂ ℂ χ) :
     ∃ n : ℕ, n ≠ 0 ∧ χ 1 = n := by
   obtain ⟨n, hn, h0⟩ := (isChar_restrict_conj_one ℂ ℂ G χ (isChar_of_irr h)).2.2
@@ -32,6 +41,15 @@ theorem irr_one {G : Type} [Group G] [Finite G] {χ : G → ℂ} (h : IsIrrChar 
   rw [h0 h1] at this
   simp [pair] at this
 
+/- English proof (translation)
+Use `Fintype.ofFinite (∀ i, G i)` as an intermediate fact. Establish `h1` using `irrChar_one_mul_finsum_conj_mul _ χ h (Pi.mulSingle i a) y`. Establish `hc` using `(isChar_restrict_conj_one ℂ ℂ _ χ (isChar_of_irr h)).2.1`. Establish `h2 : ∀ k : ∀ i, G i, χ (k * Pi.mulSingle i a * k⁻¹ * y) = χ (Pi.mulSingle i a * y)`. Introduce `k`.
+
+Rewrite using `[← hc (Pi.mulSingle i a * y) (Pi.mulSingle i (k i)⁻¹)]`. Use `congr 1`. Use function extensionality and compare the values at `j`. Distinguish the cases in `hj : j = i`. Substitute `hj` using the available equality.
+
+Simplify using `[hy]`. Simplify using `[Pi.mulSingle_eq_of_ne hj]`. Simplify using `only [h2, finsum_eq_sum_of_fintype, Finset.sum_const, Finset.card_univ, nsmul_eq_mul] at h1`. Rewrite `h1` using `[Nat.card_eq_fintype_card]`. Establish `hN : (Fintype.card (∀ i, G i) : ℂ) ≠ 0` using `Nat.cast_ne_zero.2 Fintype.card_ne_zero`.
+
+Apply `mul_left_cancel₀ hN` to reduce the goal to its premises. Rewrite using `[← h1]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem irr_mulSingle {ι : Type} [Fintype ι] [DecidableEq ι] {G : ι → Type} [∀ i, Group (G i)]
     [∀ i, Finite (G i)] {χ : (∀ i, G i) → ℂ} (h : IsIrrChar ℂ ℂ χ) (i : ι) (a : G i) (y : ∀ i, G i)
     (hy : y i = 1) : χ 1 * χ (Pi.mulSingle i a * y) = χ (Pi.mulSingle i a) * χ y := by
@@ -54,6 +72,17 @@ theorem irr_mulSingle {ι : Type} [Fintype ι] [DecidableEq ι] {G : ι → Type
   rw [← h1]
   ring
 
+/- English proof (translation)
+Take `⟨n, hn, h1⟩` from `irr_one h`. Establish `h0 : χ 1 ≠ 0` using `by rw [h1]; exact_mod_cast hn`. Establish `key : ∀ s : Finset ι, χ (fun j => if j ∈ s then x j else 1) = χ 1 * ∏ i ∈ s, (χ (Pi.mulSingle i (x i)) / χ 1)`. Introduce `s`. Proceed by induction on `s using Finset.induction_on with`.
+
+Consider the case `empty`. Simplify using `only [Finset.notMem_empty, if_false, Finset.prod_empty, mul_one]`. Both sides reduce to the same expression. Consider the case `insert i s hi ih`. Establish `e : (fun j => if j ∈ insert i s then x j else 1) = Pi.mulSingle i (x i) * (fun j => if j ∈ s then x j else 1)`.
+
+Use function extensionality and compare the values at `j`. Distinguish the cases in `hj : j = i`. Substitute `hj` using the available equality. Simplify using `[hi]`. Simplify using `[Pi.mulSingle_eq_of_ne hj, hj]`.
+
+Use `irr_mulSingle h i (x i) (fun j => if j ∈ s then x j else 1) (by simp [hi])` as an intermediate fact. Rewrite using `[e, Finset.prod_insert hi]`. Apply `mul_left_cancel₀ h0` to reduce the goal to its premises. Rewrite using `[this, ih]`. Clear the denominators using the available nonvanishing facts.
+
+Simplify using `using key Finset.univ`.
+-/
 theorem irr_factor {ι : Type} [Fintype ι] [DecidableEq ι] {G : ι → Type} [∀ i, Group (G i)]
     [∀ i, Finite (G i)] {χ : (∀ i, G i) → ℂ} (h : IsIrrChar ℂ ℂ χ) (x : ∀ i, G i) :
     χ x = χ 1 * ∏ i, (χ (Pi.mulSingle i (x i)) / χ 1) := by
@@ -81,6 +110,17 @@ theorem irr_factor {ι : Type} [Fintype ι] [DecidableEq ι] {G : ι → Type} [
       field_simp
   simpa using key Finset.univ
 
+/- English proof (translation)
+Use `Fintype.ofFinite G` as an intermediate fact. Take `⟨c, hc, hφ, -⟩` from `virt_expand G φ h`. Establish `hne : c.support.Nonempty`. Rewrite using `[Finsupp.support_nonempty_iff]`. Introduce and unpack `rfl`.
+
+Rewrite `h1` using `[hφ]`. Simplify using `at h1`. Take `⟨ψ, hψ⟩` from `hne`. Use `⟨ψ, hc ψ hψ, ?_⟩` and prove the remaining obligations. Establish `e : pair φ ψ = ∑ χ ∈ c.support, (c χ : ℂ) * pair χ ψ`.
+
+Rewrite using `[hφ]`. Simplify using `only [pair, finsum_eq_sum_of_fintype, Finsupp.sum, Finset.sum_apply, Pi.smul_apply, zsmul_eq_mul, Finset.sum_mul, Finset.mul_sum]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun _ _ => Finset.sum_congr rfl fun _ _ => ?_` and prove the remaining obligations. Simplify using `only [Pi.mul_apply, Pi.intCast_apply]`.
+
+Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e, Finset.sum_eq_single ψ]`. Rewrite using `[pair_self_of_isIrrChar_algClosed ℂ G ψ (hc ψ hψ), mul_one]`. Conclude with `Finsupp.mem_support_iff.1 hψ` after adjusting the coercions. Introduce `b hb hbψ`.
+
+Rewrite using `[pair_eq_zero_of_isIrrChar_ne G b ψ (hc b hb) (hc ψ hψ) hbψ, mul_zero]`. Introduce `h`. Conclude with `absurd hψ h`.
+-/
 theorem exists_irr_pair_ne {G : Type} [Group G] [Finite G] {φ : G → ℂ} (h : φ ∈ Virt ℂ ℂ G)
     (h1 : φ 1 ≠ 0) : ∃ ψ, IsIrrChar ℂ ℂ ψ ∧ pair φ ψ ≠ 0 := by
   classical
@@ -109,6 +149,11 @@ theorem exists_irr_pair_ne {G : Type} [Group G] [Finite G] {φ : G → ℂ} (h :
   · intro h
     exact absurd hψ h
 
+/- English proof (translation)
+Establish `key : ∀ s : Finset ι, (fun x : ∀ i, G i => ∏ i ∈ s, ψ i (x i)) ∈ Virt ℂ ℂ (∀ i, G i)`. Introduce `s`. Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => exact AddSubgroup.subset_closure (by simpa using isChar_one ℂ ℂ (∀ i, G i))`. Consider the case `insert i s hi ih`.
+
+Simplify using `only [Finset.prod_insert hi]`. Conclude with `(virt_mul_comap_conj_ind_linear (∀ i, G i)).1 _ ((virt_mul_comap_conj_ind_linear (G i)).2.1 _ (h i) _ (Pi.evalMonoidHom G i)) _ ih`. Conclude with `key _`.
+-/
 theorem prod_mem_virt {ι : Type} [Fintype ι] {G : ι → Type} [∀ i, Group (G i)]
     [∀ i, Finite (G i)] (ψ : ∀ i, G i → ℂ) (h : ∀ i, ψ i ∈ Virt ℂ ℂ (G i)) :
     (fun x : ∀ i, G i => ∏ i, ψ i (x i)) ∈ Virt ℂ ℂ (∀ i, G i) := by
@@ -128,6 +173,27 @@ end GlobalTheory.IrrPi
 namespace GlobalTheory
 open IrrPi
 
+/- English proof (translation)
+Introduce `ι _ G _ _ χ h`. Take `⟨n, hn, h1⟩` from `irr_one h`. Establish `h0 : χ 1 ≠ 0` using `by rw [h1]; exact_mod_cast hn`. Establish `hφ : ∀ i, ∃ ψ, IsIrrChar ℂ ℂ ψ ∧ pair (fun a : G i => χ (Pi.mulSingle i a)) ψ ≠ 0`. Introduce `i`.
+
+Use `exists_irr_pair_ne (AddSubgroup.subset_closure ((isChar_restrict_conj_one ℂ ℂ _ χ (isChar_of_irr h)).1 _ (MonoidHom.mulSingle G i))) ?_` and prove the remaining obligations. Simplify using `using h0`. Use `choose ψ hψ hp using hφ`. Use `⟨ψ, hψ, ?_⟩` and prove the remaining obligations. Establish `hV` using `prod_mem_virt ψ fun i => AddSubgroup.subset_closure (isChar_of_irr (hψ i))`.
+
+Use `set Ψ : (∀ i, G i) → ℂ := fun x => ∏ i, ψ i (x i) with hΨ`. Establish `hN : (Nat.card (∀ i, G i) : ℂ) ≠ 0` using `Nat.cast_ne_zero.2 Nat.card_pos.ne'`. Establish `hnorm : ∑ᶠ g, Ψ g * star (Ψ g) = (Nat.card (∀ i, G i) : ℂ)`. Establish `: pair Ψ Ψ = 1`. Rewrite using `[hΨ, pair_prod]`.
+
+Conclude with `Finset.prod_eq_one fun i _ => pair_self_of_isIrrChar_algClosed ℂ _ _ (hψ i)`. Simplify using `only [star_virt_eq_inv _ Ψ hV]`. Unfold `pair at this`. Clear denominators, using `at this` for the nonvanishing conditions. Conclude with `this`.
+
+Establish `hpair : pair χ Ψ ≠ 0`. Establish `e : pair χ Ψ = χ 1 * pair (fun x : ∀ i, G i => ∏ i, χ (Pi.mulSingle i (x i)) / χ 1) Ψ`. Unfold `pair`. Use `Fintype.ofFinite (∀ i, G i)` as an intermediate fact. Simplify using `only [finsum_eq_sum_of_fintype, Finset.mul_sum]`.
+
+Use `Finset.sum_congr rfl fun x _ => ?_` and prove the remaining obligations. Rewrite using `[irr_factor h x]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e, hΨ, pair_prod (fun i (a : G i) => χ (Pi.mulSingle i a) / χ 1) ψ]`. Use `mul_ne_zero h0 (Finset.prod_ne_zero_iff.2 fun i _ => ?_)` and prove the remaining obligations.
+
+Establish `e2 : pair (fun a => χ (Pi.mulSingle i a) / χ 1) (ψ i) = pair (fun a : G i => χ (Pi.mulSingle i a)) (ψ i) / χ 1`. Unfold `pair`. Use `Fintype.ofFinite (G i)` as an intermediate fact. Simplify using `only [finsum_eq_sum_of_fintype, Finset.mul_sum, Finset.sum_div]`. Use `Finset.sum_congr rfl fun x _ => ?_` and prove the remaining obligations.
+
+Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e2]`. Conclude with `div_ne_zero (hp i) h0`. Break down `(irr_of_norm_one _ Ψ hV hnorm).1 with hI | hI` into its components or cases. Assume the negation of the conclusion as `hne`.
+
+Conclude with `hpair (pair_eq_zero_of_isIrrChar_ne _ χ Ψ h hI fun e => hne fun x => congrFun e x)`. Use `exfalso choose m hm hm1 using fun i => irr_one (hψ i)`. Take `⟨k, hk, hk1⟩` from `irr_one hI`. Establish `: ((k + ∏ i, m i : ℕ) : ℂ) = 0`. Use `push_cast`.
+
+Rewrite using `[← hk1]`. Simplify using `[hΨ, hm1]`. Establish `: k + ∏ i, m i = 0` using `by exact_mod_cast this`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem irrChar_pi_eq_prod : ∀ (ι : Type) [Fintype ι] (G : ι → Type) [∀ i, Group (G i)] [∀ i, Finite (G i)] (χ : (∀ i, G i) → ℂ), IsIrrChar ℂ ℂ χ → ∃ ψ : ∀ i, G i → ℂ, (∀ i, IsIrrChar ℂ ℂ (ψ i)) ∧ ∀ x, χ x = ∏ i, ψ i (x i) := by
   intro ι _ G _ _ χ h
   classical

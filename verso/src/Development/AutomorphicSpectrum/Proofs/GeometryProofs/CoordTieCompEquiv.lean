@@ -40,6 +40,13 @@ def IsTwistGen {X : Scheme.{0}} (ξ : Spec (CommRingCat.of Ω) ⟶ X) {κ : Type
   ∀ (p : Cpt ξ) c, InChart ξ x c p → ∀ w : Module.Dual Ω E, (∀ e ∈ L p, w e ∈ regAt ξ p) →
     ∃ g : Fin n → Ω, (∀ j, g j ∈ regAt ξ p) ∧ ∀ e ∈ L p, w e = ∑ j, g j * (φ j e / x c ^ m)
 
+/- English proof (translation)
+Establish `hch : ∀ c p, InChart ξ (x ∘ e) c p ↔ InChart ξ x (e c) p`. Introduce `c p`. Simplify using `only [InChart, Function.comp]`. Conclude with `and_congr Iff.rfl ⟨fun h c' => by simpa using h (e.symm c'), fun h c' => h (e c')⟩`. Establish `hr : ∀ c, Set.range (fun j => (x ∘ e) j / (x ∘ e) c) = Set.range (fun j => x j / x (e c))`.
+
+Introduce `c`. Use extensionality with `a`. Conclude with `⟨fun ⟨j, hj⟩ => ⟨e j, hj⟩, fun ⟨j, hj⟩ => ⟨e.symm j, by simpa using hj⟩⟩`. Use `⟨h.gen, fun p => ?_, fun c hc => ?_, fun c hc a => ?_⟩` and prove the remaining obligations. Take `⟨c, hc⟩` from `h.cover p`.
+
+Conclude with `⟨e.symm c, (hch _ p).2 (by simpa using hc)⟩`. Take `⟨U, hU, hq⟩` from `h.affine (e c) hc`. Conclude with `⟨U, hU, fun q => by rw [hq q]; exact exists_congr fun h' => (hch c _).symm⟩`. Rewrite using `[hr c, h.ring (e c) hc a]`. Conclude with `forall_congr' fun p => imp_congr (hch c p).symm Iff.rfl`.
+-/
 theorem coordTie_comp_equiv {X : Scheme.{0}} {Ω : Type} [Field Ω] {ξ : Spec (CommRingCat.of Ω) ⟶ X} {o : Type}
     [CommRing o] [Algebra o Ω] {κ κ' : Type} {x : κ → Ω} (h : CoordTie o ξ x) (e : κ' ≃ κ) :
     CoordTie o ξ (x ∘ e) := by

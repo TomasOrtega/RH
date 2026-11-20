@@ -15,6 +15,19 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 open GlobalTheory.RowEx MeasureTheory
 noncomputable section
 namespace GlobalTheory.MovedAlg
+/- English proof (translation)
+Introduce `D T _ L μ₀ sc G W i j A A' WW X hP hI hL hX t x hx h hh u hu`. Establish `hψ : ∀ u v : WO (GlobalTheory.Grid.neg A) WW, u.map (infPart D) = 0 → v.map (infPart D) = 0 → IsAlgebraic ℚ (W.ψ (symplOH (GlobalTheory.Grid.neg A) WW u v))` using `fun u v hu hv => GlobalTheory.T.isAlgebraic_stdChar_halfSymplectic_realPart_zero hX.is.isVac.1 _ _ u v hu hv`. Take `⟨N, hN, hlev⟩` from `_root_.GlobalTheory.T.vacuum_vector_at_level_mem_fockAlgebraic hP hI hL hX t`. Take `⟨γ, hγ, a, ha, s, hs, k, hk, hx', hkc, hss⟩` from `GlobalTheory.UnRep.Space.exists_rep_suppSplit D A N hN x`. Take `⟨γ', hγ', a', ha', s', hs', k', hk', hh', hkc', hss'⟩` from `GlobalTheory.UnRep.Space.exists_rep_suppSplit D WW N hN h`.
+
+Establish `hga : γ * a ∈ GfC A`. Establish `e : γ * a = x * k⁻¹ * s⁻¹` using `by rw [hx']; group`. Rewrite using `[e]`. Conclude with `mul_mem (mul_mem hx (inv_mem hk)) (inv_mem hs)`. Establish `hga' : γ' * a' ∈ GfC WW`.
+
+Establish `e : γ' * a' = h * k'⁻¹ * s'⁻¹` using `by rw [hh']; group`. Rewrite using `[e]`. Conclude with `mul_mem (mul_mem hh (inv_mem hk')) (inv_mem hs')`. Establish `hpair : ((x, h) : GA D A × GA D WW) = (γ * a, γ' * a') * ((s, s') * (k, k'))`. Rewrite using `[hx', hh']`.
+
+Simplify using `only [Prod.mk_mul_mk, mul_assoc]`. Take `⟨ζ, hζ, hkv⟩` from `hlev k hk k' hk' hkc hkc'`. Establish `h1 : IsAlgComb W.ψ (GlobalTheory.Grid.neg A) WW X.vac (X.ω t (s, s') X.vac)` using `_root_.GlobalTheory.T.moved_support_theta_algebraic hP hI hL hX t N hN s hs s' hs' hss hss'`. Establish `h2 : IsAlgComb W.ψ (GlobalTheory.Grid.neg A) WW X.vac (X.ω t ((s, s') * (k, k')) X.vac)`. Rewrite using `[map_mul, Module.End.mul_apply, hkv, map_smul]`.
+
+Conclude with `h1.smul hζ`. Establish `h3 : IsAlgComb W.ψ (GlobalTheory.Grid.neg A) WW X.vac (X.ω t (γ * a, γ' * a') X.vac)` using `_root_.GlobalTheory.T.exists_rat_real_algebraic_combination_twist hP hI hL hX t γ hγ a ha γ' hγ' a' ha' hga hga'`. Establish `h4 : IsAlgComb W.ψ (GlobalTheory.Grid.neg A) WW X.vac (X.ω t (x, h) X.vac)`. Rewrite using `[hpair, map_mul, Module.End.mul_apply]`. Conclude with `om_algComb hX hψ t _ _ h3 h2`.
+
+Establish `h5 : IsAlgComb W.ψ (GlobalTheory.Grid.neg A) WW X.vac (heisO W.ψ (GlobalTheory.Grid.neg A) WW u X.vac)` using `⟨1, fun _ => 1, fun _ => u, fun _ => isAlgebraic_one, fun _ => hu, by simp⟩`. Conclude with `om_algComb hX hψ t x h h4 h5`.
+-/
 theorem moved_translate_eq_algebraic_combination : ∀ {D : D7} {T : Type} [Finite T] {L : LevCh D T} {μ₀ : T} {sc : Consts} {G : GridData L sc} {W : G.Weil}
     {i j : Fin D.R.m} {A A' WW : HSp D} {X : Tri T A A' WW}, _root_.GlobalTheory.FunPr.ThetaLocalInputs → (∀ D, GlobalTheory.NormSum.Inp D) → L.Is μ₀ →
     IsBottomTri W i j X →
@@ -66,6 +79,9 @@ open GlobalTheory.IndefiniteRowSideFullHecke.UnitCharTriangle (Tri)
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 open GlobalTheory.RowEx MeasureTheory
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @_root_.GlobalTheory.MovedAlg.moved_translate_eq_algebraic_combination | exact _root_.GlobalTheory.MovedAlg.moved_translate_eq_algebraic_combination | (intros; apply _root_.GlobalTheory.MovedAlg.moved_translate_eq_algebraic_combination <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.twisted_moved_translate_algebraic : ∀ {D : D7} {T : Type} [Finite T] {L : LevCh D T} {μ₀ : T} {sc : Consts} {G : GridData L sc} {W : G.Weil}
     {i j : Fin D.R.m} {A A' WW : HSp D} {X : Tri T A A' WW}, _root_.GlobalTheory.FunPr.ThetaLocalInputs → (∀ D, GlobalTheory.NormSum.Inp D) → L.Is μ₀ →
     IsBottomTri W i j X →

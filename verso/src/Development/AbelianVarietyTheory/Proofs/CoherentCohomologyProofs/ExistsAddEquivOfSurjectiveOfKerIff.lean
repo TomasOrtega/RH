@@ -4,6 +4,13 @@ namespace GlobalTheory.AddEquivOfSurjectiveKernel
 
 universe u_1 u_2 u_3
 
+/- English proof (translation)
+Establish `key : ∀ a b : A, f a = f b ↔ g a = g b`. Introduce `a b`. Rewrite using `[← sub_eq_zero, ← map_sub, h, map_sub, sub_eq_zero]`. Use `choose s hs using hf`. Use `choose t ht using hg`.
+
+Establish `h1 : ∀ a, g (s (f a)) = g a` using `fun a => (key _ _).1 (hs _)`. Establish `h2 : ∀ a, f (t (g a)) = f a` using `fun a => (key _ _).2 (ht _)`. Use `⟨{ toFun := fun b => g (s b) invFun := fun c => f (t c) left_inv := fun b => by show f (t (g (s b))) = b` and prove the remaining obligations. Rewrite using `[h2, hs]`. Use `right_inv := fun c => by show g (s (f (t c))) = c`.
+
+Rewrite using `[h1, ht]`. Use the proof step `map_add' := fun x y => by show g (s (x + y)) = g (s x) + g (s y)`. Rewrite using `[← map_add, ← key, map_add, hs, hs, hs] }, fun a => h1 a⟩`.
+-/
 theorem exists_addEquiv_of_surjective_of_ker_iff {A : Type u_1} {B : Type u_2} {C : Type u_3}
     [AddCommGroup A] [AddCommGroup B] [AddCommGroup C] (f : A →+ B) (g : A →+ C)
     (hf : Function.Surjective f) (hg : Function.Surjective g)

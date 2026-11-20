@@ -7,6 +7,13 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.HeightAndVanishing
 
 open NumberField IsDedekindDomain Formalism.ConjugateSelfDual ReciprocityTheory.Gal IsLocalRing UpperTheory.V UpperTheory.V.Base UpperTheory.V.Alg UpperTheory.V.HV UpperTheory.V.GradeZeroInterpolatingElement
 
+/- English proof (translation)
+Break down `Nat.lt_or_ge 1 m with h1 | h1` into its components or cases. Establish `hk : 0 < Nat.clog 2 m` using `Nat.clog_pos (by norm_num) h1`. Establish `hlt` using `Nat.pow_pred_clog_lt_self (by norm_num : 1 < 2) h1`. Take `⟨k, hk'⟩ : ∃ k, Nat.clog 2 m = k + 1` from `⟨Nat.clog 2 m - 1, by omega⟩`. Rewrite `hlt`, the goal using `[hk']`.
+
+Simplify using `only [Nat.pred_eq_sub_one, Nat.add_sub_cancel] at hlt`. Rewrite using `[pow_succ]`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `: m = 1` using `by omega`. Substitute `this` using the available equality.
+
+Simplify using the standard rewrite rules.
+-/
 private theorem two_pow_clog_le (m : ℕ) (hm : 1 ≤ m) : 2 ^ Nat.clog 2 m ≤ 2 * m := by
   rcases Nat.lt_or_ge 1 m with h1 | h1
   · have hk : 0 < Nat.clog 2 m := Nat.clog_pos (by norm_num) h1
@@ -20,6 +27,19 @@ private theorem two_pow_clog_le (m : ℕ) (hm : 1 ≤ m) : 2 ^ Nat.clog 2 m ≤ 
     subst this
     simp
 
+/- English proof (translation)
+Establish `hX1 : 1 ≤ X` using `by omega`. Establish `hX2 : 2 ≤ X` using `by omega`. Establish `hmono : ∀ {i j : ℕ}, i ≤ j → X ^ i ≤ X ^ j` using `fun h => Nat.pow_le_pow_right hX1 h`. Establish `mlp : ∀ {a b i j : ℕ}, a ≤ X ^ i → b ≤ X ^ j → a * b ≤ X ^ (i + j)`. Introduce `a b i j ha hb`.
+
+Rewrite using `[pow_add]`. Conclude with `Nat.mul_le_mul ha hb`. Establish `h4 : 4 ^ n ≤ X ^ (f * 2)`. Establish `e4 : (4 : ℕ) ^ n = (2 ^ n) ^ 2`. Rewrite using `[← pow_mul, mul_comm, pow_mul]`.
+
+Evaluate the numerical expressions. Rewrite using `[e4, pow_mul]`. Conclude with `Nat.pow_le_pow_left (hn.trans (Nat.pow_le_pow_left hl f)) 2`. Establish `hA1 : l * N * 4 ^ n ≤ X ^ (1 + 1 + f * 2)` using `mlp (mlp (hl.trans (pow_one X).ge) (hN.trans (pow_one X).ge)) h4`. Establish `hB : 2 ^ c * o * l ^ 3 * q ^ 2 ≤ X ^ (1 + 1 + 3 + 2)` using `mlp (mlp (mlp (hc.trans (pow_one X).ge) (ho.trans (pow_one X).ge)) (Nat.pow_le_pow_left hl 3)) (Nat.pow_le_pow_left hq 2)`.
+
+Establish `hA2 : 2 ^ (c + 6) * o * l ^ 3 * q ^ 2 ≤ 64 * X ^ (1 + 1 + 3 + 2)`. Combine the equalities or inequalities in the displayed calculation. Establish `hpos : 1 ≤ l * N * 4 ^ n` using `Nat.one_le_iff_ne_zero.mpr (by positivity)`. Establish `hmax1 : 1 ≤ max (l * N * 4 ^ n) (2 ^ (c + 6) * o * l ^ 3 * q ^ 2)` using `hpos.trans (le_max_left _ _)`. Establish `k1 : 2 * (l * N * 4 ^ n) ≤ X ^ (2 * f + 10)`.
+
+Combine the equalities or inequalities in the displayed calculation. Establish `h128 : 128 ≤ X ^ 2` using `by nlinarith`. Establish `k2 : 2 * (2 ^ (c + 6) * o * l ^ 3 * q ^ 2) ≤ X ^ (2 * f + 10)`. Combine the equalities or inequalities in the displayed calculation. Combine the equalities or inequalities in the displayed calculation.
+
+Apply the tactic sequence `rcases max_choice (l * N * 4 ^ n) (2 ^ (c + 6) * o * l ^ 3 * q ^ 2) with h | h <;> rw [h] <;> assumption`.
+-/
 private theorem nII_le (X l N o q c n f : ℕ) (hX : 16 ≤ X) (hl : l ≤ X) (hN : N ≤ X) (ho : o ≤ X) (hq : q ≤ X)
     (hc : 2 ^ c ≤ X) (hn : 2 ^ n ≤ l ^ f) (hl0 : 0 < l) (hN0 : 0 < N) :
     2 ^ Nat.clog 2 (max (l * N * 4 ^ n) (2 ^ (c + 6) * o * l ^ 3 * q ^ 2)) ≤ X ^ (2 * f + 10) := by
@@ -62,13 +82,28 @@ private theorem nII_le (X l N o q c n f : ℕ) (hX : 16 ≤ X) (hl : l ≤ X) (h
     _ ≤ X ^ (2 * f + 10) := by
       rcases max_choice (l * N * 4 ^ n) (2 ^ (c + 6) * o * l ^ 3 * q ^ 2) with h | h <;> rw [h] <;> assumption
 
+/- English proof (translation)
+Combine the equalities or inequalities in the displayed calculation.
+-/
 private theorem le_pow_self' {X : ℕ} (hX : 2 ≤ X) (k : ℕ) : k ≤ X ^ k := by
   calc k ≤ 2 ^ k := Nat.lt_two_pow_self.le
     _ ≤ X ^ k := Nat.pow_le_pow_left hX k
 
+/- English proof (translation)
+Rewrite using `[pow_add]`. Conclude with `Nat.mul_le_mul ha hb`.
+-/
 private theorem mul_le_pow' {X a b i j : ℕ} (ha : a ≤ X ^ i) (hb : b ≤ X ^ j) : a * b ≤ X ^ (i + j) := by
   rw [pow_add]; exact Nat.mul_le_mul ha hb
 
+/- English proof (translation)
+Establish `hX1 : 1 ≤ X` using `by omega`. Establish `hmono : ∀ {i j : ℕ}, i ≤ j → X ^ i ≤ X ^ j` using `fun h => Nat.pow_le_pow_right hX1 h`. Establish `h4 : 4 ^ n ≤ X ^ (f * 2)`. Establish `e4 : (4 : ℕ) ^ n = (2 ^ n) ^ 2`. Rewrite using `[← pow_mul, mul_comm, pow_mul]`.
+
+Evaluate the numerical expressions. Rewrite using `[e4, pow_mul]`. Conclude with `Nat.pow_le_pow_left (hn.le.trans (Nat.pow_le_pow_left hl f)) 2`. Establish `hA1 : l * q * P * 4 ^ n ≤ X ^ (1 + q + P + f * 2)` using `mul_le_pow' (mul_le_pow' (mul_le_pow' (hl.trans (pow_one X).ge) (le_pow_self' hX q)) (le_pow_self' hX P)) h4`. Establish `h8 : 8 ≤ X ^ 3`.
+
+Combine the equalities or inequalities in the displayed calculation. Establish `hA2 : 8 * l ^ 2 ≤ X ^ (3 + 2)` using `mul_le_pow' h8 (Nat.pow_le_pow_left hl 2)`. Establish `hmax1 : 1 ≤ max (l * q * P * 4 ^ n) (8 * l ^ 2)` using `(Nat.one_le_iff_ne_zero.mpr (by positivity)).trans (le_max_right _ _)`. Establish `k1 : 2 * (l * q * P * 4 ^ n) ≤ X ^ (1 + (10 + q + P + 2 * f))`. Combine the equalities or inequalities in the displayed calculation.
+
+Establish `k2 : 2 * (8 * l ^ 2) ≤ X ^ (1 + (10 + q + P + 2 * f))`. Combine the equalities or inequalities in the displayed calculation. Combine the equalities or inequalities in the displayed calculation. Apply the tactic sequence `rcases max_choice (l * q * P * 4 ^ n) (8 * l ^ 2) with h | h <;> rw [h] <;> assumption`.
+-/
 private theorem two_pow_nIII_le {X l q P n f : ℕ} (hX : 2 ≤ X) (hl : l ≤ X) (hl0 : 0 < l) (hn : 2 ^ n < l ^ f) :
     2 ^ Nat.clog 2 (max (l * q * P * 4 ^ n) (8 * l ^ 2)) ≤ X ^ (1 + (10 + q + P + 2 * f)) := by
   have hX1 : 1 ≤ X := by omega
@@ -101,11 +136,33 @@ private theorem two_pow_nIII_le {X l q P n f : ℕ} (hX : 2 ≤ X) (hl : l ≤ X
     _ ≤ X ^ (1 + (10 + q + P + 2 * f)) := by
       rcases max_choice (l * q * P * 4 ^ n) (8 * l ^ 2) with h | h <;> rw [h] <;> assumption
 
+/- English proof (translation)
+Break down `Nat.eq_zero_or_pos m with rfl | hm` into its components or cases. Simplify using `[pZero]`. Conclude with `(pZeroLe m hm).2.2.2`.
+-/
 private theorem pZero_le' (m : ℕ) : pZero m ≤ 2 * m + 10 := by
   rcases Nat.eq_zero_or_pos m with rfl | hm
   · simp [pZero]
   · exact (pZeroLe m hm).2.2.2
 
+/- English proof (translation)
+Take `⟨X, hXdef⟩ : ∃ X, X = l * N * e` from `⟨_, rfl⟩`. Rewrite `hn` using `[← hXdef]`. Establish `hNe : 1 ≤ N * e` using `Nat.one_le_iff_ne_zero.mpr (Nat.mul_ne_zero (by omega) (by omega))`. Establish `hle : 1 ≤ l * e` using `Nat.one_le_iff_ne_zero.mpr (Nat.mul_ne_zero (by omega) (by omega))`. Establish `hlN : 1 ≤ l * N` using `Nat.one_le_iff_ne_zero.mpr (Nat.mul_ne_zero (by omega) (by omega))`.
+
+Establish `hlX : l ≤ X`. Combine the equalities or inequalities in the displayed calculation. Establish `hNX : N ≤ X`. Combine the equalities or inequalities in the displayed calculation. Establish `heX : e ≤ X`.
+
+Combine the equalities or inequalities in the displayed calculation. Establish `hX2 : 2 ≤ X` using `hl.trans hlX`. Establish `hX1 : 1 ≤ X` using `by omega`. Establish `hmono : ∀ {i j : ℕ}, i ≤ j → X ^ i ≤ X ^ j` using `fun h => Nat.pow_le_pow_right hX1 h`. Establish `hPB : P ≤ X ^ B` using `hP.trans (le_pow_self' hX2 B)`.
+
+Establish `b1 : 2 * C ≤ X ^ (2 * C)` using `le_pow_self' hX2 _`. Establish `b2 : (l - 1) * 2 ^ n * (2 * o) ≤ X ^ (1 + a + 2 * o)` using `mul_le_pow' (mul_le_pow' (((Nat.sub_le l 1).trans hlX).trans (pow_one X).ge) hn) (le_pow_self' hX2 _)`. Establish `he1 : e + 1 ≤ X ^ 2` using `by nlinarith`. Establish `b3 : l * 2 ^ n * N * P * (e + 1) ≤ X ^ (1 + a + 1 + B + 2)` using `mul_le_pow' (mul_le_pow' (mul_le_pow' (mul_le_pow' (hlX.trans (pow_one X).ge) hn) (hNX.trans (pow_one X).ge)) hPB) he1`. Establish `hy : l * N * P ≤ X ^ (1 + 1 + B)` using `mul_le_pow' (mul_le_pow' (hlX.trans (pow_one X).ge) (hNX.trans (pow_one X).ge)) hPB`.
+
+Establish `hy1 : 1 ≤ X ^ (1 + 1 + B)` using `Nat.one_le_pow _ _ (by omega)`. Establish `h16 : 16 ≤ X ^ 4`. Combine the equalities or inequalities in the displayed calculation. Establish `b4 : pZero (l * N * P) ≤ X ^ (2 + (1 + 1 + B) + 10 + 1)`. Combine the equalities or inequalities in the displayed calculation.
+
+Establish `hXr : ((l : ℝ) * N * e) = (X : ℝ)` using `by rw [hXdef]; push_cast; ring`. Rewrite using `[hXr]`. Establish `c1 : 2 * (C : ℝ) ≤ (X : ℝ) ^ (2 * C)` using `by exact_mod_cast b1`. Establish `c2 : (((l - 1) * 2 ^ n * (2 * o) : ℕ) : ℝ) ≤ (X : ℝ) ^ (1 + a + 2 * o)` using `by exact_mod_cast b2`. Establish `c3 : (((l * 2 ^ n * N * P : ℕ) : ℝ) * (e + 1)) ≤ (X : ℝ) ^ (1 + a + 1 + B + 2)`.
+
+Establish `: (((l * 2 ^ n * N * P * (e + 1) : ℕ) : ℝ)) ≤ (X : ℝ) ^ (1 + a + 1 + B + 2)` using `by exact_mod_cast b3`. Simplify using `using this`. Establish `hlog0 : 0 ≤ Real.log (pZero (l * N * P))` using `Real.log_natCast_nonneg _`. Establish `c4 : Real.log (pZero (l * N * P)) ≤ (X : ℝ) ^ (2 + (1 + 1 + B) + 10 + 1)`. Establish `hb4 : ((pZero (l * N * P) : ℕ) : ℝ) ≤ (X : ℝ) ^ (2 + (1 + 1 + B) + 10 + 1)` using `by exact_mod_cast b4`.
+
+Conclude with `(Real.log_le_self (Nat.cast_nonneg _)).trans hb4`. Establish `hY0 : 0 ≤ (((l * 2 ^ n * N * P : ℕ) : ℝ) * (e + 1))` using `by positivity`. Establish `s1` using `mul_le_mul c1 c2 (by positivity) (by positivity)`. Establish `s2` using `mul_le_mul s1 (pow_le_pow_left₀ hY0 c3 A) (by positivity) (by positivity)`. Establish `s3` using `mul_le_mul s2 c4 hlog0 (by positivity)`.
+
+Use `s3.trans (le_of_eq ?_)` and prove the remaining obligations. Rewrite using `[← pow_mul, ← pow_add, ← pow_add, ← pow_add]`.
+-/
 private theorem final_le (C A a B o l n N P e : ℕ) (hl : 2 ≤ l) (hN : 0 < N) (he : 0 < e) (hP : P ≤ B)
     (hn : 2 ^ n ≤ (l * N * e) ^ a) :
     (2 * C * ((l - 1) * 2 ^ n * (2 * o) : ℕ) * (((l * 2 ^ n * N * P : ℕ) : ℝ) * (e + 1)) ^ A *
@@ -169,6 +226,23 @@ private theorem final_le (C A a B o l n N P e : ℕ) (hl : 2 ≤ l) (hN : 0 < N)
   refine s3.trans (le_of_eq ?_)
   rw [← pow_mul, ← pow_add, ← pow_add, ← pow_add]
 
+/- English proof (translation)
+Introduce `χ C A`. Take `⟨a, ha⟩ : ∃ a : ℕ, a = (2 * (4 * ordC χ).totient + 10) + (1 + (10 + χ.N + pOne χ + 2 * (4 * ordC χ).totient))` from `⟨_, rfl⟩`. Use `⟨2 * C + (1 + a + 2 * ordC χ) + (1 + a + 1 + (1 + pOne χ) + 2) * A + (2 + (1 + 1 + (1 + pOne χ)) + 10 + 1), ?_⟩` and prove the remaining obligations. Introduce `h hχ`. Substitute `hχ` using the available equality.
+
+Introduce `l _ c e hl2 he ψ hψ n' p₁ hcase`. Establish `pl : l.Prime` using `Fact.out`. Establish `hl : 2 ≤ l` using `pl.two_le`. Establish `hN0` using `h.N_pos`. Establish `hchar` using `((Host.mem_X h).1 hψ).1`.
+
+Take `⟨-, -, hn0, -, -⟩` from `cmDatum_char_two_adic_order_bounds h c.O ψ hchar l pl hl2`. Establish `hidx` using `hostIndex h`. Establish `hNe : 1 ≤ h.N * e` using `Nat.one_le_iff_ne_zero.mpr (Nat.mul_ne_zero (by omega) (by omega))`. Establish `hle : 1 ≤ l * e` using `Nat.one_le_iff_ne_zero.mpr (Nat.mul_ne_zero (by omega) (by omega))`. Establish `hlX : l ≤ l * h.N * e`.
+
+Combine the equalities or inequalities in the displayed calculation. Establish `hNX : h.N ≤ l * h.N * e`. Combine the equalities or inequalities in the displayed calculation. Establish `h16 : 16 ≤ h.N` using `Nat.le_of_dvd hN0 hidx.2.2.1`. Establish `hX16 : 16 ≤ l * h.N * e` using `h16.trans hNX`.
+
+Establish `hX1 : 1 ≤ l * h.N * e` using `by omega`. Establish `hX2 : 2 ≤ l * h.N * e` using `by omega`. Establish `hqN : h.q ≤ h.N` using `Nat.le_of_dvd hN0 h.q_dvd`. Establish `hoq : h.o ≤ h.q` using `hidx.2.2.2.2.1`. Establish `hcN : 2 ^ c2 ψ ≤ h.N` using `Nat.le_of_dvd hN0 (compCond c.O h.N ψ 2 Nat.prime_two).2.2.2.2.1`.
+
+Establish `hP : p₁ ≤ 1 + pOne h.chi`. Apply the tactic sequence `rcases hcase with ⟨_, rfl⟩ | ⟨_, rfl⟩ <;> omega`. Establish `hn : 2 ^ n' ≤ (l * h.N * e) ^ a`. Rewrite using `[ha]`. Break down `hcase with ⟨rfl, _⟩ | ⟨rfl, _⟩` into its components or cases.
+
+Establish `key` using `nII_le (l * h.N * e) l h.N h.o h.q (c2 ψ) (n0 l ψ) (4 * h.o).totient hX16 hlX hNX ((hoq.trans hqN).trans hNX) (hqN.trans hNX) (hcN.trans hNX) hn0.le (by omega) hN0`. Unfold `Host.nII`. Conclude with `key.trans (Nat.pow_le_pow_right hX1 (Nat.le_add_right _ _))`. Establish `key` using `two_pow_nIII_le (X := l * h.N * e) (q := h.q) (P := pOne h.chi) (f := (4 * h.o).totient) hX2 hlX (by omega) hn0`. Unfold `Host.nIII`.
+
+Conclude with `key.trans (Nat.pow_le_pow_right hX1 (Nat.le_add_left _ _))`. Conclude with `final_le C A a (1 + pOne h.chi) h.o l n' h.N p₁ e hl hN0 (by omega) hP hn`.
+-/
 theorem UpperTheory.V.GradeZeroInterpolatingElement.arith :
     ∀ (χ : Formalism.HC.PChar) (C A : ℕ), ∃ C' : ℕ, ∀ h : Host, h.chi = χ → ∀ (l : ℕ) [Fact l.Prime] (c : Coef l) (e : ℕ), l ≠ 2 → 2 ≤ e → ∀ ψ ∈ h.X c e, ∀ n' p₁ : ℕ, (n' = h.nII l ψ ∧ p₁ = 1) ∨ (n' = h.nIII l ψ ∧ p₁ = UpperTheory.V.pOne χ) → (2 * C * ((l - 1) * 2 ^ n' * (2 * h.o) : ℕ) * (((l * 2 ^ n' * h.N * p₁ : ℕ) : ℝ) * (e + 1)) ^ A * Real.log (pZero (l * h.N * p₁)) : ℝ) ≤ ((l : ℝ) * h.N * e) ^ C' := by
   intro χ C A

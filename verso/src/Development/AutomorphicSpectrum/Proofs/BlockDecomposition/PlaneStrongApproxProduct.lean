@@ -16,8 +16,16 @@ variable {R : Type} [CommRing R] {n : Type} [Fintype n] [DecidableEq n]
 
 def trunc (d : R) (A : Matrix n n R) : Matrix n n R := 1 + d • (A - 1)
 
+/- English proof (translation)
+Simplify using `[trunc]`.
+-/
 theorem trunc_one (d : R) : trunc d (1 : Matrix n n R) = 1 := by simp [trunc]
 
+/- English proof (translation)
+Establish `h : (d • (A - 1)) * (d • (B - 1)) = d • ((A - 1) * (B - 1))`. Rewrite using `[Matrix.smul_mul, Matrix.mul_smul, smul_smul, hd]`. Unfold `trunc`. Rewrite using `[Matrix.add_mul, Matrix.mul_add, Matrix.mul_add, h]`. Simplify using `only [Matrix.one_mul, Matrix.mul_one, Matrix.sub_mul, Matrix.mul_sub, smul_sub, smul_add]`.
+
+Normalize the expressions using the abelian group laws.
+-/
 theorem trunc_mul {d : R} (hd : d * d = d) (A B : Matrix n n R) :
     trunc d A * trunc d B = trunc d (A * B) := by
   have h : (d • (A - 1)) * (d • (B - 1)) = d • ((A - 1) * (B - 1)) := by
@@ -27,6 +35,13 @@ theorem trunc_mul {d : R} (hd : d * d = d) (A B : Matrix n n R) :
   simp only [Matrix.one_mul, Matrix.mul_one, Matrix.sub_mul, Matrix.mul_sub, smul_sub, smul_add]
   abel
 
+/- English proof (translation)
+Set `I : Ideal R` to `LinearMap.ker (LinearMap.mulLeft R d)`. Establish `hI : ∀ x y : R, d * x = d * y → Ideal.Quotient.mk I x = Ideal.Quotient.mk I y`. Introduce `x y hxy`. Use `Ideal.Quotient.eq.2 ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `d * (x - y) = 0`.
+
+Rewrite using `[mul_sub, hxy, sub_self]`. Establish `hmap : (Ideal.Quotient.mk I).mapMatrix A = (Ideal.Quotient.mk I).mapMatrix B`. Use extensionality with `i j`. Conclude with `hI _ _ (h i j)`. Establish `h2 : Ideal.Quotient.mk I A.det = Ideal.Quotient.mk I B.det`.
+
+Rewrite using `[RingHom.map_det, RingHom.map_det, hmap]`. Establish `h3 : A.det - B.det ∈ I` using `Ideal.Quotient.eq.1 h2`. Establish `h4 : d * (A.det - B.det) = 0` using `h3`. Rewrite `h4` using `[mul_sub]`. Conclude with `sub_eq_zero.1 h4`.
+-/
 theorem mul_det_congr (d : R) {A B : Matrix n n R} (h : ∀ i j, d * A i j = d * B i j) :
     d * A.det = d * B.det := by
   let I : Ideal R := LinearMap.ker (LinearMap.mulLeft R d)
@@ -45,6 +60,13 @@ theorem mul_det_congr (d : R) {A B : Matrix n n R} (h : ∀ i j, d * A i j = d *
   rw [mul_sub] at h4
   exact sub_eq_zero.1 h4
 
+/- English proof (translation)
+Establish `h1 : d * (trunc d A).det = d * A.det`. Use `mul_det_congr d fun i j => ?_` and prove the remaining obligations. Simplify using `only [trunc, Matrix.add_apply, Matrix.smul_apply, Matrix.sub_apply, smul_eq_mul]`. Take the linear combination `((A i j) - (1 : Matrix n n R) i j) * hd`. Establish `h2 : (1 - d) * (trunc d A).det = (1 - d) * (1 : Matrix n n R).det`.
+
+Use `mul_det_congr (1 - d) fun i j => ?_` and prove the remaining obligations. Simplify using `only [trunc, Matrix.add_apply, Matrix.smul_apply, Matrix.sub_apply, smul_eq_mul]`. Take the linear combination `(-((A i j) - (1 : Matrix n n R) i j)) * hd`. Rewrite `h1` using `[hA]`. Rewrite `h2` using `[Matrix.det_one]`.
+
+Take the linear combination `h1 + h2`.
+-/
 theorem det_trunc {d : R} (hd : d * d = d) {A : Matrix n n R} (hA : A.det = 1) :
     (trunc d A).det = 1 := by
   have h1 : d * (trunc d A).det = d * A.det := by
@@ -59,6 +81,11 @@ theorem det_trunc {d : R} (hd : d * d = d) {A : Matrix n n R} (hA : A.det = 1) :
   rw [Matrix.det_one] at h2
   linear_combination h1 + h2
 
+/- English proof (translation)
+Use extensionality with `i j`. Simplify using `only [cT, trunc, Matrix.transpose_apply, Matrix.map_apply, Matrix.add_apply, Matrix.smul_apply, Matrix.sub_apply, smul_eq_mul, map_add, map_mul, map_sub, hc]`. Establish `: ∀ p q : n, c ((1 : Matrix n n R) p q) = (1 : Matrix n n R) q p`. Introduce `p q`. Distinguish the cases in `h : p = q`.
+
+Substitute `h` using the available equality. Simplify using the standard rewrite rules. Simplify using `[Matrix.one_apply_ne h, Matrix.one_apply_ne (Ne.symm h)]`. Rewrite using `[this]`.
+-/
 theorem cT_trunc (c : R →+* R) {d : R} (hc : c d = d) (A : Matrix n n R) :
     cT c (trunc d A) = trunc d (cT c A) := by
   ext i j
@@ -71,6 +98,13 @@ theorem cT_trunc (c : R →+* R) {d : R} (hc : c d = d) (A : Matrix n n R) :
     · simp [Matrix.one_apply_ne h, Matrix.one_apply_ne (Ne.symm h)]
   rw [this]
 
+/- English proof (translation)
+Establish `e : trunc d X * J * trunc d Y = J + d • (X * J - J + J * Y - J) + (d * d) • ((X - 1) * J * (Y - 1))`. Unfold `trunc`. Simplify using `only [Matrix.add_mul, Matrix.mul_add, Matrix.one_mul, Matrix.mul_one, Matrix.smul_mul, Matrix.mul_smul, Matrix.sub_mul, Matrix.mul_sub, smul_add, smul_sub, smul_smul]`. Normalize the expressions using the abelian group laws. Rewrite using `[e, hd]`.
+
+Establish `e2 : (X - 1) * J * (Y - 1) = X * J * Y - X * J - J * Y + J`. Simplify using `only [Matrix.mul_sub, Matrix.sub_mul, Matrix.mul_one, Matrix.one_mul]`. Normalize the expressions using the abelian group laws. Rewrite using `[e2, h, add_assoc, ← smul_add]`. Establish `e3 : X * J - J + J * Y - J + (J - X * J - J * Y + J) = 0` using `by abel`.
+
+Rewrite using `[e3, smul_zero, add_zero]`.
+-/
 theorem trunc_unitary {d : R} (hd : d * d = d) {X Y J : Matrix n n R} (h : X * J * Y = J) :
     trunc d X * J * trunc d Y = J := by
   have e : trunc d X * J * trunc d Y =
@@ -99,6 +133,19 @@ section Adele
 
 variable {F : Type} [Field F] [NumberField F]
 
+/- English proof (translation)
+Set `sm : (∀ v : HeightOneSpectrum (𝓞 F), ↥(v.adicCompletionIntegers F)) → Af F` to `RestrictedProduct.structureMap (fun v : HeightOneSpectrum (𝓞 F) => v.adicCompletion F) (fun v => (v.adicCompletionIntegers F : Set (v.adicCompletion F))) cofinite`. Establish `hsm : Continuous sm` using `RestrictedProduct.isEmbedding_structureMap.continuous`. Set `c : Finset (HeightOneSpectrum (𝓞 F)) → ∀ v : HeightOneSpectrum (𝓞 F), ↥(v.adicCompletionIntegers F)` to `fun T v => if h : v ∉ T ∧ a v ∈ v.adicCompletionIntegers F then ⟨a v, h.2⟩ else 0`. Establish `hc : Tendsto c atTop (nhds 0)`. Use `tendsto_pi_nhds.2 fun v => tendsto_const_nhds.congr' ?_` and prove the remaining obligations.
+
+Use `filter_upwards [eventually_ge_atTop {v}] with T hT`. Establish `hv : v ∈ T` using `hT (Finset.mem_singleton_self v)`. Simplify using `[c, hv]`. Establish `h0 : sm 0 = 0` using `rfl`. Establish `h2 : Tendsto (fun T => sm (c T)) atTop (nhds 0)`.
+
+Use `(hsm.tendsto 0).comp hc` as an intermediate fact. Rewrite `this` using `[h0]`. Then use the resulting hypothesis. Establish `hS : {v | ¬ a v ∈ v.adicCompletionIntegers F}.Finite` using `Filter.eventually_cofinite.1 a.2`. Establish `h3` using `(tendsto_const_nhds (x := a)).sub h2`. Rewrite `h3` using `[sub_zero]`.
+
+Use `h3.congr' ?_` and prove the remaining obligations. Use `filter_upwards [eventually_ge_atTop hS.toFinset] with T hT`. Use `RestrictedProduct.ext _ _ fun v => ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `a v - (sm (c T)) v = evalV F v (e T) * a v`. Express the relevant statement in the definitionally equal form `a v - ((c T v : v.adicCompletionIntegers F) : v.adicCompletion F) = _`.
+
+Distinguish the cases in `hv : v ∈ T`. Establish `: c T v = 0` using `by simp [c, hv]`. Rewrite using `[this, he1 T v hv]`. Simplify using the standard rewrite rules. Establish `hav : a v ∈ v.adicCompletionIntegers F`.
+
+Assume the negation of the conclusion as `hn`. Conclude with `hv (hT (hS.mem_toFinset.2 hn))`. Establish `: c T v = ⟨a v, hav⟩` using `by simp [c, hv, hav]`. Rewrite using `[this, he0 T v hv]`. Simplify using the standard rewrite rules.
+-/
 theorem tendsto_fin (e : Finset (HeightOneSpectrum (𝓞 F)) → Af F)
     (he1 : ∀ T, ∀ v ∈ T, evalV F v (e T) = 1) (he0 : ∀ T, ∀ v, v ∉ T → evalV F v (e T) = 0) (a : Af F) :
     Tendsto (fun T => e T * a) atTop (nhds a) := by
@@ -145,6 +192,11 @@ open GlobalTheory.Published.StrongApprox
 
 variable {F E : Type} [Field F] [NumberField F] [Field E] [Algebra F E]
 
+/- English proof (translation)
+Use `Prod.ext ?_ ?_` and prove the remaining obligations. Establish `h1 : d.1 = 1` using `funext fun w => hd.1 w (Finset.mem_univ w)`. Express the relevant statement in the definitionally equal form `d.1 * d.1 = d.1`. Rewrite using `[h1, one_mul]`. Use `RestrictedProduct.ext _ _ fun v => ?_` and prove the remaining obligations.
+
+Express the relevant statement in the definitionally equal form `evalV F v (sndA F d) * evalV F v (sndA F d) = evalV F v (sndA F d)`. Distinguish the cases in `hv : v ∈ T`. Rewrite using `[hd.2.2.1 v hv, one_mul]`. Rewrite using `[hd.2.2.2 v hv, zero_mul]`.
+-/
 theorem idem_mul {T : Finset (HeightOneSpectrum (𝓞 F))} {d : AF F}
     (hd : IsPlacesIdem (Finset.univ : Finset (InfinitePlace F)) T d) : d * d = d := by
   refine Prod.ext ?_ ?_
@@ -157,6 +209,11 @@ theorem idem_mul {T : Finset (HeightOneSpectrum (𝓞 F))} {d : AF F}
     · rw [hd.2.2.1 v hv, one_mul]
     · rw [hd.2.2.2 v hv, zero_mul]
 
+/- English proof (translation)
+Establish `h1 : ∀ T, (d T).1 = 1` using `fun T => funext fun w => (hd T).1 w (Finset.mem_univ w)`. Establish `h2` using `tendsto_fin (fun T => sndA F (d T)) (fun T v hv => (hd T).2.2.1 v hv) (fun T v hv => (hd T).2.2.2 v hv) a.2`. Establish `h3` using `Filter.Tendsto.prodMk_nhds (tendsto_const_nhds (x := a.1)) h2`. Establish `h3' : Tendsto (fun T => ((a.1, sndA F (d T) * a.2) : AF F)) atTop (nhds a)` using `h3`. Establish `e : ∀ T, ((a.1, sndA F (d T) * a.2) : AF F) = d T * a` using `fun T => by`.
+
+Use `Prod.ext ?_ rfl` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `a.1 = (d T).1 * a.1`. Rewrite using `[h1, one_mul]`. Conclude with `h3'.congr e`.
+-/
 theorem tendsto_adele (d : Finset (HeightOneSpectrum (𝓞 F)) → AF F)
     (hd : ∀ T, IsPlacesIdem (Finset.univ : Finset (InfinitePlace F)) T (d T)) (a : AF F) :
     Tendsto (fun T => d T * a) atTop (nhds a) := by
@@ -171,6 +228,13 @@ theorem tendsto_adele (d : Finset (HeightOneSpectrum (𝓞 F)) → AF F)
     rw [h1, one_mul]
   exact h3'.congr e
 
+/- English proof (translation)
+Use `haveI : IsModuleTopology (AF F) (AF F ⊗[F] E) := ⟨rfl⟩`. Use `haveI : ContinuousAdd (AF F ⊗[F] E) := IsModuleTopology.toContinuousAdd (AF F) _`. Use `haveI : ContinuousSMul (AF F) (AF F ⊗[F] E) := IsModuleTopology.toContinuousSMul _ _`. Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => simpa using tendsto_const_nhds`.
+
+Consider the case `tmul a e`. Establish `hc : Continuous fun t : AF F => t • ((1 : AF F) ⊗ₜ[F] e)` using `continuous_smul.comp (continuous_id.prodMk continuous_const)`. Establish `h` using `(hc.tendsto a).comp (tendsto_adele d hd a)`. Establish `e1 : ∀ t : AF F, t • ((1 : AF F) ⊗ₜ[F] e) = t ⊗ₜ[F] e` using `fun t => by`. Rewrite using `[TensorProduct.smul_tmul', smul_eq_mul, mul_one]`.
+
+Rewrite `h` using `[e1]`. Use `h.congr fun T => ?_` and prove the remaining obligations. Simplify using `only [Function.comp_apply, e1, Algebra.TensorProduct.algebraMap_apply, Algebra.TensorProduct.tmul_mul_tmul, one_mul, Algebra.algebraMap_self, RingHom.id_apply]`. Consider the case `add x y hx hy => simpa only [mul_add] using hx.add hy`.
+-/
 theorem tendsto_tensor (d : Finset (HeightOneSpectrum (𝓞 F)) → AF F)
     (hd : ∀ T, IsPlacesIdem (Finset.univ : Finset (InfinitePlace F)) T (d T)) (x : AF F ⊗[F] E) :
     Tendsto (fun T => algebraMap (AF F) (AF F ⊗[F] E) (d T) * x) atTop (nhds x) := by
@@ -190,6 +254,11 @@ theorem tendsto_tensor (d : Finset (HeightOneSpectrum (𝓞 F)) → AF F)
       Algebra.TensorProduct.tmul_mul_tmul, one_mul, Algebra.algebraMap_self, RingHom.id_apply]
   | add x y hx hy => simpa only [mul_add] using hx.add hy
 
+/- English proof (translation)
+Use `haveI : IsModuleTopology (AF F) (AF F ⊗[F] E) := ⟨rfl⟩`. Use `haveI : ContinuousAdd (AF F ⊗[F] E) := IsModuleTopology.toContinuousAdd (AF F) _`. Use `tendsto_pi_nhds.2 fun i => tendsto_pi_nhds.2 fun j => ?_` and prove the remaining obligations. Establish `h` using `(tendsto_const_nhds (x := (1 : Matrix (Fin M) (Fin M) (AF F ⊗[F] E)) i j)).add (tendsto_tensor d hd ((A - 1) i j))`. Establish `e : (1 : Matrix (Fin M) (Fin M) (AF F ⊗[F] E)) i j + (A - 1) i j = A i j` using `by simp`.
+
+Rewrite `h` using `[e]`. Conclude with `h`.
+-/
 theorem tendsto_trunc {M : ℕ} (d : Finset (HeightOneSpectrum (𝓞 F)) → AF F)
     (hd : ∀ T, IsPlacesIdem (Finset.univ : Finset (InfinitePlace F)) T (d T))
     (A : Matrix (Fin M) (Fin M) (AF F ⊗[F] E)) :
@@ -223,12 +292,18 @@ open GlobalTheory.Published.StrongApprox
 
 variable {F E : Type} [Field F] [NumberField F] [Field E] [Algebra F E]
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem mat_truncHA (σ : E →ₐ[F] E) {M : ℕ} (J : Matrix (Fin M) (Fin M) E) {d : AF F}
     (hd : algebraMap (AF F) (AF F ⊗[F] E) d * algebraMap (AF F) (AF F ⊗[F] E) d =
       algebraMap (AF F) (AF F ⊗[F] E) d) (g : HA (AF F) σ J) :
     ((HA.mat (AF F) σ J (truncHA σ J hd g)).1 : Matrix (Fin M) (Fin M) (AF F ⊗[F] E)) =
       trunc (algebraMap (AF F) (AF F ⊗[F] E) d) (HA.mat (AF F) σ J g).1 := rfl
 
+/- English proof (translation)
+Use `⟨mem_SUAdelic.2 ?_, fun i j => ?_⟩` and prove the remaining obligations. Rewrite using `[mat_truncHA]`. Conclude with `det_trunc hd (mem_SUAdelic.1 hg)`. Rewrite using `[mat_truncHA]`. Simplify using `only [trunc, add_sub_cancel_left, Matrix.smul_apply, smul_eq_mul, ← mul_assoc, hd]`.
+-/
 theorem truncHA_mem (σ : E →ₐ[F] E) {M : ℕ} (J : Matrix (Fin M) (Fin M) E) {d : AF F}
     (hd : algebraMap (AF F) (AF F ⊗[F] E) d * algebraMap (AF F) (AF F ⊗[F] E) d =
       algebraMap (AF F) (AF F ⊗[F] E) d) {g : HA (AF F) σ J} (hg : g ∈ SUAdelic σ J) :
@@ -239,6 +314,11 @@ theorem truncHA_mem (σ : E →ₐ[F] E) {M : ℕ} (J : Matrix (Fin M) (Fin M) E
   · rw [mat_truncHA]
     simp only [trunc, add_sub_cancel_left, Matrix.smul_apply, smul_eq_mul, ← mul_assoc, hd]
 
+/- English proof (translation)
+Set `g' : HR (AF F) σ J` to `g`. Establish `h1` using `tendsto_trunc (E := E) d hd (g'.1 : Matrix (Fin M) (Fin M) (AF F ⊗[F] E))`. Establish `h2` using `tendsto_trunc (E := E) d hd ((g'.1)⁻¹ : GL (Fin M) (AF F ⊗[F] E)).val`. Establish `h3 : Tendsto (fun T => truncGL (hi T) g'.1) atTop (nhds g'.1)`. Use `Units.isEmbedding_embedProduct.tendsto_nhds_iff.2 ?_` and prove the remaining obligations.
+
+Conclude with `h1.prodMk_nhds ((MulOpposite.continuous_op.tendsto _).comp h2)`. Conclude with `tendsto_subtype_rng.2 h3`.
+-/
 theorem tendsto_truncHA (σ : E →ₐ[F] E) {M : ℕ} (J : Matrix (Fin M) (Fin M) E)
     (d : Finset (HeightOneSpectrum (𝓞 F)) → AF F)
     (hd : ∀ T, IsPlacesIdem (Finset.univ : Finset (InfinitePlace F)) T (d T))
@@ -255,6 +335,9 @@ theorem tendsto_truncHA (σ : E →ₐ[F] E) {M : ℕ} (J : Matrix (Fin M) (Fin 
 
 end Main2
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ M J N hN hS g hg`. Use `choose d hd using fun T : Finset (HeightOneSpectrum (𝓞 F)) => GlobalTheory.Published.StrongApprox.exists_isPlacesIdem (F := F) Finset.univ T`. Establish `hi : ∀ T, algebraMap (AF F) (AF F ⊗[F] E) (d T) * algebraMap (AF F) (AF F ⊗[F] E) (d T) = algebraMap (AF F) (AF F ⊗[F] E) (d T)` using `fun T => by rw [← map_mul, idem_mul (hd T)]`. Conclude with `hN.mem_of_tendsto (tendsto_truncHA σ J d hd hi g) (Eventually.of_forall fun T => hS _ _ _ (hd T) (truncHA_mem σ J (hi T) hg))`.
+-/
 theorem propProd : Sa2.PropProd := by
   intro F E _ _ _ _ _ σ M J N hN hS g hg
   classical

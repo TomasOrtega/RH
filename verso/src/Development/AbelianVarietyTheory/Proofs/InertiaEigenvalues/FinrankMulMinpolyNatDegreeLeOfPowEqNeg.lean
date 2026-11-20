@@ -8,6 +8,17 @@ open scoped Formalism.Per
 
 open IntermediateField in
 
+/- English proof (translation)
+Introduce `l _ F N x hN hx hF`. Establish `hp : (Polynomial.X ^ N + Polynomial.C (l : ℚ_[l])).Monic` using `Polynomial.monic_X_pow_add_C _ hN.ne'`. Establish `hroot : Polynomial.aeval x (Polynomial.X ^ N + Polynomial.C (l : ℚ_[l])) = 0` using `by simp [hx]`. Establish `hint : IsIntegral ℚ_[l] x` using `⟨_, hp, hroot⟩`. Establish `hdeg : (minpoly ℚ_[l] x).natDegree ≤ N`.
+
+Establish `h1` using `minpoly.min ℚ_[l] x hp hroot`. Rewrite `h1` using `[Polynomial.degree_X_pow_add_C hN]`. Conclude with `Polynomial.natDegree_le_of_degree_le h1`. Establish `hintF : IsIntegral F x` using `hint.tower_top`. Establish `key` using `Module.finrank_mul_finrank ℚ_[l] F (F⟮x⟯)`.
+
+Establish `hE : (F⟮x⟯).restrictScalars ℚ_[l] = ℚ_[l]⟮x⟯`. Rewrite using `[restrictScalars_adjoin]`. Apply `le_antisymm` to reduce the goal to its premises. Rewrite using `[adjoin_le_iff]`. Introduce and unpack `y (hy | hy)`.
+
+Conclude with `hF hy`. Rewrite using `[Set.mem_singleton_iff.mp hy]`. Conclude with `mem_adjoin_simple_self _ _`. Conclude with `adjoin.mono _ _ _ (Set.subset_union_right)`. Establish `h2 : Module.finrank ℚ_[l] (F⟮x⟯) = Module.finrank ℚ_[l] (ℚ_[l]⟮x⟯)`.
+
+Rewrite using `[← hE]`. Both sides reduce to the same expression. Rewrite using `[← adjoin.finrank hintF, key, h2, adjoin.finrank hint]`. Conclude with `hdeg`.
+-/
 theorem GlobalTheory.finrank_mul_minpoly_natDegree_le_of_pow_eq_neg : ∀ (l : ℕ) [Fact l.Prime] (F : IntermediateField ℚ_[l] (Om l)) (N : ℕ) (x : Om l), 0 < N → x ^ N = -(l : Om l) → F ≤ IntermediateField.adjoin ℚ_[l] {x} → Module.finrank ℚ_[l] F * (minpoly F x).natDegree ≤ N := by
   intro l _ F N x hN hx hF
   have hp : (Polynomial.X ^ N + Polynomial.C (l : ℚ_[l])).Monic :=

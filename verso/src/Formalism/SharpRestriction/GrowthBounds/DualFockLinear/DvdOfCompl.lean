@@ -58,6 +58,15 @@ def SubstPol : Prop :=
     letI : Algebra (WF p n') O := algOfIdent j φ
     ∀ F ∈ Pol (KK O) (ι := Fin n') k d, subst p n' O w n' r g F ∈ Pol (KK O) (ι := Fin n') k d
 
+/- English proof (translation)
+Establish `hP : MvPolynomial.coeff (mo.degree P) P = 1` using `h`. Establish `h1 : MvPolynomial.coeff (mo.degree P) (map f P) = 1`. Rewrite using `[MvPolynomial.coeff_map, hP, map_one]`. Establish `hd : mo.degree (map f P) = mo.degree P`. Apply `mo.toSyn.injective` to reduce the goal to its premises.
+
+Apply `le_antisymm` to reduce the goal to its premises. Rewrite using `[MonomialOrder.degree_le_iff]`. Introduce `c hc`. Apply `MonomialOrder.le_degree` to reduce the goal to its premises. Rewrite `hc`, the goal using `[MvPolynomial.mem_support_iff]`.
+
+Rewrite `hc` using `[MvPolynomial.coeff_map]`. Introduce `h0`. Apply `hc` to reduce the goal to its premises. Rewrite using `[h0, map_zero]`. Apply `MonomialOrder.le_degree` to reduce the goal to its premises.
+
+Rewrite using `[MvPolynomial.mem_support_iff, h1]`. Conclude with `one_ne_zero`. Use `⟨hd, ?_⟩` and prove the remaining obligations. Unfold `MonomialOrder.leadingCoeff`. Rewrite using `[hd, h1]`.
+-/
 theorem deg_map {τ : Type} (mo : MonomialOrder τ) {R S : Type} [CommRing R] [CommRing S] [Nontrivial S] (f : R →+* S)
     (P : MvPolynomial τ R) (h : mo.leadingCoeff P = 1) :
     mo.degree (map f P) = mo.degree P ∧ mo.leadingCoeff (map f P) = 1 := by
@@ -82,6 +91,15 @@ theorem deg_map {τ : Type} (mo : MonomialOrder τ) {R S : Type} [CommRing R] [C
   unfold MonomialOrder.leadingCoeff
   rw [hd, h1]
 
+/- English proof (translation)
+Establish `hy : y ∈ Submodule.span O (Set.range B) ⊔ T` using `by rw [hc.sup_eq_top]; trivial`. Take `⟨y₁, hy₁, y₂, hy₂, hy12⟩` from `Submodule.mem_sup.1 hy`. Take `⟨d, hd⟩` from `(Submodule.mem_span_range_iff_exists_fun O).1 hy₁`. Establish `e : ∑ b, c b • B b - ϖ • y₁ = ϖ • y₂`. Rewrite using `[h, ← hy12, smul_add]`.
+
+Normalize the expressions using the abelian group laws. Establish `hmem1 : ∑ b, c b • B b - ϖ • y₁ ∈ Submodule.span O (Set.range B)`. Use `Submodule.sub_mem _ (Submodule.sum_mem _ fun b _ => ?_) (Submodule.smul_mem _ _ hy₁)` and prove the remaining obligations. Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span ⟨b, rfl⟩)`. Establish `hmem2 : ∑ b, c b • B b - ϖ • y₁ ∈ T`.
+
+Rewrite using `[e]`. Conclude with `Submodule.smul_mem _ _ hy₂`. Establish `hzero` using `(Submodule.disjoint_def.1 hc.disjoint) _ hmem1 hmem2`. Establish `hsum : ∑ b, (c b - ϖ * d b) • B b = 0`. Rewrite `hzero` using `[← hd, Finset.smul_sum]`.
+
+Simplify using `only [sub_smul, Finset.sum_sub_distrib, mul_smul]`. Conclude with `hzero`. Introduce `b`. Use `Fintype.linearIndependent_iff.1 hli _ hsum b` as an intermediate fact. Conclude with `⟨d b, by linear_combination this⟩`.
+-/
 theorem dvd_of_compl {O M : Type} [CommRing O] [IsDomain O] [AddCommGroup M] [Module O M] {nb : ℕ} (B : Fin nb → M)
     (hli : LinearIndependent O B) (T : Submodule O M) (hc : IsCompl (Submodule.span O (Set.range B)) T)
     (ϖ : O) (c : Fin nb → O) (y : M) (h : ∑ b, c b • B b = ϖ • y) : ∀ b, ϖ ∣ c b := by

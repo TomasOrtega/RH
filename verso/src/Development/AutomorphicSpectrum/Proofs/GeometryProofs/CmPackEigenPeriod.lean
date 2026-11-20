@@ -18,6 +18,9 @@ section Comb
 
 variable {S : Scheme.{0}} {K C : Type} [CommRing K] [CommRing C]
 
+/- English proof (translation)
+Apply the tactic sequence `refine RingHom.ext fun z => TrivSqZeroExt.ext ?_ ?_ <;>`. Simplify using `[GlobalTheory.CompanionTheory.Ar.dualMap, TrivSqZeroExt.algebraMap_eq_inl]`.
+-/
 theorem dualMap_comp_algebraMap' (φ : K →+* C) :
     (GlobalTheory.CompanionTheory.Ar.dualMap φ).comp (algebraMap K (DualNumber K)) = (algebraMap C (DualNumber C)).comp φ := by
   refine RingHom.ext fun z => TrivSqZeroExt.ext ?_ ?_ <;>
@@ -28,6 +31,9 @@ def bcHom (φ : K →+* C) (x : Sp K ⟶ S) : epsAt (spMap φ ≫ x) ⟶ epsAt x
     show spMap _ ≫ spMap _ ≫ x = spMap _ ≫ spMap _ ≫ x
     rw [← Category.assoc, ← Category.assoc, spMap_comp_spMap, spMap_comp_spMap, dualMap_comp_algebraMap'])
 
+/- English proof (translation)
+Rewrite using `[spMap_comp_spMap, spMap_comp_spMap]`. Use `congr 1`. Apply the tactic sequence `refine RingHom.ext fun z => TrivSqZeroExt.ext ?_ ?_ <;>`. Simplify using `[GlobalTheory.CompanionTheory.Ar.dualMap, GlobalTheory.CompanionTheory.Ar.epsMul, mul_comm]`.
+-/
 theorem dual_epsMul (φ : K →+* C) (a : K) :
     spMap (GlobalTheory.CompanionTheory.Ar.dualMap φ) ≫ spMap (GlobalTheory.CompanionTheory.Ar.epsMul a) =
       spMap (GlobalTheory.CompanionTheory.Ar.epsMul (φ a)) ≫ spMap (GlobalTheory.CompanionTheory.Ar.dualMap φ) := by
@@ -36,12 +42,20 @@ theorem dual_epsMul (φ : K →+* C) (a : K) :
   refine RingHom.ext fun z => TrivSqZeroExt.ext ?_ ?_ <;>
     simp [GlobalTheory.CompanionTheory.Ar.dualMap, GlobalTheory.CompanionTheory.Ar.epsMul, mul_comm]
 
+/- English proof (translation)
+Proceed by induction on `l with`. Consider the case `nil => simp [MonObj.comp_one]`. Consider the case `cons a l ih => simp [MonObj.comp_mul, ih]`.
+-/
 theorem comp_list_prod {G : Over S} [GrpObj G] {T T' : Over S} (f : T' ⟶ T) (l : List (T ⟶ G)) :
     f ≫ l.prod = (l.map (f ≫ ·)).prod := by
   induction l with
   | nil => simp [MonObj.comp_one]
   | cons a l ih => simp [MonObj.comp_mul, ih]
 
+/- English proof (translation)
+Substitute `hx` using the available equality. Take `⟨u', hu', rfl⟩` from `hc`. Establish `key : IsComb (fun k => φ (c k)) (fun k => M.pt (e k)) (bcHom φ x ≫ (List.ofFn u').prod)`. Use `⟨fun k => bcHom φ x ≫ u' k, fun k => ?_, ?_⟩` and prove the remaining obligations. Use `show spMap (GlobalTheory.CompanionTheory.Ar.dualMap φ) ≫ (u' k).left = _`.
+
+Rewrite using `[hu' k, ← Category.assoc, dual_epsMul, Category.assoc, he k]`. Rewrite using `[comp_list_prod, List.map_ofFn]`. Both sides reduce to the same expression. Use `((GlobalTheory.T.lie_model_eigenvectors_action S C G _ U M).1 n _ _ _).1 key` as an intermediate fact. Conclude with `congrArg (fun q => q.left) this`.
+-/
 theorem comb_eq_pt {G : Over S} [GrpObj G] (φ : K →+* C) {x : Sp K ⟶ S} {x' : Sp C ⟶ S} (hx : spMap φ ≫ x = x')
     {U : Type} [AddCommGroup U] [Module C U] (M : LieModel G x' U) {n : ℕ} (c : Fin n → K)
     (u : Fin n → (epsAt x ⟶ G)) (w : epsAt x ⟶ G) (hc : IsComb c u w) (e : Fin n → U)
@@ -64,6 +78,11 @@ section Main
 
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E}
 
+/- English proof (translation)
+Establish `h1 : ∀ s : 𝓞 E, P (s • a) = ρ s (P a)` using `fun s => by`. Rewrite using `[hρ]`. Use function extensionality and compare the values at `j`. Conclude with `hP.1 s a j`. Rewrite using `[← hpr, HT.eigProj, LinearMap.sum_apply, Finset.smul_sum, ← Equiv.sum_comp e (fun q => z • (τ (HT.dualInt E q) • ρ (RingOfIntegers.basis E q)) (P a))]`.
+
+Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[h1, smul_comm]`. Both sides reduce to the same expression.
+-/
 theorem sum_eq_tyPart {D : Datum H} {g : ℕ} {ty : Fin g → (E →+* ℂ)} {P : D.La →+ (Fin g → ℂ)}
     (hP : IsPeriod D ty P) (ρ : 𝓞 E →+* Module.End ℂ (Fin g → ℂ))
     (hρ : ∀ a w, ρ a w = fun k => ty k (a : E) * w k) (τ : E →+* ℂ)
@@ -78,6 +97,11 @@ theorem sum_eq_tyPart {D : Datum H} {g : ℕ} {ty : Fin g → (E →+* ℂ)} {P 
   rw [h1, smul_comm]
   rfl
 
+/- English proof (translation)
+Introduce `E _ _ _ H D l Xo c g ty FU i Z P hP X b τ a v hv`. Take `⟨M, ρ, -, hρ, hder, hpr⟩` from `GlobalTheory.T.lie_model_with_cm_action E H D l Xo c g ty FU i P hP`. Take `⟨n, e, u, hu, hc⟩` from `hv`. Establish `hk : ∀ k, spMap (GlobalTheory.CompanionTheory.Ar.dualMap (algebraMap X.K ℂ)) ≫ (u k).left = (M.pt ((Z b).z • P (RingOfIntegers.basis E (e k) • (a : (FU.Di i).La)))).left` using `fun k => ReciprocityTheory.ChartRestriction.G.PullbackSections.ExpRows.isDerivAt0_unique ((GlobalTheory.T.cm_image_unique_lattice E H D l Xo c g ty FU i Z P hP X b _).2 (u k) (hu k)).2 (hder _)`. Establish `h` using `comb_eq_pt (algebraMap X.K ℂ) X.pt M _ u v hc _ hk`.
+
+Rewrite using `[h]`. Establish `hs : ∑ k, (algebraMap X.K ℂ) (X.β (tauE c τ (HT.dualInt E (e k)))) • ((Z b).z • P (RingOfIntegers.basis E (e k) • (a : (FU.Di i).La))) = (Z b).z • tyPart ty τ (P a)` using `sum_eq_tyPart hP ρ hρ τ (hpr τ) _ e a`. Rewrite using `[hs]`. Conclude with `hder _`.
+-/
 theorem isDerivAt0_of_isCMVec : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (D : Datum H) (l : Level H) (Xo : Moduli D l) (c : Coeff l) (g : ℕ) (ty : Fin g → (E →+* ℂ)) (FU : FamilyUnif Xo (algebraMap (KA l) ℂ) ty) (i : Fin FU.n) (Z : ∀ b : Bool, Curve0 H (sgnRt H b)) (P : (FU.Di i).La →+ (Fin g → ℂ)) (hP : IsPeriod (FU.Di i) ty P) (X : CMPack Z c FU i hP) (b : Bool) (τ : E →+* ℂ) (a : PureType.lat hP (sgnRt H b)) (v : epsAt (under X.y) ⟶ Xo.univ.t.G), X.IsCMVec b τ a v → IsDerivAt0 (fun s => (FU.ex i P s).left) ((Z b).z • tyPart ty τ (P a)) (spMap (dualMap (algebraMap X.K ℂ)) ≫ v.left) := by
   intro E _ _ _ H D l Xo c g ty FU i Z P hP X b τ a v hv
   obtain ⟨M, ρ, -, hρ, hder, hpr⟩ := GlobalTheory.T.lie_model_with_cm_action E H D l Xo c g ty FU i P hP

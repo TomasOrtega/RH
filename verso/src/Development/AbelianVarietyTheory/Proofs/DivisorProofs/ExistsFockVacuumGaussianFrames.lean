@@ -14,6 +14,23 @@ namespace GlobalTheory.FockVacuum
 
 section Abstract
 
+/- English proof (translation)
+Establish `hi : Function.Injective (p.prod (p ∘ₗ J))`. Rewrite using `[← LinearMap.ker_eq_bot, LinearMap.ker_eq_bot']`. Introduce `c hc`. Assume the negation of the conclusion as `h0`. Establish `h` using `hpos c h0`.
+
+Establish `h1 : p c = 0` using `congrArg Prod.fst hc`. Establish `h2 : p (J c) = 0` using `congrArg Prod.snd hc`. Simplify using `[h1, h2] at h`. Use `haveI : FiniteDimensional ℝ C := FiniteDimensional.of_injective _ hi`. Establish `hsurj : Function.Surjective (p.prod (p ∘ₗ J))`.
+
+Use `(LinearMap.injective_iff_surjective_of_finrank_eq_finrank ?_).1 hi` and prove the remaining obligations. Conclude with `le_antisymm (LinearMap.finrank_le_finrank_of_injective hi) (LinearMap.finrank_le_finrank_of_surjective hs)`. Set `e` to `LinearEquiv.ofBijective _ ⟨hi, hsurj⟩`. Establish `he1 : ∀ z, p (e.symm z) = z.1` using `fun z => congrArg Prod.fst (e.apply_symm_apply z)`. Establish `he2 : ∀ z, p (J (e.symm z)) = z.2` using `fun z => congrArg Prod.snd (e.apply_symm_apply z)`.
+
+Set `X : V →ₗ[ℝ] V →ₗ[ℝ] ℝ` to `B.compl₂ (q ∘ₗ e.symm.toLinearMap ∘ₗ LinearMap.inl ℝ V V)`. Set `Y : V →ₗ[ℝ] V →ₗ[ℝ] ℝ` to `-B.compl₂ (q ∘ₗ e.symm.toLinearMap ∘ₗ LinearMap.inr ℝ V V)`. Establish `hX : ∀ x y, X x y = B x (q (e.symm (y, 0)))` using `fun x y => rfl`. Establish `hY : ∀ x y, Y x y = -B x (q (e.symm (0, y)))` using `fun x y => rfl`. Use `⟨X, Y, fun x y => ?_, fun x y => ?_, fun x hx => ?_, fun c x => ?_⟩` and prove the remaining obligations.
+
+Establish `h` using `hω (e.symm (x, 0)) (e.symm (y, 0))`. Simplify using `only [he1, he2, map_zero, LinearMap.zero_apply] at h`. Rewrite using `[hX, hX]`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `h` using `hω (J (e.symm (0, x))) (e.symm (0, y))`.
+
+Simplify using `only [hJ, map_neg, he1, he2, map_zero, LinearMap.zero_apply, neg_zero] at h`. Rewrite using `[hY, hY]`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `h` using `hpos (e.symm (0, x)) (fun h0 => hx (by simpa [h0] using (he2 (0, x)).symm))`. Simplify using `only [he1, he2, map_zero, LinearMap.zero_apply] at h`.
+
+Rewrite using `[hY]`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `: e.symm (p c, 0) + e.symm (0, p (J c)) = c`. Rewrite using `[← map_add, LinearEquiv.symm_apply_eq]`. Conclude with `Prod.ext (add_zero _) (zero_add _)`.
+
+Rewrite using `[hX, hY, sub_neg_eq_add, ← map_add, ← map_add, this]`.
+-/
 theorem exists_siegel {V C : Type} [AddCommGroup V] [Module ℝ V] [FiniteDimensional ℝ V] [AddCommGroup C] [Module ℝ C]
     (B : V →ₗ[ℝ] V →ₗ[ℝ] ℝ) (p q : C →ₗ[ℝ] V) (J : C →ₗ[ℝ] C) (hJ : ∀ c, J (J c) = -c)
     (hω : ∀ c c', B (p (J c)) (q (J c')) - B (p (J c')) (q (J c)) = B (p c) (q c') - B (p c') (q c))
@@ -54,6 +71,17 @@ theorem exists_siegel {V C : Type} [AddCommGroup V] [Module ℝ V] [FiniteDimens
       exact Prod.ext (add_zero _) (zero_add _)
     rw [hX, hY, sub_neg_eq_add, ← map_add, ← map_add, this]
 
+/- English proof (translation)
+Set `cl : (V →ₗ[ℝ] V →ₗ[ℝ] ℝ) → (V →L[ℝ] V →L[ℝ] ℝ)` to `fun Z => LinearMap.toContinuousLinearMap ((LinearMap.toContinuousLinearMap : (V →ₗ[ℝ] ℝ) ≃ₗ[ℝ] _).toLinearMap ∘ₗ Z)`. Establish `hcl : ∀ Z x y, cl Z x y = Z x y` using `fun Z x y => rfl`. Take `⟨g, hg⟩` from `GlobalTheory.GaussSchwartz.exists_schwartz_exp_diag (cl ((-Real.pi) • Y)) (fun x hx => by`. Rewrite using `[hcl]`. Use `mul_pos Real.pi_pos (hp x hx)` as an intermediate fact.
+
+Simplify using `using this)`. Establish `ht : Function.HasTemperateGrowth fun x : V => GlobalTheory.Published.Metaplectic.eChar (cl ((1 / 2 : ℝ) • X) x x)` using `GlobalTheory.Published.Metaplectic.hasTemperateGrowth_eChar.comp ((cl ((1 / 2 : ℝ) • X)).bilinear_hasTemperateGrowth Function.HasTemperateGrowth.id Function.HasTemperateGrowth.id)`. Set `f : SchwartzMap V ℂ` to `SchwartzMap.smulLeftCLM ℂ (fun x : V => GlobalTheory.Published.Metaplectic.eChar (cl ((1 / 2 : ℝ) • X) x x)) g`. Establish `hf : ⇑f = fun x => Complex.exp (Real.pi * Complex.I * ((cl X x x : ℝ) + Complex.I * (cl Y x x : ℝ)))`. Use function extensionality and compare the values at `x`.
+
+Rewrite using `[SchwartzMap.smulLeftCLM_apply_apply ht, hg, GlobalTheory.Published.Metaplectic.eChar_apply, smul_eq_mul, Complex.ofReal_exp, ← Complex.exp_add]`. Use `congr 1`. Simplify using `only [hcl, LinearMap.smul_apply, smul_eq_mul]`. Use `push_cast`. Take the linear combination `(-(Real.pi : ℂ) * (Y x x : ℝ)) * Complex.I_mul_I`.
+
+Use `⟨f, fun h0 => ?_, fun x v => ?_⟩` and prove the remaining obligations. Use `congrFun hf 0` as an intermediate fact. Rewrite `this` using `[h0]`. Conclude with `Complex.exp_ne_zero _ this.symm`. Establish `hq : ∀ Z : V →L[ℝ] V →L[ℝ] ℝ, HasFDerivAt (fun y : V => ((Z y y : ℝ) : ℂ)) (Complex.ofRealCLM.comp (Z.precompR V x (ContinuousLinearMap.id ℝ V) + Z.precompL V (ContinuousLinearMap.id ℝ V) x)) x` using `fun Z => Complex.ofRealCLM.hasFDerivAt.comp x (Z.hasFDerivAt_of_bilinear (hasFDerivAt_id x) (hasFDerivAt_id x))`.
+
+Establish `hd` using `(((hq (cl X)).add ((hq (cl Y)).const_mul Complex.I)).const_mul (Real.pi * Complex.I)).cexp`. Rewrite using `[hf]`. Use `erw [hd.fderiv]`. Simplify using `[hcl, hX v x, hY v x]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem exists_gaussian {V : Type} [NormedAddCommGroup V] [NormedSpace ℝ V] [FiniteDimensional ℝ V]
     (X Y : V →ₗ[ℝ] V →ₗ[ℝ] ℝ) (hX : ∀ x y, X x y = X y x) (hY : ∀ x y, Y x y = Y y x) (hp : ∀ x, x ≠ 0 → 0 < Y x x) :
     ∃ f : SchwartzMap V ℂ, f ≠ 0 ∧
@@ -103,19 +131,33 @@ def evR (F : Type) [Field F] [NumberField F] : AF F →+* mixedEmbedding.mixedSp
   map_zero' := map_zero (InfiniteAdeleRing.ringEquiv_mixedSpace F)
   map_add' a b := map_add (InfiniteAdeleRing.ringEquiv_mixedSpace F) a.1 b.1
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem evR_apply (a : AF F) : evR F a = evI F a := rfl
 
 def infAd (t : mixedEmbedding.mixedSpace F) : AF F :=
   LinearMap.inl F (Ainf F) (Af F) ((InfiniteAdeleRing.ringEquiv_mixedSpace F).symm t)
 
+/- English proof (translation)
+The claim follows from `(InfiniteAdeleRing.ringEquiv_mixedSpace F).apply_symm_apply t`.
+-/
 theorem evI_infAd (t : mixedEmbedding.mixedSpace F) : evI F (infAd t) = t :=
   (InfiniteAdeleRing.ringEquiv_mixedSpace F).apply_symm_apply t
 
+/- English proof (translation)
+Rewrite using `[← evR_apply, map_mul, evR_apply, evR_apply, Algebra.smul_def]`. Use `congr 1`. Conclude with `evI_infAd _`.
+-/
 theorem evI_realAd_mul (r : ℝ) (a : AF F) : evI F (realAd F r * a) = r • evI F a := by
   rw [← evR_apply, map_mul, evR_apply, evR_apply, Algebra.smul_def]
   congr 1
   exact evI_infAd _
 
+/- English proof (translation)
+Establish `hu1 : u.1 = 0` using `(InfiniteAdeleRing.ringEquiv_mixedSpace F).injective (hu.trans (map_zero _).symm)`. Use `Prod.ext ?_ ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `u.1 * (infAd t).1 = 0`. Rewrite using `[hu1, zero_mul]`. Express the relevant statement in the definitionally equal form `u.2 * (infAd t).2 = 0`.
+
+Conclude with `mul_eq_zero_of_right _ rfl`.
+-/
 theorem mul_infAd (u : AF F) (hu : evI F u = 0) (t : mixedEmbedding.mixedSpace F) : u * infAd t = 0 := by
   have hu1 : u.1 = 0 := (InfiniteAdeleRing.ringEquiv_mixedSpace F).injective (hu.trans (map_zero _).symm)
   refine Prod.ext ?_ ?_
@@ -132,6 +174,9 @@ def trPair (F : Type) [Field F] [NumberField F] (κ : Type) [Fintype κ] :
     (fun x y y' => by simp only [Pi.add_apply, mul_add, Finset.sum_add_distrib, map_add])
     (fun c x y => by simp only [Pi.smul_apply, mul_smul_comm, ← Finset.smul_sum, map_smul])
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem trPair_apply {κ : Type} [Fintype κ] (x y : κ → mixedEmbedding.mixedSpace F) :
     trPair F κ x y = Algebra.trace ℝ (mixedEmbedding.mixedSpace F) (∑ i, x i * y i) := rfl
 
@@ -141,6 +186,9 @@ section Sign
 
 variable {ι : Type} {P Q R S : ℕ}
 
+/- English proof (translation)
+Apply the tactic sequence `rcases a with a | a <;> rcases b with b | b <;> simp [lineSign]`.
+-/
 theorem lineSign_cases (a : Ix P Q) (b : Ix R S) : lineSign a b = 1 ∨ lineSign a b = -1 := by
   rcases a with a | a <;> rcases b with b | b <;> simp [lineSign]
 
@@ -149,13 +197,22 @@ def cplx (ι : Type) (P Q R S : ℕ) : (ι → Matrix (Ix P Q) (Ix R S) ℂ) →
   map_add' c c' := by ext w a b; simp [mul_add]
   map_smul' r c := by ext w a b; simp; ring
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem cplx_apply (c : ι → Matrix (Ix P Q) (Ix R S) ℂ) (w : ι) (a : Ix P Q) (b : Ix R S) :
     cplx ι P Q R S c w a b = lineSign a b * Complex.I * c w a b := rfl
 
+/- English proof (translation)
+Use extensionality with `w a b`. Apply the tactic sequence `rcases lineSign_cases a b with h | h <;> simp [cplx_apply, h, ← mul_assoc]`.
+-/
 theorem cplx_cplx (c : ι → Matrix (Ix P Q) (Ix R S) ℂ) : cplx ι P Q R S (cplx ι P Q R S c) = -c := by
   ext w a b
   rcases lineSign_cases a b with h | h <;> simp [cplx_apply, h, ← mul_assoc]
 
+/- English proof (translation)
+Use `Finset.sum_congr rfl fun w _ => Finset.sum_congr rfl fun a _ => Finset.sum_congr rfl fun b _ => ?_` and prove the remaining obligations. Apply the tactic sequence `rcases lineSign_cases a b with h | h <;> simp [cplx_apply, h]`. Take the linear combination `(-(c w a b * (starRingEnd ℂ) (c' w a b))) * Complex.I_mul_I`. Take the linear combination `(c w a b * (starRingEnd ℂ) (c' w a b)) * Complex.I_mul_I`.
+-/
 theorem herm_cplx [Fintype ι] (c c' : ι → Matrix (Ix P Q) (Ix R S) ℂ) :
     ∑ w, ∑ a, ∑ b, lineSign a b * cplx ι P Q R S c w a b * star (cplx ι P Q R S c' w a b) =
       ∑ w, ∑ a, ∑ b, lineSign a b * c w a b * star (c' w a b) := by
@@ -164,6 +221,11 @@ theorem herm_cplx [Fintype ι] (c c' : ι → Matrix (Ix P Q) (Ix R S) ℂ) :
   · linear_combination (-(c w a b * (starRingEnd ℂ) (c' w a b))) * Complex.I_mul_I
   · linear_combination (c w a b * (starRingEnd ℂ) (c' w a b)) * Complex.I_mul_I
 
+/- English proof (translation)
+Establish `h : ∀ w a b, (lineSign a b * c w a b * star (cplx ι P Q R S c w a b)).im = -Complex.normSq (c w a b)`. Introduce `w a b`. Apply the tactic sequence `rcases lineSign_cases a b with h | h <;> simp [cplx_apply, h, Complex.normSq_apply] <;> ring`. Simplify using `only [Complex.im_sum, h, Finset.sum_neg_distrib]`. Choose the witnesses or unpack the hypotheses as in `⟨w, a, b, hw⟩ : ∃ w a b, c w a b ≠ 0 := by`.
+
+Assume the negation of the conclusion as `h0`. Use `push_neg at h0`. Conclude with `hc (by ext w a b; exact h0 w a b)`. Establish `: 0 < ∑ w, ∑ a, ∑ b, Complex.normSq (c w a b)` using `Finset.sum_pos' (fun _ _ => Finset.sum_nonneg fun _ _ => Finset.sum_nonneg fun _ _ => Complex.normSq_nonneg _) ⟨w, Finset.mem_univ _, Finset.sum_pos' (fun _ _ => Finset.sum_nonneg fun _ _ => Complex.normSq_nonneg _) ⟨a, Finset.mem_univ _, Finset.sum_pos' (fun _ _ => Complex.normS …`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem herm_cplx_pos [Fintype ι] (c : ι → Matrix (Ix P Q) (Ix R S) ℂ) (hc : c ≠ 0) :
     0 < -2 * (∑ w, ∑ a, ∑ b, lineSign a b * c w a b * star (cplx ι P Q R S c w a b)).im := by
   have h : ∀ w a b, (lineSign a b * c w a b * star (cplx ι P Q R S c w a b)).im = -Complex.normSq (c w a b) := by
@@ -181,6 +243,11 @@ theorem herm_cplx_pos [Fintype ι] (c : ι → Matrix (Ix P Q) (Ix R S) ℂ) (hc
           ⟨b, Finset.mem_univ _, Complex.normSq_pos.2 hw⟩⟩⟩
   linarith
 
+/- English proof (translation)
+Use extensionality with `w' a' b'`. Rewrite using `[cplx_apply]`. Distinguish the cases in `hw : w' = w`. Substitute `hw` using the available equality. Distinguish the cases in `hab : a = a' ∧ b = b'`.
+
+Take `⟨rfl, rfl⟩` from `hab`. Apply the tactic sequence `rcases lineSign_cases a b with h | h <;> simp [h]`. Simplify using `[Matrix.single_apply, hab]`. Simplify using `[hw]`.
+-/
 theorem cplx_single [DecidableEq ι] (w : ι) (a : Ix P Q) (b : Ix R S) :
     cplx ι P Q R S (Pi.single w (Matrix.single a b 1)) =
       (lineSign a b).re • (Pi.single w (Matrix.single a b Complex.I) : ι → Matrix (Ix P Q) (Ix R S) ℂ) := by
@@ -196,6 +263,41 @@ theorem cplx_single [DecidableEq ι] (w : ι) (a : Ix P Q) (b : Ix R S) :
 
 end Sign
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ α β κ _ _ _ _ _ P Q R S τ JA JB d a₀ b₀ A C D hCM hFr hD`. Establish `hU` using `fun c : InfinitePlace F → Matrix (Ix P Q) (Ix R S) ℂ => GlobalTheory.T.existsUnique_archimedeanMatrix_adeleExtension_of_components σ τ hCM (fun w => A w * c w * (C w)ᵀ)`. Use `choose U hU hU' using hU`. Establish `hadd : ∀ c c', U (c + c') = U c + U c'` using `fun c c' => by`. Use `(hU' (c + c') _ ⟨fun u hu => ?_, fun w => ?_⟩).symm` and prove the remaining obligations.
+
+Rewrite using `[smul_add, (hU c).1 u hu, (hU c').1 u hu, add_zero]`. Rewrite using `[Matrix.map_add _ (map_add _), (hU c).2, (hU c').2, Pi.add_apply, Matrix.mul_add, Matrix.add_mul]`. Establish `hsmul : ∀ (r : ℝ) c, U (r • c) = realAd F r • U c` using `fun r c => by`. Use `(hU' (r • c) _ ⟨fun u hu => ?_, fun w => ?_⟩).symm` and prove the remaining obligations. Rewrite using `[smul_comm, (hU c).1 u hu, smul_zero]`.
+
+Rewrite using `[GlobalTheory.T.realScalarArchimedeanAdele_smul_matrix_realPlace σ τ hCM, (hU c).2, Pi.smul_apply, Matrix.mul_smul, Matrix.smul_mul]`. Use extensionality with `i j`. Simplify using the standard rewrite rules. Set `p : (InfinitePlace F → Matrix (Ix P Q) (Ix R S) ℂ) →ₗ[ℝ] (κ → mixedEmbedding.mixedSpace F)` to `{ toFun := fun c i => evI F ((d.e (U c)).1 i) map_add' := fun c c' => by`. Use function extensionality and compare the values at `i`.
+
+Rewrite using `[hadd, map_add]`. Conclude with `map_add (evR F) _ _`. Use the proof step `map_smul' := fun r c => by`. Use function extensionality and compare the values at `i`. Rewrite using `[hsmul, map_smul]`.
+
+Conclude with `evI_realAd_mul r _ }`. Set `q : (InfinitePlace F → Matrix (Ix P Q) (Ix R S) ℂ) →ₗ[ℝ] (κ → mixedEmbedding.mixedSpace F)` to `{ toFun := fun c i => evI F ((d.e (U c)).2 i) map_add' := fun c c' => by`. Use function extensionality and compare the values at `i`. Rewrite using `[hadd, map_add]`. Conclude with `map_add (evR F) _ _`.
+
+Use the proof step `map_smul' := fun r c => by`. Use function extensionality and compare the values at `i`. Rewrite using `[hsmul, map_smul]`. Conclude with `evI_realAd_mul r _ }`. Establish `hω : ∀ c c', trPair F κ (p c) (q c') - trPair F κ (p c') (q c) = -2 * (∑ w, ∑ a, ∑ b, lineSign a b * c w a b * star (c' w a b)).im` using `fun c c' => by`.
+
+Rewrite using `[← GlobalTheory.T.archimedeanTrace_symplecticForm_orthonormalFrames σ τ JA JB a₀ b₀ A C hCM hFr (U c) (U c') c c' (hU c).1 (hU c').1 (hU c).2 (hU c').2, d.form, trPair_apply, trPair_apply, ← map_sub, ← evR_apply]`. Simplify using `only [dotProduct, map_sub, map_sum, map_mul]`. Both sides reduce to the same expression. Establish `hs : Function.Surjective (p.prod q)`. Introduce and unpack `⟨v, v'⟩`.
+
+Set `u` to `d.e.symm (fun i => infAd (v i), fun i => infAd (v' i))`. Establish `hu : At (evI F) u` using `fun t ht => by`. Rewrite using `[← map_smul, LinearEquiv.map_eq_zero_iff]`. Use extensionality with `i`. Conclude with `mul_infAd t ht _`.
+
+Conclude with `mul_infAd t ht _`. Use `choose A' hA' using fun w => (hFr.2.1 w).2`. Use `choose C' hC' using fun w => (hFr.2.2 w).2`. Establish `huc : u = U fun w => A' w * u.map (piInf (τ w)) * (C' w)ᵀ` using `hU' _ _ ⟨hu, fun w => by`. Establish `: (C' w)ᵀ * (C w)ᵀ = 1` using `by rw [← Matrix.transpose_mul, hC', Matrix.transpose_one]`.
+
+Simplify using `only [Matrix.mul_assoc]`. Rewrite using `[this, Matrix.mul_one, ← Matrix.mul_assoc, hA', Matrix.one_mul]⟩`. Use `⟨fun w => A' w * u.map (piInf (τ w)) * (C' w)ᵀ, Prod.ext (funext fun i => ?_) (funext fun i => ?_)⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `evI F ((d.e (U _)).1 i) = v i`. Rewrite using `[← huc, LinearEquiv.apply_symm_apply, evI_infAd]`.
+
+Express the relevant statement in the definitionally equal form `evI F ((d.e (U _)).2 i) = v' i`. Rewrite using `[← huc, LinearEquiv.apply_symm_apply, evI_infAd]`. Take `⟨X, Y, hX, hY, hYp, hXY⟩` from `exists_siegel (trPair F κ) p q (cplx _ P Q R S) cplx_cplx (fun c c' => by rw [hω, hω, herm_cplx]) (fun c hc => by rw [hω]; exact herm_cplx_pos c hc) hs`. Take `⟨f, hf0, hf⟩` from `exists_gaussian X Y hX hY hYp`. Use `⟨f, hf0, fun w a b u u' hu hu' hc hc' => ?_⟩` and prove the remaining obligations.
+
+Establish `e1` using `hU' _ u ⟨hu, hc⟩`. Establish `e2` using `hU' _ u' ⟨hu', hc'⟩`. Use `set c : InfinitePlace F → Matrix (Ix P Q) (Ix R S) ℂ := Pi.single w (Matrix.single a b 1) with hcdef`. Use `set c' : InfinitePlace F → Matrix (Ix P Q) (Ix R S) ℂ := Pi.single w (Matrix.single a b Complex.I) with hcdef'`. Establish `hJ : cplx _ P Q R S c = (lineSign a b).re • c'` using `cplx_single w a b`.
+
+Use extensionality with `x`. Establish `h1` using `hXY c x`. Establish `h2` using `hXY (cplx _ P Q R S c) x`. Rewrite `h2` using `[cplx_cplx]`. Rewrite `h1`, `h2` using `[hJ]`.
+
+Simplify using `only [map_smul, map_neg, smul_eq_mul] at h1 h2`. Establish `k1 : D u f x = 2 * Real.pi * Complex.I * ((X x (p c) : ℝ) + Complex.I * (Y x (p c) : ℝ)) * f x - 2 * Real.pi * Complex.I * (trPair F κ x (q c) : ℝ) * f x`. Rewrite using `[hD u hu, hf, e1]`. Both sides reduce to the same expression. Establish `k2 : D u' f x = 2 * Real.pi * Complex.I * ((X x (p c') : ℝ) + Complex.I * (Y x (p c') : ℝ)) * f x - 2 * Real.pi * Complex.I * (trPair F κ x (q c') : ℝ) * f x`.
+
+Rewrite using `[hD u' hu', hf, e2]`. Both sides reduce to the same expression. Express the relevant statement in the definitionally equal form `D u f x + (lineSign a b * Complex.I) * D u' f x = 0`. Rewrite using `[k1, k2]`. Establish `h1'` using `congrArg (fun t : ℝ => (t : ℂ)) h1`.
+
+Establish `h2'` using `congrArg (fun t : ℝ => (t : ℂ)) h2`. Establish `hl : (((lineSign a b).re : ℝ) : ℂ) = lineSign a b`. Apply the tactic sequence `rcases lineSign_cases a b with h | h <;> simp [h]`. Move the coercions through the operations in `at h1' h2'`. Rewrite `h1'`, `h2'` using `[hl]`.
+
+Take the linear combination `(2 * Real.pi * Complex.I * f x) * h1' + (2 * Real.pi * Complex.I * Complex.I * f x) * h2' + (2 * Real.pi * Complex.I * f x * lineSign a b * (Y x (p c') : ℝ)) * Complex.I_mul_I`.
+-/
 theorem exists_vacuum : ∀ {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) {α β κ : Type}
     [Fintype α] [DecidableEq α] [Fintype β] [DecidableEq β] [Fintype κ] {P Q R S : ℕ}
     (τ : ∀ w : InfinitePlace F, EmbOver E w) (JA : Matrix α α (AE F E)) (JB : Matrix β β (AE F E))

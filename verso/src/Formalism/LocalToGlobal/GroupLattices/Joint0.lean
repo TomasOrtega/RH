@@ -26,6 +26,9 @@ def FormsTiedSym.to0 {D : D7} {u : D.what₂.Word} {Ch : ℕ → Type} {chOf : �
   norm0 := T.norm 0 (Nat.zero_le _) (Or.inl rfl)
   bw0 := T.bw 0 (Nat.zero_le _) (Or.inl rfl)
 
+/- English proof (translation)
+The claim follows from `C.car0 u`.
+-/
 theorem ColsTiedSym.joint0 {D : D7} (C : ColsTiedSym D) (u : D.what₂.Word) :
     Joint0 C.herm.base.lev0 u (C.forms u).to0 := C.car0 u
 

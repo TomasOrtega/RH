@@ -5,6 +5,11 @@ open scoped Matrix
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Take `⟨t, ht⟩` from `(Module.Finite.fg_top : (⊤ : Submodule ℤ_[l] c.O).FG)`. Use `⟨t.image (↑), ?_, ?_⟩` and prove the remaining obligations. Introduce `x hx`. Take `⟨y, -, rfl⟩` from `Finset.mem_image.1 hx`. Conclude with `(Algebra.IsIntegral.isIntegral (R := ℤ_[l]) y).map c.O.val`.
+
+Introduce `x hx`. Establish `hy : (⟨x, hx⟩ : c.O) ∈ Submodule.span ℤ_[l] (t : Set c.O)` using `ht ▸ Submodule.mem_top`. Establish `h2` using `Submodule.mem_map_of_mem (f := c.O.val.toLinearMap) hy`. Rewrite `h2` using `[Submodule.map_span]`. Simplify `h2` using `[Finset.coe_image]`.
+-/
 theorem coef_span_finset {l : ℕ} [Fact l.Prime] (c : Coef l) :
     ∃ s : Finset (PadicAlgCl l), (∀ x ∈ s, IsIntegral ℤ_[l] x) ∧
       ∀ x ∈ c.O, x ∈ Submodule.span ℤ_[l] (s : Set (PadicAlgCl l)) := by
@@ -20,6 +25,15 @@ theorem coef_span_finset {l : ℕ} [Fact l.Prime] (c : Coef l) :
     rw [Submodule.map_span] at h2
     simpa [Finset.coe_image] using h2
 
+/- English proof (translation)
+Take `⟨s₁, hs₁, h₁⟩` from `coef_span_finset c₁`. Take `⟨s₂, hs₂, h₂⟩` from `coef_span_finset c₂`. Set `S : Set (PadicAlgCl l)` to `((s₁ ∪ s₂ : Finset _) : Set _)`. Set `K : IntermediateField ℚ_[l] (PadicAlgCl l)` to `IntermediateField.adjoin ℚ_[l] S`. Use `haveI : FiniteDimensional ℚ_[l] K := IntermediateField.finiteDimensional_adjoin (fun x _ => Algebra.IsIntegral.isIntegral x)`.
+
+Take `⟨h1, h2, -⟩` from `UpperTheory.V.abelian₂.dvr_intClosure l K`. Set `f : K →ₐ[ℤ_[l]] PadicAlgCl l` to `K.val.restrictScalars ℤ_[l]`. Establish `hf : Function.Injective f` using `Subtype.val_injective`. Set `e` to `(integralClosure ℤ_[l] K).equivMapOfInjective f hf`. Set `c₃ : Coef l` to `⟨(integralClosure ℤ_[l] K).map f, IsDiscreteValuationRing.RingEquivClass.isDiscreteValuationRing e, Module.Finite.equiv e.toLinearEquiv⟩`.
+
+Establish `key : ∀ (c : Coef l) (s : Finset (PadicAlgCl l)), (s : Set (PadicAlgCl l)) ⊆ S → (∀ x ∈ c.O, x ∈ Submodule.span ℤ_[l] (s : Set (PadicAlgCl l))) → c.O ≤ c₃.O`. Introduce `c s hsS hc x hx`. Establish `hspan : Submodule.span ℤ_[l] (s : Set (PadicAlgCl l)) ≤ (K.toSubalgebra.restrictScalars ℤ_[l]).toSubmodule`. Rewrite using `[Submodule.span_le]`. Introduce `y hy`.
+
+Conclude with `IntermediateField.subset_adjoin ℚ_[l] S (hsS hy)`. Establish `hxK : x ∈ K` using `hspan (hc x hx)`. Establish `hxi : IsIntegral ℤ_[l] x` using `(Algebra.IsIntegral.isIntegral (R := ℤ_[l]) (⟨x, hx⟩ : c.O)).map c.O.val`. Conclude with `⟨⟨x, hxK⟩, (isIntegral_algHom_iff f hf).1 hxi, rfl⟩`. Conclude with `⟨c₃, key c₁ s₁ (by simp [S]) h₁, key c₂ s₂ (by simp [S]) h₂⟩`.
+-/
 theorem coef_common (l : ℕ) [Fact l.Prime] (c₁ c₂ : Coef l) :
     ∃ c₃ : Coef l, c₁.O ≤ c₃.O ∧ c₂.O ≤ c₃.O := by
   classical

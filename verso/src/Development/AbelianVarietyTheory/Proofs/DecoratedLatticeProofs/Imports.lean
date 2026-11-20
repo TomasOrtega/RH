@@ -2,6 +2,13 @@ import Mathlib
 
 namespace GlobalTheory.ExistsPrimeMem
 
+/- English proof (translation)
+Introduce `n`. Proceed by induction on `n using Nat.strong_induction_on with`. Consider the case `_ n ih`. Introduce `hn hnP`. Distinguish the cases in `h1 : n = 1`.
+
+Substitute `h1` using the available equality. Conclude with `absurd ((Ideal.eq_top_iff_one P).2 (by simpa using hnP)) hP.ne_top`. Establish `hp` using `Nat.minFac_prime h1`. Establish `hpos : 0 < n` using `Nat.pos_of_ne_zero hn`. Establish `hsplit : ((n : ℕ) : A) = (n.minFac : A) * ((n / n.minFac : ℕ) : A)`.
+
+Rewrite using `[← Nat.cast_mul, Nat.mul_div_cancel' (Nat.minFac_dvd n)]`. Rewrite `hnP` using `[hsplit]`. Break down `hP.mem_or_mem hnP with h | h` into its components or cases. Conclude with `⟨n.minFac, hp, h⟩`. Conclude with `ih (n / n.minFac) (Nat.div_lt_self hpos hp.one_lt) (Nat.div_pos (Nat.minFac_le hpos) (Nat.minFac_pos n)).ne' h`.
+-/
 theorem exists_prime_mem {A : Type} [inst : CommRing A] (P : Ideal A) (hP : Ideal.IsPrime P) :
     ∀ (n : ℕ), n ≠ (0 : ℕ) → (↑n : A) ∈ P → ∃ (ℓ : ℕ), Nat.Prime ℓ ∧ (↑ℓ : A) ∈ P := by
   intro n

@@ -23,6 +23,11 @@ noncomputable section
 
 namespace GlobalTheory.Member.DomFin
 
+/- English proof (translation)
+Introduce `F _ _ Y M₀ ι _ M`. Take `⟨P, -, -, -, hdom⟩` from `GlobalTheory.LineNorm.Glue.exists_normal_dominating_finset M₀ M Finset.univ`. Use `choose ρ hρ using fun i => hdom i (Finset.mem_univ i)`. Use `⟨P, ρ, fun i => ⟨?_, hρ i⟩⟩` and prove the remaining obligations. Use `P.ar.isIntegral` as an intermediate fact.
+
+Establish `: IsDominant P.j` using `⟨(dense_iff_closure_eq.2 (genericPoint_spec P.X)).mono (Set.singleton_subset_iff.2 ⟨_, ((GlobalTheory.TrueGeo.SmallSec.j_gen_specializes P).antisymm (genericPoint_specializes _)).eq⟩)⟩`. Use `ext_of_isDominant_of_isSeparated (terminal.from _) (terminal.hom_ext _ _) P.j ?_` and prove the remaining obligations. Rewrite using `[← Category.assoc, hρ i, (M i).pb.w, P.pb.w]`.
+-/
 theorem exists_dominating_fintype : ∀ (F : Type) [Field F] [NumberField F] (Y : Var F) (M₀ : GlobalTheory.TrueGeo.Model Y)
     (ι : Type) [Fintype ι] (M : ι → GlobalTheory.TrueGeo.Model Y), ∃ (P : GlobalTheory.TrueGeo.Model Y) (π : ∀ i, P.X ⟶ (M i).X),
       ∀ i, π i ≫ (M i).p = P.p ∧ P.j ≫ π i = (M i).j := by

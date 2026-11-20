@@ -43,6 +43,9 @@ def BlockSystem.degree (S : BlockSystem dim n) : ℕ :=
 def IsBlockPolynomial (P : MvPolynomial (Letter dim n) ℂ) (D : ℕ) : Prop :=
   ∃ S : BlockSystem dim n, S.poly = P ∧ S.degree = D
 
+/- English proof (translation)
+Unfold `Block.entry`. Use `MvPolynomial.IsHomogeneous.sum _ _ _ fun k _ => ?_` and prove the remaining obligations. Simplify using `using (MvPolynomial.isHomogeneous_C _ (B.vec a k)).mul (MvPolynomial.isHomogeneous_X ℂ ((B.col b, ⟨B.emb, k⟩) : Letter dim n))`.
+-/
 theorem Block.isHomogeneous_entry (B : Block dim n) (a b : Fin B.size) :
     (B.entry a b).IsHomogeneous 1 := by
   unfold Block.entry
@@ -50,6 +53,11 @@ theorem Block.isHomogeneous_entry (B : Block dim n) (a b : Fin B.size) :
   simpa using (MvPolynomial.isHomogeneous_C _ (B.vec a k)).mul
     (MvPolynomial.isHomogeneous_X ℂ ((B.col b, ⟨B.emb, k⟩) : Letter dim n))
 
+/- English proof (translation)
+Unfold `Block.poly`. Use `MvPolynomial.IsHomogeneous.pow ?_ _` and prove the remaining obligations. Rewrite using `[Matrix.det_apply']`. Use `MvPolynomial.IsHomogeneous.sum _ _ _ fun σ _ => ?_` and prove the remaining obligations. Apply the tactic sequence `have h1 : (∏ i, (Matrix.of fun a b => B.entry a b) (σ i) i).IsHomogeneous (∑ _i : Fin B.size, 1) := MvPolynomial.IsHomogeneous.prod _ _ _ fun i _ => B.isHomogeneous_entry _ _`.
+
+Establish `h2 : (((Equiv.Perm.sign σ : ℤ) : MvPolynomial (Letter dim n) ℂ)).IsHomogeneous 0`. Use `MvPolynomial.isHomogeneous_C (Letter dim n) (((Equiv.Perm.sign σ : ℤ) : ℂ))` as an intermediate fact. Simplify using `using this`. Simplify using `using h2.mul h1`.
+-/
 theorem Block.isHomogeneous_poly (B : Block dim n) :
     B.poly.IsHomogeneous (B.size * B.expo) := by
   unfold Block.poly
@@ -64,6 +72,9 @@ theorem Block.isHomogeneous_poly (B : Block dim n) :
     simpa using this
   simpa using h2.mul h1
 
+/- English proof (translation)
+The claim follows from `MvPolynomial.IsHomogeneous.prod _ _ _ fun j _ => (S.block j).isHomogeneous_poly`.
+-/
 theorem BlockSystem.isHomogeneous_poly (S : BlockSystem dim n) :
     S.poly.IsHomogeneous S.degree :=
   MvPolynomial.IsHomogeneous.prod _ _ _ fun j _ => (S.block j).isHomogeneous_poly
@@ -84,6 +95,9 @@ def exampleSystem : BlockSystem (fun _ : Fin 2 => 2) 3 where
   block := fun _ => exampleBlock
   disjoint := Subsingleton.pairwise
 
+/- English proof (translation)
+Evaluate the decidable proposition.
+-/
 example : exampleSystem.degree = 6 := by
   decide
 
@@ -97,12 +111,30 @@ def wordDeriv (dir : Λ → W) (l : List Λ) (F : W → ℂ) (p : W) : ℂ :=
 def applyAt (dir : Λ → W) (P : MvPolynomial Λ ℂ) (F : W → ℂ) (p : W) : ℂ :=
   ∑ μ ∈ P.support, P.coeff μ * wordDeriv dir (Finsupp.toMultiset μ).toList F p
 
+/- English proof (translation)
+Substitute `h` using the available equality. Conclude with `(hF.contDiffAt (n := ⊤)).iteratedFDeriv_comp_perm (fun j => dir (v j)) σ`.
+-/
 theorem iteratedFDeriv_directions_comp_perm_of_analyticAt (dir : Λ → W) {F : W → ℂ} {p : W} (hF : AnalyticAt ℂ F p)
     {k : ℕ} (u v : Fin k → Λ) (σ : Equiv.Perm (Fin k)) (h : u = v ∘ σ) :
     iteratedFDeriv ℂ k F p (fun j => dir (u j)) = iteratedFDeriv ℂ k F p (fun j => dir (v j)) := by
   subst h
   exact (hF.contDiffAt (n := ⊤)).iteratedFDeriv_comp_perm (fun j => dir (v j)) σ
 
+/- English proof (translation)
+Establish `key : ∀ {l l' : List Λ}, l.Perm l' → ∃ e : Fin l.length ≃ Fin l'.length, ∀ j, l.get j = l'.get (e j)`. Introduce `l l' h`. Proceed by induction on `h with`. Consider the case `nil => exact ⟨Equiv.refl _, fun _ => rfl⟩`. Consider the case `cons x _ ih`.
+
+Take `⟨e, he⟩` from `ih`. Use `⟨(finSuccEquiv _).trans ((Equiv.optionCongr e).trans (finSuccEquiv _).symm), ?_⟩` and prove the remaining obligations. Introduce `j`. Use `Fin.cases ?_ (fun j => ?_) j` and prove the remaining obligations. Simplify using the standard rewrite rules.
+
+Simplify using `using he j`. Consider the case `swap x y l`. Use `⟨Equiv.swap (0 : Fin (l.length + 2)) 1, ?_⟩` and prove the remaining obligations. Introduce `j`. Use `Fin.cases ?_ (fun j => Fin.cases ?_ (fun j => ?_) j) j` and prove the remaining obligations.
+
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite using `[Equiv.swap_apply_of_ne_of_ne (Fin.succ_ne_zero _) (Fin.succ_succ_ne_one _)]`. Simplify using the standard rewrite rules. Consider the case `trans _ _ ih₁ ih₂`.
+
+Take `⟨e₁, h₁⟩` from `ih₁`. Take `⟨e₂, h₂⟩` from `ih₂`. Conclude with `⟨e₁.trans e₂, fun j => by rw [h₁, h₂]; rfl⟩`. Take `⟨e, he⟩` from `key h`. Establish `hl` using `h.length_eq`.
+
+Unfold `wordDeriv`. Establish `gen : ∀ (a b : ℕ) (_ : a = b) (u : Fin a → Λ) (v : Fin b → Λ) (e : Fin a ≃ Fin b), (∀ j, u j = v (e j)) → iteratedFDeriv ℂ a F p (fun j => dir (u j)) = iteratedFDeriv ℂ b F p (fun j => dir (v j))`. Introduce `a b hab u v e he`. Substitute `hab` using the available equality. Conclude with `iteratedFDeriv_directions_comp_perm_of_analyticAt dir hF u v e (funext he)`.
+
+Conclude with `gen _ _ hl _ _ e he`.
+-/
 theorem wordDeriv_perm (dir : Λ → W) {F : W → ℂ} {p : W} (hF : AnalyticAt ℂ F p)
     {l l' : List Λ} (h : l.Perm l') : wordDeriv dir l F p = wordDeriv dir l' F p := by
   have key : ∀ {l l' : List Λ}, l.Perm l' →
@@ -140,6 +172,9 @@ theorem wordDeriv_perm (dir : Λ → W) {F : W → ℂ} {p : W} (hF : AnalyticAt
     exact iteratedFDeriv_directions_comp_perm_of_analyticAt dir hF u v e (funext he)
   exact gen _ _ hl _ _ e he
 
+/- English proof (translation)
+Establish `h : (Finsupp.toMultiset (0 : Λ →₀ ℕ)).toList = []` using `by simp`. Simplify using `only [applyAt, MvPolynomial.support_one, Finset.sum_singleton, h]`. Simplify using `[wordDeriv]`.
+-/
 example (dir : Λ → W) (F : W → ℂ) (p : W) : applyAt dir 1 F p = F p := by
   classical
   have h : (Finsupp.toMultiset (0 : Λ →₀ ℕ)).toList = [] := by simp
@@ -184,6 +219,9 @@ def cChi (f m : ℕ) (rd : ℝ) : ℝ := 8100 * (m : ℝ) ^ 4 * (dStar f m : ℝ
 def ph (f : ℕ) (rd : ℝ) (q : ℕ) (R₀ : ℝ) (la : Set.Ioi (0 : ℝ)) : ℝ :=
   if (la : ℝ) < th f rd q R₀ then 2 * f / (rd ^ 2 * (la : ℝ) ^ 2) else 0
 
+/- English proof (translation)
+Unfold `ph`. Use `split_ifs`. Check the signs of the components of the expression. Conclude with `le_rfl`.
+-/
 theorem ph_nonneg (f : ℕ) (rd : ℝ) (q : ℕ) (R₀ : ℝ) (la : Set.Ioi (0 : ℝ)) :
     0 ≤ ph f rd q R₀ la := by
   unfold ph
@@ -285,6 +323,11 @@ def pThirteenMin (f n m : ℕ) : ℝ := 16200 * Real.pi * n * (m : ℝ) ^ 4 * (d
 
 def cCoeff (rd PP : ℝ) (D q : ℕ) : ℝ := bigR rd * PP * (D : ℝ) ^ 2 / q
 
+/- English proof (translation)
+Unfold `pTwo`. Use `Real.exp_log ?_` and prove the remaining obligations. Break down `Nat.eq_zero_or_pos (dStar f m) with h | h` into its components or cases. Simplify using `[h]`. Establish `: (0 : ℝ) < dStar f m` using `by exact_mod_cast h`.
+
+Check the signs of the components of the expression.
+-/
 theorem exp_pTwo (f m : ℕ) : Real.exp (pTwo f m) = 2 * (3 * (dStar f m : ℝ)) ^ dStar f m := by
   unfold pTwo
   refine Real.exp_log ?_
@@ -314,6 +357,11 @@ def pTwo : ℝ := WordBlockPolynomials.pTwo f P.m
 
 def pThree : ℝ := WordBlockPolynomials.pThree f r P.q P.m
 
+/- English proof (translation)
+Establish `hf : 1 ≤ f` using `le_trans (Nat.one_le_pow _ _ P.one_le_m) P.m_pow_le`. Establish `hd : (0 : ℝ) < dStar f P.m`. Use `P.one_le_m` as an intermediate fact. Conclude with `(show 0 < 2 * f * P.m by positivity)` after adjusting the coercions. Unfold `Params.jetBound WordBlockPolynomials.jetBound`.
+
+Check the signs of the components of the expression.
+-/
 theorem jetBound_pos (la : Set.Ioi (0 : ℝ)) : 0 < P.jetBound la := by
   have hf : 1 ≤ f := le_trans (Nat.one_le_pow _ _ P.one_le_m) P.m_pow_le
   have hd : (0 : ℝ) < dStar f P.m := by

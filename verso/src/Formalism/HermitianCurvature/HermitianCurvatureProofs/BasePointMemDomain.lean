@@ -17,6 +17,11 @@ section bT
 variable {V V' : Type} [AddCommGroup V] [Module ℂ V] [AddCommGroup V'] [Module ℂ V'] {T : V →ₗ[ℂ] V'}
   {S : Type} [Fintype S] [DecidableEq S]
 
+/- English proof (translation)
+Unfold `Wd.vlet Wd.Ts`. Use `arel_ins _ (brel_lift0 ?_)` and prove the remaining obligations. Use `split_ifs`. Conclude with `mrel_Tm _ hp hc hci`. Introduce `a b`.
+
+Rewrite using `[Matrix.map_apply, Matrix.map_apply]`. Conclude with `rel_star (mrel_Tm _ hp hc hci a b)`.
+-/
 theorem arel_vlet {σ : Wd.Site (Pr V)} {σ' : Wd.Site (Pr V')} (hp : Rel T σ.p σ'.p) (hc : Rel T σ.c σ'.c)
     (hci : Rel T σ.ci σ'.ci) (l : Wd.Letter ℂ S) : ARel T (Wd.vlet σ l) (Wd.vlet σ' l) := by
   unfold Wd.vlet Wd.Ts
@@ -27,6 +32,9 @@ theorem arel_vlet {σ : Wd.Site (Pr V)} {σ' : Wd.Site (Pr V')} (hp : Rel T σ.p
     rw [Matrix.map_apply, Matrix.map_apply]
     exact rel_star (mrel_Tm _ hp hc hci a b)
 
+/- English proof (translation)
+The claim follows from `| [] => by unfold Wd.bT; exact arel_one | l :: w => by unfold Wd.bT; exact arel_mul (arel_vlet hp hc hci l) (arel_bT hp hc hci w)`.
+-/
 theorem arel_bT {σ : Wd.Site (Pr V)} {σ' : Wd.Site (Pr V')} (hp : Rel T σ.p σ'.p) (hc : Rel T σ.c σ'.c)
     (hci : Rel T σ.ci σ'.ci) : ∀ w : List (Wd.Letter ℂ S), ARel T (Wd.bT σ w) (Wd.bT σ' w)
   | [] => by unfold Wd.bT; exact arel_one
@@ -36,6 +44,9 @@ end bT
 
 section pt
 
+/- English proof (translation)
+Use function extensionality and compare the values at `σ l`. Use `show PBH.consC σ c (Fin.cast hn.symm l) = (Lz (n := n)) σ l + PBH.consC 0 c (Fin.cast hn.symm l)`. Distinguish the cases in `hl : l.val = 0`. Simplify using `[PBH.consC, Lz, hl]`. Simplify using `[PBH.consC, Lz, hl]`.
+-/
 theorem base_point_eq_affine {n ρ : ℕ} (hn : 1 + ρ = n) (c : Fin ρ → ℂ) : pt0 hn c = fun σ => Lz (n := n) σ + pt0 hn c 0 := by
   funext σ l
   show PBH.consC σ c (Fin.cast hn.symm l) = (Lz (n := n)) σ l + PBH.consC 0 c (Fin.cast hn.symm l)
@@ -43,10 +54,16 @@ theorem base_point_eq_affine {n ρ : ℕ} (hn : 1 + ρ = n) (c : Fin ρ → ℂ)
   · simp [PBH.consC, Lz, hl]
   · simp [PBH.consC, Lz, hl]
 
+/- English proof (translation)
+Rewrite using `[base_point_eq_affine hn c]`. Conclude with `(Lz (n := n)).contDiff.add contDiff_const`.
+-/
 theorem contDiff_base_point {n ρ : ℕ} (hn : 1 + ρ = n) (c : Fin ρ → ℂ) : ContDiff ℝ ∞ (pt0 hn c) := by
   rw [base_point_eq_affine hn c]
   exact (Lz (n := n)).contDiff.add contDiff_const
 
+/- English proof (translation)
+Establish `h1 : ContDiffAt ℝ ∞ (fun σ : ℂ => ‖σ‖) τ` using `contDiffAt_norm ℝ hτ`. Establish `h2` using `(h1.pow m).inv (pow_ne_zero m (norm_ne_zero_iff.2 hτ))`. Conclude with `Complex.ofRealCLM.contDiff.contDiffAt.comp τ h2`.
+-/
 theorem contDiffAt_gauge {τ : ℂ} (hτ : τ ≠ 0) (m : ℕ) :
     ContDiffAt ℝ ∞ (fun σ : ℂ => ((((‖σ‖ ^ m)⁻¹ : ℝ)) : ℂ)) τ := by
   have h1 : ContDiffAt ℝ ∞ (fun σ : ℂ => ‖σ‖) τ := contDiffAt_norm ℝ hτ
@@ -60,6 +77,11 @@ section read
 variable {k n ρ : ℕ} {Wp Wq : Type} [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp] [NormedAddCommGroup Wq]
   [InnerProductSpace ℂ Wq]
 
+/- English proof (translation)
+Substitute `hn` using the available equality. Rewrite `hz`, `hz'` using `[Formalism.FourierDecayAlt.P.JCTx5.castV_rfl]`. Substitute `hz hz'` using the available equality. Establish `e : pt0 rfl y.1 τ = PBH.consC τ y.1` using `funext fun l => by simp [pt0]`. Rewrite using `[e, Formalism.FourierDecayAlt.P.Dx2.MN.castM_rfl]`.
+
+Conclude with `(PBH.domR_iota hτ zs zs' y.1 y.2).2 hy`.
+-/
 theorem base_point_mem_domain (hn : 1 + ρ = n) {z z' : Fin (2 * n + k + 1) → ℂ} {zs zs' : Fin (2 * ρ + k + 1) → ℂ}
     (hz : z = D.castV hn (liftVec k 1 ρ zs)) (hz' : z' = D.castV hn (liftVec k 1 ρ zs'))
     {y : (Fin ρ → ℂ) × Mx k ρ} (hy : y ∈ DomR k ρ zs zs') {τ : ℂ} (hτ : τ ≠ 0) :
@@ -76,6 +98,11 @@ def rdF (hn : 1 + ρ = n) (y : (Fin ρ → ℂ) × Mx k ρ) (Φ : Fn k n (Wq →
 
 variable {π : Mx k n → (Wp →L[ℂ] Wp)} {π' : Mx k n → (Wq →L[ℂ] Wq)}
 
+/- English proof (translation)
+Introduce `τ0 hτ0`. Take `⟨U, F, hU, hxU, hF, hΦF⟩` from `hΦ.2.1 _ (hdom τ0 hτ0)`. Set `φ : ℂ → (Fin n → ℂ) × Mx k n` to `fun τ => (pt0 hn y.1 τ, D.castM hn (ιLev k 1 ρ y.2))`. Establish `hφ : ContDiff ℝ ∞ φ` using `(contDiff_base_point hn y.1).prodMk contDiff_const`. Establish `hFat : ContDiffAt ℝ ∞ F (φ τ0)` using `hF.contDiffAt (hU.mem_nhds hxU)`.
+
+Establish `hcomp : ContDiffAt ℝ ∞ (F ∘ φ) τ0` using `hFat.comp τ0 hφ.contDiffAt`. Establish `heq : (fun τ => Φ (pt0 hn y.1 τ) (D.castM hn (ιLev k 1 ρ y.2))) =ᶠ[𝓝 τ0] F ∘ φ` using `by filter_upwards [hφ.continuous.continuousAt.preimage_mem_nhds (hU.mem_nhds hxU)] with τ hτ`. Conclude with `hΦF (φ τ) hτ (hdom τ0 hτ0).2.1`. Conclude with `(hcomp.congr_of_eventuallyEq heq).contDiffWithinAt`.
+-/
 theorem rd_smooth (hn : 1 + ρ = n) {z z' : Fin (2 * n + k + 1) → ℂ} {y : (Fin ρ → ℂ) × Mx k ρ}
     (hdom : ∀ τ : ℂ, τ ≠ 0 → (pt0 hn y.1 τ, D.castM hn (ιLev k 1 ρ y.2)) ∈ DomR k n z z')
     {Φ : Fn k n (Wq →L[ℂ] Wp)} (hΦ : Φ ∈ RadSp k n z z' π π') :
@@ -91,6 +118,9 @@ theorem rd_smooth (hn : 1 + ρ = n) {z z' : Fin (2 * n + k + 1) → ℂ} {y : (F
     exact hΦF (φ τ) hτ (hdom τ0 hτ0).2.1
   exact (hcomp.congr_of_eventuallyEq heq).contDiffWithinAt
 
+/- English proof (translation)
+Introduce `τ0 hτ0`. Conclude with `((contDiffAt_gauge hτ0 _).smul ((rd_smooth hn hdom hΦ).contDiffAt (isOpen_ne.mem_nhds hτ0))).contDiffWithinAt`.
+-/
 theorem rd_raw_smooth (hn : 1 + ρ = n) {z z' : Fin (2 * n + k + 1) → ℂ} {y : (Fin ρ → ℂ) × Mx k ρ}
     (hdom : ∀ τ : ℂ, τ ≠ 0 → (pt0 hn y.1 τ, D.castM hn (ιLev k 1 ρ y.2)) ∈ DomR k n z z')
     {Φ : Fn k n (Wq →L[ℂ] Wp)} (hΦ : Φ ∈ RadSp k n z z' π π') :
@@ -100,6 +130,9 @@ theorem rd_raw_smooth (hn : 1 + ρ = n) {z z' : Fin (2 * n + k + 1) → ℂ} {y 
   exact ((contDiffAt_gauge hτ0 _).smul ((rd_smooth hn hdom hΦ).contDiffAt
     (isOpen_ne.mem_nhds hτ0))).contDiffWithinAt
 
+/- English proof (translation)
+The claim follows from `off_zero_mem_punctured_smooth (rd_raw_smooth hn hdom hΦ)`.
+-/
 theorem rd_mem (hn : 1 + ρ = n) {z z' : Fin (2 * n + k + 1) → ℂ} {y : (Fin ρ → ℂ) × Mx k ρ}
     (hdom : ∀ τ : ℂ, τ ≠ 0 → (pt0 hn y.1 τ, D.castM hn (ιLev k 1 ρ y.2)) ∈ DomR k n z z')
     {Φ : Fn k n (Wq →L[ℂ] Wp)} (hΦ : Φ ∈ RadSp k n z z' π π') : rdF hn y Φ ∈ V1 (Wq →L[ℂ] Wp) :=
@@ -124,9 +157,15 @@ section congr
 
 variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℂ E]
 
+/- English proof (translation)
+Unfold `dz`. Rewrite using `[h.fderiv_eq]`.
+-/
 theorem dz_congr {f g : ℂ → E} {τ : ℂ} (h : f =ᶠ[𝓝 τ] g) : dz f τ = dz g τ := by
   unfold dz; rw [h.fderiv_eq]
 
+/- English proof (translation)
+Unfold `dzb`. Rewrite using `[h.fderiv_eq]`.
+-/
 theorem dzb_congr {f g : ℂ → E} {τ : ℂ} (h : f =ᶠ[𝓝 τ] g) : dzb f τ = dzb g τ := by
   unfold dzb; rw [h.fderiv_eq]
 
@@ -138,14 +177,23 @@ variable (hn : 1 + ρ = n) {z z' : Fin (2 * n + k + 1) → ℂ} (y : (Fin ρ →
   (hdom : ∀ τ : ℂ, τ ≠ 0 → (pt0 hn y.1 τ, D.castM hn (ιLev k 1 ρ y.2)) ∈ DomR k n z z')
 
 include hc in
+/- English proof (translation)
+Simplify using `[rdL, rdF, off0, hτ]`.
+-/
 theorem rd_apply_ne (Φ : RadSp k n z z' π π') {τ : ℂ} (hτ : τ ≠ 0) :
     (rdL hn y hdom Φ).1 τ = ((((‖τ‖ ^ (2 * n + k))⁻¹ : ℝ)) : ℂ) •
       (Φ : Fn k n (Wq →L[ℂ] Wp)) (pt0 hn y.1 τ) (D.castM hn (ιLev k 1 ρ y.2)) := by
   simp [rdL, rdF, off0, hτ]
 
+/- English proof (translation)
+Simplify using `[rdL, rdF, off0]`.
+-/
 theorem rd_apply_zero (Φ : RadSp k n z z' π π') : (rdL hn y hdom Φ).1 0 = 0 := by
   simp [rdL, rdF, off0]
 
+/- English proof (translation)
+Use `filter_upwards [isOpen_ne.mem_nhds hτ] with σ hσ`. Establish `hσ' : σ ≠ 0` using `hσ`. Establish `hn0 : ‖σ‖ ^ (2 * n + k) ≠ 0` using `pow_ne_zero _ (norm_ne_zero_iff.2 hσ')`. Simplify using `only [rdL, LinearMap.coe_mk, AddHom.coe_mk, rdF, off0, hσ', if_false, smul_smul, ← Complex.ofReal_mul, mul_inv_cancel₀ hn0, Complex.ofReal_one, one_smul]`.
+-/
 theorem raw_ev (Φ : RadSp k n z z' π π') {τ : ℂ} (hτ : τ ≠ 0) :
     (fun σ => (Φ : Fn k n (Wq →L[ℂ] Wp)) (pt0 hn y.1 σ) (D.castM hn (ιLev k 1 ρ y.2))) =ᶠ[𝓝 τ]
       fun σ => ((‖σ‖ ^ (2 * n + k) : ℝ) : ℂ) • (rdL hn y hdom Φ).1 σ := by
@@ -155,6 +203,9 @@ theorem raw_ev (Φ : RadSp k n z z' π π') {τ : ℂ} (hτ : τ ≠ 0) :
   simp only [rdL, LinearMap.coe_mk, AddHom.coe_mk, rdF, off0, hσ', if_false, smul_smul, ← Complex.ofReal_mul,
     mul_inv_cancel₀ hn0, Complex.ofReal_one, one_smul]
 
+/- English proof (translation)
+The claim follows from `differentiableAt_of_punctured_smooth (rdL hn y hdom Φ).2 hτ`.
+-/
 theorem rd_diff (Φ : RadSp k n z z' π π') {τ : ℂ} (hτ : τ ≠ 0) :
     DifferentiableAt ℝ (rdL hn y hdom Φ).1 τ :=
   differentiableAt_of_punctured_smooth (rdL hn y hdom Φ).2 hτ
@@ -162,6 +213,11 @@ theorem rd_diff (Φ : RadSp k n z z' π π') {τ : ℂ} (hτ : τ ≠ 0) :
 variable (X : ActualOps k n z z' π π')
 
 include hc in
+/- English proof (translation)
+Distinguish the cases in `hτ : τ = 0`. Substitute `hτ` using the available equality. Rewrite using `[rd_apply_zero]`. Simplify using `[off0]`. Establish `hf : DifferentiableAt ℝ (fun c' => (Φ : Fn k n (Wq →L[ℂ] Wp)) c' (D.castM hn (ιLev k 1 ρ y.2))) (pt0 hn y.1 τ)` using `PBH.diff_rad Φ.2 _ (pointWithZeroSecondCoord_mem_chart_of_restricted hn hc hτ)`.
+
+Rewrite using `[rd_apply_ne hn y hc hdom _ hτ, X.op_apply]`. Simplify using `only [off0, hτ, if_false]`. Express the relevant statement in the definitionally equal form `((((‖τ‖ ^ (2 * n + k))⁻¹ : ℝ)) : ℂ) • opL (⟨0, by omega⟩ : Fin n) 0 (fun c' => (Φ : Fn k n (Wq →L[ℂ] Wp)) c' (D.castM hn (ιLev k 1 ρ y.2))) (pt0 hn y.1 τ) = _`. Rewrite using `[(operators_at_base_point hn hc hτ _ hf).1, dz_congr (raw_ev hn y hdom Φ hτ), dz_gauge hτ _ (rd_diff hn y hdom Φ hτ), smul_smul, ← Complex.ofReal_mul, inv_mul_cancel₀ (pow_ne_zero _ (norm_ne_zero_iff.2 hτ)), Complex.ofReal_one, one_smul]`.
+-/
 theorem rd_op_p (Φ : RadSp k n z z' π π') (τ : ℂ) :
     (rdL hn y hdom (X.op ⟨0, by omega⟩ 0 Φ)).1 τ =
       off0 (fun τ => τ • dz (rdL hn y hdom Φ).1 τ + (((2 * n + k : ℕ) : ℂ) / 2) • (rdL hn y hdom Φ).1 τ) τ := by
@@ -178,6 +234,11 @@ theorem rd_op_p (Φ : RadSp k n z z' π π') (τ : ℂ) :
     inv_mul_cancel₀ (pow_ne_zero _ (norm_ne_zero_iff.2 hτ)), Complex.ofReal_one, one_smul]
 
 include hc in
+/- English proof (translation)
+Distinguish the cases in `hτ : τ = 0`. Substitute `hτ` using the available equality. Rewrite using `[rd_apply_zero]`. Simplify using `[off0]`. Establish `hf : DifferentiableAt ℝ (fun c' => (Φ : Fn k n (Wq →L[ℂ] Wp)) c' (D.castM hn (ιLev k 1 ρ y.2))) (pt0 hn y.1 τ)` using `PBH.diff_rad Φ.2 _ (pointWithZeroSecondCoord_mem_chart_of_restricted hn hc hτ)`.
+
+Rewrite using `[rd_apply_ne hn y hc hdom _ hτ, X.op_apply]`. Simplify using `only [off0, hτ, if_false]`. Express the relevant statement in the definitionally equal form `((((‖τ‖ ^ (2 * n + k))⁻¹ : ℝ)) : ℂ) • opL (⟨0, by omega⟩ : Fin n) 3 (fun c' => (Φ : Fn k n (Wq →L[ℂ] Wp)) c' (D.castM hn (ιLev k 1 ρ y.2))) (pt0 hn y.1 τ) = _`. Rewrite using `[(operators_at_base_point hn hc hτ _ hf).2.2.2.1, dzb_congr (raw_ev hn y hdom Φ hτ), dzb_gauge hτ _ (rd_diff hn y hdom Φ hτ), smul_smul, ← Complex.ofReal_mul, inv_mul_cancel₀ (pow_ne_zero _ (norm_ne_zero_iff.2 hτ)), Complex.ofReal_one, one_smul]`.
+-/
 theorem rd_op_pb (Φ : RadSp k n z z' π π') (τ : ℂ) :
     (rdL hn y hdom (X.op ⟨0, by omega⟩ 3 Φ)).1 τ =
       off0 (fun τ => conj τ • dzb (rdL hn y hdom Φ).1 τ + (((2 * n + k : ℕ) : ℂ) / 2) • (rdL hn y hdom Φ).1 τ) τ := by
@@ -194,6 +255,11 @@ theorem rd_op_pb (Φ : RadSp k n z z' π π') (τ : ℂ) :
     inv_mul_cancel₀ (pow_ne_zero _ (norm_ne_zero_iff.2 hτ)), Complex.ofReal_one, one_smul]
 
 include hc in
+/- English proof (translation)
+Distinguish the cases in `hτ : τ = 0`. Substitute `hτ` using the available equality. Rewrite using `[rd_apply_zero, rd_apply_zero, smul_zero]`. Rewrite using `[rd_apply_ne hn y hc hdom _ hτ, rd_apply_ne hn y hc hdom _ hτ, X.op_apply]`. Express the relevant statement in the definitionally equal form `((((‖τ‖ ^ (2 * n + k))⁻¹ : ℝ)) : ℂ) • opL (⟨0, by omega⟩ : Fin n) i (fun c' => (Φ : Fn k n (Wq →L[ℂ] Wp)) c' (D.castM hn (ιLev k 1 ρ y.2))) (pt0 hn y.1 τ) = _`.
+
+Rewrite using `[hm τ hτ, smul_comm]`.
+-/
 theorem rd_op_mul (Φ : RadSp k n z z' π π') (i : Fin 6) (m : ℂ → ℂ)
     (hm : ∀ τ, τ ≠ 0 → opL (⟨0, by omega⟩ : Fin n) i
       (fun c' => (Φ : Fn k n (Wq →L[ℂ] Wp)) c' (D.castM hn (ιLev k 1 ρ y.2))) (pt0 hn y.1 τ) =
@@ -217,6 +283,9 @@ variable (hn : 1 + ρ = n) {z z' : Fin (2 * n + k + 1) → ℂ} (y : (Fin ρ →
 def kapM (n k : ℕ) : ℂ := ((2 * n + k : ℕ) : ℂ) / 2
 
 include hc in
+/- English proof (translation)
+Use `rel_mk (fun Φ => ?_) (fun Φ => ?_)` and prove the remaining obligations. Conclude with `Subtype.ext (funext fun τ => (rd_op_p hn y hc hdom X Φ τ).symm)`. Rewrite using `[LinearMap.neg_apply, LinearMap.neg_apply, map_neg]`. Conclude with `congrArg Neg.neg (Subtype.ext (funext fun τ => (rd_op_pb hn y hc hdom X Φ τ).symm))`.
+-/
 theorem rel_p : Rel (rdL hn y hdom) (mkP (X.op ⟨0, by omega⟩ 0) (-X.op ⟨0, by omega⟩ 3))
     (site1 (E := Wq →L[ℂ] Wp) (kapM n k)).p := by
   refine rel_mk (fun Φ => ?_) (fun Φ => ?_)
@@ -225,6 +294,9 @@ theorem rel_p : Rel (rdL hn y hdom) (mkP (X.op ⟨0, by omega⟩ 0) (-X.op ⟨0,
     exact congrArg Neg.neg (Subtype.ext (funext fun τ => (rd_op_pb hn y hc hdom X Φ τ).symm))
 
 include hc in
+/- English proof (translation)
+Use `rel_mk (fun Φ => ?_) (fun Φ => ?_)` and prove the remaining obligations. Conclude with `Subtype.ext (funext fun τ => (rd_op_mul hn y hc hdom X Φ i m (h1 Φ) τ).symm)`. Conclude with `Subtype.ext (funext fun τ => (rd_op_mul hn y hc hdom X Φ i' m' (h2 Φ) τ).symm)`.
+-/
 theorem rel_mulop (i i' : Fin 6) (m m' : ℂ → ℂ) (hm : ContDiffOn ℝ ∞ m {τ | τ ≠ 0})
     (hm' : ContDiffOn ℝ ∞ m' {τ | τ ≠ 0})
     (h1 : ∀ (Φ : RadSp k n z z' π π') τ, τ ≠ 0 → opL (⟨0, by omega⟩ : Fin n) i
@@ -240,6 +312,9 @@ theorem rel_mulop (i i' : Fin 6) (m m' : ℂ → ℂ) (hm : ContDiffOn ℝ ∞ m
   · exact Subtype.ext (funext fun τ => (rd_op_mul hn y hc hdom X Φ i' m' (h2 Φ) τ).symm)
 
 include hc in
+/- English proof (translation)
+The claim follows from `rel_mulop hn y hc hdom X 1 4 _ _ cd_id cd_conj (fun Φ τ hτ => (operators_at_base_point hn hc hτ _ (PBH.diff_rad Φ.2 _ (pointWithZeroSecondCoord_mem_chart_of_restricted hn hc hτ))).2.1) (fun Φ τ hτ => (operators_at_base_point hn hc hτ _ (PBH.diff_rad Φ.2 _ (pointWithZeroSecondCoor …`.
+-/
 theorem rel_c : Rel (rdL hn y hdom) (mkP (X.op ⟨0, by omega⟩ 1) (X.op ⟨0, by omega⟩ 4))
     (site1 (E := Wq →L[ℂ] Wp) (kapM n k)).c :=
   rel_mulop hn y hc hdom X 1 4 _ _ cd_id cd_conj
@@ -247,6 +322,9 @@ theorem rel_c : Rel (rdL hn y hdom) (mkP (X.op ⟨0, by omega⟩ 1) (X.op ⟨0, 
     (fun Φ τ hτ => (operators_at_base_point hn hc hτ _ (PBH.diff_rad Φ.2 _ (pointWithZeroSecondCoord_mem_chart_of_restricted hn hc hτ))).2.2.2.2.1)
 
 include hc in
+/- English proof (translation)
+The claim follows from `rel_mulop hn y hc hdom X 2 5 _ _ cd_inv cd_conjinv (fun Φ τ hτ => (operators_at_base_point hn hc hτ _ (PBH.diff_rad Φ.2 _ (pointWithZeroSecondCoord_mem_chart_of_restricted hn hc hτ))).2.2.1) (fun Φ τ hτ => (operators_at_base_point hn hc hτ _ (PBH.diff_rad Φ.2 _ (pointWithZeroSeco …`.
+-/
 theorem rel_ci : Rel (rdL hn y hdom) (mkP (X.op ⟨0, by omega⟩ 2) (X.op ⟨0, by omega⟩ 5))
     (site1 (E := Wq →L[ℂ] Wp) (kapM n k)).ci :=
   rel_mulop hn y hc hdom X 2 5 _ _ cd_inv cd_conjinv
@@ -255,6 +333,11 @@ theorem rel_ci : Rel (rdL hn y hdom) (mkP (X.op ⟨0, by omega⟩ 2) (X.op ⟨0,
 
 include hc in
 
+/- English proof (translation)
+Establish `hp : Rel (rdL hn y hdom) (P5.site L ⟨0, by omega⟩).p (site1 (kapM n k)).p` using `by show Rel _ (L.p _) _`. Rewrite using `[hL.1]`. Conclude with `rel_p hn y hc hdom X`. Establish `hcc : Rel (rdL hn y hdom) (P5.site L ⟨0, by omega⟩).c (site1 (kapM n k)).c` using `by show Rel _ (L.c _) _`. Rewrite using `[hL.2.2.1]`.
+
+Conclude with `rel_c hn y hc hdom X`. Establish `hci : Rel (rdL hn y hdom) (P5.site L ⟨0, by omega⟩).ci (site1 (kapM n k)).ci` using `by show Rel _ (L.ci _) _`. Rewrite using `[hL.2.2.2.1]`. Conclude with `rel_ci hn y hc hdom X`. Conclude with `act_tr (arel_bT hp hcc hci w) x e`.
+-/
 theorem rd_act {L : R.LevelData (Pr (RadSp k n z z' π π')) n} (hL : IsActualLevel X L)
     {S : Type} [Fintype S] [DecidableEq S] (w : List (Wd.Letter ℂ S)) (x : Wd.Ix S → RadSp k n z z' π π')
     (e : Wd.Ix S) :
@@ -271,6 +354,9 @@ theorem rd_act {L : R.LevelData (Pr (RadSp k n z z' π π')) n} (hL : IsActualLe
     rw [hL.2.2.2.1]; exact rel_ci hn y hc hdom X
   exact act_tr (arel_bT hp hcc hci w) x e
 
+/- English proof (translation)
+The claim follows from `(raw_ev hn y hdom Φ ht).self_of_nhds`.
+-/
 theorem raw_eq (Φ : RadSp k n z z' π π') {t : ℂ} (ht : t ≠ 0) :
     (Φ : Fn k n (Wq →L[ℂ] Wp)) (pt0 hn y.1 t) (D.castM hn (ιLev k 1 ρ y.2)) =
       ((‖t‖ ^ (2 * n + k) : ℝ) : ℂ) • (rdL hn y hdom Φ).1 t :=

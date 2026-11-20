@@ -6,14 +6,25 @@ import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ChosenInjectiveReso
 
 open CategoryTheory Limits AlgebraicGeometry Opposite CochainComplex CochainComplex.HomComplex GlobalTheory.EtC UpperTheory.Pbf UpperTheory.Blow
 
+/- English proof (translation)
+Substitute `a` using the available equality. Substitute `b` using the available equality. Substitute `c` using the available equality. Substitute `d` using the available equality. Both sides reduce to the same expression.
+-/
 private theorem ht_cast_cast' {q : ℕ} {E : Spc} {n i n' i' n'' i'' : ℤ} (x : Ht q E n i) (a : n = n') (b : i = i')
     (c : n' = n'') (d : i' = i'') : (x.cast a b).cast c d = x.cast (a.trans c) (b.trans d) := by
   subst a; subst b; subst c; subst d; rfl
 
+/- English proof (translation)
+Substitute `hn` using the available equality. Substitute `hi` using the available equality. Both sides reduce to the same expression.
+-/
 private theorem cup_cast_left' {q : ℕ} {E : Spc} {n m i j n' i' : ℤ} (x : Ht q E n i) (b : Ht q E m j) (hn : n = n')
     (hi : i = i') : cup q (x.cast hn hi) b = (cup q x b).cast (congrArg (· + m) hn) (congrArg (· + j) hi) := by
   subst hn; subst hi; rfl
 
+/- English proof (translation)
+Establish `inj` using `(GlobalTheory.T.chosenInjectiveResolutionEtaleSheaf_basic_properties (ZMod q) (tw q 1)).1`. Establish `hz : cup q ξ (ξ - h) = 0` using `GlobalTheory.T.cupProduct_eq_zero_of_vanishing_on_cover (ZMod q) (twPair q 1 1) inj inj g₁ g₂ hc _ ξ (ξ - h) h₁ (by`. Rewrite using `[map_sub]`. Conclude with `sub_eq_zero.mpr h₂)`. Rewrite `hz` using `[map_sub, sub_eq_zero]`.
+
+Rewrite using `[hz, GlobalTheory.T.tateTwistCupProduct_graded_comm q B ξ h]`. Evaluate the numerical expressions. Rewrite using `[Int.negOnePow_even 4 ⟨2, rfl⟩, one_smul]`. Both sides reduce to the same expression.
+-/
 private theorem cup_self_eq (q : ℕ) [NeZero q] {U V B : Spc} (g₁ : U ⟶ B) (g₂ : V ⟶ B) (ξ h : Ht q B 2 1)
     (hc : Cover2 (ZMod q) g₁ g₂) (h₁ : pull _ g₁ _ _ ξ = 0) (h₂ : pull _ g₂ _ _ ξ = pull _ g₂ _ _ h) :
     cup q ξ ξ = cup q h ξ := by
@@ -28,6 +39,11 @@ private theorem cup_self_eq (q : ℕ) [NeZero q] {U V B : Spc} (g₁ : U ⟶ B) 
   rw [Int.negOnePow_even 4 ⟨2, rfl⟩, one_smul]
   rfl
 
+/- English proof (translation)
+Introduce `q _ U V B g₁ g₂ ξ h _ hc h₁ h₂ j`. Proceed by induction on `j with`. Consider the case `zero`. Rewrite using `[cpow_succ]`. Both sides reduce to the same expression.
+
+Consider the case `succ j ih`. Rewrite using `[cpow_succ q ξ (j + 1), ih, cup_cast_left', ht_cast_cast', GlobalTheory.T.tateTwistCupProduct_assoc, ht_cast_cast', cup_self_eq q g₁ g₂ ξ h hc h₁ h₂]`. Rewrite using `[cpow_succ q h j, cup_cast_left', ht_cast_cast', GlobalTheory.T.tateTwistCupProduct_assoc, ht_cast_cast']`.
+-/
 theorem UpperTheory.cpow_succ_eq_cup_of_two_cover :
     ∀ (q : ℕ) [NeZero q] {U V B : Spc} (g₁ : U ⟶ B) (g₂ : V ⟶ B) (ξ h : Ht q B 2 1), Inv q B → Cover2 (ZMod q) g₁ g₂ →
         pull _ g₁ _ _ ξ = 0 → pull _ g₂ _ _ ξ = pull _ g₂ _ _ h →

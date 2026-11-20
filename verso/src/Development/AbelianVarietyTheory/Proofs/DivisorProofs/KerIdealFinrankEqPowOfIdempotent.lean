@@ -7,6 +7,19 @@ open CategoryTheory TensorProduct Coalgebra Bialgebra GlobalTheory GlobalTheory.
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Establish `h1 : a 1 * b 1 = p ^ h` using `by simpa using hab 1`. Take `⟨s, hs, hs'⟩` from `(Nat.dvd_prime_pow hp).1 (Dvd.intro _ h1)`. Take `⟨t, ht, ht'⟩` from `(Nat.dvd_prime_pow hp).1 (Dvd.intro_left _ h1)`. Establish `h0 : a 0 * b 0 = 1` using `by simpa using hab 0`. Establish `ha0 : a 0 = 1` using `Nat.eq_one_of_mul_eq_one_right h0`.
+
+Establish `hb0 : b 0 = 1` using `Nat.eq_one_of_mul_eq_one_left h0`. Establish `hst : s + t = h`. Rewrite `h1` using `[hs', ht', ← pow_add]`. Conclude with `Nat.pow_right_injective hp.two_le h1`. Establish `hale : ∀ n, a n ≤ p ^ (n * s)`.
+
+Introduce `n`. Proceed by induction on `n with`. Consider the case `zero => simp [ha0]`. Consider the case `succ n ih`. Combine the equalities or inequalities in the displayed calculation.
+
+Establish `hble : ∀ n, b n ≤ p ^ (n * t)`. Introduce `n`. Proceed by induction on `n with`. Consider the case `zero => simp [hb0]`. Consider the case `succ n ih`.
+
+Combine the equalities or inequalities in the displayed calculation. Use `⟨s, fun n => ?_⟩` and prove the remaining obligations. Assume the negation of the conclusion as `hne`. Establish `hlt : a n < p ^ (n * s)` using `lt_of_le_of_ne (hale n) hne`. Establish `hpos : 0 < p ^ (n * t)` using `pow_pos hp.pos _`.
+
+Establish `key : a n * b n < p ^ (n * s) * p ^ (n * t)`. Combine the equalities or inequalities in the displayed calculation. Rewrite `key` using `[hab n, ← pow_add, ← Nat.mul_add, hst]`. Conclude with `lt_irrefl _ key`.
+-/
 theorem natSeq_pow_of_mul_eq {p h : ℕ} (hp : p.Prime) (a b : ℕ → ℕ)
     (hab : ∀ n, a n * b n = p ^ (n * h))
     (ha : ∀ n, a (n + 1) ≤ a 1 * a n) (hb : ∀ n, b (n + 1) ≤ b 1 * b n) :
@@ -46,6 +59,9 @@ theorem natSeq_pow_of_mul_eq {p h : ℕ} (hp : p.Prime) (a b : ℕ → ℕ)
   rw [hab n, ← pow_add, ← Nat.mul_add, hst] at key
   exact lt_irrefl _ key
 
+/- English proof (translation)
+Introduce `p _ k _ G u v huv h1 h2`. Conclude with `natSeq_pow_of_mul_eq (Fact.out : p.Prime) (fun n => Module.finrank k (G.A n ⧸ kerIdeal (u.app n))) (fun n => Module.finrank k (G.A n ⧸ kerIdeal (v.app n))) (GlobalTheory.T.finrank_kernelIdeal_mul_of_idempotents p k G u v huv h1 h2) (GlobalTheory.T.finrank_kernelIdeal_succ_le_mul_ …`.
+-/
 theorem kerIdeal_finrank_eq_pow_of_idempotent : ∀ (p : ℕ) [Fact p.Prime] (k : Type) [Field k]
     (G : PDivGroup p k) (u v : G ⟶ G), u + v = 𝟙 G → u ≫ v = 0 → v ≫ u = 0 →
     ∃ h₀ : ℕ, ∀ n : ℕ, Module.finrank k (G.A n ⧸ kerIdeal (u.app n)) = p ^ (n * h₀) := by

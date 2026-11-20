@@ -14,6 +14,15 @@ open GlobalTheory.KeyPow GlobalTheory.KeyFam GlobalTheory.ZM GlobalTheory.AbLaw
 
 namespace GlobalTheory.EtaleLocInj
 
+/- English proof (translation)
+Use `algebraize [φ]`. Take `⟨t, ht, h1⟩` from `(Algebra.FormallyUnramified.iff_exists_tensorProduct (R := R) (S := S)).1 inferInstance`. Take `⟨s, rfl⟩` from `TensorProduct.exists_finset t`. Use `⟨s, ?_, fun e e' hee hne => ?_⟩` and prove the remaining obligations. Simplify `h1` using `[map_sum]`.
+
+Use `letI : Algebra R ℂ := (e.comp φ).toAlgebra`. Set `a : S →ₐ[R] ℂ` to `{ e with commutes' := fun _ => rfl }`. Set `a' : S →ₐ[R] ℂ` to `{ e' with commutes' := fun r => (RingHom.congr_fun hee r).symm }`. Set `F` to `Algebra.TensorProduct.lift a a' (fun _ _ => Commute.all _ _)`. Use extensionality with `x`.
+
+Establish `h2` using `congrArg F (ht x)`. Simplify using `only [F, map_mul, map_sub, map_sum, Algebra.TensorProduct.lift_tmul, map_one, map_zero] at h2`. Break down `mul_eq_zero.1 h2 with h3 | h3` into its components or cases. Establish `h4` using `(sub_eq_zero.1 h3).symm`. Rewrite `h4` using `[_root_.one_mul, _root_.mul_one]`.
+
+Conclude with `h4`. Conclude with `(hne h3).elim`.
+-/
 theorem exists_separating_pairs {R S : Type} [CommRing R] [CommRing S] (φ : R →+* S) (h : φ.Etale) :
     ∃ s : Finset (S × S), ∑ p ∈ s, p.1 * p.2 = 1 ∧ ∀ e e' : S →+* ℂ, e.comp φ = e'.comp φ →
       ∑ p ∈ s, e p.1 * e' p.2 ≠ 0 → e = e' := by
@@ -35,6 +44,9 @@ theorem exists_separating_pairs {R S : Type} [CommRing R] [CommRing S] (φ : R �
       exact h4
     · exact (hne h3).elim
 
+/- English proof (translation)
+Rewrite using `[← AffinePointValues.specMap_appLE_fromSpec hU (R := CommRingCat.of ℂ) x h, ← AffinePointValues.specMap_appLE_fromSpec hU (R := CommRingCat.of ℂ) x' h']`. Use `congr 2`. Use `ext1`. Conclude with `e`.
+-/
 theorem eq_of_valAtHom_eq {X : Scheme.{0}} {U : X.Opens} (hU : IsAffineOpen U) (x x' : Sp ℂ ⟶ X)
     (h : ⊤ ≤ x ⁻¹ᵁ U) (h' : ⊤ ≤ x' ⁻¹ᵁ U) (e : valAtHom x U h = valAtHom x' U h') : x = x' := by
   rw [← AffinePointValues.specMap_appLE_fromSpec hU (R := CommRingCat.of ℂ) x h,
@@ -43,6 +55,19 @@ theorem eq_of_valAtHom_eq {X : Scheme.{0}} {U : X.Opens} (hU : IsAffineOpen U) (
   ext1
   exact e
 
+/- English proof (translation)
+Introduce `X Y π m B y b₀ hπ _ hb₀ hy`. Take `⟨_, ⟨V, hV, rfl⟩, hxV, -⟩` from `Y.isBasis_affineOpens.exists_subset_of_mem_open (Set.mem_univ (π (y b₀ (default : PrimeSpectrum ℂ)))) isOpen_univ`. Take `⟨_, ⟨U, hU, rfl⟩, hxU, hUV⟩` from `X.isBasis_affineOpens.exists_subset_of_mem_open (show y b₀ (default : PrimeSpectrum ℂ) ∈ ((π ⁻¹ᵁ V : X.Opens) : Set X) from hxV) (π ⁻¹ᵁ V).isOpen`. Establish `e : U ≤ π ⁻¹ᵁ V` using `hUV`. Take `⟨s, hs1, hs⟩` from `exists_separating_pairs _ (π.etale_appLE hV hU e)`.
+
+Use `set C : Set (Fin m → ℂ) := {b ∈ B | ⊤ ≤ y b ⁻¹ᵁ U} with hC`. Establish `hCo : IsOpen C` using `(hy U 0).1`. Establish `h₀ : ⊤ ≤ y b₀ ⁻¹ᵁ U` using `(top_le_preimage_iff_mem _ _).2 hxU`. Establish `hb₀C : b₀ ∈ C` using `⟨hb₀, h₀⟩`. Establish `hc : ∀ f : Γ(X, U), ContinuousAt (fun b => valAt' (y b) U f) b₀` using `fun f => (hy U f).2.continuousOn.continuousAt (hCo.mem_nhds hb₀C)`.
+
+Set `F : (Fin m → ℂ) × (Fin m → ℂ) → ℂ` to `fun q => ∑ p ∈ s, valAt' (y q.1) U p.1 * valAt' (y q.2) U p.2`. Establish `hF : ContinuousAt F (b₀, b₀)`. Use `tendsto_finset_sum _ fun p _ => ?_` and prove the remaining obligations. Conclude with `((hc p.1).comp_of_eq continuousAt_fst rfl).mul ((hc p.2).comp_of_eq continuousAt_snd rfl)`. Establish `hF0 : F (b₀, b₀) ≠ 0`.
+
+Simplify using `only [F, ← valAt'_mul, ← valAt'_sum, hs1, valAt'_one _ h₀]`. Conclude with `one_ne_zero`. Take `⟨u, hu, v, hv, huv⟩` from `mem_nhds_prod_iff.1 (hF.eventually_ne hF0)`. Take `⟨B', hB'sub, hB'o, hB'⟩` from `mem_nhds_iff.1 (Filter.inter_mem (hCo.mem_nhds hb₀C) (Filter.inter_mem hu hv))`. Use `⟨B', hB'o, hB', fun b hb => (hB'sub hb).1.1, fun b hb b' hb' hbb => ?_⟩` and prove the remaining obligations.
+
+Establish `h1` using `(hB'sub hb).1.2`. Establish `h2` using `(hB'sub hb').1.2`. Use `eq_of_valAtHom_eq hU _ _ h1 h2 (hs _ _ ?_ ?_)` and prove the remaining obligations. Use extensionality with `f`. Rewrite using `[RingHom.comp_apply, RingHom.comp_apply, ← valAt'_eq_valAtHom, ← valAt'_eq_valAtHom, valAt'_appLE _ _ _ _ _ _ h1, valAt'_appLE _ _ _ _ _ _ h2, hbb]`.
+
+Simplify using `only [← valAt'_eq_valAtHom]`. Establish `h3 : F (b, b') ≠ 0` using `huv (Set.mk_mem_prod (hB'sub hb).2.1 (hB'sub hb').2.2)`. Conclude with `h3`.
+-/
 theorem exists_open_injOn :
     ∀ (X Y : Scheme.{0}) (π : X ⟶ Y) (m : ℕ) (B : Set (Fin m → ℂ)) (y : (Fin m → ℂ) → (Sp ℂ ⟶ X)) (b₀ : Fin m → ℂ), Etale π → IsOpen B → b₀ ∈ B → IsHolTo B y → ∃ B' : Set (Fin m → ℂ), IsOpen B' ∧ b₀ ∈ B' ∧ B' ⊆ B ∧ ∀ b ∈ B', ∀ b' ∈ B', y b ≫ π = y b' ≫ π → y b = y b' := by
   intro X Y π m B y b₀ hπ _ hb₀ hy

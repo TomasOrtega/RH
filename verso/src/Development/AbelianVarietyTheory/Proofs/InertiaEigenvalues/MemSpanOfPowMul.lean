@@ -24,6 +24,9 @@ def galOD (g : GQ l) : OD l O →ₐ[O] OD l O := Algebra.TensorProduct.map (Alg
 
 variable {O}
 
+/- English proof (translation)
+Proceed by induction on `z using TensorProduct.induction_on with`. Consider the case `zero => simp only [smul_zero, map_zero]`. Consider the case `tmul x y`. Simplify using `only [TWact, TensorProduct.smul_tmul', TensorProduct.map_tmul, AlgHom.toLinearMap_apply, smul_eq_mul, map_mul]`. Consider the case `add x y hx hy => simp only [smul_add, map_add, hx, hy]`.
+-/
 theorem TWact_smul_of {G Qp LL R : Type} [Group G] [TopologicalSpace G] [Field Qp] [Field LL] [Algebra Qp LL] [Algebra O LL]
     [TopologicalSpace LL] [CommRing R] [Algebra O R] (f : R →ₐ[O] R) (T : LocLat G Qp LL O) (g : G) (r : R)
     (z : TW R T) : TWact f T g (r • z) = f r • TWact f T g z := by
@@ -42,6 +45,9 @@ def rhoD {LL : FinExt l} {ι : Type} (T : QLat LL)
 set_option synthInstance.maxHeartbeats 400000 in
 set_option maxHeartbeats 2000000 in
 
+/- English proof (translation)
+The claim follows from `TWact_smul_of (galOD ↥(OL LL) h) T g c z`.
+-/
 theorem TWact_galOD_smul {LL : FinExt l} (T : QLat LL) (h : GQ l) (g : Gl l) (c : OD l ↥(OL LL))
     (z : TW (OD l ↥(OL LL)) T) :
     TWact (galOD ↥(OL LL) h) T g (c • z) = galOD ↥(OL LL) h c • TWact (galOD ↥(OL LL) h) T g z :=
@@ -49,6 +55,9 @@ theorem TWact_galOD_smul {LL : FinExt l} (T : QLat LL) (h : GQ l) (g : Gl l) (c 
 
 set_option synthInstance.maxHeartbeats 400000 in
 
+/- English proof (translation)
+Establish `h1 : jD (c • y) = c • jD y` using `jD.map_smul c y`. Establish `h2` using `TWact_galOD_smul T (sQ l g) g c (jD y)`. Establish `h3` using `jD.symm.map_smul (galOD ↥(OL LL) (sQ l g) c) (TWact (galOD ↥(OL LL) (sQ l g)) T g (jD y))`. Conclude with `(congrArg (fun z => jD.symm (TWact (galOD ↥(OL LL) (sQ l g)) T g z)) h1).trans ((congrArg jD.symm h2).trans h3)`.
+-/
 theorem rhoD_smul {LL : FinExt l} {ι : Type} (T : QLat LL)
     (jD : (ι → OD l ↥(OL LL)) ≃ₗ[OD l ↥(OL LL)] TW (OD l ↥(OL LL)) T) (g : Gl l) (c : OD l ↥(OL LL))
     (y : ι → OD l ↥(OL LL)) : rhoD T jD g (c • y) = galOD ↥(OL LL) (sQ l g) c • rhoD T jD g y := by
@@ -67,6 +76,9 @@ variable (O) in
 
 def hatR (f : K⟦X⟧) : Ahat O K l e := if h : f ∈ Rpi O K l e then toHat O K l e ⟨f, h⟩ else 0
 
+/- English proof (translation)
+Rewrite using `[hatR, dif_pos h]`.
+-/
 theorem hatR_of_mem {f : K⟦X⟧} (h : f ∈ Rpi O K l e) : hatR O f = toHat O K l e ⟨f, h⟩ := by
   rw [hatR, dif_pos h]
 
@@ -84,10 +96,18 @@ variable {a : ℕ} [NeZero a] {e : ℕ} [NeZero e] [Module.Free ℤ_[l] O] [Modu
   {K : Type} [NormedField K] [IsUltrametricDist K] [Algebra O K] [IsUnitBall O K] [NormedAlgebra ℚ_[l] K]
   [CompleteSpace K] (t : Wq l a →ₐ[ℤ_[l]] O) (ϖ : PiSys l e) {ι : Type} [Fintype ι] [DecidableEq ι]
 
+/- English proof (translation)
+The claim follows from `mem_tot.1 (P.mem_Man.1 hv) τ i`.
+-/
 theorem mem_Rpi_of_mem_Man {P : PhiMod O K l e a ι} {v : Vec K a ι} (hv : v ∈ P.Man) (τ : ZMod a) (i : ι) :
     v τ i ∈ Rpi O K l e :=
   mem_tot.1 (P.mem_Man.1 hv) τ i
 
+/- English proof (translation)
+Use function extensionality and compare the values at `i`. Simplify using `only [YD, Pi.add_apply]`. Rewrite using `[← map_add]`. Use `congr 1`. Use function extensionality and compare the values at `τ`.
+
+Rewrite using `[Pi.add_apply, hatR_of_mem (O := O) (add_mem (mem_Rpi_of_mem_Man hv τ i) (mem_Rpi_of_mem_Man hv' τ i)), hatR_of_mem (O := O) (mem_Rpi_of_mem_Man hv τ i), hatR_of_mem (O := O) (mem_Rpi_of_mem_Man hv' τ i), ← map_add]`. Both sides reduce to the same expression.
+-/
 theorem YD_add {P : PhiMod O K l e a ι} {v v' : Vec K a ι} (hv : v ∈ P.Man) (hv' : v' ∈ P.Man) :
     YD t ϖ (v + v') = YD t ϖ v + YD t ϖ v' := by
   funext i
@@ -99,6 +119,11 @@ theorem YD_add {P : PhiMod O K l e a ι} {v v' : Vec K a ι} (hv : v ∈ P.Man) 
     hatR_of_mem (O := O) (mem_Rpi_of_mem_Man hv τ i), hatR_of_mem (O := O) (mem_Rpi_of_mem_Man hv' τ i), ← map_add]
   rfl
 
+/- English proof (translation)
+Use function extensionality and compare the values at `i`. Simplify using `only [YD, ED, Pi.smul_apply, smul_eq_mul]`. Rewrite using `[← map_pow, ← map_mul]`. Use `congr 1`. Use function extensionality and compare the values at `τ`.
+
+Establish `hE : E K l e ∈ Rpi O K l e` using `E_mem (K := K) l e _`. Rewrite using `[Pi.mul_apply, Pi.pow_apply, hatR_of_mem (O := O) (mul_mem (pow_mem hE k) (mem_Rpi_of_mem_Man hv τ i)), hatR_of_mem (O := O) (mem_Rpi_of_mem_Man hv τ i), ← toHat_E, ← map_pow, ← map_mul]`. Both sides reduce to the same expression.
+-/
 theorem YD_E_pow_smul {P : PhiMod O K l e a ι} {v : Vec K a ι} (hv : v ∈ P.Man) (k : ℕ) :
     YD t ϖ (E K l e ^ k • v) = ED K t ϖ ^ k • YD t ϖ v := by
   funext i
@@ -111,6 +136,11 @@ theorem YD_E_pow_smul {P : PhiMod O K l e a ι} {v : Vec K a ι} (hv : v ∈ P.M
     hatR_of_mem (O := O) (mem_Rpi_of_mem_Man hv τ i), ← toHat_E, ← map_pow, ← map_mul]
   rfl
 
+/- English proof (translation)
+Simplify using `only [YD]`. Use `congr 1`. Use function extensionality and compare the values at `τ`. Rewrite using `[hatR_of_mem (O := O) (mem_Rpi_of_mem_Man hv τ i)]`. Apply `algebraMap_AhatE_injective l e` to reduce the goal to its premises.
+
+Rewrite using `[hw τ]`. Conclude with `hat_coe_Rpi l e ⟨v τ i, mem_Rpi_of_mem_Man hv τ i⟩`.
+-/
 theorem iD_eq_YD {P : PhiMod O K l e a ι} {v : Vec K a ι} (hv : v ∈ P.Man) (i : ι) (w : ZMod a → Ahat O K l e)
     (hw : ∀ τ, algebraMap _ (AhatE O K l e) (w τ) = hat O l e (v τ i)) : ϖ.iD t K w = YD t ϖ v i := by
   simp only [YD]
@@ -125,6 +155,13 @@ end GlobalTheory.GalStep
 
 namespace GlobalTheory.GalStep
 
+/- English proof (translation)
+Take `⟨z, hz⟩` from `Ideal.mem_span_singleton'.1 h`. Establish `h0 : d ^ p * (y - z * d ^ n) = 0` using `by rw [mul_sub, ← hz, pow_add]; ring`. Establish `h1 : ∀ p : ℕ, ∀ y : R, d ^ p * y = 0 → y = 0`. Introduce `p`. Proceed by induction on `p with`.
+
+Consider the case `zero => intro y h`. Simplify using `using h`. Consider the case `succ p ih => intro y h; exact ih y (hd _ (by rw [← h, pow_succ]; ring))`. Use `h1 p _ h0` as an intermediate fact. Rewrite `this` using `[sub_eq_zero]`.
+
+Conclude with `Ideal.mem_span_singleton'.2 ⟨z, this.symm⟩`.
+-/
 theorem mem_span_of_pow_mul {R : Type} [CommRing R] {d : R} (hd : ∀ y : R, d * y = 0 → y = 0) (p n : ℕ) {y : R}
     (h : d ^ p * y ∈ Ideal.span {d ^ (p + n)}) : y ∈ Ideal.span {d ^ n} := by
   obtain ⟨z, hz⟩ := Ideal.mem_span_singleton'.1 h
@@ -145,6 +182,33 @@ variable {a : ℕ} [NeZero a] {e : ℕ} [NeZero e] [Module.Free ℤ_[l] O] [Modu
   {K : Type} [NormedField K] [IsUltrametricDist K] [Algebra O K] [IsUnitBall O K] [NormedAlgebra ℚ_[l] K]
   [CompleteSpace K] (t : Wq l a →ₐ[ℤ_[l]] O) (ϖ : PiSys l e) {ι : Type} [Fintype ι] [DecidableEq ι]
 
+/- English proof (translation)
+Take `⟨x, hxdef⟩ : ∃ x, x = E K l e ^ (β₀ + n) • m` from `⟨_, rfl⟩`. Rewrite `hwxdef` using `[← hxdef]`. Take `⟨γ, hγ⟩ : ∃ γ, γ = α + (β₀ + n)` from `⟨_, rfl⟩`. Rewrite `hD1` using `[← hγ]`. Establish `hwx1 : (fun τ k => descN K 1 (wx τ k)) = fun τ k => N K (wx τ k)`.
+
+Use function extensionality and compare the values at `τ k`. Simplify using `[descN, descPochhammer_one]`. Establish `hconn : P.xiExt (fun τ k => descN K 1 (wx τ k)) = P.conn x`. Rewrite using `[hwx1, ← P.conn_xiExt, hwxdef]`. Establish `hcM : E K l e ^ α • P.conn x ∈ P.Man`.
+
+Rewrite using `[← hconn]`. Conclude with `hman α hα _ (hdesc 1 wx hwx)`. Establish `hE : E K l e ∈ Rpi O K l e` using `E_mem l e _`. Establish `hD1' : YD t ϖ (E K l e ^ (α + 1) • P.conn x) j ∈ Ideal.span {ED K t ϖ ^ γ}`. Establish `h1` using `congrFun (YD_E_pow_smul t ϖ hcM 1) j`.
+
+Rewrite `h1` using `[smul_smul, ← pow_add, add_comm 1 α, Pi.smul_apply, smul_eq_mul, pow_one]`. Rewrite using `[h1]`. Rewrite `hD1` using `[hconn]`. Then use the resulting hypothesis. Establish `hNE : N K (E K l e) ∈ Rpi O K l e` using `N_mem (derivative_mem_R l hE)`. Take `⟨y1, hy1def⟩ : ∃ y1, y1 = (((β₀ + n : ℕ) : PowerSeries K) * N K (E K l e)) • m` from `⟨_, rfl⟩`.
+
+Establish `hy1 : y1 ∈ P.Man` using `hy1def ▸ P.smul_mem_Man (mul_mem (natCast_mem _ _) hNE) (P.M_le_Man hm)`. Establish `hkey : E K l e ^ (α + 1) * N K (E K l e ^ (β₀ + n)) = E K l e ^ γ * (((β₀ + n : ℕ) : PowerSeries K) * N K (E K l e))`. Rewrite using `[hγ]`. Break down `Nat.eq_zero_or_pos (β₀ + n) with h0 | h0` into its components or cases. Rewrite using `[h0, pow_zero, Derivation.map_one_eq_zero, Nat.cast_zero]`.
+
+Expand and normalize the polynomial expressions, which then agree. Take `⟨b, hb⟩ : ∃ b, β₀ + n = b + 1` from `⟨β₀ + n - 1, by omega⟩`. Rewrite using `[hb, Derivation.leibniz_pow, Nat.add_sub_cancel, nsmul_eq_mul, smul_eq_mul]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+
+Establish `hdec : E K l e ^ (α + 1) • P.conn x = E K l e ^ γ • y1 + E K l e ^ γ • P.EN m`. Use function extensionality and compare the values at `τ i`. Rewrite using `[hxdef, P.conn_smul, hy1def, P.EN_apply]`. Simplify using `only [Pi.add_apply, Pi.smul_apply, smul_eq_mul]`. Rewrite `hkey`, the goal using `[hγ]`.
+
+Take the linear combination `(m τ i) * hkey`. Establish `hγM : E K l e ^ γ • y1 ∈ P.Man` using `P.smul_mem_Man (pow_mem hE γ) hy1`. Establish `hENM : E K l e ^ γ • P.EN m ∈ P.Man`. Establish `h1 : E K l e ^ (α + 1) • P.conn x ∈ P.Man`. Rewrite using `[pow_succ, mul_comm, mul_smul]`.
+
+Conclude with `P.smul_mem_Man hE hcM`. Establish `h2 : E K l e ^ γ • P.EN m = E K l e ^ (α + 1) • P.conn x - E K l e ^ γ • y1`. Rewrite using `[hdec]`. Normalize the expressions using the abelian group laws. Rewrite using `[h2]`.
+
+Conclude with `sub_mem h1 hγM`. Establish `hsum` using `congrFun (YD_add t ϖ hγM hENM) j`. Rewrite `hsum` using `[← hdec, Pi.add_apply]`. Establish `hy1' : YD t ϖ (E K l e ^ γ • y1) j ∈ Ideal.span {ED K t ϖ ^ γ}`. Rewrite using `[YD_E_pow_smul t ϖ hy1 γ, Pi.smul_apply, smul_eq_mul]`.
+
+Conclude with `Ideal.mul_mem_right _ _ (Ideal.mem_span_singleton_self _)`. Establish `hEN : YD t ϖ (E K l e ^ γ • P.EN m) j ∈ Ideal.span {ED K t ϖ ^ γ}`. Establish `h1 : YD t ϖ (E K l e ^ γ • P.EN m) j = YD t ϖ (E K l e ^ (α + 1) • P.conn x) j - YD t ϖ (E K l e ^ γ • y1) j`. Rewrite using `[hsum]`. Expand and normalize the polynomial expressions, which then agree.
+
+Rewrite using `[h1]`. Conclude with `sub_mem hD1' hy1'`. Establish `hsplit : E K l e ^ γ • P.EN m = E K l e ^ (α + β₀) • (E K l e ^ n • P.EN m)`. Rewrite using `[smul_smul, ← pow_add, hγ, add_assoc]`. Rewrite `hEN` using `[hsplit, YD_E_pow_smul t ϖ hn (α + β₀), Pi.smul_apply, smul_eq_mul, hγ, ← add_assoc]`.
+
+Conclude with `mem_span_of_pow_mul hnz (α + β₀) n hEN`.
+-/
 theorem tail_step (P : PhiMod O K l e a ι) (hnz : ∀ y : OD l O, ED K t ϖ * y = 0 → y = 0)
     (hman : ∀ α : ℕ, (∀ v ∈ P.L, E K l e ^ α • v ∈ P.M) →
       ∀ w ∈ P.Mext (invL l (S O K e)), E K l e ^ α • P.xiExt w ∈ P.Man)

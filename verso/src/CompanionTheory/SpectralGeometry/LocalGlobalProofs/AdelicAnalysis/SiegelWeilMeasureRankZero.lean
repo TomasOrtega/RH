@@ -13,6 +13,9 @@ noncomputable section
 
 namespace GlobalTheory.CompanionTheory.SW.ZeroTuple
 
+/- English proof (translation)
+Establish `: φ = fun _ => φ default` using `funext fun x => by rw [Subsingleton.elim x default]`. Rewrite using `[this, lintegral_const, h, mul_one]`.
+-/
 theorem lintegral_unique {V : Type} [MeasurableSpace V] [Unique V] (m : Measure V)
     (h : m Set.univ = 1) (φ : V → ℝ≥0∞) : ∫⁻ x, φ x ∂m = φ default := by
   have : φ = fun _ => φ default := funext fun x => by rw [Subsingleton.elim x default]
@@ -28,12 +31,20 @@ instance uniqueHerm (σ : E →ₐ[F] E) : Unique (HermR R σ 0) :=
 
 variable [TopologicalSpace R] [MeasurableSpace R]
 
+/- English proof (translation)
+Unfold `coordW`. Rewrite using `[Measure.pi_of_empty]`. Simplify using the standard rewrite rules.
+-/
 theorem coordW_univ {d : ℕ} (b : Module.Basis (Fin d) F E) (lam : Measure R) (M : ℕ) :
     coordW R b lam 0 M Set.univ = 1 := by
   unfold coordW
   rw [Measure.pi_of_empty]
   simp
 
+/- English proof (translation)
+Unfold `coordHerm`. Use `haveI : IsEmpty {p : Fin 0 × Fin 0 // p.1 < p.2} := ⟨fun p => p.1.1.elim0⟩`. Rewrite using `[Measure.comap_apply _ (fun x y _ => Subsingleton.elim x y) (fun s _ => Subsingleton.measurableSet) _ MeasurableSet.univ]`. Rewrite using `[Measure.pi_of_empty, Measure.pi_of_empty]`. Establish `: (fun S : HermR R σ 0 => ((fun i : Fin 0 => algebraMap F R (1 / 2) * Algebra.trace R (R ⊗[F] E) ((S : Matrix (Fin 0) (Fin 0) (R ⊗[F] E)) i i)), (fun p : {p : Fin 0 × Fin 0 // p.1 < p.2} => (S : Matrix (Fin 0) (Fin 0) (R ⊗[F] E)) p.1.1 p.1.2))) '' Set.univ = Set.univ` using `Set.eq_univ_of_forall fun x => ⟨default, Set.mem_univ _, Subsingleton.elim _ _⟩`.
+
+Rewrite using `[this]`. Simplify using the standard rewrite rules.
+-/
 theorem coordHerm_univ (σ : E →ₐ[F] E) {d : ℕ} (b : Module.Basis (Fin d) F E) (lam : Measure R) :
     coordHerm R σ b lam 0 Set.univ = 1 := by
   unfold coordHerm
@@ -52,6 +63,11 @@ theorem coordHerm_univ (σ : E →ₐ[F] E) {d : ℕ} (b : Module.Basis (Fin d) 
 
 omit [MeasurableSpace R] in
 
+/- English proof (translation)
+Take `⟨-, h2, -⟩` from `h`. Establish `h3` using `h2 (fun _ => 1) measurable_const`. Establish `hU : {X : Fin 0 → Fin M → R ⊗[F] E | IsUnit (gramR R σ J X).det} = Set.univ` using `Set.eq_univ_of_forall fun X => by simp`. Rewrite `h3` using `[hU, Measure.restrict_univ, lintegral_one, hμ]`. Simplify using `only [lintegral_one] at h3`.
+
+Rewrite `h3` using `[lintegral_unique ν hν (fun b => m b Set.univ)]`. Rewrite using `[Subsingleton.elim S default]`. Conclude with `h3.symm`.
+-/
 theorem fib_univ (σ : E →ₐ[F] E) {M : ℕ} (J : Matrix (Fin M) (Fin M) E)
     (μ : Measure (Fin 0 → Fin M → R ⊗[F] E)) (ν : Measure (HermR R σ 0))
     (m : HermR R σ 0 → Measure (Fin 0 → Fin M → R ⊗[F] E))
@@ -73,6 +89,11 @@ section Glob
 
 variable {F E : Type} [Field F] [NumberField F] [Field E] [Algebra F E]
 
+/- English proof (translation)
+Establish `hS : {X : Fin 0 → Fin M → E | gramE σ J X = T} = Set.univ` using `Set.eq_univ_of_forall fun X => Subsingleton.elim _ _`. Unfold `thetaMeas`. Rewrite using `[hS, Measure.smul_apply, Measure.sum_apply _ MeasurableSet.univ]`. Establish `h2 : ∀ X : (Set.univ : Set (Fin 0 → Fin M → E)), ((μ.restrict 𝓕).map fun h => actW (AF F) σ J h⁻¹ (ratTup (AF F) (X : Fin 0 → Fin M → E))) Set.univ = μ 𝓕` using `fun X => by`. Rewrite using `[Measure.map_apply (measurable_of_subsingleton_codomain _) MeasurableSet.univ]`.
+
+Simplify using the standard rewrite rules. Simplify using `only [h2]`. Rewrite using `[tsum_fintype]`. Simplify using `[ENNReal.inv_mul_cancel h0 h1]`.
+-/
 theorem theta_univ (σ : E →ₐ[F] E) {M : ℕ} (J : Matrix (Fin M) (Fin M) E)
     (μ : Measure (HA (AF F) σ J)) (𝓕 : Set (HA (AF F) σ J))
     (h0 : μ 𝓕 ≠ 0) (h1 : μ 𝓕 ≠ ⊤) (T : Matrix (Fin 0) (Fin 0) E) :
@@ -92,6 +113,17 @@ theorem theta_univ (σ : E →ₐ[F] E) {M : ℕ} (J : Matrix (Fin M) (Fin M) E)
 
 end Glob
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ hCM M J hJ T hT _ d b laminf lam _ _ μ 𝓕 hμ h𝓕 minf m hinf hv`. Establish `hfin : μ 𝓕 < ⊤` using `((GlobalTheory.CompanionTheory.SW.finVol_unitaryGroup F E σ hCM M J hJ).2 μ hμ).2 𝓕 h𝓕`. Take `⟨⟨hLC, hSC, hT2⟩, -⟩` from `GlobalTheory.CompanionTheory.AdeleTop.adele_top F`. Take `⟨tg, lc, sc, t2, bs, -⟩` from `GlobalTheory.T.adelic_unitary_group_locally_compact F E σ hCM M J hJ (AF F)`. Set `Γ : Subgroup (HA (AF F) σ J)` to `HFinIn (AF F) σ J`.
+
+Use `haveI : Countable Γ := (GlobalTheory.CompanionTheory.SW.rational_countable_discrete F E σ hCM M J hJ).1`. Use `haveI : μ.IsHaarMeasure := hμ`. Establish `h𝓕' : IsFundamentalDomain Γ 𝓕 μ` using `h𝓕`. Establish `h0 : μ 𝓕 ≠ 0` using `(GlobalTheory.CompanionTheory.SW.LatticeUnimod.unimodular_of_isFundamentalDomain (HA (AF F) σ J) Γ μ 𝓕 h𝓕' hfin).1`. Establish `hI` using `theta_univ σ J μ 𝓕 h0 hfin.ne T`.
+
+Establish `hminf : ∀ S, minf S Set.univ = 1` using `fib_univ (Ainf F) σ J _ _ minf (coordW_univ _ b laminf M) (coordHerm_univ _ σ b laminf) hinf`. Establish `hm : ∀ v S, m v S Set.univ = 1` using `fun v => fib_univ (Fv F v) σ J _ _ (m v) (coordW_univ _ b (lam v) M) (coordHerm_univ _ σ b (lam v)) (hv v)`. Establish `hlat : ∀ v, latV b v = (Set.univ : Set (Fin 0 → Fin M → Fv F v ⊗[F] E))` using `fun v => Set.eq_univ_of_forall fun Y a => a.elim0`. Use `⟨fun v => ?_, ?_, ∅, fun S _ φinf φ _ _ => ?_⟩` and prove the remaining obligations. Rewrite using `[hlat, hm]`.
+
+Conclude with `ENNReal.one_lt_top`. Simplify using `[hlat, hm, summable_zero]`. Rewrite using `[lintegral_unique _ hI, lintegral_unique _ (hminf _)]`. Simplify using `only [lintegral_unique _ (hm _ _), hlat, hm]`. Simplify using `only [pureL]`.
+
+Rewrite using `[Set.indicator_of_mem (fun v _ a => a.elim0)]`. Simplify using `only [ENNReal.toReal_one, tprod_one, ENNReal.ofReal_one, mul_one, ENNReal.coe_one, one_mul]`. Conclude with `congrArg₂ (· * ·) (congrArg φinf (Subsingleton.elim _ _)) (Finset.prod_congr rfl fun v _ => congrArg (φ v) (Subsingleton.elim _ _))`.
+-/
 theorem swMeas_zero : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E), IsCMExt F E σ → ∀ (M : ℕ) (J : Matrix (Fin M) (Fin M) E), IsHermND σ J → ∀ (T : Matrix (Fin 0) (Fin 0) E) (hT : ∀ a b, σ (T b a) = T a b), T.det ≠ 0 → SWMeas σ J T hT := by
   intro F E _ _ _ _ _ σ hCM M J hJ T hT _ d b laminf lam _ _ μ 𝓕 hμ h𝓕 minf m hinf hv
   have hfin : μ 𝓕 < ⊤ := ((GlobalTheory.CompanionTheory.SW.finVol_unitaryGroup F E σ hCM M J hJ).2 μ hμ).2 𝓕 h𝓕

@@ -11,6 +11,9 @@ section Gen
 variable {p : ℕ} {O Kf : Type} [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] [Field Kf] [Algebra O Kf]
   {P : Places p O Kf} (C : Level P)
 
+/- English proof (translation)
+Unfold `Level.funMod`. Simplify using `only [Submodule.mem_inf, Submodule.mem_iInf, Submodule.mem_comap, LinearMap.mem_ker, LinearMap.proj_apply, and_assoc, LinearMap.sub_apply, LinearMap.comp_apply, LinearMap.smul_apply, LinearMap.restrictScalars_apply, sub_eq_zero]`.
+-/
 theorem mem_funMod (Hv : P.Tup → Submodule O P.Xsp) (F : P.Tup → P.Xsp) :
     F ∈ C.funMod Hv ↔ (∀ L, P.IsLatTup L → F L ∈ Hv L) ∧ (∀ L, ¬ P.IsLatTup L → F L = 0) ∧
       ∀ γ L, F (C.smul γ L) = ((C.χ γ : Oˣ) : O) • C.actX γ (F L) := by
@@ -27,8 +30,16 @@ variable {p n' : ℕ} {W Qq O Kf : Type} [CommRing W] [IsDomain W] [IsDiscreteVa
 
 def tup0 (h : HidaSetting p n' W Qq O Kf ι σ j w) : (places1 h).Tup := fun _ => line W p 0
 
+/- English proof (translation)
+Introduce `_` and use `line_isLattice h 0`.
+-/
 theorem zero_tuple_isLattice (h : HidaSetting p n' W Qq O Kf ι σ j w) : (places1 h).IsLatTup (tup0 h) := fun _ => line_isLattice h 0
 
+/- English proof (translation)
+Take `⟨n, hn⟩` from `lat1 h (L (0 : Fin 1)) (hL (0 : Fin 1))`. Use `⟨Multiplicative.ofAdd n, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `v`. Establish `hv : v = (0 : Fin 1)` using `Subsingleton.elim (α := Fin 1) v 0`. Substitute `hv` using the available equality.
+
+Establish `h1` using `smul1 h (Multiplicative.ofAdd n) (tup0 h) 0 rfl`. Use `hn.trans (Eq.trans ?_ h1.symm)` and prove the remaining obligations. Simplify using the standard rewrite rules.
+-/
 theorem tup_eq_smul (h : HidaSetting p n' W Qq O Kf ι σ j w) (L : (places1 h).Tup) (hL : (places1 h).IsLatTup L) :
     ∃ γ : (level1 h).Γ, L = (level1 h).smul γ (tup0 h) := by
   obtain ⟨n, hn⟩ := lat1 h (L (0 : Fin 1)) (hL (0 : Fin 1))
@@ -40,6 +51,15 @@ theorem tup_eq_smul (h : HidaSetting p n' W Qq O Kf ι σ j w) (L : (places1 h).
   refine hn.trans (Eq.trans ?_ h1.symm)
   simp
 
+/- English proof (translation)
+Apply `le_antisymm` to reduce the goal to its premises. Introduce `F hF`. Take `⟨a1, a2, a3⟩` from `(mem_funMod (level1 h) Hv F).1 hF`. Take `⟨c, hc⟩` from `Submodule.mem_span_singleton.1 (h2 _ (zero_tuple_isLattice h) (a1 _ (zero_tuple_isLattice h)))`. Use `Submodule.mem_span_singleton.2 ⟨c, ?_⟩` and prove the remaining obligations.
+
+Use function extensionality and compare the values at `L`. Distinguish the cases in `hL : (places1 h).IsLatTup L`. Take `⟨γ, rfl⟩` from `tup_eq_smul h L hL`. Rewrite using `[a3, ← hc, Pi.smul_apply, oneFn_pos _ hL, LinearMap.map_smul_of_tower]`. Establish `hx : (level1 h).actX γ 1 = 1` using `natAct_one' (places1 h) (fun _ => rfl) _`.
+
+Rewrite using `[hx]`. Use `show c • (1 : (places1 h).Xsp) = (((1 : Oˣ) : O)) • c • (1 : (places1 h).Xsp)`. Rewrite using `[Units.val_one, one_smul]`. Rewrite using `[a2 L hL, Pi.smul_apply, oneFn_neg _ hL, smul_zero]`. Rewrite using `[Submodule.span_le, Set.singleton_subset_iff]`.
+
+Conclude with `oneFn_mem (places1 h) (level1 h) (fun _ => rfl) rfl Hv h1`.
+-/
 theorem funMod_eq (h : HidaSetting p n' W Qq O Kf ι σ j w) (Hv : (places1 h).Tup → Submodule O (places1 h).Xsp)
     (h1 : ∀ L, (1 : (places1 h).Xsp) ∈ Hv L)
     (h2 : ∀ L, (places1 h).IsLatTup L → Hv L ≤ Submodule.span O {1}) :
@@ -63,6 +83,13 @@ theorem funMod_eq (h : HidaSetting p n' W Qq O Kf ι σ j w) (Hv : (places1 h).T
 
 def oneG (h : HidaSetting p n' W Qq O Kf ι σ j w) : (gat1 h).Fn := fun _ => oneFn (places1 h)
 
+/- English proof (translation)
+Use extensionality with `F`. Unfold `GAtP.funMod`. Rewrite using `[Submodule.mem_pi, Submodule.mem_span_singleton]`. Prove the components needed by the constructor for the conclusion. Introduce `hF`.
+
+Use `hF () (Set.mem_univ _)` as an intermediate fact. Establish `h3 : (show (places1 h).Tup → (places1 h).Xsp from F ()) ∈ (level1 h).funMod Hv` using `this`. Rewrite `h3` using `[funMod_eq h Hv h1 h2]`. Take `⟨c, hc⟩` from `Submodule.mem_span_singleton.1 h3`. Conclude with `⟨c, funext fun _ => hc⟩`.
+
+Introduce and unpack `⟨c, rfl⟩ i _ show (show O from c) • oneFn (places1 h) ∈ (level1 h).funMod Hv`. Rewrite using `[funMod_eq h Hv h1 h2]`. Conclude with `Submodule.smul_mem _ _ (Submodule.mem_span_singleton_self _)`.
+-/
 theorem example_function_module_eq_span (h : HidaSetting p n' W Qq O Kf ι σ j w) (Hv : (places1 h).Tup → Submodule O (places1 h).Xsp)
     (h1 : ∀ L, (1 : (places1 h).Xsp) ∈ Hv L)
     (h2 : ∀ L, (places1 h).IsLatTup L → Hv L ≤ Submodule.span O {1}) :
@@ -82,6 +109,13 @@ theorem example_function_module_eq_span (h : HidaSetting p n' W Qq O Kf ι σ j 
     rw [funMod_eq h Hv h1 h2]
     exact Submodule.smul_mem _ _ (Submodule.mem_span_singleton_self _)
 
+/- English proof (translation)
+Use `h.frac_O` as an intermediate fact. Establish `hf : Function.Injective (LinearMap.toSpanSingleton (gat1 h).O (gat1 h).Fn (oneG h))`. Rewrite using `[injective_iff_map_eq_zero]`. Introduce `c hc`. Establish `h1 : (show O from c) • (oneFn (places1 h) (tup0 h)) = 0` using `congrFun (congrFun hc ()) (tup0 h)`.
+
+Rewrite `h1` using `[oneFn_pos _ (zero_tuple_isLattice h), Algebra.smul_def, mul_one, MvPolynomial.algebraMap_apply]`. Establish `h2 : algebraMap O Kf (show O from c) = 0`. Use `congrArg constantCoeff h1` as an intermediate fact. Simplify using `using this`. Conclude with `(map_eq_zero_iff _ (IsFractionRing.injective O Kf)).1 h2`.
+
+Rewrite using `[LinearMap.span_singleton_eq_range, LinearMap.finrank_range_of_inj hf, Module.finrank_self]`.
+-/
 theorem finrank_oneG (h : HidaSetting p n' W Qq O Kf ι σ j w) :
     Module.finrank (gat1 h).O (Submodule.span (gat1 h).O {oneG h}) = 1 := by
   have := h.frac_O
@@ -96,12 +130,25 @@ theorem finrank_oneG (h : HidaSetting p n' W Qq O Kf ι σ j w) :
     exact (map_eq_zero_iff _ (IsFractionRing.injective O Kf)).1 h2
   rw [LinearMap.span_singleton_eq_range, LinearMap.finrank_range_of_inj hf, Module.finrank_self]
 
+/- English proof (translation)
+The claim follows from `example_function_module_eq_span h _ (one_mem_Htup (places1 h) fun _ => rfl) (Htup_le_const (gat1 h) fun _ => rfl)`.
+-/
 theorem example_dual_module_eq_span_one (h : HidaSetting p n' W Qq O Kf ι σ j w) : (gat1 h).Mna = Submodule.span (gat1 h).O {oneG h} :=
   example_function_module_eq_span h _ (one_mem_Htup (places1 h) fun _ => rfl) (Htup_le_const (gat1 h) fun _ => rfl)
 
+/- English proof (translation)
+The claim follows from `example_function_module_eq_span h _ (one_mem_HtupW (places1 h) fun _ => rfl) (HtupW_le_const (gat1 h) fun _ => rfl)`.
+-/
 theorem example_module_eq_span_one (h : HidaSetting p n' W Qq O Kf ι σ j w) : (gat1 h).M = Submodule.span (gat1 h).O {oneG h} :=
   example_function_module_eq_span h _ (one_mem_HtupW (places1 h) fun _ => rfl) (HtupW_le_const (gat1 h) fun _ => rfl)
 
+/- English proof (translation)
+Establish `hM` using `example_module_eq_span_one h`. Establish `hN` using `example_dual_module_eq_span_one h`. Use `⟨hM.trans hN.symm, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Unfold `GAtP.d`. Rewrite using `[hM]`.
+
+Conclude with `finrank_oneG h`. Unfold `GAtP.dna`. Rewrite using `[hN]`. Conclude with `finrank_oneG h`. Rewrite using `[hM, hN] show Submodule.map (((p : (gat1 h).O) ^ 0) • LinearMap.id) _ ≤ _`.
+
+Rewrite using `[pow_zero, one_smul, Submodule.map_id]`. Rewrite using `[hM, hN]`.
+-/
 theorem example_rank_one_sandwich (h : HidaSetting p n' W Qq O Kf ι σ j w) :
     (gat1 h).M = (gat1 h).Mna ∧ (gat1 h).d = 1 ∧ (gat1 h).dna = 1 ∧ (gat1 h).Sandwich := by
   have hM := example_module_eq_span_one h
@@ -114,6 +161,9 @@ theorem example_rank_one_sandwich (h : HidaSetting p n' W Qq O Kf ι σ j w) :
     rw [pow_zero, one_smul, Submodule.map_id]
   · rw [hM, hN]
 
+/- English proof (translation)
+Establish `: Fact p.Prime` using `⟨hp⟩`. Establish `hS` using `Formalism.L2.G.settingStd p n' h5 h2 he`. Establish `h` using `hS.1`. Take `⟨-, h3, h4, h5'⟩` from `example_rank_one_sandwich h`. Conclude with `⟨gat1 h, le_rfl, rfl, fun _ => level1_trivStab h, fun _ => level1_finClasses h, h3, h4, h5', fun _ => ⟨rfl, hS, lpprime_zero h⟩⟩`.
+-/
 theorem gat_full_nonempty (p : ℕ) (hp : p.Prime) (h5 : 5 ≤ p) (n' : ℕ) (h2 : 2 ≤ n') (he : Even n') :
     ∃ G : GAtP p, 1 ≤ G.P.nV ∧ G.P.r = 1 ∧ G.TrivStab ∧ G.FinClasses ∧ G.d = 1 ∧ G.dna = 1 ∧ G.Sandwich ∧
       ∀ v, G.P.n' v = n' ∧
@@ -127,6 +177,9 @@ theorem gat_full_nonempty (p : ℕ) (hp : p.Prime) (h5 : 5 ≤ p) (n' : ℕ) (h2
   exact ⟨gat1 h, le_rfl, rfl, fun _ => level1_trivStab h, fun _ => level1_finClasses h, h3, h4, h5',
     fun _ => ⟨rfl, hS, lpprime_zero h⟩⟩
 
+/- English proof (translation)
+Apply `le_antisymm (dimV_le_one K)` to reduce the goal to its premises. Unfold `dimV`. Establish `: FiniteDimensional K ↥(Vsp K (fun _ _ => 0 : Fin n' → Fin (m + 1) → ℤ))` using `Submodule.finiteDimensional_of_le (Vsp_le K)`. Rewrite using `[Nat.succ_le_iff, Module.finrank_pos_iff_exists_ne_zero]`. Conclude with `⟨⟨1, one_mem_Vsp K⟩, fun h => one_ne_zero (congrArg Subtype.val h)⟩`.
+-/
 theorem dimV_eq_one (K : Type) [Field K] {n' m : ℕ} : dimV K (fun _ _ => 0 : Fin n' → Fin (m + 1) → ℤ) = 1 := by
   apply le_antisymm (dimV_le_one K)
   unfold dimV

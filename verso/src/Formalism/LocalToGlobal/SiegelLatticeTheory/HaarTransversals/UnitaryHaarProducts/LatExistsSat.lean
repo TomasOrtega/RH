@@ -18,8 +18,14 @@ local notation "𝓕" => FractionalIdeal (nonZeroDivisors (𝓞 E)) E
 def lineV (c : 𝓕) (v : V) : Submodule (𝓞 E) V :=
   Submodule.span (𝓞 E) {y | ∃ x : E, x ∈ c ∧ y = x • v}
 
+/- English proof (translation)
+The claim follows from `Submodule.subset_span ⟨x, hx, rfl⟩`.
+-/
 lemma mem_lineV (c : 𝓕) (v : V) {x : E} (hx : x ∈ c) : x • v ∈ lineV c v := Submodule.subset_span ⟨x, hx, rfl⟩
 
+/- English proof (translation)
+Unfold `latSpanV lineV`. Rewrite using `[← Submodule.span_union]`. Use `congr 1`. Use extensionality with `y`. Simplify using `only [Set.mem_setOf_eq, Set.mem_union, Fin.exists_fin_succ', Fin.init]`.
+-/
 lemma latSpanV_succ {n : ℕ} (c : Fin (n + 1) → 𝓕) (v : Fin (n + 1) → V) :
     latSpanV c v = latSpanV (Fin.init c) (Fin.init v) ⊔ lineV (c (Fin.last n)) (v (Fin.last n)) := by
   unfold latSpanV lineV
@@ -28,21 +34,38 @@ lemma latSpanV_succ {n : ℕ} (c : Fin (n + 1) → 𝓕) (v : Fin (n + 1) → V)
   ext y
   simp only [Set.mem_setOf_eq, Set.mem_union, Fin.exists_fin_succ', Fin.init]
 
+/- English proof (translation)
+Unfold `latSpanV`. Rewrite using `[Submodule.span_eq_bot]`. Introduce and unpack `_ ⟨i, -⟩`. Conclude with `i.elim0`.
+-/
 lemma latSpanV_zero (c : Fin 0 → 𝓕) (v : Fin 0 → V) : latSpanV c v = ⊥ := by
   unfold latSpanV
   rw [Submodule.span_eq_bot]
   rintro _ ⟨i, -⟩
   exact i.elim0
 
+/- English proof (translation)
+The claim follows from `FractionalIdeal.mem_coe.1 (Submodule.neg_mem _ (FractionalIdeal.mem_coe.2 h))`.
+-/
 lemma fi_neg_mem {I : 𝓕} {x : E} (h : x ∈ I) : -x ∈ I := FractionalIdeal.mem_coe.1 (Submodule.neg_mem _ (FractionalIdeal.mem_coe.2 h))
 
+/- English proof (translation)
+The claim follows from `hIJ ▸ FractionalIdeal.mul_mem_mul hx hy`.
+-/
 lemma fi_mul_mem {I J K : 𝓕} (hIJ : I * J = K) {x y : E} (hx : x ∈ I) (hy : y ∈ J) :
     x * y ∈ K := hIJ ▸ FractionalIdeal.mul_mem_mul hx hy
 
+/- English proof (translation)
+Apply the tactic sequence `first | exact Bl.SecondBlockLemmaE.goal1 .. | (apply Bl.SecondBlockLemmaE.goal1 <;> assumption) | (intros; apply Bl.SecondBlockLemmaE.goal1 <;> assumption)`.
+-/
 lemma exists_smul_mem_of_mem_span {Λ : Submodule (𝓞 E) V} {v : V}
     (hv : v ∈ Submodule.span E (Λ : Set V)) : ∃ d : 𝓞 E, d ≠ 0 ∧ d • v ∈ Λ := by
   first | exact Bl.SecondBlockLemmaE.goal1 .. | (apply Bl.SecondBlockLemmaE.goal1 <;> assumption) | (intros; apply Bl.SecondBlockLemmaE.goal1 <;> assumption)
 
+/- English proof (translation)
+Take `⟨k, rfl⟩` from `(Submodule.mem_span_range_iff_exists_fun E).1 hx`. Rewrite using `[Fin.sum_univ_castSucc]`. Establish `hfx : f (∑ i : Fin n, k i.castSucc • w i.castSucc + k (Fin.last n) • w (Fin.last n)) = k (Fin.last n)`. Simplify using `[map_sum, hf0, hf1]`. Rewrite using `[hfx, add_sub_cancel_right]`.
+
+Conclude with `Submodule.sum_mem _ fun i _ => Submodule.smul_mem _ _ (Submodule.subset_span ⟨i, rfl⟩)`.
+-/
 lemma sub_smul_mem_span_init {n : ℕ} (w : Fin (n + 1) → V) (f : V →ₗ[E] E)
     (hf1 : f (w (Fin.last n)) = 1) (hf0 : ∀ i : Fin n, f (w i.castSucc) = 0) {x : V}
     (hx : x ∈ Submodule.span E (Set.range w)) :
@@ -55,6 +78,11 @@ lemma sub_smul_mem_span_init {n : ℕ} (w : Fin (n + 1) → V) (f : V →ₗ[E] 
   rw [hfx, add_sub_cancel_right]
   exact Submodule.sum_mem _ fun i _ => Submodule.smul_mem _ _ (Submodule.subset_span ⟨i, rfl⟩)
 
+/- English proof (translation)
+Take `⟨g, hg⟩` from `LinearMap.exists_extend ((Finsupp.lapply (Fin.last n)).comp hw.repr)`. Use `⟨g, ?_, fun i => ?_⟩` and prove the remaining obligations. Establish `h` using `congrArg (fun h => h ⟨w (Fin.last n), Submodule.subset_span ⟨_, rfl⟩⟩) hg`. Simplify `h` using `[hw.repr_eq_single (Fin.last n) ⟨w (Fin.last n), Submodule.subset_span ⟨_, rfl⟩⟩ rfl]`. Establish `hne` using `(Fin.castSucc_lt_last i).ne`.
+
+Establish `h` using `congrArg (fun h => h ⟨w i.castSucc, Submodule.subset_span ⟨_, rfl⟩⟩) hg`. Simplify `h` using `[hw.repr_eq_single i.castSucc ⟨w i.castSucc, Submodule.subset_span ⟨_, rfl⟩⟩ rfl, Finsupp.single_apply, hne]`.
+-/
 lemma exists_coord {n : ℕ} (w : Fin (n + 1) → V) (hw : LinearIndependent E w) :
     ∃ f : V →ₗ[E] E, f (w (Fin.last n)) = 1 ∧ ∀ i : Fin n, f (w i.castSucc) = 0 := by
   classical
@@ -66,6 +94,25 @@ lemma exists_coord {n : ℕ} (w : Fin (n + 1) → V) (hw : LinearIndependent E w
     have h := congrArg (fun h => h ⟨w i.castSucc, Submodule.subset_span ⟨_, rfl⟩⟩) hg
     simpa [hw.repr_eq_single i.castSucc ⟨w i.castSucc, Submodule.subset_span ⟨_, rfl⟩⟩ rfl, Finsupp.single_apply, hne] using h
 
+/- English proof (translation)
+Take `⟨f, hf1, hf0⟩` from `exists_coord w hw`. Set `g : V →ₗ[𝓞 E] E` to `f.restrictScalars (𝓞 E)`. Set `b : 𝓕` to `⟨M.map g, FractionalIdeal.isFractional_of_fg (hM.map g)⟩`. Establish `hmemb : ∀ x : E, x ∈ b ↔ ∃ m ∈ M, f m = x` using `fun x => Submodule.mem_map`. Establish `hsmul : ∀ (r : 𝓞 E) (v : V), f (r • v) = algebraMap (𝓞 E) E r * f v` using `fun r v => by`.
+
+Rewrite using `[← algebraMap_smul E r v, map_smul, smul_eq_mul]`. Establish `hdb : algebraMap (𝓞 E) E d ∈ b` using `(hmemb _).2 ⟨_, hdw, by rw [hsmul, hf1, mul_one]⟩`. Establish `hb0 : b ≠ 0`. Introduce `h`. Rewrite `hdb` using `[h, FractionalIdeal.mem_zero_iff]`.
+
+Conclude with `hd (IsFractionRing.injective (𝓞 E) E (by rw [hdb, map_zero]))`. Establish `key : ∀ z ∈ b * b⁻¹, ∃ u ∈ Submodule.span E (Set.range w), (∀ x ∈ b, x • u ∈ M) ∧ f u = z`. Introduce `z hz`. Use `FractionalIdeal.mul_induction_on hz ?_ ?_` and prove the remaining obligations. Introduce `i hi j hj`.
+
+Take `⟨m, hmM, rfl⟩` from `(hmemb i).1 hi`. Use `⟨j • m, Submodule.smul_mem _ _ (hMX hmM), fun x hx => ?_, ?_⟩` and prove the remaining obligations. Establish `hxj : x * j ∈ (1 : 𝓕)`. Rewrite using `[← mul_inv_cancel₀ hb0]`. Conclude with `FractionalIdeal.mul_mem_mul hx hj`.
+
+Take `⟨r, hr⟩` from `(FractionalIdeal.mem_one_iff _).1 hxj`. Rewrite using `[smul_smul, ← hr, algebraMap_smul]`. Conclude with `M.smul_mem r hmM`. Rewrite using `[map_smul, smul_eq_mul, mul_comm]`. Introduce and unpack `_ _ ⟨u1, hu1, h1, rfl⟩ ⟨u2, hu2, h2, rfl⟩`.
+
+Use `⟨u1 + u2, add_mem hu1 hu2, fun x hx => ?_, map_add f u1 u2⟩` and prove the remaining obligations. Rewrite using `[smul_add]`. Conclude with `add_mem (h1 x hx) (h2 x hx)`. Take `⟨u, huW, huM, hfu⟩` from `key 1 (by`. Rewrite using `[mul_inv_cancel₀ hb0]`.
+
+Conclude with `(FractionalIdeal.mem_one_iff _).2 ⟨1, map_one _⟩)`. Use `⟨b, u, hb0, le_antisymm ?_ ?_⟩` and prove the remaining obligations. Introduce `m hm`. Establish `hfm : f m ∈ b` using `(hmemb _).2 ⟨m, hm, rfl⟩`. Establish `hyW : m - f m • u ∈ Submodule.span E (Set.range w)` using `sub_mem (hMX hm) (Submodule.smul_mem _ _ huW)`.
+
+Establish `hfy : f (m - f m • u) = 0`. Rewrite using `[map_sub, map_smul, hfu, smul_eq_mul, mul_one, sub_self]`. Establish `hy` using `sub_smul_mem_span_init w f hf1 hf0 hyW`. Rewrite `hy` using `[hfy, zero_smul, sub_zero]`. Rewrite using `[show m = (m - f m • u) + f m • u by abel]`.
+
+Conclude with `Submodule.add_mem_sup ⟨sub_mem hm (huM _ hfm), hy⟩ (mem_lineV b u hfm)`. Use `sup_le inf_le_left (Submodule.span_le.2 ?_)` and prove the remaining obligations. Introduce and unpack `_ ⟨x, hx, rfl⟩`. Conclude with `huM x hx`.
+-/
 lemma peel {n : ℕ} (w : Fin (n + 1) → V) (hw : LinearIndependent E w) (M : Submodule (𝓞 E) V)
     (hM : M.FG) (hMX : M ≤ (Submodule.span E (Set.range w)).restrictScalars (𝓞 E))
     {d : 𝓞 E} (hd : d ≠ 0) (hdw : d • w (Fin.last n) ∈ M) :
@@ -119,6 +166,25 @@ lemma peel {n : ℕ} (w : Fin (n + 1) → V) (hw : LinearIndependent E w) (M : S
     rintro _ ⟨x, hx, rfl⟩
     exact huM x hx
 
+/- English proof (translation)
+Establish `hI0 : a⁻¹ * c1 ≠ 0` using `mul_ne_zero (inv_ne_zero ha) h1`. Establish `hJ0 : a⁻¹ * c2 ≠ 0` using `mul_ne_zero (inv_ne_zero ha) h2`. Take `⟨s, I0, hs, hIs⟩` from `FractionalIdeal.exists_eq_spanSingleton_mul (a⁻¹ * c1)⁻¹`. Take `⟨t, J0, ht, hJt⟩` from `FractionalIdeal.exists_eq_spanSingleton_mul (a⁻¹ * c2)`. Establish `hinj` using `IsFractionRing.injective (𝓞 E) E`.
+
+Establish `hs' : algebraMap (𝓞 E) E s ≠ 0` using `fun h => hs (hinj (by rw [h, map_zero]))`. Establish `ht' : algebraMap (𝓞 E) E t ≠ 0` using `fun h => ht (hinj (by rw [h, map_zero]))`. Establish `hI0c : (I0 : 𝓕) ≠ 0` using `right_ne_zero_of_mul (hIs ▸ inv_ne_zero hI0)`. Establish `hJ0c : (J0 : 𝓕) ≠ 0` using `right_ne_zero_of_mul (hJt ▸ hJ0)`. Establish `hI0b : I0 ≠ ⊥` using `fun h => hI0c (by rw [h]; exact FractionalIdeal.coeIdeal_bot)`.
+
+Establish `hIJ : I0 * J0 ≠ 0`. Introduce `h`. Apply `mul_ne_zero hI0c hJ0c` to reduce the goal to its premises. Rewrite using `[← FractionalIdeal.coeIdeal_mul, h]`. Conclude with `FractionalIdeal.coeIdeal_bot`.
+
+Take `⟨g, hg⟩` from `IsDedekindDomain.exists_sup_span_eq (Ideal.mul_le_inf.trans inf_le_right : I0 * J0 ≤ J0) hIJ`. Establish `hgJ : g ∈ J0` using `hg ▸ Ideal.mem_sup_right (Ideal.mem_span_singleton_self g)`. Establish `hg' : (I0 : 𝓕) * (J0 : 𝓕) + FractionalIdeal.spanSingleton _ (algebraMap (𝓞 E) E g) = (J0 : 𝓕)`. Rewrite using `[← FractionalIdeal.coeIdeal_mul, ← FractionalIdeal.coeIdeal_span_singleton, ← FractionalIdeal.coeIdeal_sup, hg]`. Establish `hsum : (I0 : 𝓕) + FractionalIdeal.spanSingleton _ (algebraMap (𝓞 E) E g) * (J0 : 𝓕)⁻¹ = 1`.
+
+Combine the equalities or inequalities in the displayed calculation. Rewrite using `[add_mul, mul_assoc, mul_inv_cancel₀ hJ0c, mul_one]`. Use `_ = 1 := by rw [hg', mul_inv_cancel₀ hJ0c]`. Establish `h1' : (1 : E) ∈ ((I0 : 𝓕) : Submodule (𝓞 E) E) ⊔ ((FractionalIdeal.spanSingleton _ (algebraMap (𝓞 E) E g) * (J0 : 𝓕)⁻¹ : 𝓕) : Submodule (𝓞 E) E)`. Rewrite using `[← Submodule.add_eq_sup, ← FractionalIdeal.coe_add, hsum]`.
+
+Conclude with `(FractionalIdeal.mem_one_iff _).2 ⟨1, map_one _⟩`. Take `⟨y, hy, z, hz, hyz⟩` from `Submodule.mem_sup.1 h1'`. Take `⟨z', hz', rfl⟩` from `FractionalIdeal.mem_singleton_mul.1 (FractionalIdeal.mem_coe.1 hz)`. Establish `e1 : algebraMap (𝓞 E) E s * (algebraMap (𝓞 E) E s)⁻¹ = 1` using `mul_inv_cancel₀ hs'`. Establish `e2 : (algebraMap (𝓞 E) E t)⁻¹ * algebraMap (𝓞 E) E t = 1` using `inv_mul_cancel₀ ht'`.
+
+Use `⟨algebraMap (𝓞 E) E s, (algebraMap (𝓞 E) E t)⁻¹ * algebraMap (𝓞 E) E g, -(algebraMap (𝓞 E) E t * z'), (algebraMap (𝓞 E) E s)⁻¹ * y, ?_, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[← inv_inv (a⁻¹ * c1), hIs, mul_inv, FractionalIdeal.spanSingleton_inv, inv_inv, FractionalIdeal.mem_singleton_mul]`. Conclude with `⟨1, FractionalIdeal.one_mem_inv_coe_ideal hI0b, (mul_one _).symm⟩`. Rewrite using `[hJt, FractionalIdeal.mem_singleton_mul]`. Conclude with `⟨_, (FractionalIdeal.mem_coeIdeal _).2 ⟨g, hgJ, rfl⟩, rfl⟩`.
+
+Apply `fi_neg_mem` to reduce the goal to its premises. Rewrite using `[show a * c2⁻¹ = (a⁻¹ * c2)⁻¹ by rw [mul_inv, inv_inv], hJt, mul_inv, FractionalIdeal.spanSingleton_inv, inv_inv, FractionalIdeal.mem_singleton_mul]`. Conclude with `⟨z', hz', rfl⟩`. Rewrite using `[show a * c1⁻¹ = (a⁻¹ * c1)⁻¹ by rw [mul_inv, inv_inv], hIs, FractionalIdeal.mem_singleton_mul]`. Conclude with `⟨y, FractionalIdeal.mem_coe.1 hy, rfl⟩`.
+
+Take the linear combination `hyz + y * e1 + algebraMap (𝓞 E) E g * z' * e2`.
+-/
 lemma coeffs (c1 c2 a : 𝓕) (h1 : c1 ≠ 0) (h2 : c2 ≠ 0) (ha : a ≠ 0) :
     ∃ α β γ δ : E, α ∈ a⁻¹ * c1 ∧ β ∈ a⁻¹ * c2 ∧ γ ∈ a * c2⁻¹ ∧ δ ∈ a * c1⁻¹ ∧
       α * δ - β * γ = 1 := by
@@ -170,6 +236,21 @@ lemma coeffs (c1 c2 a : 𝓕) (h1 : c1 ≠ 0) (h2 : c2 ≠ 0) (ha : a ≠ 0) :
     exact ⟨y, FractionalIdeal.mem_coe.1 hy, rfl⟩
   · linear_combination hyz + y * e1 + algebraMap (𝓞 E) E g * z' * e2
 
+/- English proof (translation)
+Take `⟨α, β, γ, δ, hα, hβ, hγ, hδ, hdet⟩` from `coeffs c1 c2 a h1 h2 ha`. Establish `E1 : a * (a⁻¹ * c1) = c1` using `mul_inv_cancel_left₀ ha c1`. Establish `E2 : a * (a⁻¹ * c2) = c2` using `mul_inv_cancel_left₀ ha c2`. Establish `E3 : c1 * c2 * a⁻¹ * (a * c2⁻¹) = c1`. Rewrite using `[show c1 * c2 * a⁻¹ * (a * c2⁻¹) = c1 * (c2 * c2⁻¹) * (a⁻¹ * a) by ac_rfl, mul_inv_cancel₀ h2, inv_mul_cancel₀ ha, mul_one, mul_one]`.
+
+Establish `E4 : c1 * c2 * a⁻¹ * (a * c1⁻¹) = c2`. Rewrite using `[show c1 * c2 * a⁻¹ * (a * c1⁻¹) = c2 * (c1 * c1⁻¹) * (a⁻¹ * a) by ac_rfl, mul_inv_cancel₀ h1, inv_mul_cancel₀ ha, mul_one, mul_one]`. Establish `E5 : c1 * (a * c1⁻¹) = a`. Rewrite using `[show c1 * (a * c1⁻¹) = a * (c1 * c1⁻¹) by ac_rfl, mul_inv_cancel₀ h1, mul_one]`. Establish `E6 : c1 * (a⁻¹ * c2) = c1 * c2 * a⁻¹` using `by ac_rfl`.
+
+Establish `E7 : c2 * (a * c2⁻¹) = a`. Rewrite using `[show c2 * (a * c2⁻¹) = a * (c2 * c2⁻¹) by ac_rfl, mul_inv_cancel₀ h2, mul_one]`. Establish `E8 : c2 * (a⁻¹ * c1) = c1 * c2 * a⁻¹` using `by ac_rfl`. Use `⟨α • p + β • q, γ • p + δ • q, le_antisymm (sup_le ?_ ?_) (sup_le ?_ ?_)⟩` and prove the remaining obligations. Use `Submodule.span_le.2 ?_` and prove the remaining obligations.
+
+Introduce and unpack `_ ⟨x, hx, rfl⟩`. Establish `key : (x * (α * δ - β * γ)) • p = (x * δ) • (α • p + β • q) - (x * β) • (γ • p + δ • q)` using `by module`. Rewrite `key` using `[hdet, mul_one]`. Rewrite using `[SetLike.mem_coe, key]`. Conclude with `sub_mem (Submodule.mem_sup_left (mem_lineV _ _ (fi_mul_mem E5 hx hδ))) (Submodule.mem_sup_right (mem_lineV _ _ (fi_mul_mem E6 hx hβ)))`.
+
+Use `Submodule.span_le.2 ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨x, hx, rfl⟩`. Establish `key : (x * (α * δ - β * γ)) • q = (-(x * γ)) • (α • p + β • q) + (x * α) • (γ • p + δ • q)` using `by module`. Rewrite `key` using `[hdet, mul_one]`. Rewrite using `[SetLike.mem_coe, key]`.
+
+Conclude with `add_mem (Submodule.mem_sup_left (mem_lineV _ _ (fi_neg_mem (fi_mul_mem E7 hx hγ)))) (Submodule.mem_sup_right (mem_lineV _ _ (fi_mul_mem E8 hx hα)))`. Use `Submodule.span_le.2 ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨x, hx, rfl⟩`. Rewrite using `[SetLike.mem_coe, smul_add, smul_smul, smul_smul]`. Conclude with `add_mem (Submodule.mem_sup_left (mem_lineV _ _ (fi_mul_mem E1 hx hα))) (Submodule.mem_sup_right (mem_lineV _ _ (fi_mul_mem E2 hx hβ)))`.
+
+Use `Submodule.span_le.2 ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨x, hx, rfl⟩`. Rewrite using `[SetLike.mem_coe, smul_add, smul_smul, smul_smul]`. Conclude with `add_mem (Submodule.mem_sup_left (mem_lineV _ _ (fi_mul_mem E3 hx hγ))) (Submodule.mem_sup_right (mem_lineV _ _ (fi_mul_mem E4 hx hδ)))`.
+-/
 lemma rebase (c1 c2 a : 𝓕) (h1 : c1 ≠ 0) (h2 : c2 ≠ 0) (ha : a ≠ 0) (p q : V) :
     ∃ u1 u2 : V, lineV c1 p ⊔ lineV c2 q = lineV a u1 ⊔ lineV (c1 * c2 * a⁻¹) u2 := by
   obtain ⟨α, β, γ, δ, hα, hβ, hγ, hδ, hdet⟩ := coeffs c1 c2 a h1 h2 ha
@@ -215,12 +296,28 @@ lemma rebase (c1 c2 a : 𝓕) (h1 : c1 ≠ 0) (h2 : c2 ≠ 0) (ha : a ≠ 0) (p 
     exact add_mem (Submodule.mem_sup_left (mem_lineV _ _ (fi_mul_mem E3 hx hγ)))
       (Submodule.mem_sup_right (mem_lineV _ _ (fi_mul_mem E4 hx hδ)))
 
+/- English proof (translation)
+Use `haveI := isNoetherian_of_fg_of_noetherian M hM`. Establish `h1 : (Submodule.comap M.subtype N).FG` using `IsNoetherian.noetherian _`. Establish `h2` using `h1.map M.subtype`. Rewrite `h2` using `[Submodule.map_comap_subtype, inf_eq_right.2 h]`. Then use the resulting hypothesis.
+-/
 private lemma fg_of_le_lemma {M N : Submodule (𝓞 E) V} (hM : M.FG) (h : N ≤ M) : N.FG := by
   haveI := isNoetherian_of_fg_of_noetherian M hM
   have h1 : (Submodule.comap M.subtype N).FG := IsNoetherian.noetherian _
   have h2 := h1.map M.subtype
   rwa [Submodule.map_comap_subtype, inf_eq_right.2 h] at h2
 
+/- English proof (translation)
+Proceed by induction on `n with`. Consider the case `zero`. Introduce `w hw M hM hMX hd a ha`. Take `⟨d, hd0, hdw⟩` from `hd (Fin.last 0)`. Take `⟨b, u, hb, hMe⟩` from `peel w hw M hM hMX hd0 hdw`.
+
+Use `⟨fun _ => u, b, hb, ?_⟩` and prove the remaining obligations. Rewrite using `[latSpanV_succ, Fin.init_snoc, Fin.snoc_last, latSpanV_zero, bot_sup_eq]`. Establish `hW : Submodule.span E (Set.range (Fin.init w)) = ⊥`. Rewrite using `[Set.range_eq_empty, Submodule.span_empty]`. Rewrite `hMe` using `[hW, Submodule.restrictScalars_bot, inf_bot_eq, bot_sup_eq]`.
+
+Conclude with `hMe`. Consider the case `succ n ih`. Introduce `w hw M hM hMX hd a ha`. Take `⟨d, hd0, hdw⟩` from `hd (Fin.last (n + 1))`. Take `⟨b, u, hb, hMe⟩` from `peel w hw M hM hMX hd0 hdw`.
+
+Establish `hM'fg : (M ⊓ (Submodule.span E (Set.range (Fin.init w))).restrictScalars (𝓞 E)).FG` using `fg_of_le_lemma hM inf_le_left`. Establish `hind : LinearIndependent E (Fin.init w)` using `hw.comp _ (Fin.castSucc_injective _)`. Establish `hd' : ∀ i, ∃ d : 𝓞 E, d ≠ 0 ∧ d • Fin.init w i ∈ M ⊓ (Submodule.span E (Set.range (Fin.init w))).restrictScalars (𝓞 E)`. Introduce `i`. Take `⟨d, hd0, hdw⟩` from `hd i.castSucc`.
+
+Conclude with `⟨d, hd0, hdw, Submodule.smul_of_tower_mem _ d (Submodule.subset_span ⟨i, rfl⟩)⟩`. Take `⟨e', c', hc', hM'⟩` from `ih (Fin.init w) hind _ hM'fg inf_le_right hd' (Fin.init a) (fun i => ha _)`. Take `⟨u1, u2, hre⟩` from `rebase c' b (a (Fin.last n)) hc' hb (ha _) (e' (Fin.last n)) u`. Use `⟨Fin.snoc (Fin.snoc (Fin.init e') u1) u2, c' * b * (a (Fin.last n))⁻¹, mul_ne_zero (mul_ne_zero hc' hb) (inv_ne_zero (ha _)), ?_⟩` and prove the remaining obligations. Rewrite using `[latSpanV_succ, Fin.init_snoc, Fin.init_snoc, Fin.snoc_last, Fin.snoc_last, latSpanV_succ, Fin.init_snoc, Fin.snoc_last]`.
+
+Rewrite using `[hMe, hM', latSpanV_succ, Fin.init_snoc, Fin.snoc_last, sup_assoc, hre, ← sup_assoc]`.
+-/
 theorem adapted_basis (n : ℕ) : ∀ (w : Fin (n + 1) → V), LinearIndependent E w →
     ∀ (M : Submodule (𝓞 E) V), M.FG →
     M ≤ (Submodule.span E (Set.range w)).restrictScalars (𝓞 E) →
@@ -260,6 +357,13 @@ theorem adapted_basis (n : ℕ) : ∀ (w : Fin (n + 1) → V), LinearIndependent
       Fin.init_snoc, Fin.snoc_last]
     rw [hMe, hM', latSpanV_succ, Fin.init_snoc, Fin.snoc_last, sup_assoc, hre, ← sup_assoc]
 
+/- English proof (translation)
+Apply `le_antisymm` to reduce the goal to its premises. Rewrite using `[Submodule.span_le]`. Introduce `x hx`. Conclude with `hNY hx`. Use `hY.trans ?_` and prove the remaining obligations.
+
+Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨i, rfl⟩`. Take `⟨t, ht, hti⟩` from `hg i`. Establish `h : g i = t⁻¹ • (t • g i)` using `by rw [smul_smul, inv_mul_cancel₀ ht, one_smul]`. Rewrite using `[SetLike.mem_coe, h]`.
+
+Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span hti)`.
+-/
 lemma spanE_of_lat {ι : Type} (N : Submodule (𝓞 E) V) (g : ι → V) (Y : Submodule E V)
     (hNY : N ≤ Y.restrictScalars (𝓞 E)) (hY : Y ≤ Submodule.span E (Set.range g))
     (hg : ∀ i, ∃ t : E, t ≠ 0 ∧ t • g i ∈ N) : Submodule.span E (N : Set V) = Y := by
@@ -277,6 +381,11 @@ lemma spanE_of_lat {ι : Type} (N : Submodule (𝓞 E) V) (g : ι → V) (Y : Su
 
 end Sat
 
+/- English proof (translation)
+Assume the negation of the conclusion as `h`. Use `push_neg at h`. Apply `hI` to reduce the goal to its premises. Use extensionality with `x`. Rewrite using `[FractionalIdeal.mem_zero_iff]`.
+
+Conclude with `⟨h x, fun hx => hx ▸ FractionalIdeal.mem_coe.1 (Submodule.zero_mem _)⟩`.
+-/
 private lemma fi_exists_ne_lemma {R K : Type} [CommRing R] [Field K] [Algebra R K] {S : Submonoid R}
     {I : FractionalIdeal S K} (hI : I ≠ 0) : ∃ x ∈ I, x ≠ 0 := by
   by_contra h
@@ -286,6 +395,21 @@ private lemma fi_exists_ne_lemma {R K : Type} [CommRing R] [Field K] [Algebra R 
   rw [FractionalIdeal.mem_zero_iff]
   exact ⟨h x, fun hx => hx ▸ FractionalIdeal.mem_coe.1 (Submodule.zero_mem _)⟩
 
+/- English proof (translation)
+Introduce `E V _ _ _ _ _ _ _ Λ hΛ n w hw a ha`. Establish `hMfg : (Λ ⊓ (Submodule.span E (Set.range w)).restrictScalars (𝓞 E)).FG` using `fg_of_le_lemma hΛ.fg inf_le_left`. Establish `hd : ∀ i, ∃ d : 𝓞 E, d ≠ 0 ∧ d • w i ∈ Λ ⊓ (Submodule.span E (Set.range w)).restrictScalars (𝓞 E)`. Introduce `i`. Establish `hwi : w i ∈ Submodule.span E (Λ : Set V)`.
+
+Rewrite using `[hΛ.span_eq_top]`. Conclude with `Submodule.mem_top`. Take `⟨d, hd0, hdΛ⟩` from `exists_smul_mem_of_mem_span hwi`. Conclude with `⟨d, hd0, hdΛ, Submodule.smul_of_tower_mem _ d (Submodule.subset_span ⟨i, rfl⟩)⟩`. Take `⟨e, c, hc, hMe⟩` from `adapted_basis n w hw _ hMfg inf_le_right hd a ha`.
+
+Establish `hinj` using `IsFractionRing.injective (𝓞 E) E`. Establish `hspw : Submodule.span E ((Λ ⊓ (Submodule.span E (Set.range w)).restrictScalars (𝓞 E) : Submodule (𝓞 E) V) : Set V) = Submodule.span E (Set.range w)`. Use `spanE_of_lat _ w _ inf_le_right le_rfl fun i => ?_` and prove the remaining obligations. Take `⟨d, hd0, hdM⟩` from `hd i`. Conclude with `⟨algebraMap (𝓞 E) E d, fun h => hd0 (hinj (by rw [h, map_zero])), by rw [algebraMap_smul]; exact hdM⟩`.
+
+Establish `hspe : Submodule.span E ((Λ ⊓ (Submodule.span E (Set.range w)).restrictScalars (𝓞 E) : Submodule (𝓞 E) V) : Set V) = Submodule.span E (Set.range e)`. Use `spanE_of_lat _ e _ ?_ le_rfl fun i => ?_` and prove the remaining obligations. Rewrite using `[hMe]`. Use `Submodule.span_le.2 ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨i, x, hx, rfl⟩`.
+
+Conclude with `Submodule.smul_mem _ x (Submodule.subset_span ⟨i, rfl⟩)`. Establish `hne : Fin.snoc (α` using `fun _ => FractionalIdeal (nonZeroDivisors (𝓞 E)) E) a c i ≠ 0 := by`. Proceed by induction on `i using Fin.lastCases with`. Consider the case `last => rw [Fin.snoc_last]`. Conclude with `hc`.
+
+Consider the case `cast j => rw [Fin.snoc_castSucc]`. Conclude with `ha j`. Take `⟨x, hx, hx0⟩` from `fi_exists_ne_lemma hne`. Conclude with `⟨x, hx0, by rw [hMe]; exact Submodule.subset_span ⟨i, x, hx, rfl⟩⟩`. Establish `hew : Submodule.span E (Set.range e) = Submodule.span E (Set.range w)` using `hspe.symm.trans hspw`.
+
+Use `⟨e, c, ?_, hew, hc, hMe⟩` and prove the remaining obligations. Rewrite using `[linearIndependent_iff_card_eq_finrank_span]`. Unfold `Set.finrank`. Rewrite using `[hew, finrank_span_eq_card hw]`.
+-/
 theorem satBasisV_holds : SatBasisV := by
   intro E V _ _ _ _ _ _ _ Λ hΛ n w hw a ha
   have hMfg : (Λ ⊓ (Submodule.span E (Set.range w)).restrictScalars (𝓞 E)).FG :=

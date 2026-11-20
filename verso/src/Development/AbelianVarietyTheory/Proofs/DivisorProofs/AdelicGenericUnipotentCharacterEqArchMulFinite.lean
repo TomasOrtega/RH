@@ -4,6 +4,9 @@ open scoped ContDiff
 
 namespace GlobalTheory.WhitBump
 
+/- English proof (translation)
+Use `Prod.ext ?_ ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `x.1 = infEq E ((infEq E).symm x.1) + 0`. Simplify using the standard rewrite rules. Express the relevant statement in the definitionally equal form `x.2 = 0 + x.2`. Simplify using the standard rewrite rules.
+-/
 theorem adele_eq_sInf_add_sFin {E : Type} [Field E] [NumberField E] [IsTotallyComplex E] (x : Ad E) :
     x = sInf E (pInf E x) + sFin E (pFin E x) := by
   refine Prod.ext ?_ ?_
@@ -12,6 +15,11 @@ theorem adele_eq_sInf_add_sFin {E : Type} [Field E] [NumberField E] [IsTotallyCo
   · change x.2 = 0 + x.2
     simp
 
+/- English proof (translation)
+Introduce `E _ _ _ n u`. Establish `h : GlobalTheory.Whittaker.superDiag u = sInf E (sdM ((GeneralLinearGroup.map (pInf E) u : GL (Fin n) (Cinf E)) : Matrix (Fin n) (Fin n) (Cinf E))) + sFin E (GlobalTheory.Whittaker.superDiag (GeneralLinearGroup.map (pFin E) u))`. Simplify using `only [GlobalTheory.Whittaker.superDiag, sdM, map_sum]`. Rewrite using `[← Finset.sum_add_distrib]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[← Finset.sum_add_distrib]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Conclude with `adele_eq_sInf_add_sFin _`. Unfold `GlobalTheory.JSW.psiN psiInf psiFin`. Rewrite using `[h, AddChar.map_add_eq_mul, Circle.coe_mul]`.
+-/
 theorem psiN_split : ∀ (E : Type) [Field E] [NumberField E] [IsTotallyComplex E] (n : ℕ) (u : GA E n), GlobalTheory.JSW.psiN u = psiInf (sdM ((GeneralLinearGroup.map (pInf E) u : GL (Fin n) (Cinf E)) : Matrix (Fin n) (Fin n) (Cinf E))) * psiFin (GlobalTheory.Whittaker.superDiag (GeneralLinearGroup.map (pFin E) u)) := by
   intro E _ _ _ n u
   have h : GlobalTheory.Whittaker.superDiag u = sInf E (sdM ((GeneralLinearGroup.map (pInf E) u : GL (Fin n) (Cinf E)) : Matrix (Fin n) (Fin n) (Cinf E))) + sFin E (GlobalTheory.Whittaker.superDiag (GeneralLinearGroup.map (pFin E) u)) := by

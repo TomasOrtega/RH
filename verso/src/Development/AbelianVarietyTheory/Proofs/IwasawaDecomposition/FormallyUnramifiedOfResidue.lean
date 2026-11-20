@@ -3,6 +3,15 @@ open IsLocalRing
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Establish `hloc : IsLocalHom ψ`. Use `⟨fun b hb => ?_⟩` and prove the remaining obligations. Assume the negation of the conclusion as `h`. Establish `hb' : b ∈ maximalIdeal B` using `(mem_maximalIdeal b).2 h`. Establish `: ψ b ∈ maximalIdeal R` using `hm ▸ Ideal.mem_map_of_mem ψ hb'`.
+
+Conclude with `(mem_maximalIdeal _).1 this hb`. Use `algebraize [ψ, ι, ψ.comp ι]`. Establish `h1 : Algebra.FormallyUnramified A (ResidueField R)`. Rewrite using `[← RingHom.formallyUnramified_algebraMap]`. Conclude with `hu`.
+
+Establish `h2 : Algebra.FormallyUnramified B (ResidueField R)` using `.of_restrictScalars A _ _`. Establish `h3 : Algebra.FormallyUnramified (ResidueField B) (ResidueField R)` using `.of_restrictScalars B _ _`. Establish `h4 : Algebra.EssFiniteType B (ResidueField R)` using `.comp _ R _`. Establish `h5 : Algebra.EssFiniteType (ResidueField B) (ResidueField R)` using `.of_comp B _ _`. Establish `h6 : Algebra.IsSeparable (ResidueField B) (ResidueField R)` using `Algebra.FormallyUnramified.isSeparable _ _`.
+
+Establish `h7 : Algebra.FormallyUnramified B R` using `Algebra.FormallyUnramified.of_map_maximalIdeal hm`. Conclude with `RingHom.formallyUnramified_algebraMap.2 h7`.
+-/
 theorem formallyUnramified_of_finite_map_maximalIdeal
     {A B R : Type} [CommRing A] [CommRing B] [IsLocalRing B] [CommRing R] [IsLocalRing R]
     (ι : A →+* B) (ψ : B →+* R) (hψ : ψ.Finite) (hm : (maximalIdeal B).map ψ = maximalIdeal R)

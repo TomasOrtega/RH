@@ -16,6 +16,41 @@ attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalDat
 
 open scoped Pointwise in
 
+/- English proof (translation)
+Introduce `HT HG HL`. Introduce `E Ω _ _ _ _ _ _ g _ A w h rc hrc i hi κ L t ht hTC n hbig σ _ τ P hP hinf`. Establish `hn : 0 < n` using `hP.2.1.1`. Take `⟨E', _, _, _, _, _, _, _, w', h', hg0, hg1, hN, ⟨ζ, hζ⟩, hfix⟩` from `GlobalTheory.T.exists_unramified_totallyComplex_ext_with_unity_roots E Ω g A w h i hi n hn`. Set `t' : Ω ≃ₐ[E'] Ω` to `{ t with commutes' := fun e => hfix t ht e }`.
+
+Establish `htt : ∀ z, t' z = t z` using `fun _ => rfl`. Establish `hdec : t' • A = A`. Establish `h0 : t • A = A` using `ht.1`. Use extensionality with `z`. Rewrite using `[ValuationSubring.mem_smul_pointwise_iff_exists]`.
+
+Use `conv_rhs => rw [← h0]`. Rewrite using `[ValuationSubring.mem_smul_pointwise_iff_exists]`. Both sides reduce to the same expression. Establish `ht' : t' ∈ Ine (F` using `E') A := ⟨hdec, fun z hz => ht.2 z hz⟩`. Establish `hres : AlgEquiv.restrictScalars E t' = t` using `by ext z; rfl`.
+
+Choose the witnesses or unpack the hypotheses as in `⟨a', ha'⟩ : ∃ a' : Weil h' →* (w'.adicCompletion E')ˣ, IsLocalArtin h' a' := by`. Take `⟨rc', hrc', -⟩` from `HL.1 E' Ω A w' h'`. Take `⟨a', ha', -⟩` from `hrc'`. Conclude with `⟨a', ha'⟩`. Take `⟨art, hart⟩` from `HG E' Ω`.
+
+Use `set u := a' (ineIncl h' ⟨t', ht'⟩) with hu_def`. Establish `hu : IsUnitAt w' u` using `GlobalTheory.T.localArtin_inertia_isUnitAt h' a' ha' ⟨t', ht'⟩`. Take `⟨x, hx⟩` from `GlobalTheory.T.exists_integer_approx_unit_adicCompletion w' u hu`. Use `haveI : IsAlgClosed Ω := IsAlgClosure.isAlgClosed E`. Establish `hg2 : 2 ≤ g` using `(Fact.out : g.Prime).two_le`.
+
+Establish `hq : 0 < g ^ n - 1`. Establish `: 2 ≤ g ^ n` using `le_trans hg2 (Nat.le_self_pow hn.ne' g)`. Use linear arithmetic over natural numbers and integers. Take `⟨y, hy⟩` from `IsAlgClosed.exists_pow_nat_eq ((g : ℕ) : Ω) hq`. Establish `hy' : y ^ (normV w' - 1) = algebraMap E' Ω ((((g : ℕ) : 𝓞 E')) : E')`.
+
+Rewrite using `[hN, hy]`. Simplify using the standard rewrite rules. Take `⟨σ', hσ'I, hσ'ab, hσ'v⟩` from `GlobalTheory.TameRecip.exists_ine_of_unit HG E' Ω art hart w' A h' ((g : ℕ) : 𝓞 E') hg0 hg1 y hy' u x hu hx`. Establish `hab : toAb E' Ω σ' = toAb E' Ω t'`. Rewrite using `[hσ'ab]`.
+
+Conclude with `ha'.glob art hart _`. Establish `hgE : ((g : ℕ) : E') ≠ 0` using `Nat.cast_ne_zero.mpr (Fact.out : g.Prime).ne_zero`. Establish `hkum` using `GlobalTheory.T.kummerCharacter_factors_absoluteGaloisAbelianization E' Ω (g ^ n - 1) hq ζ hζ ((g : ℕ) : E') hgE y (by rw [hy, map_natCast]) σ' t' hab`. Establish `hgΩ : ((g : ℕ) : Ω) ≠ 0`. Rewrite using `[← map_natCast (algebraMap E' Ω)]`.
+
+Conclude with `(_root_.map_ne_zero _).mpr hgE`. Establish `h1` using `hTC n hn y hy`. Establish `h2 : redThrough A κ (algebraMap E' Ω ((x : 𝓞 E') : E')) = L.gen n`. Rewrite using `[← h1]`. Establish `e : t y / y = σ' y / y` using `by rw [hkum]; rfl`.
+
+Rewrite using `[e]`. Conclude with `(redThrough_eq_of_val_sub_lt_one A κ (tameQuot_mem A σ' hq hgΩ hy) hσ'v).symm`. Use `haveI := w'.isMaximal`. Use `letI : Field (𝓞 E' ⧸ w'.asIdeal) := Ideal.Quotient.field _`. Establish `hgK : (((g : ℕ) : 𝓞 E' ⧸ w'.asIdeal)) = 0`.
+
+Rewrite using `[← map_natCast (Ideal.Quotient.mk w'.asIdeal), Ideal.Quotient.eq_zero_iff_mem]`. Conclude with `hg0`. Use `haveI : CharP (𝓞 E' ⧸ w'.asIdeal) g := (CharP.charP_iff_prime_eq_zero (Fact.out : g.Prime)).mpr hgK`. Use `letI : Algebra (ZMod g) (𝓞 E' ⧸ w'.asIdeal) := ZMod.algebra _ g`. Take `⟨ι, hι⟩` from `GlobalTheory.T.exists_residueField_embedding_place_over E' Ω g A w' h' κ`.
+
+Establish `hcard : Nat.card (𝓞 E' ⧸ w'.asIdeal) = g ^ n` using `hN`. Use `haveI : Finite (𝓞 E' ⧸ w'.asIdeal) := Nat.finite_of_card_ne_zero (by rw [hcard]; positivity)`. Take `⟨θ, hreg, ⟨x0, hx0, hθ⟩, hprod⟩` from `GlobalTheory.T.exists_regularCharacter_labelRoot_product g L n hn P hP.1 _ hcard ι`. Establish `hιz : ι (Ideal.Quotient.mk _ x) = L.gen n` using `by rw [hι]; exact h2`. Establish `hgen0 : L.gen n ≠ 0`.
+
+Introduce `e`. Establish `ho` using `L.gen_order n hn`. Rewrite `ho` using `[e, orderOf_eq_zero_iff'.mpr (fun k hk => by simp [zero_pow hk.ne'])]`. Use linear arithmetic over natural numbers and integers. Establish `hz0 : (Ideal.Quotient.mk w'.asIdeal x) ≠ 0`.
+
+Introduce `e`. Rewrite `hιz` using `[e, map_zero]`. Conclude with `hgen0 hιz.symm`. Use `set z : (𝓞 E' ⧸ w'.asIdeal)ˣ := Units.mk0 _ hz0 with hz`. Establish `hform : ∀ y' : Gn g n, Irreducible (y' : Mt g n).charpoly → ∀ z' : (𝓞 E' ⧸ w'.asIdeal)ˣ, aeval (z' : 𝓞 E' ⧸ w'.asIdeal) (y' : Mt g n).charpoly = 0 → τ.character y' = (-1) ^ (n - 1) * ∑ j ∈ Finset.range n, ((θ (z' ^ g ^ j) : ℂˣ) : ℂ)`.
+
+Introduce `y' hy' z' hz'`. Establish `hmem : ι z' ∈ Formalism.CyclotomicNorms.rootsBar (y' : Mt g n).charpoly`. Unfold `Formalism.CyclotomicNorms.rootsBar`. Rewrite using `[Polynomial.mem_roots (Polynomial.map_ne_zero (Matrix.charpoly_monic _).ne_zero), Polynomial.IsRoot.def, Polynomial.eval_map]`. Establish `hc : algebraMap (ZMod g) (Formalism.CyclotomicNorms.Fbar g) = ι.comp (algebraMap (ZMod g) (𝓞 E' ⧸ w'.asIdeal))` using `RingHom.ext_zmod _ _`.
+
+Rewrite using `[hc, ← Polynomial.hom_eval₂, ← Polynomial.aeval_def, hz', map_zero]`. Rewrite using `[hP.2.2 x0 hx0 y' hy' (ι z') hmem]`. Use `congr 1`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[hθ, Units.val_pow_eq_pow_val, map_pow]`.
+
+Establish `H` using `HT E E' Ω g A w h w' h' rc hrc i hi n hn hbig hg1 hN a' ha' (𝓞 E' ⧸ w'.asIdeal) (Ideal.Quotient.mk _) Ideal.Quotient.mk_surjective (Ideal.mk_ker) θ hreg τ hP.2.1 hform σ hinf ⟨t', ht'⟩ x z rfl hx`. Rewrite using `[← hres, H]`. Conclude with `hprod z hιz`.
+-/
 theorem depthZeroInertiaBig_of_narrowBig : DiscreteGroups.sglob.DzType.NarrowBig → GlobalTheory.Published.GlobalArtinReciprocity → GlobalTheory.Published.LocalLanglandsGL →
     DiscreteGroups.sglob.DzType.DepthZeroInertiaBig := by
   intro HT HG HL

@@ -17,15 +17,27 @@ variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algeb
 def insW_k (d : _root_.PositivityTheory.SiegelWeilFormula.SD_k σ) (w : InfinitePlace F) (z : ℂ) : AE F E := (Place.exists_sec d.cm d.B.emb).choose (Pi.single w z)
 section
 variable (d : _root_.PositivityTheory.SiegelWeilFormula.SD_k σ) (w : InfinitePlace F)
+/- English proof (translation)
+Establish `h` using `(Place.exists_sec d.cm d.B.emb).choose_spec`. Rewrite using `[_root_.PositivityTheory.SiegelWeilFormula.KW.insW_k, h.2.1, Pi.single_eq_same]`.
+-/
 theorem insW_self_k (z : ℂ) : piInf (d.B.emb w) (_root_.PositivityTheory.SiegelWeilFormula.KW.insW_k d w z) = z := by
   have h := (Place.exists_sec d.cm d.B.emb).choose_spec
   rw [_root_.PositivityTheory.SiegelWeilFormula.KW.insW_k, h.2.1, Pi.single_eq_same]
+/- English proof (translation)
+Establish `h` using `(Place.exists_sec d.cm d.B.emb).choose_spec`. Rewrite using `[_root_.PositivityTheory.SiegelWeilFormula.KW.insW_k, h.2.1, Pi.single_eq_of_ne hw]`.
+-/
 theorem insW_ne_k {w' : InfinitePlace F} (hw : w' ≠ w) (z : ℂ) : piInf (d.B.emb w') (_root_.PositivityTheory.SiegelWeilFormula.KW.insW_k d w z) = 0 := by
   have h := (Place.exists_sec d.cm d.B.emb).choose_spec
   rw [_root_.PositivityTheory.SiegelWeilFormula.KW.insW_k, h.2.1, Pi.single_eq_of_ne hw]
+/- English proof (translation)
+Establish `h` using `(Place.exists_sec d.cm d.B.emb).choose_spec`. Rewrite using `[_root_.PositivityTheory.SiegelWeilFormula.KW.insW_k, h.2.2.1]`.
+-/
 theorem insW_fin_k (z : ℂ) : finOne F • _root_.PositivityTheory.SiegelWeilFormula.KW.insW_k d w z = 0 := by
   have h := (Place.exists_sec d.cm d.B.emb).choose_spec
   rw [_root_.PositivityTheory.SiegelWeilFormula.KW.insW_k, h.2.2.1]
+/- English proof (translation)
+Establish `h` using `(Place.exists_sec d.cm d.B.emb).choose_spec`. Rewrite using `[_root_.PositivityTheory.SiegelWeilFormula.KW.insW_k, _root_.PositivityTheory.SiegelWeilFormula.KW.insW_k, _root_.PositivityTheory.SiegelWeilFormula.KW.insW_k, Pi.single_add, h.2.2.2.1]`.
+-/
 theorem insW_add_k (z z' : ℂ) : _root_.PositivityTheory.SiegelWeilFormula.KW.insW_k d w (z + z') = _root_.PositivityTheory.SiegelWeilFormula.KW.insW_k d w z + _root_.PositivityTheory.SiegelWeilFormula.KW.insW_k d w z' := by
   have h := (Place.exists_sec d.cm d.B.emb).choose_spec
   rw [_root_.PositivityTheory.SiegelWeilFormula.KW.insW_k, _root_.PositivityTheory.SiegelWeilFormula.KW.insW_k, _root_.PositivityTheory.SiegelWeilFormula.KW.insW_k, Pi.single_add, h.2.2.2.1]
@@ -35,15 +47,26 @@ def insL_k {d : _root_.PositivityTheory.SiegelWeilFormula.SD_k σ} (R : _root_.P
 section
 variable {d : _root_.PositivityTheory.SiegelWeilFormula.SD_k σ} (R : _root_.PositivityTheory.SiegelWeilFormula.RD_k d) (w : InfinitePlace F)
 def Supp_k (Z : Mx F E d.m d.n) : Prop := (∀ w', w' ≠ w → d.cw w' Z = 0) ∧ finOne F • Z = 0
+/- English proof (translation)
+Use extensionality with `i j`. Simplify using `only [_root_.PositivityTheory.SiegelWeilFormula.SD_k.cw, _root_.PositivityTheory.SiegelWeilFormula.KW.insL_k, Matrix.map_apply, _root_.PositivityTheory.SiegelWeilFormula.KW.insW_self_k]`.
+-/
 theorem cw_insL_k (v : Fin d.m → Fin d.n → ℂ) : d.cw w (_root_.PositivityTheory.SiegelWeilFormula.KW.insL_k R w v) = (R.fr w).1 * (Matrix.of v).map star := by
   ext i j
   simp only [_root_.PositivityTheory.SiegelWeilFormula.SD_k.cw, _root_.PositivityTheory.SiegelWeilFormula.KW.insL_k, Matrix.map_apply, _root_.PositivityTheory.SiegelWeilFormula.KW.insW_self_k]
+/- English proof (translation)
+Use `⟨fun w' hw' => ?_, ?_⟩` and prove the remaining obligations. Use extensionality with `i j`. Simplify using `only [_root_.PositivityTheory.SiegelWeilFormula.SD_k.cw, _root_.PositivityTheory.SiegelWeilFormula.KW.insL_k, Matrix.map_apply, _root_.PositivityTheory.SiegelWeilFormula.KW.insW_ne_k d w hw', Matrix.zero_apply]`. Use extensionality with `i j`. Simplify using `only [_root_.PositivityTheory.SiegelWeilFormula.KW.insL_k, Matrix.smul_apply, Matrix.map_apply, _root_.PositivityTheory.SiegelWeilFormula.KW.insW_fin_k, Matrix.zero_apply]`.
+-/
 theorem insL_supp_k (v : Fin d.m → Fin d.n → ℂ) : _root_.PositivityTheory.SiegelWeilFormula.KW.Supp_k w (_root_.PositivityTheory.SiegelWeilFormula.KW.insL_k R w v) := by
   refine ⟨fun w' hw' => ?_, ?_⟩
   · ext i j
     simp only [_root_.PositivityTheory.SiegelWeilFormula.SD_k.cw, _root_.PositivityTheory.SiegelWeilFormula.KW.insL_k, Matrix.map_apply, _root_.PositivityTheory.SiegelWeilFormula.KW.insW_ne_k d w hw', Matrix.zero_apply]
   · ext i j
     simp only [_root_.PositivityTheory.SiegelWeilFormula.KW.insL_k, Matrix.smul_apply, Matrix.map_apply, _root_.PositivityTheory.SiegelWeilFormula.KW.insW_fin_k, Matrix.zero_apply]
+/- English proof (translation)
+Establish `e : (R.fr w).1 * (Matrix.of (v + v')).map star = (R.fr w).1 * (Matrix.of v).map star + (R.fr w).1 * (Matrix.of v').map star`. Rewrite using `[← Matrix.mul_add]`. Use `congr 1`. Use extensionality with `i j`. Simplify using the standard rewrite rules.
+
+Unfold `_root_.PositivityTheory.SiegelWeilFormula.KW.insL_k`. Rewrite using `[e]`. Use extensionality with `i j`. Simplify using `only [Matrix.map_apply, Matrix.add_apply, _root_.PositivityTheory.SiegelWeilFormula.KW.insW_add_k]`.
+-/
 theorem insL_add_k (v v' : Fin d.m → Fin d.n → ℂ) : _root_.PositivityTheory.SiegelWeilFormula.KW.insL_k R w (v + v') = _root_.PositivityTheory.SiegelWeilFormula.KW.insL_k R w v + _root_.PositivityTheory.SiegelWeilFormula.KW.insL_k R w v' := by
   have e : (R.fr w).1 * (Matrix.of (v + v')).map star =
       (R.fr w).1 * (Matrix.of v).map star + (R.fr w).1 * (Matrix.of v').map star := by
@@ -55,12 +78,22 @@ theorem insL_add_k (v v' : Fin d.m → Fin d.n → ℂ) : _root_.PositivityTheor
   rw [e]
   ext i j
   simp only [Matrix.map_apply, Matrix.add_apply, _root_.PositivityTheory.SiegelWeilFormula.KW.insW_add_k]
+/- English proof (translation)
+Establish `h` using `_root_.PositivityTheory.SiegelWeilFormula.KW.insL_add_k R w 0 0`. Rewrite `h` using `[add_zero]`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem insL_zero_k : _root_.PositivityTheory.SiegelWeilFormula.KW.insL_k R w 0 = 0 := by
   have h := _root_.PositivityTheory.SiegelWeilFormula.KW.insL_add_k R w 0 0
   rw [add_zero] at h
   calc _root_.PositivityTheory.SiegelWeilFormula.KW.insL_k R w 0 = _root_.PositivityTheory.SiegelWeilFormula.KW.insL_k R w 0 + _root_.PositivityTheory.SiegelWeilFormula.KW.insL_k R w 0 - _root_.PositivityTheory.SiegelWeilFormula.KW.insL_k R w 0 := by abel
     _ = _root_.PositivityTheory.SiegelWeilFormula.KW.insL_k R w 0 - _root_.PositivityTheory.SiegelWeilFormula.KW.insL_k R w 0 := by rw [← h]
     _ = 0 := sub_self _
+/- English proof (translation)
+Use `Place.mat_ext d.cm d.B.emb (fun w' => ?_) ?_` and prove the remaining obligations. Distinguish the cases in `hw : w' = w`. Rewrite using `[hw]`. Express the relevant statement in the definitionally equal form `d.cw w (_root_.PositivityTheory.SiegelWeilFormula.KW.insL_k R w (R.loc w Z)) = d.cw w Z`. Rewrite using `[_root_.PositivityTheory.SiegelWeilFormula.KW.cw_insL_k]`.
+
+Establish `h2 : (Matrix.of (R.loc w Z)).map star = ((R.fr w)⁻¹).1 * d.cw w Z`. Use extensionality with `i j`. Conclude with `star_star _`. Rewrite using `[h2, ← Matrix.mul_assoc, Units.mul_inv, Matrix.one_mul]`. Express the relevant statement in the definitionally equal form `d.cw w' (_root_.PositivityTheory.SiegelWeilFormula.KW.insL_k R w (R.loc w Z)) = d.cw w' Z`.
+
+Rewrite using `[(_root_.PositivityTheory.SiegelWeilFormula.KW.insL_supp_k R w _).1 w' hw, hZ.1 w' hw]`. Rewrite using `[(_root_.PositivityTheory.SiegelWeilFormula.KW.insL_supp_k R w _).2, hZ.2]`.
+-/
 theorem insL_loc_k {Z : Mx F E d.m d.n} (hZ : _root_.PositivityTheory.SiegelWeilFormula.KW.Supp_k w Z) : _root_.PositivityTheory.SiegelWeilFormula.KW.insL_k R w (R.loc w Z) = Z := by
   refine Place.mat_ext d.cm d.B.emb (fun w' => ?_) ?_
   · by_cases hw : w' = w
@@ -74,6 +107,9 @@ theorem insL_loc_k {Z : Mx F E d.m d.n} (hZ : _root_.PositivityTheory.SiegelWeil
     · change d.cw w' (_root_.PositivityTheory.SiegelWeilFormula.KW.insL_k R w (R.loc w Z)) = d.cw w' Z
       rw [(_root_.PositivityTheory.SiegelWeilFormula.KW.insL_supp_k R w _).1 w' hw, hZ.1 w' hw]
   · rw [(_root_.PositivityTheory.SiegelWeilFormula.KW.insL_supp_k R w _).2, hZ.2]
+/- English proof (translation)
+Rewrite using `[_root_.PositivityTheory.SiegelWeilFormula.KFock.loc_add'_k d R w X Z, _root_.PositivityTheory.SiegelWeilFormula.KW.insL_add_k, _root_.PositivityTheory.SiegelWeilFormula.KW.insL_loc_k R w hZ]`. Normalize the expressions using the abelian group laws.
+-/
 theorem rest_inv_k (X Z : Mx F E d.m d.n) (hZ : _root_.PositivityTheory.SiegelWeilFormula.KW.Supp_k w Z) :
     (X + Z) - _root_.PositivityTheory.SiegelWeilFormula.KW.insL_k R w (R.loc w (X + Z)) = X - _root_.PositivityTheory.SiegelWeilFormula.KW.insL_k R w (R.loc w X) := by
   rw [_root_.PositivityTheory.SiegelWeilFormula.KFock.loc_add'_k d R w X Z, _root_.PositivityTheory.SiegelWeilFormula.KW.insL_add_k, _root_.PositivityTheory.SiegelWeilFormula.KW.insL_loc_k R w hZ]
@@ -81,6 +117,9 @@ theorem rest_inv_k (X Z : Mx F E d.m d.n) (hZ : _root_.PositivityTheory.SiegelWe
 end
 section
 variable (d : _root_.PositivityTheory.SiegelWeilFormula.SD_k σ)
+/- English proof (translation)
+Establish `e : d.gram X (Z + Z') = d.gram X Z + d.gram X Z'`. Unfold `_root_.PositivityTheory.SiegelWeilFormula.SD_k.gram`. Rewrite using `[Matrix.map_add _ (map_add _), Matrix.mul_add]`. Rewrite using `[e, _root_.PositivityTheory.SiegelWeilFormula.SD_k.tt, _root_.PositivityTheory.SiegelWeilFormula.SD_k.tt, _root_.PositivityTheory.SiegelWeilFormula.SD_k.tt, Matrix.trace_add, map_add, mul_add, AddChar.map_add_eq_mul]`.
+-/
 theorem psi_add_right_k (ε : ℤˣ) (X Z Z' : Mx F E d.m d.n) :
     d.B.ψ (((ε : ℤ) : AF F) * d.tt (d.gram X (Z + Z'))) =
       d.B.ψ (((ε : ℤ) : AF F) * d.tt (d.gram X Z)) * d.B.ψ (((ε : ℤ) : AF F) * d.tt (d.gram X Z')) := by
@@ -88,6 +127,9 @@ theorem psi_add_right_k (ε : ℤˣ) (X Z Z' : Mx F E d.m d.n) :
     unfold _root_.PositivityTheory.SiegelWeilFormula.SD_k.gram
     rw [Matrix.map_add _ (map_add _), Matrix.mul_add]
   rw [e, _root_.PositivityTheory.SiegelWeilFormula.SD_k.tt, _root_.PositivityTheory.SiegelWeilFormula.SD_k.tt, _root_.PositivityTheory.SiegelWeilFormula.SD_k.tt, Matrix.trace_add, map_add, mul_add, AddChar.map_add_eq_mul]
+/- English proof (translation)
+Establish `e : d.gram (X + X') Z = d.gram X Z + d.gram X' Z`. Unfold `_root_.PositivityTheory.SiegelWeilFormula.SD_k.gram`. Rewrite using `[Matrix.transpose_add, Matrix.add_mul, Matrix.add_mul]`. Rewrite using `[e, _root_.PositivityTheory.SiegelWeilFormula.SD_k.tt, _root_.PositivityTheory.SiegelWeilFormula.SD_k.tt, _root_.PositivityTheory.SiegelWeilFormula.SD_k.tt, Matrix.trace_add, map_add, mul_add, AddChar.map_add_eq_mul]`.
+-/
 theorem psi_add_left_k (ε : ℤˣ) (X X' Z : Mx F E d.m d.n) :
     d.B.ψ (((ε : ℤ) : AF F) * d.tt (d.gram (X + X') Z)) =
       d.B.ψ (((ε : ℤ) : AF F) * d.tt (d.gram X Z)) * d.B.ψ (((ε : ℤ) : AF F) * d.tt (d.gram X' Z)) := by
@@ -95,6 +137,9 @@ theorem psi_add_left_k (ε : ℤˣ) (X X' Z : Mx F E d.m d.n) :
     unfold _root_.PositivityTheory.SiegelWeilFormula.SD_k.gram
     rw [Matrix.transpose_add, Matrix.add_mul, Matrix.add_mul]
   rw [e, _root_.PositivityTheory.SiegelWeilFormula.SD_k.tt, _root_.PositivityTheory.SiegelWeilFormula.SD_k.tt, _root_.PositivityTheory.SiegelWeilFormula.SD_k.tt, Matrix.trace_add, map_add, mul_add, AddChar.map_add_eq_mul]
+/- English proof (translation)
+Unfold `_root_.PositivityTheory.SiegelWeilFormula.SD_k.gram _root_.PositivityTheory.SiegelWeilFormula.SD_k.cw`. Establish `hJ : (incM F d.A.J).map (piInf (d.B.emb w)) = d.A.J.map (d.B.emb w).1`. Use extensionality with `i j`. Simplify using `[incM, PositivityTheory.ThKG.Tow.Levi.piInf_incl]`. Rewrite using `[Matrix.map_mul, Matrix.map_mul, Matrix.transpose_map, Place.map_cA d.cm (d.B.emb w) Z, hJ]`.
+-/
 theorem cw_gram_k (w : InfinitePlace F) (X Z : Mx F E d.m d.n) :
     d.cw w (d.gram X Z) = (d.cw w X)ᵀ * d.A.J.map (d.B.emb w).1 * (d.cw w Z).map star := by
   unfold _root_.PositivityTheory.SiegelWeilFormula.SD_k.gram _root_.PositivityTheory.SiegelWeilFormula.SD_k.cw
@@ -102,6 +147,13 @@ theorem cw_gram_k (w : InfinitePlace F) (X Z : Mx F E d.m d.n) :
     ext i j
     simp [incM, PositivityTheory.ThKG.Tow.Levi.piInf_incl]
   rw [Matrix.map_mul, Matrix.map_mul, Matrix.transpose_map, Place.map_cA d.cm (d.B.emb w) Z, hJ]
+/- English proof (translation)
+Use `Place.mat_ext d.cm d.B.emb (fun w' => ?_) ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `d.cw w' (d.gram Z' Z) = d.cw w' 0`. Rewrite using `[_root_.PositivityTheory.SiegelWeilFormula.KW.cw_gram_k]`. Distinguish the cases in `hw : w' = w`. Substitute `hw` using the available equality.
+
+Rewrite using `[hZ, Matrix.map_zero _ (star_zero _), Matrix.mul_zero]`. Use extensionality with `i j`. Simplify using `[_root_.PositivityTheory.SiegelWeilFormula.SD_k.cw]`. Rewrite using `[hZ'.1 w' hw, Matrix.transpose_zero, Matrix.zero_mul, Matrix.zero_mul]`. Use extensionality with `i j`.
+
+Simplify using `[_root_.PositivityTheory.SiegelWeilFormula.SD_k.cw]`. Unfold `_root_.PositivityTheory.SiegelWeilFormula.SD_k.gram`. Rewrite using `[← Matrix.smul_mul, ← Matrix.smul_mul, ← Matrix.transpose_smul, hZ'.2]`. Simplify using the standard rewrite rules.
+-/
 theorem gram_supp_cmp_k (w : InfinitePlace F) {Z' Z : Mx F E d.m d.n} (hZ' : _root_.PositivityTheory.SiegelWeilFormula.KW.Supp_k w Z') (hZ : d.cw w Z = 0) :
     d.gram Z' Z = 0 := by
   refine Place.mat_ext d.cm d.B.emb (fun w' => ?_) ?_
@@ -118,18 +170,30 @@ theorem gram_supp_cmp_k (w : InfinitePlace F) {Z' Z : Mx F E d.m d.n} (hZ' : _ro
   · unfold _root_.PositivityTheory.SiegelWeilFormula.SD_k.gram
     rw [← Matrix.smul_mul, ← Matrix.smul_mul, ← Matrix.transpose_smul, hZ'.2]
     simp
+/- English proof (translation)
+Simplify using `[_root_.PositivityTheory.SiegelWeilFormula.SD_k.tt]`.
+-/
 theorem psi_zero_gram_k (ε : ℤˣ) : d.B.ψ (((ε : ℤ) : AF F) * d.tt (0 : Mx F E d.n d.n)) = 1 := by
   simp [_root_.PositivityTheory.SiegelWeilFormula.SD_k.tt]
 end
+/- English proof (translation)
+Apply the tactic sequence `rcases R.hζ with ⟨-, h⟩ | ⟨-, h⟩ <;> rw [h] <;> simp`.
+-/
 theorem zeta_ne_k {d : _root_.PositivityTheory.SiegelWeilFormula.SD_k σ} (R : _root_.PositivityTheory.SiegelWeilFormula.RD_k d) : R.ζ ≠ 0 := by
   rcases R.hζ with ⟨-, h⟩ | ⟨-, h⟩ <;> rw [h] <;> simp
 section
 variable {d : _root_.PositivityTheory.SiegelWeilFormula.SD_k σ} (R : _root_.PositivityTheory.SiegelWeilFormula.RD_k d) (w : InfinitePlace F)
+/- English proof (translation)
+Establish `h2 : (Matrix.of (R.loc w X)).map star = ((R.fr w)⁻¹).1 * d.cw w X`. Use extensionality with `i j`. Conclude with `star_star _`. Rewrite using `[h2, ← Matrix.mul_assoc, Units.mul_inv, Matrix.one_mul]`.
+-/
 theorem cw_loc_k (X : Mx F E d.m d.n) : d.cw w X = (R.fr w).1 * (Matrix.of (R.loc w X)).map star := by
   have h2 : (Matrix.of (R.loc w X)).map star = ((R.fr w)⁻¹).1 * d.cw w X := by
     ext i j
     exact star_star _
   rw [h2, ← Matrix.mul_assoc, Units.mul_inv, Matrix.one_mul]
+/- English proof (translation)
+Establish `h` using `R.hfr w`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[smul_smul, inv_mul_cancel₀ (_root_.PositivityTheory.SiegelWeilFormula.KW.zeta_ne_k R), one_smul]`. Use `_ = (R.ζ⁻¹ * ((R.sg w : ℤ) : ℂ)) • 1 := by rw [h, smul_smul]`.
+-/
 theorem frJ_k : (R.fr w).1ᵀ * d.A.J.map (d.B.emb w).1 * (R.fr w).1.map star = (R.ζ⁻¹ * ((R.sg w : ℤ) : ℂ)) • 1 := by
   have h := R.hfr w
   calc (R.fr w).1ᵀ * d.A.J.map (d.B.emb w).1 * (R.fr w).1.map star
@@ -137,6 +201,11 @@ theorem frJ_k : (R.fr w).1ᵀ * d.A.J.map (d.B.emb w).1 * (R.fr w).1.map star = 
         rw [smul_smul, inv_mul_cancel₀ (_root_.PositivityTheory.SiegelWeilFormula.KW.zeta_ne_k R), one_smul]
     _ = (R.ζ⁻¹ * ((R.sg w : ℤ) : ℂ)) • 1 := by rw [h, smul_smul]
 end
+/- English proof (translation)
+Establish `hz : ((ε : ℤ) : AF F) * d.tt M = Algebra.trace (AF F) (AE F E) ((ε : ℤ) • M.trace)`. Rewrite using `[map_zsmul, zsmul_eq_mul]`. Both sides reduce to the same expression. Establish `ptr : ∀ u, piInf (d.B.emb u) M.trace = (d.cw u M).trace` using `fun u => by`. Simplify using `[Matrix.trace, _root_.PositivityTheory.SiegelWeilFormula.SD_k.cw, map_sum]`.
+
+Rewrite using `[hz, Place.psi_trace_at d.std d.cm d.B.emb w _ ?_ ?_, map_zsmul, ptr, zsmul_eq_mul]`. Rewrite using `[smul_comm, ← Matrix.trace_smul, hM2, Matrix.trace_zero, smul_zero]`. Introduce `u hu`. Rewrite using `[map_zsmul, ptr, hM1 u hu, Matrix.trace_zero, smul_zero]`.
+-/
 theorem psi_at_w_k (d : _root_.PositivityTheory.SiegelWeilFormula.SD_k σ) (w : InfinitePlace F) (ε : ℤˣ) (M : Mx F E d.n d.n)
     (hM1 : ∀ w', w' ≠ w → d.cw w' M = 0) (hM2 : finOne F • M = 0) :
     d.B.ψ (((ε : ℤ) : AF F) * d.tt M) =
@@ -150,6 +219,19 @@ theorem psi_at_w_k (d : _root_.PositivityTheory.SiegelWeilFormula.SD_k σ) (w : 
   · rw [smul_comm, ← Matrix.trace_smul, hM2, Matrix.trace_zero, smul_zero]
   · intro u hu
     rw [map_zsmul, ptr, hM1 u hu, Matrix.trace_zero, smul_zero]
+/- English proof (translation)
+Establish `hM1 : ∀ w', w' ≠ w → d.cw w' (d.gram X (_root_.PositivityTheory.SiegelWeilFormula.KW.insL_k R w u)) = 0`. Introduce `w' hw`. Rewrite using `[_root_.PositivityTheory.SiegelWeilFormula.KW.cw_gram_k, (_root_.PositivityTheory.SiegelWeilFormula.KW.insL_supp_k R w u).1 w' hw, Matrix.map_zero _ (star_zero _), Matrix.mul_zero]`. Establish `hM2 : finOne F • d.gram X (_root_.PositivityTheory.SiegelWeilFormula.KW.insL_k R w u) = 0`. Unfold `_root_.PositivityTheory.SiegelWeilFormula.SD_k.gram`.
+
+Rewrite using `[← Matrix.mul_smul]`. Establish `: finOne F • (_root_.PositivityTheory.SiegelWeilFormula.KW.insL_k R w u).map (cA σ) = (finOne F • _root_.PositivityTheory.SiegelWeilFormula.KW.insL_k R w u).map (cA σ)`. Use extensionality with `i j`. Simplify using `[map_smul]`. Rewrite using `[this, (_root_.PositivityTheory.SiegelWeilFormula.KW.insL_supp_k R w u).2]`.
+
+Simplify using the standard rewrite rules. Establish `e1 : d.cw w (d.gram X (_root_.PositivityTheory.SiegelWeilFormula.KW.insL_k R w u)) = (R.ζ⁻¹ * ((R.sg w : ℤ) : ℂ)) • ((Matrix.of (R.loc w X))ᴴ * Matrix.of u)`. Rewrite using `[_root_.PositivityTheory.SiegelWeilFormula.KW.cw_gram_k, _root_.PositivityTheory.SiegelWeilFormula.KW.cw_loc_k R w X, _root_.PositivityTheory.SiegelWeilFormula.KW.cw_insL_k, Matrix.transpose_mul]`. Establish `h3 : ((R.fr w).1 * (Matrix.of u).map star).map star = (R.fr w).1.map star * Matrix.of u`. Use extensionality with `i j`.
+
+Simplify using `[Matrix.mul_apply]`. Establish `h4 : ((Matrix.of (R.loc w X)).map star)ᵀ = (Matrix.of (R.loc w X))ᴴ` using `rfl`. Rewrite using `[h3, h4]`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [Matrix.mul_assoc]`.
+
+Use `_ = _ := by rw [_root_.PositivityTheory.SiegelWeilFormula.KW.frJ_k, Matrix.mul_smul, Matrix.mul_one, Matrix.smul_mul]`. Rewrite using `[_root_.PositivityTheory.SiegelWeilFormula.KW.psi_at_w_k d w ε _ hM1 hM2, e1, Matrix.trace_smul, smul_eq_mul]`. Use `congr 1`. Establish `e2 : -2 * ((ε : ℤ) : ℂ) * ((R.sg w : ℤ) : ℂ) / R.ζ * Matrix.trace ((Matrix.of (R.loc w X))ᴴ * Matrix.of u) = ((-2 : ℝ) : ℂ) * (((ε : ℤ) : ℂ) * (R.ζ⁻¹ * ((R.sg w : ℤ) : ℂ) * Matrix.trace ((Matrix.of (R.loc w X))ᴴ * Matrix.of u)))`. Use `push_cast`.
+
+Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e2, Complex.re_ofReal_mul]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem kernel_k {d : _root_.PositivityTheory.SiegelWeilFormula.SD_k σ} (R : _root_.PositivityTheory.SiegelWeilFormula.RD_k d) (w : InfinitePlace F) (ε : ℤˣ) (X : Mx F E d.m d.n) (u : Fin d.m → Fin d.n → ℂ) :
     d.B.ψ (((ε : ℤ) : AF F) * d.tt (d.gram X (_root_.PositivityTheory.SiegelWeilFormula.KW.insL_k R w u))) =
       Complex.exp (2 * Real.pi * Complex.I * (((-2 * ((ε : ℤ) : ℂ) * ((R.sg w : ℤ) : ℂ) / R.ζ) *

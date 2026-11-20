@@ -16,6 +16,11 @@ set_option autoImplicit false
 
 namespace GlobalTheory.DeRham
 
+/- English proof (translation)
+Use `letI := X.grp`. Take `⟨hfin, hproj, -⟩` from `GlobalTheory.Published.AbelianDeRham.Free.prim H.1 X.ab X.dim`. Use `haveI := hfin`. Use `haveI := hproj`. Use `haveI : Module.Free R (primDR X.A) := Module.free_of_flat_of_isLocalRing`.
+
+Use `haveI : Module.Free R (HdR X.A) := inferInstanceAs (Module.Free R (Module.Dual R (primDR X.A)))`. Use `haveI : Module.Finite R (HdR X.A) := inferInstanceAs (Module.Finite R (Module.Dual R (primDR X.A)))`. Set `b` to `Module.Free.chooseBasis R (HdR X.A)`. Conclude with `⟨Fintype.card (Module.Free.ChooseBasisIndex R (HdR X.A)), ⟨b.equivFun.trans (LinearEquiv.funCongrLeft R R (Fintype.equivFin _).symm)⟩⟩`.
+-/
 theorem hdR_free_of_dvr (H : GlobalTheory.Published.AbelianDeRham) (F : Type) [Field F] [NumberField F]
     (𝔠 : FracId F) (R : Type) [CommRing R] [IsDomain R] [IsDiscreteValuationRing R]
     (X : Obj F 𝔠 (Sp R)) : ∃ n : ℕ, Nonempty (HdR X.A ≃ₗ[R] (Fin n → R)) := by

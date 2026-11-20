@@ -7,6 +7,39 @@ open GlobalTheory.Sandwich GlobalTheory.IndefiniteRowSideFullHecke.SandwichMaps 
 
 namespace GlobalTheory.DetInv
 
+/- English proof (translation)
+Introduce `p _ C _ _ _ v O _ _ _ _ hv ε hε Γ _ _ h D`. Take `⟨hdom, -, hker, hsurj, hnu, hxi, -⟩` from `GlobalTheory.AinfXi.ainf_local_xi_order p C v O hv ε hε`. Establish `hFG : D.F * D.G = mu ε • (1 : Matrix (Fin h) (Fin h) (Ainf p O))` using `(GlobalTheory.DetInv.datum_scalar_intertwine p C v O hv ε hε Γ h D).2.1`. Establish `hGF : D.G * D.F = mu ε • (1 : Matrix (Fin h) (Fin h) (Ainf p O))` using `D.G_mul_F`. Use `set f : Ainf p O →+* C := (algebraMap O C).comp (WittVector.fontaineTheta O p) with hf`.
+
+Establish `hinj` using `hv.hom_inj`. Establish `hfnu : f (nu ε) ≠ 0`. Introduce `h0`. Apply `hnu` to reduce the goal to its premises. Apply `hinj` to reduce the goal to its premises.
+
+Simplify `h0` using `[hf]`. Establish `hxiker : WittVector.fontaineTheta O p (xi ε) = 0`. Establish `: xi ε ∈ RingHom.ker (WittVector.fontaineTheta O p)`. Rewrite using `[hker]`. Conclude with `Ideal.subset_span rfl`.
+
+Conclude with `this`. Establish `hfmu : f (mu ε) = 0`. Rewrite using `[← xi_mul_nu, map_mul]`. Simplify using `[hf, hxiker]`. Establish `hnzd : xi ε ∈ nonZeroDivisors (Ainf p O)` using `mem_nonZeroDivisors_of_ne_zero hxi`.
+
+Establish `hfrac : ∀ c : C, ∃ s t : Ainf p O, f s ≠ 0 ∧ c * f s = f t`. Introduce `c`. Distinguish the cases in `hc : v c ≤ 1`. Take `⟨a, ha⟩` from `hv.exists_of_le_one hc`. Take `⟨t, rfl⟩` from `hsurj a`.
+
+Use `⟨1, t, by simp, ?_⟩` and prove the remaining obligations. Simplify using `[hf, ha]`. Establish `hc0 : c ≠ 0`. Introduce `h0`. Apply `hc` to reduce the goal to its premises.
+
+Simplify using `[h0]`. Establish `hle : v c⁻¹ ≤ 1`. Rewrite using `[map_inv₀]`. Use `push_neg at hc`. Conclude with `inv_le_one_of_one_le₀ hc.le`.
+
+Take `⟨a, ha⟩` from `hv.exists_of_le_one hle`. Take `⟨s, rfl⟩` from `hsurj a`. Use `⟨s, 1, ?_, ?_⟩` and prove the remaining obligations. Simplify using `[hf, ha, hc0]`. Simplify using `[hf, ha, hc0]`.
+
+Establish `hdiv : ∃ s : Ainf p O, f s ≠ 0 ∧ ∀ r : Ainf p O, f r = 0 → xi ε ∣ s * r`. Use `⟨1, by simp, fun r hr => ?_⟩` and prove the remaining obligations. Establish `h1 : WittVector.fontaineTheta O p r = 0`. Apply `hinj` to reduce the goal to its premises. Simplify `hr` using `[hf]`.
+
+Establish `h2 : r ∈ RingHom.ker (WittVector.fontaineTheta O p)` using `h1`. Rewrite `h2` using `[hker, Ideal.mem_span_singleton]`. Simplify using `using h2`. Establish `hmuxi : mu ε = xi ε * nu ε` using `(xi_mul_nu ε).symm`. Establish `hcomp : ∀ X Y : Matrix (Fin h) (Fin h) (Ainf p O), X * Y = mu ε • 1 → ∀ z : Fin h → C, X.map f *ᵥ (Y.map f *ᵥ z) = 0`.
+
+Introduce `X Y hXY z`. Rewrite using `[Matrix.mulVec_mulVec, ← Matrix.map_mul, hXY]`. Establish `: (mu ε • (1 : Matrix (Fin h) (Fin h) (Ainf p O))).map f = 0`. Use extensionality with `i j`. Apply the tactic sequence `by_cases hij : i = j <;> simp [hij, Matrix.one_apply, hfmu]`.
+
+Rewrite using `[this, Matrix.zero_mulVec]`. Establish `hb : ∀ z, bC C D z = D.G.map f *ᵥ z` using `fun z => by`. Simplify using `[bC, redC, Matrix.toLin'_apply, hf]`. Establish `ha : ∀ z, alC C D z = D.F.map f *ᵥ z` using `fun z => by`. Simplify using `[alC, redC, Matrix.toLin'_apply, hf]`.
+
+Prove the components needed by the constructor for the conclusion. Apply `le_antisymm` to reduce the goal to its premises. Introduce `x hx`. Rewrite `hx` using `[LinearMap.mem_ker, hb]`. Take `⟨y, hy⟩` from `GlobalTheory.DetInv.ker_map_subset_im_map (Ainf p O) C f (xi ε) (nu ε) h D.G D.F hnzd hfnu hfrac hdiv (by rw [hFG, hmuxi]) x hx`.
+
+Conclude with `⟨y, by rw [ha, hy]⟩`. Introduce and unpack `_ ⟨y, rfl⟩`. Rewrite using `[LinearMap.mem_ker, hb, ha]`. Conclude with `hcomp D.G D.F hGF y`. Apply `le_antisymm` to reduce the goal to its premises.
+
+Introduce `x hx`. Rewrite `hx` using `[LinearMap.mem_ker, ha]`. Take `⟨y, hy⟩` from `GlobalTheory.DetInv.ker_map_subset_im_map (Ainf p O) C f (xi ε) (nu ε) h D.F D.G hnzd hfnu hfrac hdiv (by rw [hGF, hmuxi]) x hx`. Conclude with `⟨y, by rw [hb, hy]⟩`. Introduce and unpack `_ ⟨y, rfl⟩`.
+
+Rewrite using `[LinearMap.mem_ker, hb, ha]`. Conclude with `hcomp D.F D.G hFG y`.
+-/
 theorem ker_bC_eq_range_alC_and_ker_alC_eq_range_bC : ∀ (p : ℕ) [Fact p.Prime] (C : Type) [Field C] [IsAlgClosed C] [CharZero C] (v : Valuation C NNReal) (O : Type) [CommRing O] [Algebra O C] [Fact ¬IsUnit (p : O)] [IsAdicComplete (Ideal.span {(p : O)}) O], v.Integers O → ∀ (ε : PreTilt O p), IsPrimitiveRoot (root ε).untilt p → ∀ (Γ : Type) [CommRing Γ] [Algebra ℤ_[p] Γ] (h : ℕ) (D : Datum ε h Γ), LinearMap.ker (bC C D) = LinearMap.range (alC C D) ∧ LinearMap.ker (alC C D) = LinearMap.range (bC C D) := by
   intro p _ C _ _ _ v O _ _ _ _ hv ε hε Γ _ _ h D
   obtain ⟨hdom, -, hker, hsurj, hnu, hxi, -⟩ := GlobalTheory.AinfXi.ainf_local_xi_order p C v O hv ε hε

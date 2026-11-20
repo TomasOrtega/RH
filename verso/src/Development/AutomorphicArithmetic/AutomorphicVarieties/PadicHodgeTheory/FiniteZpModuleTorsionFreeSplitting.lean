@@ -2,6 +2,43 @@ import Mathlib
 
 open Module Topology
 
+/- English proof (translation)
+Introduce `l _ N _ _ _ _ _ _ _`. Take `⟨m, g, hg⟩` from `Module.Finite.exists_fin' ℤ_[l] N`. Establish `hgc : Continuous g` using `LinearMap.continuous_on_pi g`. Establish `hq : Topology.IsQuotientMap g` using `hgc.isClosedMap.isQuotientMap hgc hg`. Establish `hlin : ∀ f : N →ₗ[ℤ_[l]] (Fin (Module.finrank ℤ_[l] N) → ℤ_[l]), Continuous f`.
+
+Introduce `f`. Rewrite using `[hq.continuous_iff]`. Conclude with `LinearMap.continuous_on_pi (f ∘ₗ g)`. Take `⟨a, ha, ha0⟩` from `Submodule.annihilator_top_inter_nonZeroDivisors (R := ℤ_[l]) (M := Submodule.torsion ℤ_[l] N) Submodule.torsion_isTorsion`. Establish `ha0' : a ≠ 0` using `nonZeroDivisors.ne_zero ha0`.
+
+Establish `hkill : ∀ y : Submodule.torsion ℤ_[l] N, ((l : ℤ_[l]) ^ a.valuation) • y = 0`. Introduce `y`. Establish `h1 : a • y = 0` using `(Submodule.mem_annihilator.mp ha) y trivial`. Rewrite `h1` using `[PadicInt.unitCoeff_spec ha0', mul_smul]`. Conclude with `(smul_eq_zero_iff_eq (PadicInt.unitCoeff ha0')).mp (by rwa [Units.smul_def])`.
+
+Use `set K := a.valuation`. Establish `hl0 : (l : ℝ) ≠ 0` using `by exact_mod_cast (Fact.out : l.Prime).ne_zero`. Establish `hopenI : IsOpen ((Ideal.span {(l : ℤ_[l]) ^ K} : Ideal ℤ_[l]) : Set ℤ_[l])`. Establish `: ((Ideal.span {(l : ℤ_[l]) ^ K} : Ideal ℤ_[l]) : Set ℤ_[l]) = Metric.closedBall 0 ((l : ℝ) ^ (-(K : ℤ)))`. Use extensionality with `x`.
+
+Simplify using `[← PadicInt.norm_le_pow_iff_mem_span_pow]`. Rewrite using `[this]`. Conclude with `IsUltrametricDist.isOpen_closedBall 0 (zpow_ne_zero _ hl0)`. Use `set T := Submodule.torsion ℤ_[l] N with hT`. Use `haveI : Module.IsTorsionFree ℤ_[l] (N ⧸ T) := Submodule.isTorsionFree_iff_torsion_eq_bot.mpr Submodule.QuotientTorsion.torsion_eq_bot`.
+
+Use `haveI : Module.Free ℤ_[l] (N ⧸ T) := Module.free_of_finite_type_torsion_free'`. Establish `hrank : Module.finrank ℤ_[l] (N ⧸ T) = Module.finrank ℤ_[l] N`. Establish `h` using `rank_quotient_add_rank_of_isDomain T`. Rewrite `h` using `[Module.IsTorsion.rank_eq_zero Submodule.torsion_isTorsion, add_zero]`. Unfold `Module.finrank`.
+
+Rewrite using `[h]`. Set `b` to `Module.finBasisOfFinrankEq ℤ_[l] (N ⧸ T) hrank`. Take `⟨s, hs⟩` from `Module.projective_lifting_property T.mkQ LinearMap.id T.mkQ_surjective`. Establish `hs' : ∀ q, T.mkQ (s q) = q` using `fun q => LinearMap.congr_fun hs q`. Set `f : N →ₗ[ℤ_[l]] N` to `LinearMap.id - s ∘ₗ T.mkQ`.
+
+Establish `hsx : ∀ x, f x ∈ T`. Introduce `x`. Rewrite using `[← Submodule.Quotient.mk_eq_zero]`. Use `hs' (T.mkQ x)` as an intermediate fact. Simplify using `only [Submodule.mkQ_apply] at this`.
+
+Simplify using `[f, this]`. Set `t : N →ₗ[ℤ_[l]] T` to `LinearMap.codRestrict T f hsx`. Set `p : N →ₗ[ℤ_[l]] (Fin (Module.finrank ℤ_[l] N) → ℤ_[l])` to `b.equivFun.toLinearMap ∘ₗ T.mkQ`. Establish `htv : ∀ x, (t x : N) = x - s (T.mkQ x)` using `fun x => rfl`. Establish `hmk0 : ∀ y : T, T.mkQ (y : N) = 0` using `fun y => (Submodule.Quotient.mk_eq_zero T).mpr y.2`.
+
+Establish `hker : ∀ c : Fin m → ℤ_[l], (∀ i, c i ∈ Ideal.span {(l : ℤ_[l]) ^ K}) → t (g c) = 0`. Introduce `c hc`. Use `choose c' hc' using fun i => Ideal.mem_span_singleton'.mp (hc i)`. Establish `: c = ((l : ℤ_[l]) ^ K) • c'` using `funext fun i => by simp [← hc' i, mul_comm]`. Rewrite using `[this, map_smul, map_smul, hkill]`.
+
+Use `⟨?_, p, t, hlin p, ?_, fun y => ⟨?_, ?_⟩, ?_, ?_⟩` and prove the remaining obligations. Use `haveI : NeZero (l ^ K) := ⟨pow_ne_zero _ (Fact.out : l.Prime).ne_zero⟩`. Use `Finite.of_surjective (fun d : Fin m → ZMod (l ^ K) => t (g (fun i => ((d i).val : ℤ_[l])))) ?_` and prove the remaining obligations. Introduce `y`. Take `⟨c, hc⟩` from `hg (y : N)`.
+
+Use `⟨fun i => PadicInt.toZModPow K (c i), ?_⟩` and prove the remaining obligations. Establish `h1 : t (g c) = y`. Apply `Subtype.ext` to reduce the goal to its premises. Rewrite using `[htv, hc, hmk0, map_zero, sub_zero]`. Rewrite using `[← h1, ← sub_eq_zero, ← map_sub, ← map_sub]`.
+
+Apply `hker` to reduce the goal to its premises. Introduce `i`. Rewrite using `[← PadicInt.ker_toZModPow, RingHom.mem_ker]`. Simplify using `[map_sub, ZMod.natCast_zmod_val]`. Use `hq.isCoinducing.isOpen_preimage.mp ?_ show IsOpen ((LinearMap.ker (t ∘ₗ g) : Submodule ℤ_[l] (Fin m → ℤ_[l])) : Set (Fin m → ℤ_[l]))` and prove the remaining obligations.
+
+Use `Submodule.isOpen_mono (U := Submodule.pi Set.univ (fun _ => Ideal.span {(l : ℤ_[l]) ^ K})) ?_ ?_` and prove the remaining obligations. Introduce `c hc`. Conclude with `LinearMap.mem_ker.mpr (hker c (fun i => hc i (Set.mem_univ i)))`. Rewrite using `[Submodule.coe_pi]`. Conclude with `isOpen_set_pi Set.finite_univ (fun i _ => hopenI)`.
+
+Use `show b.equivFun (T.mkQ y) = 0`. Rewrite using `[hmk0, map_zero]`. Conclude with `Subtype.ext (by rw [htv, hmk0, map_zero, sub_zero])`. Introduce `x x' hxx`. Simplify using `only [Prod.mk.injEq] at hxx`.
+
+Take `⟨h1, h2⟩` from `hxx`. Establish `hq' : T.mkQ x = T.mkQ x'` using `b.equivFun.injective h1`. Establish `h3` using `congrArg Subtype.val h2`. Rewrite `h3` using `[htv, htv, hq']`. Conclude with `sub_left_injective h3`.
+
+Introduce and unpack `⟨v, y⟩`. Use `⟨s (b.equivFun.symm v) + y, ?_⟩` and prove the remaining obligations. Establish `hm : T.mkQ (s (b.equivFun.symm v) + y) = b.equivFun.symm v`. Rewrite using `[map_add, hs', hmk0, add_zero]`. Use `Prod.ext ?_ ?_` and prove the remaining obligations.
+
+Use `show b.equivFun (T.mkQ _) = v`. Rewrite using `[hm, LinearEquiv.apply_symm_apply]`. Apply `Subtype.ext show (t _ : N) = y` to reduce the goal to its premises. Rewrite using `[htv, hm]`. Normalize the expressions using the abelian group laws.
+-/
 theorem UpperTheory.finite_zp_module_torsion_free_splitting :
     ∀ (l : ℕ) [Fact l.Prime] (N : Type) [AddCommGroup N] [Module ℤ_[l] N] [TopologicalSpace N] [IsTopologicalAddGroup N] [ContinuousSMul ℤ_[l] N] [T2Space N] [Module.Finite ℤ_[l] N], Finite ↥(Submodule.torsion ℤ_[l] N) ∧ ∃ (p : N →ₗ[ℤ_[l]] (Fin (Module.finrank ℤ_[l] N) → ℤ_[l])) (t : N →ₗ[ℤ_[l]] ↥(Submodule.torsion ℤ_[l] N)), Continuous p ∧ IsOpen (LinearMap.ker t : Set N) ∧ (∀ y : ↥(Submodule.torsion ℤ_[l] N), p y = 0 ∧ t y = y) ∧ Function.Bijective (fun y => (p y, t y)) := by
   intro l _ N _ _ _ _ _ _ _

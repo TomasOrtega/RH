@@ -63,6 +63,19 @@ def FamAll : Prop :=
 
 open Formalism.L2.Host in
 
+/- English proof (translation)
+Introduce and unpack `w p hp ⟨PP, hP, h1⟩ h2`. Establish `lev` using `W.Q.charW.base.lev`. Establish `hr : ¬ (W.Q.Rl.xiH (W.Q.Rl.mu w)).UnrAt PP` using `(lev.Q_ram _ PP).2 (Or.inl hP)`. Establish `hl : Formalism.EigenvalueLevelCeiling.plc w = p` using `(Nat.prime_dvd_prime_iff_eq (Formalism.EigenvalueLevelCeiling.plc_prime w) hp).1 ((ringChar.spec _ p).1 (by simpa using Ideal.Quotient.eq_zero_iff_mem.2 h2))`. Distinguish the cases in `hw : w ∈ W.Q.Rl.twPl`.
+
+Take `⟨ψ, Q, hψ, e⟩` from `W.Q.charW.tup.mu_on w hw`. Establish `e' : W.Q.Rl.xiH (W.Q.Rl.mu w) = W.Q.Rl.C.delAt (Formalism.EigenvalueLevelCeiling.plc w) * ψ` using `e`. Establish `key : ∀ q : ℕ, q.Prime → OverP D.host q PP → q = p` using `fun q hq ho => by`. Assume the negation of the conclusion as `hne`. Establish `hc : IsCoprime ((q : ℕ) : 𝓞 D.host.E) ((p : ℕ) : 𝓞 D.host.E)` using `Nat.Coprime.cast ((Nat.coprime_primes hq hp).2 hne)`.
+
+Take `⟨a, b, hab⟩` from `hc`. Establish `ho' : ((q : ℕ) : 𝓞 D.host.E) ∈ PP.asIdeal` using `ho`. Conclude with `PP.isPrime.ne_top ((Ideal.eq_top_iff_one _).2 (hab ▸ PP.asIdeal.add_mem (PP.asIdeal.mul_mem_left _ ho') (PP.asIdeal.mul_mem_left _ h1)))`. Establish `hd : (W.Q.Rl.C.delAt (Formalism.EigenvalueLevelCeiling.plc w)).UnrAt PP`. Unfold `CharFrame.delAt`.
+
+Use `split_ifs with hh`. Use `W.Q.Rl.C.isDel'.unr PP fun ho => D.host.pde_ne ?_` and prove the remaining obligations. Rewrite using `[← hh, hl, key _ D.host.pde'_prime ho]`. Conclude with `W.Q.Rl.C.isDel.unr PP fun ho => hh (by rw [hl, key _ D.host.pde_prime ho])`. Use `hr fun x hx => ?_` and prove the remaining obligations.
+
+Establish `a1` using `hd x hx`. Establish `a2` using `hψ.atl PP (hl ▸ h1) x`. Rewrite using `[e']`. Express the relevant statement in the definitionally equal form `(W.Q.Rl.C.delAt (Formalism.EigenvalueLevelCeiling.plc w)).loc PP x * ψ.loc PP x = 1`. Rewrite using `[a1, a2, mul_one]`.
+
+Establish `e : W.Q.Rl.mu w = W.P.A3.A.μ0` using `W.Q.charW.tup.mu_off w hw`. Use `hr fun x _ => ?_` and prove the remaining obligations. Rewrite using `[e, show W.Q.Rl.xiH W.P.A3.A.μ0 = 1 from lev.xi_base]`. Both sides reduce to the same expression.
+-/
 theorem served_holds : Served W := by
   rintro w p hp ⟨PP, hP, h1⟩ h2
   have lev := W.Q.charW.base.lev
@@ -98,6 +111,9 @@ theorem served_holds : Served W := by
     rw [e, show W.Q.Rl.xiH W.P.A3.A.μ0 = 1 from lev.xi_base]
     rfl
 
+/- English proof (translation)
+Introduce `hP`. Establish `lev` using `W.Q.charW.base.lev`. Use `(lev.Q_ram _ PP).2 (Or.inl hP) fun x _ => ?_` and prove the remaining obligations. Rewrite using `[show W.Q.Rl.xiH W.P.A3.A.μ0 = 1 from lev.xi_base]`. Both sides reduce to the same expression.
+-/
 theorem not_mem_Q_base (PP : HeightOneSpectrum (𝓞 D.host.E)) : PP ∉ (pk W).Q W.P.A3.A.μ0 := by
   intro hP
   have lev := W.Q.charW.base.lev
@@ -107,15 +123,26 @@ theorem not_mem_Q_base (PP : HeightOneSpectrum (𝓞 D.host.E)) : PP ∉ (pk W).
 
 variable {W f}
 
+/- English proof (translation)
+Take `⟨a, ha⟩` from `D.R.m_even`. Conclude with `⟨a, by omega⟩`.
+-/
 example : ∃ n, 2 * n = D.R.m := by
   obtain ⟨a, ha⟩ := D.R.m_even
   exact ⟨a, by omega⟩
 
+/- English proof (translation)
+Take `⟨a, ha⟩` from `D.R.m_even`. Use `D.R.two_le_m` as an intermediate fact. Conclude with `⟨a - 1, by omega, by omega⟩`.
+-/
 example : ∃ n, 2 * n + 2 * 0 + 2 = D.R.m ∧ 0 + 2 * n + 2 = D.R.m := by
   obtain ⟨a, ha⟩ := D.R.m_even
   have := D.R.two_le_m
   exact ⟨a - 1, by omega, by omega⟩
 
+/- English proof (translation)
+Introduce and unpack `⟨-, k, hk, r, -, e, hS⟩`. Establish `hr : r = ((p ^ k : ℕ) : ℚ)`. Establish `: (r : ℂ) = (((p ^ k : ℕ) : ℚ) : ℂ)` using `by rw [← e]; simp`. Conclude with `this` after adjusting the coercions. Use `served_holds W w p hp (hS p hp ?_) hw` and prove the remaining obligations.
+
+Use `Fact.mk hp` as an intermediate fact. Rewrite using `[hr, padicValRat.of_nat, padicValNat.prime_pow]`. Conclude with `hk.ne'` after adjusting the coercions.
+-/
 example (w : HeightOneSpectrum (𝓞 D.what₂.LL)) (p : ℕ) (hp : p.Prime) (hw : (p : 𝓞 D.what₂.LL) ∈ w.asIdeal) :
     ¬ UnitRatio (fun l => ∃ PP ∈ (pk W).Q (W.Q.Rl.mu w), ((l : ℕ) : 𝓞 D.host.E) ∈ PP.asIdeal) (p : ℂ) 1 := by
   rintro ⟨-, k, hk, r, -, e, hS⟩

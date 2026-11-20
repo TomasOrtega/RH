@@ -6,6 +6,13 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.PatchingModules.De
 
 open Matrix Filter NumberField IsDedekindDomain Formalism.ConjugateSelfDual ReciprocityTheory.Gal UpperTheory.V.Alg UpperTheory.V.W UpperTheory.V.Pa
 
+/- English proof (translation)
+Set `σ` to `Fintype.equivFin ι`. Set `key : ι → Lex (ℕ × Fin (Fintype.card ι))` to `fun i => toLex (ht i, σ i)`. Establish `hkey : Function.Injective key` using `fun a b hab => σ.injective (by simpa [key] using congrArg (fun p => (ofLex p).2) hab)`. Use `letI : LinearOrder ι := LinearOrder.lift' key hkey`. Set `e : Fin (Fintype.card ι) ≃o ι` to `Fintype.orderIsoFinOfCardEq ι rfl`.
+
+Establish `hmono : ∀ a b : Fin (Fintype.card ι), ht (e a) < ht (e b) → a < b`. Introduce `a b hab`. Establish `: e a < e b` using `by show key (e a) < key (e b)`. Conclude with `Prod.Lex.lt_iff.mpr (Or.inl hab)`. Conclude with `e.lt_iff_lt.mp this`.
+
+Take `⟨hfin, hcard⟩` from `filtCount Z Y (Fintype.card ι) (fun a => f (e a)) (fun a => P (e a)) (fun z hz => h0 z (fun i => by simpa using hz (e.symm i))) (fun a => hP _) (fun a z hz => hf (e a) z (fun j hj => by`. Simplify `hj))))` using `using hz (e.symm j) (hmono _ _ (by simpa`. Use `⟨hfin, hcard.trans_eq ?_⟩` and prove the remaining obligations. Conclude with `Equiv.prod_comp e.toEquiv (fun i => (P i).ncard)`.
+-/
 private theorem filt_ht {Z Y ι : Type} [AddCommGroup Z] [AddCommGroup Y] [Fintype ι] (ht : ι → ℕ) (f : ι → Z →+ Y)
     (P : ι → Set Y) (h0 : ∀ z, (∀ i, f i z = 0) → z = 0) (hP : ∀ i, (P i).Finite)
     (hf : ∀ i z, (∀ j, ht j < ht i → f j z = 0) → f i z ∈ P i) : Finite Z ∧ Nat.card Z ≤ ∏ i, (P i).ncard := by
@@ -30,6 +37,17 @@ private theorem filt_ht {Z Y ι : Type} [AddCommGroup Z] [AddCommGroup Y] [Finty
   refine ⟨hfin, hcard.trans_eq ?_⟩
   exact Equiv.prod_comp e.toEquiv (fun i => (P i).ncard)
 
+/- English proof (translation)
+Rewrite using `[Matrix.mul_apply, Finset.sum_eq_single j]`. Rewrite using `[Matrix.mul_apply, Finset.sum_eq_single i]`. Introduce `p _ hp`. Distinguish the cases in `hpi : i ≤ p`. Rewrite using `[hB p j hpi le_rfl (Or.inl hp)]`.
+
+Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hT i p (not_le.mp hpi)]`. Expand and normalize the polynomial expressions, which then agree. Simplify using the standard rewrite rules. Introduce `q _ hq`.
+
+Distinguish the cases in `hqj : q ≤ j`. Rewrite using `[Matrix.mul_apply, Finset.sum_mul]`. Apply `Finset.sum_eq_zero` to reduce the goal to its premises. Introduce `p _`. Distinguish the cases in `hpi : i ≤ p`.
+
+Rewrite using `[hB p q hpi hqj (Or.inr hq)]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hT i p (not_le.mp hpi)]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hT' q j (not_le.mp hqj)]`.
+
+Expand and normalize the polynomial expressions, which then agree. Simplify using the standard rewrite rules.
+-/
 private theorem conj_entry {R : Type} [CommRing R] {n : ℕ} (T B T' : Matrix (Fin n) (Fin n) R)
     (hT : ∀ i j, j < i → T i j = 0) (hT' : ∀ i j, j < i → T' i j = 0) (i j : Fin n)
     (hB : ∀ p q, i ≤ p → q ≤ j → (p ≠ i ∨ q ≠ j) → B p q = 0) : (T * B * T') i j = T i i * B i j * T' j j := by
@@ -61,6 +79,11 @@ private def co (X : Type) [CommRing X] {g : ℕ} (o : Option (Fin g)) : DD X g �
   map_zero' := by cases o <;> rfl
   map_add' y z := by cases o <;> rfl
 
+/- English proof (translation)
+Consider the cases of `o with`. Consider the case `none => show algebraMap A X c * y.a * algebraMap A X c' = (c * c') • y.a`. Rewrite using `[Algebra.smul_def, map_mul]`. Expand and normalize the polynomial expressions, which then agree. Consider the case `some j => show (algebraMap A X c * y.a) * 0 + (algebraMap A X c * y.ep j + 0 * y.a) * algebraMap A X c' = (c * c') • y.ep j`.
+
+Rewrite using `[Algebra.smul_def, map_mul]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 private theorem co_mul {A X : Type} [CommRing A] [CommRing X] [Algebra A X] {g : ℕ} (o : Option (Fin g)) (c c' : A)
     (y : DD X g) : co X o (algebraMap A (DD X g) c * y * algebraMap A (DD X g) c') = (c * c') • co X o y := by
   cases o with
@@ -74,6 +97,11 @@ private theorem co_mul {A X : Type} [CommRing A] [CommRing X] [Algebra A X] {g :
     rw [Algebra.smul_def, map_mul]
     ring
 
+/- English proof (translation)
+Introduce `N`. Establish `e : (fun g => Ideal.Quotient.mk (I ^ N) (f g * f' g)) = fun g => Ideal.Quotient.mk (I ^ N) (f g) * Ideal.Quotient.mk (I ^ N) (f' g)`. Use function extensionality and compare the values at `fun g => map_mul _ _ _`. Use `show IsLocallyConstant (fun g => Ideal.Quotient.mk (I ^ N) (f g * f' g))`. Rewrite using `[e]`.
+
+Conclude with `(h N).comp₂ (h' N) _`.
+-/
 private theorem adic_mul {D R : Type} [TopologicalSpace D] [CommRing R] {I : Ideal R} {f f' : D → R}
     (h : AdicCont I f) (h' : AdicCont I f') : AdicCont I fun g => f g * f' g := by
   intro N
@@ -84,6 +112,11 @@ private theorem adic_mul {D R : Type} [TopologicalSpace D] [CommRing R] {I : Ide
   rw [e]
   exact (h N).comp₂ (h' N) _
 
+/- English proof (translation)
+Introduce `N`. Use `show IsLocallyConstant (fun g => Ideal.Quotient.mk (I ^ N) (∑ i ∈ s, f i g))`. Use `Finset.induction_on s ?_ ?_` and prove the remaining obligations. Simplify using `only [Finset.sum_empty, map_zero]`. Conclude with `IsLocallyConstant.const 0`.
+
+Introduce `a s ha ih`. Establish `e : (fun g => Ideal.Quotient.mk (I ^ N) (∑ i ∈ insert a s, f i g)) = fun g => Ideal.Quotient.mk (I ^ N) (f a g) + Ideal.Quotient.mk (I ^ N) (∑ i ∈ s, f i g)`. Use function extensionality and compare the values at `fun g => by rw [Finset.sum_insert ha, map_add]`. Rewrite using `[e]`. Conclude with `(h a N).comp₂ ih _`.
+-/
 private theorem adic_sum {D R ι : Type} [TopologicalSpace D] [CommRing R] {I : Ideal R} (s : Finset ι) {f : ι → D → R}
     (h : ∀ i, AdicCont I (f i)) : AdicCont I fun g => ∑ i ∈ s, f i g := by
   classical
@@ -99,6 +132,9 @@ private theorem adic_sum {D R ι : Type} [TopologicalSpace D] [CommRing R] {I : 
     rw [e]
     exact (h a N).comp₂ ih _
 
+/- English proof (translation)
+Establish `e : (fun g => (x.ψ v i g : x.A)) = fun g => ∑ q, (∑ p, (((x.w v)⁻¹ : GL (Fin n) x.A) : Matrix (Fin n) (Fin n) x.A) i p * mat x.ρ (F.φ v g) p q) * (x.w v : Matrix (Fin n) (Fin n) x.A) q i` using `funext fun g => ((x.tri v g).2 i).symm`. Rewrite using `[e]`. Conclude with `adic_sum _ fun q => adic_mul (adic_sum _ fun p => adic_mul (fun N => IsLocallyConstant.const _) fun N => (x.cont p q N).comp_continuous (F.φ_cont v)) fun N => IsLocallyConstant.const _`.
+-/
 private theorem psi_cont {l : ℕ} [Fact l.Prime] {F : GFrame l} {n : ℕ} (x : NP F n) (v : F.Vl) (i : Fin n) :
     AdicCont (IsLocalRing.maximalIdeal x.A) fun g => (x.ψ v i g : x.A) := by
   have e : (fun g => (x.ψ v i g : x.A)) = fun g => ∑ q, (∑ p, (((x.w v)⁻¹ : GL (Fin n) x.A) : Matrix (Fin n) (Fin n) x.A) i p *
@@ -107,6 +143,19 @@ private theorem psi_cont {l : ℕ} [Fact l.Prime] {F : GFrame l} {n : ℕ} (x : 
   exact adic_sum _ fun q => adic_mul (adic_sum _ fun p => adic_mul (fun N => IsLocallyConstant.const _)
     fun N => (x.cont p q N).comp_continuous (F.φ_cont v)) fun N => IsLocallyConstant.const _
 
+/- English proof (translation)
+Set `χ : F.Gv v →* x.Aˣ` to `x.ψ v i * (x.ψ v j)⁻¹`. Establish `hχ : ∀ g, ((χ g : x.Aˣ) : x.A) = (x.ψ v i g : x.A) * (x.ψ v j g⁻¹ : x.A)`. Introduce `g`. Simplify using `[χ, map_inv]`. Establish `hcont : AdicCont (IsLocalRing.maximalIdeal x.A) fun g => ((χ g : x.Aˣ) : x.A)`.
+
+Establish `hinv : AdicCont (IsLocalRing.maximalIdeal x.A) fun g : F.Gv v => (x.ψ v j g⁻¹ : x.A)` using `fun N => (psi_cont x v j N).comp_continuous continuous_inv`. Use `adic_mul (psi_cont x v i) hinv` as an intermediate fact. Repeatedly rewrite using `[hχ]`. Conclude with `this`. Establish `hne : ∃ g, ((χ g : x.Aˣ) : x.A) ≠ algebraMap ℤ_[l] x.A ((F.ε.comp (F.η.ker.subtype.comp (F.φ v)) g : ℤ_[l]ˣ) : ℤ_[l])`.
+
+Assume the negation of the conclusion as `hall`. Use `push_neg at hall`. Apply `(x.N1 v).2 i j hij` to reduce the goal to its premises. Use `MonoidHom.ext fun g => Units.ext ?_` and prove the remaining obligations. Establish `h1` using `hall g`.
+
+Rewrite `h1` using `[hχ]`. Establish `h2 : ((x.ψ v j g : x.Aˣ) : x.A) * (x.ψ v j g⁻¹ : x.A) = 1`. Rewrite using `[← Units.val_mul, ← map_mul, mul_inv_cancel, map_one, Units.val_one]`. Establish `h3 : ((F.eps ℤ_[l] x.A ((F.φ v) g) : x.Aˣ) : x.A) = algebraMap ℤ_[l] x.A ((F.ε.comp (F.η.ker.subtype.comp (F.φ v)) g : ℤ_[l]ˣ) : ℤ_[l])`. Both sides reduce to the same expression.
+
+Simplify using `only [MonoidHom.mul_apply, MonoidHom.comp_apply, Units.val_mul]`. Rewrite using `[h3, ← h1]`. Take the linear combination `(-((x.ψ v i g : x.Aˣ) : x.A)) * h2`. Take `⟨C, hC⟩` from `oneCount l F n x (F.Gv v) _ d χ hL hcont hne`. Use `⟨C, fun m => ?_⟩` and prove the remaining obligations.
+
+Simplify using `only [hχ] at hC`. Conclude with `hC m`.
+-/
 private theorem pair_count {l : ℕ} [Fact l.Prime] {F : GFrame l} {n : ℕ} (x : NP F n) (v : F.Vl) (d : ℕ)
     (hL : LocCount (F.Gv v) (F.ε.comp (F.η.ker.subtype.comp (F.φ v))) d) (i j : Fin n) (hij : i < j) :
     ∃ C : ℕ, ∀ m, {z : F.Gv v → x.Am m | IsLocallyConstant z ∧ ∀ g h, z (g * h) =
@@ -151,6 +200,13 @@ private noncomputable def crd {l : ℕ} [Fact l.Prime] {F : GFrame l} {n : ℕ} 
       simp only [AddSubgroup.coe_add, Pi.add_apply, Submodule.coe_add, Matrix.mul_add, Matrix.add_mul, Matrix.add_apply,
         map_add]
 
+/- English proof (translation)
+Take `⟨hlc, hcoc, -, -⟩` from `β.2`. Establish `hρ` using `UpperTheory.V.Pa.rho1 l F n x k X`. Establish `ht` using `(UpperTheory.V.Pa.tri l F n x k X v).1`. Establish `hw' : ∀ M : Matrix (Fin n) (Fin n) (DD X k.g), k.w1 X v * (k.wi1 X v * M) = M`. Introduce `M`.
+
+Rewrite using `[← mul_assoc, (hρ.2.2.2.1 v).2, one_mul]`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Conclude with `hlc.comp fun b : k.M1 X => co X o ((k.wi1 X v * (b : Matrix (Fin n) (Fin n) (DD X k.g)) * k.w1 X v) i j)`. Introduce `g h show co X o ((k.wi1 X v * (β.1 (g * h) : Matrix (Fin n) (Fin n) (DD X k.g)) * k.w1 X v) i j) = co X o ((k.wi1 X v * (β.1 g : Matrix (Fin n) (Fin n) (DD X k.g)) * k.w1 X v) i j) + ((x.ψ v i g : x.A) * (x.ψ v j g⁻¹ : x.A)) • co X o ((k.wi1 X v * (β.1 h : Matrix (Fin n) (Fin n) …`. Rewrite using `[hcoc g h]`.
+
+Establish `hsplit : k.wi1 X v * (k.ρ1 X (F.φ v g) * (β.1 h : Matrix (Fin n) (Fin n) (DD X k.g)) * k.ρ1 X (F.φ v g)⁻¹) * k.w1 X v = (k.wi1 X v * k.ρ1 X (F.φ v g) * k.w1 X v) * (k.wi1 X v * (β.1 h : Matrix (Fin n) (Fin n) (DD X k.g)) * k.w1 X v) * (k.wi1 X v * k.ρ1 X (F.φ v g⁻¹) * k.w1 X v)`. Rewrite using `[map_inv]`. Simplify using `only [mul_assoc, hw']`. Apply the tactic sequence `rw [mul_add, add_mul, Matrix.add_apply, map_add, hsplit, conj_entry _ _ _ (ht g).1 (ht g⁻¹).1 i j (hB h), (ht g).2.1 i, (ht g⁻¹).2.1 j, co_mul]`.
+-/
 private theorem crd_coc {l : ℕ} [Fact l.Prime] {F : GFrame l} {n : ℕ} {x : NP F n} (k : Kap x) (X : Type) [CommRing X]
     [Algebra x.A X] (v : F.Vl) (o : Option (Fin k.g)) (i j : Fin n) (β : k.Zb X v)
     (hB : ∀ g p q, i ≤ p → q ≤ j → (p ≠ i ∨ q ≠ j) →
@@ -190,6 +246,11 @@ private def pos {n : ℕ} {ty : Fin n → Bool} {g : ℕ} : Idx ty g → Option 
   | .inr (.inl p) => (none, p.1)
   | .inr (.inr p) => (some p.1, p.2.1)
 
+/- English proof (translation)
+Take `⟨a1, a2, a3, a4⟩` from `h2 p q`. Break down `lt_trichotomy p q with c | rfl | c` into its components or cases. Distinguish the cases in `s : ty p = ty q`. Conclude with `DD.ext (h (.inr (.inl ⟨(p, q), c, s⟩)) rfl) (a3 s) a1 a2`. Conclude with `DD.ext (a4 s) (funext fun m => h (.inr (.inr (m, ⟨(p, q), c, s⟩))) rfl) a1 a2`.
+
+Conclude with `DD.ext (h (.inl p) rfl) (a3 rfl) a1 a2`. Conclude with `h1 p q c`.
+-/
 private theorem entry_zero {X : Type} [CommRing X] {n g : ℕ} {ty : Fin n → Bool} (B : Matrix (Fin n) (Fin n) (DD X g))
     (h1 : ∀ i j, j < i → B i j = 0) (h2 : TyPat ty B) (p q : Fin n)
     (h : ∀ t : Idx ty g, (pos t).2 = (p, q) → co X (pos t).1 (B (pos t).2.1 (pos t).2.2) = 0) : B p q = 0 := by
@@ -201,6 +262,45 @@ private theorem entry_zero {X : Type} [CommRing X] {n g : ℕ} {ty : Fin n → B
   · exact DD.ext (h (.inl p) rfl) (a3 rfl) a1 a2
   · exact h1 p q c
 
+/- English proof (translation)
+Introduce `l _ F n x k v d d' hL hA`. Establish `hpc : ∀ p : Fin n × Fin n, p.1 < p.2 → ∃ C : ℕ, ∀ m, {z : F.Gv v → x.Am m | IsLocallyConstant z ∧ ∀ g h, z (g * h) = z g + ((x.ψ v p.1 g : x.A) * (x.ψ v p.2 g⁻¹ : x.A)) • z h}.Finite ∧ {z : F.Gv v → x.Am m | IsLocallyConstant z ∧ ∀ g h, z (g * h) = z g + ((x.ψ v p.1 g : x.A) * (x …` using `fun p hp => pair_count x v d hL p.1 p.2 hp`. Set `Cof : Idx (x.ty v) k.g → ℕ` to `fun t => match t with`. Consider the case `.inl _ => 0`. Consider the case `.inr (.inl p) => Classical.choose (hpc p.1 p.2.1)`.
+
+Consider the case `.inr (.inr p) => Classical.choose (hpc p.2.1 p.2.2.1)`. Use `⟨∑ t, Cof t, fun m => ?_⟩` and prove the remaining obligations. Set `B : k.Zb (x.Am m) v → F.Gv v → Matrix (Fin n) (Fin n) (DD (x.Am m) k.g)` to `fun z g => k.wi1 (x.Am m) v * ((z.1 g : k.M1 (x.Am m)) : Matrix (Fin n) (Fin n) (DD (x.Am m) k.g)) * k.w1 (x.Am m) v`. Establish `hBtri : ∀ z g, ∀ i j, j < i → B z g i j = 0` using `fun z g => z.2.2.2.1 g`. Establish `hBty : ∀ z g, TyPat (x.ty v) (B z g)` using `fun z g => ((UpperTheory.V.Pa.tri l F n x k (x.Am m) v).2 _).mp (z.1 g).2`.
+
+Set `Sh : Set (F.Gv v → x.Am m)` to `{z | IsLocallyConstant z ∧ (∀ g h, z (g * h) = z g + z h) ∧ ∀ g ∈ muG l (F.Gv v), z g = 0}`. Set `Sp : Fin n → Fin n → Set (F.Gv v → x.Am m)` to `fun i j => {z | IsLocallyConstant z ∧ ∀ g h, z (g * h) = z g + ((x.ψ v i g : x.A) * (x.ψ v j g⁻¹ : x.A)) • z h}`. Set `P : Idx (x.ty v) k.g → Set (F.Gv v → x.Am m)` to `fun t => match t with`. Consider the case `.inl _ => Sh`. Consider the case `.inr (.inl p) => Sp p.1.1 p.1.2`.
+
+Consider the case `.inr (.inr p) => Sp p.2.1.1 p.2.1.2`. Set `ht : Idx (x.ty v) k.g → ℕ` to `fun t => ((pos t).2.2 : ℕ) - (pos t).2.1`. Set `f : Idx (x.ty v) k.g → k.Zb (x.Am m) v →+ (F.Gv v → x.Am m)` to `fun t => crd k (x.Am m) v (pos t).1 (pos t).2.1 (pos t).2.2`. Establish `h0 : ∀ z, (∀ t, f t z = 0) → z = 0`. Introduce `z hz`.
+
+Establish `hBz : ∀ g, B z g = 0`. Introduce `g`. Conclude with `Matrix.ext fun p q => entry_zero _ (hBtri z g) (hBty z g) p q fun t _ => congrFun (hz t) g`. Apply `Subtype.ext` to reduce the goal to its premises. Use function extensionality and compare the values at `g`.
+
+Apply `Subtype.ext` to reduce the goal to its premises. Establish `hρ` using `(UpperTheory.V.Pa.rho1 l F n x k (x.Am m)).2.2.2.1 v`. Establish `e : ((z.1 g : k.M1 (x.Am m)) : Matrix (Fin n) (Fin n) (DD (x.Am m) k.g)) = k.w1 (x.Am m) v * B z g * k.wi1 (x.Am m) v`. Simplify using `only [B, ← mul_assoc, hρ.2, one_mul]`. Rewrite using `[mul_assoc, hρ.2, mul_one]`.
+
+Rewrite using `[e, hBz g, mul_zero, zero_mul]`. Both sides reduce to the same expression. Establish `hP : ∀ t, (P t).Finite`. Introduce `t`. Break down `t with i | p | ⟨o, p⟩` into its components or cases.
+
+Conclude with `(homCount l F n x _ (F.Iv v) d' m hA).1`. Conclude with `((Classical.choose_spec (hpc p.1 p.2.1)) m).1`. Conclude with `((Classical.choose_spec (hpc p.1 p.2.1)) m).1`. Establish `hf : ∀ t z, (∀ t', ht t' < ht t → f t' z = 0) → f t z ∈ P t`. Introduce `t z hz`.
+
+Establish `hB : ∀ g p q, (pos t).2.1 ≤ p → q ≤ (pos t).2.2 → (p ≠ (pos t).2.1 ∨ q ≠ (pos t).2.2) → B z g p q = 0`. Introduce `g p q hp hq hne`. Distinguish the cases in `hqp : q < p`. Conclude with `hBtri z g p q hqp`. Use `entry_zero _ (hBtri z g) (hBty z g) p q fun t' ht' => ?_` and prove the remaining obligations.
+
+Establish `e1 : (pos t').2.1 = p` using `congrArg Prod.fst ht'`. Establish `e2 : (pos t').2.2 = q` using `congrArg Prod.snd ht'`. Establish `a1 : ((pos t).2.1 : ℕ) ≤ (p : ℕ)` using `hp`. Establish `a2 : (q : ℕ) ≤ ((pos t).2.2 : ℕ)` using `hq`. Establish `a3 : (p : ℕ) ≤ (q : ℕ)` using `not_lt.mp hqp`.
+
+Establish `a4 : (p : ℕ) ≠ (pos t).2.1 ∨ (q : ℕ) ≠ (pos t).2.2` using `hne.imp (fun h e => h (Fin.ext e)) (fun h e => h (Fin.ext e))`. Establish `hlt : ht t' < ht t` using `by show ((pos t').2.2 : ℕ) - (pos t').2.1 < ((pos t).2.2 : ℕ) - (pos t).2.1`. Rewrite using `[e1, e2]`. Use linear arithmetic over natural numbers and integers. Conclude with `congrFun (hz t' hlt) g`.
+
+Take `⟨hlc, hcoc⟩` from `crd_coc k (x.Am m) v (pos t).1 (pos t).2.1 (pos t).2.2 z hB`. Break down `t with i | p | ⟨o, p⟩` into its components or cases. Use `⟨hlc, fun g h => ?_, fun g hg => ?_⟩` and prove the remaining obligations. Establish `e` using `hcoc g h`. Establish `one : (x.ψ v i g : x.A) * (x.ψ v i g⁻¹ : x.A) = 1`.
+
+Rewrite using `[← Units.val_mul, ← map_mul, mul_inv_cancel, map_one, Units.val_one]`. Rewrite `e` using `[show ((x.ψ v (pos (Sum.inl i)).2.1 g : x.A) * (x.ψ v (pos (Sum.inl i)).2.2 g⁻¹ : x.A)) = 1 from one, one_smul]`. Conclude with `e`. Take `⟨-, -, -, hmu⟩` from `z.2`. Establish `e : B z g i i = 0` using `hmu g hg i`.
+
+Use `show (B z g i i).a = 0`. Rewrite using `[e]`. Both sides reduce to the same expression. Conclude with `⟨hlc, hcoc⟩`. Conclude with `⟨hlc, hcoc⟩`.
+
+Take `⟨hfin, hcard⟩` from `filt_ht ht f P h0 hP hf`. Use `⟨hfin, hcard.trans ?_⟩` and prove the remaining obligations. Establish `hK : 0 < Nat.card x.K` using `Nat.card_pos`. Set `base : Idx (x.ty v) k.g → ℕ` to `fun t => match t with`. Consider the case `.inl _ => m * (d' + 1)`.
+
+Consider the case `.inr _ => m * (1 + d)`. Combine the equalities or inequalities in the displayed calculation. Use `Finset.prod_le_prod' fun t _ => ?_` and prove the remaining obligations. Break down `t with i | p | ⟨o, p⟩` into its components or cases. Simplify `(homCount l F n x _ (F.Iv v) d' m hA).2` using `[base, Cof]`.
+
+Conclude with `((Classical.choose_spec (hpc p.1 p.2.1)) m).2`. Conclude with `((Classical.choose_spec (hpc p.1 p.2.1)) m).2`. Use `_ = Nat.card x.K ^ (∑ t, (base t + Cof t)) := Finset.prod_pow_eq_pow_sum _ _ _`. Use `_ ≤ Nat.card x.K ^ (m * (n * (d' + 1) + nu n x.a k.g * (1 + d)) + ∑ t, Cof t) := by`. Apply `Nat.pow_le_pow_right hK` to reduce the goal to its premises.
+
+Rewrite using `[Finset.sum_add_distrib]`. Apply `Nat.add_le_add_right` to reduce the goal to its premises. Take `⟨-, hnu, -, -⟩` from `UpperTheory.V.Pa.tyCard l F n x v k.g`. Establish `s1 : ∑ t : Idx (x.ty v) k.g, base t = n * (m * (d' + 1)) + (Fintype.card {p : Fin n × Fin n // p.1 < p.2 ∧ x.ty v p.1 = x.ty v p.2} + k.g * Fintype.card {p : Fin n × Fin n // p.1 < p.2 ∧ x.ty v p.1 ≠ x.ty v p.2}) * (m * (1 + d))`. Rewrite using `[Fintype.sum_sum_type, Fintype.sum_sum_type]`.
+
+Simplify using `only [base, Finset.sum_const, Finset.card_univ, Fintype.card_prod, Fintype.card_fin, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[s1, Fintype.card_subtype, Fintype.card_subtype, hnu]`. Apply `le_of_eq` to reduce the goal to its premises. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem UpperTheory.V.Pa.locV :
     ∀ (l : ℕ) [Fact l.Prime] (F : GFrame l) (n : ℕ) (x : NP F n) (k : Kap x) (v : F.Vl) (d d' : ℕ), LocCount (F.Gv v) (F.ε.comp (F.η.ker.subtype.comp (F.φ v))) d → LocAb l (F.Gv v) (F.Iv v) d' → ∃ C : ℕ, ∀ m, Finite (k.Zb (x.Am m) v) ∧ Nat.card (k.Zb (x.Am m) v) ≤ Nat.card x.K ^ (m * (n * (d' + 1) + nu n x.a k.g * (1 + d)) + C) := by
   intro l _ F n x k v d d' hL hA

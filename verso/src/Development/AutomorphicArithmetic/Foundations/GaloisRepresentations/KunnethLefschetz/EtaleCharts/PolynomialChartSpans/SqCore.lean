@@ -9,6 +9,17 @@ import Development.AutomorphicArithmetic.Foundations.GaloisRepresentations.Kunne
 
 open CategoryTheory Limits AlgebraicGeometry UpperTheory.Gal.DifferentialFormSections ReciprocityTheory.ChartRestriction.G.Geo.Tor CrystallineSemistableComparison CrystallineSemistableComparison.Onto
 
+/- English proof (translation)
+Take `⟨⟨hproj, ϖ, hϖ, -⟩, -⟩` from `hM`. Use `haveI : IsNoetherianRing (OK l K) := oKDvr l K`. Set `Z : Sch (OK l K)` to `Over.mk M.p`. Use `haveI : SmoothOfRelativeDimension (d + 1) Z.hom := hd`. Take `⟨W, π, hbl, hXp, hWp, -, hXs, hWs, -⟩` from `blTop (OK l K) Z d hproj`.
+
+Use `haveI : IsProper Z.hom := ((projProd (OK l K) Z.hom Z.hom hproj).2.2)`. Take `⟨D, het, ⟨B⟩⟩` from `blowOfBl (OK l K) (d + 1) π hbl`. Set `P : Model l K` to `⟨(XX Z).left, (XX Z).hom⟩`. Set `Y : Model l K` to `⟨W.left, W.hom⟩`. Establish `hΔ : (dg Z).left ≫ P.p = M.p` using `Over.w (dg Z)`.
+
+Establish `hπ : π.left ≫ P.p = Y.p` using `Over.w π`. Use `haveI : Smooth P.p := SmoothOfRelativeDimension.smooth (d + 1 + (d + 1)) P.p`. Use `haveI : Smooth Y.p := SmoothOfRelativeDimension.smooth (d + 1 + (d + 1)) Y.p`. Establish `hP : P.Sm` using `⟨⟨hXp, ϖ, hϖ, smSst _ ϖ P.p⟩, inferInstance⟩`. Establish `hY : Y.Sm` using `⟨⟨hWp, ϖ, hϖ, smSst _ ϖ Y.p⟩, inferInstance⟩`.
+
+Establish `sq₀ : IsPullback (pullback.fst P.p (Spec.map (CommRingCat.ofHom (OK l K).subtype))) P.q P.p (Spec.map (CommRingCat.ofHom (OK l K).subtype))` using `IsPullback.of_hasPullback _ _`. Establish `sqΔ : IsPullback (pullback.fst M.p (Spec.map (CommRingCat.ofHom (OK l K).subtype))) (Model.genMap (M` using `M) (N := P) (dg Z).left hΔ) (dg Z).left (pullback.fst P.p (Spec.map (CommRingCat.ofHom (OK l K).subtype))) := by`. Use `IsPullback.of_bot ?_ (pullback.lift_fst _ _ _).symm sq₀` and prove the remaining obligations. Rewrite using `[Model.genMap_q, hΔ]`. Conclude with `IsPullback.of_hasPullback _ _`.
+
+Establish `sqπ : IsPullback (pullback.fst Y.p (Spec.map (CommRingCat.ofHom (OK l K).subtype))) (Model.genMap (M` using `Y) (N := P) π.left hπ) π.left (pullback.fst P.p (Spec.map (CommRingCat.ofHom (OK l K).subtype))) := by`. Use `IsPullback.of_bot ?_ (pullback.lift_fst _ _ _).symm sq₀` and prove the remaining obligations. Rewrite using `[Model.genMap_q, hπ]`. Conclude with `IsPullback.of_hasPullback _ _`. Conclude with `⟨{ P := P, Y := Y, p₁ := (p1 Z).left, p₂ := (p2 Z).left, Δ := (dg Z).left, π := π.left h₁ := Over.w (p1 Z), h₂ := Over.w (p2 Z), hΔ := hΔ, hπ := hπ Δ₁ := pullback.diagonal_fst _, Δ₂ := pullback.diagonal_snd _ prod := IsPullback.of_hasPullback _ _ smP := hP, smY := hY, D := D, loc …`.
+-/
 theorem UpperTheory.Gal.KunnethLefschetz.G.sqCore (l : ℕ) [Fact l.Prime] (K : IntermediateField ℚ_[l] (PadicAlgCl l)) [FiniteDimensional ℚ_[l] K]
     (M : Model l K) (d : ℕ) (hM : M.Sm) (hd : SmoothOfRelativeDimension (d + 1) M.p) : ∃ S : Sq M (d + 1), Etale S.D.f := by
   obtain ⟨⟨hproj, ϖ, hϖ, -⟩, -⟩ := hM
@@ -48,4 +59,7 @@ theorem UpperTheory.Gal.KunnethLefschetz.G.sqCore (l : ℕ) [Fact l.Prime] (K : 
     smP := hP, smY := hY, D := D, loc := B.loc
     blow := blowBC (OK l K) K (OK l K).subtype (XX Z).hom (dg Z).left π.left D (d + 1) P.q _ _ _ _ _ sq₀ sqΔ sqπ ⟨B⟩ }, het⟩
 
+/- English proof (translation)
+Introduce `l _ K _ M d _ h1 h2` and use `UpperTheory.Gal.KunnethLefschetz.G.sqCore l K M d h1 h2`.
+-/
 theorem UpperTheory.Gal.KunnethLefschetz.G.sqEx3 : CrystallineSemistableComparison.Onto.SqEx3 := fun l _ K _ M d _ h1 h2 => UpperTheory.Gal.KunnethLefschetz.G.sqCore l K M d h1 h2

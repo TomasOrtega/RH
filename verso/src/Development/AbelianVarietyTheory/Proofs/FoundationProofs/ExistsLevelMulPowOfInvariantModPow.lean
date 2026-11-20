@@ -6,6 +6,17 @@ open Matrix GlobalTheory.KZ GlobalTheory.KZ.ES
 
 namespace GlobalTheory.KZ.ES.CongruenceDescent
 
+/- English proof (translation)
+Rewrite using `[CongruenceSubgroup.Gamma_mem]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨h00, h01, h10, h11⟩`. Establish `d00 : (N : ℤ) ∣ γ 0 0 - 1`. Rewrite using `[← ZMod.intCast_zmod_eq_zero_iff_dvd]`.
+
+Use `push_cast`. Rewrite using `[h00]`. Expand and normalize the polynomial expressions, which then agree. Establish `d01 : (N : ℤ) ∣ γ 0 1` using `(ZMod.intCast_zmod_eq_zero_iff_dvd _ _).1 h01`. Establish `d10 : (N : ℤ) ∣ γ 1 0` using `(ZMod.intCast_zmod_eq_zero_iff_dvd _ _).1 h10`.
+
+Establish `d11 : (N : ℤ) ∣ γ 1 1 - 1`. Rewrite using `[← ZMod.intCast_zmod_eq_zero_iff_dvd]`. Use `push_cast`. Rewrite using `[h11]`. Expand and normalize the polynomial expressions, which then agree.
+
+Take `⟨a, ha⟩` from `d00`. Take `⟨b, hb⟩` from `d01`. Take `⟨c, hc⟩` from `d10`. Take `⟨d, hd⟩` from `d11`. Use `⟨!![a, b; c, d], ?_⟩` and prove the remaining obligations.
+
+Apply the tactic sequence `ext i j; fin_cases i <;> fin_cases j <;> simp <;> linarith`. Introduce and unpack `⟨B, hB⟩`. Establish `e : ∀ i j, γ i j = (1 : Matrix (Fin 2) (Fin 2) ℤ) i j + N * B i j` using `fun i j => by`. Rewrite using `[show γ i j = (γ : Matrix (Fin 2) (Fin 2) ℤ) i j from rfl, hB, Matrix.add_apply, Matrix.smul_apply, smul_eq_mul]`. Apply the tactic sequence `refine ⟨?_, ?_, ?_, ?_⟩ <;> rw [e] <;> simp`.
+-/
 theorem mem_Gamma_iff_exists {N : ℕ} {γ : SL(2, ℤ)} :
     γ ∈ CongruenceSubgroup.Gamma N ↔ ∃ B : Matrix (Fin 2) (Fin 2) ℤ, (γ : Matrix (Fin 2) (Fin 2) ℤ) = 1 + (N : ℤ) • B := by
   rw [CongruenceSubgroup.Gamma_mem]
@@ -25,12 +36,24 @@ theorem mem_Gamma_iff_exists {N : ℕ} {γ : SL(2, ℤ)} :
       rw [show γ i j = (γ : Matrix (Fin 2) (Fin 2) ℤ) i j from rfl, hB, Matrix.add_apply, Matrix.smul_apply, smul_eq_mul]
     refine ⟨?_, ?_, ?_, ?_⟩ <;> rw [e] <;> simp
 
+/- English proof (translation)
+Introduce `γ hγ`. Take `⟨B, hB⟩` from `mem_Gamma_iff_exists.1 hγ`. Take `⟨c, rfl⟩` from `h`. Conclude with `mem_Gamma_iff_exists.2 ⟨(c : ℤ) • B, by rw [hB, smul_smul]; push_cast; ring_nf⟩`.
+-/
 theorem Gamma_le_of_dvd {N M : ℕ} (h : N ∣ M) : CongruenceSubgroup.Gamma M ≤ CongruenceSubgroup.Gamma N := by
   intro γ hγ
   obtain ⟨B, hB⟩ := mem_Gamma_iff_exists.1 hγ
   obtain ⟨c, rfl⟩ := h
   exact mem_Gamma_iff_exists.2 ⟨(c : ℤ) • B, by rw [hB, smul_smul]; push_cast; ring_nf⟩
 
+/- English proof (translation)
+Take `⟨B, hB⟩` from `mem_Gamma_iff_exists.1 hγ`. Establish `key : ∀ m : ℕ, ∃ Y : Matrix (Fin 2) (Fin 2) ℤ, (γ : Matrix (Fin 2) (Fin 2) ℤ) ^ m = 1 + ((m : ℤ) * L) • B + ((L : ℤ) * L) • (B * B * Y)`. Introduce `m`. Proceed by induction on `m with`. Consider the case `zero => exact ⟨0, by simp⟩`.
+
+Consider the case `succ m ih`. Take `⟨Y, hY⟩` from `ih`. Use `⟨(m : ℤ) • 1 + Y + Y * ((L : ℤ) • B), ?_⟩` and prove the remaining obligations. Rewrite using `[pow_succ, hY, hB]`. Simplify using `only [add_mul, mul_add, smul_mul_assoc, mul_smul_comm, mul_one, one_mul, smul_add, smul_smul, Matrix.mul_assoc]`.
+
+Use `push_cast`. Use `module`. Take `⟨Y, hY⟩` from `key q`. Take `⟨c, rfl⟩` from `hq`. Use `mem_Gamma_iff_exists.2 ⟨B + (c : ℤ) • (B * B * Y), ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[Matrix.SpecialLinearGroup.coe_pow, hY, smul_add, smul_smul]`. Use `push_cast`. Use `module`.
+-/
 theorem pow_mem_Gamma_mul {L q : ℕ} (hq : q ∣ L) {γ : SL(2, ℤ)} (hγ : γ ∈ CongruenceSubgroup.Gamma L) :
     γ ^ q ∈ CongruenceSubgroup.Gamma (L * q) := by
   obtain ⟨B, hB⟩ := mem_Gamma_iff_exists.1 hγ
@@ -53,6 +76,9 @@ theorem pow_mem_Gamma_mul {L q : ℕ} (hq : q ∣ L) {γ : SL(2, ℤ)} (hγ : γ
   push_cast
   module
 
+/- English proof (translation)
+Proceed by induction on `j with`. Consider the case `zero => simpa only [pow_zero, pow_one, mul_one] using hγ`. Consider the case `succ j ih`. Rewrite using `[pow_succ, pow_mul, ← mul_assoc]`. Conclude with `pow_mem_Gamma_mul (hq.mul_right _) ih`.
+-/
 theorem pow_pow_mem_Gamma_mul {L q : ℕ} (hq : q ∣ L) {γ : SL(2, ℤ)} (hγ : γ ∈ CongruenceSubgroup.Gamma L) (j : ℕ) :
     γ ^ (q ^ j) ∈ CongruenceSubgroup.Gamma (L * q ^ j) := by
   induction j with
@@ -61,6 +87,11 @@ theorem pow_pow_mem_Gamma_mul {L q : ℕ} (hq : q ∣ L) {γ : SL(2, ℤ)} (hγ 
     rw [pow_succ, pow_mul, ← mul_assoc]
     exact pow_mem_Gamma_mul (hq.mul_right _) ih
 
+/- English proof (translation)
+Rewrite using `[hl.coprime_iff_not_dvd]`. Introduce `hd`. Use `haveI := Fact.mk hl`. Take `⟨x, hx⟩` from `exists_prime_orderOf_dvd_card' l hd`. Use `orderOf_dvd_of_pow_eq_one (h x)` as an intermediate fact.
+
+Rewrite `this` using `[hx]`. Conclude with `(hl.coprime_iff_not_dvd.1 hm) this`.
+-/
 theorem coprime_card_of_pow_eq_one {Q : Type} [Group Q] [Finite Q] {l m : ℕ} (hl : l.Prime) (hm : l.Coprime m)
     (h : ∀ x : Q, x ^ m = 1) : l.Coprime (Nat.card Q) := by
   rw [hl.coprime_iff_not_dvd]
@@ -71,6 +102,19 @@ theorem coprime_card_of_pow_eq_one {Q : Type} [Group Q] [Finite Q] {l m : ℕ} (
   rw [hx] at this
   exact (hl.coprime_iff_not_dvd.1 hm) this
 
+/- English proof (translation)
+Use `haveI := Fintype.ofFinite (H ⧸ D)`. Use `choose g hg using hf`. Establish `hwd : ∀ a b : H, (a : H ⧸ D) = b → s a f = s b f`. Introduce `a b hab`. Establish `h1 : a * (a⁻¹ * b) * a⁻¹ ∈ D` using `Subgroup.Normal.conj_mem ‹_› _ (QuotientGroup.eq.1 hab) a`.
+
+Establish `h2 : b = (a * (a⁻¹ * b) * a⁻¹) * a` using `by group`. Use `conv_rhs => rw [h2, hs, hD _ h1]`. Use `set F : A := ∏ x : H ⧸ D, s x.out f with hF`. Establish `hinv : ∀ γ, s γ F = F`. Introduce `γ`.
+
+Rewrite using `[hF, map_prod]`. Use `Fintype.prod_equiv (Equiv.mulRight (γ : H ⧸ D)) _ _ fun x => ?_` and prove the remaining obligations. Rewrite using `[← hs]`. Apply `hwd` to reduce the goal to its premises. Simplify using the standard rewrite rules.
+
+Establish `hFeq : F = f ^ Nat.card (H ⧸ D) * (∏ x : H ⧸ D, g x.out) ^ m`. Rewrite using `[hF]`. Simplify using `only [hg, Finset.prod_mul_distrib, Finset.prod_pow, Finset.prod_const, Finset.card_univ, Nat.card_eq_fintype_card]`. Take `⟨u, v, huv⟩` from `Nat.isCoprime_iff_coprime.2 hm`. Use `⟨f ^ (-u) * (∏ x : H ⧸ D, g x.out) ^ v, fun γ => ?_⟩` and prove the remaining obligations.
+
+Establish `e : f * (f ^ (-u) * (∏ x : H ⧸ D, g x.out) ^ v) ^ m = F ^ v`. Establish `e1 : f * f ^ (-u * (m : ℤ)) = f ^ ((Nat.card (H ⧸ D) : ℤ) * v)`. Rewrite using `[← _root_.zpow_one_add]`. Use `congr 1`. Take the linear combination `-huv`.
+
+Rewrite using `[hFeq, mul_pow, _root_.mul_zpow, ← _root_.zpow_natCast, ← _root_.zpow_natCast, ← _root_.zpow_natCast, ← _root_.zpow_natCast]`. Simplify using `only [← _root_.zpow_mul]`. Rewrite using `[← mul_assoc, e1, mul_comm v]`. Rewrite using `[e, map_zpow, hinv]`.
+-/
 theorem exists_invariant {H A : Type} [Group H] [CommGroup A] (s : H → A →* A)
     (hs : ∀ g h a, s (g * h) a = s h (s g a)) (D : Subgroup H) [D.Normal] [Finite (H ⧸ D)] {m : ℕ}
     (hm : m.Coprime (Nat.card (H ⧸ D))) (f : A) (hD : ∀ δ ∈ D, s δ f = f) (hf : ∀ γ, ∃ g : A, s γ f = f * g ^ m) :
@@ -114,6 +158,17 @@ namespace GlobalTheory.KZ.ES
 
 open CongruenceDescent CongruenceSubgroup in
 
+/- English proof (translation)
+Introduce `Ω _ _ _ ε X l n M e hl hM f hlev hf`. Take `⟨a, q, hq, hMq⟩` from `Nat.exists_eq_pow_mul_and_not_dvd hM.ne' l hl.ne_one`. Establish `hlq : l.Coprime q` using `hl.coprime_iff_not_dvd.2 hq`. Set `H : Subgroup SL(2, ℤ)` to `Gamma (M * l ^ (a * e))`. Use `haveI := Gamma_normal (M ^ e)`.
+
+Use `haveI : NeZero (M ^ e) := ⟨(pow_pos hM e).ne'⟩`. Set `D : Subgroup H` to `(Gamma (M ^ e)).subgroupOf H`. Use `haveI : D.FiniteIndex := inferInstance`. Establish `hcard : l.Coprime (Nat.card (H ⧸ D))`. Use `coprime_card_of_pow_eq_one hl (hlq.pow_right e) fun x => ?_` and prove the remaining obligations.
+
+Take `⟨γ, rfl⟩` from `QuotientGroup.mk_surjective x`. Rewrite using `[← QuotientGroup.mk_pow, QuotientGroup.eq_one_iff, Subgroup.mem_subgroupOf, Subgroup.coe_pow]`. Use `Gamma_le_of_dvd ?_ (pow_pow_mem_Gamma_mul (q := q) ?_ γ.2 e)` and prove the remaining obligations. Conclude with `⟨M, by rw [hMq]; ring⟩`. Conclude with `⟨l ^ a * l ^ (a * e), by rw [hMq]; ring⟩`.
+
+Take `⟨h, hh⟩` from `exists_invariant (H := H) (A := X.Kˣ) (fun γ => Units.map (X.sl (ofSL γ) : X.K →* X.K)) (fun g h a => Units.ext (by simp [X.sl_mul])) D (hcard.pow_left n) f (fun δ hδ => Units.ext (by simpa using hlev δ hδ)) (fun γ => by`. Take `⟨g, hg⟩` from `hf γ (Gamma_le_of_dvd (dvd_mul_right _ _) γ.2)`. Conclude with `⟨g, Units.ext (by simpa using hg)⟩)`. Use `⟨a * e, h, fun γ hγ => ?_⟩` and prove the remaining obligations. Use `congrArg Units.val (hh ⟨γ, hγ⟩)` as an intermediate fact.
+
+Simplify using `using this`.
+-/
 theorem exists_lev_mul_pow_of_invariant_mod_pow :
     ∀ {Ω : Type} [Field Ω] [Algebra ℚ Ω] [IsAlgClosure ℚ Ω] (ε : Ω →+* ℂ) (X : Tower Ω ε), ∀ (l n M e : ℕ), l.Prime → 0 < M → ∀ f : X.Kˣ, Lev X (M ^ e) f → (∀ γ ∈ CongruenceSubgroup.Gamma M, ∃ g : X.Kˣ, X.sl (ofSL γ) (f : X.K) = f * (g : X.K) ^ (l ^ n)) → ∃ (k : ℕ) (h : X.Kˣ), Lev X (M * l ^ k) ((f : X.K) * (h : X.K) ^ (l ^ n)) := by
   intro Ω _ _ _ ε X l n M e hl hM f hlev hf

@@ -20,6 +20,11 @@ def Lift : Prop := ∀ (O Ω : Type) [CommRing O] [Field Ω] (ψ : O →+* Ω), 
 def Colim : Prop := ∀ (A : CommRingCat.{0}) (Ω : Type) [Field Ω] (ι : A →+* Ω),
   ∃ (O : CommRingCat.{0}) (f : A ⟶ O) (ψ : O →+* Ω), IE f ∧ ψ.comp f.hom = ι ∧ EtClosed ψ
 
+/- English proof (translation)
+Establish `hu : IsUnit (ψ x)` using `isUnit_iff_ne_zero.mpr hx`. Set `χ : Localization.Away x →+* Ω` to `IsLocalization.Away.lift x hu`. Establish `hχ : χ.comp (algebraMap O (Localization.Away x)) = ψ` using `IsLocalization.Away.lift_comp x hu`. Take `⟨s, -⟩` from `h (Localization.Away x) χ hχ`. Use `IsUnit.of_mul_eq_one (b := s (IsLocalization.Away.invSelf x)) ?_` and prove the remaining obligations.
+
+Establish `e` using `congrArg s (IsLocalization.Away.mul_invSelf (S := Localization.Away x) x)`. Rewrite `e` using `[map_mul, map_one, AlgHom.commutes]`. Simplify using `using e`.
+-/
 theorem unit_of_etClosed {O Ω : Type} [CommRing O] [Field Ω] (ψ : O →+* Ω) (h : EtClosed ψ)
     (x : O) (hx : ψ x ≠ 0) : IsUnit x := by
   have hu : IsUnit (ψ x) := isUnit_iff_ne_zero.mpr hx
@@ -31,6 +36,17 @@ theorem unit_of_etClosed {O Ω : Type} [CommRing O] [Field Ω] (ψ : O →+* Ω)
   rw [map_mul, map_one, AlgHom.commutes] at e
   simpa using e
 
+/- English proof (translation)
+Introduce `O Ω _ _ ψ hE p hp a₀ h₁ h₂`. Use `letI : Algebra O Ω := ψ.toAlgebra`. Set `P : StandardEtalePair O` to `⟨p, hp, p.derivative, ⟨1, 0, 1, by ring⟩⟩`. Establish `hev : ∀ q : O[X], aeval (ψ a₀) q = ψ (q.eval a₀)`. Introduce `q`.
+
+Rewrite using `[Polynomial.aeval_def]`. Conclude with `Polynomial.eval₂_at_apply (p := q) ψ a₀`. Establish `hM : P.HasMap (ψ a₀)` using `⟨by rw [hev]; exact h₁, by rw [hev]; exact isUnit_iff_ne_zero.mpr h₂⟩`. Set `χ : P.Ring →+* Ω` to `(P.lift (ψ a₀) hM).toRingHom`. Establish `hχ : χ.comp (algebraMap O P.Ring) = ψ` using `(P.lift (ψ a₀) hM).comp_algebraMap`.
+
+Take `⟨s, hs⟩` from `hE P.Ring χ hχ`. Use `⟨s P.X, ?_, ?_⟩` and prove the remaining obligations. Establish `h0 : aeval P.X P.f = 0` using `P.hasMap_X.1`. Establish `h1` using `congrArg s h0`. Rewrite `h1` using `[map_zero, ← Polynomial.aeval_algHom_apply]`.
+
+Rewrite using `[Polynomial.IsRoot.def, ← Polynomial.coe_aeval_eq_eval]`. Conclude with `h1`. Use `congrArg (fun g => g P.X) hs` as an intermediate fact. Simplify using `only [RingHom.comp_apply] at this`. Rewrite using `[show ψ (s P.X) = χ P.X from this]`.
+
+Conclude with `P.lift_X (ψ a₀) hM`.
+-/
 theorem etaleClosed_point_lifts_simple_roots_monic : Lift := by
   intro O Ω _ _ ψ hE p hp a₀ h₁ h₂
   letI : Algebra O Ω := ψ.toAlgebra
@@ -53,6 +69,21 @@ theorem etaleClosed_point_lifts_simple_roots_monic : Lift := by
     rw [show ψ (s P.X) = χ P.X from this]
     exact P.lift_X (ψ a₀) hM
 
+/- English proof (translation)
+Introduce `A _`. Set `k` to `IsLocalRing.ResidueField A`. Set `ι : A →+* SeparableClosure k` to `(algebraMap k (SeparableClosure k)).comp (IsLocalRing.residue A)`. Take `⟨O, f, ψ, hIE, hcomp, hE⟩` from `hC A (SeparableClosure k) ι`. Use `⟨O, f, SeparableClosure k, inferInstance, inferInstance, ψ, hIE, ?_, ?_, hE⟩` and prove the remaining obligations.
+
+Introduce `ω`. Establish `hsep : (minpoly k ω).Separable` using `Algebra.IsSeparable.isSeparable k ω`. Establish `hmon : (minpoly k ω).Monic` using `minpoly.monic (Algebra.IsSeparable.isIntegral k ω)`. Take `⟨q, hq, -, hqm⟩` from `Polynomial.lifts_and_degree_eq_and_monic ((Polynomial.lifts_iff_coeff_lifts _).2 (fun n => IsLocalRing.residue_surjective _)) hmon`. Use `letI : Algebra O (SeparableClosure k) := ψ.toAlgebra`.
+
+Set `P : StandardEtalePair O` to `⟨q.map f.hom, hqm.map _, (q.map f.hom).derivative, ⟨1, 0, 1, by ring⟩⟩`. Establish `hev : ∀ r : A[X], aeval ω (r.map f.hom) = aeval ω (r.map (IsLocalRing.residue A))`. Introduce `r`. Rewrite using `[Polynomial.aeval_def, Polynomial.aeval_def, Polynomial.eval₂_map, Polynomial.eval₂_map]`. Use `congr 1`.
+
+Establish `hM : P.HasMap ω`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `aeval ω (q.map f.hom) = 0`. Rewrite using `[hev, hq]`. Conclude with `minpoly.aeval k ω`.
+
+Express the relevant statement in the definitionally equal form `IsUnit (aeval ω (q.map f.hom).derivative)`. Rewrite using `[Polynomial.derivative_map, hev, ← Polynomial.derivative_map, hq]`. Conclude with `isUnit_iff_ne_zero.mpr (hsep.aeval_derivative_ne_zero (minpoly.aeval k ω))`. Set `χ : P.Ring →+* SeparableClosure k` to `(P.lift ω hM).toRingHom`. Establish `hχ : χ.comp (algebraMap O P.Ring) = ψ` using `(P.lift ω hM).comp_algebraMap`.
+
+Take `⟨s, hs⟩` from `hE P.Ring χ hχ`. Use `⟨s P.X, ?_⟩` and prove the remaining obligations. Use `congrArg (fun g => g P.X) hs` as an intermediate fact. Simplify using `only [RingHom.comp_apply] at this`. Rewrite using `[show ψ (s P.X) = χ P.X from this]`.
+
+Conclude with `P.lift_X ω hM`. Introduce `a ha`. Establish `e : ψ (f.hom a) = ι a` using `congrArg (fun g => g a) hcomp`. Rewrite using `[e]`. Simplify using `[ι, (IsLocalRing.residue_eq_zero_iff a).2 ha]`.
+-/
 theorem build_of (hC : Colim) : Build := by
   intro A _
   let k := IsLocalRing.ResidueField A
@@ -91,6 +122,23 @@ theorem build_of (hC : Colim) : Build := by
     rw [e]
     simp [ι, (IsLocalRing.residue_eq_zero_iff a).2 ha]
 
+/- English proof (translation)
+Introduce `A _`. Take `⟨O, f, Ω, _, _, ψ, hIE, hs, hm, hE⟩` from `hB A`. Establish `hU : ∀ x : O, ψ x ≠ 0 → IsUnit x` using `unit_of_etClosed ψ hE`. Establish `hZ : ∀ x : O, IsUnit x → ψ x ≠ 0` using `fun x hx => (hx.map ψ).ne_zero`. Establish `: Nontrivial O` using `⟨⟨1, 0, fun h => by simpa using congrArg ψ h⟩⟩`.
+
+Establish `: IsLocalRing O` using `IsLocalRing.of_nonunits_add (by`. Introduce `a b ha hb hab`. Establish `ha' : ψ a = 0` using `by by_contra h; exact ha (hU a h)`. Establish `hb' : ψ b = 0` using `by by_contra h; exact hb (hU b h)`. Conclude with `hZ _ hab (by rw [map_add, ha', hb', add_zero]))`.
+
+Establish `hmem : ∀ x : O, x ∈ IsLocalRing.maximalIdeal O ↔ ψ x = 0`. Introduce `x`. Rewrite using `[IsLocalRing.mem_maximalIdeal, mem_nonunits_iff]`. Conclude with `⟨fun h => by by_contra h'; exact h (hU x h'), fun h hx => hZ x hx h⟩`. Establish `hker : IsLocalRing.maximalIdeal O = RingHom.ker ψ`.
+
+Use extensionality with `x`. Rewrite using `[hmem, RingHom.mem_ker]`. Set `e : IsLocalRing.ResidueField O ≃+* Ω` to `(Ideal.quotEquivOfEq hker).trans (RingHom.quotientKerEquivOfSurjective hs)`. Establish `hSC : IsSepClosed (IsLocalRing.ResidueField O)`. Use `IsSepClosed.of_exists_root _ (fun p _ hirr hsep => ?_)` and prove the remaining obligations.
+
+Establish `hd : (p.map (e : IsLocalRing.ResidueField O →+* Ω)).degree ≠ 0`. Rewrite using `[Polynomial.degree_map]`. Conclude with `(Polynomial.degree_pos_of_irreducible hirr).ne'`. Take `⟨y, hy⟩` from `IsSepClosed.exists_root _ hd (hsep.map)`. Use `⟨e.symm y, ?_⟩` and prove the remaining obligations.
+
+Apply `e.injective` to reduce the goal to its premises. Rewrite using `[map_zero, ← hy]`. Establish `h` using `Polynomial.eval₂_at_apply (p := p) (e : IsLocalRing.ResidueField O →+* Ω) (e.symm y)`. Rewrite using `[Polynomial.eval_map]`. Simplify using `using h.symm`.
+
+Establish `hH : HenselianLocalRing O` using `{ is_henselian := by`. Introduce `p hp a₀ h₁ h₂`. Take `⟨a, ha, ha'⟩` from `hL O Ω ψ hE p hp a₀ ((hmem _).1 h₁) (hZ _ h₂)`. Conclude with `⟨a, ha, (hmem _).2 (by rw [map_sub, ha', sub_self])⟩ }`. Use `⟨O, f, hIE, ⟨hH, hSC⟩, ⟨fun a ha => ?_⟩⟩` and prove the remaining obligations.
+
+Assume the negation of the conclusion as `hna`. Conclude with `hZ _ ha (hm a ((IsLocalRing.mem_maximalIdeal _).2 hna))`.
+-/
 theorem SHLoc_of (hB : Build) (hL : Lift) : LateralTheory.E.SHExistsPf.SHLoc := by
   intro A _
   obtain ⟨O, f, Ω, _, _, ψ, hIE, hs, hm, hE⟩ := hB A

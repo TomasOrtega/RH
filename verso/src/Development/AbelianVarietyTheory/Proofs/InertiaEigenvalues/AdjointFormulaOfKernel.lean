@@ -22,16 +22,25 @@ def upVec (R : RealDat D A Ks) (i : Fin D.R.m) (t : T) (v : ∀ ρ, lowT (R.MW i
     (b : OrthonormalBasis (Fin n) ℂ (R.cV i).W) (y : (R.HW i (sg0 D A)).H) : GA D (Vc D i) → (R.cV i).W :=
   fun h => ∑ k, upLift (R.ωP i t) (R.νW i) (R.fdW i) (jointVec R i t v (b k)) (val R i v y) h • b k
 
+/- English proof (translation)
+The claim follows from `b.orthonormal.inner_right_fintype _ k`.
+-/
 theorem inner_upVec (R : RealDat D A Ks) (i : Fin D.R.m) (t : T) (v : ∀ ρ, lowT (R.MW i (sg0 D A)) ρ) {n : ℕ}
     (b : OrthonormalBasis (Fin n) ℂ (R.cV i).W) (y : (R.HW i (sg0 D A)).H) (k : Fin n) (h : GA D (Vc D i)) :
     ⟪b k, upVec R i t v b y h⟫_ℂ = upLift (R.ωP i t) (R.νW i) (R.fdW i) (jointVec R i t v (b k)) (val R i v y) h :=
   b.orthonormal.inner_right_fintype _ k
 
+/- English proof (translation)
+Use function extensionality and compare the values at `g`. Simplify using `[val]`.
+-/
 theorem val_zero (R : RealDat D A Ks) (i : Fin D.R.m) (v : ∀ ρ, lowT (R.MW i (sg0 D A)) ρ) :
     val R i v 0 = 0 := by
   funext g
   simp [val]
 
+/- English proof (translation)
+Simplify using `[upLift]`.
+-/
 theorem upLift_zero {V W : HSp D} (om : GA D V × GA D W →* Module.End ℂ (WO V W → ℂ)) (ν : Measure (GA D W))
     (𝓖 : Set (GA D W)) (f : WO V W → ℂ) (h : GA D V) : upLift om ν 𝓖 f 0 h = 0 := by
   simp [upLift]
@@ -42,6 +51,23 @@ end
 
 namespace GlobalTheory.AdjUp
 
+/- English proof (translation)
+Use `choose U hU using h4`. Establish `hc0 : (c : ℂ) ≠ 0` using `Complex.ofReal_ne_zero.2 hc.ne'`. Establish `hcoord : ∀ y k h, ⟪b k, ext (U y) h⟫_ℂ = K k y h` using `fun y k h => by`. Rewrite using `[hU y]`. Conclude with `b.orthonormal.inner_right_fintype _ k`.
+
+Establish `hadj : ∀ y u, ⟪LinearMap.adjoint th y, u⟫_ℂ = (((P / c : ℝ)) : ℂ) * ⟪U y, u⟫_ℂ`. Introduce `y u`. Rewrite using `[LinearMap.adjoint_inner_left, hPW, hφ, h3, (hcV (U y) u).1, hU y, Complex.ofReal_div]`. Clear the denominators using the available nonvanishing facts. Establish `hsum : ∀ x y h, ⟪ext (U x) h, ext (U y) h⟫_ℂ = ∑ k, star (K k x h) * K k y h`.
+
+Introduce `x y h`. Rewrite using `[← b.sum_inner_mul_inner]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[← hcoord, ← hcoord, ← inner_conj_symm]`. Both sides reduce to the same expression.
+
+Distinguish the cases in `hzero : P = 0`. Use `⟨1, one_pos, fun x y => ?_⟩` and prove the remaining obligations. Establish `h0 : ∀ z : H₂, z = 0` using `fun z => by`. Use `hPW z z` as an intermediate fact. Rewrite `this` using `[hzero, Complex.ofReal_zero, zero_mul]`.
+
+Conclude with `inner_self_eq_zero.1 this`. Rewrite using `[h0 x, h0 y, map_zero, inner_zero_left]`. Simplify using `[hK0]`. Establish `hpos : 0 < P` using `lt_of_le_of_ne hP0 (Ne.symm hzero)`. Use `⟨P ^ 2 / c, by positivity, fun x y => ?_⟩` and prove the remaining obligations.
+
+Establish `hint : ∀ k ∈ Finset.univ, Integrable (fun h => star (K k x h) * K k y h) μV`. Introduce `k _`. Use `(hcV (U x) (U y)).2 (b k) (b k)` as an intermediate fact. Simplify `this` using `only [hcoord]`. Establish `e1 : ⟪LinearMap.adjoint th x, LinearMap.adjoint th y⟫_ℂ = (((P / c : ℝ)) : ℂ) * (((P / c : ℝ)) : ℂ) * ⟪U x, U y⟫_ℂ`.
+
+Rewrite using `[hadj x, ← inner_conj_symm, hadj y, map_mul, Complex.conj_ofReal, inner_conj_symm, mul_assoc]`. Establish `e2 : ⟪U x, U y⟫_ℂ = (c : ℂ) * ∑ k, ∫ h, star (K k x h) * K k y h ∂μV`. Rewrite using `[(hcV (U x) (U y)).1, ← integral_finset_sum _ hint]`. Simplify using `only [hsum]`. Rewrite using `[e1, e2]`.
+
+Use `push_cast`. Clear the denominators using the available nonvanishing facts.
+-/
 theorem adjoint_formula_of_kernel {H₁ H₂ W Gv Gw : Type} [NormedAddCommGroup H₁] [InnerProductSpace ℂ H₁]
     [FiniteDimensional ℂ H₁] [NormedAddCommGroup H₂] [InnerProductSpace ℂ H₂] [FiniteDimensional ℂ H₂]
     [NormedAddCommGroup W] [InnerProductSpace ℂ W] [MeasurableSpace Gv] [MeasurableSpace Gw]

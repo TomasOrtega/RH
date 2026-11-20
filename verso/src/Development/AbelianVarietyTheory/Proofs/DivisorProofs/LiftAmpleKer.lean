@@ -20,6 +20,9 @@ namespace GlobalTheory.PrinThicken
 
 open GlobalTheory.AbDual GlobalTheory.CechPic
 
+/- English proof (translation)
+Rewrite using `[evc, evc]`. Use `conv_lhs => rw [hc]`. Rewrite using `[← pull_comp, ← Over.comp_left, comp_lift, lift_snd, lift_fst]`.
+-/
 theorem evc_comm {S : Scheme.{0}} {X Y : Over S} {M : LB (X ⊗ X).left} (hM : M.IsLB)
     (hc : cls M hM = CechPic.pull (lift (snd X X) (fst X X)).left (cls M hM)) (a b : Y ⟶ X) :
     evc hM a b = evc hM b a := by

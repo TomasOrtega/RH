@@ -12,6 +12,17 @@ namespace GlobalTheory.CompanionTheory.InertiaEigenvalues.LPow
 
 open Polynomial in
 
+/- English proof (translation)
+Take `⟨r, hr⟩` from `exists_add_pow_prime_eq hl (1 : ℤ[X]) X`. Establish `hl1 : l - 1 + 1 = l` using `Nat.sub_add_cancel hl.one_le`. Establish `hg` using `geom_sum_mul (1 + (X : ℤ[X])) l`. Establish `hs : ∑ i ∈ Finset.range l, (1 + (X : ℤ[X])) ^ i = X ^ (l - 1) + (l : ℤ[X]) * r`. Apply `mul_right_cancel₀ (X_ne_zero (R := ℤ))` to reduce the goal to its premises.
+
+Establish `e : (1 + (X : ℤ[X])) - 1 = X` using `by ring`. Rewrite `hg` using `[e, hr]`. Rewrite using `[hg, add_mul, ← pow_succ, hl1]`. Expand and normalize the polynomial expressions, which then agree. Establish `r0 : r.coeff 0 = 1`.
+
+Establish `h` using `congrArg (Polynomial.eval 0) hs`. Establish `hz : (0 : ℤ) ^ (l - 1) = 0` using `zero_pow (by have := hl.two_le; omega)`. Simplify using `[Polynomial.eval_finset_sum, hz] at h`. Establish `hl0 : (l : ℤ) ≠ 0` using `by exact_mod_cast hl.ne_zero`. Rewrite using `[Polynomial.coeff_zero_eq_eval_zero]`.
+
+Establish `h' : (l : ℤ) * Polynomial.eval 0 r = (l : ℤ) * 1` using `by linarith`. Conclude with `mul_left_cancel₀ hl0 h'`. Take `⟨v, hv⟩` from `X_dvd_sub_C (p := r)`. Use `⟨v, ?_⟩` and prove the remaining obligations. Establish `: r = 1 + X * v`.
+
+Rewrite using `[← hv, r0]`. Simplify using the standard rewrite rules. Rewrite using `[hs, ← this]`.
+-/
 theorem geom_poly {l : ℕ} (hl : l.Prime) :
     ∃ v : ℤ[X], ∑ i ∈ Finset.range l, (1 + (X : ℤ[X])) ^ i
       = X ^ (l - 1) + (l : ℤ[X]) * (1 + X * v) := by
@@ -38,6 +49,9 @@ theorem geom_poly {l : ℕ} (hl : l.Prime) :
     rw [← hv, r0]; simp
   rw [hs, ← this]
 
+/- English proof (translation)
+Take `⟨v, hv⟩` from `geom_poly hl`. Use `⟨Polynomial.aeval y v, ?_⟩` and prove the remaining obligations. Establish `h` using `congrArg (Polynomial.aeval y) hv`. Simplify `h` using `[map_sum]`.
+-/
 theorem geom_ring {R : Type*} [CommRing R] {l : ℕ} (hl : l.Prime) (y : R) :
     ∃ v : R, ∑ i ∈ Finset.range l, (1 + y) ^ i = y ^ (l - 1) + (l : R) * (1 + y * v) := by
   obtain ⟨v, hv⟩ := geom_poly hl
@@ -45,6 +59,19 @@ theorem geom_ring {R : Type*} [CommRing R] {l : ℕ} (hl : l.Prime) (y : R) :
   have h := congrArg (Polynomial.aeval y) hv
   simpa [map_sum] using h
 
+/- English proof (translation)
+Use `set I : Ideal R := Ideal.span {y ^ k, ξ ^ M} with hI`. Establish `hy : y ^ k ∈ I` using `Ideal.subset_span (by simp)`. Establish `hx : ξ ^ M ∈ I` using `Ideal.subset_span (by simp)`. Establish `hb : (-(y ^ a)) ^ n ∈ I`. Rewrite using `[neg_pow, ← pow_mul]`.
+
+Use `I.mul_mem_left _ ?_` and prove the remaining obligations. Establish `: y ^ (a * n) = y ^ (a * n - k) * y ^ k`. Rewrite using `[← pow_add, Nat.sub_add_cancel hk]`. Rewrite using `[this]`. Conclude with `I.mul_mem_left _ hy`.
+
+Establish `h1 : (ξ + -(y ^ a)) ^ (n + M - 1) ∈ I` using `Ideal.add_pow_mem_of_pow_mem_of_le I hx hb (by omega)`. Establish `e1 : ξ + -(y ^ a) = c * (1 + y * v)` using `by rw [hξ]; ring`. Rewrite `h1` using `[e1, mul_pow]`. Establish `hs` using `mul_neg_geom_sum (-(y * v)) k`. Establish `hu : (1 + y * v) * ∑ i ∈ Finset.range k, (-(y * v)) ^ i = 1 - (-(y * v)) ^ k`.
+
+Use `hs` as an intermediate fact. Simplify `this` using `[sub_neg_eq_add]`. Establish `hyk : (-(y * v)) ^ k ∈ I`. Rewrite using `[neg_pow, mul_pow]`. Establish `: (-1 : R) ^ k * (y ^ k * v ^ k) = ((-1 : R) ^ k * v ^ k) * y ^ k` using `by ring`.
+
+Rewrite using `[this]`. Conclude with `I.mul_mem_left _ hy`. Rewrite `h1`, `hyk`, the goal using `[← Ideal.Quotient.eq_zero_iff_mem]`. Rewrite `h1` using `[map_mul, map_pow, map_pow]`. Establish `hu'` using `congrArg (Ideal.Quotient.mk I) hu`.
+
+Rewrite `hu'` using `[map_mul, map_sub, hyk, map_one, sub_zero]`. Establish `hunit : IsUnit (Ideal.Quotient.mk I (1 + y * v))` using `IsUnit.of_mul_eq_one _ hu'`. Rewrite using `[map_pow]`. Conclude with `(hunit.pow _).mul_left_eq_zero.mp h1`.
+-/
 theorem pow_mem_span {R : Type*} [CommRing R] (y ξ c v : R) (a k n M : ℕ)
     (hξ : ξ = y ^ a + c * (1 + y * v)) (hM : 1 ≤ M) (hk : k ≤ a * n) :
     c ^ (n + M - 1) ∈ Ideal.span {y ^ k, ξ ^ M} := by
@@ -80,6 +107,11 @@ theorem pow_mem_span {R : Type*} [CommRing R] (y ξ c v : R) (a k n M : ℕ)
   rw [map_pow]
   exact (hunit.pow _).mul_left_eq_zero.mp h1
 
+/- English proof (translation)
+Take `⟨v, hv⟩` from `geom_ring (Fact.out : l.Prime) AI.π₁`. Establish `e : 1 + AI.π₁ = WittVector.teichmuller l AI.ε1`. Rewrite using `[LocAinf.π₁]`. Expand and normalize the polynomial expressions, which then agree. Rewrite `hv` using `[e]`.
+
+Conclude with `pow_mem_span AI.π₁ AI.ξ (l : Ainf l) v (l - 1) k n M hv hM hk`.
+-/
 theorem l_pow_mem (l : ℕ) [Fact l.Prime] (P : LocPrime l) (AI : LocAinf l P) (k n M : ℕ)
     (hM : 1 ≤ M) (hk : k ≤ (l - 1) * n) :
     ((l : ℕ) : Ainf l) ^ (n + M - 1) ∈ Ideal.span {AI.π₁ ^ k, AI.ξ ^ M} := by
@@ -89,6 +121,9 @@ theorem l_pow_mem (l : ℕ) [Fact l.Prime] (P : LocPrime l) (AI : LocAinf l P) (
   rw [e] at hv
   exact pow_mem_span AI.π₁ AI.ξ (l : Ainf l) v (l - 1) k n M hv hM hk
 
+/- English proof (translation)
+Introduce `l _ P AI k n M hM hk` and use `l_pow_mem l P AI k n M hM hk`.
+-/
 theorem main : ∀ (l : ℕ) [Fact l.Prime] (P : LocPrime l) (AI : LocAinf l P) (k n M : ℕ), 1 ≤ M → k ≤ (l - 1) * n → ((l : ℕ) : Ainf l) ^ (n + M - 1) ∈ Ideal.span {AI.π₁ ^ k, AI.ξ ^ M} :=
   fun l _ P AI k n M hM hk => l_pow_mem l P AI k n M hM hk
 
@@ -99,6 +134,9 @@ end
 section
 open Formalism.WeaklyAdmissibleFiltrations Formalism.BasicNotions Formalism.BasicNotions.Loc Formalism.MainNotions.N Formalism.MainNotions.LocalSituation GlobalTheory.Cyc
 
+/- English proof (translation)
+Establish `h` using `congrArg (Polynomial.eval AI.π₁) (Polynomial.geom_sum_X_comp_X_add_one_eq_sum (R := _root_.Formalism.BasicNotions.Loc.Ainf l) l)`. Simplify using `only [Polynomial.eval_comp, Polynomial.eval_finset_sum, Polynomial.eval_pow, Polynomial.eval_X, Polynomial.eval_add, Polynomial.eval_one, Polynomial.eval_mul, Polynomial.eval_natCast] at h`. Rewrite using `[← h]`. Unfold `_root_.Formalism.BasicNotions.LocAinf.ξ _root_.Formalism.BasicNotions.LocAinf.π₁`. Simplify using the standard rewrite rules.
+-/
 private theorem xi_eq_sum_choose_mul_pi_pow_lemma_2 {l : ℕ} [Fact l.Prime] {P : _root_.Formalism.BasicNotions.LocPrime l}
     (AI : _root_.Formalism.BasicNotions.LocAinf l P) :
     AI.ξ = ∑ i ∈ Finset.range l, ((l.choose (i + 1) : ℕ) : _root_.Formalism.BasicNotions.Loc.Ainf l) * AI.π₁ ^ i := by
@@ -111,6 +149,13 @@ private theorem xi_eq_sum_choose_mul_pi_pow_lemma_2 {l : ℕ} [Fact l.Prime] {P 
   unfold _root_.Formalism.BasicNotions.LocAinf.ξ _root_.Formalism.BasicNotions.LocAinf.π₁
   simp
 
+/- English proof (translation)
+Establish `hp` using `hl.out`. Take `⟨m, hm⟩ : ∃ m, l = m + 2` from `⟨l - 2, by have := hp.two_le; omega⟩`. Use `⟨∑ i ∈ Finset.range m, ((l.choose (i + 2) / l : ℕ) : _root_.Formalism.BasicNotions.Loc.Ainf l) * AI.π₁ ^ i, ?_⟩` and prove the remaining obligations. Rewrite using `[xi_eq_sum_choose_mul_pi_pow_lemma_2, show Finset.range l = Finset.range (m + 1 + 1) by rw [hm], Finset.sum_range_succ, Finset.sum_range_succ', show l.choose (m + 1 + 1) = 1 by rw [show m + 1 + 1 = l by omega]; simp]`. Establish `hd : ∀ i ∈ Finset.range m, ((l.choose (i + 1 + 1) : ℕ) : _root_.Formalism.BasicNotions.Loc.Ainf l) * AI.π₁ ^ (i + 1) = (l : _root_.Formalism.BasicNotions.Loc.Ainf l) * (AI.π₁ * (((l.choose (i + 2) / l : ℕ) : _root_.Formalism.BasicNotions.Loc.Ainf l) * AI.π₁ ^ i))`.
+
+Introduce `i hi`. Establish `hi'` using `Finset.mem_range.1 hi`. Establish `hdvd : l ∣ l.choose (i + 2)` using `hp.dvd_choose_self (by omega) (by omega)`. Rewrite using `[show ((l.choose (i + 1 + 1) : ℕ) : _root_.Formalism.BasicNotions.Loc.Ainf l) = ((l * (l.choose (i + 2) / l) : ℕ) : _root_.Formalism.BasicNotions.Loc.Ainf l) by rw [Nat.mul_div_cancel' hdvd]]`. Use `push_cast`.
+
+Expand and normalize the polynomial expressions, which then agree. Rewrite using `[Finset.sum_congr rfl hd, ← Finset.mul_sum, ← Finset.mul_sum]`. Simplify using `only [zero_add, Nat.choose_one_right, pow_zero, mul_one, Nat.cast_one, one_mul]`. Rewrite using `[show m + 1 = l - 1 by omega]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 private theorem xi_eq_pi_pow_add_prime_mul_lemma {l : ℕ} [hl : Fact l.Prime] {P : _root_.Formalism.BasicNotions.LocPrime l}
     (AI : _root_.Formalism.BasicNotions.LocAinf l P) :
     ∃ w, AI.ξ = AI.π₁ ^ (l - 1) + (l : _root_.Formalism.BasicNotions.Loc.Ainf l) * (1 + AI.π₁ * w) := by
@@ -134,6 +179,15 @@ private theorem xi_eq_pi_pow_add_prime_mul_lemma {l : ℕ} [hl : Fact l.Prime] {
   rw [show m + 1 = l - 1 by omega]
   ring
 
+/- English proof (translation)
+Introduce `l _ P AI k n M hM hk`. Take `⟨w, hw⟩` from `xi_eq_pi_pow_add_prime_mul_lemma AI`. Rewrite using `[← Ideal.Quotient.eq_zero_iff_mem]`. Use `set q := Ideal.Quotient.mk (Ideal.span {AI.π₁ ^ k, AI.ξ ^ M})`. Establish `hπ : q AI.π₁ ^ k = 0`.
+
+Rewrite using `[← map_pow, Ideal.Quotient.eq_zero_iff_mem]`. Conclude with `Ideal.subset_span (by simp)`. Establish `hξ : q AI.ξ ^ M = 0`. Rewrite using `[← map_pow, Ideal.Quotient.eq_zero_iff_mem]`. Conclude with `Ideal.subset_span (by simp)`.
+
+Establish `hu : IsUnit (q (1 + AI.π₁ * w))`. Rewrite using `[map_add, map_one, map_mul]`. Conclude with `IsNilpotent.isUnit_one_add ⟨k, by rw [mul_pow, hπ, zero_mul]⟩`. Establish `hneg : (-(q AI.π₁ ^ (l - 1))) ^ n = 0`. Rewrite using `[neg_pow, ← pow_mul, pow_eq_zero_of_le hk hπ, mul_zero]`.
+
+Establish `hsum` using `(Commute.all (q AI.ξ) (-(q AI.π₁ ^ (l - 1)))).add_pow_eq_zero_of_add_le_succ_of_pow_eq_zero hξ hneg (k := n + M - 1) (by omega)`. Rewrite `hsum` using `[← sub_eq_add_neg, congrArg q hw, map_add, map_pow, add_sub_cancel_left, map_mul, mul_pow]`. Rewrite using `[map_pow, map_natCast]`. Conclude with `((hu.pow _).mul_left_eq_zero).1 hsum`.
+-/
 theorem _root_.GlobalTheory.Adopt.ainf_invPi_mod_xi_pow_bounded_denominator : ∀ (l : ℕ) [Fact l.Prime] (P : _root_.Formalism.BasicNotions.LocPrime l)
     (AI : _root_.Formalism.BasicNotions.LocAinf l P) (k n M : ℕ), 1 ≤ M → k ≤ (l - 1) * n →
     ((l : ℕ) : _root_.Formalism.BasicNotions.Loc.Ainf l) ^ (n + M - 1) ∈ Ideal.span {AI.π₁ ^ k, AI.ξ ^ M} := by

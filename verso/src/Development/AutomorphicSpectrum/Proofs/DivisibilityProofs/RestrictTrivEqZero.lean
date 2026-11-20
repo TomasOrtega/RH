@@ -12,6 +12,15 @@ attribute [local instance] Over.cartesianMonoidalCategory
 
 namespace GlobalTheory.CompanionTheory.PdChern
 
+/- English proof (translation)
+Introduce `R _ X s L hL z hz`. Take `⟨i, hi, u, ℓ, -, hℓ, hz⟩` from `hz`. Take `⟨c, rfl⟩` from `H2.mk_surjective _ z`. Rewrite `hz` using `[CoefMap.pullCohomologyTwo_class, H2.mk_eq_mk]`. Take `⟨f, hf⟩` from `hz`.
+
+Apply `GlobalTheory.T.coef_restrict_small_cover_injective R X s L.ι L.U hL.cover` to reduce the goal to its premises. Rewrite using `[map_zero, CoefMap.pullCohomologyTwo_class, CoefMap.pullCohomologyTwo_class, H2.mk_eq_zero]`. Set `P : ObjectProperty (IsTriv s).FullSubcategory` to `fun T : (IsTriv s).FullSubcategory => IsSmall (dp0 R) s L.U T.obj`. Set `F : P.FullSubcategory ⥤ (IsSmall (dp0 R) s L.U).FullSubcategory` to `ObjectProperty.lift _ (P.ι ⋙ (IsTriv s).ι) (fun T => T.property)`. Use `⟨fun T T' φ => f (F.obj T) (F.obj T') (F.map φ), ?_⟩` and prove the remaining obligations.
+
+Use function extensionality and compare the values at `T T' T'' φ ψ`. Establish `h` using `congrFun (congrFun (congrFun (congrFun (congrFun hf (F.obj T)) (F.obj T')) (F.obj T'')) (F.map φ)) (F.map ψ)`. Establish `h0 : (ℓ.1 (F.obj T) (F.obj T') (F.obj T'') (F.map φ) (F.map ψ) : T''.obj.obj.B) = 0`. Establish `hm : (ℓ.1 (F.obj T) (F.obj T') (F.obj T'') (F.map φ) (F.map ψ) : T''.obj.obj.B) ∈ T''.obj.obj.J` using `(hℓ (F.obj T) (F.obj T') (F.obj T'') (F.map φ) (F.map ψ)).1`. Establish `e : T''.obj.obj.J = ⊥` using `T''.obj.property`.
+
+Rewrite `hm` using `[e]`. Conclude with `Ideal.mem_bot.1 hm`. Conclude with `h.trans (sub_eq_self.2 h0)`.
+-/
 theorem restrict_triv_eq_zero : ∀ (R : Type) [CommRing R] (X : Scheme.{0}) (s : X ⟶ Sp R) (L : LB X), L.IsLB → ∀ z : SecondDeRham s, IsChern (dp0 R) s L z → (CoefMap.restrict (O (dp0 R) s) (IsTriv s).ι).pull2 z = 0 := by
   intro R _ X s L hL z hz
   obtain ⟨i, hi, u, ℓ, -, hℓ, hz⟩ := hz

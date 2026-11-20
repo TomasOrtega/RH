@@ -17,6 +17,9 @@ namespace GlobalTheory.FockRed
 
 variable {D : D7} {T : Type} {L : LevCh D T} {sc : Consts} {G : GridData L sc}
 
+/- English proof (translation)
+Unfold `opPow`. Proceed by induction on `(Finsupp.toMultiset k).toList with`. Consider the case `nil => rfl`. Consider the case `cons i l ih => simp only [List.foldr_cons, ih, hA]`.
+-/
 theorem opPow_smul {ι X : Type} (A : ι → (X → ℂ) → X → ℂ) (hA : ∀ i (c : ℂ) g, A i (c • g) = c • A i g)
     (k : ι →₀ ℕ) (c : ℂ) (f : X → ℂ) : opPow A k (c • f) = c • opPow A k f := by
   unfold opPow
@@ -24,11 +27,17 @@ theorem opPow_smul {ι X : Type} (A : ι → (X → ℂ) → X → ℂ) (hA : �
   | nil => rfl
   | cons i l ih => simp only [List.foldr_cons, ih, hA]
 
+/- English proof (translation)
+Use `(MvPolynomial.basisMonomials ι ℂ).ext fun k => ?_` and prove the remaining obligations. Simplify using `only [pureTensorL, Module.Basis.constr_basis, LinearMap.smul_apply, opPow_smul A hA]`.
+-/
 theorem pureTensorL_smul {ι X : Type} (A : ι → (X → ℂ) → X → ℂ) (hA : ∀ i (c : ℂ) g, A i (c • g) = c • A i g)
     (c : ℂ) (f : X → ℂ) : pureTensorL A (c • f) = c • pureTensorL A f := by
   refine (MvPolynomial.basisMonomials ι ℂ).ext fun k => ?_
   simp only [pureTensorL, Module.Basis.constr_basis, LinearMap.smul_apply, opPow_smul A hA]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `x`. Simplify using `only [Datum.dRho, hhs, Pi.smul_apply, smul_eq_mul]`. Conclude with `deriv_const_mul_field c`.
+-/
 theorem dRho_smul {m n : ℕ} (hs : Mx D m n → (Mx D m n → ℂ) → Mx D m n → ℂ)
     (hhs : ∀ w (c : ℂ) g, hs w (c • g) = c • hs w g) (θ : InfFam D) (τ : D.what₂.Tau) (z : Matrix (Fin m) (Fin n) ℂ)
     (c : ℂ) (g : Mx D m n → ℂ) : Datum.dRho hs θ τ z (c • g) = c • Datum.dRho hs θ τ z g := by
@@ -36,11 +45,19 @@ theorem dRho_smul {m n : ℕ} (hs : Mx D m n → (Mx D m n → ℂ) → Mx D m n
   simp only [Datum.dRho, hhs, Pi.smul_apply, smul_eq_mul]
   exact deriv_const_mul_field c
 
+/- English proof (translation)
+Simplify using `only [aPlusAll, aPlus, crea, dRho_smul hs hhs, smul_comm _ c, smul_sub]`.
+-/
 theorem aPlusAll_smul {m n : ℕ} (hs : Mx D m n → (Mx D m n → ℂ) → Mx D m n → ℂ)
     (hhs : ∀ w (c : ℂ) g, hs w (c • g) = c • hs w g) (θ : InfFam D) J B B' (k : FVar D m n) (c : ℂ) (g : Mx D m n → ℂ) :
     aPlusAll hs θ J B B' k (c • g) = c • aPlusAll hs θ J B B' k g := by
   simp only [aPlusAll, aPlus, crea, dRho_smul hs hhs, smul_comm _ c, smul_sub]
 
+/- English proof (translation)
+Establish `hh : ∀ w (c : ℂ) g, heisO W.ψ (G.pS p) (G.pT p) w (c • g) = c • heisO W.ψ (G.pS p) (G.pT p) w g`. Introduce `w c g`. Use function extensionality and compare the values at `x`. Simplify using `only [heisO, Pi.smul_apply, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree.
+
+Simplify using `only [GridData.Weil.fock, pureTensorO]`. Rewrite using `[pureTensorL_smul _ (fun i c g => aPlusAll_smul _ hh _ _ _ _ i c g)]`. Both sides reduce to the same expression.
+-/
 theorem fock_smul (W : G.Weil) (p : Pair T) (c : ℂ) (f : WO (G.pS p) (G.pT p) → ℂ) (Q : PolF D (G.pT p).rank (G.pS p).rank) :
     W.fock p (c • f) Q = c • W.fock p f Q := by
   have hh : ∀ w (c : ℂ) g, heisO W.ψ (G.pS p) (G.pT p) w (c • g) = c • heisO W.ψ (G.pS p) (G.pT p) w g := by
@@ -55,6 +72,11 @@ namespace GlobalTheory.FockRed
 
 variable {D : D7} {T : Type} {L : LevCh D T} {sc : Consts} {G : GridData L sc}
 
+/- English proof (translation)
+Use function extensionality and compare the values at `g`. Simplify using `only [liftA, Formalism.IndefR.Lift.liftInt, Pi.smul_apply, smul_eq_mul]`. Rewrite using `[← integral_const_mul]`. Use `congr 1`. Use function extensionality and compare the values at `h`.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem liftA_smul_left (W : G.Weil) (M : Vol G) (a : Arrow T) (f : Sch G a) (c : ℂ) (F : Fn G a.src) :
     liftA W M a f (c • F) = c • liftA W M a f F := by
   funext g
@@ -62,6 +84,11 @@ theorem liftA_smul_left (W : G.Weil) (M : Vol G) (a : Arrow T) (f : Sch G a) (c 
   rw [← integral_const_mul]
   congr 1; funext h; ring
 
+/- English proof (translation)
+Use function extensionality and compare the values at `g`. Simplify using `only [liftA, Formalism.IndefR.Lift.liftInt, Pi.smul_apply, smul_eq_mul]`. Rewrite using `[← integral_const_mul]`. Use `congr 1`. Use function extensionality and compare the values at `h`.
+
+Consider the cases of `a with`. Consider the case `coreUp i => exact absurd rfl (ha i)`. Consider the case `_ => simp only [GridData.Weil.kerA, GridData.Weil.ker, thetaKO, map_smul, LinearMap.smul_apply, Module.End.smul_def, Pi.smul_apply, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem liftA_smul_right (W : G.Weil) (M : Vol G) (a : Arrow T) (ha : ∀ i, a ≠ .coreUp i) (c : ℂ) (f : Sch G a)
     (F : Fn G a.src) : liftA W M a (c • f) F = c • liftA W M a f F := by
   funext g
@@ -72,6 +99,9 @@ theorem liftA_smul_right (W : G.Weil) (M : Vol G) (a : Arrow T) (ha : ∀ i, a �
   | coreUp i => exact absurd rfl (ha i)
   | _ => simp only [GridData.Weil.kerA, GridData.Weil.ker, thetaKO, map_smul, LinearMap.smul_apply, Module.End.smul_def, Pi.smul_apply, smul_eq_mul]; ring
 
+/- English proof (translation)
+The claim follows from `| 0, s, g, φ => by simp [colPath, liftP] | n + 1, s, g, φ => by show liftA W M (.col t n) (s (Fin.last n) • g (Fin.last n)) (liftP W M (colPath t n) (colFam t n fun j => s j.castSucc • g j.castSucc) φ) = (∏ j, s j) • liftA W M (.col t n) (g (Fin.last n)) (liftP W M (colPath t n) …`.
+-/
 theorem pathLift_column_smul_univ (W : G.Weil) (M : Vol G) (t : T) : ∀ (n : ℕ) (s : Fin n → ℂ) (g : ∀ j : Fin n, Sch G (.col t j))
     (φ : Fn G (.top 0)), liftP W M (colPath t n) (colFam t n fun j => s j • g j) φ =
       (∏ j, s j) • liftP W M (colPath t n) (colFam t n g) φ
@@ -83,6 +113,9 @@ theorem pathLift_column_smul_univ (W : G.Weil) (M : Vol G) (t : T) : ∀ (n : �
     rw [pathLift_column_smul_univ W M t n (fun j => s j.castSucc) (fun j => g j.castSucc) φ, liftA_smul_left,
       liftA_smul_right W M _ (fun i h => by cases h), Fin.prod_univ_castSucc, smul_smul, mul_comm]
 
+/- English proof (translation)
+The claim follows from `| 0, s, g, F => by simp [rowPath, liftP] | n + 1, s, g, F => by show liftA W M (.right n m) (s (Fin.last n) • g (Fin.last n)) (liftP W M (rowPath T m n) (rowFam m n fun i => s i.castSucc • g i.castSucc) F) = (∏ i, s i) • liftA W M (.right n m) (g (Fin.last n)) (liftP W M (rowPath …`.
+-/
 theorem pathLift_row_smul_univ (W : G.Weil) (M : Vol G) (m : ℕ) : ∀ (n : ℕ) (s : Fin n → ℂ) (g : ∀ i : Fin n, Sch G (.right i m))
     (F : Fn G (.grid 0 m)), liftP W M (rowPath T m n) (rowFam m n fun i => s i • g i) F =
       (∏ i, s i) • liftP W M (rowPath T m n) (rowFam m n g) F
@@ -98,6 +131,15 @@ end GlobalTheory.FockRed
 
 namespace GlobalTheory.FockRed
 
+/- English proof (translation)
+Establish `e1 : (fun j : Fin D.R.m => (W.fock (.top t j) (movedVec t S (d.1 j)) (Q j) : Sch G (.col t j))) = fun j : Fin D.R.m => s j • (W.fock (.top t j) (g j) (Q j) : Sch G (.col t j))` using `funext fun j => by`. Rewrite using `[h1 j]`. Conclude with `fock_smul W (.top t j) _ _ _`. Establish `e2 : (fun i : Fin D.R.m => (W.fock (.chi i D.R.m) (movedVec t S (d.2 i)) (P i) : Sch G (.right i D.R.m))) = fun i : Fin D.R.m => s' i • (W.fock (.chi i D.R.m) (f i) (P i) : Sch G (.right i D.R.m))` using `funext fun i => by`. Rewrite using `[h2 i]`.
+
+Conclude with `fock_smul W (.chi i D.R.m) _ _ _`. Establish `e3` using `(congrArg (fun x => liftP W M (colPath t D.R.m) (colFam t D.R.m x) φ) e1).trans (pathLift_column_smul_univ W M t D.R.m s (fun j => W.fock (.top t j) (g j) (Q j)) φ)`. Establish `e4` using `(congrArg (fun x => liftP W M (rowPath T D.R.m D.R.m) (rowFam D.R.m D.R.m x) F) e2).trans (pathLift_row_smul_univ W M D.R.m D.R.m s' (fun i => W.fock (.chi i D.R.m) (f i) (P i)) F)`. Unfold `defPer`. Rewrite using `[← integral_const_mul]`.
+
+Use `congr 1`. Use function extensionality and compare the values at `h`. Establish `e5` using `congrFun e3 (stabilizerEmbedding G.sp.topDec h)`. Establish `e6` using `congrFun e4 h`. Simplify using `only [Pi.smul_apply, smul_eq_mul] at e5 e6`.
+
+Use `(congrArg₂ (· * ·) e5 e6).trans ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem defPer_of_smul {D : D7} {T : Type} {L : LevCh D T} {sc : Consts} {G : GridData L sc} {W : G.Weil} {U : Set T}
     (S : GridChoice W U) (t : T) (M : Vol G) (Q : PolCol G) (P : PolRow G) (d : PureDat G t) (φ : Fn G (.top 0))
     (F : Fn G (.grid 0 D.R.m)) (s s' : Fin D.R.m → ℂ) (g : ∀ j : Fin D.R.m, WO (G.V (.top j)) (G.V (.top (j + 1))) → ℂ)
@@ -132,6 +174,21 @@ variable {D : D7} {Γ : Type} [Group Γ] [Fintype Γ] {Pl0 T : Type} {A : FamIn 
 
 set_option maxHeartbeats 1600000 in
 
+/- English proof (translation)
+Take `⟨_, _, _, _, _, hBgood', _⟩` from `hB`. Take `⟨v, hv, κ, κ', z, hz, hmv⟩` from `hMv`. Use `⟨fun t => ∏ j : Fin D.R.m, z t j, fun t => Subgroup.prod_mem _ fun j _ => hz t j, ?_⟩` and prove the remaining obligations. Introduce `C hC P`. Take `⟨σc, hσc⟩` from `hCF v hv C hC`.
+
+Take `⟨K, hK⟩ : ∃ K : ℂ, K = (∏ j : Fin D.R.m, ((κ j : ℂˣ) : ℂ))⁻¹ * (∏ i : Fin D.R.m, ((κ' i : ℂˣ) : ℂ))⁻¹` from `⟨_, rfl⟩`. Use `⟨K • σc.mapDomain (fun Q => (Q, P)), ?_⟩` and prove the remaining obligations. Introduce `t a β M hM hS τ c hτ hc y`. Take `⟨Z, hZ⟩ : ∃ Z : ℂ, Z = ∏ j : Fin D.R.m, ((z t j : ℂˣ) : ℂ)` from `⟨_, rfl⟩`. Establish `hone : Z⁻¹ * K * ((∏ j : Fin D.R.m, ((κ j * z t j : ℂˣ) : ℂ)) * ∏ i : Fin D.R.m, ((κ' i : ℂˣ) : ℂ)) = 1`.
+
+Establish `n1 : (∏ j : Fin D.R.m, ((κ j : ℂˣ) : ℂ)) ≠ 0` using `Finset.prod_ne_zero_iff.2 fun j _ => (κ j).ne_zero`. Establish `n2 : (∏ j : Fin D.R.m, ((κ' j : ℂˣ) : ℂ)) ≠ 0` using `Finset.prod_ne_zero_iff.2 fun j _ => (κ' j).ne_zero`. Establish `n3 : (∏ j : Fin D.R.m, ((z t j : ℂˣ) : ℂ)) ≠ 0` using `Finset.prod_ne_zero_iff.2 fun j _ => (z t j).ne_zero`. Simplify using `only [Units.val_mul, Finset.prod_mul_distrib]`. Rewrite using `[hK, hZ]`.
+
+Clear the denominators using the available nonvanishing facts. Establish `key : ∀ d ∈ τ.support, per ch.W M t (combC ch.W (c d) C) (combR ch.rm (c d)) P (colFn ch a) (formTop ch t y) = σc.sum fun Q x => x * (Z⁻¹ * K * defPer t ch.S.toGridChoice M (Q, P) d (colFn ch a) (formTop ch t y))`. Introduce `d hd`. Take `⟨h1, h2⟩` from `hmv t a β τ c hS hτ hc d hd`. Establish `hfin : ∀ j, j < D.R.m → IsFinComb ((c d).1 j)` using `fun j hj => ((hc d hd).1 ⟨j, hj⟩).1`.
+
+Establish `hth` using `(hBgood' C hC (c d) hfin).2`. Use `(hσc t M hM a (c d) hfin _ (hL t M hM (combR ch.rm (c d)) hth P y)).trans ?_` and prove the remaining obligations. Use `Finset.sum_congr rfl fun Q _ => ?_` and prove the remaining obligations. Simplify using `only`. Rewrite using `[defPer_of_smul ch.S.toGridChoice t M Q P d (colFn ch a) (formTop ch t y) (fun j => ((κ j * z t j : ℂˣ) : ℂ)) (fun i => ((κ' i : ℂˣ) : ℂ)) (fun j => comb ch.W.ψ _ _ ((c d).1 j) (v j)) (combR ch.rm (c d)) h1 h2, ← mul_assoc (Z⁻¹ * K), hone, one_mul]`.
+
+Rewrite using `[defTot_smul, Units.coe_prod, ← hZ]`. Unfold `defTot`. Rewrite using `[Finsupp.sum_mapDomain_index_inj (fun Q Q' h => (Prod.ext_iff.1 h).1), Finsupp.sum_comm]`. Simplify using `only [Finsupp.sum, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun d hd => ?_` and prove the remaining obligations.
+
+Rewrite using `[key d hd, Finsupp.sum, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun Q _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem fockAt_of_steps (ch : Choice R) (hB : BasicAt ch) (hMv : MovedAt ch) (hCF : ColFock ch)
     (hL : ∀ (t : T) (M : Vol ch.G), IsHaarDef M → ∀ (f : SchRow ch.G), (∀ i, IsThetaFunO ch.W.ψ _ _ (f i)) →
       ∀ (P : PolRow ch.G) (y : (R.HX t).H), GlobalTheory.Unf.IsContAut _ (liftP ch.W M (rowPath T D.R.m D.R.m)
@@ -176,6 +233,15 @@ theorem fockAt_of_steps (ch : Choice R) (hB : BasicAt ch) (hMv : MovedAt ch) (hC
 
 end
 
+/- English proof (translation)
+Take `⟨a0, ha⟩` from `Big.and (Big.and GlobalTheory.T.lastRow_unfolding_basicHypotheses GlobalTheory.T.movedVectorsAreCombinationsOfVacua_of_large_depth) GlobalTheory.T.columnRealDatum_fockCombination_largeDepth`. Use `⟨a0, fun ε CF hC => ?_⟩` and prove the remaining obligations. Take `⟨x, hx⟩` from `ha ε CF hC`. Use `⟨x, fun D large₂ he hxx Γ _ _ Pl0 T A Ks _ _ _ R F s ch hch hsc => ?_⟩` and prove the remaining obligations. Take `⟨⟨hB, hMv⟩, hCF⟩` from `hx D large₂ he hxx Γ Pl0 T A Ks R F s ch hch hsc`.
+
+Use `fockAt_of_steps ch hB hMv hCF fun t M hM f hf P y => ?_` and prove the remaining obligations. Establish `hN : ∀ X, DefNode D.R.m X → X ≠ .top D.R.m → GlobalTheory.RowTens.Nice M X` using `fun X hX hX' => by`. Use `⟨?_, hM X hX hX'⟩` and prove the remaining obligations. Break down `X with ⟨i, j⟩ | i | j` into its components or cases. Apply the tactic sequence `all_goals first`.
+
+Consider the case `exact hX.elim`. Consider the case `exact GlobalTheory.DefConv.posDef_of_node ch.G s.core.lev hX rfl`. Consider the case `(obtain ⟨h1, rfl⟩ := hX`. Conclude with `GlobalTheory.DefConv.posDef_of_node ch.G s.core.lev ⟨h1, le_rfl⟩ (by simp [Node.neg]))`. Use `GlobalTheory.RowTens.row_invCont ch.W hN (hB.2.1 t y) D.R.m le_rfl _ fun k : Fin D.R.m => GlobalTheory.RowTens.fock_theta ch.W _ (hf k) (P k)` as an intermediate fact.
+
+Conclude with `⟨this.2, this.1⟩`.
+-/
 theorem fockAt_big : Big fun ch => FockAt ch := by
   obtain ⟨a0, ha⟩ := Big.and (Big.and GlobalTheory.T.lastRow_unfolding_basicHypotheses GlobalTheory.T.movedVectorsAreCombinationsOfVacua_of_large_depth) GlobalTheory.T.columnRealDatum_fockCombination_largeDepth
   refine ⟨a0, fun ε CF hC => ?_⟩

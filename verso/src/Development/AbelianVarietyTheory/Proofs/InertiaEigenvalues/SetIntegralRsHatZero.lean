@@ -18,11 +18,19 @@ namespace GlobalTheory.RSResidue
 
 variable {E : Type} [Field E] [NumberField E] [IsTotallyComplex E] {a : ℕ}
 
+/- English proof (translation)
+The claim follows from `hφ.elim (fun h' => GlobalTheory.Petersson.mem_bddForms_of_cuspSub GlobalTheory.CuspOrth.cuspFormsBounded hω h h') (fun h' => GlobalTheory.JSWPos.mspan_le_bddForms hω h h')`.
+-/
 theorem mem_bddForms {π : CuspSub E a} {ω : HChar E} (hω : ω.IsUnitary) (h : π.HasCentChar ω) {φ : Sm E a}
     (hφ : φ ∈ π.V ∨ φ.1 ∈ GlobalTheory.JSW.mspan π) : φ.1 ∈ GlobalTheory.Petersson.bddForms E a ω :=
   hφ.elim (fun h' => GlobalTheory.Petersson.mem_bddForms_of_cuspSub GlobalTheory.CuspOrth.cuspFormsBounded hω h h')
     (fun h' => GlobalTheory.JSWPos.mspan_le_bddForms hω h h')
 
+/- English proof (translation)
+Establish `h` using `rsHat_eq J η F F' hΦ g 0`. Simplify using `only [rsHat] at h`. Rewrite using `[h]`. Establish `h0 : (fun i => pFin E ((0 : Fin a → Ad E) i)) = 0` using `funext fun _ => map_zero _`. Establish `h1 : (fun i => pInf E ((0 : Fin a → Ad E) i)) = 0` using `funext fun _ => map_zero _`.
+
+Establish `h2 : (latt a (traceDualIdeal E J)).indicator (1 : (Fin a → Af E) → ℂ) 0 = 1` using `Set.indicator_of_mem (s := latt a (traceDualIdeal E J)) (show (0 : Fin a → Af E) ∈ latt a (traceDualIdeal E J) from fun i => (idealFiniteAdeles (traceDualIdeal E J)).zero_mem) _`. Rewrite using `[h0, h1, h2]`. Simplify using `[infFourier]`.
+-/
 theorem rsHat_zero {ℓ : Fin a} {Φ : (Fin a → Cinf E) → ℂ} (J : (FractionalIdeal (𝓞 E)⁰ E)ˣ) (η : Fin a → Af E)
     (F F' : Sm E a) (hΦ : GlobalTheory.CuspQuot.IsTest (rowSet E ℓ) Φ) (g : GA E a) :
     adelicFourierPi E (rsPsi ℓ F.1 F'.1 Φ J η g) 0 =
@@ -38,6 +46,13 @@ theorem rsHat_zero {ℓ : Fin a} {Φ : (Fin a → Cinf E) → ℂ} (J : (Fractio
   rw [h0, h1, h2]
   simp [infFourier]
 
+/- English proof (translation)
+Use `haveI := GlobalTheory.CovolGL.isMulRightInvariant E a μ`. Establish `hmp : MeasurePreserving (fun g => g * h) μ μ` using `measurePreserving_mul_right μ h`. Establish `e1` using `hmp.setIntegral_preimage_emb (measurableEmbedding_mulRight h) f ((fun g => g * h⁻¹) ⁻¹' 𝓕)`. Establish `e2 : (fun g => g * h) ⁻¹' ((fun g => g * h⁻¹) ⁻¹' 𝓕) = 𝓕` using `by ext; simp`. Rewrite `e1` using `[e2]`.
+
+Rewrite using `[e1]`. Establish `h2 : IsFundamentalDomain (latticeGL E a) ((fun g => g * h⁻¹) ⁻¹' 𝓕) μ` using `h𝓕.preimage_of_equiv (measurePreserving_mul_right μ h⁻¹).quasiMeasurePreserving (e := id) Function.bijective_id (fun γ x => by simp [Subgroup.smul_def, mul_assoc])`. Use `haveI : DiscreteTopology (latticeGL E a) := GlobalTheory.CuspRep.CuspidalL2GL.discreteTopology_latticeGL`. Establish `hI : GlobalTheory.AutomorphicL2Unitary.LeftInv (latticeGL E a) f` using `hf`. Establish `A` using `(GlobalTheory.AutomorphicL2Unitary.integral_quotMeasure h2 (GlobalTheory.AutomorphicL2Unitary.descend (latticeGL E a) f)).trans (integral_congr_ae (Eventually.of_forall hI.descend_mk))`.
+
+Establish `B` using `(GlobalTheory.AutomorphicL2Unitary.integral_quotMeasure h𝓕 (GlobalTheory.AutomorphicL2Unitary.descend (latticeGL E a) f)).trans (integral_congr_ae (Eventually.of_forall hI.descend_mk))`. Conclude with `A.symm.trans B`.
+-/
 theorem setIntegral_mul_right {μ : Measure (GA E a)} [μ.IsHaarMeasure] {𝓕 : Set (GA E a)}
     (h𝓕 : IsFundamentalDomain (latticeGL E a) 𝓕 μ) {f : GA E a → ℂ}
     (hf : ∀ γ ∈ latticeGL E a, ∀ g, f (γ * g) = f g) (h : GA E a) :

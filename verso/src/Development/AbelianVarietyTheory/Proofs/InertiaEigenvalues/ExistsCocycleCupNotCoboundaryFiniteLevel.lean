@@ -16,6 +16,15 @@ noncomputable section
 
 namespace GlobalTheory.LocDualFin
 
+/- English proof (translation)
+Introduce `O _ _ _ p hp a`. Take `⟨x, rfl⟩` from `Submodule.Quotient.mk_surjective _ a`. Take `⟨o, s, hs, rfl⟩` from `IsFractionRing.div_surjective (A := O) x`. Take `⟨ϖ, hϖ⟩` from `IsDiscreteValuationRing.exists_irreducible O`. Take `⟨m, u, hu⟩` from `IsDiscreteValuationRing.eq_unit_mul_pow_irreducible (nonZeroDivisors.ne_zero hs) hϖ`.
+
+Take `⟨t, ht⟩ : ϖ ∣ (p : O)` from `Ideal.mem_span_singleton.1 (hϖ.maximalIdeal_eq ▸ hp)`. Establish `hinj` using `IsFractionRing.injective O (FractionRing O)`. Establish `hπ : algebraMap O (FractionRing O) ϖ ≠ 0` using `(map_ne_zero_iff _ hinj).2 hϖ.ne_zero`. Establish `hu0 : algebraMap O (FractionRing O) (u : O) ≠ 0` using `(map_ne_zero_iff _ hinj).2 u.ne_zero`. Use `⟨m, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[← Submodule.Quotient.mk_smul, Submodule.Quotient.mk_eq_zero, Submodule.mem_one]`. Use `⟨o * t ^ m * ((u⁻¹ : Oˣ) : O), ?_⟩` and prove the remaining obligations. Rewrite using `[Algebra.smul_def, hu, ht]`. Simplify using `only [map_mul, map_pow]`. Establish `hui : algebraMap O (FractionRing O) ((u⁻¹ : Oˣ) : O) = (algebraMap O (FractionRing O) (u : O))⁻¹`.
+
+Conclude with `eq_inv_of_mul_eq_one_left (by rw [← map_mul, Units.inv_mul, map_one])`. Rewrite using `[hui]`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem ko_torsion : ∀ {O : Type} [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] (p : ℕ), (p : O) ∈ IsLocalRing.maximalIdeal O → ∀ a : KO O, ∃ r : ℕ, (p : O) ^ r • a = 0 := by
   intro O _ _ _ p hp a
   obtain ⟨x, rfl⟩ := Submodule.Quotient.mk_surjective _ a
@@ -39,6 +48,61 @@ theorem ko_torsion : ∀ {O : Type} [CommRing O] [IsDomain O] [IsDiscreteValuati
 
 open GlobalTheory.TateFin GlobalTheory.TateTop GlobalTheory.Cyc.TwistLift ReciprocityTheory.Neutral.Bridge in
 
+/- English proof (translation)
+Introduce `hTate p _ K O _ _ _ _ _ _ _ VT VT' _ _ _ _ _ _ _ _ _ _ _ _ _ _ G _ _ hK hOr hOc hOt hOa hpm hp0 hemb i D hcyc hlat hperf hcontT hTo hT2 hT2' hcs hcs' ϖ hϖ c hc hcB r hr n hrn`. Assume the negation of the conclusion as `H`. Use `push_neg at H`. Apply `hcB` to reduce the goal to its premises. Use `haveI : CompactSpace G := i.toHomeomorph.symm.compactSpace`.
+
+Use `haveI : ContinuousMul G := ⟨by`. Establish `h` using `i.symm.continuous.comp ((i.continuous.comp continuous_fst).mul (i.continuous.comp continuous_snd))`. Use `h.congr fun q => ?_` and prove the remaining obligations. Use `show i.symm (i q.1 * i q.2) = q.1 * q.2`. Rewrite using `[← map_mul, ContinuousMulEquiv.symm_apply_apply]⟩`.
+
+Set `χ : G →* ℤ_[p]ˣ` to `((cyclotomicCharacter (PadicAlgCl p) p).comp (MulSemiringAction.toRingAut (Formalism.GaloisCohomology.GK p K) (PadicAlgCl p))).comp (i : G →* Formalism.GaloisCohomology.GK p K)`. Establish `hχ : Continuous fun g => (χ g : ℤ_[p])` using `Units.continuous_val.comp ((cyclotomicCharacter.continuous p K (PadicAlgCl p)).comp i.continuous)`. Establish `hT' : ∀ (k : ℕ) (M : Type) [AddCommGroup M] [Module (ZMod (p ^ (k + 1))) M] [Finite M] [TopologicalSpace M] [DiscreteTopology M] (rho : Representation (ZMod (p ^ (k + 1))) G M) (hrho : ContAction rho), DualityFor (redChar χ (k + 1)) rho hrho`. Introduce `k M _ _ _ _ _ rho hrho`. Use `DualityFor.of_comp i.symm _ hrho ?_` and prove the remaining obligations.
+
+Establish `h1 : (redChar χ (k + 1)).comp (i.symm : Formalism.GaloisCohomology.GK p K →* G) = Formalism.GaloisCohomology.cycK p K (k + 1)` using `MonoidHom.ext fun g => congrArg (Formalism.GaloisCohomology.cycK p K (k + 1)) (i.apply_symm_apply g)`. Rewrite using `[h1]`. Conclude with `hTate p K hK (k + 1) M _ (Nat.succ_pos _) (contAction_comp i.symm hrho)`. Take `⟨ι, hι⟩` from `GlobalTheory.T.exists_padicInt_ringHom_congr_toZModPow hOr hOc hOt hOa hpm`. Establish `hspan : Ideal.span {(p : O)} ≠ ⊤` using `fun h => (IsLocalRing.mem_maximalIdeal _).1 hpm (Ideal.span_singleton_eq_top.1 h)`.
+
+Establish `hkrull : ∀ a b : O, (∀ k : ℕ, a - b ∈ Ideal.span {(p : O) ^ k}) → a = b`. Introduce `a b h`. Establish `h0` using `Ideal.iInf_pow_eq_bot_of_isLocalRing (Ideal.span {(p : O)}) hspan`. Establish `h1 : a - b ∈ ⨅ k, Ideal.span {(p : O)} ^ k` using `Ideal.mem_iInf.2 fun k => by rw [Ideal.span_singleton_pow]; exact h k`. Rewrite `h1` using `[h0, Ideal.mem_bot, sub_eq_zero]`.
+
+Conclude with `h1`. Establish `hιε : ∀ g, ι (χ g : ℤ_[p]) = (D.ε g : O)`. Introduce `g`. Use `hkrull _ _ fun k => ?_` and prove the remaining obligations. Take `⟨ζ, hζ, hζa⟩` from `GlobalTheory.T.cyclotomicCharacter_congr_root_of_unity_pow K (i g) k`.
+
+Take `⟨a, ha, hεa⟩` from `hcyc g k ζ hζ`. Establish `e1 : (a : ZMod (p ^ k)) = PadicInt.toZModPow k (χ g : ℤ_[p])` using `hζa a ha`. Establish `e2` using `hι (χ g : ℤ_[p]) k`. Rewrite `e2` using `[← e1, ZMod.val_natCast]`. Establish `e3 : ((a : ℕ) : O) - ((a % p ^ k : ℕ) : O) ∈ Ideal.span {(p : O) ^ k}`.
+
+Establish `h : ((a : ℕ) : O) = ((a / p ^ k : ℕ) : O) * (p : O) ^ k + ((a % p ^ k : ℕ) : O)`. Establish `h'` using `congrArg (Nat.cast : ℕ → O) (Nat.div_add_mod' a (p ^ k)).symm`. Move the coercions through the operations in `at h'`. Conclude with `h'`. Conclude with `Ideal.mem_span_singleton'.2 ⟨((a / p ^ k : ℕ) : O), by rw [h]; ring⟩`.
+
+Establish `e4 : ι (χ g : ℤ_[p]) - (D.ε g : O) = (ι (χ g : ℤ_[p]) - ((a % p ^ k : ℕ) : O)) - (((a : ℕ) : O) - ((a % p ^ k : ℕ) : O)) - ((D.ε g : O) - (a : O))` using `by ring`. Rewrite using `[e4]`. Conclude with `sub_mem (sub_mem e2 e3) hεa`. Use `letI : Module ℤ_[p] (KO O) := Module.compHom (KO O) ι`. Establish `hsmul : ∀ (u : ℤ_[p]) (y : KO O), u • y = ι u • y` using `fun _ _ => rfl`.
+
+Establish `htor : ∀ a : KO O, ∃ r : ℕ, (p : ℤ_[p]) ^ r • a = 0` using `fun a => by`. Take `⟨r, hr⟩` from `ko_torsion p hpm a`. Conclude with `⟨r, by rw [hsmul, map_pow, map_natCast]; exact hr⟩`. Establish `hKOd : DiscreteTopology (KO O)` using `QuotientAddGroup.discreteTopology (N := (1 : Submodule O (FractionRing O)).toAddSubgroup) (by`. Establish `: ((1 : Submodule O (FractionRing O)).toAddSubgroup : Set (FractionRing O)) = Set.range (algebraMap O (FractionRing O))`.
+
+Use extensionality with `x`. Simplify using `[Submodule.mem_one, eq_comm]`. Rewrite using `[this]`. Conclude with `hemb.isOpen_range)`. Establish `hVd : DiscreteTopology (VT ⧸ D.T)` using `QuotientAddGroup.discreteTopology (N := D.T.toAddSubgroup) hTo`.
+
+Establish `hclc : IsLocallyConstant c` using `(IsLocallyConstant.iff_continuous c).2 hc.1`. Use `set X := LinearMap.ker (LinearMap.lsmul O (VT ⧸ D.T) (ϖ ^ n)) with hXdef`. Establish `memX : ∀ x : VT ⧸ D.T, x ∈ X ↔ ϖ ^ n • x = 0` using `fun x => by`. Rewrite using `[hXdef, LinearMap.mem_ker, LinearMap.lsmul_apply]`. Use `haveI : Finite X := GlobalTheory.T.finite_pow_smul_torsion_lattice_quotient D.T hOr hOc hOa hlat ϖ hϖ n`.
+
+Take `⟨hcT', hopen, -⟩` from `GlobalTheory.T.dualLattice_compact_powSmul_nhds_basis D hOc hemb hlat hperf hT2' ϖ hϖ`. Use `haveI : CompactSpace ↥D.T' := hcT'`. Use `haveI : Finite (↥D.T' ⧸ powSub (M := ↥D.T') ϖ n) := AddSubgroup.quotient_finite_of_isOpen (powSub (M := ↥D.T') ϖ n).toAddSubgroup (hopen n)`. Use `haveI hNd : DiscreteTopology (↥D.T' ⧸ powSub (M := ↥D.T') ϖ n) := QuotientAddGroup.discreteTopology (N := (powSub (M := ↥D.T') ϖ n).toAddSubgroup) (hopen n)`. Take `⟨t, ht⟩ : ϖ ∣ (p : O)` from `Ideal.mem_span_singleton.1 (hϖ.maximalIdeal_eq ▸ hpm)`.
+
+Establish `hpow : ∀ {M : Type} [AddCommGroup M] [Module O M] (y : M), p ^ n • y = t ^ n • ϖ ^ n • y` using `fun y => by rw [← Nat.cast_smul_eq_nsmul O, Nat.cast_pow, ht, mul_pow, mul_comm, mul_smul]`. Establish `hX : ∀ x : X, p ^ n • x = 0` using `fun x => Subtype.ext (by`. Rewrite using `[AddSubmonoidClass.coe_nsmul, hpow, (memX _).1 x.2, smul_zero]`. Use the proof step `rfl)`. Establish `hN : ∀ y : ↥D.T' ⧸ powSub (M` using `↥D.T') ϖ n, p ^ n • y = 0 := fun y => by`.
+
+Take `⟨t0, rfl⟩` from `Submodule.Quotient.mk_surjective _ y`. Rewrite using `[hpow, ← Submodule.Quotient.mk_smul, ← Submodule.Quotient.mk_smul, Submodule.Quotient.mk_eq_zero, smul_comm]`. Conclude with `smul_mem_powSub ϖ n _`. Set `a : G → X → X` to `fun g x => ⟨D.ρA g x, by rw [memX, ← map_smul, (memX _).1 x.2, map_zero]⟩`. Set `a' : G → (↥D.T' ⧸ powSub (M` to `↥D.T') ϖ n) →+ (↥D.T' ⧸ powSub (M := ↥D.T') ϖ n) := fun g => (quotRep D.ρTl' ϖ n g).toAddMonoidHom`.
+
+Establish `h1 : ∀ y, a' 1 y = y` using `fun y => by show quotRep D.ρTl' ϖ n 1 y = y`. Rewrite using `[map_one]`. Both sides reduce to the same expression. Establish `hm : ∀ g h y, a' (g * h) y = a' g (a' h y)` using `fun g h y => by show quotRep D.ρTl' ϖ n (g * h) y = quotRep D.ρTl' ϖ n g (quotRep D.ρTl' ϖ n h y)`. Rewrite using `[map_mul]`.
+
+Both sides reduce to the same expression. Establish `hlc : ∀ y, IsLocallyConstant fun g => a' g y` using `fun y => by`. Take `⟨t0, rfl⟩` from `Submodule.Quotient.mk_surjective _ y`. Rewrite using `[IsLocallyConstant.iff_continuous]`. Use `show Continuous fun g => (Submodule.Quotient.mk (D.ρTl' g t0) : ↥D.T' ⧸ powSub (M := ↥D.T') ϖ n)`.
+
+Conclude with `continuous_quot_mk.comp ((sub_contAction D.contT' D.T' D.stT').comp (continuous_id.prodMk continuous_const))`. Set `βf : X → (↥D.T' ⧸ powSub (M` to `↥D.T') ϖ n) →+ KO O := fun x => ((powSub (M := ↥D.T') ϖ n).liftQ (pairKO D.bT D.T (x : VT ⧸ D.T)) (fun t0 ht0 => by`. Rewrite using `[LinearMap.mem_ker]`. Conclude with `pairKO_eq_zero_of_mem D ((memX _).1 x.2) ht0)).toAddMonoidHom`. Set `β : X →+ (↥D.T' ⧸ powSub (M` to `↥D.T') ϖ n) →+ KO O := AddMonoidHom.mk' βf (fun x x' => by`.
+
+Use extensionality with `y`. Take `⟨t0, rfl⟩` from `Submodule.Quotient.mk_surjective _ y`. Use `show pairKO D.bT D.T ((x + x' : X) : VT ⧸ D.T) t0 = pairKO D.bT D.T (x : VT ⧸ D.T) t0 + pairKO D.bT D.T (x' : VT ⧸ D.T) t0`. Rewrite using `[Submodule.coe_add, map_add, LinearMap.add_apply])`. Establish `he : ∀ g x y, β (a g x) (a' g y) = (χ g : ℤ_[p]) • β x y` using `fun g x y => by`.
+
+Take `⟨t0, rfl⟩` from `Submodule.Quotient.mk_surjective _ y`. Use `show pairKO D.bT D.T (D.ρA g x) (D.ρTl' g t0) = ι (χ g : ℤ_[p]) • pairKO D.bT D.T (x : VT ⧸ D.T) t0`. Rewrite using `[D.pairKO_equiv, twist_apply, hιε]`. Establish `hs : toKO O ((algebraMap O (FractionRing O) ϖ)⁻¹) ≠ 0`. Introduce `h0`.
+
+Rewrite `h0` using `[toKO, Submodule.mkQ_apply, Submodule.Quotient.mk_eq_zero, Submodule.mem_one]`. Take `⟨o, ho⟩` from `h0`. Apply `hϖ.not_isUnit` to reduce the goal to its premises. Establish `hinj` using `IsFractionRing.injective O (FractionRing O)`. Establish `hπ : algebraMap O (FractionRing O) ϖ ≠ 0` using `(map_ne_zero_iff _ hinj).2 hϖ.ne_zero`.
+
+Use `IsUnit.of_mul_eq_one (b := o) (hinj ?_)` and prove the remaining obligations. Rewrite using `[map_mul, ho, map_one, mul_inv_cancel₀ hπ]`. Establish `hβ1 : ∀ x : X, x ≠ 0 → ∃ y, β x y = toKO O ((algebraMap O (FractionRing O) ϖ)⁻¹)`. Introduce `x hx`. Take `⟨f, hf⟩` from `GlobalTheory.T.exists_dualLattice_pairing_eq_inv_uniformizer D hlat hperf ϖ hϖ (x : VT ⧸ D.T) (fun h => hx (Subtype.ext h))`.
+
+Conclude with `⟨Submodule.Quotient.mk f, hf⟩`. Establish `hβ2 : ∀ y, y ≠ 0 → ∃ x : X, β x y = toKO O ((algebraMap O (FractionRing O) ϖ)⁻¹)`. Introduce `y hy`. Take `⟨f, rfl⟩` from `Submodule.Quotient.mk_surjective _ y`. Establish `hf : f ∉ powSub (M` using `↥D.T') ϖ n := fun h => hy ((Submodule.Quotient.mk_eq_zero _).2 h)`.
+
+Take `⟨x, hx1, hx2⟩` from `GlobalTheory.T.exists_torsion_pairing_eq_inv_uniformizer D ϖ hϖ n f hf`. Conclude with `⟨⟨x, (memX x).2 hx1⟩, hx2⟩`. Establish `hcX : ∀ g, c g ∈ X` using `fun g => (memX _).2 (by`. Rewrite using `[← Nat.sub_add_cancel hrn, pow_add, mul_smul, hr, smul_zero])`. Set `c₀ : G → X` to `fun g => ⟨c g, hcX g⟩`.
+
+Take `⟨x, hx⟩` from `(nondeg_torsion hχ hT' htor hX hN a a' h1 hm hlc β he hs hβ1 hβ2).1 c₀ (IsLocallyConstant.desc _ Subtype.val hclc Subtype.val_injective) (fun g h => Subtype.ext (hc.2 g h)) (by`. Introduce `c' hc'l hc'c`. Take `⟨b, hbc, hbe⟩` from `(separated_dvr_second_cohomology_mem _ _).1 (H c' ⟨hc'l.continuous, fun g h => hc'c g h⟩)`. Use `⟨b, (IsLocallyConstant.iff_continuous b).2 hbc, fun q => ?_⟩` and prove the remaining obligations. Take `⟨g, h⟩` from `q`.
+
+Establish `e` using `congrFun hbe (g, h)`. Establish `e2 : β (c₀ g) (a' g (c' h)) = cupMod D c ϖ n c' (g, h)` using `by conv_lhs => rw [← mk_qlift (c' h)]`. Both sides reduce to the same expression. Rewrite using `[e2, ← e]`. Use `show _ = ι (χ g : ℤ_[p]) • b h - b (g * h) + b g`.
+
+Rewrite using `[hιε]`. Use the proof step `rfl)`. Conclude with `(mem_coboundaries1 _ _).2 ⟨x, fun g => congrArg Subtype.val (hx g)⟩`.
+-/
 theorem exists_cocycle_cup_not_cob : Formalism.GaloisCohomology.LocalTateDualityK → ∀ {p : ℕ} [Fact p.Prime] {K : IntermediateField ℚ_[p] (PadicAlgCl p)} {O : Type} [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] [TopologicalSpace O] [TopologicalSpace (FractionRing O)] [IsTopologicalAddGroup (FractionRing O)] [ContinuousSMul O (FractionRing O)] {VT VT' : Type} [AddCommGroup VT] [Module O VT] [TopologicalSpace VT] [IsTopologicalAddGroup VT] [ContinuousSMul O VT] [Module (FractionRing O) VT] [IsScalarTower O (FractionRing O) VT] [AddCommGroup VT'] [Module O VT'] [TopologicalSpace VT'] [IsTopologicalAddGroup VT'] [ContinuousSMul O VT'] [Module (FractionRing O) VT'] [IsScalarTower O (FractionRing O) VT'] {G : Type} [Group G] [TopologicalSpace G], FiniteDimensional ℚ_[p] K → IsTopologicalRing O → CompactSpace O → T2Space O → IsAdic (IsLocalRing.maximalIdeal O) → (p : O) ∈ IsLocalRing.maximalIdeal O → (p : O) ≠ 0 → Topology.IsOpenEmbedding (algebraMap O (FractionRing O)) → ∀ (i : G ≃ₜ* Formalism.GaloisCohomology.GK p K) (D : LatData O G VT VT'), (∀ (g : G) (n : ℕ) (ζ : PadicAlgCl p), ζ ^ (p ^ n) = 1 → ∃ a : ℕ, (i g) ζ = ζ ^ a ∧ ((D.ε g : Oˣ) : O) - (a : O) ∈ Ideal.span {(p : O) ^ n}) → IsLatticeIn D.T → PerfectRight D.bT → ContAction D.ρT → IsOpen (D.T : Set VT) → T2Space VT → T2Space VT' → ContinuousConstSMul (FractionRing O) VT → ContinuousConstSMul (FractionRing O) VT' → ∀ ϖ : O, Irreducible ϖ → ∀ c ∈ Z1 D.ρA, c ∉ B1 D.ρA → ∀ r : ℕ, (∀ g, ϖ ^ r • c g = 0) → ∀ n : ℕ, r ≤ n → ∃ z ∈ Z1 (quotRep D.ρTl' ϖ n), cupMod D c ϖ n z ∉ B2 (twist D.ε (KO O)) := by
   intro hTate p _ K O _ _ _ _ _ _ _ VT VT' _ _ _ _ _ _ _ _ _ _ _ _ _ _ G _ _ hK hOr hOc hOt hOa hpm hp0
     hemb i D hcyc hlat hperf hcontT hTo hT2 hT2' hcs hcs' ϖ hϖ c hc hcB r hr n hrn

@@ -11,6 +11,9 @@ open GlobalTheory.LiftLeaf GlobalTheory.TypeLeaf Formalism.BasicNotions Formalis
 
 variable {R : Ranks} {H : Host R} {what₂ : Rows.Data R} (N : NData R H what₂) (A : NAut N)
 
+/- English proof (translation)
+Proceed by induction on `L with`. Consider the case `nil => exact ((hL w (A.lpZero w) (A.lpZero w) c 0 hc).2.2).symm`. Consider the case `cons k L ih`. Rewrite using `[List.foldr_cons, List.foldr_cons, ih, (hL w _ _ c 0 hc).1, (hL w _ (A.lpZero w) c _ hc).2.1]`.
+-/
 private theorem foldr_lpSum_lpTw_lpChar (hL : CharSum N A) {w : PlE H} (x c : A.LP w) (hc : A.lpDim c = 1)
     (s : ℝ) (L : List ℝ) :
     L.foldr (fun k acc => A.lpSum (A.lpTw (A.lpChar x c) (s - k)) acc) (A.lpZero w) =
@@ -20,12 +23,20 @@ private theorem foldr_lpSum_lpTw_lpChar (hL : CharSum N A) {w : PlE H} (x c : A.
   | cons k L ih =>
     rw [List.foldr_cons, List.foldr_cons, ih, (hL w _ _ c 0 hc).1, (hL w _ (A.lpZero w) c _ hc).2.1]
 
+/- English proof (translation)
+Unfold `spehLoc`. Simplify using `only [A.locG_tw]`. Conclude with `foldr_lpSum_lpTw_lpChar N A hL (A.locG p.π w) (A.locG χ w) (A.locG_dim χ w) _ _`.
+-/
 theorem spehLoc_twist (hL : CharSum N A) (p : Part A.CG) (χ : A.CG 1) (w : PlE H) :
     spehLoc N A ⟨p.a, A.tw p.π χ, p.d⟩ w = A.lpChar (spehLoc N A p w) (A.locG χ w) := by
   unfold spehLoc
   simp only [A.locG_tw]
   exact foldr_lpSum_lpTw_lpChar N A hL (A.locG p.π w) (A.locG χ w) (A.locG_dim χ w) _ _
 
+/- English proof (translation)
+Establish `hχ : A.lpDim (A.locG χ w) = 1` using `A.locG_dim χ w`. Proceed by induction on `S with`. Consider the case `nil => exact ((hL w (A.lpZero w) (A.lpZero w) (A.locG χ w) 0 hχ).2.2).symm`. Consider the case `cons p S ih`. Express the relevant statement in the definitionally equal form `A.lpSum (spehLoc N A ⟨p.a, A.tw p.π χ, p.d⟩ w) (isoLoc N A (twistIso N A S χ) w) = A.lpChar (A.lpSum (spehLoc N A p w) (isoLoc N A S w)) (A.locG χ w)`.
+
+Rewrite using `[spehLoc_twist N A hL p χ w, ih, (hL w _ _ _ 0 hχ).1]`.
+-/
 theorem isoLoc_twist (hL : CharSum N A) (S : List (Part A.CG)) (χ : A.CG 1) (w : PlE H) :
     isoLoc N A (twistIso N A S χ) w = A.lpChar (isoLoc N A S w) (A.locG χ w) := by
   have hχ : A.lpDim (A.locG χ w) = 1 := A.locG_dim χ w
@@ -36,6 +47,9 @@ theorem isoLoc_twist (hL : CharSum N A) (S : List (Part A.CG)) (χ : A.CG 1) (w 
       A.lpChar (A.lpSum (spehLoc N A p w) (isoLoc N A S w)) (A.locG χ w)
     rw [spehLoc_twist N A hL p χ w, ih, (hL w _ _ _ 0 hχ).1]
 
+/- English proof (translation)
+Proceed by induction on `S with`. Consider the case `nil => exact A.lpSum_comm _ _`. Consider the case `cons p S ih`. Express the relevant statement in the definitionally equal form `A.lpSum (spehLoc N A p w) (isoLoc N A (S ++ [q]) w) = A.lpSum (A.lpSum (spehLoc N A p w) (isoLoc N A S w)) (spehLoc N A q w)`. Rewrite using `[ih, A.lpSum_assoc]`.
+-/
 theorem isoLoc_append_singleton (S : List (Part A.CG)) (q : Part A.CG) (w : PlE H) :
     isoLoc N A (S ++ [q]) w = A.lpSum (isoLoc N A S w) (spehLoc N A q w) := by
   induction S with
@@ -45,6 +59,9 @@ theorem isoLoc_append_singleton (S : List (Part A.CG)) (q : Part A.CG) (w : PlE 
       A.lpSum (A.lpSum (spehLoc N A p w) (isoLoc N A S w)) (spehLoc N A q w)
     rw [ih, A.lpSum_assoc]
 
+/- English proof (translation)
+Introduce `D hL i Sig Sig' _ _ h w hw`. Rewrite using `[isoLoc_twist D.nd D.naut hL, isoLoc_twist D.nd D.naut hL, isoLoc_append_singleton, isoLoc_append_singleton, h w hw]`.
+-/
 theorem main : ∀ (D : D7), CharSum D.nd D.naut → ∀ i : D.nd.Loc, LocCongr D.nd D.naut i := by
   intro D hL i Sig Sig' _ _ h w hw
   rw [isoLoc_twist D.nd D.naut hL, isoLoc_twist D.nd D.naut hL, isoLoc_append_singleton,

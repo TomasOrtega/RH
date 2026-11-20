@@ -5,6 +5,11 @@ open Classical Complex
 
 namespace PI.TransInvLatW
 
+/- English proof (translation)
+Establish `h1` using `hy (z + x)`. Establish `hz : z + (x + y) = z + x + y` using `by ring`. Rewrite using `[hz, ← h1, mul_assoc (G (z + x + y)), ← Complex.exp_add]`. Use `congr 1`. Establish `hE : -P * z * (X + Y) / A - P * (x + y) * (X + Y) / (2 * A) = (-P * (z + x) * Y / A - P * y * Y / (2 * A) + (-P * z * X / A - P * x * X / (2 * A))) + P * (x * Y - y * X) / (2 * A)` using `by ring`.
+
+Rewrite using `[hE, Complex.exp_add, hph, mul_one]`.
+-/
 theorem shift_core (P A : ℂ) (G : ℂ → ℂ) (x y X Y : ℂ)
     (hy : ∀ z, G (z + y) * exp (-P * z * Y / A - P * y * Y / (2 * A)) = G z)
     (hph : exp (P * (x * Y - y * X) / (2 * A)) = 1) (z : ℂ) :
@@ -25,6 +30,13 @@ def PhaseOne : Prop :=
       exp ((Real.pi : ℂ) * (x * (starRingEnd ℂ) (2 * (m : ℂ) * ω) -
         (2 * (m : ℂ) * ω) * (starRingEnd ℂ) x) / (2 * (area (lat2 w₁ w₂) : ℂ))) = 1
 
+/- English proof (translation)
+Introduce `w₁ w₂ hD G hG x ω m hm hx hω`. Establish `hy : 2 * (m : ℂ) * ω ∈ lat2 w₁ w₂`. Establish `: 2 * (m : ℂ) * ω = (2 * m : ℕ) • ω` using `by rw [nsmul_eq_mul]; push_cast; ring`. Rewrite using `[this]`. Conclude with `AddSubgroup.nsmul_mem _ hω _`.
+
+Establish `hy2 : 2 * (m : ℂ) * ω / 2 ∈ lat2 w₁ w₂`. Establish `: 2 * (m : ℂ) * ω / 2 = m • ω` using `by rw [nsmul_eq_mul]; ring`. Rewrite using `[this]`. Conclude with `AddSubgroup.nsmul_mem _ hω _`. Establish `hG'` using `hG _ hy`.
+
+Simplify using `only [if_pos hy2, one_mul] at hG'`. Use function extensionality and compare the values at `z`. Unfold `U1`. Rewrite using `[map_add]`. Conclude with `shift_core _ _ G x _ _ _ (fun z => hG' z) (h w₁ w₂ hD x ω m hm hx hω) z`.
+-/
 theorem transInvLat_of_phase (h : PhaseOne) : PI.TransInvLat := by
   intro w₁ w₂ hD G hG x ω m hm hx hω
   have hy : 2 * (m : ℂ) * ω ∈ lat2 w₁ w₂ := by

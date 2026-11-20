@@ -4,6 +4,11 @@ import Development.AbelianVarietyTheory.Proofs.CoherentCohomologyProofs.MemRange
 
 namespace GlobalTheory.NormalHeightOne
 
+/- English proof (translation)
+Introduce `A K _ _ _ _ _ _ _ z h`. Establish `hz` using `((GlobalTheory.normal_domain_height_one.{0, 0, 0} A K).2.1 z).2 (fun p _ hp => by`. Take `⟨r, c, hr, e⟩` from `h p inferInstance hp`. Conclude with `(GlobalTheory.mem_primeLocalSubalgebra_iff p z).2 ⟨r, hr, ⟨c, by rw [Algebra.smul_def, e]⟩⟩)`. Take `⟨c, hc⟩` from `hz`.
+
+Conclude with `⟨c, hc.symm⟩`.
+-/
 theorem mem_of_forall_height_eq_one : ∀ (A K : Type) [CommRing A] [IsDomain A] [IsNoetherianRing A]
     [IsIntegrallyClosed A] [Field K] [Algebra A K] [IsFractionRing A K] (z : K),
     (∀ Q : Ideal A, Q.IsPrime → Q.height = 1 → ∃ r c : A, r ∉ Q ∧ algebraMap A K r * z = algebraMap A K c) →

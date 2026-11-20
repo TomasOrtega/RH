@@ -34,6 +34,15 @@ namespace GlobalTheory.FlagBundle
 
 open AlgebraicGeometry CategoryTheory ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Geo.Tor GlobalTheory.ZH GlobalTheory.Cartier
 
+/- English proof (translation)
+Take `⟨A₀, hA₀⟩` from `S.nonempty (genericPoint M.Z)`. Take `⟨EE, hE⟩` from `GlobalTheory.T.exists_lattice_dualBasisQuotientFrameBlock F Ω M ι m k S τ A₀ hA₀`. Establish `: Nonempty (Rest m k τ)` using `⟨⟨⟨k τ, hk⟩, le_rfl⟩⟩`. Take `⟨Ω', _, _, M', φ, f, s, hP, hpr⟩` from `GlobalTheory.T.exists_projectiveBundleOfLattice_isProjOver F Ω M _ EE hM.1`. Establish `hc : Fintype.card (Rest m k τ) = m τ - k τ`.
+
+Rewrite using `[Fintype.card_subtype, ← Fin.card_Ici ⟨k τ, hk⟩]`. Conclude with `congrArg _ (Finset.ext fun j => by simp [Fin.le_def])`. Establish `hA` using `GlobalTheory.T.isAffineSpaceCoveredMorphism F Ω Ω' M M' φ f _ EE s hP`. Rewrite `hA` using `[hc]`. Establish `hp` using `GlobalTheory.T.projective_bundle_points_of_rational_model F Ω Ω' M M' φ f _ EE s hP`.
+
+Take `⟨S', hS'⟩` from `GlobalTheory.T.exists_adaptedFrameFamily_longerFlag_genericLine F Ω Ω' M M' φ f ι m k k' S τ hk A₀ EE s h1 h2 hA₀ hE hp`. Use `⟨Ω', _, _, M', φ, f, S', ⟨hpr, GlobalTheory.T.affineSpaceCovered_smoothOfRelativeDimension_add F Ω Ω' M M' φ f _ d hA hM.2.1, GlobalTheory.T.geometricallyIntegral_of_affCover F Ω Ω' M M' φ f _ hA hM.2.2⟩, fun τ' => ?_, hP.hom, fun z' A' hA' => ?_, GlobalTheory.T.preservesRadicalP …` and prove the remaining obligations. Distinguish the cases in `h : τ' = τ`. Substitute `h` using the available equality. Conclude with `h1 ▸ Nat.le_succ _`.
+
+Conclude with `(h2 τ' h).ge`. Rewrite `hA'` using `[hS']`. Conclude with `hA'.1`.
+-/
 theorem step {F Ω : Type} [Field F] [Field Ω] [Algebra F Ω] (M : RatModel F Ω) (d : ℕ) {ι : Type} [Finite ι]
     {m k : ι → ℕ} (S : Fr M m k) (hM : Good M d) (τ : ι) (hk : k τ < m τ) (k' : ι → ℕ) (h1 : k' τ = k τ + 1)
     (h2 : ∀ τ', τ' ≠ τ → k' τ' = k τ') :
@@ -59,6 +68,19 @@ theorem step {F Ω : Type} [Field F] [Field Ω] [Algebra F Ω] (M : RatModel F �
   · rw [hS'] at hA'
     exact hA'.1
 
+/- English proof (translation)
+Proceed by induction on `n with`. Consider the case `zero`. Introduce `Ω _ _ M d k S hM hk hn`. Take `rfl : k = m` from `funext fun τ => le_antisymm (hk τ) (Nat.sub_eq_zero_iff_le.1 (Finset.sum_eq_zero_iff.1 hn τ (Finset.mem_univ _)))`. Take `⟨Y, φ, f, S', h1, h2⟩` from `GlobalTheory.T.exists_variety_flagRefinementBundle_of_goodModel F Ω M d ι k k S hM`.
+
+Conclude with `⟨Y, φ, f, S', by simpa using h1, h2⟩`. Consider the case `succ n ih`. Introduce `Ω _ _ M d k S hM hk hn`. Take `⟨τ, -, hτ⟩` from `Finset.exists_ne_zero_of_sum_ne_zero (hn.trans_ne n.succ_ne_zero)`. Establish `hτ' : k τ < m τ` using `by omega`.
+
+Set `k'` to `Function.update k τ (k τ + 1)`. Establish `h1 : k' τ = k τ + 1` using `Function.update_self _ _ _`. Establish `h2 : ∀ τ', τ' ≠ τ → k' τ' = k τ'` using `fun τ' h => Function.update_of_ne h _ _`. Take `⟨Ω', _, _, M', φ, f, S', hM', hR⟩` from `step M d S hM τ hτ' k' h1 h2`. Establish `key : ∀ g : ℕ → ℕ, ∑ t, g (m t - k' t) + g (m τ - k τ) = ∑ t, g (m t - k t) + g (m τ - k τ - 1)` using `fun g => by`.
+
+Rewrite using `[← Finset.add_sum_erase _ _ (Finset.mem_univ τ), ← Finset.add_sum_erase _ (fun t => g (m t - k t)) (Finset.mem_univ τ), h1, Finset.sum_congr rfl fun t ht => by rw [h2 t (Finset.ne_of_mem_erase ht)], Nat.sub_add_eq]`. Expand and normalize the polynomial expressions, which then agree. Take `⟨Y, φ', f', S'', hd, hR'⟩` from `ih M' _ S' hM' (fun t => by`. Distinguish the cases in `h : t = τ`. Substitute `h` using the available equality.
+
+Rewrite using `[h1]`. Conclude with `hτ'`. Rewrite using `[h2 t h]; exact hk t) (by have := key id; simp only [id] at this; omega)`. Use `⟨Y, φ'.comp φ, f' ≫ f, S'', ?_, GlobalTheory.T.isFlagRefinementBundle_comp F Ω Ω' M M' φ f Y.Fn (ratOf Y) φ' f' ι m k k' m S S' S'' hR hR'⟩` and prove the remaining obligations. Use `key fun a => a.choose 2` as an intermediate fact.
+
+Take `⟨a, ha⟩ : ∃ a, m τ - k τ = a + 1` from `⟨m τ - k τ - 1, by omega⟩`. Rewrite `this` using `[ha, Nat.choose_succ_succ' a 1, Nat.choose_one_right, Nat.add_sub_cancel]`. Rewrite using `[hd, ha, Nat.add_sub_cancel]`. Simplify using `only [Nat.reduceAdd] at this`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem tower {F : Type} [Field F] {ι : Type} [Fintype ι] {m : ι → ℕ} (n : ℕ) :
     ∀ {Ω : Type} [Field Ω] [Algebra F Ω] (M : RatModel F Ω) (d : ℕ) {k : ι → ℕ} (S : Fr M m k), Good M d → k ≤ m →
       ∑ τ, (m τ - k τ) = n → ∃ (Y : GlobalTheory.ProjVar.Var F) (φ : Ω →ₐ[F] Y.Fn) (f : Y.X ⟶ M.Z) (S' : Fr (ratOf Y) m m),
@@ -103,12 +125,30 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheo
   {l : Level H} {Xo : Moduli Dw l} {c : Coeff l} {O : Type} [CommRing O] {β : O →+* c.F} (Z : Model Xo c β)
   {F : Type} [Field F] (e : F ≃+* c.F)
 
+/- English proof (translation)
+Use `Z.jQ_open` as an intermediate fact. Take `⟨_, ⟨b, rfl⟩, hb⟩` from `Z.jQ_dense.inter_open_nonempty _ j.isOpenEmbedding.isOpen_range ⟨_, genericPoint B, rfl⟩`. Conclude with `((genericPoint_specializes b).map j.continuous).mem_open Z.jQ.isOpenEmbedding.isOpen_range hb`.
+-/
 theorem genericPoint_mem {B : Scheme.{0}} [IsIntegral B] (j : B ⟶ gen Z) [IsOpenImmersion j] :
     j (genericPoint B) ∈ Set.range Z.jQ := by
   have := Z.jQ_open
   obtain ⟨_, ⟨b, rfl⟩, hb⟩ := Z.jQ_dense.inter_open_nonempty _ j.isOpenEmbedding.isOpen_range ⟨_, genericPoint B, rfl⟩
   exact ((genericPoint_specializes b).map j.continuous).mem_open Z.jQ.isOpenEmbedding.isOpen_range hb
 
+/- English proof (translation)
+Use `Z.jQ_open` as an intermediate fact. Take `⟨f₀, S, A₀, hT⟩` from `GlobalTheory.T.exists_lieEigenparts_frame_family_over_variety E H Dw l Xo c O β Z F e B j hj`. Take `⟨Y, φ, f, S', hd, hR⟩` from `tower _ (ratOf B) B.dim S (good_ratOf B) (fun _ => Nat.zero_le _) rfl`. Express the relevant statement in the definitionally equal form `Y.X ⟶ B.X at f`. Take `⟨g₀, A₁, hT', hC⟩` from `GlobalTheory.T.tautologicalFamily_refinement_compatible_lieAlgebraFrame E H Dw l Xo c O β Z F e B Y j f₀ S A₀ _ S' φ f hT hR`.
+
+Take `⟨gr, hgr⟩` from `GlobalTheory.T.exists_graded_line_divisors_full_flag E H Dw l Xo c O β Z F e Y (f ≫ j) g₀ S' A₁ hT'`. Establish `hgen` using `genericPoint_mem Z j`. Take `⟨D, hD1, hD2, hD3⟩` from `GlobalTheory.T.exists_reduced_cartierDivisor_of_snc_closed (gen Z) B.X j (genBd Z) hS fun h => h hgen`. Take `⟨D', hD1', hD2', hD3'⟩` from `GlobalTheory.T.exists_reduced_effective_cartierDivisor_pullback F B Y φ f D hR.hom hR.rad hD1 hD3`. Establish `hstr : (f ≫ j) ≫ genStr Z ≫ spMap e.toRingHom = Y.str`.
+
+Rewrite using `[Category.assoc, hj]`. Conclude with `hR.hom.inducedModelMorphism_comp_structureMap`. Establish `hrange : Set.range (genericPt Y ≫ f ≫ j) ⊆ Set.range Z.jQ`. Introduce and unpack `_ ⟨w, rfl⟩`. Establish `h : genericPt Y ≫ f = spMap φ.toRingHom ≫ genericPt B` using `hR.hom`.
+
+Establish `h' : genericPt B (spMap φ.toRingHom w) = genericPoint B.X` using `(ratOf B).pt_apply _`. Rewrite using `[← Category.assoc, h, Scheme.Hom.comp_apply, Scheme.Hom.comp_apply, h']`. Conclude with `hgen`. Set `z : Sp Y.Fn ⟶ Xo.XF c` to `IsOpenImmersion.lift Z.jQ (genericPt Y ≫ f ≫ j) hrange`. Establish `hz : z ≫ Z.jQ = genericPt Y ≫ f ≫ j` using `IsOpenImmersion.lift_fac _ _ _`.
+
+Establish `hzs : z ≫ pullback.snd _ _ = spMap (constF e Y)`. Establish `h1 : genericPt Y ≫ Y.str = spMap (algebraMap F Y.Fn)` using `(ratOf Y).pt_s`. Establish `h2 : spMap e.toRingHom ≫ spMap e.symm.toRingHom = 𝟙 _`. Use `(Spec.map_comp _ _).symm.trans ((congrArg Spec.map ?_).trans (Spec.map_id _))` and prove the remaining obligations. Conclude with `CommRingCat.hom_ext (RingHom.ext fun a => e.apply_symm_apply a)`.
+
+Rewrite using `[← Z.jQ_over, ← Category.assoc, hz, ← Category.comp_id (pullback.snd Z.s (spMap β)), ← h2]`. Use `Eq.trans ?_ ((congrArg (· ≫ spMap e.symm.toRingHom) h1).trans (Spec.map_comp _ _).symm)` and prove the remaining obligations. Rewrite using `[← hstr]`. Simplify using `only [Category.assoc]`. Take `⟨y0, hy1, hy2⟩` from `GlobalTheory.T.exists_framed_point_over_of_lie_eigenspace_frame E H Dw l Xo c O β Z Y.Fn (constF e Y) z _ g₀ hzs (by`.
+
+Rewrite using `[← Category.assoc, hz]`. Simplify using `only [Category.assoc])`. Set `C : FlagCpt Z e` to `{ Y := Y, π := f ≫ j, π_str := hstr, y0 := y0, f0 := g₀, y0_x := by rw [hy1, hz], flagComponentFramedPoint_frame := by rw [hy1]; exact hy2, gr := gr, gr_spec := hgr, bd := D', bd_eff := hD1', bd_red := hD3' bd_supp := fun y => (hD2' y).trans ((hD2 _).trans (by rw [Scheme.Hom.comp …`. Conclude with `⟨C, f, rfl, by simpa using hd, GlobalTheory.T.eigenFrameBasePoint_lifts_unique_flagSpace E H Dw l Xo c O β Z F e C B j f₀ S A₀ S' A₁ φ f hj rfl hT hT' hC hR⟩`.
+-/
 theorem exists_flagCpt (hS : ReciprocityTheory.AnForm.R.FinalTheorems.Snc (genBdIdeal Z)) (B : GlobalTheory.ProjVar.Var F) (j : B.X ⟶ gen Z)
     [IsOpenImmersion j] (hj : j ≫ genStr Z ≫ spMap e.toRingHom = B.str) :
     ∃ (C : FlagCpt Z e) (f : C.Y.X ⟶ B.X), C.π = f ≫ j ∧ C.Y.dim = B.dim + ∑ τ : E →+* ℂ, (Dw.mult τ).choose 2 ∧
@@ -153,6 +193,21 @@ theorem exists_flagCpt (hS : ReciprocityTheory.AnForm.R.FinalTheorems.Snc (genBd
 
 end Component
 
+/- English proof (translation)
+Introduce `E _ _ _ H Dw l Xo c O _ β Z F _ e σ N U hσ hU hne hF hsm hS`. Take `⟨q, hq⟩` from `GlobalTheory.UnifComp.exists_equiv_comp E H Dw l Xo c σ N U hσ hU hne hF`. Take `⟨B, j, hB, hcov⟩` from `GlobalTheory.T.exists_varieties_components_smooth_genericFibre E H Dw l Xo c O β Z F e hF hsm`. Establish `key` using `fun i : U.Comp => haveI := (hB (q i)).1 exists_flagCpt Z e hS (B (q i)) (j (q i)) (hB (q i)).2.2.1`. Use `choose C f hπ hdim hl using key`.
+
+Establish `lift : ∀ (K : Type) [Field K] (x : Sp K ⟶ gen Z) (i : Comp Xo c), x (IsLocalRing.closedPoint K) ∈ Set.range (j i) → ∃ x' : Sp K ⟶ (B i).X, x' ≫ j i = x` using `fun K _ x i h => by`. Use `(hB i).1` as an intermediate fact. Use `⟨IsOpenImmersion.lift (j i) x ?_, IsOpenImmersion.lift_fac _ _ _⟩` and prove the remaining obligations. Introduce and unpack `_ ⟨w, rfl⟩`. Rewrite using `[show w = IsLocalRing.closedPoint K from Subsingleton.elim (α := PrimeSpectrum K) _ _]` and apply the resulting hypothesis.
+
+Use `⟨⟨C, fun k => ?_, fun K _ _ χ x hx g => ?_, fun i x s => ?_⟩⟩` and prove the remaining obligations. Rewrite using `[hdim, (hB _).2.1, GlobalTheory.T.flag_space_dimension_eq_sum_choose E H Dw, hU.1]`. Take `⟨i₀, hi, hi'⟩` from `hcov (x (IsLocalRing.closedPoint K))`. Take `⟨i, rfl⟩` from `q.surjective i₀`. Take `⟨x', hx'⟩` from `lift K x _ hi`.
+
+Take `⟨p, ⟨hp1, hp2⟩, hp3⟩` from `hl i K χ x x' hx' hx g`. Use `⟨⟨i, p⟩, ⟨by rw [hπ, ← Category.assoc, hp1, hx'], hp2⟩, ?_⟩` and prove the remaining obligations. Introduce and unpack `⟨i', p'⟩ ⟨h1, h2⟩`. Simplify using `only at h1 h2`. Rewrite `h1` using `[hπ, ← Category.assoc]`.
+
+Take `rfl : i' = i` from `q.injective (hi' _ ⟨(p' ≫ f i') (IsLocalRing.closedPoint K), by`. Rewrite using `[← h1]`. Conclude with `(Scheme.Hom.comp_apply _ _ _).symm⟩)`. Use `(hB (q i')).1` as an intermediate fact. Rewrite using `[hp3 p' ⟨(cancel_mono (j (q i'))).1 (h1.trans hx'.symm), h2⟩]`.
+
+Set `x₀ : Sp ℂ ⟶ gen Z` to `(GlobalTheory.AllWt.ptF (S := CAt σ) (U.un i x) ≫ Z.jQ :)`. Establish `hx₀ : x₀ ≫ genStr Z = spMap σ` using `(Category.assoc _ _ _).trans ((congrArg (_ ≫ ·) Z.jQ_over).trans (pullback.lift_snd _ _ _))`. Take `⟨x', hx'⟩` from `lift ℂ x₀ (q i) ((hB _).2.2.2 _ (hq i x _))`. Take `⟨g⟩` from `GlobalTheory.ShFam.EigLoc.exists_eigFrame E H Dw l Xo c O β Z _ _ x₀ hx₀`. Take `⟨p, ⟨hp1, -⟩, -⟩` from `hl i _ _ x₀ x' hx' hx₀ g`.
+
+Establish `: p ≫ (C i).π = x₀` using `by rw [hπ, ← Category.assoc, hp1, hx']`. Conclude with `⟨p s, (Scheme.Hom.comp_apply _ _ _).symm.trans (congrArg (fun t : Sp ℂ ⟶ gen Z => t s) this)⟩`.
+-/
 theorem nonempty_flagTor : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l) (O : Type) [CommRing O] (β : O →+* c.F) (Z : Model Xo c β) (F : Type) [Field F] (e : F ≃+* c.F) (σ : c.F →+* ℂ) (N : ℕ) (U : Formalism.L2.PjFree.Unf Xo c σ N), Formalism.L2.PjFree.GoodEmb c σ → Formalism.L2.PjFree.IsUnf U → (∀ k, (U.X k).dom.Nonempty) → FnAlgClosed Xo c → SmoothOfRelativeDimension Dw.dim (genStr Z) → ReciprocityTheory.AnForm.R.FinalTheorems.Snc (genBdIdeal Z) → Nonempty (FlagTor Z e U) := by
   intro E _ _ _ H Dw l Xo c O _ β Z F _ e σ N U hσ hU hne hF hsm hS
   obtain ⟨q, hq⟩ := GlobalTheory.UnifComp.exists_equiv_comp E H Dw l Xo c σ N U hσ hU hne hF

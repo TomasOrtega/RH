@@ -22,6 +22,11 @@ abbrev stepIdx (M : FlagModel y Ψ N j) (p : Ψ × Fin N) : PartialFlagBlocks M 
 def stepV (M : FlagModel y Ψ N j) (p : Ψ × Fin N) : (Σ k, stepIdx M p k) → Σ k, ι k :=
   fun q => ⟨q.1.1, q.2⟩
 
+/- English proof (translation)
+Use `⟨Subtype.val_injective, ?_, fun _ => rfl, ?_⟩` and prove the remaining obligations. Introduce and unpack `⟨⟨k, hk⟩, m⟩ ⟨⟨k', hk'⟩, m'⟩ h`. Simplify using `only [stepV, Sigma.mk.inj_iff] at h`. Take `⟨rfl, h2⟩` from `h`. Consider the cases of `h2`.
+
+Both sides reduce to the same expression. Introduce and unpack `⟨k, m⟩ ⟨k', rfl⟩`. Conclude with `⟨⟨k', m⟩, rfl⟩`.
+-/
 theorem isBlockMap_stepV (M : FlagModel y Ψ N j) (p : Ψ × Fin N) :
     IsBlockMap (Subtype.val : PartialFlagBlocks M p → K) (stepV M p) := by
   refine ⟨Subtype.val_injective, ?_, fun _ => rfl, ?_⟩
@@ -33,6 +38,11 @@ theorem isBlockMap_stepV (M : FlagModel y Ψ N j) (p : Ψ × Fin N) :
   · rintro ⟨k, m⟩ ⟨k', rfl⟩
     exact ⟨⟨k', m⟩, rfl⟩
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨⟨k', hk'⟩, rfl⟩`. Break down `hk' with h | h` into its components or cases. Conclude with `Or.inl h`. Conclude with `Or.inr ⟨p, rfl, h⟩`.
+
+Introduce and unpack `(h | ⟨p', rfl, h⟩)`. Conclude with `⟨⟨k, Or.inl h⟩, rfl⟩`. Conclude with `⟨⟨k, Or.inr h⟩, rfl⟩`.
+-/
 theorem mem_range_step (M : FlagModel y Ψ N j) (p : Ψ × Fin N) (k : K) :
     k ∈ Set.range (Subtype.val : PartialFlagBlocks M p → K) ↔
       ((∀ p', M.blk p' ≠ some k) ∨ ∃ p', p' = p ∧ M.blk p' = some k) := by

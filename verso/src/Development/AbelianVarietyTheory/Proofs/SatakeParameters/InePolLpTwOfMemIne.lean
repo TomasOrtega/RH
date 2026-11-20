@@ -8,6 +8,11 @@ noncomputable section
 
 namespace GlobalTheory.RoadU.DepthZeroRec
 
+/- English proof (translation)
+Rewrite using `[WD.inePol_of_mem_Ine _ hσ, WD.inePol_of_mem_Ine _ hσ]`. Take `⟨m, b, rfl⟩` from `y.exists_rep`. Rewrite using `[WD.lpTw, WD.lpTwist_mk, WD.charPol_mk, WD.charPol_mk]`. Use `congr 1`. Use `show ((unrChar h (qPow w s) (ineIncl h ⟨σ, hσ⟩) : ℂˣ) : ℂ) • b.ρ (ineIncl h ⟨σ, hσ⟩) = _`.
+
+Rewrite using `[WeilDeligne.unrChar_apply, deg_ineIncl, zpow_zero, Units.val_one, one_smul]`.
+-/
 theorem inePol_lpTw_of_mem_Ine {E Ω : Type} [Field E] [NumberField E] [Field Ω] [Algebra E Ω] [IsAlgClosure E Ω]
     {A : ValuationSubring Ω} {w : HeightOneSpectrum (𝓞 E)} {h : IsPlaceOver A w}
     (y : WD h) (s : ℝ) {σ : G E Ω} (hσ : σ ∈ Ine (F := E) A) :

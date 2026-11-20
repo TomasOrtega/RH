@@ -1,5 +1,16 @@
 import Mathlib
 
+/- English proof (translation)
+Introduce `ι _ P hP`. Break down `isEmpty_or_nonempty ι with hι | hι` into its components or cases. Conclude with `⟨1, one_pos, fun _ j => (hι.false j).elim⟩`. Establish `hcont : Continuous fun z : ι → ℂ => (star z ⬝ᵥ P.mulVec z).re`. Unfold `dotProduct Matrix.mulVec dotProduct`.
+
+Use `fun_prop`. Establish `hne : (Metric.sphere (0 : ι → ℂ) 1).Nonempty` using `NormedSpace.sphere_nonempty.mpr zero_le_one`. Take `⟨u, hu, hmin⟩` from `(isCompact_sphere (0 : ι → ℂ) 1).exists_isMinOn hne hcont.continuousOn`. Establish `hu0 : u ≠ 0`. Introduce and unpack `rfl`.
+
+Simplify using `at hu`. Establish `hc : 0 < (star u ⬝ᵥ P.mulVec u).re` using `hP.re_dotProduct_pos hu0`. Use `⟨_, hc, fun z j => ?_⟩` and prove the remaining obligations. Break down `eq_or_ne z 0 with rfl | hz` into its components or cases. Simplify using the standard rewrite rules.
+
+Establish `hr : 0 < ‖z‖` using `norm_pos_iff.mpr hz`. Establish `hw : (‖z‖⁻¹ • z) ∈ Metric.sphere (0 : ι → ℂ) 1`. Rewrite using `[mem_sphere_zero_iff_norm, norm_smul, norm_inv, norm_norm, inv_mul_cancel₀ hr.ne']`. Establish `h1 : (star u ⬝ᵥ P.mulVec u).re ≤ (star (‖z‖⁻¹ • z) ⬝ᵥ P.mulVec (‖z‖⁻¹ • z)).re` using `hmin hw`. Establish `h2 : (star (‖z‖⁻¹ • z) ⬝ᵥ P.mulVec (‖z‖⁻¹ • z)).re = ‖z‖⁻¹ * (‖z‖⁻¹ * (star z ⬝ᵥ P.mulVec z).re)`.
+
+Rewrite using `[star_smul, star_trivial, Matrix.mulVec_smul, smul_dotProduct, dotProduct_smul, Complex.smul_re, Complex.smul_re, smul_eq_mul, smul_eq_mul]`. Establish `h3 : (star u ⬝ᵥ P.mulVec u).re * ‖z‖ ^ 2 ≤ (star z ⬝ᵥ P.mulVec z).re`. Rewrite `h1` using `[h2]`. Combine the equalities or inequalities in the displayed calculation. Conclude with `(mul_le_mul_of_nonneg_left (pow_le_pow_left₀ (norm_nonneg _) (norm_le_pi_norm z j) 2) hc.le).trans h3`.
+-/
 theorem UpperTheory.Reformulated.B.CoerciveOfPositiveDefinite.exists_coercive_of_posDef.{u_1} :
     ∀ {ι : Type u_1} [inst : Fintype ι] {P : Matrix ι ι Complex},
       @Matrix.PosDef ι Complex Complex.instRing Complex.partialOrder Complex.instStarRing P →

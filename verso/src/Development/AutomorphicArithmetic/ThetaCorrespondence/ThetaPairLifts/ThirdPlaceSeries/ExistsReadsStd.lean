@@ -40,6 +40,33 @@ variable {B : GlobalTheory.Mem.Base} {X : PreX B.toPre} {I : TC B X} {l : I.Laws
   {Ch₀ : ℕ → Type} {A : TwDat I l Z u a Ch₀} {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
 end Level
 set_option maxHeartbeats 4000000 in
+/- English proof (translation)
+Introduce `B X I l Z L hT Gi Gl Kc Yd cX ex W hW u a ha ha' hc t J h`. Establish `hI` using `hW.tr.ok`. Establish `ht` using `hW.tr.tw`. Establish `h2` using `B.R.two_le_m`. Establish `hs : ∀ i, (J.G i).s + 1 + 1 = B.R.m` using `fun i => (J.G i).hs`.
+
+Establish `hPi : Function.Injective J.P` using `fun i i' e => h.inj ((h.eq i).symm.trans ((congrArg Subtype.val e).trans (h.eq i')))`. Establish `hPs : ∀ P : BadPr I (W.P.I.tup t), P.1 ∈ I.Q (W.P.I.tup t) → ∃ i, J.P i = P` using `fun P hP => by`. Take `⟨i, e⟩` from `h.surj P.1 ((hW.tq.Q t P.1).2 hP)`. Conclude with `⟨i, Subtype.ext ((h.eq i).trans e)⟩`. Establish `hQ : ∀ i, (J.P i).1 ∈ I.Q (W.P.I.tup t)` using `fun i => (Finset.mem_union.1 (J.P i).2).resolve_left (h.tw i).nmem`.
+
+Establish `hbox : ∀ i j, j + 1 ≠ B.R.m → ∀ y, InBox (J.E i) j y` using `fun i j hj y e => hj ((congrArg (· + 1) e).trans (hs i)) |>.elim`. Establish `kπ : ∀ i j (β : J.Ch₀ j), ∃ y : {y : (J.E i).Ch j // InBox (J.E i) j y}, (j + 1 ≠ B.R.m → y.1 = J.π i j β) ∧ OrbAt J.A (J.E i) j y.1 β` using `fun i j β => by`. Distinguish the cases in `hj : j + 1 = B.R.m`. Take `⟨y, h1, h3⟩` from `exists_orbAt hI h.is (h.tw i) (h.M i) hj β (h.std j (by omega) β)`. Conclude with `⟨⟨y, h1⟩, fun e => absurd hj e, h3⟩`.
+
+Conclude with `⟨⟨J.π i j β, hbox i j hj _⟩, fun _ => rfl, fun e => (hj ((congrArg (· + 1) e).trans (hs i))).elim⟩`. Use `choose π hπ hπ' using kπ`. Establish `kι : ∀ j (y : ∀ i, {y : (J.E i).Ch j // InBox (J.E i) j y}), ∃ β : J.Ch₀ j, (j + 1 ≠ B.R.m → β = J.ι j fun i => (y i).1) ∧ (j + 1 = B.R.m → Good (J.A.p0 j β) ∧ ∀ i, OrbAt J.A (J.E i) j (y i).1 β)` using `fun j y => by`. Distinguish the cases in `hj : j + 1 = B.R.m`. Set `b` to `J.A.b0 j (J.ι j fun i => (y i).1) choose z hz hz' using fun i => exists_vec hI h.is (h.tw i) (h.M i) hj b (y i).2`.
+
+Take `⟨β, hβ, hβ'⟩` from `exists_chart hI ht h.is hj b (Function.extend J.P z 0) fun P hP => by`. Take `⟨i, rfl⟩` from `hPs P ((Finset.mem_union.1 P.2).resolve_left hP)`. Rewrite using `[hPi.extend_apply]`. Conclude with `hz i`. Use `⟨β, fun e => absurd hj e, fun _ => ⟨hβ, fun i => hz' i (hQ i) β (h.std j (by omega) β) ?_⟩⟩` and prove the remaining obligations.
+
+Use `hβ' (J.P i) (hQ i)` as an intermediate fact. Rewrite `this` using `[hPi.extend_apply]`. Then use the resulting hypothesis. Conclude with `⟨_, fun _ => rfl, fun e => absurd e hj⟩`. Use `choose ι hι hι' using kι`. Establish `hsec : ∀ j, j ≤ B.R.m → ∀ y i, π i j (ι j y) = y i` using `fun j hj y i => by`.
+
+Use `Subtype.ext ?_` and prove the remaining obligations. Distinguish the cases in `e : j + 1 = B.R.m`. Conclude with `orbAt_unique e (hπ' i j _) ((hι' j y e).2 i)`. Rewrite using `[hπ i j _ e, hι j y e]`. Conclude with `h.sec j hj e _ i`.
+
+Establish `hlift : ∀ j, j + 1 ≠ B.R.m → ∀ y, J.ι j y ∈ Set.range (ι j)` using `fun j hj y => ⟨fun i => ⟨y i, hbox i j hj _⟩, hι j _ hj⟩`. Set `J' : _root_.GlobalTheory.Fam.QuadraticExtensionData a t` to `⟨J.Ch₀, J.A, J.r, J.pl, J.mem, fun i => restr (J.E i), J.P, J.hψ, J.sg, π, ι⟩`. Use `⟨J', h.is, h.inj, h.surj, h.chr, h.res, h.eq, h.sg, h.tw, h.M, fun i j d e hj β => ?_, fun i β => hπ' i _ β rfl, h.std, h.last, hsec, fun n y e he r => ?_, fun j => ?_, fun β => ?_, fun β => ?_, fun j hj γ hγ α z => ?_⟩` and prove the remaining obligations. Establish `e' : j + d = (J.G i).s` using `e`. Use `h.rep i j d e hj β` as an intermediate fact.
+
+Rewrite `this` using `[← hπ i j β (by have := hs i; omega)]`. Conclude with `this`. Establish `hn : (a.G n).s + 1 + 1 = B.R.m` using `(a.G n).hs`. Establish `hP : (a.pl n).1 ∈ (B.primes X).vGs` using `(hW.lev.2.1 _).1 (a.pl n).2`. Take `⟨h3, h4⟩` from `_root_.GlobalTheory.T.true_geometry_commutation_twist_alt W hW u a ha ha' hc n`.
+
+Conclude with `couplingCoset_sub_basePoint_integral_typePrime hI h.is hn (a.G n).S ((a.G n).q.pr.comp (incA (I.rec7 l Z))) ⟨(a.pl n).1, Finset.mem_union_left _ hP⟩ hP h3 h4 _ (h.std _ (by omega) _) (hι' _ y hn).1 e he r`. Distinguish the cases in `e : j + 1 = B.R.m`. Conclude with `fun y y' hy => funext fun i => (hsec j (by omega) y i).symm.trans ((congrArg (π i j) hy).trans (hsec j (by omega) y' i))`. Introduce `y y' hy`. Establish `h3` using `h.injCh j e ((hι j y e).symm.trans (hy.trans (hι j y' e)))`.
+
+Conclude with `funext fun i => Subtype.ext (congrFun h3 i)`. Take `⟨y, rfl⟩` from `h.first β`. Conclude with `hlift 0 (by omega) y`. Take `⟨y, rfl⟩` from `h.onto β`. Conclude with `hlift _ (by omega) y`.
+
+Distinguish the cases in `e : j + 1 + 1 = B.R.m`. Assume the negation of the conclusion as `hz`. Use `hγ ⟨fun i => π i (j + 1) γ, ?_⟩` and prove the remaining obligations. Use `chart_ext hI ht h.is e (J.A.b0 _ γ) _ _ (hι' _ _ e).1 (good_of_xi hI ht e hj α γ z hz) fun P hP => ?_` and prove the remaining obligations. Take `⟨i, rfl⟩` from `hPs P hP`.
+
+Conclude with `lev_of_orbAt hI h.is (h.tw i) (h.M i) e _ hP (h.std _ (by omega) _) (h.std _ (by omega) _) ((hι' _ _ e).2 i) (hπ' i _ γ)`. Use `h.dead j hj e γ ?_ α z` and prove the remaining obligations. Introduce and unpack `⟨y, rfl⟩`. Conclude with `hγ (hlift _ e y)`.
+-/
 theorem exists_readsStd_alt : ∀ {B : GlobalTheory.Mem.Base} {X : PreX B.toPre} {I : TC B X} {l : I.Laws} {Z : TC.Later B (I.cols l)} {L : SizeData₂ (I.rec7 l Z)} {hT : GatTies (I.rec7 l Z)} {Gi : Formalism.MainNotions.G.Inst (I.rec7 l Z) L} {Gl : Formalism.MainNotions.G.LatInst (I.rec7 l Z)} {Kc : Formalism.MainNotions.G.Consts} {Yd : DivX (I.rec7 l Z)} {cX : ExtraC} {ex : Extra (I.rec7 l Z) L hT Gi Gl Kc Yd cX} (W : _root_.GlobalTheory.MiS.RealPackAlt ex), _root_.GlobalTheory.Fam.AllFamilyConditions W → ∀ (u : B.Word) (a : _root_.GlobalTheory.Fam.GeometricFamily W u), a.Is → a.True → (commOf (_root_.GlobalTheory.Fam.pk_z W) u a.g).Is → ∀ t (J : _root_.GlobalTheory.Fam.QuadraticExtensionData a t), J.ReadsLow → ∃ J' : _root_.GlobalTheory.Fam.QuadraticExtensionData a t, J'.ReadsStd := by
   intro B X I l Z L hT Gi Gl Kc Yd cX ex W hW u a ha ha' hc t J h
   have hI := hW.tr.ok

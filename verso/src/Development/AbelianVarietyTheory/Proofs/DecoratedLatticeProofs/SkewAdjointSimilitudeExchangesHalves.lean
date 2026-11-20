@@ -13,26 +13,43 @@ namespace GlobalTheory.KappaHalf
 
 variable {D : D7}
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce `h`. Use extensionality with `i j`. Rewrite using `[Matrix.smul_apply, smul_eq_mul, h i j]`. Introduce `h i j`.
+
+Use `congrFun (congrFun h i) j` as an intermediate fact. Rewrite `this` using `[Matrix.smul_apply, smul_eq_mul]`. Then use the resulting hypothesis.
+-/
 theorem isHalf_iff_smul {m n : ℕ} (e : AE D) (u : Mx D m n) : IsHalf e u ↔ e • u = u := by
   constructor
   · intro h; ext i j; rw [Matrix.smul_apply, smul_eq_mul, h i j]
   · intro h i j; have := congrFun (congrFun h i) j; rwa [Matrix.smul_apply, smul_eq_mul] at this
 
+/- English proof (translation)
+Rewrite `hu`, the goal using `[isHalf_iff_smul]`. Rewrite using `[← Matrix.mul_smul, hu]`.
+-/
 theorem isHalf_mul_left {k m n : ℕ} {e : AE D} (A : Mx D k m) {u : Mx D m n} (hu : IsHalf e u) :
     IsHalf e (A * u) := by
   rw [isHalf_iff_smul] at hu ⊢
   rw [← Matrix.mul_smul, hu]
 
+/- English proof (translation)
+Rewrite `hu`, the goal using `[isHalf_iff_smul]`. Rewrite using `[← Matrix.smul_mul, hu]`.
+-/
 theorem isHalf_mul_right {k m n : ℕ} {e : AE D} {u : Mx D k m} (B : Mx D m n) (hu : IsHalf e u) :
     IsHalf e (u * B) := by
   rw [isHalf_iff_smul] at hu ⊢
   rw [← Matrix.smul_mul, hu]
 
+/- English proof (translation)
+Rewrite `hu`, the goal using `[isHalf_iff_smul]`. Rewrite using `[smul_comm, hu]`.
+-/
 theorem isHalf_smul {m n : ℕ} {e : AE D} (c : AE D) {u : Mx D m n} (hu : IsHalf e u) :
     IsHalf e (c • u) := by
   rw [isHalf_iff_smul] at hu ⊢
   rw [smul_comm, hu]
 
+/- English proof (translation)
+Introduce `i j`. Simplify using `only [adj, Matrix.transpose_apply, Matrix.map_apply]`. Use `conv_lhs => rw [← GlobalTheory.DualPairCheck.cA_cA e]`. Rewrite using `[← map_mul, hz j i]`.
+-/
 theorem isHalf_adj_of_cA {m n : ℕ} {e : AE D} {z : Mx D m n} (hz : IsHalf (cA D e) z) :
     IsHalf e (adj z) := by
   intro i j
@@ -40,17 +57,26 @@ theorem isHalf_adj_of_cA {m n : ℕ} {e : AE D} {z : Mx D m n} (hz : IsHalf (cA 
   conv_lhs => rw [← GlobalTheory.DualPairCheck.cA_cA e]
   rw [← map_mul, hz j i]
 
+/- English proof (translation)
+Introduce `i j`. Simplify using `only [adj, Matrix.transpose_apply, Matrix.map_apply]`. Rewrite using `[← map_mul, hz j i]`.
+-/
 theorem isHalf_cA_adj {m n : ℕ} {e : AE D} {z : Mx D m n} (hz : IsHalf e z) :
     IsHalf (cA D e) (adj z) := by
   intro i j
   simp only [adj, Matrix.transpose_apply, Matrix.map_apply]
   rw [← map_mul, hz j i]
 
+/- English proof (translation)
+Unfold `GlobalTheory.IndefiniteRowSideFullHecke.SkewGramHalfModule.ofAdj`. Conclude with `isHalf_smul _ (isHalf_mul_left _ (isHalf_mul_right _ hz))`.
+-/
 theorem isHalf_ofAdj {L S : HSp D} {e : AE D} {z : Mx D L.rank S.rank} (hz : IsHalf e (adj z)) :
     IsHalf e (GlobalTheory.IndefiniteRowSideFullHecke.SkewGramHalfModule.ofAdj L S z) := by
   unfold GlobalTheory.IndefiniteRowSideFullHecke.SkewGramHalfModule.ofAdj
   exact isHalf_smul _ (isHalf_mul_left _ (isHalf_mul_right _ hz))
 
+/- English proof (translation)
+Introduce `D L S L'' τ e y`. Conclude with `⟨fun h => isHalf_ofAdj (isHalf_adj_of_cA (isHalf_mul_left _ h)), fun h => isHalf_ofAdj (isHalf_cA_adj (isHalf_mul_left _ h))⟩`.
+-/
 theorem ofAdj_rat_mul_half : ∀ (D : D7) (L S L'' : HSp D) (τ : Matrix (Fin L.rank) (Fin L''.rank) D.host.E) (e : AE D) (y : WO S L''), (IsHalf (cA D e) y → IsHalf e (GlobalTheory.IndefiniteRowSideFullHecke.SkewGramHalfModule.ofAdj L S ((rat τ : Mx D L.rank L''.rank) * y))) ∧ (IsHalf e y → IsHalf (cA D e) (GlobalTheory.IndefiniteRowSideFullHecke.SkewGramHalfModule.ofAdj L S ((rat τ : Mx D L.rank L''.rank) * y))) := by
   intro D L S L'' τ e y
   exact ⟨fun h => isHalf_ofAdj (isHalf_adj_of_cA (isHalf_mul_left _ h)),

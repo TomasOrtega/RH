@@ -4,6 +4,17 @@ universe u
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Introduce `k _ A _ _ _ φ`. Use `haveI : IsArtinianRing A := IsArtinianRing.of_finite k A`. Use `set m : Ideal A := RingHom.ker φ with hm`. Take `⟨n, hn⟩` from `IsArtinian.monotone_stabilizes (R := A) (M := A) ⟨fun n => OrderDual.toDual (m ^ n), fun _ _ h => Ideal.pow_le_pow_right h⟩`. Establish `hst : ∀ j, n ≤ j → m ^ n = m ^ j` using `fun j hj => hn j hj`.
+
+Use `set N := n + 1 with hN`. Establish `hI : IsIdempotentElem (m ^ N)` using `by show m ^ N * m ^ N = m ^ N`. Rewrite using `[← pow_add, ← hst (N + N) (by omega), hst N (by omega)]`. Establish `hfg : (m ^ N).FG` using `IsNoetherian.noetherian _`. Take `⟨f, hf, hIf⟩` from `(Ideal.isIdempotentElem_iff_of_fg _ hfg).1 hI`.
+
+Use `⟨1 - f, hf.one_sub, ?_, ?_⟩` and prove the remaining obligations. Establish `hfm : f ∈ m`. Establish `: f ∈ m ^ N` using `by rw [hIf]; exact Ideal.subset_span rfl`. Conclude with `Ideal.pow_le_self (by omega) this`. Establish `: φ f = 0` using `hfm`.
+
+Simplify using `[this]`. Introduce `a ha`. Establish `ham : a ∈ m` using `ha`. Establish `haN : a ^ N ∈ m ^ N` using `Ideal.pow_mem_pow ham N`. Rewrite `haN` using `[hIf, Ideal.mem_span_singleton']`.
+
+Take `⟨y, hy⟩` from `haN`. Use `⟨N, ?_⟩` and prove the remaining obligations. Rewrite using `[mul_pow, hf.one_sub.pow_succ_eq n, ← hy]`. Establish `: (1 - f) * f = 0` using `by rw [sub_mul, one_mul, hf.eq, sub_self]`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem exists_idem_local_of_character :
     ∀ (k : Type) [Field k] (A : Type) [CommRing A] [Algebra k A] [FiniteDimensional k A]
       (φ : A →ₐ[k] k), ∃ e : A, IsIdempotentElem e ∧ φ e = 1 ∧

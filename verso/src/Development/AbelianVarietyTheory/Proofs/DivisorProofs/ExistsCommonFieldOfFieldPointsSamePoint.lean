@@ -10,6 +10,17 @@ open GlobalTheory.Mum
 
 namespace GlobalTheory.Mum
 
+/- English proof (translation)
+Introduce `X K₁ K₂ _ _ a b h`. Take `⟨⟨x, f⟩, rfl⟩` from `(Scheme.SpecToEquivOfField K₁ X).symm.surjective a`. Take `⟨⟨y, g⟩, rfl⟩` from `(Scheme.SpecToEquivOfField K₂ X).symm.surjective b`. Establish `hxy : x = y`. Establish `h1` using `congrArg Sigma.fst ((Scheme.SpecToEquivOfField K₁ X).apply_symm_apply ⟨x, f⟩)`.
+
+Establish `h2` using `congrArg Sigma.fst ((Scheme.SpecToEquivOfField K₂ X).apply_symm_apply ⟨y, g⟩)`. Conclude with `h1.symm.trans (h.trans h2)`. Substitute `hxy` using the available equality. Use `letI : Algebra (X.residueField x) K₁ := f.hom.toAlgebra`. Use `letI : Algebra (X.residueField x) K₂ := g.hom.toAlgebra`.
+
+Use `haveI : Nontrivial (TensorProduct (X.residueField x) K₁ K₂) := inferInstance`. Take `⟨m, hm⟩` from `Ideal.exists_maximal (TensorProduct (X.residueField x) K₁ K₂)`. Use `letI : Field ((TensorProduct (X.residueField x) K₁ K₂) ⧸ m) := Ideal.Quotient.field m`. Use `⟨(TensorProduct (X.residueField x) K₁ K₂) ⧸ m, inferInstance, (Ideal.Quotient.mk m).comp Algebra.TensorProduct.includeLeftRingHom, (Ideal.Quotient.mk m).comp (Algebra.TensorProduct.includeRight (R := X.residueField x) (A := K₁) (B := K₂)).toRingHom, ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `Spec.map _ ≫ Spec.map f ≫ X.fromSpecResidueField x = Spec.map _ ≫ Spec.map g ≫ X.fromSpecResidueField x`.
+
+Rewrite using `[← Spec.map_comp_assoc, ← Spec.map_comp_assoc]`. Use `congr 2`. Use extensionality with `c`. Express the relevant statement in the definitionally equal form `Ideal.Quotient.mk m (TensorProduct.tmul _ (algebraMap _ K₁ c) 1) = Ideal.Quotient.mk m (TensorProduct.tmul _ 1 (algebraMap _ K₂ c))`. Use `congr 1`.
+
+Rewrite using `[Algebra.algebraMap_eq_smul_one, Algebra.algebraMap_eq_smul_one, TensorProduct.smul_tmul]`.
+-/
 theorem exists_common_field_of_point_eq : ∀ (X : Scheme.{0}) (K₁ K₂ : Type) [Field K₁] [Field K₂] (a : Sp K₁ ⟶ X) (b : Sp K₂ ⟶ X), a (closedPoint K₁) = b (closedPoint K₂) → ∃ (Ω : Type) (_ : Field Ω) (i₁ : K₁ →+* Ω) (i₂ : K₂ →+* Ω), spMap i₁ ≫ a = spMap i₂ ≫ b := by
   intro X K₁ K₂ _ _ a b h
   obtain ⟨⟨x, f⟩, rfl⟩ := (Scheme.SpecToEquivOfField K₁ X).symm.surjective a

@@ -20,10 +20,16 @@ def fibOf {K V : Type} [NormedField K] [MeasurableSpace K] [AddCommGroup V] [Mod
   if t = 0 then 0 else
     (ν (t • U))⁻¹ • Measure.map (fun x => s (t / q x) • x) (μ.restrict (q ⁻¹' (t • U)))
 
+/- English proof (translation)
+Simplify using `[fibOf]`.
+-/
 theorem fibOf_zero {K V : Type} [NormedField K] [MeasurableSpace K] [AddCommGroup V] [Module K V]
     [MeasurableSpace V] (μ : Measure V) (ν : Measure K) (q : V → K) (U : Set K) (s : K → K) :
     fibOf μ ν q U s 0 = 0 := by simp [fibOf]
 
+/- English proof (translation)
+Simplify using `[fibOf, ht]`.
+-/
 theorem fibOf_ne {K V : Type} [NormedField K] [MeasurableSpace K] [AddCommGroup V] [Module K V]
     [MeasurableSpace V] (μ : Measure V) (ν : Measure K) (q : V → K) (U : Set K) (s : K → K)
     {t : K} (ht : t ≠ 0) : fibOf μ ν q U s t =

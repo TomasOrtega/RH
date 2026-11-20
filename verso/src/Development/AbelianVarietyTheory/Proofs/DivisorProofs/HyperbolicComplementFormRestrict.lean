@@ -11,6 +11,9 @@ namespace GlobalTheory.LeviIndep
 
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
 
+/- English proof (translation)
+Simplify using `only [form, dotProduct, Matrix.mulVec, map_sum, map_mul, hσ, Finset.mul_sum]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[hJ i j]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem form_swap (σ : E →ₐ[F] E) {n : ℕ} (J : Matrix (Fin n) (Fin n) E)
     (hσ : ∀ z, σ (σ z) = z) (hJ : ∀ i j, σ (J j i) = J i j) (u v : Fin n → E) :
     σ (form σ J u v) = form σ J v u := by
@@ -19,11 +22,19 @@ theorem form_swap (σ : E →ₐ[F] E) {n : ℕ} (J : Matrix (Fin n) (Fin n) E)
   refine Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => ?_
   rw [hJ i j]; ring
 
+/- English proof (translation)
+Simplify using `only [incV, form, dotProduct, map_sum, map_mul]`.
+-/
 theorem incV_pair (σ : E →ₐ[F] E) {n : ℕ} (J : Matrix (Fin n) (Fin n) E) (v z : Fin n → E) :
     incV F v ⬝ᵥ (fun i => inclR (F := F) (AF F) ((J *ᵥ fun j => σ (z j)) i)) =
       inclR (F := F) (AF F) (form σ J v z) := by
   simp only [incV, form, dotProduct, map_sum, map_mul]
 
+/- English proof (translation)
+Simplify using `only [incM, form, dotProduct, Matrix.mulVec, Matrix.map_apply, map_sum, map_mul, Finset.sum_mul, Finset.mul_sum]`. Use `conv_lhs => arg 2`. Use extensionality with `i`. Rewrite using `[Finset.sum_comm]`. Rewrite using `[Finset.sum_comm]`.
+
+Use `Finset.sum_congr rfl fun k _ => Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem incM_pair (σ : E →ₐ[F] E) {n n₁ : ℕ} (J : Matrix (Fin n) (Fin n) E)
     (ι : Matrix (Fin n) (Fin n₁) E) (w : Fin n₁ → AE F E) (z : Fin n → E) :
     (incM F ι *ᵥ w) ⬝ᵥ (fun i => inclR (F := F) (AF F) ((J *ᵥ fun j => σ (z j)) i)) =
@@ -42,6 +53,9 @@ namespace GlobalTheory.LeviIndep
 
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
 
+/- English proof (translation)
+Simplify using `only [Matrix.mul_apply, Matrix.transpose_apply, Matrix.map_apply, form, dotProduct, Matrix.mulVec, Finset.sum_mul, Finset.mul_sum]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem gram_apply (σ : E →ₐ[F] E) {n n₁ : ℕ} (J : Matrix (Fin n) (Fin n) E)
     (ι : Matrix (Fin n) (Fin n₁) E) (k l : Fin n₁) :
     (ιᵀ * J * ι.map σ) k l = form σ J (fun i => ι i k) (fun i => ι i l) := by
@@ -51,6 +65,9 @@ theorem gram_apply (σ : E →ₐ[F] E) {n n₁ : ℕ} (J : Matrix (Fin n) (Fin 
   refine Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => ?_
   ring
 
+/- English proof (translation)
+Establish `h'` using `congrArg (fun u => u ⬝ᵥ (fun i => inclR (F := F) (AF F) ((J *ᵥ fun j => σ (z j)) i))) h`. Simplify using `only [add_dotProduct, smul_dotProduct, smul_eq_mul, zero_dotProduct] at h'`. Rewrite `h'` using `[incV_pair, incV_pair, incM_pair]`. Then use the resulting hypothesis.
+-/
 theorem relation_pair (σ : E →ₐ[F] E) {n n₁ : ℕ} (J : Matrix (Fin n) (Fin n) E)
     (x y : Fin n → E) (ι : Matrix (Fin n) (Fin n₁) E) (a b : AE F E) (w : Fin n₁ → AE F E)
     (h : a • incV F x + incM F ι *ᵥ w + b • incV F y = 0) (z : Fin n → E) :
@@ -61,10 +78,28 @@ theorem relation_pair (σ : E →ₐ[F] E) {n n₁ : ℕ} (J : Matrix (Fin n) (F
   simp only [add_dotProduct, smul_dotProduct, smul_eq_mul, zero_dotProduct] at h'
   rwa [incV_pair, incV_pair, incM_pair] at h'
 
+/- English proof (translation)
+Use extensionality with `i`. Simplify using `[Matrix.mulVec, dotProduct, Pi.single_apply]`.
+-/
 theorem col_eq {n n₁ : ℕ} (ι : Matrix (Fin n) (Fin n₁) E) (k : Fin n₁) :
     ι *ᵥ Pi.single k 1 = fun i => ι i k := by
   ext i; simp [Matrix.mulVec, dotProduct, Pi.single_apply]
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ n n₁ J J₁ x y ι hσ hJ hxx hyy hxy hι hJ₁ hdet a b w h`. Establish `hcx : ∀ k : Fin n₁, form σ J (fun i => ι i k) x = 0` using `fun k => by`. Rewrite using `[← col_eq]`. Conclude with `(hι _).1`. Establish `hcy : ∀ k : Fin n₁, form σ J (fun i => ι i k) y = 0` using `fun k => by`.
+
+Rewrite using `[← col_eq]`. Conclude with `(hι _).2`. Establish `hyx : form σ J y x = 1` using `by rw [← form_swap σ J hσ hJ x y, hxy, map_one]`. Establish `hxc : ∀ l : Fin n₁, form σ J x (fun i => ι i l) = 0` using `fun l => by`. Rewrite using `[← form_swap σ J hσ hJ, hcx, map_zero]`.
+
+Establish `hyc : ∀ l : Fin n₁, form σ J y (fun i => ι i l) = 0` using `fun l => by`. Rewrite using `[← form_swap σ J hσ hJ, hcy, map_zero]`. Establish `ha : a = 0`. Use `relation_pair σ J x y ι a b w h y` as an intermediate fact. Simplify `this` using `[hxy, hcy, hyy]`.
+
+Establish `hb : b = 0`. Use `relation_pair σ J x y ι a b w h x` as an intermediate fact. Simplify `this` using `[hxx, hcx, hyx]`. Use `⟨ha, ?_, hb⟩` and prove the remaining obligations. Use `set A : Matrix (Fin n₁) (Fin n₁) (AE F E) := incM F J₁ with hA`.
+
+Establish `hv : w ᵥ* A = 0`. Use extensionality with `l`. Use `relation_pair σ J x y ι a b w h (fun i => ι i l)` as an intermediate fact. Simplify using `only [hxc, hyc, map_zero, mul_zero, zero_add, add_zero] at this`. Simplify using `only [Matrix.vecMul, dotProduct, hA, incM, Matrix.map_apply, Pi.zero_apply, ← hJ₁, gram_apply]`.
+
+Conclude with `this`. Establish `hu : IsUnit A.det`. Establish `: A.det = inclR (F` using `F) (AF F) J₁.det := by`. Rewrite using `[RingHom.map_det]`. Both sides reduce to the same expression.
+
+Rewrite using `[this]`. Conclude with `(isUnit_iff_ne_zero.mpr hdet).map _`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem indep : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (n n₁ : ℕ)
     (J : Matrix (Fin n) (Fin n) E) (J₁ : Matrix (Fin n₁) (Fin n₁) E) (x y : Fin n → E) (ι : Matrix (Fin n) (Fin n₁) E),
     (∀ z, σ (σ z) = z) → (∀ i j, σ (J j i) = J i j) → form σ J x x = 0 → form σ J y y = 0 →

@@ -81,6 +81,11 @@ def ProductOrdersBounded (C₀ : ℝ) : Prop :=
     ∀ mm ∈ (plEmb (FF O) r K (X.Aw p K (FF O) j e q.1 I') * nmEmb (FF O) r K (X.Gw p K (FF O) j e q.2 I'')).support,
       ∀ x ∈ X.F.letters j, ¬ X.F.IsW j x → (ordDeg mm x : ℝ) ≤ X.o p K j x
 
+/- English proof (translation)
+Introduce `p n' r K _ _ _ X O _ _ _ S hX hLa hk j b e he hs2 q hq I' I'' hI' hI''`. Establish `: Fact p.Prime` using `⟨hX.prime⟩`. Establish `hc : WCtx C₀ p n' r K X j b e q I' I''` using `⟨hX, hLa, hk, he, hs2, hq, hI', hI''⟩`. Establish `hseg : segN X.F j + r ≤ K` using `le_trans (Nat.add_le_add_right (hX.card j) r) hX.NsK`. Establish `h6` using `(hB12 p O S n' r K X.F X.L₁ X.N₁ j (X.mg p K j) (X.th p j) (X.o p K j) hX.valid hseg (fun x => by unfold Dat.mg; positivity)).2.2.2.2.2`.
+
+Take `⟨P, hP, hPe⟩` from `h6 (X.Aw p K (FF O) j e q.1 I') (X.Gw p K (FF O) j e q.2 I'') (X.Mw p K j e q.2) (h2 p n' r K X O S j b e q I' I'' hc).1 (h2 p n' r K X O S j b e q I' I'' hc).2 (h3 p n' r K X O S j b e q I' I'' hc) (h4 p n' r K X O S j b e q I' I'' hc)`. Conclude with `⟨P, hP, hPe.trans (h1 p n' r K X O S j b e q I' I'' hc).symm⟩`.
+-/
 theorem column_word_reduction_of_four (D : Formalism.BasicNotions.D7) (hB12 : NestedTypeBound D) (C₀ : ℝ) (h1 : FrobeniusReductionProduct C₀) (h2 : ProductAllowedLetters C₀)
     (h3 : ColumnConditionsWithMargin C₀) (h4 : ProductOrdersBounded C₀) : ColumnWordReductionLifts C₀ := by
   intro p n' r K _ _ _ X O _ _ _ S hX hLa hk j b e he hs2 q hq I' I'' hI' hI''

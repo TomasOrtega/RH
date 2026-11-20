@@ -21,6 +21,9 @@ open GlobalTheory.CuspMult
 
 namespace GlobalTheory.HeckeUnitary
 
+/- English proof (translation)
+Use `⟨fun a ha => ⟨1, 1, by simpa using ha⟩, ?_⟩` and prove the remaining obligations. Introduce and unpack `g ⟨k₁, k₂, rfl⟩`. Use `⟨z, ⟨Finset.mem_singleton_self z, ?_⟩, fun y hy => Finset.mem_singleton.1 hy.1⟩` and prove the remaining obligations. Rewrite using `[← (hz k₁).eq, mul_assoc, inv_mul_cancel_left]`. Conclude with `J.mul_mem k₁.2 k₂.2`.
+-/
 theorem isDC_central {G : Type} [Group G] (J : Subgroup G) {z : G} (hz : ∀ g, Commute z g) :
     Bridge.IsDC J z {z} := by
   refine ⟨fun a ha => ⟨1, 1, by simpa using ha⟩, ?_⟩
@@ -29,6 +32,15 @@ theorem isDC_central {G : Type} [Group G] (J : Subgroup G) {z : G} (hz : ∀ g, 
   rw [← (hz k₁).eq, mul_assoc, inv_mul_cancel_left]
   exact J.mul_mem k₁.2 k₂.2
 
+/- English proof (translation)
+Establish `e : ∀ k₁ k₂ : G, k₁ * (α * z) * k₂ = k₁ * α * k₂ * z` using `fun k₁ k₂ => by`. Simplify using `only [mul_assoc, (hz k₂).eq]`. Establish `e' : ∀ a g : G, (a * z)⁻¹ * (g * z) = a⁻¹ * g` using `fun a g => by`. Rewrite using `[mul_inv_rev, mul_assoc, ← mul_assoc a⁻¹, ← (hz (a⁻¹ * g)).eq, inv_mul_cancel_left]`. Prove the components needed by the constructor for the conclusion.
+
+Introduce `a ha`. Take `⟨b, hb, rfl⟩` from `Finset.mem_image.1 ha`. Take `⟨k₁, k₂, rfl⟩` from `h.1 b hb`. Conclude with `⟨k₁, k₂, (e _ _).symm⟩`. Introduce and unpack `g ⟨k₁, k₂, rfl⟩`.
+
+Take `⟨a, ⟨ha, ha'⟩, hu⟩` from `h.2 _ ⟨k₁, k₂, rfl⟩`. Rewrite using `[e]`. Use `⟨a * z, ⟨Finset.mem_image_of_mem _ ha, by rwa [e']⟩, ?_⟩` and prove the remaining obligations. Introduce and unpack `y ⟨hy, hy'⟩`. Take `⟨b, hb, rfl⟩` from `Finset.mem_image.1 hy`.
+
+Rewrite `hy'` using `[e']`. Rewrite using `[hu b ⟨hb, hy'⟩]`.
+-/
 theorem isDC_mul_central {G : Type} [Group G] [DecidableEq G] (J : Subgroup G) {z α : G} (hz : ∀ g, Commute z g)
     {R : Finset G} (h : Bridge.IsDC J α R) : Bridge.IsDC J (α * z) (R.image (· * z)) := by
   have e : ∀ k₁ k₂ : G, k₁ * (α * z) * k₂ = k₁ * α * k₂ * z := fun k₁ k₂ => by
@@ -49,6 +61,23 @@ theorem isDC_mul_central {G : Type} [Group G] [DecidableEq G] (J : Subgroup G) {
     rw [e'] at hy'
     rw [hu b ⟨hb, hy'⟩]
 
+/- English proof (translation)
+Introduce `D V S θ M β Λ N L PP μ 𝓕 c T hμ h𝓕 hβ hN hL hsp hT hip hc`. Establish `: IsTopologicalGroup (GA D V)` using `Formalism.L2.GlobalTheoryTheory.GenusMassVolumes.Unfold.topGroupHA _ _`. Establish `: BorelSpace (GA D V)` using `⟨rfl⟩`. Establish `: SecondCountableTopology (GA D V)` using `(GlobalTheory.MemberAdelicTop.locallyCompact_secondCountable_t2 D V).2.1`. Establish `: Countable (GQ V)` using `(GlobalTheory.RationalCountable.discrete_countable_GQ D V).2`.
+
+Establish `: μ.IsMulRightInvariant` using `GlobalTheory.AdelicPointsUnimod.isMulRightInvariant_of_isHaarMeasure D V μ hμ`. Establish `hT'` using `(GlobalTheory.MultMem.mem_mult_iff D θ V S M _ _ T).1 hT`. Establish `hex : ∃ a, IsMultIP M μ 𝓕 T T a`. Assume the negation of the conclusion as `hne`. Conclude with `hip (by unfold ipM; rw [dif_neg hne])`.
+
+Establish `hIP` using `ipM_spec M μ 𝓕 T T hex`. Use `choose v hv hv0 using fun τ => (Submodule.ne_bot_iff _).1 (GlobalTheory.GardingVec.sm_ne_bot D V S M τ)`. Set `w : M.Vec` to `fun τ => ⟨v τ, hv τ⟩`. Take `⟨hint, hval⟩` from `hIP w w`. Establish `hne : ∫ g in 𝓕, star (T w g) * T w g ∂μ ≠ 0`.
+
+Rewrite using `[hval]`. Conclude with `mul_ne_zero hip (Finset.prod_ne_zero_iff.2 fun τ _ => inner_self_ne_zero.2 (hv0 τ))`. Choose the witnesses or unpack the hypotheses as in `⟨g₀, hg₀⟩ : ∃ g, T w g ≠ 0 := by`. Assume the negation of the conclusion as `h0`. Use `push Not at h0`.
+
+Conclude with `hne (by simp [h0])`. Establish `hc' : ∀ k ≤ V.rank, ∀ α R, IsHeckeAt V PP k α → Bridge.IsDC (levG V β L) α⁻¹ R → ∀ g, ∑ γ ∈ R, T w (g * γ) = c k * T w g` using `fun k hk α R h1 h2 g => congrArg (fun T' : MMap M => T' w g) (hc k hk α R h1 h2)`. Take `⟨z, hz, hzn, hk⟩` from `GlobalTheory.T.central_hecke_element_exists V β Λ N L PP hβ hN hL hsp`. Establish `hz' : ∀ g, Commute z⁻¹ g` using `fun g => (hz g).inv_left`. Establish `hcen : ∀ g, T w (g * z⁻¹) = c V.rank * T w g` using `fun g => by`.
+
+Simplify using `using hc' V.rank le_rfl z {z⁻¹} hzn (isDC_central _ hz') g`. Establish `hn : c V.rank ≠ 0` using `fun h0 => hg₀ (by simpa [h0] using hcen (g₀ * z))`. Use `⟨hn, fun k hkn => ?_⟩` and prove the remaining obligations. Take `⟨α, R, R', h1, h2, h3, h4, h5⟩` from `hk k hkn`. Establish `h6 : ∀ g, ∑ γ ∈ R', T w (g * γ) = c (V.rank - k) / c V.rank * T w g` using `fun g => by`.
+
+Use `hc' (V.rank - k) (Nat.sub_le _ _) (z * α⁻¹) (R'.image (· * z⁻¹)) h2 (by rw [mul_inv_rev, inv_inv]; exact isDC_mul_central _ hz' h4) g` as an intermediate fact. Rewrite `this` using `[Finset.sum_image (fun a _ b _ hab => mul_right_cancel hab)]`. Simplify using `only [← mul_assoc, hcen, ← Finset.mul_sum] at this`. Rewrite using `[div_mul_eq_mul_div, ← this, mul_div_cancel_left₀ _ hn]`. Establish `h7` using `GlobalTheory.DoubleCosetAdjoint.eigenvalue_inv_eq_star μ (GQ V) (levG V β L) 𝓕 (T w) α⁻¹ R R' (c k) (c (V.rank - k) / c V.rank) h𝓕 (hT'.aut w).cont (hT'.aut w).left (fun k hk g => by simpa using hT'.lev w k hk g) hint hne h3 (by rwa [inv_inv]) h5 (hc' k hkn α R h1 h3) h6`.
+
+Rewrite using `[h7, div_mul_cancel₀ _ hn]`.
+-/
 theorem star_eigenvalue_mul : ∀ {D : D7} {V : HSp D} {S : D.what₂.Tau → SPar} (θ : D.what₂.Tau → (Ainf D.host.F ⊗[D.host.F] D.host.E →+* ℂ)) (M : DSModel V S) (β : GL (Fin V.rank) (EAf D)) (Λ : Submodule (𝓞 D.host.E) (Fin V.rank → D.host.E)) (N : ℕ) (L : LevDat D.host.E ℂ V.rank) (PP : Pl D.host.E) (μ : Measure (GA D V)) (𝓕 : Set (GA D V)) (c : ℕ → ℂ) (T : MMap M), μ.IsHaarMeasure → IsFundamentalDomain (GQ V) 𝓕 μ → IsBaseFrame V β Λ N → ((N : ℕ) : 𝓞 D.host.E) ∉ PP.asIdeal → (∀ P', P' ∈ L.Pg ∨ P' ∈ L.Q → P' ≠ PP ∧ ¬ IsConjPl P' PP) → Bridge.SplitOff PP ∅ → T ∈ Mult θ M (levG V β L : Set (GA D V)) (fun _ => 1) → ipM M μ 𝓕 T T ≠ 0 → (∀ k ≤ V.rank, ∀ α R, IsHeckeAt V PP k α → Bridge.IsDC (levG V β L) α⁻¹ R → heckeOn M R T = c k • T) → c V.rank ≠ 0 ∧ ∀ k ≤ V.rank, star (c k) * c V.rank = c (V.rank - k) := by
   intro D V S θ M β Λ N L PP μ 𝓕 c T hμ h𝓕 hβ hN hL hsp hT hip hc
   classical

@@ -8,11 +8,17 @@ open LateralTheory.KummerTheory.AW LateralTheory.EtaleFoundations.AWLeib
 namespace LateralTheory.EtaleFoundations.EtaDelta
 variable {R : Type} [CommRing R]
 
+/- English proof (translation)
+The claim follows from `along_comp x a (SimplexCategory.δ i)`.
+-/
 theorem along_face {E : Spc} {U : Scheme.{0}} {M p : ℕ} (x : Sx E M U)
     (a : SimplexCategory.mk (p + 1) ⟶ SimplexCategory.mk M) (i : Fin (p + 2)) :
     (x.along a).face i = x.along (SimplexCategory.δ i ≫ a) :=
   along_comp x a (SimplexCategory.δ i)
 
+/- English proof (translation)
+The claim follows from `along_comp x (SimplexCategory.δ i) a`.
+-/
 theorem face_along {E : Spc} {U : Scheme.{0}} {M p : ℕ} (x : Sx E (M + 1) U) (i : Fin (M + 2))
     (a : SimplexCategory.mk p ⟶ SimplexCategory.mk M) :
     (x.face i).along a = x.along (a ≫ SimplexCategory.δ i) :=
@@ -22,15 +28,24 @@ section
 variable {I J K : Cx R} (μ : Pair I J K) {E : Spc} {n m k : ℤ} (hk : n + m = k)
   (α : Cochain ((chains R).obj E) I n) (β : Cochain ((chains R).obj E) J m)
 
+/- English proof (translation)
+Rewrite using `[Finsupp.linearCombination_apply]`. Both sides reduce to the same expression.
+-/
 theorem phi_eq {N : ℕ} {U : Scheme.{0}} (x : Sx E N U) (w : ℤ) (c : Pr N →₀ ℤ) :
     phi μ hk α β x w c = Finsupp.linearCombination ℤ (phiT μ hk α β x w) c := by
   rw [Finsupp.linearCombination_apply]; rfl
 
+/- English proof (translation)
+Simplify using `only [phiT, face_along]`.
+-/
 theorem phiT_face {M : ℕ} {U : Scheme.{0}} (x : Sx E (M + 1) U) (i : Fin (M + 2)) (w : ℤ) (z : Pr M) :
     phiT μ hk α β (x.face i) w z =
       phiT μ hk α β x w ⟨z.1, z.2.1, z.2.2.1 ≫ SimplexCategory.δ i, z.2.2.2 ≫ SimplexCategory.δ i⟩ := by
   simp only [phiT, face_along]
 
+/- English proof (translation)
+Simplify using `only [phi_eq, Pr.bd, map_sum, map_zsmul, Pr.push, Finsupp.lmapDomain_apply, Finsupp.linearCombination_mapDomain]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Use `congr 2`. Conclude with `congrArg _ (funext fun z => phiT_face μ hk α β x i w z)`.
+-/
 theorem phi_bd {M : ℕ} {U : Scheme.{0}} (x : Sx E (M + 1) U) (w : ℤ) (c : Pr M →₀ ℤ) :
     ∑ i : Fin (M + 2), (-1 : ℤ) ^ (i : ℕ) • phi μ hk α β (x.face i) w c = phi μ hk α β x w (Pr.bd c) := by
   simp only [phi_eq, Pr.bd, map_sum, map_zsmul, Pr.push, Finsupp.lmapDomain_apply,
@@ -39,6 +54,11 @@ theorem phi_bd {M : ℕ} {U : Scheme.{0}} (x : Sx E (M + 1) U) (w : ℤ) (c : Pr
   congr 2
   exact congrArg _ (funext fun z => phiT_face μ hk α β x i w z)
 
+/- English proof (translation)
+Simplify using `only [phiT, Fm]`. Use `split_ifs with h1 h2 h2`. Both sides reduce to the same expression. It suffices to derive a contradiction. Use linear arithmetic over natural numbers and integers.
+
+It suffices to derive a contradiction. Use linear arithmetic over natural numbers and integers. Rewrite using `[smul_zero]`.
+-/
 theorem phiT_Fm {N : ℕ} {U : Scheme.{0}} (x : Sx E N U) (w : ℤ) (p r : ℕ)
     (a : SimplexCategory.mk p ⟶ SimplexCategory.mk N) (b : SimplexCategory.mk r ⟶ SimplexCategory.mk N) :
     phiT μ hk α β x w ⟨p, r, a, b⟩ = ((m * (p : ℤ)).negOnePow : ℤ) • Fm μ α β U w p r (x.along a) (x.along b) := by
@@ -51,11 +71,17 @@ theorem phiT_Fm {N : ℕ} {U : Scheme.{0}} (x : Sx E N U) (w : ℤ) (p r : ℕ)
 
 end
 
+/- English proof (translation)
+Use `ev_sub' (0 : Cochain ((chains R).obj E) I n) 0 p s h U x` as an intermediate fact. Rewrite `this` using `[sub_self, sub_self]`. Then use the resulting hypothesis.
+-/
 theorem ev_zero' {E : Spc} {I : Cx R} {n : ℤ} (p : ℕ) (s : ℤ) (h : -(p : ℤ) + n = s) (U : Scheme.{0}) (x : Sx E p U) :
     ev (0 : Cochain ((chains R).obj E) I n) p s h U x = 0 := by
   have := ev_sub' (0 : Cochain ((chains R).obj E) I n) 0 p s h U x
   rwa [sub_self, sub_self] at this
 
+/- English proof (translation)
+Establish `h` using `ev_delta_bd (n := n) (m := n + 1) rfl α.1 p s t hs (by omega) U y`. Rewrite `h` using `[Cocycle.δ_eq_zero, ev_zero', Int.negOnePow_succ, Units.smul_def, Units.val_neg, neg_smul]`. Conclude with `add_neg_eq_zero.mp h.symm`.
+-/
 theorem d_ev {E : Spc} {I : Cx R} {n : ℤ} (α : Cocycle ((chains R).obj E) I n) (p : ℕ) (s t : ℤ)
     (hs : -(p : ℤ) + n = s) (hst : s + 1 = t) (U : Scheme.{0}) (y : Sx E p U) :
     Sec.map (I.d s t) (ev α.1 p s hs U y) =
@@ -64,18 +90,36 @@ theorem d_ev {E : Spc} {I : Cx R} {n : ℤ} (α : Cocycle ((chains R).obj E) I n
   rw [Cocycle.δ_eq_zero, ev_zero', Int.negOnePow_succ, Units.smul_def, Units.val_neg, neg_smul] at h
   exact add_neg_eq_zero.mp h.symm
 
+/- English proof (translation)
+Apply the tactic sequence `cases p <;> simp [bd]`.
+-/
 theorem bd_zero' {E : Spc} {U : Scheme.{0}} {G : Type*} [AddCommGroup G] (p : ℕ) (y : Sx E p U) :
     bd (E := E) (U := U) (fun _ _ => (0 : G)) p y = 0 := by
   cases p <;> simp [bd]
 
+/- English proof (translation)
+Rewrite using `[map_zsmul]`. Both sides reduce to the same expression.
+-/
 theorem mul_zsmul_left {I J K : Cx R} (μ : Pair I J K) (U : Scheme.{0}) (s t w : ℤ) (h : s + t = w) (c : ℤ)
     (a : Sec (I.X s) U) (b : Sec (J.X t) U) : μ.mul U s t w h (c • a) b = c • μ.mul U s t w h a b := by
   rw [map_zsmul]; rfl
 
+/- English proof (translation)
+The claim follows from `map_zsmul _ c b`.
+-/
 theorem mul_zsmul_right {I J K : Cx R} (μ : Pair I J K) (U : Scheme.{0}) (s t w : ℤ) (h : s + t = w) (c : ℤ)
     (a : Sec (I.X s) U) (b : Sec (J.X t) U) : μ.mul U s t w h a (c • b) = c • μ.mul U s t w h a b :=
   map_zsmul _ c b
 
+/- English proof (translation)
+Distinguish the cases in `h : (-(p : ℤ) + n) + (-(r : ℤ) + m) = s`. Establish `e : Fm μ α.1 β.1 U s p r y z = μ.mul U _ _ s h (ev α.1 p _ rfl U y) (ev β.1 r _ rfl U z)`. Unfold `Fm`. Rewrite using `[dif_pos h]`. Rewrite using `[e, leib' μ U _ _ s (-(p : ℤ) + n + 1) (-(r : ℤ) + m + 1) t h rfl rfl hst, d_ev α p _ _ rfl rfl, d_ev β r _ _ rfl rfl, mul_zsmul_left, mul_zsmul_right, mul_bd_left, mul_bd_right, Units.smul_def, smul_smul, ← Units.val_mul, ← Int.negOnePow_add]`.
+
+Use `congr 2`. Use `bd_congr (fun q y' hq => ?_) y` and prove the remaining obligations. Unfold `Fm`. Rewrite using `[dif_pos (by omega), dif_pos (by omega)]`. Conclude with `mul_congr μ U α.1 β.1 _ _ _ _ _ _ _ _ _ _ _ _ _ _ _`.
+
+Use `bd_congr (fun q z' hq => ?_) z` and prove the remaining obligations. Unfold `Fm`. Rewrite using `[dif_pos (by omega), dif_pos (by omega)]`. Conclude with `mul_congr μ U α.1 β.1 _ _ _ _ _ _ _ _ _ _ _ _ _ _ _`. Establish `e : Fm μ α.1 β.1 U s p r y z = 0` using `by unfold Fm; rw [dif_neg h]`.
+
+Establish `h0` using `secmap_zsmul (K.d s t) (0 : ℤ) (0 : Sec (K.X s) U)`. Rewrite `h0` using `[zero_smul, zero_smul]`. Rewrite using `[e, h0]`. Rewrite using `[bd_congr (g := fun _ _ => (0 : Sec (K.X t) U)) (fun q y' hq => by unfold Fm; rw [dif_neg (by omega)]) y, bd_congr (g := fun _ _ => (0 : Sec (K.X t) U)) (fun q z' hq => by unfold Fm; rw [dif_neg (by omega)]) z, bd_zero', bd_zero', smul_zero, smul_zero, add_zero]`.
+-/
 theorem d_Fm {I J K : Cx R} (μ : Pair I J K) {E : Spc} {n m : ℤ} (α : Cocycle ((chains R).obj E) I n)
     (β : Cocycle ((chains R).obj E) J m) (U : Scheme.{0}) (s t : ℤ) (hst : s + 1 = t) (p r : ℕ)
     (y : Sx E p U) (z : Sx E r U) :
@@ -105,9 +149,15 @@ theorem d_Fm {I J K : Cx R} (μ : Pair I J K) {E : Spc} {n m : ℤ} (α : Cocycl
       bd_congr (g := fun _ _ => (0 : Sec (K.X t) U)) (fun q z' hq => by unfold Fm; rw [dif_neg (by omega)]) z,
       bd_zero', bd_zero', smul_zero, smul_zero, add_zero]
 
+/- English proof (translation)
+The claim follows from `map_add ((φ.hom.app (op U)).hom) a b`.
+-/
 theorem secmap_add' {F G : Shv R} (φ : F ⟶ G) {U : Scheme.{0}} (a b : Sec F U) :
     Sec.map φ (a + b) = Sec.map φ a + Sec.map φ b := map_add ((φ.hom.app (op U)).hom) a b
 
+/- English proof (translation)
+The claim follows from `map_zero ((φ.hom.app (op U)).hom)`.
+-/
 theorem secmap_zero' {F G : Shv R} (φ : F ⟶ G) {U : Scheme.{0}} : Sec.map φ (0 : Sec F U) = 0 :=
   map_zero ((φ.hom.app (op U)).hom)
 
@@ -115,6 +165,13 @@ section
 variable {I J K : Cx R} (μ : Pair I J K) {E : Spc} {n m k : ℤ} (hk : n + m = k)
   (α : Cocycle ((chains R).obj E) I n) (β : Cocycle ((chains R).obj E) J m)
 
+/- English proof (translation)
+Consider the cases of `p with`. Consider the case `zero => simp [bd, Pr.d₁]`. Consider the case `succ p => show _ = _ • Finsupp.linearCombination ℤ _ (∑ i : Fin (p + 2), Finsupp.single (⟨p, r, SimplexCategory.δ i ≫ a, b⟩ : Pr N) ((-1 : ℤ) ^ (i : ℕ)))`. Simplify using `only [bd, map_sum, Finsupp.linearCombination_single, phiT_Fm, along_face, Finset.smul_sum, smul_smul]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations.
+
+Use `congr 1`. Substitute `hk` using the available equality. Simplify using `only [sign_nat, ← Units.val_mul, ← Int.negOnePow_add]`. Use `congr 1`. Rewrite using `[Int.negOnePow_eq_iff]`.
+
+Conclude with `⟨0, by push_cast; ring⟩`.
+-/
 theorem part1 {N : ℕ} {U : Scheme.{0}} (x : Sx E N U) (t : ℤ) (p r : ℕ)
     (a : SimplexCategory.mk p ⟶ SimplexCategory.mk N) (b : SimplexCategory.mk r ⟶ SimplexCategory.mk N) :
     (((m * (p : ℤ)).negOnePow : ℤˣ) : ℤ) • (((n.negOnePow : ℤˣ) : ℤ) •
@@ -134,6 +191,13 @@ theorem part1 {N : ℕ} {U : Scheme.{0}} (x : Sx E N U) (t : ℤ) (p r : ℕ)
     rw [Int.negOnePow_eq_iff]
     exact ⟨0, by push_cast; ring⟩
 
+/- English proof (translation)
+Consider the cases of `r with`. Consider the case `zero => simp [bd, Pr.d₂]`. Consider the case `succ r => show _ = _ • Finsupp.linearCombination ℤ _ ((-1 : ℤ) ^ p • ∑ j : Fin (r + 2), Finsupp.single (⟨p, r, a, SimplexCategory.δ j ≫ b⟩ : Pr N) ((-1 : ℤ) ^ (j : ℕ)))`. Simplify using `only [bd, map_zsmul, map_sum, Finsupp.linearCombination_single, phiT_Fm, along_face, Finset.smul_sum, smul_smul]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations.
+
+Use `congr 1`. Substitute `hk` using the available equality. Simplify using `only [sign_nat, ← Units.val_mul, ← Int.negOnePow_add]`. Use `congr 1`. Rewrite using `[Int.negOnePow_eq_iff]`.
+
+Conclude with `⟨-(p : ℤ), by push_cast; ring⟩`.
+-/
 theorem part2 {N : ℕ} {U : Scheme.{0}} (x : Sx E N U) (t : ℤ) (p r : ℕ)
     (a : SimplexCategory.mk p ⟶ SimplexCategory.mk N) (b : SimplexCategory.mk r ⟶ SimplexCategory.mk N) :
     (((m * (p : ℤ)).negOnePow : ℤˣ) : ℤ) • (((((-(p : ℤ) + n) + m).negOnePow : ℤˣ) : ℤ) •
@@ -155,6 +219,9 @@ theorem part2 {N : ℕ} {U : Scheme.{0}} (x : Sx E N U) (t : ℤ) (p r : ℕ)
     rw [Int.negOnePow_eq_iff]
     exact ⟨-(p : ℤ), by push_cast; ring⟩
 
+/- English proof (translation)
+Take `⟨p, r, a, b⟩` from `z`. Rewrite using `[phiT_Fm, secmap_zsmul, d_Fm μ α β U s t hst, smul_add, map_add, smul_add, part1 μ hk α β, part2 μ hk α β]`.
+-/
 theorem d_phiT {N : ℕ} {U : Scheme.{0}} (x : Sx E N U) (s t : ℤ) (hst : s + 1 = t) (z : Pr N) :
     Sec.map (K.d s t) (phiT μ hk α.1 β.1 x s z) =
       ((k.negOnePow : ℤˣ) : ℤ) • Finsupp.linearCombination ℤ (phiT μ hk α.1 β.1 x t)
@@ -162,6 +229,11 @@ theorem d_phiT {N : ℕ} {U : Scheme.{0}} (x : Sx E N U) (s t : ℤ) (hst : s + 
   obtain ⟨p, r, a, b⟩ := z
   rw [phiT_Fm, secmap_zsmul, d_Fm μ α β U s t hst, smul_add, map_add, smul_add, part1 μ hk α β, part2 μ hk α β]
 
+/- English proof (translation)
+Rewrite using `[phi_eq, phi_eq]`. Use `Finsupp.induction_linear c ?_ ?_ ?_` and prove the remaining obligations. Simplify using `only [map_zero, secmap_zero', smul_zero]`. Introduce `f g hf hg`. Rewrite using `[map_add, map_add, map_add, secmap_add', hf, hg, smul_add]`.
+
+Introduce `z a`. Rewrite using `[Finsupp.linearCombination_single, secmap_zsmul, d_phiT μ hk α β x s t hst]`. Unfold `Pr.d`. Rewrite using `[Finsupp.linearCombination_single, map_zsmul, smul_comm]`.
+-/
 theorem d_phi {N : ℕ} {U : Scheme.{0}} (x : Sx E N U) (s t : ℤ) (hst : s + 1 = t) (c : Pr N →₀ ℤ) :
     Sec.map (K.d s t) (phi μ hk α.1 β.1 x s c) = ((k.negOnePow : ℤˣ) : ℤ) • phi μ hk α.1 β.1 x t (Pr.d N c) := by
   rw [phi_eq, phi_eq]
@@ -174,10 +246,16 @@ theorem d_phi {N : ℕ} {U : Scheme.{0}} (x : Sx E N U) (s t : ℤ) (hst : s + 1
     unfold Pr.d
     rw [Finsupp.linearCombination_single, map_zsmul, smul_comm]
 
+/- English proof (translation)
+Simplify using `only [phi_eq, map_add]`.
+-/
 theorem phi_add {N : ℕ} {U : Scheme.{0}} (x : Sx E N U) (w : ℤ) (c d : Pr N →₀ ℤ) :
     phi μ hk α.1 β.1 x w (c + d) = phi μ hk α.1 β.1 x w c + phi μ hk α.1 β.1 x w d := by
   simp only [phi_eq, map_add]
 
+/- English proof (translation)
+Simplify using `only [phi_eq, map_sub]`.
+-/
 theorem phi_sub {N : ℕ} {U : Scheme.{0}} (x : Sx E N U) (w : ℤ) (c d : Pr N →₀ ℤ) :
     phi μ hk α.1 β.1 x w (c - d) = phi μ hk α.1 β.1 x w c - phi μ hk α.1 β.1 x w d := by
   simp only [phi_eq, map_sub]
@@ -188,6 +266,11 @@ end LateralTheory.EtaleFoundations.EtaDelta
 
 open LateralTheory.KummerTheory.AW LateralTheory.EtaleFoundations.EtaDelta in
 
+/- English proof (translation)
+Introduce `h hs R _ I J K μ E n m k hk α β η hη N t ht U x`. Consider the cases of `N with`. Consider the case `zero`. Rewrite using `[ev_delta_zero (n := k - 1) (by omega) η (-((0 : ℕ) : ℤ) + (k - 1)) t rfl ht U x, hη 0 _ _ U x, d_phi μ hk α β x _ t (by omega), hs.2.1, phi_sub]`. Consider the case `succ M`.
+
+Rewrite using `[ev_delta_succ (n := k - 1) (by omega) η M (-((M + 1 : ℕ) : ℤ) + (k - 1)) t rfl ht U x, hη (M + 1) _ _ U x]`. Simplify using `only [hη]`. Rewrite using `[Units.smul_def, phi_bd, d_phi μ hk α β x _ t (by omega), ← smul_add, ← phi_add, hs.2.2 M, phi_sub]`.
+-/
 theorem LateralTheory.EtaleFoundations.cupflip_eta_delta_of : LateralTheory.EtaleFoundations.cupflip_eta_delta := by
   intro h hs R _ I J K μ E n m k hk α β η hη N t ht U x
   cases N with

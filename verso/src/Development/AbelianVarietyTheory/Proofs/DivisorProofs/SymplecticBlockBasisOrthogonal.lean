@@ -15,11 +15,17 @@ variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algeb
 
 omit [NumberField E] in
 
+/- English proof (translation)
+Use extensionality with `r l`. Simplify using `[incM, incV, Matrix.vecMulVec_apply, map_mul]`.
+-/
 theorem incM_vecMulVec {n d : ℕ} (u : Fin n → E) (w : Fin d → E) :
     incM F (Matrix.vecMulVec u w) = Matrix.vecMulVec (incV F u) (incV F w) := by
   ext r l
   simp [incM, incV, Matrix.vecMulVec_apply, map_mul]
 
+/- English proof (translation)
+Use extensionality with `r l`. Simplify using `[Matrix.mul_apply, Matrix.vecMulVec_apply, Matrix.mulVec, dotProduct, Finset.sum_mul, mul_assoc]`.
+-/
 theorem mul_vecMulVec_eq {n d : ℕ} {R : Type} [CommRing R] (A : Matrix (Fin n) (Fin n) R) (u : Fin n → R)
     (w : Fin d → R) : A * Matrix.vecMulVec u w = Matrix.vecMulVec (A *ᵥ u) w := by
   ext r l
@@ -27,6 +33,9 @@ theorem mul_vecMulVec_eq {n d : ℕ} {R : Type} [CommRing R] (A : Matrix (Fin n)
 
 omit [NumberField E] in
 
+/- English proof (translation)
+Use extensionality with `r l`. Use `congrFun (h l) r` as an intermediate fact. Rewrite `this` using `[Matrix.mulVec, dotProduct]`. Rewrite using `[Matrix.mul_apply]`. Conclude with `this`.
+-/
 theorem mul_incM_of_cols {n d : ℕ} (A : Matrix (Fin n) (Fin n) (AE F E)) (m : Matrix (Fin n) (Fin d) E)
     (h : ∀ l, A *ᵥ incV F (fun r => m r l) = incV F (fun r => m r l)) : A * incM F m = incM F m := by
   ext r l
@@ -37,6 +46,9 @@ theorem mul_incM_of_cols {n d : ℕ} (A : Matrix (Fin n) (Fin n) (AE F E)) (m : 
 
 omit [NumberField E] in
 
+/- English proof (translation)
+Rewrite `h` using `[Matrix.sub_mulVec, Matrix.one_mulVec, sub_eq_iff_eq_add]`. Rewrite using `[h, tAd, add_smul, one_smul, add_comm]`.
+-/
 theorem mulVec_eq_tAd {n : ℕ} (A : Matrix (Fin n) (Fin n) (AE F E)) (v : Fin n → AE F E) (s : ℝ)
     (h : (A - 1) *ᵥ v = realAd F (s - 1) • v) : A *ᵥ v = tAd F s • v := by
   rw [Matrix.sub_mulVec, Matrix.one_mulVec, sub_eq_iff_eq_add] at h
@@ -46,6 +58,37 @@ end GlobalTheory.ThKTorus.FrameCoords
 
 open GlobalTheory.ThKTorus.FrameCoords
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ n d q J K x y b blk hdis h11 h22 h12 h21 hyl hxr hoff`. Set `b' : Module.Basis ((Fin n × Fin d) ⊕ (Fin n × Fin d)) (AF F) (Matrix (Fin n) (Fin d) (AE F E))` to `(b.baseChange (AF F)).map (GlobalTheory.RatDarboux.matBC (AF F))`. Establish `hb'v : ∀ j, b' j = incM F (b j)` using `fun j => by`. Simplify using `only [b', Module.Basis.map_apply, Module.Basis.baseChange_apply, GlobalTheory.RatDarboux.matBC_one]`. Both sides reduce to the same expression.
+
+Establish `hb' : ∀ i j, GlobalTheory.RatDarboux.sympBil (cA σ) (-1) (incM F J) (incM F K) (b' i) (b' j) = algebraMap F (AF F) (symp σ (-1) J K (b i) (b j))` using `fun i j => by`. Rewrite using `[hb'v, hb'v]`. Conclude with `GlobalTheory.RatDarboux.symp_map (AF F) σ J K _ _`. Take `⟨co, hco⟩` from `GlobalTheory.RatDarboux.exists_darboux_of_basis (GlobalTheory.RatDarboux.sympBil (cA σ) (-1) (incM F J) (incM F K)) b' (fun i j => by rw [hb', h11, map_zero]) (fun i j => by rw [hb', h22, map_zero]) (fun i => by rw [hb', h12, if_pos rfl, map_one]) (fun i j h => by rw [hb', h12, i …`. Use `⟨co, fun m => ⟨fun k => b.repr m (.inl k), fun k => b.repr m (.inr k), ?_⟩, hdis, ?_⟩` and prove the remaining obligations.
+
+Establish `hx : ∀ i, b'.repr (incM F m) i = algebraMap F (AF F) (b.repr m i)` using `fun i => by`. Rewrite using `[show incM F m = GlobalTheory.RatDarboux.matBC (AF F) ((1 : AF F) ⊗ₜ[F] m) from (GlobalTheory.RatDarboux.matBC_one _ m).symm]`. Simplify using `[b', Algebra.smul_def]`. Rewrite using `[hco]`. Simplify using `only [hx]`.
+
+Introduce `t a _ hT z`. Set `c : (Fin n × Fin d) ⊕ (Fin n × Fin d) → AF F` to `Sum.elim (fun k => ∏ i, if k ∈ blk i then tAd F (t i)⁻¹ else 1) (fun k => ∏ i, if k ∈ blk i then tAd F (t i) else 1)`. Establish `hprod : ∀ (s : Fin q → ℝ) (i : Fin q) (k : Fin n × Fin d), k ∈ blk i → (∏ i', if k ∈ blk i' then tAd F (s i') else 1) = tAd F (s i)` using `fun s i k hi => by`. Rewrite using `[Finset.prod_eq_single i (fun i' _ hne => if_neg fun h' => Finset.disjoint_left.1 (hdis i i' hne.symm) hi h') (fun h => absurd (Finset.mem_univ i) h), if_pos hi]`. Establish `hone : ∀ (s : Fin q → ℝ) (k : Fin n × Fin d), (∀ i, k ∉ blk i) → (∏ i', if k ∈ blk i' then tAd F (s i') else 1) = 1` using `fun s k hk => Finset.prod_eq_one fun i _ => if_neg (hk i)`.
+
+Establish `hfix : ∀ k, (∀ i, k ∉ blk i) → ∀ j, (j = Sum.inl k ∨ j = Sum.inr k) → mat a * b' j = b' j`. Introduce `k hk j hj`. Rewrite using `[hb'v]`. Use `mul_incM_of_cols _ _ fun l => ?_` and prove the remaining obligations. Establish `h0` using `hT.2.2 (fun r => b j r l) (fun i => by rcases hj with rfl | rfl; exacts [(hoff k hk l i).1, (hoff k hk l i).2.2.1]) (fun i => by rcases hj with rfl | rfl; exacts [(hoff k hk l i).2.1, (hoff k hk l i).2.2.2])`.
+
+Rewrite `h0` using `[Matrix.sub_mulVec, Matrix.one_mulVec, sub_eq_zero]`. Conclude with `h0`. Establish `hc : ∀ j, mat a * b' j = c j • b' j`. Introduce and unpack `(k | k)`. Distinguish the cases in `hk : ∃ i, k ∈ blk i`.
+
+Take `⟨i, hi⟩` from `hk`. Take `⟨w, hw⟩` from `hyl i k hi`. Establish `hcv : c (.inl k) = tAd F (t i)⁻¹` using `hprod (fun i => (t i)⁻¹) i k hi`. Rewrite using `[hcv, hb'v, hw, incM_vecMulVec, mul_vecMulVec_eq, mulVec_eq_tAd _ _ _ (hT.2.1 i)]`. Use extensionality with `r l`.
+
+Simplify using `[Matrix.vecMulVec_apply, smul_mul_assoc]`. Use `push_neg at hk`. Establish `hcv : c (.inl k) = 1` using `hone (fun i => (t i)⁻¹) k hk`. Rewrite using `[hcv, one_smul]`. Conclude with `hfix k hk _ (.inl rfl)`.
+
+Distinguish the cases in `hk : ∃ i, k ∈ blk i`. Take `⟨i, hi⟩` from `hk`. Take `⟨w, hw⟩` from `hxr i k hi`. Establish `hcv : c (.inr k) = tAd F (t i)` using `hprod t i k hi`. Rewrite using `[hcv, hb'v, hw, incM_vecMulVec, mul_vecMulVec_eq, mulVec_eq_tAd _ _ _ (hT.1 i)]`.
+
+Use extensionality with `r l`. Simplify using `[Matrix.vecMulVec_apply, smul_mul_assoc]`. Use `push_neg at hk`. Establish `hcv : c (.inr k) = 1` using `hone t k hk`. Rewrite using `[hcv, one_smul]`.
+
+Conclude with `hfix k hk _ (.inr rfl)`. Establish `hrep : ∀ w j, b'.repr (mat a * w) j = c j * b'.repr w j`. Introduce `w j`. Use `conv_lhs => rw [← b'.sum_repr w]`. Rewrite using `[Matrix.mul_sum]`.
+
+Repeatedly rewrite using `[Matrix.mul_smul, hc, smul_smul]`. Rewrite using `[b'.repr_sum_self]`. Conclude with `mul_comm _ _`. Establish `hw : ∀ v : (Fin n × Fin d → AF F) × (Fin n × Fin d → AF F), ∀ k, b'.repr (co.e.symm v) (.inl k) = v.1 k ∧ b'.repr (co.e.symm v) (.inr k) = v.2 k`. Introduce `v k`.
+
+Use `hco (co.e.symm v)` as an intermediate fact. Rewrite `this` using `[LinearEquiv.apply_symm_apply]`. Conclude with `⟨(congrFun (congrArg Prod.fst this) k).symm, (congrFun (congrArg Prod.snd this) k).symm⟩`. Prove the components needed by the constructor for the conclusion. Rewrite using `[hco]`.
+
+Use extensionality with `k`. Simplify using `only [hrep, (hw _ k).1, c, Sum.elim_inl, blkScale]`. Simplify using `only [hrep, (hw _ k).2, mul_zero, Pi.zero_apply]`. Rewrite using `[hco]`. Use extensionality with `k`.
+
+Simplify using `only [hrep, (hw _ k).1, mul_zero, Pi.zero_apply]`. Simplify using `only [hrep, (hw _ k).2, c, Sum.elim_inr, blkScale]`.
+-/
 theorem GlobalTheory.ThKTorus.exists_frameCo_of_basis : ∀ {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) {n d q : ℕ}
     (J : Matrix (Fin n) (Fin n) E) (K : Matrix (Fin d) (Fin d) E) (x y : Fin q → Fin n → E)
     (b : Module.Basis ((Fin n × Fin d) ⊕ (Fin n × Fin d)) F (Matrix (Fin n) (Fin d) E))

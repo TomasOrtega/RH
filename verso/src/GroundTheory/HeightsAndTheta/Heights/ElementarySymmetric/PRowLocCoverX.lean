@@ -9,6 +9,9 @@ set_option maxSynthPendingDepth 1
 
 namespace GroundTheory.Heights₂.Heights.Kleiman.SectionsOverLocalization
 
+/- English proof (translation)
+The claim follows from `RowLocCover.proof ChartSecGen.full (ChartSecMul.proof BundleOfDeg.full) RowSub.proof RowChartAct.proof`.
+-/
 theorem RowLocCover.closed : RowLocCover.Statement :=
   RowLocCover.proof ChartSecGen.full (ChartSecMul.proof BundleOfDeg.full) RowSub.proof
     RowChartAct.proof

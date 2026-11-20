@@ -14,6 +14,15 @@ namespace HilbertFamily
 
 open MvPolynomial
 
+/- English proof (translation)
+Set `p : Ideal A` to `RingHom.ker (algebraMap A K)`. Use `haveI : p.IsPrime := RingHom.ker_isPrime _`. Set `B` to `Localization.AtPrime p`. Use `haveI : Module.Free B (B ⊗[A] M) := ha B (IsLocalization.map_units B (⟨a, hK⟩ : p.primeCompl))`. Use `haveI : Module.Flat B (B ⊗[A] N) := Module.Flat.of_retract (i.baseChange B) (r.baseChange B) (by`.
+
+Rewrite using `[← LinearMap.baseChange_comp, hri, LinearMap.baseChange_id])`. Use `haveI : Module.Free B (B ⊗[A] N) := Module.free_of_flat_of_isLocalRing`. Establish `key : ∀ (L : Type) [Field L] [Algebra A L], (∀ y : p.primeCompl, IsUnit (algebraMap A L y)) → Module.finrank L (L ⊗[A] N) = Module.finrank B (B ⊗[A] N)`. Introduce `L _ _ hL`. Use `letI : Algebra B L := (IsLocalization.lift (M := p.primeCompl) hL).toAlgebra`.
+
+Use `haveI : IsScalarTower A B L := .of_algebraMap_eq fun y => (IsLocalization.lift_eq (M := p.primeCompl) hL y).symm`. Rewrite using `[← Module.finrank_baseChange (R := L) (S := B) (M' := B ⊗[A] N)]`. Conclude with `(TensorProduct.AlgebraTensorModule.cancelBaseChange A B L L N).finrank_eq.symm`. Rewrite using `[key K fun y => isUnit_iff_ne_zero.2 y.2, key (FractionRing A) fun y => ?_]`. Use `isUnit_iff_ne_zero.2 ?_` and prove the remaining obligations.
+
+Rewrite using `[Ne, FaithfulSMul.algebraMap_eq_zero_iff]`. Introduce `h`. Conclude with `y.2 (h ▸ p.zero_mem)`.
+-/
 theorem finrank_tensor_eq_of_retract {A M N : Type} [CommRing A] [IsDomain A]
     [AddCommGroup M] [Module A M] [AddCommGroup N] [Module A N] [Module.Finite A N]
     (i : N →ₗ[A] M) (r : M →ₗ[A] N) (hri : r ∘ₗ i = LinearMap.id) (a : A)
@@ -54,6 +63,11 @@ instance {A σ : Type} [CommRing A] [Finite σ] (I : Ideal (MvPolynomial σ A)) 
     Module.Finite A (piece I e) :=
   Module.Finite.iff_fg.2 ((homogeneousSubmodule_fg σ A e).map _)
 
+/- English proof (translation)
+Set `f : MvPolynomial σ A →ₗ[A] piece I e` to `LinearMap.codRestrict (piece I e) ((Ideal.Quotient.mkₐ A I).toLinearMap ∘ₗ homogeneousComponent e) fun F => ⟨_, homogeneousComponent_mem e F, rfl⟩`. Establish `hf : I.restrictScalars A ≤ LinearMap.ker f` using `fun F hF => Subtype.ext (Ideal.Quotient.eq_zero_iff_mem.2 (hI F hF e))`. Use `⟨((I.restrictScalars A).liftQ f hf) ∘ₗ (Submodule.Quotient.restrictScalarsEquiv A I).symm.toLinearMap, ?_⟩` and prove the remaining obligations. Use extensionality with `⟨_, F, hF, rfl⟩`. Express the relevant statement in the definitionally equal form `Ideal.Quotient.mk I (homogeneousComponent e F) = Ideal.Quotient.mk I F`.
+
+Rewrite using `[homogeneousComponent_of_mem hF, if_pos rfl]`.
+-/
 theorem exists_retract {A σ : Type} [CommRing A] (I : Ideal (MvPolynomial σ A))
     (hI : ∀ F ∈ I, ∀ e, homogeneousComponent e F ∈ I) (e : ℕ) :
     ∃ r : (MvPolynomial σ A ⧸ I) →ₗ[A] piece I e, r ∘ₗ (piece I e).subtype = LinearMap.id := by
@@ -69,6 +83,31 @@ theorem exists_retract {A σ : Type} [CommRing A] (I : Ideal (MvPolynomial σ A)
   change Ideal.Quotient.mk I (homogeneousComponent e F) = Ideal.Quotient.mk I F
   rw [homogeneousComponent_of_mem hF, if_pos rfl]
 
+/- English proof (translation)
+Take `⟨r, hr⟩` from `exists_retract I hI e`. Establish `hinj : Function.Injective ((piece I e).subtype.baseChange K)`. Apply `Function.LeftInverse.injective (g := r.baseChange K)` to reduce the goal to its premises. Introduce `z`. Rewrite using `[← LinearMap.comp_apply, ← LinearMap.baseChange_comp, hr, LinearMap.baseChange_id, LinearMap.id_apply]`.
+
+Set `ε` to `algebraTensorAlgEquiv (σ := σ) A K`. Set `ψ : MvPolynomial σ K →ₗ[K] K ⊗[A] (MvPolynomial σ A ⧸ I)` to `(Ideal.Quotient.mkₐ A I).toLinearMap.baseChange K ∘ₗ ε.symm.toLinearMap`. Establish `hψ : ∀ F : MvPolynomial σ A, ψ (map (algebraMap A K) F) = 1 ⊗ₜ Ideal.Quotient.mk I F`. Introduce `F`. Establish `: ε.symm (map (algebraMap A K) F) = 1 ⊗ₜ F`.
+
+Rewrite using `[AlgEquiv.symm_apply_eq, algebraTensorAlgEquiv_tmul, one_smul]`. Express the relevant statement in the definitionally equal form `(Ideal.Quotient.mkₐ A I).toLinearMap.baseChange K (ε.symm _) = _`. Rewrite using `[this]`. Both sides reduce to the same expression. Establish `hker : ∀ G, ψ G = 0 ↔ G ∈ I.map (map (algebraMap A K))`.
+
+Introduce `G`. Establish `h1` using `Algebra.TensorProduct.lTensor_ker (A := K) (Ideal.Quotient.mkₐ A I) (Ideal.Quotient.mkₐ_surjective A I)`. Establish `h2 : RingHom.ker (Ideal.Quotient.mkₐ A I) = I` using `Ideal.Quotient.mkₐ_ker A I`. Rewrite `h1` using `[h2]`. Establish `h3 : (map (algebraMap A K) : MvPolynomial σ A →+* MvPolynomial σ K) = (ε.toRingEquiv : _ →+* _).comp (Algebra.TensorProduct.includeRight (R` using `A) (A := K) (B := MvPolynomial σ A)).toRingHom := by`.
+
+Use `RingHom.ext fun F => ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `_ = ε (1 ⊗ₜ F)`. Rewrite using `[algebraTensorAlgEquiv_tmul, one_smul]`. Establish `h4 : I.map (Algebra.TensorProduct.includeRight (R` using `A) (A := K) (B := MvPolynomial σ A)).toRingHom = _ := h1.symm`. Rewrite using `[h3, ← Ideal.map_map, h4, Ideal.map_comap_of_equiv, Ideal.mem_comap, RingHom.mem_ker]`.
+
+Both sides reduce to the same expression. Establish `hrange : (homogeneousSubmodule σ K e).map ψ = (piece I e).baseChange K`. Apply `le_antisymm` to reduce the goal to its premises. Introduce and unpack `_ ⟨G, hG, rfl⟩`. Rewrite using `[G.as_sum, map_sum]`.
+
+Use `Submodule.sum_mem _ fun d hd => ?_` and prove the remaining obligations. Establish `hd' : d.degree = e`. Rewrite using `[Finsupp.degree_eq_weight_one]`. Conclude with `hG (mem_support_iff.1 hd)`. Establish `: (monomial d (coeff d G) : MvPolynomial σ K) = coeff d G • map (algebraMap A K) (monomial d 1)`.
+
+Simplify using `[smul_monomial]`. Rewrite using `[this, map_smul, hψ]`. Conclude with `Submodule.smul_mem _ _ (Submodule.tmul_mem_baseChange_of_mem _ ⟨_, isHomogeneous_monomial 1 hd', rfl⟩)`. Introduce and unpack `_ ⟨z, rfl⟩`. Proceed by induction on `z with`.
+
+Consider the case `zero => simp`. Consider the case `add z w hz hw => rw [map_add]`. Conclude with `add_mem hz hw`. Consider the case `tmul c n`. Take `⟨_, F, hF, rfl⟩` from `n`.
+
+Use `⟨c • map (algebraMap A K) F, Submodule.smul_mem _ _ (IsHomogeneous.map hF _), ?_⟩` and prove the remaining obligations. Rewrite using `[map_smul, hψ, TensorProduct.smul_tmul', smul_eq_mul, mul_one]`. Both sides reduce to the same expression. Use `haveI : Module.Finite K (homogeneousSubmodule σ K e) := Module.Finite.iff_fg.2 (homogeneousSubmodule_fg σ K e)`. Establish `h` using `LinearMap.finrank_range_add_finrank_ker (ψ ∘ₗ (homogeneousSubmodule σ K e).subtype)`.
+
+Rewrite `h` using `[LinearMap.range_comp, Submodule.range_subtype, hrange, Submodule.baseChange, LinearMap.finrank_range_of_inj hinj, LinearMap.ker_comp, ← Submodule.finrank_map_subtype_eq, Submodule.map_comap_subtype]`. Establish `hk : LinearMap.ker ψ = (I.map (map (algebraMap A K))).restrictScalars K` using `Submodule.ext hker`. Rewrite `h` using `[hk]`. Use `h.trans ?_` and prove the remaining obligations. Rewrite using `[homogeneousSubmodule_eq_finsupp_supported]`.
+
+Conclude with `Module.finrank_eq_nat_card_basis (basisRestrictSupport K _)`.
+-/
 theorem dimDeg_add_finrank {A σ : Type} [CommRing A] [Finite σ] (I : Ideal (MvPolynomial σ A))
     (hI : ∀ F ∈ I, ∀ e, homogeneousComponent e F ∈ I) (e : ℕ)
     (K : Type) [Field K] [Algebra A K] :
@@ -144,6 +183,11 @@ theorem dimDeg_add_finrank {A σ : Type} [CommRing A] [Finite σ] (I : Ideal (Mv
   rw [homogeneousSubmodule_eq_finsupp_supported]
   exact Module.finrank_eq_nat_card_basis (basisRestrictSupport K _)
 
+/- English proof (translation)
+Take `⟨a, ha0, ha⟩` from `exists_free_tensor_of_isUnit.{0} A (MvPolynomial σ A) (MvPolynomial σ A ⧸ I)`. Use `⟨a, ha0, ZM.dimDeg (I.map (map (algebraMap A (FractionRing A)))), fun K _ x hx => ?_⟩` and prove the remaining obligations. Use `letI : Algebra A K := x.toAlgebra`. Use function extensionality and compare the values at `e`. Take `⟨r, hr⟩` from `exists_retract I hI e`.
+
+Establish `h1` using `finrank_tensor_eq_of_retract _ r hr a ha K hx`. Establish `h2` using `dimDeg_add_finrank I hI e K`. Establish `h3` using `dimDeg_add_finrank I hI e (FractionRing A)`. Express the relevant statement in the definitionally equal form `ZM.dimDeg (I.map (map (algebraMap A K))) e = _`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem exists_const_of_isDomain {A σ : Type} [CommRing A] [IsDomain A] [IsNoetherianRing A]
     [Finite σ] (I : Ideal (MvPolynomial σ A))
     (hI : ∀ F ∈ I, ∀ e, homogeneousComponent e F ∈ I) :
@@ -161,6 +205,23 @@ theorem exists_const_of_isDomain {A σ : Type} [CommRing A] [IsDomain A] [IsNoet
   change ZM.dimDeg (I.map (map (algebraMap A K))) e = _
   omega
 
+/- English proof (translation)
+Proceed by induction on `J using IsNoetherian.induction with`. Consider the case `_ J ih`. Establish `hlt : ∀ b, b ∉ J → J < J ⊔ Ideal.span {b}` using `fun b hb => lt_of_le_of_ne le_sup_left fun h => hb (h ▸ Ideal.mem_sup_right (Ideal.mem_span_singleton_self b))`. Establish `hle : ∀ (K : Type) [Field K] (x : R →+* K) (b : R), J ≤ RingHom.ker x → x b = 0 → J ⊔ Ideal.span {b} ≤ RingHom.ker x` using `fun K _ x b h hb => sup_le h ((Ideal.span_singleton_le_iff_mem _).2 hb)`. Distinguish the cases in `hJ : Ideal.IsPrime J`.
+
+Establish `hsurj : Function.Surjective (map (σ` using `σ) (Ideal.Quotient.mk J)) := map_surjective _ Ideal.Quotient.mk_surjective`. Take `⟨a, ha0, φ₀, h⟩` from `exists_const_of_isDomain (I.map (map (Ideal.Quotient.mk J))) (by`. Introduce `F hF e`. Take `⟨G, hG, rfl⟩` from `(Ideal.mem_map_iff_of_surjective _ hsurj).1 hF`. Establish `: homogeneousComponent e (map (Ideal.Quotient.mk J) G) = map (Ideal.Quotient.mk J) (homogeneousComponent e G)`.
+
+Use extensionality with `d`. Simplify using `only [coeff_homogeneousComponent, coeff_map]`. Apply the tactic sequence `split_ifs <;> simp`. Rewrite using `[this]`. Conclude with `Ideal.mem_map_of_mem _ (hI G hG e))`.
+
+Take `⟨a, rfl⟩` from `Ideal.Quotient.mk_surjective a`. Establish `haJ : a ∉ J` using `fun h => ha0 (Ideal.Quotient.eq_zero_iff_mem.2 h)`. Use `((ih _ (hlt a haJ)).insert φ₀).subset ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨K, _, x, hx, rfl⟩`. Distinguish the cases in `hxa : x a = 0`.
+
+Conclude with `Or.inr ⟨K, _, x, hle K x a hx hxa, rfl⟩`. Use `left`. Rewrite using `[← h K (Ideal.Quotient.lift J x hx) hxa, Ideal.map_map]`. Use `congr 2`. Use `RingHom.ext fun F => ?_` and prove the remaining obligations.
+
+Rewrite using `[RingHom.comp_apply, map_map]`. Both sides reduce to the same expression. Break down `Ideal.not_isPrime_iff.1 hJ with rfl | ⟨b, hb, c, hc, hbc⟩` into its components or cases. Use `Set.finite_empty.subset ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨K, _, x, hx, rfl⟩`.
+
+Establish `: x 1 = 0` using `hx Submodule.mem_top`. Simplify using `at this`. Use `((ih _ (hlt b hb)).union (ih _ (hlt c hc))).subset ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨K, _, x, hx, rfl⟩`. Establish `: x b * x c = 0` using `by rw [← map_mul]; exact hx hbc`.
+
+Break down `mul_eq_zero.1 this with h | h` into its components or cases. Conclude with `Or.inl ⟨K, _, x, hle K x b hx h, rfl⟩`. Conclude with `Or.inr ⟨K, _, x, hle K x c hx h, rfl⟩`.
+-/
 theorem finite_of_le_ker {R σ : Type} [CommRing R] [IsNoetherianRing R] [Finite σ]
     (I : Ideal (MvPolynomial σ R)) (hI : ∀ F ∈ I, ∀ e, homogeneousComponent e F ∈ I)
     (J : Ideal R) :
@@ -215,6 +276,9 @@ end HilbertFamily
 
 open GlobalTheory.ZM in
 
+/- English proof (translation)
+Introduce `R σ _ _ _ I hI`. Use `(HilbertFamily.finite_of_le_ker I hI ⊥).subset ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨K, _, x, rfl⟩`. Conclude with `⟨K, _, x, bot_le, rfl⟩`.
+-/
 theorem finite_setOf_dimDeg_map : ∀ (R σ : Type) [CommRing R] [IsNoetherianRing R] [Finite σ] (I : Ideal (MvPolynomial σ R)), (∀ F ∈ I, ∀ e, MvPolynomial.homogeneousComponent e F ∈ I) → {φ : ℕ → ℕ | ∃ (K : Type) (_ : Field K) (x : R →+* K), φ = dimDeg (I.map (MvPolynomial.map x))}.Finite := by
   intro R σ _ _ _ I hI
   refine (HilbertFamily.finite_of_le_ker I hI ⊥).subset ?_

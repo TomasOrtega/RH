@@ -16,6 +16,13 @@ open ReciprocityTheory.ChartRestriction.G.Geo.Tor.Germ (PS FB ev)
 attribute [local instance] Over.cartesianMonoidalCategory
 namespace GlobalTheory.PtGermCompare
 
+/- English proof (translation)
+Establish `hG` using `GlobalTheory.globalFns_holds`. Use `U.smooth` as an intermediate fact. Establish `: IsDominant (jK R)` using `⟨(PrimeSpectrum.denseRange_comap_iff_ker_le_nilRadical _).2 (((RingHom.injective_iff_ker_eq_bot _).1 (IsFractionRing.injective R (FractionRing R))).le.trans bot_le)⟩`. Use `IsSchemeTheoreticallyDominant.of_isDominant (jK R)` as an intermediate fact. Establish `hg : IsPullback (U.gen.inv.left ≫ pullback.fst G.hom (jK R)) A.A.hom G.hom (jK R)`.
+
+Establish `: IsIso U.gen.inv.left` using `inferInstanceAs (IsIso ((Over.forget _).map U.gen.inv))`. Establish `s : IsPullback U.gen.inv.left A.A.hom (pullback.snd G.hom (jK R)) (𝟙 _)` using `IsPullback.of_horiz_isIso ⟨(Over.w U.gen.inv).trans (Category.comp_id _).symm⟩`. Simplify using `using s.paste_horiz (IsPullback.of_hasPullback G.hom (jK R))`. Establish `s₁ : Function.Surjective G.hom.appTop.hom` using `RigidIsoCube.surjective_appTop_of_baseChange hg (eSec G) (Over.w η[G]) (hG _ _ A.isAb).2`. Establish `: Flat (G ⊗ G).hom` using `by rw [Over.tensorObj_hom]; infer_instance`.
+
+Establish `s₂` using `surj_comp (RigidIsoCube.surjective_snd_of_generic hG (jK R) G A.isAb hg G) s₁`. Rewrite `s₂` using `[Over.w (snd G G)]`. Establish `s₃` using `surj_comp (RigidIsoCube.surjective_snd_of_generic hG (jK R) G A.isAb hg (G ⊗ G)) s₂`. Rewrite `s₃` using `[Over.w (snd G (G ⊗ G))]`. Conclude with `s₃`.
+-/
 theorem surjective_cube {R : Type} [CommRing R] [IsDomain R] {I : Ideal R} {D : DegData R I}
     {A : PolAV (Spec (CommRingCat.of (FractionRing R)))} {G : Over (Spec (CommRingCat.of R))} [GrpObj G]
     [IsCommMonObj G] (U : UnifPre I D A G) : Function.Surjective (G ⊗ G ⊗ G).hom.appTop.hom := by
@@ -38,6 +45,11 @@ theorem surjective_cube {R : Type} [CommRing R] [IsDomain R] {I : Ideal R} {D : 
   rw [Over.w (snd G (G ⊗ G))] at s₃
   exact s₃
 
+/- English proof (translation)
+Set `e : 𝟙_ (Over S) ⟶ G3 G` to `lift 1 (lift 1 1)`. Establish `h : c.t.s = c'.t.s` using `JetSer.gen_ext_val L.isLB (φ := thφ G (x3 G)) (ε := thε) c.isGen c'.isGen fun y J hJ => gen_unique L.isLB (φ := thφ G (x3 G)) (ε := thε) (G3 G).hom e.left (Over.w e) sj c.isGen c'.isGen (fun y J hJ => ((isCub_cubV c hJ).face 1 1).trans ((isCub_cubV c' hJ).face 1 1).symm) _ _ y J …`. Take `⟨⟨t⟩, _⟩` from `c`. Take `⟨⟨t'⟩, _⟩` from `c'`. Take `rfl : t = t'` from `h`.
+
+Both sides reduce to the same expression.
+-/
 theorem cubical_unique {S : Scheme.{0}} {G : Over S} [GrpObj G] [IsCommMonObj G]
     (sj : Function.Surjective (G ⊗ G ⊗ G).hom.appTop.hom) {L : RigLB G} (c c' : CubicalStr G L) : c = c' := by
   let e : 𝟙_ (Over S) ⟶ G3 G := lift 1 (lift 1 1)
@@ -49,6 +61,9 @@ theorem cubical_unique {S : Scheme.{0}} {G : Over S} [GrpObj G] [IsCommMonObj G]
   obtain rfl : t = t' := h
   rfl
 
+/- English proof (translation)
+Establish `key : ∀ (L L' : RigLB t.G) (_ : L = L') (c : CubicalStr t.G L) (c' : CubicalStr t.G L'), HEq c c'`. Introduce and unpack `L _ rfl c c'`. Conclude with `heq_of_eq (cubical_unique (surjective_cube P.U.toUnifPre) c c')`. Conclude with `key _ _ P.bundle _ _`.
+-/
 theorem cub_heq {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {R : Type} [CommRing R] [IsDomain R]
     {I : Ideal R} {t : SAB H (Sp R)} (P : PELUnif I t) : HEq P.U.cubG t.cub := by
   have key : ∀ (L L' : RigLB t.G) (_ : L = L') (c : CubicalStr t.G L) (c' : CubicalStr t.G L'), HEq c c' := by
@@ -64,6 +79,9 @@ def constUnit (G : Over (Spec (CommRingCat.of R))) (c : Rˣ) : Γ(G.left, ⊤)ˣ
 
 def constMul {M : LB G.left} (c : Rˣ) (t : LB.Gen M) : LB.Gen M := ⟨fun j => res le_top (constUnit G c) * t.s j⟩
 
+/- English proof (translation)
+Introduce `i j`. Establish `e : ∀ {U W : G.left.Opens} (h : W ≤ U) (a : Γ(G.left, ⊤)ˣ), res h (res le_top a) = res le_top a` using `fun h a => Units.ext (SecOps.resTop_res h a.val)`. Simplify using `only [constMul, map_mul, e]`. Rewrite using `[ht i j, mul_left_comm]`.
+-/
 theorem constMul_isGen {M : LB G.left} (c : Rˣ) {t : LB.Gen M} (ht : t.IsGen) : (constMul c t).IsGen := by
   intro i j
   have e : ∀ {U W : G.left.Opens} (h : W ≤ U) (a : Γ(G.left, ⊤)ˣ), res h (res le_top a) = res le_top a :=
@@ -88,24 +106,45 @@ def castGen (h : L = L') {Y : Scheme.{0}} {K : Type} [Fintype K] {φ : K → (Y 
     (t : LB.Gen (LB.LinComb L.L φ ε)) : LB.Gen (LB.LinComb L'.L φ ε) :=
   Eq.rec (motive := fun M _ => LB.Gen (LB.LinComb M.L φ ε)) t h
 
+/- English proof (translation)
+Substitute `h` using the available equality. Both sides reduce to the same expression.
+-/
 theorem castIdx_castIdx (h : L = L') (h' : L' = L) (j : L.L.ι) : castIdx h' (castIdx h j) = j := by subst h; rfl
 
+/- English proof (translation)
+Substitute `h` using the available equality. Both sides reduce to the same expression.
+-/
 theorem castGen_castGen (h : L = L') (h' : L' = L) {Y : Scheme.{0}} {K : Type} [Fintype K] {φ : K → (Y ⟶ G.left)}
     {ε : K → ℤ} (t : LB.Gen (LB.LinComb L.L φ ε)) : castGen h' (castGen h t) = t := by subst h; rfl
 
+/- English proof (translation)
+Substitute `h` using the available equality. Conclude with `hj`.
+-/
 theorem cast_unit (h : L = L') {j : L.L.ι} (hj : ⊤ ≤ η[G].left ⁻¹ᵁ L.L.U j) :
     ⊤ ≤ η[G].left ⁻¹ᵁ L'.L.U (castIdx h j) := by subst h; exact hj
 
+/- English proof (translation)
+Substitute `h` using the available equality. Conclude with `ht`.
+-/
 theorem cast_isGen (h : L = L') {Y : Scheme.{0}} {K : Type} [Fintype K] {φ : K → (Y ⟶ G.left)} {ε : K → ℤ}
     {t : LB.Gen (LB.LinComb L.L φ ε)} (ht : t.IsGen) : (castGen h t).IsGen := by subst h; exact ht
 
+/- English proof (translation)
+Substitute `h` using the available equality. Conclude with `hu`.
+-/
 theorem cast_normRos (h : L = L') {f g : G ⟶ G} {u : LB.Gen (LB.LinComb L.L (rosatiφ G f g) rosatiε)}
     (hu : JetSer.IsNormRos L.L f g u) : JetSer.IsNormRos L'.L f g (castGen h u) := by subst h; exact hu
 
+/- English proof (translation)
+Substitute `h` using the available equality. Conclude with `hρ`.
+-/
 theorem cast_rig (h : L = L') {w : G ⟶ G} {ρ : LB.Gen (LB.LinComb L.L (JetSer.primφ w) JetSer.primε)}
     (hρ : LB.Gen.Corr L.L _ _ _ _ (LB.pullGen L.L _ _ ρ (eSec G)) L.rig) :
     LB.Gen.Corr L'.L _ _ _ _ (LB.pullGen L'.L _ _ (castGen h ρ) (eSec G)) L'.rig := by subst h; exact hρ
 
+/- English proof (translation)
+Substitute `h` using the available equality. Consider the cases of `hc`. Conclude with `hB`.
+-/
 theorem cast_isFBOf (h : L = L') {c : CubicalStr G L} {c' : CubicalStr G L'} (hc : HEq c c') {O : Type} [CommRing O]
     [StarRing O] {act : OAct O G}
     {u : ∀ a : O, LB.Gen (LB.LinComb L.L (rosatiφ G (act.act a) (act.act (star a))) rosatiε)} {d : ℕ}
@@ -152,6 +191,9 @@ def toPt {t : SAB H (Sp V)} {P : PELUnif (maximalIdeal V) t} (D : PtData P F) : 
   ρ := castGen P.bundle.symm D.ρ
   hρ := cast_isGen _ D.ρ_gen
 
+/- English proof (translation)
+The claim follows from `cast_rig P.bundle.symm D.ρ_rig`.
+-/
 theorem rigid_toPt {t : SAB H (Sp V)} {P : PELUnif (maximalIdeal V) t} (D : PtData P F) : Rigid (toPt D) :=
   cast_rig P.bundle.symm D.ρ_rig
 
@@ -178,6 +220,9 @@ def ofPt (hF : IsAlgClosed F) (y : Pt1 E H V F) (hy : Rigid y) : PtData y.P F wh
   B := y.B
   isFB := letI := H.starRing; cast_isFBOf y.P.bundle (cub_heq y.P) y.hB
 
+/- English proof (translation)
+Consider the cases of `D`. Simplify using `only [ofPt, toPt]`. Use `congr 1`. Use `exacts [castIdx_castIdx _ _ _, funext fun a => castGen_castGen _ _ _, castGen_castGen _ _ _]`.
+-/
 theorem ofPt_toPt (hF : IsAlgClosed F) {t : SAB H (Sp V)} {P : PELUnif (maximalIdeal V) t} (D : PtData P F) :
     ofPt hF (toPt D) (rigid_toPt D) = D := by
   cases D
@@ -185,6 +230,9 @@ theorem ofPt_toPt (hF : IsAlgClosed F) {t : SAB H (Sp V)} {P : PELUnif (maximalI
   congr 1
   exacts [castIdx_castIdx _ _ _, funext fun a => castGen_castGen _ _ _, castGen_castGen _ _ _]
 
+/- English proof (translation)
+Consider the cases of `y`. Simplify using `only [ofPt, toPt, castIdx_castIdx, castGen_castGen]`.
+-/
 theorem toPt_ofPt (hF : IsAlgClosed F) (y : Pt1 E H V F) (hy : Rigid y) : toPt (ofPt hF y hy) = y := by
   cases y
   simp only [ofPt, toPt, castIdx_castIdx, castGen_castGen]

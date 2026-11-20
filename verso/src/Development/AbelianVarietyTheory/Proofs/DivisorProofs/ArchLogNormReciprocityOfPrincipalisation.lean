@@ -18,6 +18,17 @@ set_option autoImplicit false
 
 namespace GlobalTheory.MixHt
 
+/- English proof (translation)
+Introduce `k _ Y _ _ q e hq M N L s t hs ht hcov`. Establish `: IsNoetherian Y` using `hq.isNoetherian`. Establish `: Finite (k →+* ℂ)` using `hq.finite_emb`. Use `Fintype.ofFinite (k →+* ℂ)` as an intermediate fact. Establish `hcons (A : HermLB q) (σ : k →+* ℂ) : (fun i => MLine.ofHerm ((Fin.cons A L : Fin (e + 1) → HermLB q) i) σ) = Fin.cons (MLine.ofHerm A σ) (fun i => MLine.ofHerm (L i) σ)`.
+
+Use function extensionality and compare the values at `i`. Apply the tactic sequence `refine Fin.cases ?_ (fun j => ?_) i <;> rfl`. Establish `key (A B : HermLB q) (a : A.B.Sec) (b : B.B.Sec) (ha : genericPoint Y ∈ nonzeroLocus a) (hab : ∀ z : Y, Order.coheight z = 1 → z ∈ nonzeroLocus a ∨ z ∈ nonzeroLocus b) (z : Y) : ((divOfSec A.isLB a ha).mult z : ℝ) * resArch L B b z = ∑ σ : k →+* ℂ, ((divOfSec A.isLB a ha).mult z …`. Distinguish the cases in `h0 : (divOfSec A.isLB a ha).mult z = 0`. Simplify using `[h0]`.
+
+Establish `hz` using `CartierDiv.coheight_eq_one_of_mult_ne_zero h0`. Establish `hza : z ∉ nonzeroLocus a` using `fun h => (notMem_supp_divOfSec.2 h) (CartierDiv.mem_supp_of_mult_ne_zero h0)`. Rewrite using `[GlobalTheory.T.restrictedArchIntegral_eq_sum_closureIntegrals hP k Y q e hq L B b z hz ((hab z hz).resolve_left hza), finsum_eq_sum_of_fintype, Finset.mul_sum]`. Establish `fin (D : CartierDiv Y) (g : Y → ℝ) : (Function.support fun z => (D.mult z : ℝ) * g z).Finite` using `D.finite_support_mult.subset fun z hz => by`. Simplify using `only [Function.mem_support] at hz ⊢`.
+
+Introduce `h`. Simplify using `[h] at hz`. Establish `hside (A B : HermLB q) (a : A.B.Sec) (b : B.B.Sec) (ha : genericPoint Y ∈ nonzeroLocus a) (hab : ∀ z : Y, Order.coheight z = 1 → z ∈ nonzeroLocus a ∨ z ∈ nonzeroLocus b) : mixArch (Fin.cons B L : Fin (e + 1) → HermLB q) A (isRatSec_ratOfSec a ha) + ∑ᶠ z, ((divOfSec A.isLB a ha).m …`. Rewrite using `[GlobalTheory.T.mixedArchLogNormIntegral_eq_sum_embeddings hP k Y q (e + 1) hq, finsum_eq_sum_of_fintype, finsum_congr (key A B a b ha hab), finsum_sum_comm _ _ (fun σ _ => fin _ _), ← Finset.sum_add_distrib]`. Use `Finset.sum_congr rfl fun σ _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[side, ← hcons]`. Both sides reduce to the same expression. Rewrite using `[hside M N s t hs hcov, hside N M t s ht fun z hz => (hcov z hz).symm]`. Conclude with `Finset.sum_congr rfl fun σ _ => GlobalTheory.T.arith_variety_reciprocity_at_complex_embedding hP k Y q e hq σ (fun i => MLine.ofHerm (L i) σ) (MLine.ofHerm M σ) (MLine.ofHerm N σ) s hs t ht hcov`.
+-/
 theorem archRecip_of_principalisation (hP : GlobalTheory.Published.Principalisation) : ArchRecip := by
   intro k _ Y _ _ q e hq M N L s t hs ht hcov
   have : IsNoetherian Y := hq.isNoetherian

@@ -11,6 +11,11 @@ namespace Formalism.FourierDecayAlt.P.CutSE
 
 attribute [local instance] Matrix.normedAddCommGroup Matrix.normedSpace
 
+/- English proof (translation)
+Use extensionality with `g`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨h1, _, h3⟩`. Conclude with `⟨h1, h3⟩`. Introduce and unpack `⟨h1, h2⟩`.
+
+Conclude with `⟨h1, h1.1, h2⟩`.
+-/
 theorem level_zero_inter_big_cell_eq (k r : ℕ) (z z' : Fin (2 * r + k + 1) → ℂ) :
     Q.Glev k r 0 ∩ JF.Om k r z z' = Q.Glev k r 0 ∩ Q.OmPlus k r z z' := by
   ext g
@@ -20,6 +25,9 @@ theorem level_zero_inter_big_cell_eq (k r : ℕ) (z z' : Fin (2 * r + k + 1) →
   · rintro ⟨h1, h2⟩
     exact ⟨h1, h1.1, h2⟩
 
+/- English proof (translation)
+Unfold `Q.FFl Q.SmoothLev Q.LeftEq Q.RightEq`. Simplify using `only [level_zero_inter_big_cell_eq]`.
+-/
 theorem ffl_om_eq (k r : ℕ) {Wp Wq : Type} [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp] [NormedAddCommGroup Wq]
     [InnerProductSpace ℂ Wq] (z z' : Fin (2 * r + k + 1) → ℂ) (π : Q.Mx k r → (Wp →L[ℂ] Wp))
     (π' : Q.Mx k r → (Wq →L[ℂ] Wq)) :
@@ -28,6 +36,15 @@ theorem ffl_om_eq (k r : ℕ) {Wp Wq : Type} [NormedAddCommGroup Wp] [InnerProdu
   simp only [level_zero_inter_big_cell_eq]
 
 open Formalism.FourierDecayAlt.P.CutMP.JA.FFS in
+/- English proof (translation)
+Introduce `k r Wp Wq _ _ _ _ _ _ D Θ hSm hC J hJ`. Rewrite `hJ`, the goal using `[ffl_om_eq]`. Establish `hDom : Q.IsDom k r D.z D.z' 0 (Q.OmPlus k r D.z D.z')` using `Formalism.FourierDecayAlt.P.JCx2.rma_isDom_omPlus D.z_mem D.z'_mem`. Establish `hPos : ∀ g ∈ Q.OmPlus k r D.z D.z', g ∈ B.GV k r → g ∈ B.GPos D` using `fun g hg hgG => ⟨hgG, hg.2⟩`. Establish `hG'` using `germ_operators_holds k r Wp Wq Θ`.
+
+Establish `hsupp : ∀ f' : B.Mat k r → (Wq →L[ℂ] Wp), tsupport f' ⊆ Q.OmPlus k r D.z D.z' → B.SuppIn (B.GPos D) f'`. Introduce `f' hs x hx`. Establish `hxG : x ∈ B.GV k r` using `(Formalism.FourierDecayAlt.P.B5.GV_closed (k := k) (r := r)).closure_subset_iff.2 (fun y hy => hy.1) hx`. Establish `hxT : x ∈ tsupport f'` using `closure_mono (fun y hy => hy.2) hx`. Conclude with `hPos x (hs hxT) hxG`.
+
+Prove the components needed by the constructor for the conclusion. Use `equivariant_operators_holds extension_locality_holds _ _ _ _ D (Q.OmPlus k r D.z D.z') (B.opApply Θ) hDom (fun U f₁ f₂ hU he g hg hgG => (hG'.1 U f₁ f₂ hU he g hg hgG).1) (fun c f₁ g _ => (hG'.2 c f₁ g).1) (fun f₁ hf hs => (smooth_operators_holds _ _ _ _ D Θ _ hDom.1 hPos hSm f₁ …` and prove the remaining obligations. Introduce `f₁ hf _ _ p hp g hg hgG`. Conclude with `hC p hp f₁ (Formalism.FourierDecayAlt.P.B5.ckOn_mono le_top hf) g (hPos g hg hgG)`. Use `equivariant_operators_holds extension_locality_holds _ _ _ _ D (Q.OmPlus k r D.z D.z') (B.opAdj Θ) hDom (fun U f₁ f₂ hU he g hg hgG => (hG'.1 U f₁ f₂ hU he g hg hgG).2) (fun c f₁ g _ => (hG'.2 c f₁ g).2) (fun f₁ hf hs => (smooth_operators_holds _ _ _ _ D Θ _ hDom.1 hPos hSm f₁ hf …` and prove the remaining obligations.
+
+Introduce `f₁ hf hc hs p hp g hg hgG`. Conclude with `adjoint_commutation_holds _ _ _ _ D Θ hSm hC f₁ hf hc (hsupp f₁ hs) p hp g (hPos g hg hgG)`.
+-/
 theorem radial_operator_function_field : RDOpFF := by
   intro k r Wp Wq _ _ _ _ _ _ D Θ hSm hC J hJ
   rw [ffl_om_eq] at hJ ⊢

@@ -43,18 +43,29 @@ namespace GlobalTheory.WtMatchBar
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Geo.Tor.Host E} {Dw : Datum H} {l : Level H}
   {Xo : Moduli Dw l} {c : Coeff l}
 
+/- English proof (translation)
+Proceed by induction on `n with`. Consider the case `zero => rw [pow_zero, zero_smul]`. Conclude with `GlobalTheory.AllWt.one_mem_secZ`. Consider the case `succ n ih => rw [pow_succ, succ_nsmul]`. Conclude with `GlobalTheory.AllWt.mul_mem_secZ ih hf`.
+-/
 theorem pow_mem_secZ {ex : Ix Dw → ℤ} {f : Rul Xo c} (hf : f ∈ GlobalTheory.AllWt.secZ Xo c ex) (n : ℕ) :
     f ^ n ∈ GlobalTheory.AllWt.secZ Xo c (n • ex) := by
   induction n with
   | zero => rw [pow_zero, zero_smul]; exact GlobalTheory.AllWt.one_mem_secZ
   | succ n ih => rw [pow_succ, succ_nsmul]; exact GlobalTheory.AllWt.mul_mem_secZ ih hf
 
+/- English proof (translation)
+Proceed by induction on `m with`. Consider the case `zero => rw [zero_smul]; funext i; rw [Nat.cast_zero, GlobalTheory.AllWt.exOf, GlobalTheory.AllWt.wtOf_zero]; cases i <;> rfl`. Consider the case `succ m ih`. Rewrite using `[succ_nsmul, ih, ← GlobalTheory.AllWt.exOf_add, add_zero]`. Use `push_cast`.
+
+Both sides reduce to the same expression.
+-/
 theorem nsmul_exOf_zero_one (m : ℕ) : m • GlobalTheory.AllWt.exOf Dw 0 1 = GlobalTheory.AllWt.exOf Dw 0 m := by
   induction m with
   | zero => rw [zero_smul]; funext i; rw [Nat.cast_zero, GlobalTheory.AllWt.exOf, GlobalTheory.AllWt.wtOf_zero]; cases i <;> rfl
   | succ m ih =>
     rw [succ_nsmul, ih, ← GlobalTheory.AllWt.exOf_add, add_zero]; push_cast; rfl
 
+/- English proof (translation)
+Proceed by induction on `n with`. Consider the case `zero => rw [pow_one]`. Conclude with `hf`. Consider the case `succ n ih => rw [pow_succ, hv.mul]`. Conclude with `add_nonneg ih hf`.
+-/
 theorem val_pow_succ_nonneg {la : IsDedekindDomain.HeightOneSpectrum (𝓞 c.F)} {v : Rul Xo c → EReal}
     (hv : IsVal la v) {f : Rul Xo c} (hf : 0 ≤ v f) (n : ℕ) : 0 ≤ v (f ^ (n + 1)) := by
   induction n with
@@ -63,6 +74,17 @@ theorem val_pow_succ_nonneg {la : IsDedekindDomain.HeightOneSpectrum (𝓞 c.F)}
 
 set_option maxHeartbeats 800000 in
 
+/- English proof (translation)
+Introduce `hP D T j Y e o hY hE hp hq la hla hbar f hf`. Take `⟨u, u', t₁, hu, ht₁, huu, hu'⟩` from `GlobalTheory.T.exists_invertible_section_valuation_nonneg hP D T j Y e o hY hE`. Take `⟨N, hN, hU2⟩` from `GlobalTheory.T.exists_parallel_weight_invertible_section hP D T j Y e o hY hE`. Take `⟨M, hM⟩ : ∃ M : ℕ, M = 4 * (Module.finrank ℚ D.host.E * D.R.r) + 3 + 1` from `⟨_, rfl⟩`. Take `⟨K, hK⟩` from `GlobalTheory.T.eventually_weight_section_products hP D T j Y e o hY hE la f hf (u ^ M) (u' ^ M) (t₁ ^ M) _ (pow_mem_secZ hu M) (pow_ne_zero _ ht₁) (by rw [← mul_pow, huu, smul_pow, one_pow])`.
+
+Take `⟨k, hk⟩ : ∃ k : ℕ, k = max K (2 * M + N)` from `⟨_, rfl⟩`. Take `⟨w, a, hDom, hex⟩` from `GlobalTheory.T.exists_dominant_exponents_matching_weight_bar_gap _ _ _ la hp hq hla hbar N M k hN (by omega)`. Take `⟨φ, φ', t₂, hφ, ht₂, hφφ, hφ', hφb⟩` from `hU2 w`. Use `⟨k, a, 2 * M, u ^ M * φ, u' ^ M * φ', t₁ ^ M * t₂, hDom, by omega, ?_, mul_ne_zero (pow_ne_zero _ ht₁) ht₂, ?_, ?_⟩` and prove the remaining obligations. Use `hK k (hk ▸ le_max_left _ _) φ φ' t₂ _ hφ ht₂ hφφ hφb a (2 * M) hDom ?_` and prove the remaining obligations.
+
+Rewrite using `[← GlobalTheory.AllWt.secZ_nat, hex]`. Establish `h1 : f ^ (k + 1) ∈ GlobalTheory.AllWt.secZ Y.d.Xo₂ Y.d.c₂ ((k + 1) • GlobalTheory.AllWt.exOf (T.Q.Dw j) la 0)` using `pow_mem_secZ (GlobalTheory.AllWt.cuspW_le_secZ _ hf) (k + 1)`. Establish `h2` using `GlobalTheory.AllWt.mul_mem_secZ h1 (GlobalTheory.AllWt.mul_mem_secZ (pow_mem_secZ hu M) hφ)`. Use `h2 using 2` and compare the differences between its conclusion and the goal. Rewrite using `[nsmul_exOf_zero_one, ← GlobalTheory.AllWt.exOf_add, zero_add, add_zero]`.
+
+Rewrite using `[mul_mul_mul_comm, ← mul_pow, huu, hφφ, smul_pow, one_pow, smul_mul_smul_comm, one_mul]`. Introduce `la' v hv`. Establish `hV` using `isVal_valSet la' v hv`. Rewrite using `[hV.mul]`. Rewrite using `[hM]`.
+
+Conclude with `add_nonneg (val_pow_succ_nonneg hV (hu' la' v hv) _) (hφ' la' v hv)`.
+-/
 theorem exists_pow_mul_mem_cusp : GlobalTheory.CovTop.Hypotheses2 → ∀ (D : D7) (T : Core D) (j : ℕ) (Y : Deep T j) (e : ℕ) (o : ℝ), Y.Good e o → 2 < Module.finrank ℚ D.host.E / 2 → 1 ≤ (T.Q.Dw j).p → 1 ≤ (T.Q.Dw j).q → ∀ la : GlobalTheory.AllWt.Weight (T.Q.Dw j), (∀ τ, Antitone (la τ)) → (∀ τ, 1 ≤ gap (la τ) ((T.Q.Dw j).p - 1)) → ∀ f ∈ Y.V (wtOf _ la 0), ∃ (k : ℕ) (a : (D.host.E →+* ℂ) × ℕ → ℕ) (n : ℕ) (g h : Rul Y.d.Xo₂ Y.d.c₂) (t : Y.d.c₂.F), Dom a n ∧ 4 * (Module.finrank ℚ D.host.E * D.R.r) + 4 ≤ n ∧ f ^ (k + 1) * g ∈ cusp Y.d.Xo₂ Y.d.c₂ Y.U a n ∧ t ≠ 0 ∧ g * h = t • 1 ∧ ∀ la', ∀ v ∈ valSet Y.d.Xo₂ Y.d.c₂ (algCls Y.d.Xo₂ Y.d.c₂) la', 0 ≤ v h := by
   intro hP D T j Y e o hY hE hp hq la hla hbar f hf
   obtain ⟨u, u', t₁, hu, ht₁, huu, hu'⟩ := GlobalTheory.T.exists_invertible_section_valuation_nonneg hP D T j Y e o hY hE

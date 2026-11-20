@@ -23,6 +23,11 @@ variable {D : D7} {G : Type} [Group G] [Fintype G] {Pl0 T0 : Type} {A : FamIn D.
 
 set_option maxHeartbeats 1600000 in
 
+/- English proof (translation)
+Take `⟨h1, h2, h3, h4, h5, h6, h7, h8⟩` from `h`. Use `⟨h1, h2, h3, h4, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Conclude with `⟨h5.1, h5.2, h5.3, h5.4, h5.5, h5.6, h5.7, h5.8⟩`. Conclude with `⟨h6.1, h6.2, h6.3, h6.4, h6.5, h6.6, h6.7, h6.8, h6.9, h6.10, h6.11, h6.12, h6.13, h6.14, h6.15, h6.16, h6.17, h6.18, h6.19, h6.20, h6.21⟩`. Conclude with `⟨h7.1, h7.2, h7.3, h7.4, h7.5, h7.6, h7.7, h7.8, h7.9, h7.10, h7.11⟩`.
+
+Conclude with `⟨h8.1, h8.2, h8.3, h8.4, h8.5, h8.6, h8.7⟩`.
+-/
 theorem preChar_updFW {Ks : Type} [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] (R : RealDat D A Ks)
     (nW : Fin D.R.m → ℕ) (FW : ∀ i, Arith.FormsL D.what₂.LL Ks (Fin (nW i) → D.what₂.LL) (fun σ => (R.HW i σ).H) G)
     (h : PreChar R) : PreChar (updFW R nW FW) := by
@@ -49,6 +54,9 @@ def updO {i : Fin D.R.m} {Tp : Type} {tup : Tp → T0} (O : OMDat T.toCore R i T
 variable (O : ∀ i, OMDat T.toCore R i Unit (fun _ => A.μ0))
 
 set_option maxHeartbeats 1600000 in
+/- English proof (translation)
+Use `⟨h.1, ?_⟩` and prove the remaining obligations. Take `⟨h1, h2, h3, h4, h5, h6, h7, h8, h9, h10, h11⟩` from `h.2`. Use `⟨⟨h1.field, h1.std, ?_, h1.c0, h1.lev⟩, fun t => ⟨(h2 t).reps, (h2 t).B, (h2 t).xi, (h2 t).phi, (h2 t).half⟩, h3, h4, h5, h6, h7, h8, h9, h10, h11⟩` and prove the remaining obligations. Conclude with `h1.v0`.
+-/
 theorem omPins_upd (i : Fin D.R.m) (h : OMPins T R κ v₀ O i) :
     OMPins T (updFW R nW FW) κ v₀ (fun i => updO T R nW FW (O i)) i := by
   refine ⟨h.1, ?_⟩
@@ -58,6 +66,9 @@ theorem omPins_upd (i : Fin D.R.m) (h : OMPins T R κ v₀ O i) :
   exact h1.v0
 
 set_option maxHeartbeats 1600000 in
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fun i => h.1 i, fun i σ hσ hV => h.2 i σ hσ hV⟩`.
+-/
 theorem fired_upd (ph : Fin D.R.m → ℂ) (h : Fired T R κ v₀ O ph) :
     Fired T (updFW R nW FW) κ v₀ (fun i => updO T R nW FW (O i)) ph :=
   ⟨fun i => h.1 i, fun i σ hσ hV => h.2 i σ hσ hV⟩
@@ -74,10 +85,22 @@ def tieGeo (h : TieIn T R κ v₀) : FWTie T (geoR T R κ v₀ O) κ v₀ :=
     hv₀ := t.hv₀, x0 := t.x0, ev0 := t.ev0, ev := t.ev }
 
 set_option maxHeartbeats 1600000 in
+/- English proof (translation)
+Introduce `i σ hσ hV` and use `barTie_tieN T R κ v₀ (nTop T κ) h (hasB_nTop T h.laws κ) i σ hσ hV`.
+-/
 theorem barTie_tieGeo (h : TieIn T R κ v₀) : BarTie (tieGeo T R κ v₀ O h) :=
   fun i σ hσ hV => barTie_tieN T R κ v₀ (nTop T κ) h (hasB_nTop T h.laws κ) i σ hσ hV
 
 set_option maxHeartbeats 1600000 in
+/- English proof (translation)
+Introduce `i`. Establish `hb` using `hasB_nTop T h.laws κ i`. Use `⟨fun hk g f => ?_, fun hk g => ?_⟩` and prove the remaining obligations. Establish `hex` using `GlobalTheory.LevelRep.exists_cusp_rep T κ i (O i).lev2 h.laws (hp i).2.act.1 hk`. Use `⟨hk g f f.2, ?_⟩` and prove the remaining obligations.
+
+Establish `e1 : geoRho T R κ O i = rhoB D.what₂.LL hb.some hex.choose` using `dif_pos ⟨hb, hex⟩`. Establish `e2 : (⟨_, hk g f f.2⟩ : Cu T κ i) = hex.choose g f` using `Subtype.ext (hex.choose_spec g f).symm`. Use `show crdOr T.Q.c.F D.what₂.LL (Cu T κ i) (nTop T κ i) ⟨_, hk g f f.2⟩ = geoRho T R κ O i g (crdOr T.Q.c.F D.what₂.LL (Cu T κ i) (nTop T κ i) f)`. Rewrite using `[e1, e2, crdOr_eq hb, rhoB_crd]`. Establish `e1 : geoRho T R κ O i = 1` using `dif_neg fun h' => hk fun g f hf => by`.
+
+Establish `h1` using `h'.2.choose_spec g ⟨f, hf⟩`. Establish `h2` using `(h'.2.choose g ⟨f, hf⟩).2`. Rewrite `h2` using `[h1]`. Conclude with `h2`. Use `show geoRho T R κ O i g = 1`.
+
+Rewrite using `[e1]`. Both sides reduce to the same expression.
+-/
 theorem rhoGeo_tieGeo (h : TieIn T R κ v₀) (hp : ∀ i, OMPins T R κ v₀ O i) :
     RhoGeo (tieGeo T R κ v₀ O h) (fun i => updO T R _ _ (O i)) := by
   intro i
@@ -100,6 +123,11 @@ theorem rhoGeo_tieGeo (h : TieIn T R κ v₀) (hp : ∀ i, OMPins T R κ v₀ O 
     rfl
 
 set_option maxHeartbeats 1600000 in
+/- English proof (translation)
+Use `choose y ha using GlobalTheory.ChiDetValues.chiC_mem_coeff T R κ v₀ hL h i`. Establish `hne : ∀ g, algebraMap T.Q.c.F D.what₂.LL (y g) ≠ 0` using `fun g h0 => (chiC R i g).ne_zero (by rw [← ha, h0, map_zero])`. Establish `hex : ∃ chi, ChiIs R i chi` using `⟨MonoidHom.mk' (fun g => Units.mk0 _ (hne g)) fun g g' => Units.ext (D.what₂.embLL.injective (by`. Simplify using `only [Units.val_mk0, Units.val_mul, map_mul, ha, chiC_mul])), ha⟩`. Rewrite using `[chiTop, dif_pos hex]`.
+
+Conclude with `hex.choose_spec`.
+-/
 theorem chiIs_chiTop_of_tie (hL : R.toLevCh.Is A.μ0) (h : TieIn T R κ v₀) (i : Fin D.R.m) : ChiIs R i (chiTop R i) := by
   choose y ha using GlobalTheory.ChiDetValues.chiC_mem_coeff T R κ v₀ hL h i
   have hne : ∀ g, algebraMap T.Q.c.F D.what₂.LL (y g) ≠ 0 := fun g h0 => (chiC R i g).ne_zero (by rw [← ha, h0, map_zero])
@@ -115,6 +143,9 @@ namespace GlobalTheory.RealGeo
 
 set_option maxHeartbeats 1600000 in
 
+/- English proof (translation)
+Introduce `D G _ _ Pl0 T0 A T _ R κ v₀ O ph hc ht hp hf`. Establish `hf'` using `Half.fired_upd T R κ v₀ (nTop T κ) (formsGeo T R κ v₀ O) O ph hf`. Use `⟨⟨κ, v₀, Half.tieGeo T R κ v₀ O ht, Half.barTie_tieGeo T R κ v₀ O ht, fun i => Half.updO T R _ _ (O i), fun i => Half.omPins_upd T R κ v₀ _ _ O i (hp i), Half.rhoGeo_tieGeo T R κ v₀ O ht hp, fun i σ hσ hV _ => hf'.2 i σ hσ hV, fun i _ => ⟨ph i, hf'.1 i⟩, fun i _ _ => hf'.1 i⟩, rf …` and prove the remaining obligations. Conclude with `(Half.chiIs_chiTop_of_tie T R κ v₀ hc.lev ht i g).trans (Units.coe_prod _ _)`.
+-/
 theorem exists_geoHalf_geoR : ∀ (D : D7) (G : Type) [Group G] [Fintype G] (Pl0 T0 : Type) (A : FamIn D.what₂.LL G Pl0 T0 D.R.m) (T : CoreJ D) [Algebra T.Q.c.F D.what₂.LL] (R : RealDat D A T.Q.c.F) (κ : ∀ i : Fin D.R.m, WeightFamilies.Wt D ((i : ℕ) + 1)) (v₀ : ∀ (i : Fin D.R.m) (σ : D.what₂.LL →+* ℂ), (R.MW i σ).Vec) (O : ∀ i, OMDat T.toCore R i Unit (fun _ => A.μ0)) (ph : Fin D.R.m → ℂ), PreChar R → TieIn T R κ v₀ → (∀ i, OMPins T R κ v₀ O i) → Fired T R κ v₀ O ph → ∃ B : GeoHalf T (geoR T R κ v₀ O) ph, B.κ = κ ∧ B.v₀ = v₀ ∧ Fired T (geoR T R κ v₀ O) B.κ B.v₀ B.O ph ∧ PreChar (geoR T R κ v₀ O) ∧ (geoR T R κ v₀ O).grp_chiW := by
   intro D G _ _ Pl0 T0 A T _ R κ v₀ O ph hc ht hp hf
   have hf' := Half.fired_upd T R κ v₀ (nTop T κ) (formsGeo T R κ v₀ O) O ph hf

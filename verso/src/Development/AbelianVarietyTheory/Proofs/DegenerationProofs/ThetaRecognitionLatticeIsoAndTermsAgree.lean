@@ -10,6 +10,11 @@ open scoped BigOperators Topology
 
 namespace GlobalTheory.MatchTerm
 
+/- English proof (translation)
+Establish `h0 : (m : ℝ) ≠ 0` using `by exact_mod_cast hm.pos.ne'`. Use `squeeze_zero_norm (a := fun χ => Real.exp (-q χ)) (fun χ => ?_) (Real.tendsto_exp_atBot.comp (tendsto_neg_atTop_atBot.comp hq.pos))` and prove the remaining obligations. Rewrite using `[(GlobalTheory.T.norm_rep_generators_and_thetaSeriesTerm C N q hq).2 m hm p χ, hp, toAdd_one, zero_add, ← natCast_zsmul, QuadraticMap.map_smul]`. Establish `: (((m : ℤ) * (m : ℤ)) • q χ) / (m : ℝ) ^ 2 = q χ`. Rewrite using `[zsmul_eq_mul]`.
+
+Use `push_cast`. Clear the denominators using the available nonvanishing facts. Rewrite using `[this]`. Conclude with `mul_le_of_le_one_right (Real.exp_pos _).le (hq.th _)`.
+-/
 theorem txT_tendsto {C : Type} [NormedField C] {N : NumD C} {q : QuadraticMap ℤ N.X ℝ} (hq : N.Int q) {m : ℕ}
     (hm : Odd m) (p : N.QT (m ^ 2)) (hp : p.1.1 = 1) : Tendsto (N.txT m p) cofinite (𝓝 0) := by
   have h0 : (m : ℝ) ≠ 0 := by exact_mod_cast hm.pos.ne'
@@ -21,6 +26,13 @@ theorem txT_tendsto {C : Type} [NormedField C] {N : NumD C} {q : QuadraticMap �
   rw [this]
   exact mul_le_of_le_one_right (Real.exp_pos _).le (hq.th _)
 
+/- English proof (translation)
+Take `⟨t, ht, hx⟩` from `hT.good (N.c x)`. Take `⟨b, rfl⟩` from `hT.div t`. Take `⟨γ, rfl⟩` from `(GlobalTheory.T.degenerationData_torsion_structure_algClosed C N n g hC hT 0).1 b`. Take `⟨s, hs⟩` from `(N.exists_tor_iff (γ ^ (n ^ 1) ^ 2)).2 (by rw [NumD.Gt.pow_b, pow_one, sq, pow_mul, ht])`. Take `⟨s, rfl⟩` from `exists_char_pow (k := (n ^ 1) ^ 2) (pow_ne_zero _ (pow_ne_zero _ hn.pos.ne')) s`.
+
+Use `⟨⟨(1, γ * (N.tor s)⁻¹), ?_⟩, rfl, ?_⟩` and prove the remaining obligations. Rewrite using `[NumD.mem_QT, mul_pow, inv_pow, ← N.tor_pow, hs, mul_inv_cancel]`. Conclude with `N.io_zero.symm`. Rewrite using `[← norm_ne_zero_iff, (GlobalTheory.T.norm_rep_generators_and_thetaSeriesTerm C N q hq).2 _ hn.pow]`. Use `mul_ne_zero (Real.exp_pos _).ne' ?_` and prove the remaining obligations.
+
+Simplify using `[hx]`.
+-/
 theorem exists_txT_ne {C : Type} [NormedField C] [IsAlgClosed C] {N : NumD C} {q : QuadraticMap ℤ N.X ℝ}
     (hq : N.Int q) {n g : ℕ} (hn : Odd n) (hC : (n : C) ≠ 0) (hT : N.Tors n g) (x : N.X) :
     ∃ p : N.QT ((n ^ 1) ^ 2), p.1.1 = 1 ∧ N.txT (n ^ 1) p x ≠ 0 := by
@@ -36,6 +48,9 @@ theorem exists_txT_ne {C : Type} [NormedField C] [IsAlgClosed C] {N : NumD C} {q
     refine mul_ne_zero (Real.exp_pos _).ne' ?_
     simp [hx]
 
+/- English proof (translation)
+Use `tsum_congr fun β => ?_` and prove the remaining obligations. Rewrite using `[(GlobalTheory.T.thetaConstantTerm_representative_dependence C N (M * m) (hM.mul hm) P (P * N.qTor s hs) β).2 s (mul_one _) rfl, GlobalTheory.T.degenerationSeriesTerms_nest C N M m hM hm P p (by rw [hP, hp, one_pow]) h, hP, map_one, one_pow, one_mul, toAdd_one, zero_add, ofAdd_ns …`. Both sides reduce to the same expression.
+-/
 theorem tx_twist {C : Type} [NormedField C] {N : NumD C} {M m : ℕ} (hM : Odd M) (hm : Odd m)
     (p : N.QT (m ^ 2)) (P : N.QT ((M * m) ^ 2)) (hp : p.1.1 = 1) (hP : P.1.1 = 1) (h : p.1.2 = P.1.2 ^ M)
     (s : Multiplicative N.X →* Cˣ) (hs : s ^ (M * m) ^ 2 = 1) :
@@ -49,11 +64,27 @@ theorem tx_twist {C : Type} [NormedField C] {N : NumD C} {M m : ℕ} (hM : Odd M
 section
 variable {C : Type} [NormedField C] [IsAlgClosed C] {N N' : NumD C} {n g : ℕ} (μ : Match N N' n)
 
+/- English proof (translation)
+Take `⟨j, rfl⟩` from `hm`. Conclude with `μ.tx j p p' h`.
+-/
 theorem tx_eq {m : ℕ} (hm : ∃ j, m = n ^ j) {p : N.QT (m ^ 2)} {p' : N'.QT (m ^ 2)} (h : μ.r _ p p') :
     N'.tx m p' = μ.c₀ * N.tx m p := by
   obtain ⟨j, rfl⟩ := hm
   exact μ.tx j p p' h
 
+/- English proof (translation)
+Establish `h0 : ∀ a, n ^ a ≠ 0` using `fun a => pow_ne_zero _ hn.pos.ne'`. Establish `hL0 : n ^ i * n ^ j ≠ 0` using `mul_ne_zero (h0 _) (h0 _)`. Establish `hL : ∃ a, (n ^ i * n ^ j) ^ 2 = n ^ a` using `⟨(i + j) * 2, by ring⟩`. Take `⟨γ, hγ⟩` from `(GlobalTheory.T.degenerationData_torsion_structure_algClosed C N n g hC hT i).2.1 p.1.2`. Establish `hp1 : p.1.2 ^ (n ^ j) ^ 2 = 1` using `by rw [N.mem_QT.1 p.2, hp]; exact N.io_zero`.
+
+Establish `hp1' : p'.1.2 ^ (n ^ j) ^ 2 = 1` using `by rw [N'.mem_QT.1 p'.2, hp']; exact N'.io_zero`. Set `P : N.QT ((n ^ i * n ^ j) ^ 2)` to `⟨(1, γ), by`. Rewrite using `[NumD.mem_QT, show (n ^ i * n ^ j) ^ 2 = n ^ i * ((n ^ j) ^ 2 * n ^ i) by ring, pow_mul, hγ, pow_mul, hp1, one_pow]`. Conclude with `N.io_zero.symm⟩`. Take `⟨P', hPP, hP'⟩` from `tot_G μ hA hL P rfl`.
+
+Set `Q' : N'.QT ((n ^ i * n ^ j) ^ 2)` to `⟨(1, p'.1.2), by`. Rewrite using `[NumD.mem_QT, show (n ^ i * n ^ j) ^ 2 = (n ^ j) ^ 2 * (n ^ i) ^ 2 by ring, pow_mul, hp1', one_pow]`. Conclude with `N'.io_zero.symm⟩`. Establish `h1 : μ.r _ (P ^ n ^ i) Q'` using `(r_incl μ (p := p) (p' := p') (q := P ^ n ^ i) (q' := Q') ((n ^ i) ^ 2) (by ring) (pow_ne_zero _ (h0 i)) (by rw [hp, one_pow]; exact one_pow _) hγ (by rw [hp', one_pow]) rfl).1 h`. Establish `h2 : Q' = P' ^ n ^ i` using `eq_of_qeq (pow_ne_zero _ hL0) (qeq_right μ h1 (r_pow μ hL hPP _)) (by change 1 = P'.1.1 ^ n ^ i; rw [hP', one_pow])`.
+
+Establish `h3 : p'.1.2 = P'.1.2 ^ n ^ i` using `congrArg (fun q : N'.QT _ => q.1.2) h2`. Take `⟨s, rfl⟩` from `exists_char_pow hL0 t`. Establish `hs : s ^ (n ^ i * n ^ j) ^ 2 = 1` using `by rw [sq, pow_mul, pow_mul _ (n ^ i), ht, one_pow]`. Take `⟨s', hs', hss⟩` from `thetaMatching_exists_right_torus_torsion μ hA hL s hs`. Establish `ht'' : t' ^ (n ^ i * n ^ j) ^ 2 = 1`.
+
+Rewrite using `[show (n ^ i * n ^ j) ^ 2 = n ^ i * (n ^ i * (n ^ j) ^ 2) by ring, pow_mul, ht', one_pow]`. Establish `h4 : μ.r _ (N.qTor s hs ^ (n ^ i * n ^ j)) (N'.qTor t' ht'')` using `(r_incl μ (p := N.qTor _ ht) (p' := N'.qTor t' ht') (q := N.qTor s hs ^ (n ^ i * n ^ j)) (q' := N'.qTor t' ht'') (n ^ i * (n ^ j) ^ 2) (by ring) (mul_ne_zero (h0 i) (pow_ne_zero _ (h0 j))) ((one_pow _).trans (one_pow _).symm) (N.tor_pow _ _).symm (one_pow _).symm rfl).1 e`. Establish `h5` using `eq_of_qeq (pow_ne_zero _ hL0) (qeq_right μ h4 (r_pow μ hL hss _)) (one_pow _).symm`. Establish `h6 : t' = s' ^ (n ^ i * n ^ j)` using `N'.tor_injective ((congrArg (fun q : N'.QT _ => q.1.2) h5).trans (N'.tor_pow _ _).symm)`. Rewrite using `[h6, ← tx_twist hn.pow hn.pow p P hp rfl hγ.symm s hs, ← tx_twist hn.pow hn.pow p' P' hp' hP' h3 s' hs']`.
+
+Conclude with `tx_eq μ ⟨i + j, (pow_add _ _ _).symm⟩ (μ.mul _ _ _ _ _ hPP hss)`.
+-/
 theorem twisted_eq (hn : Odd n) (hC : (n : C) ≠ 0) (hT : N.Tors n g) (hA : μ.A) (i j : ℕ)
     {p : N.QT ((n ^ j) ^ 2)} {p' : N'.QT ((n ^ j) ^ 2)} (h : μ.r _ p p') (hp : p.1.1 = 1) (hp' : p'.1.1 = 1)
     {t : Multiplicative N.X →* Cˣ} {ht : t ^ n ^ i = 1} {t' : Multiplicative N'.X →* Cˣ} {ht' : t' ^ n ^ i = 1}
@@ -95,6 +126,23 @@ theorem twisted_eq (hn : Odd n) (hC : (n : C) ≠ 0) (hT : N.Tors n g) (hA : μ.
   exact tx_eq μ ⟨i + j, (pow_add _ _ _).symm⟩ (μ.mul _ _ _ _ _ hPP hss)
 end
 
+/- English proof (translation)
+Introduce `C _ _ _ _ N N' q q' n g g' hpr hn hn1 hq hq' hT hT' μ hA`. Establish `hC : (n : C) ≠ 0`. Introduce `h`. Rewrite `hn1` using `[h, norm_zero]`. Conclude with `zero_ne_one hn1`.
+
+Establish `hn0` using `hpr.ne_zero`. Establish `key : ∀ i j (p : N.QT ((n ^ j) ^ 2)) (p' : N'.QT ((n ^ j) ^ 2)), μ.r _ p p' → p.1.1 = 1 → p'.1.1 = 1 → ∀ α α', Cl μ i α α' → ∑' z, N'.txT (n ^ j) p' (α' + n ^ i • z) = μ.c₀ * ∑' z, N.txT (n ^ j) p (α + n ^ i • z)`. Introduce `i j p p' h hp hp' α α' hα`. Take `⟨E, hE, hr⟩` from `exists_torus_bij μ hn0 hA ⟨i, rfl⟩`. Conclude with `class_sum_eq (by rw [Nat.cast_pow, norm_pow, hn1, one_pow]) _ _ (txT_tendsto hq hn.pow p hp) (txT_tendsto hq' hn.pow p' hp') _ α α' E hE (fun t => hα.tor μ (hr t)) fun t => twisted_eq μ hn hC hT hA i j h hp hp' (hr t)`.
+
+Establish `tot : ∀ j x, ∃ x', Cl μ j x x'` using `fun j x => by`. Take `⟨p, hp⟩` from `(GlobalTheory.T.degenerationData_torsion_structure_algClosed C N n g hC hT j).2.2.1 x`. Take `⟨p', h⟩` from `μ.tot j p`. Conclude with `⟨_, p, p', h, hp, rfl⟩`. Establish `cotot : ∀ j x', ∃ x, Cl μ j x x'` using `fun j x' => by`.
+
+Take `⟨p', hp⟩` from `(GlobalTheory.T.degenerationData_torsion_structure_algClosed C N' n g' hC hT' j).2.2.1 x'`. Take `⟨p, h⟩` from `μ.cotot j p'`. Conclude with `⟨_, p, p', h, rfl, hp⟩`. Establish `hL : ∃ a, (n ^ 1) ^ 2 = n ^ a` using `⟨2, by ring⟩`. Establish `hf : ∀ x, ∃ x', ∀ j, Cl μ j x x'` using `fun x => by choose α hα using fun j => tot j x`.
+
+Take `⟨p, hp, hx⟩` from `exists_txT_ne hq hn hC hT x`. Take `⟨p', h, hp'⟩` from `tot_G μ hA hL p hp`. Take `⟨x', hx'⟩` from `(limit_class hpr.two_le _ _ (txT_tendsto hq hn.pow p hp) (txT_tendsto hq' hn.pow p' hp') μ.c₀ x α (fun j => ((hα j).cong μ hA ((hα (j + 1)).down μ hn0)).1 ⟨0, by simp⟩) fun i => key i 1 p p' h hp hp' _ _ (hα i)).2 (mul_ne_zero μ.c₀_ne hx)`. Use `⟨x', fun j => ?_⟩` and prove the remaining obligations. Take `⟨z, hz⟩` from `hx' j`.
+
+Simplify `(hα j).shift μ 0 z` using `[← hz]`. Establish `hg : ∀ x', ∃ x, ∀ j, Cl μ j x x'` using `fun x' => by choose α hα using fun j => cotot j x'`. Take `⟨p', hp', hx⟩` from `exists_txT_ne hq' hn hC hT' x'`. Take `⟨p, h, hp⟩` from `cotot_G μ hA hL p' hp'`. Take `⟨x, hx'⟩` from `(limit_class hpr.two_le _ _ (txT_tendsto hq' hn.pow p' hp') (txT_tendsto hq hn.pow p hp) μ.c₀⁻¹ x' α (fun j => ((hα j).cong μ hA ((hα (j + 1)).down μ hn0)).2 ⟨0, by simp⟩) fun i => by rw [key i 1 p p' h hp hp' _ _ (hα i), inv_mul_cancel_left₀ μ.c₀_ne]).2 (mul_ne_zero (inv_ne_zero …`.
+
+Use `⟨x, fun j => ?_⟩` and prove the remaining obligations. Take `⟨z, hz⟩` from `hx' j`. Simplify `(hα j).shift μ z 0` using `[← hz]`. Take `⟨e, he, -⟩` from `existsUnique_addEquiv_of_compatible_congr N.X N'.X n hpr.two_le (Cl μ) tot cotot (fun _ _ _ _ _ h h' => h.add μ h') (fun _ _ _ _ _ h h' => h.cong μ hA h') (fun _ _ _ _ _ h => h.shift μ _ _) hf hg`. Use `⟨e, fun j p p' h => ((he j _).cong μ hA ⟨p, p', h, rfl, rfl⟩).1 ⟨0, by simp⟩, fun j p p' h hp hp' χ => ?_⟩` and prove the remaining obligations.
+
+Conclude with `(limit_class hpr.two_le _ _ (txT_tendsto hq hn.pow p hp) (txT_tendsto hq' hn.pow p' hp') μ.c₀ χ (fun _ => e χ) (fun j => ⟨0, by simp⟩) fun i => key i j p p' h hp hp' _ _ (he i χ)).1 _ fun j => ⟨0, by simp⟩`.
+-/
 theorem main : AllMatch fun μ _ _ => μ.A → ∃ e, μ.B e ∧ μ.Term e := by
   intro C _ _ _ _ N N' q q' n g g' hpr hn hn1 hq hq' hT hT' μ hA
   have hC : (n : C) ≠ 0 := by

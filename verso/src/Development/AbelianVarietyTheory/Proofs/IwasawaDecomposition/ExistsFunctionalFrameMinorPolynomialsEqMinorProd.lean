@@ -16,6 +16,13 @@ open GlobalTheory.Mem.CanonicalSurjection
 
 namespace GlobalTheory.Mem.RangeMinors
 
+/- English proof (translation)
+Set `T : Module.Dual ℚ V →ₗ[ℚ] V` to `{ toFun := fun ψ => ∑ J, ψ (n J) • n J map_add' := fun a b => by simp [add_smul, Finset.sum_add_distrib] map_smul' := fun c a => by simp [Finset.smul_sum, mul_smul] }`. Assume the negation of the conclusion as `h`. Establish `hn : n J₀ ∉ LinearMap.range T` using `fun ⟨ψ, hψ⟩ => h ⟨ψ, hψ⟩`. Take `⟨φ, hφ, hbot⟩` from `Submodule.exists_dual_map_eq_bot_of_notMem hn inferInstance`. Establish `h0 : φ (T φ) = 0`.
+
+Establish `: φ (T φ) ∈ (LinearMap.range T).map φ` using `Submodule.mem_map_of_mem ⟨φ, rfl⟩`. Rewrite `this` using `[hbot]`. Simplify using `using this`. Establish `h1 : ∑ J, φ (n J) * φ (n J) = 0`. Simplify `h0` using `[T, map_sum]`.
+
+Establish `h2` using `(Finset.sum_eq_zero_iff_of_nonneg (fun J _ => mul_self_nonneg (φ (n J)))).1 h1 J₀ (Finset.mem_univ _)`. Conclude with `hφ (mul_self_eq_zero.1 h2)`.
+-/
 theorem exists_dual_sum_smul_eq {V ι : Type} [AddCommGroup V] [Module ℚ V] [Fintype ι] (n : ι → V) (J₀ : ι) :
     ∃ ψ : Module.Dual ℚ V, ∑ J, ψ (n J) • n J = n J₀ := by
   let T : Module.Dual ℚ V →ₗ[ℚ] V :=
@@ -34,6 +41,13 @@ theorem exists_dual_sum_smul_eq {V ι : Type} [AddCommGroup V] [Module ℚ V] [F
   have h2 := (Finset.sum_eq_zero_iff_of_nonneg (fun J _ => mul_self_nonneg (φ (n J)))).1 h1 J₀ (Finset.mem_univ _)
   exact hφ (mul_self_eq_zero.1 h2)
 
+/- English proof (translation)
+Use `⟨(MvPolynomial.basisMonomials σ k).constr k fun m => algebraMap ℚ k (ψ (MvPolynomial.monomial m 1)), fun F => ?_⟩` and prove the remaining obligations. Proceed by induction on `F using MvPolynomial.induction_on' with`. Consider the case `monomial m a`. Establish `e1 : (MvPolynomial.monomial m a : MvPolynomial σ ℚ) = a • MvPolynomial.monomial m 1`. Rewrite using `[MvPolynomial.smul_monomial, smul_eq_mul, mul_one]`.
+
+Establish `e2 : MvPolynomial.map (algebraMap ℚ k) (MvPolynomial.monomial m a : MvPolynomial σ ℚ) = algebraMap ℚ k a • MvPolynomial.basisMonomials σ k m`. Rewrite using `[MvPolynomial.map_monomial, MvPolynomial.coe_basisMonomials, MvPolynomial.smul_monomial, smul_eq_mul, mul_one]`. Rewrite using `[e2, map_smul, Module.Basis.constr_basis]`. Use `conv_rhs => rw [e1, map_smul, smul_eq_mul, map_mul]`. Rewrite using `[smul_eq_mul]`.
+
+Consider the case `add p q hp hq => rw [map_add, map_add, hp, hq, map_add, map_add]`.
+-/
 theorem exists_dual_baseChange {σ : Type} (k : Type) [Field k] [CharZero k] (ψ : Module.Dual ℚ (MvPolynomial σ ℚ)) :
     ∃ ph : Module.Dual k (MvPolynomial σ k),
       ∀ F : MvPolynomial σ ℚ, ph (MvPolynomial.map (algebraMap ℚ k) F) = algebraMap ℚ k (ψ F) := by
@@ -50,6 +64,11 @@ theorem exists_dual_baseChange {σ : Type} (k : Type) [Field k] [CharZero k] (ψ
     rw [smul_eq_mul]
   | add p q hp hq => rw [map_add, map_add, hp, hq, map_add, map_add]
 
+/- English proof (translation)
+Unfold `KM.nablaX GL3Columns.minY`. Simplify using `only [map_prod]`. Use `Finset.prod_congr rfl fun s _ => Finset.prod_congr rfl fun c _ => ?_` and prove the remaining obligations. Rewrite using `[RingHom.map_det, RingHom.map_det, ← Matrix.det_transpose]`. Use `congr 1`.
+
+Use extensionality with `i j`. Simplify using the standard rewrite rules.
+-/
 theorem eval_nablaX_eq_minY {Lt k : Type} [Fintype Lt] [DecidableEq Lt] [CommRing k] (N : ℕ) (nu : Lt → YoungDiagram)
     (J : KM.ColChoice N nu) (y : Lt → Fin N → ℕ → k) :
     MvPolynomial.eval (fun v : Lt × ℕ × Fin N => y v.1 v.2.2 v.2.1)
@@ -62,6 +81,15 @@ theorem eval_nablaX_eq_minY {Lt k : Type} [Fintype Lt] [DecidableEq Lt] [CommRin
   ext i j
   simp
 
+/- English proof (translation)
+Introduce `D k _ _ N nu J₀`. Use `haveI : Finite (KM.ColChoice N nu) := by`. Unfold `KM.ColChoice`. Use `infer_instance`. Use `letI : Fintype (KM.ColChoice N nu) := Fintype.ofFinite _`.
+
+Take `⟨ψ, hψ⟩` from `exists_dual_sum_smul_eq (fun J : KM.ColChoice N nu => MvPolynomial.map (Int.castRingHom ℚ) (KM.nablaX N nu J)) J₀`. Take `⟨ph, hph⟩` from `exists_dual_baseChange k ψ`. Establish `hm : ∀ J : KM.ColChoice N nu, MvPolynomial.map (algebraMap ℚ k) (MvPolynomial.map (Int.castRingHom ℚ) (KM.nablaX N nu J)) = MvPolynomial.map (Int.castRingHom k) (KM.nablaX N nu J)` using `fun J => by`. Rewrite using `[MvPolynomial.map_map]`. Use `congr 2`.
+
+Conclude with `RingHom.ext_int _ _`. Use `⟨ph, fun y => ?_⟩` and prove the remaining obligations. Rewrite using `[GL3Columns.wwCB_holds D k N nu y, finsum_eq_sum_of_fintype, map_sum]`. Establish `h` using `congrArg (fun F => MvPolynomial.eval (fun v : (Bool × Formalism.MainNotions.G.HH D) × ℕ × Fin N => y v.1 v.2.2 v.2.1) (MvPolynomial.map (algebraMap ℚ k) F)) hψ`. Simplify using `only [map_sum] at h`.
+
+Rewrite `h` using `[hm, eval_nablaX_eq_minY]`. Rewrite using `[← h]`. Use `Finset.sum_congr rfl fun J _ => ?_` and prove the remaining obligations. Rewrite using `[← MvPolynomial.smul_eq_C_mul, map_smul, ← hm, hph, MvPolynomial.smul_eq_C_mul, map_mul, MvPolynomial.map_C, map_mul, MvPolynomial.eval_C, hm, eval_nablaX_eq_minY, smul_eq_mul, mul_comm]`.
+-/
 theorem exists_dual_DeX_eq_minY : ∀ (D : D7) (k : Type) [Field k] [CharZero k] (N : ℕ) (nu : Bool × Formalism.MainNotions.G.HH D → YoungDiagram)
     (J : KM.ColChoice N nu), ∃ ph : Module.Dual k (MvPolynomial ((Bool × Formalism.MainNotions.G.HH D) × ℕ × Fin N) k),
       ∀ y : Bool × Formalism.MainNotions.G.HH D → Fin N → ℕ → k, ph (GL3Columns.DeX N nu y) = GL3Columns.minY N nu J y := by

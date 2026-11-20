@@ -19,6 +19,13 @@ def DPullSt (Y : FBChart C V O dd) (p : ∀ o, PairData Y d (I o)) : Prop :=
 
 namespace VP
 
+/- English proof (translation)
+Establish `hs : MvPowerSeries.HasSubst a` using `MvPowerSeries.hasSubst_of_constantCoeff_zero ha`. Use `set c := MvPowerSeries.constantCoeff f with hc`. Establish `hg : MvPowerSeries.constantCoeff (f - algebraMap C (MvPowerSeries σ C) c) = 0`. Simplify using `[hc, MvPowerSeries.algebraMap_apply]`. Establish `hf : f = algebraMap C (MvPowerSeries σ C) c + (f - algebraMap C (MvPowerSeries σ C) c)`.
+
+Expand and normalize the polynomial expressions, which then agree. Establish `h1 : MvPowerSeries.subst a (algebraMap C (MvPowerSeries σ C) c) = algebraMap C (MvPowerSeries τ C) c`. Rewrite using `[← MvPowerSeries.coe_substAlgHom hs]`. Conclude with `(MvPowerSeries.substAlgHom hs).commutes c`. Rewrite using `[hf, MvPowerSeries.subst_add hs, map_add, h1, constantCoeff_subst_zero ha hg]`.
+
+Simplify using `[MvPowerSeries.algebraMap_apply]`.
+-/
 theorem cc_subst_eq {σ τ : Type} [Finite σ] {a : σ → MvPowerSeries τ C}
     (ha : ∀ s, MvPowerSeries.constantCoeff (a s) = 0) (f : MvPowerSeries σ C) :
     MvPowerSeries.constantCoeff (MvPowerSeries.subst a f) = MvPowerSeries.constantCoeff f := by
@@ -35,10 +42,16 @@ theorem cc_subst_eq {σ τ : Type} [Finite σ] {a : σ → MvPowerSeries τ C}
   rw [hf, MvPowerSeries.subst_add hs, map_add, h1, constantCoeff_subst_zero ha hg]
   simp [MvPowerSeries.algebraMap_apply]
 
+/- English proof (translation)
+Simplify using `[jetAt0]`.
+-/
 private theorem jetAt0_zero_left' {σ : Type} (G : MvPowerSeries σ C) :
     jetAt0 (0 : MvPolynomial σ C) G = 0 := by
   simp [jetAt0]
 
+/- English proof (translation)
+Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simp [jetAt0_zero_left']`. Consider the case `insert j s hj ih => rw [Finset.sum_insert hj, Finset.sum_insert hj, tpjet_jetAt0_add, ih]`.
+-/
 private theorem jetAt0_finset_sum_left {σ ι : Type} (s : Finset ι) (P : ι → MvPolynomial σ C)
     (G : MvPowerSeries σ C) : jetAt0 (∑ j ∈ s, P j) G = ∑ j ∈ s, jetAt0 (P j) G := by
   classical
@@ -46,6 +59,9 @@ private theorem jetAt0_finset_sum_left {σ ι : Type} (s : Finset ι) (P : ι �
   | empty => simp [jetAt0_zero_left']
   | insert j s hj ih => rw [Finset.sum_insert hj, Finset.sum_insert hj, tpjet_jetAt0_add, ih]
 
+/- English proof (translation)
+Rewrite using `[Finset.mul_sum, jetAt0_finset_sum_left, jet_sum_right]`. Use `Finset.sum_congr rfl fun w _ => ?_` and prove the remaining obligations. Rewrite using `[← mul_assoc, jet_mul_X, jet_mul_C, jet_smul_right, dVar_eq_pderiv]`.
+-/
 theorem jet_lin {σ ι : Type} [Fintype ι] (e : ι → σ) (q : MvPolynomial σ C) (c : ι → C) (G : MvPowerSeries σ C) :
     jetAt0 (q * ∑ w, MvPolynomial.C (c w) * MvPolynomial.X (e w)) G =
       jetAt0 q (∑ w, c w • MvPowerSeries.pderiv C (e w) G) := by
@@ -55,6 +71,13 @@ theorem jet_lin {σ ι : Type} [Fintype ι] (e : ι → σ) (q : MvPolynomial σ
 
 variable {Y : FBChart C V O dd} {p : ∀ o, PairData Y d (I o)}
 
+/- English proof (translation)
+Establish `hu' : u = fun i => ∑ w : WVO I, c w * (p w.1).u w.2.1 w.2.2 i`. Rewrite using `[hu]`. Use function extensionality and compare the values at `i`. Rewrite using `[Finset.sum_apply]`. Both sides reduce to the same expression.
+
+Substitute `hu'` using the available equality. Proceed by induction on `k with`. Consider the case `zero => intro q g`. Simplify using the standard rewrite rules. Consider the case `succ k ih`.
+
+Introduce `q g`. Rewrite using `[Function.iterate_succ_apply, ih, hD, ← jet_lin (fun w : WVO I => (b, w)), pow_succ, mul_assoc]`.
+-/
 theorem jet_iter (hD : DPullSt Y p) {n : ℕ} (b : Fin n) (u : Fin dd → C) (c : WVO I → C)
     (hu : u = ∑ w : WVO I, c w • (Y.raw (p w.1)).u w.2.1 w.2.2) (k : ℕ) :
     ∀ (q : MvPolynomial (Fin n × WVO I) C) (g : PS C n dd),
@@ -69,6 +92,13 @@ theorem jet_iter (hD : DPullSt Y p) {n : ℕ} (b : Fin n) (u : Fin dd → C) (c 
     intro q g
     rw [Function.iterate_succ_apply, ih, hD, ← jet_lin (fun w : WVO I => (b, w)), pow_succ, mul_assoc]
 
+/- English proof (translation)
+Introduce `ls`. Proceed by induction on `ls with`. Consider the case `nil => intro _ q`. Simplify using the standard rewrite rules. Consider the case `cons l ls ih`.
+
+Introduce `hls q`. Establish `htl : ∀ ℓ ∈ ls, m ℓ ≠ 0 → uv ℓ = ∑ w : WVO I, co ℓ w • (Y.raw (p w.1)).u w.2.1 w.2.2` using `fun ℓ hℓ => hls ℓ (List.mem_cons_of_mem l hℓ)`. Rewrite using `[List.foldr_cons, List.map_cons, List.prod_cons]`. Distinguish the cases in `hm : m l = 0`. Rewrite using `[hm, Function.iterate_zero, id, pow_zero, one_mul]`.
+
+Conclude with `ih htl q`. Rewrite using `[jet_iter hD (cp l) (uv l) (co l) (hls l List.mem_cons_self hm) (m l), ih htl, mul_assoc]`.
+-/
 theorem jet_list (hD : DPullSt Y p) {n : ℕ} {ι : Type} (cp : ι → Fin n) (uv : ι → Fin dd → C) (co : ι → WVO I → C)
     (m : ι →₀ ℕ) (f : PS C n dd) :
     ∀ (ls : List ι), (∀ ℓ ∈ ls, m ℓ ≠ 0 → uv ℓ = ∑ w : WVO I, co ℓ w • (Y.raw (p w.1)).u w.2.1 w.2.2) →
@@ -91,14 +121,27 @@ theorem jet_list (hD : DPullSt Y p) {n : ℕ} {ι : Type} (cp : ι → Fin n) (u
 
 end VP
 
+/- English proof (translation)
+Rewrite using `[← MvPolynomial.C_1, jet_C, one_mul]`.
+-/
 private theorem jetAt0_one_eq_constantCoeff {σ : Type} (G : MvPowerSeries σ C) :
     jetAt0 (1 : MvPolynomial σ C) G = MvPowerSeries.constantCoeff G := by
   rw [← MvPolynomial.C_1, jet_C, one_mul]
 
+/- English proof (translation)
+Rewrite using `[mul_comm, jet_mul_C]`.
+-/
 private theorem jetAt0_C_mul' {σ : Type} (a : C) (q : MvPolynomial σ C) (G : MvPowerSeries σ C) :
     jetAt0 (MvPolynomial.C a * q) G = a * jetAt0 q G := by
   rw [mul_comm, jet_mul_C]
 
+/- English proof (translation)
+Introduce `n ι _ cp uv P Q hQ F`. Take `⟨co, hco, rfl⟩` from `hQ`. Establish `hcc : ∀ H : PS C n dd, MvPowerSeries.constantCoeff (pullN Y p H) = MvPowerSeries.constantCoeff H` using `fun H => VP.cc_subst_eq (fun q => VP.cc_pullPt (Y := Y) (p := p) q) H`. Establish `hmon : ∀ m ∈ P.support, MvPowerSeries.constantCoeff (DmonN (Y.B.FK C) cp uv m F) = jetAt0 (∏ ℓ, (∑ w : WVO I, MvPolynomial.C (co ℓ w) * MvPolynomial.X (cp ℓ, w)) ^ m ℓ) (pullN Y p F)`. Introduce `m hm`.
+
+Establish `hv : ∀ ℓ ∈ (Finset.univ : Finset ι).toList, m ℓ ≠ 0 → uv ℓ = ∑ w : WVO I, co ℓ w • (Y.raw (p w.1)).u w.2.1 w.2.2` using `fun ℓ _ hℓ => hco ℓ ((MvPolynomial.mem_vars ℓ).2 ⟨m, hm, Finsupp.mem_support_iff.2 hℓ⟩)`. Establish `h1` using `VP.jet_list hD cp uv co m F _ hv 1`. Rewrite `h1` using `[one_mul, Finset.prod_map_toList, jetAt0_one_eq_constantCoeff, hcc]`. Conclude with `h1`. Rewrite using `[DpolyN, map_sum, MvPolynomial.aeval_def, MvPolynomial.eval₂_eq', VP.jetAt0_finset_sum_left]`.
+
+Use `Finset.sum_congr rfl fun m hm => ?_` and prove the remaining obligations. Rewrite using `[map_mul, hmon m hm, MvPolynomial.algebraMap_eq, jetAt0_C_mul']`. Simplify using the standard rewrite rules.
+-/
 theorem logCoord_of_dpull {Y : FBChart C V O dd} {p : ∀ o, PairData Y d (I o)} (hD : DPullSt Y p) :
     LogCoordSt Y p := by
   classical

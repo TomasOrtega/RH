@@ -10,15 +10,24 @@ namespace GlobalTheory.ThK.UnipDom.Additive
 
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
 
+/- English proof (translation)
+Simplify using `[cA, inclR]`.
+-/
 theorem cA_inclR (σ : E →ₐ[F] E) (e : E) :
     cA σ (inclR (F := F) (AF F) e) = inclR (F := F) (AF F) (σ e) := by
   simp [cA, inclR]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `i`. Simplify using `[incM, incV, Matrix.mulVec, dotProduct, map_sum, map_mul]`.
+-/
 theorem incM_mulVec_incV {m n : ℕ} (A : Matrix (Fin m) (Fin n) E) (z : Fin n → E) :
     incM F A *ᵥ incV F z = incV F (A *ᵥ z) := by
   funext i
   simp [incM, incV, Matrix.mulVec, dotProduct, map_sum, map_mul]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `i`. Distinguish the cases in `h : i = j`. Substitute `h` using the available equality. Simplify using `[incV]`. Simplify using `[incV, Pi.single_apply, h]`.
+-/
 theorem single_eq_incV {n : ℕ} (j : Fin n) :
     (Pi.single j (1 : AE F E) : Fin n → AE F E) = incV F (Pi.single j (1 : E)) := by
   funext i
@@ -26,28 +35,57 @@ theorem single_eq_incV {n : ℕ} (j : Fin n) :
   · subst h; simp [incV]
   · simp [incV, Pi.single_apply, h]
 
+/- English proof (translation)
+Simplify using `[fA, incV, form, incM, cA_inclR, dotProduct, Matrix.mulVec, map_sum, map_mul]`.
+-/
 theorem fA_incV (σ : E →ₐ[F] E) {n : ℕ} (J : Matrix (Fin n) (Fin n) E) (v w : Fin n → E) :
     fA σ J (incV F v) (incV F w) = inclR (F := F) (AF F) (form σ J v w) := by
   simp [fA, incV, form, incM, cA_inclR, dotProduct, Matrix.mulVec, map_sum, map_mul]
 
+/- English proof (translation)
+Simplify using `[fA, add_dotProduct]`.
+-/
 theorem fA_add_left (σ : E →ₐ[F] E) {n : ℕ} (J : Matrix (Fin n) (Fin n) E) (v v' w : Fin n → AE F E) :
     fA σ J (v + v') w = fA σ J v w + fA σ J v' w := by
   simp [fA, add_dotProduct]
 
+/- English proof (translation)
+Simplify using `[fA, smul_dotProduct]`.
+-/
 theorem fA_smul_left (σ : E →ₐ[F] E) {n : ℕ} (J : Matrix (Fin n) (Fin n) E) (c : AE F E) (v w : Fin n → AE F E) :
     fA σ J (c • v) w = c * fA σ J v w := by
   simp [fA, smul_dotProduct]
 
 variable {σ : E →ₐ[F] E}
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem mat_mul' {n : ℕ} {J : Matrix (Fin n) (Fin n) E} (u v : UA σ J) : mat (u * v) = mat u * mat v := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem mat_one' {n : ℕ} {J : Matrix (Fin n) (Fin n) E} : mat (1 : UA σ J) = 1 := rfl
 
+/- English proof (translation)
+Use `show ((u.1⁻¹ : GL (Fin n) (AE F E)) : Matrix (Fin n) (Fin n) (AE F E)) * u.1.1 = 1`. Conclude with `Units.inv_mul u.1`.
+-/
 theorem mat_inv_mul' {n : ℕ} {J : Matrix (Fin n) (Fin n) E} (u : UA σ J) : mat u⁻¹ * mat u = 1 := by
   show ((u.1⁻¹ : GL (Fin n) (AE F E)) : Matrix (Fin n) (Fin n) (AE F E)) * u.1.1 = 1
   exact Units.inv_mul u.1
 
+/- English proof (translation)
+Proceed by induction on `hu using Subgroup.closure_induction with`. Consider the case `mem x hx => exact hx`. Consider the case `one => exact ⟨by simp [mat_one'], fun z => ⟨0, by simp [mat_one']⟩⟩`. Consider the case `mul x y _ _ hx hy`. Use `⟨by rw [mat_mul', ← Matrix.mulVec_mulVec, hy.1, hx.1], fun z => ?_⟩` and prove the remaining obligations.
+
+Take `⟨a, ha⟩` from `hx.2 z`. Take `⟨b, hb⟩` from `hy.2 z`. Use `⟨a + b, ?_⟩` and prove the remaining obligations. Rewrite using `[mat_mul', ← Matrix.mulVec_mulVec, hb, Matrix.mulVec_add, Matrix.mulVec_smul, hx.1, ha, add_smul, add_assoc]`. Consider the case `inv x _ hx`.
+
+Establish `h1 : ∀ w, mat x⁻¹ *ᵥ (mat x *ᵥ w) = w` using `fun w => by`. Rewrite using `[Matrix.mulVec_mulVec, mat_inv_mul', Matrix.one_mulVec]`. Establish `hx1 : mat x⁻¹ *ᵥ incV F H'.x = incV F H'.x`. Use `h1 (incV F H'.x)` as an intermediate fact. Rewrite `this` using `[hx.1]`. Then use the resulting hypothesis.
+
+Use `⟨hx1, fun z => ?_⟩` and prove the remaining obligations. Take `⟨a, ha⟩` from `hx.2 z`. Use `⟨-a, ?_⟩` and prove the remaining obligations. Establish `h2` using `h1 (incM F H'.ι *ᵥ z)`. Rewrite `h2` using `[ha, Matrix.mulVec_add, Matrix.mulVec_smul, hx1]`.
+
+Rewrite using `[neg_smul]`. Conclude with `eq_add_neg_of_add_eq h2`.
+-/
 theorem unip_spec {d d₁ : ℕ} {W : Spc F E d} {H' : Plane E d d₁} {u : UA σ W.J} (hu : u ∈ unip σ W H') :
     mat u *ᵥ incV F H'.x = incV F H'.x ∧
       ∀ z, ∃ a : AE F E, mat u *ᵥ (incM F H'.ι *ᵥ z) = incM F H'.ι *ᵥ z + a • incV F H'.x := by
@@ -76,6 +114,13 @@ theorem unip_spec {d d₁ : ℕ} {W : Spc F E d} {H' : Plane E d d₁} {u : UA �
 end GlobalTheory.ThK.UnipDom.Additive
 
 open GlobalTheory.ThK.UnipDom.Additive in
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ B d d₁ W W₁ H' r s i₀ i₁ _ _ hA u hu v hv`. Use function extensionality and compare the values at `j`. Use `set e : Fin d → AE F E := incM F H'.ι *ᵥ Pi.single j 1 with he`. Establish `hval : ∀ c : AE F E, fA σ W.J (e + c • incV F H'.x) (incV F H'.y) = c`. Introduce `c`.
+
+Rewrite using `[fA_add_left, fA_smul_left, fA_incV, hA.xy, map_one, mul_one, he, single_eq_incV, incM_mulVec_incV, fA_incV, (hA.orth _).2, map_zero, zero_add]`. Take `⟨a, ha⟩` from `(unip_spec hu).2 (Pi.single j 1)`. Take `⟨b, hb⟩` from `(unip_spec hv).2 (Pi.single j 1)`. Establish `hux` using `(unip_spec hu).1`. Establish `huv : mat (u * v) *ᵥ e = e + (a + b) • incV F H'.x`.
+
+Rewrite using `[mat_mul', ← Matrix.mulVec_mulVec, he, hb, Matrix.mulVec_add, Matrix.mulVec_smul, hux, ha, add_smul, add_assoc]`. Simplify using `only [Pi.add_apply, coA]`. Rewrite using `[← he, huv, hval, ha, ← he, hval, hb, ← he, hval]`.
+-/
 theorem GlobalTheory.ThK.UnipDom.coA_mul_of_mem_unip : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E) (d d₁ : ℕ) (W : Spc F E d) (W₁ : Spc F E d₁) (H' : Plane E d d₁) (r s i₀ i₁ : ℕ), IsCMExt F E σ → W.IsSkew σ B r s → H'.IsAdapted σ B W W₁ i₀ i₁ → ∀ u ∈ unip σ W H', ∀ v ∈ unip σ W H', coA σ W.J H' (u * v) = coA σ W.J H' u + coA σ W.J H' v := by
   intro F E _ _ _ _ _ σ B d d₁ W W₁ H' r s i₀ i₁ _ _ hA u hu v hv
   funext j

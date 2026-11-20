@@ -22,12 +22,21 @@ variable {n : ℕ}
 
 def flip (ε : Fin n → Bool) : Fin n → Bool := fun a => !ε a
 
+/- English proof (translation)
+Apply the tactic sequence `unfold flip; cases ε a <;> cases ε b <;> simp`.
+-/
 theorem flip_eq_iff (ε : Fin n → Bool) (a b : Fin n) : flip ε a = flip ε b ↔ ε a = ε b := by
   unfold flip; cases ε a <;> cases ε b <;> simp
 
+/- English proof (translation)
+The claim follows from `not_congr (flip_eq_iff ε a b)`.
+-/
 theorem flip_ne_iff (ε : Fin n → Bool) (a b : Fin n) : flip ε a ≠ flip ε b ↔ ε a ≠ ε b :=
   not_congr (flip_eq_iff ε a b)
 
+/- English proof (translation)
+Use extensionality with `a b`. Unfold `Formalism.REAL.Jm flip`. Distinguish the cases in `h : a = b`. Apply the tactic sequence `subst h; rcases hε : ε a with _ | _ <;> simp [hε]`. Simplify using `[Matrix.diagonal_apply_ne _ h]`.
+-/
 theorem Jm_flip (ε : Fin n → Bool) : Formalism.REAL.Jm (flip ε) = -Formalism.REAL.Jm ε := by
   ext a b
   unfold Formalism.REAL.Jm flip
@@ -35,41 +44,71 @@ theorem Jm_flip (ε : Fin n → Bool) : Formalism.REAL.Jm (flip ε) = -Formalism
   · subst h; rcases hε : ε a with _ | _ <;> simp [hε]
   · simp [Matrix.diagonal_apply_ne _ h]
 
+/- English proof (translation)
+Unfold `Formalism.REAL.inUJ`. Rewrite using `[Jm_flip, Matrix.mul_neg, Matrix.neg_mul, neg_inj]`.
+-/
 theorem inUJ_flip (ε : Fin n → Bool) (g : Matrix (Fin n) (Fin n) ℂ) :
     Formalism.REAL.inUJ (flip ε) g ↔ Formalism.REAL.inUJ ε g := by
   unfold Formalism.REAL.inUJ
   rw [Jm_flip, Matrix.mul_neg, Matrix.neg_mul, neg_inj]
 
+/- English proof (translation)
+Use extensionality with `g`. Conclude with `inUJ_flip ε g`.
+-/
 theorem UJset_flip (ε : Fin n → Bool) : UJset (flip ε) = UJset ε := by
   ext g; exact inUJ_flip ε g
 
+/- English proof (translation)
+Use extensionality with `g`. Conclude with `inUJ_flip ε _`.
+-/
 theorem UJ_flip (ε : Fin n → Bool) : Formalism.REAL.UJ (flip ε) = Formalism.REAL.UJ ε := by
   ext g; exact inUJ_flip ε _
 
+/- English proof (translation)
+Use extensionality with `g`. Unfold `Formalism.REAL.Kset`. Simplify using `only [Set.mem_setOf_eq, Jm_flip, Matrix.mul_neg, Matrix.neg_mul, neg_inj]`.
+-/
 theorem Kset_flip (ε : Fin n → Bool) : Formalism.REAL.Kset (flip ε) = Formalism.REAL.Kset ε := by
   ext g
   unfold Formalism.REAL.Kset
   simp only [Set.mem_setOf_eq, Jm_flip, Matrix.mul_neg, Matrix.neg_mul, neg_inj]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `a`. Unfold `Formalism.REAL.rhoC`. Simplify using `only [flip_eq_iff]`.
+-/
 theorem rhoC_flip (ε : Fin n → Bool) : Formalism.REAL.rhoC (flip ε) = Formalism.REAL.rhoC ε := by
   funext a
   unfold Formalism.REAL.rhoC
   simp only [flip_eq_iff]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `a`. Unfold `Formalism.REAL.rhoN`. Simplify using `only [flip_ne_iff]`.
+-/
 theorem rhoN_flip (ε : Fin n → Bool) : Formalism.REAL.rhoN (flip ε) = Formalism.REAL.rhoN ε := by
   funext a
   unfold Formalism.REAL.rhoN
   simp only [flip_ne_iff]
 
+/- English proof (translation)
+Unfold `Formalism.QuantumDeterminants.lowK`. Rewrite using `[rhoC_flip, rhoN_flip]`.
+-/
 theorem lowK_flip (ε : Fin n → Bool) (lam : Fin n → ℝ) : Formalism.QuantumDeterminants.lowK (flip ε) lam = Formalism.QuantumDeterminants.lowK ε lam := by
   unfold Formalism.QuantumDeterminants.lowK; rw [rhoC_flip, rhoN_flip]
 
+/- English proof (translation)
+Unfold `vNormSq`. Rewrite using `[rhoC_flip]`.
+-/
 theorem vNormSq_flip (ε : Fin n → Bool) (μ : Fin n → ℝ) : vNormSq (flip ε) μ = vNormSq ε μ := by
   unfold vNormSq; rw [rhoC_flip]
 
+/- English proof (translation)
+Unfold `CDom`. Simplify using `only [flip_eq_iff]`.
+-/
 theorem cDom_flip (ε : Fin n → Bool) (μ Λ : Fin n → ℝ) : CDom (flip ε) μ Λ ↔ CDom ε μ Λ := by
   unfold CDom; simp only [flip_eq_iff]
 
+/- English proof (translation)
+Unfold `IsKTypeOf IsKStableOn`. Simplify using `only [Kset_flip, cDom_flip]`.
+-/
 theorem isKTypeOf_flip {H : Type*} [NormedAddCommGroup H] [InnerProductSpace ℂ H] (ε : Fin n → Bool)
     (σ : Matrix (Fin n) (Fin n) ℂ → (H →L[ℂ] H)) (Λ : Fin n → ℝ) (S : Submodule ℂ H) :
     IsKTypeOf (flip ε) σ Λ S ↔ IsKTypeOf ε σ Λ S := by
@@ -82,6 +121,9 @@ namespace GlobalTheory.NegModel
 
 variable {n : ℕ}
 
+/- English proof (translation)
+Establish `key : ∀ (G G' : Subgroup (Matrix (Fin n) (Fin n) ℂ)ˣ), G = G' → ∀ (_ : LocallyCompactSpace G) (_ : LocallyCompactSpace G'), (letI : MeasurableSpace G` using `borel G; haveI : BorelSpace G := ⟨rfl⟩; MemLp (fun g : G => f ((g : (Matrix (Fin n) (Fin n) ℂ)ˣ) : Matrix (Fin n) (Fin n) ℂ)) 2 Measure.haar) → (letI : MeasurableSpace G' := borel G'; haveI : BorelSpace G' := ⟨rfl⟩; MemLp (fun g : G' => f ((g : (Matrix (Fin n) (Fin n) ℂ)ˣ) : Matr …`. Introduce `G G' hG _ _ hm`. Substitute `hG` using the available equality. Conclude with `hm`. Conclude with `key _ _ h inferInstance inferInstance hf`.
+-/
 theorem memLp_UJ_congr {ε ε' : Fin n → Bool} (h : Formalism.REAL.UJ ε = Formalism.REAL.UJ ε') (f : Matrix (Fin n) (Fin n) ℂ → ℂ)
     (hf : MemLp (fun g : Formalism.REAL.UJ ε => f ((g : (Matrix (Fin n) (Fin n) ℂ)ˣ) : Matrix (Fin n) (Fin n) ℂ)) 2
       (Formalism.REAL.muG ε)) :
@@ -98,10 +140,20 @@ theorem memLp_UJ_congr {ε ε' : Fin n → Bool} (h : Formalism.REAL.UJ ε = For
     exact hm
   exact key _ _ h inferInstance inferInstance hf
 
+/- English proof (translation)
+Introduce `v w` and use `memLp_UJ_congr (UJ_flip ε).symm (fun g => ⟪w, σ g v⟫_ℂ) (h v w)`.
+-/
 theorem isSqIntOn_flip {H : Type*} [NormedAddCommGroup H] [InnerProductSpace ℂ H] (ε : Fin n → Bool)
     (σ : Matrix (Fin n) (Fin n) ℂ → (H →L[ℂ] H)) (h : IsSqIntOn ε σ) : IsSqIntOn (flip ε) σ := fun v w =>
   memLp_UJ_congr (UJ_flip ε).symm (fun g => ⟪w, σ g v⟫_ℂ) (h v w)
 
+/- English proof (translation)
+Take `⟨h1, h2, h3, h4, h5, ⟨S, hS⟩, h7⟩` from `h`. Use `⟨h1, h2, ?_, ?_, isSqIntOn_flip ε σ h5, ⟨S, ?_⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[UJset_flip]`. Conclude with `h3`. Rewrite using `[UJset_flip]`.
+
+Conclude with `h4`. Rewrite using `[lowK_flip, isKTypeOf_flip]`. Conclude with `hS`. Introduce `μ S' hS'`. Rewrite using `[lowK_flip, vNormSq_flip, vNormSq_flip]`.
+
+Conclude with `h7 μ S' ((isKTypeOf_flip ε σ μ S').1 hS')`.
+-/
 theorem isDS_flip {H : Type*} [NormedAddCommGroup H] [InnerProductSpace ℂ H] (ε : Fin n → Bool) (lam : Fin n → ℝ)
     (σ : Matrix (Fin n) (Fin n) ℂ → (H →L[ℂ] H)) (h : IsDS ε lam σ) : IsDS (flip ε) lam σ := by
   obtain ⟨h1, h2, h3, h4, h5, ⟨S, hS⟩, h7⟩ := h
@@ -119,17 +171,29 @@ namespace GlobalTheory.NegModel
 
 variable {D : D7}
 
+/- English proof (translation)
+Use extensionality with `i j`. Simplify using `[gramAt, GlobalTheory.Grid.neg_gram]`.
+-/
 theorem gramAt_neg (V : HSp D) (τ : D.what₂.Tau) : gramAt D (GlobalTheory.Grid.sgn true V) τ = -gramAt D V τ := by
   ext i j; simp [gramAt, GlobalTheory.Grid.neg_gram]
 
+/- English proof (translation)
+Use extensionality with `g`. Simplify using `only [Formalism.QuantumDeterminants.UH, Set.mem_setOf_eq, Matrix.mul_neg, Matrix.neg_mul, neg_inj]`.
+-/
 theorem UH_neg {ι : Type*} [Fintype ι] [DecidableEq ι] (H : Matrix ι ι ℂ) : Formalism.QuantumDeterminants.UH (-H) = Formalism.QuantumDeterminants.UH H := by
   ext g
   simp only [Formalism.QuantumDeterminants.UH, Set.mem_setOf_eq, Matrix.mul_neg, Matrix.neg_mul, neg_inj]
 
+/- English proof (translation)
+Rewrite using `[gramAt_neg, UH_neg]`.
+-/
 theorem UH_sgn (V : HSp D) (τ : D.what₂.Tau) :
     Formalism.QuantumDeterminants.UH (gramAt D (GlobalTheory.Grid.sgn true V) τ) = Formalism.QuantumDeterminants.UH (gramAt D V τ) := by
   rw [gramAt_neg, UH_neg]
 
+/- English proof (translation)
+Use extensionality with `X`. Simplify using `only [lieAt, Set.mem_setOf_eq]`. Rewrite using `[gramAt_neg, Matrix.mul_neg, Matrix.neg_mul, ← neg_add, neg_eq_zero]`.
+-/
 theorem lieAt_sgn (V : HSp D) (τ : D.what₂.Tau) : lieAt (GlobalTheory.Grid.sgn true V) τ = lieAt V τ := by
   ext X
   simp only [lieAt, Set.mem_setOf_eq]
@@ -154,11 +218,17 @@ theorem lieAt_sgn (V : HSp D) (τ : D.what₂.Tau) : lieAt (GlobalTheory.Grid.sg
   fr_gram τ := by
     rw [gramAt_neg, ← M.fr_gram τ, Jm_flip, Matrix.mul_neg, Matrix.neg_mul]
 
+/- English proof (translation)
+Use `show (M.fr τ)⁻¹ * Formalism.REAL.Jm (flip (M.ε τ)) * M.fr τ = -((M.fr τ)⁻¹ * Formalism.REAL.Jm (M.ε τ) * M.fr τ)`. Rewrite using `[Jm_flip, Matrix.mul_neg, Matrix.neg_mul]`.
+-/
 theorem cart_negModel {V : HSp D} {S : D.what₂.Tau → SPar} (M : DSModel V S) (τ : D.what₂.Tau) :
     cart (negModel M) τ = -cart M τ := by
   show (M.fr τ)⁻¹ * Formalism.REAL.Jm (flip (M.ε τ)) * M.fr τ = -((M.fr τ)⁻¹ * Formalism.REAL.Jm (M.ε τ) * M.fr τ)
   rw [Jm_flip, Matrix.mul_neg, Matrix.neg_mul]
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem onb_negModel {V : HSp D} {S : D.what₂.Tau → SPar} (M : DSModel V S) (τ : D.what₂.Tau) :
     onb (negModel M) τ = onb M τ := rfl
 
@@ -168,6 +238,9 @@ namespace GlobalTheory.NegModel
 
 variable {D : D7}
 
+/- English proof (translation)
+Substitute `hH` using the available equality. Establish `: p = p'` using `funext fun x => propext (hp x)`. Substitute `this` using the available equality. Reduce the equality to equality of the corresponding arguments.
+-/
 theorem val_dite_congr {G : Type*} [Group G] {H H' : Subgroup G} (hH : H = H') (p : H → Prop) (p' : H' → Prop)
     [Decidable (∃ x, p x)] [Decidable (∃ x, p' x)]
     (hp : ∀ x : H, p x ↔ p' ⟨x.1, hH ▸ x.2⟩) :
@@ -177,10 +250,16 @@ theorem val_dite_congr {G : Type*} [Group G] {H H' : Subgroup G} (hH : H = H') (
   subst this
   congr
 
+/- English proof (translation)
+Unfold both sides. The equivalence is reflexive.
+-/
 theorem isAtTau_sgn (θ : InfFam D) (V : HSp D) (τ : D.what₂.Tau) (g : Matrix (Fin V.rank) (Fin V.rank) ℂ)
     (x : GA D (GlobalTheory.Grid.sgn true V)) :
     IsAtTau θ (GlobalTheory.Grid.sgn true V) τ g x ↔ IsAtTau θ V τ g (GlobalTheory.Grid.ofSgn true V x) := Iff.rfl
 
+/- English proof (translation)
+Establish `h` using `val_dite_congr (G := GL (Fin V.rank) (AF D.host.F ⊗[D.host.F] D.host.E)) (H := HR (AF D.host.F) D.sp.cm.sig (GlobalTheory.Grid.sgn true V).gram) (H' := HR (AF D.host.F) D.sp.cm.sig V.gram) (GlobalTheory.Grid.hr_sgn true V) (fun x => IsAtTau θ (GlobalTheory.Grid.sgn true V) τ g x) …`. Conclude with `Subtype.ext h`.
+-/
 theorem ofSgn_atTau (θ : InfFam D) (V : HSp D) (τ : D.what₂.Tau) (g : Matrix (Fin V.rank) (Fin V.rank) ℂ) :
     GlobalTheory.Grid.ofSgn true V (atTau θ (GlobalTheory.Grid.sgn true V) τ g) = atTau θ V τ g := by
   classical
@@ -190,6 +269,9 @@ theorem ofSgn_atTau (θ : InfFam D) (V : HSp D) (τ : D.what₂.Tau) (g : Matrix
     (fun x => isAtTau_sgn θ V τ g x)
   exact Subtype.ext h
 
+/- English proof (translation)
+The claim follows from `ofSgn_atTau θ V τ _`.
+-/
 theorem ofSgn_oneP (θ : InfFam D) (V : HSp D) (τ : D.what₂.Tau) (X : Matrix (Fin V.rank) (Fin V.rank) ℂ) (t : ℝ) :
     GlobalTheory.Grid.ofSgn true V (oneP θ (GlobalTheory.Grid.sgn true V) τ X t) = oneP θ V τ X t :=
   ofSgn_atTau θ V τ _
@@ -200,11 +282,17 @@ namespace GlobalTheory.NegModel
 
 variable {D : D7} {V : HSp D} {S : D.what₂.Tau → SPar}
 
+/- English proof (translation)
+Use `show Submodule.span ℂ {w | SmoothVec (lieAt (GlobalTheory.Grid.sgn true V) τ) (M.rep τ) w} = Submodule.span ℂ {w | SmoothVec (lieAt V τ) (M.rep τ) w}`. Rewrite using `[lieAt_sgn]`.
+-/
 theorem sm_negModel (M : DSModel V S) (τ : D.what₂.Tau) : (negModel M).sm τ = M.sm τ := by
   show Submodule.span ℂ {w | SmoothVec (lieAt (GlobalTheory.Grid.sgn true V) τ) (M.rep τ) w} =
     Submodule.span ℂ {w | SmoothVec (lieAt V τ) (M.rep τ) w}
   rw [lieAt_sgn]
 
+/- English proof (translation)
+Substitute `h` using the available equality. Conclude with `⟨LinearEquiv.refl ℂ _, fun _ => rfl⟩`.
+-/
 theorem exists_equiv_incl {ι : Type} [Fintype ι] {H : ι → Type} [∀ i, AddCommGroup (H i)] [∀ i, Module ℂ (H i)]
     (p q : ∀ i, Submodule ℂ (H i)) (h : p = q) :
     ∃ e : (⨂[ℂ] i, p i) ≃ₗ[ℂ] (⨂[ℂ] i, q i), ∀ x,
@@ -212,6 +300,27 @@ theorem exists_equiv_incl {ι : Type} [Fintype ι] {H : ι → Type} [∀ i, Add
   subst h
   exact ⟨LinearEquiv.refl ℂ _, fun _ => rfl⟩
 
+/- English proof (translation)
+Introduce `D V S M`. Use `⟨negModel M, cart_negModel M, onb_negModel M, ?_⟩` and prove the remaining obligations. Introduce `W S' M' θ _ ω pt It₁ h₁`. Take `⟨e, he⟩` from `exists_equiv_incl (H := M.H) (fun τ => (negModel M).sm τ) (fun τ => M.sm τ) (funext (sm_negModel M))`. Establish `he' : ∀ x : SmT (negModel M), inclT M (e x) = inclT (negModel M) x` using `he`.
+
+Use `⟨It₁.compr₂ e.toLinearMap, ?_⟩` and prove the remaining obligations. Establish `hIt : ∀ φ v, It₁.compr₂ e.toLinearMap φ v = e (It₁ φ v)` using `fun _ _ => rfl`. Use `⟨?_, ?_, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `h0`. Apply `h₁.ne` to reduce the goal to its premises.
+
+Use `LinearMap.ext fun φ => LinearMap.ext fun v => ?_` and prove the remaining obligations. Establish `h2 : e (It₁ φ v) = 0` using `by rw [← hIt, h0]; rfl`. Simplify using `using h2`. Introduce `φ w`. Take `⟨c, hc⟩` from `h₁.bdd φ w`.
+
+Use `⟨c, fun v => ?_⟩` and prove the remaining obligations. Rewrite using `[hIt, he']`. Conclude with `hc v`. Introduce `τ g hg φ φ' hpt v`. Rewrite using `[hIt, hIt, he', he']`.
+
+Use `h₁.eqK τ g (by rw [UH_sgn]; exact hg) φ φ' ?_ v` and prove the remaining obligations. Rewrite using `[hpt]`. Use `show ω (atTau θ V τ g, 1) (pt φ) = ω (GlobalTheory.Grid.ofSgn true V (atTau θ (GlobalTheory.Grid.sgn true V) τ g), 1) (pt φ)`. Rewrite using `[ofSgn_atTau]`. Introduce `τ X hX φ φ' hd v w`.
+
+Rewrite using `[hIt, hIt, he', he']`. Use `h₁.eqg τ X (by rw [lieAt_sgn]; exact hX) φ φ' (fun z => ?_) v w` and prove the remaining obligations. Establish `h3 : (fun t : ℝ => (GlobalTheory.Grid.WRep.toSgn true ω) (oneP θ (GlobalTheory.Grid.sgn true V) τ X t, 1) (pt φ) z) = fun t : ℝ => ω (oneP θ V τ X t, 1) (pt φ) z`. Use function extensionality and compare the values at `t`. Use `show ω (GlobalTheory.Grid.ofSgn true V (oneP θ (GlobalTheory.Grid.sgn true V) τ X t), 1) (pt φ) z = _`.
+
+Rewrite using `[ofSgn_oneP]`. Rewrite using `[h3]`. Conclude with `hd z`. Introduce `τ h hh φ φ' v v' hpt hv`. Rewrite using `[hIt, hIt, h₁.invK τ h hh φ φ' v v' ?_ hv]`.
+
+Rewrite using `[hpt]`. Use `show ω (1, atTau θ W τ h) (pt φ) = ω (GlobalTheory.Grid.ofSgn true V 1, atTau θ W τ h) (pt φ)`. Rewrite using `[map_one]`. Introduce `τ X hX φ φ' v v' hd hv`. Rewrite using `[hIt, hIt, ← map_add, h₁.invg τ X hX φ φ' v v' ?_ hv, map_zero]`.
+
+Introduce `z`. Establish `h3 : (fun t : ℝ => (GlobalTheory.Grid.WRep.toSgn true ω) (1, oneP θ W τ X t) (pt φ) z) = fun t : ℝ => ω (1, oneP θ W τ X t) (pt φ) z`. Use function extensionality and compare the values at `t`. Use `show ω (GlobalTheory.Grid.ofSgn true V 1, oneP θ W τ X t) (pt φ) z = _`. Rewrite using `[map_one]`.
+
+Rewrite using `[h3]`. Conclude with `hd z`.
+-/
 theorem exists_negModel_transfer : ∀ {D : D7} {V : HSp D} {S : D.what₂.Tau → SPar} (M : DSModel V S), ∃ M₁ : DSModel (GlobalTheory.Grid.sgn true V) (fun τ => (S τ).image fun x => (x.1, !x.2)), (∀ τ, cart M₁ τ = -cart M τ) ∧ (∀ τ, onb M₁ τ = onb M τ) ∧ ∀ {W : HSp D} {S' : D.what₂.Tau → SPar} (M' : DSModel W S') (θ : InfFam D), IsInfFam θ → ∀ (ω : GlobalTheory.Grid.WRep V W) (pt : PolF D W.rank V.rank → (WO V W → ℂ)) (It₁ : PolF D W.rank V.rank →ₗ[ℂ] SmT M' →ₗ[ℂ] SmT M₁), IsItW θ M₁ M' (GlobalTheory.Grid.WRep.toSgn true ω) pt It₁ → ∃ It : PolF D W.rank V.rank →ₗ[ℂ] SmT M' →ₗ[ℂ] SmT M, IsItW θ M M' ω pt It := by
   intro D V S M
   refine ⟨negModel M, cart_negModel M, onb_negModel M, ?_⟩

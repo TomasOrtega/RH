@@ -14,6 +14,11 @@ namespace GlobalTheory.FullRankCoinv.Reduce
 section
 variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
 
+/- English proof (translation)
+Establish `hmem : (fun Y => Ψ ((g.1)ᵀ * Y)) ∈ fullRk k n d`. Set `e : Matrix (Fin n) (Fin d) k ≃ₜ Matrix (Fin n) (Fin d) k` to `{ toFun := fun X => (g.1)ᵀ * X invFun := fun X => ((g⁻¹).1)ᵀ * X left_inv := fun X => by`. Simplify using `only [← Matrix.mul_assoc, ← Matrix.transpose_mul, Units.mul_inv, Matrix.transpose_one, Matrix.one_mul]`. Use `right_inv := fun X => by`. Simplify using `only [← Matrix.mul_assoc, ← Matrix.transpose_mul, Units.inv_mul, Matrix.transpose_one, Matrix.one_mul]`.
+
+Use `continuous_toFun := by fun_prop`. Use `continuous_invFun := by fun_prop }`. Use `⟨⟨hΨ.1.1.comp_continuous e.continuous, hΨ.1.2.comp_homeomorph e⟩, fun Y hY => hΨ.2 _ ?_⟩` and prove the remaining obligations. Rewrite using `[Matrix.rank_mul_eq_right_of_isUnit_det _ _ (by rw [Matrix.det_transpose]; exact Matrix.isUnits_det_units g)]` and apply the resulting hypothesis. Conclude with `(fullRk k n d).smul_mem ((ν (gdet g) : ℂ) * apow (gdet g) ((d : ℂ) / 2)) hmem`.
+-/
 theorem lact_mem {n d : ℕ} (ν : kˣ →* ℂˣ) (g : GL (Fin n) k) {Ψ : Matrix (Fin n) (Fin d) k → ℂ}
     (hΨ : Ψ ∈ fullRk k n d) : lact ν g Ψ ∈ fullRk k n d := by
   have hmem : (fun Y => Ψ ((g.1)ᵀ * Y)) ∈ fullRk k n d := by
@@ -33,6 +38,13 @@ theorem lact_mem {n d : ℕ} (ν : kˣ →* ℂˣ) (g : GL (Fin n) k) {Ψ : Matr
       (by rw [Matrix.det_transpose]; exact Matrix.isUnits_det_units g)]
   exact (fullRk k n d).smul_mem ((ν (gdet g) : ℂ) * apow (gdet g) ((d : ℂ) / 2)) hmem
 
+/- English proof (translation)
+Use `⟨⟨?_, ?_⟩, fun Y hY => ?_⟩` and prove the remaining obligations. Rewrite using `[IsLocallyConstant.iff_eventually_eq]`. Introduce `x`. Distinguish the cases in `hx : x ∈ T`. Use `filter_upwards [hT.isOpen.mem_nhds hx, hΨ.1.1.eventually_eq x] with y hy h`.
+
+Rewrite using `[Set.indicator_of_mem hx, Set.indicator_of_mem hy, h]`. Use `filter_upwards [hT.compl.isOpen.mem_nhds hx] with y hy`. Rewrite using `[Set.indicator_of_notMem hx, Set.indicator_of_notMem hy]`. Use `HasCompactSupport.mono hΨ.1.2 fun y hy h => hy ?_` and prove the remaining obligations. Distinguish the cases in `hy' : y ∈ T`.
+
+Rewrite using `[Set.indicator_of_mem hy', h]`. Conclude with `Set.indicator_of_notMem hy' _`. Distinguish the cases in `hy' : Y ∈ T`. Rewrite using `[Set.indicator_of_mem hy', hΨ.2 Y hY]`. Conclude with `Set.indicator_of_notMem hy' _`.
+-/
 theorem indicator_mem {n d : ℕ} {T : Set (Matrix (Fin n) (Fin d) k)} (hT : IsClopen T)
     {Ψ : Matrix (Fin n) (Fin d) k → ℂ} (hΨ : Ψ ∈ fullRk k n d) : T.indicator Ψ ∈ fullRk k n d := by
   refine ⟨⟨?_, ?_⟩, fun Y hY => ?_⟩
@@ -53,6 +65,25 @@ theorem indicator_mem {n d : ℕ} {T : Set (Matrix (Fin n) (Fin d) k)} (hT : IsC
 
 end
 
+/- English proof (translation)
+Introduce `k _ _ _ _ _ _ n d ν S hS hint s`. Establish `hadd : ∀ Ψ ∈ fullRk k n d, ∀ Φ ∈ fullRk k n d, ∀ Y, smallF (haarVol (GlobalTheory.SplitWeil.KO k (Fin n))) ν (Ψ + Φ) Y = smallF (haarVol (GlobalTheory.SplitWeil.KO k (Fin n))) ν Ψ Y + smallF (haarVol (GlobalTheory.SplitWeil.KO k (Fin n))) ν Φ Y`. Introduce `Ψ hΨ Φ hΦ Y`. Simplify using `only [smallF, Pi.add_apply]`. Rewrite using `[← integral_add (hint Ψ hΨ Y) (hint Φ hΦ Y)]`.
+
+Use `congr 1`. Use function extensionality and compare the values at `g`. Expand and normalize the polynomial expressions, which then agree. Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty`.
+
+Introduce `Ψ hΨ h`. Use `⟨Ψ, hΨ, fun Y _ => ?_, by simp, fun _ => rfl⟩` and prove the remaining obligations. Assume the negation of the conclusion as `h0`. Simplify using `using h Y h0`. Consider the case `insert E s _ ih`.
+
+Introduce `Ψ hΨ h`. Use `set T : Set (Matrix (Fin n) (Fin d) k) := (fun Y => E.val * Y) ⁻¹' S with hTdef`. Establish `hT : IsClopen T` using `hS.preimage (by fun_prop)`. Establish `h1` using `indicator_mem hT hΨ`. Establish `h2` using `indicator_mem hT.compl hΨ`.
+
+Establish `hsum : T.indicator Ψ + Tᶜ.indicator Ψ = Ψ` using `Set.indicator_self_add_compl T Ψ`. Take `⟨Φ₂, hΦ₂, hS₂, ha₂, hF₂⟩` from `ih _ h2 fun Y hY => by`. Establish `hYT : Y ∈ Tᶜ`. Assume the negation of the conclusion as `hc`. Conclude with `hY (Set.indicator_of_notMem hc _)`.
+
+Rewrite `hY` using `[Set.indicator_of_mem hYT]`. Take `⟨E', hE', hS'⟩` from `h Y hY`. Break down `Finset.mem_insert.1 hE' with rfl | hE'` into its components or cases. Conclude with `absurd hS' hYT`. Conclude with `⟨E', hE', hS'⟩`.
+
+Establish `hΦ₁` using `lact_mem ν (invT E) h1`. Use `⟨lact ν (invT E) (T.indicator Ψ) + Φ₂, add_mem hΦ₁ hΦ₂, fun Y hY => ?_, ?_, fun Y => ?_⟩` and prove the remaining obligations. Establish `hn : (invT E).1ᵀ * Y ∉ T`. Introduce `hc`. Apply `hY` to reduce the goal to its premises.
+
+Establish `hc' : E.val * ((invT E).1ᵀ * Y) ∈ S` using `hc`. Rewrite `hc'` using `[invT_val, Matrix.transpose_transpose, ← Matrix.mul_assoc, Units.mul_inv, Matrix.one_mul]`. Then use the resulting hypothesis. Simplify using `only [Pi.add_apply, hS₂ Y hY, lact, Set.indicator_of_notMem hn, mul_zero, add_zero]`. Establish `ha₁ : lact ν (invT E) (T.indicator Ψ) - T.indicator Ψ ∈ augRk n d ν` using `Submodule.subset_span ⟨_, _, h1, rfl⟩`. Establish `: Ψ - (lact ν (invT E) (T.indicator Ψ) + Φ₂) = (Tᶜ.indicator Ψ - Φ₂) - (lact ν (invT E) (T.indicator Ψ) - T.indicator Ψ)`.
+
+Take the linear combination `-hsum`. Rewrite using `[this]`. Conclude with `sub_mem ha₂ ha₁`. Rewrite using `[hadd _ hΦ₁ _ hΦ₂, UnitMinor.smallF_lact, hF₂, ← hadd _ h1 _ h2, hsum]`.
+-/
 theorem reduce_support : ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
     [MeasurableSpace k] [BorelSpace k] (n d : ℕ) (ν : kˣ →* ℂˣ) (S : Set (Matrix (Fin n) (Fin d) k)), IsClopen S →
     (∀ Φ ∈ GlobalTheory.FullRankCoinv.fullRk k n d, ∀ Y : Matrix (Fin n) (Fin d) k, Integrable (fun g : GL (Fin n) k =>

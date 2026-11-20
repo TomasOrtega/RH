@@ -39,6 +39,9 @@ def glevG (c₀ : DiaG X.E (Pr.vT u)) (s : DecoCl n (Pr.vT u) Pr.vGs Λ.grp → 
     (fun P hP => (hPr.vT_norm u P hP : Ideal.absNorm P.asIdeal = Pr.T u)) (rls_T_notUnder hPr u)
     (colBase_index hc n hPr u) a t nb skip fc zl c hc1 hmem hlam
 
+/- English proof (translation)
+Take `⟨J, f, bad, emb, lat, l0, rfl, rfl, rfl, rfl, rfl, rfl⟩` from `Q`. Both sides reduce to the same expression.
+-/
 theorem glevG_fr (c₀ : DiaG X.E (Pr.vT u)) (s : DecoCl n (Pr.vT u) Pr.vGs Λ.grp → DecoSet X.E n (Pr.vT u) Pr.vGs)
     (hS : DecoPtSurj hc n (Pr.vT u) Pr.vGs) (hs : ∀ c, decoCls n (Pr.vT u) Pr.vGs Λ.grp (s c) = c)
     (Q : StepCrd Pr σ₀ n fun c => (s c).1.L) (a t nb skip fc : ℕ) (zl : Bool) (c) (hc1) (hmem) (hlam) :
@@ -65,6 +68,9 @@ def glevPG (s : DecoCl n (∅ : Finset (Pl X.E)) Pr.vGs Λ.grp → DecoSet X.E n
     (by rw [baseLb_index hc n ∅ (fun P => absurd P.2 (Finset.notMem_empty P.1))]; simp)
     a t nb skip fc zl (fun _ _ _ => 1) (fun _ _ _ => by rw [Units.val_one, map_one]) hmem hlam
 
+/- English proof (translation)
+Take `⟨J, f, bad, emb, lat, l0, rfl, rfl, rfl, rfl, rfl, rfl⟩` from `Q`. Use function extensionality and compare the values at `i v h`. Conclude with `glvD_one n v`.
+-/
 theorem glevPG_fr (s : DecoCl n (∅ : Finset (Pl X.E)) Pr.vGs Λ.grp → DecoSet X.E n (∅ : Finset (Pl X.E)) Pr.vGs)
     (hS : DecoPtSurj hc n (∅ : Finset (Pl X.E)) Pr.vGs) (hs : ∀ c, decoCls n ∅ Pr.vGs Λ.grp (s c) = c)
     (Q : StepCrd Pr σ₀ n fun c => (s c).1.N) (a t nb skip fc : ℕ) (zl : Bool) (hmem) (hlam) :
@@ -83,14 +89,23 @@ variable {d : ColDat} (a : ColArgs d) (S : GSplit (Pr := d.Pr) d.sp.cm) (hCh : d
 def recGLoc : Formalism.L2.Forms.GLoc d.host.F d.host.E (CF.sigD (d.colRec a)) d.host.g :=
   tieGLoc d.hPr S d.Ch d.σ₀ hCh
 
+/- English proof (translation)
+The claim follows from `hH.piG_K i`.
+-/
 theorem recGLoc_K (hH : HostHyp d) (i : Fin 2) : ((recGLoc a S hCh).piG i : d.host.E) ∈ d.host.K := hH.piG_K i
 
+/- English proof (translation)
+The claim follows from `tieGLoc_chiTied d.hPr S d.Ch d.σ₀ hCh`.
+-/
 theorem recGLoc_chi : Formalism.L2.Forms.CharacterCompatible (recGLoc a S hCh) d.R.m := tieGLoc_chiTied d.hPr S d.Ch d.σ₀ hCh
 
 def recUnit (u : d.what₂.Word) (i : ℕ) (j : Fin 2) (v : HeightOneSpectrum (𝓞 d.X.F)) (h : (d.Pr.g j : 𝓞 d.X.F) ∈ v.asIdeal) :
     (v.adicCompletionIntegers d.X.F)ˣ :=
   if i = d.R.m then S.unitOf d.hPr j v h (d.Pr.piT u) (glk_piT_cong d.hPr u j) else 1
 
+/- English proof (translation)
+Unfold `recUnit`. Use `split_ifs`. Conclude with `S.unitOf_res d.hPr j v h _ _`. Rewrite using `[Units.val_one, map_one]`.
+-/
 theorem recUnit_res (u : d.what₂.Word) (i : ℕ) (j : Fin 2) (v : HeightOneSpectrum (𝓞 d.X.F)) (h : (d.Pr.g j : 𝓞 d.X.F) ∈ v.asIdeal) :
     IsLocalRing.residue (v.adicCompletionIntegers d.X.F) (recUnit S u i j v h) = 1 := by
   unfold recUnit
@@ -107,10 +122,16 @@ def recGLev (hS : SpStd d.toColBase) (hH : HostHyp d) (hP : PtSurj d) (u : d.wha
     (fun _ _ _ M => by rw [hl]; exact colLevS_mem_iff d.Ch hi _ _ M)
     (fun _ _ _ M hM => by revert hM; rw [hl]; intro hM; exact colLevS_lam_eq d.Ch hi _ _ d.σ₀ M hM)
 
+/- English proof (translation)
+The claim follows from `glevG_fr d.hX d.hPr S d.Ch d.σ₀ hCh u (d.lev i) _ _ _ _ _ _ _ _ _ _ _ _ _ _ _`.
+-/
 theorem recGLev_fr (hS : SpStd d.toColBase) (hH : HostHyp d) (hP : PtSurj d) (u : d.what₂.Word) (i : ℕ) (hi : i ≤ d.R.m) :
     (recGLev a S hCh hl hS hH hP u i hi).fr = fun j v h => glvD (d.R.N i) v (recUnit S u i j v h) :=
   glevG_fr d.hX d.hPr S d.Ch d.σ₀ hCh u (d.lev i) _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
 
+/- English proof (translation)
+Rewrite using `[recGLev_fr, recGLev_fr]`. Use function extensionality and compare the values at `j v h`. Unfold `recUnit`. Rewrite using `[if_neg him.ne, if_neg him.ne]`.
+-/
 theorem recGLev_fr_const (hS : SpStd d.toColBase) (hH : HostHyp d) (hP : PtSurj d) (u u' : d.what₂.Word) (i : ℕ) (hi : i ≤ d.R.m)
     (him : i < d.R.m) : (recGLev a S hCh hl hS hH hP u i hi).fr = (recGLev a S hCh hl hS hH hP u' i hi).fr := by
   rw [recGLev_fr, recGLev_fr]
@@ -130,6 +151,9 @@ def recGLevP (hS : SpStd d.toColBase) (hH : HostHyp d) (hP : PtSurjP d) (u : d.w
       rw [e]
       exact rowTyG_sharp_lam_eq d.Ch _ _ d.σ₀ M hM)
 
+/- English proof (translation)
+The claim follows from `glevPG_fr d.hPr S d.Ch d.σ₀ hCh d.levP.inv _ _ _ _ _ _ _ _ _ _ _ _`.
+-/
 theorem recGLevP_fr (hS : SpStd d.toColBase) (hH : HostHyp d) (hP : PtSurjP d) (u : d.what₂.Word) :
     (recGLevP a S hCh hlP hS hH hP u).fr = fun _ _ _ => 1 :=
   glevPG_fr d.hPr S d.Ch d.σ₀ hCh d.levP.inv _ _ _ _ _ _ _ _ _ _ _ _

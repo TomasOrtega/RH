@@ -15,6 +15,11 @@ open GlobalTheory.IndefiniteRowSideFullHecke.SphericalZero (ip delta swSec sZero
 open GlobalTheory.Mem.Th (CptF)
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
+/- English proof (translation)
+Establish `: BorelSpace (GA D A)` using `⟨rfl⟩`. Establish `: Countable (FinPl D)` using `GlobalTheory.AdelicUnitaryTop.countable_heightOneSpectrum D.host.F`. Use `hL.1` as an intermediate fact. Establish `e : openOff A L S = ⋂ v, ⋂ (_ : v ∉ S), (proj D.sp.cm.sig A.gram v) ⁻¹' (stabLoc D.sp.cm.sig A.gram L v : Set _)`. Use extensionality with `g`.
+
+Simplify using `[openOff]`. Rewrite using `[e]`. Conclude with `MeasurableSet.iInter fun v => MeasurableSet.iInter fun _ => ((isOpen_stabLoc D.sp.cm.sig A.gram L v).preimage (continuous_proj D.sp.cm.sig A.gram v)).measurableSet`.
+-/
 theorem measurableSet_openOff {D : D7} (A : HSp D) (L : Lat A) (hL : IsSelfDualC A L) (S : Finset (FinPl D)) :
     MeasurableSet (openOff A L S) := by
   have : BorelSpace (GA D A) := ⟨rfl⟩
@@ -27,15 +32,24 @@ theorem measurableSet_openOff {D : D7} (A : HSp D) (L : Lat A) (hL : IsSelfDualC
   exact MeasurableSet.iInter fun v => MeasurableSet.iInter fun _ =>
     ((isOpen_stabLoc D.sp.cm.sig A.gram L v).preimage (continuous_proj D.sp.cm.sig A.gram v)).measurableSet
 
+/- English proof (translation)
+Introduce `_ _ h _ hg v hv` and use `hg v fun h' => hv (h h')`.
+-/
 theorem monotone_openOff {D : D7} (A : HSp D) (L : Lat A) : Monotone (openOff A L) :=
   fun _ _ h _ hg v hv => hg v fun h' => hv (h h')
 
+/- English proof (translation)
+Use `hL.1` as an intermediate fact. Use `Set.eq_univ_of_forall fun g => ?_` and prove the remaining obligations. Establish `h` using `Filter.eventually_cofinite.1 (eventually_proj_mem_stabLoc D.sp.cm.sig A.gram L g)`. Conclude with `Set.mem_iUnion.2 ⟨h.toFinset, fun v hv => by_contra fun h' => hv (h.mem_toFinset.2 h')⟩`.
+-/
 theorem iUnion_openOff {D : D7} (A : HSp D) (L : Lat A) (hL : IsSelfDualC A L) : ⋃ S, openOff A L S = Set.univ := by
   have := hL.1
   refine Set.eq_univ_of_forall fun g => ?_
   have h := Filter.eventually_cofinite.1 (eventually_proj_mem_stabLoc D.sp.cm.sig A.gram L g)
   exact Set.mem_iUnion.2 ⟨h.toFinset, fun v hv => by_contra fun h' => hv (h.mem_toFinset.2 h')⟩
 
+/- English proof (translation)
+Introduce `D A L hL m F hF`. Establish `: Countable (FinPl D)` using `GlobalTheory.AdelicUnitaryTop.countable_heightOneSpectrum D.host.F`. Establish `h` using `tendsto_setIntegral_of_monotone (μ := m) (f := F) (measurableSet_openOff A L hL) (monotone_openOff A L) hF.integrableOn`. Rewrite `h` using `[iUnion_openOff A L hL, Measure.restrict_univ]`. Then use the resulting hypothesis.
+-/
 theorem tendsto_setIntegral_openOff : ∀ (D : D7) (A : HSp D) (L : Lat A), IsSelfDualC A L → ∀ (m : Measure (GA D A)) (F : GA D A → ℂ), Integrable F m → Filter.Tendsto (fun S : Finset (FinPl D) => ∫ g in openOff A L S, F g ∂m) Filter.atTop (nhds (∫ g, F g ∂m)) := by
   intro D A L hL m F hF
   have : Countable (FinPl D) := GlobalTheory.AdelicUnitaryTop.countable_heightOneSpectrum D.host.F

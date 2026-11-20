@@ -24,8 +24,20 @@ def toK : geo F K Ω →* (Ω ≃ₐ[K] Ω) :=
   MonoidHom.mk' (fun g => { (g : Ω ≃ₐ[F] Ω).toRingEquiv with commutes' := (TopW.mem_geo _).1 g.2 })
     (fun _ _ => AlgEquiv.ext fun _ => rfl)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem toK_apply (g : geo F K Ω) (z : Ω) : toK g z = (g : Ω ≃ₐ[F] Ω) z := rfl
 
+/- English proof (translation)
+Apply `continuous_of_continuousAt_one` to reduce the goal to its premises. Introduce `s hs`. Rewrite `hs` using `[map_one, krullTopology_mem_nhds_one_iff]`. Take `⟨E, hE, hsub⟩` from `hs`. Set `b` to `Module.finBasis K E`.
+
+Establish `hop : IsOpen (⋂ i, (MulAction.stabilizer (Ω ≃ₐ[F] Ω) (b i : Ω) : Set (Ω ≃ₐ[F] Ω)))` using `isOpen_iInter_of_finite fun i => stabilizer_isOpen_of_isIntegral (K := F) (b i : Ω)`. Use `Filter.mem_map.2 (Filter.mem_of_superset ((hop.preimage continuous_subtype_val).mem_nhds ?_) ?_)` and prove the remaining obligations. Simplify using `only [Set.mem_preimage, Set.mem_iInter, SetLike.mem_coe]`. Conclude with `fun i => Subgroup.one_mem _`. Introduce `g hg`.
+
+Simplify using `only [Set.mem_preimage, Set.mem_iInter, SetLike.mem_coe, MulAction.mem_stabilizer_iff] at hg`. Apply `hsub` to reduce the goal to its premises. Rewrite using `[SetLike.mem_coe, IntermediateField.mem_fixingSubgroup_iff]`. Introduce `z hz`. Establish `hlin : (((toK g).toLinearMap).comp E.val.toLinearMap) = E.val.toLinearMap` using `b.ext fun i => hg i`.
+
+Conclude with `LinearMap.congr_fun hlin ⟨z, hz⟩`.
+-/
 theorem continuous_toK [Algebra.IsAlgebraic F Ω] : Continuous (toK : geo F K Ω →* (Ω ≃ₐ[K] Ω)) := by
   apply continuous_of_continuousAt_one
   intro s hs
@@ -46,6 +58,13 @@ theorem continuous_toK [Algebra.IsAlgebraic F Ω] : Continuous (toK : geo F K Ω
       b.ext fun i => hg i
     exact LinearMap.congr_fun hlin ⟨z, hz⟩
 
+/- English proof (translation)
+Use `⟨fun g => if h : g ∈ geo F K Ω then η (toK ⟨g, h⟩) else 0, fun g hg h hh => ?_, ?_, fun B g hB hi hg => ?_⟩` and prove the remaining obligations. Simplify using `only [dif_pos hg, dif_pos hh, dif_pos (mul_mem hg hh)]`. Rewrite using `[hx, hy]`. Establish `e : toK (⟨g * h, mul_mem hg hh⟩ : geo F K Ω) = toK ⟨g, hg⟩ * toK ⟨h, hh⟩` using `map_mul toK ⟨g, hg⟩ ⟨h, hh⟩`. Rewrite using `[e]`.
+
+Conclude with `h2 (toK ⟨g, hg⟩) (toK ⟨h, hh⟩)`. Establish `e : (fun g : geo F K Ω => if h : (g : Ω ≃ₐ[F] Ω) ∈ geo F K Ω then η (toK ⟨(g : Ω ≃ₐ[F] Ω), h⟩) else 0) = η ∘ toK`. Use function extensionality and compare the values at `fun g => by rw [dif_pos g.2]; rfl`. Rewrite using `[e]`. Conclude with `h1.comp_continuous continuous_toK`.
+
+Simplify using `only [dif_pos hg]`. Conclude with `h3 B hB _ hi`.
+-/
 theorem exists_extend [Algebra.IsAlgebraic F Ω] {N : ℕ} {ζ α β : Ω} {x y : (Ω ≃ₐ[F] Ω) →* Multiplicative (ZMod N)}
     (hx : ∀ g, (x g).toAdd = kum (K := F) (N := N) ζ α g) (hy : ∀ g, (y g).toAdd = kum (K := F) (N := N) ζ β g)
     (R : Subring K) (η : (Ω ≃ₐ[K] Ω) → ZMod N) (h1 : IsLocallyConstant η)
@@ -72,6 +91,11 @@ end General
 
 variable {Ω : Type} [Field Ω] [Algebra ℚ Ω] {ε : Ω →+* ℂ}
 
+/- English proof (translation)
+Use `haveI : NeZero M := ⟨hM⟩`. Unfold `fixMu`. Use `congr 1`. Apply `le_antisymm` to reduce the goal to its premises. Rewrite using `[IntermediateField.adjoin_le_iff]`.
+
+Introduce `z hz`. Take `⟨i, -, rfl⟩` from `hζ.eq_pow_of_pow_eq_one hz`. Conclude with `pow_mem (IntermediateField.subset_adjoin ℚ {ζ} rfl) i`. Conclude with `IntermediateField.adjoin.mono _ _ _ (Set.singleton_subset_iff.2 hζ.pow_eq_one)`.
+-/
 theorem fixMu_eq {M : ℕ} (hM : M ≠ 0) {ζ : Ω} (hζ : IsPrimitiveRoot ζ M) :
     fixMu Ω M = (IntermediateField.adjoin ℚ {ζ}).fixingSubgroup := by
   haveI : NeZero M := ⟨hM⟩
@@ -86,6 +110,9 @@ theorem fixMu_eq {M : ℕ} (hM : M ≠ 0) {ζ : Ω} (hζ : IsPrimitiveRoot ζ M)
 
 attribute [local instance] algMdl
 
+/- English proof (translation)
+Use `haveI : IsAlgClosed Ω := IsAlgClosure.isAlgClosed ℚ`. Use `haveI : Algebra.IsAlgebraic ℚ Ω := IsAlgClosure.isAlgebraic`. Establish `h` using `LevNormal.normal Ω ε X (CongruenceSubgroup.Gamma M) M _ (Nat.pos_of_ne_zero hM) (isPrimitiveRoot_eOm ε hM) le_rfl`. Rewrite `h` using `[← fixMu_eq hM (isPrimitiveRoot_eOm ε hM)]`. Conclude with `h`.
+-/
 theorem normal_top [IsAlgClosure ℚ Ω] (X : Tower Ω ε) {M : ℕ} (hM : M ≠ 0) : Normal (topF X M) (topL X M) := by
   haveI : IsAlgClosed Ω := IsAlgClosure.isAlgClosed ℚ
   haveI : Algebra.IsAlgebraic ℚ Ω := IsAlgClosure.isAlgebraic
@@ -93,6 +120,21 @@ theorem normal_top [IsAlgClosure ℚ Ω] (X : Tower Ω ε) {M : ℕ} (hM : M ≠
   rw [← fixMu_eq hM (isPrimitiveRoot_eOm ε hM)] at h
   exact h
 
+/- English proof (translation)
+Use `letI := algPoly X (CongruenceSubgroup.Gamma M)`. Prove the components needed by the constructor for the conclusion. Introduce `h f hf`. Apply `h` to reduce the goal to its premises. Establish `: ∃ P : Polynomial Ω, algebraMap (Polynomial Ω) (topL X M) P = f`.
+
+Break down `hf with hf | ⟨c, hc⟩` into its components or cases. Conclude with `⟨Polynomial.X, Subtype.ext ((coe_jPoly X _ _).trans (by rw [aeval_X, hf]))⟩`. Conclude with `⟨C c, Subtype.ext ((coe_jPoly X _ _).trans (by rw [aeval_C, hc]))⟩`. Take `⟨P, rfl⟩` from `this`. Conclude with `Subalgebra.algebraMap_mem _ P`.
+
+Introduce `h f hf`. Establish `hP : ∀ P : Polynomial Ω, ((algebraMap (topL X M) (topBar X M)).comp (algebraMap (Polynomial Ω) (topL X M))) P ∈ B`. Introduce `P`. Proceed by induction on `P using Polynomial.induction_on with`. Consider the case `C c => exact h _ (Or.inr ⟨c, ((coe_jPoly X _ _).trans (by rw [aeval_C])).symm⟩)`.
+
+Consider the case `add p q hp hq => rw [map_add]`. Conclude with `add_mem hp hq`. Consider the case `monomial k c hk`. Rewrite using `[pow_succ, ← mul_assoc, map_mul]`. Conclude with `mul_mem hk (h _ (Or.inl ((coe_jPoly X _ _).trans (by rw [aeval_X]))))`.
+
+Take `⟨q, hq, h0⟩ : IsIntegral (Polynomial Ω) f` from `hf`. Set `φ : Polynomial Ω →+* B` to `RingHom.codRestrict _ B hP`. Establish `hi : IsIntegral B (algebraMap (topL X M) (topBar X M) f)`. Use `⟨q.map φ, hq.map φ, ?_⟩` and prove the remaining obligations. Rewrite using `[eval₂_map]`.
+
+Use `congrArg (algebraMap (topL X M) (topBar X M)) h0` as an intermediate fact. Rewrite `this` using `[hom_eval₂, map_zero]`. Conclude with `this`. Take `⟨y, hy⟩` from `IsIntegrallyClosed.algebraMap_eq_of_integral hi`. Rewrite using `[← hy]`.
+
+Conclude with `y.2`.
+-/
 theorem over_iff (X : Tower Ω ε) (M : ℕ) (B : ValuationSubring (topBar X M)) :
     letI := algPoly X (CongruenceSubgroup.Gamma M)
     Over (FunctionField.ringOfIntegers Ω (topL X M)).toSubring B ↔
@@ -130,6 +172,19 @@ theorem over_iff (X : Tower Ω ε) (M : ℕ) (B : ValuationSubring (topBar X M))
     rw [← hy]
     exact y.2
 
+/- English proof (translation)
+Use `haveI : IsAlgClosed Ω := IsAlgClosure.isAlgClosed ℚ`. Use `haveI : Algebra.IsAlgebraic ℚ Ω := IsAlgClosure.isAlgebraic`. Use `haveI : CharZero Ω := algebraRat.charZero Ω`. Use `letI := algPoly X (CongruenceSubgroup.Gamma M)`. Use `letI := algRat X (CongruenceSubgroup.Gamma M)`.
+
+Use `haveI := isScalarTower_poly_rat X (CongruenceSubgroup.Gamma M)`. Use `haveI : FiniteDimensional (RatFunc Ω) (topL X M) := GlobalTheory.T.finiteDimensional_lev_of_gamma_le Ω ε X _ M (Nat.pos_of_ne_zero hM) le_rfl`. Use `haveI := normal_top X hM`. Use `haveI : Algebra.IsAlgebraic (topF X M) (topBar X M) := Algebra.IsAlgebraic.trans _ (topL X M) _`. Take `⟨hu0, huF, huL, hu1, hu2⟩` from `hu`.
+
+Take `⟨hv0, hvF, hvL, hv1, hv2⟩` from `hv`. Establish `hN : 0 < l ^ n` using `Nat.pos_of_ne_zero (pow_ne_zero n hl)`. Establish `hζ` using `isPrimitiveRoot_topZeta X M hl n`. Establish `hα` using `topRoot_pow X M hN.ne' huL`. Establish `hβ` using `topRoot_pow X M hN.ne' hvL`.
+
+Establish `hx` using `topChar_apply X hl hlM huF hu0`. Establish `hy` using `topChar_apply X hl hlM hvF hv0`. Establish `ha : ∃ η, IsTopEta X M (topChar X M l n u) (topChar X M l n v) η`. Take `⟨-, -, -, -, η, h1, h2, h3⟩` from `GlobalTheory.T.kummerCupProduct_coboundary_theorem Ω (topL X M) (topBar X M) (l ^ n) _ hN hζ ⟨u, huL⟩ ⟨v, hvL⟩ _ _ (fun h => hu0 (congrArg Subtype.val h)) (fun h => hv0 (congrArg Subtype.val h)) hu1 hu2 hv1 hv2 hα hβ`. Take `⟨η', g1, g2, g3⟩` from `exists_extend hx hy _ η h1 h2 h3`.
+
+Conclude with `⟨η', g1, g2, fun B g hB => g3 B g ((over_iff X M B).2 hB)⟩`. Use `⟨ha, fun φ => ?_⟩` and prove the remaining obligations. Take `⟨g1, g2, g3⟩` from `isTopEta_topEta X M ha`. Use `isTopW_topW Ω (topL X M) (topBar X M) (topF X M) (l ^ n) _ hN hζ (topGal_topZeta X hl hlM) (map_mem_ringOfIntegers_of_fix_mdl Ω ε X _ _) ⟨u, huF⟩ ⟨v, hvF⟩ (topRoot X M (l ^ n) u) (topRoot X M (l ^ n) v) (fun h => hu0 (congrArg Subtype.val h)) (fun h => hv0 (congrArg Subtype.val h …` and prove the remaining obligations. Rewrite using `[hα, IsScalarTower.algebraMap_apply (topF X M) (topL X M) (topBar X M)]`.
+
+Both sides reduce to the same expression. Rewrite using `[hβ, IsScalarTower.algebraMap_apply (topF X M) (topL X M) (topBar X M)]`. Both sides reduce to the same expression.
+-/
 theorem spec_of_units [IsAlgClosure ℚ Ω] (X : Tower Ω ε) {M l n : ℕ} (hM : M ≠ 0) (hl : l ≠ 0) (hlM : l ^ n ∣ M) {u v : X.K}
     (hu : TopUnits.IsTopUnit X M u) (hv : TopUnits.IsTopUnit X M v) :
     (∃ η, IsTopEta X M (topChar X M l n u) (topChar X M l n v) η) ∧
@@ -178,6 +233,9 @@ open GlobalTheory.KZ
 
 attribute [local instance] algMdl
 
+/- English proof (translation)
+Introduce `Ω _ _ _ ε X l n r N x c d hl hN hs hlN hc1 hd1 hc hd`. Take `⟨hu, hv⟩` from `TopUnits.isTopUnit_topU_topV X x hl hN hs hlN hc1 hd1 hc hd`. Take `⟨h1, h2⟩` from `TopEta.spec_of_units X (mul_ne_zero (pow_ne_zero _ hl.ne_zero) hN.ne') hl.ne_zero (pow_dvd_topLevel l n r N) hu hv`. Conclude with `⟨h1, fun σ _ => h2 _⟩`.
+-/
 theorem wkTop_spec : ∀ {Ω : Type} [Field Ω] [Algebra ℚ Ω] [IsAlgClosure ℚ Ω] {ε : Ω →+* ℂ} (X : Tower Ω ε)
     (l n r N : ℕ) (x : ZMod N) (c d : ℕ), l.Prime → 0 < N → 1 ≤ r + n → Nat.Coprime l N → 1 < c → 1 < d →
     Nat.Coprime c (6 * l * N) → Nat.Coprime d (6 * l * N) →

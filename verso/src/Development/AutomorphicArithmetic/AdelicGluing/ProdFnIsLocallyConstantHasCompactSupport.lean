@@ -10,9 +10,17 @@ open UpperTheory.ConvolutionTheory.GM.TE
 section
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {n : ℕ} {v : Pl F}
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 private theorem cmp_val (w : PlacesOver E v) (g : GL (Fin n) (CompletionsOver E v)) (i j : Fin n) :
     (UpperTheory.ConvolutionTheory.GM.cmp w g).val i j = g.val i j w := rfl
 
+/- English proof (translation)
+Establish `hv : Continuous fun g : GL (Fin n) (CompletionsOver E v) => (UpperTheory.ConvolutionTheory.GM.cmp w g).val`. Use `continuous_matrix fun i j => ?_` and prove the remaining obligations. Simplify using `only [cmp_val]`. Conclude with `(continuous_apply w).comp (Units.continuous_val.matrix_elem i j)`. Use `Units.continuous_iff.mpr ⟨hv, ?_⟩` and prove the remaining obligations.
+
+Establish `: (fun g : GL (Fin n) (CompletionsOver E v) => ((UpperTheory.ConvolutionTheory.GM.cmp w g)⁻¹ : GL (Fin n) (w.1.adicCompletion E)).val) = (fun g => (UpperTheory.ConvolutionTheory.GM.cmp w g).val) ∘ fun g => g⁻¹`. Use function extensionality and compare the values at `g`. Simplify using `[map_inv]`. Conclude with `this ▸ hv.comp continuous_inv`.
+-/
 private theorem cmp_continuous (w : PlacesOver E v) :
     Continuous (UpperTheory.ConvolutionTheory.GM.cmp (n := n) w) := by
   have hv : Continuous fun g : GL (Fin n) (CompletionsOver E v) => (UpperTheory.ConvolutionTheory.GM.cmp w g).val := by
@@ -26,6 +34,9 @@ private theorem cmp_continuous (w : PlacesOver E v) :
     simp [map_inv]
   exact this ▸ hv.comp continuous_inv
 
+/- English proof (translation)
+Distinguish the cases in `hij : i = j`. Substitute `hij` using the available equality. Simplify using the standard rewrite rules. Simplify using `[Matrix.one_apply_ne hij]`.
+-/
 private theorem one_apply_pi (i j : Fin n) (w : PlacesOver E v) :
     (1 : Matrix (Fin n) (Fin n) (CompletionsOver E v)) i j w =
       (1 : Matrix (Fin n) (Fin n) (w.1.adicCompletion E)) i j := by
@@ -51,6 +62,9 @@ private noncomputable def glGlue (x : ∀ w : PlacesOver E v, GL (Fin n) (w.1.ad
     rw [Matrix.mul_apply, Finset.sum_apply, one_apply_pi]
     exact h1
 
+/- English proof (translation)
+Use `Units.continuous_iff.mpr ⟨?_, ?_⟩` and prove the remaining obligations. Use `continuous_matrix fun i j => continuous_pi fun w => ?_` and prove the remaining obligations. Conclude with `(Units.continuous_val.matrix_elem i j).comp (continuous_apply w)`. Use `continuous_matrix fun i j => continuous_pi fun w => ?_` and prove the remaining obligations. Conclude with `(Units.continuous_val.matrix_elem i j).comp (continuous_inv.comp (continuous_apply w))`.
+-/
 private theorem glGlue_continuous :
     Continuous (glGlue (E := E) (n := n) (v := v)) := by
   refine Units.continuous_iff.mpr ⟨?_, ?_⟩
@@ -59,6 +73,9 @@ private theorem glGlue_continuous :
   · refine continuous_matrix fun i j => continuous_pi fun w => ?_
     exact (Units.continuous_val.matrix_elem i j).comp (continuous_inv.comp (continuous_apply w))
 
+/- English proof (translation)
+Use extensionality with `i j w`. Both sides reduce to the same expression.
+-/
 private theorem glGlue_cmp (g : GL (Fin n) (CompletionsOver E v)) :
     glGlue (fun w => UpperTheory.ConvolutionTheory.GM.cmp w g) = g := by
   ext i j w
@@ -66,6 +83,17 @@ private theorem glGlue_cmp (g : GL (Fin n) (CompletionsOver E v)) :
 
 end
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ n v h hh`. Use `haveI : Fintype (PlacesOver E v) := Fintype.ofFinite _`. Establish `hp : prodFn h = fun g => ∏ w, h w (UpperTheory.ConvolutionTheory.GM.cmp w g)`. Use function extensionality and compare the values at `g`. Conclude with `finprod_eq_prod_of_fintype _`.
+
+Prove the components needed by the constructor for the conclusion. Establish `key : ∀ s : Finset (PlacesOver E v), IsLocallyConstant fun g : GL (Fin n) (CompletionsOver E v) => ∏ w ∈ s, h w (UpperTheory.ConvolutionTheory.GM.cmp w g)` using `by classical`. Introduce `s`. Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty`.
+
+Simplify using `only [Finset.prod_empty]`. Conclude with `IsLocallyConstant.const (1 : ℂ)`. Consider the case `insert a s ha ih`. Simplify using `only [Finset.prod_insert ha]`. Conclude with `((hh a).1.comp_continuous (cmp_continuous a)).mul ih`.
+
+Rewrite using `[hp]`. Conclude with `key Finset.univ`. Establish `hK : IsCompact (glGlue '' Set.pi Set.univ fun w : PlacesOver E v => tsupport (h w))` using `(isCompact_univ_pi fun w => (hh w).2).image glGlue_continuous`. Use `HasCompactSupport.of_support_subset_isCompact hK fun g hg => ?_` and prove the remaining obligations. Use `⟨fun w => UpperTheory.ConvolutionTheory.GM.cmp w g, fun w _ => subset_tsupport _ ?_, glGlue_cmp g⟩` and prove the remaining obligations.
+
+Rewrite `hg` using `[Function.mem_support, hp]`. Introduce `h0`. Conclude with `hg (Finset.prod_eq_zero (Finset.mem_univ w) h0)`.
+-/
 theorem UpperTheory.prodFn_isLocallyConstant_hasCompactSupport :
     ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (n : ℕ) (v : Pl F) (h : ∀ w : PlacesOver E v, GL (Fin n) (w.1.adicCompletion E) → ℂ),
         (∀ w, IsLocallyConstant (h w) ∧ HasCompactSupport (h w)) →

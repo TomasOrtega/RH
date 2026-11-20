@@ -4,6 +4,13 @@ open Topology
 
 namespace GlobalTheory.CompanionTheory.CompactOperators
 
+/- English proof (translation)
+Establish `hcn : (0 : ℝ) ≤ c⁻¹` using `inv_nonneg.mpr hc.le`. Establish `hanti : AntilipschitzWith (Real.toNNReal c⁻¹) Φ`. Use `Φ.antilipschitz_of_bound fun x => ?_` and prove the remaining obligations. Rewrite using `[Real.coe_toNNReal _ hcn, hΦ, ← mul_assoc, inv_mul_cancel₀ hc.ne', one_mul]`. Establish `hemb : IsClosedEmbedding Φ` using `hanti.isClosedEmbedding Φ.uniformContinuous`.
+
+Take `⟨S, hS, hSn⟩` from `hB`. Use `⟨Φ ⁻¹' S, hemb.isCompact_preimage hS, ?_⟩` and prove the remaining obligations. Establish `hpre : A ⁻¹' (Φ ⁻¹' S) = Φ ⁻¹' (B ⁻¹' S)`. Use extensionality with `x`. Use `show Φ (A x) ∈ S ↔ B (Φ x) ∈ S`.
+
+Rewrite using `[show Φ (A x) = B (Φ x) from ContinuousLinearMap.ext_iff.mp hAB x]`. Rewrite using `[hpre]`. Conclude with `Φ.continuous.continuousAt.preimage_mem_nhds (by rw [map_zero]; exact hSn)`.
+-/
 theorem isCompactOperator_of_scaled_isometric_intertwiner
     {H K : Type} [NormedAddCommGroup H] [InnerProductSpace ℂ H] [CompleteSpace H]
     [NormedAddCommGroup K] [InnerProductSpace ℂ K] [CompleteSpace K]

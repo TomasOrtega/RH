@@ -2,6 +2,13 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.IdeleGenerators.Pe
 open UpperTheory.V.Sd.Eis
 open MeasureTheory Measure Pointwise
 
+/- English proof (translation)
+Take `⟨C, hC, hcov⟩` from `hc`. Establish `h1 : D ⊆ ⋃ g : Γ, ((g +ᵥ C) ∩ D)`. Introduce `x hx`. Take `⟨γ, hγ, h⟩` from `hcov x`. Use `Set.mem_iUnion.2 ⟨⟨γ, hγ⟩, ⟨x - γ, h, ?_⟩, hx⟩` and prove the remaining obligations.
+
+Express the relevant statement in the definitionally equal form `γ + (x - γ) = x`. Normalize the expressions using the abelian group laws. Establish `h2 : μ D ≤ μ C`. Rewrite using `[hD.measure_eq_tsum C]`. Conclude with `(measure_mono h1).trans (measure_iUnion_le _)`.
+
+Conclude with `ne_top_of_le_ne_top hC.measure_lt_top.ne h2`.
+-/
 private theorem perMean_fin {A : Type} [AddCommGroup A] [TopologicalSpace A] [IsTopologicalAddGroup A]
     [MeasurableSpace A] [BorelSpace A] (Γ : AddSubgroup A) [Countable Γ] (hc : Cocpt Γ) (μ : Measure A) [μ.IsAddHaarMeasure]
     (D : Set A) (hD : IsAddFundamentalDomain Γ D μ) : μ D ≠ ⊤ := by
@@ -17,6 +24,15 @@ private theorem perMean_fin {A : Type} [AddCommGroup A] [TopologicalSpace A] [Is
     exact (measure_mono h1).trans (measure_iUnion_le _)
   exact ne_top_of_le_ne_top hC.measure_lt_top.ne h2
 
+/- English proof (translation)
+Establish `hq : QuasiMeasurePreserving e μ μ` using `⟨e.measurable, by rw [he]; exact Measure.smul_absolutelyContinuous⟩`. Establish `hD' : IsAddFundamentalDomain Γ (e ⁻¹' D) μ` using `hD.preimage_of_equiv hq hσ (fun g x => hs g x)`. Establish `hm : μ (e ⁻¹' D) = μ D`. Use `hD'.measure_set_eq hD MeasurableSet.univ (fun g => by simp)` as an intermediate fact. Simplify using `using this`.
+
+Establish `h0 : μ D ≠ 0` using `hD.measure_ne_zero (NeZero.ne μ)`. Establish `hc : (c : ENNReal) = 1`. Rewrite `hm` using `[← e.map_apply, he, Measure.smul_apply, ENNReal.smul_def, smul_eq_mul]`. Conclude with `(ENNReal.mul_left_inj h0 hfin).1 (by rw [hm, one_mul])`. Establish `hc' : c = 1` using `by exact_mod_cast hc`.
+
+Rewrite `he` using `[hc', one_smul]`. Establish `h1 : ∫ x in D, f (e x) ∂μ = ∫ x in e ⁻¹' D, f (e x) ∂μ`. Use `hD.setIntegral_eq hD' (fun g x => ?_)` and prove the remaining obligations. Take `⟨g', rfl⟩` from `hσ.2 g`. Express the relevant statement in the definitionally equal form `f (e ((σ g' : A) + x)) = _`.
+
+Rewrite using `[hs, hf _ g'.2]`. Rewrite using `[h1, ← setIntegral_map_equiv, he]`.
+-/
 private theorem perMean_key {A : Type} [AddCommGroup A] [TopologicalSpace A] [IsTopologicalAddGroup A]
     [MeasurableSpace A] [BorelSpace A] (Γ : AddSubgroup A) [Countable Γ] (μ : Measure A) [μ.IsAddHaarMeasure]
     (D : Set A) (hD : IsAddFundamentalDomain Γ D μ) (hfin : μ D ≠ ⊤) (e : A ≃ᵐ A) (c : NNReal)
@@ -41,6 +57,17 @@ private theorem perMean_key {A : Type} [AddCommGroup A] [TopologicalSpace A] [Is
     rw [hs, hf _ g'.2]
   rw [h1, ← setIntegral_map_equiv, he]
 
+/- English proof (translation)
+Introduce `A _ _ _ _ _ _ _ _ Γ _ hc μ _ D hD`. Establish `hfin` using `perMean_fin Γ hc μ D hD`. Use `⟨hfin, fun f hf => ⟨fun hcont => ?_, fun y => ?_, fun e he => ?_⟩⟩` and prove the remaining obligations. Take `⟨C, hC, hcov⟩` from `hc`. Take `⟨M, hM⟩` from `hC.exists_bound_of_continuousOn hcont.continuousOn`.
+
+Use `Measure.integrableOn_of_bounded hfin hcont.aestronglyMeasurable (M := M) (Filter.Eventually.of_forall fun x => ?_)` and prove the remaining obligations. Take `⟨γ, hγ, h⟩` from `hcov x`. Use `hf γ hγ (x - γ)` as an intermediate fact. Rewrite `this` using `[add_sub_cancel]`. Rewrite using `[this]`.
+
+Conclude with `hM _ h`. Use `perMean_key Γ μ D hD hfin (MeasurableEquiv.addRight y) 1 ?_ id Function.bijective_id ?_ f hf` and prove the remaining obligations. Rewrite using `[one_smul]`. Conclude with `map_add_right_eq_self μ y`. Introduce `g x`.
+
+Conclude with `add_assoc _ _ _`. Use `haveI : (μ.map e).IsAddHaarMeasure := ContinuousAddEquiv.isAddHaarMeasure_map μ e`. Use `perMean_key Γ μ D hD hfin e.toHomeomorph.toMeasurableEquiv _ (Measure.isAddLeftInvariant_eq_smul (μ.map e) μ) (fun g => ⟨e.symm g, (he _).1 (by simpa using g.2)⟩) ⟨fun a b h => ?_, fun b => ⟨⟨e b, (he _).2 b.2⟩, ?_⟩⟩ ?_ f hf` and prove the remaining obligations. Conclude with `Subtype.ext (e.symm.injective (congrArg Subtype.val h))`. Conclude with `Subtype.ext (e.symm_apply_apply _)`.
+
+Introduce `g x`. Express the relevant statement in the definitionally equal form `e (e.symm g + x) = g + e x`. Rewrite using `[map_add, e.apply_symm_apply]`.
+-/
 theorem UpperTheory.periodic_integral_fundamentalDomain_invariant :
     UpperTheory.V.Sd.Eis.PerMean := by
   intro A _ _ _ _ _ _ _ _ Γ _ hc μ _ D hD

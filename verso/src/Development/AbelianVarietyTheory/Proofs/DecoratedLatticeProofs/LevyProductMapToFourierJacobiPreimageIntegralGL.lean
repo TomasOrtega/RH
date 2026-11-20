@@ -20,6 +20,9 @@ variable {n : Type} [Fintype n] [DecidableEq n] {c : ℕ}
 
 def midLev (c ρ : ℕ) : n ⊕ Fin c → ℕ := Sum.elim (fun _ => 2 * ρ + 1) (fun i => 2 * (i.val + 1))
 
+/- English proof (translation)
+Rewrite `hu` using `[mem_N_iff]`. Introduce `r s hrs`. Use `hu r s ?_` and prove the remaining obligations. Apply the tactic sequence `rcases r with r | r <;> rcases s with s | s <;> simp only [midLev, lev, Sum.elim_inl, Sum.elim_inr] at hrs ⊢ <;> omega`.
+-/
 theorem uni_of_mem_N {ρ : ℕ} {u : GL (n ⊕ Fin c) k} (hu : u ∈ N k n c (ρ + 1)) :
     Uni (midLev c ρ) u.val := by
   rw [mem_N_iff] at hu
@@ -27,6 +30,11 @@ theorem uni_of_mem_N {ρ : ℕ} {u : GL (n ⊕ Fin c) k} (hu : u ∈ N k n c (ρ
   refine hu r s ?_
   rcases r with r | r <;> rcases s with s | s <;> simp only [midLev, lev, Sum.elim_inl, Sum.elim_inr] at hrs ⊢ <;> omega
 
+/- English proof (translation)
+Introduce `r s hrs`. Apply the tactic sequence `rcases r with r | r <;> rcases s with s | s`. Simplify using `[colE, upU, Matrix.one_apply]`. Simplify using `only [midLev, Sum.elim_inl, Sum.elim_inr] at hrs`. Establish `: s.val ≠ ρ` using `by omega`.
+
+Simplify using `[colE, upU, this]`. Simplify using `[colE, upU]`. Simplify using `[colE, upU, Matrix.one_apply]`.
+-/
 theorem uni_colE (ρ : ℕ) (β : n → k) : Uni (midLev c ρ) (colE c (ρ + 1) β).val := by
   intro r s hrs
   rcases r with r | r <;> rcases s with s | s
@@ -37,11 +45,23 @@ theorem uni_colE (ρ : ℕ) (β : n → k) : Uni (midLev c ρ) (colE c (ρ + 1) 
   · simp [colE, upU]
   · simp [colE, upU, Matrix.one_apply]
 
+/- English proof (translation)
+Rewrite using `[h _ _ (by simp [midLev])]`. Simplify using `[Matrix.one_apply]`.
+-/
 theorem uni_inl_inl {ρ : ℕ} {M : Matrix (n ⊕ Fin c) (n ⊕ Fin c) k} (h : Uni (midLev c ρ) M) (i j : n) :
     M (Sum.inl i) (Sum.inl j) = (1 : Matrix n n k) i j := by
   rw [h _ _ (by simp [midLev])]
   simp [Matrix.one_apply]
 
+/- English proof (translation)
+Rewrite `hg`, the goal using `[GlobalTheory.SplitFlip.mem_KO_iff]`. Establish `one_int : ∀ (i j : Fin c), (1 : Matrix (Fin c) (Fin c) k) i j ∈ 𝒪[k]` using `fun i j => by`. Rewrite using `[Matrix.one_apply]`. Use `split_ifs`. Conclude with `one_mem _`.
+
+Conclude with `zero_mem _`. Use `⟨fun i j => ?_, fun i j => ?_⟩` and prove the remaining obligations. Rewrite using `[embX_val]`. Apply the tactic sequence `rcases i with i | i <;> rcases j with j | j`. Conclude with `hg.1 i j`.
+
+Conclude with `zero_mem _`. Conclude with `zero_mem _`. Conclude with `one_int i j`. Rewrite using `[← map_inv, embX_val]`. Apply the tactic sequence `rcases i with i | i <;> rcases j with j | j`.
+
+Conclude with `hg.2 i j`. Conclude with `zero_mem _`. Conclude with `zero_mem _`. Conclude with `one_int i j`.
+-/
 theorem embX_mem_KO {g : GL n k} (hg : g ∈ KO k n) : embX c g ∈ KO k (n ⊕ Fin c) := by
   rw [GlobalTheory.SplitFlip.mem_KO_iff] at hg ⊢
   have one_int : ∀ (i j : Fin c), (1 : Matrix (Fin c) (Fin c) k) i j ∈ 𝒪[k] := fun i j => by
@@ -62,6 +82,19 @@ theorem embX_mem_KO {g : GL n k} (hg : g ∈ KO k n) : embX c g ∈ KO k (n ⊕ 
     · exact zero_mem _
     · exact one_int i j
 
+/- English proof (translation)
+Rewrite using `[GlobalTheory.SplitFlip.mem_KO_iff]`. Establish `one_int : ∀ {m : Type} [DecidableEq m] (i j : m), (1 : Matrix m m k) i j ∈ 𝒪[k]` using `fun i j => by`. Rewrite using `[Matrix.one_apply]`. Use `split_ifs`. Conclude with `one_mem _`.
+
+Conclude with `zero_mem _`. Use `⟨fun i j => ?_, fun i j => ?_⟩` and prove the remaining obligations. Apply the tactic sequence `rcases i with i | i <;> rcases j with j | j`. Conclude with `one_int i j`. Simplify using `only [colE, upU, fromBlocks_apply₁₂, Matrix.of_apply] split_ifs`.
+
+Conclude with `hβ i`. Conclude with `zero_mem _`. Simplify using `only [colE, upU, fromBlocks_apply₂₁, Matrix.zero_apply]`. Conclude with `zero_mem _`. Conclude with `one_int i j`.
+
+Apply the tactic sequence `rcases i with i | i <;> rcases j with j | j`. Conclude with `one_int i j`. Use `show (fromBlocks 1 (-(Matrix.of fun r (i : Fin c) => if i.val + 1 = p then β r else 0)) 0 1 : Matrix (n ⊕ Fin c) (n ⊕ Fin c) k) (Sum.inl i) (Sum.inr j) ∈ 𝒪[k]`. Simplify using `only [fromBlocks_apply₁₂, Matrix.neg_apply, Matrix.of_apply]`. Use `split_ifs`.
+
+Conclude with `neg_mem (hβ i)`. Rewrite using `[neg_zero]`. Conclude with `zero_mem _`. Use `show (fromBlocks 1 (-(Matrix.of fun r (i : Fin c) => if i.val + 1 = p then β r else 0)) 0 1 : Matrix (n ⊕ Fin c) (n ⊕ Fin c) k) (Sum.inr i) (Sum.inl j) ∈ 𝒪[k]`. Simplify using `only [fromBlocks_apply₂₁, Matrix.zero_apply]`.
+
+Conclude with `zero_mem _`. Use `show (fromBlocks 1 (-(Matrix.of fun r (i : Fin c) => if i.val + 1 = p then β r else 0)) 0 1 : Matrix (n ⊕ Fin c) (n ⊕ Fin c) k) (Sum.inr i) (Sum.inr j) ∈ 𝒪[k]`. Simplify using `only [fromBlocks_apply₂₂]`. Conclude with `one_int i j`.
+-/
 theorem colE_mem_KO (p : ℕ) {β : n → k} (hβ : ∀ i, β i ∈ 𝒪[k]) : colE c p β ∈ KO k (n ⊕ Fin c) := by
   rw [GlobalTheory.SplitFlip.mem_KO_iff]
   have one_int : ∀ {m : Type} [DecidableEq m] (i j : m), (1 : Matrix m m k) i j ∈ 𝒪[k] := fun i j => by
@@ -92,16 +125,27 @@ theorem colE_mem_KO (p : ℕ) {β : n → k} (hβ : ∀ i, β i ∈ 𝒪[k]) : c
         Matrix (n ⊕ Fin c) (n ⊕ Fin c) k) (Sum.inr i) (Sum.inr j) ∈ 𝒪[k]
       simp only [fromBlocks_apply₂₂]; exact one_int i j
 
+/- English proof (translation)
+Rewrite using `[Units.val_mul, embX_val, Matrix.mul_apply, Fintype.sum_sum_type]`. Simplify using `[uni_inl_inl hw, Matrix.one_apply]`.
+-/
 theorem embX_mul_inl {ρ : ℕ} (g : GL n k) (w : GL (n ⊕ Fin c) k) (hw : Uni (midLev c ρ) w.val) (i j : n) :
     (embX c g * w).val (Sum.inl i) (Sum.inl j) = g.val i j := by
   rw [Units.val_mul, embX_val, Matrix.mul_apply, Fintype.sum_sum_type]
   simp [uni_inl_inl hw, Matrix.one_apply]
 
+/- English proof (translation)
+Rewrite using `[Units.val_mul, embX_val, Matrix.mul_apply, Fintype.sum_sum_type]`. Simplify using `[uni_inl_inl hw, Matrix.one_apply]`.
+-/
 theorem mul_embX_inl {ρ : ℕ} (g : GL n k) (w : GL (n ⊕ Fin c) k) (hw : Uni (midLev c ρ) w.val) (i j : n) :
     (w * embX c g).val (Sum.inl i) (Sum.inl j) = g.val i j := by
   rw [Units.val_mul, embX_val, Matrix.mul_apply, Fintype.sum_sum_type]
   simp [uni_inl_inl hw, Matrix.one_apply]
 
+/- English proof (translation)
+Establish `h1` using `uni_inl_inl (uni_of_mem_N hu)`. Establish `h0 : u.val (Sum.inl t) (Sum.inr ⟨ρ, hρ⟩) = 0`. Rewrite `hu` using `[mem_N_iff]`. Rewrite using `[hu _ _ (by simp [lev])]`. Simplify using the standard rewrite rules.
+
+Rewrite using `[Units.val_mul, Matrix.mul_apply, Fintype.sum_sum_type]`. Simplify using `[colE, upU, h1, Matrix.one_apply, h0]`.
+-/
 theorem col_eq {ρ : ℕ} (hρ : ρ < c) (u : GL (n ⊕ Fin c) k) (hu : u ∈ N k n c (ρ + 1)) (β : n → k) (t : n) :
     (u * colE c (ρ + 1) β).val (Sum.inl t) (Sum.inr ⟨ρ, hρ⟩) = β t := by
   have h1 := uni_inl_inl (uni_of_mem_N hu)
@@ -112,6 +156,17 @@ theorem col_eq {ρ : ℕ} (hρ : ρ < c) (u : GL (n ⊕ Fin c) k) (hu : u ∈ N 
   rw [Units.val_mul, Matrix.mul_apply, Fintype.sum_sum_type]
   simp [colE, upU, h1, Matrix.one_apply, h0]
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce `hr`. Establish `hw : Uni (midLev c ρ) (u * colE c (ρ + 1) β).val` using `Uni.mul (uni_of_mem_N hu) (uni_colE ρ β)`. Establish `hwi : Uni (midLev c ρ) ((u * colE c (ρ + 1) β)⁻¹).val` using `Uni.inv hw`. Establish `hr'` using `(GlobalTheory.SplitFlip.mem_KO_iff _).1 hr`.
+
+Establish `hg : g ∈ KO k n`. Rewrite using `[GlobalTheory.SplitFlip.mem_KO_iff]`. Use `⟨fun i j => ?_, fun i j => ?_⟩` and prove the remaining obligations. Use `hr'.1 (Sum.inl i) (Sum.inl j)` as an intermediate fact. Rewrite `this` using `[mul_assoc, embX_mul_inl g _ hw]`. Then use the resulting hypothesis.
+
+Use `hr'.2 (Sum.inl i) (Sum.inl j)` as an intermediate fact. Rewrite `this` using `[mul_assoc, _root_.mul_inv_rev, ← map_inv, mul_embX_inl g⁻¹ _ hwi]`. Then use the resulting hypothesis. Establish `hwK : u * colE c (ρ + 1) β ∈ KO k (n ⊕ Fin c)`. Use `mul_mem (inv_mem (embX_mem_KO (c := c) hg)) hr` as an intermediate fact. Rewrite `this` using `[mul_assoc, inv_mul_cancel_left]`. Then use the resulting hypothesis.
+
+Establish `hβ : ∀ i, β i ∈ 𝒪[k]` using `fun i => by`. Use `((GlobalTheory.SplitFlip.mem_KO_iff _).1 hwK).1 (Sum.inl i) (Sum.inr ⟨ρ, hρ⟩)` as an intermediate fact. Rewrite `this` using `[col_eq hρ u hu β i]`. Then use the resulting hypothesis. Use `⟨hg, ?_, hβ⟩` and prove the remaining obligations. Use `mul_mem hwK (inv_mem (colE_mem_KO (c := c) (ρ + 1) hβ))` as an intermediate fact.
+
+Rewrite `this` using `[mul_inv_cancel_right]`. Then use the resulting hypothesis. Introduce and unpack `⟨hg, huK, hβ⟩`. Conclude with `mul_mem (mul_mem (embX_mem_KO hg) huK) (colE_mem_KO _ hβ)`.
+-/
 theorem mem_KO_iff_prod {ρ : ℕ} (hρ : ρ < c) (g : GL n k) (u : GL (n ⊕ Fin c) k) (hu : u ∈ N k n c (ρ + 1))
     (β : n → k) :
     embX c g * u * colE c (ρ + 1) β ∈ KO k (n ⊕ Fin c) ↔
@@ -144,6 +199,9 @@ theorem mem_KO_iff_prod {ρ : ℕ} (hρ : ρ < c) (g : GL n k) (u : GL (n ⊕ Fi
 end GlobalTheory.HaarFJInt
 
 open GlobalTheory.HaarFJInt in
+/- English proof (translation)
+Introduce `k _ _ _ _ n _ _ c ρ hρ`. Use extensionality with `⟨⟨g, u⟩, β⟩`. Simplify using `only [Set.mem_preimage, Set.mem_setOf_eq, prodRFJ_coe, Set.mem_prod, SetLike.mem_coe]`. Rewrite using `[mem_KO_iff_prod hρ g u u.2 β, and_assoc]`.
+-/
 theorem GlobalTheory.HaarFJInt.prodRFJ_preimage_KO : ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] (n : Type) [Fintype n] [DecidableEq n] (c ρ : ℕ), ρ < c → prodRFJ (k := k) (n := n) (c := c) ρ ⁻¹' {x | (x : GL (n ⊕ Fin c) k) ∈ KO k (n ⊕ Fin c)} = ((KO k n : Set (GL n k)) ×ˢ {u : N k n c (ρ + 1) | (u : GL (n ⊕ Fin c) k) ∈ KO k (n ⊕ Fin c)}) ×ˢ {β : n → k | ∀ i, β i ∈ 𝒪[k]} := by
   intro k _ _ _ _ n _ _ c ρ hρ
   ext ⟨⟨g, u⟩, β⟩

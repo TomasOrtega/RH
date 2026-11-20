@@ -13,6 +13,17 @@ open Formalism.BasicNotions Formalism.BasicNotions.TH Formalism.MainNotions.Stan
 namespace GlobalTheory.FinPl.SuppTwoAsm
 
 set_option maxHeartbeats 800000 in
+/- English proof (translation)
+Introduce `a ha`. Rewrite `ha` using `[GinfC, MonoidHom.mem_ker]`. Rewrite using `[grpOff, congGrp, MonoidHom.mem_ker]`. Establish `h1` using `Units.ext_iff.mp ha`. Simplify using `only [finHom, Formalism.UG.bc, MonoidHom.comp_apply, Units.coe_map, Units.val_one] at h1`.
+
+Apply `Units.ext` to reduce the goal to its premises. Use extensionality with `i j`. Establish `h2` using `congrFun (congrFun h1 i) j`. Simplify using `only [MonoidHom.coe_coe, RingHom.mapMatrix_apply, Matrix.map_apply, RingHom.toMonoidHom_eq_coe] at h2`. Simplify using `only [MonoidHom.comp_apply, Matrix.GeneralLinearGroup.map, Units.coe_map, Units.val_one, MonoidHom.coe_coe, RingHom.mapMatrix_apply, Matrix.map_apply, RingHom.toMonoidHom_eq_coe]`.
+
+Establish `hf : (Algebra.TensorProduct.map (sndA D.host.F) (AlgHom.id D.host.F D.host.E)).toRingHom = finPart D` using `rfl`. Rewrite `h2` using `[hf]`. Distinguish the cases in `hij : i = j`. Substitute `hij` using the available equality. Rewrite `h2`, the goal using `[Matrix.one_apply_eq]`.
+
+Rewrite using `[← map_one (Ideal.Quotient.mk (idOff D P)), Ideal.Quotient.eq, idOff, Ideal.mem_iInf]`. Introduce `w`. Establish `h3 : compAt D w.1 ((matHom V a).val i i) = compAt D w.1 1`. Rewrite using `[compAt, RingHom.comp_apply, RingHom.comp_apply, h2, RingHom.map_one]`. Conclude with `(RingHom.map_one _).symm`.
+
+Rewrite using `[RingHom.mem_ker, RingHom.map_sub, h3, sub_self]`. Rewrite `h2`, the goal using `[Matrix.one_apply_ne hij]`. Rewrite using `[Ideal.Quotient.eq_zero_iff_mem, idOff, Ideal.mem_iInf]`. Introduce `w`. Rewrite using `[RingHom.mem_ker, compAt, RingHom.comp_apply, h2, map_zero]`.
+-/
 theorem ginf_le_grpOff {D : D7} (V : HSp D) (P : Pl D → Prop) : GinfC V ≤ grpOff V P := by
   intro a ha
   rw [GinfC, MonoidHom.mem_ker] at ha

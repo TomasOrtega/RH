@@ -15,11 +15,19 @@ namespace ReciprocityTheory.ChartRestriction.G.DVR
 open ReciprocityTheory.ChartRestriction.G.Out ReciprocityTheory.ChartRestriction.G.Semi IsLocalRing QForm
 open ReciprocityTheory.ChartRestriction.G.Geo.Tor
 
+/- English proof (translation)
+Rewrite using `[← CategoryTheory.Limits.pullbackSymmetry_hom_comp_snd, AlgebraicGeometry.Scheme.Hom.comp_app]`. Use `erw [CommRingCat.hom_comp, RingHom.comp_apply, h, map_zero]`.
+-/
 theorem app_fst_eq_zero_of_snd {X T S : Scheme.{0}} (p : X ⟶ S) (t : T ⟶ S) (W : X.Opens) (d : Γ(X, W))
     (h : ((pullback.snd t p).app W).hom d = 0) : ((pullback.fst p t).app W).hom d = 0 := by
   rw [← CategoryTheory.Limits.pullbackSymmetry_hom_comp_snd, AlgebraicGeometry.Scheme.Hom.comp_app]
   erw [CommRingCat.hom_comp, RingHom.comp_apply, h, map_zero]
 
+/- English proof (translation)
+Use `TopCat.Presheaf.section_ext (CategoryTheory.Limits.pullback t p).sheaf _ _ _ fun y hy => ?_` and prove the remaining obligations. Establish `hy' : CategoryTheory.Limits.pullback.snd t p y ∈ W` using `hy`. Use `h y hy'` as an intermediate fact. Simplify using `only [gs, dif_pos hy'] at this`. Use `erw [this]`.
+
+Conclude with `(map_zero _).symm`.
+-/
 theorem snd_app_eq_zero {X T S : Scheme.{0}} (p : X ⟶ S) (t : T ⟶ S) (W : X.Opens) (d : Γ(X, W))
     (h : ∀ y : ↥(CategoryTheory.Limits.pullback t p : Scheme.{0}), CategoryTheory.Limits.pullback.snd t p y ∈ W → gs (CategoryTheory.Limits.pullback.snd t p) y W d = 0) :
     ((CategoryTheory.Limits.pullback.snd t p).app W).hom d = 0 := by
@@ -30,6 +38,31 @@ theorem snd_app_eq_zero {X T S : Scheme.{0}} (p : X ⟶ S) (t : T ⟶ S) (W : X.
   erw [this]
   exact (map_zero _).symm
 
+/- English proof (translation)
+Take `⟨n, a, σ, σF, hscal, hva, hsum⟩` from `hE`. Establish `hb : ∀ i, ∃ b : V, algebraMap V (FractionRing V) b = a i` using `fun i => by`. Take `⟨b, hb⟩` from `mem_range_of_val_nonneg hϖ hv (a i) (by simpa using hva i)`. Conclude with `⟨b, hb⟩`. Use `choose b hb using hb`.
+
+Establish `hflat : Flat D.toPre.P.A.hom`. Use `D.toPre.P.smoothDim` as an intermediate fact. Use `SmoothOfRelativeDimension.smooth D.toPre.P.g D.toPre.P.A.hom` as an intermediate fact. Use `infer_instance`. Establish `hjK : IsOpenImmersion (jK V)`.
+
+Take `⟨ϖ₀, h₀⟩` from `IsDiscreteValuationRing.exists_irreducible V`. Use `away_fractionRing h₀` as an intermediate fact. Conclude with `IsOpenImmersion.of_isLocalization ϖ₀`. Establish `hjFK : IsIso (jFK (R` using `V) (FractionRing V)) := by show IsIso (Spec.map (CommRingCat.ofHom (RingHom.id (FractionRing V))))`. Rewrite using `[CommRingCat.ofHom_id, Spec.map_id]`.
+
+Use `infer_instance`. Establish `ht : IsOpenImmersion (TF (R` using `V) (FractionRing V)).hom := by show IsOpenImmersion (jFK (R := V) (FractionRing V) ≫ jK V) infer_instance`. Establish `: Nonempty (TF (R` using `V) (FractionRing V)).left := ⟨IsLocalRing.closedPoint (FractionRing V)⟩`. Establish `hBF : (Out.DegPre.BF D.toPre (FractionRing V)).hom = pullback.snd (TF (R` using `V) (FractionRing V)).hom D.toPre.P.A.hom ≫ D.toPre.P.A.hom := pullback.condition`. Establish `hnat : ∀ {R S : CommRingCat.{0}} (g : R ⟶ S) (x : R), (Spec.map g).appTop.hom ((Scheme.ΓSpecIso R).inv.hom x) = (Scheme.ΓSpecIso S).inv.hom (g.hom x)`.
+
+Introduce `R S g x`. Conclude with `(congrArg (fun q => q.hom x) (Scheme.ΓSpecIso_inv_naturality g)).symm`. Establish `hTF : ∀ c : V, (TF (R` using `V) (FractionRing V)).hom.appTop.hom ((Scheme.ΓSpecIso (CommRingCat.of V)).inv.hom c) = (Scheme.ΓSpecIso (CommRingCat.of (FractionRing V))).inv.hom (algebraMap V (FractionRing V) c) := by`. Introduce `c`. Use `show (jFK (R := V) (FractionRing V) ≫ jK V).appTop.hom _ = _`.
+
+Rewrite using `[Scheme.Hom.comp_appTop, CommRingCat.hom_comp, RingHom.comp_apply, hnat, hnat]`. Both sides reduce to the same expression. Establish `H : ∀ j : (LB.LinComb D.toPre.P.L (D.toPre.famφB α) (Out.DegPre.famε k)).ι, f.f j - constFn D.toPre.P.A.hom _ r * ∑ i, constFn D.toPre.P.A.hom _ (b i) * (σ i).f j = 0`. Introduce `j`. Use `eq_zero_of_app_fst_open D.toPre.P.A.hom (TF (R := V) (FractionRing V)).hom _ _ (app_fst_eq_zero_of_snd _ _ _ _ (snd_app_eq_zero _ _ _ _ fun y hy => ?_))` and prove the remaining obligations.
+
+Use `choose J hJ using fun ψ : (Out.DegPre.BF D.toPre (FractionRing V)).left ⟶ D.toPre.P.A.left => exists_chart D.toPre.P.isLB (ψ y)`. Establish `hG : Good D.toPre.P.L y J` using `hJ`. Use `set π := pullback.snd (TF (R := V) (FractionRing V)).hom D.toPre.P.A.hom`. Use `set U := (LB.LinComb D.toPre.P.L (D.toPre.famφB α) (Out.DegPre.famε k)).U j`. Take `⟨tj, htj⟩ : ∃ tj, (trF (L` from `D.toPre.P.L) (D.toPre.famφB α) (Out.DegPre.famε k) π y j (fun k => J (π ≫ D.toPre.famφB α k))).val = tj := ⟨_, rfl⟩`.
+
+Establish `e_f : gs π y U (f.f j) = tj * sval f π y J` using `(sec_trans f π y hy (hG.mem _ π)).trans (congrArg (· * sval f π y J) htj)`. Establish `e_σ : ∀ i, gs π y U ((σ i).f j) = tj * sval (σ i) π y J` using `fun i => (sec_trans (σ i) π y hy (hG.mem _ π)).trans (congrArg (· * sval (σ i) π y J) htj)`. Establish `hf' : sval f (𝟙 (pullback (TF (R` using `V) (FractionRing V)).hom D.toPre.P.A.hom) ≫ π) y J = gs (𝟙 (pullback (TF (R := V) (FractionRing V)).hom D.toPre.P.A.hom)) y ⊤ (Out.scal (Out.DegPre.BF D.toPre (FractionRing V)).hom r) * sval E (𝟙 (pullback (TF (R := V) (FractionRing V)).hom D.toPre.P.A.hom)) y J := secScal_sval_c …`. Establish `hσ' : ∀ i, sval (σ i) (𝟙 (pullback (TF (R` using `V) (FractionRing V)).hom D.toPre.P.A.hom) ≫ π) y J = sval (σF i) (𝟙 (pullback (TF (R := V) (FractionRing V)).hom D.toPre.P.A.hom)) y J := fun i => SectionScalarValuation.secScal_sval (hscal i) (𝟙 (pullback (TF (R := V) (FractionRing V)).hom D.toPre.P.A.hom)) y hG`. Rewrite `hf'` using `[Category.id_comp]`.
+
+Simplify using `only [Category.id_comp] at hσ'`. Set `bg : Fin n → Γ((pullback (TF (R` to `V) (FractionRing V)).hom D.toPre.P.A.hom), ⊤) := fun i => (pullback.fst (TF (R := V) (FractionRing V)).hom D.toPre.P.A.hom).appTop.hom ((Scheme.ΓSpecIso (CommRingCat.of (FractionRing V))).inv.hom (a i))`. Establish `hE' : sval E (𝟙 (pullback (TF (R` using `V) (FractionRing V)).hom D.toPre.P.A.hom)) y J = ∑ i, gs (𝟙 (pullback (TF (R := V) (FractionRing V)).hom D.toPre.P.A.hom)) y ⊤ (bg i) * sval (σF i) (𝟙 (pullback (TF (R := V) (FractionRing V)).hom D.toPre.P.A.hom)) y J := SectionScalarValuation.sval_lin bg σF hsum (𝟙 (pullback (TF …`. Establish `c1 : gs (𝟙 (pullback (TF (R` using `V) (FractionRing V)).hom D.toPre.P.A.hom)) y ⊤ (Out.scal (Out.DegPre.BF D.toPre (FractionRing V)).hom r) = cst (π ≫ D.toPre.P.A.hom) y r := (gs_pull (𝟙 (pullback (TF (R := V) (FractionRing V)).hom D.toPre.P.A.hom)) _ y ⊤ trivial _).trans (by rw [Category.id_comp, hBF]; rfl)`. Establish `c2 : ∀ i, gs (𝟙 (pullback (TF (R` using `V) (FractionRing V)).hom D.toPre.P.A.hom)) y ⊤ (bg i) = cst (π ≫ D.toPre.P.A.hom) y (b i) := by`.
+
+Introduce `i`. Use `(gs_pull (𝟙 (pullback (TF (R := V) (FractionRing V)).hom D.toPre.P.A.hom)) _ y ⊤ trivial _).trans ?_` and prove the remaining obligations. Rewrite using `[Category.id_comp, cst, ← pullback.condition, ← gs_pull _ _ y ⊤ trivial]`. Conclude with `(congrArg (fun z => gs (pullback.fst (TF (R := V) (FractionRing V)).hom D.toPre.P.A.hom) y ⊤ ((Scheme.ΓSpecIso (CommRingCat.of (FractionRing V))).inv.hom z)) (hb i).symm).trans (congrArg (gs (pullback.fst (TF (R := V) (FractionRing V)).hom D.toPre.P.A.hom) y ⊤) (hTF (b i)).symm)`. Establish `e_sub : gs π y U (f.f j - constFn D.toPre.P.A.hom U r * ∑ i, constFn D.toPre.P.A.hom U (b i) * (σ i).f j) = gs π y U (f.f j) - gs π y U (constFn D.toPre.P.A.hom U r) * ∑ i, gs π y U (constFn D.toPre.P.A.hom U (b i)) * gs π y U ((σ i).f j)`.
+
+Simplify using `only [gs_eq π y U hy, map_sub, map_mul, map_sum]`. Rewrite using `[e_sub, e_f, hf', hE', gs_constFn _ _ _ _ hy]`. Simplify using `only [e_σ, hσ', c1, c2, gs_constFn _ _ _ _ hy]`. Rewrite using `[Finset.mul_sum, Finset.mul_sum, Finset.mul_sum, ← Finset.sum_sub_distrib]`. Conclude with `Finset.sum_eq_zero fun i _ => by ring`.
+
+Introduce `j`. Conclude with `⟨_, sub_eq_zero.1 (H j)⟩`.
+-/
 theorem secB_dvd_of_vge {V : Type} [CommRing V] [IsDomain V] [IsDiscreteValuationRing V] {ϖ : V}
     (hϖ : Irreducible ϖ) {D : Out.DegData V (IsLocalRing.maximalIdeal V)}
     {vK : AddValuation (FractionRing V) (WithTop ℚ)} (hv : ValOver ϖ (FractionRing V) vK) {k : ℕ}

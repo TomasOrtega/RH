@@ -9,6 +9,11 @@ open GroundTheory.PAdicHodge Formalism.Per6 DividedPowers CrystallineSemistableC
 
 namespace GlobalTheory.CompanionTheory.LatGal
 
+/- English proof (translation)
+Rewrite `hx`, the goal using `[IsLocalRing.mem_maximalIdeal, mem_nonunits_iff]`. Introduce `hu`. Apply `hx` to reduce the goal to its premises. Establish `h1 : galBdRHom σ⁻¹ (galBdRHom σ x) = x`. Rewrite using `[← RingHom.comp_apply, ← galBdRHom_mul, inv_mul_cancel, galBdRHom_one, RingHom.id_apply]`.
+
+Rewrite using `[← h1]`. Conclude with `hu.map _`.
+-/
 private theorem galBdRHom_mem_maximalIdeal {p : ℕ} [Fact p.Prime] {K : IntermediateField ℚ_[p] (PadicAlgCl p)}
     (σ : PadicAlgCl p ≃ₐ[K] PadicAlgCl p) (x : BDeRhamPlus (normInteger ℂ_[p]) p)
     (hx : x ∈ IsLocalRing.maximalIdeal (BDeRhamPlus (normInteger ℂ_[p]) p)) :
@@ -21,6 +26,11 @@ private theorem galBdRHom_mem_maximalIdeal {p : ℕ} [Fact p.Prime] {K : Interme
   rw [← h1]
   exact hu.map _
 
+/- English proof (translation)
+Rewrite using `[Ideal.span_le, Set.singleton_subset_iff, SetLike.mem_coe, Ideal.mem_comap, map_pow]`. Establish `ht : Lat.gP l g (tBdR l) ∈ Ideal.span {tBdR l}`. Rewrite using `[← maximalIdeal_eq_span_tBdR]`. Conclude with `galBdRHom_mem_maximalIdeal _ _ (by rw [maximalIdeal_eq_span_tBdR]; exact Ideal.mem_span_singleton_self _)`. Take `⟨c, hc⟩` from `Ideal.mem_span_singleton'.mp ht`.
+
+Rewrite using `[← hc, mul_pow]`. Conclude with `Ideal.mul_mem_left _ _ (Ideal.mem_span_singleton_self _)`.
+-/
 theorem span_tBdR_pow_le_comap (l : ℕ) [Fact l.Prime] (K : IntermediateField ℚ_[l] (PadicAlgCl l))
     (k : ℕ) (g : K.fixingSubgroup) :
     Ideal.span {tBdR l ^ k} ≤ (Ideal.span {tBdR l ^ k}).comap (Lat.gP l g) := by

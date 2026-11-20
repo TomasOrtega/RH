@@ -13,6 +13,11 @@ attribute [local instance] Matrix.normedAddCommGroup Matrix.normedSpace
 
 variable {n : ℕ}
 
+/- English proof (translation)
+Establish `hb` using `Real.exp_bound hu (n := 5) (by norm_num)`. Establish `h1 : -(|u| ^ 5 * ((Nat.succ 5 : ℝ) / ((Nat.factorial 5 : ℝ) * 5))) ≤ Real.exp u - ∑ i ∈ Finset.range 5, u ^ i / (Nat.factorial i : ℝ)` using `(abs_le.mp hb).1`. Evaluate the numerical expressions using `[Finset.sum_range_succ, Nat.factorial] at h1`. Establish `hu2 : |u| ^ 5 ≤ u ^ 2`. Establish `h0 : 0 ≤ |u|` using `abs_nonneg u`.
+
+Establish `h3 : |u| ^ 3 ≤ 1` using `pow_le_one₀ h0 hu`. Combine the equalities or inequalities in the displayed calculation. Establish `hlo : -1 ≤ u` using `(abs_le.mp hu).1`. Establish `hq : 0 ≤ (u + 1) * (u + 3)` using `mul_nonneg (by linarith) (by linarith)`. Use polynomial arithmetic with `[mul_nonneg (sq_nonneg u) hq, sq_nonneg u]`.
+-/
 theorem exp_ge_one_add_add_sq_div_three {u : ℝ} (hu : |u| ≤ 1) :
     1 + u + u ^ 2 / 3 ≤ Real.exp u := by
   have hb := Real.exp_bound hu (n := 5) (by norm_num)
@@ -29,6 +34,27 @@ theorem exp_ge_one_add_add_sq_div_three {u : ℝ} (hu : |u| ≤ 1) :
   have hq : 0 ≤ (u + 1) * (u + 3) := mul_nonneg (by linarith) (by linarith)
   nlinarith [mul_nonneg (sq_nonneg u) hq, sq_nonneg u]
 
+/- English proof (translation)
+Establish `hc0 : 0 < min 1 (1 / R)` using `lt_min one_pos (by positivity)`. Establish `hc1 : min 1 (1 / R) ≤ 1` using `min_le_left _ _`. Establish `hcR : min 1 (1 / R) * R ≤ 1`. Combine the equalities or inequalities in the displayed calculation. Generalize the expression as in `hcdef : min 1 (1 / R) = c at hc0 hc1 hcR ⊢`.
+
+Establish `hQ0 : 0 ≤ ∑ j, w j * y j ^ 2` using `Finset.sum_nonneg fun j _ => mul_nonneg (hw j) (sq_nonneg _)`. Establish `hQR : ∑ j, w j * y j ^ 2 ≤ R ^ 2`. Combine the equalities or inequalities in the displayed calculation. Establish `h` using `hy j`. Establish `: y j ^ 2 = |y j| ^ 2` using `(sq_abs _).symm`.
+
+Rewrite using `[this]`. Conclude with `pow_le_pow_left₀ (abs_nonneg _) h 2) (hw j)`. Use `_ = R ^ 2 := by rw [← Finset.sum_mul, h1, one_mul]`. Establish `hpt : ∀ j, 1 + c * y j + (c * y j) ^ 2 / 3 ≤ Real.exp (c * y j)` using `fun j => exp_ge_one_add_add_sq_div_three (by`. Rewrite using `[abs_mul, abs_of_pos hc0]`.
+
+Combine the equalities or inequalities in the displayed calculation. Establish `hsum : ∑ j, w j * (1 + c * y j + (c * y j) ^ 2 / 3) = 1 + c ^ 2 * (∑ j, w j * y j ^ 2) / 3`. Establish `e : ∑ j, w j * (1 + c * y j + (c * y j) ^ 2 / 3) = ∑ j, w j + c * ∑ j, w j * y j + c ^ 2 / 3 * ∑ j, w j * y j ^ 2`. Simplify using `only [Finset.mul_sum, ← Finset.sum_add_distrib]`. Conclude with `Finset.sum_congr rfl fun j _ => by ring`.
+
+Rewrite using `[e, h1, h0]`. Expand and normalize the polynomial expressions, which then agree. Establish `hS : 1 + c ^ 2 * (∑ j, w j * y j ^ 2) / 3 ≤ ∑ j, w j * Real.exp (c * y j)`. Rewrite using `[← hsum]`. Conclude with `Finset.sum_le_sum fun j _ => mul_le_mul_of_nonneg_left (hpt j) (hw j)`.
+
+Establish `hS1 : 0 < 1 + c ^ 2 * (∑ j, w j * y j ^ 2) / 3` using `by positivity`. Establish `hSpos : 0 < ∑ j, w j * Real.exp (c * y j)` using `lt_of_lt_of_le hS1 hS`. Establish `hJ : (∑ j, w j * Real.exp (c * y j)) ^ (1 / c) ≤ ∑ j, w j * Real.exp (y j)`. Use `Real.rpow_arith_mean_le_arith_mean_rpow Finset.univ w (fun j => Real.exp (c * y j)) (fun j _ => hw j) h1 (fun j _ => (Real.exp_pos _).le) (p := 1 / c) (by rw [le_div_iff₀ hc0]; linarith)` as an intermediate fact. Use `this.trans (le_of_eq (Finset.sum_congr rfl fun j _ => ?_))` and prove the remaining obligations.
+
+Rewrite using `[← Real.exp_mul]`. Use `congr 2`. Clear the denominators using the available nonvanishing facts. Establish `ht1 : c ^ 2 * (∑ j, w j * y j ^ 2) ≤ 1`. Combine the equalities or inequalities in the displayed calculation.
+
+Establish `hlog1 : 3 / 4 * (c ^ 2 * (∑ j, w j * y j ^ 2) / 3) ≤ Real.log (1 + c ^ 2 * (∑ j, w j * y j ^ 2) / 3)`. Establish `h` using `Real.log_le_sub_one_of_pos (inv_pos.mpr hS1)`. Rewrite `h` using `[Real.log_inv]`. Establish `hinv : (1 + c ^ 2 * (∑ j, w j * y j ^ 2) / 3)⁻¹ ≤ 1 - 3 / 4 * (c ^ 2 * (∑ j, w j * y j ^ 2) / 3)`. Rewrite using `[inv_eq_one_div, div_le_iff₀ hS1]`.
+
+Use polynomial arithmetic with `[mul_nonneg (sq_nonneg c) hQ0]`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hlog : 3 / 4 * (c ^ 2 * (∑ j, w j * y j ^ 2) / 3) ≤ Real.log (∑ j, w j * Real.exp (c * y j))` using `hlog1.trans (Real.log_le_log hS1 hS)`. Combine the equalities or inequalities in the displayed calculation. Clear the denominators using the available nonvanishing facts.
+
+Use `_ ≤ (1 / c) * Real.log (∑ j, w j * Real.exp (c * y j)) := mul_le_mul_of_nonneg_left hlog (by positivity)`. Use `_ = Real.log ((∑ j, w j * Real.exp (c * y j)) ^ (1 / c)) := by rw [Real.log_rpow hSpos]`. Use `_ ≤ Real.log (∑ j, w j * Real.exp (y j)) := Real.log_le_log (by positivity) hJ`.
+-/
 theorem logSumExp_lower {ι : Type*} [Fintype ι] (w y : ι → ℝ) (hw : ∀ j, 0 ≤ w j)
     (h1 : ∑ j, w j = 1) (h0 : ∑ j, w j * y j = 0) {R : ℝ} (hR : 0 < R) (hy : ∀ j, |y j| ≤ R) :
     min 1 (1 / R) * (∑ j, w j * y j ^ 2) / 4 ≤ Real.log (∑ j, w j * Real.exp (y j)) := by

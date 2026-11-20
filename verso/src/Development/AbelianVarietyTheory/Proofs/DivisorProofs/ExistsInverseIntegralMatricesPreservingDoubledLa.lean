@@ -9,11 +9,37 @@ namespace GlobalTheory.LatticeStab
 
 variable {A O : Type} [CommRing A] [CommRing O] (ι : O →ₙ+* A) {n : ℕ}
 
+/- English proof (translation)
+Use extensionality with `i j`. Simplify using `[Matrix.mul_apply, map_sum, map_mul]`.
+-/
 theorem map_mul_of_nonUnital {m : Type} [Fintype m] (G H : Matrix m m O) :
     (G * H).map ι = G.map ι * H.map ι := by
   ext i j
   simp [Matrix.mul_apply, map_sum, map_mul]
 
+/- English proof (translation)
+Establish `h0 : (0 : Fin n → A) ∈ Λ` using `(hΛ 0).2 ⟨0, by ext i; simp [Matrix.mulVec, dotProduct]⟩`. Establish `hcol : ∀ k : Fin n, (fun r => P r k) ∈ Λ`. Introduce `k`. Use `(hΛ _).2 ⟨Pi.single k 1, ?_⟩` and prove the remaining obligations. Use extensionality with `r`.
+
+Simplify using `only [Matrix.mulVec, dotProduct]`. Rewrite using `[Finset.sum_eq_single k]`. Use `congrFun (congrFun hP r) k` as an intermediate fact. Simplify using `only [Matrix.smul_apply, smul_eq_mul] at this`. Simplify using `only [Pi.single_eq_same]`.
+
+Rewrite using `[mul_comm]`. Conclude with `this.symm`. Introduce `b _ hb`. Simplify using `[Pi.single_eq_of_ne hb]`. Simplify using the standard rewrite rules.
+
+Establish `hDcol : ∀ j, (fun k => Matrix.fromBlocks P 0 0 P k j) ∘ Sum.inl ∈ Λ ∧ (fun k => Matrix.fromBlocks P 0 0 P k j) ∘ Sum.inr ∈ Λ`. Introduce `j`. Break down `j with k | k` into its components or cases. Establish `e1 : (fun k' => Matrix.fromBlocks P 0 0 P k' (Sum.inl k)) ∘ Sum.inl = fun r => P r k`. Use extensionality with `r`.
+
+Simplify using the standard rewrite rules. Establish `e2 : (fun k' => Matrix.fromBlocks P 0 0 P k' (Sum.inl k)) ∘ Sum.inr = 0`. Use extensionality with `r`. Simplify using the standard rewrite rules. Rewrite using `[e1, e2]`.
+
+Conclude with `⟨hcol k, h0⟩`. Establish `e1 : (fun k' => Matrix.fromBlocks P 0 0 P k' (Sum.inr k)) ∘ Sum.inl = 0`. Use extensionality with `r`. Simplify using the standard rewrite rules. Establish `e2 : (fun k' => Matrix.fromBlocks P 0 0 P k' (Sum.inr k)) ∘ Sum.inr = fun r => P r k`.
+
+Use extensionality with `r`. Simplify using the standard rewrite rules. Rewrite using `[e1, e2]`. Conclude with `⟨h0, hcol k⟩`. Establish `ex : ∀ j, ∃ a b : Fin n → O, (M *ᵥ fun k => Matrix.fromBlocks P 0 0 P k j) ∘ Sum.inl = P *ᵥ (fun i => ι (a i)) ∧ (M *ᵥ fun k => Matrix.fromBlocks P 0 0 P k j) ∘ Sum.inr = P *ᵥ (fun i => ι (b i))`.
+
+Introduce `j`. Take `⟨h1, h2⟩` from `hM _ (hDcol j).1 (hDcol j).2`. Take `⟨a, ha⟩` from `(hΛ _).1 h1`. Take `⟨b, hb⟩` from `(hΛ _).1 h2`. Conclude with `⟨a, b, ha, hb⟩`.
+
+Use `choose a b hab using ex`. Use `⟨Matrix.of fun i j => Sum.elim (a j) (b j) i, ?_⟩` and prove the remaining obligations. Use extensionality with `i j`. Establish `hMD : (M * Matrix.fromBlocks P 0 0 P) i j = (M *ᵥ fun k => Matrix.fromBlocks P 0 0 P k j) i` using `rfl`. Rewrite using `[hMD]`.
+
+Break down `i with r | r` into its components or cases. Use `congrFun (hab j).1 r` as an intermediate fact. Simplify using `only [Function.comp] at this`. Rewrite using `[this]`. Simplify using `[Matrix.mul_apply, Matrix.mulVec, dotProduct, Fintype.sum_sum_type]`.
+
+Use `congrFun (hab j).2 r` as an intermediate fact. Simplify using `only [Function.comp] at this`. Rewrite using `[this]`. Simplify using `[Matrix.mul_apply, Matrix.mulVec, dotProduct, Fintype.sum_sum_type]`.
+-/
 theorem exists_matrix_of_keeps (P : Matrix (Fin n) (Fin n) A) (Λ : Set (Fin n → A))
     (hP : ι 1 • P = P)
     (hΛ : ∀ z, z ∈ Λ ↔ ∃ a : Fin n → O, z = P *ᵥ fun i => ι (a i))
@@ -75,6 +101,15 @@ theorem exists_matrix_of_keeps (P : Matrix (Fin n) (Fin n) A) (Λ : Set (Fin n �
 
 end GlobalTheory.LatticeStab
 
+/- English proof (translation)
+Introduce `A O _ _ ι n P Q Λ hinj _hPQ hQP hP _hQ hΛ M M' hMM' hM`. Take `⟨G, hG⟩` from `GlobalTheory.LatticeStab.exists_matrix_of_keeps ι P Λ hP hΛ M (fun z h1 h2 => ⟨(hM z h1 h2).1, (hM z h1 h2).2.1⟩)`. Take `⟨G', hG'⟩` from `GlobalTheory.LatticeStab.exists_matrix_of_keeps ι P Λ hP hΛ M' (fun z h1 h2 => ⟨(hM z h1 h2).2.2.1, (hM z h1 h2).2.2.2⟩)`. Use `⟨G, G', ?_, hG⟩` and prove the remaining obligations. Establish `hDD : Matrix.fromBlocks P 0 0 P * (G * G').map ι = Matrix.fromBlocks P 0 0 P`.
+
+Rewrite using `[GlobalTheory.LatticeStab.map_mul_of_nonUnital, ← Matrix.mul_assoc, ← hG, Matrix.mul_assoc, ← hG', ← Matrix.mul_assoc, hMM', Matrix.one_mul]`. Establish `hQD : Matrix.fromBlocks Q 0 0 Q * Matrix.fromBlocks P 0 0 P = ι 1 • (1 : Matrix (Fin n ⊕ Fin n) (Fin n ⊕ Fin n) A)`. Rewrite using `[← Matrix.fromBlocks_one, Matrix.fromBlocks_smul, Matrix.fromBlocks_multiply]`. Simplify using `[hQP]`. Establish `key : ι 1 • (G * G').map ι = ι 1 • (1 : Matrix (Fin n ⊕ Fin n) (Fin n ⊕ Fin n) A)`.
+
+Use `congrArg (fun X => Matrix.fromBlocks Q 0 0 Q * X) hDD` as an intermediate fact. Simplify using `only [← Matrix.mul_assoc, hQD] at this`. Rewrite `this` using `[Matrix.smul_mul, Matrix.one_mul]`. Then use the resulting hypothesis. Use extensionality with `i j`. Apply `hinj` to reduce the goal to its premises.
+
+Use `congrFun (congrFun key i) j` as an intermediate fact. Simplify using `only [Matrix.smul_apply, Matrix.map_apply, smul_eq_mul, ← map_mul, one_mul] at this`. Rewrite using `[this]`. Apply the tactic sequence `by_cases h : i = j <;> simp [Matrix.one_apply, h]`.
+-/
 theorem GlobalTheory.LatticeStab.matrix_in_diag_basis : ∀ (A O : Type) [CommRing A] [CommRing O] (ι : O →ₙ+* A) (n : ℕ) (P Q : Matrix (Fin n) (Fin n) A)
     (Λ : Set (Fin n → A)), Function.Injective ι → P * Q = ι 1 • (1 : Matrix (Fin n) (Fin n) A) →
     Q * P = ι 1 • (1 : Matrix (Fin n) (Fin n) A) → ι 1 • P = P → ι 1 • Q = Q →

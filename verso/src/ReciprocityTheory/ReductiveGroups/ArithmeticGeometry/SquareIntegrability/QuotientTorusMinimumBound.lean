@@ -10,6 +10,17 @@ noncomputable section
 
 namespace Col
 
+/- English proof (translation)
+Establish `: IsAddTorsionFree (M ⧸ N)`. Use `⟨fun n hn a b hab => ?_⟩` and prove the remaining obligations. Proceed by induction on `a using Submodule.Quotient.induction_on with | H x => ?_`. Proceed by induction on `b using Submodule.Quotient.induction_on with | H y => ?_`. Simplify using `only at hab`.
+
+Rewrite `hab` using `[← Submodule.Quotient.mk_smul, ← Submodule.Quotient.mk_smul, Submodule.Quotient.eq]`. Rewrite using `[Submodule.Quotient.eq]`. Use `hsat n (x - y) (by exact_mod_cast hn) ?_` and prove the remaining obligations. Rewrite using `[natCast_zsmul, smul_sub]`. Conclude with `hab`.
+
+Establish `: Module.Free ℤ (M ⧸ N)` using `Module.free_of_finite_type_torsion_free'`. Take `⟨σ, hσ⟩` from `Module.projective_lifting_property N.mkQ (LinearMap.id) (Submodule.mkQ_surjective N)`. Establish `hmem : ∀ x : M, x - σ (N.mkQ x) ∈ N`. Introduce `x`. Rewrite using `[← Submodule.Quotient.mk_eq_zero, ← Submodule.mkQ_apply, map_sub]`.
+
+Use `LinearMap.congr_fun hσ (N.mkQ x)` as an intermediate fact. Simplify using `only [LinearMap.comp_apply, LinearMap.id_apply] at this`. Rewrite using `[this, sub_self]`. Set `p : M →ₗ[ℤ] N` to `LinearMap.codRestrict N (LinearMap.id - σ ∘ₗ N.mkQ) (fun x => hmem x)`. Use `⟨ψ ∘ₗ p, fun x => ?_⟩` and prove the remaining obligations.
+
+Establish `: p x = x`. Apply `Subtype.ext` to reduce the goal to its premises. Simplify using `[p, (Submodule.Quotient.mk_eq_zero N).2 x.2]`. Simplify using `[this]`.
+-/
 theorem extend_hom {M : Type} [AddCommGroup M] [Module.Free ℤ M] [Module.Finite ℤ M]
     (N : Submodule ℤ M) (hsat : ∀ (k : ℤ) (x : M), k ≠ 0 → k • x ∈ N → x ∈ N) (ψ : N →ₗ[ℤ] ℤ) :
     ∃ Ψ : M →ₗ[ℤ] ℤ, ∀ x : N, Ψ x = ψ x := by
@@ -42,12 +53,18 @@ variable {E : Type} [Field E] [NumberField E]
 def GB (X : PT E) (I : Submodule ℤ (Vsp X.dim)) : Submodule ℤ (EuclideanSpace ℂ (Fin (gB (IR I)))) :=
   (Ip X I).map (((wmap (IR I)).toLinearMap).restrictScalars ℤ)
 
+/- English proof (translation)
+Unfold `GB`. Rewrite using `[Submodule.mem_map]`. Both sides reduce to the same expression.
+-/
 theorem mem_GB {X : PT E} {I : Submodule ℤ (Vsp X.dim)} {t : EuclideanSpace ℂ (Fin (gB (IR I)))} :
     t ∈ GB X I ↔ ∃ x ∈ Ip X I, wmap (IR I) x = t := by
   unfold GB
   rw [Submodule.mem_map]
   rfl
 
+/- English proof (translation)
+The claim follows from `mem_GB.2 ⟨x, hx, rfl⟩`.
+-/
 theorem wmap_mem_GB {X : PT E} {I : Submodule ℤ (Vsp X.dim)} {x : Vsp X.dim} (hx : x ∈ Ip X I) :
     wmap (IR I) x ∈ GB X I := mem_GB.2 ⟨x, hx, rfl⟩
 
@@ -56,6 +73,11 @@ section GBsec
 variable {X : PT E} {I : Submodule ℤ (Vsp X.dim)} {DF : ℕ} {P : Par X DF} (hI : IsSplit P I)
 include hI
 
+/- English proof (translation)
+Take `⟨x, hx, rfl⟩` from `mem_GB.1 ht`. Rewrite using `[norm_wmap (hK_of hI)]`. Distinguish the cases in `hxI : x ∈ I`. It suffices to derive a contradiction. Apply `h0` to reduce the goal to its premises.
+
+Rewrite using `[← norm_eq_zero, norm_wmap (hK_of hI), proj_two_of_mem (hK_of hI) (mem_IR hxI), norm_zero]`. Conclude with `gap_le_norm_proj_two hI hx hxI`.
+-/
 theorem GB_norm {t : EuclideanSpace ℂ (Fin (gB (IR I)))} (ht : t ∈ GB X I) (h0 : t ≠ 0) :
     P.th ≤ ‖t‖ := by
   obtain ⟨x, hx, rfl⟩ := mem_GB.1 ht
@@ -65,6 +87,13 @@ theorem GB_norm {t : EuclideanSpace ℂ (Fin (gB (IR I)))} (ht : t ∈ GB X I) (
     rw [← norm_eq_zero, norm_wmap (hK_of hI), proj_two_of_mem (hK_of hI) (mem_IR hxI), norm_zero]
   · exact gap_le_norm_proj_two hI hx hxI
 
+/- English proof (translation)
+Rewrite using `[discreteTopology_iff_isOpen_singleton_zero]`. Establish `: ({0} : Set (GB X I)) = Subtype.val ⁻¹' Metric.ball 0 P.th`. Use extensionality with `⟨t, ht⟩`. Simplify using `only [Set.mem_singleton_iff, Set.mem_preimage, Metric.mem_ball, dist_zero_right]`. Prove the components needed by the constructor for the conclusion.
+
+Introduce `h`. Establish `: t = 0` using `congrArg Subtype.val h`. Rewrite using `[this, norm_zero]`. Conclude with `th_pos P`. Introduce `h`.
+
+Assume the negation of the conclusion as `hne`. Establish `h0 : t ≠ 0` using `fun h' => hne (Subtype.ext h')`. Conclude with `absurd (GB_norm hI ht h0) (not_le.2 h)`. Rewrite using `[this]`. Conclude with `Metric.isOpen_ball.preimage continuous_subtype_val`.
+-/
 theorem GB_discrete : DiscreteTopology (GB X I) := by
   rw [discreteTopology_iff_isOpen_singleton_zero]
   have : ({0} : Set (GB X I)) = Subtype.val ⁻¹' Metric.ball 0 P.th := by
@@ -81,6 +110,29 @@ theorem GB_discrete : DiscreteTopology (GB X I) := by
   rw [this]
   exact Metric.isOpen_ball.preimage continuous_subtype_val
 
+/- English proof (translation)
+Establish `hK` using `hK_of hI`. Use `set C0 := ∑ i, ‖X.b i‖ with hC0`. Establish `hC0n : 0 ≤ C0` using `Finset.sum_nonneg fun _ _ => norm_nonneg _`. Take `⟨M, hM0, hM⟩` from `reps_bdd hI hP C0`. Establish `approx : ∀ t, ∃ s ∈ GB X I, ‖t - s‖ ≤ C0 + M`.
+
+Introduce `t`. Use `set v := jj (IR I) t`. Use `set γ : Vsp X.dim := (ZSpan.floor X.b v : Vsp X.dim)`. Establish `hγ : γ ∈ X.L` using `(ZSpan.floor X.b v).2`. Establish `hvγ : ‖v - γ‖ ≤ C0`.
+
+Rewrite using `[← ZSpan.fract_apply]`. Conclude with `ZSpan.norm_fract_le _ _`. Establish `hucv : uc (IR I) v = 0` using `by simp [uc, v, z_jj]`. Establish `huc : ‖uc (IR I) γ‖ ≤ C0`. Establish `: uc (IR I) γ = -uc (IR I) (v - γ)` using `by rw [uc_sub, hucv]; simp`.
+
+Rewrite using `[this, norm_neg]`. Conclude with `(norm_uc_le hI.iso _).trans hvγ`. Take `⟨y', hy'L, hy'u, hy'M⟩` from `hM γ hγ huc`. Establish `hIp : γ - y' ∈ Ip X I`. Use `⟨X.L.sub_mem hγ hy'L, fun a ha => ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[← (isU_uc (I := I) (γ - y')).2 a (mem_IR ha), uc_sub, hy'u, sub_self, inner_zero_left]`. Use `⟨wmap (IR I) (γ - y'), wmap_mem_GB hIp, ?_⟩` and prove the remaining obligations. Establish `ht : t = wmap (IR I) v` using `(wmap_jj _ t).symm`. Establish `: t - wmap (IR I) (γ - y') = wmap (IR I) (v - γ) + wmap (IR I) y'`. Rewrite using `[ht, ← map_sub, ← map_add]`.
+
+Use `congr 1`. Normalize the expressions using the abelian group laws. Rewrite using `[this]`. Use `(norm_add_le _ _).trans (add_le_add ?_ ?_)` and prove the remaining obligations. Rewrite using `[norm_wmap hK]`.
+
+Conclude with `(norm_proj_two_le hK _).trans hvγ`. Rewrite using `[norm_wmap hK]`. Conclude with `hy'M`. Assume the negation of the conclusion as `hW`. Rewrite `hW` using `[← Submodule.orthogonal_eq_bot_iff]`.
+
+Take `⟨t0, ht0, ht0ne⟩` from `(Submodule.ne_bot_iff _).1 hW`. Establish `hn0 : 0 < ‖t0‖` using `norm_pos_iff.2 ht0ne`. Use `set c : ℝ := (C0 + M + 1) / ‖t0‖`. Use `set t := c • t0`. Establish `htW : t ∈ (Submodule.span ℝ (GB X I : Set (EuclideanSpace ℂ (Fin (gB (IR I))))))ᗮ` using `Submodule.smul_mem _ _ ht0`.
+
+Establish `hnt : ‖t‖ = C0 + M + 1`. Rewrite using `[norm_smul, Real.norm_eq_abs, abs_of_nonneg (by positivity)]`. Simplify using `only [c]`. Clear the denominators using the available nonvanishing facts. Take `⟨s, hs, hts⟩` from `approx t`.
+
+Establish `hin : ⟪s, t⟫_ℝ = 0` using `Submodule.inner_right_of_mem_orthogonal (Submodule.subset_span hs) htW`. Establish `h2` using `norm_sub_sq_real t s`. Rewrite `h2` using `[real_inner_comm, hin]`. Establish `: ‖t‖ ^ 2 ≤ ‖t - s‖ ^ 2` using `by nlinarith [sq_nonneg ‖s‖]`. Establish `h3 : ‖t - s‖ < ‖t‖` using `by rw [hnt]; linarith`.
+
+Use polynomial arithmetic with `[norm_nonneg (t - s), norm_nonneg t]`.
+-/
 theorem GB_span (hP : Ext.PackingCount) :
     Submodule.span ℝ (GB X I : Set (EuclideanSpace ℂ (Fin (gB (IR I))))) = ⊤ := by
   have hK := hK_of hI
@@ -137,6 +189,21 @@ section GBsec2
 variable {X : PT E} {I : Submodule ℤ (Vsp X.dim)} {DF : ℕ} {P : Par X DF} (hI : IsSplit P I)
 include hI
 
+/- English proof (translation)
+Establish `hK` using `hK_of hI`. Use `set N : Submodule ℤ X.L := (Ip X I).comap X.L.subtype with hN`. Establish `hsat : ∀ (k : ℤ) (x : X.L), k ≠ 0 → k • x ∈ N → x ∈ N`. Introduce `k x hk hx`. Use `⟨x.2, fun a ha => ?_⟩` and prove the remaining obligations.
+
+Establish `h` using `hx.2 a ha`. Simplify using `only [Submodule.coe_subtype, Submodule.coe_smul] at h`. Rewrite `h` using `[← Int.cast_smul_eq_zsmul ℂ, Hf_smul_l, Complex.mul_im]`. Simplify using `only [Complex.intCast_re, Complex.intCast_im, zero_mul, add_zero, mul_eq_zero, Int.cast_eq_zero] at h`. Break down `h with h | h` into its components or cases.
+
+Conclude with `absurd h hk`. Conclude with `h`. Set `ψ0 : N →+ GB X I` to `{ toFun := fun x => ⟨wmap (IR I) ((x : X.L) : Vsp X.dim), wmap_mem_GB x.2⟩ map_zero' := by ext1; simp map_add' := by intro x y; ext1; simp }`. Take `⟨Ψ, hΨ⟩` from `extend_hom N hsat (φ.comp ψ0).toIntLinearMap`. Take `⟨x0, hx0L, hx0⟩` from `X.perfect Ψ.toAddMonoidHom`.
+
+Establish `hx0I : x0 ∈ Ip X I`. Use `⟨hx0L, fun a ha => ?_⟩` and prove the remaining obligations. Establish `haIp : a ∈ Ip X I` using `⟨hI.le ha, fun b hb => hI.iso a ha b hb⟩`. Establish `h1` using `hx0 ⟨a, hI.le ha⟩`. Establish `h2` using `hΨ ⟨⟨a, hI.le ha⟩, haIp⟩`.
+
+Establish `hw : wmap (IR I) a = 0`. Rewrite using `[← norm_eq_zero, norm_wmap hK, proj_two_of_mem hK (mem_IR ha), norm_zero]`. Establish `h3 : ψ0 ⟨⟨a, hI.le ha⟩, haIp⟩ = 0` using `Subtype.ext hw`. Simplify using `only [LinearMap.toAddMonoidHom_coe] at h1`. Rewrite `h1` using `[h2]`.
+
+Simplify using `only [AddMonoidHom.coe_toIntLinearMap, AddMonoidHom.coe_comp, Function.comp_apply, h3, map_zero, Int.cast_zero] at h1`. Conclude with `h1.symm`. Use `⟨x0, hx0I, fun x hx => ?_⟩` and prove the remaining obligations. Establish `h1` using `hx0 ⟨x, hx.1⟩`. Establish `h2` using `hΨ ⟨⟨x, hx.1⟩, hx⟩`.
+
+Simplify using `only [LinearMap.toAddMonoidHom_coe] at h1`. Rewrite `h1` using `[h2]`. Rewrite using `[Hf_wmap hK, herm_im_proj_two hI hx0I hx]`. Conclude with `h1`.
+-/
 theorem GB_perfect (φ : GB X I →+ ℤ) :
     ∃ x0 ∈ Ip X I, ∀ x (hx : x ∈ Ip X I),
       (φ ⟨wmap (IR I) x, wmap_mem_GB hx⟩ : ℝ) = (Hf (wmap (IR I) x0) (wmap (IR I) x)).im := by
@@ -193,6 +260,9 @@ def bB {X : PT E} {I : Submodule ℤ (Vsp X.dim)} {DF : ℕ} {P : Par X DF} (hI 
       rw [← Module.finrank_eq_card_chooseBasisIndex, ZLattice.rank ℝ, finrank_real_of_complex,
         finrank_euclideanSpace]))
 
+/- English proof (translation)
+Use `haveI := GB_discrete hI`. Use `haveI : IsZLattice ℝ (GB X I) := ⟨GB_span hI hP⟩`. Use `haveI := ZLattice.module_free ℝ (GB X I)`. Rewrite using `[lat, bB, Module.Basis.range_reindex, Module.Basis.ofZLatticeBasis_span]`.
+-/
 theorem lat_bB {X : PT E} {I : Submodule ℤ (Vsp X.dim)} {DF : ℕ} {P : Par X DF} (hI : IsSplit P I)
     (hP : Ext.PackingCount) : lat (bB hI hP) = GB X I := by
   haveI := GB_discrete hI
@@ -200,6 +270,9 @@ theorem lat_bB {X : PT E} {I : Submodule ℤ (Vsp X.dim)} {DF : ℕ} {P : Par X 
   haveI := ZLattice.module_free ℝ (GB X I)
   rw [lat, bB, Module.Basis.range_reindex, Module.Basis.ofZLatticeBasis_span]
 
+/- English proof (translation)
+Establish `e1 : (-(Real.pi * q * (k : ℝ)) * I : ℂ) = ((-(Real.pi * q * k) : ℝ) : ℂ) * I` using `by push_cast; ring`. Establish `e2 : Real.pi * q * k = ((q * k : ℤ) : ℝ) * Real.pi` using `by push_cast; ring`. Rewrite using `[e1, Complex.exp_mul_I, ← Complex.ofReal_cos, ← Complex.ofReal_sin, Real.cos_neg, Real.sin_neg, e2, Real.cos_int_mul_pi, Real.sin_int_mul_pi, neg_zero, Complex.ofReal_zero, zero_mul, add_zero, ← Complex.ofReal_pow]`. Use `congr 1`. Rewrite using `[← zpow_natCast, ← zpow_mul, mul_comm]`.
+-/
 theorem exp_sign (q : ℕ) (k : ℤ) :
     cexp (-(Real.pi * q * (k : ℝ)) * I) = (((-1 : ℝ) ^ k : ℝ) : ℂ) ^ q := by
   have e1 : (-(Real.pi * q * (k : ℝ)) * I : ℂ) = ((-(Real.pi * q * k) : ℝ) : ℂ) * I := by push_cast; ring
@@ -220,6 +293,11 @@ section GT
 variable {X : PT E} {I : Submodule ℤ (Vsp X.dim)} {DF : ℕ} {P : Par X DF} (hI : IsSplit P I)
 include hI
 
+/- English proof (translation)
+Establish `h : ∃ x' ∈ Ip X I, wmap (IR I) x' = wmap (IR I) x` using `⟨x, hx, rfl⟩`. Rewrite using `[kaB, dif_pos h]`. Establish `hs` using `h.choose_spec`. Establish `hp : p2 (IR I) h.choose = p2 (IR I) x`. Rewrite using `[← jj_wmap' (hK_of hI), ← jj_wmap' (hK_of hI) x, hs.2]`.
+
+Rewrite using `[sign_eq_of_proj_two_eq hI hs.1 hx hp]`.
+-/
 theorem kaB_wmap (q : ℕ) {x : Vsp X.dim} (hx : x ∈ Ip X I) : kaB X I q (wmap (IR I) x) = (X.eps x : ℂ) ^ q := by
   have h : ∃ x' ∈ Ip X I, wmap (IR I) x' = wmap (IR I) x := ⟨x, hx, rfl⟩
   rw [kaB, dif_pos h]
@@ -260,12 +338,25 @@ def YB (q : ℕ) : GT (Fin (gB (IR I))) where
     rw [kaB_wmap hI _ hx, norm_pow]
     rcases X.eps_pm x hx.1 with h | h <;> simp [h]
 
+/- English proof (translation)
+Use `show t ∈ lat (bB hI hP) ↔ t ∈ GB X I`. Rewrite using `[lat_bB]`.
+-/
 theorem YB_lat (q : ℕ) {t : EuclideanSpace ℂ (Fin (gB (IR I)))} : t ∈ lat (YB hI hP q).b ↔ t ∈ GB X I := by
   show t ∈ lat (bB hI hP) ↔ t ∈ GB X I
   rw [lat_bB]
 
+/- English proof (translation)
+The claim follows from `kaB_wmap hI q hx`.
+-/
 theorem YB_ka (q : ℕ) {x : Vsp X.dim} (hx : x ∈ Ip X I) : (YB hI hP q).ka (wmap (IR I) x) = (X.eps x : ℂ) ^ q := kaB_wmap hI q hx
 
+/- English proof (translation)
+Introduce `γ hγ γ' hγ'`. Rewrite `hγ`, `hγ'` using `[YB_lat]`. Take `⟨x, hx, rfl⟩` from `mem_GB.1 hγ`. Take `⟨y, hy, rfl⟩` from `mem_GB.1 hγ'`. Establish `hxy : x + y ∈ Ip X I` using `(Ip X I).add_mem hx hy`.
+
+Take `⟨k, hk⟩` from `X.integral x y hx.1 hy.1`. Rewrite using `[← map_add, YB_ka hI hP q hxy, YB_ka hI hP q hx, YB_ka hI hP q hy, Hf_wmap (hK_of hI), herm_im_proj_two hI hx hy, hk, exp_sign]`. Establish `he` using `X.eps_add x hx.1 y hy.1`. Rewrite `he` using `[hk, show Real.pi * (k : ℝ) = (k : ℝ) * Real.pi by ring, Real.cos_int_mul_pi]`. Establish `hc : (X.eps (x + y) : ℂ) = (X.eps x : ℂ) * X.eps y * (((-1 : ℝ) ^ k : ℝ) : ℂ)`.
+
+Use `congrArg (fun r : ℝ => (r : ℂ)) he` as an intermediate fact. Move the coercions through the operations in `at this ⊢`. Conclude with `this`. Rewrite using `[hc, mul_pow, mul_pow]`.
+-/
 theorem YB_coc (q : ℕ) : (YB hI hP q).Coc q := by
   intro γ hγ γ' hγ'
   rw [YB_lat] at hγ hγ'

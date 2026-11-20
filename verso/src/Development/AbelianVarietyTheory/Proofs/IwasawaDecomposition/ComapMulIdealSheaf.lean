@@ -4,6 +4,11 @@ open CategoryTheory Limits AlgebraicGeometry
 
 namespace GlobalTheory.Principalise
 
+/- English proof (translation)
+Introduce `X X' f I J`. Establish `h : ∀ y : X', ∃ (U : X.affineOpens) (A : X'.affineOpens), y ∈ A.1 ∧ A.1 ≤ f ⁻¹ᵁ U.1`. Introduce `y`. Take `⟨_, ⟨U, hU, rfl⟩, hyU, -⟩` from `X.isBasis_affineOpens.exists_subset_of_mem_open (Set.mem_univ (f y)) isOpen_univ`. Take `⟨_, ⟨A, hA, rfl⟩, hyA, hAU⟩` from `X'.isBasis_affineOpens.exists_subset_of_mem_open (show y ∈ f ⁻¹ᵁ U from hyU) (f ⁻¹ᵁ U).isOpen`.
+
+Conclude with `⟨⟨U, hU⟩, ⟨A, hA⟩, hyA, hAU⟩`. Use `choose U A hyA hAU using h`. Use `Scheme.IdealSheafData.ext_of_iSup_eq_top A ?_ fun y => ?_` and prove the remaining obligations. Conclude with `top_le_iff.1 fun y _ => TopologicalSpace.Opens.mem_iSup.2 ⟨y, hyA y⟩`. Rewrite using `[Scheme.IdealSheafData.ideal_mul, Pi.mul_apply, comapIdealAffine _ f (U y) (A y) (hAU y), comapIdealAffine _ f (U y) (A y) (hAU y), comapIdealAffine _ f (U y) (A y) (hAU y), Scheme.IdealSheafData.ideal_mul, Pi.mul_apply, Ideal.map_mul]`.
+-/
 theorem comap_mul_idealSheaf : ∀ (X X' : Scheme.{0}) (f : X' ⟶ X) (I J : X.IdealSheafData),
     (I * J).comap f = I.comap f * J.comap f := by
   intro X X' f I J

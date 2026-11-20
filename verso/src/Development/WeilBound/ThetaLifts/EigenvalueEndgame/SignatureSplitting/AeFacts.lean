@@ -15,6 +15,13 @@ open GlobalTheory.Eis.Conv (halfE)
 
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E} {d : ℕ}
 
+/- English proof (translation)
+Take `⟨Φ, j, h1, h2, h3, h4⟩` from `GlobalTheory.HeckeBridge.exists_tensor_adele_equiv F E σ h`. Use `GlobalTheory.AdelicUnitaryTop.locallyCompact_adele E` as an intermediate fact. Use `GlobalTheory.AdelicUnitaryTop.secondCountable_adele E` as an intermediate fact. Set `e : AE F E ≃ₜ AdeleRing (𝓞 E) E` to `⟨Φ.toEquiv, h1, h2⟩`. Establish `hi : ∀ x, Φ (inclR (F` using `F) (AF F) x) = algebraMap E _ x := fun x => (h4 _).trans (Prod.ext (h3 x) (by`.
+
+Express the relevant statement in the definitionally equal form `GlobalTheory.AdeleBaseChange.adMap F E 1 * algebraMap E _ x = algebraMap E _ x`. Rewrite using `[map_one, one_mul]))`. Use `⟨e.isClosedEmbedding.locallyCompactSpace, e.secondCountableTopology, cusp_of Φ h1 h2 hi ?_ ?_, lat_of Φ h1 h2 hi⟩` and prove the remaining obligations. Rewrite using `[inv_inv, h4]`. Express the relevant statement in the definitionally equal form `(2 : InfiniteAdeleRing E) * j (algebraMap F (Ainf F ⊗[F] E) 2⁻¹) = 1`.
+
+Rewrite using `[← map_ofNat j, ← map_mul, ← map_ofNat (algebraMap F (Ainf F ⊗[F] E)), ← map_mul, mul_inv_cancel₀ two_ne_zero, map_one, map_one]`. Rewrite using `[inv_inv, h4]`. Conclude with `map_one (finAdEquiv F E)`.
+-/
 theorem ae_facts (h : IsCMExt F E σ) : LocallyCompactSpace (AE F E) ∧ SecondCountableTopology (AE F E) ∧
     Cusp (Matrix.SpecialLinearGroup.map (n := Fin 2) (inclR (F := F) (E := E) (AF F))).range uni (dia (halfE F E)⁻¹) ∧
     Lat ((inclR (F := F) (E := E) (AF F)).toAddMonoidHom.toMultiplicative).range := by
@@ -32,6 +39,9 @@ theorem ae_facts (h : IsCMExt F E σ) : LocallyCompactSpace (AE F E) ∧ SecondC
   · rw [inv_inv, h4]
     exact map_one (finAdEquiv F E)
 
+/- English proof (translation)
+The claim follows from `haveI : LocallyCompactSpace (Matrix (Fin 2) (Fin 2) R) := inferInstanceAs (LocallyCompactSpace (Fin 2 → Fin 2 → R)) haveI : SecondCountableTopology (Matrix (Fin 2) (Fin 2) R) := inferInstanceAs (SecondCountableTopology (Fin 2 → Fin 2 → R)) ⟨closedEmb.locallyCompactSpace, closedEm …`.
+-/
 theorem sl_facts {R : Type} [CommRing R] [TopologicalSpace R] [IsTopologicalRing R] [T2Space R] [LocallyCompactSpace R]
     [SecondCountableTopology R] : LocallyCompactSpace SL(2, R) ∧ SecondCountableTopology SL(2, R) ∧ T2Space SL(2, R) :=
   haveI : LocallyCompactSpace (Matrix (Fin 2) (Fin 2) R) := inferInstanceAs (LocallyCompactSpace (Fin 2 → Fin 2 → R))
@@ -40,13 +50,26 @@ theorem sl_facts {R : Type} [CommRing R] [TopologicalSpace R] [IsTopologicalRing
 
 variable {J : Matrix (Fin d) (Fin d) E}
 
+/- English proof (translation)
+Conclude with `heightGL_mul_le F g.1 h.1` after adjusting the coercions.
+-/
 theorem ht_mul (g h : UA σ J) : (ht (g * h) : ℝ) ≤ ht g * ht h := by exact_mod_cast heightGL_mul_le F g.1 h.1
 
+/- English proof (translation)
+The claim follows from `NNReal.continuous_coe.comp ((GlobalTheory.Grow.continuous_heightGL F).comp continuous_subtype_val)`.
+-/
 theorem ht_cont : Continuous fun g : UA σ J => (ht g : ℝ) :=
   NNReal.continuous_coe.comp ((GlobalTheory.Grow.continuous_heightGL F).comp continuous_subtype_val)
 
 def Mod (f : UA σ J → ℂ) : Prop := ∃ (C : ℝ) (k : ℕ), ∀ x, ‖f x‖ ≤ C * (ht x : ℝ) ^ k
 
+/- English proof (translation)
+Take `⟨C, k, hf⟩` from `hf`. Take `⟨n, hn⟩` from `pow_unbounded_of_one_lt (ht (m a) : ℝ) one_lt_two`. Use `⟨n * k, fun Ω hΩ => ?_⟩` and prove the remaining obligations. Take `⟨M, hM⟩` from `hΩ.exists_bound_of_continuousOn (f := fun κ => (ht (m κ * x) : ℝ)) (ht_cont.comp (hm.mul continuous_const)).continuousOn`. Use `⟨max C 0 * M ^ k, fun i κ hκ => (hf _).trans ?_⟩` and prove the remaining obligations.
+
+Establish `e : (ht (m (a ^ i * κ) * x) : ℝ) ≤ M * (2 ^ i) ^ n`. Proceed by induction on `i with`. Consider the case `zero => simpa using hM κ hκ`. Consider the case `succ i ih`. Rewrite using `[pow_succ' a, mul_assoc, map_mul, mul_assoc, pow_succ' 2, mul_pow, mul_left_comm]`.
+
+Conclude with `(ht_mul _ _).trans (mul_le_mul hn.le ih (by positivity) (by positivity))`. Rewrite using `[pow_mul, mul_assoc, ← mul_pow]`. Conclude with `mul_le_mul (le_max_left _ _) (pow_le_pow_left₀ (by positivity) e _) (by positivity) (le_max_right _ _)`.
+-/
 theorem Mod.gr {G : Type} [Group G] [TopologicalSpace G] {f : UA σ J → ℂ} (hf : Mod f) {m : G →* UA σ J} (hm : Continuous m)
     (a : G) (x : UA σ J) : ∃ k, Gr a k fun g => f (m g * x) := by
   obtain ⟨C, k, hf⟩ := hf
@@ -64,6 +87,13 @@ theorem Mod.gr {G : Type} [Group G] [TopologicalSpace G] {f : UA σ J → ℂ} (
   rw [pow_mul, mul_assoc, ← mul_pow]
   exact mul_le_mul (le_max_left _ _) (pow_le_pow_left₀ (by positivity) e _) (by positivity) (le_max_right _ _)
 
+/- English proof (translation)
+Take `⟨C, k, hf⟩` from `hf`. Take `⟨K, hK, hc⟩` from `hN.cov`. Take `⟨μ, 𝓕, h1, h2, h3⟩` from `hN.ex`. Take `⟨M, hM⟩` from `hK.exists_bound_of_continuousOn (f := fun u => (ht u.1 : ℝ)) (ht_cont.comp continuous_subtype_val).continuousOn`. Use `⟨max C 0 * M ^ k, k, fun x => ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[h μ 𝓕 h1 h2 h3]`. Use `(norm_setIntegral_le_of_norm_le_const (by simp [h3]) fun u _ => ?_).trans_eq (by rw [Measure.real, h3, ENNReal.toReal_one, mul_one])` and prove the remaining obligations. Take `⟨γ, a, b⟩` from `hc u`. Rewrite using `[← hi _ a, ← mul_assoc, mul_assoc (max C 0), ← mul_pow]`. Use `(hf _).trans (mul_le_mul (le_max_left _ _) (pow_le_pow_left₀ (by positivity) ((ht_mul _ _).trans (mul_le_mul_of_nonneg_right ?_ (by positivity))) _) (by positivity) (le_max_right _ _))` and prove the remaining obligations.
+
+Simplify using `using hM _ b`.
+-/
 theorem Mod.av {N : Subgroup (UA σ J)} (hN : UnipGood N) {f c : UA σ J → ℂ} (hf : Mod f) (hi : ∀ γ ∈ ratU σ J, ∀ x, f (γ * x) = f x)
     (h : IsAv ((ratU σ J).subgroupOf N) Subtype.val f c) : Mod c := by
   obtain ⟨C, k, hf⟩ := hf

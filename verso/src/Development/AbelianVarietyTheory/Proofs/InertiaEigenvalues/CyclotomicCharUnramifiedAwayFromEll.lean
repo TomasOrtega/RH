@@ -5,6 +5,13 @@ open Formalism Formalism.MainNotions Formalism.BasicNotions Formalism.BasicNotio
 
 namespace GlobalTheory.CycUnram
 
+/- English proof (translation)
+Introduce `D i v hv γ hγ`. Establish `hl : ((D.nd.l i : ℕ) : 𝓞 D.host.E) ∉ v.asIdeal` using `by simpa [placesOver] using hv`. Establish `h1 : cycZ D.host.E D.nd.Om (D.nd.l i) γ = 1`. Use `Units.ext (PadicInt.ext_of_toZModPow.mp fun n => ?_)` and prove the remaining obligations. Rewrite using `[cycZ_toZModPow_eq hl (D.nd.plOm.2 v) (q := 1) (fun x hx => by simpa using hγ.2 x hx) n]`.
+
+Simplify using the standard rewrite rules. Establish `h2 : epsU D.nd i γ = 1`. Unfold `epsU Glob.epsO`. Rewrite using `[MonoidHom.comp_apply, h1, map_one]`. Use `⟨h2, fun c hc1 hc2 => ?_⟩` and prove the remaining obligations.
+
+Express the relevant statement in the definitionally equal form `D.nd.chi i c γ = D.nd.chi i 1 γ`. Rewrite using `[D.nd.chi_def i c hc1 hc2, MonoidHom.mul_apply, MonoidHom.zpow_apply, MonoidHom.comp_apply, h1, map_one, one_zpow, mul_one]`.
+-/
 theorem main : ∀ (D : D7) (i : D.nd.Loc) (v : HeightOneSpectrum (𝓞 D.host.E)), v ∉ placesOver D.host.E (D.nd.l i) → ∀ γ ∈ Ine (F := D.host.E) (D.nd.plOm.1 v), epsU D.nd i γ = 1 ∧ ∀ c, 1 ≤ c → c ≤ D.R.t → chiU D.nd i c γ = chiU D.nd i 1 γ := by
   intro D i v hv γ hγ
   have hl : ((D.nd.l i : ℕ) : 𝓞 D.host.E) ∉ v.asIdeal := by simpa [placesOver] using hv

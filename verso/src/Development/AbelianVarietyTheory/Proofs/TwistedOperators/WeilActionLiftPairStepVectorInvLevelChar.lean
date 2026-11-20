@@ -15,6 +15,11 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 namespace GlobalTheory.VecInv
 
+/- English proof (translation)
+Rewrite using `[Finset.prod_congr rfl fun i hi => congrArg (·⁻¹) (h i hi)]`. Simplify using `only [Finset.prod_mul_distrib, Finset.prod_inv_distrib]`. Generalize the expression as in `(∏ i ∈ Pg, a i) = A, (∏ i ∈ Pg, d i) = B, (∏ i ∈ Q, xa i) = C, (∏ i ∈ Q, xb i) = E, (∏ i ∈ Q, xd i) = F`. Apply `Units.ext` to reduce the goal to its premises. Use `push_cast`.
+
+Clear the denominators using the available nonvanishing facts.
+-/
 theorem char_identity {ι : Type} (Pg Q : Finset ι) (a a' d xa xb xd : ι → ℂˣ) (h : ∀ i ∈ Pg, a' i = a i) :
     ((∏ i ∈ Pg, (a i * d i)⁻¹) * ∏ i ∈ Q, xa i * xd i)⁻¹ * ((∏ i ∈ Pg, (a' i)⁻¹) * ∏ i ∈ Q, xb i) =
       (∏ i ∈ Q, (xa i)⁻¹ * xb i) * (1 * (∏ i ∈ Pg, (d i)⁻¹) * ∏ i ∈ Q, xd i)⁻¹ := by
@@ -25,6 +30,9 @@ theorem char_identity {ι : Type} (Pg Q : Finset ι) (a a' d xa xb xd : ι → �
   push_cast
   field_simp
 
+/- English proof (translation)
+Rewrite `h` using `[hc, ← Units.val_inv_eq_inv_val, ← Units.val_mul, e, ← Units.coe_prod, Units.val_mul, mul_smul]`. Rewrite using `[← Units.val_inv_eq_inv_val]`. Conclude with `smul_right_injective _ (Units.ne_zero _) h`.
+-/
 theorem smul_cancel {X : Type} {u v : X → ℂ} {ι : Type} {Q : Finset ι} {x : ι → ℂˣ} {m m' l : ℂˣ} {c : ℂ}
     (h : (∏ i ∈ Q, ((x i : ℂˣ) : ℂ)) • u = c • v) (hc : c = (m : ℂ)⁻¹ * m') (e : m⁻¹ * m' = (∏ i ∈ Q, x i) * l⁻¹) :
     u = (l : ℂ)⁻¹ • v := by
@@ -34,6 +42,11 @@ theorem smul_cancel {X : Type} {u v : X → ℂ} {ι : Type} {Q : Finset ι} {x 
 
 variable {D : D7}
 
+/- English proof (translation)
+Take `⟨hvac, e, he, hth⟩` from `hv`. Establish `hee` using `GlobalTheory.PlaceVec.idemSum_mul_self he`. Establish `hinf` using `GlobalTheory.PlaceVec.idemSum_infPart he`. Use `⟨_, e, hee, fun PP => @Finset.mem_union _ (_) _ _ PP, he, fun u1 u2 r hS hT hr g h sS sT tri same => ?_⟩` and prove the remaining obligations. Establish `h0` using `GlobalTheory.T.weil_latticeVacuum_stabilizer_splitting_characters D ψ S T ΛS ΛT χS χT om hW sdS sdT hη βS βT frS frT _ e hee he u1 u2 g h sS sT f₀ hvac.2.theta hvac.2.lat`.
+
+Conclude with `GlobalTheory.T.weilAction_schrodingerModel_finiteIdempotent D ψ S T ΛS ΛT χS χT om hW sdS sdT (cA D e) (by rw [← RingHom.map_mul, hee]) (GlobalTheory.PlaceVec.infPart_cA hinf) g h (mem_latO_iff frS frT sS.2 sT.2) f₀ (adjDatum S T βS βT Pg Q ξ (cA D e)) f _ _ hvac.2.theta hth (Cir …`.
+-/
 theorem om_vec {ψ : AddChar (AF D.host.F) ℂ} {θ : InfFam D} {S T : HSp D}
     {sS : D.what₂.Tau → Matrix (Fin S.rank) (Fin S.rank) ℂ} {sT : D.what₂.Tau → Matrix (Fin T.rank) (Fin T.rank) ℂ}
     {ΛS : Submodule (𝓞 D.host.E) (Fin S.rank → D.host.E)} {ΛT : Submodule (𝓞 D.host.E) (Fin T.rank → D.host.E)}
@@ -63,6 +76,11 @@ theorem om_vec {ψ : AddChar (AF D.host.F) ℂ} {θ : InfFam D} {S T : HSp D}
 
 variable {T0 : Type} {L : LevCh D T0} {μ0 : T0}
 
+/- English proof (translation)
+Establish `rV : (Vc D i).rank = D.R.r + D.R.t` using `D.sp.V_rank _ (Nat.le_add_left _ _) i.2`. Use `congrArg Units.val (congrArg₂ (· * ·) (congrArg₂ (· * ·) ?_ ?_) rfl)` and prove the remaining obligations. Conclude with `extendOne_of_mem _ (Subgroup.mem_top _)`. Use `Finset.prod_congr rfl fun PP h => ?_` and prove the remaining obligations. Rewrite using `[← (GlobalTheory.T.det_twoDiagBlocks_properties _ _ _ D.R.t (r_le_V i) _).2.1 rV (tg PP h)]`.
+
+Conclude with `Finset.prod_range_one _`.
+-/
 theorem levChi_flag_V (i : Fin D.R.m) (t : T0) {κ : GA D (Vc D i)}
     (tg : ∀ PP ∈ L.Pg, redFn (L.βV i) PP (finE (Vc D i) κ) ∈ blockTri (blkOf D.R.r D.R.t)) :
     levChi _ (L.βV i) (flagL (L.datVt i t)) κ =
@@ -75,6 +93,19 @@ theorem levChi_flag_V (i : Fin D.R.m) (t : T0) {κ : GA D (Vc D i)}
     rw [← (GlobalTheory.T.det_twoDiagBlocks_properties _ _ _ D.R.t (r_le_V i) _).2.1 rV (tg PP h)]
     exact Finset.prod_range_one _
 
+/- English proof (translation)
+Establish `rV : (Vc D i).rank = D.R.r + D.R.t` using `D.sp.V_rank _ (Nat.le_add_left _ _) i.2`. Establish `rW : (Wc D i).rank = D.R.r` using `D.sp.W_rank _ (Nat.le_add_left _ _) i.2`. Establish `hη : IsEtaTilde D L.eta` using `GlobalTheory.T.isUnramifiedEtaTilde_of_odd_exponentSum D _ _ hL.eta L.C.isEta _ _ _ hW.resS hW.resT (by`. Rewrite using `[rV, rW]`. Take `⟨c, hc⟩` from `D.R.t_odd`.
+
+Conclude with `⟨D.R.r + c, by omega⟩)`. Take `⟨P, e, hee, hP, he, hom⟩` from `om_vec hW ⟨_, hη⟩ (GlobalTheory.T.isSelfDualCoordLattice_of_selfDualFrame D _ _ _ _ (hL.βV i)) (GlobalTheory.T.isSelfDualCoordLattice_of_selfDualFrame D _ _ _ _ (hL.βW i)) (hL.βV i).choose_spec.1 (hL.βW i).choose_spec.1 hv`. Take `⟨u1, u2⟩` from `unrOff_mu hL t i hP he`. Establish `sV : finE (Vc D i) κ ∈ St (L.βV i)` using `parLev_St hκ.2.1`. Establish `sW : finE (Wc D i) κ' ∈ St (L.βW i)` using `parLev_St hκ'.2.1`.
+
+Establish `tg : ∀ PP ∈ L.Pg, redFn (L.βV i) PP (finE (Vc D i) κ) ∈ blockTri (blkOf D.R.r D.R.t)` using `fun PP h => parLev_g hκ.2.1 h`. Establish `tri : ∀ PP, PP ∈ L.Pg ∨ PP ∈ L.Q t → redFn (L.βV i) PP (finE (Vc D i) κ) ∈ blockTri (blk2 D.R.r)` using `fun PP h => h.elim (fun h => blockTri_blkOf_le _ _ (tg PP h)) fun h => parLev_q hκ.2.1 h`. Establish `same : ∀ PP ∈ L.Pg, upperLeftBlock (r_le_V i) (redFn (L.βV i) PP (finE (Vc D i) κ)) = upperLeftBlock (r_le_rank_Wc i) (redFn (L.βW i) PP (finE (Wc D i) κ'))` using `fun PP h => (congrFun hκ.2.2 ⟨PP, h⟩).trans (congrFun hκ'.2.2 ⟨PP, h⟩).symm`. Establish `h1` using `hom u1 (u1.mul u2.inv) _ (r_le_V i) (r_le_rank_Wc i) rW κ κ' ⟨hκ.1, sV⟩ ⟨hκ'.1, sW⟩ tri same`. Take `⟨aV, haV, hrV⟩` from `exists_det_int sV`.
+
+Take `⟨aW, haW, hrW⟩` from `exists_det_int sW`. Take `⟨mV, nV⟩` from `mu_val hL t i hP he (detAt e hee _ κ) _ aV _ (isDetAt_detAt e hee _ κ) haV fun PP _ => hrV PP`. Take `⟨mW, -⟩` from `mu_val hL t i hP he (detAt e hee _ κ') _ aW _ (isDetAt_detAt e hee _ κ') haW fun PP _ => hrW PP`. Rewrite using `[levChi_flag_V i t tg]`. Use `smul_cancel h1 (by` and prove the remaining obligations.
+
+Rewrite using `[splitFacO, MonoidHom.mul_apply, MonoidHom.inv_apply, nV, inv_one, mul_one, Circle.coe_mul, Circle.coe_inv, mV, mW]) ?_`. Use `Eq.trans ?_ (char_identity L.Pg (L.Q t) (fun PP => L.chi ((i : ℕ) + 1) PP (Matrix.GeneralLinearGroup.det (upperLeftBlock (r_le_V i) (redFn (L.βV i) PP (finE (Vc D i) κ))))) (fun PP => L.chi ((i : ℕ) + 1) PP (Matrix.GeneralLinearGroup.det (redFn (L.βW i) PP (finE (Wc D i) κ')))) _ …` and prove the remaining obligations. Use `congrArg₂ (· * ·) (congrArg (·⁻¹) (congrArg₂ (· * ·) ?_ ?_)) rfl` and prove the remaining obligations. Conclude with `Finset.prod_congr rfl fun PP h => by`. Rewrite using `[(GlobalTheory.T.det_twoDiagBlocks_properties _ _ _ 0 (r_le_V i) _).1 (tri PP (Or.inl h)), map_mul]`.
+
+Conclude with `Finset.prod_congr rfl fun PP h => by`. Rewrite using `[(GlobalTheory.T.det_twoDiagBlocks_properties _ _ _ 0 (r_le_V i) _).1 (tri PP (Or.inr h)), map_mul]`.
+-/
 theorem om_lifts (hL : L.Is μ0) (i : Fin D.R.m) (t : T0) {ψ : AddChar (AF D.host.F) ℂ} {θ : InfFam D}
     {sS : D.what₂.Tau → Matrix (Fin (Vc D i).rank) (Fin (Vc D i).rank) ℂ}
     {sT : D.what₂.Tau → Matrix (Fin (Wc D i).rank) (Fin (Wc D i).rank) ℂ} {f₀ f : WO (Vc D i) (Wc D i) → ℂ}
@@ -122,6 +153,9 @@ theorem om_lifts (hL : L.Is μ0) (i : Fin D.R.m) (t : T0) {ψ : AddChar (AF D.ho
   · exact Finset.prod_congr rfl fun PP h => by
       rw [(GlobalTheory.T.det_twoDiagBlocks_properties _ _ _ 0 (r_le_V i) _).1 (tri PP (Or.inr h)), map_mul]
 
+/- English proof (translation)
+Introduce `_ hL _ hω hv i t _ _ _ hκ hκ'` and use `om_lifts hL i t (hω i t) (hv i t) hκ hκ'`.
+-/
 theorem omega_lifts_vP : ∀ {D : D7} {G : Type} [Group G] [Fintype G] {Pl0 T0 : Type} {A : FamIn D.what₂.LL G Pl0 T0 D.R.m} {Ks : Type} [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] (R : RealDat D A Ks), R.toLevCh.Is A.μ0 → R.models_inf → R.thP_ωP → R.thP_vP → ∀ i t (g0 : G0 R.Pg D.R.r) κ κ', IsLevelLift (Vc D i) (R.βV i) (R.datVt i t) g0 κ → IsLevelLift (Wc D i) (R.βW i) (R.datWp i R.triv) g0 κ' → R.ωP i t (κ, κ') (R.vP i t) = (levChi _ (R.βV i) (flagL (R.datVt i t)) κ)⁻¹ • R.vP i t :=
   fun _ hL _ hω hv i t _ _ _ hκ hκ' => om_lifts hL i t (hω i t) (hv i t) hκ hκ'
 

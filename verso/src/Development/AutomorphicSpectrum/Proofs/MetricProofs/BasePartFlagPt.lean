@@ -21,12 +21,20 @@ def flagPt (M : FlagModel y Ψ N j) (F : FrameData ι Ψ N M.Ω M.blk) (b : (Σ 
   if hk : ∀ p, M.blk p ≠ some q.1 then b ⟨⟨q.1, hk⟩, q.2⟩ else
     ∑ I, valAt M.x (F.u q I) b * minorIJ (h (not_forall.1 hk).choose.1) I (stepCols N j (not_forall.1 hk).choose.2)
 
+/- English proof (translation)
+Use function extensionality and compare the values at `q`. Take `⟨⟨k, hk⟩, m⟩` from `q`. Conclude with `dif_pos hk`.
+-/
 theorem basePart_flagPt (M : FlagModel y Ψ N j) (F : FrameData ι Ψ N M.Ω M.blk) (b : (Σ k, baseIdx ι M.blk k) → ℂ)
     (h : Ψ → Matrix (Fin N) (Fin N) ℂ) : basePart M.blk (flagPt M F b h) = b := by
   funext q
   obtain ⟨⟨k, hk⟩, m⟩ := q
   exact dif_pos hk
 
+/- English proof (translation)
+Establish `hk : ¬ ∀ p', M.blk p' ≠ some k` using `fun h' => h' p hp`. Simplify using `only [flagPt]`. Rewrite using `[dif_neg hk]`. Establish `key : ∀ p' : Ψ × Fin N, M.blk p' = some k → (∑ I, valAt M.x (F.u ⟨k, m⟩ I) b * minorIJ (h p'.1) I (stepCols N j p'.2)) = ∑ I, valAt M.x (F.u ⟨k, m⟩ I) b * minorIJ (h p.1) I (stepCols N j p.2)`. Introduce `p' hp'`.
+
+Rewrite using `[M.blk_inj _ _ k hp' hp]`. Conclude with `key (not_forall.1 hk).choose (not_not.1 (not_forall.1 hk).choose_spec)`.
+-/
 theorem flagPt_step (M : FlagModel y Ψ N j) (F : FrameData ι Ψ N M.Ω M.blk) (b : (Σ k, baseIdx ι M.blk k) → ℂ)
     (h : Ψ → Matrix (Fin N) (Fin N) ℂ) {p : Ψ × Fin N} {k : K} (hp : M.blk p = some k) (m : ι k) :
     flagPt M F b h ⟨k, m⟩ = ∑ I, valAt M.x (F.u ⟨k, m⟩ I) b * minorIJ (h p.1) I (stepCols N j p.2) := by
@@ -40,6 +48,9 @@ theorem flagPt_step (M : FlagModel y Ψ N j) (F : FrameData ι Ψ N M.Ω M.blk) 
     rw [M.blk_inj _ _ k hp' hp]
   exact key (not_forall.1 hk).choose (not_not.1 (not_forall.1 hk).choose_spec)
 
+/- English proof (translation)
+Use `⟨fun k => by rw [basePart_flagPt]; exact hb k, fun k hp m => ?_⟩` and prove the remaining obligations. Rewrite using `[basePart_flagPt]`. Conclude with `flagPt_step M F b h hp m`.
+-/
 theorem exactAt_flagPt (M : FlagModel y Ψ N j) (F : FrameData ι Ψ N M.Ω M.blk) {b : (Σ k, baseIdx ι M.blk k) → ℂ}
     (hb : ∀ k, b ⟨k, F.c k⟩ = 1) (h : Ψ → Matrix (Fin N) (Fin N) ℂ) (p : Ψ × Fin N) :
     M.ExactAt F p (flagPt M F b h) (h p.1) := by

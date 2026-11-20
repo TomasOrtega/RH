@@ -9,6 +9,11 @@ attribute [local instance] Over.cartesianMonoidalCategory
 
 namespace GlobalTheory.CDimAlg
 
+/- English proof (translation)
+Use `set W₀ := Algebra.EssFiniteType.subalgebra F W`. Use `haveI : FaithfulSMul W₀ W := (faithfulSMul_iff_algebraMap_injective _ _).2 Subtype.val_injective`. Use `haveI : Algebra.IsAlgebraic W₀ W := IsLocalization.isAlgebraic W (Algebra.EssFiniteType.submonoid F W)`. Establish `h` using `trdeg_add_eq F W₀ (A := W)`. Rewrite `h` using `[trdeg_eq_zero (R := W₀) (A := W), add_zero]`.
+
+Rewrite using `[← h]`. Conclude with `trdeg_lt_aleph0_of_finiteType`.
+-/
 theorem trdeg_lt_aleph0_of_essFiniteType (F W : Type) [Field F] [CommRing W] [IsDomain W] [Algebra F W]
     [Algebra.EssFiniteType F W] : Algebra.trdeg F W < Cardinal.aleph0 := by
   set W₀ := Algebra.EssFiniteType.subalgebra F W
@@ -19,6 +24,13 @@ theorem trdeg_lt_aleph0_of_essFiniteType (F W : Type) [Field F] [CommRing W] [Is
   rw [← h]
   exact trdeg_lt_aleph0_of_finiteType
 
+/- English proof (translation)
+Proceed by induction on `d using WithBot.recBotCoe with`. Consider the case `bot => simp at h`. Consider the case `coe e`. Proceed by induction on `e using ENat.recTopCoe with`. Consider the case `top`.
+
+It suffices to derive a contradiction. Establish `h' : ((⊤ + n : ℕ∞) : WithBot ℕ∞) = ((m : ℕ∞) : WithBot ℕ∞)` using `by exact_mod_cast h`. Rewrite `h'` using `[WithBot.coe_inj, top_add]`. Conclude with `ENat.top_ne_natCast m h'`. Consider the case `coe k`.
+
+Use `⟨k, rfl, ?_⟩` and prove the remaining obligations. Conclude with `h` after adjusting the coercions.
+-/
 theorem exists_nat_of_add_eq {d : WithBot ℕ∞} {n m : ℕ} (h : d + n = m) : ∃ k : ℕ, d = k ∧ k + n = m := by
   induction d using WithBot.recBotCoe with
   | bot => simp at h
@@ -37,6 +49,47 @@ end GlobalTheory.CDimAlg
 
 namespace GlobalTheory.CDimAlg
 
+/- English proof (translation)
+Introduce `F W R _ _ _ _ _ _ b hb I _ ψ hψ hloc bR hbR`. Take `⟨hRn, -, hfl, hmap, hres⟩` from `hψ`. Use `letI : Algebra F W := b.toAlgebra`. Use `haveI : Algebra.EssFiniteType F W := hb`. Use `haveI : IsNoetherianRing W := Algebra.EssFiniteType.isNoetherianRing F W`.
+
+Use `set q : Ideal (MvPolynomial I W) := (maximalIdeal R).comap ψ with hq`. Use `haveI : q.IsPrime := Ideal.comap_isPrime ψ _`. Establish `hmemq : ∀ x, x ∈ q ↔ ¬ IsUnit (ψ x)` using `fun x => by`. Rewrite using `[hq, Ideal.mem_comap, mem_maximalIdeal, mem_nonunits_iff]`. Establish `hu : ∀ s : q.primeCompl, IsUnit (ψ s)` using `fun s => by`.
+
+Establish `h` using `s.2`. Rewrite `h` using `[Ideal.mem_primeCompl_iff, hmemq, not_not]`. Conclude with `h`. Set `ψA : Localization.AtPrime q →+* R` to `IsLocalization.lift hu`. Establish `hψA' : ∀ x, ψA (algebraMap _ (Localization.AtPrime q) x) = ψ x` using `fun x => IsLocalization.lift_eq hu x`.
+
+Establish `hψA : ψA.comp (algebraMap _ (Localization.AtPrime q)) = ψ` using `RingHom.ext hψA'`. Use `haveI hlocA : IsLocalHom ψA := by`. Use `⟨fun x hx => ?_⟩` and prove the remaining obligations. Take `⟨⟨p, s⟩, rfl⟩` from `IsLocalization.mk'_surjective q.primeCompl x`. Establish `e1` using `IsLocalization.mk'_spec (Localization.AtPrime q) p s`.
+
+Establish `hp : IsUnit (ψ p)`. Rewrite using `[← hψA', ← e1, map_mul, hψA']`. Conclude with `hx.mul (hu s)`. Establish `hpq : p ∈ q.primeCompl`. Rewrite using `[Ideal.mem_primeCompl_iff, hmemq, not_not]`.
+
+Conclude with `hp`. Establish `h2 : IsUnit (algebraMap _ (Localization.AtPrime q) p)` using `IsLocalization.map_units _ ⟨p, hpq⟩`. Rewrite `h2` using `[← e1]`. Conclude with `isUnit_of_mul_isUnit_left h2`. Use `letI : Algebra (MvPolynomial I W) R := ψ.toAlgebra`.
+
+Use `letI : Algebra (Localization.AtPrime q) R := ψA.toAlgebra`. Use `haveI : IsScalarTower (MvPolynomial I W) (Localization.AtPrime q) R := IsScalarTower.of_algebraMap_eq (fun x => (hψA' x).symm)`. Use `haveI : Module.Flat (MvPolynomial I W) R := hfl`. Use `haveI : Module.Flat (Localization.AtPrime q) R := (Module.flat_iff_of_isLocalization (Localization.AtPrime q) q.primeCompl R).2 inferInstance`. Use `haveI : IsNoetherianRing (Localization.AtPrime q) := IsLocalization.isNoetherianRing q.primeCompl _ inferInstance`.
+
+Use `haveI : IsNoetherianRing R := hRn`. Use `haveI : IsLocalHom (algebraMap (Localization.AtPrime q) R) := hlocA`. Establish `hmA : (maximalIdeal (Localization.AtPrime q)).map (algebraMap (Localization.AtPrime q) R) = maximalIdeal R`. Rewrite using `[← Localization.AtPrime.map_eq_maximalIdeal, Ideal.map_map]`. Express the relevant statement in the definitionally equal form `q.map (ψA.comp (algebraMap _ (Localization.AtPrime q))) = _`.
+
+Rewrite using `[hψA]`. Conclude with `hmap`. Establish `hdim : ringKrullDim (Localization.AtPrime q) = ringKrullDim R` using `GlobalTheory.RegSmooth.ringKrullDim_eq_of_flat_of_map_maximalIdeal hmA`. Set `κ : ResidueField (Localization.AtPrime q) →+* ResidueField R` to `ResidueField.map ψA`. Establish `hκs : Function.Surjective κ`.
+
+Introduce `y`. Take `⟨r, rfl⟩` from `residue_surjective y`. Take `⟨a, c, hc, hr⟩` from `hres r`. Establish `hcq : c ∈ q.primeCompl` using `by rw [Ideal.mem_primeCompl_iff, hmemq, not_not]; exact hc`. Use `⟨residue _ (IsLocalization.mk' (Localization.AtPrime q) a ⟨c, hcq⟩), ?_⟩` and prove the remaining obligations.
+
+Establish `e1 : ψA (IsLocalization.mk' (Localization.AtPrime q) a ⟨c, hcq⟩) * ψ c = ψ a`. Rewrite using `[← hψA' c, ← map_mul, IsLocalization.mk'_spec, hψA']`. Establish `e2 : residue R (r * ψ c) = residue R (ψ a)` using `Ideal.Quotient.eq.2 hr`. Establish `hne : residue R (ψ c) ≠ 0` using `(residue_ne_zero_iff_isUnit _).2 hc`. Express the relevant statement in the definitionally equal form `residue R (ψA _) = residue R r`.
+
+Use `mul_right_cancel₀ hne ?_` and prove the remaining obligations. Rewrite using `[← map_mul, e1, ← e2, map_mul]`. Set `e : ResidueField (Localization.AtPrime q) ≃+* ResidueField R` to `RingEquiv.ofBijective κ ⟨κ.injective, hκs⟩`. Establish `hcomp : ∀ x : F, e (residue _ (algebraMap F (Localization.AtPrime q) x)) = residue R (bR x)`. Introduce `x`.
+
+Express the relevant statement in the definitionally equal form `residue R (ψA _) = _`. Rewrite using `[IsScalarTower.algebraMap_apply F (MvPolynomial I W) (Localization.AtPrime q), hψA', ← hbR]`. Both sides reduce to the same expression. Use `haveI : Algebra.EssFiniteType F (MvPolynomial I W) := Algebra.EssFiniteType.comp F W _`. Use `haveI : Algebra.EssFiniteType (MvPolynomial I W) (Localization.AtPrime q) := Algebra.EssFiniteType.of_isLocalization _ q.primeCompl`.
+
+Use `haveI hAft : Algebra.EssFiniteType F (Localization.AtPrime q) := Algebra.EssFiniteType.comp F (MvPolynomial I W) _`. Establish `hresA : ((residue (Localization.AtPrime q)).comp (algebraMap F (Localization.AtPrime q))).EssFiniteType` using `RingHom.EssFiniteType.comp (RingHom.essFiniteType_algebraMap.2 hAft) (RingHom.FiniteType.of_surjective _ residue_surjective).essFiniteType`. Establish `hRe : (residue R).comp bR = e.toRingHom.comp ((residue (Localization.AtPrime q)).comp (algebraMap F (Localization.AtPrime q)))` using `RingHom.ext fun x => (hcomp x).symm`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Rewrite using `[hRe]`.
+
+Conclude with `RingHom.EssFiniteType.comp hresA (RingHom.FiniteType.of_surjective _ e.surjective).essFiniteType`. Introduce `a t ha ht`. Take `⟨mW, hmW⟩ : ∃ m : ℕ, Algebra.trdeg F W = m` from `Cardinal.lt_aleph0.1 (trdeg_lt_aleph0_of_essFiniteType F W)`. Establish `hW : ringKrullDim W + t = mW`. Use `letI : Algebra F (ResidueField W) := ((residue W).comp b).toAlgebra`.
+
+Use `haveI : IsScalarTower F W (ResidueField W) := IsScalarTower.of_algebraMap_eq' rfl`. Conclude with `GlobalTheory.LocModelDim.ringKrullDim_add_trdeg (k := F) (R := W) (Ω := ResidueField W) residue_surjective ht hmW`. Use `haveI : FaithfulSMul F W := (faithfulSMul_iff_algebraMap_injective _ _).2 b.injective`. Use `haveI : FaithfulSMul W (MvPolynomial I W) := (faithfulSMul_iff_algebraMap_injective _ _).2 (MvPolynomial.C_injective I W)`. Establish `hP : Algebra.trdeg F (MvPolynomial I W) = ((mW + Fintype.card I : ℕ) : Cardinal)`.
+
+Rewrite using `[← trdeg_add_eq F W (A := MvPolynomial I W), MvPolynomial.trdeg_of_isDomain, hmW, Cardinal.lift_id, Cardinal.mk_fintype]`. Use `push_cast`. Both sides reduce to the same expression. Use `haveI : FaithfulSMul (MvPolynomial I W) (Localization.AtPrime q) := (faithfulSMul_iff_algebraMap_injective _ _).2 (IsLocalization.injective _ q.primeCompl_le_nonZeroDivisors)`. Use `haveI : Algebra.IsAlgebraic (MvPolynomial I W) (Localization.AtPrime q) := IsLocalization.isAlgebraic _ q.primeCompl`.
+
+Establish `hA : Algebra.trdeg F (Localization.AtPrime q) = ((mW + Fintype.card I : ℕ) : Cardinal)`. Rewrite using `[← trdeg_add_eq F (MvPolynomial I W) (A := Localization.AtPrime q), trdeg_eq_zero (R := MvPolynomial I W) (A := Localization.AtPrime q), add_zero, hP]`. Use `letI alA : Algebra F (ResidueField (Localization.AtPrime q)) := ((residue (Localization.AtPrime q)).comp (algebraMap F (Localization.AtPrime q))).toAlgebra`. Use `haveI : IsScalarTower F (Localization.AtPrime q) (ResidueField (Localization.AtPrime q)) := IsScalarTower.of_algebraMap_eq' rfl`. Use `haveI : Algebra.EssFiniteType F (ResidueField (Localization.AtPrime q)) := hresA`.
+
+Take `⟨tA, htA⟩ : ∃ m : ℕ, Algebra.trdeg F (ResidueField (Localization.AtPrime q)) = m` from `Cardinal.lt_aleph0.1 (trdeg_lt_aleph0 F (ResidueField (Localization.AtPrime q)))`. Establish `hAf` using `GlobalTheory.LocModelDim.ringKrullDim_add_trdeg (k := F) (R := Localization.AtPrime q) (Ω := ResidueField (Localization.AtPrime q)) residue_surjective htA hA`. Take `⟨k, hk, hkt⟩` from `exists_nat_of_add_eq hAf`. Use `letI alR : Algebra F (ResidueField R) := ((residue R).comp bR).toAlgebra`. Set `eA : ResidueField (Localization.AtPrime q) ≃ₐ[F] ResidueField R` to `{ e with commutes' := fun x => hcomp x }`.
+
+Use `⟨k, tA, by rw [← hdim, hk], by rw [← eA.trdeg_eq, htA], ?_⟩` and prove the remaining obligations. Take `⟨a0, ha0, ha0t⟩` from `exists_nat_of_add_eq hW`. Rewrite `ha0` using `[ha]`. Establish `: a = a0` using `by exact_mod_cast ha0`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem ringKrullDim_add_trdeg_of_isComplAt : ∀ (F W R : Type) [Field F] [CommRing W] [IsDomain W] [IsLocalRing W] [CommRing R] [IsLocalRing R] (b : F →+* W), b.EssFiniteType → ∀ (I : Type) [Fintype I] (ψ : MvPolynomial I W →+* R), GlobalTheory.TChart.IsComplAt ψ → IsLocalHom (ψ.comp MvPolynomial.C) → ∀ bR : F →+* R, (ψ.comp MvPolynomial.C).comp b = bR → ((residue R).comp bR).EssFiniteType ∧ ∀ a t : ℕ, ringKrullDim W = a → (letI := ((residue W).comp b).toAlgebra; Algebra.trdeg F (ResidueField W) = t) → ∃ a' t' : ℕ, ringKrullDim R = a' ∧ (letI := ((residue R).comp bR).toAlgebra; Algebra.trdeg F (ResidueField R) = t') ∧ a' + t' = a + t + Fintype.card I := by
   intro F W R _ _ _ _ _ _ b hb I _ ψ hψ hloc bR hbR
   obtain ⟨hRn, -, hfl, hmap, hres⟩ := hψ

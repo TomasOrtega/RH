@@ -1,6 +1,21 @@
 import Mathlib
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.FundamentalDomains.Signature
 
+/- English proof (translation)
+Introduce `E _ _ _ r X w`. Establish `hw : w ∈ Submodule.span E (X.Λ : Set (Fin r → E))`. Rewrite using `[X.Λ_span]`. Conclude with `Submodule.mem_top`. Proceed by induction on `hw using Submodule.span_induction with`.
+
+Consider the case `mem x hx => exact ⟨1, one_ne_zero, by rwa [one_smul]⟩`. Consider the case `zero => exact ⟨1, one_ne_zero, by rw [smul_zero]; exact X.Λ.zero_mem⟩`. Consider the case `add x y _ _ hx hy`. Take `⟨a, ha, hax⟩` from `hx`. Take `⟨b, hb, hby⟩` from `hy`.
+
+Use `⟨a * b, mul_ne_zero ha hb, ?_⟩` and prove the remaining obligations. Rewrite using `[smul_add]`. Use `X.Λ.add_mem ?_ ?_` and prove the remaining obligations. Rewrite using `[mul_comm, mul_smul]`. Conclude with `X.Λ.smul_mem b hax`.
+
+Rewrite using `[mul_smul]`. Conclude with `X.Λ.smul_mem a hby`. Consider the case `smul t x _ hx`. Take `⟨a, ha, hax⟩` from `hx`. Take `⟨p, q, hq, rfl⟩` from `IsFractionRing.div_surjective (A := NumberField.RingOfIntegers E) t`.
+
+Establish `hq0 : q ≠ 0` using `nonZeroDivisors.ne_zero hq`. Establish `hq1 : algebraMap (NumberField.RingOfIntegers E) E q ≠ 0`. Simplify using `using hq0`. Use `⟨a * q, mul_ne_zero ha hq0, ?_⟩` and prove the remaining obligations. Establish `key : (a * q) • ((algebraMap (NumberField.RingOfIntegers E) E p / algebraMap (NumberField.RingOfIntegers E) E q) • x) = p • (a • x)`.
+
+Use extensionality with `i`. Simplify using `only [Pi.smul_apply]`. Simplify using `only [Algebra.smul_def, map_mul, Algebra.algebraMap_self, RingHom.id_apply]`. Clear the denominators using the available nonvanishing facts. Rewrite using `[key]`.
+
+Conclude with `X.Λ.smul_mem p hax`.
+-/
 theorem UpperTheory.Reformulated.B.LocalSituation.exists_smul_mem :
     ∀ {E : Type} [inst : Field E] [inst_1 : NumberField E] [inst_2 : NumberField.IsCMField E] {r : ℕ}
       (X : ReciprocityTheory.ChartRestriction.G.FD.Data E r) (w : Fin r → E),

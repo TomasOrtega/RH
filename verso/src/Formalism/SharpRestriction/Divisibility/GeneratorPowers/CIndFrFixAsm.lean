@@ -42,6 +42,17 @@ def ccOf {S : Type} [CommRing S] {d : ℕ} (cm : ℕ → Fin d → Fin d → S) 
   | 0 => 0
   | m + 1 => ccOf cm m - cm m
 
+/- English proof (translation)
+Introduce `E _ _ _ H Dw l Xo c _ hstar S _ _ _ y C`. Use `choose U hCorr h1 hs hb using fun m => hA E H Dw l Xo c hstar S y C m`. Establish `hact : ∀ (a : 𝓞 E) (i : Fin C.d), MvPowerSeries.constantCoeff (C.B.A.act a i) = 0` using `fun a i => C.B.A.const a i`. Use `choose cm hcs hcb hcU using fun m => CIndFrExp3.fixExp (G := C.B.G) (act := C.B.A.act) (hact := hact) (bar := H.bar) (m := m) (U := U m) (h1 := h1 m) (hs := hs m) (hb := hb m)`. Establish `hsym : ∀ m i j, ccOf cm m i j = ccOf cm m j i`.
+
+Introduce `m`. Proceed by induction on `m with`. Consider the case `zero => intro i j`. Both sides reduce to the same expression. Consider the case `succ m ih`.
+
+Introduce `i j`. Use `show ccOf cm m i j - cm m i j = ccOf cm m j i - cm m j i`. Rewrite using `[ih i j, hcs m i j]`. Establish `hbal : ∀ m (a : 𝓞 E), Matrix.transpose (dLin (C.B.A.act a)) * Matrix.of (ccOf cm m) = Matrix.of (ccOf cm m) * dLin (C.B.A.act (H.bar a))`. Introduce `m`.
+
+Proceed by induction on `m with`. Consider the case `zero => intro a`. Simplify using `only [ccOf, Matrix.of_zero, mul_zero, zero_mul]`. Consider the case `succ m ih`. Introduce `a`.
+
+Simplify using `only [ccOf]`. Rewrite using `[← Matrix.of_sub_of, mul_sub, sub_mul, ih a, hcb m a]`. Establish `hdiff : ∀ m, ccOf cm m - ccOf cm (m + 1) = cm m` using `fun m => show ccOf cm m - (ccOf cm m - cm m) = cm m from sub_sub_cancel _ _`. Take `⟨e', hfr, hrig, htr, hu⟩` from `CIndFrFix2c.fixTw (C := C) (cc := ccOf cm) (h0 := rfl) (hsym := hsym) (hbal := hbal) (hstep := fun m => ⟨U m, by rw [hdiff m]; exact hcU m, hCorr m⟩)`. Conclude with `⟨e', hfr, hrig, ccOf cm, htr, rfl, hsym, hbal, hu⟩`.
+-/
 theorem frTruncFix_of (hA : FrRatioSt) : FrTruncFixSt := by
   intro E _ _ _ H Dw l Xo c _ hstar S _ _ _ y C
   choose U hCorr h1 hs hb using fun m => hA E H Dw l Xo c hstar S y C m

@@ -32,14 +32,29 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.S
 
 namespace GlobalTheory.CompanionTheory.Ar.HTPullK
 
+/- English proof (translation)
+Apply the tactic sequence `ext r <;> simp [dualMap, TrivSqZeroExt.algebraMap_eq_inl]`.
+-/
 theorem dual_sq {A B : Type} [CommRing A] [CommRing B] (c : A →+* B) :
     (dualMap c).comp (algebraMap A (DualNumber A)) = (algebraMap B (DualNumber B)).comp c := by
   ext r <;> simp [dualMap, TrivSqZeroExt.algebraMap_eq_inl]
 
+/- English proof (translation)
+Apply the tactic sequence `ext r <;> simp [dualMap]`.
+-/
 theorem dualMap_comp {A B C : Type} [CommRing A] [CommRing B] [CommRing C] (c : A →+* B) (d : B →+* C) :
     (dualMap d).comp (dualMap c) = dualMap (d.comp c) := by
   ext r <;> simp [dualMap]
 
+/- English proof (translation)
+Substitute `hy` using the available equality. Use `letI : Algebra A B := c.toAlgebra`. Use `letI : Module A E' := Module.compHom E' c`. Use `haveI : IsScalarTower A B E' := ⟨fun a b e => by show (c a * b) • e = c a • b • e`. Rewrite using `[mul_smul]⟩`.
+
+Use `haveI : Smooth G.hom := hsm`. Take `⟨j, h1, h2, -⟩` from `GlobalTheory.T.lie_model_base_change_map S G A B x E E' M M'`. Set `β : E →ₗ[A] E'` to `{ toFun := j, map_add' := map_add j, map_smul' := fun a e => h2 a e }`. Establish `hbc : IsBaseChange B β` using `(GlobalTheory.T.lie_model_finite_base_change S G A x E M).2.2 B E' M' β h1`. Use `⟨j, h1, h2, ?_, ?_⟩` and prove the remaining obligations.
+
+Use `eq_top_iff.2 fun e _ => ?_` and prove the remaining obligations. Use `hbc.inductionOn e (fun z => z ∈ Submodule.span B (Set.range j)) (Submodule.zero_mem _) ?_ ?_ ?_` and prove the remaining obligations. Conclude with `fun m => Submodule.subset_span ⟨m, rfl⟩`. Conclude with `fun s n h => Submodule.smul_mem _ s h`. Conclude with `fun a b ha hb => Submodule.add_mem _ ha hb`.
+
+Introduce `l`. Use `⟨hbc.lift ((Algebra.linearMap A B).comp l), fun e => ?_⟩` and prove the remaining obligations. Conclude with `hbc.lift_eq _ e`.
+-/
 theorem lieBC {S : Scheme.{0}} {G : Over S} [GrpObj G] {A B : Type} [CommRing A] [CommRing B] (c : A →+* B)
     (x : Sp A ⟶ S) (y : Sp B ⟶ S) (hy : y = Spec.map (CommRingCat.ofHom c) ≫ x) (hsm : Smooth G.hom)
     {E E' : Type} [AddCommGroup E] [Module A E] [AddCommGroup E'] [Module B E']
@@ -67,6 +82,11 @@ theorem lieBC {S : Scheme.{0}} {G : Over S} [GrpObj G] {A B : Type} [CommRing A]
     refine ⟨hbc.lift ((Algebra.linearMap A B).comp l), fun e => ?_⟩
     exact hbc.lift_eq _ e
 
+/- English proof (translation)
+Take `⟨s, hs, hv⟩` from `H`. Use `⟨s, hs, fun e => ?_⟩` and prove the remaining obligations. Take `⟨v, h1, h2, h3⟩` from `hv e`. Use `⟨v, h1, ?_, h3⟩` and prove the remaining obligations. Use `hφ.hom_ext ?_ ?_` and prove the remaining obligations.
+
+Rewrite using `[Category.assoc, hi', h2, Category.assoc, h]`. Establish `w₁` using `Over.w (Mb.pt e)`. Rewrite using `[Category.assoc, hover, ← Category.assoc, h1, Category.assoc, w₁]`. Use `show _ = _ ≫ Spec.map _ ≫ x'`. Rewrite using `[← Category.assoc _ _ x', ← Spec.map_comp, ← CommRingCat.ofHom_comp, dual_sq]`.
+-/
 theorem isHT_move {R : Type} [CommRing R] [IsDomain R] {T : Type} [CommGroup T] (Γ : BT.QFGroup R T)
     {S S' : Scheme.{0}} {G : Over S} {G' : Over S'} [GrpObj G] [GrpObj G'] {f : S' ⟶ S} {φ : G'.left ⟶ G.left}
     (hφ : IsPullback φ G'.hom G.hom f) {x' : Sp R ⟶ S'} {y : Sp R ⟶ S} {i₁ : Γ.G.left ⟶ G.left}
@@ -84,6 +104,9 @@ theorem isHT_move {R : Type} [CommRing R] [IsDomain R] {T : Type} [CommGroup T] 
     show _ = _ ≫ Spec.map _ ≫ x'
     rw [← Category.assoc _ _ x', ← Spec.map_comp, ← CommRingCat.ofHom_comp, dual_sq]
 
+/- English proof (translation)
+Take `⟨s, hs, hv⟩` from `H`. Use `⟨s, hs, fun e => ?_⟩` and prove the remaining obligations. Take `⟨v, h1, h2, h3⟩` from `hv (g e)`. Conclude with `⟨v, h1, by rw [h2, hg], h3⟩`.
+-/
 theorem isHT_lie {R : Type} [CommRing R] [IsDomain R] {T : Type} [CommGroup T] (Γ : BT.QFGroup R T)
     {S : Scheme.{0}} {G : Over S} [GrpObj G] {x : Sp R ⟶ S} {i : Γ.G.left ⟶ G.left} {L₁ L₂ : Type} [AddCommGroup L₁]
     [Module R L₁] [AddCommGroup L₂] [Module R L₂] {M₁ : LieModel G x L₁} {M₂ : LieModel G x L₂} (g : L₁ ≃ₗ[R] L₂)
@@ -94,6 +117,13 @@ theorem isHT_lie {R : Type} [CommRing R] [IsDomain R] {T : Type} [CommGroup T] (
   obtain ⟨v, h1, h2, h3⟩ := hv (g e)
   exact ⟨v, h1, by rw [h2, hg], h3⟩
 
+/- English proof (translation)
+Use `haveI : NeZero N := ⟨hN.ne'⟩`. Establish `hz' : IsPrimitiveRoot (s z) N` using `hz.map_of_injective hs`. Set `zu : Rˣ` to `(hz.isUnit hN.ne').unit`. Establish `hinj : Function.Injective (Units.map (s : R →* R'))` using `Units.map_injective hs`. Establish `ex : ∀ t, ∃ u : Rˣ, Units.map (s : R →* R') u = χ' t` using `fun t => by`.
+
+Establish `e : ((χ' t : R'ˣ) : R') ^ N = 1`. Rewrite using `[← Units.val_pow_eq_pow_val, ← map_pow, hT t, map_one, Units.val_one]`. Take `⟨m, -, hm⟩` from `hz'.eq_pow_of_pow_eq_one e`. Use `⟨zu ^ m, Units.ext ?_⟩` and prove the remaining obligations. Simplify `hm` using `[zu]`.
+
+Use `choose c hc using ex`. Use `⟨MonoidHom.mk' c fun a b => hinj (by rw [map_mul, hc, hc, hc, map_mul]), ?_⟩` and prove the remaining obligations. Use extensionality with `t`. Simplify using `[hc]`.
+-/
 theorem char_descends {R R' : Type} [CommRing R] [CommRing R'] [IsDomain R'] (s : R →+* R')
     (hs : Function.Injective s) {T : Type} [CommGroup T] {N : ℕ} (hN : 0 < N) {z : R} (hz : IsPrimitiveRoot z N)
     (hT : ∀ t : T, t ^ N = 1) (χ' : T →* R'ˣ) :
@@ -113,6 +143,13 @@ theorem char_descends {R R' : Type} [CommRing R] [CommRing R'] [IsDomain R'] (s 
   ext t
   simp [hc]
 
+/- English proof (translation)
+Take `⟨Γ', F, hF⟩` from `GlobalTheory.T.exists_base_change_group R T Γ R' (algebraMap R R') hs`. Establish `tor₁` using `GlobalTheory.T.torsion_along_base_change R T Γ X G x N i hi R' (algebraMap R R') Γ' F hF`. Take `⟨i', hi', tor'⟩` from `GlobalTheory.T.torsion_along_group_pullback R' T Γ' X X' G G' f φ x' _ N (F ≫ i) hφ hx tor₁`. Establish `key : ∀ y : Sp R' ⟶ X, x' ≫ f = y → ∃ M₂ : LieModel G y L', ∀ e, (M₀'.pt e).left ≫ φ = (M₂.pt e).left`. Introduce and unpack `_ rfl`.
+
+Conclude with `⟨LieMove.pushModel hφ M₀', fun _ => rfl⟩`. Take `⟨M₂, hM₂⟩` from `key _ hx`. Take `⟨β, hβ, -, hsp, hext⟩` from `lieBC (algebraMap R R') x _ rfl hsm M₀ M₂`. Use `⟨Γ', i', β, tor', fun e => ?_, hsp, hext, fun χ w₀ w₀' hw H => ?_⟩` and prove the remaining obligations. Rewrite using `[hM₂, hβ]`.
+
+Establish `H'` using `GlobalTheory.T.hodge_tate_functional_base_change R T Γ X G x N i hi L M₀ R' Γ' F hF tor₁ L' M₂ β hβ hsp χ w₀ w₀' hw H`. Conclude with `isHT_move Γ' hφ.1 hi' tor'.isOver hM₂ H'`.
+-/
 theorem core {R R' : Type} [CommRing R] [IsDomain R] [CommRing R'] [IsDomain R'] [Algebra R R']
     (hs : Function.Injective (algebraMap R R')) {X X' : Scheme.{0}} (x : Sp R ⟶ X) (x' : Sp R' ⟶ X') (f : X' ⟶ X)
     (hx : x' ≫ f = Spec.map (CommRingCat.ofHom (algebraMap R R')) ≫ x)
@@ -149,11 +186,17 @@ variable {R R' : Type} [CommRing R] [IsDomain R] [CommRing R'] [IsDomain R'] [Al
   {ξ : Sp Ω ⟶ X} {ξ' : Sp Ω' ⟶ X'} {V V' : Type} [AddCommGroup V] [Module Ω V] [AddCommGroup V'] [Module Ω' V']
   {M : LieModel G ξ V} {M' : LieModel G' ξ' V'} {j : V →+ V'}
 
+/- English proof (translation)
+Use `M'.inj (Over.OverMorphism.ext (hφ.1.hom_ext h ?_))` and prove the remaining obligations. Conclude with `(Over.w (M'.pt a)).trans (Over.w (M'.pt b)).symm`.
+-/
 theorem tan_eq (hφ : IsGrpPullback G' G f φ) {a b : V'}
     (h : (M'.pt a).left ≫ φ = (M'.pt b).left ≫ φ) : a = b := by
   refine M'.inj (Over.OverMorphism.ext (hφ.1.hom_ext h ?_))
   exact (Over.w (M'.pt a)).trans (Over.w (M'.pt b)).symm
 
+/- English proof (translation)
+Use `tan_eq (M' := M') hφ ?_` and prove the remaining obligations. Rewrite using `[hj, hj₀, hj', Category.assoc, hβ, ← Category.assoc, ← Category.assoc, ← Spec.map_comp, ← Spec.map_comp, ← CommRingCat.ofHom_comp, ← CommRingCat.ofHom_comp, dualMap_comp, dualMap_comp]`. Establish `e : k'.comp (algebraMap R R') = i.comp k` using `RingHom.ext hk`. Rewrite using `[e]`.
+-/
 theorem j_comm (hφ : IsGrpPullback G' G f φ) (hk : ∀ r, k' (algebraMap R R' r) = i (k r))
     (hj : ∀ e, (M'.pt (j e)).left ≫ φ = Spec.map (CommRingCat.ofHom (dualMap i)) ≫ (M.pt e).left)
     {L L' : Type} [AddCommGroup L] [Module R L] [AddCommGroup L'] [Module R' L']
@@ -168,6 +211,11 @@ theorem j_comm (hφ : IsGrpPullback G' G f φ) (hk : ∀ r, k' (algebraMap R R' 
   have e : k'.comp (algebraMap R R') = i.comp k := RingHom.ext hk
   rw [e]
 
+/- English proof (translation)
+Establish `he : e ∈ Submodule.span R' (Set.range β)` using `by rw [hsp]; trivial`. Proceed by induction on `he using Submodule.span_induction with`. Consider the case `mem _ h`. Take `⟨l, rfl⟩` from `h`. Rewrite using `[hjj, hww, hw, hw₀, hk]`.
+
+Consider the case `zero => simp`. Consider the case `add a b _ _ ha hb => simp [ha, hb]`. Consider the case `smul a b _ hb => simp [hjs, hb]`.
+-/
 theorem form_eq (hk : ∀ r, k' (algebraMap R R' r) = i (k r))
     {L L' : Type} [AddCommGroup L] [Module R L] [AddCommGroup L'] [Module R' L'] {β : L →+ L'}
     (hsp : Submodule.span R' (Set.range β) = ⊤) {j₀ : L → V} {j' : L' →+ V'}
@@ -184,6 +232,11 @@ theorem form_eq (hk : ∀ r, k' (algebraMap R R' r) = i (k r))
   | add a b _ _ ha hb => simp [ha, hb]
   | smul a b _ hb => simp [hjs, hb]
 
+/- English proof (translation)
+Establish `hsm' : Smooth G'.hom` using `MorphismProperty.of_isPullback hφ.1 hsm`. Take `⟨_, T, _, Γ, i₀, L, _, _, M₀, j₀, χ, w₀, tor, hj₀, hHT, hw⟩` from `H`. Use `haveI := GlobalTheory.T.quasi_finite_group_finite R T Γ`. Take `⟨L', _, _, ⟨M₀'⟩⟩` from `lieModel_exists X' G' R' x'`. Take `⟨Γ', i', β, tor', hβ, hsp, hext, hcore⟩` from `core hs x x' f hx φ hφ hsm Γ N i₀ tor M₀ M₀'`.
+
+Take `⟨j', hj', hjs, -, -⟩` from `lieBC k' x' ξ' hξ' hsm' M₀' M'`. Take `⟨w₀', hw₀⟩` from `hext w₀`. Use `⟨inferInstance, T, _, Γ', i', L', _, _, M₀', j', (Units.map (algebraMap R R' : R →* R')).comp χ, w₀', tor', hj', hcore χ w₀ w₀' hw₀ hHT, ?_⟩` and prove the remaining obligations. Conclude with `form_eq hk hsp hjs (j_comm hφ hk hj hβ hj₀ hj') hww hw hw₀`.
+-/
 theorem forward (hs : Function.Injective (algebraMap R R'))
     (hx : x' ≫ f = Spec.map (CommRingCat.ofHom (algebraMap R R')) ≫ x)
     (hφ : IsGrpPullback G' G f φ) (hsm : Smooth G.hom)
@@ -213,6 +266,23 @@ variable {R R' : Type} [CommRing R] [IsDomain R] [CommRing R'] [IsDomain R'] [Al
   {ξ : Sp Ω ⟶ X} {ξ' : Sp Ω' ⟶ X'} {V V' : Type} [AddCommGroup V] [Module Ω V] [AddCommGroup V'] [Module Ω' V']
   {M : LieModel G ξ V} {M' : LieModel G' ξ' V'} {j : V →+ V'}
 
+/- English proof (translation)
+Establish `hsm' : Smooth G'.hom` using `MorphismProperty.of_isPullback hφ.1 hsm`. Take `⟨_, T, _, Γ, i₀, L, _, _, M₀, -, -, -, tor, -, -, -⟩` from `h0`. Use `haveI := GlobalTheory.T.quasi_finite_group_finite R T Γ`. Take `⟨_, T₂, _, Γ₂, i₂, L₂, _, _, M₂, j₂, χ₂, w₂, tor₂, hj₂, hHT₂, hw₂⟩` from `H`. Take `⟨L', _, _, ⟨M₀'⟩⟩` from `lieModel_exists X' G' R' x'`.
+
+Take `⟨Γ', i', β, tor', hβ, hsp, hext, hcore⟩` from `core hs x x' f hx φ hφ hsm Γ N i₀ tor M₀ M₀'`. Take `⟨b, hb⟩` from `GlobalTheory.T.torsion_along_unique_up_to_iso R' T₂ T Γ₂ Γ' X' G' x' N i₂ i' tor₂ tor'`. Establish `H₁` using `hb L₂ M₂ χ₂ w₂ hHT₂`. Take `⟨g, hg, -⟩` from `GlobalTheory.T.lie_model_existsUnique_equiv X' G' R' x' L' L₂ M₀' M₂`. Establish `H₂` using `isHT_lie Γ' g hg H₁`.
+
+Take `⟨χ, hχ⟩` from `char_descends (algebraMap R R') hs hN hz (GlobalTheory.T.torsion_along_order_divides R T Γ X G x N i₀ tor) (χ₂.comp b.symm.toMonoidHom)`. Take `⟨w₀, hw₀⟩` from `PositivityTheory.UnitarySelfGeneration.ht_exists R T Γ X G x N i₀ tor hsm L M₀ χ`. Take `⟨j₁, hj₁, -, -, hj₁ext⟩` from `lieBC k x ξ hξ hsm M₀ M`. Take `⟨w, hw⟩` from `hj₁ext w₀`. Take `⟨w₀', hw₀'⟩` from `hext w₀`.
+
+Establish `H₃` using `hcore χ w₀ w₀' hw₀' hw₀`. Rewrite `H₃` using `[hχ]`. Take `⟨u, hu⟩` from `(GlobalTheory.T.hodge_tate_functional_unique_mod_smul R' T Γ' X' G' x' N i' tor' hsm' hN0 L' M₀' _ w₀' _ H₃).1 H₂`. Take `⟨j', hj', hjs, hjsp, hjext⟩` from `lieBC k' x' ξ' hξ' hsm' M₀' M'`. Take `⟨u', hu'⟩` from `hjext u`.
+
+Use `⟨w, ⟨inferInstance, T, _, Γ, i₀, L, _, _, M₀, j₁, χ, w₀, tor, hj₁, hw₀, hw⟩, u', ?_, ?_⟩` and prove the remaining obligations. Establish `hd` using `form_eq (w := w) (w' := jd w) hk hsp hjs (j_comm hφ hk hj hβ hj₁ hj') (hjd w) hw hw₀'`. Use `LinearMap.ext_on hjsp ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨e, rfl⟩`. Establish `a1 : j₂ (g e) = j' e` using `M'.inj (Over.OverMorphism.ext (by rw [hj₂, hg, hj']))`.
+
+Establish `a2` using `hw₂ (g e)`. Establish `a3` using `LinearMap.congr_fun hu e`. Simplify using `only [LinearMap.comp_apply, LinearEquiv.coe_coe, LinearMap.add_apply, LinearMap.smul_apply] at a3`. Rewrite `a2` using `[a1, a3]`. Simplify using `only [LinearMap.add_apply, LinearMap.smul_apply]`.
+
+Rewrite using `[a2, hd, hu', map_add, map_nsmul]`. Introduce `e v hv he`. Take `⟨l, rfl⟩` from `M₀'.onto v hv`. Establish `: e = j' l` using `M'.inj (Over.OverMorphism.ext (he.trans (hj' l).symm))`. Substitute `this` using the available equality.
+
+Conclude with `⟨u l, (hu' l).symm⟩`.
+-/
 theorem backward [IsIntegrallyClosed R] [IsNoetherianRing R] (hs : Function.Injective (algebraMap R R'))
     (hx : x' ≫ f = Spec.map (CommRingCat.ofHom (algebraMap R R')) ≫ x)
     (hφ : IsGrpPullback G' G f φ) (hsm : Smooth G.hom)
@@ -266,6 +336,27 @@ theorem backward [IsIntegrallyClosed R] [IsNoetherianRing R] (hs : Function.Inje
 
 end Back
 
+/- English proof (translation)
+Take `⟨L, _, _, ⟨M₀⟩⟩` from `lieModel_exists X G R x`. Use `haveI : Smooth G.hom := hsm`. Take `⟨hfin, hproj, -⟩` from `GlobalTheory.T.lie_model_finite_base_change X G R x L M₀`. Use `haveI := hfin`. Use `haveI := hproj`.
+
+Use `haveI : Module.Free R L := Module.free_of_flat_of_isLocalRing`. Set `b` to `Module.finBasis R L`. Take `⟨j₁, hj₁, hj₁s, hj₁sp, hj₁ext⟩` from `lieBC k _ ξ hξ hsm M₀ M`. Use `choose δ hδ using fun a => hj₁ext (b.coord a)`. Use `⟨_, δ, fun a => j₁ (b a), fun a => ⟨M₀.pt (b a), M₀.tan _, hj₁ _⟩, ?_, ?_⟩` and prove the remaining obligations.
+
+Introduce `a e v hv hev`. Take `⟨l, rfl⟩` from `M₀.onto v hv`. Establish `: e = j₁ l` using `M.inj (Over.OverMorphism.ext (hev.trans (hj₁ l).symm))`. Substitute `this` using the available equality. Rewrite using `[hδ]`.
+
+Conclude with `⟨_, rfl⟩`. Introduce `u'`. Take `⟨P, hP⟩ : ∃ P, P = u' - ∑ a, u' (j (j₁ (b a))) • jd (δ a)` from `⟨_, rfl⟩`. Establish `A0 : ∀ a', P (j (j₁ (b a'))) = 0`. Introduce `a'`.
+
+Rewrite using `[hP, LinearMap.sub_apply, LinearMap.sum_apply, Finset.sum_eq_single a']`. Rewrite using `[LinearMap.smul_apply, hjd, hδ]`. Simplify using the standard rewrite rules. Introduce `a _ hne`. Rewrite using `[LinearMap.smul_apply, hjd, hδ]`.
+
+Simplify using `[Module.Basis.coord_apply, Finsupp.single_apply, hne.symm]`. Simplify using the standard rewrite rules. Establish `A : ∀ l, P (j (j₁ l)) = 0` using `fun l => by`. Establish `hl : l ∈ Submodule.span R (Set.range b)`. Rewrite using `[b.span_eq]`.
+
+Discharge the goal by the elementary cases of `trivial`. Proceed by induction on `hl using Submodule.span_induction with`. Consider the case `mem _ h => obtain ⟨a, rfl⟩ := h`. Conclude with `A0 a`. Consider the case `zero => simp`.
+
+Consider the case `add a b _ _ ha hb => simp [ha, hb]`. Consider the case `smul r a _ ha => rw [hj₁s, hjs, map_smul, ha, smul_zero]`. Establish `B : ∀ v, P (j v) = 0` using `fun v => by`. Establish `hv : v ∈ Submodule.span Ω (Set.range j₁)` using `by rw [hj₁sp]; trivial`. Proceed by induction on `hv using Submodule.span_induction with`.
+
+Consider the case `mem _ h => obtain ⟨a, rfl⟩ := h`. Conclude with `A a`. Consider the case `zero => simp`. Consider the case `add a b _ _ ha hb => simp [ha, hb]`. Consider the case `smul r a _ ha => rw [hjs, map_smul, ha, smul_zero]`.
+
+Establish `C : P = 0` using `LinearMap.ext_on hspan (by rintro _ ⟨v, rfl⟩; simpa using B v)`. Rewrite `C` using `[hP]`. Conclude with `sub_eq_zero.1 C`.
+-/
 theorem om_decomp {R : Type} [CommRing R] [IsLocalRing R] {X : Scheme.{0}} {x : Sp R ⟶ X} {G : Over X} [GrpObj G]
     [IsCommMonObj G] {Ω Ω' : Type} [Field Ω] [Field Ω'] {k : R →+* Ω} {ξ : Sp Ω ⟶ X}
     {V V' : Type} [AddCommGroup V] [Module Ω V] [AddCommGroup V'] [Module Ω' V'] {M : LieModel G ξ V}
@@ -326,6 +417,43 @@ theorem om_decomp {R : Type} [CommRing R] [IsLocalRing R] {X : Scheme.{0}} {x : 
 
 end GlobalTheory.CompanionTheory.Ar.HTPullK
 
+/- English proof (translation)
+Introduce `X X' Ω Ω' _ _ ξ ξ' f i G G' _ _ _ _ φ V V' _ _ _ _ M M' j gen gen' dom hφ hsm hj jd hjd N hN p' h hic hnoe hroot h0`. Take `⟨ζ, hζ⟩` from `hroot`. Take `⟨hext, hspan, hlat⟩` from `GlobalTheory.T.lie_lattice_dominant_compat X X' Ω Ω' ξ ξ' f i G G' φ V V' M M' j gen gen' dom hφ hsm hj`. Establish `hsm' : Smooth G'.hom` using `MorphismProperty.of_isPullback hφ.1 hsm`. Set `p : Cpt ξ` to `⟨f p'.1, h⟩`.
+
+Set `k` to `genMap ξ p`. Set `k'` to `genMap ξ' p'`. Establish `hkinj : Function.Injective k` using `gen.inj p`. Establish `hk'inj : Function.Injective k'` using `gen'.inj p'`. Use `haveI : IsDomain (X.presheaf.stalk (f p'.1)) := hkinj.isDomain k`.
+
+Use `haveI : IsDomain (X'.presheaf.stalk p'.1) := hk'inj.isDomain k'`. Use `letI : Algebra (X.presheaf.stalk (f p'.1)) (X'.presheaf.stalk p'.1) := (f.stalkMap p'.1).hom.toAlgebra`. Establish `hk : ∀ r, k' (algebraMap (X.presheaf.stalk (f p'.1)) (X'.presheaf.stalk p'.1) r) = i (k r)` using `GlobalTheory.CompanionTheory.Ar.Flat.PullReg.stalkMap_comp_genMap dom p' h`. Establish `hs : Function.Injective (algebraMap (X.presheaf.stalk (f p'.1)) (X'.presheaf.stalk p'.1))`. Introduce `a b e`.
+
+Conclude with `hkinj (i.injective (by rw [← hk, ← hk, e]))`. Establish `hx : X'.fromSpecStalk p'.1 ≫ f = Spec.map (CommRingCat.ofHom (algebraMap (X.presheaf.stalk (f p'.1)) (X'.presheaf.stalk p'.1))) ≫ X.fromSpecStalk (f p'.1)` using `(Scheme.SpecMap_stalkMap_fromSpecStalk f).symm`. Establish `hξ : ξ = Spec.map (CommRingCat.ofHom k) ≫ X.fromSpecStalk (f p'.1)` using `(RegAtDom.spec_genMap ξ _ h).symm`. Establish `hξ' : ξ' = Spec.map (CommRingCat.ofHom k') ≫ X'.fromSpecStalk p'.1` using `(RegAtDom.spec_genMap ξ' p'.1 p'.2).symm`. Use `haveI := hic`.
+
+Use `haveI := hnoe`. Use `haveI : NeZero N := ⟨hN.ne'⟩`. Establish `hfr` using `RegAtRing.regAt_ring X Ω ξ gen p`. Use `haveI : IsFractionRing (regAt ξ p) Ω := hfr.1`. Use `haveI : IsIntegrallyClosed (regAt ξ p) := hfr.2.2 hic`.
+
+Establish `hζint : IsIntegral (regAt ξ p) ζ` using `IsIntegral.of_pow hN (by rw [hζ.pow_eq_one]; exact isIntegral_one)`. Take `⟨y, hy⟩` from `IsIntegrallyClosed.isIntegral_iff.1 hζint`. Take `⟨z, hz⟩` from `y.2`. Establish `hkz : k z = ζ` using `hz.trans hy`. Establish `hzp : IsPrimitiveRoot z N` using `IsPrimitiveRoot.of_map_of_injective (by rw [hkz]; exact hζ : IsPrimitiveRoot (k z) N) hkinj`.
+
+Establish `hN0 : (N : X'.presheaf.stalk p'.1) ≠ 0`. Introduce `e`. Establish `e' : (N : Ω') = 0` using `by simpa using congrArg k' e`. Establish `e'' : (N : Ω) = 0` using `i.injective (by simpa using e')`. Conclude with `(hζ.neZero').out e''`.
+
+Establish `hjds : ∀ (a : Ω) (w : Module.Dual Ω V), jd (a • w) = i a • jd w`. Introduce `a w`. Use `LinearMap.ext_on hspan ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨e, rfl⟩`. Rewrite using `[hjd, LinearMap.smul_apply, LinearMap.smul_apply, hjd, smul_eq_mul, smul_eq_mul, map_mul]`.
+
+Establish `hreg : ∀ c ∈ regAt ξ p, i c ∈ regAt ξ' p'`. Introduce and unpack `_ ⟨r, rfl⟩`. Conclude with `⟨_, hk r⟩`. Establish `hC : ∀ u' ∈ M'.omLat p', N • u' ∈ (M.htLat N).pull ξ' f jd p'`. Introduce `u' hu'`.
+
+Establish `hu'' : ∀ e ∈ M'.lat p', u' e ∈ regAt ξ' p'` using `hu'`. Take `⟨n, δ, b, hb, hδ, hdec⟩` from `HTPullK.om_decomp (M := M) hξ hsm i j hext.1 hspan jd hjd`. Establish `hδom : ∀ a, δ a ∈ M.omLat p`. Introduce `a`. Use `show ∀ e ∈ M.lat p, δ a e ∈ regAt ξ p`.
+
+Introduce `e he`. Take `⟨v, hv, hev⟩` from `((lieLat_carrier X G Ω ξ V M p).1 e).1 he`. Conclude with `hδ a e v hv hev`. Establish `hNδ : ∀ a, (N : Ω) • δ a ∈ M.htLat N p` using `fun a => (GlobalTheory.T.hodge_tate_lattice_le_omega X Ω ξ G V M N p gen hsm).2 h0 (δ a) (hδom a)`. Establish `hc : ∀ a, u' (j (b a)) ∈ regAt ξ' p'`.
+
+Introduce `a`. Apply `hu''` to reduce the goal to its premises. Rewrite using `[hlat]`. Conclude with `Submodule.subset_span ⟨h, b a, Submodule.subset_span (hb a), rfl⟩`. Rewrite using `[hdec u', Finset.smul_sum]`.
+
+Use `sum_mem fun a _ => ?_` and prove the remaining obligations. Establish `e1 : N • (u' (j (b a)) • jd (δ a)) = u' (j (b a)) • jd ((N : Ω) • δ a)`. Rewrite using `[Nat.cast_smul_eq_nsmul, map_nsmul, smul_comm]`. Rewrite using `[e1]`. Conclude with `Submodule.smul_mem _ (⟨_, hc a⟩ : regAt ξ' p') (Submodule.subset_span ⟨h, _, hNδ a, rfl⟩)`.
+
+Apply `le_antisymm` to reduce the goal to its premises. Use `Submodule.span_le.2 fun w' hw' => ?_` and prove the remaining obligations. Take `⟨w, hwF, u', rfl, hu⟩` from `HTPullK.backward (M := M) (M' := M') hs hx hφ hsm hk hξ hξ' hj hN hN0 hzp h0 jd hjd hw'`. Establish `hu' : u' ∈ M'.omLat p'`. Introduce `e he`.
+
+Take `⟨v, hv, hev⟩` from `((lieLat_carrier X' G' Ω' ξ' V' M' p').1 e).1 he`. Conclude with `hu e v hv hev`. Conclude with `add_mem (Submodule.subset_span ⟨h, w, Submodule.subset_span hwF, rfl⟩) (hC u' hu')`. Use `Submodule.span_le.2 ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨h', e, he, rfl⟩`.
+
+Use `show jd e ∈ M'.htLat N p'`. Establish `he' : e ∈ M.htLat N p` using `he`. Use `clear he`. Proceed by induction on `he' using Submodule.span_induction with`. Consider the case `mem w hw`.
+
+Conclude with `Submodule.subset_span (HTPullK.forward (M := M) (M' := M') hs hx hφ hsm hk hξ' hj (hjd w) hw)`. Consider the case `zero => simp`. Consider the case `add a b _ _ ha hb => simpa using add_mem ha hb`. Consider the case `smul c a _ ha`. Establish `e1 : jd (c • a) = i c • jd a` using `hjds c a`.
+
+Rewrite using `[e1]`. Conclude with `Submodule.smul_mem _ (⟨i c, hreg c c.2⟩ : regAt ξ' p') ha`.
+-/
 theorem GlobalTheory.CompanionTheory.Ar.HTPullK.main : ∀ (X X' : Scheme.{0}) (Ω Ω' : Type) [Field Ω] [Field Ω'] (ξ : Sp Ω ⟶ X) (ξ' : Sp Ω' ⟶ X') (f : X' ⟶ X) (i : Ω →+* Ω') (G : Over X) (G' : Over X') [GrpObj G] [IsCommMonObj G] [GrpObj G'] [IsCommMonObj G'] (φ : G'.left ⟶ G.left) (V V' : Type) [AddCommGroup V] [Module Ω V] [AddCommGroup V'] [Module Ω' V'] (M : LieModel G ξ V) (M' : LieModel G' ξ' V') (j : V →+ V'), IsCptGen ξ → IsCptGen ξ' → GlobalTheory.CompanionTheory.Ar.Dominates ξ' ξ f i → IsGrpPullback G' G f φ → Smooth G.hom → (∀ e, (M'.pt (j e)).left ≫ φ = Spec.map (CommRingCat.ofHom (dualMap i)) ≫ (M.pt e).left) → ∀ (jd : Module.Dual Ω V →+ Module.Dual Ω' V'), (∀ w e, jd w (j e) = i (w e)) → ∀ (N : ℕ), 0 < N → ∀ (p' : Cpt ξ') (h : genPt ξ ⤳ f p'.1), IsIntegrallyClosed (X.presheaf.stalk (f p'.1)) → IsNoetherianRing (X.presheaf.stalk (f p'.1)) → (∃ ζ : Ω, IsPrimitiveRoot ζ N) → M.IsHTFormAt N ⟨f p'.1, h⟩ 0 → M'.htLat N p' = (M.htLat N).pull ξ' f jd p' := by
   intro X X' Ω Ω' _ _ ξ ξ' f i G G' _ _ _ _ φ V V' _ _ _ _ M M' j gen gen' dom hφ hsm hj jd hjd N hN p' h hic hnoe
     hroot h0
@@ -428,6 +556,9 @@ namespace PositivityTheory.UnitarySelfGeneration
 open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalCategory MonObj NumberField
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Geo.Tor GlobalTheory.CompanionTheory.Ar
 
+/- English proof (translation)
+The claim follows from `@GlobalTheory.CompanionTheory.Ar.HTPullK.main`.
+-/
 theorem height_pullback_dominating_map : ∀ (X X' : Scheme.{0}) (Ω Ω' : Type) [Field Ω] [Field Ω'] (ξ : Sp Ω ⟶ X) (ξ' : Sp Ω' ⟶ X') (f : X' ⟶ X) (i : Ω →+* Ω') (G : Over X) (G' : Over X') [GrpObj G] [IsCommMonObj G] [GrpObj G'] [IsCommMonObj G'] (φ : G'.left ⟶ G.left) (V V' : Type) [AddCommGroup V] [Module Ω V] [AddCommGroup V'] [Module Ω' V'] (M : LieModel G ξ V) (M' : LieModel G' ξ' V') (j : V →+ V'), IsCptGen ξ → IsCptGen ξ' → GlobalTheory.CompanionTheory.Ar.Dominates ξ' ξ f i → IsGrpPullback G' G f φ → Smooth G.hom → (∀ e, (M'.pt (j e)).left ≫ φ = Spec.map (CommRingCat.ofHom (dualMap i)) ≫ (M.pt e).left) → ∀ (jd : Module.Dual Ω V →+ Module.Dual Ω' V'), (∀ w e, jd w (j e) = i (w e)) → ∀ (N : ℕ), 0 < N → ∀ (p' : Cpt ξ') (h : genPt ξ ⤳ f p'.1), IsIntegrallyClosed (X.presheaf.stalk (f p'.1)) → IsNoetherianRing (X.presheaf.stalk (f p'.1)) → (∃ ζ : Ω, IsPrimitiveRoot ζ N) → M.IsHTFormAt N ⟨f p'.1, h⟩ 0 → M'.htLat N p' = (M.htLat N).pull ξ' f jd p' :=
   @GlobalTheory.CompanionTheory.Ar.HTPullK.main
 

@@ -15,6 +15,13 @@ open Formalism.MainNotions.S.Loc
 
 section General
 
+/- English proof (translation)
+Rewrite `hv`, the goal using `[Fintype.linearIndependent_iff]`. Introduce `g hg`. Establish `h1 : ∑ i, (B.mulVec g) i • v i = 0`. Rewrite using `[← hg]`. Simplify using `only [Matrix.mulVec, dotProduct, Finset.sum_smul, hw, Finset.smul_sum, smul_smul]`.
+
+Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun j _ => Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[mul_comm]`. Establish `h2 : B.mulVec g = 0` using `funext (hv _ h1)`. Establish `h3 : g = B⁻¹.mulVec (B.mulVec g)`.
+
+Rewrite using `[Matrix.mulVec_mulVec, Matrix.nonsing_inv_mul _ hB, Matrix.one_mulVec]`. Introduce `i`. Rewrite using `[h3, h2, Matrix.mulVec_zero, Pi.zero_apply]`.
+-/
 theorem linInd_of_change {R W ι : Type} [CommRing R] [AddCommGroup W] [Module R W] [Fintype ι] [DecidableEq ι]
     {v w : ι → W} (B : Matrix ι ι R) (hB : IsUnit B.det) (hv : LinearIndependent R v)
     (hw : ∀ j, w j = ∑ i, B i j • v i) : LinearIndependent R w := by
@@ -32,6 +39,9 @@ theorem linInd_of_change {R W ι : Type} [CommRing R] [AddCommGroup W] [Module R
   intro i
   rw [h3, h2, Matrix.mulVec_zero, Pi.zero_apply]
 
+/- English proof (translation)
+Distinguish the cases in `hy : IsUnit y`. Take `⟨u, rfl⟩` from `hy`. Rewrite using `[Ring.inverse_unit]`. Conclude with `Units.isUnit _`. Conclude with `absurd (Ring.inverse_non_unit y hy) h`.
+-/
 theorem isUnit_ringInverse_of_ne {R : Type} [CommRing R] {y : R} (h : Ring.inverse y ≠ 0) :
     IsUnit (Ring.inverse y) := by
   by_cases hy : IsUnit y
@@ -40,6 +50,9 @@ theorem isUnit_ringInverse_of_ne {R : Type} [CommRing R] {y : R} (h : Ring.inver
     exact Units.isUnit _
   · exact absurd (Ring.inverse_non_unit y hy) h
 
+/- English proof (translation)
+Take `⟨hlow, hdiag⟩` from `hA`. Rewrite using `[Matrix.det_of_isUpperTriangular (fun i j hij => hlow i j hij)]`. Simplify using `[hdiag]`.
+-/
 theorem det_uni_eq_one {K : Type} [CommRing K] {n : ℕ} {A : Matrix (Fin n) (Fin n) K} (hA : Uni A) :
     A.det = 1 := by
   obtain ⟨hlow, hdiag⟩ := hA
@@ -52,11 +65,25 @@ section Main
 
 variable {D : D7}
 
+/- English proof (translation)
+Take `⟨P, hne, hP⟩` from `Ring.not_isField_iff_exists_prime.1 (NumberField.RingOfIntegers.not_isField D.host.F)`. Conclude with `⟨⟨P, hP, hne⟩⟩`.
+-/
 theorem exists_place (D : D7) : Nonempty (PlF D) := by
   obtain ⟨P, hne, hP⟩ :=
     Ring.not_isField_iff_exists_prime.1 (NumberField.RingOfIntegers.not_isField D.host.F)
   exact ⟨⟨P, hP, hne⟩⟩
 
+/- English proof (translation)
+Rewrite using `[Fintype.linearIndependent_iff]`. Introduce `g hg`. Establish `key : ∀ y, H.h (∑ i, g i • Fr.f i) y = ∑ i, g i * H.h (Fr.f i) y`. Introduce `y`. Establish `hs : ∀ s : Finset (Fin (r + 1)), H.h (∑ i ∈ s, g i • Fr.f i) y = ∑ i ∈ s, g i * H.h (Fr.f i) y`.
+
+Introduce `s`. Use `Finset.induction_on s (by simp [H.h_zero_left]) ?_` and prove the remaining obligations. Introduce `a s ha ih`. Rewrite using `[Finset.sum_insert ha, Finset.sum_insert ha, H.h_add_left, H.h_smul_left, ih]`. Conclude with `hs Finset.univ`.
+
+Establish `hlast : g (Fin.last r) = 0`. Establish `hz` using `key (Fr.f (Fin.last r))`. Rewrite `hz` using `[hg, H.h_zero_left, Fin.sum_univ_castSucc]`. Establish `hoff : ∀ i : Fin r, H.h (Fr.f i.castSucc) (Fr.f (Fin.last r)) = 0` using `fun i => Fr.h_iso _ _ (Or.inl (Fin.castSucc_ne_last i))`. Simplify using `only [hoff, mul_zero, Finset.sum_const_zero, zero_add, Fr.h_zz] at hz`.
+
+Establish `hu : IsUnit (-(algebraMap F E Fr.T))` using `((Ne.isUnit hT).map (algebraMap F E)).neg`. Conclude with `hu.mul_left_eq_zero.1 hz.symm`. Introduce `i`. Use `Fin.lastCases hlast (fun j => ?_) i` and prove the remaining obligations. Establish `he` using `key (Fr.es j)`.
+
+Rewrite `he` using `[hg, H.h_zero_left, Fin.sum_univ_castSucc, hlast, zero_mul, add_zero]`. Simplify using `only [Fr.h_es, mul_ite, mul_one, mul_zero, Finset.sum_ite_eq', Finset.mem_univ, if_true] at he`. Conclude with `he.symm`.
+-/
 private theorem linearIndependent_frameD_of_T_ne_zero {F : Type} [Field F] [ValuativeRel F] [TopologicalSpace F]
     {E : Type} [CommRing E] [Algebra F E] [TopologicalSpace E] [MeasurableSpace E]
     {M : Model F E} {V : Type} [AddCommGroup V] [Module E V] {H : HermSp M V} {r : ℕ}
@@ -88,6 +115,9 @@ private theorem linearIndependent_frameD_of_T_ne_zero {F : Type} [Field F] [Valu
     Finset.mem_univ, if_true] at he
   exact he.symm
 
+/- English proof (translation)
+Take `⟨hX, -, -, -, -, -, hN⟩` from `hR`. Take `⟨-, hT, -, hT', -⟩` from `hN`. Conclude with `LinearIndependent.sum_type (linearIndependent_frameD_of_T_ne_zero P.A hT) (linearIndependent_frameD_of_T_ne_zero P.B hT') (disjoint_iff.2 hX)`.
+-/
 theorem local_pair_linInd (Z : LocDat D) (p : PlF D) (P : LocNG.FPair (locH Z p) D.R.rS)
     (hR : P.RelG (LocNG.theta (Z.M p))) :
     LinearIndependent (D.s.atP p).Ep (Sum.elim P.A.f P.B.f) := by
@@ -102,6 +132,21 @@ section Final
 
 variable {D : D7}
 
+/- English proof (translation)
+Take `⟨p⟩` from `exists_place D`. Establish `hloc` using `local_pair_linInd Z p (FP p) (hR p)`. Take `⟨hA, hA', -, -⟩` from `hB p`. Establish `hu : ∀ i, Sum.elim (FP p).A.f (FP p).B.f i = Sum.elim (frFac Z.δ p) (frFac Z.δ p) i • baseChange₂ D p (Sum.elim (frame F) (frame F') i)`. Introduce and unpack `(a | a)`.
+
+Simplify using `only [Sum.elim_inl, hA]`. Simplify using `only [Sum.elim_inr, hA']`. Establish `hs : ∀ i, Ring.inverse (Sum.elim (frFac Z.δ p) (frFac Z.δ p) i) * Sum.elim (frFac Z.δ p) (frFac Z.δ p) i = 1`. Introduce `i`. Establish `hne : Sum.elim (frFac Z.δ p) (frFac Z.δ p) i ≠ 0`.
+
+Introduce `h0`. Apply `hloc.ne_zero i` to reduce the goal to its premises. Rewrite using `[hu i, h0, zero_smul]`. Use `Ring.inverse_mul_cancel _ ?_` and prove the remaining obligations. Break down `i with a | a` into its components or cases.
+
+Conclude with `isUnit_ringInverse_of_ne hne`. Conclude with `isUnit_ringInverse_of_ne hne`. Rewrite `hloc`, the goal using `[Fintype.linearIndependent_iff]`. Introduce `g hg`. Establish `h1 : ∑ i, ((D.s.atP p).ιE (g i) * Ring.inverse (Sum.elim (frFac Z.δ p) (frFac Z.δ p) i)) • Sum.elim (FP p).A.f (FP p).B.f i = 0`.
+
+Establish `hmap` using `congrArg (baseChange₂ D p) hg`. Rewrite `hmap` using `[map_sum, map_zero]`. Rewrite using `[← hmap]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[hu i, smul_smul, mul_assoc, hs i, mul_one, baseChange_smul₂]`.
+
+Introduce `i`. Establish `h2` using `hloc _ h1 i`. Establish `h3 : (D.s.atP p).ιE (g i) = 0`. Establish `h4` using `congrArg (· * Sum.elim (frFac Z.δ p) (frFac Z.δ p) i) h2`. Simplify `h4` using `only [mul_assoc, hs i, mul_one, zero_mul]`.
+
+Conclude with `(map_eq_zero_iff _ (D.s.atP p).ιE.injective).1 h3`.
+-/
 theorem base_frames_linInd (Z : LocDat D) (FP : ∀ p : PlF D, LocNG.FPair (locH Z p) D.R.rS) (Tn T'n : ℕ)
     (F : LFlag (VS D) D.R.rS (Tn : D.host.E)) (F' : LFlag (VS D) D.R.rS (T'n : D.host.E))
     (hB : Based Z FP Tn T'n F F') (hR : ∀ p, (FP p).RelG (LocNG.theta (Z.M p))) :
@@ -141,6 +186,13 @@ theorem base_frames_linInd (Z : LocDat D) (FP : ∀ p : PlF D, LocNG.FPair (locH
     simpa only [mul_assoc, hs i, mul_one, zero_mul] using h4
   exact (map_eq_zero_iff _ (D.s.atP p).ιE.injective).1 h3
 
+/- English proof (translation)
+Introduce `D Z FP Tn T'n F G F' G' hB hR hG hG'`. Establish `hbase` using `base_frames_linInd Z FP Tn T'n F F' hB hR`. Take `⟨A, hA, hcA⟩` from `hG`. Take `⟨A', hA', hcA'⟩` from `hG'`. Use `linInd_of_change (Matrix.fromBlocks A 0 0 A') ?_ hbase ?_` and prove the remaining obligations.
+
+Rewrite using `[Matrix.det_fromBlocks_zero₂₁, det_uni_eq_one hA, det_uni_eq_one hA', mul_one]`. Conclude with `isUnit_one`. Introduce and unpack `(b | b)`. Simplify using `only [Sum.elim_inl, Fintype.sum_sum_type, Sum.elim_inr, Matrix.fromBlocks_apply₁₁, Matrix.fromBlocks_apply₂₁, Matrix.zero_apply, zero_smul, Finset.sum_const_zero, add_zero]`. Conclude with `hcA b`.
+
+Simplify using `only [Sum.elim_inr, Fintype.sum_sum_type, Sum.elim_inl, Matrix.fromBlocks_apply₁₂, Matrix.fromBlocks_apply₂₂, Matrix.zero_apply, zero_smul, Finset.sum_const_zero, zero_add]`. Conclude with `hcA' b`.
+-/
 theorem changed_frames_linInd : ∀ (D : D7) (Z : LocDat D) (FP : ∀ p : PlF D, LocNG.FPair (locH Z p) D.R.rS) (Tn T'n : ℕ) (F G : LFlag (VS D) D.R.rS (Tn : D.host.E)) (F' G' : LFlag (VS D) D.R.rS (T'n : D.host.E)), Based Z FP Tn T'n F F' → (∀ p, (FP p).RelG (LocNG.theta (Z.M p))) → Tri D.host.E (frame F) (frame G) → Tri D.host.E (frame F') (frame G') → LinearIndependent D.host.E (Sum.elim (frame G) (frame G')) := by
   intro D Z FP Tn T'n F G F' G' hB hR hG hG'
   have hbase := base_frames_linInd Z FP Tn T'n F F' hB hR

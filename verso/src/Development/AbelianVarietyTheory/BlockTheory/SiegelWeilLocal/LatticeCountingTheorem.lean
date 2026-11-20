@@ -15,6 +15,11 @@ def CountingTheorem : Prop :=
           Real.exp (-(1 / 16 * (B.I.n : ℝ) * (B.I.f : ℝ) * Real.log (B.I.n : ℝ))) *
             GlobalTheory.Count.mainTerm B d
 
+/- English proof (translation)
+Take `⟨-, -, -, -, -, -, hb, -, -, hg, hgb, -⟩` from `h`. Assume the negation of the conclusion as `hC`. Establish `hC' : Cg < 0` using `not_le.mp hC`. Establish `h1 : b ^ Cg < 1` using `Real.rpow_lt_one_of_one_lt_of_neg (by linarith) hC'`. Establish `h2 : (1 : ℝ) ≤ (B.g : ℝ)` using `by exact_mod_cast hg`.
+
+Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 example (B : RowsAut) (Cg : ℝ) (n₀ : ℕ) (d : InfinitePlace B.I.F → ℝ) (p q : ℕ) (b : ℝ)
     (h : GlobalTheory.Count.CountHyp B Cg n₀ d p q b) : 0 ≤ Cg := by
   obtain ⟨-, -, -, -, -, -, hb, -, -, hg, hgb, -⟩ := h

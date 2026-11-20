@@ -20,6 +20,15 @@ def powDenomSubring {S EE : Type} [CommRing S] [CommRing EE] (a : S →+* EE) (Q
     refine ⟨n, -t, ?_⟩
     rw [map_neg, ← ht]; ring
 
+/- English proof (translation)
+Use `choose n t ht using hE`. Use `set N := ∑ m, n m with hN`. Establish `hle : ∀ m, n m ≤ N` using `fun m => Finset.single_le_sum (f := n) (fun _ _ => Nat.zero_le _) (Finset.mem_univ m)`. Establish `h1 : ∀ m, a Q ^ N * E m = a (Q ^ (N - n m) * t m)`. Introduce `m`.
+
+Rewrite using `[map_mul, map_pow, ← ht, ← mul_assoc, ← pow_add, Nat.sub_add_cancel (hle m)]`. Establish `h2` using `hx (fun m => ψ (Q ^ (N - n m) * t m)) (by`. Establish `: ∀ m, c (ψ (Q ^ (N - n m) * t m)) • x m = ι (a Q ^ N) • (ι (E m) • x m)`. Introduce `m`. Rewrite using `[← hc, ← h1, map_mul, mul_smul]`.
+
+Simplify using `only [this]`. Rewrite using `[← Finset.smul_sum, h0, smul_zero])`. Establish `h3 : ψ (Q ^ (N - n m) * t m) = 0` using `congrFun h2 m`. Establish `h4 : a Q ^ N * E m = 0`. Apply `hι` to reduce the goal to its premises.
+
+Rewrite using `[h1, hc, h3, map_zero, map_zero]`. Conclude with `((hQ.pow N).mul_right_eq_zero).1 h4`.
+-/
 theorem eq_zero_of_sum_smul_eq_zero_of_powDenom {S EE W RW Y : Type} [CommRing S] [CommRing EE]
     [CommRing W] [CommRing RW] [AddCommGroup Y] [Module RW Y] (a : S →+* EE) (ι : EE →+* RW)
     (c : W →+* RW) (ψ : S →+* W) (Q : S) (hι : Function.Injective ι)
@@ -46,6 +55,11 @@ theorem eq_zero_of_sum_smul_eq_zero_of_powDenom {S EE W RW Y : Type} [CommRing S
     rw [h1, hc, h3, map_zero, map_zero]
   exact ((hQ.pow N).mul_right_eq_zero).1 h4
 
+/- English proof (translation)
+Take `⟨k, s, hs⟩` from `hy`. Take `⟨v, hv⟩` from `(hQ.pow k).exists_left_inv`. Use `⟨fun i => v * a (s i), fun i => ⟨k, s i, ?_⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[← mul_assoc, mul_comm _ v, hv, one_mul]`. Establish `: ∀ i, ι (v * a (s i)) • x i = ι v • (c (ψ (s i)) • x i)`.
+
+Introduce `i`. Rewrite using `[map_mul, mul_smul, hc]`. Simplify using `only [this]`. Rewrite using `[← Finset.smul_sum, ← hs, ← hc, ← map_pow, ← mul_smul, ← map_mul, hv, map_one, one_smul]`.
+-/
 theorem exists_coeff_powDenom {S EE W RW Y : Type} [CommRing S] [CommRing EE]
     [CommRing W] [CommRing RW] [AddCommGroup Y] [Module RW Y] (a : S →+* EE) (ι : EE →+* RW)
     (c : W →+* RW) (ψ : S →+* W) (Q : S)
@@ -62,6 +76,21 @@ theorem exists_coeff_powDenom {S EE W RW Y : Type} [CommRing S] [CommRing EE]
     simp only [this]
     rw [← Finset.smul_sum, ← hs, ← hc, ← map_pow, ← mul_smul, ← map_mul, hv, map_one, one_smul]
 
+/- English proof (translation)
+Introduce `S EE W RW Y _ _ _ _ _ _ a ι c ψ Q hι hc hQ q x z hx hz hx'`. Use `choose A hAm hA using fun j => exists_coeff_powDenom a ι c ψ Q hc hQ x (z j) (hz j)`. Use `choose B hBm hB using fun i => exists_coeff_powDenom a ι c ψ Q hc hQ z (x i) (hx' i)`. Use `⟨Matrix.of fun i j => A j i, ?_, fun j => by simpa using hA j⟩` and prove the remaining obligations. Establish `hAB : (Matrix.of fun i j => A j i) * (Matrix.of fun j i => B i j) = (1 : Matrix (Fin q) (Fin q) EE)`.
+
+Use extensionality with `m i`. Rewrite using `[← sub_eq_zero]`. Use `eq_zero_of_sum_smul_eq_zero_of_powDenom a ι c ψ Q hι hc hQ x hx (fun m => ((Matrix.of fun i j => A j i) * (Matrix.of fun j i => B i j)) m i - (1 : Matrix (Fin q) (Fin q) EE) m i) ?_ ?_ m` and prove the remaining obligations. Introduce `m`. Use `sub_mem ?_ ?_` and prove the remaining obligations.
+
+Rewrite using `[Matrix.mul_apply]`. Conclude with `sum_mem fun j _ => mul_mem (hAm j m) (hBm i j)`. Rewrite using `[Matrix.one_apply] split_ifs`. Conclude with `one_mem _`. Conclude with `zero_mem _`.
+
+Simplify using `only [map_sub, sub_smul, Finset.sum_sub_distrib]`. Rewrite using `[sub_eq_zero]`. Establish `h1 : ∑ m, ι ((1 : Matrix (Fin q) (Fin q) EE) m i) • x m = x i`. Rewrite using `[Finset.sum_eq_single i]`. Simplify using the standard rewrite rules.
+
+Introduce `m _ hm`. Simplify using `[Matrix.one_apply_ne hm]`. Simplify using the standard rewrite rules. Rewrite using `[h1]`. Use `conv_rhs => rw [hB i]`.
+
+Simplify using `only [Matrix.mul_apply, Matrix.of_apply, map_sum, Finset.sum_smul]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[hA j, Finset.smul_sum]`. Use `Finset.sum_congr rfl fun m _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[map_mul, mul_comm, mul_smul]`. Conclude with `(Matrix.isUnit_iff_isUnit_det _).2 (Matrix.isUnit_det_of_right_inverse hAB)`.
+-/
 theorem exists_isUnit_matrix_of_pow_smul_span : ∀ (S EE W RW Y : Type) [CommRing S] [CommRing EE] [CommRing W] [CommRing RW] [AddCommGroup Y] [Module RW Y] (a : S →+* EE) (ι : EE →+* RW) (c : W →+* RW) (ψ : S →+* W) (Q : S), Function.Injective ι → (∀ s, ι (a s) = c (ψ s)) → IsUnit (a Q) → ∀ (q : ℕ) (x z : Fin q → Y), (∀ w : Fin q → W, ∑ i, c (w i) • x i = 0 → w = 0) → (∀ j, ∃ (k : ℕ) (s : Fin q → S), c (ψ Q) ^ k • z j = ∑ i, c (ψ (s i)) • x i) → (∀ i, ∃ (k : ℕ) (s : Fin q → S), c (ψ Q) ^ k • x i = ∑ j, c (ψ (s j)) • z j) → ∃ A : Matrix (Fin q) (Fin q) EE, IsUnit A ∧ ∀ j, z j = ∑ i, ι (A i j) • x i := by
   intro S EE W RW Y _ _ _ _ _ _ a ι c ψ Q hι hc hQ q x z hx hz hx'
   choose A hAm hA using fun j => exists_coeff_powDenom a ι c ψ Q hc hQ x (z j) (hz j)

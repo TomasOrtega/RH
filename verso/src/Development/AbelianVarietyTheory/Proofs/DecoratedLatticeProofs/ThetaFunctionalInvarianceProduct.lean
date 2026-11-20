@@ -22,6 +22,11 @@ def iterForm {D : D7} {S A B T : HSp D} (o : OrthDec S A B) (ℓA : (WO A T → 
     (ℓB : (WO B T → ℂ) →ₗ[ℂ] ℂ) : (WO S T → ℂ) →ₗ[ℂ] ℂ :=
   ℓA ∘ₗ LinearMap.pi fun a => ℓB ∘ₗ LinearMap.funLeft ℂ ℂ (fun b => (o.resS T).symm (a, b))
 
+/- English proof (translation)
+Establish `h : (LinearMap.pi fun a => ℓB ∘ₗ LinearMap.funLeft ℂ ℂ (fun b => (o.resS T).symm (a, b))) (o.boxS T fA fB) = ℓB fB • fA`. Use function extensionality and compare the values at `a`. Establish `: (LinearMap.funLeft ℂ ℂ (fun b => (o.resS T).symm (a, b))) (o.boxS T fA fB) = fA a • fB`. Use function extensionality and compare the values at `b`. Simplify using `[LinearMap.funLeft_apply, OrthDec.boxS]`.
+
+Simplify using `[this, mul_comm]`. Rewrite using `[iterForm, LinearMap.comp_apply, h, map_smul, smul_eq_mul, mul_comm]`.
+-/
 theorem iterForm_boxS {D : D7} {S A B T : HSp D} (o : OrthDec S A B) (ℓA : (WO A T → ℂ) →ₗ[ℂ] ℂ)
     (ℓB : (WO B T → ℂ) →ₗ[ℂ] ℂ) (fA : WO A T → ℂ) (fB : WO B T → ℂ) :
     iterForm o ℓA ℓB (o.boxS T fA fB) = ℓA fA * ℓB fB := by
@@ -38,6 +43,39 @@ end GlobalTheory.ProdForm
 
 namespace GlobalTheory.ProdForm
 
+/- English proof (translation)
+Introduce `D ψ hψ S A B T o e hs ℓA ℓB hA hB`. Take `⟨he, hec, v, ε, hε, heq⟩` from `id hs`. Establish `hs'` using `GlobalTheory.SplitScalar.isSplitIdem_conj hs`. Establish `he' : cA D e * cA D e = cA D e` using `hs'.1`. Establish `heε' : algebraMap (AF D.host.F) (AE D) ε * cA D e = cA D e` using `by rw [← heq]; linear_combination he' + hec`.
+
+Establish `c2 : cA D (cA D e) * cA D e = 0` using `by rw [GlobalTheory.LatVac.cA_cA, hec]`. Establish `hresA : ∀ u : WO S T, u ∈ half S T (cA D e) → ∀ i j, cA D e * (o.resS T u).1 i j = (o.resS T u).1 i j`. Introduce `u hu i j`. Establish `hu' : ∀ i j, cA D e * u i j = u i j` using `(isHalf_iff S T).2 hu`. Simplify using `only [OrthDec.resS_apply, Matrix.mul_apply, Finset.mul_sum, ← mul_assoc, hu']`.
+
+Establish `hresB : ∀ u : WO S T, u ∈ half S T (cA D e) → ∀ i j, cA D e * (o.resS T u).2 i j = (o.resS T u).2 i j`. Introduce `u hu i j`. Establish `hu' : ∀ i j, cA D e * u i j = u i j` using `(isHalf_iff S T).2 hu`. Simplify using `only [OrthDec.resS_apply, Matrix.mul_apply, Finset.mul_sum, ← mul_assoc, hu']`. Use `set l0 := iterForm o ℓA ℓB with hl0`.
+
+Set `gen : Set (WO S T → ℂ)` to `{f | ∃ fA fB, IsThetaFunO ψ A T fA ∧ IsThetaFunO ψ B T fB ∧ f = o.boxS T fA fB}`. Set `P : Submodule ℂ (WO S T → ℂ)` to `Submodule.span ℂ gen`. Establish `hPst : ∀ u ∈ half S T (cA D e), ∀ p ∈ P, heisL S T ψ u p ∈ P`. Introduce `u hu p hp`. Proceed by induction on `hp using Submodule.span_induction with`.
+
+Consider the case `mem f hf`. Take `⟨fA, fB, hfA, hfB, rfl⟩` from `hf`. Use `Submodule.subset_span ⟨_, _, GlobalTheory.ThetaClosed.isThetaFunO_heisO_all hψ hfA (o.resS T u).1, GlobalTheory.ThetaClosed.isThetaFunO_heisO_all hψ hfB (o.resS T u).2, ?_⟩` and prove the remaining obligations. Conclude with `o.heisO_boxS ψ T fA fB u`. Consider the case `zero => rw [map_zero]`.
+
+Conclude with `P.zero_mem`. Consider the case `add a b _ _ ha hb => rw [map_add]`. Conclude with `P.add_mem ha hb`. Consider the case `smul c a _ ha => rw [map_smul]`. Conclude with `P.smul_mem c ha`.
+
+Establish `hl0P : ∀ u ∈ half S T (cA D e), ∀ p ∈ P, l0 (heisL S T ψ u p) = l0 p`. Introduce `u hu p hp`. Proceed by induction on `hp using Submodule.span_induction with`. Consider the case `mem f hf`. Take `⟨fA, fB, hfA, hfB, rfl⟩` from `hf`.
+
+Express the relevant statement in the definitionally equal form `l0 (heisO ψ S T u (o.boxS T fA fB)) = _`. Rewrite using `[o.heisO_boxS ψ T fA fB u, hl0, iterForm_boxS, iterForm_boxS, hA _ (hresA u hu) fA hfA, hB _ (hresB u hu) fB hfB]`. Consider the case `zero => simp`. Consider the case `add a b _ _ ha hb => rw [map_add, map_add, map_add, ha, hb]`. Consider the case `smul c a _ ha => rw [map_smul, map_smul, map_smul, ha]`.
+
+Set `K : Submodule ℂ (WO S T → ℂ)` to `Submodule.span ℂ {m | ∃ u ∈ half S T (cA D e), ∃ g ∈ {g | IsThetaFunO ψ S T g}, m = heisL S T ψ u g - g}`. Establish `hsm : ∀ u ∈ half S T (cA D e), ∀ g ∈ {g | IsThetaFunO ψ S T g}, ∃ k : ℕ, 0 < k ∧ heisL S T ψ (k • u) g = g`. Introduce `u hu g hg`. Take `⟨U, hU, h⟩` from `(show IsThetaFunO ψ S T g from hg).level`. Take `⟨k, hk, hkU⟩` from `GlobalTheory.SplitScalar.exists_nsmul_mem U hU (infPart_half hε heε' hu)`.
+
+Conclude with `⟨k, hk, h _ hkU (infPart_half hε heε' ((half S T (cA D e)).nsmul_mem hu k))⟩`. Establish `hPK : ∀ m ∈ P, m ∈ K → l0 m = 0`. Introduce `m hmP hmK`. Take `⟨ι, s, y, hy, ⟨i, hi, hi0⟩, h⟩` from `GlobalTheory.HalfCoinv.exists_sum_eq_zero (heisL_half S T ψ c2) (GlobalTheory.SplitScalar.heisO_zero ψ S T) hsm hmK`. Establish `h1 : l0 (∑ j ∈ s, heisL S T ψ (y j) m) = (s.card : ℂ) * l0 m`.
+
+Rewrite using `[map_sum, Finset.sum_congr rfl (fun j _ => hl0P (y j) (hy j) m hmP), Finset.sum_const, nsmul_eq_mul]`. Rewrite `h1` using `[h, map_zero]`. Establish `hc : (s.card : ℂ) ≠ 0` using `Nat.cast_ne_zero.2 (Finset.card_ne_zero.2 ⟨i, hi⟩)`. Conclude with `(mul_eq_zero.1 h1.symm).resolve_left hc`. Set `fP : (WO S T → ℂ) →ₗ.[ℂ] ℂ` to `⟨P, l0 ∘ₗ P.subtype⟩`.
+
+Set `fK : (WO S T → ℂ) →ₗ.[ℂ] ℂ` to `⟨K, 0⟩`. Establish `H : ∀ (x : fP.domain) (y : fK.domain), (x : WO S T → ℂ) = y → fP x = fK y`. Introduce `x y hxy`. Express the relevant statement in the definitionally equal form `l0 (x : WO S T → ℂ) = 0`. Conclude with `hPK _ x.2 (hxy ▸ y.2)`.
+
+Take `⟨L, hL⟩` from `LinearMap.exists_extend (fP.sup fK H).toFun`. Establish `hLv : ∀ z : (fP.sup fK H).domain, L z = (fP.sup fK H) z` using `fun z => LinearMap.congr_fun hL z`. Use `⟨L, fun u hu f hf => ?_, fun fA fB hfA hfB => ?_⟩` and prove the remaining obligations. Establish `huY : u ∈ half S T (cA D e)` using `(isHalf_iff S T).1 hu`. Establish `hk : heisO ψ S T u f - f ∈ K` using `Submodule.subset_span ⟨u, huY, f, hf, rfl⟩`.
+
+Establish `hz : heisO ψ S T u f - f ∈ (fP.sup fK H).domain`. Rewrite using `[LinearPMap.domain_sup]`. Conclude with `Submodule.mem_sup_right hk`. Establish `: L (heisO ψ S T u f - f) = 0`. Use `(hLv ⟨_, hz⟩).trans ((LinearPMap.sup_apply H (0 : fP.domain) ⟨_, hk⟩ ⟨_, hz⟩ (by simp)).trans ?_)` and prove the remaining obligations.
+
+Express the relevant statement in the definitionally equal form `l0 0 + 0 = 0`. Simplify using the standard rewrite rules. Rewrite `this` using `[map_sub, sub_eq_zero]`. Then use the resulting hypothesis. Establish `hp : o.boxS T fA fB ∈ P` using `Submodule.subset_span ⟨fA, fB, hfA, hfB, rfl⟩`. Establish `hz : o.boxS T fA fB ∈ (fP.sup fK H).domain`.
+
+Rewrite using `[LinearPMap.domain_sup]`. Conclude with `Submodule.mem_sup_left hp`. Use `(hLv ⟨_, hz⟩).trans ((LinearPMap.sup_apply H ⟨_, hp⟩ (0 : fK.domain) ⟨_, hz⟩ (by simp)).trans ?_)` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `l0 (o.boxS T fA fB) + 0 = _`. Rewrite using `[add_zero, hl0, iterForm_boxS]`.
+-/
 theorem exists_product_form : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ), IsStdChar D ψ (-1) → ∀ (S A B T : HSp D) (o : OrthDec S A B), ∀ e, IsSplitIdem D e → ∀ (ℓA : (WO A T → ℂ) →ₗ[ℂ] ℂ) (ℓB : (WO B T → ℂ) →ₗ[ℂ] ℂ), (∀ u : WO A T, (∀ i j, cA D e * u i j = u i j) → ∀ f, IsThetaFunO ψ A T f → ℓA (heisO ψ A T u f) = ℓA f) → (∀ u : WO B T, (∀ i j, cA D e * u i j = u i j) → ∀ f, IsThetaFunO ψ B T f → ℓB (heisO ψ B T u f) = ℓB f) → ∃ ℓ : (WO S T → ℂ) →ₗ[ℂ] ℂ, (∀ u : WO S T, (∀ i j, cA D e * u i j = u i j) → ∀ f, IsThetaFunO ψ S T f → ℓ (heisO ψ S T u f) = ℓ f) ∧ ∀ fA fB, IsThetaFunO ψ A T fA → IsThetaFunO ψ B T fB → ℓ (o.boxS T fA fB) = ℓA fA * ℓB fB := by
   intro D ψ hψ S A B T o e hs ℓA ℓB hA hB
   classical

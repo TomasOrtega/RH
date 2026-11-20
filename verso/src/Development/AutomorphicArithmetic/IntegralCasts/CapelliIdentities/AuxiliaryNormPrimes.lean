@@ -14,6 +14,9 @@ noncomputable def UpperTheory.Reformulated.B.AuxiliaryNormPrimes.gtpolyP.{u_1} :
     {L : Type u_1} → [NormedField L] → Multiset L → Multiset L :=
     fun {L : Type u_1} [NormedField L] (R : Multiset L) ↦ Multiset.filter (fun (z : L) ↦ ‖z‖ < (1 : ℝ)) R
 
+/- English proof (translation)
+Establish `h` using `IsUltrametricDist.norm_add_le_max x (-y)`. Rewrite `h` using `[norm_neg, ← sub_eq_add_neg]`. Then use the resulting hypothesis.
+-/
 private theorem UpperTheory.Reformulated.B.AuxiliaryNormPrimes.norm_sub_le_max' {L : Type*} [NormedField L] [IsUltrametricDist L]
     (x y : L) : ‖x - y‖ ≤ max ‖x‖ ‖y‖ := by
   have h := IsUltrametricDist.norm_add_le_max x (-y)

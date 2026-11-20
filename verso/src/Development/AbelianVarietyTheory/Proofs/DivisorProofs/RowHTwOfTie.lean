@@ -7,6 +7,9 @@ open Formalism.BasicNotions Formalism.MainNotions GlobalTheory.EX GlobalTheory.E
 
 namespace GlobalTheory.Fc
 
+/- English proof (translation)
+Introduce `Q Lk h`. Use `h.imp fun 𝒜 σ _ hT => ?_` and prove the remaining obligations. Introduce `eps Fm hc x hx i`. Take `⟨t⟩` from `hT Fm hc x hx i`. Conclude with `Formalism.L2.Top4.tieTwRec_of (Q := (σ Fm hc x hx i).B.Q) t.1 (Fm.tw_supp x hx i)`.
+-/
 theorem row_hTw_of_tie : ∀ (Q : V4.Slot) (Lk : LkT Bundle), Row Q Lk (AtAll HasTie) → R1.TwistConditionAtBundlePoints Q Lk := by
   intro Q Lk h
   refine h.imp fun 𝒜 σ _ hT => ?_

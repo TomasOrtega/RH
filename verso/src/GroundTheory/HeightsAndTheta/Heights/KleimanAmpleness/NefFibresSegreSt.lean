@@ -18,10 +18,16 @@ def NefFibresSegre.Statement : Prop :=
       (Kleiman.Nef (M.toSubSystem.extend (FractionRing O)) ↔
         IndefiniteRowSideFullHecke.Kleiman2.IsNefIdeal (FractionRing O) (NumbersDVR.genFib P) β)
 
+/- English proof (translation)
+The claim follows from `NumbersDVR.isModelOver_projectiveSpace 1`.
+-/
 theorem NefFibresSegre.hyps :
     NumbersDVR.IsModelOver (⊥ : Ideal (NumbersDVR.MRing (fun _ : Unit => Fin 2) exO)) 1 :=
   NumbersDVR.isModelOver_projectiveSpace 1
 
+/- English proof (translation)
+The claim follows from `h exO Unit (fun _ => Fin 2) ⊥ 1 (fun _ => 1) NefFibresSegre.hyps`.
+-/
 example (h : NefFibresSegre.Statement) :=
   h exO Unit (fun _ => Fin 2) ⊥ 1 (fun _ => 1) NefFibresSegre.hyps
 

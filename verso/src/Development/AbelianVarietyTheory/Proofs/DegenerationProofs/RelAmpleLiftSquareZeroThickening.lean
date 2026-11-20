@@ -20,6 +20,13 @@ attribute [local instance] Over.cartesianMonoidalCategory
 
 namespace GlobalTheory.AmpleThickening
 
+/- English proof (translation)
+Use `⟨fun (x : PrimeSpectrum A) ↦ ?_⟩` and prove the remaining obligations. Establish `: x ∈ Set.range (PrimeSpectrum.comap g)`. Rewrite using `[range_comap_of_surjective _ _ hg]`. Take `⟨n, hn⟩` from `hn`. Introduce `a ha`.
+
+Apply `x.isPrime.mem_of_pow_mem n` to reduce the goal to its premises. Establish `: a ^ n ∈ RingHom.ker g ^ n` using `Ideal.pow_mem_pow ha n`. Rewrite `this` using `[hn]`. Rewrite using `[show a ^ n = 0 from this]`. Conclude with `zero_mem _`.
+
+Conclude with `this`.
+-/
 theorem surjective_spec_of_isNilpotent_ker {A A' : Type} [CommRing A] [CommRing A'] (g : A →+* A')
     (hg : Function.Surjective g) (hn : IsNilpotent (RingHom.ker g)) :
     Surjective (Spec.map (CommRingCat.ofHom g)) := by
@@ -35,6 +42,9 @@ theorem surjective_spec_of_isNilpotent_ker {A A' : Type} [CommRing A] [CommRing 
     exact zero_mem _
   exact this
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨powSecMk n σ.f fun i j => (σ.compat i j).trans (congrArg (· * _) (by change (H.g i j ^ (n : ℤ)).val = _ rw [zpow_natCast, Units.val_pow_eq_pow_val])), nonzeroLocus_powSecMk n _ _⟩`.
+-/
 theorem exists_sec_lbPow_of_pw {X : Scheme.{0}} {H : LB X} {n : ℕ} (σ : LB.Sec (pw H n)) :
     ∃ s : (lbPow H n).Sec, nonzeroLocus s = nonzeroLocus σ :=
   ⟨powSecMk n σ.f fun i j => (σ.compat i j).trans (congrArg (· * _) (by
@@ -42,6 +52,19 @@ theorem exists_sec_lbPow_of_pw {X : Scheme.{0}} {H : LB X} {n : ℕ} (σ : LB.Se
       rw [zpow_natCast, Units.val_pow_eq_pow_val])),
     nonzeroLocus_powSecMk n _ _⟩
 
+/- English proof (translation)
+Introduce `A A' _ _ g hg h2 X X' β hβ _ L L' hL hL' hw hA`. Establish `hn : IsNilpotent (RingHom.ker g)` using `⟨2, h2⟩`. Take `⟨d, -, m, s', hs'⟩` from `(Unif.relAmple_iff_veryAmpleBy A' X' L' hL').1 hA`. Establish `hP' : IsProper X'.hom` using `isProper_of_veryAmpleBy hs'`. Establish `hs : Surjective (Spec.map (CommRingCat.ofHom g))` using `surjective_spec_of_isNilpotent_ker g hg hn`.
+
+Establish `hc : IsClosedImmersion (Spec.map (CommRingCat.ofHom g))` using `.spec_of_surjective _ hg`. Establish `: Surjective β` using `MorphismProperty.of_isPullback (P := @Surjective) hβ.flip hs`. Establish `: IsClosedImmersion β` using `MorphismProperty.of_isPullback (P := @IsClosedImmersion) hβ.flip hc`. Establish `hp : IsProper (β ≫ X.hom)` using `by rw [hβ.w]; infer_instance`. Establish `: UniversallyClosed X.hom` using `UniversallyClosed.of_comp_surjective β X.hom`.
+
+Establish `: IsSeparated X.hom` using `NilProper.isSeparated_of_comp_surjective β X.hom`. Establish `: IsProper X.hom` using `{}`. Establish `: CompactSpace X.left` using `QuasiCompact.compactSpace_of_compactSpace X.hom`. Establish `: QuasiSeparatedSpace X.left` using `quasiSeparatedSpace_of_quasiSeparated X.hom`. Establish `h : IsAmpleLB (L.pull β)` using `(isAmpleLB_of_relAmple_of_isAffine X' hL' hA).of_lbIso (LB.isLB_pull hL β) hw.symm`.
+
+Use `(relAmple_iff_isAmpleLB_of_isAffine X hL).2 ⟨hL, inferInstance, fun x => ?_⟩` and prove the remaining obligations. Take `⟨z, rfl⟩` from `β.surjective x`. Take `⟨n, hn₁, s, hz, ha⟩` from `h.exists_affine z`. Establish `hH` using `isLB_lbPow hL n`. Take `⟨s₀, hs₀⟩` from `exists_sec_nonzeroLocus_eq_of_lbIso (LB.isLB_pull hH β) (isLB_lbPow h.isLB n) (lbIso_lbPow_pull hL β n).symm s`.
+
+Take `⟨D, hD, e⟩` from `AffineThickening.exists_isAffineOpen_preimage_eq_of_isNilpotent A A' g hg hn _ _ X.hom X'.hom β hβ _ ha`. Take `⟨t, ht⟩` from `secOn_pull_surjective_of_surjective A A' g hg _ _ X.hom X'.hom β hβ _ hH D hD (GlobalTheory.LB.ofSec s₀ (β ⁻¹ᵁ D))`. Take `⟨k, hk, σ, hσ⟩` from `GlobalTheory.T.exists_pow_section' _ _ β (SquareZero.mul_eq_zero_of_app_eq_zero A A' g hg h2 _ _ X.hom X'.hom β hβ) _ hH s₀ D (e.trans hs₀.symm) t ht`. Take `⟨u, hu⟩` from `exists_sec_lbPow_of_pw σ`. Establish `e' : nonzeroLocus (secOfPowPow u) = D` using `(nonzeroLocus_secOfPowPow u).trans (hu.trans hσ)`.
+
+Conclude with `⟨n * k, Nat.mul_pos hn₁ hk, secOfPowPow u, e'.ge (e.ge hz), e' ▸ hD⟩`.
+-/
 theorem relAmple_of_sq_zero : ∀ (A A' : Type) [CommRing A] [CommRing A'] (g : A →+* A'), Function.Surjective g → RingHom.ker g ^ 2 = ⊥ → ∀ (X : Over (Spec (CommRingCat.of A))) (X' : Over (Spec (CommRingCat.of A'))) (β : X'.left ⟶ X.left), IsPullback β X'.hom X.hom (Spec.map (CommRingCat.ofHom g)) → LocallyOfFiniteType X.hom → ∀ (L : LB X.left) (L' : LB X'.left), L.IsLB → L'.IsLB → LBIso L' (L.pull β) → RelAmple X' L' → RelAmple X L := by
   intro A A' _ _ g hg h2 X X' β hβ _ L L' hL hL' hw hA
   have hn : IsNilpotent (RingHom.ker g) := ⟨2, h2⟩

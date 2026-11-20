@@ -2,6 +2,17 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.WeakShimuraTheory.
 
 open NumberField IsDedekindDomain Formalism.ConjugateSelfDual ReciprocityTheory.Gal UpperTheory.V UpperTheory.V.Base UpperTheory.V.HV UpperTheory.V.GradeZeroInterpolatingElement UpperTheory.V.Ws
 
+/- English proof (translation)
+Establish `hdiv : ∀ {n : ℤ}, n ≠ 0 → Function.Surjective (fun a : Additive kˣ => n • a)`. Introduce `n hn y`. Establish `hpos : 0 < n.natAbs` using `Int.natAbs_pos.mpr hn`. Take `⟨x, hx⟩` from `IsAlgClosed.exists_pow_nat_eq ((Additive.toMul y : kˣ) : k) hpos`. Establish `hx0 : x ≠ 0`.
+
+Introduce and unpack `rfl`. Rewrite `hx` using `[zero_pow hpos.ne']`. Conclude with `(Additive.toMul y).ne_zero hx.symm`. Establish `hu : Units.mk0 x hx0 ^ n.natAbs = Additive.toMul y`. Use `ext`.
+
+Simplify using `[hx]`. Break down `Int.natAbs_eq n with h | h` into its components or cases. Use `⟨Additive.ofMul (Units.mk0 x hx0), ?_⟩` and prove the remaining obligations. Apply `Additive.toMul.injective` to reduce the goal to its premises. Simplify using `only [toMul_zsmul, toMul_ofMul]`.
+
+Rewrite using `[h, zpow_natCast, hu]`. Use `⟨Additive.ofMul (Units.mk0 x hx0)⁻¹, ?_⟩` and prove the remaining obligations. Apply `Additive.toMul.injective` to reduce the goal to its premises. Simplify using `only [toMul_zsmul, toMul_ofMul]`. Rewrite using `[h, zpow_neg, zpow_natCast, inv_pow, inv_inv, hu]`.
+
+Use `letI : DivisibleBy (Additive kˣ) ℤ := divisibleByOfSMulRightSurj _ _ hdiv`. Take `⟨F, hF⟩` from `(Module.Baer.of_divisible (Additive kˣ)).extension_property_addMonoidHom (MonoidHom.toAdditive i) hi (MonoidHom.toAdditive g)`. Use `⟨MonoidHom.toAdditive.symm F, fun x => ?_⟩` and prove the remaining obligations. Conclude with `congrArg Additive.toMul (DFunLike.congr_fun hF (Additive.ofMul x))`.
+-/
 private theorem UpperTheory.V.Ws.Tw.extIdeal_inj {H G : Type} [CommGroup H] [CommGroup G] {k : Type} [Field k] [IsAlgClosed k]
     (i : H →* G) (hi : Function.Injective i) (g : H →* kˣ) : ∃ F : G →* kˣ, ∀ x, F (i x) = g x := by
   have hdiv : ∀ {n : ℤ}, n ≠ 0 → Function.Surjective (fun a : Additive kˣ => n • a) := by
@@ -30,6 +41,19 @@ private theorem UpperTheory.V.Ws.Tw.extIdeal_inj {H G : Type} [CommGroup H] [Com
   refine ⟨MonoidHom.toAdditive.symm F, fun x => ?_⟩
   exact congrArg Additive.toMul (DFunLike.congr_fun hF (Additive.ofMul x))
 
+/- English proof (translation)
+Establish `key : ∀ a b c d, φ a / φ b = φ c / φ d → g a / g b = g c / g d`. Introduce `a b c d e`. Rewrite `e`, the goal using `[div_eq_div_iff_mul_eq_mul]`. Use `h (a * d) (c * b) (by rw [map_mul, map_mul, e])` as an intermediate fact. Rewrite `this` using `[map_mul, map_mul]`. Then use the resulting hypothesis.
+
+Set `Hs : Subgroup G` to `{ carrier := {x | ∃ a b, φ a / φ b = x} mul_mem' := by`. Introduce and unpack `_ _ ⟨a, b, rfl⟩ ⟨c, d, rfl⟩`. Conclude with `⟨a * c, b * d, by rw [map_mul, map_mul, div_mul_div_comm]⟩`. Use the proof step `one_mem' := ⟨1, 1, by simp⟩`. Use the proof step `inv_mem' := by`.
+
+Introduce and unpack `_ ⟨a, b, rfl⟩`. Conclude with `⟨b, a, by rw [inv_div]⟩ }`. Establish `hmem : ∀ x : Hs, ∃ a b, φ a / φ b = (x : G)` using `fun x => x.2`. Use `choose A B hAB using hmem`. Set `hh : Hs →* kˣ` to `{ toFun := fun x => g (A x) / g (B x) map_one' := by`.
+
+Use `key (A 1) (B 1) 1 1 (by rw [hAB]; simp)` as an intermediate fact. Simplify using `using this`. Use the proof step `map_mul' := by`. Introduce `x y`. Use `key (A (x * y)) (B (x * y)) (A x * A y) (B x * B y) (by rw [hAB, map_mul, map_mul, ← div_mul_div_comm, hAB, hAB]; rfl)` as an intermediate fact.
+
+Use `show g (A (x * y)) / g (B (x * y)) = g (A x) / g (B x) * (g (A y) / g (B y))`. Rewrite using `[this, map_mul, map_mul, div_mul_div_comm] }`. Take `⟨F, hF⟩` from `UpperTheory.V.Ws.Tw.extIdeal_inj Hs.subtype Subtype.val_injective hh`. Use `⟨F, fun x => ?_⟩` and prove the remaining obligations. Set `y : Hs` to `⟨φ x, x, 1, by simp⟩`.
+
+Establish `e1 : F (φ x) = hh y` using `hF y`. Rewrite using `[e1]`. Use `key (A y) (B y) x 1 (by rw [hAB]; simp [y])` as an intermediate fact. Simplify `this` using `[hh]`.
+-/
 private theorem UpperTheory.V.Ws.Tw.extIdeal_mon {S G : Type} [CommMonoid S] [CommGroup G] {k : Type} [Field k] [IsAlgClosed k]
     (φ : S →* G) (g : S →* kˣ) (h : ∀ a b, φ a = φ b → g a = g b) : ∃ F : G →* kˣ, ∀ x, F (φ x) = g x := by
   classical
@@ -68,6 +92,27 @@ private theorem UpperTheory.V.Ws.Tw.extIdeal_mon {S G : Type} [CommMonoid S] [Co
   have := key (A y) (B y) x 1 (by rw [hAB]; simp [y])
   simpa [hh] using this
 
+/- English proof (translation)
+Introduce `K _ _ 𝔪 _ k _ _ g hg hu`. Set `ι : Ideal (𝓞 K) → (FractionalIdeal (nonZeroDivisors (𝓞 K)) K)ˣ` to `fun I => if hI : I = ⊥ then 1 else Units.mk0 (I : FractionalIdeal (nonZeroDivisors (𝓞 K)) K) (FractionalIdeal.coeIdeal_ne_zero.mpr hI)`. Establish `hιv : ∀ I : Ideal (𝓞 K), I ≠ ⊥ → ((ι I : FractionalIdeal (nonZeroDivisors (𝓞 K)) K)) = I`. Introduce `I hI`. Simplify using `only [ι, dif_neg hI, Units.val_mk0]`.
+
+Establish `hι : ∀ I J : Ideal (𝓞 K), I ≠ ⊥ → J ≠ ⊥ → ι (I * J) = ι I * ι J`. Introduce `I J hI hJ`. Establish `hIJ : I * J ≠ ⊥` using `fun h => (Ideal.mul_eq_bot.mp h).elim hI hJ`. Apply `Units.ext` to reduce the goal to its premises. Rewrite using `[Units.val_mul, hιv _ hIJ, hιv _ hI, hιv _ hJ, FractionalIdeal.coeIdeal_mul]`.
+
+Establish `hspan : ∀ a : 𝓞 K, a ≠ 0 → Ideal.span {a} ≠ ⊥` using `fun a ha h => ha (Ideal.span_singleton_eq_bot.mp h)`. Establish `hcopU : ∀ u : (𝓞 K)ˣ, IsCoprime (Ideal.span {(u : 𝓞 K)}) 𝔪`. Introduce `u`. Rewrite using `[Ideal.span_singleton_eq_top.mpr u.isUnit, ← Ideal.one_eq_top]`. Conclude with `isCoprime_one_left`.
+
+Set `S : Submonoid (𝓞 K)` to `{ carrier := {a | a ≠ 0 ∧ IsCoprime (Ideal.span {a}) 𝔪} mul_mem' := by`. Introduce and unpack `a b ⟨ha, ca⟩ ⟨hb, cb⟩`. Use `⟨mul_ne_zero ha hb, ?_⟩` and prove the remaining obligations. Rewrite using `[← Ideal.span_singleton_mul_span_singleton]`. Conclude with `ca.mul_left cb`.
+
+Use the proof step `one_mem' := ⟨one_ne_zero, by`. Rewrite using `[Ideal.span_singleton_one, ← Ideal.one_eq_top]`. Conclude with `isCoprime_one_left⟩ }`. Set `φ : S →* (FractionalIdeal (nonZeroDivisors (𝓞 K)) K)ˣ` to `{ toFun := fun a => ι (Ideal.span {(a : 𝓞 K)}) map_one' := by`. Apply `Units.ext` to reduce the goal to its premises.
+
+Use `show ((ι (Ideal.span {(1 : 𝓞 K)}) : FractionalIdeal (nonZeroDivisors (𝓞 K)) K)) = 1`. Rewrite using `[hιv _ (hspan 1 one_ne_zero), Ideal.span_singleton_one, FractionalIdeal.coeIdeal_top]`. Use the proof step `map_mul' := by`. Introduce `a b`. Use `show ι (Ideal.span {(a : 𝓞 K) * b}) = ι (Ideal.span {(a : 𝓞 K)}) * ι (Ideal.span {(b : 𝓞 K)})`.
+
+Rewrite using `[← Ideal.span_singleton_mul_span_singleton]`. Conclude with `hι _ _ (hspan _ a.2.1) (hspan _ b.2.1) }`. Set `g' : S →* kˣ` to `{ toFun := fun a => g a map_one' := by simpa using hu 1 map_mul' := fun a b => hg a b a.2.1 b.2.1 a.2.2 b.2.2 }`. Establish `hcompat : ∀ a b : S, φ a = φ b → g' a = g' b`. Introduce `a b e`.
+
+Establish `e2 : ((ι (Ideal.span {(a : 𝓞 K)}) : FractionalIdeal (nonZeroDivisors (𝓞 K)) K)) = ((ι (Ideal.span {(b : 𝓞 K)}) : FractionalIdeal (nonZeroDivisors (𝓞 K)) K))` using `congrArg Units.val e`. Rewrite `e2` using `[hιv _ (hspan _ a.2.1), hιv _ (hspan _ b.2.1)]`. Take `⟨u, hu'⟩` from `Ideal.span_singleton_eq_span_singleton.mp (FractionalIdeal.coeIdeal_injective e2)`. Use `show g a = g b`. Rewrite using `[← hu', hg _ _ a.2.1 u.ne_zero a.2.2 (hcopU u), hu u, mul_one]`.
+
+Take `⟨F, hF⟩` from `UpperTheory.V.Ws.Tw.extIdeal_mon φ g' hcompat`. Use `⟨fun I => F (ι I), ?_, ?_⟩` and prove the remaining obligations. Introduce `I J hI hJ _ _ show F (ι (I * J)) = F (ι I) * F (ι J)`. Rewrite using `[hι I J hI hJ, map_mul]`. Introduce `a ha hca`.
+
+Conclude with `hF ⟨a, ha, hca⟩`.
+-/
 theorem UpperTheory.V.Ws.Tw.extIdeal :
     ∀ (K : Type) [Field K] [NumberField K] (𝔪 : Ideal (𝓞 K)), 𝔪 ≠ ⊥ → ∀ (k : Type) [Field k] [IsAlgClosed k] (g : 𝓞 K → kˣ), (∀ a b, a ≠ 0 → b ≠ 0 → IsCoprime (Ideal.span {a}) 𝔪 → IsCoprime (Ideal.span {b}) 𝔪 → g (a * b) = g a * g b) → (∀ u : (𝓞 K)ˣ, g u = 1) → ∃ f : Ideal (𝓞 K) → kˣ, (∀ I J, I ≠ ⊥ → J ≠ ⊥ → IsCoprime I 𝔪 → IsCoprime J 𝔪 → f (I * J) = f I * f J) ∧ ∀ a, a ≠ 0 → IsCoprime (Ideal.span {a}) 𝔪 → f (Ideal.span {a}) = g a := by
   intro K _ _ 𝔪 _ k _ _ g hg hu

@@ -14,26 +14,46 @@ open scoped Matrix
 open NumberField IsDedekindDomain Filter Topology Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes GlobalTheory.WeilM GlobalTheory.AdelicU GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels UpperTheory.TP.BA
 namespace UpperTheory.LatD
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {n d : ℕ} {v : Pl F}
+/- English proof (translation)
+Establish `h1` using `hx (1 - sg v 1) (by rw [map_sub, map_one, PositivityTheory.ThKH.Iwas.ev_sg, sub_self])`. Rewrite `h1` using `[sub_smul, one_smul, sub_eq_zero]`. Conclude with `h1.symm`.
+-/
 private theorem at_self_pk {M : Type} [AddCommGroup M] [Module (AF F) M] {x : M} (hx : At (evFin F v) x) :
     sg v 1 • x = x := by
   have h1 := hx (1 - sg v 1) (by rw [map_sub, map_one, PositivityTheory.ThKH.Iwas.ev_sg, sub_self])
   rw [sub_smul, one_smul, sub_eq_zero] at h1
   exact h1.symm
+/- English proof (translation)
+Introduce `u hu` and use `by have h := ha u hu rw [smul_eq_mul] at h ⊢ rw [← mul_assoc, h, zero_mul]`.
+-/
 private theorem at_mulA_pk {a : AF F} (ha : At (evFin F v) a) (a' : AF F) : At (evFin F v) (a * a') := fun u hu => by
   have h := ha u hu
   rw [smul_eq_mul] at h ⊢
   rw [← mul_assoc, h, zero_mul]
+/- English proof (translation)
+Rewrite using `[PositivityTheory.ThKH.Iwas.ev_sg]`. Conclude with `one_mem _`.
+-/
 private theorem sg_one_int_pk : evFin F v (sg v 1) ∈ v.adicCompletionIntegers F := by
   rw [PositivityTheory.ThKH.Iwas.ev_sg]; exact one_mem _
+/- English proof (translation)
+The claim follows from `AddSubgroup.subset_closure ⟨a, h1, h2, o, rfl⟩`.
+-/
 private theorem oh_gen_pk {a : AF F} (h1 : At (evFin F v) a) (h2 : evFin F v a ∈ v.adicCompletionIntegers F) (o : 𝓞 E) :
     a • inclR (F := F) (AF F) (o : E) ∈ Oh E v :=
   AddSubgroup.subset_closure ⟨a, h1, h2, o, rfl⟩
+/- English proof (translation)
+Use `AddSubgroup.closure_induction (p := fun x _ => p x) ?_ zero (fun x y _ _ h h' => add x y h h') (fun x _ h => neg x h) hx` and prove the remaining obligations. Introduce and unpack `_ ⟨a, h1, h2, o, rfl⟩`. Conclude with `gen a h1 h2 o`.
+-/
 private theorem oh_ind_pk {p : AE F E → Prop}
     (gen : ∀ a : AF F, At (evFin F v) a → evFin F v a ∈ v.adicCompletionIntegers F → ∀ o : 𝓞 E, p (a • inclR (F := F) (AF F) (o : E)))
     (zero : p 0) (add : ∀ x y, p x → p y → p (x + y)) (neg : ∀ x, p x → p (-x)) {x : AE F E} (hx : x ∈ Oh E v) : p x := by
   refine AddSubgroup.closure_induction (p := fun x _ => p x) ?_ zero (fun x y _ _ h h' => add x y h h') (fun x _ h => neg x h) hx
   rintro _ ⟨a, h1, h2, o, rfl⟩
   exact gen a h1 h2 o
+/- English proof (translation)
+Use `oh_ind_pk (p := fun x => x * y ∈ Oh E v) ?_ (by simp [zero_mem]) (fun x y h h' => by rw [add_mul]; exact add_mem h h') (fun x h => by rw [neg_mul]; exact neg_mem h) hx` and prove the remaining obligations. Introduce `a h1 h2 o`. Use `oh_ind_pk (p := fun y => a • inclR (F := F) (AF F) (o : E) * y ∈ Oh E v) ?_ (by simp [zero_mem]) (fun x y h h' => by rw [mul_add]; exact add_mem h h') (fun x h => by rw [mul_neg]; exact neg_mem h) hy` and prove the remaining obligations. Introduce `a' h1' h2' o'`. Establish `e : a • inclR (F` using `F) (AF F) (o : E) * a' • inclR (F := F) (AF F) (o' : E) = (a * a') • inclR (F := F) (AF F) ((o * o' : 𝓞 E) : E) := by`.
+
+Rewrite using `[smul_mul_smul_comm, ← map_mul]`. Both sides reduce to the same expression. Rewrite using `[e]`. Conclude with `oh_gen_pk (at_mulA_pk h1 a') (by rw [map_mul]; exact mul_mem h2 h2') _`.
+-/
 private theorem oh_mul_pk {x y : AE F E} (hx : x ∈ Oh E v) (hy : y ∈ Oh E v) : x * y ∈ Oh E v := by
   refine oh_ind_pk (p := fun x => x * y ∈ Oh E v) ?_ (by simp [zero_mem]) (fun x y h h' => by rw [add_mul]; exact add_mem h h')
     (fun x h => by rw [neg_mul]; exact neg_mem h) hx
@@ -46,27 +66,47 @@ private theorem oh_mul_pk {x y : AE F E} (hx : x ∈ Oh E v) (hy : y ∈ Oh E v)
     rw [smul_mul_smul_comm, ← map_mul]; rfl
   rw [e]
   exact oh_gen_pk (at_mulA_pk h1 a') (by rw [map_mul]; exact mul_mem h2 h2') _
+/- English proof (translation)
+Use `oh_gen_pk (E := E) (PositivityTheory.ThKH.Iwas.at_sg t) (by rw [PositivityTheory.ThKH.Iwas.ev_sg]; exact ht) (1 : 𝓞 E)` as an intermediate fact. Simplify using `using this`.
+-/
 private theorem oh_sg_pk {t : Fv F v} (ht : t ∈ v.adicCompletionIntegers F) : sg v t • (1 : AE F E) ∈ Oh E v := by
   have := oh_gen_pk (E := E) (PositivityTheory.ThKH.Iwas.at_sg t) (by rw [PositivityTheory.ThKH.Iwas.ev_sg]; exact ht) (1 : 𝓞 E)
   simpa using this
+/- English proof (translation)
+Use `oh_mul_pk (oh_sg_pk (E := E) ht) hx` as an intermediate fact. Rewrite `this` using `[smul_mul_assoc, one_mul]`. Then use the resulting hypothesis.
+-/
 private theorem oh_smul_pk {t : Fv F v} (ht : t ∈ v.adicCompletionIntegers F) {x : AE F E} (hx : x ∈ Oh E v) :
     sg v t • x ∈ Oh E v := by
   have := oh_mul_pk (oh_sg_pk (E := E) ht) hx
   rwa [smul_mul_assoc, one_mul] at this
+/- English proof (translation)
+Rewrite using `[Matrix.mul_apply]`. Conclude with `sum_mem fun k _ => oh_mul_pk (hP i k) (hQ k j)`.
+-/
 private theorem oh_matmul_pk {P Q : Matrix (Fin n) (Fin n) (AE F E)} (hP : ∀ i j, P i j ∈ Oh E v) (hQ : ∀ i j, Q i j ∈ Oh E v) (i j : Fin n) :
     (P * Q) i j ∈ Oh E v := by
   rw [Matrix.mul_apply]
   exact sum_mem fun k _ => oh_mul_pk (hP i k) (hQ k j)
+/- English proof (translation)
+Simplify using `only [Matrix.mulVec, dotProduct]`. Conclude with `sum_mem fun k _ => oh_mul_pk (hP i k) (hw k)`.
+-/
 private theorem oh_mulVec_pk {P : Matrix (Fin n) (Fin n) (AE F E)} {w : Fin n → AE F E} (hP : ∀ i j, P i j ∈ Oh E v) (hw : ∀ i, w i ∈ Oh E v) (i : Fin n) :
     (P *ᵥ w) i ∈ Oh E v := by
   simp only [Matrix.mulVec, dotProduct]
   exact sum_mem fun k _ => oh_mul_pk (hP i k) (hw k)
+/- English proof (translation)
+Use `AddSubgroup.closure_induction (p := fun x _ => p x) ?_ zero (fun x y _ _ h h' => add x y h h') (fun x _ h => neg x h) hx` and prove the remaining obligations. Introduce and unpack `_ ⟨a, h1, h2, y, hy, rfl⟩`. Conclude with `gen a h1 h2 y hy`.
+-/
 private theorem lat_ind_pk {m : ℕ} {X : Spc F E m} {p : (Fin m → AE F E) → Prop}
     (gen : ∀ a : AF F, At (evFin F v) a → evFin F v a ∈ v.adicCompletionIntegers F → ∀ y ∈ X.L, p (fun i => a • inclR (F := F) (AF F) (y i)))
     (zero : p 0) (add : ∀ x y, p x → p y → p (x + y)) (neg : ∀ x, p x → p (-x)) {x : Fin m → AE F E} (hx : x ∈ PositivityTheory.ThK.latW X v) : p x := by
   refine AddSubgroup.closure_induction (p := fun x _ => p x) ?_ zero (fun x y _ _ h h' => add x y h h') (fun x _ h => neg x h) hx
   rintro _ ⟨a, h1, h2, y, hy, rfl⟩
   exact gen a h1 h2 y hy
+/- English proof (translation)
+Use `oh_ind_pk (p := fun o => (fun i => o * z i) ∈ PositivityTheory.ThK.latW X v) ?_ (by simp only [zero_mul]; exact zero_mem _) (fun x y h h' => by simp only [add_mul]; exact add_mem h h') (fun x h => by simp only [neg_mul]; exact neg_mem h) ho` and prove the remaining obligations. Introduce `a h1 h2 o`. Use `lat_ind_pk (p := fun z => (fun i => a • inclR (F := F) (AF F) (o : E) * z i) ∈ PositivityTheory.ThK.latW X v) ?_ (by simp only [Pi.zero_apply, mul_zero]; exact zero_mem _) (fun x y h h' => by simp only [Pi.add_apply, mul_add]; exact add_mem h h') (fun x h => by simp only [Pi.neg_ …` and prove the remaining obligations. Introduce `a' h1' h2' y hy`. Use `AddSubgroup.subset_closure ⟨a * a', at_mulA_pk h1 a', by rw [map_mul]; exact mul_mem h2 h2', o • y, X.L.smul_mem o hy, ?_⟩` and prove the remaining obligations.
+
+Use function extensionality and compare the values at `i`. Rewrite using `[smul_mul_smul_comm, ← map_mul]`. Both sides reduce to the same expression.
+-/
 private theorem lat_smul_pk {m : ℕ} {X : Spc F E m} {o : AE F E} (ho : o ∈ Oh E v) {z : Fin m → AE F E} (hz : z ∈ PositivityTheory.ThK.latW X v) :
     (fun i => o * z i) ∈ PositivityTheory.ThK.latW X v := by
   refine oh_ind_pk (p := fun o => (fun i => o * z i) ∈ PositivityTheory.ThK.latW X v) ?_ (by simp only [zero_mul]; exact zero_mem _)
@@ -80,6 +120,9 @@ private theorem lat_smul_pk {m : ℕ} {X : Spc F E m} {o : AE F E} (ho : o ∈ O
   funext i
   rw [smul_mul_smul_comm, ← map_mul]
   rfl
+/- English proof (translation)
+Establish `e : P *ᵥ w = ∑ j, fun i => w j * P i j`. Use function extensionality and compare the values at `i`. Simplify using `[Matrix.mulVec, dotProduct, Finset.sum_apply, mul_comm]`. Rewrite using `[e]`. Conclude with `sum_mem fun j _ => lat_smul_pk (hw j) (hP j)`.
+-/
 private theorem lat_mulVec_pk {m : ℕ} {X : Spc F E m} {P : Matrix (Fin m) (Fin n) (AE F E)} {w : Fin n → AE F E}
     (hP : ∀ j, (fun i => P i j) ∈ PositivityTheory.ThK.latW X v) (hw : ∀ j, w j ∈ Oh E v) : P *ᵥ w ∈ PositivityTheory.ThK.latW X v := by
   have e : P *ᵥ w = ∑ j, fun i => w j * P i j := by
@@ -87,6 +130,23 @@ private theorem lat_mulVec_pk {m : ℕ} {X : Spc F E m} {P : Matrix (Fin m) (Fin
     simp [Matrix.mulVec, dotProduct, Finset.sum_apply, mul_comm]
   rw [e]
   exact sum_mem fun j _ => lat_smul_pk (hw j) (hP j)
+/- English proof (translation)
+Use `lat_ind_pk (p := fun z => Matrix.vecMulVec z y ∈ latAtV X W v) ?_ ?_ ?_ ?_ hz` and prove the remaining obligations. Introduce `a h1 h2 x hx`. Use `lat_ind_pk (p := fun y => Matrix.vecMulVec (fun i => a • inclR (F := F) (AF F) (x i)) y ∈ latAtV X W v) ?_ ?_ ?_ ?_ hy` and prove the remaining obligations. Introduce `a' h1' h2' y hy`. Use `AddSubgroup.subset_closure ⟨a * a', at_mulA_pk h1 a', by rw [map_mul]; exact mul_mem h2 h2', x, hx, y, hy, ?_⟩` and prove the remaining obligations.
+
+Use extensionality with `i j`. Simplify using `[Matrix.vecMulVec_apply, incM, smul_mul_smul_comm]`. Rewrite using `[mul_comm a a', mul_smul]`. Establish `e : Matrix.vecMulVec (fun i => a • inclR (F` using `F) (AF F) (x i)) (0 : Fin d → AE F E) = 0 := by`. Use extensionality with `i j`.
+
+Simplify using `[Matrix.vecMulVec_apply]`. Rewrite using `[e]`. Conclude with `zero_mem _`. Introduce `x y h h'`. Use `add_mem h h'` as an intermediate fact.
+
+Rewrite using `[show ∀ u (p q : Fin d → AE F E), Matrix.vecMulVec u p + Matrix.vecMulVec u q = Matrix.vecMulVec u (p + q) from fun u p q => by` and apply the resulting hypothesis. Use extensionality with `i j`. Simplify using `[Matrix.vecMulVec_apply, mul_add]] at this`. Introduce `x h`. Use `neg_mem h` as an intermediate fact.
+
+Rewrite using `[show ∀ u (p : Fin d → AE F E), -Matrix.vecMulVec u p = Matrix.vecMulVec u (-p) from fun u p => by` and apply the resulting hypothesis. Use extensionality with `i j`. Simplify using `[Matrix.vecMulVec_apply]] at this`. Establish `e : Matrix.vecMulVec (0 : Fin n → AE F E) y = 0`. Use extensionality with `i j`.
+
+Simplify using `[Matrix.vecMulVec_apply]`. Rewrite using `[e]`. Conclude with `zero_mem _`. Introduce `x y h h'`. Use `add_mem h h'` as an intermediate fact.
+
+Rewrite using `[show ∀ (p q : Fin n → AE F E) u, Matrix.vecMulVec p u + Matrix.vecMulVec q u = Matrix.vecMulVec (p + q) u from fun p q u => by` and apply the resulting hypothesis. Use extensionality with `i j`. Simplify using `[Matrix.vecMulVec_apply, add_mul]] at this`. Introduce `x h`. Use `neg_mem h` as an intermediate fact.
+
+Rewrite using `[show ∀ (p : Fin n → AE F E) u, -Matrix.vecMulVec p u = Matrix.vecMulVec (-p) u from fun p u => by` and apply the resulting hypothesis. Use extensionality with `i j`. Simplify using `[Matrix.vecMulVec_apply]] at this`.
+-/
 private theorem vmv_mem_pk {X : Spc F E n} {W : Spc F E d} {z : Fin n → AE F E} {y : Fin d → AE F E}
     (hz : z ∈ PositivityTheory.ThK.latW X v) (hy : y ∈ PositivityTheory.ThK.latW W v) : Matrix.vecMulVec z y ∈ latAtV X W v := by
   refine lat_ind_pk (p := fun z => Matrix.vecMulVec z y ∈ latAtV X W v) ?_ ?_ ?_ ?_ hz
@@ -119,6 +179,11 @@ private theorem vmv_mem_pk {X : Spc F E n} {W : Spc F E d} {z : Fin n → AE F E
     have := neg_mem h
     rwa [show ∀ (p : Fin n → AE F E) u, -Matrix.vecMulVec p u = Matrix.vecMulVec (-p) u from fun p u => by
       ext i j; simp [Matrix.vecMulVec_apply]] at this
+/- English proof (translation)
+Use `AddSubgroup.closure_induction (p := fun x _ => p x) ?_ zero (fun x y _ _ h h' => add x y h h') (fun x _ h => neg x h) hγ` and prove the remaining obligations. Introduce and unpack `_ ⟨a, h1, h2, x, hx, y, hy, rfl⟩`. Establish `e : a • incM F (Matrix.vecMulVec x y) = Matrix.vecMulVec (fun i => a • inclR (F` using `F) (AF F) (x i)) (fun j => sg v 1 • inclR (F := F) (AF F) (y j)) := by`. Use extensionality with `i j`. Establish `e1 : a * sg v 1 = a` using `by rw [mul_comm]; exact at_self_pk h1`.
+
+Simplify using `[Matrix.vecMulVec_apply, incM, smul_mul_smul_comm, e1]`. Rewrite using `[← mul_smul, mul_comm (sg v 1) a, e1]`. Rewrite using `[e]`. Conclude with `gen _ (AddSubgroup.subset_closure ⟨a, h1, h2, x, hx, rfl⟩) _ (AddSubgroup.subset_closure ⟨sg v 1, PositivityTheory.ThKH.Iwas.at_sg 1, sg_one_int_pk, y, hy, rfl⟩)`.
+-/
 private theorem gam_ind_pk {X : Spc F E n} {W : Spc F E d} {p : Matrix (Fin n) (Fin d) (AE F E) → Prop}
     (gen : ∀ z ∈ PositivityTheory.ThK.latW X v, ∀ y ∈ PositivityTheory.ThK.latW W v, p (Matrix.vecMulVec z y))
     (zero : p 0) (add : ∀ x y, p x → p y → p (x + y)) (neg : ∀ x, p x → p (-x)) {γ : Matrix (Fin n) (Fin d) (AE F E)}
@@ -134,18 +199,63 @@ private theorem gam_ind_pk {X : Spc F E n} {W : Spc F E d} {p : Matrix (Fin n) (
   rw [e]
   exact gen _ (AddSubgroup.subset_closure ⟨a, h1, h2, x, hx, rfl⟩) _
     (AddSubgroup.subset_closure ⟨sg v 1, PositivityTheory.ThKH.Iwas.at_sg 1, sg_one_int_pk, y, hy, rfl⟩)
+/- English proof (translation)
+Rewrite using `[Matrix.mul_smul, Matrix.mul_one]`. Conclude with `at_self_pk h`.
+-/
 private theorem mul_eM_pk {M : Matrix (Fin n) (Fin n) (AE F E)} (h : At (evFin F v) M) : M * eM v n = M := by
   rw [Matrix.mul_smul, Matrix.mul_one]; exact at_self_pk h
+/- English proof (translation)
+Rewrite using `[Matrix.smul_mul, Matrix.one_mul]`. Conclude with `at_self_pk h`.
+-/
 private theorem eM_mul_pk {M : Matrix (Fin n) (Fin n) (AE F E)} (h : At (evFin F v) M) : eM v n * M = M := by
   rw [Matrix.smul_mul, Matrix.one_mul]; exact at_self_pk h
+/- English proof (translation)
+Distinguish the cases in `h : i = j`. Substitute `h` using the available equality. Simplify `oh_sg_pk (E := E) (v := v) (one_mem _)` using `[eM]`. Simplify using `[eM, h, zero_mem]`.
+-/
 private theorem eM_mem_pk (i j : Fin n) : (eM (E := E) v n) i j ∈ Oh E v := by
   by_cases h : i = j
   · subst h
     simpa [eM] using oh_sg_pk (E := E) (v := v) (one_mem _)
   · simp [eM, h, zero_mem]
+/- English proof (translation)
+Introduce `u hu` and use `by rw [smul_smul, show u * sg v 1 = 0 from PositivityTheory.ThKH.Iwas.at_sg 1 u hu, zero_smul]`.
+-/
 private theorem eM_at_pk : At (evFin F v) (eM (E := E) v n) := fun u hu => by
   rw [smul_smul, show u * sg v 1 = 0 from PositivityTheory.ThKH.Iwas.at_sg 1 u hu, zero_smul]
 end UpperTheory.LatD
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ B n d X W r s r' s' hB hX hW hnd v`. Establish `hYR : ∃ Y R, IsIsoW σ W v (n` using `n) Y R := by`. Distinguish the cases in `ht : Nonempty (E →ₐ[F] Fv F v)`. Take `⟨t⟩` from `ht`. Conclude with `_root_.UpperTheory.exists_isotropic_splitting_of_two_mul_le F E σ B n d W r' s' hB hW hnd v t`.
+
+Take `⟨w, hw⟩` from `_root_.PositivityTheory.ThK.inertof_proof_k F E σ B hB v (not_nonempty_iff.1 ht)`. Conclude with `_root_.UpperTheory.exists_isotropic_splitting_at_inert_prime F E σ B n d W r' s' hB hW hnd v w hw`. Take `⟨Y, R, hY⟩` from `hYR`. Take `⟨b, c, hF⟩` from `UpperTheory.unitaryLattice_exists_frame F E n X v hX.lat`. Choose the witnesses or unpack the hypotheses as in `⟨ϖ, hϖ0, hϖ1⟩ : ∃ ϖ : Fv F v, ϖ ≠ 0 ∧ Valued.v ϖ < 1 := by`.
+
+Take `⟨π, hπ⟩` from `v.valuation_exists_uniformizer F`. Establish `e : Valued.v ((π : F) : v.adicCompletion F) = v.valuation F π` using `v.valuedAdicCompletion_eq_valuation' π`. Use `⟨((π : F) : v.adicCompletion F), ?_, ?_⟩` and prove the remaining obligations. Introduce `h0`. Rewrite `e` using `[h0, map_zero, hπ]`.
+
+Conclude with `absurd e.symm (by simp)`. Rewrite using `[e, hπ]`. Conclude with `compareOfLessAndEq_eq_lt.mp rfl`. Establish `hϖm : ϖ ∈ v.adicCompletionIntegers F` using `hϖ1.le`. Establish `hmul : ∀ a ∈ abelian₂ (E` using `E) v b c, ∀ a' ∈ abelian₂ (E := E) v b c, a * a' ∈ abelian₂ (E := E) v b c := by`.
+
+Introduce `a ha a' ha'`. Use `⟨PositivityTheory.ThKH.Iwas.at_mul_left ha.1 a', fun i j => ?_⟩` and prove the remaining obligations. Establish `e : c * (a * a') * b = (c * a * b) * (c * a' * b)`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[e]`.
+
+Conclude with `UpperTheory.LatD.oh_matmul_pk ha.2 ha'.2 i j`. Establish `hact : ∀ a ∈ abelian₂ (E` using `E) v b c, ∀ z ∈ PositivityTheory.ThK.latW X v, a *ᵥ z ∈ PositivityTheory.ThK.latW X v := by`. Introduce `a ha z hz`. Establish `e : a *ᵥ z = b *ᵥ ((c * a * b) *ᵥ (c *ᵥ z))`. Rewrite using `[Matrix.mulVec_mulVec, Matrix.mulVec_mulVec]`.
+
+Use `congr 1`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[e]`. Conclude with `UpperTheory.LatD.lat_mulVec_pk hF.col (UpperTheory.LatD.oh_mulVec_pk ha.2 (hF.coord z hz))`. Use `⟨abelian₂ (E := E) v b c, b * Y, R * c, ϖ, ?_⟩` and prove the remaining obligations.
+
+Use `{ at_mem := fun a ha => ha.1 one_mem := ⟨UpperTheory.LatD.eM_at_pk, fun i j => ?_⟩ mul_mem := hmul smul_mem := fun t ht a ha => ⟨fun u hu => by rw [smul_comm, ha.1 u hu, smul_zero], fun i j => ?_⟩ act := ?_ x_mem := ?_ gram := ?_ right := ?_ r_mem := ?_ ϖ_ne := hϖ0 ϖ_mem := hϖm u …` and prove the remaining obligations. Rewrite using `[UpperTheory.LatD.mul_eM_pk hF.at_c, hF.cb]`. Conclude with `UpperTheory.LatD.eM_mem_pk i j`. Rewrite using `[Matrix.mul_smul, Matrix.smul_mul]`. Conclude with `UpperTheory.LatD.oh_smul_pk ht (ha.2 i j)`.
+
+Introduce `a ha γ hγ`. Use `UpperTheory.LatD.gam_ind_pk (p := fun γ => a * γ ∈ latAtV X W v) ?_ (by simp [zero_mem]) ?_ ?_ hγ` and prove the remaining obligations. Introduce `z hz y hy`. Rewrite using `[Matrix.mul_vecMulVec]`. Conclude with `UpperTheory.LatD.vmv_mem_pk (hact a ha z hz) hy`.
+
+Introduce `x y h h'`. Rewrite using `[Matrix.mul_add]`. Conclude with `add_mem h h'`. Introduce `x h`. Rewrite using `[Matrix.mul_neg]`.
+
+Conclude with `neg_mem h`. Establish `e : b * Y = ∑ k, Matrix.vecMulVec (fun i => b i k) (Y k)`. Use extensionality with `i j`. Simplify using `[Matrix.mul_apply, Matrix.sum_apply, Matrix.vecMulVec_apply]`. Rewrite using `[e]`.
+
+Conclude with `sum_mem fun k _ => UpperTheory.LatD.vmv_mem_pk (hF.col k) (hY.what₂ k)`. Establish `hm : (b * Y).map (cA σ) = b.map (cA σ) * Y.map (cA σ)` using `Matrix.map_mul (f := (cA σ).toRingHom)`. Rewrite using `[hm, Matrix.transpose_mul]`. Establish `e : b * Y * incM F W.J * ((Y.map (cA σ))ᵀ * (b.map (cA σ))ᵀ) = b * (Y * incM F W.J * (Y.map (cA σ))ᵀ) * (b.map (cA σ))ᵀ` using `by simp only [Matrix.mul_assoc]`. Rewrite using `[e, hY.gram, Matrix.mul_zero, Matrix.zero_mul]`.
+
+Establish `e : b * Y * (R * c) = b * (Y * R) * c` using `by simp only [Matrix.mul_assoc]`. Rewrite using `[e, hY.right, UpperTheory.LatD.mul_eM_pk hF.at_b, hF.bc]`. Introduce `γ hγ`. Use `⟨PositivityTheory.ThKH.Iwas.at_mul_right _ (PositivityTheory.ThKH.Iwas.at_mul_right _ hF.at_c), ?_⟩` and prove the remaining obligations. Use `UpperTheory.LatD.gam_ind_pk (p := fun γ => ∀ i j, (c * (γ * (R * c)) * b) i j ∈ Oh E v) ?_ (by simp [zero_mem]) ?_ ?_ hγ` and prove the remaining obligations.
+
+Introduce `z hz y hy i j`. Establish `e : c * (Matrix.vecMulVec z y * (R * c)) * b = Matrix.vecMulVec (c *ᵥ z) (sg v 1 • (y ᵥ* R))`. Establish `e1 : c * (Matrix.vecMulVec z y * (R * c)) * b = c * Matrix.vecMulVec z y * R * (c * b)`. Simplify using `only [Matrix.mul_assoc]`. Rewrite using `[e1, hF.cb, Matrix.mul_vecMulVec, Matrix.vecMulVec_mul, Matrix.mul_smul, Matrix.mul_one]`.
+
+Use extensionality with `i j`. Simplify using `[Matrix.vecMulVec_apply]`. Rewrite using `[e, Matrix.vecMulVec_apply]`. Conclude with `UpperTheory.LatD.oh_mul_pk (hF.coord z hz i) (UpperTheory.LatD.oh_smul_pk (one_mem _) (hY.coord y hy j))`. Introduce `x y h h' i j`.
+
+Rewrite using `[Matrix.add_mul, Matrix.mul_add, Matrix.add_mul]`. Conclude with `add_mem (h i j) (h' i j)`. Introduce `x h i j`. Rewrite using `[Matrix.neg_mul, Matrix.mul_neg, Matrix.neg_mul]`. Conclude with `neg_mem (h i j)`.
+-/
 theorem UpperTheory.exists_weilLatticeDatum :
     ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E) (n d : ℕ) (X : Spc F E n) (W : Spc F E d) (r s r' s' : ℕ), _root_.UpperTheory.TP.W.GoodK σ B → X.IsHerm σ B r s → W.IsSkew σ B r' s' → 2 * n ≤ d → ∀ v : Pl F, ∃ Λ x₁ R ϖ, LatData σ X W v Λ x₁ R ϖ := by
   intro F E _ _ _ _ _ σ B n d X W r s r' s' hB hX hW hnd v

@@ -11,6 +11,13 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.AlgebraTools.IwHec
 import Development.AutomorphicArithmetic.AutomorphicVarieties.AlgebraTools.IwHkNorm
 open ValuativeRel Matrix GlobalTheory.SmGL GlobalTheory.SplitWeil UpperTheory.V.Hi UpperTheory.V.AlgebraTools GlobalTheory.PRep
 
+/- English proof (translation)
+Establish `hF : (MulAction.orbit I (x : G ⧸ I)).Finite` using `hI x`. Use `ext`. Express the relevant statement in the definitionally equal form `(hk2 ρ I I x v : M) = _`. Rewrite using `[(hkApply A G M ρ I I x hF).1 v, dc, finsum_set_coe_eq_finsum_mem (f := fun q : G ⧸ I => ρ q.out), finsum_mem_eq_finite_toFinset_sum _ hF, LinearMap.sum_apply, Finset.sum_congr rfl (g := fun _ => (v : M))]`. Rewrite using `[Finset.sum_const, ← Set.ncard_eq_toFinset_card _ hF, Submodule.coe_smul, Nat.cast_smul_eq_nsmul]`.
+
+Introduce `q hq`. Rewrite `hq` using `[Set.Finite.mem_toFinset]`. Take `⟨a, ha⟩` from `hq`. Establish `ha' : (((a : G) * x : G) : G ⧸ I) = (q.out : G)`. Rewrite using `[QuotientGroup.out_eq']`.
+
+Conclude with `ha`. Establish `h1` using `mul_mem (mul_mem (h a.2) hx) (h (QuotientGroup.eq.1 ha'))`. Rewrite `h1` using `[mul_inv_cancel_left]`. Conclude with `hv _ h1`.
+-/
 private theorem hk_fixed {A G M : Type} [CommRing A] [Group G] [AddCommGroup M] [Module A M]
     (ρ : Representation A G M) {I K : Subgroup G} (h : I ≤ K) (hI : HeckePair I) {x : G} (hx : x ∈ K)
     (v : fixd ρ I) (hv : (v : M) ∈ fixd ρ K) :
@@ -32,6 +39,11 @@ private theorem hk_fixed {A G M : Type} [CommRing A] [Group G] [AddCommGroup M] 
     rw [mul_inv_cancel_left] at h1
     exact hv _ h1
 
+/- English proof (translation)
+Take `⟨-, h1, h2⟩` from `hkTrace ℤ G ℤ (Representation.trivial ℤ G ℤ) I K h ι w hI hw hu`. Set `v : fixd (Representation.trivial ℤ G ℤ) K` to `⟨1, fun _ _ => rfl⟩`. Establish `h3` using `LinearMap.congr_fun h1 (inc _ h v)`. Rewrite `h3` using `[LinearMap.comp_apply, h2, LinearMap.sum_apply, Finset.sum_congr rfl fun i _ => hk_fixed _ h hI (hw i) (inc _ h v) v.2, ← Finset.sum_smul, map_smul]`. Establish `h4 : (∑ i, (((MulAction.orbit I (w i : G ⧸ I)).ncard : ℕ) : ℤ)) * 1 = (I.relIndex K : ℤ) * 1` using `congrArg Subtype.val h3`.
+
+Rewrite `h4` using `[mul_one, mul_one]`. Conclude with `h4` after adjusting the coercions.
+-/
 private theorem sum_ncard {G : Type} [Group G] {I K : Subgroup G} (h : I ≤ K) (hI : HeckePair I) {ι : Type}
     [Fintype ι] (w : ι → G) (hw : ∀ i, w i ∈ K) (hu : ∀ g ∈ K, ∃! i, ∃ a ∈ I, ∃ b ∈ I, g = a * w i * b) :
     ∑ i, (MulAction.orbit I (w i : G ⧸ I)).ncard = I.relIndex K := by
@@ -45,10 +57,32 @@ private theorem sum_ncard {G : Type} [Group G] {I K : Subgroup G} (h : I ≤ K) 
   rw [mul_one, mul_one] at h4
   exact_mod_cast h4
 
+/- English proof (translation)
+Rewrite using `[invLen, Finset.card_eq_zero, Finset.filter_eq_empty_iff]`. Conclude with `fun p _ h => lt_asymm h.1 h.2`.
+-/
 private theorem invLen_one (n : ℕ) : invLen (1 : Equiv.Perm (Fin n)) = 0 := by
   rw [invLen, Finset.card_eq_zero, Finset.filter_eq_empty_iff]
   exact fun p _ h => lt_asymm h.1 h.2
 
+/- English proof (translation)
+Introduce `k _ _ _ _ n A M _ _ _ ρ hreg v`. Establish `hI` using `(heckePairIwC k n ⊤).1`. Establish `he : iwC k n ⊤ = iwahori k (Fin n)` using `(memIwC k n ⊤).2.1`. Establish `hle : iwC k n ⊤ ≤ KO k (Fin n)` using `he ▸ iwahori_le_KO k (Fin n)`. Take `⟨hw, hu⟩` from `bruhatKO k n`.
+
+Rewrite `hu` using `[← he]`. Prove the components needed by the constructor for the conclusion. Introduce `hv i j hij`. Establish `h2` using `((lenStep n 1).1 i j hij).1 (by show i < j`. Rewrite using `[Fin.lt_def]`.
+
+Use the proof step `omega)`. Rewrite `h2` using `[mul_one, invLen_one]`. Rewrite using `[hk_fixed ρ hle hI (hw _) v hv, permCard, h2, zero_add, pow_one]`. Introduce `hs`. Establish `key : ∀ (m : ℕ) (w : Equiv.Perm (Fin n)), invLen w = m → hk ρ (iwC k n ⊤) (pm k n w) v = ((resCard k : A) ^ m) • v`.
+
+Introduce `m`. Proceed by induction on `m with`. Consider the case `zero`. Introduce `w hm`. Rewrite using `[(lenStep n w).2.1 hm, map_one, (hkNorm A _ M ρ _ 1 hI (one_mem _)).2.1, pow_zero, one_smul]`.
+
+Both sides reduce to the same expression. Consider the case `succ m ih`. Introduce `w hm`. Establish `hw1 : w ≠ 1`. Introduce and unpack `rfl`.
+
+Rewrite `hm` using `[invLen_one]`. Use linear arithmetic over natural numbers and integers. Take `⟨i, j, hij, hlt⟩` from `(lenStep n w).2.2 hw1`. Establish `hl` using `((lenStep n w).1 i j hij).2 hlt`. Establish `hp` using `permMul k n ⊤ A M ρ (Equiv.swap i j * w) i j hij (by simpa using hlt)`.
+
+Rewrite `hp` using `[Equiv.swap_mul_self_mul]`. Rewrite using `[← hp, Module.End.mul_apply, ih _ (by omega), map_smul, hs i j hij, smul_smul, pow_succ]`. Establish `h1` using `LinearMap.congr_fun (hkTrace A _ M ρ _ _ hle _ (fun w => pm k n w) hI hw hu).2.1 v`. Establish `h2` using `sum_ncard hle hI (fun w => pm k n w) hw hu`. Simplify using `only [permCard] at h2`.
+
+Rewrite `h1` using `[LinearMap.sum_apply, Finset.sum_congr rfl fun w _ => key _ w rfl, ← Finset.sum_smul]`. Establish `h3 : ((iwC k n ⊤).relIndex (KO k (Fin n)) : A) • (v : M) = (trc ρ (KO k (Fin n)) (iwC k n ⊤) v : M)`. Rewrite using `[← h2, Nat.cast_sum]`. Simplify using `only [Nat.cast_pow]`. Conclude with `congrArg Subtype.val h1`.
+
+Introduce `g hg`. Apply `hreg` to reduce the goal to its premises. Use `show _ • ρ g v = _ • (v : M)`. Rewrite using `[← map_smul, h3]`. Conclude with `(trc ρ (KO k (Fin n)) (iwC k n ⊤) v).2 g hg`.
+-/
 theorem UpperTheory.V.AlgebraTools.sphEq :
     ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] (n : ℕ) (A M : Type) [CommRing A] [AddCommGroup M] [Module A M] (ρ : Representation A (GL (Fin n) k) M), IsSMulRegular M ((iwC k n ⊤).relIndex (KO k (Fin n)) : A) → ∀ v : fixd ρ (iwC k n ⊤), (v : M) ∈ fixd ρ (KO k (Fin n)) ↔ ∀ i j : Fin n, (j : ℕ) = i + 1 → hk ρ (iwC k n ⊤) (pm k n (Equiv.swap i j)) v = (resCard k : A) • v := by
   intro k _ _ _ _ n A M _ _ _ ρ hreg v

@@ -12,6 +12,9 @@ open NumberField MvPolynomial Filter Topology Formalism.BasicNotions Formalism.M
 open CategoryTheory AlgebraicGeometry ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Geo.Tor GlobalTheory GlobalTheory.ArInt
 open scoped Classical
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.FlagZ.Taut.isometric_grLB_grLine | exact GlobalTheory.FlagZ.Taut.isometric_grLB_grLine | (intros; apply GlobalTheory.FlagZ.Taut.isometric_grLB_grLine <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.tautological_flag_graded_isometric : ∀ (ι : Type) [Fintype ι] (N : ℕ) (fl : ∀ _ : ι, GlobalTheory.Vert.Flag ((Scheme.Modules.pullback (GlobalTheory.FlagZ.flStr ι N)).obj (GlobalTheory.FlagZ.Taut.stdE N)) N), GlobalTheory.FlagZ.Taut.IsTaut ι N fl →
   ∀ (a : ι) (i : Fin N), (VMetric.grLB (fl a) i ((HermVB.std (𝟙 (Sp ℤ)) N).cInf.pull (GlobalTheory.FlagZ.flStr ι N) (Category.comp_id _))).Isometric (GlobalTheory.FlagZ.grLine (a, i)) := by
   first | exact @GlobalTheory.FlagZ.Taut.isometric_grLB_grLine | exact GlobalTheory.FlagZ.Taut.isometric_grLB_grLine | (intros; apply GlobalTheory.FlagZ.Taut.isometric_grLB_grLine <;> assumption)

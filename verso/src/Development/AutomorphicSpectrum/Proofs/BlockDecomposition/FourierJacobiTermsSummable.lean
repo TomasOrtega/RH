@@ -20,6 +20,9 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 namespace GlobalTheory.CompanionTheory.FJE.Domination
 
+/- English proof (translation)
+Establish `hs : Summable (F ∘ Equiv.addRight ζ)` using `Summable.of_nonneg_of_le (fun _ => hF _) h hc`. Use `⟨(Equiv.addRight ζ).summable_iff.1 hs, ?_⟩` and prove the remaining obligations. Rewrite using `[← (Equiv.addRight ζ).tsum_eq F]`. Conclude with `hs.tsum_le_tsum h hc`.
+-/
 theorem summable_tsum_le_of_shift {ι : Type*} [AddCommGroup ι] {F c : ι → ℝ} (ζ : ι) (hF : ∀ i, 0 ≤ F i)
     (h : ∀ i, F (i + ζ) ≤ c i) (hc : Summable c) : Summable F ∧ ∑' i, F i ≤ ∑' i, c i := by
   have hs : Summable (F ∘ Equiv.addRight ζ) := Summable.of_nonneg_of_le (fun _ => hF _) h hc
@@ -29,6 +32,9 @@ theorem summable_tsum_le_of_shift {ι : Type*} [AddCommGroup ι] {F c : ι → �
 
 variable {D : D7} {n ρ p : ℕ} {hn : ρ + p = n}
 
+/- English proof (translation)
+Establish `: GlobalTheory.CompanionTheory.FJE.rt (η + ζ) = GlobalTheory.CompanionTheory.FJE.rt η + GlobalTheory.CompanionTheory.FJE.rt ζ`. Use extensionality with `i j`. Conclude with `map_add (incA D) _ _`. Rewrite using `[this, add_assoc]`.
+-/
 theorem rt_add_add (η ζ : Matrix (Fin ρ) (Fin p) D.host.E) (y : Mx D ρ p) :
     GlobalTheory.CompanionTheory.FJE.rt (η + ζ) + y = GlobalTheory.CompanionTheory.FJE.rt η + (GlobalTheory.CompanionTheory.FJE.rt ζ + y) := by
   have : GlobalTheory.CompanionTheory.FJE.rt (η + ζ) = GlobalTheory.CompanionTheory.FJE.rt η + GlobalTheory.CompanionTheory.FJE.rt ζ := by
@@ -36,6 +42,13 @@ theorem rt_add_add (η ζ : Matrix (Fin ρ) (Fin p) D.host.E) (y : Mx D ρ p) :
     exact map_add (incA D) _ _
   rw [this, add_assoc]
 
+/- English proof (translation)
+Establish `e1 : M.sh (η.map (incA D)) * M.emb e * (M.nzx 0 x₀ * (M.sh y₀ * g)) = M.sh (GlobalTheory.CompanionTheory.FJE.rt η) * (M.nzx z' (GlobalTheory.CompanionTheory.FJE.rt ζ₂) * (M.sh y' * M.emb e * g))`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [mul_assoc]`. Use `_ = _ := by`. Rewrite using `[hz]`.
+
+Simplify using `only [mul_assoc]`. Establish `e2 : M.sh (GlobalTheory.CompanionTheory.FJE.rt η + y') * M.emb e * g = M.sh (GlobalTheory.CompanionTheory.FJE.rt η) * (M.sh y' * M.emb e * g)`. Rewrite using `[← GlobalTheory.CompanionTheory.FJE.sh_add]`. Simplify using `only [mul_assoc]`. Establish `hv : ‖GlobalTheory.CompanionTheory.FJE.chv ψ b₀ (GlobalTheory.CompanionTheory.FJE.rt ζ₂) (GlobalTheory.CompanionTheory.FJE.rt η)‖ = 1` using `hψ.2.1 _`.
+
+Rewrite using `[e1, e2, GlobalTheory.T.coefficient_heisenberg_equivariance M m ψ hψ b₀ χ s f hf, norm_mul, norm_mul, (GlobalTheory.CompanionTheory.FJE.CentralChar.chz_facts ψ hψ b₀).2.1, hv, one_mul, one_mul]`.
+-/
 theorem norm_Wz_shift (M : Maps D hn) (m : Meas D ρ p) (ψ : AddChar (AF D.host.F) ℂ) (hψ : IsCharAF D.host.F ψ)
     (b₀ : HermE D ρ) (χ : (AE D)ˣ →* Circle) (s : ℂ) (f : G D n → ℂ) (hf : IsLaw χ s f) (g : G D n) (e : G D p)
     (η ζ₂ : Matrix (Fin ρ) (Fin p) D.host.E) (y' x₀ y₀ : Mx D ρ p) (z' : hermA D ρ)
@@ -57,6 +70,9 @@ theorem norm_Wz_shift (M : Maps D hn) (m : Meas D ρ p) (ψ : AddChar (AF D.host
   rw [e1, e2, GlobalTheory.T.coefficient_heisenberg_equivariance M m ψ hψ b₀ χ s f hf, norm_mul, norm_mul,
     (GlobalTheory.CompanionTheory.FJE.CentralChar.chz_facts ψ hψ b₀).2.1, hv, one_mul, one_mul]
 
+/- English proof (translation)
+Establish `e : (a₁ + (T.symm (y, 0)).1, a₂ + (T.symm (y, 0)).2) = (a₁, a₂) + T.symm (y, 0)` using `rfl`. Rewrite using `[e, map_add, h, T.apply_symm_apply]`. Simplify using the standard rewrite rules.
+-/
 theorem apply_add_symm {A : Type*} [TopologicalSpace A] [AddCommGroup A] (T : (A × A) ≃ₜ+ (A × A)) {a₁ a₂ b₁ b₂ y : A}
     (h : T (a₁, a₂) = (b₁, b₂)) : T (a₁ + (T.symm (y, 0)).1, a₂ + (T.symm (y, 0)).2) = (b₁ + y, b₂) := by
   have e : (a₁ + (T.symm (y, 0)).1, a₂ + (T.symm (y, 0)).2) = (a₁, a₂) + T.symm (y, 0) := rfl
@@ -65,6 +81,15 @@ theorem apply_add_symm {A : Type*} [TopologicalSpace A] [AddCommGroup A] (T : (A
 
 set_option maxHeartbeats 1000000 in
 
+/- English proof (translation)
+Introduce `D n ρ p hn M m ψ hψ b₀ χ s f hf g hdom`. Take `⟨i1, i2, i3, i4, i5, K, hK, hKc⟩` from `lattice_Mx D ρ p`. Establish `hΦ : Continuous fun v : Mx D ρ p × Mx D ρ p => M.nzx 0 v.2 * (M.sh v.1 * g)`. Establish `h1 : Continuous fun v : Mx D ρ p × Mx D ρ p => M.nzx 0 v.2` using `M.nzx_cont.comp (continuous_const.prodMk continuous_snd)`. Establish `h2 : Continuous fun v : Mx D ρ p × Mx D ρ p => M.sh v.1` using `M.sh_cont.comp continuous_fst`.
+
+Conclude with `h1.mul (h2.mul continuous_const)`. Take `⟨c, hc, hb⟩` from `hdom _ ((hK.prod hK).image hΦ)`. Use `⟨fun q => ∑' η, c (q, η), hc.prod, fun q y => ?_⟩` and prove the remaining obligations. Take `⟨T, hT1, -, hT3⟩` from `GlobalTheory.T.lattice_translation_preserved M ((q.out : GF D p) : G D p) (q.out : GF D p).2`. Take `⟨a₁, ha₁, hy⟩` from `hKc (T.symm (y, 0)).1`.
+
+Take `⟨a₂, ha₂, hx⟩` from `hKc (T.symm (y, 0)).2`. Take `⟨ξ₁, rfl⟩ : ∃ ξ, GlobalTheory.CompanionTheory.FJE.rt ξ = a₁` from `ha₁`. Take `⟨ξ₂, rfl⟩ : ∃ ξ, GlobalTheory.CompanionTheory.FJE.rt ξ = a₂` from `ha₂`. Take `⟨ζ₁, ζ₂, hζ⟩` from `hT1 ξ₁ ξ₂`. Establish `hTv` using `apply_add_symm (y := y) T hζ`.
+
+Take `⟨z', hz'⟩` from `hT3 (GlobalTheory.CompanionTheory.FJE.rt ξ₁ + (T.symm (y, 0)).1) (GlobalTheory.CompanionTheory.FJE.rt ξ₂ + (T.symm (y, 0)).2)`. Rewrite `hz'` using `[hTv]`. Use `summable_tsum_le_of_shift ζ₁ (fun _ => norm_nonneg _) (fun η => ?_) (hc.prod_factor q)` and prove the remaining obligations. Rewrite using `[rt_add_add, norm_Wz_shift M m ψ hψ b₀ χ s f hf g _ η ζ₂ _ _ _ z' hz']`. Conclude with `hb _ ⟨(_, _), ⟨hy, hx⟩, rfl⟩ (q, η)`.
+-/
 theorem domination : ∀ {D : D7} {n ρ p : ℕ} {hn : ρ + p = n} (M : Maps D hn) (m : Meas D ρ p)
     (ψ : AddChar (AF D.host.F) ℂ), IsCharAF D.host.F ψ → ∀ (b₀ : HermE D ρ) (χ : (AE D)ˣ →* Circle) (s : ℂ)
     (f : G D n → ℂ), IsLaw χ s f → ∀ g : G D n,

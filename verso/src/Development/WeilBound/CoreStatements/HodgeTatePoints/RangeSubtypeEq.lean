@@ -16,6 +16,11 @@ section Gen
 variable {C : Type} [Field C] {R : Type} [CommRing R] [Algebra R C]
 variable {X N Q : Type} [AddCommGroup X] [AddCommGroup N] [AddCommGroup Q]
 
+/- English proof (translation)
+Rewrite using `[← Submodule.map_comp]`. Use `congr 1`. Apply `LinearMap.ext` to reduce the goal to its premises. Introduce `g`. Use function extensionality and compare the values at `x`.
+
+Use `show g (ι x) = g (e x)`. Rewrite using `[he]`.
+-/
 lemma map_res_eq (M : Submodule R (N → C)) (ι : X →+ N) (K : AddSubgroup N) (e : X ≃+ K)
     (he : ∀ x, (e x : N) = ι x) :
     M.map (LinearMap.funLeft R C ι) =
@@ -28,6 +33,11 @@ lemma map_res_eq (M : Submodule R (N → C)) (ι : X →+ N) (K : AddSubgroup N)
   show g (ι x) = g (e x)
   rw [he]
 
+/- English proof (translation)
+Use extensionality with `g`. Rewrite using `[Submodule.mem_map_equiv, Submodule.mem_comap, Submodule.mem_comap]`. Establish `: pullQ (R` using `R) K ((pbE (C := C) (R := R) e).symm g) = LinearMap.funLeft R C ψ g := by`. Use function extensionality and compare the values at `x`. Use `show (pbE (C := C) (R := R) e).symm g (x : N ⧸ K) = g (ψ x)`.
+
+Rewrite using `[LinearEquiv.funCongrLeft_symm]`. Use `show g (e.symm (x : N ⧸ K)) = g (ψ x)`. Rewrite using `[← he, AddEquiv.symm_apply_apply]`. Rewrite using `[this]`.
+-/
 lemma comap_quo_eq (M : Submodule R (N → C)) (ψ : N →+ Q) (K : AddSubgroup N) (e : Q ≃+ N ⧸ K)
     (he : ∀ x, e (ψ x) = (x : N ⧸ K)) :
     M.comap (LinearMap.funLeft R C ψ) =
@@ -42,11 +52,17 @@ lemma comap_quo_eq (M : Submodule R (N → C)) (ψ : N →+ Q) (K : AddSubgroup 
     rw [← he, AddEquiv.symm_apply_apply]
   rw [this]
 
+/- English proof (translation)
+Substitute `hK` using the available equality. Conclude with `⟨AddMonoidHom.ofInjective hι, fun _ => rfl⟩`.
+-/
 lemma exists_subEquiv (ι : X →+ N) (hι : Function.Injective ι) (K : AddSubgroup N)
     (hK : ι.range = K) : ∃ e : X ≃+ K, ∀ x, (e x : N) = ι x := by
   subst hK
   exact ⟨AddMonoidHom.ofInjective hι, fun _ => rfl⟩
 
+/- English proof (translation)
+Substitute `hK` using the available equality. Use `⟨(QuotientAddGroup.quotientKerEquivOfSurjective ψ hψ).symm, fun x => ?_⟩` and prove the remaining obligations. Rewrite using `[AddEquiv.symm_apply_eq]`. Both sides reduce to the same expression.
+-/
 lemma exists_quoEquiv (ψ : N →+ Q) (hψ : Function.Surjective ψ) (K : AddSubgroup N)
     (hK : K = ψ.ker) : ∃ e : Q ≃+ N ⧸ K, ∀ x, e (ψ x) = (x : N ⧸ K) := by
   subst hK
@@ -54,6 +70,13 @@ lemma exists_quoEquiv (ψ : N →+ Q) (hψ : Function.Surjective ψ) (K : AddSub
   rw [AddEquiv.symm_apply_eq]
   rfl
 
+/- English proof (translation)
+Use extensionality with `g`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨hg, hinv⟩`. Establish `h : LinearMap.funLeft R C ψ (fun c => g (Function.surjInv hψ c)) = g`. Use function extensionality and compare the values at `x`.
+
+Use `show g (Function.surjInv hψ (ψ x)) = g x`. Establish `hk : Function.surjInv hψ (ψ x) - x ∈ K`. Rewrite using `[hK, map_sub, Function.surjInv_eq hψ, sub_self]`. Use `hinv x _ hk` as an intermediate fact. Rewrite `this` using `[add_sub_cancel]`. Then use the resulting hypothesis.
+
+Conclude with `⟨_, by show LinearMap.funLeft R C ψ _ ∈ M; rw [h]; exact hg, h⟩`. Introduce and unpack `⟨q, hq, rfl⟩`. Use `⟨hq, fun x k hk => ?_⟩` and prove the remaining obligations. Use `show q (ψ (x + k)) = q (ψ x)`. Rewrite using `[map_add, (hK k).1 hk, add_zero]`.
+-/
 lemma invFun_eq (M : Submodule R (N → C)) (ψ : N →+ Q) (hψ : Function.Surjective ψ)
     (K : AddSubgroup N) (hK : ∀ x, x ∈ K ↔ ψ x = 0) :
     invFun M K = (M.comap (LinearMap.funLeft R C ψ)).map (LinearMap.funLeft R C ψ) := by
@@ -73,6 +96,9 @@ lemma invFun_eq (M : Submodule R (N → C)) (ψ : N →+ Q) (hψ : Function.Surj
     show q (ψ (x + k)) = q (ψ x)
     rw [map_add, (hK k).1 hk, add_zero]
 
+/- English proof (translation)
+Rewrite `hg`, the goal using `[mem_aug]`. Use `⟨h g hg.1, ?_⟩` and prove the remaining obligations. Use `show g (φ 0) = 0`. Rewrite using `[map_zero, hg.2]`.
+-/
 lemma aug_pull (φ : X →+ N) (M : Submodule R (N → C)) (M' : Submodule R (X → C))
     (h : ∀ g ∈ M, LinearMap.funLeft R C φ g ∈ M') {g : N → C} (hg : g ∈ augIdeal M) :
     LinearMap.funLeft R C φ g ∈ augIdeal M' := by
@@ -81,6 +107,9 @@ lemma aug_pull (φ : X →+ N) (M : Submodule R (N → C)) (M' : Submodule R (X 
   show g (φ 0) = 0
   rw [map_zero, hg.2]
 
+/- English proof (translation)
+Establish `h' : (sqIdeal (augIdeal M)).map (LinearMap.funLeft R C φ) ≤ sqIdeal (augIdeal M')`. Rewrite using `[sqIdeal, Submodule.map_span_le]`. Introduce and unpack `s ⟨f, hf, f', hf', rfl⟩`. Conclude with `Submodule.subset_span ⟨_, aug_pull φ M M' h hf, _, aug_pull φ M M' h hf', rfl⟩`. Conclude with `h' (Submodule.mem_map_of_mem hg)`.
+-/
 lemma sq_pull (φ : X →+ N) (M : Submodule R (N → C)) (M' : Submodule R (X → C))
     (h : ∀ g ∈ M, LinearMap.funLeft R C φ g ∈ M') {g : N → C} (hg : g ∈ sqIdeal (augIdeal M)) :
     LinearMap.funLeft R C φ g ∈ sqIdeal (augIdeal M') := by
@@ -92,6 +121,11 @@ lemma sq_pull (φ : X →+ N) (M : Submodule R (N → C)) (M' : Submodule R (X �
 
 variable {v : Valuation C NNReal}
 
+/- English proof (translation)
+Take `⟨K, hK⟩ : ∃ K, ι.range = K` from `⟨_, rfl⟩`. Take `⟨e, he⟩` from `exists_subEquiv ι hι K hK`. Establish `: Fintype (N ⧸ K)` using `Fintype.ofFinite _`. Take `⟨⟨AK, hAK⟩, -⟩` from `ReciprocityTheory.PGsh.L2.h2 C R v hv N K AA`. Use `⟨hopfPull e AK, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[map_res_eq _ ι _ e he, ← hAK]`. Both sides reduce to the same expression.
+-/
 theorem exists_res (hv : v.Integers R) [Fintype N] [DecidableEq N] [Fintype X] [DecidableEq X]
     (AA : HopfOrder (C := C) R N) (ι : X →+ N) (hι : Function.Injective ι) :
     ∃ AK : HopfOrder (C := C) R X, AK.carrier = AA.carrier.map (LinearMap.funLeft R C ι) := by
@@ -104,6 +138,11 @@ theorem exists_res (hv : v.Integers R) [Fintype N] [DecidableEq N] [Fintype X] [
   rw [map_res_eq _ ι _ e he, ← hAK]
   rfl
 
+/- English proof (translation)
+Take `⟨e, he⟩` from `exists_quoEquiv ψ hψ ψ.ker rfl`. Establish `: Fintype (N ⧸ ψ.ker)` using `Fintype.ofFinite _`. Take `⟨-, ⟨AQ, hAQ⟩, -⟩` from `ReciprocityTheory.PGsh.L2.h2 C R v hv N ψ.ker AA`. Use `⟨hopfPull e AQ, ?_⟩` and prove the remaining obligations. Rewrite using `[comap_quo_eq _ ψ _ e he, ← hAQ]`.
+
+Both sides reduce to the same expression.
+-/
 theorem exists_quo (hv : v.Integers R) [Fintype N] [DecidableEq N] [Fintype Q] [DecidableEq Q]
     (AA : HopfOrder (C := C) R N) (ψ : N →+ Q) (hψ : Function.Surjective ψ) :
     ∃ AQ : HopfOrder (C := C) R Q, AQ.carrier = AA.carrier.comap (LinearMap.funLeft R C ψ) := by
@@ -115,6 +154,13 @@ theorem exists_quo (hv : v.Integers R) [Fintype N] [DecidableEq N] [Fintype Q] [
   rw [comap_quo_eq _ ψ _ e he, ← hAQ]
   rfl
 
+/- English proof (translation)
+Take `⟨K, hKd⟩ : ∃ K, ι.range = K` from `⟨_, rfl⟩`. Take `⟨e, he⟩` from `exists_subEquiv ι hι K hKd`. Take `⟨e', he'⟩` from `exists_quoEquiv ψ hψ K (hKd ▸ hex)`. Establish `: Fintype (N ⧸ K)` using `Fintype.ofFinite _`. Take `⟨-, -, h3iii, -⟩` from `ReciprocityTheory.PGsh.L2.h3 C R inferInstance inferInstance v hv N K AA`.
+
+Rewrite `hK` using `[map_res_eq _ ι _ e he]`. Rewrite `hQ` using `[comap_quo_eq _ ψ _ e' he']`. Establish `hK'` using `hasColen_map v e.symm _ _ hK`. Establish `hQ'` using `hasColen_map v e'.symm _ _ hQ`. Rewrite `hK'`, `hQ'` using `[map_pbE_symm]`.
+
+Rewrite using `[Fintype.card_congr e.toEquiv, Fintype.card_congr e'.toEquiv]`. Conclude with `h3iii c cQ cK hc hQ' hK'`.
+-/
 theorem colen_ses [IsAlgClosed C] [CharZero C] (hv : v.Integers R) [Fintype N] [DecidableEq N]
     [Fintype X] [DecidableEq X] [Fintype Q] [DecidableEq Q]
     (AA : HopfOrder (C := C) R N) (ι : X →+ N) (hι : Function.Injective ι)
@@ -137,6 +183,17 @@ theorem colen_ses [IsAlgClosed C] [CharZero C] (hv : v.Integers R) [Fintype N] [
   rw [Fintype.card_congr e.toEquiv, Fintype.card_congr e'.toEquiv]
   exact h3iii c cQ cK hc hQ' hK'
 
+/- English proof (translation)
+Take `⟨e, he⟩` from `exists_subEquiv ι hι _ rfl`. Take `⟨e', he'⟩` from `exists_quoEquiv ψ hψ ι.range hex`. Establish `: Fintype (N ⧸ ι.range)` using `Fintype.ofFinite _`. Take `⟨-, -, -, h3iv⟩` from `ReciprocityTheory.PGsh.L2.h3 C R inferInstance inferInstance v hv N ι.range AA`. Establish `hres : ∀ f : N → C, LinearMap.funLeft R C (e.symm : ι.range →+ X) (LinearMap.funLeft R C ι f) = resK (R` using `R) ι.range f := by`.
+
+Introduce `f`. Use function extensionality and compare the values at `k`. Use `show f (ι (e.symm k)) = f k`. Rewrite using `[← he, AddEquiv.apply_symm_apply]`. Establish `h1` using `sq_pull (e.symm : ι.range →+ X) _ (AA.carrier.map (resK (R := R) ι.range)) (by rintro _ ⟨f, hf, rfl⟩; rw [hres]; exact ⟨f, hf, rfl⟩) hr`.
+
+Rewrite `h1` using `[hres, sq_eq_mul]`. Take `⟨u, hu, w, hw, huw⟩` from `Submodule.mem_sup.1 (h3iv g hg h1)`. Take `⟨b, hb, rfl⟩` from `hu`. Establish `hp : ∀ b : N ⧸ ι.range → C, LinearMap.funLeft R C ψ (LinearMap.funLeft R C (e' : Q →+ N ⧸ ι.range) b) = pullQ (R` using `R) ι.range b := by`. Introduce `b`.
+
+Use function extensionality and compare the values at `x`. Use `show b (e' (ψ x)) = b x`. Rewrite using `[he']`. Use `⟨LinearMap.funLeft R C (e' : Q →+ N ⧸ ι.range) b, aug_pull _ _ _ ?_ hb, ?_⟩` and prove the remaining obligations. Introduce `f hf show LinearMap.funLeft R C ψ _ ∈ AA.carrier`.
+
+Rewrite using `[hp]`. Conclude with `hf`. Rewrite using `[hp, ← huw, add_sub_cancel_left, sq_eq_mul]`. Conclude with `hw`.
+-/
 theorem om_exact [IsAlgClosed C] [CharZero C] (hv : v.Integers R) [Fintype N] [DecidableEq N]
     (AA : HopfOrder (C := C) R N) (ι : X →+ N)
     (ψ : N →+ Q) (hψ : Function.Surjective ψ) (hι : Function.Injective ι) (hex : ι.range = ψ.ker)
@@ -182,6 +239,9 @@ section Scalars
 variable {C : Type} [Field C] {R : Type} [CommRing R] [Algebra R C] {F : Type} [Field F]
 variable {X N : Type} [AddCommGroup X] [AddCommGroup N] [Module F X] [Module F N]
 
+/- English proof (translation)
+Introduce and unpack `a _ ⟨g, hg, rfl⟩`. Use `⟨_, hM a g hg, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `x`. Use `show g (a • ι x) = g (ι (a • x))`. Rewrite using `[map_smul]`.
+-/
 lemma fstable_map (M : Submodule R (N → C)) (hM : FStable F M) (ι : X →ₗ[F] N) :
     FStable F (M.map (LinearMap.funLeft R C ι)) := by
   rintro a _ ⟨g, hg, rfl⟩
@@ -190,6 +250,11 @@ lemma fstable_map (M : Submodule R (N → C)) (hM : FStable F M) (ι : X →ₗ[
   show g (a • ι x) = g (ι (a • x))
   rw [map_smul]
 
+/- English proof (translation)
+Introduce `a g hg`. Use `hM a _ hg` as an intermediate fact. Use `show LinearMap.funLeft R C ψ _ ∈ M`. Use `this using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `x`.
+
+Use `show g (a • ψ x) = g (ψ (a • x))`. Rewrite using `[map_smul]`.
+-/
 lemma fstable_comap (M : Submodule R (N → C)) (hM : FStable F M) (ψ : N →ₗ[F] X) :
     FStable F (M.comap (LinearMap.funLeft R C ψ)) := by
   intro a g hg
@@ -200,6 +265,9 @@ lemma fstable_comap (M : Submodule R (N → C)) (hM : FStable F M) (ψ : N →�
   show g (a • ψ x) = g (ψ (a • x))
   rw [map_smul]
 
+/- English proof (translation)
+Use extensionality with `x`. Simplify using `[AddMonoidHom.mem_range, AddMonoidHom.mem_ker]`.
+-/
 lemma range_subtype_eq (K : Submodule F N) :
     (K.subtype.toAddMonoidHom).range = (K.mkQ.toAddMonoidHom).ker := by
   ext x
@@ -207,6 +275,11 @@ lemma range_subtype_eq (K : Submodule F N) :
 
 end Scalars
 
+/- English proof (translation)
+Introduce `p _ C _ _ _ v R _ _ hv _ F _ _ _ _ f _ N _ _ _ _ AA hAA K _ _ _ _`. Use `⟨?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Take `⟨AK, hAK⟩` from `exists_res hv AA K.subtype.toAddMonoidHom Subtype.val_injective`. Conclude with `⟨AK, hAK, hAK ▸ fstable_map _ hAA K.subtype⟩`. Take `⟨AQ, hAQ⟩` from `exists_quo hv AA K.mkQ.toAddMonoidHom K.mkQ_surjective`.
+
+Conclude with `⟨AQ, hAQ, hAQ ▸ fstable_comap _ hAA K.mkQ⟩`. Conclude with `invFun_eq _ K.mkQ.toAddMonoidHom K.mkQ_surjective _ (fun x => by simp)`. Introduce `c cQ cK hc hQ hK`. Conclude with `colen_ses hv AA K.subtype.toAddMonoidHom Subtype.val_injective K.mkQ.toAddMonoidHom K.mkQ_surjective (range_subtype_eq K) c cQ cK hc hQ hK`.
+-/
 theorem subquo : ∀ (p : ℕ) [Fact p.Prime] (C : Type) [Field C] [IsAlgClosed C] [CharZero C] (v : Valuation C NNReal) (R : Type) [CommRing R] [Algebra R C], v.Integers R → v (p : C) < 1 → ∀ (F : Type) [Field F] [Fintype F] [DecidableEq F] [CharP F p] (f : ℕ), Fintype.card F = p ^ f → ∀ (N : Type) [AddCommGroup N] [Module F N] [Fintype N] [DecidableEq N] (AA : HopfOrder (C := C) R N), FStable F AA.carrier → ∀ (K : Submodule F N) [Fintype K] [DecidableEq K] [Fintype (N ⧸ K)] [DecidableEq (N ⧸ K)], (∃ AK : HopfOrder (C := C) R K, AK.carrier = (AA.carrier.map (LinearMap.funLeft R C (Subtype.val : K → N))) ∧ FStable F AK.carrier) ∧ (∃ AQ : HopfOrder (C := C) R (N ⧸ K), AQ.carrier = (AA.carrier.comap (LinearMap.funLeft R C (K.mkQ : N → N ⧸ K))) ∧ FStable F AQ.carrier) ∧ invFun AA.carrier K.toAddSubgroup = (AA.carrier.comap (LinearMap.funLeft R C (K.mkQ : N → N ⧸ K))).map (LinearMap.funLeft R C (K.mkQ : N → N ⧸ K)) ∧ ∀ c cQ cK, HasColen R v AA.carrier c → HasColen R v (AA.carrier.comap (LinearMap.funLeft R C (K.mkQ : N → N ⧸ K))) cQ → HasColen R v (AA.carrier.map (LinearMap.funLeft R C (Subtype.val : K → N))) cK → c = cQ ^ Fintype.card K * cK ^ Fintype.card (N ⧸ K) := by
   intro p _ C _ _ _ v R _ _ hv _ F _ _ _ _ f _ N _ _ _ _ AA hAA K _ _ _ _
   refine ⟨?_, ?_, ?_, ?_⟩

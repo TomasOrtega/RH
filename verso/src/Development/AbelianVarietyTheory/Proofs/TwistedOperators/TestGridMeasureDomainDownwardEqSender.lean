@@ -20,6 +20,9 @@ open GlobalTheory.GridJoin GlobalTheory.Grid
 
 variable {D : D7}
 
+/- English proof (translation)
+Take `⟨L, hl1, hl2, rfl⟩` from `hV`. Take `rfl : μ₁ = μ₂` from `eq_of_heq hμ`. Conclude with `GlobalTheory.FlipStart.Col.fund_exch (V := V₂) (μ := μ₁) h1 h2 H hH`.
+-/
 theorem exch {V₁ V₂ : HSp D} (hV : SameSp V₂ V₁) (e : GA D V₁ = GA D V₂)
     {μ₁ : Measure (GA D V₁)} {F₁ : Set (GA D V₁)} {μ₂ : Measure (GA D V₂)} {F₂ : Set (GA D V₂)}
     (hμ : HEq μ₁ μ₂) (hH₂ : μ₂.IsHaarMeasure) (h1 : IsFundamentalDomain (GQ V₁) F₁ μ₁)
@@ -30,6 +33,9 @@ theorem exch {V₁ V₂ : HSp D} (hV : SameSp V₂ V₁) (e : GA D V₁ = GA D V
   obtain rfl : μ₁ = μ₂ := eq_of_heq hμ
   exact GlobalTheory.FlipStart.Col.fund_exch (V := V₂) (μ := μ₁) h1 h2 H hH
 
+/- English proof (translation)
+Take `⟨L, hl1, hl2, rfl⟩` from `hV`. Take `rfl` from `eq_of_heq hK`. Conclude with `heq_of_eq (GlobalTheory.FunObjModel.isMeasLevW_unique (V := V₀) (fun _ _ e => e.1) h.1 h₀.1)`.
+-/
 theorem measFD_heq {V V₀ : HSp D} (hV : SameSp V₀ V) {K : Subgroup (GL (Fin V.rank) (Lev.EAf D))}
     {K₀ : Subgroup (GL (Fin V₀.rank) (Lev.EAf D))} (hK : HEq K K₀) {μ : Measure (GA D V)} {μ₀ : Measure (GA D V₀)}
     {F : Set (GA D V)} {F₀ : Set (GA D V₀)} (h : Lev.IsMeasFD V K μ F) (h₀ : Lev.IsMeasFD V₀ K₀ μ₀ F₀) : HEq μ μ₀ := by
@@ -37,6 +43,9 @@ theorem measFD_heq {V V₀ : HSp D} (hV : SameSp V₀ V) {K : Subgroup (GL (Fin 
   obtain rfl := eq_of_heq hK
   exact heq_of_eq (GlobalTheory.FunObjModel.isMeasLevW_unique (V := V₀) (fun _ _ e => e.1) h.1 h₀.1)
 
+/- English proof (translation)
+Take `⟨L, hl1, hl2, rfl⟩` from `hV`. Take `rfl` from `eq_of_heq hK`. Establish `h1 : Lev.IsMeasLevDef V₀ K μ` using `h.1`. Conclude with `heq_of_eq (GlobalTheory.FunObjModel.isMeasLevW_unique (V := V₀) (fun _ _ e => e.1) h1 h₀.1)`.
+-/
 theorem measDef_heq {V V₀ : HSp D} (hV : SameSp V₀ V) {K : Subgroup (GL (Fin V.rank) (Lev.EAf D))}
     {K₀ : Subgroup (GL (Fin V₀.rank) (Lev.EAf D))} (hK : HEq K K₀) {μ : Measure (GA D V)} {μ₀ : Measure (GA D V₀)}
     {F : Set (GA D V)} {F₀ : Set (GA D V₀)} (h : IsMeasDef V K μ F) (h₀ : IsMeasDef V₀ K₀ μ₀ F₀) : HEq μ μ₀ := by
@@ -45,6 +54,11 @@ theorem measDef_heq {V V₀ : HSp D} (hV : SameSp V₀ V) {K : Subgroup (GL (Fin
   have h1 : Lev.IsMeasLevDef V₀ K μ := h.1
   exact heq_of_eq (GlobalTheory.FunObjModel.isMeasLevW_unique (V := V₀) (fun _ _ e => e.1) h1 h₀.1)
 
+/- English proof (translation)
+Take `⟨L, hl1, hl2, rfl⟩` from `hsp`. Take `rfl` from `eq_of_heq hl`. Establish `hs` using `Formalism.L2.DIV.stabilizer_eq_stabilizer_lattice _ _ _ _ _ hf`. Establish `h2` using `GlobalTheory.ChiGrid.congLev_top (hc := D.sp.cm) (J := V.gram) (Λ := Λ')`. Apply `heq_of_eq` to reduce the goal to its premises.
+
+Rewrite using `[h2, hs]`. Both sides reduce to the same expression.
+-/
 theorem lev_heq {V V' : HSp D} (hsp : SameSp V V') {β : GL (Fin V'.rank) (Lev.EAf D)}
     {Λ' : Submodule (𝓞 D.host.E) (Fin V'.rank → D.host.E)} {Λ : Submodule (𝓞 D.host.E) (Fin V.rank → D.host.E)}
     (hl : HEq Λ' Λ) (hf : Formalism.L2.DIV.IsFrame β Λ') :
@@ -57,14 +71,41 @@ theorem lev_heq {V V' : HSp D} (hsp : SameSp V V') {β : GL (Fin V'.rank) (Lev.E
   rw [h2, hs]
   rfl
 
+/- English proof (translation)
+Substitute `h` using the available equality. Conclude with `⟨HEq.rfl, HEq.rfl⟩`.
+-/
 theorem cast_heq {S S' : GlobalTheory.Grid.Node D} (h : S = S') (m : S.MeasDat) :
     HEq (Node.MeasDat.cast h m).ν m.ν ∧ HEq (Node.MeasDat.cast h m).fd m.fd := by
   subst h; exact ⟨HEq.rfl, HEq.rfl⟩
 
+/- English proof (translation)
+Substitute `h` using the available equality. Conclude with `hf`.
+-/
 theorem cast_fd {S S' : GlobalTheory.Grid.Node D} (h : S = S') (m : S.MeasDat) (hf : IsFundamentalDomain (GQ S.V) m.fd m.ν) :
     IsFundamentalDomain (GQ S'.V) (Node.MeasDat.cast h m).fd (Node.MeasDat.cast h m).ν := by
   subst h; exact hf
 
+/- English proof (translation)
+Introduce `D Γ _ _ Pl0 T A Ks _ _ _ R sc large₂ F hS hc G' W hW G hG hJ M t hM i j hi hj e H hH`. Establish `hAt` using `hM.vtx (.grid i (j + 1)) ⟨hi, by omega⟩`. Take `⟨hHaar, hfd⟩` from `hAt.haar_fund`. Establish `hsp : SameSp (G'.V (.grid i (j + 1))) (G.V i (j + 1)).V` using `(hJ.1.vert i (j + 1) hi (by omega)).sp`. It suffices to establish `key : HEq (G.meas t i (j + 1)).ν (M.ν (.grid i (j + 1))) ∧ IsFundamentalDomain (GQ (G.V i (j + 1)).V) (G.meas t i (j + 1)).fd (G.meas t i (j + 1)).ν from exch hsp e key.1 hHaar key.2 hfd H hH`.
+
+Unfold `Vol.IsAt at hAt`. Break down `i with _ | i` into its components or cases. Establish `hmod` using `hS.core.models`. Distinguish the cases in `h : j + 1 < D.R.m`. Establish `hT : G'.V (.grid 0 (j + 1)) = Yc D (j + 1)` using `congrArg LSp.sp (colY_lt R.toLevCh h)`.
+
+Establish `hK : HEq (levJ G' t (.grid 0 (j + 1))) (lev D.sp.cm (Yc D (j + 1)).gram (R.βY (j + 1)) (R.datYt t (j + 1) R.triv))` using `levCol_lt R.toLevCh t h`. Establish `e0 : G.meas t 0 (j + 1) = Node.MeasDat.cast (nodeY_eq_chainVertexAtRowZero_of_lt R h) ⟨R.νY t (j + 1), R.fdY t (j + 1)⟩` using `by show meas0 R t j = _`. Rewrite using `[meas0, dif_pos h]`. Rewrite using `[e0]`. Break down `Nat.lt_or_ge (j + 1 + 1) D.R.m with h' | h'` into its components or cases.
+
+Establish `hc` using `hmod.νY t (j + 1) h'`. Rewrite `hAt` using `[if_neg (show ¬ (GlobalTheory.ChiGrid.Node.grid 0 (j + 1)).neg D.R.m = 0 by simp only [GlobalTheory.ChiGrid.Node.neg]; omega)]`. Conclude with `⟨(cast_heq _ _).1.trans (GlobalTheory.FlipStart.Col.measFD_heq hT hK hAt hc).symm, cast_fd _ _ hc.2⟩`. Establish `e1 : j + 1 = D.R.m - 1` using `by omega`. Establish `hc` using `hmod.νY' t`.
+
+Rewrite `hc` using `[← e1]`. Rewrite `hAt` using `[if_pos (show (GlobalTheory.ChiGrid.Node.grid 0 (j + 1)).neg D.R.m = 0 by simp only [GlobalTheory.ChiGrid.Node.neg]; omega)]`. Conclude with `⟨(cast_heq _ _).1.trans (GlobalTheory.FlipStart.Col.measDef_heq hT hK hAt hc).symm, cast_fd _ _ hc.2⟩`. Establish `hj' : j + 1 = D.R.m` using `by omega`. Establish `hT : G'.V (.grid 0 (j + 1)) = D.sp.X'` using `by show (columnBlock R.toLevCh (j + 1)).sp = _`.
+
+Rewrite using `[hj', colY_m]`. Establish `hK : HEq (levJ G' t (.grid 0 (j + 1))) (lev D.sp.cm D.sp.X'.gram R.βX (R.datXt t))` using `levCol_top R.toLevCh t h`. Establish `e0 : G.meas t 0 (j + 1) = Node.MeasDat.cast (nodeX_eq_chainVertexAtRowZero_of_ge R h) ⟨R.νX t, R.fdX t⟩` using `by show meas0 R t j = _`. Rewrite using `[meas0, dif_neg h]`. Rewrite using `[e0]`.
+
+Establish `hc` using `hmod.νX t`. Rewrite `hAt` using `[if_pos (show (GlobalTheory.ChiGrid.Node.grid 0 (j + 1)).neg D.R.m = 0 by simp only [GlobalTheory.ChiGrid.Node.neg]; omega)]`. Conclude with `⟨(cast_heq _ _).1.trans (GlobalTheory.FlipStart.Col.measDef_heq hT hK hAt hc).symm, cast_fd _ _ hc.2⟩`. Establish `hN` using `hJ.1.vert (i + 1) (j + 1) hi (by omega)`. Establish `hm` using `hG.meas.vert i j hi (by omega)`.
+
+Take `⟨c, hfr⟩` from `(hG.spaces.vert i (j + 1) hi (by omega)).frame`. Establish `hK : HEq ((G.nV i (j + 1)).princ ⊤) (levJ G' t (.grid (i + 1) (j + 1)))`. Rewrite using `[GlobalTheory.Grid.Node.princ_top]`. Conclude with `lev_heq hN.sp hN.lat hfr.1`. Use `show HEq (G.mV i (j + 1)).ν _ ∧ IsFundamentalDomain (GQ (G.nV i (j + 1)).V) (G.mV i (j + 1)).fd (G.mV i (j + 1)).ν`.
+
+Distinguish the cases in `hd : D.R.m - 1 ≤ j + 1`. Establish `h1` using `hm.1 hd`. Rewrite `hAt` using `[if_pos (show (GlobalTheory.ChiGrid.Node.grid (i + 1) (j + 1)).neg D.R.m = 0 by simp only [GlobalTheory.ChiGrid.Node.neg]; omega)]`. Conclude with `⟨measDef_heq hN.sp hK h1 hAt, h1.2⟩`. Establish `h1` using `hm.2 hd`.
+
+Rewrite `hAt` using `[if_neg (show ¬ (GlobalTheory.ChiGrid.Node.grid (i + 1) (j + 1)).neg D.R.m = 0 by simp only [GlobalTheory.ChiGrid.Node.neg]; omega)]`. Conclude with `⟨measFD_heq hN.sp hK h1 hAt, h1.2⟩`.
+-/
 theorem meas_down : ∀ {D : D7} {Γ : Type} [Group Γ] [Fintype Γ] {Pl0 T : Type} {A : FamIn D.what₂.LL Γ Pl0 T D.R.m}
     {Ks : Type} [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] {R : RealDat D A Ks} {sc : Consts} {large₂ : SizeData₂ D}
     {F : Face D A}, GlobalTheory.RowClaim.HidaSetting large₂ R F → sc.cGap = 1 →

@@ -26,8 +26,14 @@ noncomputable def qn (l M i : ℕ) : ℚ := ((i.factorial : ℚ))⁻¹ * (((l : 
 
 def T (k : ℕ) : Submodule W (A f ξ l M) := Submodule.span W (dpA f ξ l M '' {i | k ≤ i})
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem smul_def' (u : W) (x : A f ξ l M) : u • x = ofW f ξ l M u * x := rfl
 
+/- English proof (translation)
+Rewrite using `[smul_def', map_mul, ι_ofW]`.
+-/
 theorem ι_smul (u : W) (x : A f ξ l M) : ι f ξ l M (u • x) = f u * ι f ξ l M x := by
   rw [smul_def', map_mul, ι_ofW]
 

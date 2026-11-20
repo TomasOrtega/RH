@@ -19,6 +19,17 @@ open GlobalTheory.KeyEq
 noncomputable section
 namespace GlobalTheory.KeyEq
 
+/- English proof (translation)
+Introduce `P hg rig hr th hth v hv th' hth' v' hv' a N ha hN`. Use `haveI := P.isAb.comm`. Take `⟨-, -, -, -, bas⟩` from `GlobalTheory.LieComb.lieComb_algebra ℂ P.A P.g v hv.1`. Use `⟨?_, ((bas N v' hv hN).1 hv').ne_zero, ?_⟩` and prove the remaining obligations. Introduce and unpack `rfl`.
+
+Take `⟨y, -, hy⟩` from `hth' (IsLocalRing.closedPoint ℂ)`. Take `⟨i, hi⟩` from `TopologicalSpace.Opens.mem_iSup.1 hy`. Rewrite `hi` using `[ha i, constFn, map_zero, map_zero, zero_mul, Scheme.basicOpen_zero]`. Conclude with `hi`. Introduce and unpack `τ M α β c ⟨u, h₁, h₂, h₃, h₄, h₅, h₆⟩`.
+
+Use `⟨u, h₁, h₂, h₃, h₄, ?_, ?_⟩` and prove the remaining obligations. Introduce `i z hz`. Establish `e` using `h₅ i z hz`. Use `((congrArg (valAt' _ _) (ha i)).trans (valAt'_mul _ _ _ _)).trans ?_` and prove the remaining obligations. Rewrite using `[valAt'_constFn _ _ (Over.w (u.ex z)) _ _ hz]`.
+
+Use `(congrArg (a * ·) e).trans ?_` and prove the remaining obligations. Use `beta_reduce`. Simplify using `only [_root_.mul_assoc]`. Introduce `i`. Establish `h1` using `GlobalTheory.UnifDifferential.isDiff_of_isLieComb P.A P.L P.g P.g u _ v _ _ hv.1 h₆ (hN i)`.
+
+Establish `e : ∑ j, N i j • ((2 * Real.pi * Complex.I : ℂ)⁻¹ • M j) = (2 * Real.pi * Complex.I : ℂ)⁻¹ • (N * M) i`. Simplify using `only [smul_comm (N i _) (2 * Real.pi * Complex.I : ℂ)⁻¹]`. Rewrite using `[← Finset.smul_sum, ← Matrix.vecMul_eq_sum]`. Both sides reduce to the same expression. Rewrite `h1` using `[e]`. Then use the resulting hypothesis.
+-/
 theorem normalAt_scale :
     ∀ (P : Out.PolAV (Sp ℂ)) (hg rig hr th hth v hv th' hth' v' hv') (a : ℂ) (N : Matrix (Fin P.g) (Fin P.g) ℂ), (∀ i, LB.Sec.f th' i = constFn P.A.hom _ a * LB.Sec.f th i) → (∀ i, IsLieComb (N i) v (v' i)) → a ≠ 0 ∧ N.det ≠ 0 ∧ ∀ (τ M : Matrix (Fin P.g) (Fin P.g) ℂ) (α β : Fin P.g → ℂ) (c : ℂ), NormalAt ⟨P, hg, rig, hr, th, hth, v, hv⟩ τ M α β c → NormalAt ⟨P, hg, rig, hr, th', hth', v', hv'⟩ τ (N * M) α β (a * c) := by
   intro P hg rig hr th hth v hv th' hth' v' hv' a N ha hN

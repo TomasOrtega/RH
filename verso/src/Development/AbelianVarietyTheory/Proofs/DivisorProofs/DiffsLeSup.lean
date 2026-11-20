@@ -20,6 +20,11 @@ def thetaSpanV' (B : Base F E) (G : Geo σ a a') (X : Chars F E) (om' : Rep σ G
     (Rf : FinMaps F a a') : Submodule ℂ (UA σ G.W.J → ℂ) :=
   Submodule.span ℂ {f | ∃ Φ, ∃ Φ' ∈ G.M'.So B.ψ B.τ₁, PolMatch B G X R Rf Φ Φ' ∧ f = G.M'.I om' Φ'}
 
+/- English proof (translation)
+Use `Submodule.span_le.2 ?_` and prove the remaining obligations. Introduce and unpack `f ⟨Φ, Φ', hΦ', hm, rfl⟩`. Establish `h1 : G.M.I om Φ ∈ thetaSpanV B G X om R Rf` using `Submodule.subset_span ⟨Φ, Φ', hΦ', hm, rfl⟩`. Establish `h2 : G.M'.I om' Φ' ∈ thetaSpanV' B G X om' R Rf` using `Submodule.subset_span ⟨Φ, Φ', hΦ', hm, rfl⟩`. Establish `: (fun h => G.M.I om Φ h - c * G.M'.I om' Φ' h) = G.M.I om Φ + (-c) • G.M'.I om' Φ'`.
+
+Use function extensionality and compare the values at `h`. Simplify using `[sub_eq_add_neg]`. Rewrite using `[SetLike.mem_coe, this]`. Conclude with `Submodule.add_mem_sup h1 (Submodule.smul_mem _ _ h2)`.
+-/
 theorem diffs_le_sup (B : Base F E) (G : Geo σ a a') (X : Chars F E) (om : Rep σ G.V G.W) (om' : Rep σ G.V' G.W)
     (R : RealMaps F a a') (Rf : FinMaps F a a') (c : ℂ) :
     Diffs B G X om om' R Rf c ≤ thetaSpanV B G X om R Rf ⊔ thetaSpanV' B G X om' R Rf := by

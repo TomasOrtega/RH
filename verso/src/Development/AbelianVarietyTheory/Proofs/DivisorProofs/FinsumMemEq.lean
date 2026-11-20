@@ -25,6 +25,9 @@ def fixSub {m : ℕ} (f : Fin m → F) : Subgroup (GL (Fin m) F) where
         = ((x⁻¹ : GL (Fin m) F) : Matrix (Fin m) (Fin m) F) *ᵥ ((x : Matrix (Fin m) (Fin m) F) *ᵥ w) := by rw [hx w hw]
       _ = w := by rw [mulVec_mulVec, ← Units.val_mul, inv_mul_cancel, Units.val_one, one_mulVec]
 
+/- English proof (translation)
+Take `⟨n, ρ, hρ⟩` from `h`. Rewrite using `[hρ, hρ]`. Use `congr 1`. Simplify using `using ρ.char_conj x y⁻¹`.
+-/
 theorem isChar_conj {G : Type} [Group G] {χ : G → ℂ} (h : IsChar ℂ ℂ χ) (x y : G) :
     χ (y⁻¹ * x * y) = χ x := by
   obtain ⟨n, ρ, hρ⟩ := h
@@ -32,6 +35,9 @@ theorem isChar_conj {G : Type} [Group G] {χ : G → ℂ} (h : IsChar ℂ ℂ χ
   congr 1
   simpa using ρ.char_conj x y⁻¹
 
+/- English proof (translation)
+Rewrite using `[finsum_mem_def, finsum_eq_sum_of_fintype]`. Simplify using `[Set.indicator_apply]`.
+-/
 theorem finsum_mem_eq {α : Type} [Fintype α] (s : Set α) (g : α → ℂ) :
     ∑ᶠ x ∈ s, g x = ∑ x, if x ∈ s then g x else 0 := by
   rw [finsum_mem_def, finsum_eq_sum_of_fintype]
@@ -39,11 +45,21 @@ theorem finsum_mem_eq {α : Type} [Fintype α] (s : Set α) (g : α → ℂ) :
 
 def eLast (m : ℕ) (hm : 0 < m) : Fin m → F := Pi.single (⟨m - 1, by omega⟩ : Fin m) 1
 
+/- English proof (translation)
+Use extensionality with `i`. Simplify using `only [mulVec, dotProduct, vecMulVec, of_apply, Pi.smul_apply, smul_eq_mul, Finset.sum_mul]`. Conclude with `Finset.sum_congr rfl fun j _ => by ring`.
+-/
 theorem vmv_mulVec {m : ℕ} (u v w : Fin m → F) : vecMulVec u v *ᵥ w = (v ⬝ᵥ w) • u := by
   ext i
   simp only [mulVec, dotProduct, vecMulVec, of_apply, Pi.smul_apply, smul_eq_mul, Finset.sum_mul]
   exact Finset.sum_congr rfl fun j _ => by ring
 
+/- English proof (translation)
+Establish `h : ∀ w, (x : Matrix (Fin m) (Fin m) F) *ᵥ w = (1 + vecMulVec ((x : Matrix (Fin m) (Fin m) F) *ᵥ w₀ - w₀) f) *ᵥ w`. Introduce `w`. Establish `hw' : f ⬝ᵥ (w - (f ⬝ᵥ w) • w₀) = 0`. Rewrite using `[dotProduct_sub, dotProduct_smul, hw, smul_eq_mul, mul_one, sub_self]`. Establish `h1` using `hx _ hw'`.
+
+Rewrite using `[add_mulVec, one_mulVec, vmv_mulVec, smul_sub]`. Establish `: w = (w - (f ⬝ᵥ w) • w₀) + (f ⬝ᵥ w) • w₀` using `by abel`. Use `conv_lhs => rw [this]`. Rewrite using `[mulVec_add, h1, mulVec_smul]`. Normalize the expressions using the abelian group laws.
+
+Use extensionality with `i j`. Use `congr_fun (h (Pi.single j 1)) i` as an intermediate fact. Simplify `this` using `[mulVec_single_one]`.
+-/
 theorem key {m : ℕ} (f w₀ : Fin m → F) (hw : f ⬝ᵥ w₀ = 1) (x : GL (Fin m) F) (hx : x ∈ fixSet f) :
     (x : Matrix (Fin m) (Fin m) F) = 1 + vecMulVec ((x : Matrix (Fin m) (Fin m) F) *ᵥ w₀ - w₀) f := by
   have h : ∀ w, (x : Matrix (Fin m) (Fin m) F) *ᵥ w =
@@ -61,6 +77,17 @@ theorem key {m : ℕ} (f w₀ : Fin m → F) (hw : f ⬝ᵥ w₀ = 1) (x : GL (F
   have := congr_fun (h (Pi.single j 1)) i
   simpa [mulVec_single_one] using this
 
+/- English proof (translation)
+Establish `hzz : (z : Matrix (Fin m) (Fin m) F) * ((z⁻¹ : GL (Fin m) F) : Matrix (Fin m) (Fin m) F) = 1`. Rewrite using `[← Units.val_mul, mul_inv_cancel, Units.val_one]`. Establish `hzz' : ((z⁻¹ : GL (Fin m) F) : Matrix (Fin m) (Fin m) F) * (z : Matrix (Fin m) (Fin m) F) = 1`. Rewrite using `[← Units.val_mul, inv_mul_cancel, Units.val_one]`. Prove the components needed by the constructor for the conclusion.
+
+Introduce `h w hw`. Establish `hw' : (f ᵥ* (z : Matrix (Fin m) (Fin m) F)) ⬝ᵥ (((z⁻¹ : GL (Fin m) F) : Matrix (Fin m) (Fin m) F) *ᵥ w) = 0`. Rewrite using `[← dotProduct_mulVec, mulVec_mulVec, hzz, one_mulVec, hw]`. Use `h _ hw'` as an intermediate fact. Establish `hzw : (z : Matrix (Fin m) (Fin m) F) *ᵥ (((z⁻¹ : GL (Fin m) F) : Matrix (Fin m) (Fin m) F) *ᵥ w) = w`.
+
+Rewrite using `[mulVec_mulVec, hzz, one_mulVec]`. Simplify using `only [Units.val_mul] at this`. Rewrite `this` using `[← mulVec_mulVec, ← mulVec_mulVec, hzw]`. Establish `hzv : ∀ v, (z : Matrix (Fin m) (Fin m) F) *ᵥ (((z⁻¹ : GL (Fin m) F) : Matrix (Fin m) (Fin m) F) *ᵥ v) = v`. Introduce `v`.
+
+Rewrite using `[mulVec_mulVec, hzz, one_mulVec]`. Use `congrArg (fun v => (z : Matrix (Fin m) (Fin m) F) *ᵥ v) this` as an intermediate fact. Simplify `this` using `only [hzv]`. Introduce `h w hw`. Rewrite `hw` using `[← dotProduct_mulVec]`.
+
+Simplify using `only [Units.val_mul]`. Rewrite using `[← mulVec_mulVec, ← mulVec_mulVec, h _ hw, mulVec_mulVec, hzz', one_mulVec]`.
+-/
 theorem conj_mem {m : ℕ} (f : Fin m → F) (z x : GL (Fin m) F) :
     z⁻¹ * x * z ∈ fixSet (f ᵥ* (z : Matrix (Fin m) (Fin m) F)) ↔ x ∈ fixSet f := by
   have hzz : (z : Matrix (Fin m) (Fin m) F) * ((z⁻¹ : GL (Fin m) F) : Matrix (Fin m) (Fin m) F) = 1 := by
@@ -85,6 +112,9 @@ theorem conj_mem {m : ℕ} (f : Fin m → F) (z x : GL (Fin m) F) :
     simp only [Units.val_mul]
     rw [← mulVec_mulVec, ← mulVec_mulVec, h _ hw, mulVec_mulVec, hzz', one_mulVec]
 
+/- English proof (translation)
+Use `Fintype.sum_equiv (MulAut.conj z⁻¹).toEquiv _ _ fun x => ?_` and prove the remaining obligations. Simplify using `only [MulEquiv.toEquiv_eq_coe, MulEquiv.coe_toEquiv, MulAut.conj_apply, inv_inv]`. Rewrite using `[conj_mem]`.
+-/
 theorem sum_conj {m : ℕ} [Fintype (GL (Fin m) F)] (f : Fin m → F) (z : GL (Fin m) F) (φ : GL (Fin m) F → ℂ) :
     (∑ x, if x ∈ fixSet f then φ (z⁻¹ * x * z) else 0) =
       ∑ g, if g ∈ fixSet (f ᵥ* (z : Matrix (Fin m) (Fin m) F)) then φ g else 0 := by

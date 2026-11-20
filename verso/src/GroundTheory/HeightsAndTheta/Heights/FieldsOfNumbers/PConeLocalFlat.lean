@@ -12,6 +12,13 @@ universe u
 
 set_option maxHeartbeats 400000 in
 
+/- English proof (translation)
+Introduce `F _ K _ _ ι _ P hP W hW hPW`. Use `hP.isPrime` as an intermediate fact. Use `hW.isPrime` as an intermediate fact. Use `choose v hv using hW.relevant`. Take `⟨hA, hloc⟩` from `h F K ι P hP W hW hPW v hv`.
+
+Set `_` to `(coneVarMap P W hPW v).toRingHom.toAlgebra`. Use `isPrime_map_C_mvPolynomial K (maximalIdeal (degZeroLoc P {W}))` as an intermediate fact. Establish `: IsScalarTower (degZeroLoc P {W}) (MvPolynomial K (degZeroLoc P {W})) (coneLocal P W hPW)` using `IsScalarTower.of_algebraMap_eq fun x => ((coneVarMap P W hPW v).commutes x).symm`. Establish `hR : IsLocalRing (coneLocal P W hPW)` using `IsLocalization.AtPrime.isLocalRing (coneLocal P W hPW) ((maximalIdeal (degZeroLoc P {W})).map (C : degZeroLoc P {W} →+* MvPolynomial K _))`. Use `⟨hA, hR, ?_, ?_⟩` and prove the remaining obligations.
+
+Use `IsLocalization.flat (coneLocal P W hPW) ((maximalIdeal (degZeroLoc P {W})).map (C : degZeroLoc P {W} →+* MvPolynomial K _)).primeCompl` as an intermediate fact. Conclude with `Module.Flat.trans _ (MvPolynomial K (degZeroLoc P {W})) _`. Rewrite using `[← IsLocalization.AtPrime.map_eq_maximalIdeal ((maximalIdeal (degZeroLoc P {W})).map (C : degZeroLoc P {W} →+* MvPolynomial K _)) (coneLocal P W hPW), Ideal.map_map, ← MvPolynomial.algebraMap_eq, ← IsScalarTower.algebraMap_eq]`.
+-/
 theorem ConeLocalFlat.proof (h : ConePolyLocalization.Statement.{u}) : ConeLocalFlat.Statement.{u} := by
   intro F _ K _ _ ι _ P hP W hW hPW
   have := hP.isPrime

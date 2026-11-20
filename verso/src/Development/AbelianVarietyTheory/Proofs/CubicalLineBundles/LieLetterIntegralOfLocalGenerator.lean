@@ -15,6 +15,11 @@ open GlobalTheory GlobalTheory.CM GlobalTheory.LamF
 
 namespace GlobalTheory.LamF
 
+/- English proof (translation)
+Establish `key : F.lieLat ≤ (F'.lieLat).comap (D.restrictScalars (𝓞 K))`. Unfold `GenFib.lieLat`. Use `Submodule.span_le.mpr ?_` and prove the remaining obligations. Introduce and unpack `x ⟨u, hu⟩`. Conclude with `Submodule.subset_span ⟨u ≫ f, hD u x hu⟩`.
+
+Conclude with `key hc`.
+-/
 theorem isDiffOf_mem_lieLat {K : Type} [Field K] [NumberField K] {P P' : Out.PolAV (Sp (𝓞 K))} {F : GenFib P}
     {F' : GenFib P'} {f : P.A ⟶ P'.A} {D : (Fin F.P₀.g → K) →ₗ[K] (Fin F'.P₀.g → K)} (hD : F.IsDiffOf F' f D)
     {c : Fin F.P₀.g → K} (hc : c ∈ F.lieLat) : D c ∈ F'.lieLat := by
@@ -25,6 +30,15 @@ theorem isDiffOf_mem_lieLat {K : Type} [Field K] [NumberField K] {P P' : Out.Pol
     exact Submodule.subset_span ⟨u ≫ f, hD u x hu⟩
   exact key hc
 
+/- English proof (translation)
+Take `⟨⟨M, hM, -⟩, f₀, -, hf₀, hcomb⟩` from `GlobalTheory.T.existsUnique_differential_monHom_lieBasis K P F P' F' f hf`. Establish `hmem : M (Pi.single i c) ∈ F'.lieLat` using `isDiffOf_mem_lieLat hM hc`. Establish `hv : IsLieComb (Pi.single i 1) F.v (F.v i)` using `(GlobalTheory.LieComb.lieComb_algebra K F.P₀.A F.P₀.g F.v F.basis.1).2.2.2.1 i`. Establish `h1 : IsLieComb (M (Pi.single i 1)) F'.v (F.v i ≫ f₀)` using `hcomb M hM _ _ hv`. Establish `hw' : F.v i ≫ f₀ = w`.
+
+Apply `Over.OverMorphism.ext` to reduce the goal to its premises. Apply `F'.fib.2.1.1.hom_ext` to reduce the goal to its premises. Rewrite using `[Over.comp_left, Category.assoc, hf₀, hw]`. Rewrite using `[Over.w, Over.w]`. Rewrite `h1` using `[hw']`.
+
+Establish `htan : IsTangent w` using `(GlobalTheory.LieComb.lieComb_algebra K F'.P₀.A F'.P₀.g F'.v F'.basis.1).2.1 U w hU`. Establish `hUeq : M (Pi.single i 1) = U` using `(F'.basis.2 w htan).unique h1 hU`. Establish `hsingle : (Pi.single i c : Fin F.P₀.g → K) = c • Pi.single i 1`. Use extensionality with `j`. Simplify using `only [Pi.smul_apply, Pi.single_apply, smul_eq_mul]`.
+
+Apply the tactic sequence `split_ifs <;> simp`. Rewrite `hmem` using `[hsingle, map_smul, hUeq]`. Conclude with `hmem`.
+-/
 theorem smul_image_mem_lieLat {K : Type} [Field K] [NumberField K] {P P' : Out.PolAV (Sp (𝓞 K))} (F : GenFib P)
     (F' : GenFib P') (f : P.A ⟶ P'.A) (hf : IsMonHom f) (i : Fin F.P₀.g) (w : epsR K ⟶ F'.P₀.A)
     (U : Fin F'.P₀.g → K) (hw : w.left ≫ F'.φ = (F.v i).left ≫ F.φ ≫ f.left) (hU : IsLieComb U F'.v w) (c : K)
@@ -50,6 +64,11 @@ theorem smul_image_mem_lieLat {K : Type} [Field K] [NumberField K] {P P' : Out.P
   rw [hsingle, map_smul, hUeq] at hmem
   exact hmem
 
+/- English proof (translation)
+Establish `hfA : IsPolFibre (algebraMap (𝓞 K) K) A x.P φ` using `(isFibreOf_iff_isPolFibre (𝓞 K) K (algebraMap (𝓞 K) K) A x φ).mp hx`. Establish `hfB : IsPolFibre (algebraMap (𝓞 K) K) B y.P ψ` using `(isFibreOf_iff_isPolFibre (𝓞 K) K (algebraMap (𝓞 K) K) B y ψ).mp hy`. Establish `hI : ℓ.I ≠ 0` using `hℓ.1.1`. Take `⟨s, hs, hsI⟩ : ∃ s : 𝓞 K, s ∉ p.asIdeal ∧ s • cl ∈ ℓ.I` from `((((local_global_ideal_lattice K).2.1 ℓ.I p hI).2 cl).mp hcl).2 cl |>.mp le_rfl`. Establish `hA : (Pi.single i (s • cl) : Fin x.P.g → K) ∈ (GenFib.mk x.P φ hfA x.v x.basis : GenFib A).lieLat` using `(isVecLine_mem_iff_mem_lieLat K A x φ hfA i ℓ hℓ (s • cl)).mp hsI`.
+
+Establish `hB` using `smul_image_mem_lieLat (GenFib.mk x.P φ hfA x.v x.basis) (GenFib.mk y.P ψ hfB y.v y.basis) f hf i w U hw hU (s • cl) hA`. Establish `key` using `(isModelAt_integral_iff_mem_lieLat K B y ψ hfB p M hM (cl • U)).mpr ⟨s, hs, by rw [← smul_assoc]; exact hB⟩`. Conclude with `key m`.
+-/
 theorem image_integral_of_isLocGen {K : Type} [Field K] [NumberField K] {A B : Out.PolAV (Sp (𝓞 K))} {x y : KeyIn K}
     {φ : x.P.A.left ⟶ A.A.left} {ψ : y.P.A.left ⟶ B.A.left} (hx : IsFibreOf A x (gmap K) φ)
     (hy : IsFibreOf B y (gmap K) ψ) (f : A.A ⟶ B.A) (hf : IsMonHom f) {i : Fin x.P.g} {ℓ : MLine K}
@@ -72,6 +91,13 @@ theorem image_integral_of_isLocGen {K : Type} [Field K] [NumberField K] {A B : O
     ⟨s, hs, by rw [← smul_assoc]; exact hB⟩
   exact key m
 
+/- English proof (translation)
+Introduce `E _ _ _ _ H l c nΨ n' f o La hgood L hL p M hM k cl hcl m`. Take `⟨-, -, -, hB, hΨ, h', -, -, -, -, -, -, -, hiso, -, -, hℓΨ, hℓ', -⟩` from `hgood`. Take `⟨-, -, hlet, hline⟩` from `hL`. Take `⟨w, hwk, hU⟩` from `hlet k`. Establish `hlk` using `hline k`.
+
+Unfold `LamLetters.IsLetter at hwk`. Apply the tactic sequence `rcases hsrc : L.src k with q | q <;> rw [hsrc] at hwk hlk`. Simplify using `only at hwk hlk`. Rewrite `hcl` using `[hlk]`. Conclude with `image_integral_of_isLocGen hΨ hB (o.φΨ q.1) (hiso.1 q.1) (hℓΨ q.2) hwk hU hM hcl m`.
+
+Simplify using `only at hwk hlk`. Rewrite `hcl` using `[hlk]`. Conclude with `image_integral_of_isLocGen h' hB (o.φ' q.1) (hiso.2.1 q.1) (hℓ' q.2) hwk hU hM hcl m`.
+-/
 theorem letter_integral_of_isLocGen : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] [StarRing (𝓞 E)] (H : Host E) (l : Level H) (c : Coeff l) (nΨ n' f : ℕ) (o : LamObj c nΨ n') (La : ℝ), LamObjGood o f La → ∀ L : LamLetters o, L.IsGood → ∀ (p : HeightOneSpectrum (𝓞 o.K₁)) (M : Matrix (Fin o.xB.P.g) (Fin o.xB.P.g) o.K₁), IsModelAt o.B o.xB o.φB p M → ∀ (k : Fin o.xB.P.g) (cl : o.K₁), IsLocGen p cl (L.ℓ k).I → ∀ m, p.valuation o.K₁ (Matrix.vecMul (cl • L.U k) M⁻¹ m) ≤ 1 := by
   intro E _ _ _ _ H l c nΨ n' f o La hgood L hL p M hM k cl hcl m
   obtain ⟨-, -, -, hB, hΨ, h', -, -, -, -, -, -, -, hiso, -, -, hℓΨ, hℓ', -⟩ := hgood

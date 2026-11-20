@@ -17,6 +17,9 @@ open ReciprocityTheory.ChartRestriction.G.Geo.Tor Filter Topology GlobalTheory.C
 def ev {A : Type} [CommRing A] {T : Scheme.{0}} (x : Sp A ⟶ T) : Γ(T, ⊤) →+* A :=
   (x.appTop ≫ (Scheme.ΓSpecIso (CommRingCat.of A)).hom).hom
 
+/- English proof (translation)
+Establish `hx : x.appLE ⊤ ⊤ h = x.app ⊤`. Rewrite using `[Scheme.Hom.app_eq_appLE]`. Both sides reduce to the same expression. Simplify using `only [GlobalTheory.FibreDeriv.evEps, ev, hx]`.
+-/
 private theorem ev_eps_eq_ev {T : Scheme.{0}} (x : Sp (DualNumber ℂ) ⟶ T) (h) (f : Γ(T, ⊤)) :
     GlobalTheory.FibreDeriv.evEps x ⊤ h f = ev x f := by
   have hx : x.appLE ⊤ ⊤ h = x.app ⊤ := by
@@ -24,6 +27,13 @@ private theorem ev_eps_eq_ev {T : Scheme.{0}} (x : Sp (DualNumber ℂ) ⟶ T) (h
     rfl
   simp only [GlobalTheory.FibreDeriv.evEps, ev, hx]
 
+/- English proof (translation)
+Establish `hx : spMap (TrivSqZeroExt.fstHom ℂ ℂ ℂ).toRingHom ≫ (spMap (algebraMap ℂ (DualNumber ℂ)) ≫ x) = x`. Establish `e : (TrivSqZeroExt.fstHom ℂ ℂ ℂ).toRingHom.comp (algebraMap ℂ (DualNumber ℂ)) = RingHom.id ℂ`. Use extensionality with `z`. Simplify using `[TrivSqZeroExt.algebraMap_eq_inl]`. Rewrite using `[← Category.assoc, ← Spec.map_comp, ← CommRingCat.ofHom_comp, e]`.
+
+Simplify using the standard rewrite rules. Establish `h1` using `GlobalTheory.FibreDeriv.fst_evEps (spMap (algebraMap ℂ (DualNumber ℂ)) ≫ x) x hx ⊤ le_rfl f`. Rewrite using `[← h1, ev_eps_eq_ev]`. Establish `key : (spMap (algebraMap ℂ (DualNumber ℂ)) ≫ x).appTop ≫ (Scheme.ΓSpecIso (CommRingCat.of (DualNumber ℂ))).hom = (x.appTop ≫ (Scheme.ΓSpecIso (CommRingCat.of ℂ)).hom) ≫ CommRingCat.ofHom (algebraMap ℂ (DualNumber ℂ))`. Rewrite using `[Scheme.Hom.comp_appTop, Category.assoc, Scheme.ΓSpecIso_naturality, Category.assoc]`.
+
+Establish `h2` using `congrArg (fun g => (g.hom f).fst) key`. Simplify `h2` using `[ev, TrivSqZeroExt.algebraMap_eq_inl]`.
+-/
 theorem valAt'_top {T : Scheme.{0}} (x : Sp ℂ ⟶ T) (f : Γ(T, ⊤)) : valAt' x ⊤ f = ev x f := by
   have hx : spMap (TrivSqZeroExt.fstHom ℂ ℂ ℂ).toRingHom ≫ (spMap (algebraMap ℂ (DualNumber ℂ)) ≫ x) = x := by
     have e : (TrivSqZeroExt.fstHom ℂ ℂ ℂ).toRingHom.comp (algebraMap ℂ (DualNumber ℂ)) = RingHom.id ℂ := by
@@ -39,6 +49,9 @@ theorem valAt'_top {T : Scheme.{0}} (x : Sp ℂ ⟶ T) (f : Γ(T, ⊤)) : valAt'
   have h2 := congrArg (fun g => (g.hom f).fst) key
   simpa [ev, TrivSqZeroExt.algebraMap_eq_inl] using h2
 
+/- English proof (translation)
+Establish `hx : x.appLE ⊤ ⊤ h = x.app ⊤`. Rewrite using `[Scheme.Hom.app_eq_appLE]`. Both sides reduce to the same expression. Simplify using `only [GlobalTheory.FibreDeriv.evEps, ev, hx]`.
+-/
 theorem evEps_top {T : Scheme.{0}} (x : Sp (DualNumber ℂ) ⟶ T) (h) (f : Γ(T, ⊤)) :
     GlobalTheory.FibreDeriv.evEps x ⊤ h f = ev x f := by
   have hx : x.appLE ⊤ ⊤ h = x.app ⊤ := by
@@ -49,6 +62,9 @@ theorem evEps_top {T : Scheme.{0}} (x : Sp (DualNumber ℂ) ⟶ T) (h) (f : Γ(T
 def cst {R : Type} [CommRing R] (G : Over (Sp R)) (r : R) : Γ(G.left, ⊤) :=
   G.hom.appTop ((Scheme.ΓSpecIso (CommRingCat.of R)).inv r)
 
+/- English proof (translation)
+Establish `key : G.hom.appTop ≫ x.appTop ≫ (Scheme.ΓSpecIso (CommRingCat.of A)).hom = (Scheme.ΓSpecIso (CommRingCat.of R)).hom ≫ CommRingCat.ofHom φ`. Rewrite using `[← Category.assoc, ← Scheme.Hom.comp_appTop, hx]`. Conclude with `Scheme.ΓSpecIso_naturality _`. Establish `h` using `congrArg (fun f => f.hom ((Scheme.ΓSpecIso (CommRingCat.of R)).inv.hom r)) key`. Simplify `h` using `[ev, cst]`.
+-/
 theorem ev_cst {R A : Type} [CommRing R] [CommRing A] {G : Over (Sp R)} (φ : R →+* A) (x : Sp A ⟶ G.left)
     (hx : x ≫ G.hom = spMap φ) (r : R) : ev x (cst G r) = φ r := by
   have key : G.hom.appTop ≫ x.appTop ≫ (Scheme.ΓSpecIso (CommRingCat.of A)).hom =
@@ -62,6 +78,11 @@ variable {R : Type} [CommRing R]
 
 def crd (R : Type) [CommRing R] : Γ((gaObj (Sp R)).left, ⊤) := AffineSpace.coord (Sp R) (0 : Fin 1)
 
+/- English proof (translation)
+Establish `h` using `(gaEquiv (Over.mk y)).apply_symm_apply (Multiplicative.ofAdd ((Scheme.ΓSpecIso (CommRingCat.of A)).inv.hom a))`. Establish `h2 : (gaPt y a).left.appTop.hom (crd R) = (Scheme.ΓSpecIso (CommRingCat.of A)).inv.hom a` using `congrArg Multiplicative.toAdd h`. Establish `h3` using `congrArg (fun f => f.hom a) (Scheme.ΓSpecIso (CommRingCat.of A)).inv_hom_id`. Use `show (Scheme.ΓSpecIso (CommRingCat.of A)).hom.hom ((gaPt y a).left.appTop.hom (crd R)) = a`. Rewrite using `[h2]`.
+
+Conclude with `h3`.
+-/
 theorem ev_crd {A : Type} [CommRing A] (y : Sp A ⟶ Sp R) (a : A) : ev (gaPt y a).left (crd R) = a := by
   have h := (gaEquiv (Over.mk y)).apply_symm_apply
     (Multiplicative.ofAdd ((Scheme.ΓSpecIso (CommRingCat.of A)).inv.hom a))
@@ -72,6 +93,15 @@ theorem ev_crd {A : Type} [CommRing A] (y : Sp A ⟶ Sp R) (a : A) : ev (gaPt y 
   rw [h2]
   exact h3
 
+/- English proof (translation)
+Introduce `a`. Choose the witnesses or unpack the hypotheses as in `⟨p, rfl⟩ : ∃ p : MvPolynomial (Fin 1) Γ(Sp R, ⊤), MvPolynomial.eval₂Hom ((gaObj (Sp R)).hom.appTop.hom) (AffineSpace.coord (Sp R)) p = a := by`. Use `⟨(Scheme.ΓSpecIso _).hom.hom ((AffineSpace.isoOfIsAffine (Fin 1) (Sp R)).inv.appTop.hom a), ?_⟩` and prove the remaining obligations. Establish `h` using `congrArg (fun f => f.hom a) (congrArg Scheme.Hom.appTop (AffineSpace.isoOfIsAffine (Fin 1) (Sp R)).hom_inv_id)`. Simplify using `only [Scheme.Hom.comp_appTop, Scheme.Hom.id_appTop, CommRingCat.hom_comp, CommRingCat.hom_id, RingHom.comp_apply, RingHom.id_apply, AffineSpace.isoOfIsAffine_hom_appTop, CommRingCat.hom_ofHom] at h`.
+
+Conclude with `h`. Proceed by induction on `p using MvPolynomial.induction_on with`. Consider the case `C s`. Rewrite using `[MvPolynomial.eval₂Hom_C]`. Establish `h` using `h0 ((Scheme.ΓSpecIso (CommRingCat.of R)).hom.hom s)`.
+
+Establish `e : cst (gaObj (Sp R)) ((Scheme.ΓSpecIso (CommRingCat.of R)).hom.hom s) = (gaObj (Sp R)).hom.appTop.hom s`. Simplify using `[cst]`. Rewrite `h` using `[e]`. Then use the resulting hypothesis. Consider the case `add p q hp hq => rw [map_add]`. Conclude with `ha _ _ hp hq`.
+
+Consider the case `mul_X p i hp`. Rewrite using `[map_mul, MvPolynomial.eval₂Hom_X']`. Take `rfl : i = 0` from `Subsingleton.elim _ _`. Conclude with `hm _ _ hp h1`.
+-/
 theorem ga_induction (P : Γ((gaObj (Sp R)).left, ⊤) → Prop) (h0 : ∀ r, P (cst _ r)) (h1 : P (crd R))
     (ha : ∀ a b, P a → P b → P (a + b)) (hm : ∀ a b, P a → P b → P (a * b)) : ∀ a, P a := by
   intro a
@@ -113,6 +143,13 @@ def gaFrame (R : Type) [CommRing R] : LieModel (gaObj (Sp R)) (𝟙 (Sp R)) (Fin
   add r s := (gaLie _).add _ _
   smul c r := (gaLie _).smul c (r 0)
 
+/- English proof (translation)
+Establish `hz : Spec.map (CommRingCat.ofHom (dualMap φ)) ≫ (Spec.map (CommRingCat.ofHom (algebraMap R (DualNumber R))) ≫ 𝟙 (Sp R)) = spMap ((algebraMap ℂ (DualNumber ℂ)).comp φ)`. Rewrite using `[Category.comp_id, ← Spec.map_comp, ← CommRingCat.ofHom_comp]`. Use `congr 2`. Apply the tactic sequence `ext r <;> simp [dualMap, TrivSqZeroExt.algebraMap_eq_inl]`. Establish `h1` using `map_gaPt (dualMap φ) _ _ hz (TrivSqZeroExt.inr 1 : DualNumber R)`.
+
+Establish `h2 : dualMap φ (TrivSqZeroExt.inr 1 : DualNumber R) = (TrivSqZeroExt.inr 1 : DualNumber ℂ)`. Apply the tactic sequence `ext <;> simp [dualMap]`. Rewrite `h1` using `[h2]`. Use `show Spec.map (CommRingCat.ofHom (dualMap φ)) ≫ (gaPt (Spec.map (CommRingCat.ofHom (algebraMap R (DualNumber R))) ≫ 𝟙 (Sp R)) (TrivSqZeroExt.inr ((Pi.single 0 1 : Fin 1 → R) 0) : DualNumber R)).left = _`. Rewrite using `[Pi.single_eq_same]`.
+
+Conclude with `h1`.
+-/
 theorem frame_eq (φ : R →+* ℂ) :
     spMap (dualMap φ) ≫ ((gaFrame R).pt (Pi.single 0 1)).left =
       (gaPt (spMap ((algebraMap ℂ (DualNumber ℂ)).comp φ)) (TrivSqZeroExt.inr 1 : DualNumber ℂ)).left := by
@@ -183,6 +220,13 @@ def gaExp {n : ℕ} {B : Set (Fin n → ℂ)} {ψ : (Fin n → ℂ) → (R →+*
       rw [valAt'_top, ev_crd] at this
       rw [this]
 
+/- English proof (translation)
+Use extensionality with `z`. Simplify using `only [FamExp.per, Set.mem_ofPred_eq, Set.mem_singleton_iff]`. Express the relevant statement in the definitionally equal form `gaPt (spMap (ψ b)) (z 0) = 1 ↔ z = 0`. Rewrite using `[← gaPt_zero (spMap (ψ b))]`. Prove the components needed by the constructor for the conclusion.
+
+Introduce `h`. Use function extensionality and compare the values at `i`. Take `rfl : i = 0` from `Subsingleton.elim _ _`. Conclude with `(gaPt_bijective _).1 h`. Introduce and unpack `rfl`.
+
+Both sides reduce to the same expression.
+-/
 theorem gaExp_per {n : ℕ} {B : Set (Fin n → ℂ)} {ψ : (Fin n → ℂ) → (R →+* ℂ)} (hψ : IsHolPts B ψ)
     (b : Fin n → ℂ) : (gaExp hψ).per b = {0} := by
   ext z
@@ -197,6 +241,9 @@ theorem gaExp_per {n : ℕ} {B : Set (Fin n → ℂ)} {ψ : (Fin n → ℂ) → 
   · rintro rfl
     rfl
 
+/- English proof (translation)
+Use `⟨isOpen_univ, fun r => ?_⟩` and prove the remaining obligations. Simplify using `only [Polynomial.coe_evalRingHom]`. Conclude with `(r.differentiable.comp (differentiable_apply 0)).differentiableOn`.
+-/
 theorem isHolPts_eval : IsHolPts (Set.univ : Set (Fin 1 → ℂ)) (fun b => Polynomial.evalRingHom (b 0)) := by
   refine ⟨isOpen_univ, fun r => ?_⟩
   simp only [Polynomial.coe_evalRingHom]
@@ -205,6 +252,13 @@ theorem isHolPts_eval : IsHolPts (Set.univ : Set (Fin 1 → ℂ)) (fun b => Poly
 variable {G : Over (Sp R)} [GrpObj G] {g n : ℕ} {M : LieModel G (𝟙 (Sp R)) (Fin g → R)} {B : Set (Fin n → ℂ)}
   {ψ : (Fin n → ℂ) → (R →+* ℂ)}
 
+/- English proof (translation)
+Establish `hS : ∀ r : R, IsOpen {bz : (Fin n → ℂ) × (Fin g → ℂ) | bz ∈ B ×ˢ Set.univ ∧ ⊤ ≤ (e.ex bz.1 bz.2).left ⁻¹ᵁ ⊤} ∧ DifferentiableOn ℂ (fun bz : (Fin n → ℂ) × (Fin g → ℂ) => ψ bz.1 r) {bz : (Fin n → ℂ) × (Fin g → ℂ) | bz ∈ B ×ˢ Set.univ ∧ ⊤ ≤ (e.ex bz.1 bz.2).left ⁻¹ᵁ ⊤}`. Introduce `r`. Take `⟨ho, hd⟩` from `e.hol ⊤ (cst G r)`. Use `⟨ho, hd.congr fun p _ => ?_⟩` and prove the remaining obligations. Use `show ψ p.1 r = valAt' (e.ex p.1 p.2).left ⊤ (cst G r)`.
+
+Rewrite using `[valAt'_top, ev_cst (ψ p.1) (e.ex p.1 p.2).left (Over.w (e.ex p.1 p.2)) r]`. Establish `hmap : ∀ b ∈ B, ((b, (0 : Fin g → ℂ)) : (Fin n → ℂ) × (Fin g → ℂ)) ∈ {bz : (Fin n → ℂ) × (Fin g → ℂ) | bz ∈ B ×ˢ Set.univ ∧ ⊤ ≤ (e.ex bz.1 bz.2).left ⁻¹ᵁ ⊤}` using `fun b hb => ⟨⟨hb, Set.mem_univ _⟩, le_top⟩`. Establish `hcont : Continuous fun b : Fin n → ℂ => ((b, (0 : Fin g → ℂ)) : (Fin n → ℂ) × (Fin g → ℂ))` using `continuous_id.prodMk continuous_const`. Use `⟨?_, fun r => ?_⟩` and prove the remaining obligations. Establish `h` using `(hS 0).1.preimage hcont`.
+
+Use `h using 1` and compare the differences between its conclusion and the goal. Use extensionality with `b`. Conclude with `⟨fun hb => hmap b hb, fun hb => hb.1.1⟩`. Establish `hdiff : DifferentiableOn ℂ (fun b : Fin n → ℂ => ((b, (0 : Fin g → ℂ)) : (Fin n → ℂ) × (Fin g → ℂ))) B` using `(differentiable_id.prodMk (differentiable_const _)).differentiableOn`. Conclude with `(hS r).2.comp hdiff hmap`.
+-/
 theorem isHolPts_of_famExp (e : FamExp G M B ψ) : IsHolPts B ψ := by
   have hS : ∀ r : R, IsOpen {bz : (Fin n → ℂ) × (Fin g → ℂ) | bz ∈ B ×ˢ Set.univ ∧
         ⊤ ≤ (e.ex bz.1 bz.2).left ⁻¹ᵁ ⊤} ∧
@@ -229,6 +283,17 @@ theorem isHolPts_of_famExp (e : FamExp G M B ψ) : IsHolPts B ψ := by
       (differentiable_id.prodMk (differentiable_const _)).differentiableOn
     exact (hS r).2.comp hdiff hmap
 
+/- English proof (translation)
+Take `⟨V, N, f, L, hV, hL, hLz, -⟩` from `e.log b hb`. Rewrite `h`, `h'` using `[GlobalTheory.FibreDeriv.isDerivAt0_iff]`. Establish `hv : ⊤ ≤ v ⁻¹ᵁ V` using `(GlobalTheory.FibreDeriv.top_le_preimage_eps v _ h.1 V).2 hV`. Establish `hjet : ∀ j, fderiv ℂ (fun z => valAt' (e.ex b z).left V (f j)) 0 w = fderiv ℂ (fun z => valAt' (e.ex b z).left V (f j)) 0 w'`. Introduce `j`.
+
+Establish `e1` using `congrArg TrivSqZeroExt.snd (h.2 V hv (f j))`. Establish `e2` using `congrArg TrivSqZeroExt.snd (h'.2 V hv (f j))`. Rewrite `e1`, `e2` using `[GlobalTheory.FibreDeriv.snd_jet]`. Conclude with `e1.symm.trans e2`. Establish `hΦd : DifferentiableAt ℂ (fun z (j : Fin N) => valAt' (e.ex b z).left V (f j)) 0` using `differentiableAt_pi.2 fun j => ExpLift.ex_differentiableAt e hb V (f j) hV`.
+
+Establish `hΦw : fderiv ℂ (fun z (j : Fin N) => valAt' (e.ex b z).left V (f j)) 0 w = fderiv ℂ (fun z (j : Fin N) => valAt' (e.ex b z).left V (f j)) 0 w'`. Rewrite using `[fderiv_pi (fun j => ExpLift.ex_differentiableAt e hb V (f j) hV)]`. Use function extensionality and compare the values at `j`. Simplify using `only [ContinuousLinearMap.pi_apply]`. Conclude with `hjet j`.
+
+Establish `hloc : (fun z => L (b, fun j => valAt' (e.ex b z).left V (f j))) =ᶠ[𝓝 0] id`. Establish `ht : Tendsto (fun z : Fin g → ℂ => (b, z)) (𝓝 0) (𝓝 (b, 0))` using `tendsto_const_nhds.prodMk_nhds tendsto_id`. Conclude with `ht.eventually hLz`. Establish `h1 : HasFDerivAt (fun z => L (b, fun j => valAt' (e.ex b z).left V (f j))) (ContinuousLinearMap.id ℂ (Fin g → ℂ)) 0` using `(hasFDerivAt_id (0 : Fin g → ℂ)).congr_of_eventuallyEq hloc`. Establish `h2` using `hL.differentiableAt.hasFDerivAt.comp (0 : Fin g → ℂ) ((hasFDerivAt_const b (0 : Fin g → ℂ)).prodMk hΦd.hasFDerivAt)`.
+
+Establish `h3` using `h1.unique h2`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem dir_unique (e : FamExp G M B ψ) {b : Fin n → ℂ} (hb : b ∈ B) {w w' : Fin g → ℂ}
     {v : Sp (DualNumber ℂ) ⟶ G.left} (h : IsDerivAt0 (fun z => (e.ex b z).left) w v)
     (h' : IsDerivAt0 (fun z => (e.ex b z).left) w' v) : w = w' := by
@@ -266,6 +331,13 @@ theorem dir_unique (e : FamExp G M B ψ) {b : Fin n → ℂ} (hb : b ∈ B) {w w
     _ = ContinuousLinearMap.id ℂ (Fin g → ℂ) w' := (congrArg (fun T => T w') h3).symm
     _ = w' := rfl
 
+/- English proof (translation)
+Establish `hB : IsOpen B` using `(isHolPts_of_famExp e).1`. Take `⟨h, -, hh⟩` from `exists_linear_lift_of_additive_family R G g n M B ψ e g B e'.ex hB subset_rfl e'.add e'.hol`. Take `⟨h1, -, h3⟩` from `hh b hb`. Establish `hid : h b = LinearMap.id`. Use `(Pi.basisFun ℂ (Fin g)).ext fun a => ?_` and prove the remaining obligations.
+
+Simplify using `only [Pi.basisFun_apply, LinearMap.id_apply]`. Conclude with `dir_unique e hb ((h3 _ _).1 (e'.diff b hb a)) (e.diff b hb a)`. Use function extensionality and compare the values at `z`. Use `h1 z` as an intermediate fact. Rewrite `this` using `[hid, LinearMap.id_apply]`.
+
+Conclude with `this`.
+-/
 theorem ex_unique [IsCommMonObj G] (e e' : FamExp G M B ψ) {b : Fin n → ℂ} (hb : b ∈ B) : e.ex b = e'.ex b := by
   have hB : IsOpen B := (isHolPts_of_famExp e).1
   obtain ⟨h, -, hh⟩ := exists_linear_lift_of_additive_family R G g n M B ψ e g B e'.ex hB subset_rfl
@@ -280,6 +352,9 @@ theorem ex_unique [IsCommMonObj G] (e e' : FamExp G M B ψ) {b : Fin n → ℂ} 
   rw [hid, LinearMap.id_apply] at this
   exact this
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨gaExp isHolPts_eval⟩`.
+-/
 theorem nonempty_famExp : Nonempty (FamExp (gaObj (Sp (Polynomial ℂ))) (gaFrame _) (Set.univ : Set (Fin 1 → ℂ))
     (fun b => Polynomial.evalRingHom (b 0))) := ⟨gaExp isHolPts_eval⟩
 

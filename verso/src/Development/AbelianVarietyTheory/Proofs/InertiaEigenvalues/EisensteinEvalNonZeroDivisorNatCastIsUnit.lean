@@ -8,6 +8,19 @@ noncomputable section
 
 namespace GlobalTheory.GalStep
 
+/- English proof (translation)
+Introduce `l _ a e _ _ O K _ _ _ _ _ _ _ _ _ _ t ϖ`. Use `⟨fun y hy => ?_, fun n hn => ?_⟩` and prove the remaining obligations. Establish `hd : ED K t ϖ = (1 : O) ⊗ₜ[ℤ_[l]] GlobalTheory.MemLoc.aDp l (ϖ.ev a (eis l a e))`. Rewrite using `[ED, PiSys.iD, glue_const, Ehat, PiSys.iHat_ofAl]`. Conclude with `(ϖ.iAl_of_mem O K (E_mem l e _) _).trans (congrArg (toOD l O) (ϖ.iA_E a O K))`.
+
+Use `set d := GlobalTheory.MemLoc.aDp l (ϖ.ev a (eis l a e))`. Establish `hinj : Function.Injective (LinearMap.mulLeft ℤ_[l] d)`. Introduce `x z hxz`. Rewrite using `[← sub_eq_zero]`. Apply `GlobalTheory.BKReal.HatDescent.aDp_ev_eis_mul_eq_zero (a := a) ϖ` to reduce the goal to its premises.
+
+Simplify using `only [LinearMap.mulLeft_apply] at hxz`. Rewrite using `[mul_sub, hxz, sub_self]`. Establish `hT` using `Module.Flat.lTensor_preserves_injective_linearMap (M := O) _ hinj`. Establish `hmul : ∀ z : OD l O, (LinearMap.mulLeft ℤ_[l] d).lTensor O z = ((1 : O) ⊗ₜ[ℤ_[l]] d) * z`. Introduce `z`.
+
+Proceed by induction on `z using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul o β => simp [Algebra.TensorProduct.tmul_mul_tmul]`. Consider the case `add x w hx hw => rw [map_add, hx, hw, mul_add]`. Apply `hT` to reduce the goal to its premises.
+
+Rewrite using `[hmul, map_zero, ← hd, hy]`. Take `⟨k, m, hm, rfl⟩` from `Nat.exists_eq_pow_mul_and_not_dvd hn l (Fact.out : l.Prime).one_lt.ne'`. Establish `hmu : IsUnit (m : ℤ_[l])` using `PadicInt.isUnit_iff.2 (PadicInt.norm_natCast_eq_one_iff.2 ((Nat.Prime.coprime_iff_not_dvd Fact.out).2 hm))`. Establish `hmu' : IsUnit (m : OD l O)`. Simplify `hmu.map (algebraMap ℤ_[l] (OD l O))` using `only [map_natCast]`.
+
+Rewrite using `[Nat.cast_mul, Nat.cast_pow]`. Conclude with `(isUnit_l_OD.pow k).mul hmu'`.
+-/
 theorem ED_nzd_and_natCast_isUnit : ∀ (l : ℕ) [Fact l.Prime] (a e : ℕ) [NeZero a] [NeZero e] (O K : Type)
     [CommRing O] [Algebra ℤ_[l] O] [Module.Free ℤ_[l] O] [Module.Finite ℤ_[l] O] [NormedField K]
     [IsUltrametricDist K] [Algebra O K] [IsUnitBall O K] [NormedAlgebra ℚ_[l] K] [CompleteSpace K]

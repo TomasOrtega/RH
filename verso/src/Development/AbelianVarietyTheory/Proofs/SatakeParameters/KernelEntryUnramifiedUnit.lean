@@ -9,6 +9,9 @@ open Formalism.BasicNotions Formalism.MainNotions Formalism.L2.Ker Formalism.L2.
 
 namespace GlobalTheory.KerJ
 
+/- English proof (translation)
+Introduce `D L hT Gi Gl K Y cX ex t hm u μ w hw i hi c c'`. Establish `h3` using `GlobalTheory.T.rhoThreeOf_of_determinantCharacterFiniteOrderType D u (D.chTw u μ) _ (hm u μ)`. Establish `hb` using `CharVal.brRho_holds D _ _ h3`. Rewrite using `[t.kf_un u μ w hw i hi c c']`. Conclude with `(t.kf u μ w hw).norm_un ((t.kf u μ w hw).unUnit_of t.idl t.idl_ok hb (GlobalTheory.T.kernelBasis_determinant_abs_at_place _ _ _ _ _ _ _ _ _)) hi c c'`.
+-/
 theorem unUnit_of_mtType : ∀ (D : D7) (L : SizeData₂ D) (hT : GatTies D) (Gi : G.Inst D L) (Gl : G.LatInst D) (K : G.Consts) (Y : DivX D) (cX : ExtraC) (ex : Extra D L hT Gi Gl K Y cX) (t : KerEntTied ex), (∀ u μ, MtType u (t.O u μ).mt) → t.ent.UnUnit := by
   intro D L hT Gi Gl K Y cX ex t hm u μ w hw i hi c c'
   have h3 := GlobalTheory.T.rhoThreeOf_of_determinantCharacterFiniteOrderType D u (D.chTw u μ) _ (hm u μ)

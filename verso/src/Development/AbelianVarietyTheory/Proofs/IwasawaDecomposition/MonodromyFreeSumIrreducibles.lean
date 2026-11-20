@@ -10,6 +10,17 @@ open NumberField IsDedekindDomain Formalism.ConjugateSelfDual ReciprocityTheory.
 
 namespace GlobalTheory.WeilDeligne.IrrDecomp
 
+/- English proof (translation)
+Establish `he' : ∀ g v, e.symm (ρ' g v) = ρ g (e.symm v)` using `fun g v => by`. Rewrite using `[e.symm_apply_eq, he, e.apply_symm_apply]`. Set `F : Subrepresentation ρ ≃o Subrepresentation ρ'` to `{ toFun := fun U => ⟨U.toSubmodule.map (e : V →ₗ[ℂ] V'), fun g v hv => by`. Take `⟨u, hu, rfl⟩` from `hv`. Conclude with `⟨ρ g u, U.apply_mem_toSubmodule g hu, he g u⟩⟩`.
+
+Use `invFun := fun U => ⟨U.toSubmodule.map (e.symm : V' →ₗ[ℂ] V), fun g v hv => by`. Take `⟨u, hu, rfl⟩` from `hv`. Conclude with `⟨ρ' g u, U.apply_mem_toSubmodule g hu, he' g u⟩⟩`. Use `left_inv := fun U => by`. Apply `Subrepresentation.toSubmodule_injective` to reduce the goal to its premises.
+
+Use extensionality with `v`. Simplify using `[Submodule.mem_map_equiv]`. Use `right_inv := fun U => by`. Apply `Subrepresentation.toSubmodule_injective` to reduce the goal to its premises. Use extensionality with `v`.
+
+Simplify using `[Submodule.mem_map_equiv]`. Use the proof step `map_rel_iff' := by`. Introduce `U U'`. Use `show U.toSubmodule.map (e : V →ₗ[ℂ] V') ≤ U'.toSubmodule.map (e : V →ₗ[ℂ] V') ↔ U.toSubmodule ≤ U'.toSubmodule`. Conclude with `Submodule.map_le_map_iff_of_injective e.injective _ _ }`.
+
+Use `haveI : IsSimpleOrder (Subrepresentation ρ) := hρ`. Conclude with `F.symm.isSimpleOrder`.
+-/
 theorem isIrreducible_of_equiv {G V V' : Type} [Monoid G] [AddCommGroup V] [Module ℂ V]
     [AddCommGroup V'] [Module ℂ V'] {ρ : Representation ℂ G V} {ρ' : Representation ℂ G V'}
     (e : V ≃ₗ[ℂ] V') (he : ∀ g v, e (ρ g v) = ρ' g (e v)) (hρ : ρ.IsIrreducible) :
@@ -42,6 +53,25 @@ theorem isIrreducible_of_equiv {G V V' : Type} [Monoid G] [AddCommGroup V] [Modu
 variable {E Ω : Type} [Field E] [NumberField E] [Field Ω] [Algebra E Ω] [IsAlgClosure E Ω]
   {A : ValuationSubring Ω} {w : HeightOneSpectrum (𝓞 E)} {h : IsPlaceOver A w}
 
+/- English proof (translation)
+Proceed by induction on `n using Nat.strong_induction_on with`. Consider the case `_ n ih`. Introduce `V _ _ _ a hn hN`. Break down `Nat.eq_zero_or_pos n with rfl | hpos` into its components or cases. Use `⟨[], by simp, ?_⟩ show WD.mk a = WD.mk (WDRep.diag h (ι := Fin 0) fun i => i.elim0)` and prove the remaining obligations.
+
+Conclude with `WD.sound ⟨LinearEquiv.ofFinrankEq _ _ (by simp [hn]), fun _ _ => Subsingleton.elim _ _, fun _ => Subsingleton.elim _ _⟩`. Use `haveI : Nontrivial V := Module.nontrivial_of_finrank_pos (hn ▸ hpos)`. Establish `hP : ∃ d, ∃ Q : Submodule ℂ V, (∀ σ, ∀ v ∈ Q, a.ρ σ v ∈ Q) ∧ Q ≠ ⊥ ∧ finrank ℂ Q = d` using `⟨_, ⊤, fun _ _ _ => trivial, top_ne_bot, rfl⟩`. Take `⟨Q, hQs, hQ0, hQd⟩` from `Nat.find_spec hP`. Establish `hmin : ∀ Q' : Submodule ℂ V, (∀ σ, ∀ v ∈ Q', a.ρ σ v ∈ Q') → Q' ≠ ⊥ → finrank ℂ Q ≤ finrank ℂ Q'` using `fun Q' hs hne => hQd ▸ Nat.find_min' hP ⟨Q', hs, hne, rfl⟩`.
+
+Establish `hirr : (restrictρ a Q hQs).ρ.IsIrreducible` using `by haveI : Nontrivial Q := Submodule.nontrivial_iff_ne_bot.mpr hQ0`. Use `{ exists_pair_ne := ⟨⊥, ⊤, fun hbt => ?_⟩, eq_bot_or_eq_top := fun U => ?_ }` and prove the remaining obligations. Conclude with `bot_ne_top (α := Submodule ℂ Q) (congrArg Subrepresentation.toSubmodule hbt)`. Distinguish the cases in `hU : U.toSubmodule = ⊥`. Conclude with `Or.inl (Subrepresentation.toSubmodule_injective hU)`.
+
+Use `Or.inr (Subrepresentation.toSubmodule_injective ?_) show U.toSubmodule = ⊤` and prove the remaining obligations. Establish `hs : ∀ σ, ∀ v ∈ U.toSubmodule.map Q.subtype, a.ρ σ v ∈ U.toSubmodule.map Q.subtype`. Introduce and unpack `σ _ ⟨u, hu, rfl⟩`. Conclude with `⟨_, U.apply_mem_toSubmodule σ hu, rfl⟩`. Establish `hr : finrank ℂ (U.toSubmodule.map Q.subtype) = finrank ℂ U.toSubmodule` using `Submodule.finrank_map_subtype_eq Q U.toSubmodule`.
+
+Establish `hpos' : 0 < finrank ℂ U.toSubmodule` using `Nat.pos_of_ne_zero fun h0 => hU (Submodule.finrank_eq_zero.mp h0)`. Establish `hne : U.toSubmodule.map Q.subtype ≠ ⊥` using `fun h0 => by`. Rewrite `hr` using `[h0, finrank_bot]`. Use linear arithmetic over natural numbers and integers. Establish `h1` using `hmin _ hs hne`.
+
+Establish `h2` using `Submodule.finrank_le U.toSubmodule`. Conclude with `Submodule.eq_top_of_finrank_eq (by omega)`. Take `⟨T, hQT, hTs⟩` from `GlobalTheory.WeilDeligne.PrimDecomp.exists_stable_isCompl E Ω A w h V a Q hQs`. Establish `hiso : ((restrictρ a Q hQs).sum (restrictρ a T hTs)).Iso a`. Use `⟨Submodule.prodEquivOfIsCompl Q T hQT, fun σ v => ?_, fun v => ?_⟩` and prove the remaining obligations.
+
+Simplify using `[map_add]`. Simplify using `[hN]`. Establish `hdim` using `Submodule.finrank_add_eq_of_isCompl hQT`. Establish `hQpos : 0 < finrank ℂ Q` using `Nat.pos_of_ne_zero fun h0 => hQ0 (Submodule.finrank_eq_zero.mp h0)`. Take `⟨L, hL, hT⟩` from `ih (finrank ℂ T) (by omega) T (restrictρ a T hTs) rfl rfl`.
+
+Use `⟨WD.mk (restrictρ a Q hQs) :: L, ?_, ?_⟩` and prove the remaining obligations. Use `List.forall_mem_cons.mpr ⟨?_, hL⟩` and prove the remaining obligations. Take `⟨e, he, -⟩` from `WD.iso_std (restrictρ a Q hQs)`. Conclude with `⟨_, (WD.std (restrictρ a Q hQs)).2, (WD.sound (WD.iso_std _)).symm, isIrreducible_of_equiv e he hirr⟩`. Rewrite using `[show sumList (WD.mk (restrictρ a Q hQs) :: L) = WD.lpSum (WD.mk (restrictρ a Q hQs)) (sumList L) from rfl, ← hT, WD.lpSum_mk]`.
+
+Conclude with `(WD.sound hiso).symm`.
+-/
 theorem exists_irr_list (n : ℕ) : ∀ (V : Type) [AddCommGroup V] [Module ℂ V]
     [FiniteDimensional ℂ V] (a : WDRep h V), finrank ℂ V = n → a.N = 0 →
     ∃ L : List (WD h), (∀ z ∈ L, IsIrrWD z) ∧ WD.mk a = sumList L := by

@@ -12,6 +12,11 @@ open scoped Classical
 
 namespace GlobalTheory.TraceSep
 
+/- English proof (translation)
+Use `first`. Consider the case `exact @_root_.GlobalTheory.OrthogonalProjectionOnto.main`. Consider the case `exact _root_.GlobalTheory.OrthogonalProjectionOnto.main`. Consider the case `(apply _root_.GlobalTheory.OrthogonalProjectionOnto.main <;> assumption)`. Consider the case `(intros; apply _root_.GlobalTheory.OrthogonalProjectionOnto.main <;> assumption)`.
+
+Consider the case `(intros; apply @_root_.GlobalTheory.OrthogonalProjectionOnto.main <;> first | assumption | infer_instance)`. Consider the case `(intros; exact _root_.GlobalTheory.OrthogonalProjectionOnto.main ..)`.
+-/
 theorem exists_smul_eq_ite {R : Type*} [Ring R] {ι : Type*} [Fintype ι] [DecidableEq ι]
     (M : ι → Type*) [∀ i, AddCommGroup (M i)] [∀ i, Module R (M i)] [∀ i, IsSimpleModule R (M i)]
     (h : ∀ i j, i ≠ j → ∀ f : M i →ₗ[R] M j, f = 0) (i₀ : ι) (s : ∀ i, Finset (M i)) :
@@ -28,6 +33,13 @@ end GlobalTheory.TraceSep
 
 namespace GlobalTheory.TraceSep
 
+/- English proof (translation)
+Establish `hfix : ∀ u ∈ LinearMap.range P, P u = u`. Introduce and unpack `u ⟨w, rfl⟩`. Conclude with `LinearMap.congr_fun hP w`. Establish `hBU : LinearMap.range (P ∘ₗ A ∘ₗ P) ≤ LinearMap.range P` using `LinearMap.range_comp_le_range _ _`. Use `haveI : FiniteDimensional ℂ (LinearMap.range (P ∘ₗ A ∘ₗ P)) := Submodule.finiteDimensional_of_le hBU`.
+
+Use `⟨inferInstance, ?_⟩` and prove the remaining obligations. Establish `hQ : ∀ u, (P.rangeRestrict ∘ₗ A ∘ₗ (LinearMap.range P).subtype) u ∈ (LinearMap.range (P ∘ₗ A ∘ₗ P)).comap (LinearMap.range P).subtype`. Introduce `u`. Use `⟨u, ?_⟩` and prove the remaining obligations. Simplify using `[hfix u u.2]`.
+
+Rewrite using `[← LinearMap.trace_restrict_eq_of_forall_mem _ _ hQ, ← LinearMap.trace_conj' _ (Submodule.comapSubtypeEquivOfLe hBU)]`. Use `congr 1`. Use extensionality with `⟨x, hx⟩`. Simplify using `[LinearEquiv.conj_apply, Submodule.comapSubtypeEquivOfLe, hfix x (hBU hx)]`.
+-/
 theorem hasFinTrace_compress {V : Type} [AddCommGroup V] [Module ℂ V] (P : V →ₗ[ℂ] V) (hP : P ∘ₗ P = P)
     [FiniteDimensional ℂ (LinearMap.range P)] (A : V →ₗ[ℂ] V) :
     GlobalTheory.IndefiniteRowSideFullHecke.IwahoriDoubleCosets.HasFinTrace (P ∘ₗ A ∘ₗ P)
@@ -48,6 +60,27 @@ theorem hasFinTrace_compress {V : Type} [AddCommGroup V] [Module ℂ V] (P : V �
   ext ⟨x, hx⟩
   simp [LinearEquiv.conj_apply, Submodule.comapSubtypeEquivOfLe, hfix x (hBU hx)]
 
+/- English proof (translation)
+Introduce `G _ n W _ _ σ hirr hne P hP hfin a hsum i₀ hi₀`. Set `Q : ∀ i, MonoidAlgebra ℂ G → Module.End ℂ (LinearMap.range (P i))` to `fun i y => (P i).rangeRestrict ∘ₗ (σ i).asAlgebraHom y ∘ₗ (LinearMap.range (P i)).subtype`. Establish `hlin : ∀ y, ∑ i, a i * LinearMap.trace ℂ _ (Q i y) = 0`. Introduce `y`. Proceed by induction on `y using MonoidAlgebra.induction_on with`.
+
+Consider the case `of g`. Use `hsum g _ fun i => ?_` and prove the remaining obligations. Use `hasFinTrace_compress (P i) (hP i) (σ i g)` as an intermediate fact. Simplify `this` using `[Q, Representation.asAlgebraHom_of]`. Consider the case `add x y hx hy`.
+
+Simplify using `only [Q, map_add, LinearMap.add_comp, LinearMap.comp_add, mul_add, Finset.sum_add_distrib] at hx hy ⊢`. Rewrite using `[hx, hy, add_zero]`. Consider the case `smul c x hx`. Simplify using `only [Q, map_smul, LinearMap.smul_comp, LinearMap.comp_smul, smul_eq_mul] at hx ⊢`. Rewrite using `[Finset.sum_congr rfl fun i _ => mul_left_comm (a i) c _, ← Finset.mul_sum, hx, mul_zero]`.
+
+Use `haveI : ∀ i, IsSimpleModule (MonoidAlgebra ℂ G) (σ i).asModule := fun i => (Representation.irreducible_iff_isSimpleModule_asModule _).mp (hirr i)`. Establish `hzero : ∀ i j, i ≠ j → ∀ f : (σ i).asModule →ₗ[MonoidAlgebra ℂ G] (σ j).asModule, f = 0`. Introduce `i j hij f`. Use `haveI := hirr i`. Use `haveI := hirr j`.
+
+Use `haveI := hne i j hij`. Use `haveI := (Representation.IntertwiningMap.equivLinearMapAsModule (σ i) (σ j)).toEquiv.symm.subsingleton`. Conclude with `Subsingleton.elim _ _`. Set `b : ∀ i, Module.Basis (Fin (Module.finrank ℂ (LinearMap.range (P i)))) ℂ (LinearMap.range (P i))` to `fun i => Module.finBasis ℂ _`. Take `⟨x, hx⟩` from `exists_smul_eq_ite (R := MonoidAlgebra ℂ G) (fun i => (σ i).asModule) hzero i₀ (fun i => Finset.univ.image fun k => (((b i k : LinearMap.range (P i)) : W i) : (σ i).asModule))`.
+
+Establish `hQx : ∀ i, Q i x = if i = i₀ then LinearMap.id else 0`. Introduce `i`. Use `(b i).ext fun k => ?_` and prove the remaining obligations. Establish `h1` using `hx i _ (Finset.mem_image_of_mem _ (Finset.mem_univ k))`. Express the relevant statement in the definitionally equal form `(σ i).asAlgebraHom x (b i k : W i) = _ at h1`.
+
+Establish `hfix : P i (b i k : W i) = b i k`. Take `⟨w, hw⟩` from `(b i k).2`. Rewrite using `[← hw]`. Conclude with `LinearMap.congr_fun (hP i) w`. Apply `Subtype.ext` to reduce the goal to its premises.
+
+Distinguish the cases in `hi : i = i₀`. Substitute `hi` using the available equality. Establish `h1' : (σ i).asAlgebraHom x (b i k : W i) = b i k` using `by simpa using h1`. Simplify using `[Q, h1', hfix]`. Establish `h1' : (σ i).asAlgebraHom x (b i k : W i) = 0` using `h1.trans (if_neg hi)`.
+
+Simplify using `[Q, h1', hi]`. Establish `h` using `hlin x`. Rewrite `h` using `[Finset.sum_eq_single i₀ (fun i _ hi => by rw [hQx i, if_neg hi, map_zero, mul_zero]) (by simp)]`. Rewrite `h` using `[hQx i₀, if_pos rfl, LinearMap.trace_id]`. Establish `hpos : 0 < Module.finrank ℂ (LinearMap.range (P i₀))`.
+
+Rewrite using `[Module.finrank_pos_iff, Submodule.nontrivial_iff_ne_bot, Ne, LinearMap.range_eq_bot]`. Conclude with `hi₀`. Establish `hne0 : (Module.finrank ℂ (LinearMap.range (P i₀)) : ℂ) ≠ 0` using `by exact_mod_cast hpos.ne'`. Conclude with `(mul_eq_zero.1 h).resolve_right hne0`.
+-/
 theorem coeff_eq_zero_of_sum_trace_eq_zero : ∀ (G : Type) [Group G] (n : ℕ) (W : Fin n → Type) [∀ i, AddCommGroup (W i)] [∀ i, Module ℂ (W i)] (σ : ∀ i, Representation ℂ G (W i)), (∀ i, (σ i).IsIrreducible) → (∀ i j, i ≠ j → IsEmpty ((σ i).Equiv (σ j))) → ∀ (P : ∀ i, W i →ₗ[ℂ] W i), (∀ i, P i ∘ₗ P i = P i) → (∀ i, FiniteDimensional ℂ (LinearMap.range (P i))) → ∀ a : Fin n → ℂ, (∀ (g : G) (c : Fin n → ℂ), (∀ i, GlobalTheory.IndefiniteRowSideFullHecke.IwahoriDoubleCosets.HasFinTrace (P i ∘ₗ σ i g ∘ₗ P i) (c i)) → ∑ i, a i * c i = 0) → ∀ i, P i ≠ 0 → a i = 0 := by
   intro G _ n W _ _ σ hirr hne P hP hfin a hsum i₀ hi₀
   let Q : ∀ i, MonoidAlgebra ℂ G → Module.End ℂ (LinearMap.range (P i)) := fun i y =>

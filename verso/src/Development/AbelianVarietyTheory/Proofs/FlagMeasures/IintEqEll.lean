@@ -8,6 +8,9 @@ open scoped InnerProductSpace
 
 namespace GlobalTheory.SgInf.EllName
 
+/- English proof (translation)
+Use extensionality with `η`. Rewrite using `[ContinuousLinearMap.smul_apply, rankOneInnerOperator_apply, rankOneInnerOperator_apply, inner_smul_left, smul_smul, smul_smul]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem rankOneInnerOperator_smul_smul_eq_mul_conj_smul {Wp : Type} [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp]
     {Wq : Type} [NormedAddCommGroup Wq] [InnerProductSpace ℂ Wq] (α β : ℂ) (a : Wp) (b : Wq) :
     rk1 (α • a) (β • b) = (α * (starRingEnd ℂ) β) • rk1 a b := by
@@ -16,6 +19,9 @@ theorem rankOneInnerOperator_smul_smul_eq_mul_conj_smul {Wp : Type} [NormedAddCo
   congr 1
   ring
 
+/- English proof (translation)
+Unfold `Afun`. Rewrite using `[hl.2.2 _ (mem_DD σ w hx) _ hw₀, rankOneInnerOperator_apply]`.
+-/
 private theorem Afun_eq_inner_smul_of_isEll {k r : ℕ} {H : Type} [NormedAddCommGroup H] [InnerProductSpace ℂ H]
     {Wp : Type} [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp] [CompleteSpace Wp]
     {z : Fin (2 * r + k + 1) → ℂ} {ψ : Mat k r → ℂ} {π : Mat k r → (Wp →L[ℂ] Wp)} {μS : Measure (Mt k r)}
@@ -25,6 +31,21 @@ private theorem Afun_eq_inner_smul_of_isEll {k r : ℕ} {H : Type} [NormedAddCom
   unfold Afun
   rw [hl.2.2 _ (mem_DD σ w hx) _ hw₀, rankOneInnerOperator_apply]
 
+/- English proof (translation)
+Introduce `k r H _ _ _ Wp _ _ _ _ Wq _ _ _ _ σ w a μG d z c π μS z' c' π' μS' hStd hS hS' l l' hl hl' γ hγ`. Establish `hHaar` using `hStd.2.2.2.2.1`. Establish `hd : (0 : ℝ) < d` using `hStd.2.2.2.2.2.1.1`. Establish `h0 : μG {x | Matrix.of x ∉ GG k r} = 0` using `by first`. Consider the case `exact hHaar.1`.
+
+Consider the case `exact hHaar.2.2.1`. Establish `hGG : ∀ᵐ x ∂μG, Matrix.of x ∈ GG k r` using `ae_iff.2 h0`. Establish `hU : IsUnit (Hpk k r).det` using `Matrix.isUnit_det_of_right_inverse (hpkFacts k r).2.1`. Establish `hgrp` using `uHGroup _ (Hpk k r) hU`. Establish `hγG : γ ∈ GG k r` using `Greg_subset z z' hγ`.
+
+Establish `hγi : γ⁻¹ ∈ GG k r` using `(hgrp.2.2 γ hγG).2`. Establish `hae : ∀ w₀ ∈ DD σ w, ∀ w₀' ∈ DD σ w, ∀ (ξ : Wp) (ξ' : Wq), (fun x : Mt k r => rk1 (Afun (psiGen k r z c) π μS σ w w₀ ξ (Matrix.of x)) (Afun (psiGen k r z' c') π' μS' σ w w₀' ξ' (γ⁻¹ * Matrix.of x))) =ᵐ[μG] fun x => (⟪l w₀, ξ⟫_ℂ * (starRingEnd ℂ) ⟪l' w₀', ξ'⟫_ℂ) • rk1 (l (σ (Matri …`. Introduce `w₀ hw₀ w₀' hw₀' ξ ξ'`. Use `filter_upwards [hGG] with x hx`. Rewrite using `[Afun_eq_inner_smul_of_isEll hl hw₀ ξ hx, Afun_eq_inner_smul_of_isEll hl' hw₀' ξ' (hgrp.2.1 _ hγi _ hx), rankOneInnerOperator_smul_smul_eq_mul_conj_smul]`.
+
+Take `⟨u, hu, hlu⟩` from `hl.2.1`. Take `⟨u', hu', hlu'⟩` from `hl'.2.1`. Establish `hint : Integrable (fun x : Mt k r => rk1 (l (σ (Matrix.of x) w)) (l' (σ (γ⁻¹ * Matrix.of x) w))) μG`. Take `⟨-, hI, -⟩` from `GlobalTheory.T.besselOrbitalIntegral_eq_inv_deg_smul k r σ w a μG d z c π μS z' c' π' μS' hStd hS hS' u hu u' hu' (l u) (l' u') γ hγ`. Establish `hc : (⟪l u, l u⟫_ℂ * (starRingEnd ℂ) ⟪l' u', l' u'⟫_ℂ) ≠ 0` using `mul_ne_zero (inner_self_ne_zero.2 hlu) ((map_ne_zero _).2 (inner_self_ne_zero.2 hlu'))`.
+
+Use `(hI.smul (⟪l u, l u⟫_ℂ * (starRingEnd ℂ) ⟪l' u', l' u'⟫_ℂ)⁻¹).congr ?_` and prove the remaining obligations. Use `filter_upwards [hae u hu u' hu' (l u) (l' u')] with x hx`. Rewrite using `[Pi.smul_apply, hx, smul_smul, inv_mul_cancel₀ hc, one_smul]`. Use `⟨hint, ?_⟩` and prove the remaining obligations. Introduce `w₀ hw₀ w₀' hw₀' ξ ξ'`.
+
+Take `⟨-, -, hO⟩` from `GlobalTheory.T.besselOrbitalIntegral_eq_inv_deg_smul k r σ w a μG d z c π μS z' c' π' μS' hStd hS hS' w₀ hw₀ w₀' hw₀' ξ ξ' γ hγ`. Establish `hO2 : OO μG (Afun (psiGen k r z c) π μS σ w w₀ ξ) (Afun (psiGen k r z' c') π' μS' σ w w₀' ξ') γ = (⟪l w₀, ξ⟫_ℂ * (starRingEnd ℂ) ⟪l' w₀', ξ'⟫_ℂ) • OO μG (fun x => l (σ x w)) (fun x => l' (σ x w)) γ`. Unfold `OO`. Rewrite using `[integral_congr_ae (hae w₀ hw₀ w₀' hw₀' ξ ξ'), integral_smul]`. Establish `hdne : (d : ℂ) ≠ 0` using `by exact_mod_cast hd.ne'`.
+
+Rewrite `hO` using `[hO2, eq_inv_smul_iff₀ hdne]`. Rewrite using `[← hO, smul_smul, inner_conj_symm]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem iint_eq_ell : ∀ (k r : ℕ) {H : Type} [NormedAddCommGroup H] [InnerProductSpace ℂ H] [CompleteSpace H] {Wp : Type} [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp] [FiniteDimensional ℂ Wp] [CompleteSpace Wp] {Wq : Type} [NormedAddCommGroup Wq] [InnerProductSpace ℂ Wq] [FiniteDimensional ℂ Wq] [CompleteSpace Wq] (σ : Mat k r → (H →L[ℂ] H)) (w : H) (a : ℝ) (μG : Measure (Mt k r)) (d : ℝ) (z : Fin (2 * r + k + 1) → ℂ) (c : Fin r → ℂ) (π : Mat k r → (Wp →L[ℂ] Wp)) (μS : Measure (Mt k r)) (z' : Fin (2 * r + k + 1) → ℂ) (c' : Fin r → ℂ) (π' : Mat k r → (Wq →L[ℂ] Wq)) (μS' : Measure (Mt k r)) , Std σ w a μG d → Side z π μS → Side z' π' μS' → ∀ (l : H → Wp) (l' : H → Wq), IsEll z (psiGen k r z c) π μS σ (DD σ w) l → IsEll z' (psiGen k r z' c') π' μS' σ (DD σ w) l' → ∀ γ ∈ Greg k r z z', Integrable (fun x : Mt k r => rk1 (l (σ (Matrix.of x) w)) (l' (σ (γ⁻¹ * Matrix.of x) w))) μG ∧ ∀ w₀ ∈ DD σ w, ∀ w₀' ∈ DD σ w, ∀ (ξ : Wp) (ξ' : Wq), Iint (psiGen k r z c) (psiGen k r z' c') π π' μS μS' σ w₀' w₀ ξ ξ' γ = (⟪l w₀, ξ⟫_ℂ * ⟪ξ', l' w₀'⟫_ℂ * (d : ℂ)) • OO μG (fun x => l (σ x w)) (fun x => l' (σ x w)) γ := by
   intro k r H _ _ _ Wp _ _ _ _ Wq _ _ _ _ σ w a μG d z c π μS z' c' π' μS' hStd hS hS' l l' hl hl' γ hγ
   have hHaar := hStd.2.2.2.2.1

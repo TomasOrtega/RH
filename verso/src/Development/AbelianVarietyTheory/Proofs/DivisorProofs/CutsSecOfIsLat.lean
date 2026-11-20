@@ -47,6 +47,9 @@ def crd {X : Scheme.{0}} {F : X.Modules} {r : ℕ} {V V' : X.Opens} {s : Fin r �
     (σ : Γ(F, V)) (i : Fin r) : Γ(X, V ⊓ V') :=
   (hs.basis inf_le_right).repr (resM F inf_le_left σ) i
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem coef_true {X : Scheme.{0}} {F : X.Modules} {r : ℕ} {V V' : X.Opens} {e : Fin r → Γ(F, V)} {s : Fin r → Γ(F, V')}
     (he : GlobalTheory.VB.IsFrame e) (hs : GlobalTheory.VB.IsFrame s) (l i : Fin r) : coef true he hs l i = crd hs (e l) i := rfl
 

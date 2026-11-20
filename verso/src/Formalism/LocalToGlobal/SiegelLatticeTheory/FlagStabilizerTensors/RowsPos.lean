@@ -55,6 +55,11 @@ def DiagLP : Prop :=
       (Y.tO u u).RowBig (epsL D) (ddC X Y u u) → (Y.tO u u).RowNotScalar (epsL D) (ddC X Y u u) →
       Formalism.L2.SG.RowsOther.DiagRow (Y.tO u u) (oneC X Y u) (D.mem u).A.GamP (ddC X Y u u)
 
+/- English proof (translation)
+Introduce `Cg cb Cw cT CT C0 _ _`. Take `⟨CH, Ch, Cp, h1, h2, h3, h4⟩` from `h Cg cb Cw cT CT C0`. Use `⟨CH, Ch, Cp, h1, h2, h3, fun Cs hCs => ?_⟩` and prove the remaining obligations. Take `⟨C₀, h5⟩` from `h4 Cs hCs`. Use `⟨C₀, fun C hC => ?_⟩` and prove the remaining obligations.
+
+Take `⟨C'₀, Cl₀, h6⟩` from `h5 C hC`. Conclude with `⟨C'₀, Cl₀, fun C' Cl hC' hCl D large₂ X Y u _ hK hT => h6 C' Cl hC' hCl D large₂ X Y u hK hT⟩`.
+-/
 theorem typeBound_of_uniformTypeBound (h : TypeC) : TypeP := by
   intro Cg cb Cw cT CT C0 _ _
   obtain ⟨CH, Ch, Cp, h1, h2, h3, h4⟩ := h Cg cb Cw cT CT C0
@@ -64,22 +69,34 @@ theorem typeBound_of_uniformTypeBound (h : TypeC) : TypeP := by
   obtain ⟨C'₀, Cl₀, h6⟩ := h5 C hC
   exact ⟨C'₀, Cl₀, fun C' Cl hC' hCl D large₂ X Y u _ hK hT => h6 C' Cl hC' hCl D large₂ X Y u hK hT⟩
 
+/- English proof (translation)
+Introduce `Cg cb Cw cT CT C0 _ _`. Take `⟨C'₀, Cl₀, h1⟩` from `h Cg cb Cw cT CT C0`. Conclude with `⟨C'₀, Cl₀, fun C' Cl hC' hCl D large₂ X Y u _ hK hT hA => h1 C' Cl hC' hCl D large₂ X Y u hK hT hA⟩`.
+-/
 theorem diagonalBound_pos_of_diagonalBound (h : KppDiagC) : KppDiagP := by
   intro Cg cb Cw cT CT C0 _ _
   obtain ⟨C'₀, Cl₀, h1⟩ := h Cg cb Cw cT CT C0
   exact ⟨C'₀, Cl₀, fun C' Cl hC' hCl D large₂ X Y u _ hK hT hA => h1 C' Cl hC' hCl D large₂ X Y u hK hT hA⟩
 
+/- English proof (translation)
+Introduce `Cg cb Cw cT CT C0 _ _`. Take `⟨C4, hC4, C'₀, Cl₀, h1⟩` from `h Cg cb Cw cT CT C0`. Conclude with `⟨C4, hC4, C'₀, Cl₀, fun C' Cl hC' hCl D large₂ X Y u u' _ hH hS hT hA => h1 C' Cl hC' hCl D large₂ X Y u u' hH hS hT hA⟩`.
+-/
 theorem rowNGP_of (h : RowNGC) : RowNGP := by
   intro Cg cb Cw cT CT C0 _ _
   obtain ⟨C4, hC4, C'₀, Cl₀, h1⟩ := h Cg cb Cw cT CT C0
   exact ⟨C4, hC4, C'₀, Cl₀, fun C' Cl hC' hCl D large₂ X Y u u' _ hH hS hT hA =>
     h1 C' Cl hC' hCl D large₂ X Y u u' hH hS hT hA⟩
 
+/- English proof (translation)
+Introduce `Cg cb Cw cT CT C0 A _ _`. Take `⟨CB, hCB, C'₀, Cl₀, h1⟩` from `h Cg cb Cw cT CT C0 A`. Conclude with `⟨CB, hCB, C'₀, Cl₀, fun C' Cl hC' hCl D large₂ X Y u _ hH hT hA => h1 C' Cl hC' hCl D large₂ X Y u hH hT hA⟩`.
+-/
 theorem rowMainEqP_of (h : RowMainEqC) : RowMainEqP := by
   intro Cg cb Cw cT CT C0 A _ _
   obtain ⟨CB, hCB, C'₀, Cl₀, h1⟩ := h Cg cb Cw cT CT C0 A
   exact ⟨CB, hCB, C'₀, Cl₀, fun C' Cl hC' hCl D large₂ X Y u _ hH hT hA => h1 C' Cl hC' hCl D large₂ X Y u hH hT hA⟩
 
+/- English proof (translation)
+Introduce `Cg cb Cw cT CT C0 A _ _`. Take `⟨CB, C4, h1, h2, h3⟩` from `h Cg cb Cw cT CT C0 A`. Use `⟨CB, C4, h1, h2, fun CG hCG => ?_⟩` and prove the remaining obligations. Take `⟨C'₀, Cl₀, h4⟩` from `h3 CG hCG`. Conclude with `⟨C'₀, Cl₀, fun C' Cl hC' hCl D large₂ X Y u _ hH hP hT hA hG hB hN => h4 C' Cl hC' hCl D large₂ X Y u hH hP hT hA hG hB hN⟩`.
+-/
 theorem diagLP_of (h : DiagCL) : DiagLP := by
   intro Cg cb Cw cT CT C0 A _ _
   obtain ⟨CB, C4, h1, h2, h3⟩ := h Cg cb Cw cT CT C0 A
@@ -92,6 +109,35 @@ section Asm
 
 variable {D : D7} {X : HidaSetting D}
 
+/- English proof (translation)
+Introduce `Cg cb Cw cT CT C0 hcb hcT`. Take `⟨CH, Ch, Cp, hCH, hCh, hCp, hT⟩` from `hTy Cg cb Cw cT CT C0 hcb hcT`. Take `⟨Ct₀, hT2⟩` from `hT (Cp + 4) le_rfl`. Take `⟨Cd₀, hD2⟩` from `hDl Cg cb Cw cT CT C0 CH hCH`. Use `set C := max (max Ct₀ Cd₀) 0 with hCdef`.
+
+Establish `hC0 : 0 ≤ C` using `le_max_right _ _`. Take `⟨C'₁, Cl₁, hT3⟩` from `hT2 C (le_trans (le_max_left _ _) (le_max_left _ _))`. Take `⟨C'₂, Cl₂, hD3⟩` from `hD2 C (le_trans (le_max_right _ _) (le_max_left _ _))`. Take `⟨Cc, hCc, C'₃, Cl₃, hC3⟩` from `hCo Cg cb Cw cT CT C0 CH hCH`. Take `⟨C'₄, Cl₄, hP4⟩` from `hPg Cg cb Cw cT CT C0`.
+
+Use `⟨max (max C'₁ C'₂) (max C'₃ C'₄), max (max (max Cl₁ Cl₂) (max Cl₃ Cl₄)) (k2C0 (k2Cf C Ch Cc)), fun C' Cl h1 h2 D large₂ X Y u hTs hH hTie => ?_⟩` and prove the remaining obligations. Establish `a1 : C'₁ ≤ C'` using `le_trans (le_trans (le_max_left _ _) (le_max_left _ _)) h1`. Establish `a2 : C'₂ ≤ C'` using `le_trans (le_trans (le_max_right _ _) (le_max_left _ _)) h1`. Establish `a3 : C'₃ ≤ C'` using `le_trans (le_trans (le_max_left _ _) (le_max_right _ _)) h1`. Establish `a4 : C'₄ ≤ C'` using `le_trans (le_trans (le_max_right _ _) (le_max_right _ _)) h1`.
+
+Establish `b1 : Cl₁ ≤ Cl` using `le_trans (le_trans (le_trans (le_max_left _ _) (le_max_left _ _)) (le_max_left _ _)) h2`. Establish `b2 : Cl₂ ≤ Cl` using `le_trans (le_trans (le_trans (le_max_right _ _) (le_max_left _ _)) (le_max_left _ _)) h2`. Establish `b3 : Cl₃ ≤ Cl` using `le_trans (le_trans (le_trans (le_max_left _ _) (le_max_right _ _)) (le_max_left _ _)) h2`. Establish `b4 : Cl₄ ≤ Cl` using `le_trans (le_trans (le_trans (le_max_right _ _) (le_max_right _ _)) (le_max_left _ _)) h2`. Establish `b5 : k2C0 (k2Cf C Ch Cc) ≤ Cl` using `le_trans (le_max_right _ _) h2`.
+
+Establish `tAt` using `hT3 C' Cl a1 b1 D large₂ X Y u hTs hH hTie`. Establish `dAt` using `hD3 C' Cl a2 b2 D large₂ X Y u hH hTie`. Establish `cAt` using `hC3 C' Cl a3 b3 D large₂ X Y u hH hTie`. Establish `pg` using `hP4 C' Cl a4 b4 D large₂ X Y hH`. Take `⟨hΓ, hdim⟩` from `hDim D X Y u hTie`.
+
+Establish `hJ` using `hJP Cg cb Cw cT CT C0 C' Cl D large₂ X Y u hH hTie`. Take `⟨hL, -, -, -, hWd, -⟩` from `hTie`. Establish `hF` using `hFE D X Y u u`. Establish `hI` using `hOI D X Y u u (hFold D X Y u hL hWd) (hFold D X Y u hL hWd) hF`. Establish `hIrr` using `hIV D X Y u hF hI`.
+
+Establish `hdpi : 0 ≤ dpiC X u` using `Nat.cast_nonneg _`. Establish `hmass : 0 ≤ massC Y u` using `Finset.sum_nonneg fun Λ _ => by unfold wRow; positivity`. Establish `hK : 0 ≤ dpiC X u * massC Y u` using `mul_nonneg hdpi hmass`. Use `set B := dpiC X u * massC Y u * (∑ j ∈ Finset.Icc 1 D.R.rS, k2A1 large₂ C Ch Cc j) ^ 2 with hB`. Use `set g : GTu Y u × GTu Y u → ℝ := ((Y.tO u u).allPairs (Y.tO u u).degSet).indicator (fun p => ‖(Y.tO u u).vec p.1‖ * ‖(Y.tO u u).vec p.2‖) with hg`.
+
+Establish `hg0 : ∀ p, 0 ≤ g p` using `fun p => Set.indicator_nonneg (fun p _ => by positivity) p`. Establish `hfin : ∀ s : Finset (GTu Y u × GTu Y u), ∑ p ∈ s, g p ≤ B`. Introduce `s`. Establish `: ∑ p ∈ s, g p = ∑ p ∈ s.filter (fun p => p ∈ (Y.tO u u).allPairs (Y.tO u u).degSet), ‖(Y.tO u u).vec p.1‖ * ‖(Y.tO u u).vec p.2‖`. Rewrite using `[Finset.sum_filter]`.
+
+Both sides reduce to the same expression. Rewrite using `[this]`. Conclude with `fin_bound hC0 hCh (le_refl _) hK hIrr hJ tAt dAt cAt _ (fun p hp => (Finset.mem_filter.1 hp).2)`. Establish `hsum : Summable g` using `summable_of_sum_le hg0 hfin`. Establish `htsum : Formalism.L2.SG.RowsOther.ampSum (Y.tO u u) ((Y.tO u u).allPairs (Y.tO u u).degSet) ≤ B` using `tsum_le_of_sum_le' (mul_nonneg hK (sq_nonneg _)) hfin`.
+
+Use `⟨hsum, ?_⟩` and prove the remaining obligations. Establish `hPg0 : 0 ≤ Formalism.L2.SG.RowsConc.PgC Y` using `Finset.prod_nonneg fun v _ => by positivity`. Establish `hdu : 0 ≤ Formalism.L2.SG.RowsConc.duC X Y u` using `Nat.cast_nonneg _`. Establish `hCf : 1 ≤ k2Cf C Ch Cc` using `by unfold k2Cf; nlinarith [sq_nonneg C, sq_nonneg Ch, sq_nonneg Cc]`. Establish `hk : k2C0 (k2Cf C Ch Cc) * (D.R.m : ℝ) ^ 6 * large₂.sc.L ≤ (D.R.k : ℝ) * Real.log D.R.k`.
+
+Establish `hL0 : 0 ≤ large₂.sc.L`. Rewrite using `[← log_scale_eq_L]; exact Real.log_nonneg (by linarith [two_le_scale_b large₂ (D := D)])`. Establish `hm6 : 0 ≤ (D.R.m : ℝ) ^ 6 * large₂.sc.L` using `mul_nonneg (by positivity) hL0`. Use `hH.2.1` as an intermediate fact. Combine the equalities or inequalities in the displayed calculation.
+
+Establish `hA : (∑ j ∈ Finset.Icc 1 D.R.rS, k2A1 large₂ C Ch Cc j) ^ 2 ≤ k2B D large₂ (k2Cf C Ch Cc)`. Unfold `k2B`. Conclude with `pow_le_pow_left₀ (Finset.sum_nonneg fun j _ => kloostermanTermA_nonneg large₂ hC0 hCh hCc j) (Finset.sum_le_sum fun j hj => rank_contribution_le large₂ hC0 j hj) 2`. Establish `hclose` using `final_bound_closes D large₂ (k2Cf C Ch Cc) hCf _ hdu hk`. Establish `hGB : (Y.tO u u).Gam1 * B ≤ Formalism.L2.SG.RowsConc.duC X Y u * (∑ j ∈ Finset.Icc 1 D.R.rS, k2A1 large₂ C Ch Cc j) ^ 2`.
+
+Establish `e : (Y.tO u u).Gam1 * B = ((Y.tO u u).Gam1 * massC Y u * dpiC X u) * (∑ j ∈ Finset.Icc 1 D.R.rS, k2A1 large₂ C Ch Cc j) ^ 2`. Rewrite using `[hB]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e]`. Conclude with `mul_le_mul_of_nonneg_right hdim (sq_nonneg _)`.
+
+Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem pairs_degree_bound (hFold : FoldOKC) (hFE : FundExistsC) (hOI : OOIntAllC)
     (hIV : IrrVecC) (hJP : JPosC) (hTy : TypeP) (hDl : DelC) (hCo : CosetsC) (hDim : DimFormC) (hPg : PgLeC) :
     PairsDegCutP := by
@@ -183,6 +229,11 @@ theorem pairs_degree_bound (hFold : FoldOKC) (hFE : FundExistsC) (hOI : OOIntAll
 
 end Asm
 
+/- English proof (translation)
+Introduce `Cg cb Cw cT CT C0 hcb hcT`. Take `⟨C'₀, Cl₀, h⟩` from `hc Cg cb Cw cT CT C0 hcb hcT`. Use `⟨C'₀, Cl₀, fun C' Cl h1 h2 D large₂ X Y u hTs hH hT ha => ?_⟩` and prove the remaining obligations. Establish `hG0 : 0 ≤ (Y.tO u u).Gam1` using `ha.2.2.le`. Establish `hPg : 0 ≤ PgC Y` using `Finset.prod_nonneg fun v _ => by positivity`.
+
+Establish `hGB : (Y.tO u u).GGBound (PgC Y)` using `Formalism.L2.SG.TermOp.ggBound Y.TR (Y.cs u) (Y.cs u) (Y.FN u) (Y.FN u) hGG Y.psi_ne (fun v => card_ge_three hH.2 Y.TR v)`. Use `⟨ha.1.indicator _, ?_⟩` and prove the remaining obligations. Conclude with `Formalism.L2.SG.RowsOther.kppDiag_of_pairs (Y.tO u u) hP hE hS hSub (PgC Y) (duC X Y u) D.R.k D.R.f hPg ha (Formalism.L2.SG.TermOp.rowOrth Y.TR (Y.cs u) (Y.cs u) (Y.FN u) (Y.FN u)) (hC D X Y u u hT) (hN D X Y u hT) hGB (Formalism.L2.SG.RowsOther.pairsDeg_of_amp _ hG0 _ _ _ _ hPg …`.
+-/
 theorem diagonalBound_pos_of_degreeCutoff (hP : PB.NormSqBoundOfEqualIota) (hE : PB.GramSumLeOfPosSemidef) (hS : PB.PairSplit) (hSub : PB.SubFamily)
     (hGG : Formalism.L2.SG.GGMirabolic.TermsGGBound) (hC : CorankPosC) (hN : NormExpDegC)
     (hc : PairsDegCutP) : KppDiagP := by
@@ -199,6 +250,9 @@ theorem diagonalBound_pos_of_degreeCutoff (hP : PB.NormSqBoundOfEqualIota) (hE :
     (Formalism.L2.SG.TermOp.rowOrth Y.TR (Y.cs u) (Y.cs u) (Y.FN u) (Y.FN u)) (hC D X Y u u hT) (hN D X Y u hT) hGB
     (Formalism.L2.SG.RowsOther.pairsDeg_of_amp _ hG0 _ _ _ _ hPg (h C' Cl h1 h2 D large₂ X Y u hTs hH hT))
 
+/- English proof (translation)
+The claim follows from `diagonalBound_pos_of_degreeCutoff Formalism.FourierDecayAlt.P.price_of_index Formalism.FourierDecayAlt.P.equal_index Formalism.FourierDecayAlt.P.pair_split_alt Formalism.FourierDecayAlt.P.subfamilyAlt Formalism.L2.SG.Closed.TermsGGBound_holds Formalism.L2.SG.KappaOffDiagonal.cora …`.
+-/
 theorem kernel_diagonal_positive (hTy : TypeP) : KppDiagP :=
   diagonalBound_pos_of_degreeCutoff Formalism.FourierDecayAlt.P.price_of_index Formalism.FourierDecayAlt.P.equal_index
     Formalism.FourierDecayAlt.P.pair_split_alt Formalism.FourierDecayAlt.P.subfamilyAlt Formalism.L2.SG.Closed.TermsGGBound_holds
@@ -207,6 +261,17 @@ theorem kernel_diagonal_positive (hTy : TypeP) : KppDiagP :=
       Formalism.L2.SG.Closed.OOIntAllC_outright IrrVecC_holds JPosC_holds hTy DelC_holds cosetsC_holds kappa_off_diagonal_dim_form_C
       (PgLe.pgLeC_of Formalism.L2.SG.Pf.splitPrimeLoc_holds Formalism.L2.SG.Pf.SatGramLoc.reduction_structure_holds))
 
+/- English proof (translation)
+Introduce `Cg cb Cw cT CT C0 A hcb hcT`. Take `⟨CB, hCB, C'₁, Cl₁, hM'⟩` from `hM Cg cb Cw cT CT C0 A hcb hcT`. Take `⟨C4, hC4, C'₂, Cl₂, hNG'⟩` from `hNG Cg cb Cw cT CT C0 hcb hcT`. Take `⟨C'₄, Cl₄, hNum'⟩` from `hNum Cg cb Cw cT CT C0 A CB C4 hCB hC4`. Use `⟨CB, C4, hCB, hC4, fun CG hCG => ⟨max (max C'₁ C'₂) C'₄, max (max Cl₁ Cl₂) Cl₄, fun C' Cl h1 h2 D large₂ X Y u hTs hH hK2 hT ha hG r1 r2 => ?_⟩⟩` and prove the remaining obligations.
+
+Establish `a1 : C'₁ ≤ C'` using `le_trans (le_trans (le_max_left _ _) (le_max_left _ _)) h1`. Establish `a2 : C'₂ ≤ C'` using `le_trans (le_trans (le_max_right _ _) (le_max_left _ _)) h1`. Establish `a4 : C'₄ ≤ C'` using `le_trans (le_max_right _ _) h1`. Establish `b1 : Cl₁ ≤ Cl` using `le_trans (le_trans (le_max_left _ _) (le_max_left _ _)) h2`. Establish `b2 : Cl₂ ≤ Cl` using `le_trans (le_trans (le_max_right _ _) (le_max_left _ _)) h2`.
+
+Establish `b4 : Cl₄ ≤ Cl` using `le_trans (le_max_right _ _) h2`. Establish `h0 : Formalism.MainNotions.S.Cnt.Hyp0 D large₂ C' Cl Cg cb Cw cT CT C0` using `hH.1`. Establish `hs : Formalism.MainNotions.S.Cnt.Stand D u u` using `hH.2.1`. Establish `hPg : 0 ≤ PgC Y` using `Finset.prod_nonneg fun v _ => by positivity`. Establish `hdd` using `dd_nonneg hT u u`.
+
+Establish `r3` using `hM' C' Cl a1 b1 D large₂ X Y u hTs hH hT ha`. Establish `r4` using `hNG' C' Cl a2 b2 D large₂ X Y u u hTs h0 hs hT ha`. Establish `hGB : (Y.tO u u).GGBound (PgC Y)` using `Formalism.L2.SG.TermOp.ggBound Y.TR (Y.cs u) (Y.cs u) (Y.FN u) (Y.FN u) hGG Y.psi_ne (fun v => card_ge_three hK2 Y.TR v)`. Establish `hD` using `Formalism.L2.SG.RowsOther.diag_of_abstract (Y.tO u u) hA hP hE hS hSub (oneC X Y u) (PgC Y) (gamB D large₂ CB) (epsL D) (epsNG D large₂ C4) (ddC X Y u u) hPg hdd ha (hNS D X Y u u hT) hGB (Formalism.L2.SG.TermOp.rowOrth Y.TR (Y.cs u) (Y.cs u) (Y.FN u) (Y.FN u)) (hC D X Y u u hT) …`. Unfold `Formalism.L2.SG.RowsOther.DiagRow at hD ⊢`.
+
+Conclude with `hD.trans (mul_le_mul_of_nonneg_right (hNum' C' Cl a4 b4 D large₂ X Y u hH hK2 hT (hG ▸ hCG)) hdd)`.
+-/
 theorem diagLP_of_rows (hA : PB.PairBoundAbstract) (hP : PB.NormSqBoundOfEqualIota) (hE : PB.GramSumLeOfPosSemidef) (hS : PB.PairSplit)
     (hSub : PB.SubFamily) (hGG : Formalism.L2.SG.GGMirabolic.TermsGGBound)
     (hNS : NormExpSatTied) (hC : CorankPosC) (hId : IdOneC) (hNG : RowNGP) (hM : RowMainEqP)
@@ -239,6 +304,9 @@ theorem diagLP_of_rows (hA : PB.PairBoundAbstract) (hP : PB.NormSqBoundOfEqualIo
   unfold Formalism.L2.SG.RowsOther.DiagRow at hD ⊢
   exact hD.trans (mul_le_mul_of_nonneg_right (hNum' C' Cl a4 b4 D large₂ X Y u hH hK2 hT (hG ▸ hCG)) hdd)
 
+/- English proof (translation)
+The claim follows from `diagLP_of_rows Formalism.FourierDecayAlt.P.pair_bound_abstract Formalism.FourierDecayAlt.P.price_of_index Formalism.FourierDecayAlt.P.equal_index Formalism.FourierDecayAlt.P.pair_split_alt Formalism.FourierDecayAlt.P.subfamilyAlt Formalism.L2.SG.Closed.TermsGGBound_holds normExpS …`.
+-/
 theorem diagonal_positive_final (hNG : RowNGP) (hM : RowMainEqP) : DiagLP :=
   diagLP_of_rows Formalism.FourierDecayAlt.P.pair_bound_abstract Formalism.FourierDecayAlt.P.price_of_index Formalism.FourierDecayAlt.P.equal_index
     Formalism.FourierDecayAlt.P.pair_split_alt Formalism.FourierDecayAlt.P.subfamilyAlt Formalism.L2.SG.Closed.TermsGGBound_holds

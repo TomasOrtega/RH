@@ -15,11 +15,17 @@ variable {D : Car}
 def gM {n : ℕ} (γ : Matrix (Fin n) (Fin n) D.host.E) (τ : D.what₂.Tau) : Matrix (Fin n) (Fin n) ℂ :=
   γ.map (TaylorLogMetric.embT D τ)
 
+/- English proof (translation)
+Rewrite using `[Formalism.L2.Ker.Cd.IntegralLatticeDensity.CU.star_conj, Formalism.L2.Ker.Cd.IntegralLatticeDensity.CU.emb_conj]`. Both sides reduce to the same expression.
+-/
 theorem embT_star' (τ : D.what₂.Tau) (x : D.host.E) :
     TaylorLogMetric.embT D τ (letI := D.host.cmStar; star x) = star (TaylorLogMetric.embT D τ x) := by
   rw [Formalism.L2.Ker.Cd.IntegralLatticeDensity.CU.star_conj, Formalism.L2.Ker.Cd.IntegralLatticeDensity.CU.emb_conj]
   rfl
 
+/- English proof (translation)
+Use `letI := D.host.cmStar`. Use extensionality with `i j`. Simplify using `only [gM, conjTranspose_apply, map_apply, star_apply]`. Rewrite using `[embT_star']`.
+-/
 theorem gM_conjTranspose {n : ℕ} (γ : Matrix (Fin n) (Fin n) D.host.E) (τ : D.what₂.Tau) :
     (gM γ τ)ᴴ = gM (letI := D.host.cmStar; star γ) τ := by
   letI := D.host.cmStar
@@ -27,16 +33,28 @@ theorem gM_conjTranspose {n : ℕ} (γ : Matrix (Fin n) (Fin n) D.host.E) (τ : 
   simp only [gM, conjTranspose_apply, map_apply, star_apply]
   rw [embT_star']
 
+/- English proof (translation)
+Simplify using `[gM, Matrix.map_mul]`.
+-/
 theorem gM_mul {n : ℕ} (A B : Matrix (Fin n) (Fin n) D.host.E) (τ : D.what₂.Tau) : gM (A * B) τ = gM A τ * gM B τ := by
   simp [gM, Matrix.map_mul]
 
+/- English proof (translation)
+Simplify using `[gM, Matrix.map_one]`.
+-/
 theorem gM_one {n : ℕ} (τ : D.what₂.Tau) : gM (1 : Matrix (Fin n) (Fin n) D.host.E) τ = 1 := by
   simp [gM, Matrix.map_one]
 
+/- English proof (translation)
+Rewrite using `[gM_conjTranspose, ← gM_mul, h, gM_one]`.
+-/
 theorem gM_unit {n : ℕ} (γ : Matrix (Fin n) (Fin n) D.host.E) (h : (letI := D.host.cmStar; star γ * γ) = 1)
     (τ : D.what₂.Tau) : (gM γ τ)ᴴ * gM γ τ = 1 := by
   rw [gM_conjTranspose, ← gM_mul, h, gM_one]
 
+/- English proof (translation)
+Rewrite using `[gM_conjTranspose, ← gM_mul, h, gM_one]`.
+-/
 theorem gM_unit' {n : ℕ} (γ : Matrix (Fin n) (Fin n) D.host.E) (h : (letI := D.host.cmStar; γ * star γ) = 1)
     (τ : D.what₂.Tau) : gM γ τ * (gM γ τ)ᴴ = 1 := by
   rw [gM_conjTranspose, ← gM_mul, h, gM_one]
@@ -67,10 +85,16 @@ def phiL (h1 : (letI := D.host.cmStar; star γ * γ) = 1) (h2 : (letI := D.host.
     rw [Matrix.mul_assoc, Matrix.mul_assoc, gM_unit' γ h2, Matrix.mul_one, ← Matrix.mul_assoc, gM_unit' γ' h2',
       Matrix.one_mul]
 
+/- English proof (translation)
+Simplify using `[Matrix.trace, Matrix.mul_apply, Matrix.conjTranspose_apply]`.
+-/
 theorem sum_trace {m n : ℕ} (X Y : Matrix (Fin m) (Fin n) ℂ) :
     ∑ i, ∑ j, X i j * (starRingEnd ℂ) (Y i j) = Matrix.trace (X * Yᴴ) := by
   simp [Matrix.trace, Matrix.mul_apply, Matrix.conjTranspose_apply]
 
+/- English proof (translation)
+Rewrite using `[Matrix.conjTranspose_mul, Matrix.conjTranspose_mul]`. Establish `e : P * Z * Q * (Qᴴ * (Wᴴ * Pᴴ)) = P * (Z * Wᴴ) * Pᴴ`. Simplify using `only [Matrix.mul_assoc]`. Rewrite using `[← Matrix.mul_assoc Q Qᴴ, hQ, Matrix.one_mul]`. Rewrite using `[e, Matrix.trace_mul_comm, ← Matrix.mul_assoc, hP, Matrix.one_mul]`.
+-/
 theorem trace_unit {m n : ℕ} (P : Matrix (Fin m) (Fin m) ℂ) (Q : Matrix (Fin n) (Fin n) ℂ) (hP : Pᴴ * P = 1)
     (hQ : Q * Qᴴ = 1) (Z W : Matrix (Fin m) (Fin n) ℂ) :
     Matrix.trace (P * Z * Q * (P * W * Q)ᴴ) = Matrix.trace (Z * Wᴴ) := by
@@ -80,6 +104,11 @@ theorem trace_unit {m n : ℕ} (P : Matrix (Fin m) (Fin m) ℂ) (Q : Matrix (Fin
     rw [← Matrix.mul_assoc Q Qᴴ, hQ, Matrix.one_mul]
   rw [e, Matrix.trace_mul_comm, ← Matrix.mul_assoc, hP, Matrix.one_mul]
 
+/- English proof (translation)
+Introduce `x y`. Simplify using `only [Ker.formV, LinearMap.mk₂'ₛₗ_apply]`. Use `congr 1`. Use `Finset.sum_congr rfl fun τ _ => ?_` and prove the remaining obligations. Establish `e` using `sum_trace (gM γ' τ * Matrix.of (x τ) * (gM γ τ)ᴴ) (gM γ' τ * Matrix.of (y τ) * (gM γ τ)ᴴ)`.
+
+Establish `e2` using `sum_trace (Matrix.of (x τ)) (Matrix.of (y τ))`. Rewrite `e` using `[trace_unit _ _ (gM_unit γ' h1' τ) (by rw [Matrix.conjTranspose_conjTranspose]; exact gM_unit γ h1 τ)]`. Conclude with `e.trans e2.symm`.
+-/
 theorem phiL_isom (h1 h2 h1' h2') (A : ℝ) :
     IsIsom (Ker.formV A D.what₂.Tau N N') (Ker.formV A D.what₂.Tau N N')
       ((phiL γ γ' h1 h2 h1' h2' : TaylorLogMetric.VC D N N' ≃ₗ[ℂ] TaylorLogMetric.VC D N N') : TaylorLogMetric.VC D N N' →ₗ[ℂ] TaylorLogMetric.VC D N N') := by

@@ -13,6 +13,9 @@ attribute [local instance] Over.cartesianMonoidalCategory
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {Dw : Datum H} {l : Level H}
   {Xo : Moduli Dw l} {c : Coeff l}
 
+/- English proof (translation)
+The claim follows from `RingHom.ext fun _ => rfl`.
+-/
 theorem dualMapR_eq {R R' : Type} [CommRing R] [CommRing R'] (φ : R →+* R') :
     ReciprocityTheory.ChartRestriction.G.Chart.dualMapR φ = dualMap φ := RingHom.ext fun _ => rfl
 
@@ -20,6 +23,9 @@ section BC
 
 variable {S T : Type} [CommRing S] [Algebra c.F S] [Field T] [Algebra c.F T] (ψ : S →ₐ[c.F] T) (y : FrPt Xo c S)
 
+/- English proof (translation)
+Rewrite using `[Category.assoc, Over.w (uS y i)]`. Use `show spMap _ ≫ spMap (algebraMap S (DualNumber S)) = spMap (algebraMap T (DualNumber T)) ≫ spMap _`. Rewrite using `[spMap_comp_spMap, spMap_comp_spMap, dualMapR_eq, dualMap_comp_alg]`.
+-/
 theorem hw0 (i : Fin (Fintype.card (IxB Dw))) :
     (spMap (ReciprocityTheory.ChartRestriction.G.Chart.dualMapR ψ.toRingHom) ≫ (uS y i).left) ≫
       ((Over.pullback y.x).obj Xo.univ.t.G).hom = (epsR T).hom ≫ spMap ψ.toRingHom := by

@@ -9,6 +9,13 @@ attribute [local instance] Matrix.normedAddCommGroup Matrix.normedSpace
 
 namespace GlobalTheory.CompanionTheory.ModelS
 
+/- English proof (translation)
+Introduce `hh p hp g hg`. Establish `hpg : p * g ∈ GLs n` using `GlobalTheory.CompanionTheory.RCalc.mul_mem_GLs hp.1 hg`. Rewrite using `[DR_apply X h hpg, DR_apply X h hg]`. Establish `dg` using `GlobalTheory.CompanionTheory.RCalc.differentiableAt_of_smooth h.2.1 hg`. Establish `dpg` using `GlobalTheory.CompanionTheory.RCalc.differentiableAt_of_smooth h.2.1 hpg`.
+
+Establish `ev : (fun y => h.1 (GlobalTheory.CompanionTheory.RCalc.mulL p y)) =ᶠ[nhds g] fun y => φ p • h.1 y` using `by filter_upwards [GlobalTheory.CompanionTheory.RCalc.isOpen_GLs.mem_nhds hg] with y hy`. Conclude with `hh p hp y hy`. Establish `e1' : fderiv ℝ (fun y => h.1 (GlobalTheory.CompanionTheory.RCalc.mulL p y)) g (g * X) = fderiv ℝ h.1 (p * g) (p * (g * X))` using `GlobalTheory.CompanionTheory.RCalc.fderiv_comp_clm (GlobalTheory.CompanionTheory.RCalc.mulL p) dpg (g * X)`. Rewrite `e1'` using `[ev.fderiv_eq]`. Establish `e2'` using `GlobalTheory.CompanionTheory.RCalc.fderiv_csmul_apply dg (φ p) (g * X)`.
+
+Simplify using `only [Rd]`. Rewrite using `[Matrix.mul_assoc, ← e1']`. Conclude with `e2'`.
+-/
 theorem DR_mem_Eqv (n : ℕ) (lev : Fin n → ℕ) (φ : Mat n → ℂ) (X : Mat n) (h : GlobalTheory.CompanionTheory.ModelS.SmF n) :
     h ∈ GlobalTheory.CompanionTheory.ModelS.Eqv lev φ → GlobalTheory.CompanionTheory.ModelS.DR X h ∈ GlobalTheory.CompanionTheory.ModelS.Eqv lev φ := by
   intro hh p hp g hg

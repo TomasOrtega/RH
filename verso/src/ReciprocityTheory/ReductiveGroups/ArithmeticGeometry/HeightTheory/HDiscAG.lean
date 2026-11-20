@@ -7,6 +7,9 @@ namespace ReciprocityTheory.ChartRestriction.G.T0
 
 open NumberField IsDedekindDomain
 
+/- English proof (translation)
+Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simp`. Consider the case `insert j s hj ih => rw [Finset.prod_insert hj, Finset.sum_insert hj, ih, zpow_add₀ hx]`.
+-/
 theorem prod_zpow_eq {ι G : Type*} [CommGroupWithZero G] {x : G} (hx : x ≠ 0) (s : Finset ι)
     (f : ι → ℤ) : ∏ i ∈ s, x ^ f i = x ^ ∑ i ∈ s, f i := by
   classical
@@ -25,6 +28,33 @@ namespace Data
 
 variable (d : Data K ι Ω WT A)
 
+/- English proof (translation)
+Use `letI : ∀ c, Algebra (KTf K d.D d.N) (OmS (Ω c) d.D d.N) := fun c => (d.KTtoS h c).toAlgebra`. Use `letI : ∀ c, Algebra (Op d.D d.N la) (OmS (Ω c) d.D d.N) := fun c => d.algOp h la c`. Use `letI := algOpKT (K := K) d.D d.N la`. Use `haveI := Op_isDVR (K := K) d.D d.N la`. Use `haveI := isFractionRing_Op (K := K) d.D d.N la`.
+
+Establish `hF` using `fun c => d.comp_facts hd h la c`. Use `haveI : ∀ c, IsScalarTower (Op d.D d.N la) (KTf K d.D d.N) (OmS (Ω c) d.D d.N) := fun c => (hF c).2.1`. Use `haveI : ∀ c, FiniteDimensional (KTf K d.D d.N) (OmS (Ω c) d.D d.N) := fun c => (hF c).2.2.1`. Use `haveI : ∀ c, Algebra.IsSeparable (KTf K d.D d.N) (OmS (Ω c) d.D d.N) := fun c => (hF c).2.2.2.1`. Set `n : ∀ c, AddValuation (OmS (Ω c) d.D d.N) (WithTop ℤ) → ℤ` to `fun c w => d.ord c (d.Wres c w) d.wF (hd.a4.choose c)`.
+
+Use `choose g hg0 hgw hgiff using fun c => d.comp_g hd h la c (n c)`. Establish `hset : d.AdmissibleOmegaFamiliesAtPrimeOfSection hd.a4.choose la = {y | ∀ c, g c * y c ∈ integralClosure (Op d.D d.N la) (OmS (Ω c) d.D d.N)}`. Use extensionality with `y`. Simplify using `only [AdmissibleOmegaFamiliesAtPrimeOfSection, Set.mem_setOf_eq]`. Conclude with `forall_congr' fun c => hgiff c (y c)`.
+
+Establish `hb : ∀ k c, g c * d.bvecG hd.sel hd.a4.choose k c ∈ integralClosure (Op d.D d.N la) (OmS (Ω c) d.D d.N)` using `fun k c => (hgiff c _).mp (fun w hw => d.b_mem hd h la k c w hw)`. Take `⟨nn, t, u, hlen, hdisc⟩` from `HDiscLat.lattice_main (R := Op d.D d.N la) (F := KTf K d.D d.N) (unifOp_irreducible d.D d.N la) g hg0 (d.del_eq hd h) (d.bvecG hd.sel hd.a4.choose) hb (d.b_linIndep hd h)`. Use `choose uN huN hN using fun c => d.comp_norm hd h la c (hg0 c) (n c) (hgw c)`. Set `Nc : ι → ℤ` to `fun c => ∑ᶠ (w : AddValuation (OmS (Ω c) d.D d.N) (WithTop ℤ)) (_ : w ∈ d.PlOver la c), (d.fze h c w : ℤ) * n c w`. Establish `hfin : ∀ c, (d.PlOver la c).Finite` using `fun c => by`.
+
+Take `⟨i1, i2, i3, i4, i5, i6⟩` from `hF c`. Rewrite using `[d.plOver_eq h la c]`. Conclude with `ValPl.placesOver_finite (F := KTf K d.D d.N) (Op d.D d.N la) (OmS (Ω c) d.D d.N)`. Use `⟨nn, t, ∑ c, Nc c, ?_, ?_, ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `Module.length (Op d.D d.N la) (↥(Submodule.span (Op d.D d.N la) (d.AdmissibleOmegaFamiliesAtPrimeOfSection hd.a4.choose la)) ⧸ (Submodule.span (Op d.D d.N la) (Set.range (d.bvecG hd.sel hd.a4.choose))).comap (Submodule.span (Op d.D d.N la) (d.AdmissibleOmegaFamiliesAtPrimeOfSecti …`.
+
+Rewrite using `[hset]`. Conclude with `hlen`. Simplify using `only [NlaG, Nc]`. Use `push_cast`. Use `Finset.sum_congr rfl fun c _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[finsum_mem_eq_finite_toFinset_sum _ (hfin c), finsum_mem_eq_finite_toFinset_sum _ (hfin c)]`. Use `push_cast`. Both sides reduce to the same expression. Use `set X := OpToKT d.D d.N la (unifOp d.D d.N la) with hX`. Establish `hX0 : X ≠ 0` using `(map_ne_zero_iff _ (OpToKT_injective d.D d.N la)).mpr (unifOp_irreducible d.D d.N la).ne_zero`.
+
+Set `U : (Op d.D d.N la)ˣ` to `∏ c, (huN c).unit`. Establish `hprod : ∏ c, Algebra.norm (KTf K d.D d.N) (g c) = X ^ (∑ c, Nc c) * OpToKT d.D d.N la (U : Op d.D d.N la)`. Rewrite using `[Finset.prod_congr rfl fun c _ => hN c, Finset.prod_mul_distrib, prod_zpow_eq hX0, ← map_prod]`. Use `congr 2`. Simplify using `only [U, Units.coe_prod, IsUnit.unit_spec]`.
+
+Rewrite `hdisc` using `[hprod]`. Use `⟨↑(u * U⁻¹ * U⁻¹), Units.isUnit _, ?_⟩` and prove the remaining obligations. Rewrite using `[algK_unif, ← hX]`. Use `set V := OpToKT d.D d.N la (U : Op d.D d.N la)`. Use `set V' := OpToKT d.D d.N la ((U⁻¹ : (Op d.D d.N la)ˣ) : Op d.D d.N la)`.
+
+Establish `hU : V * V' = 1`. Simplify using `only [V, V']`. Rewrite using `[← map_mul, Units.mul_inv, map_one]`. Use `set Y := X ^ (∑ c, Nc c)`. Establish `hY : Y ≠ 0` using `zpow_ne_zero _ hX0`.
+
+Establish `h2 : X ^ (2 * ∑ c, Nc c) = Y ^ 2`. Rewrite using `[mul_comm, zpow_mul]`. Use `norm_cast`. Establish `hone : (Y * V) ^ 2 * ((Y ^ 2)⁻¹ * V' * V') = 1`. Combine the equalities or inequalities in the displayed calculation.
+
+Expand and normalize the polynomial expressions, which then agree. Use `_ = 1 := by rw [mul_inv_cancel₀ (pow_ne_zero 2 hY), hU]; ring`. Establish `hdisc' : d.De hd h * (Y * V) ^ 2 = OpToKT d.D d.N la ↑u * X ^ (2 * nn + t)`. Rewrite using `[← map_pow, ← map_mul]`. Conclude with `hdisc`.
+
+Rewrite using `[zpow_sub₀ hX0, zpow_natCast, h2, Units.val_mul, Units.val_mul, map_mul, map_mul]`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem disc_at (hd : d.AxH 𝒜) (h : d.S1) (la : HeightOneSpectrum (𝓞 K)) :
     ∃ n t : ℕ, ∃ N : ℤ, (d.htOf hd h).Ila la = n ∧ d.NlaG h d.wF hd.a4.choose la = N ∧
       ∃ u : Op d.D d.N la, IsUnit u ∧ d.De hd h =

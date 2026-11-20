@@ -9,6 +9,11 @@ open MeasureTheory NumberField Set
 open scoped InnerProductSpace ENNReal
 open Formalism.MainNotions.S Formalism.MainNotions.PlaceDegreeData Formalism.MainNotions.BridgeLemma
 
+/- English proof (translation)
+Take `⟨hH, hF, -⟩` from `hd`. Use `hH` as an intermediate fact. Establish `: SecondCountableTopology X.I.Gf` using `rr_secondCountable X.I X.μf`. Establish `: (X.I.muA X.μf).IsMulLeftInvariant` using `rr_muA_left X.I X.μf`. Establish `: SigmaFinite (X.I.muA X.μf)` using `rr_muA_sigmaFinite X.I X.μf`.
+
+Conclude with `rr_right_of_finite (rr_FD_of X.I X.μf X.fund hF) hV`.
+-/
 theorem adelic_unimodular_of_finite_covolume (X : CData) (hd : RegData X) (hV : X.FinVol) : UnimodA X := by
   obtain ⟨hH, hF, -⟩ := hd
   have := hH
@@ -17,6 +22,15 @@ theorem adelic_unimodular_of_finite_covolume (X : CData) (hd : RegData X) (hV : 
   have : SigmaFinite (X.I.muA X.μf) := rr_muA_sigmaFinite X.I X.μf
   exact rr_right_of_finite (rr_FD_of X.I X.μf X.fund hF) hV
 
+/- English proof (translation)
+Establish `: (X.I.muA X.μf).IsMulRightInvariant` using `h`. Use `⟨fun g => ?_⟩` and prove the remaining obligations. Use `set B : Set X.I.Ginf := Set.pi univ fun v => {y : Formalism.REAL.UJ (X.I.ε v) | Formalism.REAL.hsG y ≤ (X.I.n : ℝ) + 1} with hBdef`. Establish `hB : (Measure.pi fun v => Formalism.REAL.muG (X.I.ε v)) B = ∏ v, Formalism.REAL.muG (X.I.ε v) {y : Formalism.REAL.UJ (X.I.ε v) | Formalism.REAL.hsG y ≤ (X.I.n : ℝ) + 1}` using `Measure.pi_pi _ _`. Establish `hB0 : (Measure.pi fun v => Formalism.REAL.muG (X.I.ε v)) B ≠ 0`.
+
+Rewrite using `[hB]`. Conclude with `Finset.prod_ne_zero_iff.2 fun v _ => (Formalism.REAL.frobenius_ball_compact_pos_finite (X.I.ε v)).2.1.ne'`. Establish `hBt : (Measure.pi fun v => Formalism.REAL.muG (X.I.ε v)) B ≠ ⊤`. Rewrite using `[hB]`. Conclude with `ENNReal.prod_ne_top fun v _ => (Formalism.REAL.frobenius_ball_compact_pos_finite (X.I.ε v)).2.2.ne`.
+
+Use extensionality with `A hA`. Rewrite using `[Measure.map_apply (measurable_mul_const g) hA]`. Establish `key : (X.I.muA X.μf) ((fun x : X.I.GA => x * ((1 : X.I.Ginf), g)) ⁻¹' (B ×ˢ A)) = (X.I.muA X.μf) (B ×ˢ A)` using `measure_preimage_mul_right _ _ _`. Establish `e1 : (fun x : X.I.GA => x * ((1 : X.I.Ginf), g)) ⁻¹' (B ×ˢ A) = B ×ˢ ((fun y => y * g) ⁻¹' A)`. Use extensionality with `⟨a, b⟩`.
+
+Simplify using the standard rewrite rules. Rewrite `key` using `[e1]`. Unfold `AutInst.muA at key`. Rewrite `key` using `[Measure.prod_prod, Measure.prod_prod]`. Conclude with `(ENNReal.mul_right_inj hB0 hBt).1 key`.
+-/
 theorem UnimodF_of_UnimodA (X : CData) (h : UnimodA X) : UnimodF X := by
   have : (X.I.muA X.μf).IsMulRightInvariant := h
   refine ⟨fun g => ?_⟩
@@ -41,6 +55,9 @@ theorem UnimodF_of_UnimodA (X : CData) (h : UnimodA X) : UnimodF X := by
   rw [Measure.prod_prod, Measure.prod_prod] at key
   exact (ENNReal.mul_right_inj hB0 hBt).1 key
 
+/- English proof (translation)
+The claim follows from `regularRep_isometric_weaklyMeasurable X hd (adelic_unimodular_of_finite_covolume X hd hV)`.
+-/
 theorem regularRep_measurable_of_finite_volume (X : CData) (hd : RegData X) (hV : X.FinVol) : X.RegRep :=
   regularRep_isometric_weaklyMeasurable X hd (adelic_unimodular_of_finite_covolume X hd hV)
 
@@ -50,6 +67,9 @@ def KernelDiagonalVolumeModulusConditions (n₀ : ℕ) (A C cb c₁ A₂ cε C�
       X.NearStep (Formalism.HermitianLatticeCounting.S7.epsN cε X.I.n X.I.f) c₁ A₂ Mod ∧
       X.FarCount (X.Acnt C₁) (2 * (X.I.n : ℝ) ^ 2) Mod ∧ X.DeepInt (A₂ + 1) Mod
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fun h X hX => (h X hX).2, fun h X hX => ⟨regularRep_measurable_of_finite_volume X (RegData_of_HypB X hX.1) (h X hX).2.1, h X hX⟩⟩`.
+-/
 theorem kernel_conditions_iff_without_regular_rep (n₀ : ℕ) (A C cb c₁ A₂ cε C₁ : ℝ) :
     StepsC'' n₀ A C cb c₁ A₂ cε C₁ ↔ KernelDiagonalVolumeModulusConditions n₀ A C cb c₁ A₂ cε C₁ :=
   ⟨fun h X hX => (h X hX).2, fun h X hX =>

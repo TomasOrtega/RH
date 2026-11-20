@@ -16,6 +16,9 @@ variable {m n : ℕ} {ε : Fin m → Bool} {c t : ℝ} {p q : ℕ} {e : ℤ} {sL
   [SecondCountableTopology G] {Pp Γ : Subgroup G} {ι : GR n →* G} {s₀ : ℂ} {Ht : G → ℝ≥0}
   {sec I : PX m n →ₗ[ℂ] (G → ℂ)} {Λ : Set ((G → ℂ) → ℂ)}
 
+/- English proof (translation)
+Rewrite using `[norm_hz hD hG, norm_hz hD hG, norm_hz hD hG, Complex.ofReal_re, Complex.ofReal_re]`. Establish `hx` using `Ht_pos hD hG x`. Establish `hr` using `rpow_le_add hx (show σ₁ - s₀.re ≤ z.re - s₀.re by linarith) (show z.re - s₀.re ≤ σ₂ - s₀.re by linarith)`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem hz_bound (hD : CayleyBlocksInvertible) (hG : GlobData ε c sL ρ G Pp Γ ι s₀ Ht sec I Λ) {Q : PX m n} {C : ℝ} (hC0 : 0 ≤ C)
     (hC : ∀ x, ‖sec Q x‖ ≤ C * ‖sec 1 x‖) {σ₁ σ₂ : ℝ} {z : ℂ} (h₁ : σ₁ ≤ z.re) (h₂ : z.re ≤ σ₂) (x : G) :
     ‖hz Ht sec s₀ z Q x‖ ≤ C * (‖hz Ht sec s₀ (σ₁ : ℂ) 1 x‖ + ‖hz Ht sec s₀ (σ₂ : ℂ) 1 x‖) := by
@@ -27,6 +30,9 @@ theorem hz_bound (hD : CayleyBlocksInvertible) (hG : GlobData ε c sL ρ G Pp Γ
         mul_le_mul hr (hC x) (norm_nonneg _) (by positivity)
     _ = C * ((Ht x : ℝ) ^ (σ₁ - s₀.re) * ‖sec 1 x‖ + (Ht x : ℝ) ^ (σ₂ - s₀.re) * ‖sec 1 x‖) := by ring
 
+/- English proof (translation)
+Rewrite using `[norm_hz hD hG, norm_hz hD hG]`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem hz_bound0 (hD : CayleyBlocksInvertible) (hG : GlobData ε c sL ρ G Pp Γ ι s₀ Ht sec I Λ) {Q : PX m n} {C : ℝ}
     (hC : ∀ x, ‖sec Q x‖ ≤ C * ‖sec 1 x‖) (z : ℂ) (x : G) :
     ‖hz Ht sec s₀ z Q x‖ ≤ C * ‖hz Ht sec s₀ z 1 x‖ := by
@@ -35,6 +41,19 @@ theorem hz_bound0 (hD : CayleyBlocksInvertible) (hG : GlobData ε c sL ρ G Pp �
         mul_le_mul_of_nonneg_left (hC x) (Real.rpow_nonneg (Ht_pos hD hG x).le _)
     _ = C * ((Ht x : ℝ) ^ (z.re - s₀.re) * ‖sec 1 x‖) := by ring
 
+/- English proof (translation)
+Take `⟨U, d, E, σ, -, -, -, -, -, -, -, hconv⟩` from `hG.eis`. Establish `hmaj : ∀ z : ℂ, σ < z.re → ∀ C : Set G, IsCompact C → ∃ u : GlobalTheory.Eis.Cosets Pp Γ → ℝ, Summable u ∧ ∀ g ∈ C, ∀ q', ‖GlobalTheory.Eis.term Pp Γ (hz Ht sec s₀ z 1) g q'‖ ≤ u q'` using `fun z hzr C hC => (hconv z hzr).1 C hC`. Use `⟨σ, ?_, ?_, hmaj⟩` and prove the remaining obligations. Introduce `Q g z₀ hz₀`. Establish `hz₀' : σ < z₀.re` using `hz₀`.
+
+Take `⟨C, hC0, hC⟩` from `sec_bound hI hM hD hL hG Q`. Use `set σ₁ : ℝ := (σ + z₀.re) / 2`. Use `set σ₂ : ℝ := z₀.re + 1`. Establish `hσ₁ : σ < ((σ₁ : ℂ)).re` using `by simp only [Complex.ofReal_re, σ₁]; linarith`. Establish `hσ₂ : σ < ((σ₂ : ℂ)).re` using `by simp only [Complex.ofReal_re, σ₂]; linarith`.
+
+Take `⟨u₁, hu₁, hb₁⟩` from `hmaj _ hσ₁ {g} isCompact_singleton`. Take `⟨u₂, hu₂, hb₂⟩` from `hmaj _ hσ₂ {g} isCompact_singleton`. Use `set V : Set ℂ := {z | σ₁ < z.re ∧ z.re < σ₂}`. Establish `hV : IsOpen V` using `(isOpen_lt continuous_const Complex.continuous_re).inter (isOpen_lt Complex.continuous_re continuous_const)`. Establish `hz₀V : z₀ ∈ V` using `⟨by simp only [σ₁]; linarith, by simp only [σ₂]; linarith⟩`.
+
+Establish `hdiff : DifferentiableOn ℂ (fun w => ∑' q', GlobalTheory.Eis.term Pp Γ (hz Ht sec s₀ w Q) g q') V`. Use `Complex.differentiableOn_tsum_of_summable_norm ((hu₁.add hu₂).mul_left C) (fun q' => ?_) hV (fun q' w hw => ?_)` and prove the remaining obligations. Establish `hne : (((Ht (((q'.out : Γ) : G) * g) : ℝ) : ℂ)) ≠ 0` using `Complex.ofReal_ne_zero.mpr (Ht_pos hD hG _).ne'`. Conclude with `(((differentiable_id.sub_const s₀).const_cpow (Or.inl hne)).mul_const _).differentiableOn`. Establish `h` using `hz_bound hD hG hC0 hC (σ₁ := σ₁) (σ₂ := σ₂) (z := w) hw.1.le hw.2.le (((q'.out : Γ) : G) * g)`.
+
+Combine the equalities or inequalities in the displayed calculation. Conclude with `(hdiff.differentiableAt (hV.mem_nhds hz₀V)).differentiableWithinAt`. Introduce `Q g z hzr`. Take `⟨C, hC0, hC⟩` from `sec_bound hI hM hD hL hG Q`. Take `⟨u, hu, hb⟩` from `hmaj z hzr {g} isCompact_singleton`.
+
+Use `Summable.of_norm_bounded (hu.mul_left C) fun q' => ?_` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem farHol (hI : Iwa) (hM : Mult) (hD : CayleyBlocksInvertible) (hL : LocData ε c t p q e sL ρ)
     (hG : GlobData ε c sL ρ G Pp Γ ι s₀ Ht sec I Λ) : ∃ σ : ℝ,
     (∀ Q g, DifferentiableOn ℂ (fun z => GlobalTheory.Eis.cosetSum Pp Γ (hz Ht sec s₀ z Q) g) (GlobalTheory.Cont.rightOf σ)) ∧

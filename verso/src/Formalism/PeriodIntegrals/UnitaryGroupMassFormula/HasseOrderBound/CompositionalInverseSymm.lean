@@ -14,19 +14,37 @@ variable {D : D7} {B : WeightFamilies.Prov D} {P : ModuliIntegralCharts.Prov D} 
 
 def s0 : Lc X la w := algebraMap (Rp X la N) (Lc X la w) (sec X la w 0)
 
+/- English proof (translation)
+The claim follows from `section_mul_inverse_eq_one X la w`.
+-/
 theorem section_mul_inverse : s0 X la w * wi X la w = 1 := section_mul_inverse_eq_one X la w
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem hasse_apply (β : Idx D j N →₀ ℕ) (x : Lc X la w) :
     hasse X la w β x = MvPowerSeries.coeff β (tayLc X la w x) := rfl
 
 def cS (p : Idx D j N) : Lc X la w := hasse X la w (Finsupp.single p 1) (s0 X la w)
 
+/- English proof (translation)
+Unfold `cS s0`. Rewrite using `[hasse_algebraMap, hasseRp_single, pdRp_sec]`. Apply the tactic sequence `by_cases h : p.1 = 0 <;> simp [h]`.
+-/
 theorem cS_eq (p : Idx D j N) : cS X la w p =
     if p.1 = 0 then algebraMap (Rp X la N) (Lc X la w) (emb X la N (X.inc wL (w p.2))) else 0 := by
   unfold cS s0
   rw [hasse_algebraMap, hasseRp_single, pdRp_sec]
   by_cases h : p.1 = 0 <;> simp [h]
 
+/- English proof (translation)
+Use extensionality with `γ`. Rewrite using `[Finsupp.sum_fintype _ _ (by intro p; simp)]`. Simplify using `only [map_add, map_sum, Finsupp.coe_equivFunOnFinite_symm, MvPowerSeries.coeff_C_mul, MvPowerSeries.coeff_X, MvPowerSeries.coeff_C]`. Rewrite using `[← hasse_apply]`. Establish `hne : ∀ p : Idx D j N, (0 : Idx D j N →₀ ℕ) ≠ Finsupp.single p 1` using `fun p h => by`.
+
+Simplify using `using h.symm`. Distinguish the cases in `h0 : γ = 0`. Substitute `h0` using the available equality. Rewrite using `[hasse_zero]`. Simplify using `[hne]`.
+
+Distinguish the cases in `h1 : ∃ q, γ = Finsupp.single q 1`. Take `⟨q, rfl⟩` from `h1`. Establish `hq : hasse X la w (Finsupp.single q 1) (s0 X la w) = cS X la w q` using `rfl`. Rewrite using `[hq]`. Simplify using `[Finsupp.single_left_inj one_ne_zero, h0]`.
+
+Use `push Not at h1`. Unfold `s0`. Rewrite using `[hasse_algebraMap, hasseRp_sec_eq_zero X la w h0 h1 0, map_zero]`. Simplify using `[h0, h1]`.
+-/
 theorem taySec : tayLc X la w (s0 X la w) =
     MvPowerSeries.C (s0 X la w) +
       (Finsupp.equivFunOnFinite.symm (cS X la w)).sum (fun p a => MvPowerSeries.C a * MvPowerSeries.X p) := by
@@ -54,6 +72,17 @@ theorem taySec : tayLc X la w (s0 X la w) =
 
 end
 
+/- English proof (translation)
+Introduce `D B P j X la N wL w T β`. Establish `hT` using `_root_.coeffInversePowerFacts (Idx D j N) (Lc X la w) (tayLc X la w) (s0 X la w) (wi X la w) (Finsupp.equivFunOnFinite.symm (cS X la w)) (section_mul_inverse X la w) (taySec X la w) T β`. Rewrite `hT` using `[← hasse_apply]`. Establish `hprod : (β.prod fun p b => (Finsupp.equivFunOnFinite.symm (cS X la w)) p ^ b) = if (∀ i : Fin (WeightFamilies.dimY D j), ∀ k, β (i.succ, k) = 0) then algebraMap (Rp X la N) (Lc X la w) (∏ k, emb X la N (X.inc wL (w k)) ^ β (0, k)) else 0`. Rewrite using `[Finsupp.prod_fintype _ _ (by intro p; simp)]`.
+
+Simplify using `only [Finsupp.coe_equivFunOnFinite_symm]`. Rewrite using `[Fintype.prod_prod_type, Fin.prod_univ_succ]`. Simplify using `only [cS_eq, Fin.succ_ne_zero, if_false, if_true, map_prod, map_pow]`. Use `split_ifs with h`. Simplify using `[h]`.
+
+Use `push Not at h`. Take `⟨i, k, hk⟩` from `h`. Apply `mul_eq_zero_of_right` to reduce the goal to its premises. Apply `Finset.prod_eq_zero (Finset.mem_univ i)` to reduce the goal to its premises. Apply `Finset.prod_eq_zero (Finset.mem_univ k)` to reduce the goal to its premises.
+
+Conclude with `zero_pow hk`. Use `⟨if (∀ i : Fin (WeightFamilies.dimY D j), ∀ k, β (i.succ, k) = 0) then (-1) ^ (β.sum fun _ n => n) * (((T + (β.sum fun _ n => n) - 1).choose (β.sum fun _ n => n) : ℕ) : ℤ) * ((Nat.multinomial β.support β : ℕ) : ℤ) else 0, ?_, ?_⟩` and prove the remaining obligations. Introduce `hm split_ifs at hm with h`. Rewrite using `[Finsupp.sum_fintype _ _ (fun _ => rfl), Fintype.sum_prod_type, Fin.sum_univ_succ]`. Simplify using `[h]`.
+
+Conclude with `absurd rfl hm`. Rewrite using `[hT, hprod] split_ifs with h`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Simplify using the standard rewrite rules.
+-/
 theorem compositionalInverseSymm : S1 := by
   classical
   intro D B P j X la N wL w T β

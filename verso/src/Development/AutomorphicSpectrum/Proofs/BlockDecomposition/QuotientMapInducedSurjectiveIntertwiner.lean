@@ -6,17 +6,28 @@ open scoped TensorProduct
 
 namespace GlobalTheory.CompanionTheory.LeibPhi
 
+/- English proof (translation)
+Conclude with `f.1.1.2 ⟨h, hh⟩ g`.
+-/
 private theorem cIndSpace_apply_mem_mul {G W : Type} [Group G] [TopologicalSpace G]
     [IsTopologicalGroup G] [AddCommGroup W] [Module ℂ W] {H : Subgroup G}
     {σ : Representation ℂ H W} (f : GlobalTheory.PRep.cIndSpace H σ) (h : G) (hh : h ∈ H)
     (g : G) : f.1.1.1 (h * g) = σ ⟨h, hh⟩ (f.1.1.1 g) := by
   exact f.1.1.2 ⟨h, hh⟩ g
 
+/- English proof (translation)
+Unfold `GlobalTheory.CompanionTheory.LeibPhi.IsHK`. Conclude with `⟨fun _ _ _ => Iff.rfl, ⊤, by simp, fun _ _ _ => Iff.rfl⟩`.
+-/
 private theorem isHK_empty {G : Type} [Group G] [TopologicalSpace G]
     (H : Subgroup G) : GlobalTheory.CompanionTheory.LeibPhi.IsHK H ∅ := by
   unfold GlobalTheory.CompanionTheory.LeibPhi.IsHK
   exact ⟨fun _ _ _ => Iff.rfl, ⊤, by simp, fun _ _ _ => Iff.rfl⟩
 
+/- English proof (translation)
+Unfold `GlobalTheory.CompanionTheory.LeibPhi.IsHK at *`. Take `⟨hA₁, KA, hKA, hA₂⟩` from `hA`. Take `⟨hB₁, KB, hKB, hB₂⟩` from `hB`. Use `⟨fun h hh g => ?_, KA ⊓ KB, ?_, fun g x hx => ?_⟩` and prove the remaining obligations. Simplify using `only [Set.mem_union, hA₁ h hh g, hB₁ h hh g]`.
+
+Rewrite using `[Subgroup.coe_inf]`. Conclude with `hKA.inter hKB`. Rewrite `hx` using `[Subgroup.mem_inf]`. Simplify using `only [Set.mem_union, hA₂ g x hx.1, hB₂ g x hx.2]`.
+-/
 private theorem isHK_union {G : Type} [Group G] [TopologicalSpace G]
     {H : Subgroup G} {A B : Set G} (hA : GlobalTheory.CompanionTheory.LeibPhi.IsHK H A)
     (hB : GlobalTheory.CompanionTheory.LeibPhi.IsHK H B) : GlobalTheory.CompanionTheory.LeibPhi.IsHK H (A ∪ B) := by
@@ -30,6 +41,11 @@ private theorem isHK_union {G : Type} [Group G] [TopologicalSpace G]
   · rw [Subgroup.mem_inf] at hx
     simp only [Set.mem_union, hA₂ g x hx.1, hB₂ g x hx.2]
 
+/- English proof (translation)
+Unfold `GlobalTheory.CompanionTheory.LeibPhi.IsHK at *`. Take `⟨hA₁, KA, hKA, hA₂⟩` from `hA`. Take `⟨hB₁, KB, hKB, hB₂⟩` from `hB`. Use `⟨fun h hh g => ?_, KA ⊓ KB, ?_, fun g x hx => ?_⟩` and prove the remaining obligations. Simplify using `only [Set.mem_diff, hA₁ h hh g, hB₁ h hh g]`.
+
+Rewrite using `[Subgroup.coe_inf]`. Conclude with `hKA.inter hKB`. Rewrite `hx` using `[Subgroup.mem_inf]`. Simplify using `only [Set.mem_diff, hA₂ g x hx.1, hB₂ g x hx.2]`.
+-/
 private theorem isHK_diff {G : Type} [Group G] [TopologicalSpace G]
     {H : Subgroup G} {A B : Set G} (hA : GlobalTheory.CompanionTheory.LeibPhi.IsHK H A)
     (hB : GlobalTheory.CompanionTheory.LeibPhi.IsHK H B) : GlobalTheory.CompanionTheory.LeibPhi.IsHK H (A \ B) := by
@@ -43,6 +59,37 @@ private theorem isHK_diff {G : Type} [Group G] [TopologicalSpace G]
   · rw [Subgroup.mem_inf] at hx
     simp only [Set.mem_diff, hA₂ g x hx.1, hB₂ g x hx.2]
 
+/- English proof (translation)
+Take `⟨C, hC, hsupp⟩ : ∃ C : Set G', IsCompact C ∧ ∀ g, F.1.1.1 g ≠ 0 → ∃ h ∈ H', ∃ c ∈ C, g = h * c` from `F.2`. Establish `hloc : ∀ c : G', ∃ T : Set G, ∃ U ∈ 𝓝 c, GlobalTheory.CompanionTheory.LeibPhi.IsHK H T ∧ (∀ y ∈ U, ι y ∈ T) ∧ ∃ e : GlobalTheory.PRep.cIndSpace H σ, ∀ x, ι x ∈ T → q (e.1.1.1 (ι x)) = F.1.1.1 x`. Introduce `c`. Take `⟨K', hK'o, hK'⟩` from `GlobalTheory.CompanionTheory.LeibPhi.cInd_right_inv H' σ' F`. Take `⟨w, hw⟩` from `hsurj (F.1.1.1 c)`.
+
+Take `⟨e, he⟩` from `GlobalTheory.CompanionTheory.LeibPhi.exists_cInd_value H σ hσ hbase (ι c) w`. Take `⟨Ke, hKeo, hKe⟩` from `GlobalTheory.CompanionTheory.LeibPhi.cInd_right_inv H σ e`. Establish `hS : {y : G' | c⁻¹ * y * c ∈ K' ∧ ι (c⁻¹ * y * c) ∈ Ke} ∈ 𝓝 (1 : G')`. Establish `hcont : Continuous (fun y : G' => c⁻¹ * y * c)` using `by fun_prop`. Establish `hopen : IsOpen {z : G' | z ∈ K' ∧ ι z ∈ Ke}` using `hK'o.inter (hKeo.preimage hι)`.
+
+Conclude with `(hopen.preimage hcont).mem_nhds (by simp [one_mem])`. Take `⟨K, hK, hKemb⟩` from `hemb _ hS`. Establish `hconj : (fun μ : G => ι c * μ * (ι c)⁻¹) ⁻¹' K ∈ 𝓝 (1 : G)`. Establish `hcont : Continuous (fun μ : G => ι c * μ * (ι c)⁻¹)` using `by fun_prop`. Conclude with `hcont.continuousAt.preimage_mem_nhds (by simpa using hK)`.
+
+Take `⟨M, hMo, -, hMsub⟩` from `hbase _ hconj`. Use `⟨{g | ∃ a ∈ H, ∃ x ∈ M, g = a * ι c * x}, {y | ι (c⁻¹ * y) ∈ M}, ?_, GlobalTheory.CompanionTheory.LeibPhi.isHK_doubleCoset H M hMo (ι c), ?_, e, ?_⟩` and prove the remaining obligations. Establish `hcont : Continuous (fun y : G' => ι (c⁻¹ * y))` using `hι.comp (continuous_mul_left c⁻¹)`. Conclude with `(hMo.preimage hcont).mem_nhds (by simp [one_mem])`. Introduce `y hy`.
+
+Conclude with `⟨1, one_mem _, ι (c⁻¹ * y), hy, by simp⟩`. Introduce and unpack `x ⟨a, ha, μ, hμ, hx⟩`. Establish `hκ : ι c * μ * (ι c)⁻¹ ∈ K` using `hMsub hμ`. Take `⟨h', hh', κ', hκ', hxeq⟩` from `hKemb (x * c⁻¹) a ha (ι c * μ * (ι c)⁻¹) hκ (by rw [map_mul, hx, map_inv]; group)`. Establish `hx' : x = h' * (c * (c⁻¹ * κ' * c))`.
+
+Establish `h0 : x = x * c⁻¹ * c` using `by group`. Rewrite using `[h0, hxeq]`. Use `group`. Establish `hι' : ι h' ∈ H` using `(hH h').1 hh'`. Establish `hFx : F.1.1.1 x = σ' ⟨h', hh'⟩ (q w)`.
+
+Rewrite using `[hx', cIndSpace_apply_mem_mul F h' hh', hK' c _ hκ'.1, hw]`. Rewrite using `[hFx, hx', map_mul, map_mul, cIndSpace_apply_mem_mul e _ hι', hKe _ _ hκ'.2, he]`. Conclude with `hq ⟨h', hh'⟩ hι' w`. Use `choose T U hU hT hUT e he using hloc`. Take `⟨t, -, hCt⟩` from `hC.elim_nhds_subcover U (fun c _ => hU c)`.
+
+Establish `hglue : ∀ s : Finset G', ∃ V : Set G, GlobalTheory.CompanionTheory.LeibPhi.IsHK H V ∧ (∀ c ∈ s, T c ⊆ V) ∧ ∃ f : GlobalTheory.PRep.cIndSpace H σ, (∀ g ∉ V, f.1.1.1 g = 0) ∧ ∀ x, ι x ∈ V → q (f.1.1.1 (ι x)) = F.1.1.1 x`. Introduce `s`. Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty`. Use `⟨∅, isHK_empty H, by simp, 0, fun g _ => ?_, fun x hx => ?_⟩` and prove the remaining obligations.
+
+Both sides reduce to the same expression. Simplify using `at hx`. Consider the case `@insert c s hcs ih`. Take `⟨V, hV, hsV, f, hf0, hf⟩` from `ih`. Take `⟨f', hf'in, hf'out⟩` from `GlobalTheory.CompanionTheory.LeibPhi.exists_indicator H σ (isHK_diff (hT c) hV) (e c)`.
+
+Establish `hadd : ∀ g, (f + f').1.1.1 g = f.1.1.1 g + f'.1.1.1 g` using `fun _ => rfl`. Use `⟨V ∪ T c, isHK_union hV (hT c), ?_, f + f', ?_, ?_⟩` and prove the remaining obligations. Introduce `d hd`. Break down `Finset.mem_insert.1 hd with rfl | hd` into its components or cases. Conclude with `Set.subset_union_right`.
+
+Conclude with `(hsV d hd).trans Set.subset_union_left`. Introduce `g hg`. Rewrite `hg` using `[Set.mem_union, not_or]`. Rewrite using `[hadd, hf0 g hg.1, hf'out g (fun h => hg.2 h.1), add_zero]`. Introduce `x hx`.
+
+Distinguish the cases in `hxV : ι x ∈ V`. Rewrite using `[hadd, hf'out _ (fun h => h.2 hxV), add_zero]`. Conclude with `hf x hxV`. Break down `hx with hx | hx` into its components or cases. Conclude with `absurd hx hxV`.
+
+Rewrite using `[hadd, hf0 _ hxV, hf'in _ ⟨hx, hxV⟩, zero_add]`. Conclude with `he c x hx`. Take `⟨V, hV, htV, f, hf0, hf⟩` from `hglue t`. Use `⟨f, fun x => ?_⟩` and prove the remaining obligations. Distinguish the cases in `hx : ι x ∈ V`.
+
+Conclude with `(hf x hx).symm`. Rewrite using `[hf0 _ hx, map_zero]`. Assume the negation of the conclusion as `hne`. Take `⟨h', hh', c', hc', rfl⟩` from `hsupp x hne`. Take `⟨d, hd, hc'U⟩` from `Set.mem_iUnion₂.1 (hCt hc')`.
+
+Establish `hmem : ι c' ∈ V` using `htV d hd (hUT d c' hc'U)`. Unfold `GlobalTheory.CompanionTheory.LeibPhi.IsHK at hV`. Apply `hx` to reduce the goal to its premises. Rewrite using `[map_mul]`. Conclude with `(hV.1 _ ((hH h').1 hh') _).2 hmem`.
+-/
 theorem exists_cInd_restrict_eq {G G' W W' : Type} [Group G] [TopologicalSpace G] [IsTopologicalGroup G]
     [Group G'] [TopologicalSpace G']
     [IsTopologicalGroup G'] [AddCommGroup W] [Module ℂ W] [AddCommGroup W'] [Module ℂ W']

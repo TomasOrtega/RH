@@ -13,6 +13,15 @@ open MeasureTheory Formalism.IndefR.Lev Formalism.IndefR.Datum Formalism.IndefR.
 
 namespace GlobalTheory.OneMeasureRatio
 
+/- English proof (translation)
+Establish `hr : 6 ≤ D.R.r`. Unfold `Ranks.r`. Use `D.R.two_le_m` as an intermediate fact. Use `D.R.m_add_three_le_k` as an intermediate fact. Use linear arithmetic over natural numbers and integers.
+
+Establish `hf : 2 ≤ D.R.f`. Unfold `Ranks.f Ranks.n; have := And.intro (Nat.one_le_two_pow (n := D.R.e)) (show 0 < D.R.ord by positivity); omega`. Establish `hn : D.R.r ≤ D.R.nV` using `by unfold Ranks.nV; omega`. Establish `hr' : (6 : ℝ) ≤ D.R.r` using `by exact_mod_cast hr`. Establish `hf' : (2 : ℝ) ≤ D.R.f` using `by exact_mod_cast hf`.
+
+Establish `hn' : (D.R.r : ℝ) ≤ D.R.nV` using `by exact_mod_cast hn`. Establish `h1` using `hL.1`. Rewrite using `[← Real.log_exp L]`. Use `Real.log_le_log (by positivity) ?_` and prove the remaining obligations. Establish `a1 : 2 * (D.R.r : ℝ) ≤ (D.R.f : ℝ) * D.R.r` using `mul_le_mul_of_nonneg_right hf' (by positivity)`.
+
+Establish `a2 : 2 * (D.R.r : ℝ) * D.R.r ≤ (D.R.f : ℝ) * D.R.r * D.R.nV` using `mul_le_mul a1 hn' (by positivity) (by positivity)`. Establish `: (D.R.r : ℝ) + 3 ≤ (D.R.f : ℝ) * D.R.r * D.R.nV` using `by nlinarith`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem log_r_add_three_le (D : D7) (L : ℝ) (hL : GlobalTheory.IndefiniteRowSideFullHecke.OneMeasureSizes.Sizes D L) :
     Real.log ((D.R.r : ℝ) + 3) ≤ L := by
   have hr : 6 ≤ D.R.r := by
@@ -32,6 +41,15 @@ theorem log_r_add_three_le (D : D7) (L : ℝ) (hL : GlobalTheory.IndefiniteRowSi
   have : (D.R.r : ℝ) + 3 ≤ (D.R.f : ℝ) * D.R.r * D.R.nV := by nlinarith
   linarith
 
+/- English proof (translation)
+Introduce `hP D Tu C t0 hC i P μ 𝓕 hF L hL`. Establish `h0` using `GlobalTheory.T.fundamental_domain_measure_ne_zero hP D Tu C t0 hC i P μ 𝓕 hF`. Establish `ht` using `GlobalTheory.T.fundamental_domain_measure_ne_top hP D Tu C t0 hC i P μ 𝓕 hF`. Establish `hv` using `GlobalTheory.T.log_fundamental_domain_volume_le hP D Tu C t0 hC i P μ 𝓕 hF L hL`. Establish `hd : ∀ τ, Real.log (GlobalTheory.IndefiniteRowSideFullHecke.OneMeasureSizes.dimAt D i τ) ≤ 3 / 2 * (D.R.r : ℝ) ^ 2 * L` using `GlobalTheory.T.log_lowestKTypeWeylDimension_le_of_sizeBounds D i L hL`.
+
+Establish `hd1 : ∀ τ, 1 ≤ GlobalTheory.IndefiniteRowSideFullHecke.OneMeasureSizes.dimAt D i τ` using `GlobalTheory.DimAtOne.one_le_dimAt D i`. Establish `hvpos : 0 < (μ 𝓕).toReal` using `ENNReal.toReal_pos h0 ht`. Establish `hdpos : ∀ τ, 0 < GlobalTheory.IndefiniteRowSideFullHecke.OneMeasureSizes.dimAt D i τ` using `fun τ => zero_lt_one.trans_le (hd1 τ)`. Unfold `GlobalTheory.IndefiniteRowSideFullHecke.OneMeasureSizes.ratio`. Rewrite using `[Real.log_mul hvpos.ne' (Finset.prod_pos fun τ _ => hdpos τ).ne', Real.log_prod (fun τ _ => (hdpos τ).ne')]`.
+
+Establish `hsum : ∑ τ, Real.log (GlobalTheory.IndefiniteRowSideFullHecke.OneMeasureSizes.dimAt D i τ) ≤ ∑ _τ : D.what₂.Tau, 3 / 2 * (D.R.r : ℝ) ^ 2 * L` using `Finset.sum_le_sum fun τ _ => hd τ`. Rewrite `hsum` using `[Finset.sum_const, Finset.card_univ, D.what₂.card_Tau, nsmul_eq_mul]`. Establish `hlog` using `log_r_add_three_le D L hL`. Establish `hL0 : 0 ≤ L` using `le_trans (Real.log_nonneg (by have := Nat.cast_nonneg (α := ℝ) D.R.r; linarith)) hlog`. Establish `hfr : 0 ≤ (D.R.f : ℝ) * (D.R.r : ℝ) ^ 2` using `by positivity`.
+
+Establish `h3` using `mul_le_mul_of_nonneg_left hlog hfr`. Establish `h4 : 0 ≤ (D.R.f : ℝ) * (D.R.r : ℝ) ^ 2 * L` using `mul_nonneg hfr hL0`. Use the polynomial consequences of the given equalities and inequalities.
+-/
 theorem log_ratio_le : ∀ (hP : Hypotheses2) (D : D7) (Tu : Type) (C : LevCh D Tu) (t0 : Tu) (hC : C.Is t0) (i : Fin D.R.m) (P : LevelP C.Pg D.R.r ℂ) (μ : MeasureTheory.Measure (GA D (Wc D i))) (𝓕 : Set (GA D (Wc D i))) (hF : IsMeasFD (Wc D i) (GlobalTheory.IndefiniteRowSideFullHecke.OneMeasureSizes.levW C i P) μ 𝓕) (L : ℝ) (hL : GlobalTheory.IndefiniteRowSideFullHecke.OneMeasureSizes.Sizes D L), Real.log (GlobalTheory.IndefiniteRowSideFullHecke.OneMeasureSizes.ratio D i μ 𝓕) ≤ 122 * (D.R.f * (D.R.r : ℝ) ^ 2 * L) := by
   intro hP D Tu C t0 hC i P μ 𝓕 hF L hL
   have h0 := GlobalTheory.T.fundamental_domain_measure_ne_zero hP D Tu C t0 hC i P μ 𝓕 hF

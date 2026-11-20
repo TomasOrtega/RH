@@ -13,6 +13,9 @@ section Adelic
 
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {n : ℕ}
 
+/- English proof (translation)
+Use `choose d hd0 hd using fun i => levelaf_denom (E := E) (f i)`. Use `⟨∏ k, d k, Finset.prod_ne_zero_iff.2 fun i _ => hd0 i, fun i => ?_⟩` and prove the remaining obligations. Rewrite using `[← Finset.mul_prod_erase _ _ (Finset.mem_univ i), levelafC_mul, mul_comm (levelafC E (d i)), mul_assoc]`. Conclude with `mul_mem (levelafC_mem _) (hd i)`.
+-/
 theorem lvB_denom_fam {ι : Type} [Fintype ι] (f : ι → E ⊗[F] FiniteAdeleRing (𝓞 F) F) :
     ∃ d : 𝓞 F, d ≠ 0 ∧ ∀ i, levelafC E d * f i ∈
       tensInt (F := F) (FiniteAdeleRing (𝓞 F) F) (intOE E) (intAd F) := by
@@ -23,17 +26,41 @@ theorem lvB_denom_fam {ι : Type} [Fintype ι] (f : ι → E ⊗[F] FiniteAdeleR
     mul_comm (levelafC E (d i)), mul_assoc]
   exact mul_mem (levelafC_mem _) (hd i)
 
+/- English proof (translation)
+Use `show algebraMap (𝓞 E) E a ⊗ₜ[F] (1 : FiniteAdeleRing (𝓞 F) F) ∈ _`. Conclude with `levelaf_tmul_mem a (one_mem _)`.
+-/
 theorem lvB_incl_int (a : 𝓞 E) : inclE (F := F) (FiniteAdeleRing (𝓞 F) F) (algebraMap (𝓞 E) E a) ∈
     tensInt (F := F) (FiniteAdeleRing (𝓞 F) F) (intOE E) (intAd F) := by
   show algebraMap (𝓞 E) E a ⊗ₜ[F] (1 : FiniteAdeleRing (𝓞 F) F) ∈ _
   exact levelaf_tmul_mem a (one_mem _)
 
+/- English proof (translation)
+Rewrite using `[levelafC, map_intCast, ← Algebra.TensorProduct.includeRight_apply, map_intCast]`.
+-/
 theorem lvB_C_intCast (M : ℤ) : levelafC E ((M : 𝓞 F)) = ((M : E ⊗[F] FiniteAdeleRing (𝓞 F) F)) := by
   rw [levelafC, map_intCast, ← Algebra.TensorProduct.includeRight_apply, map_intCast]
 
+/- English proof (translation)
+Rewrite using `[levelafC, map_natCast, ← Algebra.TensorProduct.includeRight_apply, map_natCast]`.
+-/
 theorem lvB_C_natCast (M : ℕ) : levelafC E ((M : 𝓞 F)) = ((M : E ⊗[F] FiniteAdeleRing (𝓞 F) F)) := by
   rw [levelafC, map_natCast, ← Algebra.TensorProduct.includeRight_apply, map_natCast]
 
+/- English proof (translation)
+Take `⟨s, hs⟩` from `hL`. Take `⟨d, hd0, hd⟩` from `lvB_denom_fam (F := F) (E := E) (fun p : s × Fin n => inclE (F := F) (FiniteAdeleRing (𝓞 F) F) ((p.1 : Fin n → E) p.2))`. Use `⟨d, hd0, ?_⟩` and prove the remaining obligations. Establish `hL' : ∀ x ∈ L, ∀ i, levelafC E d * inclE (F` using `F) (FiniteAdeleRing (𝓞 F) F) (x i) ∈ tensInt (F := F) (FiniteAdeleRing (𝓞 F) F) (intOE E) (intAd F) := by`. Introduce `x hx`.
+
+Rewrite `hx` using `[← hs]`. Proceed by induction on `hx using Submodule.span_induction with`. Consider the case `mem x hx => exact fun i => hd ⟨⟨x, Finset.mem_coe.1 hx⟩, i⟩`. Consider the case `zero => intro i`. Simplify using the standard rewrite rules.
+
+Consider the case `add x y _ _ hx hy`. Introduce `i`. Simplify using `only [Pi.add_apply, map_add, mul_add]`. Conclude with `add_mem (hx i) (hy i)`. Consider the case `smul a x _ hx`.
+
+Introduce `i`. Simplify using `only [Pi.smul_apply]`. Rewrite using `[Algebra.smul_def, map_mul, mul_left_comm]`. Conclude with `mul_mem (lvB_incl_int a) (hx i)`. Introduce `y hy`.
+
+Proceed by induction on `hy using Submodule.span_induction with`. Consider the case `mem y hy`. Take `⟨x, rfl⟩` from `hy`. Conclude with `fun i => hL' x x.2 i`. Consider the case `zero => intro i`.
+
+Simplify using the standard rewrite rules. Consider the case `add x y _ _ hx hy`. Introduce `i`. Simplify using `only [Pi.add_apply, mul_add]`. Conclude with `add_mem (hx i) (hy i)`.
+
+Consider the case `smul r y _ hy`. Introduce `i`. Simplify using `only [Pi.smul_apply, Subring.smul_def, smul_eq_mul]`. Rewrite using `[mul_left_comm]`. Conclude with `mul_mem r.2 (hy i)`.
+-/
 theorem lvB_lat_up (L : Submodule (𝓞 E) (Fin n → E)) (hL : L.FG) :
     ∃ d : 𝓞 F, d ≠ 0 ∧ ∀ y ∈ Formalism.MainNotions.S.lamAf (F := F) L, ∀ i, levelafC E d * y i ∈
       tensInt (F := F) (FiniteAdeleRing (𝓞 F) F) (intOE E) (intAd F) := by
@@ -75,10 +102,22 @@ theorem lvB_lat_up (L : Submodule (𝓞 E) (Fin n → E)) (hL : L.FG) :
     rw [mul_left_comm]
     exact mul_mem r.2 (hy i)
 
+/- English proof (translation)
+Apply the tactic sequence `first | exact Bl.IntegerMulIntegral.goal1 .. | (apply Bl.IntegerMulIntegral.goal1 <;> assumption) | (intros; apply Bl.IntegerMulIntegral.goal1 <;> assumption) | (apply @Bl.IntegerMulIntegral.goal1 <;> assumption) | (intros; apply @Bl.IntegerMulIntegral.goal1 <;> assumption) | (ap …`.
+-/
 theorem lvB_span_int (L : Submodule (𝓞 E) (Fin n → E)) (v : Fin n → E)
     (hv : v ∈ Submodule.span E (L : Set (Fin n → E))) : ∃ m : ℤ, m ≠ 0 ∧ m • v ∈ L := by
   first | exact Bl.IntegerMulIntegral.goal1 .. | (apply Bl.IntegerMulIntegral.goal1 <;> assumption) | (intros; apply Bl.IntegerMulIntegral.goal1 <;> assumption) | (apply @Bl.IntegerMulIntegral.goal1 <;> assumption) | (intros; apply @Bl.IntegerMulIntegral.goal1 <;> assumption) | (apply @Bl.IntegerMulIntegral.goal1 <;> first | assumption | infer_instance)
 
+/- English proof (translation)
+Use `choose m hm0 hm using fun i : Fin n => lvB_span_int L (Pi.single i 1) (hspan ▸ Submodule.mem_top)`. Use `set M : ℤ := ∏ i, m i with hMdef`. Establish `hM : ∀ i, M • (Pi.single i (1 : E) : Fin n → E) ∈ L` using `fun i => by`. Rewrite using `[hMdef, ← Finset.mul_prod_erase _ _ (Finset.mem_univ i), mul_comm, mul_smul]`. Conclude with `zsmul_mem (hm i) _`.
+
+Use `⟨(M : 𝓞 F), Int.cast_ne_zero.2 (Finset.prod_ne_zero_iff.2 fun i _ => hm0 i), ?_⟩` and prove the remaining obligations. Introduce `y hy`. Rewrite using `[lvB_C_intCast]`. Establish `e : (M : E ⊗[F] FiniteAdeleRing (𝓞 F) F) • y = ∑ i, (⟨y i, hy i⟩ : tensInt (F` using `F) (FiniteAdeleRing (𝓞 F) F) (intOE E) (intAd F)) • (fun j => inclE (F := F) (FiniteAdeleRing (𝓞 F) F) ((M • (Pi.single i (1 : E) : Fin n → E)) j)) := by`. Use extensionality with `j`.
+
+Simplify using `only [Pi.smul_apply, smul_eq_mul, Finset.sum_apply, Subring.smul_def, Pi.single_apply, zsmul_eq_mul]`. Rewrite using `[Finset.sum_eq_single j]`. Simplify using `[mul_comm]`. Introduce `b _ hb`. Simplify using `[Ne.symm hb]`.
+
+Simplify using the standard rewrite rules. Rewrite using `[e]`. Conclude with `sum_mem fun i _ => Submodule.smul_mem _ _ (Submodule.subset_span ⟨⟨_, hM i⟩, rfl⟩)`.
+-/
 theorem lvB_lat_down (L : Submodule (𝓞 E) (Fin n → E))
     (hspan : Submodule.span E (L : Set (Fin n → E)) = ⊤) :
     ∃ d : 𝓞 F, d ≠ 0 ∧ ∀ y : Fin n → E ⊗[F] FiniteAdeleRing (𝓞 F) F,

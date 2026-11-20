@@ -243,19 +243,33 @@ def DefectPoint.Statement : Prop :=
 
 namespace MahlerInhabit
 
+/- English proof (translation)
+Take `⟨h1, h2, h3, -⟩` from `MahlerSection.hypotheses_inhabited`. Conclude with `⟨h1, h2, h3⟩`.
+-/
 theorem point_data :
     IsChowCycleData (Finsupp.single (⊥ : Ideal (MvPolynomial (Fin 1) ℂ)) 1) 0 1 (X (0, 0)) := by
   obtain ⟨h1, h2, h3, -⟩ := MahlerSection.hypotheses_inhabited
   exact ⟨h1, h2, h3⟩
 
+/- English proof (translation)
+The claim follows from `MahlerSection.hypotheses_inhabited.2.2.2`.
+-/
 theorem point_admissible :
     IsAdmissible (Finsupp.single (⊥ : Ideal (MvPolynomial (Fin 1) ℂ)) 1) (fun _ => 1) :=
   MahlerSection.hypotheses_inhabited.2.2.2
 
+/- English proof (translation)
+Introduce `W hW` and use `(MahlerSection.hypotheses_inhabited.1 W hW).isRelevant`.
+-/
 theorem point_relevant :
     ∀ W ∈ (Finsupp.single (⊥ : Ideal (MvPolynomial (Fin 1) ℂ)) 1).support, IsRelevant W :=
   fun W hW => (MahlerSection.hypotheses_inhabited.1 W hW).isRelevant
 
+/- English proof (translation)
+Introduce `x`. Prove the components needed by the constructor for the conclusion. Introduce `_`. Conclude with `⟨x 0, funext fun j => by rw [Fin.fin_one_eq_zero j]; simp⟩`. Introduce and unpack `- q hq`.
+
+Rewrite `hq` using `[Ideal.mem_bot]`. Simplify using `[hq]`.
+-/
 theorem point_line :
     ∀ x : Fin 1 → ℂ, (∀ q ∈ (⊥ : Ideal (MvPolynomial (Fin 1) ℂ)), eval x q = 0) ↔
       ∃ t : ℂ, x = t • (fun _ => (1 : ℂ)) := by
@@ -267,11 +281,19 @@ theorem point_line :
     rw [Ideal.mem_bot] at hq
     simp [hq]
 
+/- English proof (translation)
+Introduce `h0`. Use `congrArg (fun y : EuclideanSpace ℂ (Fin 1) => y 0) h0` as an intermediate fact. Simplify using `at this`.
+-/
 theorem euclid_ne_zero : (EuclideanSpace.single 0 1 : EuclideanSpace ℂ (Fin 1)) ≠ 0 := by
   intro h0
   have := congrArg (fun y : EuclideanSpace ℂ (Fin 1) => y 0) h0
   simp at this
 
+/- English proof (translation)
+Use `⟨1, one_ne_zero, fun _ => LineChowForm.D2, fun W hW => ?_, ?_⟩` and prove the remaining obligations. Rewrite `hW` using `[Finsupp.support_single _ one_ne_zero, Finset.mem_singleton]`. Substitute `hW` using the available equality. Conclude with `LineChowForm.isChowForm_line`. Rewrite using `[Finsupp.support_single _ one_ne_zero]`.
+
+Simplify using the standard rewrite rules.
+-/
 theorem line_chowCycle :
     IsChowFormCycle (Finsupp.single (⊥ : Ideal (MvPolynomial (Fin 2) ℂ)) 1) 2 LineChowForm.D2 := by
   refine ⟨1, one_ne_zero, fun _ => LineChowForm.D2, fun W hW => ?_, ?_⟩
@@ -281,6 +303,9 @@ theorem line_chowCycle :
   · rw [Finsupp.support_single _ one_ne_zero]
     simp
 
+/- English proof (translation)
+Use `⟨fun W hW => ?_, line_chowCycle, LineChowForm.isMultiHomog_line⟩` and prove the remaining obligations. Rewrite `hW` using `[Finsupp.support_single _ one_ne_zero, Finset.mem_singleton]`. Substitute `hW` using the available equality. Conclude with `LineChowForm.isProjPrime_line`.
+-/
 theorem line_data :
     IsChowCycleData (Finsupp.single (⊥ : Ideal (MvPolynomial (Fin 2) ℂ)) 1) 1 1 LineChowForm.D2 := by
   refine ⟨fun W hW => ?_, line_chowCycle, LineChowForm.isMultiHomog_line⟩
@@ -290,13 +315,28 @@ theorem line_data :
 
 def coord (a : Fin 2) : Fin 2 → ℂ := fun j => if j = a then 1 else 0
 
+/- English proof (translation)
+Apply the tactic sequence `fin_cases a <;> simp [linForm, coord]`.
+-/
 theorem linForm_coord (a : Fin 2) : linForm (coord a) = X a := by
   fin_cases a <;> simp [linForm, coord]
 
+/- English proof (translation)
+Simplify using `[cycleSection]`.
+-/
 theorem cycleSection_line (u : Fin 2 → ℂ) :
     cycleSection (Finsupp.single (⊥ : Ideal (MvPolynomial (Fin 2) ℂ)) 1) u = divCycle ⊥ u := by
   simp [cycleSection]
 
+/- English proof (translation)
+Introduce `W' hW' hXb`. Rewrite `hXb` using `[linForm_coord]`. Establish `hmem : W' ∈ relComps ((⊥ : Ideal (MvPolynomial (Fin 2) ℂ)) ⊔ Ideal.span {linForm (coord a)})`. Assume the negation of the conclusion as `hc`. Apply `Finsupp.mem_support_iff.mp hW'` to reduce the goal to its premises.
+
+Simplify using `only [divCycle, fundCycle, Finsupp.onFinset_apply]`. Conclude with `if_neg hc`. Take `⟨hmin, j, hj⟩` from `hmem`. Establish `hXa : X a ∈ W'`. Apply `hmin.1.2` to reduce the goal to its premises.
+
+Rewrite using `[← linForm_coord]`. Conclude with `Ideal.mem_sup_right (Ideal.subset_span rfl)`. Apply the tactic sequence `have : j = a ∨ j = b := by fin_cases a <;> fin_cases b <;> fin_cases j <;> simp_all`. Break down `this with rfl | rfl` into its components or cases. Conclude with `hj hXa`.
+
+Conclude with `hj hXb`.
+-/
 theorem line_proper (a b : Fin 2) (hab : a ≠ b) :
     IsAdmissible (divCycle (⊥ : Ideal (MvPolynomial (Fin 2) ℂ)) (coord a)) (coord b) := by
   intro W' hW' hXb
@@ -316,6 +356,11 @@ theorem line_proper (a b : Fin 2) (hab : a ≠ b) :
   · exact hj hXa
   · exact hj hXb
 
+/- English proof (translation)
+Establish `hadm : ∀ a : Fin 2, IsAdmissible (Finsupp.single (⊥ : Ideal (MvPolynomial (Fin 2) ℂ)) 1) (coord a)`. Introduce `a W hW`. Rewrite `hW` using `[Finsupp.support_single _ one_ne_zero, Finset.mem_singleton]`. Substitute `hW` using the available equality. Rewrite using `[linForm_coord, Ideal.mem_bot]`.
+
+Conclude with `X_ne_zero _`. Use `⟨line_data, hadm 0, hadm 1, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[cycleSection_line]; exact line_proper 0 1 (by decide)`. Rewrite using `[cycleSection_line]; exact line_proper 1 0 (by decide)`.
+-/
 theorem line_pair :
     IsChowCycleData (Finsupp.single (⊥ : Ideal (MvPolynomial (Fin 2) ℂ)) 1) 1 1 LineChowForm.D2 ∧
       IsAdmissible (Finsupp.single (⊥ : Ideal (MvPolynomial (Fin 2) ℂ)) 1) (coord 0) ∧
@@ -332,6 +377,9 @@ theorem line_pair :
   · rw [cycleSection_line]; exact line_proper 0 1 (by decide)
   · rw [cycleSection_line]; exact line_proper 1 0 (by decide)
 
+/- English proof (translation)
+Apply the tactic sequence `refine ⟨LineChowForm.isProjPrime_line, ?_, ?_, line_proper 0 1 (by decide)⟩ <;>`. Rewrite using `[linForm_coord, Ideal.mem_bot]`. Conclude with `X_ne_zero _`.
+-/
 theorem line_prime_pair :
     IsProjPrime (⊥ : Ideal (MvPolynomial (Fin 2) ℂ)) ∧ linForm (coord 0) ∉ (⊥ : Ideal (MvPolynomial (Fin 2) ℂ)) ∧
       linForm (coord 1) ∉ (⊥ : Ideal (MvPolynomial (Fin 2) ℂ)) ∧
@@ -341,11 +389,17 @@ theorem line_prime_pair :
 
 end MahlerInhabit
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨MahlerInhabit.point_data, MahlerInhabit.point_admissible⟩`.
+-/
 theorem DefectAverage.hypotheses_inhabited :
     IsChowCycleData (Finsupp.single (⊥ : Ideal (MvPolynomial (Fin 1) ℂ)) 1) 0 1 (X (0, 0)) ∧
       IsAdmissible (Finsupp.single (⊥ : Ideal (MvPolynomial (Fin 1) ℂ)) 1) (fun _ => 1) :=
   ⟨MahlerInhabit.point_data, MahlerInhabit.point_admissible⟩
 
+/- English proof (translation)
+The claim follows from `MahlerInhabit.line_pair`.
+-/
 theorem DefectSymm.hypotheses_inhabited :
     IsChowCycleData (Finsupp.single (⊥ : Ideal (MvPolynomial (Fin 2) ℂ)) 1) 1 1 LineChowForm.D2 ∧
       IsAdmissible (Finsupp.single (⊥ : Ideal (MvPolynomial (Fin 2) ℂ)) 1) (MahlerInhabit.coord 0) ∧ IsAdmissible (Finsupp.single (⊥ : Ideal (MvPolynomial (Fin 2) ℂ)) 1) (MahlerInhabit.coord 1) ∧
@@ -353,6 +407,9 @@ theorem DefectSymm.hypotheses_inhabited :
       IsAdmissible (cycleSection (Finsupp.single (⊥ : Ideal (MvPolynomial (Fin 2) ℂ)) 1) (MahlerInhabit.coord 1)) (MahlerInhabit.coord 0) :=
   MahlerInhabit.line_pair
 
+/- English proof (translation)
+The claim follows from `MahlerInhabit.line_prime_pair`.
+-/
 theorem ProperSymm.hypotheses_inhabited :
     IsProjPrime (⊥ : Ideal (MvPolynomial (Fin 2) ℂ)) ∧
       linForm (MahlerInhabit.coord 0) ∉ (⊥ : Ideal (MvPolynomial (Fin 2) ℂ)) ∧
@@ -360,25 +417,40 @@ theorem ProperSymm.hypotheses_inhabited :
       IsAdmissible (divCycle (⊥ : Ideal (MvPolynomial (Fin 2) ℂ)) (MahlerInhabit.coord 0)) (MahlerInhabit.coord 1) :=
   MahlerInhabit.line_prime_pair
 
+/- English proof (translation)
+The claim follows from `MahlerInhabit.point_relevant`.
+-/
 theorem AdmissibleAE.hypotheses_inhabited :
     ∀ W ∈ (Finsupp.single (⊥ : Ideal (MvPolynomial (Fin 1) ℂ)) 1).support, IsRelevant W :=
   MahlerInhabit.point_relevant
 
+/- English proof (translation)
+The claim follows from `MahlerInhabit.euclid_ne_zero`.
+-/
 theorem FsLogAverage.hypotheses_inhabited :
     (EuclideanSpace.single 0 1 : EuclideanSpace ℂ (Fin 1)) ≠ 0 :=
   MahlerInhabit.euclid_ne_zero
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨isChowForm_point ℂ, fun h0 => one_ne_zero (congrFun h0 0), MahlerInhabit.point_line⟩`.
+-/
 theorem PointChowForm.hypotheses_inhabited :
     IsChowForm (⊥ : Ideal (MvPolynomial (Fin 1) ℂ)) 1 (X (0, 0)) ∧ (fun _ : Fin 1 => (1 : ℂ)) ≠ 0 ∧
       ∀ x : Fin 1 → ℂ, (∀ q ∈ (⊥ : Ideal (MvPolynomial (Fin 1) ℂ)), eval x q = 0) ↔
         ∃ t : ℂ, x = t • (fun _ => (1 : ℂ)) :=
   ⟨isChowForm_point ℂ, fun h0 => one_ne_zero (congrFun h0 0), MahlerInhabit.point_line⟩
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨inferInstance, measurable_const⟩`.
+-/
 theorem ConeFubini.hypotheses_inhabited :
     IsFiniteMeasure (Measure.dirac (0 : EuclideanSpace ℂ (Fin 1))) ∧
       Measurable (Function.uncurry fun (_ : Fin 1 → ℂ) (_ : EuclideanSpace ℂ (Fin 1)) => (0 : ℝ)) :=
   ⟨inferInstance, measurable_const⟩
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨isProjPrime_point ℂ, isChowForm_point ℂ, isMultiHomog_point ℂ⟩`.
+-/
 theorem ChowDegreePos.hypotheses_inhabited :
     IsProjPrime (⊥ : Ideal (MvPolynomial (Fin 1) ℂ)) ∧ IsChowForm (⊥ : Ideal (MvPolynomial (Fin 1) ℂ)) 1 (X (0, 0)) ∧
       IsMultiHomog 1 (X (0, 0) : MvPolynomial (Fin 1 × Fin 1) ℂ) :=

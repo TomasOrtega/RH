@@ -11,6 +11,15 @@ open AlgebraicGeometry CategoryTheory Limits NumberField
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Geo.Tor GlobalTheory.IndefiniteRowSideFullHecke.FibreFramesOnModels
 open ReciprocityTheory.ChartRestriction.G.H1
 
+/- English proof (translation)
+Take `⟨φ, he, e, hg, F, hp, hgen, hr, hs, hF, hFe, hv⟩` from `hx`. Take `⟨th₀, h₀⟩` from `sec_pull_down ((isGen_iff e).1 hgen) hL x.P.isLB θ₀`. Establish `h₁` using `(KeyCancel.appLE_eq_iff_stalk e θ x.th).1 hs`. Establish `hm : ∀ i, LB.Sec.f x.th i = constFn x.P.A.hom _ (f b) * LB.Sec.f th₀ i`. Use `(sec_eq_iff _ _ _ _).2 fun k y hk => ?_` and prove the remaining obligations.
+
+Take `⟨j, hj⟩` from `exists_chart hL (φ y)`. Establish `e₁` using `h₁ _ (𝟙 _) y j k hj hk`. Establish `e₀` using `h₀ _ (𝟙 _) y j k hj hk`. Rewrite `e₁` using `[hb j, gs_mul (𝟙 _ ≫ φ) y _ hj, gs_constFn _ _ (𝟙 _ ≫ φ) y hj, e₀, Category.id_comp, hp.1.w, cst_comp, mul_left_comm]`. Conclude with `((Units.mul_right_inj _).1 e₁).symm`.
+
+Use `⟨th₀, fun s => ?_, hm, φ, he, e, hg, F, hp, hgen, hr, (KeyCancel.appLE_eq_iff_stalk e θ₀ th₀).2 h₀, hF, hFe, hv⟩` and prove the remaining obligations. Take `⟨z, hz, hne⟩` from `x.th_ne s`. Take `⟨k, hk⟩` from `TopologicalSpace.Opens.mem_iSup.1 hne`. Use `⟨z, hz, TopologicalSpace.Opens.mem_iSup.2 ⟨k, ?_⟩⟩` and prove the remaining obligations. Rewrite `hk` using `[hm k, Scheme.basicOpen_mul]`.
+
+Conclude with `hk.2`.
+-/
 theorem exists_isFibreOf_of_isMul (R R' : Type) [CommRing R] [CommRing R'] (f : R →+* R') (G : Over (Sp R)) [GrpObj G]
     [IsCommMonObj G] (L : LB G.left) (rig : LB.Gen (L.pull (eSec G))) (θ : L.Sec) (n : ℕ) (w : Fin n → (epsR R ⟶ G))
     (x : KeyIn R') (hL : L.IsLB) (hx : IsFibreOf x G L rig θ w f) (θ₀ : L.Sec) (b : R) (hb : IsMul (X := G) θ b θ₀) :

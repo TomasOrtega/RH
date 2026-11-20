@@ -16,6 +16,9 @@ namespace GlobalTheory.Obs.BC
 
 variable {R₀ R₁ : Type} [CommRing R₀] [CommRing R₁] [Algebra R₀ R₁]
 
+/- English proof (translation)
+The claim follows from `U.2`.
+-/
 theorem isAffine_aff {X : Scheme.{0}} (U : X.affineOpens) : IsAffineOpen U.1 := U.2
 
 def preAff {X₀ X₁ : Scheme.{0}} (pr : X₁ ⟶ X₀) [IsAffineHom pr] : AffOp X₀ ⥤ AffOp X₁ where
@@ -44,6 +47,9 @@ def tensHom (w : pr ≫ s₀ = s₁ ≫ spMap (algebraMap R₀ R₁)) (U : X₀.
     { prSec w U hU with commutes' := fun r ↦ (semiHom_secPull w (⟨(⟨pr ⁻¹ᵁ U.1, hU⟩, U), le_rfl⟩ : Pair pr)).map_algebraMap r }
     (fun _ _ ↦ Commute.all _ _)
 
+/- English proof (translation)
+Simplify using `[tensHom, Algebra.ofId_apply]`. Both sides reduce to the same expression.
+-/
 theorem tensHom_tmul (w : pr ≫ s₀ = s₁ ≫ spMap (algebraMap R₀ R₁)) (U : X₀.affineOpens)
     (hU : IsAffineOpen (pr ⁻¹ᵁ U.1)) (r : R₁) (b : Sec s₀ U.1) :
     tensHom w U hU (r ⊗ₜ b) = algebraMap R₁ _ r * prSec w U hU b := by
@@ -51,6 +57,9 @@ theorem tensHom_tmul (w : pr ≫ s₀ = s₁ ≫ spMap (algebraMap R₀ R₁)) (
 
 variable [IsAffineHom pr]
 
+/- English proof (translation)
+The claim follows from `(pairPull w).naturality (T := op ⟨(⟨pr ⁻¹ᵁ U.unop.1, (isAffine_aff U.unop).preimage pr⟩, U.unop), le_rfl⟩) (T' := op ⟨(⟨pr ⁻¹ᵁ V.unop.1, (isAffine_aff V.unop).preimage pr⟩, V.unop), le_rfl⟩) (homOfLE (show (⟨(⟨pr ⁻¹ᵁ V.unop.1, (isAffine_aff V.unop).preimage pr⟩, V.unop), le_rfl⟩ …`.
+-/
 theorem prSec_res (w : pr ≫ s₀ = s₁ ≫ spMap (algebraMap R₀ R₁)) {U V : AffOp X₀} (a : U ⟶ V) (b : Sec s₀ U.unop.1) :
     prSec w V.unop ((isAffine_aff V.unop).preimage pr) (mp (OAff s₀) a b) =
       Sec.res s₁ (pr.preimage_mono (leOfHom a.unop)) (prSec w U.unop ((isAffine_aff U.unop).preimage pr) b) :=

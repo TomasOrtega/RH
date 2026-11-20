@@ -15,6 +15,9 @@ open scoped CategoryTheory.Obj TensorProduct
 noncomputable section
 namespace GlobalTheory.AmpleStabTorsion
 
+/- English proof (translation)
+Establish `hfin : (Set.univ : Set H.left).Finite` using `(H.hom.finite_preimage_singleton (IsLocalRing.closedPoint k)).subset fun t _ => Subsingleton.elim _ _`. Establish `: Finite H.left` using `Set.finite_univ_iff.1 hfin`. Use `Finite.of_injective (fun y : Out.baseOver (Sp k) ⟶ H => (y.left : Sp k ⟶ H.left) (IsLocalRing.closedPoint k)) fun y y' h => ?_` and prove the remaining obligations. Conclude with `Over.OverMorphism.ext (ext_of_apply_closedPoint_eq H.hom (Over.w y) (Over.w y') h)`.
+-/
 theorem finite_sections {k : Type} [Field k] [IsAlgClosed k] (H : Over (Sp k)) [IsFinite H.hom] :
     Finite (Out.baseOver (Sp k) ⟶ H) := by
   have hfin : (Set.univ : Set H.left).Finite :=
@@ -24,6 +27,13 @@ theorem finite_sections {k : Type} [Field k] [IsAlgClosed k] (H : Over (Sp k)) [
     (fun y : Out.baseOver (Sp k) ⟶ H => (y.left : Sp k ⟶ H.left) (IsLocalRing.closedPoint k)) fun y y' h => ?_
   exact Over.OverMorphism.ext (ext_of_apply_closedPoint_eq H.hom (Over.w y) (Over.w y') h)
 
+/- English proof (translation)
+Introduce `hL k _ _ A _ _ hA M hM hamp x hx`. Take `⟨d, -, n, s, hs⟩` from `(GlobalTheory.Unif.relAmple_iff_veryAmpleBy k A M hM).1 hamp`. Take `⟨h0, -, htw⟩` from `GlobalTheory.UU.TrivTwist.inK_iff_trivial_twist _ A M hM`. Take `⟨H, j, hj, hH⟩` from `GlobalTheory.T.exists_closed_subscheme_translation_kernel hL.globalFns k A hA ⟨_, isLB_pw hM d, n, s, hs⟩ M _ hM h0`. Use `GlobalTheory.AmpleStabFinite.isFinite_of_relAmple hL.globalFns k A hA M _ hM h0 hamp H j hj hH` as an intermediate fact.
+
+Use `finite_sections H` as an intermediate fact. Establish `hxK : x ∈ GlobalTheory.UU.kSubgroup A hM (Out.baseOver (Sp k))`. Take `⟨c, hc⟩` from `hx`. Conclude with `fun p => ⟨⊤, trivial, _, LB.isGen_genPull _ c hc _⟩`. Establish `hfin : ((GlobalTheory.UU.kSubgroup A hM (Out.baseOver (Sp k)) : Set (Out.baseOver (Sp k) ⟶ A))).Finite` using `(Set.finite_range fun y : Out.baseOver (Sp k) ⟶ H => y ≫ j).subset fun z hz => (hH _ z).1 ((htw _ rfl _ z).1 hz)`.
+
+Establish `: Finite (GlobalTheory.UU.kSubgroup A hM (Out.baseOver (Sp k)))` using `hfin`. Take `⟨m, hm, e⟩` from `(isOfFinOrder_of_finite (⟨x, hxK⟩ : GlobalTheory.UU.kSubgroup A hM (Out.baseOver (Sp k)))).exists_pow_eq_one`. Conclude with `⟨m, hm, congrArg Subtype.val e⟩`.
+-/
 theorem exists_pow_eq_one : Out.Laws → ∀ (k : Type) [Field k] [IsAlgClosed k] (A : Over (Sp k)) [GrpObj A] [IsCommMonObj A], IsAbelianScheme A → ∀ M : LB A.left, M.IsLB → Out.RelAmple A M → ∀ x : Out.baseOver (Sp k) ⟶ A, Triv (Out.translDiff A M x) → ∃ m : ℕ, 1 ≤ m ∧ x ^ m = 1 := by
   intro hL k _ _ A _ _ hA M hM hamp x hx
   obtain ⟨d, -, n, s, hs⟩ := (GlobalTheory.Unif.relAmple_iff_veryAmpleBy k A M hM).1 hamp

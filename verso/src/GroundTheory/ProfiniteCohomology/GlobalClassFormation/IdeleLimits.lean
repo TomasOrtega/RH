@@ -24,6 +24,9 @@ structure LocalEmbeddings where
 
   inf : ∀ v : InfinitePlace K.1, ℚ̄ →ₐ[K.1] AlgebraicClosure v.Completion
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨⟨fun _ => Classical.choice nonempty_algHom_of_isSepClosed, fun _ => Classical.choice nonempty_algHom_of_isSepClosed⟩⟩`.
+-/
 theorem nonempty_localEmbeddings : Nonempty (LocalEmbeddings K) :=
   ⟨⟨fun _ => Classical.choice nonempty_algHom_of_isSepClosed,
     fun _ => Classical.choice nonempty_algHom_of_isSepClosed⟩⟩
@@ -98,6 +101,9 @@ def idelesLimitCohomologyEquiv (ι : LocalEmbeddings K) {n : ℕ} (hn : 1 ≤ n)
     cohomology (limitRep K) n ≃+ ⨁ v : Place K.1, localGaloisCohomology K n v :=
   limitCohomologyEquiv (ι.places.levelDecomposition n) (ι.localLimit n) hn
 
+/- English proof (translation)
+The claim follows from `limitCohomologyEquiv_levelInfl _ _ hn p y v`.
+-/
 theorem idelesLimitCohomologyEquiv_levelInfl (ι : LocalEmbeddings K) {n : ℕ} (hn : 1 ≤ n) (p : GLevel K)
     (y : cohomology (ideleRep K.1 p.1.1) n) (v : Place K.1) :
     idelesLimitCohomologyEquiv ι hn ((levelInfl K p.1 n).hom y) v =

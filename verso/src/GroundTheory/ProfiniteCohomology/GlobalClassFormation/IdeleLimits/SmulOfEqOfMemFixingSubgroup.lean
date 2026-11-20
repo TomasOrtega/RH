@@ -19,10 +19,18 @@ def ideleMap {F E : FiniteSubfield} (h : F ≤ E) : IdeleGroup F.1 →* IdeleGro
   letI := algebraOfLE h
   ideleEmbedding F.1 E.1
 
+/- English proof (translation)
+The claim follows from `letI := algebraOfLE h ideleEmbedding_injective`.
+-/
 theorem ideleMap_injective {F E : FiniteSubfield} (h : F ≤ E) : Function.Injective (ideleMap h) :=
   letI := algebraOfLE h
   ideleEmbedding_injective
 
+/- English proof (translation)
+Set `` to `algebraOfLE hFE`. Set `` to `algebraOfLE hEM`. Set `` to `algebraOfLE (hFE.trans hEM)`. Establish `: IsScalarTower F.1 E.1 M.1` using `IsScalarTower.of_algebraMap_eq fun _ ↦ rfl`. Conclude with `ideleEmbedding_ideleEmbedding x`.
+
+Use the proof step `@[simp]`.
+-/
 theorem ideleMap_ideleMap {F E M : FiniteSubfield} (hFE : F ≤ E) (hEM : E ≤ M) (x : IdeleGroup F.1) :
     ideleMap hEM (ideleMap hFE x) = ideleMap (hFE.trans hEM) x := by
   let := algebraOfLE hFE
@@ -32,9 +40,15 @@ theorem ideleMap_ideleMap {F E M : FiniteSubfield} (hFE : F ≤ E) (hEM : E ≤ 
   exact ideleEmbedding_ideleEmbedding x
 
 @[simp]
+/- English proof (translation)
+The claim follows from `ideleMap_injective h (ideleMap_ideleMap h h x)`.
+-/
 theorem ideleMap_self {F : FiniteSubfield} (h : F ≤ F) (x : IdeleGroup F.1) : ideleMap h x = x :=
   ideleMap_injective h (ideleMap_ideleMap h h x)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem ideleClassMap_mk {F E : FiniteSubfield} (h : F ≤ E) (x : IdeleGroup F.1) :
     FiniteSubfield.ideleClassMap h (IdeleClassGroup.mk F.1 x) =
       IdeleClassGroup.mk E.1 (ideleMap h x) :=
@@ -67,6 +81,9 @@ def of (F : FiniteSubfield) : IdeleGroup F.1 →* IdeleLimit where
   map_mul' x y := (DirectLimit.mul_def (f := fun _ _ h ↦ ideleMap h) F x y).symm
 
 @[simp]
+/- English proof (translation)
+The claim follows from `show (⟦⟨E, ideleMap h x⟩⟧ : DirectLimit (fun F : FiniteSubfield ↦ IdeleGroup F.1) (fun _ _ h ↦ ideleMap h)) = ⟦⟨F, x⟩⟧ from DirectLimit.mk_apply (F := fun F : FiniteSubfield ↦ IdeleGroup F.1) (f := fun _ _ h ↦ ideleMap h) F E x h`.
+-/
 theorem of_ideleMap {F E : FiniteSubfield} (h : F ≤ E) (x : IdeleGroup F.1) :
     of E (ideleMap h x) = of F x :=
   show (⟦⟨E, ideleMap h x⟩⟧ : DirectLimit
@@ -74,18 +91,30 @@ theorem of_ideleMap {F E : FiniteSubfield} (h : F ≤ E) (x : IdeleGroup F.1) :
       ⟦⟨F, x⟩⟧ from DirectLimit.mk_apply (F := fun F : FiniteSubfield ↦ IdeleGroup F.1)
         (f := fun _ _ h ↦ ideleMap h) F E x h
 
+/- English proof (translation)
+The claim follows from `DirectLimit.mk_injective (f := fun _ _ h ↦ ideleMap h) (fun _ _ h ↦ ideleMap_injective h) F`.
+-/
 theorem of_injective (F : FiniteSubfield) : Function.Injective (of F) :=
   DirectLimit.mk_injective (f := fun _ _ h ↦ ideleMap h) (fun _ _ h ↦ ideleMap_injective h) F
 
+/- English proof (translation)
+Take `⟨F, x, rfl⟩` from `DirectLimit.exists_eq_mk (f := fun _ _ h ↦ ideleMap h) z`. Conclude with `⟨F, x, rfl⟩`.
+-/
 theorem exists_of (z : IdeleLimit) : ∃ (F : FiniteSubfield) (x : IdeleGroup F.1), of F x = z := by
   obtain ⟨F, x, rfl⟩ := DirectLimit.exists_eq_mk (f := fun _ _ h ↦ ideleMap h) z
   exact ⟨F, x, rfl⟩
 
+/- English proof (translation)
+Take `⟨F, x, y, rfl, rfl⟩` from `DirectLimit.exists_eq_mk₂ (f := fun _ _ h ↦ ideleMap h) z w`. Conclude with `⟨F, x, y, rfl, rfl⟩`.
+-/
 theorem exists_of₂ (z w : IdeleLimit) : ∃ (F : FiniteSubfield) (x y : IdeleGroup F.1),
     of F x = z ∧ of F y = w := by
   obtain ⟨F, x, y, rfl, rfl⟩ := DirectLimit.exists_eq_mk₂ (f := fun _ _ h ↦ ideleMap h) z w
   exact ⟨F, x, y, rfl, rfl⟩
 
+/- English proof (translation)
+Rewrite using `[← of_ideleMap hF x, ← of_ideleMap hE y, (of_injective M).eq_iff]`.
+-/
 theorem of_eq_of_iff {F E M : FiniteSubfield} (hF : F ≤ M) (hE : E ≤ M) (x : IdeleGroup F.1)
     (y : IdeleGroup E.1) : of F x = of E y ↔ ideleMap hF x = ideleMap hE y := by
   rw [← of_ideleMap hF x, ← of_ideleMap hE y, (of_injective M).eq_iff]
@@ -109,18 +138,31 @@ def lift : IdeleLimit →* A where
     exact map_mul (g F) x y
 
 @[simp]
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem lift_of (F : FiniteSubfield) (x : IdeleGroup F.1) : lift g compat (of F x) = g F x :=
   rfl
 
 end lift
 
 @[ext]
+/- English proof (translation)
+Use extensionality with `z`. Take `⟨F, x, rfl⟩` from `exists_of z`. Conclude with `DFunLike.congr_fun (h F) x`.
+-/
 theorem hom_ext {A : Type*} [Monoid A] {φ ψ : IdeleLimit →* A}
     (h : ∀ F : FiniteSubfield, φ.comp (of F) = ψ.comp (of F)) : φ = ψ := by
   ext z
   obtain ⟨F, x, rfl⟩ := exists_of z
   exact DFunLike.congr_fun (h F) x
 
+/- English proof (translation)
+Establish `hE : E = E'`. Use `Subtype.ext (SetLike.ext fun y ↦ ⟨fun hy ↦ ?_, fun hy ↦ ?_⟩)` and prove the remaining obligations. Take `⟨z, hz⟩` from `τ.surjective ⟨y, hy⟩`. Establish `hy' : y = ((τ' z : E'.1) : ℚ̄)` using `by rw [← h z, hz]`. Rewrite using `[hy']`.
+
+Conclude with `(τ' z).2`. Take `⟨z, hz⟩` from `τ'.surjective ⟨y, hy⟩`. Establish `hy' : y = ((τ z : E.1) : ℚ̄)` using `by rw [h z, hz]`. Rewrite using `[hy']`. Conclude with `(τ z).2`.
+
+Substitute `hE` using the available equality. Establish `: τ = τ'` using `RingEquiv.ext fun z ↦ Subtype.ext (h z)`. Rewrite using `[this]`.
+-/
 theorem of_ideleEquiv_congr {F E E' : FiniteSubfield} (τ : F.1 ≃+* E.1) (τ' : F.1 ≃+* E'.1)
     (h : ∀ x : F.1, (τ x : ℚ̄) = τ' x) (x : IdeleGroup F.1) :
     of E (ideleEquiv τ x) = of E' (ideleEquiv τ' x) := by
@@ -141,6 +183,11 @@ theorem of_ideleEquiv_congr {F E E' : FiniteSubfield} (τ : F.1 ≃+* E.1) (τ' 
 def conjOf (σ : ℚ̄ ≃ₐ[ℚ] ℚ̄) (F : FiniteSubfield) : IdeleGroup F.1 →* IdeleLimit :=
   (of (map σ F)).comp (ideleEquiv (mapEquiv σ F)).toMulEquiv.toMonoidHom
 
+/- English proof (translation)
+Express the relevant statement in the definitionally equal form `of (map σ E) (ideleEquiv (mapEquiv σ E) (ideleMap h x)) = of (map σ F) (ideleEquiv (mapEquiv σ F) x)`. Rewrite using `[ideleMap]`. Set `` to `algebraOfLE h`. Set `` to `algebraOfLE (map_mono σ h)`. Rewrite using `[ideleEquiv_ideleEmbedding_of_comm (mapEquiv σ F) (mapEquiv σ E) (fun x ↦ rfl)]`.
+
+Conclude with `of_ideleMap (map_mono σ h) _`.
+-/
 theorem conjOf_compat (σ : ℚ̄ ≃ₐ[ℚ] ℚ̄) (F E : FiniteSubfield) (h : F ≤ E) (x : IdeleGroup F.1) :
     conjOf σ E (ideleMap h x) = conjOf σ F x := by
   change of (map σ E) (ideleEquiv (mapEquiv σ E) (ideleMap h x)) =
@@ -154,16 +201,25 @@ theorem conjOf_compat (σ : ℚ̄ ≃ₐ[ℚ] ℚ̄) (F E : FiniteSubfield) (h :
 def galoisHom (σ : ℚ̄ ≃ₐ[ℚ] ℚ̄) : IdeleLimit →* IdeleLimit :=
   lift (conjOf σ) (conjOf_compat σ)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem galoisHom_of (σ : ℚ̄ ≃ₐ[ℚ] ℚ̄) (F : FiniteSubfield) (x : IdeleGroup F.1) :
     galoisHom σ (of F x) = of (map σ F) (ideleEquiv (mapEquiv σ F) x) :=
   rfl
 
+/- English proof (translation)
+Take `⟨F, x, rfl⟩` from `exists_of z`. Rewrite using `[galoisHom_of]`. Use `(of_ideleEquiv_congr (mapEquiv 1 F) (RingEquiv.refl F.1) (fun x ↦ rfl) x).trans ?_` and prove the remaining obligations. Rewrite using `[ideleEquiv_refl]`.
+-/
 theorem galoisHom_one (z : IdeleLimit) : galoisHom 1 z = z := by
   obtain ⟨F, x, rfl⟩ := exists_of z
   rw [galoisHom_of]
   refine (of_ideleEquiv_congr (mapEquiv 1 F) (RingEquiv.refl F.1) (fun x ↦ rfl) x).trans ?_
   rw [ideleEquiv_refl]
 
+/- English proof (translation)
+Take `⟨F, x, rfl⟩` from `exists_of z`. Rewrite using `[galoisHom_of, galoisHom_of, galoisHom_of, ← ideleEquiv_trans]`. Conclude with `of_ideleEquiv_congr (mapEquiv (σ * τ) F) ((mapEquiv τ F).trans (mapEquiv σ (map τ F))) (fun x ↦ rfl) x`.
+-/
 theorem galoisHom_mul (σ τ : ℚ̄ ≃ₐ[ℚ] ℚ̄) (z : IdeleLimit) :
     galoisHom (σ * τ) z = galoisHom σ (galoisHom τ z) := by
   obtain ⟨F, x, rfl⟩ := exists_of z
@@ -178,13 +234,22 @@ instance : MulDistribMulAction (ℚ̄ ≃ₐ[ℚ] ℚ̄) IdeleLimit where
   smul_one σ := map_one (galoisHom σ)
   smul_mul σ := map_mul (galoisHom σ)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem smul_def (σ : ℚ̄ ≃ₐ[ℚ] ℚ̄) (z : IdeleLimit) : σ • z = galoisHom σ z :=
   rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem smul_of (σ : ℚ̄ ≃ₐ[ℚ] ℚ̄) (F : FiniteSubfield) (x : IdeleGroup F.1) :
     σ • of F x = of (map σ F) (ideleEquiv (mapEquiv σ F) x) :=
   rfl
 
+/- English proof (translation)
+Rewrite using `[smul_of]`. Use `(of_ideleEquiv_congr (mapEquiv σ F) (RingEquiv.refl F.1) (fun y ↦ (IntermediateField.mem_fixingSubgroup_iff F.1 σ).1 hσ y y.2) x).trans ?_` and prove the remaining obligations. Rewrite using `[ideleEquiv_refl]`.
+-/
 theorem smul_of_eq_of_mem_fixingSubgroup {F : FiniteSubfield} {σ : ℚ̄ ≃ₐ[ℚ] ℚ̄}
     (hσ : σ ∈ F.1.fixingSubgroup) (x : IdeleGroup F.1) : σ • of F x = of F x := by
   rw [smul_of]
@@ -208,15 +273,24 @@ def toClassLimit : IdeleLimit →* IdeleClassLimit :=
     rw [← ideleClassMap_mk, IdeleClassLimit.of_ideleClassMap]
 
 @[simp]
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem toClassLimit_of (F : FiniteSubfield) (x : IdeleGroup F.1) :
     toClassLimit (of F x) = IdeleClassLimit.of F (IdeleClassGroup.mk F.1 x) :=
   rfl
 
+/- English proof (translation)
+Take `⟨F, x, rfl⟩` from `exists_of z`. Rewrite using `[smul_of, toClassLimit_of, toClassLimit_of, IdeleClassLimit.smul_of, ideleClassEquiv_mk]`.
+-/
 theorem toClassLimit_smul (σ : ℚ̄ ≃ₐ[ℚ] ℚ̄) (z : IdeleLimit) :
     toClassLimit (σ • z) = σ • toClassLimit z := by
   obtain ⟨F, x, rfl⟩ := exists_of z
   rw [smul_of, toClassLimit_of, toClassLimit_of, IdeleClassLimit.smul_of, ideleClassEquiv_mk]
 
+/- English proof (translation)
+Introduce `c`. Take `⟨F, c, rfl⟩` from `IdeleClassLimit.exists_of c`. Take `⟨x, rfl⟩` from `IdeleClassGroup.mk_surjective F.1 c`. Conclude with `⟨of F x, rfl⟩`.
+-/
 theorem toClassLimit_surjective : Function.Surjective toClassLimit := by
   intro c
   obtain ⟨F, c, rfl⟩ := IdeleClassLimit.exists_of c

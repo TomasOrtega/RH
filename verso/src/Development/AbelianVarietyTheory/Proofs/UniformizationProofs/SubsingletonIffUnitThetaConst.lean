@@ -35,6 +35,13 @@ variable {R : Type} [CommRing R] [IsDomain R] {D : DegPre R} {F : Type} [Field F
 def qkMul (j : ℕ) (p : QkPt D F k) : QkPt D F k :=
   qkMk hB (j • p.y) (j • p.g) (by rw [smul_comm, qk_nsmul hB, map_nsmul])
 
+/- English proof (translation)
+Establish `add : ∀ i j : ℕ, f (qkMul hB (i + j) p) = f (qkMul hB i p) * f (qkMul hB j p)` using `fun i j => by`. Use `hf _ _ _ ?_` and prove the remaining obligations. Establish `e : qkMul hB (i + j) p = qkAdd hB (qkMul hB i p) (qkMul hB j p)` using `qk_ext (add_smul i j p.y) (add_nsmul p.g i j)`. Rewrite using `[e]`. Conclude with `qkAdd_qkAdd hB _ _`.
+
+Proceed by induction on `j with`. Consider the case `zero`. Establish `h` using `add 0 0`. Rewrite using `[pow_zero]`. Conclude with `left_eq_mul.1 h`.
+
+Consider the case `succ j ih`. Establish `e : qkMul hB 1 p = p` using `qk_ext (one_nsmul _) (one_nsmul _)`. Rewrite using `[add, ih, e, pow_succ]`.
+-/
 theorem map_qkMul {M : Type} [Group M] (f : QkPt D F k → M)
     (hf : ∀ p p' p'', QkAdd p p' p'' → f p'' = f p * f p') (p : QkPt D F k) (j : ℕ) :
     f (qkMul hB j p) = f p ^ j := by
@@ -53,6 +60,9 @@ theorem map_qkMul {M : Type} [Group M] (f : QkPt D F k → M)
     have e : qkMul hB 1 p = p := qk_ext (one_nsmul _) (one_nsmul _)
     rw [add, ih, e, pow_succ]
 
+/- English proof (translation)
+Use `(equiv_iff hB _ _).2 ⟨p.y, ?_, ?_⟩` and prove the remaining obligations. Use `show k • p.y = 0 • p.y + k • p.y`. Rewrite using `[zero_nsmul, zero_add]`. Use `show k • p.g = 0 • p.g + iota hB F p.y`. Rewrite using `[zero_nsmul, zero_add, qk_nsmul hB]`.
+-/
 theorem equiv_qkMul_self (p : QkPt D F k) : QkPt.Equiv D F (qkMul hB 0 p) (qkMul hB k p) := by
   refine (equiv_iff hB _ _).2 ⟨p.y, ?_, ?_⟩
   · show k • p.y = 0 • p.y + k • p.y

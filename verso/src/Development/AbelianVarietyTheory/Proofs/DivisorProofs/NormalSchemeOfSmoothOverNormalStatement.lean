@@ -10,5 +10,8 @@ open CategoryTheory AlgebraicGeometry ReciprocityTheory.ChartRestriction.G Recip
 open scoped Classical
 open Formalism.BasicNotions.DV Formalism.MainNotions.WeightThresholdDefs GlobalTheory.FlagAr GlobalTheory.ShFam.Pad GlobalTheory.VB
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.SmoothNormal.isNormalScheme_of_smoothOfRelativeDimension | exact GlobalTheory.SmoothNormal.isNormalScheme_of_smoothOfRelativeDimension | (intros; apply GlobalTheory.SmoothNormal.isNormalScheme_of_smoothOfRelativeDimension <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.normal_scheme_of_smooth_over_normal : ∀ (B Y : Scheme.{0}) [IsLocallyNoetherian B] (π : Y ⟶ B) (n : ℕ) [SmoothOfRelativeDimension n π], ReciprocityTheory.ChartRestriction.G.Geo.Tor.IsNormalScheme B → ReciprocityTheory.ChartRestriction.G.Geo.Tor.IsNormalScheme Y := by
   first | exact @GlobalTheory.SmoothNormal.isNormalScheme_of_smoothOfRelativeDimension | exact GlobalTheory.SmoothNormal.isNormalScheme_of_smoothOfRelativeDimension | (intros; apply GlobalTheory.SmoothNormal.isNormalScheme_of_smoothOfRelativeDimension <;> assumption)

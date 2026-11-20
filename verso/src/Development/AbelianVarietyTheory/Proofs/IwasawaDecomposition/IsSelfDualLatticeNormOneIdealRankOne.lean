@@ -13,6 +13,19 @@ attribute [local instance] GlobalTheory.Mem.Col2.starE Formalism.BasicNotions.Ho
 
 namespace GlobalTheory.Mem.R3.SelC
 
+/- English proof (translation)
+Establish `hN : ((Fintype.card G : ℕ) : K) ≠ 0` using `Nat.cast_ne_zero.mpr Fintype.card_ne_zero`. Establish `h1 : χ 1 ≠ 0`. Introduce `h0`. Establish `h` using `conv_char hχ hχ`. Take `⟨n, ρ, hi, hρ⟩` from `hχ`.
+
+Establish `e` using `hρ 1`. Rewrite `e` using `[h0, map_zero, Representation.char_one, Module.finrank_fin_fun, Nat.cast_eq_zero]`. Substitute `e` using the available equality. Conclude with `(bot_ne_top (α := Subrepresentation ρ)) (Subrepresentation.toSubmodule_injective (Subsingleton.elim _ _))`. Establish `hterm : ∀ ψ ∈ Xg, ∑ g, (chiIdem ψ).coeff g * χ g = if ψ = χ then χ 1 else 0`.
+
+Introduce `ψ hψ`. Establish `h` using `conv_char (hXg ψ hψ) hχ 1`. Simplify using `only [mul_one] at h`. Establish `e : ∑ g, (chiIdem ψ).coeff g * χ g = ψ 1 / (Fintype.card G : K) * ∑ g, ψ g⁻¹ * χ g`. Rewrite using `[Finset.mul_sum]`.
+
+Conclude with `Finset.sum_congr rfl fun g _ => by rw [coeff_chiIdem, mul_assoc]`. Rewrite using `[e]`. Use `split_ifs at h ⊢ with hc`. Rewrite using `[mul_right_cancel₀ h1 h, hc]`. Clear the denominators using the available nonvanishing facts.
+
+Rewrite using `[(mul_eq_zero.1 h).resolve_right h1, mul_zero]`. Establish `hsum : ∑ g, (idemOf Xg).coeff g * χ g = if χ ∈ Xg then χ 1 else 0`. Unfold `idemOf`. Simplify using `only [MonoidAlgebra.coeff_sum, Finset.sum_apply', Finset.sum_mul]`. Rewrite using `[Finset.sum_comm, Finset.sum_congr rfl hterm, Finset.sum_ite_eq']`.
+
+Rewrite using `[hsum]`. Use `split_ifs with hc`. Conclude with `iff_of_true hc rfl`. Conclude with `iff_of_false hc h1.symm`.
+-/
 theorem mem_iff_trace {K G : Type} [Field K] [CharZero K] [Group G] [Fintype G] (Xg : Finset (G → K))
     (hXg : ∀ χ ∈ Xg, IsAbsIrrChar χ) {χ : G → K} (hχ : IsAbsIrrChar χ) :
     χ ∈ Xg ↔ ∑ g, (idemOf Xg).coeff g * χ g = χ 1 := by
@@ -47,6 +60,9 @@ theorem mem_iff_trace {K G : Type} [Field K] [CharZero K] [Group G] [Fintype G] 
   · exact iff_of_true hc rfl
   · exact iff_of_false hc h1.symm
 
+/- English proof (translation)
+Rewrite using `[mem_XgE, isAbsIrrChar_comp_iff eG.symm, ← Equiv.sum_comp eG.toEquiv]`. Simplify using `only [MulEquiv.toEquiv_eq_coe, EquivLike.coe_coe, MulEquiv.symm_apply_apply, map_one, ← he, ← map_mul, ← map_sum]`. Rewrite using `[σ.injective.eq_iff]`. Conclude with `⟨fun h => ⟨hXg χ h, (mem_iff_trace Xg hXg (hXg χ h)).1 h⟩, fun h => (mem_iff_trace Xg hXg h.1).2 h.2⟩`.
+-/
 theorem mem_iff_XgE {K G H : Type} [Field K] [CharZero K] [Group G] [Fintype G] [Group H] [Fintype H] (σ : K →+* ℂ) (eG : G ≃* H)
     (e : MonoidAlgebra ℂ H) (Xg : Finset (G → K)) (hXg : ∀ χ ∈ Xg, IsAbsIrrChar χ)
     (he : ∀ g, σ ((idemOf Xg).coeff g) = e.coeff (eG g)) (χ : G → K) :
@@ -56,6 +72,17 @@ theorem mem_iff_XgE {K G H : Type} [Field K] [CharZero K] [Group G] [Fintype G] 
   rw [σ.injective.eq_iff]
   exact ⟨fun h => ⟨hXg χ h, (mem_iff_trace Xg hXg (hXg χ h)).1 h⟩, fun h => (mem_iff_trace Xg hXg h.1).2 h.2⟩
 
+/- English proof (translation)
+Set `b : Module.Basis (Fin n) ℂ W` to `Module.Basis.mk li sp.ge`. Establish `hb : ∀ y, b.equivFun (j y) = fun i => σ (y i)`. Introduce `y`. Rewrite using `[← LinearEquiv.eq_symm_apply, Module.Basis.equivFun_symm_apply]`. Use `conv_lhs => rw [pi_eq_sum_univ' y]`.
+
+Rewrite using `[map_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[LinearMap.map_smulₛₗ, Module.Basis.mk_apply]`. Set `A` to `LinearMap.toMatrix' Ψ.toLinearMap`. Set `A'` to `LinearMap.toMatrix' Ψ.symm.toLinearMap`.
+
+Establish `h1 : A * A' = 1`. Rewrite using `[← LinearMap.toMatrix'_comp]`. Simplify using the standard rewrite rules. Establish `h2 : A' * A = 1`. Rewrite using `[← LinearMap.toMatrix'_comp]`.
+
+Simplify using the standard rewrite rules. Set `E : (Fin n → ℂ) ≃ₗ[ℂ] (Fin d → ℂ)` to `LinearEquiv.ofLinear (Matrix.toLin' (A.map σ)) (Matrix.toLin' (A'.map σ)) (by rw [← Matrix.toLin'_mul, ← Matrix.map_mul, h1]; simp) (by rw [← Matrix.toLin'_mul, ← Matrix.map_mul, h2]; simp)`. Use `⟨b.equivFun.trans E, fun y => ?_⟩` and prove the remaining obligations. Rewrite using `[LinearEquiv.trans_apply, hb]`. Use function extensionality and compare the values at `a`.
+
+Use `show (A.map σ).mulVec (σ ∘ y) a = _`. Rewrite using `[← RingHom.map_mulVec]`. Conclude with `congrArg σ (congrFun (LinearMap.toMatrix'_mulVec Ψ.toLinearMap y) a)`.
+-/
 theorem exists_coord {K W : Type} [Field K] [AddCommGroup W] [Module ℂ W] (σ : K →+* ℂ) {n d : ℕ}
     (Ψ : (Fin n → K) ≃ₗ[K] (Fin d → K)) (j : (Fin n → K) →ₛₗ[σ] W)
     (li : LinearIndependent ℂ fun i => j (Pi.single i 1)) (sp : Submodule.span ℂ (Set.range fun i => j (Pi.single i 1)) = ⊤) :
@@ -90,6 +117,9 @@ section Rows
 
 variable {X : Fields} {Pr : Primes X} {R : Ranks} (W : Wts X Pr.Word R)
 
+/- English proof (translation)
+Substitute `hΛ` using the available equality. Substitute `e` using the available equality. Conclude with `⟨id, LinearEquiv.refl _ _, fun _ => rfl⟩`.
+-/
 theorem rowCast_lin {SG' : Finset (HeightOneSpectrum (𝓞 X.E))} (e : Pr.vGs = SG') (A : LevFam X.E X.K (R.N R.m - 1) Pr.vGs)
     (Λ' : LevFam X.E X.K (R.N R.m - 1) SG') (hΛ : Λ' = e ▸ A) :
     ((formGSD (rowVal W SG') Λ').Ok → (rowGSD W A).Ok) ∧
@@ -103,9 +133,23 @@ variable (Ch : Chars X Pr R.m) (sel : HeightOneSpectrum (𝓞 X.F) → HeightOne
 
 include hX in
 
+/- English proof (translation)
+The claim follows from `(rowCast_lin W (rcol_rowSG_eq sel mu hQ) (rowTyG Ch P).inv _ (rowTy_inv_cast Ch sel mu hQ P)).1 (mtildeOk W Ch sel mu hX P)`.
+-/
 theorem rowG_ok (hQ : QE sel (mu : Chr X.F X.E X.K) = ∅) : (rowGSD W (rowTyG Ch P).inv).Ok :=
   (rowCast_lin W (rcol_rowSG_eq sel mu hQ) (rowTyG Ch P).inv _ (rowTy_inv_cast Ch sel mu hQ P)).1 (mtildeOk W Ch sel mu hX P)
 
+/- English proof (translation)
+Use `set h := mtildeKOk W Ch sel mu hX`. Establish `hr : LinearMap.range ((MtildeKCSD W Ch sel mu h).lvlE (g0Act W Ch sel mu h) P.grp P.chr).mulVecLin = (MtildeKCSD W Ch sel mu h).lvlPart (g0Act W Ch sel mu h) P.grp P.chr` using `(image_idempotent_spec X.K _ _).2.trans (level_part_spec X.K _ _ _ _ _)`. Set `c` to `(mtildeKGSD W Ch sel mu).coordOf h (mtildeKGSD W Ch sel mu).outSec`. Set `f0` to `c.symm.toLinearMap ∘ₗ ((MtildeKCSD W Ch sel mu h).lvlE (g0Act W Ch sel mu h) P.grp P.chr).mulVecLin`. Establish `hf0 : ∀ y, c (f0 y) = ((MtildeKCSD W Ch sel mu h).lvlE (g0Act W Ch sel mu h) P.grp P.chr).mulVec y` using `fun y => c.apply_symm_apply _`.
+
+Establish `hm : ∀ y, ((mtildeKGSD W Ch sel mu).EqFun.subtype ∘ₗ f0) y ∈ (mtildeGSD W Ch sel mu P).EqFun` using `fun y => by`. Use `(mem_lvlPartX_iff W Ch sel mu P h (f0 y)).1 ?_` and prove the remaining obligations. Rewrite using `[← hr]`. Conclude with `⟨y, (hf0 y).symm⟩`. Set `f` to `LinearMap.codRestrict _ _ hm`.
+
+Establish `hinj : Function.Injective f` using `fun y y' e => by`. Establish `e1 : f0 y = f0 y'` using `Subtype.ext (congrArg Subtype.val e :)`. Conclude with `(image_idempotent_spec X.K _ _).1 ((hf0 y).symm.trans ((congrArg c e1).trans (hf0 y')))`. Establish `hsurj : Function.Surjective f` using `fun x => by`. Take `⟨hK, -⟩` from `(mem_MtildeV_iff W Ch sel mu P x.1).1 x.2`.
+
+Establish `h1` using `(mem_lvlPartX_iff W Ch sel mu P h ⟨x.1, hK⟩).2 x.2`. Rewrite `h1` using `[← hr]`. Take `⟨y, hy⟩` from `h1`. Establish `e1 : f0 y = ⟨x.1, hK⟩` using `c.injective ((hf0 y).trans hy)`. Conclude with `⟨y, Subtype.ext (congrArg Subtype.val e1 :)⟩`.
+
+Use `⟨LinearEquiv.ofBijective f ⟨hinj, hsurj⟩, fun y => ⟨(f0 y).2, ?_⟩⟩` and prove the remaining obligations. Rewrite using `[← hf0]`. Conclude with `(LinearEquiv.symm_apply_apply _ _).symm`.
+-/
 theorem exists_lvlEquiv : ∃ Φ : (Fin ((MtildeKCSD W Ch sel mu (mtildeKOk W Ch sel mu hX)).lvlDim
       (g0Act W Ch sel mu (mtildeKOk W Ch sel mu hX)) P.grp P.chr) → X.K) ≃ₗ[X.K] MtildeV W Ch sel mu P,
     ∀ y, ∃ hK : (Φ y).1 ∈ (mtildeKGSD W Ch sel mu).EqFun,
@@ -139,6 +183,11 @@ theorem exists_lvlEquiv : ∃ Φ : (Fin ((MtildeKCSD W Ch sel mu (mtildeKOk W Ch
   rw [← hf0]
   exact (LinearEquiv.symm_apply_apply _ _).symm
 
+/- English proof (translation)
+Take `⟨Φ, hΦ⟩` from `exists_lvlEquiv W Ch sel mu hX P`. Take `⟨L, hL⟩` from `(rowCast_lin W (rcol_rowSG_eq sel mu hQ) (rowTyG Ch P).inv _ (rowTy_inv_cast Ch sel mu hQ P)).2`. Take `⟨ι, hι⟩` from `exists_coord σ ((Φ.trans L).trans ((rowGSD W (rowTyG Ch P).inv).hB hM).equivFun) j li sp`. Use `⟨ι, fun y => ?_⟩` and prove the remaining obligations. Take `⟨hK, e⟩` from `hΦ y`.
+
+Use `⟨⟨(Φ y).1, hK⟩, (Φ y).2, e, (hι y).trans ?_⟩` and prove the remaining obligations. Unfold `zOfRow zOfRow0`. Rewrite using `[← hL]`. Both sides reduce to the same expression.
+-/
 theorem exists_read (hQ : QE sel (mu : Chr X.F X.E X.K) = ∅) (σ : X.K →+* ℂ) (hM : (rowGSD W (rowTyG Ch P).inv).Ok)
     {V : Type} [AddCommGroup V] [Module ℂ V]
     (j : (Fin ((MtildeKCSD W Ch sel mu (mtildeKOk W Ch sel mu hX)).lvlDim
@@ -166,6 +215,11 @@ section Weights
 
 variable {B : Base} {X : PreX B.toPre} (I : TC B X) (l : I.Laws) (Z : TC.Later B (I.cols l))
 
+/- English proof (translation)
+Establish `e1 : ((nuT (I.rec7 l Z) u i τ r : ℕ) : ℝ) = DV.nuRow (I.rec7 l Z) u (i + 1) τ r` using `(nu_t_identity (I.rec7 l Z) u i hi τ r).1`. Establish `e2` using `GlobalTheory.ColPeriod.nuRow_succ_eq_wt (I.rec7 l Z) u i hi τ r r.2`. Establish `e3` using `B.wts.nuW_eq u hi τ r`. Establish `e4` using `lamOf_wtN (B.wts.hc u τ) hi.le r`. Establish `key : (((nuT (I.rec7 l Z) u i τ r : ℕ) : ℤ) : ℝ) = (((B.wts.nuW u (i + 1) τ).w r : ℤ) : ℝ)`.
+
+Rewrite using `[Int.cast_natCast, e1, e2, ← Rat.cast_intCast, e3]`. Unfold `Wts.lamN at e3 ⊢`. Rewrite using `[e4]`. Both sides reduce to the same expression. Conclude with `key` after adjusting the coercions.
+-/
 theorem nuT_eq (u : B.Word) {i : ℕ} (hi : i < B.R.m) (τ : Tau B.R) (r : Fin (B.R.N i)) :
     ((nuT (I.rec7 l Z) u i τ r : ℕ) : ℤ) = (B.wts.nuW u (i + 1) τ).w r := by
   have e1 : ((nuT (I.rec7 l Z) u i τ r : ℕ) : ℝ) = DV.nuRow (I.rec7 l Z) u (i + 1) τ r := (nu_t_identity (I.rec7 l Z) u i hi τ r).1
@@ -179,6 +233,19 @@ theorem nuT_eq (u : B.Word) {i : ℕ} (hi : i < B.R.m) (τ : Tau B.R) (r : Fin (
     rfl
   exact_mod_cast key
 
+/- English proof (translation)
+Introduce `(u : B.Word) μ i hi`. Establish `hi' : i < B.R.m` using `hi`. Establish `hN : 0 < B.R.N i` using `B.R.N_pos i`. Establish `hN' : 0 < B.R.N (i + 1)` using `B.R.N_pos (i + 1)`. Establish `hlt : B.R.N i < B.R.N (i + 1)` using `by unfold Ranks.N; rw [Nat.succ_mul]; omega`.
+
+Establish `d0 : ∀ τ, (B.wts.lamTrue u i τ).detShift = (B.wts.lamTrue u i τ).w ⟨B.R.N i - 1, by omega⟩` using `fun τ => dif_pos hN`. Establish `d' : ∀ τ, (B.wts.lamTrue u (i + 1) τ).detShift = (B.wts.lamTrue u (i + 1) τ).w ⟨B.R.N (i + 1) - 1, by omega⟩` using `fun τ => dif_pos hN'`. Establish `dn : ∀ τ, (B.wts.nuW u (i + 1) τ).detShift = (B.wts.nuW u (i + 1) τ).w (⟨B.R.N i - 1, by omega⟩ : Fin (B.R.N i))` using `fun τ => dif_pos hN`. Establish `hs : ∀ (τ : Tau B.R) (r : Fin (B.R.N i)), (B.wts.nuW u (i + 1) τ).w r = (B.wts.lamTrue u i τ).w r + ((I.rec7 l Z).chTw u μ).sSharp i τ` using `fun τ r => by`. Establish `e1` using `B.wts.nuW_eq_true u hi' τ r`.
+
+Establish `e2 : ((((I.rec7 l Z).chTw u μ).sSharp i τ : ℤ) : ℚ) = sExp' B.R ((B.wts.hc u τ).e ⟨i, hi'⟩) (i + 1)` using `((I.rec7 l Z).chTw u μ).sSharp_eq i hi τ`. Rewrite `e1` using `[← e2]`. Conclude with `e1` after adjusting the coercions. Establish `hl : ∀ τ, ((nuLast (Pr` using `B.primes X) B.wts u i τ : ℕ) : ℤ) = (B.wts.lamTrue u i τ).detShift + ((I.rec7 l Z).chTw u μ).sSharp i τ := fun τ => by`. Rewrite using `[nuLast_eq (Pr := B.primes X) B.wts u i hi' τ, dn, hs, d0]`.
+
+Use `⟨fun (τ : Tau B.R) (r : Fin (B.R.N i)) => ?_, fun τ => (hl τ).symm, fun (τ : Tau B.R) => ?_, jet_in_weight_space_chain (Pr := B.primes X) B.wts u hi'⟩` and prove the remaining obligations. Establish `e1` using `nuT_eq I l Z u hi' τ r`. Establish `e2` using `hs τ r`. Establish `e3` using `hl τ`. Establish `hanti : (B.wts.lamTrue u i τ).detShift ≤ (B.wts.lamTrue u i τ).w r`.
+
+Use `(d0 τ).trans_le ?_` and prove the remaining obligations. Conclude with `(B.wts.lamTrue u i τ).anti (by show r.1 ≤ B.R.N i - 1; have : r.1 < B.R.N i := r.2; omega)`. Use `show ((B.wts.lamTrue u i τ).w r - (B.wts.lamTrue u i τ).detShift).toNat + nuLast (Pr := B.primes X) B.wts u i τ = nuT (I.rec7 l Z) u i τ r`. Use linear arithmetic over natural numbers and integers. Establish `e1` using `B.wts.lamTrue_new u hi' τ ⟨B.R.N (i + 1) - 1, by omega⟩ (by show ¬ B.R.N (i + 1) - 1 < B.R.N i; omega)`.
+
+Establish `e2 : ((((I.rec7 l Z).chTw u μ).sDiv i τ : ℤ) : ℚ) = sExp B.R ((B.wts.hc u τ).e ⟨i, hi'⟩) (i + 1)` using `((I.rec7 l Z).chTw u μ).sDiv_eq i hi τ`. Rewrite `e1` using `[← e2]`. Use `(d' τ).trans ?_` and prove the remaining obligations. Conclude with `e1` after adjusting the coercions.
+-/
 theorem wtTie_base {L : SizeData₂ (I.rec7 l Z)} {hT : GatTies (I.rec7 l Z)} {Gi : G.Inst (I.rec7 l Z) L} {Gl : G.LatInst (I.rec7 l Z)}
     {K : G.Consts} {Y : DivX (I.rec7 l Z)} {cX : ExtraC} {ex : Extra (I.rec7 l Z) L hT Gi Gl K Y cX} (t : KerEntTied ex) :
     t.WtTie (fun u i τ => B.wts.lamTrue u i τ) (fun u i τ => (B.wts.lamTrue u i τ).detShift)
@@ -225,6 +292,23 @@ section Chi
 
 variable {B : Base} {X : PreX B.toPre} (I : TC B X) (l : I.Laws) (Z : TC.Later B (I.cols l))
 
+/- English proof (translation)
+Take `⟨𝔟, hb, hab⟩` from `h`. Establish `hc : ∀ x : D.host.E, star x = D.host.conj x` using `fun x => bridge_star_holds D.R D.host x`. Establish `hfg : 𝔞.FG` using `Submodule.fg_of_isUnit (IsUnit.of_mul_eq_one 𝔟 hab)`. Use `⟨Submodule.fg_pi fun _ => hfg, ?_, fun y => ?_⟩` and prove the remaining obligations. Choose the witnesses or unpack the hypotheses as in `⟨x, hx, h0⟩ : ∃ x ∈ 𝔞, x ≠ 0 := by`.
+
+Assume the negation of the conclusion as `hn`. Use `push Not at hn`. Establish `: 𝔞 = ⊥` using `(Submodule.eq_bot_iff _).2 hn`. Rewrite `hab` using `[this, Submodule.bot_mul]`. Establish `h1 : (1 : D.host.E) ∈ (1 : TaylorLogMetric.IdE D)` using `Submodule.one_le.1 le_rfl`.
+
+Rewrite `h1` using `[← hab]`. Conclude with `one_ne_zero ((Submodule.mem_bot _).1 h1)`. Rewrite using `[eq_top_iff]`. Introduce `v _`. Establish `: v = (v 0 / x) • (fun _ : Fin 1 => x)`.
+
+Use function extensionality and compare the values at `i`. Rewrite using `[Subsingleton.elim i 0]`. Simplify using `[h0]`. Rewrite using `[this]`. Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span fun _ _ => hx)`.
+
+Prove the components needed by the constructor for the conclusion. Introduce `hy x hx`. Establish `h1 : y 0 * star (x 0) ∈ 𝔞 * 𝔟` using `Submodule.mul_mem_mul (hy 0 trivial) ((hb _).2 (by rw [← hc, star_star]; exact hx 0 trivial))`. Rewrite `h1` using `[hab, Submodule.mem_one]`. Take `⟨r, hr⟩` from `h1`.
+
+Conclude with `⟨r, by rw [hr]; simp [stdH, mul_comm]⟩`. Introduce `hy i _`. Rewrite using `[Subsingleton.elim i 0]`. Establish `h1 : Submodule.span (𝓞 D.host.E) {y 0} * 𝔟 ≤ 1`. Rewrite using `[Submodule.span_singleton_mul]`.
+
+Introduce `z hz`. Take `⟨b, hb', rfl⟩` from `(Submodule.mem_smul_pointwise_iff_exists _ _ _).1 hz`. Take `⟨r, hr⟩` from `hy (fun _ => star b) fun _ _ => by rw [hc]; exact (hb b).1 hb'`. Conclude with `Submodule.mem_one.2 ⟨r, by rw [hr]; simp [stdH, mul_comm]⟩`. Establish `h2 : Submodule.span (𝓞 D.host.E) {y 0} ≤ 𝔞`.
+
+Combine the equalities or inequalities in the displayed calculation. Rewrite using `[mul_left_comm, hab, mul_one]`. Use `_ ≤ 𝔞 * 1 := mul_le_mul_right h1 𝔞`. Use `_ = 𝔞 := mul_one _`. Conclude with `h2 (Submodule.mem_span_singleton_self _)`.
+-/
 theorem isSelfDualLattice_normOne_ideal_rankOne {D : D7} {𝔞 : TaylorLogMetric.IdE D} (h : TaylorLogMetric.N1 D 𝔞) :
     IsSDLat D.host.E 1 (Submodule.pi Set.univ fun _ : Fin 1 => 𝔞) := by
   obtain ⟨𝔟, hb, hab⟩ := h
@@ -268,6 +352,11 @@ theorem isSelfDualLattice_normOne_ideal_rankOne {D : D7} {𝔞 : TaylorLogMetric
           _ = 𝔞 := mul_one _
       exact h2 (Submodule.mem_span_singleton_self _)
 
+/- English proof (translation)
+Rewrite using `[GlobalTheory.Mem.ChiDet.detId_stdL]`. Unfold `GlobalTheory.Mem.Chr.detSub`. Apply `le_antisymm` to reduce the goal to its premises. Use `Submodule.span_le.2 ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨x, hx, rfl⟩`.
+
+Rewrite using `[Matrix.det_unique]`. Conclude with `hx _ _ trivial`. Introduce `a ha`. Conclude with `Submodule.subset_span ⟨fun _ _ => a, fun _ _ _ => ha, by rw [Matrix.det_unique]; rfl⟩`.
+-/
 theorem detId_rank_one {R : Ranks} (H : Host R) (𝔞 : Submodule (𝓞 H.E) H.E) :
     Th.detId H (Th.stdL H 1) (Submodule.pi Set.univ fun _ : Fin 1 => 𝔞) = 𝔞 := by
   rw [GlobalTheory.Mem.ChiDet.detId_stdL]
@@ -280,6 +369,13 @@ theorem detId_rank_one {R : Ranks} (H : Host R) (𝔞 : Submodule (𝓞 H.E) H.E
   · intro a ha
     exact Submodule.subset_span ⟨fun _ _ => a, fun _ _ _ => ha, by rw [Matrix.det_unique]; rfl⟩
 
+/- English proof (translation)
+Establish `h1 : TaylorLogMetric.N1 (I.rec7 l Z) 1`. Use `RcHyp.n1_span_unitary (D := I.rec7 l Z) 1` as an intermediate fact. Rewrite `this` using `[OneMemClass.coe_one, ← Submodule.one_eq_span]`. Then use the resulting hypothesis. Establish `hs` using `isSelfDualLattice_normOne_ideal_rankOne h`. Establish `h2` using `hidl.2.2.2.2 1 ⟨_, isSelfDualLattice_normOne_ideal_rankOne h1⟩ ⟨_, hs⟩`.
+
+Establish `h3 : TaylorLogMetric.detId (I.rec7 l Z) (Submodule.pi Set.univ fun _ : Fin 1 => (1 : TaylorLogMetric.IdE (I.rec7 l Z))) (Submodule.pi Set.univ fun _ : Fin 1 => 𝔞) = 𝔞` using `detId_rank_one B.host 𝔞`. Establish `h4` using `h2.trans h3`. Take `⟨x, hx⟩` from `QuotientGroup.mk_surjective (relDetQ B.host I.SQ 1 (Th.stdL B.host 1) (Submodule.pi Set.univ fun _ : Fin 1 => 𝔞))`. Establish `h5 : idl (QuotientGroup.mk x) = 𝔞` using `(congrArg idl hx).trans h4`. Establish `h6` using `GlobalTheory.Mem.ChiDet.tildeD_eq_chiId B.R B.host I.C.chiPsi I.C.isChi 1 (Submodule.pi Set.univ fun _ : Fin 1 => 𝔞) ⟨hs.1, hs.2.1⟩ (toDtT B.host I.SQ x) (congrArg (toDtTMod B.host I.SQ) hx)`.
+
+Use `replace h6 := h6.trans (congrArg (chiId I.C.chiPsi) (detId_rank_one B.host 𝔞))`. Use `((congrArg _ h5.symm).trans (TaylorLogMetric.chiRec_idl _ _ hidl.1 _)).trans (Eq.trans ?_ h6)` and prove the remaining obligations. Use `show ((tildeQ B.host I.SQ I.C.chiPsi x : ℂˣ) : ℂ) = _`. Rewrite using `[tildeQ_eq_comp B.host I.SQ (KD_le_ker_of_isChiPsi I.C.isChi)]`. Both sides reduce to the same expression.
+-/
 theorem chiRec_eq_chi {idl : (I.rec7 l Z).Dt ⧸ (I.rec7 l Z).UO → TaylorLogMetric.IdE (I.rec7 l Z)} (hidl : TaylorLogMetric.RelDetPinned (I.rec7 l Z) idl)
     (𝔞 : TaylorLogMetric.IdE (I.rec7 l Z)) (h : TaylorLogMetric.N1 (I.rec7 l Z) 𝔞) : TaylorLogMetric.chiRec (I.rec7 l Z) idl 𝔞 = I.chi 𝔞 := by
   have h1 : TaylorLogMetric.N1 (I.rec7 l Z) 1 := by
@@ -300,6 +396,9 @@ theorem chiRec_eq_chi {idl : (I.rec7 l Z).Dt ⧸ (I.rec7 l Z).UO → TaylorLogMe
   rw [tildeQ_eq_comp B.host I.SQ (KD_le_ker_of_isChiPsi I.C.isChi)]
   rfl
 
+/- English proof (translation)
+Introduce `𝔞 h` and use `by rw [t.χ_rec] exact chiRec_eq_chi I l Z t.idl_ok 𝔞 h`.
+-/
 theorem ker_chi_eq {L : SizeData₂ (I.rec7 l Z)} {hT : GatTies (I.rec7 l Z)} {Gi : G.Inst (I.rec7 l Z) L} {Gl : G.LatInst (I.rec7 l Z)}
     {K : G.Consts} {Y : DivX (I.rec7 l Z)} {cX : ExtraC} {ex : Extra (I.rec7 l Z) L hT Gi Gl K Y cX} (t : KerEntTied ex) :
     ∀ 𝔞, TaylorLogMetric.N1 (I.rec7 l Z) 𝔞 → t.χ 𝔞 = I.chi 𝔞 := fun 𝔞 h => by

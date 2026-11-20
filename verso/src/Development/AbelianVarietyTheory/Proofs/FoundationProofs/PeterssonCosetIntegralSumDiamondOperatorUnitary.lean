@@ -6,6 +6,11 @@ open scoped MatrixGroups ModularForm Manifold
 
 namespace GlobalTheory.Hk
 
+/- English proof (translation)
+Establish `hf : (⇑f ∣[k] h) = ⇑f`. Rewrite using `[ModularForm.SL_slash]`. Conclude with `SlashInvariantForm.slash_action_eqn f _ ⟨h, hh, rfl⟩`. Establish `hg : (⇑g ∣[k] h) = ⇑g`. Rewrite using `[ModularForm.SL_slash]`.
+
+Conclude with `SlashInvariantForm.slash_action_eqn g _ ⟨h, hh, rfl⟩`. Rewrite using `[← petersson_slash_SL, hf, hg]`.
+-/
 lemma petersson_smul_of_mem {Γ : Subgroup SL(2, ℤ)} {k : ℤ} (f g : CuspForm Γ k) {h : SL(2, ℤ)}
     (hh : h ∈ Γ) (τ : ℍ) : petersson k ⇑f ⇑g (h • τ) = petersson k ⇑f ⇑g τ := by
   have hf : (⇑f ∣[k] h) = ⇑f := by
@@ -30,6 +35,17 @@ def cosetShift (Γ : Subgroup SL(2, ℤ)) (σ : SL(2, ℤ))
     induction q using Quotient.inductionOn' with
     | h a => simp [Quotient.map'_mk'']
 
+/- English proof (translation)
+Introduce `N l k d σ _ _ hσ f g`. Establish `h₁ : ∀ γ ∈ lev N l, σ * γ * σ⁻¹ ∈ lev N l` using `fun γ hγ => GlobalTheory.T.isDiamondMatrix_conj_mem_gamma1InterGamma0Level N l d σ γ hσ hγ`. Establish `hσ' : IsDia N l (σ 0 0) σ⁻¹`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Simplify using `[Matrix.SpecialLinearGroup.SL2_inv_expl, hσ.1]`.
+
+Simplify using `[Matrix.SpecialLinearGroup.SL2_inv_expl]`. Establish `h₂ : ∀ γ ∈ lev N l, σ⁻¹ * γ * σ ∈ lev N l` using `fun γ hγ => by`. Simplify using `using GlobalTheory.T.isDiamondMatrix_conj_mem_gamma1InterGamma0Level N l _ σ⁻¹ γ hσ' hγ`. Use `set e := cosetShift (lev N l) σ h₁ h₂`. Unfold `pet`.
+
+Use `conv_rhs => rw [← finsum_comp_equiv e]`. Use `finsum_congr fun γ => ?_` and prove the remaining obligations. Use `congr 1`. Use function extensionality and compare the values at `z`. Establish `he : e γ = QuotientGroup.mk (γ.out * σ⁻¹)` using `by conv_lhs => rw [← QuotientGroup.out_eq' γ]`.
+
+Both sides reduce to the same expression. Establish `hx : (QuotientGroup.mk (e γ).out : SL(2, ℤ) ⧸ lev N l) = QuotientGroup.mk (γ.out * σ⁻¹)`. Rewrite using `[QuotientGroup.out_eq', he]`. Establish `hmem` using `QuotientGroup.eq.mp hx.symm`. Establish `hinv : (e γ).out⁻¹ = ((γ.out * σ⁻¹)⁻¹ * (e γ).out)⁻¹ * (σ * γ.out⁻¹)` using `by group`.
+
+Rewrite using `[hinv, mul_smul, petersson_smul_of_mem f g (inv_mem hmem), dia, dia, petersson_slash_SL, mul_smul]`.
+-/
 theorem pet_dia_dia : ∀ (N l : ℕ) (k d : ℤ) (σ : SL(2, ℤ)), 0 < N → 0 < l → GlobalTheory.Hk.IsDia N l d σ →
     ∀ f g : CuspForm (GlobalTheory.Hk.lev N l) k,
       GlobalTheory.Hk.pet (GlobalTheory.Hk.lev N l) k (GlobalTheory.Hk.dia k σ ⇑f) (GlobalTheory.Hk.dia k σ ⇑g) =

@@ -7,6 +7,9 @@ open Polynomial
 
 namespace GlobalTheory.NilpFiltration
 
+/- English proof (translation)
+Rewrite using `[← LinearEquiv.charpoly_conj φ f]`. Use `congr 1`. Use extensionality with `b`. Rewrite using `[LinearEquiv.conj_apply_apply, h, LinearEquiv.apply_symm_apply]`.
+-/
 theorem charpoly_eq_of_intertwine {K : Type} [Field K] {A B : Type} [AddCommGroup A] [Module K A]
     [FiniteDimensional K A] [AddCommGroup B] [Module K B] [FiniteDimensional K B]
     (φ : A ≃ₗ[K] B) (f : Module.End K A) (g : Module.End K B) (h : ∀ a, φ (f a) = g (φ a)) :
@@ -16,6 +19,39 @@ theorem charpoly_eq_of_intertwine {K : Type} [Field K] {A B : Type} [AddCommGrou
   ext b
   rw [LinearEquiv.conj_apply_apply, h, LinearEquiv.apply_symm_apply]
 
+/- English proof (translation)
+Introduce `n`. Proceed by induction on `n with`. Consider the case `zero`. Introduce `X _ _ _ t T _ he _ hT`. Establish `ht : t = 0` using `by simpa using he`.
+
+Substitute `ht` using the available equality. Rewrite using `[pow_one]`. Establish `hinj : Function.Injective (LinearMap.range (0 : Module.End K X)).mkQ`. Rewrite using `[← LinearMap.ker_eq_bot, Submodule.ker_mkQ, LinearMap.range_zero]`. Use `charpoly_eq_of_intertwine (LinearEquiv.ofBijective _ ⟨hinj, Submodule.mkQ_surjective _⟩) T _ (fun x => ?_)` and prove the remaining obligations.
+
+Both sides reduce to the same expression. Consider the case `succ n ih`. Introduce `X _ _ _ t T hc he hk hT`. Establish `htY : ∀ x ∈ LinearMap.range t, t x ∈ LinearMap.range t` using `fun x _ => LinearMap.mem_range_self t x`. Establish `hTY : ∀ x ∈ LinearMap.range t, T x ∈ LinearMap.range t` using `fun x hx => hT hx`.
+
+Use `set Y := LinearMap.range t with hYdef`. Use `set t' := t.restrict htY with ht'`. Use `set T' := T.restrict hTY with hT'def`. Establish `hcomm : ∀ x, t (T x) = T (t x)` using `fun x => LinearMap.congr_fun hc.eq x`. Establish `hc' : Commute t' T'` using `by show t' * T' = T' * t'`.
+
+Use extensionality with `x`. Simplify using `only [Module.End.mul_apply, t', T', LinearMap.restrict_coe_apply]`. Conclude with `hcomm x`. Establish `hpow : ∀ k (x : Y), ((t' ^ k) x : X) = (t ^ k) x`. Introduce `k`.
+
+Proceed by induction on `k with`. Consider the case `zero => intro x`. Both sides reduce to the same expression. Consider the case `succ k ihk`. Introduce `x`.
+
+Rewrite using `[pow_succ', Module.End.mul_apply, pow_succ', Module.End.mul_apply, LinearMap.restrict_coe_apply, ihk]`. Establish `he' : t' ^ (n + 1) = 0`. Use extensionality with `x`. Take `⟨y, hy⟩` from `x.2`. Rewrite using `[hpow, LinearMap.zero_apply, ZeroMemClass.coe_zero, ← hy, ← Module.End.mul_apply, ← pow_succ, he, LinearMap.zero_apply]`.
+
+Establish `hk' : ∀ x : Y, t' x = 0 → x ∈ LinearMap.range (t' ^ n)`. Introduce `x hx`. Establish `hx' : t x = 0`. Use `congrArg Subtype.val hx` as an intermediate fact. Simplify `this` using `[t', LinearMap.restrict_coe_apply]`.
+
+Take `⟨z, hz⟩` from `hk x hx'`. Use `⟨⟨t z, LinearMap.mem_range_self t z⟩, Subtype.ext ?_⟩` and prove the remaining obligations. Rewrite using `[hpow, ← Module.End.mul_apply, ← pow_succ, hz]`. Establish `hT' : LinearMap.range t' ≤ (LinearMap.range t').comap T'`. Introduce and unpack `y ⟨x, rfl⟩`.
+
+Use `show T' (t' x) ∈ LinearMap.range t'`. Conclude with `⟨T' x, by rw [← Module.End.mul_apply, hc'.eq, Module.End.mul_apply]⟩`. Establish `hmain : LinearMap.charpoly T = LinearMap.charpoly T' * LinearMap.charpoly (Y.mapQ Y T hT)` using `GlobalTheory.CuspGL.charpoly_eq_restrict_mul_mapQ Y T hTY`. Set `f : X →ₗ[K] Y ⧸ LinearMap.range t'` to `(LinearMap.range t').mkQ ∘ₗ t.rangeRestrict`. Establish `hf : ∀ x, f x = Submodule.Quotient.mk (⟨t x, LinearMap.mem_range_self t x⟩ : Y)` using `fun x => rfl`.
+
+Establish `hsurj : Function.Surjective f` using `(Submodule.mkQ_surjective _).comp t.surjective_rangeRestrict`. Establish `hker : LinearMap.ker f = Y`. Use extensionality with `x`. Rewrite using `[LinearMap.mem_ker, hf, Submodule.Quotient.mk_eq_zero]`. Prove the components needed by the constructor for the conclusion.
+
+Introduce and unpack `⟨y, hy⟩`. Take `⟨w, hw⟩` from `y.2`. Establish `h1 : t (x - t w) = 0`. Use `congrArg Subtype.val hy` as an intermediate fact. Simplify using `only [t', LinearMap.restrict_coe_apply] at this`.
+
+Rewrite using `[map_sub, ← this, hw, sub_self]`. Take `⟨z, hz⟩` from `hk _ h1`. Establish `h2 : x - t w ∈ Y`. Rewrite using `[← hz, pow_succ', Module.End.mul_apply]`. Conclude with `LinearMap.mem_range_self t _`.
+
+Establish `h3` using `Y.add_mem h2 (LinearMap.mem_range_self t w)`. Rewrite `h3` using `[sub_add_cancel]`. Then use the resulting hypothesis. Introduce and unpack `⟨w, rfl⟩`. Conclude with `⟨⟨t w, LinearMap.mem_range_self t w⟩, rfl⟩`. Set `φ : (X ⧸ Y) ≃ₗ[K] Y ⧸ LinearMap.range t'` to `(Submodule.quotEquivOfEq Y (LinearMap.ker f) hker.symm).trans (f.quotKerEquivOfSurjective hsurj)`.
+
+Establish `hφ : ∀ x, φ (Submodule.Quotient.mk x) = f x` using `fun x => rfl`. Establish `hq : LinearMap.charpoly (Y.mapQ Y T hT) = LinearMap.charpoly ((LinearMap.range t').mapQ (LinearMap.range t') T' hT')`. Use `charpoly_eq_of_intertwine φ _ _ (fun a => ?_)` and prove the remaining obligations. Proceed by induction on `a using Submodule.Quotient.induction_on with`. Consider the case `H x`.
+
+Rewrite using `[Submodule.mapQ_apply, hφ, hφ, hf, hf, Submodule.mapQ_apply]`. Use `congr 1`. Conclude with `Subtype.ext (hcomm x)`. Rewrite using `[hmain, ih Y t' T' hc' he' hk' hT', ← hq, ← pow_succ]`.
+-/
 theorem charpoly_eq_quotient_charpoly_pow_succ (K : Type) [Field K] : ∀ (n : ℕ) (X : Type) [AddCommGroup X] [Module K X]
     [FiniteDimensional K X] (t T : Module.End K X) (_ : Commute t T) (_ : t ^ (n + 1) = 0)
     (_ : ∀ x, t x = 0 → x ∈ LinearMap.range (t ^ n))
@@ -108,6 +144,9 @@ theorem charpoly_eq_quotient_charpoly_pow_succ (K : Type) [Field K] : ∀ (n : �
         exact Subtype.ext (hcomm x)
     rw [hmain, ih Y t' T' hc' he' hk' hT', ← hq, ← pow_succ]
 
+/- English proof (translation)
+Introduce `K _ X _ _ _ t T hc e he0 he hk hT`. Take `⟨n, rfl⟩` from `Nat.exists_eq_succ_of_ne_zero he0.ne'`. Conclude with `charpoly_eq_quotient_charpoly_pow_succ K n X t T hc he (by simpa using hk) hT`.
+-/
 theorem charpoly_eq_charpoly_mapQ_pow : ∀ (K : Type) [Field K] (X : Type) [AddCommGroup X] [Module K X]
     [FiniteDimensional K X]
     (t T : Module.End K X) (_ : Commute t T) (e : ℕ) (_ : 0 < e) (_ : t ^ e = 0)

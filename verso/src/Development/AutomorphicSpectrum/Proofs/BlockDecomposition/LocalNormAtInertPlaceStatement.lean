@@ -13,6 +13,9 @@ open GroundTheory.Global.AdicLiesOver
 open GlobalTheory.CompanionTheory.FexTheta
 
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.CompanionTheory.FexTheta.local_norm_eq_of_unique_place | exact GlobalTheory.CompanionTheory.FexTheta.local_norm_eq_of_unique_place | (intros; apply GlobalTheory.CompanionTheory.FexTheta.local_norm_eq_of_unique_place <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.local_norm_at_inert_place : ∀ (K : Type) [Field K] [NumberField K], Module.finrank ℚ K = 2 → ∀ (v : Pl) (w : PlK K) [w.asIdeal.LiesOver v.asIdeal],
   (∀ w' : PlK K, w'.asIdeal.LiesOver v.asIdeal → w' = w) → ∀ ξ : K,
     Algebra.norm (Qv v) (algebraMap K (Kv K w) ξ) = ((Algebra.norm ℚ ξ : ℚ) : Qv v) := by

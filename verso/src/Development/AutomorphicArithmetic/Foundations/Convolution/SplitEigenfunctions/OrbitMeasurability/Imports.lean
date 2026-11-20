@@ -12,6 +12,25 @@ open UpperTheory.ConvolutionTheory.R2 UpperTheory.ConvolutionTheory.R2.Ff UpperT
 open scoped Classical
 open scoped ENNReal NNReal
 
+/- English proof (translation)
+Introduce `M μ _ Φ hΦ h0`. Take `⟨U⟩` from `UpperTheory.ConvolutionTheory.RankTwoDescent.uMeasEx_of`. Use `haveI := M.haar`. Establish `hemb : MeasurableEmbedding pm` using `UpperTheory.isOpenEmbedding_projection.measurableEmbedding`. Use `set F : Set GG := pm '' (M.D ×ˢ Set.univ) with hFdef`.
+
+Establish `hF : IsFundamentalDomain Ga F μ` using `UpperTheory.isFundamentalDomain_image_sl2Domain_prod_ideles M U μ`. Establish `hFm : MeasurableSet F` using `hemb.measurableSet_image.2 (M.meas.prod MeasurableSet.univ)`. Establish `hinv : ∀ (γ : Ga) (x : GG), Φ ((γ • x : GG) : GL (Fin 2) (A ℚ)) = Φ (x : GL (Fin 2) (A ℚ))`. Introduce `γ x`. Choose the witnesses or unpack the hypotheses as in `⟨r, hr⟩ : ∃ r : GL (Fin 2) ℚ, ratGL ℚ 2 r = ((γ : GG) : GL (Fin 2) (A ℚ)) := by`.
+
+Take `⟨r, hr⟩` from `γ.2`. Conclude with `⟨r, hr⟩`. Use `hΦ.left r (x : GL (Fin 2) (A ℚ))` as an intermediate fact. Rewrite `this` using `[hr]`. Conclude with `this`.
+
+Set `Φq : GroundTheory.Automorphic.RightCosetSpace Ga → ℂ` to `fun y => Φ ((Quotient.out y : GG) : GL (Fin 2) (A ℚ))`. Establish `hq : ∀ x : GG, Φq (GroundTheory.Automorphic.RightCosetSpace.mk Ga x) = Φ (x : GL (Fin 2) (A ℚ))`. Introduce `x`. Establish `h : GroundTheory.Automorphic.RightCosetSpace.mk Ga (Quotient.out (GroundTheory.Automorphic.RightCosetSpace.mk Ga x)) = GroundTheory.Automorphic.RightCosetSpace.mk Ga x` using `Quotient.out_eq _`. Take `⟨γ, hγ⟩` from `GroundTheory.Automorphic.RightCosetSpace.mk_eq_mk_iff.1 h`.
+
+Express the relevant statement in the definitionally equal form `Φ ((Quotient.out (GroundTheory.Automorphic.RightCosetSpace.mk Ga x) : GG) : GL (Fin 2) (A ℚ)) = _`. Rewrite using `[← hγ, hinv]`. Establish `hqc : Continuous Φq`. Use `(GroundTheory.Automorphic.RightCosetSpace.isOpenQuotientMap_mk (Γ := Ga)).isQuotientMap.continuous_iff.2 ?_` and prove the remaining obligations. Establish `: Φq ∘ GroundTheory.Automorphic.RightCosetSpace.mk Ga = fun x : GG => Φ (x : GL (Fin 2) (A ℚ))` using `funext hq`.
+
+Rewrite using `[this]`. Conclude with `hΦ.cont.comp continuous_subtype_val`. Express the relevant statement in the definitionally equal form `∫ y, Φq y ∂(GroundTheory.Automorphic.RightCosetSpace.quotientMeasure Ga μ) = 0`. Rewrite using `[← GroundTheory.Automorphic.RightCosetSpace.map_restrict_eq_quotientMeasure μ hF, integral_map (GroundTheory.Automorphic.RightCosetSpace.measurable_mk Ga).aemeasurable hqc.aestronglyMeasurable]`. Simplify using `only [hq]`.
+
+Take `⟨c, hc⟩` from `UpperTheory.exists_haar_restrict_range_sl2IdeleMap_eq_smul_prod M U μ`. Establish `hFR : F ⊆ Set.range pm` using `Set.image_subset_range _ _`. Establish `hres : μ.restrict F = (c • (M.μ.prod (us U)).map pm).restrict F`. Rewrite using `[← hc, Measure.restrict_restrict hFm, Set.inter_eq_self_of_subset_left hFR]`. Rewrite using `[hres, Measure.restrict_smul, integral_smul_nnreal_measure, hemb.setIntegral_map]`.
+
+Establish `hpre : pm ⁻¹' F = M.D ×ˢ Set.univ` using `hemb.injective.preimage_image _`. Establish `hr : (M.μ.prod (us U)).restrict (M.D ×ˢ Set.univ) = (M.μ.restrict M.D).prod (us U)`. Rewrite using `[← Measure.prod_restrict, Measure.restrict_univ]`. Rewrite using `[hpre, hr]`. Distinguish the cases in `hi : Integrable (fun x : G1 ℚ × US => Φ (pm x : GL (Fin 2) (A ℚ))) ((M.μ.restrict M.D).prod (us U))`.
+
+Rewrite using `[integral_prod_symm _ hi]`. Establish `: ∀ t : US, ∫ g in M.D, Φ (pm (g, t) : GL (Fin 2) (A ℚ)) ∂M.μ = 0` using `fun t => h0 t t.2`. Simplify using `[this]`. Rewrite using `[integral_undef hi, smul_zero]`.
+-/
 theorem UpperTheory.ConvolutionTheory.RankTwoDescent.Cp.fibre :
     UpperTheory.ConvolutionTheory.RankTwoDescent.Cp.Fibre := by
   intro M μ _ Φ hΦ h0

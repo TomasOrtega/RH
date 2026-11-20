@@ -5,6 +5,9 @@ import Development.AbelianVarietyTheory.Proofs.DivisorProofs.HaarMeasureIwasawaQ
 open MeasureTheory
 open scoped NNReal ENNReal
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.IwasawaAE.lintegral_mul_right_eq_of_equivariant | exact GlobalTheory.IwasawaAE.lintegral_mul_right_eq_of_equivariant | (intros; apply GlobalTheory.IwasawaAE.lintegral_mul_right_eq_of_equivariant <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.iwasawa_averaging_integral_formula : ∀ (G : Type) [Group G] [TopologicalSpace G] [IsTopologicalGroup G] [LocallyCompactSpace G]
     [SecondCountableTopology G] [T2Space G] [MeasurableSpace G] [BorelSpace G] (P K : Subgroup G) (μG : Measure G) (μP : Measure P) (μK : Measure K) (δ : P → ℝ≥0) (b : G → ℝ≥0∞),
     IsClosed (P : Set G) → IsCompact (K : Set G) → μG.IsHaarMeasure → μP.IsHaarMeasure → μK.IsHaarMeasure →

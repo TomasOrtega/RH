@@ -18,6 +18,17 @@ namespace GlobalTheory.RatioExt
 
 open GlobalTheory.SecRingIso GlobalTheory.FieldBaseChange ReciprocityTheory.ChartRestriction.G.DVR
 
+/- English proof (translation)
+Introduce `n hn a b z`. Use `⟨?_, fun j j' _ hj hj' => h n hn a b z j j' hj hj'⟩` and prove the remaining obligations. Establish `hk : 1 ≤ n * (3 + 1)` using `by omega`. Take `⟨d, hd, -⟩` from `presMul_refl.exists_pow hn b 3 _ hk rfl`. Take `⟨c, hcφ⟩` from `hc (n * (3 + 1)) (by omega) (φ z)`.
+
+Take `⟨c', hcψ⟩` from `hc (n * (3 + 1)) (by omega) (ψ z)`. Take `⟨j, hj⟩` from `exists_ch hcφ`. Take `⟨j', hj'⟩` from `exists_ch hcψ`. Use `show φ z ∈ nonzeroLocus b ↔ ψ z ∈ nonzeroLocus b`. Rewrite using `[mem_iff b φ z hj, mem_iff b ψ z hj']`.
+
+Prove the components needed by the constructor for the conclusion. Introduce `hb`. Establish `e` using `h _ hk d c' z j j' hj hj'`. Rewrite `e` using `[sv_pow hd φ z hj, sv_pow hd ψ z hj']`. Establish `u` using `(hb.pow (3 + 1)).mul ((mem_iff c' ψ z hj').1 hcψ)`.
+
+Rewrite `u` using `[e]`. Conclude with `isUnit_pow_succ_iff.1 (isUnit_of_mul_isUnit_right u)`. Introduce `hb`. Establish `e` using `h _ hk c d z j j' hj hj'`. Rewrite `e` using `[sv_pow hd φ z hj, sv_pow hd ψ z hj']`.
+
+Establish `u` using `((mem_iff c φ z hj).1 hcφ).mul (hb.pow (3 + 1))`. Rewrite `u` using `[e]`. Conclude with `isUnit_pow_succ_iff.1 (isUnit_of_mul_isUnit_left u)`.
+-/
 theorem corresp_refl {X Z : Scheme.{0}} {L : LB X} {φ ψ : Z ⟶ X}
     (hc : ∀ N : ℕ, 4 ≤ N → ∀ x : X, ∃ s : H0 L N, x ∈ nonzeroLocus s)
     (h : ∀ n : ℕ, 1 ≤ n → ∀ (a b : H0 L n) (z : Z) (j j' : Fin 1 → L.ι), φ z ∈ ch L j → ψ z ∈ ch L j' →
@@ -51,6 +62,11 @@ variable {R : Type} [CommRing R] [IsDomain R] {I : Ideal R} {D : DegData R I}
   {A : PolAV (Spec (CommRingCat.of (FractionRing R)))} {G : Over (Spec (CommRingCat.of R))}
   [GrpObj G] [IsCommMonObj G]
 
+/- English proof (translation)
+Take `⟨s, hs⟩` from `exists_move A.isLB U.LG.isLB hw (𝟙 _) (n : ℤ) (g₁ := 𝟙 A.A.left) U.gen.hom.left ((Category.comp_id _).trans (Category.id_comp _).symm) (g₂ := pullback.fst G.hom (jK R)) (Category.id_comp _).symm a`. Take `⟨F, ⟨r, hr, σ, -, h₁, -⟩, -⟩` from `(U.expand n hn).1 s`. Use `⟨r, σ, hr, fun Z f z i j hi hj => ?_⟩` and prove the remaining obligations. Take `⟨J, hJ, e⟩` from `exists_good U.LG.L U.LG.isLB z (fun _ : Unit => f ≫ pullback.fst G.hom (jK R)) (fun _ => i) (fun _ _ _ => rfl) (fun _ => hi)`. Establish `e₁` using `ExpInt.secScal_sval h₁ f z hJ`.
+
+Rewrite `e₁` using `[sval_eq_powVal, sval_eq_powVal, Category.comp_id, e (), ExpInt.gs_scal, hs Z f z i j hi hj, Category.comp_id, ← Category.assoc]`. Conclude with `e₁`.
+-/
 theorem exists_integral (U : Unif I D A G)
     {w : LB.Iso (A.L.pull U.gen.hom.left) (U.LG.L.pull (pullback.fst G.hom (jK R)))} (hw : w.IsGen)
     {n : ℕ} (hn : 1 ≤ n) (a : H0 A.L n) : ∃ (r : R) (σ : H0 U.LG.L n), r ≠ 0 ∧
@@ -77,6 +93,21 @@ namespace GlobalTheory
 
 open GlobalTheory.SecRingIso GlobalTheory.FieldBaseChange ReciprocityTheory.ChartRestriction.G.DVR GlobalTheory.RatioExt in
 
+/- English proof (translation)
+Introduce `hL R _ _ I D A G _ _ U P hP Z f₁ f₂ hK h`. Take `⟨w, hw⟩` from `U.ext`. Establish `key : ∀ n : ℕ, 1 ≤ n → ∀ a : H0 A.L n, ∃ (r : R) (σ : H0 U.LG.L n), r ≠ 0 ∧ P n σ ∧ ∀ (f : Z ⟶ ((Over.pullback (jK R)).obj G).left) (z : Z) (i : U.LG.L.ι) (j : Fin 1 → A.L.ι), (f ≫ pullback.fst G.hom (jK R)) z ∈ U.LG.L.U i → (f ≫ U.gen.hom.left) z ∈ ch A.L j → powVal σ (f ≫ pullb …` using `fun n hn a => by`. Take `⟨r, σ₀, hr, H⟩` from `exists_integral U hw hn a`. Take `⟨c, σ, hc, hσ, hPσ⟩` from `hP n hn σ₀`.
+
+Use `⟨c * r, σ, mul_ne_zero hc hr, hPσ, fun f z i j hi hj => ?_⟩` and prove the remaining obligations. Take `⟨j, rfl⟩ : ∃ i, j = fun _ => i` from `⟨j 0, funext fun t => congrArg j (Subsingleton.elim _ _)⟩`. Establish `e₁` using `H Z f z i j hi (mem_wchart.1 hj 0)`. Establish `e₂ : powVal σ (f ≫ pullback.fst G.hom (jK R)) z i = cst ((f ≫ pullback.fst G.hom (jK R)) ≫ G.hom) z c * powVal σ₀ (f ≫ pullback.fst G.hom (jK R)) z i` using `secIsMul_gs (p := G.hom) (a := c) hσ _ z _ (mem_wchart.2 fun _ => hi)`. Rewrite `e₂` using `[Category.assoc, pullback.condition, ← Category.assoc]`.
+
+Rewrite using `[e₂, e₁, H1.cst_mul, _root_.mul_assoc]`. Both sides reduce to the same expression. Use `A.isAb.proper` as an intermediate fact. Establish `: CompactSpace A.A.left` using `QuasiCompact.compactSpace_of_compactSpace A.A.hom`. Establish `: QuasiSeparatedSpace A.A.left` using `quasiSeparatedSpace_of_quasiSeparated A.A.hom`.
+
+Establish `hc` using `fun N hN => (polAV_nonzeroLocus_cover_affine hL.ample A (N := N) hN).1`. Establish `h₁ : Corresp (L` using `A.L) (L' := A.L) (fun _ _ => Equiv.refl _) (f₁ ≫ U.gen.hom.left) (f₂ ≫ U.gen.hom.left) := by`. Use `corresp_refl hc fun n hn a b z j j' hj hj' => ?_` and prove the remaining obligations. Take `⟨i₁, i₂, m₁, m₂, H⟩` from `h z`. Take `⟨r, σ, hr, hσ, Hσ⟩` from `key n hn a`.
+
+Take `⟨s, τ, hs, hτ, Hτ⟩` from `key n hn b`. Establish `e : powVal σ (f₁ ≫ pullback.fst G.hom (jK R)) z i₁ * powVal τ (f₂ ≫ pullback.fst G.hom (jK R)) z i₂ = powVal τ (f₁ ≫ pullback.fst G.hom (jK R)) z i₁ * powVal σ (f₂ ≫ pullback.fst G.hom (jK R)) z i₂` using `H n hn σ τ hσ hτ`. Rewrite `e` using `[Hσ f₁ z i₁ j m₁ hj, Hσ f₂ z i₂ j' m₂ hj', Hτ f₁ z i₁ j m₁ hj, Hτ f₂ z i₂ j' m₂ hj', hK]`. Use `((((ExpInt.isUnit_cst (f₂ ≫ pullback.snd G.hom (jK R)) z hr).mul (ExpInt.isUnit_cst (f₂ ≫ pullback.snd G.hom (jK R)) z hs)).mul (isoVal w f₁ z i₁ (j 0) ^ (n : ℤ)).isUnit).mul (isoVal w f₂ z i₂ (j' 0) ^ (n : ℤ)).isUnit).mul_left_cancel ?_` and prove the remaining obligations. Take the linear combination `e`.
+
+Establish `h₂ : Corresp (L` using `A.L) (L' := A.L) (fun _ _ => Equiv.refl _) (f₂ ≫ U.gen.hom.left) (f₂ ≫ U.gen.hom.left) := corresp_refl hc fun n hn a b z j j' hj hj' => by`. Use `(congrArg₂ (· * ·) (sec_trans a _ z hj hj') rfl).trans (Eq.trans ?_ (congrArg₂ (· * ·) (sec_trans b _ z hj hj') rfl).symm)` and prove the remaining obligations. Conclude with `(mul_right_comm _ _ _)`. Establish `e` using `h₁.unique A.isLB h₂ (n := 4) (by norm_num) id (top_le_iff.1 fun x _ => TopologicalSpace.Opens.mem_iSup.2 (hc 4 le_rfl x)) (polAV_nonzeroLocus_cover_affine hL.ample A le_rfl).2`. Establish `: IsIso U.gen.hom.left` using `inferInstanceAs (IsIso ((Over.forget _).map U.gen.hom))`.
+
+Conclude with `(cancel_mono _).1 e`.
+-/
 theorem hom_ext_of_integral_ratios : Laws → ∀ (R : Type) [CommRing R] [IsDomain R] (I : Ideal R) (D : DegData R I) (A : PolAV (Spec (CommRingCat.of (FractionRing R)))) (G : Over (Spec (CommRingCat.of R))) [GrpObj G] [IsCommMonObj G] (U : Unif I D A G) (P : ∀ k : ℕ, H0 U.LG.L k → Prop), (∀ k : ℕ, 1 ≤ k → ∀ σ₀ : H0 U.LG.L k, ∃ (c : R) (σ : H0 U.LG.L k), c ≠ 0 ∧ (∀ i, σ.f i = resTop _ (scal G.hom c) * σ₀.f i) ∧ P k σ) → ∀ (Z : Scheme.{0}) (f₁ f₂ : Z ⟶ ((Over.pullback (jK R)).obj G).left), f₁ ≫ pullback.snd G.hom (jK R) = f₂ ≫ pullback.snd G.hom (jK R) → (∀ z : Z, ∃ i₁ i₂ : U.LG.L.ι, (f₁ ≫ pullback.fst G.hom (jK R)) z ∈ U.LG.L.U i₁ ∧ (f₂ ≫ pullback.fst G.hom (jK R)) z ∈ U.LG.L.U i₂ ∧ ∀ k : ℕ, 1 ≤ k → ∀ σ τ : H0 U.LG.L k, P k σ → P k τ → gs (f₁ ≫ pullback.fst G.hom (jK R)) z (LB.wchart U.LG.L (fun _ : Fin 1 => 𝟙 G.left) (fun _ => i₁)) (σ.f (fun _ => i₁)) * gs (f₂ ≫ pullback.fst G.hom (jK R)) z (LB.wchart U.LG.L (fun _ : Fin 1 => 𝟙 G.left) (fun _ => i₂)) (τ.f (fun _ => i₂)) = gs (f₁ ≫ pullback.fst G.hom (jK R)) z (LB.wchart U.LG.L (fun _ : Fin 1 => 𝟙 G.left) (fun _ => i₁)) (τ.f (fun _ => i₁)) * gs (f₂ ≫ pullback.fst G.hom (jK R)) z (LB.wchart U.LG.L (fun _ : Fin 1 => 𝟙 G.left) (fun _ => i₂)) (σ.f (fun _ => i₂))) → f₁ = f₂ := by
   intro hL R _ _ I D A G _ _ U P hP Z f₁ f₂ hK h
   obtain ⟨w, hw⟩ := U.ext

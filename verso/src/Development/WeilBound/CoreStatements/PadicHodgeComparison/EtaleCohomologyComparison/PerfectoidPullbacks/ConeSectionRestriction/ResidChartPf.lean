@@ -12,6 +12,25 @@ open Polynomial
 
 variable {K : Type} [Field K] {R : Type} [CommRing R] [IsDomain R] [Algebra K R]
 
+/- English proof (translation)
+Take `⟨p, hpm, hp⟩` from `hg`. Establish `hmono : ∀ (x : R) (n m : ℕ), n ≤ m → w ^ n * x ∈ A → w ^ m * x ∈ A`. Introduce `x n m hnm hx`. Establish `: w ^ m * x = w ^ (m - n) * (w ^ n * x)`. Rewrite using `[← mul_assoc, ← pow_add, Nat.sub_add_cancel hnm]`.
+
+Rewrite using `[this]`. Conclude with `A.mul_mem (A.pow_mem hwA _) hx`. Establish `hc : ∀ i : ℕ, ∃ n : ℕ, w ^ n * ((p.coeff i : T) : R) ∈ A` using `fun i => hscale _ (p.coeff i).2`. Use `choose n hn using hc`. Use `set N : ℕ := ∑ i ∈ Finset.range (p.natDegree + 1), n i with hN`.
+
+Establish `hcN : ∀ i ≤ p.natDegree, w ^ N * ((p.coeff i : T) : R) ∈ A`. Introduce `i hi`. Use `hmono _ (n i) N ?_ (hn i)` and prove the remaining obligations. Conclude with `Finset.single_le_sum (f := n) (fun _ _ => Nat.zero_le _) (Finset.mem_range.2 (Nat.lt_succ_of_le hi))`. Use `set P : R[X] := p.map (algebraMap T R) with hP`.
+
+Establish `hPm : P.Monic` using `hpm.map _`. Establish `hPdeg : P.natDegree = p.natDegree` using `hpm.natDegree_map _`. Establish `hPcoeff : ∀ i, P.coeff i = ((p.coeff i : T) : R)` using `fun i => by`. Rewrite using `[hP, coeff_map]`. Both sides reduce to the same expression.
+
+Use `set Q : R[X] := P.scaleRoots (w ^ N) with hQ`. Establish `hQm : Q.Monic` using `(monic_scaleRoots_iff _).2 hPm`. Establish `hQlift : Q ∈ lifts (algebraMap A R)`. Rewrite using `[lifts_iff_coeff_lifts]`. Introduce `i`.
+
+Establish `hmem : Q.coeff i ∈ A`. Rewrite using `[hQ, coeff_scaleRoots, hPdeg, hPcoeff]`. Break down `lt_trichotomy i p.natDegree with hlt | heq | hgt` into its components or cases. Establish `h1 : (w ^ N) ^ (p.natDegree - i) = (w ^ N) ^ (p.natDegree - i - 1) * w ^ N`. Rewrite using `[← pow_succ]`.
+
+Use `congr 1`. Use linear arithmetic over natural numbers and integers. Rewrite using `[h1, mul_comm, mul_assoc]`. Conclude with `A.mul_mem (A.pow_mem (A.pow_mem hwA _) _) (hcN i hlt.le)`. Substitute `heq` using the available equality.
+
+Establish `: p.coeff p.natDegree = 1` using `hpm.coeff_natDegree`. Rewrite using `[this, Nat.sub_self, pow_zero, mul_one]`. Conclude with `A.one_mem`. Rewrite using `[coeff_eq_zero_of_natDegree_lt hgt]`. Simplify using `only [ZeroMemClass.coe_zero, zero_mul]`.
+
+Conclude with `A.zero_mem`. Conclude with `⟨⟨_, hmem⟩, rfl⟩`. Take `⟨q, hqQ, -, hqm⟩` from `lifts_and_degree_eq_and_monic hQlift hQm`. Use `⟨N, q, hqm, ?_⟩` and prove the remaining obligations. Rewrite using `[← eval_map, hqQ, hQ, scaleRoots_eval_mul, hP, eval_map, hp, mul_zero]`.
+-/
 theorem chart_ext_scale (A T : Subalgebra K R) (w : R) (hwA : w ∈ A)
     (hscale : ∀ x ∈ T, ∃ N : ℕ, w ^ N * x ∈ A) (g : R) (hg : IsIntegral T g) :
     ∃ N : ℕ, IsIntegral A (w ^ N * g) := by
@@ -60,6 +79,39 @@ theorem chart_ext_scale (A T : Subalgebra K R) (w : R) (hwA : w ∈ A)
   refine ⟨N, q, hqm, ?_⟩
   rw [← eval_map, hqQ, hQ, scaleRoots_eval_mul, hP, eval_map, hp, mul_zero]
 
+/- English proof (translation)
+Take `⟨t, ht⟩` from `hB0FG`. Take `⟨s, hs⟩` from `hBuFG`. Establish `hkey : ∀ g : R, ∃ N : ℕ, g ∈ Bu → IsIntegral A (w ^ N * g)`. Introduce `g`. Distinguish the cases in `hg : g ∈ Bu`.
+
+Take `⟨N, hN⟩` from `chart_ext_scale A T w hwA hscale g (hBuInt g hg)`. Conclude with `⟨N, fun _ => hN⟩`. Conclude with `⟨0, fun h => absurd h hg⟩`. Use `choose N hN using hkey`. Use `set u : Finset R := t ∪ s.image (fun g => w ^ N g * g) with hu`.
+
+Use `set B' : Subalgebra K R := Algebra.adjoin K (u : Set R) with hB'`. Establish `htB' : B0 ≤ B'`. Rewrite using `[← ht, hB']`. Conclude with `Algebra.adjoin_mono (by rw [hu, Finset.coe_union]; exact Set.subset_union_left)`. Establish `hwB' : w ∈ B'` using `htB' (hAB0 hwA)`.
+
+Establish `hgen : ∀ g ∈ s, w ^ N g * g ∈ B'`. Introduce `g hg`. Apply `Algebra.subset_adjoin` to reduce the goal to its premises. Rewrite using `[hu, Finset.coe_union]`. Conclude with `Or.inr (Finset.mem_coe.2 (Finset.mem_image_of_mem _ hg))`.
+
+Establish `hsBu : ∀ g ∈ s, g ∈ Bu` using `fun g hg => by`. Rewrite using `[← hs]`. Conclude with `Algebra.subset_adjoin (Finset.mem_coe.2 hg)`. Establish `hpow : ∀ b ∈ Bu, ∃ L : ℕ, w ^ L * b ∈ B'`. Introduce `b hb`.
+
+Rewrite `hb` using `[← hs]`. Proceed by induction on `hb using Algebra.adjoin_induction with`. Consider the case `mem x hx => exact ⟨N x, hgen x (Finset.mem_coe.1 hx)⟩`. Consider the case `algebraMap k => exact ⟨0, by rw [pow_zero, one_mul]; exact B'.algebraMap_mem k⟩`. Consider the case `add x y _ _ ihx ihy`.
+
+Take `⟨L1, h1⟩` from `ihx`. Take `⟨L2, h2⟩` from `ihy`. Use `⟨L1 + L2, ?_⟩` and prove the remaining obligations. Establish `: w ^ (L1 + L2) * (x + y) = w ^ L2 * (w ^ L1 * x) + w ^ L1 * (w ^ L2 * y)` using `by ring`. Rewrite using `[this]`.
+
+Conclude with `B'.add_mem (B'.mul_mem (B'.pow_mem hwB' _) h1) (B'.mul_mem (B'.pow_mem hwB' _) h2)`. Consider the case `mul x y _ _ ihx ihy`. Take `⟨L1, h1⟩` from `ihx`. Take `⟨L2, h2⟩` from `ihy`. Use `⟨L1 + L2, ?_⟩` and prove the remaining obligations.
+
+Establish `: w ^ (L1 + L2) * (x * y) = (w ^ L1 * x) * (w ^ L2 * y)` using `by ring`. Rewrite using `[this]`. Conclude with `B'.mul_mem h1 h2`. Use `⟨B', htB', ⟨u, hB'.symm⟩, ?_, ?_⟩` and prove the remaining obligations. Introduce `b hb`.
+
+Rewrite `hb` using `[hB']`. Proceed by induction on `hb using Algebra.adjoin_induction with`. Consider the case `mem x hx`. Rewrite `hx` using `[hu, Finset.coe_union]`. Break down `hx with hx | hx` into its components or cases.
+
+Apply `hB0Int` to reduce the goal to its premises. Rewrite using `[← ht]`. Conclude with `Algebra.subset_adjoin hx`. Take `⟨g, hg, rfl⟩` from `Finset.mem_image.1 (Finset.mem_coe.1 hx)`. Conclude with `hN g (hsBu g hg)`.
+
+Consider the case `algebraMap k`. Establish `hk : algebraMap K R k ∈ A` using `A.algebraMap_mem k`. Establish `: algebraMap K R k = algebraMap A R ⟨_, hk⟩` using `rfl`. Rewrite using `[this]`. Conclude with `isIntegral_algebraMap`.
+
+Consider the case `add x y _ _ ihx ihy => exact ihx.add ihy`. Consider the case `mul x y _ _ ihx ihy => exact ihx.mul ihy`. Introduce `r`. Take `⟨b, hb, b', hb', hb'0, hrb⟩` from `hFrac r`. Take `⟨L1, h1⟩` from `hpow b hb`.
+
+Take `⟨L2, h2⟩` from `hpow b' hb'`. Use `⟨w ^ (L1 + L2) * b, ?_, w ^ (L1 + L2) * b', ?_, ?_, ?_⟩` and prove the remaining obligations. Establish `: w ^ (L1 + L2) * b = w ^ L2 * (w ^ L1 * b)` using `by ring`. Rewrite using `[this]`. Conclude with `B'.mul_mem (B'.pow_mem hwB' _) h1`.
+
+Establish `: w ^ (L1 + L2) * b' = w ^ L1 * (w ^ L2 * b')` using `by ring`. Rewrite using `[this]`. Conclude with `B'.mul_mem (B'.pow_mem hwB' _) h2`. Conclude with `mul_ne_zero (pow_ne_zero _ hw0) hb'0`. Rewrite using `[← hrb]`.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem chart_ext_pf (A T B0 Bu : Subalgebra K R) (hAT : A ≤ T) (hAB0 : A ≤ B0) (hB0 : B0 ≤ Bu) (hTBu : T ≤ Bu)
     (hB0FG : B0.FG) (hB0Int : ∀ b ∈ B0, IsIntegral A b) (hBuFG : Bu.FG) (hBuInt : ∀ b ∈ Bu, IsIntegral T b)
     (hFrac : ∀ r : R, ∃ b ∈ Bu, ∃ b' ∈ Bu, b' ≠ 0 ∧ r * b' = b)

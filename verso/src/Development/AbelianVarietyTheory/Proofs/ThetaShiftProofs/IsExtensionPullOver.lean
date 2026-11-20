@@ -20,25 +20,40 @@ def constHom (π : Y ⟶ Spec (CommRingCat.of R)) (U : Y.Opens) : R →+* Γ(Y, 
   ((Y.presheaf.map (homOfLE le_top).op).hom.comp π.appTop.hom).comp
     (Scheme.ΓSpecIso (CommRingCat.of R)).inv.hom
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem constHom_apply (π : Y ⟶ Spec (CommRingCat.of R)) (U : Y.Opens) (c : R) :
     constHom π U c = resTop U (scal π c) := rfl
 
 def constVal (π : Z ⟶ Spec (CommRingCat.of R)) (z : Z) (c : R) : Z.presheaf.stalk z :=
   gs π z ⊤ ((Scheme.ΓSpecIso (CommRingCat.of R)).inv.hom c)
 
+/- English proof (translation)
+The claim follows from `gs_pull r π z ⊤ trivial _`.
+-/
 theorem gs_scal (π : Y ⟶ Spec (CommRingCat.of R)) (r : Z ⟶ Y) (z : Z) (c : R) :
     gs r z ⊤ (scal π c) = constVal (r ≫ π) z c := gs_pull r π z ⊤ trivial _
 
+/- English proof (translation)
+The claim follows from `(gs_res r z le_top h _).trans (gs_scal π r z c)`.
+-/
 theorem gs_const (π : Y ⟶ Spec (CommRingCat.of R)) (r : Z ⟶ Y) (z : Z) (U : Y.Opens) (h : r z ∈ U) (c : R) :
     gs r z U (resTop U (scal π c)) = constVal (r ≫ π) z c :=
   (gs_res r z le_top h _).trans (gs_scal π r z c)
 
+/- English proof (translation)
+Use `(gs_pull π (Spec.map (CommRingCat.ofHom φ)) z ⊤ trivial _).symm.trans (congrArg (gs π z ⊤) ?_)` and prove the remaining obligations. Use `congrArg (fun q => q.hom c) (Scheme.ΓSpecIso_inv_naturality (CommRingCat.ofHom φ))` as an intermediate fact. Conclude with `this.symm`.
+-/
 theorem constVal_specMap (π : Z ⟶ Spec (CommRingCat.of R')) (φ : R →+* R') (z : Z) (c : R) :
     constVal (π ≫ Spec.map (CommRingCat.ofHom φ)) z c = constVal π z (φ c) := by
   refine (gs_pull π (Spec.map (CommRingCat.ofHom φ)) z ⊤ trivial _).symm.trans (congrArg (gs π z ⊤) ?_)
   have := congrArg (fun q => q.hom c) (Scheme.ΓSpecIso_inv_naturality (CommRingCat.ofHom φ))
   exact this.symm
 
+/- English proof (translation)
+Simplify using `only [gs_eq r z U h, map_zero]`.
+-/
 theorem gs_zero' (r : Z ⟶ Y) (z : Z) (U : Y.Opens) (h : r z ∈ U) : gs r z U 0 = 0 := by
   simp only [gs_eq r z U h, map_zero]
 
@@ -50,6 +65,9 @@ instance (π : Y ⟶ Spec (CommRingCat.of R)) (U : Y.Opens) : CommRing (FnOver �
 instance (π : Y ⟶ Spec (CommRingCat.of R)) (U : Y.Opens) : Algebra R (FnOver π U) :=
   (constHom π U).toAlgebra
 
+/- English proof (translation)
+The claim follows from `(gs_mul r z U h _ _).trans (congrArg (· * _) (gs_const π r z U h c))`.
+-/
 theorem gs_smul (π : Y ⟶ Spec (CommRingCat.of R)) (r : Z ⟶ Y) (z : Z) (U : Y.Opens) (h : r z ∈ U) (c : R)
     (a : FnOver π U) : gs r z U (c • a : FnOver π U) = constVal (r ≫ π) z c * gs r z U a :=
   (gs_mul r z U h _ _).trans (congrArg (· * _) (gs_const π r z U h c))
@@ -66,6 +84,9 @@ def pullFn {π : Y ⟶ Spec (CommRingCat.of R)} {π' : Y' ⟶ Spec (CommRingCat.
     rw [hp, constVal_specMap, Category.id_comp]
     exact congrArg _ (v a).symm
 
+/- English proof (translation)
+The claim follows from `(gs_res r z h hz _).trans (gs_pull r p z U (h hz) a)`.
+-/
 theorem gs_pullFn {π : Y ⟶ Spec (CommRingCat.of R)} {π' : Y' ⟶ Spec (CommRingCat.of R')} {φ : R →+* R'}
     {p : Y' ⟶ Y} (hp : p ≫ π = π' ≫ Spec.map (CommRingCat.ofHom φ)) {U : Y.Opens} {U' : Y'.Opens}
     (h : U' ≤ p ⁻¹ᵁ U) (a : FnOver π U) (r : Z ⟶ Y') (z : Z) (hz : r z ∈ U') :
@@ -96,6 +117,9 @@ instance : SMul R (SecOver π M) := ⟨fun c => SecOps.secScale (scal π c)⟩
 
 def chartFun (j : M.ι) (s : SecOver π M) : FnOver π (M.U j) := LB.Sec.f s j
 
+/- English proof (translation)
+The claim follows from `SecOps.sec_ext h`.
+-/
 theorem SecOver.ext {s t : SecOver π M} (h : ∀ j, chartFun π M j s = chartFun π M j t) : s = t :=
   SecOps.sec_ext h
 
@@ -128,16 +152,28 @@ section Val
 variable {z : Z} {J : (Z ⟶ X) → L.ι} (hJ : Good L z J) (r : Z ⟶ Y)
 include hJ
 
+/- English proof (translation)
+The claim follows from `gs_add r z _ (hJ.mem φ r) _ _`.
+-/
 theorem sval_add' (s t : SecOver π (LB.LinComb L φ ε)) :
     sval (s + t : SecOver π _) r z J = sval s r z J + sval t r z J := gs_add r z _ (hJ.mem φ r) _ _
 
+/- English proof (translation)
+The claim follows from `gs_smul π r z _ (hJ.mem φ r) c _`.
+-/
 theorem sval_smul' (c : R) (s : SecOver π (LB.LinComb L φ ε)) :
     sval (c • s : SecOver π _) r z J = constVal (r ≫ π) z c * sval s r z J :=
   gs_smul π r z _ (hJ.mem φ r) c _
 
+/- English proof (translation)
+The claim follows from `(gs_eq r z _ (hJ.mem φ r) _).trans (by erw [map_zero, map_zero])`.
+-/
 theorem sval_zero' : sval (0 : SecOver π (LB.LinComb L φ ε)) r z J = 0 :=
   (gs_eq r z _ (hJ.mem φ r) _).trans (by erw [map_zero, map_zero])
 
+/- English proof (translation)
+Proceed by induction on `S using Finset.induction_on with`. Consider the case `empty => rw [Finset.sum_empty, Finset.sum_empty, sval_zero' hJ]`. Consider the case `insert a S ha ih => rw [Finset.sum_insert ha, Finset.sum_insert ha, sval_add' hJ, ih]`.
+-/
 theorem sval_sum' {I : Type} (S : Finset I) (s : I → SecOver π (LB.LinComb L φ ε)) :
     sval (∑ i ∈ S, s i : SecOver π _) r z J = ∑ i ∈ S, sval (s i) r z J := by
   classical
@@ -147,19 +183,31 @@ theorem sval_sum' {I : Type} (S : Finset I) (s : I → SecOver π (LB.LinComb L 
 
 end Val
 
+/- English proof (translation)
+The claim follows from `SecOps.sec_ext (sec_ext_val hL h)`.
+-/
 theorem sec_ext' (hL : L.IsLB) {s s' : LB.Sec (LB.LinComb L φ ε)}
     (h : ∀ y J, Good L y J → sval s (𝟙 Y) y J = sval s' (𝟙 Y) y J) : s = s' :=
   SecOps.sec_ext (sec_ext_val hL h)
 
+/- English proof (translation)
+The claim follows from `Set.mem_iInter`.
+-/
 theorem mem_wchart {j : K → L.ι} {y : Y} : y ∈ LB.wchart L φ j ↔ ∀ k, φ k y ∈ L.U (j k) :=
   Set.mem_iInter
 
+/- English proof (translation)
+Take `rfl : φ' = fun k => p ≫ φ k` from `funext hφ`. Use extensionality with `y`. Conclude with `(mem_wchart (φ := fun k => p ≫ φ k)).trans (mem_wchart (φ := φ) (y := p y)).symm`.
+-/
 theorem wchart_eq {φ' : K → (Y' ⟶ X)} {p : Y' ⟶ Y} (hφ : ∀ k, φ' k = p ≫ φ k) (j : K → L.ι) :
     LB.wchart L φ' j = p ⁻¹ᵁ LB.wchart L φ j := by
   obtain rfl : φ' = fun k => p ≫ φ k := funext hφ
   ext y
   exact (mem_wchart (φ := fun k => p ≫ φ k)).trans (mem_wchart (φ := φ) (y := p y)).symm
 
+/- English proof (translation)
+The claim follows from `Finset.prod_congr rfl fun k _ => by rw [hφ, Category.assoc]`.
+-/
 theorem trF_comp {φ' : K → (Y' ⟶ X)} {p : Y' ⟶ Y} (hφ : ∀ k, φ' k = p ≫ φ k) (r : Z ⟶ Y') (z : Z)
     (j j' : K → L.ι) : Geo.Tor.trF φ' ε r z j j' = Geo.Tor.trF φ ε (r ≫ p) z j j' :=
   Finset.prod_congr rfl fun k _ => by rw [hφ, Category.assoc]
@@ -182,11 +230,23 @@ def pullOver : SecOver π (LB.LinComb L φ ε) →ₛₗ[f] SecOver π' (LB.LinC
   map_add' s t := SecOver.ext _ _ fun j => map_add (pullFn hp (wchart_eq hφ j).le) _ _
   map_smul' c s := SecOver.ext _ _ fun j => map_smulₛₗ (pullFn hp (wchart_eq hφ j).le) _ _
 
+/- English proof (translation)
+Rewrite using `[sval_of s (r ≫ p) z J (fun k => J (r ≫ φ' k)) (fun k => by rw [hφ, Category.assoc])]`. Conclude with `gs_pullFn hp _ _ r z (hJ.mem φ' r)`.
+-/
 theorem sval_pullOver (s : SecOver π (LB.LinComb L φ ε)) (r : Z ⟶ Y') {z : Z} {J : (Z ⟶ X) → L.ι}
     (hJ : Good L z J) : sval (pullOver L ε hp hφ s) r z J = sval s (r ≫ p) z J := by
   rw [sval_of s (r ≫ p) z J (fun k => J (r ≫ φ' k)) (fun k => by rw [hφ, Category.assoc])]
   exact gs_pullFn hp _ _ r z (hJ.mem φ' r)
 
+/- English proof (translation)
+Establish `key : ∀ (y : Y') (j₁ : K' → L.ι) (j₂ : K → L.ι) (hm : y ∈ LB.wchart L φ₁ j₁ ⊓ LB.wchart L (fun k => h ≫ φ k) j₂) (a₂ : LB.wchart L φ₁ j₁ ⊓ LB.wchart L (fun k => h ≫ φ k) j₂ ≤ h ⁻¹ᵁ LB.wchart L φ j₂), gs (𝟙 Y') y _ (∑ i, resTop _ (c i) * (Y'.presheaf.map (homOfLE a₂).op).hom ((h.a …` using `fun y j₁ j₂ hm a₂ => by`. Use `((gs_eq _ y _ hm _).trans (by rw [map_sum, map_sum])).trans (Finset.sum_congr rfl fun i _ => (gs_eq _ y _ hm _).symm.trans ((gs_mul _ y _ hm _ _).trans (congrArg₂ (· * ·) (gs_res _ y _ hm _) ((gs_res _ y a₂ hm _).trans (gs_pull _ h y _ (a₂ hm) _)))))` and prove the remaining obligations. Prove the components needed by the constructor for the conclusion. Introduce `H y J hJ`. Simplify using `only [sval_of (s _) (𝟙 Y' ≫ h) y J (fun k => J (𝟙 Y' ≫ h ≫ φ k)) (fun k => by rw [Category.assoc])]`.
+
+Establish `hm : (𝟙 Y' : Y' ⟶ Y') y ∈ LB.wchart L φ₁ (fun k => J (𝟙 Y' ≫ φ₁ k)) ⊓ LB.wchart L (fun k => h ≫ φ k) (fun k => J (𝟙 Y' ≫ h ≫ φ k))` using `⟨hJ.mem φ₁ _, hJ.mem (fun k => h ≫ φ k) _⟩`. Establish `e` using `H (fun k => J (𝟙 Y' ≫ φ₁ k)) (fun k => J (𝟙 Y' ≫ h ≫ φ k)) (by`. Apply the tactic sequence `rintro (a | a) (b | b) e <;> exact congrArg (fun q => J (𝟙 Y' ≫ q)) e)`. Conclude with `(gs_res _ y _ hm _).symm.trans ((congrArg (gs (𝟙 Y') y _) e).trans (key y _ _ hm _))`. Introduce `H j₁ j₂ hc`.
+
+Use `fn_ext fun y hy => ?_` and prove the remaining obligations. Take `⟨J, hJ, e⟩` from `exists_good L hL y _ _ hc (by`. Introduce and unpack `(a | a)`. Use `exacts [Set.mem_iInter.1 hy.1 a, Set.mem_iInter.1 hy.2 a])`. Use `H y J hJ` as an intermediate fact.
+
+Rewrite `this` using `[sval_of s₁ _ y J j₁ (fun k => by rw [Category.id_comp]; exact e (.inl k))]`. Simplify using `only [sval_of (s _) (𝟙 Y' ≫ h) y J j₂ (fun k => by rw [Category.id_comp]; exact e (.inr k))] at this`. Conclude with `(gs_res _ y _ hy _).trans (this.trans (key y _ _ hy _).symm)`.
+-/
 theorem secLin_iff_val (hL : L.IsLB) {φ₁ : K' → (Y' ⟶ X)} {ε₁ : K' → ℤ} (s₁ : LB.Sec (LB.LinComb L φ₁ ε₁))
     {n : ℕ} (s : Fin n → LB.Sec (LB.LinComb L φ ε)) (h : Y' ⟶ Y) (c : Fin n → Γ(Y', ⊤)) :
     GeneratorPullback.SecLin L φ₁ ε₁ s₁ φ ε s h c ↔ ∀ y J, Good L y J →
@@ -219,6 +279,15 @@ theorem secLin_iff_val (hL : L.IsLB) {φ₁ : K' → (Y' ⟶ X)} {ε₁ : K' →
     simp only [sval_of (s _) (𝟙 Y' ≫ h) y J j₂ (fun k => by rw [Category.id_comp]; exact e (.inr k))] at this
     exact (gs_res _ y _ hy _).trans (this.trans (key y _ _ hy _).symm)
 
+/- English proof (translation)
+Establish `key : ∀ (y : Y') (j₁ : K' → L.ι) (j₂ : K → L.ι) (hm : y ∈ LB.wchart L φ₁ j₁ ⊓ LB.wchart L (fun k => h ≫ φ k) j₂) (a₁ : LB.wchart L φ₁ j₁ ⊓ LB.wchart L (fun k => h ≫ φ k) j₂ ≤ LB.wchart L φ₁ j₁) (a₂ : LB.wchart L φ₁ j₁ ⊓ LB.wchart L (fun k => h ≫ φ k) j₂ ≤ h ⁻¹ᵁ LB.wchart L φ j₂), …` using `fun y j₁ j₂ hm a₁ a₂ => ⟨(gs_res _ y a₂ hm _).trans (gs_pull _ h y _ (a₂ hm) _), (gs_mul _ y _ hm _ _).trans (congrArg₂ (· * ·) (gs_res _ y _ hm _) (gs_res _ y a₁ hm _))⟩`. Prove the components needed by the constructor for the conclusion. Introduce `H y J hJ`. Rewrite using `[sval_of s (𝟙 Y' ≫ h) y J (fun k => J (𝟙 Y' ≫ h ≫ φ k)) (fun k => by rw [Category.assoc])]`. Establish `hm : (𝟙 Y' : Y' ⟶ Y') y ∈ LB.wchart L φ₁ (fun k => J (𝟙 Y' ≫ φ₁ k)) ⊓ LB.wchart L (fun k => h ≫ φ k) (fun k => J (𝟙 Y' ≫ h ≫ φ k))` using `⟨hJ.mem φ₁ _, hJ.mem (fun k => h ≫ φ k) _⟩`.
+
+Establish `e` using `H (fun k => J (𝟙 Y' ≫ φ₁ k)) (fun k => J (𝟙 Y' ≫ h ≫ φ k)) (by`. Apply the tactic sequence `rintro (a | a) (b | b) e <;> exact congrArg (fun q => J (𝟙 Y' ≫ q)) e)`. Take `⟨k₁, k₂⟩` from `key y _ _ hm _ _`. Conclude with `k₁.symm.trans ((congrArg (gs (𝟙 Y') y _) e).trans k₂)`. Introduce `H j₁ j₂ hc`.
+
+Use `fn_ext fun y hy => ?_` and prove the remaining obligations. Take `⟨J, hJ, e⟩` from `exists_good L hL y _ _ hc (by`. Introduce and unpack `(a | a)`. Use `exacts [Set.mem_iInter.1 hy.1 a, Set.mem_iInter.1 hy.2 a])`. Use `H y J hJ` as an intermediate fact.
+
+Rewrite `this` using `[sval_of s₁ _ y J j₁ (fun k => by rw [Category.id_comp]; exact e (.inl k)), sval_of s _ y J j₂ (fun k => by rw [Category.id_comp]; exact e (.inr k))]`. Take `⟨k₁, k₂⟩` from `key y _ _ hy _ _`. Conclude with `k₁.trans (this.trans k₂.symm)`.
+-/
 theorem secScal_iff_val (hL : L.IsLB) {φ₁ : K' → (Y' ⟶ X)} {ε₁ : K' → ℤ} (s₁ : LB.Sec (LB.LinComb L φ₁ ε₁))
     (s : LB.Sec (LB.LinComb L φ ε)) (h : Y' ⟶ Y) (c : Γ(Y', ⊤)) :
     GeneratorPullback.SecScal L φ₁ ε₁ s₁ φ ε s h c ↔ ∀ y J, Good L y J →
@@ -254,6 +323,9 @@ theorem secScal_iff_val (hL : L.IsLB) {φ₁ : K' → (Y' ⟶ X)} {ε₁ : K' �
     obtain ⟨k₁, k₂⟩ := key y _ _ hy _ _
     exact k₁.trans (this.trans k₂.symm)
 
+/- English proof (translation)
+Use `(secScal_iff_val hL s₁ s p _).trans ?_` and prove the remaining obligations. Establish `e : ∀ y J, Good L y J → (sval s (𝟙 Y' ≫ p) y J = gs (𝟙 Y') y ⊤ (scal π₀ c) * sval s₁ (𝟙 Y') y J ↔ sval (pullOver L ε hp hφ s) (𝟙 Y') y J = sval (g c • s₁ : SecOver π' _) (𝟙 Y') y J)` using `fun y J hJ => by`. Rewrite using `[sval_pullOver hp hφ s _ hJ, sval_smul' hJ, gs_scal, h₀, ← Category.assoc, constVal_specMap]`. Conclude with `⟨fun H => sec_ext' hL fun y J hJ => (e y J hJ).1 (H y J hJ), fun H y J hJ => (e y J hJ).2 (by rw [H])⟩`.
+-/
 theorem secScal_iff (hL : L.IsLB) (s₁ : SecOver π' (LB.LinComb L φ' ε)) (s : SecOver π (LB.LinComb L φ ε))
     {S : Type} [CommRing S] (π₀ : Y' ⟶ Spec (CommRingCat.of S)) (g : S →+* R')
     (h₀ : π₀ = π' ≫ Spec.map (CommRingCat.ofHom g)) (c : S) :
@@ -265,6 +337,9 @@ theorem secScal_iff (hL : L.IsLB) (s₁ : SecOver π' (LB.LinComb L φ' ε)) (s 
   exact ⟨fun H => sec_ext' hL fun y J hJ => (e y J hJ).1 (H y J hJ),
     fun H y J hJ => (e y J hJ).2 (by rw [H])⟩
 
+/- English proof (translation)
+Use `(secLin_iff_val hL s₁ s h _).trans ?_` and prove the remaining obligations. Establish `e : ∀ y J, Good L y J → ∑ i, gs (𝟙 Y') y ⊤ (scal π' (c i)) * sval (s i) (𝟙 Y' ≫ h) y J = sval (∑ i, c i • t i : SecOver π' _) (𝟙 Y') y J` using `fun y J hJ => by`. Rewrite using `[sval_sum' hJ]`. Conclude with `Finset.sum_congr rfl fun i _ => by rw [sval_smul' hJ, gs_scal, ht i y J hJ]`. Conclude with `⟨fun H => sec_ext' hL fun y J hJ => (H y J hJ).trans (e y J hJ), fun H y J hJ => by rw [e y J hJ, H]⟩`.
+-/
 theorem secLin_iff (hL : L.IsLB) {φ₁ : K' → (Y' ⟶ X)} {ε₁ : K' → ℤ} (s₁ : SecOver π' (LB.LinComb L φ₁ ε₁))
     {n : ℕ} (s : Fin n → LB.Sec (LB.LinComb L φ ε)) (h : Y' ⟶ Y) (c : Fin n → R')
     (t : Fin n → SecOver π' (LB.LinComb L φ₁ ε₁))
@@ -286,6 +361,17 @@ variable {K F : Type} [Field K] [Field F] [Algebra K F] {X Y Y' : Scheme.{0}}
   {π : Y ⟶ Spec (CommRingCat.of K)} {π' : Y' ⟶ Spec (CommRingCat.of F)} {p : Y' ⟶ Y}
   (H : IsPullback p π' π (Spec.map (CommRingCat.ofHom (algebraMap K F)))) [NoetherianSpace Y]
 
+/- English proof (translation)
+Substitute `h` using the available equality. Establish `: Flat (Spec.map (CommRingCat.ofHom (algebraMap K F)))`. Rewrite using `[HasRingHomProperty.Spec_iff (P := @Flat)]`. Conclude with `RingHom.Flat.of_isField (Field.toIsField K) _`. Establish `po` using `(isIso_pushoutSection_iff H (US := ⊤) (UT := ⊤) (UX := U) (UY := p ⁻¹ᵁ U) le_top le_top (by simp)).mp (isIso_pushoutSection_of_isQuasiSeparated_of_flat_right H _ _ _ (isAffineOpen_top _) (isAffineOpen_top _) (NoetherianSpace.isCompact _) (fun _ _ _ _ _ _ _ _ => NoetherianSpace.is …`.
+
+Establish `po' : IsPushout (CommRingCat.ofHom (constHom π U)) (CommRingCat.ofHom (algebraMap K F)) (p.app U) (CommRingCat.ofHom (constHom π' (p ⁻¹ᵁ U)))`. Use `po.of_iso (Scheme.ΓSpecIso (.of K)) (Iso.refl _) (Scheme.ΓSpecIso (.of F)) (Iso.refl _) ?_ ?_ ?_ ?_` and prove the remaining obligations. Use extensionality with `x`. Simplify using `[constHom, Scheme.Hom.appLE]`. Both sides reduce to the same expression.
+
+Rewrite using `[← Scheme.ΓSpecIso_naturality, Scheme.Hom.appTop, Scheme.Hom.app_eq_appLE]`. Both sides reduce to the same expression. Simplify using `[Scheme.Hom.app_eq_appLE]`. Use extensionality with `x`. Simplify using `[constHom, Scheme.Hom.appLE]`.
+
+Both sides reduce to the same expression. Set `: Algebra (FnOver π U) (FnOver π' (p ⁻¹ᵁ U))` to `(p.app U).hom.toAlgebra`. Set `: Algebra K (FnOver π' (p ⁻¹ᵁ U))` to `((constHom π' (p ⁻¹ᵁ U)).comp (algebraMap K F)).toAlgebra`. Establish `: IsScalarTower K F (FnOver π' (p ⁻¹ᵁ U))` using `.of_algebraMap_eq fun r ↦ rfl`. Establish `: IsScalarTower K (FnOver π U) (FnOver π' (p ⁻¹ᵁ U))` using `.of_algebraMap_eq fun r ↦ (congrArg (fun q => q.hom r) po'.w).symm`.
+
+Establish `: Algebra.IsPushout K F (FnOver π U) (FnOver π' (p ⁻¹ᵁ U))` using `(CommRingCat.isPushout_iff_isPushout.mp po').symm`. Use `isExtension_of_isPushout _ fun x => ?_` and prove the remaining obligations. Use `show (Y'.presheaf.map (𝟙 _)).hom _ = _`. Rewrite using `[CategoryTheory.Functor.map_id]`. Both sides reduce to the same expression.
+-/
 theorem isExtension_pullFn {U : Y.Opens} {U' : Y'.Opens} (h : U' = p ⁻¹ᵁ U) :
     IsExtension (pullFn H.w h.le) := by
   subst h
@@ -319,6 +405,15 @@ variable {L : LB X} (hL : L.IsLB) {I : Type} [Fintype I] {φ : I → (Y ⟶ X)} 
 
 include hL in
 
+/- English proof (translation)
+Take `⟨T, hT⟩` from `(NoetherianSpace.isCompact (Set.univ : Set Y)).elim_finite_subcover (fun j : I → L.ι => (LB.wchart L φ j : Set Y)) (fun j => (LB.wchart L φ j).isOpen) (fun y _ => by choose j hj using fun k => exists_chart hL (φ k y)`. Conclude with `Set.mem_iUnion.2 ⟨j, Set.mem_iInter.2 hj⟩)`. Use `IsExtension.of_proj (J := I → L.ι) _ (fun j => pullFn H.w (wchart_eq hφ j).le) (fun j => isExtension_pullFn H (wchart_eq hφ j)) (chartLin π (LB.LinComb L φ ε)) (chartLin π' (LB.LinComb L φ' ε)) (fun _ _ => rfl) (fun x hx => SecOver.ext _ _ hx) T (fun v hv => SecOver.ext _ _ fun j …` and prove the remaining obligations. Take `⟨t, ht, hy'⟩` from `Set.mem_iUnion₂.1 (hT (Set.mem_univ y))`. Use `(sec_trans v (𝟙 Y) y hy hy').trans ?_` and prove the remaining obligations.
+
+Establish `z : gs (𝟙 Y) y (LB.wchart L φ t) (LB.Sec.f v t) = 0` using `(congrArg (gs (𝟙 Y) y (LB.wchart L φ t)) (hv t ht)).trans (gs_zero' _ y _ hy')`. Conclude with `((congrArg _ z).trans (mul_zero _)).trans (gs_zero' _ y _ hy).symm`. Use `⟨⟨fun j => Λ j (chartFun π' (LB.LinComb L φ' ε) j x), fun (i j : I → L.ι) => ?_⟩, fun j => rfl⟩` and prove the remaining obligations. Establish `e : LB.wchart L φ' i ⊓ LB.wchart L φ' j = p ⁻¹ᵁ (LB.wchart L φ i ⊓ LB.wchart L φ j)`. Rewrite using `[wchart_eq hφ, wchart_eq hφ]`.
+
+Both sides reduce to the same expression. Take `⟨Λ', hΛ'⟩` from `(isExtension_pullFn H e).coord ℓ`. Establish `e₁` using `IsCoord.natural (isExtension_pullFn H (wchart_eq hφ i)).span (hΛ i) hΛ' (resFn π inf_le_left) (resFn π' inf_le_left) (fun v => fn_ext fun y hy => ((gs_res _ y _ hy _).trans (gs_pullFn H.w _ _ _ y hy.1)).trans ((gs_pullFn H.w _ _ _ y hy).trans (gs_res (𝟙 Y' ≫ p) y _ (e.le hy) _)). …`. Establish `e₂` using `IsCoord.natural (isExtension_pullFn H (wchart_eq hφ j)).span (hΛ j) hΛ' (LinearMap.mulLeft K (show FnOver π _ from ((LB.LinComb L φ ε).g i j).val) ∘ₗ resFn π inf_le_right) (LinearMap.mulLeft F (show FnOver π' _ from ((LB.LinComb L φ' ε).g i j).val) ∘ₗ resFn π' inf_le_right) (fun …`. Use `((gs_mul _ y _ hy _ _).trans (congrArg₂ (· * ·) ((gs_unit _ y _ hy _).trans (congrArg Units.val (gm_linComb L φ' ε (𝟙 Y') y i j hy.1 hy.2))) ((gs_res _ y _ hy _).trans (gs_pullFn H.w _ _ _ y hy.2)))).trans (Eq.symm ?_)` and prove the remaining obligations.
+
+Establish `hy' : (𝟙 Y' ≫ p) y ∈ LB.wchart L φ i ⊓ LB.wchart L φ j` using `e.le hy`. Use `(gs_pullFn H.w _ _ _ y hy).trans ((gs_mul _ y _ hy' _ _).trans (congrArg₂ (· * ·) ((gs_unit _ y _ hy' _).trans (congrArg Units.val ((gm_linComb L φ ε (𝟙 Y' ≫ p) y i j hy'.1 hy'.2).trans (trF_comp hφ _ y i j).symm))) (gs_res _ y _ hy' _)))) (chartFun π' (LB.LinComb L φ' ε) j x)` and prove the remaining obligations. Conclude with `e₁.symm.trans ((congrArg Λ' (LB.Sec.compat x i j)).trans e₂)`.
+-/
 theorem isExtension_pullOver : IsExtension (pullOver L ε H.w hφ) := by
   obtain ⟨T, hT⟩ := (NoetherianSpace.isCompact (Set.univ : Set Y)).elim_finite_subcover
     (fun j : I → L.ι => (LB.wchart L φ j : Set Y)) (fun j => (LB.wchart L φ j).isOpen) (fun y _ => by

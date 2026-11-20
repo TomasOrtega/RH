@@ -10,6 +10,13 @@ noncomputable section
 
 namespace ShiftedSumIntegral
 
+/- English proof (translation)
+Establish `hshift : ∫ x in Ioi 0, G (x + w) = ∫ x in Ioi w, G x`. Establish `A : MeasurableEmbedding fun x : ℝ ↦ x + w` using `(Homeomorph.addRight w).isClosedEmbedding.measurableEmbedding`. Use `A.setIntegral_map (μ := volume) G (Ioi w)` as an intermediate fact. Rewrite `this` using `[map_add_right_eq_self]`. Rewrite using `[this]`.
+
+Simplify using the standard rewrite rules. Establish `anti' : AntitoneOn (fun x ↦ G (x + w)) (Ici 0)` using `fun x hx y hy hxy ↦ anti (mem_Ici.2 (by linarith [mem_Ici.1 hx])) (mem_Ici.2 (by linarith [mem_Ici.1 hy])) (by linarith)`. Establish `int' : IntegrableOn (fun x ↦ G (x + w)) (Ioi 0)` using `(hint.comp_add_right w).integrableOn`. Establish `sm` using `anti'.summable_of_integrableOn_Ioi_zero int' (fun x _ ↦ nonneg _)`. Use `⟨sm, ?_, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[← hshift]`. Conclude with `anti'.integral_le_tsum sm (fun x _ ↦ nonneg _)`. Rewrite using `[← hshift]`. Simplify using `using anti'.tsum_le_integral int' (fun x _ ↦ nonneg _)`.
+-/
 theorem half_line {G : ℝ → ℝ} (anti : AntitoneOn G (Ici 0)) (hint : Integrable G)
     (nonneg : ∀ x, 0 ≤ G x) {w : ℝ} (hw : 0 ≤ w) :
     Summable (fun k : ℕ ↦ G (k + w)) ∧ ∫ x in Ioi w, G x ≤ ∑' k : ℕ, G (k + w) ∧
@@ -32,6 +39,37 @@ theorem half_line {G : ℝ → ℝ} (anti : AntitoneOn G (Ici 0)) (hint : Integr
   · rw [← hshift]
     simpa using anti'.tsum_le_integral int' (fun x _ ↦ nonneg _)
 
+/- English proof (translation)
+Introduce `a u s ha hs`. Use `set G : ℝ → ℝ := fun x ↦ (x ^ 2 + a ^ 2) ^ (-s) with hGdef`. Use `show Summable (fun n : ℤ ↦ G (n + u)) ∧ |∑' n : ℤ, G (n + u) - ∫ t, G t| ≤ a ^ (-2 * s)`. Establish `hpos : ∀ x, 0 < x ^ 2 + a ^ 2` using `fun x ↦ by positivity`. Establish `nonneg : ∀ x, 0 ≤ G x` using `fun x ↦ Real.rpow_nonneg (hpos x).le _`.
+
+Establish `cont : Continuous G` using `(by fun_prop : Continuous fun x : ℝ ↦ x ^ 2 + a ^ 2).rpow_const fun x ↦ Or.inl (hpos x).ne'`. Establish `anti : AntitoneOn G (Ici 0)` using `fun x hx y hy hxy ↦ Real.rpow_le_rpow_of_nonpos (hpos x) (by nlinarith [mem_Ici.1 hx]) (by linarith)`. Establish `even : ∀ x, G (-x) = G x` using `fun x ↦ by simp only [hGdef, neg_sq]`. Establish `hG0 : G 0 = a ^ (-2 * s)` using `by show ((0 : ℝ) ^ 2 + a ^ 2) ^ (-s) = a ^ (-2 * s)`. Rewrite using `[show (0 : ℝ) ^ 2 + a ^ 2 = a ^ (2 : ℝ) by rw [Real.rpow_two]; ring, ← Real.rpow_mul ha.le]`.
+
+Put the polynomial expressions in normal form. Establish `hint : Integrable G`. Establish `hm : 0 < min 1 (a ^ 2)` using `lt_min one_pos (by positivity)`. Use `((integrable_rpow_neg_one_add_norm_sq (E := ℝ) (μ := volume) (r := 2 * s) (by simp; linarith)).const_mul (min 1 (a ^ 2) ^ (-s))).mono' cont.aestronglyMeasurable (Eventually.of_forall fun t ↦ ?_)` and prove the remaining obligations. Rewrite using `[Real.norm_eq_abs, abs_of_nonneg (nonneg t), Real.norm_eq_abs, sq_abs, show -(2 * s) / 2 = -s by ring, ← Real.mul_rpow hm.le (by positivity)]`.
+
+Conclude with `Real.rpow_le_rpow_of_nonpos (by positivity) (by nlinarith [min_le_left 1 (a ^ 2), min_le_right 1 (a ^ 2), mul_le_mul_of_nonneg_right (min_le_left 1 (a ^ 2)) (sq_nonneg t)]) (by linarith)`. Establish `hJ : ∫ t, G t = 2 * ∫ x in Ioi 0, G x`. Rewrite using `[← integral_comp_abs (f := G)]`. Use `congr 1`. Use extensionality with `x`.
+
+Simplify using `only [hGdef, sq_abs]`. Establish `hseg : ∀ y, 0 ≤ y → y * G y ≤ ∫ x in (0 : ℝ)..y, G x ∧ ∫ x in (0 : ℝ)..y, G x ≤ y * G 0`. Introduce `y hy`. Prove the components needed by the constructor for the conclusion. Use `intervalIntegral.integral_mono_on hy (intervalIntegrable_const (μ := volume)) (cont.intervalIntegrable 0 y) (fun x hx ↦ anti (mem_Ici.2 hx.1) (mem_Ici.2 hy) hx.2)` as an intermediate fact.
+
+Simplify using `using this`. Use `intervalIntegral.integral_mono_on hy (cont.intervalIntegrable 0 y) (intervalIntegrable_const (μ := volume)) (fun x hx ↦ anti (mem_Ici.2 le_rfl) (mem_Ici.2 hx.1) hx.1)` as an intermediate fact. Simplify using `using this`. Establish `htail : ∀ y, 0 ≤ y → ∫ x in Ioi y, G x = (∫ x in Ioi 0, G x) - ∫ x in (0 : ℝ)..y, G x` using `fun y hy ↦ by`. Establish `e : (∫ x in Ioi 0, G x) - (∫ x in Ioi y, G x) = ∫ x in (0 : ℝ)..y, G x` using `intervalIntegral.integral_Ioi_sub_Ioi hint.integrableOn hy`.
+
+Combine the linear equalities and inequalities to obtain the conclusion. Establish `core : ∀ w : ℝ, 0 ≤ w → w < 1 → Summable (fun m : ℤ ↦ G (m + w)) ∧ |∑' m : ℤ, G (m + w) - ∫ t, G t| ≤ G 0`. Introduce `w hw0 hw1`. Take `⟨sP, lP, uP⟩` from `half_line anti hint nonneg hw0`. Take `⟨sQ, lQ, uQ⟩` from `half_line anti hint nonneg (by linarith : 0 ≤ 1 - w)`.
+
+Establish `hneg : ∀ n : ℕ, G (((-((n : ℤ) + 1) : ℤ) : ℝ) + w) = G (n + (1 - w))` using `fun n ↦ by`. Rewrite using `[← even]`. Use `congr 1`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+
+Establish `sQ' : Summable (fun n : ℕ ↦ G (((-((n : ℤ) + 1) : ℤ) : ℝ) + w))`. Use `sQ using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `n`. Conclude with `hneg n`. Establish `hT : ∑' m : ℤ, G (m + w) = ∑' k : ℕ, G (k + w) + ∑' k : ℕ, G (k + (1 - w))`.
+
+Rewrite using `[tsum_of_nat_of_neg_add_one (f := fun m : ℤ ↦ G (m + w)) (by exact_mod_cast sP) sQ']`. Use `push_cast`. Use `congr 1`. Conclude with `tsum_congr fun n ↦ by rw [← hneg n]; push_cast; ring_nf`. Use `⟨Summable.of_nat_of_neg_add_one (by exact_mod_cast sP) sQ', ?_⟩` and prove the remaining obligations.
+
+Take `⟨lw, uw⟩` from `hseg w hw0`. Take `⟨lv, uv⟩` from `hseg (1 - w) (by linarith)`. Rewrite `lP`, `uP` using `[htail w hw0]`. Rewrite `lQ`, `uQ` using `[htail (1 - w) (by linarith)]`. Establish `gw : G w ≤ G 0` using `anti (mem_Ici.2 le_rfl) (mem_Ici.2 hw0) hw0`.
+
+Establish `gv : G (1 - w) ≤ G 0` using `anti (mem_Ici.2 le_rfl) (mem_Ici.2 (by linarith)) (by linarith)`. Establish `h1 : G w * (1 - w) ≤ G 0 * (1 - w)` using `mul_le_mul_of_nonneg_right gw (by linarith)`. Establish `h2 : G (1 - w) * w ≤ G 0 * w` using `mul_le_mul_of_nonneg_right gv hw0`. Rewrite using `[hT, hJ, abs_le]`. Prove the components needed by the constructor for the conclusion.
+
+Combine the linear equalities and inequalities to obtain the conclusion. Combine the linear equalities and inequalities to obtain the conclusion. Establish `key : ∀ n : ℤ, G (n + u) = (fun m : ℤ ↦ G (m + Int.fract u)) (Equiv.addRight ⌊u⌋ n)` using `fun n ↦ by`. Simplify using `only [Equiv.coe_addRight, Int.cast_add]`. Rewrite using `[add_assoc, Int.floor_add_fract]`.
+
+Take `⟨hs', hb⟩` from `core (Int.fract u) (Int.fract_nonneg u) (Int.fract_lt_one u)`. Rewrite using `[← hG0]`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Rewrite using `[show (fun n : ℤ ↦ G (n + u)) = _ from funext key]`. Conclude with `(Equiv.addRight ⌊u⌋).summable_iff.2 hs'`.
+
+Rewrite using `[tsum_congr key, (Equiv.addRight ⌊u⌋).tsum_eq (fun m : ℤ ↦ G (m + Int.fract u))]`. Conclude with `hb`.
+-/
 theorem proof : ShiftedSumIntegral.Statement := by
   intro a u s ha hs
   set G : ℝ → ℝ := fun x ↦ (x ^ 2 + a ^ 2) ^ (-s) with hGdef

@@ -9,28 +9,48 @@ namespace Formalism.MainNotions.BridgeLemma
 
 open Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotions.S Formalism.FourierDecayAlt Finset
 
+/- English proof (translation)
+Simplify using `only [StandingHypotheses] at hH`. Conclude with `hH.2.2.2.2.2.2.2.2.2.2.2.2.2.2.2.2.2.2.1`.
+-/
 theorem v_ge_of_hyp {D : D7} {large₂ : SizeData₂ D} {C' Cl Cg cb Cu cT CT : ℝ}
     (hH : StandingHypotheses D large₂ C' Cl Cg cb Cu cT CT) : 1 ≤ D.host.v := by
   dsimp only [StandingHypotheses] at hH
   exact hH.2.2.2.2.2.2.2.2.2.2.2.2.2.2.2.2.2.2.1
 
+/- English proof (translation)
+Use `show 0 < Real.pi / D.host.v`. Conclude with `div_pos Real.pi_pos (by linarith)`.
+-/
 theorem ka_pos_of {D : D7} (hv : 1 ≤ D.host.v) : 0 < D.host.ka := by
   show 0 < Real.pi / D.host.v
   exact div_pos Real.pi_pos (by linarith)
 
+/- English proof (translation)
+Unfold `gg`. Conclude with `mul_pos (Nat.cast_pos.mpr (D.host.g_prime 0).pos) (Nat.cast_pos.mpr (D.host.g_prime 1).pos)`.
+-/
 theorem gg_pos (D : D7) : 0 < gg D := by
   unfold gg
   exact mul_pos (Nat.cast_pos.mpr (D.host.g_prime 0).pos) (Nat.cast_pos.mpr (D.host.g_prime 1).pos)
 
+/- English proof (translation)
+Unfold `VV`. Conclude with `mul_pos (D.dsig_pos τ) (Finset.prod_pos fun i _ => by positivity)`.
+-/
 theorem VV_pos (D : D7) (τ : D.what₂.Tau) : 0 < VV D τ := by
   unfold VV
   exact mul_pos (D.dsig_pos τ) (Finset.prod_pos fun i _ => by positivity)
 
+/- English proof (translation)
+Simplify using `only [StandingNumericalData] at hD`. Conclude with `hD.2.2.2.2.1 u τ`.
+-/
 theorem last_shifted_parameter_eq {D : D7} {C0 : ℝ} (hD : StandingNumericalData D C0) (u : D.what₂.Word) (τ : D.what₂.Tau) :
     ¬ IsTop D τ → uOne D u τ D.R.k = vOne D τ (D.R.k - 1) - 1 / 2 := by
   dsimp only [StandingNumericalData] at hD
   exact hD.2.2.2.2.1 u τ
 
+/- English proof (translation)
+Introduce and unpack `⟨hD, hH, -⟩ u u' τ`. Establish `ok` using `cfg_ok hD hH τ`. Establish `sm` using `cfg_small hH h40 τ`. Establish `hka` using `ka_pos_of (v_ge_of_hyp hH)`. Establish `hrd : 0 < D.host.rdE` using `Formalism.MainNotions.S.rdE_pos D`.
+
+Establish `hTW` using `Formalism.FourierDecayAlt.P.critical_threshold_words (cfgOf D τ) (deOf D u) (deOf D u') D.host.ka D.host.rdE (gg D) (VV D τ) ok sm.hvth (isWord_deOf D u) (isWord_deOf D u') hka hrd (gg_pos D) (VV_pos D τ)`. Rewrite using `[← Tcrit_eq D u τ hka.le, ← Tcrit_eq D u' τ hka.le, ← Vand_u D u τ (last_shifted_parameter_eq hD u τ), ← Vand_u D u' τ (last_shifted_parameter_eq hD u' τ)]`. Conclude with `le_trans (le_of_eq hTW.1) (hTW.2.2.trans hC1)`.
+-/
 theorem critical_level_ratio_le_exp {D : D7} {large₂ : SizeData₂ D} {C0 C' Cl Cg cb Cu cT CT C1 : ℝ} (h40 : 40 ≤ Cl)
     (hC1 : Real.exp (3 / 4) ≤ C1) : LocalBesselAndTopKernel.SecondBoundHyp D large₂ C0 C' Cl Cg cb Cu cT CT C1 := by
   rintro ⟨hD, hH, -⟩ u u' τ
@@ -44,6 +64,11 @@ theorem critical_level_ratio_le_exp {D : D7} {large₂ : SizeData₂ D} {C0 C' C
     ← Vand_u D u' τ (last_shifted_parameter_eq hD u' τ)]
   exact le_trans (le_of_eq hTW.1) (hTW.2.2.trans hC1)
 
+/- English proof (translation)
+Simplify using `only [aEff, uOne_one D u τ]`. Distinguish the cases in `h : S.IsTop D τ`. Simplify using `[cfgOf, Sz.Cfg.aeff, h]`. Establish `hk : 1 ≤ D.R.k - 1`. Use `D.R.m_add_three_le_k` as an intermediate fact.
+
+Use linear arithmetic over natural numbers and integers. Establish `hv` using `cfg_v D τ 1 le_rfl hk`. Simplify using `[cfgOf, Sz.Cfg.aeff, h] at hv ⊢`. Apply the tactic sequence `first | exact hv | linarith | simp [hv]`.
+-/
 theorem cfg_aeff (D : D7) (u : D.what₂.Word) (τ : D.what₂.Tau) : (cfgOf D τ).aeff = aEff D u τ := by
   simp only [aEff, uOne_one D u τ]
   by_cases h : S.IsTop D τ
@@ -55,6 +80,13 @@ theorem cfg_aeff (D : D7) (u : D.what₂.Word) (τ : D.what₂.Tau) : (cfgOf D �
     simp [cfgOf, Sz.Cfg.aeff, h] at hv ⊢
     first | exact hv | linarith | simp [hv]
 
+/- English proof (translation)
+Generalize the expression as in `cfgOf D τ = c at ok ⊢`. Establish `hk : (4 : ℝ) ≤ c.k` using `by exact_mod_cast ok.hk`. Establish `hD` using `ok.hDel`. Establish `hv0` using `ok.hv0`. Establish `hv1 : 0 ≤ c.v 1`.
+
+Unfold `Sz.Cfg.v`. Use `push_cast`. Use the polynomial consequences of the given equalities and inequalities. Establish `ha` using `ok.ha`. Unfold `Sz.Cfg.aeff`.
+
+Use `split_ifs with ht`. Take `⟨hbp, -⟩` from `ok.htop ht`. Establish `hb1` using `ok.hb1`. Conclude with `div_pos (mul_pos (by nlinarith) (by linarith)) (mul_pos (by linarith) (by linarith))`. Use the polynomial consequences of the given equalities and inequalities.
+-/
 theorem cfg_aeff_pos {D : D7} {τ : D.what₂.Tau} (ok : (cfgOf D τ).Ok) : 0 < (cfgOf D τ).aeff := by
   generalize cfgOf D τ = c at ok ⊢
   have hk : (4 : ℝ) ≤ c.k := by exact_mod_cast ok.hk
@@ -72,6 +104,17 @@ theorem cfg_aeff_pos {D : D7} {τ : D.what₂.Tau} (ok : (cfgOf D τ).Ok) : 0 < 
     exact div_pos (mul_pos (by nlinarith) (by linarith)) (mul_pos (by linarith) (by linarith))
   · nlinarith
 
+/- English proof (translation)
+Establish `hk : (4 : ℝ) ≤ c.k` using `by exact_mod_cast ok.hk`. Establish `hm : (2 : ℝ) ≤ c.m` using `by exact_mod_cast ok.hm`. Establish `hD` using `ok.hDel`. Establish `hE : 9 / 10 ≤ Real.exp (-(2 * c.m * Real.log bb / c.k))`. Establish `h` using `Real.add_one_le_exp (-(2 * c.m * Real.log bb / c.k))`.
+
+Combine the linear relations using `[sm.hmu]`. Establish `hV : 0 ≤ c.vthp ∧ c.vthp ≤ 1 / 10`. Unfold `Sz.Cfg.vthp`. Use `split_ifs with ht`. Take `⟨hbp, -⟩` from `ok.htop ht`.
+
+Establish `hb1` using `ok.hb1`. Establish `hvth` using `sm.hvth`. Unfold `Sz.Cfg.vth at hvth`. Establish `hbp0 : 0 < c.bp` using `by linarith`. Rewrite `hvth` using `[div_le_iff₀ (by linarith)]`.
+
+Prove the components needed by the constructor for the conclusion. Check the signs of the components of the expression. Rewrite using `[div_le_iff₀ hbp0]`. Use polynomial arithmetic with `[mul_nonneg (sub_nonneg.mpr hm) (mul_nonneg (by linarith : (0 : ℝ) ≤ c.k) (by linarith : (0 : ℝ) ≤ c.Del))]`. Evaluate the numerical expressions.
+
+Unfold `Sz.cOne`. Rewrite using `[le_div_iff₀ (by linarith [hV.1])]`. Evaluate the numerical expressions. Combine the linear relations using `[hV.1, hV.2, hE]`.
+-/
 theorem cOne_ge {c : Sz.Cfg} {bb : ℝ} (ok : c.Ok) (sm : c.Small bb) : 1 / 5 ≤ Sz.cOne c bb := by
   have hk : (4 : ℝ) ≤ c.k := by exact_mod_cast ok.hk
   have hm : (2 : ℝ) ≤ c.m := by exact_mod_cast ok.hm
@@ -99,6 +142,33 @@ theorem cOne_ge {c : Sz.Cfg} {bb : ℝ} (ok : c.Ok) (sm : c.Small bb) : 1 / 5 �
   norm_num
   linarith [hV.1, hV.2, hE]
 
+/- English proof (translation)
+Introduce and unpack `⟨hD, hH, -⟩ hG u τ`. Establish `ok` using `cfg_ok hD hH τ`. Establish `sm` using `cfg_small hH h40 τ`. Establish `hv1` using `v_ge_of_hyp hH`. Establish `hka` using `ka_pos_of hv1`.
+
+Establish `hH'` using `hH`. Simplify using `only [StandingHypotheses] at hH'`. Take `⟨-, -, hmf, hfk, -, -, -, -, -, -, -, hg1, -, -, -, hbO, -, -, -, -, -, -, -, -, -⟩` from `hH'`. Establish `hm2 : 2 ≤ D.R.m` using `ok.hm`. Establish `hk16n : 16 ≤ D.R.k` using `le_trans (le_trans (by norm_num) (Nat.pow_le_pow_left hm2 4)) (hmf.trans hfk)`.
+
+Establish `hk16 : (16 : ℝ) ≤ D.R.k` using `by exact_mod_cast hk16n`. Establish `hb1 : 1 ≤ large₂.sc.b` using `sm.hbb`. Establish `hrd1 : 1 ≤ D.host.rdE`. Establish `hvdef : D.host.v = D.host.rdE / 2` using `rfl`. Combine the linear equalities and inequalities to obtain the conclusion.
+
+Establish `hka_eq : D.host.ka = 2 * Real.pi / D.host.rdE` using `by show Real.pi / D.host.v = _`. Rewrite using `[show D.host.v = D.host.rdE / 2 from rfl]`. Clear the denominators using the available nonvanishing facts. Establish `hg0 : (16 : ℝ) ^ 8 ≤ (D.host.g 0 : ℝ)`. Establish `h16 : (16 : ℝ) ≤ (D.R.k : ℝ) * large₂.sc.b` using `by nlinarith`.
+
+Conclude with `le_trans (pow_le_pow_left₀ (by norm_num) h16 8) hg1`. Establish `hg1' : (1 : ℝ) ≤ (D.host.g 1 : ℝ)` using `by exact_mod_cast (D.host.g_prime 1).one_lt.le`. Establish `hgg : 2 * Real.pi ≤ gg D`. Unfold `gg`. Use polynomial arithmetic with `[Real.pi_le_four]`.
+
+Take `⟨hG1, hG2⟩` from `hG τ`. Establish `hVVpos` using `VV_pos D τ`. Establish `hvpos : 0 < vand (lamSH D.R (D.hc τ))`. Assume the negation of the conclusion as `hneg`. Use `push_neg at hneg`.
+
+Establish `h3 : Real.exp (CV * D.R.k * D.R.m * large₂.sc.L) * vand (lamSH D.R (D.hc τ)) ≤ 0` using `mul_nonpos_of_nonneg_of_nonpos (Real.exp_pos _).le hneg`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hFD : Sz.FormalDegreeLower (cfgOf D τ) (1 / 2) (VV D τ)`. Unfold `Sz.FormalDegreeLower`. Rewrite using `[Vand_lam D τ]`.
+
+Use the polynomial consequences of the given equalities and inequalities. Establish `hTL` using `Formalism.FourierDecayAlt.P.critical_threshold_lower_bound (cfgOf D τ) D.R.rS large₂.sc.b (deOf D u) D.host.ka D.host.rdE (gg D) (VV D τ) ok (m_eq D) sm (isWord_deOf D u) hrd1 hka_eq hgg hFD`. Rewrite using `[← Tcrit_eq D u τ hka.le, ← Vand_u D u τ (last_shifted_parameter_eq hD u τ), ← cfg_aeff D u τ]`. Use `le_trans ?_ hTL` and prove the remaining obligations. Use `show _ ≤ Sz.cOne (cfgOf D τ) large₂.sc.b * gg D ^ D.R.m * (D.host.ka ^ (D.R.m - 1))⁻¹ * (∏ j ∈ Finset.Icc 1 D.R.m, bOne D τ j) / (cfgOf D τ).aeff`.
+
+Establish `hpow : D.host.ka ^ (-((D.R.m : ℝ) - 1)) = (D.host.ka ^ (D.R.m - 1))⁻¹`. Rewrite using `[Real.rpow_neg hka.le, show ((D.R.m : ℝ) - 1) = ((D.R.m - 1 : ℕ) : ℝ) by`. Rewrite using `[Nat.cast_sub (by omega : 1 ≤ D.R.m)]`. Use the proof step `simp, Real.rpow_natCast]`. Rewrite using `[hpow]`.
+
+Establish `hkC : (D.R.k : ℝ) ^ (-C3') ≤ 1 / 5`. Establish `h1 : (D.R.k : ℝ) ^ (-C3') ≤ (D.R.k : ℝ) ^ (-(1 : ℝ))` using `Real.rpow_le_rpow_of_exponent_le (by linarith) (by linarith)`. Rewrite `h1` using `[Real.rpow_neg_one]`. Establish `h2 : (D.R.k : ℝ)⁻¹ ≤ (16 : ℝ)⁻¹` using `(inv_le_inv₀ (by linarith) (by norm_num)).2 hk16`. Combine the linear equalities and inequalities to obtain the conclusion.
+
+Establish `hc1` using `cOne_ge ok sm`. Establish `hP : 0 ≤ ∏ j ∈ Finset.Icc 1 D.R.m, bOne D τ j`. Use `Finset.prod_nonneg fun j hj => ?_` and prove the remaining obligations. Take `⟨h1, h2⟩` from `Finset.mem_Icc.1 hj`. Conclude with `le_trans (le_max_of_le_left (Real.rpow_nonneg (by linarith) _)) (hbO τ j h1 h2).1`.
+
+Establish `hA : 0 ≤ gg D ^ D.R.m * (D.host.ka ^ (D.R.m - 1))⁻¹ * (∏ j ∈ Finset.Icc 1 D.R.m, bOne D τ j) / (cfgOf D τ).aeff`. Establish `h1` using `cfg_aeff_pos ok`. Establish `h2` using `gg_pos D`. Check the signs of the components of the expression. Establish `key` using `mul_le_mul_of_nonneg_right (hkC.trans hc1) hA`.
+
+Conclude with `(le_of_eq (by ring)).trans (key.trans (le_of_eq (by ring)))`.
+-/
 theorem critical_level_lower_bound {D : D7} {large₂ : SizeData₂ D} {C0 C' Cl Cg cb Cu cT CT ep0 CV C3' : ℝ} (h40 : 40 ≤ Cl)
     (hep : ep0 ≤ 1 / 2) (hC3 : 1 ≤ C3') : LocalBesselAndTopKernel.LocalTiedPairs D large₂ C0 C' Cl Cg cb Cu cT CT ep0 CV C3' := by
   rintro ⟨hD, hH, -⟩ hG u τ
@@ -172,10 +242,16 @@ theorem critical_level_lower_bound {D : D7} {large₂ : SizeData₂ D} {C0 C' Cl
 
 variable {eps : ℝ}
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨0, fun x _ i hh => critical_level_ratio_le_exp h40 hC1 hh⟩`.
+-/
 theorem family_critical_level_ratio (Fm : FamP eps) {C0 Cg cb Cu cT CT C1 : ℝ} (h40 : 40 ≤ sCl Fm)
     (hC1 : Real.exp (3 / 4) ≤ C1) : LocalBesselAndTopKernel.TheoremThreePassage Fm C0 Cg cb Cu cT CT C1 :=
     ⟨0, fun x _ i hh => critical_level_ratio_le_exp h40 hC1 hh⟩
 
+/- English proof (translation)
+Take `⟨x0, hx0⟩` from `hg`. Use `⟨x0, fun x hx i hh => ?_⟩` and prove the remaining obligations. Conclude with `critical_level_lower_bound (C0 := C0) (CV := CV) (ep0 := ep0) h40 hep hC3 hh (hx0 x hx i hh)`.
+-/
 theorem family_critical_level_lower_bound (Fm : FamP eps) {C0 Cg cb Cu cT CT ep0 CV C3' : ℝ} (h40 : 40 ≤ sCl Fm)
     (hep : ep0 ≤ 1 / 2) (hC3 : 1 ≤ C3') (hg : LocalBesselAndTopKernel.FamilyTopBound Fm C0 Cg cb Cu cT CT ep0 CV) :
     LocalBesselAndTopKernel.LocalSplitExponents Fm C0 Cg cb Cu cT CT C3' := by

@@ -49,6 +49,23 @@ noncomputable def UpperTheory.Reformulated.B.Qn18.OpenCoset :
                     ∀ u ∈ U, UpperTheory.Reformulated.B.Qn18.ev (↑((r : Γ → GL (Fin n) C) (g * u)) : Matrix (Fin n) (Fin n) C) f = (0 : C)
 
 open scoped Pointwise in
+/- English proof (translation)
+Use `haveI : ContinuousConstSMul G G := ⟨hc⟩`. Use `set X : Set G := irreducibleComponent (1 : G) with hX`. Establish `hXc : X ∈ irreducibleComponents G` using `irreducibleComponent_mem_irreducibleComponents _`. Establish `horb : MulAction.orbit G X ⊆ irreducibleComponents G`. Introduce and unpack `_ ⟨h, rfl⟩`.
+
+Use `⟨?_, ?_⟩` and prove the remaining obligations. Conclude with `hXc.1.image _ (hc h).continuousOn`. Introduce `Y hY hle`. Establish `h1 : IsIrreducible (h⁻¹ • Y)` using `IsIrreducible.image hY _ (hc h⁻¹).continuousOn`. Establish `h2 : X ⊆ h⁻¹ • Y`.
+
+Establish `: h • X ⊆ Y` using `hle`. Conclude with `Set.smul_set_subset_iff_subset_inv_smul_set.mp this`. Establish `h3 : h⁻¹ • Y ⊆ X` using `hXc.2 h1 h2`. Establish `h4 : Y ⊆ h • X`. Use `Set.smul_set_subset_iff_subset_inv_smul_set.mp h3` as an intermediate fact.
+
+Simplify using `using this`. Conclude with `h4`. Establish `hfin : (MulAction.orbit G X).Finite` using `TopologicalSpace.NoetherianSpace.finite_irreducibleComponents.subset horb`. Use `haveI : (MulAction.stabilizer G X).FiniteIndex := by`. Use `⟨?_⟩` and prove the remaining obligations.
+
+Rewrite using `[MulAction.index_stabilizer]`. Conclude with `((Set.ncard_pos hfin).mpr ⟨X, MulAction.mem_orbit_self X⟩).ne'`. Take `⟨W, hW, hXW⟩` from `isIrreducible_iff_sUnion_isClosed.mp hXc.1 (s.image fun a => (fun x : G => a * x) ⁻¹' Z) (by`. Introduce `z hz`. Take `⟨a, -, rfl⟩` from `Finset.mem_image.mp hz`.
+
+Conclude with `hZ.preimage (hc a))`. Use the proof step `(by`. Introduce `x _`. Take `⟨a, ha, hx⟩` from `hs x`. Conclude with `⟨_, Finset.mem_coe.mpr (Finset.mem_image_of_mem _ ha), hx⟩)`.
+
+Take `⟨a, -, rfl⟩` from `Finset.mem_image.mp hW`. Use `⟨(MulAction.stabilizer G X).normalCore, inferInstance, inferInstance, a, ?_⟩` and prove the remaining obligations. Introduce `u hu`. Establish `hu' : u • X = X` using `Subgroup.normalCore_le _ hu`. Establish `: u ∈ X`.
+
+Rewrite using `[← hu']`. Conclude with `⟨1, mem_irreducibleComponent, by simp⟩`. Conclude with `hXW this`.
+-/
 private theorem UpperTheory.Reformulated.B.Qn18.coset_of_cover {G : Type} [Group G] [TopologicalSpace G]
     [TopologicalSpace.NoetherianSpace G] (hc : ∀ h : G, Continuous fun x : G => h * x)
     (Z : Set G) (hZ : IsClosed Z) (s : Finset G) (hs : ∀ x : G, ∃ a ∈ s, a * x ∈ Z) :
@@ -96,6 +113,9 @@ private theorem UpperTheory.Reformulated.B.Qn18.coset_of_cover {G : Type} [Group
     exact ⟨1, mem_irreducibleComponent, by simp⟩
   exact hXW this
 
+/- English proof (translation)
+Take `⟨o, ho⟩` from `hne`. Take `⟨s, hs⟩` from `isCompact_univ.elim_finite_subcover (fun a : G => (fun x : G => a * x) ⁻¹' O) (fun a => hO.preimage (continuous_const_mul a)) (fun x _ => Set.mem_iUnion.mpr ⟨o * x⁻¹, by simpa using ho⟩)`. Use `⟨s, fun x => ?_⟩` and prove the remaining obligations. Simplify using `using hs (Set.mem_univ x)`.
+-/
 private theorem UpperTheory.Reformulated.B.Qn18.finite_cover {G : Type} [Group G] [TopologicalSpace G]
     [IsTopologicalGroup G] [CompactSpace G] (O : Set G) (hO : IsOpen O) (hne : O.Nonempty) :
     ∃ s : Finset G, ∀ x : G, ∃ a ∈ s, a * x ∈ O := by
@@ -106,6 +126,21 @@ private theorem UpperTheory.Reformulated.B.Qn18.finite_cover {G : Type} [Group G
   refine ⟨s, fun x => ?_⟩
   simpa using hs (Set.mem_univ x)
 
+/- English proof (translation)
+Introduce `hch Γ C _ _ _ _ _ n r f O hO hne hf`. Take `⟨s, hs⟩` from `UpperTheory.Reformulated.B.Qn18.finite_cover O hO hne`. Set `p : Γ → PrimeSpectrum (MvPolynomial (Fin n × Fin n) C)` to `fun g => ⟨RingHom.ker (MvPolynomial.eval fun q : Fin n × Fin n => (↑(r g) : Matrix (Fin n) (Fin n) C) q.1 q.2), RingHom.ker_isPrime _⟩`. Establish `hp : ∀ (g : Γ) (S : Set (MvPolynomial (Fin n × Fin n) C)), p g ∈ PrimeSpectrum.zeroLocus S ↔ ∀ k ∈ S, UpperTheory.Reformulated.B.Qn18.ev (↑(r g) : Matrix (Fin n) (Fin n) C) k = 0`. Introduce `g S`.
+
+Rewrite using `[PrimeSpectrum.mem_zeroLocus]`. Conclude with `Iff.rfl`. Set `τ : TopologicalSpace Γ` to `TopologicalSpace.induced p inferInstance`. Establish `hcl : ∀ k : MvPolynomial (Fin n × Fin n) C, @IsClosed Γ τ {g | UpperTheory.Reformulated.B.Qn18.ev (↑(r g) : Matrix (Fin n) (Fin n) C) k = 0}`. Introduce `k`.
+
+Use `(@isClosed_induced_iff _ _ _ _ p).mpr ⟨_, PrimeSpectrum.isClosed_zeroLocus {k}, ?_⟩` and prove the remaining obligations. Use extensionality with `g`. Simplify using `[hp]`. Establish `hN : @TopologicalSpace.NoetherianSpace Γ τ`. Use `letI := τ`.
+
+Conclude with `(@Topology.IsInducing.mk _ _ τ _ p rfl).noetherianSpace`. Establish `hc : ∀ h : Γ, @Continuous Γ Γ τ τ fun x => h * x`. Introduce `h`. Use `(@continuous_iff_isClosed _ _ τ τ _).mpr ?_` and prove the remaining obligations. Introduce `T hT`.
+
+Take `⟨T', hT', rfl⟩` from `(@isClosed_induced_iff _ _ _ _ p).mp hT`. Take `⟨S, rfl⟩` from `(PrimeSpectrum.isClosed_iff_zeroLocus _).mp hT'`. Use `choose F hF using fun k => hch C n n (LinearMap.mulLeft C (↑(r h) : Matrix (Fin n) (Fin n) C)) k`. Establish `: (fun x => h * x) ⁻¹' (p ⁻¹' PrimeSpectrum.zeroLocus S) = ⋂ k ∈ S, {g | UpperTheory.Reformulated.B.Qn18.ev (↑(r g) : Matrix (Fin n) (Fin n) C) (F k) = 0}`. Use extensionality with `g`.
+
+Simplify using `only [Set.mem_preimage, hp, Set.mem_iInter, Set.mem_setOf_eq, (hF _).1, LinearMap.mulLeft_apply, map_mul, Units.val_mul]`. Rewrite using `[this]`. Conclude with `@isClosed_biInter _ _ τ _ _ fun k _ => hcl (F k)`. Conclude with `@UpperTheory.Reformulated.B.Qn18.coset_of_cover Γ _ τ hN hc _ (hcl f) s fun x => by`. Take `⟨a, ha, hx⟩` from `hs x`.
+
+Conclude with `⟨a, ha, hf _ hx⟩`.
+-/
 theorem UpperTheory.Reformulated.B.Qn18.main :
     UpperTheory.Reformulated.B.Qn18.Chain → UpperTheory.Reformulated.B.Qn18.OpenCoset := by
   intro hch Γ C _ _ _ _ _ n r f O hO hne hf

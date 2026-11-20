@@ -18,12 +18,18 @@ open ReciprocityTheory.Aut
 
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] (s : SplitPlace E)
 
+/- English proof (translation)
+The claim follows from `(HeightOneSpectrum.mem_adicCompletionIntegers _ _ _).2 (s.split_le_one a)`.
+-/
 theorem i_mem (a : 𝓞 E) : s.i (a : E) ∈ s.v.adicCompletionIntegers (maximalRealSubfield E) :=
   (HeightOneSpectrum.mem_adicCompletionIntegers _ _ _).2 (s.split_le_one a)
 
 def iInt : 𝓞 E →+* s.v.adicCompletionIntegers (maximalRealSubfield E) :=
   ((s.i : E →+* s.v.adicCompletion (maximalRealSubfield E)).comp (algebraMap (𝓞 E) E)).codRestrict _ (i_mem s)
 
+/- English proof (translation)
+The claim follows from `Valuation.mem_maximalIdeal_iff _ _`.
+-/
 theorem mem_max_iff (x : s.v.adicCompletionIntegers (maximalRealSubfield E)) :
     x ∈ IsLocalRing.maximalIdeal (s.v.adicCompletionIntegers (maximalRealSubfield E)) ↔
       Valued.v (x : s.v.adicCompletion (maximalRealSubfield E)) < 1 :=
@@ -32,10 +38,20 @@ theorem mem_max_iff (x : s.v.adicCompletionIntegers (maximalRealSubfield E)) :
 def psiR : 𝓞 E →+* IsLocalRing.ResidueField (s.v.adicCompletionIntegers (maximalRealSubfield E)) :=
   (IsLocalRing.residue _).comp (iInt s)
 
+/- English proof (translation)
+Rewrite using `[psiR, RingHom.comp_apply, IsLocalRing.residue_eq_zero_iff, mem_max_iff]`. Conclude with `Iff.rfl`.
+-/
 theorem psiR_eq_zero (a : 𝓞 E) : psiR s a = 0 ↔ a ∈ s.w.asIdeal := by
   rw [psiR, RingHom.comp_apply, IsLocalRing.residue_eq_zero_iff, mem_max_iff]
   exact Iff.rfl
 
+/- English proof (translation)
+Introduce `y`. Take `⟨x, rfl⟩` from `IsLocalRing.residue_surjective y`. Establish `hx : Valued.v (x : s.v.adicCompletion (maximalRealSubfield E)) ≤ 1` using `(HeightOneSpectrum.mem_adicCompletionIntegers _ _ _).1 x.2`. Take `⟨a, ha⟩` from `adic_exists_approx s.v _ hx`. Use `⟨algebraMap (𝓞 (maximalRealSubfield E)) (𝓞 E) a, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[psiR, RingHom.comp_apply, ← sub_eq_zero, ← map_sub, IsLocalRing.residue_eq_zero_iff, mem_max_iff]`. Establish `e : ((iInt s (algebraMap (𝓞 (maximalRealSubfield E)) (𝓞 E) a) : s.v.adicCompletionIntegers (maximalRealSubfield E)) : s.v.adicCompletion (maximalRealSubfield E)) = algebraMap (𝓞 (maximalRealSubfield E)) (s.v.adicCompletion (maximalRealSubfield E)) a` using `by show s.i (((algebraMap (𝓞 (maximalRealSubfield E)) (𝓞 E) a : 𝓞 E)) : E) = _`. Rewrite using `[split_coe_algebraMap, AlgHom.commutes]`. Both sides reduce to the same expression. Rewrite using `[AddSubgroupClass.coe_sub, e, Valuation.map_sub_swap]`.
+
+Conclude with `ha`.
+-/
 theorem psiR_surj : Function.Surjective (psiR s) := by
   intro y
   obtain ⟨x, rfl⟩ := IsLocalRing.residue_surjective y
@@ -66,21 +82,38 @@ def kEqv : kP s.w ≃+* IsLocalRing.ResidueField (s.v.adicCompletionIntegers (ma
 def phiR : s.v.adicCompletionIntegers (maximalRealSubfield E) →+* kP s.w :=
   ((kEqv s).symm : _ →+* kP s.w).comp (IsLocalRing.residue _)
 
+/- English proof (translation)
+The claim follows from `(kEqv s).symm.surjective.comp IsLocalRing.residue_surjective`.
+-/
 theorem phiR_surj : Function.Surjective (phiR s) :=
   (kEqv s).symm.surjective.comp IsLocalRing.residue_surjective
 
+/- English proof (translation)
+Rewrite using `[phiR, RingHom.comp_apply, RingEquiv.coe_toRingHom, map_eq_zero_iff _ (kEqv s).symm.injective, IsLocalRing.residue_eq_zero_iff, mem_max_iff]`.
+-/
 theorem phiR_eq_zero (x : s.v.adicCompletionIntegers (maximalRealSubfield E)) :
     phiR s x = 0 ↔ Valued.v (x : s.v.adicCompletion (maximalRealSubfield E)) < 1 := by
   rw [phiR, RingHom.comp_apply, RingEquiv.coe_toRingHom, map_eq_zero_iff _ (kEqv s).symm.injective,
     IsLocalRing.residue_eq_zero_iff, mem_max_iff]
 
+/- English proof (translation)
+The claim follows from `Ideal.Quotient.lift_mk s.w.asIdeal (psiR s) (fun a ha => (psiR_eq_zero s a).2 ha)`.
+-/
 theorem kEqv_mk (a : 𝓞 E) : kEqv s (Ideal.Quotient.mk s.w.asIdeal a) = psiR s a :=
   Ideal.Quotient.lift_mk s.w.asIdeal (psiR s) (fun a ha => (psiR_eq_zero s a).2 ha)
 
+/- English proof (translation)
+Rewrite using `[phiR, RingHom.comp_apply, RingEquiv.coe_toRingHom, RingEquiv.symm_apply_eq]`. Rewrite using `[kEqv_mk]`. Both sides reduce to the same expression.
+-/
 theorem phiR_i (a : 𝓞 E) : phiR s ⟨_, i_mem s a⟩ = Ideal.Quotient.mk s.w.asIdeal a := by
   rw [phiR, RingHom.comp_apply, RingEquiv.coe_toRingHom, RingEquiv.symm_apply_eq]
   rw [kEqv_mk]; rfl
 
+/- English proof (translation)
+Take `⟨a, ha⟩` from `Ideal.Quotient.mk_surjective (I := s.w.asIdeal) (phiR s x)`. Use `⟨a, ?_, ha.symm⟩` and prove the remaining obligations. Establish `h : phiR s (x - ⟨_, i_mem s a⟩) = 0`. Rewrite using `[map_sub, phiR_i, ha, sub_self]`. Establish `h2` using `(phiR_eq_zero s _).1 h`.
+
+Rewrite `h2` using `[AddSubgroupClass.coe_sub]`. Then use the resulting hypothesis.
+-/
 theorem exists_approx (x : s.v.adicCompletionIntegers (maximalRealSubfield E)) :
     ∃ a : 𝓞 E, Valued.v ((x : s.v.adicCompletion (maximalRealSubfield E)) - s.i (a : E)) < 1 ∧
       phiR s x = Ideal.Quotient.mk s.w.asIdeal a := by
@@ -103,12 +136,30 @@ namespace GlobalTheory.MtRed
 
 variable (D : D7) (n : ℕ)
 
+/- English proof (translation)
+Use `show Formalism.UG.cT (GlobalTheory.StdFrameExist.sgA D) (GlobalTheory.StdFrameExist.kmat κ).1 * (1 : Matrix (Fin n) (Fin n) D.host.E).map (Formalism.UG.inclE (F := D.host.F) (Formalism.L2.Herm.Af D.host.F)) * (GlobalTheory.StdFrameExist.kmat κ).1 = (1 : Matrix (Fin n) (Fin n) D.h …`. Rewrite using `[Matrix.map_one _ (map_zero _) (map_one _), Matrix.mul_one, GlobalTheory.StdFrameExist.cT_kmat]`.
+-/
 theorem km_mem_UA (κ : Formalism.AUTREP.GAf D.host.E n) : km D n κ ∈ UA D.sp.cm (1 : Matrix (Fin n) (Fin n) D.host.E) := by
   show Formalism.UG.cT (GlobalTheory.StdFrameExist.sgA D) (GlobalTheory.StdFrameExist.kmat κ).1 *
       (1 : Matrix (Fin n) (Fin n) D.host.E).map (Formalism.UG.inclE (F := D.host.F) (Formalism.L2.Herm.Af D.host.F)) *
       (GlobalTheory.StdFrameExist.kmat κ).1 = (1 : Matrix (Fin n) (Fin n) D.host.E).map (Formalism.UG.inclE (F := D.host.F) (Formalism.L2.Herm.Af D.host.F))
   rw [Matrix.map_one _ (map_zero _) (map_one _), Matrix.mul_one, GlobalTheory.StdFrameExist.cT_kmat]
 
+/- English proof (translation)
+Rewrite using `[GlobalTheory.StdFrameExist.mem_Umax_iff]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨y, hy⟩ i j`. Establish `e : (GlobalTheory.StdFrameExist.kmat κ).1 i j = ((y.1 i j : Formalism.L2.Herm.intAf D.host.F D.host.E) : EAf D)` using `by show (km D n κ).1 i j = _`. Rewrite using `[← hy]`.
+
+Simplify using `[frGL, intGL, Formalism.UG.bc]`. Rewrite using `[e]`. Conclude with `(y.1 i j).2`. Introduce `h`. Establish `h' : GlobalTheory.StdFrameExist.IntM (GlobalTheory.StdFrameExist.SI D) (GlobalTheory.StdFrameExist.kmat κ⁻¹).1` using `(GlobalTheory.StdFrameExist.mem_Umax_iff _).1 (inv_mem ((GlobalTheory.StdFrameExist.mem_Umax_iff κ).2 h))`.
+
+Establish `hm : (GlobalTheory.StdFrameExist.kmat κ).1 * (GlobalTheory.StdFrameExist.kmat κ⁻¹).1 = 1`. Rewrite using `[GlobalTheory.StdFrameExist.kmat_inv, Units.mul_inv]`. Establish `hm' : (GlobalTheory.StdFrameExist.kmat κ⁻¹).1 * (GlobalTheory.StdFrameExist.kmat κ).1 = 1`. Rewrite using `[GlobalTheory.StdFrameExist.kmat_inv, Units.inv_mul]`. Use `⟨⟨Matrix.of fun i j => ⟨_, h i j⟩, Matrix.of fun i j => ⟨_, h' i j⟩, ?_, ?_⟩, ?_⟩` and prove the remaining obligations.
+
+Use extensionality with `i j`. Use `congrFun (congrFun hm i) j` as an intermediate fact. Rewrite `this` using `[Matrix.mul_apply]`. Rewrite using `[Matrix.mul_apply]`. Use `push_cast`.
+
+Use `show ∑ x, (GlobalTheory.StdFrameExist.kmat κ).1 i x * (GlobalTheory.StdFrameExist.kmat κ⁻¹).1 x j = _`. Rewrite using `[this, Matrix.one_apply, Matrix.one_apply]`. Apply the tactic sequence `split_ifs <;> simp`. Use extensionality with `i j`. Use `congrFun (congrFun hm' i) j` as an intermediate fact.
+
+Rewrite `this` using `[Matrix.mul_apply]`. Rewrite using `[Matrix.mul_apply]`. Use `push_cast`. Use `show ∑ x, (GlobalTheory.StdFrameExist.kmat κ⁻¹).1 i x * (GlobalTheory.StdFrameExist.kmat κ).1 x j = _`. Rewrite using `[this, Matrix.one_apply, Matrix.one_apply]`.
+
+Apply the tactic sequence `split_ifs <;> simp`. Apply `Units.ext` to reduce the goal to its premises. Use extensionality with `i j`. Simplify using `[frGL, intGL, Formalism.UG.bc]`. Both sides reduce to the same expression.
+-/
 theorem km_mem_St_iff (κ : Formalism.AUTREP.GAf D.host.E n) :
     km D n κ ∈ Formalism.L2.DIV.St (1 : GL (Fin n) (EAf D)) ↔ κ ∈ ReciprocityTheory.Aut.Umax D.host.E n := by
   rw [GlobalTheory.StdFrameExist.mem_Umax_iff]
@@ -149,6 +200,11 @@ theorem km_mem_St_iff (κ : Formalism.AUTREP.GAf D.host.E n) :
       simp [frGL, intGL, Formalism.UG.bc]
       rfl
 
+/- English proof (translation)
+Use `Formalism.L2.DIV.reduction_local D.host.F D.host.E n 1 PP v hP.symm _ ((km_mem_St_iff D n κ).2 hκ) ?_` and prove the remaining obligations. Establish `h` using `hT v hv`. Apply `Units.ext` to reduce the goal to its premises. Use extensionality with `i j`. Establish `e` using `congrFun (congrFun h i) j`.
+
+Rewrite `e` using `[Matrix.map_apply]`. Conclude with `e`.
+-/
 theorem red_eq_one (κ : Formalism.AUTREP.GAf D.host.E n) (hκ : κ ∈ ReciprocityTheory.Aut.Umax D.host.E n)
     (A : Set (HeightOneSpectrum (𝓞 (maximalRealSubfield D.host.E)))) (v : HeightOneSpectrum (𝓞 (maximalRealSubfield D.host.E)))
     (PP : Pl D.host.E) (hT : ReciprocityTheory.Aut.TrivOutside A κ) (hP : NG.OverPl PP v) (hv : v ∉ A) :
@@ -171,6 +227,15 @@ namespace GlobalTheory.MtRed
 
 variable (D : D7) (n : ℕ)
 
+/- English proof (translation)
+Take `⟨y, hy⟩` from `(km_mem_St_iff D n κ).2 hκ`. Establish `hz : (κ.1.val a b) ∈ ReciprocityTheory.Aut.ALint D.host.E` using `hκ a b`. Establish `hz'` using `GlobalTheory.RowGood.tr_int rfl hz`. Rewrite `hz'` using `[GlobalTheory.RowGood.tr_rfl]`. Establish `hmem : (s.loc n κ).val a b ∈ s.v.adicCompletionIntegers (maximalRealSubfield D.host.E)` using `(HeightOneSpectrum.mem_adicCompletionIntegers _ _ _).2 (GlobalTheory.RowGood.proj_le_one s hz')`.
+
+Use `⟨hmem, ?_⟩` and prove the remaining obligations. Take `⟨c, hc, hφ⟩` from `exists_approx s ⟨_, hmem⟩`. Rewrite using `[hφ]`. Establish `hyab : ((y.val a b : Formalism.L2.Herm.intAf D.host.F D.host.E) : EAf D) = κ.1.val a b`. Establish `e : (km D n κ).1 a b = ((y.1 a b : Formalism.L2.Herm.intAf D.host.F D.host.E) : EAf D)`.
+
+Rewrite using `[← hy]`. Simplify using `[frGL, intGL, Formalism.UG.bc]`. Conclude with `e.symm`. Rewrite using `[← hy, redFn_frGL]`. Use `GlobalTheory.RowGood.res_eq (rfl : maximalRealSubfield D.host.E = _) s (κ.1.val a b) (y.val a b) (by rw [GlobalTheory.RowGood.tr_rfl]; exact hyab) c hc` as an intermediate fact.
+
+Conclude with `this`.
+-/
 theorem red_split (κ : Formalism.AUTREP.GAf D.host.E n) (hκ : κ ∈ ReciprocityTheory.Aut.Umax D.host.E n)
     (s : ReciprocityTheory.Aut.SplitPlace D.host.E) (a b : Fin n) :
     ∃ h : (s.loc n κ).val a b ∈ s.v.adicCompletionIntegers (maximalRealSubfield D.host.E),
@@ -200,6 +265,9 @@ end
 
 namespace GlobalTheory.MtRed
 
+/- English proof (translation)
+Introduce `D n`. Conclude with `⟨km_mem_UA D n, km_mem_St_iff D n, fun κ hκ A v PP hT hP hv => red_eq_one D n κ hκ A v PP hT hP hv, fun s => ⟨phiR s, phiR_surj s, phiR_eq_zero s, fun a => ⟨i_mem s a, phiR_i s a⟩, fun κ hκ a b => red_split D n κ hκ s a b⟩⟩`.
+-/
 theorem km_reduction : ∀ (D : D7) (n : ℕ), (∀ κ, km D n κ ∈ UA D.sp.cm (1 : Matrix (Fin n) (Fin n) D.host.E)) ∧ (∀ κ, km D n κ ∈ Formalism.L2.DIV.St (1 : GL (Fin n) (EAf D)) ↔ κ ∈ ReciprocityTheory.Aut.Umax D.host.E n) ∧ (∀ κ ∈ ReciprocityTheory.Aut.Umax D.host.E n, ∀ (A : Set (HeightOneSpectrum (𝓞 (maximalRealSubfield D.host.E)))) (v) (PP : Pl D.host.E), ReciprocityTheory.Aut.TrivOutside A κ → NG.OverPl PP v → v ∉ A → redFn (1 : GL (Fin n) (EAf D)) PP (km D n κ) = 1) ∧ ∀ s : ReciprocityTheory.Aut.SplitPlace D.host.E, ∃ φ : s.v.adicCompletionIntegers (maximalRealSubfield D.host.E) →+* kP s.w, Function.Surjective φ ∧ (∀ x, φ x = 0 ↔ Valued.v (x : s.v.adicCompletion (maximalRealSubfield D.host.E)) < 1) ∧ (∀ a : 𝓞 D.host.E, ∃ h : s.i (a : D.host.E) ∈ s.v.adicCompletionIntegers (maximalRealSubfield D.host.E), φ ⟨_, h⟩ = Ideal.Quotient.mk _ a) ∧ ∀ κ ∈ ReciprocityTheory.Aut.Umax D.host.E n, ∀ a b, ∃ h : (s.loc n κ).val a b ∈ s.v.adicCompletionIntegers (maximalRealSubfield D.host.E), (redFn (1 : GL (Fin n) (EAf D)) s.w (km D n κ)).val a b = φ ⟨_, h⟩ := by
   intro D n
   exact ⟨km_mem_UA D n, km_mem_St_iff D n, fun κ hκ A v PP hT hP hv => red_eq_one D n κ hκ A v PP hT hP hv,

@@ -10,6 +10,11 @@ open scoped InnerProductSpace ComplexOrder Matrix.Norms.L2Operator
 
 namespace GlobalTheory.SphJet
 
+/- English proof (translation)
+Establish `hK : toMK k ∈ Kset ε` using `(mem_KG ε _).1 k.2`. Establish `hU : star (toMK k) * toMK k = 1` using `Matrix.mem_unitaryGroup_iff'.1 hK.1`. Establish `hinv : (toMK k)⁻¹ = (toMK k)ᴴ` using `Matrix.inv_eq_left_inv hU`. Rewrite using `[hinv]`. Use `hx.conjTranspose_mul_mul_same ?_` and prove the remaining obligations.
+
+Introduce `v₁ v₂ hv`. Use `congrArg (fun v => (toMK k)ᴴ *ᵥ v) hv` as an intermediate fact. Simplify `this` using `[Matrix.mulVec_mulVec, ← Matrix.star_eq_conjTranspose, hU]`.
+-/
 private lemma posDef_inv_toMK_mul_mul_toMK {n : ℕ} {ε : Fin n → Bool} (k : KG ε)
     {x : Matrix (Fin n) (Fin n) ℂ} (hx : x.PosDef) : ((toMK k)⁻¹ * x * toMK k).PosDef := by
   have hK : toMK k ∈ Kset ε := (mem_KG ε _).1 k.2
@@ -21,6 +26,15 @@ private lemma posDef_inv_toMK_mul_mul_toMK {n : ℕ} {ε : Fin n → Bool} (k : 
   have := congrArg (fun v => (toMK k)ᴴ *ᵥ v) hv
   simpa [Matrix.mulVec_mulVec, ← Matrix.star_eq_conjTranspose, hU] using this
 
+/- English proof (translation)
+Establish `hP : (NormedSpace.exp X).PosDef` using `GlobalTheory.Dec.FormF.exp_posDef hX`. Establish `hint : ∀ v : W, Integrable (fun k : KG ε => ‖⟪v, τ (toMK k) w⟫_ℂ‖ ^ 2) (muK ε)`. Introduce `v`. Assume the negation of the conclusion as `hn`. Establish `hs` using `GlobalTheory.PsiBound.schur_norm hτ v`.
+
+Rewrite `hs` using `[integral_undef hn, mul_zero]`. Establish `hv : v = 0`. Establish `: ‖v‖ = 0` using `by nlinarith [norm_nonneg v]`. Conclude with `norm_eq_zero.1 this`. Substitute `hv` using the available equality.
+
+Simplify using `at hn`. Establish `hM : 0 ≤ decHS h (rkR ε) (Real.sqrt (hs X))` using `(Real.exp_pos _).le`. Apply the tactic sequence `rw [GlobalTheory.PsiBound.ps_entry hτ lam hP u y]`. Use `GlobalTheory.PsiBound.weighted_bound (muK ε) (Module.finrank ℂ W) _ _ _ _ _ _ hM (norm_nonneg u) (norm_nonneg y) (fun k => GlobalTheory.PsiBound.norm_Phi_le hlam hgap hX ((mem_KG ε _).1 k.2)) (hint y) ?_ (GlobalTheory.PsiBound.schur_norm hτ y) ?_` and prove the remaining obligations. Simplify `hint u` using `only [norm_inner_symm]`.
+
+Simplify `GlobalTheory.PsiBound.schur_norm hτ u` using `only [norm_inner_symm]`.
+-/
 private lemma norm_inner_ps_exp_le_decHS_mul {n : ℕ} {ε : Fin n → Bool} {lam : Fin n → ℝ} {W : Type}
     [NormedAddCommGroup W] [InnerProductSpace ℂ W] {τ : Matrix (Fin n) (Fin n) ℂ → (W →L[ℂ] W)}
     {w : W} (hlam : IsHCParam lam) (hτ : IsTau ε (lowK ε lam) τ w) {h : ℝ}
@@ -46,6 +60,23 @@ private lemma norm_inner_ps_exp_le_decHS_mul {n : ℕ} {ε : Fin n → Bool} {la
   · simpa only [norm_inner_symm] using hint u
   · simpa only [norm_inner_symm] using GlobalTheory.PsiBound.schur_norm hτ u
 
+/- English proof (translation)
+Introduce `n ε lam W _ _ τ w hlam hτ h hgap X hX`. Establish `hP : (NormedSpace.exp X).PosDef` using `GlobalTheory.Dec.FormF.exp_posDef hX`. Use `⟨fun x => ?_, ?_, ?_⟩` and prove the remaining obligations. Apply the tactic sequence `rw [GlobalTheory.PsiBound.ps_entry hτ lam hP x x]`. Use `set F : KG ε → ℂ := fun k => Phi lam ((toMK k)⁻¹ * NormedSpace.exp X * toMK k) * (⟪x, τ (toMK k) w⟫_ℂ * ⟪τ (toMK k) w, x⟫_ℂ) with hFdef`.
+
+Establish `hF : ∀ k, 0 ≤ F k`. Introduce `k`. Establish `hphi : 0 < Phi lam ((toMK k)⁻¹ * NormedSpace.exp X * toMK k)` using `(phiPos n lam _ (posDef_inv_toMK_mul_mul_toMK k hP)).2.1`. Establish `hsq : 0 ≤ ⟪x, τ (toMK k) w⟫_ℂ * ⟪τ (toMK k) w, x⟫_ℂ`. Rewrite using `[← inner_conj_symm x (τ (toMK k) w), mul_comm, Complex.mul_conj]`.
+
+Conclude with `Complex.zero_le_real.2 (Complex.normSq_nonneg _)`. Conclude with `mul_nonneg hphi.le hsq`. Establish `hre : ∀ k, F k = ((F k).re : ℂ)` using `fun k => Complex.ext rfl (by simpa using ((Complex.le_def.1 (hF k)).2).symm)`. Establish `hI : ∫ k, F k ∂(muK ε) = ((∫ k, (F k).re ∂(muK ε) : ℝ) : ℂ)`. Rewrite using `[integral_congr_ae (Eventually.of_forall hre)]`.
+
+Use `first`. Consider the case `exact integral_complex_ofReal`. Consider the case `exact integral_ofReal`. Rewrite using `[hI]`. Use `mul_nonneg (Nat.cast_nonneg _) (Complex.zero_le_real.2 (integral_nonneg fun k => ?_))` and prove the remaining obligations.
+
+Conclude with `(Complex.le_def.1 (hF k)).1`. Establish `hM : 0 ≤ decHS h (rkR ε) (Real.sqrt (hs X))` using `(Real.exp_pos _).le`. Use `ContinuousLinearMap.opNorm_le_bound _ hM fun u => ?_` and prove the remaining obligations. Use `set T := ps ε lam τ w (NormedSpace.exp X)`. Break down `eq_or_ne (T u) 0 with h0 | h0` into its components or cases.
+
+Rewrite using `[h0, norm_zero]`. Check the signs of the components of the expression. Establish `hb` using `norm_inner_ps_exp_le_decHS_mul hlam hτ hgap hX u (T u)`. Rewrite `hb` using `[inner_self_eq_norm_sq_to_K]`. Simplify using `only [norm_pow, RCLike.norm_ofReal, Complex.norm_real, Real.norm_eq_abs, abs_norm] at hb`.
+
+Establish `hpos : 0 < ‖T u‖` using `norm_pos_iff.2 h0`. Use the polynomial consequences of the given equalities and inequalities. Take `⟨hopen, hpos, hdiff, -⟩` from `psBasic n ε lam W τ w hlam hτ`. Use `haveI : FiniteDimensional ℂ W := hτ.1`. Use `haveI : CompleteSpace W := FiniteDimensional.complete ℂ W`.
+
+Set `e : (Fin n → Fin n → ℂ) ≃L[ℂ] Matrix (Fin n) (Fin n) ℂ` to `(Matrix.ofLinearEquiv ℂ).toContinuousLinearEquiv`. Establish `hg : AnalyticAt ℂ (fun z : Fin n → Fin n → ℂ => ps ε lam τ w (Matrix.of z)) (e.symm (NormedSpace.exp X))` using `GlobalTheory.SCV.analyticAt_of_differentiableOn hdiff (hopen.mem_nhds (show Matrix.of _ ∈ U1 ε from hpos _ hP))`. Establish `he : AnalyticAt ℂ (⇑e.symm) (NormedSpace.exp X)` using `e.symm.toContinuousLinearMap.analyticAt _`. Conclude with `hg.comp he`.
+-/
 theorem ps_exp_pos_bound_analytic : ∀ (n : ℕ) (ε : Fin n → Bool) (lam : Fin n → ℝ) (W : Type) [NormedAddCommGroup W] [InnerProductSpace ℂ W] (τ : Matrix (Fin n) (Fin n) ℂ → (W →L[ℂ] W)) (w : W), IsHCParam lam → IsTau ε (lowK ε lam) τ w → ∀ h : ℝ, GapAtLeast ε lam h → ∀ X, inP ε X → (∀ x : W, 0 ≤ ⟪x, ps ε lam τ w (NormedSpace.exp X) x⟫_ℂ) ∧ ‖ps ε lam τ w (NormedSpace.exp X)‖ ≤ decHS h (rkR ε) (Real.sqrt (hs X)) ∧ AnalyticAt ℂ (ps ε lam τ w) (NormedSpace.exp X) := by
   intro n ε lam W _ _ τ w hlam hτ h hgap X hX
   have hP : (NormedSpace.exp X).PosDef := GlobalTheory.Dec.FormF.exp_posDef hX

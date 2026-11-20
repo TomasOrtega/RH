@@ -18,6 +18,17 @@ set_option synthInstance.maxHeartbeats 200000
 section
 open NumberField Formalism.ConjugateSelfDual ReciprocityTheory.Gal UpperTheory.V UpperTheory.V.HV UpperTheory.V.W
 open UpperTheory.V.Z.Desc.V0
+/- English proof (translation)
+Introduce `hU l _ L Ω _ _ _ _ _ _ s V c n r B Λ ι J m hn hiso hD hE hN`. Take `⟨M, _, _, _, h, e₀, hId, hmu⟩` from `hN`. Introduce `x w hJ hA hI δ hδ hJδ hψ`. Take `⟨b₀, hb₀, hopen⟩` from `_root_.UpperTheory.V.J.irrOpenW_alt l L Ω s V c n r B ι J hn hE x hI`. Establish `hlam` using `UpperTheory.V.J.lamDer l L Ω s V c n r B Λ x m hiso δ hδ hψ`.
+
+Establish `hdense : ∀ a : B.B, (∀ y ∈ {y : B.Pt | J ≤ RingHom.ker y ∧ y.Good w}, y a = 0) → a ∈ J` using `fun a ha => hD w hA.1 a fun y hy hg => ha y ⟨hy, hg⟩`. Establish `hex : ∃ y : B.Pt, (J ≤ RingHom.ker y ∧ y.Good w) ∧ y b₀ ≠ 0`. Assume the negation of the conclusion as `hcon`. Use `push_neg at hcon`. Conclude with `hb₀ (hJ (hdense b₀ hcon))`.
+
+Take `⟨y₀, hy₀, hyb₀⟩` from `hex`. Establish `hone` using `(hmu x y₀ w hJ hy₀.1 hA hy₀.2 hI (hopen y₀ w hy₀.1 hy₀.2 hyb₀)).1`. Take `⟨e⟩` from `hiso`. Use `haveI : IsDomain (MvPowerSeries (Fin m) c.O) := GlobalTheory.CohenStructure.isDomain_mvPowerSeries c.O m`. Use `haveI : IsDomain Λ.Λ := e.toRingEquiv.toMulEquiv.isDomain _`.
+
+Use `haveI : IsIntegrallyClosed (MvPowerSeries (Fin m) c.O) := GlobalTheory.CohenStructure.isIntegrallyClosed_mvPowerSeries c.O m`. Use `haveI : IsIntegrallyClosed Λ.Λ := IsIntegrallyClosed.of_equiv e.toRingEquiv.symm`. Use `haveI : IsNoetherianRing Λ.Λ := UpperTheory.V.Alg.IsCO.toIsNoetherian (O := c.O)`. Use `haveI : CharZero Λ.Λ := by haveI : CharZero c.O := (RingHom.charZero_iff (ϕ := (c.O.val : c.O →ₐ[ℤ_[l]] PadicAlgCl l).toRingHom) Subtype.val_injective).2 inferInstance`. Establish `hC : Function.Injective (MvPowerSeries.C : c.O →+* MvPowerSeries (Fin m) c.O)` using `fun a b hab => by`.
+
+Simplify using `using congrArg MvPowerSeries.constantCoeff hab`. Conclude with `(RingHom.charZero_iff (ϕ := (e.symm.toRingEquiv : MvPowerSeries (Fin m) c.O →+* Λ.Λ).comp MvPowerSeries.C) (e.symm.injective.comp hC)).1 inferInstance`. Conclude with `hU c.O Λ.Λ B.B _ (Λ.toPair B.u) J M h e₀ hId x {y : B.Pt | J ≤ RingHom.ker y ∧ y.Good w} b₀ hb₀ hdense hone (fun y hy hyb => (hmu x y w hJ hy.1 hA hy.2 hI (hopen y w hy.1 hy.2 hyb)).2) δ hδ hJδ hlam`.
+-/
 theorem UpperTheory.V.Z.Desc.V0.unramified_at_of_dense_purity_num_e_power_series :
     UnrAlgE → ∀ (l : ℕ) [Fact l.Prime] (L Ω : Type) [Field L] [NumberField L] [IsCMField L] [Field Ω] [Algebra L Ω] [IsAlgClosure L Ω]
     (s : HidaSetting l L Ω) (V : s.Lev) (c : Coef l) (n : ℕ) (r : Resid V.frame c.O n) (B : UniversalOrdinaryDeterminantRing r) (Λ : LamObj r)

@@ -18,6 +18,17 @@ open GlobalTheory.RecDict
 
 namespace GlobalTheory.LevelOpen
 
+/- English proof (translation)
+Establish `h1 : e * (1 - e) = 0` using `by rw [mul_sub, he, mul_one, sub_self]`. Establish `h2 : (1 - e) * e = 0` using `by rw [mul_comm, h1]`. Establish `h3 : (1 - e) * (1 - e) = 1 - e` using `by rw [sub_mul, h1, one_mul, sub_zero]`. Establish `key : ∀ X Y Z W : Matrix (Fin n) (Fin n) A, (e • X + (1 - e) • Z) * (e • Y + (1 - e) • W) = e • (X * Y) + (1 - e) • (Z * W)`. Introduce `X Y Z W`.
+
+Simplify using `only [add_mul, mul_add, smul_mul_smul_comm, he, h1, h2, h3, zero_smul, add_zero, zero_add]`. Establish `one : ∀ X : Matrix (Fin n) (Fin n) A, e • X + (1 - e) • X = X`. Introduce `X`. Rewrite using `[← add_smul, add_sub_cancel, one_smul]`. Use `⟨⟨e • g.1 + (1 - e) • 1, e • (g⁻¹).1 + (1 - e) • 1, ?_, ?_⟩, ?_, rfl⟩` and prove the remaining obligations.
+
+Rewrite using `[key, Units.mul_inv, one_mul, one]`. Rewrite using `[key, Units.inv_mul, one_mul, one]`. Establish `hg' : Formalism.UG.cT σ g.1 * J * g.1 = J` using `hg`. Express the relevant statement in the definitionally equal form `Formalism.UG.cT σ (e • g.1 + (1 - e) • 1) * J * (e • g.1 + (1 - e) • 1) = J`. Establish `hc : Formalism.UG.cT σ (e • g.1 + (1 - e) • (1 : Matrix (Fin n) (Fin n) A)) = e • Formalism.UG.cT σ g.1 + (1 - e) • 1`.
+
+Use extensionality with `i j`. Distinguish the cases in `h : i = j`. Substitute `h` using the available equality. Simplify using `[Formalism.UG.cT, hσ]`. Simplify using `[Formalism.UG.cT, hσ, Matrix.one_apply_ne h, Matrix.one_apply_ne (Ne.symm h)]`.
+
+Rewrite using `[hc]`. Use `conv_lhs => rw [← one J]`. Rewrite using `[key, key, hg', one_mul, mul_one, one]`.
+-/
 theorem exists_cut {A : Type} [CommRing A] {n : ℕ} (σ : A →+* A) (J : Matrix (Fin n) (Fin n) A) (e : A)
     (he : e * e = e) (hσ : σ e = e) (g : GL (Fin n) A) (hg : g ∈ Formalism.UG.UJ σ J) :
     ∃ k ∈ Formalism.UG.UJ σ J, k.1 = e • g.1 + (1 - e) • (1 : Matrix (Fin n) (Fin n) A) := by
@@ -45,6 +56,33 @@ theorem exists_cut {A : Type} [CommRing A] {n : ℕ} (σ : A →+* A) (J : Matri
     conv_lhs => rw [← one J]
     rw [key, key, hg', one_mul, mul_one, one]
 
+/- English proof (translation)
+Establish `: IsModuleTopology (Af F) (Af F ⊗[F] E)` using `⟨rfl⟩`. Establish `: Module.Finite F E` using `Module.Finite.of_restrictScalars_finite ℚ F E`. Establish `: IsTopologicalRing (Af F ⊗[F] E)` using `IsModuleTopology.isTopologicalRing (Af F) _`. Establish `ho : IsOpen {z : Fin n → Af F ⊗[F] E | ∃ y ∈ GlobalTheory.AdLat.hat F (L : Set (Fin n → E)), z = N • y}` using `(GlobalTheory.AdLat.OpenLat.isOpen_nsmul_hat F E n L hL).1 N hN`. Establish `hfz : (L.restrictScalars ℤ).FG`.
+
+Establish `: Module.Finite (𝓞 E) L` using `Module.Finite.iff_fg.mpr hfg`. Establish `: Module.Finite ℤ L` using `Module.Finite.trans (𝓞 E) L`. Conclude with `(Module.Finite.iff_fg (N := L.restrictScalars ℤ)).mp (inferInstanceAs (Module.Finite ℤ L))`. Take `⟨s, hs⟩` from `hfz`. Establish `hev : ∀ᶠ m : Matrix (Fin n) (Fin n) (Af F ⊗[F] E) in 𝓝 1, ∀ x ∈ s, ∃ y ∈ GlobalTheory.AdLat.hat F (L : Set (Fin n → E)), m.mulVec (GlobalTheory.AdLat.fv F x) - GlobalTheory.AdLat.fv F x = N • y`.
+
+Rewrite using `[Filter.eventually_all_finset]`. Introduce `x _`. Establish `hc : Continuous fun m : Matrix (Fin n) (Fin n) (Af F ⊗[F] E) => m.mulVec (GlobalTheory.AdLat.fv F x) - GlobalTheory.AdLat.fv F x` using `(continuous_id.matrix_mulVec continuous_const).sub continuous_const`. Conclude with `(ho.preimage hc).mem_nhds ⟨0, zero_mem _, by simp⟩`. Use `Filter.mem_of_superset hev fun m hm => ?_` and prove the remaining obligations.
+
+Establish `hsm : ∀ a : Af F, (∀ v, a v ∈ v.adicCompletionIntegers F) → ∀ y ∈ GlobalTheory.AdLat.hat F (L : Set (Fin n → E)), a • y ∈ GlobalTheory.AdLat.hat F (L : Set (Fin n → E))`. Introduce `a ha y hy`. Proceed by induction on `hy using AddSubgroup.closure_induction with`. Consider the case `mem x hx`. Take `⟨b, hb, x, hx, rfl⟩` from `hx`.
+
+Conclude with `AddSubgroup.subset_closure ⟨a * b, fun v => mul_mem (ha v) (hb v), x, hx, rfl⟩`. Consider the case `zero => rw [smul_zero]`. Conclude with `zero_mem _`. Consider the case `add x y _ _ hx hy => rw [smul_add]`. Conclude with `add_mem hx hy`.
+
+Consider the case `neg x _ hx => rw [smul_neg]`. Conclude with `neg_mem hx`. Establish `hadd : ∀ z w : Fin n → Af F ⊗[F] E, (∃ y ∈ GlobalTheory.AdLat.hat F (L : Set (Fin n → E)), m.mulVec z - z = N • y) → (∃ y ∈ GlobalTheory.AdLat.hat F (L : Set (Fin n → E)), m.mulVec w - w = N • y) → ∃ y ∈ GlobalTheory.AdLat.hat F (L : Set (Fin n → E)), m.mulVec (z + w) - (z + w) = …`. Introduce and unpack `z w ⟨y, hy, h⟩ ⟨y', hy', h'⟩`. Conclude with `⟨y + y', add_mem hy hy', by rw [smul_add, ← h, ← h', Matrix.mulVec_add]; abel⟩`.
+
+Establish `hx : ∀ x ∈ Submodule.span ℤ (s : Set (Fin n → E)), ∃ y ∈ GlobalTheory.AdLat.hat F (L : Set (Fin n → E)), m.mulVec (GlobalTheory.AdLat.fv F x) - GlobalTheory.AdLat.fv F x = N • y`. Introduce `x hx`. Proceed by induction on `hx using Submodule.span_induction with`. Consider the case `mem x hx => exact hm x hx`. Consider the case `zero`.
+
+Establish `: GlobalTheory.AdLat.fv F (0 : Fin n → E) = 0` using `funext fun i => TensorProduct.tmul_zero _ _`. Conclude with `⟨0, zero_mem _, by simp [this]⟩`. Consider the case `add x y _ _ hx hy`. Establish `: GlobalTheory.AdLat.fv F (x + y) = GlobalTheory.AdLat.fv F x + GlobalTheory.AdLat.fv F y`. Use function extensionality and compare the values at `fun i => TensorProduct.tmul_add _ _ _`.
+
+Rewrite using `[this]`. Conclude with `hadd _ _ hx hy`. Consider the case `smul c x _ hx`. Take `⟨y, hy, h⟩` from `hx`. Establish `: GlobalTheory.AdLat.fv F (c • x) = c • GlobalTheory.AdLat.fv F x`.
+
+Use function extensionality and compare the values at `fun i => map_zsmul (TensorProduct.mk F (Af F) E 1) c (x i)`. Use `⟨c • y, zsmul_mem hy c, ?_⟩` and prove the remaining obligations. Rewrite using `[this, Matrix.mulVec_smul, ← smul_sub, h, smul_comm]`. Introduce `z hz`. Proceed by induction on `hz using AddSubgroup.closure_induction with`.
+
+Consider the case `mem z hz`. Take `⟨a, ha, x, hxL, rfl⟩` from `hz`. Take `⟨y, hy, h⟩` from `hx x (by rw [hs]; exact hxL)`. Establish `: (fun i => a ⊗ₜ[F] x i) = a • GlobalTheory.AdLat.fv F x`. Use function extensionality and compare the values at `i`.
+
+Simplify using `[GlobalTheory.AdLat.fv, TensorProduct.smul_tmul']`. Use `⟨a • y, hsm a ha y hy, ?_⟩` and prove the remaining obligations. Rewrite using `[this, Matrix.mulVec_smul, ← smul_sub, h, smul_comm]`. Consider the case `zero => exact ⟨0, zero_mem _, by simp⟩`. Consider the case `add z w _ _ hz hw => exact hadd z w hz hw`.
+
+Consider the case `neg z _ hz`. Take `⟨y, hy, h⟩` from `hz`. Conclude with `⟨-y, neg_mem hy, by rw [smul_neg, ← h, Matrix.mulVec_neg]; abel⟩`.
+-/
 theorem congr_mem_nhds (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (n : ℕ)
     (L : Submodule (𝓞 E) (Fin n → E)) (hfg : L.FG) (hL : Submodule.span E (L : Set (Fin n → E)) = ⊤)
     (N : ℕ) (hN : 0 < N) :
@@ -121,6 +159,11 @@ theorem congr_mem_nhds (F E : Type) [Field F] [NumberField F] [Field E] [NumberF
     obtain ⟨y, hy, h⟩ := hz
     exact ⟨-y, neg_mem hy, by rw [smul_neg, ← h, Matrix.mulVec_neg]; abel⟩
 
+/- English proof (translation)
+Establish `: IsModuleTopology (Af F) (Af F ⊗[F] E)` using `⟨rfl⟩`. Establish `: IsModuleTopology (AF F) (AF F ⊗[F] E)` using `⟨rfl⟩`. Establish `: ContinuousAdd (Af F ⊗[F] E)` using `IsModuleTopology.toContinuousAdd (Af F) _`. Establish `: ContinuousSMul (Af F) (Af F ⊗[F] E)` using `IsModuleTopology.toContinuousSMul _ _`. Set `φ : AF F ⊗[F] E →ₛₗ[(sndA F).toRingHom] Af F ⊗[F] E` to `{ toFun := Algebra.TensorProduct.map (sndA F) (AlgHom.id F E) map_add' := map_add _ map_smul' := fun a x => by`.
+
+Rewrite using `[Algebra.smul_def, Algebra.smul_def, map_mul]`. Use `rfl }`. Establish `hs : Continuous ((sndA F).toRingHom : AF F → Af F)` using `continuous_snd`. Conclude with `IsModuleTopology.continuous_of_linearMapₛₗ hs φ`.
+-/
 theorem continuous_fin (F E : Type) [Field F] [NumberField F] [Field E] [Algebra F E] :
     Continuous (Algebra.TensorProduct.map (sndA F) (AlgHom.id F E) : AF F ⊗[F] E → Af F ⊗[F] E) := by
   have : IsModuleTopology (Af F) (Af F ⊗[F] E) := ⟨rfl⟩
@@ -136,6 +179,17 @@ theorem continuous_fin (F E : Type) [Field F] [NumberField F] [Field E] [Algebra
   have hs : Continuous ((sndA F).toRingHom : AF F → Af F) := continuous_snd
   exact IsModuleTopology.continuous_of_linearMapₛₗ hs φ
 
+/- English proof (translation)
+Set `e : AF F ⊗[F] E` to `pairA F 0 1 ⊗ₜ 1`. Establish `he : e * e = e`. Simplify using `only [e, Algebra.TensorProduct.tmul_mul_tmul, mul_one]`. Use `congr 1`. Conclude with `Prod.ext (mul_zero _) (mul_one _)`.
+
+Establish `hσ : sigR (AF F) σ e = e`. Simplify using `[e, sigR]`. Take `⟨k, hk, hke⟩` from `exists_cut _ (JR (AF F) J) e he hσ g hg`. Establish `h0 : Algebra.TensorProduct.map (fstA F) (AlgHom.id F E) e = 0` using `TensorProduct.zero_tmul _ _`. Establish `h1 : Algebra.TensorProduct.map (sndA F) (AlgHom.id F E) e = 1` using `rfl`.
+
+Use `⟨k, hk, Units.ext ?_, Units.ext ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `k.1.map (Algebra.TensorProduct.map (fstA F) (AlgHom.id F E)) = 1`. Use extensionality with `i j`. Rewrite using `[hke]`. Distinguish the cases in `h : i = j`.
+
+Substitute `h` using the available equality. Simplify using `[h0]`. Simplify using `[h0, Matrix.one_apply_ne h]`. Use extensionality with `i j`. Express the relevant statement in the definitionally equal form `Algebra.TensorProduct.map (sndA F) (AlgHom.id F E) (k.1 i j) = Algebra.TensorProduct.map (sndA F) (AlgHom.id F E) (g.1 i j)`.
+
+Rewrite using `[hke]`. Simplify using `[h1]`.
+-/
 theorem exists_finPart_mat {F E : Type} [Field F] [NumberField F] [Field E] [Algebra F E] (σ : E →ₐ[F] E) {n : ℕ}
     (J : Matrix (Fin n) (Fin n) E) (g : GL (Fin n) (AF F ⊗[F] E)) (hg : g ∈ HR (AF F) σ J) :
     ∃ k ∈ HR (AF F) σ J, Formalism.UG.bc (Algebra.TensorProduct.map (fstA F) (AlgHom.id F E)).toRingHom k = 1 ∧
@@ -167,12 +221,30 @@ theorem exists_finPart_mat {F E : Type} [Field F] [NumberField F] [Field E] [Alg
 
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
+/- English proof (translation)
+Set `g' : HR (AF D.host.F) D.sp.cm.sig V.gram` to `g`. Take `⟨k, hk, h1, h2⟩` from `exists_finPart_mat D.sp.cm.sig V.gram (matHom V g) g'.2`. Set `k' : HR (AF D.host.F) D.sp.cm.sig V.gram` to `⟨k, hk⟩`. Conclude with `⟨k', h1, h2⟩`.
+-/
 theorem exists_finPart (D : D7) (V : HSp D) (g : GA D V) : ∃ k ∈ GfC V, finHom V k = finHom V g := by
   let g' : HR (AF D.host.F) D.sp.cm.sig V.gram := g
   obtain ⟨k, hk, h1, h2⟩ := exists_finPart_mat D.sp.cm.sig V.gram (matHom V g) g'.2
   let k' : HR (AF D.host.F) D.sp.cm.sig V.gram := ⟨k, hk⟩
   exact ⟨k', h1, h2⟩
 
+/- English proof (translation)
+Introduce `D V N Kf hN hK g₀`. Establish `: IsModuleTopology (AF D.host.F) (AF D.host.F ⊗[D.host.F] D.host.E)` using `⟨rfl⟩`. Establish `: Module.Finite D.host.F D.host.E` using `Module.Finite.of_restrictScalars_finite ℚ _ _`. Establish `: IsTopologicalRing (AF D.host.F ⊗[D.host.F] D.host.E)` using `IsModuleTopology.isTopologicalRing (AF D.host.F) _`. Establish `: IsTopologicalGroup (GA D V)` using `inferInstanceAs (IsTopologicalGroup (HR (AF D.host.F) D.sp.cm.sig V.gram))`.
+
+Set `ψ : V.V →ₗ[𝓞 D.host.E] (Fin V.rank → D.host.E)` to `V.frame.equivFun.toLinearMap.restrictScalars (𝓞 D.host.E)`. Set `L` to `V.L0.map ψ`. Establish `hfg : L.FG` using `V.standardTuple_isLattice.fg.map ψ`. Establish `hL : Submodule.span D.host.E (L : Set (Fin V.rank → D.host.E)) = ⊤`. Establish `: (L : Set (Fin V.rank → D.host.E)) = V.frame.equivFun.toLinearMap '' V.L0` using `rfl`.
+
+Rewrite using `[this, ← Submodule.map_span, V.standardTuple_isLattice.span_eq_top, Submodule.map_top, LinearEquiv.range]`. Establish `hhat : GlobalTheory.AdLat.hat D.host.F (L : Set (Fin V.rank → D.host.E)) = latHat V`. Unfold `GlobalTheory.AdLat.hat latHat`. Use `congr 1`. Use extensionality with `z`.
+
+Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨a, ha, _, ⟨x, hx, rfl⟩, rfl⟩`. Conclude with `⟨a, ha, x, hx, rfl⟩`. Introduce and unpack `⟨a, ha, x, hx, rfl⟩`. Conclude with `⟨a, ha, _, ⟨x, hx, rfl⟩, rfl⟩`.
+
+Establish `hn` using `congr_mem_nhds D.host.F D.host.E V.rank L hfg hL N hN`. Rewrite `hn` using `[hhat]`. Establish `hm : Continuous fun g : GA D V => (matHom V g).1` using `Units.continuous_val.comp continuous_subtype_val`. Establish `hf : Continuous fun g : GA D V => (finHom V g).1` using `hm.matrix_map (continuous_fin D.host.F D.host.E)`. Establish `hc : Continuous fun g : GA D V => (finHom V (g₀⁻¹ * g)).1` using `hf.comp (continuous_const_mul g₀⁻¹)`.
+
+Establish `h1` using `hc.continuousAt.preimage_mem_nhds (x := g₀) (by rw [inv_mul_cancel, map_one]; exact hn)`. Use `Filter.mem_of_superset h1 fun g hg => ?_` and prove the remaining obligations. Take `⟨k, hk, hkg⟩` from `exists_finPart D V (g₀⁻¹ * g)`. Use `⟨k, (hK k).mpr ⟨hk, by rw [hkg]; exact hg⟩, k⁻¹ * (g₀⁻¹ * g), ?_, by group⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `finHom V _ = 1`.
+
+Rewrite using `[map_mul, map_inv, hkg, inv_mul_cancel]`.
+-/
 theorem level_mem_nhds : ∀ (D : D7) (V : HSp D) (N : ℕ) (Kf : Subgroup (GA D V)), 0 < N → IsLevelK V N Kf → ∀ g₀ : GA D V, {g : GA D V | ∃ k ∈ Kf, ∃ h ∈ GinfC V, g = g₀ * k * h} ∈ 𝓝 g₀ := by
   intro D V N Kf hN hK g₀
   have : IsModuleTopology (AF D.host.F) (AF D.host.F ⊗[D.host.F] D.host.E) := ⟨rfl⟩

@@ -7,6 +7,13 @@ open ReciprocityTheory.ChartRestriction.G.Out GlobalTheory.AbLaw GlobalTheory.Fo
 
 namespace GlobalTheory.FormalAlg
 
+/- English proof (translation)
+Introduce `R _ I X Z φ p hg V hV hW`. Use `set K := (baseIdeal p I).comap φ with hK`. Establish `hKid : K.ideal ⟨φ ⁻¹ᵁ V, hW⟩ = ((baseIdeal p I).ideal ⟨V, hV⟩).map (φ.app V).hom`. Rewrite using `[hK, GlobalTheory.Principalise.comapIdealAffine (baseIdeal p I) φ ⟨V, hV⟩ ⟨φ ⁻¹ᵁ V, hW⟩ le_rfl, Scheme.Hom.app_eq_appLE]`. Introduce `q`.
+
+Take `⟨c, rfl⟩` from `Ideal.Quotient.mk_surjective q`. Take `⟨b, hb⟩` from `Scheme.Hom.app_surjective (K.subschemeι ≫ φ) V hV ((K.subschemeι.app (φ ⁻¹ᵁ V)).hom c)`. Use `⟨b, ?_⟩` and prove the remaining obligations. Simplify using `only [RingHom.comp_apply]`. Rewrite using `[Ideal.Quotient.eq, ← hKid, ← Scheme.IdealSheafData.ker_subschemeι_app, RingHom.mem_ker, map_sub]`.
+
+Rewrite `hb` using `[Scheme.Hom.comp_app]`. Rewrite using `[sub_eq_zero]`. Conclude with `hb`.
+-/
 theorem surj_mod_baseIdeal_of_isClosedImmersion : ∀ (R : Type) [CommRing R] (I : Ideal R) (X Z : Scheme.{0}) (φ : X ⟶ Z) (p : Z ⟶ Spec (CommRingCat.of R)), IsClosedImmersion (((baseIdeal p I).comap φ).subschemeι ≫ φ) → ∀ (V : Z.Opens) (hV : IsAffineOpen V), IsAffineOpen (φ ⁻¹ᵁ V) → Function.Surjective ((Ideal.Quotient.mk (((baseIdeal p I).ideal ⟨V, hV⟩).map (φ.app V).hom)).comp (φ.app V).hom) := by
   intro R _ I X Z φ p hg V hV hW
   set K := (baseIdeal p I).comap φ with hK

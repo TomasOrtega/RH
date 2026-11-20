@@ -15,6 +15,29 @@ open GlobalTheory.Doubling (absE)
 
 namespace GlobalTheory.IwArchLocal
 
+/- English proof (translation)
+Introduce `n M θ g g' x hM hC hgg' hgM hx0 hxiso`. Establish `hC' : Formalism.IndefR.Datum.IsCartanInv Mᵀ θ` using `GlobalTheory.MajFrameCartan.isCartanInv_transpose hM hC`. Take `⟨b, ε, hb1, hb2⟩` from `GlobalTheory.Doubling.exists_frame_of_isCartanInv hC'`. Establish `hcT : ∀ {p q : Type} (N : Matrix p q ℂ), Formalism.UG.cT (starRingEnd ℂ) N = Nᴴ` using `fun N => by`. Use extensionality with `i j`.
+
+Simplify using `[Formalism.UG.cT, Matrix.conjTranspose_apply]`. Set `gG : GL (Fin n) ℂ` to `⟨g, g', hgg', mul_eq_one_comm.1 hgg'⟩`. Establish `hgG : gG ∈ Formalism.UG.UJ (starRingEnd ℂ) Mᵀ` using `by show Formalism.UG.cT (starRingEnd ℂ) g * Mᵀ * g = Mᵀ`. Rewrite using `[hcT]`. Use `congrArg Matrix.transpose hgM` as an intermediate fact.
+
+Rewrite `this` using `[Matrix.transpose_mul, Matrix.transpose_mul, Matrix.transpose_transpose, ← Matrix.transpose_map]`. Rewrite using `[Matrix.mul_assoc]`. Conclude with `this`. Set `X : Matrix (Fin n) (Fin 1) ℂ` to `Matrix.of fun i _ => x i`. Establish `hX : Formalism.UG.cT (starRingEnd ℂ) X * Mᵀ * X = 0`.
+
+Rewrite using `[hcT]`. Use extensionality with `i j`. Use `fin_cases i`. Use `fin_cases j`. Simplify using `only [Matrix.mul_apply, Matrix.conjTranspose_apply, Matrix.transpose_apply, X, Matrix.of_apply, Matrix.zero_apply]`.
+
+Rewrite using `[← hxiso]`. Simplify using `only [dotProduct, Matrix.mulVec, Pi.star_apply, Finset.sum_mul, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree. Take `⟨k, hk, hku, β, hβ⟩` from `GlobalTheory.Core.Rk.IwArch.iw_iso_cols (starRingEnd ℂ) (RingHom.id ℂ) Function.bijective_id (fun _ => rfl) b ε (by rw [hcT]; exact hb1) X hX gG hgG`.
+
+Establish `hkG : k.1ᴴ * Mᵀ * k.1 = Mᵀ`. Establish `h : Formalism.UG.cT (starRingEnd ℂ) k.1 * Mᵀ * k.1 = Mᵀ` using `hk`. Rewrite `h` using `[hcT]`. Then use the resulting hypothesis. Establish `e : (g * (k⁻¹).1) *ᵥ x = β 0 0 • x`. Use function extensionality and compare the values at `i`.
+
+Establish `h` using `congrFun (congrFun hβ i) 0`. Rewrite `h` using `[Matrix.mul_apply, Matrix.mul_apply, Fin.sum_univ_one]`. Simplify using `only [X, Matrix.of_apply] at h`. Rewrite using `[Matrix.mulVec, dotProduct, Pi.smul_apply, smul_eq_mul, mul_comm]`. Conclude with `h`.
+
+Use `⟨k.1, (k⁻¹).1, Units.mul_inv k, ?_, ?_, β 0 0, ?_, e⟩` and prove the remaining obligations. Use `congrArg Matrix.transpose hkG` as an intermediate fact. Rewrite `this` using `[Matrix.transpose_mul, Matrix.transpose_mul, Matrix.transpose_transpose]`. Rewrite `this` using `[Matrix.conjTranspose, Matrix.transpose_map, Matrix.transpose_transpose]`. Rewrite `this` using `[← Matrix.mul_assoc]`.
+
+Conclude with `this`. Establish `hu : (b⁻¹ * k * b).1ᴴ * (b⁻¹ * k * b).1 = 1`. Establish `h : Formalism.UG.cT (starRingEnd ℂ) (b⁻¹ * k * b).1 * 1 * (b⁻¹ * k * b).1 = 1` using `hku`. Rewrite `h` using `[hcT, Matrix.mul_one]`. Then use the resulting hypothesis. Rewrite `hu` using `[Units.val_mul, Units.val_mul]`.
+
+Use `(GlobalTheory.Doubling.unitary_iff_commute (Units.mul_inv b) hb1 (GlobalTheory.Doubling.diagonal_sign_mul_self ε) hkG).1 hu` as an intermediate fact. Rewrite `this` using `[hb2]`. Then use the resulting hypothesis. Introduce `h0`. Rewrite `e` using `[h0, zero_smul]`. Apply `hx0` to reduce the goal to its premises.
+
+Establish `hg'g : g' * g = 1` using `mul_eq_one_comm.1 hgg'`. Establish `hinv : (k.1 * g') * (g * (k⁻¹).1) = 1`. Combine the equalities or inequalities in the displayed calculation. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem iwasawa_arch_isotropic_line : ∀ {n : ℕ} (M θ g g' : Matrix (Fin n) (Fin n) ℂ) (x : Fin n → ℂ), Mᴴ = M → IsCartan M θ → g * g' = 1 → gᵀ * M * g.map star = M → x ≠ 0 → x ⬝ᵥ M *ᵥ star x = 0 → ∃ k k' : Matrix (Fin n) (Fin n) ℂ, k * k' = 1 ∧ kᵀ * M * k.map star = M ∧ Commute k θ ∧ ∃ β : ℂ, β ≠ 0 ∧ (g * k') *ᵥ x = β • x := by
   intro n M θ g g' x hM hC hgg' hgM hx0 hxiso
   have hC' : Formalism.IndefR.Datum.IsCartanInv Mᵀ θ := GlobalTheory.MajFrameCartan.isCartanInv_transpose hM hC

@@ -6,18 +6,29 @@ noncomputable section
 
 namespace GlobalTheory.Hk
 
+/- English proof (translation)
+Use `haveI : NeZero N := ⟨hN.ne'⟩`. Use `haveI : NeZero l := ⟨hl.ne'⟩`. Unfold `lev`. Use `infer_instance`.
+-/
 private theorem finiteIndex_lev_of_pos' (N l : ℕ) (hN : 0 < N) (hl : 0 < l) : (lev N l).FiniteIndex := by
   haveI : NeZero N := ⟨hN.ne'⟩
   haveI : NeZero l := ⟨hl.ne'⟩
   unfold lev
   infer_instance
 
+/- English proof (translation)
+Rewrite `hc`, the goal using `[isCusp_SL2Z_iff]`. Take `⟨c, rfl⟩` from `hc`. Conclude with `⟨g • c, by rw [← Rat.coe_castHom, OnePoint.map_smul]⟩`.
+-/
 private theorem isCusp_SL2Z_ratGL_smul' (g : GL (Fin 2) ℚ) {c : OnePoint ℝ} (hc : IsCusp c 𝒮ℒ) :
     IsCusp (Matrix.GeneralLinearGroup.map (Rat.castHom ℝ) g • c) 𝒮ℒ := by
   rw [isCusp_SL2Z_iff] at hc ⊢
   obtain ⟨c, rfl⟩ := hc
   exact ⟨g • c, by rw [← Rat.coe_castHom, OnePoint.map_smul]⟩
 
+/- English proof (translation)
+Introduce `N l k g hN hl _ f c hc`. Use `haveI := finiteIndex_lev_of_pos' N l hN hl`. Rewrite `hc` using `[Subgroup.IsArithmetic.isCusp_iff_isCusp_SL2Z]`. Rewrite using `[← OnePoint.IsZeroAt.smul_iff]`. Establish `h` using `isCusp_SL2Z_ratGL_smul' g hc`.
+
+Rewrite `h` using `[← Subgroup.IsArithmetic.isCusp_iff_isCusp_SL2Z ((GlobalTheory.Hk.lev N l : Subgroup SL(2, ℤ)) : Subgroup (GL (Fin 2) ℝ))]`. Conclude with `f.zero_at_cusps' h`.
+-/
 theorem cuspForm_slash_rat_isZeroAt : ∀ (N l : ℕ) (k : ℤ) (g : GL (Fin 2) ℚ), 0 < N → 0 < l →
     0 < (g.det : ℚ) → ∀ f : CuspForm (GlobalTheory.Hk.lev N l) k, ∀ c : OnePoint ℝ,
     IsCusp c (GlobalTheory.Hk.lev N l) →

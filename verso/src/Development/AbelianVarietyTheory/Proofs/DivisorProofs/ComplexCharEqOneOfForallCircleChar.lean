@@ -24,10 +24,22 @@ noncomputable def circNormChar {G : Type} [Group G] (ν : G →* ℂˣ) (t : ℝ
     show Circle.exp (t * Real.log ‖((ν (a * b) : ℂˣ) : ℂ)‖) = _
     rw [ν.map_mul, Units.val_mul, norm_mul, Real.log_mul ha hb, mul_add, Circle.exp_add]
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 private theorem coe_circArgChar_eq_div_norm {G : Type} [Group G] (ν : G →* ℂˣ) (g : G) :
     ((circArgChar ν g : Circle) : ℂ) = (ν g : ℂ) / (‖(ν g : ℂ)‖ : ℂ) := by
   rfl
 
+/- English proof (translation)
+Introduce `G _ ν x h`. Establish `hx0 : (ν x : ℂ) ≠ 0` using `(ν x).ne_zero`. Establish `hpos : 0 < ‖(ν x : ℂ)‖` using `norm_pos_iff.mpr hx0`. Establish `hn : ‖(ν x : ℂ)‖ = 1`. Assume the negation of the conclusion as `hne`.
+
+Establish `hlog : Real.log ‖(ν x : ℂ)‖ ≠ 0` using `Real.log_ne_zero_of_pos_of_ne_one hpos hne`. Establish `h2` using `h (circNormChar ν (Real.pi / Real.log ‖(ν x : ℂ)‖)) (fun g hg => by`. Simplify using `[circNormChar, hg])`. Establish `h3` using `congrArg (fun z : Circle => (z : ℂ)) h2`. Simplify using `only [circNormChar, MonoidHom.coe_mk, OneHom.coe_mk, Circle.coe_exp, div_mul_cancel₀ _ hlog, Circle.coe_one] at h3`.
+
+Evaluate the numerical expressions using `[Complex.exp_pi_mul_I] at h3`. Establish `h1` using `h (circArgChar ν) (fun g hg => by`. Apply `Circle.ext` to reduce the goal to its premises. Rewrite using `[coe_circArgChar_eq_div_norm, hg]`. Use the proof step `simp)`.
+
+Establish `h4` using `congrArg (fun z : Circle => (z : ℂ)) h1`. Simplify using `only [coe_circArgChar_eq_div_norm, Circle.coe_one, hn, Complex.ofReal_one, div_one] at h4`. Apply `Units.ext` to reduce the goal to its premises. Simplify using `using h4`.
+-/
 theorem complexChar_eq_one_of_forall_circleChar :
     ∀ {G : Type} [Group G] (ν : G →* ℂˣ) (x : G),
       (∀ μ : G →* Circle, (∀ g, ν g = 1 → μ g = 1) → μ x = 1) → ν x = 1 := by

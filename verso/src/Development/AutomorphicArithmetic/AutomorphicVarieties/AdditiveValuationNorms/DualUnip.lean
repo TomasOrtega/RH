@@ -6,6 +6,17 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.AdditiveValuationN
 
 open UpperTheory.V UpperTheory.V.PropA Formalism.GaloisCohomology
 
+/- English proof (translation)
+Introduce `l _ D _ _ g t hfin ht hnil`. Establish `hT` using `torsFin l D hfin`. Use `choose k hk using hnil`. Establish `key : ∀ (n : ℕ) (x : D →ₗ[ℤ_[l]] QZ l) (φ : D), ((t - 1) ^ n) x φ = x (((g - 1) ^ n) φ)`. Introduce `n`.
+
+Proceed by induction on `n with`. Consider the case `zero`. Introduce `x φ`. Simplify using the standard rewrite rules. Consider the case `succ n ih`.
+
+Introduce `x φ`. Rewrite using `[pow_succ, Module.End.mul_apply, ih]`. Rewrite using `[pow_succ' (g - 1), Module.End.mul_apply]`. Simplify using `[ht, map_sub]`. Use `⟨hT.toFinset.sup k, fun x => ?_⟩` and prove the remaining obligations.
+
+Take `⟨y, hy⟩` from `dualDiv l D (((t - 1) ^ (hT.toFinset.sup k)) x) (by`. Introduce `φ hφ`. Rewrite using `[key]`. Establish `hmem : φ ∈ hT.toFinset` using `by simpa using hφ`. Establish `hle : k φ ≤ hT.toFinset.sup k` using `Finset.le_sup hmem`.
+
+Rewrite using `[← Nat.sub_add_cancel hle, pow_add, Module.End.mul_apply, hk, map_zero, map_zero])`. Conclude with `⟨y, by simpa using hy⟩`.
+-/
 theorem UpperTheory.V.PropA.dualUnip :
     ∀ (l : ℕ) [Fact l.Prime] (D : Type) [AddCommGroup D] [Module ℤ_[l] D] (g : Module.End ℤ_[l] D) (t : Module.End ℤ_[l] (D →ₗ[ℤ_[l]] QZ l)),
       Module.Finite ℤ_[l] (D →ₗ[ℤ_[l]] QZ l) → (∀ x φ, t x φ = x (g φ)) → (∀ φ : D, ∃ k : ℕ, ((g - 1) ^ k) φ = 0) → Unip t := by

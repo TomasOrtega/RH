@@ -17,6 +17,11 @@ noncomputable section
 
 namespace GlobalTheory.NormBlPrincipal
 
+/- English proof (translation)
+Introduce `S Z π J h R _ _ ξ`. Take `⟨-, S₀, π₀, ν, -, hbl, hc, -⟩` from `h`. Take `⟨U, f, hx, -, hU⟩` from `hbl.1 ((ξ ≫ ν) (closedPoint R))`. Establish `hle : ⊤ ≤ (ξ ≫ ν) ⁻¹ᵁ U.1` using `(Scheme.preimage_eq_top_of_closedPoint_mem (ξ ≫ ν) hx).ge`. Use `⟨((ξ ≫ ν).appLE U.1 ⊤ hle ≫ (Scheme.ΓSpecIso (.of R)).hom).hom f, ?_⟩` and prove the remaining obligations.
+
+Establish `e : idlAlong (J.comap π) ξ = idlAlong (J.comap π₀) (ξ ≫ ν)`. Rewrite using `[GlobalTheory.PullAlong.idlAlong_comap_eq, GlobalTheory.PullAlong.idlAlong_comap_eq, ← hc, Category.assoc]`. Rewrite using `[e, GlobalTheory.TraitOrder.idlAlong_eq_map _ _ U hle, hU, Ideal.map_span, Set.image_singleton]`.
+-/
 theorem idlAlong_comap_principal : ∀ {S Z : Scheme.{0}} (π : S ⟶ Z) (J : Z.IdealSheafData), IsNormBl π J →
     ∀ (R : Type) [CommRing R] [IsLocalRing R]
     (ξ : Sp R ⟶ S), ∃ g₀ : R, idlAlong (J.comap π) ξ = Ideal.span {g₀} := by

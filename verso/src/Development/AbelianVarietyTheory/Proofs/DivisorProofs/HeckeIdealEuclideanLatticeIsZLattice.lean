@@ -41,6 +41,13 @@ def toMixed {φ : I → K →+* ℂ} (h : IsCMType φ) : EuclideanSpace ℂ I �
       simp only [e]
       split_ifs <;> simp }
 
+/- English proof (translation)
+Use `haveI : IsEmpty {w : InfinitePlace K // w.IsReal} := ⟨fun w => InfinitePlace.not_isReal_iff_isComplex.2 (IsTotallyComplex.isComplex w.1) w.2⟩`. Use `Prod.ext (Subsingleton.elim _ _) (funext fun w => ?_)` and prove the remaining obligations. Rewrite using `[mixedEmbedding.mixedEmbedding_apply_isComplex]`. Simplify using `only [toMixed, LinearEquiv.coe_mk, LinearMap.coe_mk, AddHom.coe_mk, embA_apply]`. Use `set i := (Equiv.ofBijective _ (GlobalTheory.CMVal.Model.IsCMType.bijective h)).symm w.1 with hi`.
+
+Establish `hw : InfinitePlace.mk (φ i) = w.1` using `(Equiv.ofBijective _ (GlobalTheory.CMVal.Model.IsCMType.bijective h)).apply_symm_apply w.1`. Use `split_ifs with hs`. Rewrite using `[hs, hw]`. Establish `hc` using `(InfinitePlace.embedding_mk_eq (φ i)).resolve_left (fun e => hs e.symm)`. Rewrite using `[← hw, hc]`.
+
+Simplify using `[ComplexEmbedding.conjugate_coe_eq]`.
+-/
 theorem toMixed_embA {φ : I → K →+* ℂ} (h : IsCMType φ) (α : 𝓞 K) :
     toMixed h (embA φ α) = mixedEmbedding K (α : K) := by
   classical
@@ -59,6 +66,13 @@ theorem toMixed_embA {φ : I → K →+* ℂ} (h : IsCMType φ) (α : 𝓞 K) :
     simp [ComplexEmbedding.conjugate_coe_eq]
 
 open Classical in
+/- English proof (translation)
+Use extensionality with `z`. Rewrite using `[mem_lat]`. Express the relevant statement in the definitionally equal form `_ ↔ toMixed h z ∈ mixedEmbedding.idealLattice K _`. Rewrite using `[mixedEmbedding.mem_idealLattice]`. Prove the components needed by the constructor for the conclusion.
+
+Introduce and unpack `⟨μ, hμ, rfl⟩`. Conclude with `⟨(μ : K), (FractionalIdeal.mem_coeIdeal _).2 ⟨μ, hμ, rfl⟩, (toMixed_embA h μ).symm⟩`. Introduce and unpack `⟨y, hy, hyz⟩`. Establish `hy' : y ∈ (M : FractionalIdeal (𝓞 K)⁰ K)` using `hy`. Take `⟨μ, hμ, rfl⟩` from `(FractionalIdeal.mem_coeIdeal _).1 hy'`.
+
+Conclude with `⟨μ, hμ, (toMixed h).injective (by rw [toMixed_embA]; exact hyz)⟩`.
+-/
 theorem lat_eq_comap {φ : I → K →+* ℂ} (h : IsCMType φ) (M : Ideal (𝓞 K)) (hM : M ≠ ⊥) :
     lat φ M = ZLattice.comap (E := mixedEmbedding.mixedSpace K) (F := EuclideanSpace ℂ I) ℝ (mixedEmbedding.idealLattice K
       (Units.mk0 (M : FractionalIdeal (𝓞 K)⁰ K) (FractionalIdeal.coeIdeal_ne_zero.2 hM)))
@@ -75,6 +89,9 @@ theorem lat_eq_comap {φ : I → K →+* ℂ} (h : IsCMType φ) (M : Ideal (𝓞
     obtain ⟨μ, hμ, rfl⟩ := (FractionalIdeal.mem_coeIdeal _).1 hy'
     exact ⟨μ, hμ, (toMixed h).injective (by rw [toMixed_embA]; exact hyz)⟩
 
+/- English proof (translation)
+Introduce `K _ _ _ I _ φ h M hM`. Rewrite using `[lat_eq_comap h M hM]`. Conclude with `⟨inferInstance, inferInstance⟩`.
+-/
 theorem lat_isZLattice : ∀ (K : Type) [Field K] [NumberField K] [NumberField.IsTotallyComplex K] (I : Type) [Fintype I]
     (φ : I → K →+* ℂ), GlobalTheory.CMVal.IsCMType φ → ∀ M : Ideal (𝓞 K), M ≠ ⊥ →
       ∃ _ : DiscreteTopology (GlobalTheory.HeckePoisson.lat φ M), IsZLattice ℝ (GlobalTheory.HeckePoisson.lat φ M) := by

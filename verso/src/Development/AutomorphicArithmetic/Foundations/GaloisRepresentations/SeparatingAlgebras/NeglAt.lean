@@ -5,6 +5,17 @@ open GlobalTheory.CuspRep GlobalTheory.WeilDeligne GlobalTheory.Pst GlobalTheory
 open GlobalTheory.GalCut GlobalTheory.UnitaryBC GlobalTheory.Cong GlobalTheory.DefU
 open MeasureTheory GroundTheory.Automorphic.Spherical UpperTheory.Gal.Gen
 
+/- English proof (translation)
+Introduce `hG hS E _ _ _ a K w₀ w hs hap hyp Φ hΦ δ hδ`. Take `⟨C, hC⟩` from `hG E a K w hs hyp`. Establish `hC1 : 0 < |C| + 1` using `by positivity`. Take `⟨p, hp, hp1, hI⟩` from `hS a Φ hΦ (δ / (|C| + 1)) (div_pos hδ hC1)`. Take `⟨h, hloc, hsep, hnorm, hop⟩` from `hC p hp`.
+
+Use `⟨h, ?_, hsep, ?_, ?_⟩` and prove the remaining obligations. Introduce `g hg`. Establish `hm` using `(GlobalTheory.Cong.LevelExt.mem_locU_iff g).1 (hloc g hg)`. Use `⟨hm.1, fun u hu => hm.2 u ?_⟩` and prove the remaining obligations. Establish `e : u.under (𝓞 (maximalRealSubfield E)) = w₀.under (𝓞 (maximalRealSubfield E))` using `Classical.byContradiction hu`.
+
+Introduce `e'`. Conclude with `hap (e'.symm.trans e)`. Establish `hI0 : 0 ≤ ∫ θ : Fin a → UnitAddCircle, ‖evalAt (pt θ) p‖ ^ 2` using `integral_nonneg fun _ => by positivity`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[← mul_div_assoc, div_le_iff₀ hC1]`.
+
+Use polynomial arithmetic with `[abs_nonneg C]`. Introduce `U hU hB φ hφ hfix`. Establish `hB' : ¬ GenAt w Φ U` using `hB`. Unfold `GenAt at hB'`. Use `push_neg at hB'`.
+
+Take `⟨z, hz, h0⟩` from `hB'`. Rewrite using `[hop U hU z hz φ hφ hfix, hp1 z h0, one_smul]`.
+-/
 theorem UpperTheory.Gal.Gen.neglAt_pf :
     UpperTheory.Gal.Gen.GlobOp → UpperTheory.Gal.Gen.Small → UpperTheory.Gal.Gen.NeglAt := by
   intro hG hS E _ _ _ a K w₀ w hs hap hyp Φ hΦ δ hδ

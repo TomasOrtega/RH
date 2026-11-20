@@ -26,12 +26,22 @@ open GlobalTheory.CompanionTheory.GrForm GlobalTheory.CompanionTheory.GrVB
 
 variable {O : Type} [CommRing O] {X : Scheme.{0}} {q : X ⟶ Spec (CommRingCat.of O)}
 
+/- English proof (translation)
+Use `Ideal.Quotient.eq.1 ?_` and prove the remaining obligations. Rewrite using `[map_mul, mk_evLift, lft_spec _ (hP _ T.property), lft_spec _ (hP _ T.property), map_mul]`.
+-/
 theorem evLift_mul_sub {W : X.Opens} {P : ObjectProperty (Thick (LL q))} (hP : ∀ T, P T → InU W T) (z x : Γ(X, W))
     (T : P.FullSubcategory) :
     (show T.obj.B from evLift hP z T) * lft W T.obj x - lft W T.obj (z * x) ∈ T.obj.J := by
   refine Ideal.Quotient.eq.1 ?_
   rw [map_mul, mk_evLift, lft_spec _ (hP _ T.property), lft_spec _ (hP _ T.property), map_mul]
 
+/- English proof (translation)
+Take `⟨f, hf, rfl, hfs⟩` from `hc`. Use `⟨(mulMor hF r (evLift hP z) (evLift_nat hP z)).pullC r f, ?_, rfl, ?_⟩` and prove the remaining obligations. Rewrite using `[CH.Mor.d_pullC, hf, map_zero]`. Introduce `s`. Set `uu : Fin d → ∀ T : P.FullSubcategory, (sP P).A.obj T` to `fun i T => u i T.obj`.
+
+Establish `hl : ∀ i {T T' : P.FullSubcategory} (φ : T ⟶ T'), uu i T' - ((sP P).A.map φ).hom (uu i T) ∈ (sP P).J.S T'` using `fun i {T T'} φ => sub_mem_of_lift φ.hom (hP _ T.property) (hP _ T'.property) (t i) _ _ (hu i _ (hP _ T.property)) (hu i _ (hP _ T'.property))`. Express the relevant statement in the definitionally equal form `Ideal.Quotient.mk _ (show (sP P).A.obj (s.obj (Fin.last r)) from evLift hP z (s.obj (Fin.last r))) * (show sqM (sFil P r) (sFil P ((r : ℤ) + 1)) _ from f s).1 = _`. Rewrite using `[hfs s, ← map_mul, Ideal.Quotient.eq, Finset.mul_sum, ← Finset.sum_sub_distrib]`. Use `Ideal.sum_mem _ fun I _ => ?_` and prove the remaining obligations. Establish `hw` using `wz_mem hF uu hl I.1 s`.
+
+Use `J_mul_sFil P r _ (evLift_mul_sub hP z (x I) (s.obj (Fin.last r))) hw` as an intermediate fact. Establish `e` using `units_mul_relation_rearrange_commRing (S := (sP P).A.obj (s.obj (Fin.last r))) (evLift hP z (s.obj (Fin.last r))) (wz uu I.1 s) (lft W (s.obj (Fin.last r)).obj (x I)) (lft W (s.obj (Fin.last r)).obj (z * x I))`. Conclude with `Eq.mpr (congrArg (fun v => v ∈ (sFil P ((r : ℤ) + 1)).S (s.obj (Fin.last r))) e) this`.
+-/
 theorem rp_fAct {W : X.Opens} {P : ObjectProperty (Thick (LL q))} (hF : IsFil (sP P) (sFil P))
     (hP : ∀ T, P T → InU W T) {d r : ℕ} {t : Fin d → Γ(X, W)} {u : Fin d → ∀ T : Thick (LL q), T.B}
     (hu : IsLift W t u) (z : Γ(X, W)) (x : Idx r d → Γ(X, W)) (c : HU (GF q r) P r)
@@ -55,6 +65,19 @@ theorem rp_fAct {W : X.Opens} {P : ObjectProperty (Thick (LL q))} (hF : IsFil (s
       (lft W (s.obj (Fin.last r)).obj (z * x I))
     exact Eq.mpr (congrArg (fun v => v ∈ (sFil P ((r : ℤ) + 1)).S (s.obj (Fin.last r))) e) this
 
+/- English proof (translation)
+Introduce `hLoc hPoly O _ l s hb X q W₀ d c r hr`. Establish `hL : StLoc` using `stLoc stFrame hLoc hPoly`. Establish `hE : StExists` using `exists_of_cocycle stCocycle`. Set `u : Fin d → ∀ T : Thick (LL q), T.B` to `fun k T => lft W₀ T (c.t k)`. Establish `hu : IsLift W₀ c.t u` using `fun k T h => lft_spec T h _`.
+
+Use `choose ω hω using fun k : Idx r d => hE W₀ c.t u hu (SS q l s W₀) (ss_inU l s W₀) r (Pi.single k 1)`. Use `⟨ω, ?_⟩` and prove the remaining obligations. Introduce `W hW hle Q hQ hQ₀ hF hQW h`. Establish `hFree : Free W Q r u` using `free_at hL hb hle hW c hu hr hQ`. Establish `hu' : IsLift W (fun i => rs hle (c.t i)) u` using `isLift_res hle hu fun _ => rfl`.
+
+Establish `hrep : ∀ f : Idx r d → Γ(X, W), Rp (W` using `W) Q u f (∑ k, fAct hF hQW r (f k) ((resU (GF q r) hQ₀).pull r (ω k))) := by`. Introduce `f`. Establish `s1` using `rp_sum hE stAdd hu' hQW Finset.univ (fun k I => f k * rs hle ((Pi.single k 1 : Idx r d → Γ(X, W₀)) I)) _ (fun k _ => rp_fAct hF hQW hu' (f k) _ _ (stRes W₀ W hle c.t u hu (SS q l s W₀) Q hQ₀ (ss_inU l s W₀) hQW r _ _ (hω k)))`. Establish `e : (∑ k, fun I => f k * rs hle ((Pi.single k 1 : Idx r d → Γ(X, W₀)) I)) = f`. Use function extensionality and compare the values at `I`.
+
+Rewrite using `[Finset.sum_apply, Finset.sum_eq_single I]`. Simplify using the standard rewrite rules. Introduce `b _ hb'`. Simplify using `[Pi.single_eq_of_ne (Ne.symm hb')]`. Simplify using the standard rewrite rules.
+
+Rewrite `s1` using `[e]`. Then use the resulting hypothesis. Take `⟨x, hx⟩` from `hFree.1 h`. Use `⟨x, rp_class hx (hrep x), fun y hy => ?_⟩` and prove the remaining obligations. Establish `hy' : Rp (W` using `W) Q u y h := by`. Rewrite using `[hy]`.
+
+Conclude with `hrep y`. Conclude with `rp_coef stAdd hu' hQW hFree hy' hx`.
+-/
 theorem basis : KH.LocGr → KH.PolyTf → ∀ {O : Type} [CommRing O] (l s : ℕ) (hb : TFBase (dividedPowersBot O) l s) {X : Scheme.{0}} (q : X ⟶ Spec (CommRingCat.of O)) {W₀ : X.Opens} {d : ℕ}
     (c : Coord q W₀ d) (r : ℕ) (hr : r < s),
     ∃ ω : Idx r d → HU (GlobalTheory.CompanionTheory.GrCech.grF (nlFun (dividedPowersBot O) 0 X q (Ideal.Quotient.mk ⊥)) r) (St (TF l s) {W₀}) r,

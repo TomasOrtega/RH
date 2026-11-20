@@ -16,6 +16,11 @@ open ModularForm (E₄ E₆)
 
 namespace GlobalTheory.NormSqOfSquareEqNeg
 
+/- English proof (translation)
+Establish `h1 : Complex.normSq α ^ 2 = (d : ℝ) ^ 2`. Rewrite using `[← map_pow, h, Complex.normSq_neg, Complex.normSq_natCast]`. Expand and normalize the polynomial expressions, which then agree. Establish `h2 : Complex.normSq α = d`. Use `Complex.normSq_nonneg α` as an intermediate fact.
+
+Use polynomial arithmetic with `[sq_nonneg (Complex.normSq α - d), sq_nonneg (Complex.normSq α + d), (Nat.cast_nonneg d : (0:ℝ) ≤ d)]`. Rewrite using `[h2]`. Simplify using the standard rewrite rules.
+-/
 theorem normSq_of_sq_eq_neg (d : ℕ) (α : ℂ) (h : α ^ 2 = -(d : ℂ)) : (Complex.normSq α : ℂ) = d := by
   have h1 : Complex.normSq α ^ 2 = (d : ℝ) ^ 2 := by
     rw [← map_pow, h, Complex.normSq_neg, Complex.normSq_natCast]
@@ -25,6 +30,21 @@ theorem normSq_of_sq_eq_neg (d : ℕ) (α : ℂ) (h : α ^ 2 = -(d : ℂ)) : (Co
     nlinarith [sq_nonneg (Complex.normSq α - d), sq_nonneg (Complex.normSq α + d), (Nat.cast_nonneg d : (0:ℝ) ≤ d)]
   rw [h2]; simp
 
+/- English proof (translation)
+Introduce `K _ _ d δ ι g t Λ₀ Λ₁ Ω₀ Ω₁ hd hδ hT`. Take `⟨_, _, _, hL₀, ⟨𝔞, _, hL₁⟩, _, _, hP⟩` from `id hT`. Take `⟨_, hm₀, him, hint⟩` from `GlobalTheory.LatOfMult.main K d δ ι 1 Λ₀ hd hδ hL₀`. Take `⟨_, hm₁, _, _⟩` from `GlobalTheory.LatOfMult.main K d δ ι 𝔞 Λ₁ hd hδ hL₁`. Establish `hα : ι δ ≠ 0` using `fun h => him (by simp [h])`.
+
+Establish `hδ0 : δ ≠ 0` using `fun h => hα (by simp [h])`. Establish `hα2 : ι δ ^ 2 = -(d : ℂ)` using `by rw [← map_pow, hδ]; simp`. Establish `hN : (Complex.normSq (ι δ) : ℂ) = d` using `normSq_of_sq_eq_neg d _ hα2`. Establish `hc : ι δ ^ 2 - (Complex.normSq (ι δ) : ℂ) = -(2 * d : ℂ)` using `by rw [hα2, hN]; ring`. Establish `hc0 : -(2 * d : ℂ) ≠ 0`.
+
+Establish `: (d : ℂ) ≠ 0` using `by exact_mod_cast hd.ne'`. Simplify using `using this`. Take `⟨S, hS⟩` from `kernel_reps_exist Λ₀ (ι δ) hα hm₀`. Establish `hTr` using `GlobalTheory.T.isLatticeQuotientCorrespondence_of_torsionTransport K ι g t Λ₀ Λ₁ Ω₀ Ω₁ hT`. Establish `hmul : ∀ x x', Tr t x x' → Tr t (δ * x) (δ * x')` using `fun x x' h => (GlobalTheory.T.isIdeleTranslateIntegral_additive_total_properties K t).2.1 δ x x' hint h`.
+
+Take `⟨φ, S', hS', hbij, hrel⟩` from `GlobalTheory.WpFam.kerReps_transport K ι Λ₀ Λ₁ (Tr t) δ S hTr hδ0 hmul hS`. Establish `e₀` using `quasiPeriodConstIsogeny_thm Λ₀ (ι δ) S hα hm₀ hS`. Establish `e₁` using `quasiPeriodConstIsogeny_thm Λ₁ (ι δ) S' hα hm₁ hS'`. Rewrite `e₀`, `e₁` using `[hc]`. Establish `s₀ : s2 Λ₀ = (∑ P ∈ S, Λ₀.weierstrassP P) / -(2 * d : ℂ)`.
+
+Rewrite using `[eq_div_iff hc0, mul_comm, e₀]`. Establish `s₁ : s2 Λ₁ = (∑ P ∈ S', Λ₁.weierstrassP P) / -(2 * d : ℂ)`. Rewrite using `[eq_div_iff hc0, mul_comm, e₁]`. Establish `key : ∀ P ∈ S, g (Λ₀.weierstrassP P / Ω₀ ^ 2) = Λ₁.weierstrassP (φ P) / Ω₁ ^ 2`. Introduce `P hPS`.
+
+Take `⟨k, k', hk, hk', hkk⟩` from `hrel P hPS`. Establish `hnot : ι k ∉ Λ₀.lattice` using `by rw [hk]; exact (hS.1 P hPS).2`. Use `(hP k k' hnot hkk).1` as an intermediate fact. Rewrite `this` using `[hk, hk']`. Then use the resulting hypothesis. Establish `hsum : ∑ P ∈ S, Λ₁.weierstrassP (φ P) / Ω₁ ^ 2 = ∑ Q ∈ S', Λ₁.weierstrassP Q / Ω₁ ^ 2` using `Finset.sum_nbij φ (fun a ha => hbij.mapsTo ha) hbij.injOn hbij.surjOn (fun _ _ => rfl)`.
+
+Establish `hg2 : g (-(2 * d : ℂ)) = -(2 * d : ℂ)` using `by simp [map_neg, map_mul, map_ofNat, map_natCast]`. Rewrite using `[s₀, s₁, div_right_comm, div_right_comm (∑ P ∈ S', _), map_div₀, hg2, Finset.sum_div, Finset.sum_div, map_sum, Finset.sum_congr rfl key, hsum]`.
+-/
 theorem main : ∀ (K : Type) [Field K] [NumberField K] (d : ℕ) (δ : K) (ι : K →+* ℂ) (g : ℂ ≃+* ℂ) (t : (Af K)ˣ)
     (Λ₀ Λ₁ : PeriodPair) (Ω₀ Ω₁ : ℂ), 0 < d → δ ^ 2 = -(d : K) → TorsTransport ι g t Λ₀ Λ₁ Ω₀ Ω₁ →
     g (s2 Λ₀ / Ω₀ ^ 2) = s2 Λ₁ / Ω₁ ^ 2 := by

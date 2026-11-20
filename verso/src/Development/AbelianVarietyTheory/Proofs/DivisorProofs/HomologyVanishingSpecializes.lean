@@ -20,6 +20,9 @@ noncomputable section
 
 namespace GlobalTheory.FibreVanishGen
 
+/- English proof (translation)
+Introduce `r hr`. Rewrite using `[Submonoid.mem_comap, IsUnit.mem_submonoid_iff]`. Conclude with `isUnit_iff_ne_zero.2 fun h => (Ideal.mem_primeCompl_iff.1 hr) (RingHom.mem_ker.2 h)`.
+-/
 theorem primeCompl_ker_le {R : Type} [CommRing R] {κ : Type} [Field κ] (g : R →+* κ) :
     (RingHom.ker g).primeCompl ≤ Submonoid.comap g (IsUnit.submonoid κ) := by
   intro r hr
@@ -30,10 +33,20 @@ def liftRes {R : Type} [CommRing R] {κ : Type} [Field κ] (g : R →+* κ) :
     (RingHom.ker g).ResidueField →+* κ :=
   Ideal.ResidueField.lift (RingHom.ker g) g le_rfl (primeCompl_ker_le g)
 
+/- English proof (translation)
+The claim follows from `RingHom.ext fun r => Ideal.ResidueField.lift_algebraMap _ _ le_rfl (primeCompl_ker_le g) r`.
+-/
 theorem liftRes_comp {R : Type} [CommRing R] {κ : Type} [Field κ] (g : R →+* κ) :
     (liftRes g).comp (algebraMap R (RingHom.ker g).ResidueField) = g :=
   RingHom.ext fun r => Ideal.ResidueField.lift_algebraMap _ _ le_rfl (primeCompl_ker_le g) r
 
+/- English proof (translation)
+Use `set L := (RingHom.ker g).ResidueField`. Use `set a := algebraMap R L`. Use `letI : Algebra L κ := (liftRes g).toAlgebra`. Set `K'` to `((ModuleCat.extendScalars.{0, 0, 0} a).mapHomologicalComplex (ComplexShape.up ℕ)).obj K`. Take `⟨e⟩` from `FieldChangeInter.nonempty_homology_equiv (R := L) κ K' q`.
+
+Establish `e₁ : ModuleCat.extendScalars.{0, 0, 0} g ≅ ModuleCat.extendScalars.{0, 0, 0} a ⋙ ModuleCat.extendScalars.{0, 0, 0} (algebraMap L κ)` using `eqToIso (congrArg _ (liftRes_comp g).symm) ≪≫ ModuleCat.extendScalarsComp a (liftRes g)`. Establish `e₂ : ((ModuleCat.extendScalars.{0, 0, 0} g).mapHomologicalComplex (ComplexShape.up ℕ)).obj K ≅ ((ModuleCat.extendScalars.{0, 0, 0} (algebraMap L κ)).mapHomologicalComplex _).obj K'` using `(NatIso.mapHomologicalComplex e₁ _).app K ≪≫ ((Functor.mapHomologicalComplexCompIso (Iso.refl _) _).symm.app K)`. Establish `e₃` using `((HomologicalComplex.homologyFunctor _ _ q).mapIso e₂).toLinearEquiv`. Use `Iff.trans (e₃.toEquiv.trans e.toEquiv).subsingleton_congr ?_` and prove the remaining obligations. Prove the components needed by the constructor for the conclusion.
+
+Introduce `h`. Assume the negation of the conclusion as `hV`. Rewrite `hV` using `[not_subsingleton_iff_nontrivial]`. Conclude with `not_nontrivial_iff_subsingleton.2 h (Module.FaithfullyFlat.lTensor_nontrivial L κ _)`. Introduce `h infer_instance`.
+-/
 theorem subsingleton_homology_iff {R : Type} [CommRing R] (K : CochainComplex (ModuleCat.{0} R) ℕ)
     {κ : Type} [Field κ] (g : R →+* κ) (q : ℕ) :
     Subsingleton ((((ModuleCat.extendScalars.{0, 0, 0} g).mapHomologicalComplex _).obj K).homology q) ↔
@@ -61,6 +74,17 @@ theorem subsingleton_homology_iff {R : Type} [CommRing R] (K : CochainComplex (M
   · intro h
     infer_instance
 
+/- English proof (translation)
+Introduce `R _ _ C n hn hflat hfin κ₁ κ₂ _ _ g₁ g₂ hle q h1`. Take `⟨K, φ, hKn, hKfin, -, hKproj, -, -, hext⟩` from `exists_finite_projective_complex_quasiIso C n hn hflat hfin`. Establish `tr : ∀ (κ : Type) [Field κ] (g : R →+* κ), Subsingleton ((((ModuleCat.extendScalars.{0, 0, 0} g).mapHomologicalComplex _).obj C).homology q) ↔ Subsingleton ((((ModuleCat.extendScalars.{0, 0, 0} g).mapHomologicalComplex _).obj K).homology q)`. Introduce `κ _ g`. Use `letI := g.toAlgebra`.
+
+Use `haveI := hext κ`. Conclude with `(asIso (HomologicalComplex.homologyMap (((ModuleCat.extendScalars.{0, 0, 0} (algebraMap R κ)).mapHomologicalComplex _).map φ) q) ).toLinearEquiv.toEquiv.subsingleton_congr.symm`. Use `haveI := hKfin`. Use `haveI := hKproj`. Take `⟨hfinH, hsc, -⟩` from `semicontinuity_finite_projective_complex K n hKn`.
+
+Set `P₁ : PrimeSpectrum R` to `⟨RingHom.ker g₁, RingHom.ker_isPrime g₁⟩`. Set `P₂ : PrimeSpectrum R` to `⟨RingHom.ker g₂, RingHom.ker_isPrime g₂⟩`. Establish `h1'` using `(subsingleton_homology_iff K g₁ q).1 ((tr κ₁ g₁).1 h1)`. Establish `hP₁ : Module.finrank P₁.asIdeal.ResidueField ((((ModuleCat.extendScalars (algebraMap R P₁.asIdeal.ResidueField)).mapHomologicalComplex _).obj K).homology q) < 1`. Rewrite using `[Module.finrank_zero_of_subsingleton]`.
+
+Conclude with `zero_lt_one`. Establish `hsp : P₂ ⤳ P₁` using `(PrimeSpectrum.le_iff_specializes P₂ P₁).1 hle`. Establish `hP₂` using `((hsc q P₁ 1 hP₁).filter_mono (specializes_iff_nhds.1 hsp)).self_of_nhds`. Use `haveI := hfinH q P₂`. Establish `h2' : Subsingleton ((((ModuleCat.extendScalars (algebraMap R P₂.asIdeal.ResidueField)).mapHomologicalComplex _).obj K).homology q)` using `Module.finrank_zero_iff.1 (Nat.lt_one_iff.1 hP₂)`.
+
+Conclude with `(tr κ₂ g₂).2 ((subsingleton_homology_iff K g₂ q).2 h2')`.
+-/
 theorem main : ∀ (R : Type) [CommRing R] [IsNoetherianRing R] (C : CochainComplex (ModuleCat.{0} R) ℕ) (n : ℕ), (∀ p, n < p → IsZero (C.X p)) → (∀ p, Module.Flat R (C.X p)) → (∀ p, Module.Finite R (C.homology p)) → ∀ (κ₁ κ₂ : Type) [Field κ₁] [Field κ₂] (g₁ : R →+* κ₁) (g₂ : R →+* κ₂), RingHom.ker g₂ ≤ RingHom.ker g₁ → ∀ q : ℕ, Subsingleton ((((ModuleCat.extendScalars.{0, 0, 0} g₁).mapHomologicalComplex _).obj C).homology q) → Subsingleton ((((ModuleCat.extendScalars.{0, 0, 0} g₂).mapHomologicalComplex _).obj C).homology q) := by
   intro R _ _ C n hn hflat hfin κ₁ κ₂ _ _ g₁ g₂ hle q h1
   obtain ⟨K, φ, hKn, hKfin, -, hKproj, -, -, hext⟩ :=

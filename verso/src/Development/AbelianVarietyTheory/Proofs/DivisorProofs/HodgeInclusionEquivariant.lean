@@ -17,6 +17,11 @@ namespace GlobalTheory.AbDatum
 open GlobalTheory.HodgeSub GlobalTheory.HodgeSub.Nat GlobalTheory.TanFibre MonObj
 open ReciprocityTheory.ChartRestriction.G.Pdiv (specO)
 
+/- English proof (translation)
+Establish `nat` using `omegaBase_naturality hp hp f f' hf`. Establish `e₁` using `form_eq_fibre hp hy w we`. Establish `e₂` using `form_eq_fibre hp hy' w' we'`. Establish `e₃` using `cotMap_comp (IsMonHom.one_hom f') hy rfl hy'`. Establish `key : form w' we' = (Scheme.Modules.pullback x).map (omegaMap f) ≫ form w we` using `e₂.trans <| (congrArg (fun z ↦ omegaBase hp ≫ z ≫ (epsIso k).hom) e₃.symm).trans <| (congrArg (omegaBase hp ≫ ·) (Category.assoc _ _ _)).trans <| (Category.assoc _ _ _).symm.trans <| (congrArg (· ≫ cotMap y hy ≫ (epsIso k).hom) nat.symm).trans <| (Category.assoc _ _ _).trans <| c …`.
+
+Use `(congr(($key).app ⊤ (QCoh.pullbackSections x (omega A) h s))).trans ?_` and prove the remaining obligations. Conclude with `congrArg ((form w we).app ⊤) (QCoh.pullback_map_app_pullbackSections x (omegaMap f) h s)`.
+-/
 theorem form_comp_hom {k : Type} [CommRing k] {X : Scheme.{0}} {A : Over X} [GrpObj A] {x : Sp k ⟶ X}
     {G : Over (Sp k)} [GrpObj G] {ψ : G.left ⟶ A.left} (hp : IsGrpPullback G A x ψ)
     (f : A ⟶ A) [IsMonHom f] (f' : G ⟶ G) [IsMonHom f'] (hf : f'.left ≫ ψ = ψ ≫ f.left)
@@ -40,6 +45,13 @@ theorem form_comp_hom {k : Type} [CommRing k] {X : Scheme.{0}} {A : Over X} [Grp
   refine (congr(($key).app ⊤ (QCoh.pullbackSections x (omega A) h s))).trans ?_
   exact congrArg ((form w we).app ⊤) (QCoh.pullback_map_app_pullbackSections x (omegaMap f) h s)
 
+/- English proof (translation)
+Introduce `v h hv w we`. Set `f' : onAff A hV ⟶ onAff A hV` to `(Over.pullback hV.fromSpec).map f`. Establish `hp : IsGrpPullback (onAff A hV) A hV.fromSpec _` using `isGrpPullback_pullback A hV.fromSpec`. Establish `hv'` using `hv.push f'`. Establish `t` using `hv'.1`.
+
+Establish `w' : ((v ≫ f').left ≫ pullback.fst A.hom hV.fromSpec) ≫ A.hom = (Pdiv.specO Γ(T, V) (DualNumber Γ(T, V))).hom ≫ hV.fromSpec`. Rewrite using `[Category.assoc, pullback.condition, ← Category.assoc]`. Conclude with `congrArg (· ≫ hV.fromSpec) (Over.w (v ≫ f'))`. Establish `we' : sec (epsZero Γ(T, V)) ≫ (v ≫ f').left ≫ pullback.fst A.hom hV.fromSpec = hV.fromSpec ≫ GlobalTheory.IndefiniteRowSideFullHecke.ZeroSectionBase.zeroSec A`. Rewrite using `[← Category.assoc]`.
+
+Conclude with `(congrArg (· ≫ pullback.fst A.hom hV.fromSpec) t).trans (unitSec_comp hp)`. Conclude with `(hc (v ≫ f') _ hv' w' we').trans (congrArg (Scheme.ΓSpecIso (CommRingCat.of Γ(T, V))).hom (form_comp_hom hp f f' (pullback.lift_fst _ _ _) (epsZero_comp_of_isTangent hv.1) (epsZero_comp_of_isTangent t) w we w' we' hV.fromSpec_preimage_self.ge s))`.
+-/
 theorem corr_pull {T : Scheme.{0}} {A : Over T} [GrpObj A] (f : A ⟶ A) [IsMonHom f] {V : T.Opens}
     (hV : IsAffineOpen V) (s : Γ(omega A, V)) (c : primDR (onAff A hV)) (hc : HodgeSub.Corr A hV s c) :
     HodgeSub.Corr A hV ((omegaMap f).app V s)
@@ -61,6 +73,11 @@ theorem corr_pull {T : Scheme.{0}} {A : Over T} [GrpObj A] (f : A ⟶ A) [IsMonH
     (form_comp_hom hp f f' (pullback.lift_fst _ _ _) (epsZero_comp_of_isTangent hv.1)
       (epsZero_comp_of_isTangent t) w we w' we' hV.fromSpec_preimage_self.ge s))
 
+/- English proof (translation)
+Introduce `P O _ T A _ _ g hA hg i H e ρ a hρ ha x`. Use `haveI := i.hom x`. Use `hom_ext_affine fun V hV s ↦ (e V hV).injective ?_` and prove the remaining obligations. Establish `h₁` using `(ha V hV ((omegaMap (i.act x)).app V s)).2`. Establish `h₂` using `corr_pull (i.act x) hV s _ (ha V hV s).2`.
+
+Establish `h₃` using `corr_unique P T A g hA hg V hV _ _ _ h₁ h₂`. Conclude with `h₃.trans (hρ x V hV _).symm`.
+-/
 theorem isEquivariant_hodgeIncl : GlobalTheory.CovTop.Hypotheses2 → ∀ (O : Type) [CommRing O] (T : Scheme.{0}) (A : Over T) [GrpObj A] [QuasiSeparated A.hom] (g : ℕ),
     IsAbelianScheme A → SmoothOfRelativeDimension g A.hom → ∀ (i : OAct O A) (H : T.Modules)
     (e : ∀ (V : T.Opens) (hV : IsAffineOpen V), Γ(H, V) ≃ₗ[Γ(T, V)] primDR (onAff A hV))

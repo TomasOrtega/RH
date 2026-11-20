@@ -8,6 +8,23 @@ open MvPolynomial MeasureTheory Filter Topology Matrix ComplexSets
 
 noncomputable section
 
+/- English proof (translation)
+Introduce `n d W A σ r N hσ hZN f φ hfN`. Use `set g : (Fin d → ℂ) → Fin d → ℂ := fun v => A *ᵥ σ v with hg`. Use `set C : Set (Fin d → ℂ) := {w | w ∈ Metric.ball (0 : Fin d → ℂ) r ∧ σ w ∈ N ∧ LinearMap.det (fderiv ℂ g w : (Fin d → ℂ) →ₗ[ℂ] Fin d → ℂ) = 0} with hC`. Use `set R : Set (Fin d → ℂ) := {w | w ∈ Metric.ball (0 : Fin d → ℂ) r ∧ σ w ∈ N ∧ LinearMap.det (fderiv ℂ g w : (Fin d → ℂ) →ₗ[ℂ] Fin d → ℂ) ≠ 0} with hR`. Establish `hgd : ∀ w ∈ Metric.ball (0 : Fin d → ℂ) r, DifferentiableAt ℂ g w`.
+
+Introduce `w hw`. Establish `hσw : DifferentiableAt ℂ σ w` using `(hσ w hw).differentiableAt (Metric.isOpen_ball.mem_nhds hw)`. Conclude with `(LinearMap.toContinuousLinearMap (Matrix.mulVecLin A)).differentiableAt.comp w hσw`. Establish `hnull : volume (g '' C) = 0`. Use `addHaar_image_eq_zero_of_det_fderivWithin_eq_zero volume (f' := fun w => (fderiv ℂ g w).restrictScalars ℝ) ?_ ?_` and prove the remaining obligations.
+
+Introduce `w hw`. Conclude with `((hgd w hw.1).hasFDerivAt.restrictScalars ℝ).hasFDerivWithinAt`. Introduce `w hw`. Rewrite using `[ContinuousLinearMap.det, ContinuousLinearMap.coe_restrictScalars, LinearMap.det_restrictScalars, hw.2.2, Algebra.norm_complex_apply, map_zero]`. Establish `hz : ∀ y ∉ g '' C, chartDens W A ((σ '' R)ᶜ.indicator f) φ y = 0`.
+
+Introduce `y hy`. Unfold `chartDens sheetSum`. Apply `finsum_eq_zero_of_forall_eq_zero` to reduce the goal to its premises. Introduce `x`. Rewrite using `[finsum_eq_if]`.
+
+Use `split_ifs with hx hs`. Distinguish the cases in `hxR : x ∈ σ '' R`. Simplify using `[hxR]`. Distinguish the cases in `hf : f x = 0`. Simplify using `[hxR, hf]`.
+
+It suffices to derive a contradiction. Establish `hxN : x ∈ N` using `hfN (subset_tsupport f (Function.mem_support.mpr hf))`. Take `⟨w, hw, rfl⟩` from `hZN ⟨hx.1, hxN⟩`. Establish `hdet : LinearMap.det (fderiv ℂ g w : (Fin d → ℂ) →ₗ[ℂ] Fin d → ℂ) = 0`. Assume the negation of the conclusion as `hne`.
+
+Conclude with `hxR ⟨w, ⟨hw, hxN, hne⟩, rfl⟩`. Conclude with `hy ⟨w, ⟨hw, hxN, hdet⟩, hx.2⟩`. Both sides reduce to the same expression. Both sides reduce to the same expression. Unfold `chartInt`.
+
+Apply `integral_eq_zero_of_ae` to reduce the goal to its premises. Rewrite using `[Filter.EventuallyEq, ae_iff]`. Use `measure_mono_null (fun y hy => ?_) hnull` and prove the remaining obligations. Assume the negation of the conclusion as `h`. Conclude with `hy (by simpa using hz y h)`.
+-/
 theorem ParamOffRegularZero.proof : ParamOffRegularZero.Statement := by
   intro n d W A σ r N hσ hZN f φ hfN
   set g : (Fin d → ℂ) → Fin d → ℂ := fun v => A *ᵥ σ v with hg

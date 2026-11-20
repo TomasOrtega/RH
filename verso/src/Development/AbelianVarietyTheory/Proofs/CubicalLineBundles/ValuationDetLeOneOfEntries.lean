@@ -11,6 +11,11 @@ open GlobalTheory GlobalTheory.CM GlobalTheory.LamF
 
 namespace GlobalTheory.LamF
 
+/- English proof (translation)
+Rewrite using `[Matrix.det_apply]`. Use `v.map_sum_le fun σ _ => ?_` and prove the remaining obligations. Establish `hp : v (∏ i, N (σ i) i) ≤ 1`. Rewrite using `[map_prod]`. Conclude with `Finset.prod_le_one' fun i _ => h _ _`.
+
+Break down `Int.units_eq_one_or (Equiv.Perm.sign σ) with hs | hs` into its components or cases. Rewrite using `[hs, one_smul]`. Conclude with `hp`. Rewrite using `[hs, Units.neg_smul, one_smul, Valuation.map_neg]`. Conclude with `hp`.
+-/
 theorem valuation_det_le_one_of_entries {K G J : Type} [Field K] [LinearOrderedCommGroupWithZero G]
     [Fintype J] [DecidableEq J] (v : Valuation K G) (N : Matrix J J K) (h : ∀ i j, v (N i j) ≤ 1) :
     v N.det ≤ 1 := by
@@ -23,6 +28,13 @@ theorem valuation_det_le_one_of_entries {K G J : Type} [Field K] [LinearOrderedC
   · rw [hs, one_smul]; exact hp
   · rw [hs, Units.neg_smul, one_smul, Valuation.map_neg]; exact hp
 
+/- English proof (translation)
+Establish `hN : v (Matrix.diagonal c * U * M⁻¹).det ≤ 1`. Use `valuation_det_le_one_of_entries v _ fun k m => ?_` and prove the remaining obligations. Establish `hk : (Matrix.diagonal c * U) k = c k • U k`. Use function extensionality and compare the values at `j`. Simplify using `[Matrix.diagonal_mul]`.
+
+Establish `: (Matrix.diagonal c * U * M⁻¹) k m = Matrix.vecMul (c k • U k) M⁻¹ m`. Rewrite using `[← hk]`. Both sides reduce to the same expression. Rewrite using `[this]`. Conclude with `h k m`.
+
+Establish `hvM : v M.det ≠ 0` using `(Valuation.ne_zero_iff v).2 hM`. Rewrite `hN` using `[Matrix.det_mul, Matrix.det_mul, Matrix.det_diagonal, Matrix.det_nonsing_inv, Ring.inverse_eq_inv', map_mul, map_inv₀, ← div_eq_mul_inv, div_le_one₀ (zero_lt_iff.2 hvM)]`. Conclude with `hN`.
+-/
 theorem valuation_prod_mul_det_le {K G J : Type} [Field K] [LinearOrderedCommGroupWithZero G]
     [Fintype J] [DecidableEq J] (v : Valuation K G) (U M : Matrix J J K) (c : J → K) (hM : M.det ≠ 0)
     (h : ∀ k m, v (Matrix.vecMul (c k • U k) M⁻¹ m) ≤ 1) :
@@ -40,6 +52,11 @@ theorem valuation_prod_mul_det_le {K G J : Type} [Field K] [LinearOrderedCommGro
     map_mul, map_inv₀, ← div_eq_mul_inv, div_le_one₀ (zero_lt_iff.2 hvM)] at hN
   exact hN
 
+/- English proof (translation)
+Introduce `E _ _ _ _ H l c nΨ n' f o La ho L hL p cd cl hcd hcl`. Take `⟨M, hM, hdet⟩` from `ho.2.2.2.2.2.2.2.2.2.2.2.2.2.2.2.2.2.2.2.2.2.2 p`. Establish `hv : p.valuation o.K₁ M.det = p.valuation o.K₁ cd`. Rewrite using `[(isLocGen_iff_valuation_eq p _ _).1 hdet, (isLocGen_iff_valuation_eq p _ _).1 hcd]`. Rewrite using `[← hv]`.
+
+Conclude with `valuation_prod_mul_det_le _ L.U M cl hdet.1 fun k m => GlobalTheory.T.lieLetter_integral_of_local_generator E H l c nΨ n' f o La ho L hL p M hM k (cl k) (hcl k) m`.
+-/
 theorem letters_det_valuation_le : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] [StarRing (𝓞 E)] (H : Host E) (l : Level H) (c : Coeff l) (nΨ n' f : ℕ) (o : LamObj c nΨ n') (La : ℝ), LamObjGood o f La → ∀ L : LamLetters o, L.IsGood → ∀ (p : HeightOneSpectrum (𝓞 o.K₁)) (cd : o.K₁) (cl : Fin o.xB.P.g → o.K₁), IsLocGen p cd o.LamL.I → (∀ k, IsLocGen p (cl k) (L.ℓ k).I) → p.valuation o.K₁ ((∏ k, cl k) * L.U.det) ≤ p.valuation o.K₁ cd := by
   intro E _ _ _ _ H l c nΨ n' f o La ho L hL p cd cl hcd hcl
   obtain ⟨M, hM, hdet⟩ := ho.2.2.2.2.2.2.2.2.2.2.2.2.2.2.2.2.2.2.2.2.2.2 p

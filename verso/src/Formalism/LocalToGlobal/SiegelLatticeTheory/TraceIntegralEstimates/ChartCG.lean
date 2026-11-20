@@ -10,6 +10,9 @@ namespace Formalism.L2.S.Pv.Chart
 
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
+/- English proof (translation)
+Establish `hS : ∀ (S : Submodule ℂ (Fin n → ℂ)) (x : Fin n → ℂ), IsClosed {g : Matrix (Fin n) (Fin n) ℂ | (g - 1) *ᵥ x ∈ S}` using `fun S x => S.closed_of_finiteDimensional.preimage ((continuous_id.sub continuous_const).matrix_mulVec continuous_const)`. Unfold `InN InS`. Simplify using `only [Set.setOf_and, Set.setOf_forall]`. Conclude with `((isClosed_iInter fun a => hS _ _).inter (hS _ _)).inter (isClosed_iInter fun y => isClosed_iInter fun _ => hS _ _)`.
+-/
 theorem isClosed_inN {n r : ℕ} (ε : Fin n → Bool) (e : Fin r → Fin n → ℂ) (z : Fin n → ℂ) :
     IsClosed {g : Matrix (Fin n) (Fin n) ℂ | InN ε e z g} := by
   have hS : ∀ (S : Submodule ℂ (Fin n → ℂ)) (x : Fin n → ℂ),
@@ -22,6 +25,9 @@ theorem isClosed_inN {n r : ℕ} (ε : Fin n → Bool) (e : Fin r → Fin n → 
 
 variable {D : D7}
 
+/- English proof (translation)
+Establish `hu : Continuous fun y : Formalism.REAL.UJ (X.B.I.ε v) => uMat y` using `Units.continuous_val.comp continuous_subtype_val`. Establish `hc : Continuous fun y : Formalism.REAL.UJ (X.B.I.ε v) => uMat ((γ v)⁻¹ * y * γ v)` using `hu.comp ((continuous_const.mul continuous_id).mul continuous_const)`. Conclude with `((isClosed_inN _ _ _).preimage hu).inter ((isClosed_inN _ _ _).preimage hc)`.
+-/
 theorem isClosed_stV (X : HidaSetting D) (u u' : D.what₂.Word) (γ : X.B.I.Ginf) (v : InfinitePlace X.B.I.F) :
     IsClosed (Formalism.L2.SG.NGPin.StV X u u' γ v) := by
   have hu : Continuous fun y : Formalism.REAL.UJ (X.B.I.ε v) => uMat y :=
@@ -30,6 +36,29 @@ theorem isClosed_stV (X : HidaSetting D) (u u' : D.what₂.Word) (γ : X.B.I.Gin
     hu.comp ((continuous_const.mul continuous_id).mul continuous_const)
   exact ((isClosed_inN _ _ _).preimage hu).inter ((isClosed_inN _ _ _).preimage hc)
 
+/- English proof (translation)
+Introduce `D X Y u u' t hrel hG w hw γw s s' hrep hs hs' hpt`. Establish `: Nonempty D.what₂.Word` using `⟨u⟩`. Take `⟨C⟩` from `Formalism.L2.SG.Pf.choiceExists X 1 one_pos`. Establish `hτ : ∀ v : InfinitePlace X.B.I.F, ∃ τ, vOf X τ = v` using `fun v => ⟨X.pl v, X.pl.symm_apply_apply v⟩`. Establish `hpl : ∀ z ∈ StInf X u u' γw, ∀ v, z v ∈ Formalism.L2.SG.NGPin.StV X u u' γw v`.
+
+Introduce `z hz v`. Rewrite `hz` using `[Formalism.L2.SG.NGPin.stInf_eq_pi]`. Conclude with `hz v (Set.mem_univ _)`. Use `⟨BX, fun p => BX_measurable p, fun p x x' y y' h => BX_lower p x x' y y' h, fun p x => BX_zero p x, ?_, ?_, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[Formalism.L2.SG.NGPin.stCoord_eq]`.
+
+Use `measurable_pi_lambda _ fun v => ?_` and prove the remaining obligations. Take `⟨τ, rfl⟩` from `hτ v`. Conclude with `(stCoordV_meas C u' w γw τ).comp (measurable_pi_apply _)`. Rewrite using `[Formalism.L2.SG.NGPin.stInf_eq_pi]`. Conclude with `MeasurableSet.univ_pi fun v => (isClosed_stV X u u' γw v).measurableSet`.
+
+Introduce `z₁ h₁ z₂ h₂ heq`. Rewrite `heq` using `[Formalism.L2.SG.NGPin.stCoord_eq]`. Use function extensionality and compare the values at `v`. Take `⟨τ, rfl⟩` from `hτ v`. Conclude with `stCoordV_inj C u u' w γw τ hrep (hpl z₁ h₁ _) (hpl z₂ h₂ _) (congrFun heq (vOf X τ))`.
+
+Introduce `x`. Establish `hex : ∀ v, ∃ y ∈ Formalism.L2.SG.NGPin.StV X u u' γw v, Formalism.L2.SG.NGPin.stCoordV X u' w γw v y = x v`. Introduce `v`. Take `⟨τ, rfl⟩` from `hτ v`. Conclude with `stCoordV_surj C u u' w γw τ hrep (x (vOf X τ))`.
+
+Use `choose y hy hyx using hex`. Use `⟨y, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[Formalism.L2.SG.NGPin.stInf_eq_pi]`. Conclude with `fun v _ => hy v`. Rewrite using `[Formalism.L2.SG.NGPin.stCoord_eq]`.
+
+Use function extensionality and compare the values at `v`. Conclude with `hyx v`. Introduce `z₁ h₁ z₂ h₂`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Establish `hN` using `Formalism.L2.SG.Pf.psiInfChar_holds D X u`.
+
+Establish `hN'` using `Formalism.L2.SG.Pf.psiInfChar_holds D X u'`. Use `⟨(hN.2.1 _ h₁.1 _ h₂.1).1, ?_⟩` and prove the remaining obligations. Establish `e : γw⁻¹ * (z₁ * z₂) * γw = (γw⁻¹ * z₁ * γw) * (γw⁻¹ * z₂ * γw)` using `by group`. Rewrite using `[e]`. Conclude with `(hN'.2.1 _ h₁.2 _ h₂.2).1`.
+
+Rewrite using `[Formalism.L2.SG.NGPin.stCoord_eq]`. Use function extensionality and compare the values at `v p`. Conclude with `stCoordV_mul X v (hpl z₁ h₁ v) (hpl z₂ h₂ v) p`. Introduce `r hr`. Take `⟨hr1, hr2⟩` from `hr`.
+
+Use `⟨?_, ?_⟩` and prove the remaining obligations. Use `Formalism.L2.SG.Pf.FormTranspose.sinf_conj X u (Formalism.L2.SG.Pf.Sinf.sinf_inv' X u hs) hr1` as an intermediate fact. Simplify `this` using `only [inv_inv]`. Establish `hγ : γw = s⁻¹ * t.pt.1 * s'` using `by rw [hpt]; group`. Use `Formalism.L2.SG.Pf.FormTranspose.sinf_conj X u' (Formalism.L2.SG.Pf.Sinf.sinf_inv' X u' hs') hr2` as an intermediate fact.
+
+Rewrite using `[hγ]`. Use `this using 1` and compare the differences between its conclusion and the goal. Use `group`.
+-/
 theorem chartC_holds : Formalism.L2.SG.NGCut.StabilizerCovolume.ChartC := by
   intro D X Y u u' t hrel hG w hw γw s s' hrep hs hs' hpt
   have : Nonempty D.what₂.Word := ⟨u⟩

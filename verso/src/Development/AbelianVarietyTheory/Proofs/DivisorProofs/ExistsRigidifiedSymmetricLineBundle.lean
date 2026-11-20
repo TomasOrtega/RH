@@ -20,6 +20,19 @@ open scoped CategoryTheory.Obj
 
 namespace GlobalTheory.RigidifyTwist
 
+/- English proof (translation)
+Introduce `S A _ M hM hs`. Establish `hM'` using `LB.isLB_linComb hM (K := Fin 2) ![𝟙 A.left, A.hom ≫ eSec A] ![1, -1]`. Establish `hc : cls _ hM' = cls M hM - CechPic.pull (A.hom ≫ eSec A) (cls M hM)`. Rewrite using `[CechPic.cls_linComb hM, Fin.sum_univ_two]`. Simplify using `[CechPic.pull_id, sub_eq_add_neg]`.
+
+Establish `hz : ∀ {T : Over S} (z : T ⟶ A), CechPic.pull z.left (CechPic.pull (A.hom ≫ eSec A) (cls M hM)) = CechPic.pull (T.hom ≫ eSec A) (cls M hM)`. Introduce `T z`. Rewrite using `[← CechPic.pull_comp, ← Category.assoc, Over.w z]`. Use `⟨_, hM', ?_, ?_, ?_⟩` and prove the remaining obligations. Use `(CechPic.cls_eq_zero_iff (pull_isLB hM' _)).1 ?_` and prove the remaining obligations.
+
+Rewrite using `[CechPic.cls_pull hM', hc, map_sub, ← CechPic.pull_comp, sub_eq_zero]`. Conclude with `congrArg (fun f => CechPic.pull f (cls M hM)) ((Category.id_comp _).symm.trans (((Over.w η[A]).symm =≫ _).trans (Category.assoc _ _ _)))`. Introduce `s`. Take `⟨U, hU, t, ht⟩` from `hs s`. Use `⟨U, hU, (CechPic.cls_eq_zero_iff (LB.isLB_linComb hM' _ _)).1 ?_⟩` and prove the remaining obligations.
+
+Establish `h0` using `(CechPic.cls_eq_zero_iff (LB.isLB_linComb hM _ _)).2 ⟨t, ht⟩`. Establish `hinv : ∀ {Z : Scheme.{0}} (f : S ⟶ Z), (GrpObj.inv : A ⟶ A).left ≫ A.hom ≫ f = A.hom ≫ f`. Introduce `Z f`. Rewrite using `[← Category.assoc, Over.w]`. Rewrite `h0` using `[CechPic.cls_linComb hM, Fin.sum_univ_two]`.
+
+Rewrite using `[CechPic.cls_linComb hM', Fin.sum_univ_two]`. Simplify using `only [Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.cons_val_fin_one, one_smul, neg_smul, hc, map_sub, ← CechPic.pull_comp, Category.assoc, hinv] at h0 ⊢`. Rewrite using `[← h0]`. Normalize the expressions using the abelian group laws. Simplify using `only [CechPic.lam, hc, map_sub, hz]`.
+
+Normalize the expressions using the abelian group laws.
+-/
 theorem rigidified_sym_lam_twist : ∀ (S : Scheme.{0}) (A : Over S) [GrpObj A] (M : LB A.left) (hM : M.IsLB), Out.Sym A M → ∃ (M' : LB A.left) (hM' : M'.IsLB), Out.Rigidified A M' ∧ Out.Sym A M' ∧ lam (cls M' hM') (fst A A) (snd A A) = lam (cls M hM) (fst A A) (snd A A) := by
   intro S A _ M hM hs
   have hM' := LB.isLB_linComb hM (K := Fin 2) ![𝟙 A.left, A.hom ≫ eSec A] ![1, -1]

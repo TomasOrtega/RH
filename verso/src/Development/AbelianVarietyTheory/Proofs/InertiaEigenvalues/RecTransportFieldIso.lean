@@ -34,6 +34,15 @@ noncomputable section
 
 namespace GlobalTheory.LocLanglands.EpsUnique
 
+/- English proof (translation)
+Introduce `K L Ω _ _ _ _ _ _ _ _ _ _ A v h hL H hH`. Use `haveI : IsAlgClosed Ω := IsAlgClosure.isAlgClosed K`. Use `haveI : Normal K Ω := IsAlgClosure.normal K Ω`. Set `f : Weil h → (L →ₐ[K] Ω)` to `fun σ => (σ : G K Ω).toAlgHom.comp (IsScalarTower.toAlgHom K L Ω)`. Establish `hf : ∀ σ τ : Weil h, f σ = f τ ↔ σ⁻¹ * τ ∈ H` using `fun σ τ => by`.
+
+Rewrite using `[hH, AlgHom.ext_iff]`. Use `forall_congr' fun x => ?_` and prove the remaining obligations. Use `show (σ : G K Ω) (algebraMap L Ω x) = (τ : G K Ω) (algebraMap L Ω x) ↔ (σ : G K Ω).symm ((τ : G K Ω) (algebraMap L Ω x)) = _`. Rewrite using `[AlgEquiv.symm_apply_eq, eq_comm]`. Establish `hs : Function.Surjective f` using `fun s => by`.
+
+Take `⟨τ, hτ⟩` from `hL (AlgEquiv.ofBijective (s.liftNormal Ω) (AlgHom.normal_bijective K Ω Ω _))`. Conclude with `⟨τ, AlgHom.ext fun x => (hτ x).trans (s.liftNormal_commutes Ω x)⟩`. Set `g : Weil h ⧸ H → (L →ₐ[K] Ω)` to `Quotient.lift f fun σ τ hστ => (hf σ τ).2 (QuotientGroup.leftRel_apply.1 hστ)`. Establish `hg : Function.Bijective g`. Use `⟨fun a b => Quotient.inductionOn₂ a b fun σ τ e => QuotientGroup.eq.2 ((hf σ τ).1 e), fun s => ?_⟩` and prove the remaining obligations.
+
+Take `⟨σ, rfl⟩` from `hs s`. Conclude with `⟨QuotientGroup.mk σ, rfl⟩`. Rewrite using `[Subgroup.index, Nat.card_eq_of_bijective g hg, Nat.card_eq_fintype_card, AlgHom.card]`.
+-/
 theorem index_eq_finrank : ∀ (K L Ω : Type) [Field K] [NumberField K] [Field L] [NumberField L] [Field Ω] [Algebra K Ω] [IsAlgClosure K Ω] [Algebra L Ω] [Algebra K L] [IsScalarTower K L Ω] (A : ValuationSubring Ω) (v : HeightOneSpectrum (𝓞 K)) (h : IsPlaceOver A v), IsLocalExt L h → ∀ H : Subgroup (Weil h), (∀ σ : Weil h, σ ∈ H ↔ ∀ x : L, (σ : G K Ω) (algebraMap L Ω x) = algebraMap L Ω x) → H.index = Module.finrank K L := by
   intro K L Ω _ _ _ _ _ _ _ _ _ _ A v h hL H hH
   haveI : IsAlgClosed Ω := IsAlgClosure.isAlgClosed K
@@ -55,6 +64,15 @@ theorem index_eq_finrank : ∀ (K L Ω : Type) [Field K] [NumberField K] [Field 
     exact ⟨QuotientGroup.mk σ, rfl⟩
   rw [Subgroup.index, Nat.card_eq_of_bijective g hg, Nat.card_eq_fintype_card, AlgHom.card]
 
+/- English proof (translation)
+Introduce `K L Ω _ _ _ _ _ _ _ _ _ _ _ A v v' h h' r hr hs n b u ξ hn hu hsp`. Establish `hu0 : u ≠ 0`. Introduce and unpack `rfl`. Use `haveI : Nonempty (Fin n) := ⟨⟨0, hn ▸ Module.finrank_pos⟩⟩`. Use `bot_ne_top (α := Submodule ℂ (Fin n → ℂ)) (hsp ▸ (Submodule.span_eq_bot.2 ?_).symm)` and prove the remaining obligations.
+
+Introduce and unpack `_ ⟨σ, rfl⟩`. Simplify using the standard rewrite rules. Establish `hξ : GlobalTheory.WeilDeligne.IsSmooth ξ` using `(hs _ b.ρ b.smooth).of_le fun σ hσ => by`. Establish `h1` using `hu σ`. Rewrite `h1` using `[show b.ρ (r σ) = 1 from hσ]`.
+
+Conclude with `Units.ext (smul_left_injective ℂ hu0 (by simpa using h1.symm))`. Use `⟨hξ, 1, n, _, b, (LinearMap.proj (0 : Fin 1)).smulRight u, rfl, rfl, by simp [hn], fun σ' σ hσ x => ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[show σ = r σ' from Subtype.ext (AlgEquiv.ext fun z => (hσ z).trans (hr σ' z).symm)]`. Simplify using `[hu, smul_smul, mul_comm]`. Rewrite using `[eq_top_iff, ← hsp]`.
+
+Use `Submodule.span_mono ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨σ, rfl⟩`. Conclude with `⟨(σ, fun _ => 1), by simp⟩`.
+-/
 theorem induces_of_eigenvector : ∀ (K L Ω : Type) [Field K] [NumberField K] [Field L] [NumberField L] [Field Ω] [Algebra K Ω] [IsAlgClosure K Ω] [Algebra L Ω] [IsAlgClosure L Ω] [Algebra K L] [IsScalarTower K L Ω] (A : ValuationSubring Ω) (v : HeightOneSpectrum (𝓞 K)) (v' : HeightOneSpectrum (𝓞 L)) (h : IsPlaceOver A v) (h' : IsPlaceOver A v') (r : Weil h' →* Weil h), (∀ (σ : Weil h') (z : Ω), (r σ : G K Ω) z = (σ : G L Ω) z) → (∀ (M : Type) [Monoid M] (f : Weil h →* M), GlobalTheory.WeilDeligne.IsSmooth f → GlobalTheory.WeilDeligne.IsSmooth (f.comp r)) → ∀ (n : ℕ) (b : WDRep h (Fin n → ℂ)) (u : Fin n → ℂ) (ξ : Weil h' →* ℂˣ), n = Module.finrank K L → (∀ σ, b.ρ (r σ) u = (ξ σ : ℂ) • u) → Submodule.span ℂ (Set.range fun σ => b.ρ σ u) = ⊤ → ∃ hξ : GlobalTheory.WeilDeligne.IsSmooth ξ, Induces (WD.lpOfChar h' ξ hξ) (WD.mk b) := by
   intro K L Ω _ _ _ _ _ _ _ _ _ _ _ A v v' h h' r hr hs n b u ξ hn hu hsp
   have hu0 : u ≠ 0 := by
@@ -80,6 +98,13 @@ section One
 variable {E Ω : Type} [Field E] [NumberField E] [Field Ω] [Algebra E Ω] [IsAlgClosure E Ω]
   {A : ValuationSubring Ω} {w : HeightOneSpectrum (𝓞 E)} {h : IsPlaceOver A w}
 
+/- English proof (translation)
+Take `⟨m, a, rfl⟩` from `x.exists_rep`. Take `⟨n, b, rfl⟩` from `y.exists_rep`. Simplify using `only [WD.charPol_mk] at hxy`. Take `⟨e, he⟩` from `GlobalTheory.TraceIso.exists_equiv_of_trace_eq a.ρ b.ρ (GlobalTheory.T.weil_deligne_semisimple E Ω A w h m a) (GlobalTheory.T.weil_deligne_semisimple E Ω A w h n b) fun g => by`. Establish `h1` using `hxy g`.
+
+Rewrite `h1` using `[← LinearMap.charpoly_toMatrix _ (Pi.basisFun ℂ (Fin m)), ← LinearMap.charpoly_toMatrix _ (Pi.basisFun ℂ (Fin n))]`. Rewrite using `[LinearMap.trace_eq_matrix_trace ℂ (Pi.basisFun ℂ (Fin m)), LinearMap.trace_eq_matrix_trace ℂ (Pi.basisFun ℂ (Fin n)), Matrix.trace_eq_neg_charpoly_nextCoeff, Matrix.trace_eq_neg_charpoly_nextCoeff, h1]`. Establish `hmn : n = m` using `by simpa using e.finrank_eq.symm`. Use `⟨m, n, a, b, e, rfl, rfl, by simp [hmn], fun σ' σ hσ u => ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[show σ = σ' from Subtype.ext (AlgEquiv.ext hσ)]`.
+
+Conclude with `he _ _`. Conclude with `eq_top_iff.2 fun u _ => Submodule.subset_span ⟨(1, e.symm u), by simp⟩`.
+-/
 theorem induces_of_charPol {x y : WD h} (hxy : ∀ σ, x.charPol σ = y.charPol σ) : Induces x y := by
   obtain ⟨m, a, rfl⟩ := x.exists_rep
   obtain ⟨n, b, rfl⟩ := y.exists_rep
@@ -97,6 +122,9 @@ theorem induces_of_charPol {x y : WD h} (hxy : ∀ σ, x.charPol σ = y.charPol 
   · rw [show σ = σ' from Subtype.ext (AlgEquiv.ext hσ)]; exact he _ _
   · exact eq_top_iff.2 fun u _ => Submodule.subset_span ⟨(1, e.symm u), by simp⟩
 
+/- English proof (translation)
+Use `hε.ind E E w w h h (isLocalExt_self h) ψ ψ hc h1 hc (fun z => by simp) x x y x (induces_of_charPol hxy) (induces_self x) rfl` as an intermediate fact. Conclude with `(mul_right_cancel this).symm`.
+-/
 theorem eps_eq_of_charPol {ε : EpsFamily A} (hε : IsDeligneEps ε) {ψ : AddChar (w.adicCompletion E) Circle}
     (hc : Continuous ψ) (h1 : ψ ≠ 1) {x y : WD h} (hxy : ∀ σ, x.charPol σ = y.charPol σ) :
     ε E w h ψ x = ε E w h ψ y := by
@@ -104,6 +132,13 @@ theorem eps_eq_of_charPol {ε : EpsFamily A} (hε : IsDeligneEps ε) {ψ : AddCh
     (induces_of_charPol hxy) (induces_self x) rfl
   exact (mul_right_cancel this).symm
 
+/- English proof (translation)
+Establish `hint : ∀ x : 𝓞 L, algebraMap L Ω x ∈ A` using `fun x => by`. Establish `h1 : IsIntegral ℤ (algebraMap L Ω x)` using `x.2.map (algebraMap L Ω).toIntAlgHom`. Establish `h2 : IsIntegral A (algebraMap L Ω x)` using `h1.tower_top`. Take `⟨y, hy⟩` from `IsIntegrallyClosed.isIntegral_iff.1 h2`. Conclude with `hy ▸ y.2`.
+
+Set `f : 𝓞 L →+* A` to `((algebraMap L Ω).comp (algebraMap (𝓞 L) L)).codRestrict A hint`. Establish `hf : ∀ x : 𝓞 L, A.valuation (algebraMap L Ω x) < 1 ↔ x ∈ (IsLocalRing.maximalIdeal A).comap f` using `fun x => (A.valuation_lt_one_iff (f x)).symm`. Use `⟨⟨(IsLocalRing.maximalIdeal A).comap f, inferInstance, fun h0 => ?_⟩, hf⟩` and prove the remaining obligations. Take `⟨x, hx, hx0⟩` from `Submodule.exists_mem_ne_zero_of_ne_bot w.ne_bot`. Establish `h3` using `(hf (algebraMap (𝓞 E) (𝓞 L) x)).1 (by`.
+
+Use `(h x).2 hx` as an intermediate fact. Rewrite using `[IsScalarTower.algebraMap_apply E L Ω] at this)` and apply the resulting hypothesis. Rewrite `h3` using `[h0, Ideal.mem_bot]`. Conclude with `hx0 (FaithfulSMul.algebraMap_injective (𝓞 E) (𝓞 L) (by simpa using h3))`.
+-/
 theorem exists_place (h : IsPlaceOver A w) (L : Type) [Field L] [NumberField L] [Algebra L Ω] [Algebra E L]
     [IsScalarTower E L Ω] : ∃ v : HeightOneSpectrum (𝓞 L), IsPlaceOver A v := by
   have hint : ∀ x : 𝓞 L, algebraMap L Ω x ∈ A := fun x => by
@@ -122,6 +157,11 @@ theorem exists_place (h : IsPlaceOver A w) (L : Type) [Field L] [NumberField L] 
   rw [h0, Ideal.mem_bot] at h3
   exact hx0 (FaithfulSMul.algebraMap_injective (𝓞 E) (𝓞 L) (by simpa using h3))
 
+/- English proof (translation)
+Take `⟨T, hT, hT'⟩` from `GlobalTheory.T.local_trace_completion E L Ω A w v h hv hL`. Use `⟨ψ.compAddMonoidHom T, hc.comp hT, fun h0 => h1 ?_, fun z => by simp [hT']⟩` and prove the remaining obligations. Use extensionality with `x`. Use `(HeightOneSpectrum.denseRange_algebraMap E w).induction_on (p := fun x => (ψ x : ℂ) = (1 : AddChar _ Circle) x) x (isClosed_eq (continuous_subtype_val.comp hc) (by simpa using continuous_const)) fun a => ?_` and prove the remaining obligations. Take `⟨z, rfl⟩` from `Algebra.trace_surjective E L a`.
+
+Use `DFunLike.congr_fun h0 (algebraMap L _ z)` as an intermediate fact. Simplify using `only [AddChar.compAddMonoidHom_apply, hT', AddChar.one_apply] at this`. Simplify using `[this]`.
+-/
 theorem exists_addChar (L : Type) [Field L] [NumberField L] [Algebra L Ω] [IsAlgClosure L Ω] [Algebra E L]
     [IsScalarTower E L Ω] {v : HeightOneSpectrum (𝓞 L)} (hv : IsPlaceOver A v) (hL : IsLocalExt L h)
     {ψ : AddChar (w.adicCompletion E) Circle} (hc : Continuous ψ) (h1 : ψ ≠ 1) :
@@ -147,6 +187,11 @@ variable {E Ω : Type} [Field E] [NumberField E] [Field Ω] [Algebra E Ω] [IsAl
   {A' : ValuationSubring Ω'} {w' : HeightOneSpectrum (𝓞 E')} {h' : IsPlaceOver A' w'}
   {φ : Ω ≃+* Ω'} {j : E →+* E'} {i : w.adicCompletion E ≃+* w'.adicCompletion E'}
 
+/- English proof (translation)
+Use `haveI : CharZero (w.adicCompletion E) := charZero_of_injective_algebraMap (algebraMap E _).injective`. Use `haveI : CharZero (w'.adicCompletion E') := charZero_of_injective_algebraMap (algebraMap E' _).injective`. Use `⟨?_, fun h0 => h1 ?_⟩` and prove the remaining obligations. Establish `: (ψ' : _ → Circle) = ψ ∘ i.symm` using `funext fun x => by simp [← hψ]`. Rewrite using `[this]`.
+
+Conclude with `hc.comp (GlobalTheory.LocalFieldIso.continuous_iso_keeps_valuation _ _ i hP.cont).1`. Use extensionality with `x`. Simplify using `[← hψ, h0]`.
+-/
 theorem addChar_transport (hP : PlaceIso A w A' w' φ j i) {ψ : AddChar (w.adicCompletion E) Circle}
     {ψ' : AddChar (w'.adicCompletion E') Circle} (hc : Continuous ψ) (h1 : ψ ≠ 1) (hψ : ∀ x, ψ' (i x) = ψ x) :
     Continuous ψ' ∧ ψ' ≠ 1 := by
@@ -159,6 +204,13 @@ theorem addChar_transport (hP : PlaceIso A w A' w' φ j i) {ψ : AddChar (w.adic
   · ext x
     simp [← hψ, h0]
 
+/- English proof (translation)
+Take `⟨hc', h1'⟩` from `addChar_transport hP hc h1 hψ`. Take `⟨-, a, ha, -⟩` from `hL E Ω A w h`. Take `⟨-, a', ha', -⟩` from `hL E' Ω' A' w' h'`. Take `⟨χ, hχ, rfl⟩` from `ha.factor ξ hξ`. Take `⟨χ', hχ', rfl⟩` from `ha'.factor ξ' hξ'`.
+
+Take `⟨c, hcr, -⟩` from `GlobalTheory.T.place_over_transport_ring_iso E Ω A w h E' Ω' A' w' h' φ j i hP`. Use `haveI : CharZero (w.adicCompletion E) := charZero_of_injective_algebraMap (algebraMap E _).injective`. Use `haveI : CharZero (w'.adicCompletion E') := charZero_of_injective_algebraMap (algebraMap E' _).injective`. Use `Units.ext ((GlobalTheory.T.tate_epsilon_transport _ _ i hP.cont ψ ψ' χ χ' _ hψ (fun x => ?_) (hε.char E w h ψ hc h1 a ha χ hχ)).unique (hε'.char E' w' h' ψ' hc' h1' a' ha' χ' hχ'))` and prove the remaining obligations. Take `⟨σ, rfl⟩` from `ha.surj x`.
+
+Establish `h2` using `(hcr σ _).2 rfl`. Rewrite using `[← GlobalTheory.T.localArtinMap_unique_transport_placeIso hG hC E Ω A w h E' Ω' A' w' h' φ j i hP a a' ha ha' σ _ h2]`. Conclude with `(hr σ _ h2).symm`.
+-/
 theorem eps_char (hG : GlobalArtinReciprocity) (hC : ChevalleyUnits) (hL : LocalLanglandsExists)
     (hP : PlaceIso A w A' w' φ j i) {ε : EpsFamily A} {ε' : EpsFamily A'} (hε : IsDeligneEps ε)
     (hε' : IsDeligneEps ε') {ψ : AddChar (w.adicCompletion E) Circle}
@@ -181,10 +233,36 @@ theorem eps_char (hG : GlobalArtinReciprocity) (hC : ChevalleyUnits) (hL : Local
   rw [← GlobalTheory.T.localArtinMap_unique_transport_placeIso hG hC E Ω A w h E' Ω' A' w' h' φ j i hP a a' ha ha' σ _ h2]
   exact (hr σ _ h2).symm
 
+/- English proof (translation)
+Rewrite using `[valuation_lt_one_iff', valuation_lt_one_iff', ← map_inv₀, hm, hm, map_eq_zero_iff _ φ.injective]`.
+-/
 theorem valuation_lt_one_iff_map (hm : ∀ z, φ z ∈ A' ↔ z ∈ A) (z : Ω) :
     A'.valuation (φ z) < 1 ↔ A.valuation z < 1 := by
   rw [valuation_lt_one_iff', valuation_lt_one_iff', ← map_inv₀, hm, hm, map_eq_zero_iff _ φ.injective]
 
+/- English proof (translation)
+Take `⟨hc', h1'⟩` from `addChar_transport hP hc h1 hψ`. Take `⟨L, hfin, hL, hHL⟩` from `GlobalTheory.T.exists_localExtension_of_finiteIndex_weilSubgroup E Ω A w h H hH hHo`. Take `⟨L', jL, hfin', hL', hdeg, hφ, hadj⟩` from `GlobalTheory.T.weil_group_transport E Ω A w h E' Ω' A' w' h' φ j c hP.ext (fun σ => (hcr σ _).2 rfl) L hfin hL`. Use `haveI : NumberField L := NumberField.of_module_finite E L`. Use `haveI : NumberField L' := NumberField.of_module_finite E' L'`.
+
+Use `haveI : IsAlgClosure L Ω := ⟨IsAlgClosure.isAlgClosed E, Algebra.IsAlgebraic.tower_top (K := E) L⟩`. Use `haveI : IsAlgClosure L' Ω' := ⟨IsAlgClosure.isAlgClosed E', Algebra.IsAlgebraic.tower_top (K := E') L'⟩`. Take `⟨v, hv⟩` from `exists_place h L`. Take `⟨v', hv'⟩` from `exists_place h' L'`. Establish `hj : ∀ x, jL (algebraMap E L x) = algebraMap E' L' (j x)` using `fun x => Subtype.ext ((hφ _).symm.trans (hP.ext x))`.
+
+Take `⟨iL, hiL, hiL'⟩` from `GlobalTheory.T.completion_base_change_places E L E' L' w v w' v' j jL i (fun x => by rw [← hv, ← h]; rfl) (fun x => by rw [← hv', ← h']; rfl) (fun x => by`. Rewrite using `[← hv, ← hv', ← valuation_lt_one_iff_map hP.mem]`. Conclude with `Iff.of_eq (congrArg (fun z => A'.valuation z < 1) (hφ _).symm))`. Use `hj hadj hP.cont hP.loc`. Establish `hPL : PlaceIso A v A' v' φ jL iL` using `⟨hP.mem, hφ, hiL, hiL'⟩`.
+
+Take `⟨ψL, hcL, h1L, hψL⟩` from `exists_addChar L hv hL hc h1`. Take `⟨ψL', hcL', -, hψL'⟩` from `exists_addChar L' hv' hL' hc' h1'`. Establish `hψi : ∀ x, ψL' (iL x) = ψL x` using `fun x => by`. Use `(HeightOneSpectrum.denseRange_algebraMap L v).induction_on (p := fun x => ψL' (iL x) = ψL x) x (isClosed_eq (hcL'.comp hiL) hcL) fun z => ?_` and prove the remaining obligations. Rewrite using `[hiL', hψL', hψL, GlobalTheory.T.trace_base_change_field E L E' L' j jL hj hadj hdeg, ← hP.loc, hψ]`.
+
+Take `⟨r, hr, hrs⟩` from `GlobalTheory.T.weil_group_restriction E L Ω A w v h hv`. Take `⟨r', hr', hrs'⟩` from `GlobalTheory.T.weil_group_restriction E' L' Ω' A' w' v' h' hv'`. Establish `hn' : n = Module.finrank E L` using `hn.trans (index_eq_finrank E L Ω A w h hL H hHL)`. Establish `m : ∀ σ, r σ ∈ H` using `fun σ => (hHL _).2 fun x => by rw [hr]; exact (σ : G L Ω).commutes x`. Establish `m' : ∀ σ, (c.symm.toMonoidHom.comp r') σ ∈ H` using `fun σ => (hHL _).2 fun x => by`.
+
+Apply `φ.injective` to reduce the goal to its premises. Use `show φ ((c.symm (r' σ) : G E Ω) x) = _`. Rewrite using `[(hcr _ (r' σ)).2 (c.apply_symm_apply _), hr', hφ]`. Conclude with `(σ : G L' Ω').commutes (jL x)`. Establish `key : ∀ (χ : H →* ℂˣ) (b : WDRep h (Fin n → ℂ)) (b' : WDRep h' (Fin n → ℂ)) (u : Fin n → ℂ), (∀ σ, b'.ρ (c σ) = b.ρ σ) → (∀ σ : H, b.ρ σ u = (χ σ : ℂ) • u) → Submodule.span ℂ (Set.range fun σ => b.ρ σ u) = ⊤ → ∃ (x : WD hv) (x' : WD hv'), Induces x (WD.mk b) ∧ Induces x' (WD.mk b …`.
+
+Introduce `χ b b' u e k s`. Take `⟨p, hp⟩` from `induces_of_eigenvector E L Ω A w v h hv r hr hrs n b u (χ.comp (r.codRestrict H m)) hn' (fun σ => k ⟨r σ, m σ⟩) s`. Take `⟨p', hp'⟩` from `induces_of_eigenvector E' L' Ω' A' w' v' h' hv' r' hr' hrs' n b' u (χ.comp ((c.symm.toMonoidHom.comp r').codRestrict H m')) (hn'.trans hdeg.symm) (fun σ => by`. Use `k ⟨_, m' σ⟩` as an intermediate fact. Rewrite `this` using `[← e]`.
+
+Simplify using `using this)`. Use the proof step `(by`. Rewrite using `[← s, ← c.surjective.range_comp]`. Simplify using `only [Function.comp_def, e])`. Use `⟨_, _, hp, hp', by simp [WD.lpOfChar], by simp [WD.lpOfChar], eps_char hG hC hLL hPL hε hε' hcL h1L hψi p p' fun σ σ' hσ => congrArg χ (Subtype.ext ?_)⟩` and prove the remaining obligations.
+
+Use `show r σ = c.symm (r' σ')`. Rewrite using `[eq_comm, MulEquiv.symm_apply_eq, eq_comm, ← hcr]`. Introduce `z`. Rewrite using `[hr, hr']`. Conclude with `hσ z`.
+
+Take `⟨x₁, x₁', i₁, i₁', d₁, d₁', q₁⟩` from `key χ₁ b₁ b₁' v₁ e₁ k₁ s₁`. Take `⟨x₂, x₂', i₂, i₂', d₂, d₂', q₂⟩` from `key χ₂ b₂ b₂' v₂ e₂ k₂ s₂`. Establish `t` using `hε.ind E L w v h hv hL ψ ψL hc h1 hcL hψL x₁ x₂ _ _ i₁ i₂ (d₁.trans d₂.symm)`. Establish `t'` using `hε'.ind E' L' w' v' h' hv' hL' ψ' ψL' hc' h1' hcL' hψL' x₁' x₂' _ _ i₁' i₂' (d₁'.trans d₂'.symm)`. Rewrite `t'` using `[← q₁, ← q₂]`.
+
+Apply `mul_right_cancel (b := ε L v hv ψL x₂)` to reduce the goal to its premises. Rewrite using `[mul_right_comm, t, mul_assoc _ (ε' E' w' h' ψ' (WD.mk b₁')), t']`. Simplify using `only [mul_assoc, mul_comm, mul_left_comm]`.
+-/
 theorem eps_ind (hG : GlobalArtinReciprocity) (hC : ChevalleyUnits) (hLL : LocalLanglandsExists)
     (hP : PlaceIso A w A' w' φ j i) {ε : EpsFamily A} {ε' : EpsFamily A'} (hε : IsDeligneEps ε)
     (hε' : IsDeligneEps ε') {ψ : AddChar (w.adicCompletion E) Circle}
@@ -266,6 +344,19 @@ theorem eps_ind (hG : GlobalArtinReciprocity) (hC : ChevalleyUnits) (hLL : Local
 
 end Two
 
+/- English proof (translation)
+Introduce `hG hC hB hLL E Ω _ _ _ _ _ A w h E' Ω' _ _ _ _ _ A' w' h' φ j i hP ε ε' hε hε' ψ ψ' hc h1 hψ y y' hy`. Take `⟨hc', h1'⟩` from `addChar_transport hP hc h1 hψ`. Take `⟨S, hS, -, -, hSadd, -, -, -, -, hSchar⟩` from `GlobalTheory.T.place_over_transport_ring_iso_symm E Ω A w h E' Ω' A' w' h' φ j i hP`. Take `⟨c, hcr, hdeg, hq, hsm⟩` from `GlobalTheory.T.place_over_transport_ring_iso E Ω A w h E' Ω' A' w' h' φ j i hP`. Establish `rep : ∀ (n : ℕ) (b : WDRep h (Fin n → ℂ)), ∃ b' : WDRep h' (Fin n → ℂ), S (WD.mk b) = WD.mk b' ∧ ∀ σ, b'.ρ (c σ) = b.ρ σ`.
+
+Introduce `n b`. Set `b' : WDRep h' (Fin n → ℂ)` to `{ ρ := b.ρ.comp c.symm.toMonoidHom N := b.N smooth := (hsm _ _).2 (b.smooth.of_le fun σ hσ => by simpa using hσ) semisimple := fun σ => b.semisimple _ nilpotent := b.nilpotent comm := fun σ => by`. Use `b.comm (c.symm σ)` as an intermediate fact. Rewrite `this` using `[← hdeg, c.apply_symm_apply, ← hq]`. Conclude with `this }`.
+
+Establish `hb : ∀ σ, b'.ρ (c σ) = b.ρ σ` using `fun σ => congrArg b.ρ (c.symm_apply_apply σ)`. Conclude with `⟨b', (hS _ _).1 ⟨n, b, b', rfl, rfl, rfl, fun σ σ' hσ => by rw [← (hcr _ _).1 hσ, hb]⟩, hb⟩`. Establish `hpol : ∀ x σ, (S x).charPol (c σ) = x.charPol σ`. Introduce `x σ`. Take `⟨n, b, rfl⟩` from `x.exists_rep`.
+
+Take `⟨b', h2, h3⟩` from `rep n b`. Rewrite using `[h2, WD.charPol_mk, WD.charPol_mk, h3]`. Rewrite using `[← (hS y y').1 hy]`. Use `GlobalTheory.T.epsilon_unique_of_inductive hB E Ω A w h (ε E w h ψ) (fun x => ε' E' w' h' ψ' (S x)) (hε.add E w h ψ hc h1) (fun x z => by rw [hSadd, hε'.add E' w' h' ψ' hc' h1']) (fun x z hxz => ⟨eps_eq_of_charPol hε hc h1 hxz, eps_eq_of_charPol hε' hc' h1' fun σ => ?_⟩) (fun ξ h …` and prove the remaining obligations. Take `⟨σ, rfl⟩` from `c.surjective σ`.
+
+Rewrite using `[hpol, hpol, hxz]`. Establish `hξ' : GlobalTheory.WeilDeligne.IsSmooth (ξ.comp c.symm.toMonoidHom)` using `(hsm _ _).2 (hξ.of_le fun σ hσ => by simpa using hσ)`. Establish `hr : ∀ σ σ', WeilRel φ σ σ' → ξ σ = (ξ.comp c.symm.toMonoidHom) σ'` using `fun σ σ' hσ => by`. Simplify using `[← (hcr _ _).1 hσ]`. Rewrite using `[hSchar ξ hξ _ hξ' hr]`.
+
+Conclude with `eps_char hG hC hLL hP hε hε' hc h1 hψ hξ hξ' hr`. Take `⟨b₁', f₁, e₁⟩` from `rep n b₁`. Take `⟨b₂', f₂, e₂⟩` from `rep n b₂`. Rewrite using `[f₁, f₂]`. Conclude with `eps_ind hG hC hLL hP hε hε' hc h1 hψ c hcr H hH hHo χ₁ χ₂ b₁ b₂ b₁' b₂' e₁ e₂ v₁ v₂ hn k₁ k₂ s₁ s₂`.
+-/
 theorem eps_eq_of_placeIso : GlobalArtinReciprocity → ChevalleyUnits → BrauerDegreeZero → LocalLanglandsExists → ∀ (E Ω : Type) [Field E] [NumberField E] [Field Ω] [Algebra E Ω] [IsAlgClosure E Ω] (A : ValuationSubring Ω) (w : HeightOneSpectrum (𝓞 E)) (h : IsPlaceOver A w) (E' Ω' : Type) [Field E'] [NumberField E'] [Field Ω'] [Algebra E' Ω'] [IsAlgClosure E' Ω'] (A' : ValuationSubring Ω') (w' : HeightOneSpectrum (𝓞 E')) (h' : IsPlaceOver A' w') (φ : Ω ≃+* Ω') (j : E →+* E') (i : w.adicCompletion E ≃+* w'.adicCompletion E'), PlaceIso A w A' w' φ j i → ∀ (ε : EpsFamily A) (ε' : EpsFamily A'), IsDeligneEps ε → IsDeligneEps ε' → ∀ (ψ : AddChar (w.adicCompletion E) Circle) (ψ' : AddChar (w'.adicCompletion E') Circle), Continuous ψ → ψ ≠ 1 → (∀ x, ψ' (i x) = ψ x) → ∀ (y : WD h) (y' : WD h'), WDRel φ y y' → ε E w h ψ y = ε' E' w' h' ψ' y' := by
   intro hG hC hB hLL E Ω _ _ _ _ _ A w h E' Ω' _ _ _ _ _ A' w' h' φ j i hP ε ε' hε hε' ψ ψ' hc h1 hψ y y' hy
   obtain ⟨hc', h1'⟩ := addChar_transport hP hc h1 hψ

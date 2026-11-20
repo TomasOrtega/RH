@@ -21,6 +21,25 @@ noncomputable section
 
 namespace GlobalTheory.RepCount
 
+/- English proof (translation)
+Introduce `H S0 X _ _ _ _ _ σ0 ρ C I hirr hk`. Use `haveI hS : IsSimpleModule (MonoidAlgebra ℂ H) σ0.asModule := (Representation.irreducible_iff_isSimpleModule_asModule σ0).1 hirr`. Set `N : Submodule (MonoidAlgebra ℂ H) ρ.asModule` to `⨆ (f : S0 →ₗ[ℂ] X) (hf : f ∈ homInto σ0 ρ C), LinearMap.range (modMap f hf.2)`. Establish `hN : N ≤ isotypicComponent (MonoidAlgebra ℂ H) ρ.asModule σ0.asModule`. Use `iSup₂_le fun f hf => ?_` and prove the remaining obligations.
+
+Break down `LinearMap.injective_or_eq_zero (modMap f hf.2) with hi | h0` into its components or cases. Conclude with `le_sSup ⟨(LinearEquiv.ofInjective _ hi).symm⟩`. Rewrite using `[h0, LinearMap.range_zero]`. Conclude with `bot_le`. Use `haveI : IsSemisimpleModule (MonoidAlgebra ℂ H) N := IsSemisimpleModule.of_injective _ (Submodule.inclusion_injective hN)`.
+
+Establish `hiso : IsIsotypicOfType (MonoidAlgebra ℂ H) N σ0.asModule` using `(IsIsotypicOfType.isotypicComponent _ _ _).of_injective _ (Submodule.inclusion_injective hN)`. Take `⟨ι, ⟨e⟩⟩` from `hiso.linearEquiv_finsupp`. Rewrite using `[eq_bot_iff]`. Introduce and unpack `v ⟨hv1, hv2⟩`. Rewrite using `[Submodule.mem_bot]`.
+
+Assume the negation of the conclusion as `hv0`. Establish `hvN : ρ.asModuleEquiv.symm v ∈ N`. Establish `hle : (⨆ f ∈ homInto σ0 ρ C, LinearMap.range f : Submodule ℂ X) ≤ (N.restrictScalars ℂ).comap ρ.asModuleEquiv.symm.toLinearMap`. Use `iSup₂_le fun f hf => ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨s, rfl⟩`.
+
+Establish `hfs : ρ.asModuleEquiv.symm (f s) = modMap f hf.2 (σ0.asModuleEquiv.symm s)`. Rewrite using `[LinearEquiv.symm_apply_eq, modMap_apply, LinearEquiv.apply_symm_apply]`. Use `show ρ.asModuleEquiv.symm (f s) ∈ N`. Rewrite using `[hfs]`. Conclude with `(le_iSup₂ (f := fun (f : S0 →ₗ[ℂ] X) (hf : f ∈ homInto σ0 ρ C) => LinearMap.range (modMap f hf.2)) f hf) ⟨_, rfl⟩`.
+
+Conclude with `hle hv1`. Set `w : N` to `⟨_, hvN⟩`. Establish `hw : w ≠ 0` using `fun h => hv0 (by`. Use `congrArg (fun x : N => ρ.asModuleEquiv x.1) h` as an intermediate fact. Simplify `this)` using `[w]`.
+
+Establish `hew : e w ≠ 0` using `fun h => hw (e.map_eq_zero_iff.1 h)`. Choose the witnesses or unpack the hypotheses as in `⟨i, hi⟩ : ∃ i, e w i ≠ 0 := by`. Assume the negation of the conclusion as `h`. Use `push_neg at h`. Conclude with `hew (Finsupp.ext h)`.
+
+Use `killed_ne_bot (LinearEquiv.refl _ σ0.asModule) hi (fun x hx => ?_) hk` and prove the remaining obligations. Establish `hxw : x • w = 0`. Apply `Subtype.ext` to reduce the goal to its premises. Use `show x • ρ.asModuleEquiv.symm v = 0`. Apply `ρ.asModuleEquiv.injective` to reduce the goal to its premises.
+
+Rewrite using `[Representation.asModuleEquiv_map_smul, LinearEquiv.apply_symm_apply, mem_killed.1 hv2 x hx, map_zero]`. Use `congrArg (fun u => e u i) hxw` as an intermediate fact. Simplify `this` using `[map_smul, Finsupp.smul_apply]`.
+-/
 theorem iSup_range_homInto_inf_killed_eq_bot : ∀ (H S0 X : Type) [Group H] [AddCommGroup S0] [Module ℂ S0] [AddCommGroup X] [Module ℂ X] (σ0 : Representation ℂ H S0) (ρ : Representation ℂ H X) (C : Submodule ℂ X) (I : Set (MonoidAlgebra ℂ H)), σ0.IsIrreducible → killed σ0 I = ⊥ → ((⨆ f ∈ homInto σ0 ρ C, LinearMap.range f) ⊓ killed ρ I : Submodule ℂ X) = ⊥ := by
   intro H S0 X _ _ _ _ _ σ0 ρ C I hirr hk
   haveI hS : IsSimpleModule (MonoidAlgebra ℂ H) σ0.asModule :=

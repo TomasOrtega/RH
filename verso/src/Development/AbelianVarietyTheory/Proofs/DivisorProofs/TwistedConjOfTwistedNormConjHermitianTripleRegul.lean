@@ -16,12 +16,24 @@ open scoped TensorProduct Classical
 
 namespace GlobalTheory.NrmUnique
 
+/- English proof (translation)
+The claim follows from `GlobalTheory.T.exists_matrixAdjoinTensorUnramified_of_commute_separable`.
+-/
 theorem phi_surj_commutant : ∀ (p : ℕ) [Fact p.Prime] (K : IntermediateField ℚ_[p] (PadicAlgCl p)) (n r : ℕ) (γ : Matrix (Fin n) (Fin n) K), 0 < r → γ.charpoly.Separable → ∀ X : Matrix (Fin n) (Fin n) (KQ p K r), Commute X (γ.map (inclK p K r)) → ∃ x, GlobalTheory.PolyTensor.phi p K n γ r x = X := GlobalTheory.T.exists_matrixAdjoinTensorUnramified_of_commute_separable
 
+/- English proof (translation)
+The claim follows from `GlobalTheory.T.matrixAdjoinTensorUnramifiedToMatrix_injective`.
+-/
 theorem phi_injective : ∀ (p : ℕ) [Fact p.Prime] (K : IntermediateField ℚ_[p] (PadicAlgCl p)) (n r : ℕ) (γ : Matrix (Fin n) (Fin n) K), 0 < r → Function.Injective (GlobalTheory.PolyTensor.phi p K n γ r) := GlobalTheory.T.matrixAdjoinTensorUnramifiedToMatrix_injective
 
+/- English proof (translation)
+The claim follows from `GlobalTheory.T.twisted_conj_of_twistedNorm_eq_GL_one_unramified`.
+-/
 theorem hilbert_ninety_gl1 : ∀ (p : ℕ) [Fact p.Prime] (r : ℕ), 0 < r → ∀ δ δ' : GL (Fin 1) (Qr p r), nrmG (GlobalTheory.LKLoc.sig p (Q0 p) 1 r) r δ = nrmG (GlobalTheory.LKLoc.sig p (Q0 p) 1 r) r δ' → ∃ h : GL (Fin 1) (Qr p r), δ' = h⁻¹ * δ * GlobalTheory.LKLoc.sig p (Q0 p) 1 r h := GlobalTheory.T.twisted_conj_of_twistedNorm_eq_GL_one_unramified
 
+/- English proof (translation)
+Unfold `nrmG`. Rewrite using `[map_list_prod, List.map_map]`. Use `congr 1`. Use `List.map_congr_left fun i _ => ?_` and prove the remaining obligations. Conclude with `Function.Semiconj.iterate_right (f := f) hf i a`.
+-/
 theorem map_nrmG {H H' : Type} [Group H] [Group H'] (θ : H →* H) (θ' : H' →* H') (f : H →* H')
     (hf : ∀ x, f (θ x) = θ' (f x)) (r : ℕ) (a : H) : f (nrmG θ r a) = nrmG θ' r (f a) := by
   unfold nrmG
@@ -30,6 +42,9 @@ theorem map_nrmG {H H' : Type} [Group H] [Group H'] (θ : H →* H) (θ' : H' �
   refine List.map_congr_left fun i _ => ?_
   exact Function.Semiconj.iterate_right (f := f) hf i a
 
+/- English proof (translation)
+Unfold `nrmG`. Rewrite using `[← List.prod_map_mul]`. Use `congr 1`. Use `List.map_congr_left fun i _ => ?_` and prove the remaining obligations. Conclude with `iterate_map_mul θ i a b`.
+-/
 theorem nrmG_mul {H : Type} [CommGroup H] (θ : H →* H) (r : ℕ) (a b : H) :
     nrmG θ r (a * b) = nrmG θ r a * nrmG θ r b := by
   unfold nrmG
@@ -38,17 +53,34 @@ theorem nrmG_mul {H : Type} [CommGroup H] (θ : H →* H) (r : ℕ) (a b : H) :
   refine List.map_congr_left fun i _ => ?_
   exact iterate_map_mul θ i a b
 
+/- English proof (translation)
+Use `eq_inv_of_mul_eq_one_left ?_` and prove the remaining obligations. Rewrite using `[← nrmG_mul, inv_mul_cancel]`. Simplify using `[nrmG, iterate_map_one]`.
+-/
 theorem nrmG_inv {H : Type} [CommGroup H] (θ : H →* H) (r : ℕ) (a : H) :
     nrmG θ r a⁻¹ = (nrmG θ r a)⁻¹ := by
   refine eq_inv_of_mul_eq_one_left ?_
   rw [← nrmG_mul, inv_mul_cancel]
   simp [nrmG, iterate_map_one]
 
+/- English proof (translation)
+Use extensionality with `i j`. Use `fin_cases i`. Use `fin_cases j`. Simplify using `[Matrix.mul_apply, mul_comm]`.
+-/
 theorem gl_one_mul_comm {R : Type} [CommRing R] (a b : GL (Fin 1) R) : a * b = b * a := by
   ext i j
   fin_cases i; fin_cases j
   simp [Matrix.mul_apply, mul_comm]
 
+/- English proof (translation)
+Establish `hinj` using `phi_injective p K n r γ.val hr`. Establish `lift : ∀ d : GL (Fin n) (KQ p K r), Commute d.val (γ.val.map (inclK p K r)) → ∃ u : (GlobalTheory.PolyTensor.PolyAlg p K n γ.val ⊗[ℚ_[p]] Qr p r)ˣ, GlobalTheory.PolyTensor.phi p K n γ.val r u = d.val`. Introduce `d hd`. Take `⟨x, hx⟩` from `phi_surj_commutant p K n r γ.val hr hγ d.val hd`. Take `⟨x', hx'⟩` from `phi_surj_commutant p K n r γ.val hr hγ (d⁻¹).val (Commute.units_inv_left hd)`.
+
+Establish `h1 : x * x' = 1` using `hinj (by rw [map_mul, map_one, hx, hx']; exact d.mul_inv)`. Conclude with `⟨⟨x, x', h1, by rw [mul_comm]; exact h1⟩, hx⟩`. Take `⟨u, hu⟩` from `lift δ hc`. Take `⟨u', hu'⟩` from `lift δ' hc'`. Set `Φ : (GlobalTheory.PolyTensor.PolyAlg p K n γ.val ⊗[ℚ_[p]] Qr p r)ˣ →* GL (Fin n) (KQ p K r)` to `Units.map (GlobalTheory.PolyTensor.phi p K n γ.val r).toMonoidHom`.
+
+Set `τ : (GlobalTheory.PolyTensor.PolyAlg p K n γ.val ⊗[ℚ_[p]] Qr p r)ˣ →* (GlobalTheory.PolyTensor.PolyAlg p K n γ.val ⊗[ℚ_[p]] Qr p r)ˣ` to `Units.map (Algebra.TensorProduct.map (AlgHom.id ℚ_[p] (GlobalTheory.PolyTensor.PolyAlg p K n γ.val)) (frobQ p r)).toRingHom.toMonoidHom`. Establish `hΦ : ∀ a, Φ (τ a) = sigRes p K n r (Φ a)` using `fun a => Units.ext (GlobalTheory.PolyTensor.phi_tw p K n γ.val r a)`. Establish `hΦinj : Function.Injective Φ` using `fun a b h => Units.ext (hinj (congrArg Units.val h))`. Establish `hδ : Φ u = δ` using `Units.ext hu`. Establish `hδ' : Φ u' = δ'` using `Units.ext hu'`.
+
+Establish `hNu : nrmG τ r u = nrmG τ r u'` using `hΦinj (by rw [map_nrmG τ _ Φ hΦ, map_nrmG τ _ Φ hΦ, hδ, hδ', hN])`. Establish `hn1 : nrmG τ r (u' * u⁻¹) = 1` using `by rw [nrmG_mul, nrmG_inv, hNu, mul_inv_cancel]`. Take `⟨g, hg⟩` from `GlobalTheory.T.exists_unit_of_frobenius_norm_one_tensor_Qr p r hr (GlobalTheory.PolyTensor.PolyAlg p K n γ.val) (u' * u⁻¹) hn1`. Establish `hu'g : u' = g⁻¹ * u * τ g`. Combine the equalities or inequalities in the displayed calculation.
+
+Use `⟨Φ g, ?_, fun y hy => ?_⟩` and prove the remaining obligations. Rewrite using `[← hδ', ← hδ, hu'g, map_mul, map_mul, map_inv, hΦ]`. Conclude with `(GlobalTheory.PolyTensor.phi_commute p K n γ.val r y.val hy (g : _)).symm`.
+-/
 theorem twConj_place (p : ℕ) [Fact p.Prime] (r : ℕ) (hr : 0 < r) (K : IntermediateField ℚ_[p] (PadicAlgCl p))
     [FiniteDimensional ℚ_[p] K] (n : ℕ) (γ : GL (Fin n) K) (hγ : γ.val.charpoly.Separable)
     (δ δ' : GL (Fin n) (KQ p K r))
@@ -88,6 +120,27 @@ theorem twConj_place (p : ℕ) [Fact p.Prime] (r : ℕ) (hr : 0 < r) (K : Interm
   · rw [← hδ', ← hδ, hu'g, map_mul, map_mul, map_inv, hΦ]
   · exact (GlobalTheory.PolyTensor.phi_commute p K n γ.val r y.val hy (g : _)).symm
 
+/- English proof (translation)
+Introduce `p _ G r γ δ z δ' z' hr hreg h h'`. Take `⟨hex, -⟩` from `GlobalTheory.T.twistedNormConj_normalize_and_degree_one p G`. Take `⟨hit, hfix, -, -⟩` from `GlobalTheory.T.hermitianTripleFrobeniusTwist_order_fixed_points p G r hr`. Use `set d := z * δ * (sigG G r z)⁻¹ with hd`. Use `set d' := z' * δ' * (sigG G r z')⁻¹ with hd'`.
+
+Establish `hN : nrmG (sigG G r) r d = inclG G r γ`. Use `hex r γ δ z hr h` as an intermediate fact. Simplify `this` using `[IsNrm]`. Establish `hN' : nrmG (sigG G r) r d' = inclG G r γ`. Use `hex r γ δ' z' hr h'` as an intermediate fact.
+
+Simplify `this` using `[IsNrm]`. Establish `comm : ∀ e, nrmG (sigG G r) r e = inclG G r γ → e * inclG G r γ = inclG G r γ * e`. Introduce `e he`. Use `(GlobalTheory.T.twistedNormProductIterate_twistedConj (sigG G r) r e 1).2` as an intermediate fact. Rewrite `this` using `[he, hfix, hit]`.
+
+Conclude with `this`. Establish `hc` using `comm d hN`. Establish `hc'` using `comm d' hN'`. Establish `key : ∀ (w : Fin G.m) (e : Gr G r), (nrmG (sigG G r) r e).2 w = nrmG (sigRes p (G.Fw w) G.n r) r (e.2 w)` using `fun w e => map_nrmG (sigG G r) (sigRes p (G.Fw w) G.n r) ((Pi.evalMonoidHom _ w).comp (MonoidHom.snd _ _)) (fun _ => rfl) r e`. Establish `key1 : ∀ e : Gr G r, (nrmG (sigG G r) r e).1 = nrmG (GlobalTheory.LKLoc.sig p (Q0 p) 1 r) r e.1` using `fun e => map_nrmG (sigG G r) (GlobalTheory.LKLoc.sig p (Q0 p) 1 r) (MonoidHom.fst _ _) (fun _ => rfl) r e`.
+
+Establish `hNw : ∀ w, nrmG (sigRes p (G.Fw w) G.n r) r (d.2 w) = nrmG (sigRes p (G.Fw w) G.n r) r (d'.2 w)` using `fun w => by rw [← key, ← key, hN, hN']`. Establish `hN1 : nrmG (GlobalTheory.LKLoc.sig p (Q0 p) 1 r) r d.1 = nrmG (GlobalTheory.LKLoc.sig p (Q0 p) 1 r) r d'.1`. Rewrite using `[← key1, ← key1, hN, hN']`. Establish `hcw : ∀ (e : Gr G r), e * inclG G r γ = inclG G r γ * e → ∀ w, Commute (e.2 w).val ((γ.2 w).val.map (inclK p (G.Fw w) r))`. Introduce `e he w`.
+
+Use `congrArg (fun x : Gr G r => (x.2 w).val) he` as an intermediate fact. Conclude with `this`. Use `choose H hH hHc using fun w => twConj_place p r hr (G.Fw w) G.n (γ.2 w) (hreg w) (d.2 w) (d'.2 w) (hcw d hc w) (hcw d' hc' w) (hNw w)`. Take `⟨h0, hh0⟩` from `hilbert_ninety_gl1 p r hr d.1 d'.1 hN1`. Set `hh : Gr G r` to `(h0, H)`.
+
+Establish `hdd : d' = hh⁻¹ * d * sigG G r hh` using `Prod.ext hh0 (funext hH)`. Establish `hcomm : ∀ y ∈ Subgroup.centralizer {γ}, hh * inclG G r y = inclG G r y * hh`. Introduce `y hy`. Establish `hy' : γ * y = y * γ` using `Subgroup.mem_centralizer_iff.1 hy γ rfl`. Use `Prod.ext (gl_one_mul_comm _ _) (funext fun w => ?_)` and prove the remaining obligations.
+
+Establish `hyw : Commute (y.2 w).val (γ.2 w).val`. Use `congrArg (fun x : Gp G => (x.2 w).val) hy'` as an intermediate fact. Conclude with `this.symm`. Conclude with `Units.ext (hHc w (y.2 w) hyw)`. Use `⟨z⁻¹ * hh * z', ?_, fun y hy => ?_⟩` and prove the remaining obligations.
+
+Establish `e1 : δ' = z'⁻¹ * d' * sigG G r z'` using `by rw [hd']; group`. Rewrite using `[e1, hdd, hd]`. Simplify using `only [map_mul, map_inv]`. Use `group`. Establish `h2 : hh⁻¹ * inclG G r y * hh = inclG G r y`.
+
+Rewrite using `[mul_assoc, ← hcomm y hy, inv_mul_cancel_left]`. Simplify using `only [carry, MonoidHom.comp_apply, MulEquiv.coe_toMonoidHom, MulAut.conj_apply, inv_inv]`. Rewrite using `[show (z⁻¹ * hh * z')⁻¹ * (z⁻¹ * inclG G r y * z) * (z⁻¹ * hh * z') = z'⁻¹ * (hh⁻¹ * inclG G r y * hh) * z' by group, h2]`.
+-/
 theorem nrm_unique : ∀ (p : ℕ) [Fact p.Prime] (G : HTGroup p) (r : ℕ) (γ : Gp G) (δ z δ' z' : Gr G r), 0 < r →
     regular₂ G γ → IsNrm G r γ δ z → IsNrm G r γ δ' z' → ∃ g : Gr G r, δ' = g⁻¹ * δ * sigG G r g ∧
       ∀ y ∈ Subgroup.centralizer {γ}, carry G r z' y = g⁻¹ * carry G r z y * g := by

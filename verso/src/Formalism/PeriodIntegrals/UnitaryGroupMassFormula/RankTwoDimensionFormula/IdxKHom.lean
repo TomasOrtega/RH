@@ -12,6 +12,11 @@ namespace PI.UnitaryDimensionFormula
 
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
+/- English proof (translation)
+Establish `hk1 : (((1 : Hfin X u) : X.B.I.Gf) * X.xu u)⁻¹ * ((s : X.B.I.Gf) * X.xu u) ∈ X.B.I.Kset`. Simplify `hs` using `[cj, mul_assoc]`. Establish `hk2 : ((s : X.B.I.Gf) * X.xu u)⁻¹ * (((1 : Hfin X u) : X.B.I.Gf) * X.xu u) ∈ X.B.I.Kset`. Establish `hi` using `PI.UnitaryDimensionFormula.kset_inv hs`. Simplify `hi` using `[cj, mul_assoc, mul_inv_rev]`.
+
+Establish `hg` using `NormCutK.colGood X u 1 s hk1 hk2`. Simplify `hg` using `[cj, mul_assoc]`.
+-/
 theorem cj_good {D : D7} {X : HidaSetting D} (u : D.what₂.Word) (s : Hfin X u) (hs : cj X u s ∈ X.B.I.Kset) :
     NormCutK.Good X (cj X u s) := by
   have hk1 : (((1 : Hfin X u) : X.B.I.Gf) * X.xu u)⁻¹ * ((s : X.B.I.Gf) * X.xu u) ∈ X.B.I.Kset := by
@@ -22,6 +27,11 @@ theorem cj_good {D : D7} {X : HidaSetting D} (u : D.what₂.Word) (s : Hfin X u)
   have hg := NormCutK.colGood X u 1 s hk1 hk2
   simpa [cj, mul_assoc] using hg
 
+/- English proof (translation)
+Introduce `D X Y u _`. Use `⟨NormCutK.levi_one (TR := Y.TR), fun s t hs ht => ?_, fun s hs hKu v => ?_⟩` and prove the remaining obligations. Establish `hst : cj X u (s * t) = cj X u s * cj X u t`. Simplify using `[cj, mul_assoc]`. Rewrite using `[hst, NormCutK.levi_mul (TR := Y.TR) (cj_good u s hs) (cj_good u t ht)]`.
+
+Conclude with `NormCutK.unitriangular_reduction_of_mem_level (TR := Y.TR) (cj_good u s hs) hKu v`.
+-/
 theorem idxHom : IdxHom := by
   intro D X Y u _
   refine ⟨NormCutK.levi_one (TR := Y.TR), fun s t hs ht => ?_, fun s hs hKu v => ?_⟩

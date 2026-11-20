@@ -16,6 +16,17 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 namespace GlobalTheory.NormExact
 
+/- English proof (translation)
+Introduce `D ψ θ S T a d hS hT cc δ r hs G f c c' hG h1 h2`. Substitute `hS hT` using the available equality. Choose the witnesses or unpack the hypotheses as in `⟨Y, hY⟩ : ∃ Y, G Y ≠ 0 := by`. Assume the negation of the conclusion as `hc`. Use `push_neg at hc`.
+
+Conclude with `hG (funext hc)`. Establish `hδ : δ ≠ 0` using `delta_ne_zero hs.crv`. Establish `hr : r ≠ 0` using `IsScale.ne_zero hs.crv.1.1 hs.scale`. Establish `hm : ∀ τ, δ * embT D τ r ≠ 0` using `fun τ => mul_ne_zero hδ ((map_ne_zero _).2 hr)`. Take `⟨x, ⟨hx, hx0⟩, -⟩` from `GlobalTheory.StdUnn.exists_unique_of_comp_finPart D θ hs.inf T.rank S.rank (fun τ => Matrix.of fun i j => Y τ i j / (δ * embT D τ r)) 0`.
+
+Use `replace hx0 : x.map (finPart D) = 0 := by rw [hx0]; exact Matrix.map_zero _ (map_zero _)`. Establish `hxY : coordY θ rfl rfl δ r x = Y`. Use function extensionality and compare the values at `τ i j`. Simplify using `only [coordY, Fin.cast_eq_self, hx, Matrix.of_apply]`. Establish `hE : embT D τ r ≠ 0` using `(map_ne_zero _).2 hr`.
+
+Clear denominators, using `[hm τ, hE, hδ]` for the nonvanishing conditions. Establish `e1` using `h1.2 x hx0`. Establish `e2` using `h2.2 x hx0`. Rewrite `e1`, `e2` using `[hxY]`. Rewrite `e2` using `[e1, Pi.smul_apply, Pi.smul_apply, smul_eq_mul, smul_eq_mul]`.
+
+Establish `he` using `Complex.exp_ne_zero (-((Real.pi : ℂ) / 2) * Hf D (tor0 D cc δ) Y Y)`. Use `mul_left_cancel₀ he e2` as an intermediate fact. Conclude with `mul_right_cancel₀ hY this`.
+-/
 theorem reads_smul_const_unique : ∀ {D : D7} (ψ : AddChar (AF D.host.F) ℂ) (θ : InfFam D) (S T : HSp D) {a d : ℕ} (hS : S.rank = a) (hT : T.rank = d)
   (cc : Ideal (𝓞 D.host.K)) (δ : ℂ) (r : D.host.E), Setup ψ θ S T cc δ r →
   ∀ (G : VC D a d → ℂ) (f : WO S T → ℂ) (c c' : ℂ), G ≠ 0 →

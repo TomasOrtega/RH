@@ -7,6 +7,25 @@ open MeasureTheory NumberField Matrix Finset Formalism.MainNotions.S GlobalTheor
 
 namespace GlobalTheory.FlagBase.MeanCov
 
+/- English proof (translation)
+Establish `himg : (fun t : ℝ => κ / t) '' Set.Ioi 0 = Set.Ioi 0`. Use extensionality with `s`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨t, ht, rfl⟩`. Conclude with `div_pos hκ ht`.
+
+Introduce `hs`. Establish `hs0 : s ≠ 0` using `ne_of_gt (Set.mem_Ioi.mp hs)`. Use `⟨κ / s, div_pos hκ hs, ?_⟩` and prove the remaining obligations. Clear the denominators using the available nonvanishing facts. Establish `hder : ∀ t ∈ Set.Ioi (0 : ℝ), HasDerivWithinAt (fun t : ℝ => κ / t) (κ * -(t ^ 2)⁻¹) (Set.Ioi 0) t`.
+
+Introduce `t ht`. Establish `ht0 : t ≠ 0` using `ne_of_gt (Set.mem_Ioi.mp ht)`. Establish `h1 : HasDerivAt (fun y : ℝ => κ * y⁻¹) (κ * -(t ^ 2)⁻¹) t` using `(hasDerivAt_inv ht0).const_mul κ`. Establish `h2 : (fun y : ℝ => κ / y) = fun y => κ * y⁻¹`. Use function extensionality and compare the values at `y`.
+
+Rewrite using `[div_eq_mul_inv]`. Rewrite using `[h2]`. Conclude with `h1.hasDerivWithinAt`. Establish `hinj : Set.InjOn (fun t : ℝ => κ / t) (Set.Ioi 0)`. Introduce `a ha b hb hab`.
+
+Establish `ha0 : a ≠ 0` using `ne_of_gt (Set.mem_Ioi.mp ha)`. Establish `hb0 : b ≠ 0` using `ne_of_gt (Set.mem_Ioi.mp hb)`. Establish `hk0 : κ ≠ 0` using `ne_of_gt hκ`. Simplify using `only at hab`. Clear denominators, using `at hab` for the nonvanishing conditions.
+
+Use polynomial arithmetic with `[hab]`. Establish `key` using `lintegral_image_eq_lintegral_abs_deriv_mul measurableSet_Ioi hder hinj (fun s => w (κ / s) / ENNReal.ofReal s)`. Rewrite `key` using `[himg]`. Rewrite using `[key]`. Use `setLIntegral_congr_fun measurableSet_Ioi ?_` and prove the remaining obligations.
+
+Introduce `t ht`. Establish `ht' : 0 < t` using `Set.mem_Ioi.mp ht`. Establish `hq : 0 < κ / t` using `div_pos hκ ht'`. Establish `habs : |κ * -(t ^ 2)⁻¹| = κ / t * t⁻¹`. Rewrite using `[abs_mul, abs_neg, abs_of_pos hκ, abs_of_pos (by positivity)]`.
+
+Clear the denominators using the available nonvanishing facts. Establish `hkk : κ / (κ / t) = t`. Clear the denominators using the available nonvanishing facts. Simplify using `only`. Rewrite using `[habs, hkk, ENNReal.ofReal_mul hq.le, ENNReal.ofReal_inv_of_pos ht', div_eq_mul_inv, div_eq_mul_inv]`.
+
+Establish `hne : ENNReal.ofReal (κ / t) ≠ 0` using `by simpa using hq`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[ENNReal.mul_inv_cancel hne ENNReal.ofReal_ne_top, one_mul]`.
+-/
 theorem lintegral_div_inv (κ : ℝ) (hκ : 0 < κ) (w : ℝ → ENNReal) :
     ∫⁻ t in Set.Ioi (0 : ℝ), w (κ / t) / ENNReal.ofReal t
       = ∫⁻ t in Set.Ioi (0 : ℝ), w t / ENNReal.ofReal t := by
@@ -58,6 +77,9 @@ theorem lintegral_div_inv (κ : ℝ) (hκ : 0 < κ) (w : ℝ → ENNReal) :
     _ = w t * (ENNReal.ofReal t)⁻¹ := by
       rw [ENNReal.mul_inv_cancel hne ENNReal.ofReal_ne_top, one_mul]
 
+/- English proof (translation)
+Establish `hc : Continuous (fun x : InfinitePlace E → Fin j → Fin j → ℂ => ∏ w, ‖(Matrix.of (x w)).det‖ ^ 2)`. Use `continuous_finset_prod _ (fun w _ => ?_)` and prove the remaining obligations. Conclude with `((Continuous.matrix_det (A := fun x : InfinitePlace E → Fin j → Fin j → ℂ => Matrix.of (x w)) (continuous_apply w)).norm).pow 2`. Conclude with `hc.measurable`.
+-/
 theorem measurable_detNorm (E : Type) [Field E] [NumberField E] (j : ℕ) :
     Measurable (detNorm E j) := by
   have hc : Continuous (fun x : InfinitePlace E → Fin j → Fin j → ℂ =>
@@ -67,6 +89,13 @@ theorem measurable_detNorm (E : Type) [Field E] [NumberField E] (j : ℕ) :
       (A := fun x : InfinitePlace E → Fin j → Fin j → ℂ => Matrix.of (x w)) (continuous_apply w)).norm).pow 2
   exact hc.measurable
 
+/- English proof (translation)
+Establish `hm` using `GlobalTheory.FlagBase.MeanCov.measurable_detNorm E j`. Rewrite using `[ae_iff]`. Establish `hs : MeasurableSet {g : MatInf E j | ¬ 0 < detNorm E j g}` using `(measurableSet_lt measurable_const hm).compl`. Establish `hz : ∀ g ∈ {g : MatInf E j | ¬ 0 < detNorm E j g}, ENNReal.ofReal ((detNorm E j g)⁻¹ ^ j) = 0`. Introduce `g hg`.
+
+Establish `hnn : 0 ≤ detNorm E j g`. Unfold `detNorm`. Conclude with `Finset.prod_nonneg fun w _ => by positivity`. Establish `h0 : detNorm E j g = 0` using `le_antisymm (not_lt.mp hg) hnn`. Rewrite using `[h0, _root_.inv_zero, zero_pow (by omega), ENNReal.ofReal_zero]`.
+
+Unfold `haarGL`. Use `(withDensity_apply _ hs).trans ?_` and prove the remaining obligations. Use `(setLIntegral_congr_fun hs hz).trans ?_` and prove the remaining obligations. Simplify using the standard rewrite rules.
+-/
 theorem ae_detNorm_pos (E : Type) [Field E] [NumberField E] (j : ℕ) (hj : 1 ≤ j) :
     ∀ᵐ g ∂(haarGL E j), 0 < detNorm E j g := by
   have hm := GlobalTheory.FlagBase.MeanCov.measurable_detNorm E j
@@ -86,6 +115,13 @@ theorem ae_detNorm_pos (E : Type) [Field E] [NumberField E] (j : ℕ) (hj : 1 �
   refine (setLIntegral_congr_fun hs hz).trans ?_
   simp
 
+/- English proof (translation)
+Introduce `E _ _ hE j hj w hw`. Unfold `latMean glVol`. Rewrite using `[← ENNReal.tsum_mul_right]`. Use `tsum_congr fun c => ?_` and prove the remaining obligations. Take `⟨κ, hκ, hL⟩` from `(GlobalTheory.T.translatedLatticeAtInfinity_full_covolume_dual E hE j).1 (Quot.out c).1 (Quot.out c).2`.
+
+Establish `hF : Measurable fun t : ℝ => w (κ / t)` using `hw.comp (measurable_const.div measurable_id)`. Establish `hd : (haarGL E j).withDensity (fun g => w (covAt E j (latAt E j (Quot.out c).1 g))) = (haarGL E j).withDensity (fun g => w (κ / detNorm E j g))`. Use `withDensity_congr_ae ?_` and prove the remaining obligations. Use `filter_upwards [GlobalTheory.FlagBase.MeanCov.ae_detNorm_pos E j hj] with g hg`. Rewrite using `[(hL g hg).2.1]`.
+
+Rewrite using `[hd]`. Use `(GlobalTheory.T.leftQuotientCovolume_withDensity_detNormSq E hE j hj _ (Quot.out c).2 (fun t => w (κ / t)) hF).trans ?_` and prove the remaining obligations. Use `congr 1`. Conclude with `GlobalTheory.FlagBase.MeanCov.lintegral_div_inv κ hκ w`.
+-/
 theorem latMean_covAt : ∀ (E : Type) [Field E] [NumberField E], IsTotallyComplex E → ∀ j : ℕ, 1 ≤ j → ∀ w : ℝ → ENNReal, Measurable w → latMean E j (fun L => w (covAt E j L)) = glVol E j * ∫⁻ t in Set.Ioi (0 : ℝ), w t / ENNReal.ofReal t := by
   intro E _ _ hE j hj w hw
   unfold latMean glVol

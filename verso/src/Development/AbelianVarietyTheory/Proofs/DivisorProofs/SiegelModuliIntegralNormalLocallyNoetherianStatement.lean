@@ -8,5 +8,8 @@ open GlobalTheory GlobalTheory.Toroidal GlobalTheory.LocM GlobalTheory.PolFan Gl
 open scoped CategoryTheory.Obj
 attribute [local instance] Over.cartesianMonoidalCategory
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.SiegelIntegral.integral_normal_noetherian | exact GlobalTheory.SiegelIntegral.integral_normal_noetherian | (intros; apply GlobalTheory.SiegelIntegral.integral_normal_noetherian <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.siegelModuli_integral_normal_locallyNoetherian : ∀ (g n : ℕ), 1 ≤ g → 3 ≤ n → Odd n → ∀ F : SFam g n (zetaAway n), IsIntegral F.X ∧ Geo.Tor.IsNormalScheme F.X ∧ IsLocallyNoetherian F.X := by
   first | exact @GlobalTheory.SiegelIntegral.integral_normal_noetherian | exact GlobalTheory.SiegelIntegral.integral_normal_noetherian | (intros; apply GlobalTheory.SiegelIntegral.integral_normal_noetherian <;> assumption)

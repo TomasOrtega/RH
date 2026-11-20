@@ -47,8 +47,14 @@ def pointCpt (hc : IsIso c) (ht : IsIso t₀.G.hom) (β : O →+* F) (hn : Geo.T
 
 end Point
 
+/- English proof (translation)
+The claim follows from `(pow_one _).symm.trans (BaseRing.zeta_pow_self one_pos)`.
+-/
 theorem zeta_one : zeta 1 = 1 := (pow_one _).symm.trans (BaseRing.zeta_pow_self one_pos)
 
+/- English proof (translation)
+Use `IntermediateField.adjoin_le_iff.2 ?_` and prove the remaining obligations. Introduce and unpack `x (rfl | rfl)`. Conclude with `IntermediateField.subset_adjoin _ _ (by simp)`. Rewrite using `[h, zeta_one]`. Conclude with `one_mem _`.
+-/
 theorem KA_le_of_eq_one {l₀ : Level H} (h : l₀.A = 1) (l : Level H) : KA l₀ ≤ KA l := by
   refine IntermediateField.adjoin_le_iff.2 ?_
   rintro x (rfl | rfl)

@@ -31,6 +31,15 @@ open LevFlat
   add_smul a b x := h.add a b x.toMul
   zero_smul x := h.zero x.toMul
 
+/- English proof (translation)
+Take `⟨p, hp⟩` from `CharP.exists Ω`. Break down `CharP.char_is_prime_or_zero Ω p with hpp | rfl` into its components or cases. Use `⟨p, hpp.one_le, fun 𝔭 h𝔭 hN𝔭 => ?_, fun b _ hb h0 => ?_⟩` and prove the remaining obligations. Rewrite using `[Ideal.isCoprime_iff_sup_eq]`. Assume the negation of the conclusion as `hne`.
+
+Establish `hp𝔭 : (p : 𝓞 F) ∈ 𝔭`. Rewrite using `[h𝔭.eq_of_le hne le_sup_left]`. Conclude with `Ideal.mem_sup_right (Ideal.mem_span_singleton_self _)`. Establish `hc : Nat.Coprime p N` using `hpp.coprime_iff_not_dvd.2 fun h => hN ((CharP.cast_eq_zero_iff Ω p N).2 h)`. Take `⟨u, v, huv⟩` from `(Nat.isCoprime_iff_coprime.2 hc).map (Int.castRingHom (𝓞 F))`.
+
+Simplify using `only [map_natCast] at huv`. Conclude with `h𝔭.ne_top ((Ideal.eq_top_iff_one _).2 (huv ▸ 𝔭.add_mem (𝔭.mul_mem_left u hp𝔭) (𝔭.mul_mem_left v hN𝔭)))`. Take `⟨u, v, huv⟩` from `hb.map (Int.castRingHom Ω)`. Rewrite `huv` using `[map_natCast, CharP.cast_eq_zero, eq_intCast, h0]`. Simplify using `at huv`.
+
+Use `haveI := CharP.charP_to_charZero Ω`. Use `⟨1, le_rfl, fun 𝔭 _ _ => ?_, fun b hb _ => ?_⟩` and prove the remaining obligations. Rewrite using `[Ideal.isCoprime_iff_sup_eq, Nat.cast_one, Ideal.span_singleton_one, sup_top_eq]`. Conclude with `Int.cast_ne_zero.2 (Algebra.norm_ne_zero_iff.2 hb)`.
+-/
 theorem exists_charExp (F : Type) [Field F] [NumberField F] (N : ℕ) (Ω : Type) [Field Ω] (hN : (N : Ω) ≠ 0) :
     ∃ q : ℕ, 1 ≤ q ∧ (∀ 𝔭 : Ideal (𝓞 F), 𝔭.IsMaximal → (N : 𝓞 F) ∈ 𝔭 → IsCoprime 𝔭 (Ideal.span {(q : 𝓞 F)})) ∧
       ∀ b : 𝓞 F, b ≠ 0 → IsCoprime (Algebra.norm ℤ b) (q : ℤ) → ((Algebra.norm ℤ b : ℤ) : Ω) ≠ 0 := by
@@ -54,6 +63,11 @@ theorem exists_charExp (F : Type) [Field F] [NumberField F] (N : ℕ) (Ω : Type
     · rw [Ideal.isCoprime_iff_sup_eq, Nat.cast_one, Ideal.span_singleton_one, sup_top_eq]
     · exact Int.cast_ne_zero.2 (Algebra.norm_ne_zero_iff.2 hb)
 
+/- English proof (translation)
+Establish `key : ∀ t' : S' ⟶ S, (𝟙_ (Over S')).hom ≫ t = t' → ∃ e : (𝟙_ (Over S') ⟶ X'.A) ≃* (Over.mk t' ⟶ X.A), ∀ x a, e (x ≫ X'.rm.act a) = e x ≫ X.rm.act a`. Introduce and unpack `_ rfl`. Take `⟨e, he⟩` from `ptEquiv h.grp (𝟙_ (Over S'))`. Use `⟨e, fun x a => Over.OverMorphism.ext ?_⟩` and prove the remaining obligations. Rewrite using `[he, Over.comp_left, Over.comp_left, he, Category.assoc, Category.assoc, h.act]`.
+
+Conclude with `key t (Category.id_comp t)`.
+-/
 theorem exists_ptEquiv {F : Type} [Field F] [NumberField F] {𝔠 : FracId F} {S S' : Scheme.{0}} {X : Obj F 𝔠 S}
     {X' : Obj F 𝔠 S'} {t : S' ⟶ S} {φ : X'.A.left ⟶ X.A.left} (h : X'.IsPullBy X t φ) :
     ∃ e : (𝟙_ (Over S') ⟶ X'.A) ≃* (Over.mk t ⟶ X.A), ∀ x a, e (x ≫ X'.rm.act a) = e x ≫ X.rm.act a := by
@@ -69,6 +83,19 @@ end TorsRankTwo
 
 open LevFlat TorsRankTwo
 
+/- English proof (translation)
+Introduce `F _ _ _ 𝔠 S X N Ω _ _ t hN`. Establish `hN0 : N ≠ 0`. Introduce and unpack `rfl`. Conclude with `hN Nat.cast_zero`. Take `⟨X', φ, hφ⟩` from `X.exists_isPullBy t`.
+
+Take `⟨e, he⟩` from `exists_ptEquiv hφ`. Use `letI : Module (𝓞 F) (Additive (Over.mk t ⟶ X.A)) := addModule (isAct_ptAct X (Over.mk t))`. Take `⟨q, hq, hq𝔭, hqb⟩` from `exists_charExp F N Ω hN`. Take `⟨C₀, hC₀⟩` from `GlobalTheory.RealMultKernel.card_ker_act_le F 𝔠 Ω X'`. Take `⟨C₁, hC₁⟩` from `GlobalTheory.SmallNorm.exists_small_coprime_norm F q hq`.
+
+Take `⟨p, h1, h2, h3⟩` from `GlobalTheory.RankTwoTorsion.rank_two_torsion F (Additive (Over.mk t ⟶ X.A)) N (Nat.one_le_iff_ne_zero.2 hN0) (fun j => by`. Rewrite using `[← GlobalTheory.abMulN_holds Ω X'.A _ (N ^ j) X'.ab X'.dim (by rw [Nat.cast_pow]; exact pow_ne_zero j hN)]`. Use `Nat.card_congr (Equiv.subtypeEquiv (Additive.toMul.trans e.symm.toEquiv) fun x => ?_)` and prove the remaining obligations. Use `show x.toMul ^ (N ^ j) = 1 ↔ e.symm x.toMul ^ (N ^ j) = 1`. Rewrite using `[← map_pow e.symm, e.symm.map_eq_one_iff])`.
+
+Use the proof step `(fun 𝔭 h𝔭 hN𝔭 => ⟨C₀ * C₁ ^ 2, fun n => by`. Establish `hI : 𝔭 ^ n ≠ ⊥` using `fun h0 => by`. Use `Ideal.pow_mem_pow hN𝔭 n` as an intermediate fact. Rewrite `this` using `[h0, Ideal.mem_bot]`. Conclude with `pow_ne_zero n (Nat.cast_ne_zero.2 hN0) this`.
+
+Take `⟨b, hbI, hb0, hbq, k, hk, hkf⟩` from `hC₁ (𝔭 ^ n) hI (hq𝔭 𝔭 h𝔭 hN𝔭).pow_left`. Take `⟨hfin, hle⟩` from `hC₀ b k (hqb b hb0 hbq) hk`. Set `f : {x : Additive (Over.mk t ⟶ X.A) // ∀ a ∈ 𝔭 ^ n, a • x = 0} → {y : 𝟙_ (Over (Sp Ω)) ⟶ X'.A // y ≫ X'.rm.act b = 1}` to `fun x => ⟨e.symm x.1.toMul, e.injective (by`. Rewrite using `[he, e.apply_symm_apply, map_one]`. Conclude with `x.2 b hbI)⟩`.
+
+Establish `hf : Function.Injective f` using `fun x y hxy => Subtype.ext (Additive.toMul.injective (e.symm.injective (congrArg Subtype.val hxy)))`. Use `(Nat.card_le_card_of_injective f hf).trans (hle.trans ?_)` and prove the remaining obligations. Rewrite `hkf` using `[map_pow]`. Combine the equalities or inequalities in the displayed calculation. Conclude with `⟨fun i => (p i).toMul, h1, h2, fun y hy => h3 (Additive.ofMul y) hy⟩`.
+-/
 theorem torsion_free_rank_two :
     ∀ (F : Type) [Field F] [NumberField F] [IsTotallyReal F] (𝔠 : FracId F) (S : Scheme.{0}) (X : Obj F 𝔠 S)
     (N : ℕ) (Ω : Type) [Field Ω] [IsAlgClosed Ω] (t : Sp Ω ⟶ S), (N : Ω) ≠ 0 →

@@ -12,6 +12,9 @@ open scoped TensorProduct
 
 namespace GlobalTheory.CompanionTheory.ContraProd
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨((GlobalTheory.ContraRefl.contraEquiv E₁).symm.trans E₂).trans E₃⟩`.
+-/
 theorem contra_contra_of_equiv {G V W U : Type} [Group G] [TopologicalSpace G] [IsTopologicalGroup G]
     [AddCommGroup V] [Module ℂ V] [AddCommGroup W] [Module ℂ W] [AddCommGroup U] [Module ℂ U]
     {σ : Representation ℂ G V} {τ : Representation ℂ G W} {υ : Representation ℂ G U}
@@ -19,6 +22,9 @@ theorem contra_contra_of_equiv {G V W U : Type} [Group G] [TopologicalSpace G] [
     Nonempty ((contra (contra σ)).Equiv σ) :=
   ⟨((GlobalTheory.ContraRefl.contraEquiv E₁).symm.trans E₂).trans E₃⟩
 
+/- English proof (translation)
+Substitute `e` using the available equality. Conclude with `⟨Representation.Equiv.refl _⟩`.
+-/
 theorem prodIrr_equiv_of_eq {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k]
     [IsNonarchimedeanLocalField k] {h N : ℕ} {x y : Fin h → IrrGL k} (e : y = x)
     (hy : ∑ a, (y a).1 = N) (hx : ∑ a, (x a).1 = N) :
@@ -26,6 +32,9 @@ theorem prodIrr_equiv_of_eq {k : Type} [Field k] [ValuativeRel k] [TopologicalSp
   subst e
   exact ⟨Representation.Equiv.refl _⟩
 
+/- English proof (translation)
+Introduce `k _ _ _ _ hA h N x hd`. Use `Exists.elim (contra_prodIrr hA x hd) fun hd₁ H₁ => H₁.elim fun E₁ => ?_` and prove the remaining obligations. Use `Exists.elim (contra_prodIrr hA (fun a => Zc.dualCl (x a)) hd₁) fun hd₂ H₂ => H₂.elim fun E₂ => ?_` and prove the remaining obligations. Use `(prodIrr_equiv_of_eq (funext fun a => GlobalTheory.CompanionTheory.Zcore.dualCl_dualCl hA (x a)) hd₂ hd).elim fun E₃ => ?_` and prove the remaining obligations. Conclude with `contra_contra_of_equiv E₁ E₂ E₃`.
+-/
 theorem contra_contra_prodIrr : ∀ {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k], GlobalTheory.Published.IrreducibleAdmissibleGL → ∀ {h N : ℕ} (x : Fin h → IrrGL k) (hd : ∑ a, (x a).1 = N), Nonempty ((contra (contra (prodIrr x hd))).Equiv (prodIrr x hd)) := by
   intro k _ _ _ _ hA h N x hd
   refine Exists.elim (contra_prodIrr hA x hd) fun hd₁ H₁ => H₁.elim fun E₁ => ?_

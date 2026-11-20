@@ -27,6 +27,9 @@ open Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotions.Inhab Fo
 
 namespace GlobalTheory.EX
 
+/- English proof (translation)
+Introduce `hZ hC hL hN hD hR hP hJ hQ` and use `GlobalTheory.T.host_existence_of_choices (GlobalTheory.EX.qdChoice_of_explicitFormula hZ hC hL hN hD hR hP hJ) (GlobalTheory.T.thin_choice_of_zero_density hZ hC hL hN hD) (GlobalTheory.T.norm_primes_and_level_prime hQ).1 (GlobalTheory.EX.smallPrimeOne_of_tzRat hR) GlobalTheory.T. …`.
+-/
 theorem hostEx_of_zeroFreeRegion :
     GlobalTheory.Mem.An.ExplZeta → GlobalTheory.Mem.An.ExplChi → GlobalTheory.Mem.An.LogDerOne → GlobalTheory.Mem.An.ZeroCount → Formalism.ZeroFreeDirichlet.ZFRDirichlet → GlobalTheory.Mem.An.TZRat → GlobalTheory.Mem.An.PageThm → GlobalTheory.Mem.An.Jutila → GlobalTheory.Mem.An.QuadraticHeckeZeroEstimates → HostEx :=
   fun hZ hC hL hN hD hR hP hJ hQ =>

@@ -2,6 +2,11 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.GaloisLibrary.Selm
 
 open ReciprocityTheory.Gal UpperTheory.V.Base
 
+/- English proof (translation)
+Establish `h1 : Module.length R A = Module.length R (LinearMap.ker g) + Module.length R (LinearMap.range g)` using `Module.length_eq_add_of_exact (LinearMap.ker g).subtype g.rangeRestrict (Submodule.injective_subtype _) g.surjective_rangeRestrict (by`. Rewrite using `[LinearMap.exact_iff, LinearMap.ker_rangeRestrict, Submodule.range_subtype])`. Establish `h2 : Module.length R (LinearMap.range g) ≤ Module.length R B` using `Module.length_le_of_injective (LinearMap.range g).subtype (Submodule.injective_subtype _)`. Establish `h3 : Module.length R (LinearMap.ker g) ≤ Module.length R (LinearMap.ker k)` using `Module.length_le_of_injective (j.restrict (p := LinearMap.ker g) (q := LinearMap.ker k) fun x hx => hk x hx) fun x y e => Subtype.ext (hj (congrArg Subtype.val e))`. Rewrite using `[h1, add_comm]`.
+
+Conclude with `add_le_add h2 h3`.
+-/
 private theorem len_le_add {R A B C D : Type} [CommRing R] [AddCommGroup A] [Module R A] [AddCommGroup B] [Module R B]
     [AddCommGroup C] [Module R C] [AddCommGroup D] [Module R D] (g : A →ₗ[R] B) (j : A →ₗ[R] C) (k : C →ₗ[R] D)
     (hj : Function.Injective j) (hk : ∀ x, g x = 0 → k (j x) = 0) :
@@ -18,6 +23,9 @@ private theorem len_le_add {R A B C D : Type} [CommRing R] [AddCommGroup A] [Mod
   rw [h1, add_comm]
   exact add_le_add h2 h3
 
+/- English proof (translation)
+The claim follows from `len_le_add (g.restrict hPQ) (j.comp P.subtype) k (hj.comp (Submodule.injective_subtype P)) fun x hx => hk x.1 (congrArg Subtype.val hx)`.
+-/
 private theorem len_sub {R A B C D : Type} [CommRing R] [AddCommGroup A] [Module R A] [AddCommGroup B] [Module R B]
     [AddCommGroup C] [Module R C] [AddCommGroup D] [Module R D] (g : A →ₗ[R] B) (j : A →ₗ[R] C) (k : C →ₗ[R] D)
     (hj : Function.Injective j) (hk : ∀ x, g x = 0 → k (j x) = 0) (P : Submodule R A) (Q : Submodule R B)
@@ -26,6 +34,17 @@ private theorem len_sub {R A B C D : Type} [CommRing R] [AddCommGroup A] [Module
   len_le_add (g.restrict hPQ) (j.comp P.subtype) k (hj.comp (Submodule.injective_subtype P))
     fun x hx => hk x.1 (congrArg Subtype.val hx)
 
+/- English proof (translation)
+Introduce `R G M _ _ _ _ _ _ _ _ _ _ ρ U' U h 𝒟 h𝒟`. Establish `hj` using `Submodule.injective_subtype (LocSel ρ U 𝒟)`. Establish `hk : ∀ x, selRes ρ h 𝒟 x = 0 → resU ρ h ((LocSel ρ U 𝒟).subtype x) = 0` using `fun x hx => congrArg Subtype.val hx`. Use `⟨len_le_add (selRes ρ h 𝒟) _ _ hj hk, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `_`.
+
+Establish `hm : ∀ x, selRes ρ h 𝒟 x ∈ selEig ρ U' h𝒟 U 1` using `fun x => by`. Rewrite using `[selEig, eig_one]`. Introduce `g`. Conclude with `Subtype.ext (restriction_mem_invariant_H1 ρ h x.1 g)`. Conclude with `len_le_add ((selRes ρ h 𝒟).codRestrict _ hm) _ _ hj fun x hx => hk x (congrArg Subtype.val hx)`.
+
+Introduce `_ _ W ψ`. Use `len_sub (selRes ρ h 𝒟) _ _ hj hk _ _ fun x hx => ?_` and prove the remaining obligations. Rewrite `hx`, the goal using `[mem_eig]`. Introduce `g`. Establish `e : selRep ρ U h𝒟 g.1 x = ((ψ g : Rˣ) : R) • x` using `hx g`.
+
+Use `show selRep ρ U' h𝒟 g.1 _ = _`. Rewrite using `[← selRes_selRep, e, map_smul]`. Introduce `_ _ g s`. Use `len_sub (selRes ρ h 𝒟) _ _ hj hk _ _ fun x hx => ?_` and prove the remaining obligations. Rewrite `hx`, the goal using `[Module.End.mem_eigenspace_iff]`.
+
+Rewrite using `[← selRes_selRep, hx, map_smul]`.
+-/
 theorem UpperTheory.V.Base.selUp :
     ∀ (R G M : Type) [CommRing R] [Group G] [TopologicalSpace G] [IsTopologicalGroup G] [AddCommGroup M] [Module R M]
       [TopologicalSpace M] [IsTopologicalAddGroup M] [ContinuousConstSMul R M] [DiscreteTopology M] (ρ : Representation R G M) (U' U : Subgroup G) (h : U' ≤ U) (𝒟 : Set (Subgroup G)) (h𝒟 : ConjStable 𝒟),

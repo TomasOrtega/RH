@@ -16,6 +16,9 @@ variable {G : Type} [Group G] [TopologicalSpace G] [IsTopologicalGroup G] [Measu
   {V : Type} [AddCommGroup V] [Module ℂ V]
 
 omit [MeasurableSpace G] [BorelSpace G] in
+/- English proof (translation)
+Rewrite using `[IsLocallyConstant.iff_exists_open]`. Introduce `g`. Use `⟨(fun x => g⁻¹ * x) ⁻¹' (U : Set G), hUo.preimage (continuous_mul_left _), by simp [U.one_mem], fun x hx => ?_⟩` and prove the remaining obligations. Use `hf _ hx g` as an intermediate fact. Simplify using `using this`.
+-/
 private theorem isLocallyConstant_of_right {U : Subgroup G} (hUo : IsOpen (U : Set G)) {f : G → ℂ}
     (hf : ∀ k ∈ U, ∀ x, f (x * k) = f x) : IsLocallyConstant f := by
   rw [IsLocallyConstant.iff_exists_open]
@@ -25,6 +28,11 @@ private theorem isLocallyConstant_of_right {U : Subgroup G} (hUo : IsOpen (U : S
   have := hf _ hx g
   simpa using this
 
+/- English proof (translation)
+Introduce `v l`. Establish `hi` using `hρ.smoothOp_integrand hf hc v`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Use `integrable_map (μ := m) hi.1 hi.2 l l.map_zero` as an intermediate fact. Simplify `this` using `only [map_smul, smul_eq_mul]`.
+
+Rewrite using `[hρ.map_smoothOp (μ := m) hf hc l v]`. Simplify using `only [smul_eq_mul]`.
+-/
 private theorem isIntegralOp_smoothOp (m : Measure G) [IsFiniteMeasureOnCompacts m] {ρ : Representation ℂ G V}
     (hρ : GlobalTheory.PRep.IsSmooth ρ) {f : G → ℂ} (hf : IsLocallyConstant f) (hc : HasCompactSupport f) :
     IsIntegralOp m ρ f (smoothOp ρ m f) := by
@@ -36,6 +44,15 @@ private theorem isIntegralOp_smoothOp (m : Measure G) [IsFiniteMeasureOnCompacts
   · rw [hρ.map_smoothOp (μ := m) hf hc l v]
     simp only [smul_eq_mul]
 
+/- English proof (translation)
+Establish `hlc` using `isLocallyConstant_of_right hUo (fun k hk x => (hf.2 k hk x).2)`. Establish `hs` using `GlobalTheory.TwTrLevel.finite_supp U hUo f hf.1`. Rewrite using `[GlobalTheory.TwTrLevel.levOp_apply ρ U U f LinearMap.id v hs, Subgroup.relIndex_self]`. Simplify using `only [Nat.cast_one, inv_one, one_smul, LinearMap.id_apply]`. Rewrite using `[finsum_eq_sum_of_support_subset (s := hs.toFinset) _ (by`.
+
+Introduce `q hq`. Simplify using `only [Function.mem_support, ne_eq] at hq`. Simplify using `only [Set.Finite.coe_toFinset, Set.mem_setOf_eq]`. Introduce `h0`. Conclude with `hq (by rw [h0, zero_smul]))]`.
+
+Use `GlobalTheory.OpTrace.eq_of_forall_dual fun l => ?_` and prove the remaining obligations. Rewrite using `[hρ.map_smoothOp hlc hf.1 l v, GlobalTheory.HaarSum.integral_eq_sum_cosets m U hUo hUc.measure_ne_top (fun g => f g • l (ρ g v)) ?_ hs.toFinset ?_, map_smul, map_sum]`. Simplify using the standard rewrite rules. Introduce `x s hs'`. Rewrite using `[(hf.2 s hs' x).2, map_mul, Module.End.mul_apply, (mem_fixed.1 hv) s hs']`.
+
+Introduce `q hq`. Establish `: f q.out = 0` using `by simpa using hq`. Simplify using `[this]`.
+-/
 private theorem smoothOp_eq_levOp (m : Measure G) [m.IsHaarMeasure] {U : Subgroup G} (hUo : IsOpen (U : Set G))
     (hUc : IsCompact (U : Set G)) {ρ : Representation ℂ G V} (hρ : GlobalTheory.PRep.IsSmooth ρ) {f : G → ℂ}
     (hf : GlobalTheory.BCT.IsHecke U f) {v : V} (hv : v ∈ fixed ρ U) :
@@ -61,6 +78,11 @@ private theorem smoothOp_eq_levOp (m : Measure G) [m.IsHaarMeasure] {U : Subgrou
     have : f q.out = 0 := by simpa using hq
     simp [this]
 
+/- English proof (translation)
+Establish `hlc` using `isLocallyConstant_of_right hUo (fun k hk x => (hf.2 k hk x).2)`. Establish `hW : ∀ x, smoothOp ρ m f x ∈ fixed ρ U` using `hρ.smoothOp_mem_fixed hlc hf.1 (fun k hk g => (hf.2 k hk g).1)`. Establish `hmem : ∀ v ∈ fixed ρ U, GlobalTheory.BCT.levOp ρ U U f LinearMap.id v ∈ fixed ρ U` using `fun v hv => GlobalTheory.TwTrLevel.levOp_mem_fixed ρ (MonoidHom.id G) (fun _ => rfl) LinearMap.id (fun _ => rfl) U U hUo (fun _ h => h) f hf v hv`. Rewrite using `[finRankTrace_eq _ (fixed ρ U) hW, GlobalTheory.BCT.twTr, dif_pos hmem, ← smul_eq_mul, ← map_smul]`. Use `congr 1`.
+
+Use `LinearMap.ext fun v => Subtype.ext ?_` and prove the remaining obligations. Simplify using `using smoothOp_eq_levOp m hUo hUc hρ hf v.2`.
+-/
 private theorem finRankTrace_smoothOp (m : Measure G) [m.IsHaarMeasure] {U : Subgroup G} (hUo : IsOpen (U : Set G))
     (hUc : IsCompact (U : Set G)) {ρ : Representation ℂ G V} (hρ : GlobalTheory.PRep.IsSmooth ρ)
     [FiniteDimensional ℂ (fixed ρ U)] {f : G → ℂ} (hf : GlobalTheory.BCT.IsHecke U f) :
@@ -79,6 +101,31 @@ private theorem finRankTrace_smoothOp (m : Measure G) [m.IsHaarMeasure] {U : Sub
 end UpperTheory.ConvolutionTheory.C.CharIndepProof
 
 open UpperTheory.ConvolutionTheory.C.CharIndepProof GlobalTheory.OpTrace in
+/- English proof (translation)
+Introduce `G _ _ _ _ _ _ _ _ m _ _ U hU ι _ σ c hfd hc i₀ hi₀`. Take `⟨hUc, hUo⟩` from `hU`. Establish `hfx : ∀ i, fixed (σ i).ρ U = fixedVectors (σ i).ρ U` using `fun i => Submodule.ext fun v => GlobalTheory.OpTrace.mem_fixed`. Use `haveI hfd' : ∀ i, FiniteDimensional ℂ (fixed (σ i).ρ U) := fun i => by rw [hfx i]; exact hfd i`. Set `S : Setoid ι` to `⟨fun i j => Nonempty ((σ i).ρ.Equiv (σ j).ρ), ⟨fun i => ⟨Representation.Equiv.refl _⟩, fun ⟨e⟩ => ⟨e.symm⟩, fun ⟨e⟩ ⟨e'⟩ => ⟨e.trans e'⟩⟩⟩`.
+
+Set `mk : ι → Quotient S` to `Quotient.mk S`. Set `r : Quotient S → ι` to `Quotient.out`. Use `haveI : Fintype (Quotient S) := Fintype.ofFinite _`. Establish `hmkr : ∀ q, mk (r q) = q` using `fun q => Quotient.out_eq q`. Establish `hr : ∀ i, Nonempty ((σ i).ρ.Equiv (σ (r (mk i))).ρ)` using `fun i => (Quotient.exact (hmkr (mk i))).elim fun e => ⟨e.symm⟩`.
+
+Set `c' : Quotient S → ℂ` to `fun q => ∑ i with mk i = q, c i`. Establish `hvol : (m.real (U : Set G) : ℂ) ≠ 0`. Establish `h1 : m (U : Set G) ≠ 0` using `(hUo.measure_pos m ⟨1, U.one_mem⟩).ne'`. Establish `h2 : m.real (U : Set G) ≠ 0` using `ENNReal.toReal_ne_zero.2 ⟨h1, hUc.measure_ne_top⟩`. Conclude with `h2` after adjusting the coercions.
+
+Establish `key : ∀ f, GlobalTheory.BCT.IsHecke U f → ∑ q : {q : Quotient S // fixed (σ (r q)).ρ U ≠ ⊥}, c' q * GlobalTheory.BCT.twTr (σ (r q)).ρ U U f LinearMap.id = 0`. Introduce `f hf`. Establish `hlc : IsLocallyConstant f` using `isLocallyConstant_of_right hUo (fun k hk x => (hf.2 k hk x).2)`. Establish `hW : ∀ i x, smoothOp (σ i).ρ m f x ∈ fixed (σ i).ρ U` using `fun i => (σ i).smooth.smoothOp_mem_fixed hlc hf.1 (fun k hk g => (hf.2 k hk g).1)`. Establish `hfr : ∀ i, FiniteDimensional ℂ (LinearMap.range (smoothOp (σ i).ρ m f))` using `fun i => Submodule.finiteDimensional_of_le (S₂ := fixed (σ i).ρ U) (by rintro _ ⟨x, rfl⟩; exact hW i x)`.
+
+Set `s : ι → ℂ` to `fun i => finRankTrace (smoothOp (σ i).ρ m f)`. Establish `h0` using `hc f s ⟨hlc, hf.1⟩ (fun u hu g => hf.2 u hu g) (fun i => ⟨_, isIntegralOp_smoothOp m (σ i).smooth hlc hf.1, hfr i, rfl⟩)`. Establish `hconst : ∀ i, s i = s (r (mk i))` using `fun i => by`. Take `⟨e⟩` from `hr i`. Use `haveI := hfr i`.
+
+Conclude with `((finRankTrace_eq_of_equiv e.toLinearEquiv (T := smoothOp (σ i).ρ m f) (T' := smoothOp (σ (r (mk i))).ρ m f) ((σ i).smooth.map_smoothOp_of_intertwining (σ (r (mk i))).smooth hlc hf.1 e.toLinearEquiv.toLinearMap (fun g v => Representation.IntertwiningMap.isIntertwining _ _ e.toInt …`. Establish `hzero : ∀ q, ¬ fixed (σ (r q)).ρ U ≠ ⊥ → s (r q) = 0` using `fun q hq => by`. Establish `hb : fixed (σ (r q)).ρ U = ⊥` using `not_not.1 hq`. Establish `hW' : ∀ x, smoothOp (σ (r q)).ρ m f x ∈ (⊥ : Submodule ℂ (σ (r q)).V)` using `fun x => hb ▸ hW (r q) x`. Use `show finRankTrace _ = 0`.
+
+Rewrite using `[finRankTrace_eq _ ⊥ hW', Subsingleton.elim (LinearMap.restrict _ _) 0, map_zero]`. Establish `h1 : ∑ q, c' q * s (r q) = 0`. Rewrite using `[← h0, ← Finset.sum_fiberwise (s := Finset.univ) (g := mk)]`. Use `Finset.sum_congr rfl fun q _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_mul]`.
+
+Use `Finset.sum_congr rfl fun i hi => ?_` and prove the remaining obligations. Rewrite using `[hconst i, (Finset.mem_filter.1 hi).2]`. Rewrite `h1` using `[← Fintype.sum_subtype_add_sum_subtype (fun q => fixed (σ (r q)).ρ U ≠ ⊥), Finset.sum_eq_zero (s := Finset.univ) (f := fun q : {q // ¬ fixed (σ (r q)).ρ U ≠ ⊥} => c' q * s (r q)) (fun q _ => by rw [hzero q q.2, mul_zero]), add_zero]`. Establish `h2 : ∀ q : {q : Quotient S // fixed (σ (r q)).ρ U ≠ ⊥}, c' q * s (r q) = (m.real (U : Set G) : ℂ) * (c' q * GlobalTheory.BCT.twTr (σ (r q)).ρ U U f LinearMap.id)` using `fun q => by show c' q * finRankTrace _ = _`. Rewrite using `[finRankTrace_smoothOp m hUo hUc (σ (r q)).smooth hf]`.
+
+Expand and normalize the polynomial expressions, which then agree. Simplify using `only [h2, ← Finset.mul_sum] at h1`. Conclude with `(mul_eq_zero.1 h1).resolve_left hvol`. Establish `hli` using `GlobalTheory.HeckeTraceIndep.twTr_linearIndependent G U hUo hUc U ⟨hUo, le_rfl, fun _ h => h⟩ {q : Quotient S // fixed (σ (r q)).ρ U ≠ ⊥} (fun q => σ (r q)) (fun q => ⟨hfd' _, q.2⟩) (fun q q' h => Subtype.ext (by rw [← hmkr q, ← hmkr q']; exact Quotient.sound h)) (fun q => c' q) …`. Establish `hq : fixed (σ (r (mk i₀))).ρ U ≠ ⊥`.
+
+Take `⟨e⟩` from `hr i₀`. Rewrite `hi₀` using `[← hfx i₀]`. Take `⟨v, hv, hv0⟩` from `(Submodule.ne_bot_iff _).1 hi₀`. Use `(Submodule.ne_bot_iff _).2 ⟨e.toLinearEquiv v, mem_fixed.2 fun k hk => ?_, ?_⟩` and prove the remaining obligations. Use `Representation.IntertwiningMap.isIntertwining _ _ e.toIntertwiningMap k v` as an intermediate fact.
+
+Rewrite `this` using `[mem_fixed.1 hv k hk]`. Conclude with `this.symm`. Simplify using `using hv0`. Establish `hfin` using `hli ⟨mk i₀, hq⟩`. Establish `hset : {i | Nonempty ((σ i).ρ.Equiv (σ i₀).ρ)} = ↑(Finset.univ.filter fun i => mk i = mk i₀)`.
+
+Use extensionality with `i`. Simplify using `only [Set.mem_setOf_eq, Finset.coe_filter, Finset.mem_univ, true_and]`. Conclude with `⟨fun h => Quotient.sound h, fun h => Quotient.exact h⟩`. Rewrite using `[hset, finsum_mem_coe_finset]`. Conclude with `hfin`.
+-/
 theorem UpperTheory.ConvolutionTheory.C.charIndep :
     UpperTheory.ConvolutionTheory.C.CharIndep := by
   classical

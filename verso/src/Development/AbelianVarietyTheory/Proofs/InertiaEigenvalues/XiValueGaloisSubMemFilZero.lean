@@ -16,6 +16,25 @@ open scoped Formalism.Per
 
 open GlobalTheory.BKGal.XiFil GlobalTheory.BKGal.ValueFil in
 
+/- English proof (translation)
+Introduce `l _ a e _ _ O K _ _ _ _ _ _ _ _ _ _ t ϖ _ ι _ _ η H D T R`. Use `haveI : FiniteDimensional ℚ_[l] K := TameDescentExponentData.finite (l := l) (e := e) (a := a)`. Use `haveI : CompleteSpace K := FiniteDimensional.complete ℚ_[l] K`. Use `⟨η, fun w hwA hN hw g hg C => ?_⟩` and prove the remaining obligations. Establish `hwS : ∀ τ j, w τ j ∈ invL l (S O K e)` using `fun τ j => away_mono (A_le_S l e) (by simp) (mem_tot.1 hwA τ j)`.
+
+Establish `hd : ∀ j : ι, D.xi (fun _ => Pi.single j (1 : K)) ∈ D.MMl` using `fun j => ((GlobalTheory.T.breuilKisin_section_trivialises_invertPrime_tensor O K l e a ι D.toPhiMod).2 _).2 (mem_tot.2 fun τ i => by`. Rewrite using `[cst_apply]`. Conclude with `HasK.C_mem _)`. Take `⟨V, hV⟩ : ∃ V : ι → TW (OB l O) T, V = fun j => R.jB (toBcris t ϖ D.toPhiMod ⟨D.xi (fun _ => Pi.single j 1), hd j⟩)` from `⟨_, rfl⟩`. Take `⟨c, hc⟩ : ∃ c : ι → OB l O, c = fun j => ϖ.iB t K (fun τ => ⟨w τ j, hwS τ j⟩)` from `⟨_, rfl⟩`.
+
+Establish `hval : R.jB (toBcris t ϖ D.toPhiMod ⟨D.xiExt w, hw⟩) = ∑ j, c j • V j`. Rewrite using `[GlobalTheory.T.tensorBcris_frobenius_value_eq_sum_coordinates l a e O K t ϖ ι D.toPhiMod w hwS hw hd, map_sum, hV, hc]`. Simplify using `only [map_smul]`. Establish `hfix : ∀ j, actB (sQ l) T g (V j) = V j` using `fun j => by`. Rewrite using `[hV]`.
+
+Conclude with `R.horiz g hg _ (hd j)`. Establish `hgval : actB (sQ l) T g (∑ j, c j • V j) = ∑ j, galOB O (sQ l g) (c j) • V j`. Rewrite using `[map_sum]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `TWact (galOB O (sQ l g)) T g (c j • V j) = _`.
+
+Rewrite using `[TWact_smul]`. Express the relevant statement in the definitionally equal form `_ • actB (sQ l) T g (V j) = _`. Rewrite using `[hfix j]`. Rewrite using `[hval, hgval, ← Finset.sum_sub_distrib]`. Use `Submodule.sum_mem _ fun j _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[← sub_smul]`. Establish `h1 : galOB O (sQ l g) (c j) - c j ∈ filO O C η`. Rewrite using `[hc]`. Use `GlobalTheory.T.galOB_iB_sub_iB_mem_filO l a e O K t ϖ C η (fun τ => ⟨w τ j, hwS τ j⟩) (fun τ => mem_tot.1 hwA τ j) (fun τ => ?_) g hg` and prove the remaining obligations. Take `⟨h, hh, k, hk⟩` from `hN τ j`.
+
+Conclude with `⟨h, hh, k, hk⟩`. Establish `h2 : V j ∈ filT C T (-(η : ℤ))`. Rewrite using `[hV]`. Simplify using `only`. Take `⟨u, hu⟩ : ∃ u, u = toBcris t ϖ D.toPhiMod ⟨D.xi (fun _ => Pi.single j 1), hd j⟩` from `⟨_, rfl⟩`.
+
+Rewrite using `[← hu]`. Establish `hsum : u = ∑ i, u i • Pi.single i (1 : OB l O)` using `by ext1 k`. Simplify using `[Finset.sum_apply, Pi.single_apply]`. Rewrite using `[hsum, map_sum]`. Use `Submodule.sum_mem _ fun i _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[map_smul]`. Use `smul_mem_filT_of_zero ?_ (GlobalTheory.T.jB_single_mem_filT' l a e O K t ϖ ι η H D T R C i)` and prove the remaining obligations. Rewrite using `[hu, toBcris_apply]`. Conclude with `GlobalTheory.T.invariant_lattice_filtration_zero l a e O K t ϖ C _`. Conclude with `smul_mem_filT_neg h1 h2`.
+-/
 theorem GlobalTheory.BKGal.XiFil.xi_value_gal_sub_mem_filZero : ∀ (l : ℕ) [Fact l.Prime] (a e : ℕ) [NeZero a] [NeZero e] (O K : Type) [CommRing O] [Algebra ℤ_[l] O] [Module.Free ℤ_[l] O] [Module.Finite ℤ_[l] O] [NormedField K] [IsUltrametricDist K] [Algebra O K] [IsUnitBall O K] [NormedAlgebra ℚ_[l] K] [TameDescentExponentData K l e a] (t : Wq l a →ₐ[ℤ_[l]] O) (ϖ : PiSys l e), l ≠ 2 → ∀ (ι : Type) [Fintype ι] [DecidableEq ι] (η H : ℕ) (D : BKDat O K l e a ι η H) (T : LocLat (Gl l) ℚ_[l] K O) (R : GalDat t ϖ (sQ l) D T), ∃ m₀ : ℕ, ∀ w ∈ D.Mext (invL l (A O K)), (∀ τ i, ∃ h ∈ A O K, ∃ k : ℕ, (l : K⟦X⟧) ^ k * N K (w τ i) = E K l e ^ m₀ * h) → ∀ (hw : D.xiExt w ∈ D.MMl) (g : Gl l), sQ l g ∈ GK (ϖ.field a) → ∀ C : GlobalTheory.MemLoc.Core l, actB (sQ l) T g (R.jB (toBcris t ϖ D.toPhiMod ⟨D.xiExt w, hw⟩)) - R.jB (toBcris t ϖ D.toPhiMod ⟨D.xiExt w, hw⟩) ∈ Submodule.span O {w : TW (OB l O) T | ∃ (β : Per.Bcris l) (x : ↥T.L.T), C.ι β ∈ Per.FilD l 0 ∧ w = ((1 : O) ⊗ₜ[ℤ_[l]] β) ⊗ₜ[O] x} := by
   intro l _ a e _ _ O K _ _ _ _ _ _ _ _ _ _ t ϖ _ ι _ _ η H D T R
   haveI : FiniteDimensional ℚ_[l] K := TameDescentExponentData.finite (l := l) (e := e) (a := a)

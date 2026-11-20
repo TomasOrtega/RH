@@ -24,6 +24,13 @@ namespace GlobalTheory
 
 namespace FibreMatch
 
+/- English proof (translation)
+Establish `hc : Countable (W ⧸ LinearMap.range f)` using `Function.Surjective.countable (f := fun a => (LinearMap.range f).mkQ (P a)) fun q => by`. Take `⟨w, rfl⟩` from `(LinearMap.range f).mkQ_surjective q`. Take `⟨z, a, rfl⟩` from `h w`. Use `⟨a, ?_⟩` and prove the remaining obligations. Establish `: (LinearMap.range f).mkQ (f z) = 0` using `(Submodule.Quotient.mk_eq_zero _).2 ⟨z, rfl⟩`.
+
+Simplify using `only [map_add, this, zero_add]`. Introduce `w`. Assume the negation of the conclusion as `hw`. Establish `hq : (LinearMap.range f).mkQ w ≠ 0` using `fun h0 => hw ((Submodule.Quotient.mk_eq_zero _).1 h0)`. Establish `: Countable ℂ` using `(smul_left_injective ℂ hq).countable`.
+
+Conclude with `not_countable (α := ℝ) (Complex.ofReal_injective.countable)`.
+-/
 theorem surjective_of_countable {V W L : Type} [AddCommGroup V] [Module ℂ V] [AddCommGroup W] [Module ℂ W]
     [Countable L] (f : V →ₗ[ℂ] W) (P : L → W) (h : ∀ w, ∃ z a, w = f z + P a) : Function.Surjective f := by
   have hc : Countable (W ⧸ LinearMap.range f) :=
@@ -41,11 +48,31 @@ theorem surjective_of_countable {V W L : Type} [AddCommGroup V] [Module ℂ V] [
 
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E}
 
+/- English proof (translation)
+Use `D.fin` as an intermediate fact. Establish `: Countable (𝓞 E)` using `Finsupp.Countable.of_moduleFinite (R := ℤ)`. Conclude with `Finsupp.Countable.of_moduleFinite (R := 𝓞 E)`.
+-/
 theorem countable_La (D : Datum H) : Countable D.La := by
   have := D.fin
   have : Countable (𝓞 E) := Finsupp.Countable.of_moduleFinite (R := ℤ)
   exact Finsupp.Countable.of_moduleFinite (R := 𝓞 E)
 
+/- English proof (translation)
+Substitute `hy` using the available equality. Establish `dk' : DiscreteTopology {z // e' z = 1}`. Establish `h0 : (fun z => e' z = 1) = fun z => z ∈ P'.range` using `funext fun z => propext (hk' z)`. Use `show DiscreteTopology (Subtype fun z => e' z = 1)`. Rewrite using `[h0]`.
+
+Conclude with `hP'.2.2.1`. Set `ρ` to `pushHom n.cart (𝟙_ (Over (Sp ℂ)))`. Establish `hρ : ∀ x, (ρ x).left = x.left ≫ n.cm.F` using `fun _ => rfl`. Establish `ρi : Function.Injective ρ` using `fun x x' hx => Over.OverMorphism.ext <| n.cart.1.hom_ext (by rw [← hρ, ← hρ, hx]) (by rw [Over.w, Over.w])`. Establish `ρs : Function.Surjective ρ` using `fun x => ⟨Over.homMk (n.cart.1.lift x.left (𝟙_ (Over (Sp ℂ))).hom (Over.w x)) (n.cart.1.lift_snd _ _ _), Over.OverMorphism.ext (n.cart.1.lift_fst _ _ _)⟩`.
+
+Set `ψ : pullback t.G.hom (𝟙 (Sp ℂ)) ⟶ pullback t'.G.hom ((𝟙_ (Over (Sp ℂ))).hom ≫ y)` to `pullback.lift (pullback.fst _ _ ≫ n.cm.F) (pullback.snd _ _) (by`. Rewrite using `[Category.assoc, n.cart.1.w, ← Category.assoc, pullback.condition, Category.assoc]`. Use the proof step `rfl)`. Establish `ψ₁ : ψ ≫ pullback.fst _ _ = pullback.fst _ _ ≫ n.cm.F` using `pullback.lift_fst _ _ _`. Establish `ψ₂ : ψ ≫ pullback.snd _ _ = pullback.snd _ _` using `pullback.lift_snd _ _ _`.
+
+Take `⟨f, hf, -⟩` from `existsUnique_linear_lift_fibre (Sp ℂ) X t.G t'.G (𝟙 _) _ g g e e' ψ ρ t'.semi.smooth ha ha' hh hh' hd' dk' ψ₂ (fun x => pullback.hom_ext (by rw [Category.assoc, ψ₁, ← Category.assoc, UniformLift.fibPt_fst, UniformLift.fibPt_fst]; rfl) (by rw [Category.assoc, ψ₂, UniformLift.fibPt …`. Establish `hf : ∀ z, e' (f z) = ρ (e z)` using `hf`. Use `countable_La D₂` as an intermediate fact. Establish `fs : Function.Surjective f` using `surjective_of_countable f P' fun w => by`. Take `⟨x, hx⟩` from `ρs (e' w)`.
+
+Take `⟨z, rfl⟩` from `hs x`. Take `⟨a, ha⟩` from `(hk' _).1 ((ExpUniqFamily.eq_iff_sub e' ha' w (f z)).1 (hx.symm.trans (hf z).symm))`. Conclude with `⟨z, a, by rw [ha]; abel⟩`. Set `fe` to `LinearEquiv.ofBijective f ⟨LinearMap.injective_iff_surjective.2 fs, fs⟩`. Take `⟨h, gam, h1, h2, -⟩` from `ExpUniqFamily.algebraic (fun k (a : 𝓞 E) => ty k (a : E)) P P' hP.1 hP'.1 hP.2.1 hP'.2.1 hP.2.2.1 hP'.2.2.1 (fun z => ρ (e z)) e' (fun z w => by rw [ha, map_mul]) ha' (fun z => by rw [← hk, map_eq_one_iff ρ ρi]) hk' (fun a x => x ≫ t'.act.act a) (fun a z => by`.
+
+Rewrite using `[hl]`. Apply `Over.OverMorphism.ext` to reduce the goal to its premises. Rewrite using `[hρ, Over.comp_left, Over.comp_left, hρ, Category.assoc, n.act, Category.assoc])`. Use the proof step `hl' f fe.symm hf (fun z => by`. Rewrite using `[← hf]`.
+
+Conclude with `congrArg e' (fe.apply_symm_apply z))`. Use `⟨h, gam, fun z => by rw [h1, hρ], h2, fun a a' => ?_⟩` and prove the remaining obligations. Use `ExpUniqFamily.int_eq_of_exp _ _ fun k hk0 => ?_` and prove the remaining obligations. Establish `hL : LBIso t.PP.L (t'.PP.L.pull n.cm.F)`. Take `⟨w, hw, -⟩` from `n.lin`.
+
+Conclude with `⟨w, hw⟩`. Establish `w1` using `(weilIs_grpPullback_of_comm X (Sp ℂ) t'.G t.G y n.cm.F t'.PP.L t.PP.L t'.PP.isLB t.PP.isLB n.cart hL _ k _ _ (ρ _) (ρ _) _ (hρ _) (hρ _)).1 (hw k a a' (Units.mk0 _ (Complex.exp_ne_zero _)) hk0 rfl)`. Establish `w2` using `hw' k (gam a) (gam a') (Units.mk0 _ (Complex.exp_ne_zero _)) hk0 rfl`. Rewrite `w2` using `[h2, h2, ← map_smul h, ← map_smul h, h1, h1]`. Conclude with `congrArg Units.val (weilIs_unique_fieldPoint X t'.G t'.PP.L t'.PP.isLB ℂ _ k _ _ _ _ w2 w1)`.
+-/
 theorem fibrewise {X : Scheme.{0}} (t : SAB H (Sp ℂ)) (t' : SAB H X) (D₁ D₂ : Datum H) {g : ℕ}
     (ty : Fin g → (E →+* ℂ))
     (P : D₁.La →+ (Fin g → ℂ)) (P' : D₂.La →+ (Fin g → ℂ)) (hP : IsPeriod D₁ ty P) (hP' : IsPeriod D₂ ty P')
@@ -122,6 +149,9 @@ theorem fibrewise {X : Scheme.{0}} (t : SAB H (Sp ℂ)) (t' : SAB H X) (D₁ D�
 
 end FibreMatch
 
+/- English proof (translation)
+Introduce `E _ _ _ H D l Xo σ g ty U i P D' P' t e n hP hP' ⟨_, _, _, _, _, ha, hs, hk, hl, hh, hw⟩`. Conclude with `FibreMatch.fibrewise t Xo.univ.t D' (U.Di i) ty P' P hP' hP _ _ n (Category.id_comp _) e (U.ex i P) ha (U.ex_add i P hP) hs hk (U.ex_ker i P hP) hl (U.ex_lin i P hP) hw (U.ex_weil i P hP) hh (ExpUniqFamily.isHolTo_ex U i P hP) (U.ex_diff i P hP)`.
+-/
 theorem familyUnif_fibre_lattice_match : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (D : Datum H) (l : Level H) (Xo : Moduli D l) (σ : KA l →+* ℂ) (g : ℕ) (ty : Fin g → (E →+* ℂ)) (U : FamilyUnif Xo σ ty) (i : Fin U.n) (P : (U.Di i).La →+ (Fin g → ℂ)) (D' : Datum H) (P' : D'.La →+ (Fin g → ℂ)) (t : SAB H (Sp ℂ)) (e : (Fin g → ℂ) → (𝟙_ (Over (Sp ℂ)) ⟶ t.G)) (n : SABMap t Xo.univ.t (U.u i P)), IsPeriod (U.Di i) ty P → IsPeriod D' ty P' → (IsProper t.G.hom ∧ SmoothOfRelativeDimension g t.G.hom ∧ Out.RelAmple t.G t.PP.L ∧ Out.KTriv t.G t.PP.L ∧ DetCond D' t.act (𝟙 (Sp ℂ)) H.rt0 ∧ (∀ z w, e (z + w) = e z * e w) ∧ Function.Surjective e ∧ (∀ z, e z = 1 ↔ z ∈ P'.range) ∧ (∀ (a : 𝓞 E) z, e (fun k => ty k (a : E) * z k) = e z ≫ t.act.act a) ∧ IsHolTo Set.univ (fun z => (e z).left) ∧ ∀ (k : ℕ) (a b : D'.La) (c : ℂˣ), 0 < k → (c : ℂ) = Complex.exp (-(2 * Real.pi * Complex.I) * (D'.EF a b : ℂ) / k) → Out.WeilIs t.G t.PP.L k (e ((k : ℂ)⁻¹ • P' a)) (e ((k : ℂ)⁻¹ • P' b)) (unitOn c)) → ∃ (h : (Fin g → ℂ) ≃ₗ[ℂ] (Fin g → ℂ)) (gam : D'.La ≃ₗ[𝓞 E] (U.Di i).La), (∀ z, (e z).left ≫ n.φ = (U.ex i P (h z)).left) ∧ (∀ a, P (gam a) = h (P' a)) ∧ ∀ a a', (U.Di i).EF (gam a) (gam a') = D'.EF a a' := by
   intro E _ _ _ H D l Xo σ g ty U i P D' P' t e n hP hP' ⟨_, _, _, _, _, ha, hs, hk, hl, hh, hw⟩
   exact FibreMatch.fibrewise t Xo.univ.t D' (U.Di i) ty P' P hP' hP _ _ n (Category.id_comp _) e (U.ex i P) ha

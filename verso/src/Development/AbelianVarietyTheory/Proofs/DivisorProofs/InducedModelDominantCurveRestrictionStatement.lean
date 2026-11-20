@@ -9,6 +9,9 @@ open Formalism.BasicNotions Formalism.MainNotions Formalism.L2.Pj Formalism.Basi
 open scoped ENNReal Classical
 
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.NefHodgeTateAt.nefAt_HT | exact GlobalTheory.NefHodgeTateAt.nefAt_HT | (intros; apply GlobalTheory.NefHodgeTateAt.nefAt_HT <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.induced_model_dominant_curve_restriction : Hypotheses2 → HypothesesH → ∀ (D : D7) (O : Setup D), O.Core → 2 < D.R.f * (O.N - 1) → ∀ (A : SlopeTestRemainingChoices O.Y) (T : Real0 O.Y) (H : Ht O.Y), O.Reads A T H →
   ∀ (B : ℝ), 2 ≤ B → ∀ (u : Wt O.Y) (s : ℚ), IsRat O.Y u → 0 < s → WeightThresholdDefs.Dominant O.Y (A.sh u s) →
   ∀ (c : O.s.Comp) (M : TrueGeo.Model (O.var c)) (L : HermLB M.p) (k : ℕ+) (cf : HeightOneSpectrum (𝓞 D.what₂.LL) → ℝ),

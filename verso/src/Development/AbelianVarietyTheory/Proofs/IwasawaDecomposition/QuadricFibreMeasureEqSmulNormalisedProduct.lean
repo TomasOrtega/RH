@@ -19,6 +19,9 @@ open scoped TensorProduct NNReal ENNReal
 
 namespace GlobalTheory.GaugeEx.XbetaScale
 
+/- English proof (translation)
+Establish `h1 : Continuous (Algebra.trace R (R ⊗[F] E))` using `IsModuleTopology.continuous_of_linearMap _`. Establish `h2` using `GlobalTheory.AdelicUnitaryTop.continuous_sigR R σ`. Unfold `qR hR Formalism.UG.hform`. Use `continuous_const.mul (h1.comp ?_)` and prove the remaining obligations. Use `fun_prop`.
+-/
 theorem continuous_qR {F E : Type} [Field F] [Field E] [Algebra F E] [FiniteDimensional F E]
     (R : Type) [CommRing R] [Algebra F R] [TopologicalSpace R] [IsTopologicalRing R]
     (σ : E →ₐ[F] E) {M : ℕ} (J : Matrix (Fin M) (Fin M) E) :
@@ -30,6 +33,9 @@ theorem continuous_qR {F E : Type} [Field F] [Field E] [Algebra F E] [FiniteDime
   refine continuous_const.mul (h1.comp ?_)
   fun_prop
 
+/- English proof (translation)
+Use extensionality with `c`. Simplify using `only [Set.mem_setOf_eq]`. Use `Iff.trans ?_ (Pi.isUnit_iff (x := c)).symm` and prove the remaining obligations. Simplify using `only [isUnit_iff_ne_zero]`.
+-/
 theorem units_inf (F : Type) [Field F] [NumberField F] :
     {c : Ainf F | ∀ w, c w ≠ 0} = {c | IsUnit c} := by
   ext c
@@ -37,10 +43,16 @@ theorem units_inf (F : Type) [Field F] [NumberField F] :
   refine Iff.trans ?_ (Pi.isUnit_iff (x := c)).symm
   simp only [isUnit_iff_ne_zero]
 
+/- English proof (translation)
+Use extensionality with `c`. Simplify using `only [Set.mem_setOf_eq, isUnit_iff_ne_zero]`.
+-/
 theorem units_fv (K : Type) [Field K] : {c : K | c ≠ 0} = {c | IsUnit c} := by
   ext c
   simp only [Set.mem_setOf_eq, isUnit_iff_ne_zero]
 
+/- English proof (translation)
+Take `⟨fib0, h0, rfl⟩` from `hm`. Conclude with `(GlobalTheory.T.fibreFamily_hermitian_quadratic_form_at_unit_props F E σ R hR M J (r • μ) (t • ν) β _ hν hβ ⟨_, GlobalTheory.GramFibreRescale.isFibreFamily_smul h0 r t ht, rfl⟩).2.2 _ ⟨fib, hfib, rfl⟩`.
+-/
 theorem fib_eq_smul {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
     (σ : E →ₐ[F] E) (R : Type) [CommRing R] [Algebra F R] [TopologicalSpace R] [IsTopologicalRing R]
     [T2Space R] [LocallyCompactSpace R] [SecondCountableTopology R] [MeasurableSpace R] [BorelSpace R]
@@ -60,6 +72,27 @@ namespace GlobalTheory.GaugeEx
 
 open XbetaScale
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ hσ d b s`. Use `choose κ hκ0 hκ using GlobalTheory.T.exists_selfDualMeasure_global_const_rank_only F E σ hσ d b s`. Use `⟨κ, hκ0, ?_⟩` and prove the remaining obligations. Introduce `M J β ψ ν hM hJ hβ hψ hν`. Take `⟨mi, mv, hmi, hmv, hprod⟩` from `hν`.
+
+Take `⟨nI, nV⟩` from `GlobalTheory.GaugeEx.nice_ainf_fv F`. Establish `hβi : IsUnit (algebraMap F (Ainf F) β)` using `(isUnit_iff_ne_zero.2 hβ).map _`. Establish `hβv : ∀ v : HeightOneSpectrum (𝓞 F), IsUnit (algebraMap F (Fv F v) β)` using `fun v => (isUnit_iff_ne_zero.2 hβ).map _`. Establish `key : ∀ μi, SdW F E σ M J (Ainf F) (psiInf F ψ) 1 μi → ∀ νi, SdR (Ainf F) (psiInf F ψ) νi → ∀ μv : ∀ v : HeightOneSpectrum (𝓞 F), Measure (Fin 1 → Fin M → Fv F v ⊗[F] E), (∀ v, SdW F E σ M J (Fv F v) (psiV F ψ v) 1 (μv v)) → ∀ νv : ∀ v : HeightOneSpectrum (𝓞 F), Measure (Fv F v), …`. Introduce `μi hμi νi hνi μv hμv νv hνv fibInf hfi fibV hfv`.
+
+Take `⟨ri, ti, r, t, e1, e2, e3, e4, -, hti, -, ht, hfin, hk⟩` from `hκ M ψ J hψ hJ μi νi μv νv hμi hνi hμv hνv`. Establish `a1 : fibInf (algebraMap F (Ainf F) β) = (ri / ti) • mi`. Use `fib_eq_smul σ (Ainf F) nI J _ _ _ mi ri ti hti (e2 ▸ hνi.1) hβi hmi fibInf ?_` and prove the remaining obligations. Rewrite using `[← e1, ← e2, ← units_inf]`. Conclude with `hfi`.
+
+Establish `a2 : (fun v => fibV v (algebraMap F (Fv F v) β)) = fun v => (r v / t v) • mv v`. Use function extensionality and compare the values at `v`. Use `fib_eq_smul σ (Fv F v) (nV v) J _ _ _ (mv v) (r v) (t v) (ht v) (e4 v ▸ (hνv v).1) (hβv v) (hmv v) (fibV v) ?_` and prove the remaining obligations. Rewrite using `[← e3, ← e4, ← units_fv]`. Conclude with `hfv v`.
+
+Rewrite using `[a1, a2, ← hk]`. Conclude with `GlobalTheory.T.restrictedProduct_measure_smul_factors_eq_smul F E d b 1 M ν mi mv (ri / ti) (fun v => r v / t v) hprod hfin`. Take `⟨⟨νi0, hνi0, -⟩, hWi⟩` from `GlobalTheory.T.existsUnique_selfDual_haar_measure_infinite_adeles F E σ hσ ψ hψ`. Take `⟨μi0, hμi0, -⟩` from `hWi M J hJ`. Use `choose νv0 hνv0 using fun v => (GlobalTheory.T.existsUnique_selfDual_measures_finitePlace F E σ hσ ψ hψ v).1.exists`.
+
+Use `choose μv0 hμv0 using fun v => ((GlobalTheory.T.existsUnique_selfDual_measures_finitePlace F E σ hσ ψ hψ v).2 M J hJ).exists`. Establish `exI : ∀ μi, SdW F E σ M J (Ainf F) (psiInf F ψ) 1 μi → ∀ νi, SdR (Ainf F) (psiInf F ψ) νi → ∃ fibInf : Ainf F → Measure (Fin 1 → Fin M → Ainf F ⊗[F] E), IsFibreFamily μi (fun X => qR (Ainf F) σ J (X 0)) id Set.univ νi {c : Ainf F | ∀ w, c w ≠ 0} fibInf` using `fun μi hμi νi hνi => GlobalTheory.T.exists_fibreFamily_hermitianLength_infiniteAdeles F E σ hσ M J μi νi hM hJ hμi.1 hνi.1`. Establish `exV : ∀ μv : ∀ v : HeightOneSpectrum (𝓞 F), Measure (Fin 1 → Fin M → Fv F v ⊗[F] E), (∀ v, SdW F E σ M J (Fv F v) (psiV F ψ v) 1 (μv v)) → ∀ νv : ∀ v : HeightOneSpectrum (𝓞 F), Measure (Fv F v), (∀ v, SdR (Fv F v) (psiV F ψ v) (νv v)) → ∃ fibV : ∀ v : HeightOneSpectrum (𝓞 F), Fv …`. Introduce `μv hμv νv hνv`. Use `choose fibV hfibV using fun v => (GlobalTheory.LocalDensityCompare.null_and_exists v σ J hσ hM hJ (μv v) (hμv v).1 (νv v) (hνv v).1).2`.
+
+Conclude with `⟨fibV, hfibV⟩`. Introduce `νX`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨-, h⟩`. Take `⟨fi, hfi⟩` from `exI μi0 hμi0 νi0 hνi0`.
+
+Take `⟨fv, hfv⟩` from `exV μv0 hμv0 νv0 hνv0`. Establish `h1` using `(((((h.2 μi0 hμi0).2 νi0 hνi0).2 μv0 hμv0).2 νv0 hνv0).2 fi hfi).2 fv hfv`. Establish `h2` using `GlobalTheory.T.restrictedProduct_integral_pureTensor_eq_prod F E d b 1 M _ _ _ (key μi0 hμi0 νi0 hνi0 μv0 hμv0 νv0 hνv0 fi hfi fv hfv)`. Use `GlobalTheory.T.adelicTupleMeasure_ext_of_pureTensor_integrals F E d b 1 M _ _ fun Φ Φinf Φf Φv c1 c2 c3 c4 => ?_` and prove the remaining obligations. Take `⟨p1, -, p3⟩` from `h1 d b Φ Φinf Φf Φv c1 c2 c3 c4`.
+
+Take `⟨q1, -, q3⟩` from `h2 d b Φ Φinf Φf Φv c1 c2 c3 c4`. Conclude with `⟨p1, q1, p3.trans q3.symm⟩`. Introduce and unpack `rfl`. Use `⟨?_, ⟨μi0, hμi0⟩, fun μi hμi => ⟨⟨νi0, hνi0⟩, fun νi hνi => ⟨⟨μv0, hμv0⟩, fun μv hμv => ⟨⟨νv0, hνv0⟩, fun νv hνv => ⟨exI μi hμi νi hνi, fun fi hfi => ⟨exV μv hμv νv hνv, fun fv hfv => GlobalTheory.T.restrictedProduct_integral_pureTensor_eq_prod F E d b 1 M _ _ _ (key μi hμi νi hν …` and prove the remaining obligations. Establish `hz` using `(GlobalTheory.T.restrictedProductMeasure_basic_properties F E d b 1 M ν mi mv hprod).2.2.2 {Y | qR (Ainf F) σ J (Y 0) = algebraMap F _ β} (fun v => {Y | qR (Fv F v) σ J (Y 0) = algebraMap F _ β}) (isClosed_eq (continuous_qR _ σ J) continuous_const).measurableSet (fun v => (isClos …`.
+
+Establish `hs : {X : Fin 1 → Fin M → AF F ⊗[F] E | qR (AF F) σ J (X 0) ≠ algebraMap F (AF F) β} = {X | ¬ (projInf X ∈ {Y : Fin 1 → Fin M → Ainf F ⊗[F] E | qR (Ainf F) σ J (Y 0) = algebraMap F _ β} ∧ ∀ v, projV v (projFin X) ∈ {Y : Fin 1 → Fin M → Fv F v ⊗[F] E | qR (Fv F v) σ J (Y 0) = alge …`. Use extensionality with `X`. Conclude with `not_congr ((GlobalTheory.GaugeEx.q_and_unitary_local_components F E σ M J).1 (X 0) β)`. Rewrite using `[Measure.smul_apply, hs, hz, smul_zero]`.
+-/
 theorem isXbetaMeasure_iff_smul_std : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E), IsCMExt F E σ → ∀ (d : ℕ) (b : Module.Basis (Fin d) F E) (s : StdMeas b), ∃ κ : ℕ → ℝ≥0, (∀ M, κ M ≠ 0) ∧ ∀ (M : ℕ) (J : Matrix (Fin M) (Fin M) E) (β : F) (ψ : AddChar (AF F) ℂ) (ν : Measure (Fin 1 → Fin M → AF F ⊗[F] E)), 1 ≤ M → IsHermND σ J → β ≠ 0 → IsCharAF F ψ → IsStdX s σ J β ν → ∀ νX, IsXbetaMeasure F E σ M J ψ β νX ↔ νX = κ M • ν := by
   intro F E _ _ _ _ _ σ hσ d b s
   choose κ hκ0 hκ using GlobalTheory.T.exists_selfDualMeasure_global_const_rank_only F E σ hσ d b s

@@ -17,6 +17,11 @@ noncomputable section
 
 namespace GlobalTheory.LagrCoord
 
+/- English proof (translation)
+Take `⟨hrs, A, hA⟩` from `h`. Set `e : Fin r ⊕ Fin s ≃ Fin n` to `finSumFinEquiv.trans (finCongr hrs)`. Establish `hD : (Matrix.fromBlocks (1 : Matrix (Fin r) (Fin r) ℂ) 0 0 (-1 : Matrix (Fin s) (Fin s) ℂ)).det ≠ 0`. Rewrite using `[Matrix.det_fromBlocks_zero₂₁, Matrix.det_one, one_mul, Matrix.det_neg, Matrix.det_one, mul_one]`. Conclude with `pow_ne_zero _ (neg_ne_zero.mpr one_ne_zero)`.
+
+Introduce `h0`. Apply `hD` to reduce the goal to its premises. Rewrite using `[← hA, ← Matrix.det_submatrix_equiv_self e.symm, Matrix.submatrix_mul _ _ e.symm (id : Fin n → Fin n) e.symm Function.bijective_id, Matrix.submatrix_mul _ _ e.symm (id : Fin n → Fin n) id Function.bijective_id, Matrix.det_mul, Matrix.det_mul, Matrix.submatrix_id_id, h0, mul_zero, …`.
+-/
 theorem det_ne_zero_of_hasSig {n r s : ℕ} {M : Matrix (Fin n) (Fin n) ℂ} (h : HasSig M r s) : M.det ≠ 0 := by
   obtain ⟨hrs, A, hA⟩ := h
   let e : Fin r ⊕ Fin s ≃ Fin n := finSumFinEquiv.trans (finCongr hrs)
@@ -30,18 +35,35 @@ theorem det_ne_zero_of_hasSig {n r s : ℕ} {M : Matrix (Fin n) (Fin n) ℂ} (h 
     Matrix.submatrix_mul _ _ e.symm (id : Fin n → Fin n) id Function.bijective_id,
     Matrix.det_mul, Matrix.det_mul, Matrix.submatrix_id_id, h0, mul_zero, zero_mul]
 
+/- English proof (translation)
+Introduce `h0`. Apply `det_ne_zero_of_hasSig h` to reduce the goal to its premises. Rewrite using `[Matrix.det_smul, h0, mul_zero]`.
+-/
 theorem det_ne_zero_of_hasSig_smul {n r s : ℕ} {c : ℂ} {M : Matrix (Fin n) (Fin n) ℂ} (h : HasSig (c • M) r s) :
     M.det ≠ 0 := by
   intro h0
   apply det_ne_zero_of_hasSig h
   rw [Matrix.det_smul, h0, mul_zero]
 
+/- English proof (translation)
+Introduce `h0`. Apply `h` to reduce the goal to its premises. Rewrite using `[← RingHom.mapMatrix_apply, ← RingHom.map_det, h0, map_zero]`.
+-/
 theorem det_ne_zero_of_map {E : Type} [CommRing E] {n : ℕ} (J : Matrix (Fin n) (Fin n) E) (f : E →+* ℂ)
     (h : (J.map f).det ≠ 0) : J.det ≠ 0 := by
   intro h0
   apply h
   rw [← RingHom.mapMatrix_apply, ← RingHom.map_det, h0, map_zero]
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ B hB n d r s r' s' X W hX hW v t Y`. Take `⟨w⟩ : Nonempty (InfinitePlace F)` from `inferInstance`. Establish `hXd : X.J.det ≠ 0` using `det_ne_zero_of_map X.J (B.emb w).1 (det_ne_zero_of_hasSig (hX.sig w))`. Establish `hWd : W.J.det ≠ 0` using `det_ne_zero_of_map W.J (B.emb w).1 (det_ne_zero_of_hasSig_smul (hW.sig w))`. Establish `ht : Function.Injective t` using `t.toRingHom.injective`.
+
+Establish `hXt : IsUnit (X.J.map t).det`. Rewrite using `[isUnit_iff_ne_zero]`. Introduce `h0`. Apply `hXd` to reduce the goal to its premises. Apply `ht` to reduce the goal to its premises.
+
+Rewrite using `[map_zero, ← h0]`. Conclude with `(RingHom.map_det t.toRingHom X.J)`. Establish `hWt : IsUnit ((W.J.map t)ᵀ).det`. Rewrite using `[Matrix.det_transpose, isUnit_iff_ne_zero]`. Introduce `h0`.
+
+Apply `hWd` to reduce the goal to its premises. Apply `ht` to reduce the goal to its premises. Rewrite using `[map_zero, ← h0]`. Conclude with `(RingHom.map_det t.toRingHom W.J)`. Take `⟨x, hxat, hx0, hx1⟩` from `GlobalTheory.T.exists_splitPlace_adelicMatrix_given_components hB.cm v t (0 : Matrix (Fin n) (Fin d) (Fv F v)) (-((X.J.map t)⁻¹ * Y * ((W.J.map t)ᵀ)⁻¹))`.
+
+Use `⟨x, hxat, hx0, ?_⟩` and prove the remaining obligations. Rewrite using `[hx1]`. Simplify using `only [Units.val_one, Matrix.transpose_one, Matrix.one_mul, Matrix.mul_one, Matrix.mul_neg, Matrix.neg_mul, neg_neg]`. Rewrite using `[Matrix.mul_assoc, Matrix.mul_assoc, Matrix.nonsing_inv_mul _ hWt, Matrix.mul_one, Matrix.mul_nonsing_inv_cancel_left _ _ hXt]`.
+-/
 theorem exists_coord : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E),
     B.IsGood σ → ∀ (n d r s r' s' : ℕ) (X : Spc F E n) (W : Spc F E d), X.IsHerm σ B r s → W.IsSkew σ B r' s' →
     ∀ (v : Pl F) (t : E →ₐ[F] Fv F v) (Y : Matrix (Fin n) (Fin d) (Fv F v)), ∃ x : Matrix (Fin n) (Fin d) (AE F E),

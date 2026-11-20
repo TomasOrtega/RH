@@ -4,6 +4,41 @@ namespace ReciprocityTheory.ChartRestriction.G.FreeQuotientRank
 
 open NumberField
 
+/- English proof (translation)
+Introduce `K _ _ ρ m hdet s β a b B Bfin hs hβ harch hdeg hfin`. Use `set n : ℝ := (Module.finrank ℚ K : ℝ) with hn`. Establish `hnpos : 0 < n` using `by rw [hn]; exact_mod_cast Module.finrank_pos`. Establish `hsum : ∑ σ : InfinitePlace K, (σ.mult : ℝ) = n`. Rewrite using `[hn]`.
+
+Conclude with `InfinitePlace.sum_mult_eq` after adjusting the coercions. Establish `hord` using `finite_ordAt (K := K) hdet`. Establish `hsU : (⋃ i, Function.support (s i)).Finite` using `Set.finite_iUnion hs`. Use `set T : Finset (IsDedekindDomain.HeightOneSpectrum (𝓞 K)) := (hord.union (hsU.union hβ)).toFinset with hT`. Establish `memT : ∀ w, w ∈ (Function.support fun v : IsDedekindDomain.HeightOneSpectrum (𝓞 K) => (ordAt v m.det : ℝ) * logN v) ∪ ((⋃ i, Function.support (s i)) ∪ Function.support β) → w ∈ T`.
+
+Introduce `w hw`. Rewrite using `[hT, Set.Finite.mem_toFinset]`. Conclude with `hw`. Establish `e1 : ∑ᶠ w : IsDedekindDomain.HeightOneSpectrum (𝓞 K), (ordAt w m.det : ℝ) * logN w = ∑ w ∈ T, (ordAt w m.det : ℝ) * logN w`. Apply `finsum_eq_sum_of_support_subset` to reduce the goal to its premises.
+
+Introduce `w hw`. Conclude with `memT w (Or.inl hw)`. Establish `e2 : ∀ i, ∑ᶠ w : IsDedekindDomain.HeightOneSpectrum (𝓞 K), s i w * logN w = ∑ w ∈ T, s i w * logN w`. Introduce `i`. Apply `finsum_eq_sum_of_support_subset` to reduce the goal to its premises.
+
+Introduce `w hw`. Simplify using `only [Function.mem_support, ne_eq] at hw`. Use `memT w (Or.inr (Or.inl (Set.mem_iUnion.mpr ⟨i, fun h => hw ?_⟩)))` and prove the remaining obligations. Rewrite using `[h, zero_mul]`. Establish `e3 : ∑ᶠ w : IsDedekindDomain.HeightOneSpectrum (𝓞 K), β w * logN w = ∑ w ∈ T, β w * logN w`.
+
+Apply `finsum_eq_sum_of_support_subset` to reduce the goal to its premises. Introduce `w hw`. Simplify using `only [Function.mem_support, ne_eq] at hw`. Use `memT w (Or.inr (Or.inr fun h => hw ?_))` and prove the remaining obligations. Rewrite using `[h, zero_mul]`.
+
+Establish `e0 : ∑ᶠ w : IsDedekindDomain.HeightOneSpectrum (𝓞 K), ((ordAt w m.det : ℝ) + ∑ i, s i w + ρ * β w) * logN w = ∑ w ∈ T, ((ordAt w m.det : ℝ) + ∑ i, s i w + ρ * β w) * logN w`. Apply `finsum_eq_sum_of_support_subset` to reduce the goal to its premises. Introduce `w hw`. Simplify using `only [Function.mem_support, ne_eq] at hw`. Assume the negation of the conclusion as `hnot`.
+
+Apply `hw` to reduce the goal to its premises. Establish `h1 : (ordAt w m.det : ℝ) * logN w = 0`. Assume the negation of the conclusion as `h`. Conclude with `hnot (memT w (Or.inl h))`. Establish `h2 : ∀ i, s i w = 0` using `fun i => by`.
+
+Assume the negation of the conclusion as `h`. Conclude with `hnot (memT w (Or.inr (Or.inl (Set.mem_iUnion.mpr ⟨i, h⟩))))`. Establish `h3 : β w = 0`. Assume the negation of the conclusion as `h`. Conclude with `hnot (memT w (Or.inr (Or.inr h)))`.
+
+Rewrite using `[add_mul, add_mul, h1]`. Simplify using `[h2, h3]`. Establish `hPF : ∑ w ∈ T, (ordAt w m.det : ℝ) * logN w = ∑ σ : InfinitePlace K, (σ.mult : ℝ) * Real.log (σ m.det)`. Rewrite using `[← e1]`. Conclude with `finsum_ordAt hdet`.
+
+Establish `hHad : ∀ σ : InfinitePlace K, Real.log (σ m.det) ≤ ∑ j, b j σ - ∑ i, a i σ + (ρ : ℝ) / 2 * Real.log ρ` using `fun σ => log_det_le m hdet σ (fun i => a i σ) (fun j => b j σ) fun i j h => harch σ i j h`. Establish `hsumσ : ∑ σ : InfinitePlace K, (σ.mult : ℝ) * Real.log (σ m.det) ≤ ∑ σ : InfinitePlace K, (σ.mult : ℝ) * (∑ j, b j σ - ∑ i, a i σ + (ρ : ℝ) / 2 * Real.log ρ)` using `Finset.sum_le_sum fun σ _ => mul_le_mul_of_nonneg_left (hHad σ) (Nat.cast_nonneg _)`. Establish `hexp : ∑ σ : InfinitePlace K, (σ.mult : ℝ) * (∑ j, b j σ - ∑ i, a i σ + (ρ : ℝ) / 2 * Real.log ρ) = ∑ j, ∑ σ : InfinitePlace K, (σ.mult : ℝ) * b j σ - ∑ i, ∑ σ : InfinitePlace K, (σ.mult : ℝ) * a i σ + n * ((ρ : ℝ) / 2 * Real.log ρ)`. Establish `c1 : ∑ σ : InfinitePlace K, ∑ j, (σ.mult : ℝ) * b j σ = ∑ j, ∑ σ : InfinitePlace K, (σ.mult : ℝ) * b j σ` using `Finset.sum_comm`. Establish `c2 : ∑ σ : InfinitePlace K, ∑ i, (σ.mult : ℝ) * a i σ = ∑ i, ∑ σ : InfinitePlace K, (σ.mult : ℝ) * a i σ` using `Finset.sum_comm`.
+
+Establish `c3 : ∑ σ : InfinitePlace K, (σ.mult : ℝ) * ((ρ : ℝ) / 2 * Real.log ρ) = n * ((ρ : ℝ) / 2 * Real.log ρ)` using `by rw [← Finset.sum_mul, hsum]`. Rewrite using `[← c1, ← c2, ← c3, ← Finset.sum_sub_distrib, ← Finset.sum_add_distrib]`. Use `Finset.sum_congr rfl fun σ _ => ?_` and prove the remaining obligations. Rewrite using `[mul_add, mul_sub, Finset.mul_sum, Finset.mul_sum]`. Establish `hdeg' : ∀ i, ∑ w ∈ T, s i w * logN w - ∑ σ : InfinitePlace K, (σ.mult : ℝ) * a i σ ≤ B i * n`.
+
+Introduce `i`. Use `hdeg i` as an intermediate fact. Rewrite `this` using `[e2 i, div_le_iff₀ hnpos]`. Conclude with `this`. Establish `hdegS : ∑ i, ∑ w ∈ T, s i w * logN w - ∑ i, ∑ σ : InfinitePlace K, (σ.mult : ℝ) * a i σ ≤ (∑ i, B i) * n`.
+
+Rewrite using `[← Finset.sum_sub_distrib, Finset.sum_mul]`. Conclude with `Finset.sum_le_sum fun i _ => hdeg' i`. Establish `hfin' : ∑ w ∈ T, β w * logN w ≤ Bfin * n`. Use `hfin` as an intermediate fact. Rewrite `this` using `[e3, div_le_iff₀ hnpos]`.
+
+Conclude with `this`. Establish `hfinρ : (ρ : ℝ) * ∑ w ∈ T, β w * logN w ≤ ρ * (Bfin * n)` using `mul_le_mul_of_nonneg_left hfin' (Nat.cast_nonneg _)`. Establish `hL : ∑ w ∈ T, ((ordAt w m.det : ℝ) + ∑ i, s i w + ρ * β w) * logN w = ∑ w ∈ T, (ordAt w m.det : ℝ) * logN w + ∑ i, ∑ w ∈ T, s i w * logN w + ρ * ∑ w ∈ T, β w * logN w`. Establish `hw : ∀ w, ((ordAt w m.det : ℝ) + ∑ i, s i w + ρ * β w) * logN w = (ordAt w m.det : ℝ) * logN w + ∑ i, s i w * logN w + ρ * (β w * logN w)` using `fun w => by`. Rewrite using `[add_mul, add_mul, Finset.sum_mul]`.
+
+Expand and normalize the polynomial expressions, which then agree. Rewrite using `[Finset.sum_congr rfl fun w _ => hw w, Finset.sum_add_distrib, Finset.sum_add_distrib, ← Finset.mul_sum, Finset.sum_comm]`. Establish `hR : (∑ j, (∑ σ : InfinitePlace K, (σ.mult : ℝ) * b j σ) / n) * n = ∑ j, ∑ σ : InfinitePlace K, (σ.mult : ℝ) * b j σ`. Rewrite using `[← Finset.sum_div, div_mul_cancel₀ _ hnpos.ne']`. Rewrite using `[e0, hL, div_le_iff₀ hnpos, add_mul, add_mul, add_mul, hR]`.
+
+Combine the linear relations using `[hPF, hsumσ, hexp, hdegS, hfinρ]`.
+-/
 theorem globalQuot_holds : GlobalQuotStatement := by
   intro K _ _ ρ m hdet s β a b B Bfin hs hβ harch hdeg hfin
   classical

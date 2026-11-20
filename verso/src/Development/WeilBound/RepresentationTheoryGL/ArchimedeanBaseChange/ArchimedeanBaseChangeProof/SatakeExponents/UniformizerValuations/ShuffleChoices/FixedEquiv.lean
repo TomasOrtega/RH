@@ -17,6 +17,9 @@ section SlopeTestRemainingChoices
 variable {F : Type} [Field F] [ValuativeRel F] [TopologicalSpace F] [IsNonarchimedeanLocalField F]
   {ι : Type} [Fintype ι] [DecidableEq ι]
 
+/- English proof (translation)
+Unfold `hk`. Use `(φ.toLinearEquiv.toAddEquiv.map_finsum (fun q : GL ι F ⧸ K => e q.out • ρ q.out v)).trans (finsum_congr fun q => ?_)` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `φ.toLinearEquiv (e q.out • ρ q.out v) = e q.out • σ q.out (φ.toLinearEquiv v)`. Rewrite using `[map_smul, Representation.Equiv.toLinearEquiv_apply, Representation.Equiv.toLinearEquiv_apply, φ.toIntertwiningMap.isIntertwining]`.
+-/
 theorem hk_equiv {V W : Type} [AddCommGroup V] [Module ℂ V] [AddCommGroup W] [Module ℂ W]
     {ρ : Representation ℂ (GL ι F) V} {σ : Representation ℂ (GL ι F) W} (φ : ρ.Equiv σ)
     (K : Subgroup (GL ι F)) (e : GL ι F → ℂ) (v : V) :
@@ -28,6 +31,9 @@ theorem hk_equiv {V W : Type} [AddCommGroup V] [Module ℂ V] [AddCommGroup W] [
   rw [map_smul, Representation.Equiv.toLinearEquiv_apply, Representation.Equiv.toLinearEquiv_apply,
     φ.toIntertwiningMap.isIntertwining]
 
+/- English proof (translation)
+Introduce `h`. Establish `h1 : ρ (h : GL ι F) v = (((1 : K →* ℂˣ) h : ℂˣ) : ℂ) • v` using `hv h`. Rewrite using `[Representation.Equiv.toLinearEquiv_apply, ← φ.toIntertwiningMap.isIntertwining, ← Representation.Equiv.toLinearEquiv_apply, h1, map_smul]`. Both sides reduce to the same expression.
+-/
 theorem fixed_equiv {V W : Type} [AddCommGroup V] [Module ℂ V] [AddCommGroup W] [Module ℂ W]
     {ρ : Representation ℂ (GL ι F) V} {σ : Representation ℂ (GL ι F) W} (φ : ρ.Equiv σ)
     (K : Subgroup (GL ι F)) (v : V) (hv : v ∈ fixed ρ K) : φ.toLinearEquiv v ∈ fixed σ K := by
@@ -39,12 +45,24 @@ theorem fixed_equiv {V W : Type} [AddCommGroup V] [Module ℂ V] [AddCommGroup W
 
 end SlopeTestRemainingChoices
 
+/- English proof (translation)
+Introduce `E _ _ _ n w K' k D _`. Use `⟨(Finset.univ.sup fun j => Module.finrank ℂ (fixed (prodAt (D j) w) K')) + 1, fun j => ?_⟩` and prove the remaining obligations. Conclude with `Nat.lt_succ_of_le (Finset.le_sup (f := fun j => Module.finrank ℂ (fixed (prodAt (D j) w) K')) (Finset.mem_univ j))`.
+-/
 theorem choiceM : ChoiceM := by
   intro E _ _ _ n w K' k D _
   refine ⟨(Finset.univ.sup fun j => Module.finrank ℂ (fixed (prodAt (D j) w) K')) + 1, fun j => ?_⟩
   exact Nat.lt_succ_of_le
     (Finset.le_sup (f := fun j => Module.finrank ℂ (fixed (prodAt (D j) w) K')) (Finset.mem_univ j))
 
+/- English proof (translation)
+Introduce `E _ _ _ n w K' hKo hKc P hP0 k D`. Establish `hs : ∀ j, IsSmooth (prodAt (D j) w)` using `fun j => GlobalTheory.SmGL.isSmooth_parInd _ _`. Establish `hfl : ∀ j, GlobalTheory.SmGL.HasFiniteLength (prodAt (D j) w)` using `fun j => hP E n w (Fin (D j).c) (fun i => Fin ((D j).N i)) (GlobalTheory.SmGL.stdBlocks (D j).N (D j).h) (fun i => ((D j).σ i w).V) (fun i => ((D j).σ i w).ρ) (fun i => ((D j).σ i w).smooth) (fun i => ((D j).σ i w).irred)`. Use `choose J hJ W hW1 hW2 τ hτ hcov using fun j => hF E n w _ (prodAt (D j) w) (hs j) (hfl j)`. Set `_ : ∀ j, Fintype (J j)` to `hJ`.
+
+Set `_ : ∀ j i, AddCommGroup (W j i)` to `hW1`. Set `_ : ∀ j i, Module ℂ (W j i)` to `hW2`. Set `I : Type` to `Σ j : Fin k, {i : J j // IsEmpty ((τ j i).Equiv P.ρ)}`. Take `⟨e, hIk, v₀, hv₀, l, hl1, hl, hkill⟩` from `hI E n w K' hKo hKc P.V P.ρ P.smooth P.irred hP0 I (fun x => W x.1 x.2.1) (fun x => τ x.1 x.2.1) (fun x => (hτ x.1 x.2.1).1) (fun x => (hτ x.1 x.2.1).2.1) (fun x => x.2.2)`. Use `⟨e, hIk, ⟨v₀, hv₀, l, hl1, hl⟩, ?_⟩` and prove the remaining obligations.
+
+Introduce `j τ' hsub hne v hv`. Take `⟨i, ⟨φ⟩⟩` from `hcov j τ'.V τ'.ρ τ'.irred hsub`. Establish `hi : IsEmpty ((τ j i).Equiv P.ρ)` using `⟨fun ψ => hne.false (φ.trans ψ)⟩`. Apply `φ.toLinearEquiv.injective` to reduce the goal to its premises. Rewrite using `[hk_equiv, map_zero]`.
+
+Conclude with `hkill ⟨j, i, hi⟩ _ (fixed_equiv φ K' v hv)`.
+-/
 theorem choiceS_of
     (hI : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (n : ℕ) (w : Pl E),
       PositivityTheory.Rg.BcN.F2.IsolateAt (w.adicCompletion E) (Fin n))

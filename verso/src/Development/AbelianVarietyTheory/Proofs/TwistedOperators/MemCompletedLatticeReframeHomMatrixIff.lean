@@ -15,6 +15,11 @@ namespace GlobalTheory.AdSpan.ReVec.Lat
 
 variable {D : D7} (S T : HSp D) (b : Module.Basis (Fin S.rank) D.host.E S.V)
 
+/- English proof (translation)
+Use `Matrix.ext fun (i j : Fin S.rank) => ?_` and prove the remaining obligations. Establish `hb : ∀ k, b k = ∑ l, frP S b l k • S.frame l` using `fun k => (Module.Basis.sum_toMatrix_smul_self S.frame b k).symm`. Use `show S.hT (b i) (b j) = ∑ k, (∑ l, star (frP S b l i) * S.gram l k) * frP S b k j`. Rewrite using `[hb i, hb j]`. Simplify using `only [map_sum, LinearMap.map_smulₛₗ, LinearMap.sum_apply, LinearMap.smul_apply, smul_eq_mul, HSpace.gram, Finset.sum_mul, Finset.mul_sum, RingHom.id_apply, starRingEnd_apply]`.
+
+Use `Finset.sum_congr rfl fun k _ => Finset.sum_congr rfl fun l _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem gram_reS_eq : (reS S b).gram = (frP S b)ᴴ * S.gram * frP S b := by
   refine Matrix.ext fun (i j : Fin S.rank) => ?_
   have hb : ∀ k, b k = ∑ l, frP S b l k • S.frame l := fun k =>
@@ -26,6 +31,9 @@ theorem gram_reS_eq : (reS S b).gram = (frP S b)ᴴ * S.gram * frP S b := by
   refine Finset.sum_congr rfl fun k _ => Finset.sum_congr rfl fun l _ => ?_
   ring
 
+/- English proof (translation)
+Establish `hb : ∀ a, b a = ∑ l, frP S b l a • S.frame l` using `fun a => (Module.Basis.sum_toMatrix_smul_self S.frame b a).symm`. Simplify using `only [hb, Matrix.mulVec, dotProduct, Finset.sum_smul, Finset.smul_sum, smul_smul]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun a _ => Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[mul_comm]`.
+-/
 theorem sum_frameMatrix_mulVec_smul (s' : Fin S.rank → D.host.E) :
     ∑ k, (frP S b *ᵥ s') k • S.frame k = ∑ a, s' a • b a := by
   have hb : ∀ a, b a = ∑ l, frP S b l a • S.frame l := fun a =>
@@ -35,10 +43,20 @@ theorem sum_frameMatrix_mulVec_smul (s' : Fin S.rank → D.host.E) :
   refine Finset.sum_congr rfl fun a _ => Finset.sum_congr rfl fun k _ => ?_
   rw [mul_comm]
 
+/- English proof (translation)
+Use `show ∑ a, s' a • b a ∈ S.L0 ↔ ∑ k, (frP S b *ᵥ s') k • S.frame k ∈ S.L0`. Rewrite using `[sum_frameMatrix_mulVec_smul]`.
+-/
 theorem mem_L0c_iff_mem_intVec_of_span_frame (s' : Fin S.rank → D.host.E) : s' ∈ L0c D (reS S b) ↔ frP S b *ᵥ s' ∈ L0c D S := by
   show ∑ a, s' a • b a ∈ S.L0 ↔ ∑ k, (frP S b *ᵥ s') k • S.frame k ∈ S.L0
   rw [sum_frameMatrix_mulVec_smul]
 
+/- English proof (translation)
+Establish `h0 : ∀ G' : Matrix (Fin S.rank) (Fin S.rank) D.host.E, G' = (frP S b)ᴴ * S.gram * frP S b → (star s' ᵥ* G') ᵥ* frPinv S b = star (frP S b *ᵥ s') ᵥ* S.gram`. Introduce and unpack `G' rfl`. Rewrite using `[Matrix.vecMul_vecMul, Matrix.mul_assoc, frameMatrix_mul_frameMatrixInv, Matrix.mul_one, Matrix.star_mulVec, Matrix.vecMul_vecMul]`. Establish `h1` using `h0 (reS S b).gram (gram_reS_eq S b)`. Establish `hv : ∀ j, ∑ c, (∑ k, star (s' k) * (reS S b).gram k c) * frPinv S b c j = ∑ k, star ((frP S b *ᵥ s') k) * S.gram k j` using `fun j => congrFun h1 j`.
+
+Use extensionality with `i j`. Express the relevant statement in the definitionally equal form `∑ c, X ⊗ₜ[D.host.F] (a * t i * ∑ k, star (s' k) * (reS S b).gram k c) * incA D (frPinv S b c j) = _`. Rewrite using `[Matrix.of_apply, ← hv j, Finset.mul_sum, TensorProduct.tmul_sum]`. Use `Finset.sum_congr rfl fun c _ => ?_` and prove the remaining obligations. Use `show X ⊗ₜ[D.host.F] _ * ((1 : AF D.host.F) ⊗ₜ[D.host.F] _) = _`.
+
+Rewrite using `[Algebra.TensorProduct.tmul_mul_tmul, mul_one, mul_assoc]`.
+-/
 theorem reW_gen (X : AF D.host.F) (a : D.host.E) (t : Fin T.rank → D.host.E) (s' : Fin S.rank → D.host.E) :
     reW S T b (Matrix.of fun i j => X ⊗ₜ[D.host.F] (a * t i * ∑ k, star (s' k) * (reS S b).gram k j)) =
       Matrix.of fun i j => X ⊗ₜ[D.host.F] (a * t i * ∑ k, star ((frP S b *ᵥ s') k) * S.gram k j) := by
@@ -57,6 +75,13 @@ theorem reW_gen (X : AF D.host.F) (a : D.host.E) (t : Fin T.rank → D.host.E) (
   show X ⊗ₜ[D.host.F] _ * ((1 : AF D.host.F) ⊗ₜ[D.host.F] _) = _
   rw [Algebra.TensorProduct.tmul_mul_tmul, mul_one, mul_assoc]
 
+/- English proof (translation)
+Unfold `latO`. Rewrite using `[AddMonoidHom.map_closure]`. Use `congr 1`. Use extensionality with `w`. Prove the components needed by the constructor for the conclusion.
+
+Introduce and unpack `⟨w', ⟨α, hα, hP, a, ha, s', hs', t, ht, rfl⟩, rfl⟩`. Conclude with `⟨α, hα, hP, a, ha, _, (mem_L0c_iff_mem_intVec_of_span_frame S b s').1 hs', t, ht, reW_gen S T b _ a t s'⟩`. Introduce and unpack `⟨α, hα, hP, a, ha, s, hs, t, ht, rfl⟩`. Establish `hs' : frP S b *ᵥ (frPinv S b *ᵥ s) = s`. Rewrite using `[Matrix.mulVec_mulVec, frameMatrix_mul_frameMatrixInv, Matrix.one_mulVec]`.
+
+Use `⟨_, ⟨α, hα, hP, a, ha, frPinv S b *ᵥ s, (mem_L0c_iff_mem_intVec_of_span_frame S b _).2 (hs'.symm ▸ hs), t, ht, rfl⟩, ?_⟩` and prove the remaining obligations. Establish `key : ∀ s' s : Fin S.rank → D.host.E, frP S b *ᵥ s' = s → reW S T b (Matrix.of fun i j => pairA D.host.F 0 α ⊗ₜ[D.host.F] (a * t i * ∑ k, star (s' k) * (reS S b).gram k j)) = Matrix.of fun i j => pairA D.host.F 0 α ⊗ₜ[D.host.F] (a * t i * ∑ k, star (s k) * S.gram k j)`. Introduce and unpack `s' s rfl`. Conclude with `reW_gen S T b _ a t s'`. Conclude with `key _ _ hs'`.
+-/
 theorem map_latO (LT : Set (Fin T.rank → D.host.E)) (P : HeightOneSpectrum (𝓞 D.host.F) → Prop) :
     (latO (reS S b) T (L0c D (reS S b)) LT P).map (reWHom S T b) = latO S T (L0c D S) LT P := by
   unfold latO
@@ -82,6 +107,9 @@ end GlobalTheory.AdSpan.ReVec.Lat
 
 open GlobalTheory.AdSpan.ReVec.Lat in
 
+/- English proof (translation)
+Introduce `D S T b LT u`. Rewrite using `[← map_latO S T b LT]`. Conclude with `(AddSubgroup.mem_map_iff_mem (f := reWHom S T b) (reW_bijective S T b).1).symm`.
+-/
 theorem GlobalTheory.AdSpan.ReVec.latO_reW_iff : ∀ (D : D7) (S T : HSp D) (b : Module.Basis (Fin S.rank) D.host.E S.V)
     (LT : Set (Fin T.rank → D.host.E)) (u : WO (reS S b) T),
     u ∈ latO (reS S b) T (L0c D (reS S b)) LT (fun _ => True) ↔

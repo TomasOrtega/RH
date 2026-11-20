@@ -13,6 +13,9 @@ section Qcqs
 
 variable {X : Scheme.{u}} (F : X.Modules) {U W : X.Opens}
 
+/- English proof (translation)
+The claim follows from `TopCat.Sheaf.eq_of_locally_eq' (⟨F.presheaf, F.isSheaf⟩ : TopCat.Sheaf Ab X) 𝒰 W (fun i ↦ homOfLE (h i)) hcov s t H`.
+-/
 theorem section_eq_of_cover {ι : Type*} (𝒰 : ι → X.Opens) (h : ∀ i, 𝒰 i ≤ W)
     (hcov : W ≤ iSup 𝒰) (s t : Γ(F, W))
     (H : ∀ i, F.presheaf.map (homOfLE (h i)).op s = F.presheaf.map (homOfLE (h i)).op t) :
@@ -20,6 +23,9 @@ theorem section_eq_of_cover {ι : Type*} (𝒰 : ι → X.Opens) (h : ∀ i, �
   TopCat.Sheaf.eq_of_locally_eq' (⟨F.presheaf, F.isSheaf⟩ : TopCat.Sheaf Ab X) 𝒰 W
     (fun i ↦ homOfLE (h i)) hcov s t H
 
+/- English proof (translation)
+Take `⟨s, hs', hs⟩` from `isCompact_and_isOpen_iff_finite_and_eq_biUnion_affineOpens.mp ⟨hW, W.2⟩`. Conclude with `⟨s, hs'.fintype, fun i ↦ i.1.1, fun i ↦ i.1.2, by ext1; simpa using hs⟩`.
+-/
 theorem exists_finite_affine_cover_of_isCompact (hW : IsCompact (W : Set X)) :
     ∃ (ι : Type u) (_ : Fintype ι) (𝒰 : ι → X.Opens), (∀ i, IsAffineOpen (𝒰 i)) ∧
       W = iSup 𝒰 := by
@@ -28,6 +34,11 @@ theorem exists_finite_affine_cover_of_isCompact (hW : IsCompact (W : Set X)) :
 
 variable [F.IsQuasicoherent]
 
+/- English proof (translation)
+Take `⟨ι, _, 𝒰, haff, hcov⟩` from `exists_finite_affine_cover_of_isCompact hW`. Establish `hle (i : ι) : 𝒰 i ≤ W` using `hcov ▸ le_iSup 𝒰 i`. Establish `H (i : ι) : ∃ n : ℕ, X.presheaf.map (homOfLE ((hle i).trans h)).op f ^ n • F.presheaf.map (homOfLE (hle i)).op t = 0`. Use `exists_pow_smul_eq_zero F (haff i) _ (V := 𝒰 i ⊓ X.basicOpen f) inf_le_left (X.basicOpen_res _ _).symm _ ?_` and prove the remaining obligations. Rewrite using `[res_res, ← res_res F inf_le_left (inf_le_inf_right _ (hle i)), ht, map_zero]`.
+
+Use `choose n hn using H`. Use `⟨Finset.univ.sup n, section_eq_of_cover F 𝒰 hle hcov.le _ _ fun i ↦ ?_⟩` and prove the remaining obligations. Take `⟨m, hm⟩` from `Nat.exists_eq_add_of_le' (Finset.le_sup (f := n) (Finset.mem_univ i))`. Rewrite using `[F.map_smul, map_pow, res_res_ring, hm, pow_add, mul_smul, hn, smul_zero, map_zero]`.
+-/
 theorem exists_pow_res_smul_eq_zero_of_isCompact (hW : IsCompact (W : Set X)) (h : W ≤ U)
     (f : Γ(X, U)) (t : Γ(F, W))
     (ht : F.presheaf.map (homOfLE (inf_le_left : W ⊓ X.basicOpen f ≤ W)).op t = 0) :
@@ -44,6 +55,19 @@ theorem exists_pow_res_smul_eq_zero_of_isCompact (hW : IsCompact (W : Set X)) (h
   obtain ⟨m, hm⟩ := Nat.exists_eq_add_of_le' (Finset.le_sup (f := n) (Finset.mem_univ i))
   rw [F.map_smul, map_pow, res_res_ring, hm, pow_add, mul_smul, hn, smul_zero, map_zero]
 
+/- English proof (translation)
+Take `⟨ι, _, 𝒰, haff, hcov⟩` from `exists_finite_affine_cover_of_isCompact hU`. Establish `hle (i : ι) : 𝒰 i ≤ U` using `hcov ▸ le_iSup 𝒰 i`. Establish `H (i : ι) : ∃ (n : ℕ) (t : Γ(F, 𝒰 i)), X.presheaf.map (homOfLE ((inf_le_left : 𝒰 i ⊓ X.basicOpen f ≤ _).trans (hle i))).op f ^ n • F.presheaf.map (homOfLE (inf_le_right : 𝒰 i ⊓ X.basicOpen f ≤ _)).op s = F.presheaf.map (homOfLE inf_le_left).op t`. Use `exists_pow_smul_eq_res F (haff i) (X.presheaf.map (homOfLE (hle i)).op f) (V := 𝒰 i ⊓ X.basicOpen f) inf_le_left (X.basicOpen_res _ _).symm (F.presheaf.map (homOfLE inf_le_right).op s)` as an intermediate fact. Rewrite `this` using `[res_res_ring]`. Then use the resulting hypothesis.
+
+Use `choose n t ht using H`. Establish `H' (i : ι) : ∃ (t : Γ(F, 𝒰 i)), X.presheaf.map (homOfLE ((inf_le_left : 𝒰 i ⊓ X.basicOpen f ≤ _).trans (hle i))).op f ^ Finset.univ.sup n • F.presheaf.map (homOfLE (inf_le_right : 𝒰 i ⊓ X.basicOpen f ≤ _)).op s = F.presheaf.map (homOfLE inf_le_left).op t`. Take `⟨m, hm⟩` from `Nat.exists_eq_add_of_le' (Finset.le_sup (f := n) (Finset.mem_univ i))`. Use `⟨X.presheaf.map (homOfLE (hle i)).op f ^ m • t i, ?_⟩` and prove the remaining obligations. Rewrite using `[F.map_smul, map_pow, res_res_ring, hm, pow_add, mul_smul, ht]`.
+
+Generalize the expression as in `Finset.univ.sup n = N at H'`. Use `clear ht t n`. Use `choose t ht using H'`. Establish `ht' (i : ι) (V : X.Opens) (h₁ : V ≤ 𝒰 i) (h₂ : V ≤ X.basicOpen f) : F.presheaf.map (homOfLE h₁).op (t i) = X.presheaf.map (homOfLE (h₁.trans (hle i))).op f ^ N • F.presheaf.map (homOfLE h₂).op s`. Rewrite using `[← res_res F inf_le_left (le_inf h₁ h₂), ← ht, F.map_smul, map_pow, res_res_ring, res_res]`.
+
+Establish `H (p : ι × ι) : ∃ m : ℕ, X.presheaf.map (homOfLE ((inf_le_left : 𝒰 p.1 ⊓ 𝒰 p.2 ≤ _).trans (hle p.1))).op f ^ m • (F.presheaf.map (homOfLE (inf_le_left : 𝒰 p.1 ⊓ 𝒰 p.2 ≤ _)).op (t p.1) - F.presheaf.map (homOfLE inf_le_right).op (t p.2)) = 0`. Use `exists_pow_res_smul_eq_zero_of_isCompact F (hU' _ _ (hle p.1) (𝒰 p.1).2 (haff _).isCompact (hle p.2) (𝒰 p.2).2 (haff _).isCompact) _ f _ ?_` and prove the remaining obligations. Rewrite using `[map_sub, res_res, res_res, ht' _ _ _ inf_le_right, ht' _ _ _ inf_le_right, sub_self]`. Use `choose m hm using H`. Take `⟨T, hT, -⟩` from `TopCat.Sheaf.existsUnique_gluing' (⟨F.presheaf, F.isSheaf⟩ : TopCat.Sheaf Ab X) 𝒰 U (fun i ↦ homOfLE (hle i)) hcov.le (fun i ↦ X.presheaf.map (homOfLE (hle i)).op f ^ Finset.univ.sup m • t i) (by`.
+
+Introduce `i j`. Take `⟨k, hk⟩` from `Nat.exists_eq_add_of_le' (Finset.le_sup (f := m) (Finset.mem_univ (i, j)))`. Express the relevant statement in the definitionally equal form `F.presheaf.map (homOfLE inf_le_left).op _ = F.presheaf.map (homOfLE inf_le_right).op _`. Rewrite using `[F.map_smul, F.map_smul, map_pow, map_pow, res_res_ring, res_res_ring, ← sub_eq_zero, ← smul_sub, hk, pow_add, mul_smul, hm (i, j), smul_zero])`. Use `replace hT (i : ι) : F.presheaf.map (homOfLE (hle i)).op T = X.presheaf.map (homOfLE (hle i)).op f ^ Finset.univ.sup m • t i := hT i`.
+
+Use `⟨Finset.univ.sup m + N, T, section_eq_of_cover F (fun i ↦ 𝒰 i ⊓ X.basicOpen f) (fun _ ↦ inf_le_right) ?_ _ _ fun i ↦ ?_⟩` and prove the remaining obligations. Rewrite using `[← iSup_inf_eq, ← hcov]`. Conclude with `le_inf (X.basicOpen_le f) le_rfl`. Rewrite using `[res_res, ← res_res F (hle i) inf_le_left, hT, F.map_smul, F.map_smul, map_pow, map_pow, res_res_ring, res_res_ring, ht' _ _ _ inf_le_right, pow_add, mul_smul]`.
+-/
 theorem exists_pow_res_smul_eq_res_of_qcqs (hU : IsCompact (U : Set X))
     (hU' : IsQuasiSeparated (U : Set X)) (f : Γ(X, U)) (s : Γ(F, X.basicOpen f)) :
     ∃ (n : ℕ) (t : Γ(F, U)), X.presheaf.map (homOfLE (X.basicOpen_le f)).op f ^ n • s =
@@ -107,6 +131,9 @@ section Push
 
 variable {X Y : Scheme.{u}} (f : X ⟶ Y) (F : X.Modules)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem pushforward_smul (V : Y.Opens) (r : Γ(Y, V))
     (s : Γ((Scheme.Modules.pushforward f).obj F, V)) :
     r • s = (f.app V r • (show Γ(F, f ⁻¹ᵁ V) from s) : Γ(F, f ⁻¹ᵁ V)) := rfl
@@ -138,6 +165,9 @@ instance isQuasicoherent_pushforward [QuasiCompact f] [QuasiSeparated f] [F.IsQu
   · obtain ⟨n, hn⟩ := h₂ t ht
     exact ⟨n, by rw [pushforward_smul, map_pow]; exact hn⟩
 
+/- English proof (translation)
+Use `letI := (f.app V).hom.toAlgebra`. Use `haveI : Module.Finite Γ(Y, V) Γ(X, f ⁻¹ᵁ V) := f.finite_app V hV`. Use `letI : Module Γ(Y, V) Γ(F, f ⁻¹ᵁ V) := Module.compHom _ (f.app V).hom`. Use `haveI : IsScalarTower Γ(Y, V) Γ(X, f ⁻¹ᵁ V) Γ(F, f ⁻¹ᵁ V) := .of_algebraMap_smul fun _ _ ↦ rfl`. Conclude with `Module.Finite.trans (R := Γ(Y, V)) Γ(X, f ⁻¹ᵁ V) Γ(F, f ⁻¹ᵁ V)`.
+-/
 theorem finite_sections_pushforward [IsFinite f] {V : Y.Opens} (hV : IsAffineOpen V)
     [hF : Module.Finite Γ(X, f ⁻¹ᵁ V) Γ(F, f ⁻¹ᵁ V)] :
     Module.Finite Γ(Y, V) Γ((Scheme.Modules.pushforward f).obj F, V) := by
@@ -153,6 +183,9 @@ section Sections
 
 variable {X Y : Scheme.{u}}
 
+/- English proof (translation)
+The claim follows from `congr($(φ.mapPresheaf.naturality (homOfLE h).op) s)`.
+-/
 theorem hom_app_res {F F' : X.Modules} (φ : F ⟶ F') {U V : X.Opens} (h : V ≤ U) (s : Γ(F, U)) :
     φ.app V (F.presheaf.map (homOfLE h).op s) = F'.presheaf.map (homOfLE h).op (φ.app U s) :=
   congr($(φ.mapPresheaf.naturality (homOfLE h).op) s)
@@ -163,6 +196,9 @@ def homAppLinear {F F' : X.Modules} (φ : F ⟶ F') (U : X.Opens) : Γ(F, U) →
   map_smul' := φ.app_smul
 
 @[simp]
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem homAppLinear_apply {F F' : X.Modules} (φ : F ⟶ F') (U : X.Opens) (s : Γ(F, U)) :
     homAppLinear φ U s = φ.app U s := rfl
 
@@ -174,10 +210,16 @@ abbrev appLEAlgebra (e : U ≤ f ⁻¹ᵁ V) : Algebra Γ(Y, V) Γ(X, U) :=
 abbrev appLEModule (e : U ≤ f ⁻¹ᵁ V) : Module Γ(Y, V) Γ(F, U) :=
   Module.compHom Γ(F, U) (f.appLE V U e).hom
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem appLEModule_smul (e : U ≤ f ⁻¹ᵁ V) (r : Γ(Y, V)) (s : Γ(F, U)) :
     letI := appLEModule f F e
     r • s = f.appLE V U e r • s := rfl
 
+/- English proof (translation)
+The claim follows from `letI := appLEAlgebra f e letI := appLEModule f F e .of_algebraMap_smul fun _ _ ↦ rfl`.
+-/
 theorem appLE_isScalarTower (e : U ≤ f ⁻¹ᵁ V) :
     letI := appLEAlgebra f e
     letI := appLEModule f F e
@@ -200,20 +242,32 @@ def pullbackSections (e : U ≤ f ⁻¹ᵁ V) :
         $(((Scheme.Modules.pullbackPushforwardAdjunction f).unit.app G).app_smul r s))).trans
         (((Scheme.Modules.pullback f).obj G).map_smul (homOfLE e) (f.app V r) _) }
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem pullbackSections_apply (e : U ≤ f ⁻¹ᵁ V) (s : Γ(G, V)) :
     pullbackSections f G e s = ((Scheme.Modules.pullback f).obj G).presheaf.map (homOfLE e).op
       (((Scheme.Modules.pullbackPushforwardAdjunction f).unit.app G).app V s) := rfl
 
+/- English proof (translation)
+The claim follows from `letI := appLEModule f ((Scheme.Modules.pullback f).obj G) e (pullbackSections f G e).map_smul r s`.
+-/
 theorem pullbackSections_smul (e : U ≤ f ⁻¹ᵁ V) (r : Γ(Y, V)) (s : Γ(G, V)) :
     pullbackSections f G e (r • s) = f.appLE V U e r • pullbackSections f G e s :=
   letI := appLEModule f ((Scheme.Modules.pullback f).obj G) e
   (pullbackSections f G e).map_smul r s
 
+/- English proof (translation)
+The claim follows from `res_res _ _ _ _`.
+-/
 theorem res_pullbackSections (e : U ≤ f ⁻¹ᵁ V) (h : U' ≤ U) (s : Γ(G, V)) :
     ((Scheme.Modules.pullback f).obj G).presheaf.map (homOfLE h).op (pullbackSections f G e s) =
       pullbackSections f G (h.trans e) s :=
   res_res _ _ _ _
 
+/- English proof (translation)
+The claim follows from `(congr(((Scheme.Modules.pullback f).obj G).presheaf.map (homOfLE e).op $(hom_app_res ((Scheme.Modules.pullbackPushforwardAdjunction f).unit.app G) h s))).trans (res_res ((Scheme.Modules.pullback f).obj G) (f.preimage_mono h) e _)`.
+-/
 theorem pullbackSections_res (e : U ≤ f ⁻¹ᵁ V') (h : V' ≤ V) (s : Γ(G, V)) :
     pullbackSections f G e (G.presheaf.map (homOfLE h).op s) =
       pullbackSections f G (e.trans (f.preimage_mono h)) s :=
@@ -221,6 +275,9 @@ theorem pullbackSections_res (e : U ≤ f ⁻¹ᵁ V') (h : V' ≤ V) (s : Γ(G,
     $(hom_app_res ((Scheme.Modules.pullbackPushforwardAdjunction f).unit.app G) h s))).trans
     (res_res ((Scheme.Modules.pullback f).obj G) (f.preimage_mono h) e _)
 
+/- English proof (translation)
+Use `(hom_app_res ((Scheme.Modules.pullback f).map φ) e _).trans ?_` and prove the remaining obligations. Rewrite using `[pullbackSections_apply]`. Use `congr 1`. Conclude with `congr(($((Scheme.Modules.pullbackPushforwardAdjunction f).unit.naturality φ)).app V s).symm`.
+-/
 theorem pullback_map_app_pullbackSections {G G' : Y.Modules} (φ : G ⟶ G') (e : U ≤ f ⁻¹ᵁ V)
     (s : Γ(G, V)) :
     ((Scheme.Modules.pullback f).map φ).app U (pullbackSections f G e s) =
@@ -230,6 +287,9 @@ theorem pullback_map_app_pullbackSections {G G' : Y.Modules} (φ : G ⟶ G') (e 
   congr 1
   exact congr(($((Scheme.Modules.pullbackPushforwardAdjunction f).unit.naturality φ)).app V s).symm
 
+/- English proof (translation)
+Substitute `e` using the available equality. Establish `: ⇑(F.presheaf.map (homOfLE h).op) = id` using `funext (res_self F h)`. Rewrite using `[this]`. Conclude with `Function.bijective_id`.
+-/
 theorem res_bijective_of_eq (h : U' ≤ U) (e : U' = U) :
     Function.Bijective (F.presheaf.map (homOfLE h).op) := by
   subst e
@@ -237,6 +297,9 @@ theorem res_bijective_of_eq (h : U' ≤ U) (e : U' = U) :
   rw [this]
   exact Function.bijective_id
 
+/- English proof (translation)
+Rewrite using `[Scheme.Hom.image_top_eq_opensRange, hU.opensRange_fromSpec]`.
+-/
 theorem fromSpec_image_top (hU : IsAffineOpen U) : hU.fromSpec ''ᵁ ⊤ = U := by
   rw [Scheme.Hom.image_top_eq_opensRange, hU.opensRange_fromSpec]
 
@@ -248,6 +311,9 @@ def sectionsEquivFromSpec (hU : IsAffineOpen U) :
       map_smul' r s := (F.map_smul _ r s).trans (restrict_fromSpec_smul F hU ⊤ r _).symm }
     (res_bijective_of_eq F _ (fromSpec_image_top hU))
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem sectionsEquivFromSpec_apply (hU : IsAffineOpen U) (s : Γ(F, U)) :
     sectionsEquivFromSpec F hU s = F.presheaf.map (homOfLE (fromSpec_image_le hU ⊤)).op s := rfl
 
@@ -287,6 +353,9 @@ def tildePullbackIso :
     (tilde.adjunction.comp (Scheme.Modules.pullbackPushforwardAdjunction (Spec.map φ)))
 
 set_option backward.isDefEq.respectTransparency false in
+/- English proof (translation)
+Use `Adjunction.unit_leftAdjointUniq_hom_app (((ModuleCat.extendRestrictScalarsAdj φ.hom).comp tilde.adjunction).ofNatIsoRight (pushforwardSpecΓIso φ)) (tilde.adjunction.comp (Scheme.Modules.pullbackPushforwardAdjunction (Spec.map φ))) M` as an intermediate fact. Conclude with `congr($this m)`.
+-/
 theorem tildePullbackIso_hom_app_toOpen (M : ModuleCat.{u} R) (m : M) :
     ((tildePullbackIso φ).hom.app M).app ⊤
       (tilde.toOpen ((ModuleCat.extendScalars φ.hom).obj M) ⊤
@@ -307,6 +376,9 @@ def tildeIsoPullback (M : (Spec R).Modules) [M.IsQuasicoherent] :
   haveI := Scheme.Modules.isIso_fromTildeΓ_of_isQuasicoherent M
   (tildePullbackIso φ).app _ ≪≫ (Scheme.Modules.pullback (Spec.map φ)).mapIso (asIso M.fromTildeΓ)
 
+/- English proof (translation)
+The claim follows from `(SheafOfModules.isQuasicoherent (Spec S).ringCatSheaf).prop_of_iso (tildeIsoPullback φ M) (inferInstanceAs (tilde ((ModuleCat.extendScalars φ.hom).obj (moduleSpecΓFunctor.obj M))).IsQuasicoherent)`.
+-/
 theorem isQuasicoherent_pullback_Spec (M : (Spec R).Modules) [M.IsQuasicoherent] :
     ((Scheme.Modules.pullback (Spec.map φ)).obj M).IsQuasicoherent :=
   (SheafOfModules.isQuasicoherent (Spec S).ringCatSheaf).prop_of_iso (tildeIsoPullback φ M)
@@ -314,6 +386,11 @@ theorem isQuasicoherent_pullback_Spec (M : (Spec R).Modules) [M.IsQuasicoherent]
       (moduleSpecΓFunctor.obj M))).IsQuasicoherent)
 
 set_option backward.isDefEq.respectTransparency false in
+/- English proof (translation)
+Use `letI := φ.hom.toAlgebra`. Use `⟨(tilde.isoTop ((ModuleCat.extendScalars φ.hom).obj (moduleSpecΓFunctor.obj M)) ≪≫ moduleSpecΓFunctor.mapIso (tildeIsoPullback φ M)).toLinearEquiv, fun m ↦ ?_⟩` and prove the remaining obligations. Establish `h₁` using `tildePullbackIso_hom_app_toOpen φ (moduleSpecΓFunctor.obj M) m`. Establish `h₂` using `congr(($((Scheme.Modules.pullbackPushforwardAdjunction (Spec.map φ)).unit.naturality M.fromTildeΓ)).app ⊤ (tilde.toOpen (moduleSpecΓFunctor.obj M) ⊤ m))`. Establish `h₃ : M.fromTildeΓ.app ⊤ (tilde.toOpen (moduleSpecΓFunctor.obj M) ⊤ m) = m` using `(congr($(Scheme.Modules.toOpen_fromTildeΓ_app M ⊤) m)).trans (res_self M le_rfl m)`.
+
+Use `Eq.trans congr(((Scheme.Modules.pullback (Spec.map φ)).map M.fromTildeΓ).app ⊤ $h₁) ?_` and prove the remaining obligations. Use `h₂.symm.trans ?_` and prove the remaining obligations. Conclude with `congr(((Scheme.Modules.pullbackPushforwardAdjunction (Spec.map φ)).unit.app M).app ⊤ $h₃)`.
+-/
 theorem exists_equiv_pullback_Spec (M : (Spec R).Modules) [M.IsQuasicoherent] :
     letI := φ.hom.toAlgebra
     ∃ e : S ⊗[R] Γ(M, ⊤) ≃ₗ[S] Γ((Scheme.Modules.pullback (Spec.map φ)).obj M, ⊤),
@@ -348,6 +425,9 @@ def restrictPullbackIso :
     ((Scheme.Modules.pullbackPushforwardAdjunction f).comp (Scheme.Modules.restrictAdjunction j))
 
 set_option backward.isDefEq.respectTransparency false in
+/- English proof (translation)
+Use `Adjunction.unit_leftAdjointUniq_hom_app (((Scheme.Modules.restrictAdjunction i).comp (Scheme.Modules.pullbackPushforwardAdjunction p)).ofNatIsoRight (Scheme.Modules.pushforwardComp p i ≪≫ Scheme.Modules.pushforwardCongr w ≪≫ (Scheme.Modules.pushforwardComp j f).symm)) ((Scheme.Mo …` as an intermediate fact. Conclude with `congr(($this).app V s)`.
+-/
 theorem restrictPullbackIso_hom_app_unit (G : Y.Modules) (V : Y.Opens) (s : Γ(G, V)) :
     ((restrictPullbackIso w).hom.app G).app (j ⁻¹ᵁ f ⁻¹ᵁ V)
       (((Scheme.Modules.pullback p).obj (G.restrict i)).presheaf.map
@@ -367,6 +447,13 @@ theorem restrictPullbackIso_hom_app_unit (G : Y.Modules) (V : Y.Opens) (s : Γ(G
 
 set_option backward.isDefEq.respectTransparency false in
 
+/- English proof (translation)
+Establish `h₁ : U' ≤ j ⁻¹ᵁ f ⁻¹ᵁ V` using `(j.preimage_image_eq U').ge.trans (j.preimage_mono e)`. Establish `h₂ : V' ≤ i ⁻¹ᵁ V` using `(i.preimage_image_eq V').ge.trans (i.preimage_mono hV)`. Establish `h₃ : j ⁻¹ᵁ f ⁻¹ᵁ V ≤ p ⁻¹ᵁ i ⁻¹ᵁ V`. Rewrite using `[← Scheme.Hom.comp_preimage, ← w, Scheme.Hom.comp_preimage]`. Establish `H : ((restrictPullbackIso w).hom.app G).app (j ⁻¹ᵁ f ⁻¹ᵁ V) (pullbackSections p (G.restrict i) h₃ (G.presheaf.map (homOfLE (i.image_preimage_le V)).op s)) = pullbackSections f G (j.image_preimage_le (f ⁻¹ᵁ V)) s` using `restrictPullbackIso_hom_app_unit w G V s`.
+
+Establish `H₁` using `hom_app_res ((restrictPullbackIso w).hom.app G) h₁ (pullbackSections p (G.restrict i) h₃ (G.presheaf.map (homOfLE (i.image_preimage_le V)).op s))`. Establish `H₂` using `res_pullbackSections p (G.restrict i) h₃ h₁ (G.presheaf.map (homOfLE (i.image_preimage_le V)).op s)`. Establish `H₃` using `pullbackSections_res p (G.restrict i) e' h₂ (G.presheaf.map (homOfLE (i.image_preimage_le V)).op s)`. Establish `H₄` using `res_res G (i.image_preimage_le V) (i.image_mono h₂) s`. Establish `H₅` using `res_pullbackSections f G (j.image_preimage_le (f ⁻¹ᵁ V)) (j.image_mono h₁) s`.
+
+Rewrite `H₁` using `[H]`. Use `Eq.trans ?_ (H₁.trans H₅)` and prove the remaining obligations. Conclude with `congr(((restrictPullbackIso w).hom.app G).app U' $(congr(pullbackSections p (G.restrict i) e' $H₄).symm.trans (H₃.trans H₂.symm)))`.
+-/
 theorem restrictPullbackIso_hom_app_pullbackSections (G : Y.Modules) {V : Y.Opens} {V' : Y'.Opens}
     {U' : X'.Opens} (hV : i ''ᵁ V' ≤ V) (e' : U' ≤ p ⁻¹ᵁ V') (e : j ''ᵁ U' ≤ f ⁻¹ᵁ V)
     (s : Γ(G, V)) :
@@ -401,6 +488,9 @@ section Pull
 
 variable {X Y : Scheme.{u}} (f : X ⟶ Y) (G : Y.Modules) {U : X.Opens} {V : Y.Opens}
 
+/- English proof (translation)
+Take `⟨_, ⟨V, hV, rfl⟩, hxV, -⟩` from `Y.isBasis_affineOpens.exists_subset_of_mem_open (Set.mem_univ (f x)) isOpen_univ`. Take `⟨_, ⟨U, hU, rfl⟩, hxU, hle⟩` from `X.isBasis_affineOpens.exists_subset_of_mem_open (show x ∈ W ⊓ f ⁻¹ᵁ V from ⟨hx, hxV⟩) (W ⊓ f ⁻¹ᵁ V).2`. Conclude with `⟨U, V, hU, hV, hxU, fun _ h ↦ (hle h).1, fun _ h ↦ (hle h).2⟩`.
+-/
 theorem exists_affine_pair (x : X) {W : X.Opens} (hx : x ∈ W) :
     ∃ (U : X.Opens) (V : Y.Opens), IsAffineOpen U ∧ IsAffineOpen V ∧ x ∈ U ∧ U ≤ W ∧
       U ≤ f ⁻¹ᵁ V := by
@@ -425,6 +515,9 @@ instance isQuasicoherent_pullback : ((Scheme.Modules.pullback f).obj G).IsQuasic
 
 set_option backward.isDefEq.respectTransparency false in
 
+/- English proof (translation)
+The claim follows from `appLE_isScalarTower f ((Scheme.Modules.pullback f).obj G) e IsBaseChange Γ(X, U) (pullbackSections f G e) := by letI := appLEAlgebra f e letI := appLEModule f ((Scheme.Modules.pullback f).obj G) e haveI := appLE_isScalarTower f ((Scheme.Modules.pullback f).obj G) e obtain ⟨a, ha⟩ …`.
+-/
 theorem isBaseChange_pullbackSections (hU : IsAffineOpen U) (hV : IsAffineOpen V)
     (e : U ≤ f ⁻¹ᵁ V) :
     letI := appLEAlgebra f e
@@ -449,6 +542,11 @@ theorem isBaseChange_pullbackSections (hU : IsAffineOpen U) (hV : IsAffineOpen V
     (fromSpec_image_le hV ⊤) le_rfl _ s)
   exact congr(κ $(res_self _ le_rfl _)).symm
 
+/- English proof (translation)
+Take `rfl : mod = appLEModule f _ e` from `Module.ext' _ _ fun r s ↦ by`. Rewrite using `[appLEModule_smul, ← halg, algebraMap_smul]`. Take `rfl : alg = appLEAlgebra f e` from `Algebra.algebra_ext _ _ halg`. Use `letI := appLEModule f ((Scheme.Modules.pullback f).obj G) e`. Take `rfl : l = pullbackSections f G e` from `LinearMap.ext hl`.
+
+Conclude with `isBaseChange_pullbackSections f G hU hV e`.
+-/
 theorem isBaseChange_of_eq_pullbackSections (hU : IsAffineOpen U) (hV : IsAffineOpen V)
     (e : U ≤ f ⁻¹ᵁ V) [alg : Algebra Γ(Y, V) Γ(X, U)]
     [mod : Module Γ(Y, V) Γ((Scheme.Modules.pullback f).obj G, U)]
@@ -463,6 +561,11 @@ theorem isBaseChange_of_eq_pullbackSections (hU : IsAffineOpen U) (hV : IsAffine
   obtain rfl : l = pullbackSections f G e := LinearMap.ext hl
   exact isBaseChange_pullbackSections f G hU hV e
 
+/- English proof (translation)
+Use `letI : Module Γ(Y, V) Γ((Scheme.Modules.pullback f).obj G, U) := Module.compHom _ (algebraMap Γ(Y, V) Γ(X, U))`. Use `haveI : IsScalarTower Γ(Y, V) Γ(X, U) Γ((Scheme.Modules.pullback f).obj G, U) := .of_algebraMap_smul fun _ _ ↦ rfl`. Establish `h` using `isBaseChange_of_eq_pullbackSections f G hU hV e halg { toFun := pullbackSections f G e map_add' s t := by rw [← hl, ← hl, ← hl, map_add] map_smul' r s := by`. Rewrite using `[pullbackSections_smul, ← halg]`. Use `rfl } fun _ ↦ rfl`.
+
+Use `IsBaseChange.of_equiv ((Algebra.IsPushout.cancelBaseChange A B Γ(Y, V) Γ(X, U) Γ(G, V)).symm ≪≫ₗ h.equiv.restrictScalars B) fun s ↦ ?_` and prove the remaining obligations. Simplify using `[hl]`.
+-/
 theorem isBaseChange_pullbackSections_of_isPushout (hU : IsAffineOpen U) (hV : IsAffineOpen V)
     (e : U ≤ f ⁻¹ᵁ V) {A B : Type*} [CommRing A] [CommRing B] [Algebra A B]
     [Algebra A Γ(Y, V)] [Algebra B Γ(X, U)] [Algebra A Γ(X, U)] [Algebra Γ(Y, V) Γ(X, U)]
@@ -491,6 +594,9 @@ theorem isBaseChange_pullbackSections_of_isPushout (hU : IsAffineOpen U) (hV : I
       h.equiv.restrictScalars B) fun s ↦ ?_
   simp [hl]
 
+/- English proof (translation)
+The claim follows from `letI := appLEAlgebra f e letI := appLEModule f ((Scheme.Modules.pullback f).obj G) e haveI := appLE_isScalarTower f ((Scheme.Modules.pullback f).obj G) e Module.Finite.equiv (isBaseChange_pullbackSections f G hU hV e).equiv`.
+-/
 theorem finite_sections_pullback (hU : IsAffineOpen U) (hV : IsAffineOpen V) (e : U ≤ f ⁻¹ᵁ V)
     [Module.Finite Γ(Y, V) Γ(G, V)] :
     Module.Finite Γ(X, U) Γ((Scheme.Modules.pullback f).obj G, U) :=
@@ -505,6 +611,9 @@ section Exact
 
 variable {X Y : Scheme.{u}} {F F' : X.Modules}
 
+/- English proof (translation)
+Establish `: Mono ((Scheme.Modules.toPresheaf X).map φ)` using `inferInstance`. Establish `: Mono (((Scheme.Modules.toPresheaf X).map φ).app (op U))` using `(NatTrans.mono_iff_mono_app _).mp this _`. Conclude with `(AddCommGrpCat.mono_iff_injective _).mp this`.
+-/
 theorem app_injective_of_mono (φ : F ⟶ F') [Mono φ] (U : X.Opens) :
     Function.Injective (φ.app U) := by
   have : Mono ((Scheme.Modules.toPresheaf X).map φ) := inferInstance
@@ -512,6 +621,11 @@ theorem app_injective_of_mono (φ : F ⟶ F') [Mono φ] (U : X.Opens) :
     (NatTrans.mono_iff_mono_app _).mp this _
   exact (AddCommGrpCat.mono_iff_injective _).mp this
 
+/- English proof (translation)
+Use `(Scheme.Modules.toPresheaf X).mono_of_mono_map ((NatTrans.mono_iff_mono_app _).mpr ?_)` and prove the remaining obligations. Introduce and unpack `⟨W⟩`. Use `(AddCommGrpCat.mono_iff_injective _).mpr fun s t e ↦ ?_` and prove the remaining obligations. Use `choose 𝒰 hx hle hinj using fun x : W ↦ h W x x.2`. Use `section_eq_of_cover F 𝒰 hle (fun x hxW ↦ Opens.mem_iSup.mpr ⟨⟨x, hxW⟩, hx _⟩) s t fun i ↦ hinj i ?_` and prove the remaining obligations.
+
+Use `(hom_app_res φ (hle i) s).trans (Eq.trans ?_ (hom_app_res φ (hle i) t).symm)` and prove the remaining obligations. Conclude with `congr(F'.presheaf.map (homOfLE (hle i)).op $e)`.
+-/
 theorem mono_of_locally_app_injective (φ : F ⟶ F')
     (h : ∀ (W : X.Opens) (x : X), x ∈ W → ∃ U : X.Opens, x ∈ U ∧ U ≤ W ∧
       Function.Injective (φ.app U)) : Mono φ := by
@@ -524,6 +638,11 @@ theorem mono_of_locally_app_injective (φ : F ⟶ F')
   refine (hom_app_res φ (hle i) s).trans (Eq.trans ?_ (hom_app_res φ (hle i) t).symm)
   exact congr(F'.presheaf.map (homOfLE (hle i)).op $e)
 
+/- English proof (translation)
+Use `⟨fun {H} a b e ↦ Scheme.Modules.hom_ext _ _ fun W ↦ ?_⟩` and prove the remaining obligations. Use extensionality with `s`. Use `choose 𝒰 hx hle hsurj using fun x : W ↦ h W x x.2`. Use `section_eq_of_cover H 𝒰 hle (fun x hxW ↦ Opens.mem_iSup.mpr ⟨⟨x, hxW⟩, hx _⟩) _ _ fun i ↦ ?_` and prove the remaining obligations. Take `⟨t, ht⟩` from `hsurj i (F'.presheaf.map (homOfLE (hle i)).op s)`.
+
+Use `(hom_app_res a (hle i) s).symm.trans (Eq.trans ?_ (hom_app_res b (hle i) s))` and prove the remaining obligations. Rewrite using `[← ht]`. Conclude with `congr(($e).app (𝒰 i) t)`.
+-/
 theorem epi_of_locally_app_surjective (φ : F ⟶ F')
     (h : ∀ (W : X.Opens) (x : X), x ∈ W → ∃ U : X.Opens, x ∈ U ∧ U ≤ W ∧
       Function.Surjective (φ.app U)) : Epi φ := by
@@ -539,6 +658,13 @@ theorem epi_of_locally_app_surjective (φ : F ⟶ F')
 
 set_option backward.isDefEq.respectTransparency false in
 
+/- English proof (translation)
+Set `ψ` to `(Scheme.Modules.restrictFunctor hU.fromSpec).map φ`. Establish `h` using `(Scheme.Modules.fromTildeΓNatTrans (R := Γ(X, U))).naturality ψ`. Establish `h₁ : IsIso ((Scheme.Modules.fromTildeΓNatTrans (R` using `Γ(X, U))).app (F.restrict hU.fromSpec)) := Scheme.Modules.isIso_fromTildeΓ_of_isQuasicoherent (F.restrict hU.fromSpec)`. Establish `h₂ : IsIso ((Scheme.Modules.fromTildeΓNatTrans (R` using `Γ(X, U))).app (F'.restrict hU.fromSpec)) := Scheme.Modules.isIso_fromTildeΓ_of_isQuasicoherent (F'.restrict hU.fromSpec)`. Establish `h₃ : Epi ((𝟭 _).map ψ)` using `inferInstanceAs (Epi ψ)`.
+
+Establish `h₄ : Epi ((moduleSpecΓFunctor ⋙ tilde.functor Γ(X, U)).map ψ)`. Rewrite using `[← epi_comp_iff_of_isIso _ ((Scheme.Modules.fromTildeΓNatTrans (R := Γ(X, U))).app (F'.restrict hU.fromSpec)), h]`. Use `infer_instance`. Establish `h₅ : Epi (moduleSpecΓFunctor.map ψ)` using `(tilde.functor Γ(X, U)).epi_of_epi_map h₄`. Establish `h₆ : Function.Surjective (φ.app (hU.fromSpec ''ᵁ ⊤))` using `(ModuleCat.epi_iff_surjective (moduleSpecΓFunctor.map ψ)).mp h₅`.
+
+Rewrite `h₆` using `[fromSpec_image_top hU]`. Then use the resulting hypothesis.
+-/
 theorem app_surjective_of_epi_of_isAffineOpen (φ : F ⟶ F') [Epi φ] [F.IsQuasicoherent]
     [F'.IsQuasicoherent] {U : X.Opens} (hU : IsAffineOpen U) :
     Function.Surjective (φ.app U) := by
@@ -562,12 +688,18 @@ theorem app_surjective_of_epi_of_isAffineOpen (φ : F ⟶ F') [Epi φ] [F.IsQuas
 
 variable (f : X ⟶ Y)
 
+/- English proof (translation)
+Use `epi_of_locally_app_surjective _ fun W y hy ↦ ?_` and prove the remaining obligations. Take `⟨_, ⟨V, hV, rfl⟩, hyV, hle⟩` from `Y.isBasis_affineOpens.exists_subset_of_mem_open hy W.2`. Conclude with `⟨V, hyV, hle, app_surjective_of_epi_of_isAffineOpen φ (IsAffineOpen.preimage hV f)⟩`.
+-/
 theorem epi_pushforward_map [IsAffineHom f] (φ : F ⟶ F') [Epi φ] [F.IsQuasicoherent]
     [F'.IsQuasicoherent] : Epi ((Scheme.Modules.pushforward f).map φ) := by
   refine epi_of_locally_app_surjective _ fun W y hy ↦ ?_
   obtain ⟨_, ⟨V, hV, rfl⟩, hyV, hle⟩ := Y.isBasis_affineOpens.exists_subset_of_mem_open hy W.2
   exact ⟨V, hyV, hle, app_surjective_of_epi_of_isAffineOpen φ (IsAffineOpen.preimage hV f)⟩
 
+/- English proof (translation)
+Use `hS.mono_f` as an intermediate fact. Use `hS.epi_g` as an intermediate fact. Conclude with `ShortComplex.ShortExact.mk' (hS.exact.map_of_mono_of_preservesKernel _ hS.mono_f inferInstance) (inferInstanceAs (Mono ((Scheme.Modules.pushforward f).map S.f))) (epi_pushforward_map f S.g)`.
+-/
 theorem shortExact_map_pushforward [IsAffineHom f] {S : ShortComplex X.Modules}
     (hS : S.ShortExact) [S.X₂.IsQuasicoherent] [S.X₃.IsQuasicoherent] :
     (S.map (Scheme.Modules.pushforward f)).ShortExact := by
@@ -577,11 +709,19 @@ theorem shortExact_map_pushforward [IsAffineHom f] {S : ShortComplex X.Modules}
     (hS.exact.map_of_mono_of_preservesKernel _ hS.mono_f inferInstance)
     (inferInstanceAs (Mono ((Scheme.Modules.pushforward f).map S.f))) (epi_pushforward_map f S.g)
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨hS.map_of_epi_of_preservesCokernel _ inferInstance inferInstance, inferInstanceAs (Epi ((Scheme.Modules.pullback f).map S.g))⟩`.
+-/
 theorem exact_map_pullback {S : ShortComplex Y.Modules} (hS : S.Exact) [Epi S.g] :
     (S.map (Scheme.Modules.pullback f)).Exact ∧ Epi (S.map (Scheme.Modules.pullback f)).g :=
   ⟨hS.map_of_epi_of_preservesCokernel _ inferInstance inferInstance,
     inferInstanceAs (Epi ((Scheme.Modules.pullback f).map S.g))⟩
 
+/- English proof (translation)
+Establish `: b ∘ₗ hl.equiv.toLinearMap = hl'.equiv.toLinearMap ∘ₗ a.baseChange B`. Use extensionality with `m`. Simplify using `[hab]`. Establish `h : Function.Injective (b ∘ₗ hl.equiv.toLinearMap)`. Rewrite using `[this]`.
+
+Conclude with `hl'.equiv.injective.comp (Module.Flat.lTensor_preserves_injective_linearMap a ha)`. Conclude with `Function.Injective.of_comp_right h hl.equiv.surjective`.
+-/
 theorem injective_of_isBaseChange_of_flat {A B M M' N N' : Type*} [CommRing A] [CommRing B]
     [Algebra A B] [Module.Flat A B] [AddCommGroup M] [Module A M] [AddCommGroup M'] [Module A M']
     [AddCommGroup N] [Module A N] [Module B N] [IsScalarTower A B N] [AddCommGroup N']
@@ -596,6 +736,11 @@ theorem injective_of_isBaseChange_of_flat {A B M M' N N' : Type*} [CommRing A] [
     exact hl'.equiv.injective.comp (Module.Flat.lTensor_preserves_injective_linearMap a ha)
   exact Function.Injective.of_comp_right h hl.equiv.surjective
 
+/- English proof (translation)
+Use `mono_of_locally_app_injective _ fun W x hx ↦ ?_` and prove the remaining obligations. Take `⟨U, V, hU, hV, hxU, hle, e⟩` from `exists_affine_pair f x hx`. Use `⟨U, hxU, hle, ?_⟩` and prove the remaining obligations. Use `letI := appLEAlgebra f e`. Use `letI := appLEModule f ((Scheme.Modules.pullback f).obj G) e`.
+
+Use `haveI := appLE_isScalarTower f ((Scheme.Modules.pullback f).obj G) e`. Use `letI := appLEModule f ((Scheme.Modules.pullback f).obj G') e`. Use `haveI := appLE_isScalarTower f ((Scheme.Modules.pullback f).obj G') e`. Use `haveI : Module.Flat Γ(Y, V) Γ(X, U) := f.flat_appLE hV hU e`. Conclude with `injective_of_isBaseChange_of_flat (isBaseChange_pullbackSections f G hU hV e) (isBaseChange_pullbackSections f G' hU hV e) (homAppLinear φ V) (homAppLinear ((Scheme.Modules.pullback f).map φ) U) (pullback_map_app_pullbackSections f φ e) (app_injective_of_mono φ V)`.
+-/
 theorem mono_pullback_map [Flat f] {G G' : Y.Modules} (φ : G ⟶ G') [Mono φ] [G.IsQuasicoherent]
     [G'.IsQuasicoherent] : Mono ((Scheme.Modules.pullback f).map φ) := by
   refine mono_of_locally_app_injective _ fun W x hx ↦ ?_
@@ -612,6 +757,9 @@ theorem mono_pullback_map [Flat f] {G G' : Y.Modules} (φ : G ⟶ G') [Mono φ] 
     (homAppLinear ((Scheme.Modules.pullback f).map φ) U)
     (pullback_map_app_pullbackSections f φ e) (app_injective_of_mono φ V)
 
+/- English proof (translation)
+Use `hS.mono_f` as an intermediate fact. Use `hS.epi_g` as an intermediate fact. Conclude with `ShortComplex.ShortExact.mk' (exact_map_pullback f hS.exact).1 (mono_pullback_map f S.f) (exact_map_pullback f hS.exact).2`.
+-/
 theorem shortExact_map_pullback [Flat f] {S : ShortComplex Y.Modules}
     (hS : S.ShortExact) [S.X₁.IsQuasicoherent] [S.X₂.IsQuasicoherent] :
     (S.map (Scheme.Modules.pullback f)).ShortExact := by
@@ -622,6 +770,9 @@ theorem shortExact_map_pullback [Flat f] {S : ShortComplex Y.Modules}
 
 end Exact
 
+/- English proof (translation)
+Use `⟨fun _ _ F _ ↦ inferInstance, fun hf F _ hF ↦ ?_, fun _ S hS _ _ ↦ shortExact_map_pushforward f hS, fun G _ ↦ ⟨inferInstance, fun _ _ hU hV e ↦ isBaseChange_pullbackSections f G hU hV e⟩, fun S hS _ ↦ exact_map_pullback f hS, fun _ S hS _ _ ↦ shortExact_map_pullback f hS⟩` and prove the remaining obligations. Establish `: IsFinite f` using `hf.elim id fun _ ↦ inferInstance`. Conclude with `⟨inferInstance, fun V hV ↦ finite_sections_pushforward f F hV (hF := hF _ (hV.preimage f))⟩`.
+-/
 theorem quasicoherent_push_pull {X Y : Scheme.{u}} (f : X ⟶ Y) :
     (QuasiCompact f → QuasiSeparated f → ∀ F : X.Modules, F.IsQuasicoherent →
       ((Scheme.Modules.pushforward f).obj F).IsQuasicoherent) ∧

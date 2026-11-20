@@ -9,6 +9,15 @@ attribute [local instance] Over.cartesianMonoidalCategory
 
 namespace GlobalTheory.PairingLocus
 
+/- English proof (translation)
+Take `⟨m, hm⟩` from `hn.exists_left_inv`. Establish `h₀ : (∑ i ∈ Finset.range n, u ^ i) * (u - 1) = 0` using `by rw [geom_sum_mul, hu, sub_self]`. Establish `h₁ : u * (m * ∑ i ∈ Finset.range n, u ^ i) = m * ∑ i ∈ Finset.range n, u ^ i`. Take the linear combination `m * h₀`. Establish `h₂ : ∀ i : ℕ, u ^ i * (m * ∑ i ∈ Finset.range n, u ^ i) = m * ∑ i ∈ Finset.range n, u ^ i`.
+
+Introduce `i`. Proceed by induction on `i with`. Consider the case `zero => rw [pow_zero, _root_.one_mul]`. Consider the case `succ i ih => rw [pow_succ, _root_.mul_assoc, h₁, ih]`. Use `⟨m * ∑ i ∈ Finset.range n, u ^ i, ?_, fun R' _ φ => ⟨fun h => ?_, fun h => ?_⟩⟩` and prove the remaining obligations.
+
+Use `show _ * _ = _`. Rewrite using `[_root_.mul_assoc, Finset.sum_mul, Finset.sum_congr rfl fun i _ => h₂ i, Finset.sum_const, Finset.card_range, nsmul_eq_mul, ← _root_.mul_assoc, hm, _root_.one_mul]`. Use `congrArg φ hm` as an intermediate fact. Simplify using `only [map_mul, map_sum, map_pow, h, one_pow, Finset.sum_const, Finset.card_range, nsmul_eq_mul, _root_.mul_one, map_natCast, map_one] at this ⊢`. Conclude with `this`.
+
+Use `congrArg φ h₁` as an intermediate fact. Rewrite `this` using `[map_mul, h, _root_.mul_one]`. Then use the resulting hypothesis.
+-/
 theorem exists_idempotent {R : Type} [CommRing R] {n : ℕ} (hn : IsUnit (n : R)) {u : R} (hu : u ^ n = 1) :
     ∃ e : R, IsIdempotentElem e ∧ ∀ (R' : Type) [CommRing R'] (φ : R →+* R'), φ u = 1 ↔ φ e = 1 := by
   obtain ⟨m, hm⟩ := hn.exists_left_inv
@@ -31,6 +40,13 @@ theorem exists_idempotent {R : Type} [CommRing R] {n : ℕ} (hn : IsUnit (n : R)
   · have := congrArg φ h₁
     rwa [map_mul, h, _root_.mul_one] at this
 
+/- English proof (translation)
+Establish `: (X.basicOpen e : Set X) = (X.basicOpen (1 - e) : Set X)ᶜ`. Use extensionality with `x`. Prove the components needed by the constructor for the conclusion. Introduce `h h'`. Establish `hx : x ∈ X.basicOpen (e * (1 - e))` using `by rw [Scheme.basicOpen_mul]; exact ⟨h, h'⟩`.
+
+Rewrite `hx` using `[he.mul_one_sub_self, Scheme.basicOpen_zero]`. Conclude with `hx`. Introduce `h`. Break down `IsLocalRing.isUnit_or_isUnit_one_sub_self (X.presheaf.germ ⊤ x trivial e) with h' | h'` into its components or cases. Conclude with `(X.mem_basicOpen e x trivial).2 h'`.
+
+Conclude with `absurd ((X.mem_basicOpen (U := ⊤) (1 - e) x trivial).2 (by rwa [map_sub, map_one])) h`. Rewrite using `[this]`. Conclude with `(X.basicOpen (1 - e)).isOpen.isClosed_compl`.
+-/
 theorem isClosed_basicOpen {X : Scheme.{0}} {e : Γ(X, ⊤)} (he : IsIdempotentElem e) :
     IsClosed (X.basicOpen e : Set X) := by
   have : (X.basicOpen e : Set X) = (X.basicOpen (1 - e) : Set X)ᶜ := by
@@ -47,6 +63,13 @@ theorem isClosed_basicOpen {X : Scheme.{0}} {e : Γ(X, ⊤)} (he : IsIdempotentE
   rw [this]
   exact (X.basicOpen (1 - e)).isOpen.isClosed_compl
 
+/- English proof (translation)
+Establish `p : h ⁻¹ᵁ X.basicOpen e = Y.basicOpen (h.appTop.hom e)` using `Scheme.preimage_basicOpen h e`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `H _ ⟨y, rfl⟩`. Establish `: y ∈ h ⁻¹ᵁ X.basicOpen e`. Rewrite using `[p, H, Scheme.basicOpen_of_isUnit _ isUnit_one]`.
+
+Discharge the goal by the elementary cases of `trivial`. Conclude with `this`. Introduce `H`. Establish `hu : IsUnit (h.appTop.hom e)`. Use `RingedSpace.isUnit_of_isUnit_germ Y.toRingedSpace ⊤ _ fun y hy => ?_` and prove the remaining obligations.
+
+Establish `: y ∈ Y.basicOpen (h.appTop.hom e)` using `by rw [← p]; exact H ⟨y, rfl⟩`. Conclude with `(Y.mem_basicOpen _ y hy).1 this`. Conclude with `hu.mul_left_cancel ((he.map h.appTop.hom).eq.trans (_root_.mul_one _).symm)`.
+-/
 theorem appTop_eq_one_iff {X Y : Scheme.{0}} {e : Γ(X, ⊤)} (he : IsIdempotentElem e) (h : Y ⟶ X) :
     h.appTop.hom e = 1 ↔ Set.range h ⊆ X.basicOpen e := by
   have p : h ⁻¹ᵁ X.basicOpen e = Y.basicOpen (h.appTop.hom e) := Scheme.preimage_basicOpen h e
@@ -62,6 +85,11 @@ theorem appTop_eq_one_iff {X Y : Scheme.{0}} {e : Γ(X, ⊤)} (he : IsIdempotent
       exact (Y.mem_basicOpen _ y hy).1 this
     exact hu.mul_left_cancel ((he.map h.appTop.hom).eq.trans (_root_.mul_one _).symm)
 
+/- English proof (translation)
+Establish `hu : (c * c₀⁻¹).val ^ n = 1`. Rewrite using `[← Units.val_pow_eq_pow_val, mul_pow, inv_pow, hc, hc₀, inv_one, _root_.mul_one, Units.val_one]`. Take `⟨e, he, H⟩` from `exists_idempotent hn hu`. Use `⟨X.basicOpen e, isClosed_basicOpen he, fun Y h => ?_⟩` and prove the remaining obligations. Rewrite using `[← appTop_eq_one_iff he, ← H, ← mul_inv_eq_one, ← map_inv, ← map_mul, ← Units.val_eq_one]`.
+
+Both sides reduce to the same expression.
+-/
 theorem exists_clopen_eq {X : Scheme.{0}} {n : ℕ} (hn : IsUnit (n : Γ(X, ⊤))) {c c₀ : Γ(X, ⊤)ˣ}
     (hc : c ^ n = 1) (hc₀ : c₀ ^ n = 1) :
     ∃ U : X.Opens, IsClosed (U : Set X) ∧ ∀ (Y : Scheme.{0}) (h : Y ⟶ X),
@@ -73,6 +101,11 @@ theorem exists_clopen_eq {X : Scheme.{0}} {n : ℕ} (hn : IsUnit (n : Γ(X, ⊤)
   rw [← appTop_eq_one_iff he, ← H, ← mul_inv_eq_one, ← map_inv, ← map_mul, ← Units.val_eq_one]
   rfl
 
+/- English proof (translation)
+Establish `hpow : ∀ j : ℕ, WeilIs P.A P.L k (x ^ (j + 1)) y (c ^ (j + 1))`. Introduce `j`. Proceed by induction on `j with`. Consider the case `zero => rwa [zero_add, pow_one, pow_one]`. Consider the case `succ j ih => rw [pow_succ, pow_succ c]`.
+
+Conclude with `weilIs_mul_left hG S P k T _ _ _ _ _ ih hc`. Establish `h` using `hpow k`. Rewrite `h` using `[pow_succ, hx, _root_.one_mul]`. Use `CommutatorPairing.weilIs_unique hG P.isAb P.isLB h hc` as an intermediate fact. Rewrite `this` using `[pow_succ, mul_eq_right]`. Then use the resulting hypothesis.
+-/
 theorem pow_eq_one (hG : GlobalFnsSt) {S : Scheme.{0}} (P : PolAV S) (k : ℕ) {T : Over S} {x y : T ⟶ P.A}
     (hx : x ^ k = 1) {c : Γ(T.left, ⊤)ˣ} (hc : WeilIs P.A P.L k x y c) : c ^ k = 1 := by
   have hpow : ∀ j : ℕ, WeilIs P.A P.L k (x ^ (j + 1)) y (c ^ (j + 1)) := by
@@ -85,6 +118,9 @@ theorem pow_eq_one (hG : GlobalFnsSt) {S : Scheme.{0}} (P : PolAV S) (k : ℕ) {
   have := CommutatorPairing.weilIs_unique hG P.isAb P.isLB h hc
   rwa [pow_succ, mul_eq_right] at this
 
+/- English proof (translation)
+Take `⟨U, hU, H⟩` from `exists_clopen_eq hn hc (pow_eq_one hG P n hx h₀)`. Use `⟨U, hU, fun T' h => ?_⟩` and prove the remaining obligations. Establish `h₁` using `CommPairing.weilIs_pull hG P.isAb P.isLB h h₀`. Rewrite using `[← H]`. Conclude with `⟨fun h₂ => CommutatorPairing.weilIs_unique hG P.isAb P.isLB h₂ h₁, fun e => e ▸ h₁⟩`.
+-/
 theorem exists_clopen_of_weilIs (hG : GlobalFnsSt) {S : Scheme.{0}} (P : PolAV S) (n : ℕ) {T : Over S}
     {x y : T ⟶ P.A} {c c₀ : Γ(T.left, ⊤)ˣ} (hn : IsUnit (n : Γ(T.left, ⊤))) (hx : x ^ n = 1) (hc : c ^ n = 1)
     (h₀ : WeilIs P.A P.L n x y c₀) :
@@ -96,6 +132,9 @@ theorem exists_clopen_of_weilIs (hG : GlobalFnsSt) {S : Scheme.{0}} (P : PolAV S
   rw [← H]
   exact ⟨fun h₂ => CommutatorPairing.weilIs_unique hG P.isAb P.isLB h₂ h₁, fun e => e ▸ h₁⟩
 
+/- English proof (translation)
+Introduce `hG hl S P n T x y c _ hn hx hy hc`. Take `⟨c₀, h₀, -⟩` from `CommutatorPairing.existsUnique_weilIs hG hl S P n T x y hx hy`. Conclude with `exists_clopen_of_weilIs hG P n hn hx hc h₀`.
+-/
 theorem exists_clopen_of_lift : GlobalFnsSt → (∀ (S : Scheme.{0}) (P : PolAV S) (N : ℕ) (T : Over S) (x : T ⟶ P.A),
     x ^ N = 1 → ∀ p : T.left, ∃ V : T.left.Opens, p ∈ V ∧
       ∃ θ : ThetaGrp P.A P.L N (overRes V), θ.pt = overResι V ≫ x) →
@@ -108,6 +147,9 @@ theorem exists_clopen_of_lift : GlobalFnsSt → (∀ (S : Scheme.{0}) (P : PolAV
   obtain ⟨c₀, h₀, -⟩ := CommutatorPairing.existsUnique_weilIs hG hl S P n T x y hx hy
   exact exists_clopen_of_weilIs hG P n hn hx hc h₀
 
+/- English proof (translation)
+Take `⟨c₀, h₀, -⟩` from `(hL.weil S P n T).1 x y hx hy`. Conclude with `exists_clopen_of_weilIs hL.globalFns P n hn hx hc h₀`.
+-/
 theorem exists_clopen_of_isLocallyNoetherian (hL : Laws) (S : Scheme.{0}) [IsLocallyNoetherian S] (P : PolAV S)
     (n : ℕ) (T : Over S) (x y : T ⟶ P.A) (c : Γ(T.left, ⊤)ˣ) (hn : IsUnit (n : Γ(T.left, ⊤))) (hx : x ^ n = 1)
     (hy : y ^ n = 1) (hc : c ^ n = 1) :

@@ -8,6 +8,9 @@ attribute [local instance] Over.cartesianMonoidalCategory
 
 namespace GlobalTheory.RealMult
 
+/- English proof (translation)
+Introduce `M W W' hW hW' hle R₀ _`. Unfold `coefSpecMap spMap`. Rewrite using `[← hW.map_fromSpec hW' (homOfLE hle).op, ← Category.assoc, ← Category.assoc, ← Spec.map_comp, ← Spec.map_comp]`. Use `congr 2`.
+-/
 theorem spMap_restrict_comp_coefSpecMap : ∀ (M : Scheme.{0}) (W W' : M.Opens) (hW : IsAffineOpen W) (hW' : IsAffineOpen W') (hle : W' ≤ W)
     (R₀ : Type) [CommRing R₀],
     spMap (Algebra.TensorProduct.map (AlgHom.id R₀ R₀) (M.presheaf.map (homOfLE hle).op).hom.toIntAlgHom :

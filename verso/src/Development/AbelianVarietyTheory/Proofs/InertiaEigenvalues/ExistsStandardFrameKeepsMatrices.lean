@@ -27,6 +27,15 @@ variable {D : D7}
 
 open GlobalTheory.StdFrameExist in
 
+/- English proof (translation)
+Substitute `hn` using the available equality. Establish `hO : IsOrthF V (1 : GL (Fin V.rank) (Lev.EAf D))` using `by show Formalism.UG.cT (sgA D) (1 : Matrix (Fin V.rank) (Fin V.rank) (Lev.EAf D)) * gA V * 1 = 1`. Establish `: gA V = 1` using `by show V.gram.map _ = 1`. Rewrite using `[hg]`. Conclude with `Matrix.map_one _ (map_zero _) (map_one _)`.
+
+Rewrite using `[this, Formalism.UG.cT_one, Matrix.mul_one, Matrix.mul_one]`. Establish `hI : IntM (SI D) ((1 : GL (Fin V.rank) (Lev.EAf D)) : Matrix (Fin V.rank) (Fin V.rank) (Lev.EAf D))` using `fun i j => by`. Rewrite using `[Units.val_one, Matrix.one_apply]`. Use `split_ifs`. Conclude with `(SI D).one_mem`.
+
+Conclude with `(SI D).zero_mem`. Use `⟨rowPsi V 1 hO, ⟨rfl, fun κ a b => ?_⟩, stdFrame_rowPsi hF hV hO hI (by rw [inv_one]; exact hI)⟩` and prove the remaining obligations. Rewrite using `[← GlobalTheory.HeckeTrans.finE_unswap]`. Use `show (Formalism.IndefR.Lev.finE V (psiF V 1 hO κ)).1.map _ a b = _`. Rewrite using `[finE_psiF, inv_one, mul_one, one_mul]`.
+
+Both sides reduce to the same expression.
+-/
 theorem exists_idFrame_of (hF : D.host.F = maximalRealSubfield D.host.E) (V : HSp D) (hg : V.gram = 1)
     (hV : Seed.FrmC.StdLat V) (n : ℕ) (hn : V.rank = n) :
     ∃ P : principalLevelFrame.RowPsi V n, IdFrame hF P ∧ GlobalTheory.Mem.R3.StdFrame hF P := by
@@ -49,6 +58,11 @@ theorem exists_idFrame_of (hF : D.host.F = maximalRealSubfield D.host.E) (V : HS
   rw [finE_psiF, inv_one, mul_one, one_mul]
   rfl
 
+/- English proof (translation)
+Introduce `D hF j hV`. Establish `hL` using `(GlobalTheory.Equiv.StdSpace.lattice_clause_iff (Vc D j)).1 hV.2`. Establish `hS : Seed.FrmC.StdLat (Vc D j)` using `fun x => by`. Rewrite using `[hL]`. Conclude with `forall_congr' fun i => (IsIntegralClosure.isIntegral_iff (A := 𝓞 D.host.E)).symm`.
+
+Conclude with `exists_idFrame_of hF (Vc D j) hV.1 hS D.R.nV (GlobalTheory.IndefiniteRowSideFullHecke.HeckeTransferRankOne.rank_Vc j).1`.
+-/
 theorem exists_idFrame : ∀ (D : D7) (hF : D.host.F = maximalRealSubfield D.host.E) (j : Fin D.R.m), FWT.VStd D j →
     ∃ P : principalLevelFrame.RowPsi (Vc D j) D.R.nV, IdFrame hF P ∧ GlobalTheory.Mem.R3.StdFrame hF P := by
   intro D hF j hV

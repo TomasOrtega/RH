@@ -12,6 +12,13 @@ noncomputable section
 
 namespace NormalCurveRegularPoint
 
+/- English proof (translation)
+Proceed by induction on `g using MvPolynomial.induction_on generalizing z with`. Consider the case `C a => simp`. Consider the case `add p q hp hq`. Establish `hp'` using `(AnalyticOnNhd.eval_mvPolynomial (𝕜 := ℂ) p z trivial).differentiableAt`. Establish `hq'` using `(AnalyticOnNhd.eval_mvPolynomial (𝕜 := ℂ) q z trivial).differentiableAt`.
+
+Simplify using `only [map_add]`. Rewrite using `[fderiv_fun_add hp' hq']`. Simplify using `[hp, hq]`. Consider the case `mul_X p j hp`. Establish `hp'` using `(AnalyticOnNhd.eval_mvPolynomial (𝕜 := ℂ) p z trivial).differentiableAt`.
+
+Establish `hX : DifferentiableAt ℂ (fun x : σ → ℂ => x j) z` using `differentiableAt_apply j z`. Simplify using `only [eval_mul, eval_X]`. Rewrite using `[fderiv_fun_mul hp' hX]`. Simplify using `[hp, Derivation.leibniz, pderiv_X, Pi.single_apply, fderiv_apply, mul_comm]`. Apply the tactic sequence `split_ifs <;> simp`.
+-/
 theorem fderiv_eval_single {σ : Type} [Fintype σ] [DecidableEq σ] (g : MvPolynomial σ ℂ) (z : σ → ℂ) (i : σ) :
     fderiv ℂ (fun x : σ → ℂ => eval x g) z (Pi.single i 1) = eval z (pderiv i g) := by
   induction g using MvPolynomial.induction_on generalizing z with
@@ -32,6 +39,19 @@ theorem fderiv_eval_single {σ : Type} [Fintype σ] [DecidableEq σ] (g : MvPoly
 
 end NormalCurveRegularPoint
 
+/- English proof (translation)
+Introduce `σ _ I w hI hnorm hdim hw`. Take `⟨k, f, D, hk, hfI, hlin, hD, hgen⟩` from `hJ σ I w hI hnorm hdim hw`. Use `set W : Set (σ → ℂ) := {z | eval z D ≠ 0}`. Establish `hWo : IsOpen W` using `isOpen_ne_fun (continuous_eval D) continuous_const`. Establish `hder : ∀ j, (fun i : σ => fderiv ℂ (fun z : σ → ℂ => eval z (f j)) w (Pi.single i 1)) = fun i => eval w (pderiv i (f j))` using `fun j => funext fun i => NormalCurveRegularPoint.fderiv_eval_single (f j) w i`.
+
+Set `Φ : ((σ → ℂ) →L[ℂ] ℂ) →ₗ[ℂ] (σ → ℂ)` to `{ toFun := fun L i => L (Pi.single i 1), map_add' := fun _ _ => rfl, map_smul' := fun _ _ => rfl }`. Establish `hlin' : LinearIndependent ℂ (fun j => fderiv ℂ (fun z : σ → ℂ => eval z (f j)) w)`. Use `LinearIndependent.of_comp Φ ?_` and prove the remaining obligations. Use `hlin using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `j`.
+
+Conclude with `hder j`. Take `⟨d, A, O, V, g, hd, hO, hV, hwV, hVW, hg, hAg, hset⟩` from `IndefiniteRowSideFullHecke.ComplexSets.AnalyticImplicitChart.proof σ (Fin k) (fun j z => eval z (f j)) w W (fun j => AnalyticOnNhd.eval_mvPolynomial (f j) w trivial) (fun j => hw _ (hfI j)) hlin' (hWo.mem_nhds hD)`. Simplify using `only [Fintype.card_fin] at hd`. Take `rfl : d = 1` from `by omega`. Use `⟨A, O, V, g, hO, hV, hwV, hg, hAg, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[← hset]`. Use extensionality with `z`. Simplify using `only [Set.mem_inter_iff, Set.mem_ofPred_eq]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨hz, hzV⟩`.
+
+Conclude with `⟨hzV, fun j => hz _ (hfI j)⟩`. Introduce and unpack `⟨hzV, hzf⟩`. Use `⟨fun q hq => ?_, hzV⟩` and prove the remaining obligations. Establish `hspan : Ideal.span (Set.range f) ≤ RingHom.ker (eval z)`. Rewrite using `[Ideal.span_le]`.
+
+Introduce and unpack `_ ⟨j, rfl⟩`. Conclude with `hzf j`. Establish `h0 : eval z (D * q) = 0` using `hspan (hgen q hq)`. Rewrite `h0` using `[eval_mul]`. Conclude with `(mul_eq_zero.mp h0).resolve_left (hVW hzV)`.
+-/
 theorem NormalCurveRegularPoint.proof (hJ : NormalCurveJacobian.Statement) : NormalCurveRegularPoint.Statement := by
   classical
   intro σ _ I w hI hnorm hdim hw

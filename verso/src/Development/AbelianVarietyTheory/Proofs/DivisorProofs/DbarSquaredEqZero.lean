@@ -9,6 +9,15 @@ noncomputable section
 
 namespace GlobalTheory.TorsionForm.FlatAcyc
 
+/- English proof (translation)
+Use `set A : Fin g → Fin g → Ext (0 + 0 + g) := fun d a => d01 (fun z' => d01 f z' (ev a)) z (ev d) with hA`. Establish `hdiff : ∀ a, DifferentiableAt ℝ (fun z' => wedge (dzb 0 a) (d01 f z' (ev a))) z` using `fun a => ((wedgeR (dzb 0 a)).differentiable.comp (hf1 (ev a))).differentiableAt`. Establish `h1 : ∀ d, d01 (fun z' => ∑ a, wedge (dzb 0 a) (d01 f z' (ev a))) z (ev d) = ∑ a, wedge (dzb 0 a) (A d a)`. Introduce `d`. Rewrite using `[d01_sum Finset.univ (fun a _ => hdiff a)]`.
+
+Use `Finset.sum_congr rfl (fun a _ => ?_)` and prove the remaining obligations. Conclude with `dbar_wedge_comm (dzb 0 a) ((hf1 (ev a)) z) (ev d)`. Establish `hX : dbarF (dbarF f) z = ∑ d, ∑ a, wedge (dzb 0 d) (wedge (dzb 0 a) (A d a))`. Unfold `dbarF`. Use `Finset.sum_congr rfl (fun d _ => ?_)` and prove the remaining obligations.
+
+Rewrite using `[h1 d]`. Use `map_sum (wedgeR (dzb 0 d)) (fun a => wedge (dzb 0 a) (A d a)) Finset.univ` as an intermediate fact. Simplify `this` using `only [wedgeR_apply]`. Establish `hneg : ∑ d, ∑ a, wedge (dzb 0 d) (wedge (dzb 0 a) (A d a)) = -∑ d, ∑ a, wedge (dzb 0 d) (wedge (dzb 0 a) (A d a))` using `by conv_lhs => arg 2; ext d; arg 2; ext a`. Rewrite using `[wedge_wedge, show A d a = A a d from hsym z (ev a) (ev d)]`.
+
+Rewrite using `[Finset.sum_comm]`. Simplify using `only [Finset.sum_neg_distrib]`. Rewrite using `[hX]`. Conclude with `self_eq_neg.mp hneg`.
+-/
 theorem dbarF_dbarF {g : ℕ} (f : (Fin g → ℂ) → Ext (0 + 0 + g))
     (hf1 : ∀ v, Differentiable ℝ (fun z => d01 f z v))
     (hsym : ∀ z v w, d01 (fun z' => d01 f z' v) z w = d01 (fun z' => d01 f z' w) z v)

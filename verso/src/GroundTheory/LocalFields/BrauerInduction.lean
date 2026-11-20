@@ -14,6 +14,9 @@ universe u
 
 variable {G : Type u} [Group G] [Fintype G]
 
+/- English proof (translation)
+Take `⟨p, hp, hKp⟩` from `hK`. Use `hKp.isNilpotent hp` as an intermediate fact. Take `⟨L, μ, h⟩` from `hχ.exists_eq_indFun_of_isNilpotent`. Conclude with `⟨L, μ, by rw [h, indLin]⟩`.
+-/
 theorem IsElementary.exists_eq_indLin {K : Subgroup G} (hK : IsElementary K) {χ : K → ℂ}
     (hχ : IsIrrCharacter χ) : ∃ (L : Subgroup K) (μ : L →* ℂˣ), χ = indLin L μ := by
   obtain ⟨p, hp, hKp⟩ := hK

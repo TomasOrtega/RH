@@ -24,6 +24,25 @@ variable {G : Type} [Group G] [TopologicalSpace G] {Qp K₀ K : Type} [Field Qp]
 
 include E in
 
+/- English proof (translation)
+Establish `hU` using `span_range_map E ι`. Establish `hkill : ∀ y : TW RW T, m • y ∈ LinearMap.range ((latMap ι).baseChange RW)`. Introduce `y`. Establish `hy : y ∈ Submodule.span RW (Set.range (E.jD T))`. Rewrite using `[E.jD_span T]`.
+
+Conclude with `Submodule.mem_top`. Proceed by induction on `hy using Submodule.span_induction with`. Consider the case `mem z hz`. Take `⟨x, rfl⟩` from `hz`. Rewrite using `[← hU]`.
+
+Use `Submodule.subset_span ⟨_, hall x, ?_⟩` and prove the remaining obligations. Rewrite using `[E.jD_smul, map_natCast, Nat.cast_smul_eq_nsmul]`. Consider the case `zero => simp`. Consider the case `add z w _ _ hz hw => rw [smul_add]`. Conclude with `Submodule.add_mem _ hz hw`.
+
+Consider the case `smul r z _ hz => rw [smul_comm]`. Conclude with `Submodule.smul_mem _ r hz`. Establish `hinj : Function.Injective ((latMap ι).baseChange RW)` using `Module.Flat.lTensor_preserves_injective_linearMap (M := RW) (latMap ι) (fun x y hxy => Subtype.ext (hι (congrArg Subtype.val hxy)))`. Establish `hcomm : ∀ c : TW RW T', (latMap ι).baseChange RW (TWmap φR T' c) = TWmap φR T ((latMap ι).baseChange RW c)`. Introduce `c`.
+
+Proceed by induction on `c using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul r t => simp [TWmap]`. Consider the case `add x y hx hy => simp only [map_add, hx, hy]`. Establish `h2 : ∀ t : ↥T.L.T, ∃ t' : ↥T'.L.T, latMap ι t' = m • t`.
+
+Introduce `t`. Take `⟨c, hc⟩` from `hkill ((1 : RW) ⊗ₜ[O] t)`. Rewrite `hc` using `[← TensorProduct.tmul_smul]`. Establish `hf : TWmap φR T' c = c`. Apply `hinj` to reduce the goal to its premises.
+
+Rewrite using `[hcomm, hc]`. Simplify using `[TWmap]`. Take `⟨t', rfl⟩` from `hfix c hf`. Use `⟨t', hone ?_⟩` and prove the remaining obligations. Simplify using `using hc`.
+
+Establish `hle : (T.L.T : Set T.V) ⊆ (LinearMap.range ι.f : Submodule LL T.V)`. Introduce `t ht`. Take `⟨t', h'⟩` from `h2 ⟨t, ht⟩`. Use `⟨(m : LL)⁻¹ • (t' : T'.V), ?_⟩` and prove the remaining obligations. Establish `h3 : ι.f (t' : T'.V) = m • t` using `congrArg Subtype.val h'`.
+
+Rewrite using `[map_smul, h3, ← Nat.cast_smul_eq_nsmul LL, smul_smul, inv_mul_cancel₀ hm, one_smul]`. Establish `htop : LinearMap.range ι.f = ⊤` using `top_le_iff.1 (T.L.span ▸ Submodule.span_le.2 hle)`. Conclude with `LinearMap.range_eq_top.1 htop`.
+-/
 theorem surjective_of_tie (hfl : Module.Flat O RW) {T' T : LocLat G Qp LL O}
     (hfix : ∀ b, TWmap φR T' b = b → ∃ t : ↥T'.L.T, b = (1 : RW) ⊗ₜ[O] t)
     (hone : Function.Injective fun t : ↥T.L.T => (1 : RW) ⊗ₜ[O] t)
@@ -77,6 +96,13 @@ theorem surjective_of_tie (hfl : Module.Flat O RW) {T' T : LocLat G Qp LL O}
 
 end Generic
 
+/- English proof (translation)
+Introduce `D HW F l _ K LL hA T D' hpow hφ hγ`. Take `⟨T', ι, hι, hr⟩` from `exists_sublattice (D.locA l) (HW l) (F l) K 1 LL hA.2.2 T D' hφ hγ`. Take `⟨a, ha⟩` from `hpow`. Use `⟨T', ι, ⟨hι, ?_⟩, hr⟩` and prove the remaining obligations. Use `haveI := flat_RW LL`.
+
+Use `haveI : CharZero ↥LL.1 := charZero_of_injective_algebraMap (algebraMap ℚ_[l] ↥LL.1).injective`. Establish `hp : (((D.loc l).PD K).p : ℕ) = l` using `(D.loc l).PD_p K`. Use `surjective_of_tie ((F l).E K 1 LL hA.2.2).tie (flat_RW LL) (fun b hb => ((GlobalTheory.WittTensorFixed.main l K LL T').2.1 b).1 hb) (GlobalTheory.WittTensorFixed.main l K LL T).2.2 ι hι (l ^ a) ?_ ?_` and prove the remaining obligations. Conclude with `pow_ne_zero a (Fact.out : l.Prime).ne_zero` after adjusting the coercions. Introduce `x`.
+
+Rewrite using `[hr]`. Use `ha x` as an intermediate fact. Rewrite `this` using `[hp]`. Simplify using `using this`.
+-/
 theorem exists_lattice_of_pow_mem : ∀ (D : D7) (HW : HWOf D.loc) (F : FonOf D.loc D.locA HW), InvariantsGenerators.LitSub D HW F := by
   intro D HW F l _ K LL hA T D' hpow hφ hγ
   obtain ⟨T', ι, hι, hr⟩ := exists_sublattice (D.locA l) (HW l) (F l) K 1 LL hA.2.2 T D' hφ hγ

@@ -18,6 +18,13 @@ open GlobalTheory.ChainDesc
 
 namespace GlobalTheory.ChainDesc
 
+/- English proof (translation)
+Introduce `O _ _ _ p _ B Λ _ h o Lie Om π γ M E ι I V D k n hn Q t q`. Take `⟨hV, hc, -, -, hF, -⟩` from `k`. Use `haveI := q.1`. Establish `hcov : TopologicalSpace.IsOpenCover V` using `top_le_iff.1 fun x _ => TopologicalSpace.Opens.mem_iSup.2 (hc x)`. Use `(GlobalTheory.QCoh.hom_eq_zero_iff_affineCover V hcov hV _).2 fun i s => ?_` and prove the remaining obligations.
+
+Take `⟨h1, h2, -⟩` from `q.2 (V i) (hV i)`. Take `⟨s, rfl⟩` from `h1 s`. Establish `e : t.app (V i) ((resG B.X le_top (γ 0) : Γ(B.X, V i)) • s) = 0`. Rewrite using `[h2, map_smul]`. Use `(D i).kill n hn (Submodule.smul_mem_pointwise_smul _ _ _ ?_)` and prove the remaining obligations.
+
+Rewrite using `[hF i (n + 1) hn]`. Conclude with `⟨s, rfl⟩`. Conclude with `((appLinear t (V i)).map_smul _ s).symm.trans e`.
+-/
 theorem kills_of_isQuot : ∀ (O : Type) [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] (p : ℕ) [Fact p.Prime] (B : GlobalTheory.Vert.Model O) (Λ : Type) [CommRing Λ] (h o : ℕ) (Lie Om : AM B Λ) (π : Γ(B.X, ⊤)) (γ : ℕ → Γ(B.X, ⊤)) (M : Λ →+* Matrix (Fin h) (Fin h) ℤ) (E : ℕ → B.X.Modules) (ι : ∀ n, E n ⟶ freeModule B.X (Fin h)) (I : Type) (V : I → B.X.Opens) (D : ∀ i, ChainOn p h o Lie Om π γ (V i)), IsLoc M ι V D → ∀ n < o, ∀ (Q : AM B Λ) (t : E (n + 1) ⟶ Q.V), IsQuot M (ι (n + 1)) (baseOn h π) Q t → Kills (γ 0) Q.V := by
   intro O _ _ _ p _ B Λ _ h o Lie Om π γ M E ι I V D k n hn Q t q
   obtain ⟨hV, hc, -, -, hF, -⟩ := k

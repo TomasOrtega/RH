@@ -19,6 +19,9 @@ variable (K : IntermediateField ℚ_[p] (PadicAlgCl p))
 instance algebraMaxUnramified : Algebra (maxUnramified p K) K :=
   (IntermediateField.inclusion (inf_le_left : maxUnramified p K ≤ K)).toRingHom.toAlgebra
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem coe_algebraMap_maxUnramified (k : maxUnramified p K) :
     ((algebraMap (maxUnramified p K) K k : K) : PadicAlgCl p) = k :=
   rfl
@@ -38,6 +41,9 @@ instance finiteDimensional_maxUnramified [FiniteDimensional ℚ_[p] K] :
 def unramifiedOver : IntermediateField (maxUnramified p K) (PadicAlgCl p) :=
   IntermediateField.extendScalars (inf_le_right : maxUnramified p K ≤ unramifiedClosure p)
 
+/- English proof (translation)
+Unfold both sides. The equivalence is reflexive.
+-/
 theorem mem_unramifiedOver {x : PadicAlgCl p} : x ∈ unramifiedOver K ↔ x ∈ unramifiedClosure p :=
   Iff.rfl
 
@@ -49,6 +55,9 @@ instance normal_unramifiedOver : Normal (maxUnramified p K) (unramifiedOver K) :
   obtain ⟨y, hy, rfl⟩ := (IntermediateField.mem_map _).1 hx
   exact gal_mem_unramifiedClosure (σ.restrictScalars ℚ_[p]) hy
 
+/- English proof (translation)
+Establish `hxN : algebraMap K (PadicAlgCl p) x ∈ IntermediateField.normalClosure (maxUnramified p K) K (PadicAlgCl p)` using `(IsScalarTower.toAlgHom (maxUnramified p K) K (PadicAlgCl p)).fieldRange_le_normalClosure ⟨x, rfl⟩`. Establish `h` using `Normal.splits (inferInstance : Normal (maxUnramified p K) (IntermediateField.normalClosure (maxUnramified p K) K (PadicAlgCl p))) ⟨_, hxN⟩`. Rewrite `h` using `[IntermediateField.minpoly_eq, minpoly.algebraMap_eq (algebraMap K (PadicAlgCl p)).injective]`. Then use the resulting hypothesis.
+-/
 theorem splits_normalClosure (x : K) :
     ((minpoly (maxUnramified p K) x).map
       (algebraMap (maxUnramified p K) (IntermediateField.normalClosure (maxUnramified p K) K (PadicAlgCl p)))).Splits := by
@@ -59,6 +68,13 @@ theorem splits_normalClosure (x : K) :
     (IntermediateField.normalClosure (maxUnramified p K) K (PadicAlgCl p))) ⟨_, hxN⟩
   rwa [IntermediateField.minpoly_eq, minpoly.algebraMap_eq (algebraMap K (PadicAlgCl p)).injective] at h
 
+/- English proof (translation)
+Use `set K₀ := maxUnramified p K`. Use `set N := IntermediateField.normalClosure K₀ K (PadicAlgCl p)`. Use `set A := unramifiedOver K ⊓ N`. Establish `: FiniteDimensional K₀ A` using `FiniteDimensional.of_injective (IntermediateField.inclusion (inf_le_right : A ≤ N)).toLinearMap (IntermediateField.inclusion_injective (inf_le_right : A ≤ N))`. Establish `: IsGalois K₀ A` using `⟨⟩`.
+
+Use `set B := (IsScalarTower.toAlgHom K₀ K (PadicAlgCl p)).fieldRange`. Establish `: FiniteDimensional K₀ B` using `LinearEquiv.finiteDimensional (AlgEquiv.ofInjectiveField (IsScalarTower.toAlgHom K₀ K (PadicAlgCl p))).toLinearEquiv`. Establish `hAB : A ⊓ B = ⊥`. Rewrite using `[eq_bot_iff]`. Introduce and unpack `x ⟨⟨hxU, -⟩, ⟨k, rfl⟩⟩`.
+
+Rewrite using `[IntermediateField.mem_bot]`. Conclude with `⟨⟨(k : PadicAlgCl p), k.2, (mem_unramifiedOver K).1 hxU⟩, rfl⟩`. Establish `h` using `IntermediateField.linearDisjoint_iff'.1 (IntermediateField.LinearDisjoint.of_inf_eq_bot hAB)`. Rewrite using `[IntermediateField.linearDisjoint_iff]`. Rewrite `h` using `[AlgHom.fieldRange_toSubalgebra]`. Then use the resulting hypothesis.
+-/
 theorem linearDisjoint_unramified [FiniteDimensional ℚ_[p] K] :
     (unramifiedOver K ⊓ IntermediateField.normalClosure (maxUnramified p K) K (PadicAlgCl p)).LinearDisjoint K := by
   set K₀ := maxUnramified p K
@@ -99,6 +115,9 @@ def unramifiedToBCrisPlus : unramifiedClosure p →ₐ[ℚ_[p]] BCrisPlus ℂ_[p
       (iotaPlusAlg (p := p)).range →ₐ[ℚ_[p]] BCrisPlus ℂ_[p] p).comp
     (((algClToBdR p).comp (unramifiedClosure p).val).codRestrict _ fun u => unramifiedClosure_le u.2)
 
+/- English proof (translation)
+The claim follows from `congrArg Subtype.val ((AlgEquiv.ofInjective (iotaPlusAlg (p := p)) fun _ _ h => iotaPlus_injective (K := ℂ_[p]) (p := p) h).apply_symm_apply ⟨algClToBdR p u, unramifiedClosure_le u.2⟩)`.
+-/
 theorem iotaPlus_unramifiedToBCrisPlus (u : unramifiedClosure p) :
     iotaPlus ℂ_[p] p (unramifiedToBCrisPlus u) = algClToBdR p u :=
   congrArg Subtype.val ((AlgEquiv.ofInjective (iotaPlusAlg (p := p)) fun _ _ h =>
@@ -112,6 +131,9 @@ instance algebraMaxUnramifiedBCrisPlus : Algebra (maxUnramified p K) (BCrisPlus 
 instance moduleMaxUnramifiedBCrisPlus : Module (maxUnramified p K) (BCrisPlus ℂ_[p] p) :=
   Algebra.toModule
 
+/- English proof (translation)
+The claim follows from `iotaPlus_unramifiedToBCrisPlus _`.
+-/
 theorem iotaPlus_algebraMap_maxUnramified (k : maxUnramified p K) :
     iotaPlus ℂ_[p] p (algebraMap (maxUnramified p K) (BCrisPlus ℂ_[p] p) k) = algClToBdR p k :=
   iotaPlus_unramifiedToBCrisPlus _
@@ -129,6 +151,9 @@ def tensorBCrisPlusToBdRPlus :
     K ⊗[maxUnramified p K] BCrisPlus ℂ_[p] p →ₐ[maxUnramified p K] 𝔹 :=
   Algebra.TensorProduct.lift (algToBdRPlus K) (iotaPlusMaxUnramified K) fun _ _ => Commute.all _ _
 
+/- English proof (translation)
+The claim follows from `Algebra.TensorProduct.lift_tmul _ _ _ a b`.
+-/
 theorem tensorBCrisPlusToBdRPlus_tmul (a : K) (b : BCrisPlus ℂ_[p] p) :
     tensorBCrisPlusToBdRPlus K (a ⊗ₜ b) = algClToBdR p a * iotaPlus ℂ_[p] p b :=
   Algebra.TensorProduct.lift_tmul _ _ _ a b
@@ -152,6 +177,9 @@ def tensorBCrisToBdR : K ⊗[maxUnramified p K] BCris hε →ₐ[maxUnramified p
     (IsScalarTower.toAlgHom (maxUnramified p K) K (PadicAlgCl p))) (iotaBMaxUnramified K hε hζ)
     fun _ _ => Commute.all _ _
 
+/- English proof (translation)
+The claim follows from `Algebra.TensorProduct.lift_tmul _ _ _ a b`.
+-/
 theorem tensorBCrisToBdR_tmul (a : K) (b : BCris hε) :
     tensorBCrisToBdR K hε hζ (a ⊗ₜ b) = algClToBdRField p a * iotaB hε hζ b :=
   Algebra.TensorProduct.lift_tmul _ _ _ a b
@@ -165,18 +193,27 @@ def tensorFracBCrisToBdR :
     (IsScalarTower.toAlgHom (maxUnramified p K) K (PadicAlgCl p))) (fracBCrisOver K hε hζ).val
     fun _ _ => Commute.all _ _
 
+/- English proof (translation)
+The claim follows from `mem_unramifiedClosure_of_mem_fracBCris hε hζ hy`.
+-/
 theorem mem_unramifiedOver_of_mem_fracBCrisOver {y : PadicAlgCl p}
     (hy : algClToBdRFieldMaxUnramified K y ∈ fracBCrisOver K hε hζ) : y ∈ unramifiedOver K :=
   mem_unramifiedClosure_of_mem_fracBCris hε hζ hy
 
 variable [FiniteDimensional ℚ_[p] K]
 
+/- English proof (translation)
+The claim follows from `injective_lift_of_linearDisjoint (algClToBdRFieldMaxUnramified K) (fracBCrisOver K hε hζ) (unramifiedOver K) (IntermediateField.normalClosure (maxUnramified p K) K (PadicAlgCl p)) K (fun _ hy => mem_unramifiedOver_of_mem_fracBCrisOver K hε hζ hy) (splits_normalClosure K) (linearD …`.
+-/
 theorem tensorFracBCrisToBdR_injective : Function.Injective (tensorFracBCrisToBdR K hε hζ) :=
   injective_lift_of_linearDisjoint (algClToBdRFieldMaxUnramified K) (fracBCrisOver K hε hζ)
     (unramifiedOver K) (IntermediateField.normalClosure (maxUnramified p K) K (PadicAlgCl p)) K
     (fun _ hy => mem_unramifiedOver_of_mem_fracBCrisOver K hε hζ hy) (splits_normalClosure K)
     (linearDisjoint_unramified K)
 
+/- English proof (translation)
+The claim follows from `injective_lift_of_forall_mem (algClToBdRFieldMaxUnramified K) (fracBCrisOver K hε hζ) (unramifiedOver K) (IntermediateField.normalClosure (maxUnramified p K) K (PadicAlgCl p)) K (fun _ hy => mem_unramifiedOver_of_mem_fracBCrisOver K hε hζ hy) (splits_normalClosure K) (linearDisjo …`.
+-/
 theorem tensorBCrisToBdR_injective : Function.Injective (tensorBCrisToBdR K hε hζ) :=
   injective_lift_of_forall_mem (algClToBdRFieldMaxUnramified K) (fracBCrisOver K hε hζ)
     (unramifiedOver K) (IntermediateField.normalClosure (maxUnramified p K) K (PadicAlgCl p)) K

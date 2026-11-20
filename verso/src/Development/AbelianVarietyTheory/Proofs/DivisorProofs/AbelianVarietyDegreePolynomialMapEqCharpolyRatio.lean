@@ -17,6 +17,27 @@ set_option autoImplicit false
 noncomputable section
 namespace GlobalTheory.AV.AbVar
 
+/- English proof (translation)
+Introduce `K _ l _ hl A _ f P hPm hPd hP`. Take `⟨hfree, hfin, -, -, hrkV⟩` from `GlobalTheory.T.tateModule_free_finrank_two_mul_dim K l hl A`. Set `δ : Polynomial ℤ → ℚ` to `fun F => (deg (A := A) (B := A) (Polynomial.aeval f F) : ℚ)`. Establish `hmul : ∀ F G, δ (F * G) = δ F * δ G`. Introduce `F G`.
+
+Simplify using `only [δ, map_mul]`. Rewrite using `[End.mul_def, (GlobalTheory.T.isIsogeny_comp_iff_and_degree_mul K A A A _ _ rfl rfl).2]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Establish `hpoly : ∀ (n : ℕ) (u : Fin n → Polynomial ℤ), ∃ Φ : MvPolynomial (Fin n) ℚ, Φ.IsHomogeneous (2 * A.dim) ∧ ∀ m : Fin n → ℤ, MvPolynomial.eval (fun i => (m i : ℚ)) Φ = δ (∑ i, m i • u i)`.
+
+Introduce `n u`. Take `⟨Φ, hΦ, hΦe⟩` from `GlobalTheory.T.homDegree_integerCombination_isHomogeneous K A A rfl n (fun i => Polynomial.aeval f (u i))`. Use `⟨Φ, hΦ, fun m => ?_⟩` and prove the remaining obligations. Rewrite using `[hΦe m]`. Simplify using `only [δ, map_sum, map_zsmul]`.
+
+Establish `hPn : ∀ n : ℤ, P.eval (n : ℚ) = δ (Polynomial.C n - Polynomial.X)`. Introduce `n`. Rewrite using `[hP n]`. Simplify using `only [δ, map_sub, map_intCast, Polynomial.aeval_C, Polynomial.aeval_X, algebraMap_int_eq, eq_intCast]`. Establish `hroots` using `GlobalTheory.T.multiplicative_polynomialFunction_eq_normForm (PadicAlgCl l) A.dim δ P hmul hpoly hPm hPd hPn`.
+
+Apply `GlobalTheory.PadicRootNorm.eq_of_norm_prod_aeval_eq l` to reduce the goal to its premises. Conclude with `hPm.map _`. Conclude with `LinearMap.charpoly_monic _`. Rewrite using `[Polynomial.natDegree_map, hPd, LinearMap.charpoly_natDegree, hrkV]`. Introduce `F`.
+
+Establish `h1 : (P.map (algebraMap ℚ ℚ_[l])).aroots (PadicAlgCl l) = P.aroots (PadicAlgCl l)`. Simplify using `only [Polynomial.aroots, Polynomial.map_map]`. Use `congr 2`. Rewrite using `[h1]`. Use `(congrArg norm (hroots F)).symm.trans ?_` and prove the remaining obligations.
+
+Establish `h2` using `GlobalTheory.T.det_aeval_eq_prod_aroots_charpoly' ℚ_[l] (PadicAlgCl l) (Vl l A) (vmap l f) (F.map (algebraMap ℤ ℚ_[l]))`. Simplify using `only [Polynomial.aeval_map_algebraMap] at h2`. Rewrite using `[← h2]`. Set `ψ : End A →+* Module.End ℚ_[l] (Vl l A)` to `(Module.End.baseChangeHom ℤ_[l] ℚ_[l] (Tl l A)).toRingHom.comp (tend l A)`. Establish `hψ : vmap l (A` using `A) (B := A) f = ψ f := rfl`.
+
+Establish `hev : ∀ G : Polynomial ℤ, Polynomial.aeval (ψ f) G = ψ (Polynomial.aeval f G)`. Introduce `G`. Proceed by induction on `G using Polynomial.induction_on with`. Consider the case `C a => simp`. Consider the case `add p q hp hq => simp only [map_add, hp, hq]`.
+
+Consider the case `monomial n a _ => simp only [map_mul, map_pow, Polynomial.aeval_C, Polynomial.aeval_X, algebraMap_int_eq, eq_intCast, map_intCast]`. Rewrite using `[hψ, hev F]`. Establish `h3 : ψ (Polynomial.aeval f F) = (tend l A (Polynomial.aeval f F)).baseChange ℚ_[l]` using `rfl`. Rewrite using `[h3, LinearMap.det_baseChange, PadicAlgCl.norm_extends]`. Establish `h4` using `GlobalTheory.T.padicNorm_degree_eq_padicNorm_det_tateModule K l hl A (Polynomial.aeval f F)`.
+
+Establish `h5 : algebraMap ℚ (PadicAlgCl l) (δ F) = algebraMap ℚ_[l] (PadicAlgCl l) ((deg (A` using `A) (B := A) (Polynomial.aeval f F) : ℕ) : ℚ_[l]) := by`. Simplify using `only [δ, map_natCast]`. Rewrite using `[h5, PadicAlgCl.norm_extends]`. Rewrite `h4` using `[PadicInt.norm_def]`. Simplify using `using h4`.
+-/
 theorem map_eq_charpoly_vmap : ∀ (K : Type) [Field K] (l : ℕ) [Fact l.Prime], (l : K) ≠ 0 → ∀ (A : AbVar K) [Module.Finite ℚ_[l] (Vl l A)] (f : End A) (P : Polynomial ℚ), P.Monic → P.natDegree = 2 * A.dim → (∀ n : ℤ, P.eval (n : ℚ) = (deg (A := A) (B := A) ((n : End A) - f) : ℚ)) → P.map (algebraMap ℚ ℚ_[l]) = (vmap l (A := A) (B := A) f).charpoly := by
   intro K _ l _ hl A _ f P hPm hPd hP
   obtain ⟨hfree, hfin, -, -, hrkV⟩ := GlobalTheory.T.tateModule_free_finrank_two_mul_dim K l hl A

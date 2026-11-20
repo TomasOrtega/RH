@@ -16,22 +16,39 @@ open scoped BigOperators Real
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Simplify using `only [valAt', dif_pos h, valAt, map_mul]`.
+-/
 private lemma valAt'_mul_of_preimage_whole {Y : Scheme.{0}} (x : Sp ℂ ⟶ Y) (U : Y.Opens) (h : ⊤ ≤ x ⁻¹ᵁ U)
     (f f' : Γ(Y, U)) : valAt' x U (f * f') = valAt' x U f * valAt' x U f' := by
   simp only [valAt', dif_pos h, valAt, map_mul]
 
+/- English proof (translation)
+Simplify using `only [valAt', dif_pos h, valAt, map_one]`.
+-/
 private lemma valAt'_one' {Y : Scheme.{0}} (x : Sp ℂ ⟶ Y) (U : Y.Opens) (h : ⊤ ≤ x ⁻¹ᵁ U) :
     valAt' x U 1 = 1 := by
   simp only [valAt', dif_pos h, valAt, map_one]
 
+/- English proof (translation)
+Introduce `_ ha` and use `hVW (h ha)`.
+-/
 private lemma preimage_whole_of_le {Y : Scheme.{0}} (x : Sp ℂ ⟶ Y) {V W : Y.Opens} (hVW : V ≤ W)
     (h : ⊤ ≤ x ⁻¹ᵁ V) : ⊤ ≤ x ⁻¹ᵁ W :=
   fun _ ha => hVW (h ha)
 
+/- English proof (translation)
+Introduce `_ ha` and use `⟨hV ha, hW ha⟩`.
+-/
 private lemma preimage_inf_whole_of_whole {Y : Scheme.{0}} (x : Sp ℂ ⟶ Y) {V W : Y.Opens} (hV : ⊤ ≤ x ⁻¹ᵁ V)
     (hW : ⊤ ≤ x ⁻¹ᵁ W) : ⊤ ≤ x ⁻¹ᵁ (V ⊓ W) :=
   fun _ ha => ⟨hV ha, hW ha⟩
 
+/- English proof (translation)
+Establish `hW : ⊤ ≤ x ⁻¹ᵁ W` using `preimage_whole_of_le x hVW h`. Establish `key : Y.presheaf.map (homOfLE hVW).op ≫ x.appLE V ⊤ h = x.appLE W ⊤ hW`. Rewrite using `[Scheme.Hom.map_appLE]`. Simplify using `only [valAt', dif_pos h, dif_pos hW, valAt]`. Rewrite using `[← key]`.
+
+Both sides reduce to the same expression.
+-/
 private lemma valAt'_presheaf_map' {Y : Scheme.{0}} (x : Sp ℂ ⟶ Y) {V W : Y.Opens} (hVW : V ≤ W)
     (h : ⊤ ≤ x ⁻¹ᵁ V) (f : Γ(Y, W)) :
     valAt' x V ((Y.presheaf.map (homOfLE hVW).op).hom f) = valAt' x W f := by
@@ -42,6 +59,9 @@ private lemma valAt'_presheaf_map' {Y : Scheme.{0}} (x : Sp ℂ ⟶ Y) {V W : Y.
   rw [← key]
   rfl
 
+/- English proof (translation)
+Unfold `res`. Rewrite using `[Units.coe_map]`. Conclude with `valAt'_presheaf_map' x hVW h f`.
+-/
 private lemma valAt'_res_units {Y : Scheme.{0}} (x : Sp ℂ ⟶ Y) {V W : Y.Opens} (hVW : V ≤ W)
     (h : ⊤ ≤ x ⁻¹ᵁ V) (f : Γ(Y, W)ˣ) :
     valAt' x V ((res hVW f : Γ(Y, V)ˣ) : Γ(Y, V)) = valAt' x W (f : Γ(Y, W)) := by
@@ -49,6 +69,25 @@ private lemma valAt'_res_units {Y : Scheme.{0}} (x : Sp ℂ ⟶ Y) {V W : Y.Open
   rw [Units.coe_map]
   exact valAt'_presheaf_map' x hVW h f
 
+/- English proof (translation)
+Use `choose φ hφ using hreg`. Establish `mem : ∀ (x : 𝟙_ (Over (Sp ℂ)) ⟶ X) {V W : X.left.Opens}, V ≤ W → ⊤ ≤ x.left ⁻¹ᵁ V → ⊤ ≤ x.left ⁻¹ᵁ W` using `fun x _ _ hVW h => preimage_whole_of_le x.left hVW h`. Set `ψ : ∀ i j, Γ(X.left, U i ⊓ U j)` to `fun i j => (X.left.presheaf.map (homOfLE (inf_comm (U i) (U j)).le).op).hom (φ j i)`. Establish `hψ : ∀ i j z, ⊤ ≤ (ex z).left ⁻¹ᵁ (U i ⊓ U j) → valAt' (ex z).left (U i ⊓ U j) (ψ i j) = fr j z / fr i z`. Introduce `i j z hz`.
+
+Rewrite using `[valAt'_presheaf_map' _ _ hz, hφ j i z (mem _ (inf_comm (U i) (U j)).le hz)]`. Establish `hmul : ∀ i j, φ i j * ψ i j = 1`. Introduce `i j`. Apply `hext` to reduce the goal to its premises. Introduce `x hx`.
+
+Take `⟨z, rfl⟩` from `hex x`. Rewrite using `[valAt'_mul_of_preimage_whole _ _ hx, valAt'_one' _ _ hx, hφ i j z hx, hψ i j z hx]`. Establish `h1` using `hfr i z (mem _ inf_le_left hx)`. Establish `h2` using `hfr j z (mem _ inf_le_right hx)`. Rewrite using `[div_mul_div_comm, mul_comm (fr i z), div_self (mul_ne_zero h2 h1)]`.
+
+Use `⟨fun i j => Units.mkOfMulEqOne (φ i j) (ψ i j) (hmul i j), ⟨hU, fun i => ?_, fun i j k => ?_⟩, ?_⟩` and prove the remaining obligations. Apply `Units.ext` to reduce the goal to its premises. Apply `hext` to reduce the goal to its premises. Introduce `x hx`. Take `⟨z, rfl⟩` from `hex x`.
+
+Rewrite using `[valAt'_res_units _ _ hx, Units.val_one, valAt'_one' _ _ hx]`. Simplify using `only [Units.val_mkOfMulEqOne]`. Rewrite using `[hφ i i z (mem _ ?_ hx), div_self (hfr i z (mem _ ?_ hx))]`. Apply the tactic sequence `all_goals simp`. Apply `Units.ext` to reduce the goal to its premises.
+
+Apply `hext` to reduce the goal to its premises. Introduce `x hx`. Take `⟨z, rfl⟩` from `hex x`. Establish `pi` using `mem _ (inf_le_left.trans inf_le_left) hx`. Establish `pj` using `mem _ (inf_le_left.trans inf_le_right) hx`.
+
+Establish `pk` using `mem _ inf_le_right hx`. Rewrite using `[Units.val_mul, valAt'_mul_of_preimage_whole _ _ hx, valAt'_res_units _ _ hx, valAt'_res_units _ _ hx, valAt'_res_units _ _ hx]`. Simplify using `only [Units.val_mkOfMulEqOne]`. Rewrite using `[hφ i j z (preimage_inf_whole_of_whole _ pi pj), hφ j k z (preimage_inf_whole_of_whole _ pj pk), hφ i k z (preimage_inf_whole_of_whole _ pi pk)]`. Establish `h1` using `hfr i z pi`.
+
+Establish `h2` using `hfr j z pj`. Establish `h3` using `hfr k z pk`. Clear the denominators using the available nonvanishing facts. Introduce `i j z hz`. Simplify using `only [Units.val_mkOfMulEqOne]`.
+
+Rewrite using `[hφ i j z hz, div_mul_cancel₀ _ (hfr j z (mem _ inf_le_right hz))]`.
+-/
 theorem exists_isLB_of_frames (X : Over (Sp ℂ)) {Z κ : Type} (ex : Z → (𝟙_ (Over (Sp ℂ)) ⟶ X))
     (hex : Function.Surjective ex)
     (hext : ∀ (U : X.left.Opens) (f f' : Γ(X.left, U)), (∀ x : (𝟙_ (Over (Sp ℂ)) ⟶ X),
@@ -106,6 +145,15 @@ theorem exists_isLB_of_frames (X : Over (Sp ℂ)) {Z κ : Type} (ex : Z → (�
     simp only [Units.val_mkOfMulEqOne]
     rw [hφ i j z hz, div_mul_cancel₀ _ (hfr j z (mem _ inf_le_right hz))]
 
+/- English proof (translation)
+Establish `half : ∀ c : Fin g → ℝ, (∀ i, c i = 0 ∨ c i = 1 / 2) → ∃ p : Fin g → ℤ, ∀ i, (c i : ℂ) = (p i : ℂ) / 2`. Introduce `c hc`. Use `⟨fun i => if c i = 0 then 0 else 1, fun i => ?_⟩` and prove the remaining obligations. Break down `hc i with h | h` into its components or cases. Simplify using `[h]`.
+
+Establish `: c i ≠ 0` using `by rw [h]; norm_num`. Simplify using `only [h]`. Evaluate the numerical expressions. Take `⟨p, hp⟩` from `half a ha`. Take `⟨q, hq⟩` from `half b hb`.
+
+Take `⟨m, rfl⟩` from `hN`. Establish `key : ((m + m : ℕ) : ℂ) * (ofRealVec a ⬝ᵥ ofIntVec n' - ofRealVec b ⬝ᵥ ofIntVec n) = ((∑ i, (m : ℤ) * p i * n' i - ∑ i, (m : ℤ) * q i * n i : ℤ) : ℂ)`. Simplify using `only [dotProduct, ofRealVec, ofIntVec, hp, hq]`. Use `push_cast`. Rewrite using `[mul_sub, Finset.mul_sum, Finset.mul_sum]`.
+
+Apply the tactic sequence `congr 1 <;> exact Finset.sum_congr rfl fun i _ => by ring`. Rewrite using `[key, eC_int]`.
+-/
 private lemma eC_even_mul_half_char_eq_one {g : ℕ} {a b : Fin g → ℝ} (ha : ∀ i, a i = 0 ∨ a i = 1 / 2) (hb : ∀ i, b i = 0 ∨ b i = 1 / 2)
     {N : ℕ} (hN : Even N) (n n' : Fin g → ℤ) :
     eC ((N : ℂ) * (ofRealVec a ⬝ᵥ ofIntVec n' - ofRealVec b ⬝ᵥ ofIntVec n)) = 1 := by
@@ -130,6 +178,9 @@ private lemma eC_even_mul_half_char_eq_one {g : ℕ} {a b : Fin g → ℝ} (ha :
 
 variable {g : ℕ} {τ : Matrix (Fin g) (Fin g) ℂ} {a b : Fin g → ℝ}
 
+/- English proof (translation)
+Rewrite using `[autFactor, mul_pow, ← eC_nat_mul, ← eC_nat_mul, eC_even_mul_half_char_eq_one ha hb hN n n', _root_.one_mul]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem autFactor_pow_of_even (ha : ∀ i, a i = 0 ∨ a i = 1 / 2) (hb : ∀ i, b i = 0 ∨ b i = 1 / 2)
     {N : ℕ} (hN : Even N) (n n' : Fin g → ℤ) (z : Fin g → ℂ) :
     autFactor a b τ n n' z ^ N =
@@ -138,6 +189,9 @@ theorem autFactor_pow_of_even (ha : ∀ i, a i = 0 ∨ a i = 1 / 2) (hb : ∀ i,
   congr 1
   ring
 
+/- English proof (translation)
+Use extensionality with `f`. Rewrite using `[mem_thetaLevelChar, mem_thetaLevel]`. Use `and_congr_right fun _ => forall_congr' fun n => forall_congr' fun n' => forall_congr' fun z => ?_` and prove the remaining obligations. Rewrite using `[eC_even_mul_half_char_eq_one ha hb hN n n', _root_.one_mul]`.
+-/
 theorem thetaLevelChar_eq_thetaLevel_of_even (ha : ∀ i, a i = 0 ∨ a i = 1 / 2)
     (hb : ∀ i, b i = 0 ∨ b i = 1 / 2) {N : ℕ} (hN : Even N) :
     thetaLevelChar a b N τ = thetaLevel N τ := by
@@ -146,6 +200,9 @@ theorem thetaLevelChar_eq_thetaLevel_of_even (ha : ∀ i, a i = 0 ∨ a i = 1 / 
   refine and_congr_right fun _ => forall_congr' fun n => forall_congr' fun n' => forall_congr' fun z => ?_
   rw [eC_even_mul_half_char_eq_one ha hb hN n n', _root_.one_mul]
 
+/- English proof (translation)
+Assume the negation of the conclusion as `h`. Use `push Not at h`. Use `SCV.eqOn_of_eqOn_open (f := f) (g := fun _ => 0) isOpen_univ isPreconnected_univ hf.differentiableOn (differentiable_const _).differentiableOn hV hVne (Set.subset_univ _) h` as an intermediate fact. Conclude with `hf0 (funext fun z => this (Set.mem_univ z))`.
+-/
 private lemma exists_mem_open_ne_zero_of_differentiable {f : (Fin g → ℂ) → ℂ} (hf : Differentiable ℂ f) (hf0 : f ≠ 0)
     {V : Set (Fin g → ℂ)} (hV : IsOpen V) (hVne : V.Nonempty) : ∃ z ∈ V, f z ≠ 0 := by
   by_contra h
@@ -154,6 +211,19 @@ private lemma exists_mem_open_ne_zero_of_differentiable {f : (Fin g → ℂ) →
     hf.differentiableOn (differentiable_const _).differentiableOn hV hVne (Set.subset_univ _) h
   exact hf0 (funext fun z => this (Set.mem_univ z))
 
+/- English proof (translation)
+Use `set θ : (Fin g → ℂ) → ℂ := fun z => theta a b z τ with hθ`. Establish `hθd : Differentiable ℂ θ` using `differentiable_theta hτ a b`. Establish `hθ0 : θ ≠ 0` using `theta_ne_zero hτ a b`. Choose the witnesses or unpack the hypotheses as in `⟨q, hq⟩ : ∃ q, θ q ≠ 0 := by`. Assume the negation of the conclusion as `h`.
+
+Use `push Not at h`. Conclude with `hθ0 (funext h)`. Establish `hk' : (-(k : ℂ)) ≠ 0` using `neg_ne_zero.mpr (Nat.cast_ne_zero.mpr hk)`. Establish `hV : IsOpen {w : Fin g → ℂ | θ (z₀ + w) ≠ 0}` using `isOpen_ne_fun (hθd.continuous.comp (continuous_const.add continuous_id)) continuous_const`. Establish `hVne : ({w : Fin g → ℂ | θ (z₀ + w) ≠ 0}).Nonempty` using `⟨q - z₀, by simpa only [Set.mem_ofPred_eq, add_sub_cancel] using hq⟩`.
+
+Establish `hhd : Differentiable ℂ (fun w : Fin g → ℂ => θ (z₀ + (-(k : ℂ)) • w))` using `hθd.comp (by fun_prop)`. Establish `hh0 : (fun w : Fin g → ℂ => θ (z₀ + (-(k : ℂ)) • w)) ≠ 0`. Introduce `h0`. Apply `hq` to reduce the goal to its premises. Use `congrFun h0 ((-(k : ℂ))⁻¹ • (q - z₀))` as an intermediate fact.
+
+Simplify `this` using `only [smul_smul, mul_inv_cancel₀ hk', one_smul, add_sub_cancel, Pi.zero_apply]`. Take `⟨w, hw1, hw2⟩` from `exists_mem_open_ne_zero_of_differentiable hhd hh0 hV hVne`. Use `⟨fun z => ∏ i : Fin (k + 1), θ (z + if i = 0 then (-(k : ℂ)) • w else w), ?_, ?_⟩` and prove the remaining obligations. Establish `hsum : ∑ i ∈ (Finset.univ : Finset (Fin (k + 1))), ((fun _ => 1 : Fin (k + 1) → ℕ) i : ℂ) • (fun i : Fin (k + 1) => if i = 0 then (-(k : ℂ)) • w else w) i = 0`. Rewrite using `[Fin.sum_univ_succ]`.
+
+Simplify using `only [Nat.cast_one, one_smul, if_pos, Fin.succ_ne_zero, if_false, Finset.sum_const, Finset.card_univ, Fintype.card_fin]`. Rewrite using `[← Nat.cast_smul_eq_nsmul ℂ, neg_smul, neg_add_cancel]`. Use `prod_translate_mem_thetaLevelChar (a := a) (b := b) (τ := τ) (Finset.univ : Finset (Fin (k + 1))) (d := fun _ => 1) (F := fun _ => θ) (fun _ _ => theta_mem_thetaLevelChar_one hτ) _ hsum` as an intermediate fact. Simplify `this` using `only [Finset.sum_const, Finset.card_univ, Fintype.card_fin, smul_eq_mul, _root_.mul_one]`. Rewrite using `[Finset.prod_ne_zero_iff]`.
+
+Introduce `i _`. Use `split_ifs`. Conclude with `hw2`. Conclude with `hw1`.
+-/
 theorem exists_mem_thetaLevelChar_apply_ne_zero (hτ : τ ∈ SiegelH (Fin g)) (a b : Fin g → ℝ)
     {k : ℕ} (hk : k ≠ 0) (z₀ : Fin g → ℂ) : ∃ F ∈ thetaLevelChar a b (k + 1) τ, F z₀ ≠ 0 := by
   set θ : (Fin g → ℂ) → ℂ := fun z => theta a b z τ with hθ
@@ -193,6 +263,53 @@ theorem exists_mem_thetaLevelChar_apply_ne_zero (hτ : τ ∈ SiegelH (Fin g)) (
     · exact hw2
     · exact hw1
 
+/- English proof (translation)
+Introduce `H1 _ _ _ H5 g τ hτ N hN3 X ex D hX hquot hNe _ hexadd a b ha hb`. Take `⟨hInt, hProp, hsurj, hker, hhol, -, -⟩` from `hX`. Establish `: IsIntegral X.left` using `hInt`. Establish `: IsProper X.hom` using `hProp`. Establish `hN0 : N ≠ 0` using `by omega`.
+
+Establish `hext` using `H1 X inferInstance inferInstance`. Establish `hlev : ∀ M, Even M → thetaLevelChar a b M τ = thetaLevel M τ` using `fun M hM => thetaLevelChar_eq_thetaLevel_of_even ha hb hM`. Establish `quot : ∀ p q : (Fin g → ℂ) → ℂ, p ∈ thetaLevelChar a b (N * (N + 2)) τ → q ∈ thetaLevelChar a b (N * (N + 2)) τ → ∃ (V : X.left.Opens) (φ : Γ(X.left, V)), ∀ z, (⊤ ≤ (ex z).left ⁻¹ᵁ V ↔ q z ≠ 0) ∧ (q z ≠ 0 → valAt' (ex z).left V φ = p z / q z)`. Introduce `p q hp hq`. Rewrite `hp`, `hq` using `[hlev _ (hNe.mul_right _)]`.
+
+Conclude with `hquot (N + 2) p q (mem_thetaLevel.mp hp) (mem_thetaLevel.mp hq)`. Set `κ : Type` to `{p : ((Fin g → ℂ) → ℂ) × ((Fin g → ℂ) → ℂ) // p.1 ∈ thetaLevel N τ ∧ p.2 ∈ thetaLevelChar a b (N + 1) τ}`. Establish `hF : ∀ i : κ, i.1.2 ∈ thetaLevelChar a b (N + 1) τ` using `fun i => i.2.2`. Establish `hh : ∀ i : κ, i.1.1 ∈ thetaLevelChar a b N τ` using `fun i => by`. Rewrite using `[hlev N hNe]`.
+
+Conclude with `i.2.1`. Establish `hchart : ∀ i : κ, ∃ V : X.left.Opens, ∀ z, (⊤ ≤ (ex z).left ⁻¹ᵁ V ↔ i.1.1 z ≠ 0 ∧ i.1.2 z ≠ 0)`. Introduce `i`. Establish `hq : i.1.1 * i.1.2 ^ N ∈ thetaLevelChar a b (N * (N + 2)) τ`. Establish `e : N * (N + 2) = N + N * (N + 1)` using `by ring`.
+
+Rewrite using `[e]`. Conclude with `mul_mem_thetaLevelChar (hh i) (pow_mem_thetaLevelChar (hF i) N)`. Take `⟨V, _, hV⟩` from `quot _ _ hq hq`. Use `⟨V, fun z => (hV z).1.trans ?_⟩` and prove the remaining obligations. Simplify using `only [Pi.mul_apply, Pi.pow_apply, ne_eq, mul_eq_zero, pow_eq_zero_iff hN0, not_or]`.
+
+Use `choose V hV using hchart`. Set `fr : κ → (Fin g → ℂ) → ℂ` to `fun i z => i.1.1 z / i.1.2 z`. Establish `hfr : ∀ i z, ⊤ ≤ (ex z).left ⁻¹ᵁ V i → fr i z ≠ 0` using `fun i z hz => div_ne_zero ((hV i z).1 hz).1 ((hV i z).1 hz).2`. Establish `pt : ∀ x : Sp ℂ ⟶ X.left, x ≫ X.hom = 𝟙 _ → ∃ z, (ex z).left = x`. Introduce `x hx`.
+
+Take `⟨z, hz⟩` from `hsurj (Over.homMk x (by simpa using hx))`. Conclude with `⟨z, by rw [hz]; rfl⟩`. Establish `hcov : ⨆ i, V i = ⊤`. Use `ComplexPoints.iSup_eq_top_of_complexPoints X.hom V fun x hx => ?_` and prove the remaining obligations. Take `⟨z, rfl⟩` from `pt x hx`.
+
+Take `⟨F, hFm, hFz⟩` from `exists_mem_thetaLevelChar_apply_ne_zero hτ a b hN0 z`. Take `⟨h, hhm, hhz⟩` from `exists_mem_thetaLevelChar_apply_ne_zero hτ 0 0 (k := N - 1) (by omega) z`. Rewrite `hhm` using `[Nat.sub_add_cancel (by omega), thetaLevelChar_zero]`. Conclude with `⟨⟨(h, F), hhm, hFm⟩, (hV _ z).2 ⟨hhz, hFz⟩⟩`. Establish `hreg : ∀ i j : κ, ∃ φ : Γ(X.left, V i ⊓ V j), ∀ z, ⊤ ≤ (ex z).left ⁻¹ᵁ (V i ⊓ V j) → valAt' (ex z).left (V i ⊓ V j) φ = fr i z / fr j z`.
+
+Introduce `i j`. Establish `hp : i.1.1 * j.1.2 * i.1.2 ^ (N - 1) ∈ thetaLevelChar a b (N * (N + 2)) τ`. Establish `e : N * (N + 2) = N + (N + 1) + (N - 1) * (N + 1)`. Take `⟨M, hM⟩ : ∃ M, N = M + 1` from `⟨N - 1, by omega⟩`. Rewrite using `[hM, Nat.add_sub_cancel]`.
+
+Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e]`. Conclude with `mul_mem_thetaLevelChar (mul_mem_thetaLevelChar (hh i) (hF j)) (pow_mem_thetaLevelChar (hF i) _)`. Establish `hq : j.1.1 * i.1.2 ^ N ∈ thetaLevelChar a b (N * (N + 2)) τ`. Establish `e : N * (N + 2) = N + N * (N + 1)` using `by ring`.
+
+Rewrite using `[e]`. Conclude with `mul_mem_thetaLevelChar (hh j) (pow_mem_thetaLevelChar (hF i) N)`. Take `⟨W, φ, hW⟩` from `quot _ _ hp hq`. Establish `hVW : V i ⊓ V j ≤ W`. Use `ComplexPoints.opens_le_of_complexPoints X.hom _ _ fun x hx hxV => ?_` and prove the remaining obligations.
+
+Take `⟨z, rfl⟩` from `pt x hx`. Establish `hi` using `(hV i z).1 (preimage_whole_of_le _ inf_le_left hxV)`. Establish `hj` using `(hV j z).1 (preimage_whole_of_le _ inf_le_right hxV)`. Use `(hW z).1.2 ?_` and prove the remaining obligations. Simplify using `only [Pi.mul_apply, Pi.pow_apply]`.
+
+Conclude with `mul_ne_zero hj.1 (pow_ne_zero _ hi.2)`. Use `⟨(X.left.presheaf.map (homOfLE hVW).op).hom φ, fun z hz => ?_⟩` and prove the remaining obligations. Establish `hi` using `(hV i z).1 (preimage_whole_of_le _ inf_le_left hz)`. Establish `hj` using `(hV j z).1 (preimage_whole_of_le _ inf_le_right hz)`. Establish `hq0 : (j.1.1 * i.1.2 ^ N) z ≠ 0`.
+
+Simplify using `only [Pi.mul_apply, Pi.pow_apply]`. Conclude with `mul_ne_zero hj.1 (pow_ne_zero _ hi.2)`. Rewrite using `[valAt'_presheaf_map' _ hVW hz, (hW z).2 hq0]`. Establish `hpow : i.1.2 z ^ N = i.1.2 z ^ (N - 1) * i.1.2 z`. Rewrite using `[← pow_succ, Nat.sub_add_cancel (by omega)]`.
+
+Simplify using `only [fr, Pi.mul_apply, Pi.pow_apply]`. Rewrite using `[hpow]`. Establish `h1` using `hi.1`. Establish `h2` using `hi.2`. Establish `h3` using `hj.1`.
+
+Establish `h4` using `hj.2`. Clear the denominators using the available nonvanishing facts. Take `⟨tr, hLB, hcompat⟩` from `exists_isLB_of_frames X ex hsurj hext V hcov fr hfr hreg`. Establish `hex0 : ex 0 = 1`. Take `⟨z1, hz1⟩` from `hsurj 1`.
+
+Use `hexadd z1 0` as an intermediate fact. Rewrite `this` using `[add_zero, hz1, _root_.one_mul]`. Conclude with `this.symm`. Set `u : HolUnif X (LB.mk κ V tr) g` to `{ ex := ex ex_add := hexadd ex_onto := hsurj Λ := (periodLattice τ).toIntSubmodule ker := fun z => by`. Rewrite using `[← hex0, hker, sub_zero]`.
+
+Conclude with `Iff.rfl`. Use `discrete := (H5 g τ hτ).1`. Use `full := (H5 g τ hτ).2.1`. Use `hol := fun W f => by`. Simplify `hhol W f` using `only [Set.mem_univ, true_and]`.
+
+Use `fr := fr`. Use `fr_hol := fun i => by`. Establish `dh` using `(mem_thetaLevel.mp i.2.1).1`. Establish `dF` using `(mem_thetaLevelChar.mp i.2.2).1`. Introduce `z hz`.
+
+Establish `hd` using `(dh z).mul ((dF z).inv ((hV i z).1 hz).2)`. Conclude with `(hd.congr_of_eventuallyEq (Filter.Eventually.of_forall fun w => div_eq_mul_inv _ _)).differentiableWithinAt`. Use `fr_ne := hfr`. Use `fr_compat := hcompat }`. Use `⟨LB.mk κ V tr, u, hLB, rfl, fun z => Iff.rfl, ?_, ?_⟩` and prove the remaining obligations.
+
+Introduce `n n' i z hz`. Establish `hi` using `(hV i z).1 hz`. Establish `hA : autFactor a b τ n n' z ≠ 0`. Rewrite using `[autFactor]`. Conclude with `mul_ne_zero (eC_ne_zero _) (eC_ne_zero _)`.
+
+Establish `h1` using `(mem_thetaLevelChar_iff_autFactor.mp (hh i)).2 n n' z`. Establish `h2` using `(mem_thetaLevelChar_iff_autFactor.mp (hF i)).2 n n' z`. Use `show i.1.1 z / i.1.2 z = autFactor a b τ n n' z * (i.1.1 (z + τ *ᵥ ofIntVec n + ofIntVec n') / i.1.2 (z + τ *ᵥ ofIntVec n + ofIntVec n'))`. Rewrite using `[h1, h2, pow_succ]`. Establish `h3` using `hi.2`.
+
+Establish `h4` using `pow_ne_zero N hA`. Clear the denominators using the available nonvanishing facts. Introduce `i`. Use `⟨i.1.1, i.1.2, mem_thetaLevel.mp i.2.1, (mem_thetaLevelChar.mp i.2.2).1, fun n n' z => ?_, fun z => ⟨hV i z, rfl⟩⟩` and prove the remaining obligations. Rewrite using `[(mem_thetaLevelChar_iff_autFactor.mp i.2.2).2 n n' z, pow_succ', autFactor_pow_of_even ha hb hNe]`.
+-/
 theorem exists_thetaBundle_holUnif :
     (∀ (X : Over (Sp ℂ)), IsReduced X.left → LocallyOfFiniteType X.hom → ∀ (U : X.left.Opens) (f f' : Γ(X.left, U)), (∀ x : (𝟙_ (Over (Sp ℂ)) ⟶ X), ⊤ ≤ (x).left ⁻¹ᵁ U → valAt' x.left U f = valAt' x.left U f') → f = f') → SiegelSubDomainStatement → ThetaHoloStatement → (∀ (g : ℕ) (τ : Matrix (Fin g) (Fin g) ℂ), τ ∈ SiegelH (Fin g) → (Differentiable ℂ (fun z => theta 0 0 z τ) ∧ ∀ (n n' : Fin g → ℤ) z, (fun z => theta 0 0 z τ) (z + τ *ᵥ ofIntVec n + ofIntVec n') = eC (-(1 : ℂ) * (ofIntVec n ⬝ᵥ (τ *ᵥ ofIntVec n) / 2 + ofIntVec n ⬝ᵥ z)) * (fun z => theta 0 0 z τ) z) ∧ (fun z => theta 0 0 z τ) ≠ 0) → (∀ (g : ℕ) (τ : Matrix (Fin g) (Fin g) ℂ), τ ∈ SiegelH (Fin g) → DiscreteTopology (periodLattice τ) ∧ Submodule.span ℝ (periodLattice τ : Set (Fin g → ℂ)) = ⊤ ∧ ∀ n n' : Fin g → ℤ, τ *ᵥ ofIntVec n + ofIntVec n' = 0 → n = 0 ∧ n' = 0) → (∀ (g : ℕ) (τ : Matrix (Fin g) (Fin g) ℂ), τ ∈ SiegelH (Fin g) → ∀ N : ℕ, 3 ≤ N → ∀ (X : Over (Sp ℂ)) (ex : (Fin g → ℂ) → (𝟙_ (Over (Sp ℂ)) ⟶ X)) (D : (Fin g → Fin N) → X.left.Opens), (IsIntegral X.left ∧ IsProper X.hom ∧ Function.Surjective ex ∧ (∀ z z', ex z = ex z' ↔ z - z' ∈ periodLattice τ) ∧ (∀ (U : (X).left.Opens) (f : Γ((X).left, U)), IsOpen {w | w ∈ (Set.univ : Set (Fin g → ℂ)) ∧ ⊤ ≤ (ex w).left ⁻¹ᵁ U} ∧ DifferentiableOn ℂ (fun w => valAt' (ex w).left U f) {w | w ∈ (Set.univ : Set (Fin g → ℂ)) ∧ ⊤ ≤ (ex w).left ⁻¹ᵁ U}) ∧ (∀ c, IsAffineOpen (D c) ∧ ringKrullDim Γ(X.left, D c) ≤ g ∧ (∀ z, ⊤ ≤ (ex z).left ⁻¹ᵁ D c ↔ theta (fun i => ((c i : ℕ) : ℝ) / N) 0 ((N : ℂ) • z) ((N : ℂ) • τ) ≠ 0) ∧ ∃ r : (Fin g → Fin N) → Γ(X.left, D c), (∀ c' z, theta (fun i => ((c i : ℕ) : ℝ) / N) 0 ((N : ℂ) • z) ((N : ℂ) • τ) ≠ 0 → valAt' (ex z).left (D c) (r c') = theta (fun i => ((c' i : ℕ) : ℝ) / N) 0 ((N : ℂ) • z) ((N : ℂ) • τ) / theta (fun i => ((c i : ℕ) : ℝ) / N) 0 ((N : ℂ) • z) ((N : ℂ) • τ)) ∧ ∀ f : Γ(X.left, D c), ∃ F : MvPolynomial (Fin g → Fin N) ℂ, f = MvPolynomial.eval₂ (RingHom.comp (X.hom.appLE ⊤ _ le_top).hom (Scheme.ΓSpecIso (CommRingCat.of ℂ)).inv.hom) r F) ∧ (⨆ c, D c = ⊤)) → (∀ (d : ℕ) (p q : (Fin g → ℂ) → ℂ), (Differentiable ℂ p ∧ ∀ (n n' : Fin g → ℤ) z, p (z + τ *ᵥ ofIntVec n + ofIntVec n') = eC (-((N * d : ℕ) : ℂ) * (ofIntVec n ⬝ᵥ (τ *ᵥ ofIntVec n) / 2 + ofIntVec n ⬝ᵥ z)) * p z) → (Differentiable ℂ q ∧ ∀ (n n' : Fin g → ℤ) z, q (z + τ *ᵥ ofIntVec n + ofIntVec n') = eC (-((N * d : ℕ) : ℂ) * (ofIntVec n ⬝ᵥ (τ *ᵥ ofIntVec n) / 2 + ofIntVec n ⬝ᵥ z)) * q z) → ∃ (U : X.left.Opens) (φ : Γ(X.left, U)), ∀ z, (⊤ ≤ (ex z).left ⁻¹ᵁ U ↔ q z ≠ 0) ∧ (q z ≠ 0 → valAt' (ex z).left U φ = p z / q z)) → Even N → ∀ [GrpObj X], (∀ z w, ex (z + w) = ex z * ex w) → ∀ a b : Fin g → ℝ, (∀ i, a i = 0 ∨ a i = 1 / 2) → (∀ i, b i = 0 ∨ b i = 1 / 2) → ∃ (L : LB X.left) (u : HolUnif X L g), L.IsLB ∧ u.ex = ex ∧ (∀ z, z ∈ u.Λ ↔ z ∈ periodLattice τ) ∧ (∀ (n n' : Fin g → ℤ) i z, ⊤ ≤ (ex z).left ⁻¹ᵁ L.U i → u.fr i z = autFactor a b τ n n' z * u.fr i (z + τ *ᵥ ofIntVec n + ofIntVec n')) ∧ (∀ i, ∃ h F : (Fin g → ℂ) → ℂ, (Differentiable ℂ h ∧ ∀ (n n' : Fin g → ℤ) z, h (z + τ *ᵥ ofIntVec n + ofIntVec n') = eC (-(N : ℂ) * (ofIntVec n ⬝ᵥ (τ *ᵥ ofIntVec n) / 2 + ofIntVec n ⬝ᵥ z)) * h z) ∧ Differentiable ℂ F ∧ (∀ (n n' : Fin g → ℤ) z, F (z + τ *ᵥ ofIntVec n + ofIntVec n') = autFactor a b τ n n' z * eC (-(N : ℂ) * (ofIntVec n ⬝ᵥ (τ *ᵥ ofIntVec n) / 2 + ofIntVec n ⬝ᵥ z)) * F z) ∧ ∀ z, (⊤ ≤ (ex z).left ⁻¹ᵁ L.U i ↔ h z ≠ 0 ∧ F z ≠ 0) ∧ u.fr i z = h z / F z)) := by
   intro H1 _ _ _ H5 g τ hτ N hN3 X ex D hX hquot hNe _ hexadd a b ha hb

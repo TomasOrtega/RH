@@ -16,16 +16,25 @@ import Development.WeilBound.CoreStatements.HodgeTatePoints.A53
 
 namespace PositivityTheory.HtPt.Ktw
 
+/- English proof (translation)
+The claim follows from `GroundTheory.Heights₂.Heights.ForSecondHalf.NefProductNonneg.unfolding_matrix_of_form a28 (a63 hR)`.
+-/
 theorem a64 (hR : GroundTheory.Heights₂.Heights.Kleiman.GenericPointSectionInput.Statement.{0, 0}) :
     GroundTheory.Heights₂.Heights.IndefiniteRowSideFullHecke.Kleiman2.NefProductNonneg.Statement :=
   GroundTheory.Heights₂.Heights.ForSecondHalf.NefProductNonneg.unfolding_matrix_of_form a28 (a63 hR)
 
+/- English proof (translation)
+The claim follows from `(GroundTheory.Heights₂.Heights.Kleiman.SectionsOverLocalization.VeryAmpleNefPlusAmple.equiv GroundTheory.Heights₂.Heights.Kleiman.SectionsOverLocalization.BundleOfDeg.full a65 a71 GroundTheory.Heights₂.Heights.Kleiman.SectionsOverLocalization.ModelDimEq.full).mp (a72 hR)`.
+-/
 theorem a73 (hR : GroundTheory.Heights₂.Heights.Kleiman.GenericPointSectionInput.Statement.{0, 0}) :
     GroundTheory.Heights₂.Heights.IndefiniteRowSideFullHecke.Kleiman2.VeryAmpleNefPlusAmple.Statement :=
   (GroundTheory.Heights₂.Heights.Kleiman.SectionsOverLocalization.VeryAmpleNefPlusAmple.equiv
     GroundTheory.Heights₂.Heights.Kleiman.SectionsOverLocalization.BundleOfDeg.full a65 a71
     GroundTheory.Heights₂.Heights.Kleiman.SectionsOverLocalization.ModelDimEq.full).mp (a72 hR)
 
+/- English proof (translation)
+The claim follows from `(GroundTheory.Heights₂.Heights.Kleiman.SectionsOverLocalization.SectionCount.equiv GroundTheory.Heights₂.Heights.Kleiman.SectionsOverLocalization.GraphModel.full GroundTheory.Heights₂.Heights.Kleiman.SectionsOverLocalization.BundleOfDeg.full GroundTheory.Heights₂.Heights.Kleiman. …`.
+-/
 theorem a77 (hR : GroundTheory.Heights₂.Heights.Kleiman.GenericPointSectionInput.Statement.{0, 0}) :
     GroundTheory.Heights₂.Heights.IndefiniteRowSideFullHecke.Kleiman2.SectionCount.Statement := (GroundTheory.Heights₂.Heights.Kleiman.SectionsOverLocalization.SectionCount.equiv
     GroundTheory.Heights₂.Heights.Kleiman.SectionsOverLocalization.GraphModel.full
@@ -37,6 +46,9 @@ theorem a77 (hR : GroundTheory.Heights₂.Heights.Kleiman.GenericPointSectionInp
     (GroundTheory.Heights₂.Heights.Kleiman.SectionCount.assembled a39 a43 a48 a51 hR)
 
 open MvPolynomial ReciprocityTheory.ChartRestriction.G.ArakelovGeometry.KH GroundTheory.Heights₂.Heights.IndefiniteRowSideFullHecke.Kleiman2 in
+/- English proof (translation)
+Introduce `hR` and use `⟨a64 hR, a73 hR, a77 hR⟩`.
+-/
 theorem k_twins : GroundTheory.Heights₂.Heights.Kleiman.GenericPointSectionInput.Statement.{0, 0} → NefProductNonneg.Statement ∧ VeryAmpleNefPlusAmple.Statement ∧ SectionCount.Statement :=
   fun hR => ⟨a64 hR, a73 hR, a77 hR⟩
 

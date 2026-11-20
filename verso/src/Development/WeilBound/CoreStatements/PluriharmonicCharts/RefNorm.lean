@@ -13,6 +13,13 @@ variable {K : Type} [Fintype K] {ι : K → Type} [∀ k, Fintype (ι k)] {Φ : 
   {Ψ : Type} {N j : ℕ} {M : FlagModel y Ψ N j}
 variable {Gr : FrameData ι Ψ N M.Ω M.blk → Ψ → ((Σ k, baseIdx ι M.blk k) → ℂ) → Matrix (Fin N) (Fin N) ℂ → Prop}
 
+/- English proof (translation)
+Establish `e1 : ∑ k' : NonPluckerBlocks M.blk, (M.b p k' : ℝ) * L k'.1 = ∑ k, if h : ∀ p', M.blk p' ≠ some k then (M.b p ⟨k, h⟩ : ℝ) * L k else 0` using `Fintype.sum_of_injective Subtype.val Subtype.val_injective _ _ (fun k hk => dif_neg fun h => hk ⟨⟨k, h⟩, rfl⟩) (fun k => by rw [dif_pos k.2])`. Establish `e2 : (M.blk p).elim 0 L = ∑ k, if M.blk p = some k then L k else 0`. Consider the cases of `M.blk p with`. Consider the case `none => simp`. Consider the case `some k => simp`.
+
+Rewrite using `[e1, e2, ← Finset.sum_sub_distrib]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Unfold `FlagModel.dy`. Distinguish the cases in `h : ∀ p', M.blk p' ≠ some k`. Rewrite using `[dif_pos h, dif_pos h, if_neg (h p)]`.
+
+Simplify using the standard rewrite rules. Apply the tactic sequence `rw [dif_neg h, dif_neg h]; split_ifs <;> simp`.
+-/
 theorem sum_dy (p : Ψ × Fin N) (L : K → ℝ) :
     ∑ k, (M.dy p k : ℝ) * L k = (M.blk p).elim 0 L - ∑ k' : NonPluckerBlocks M.blk, (M.b p k' : ℝ) * L k'.1 := by
   have e1 : ∑ k' : NonPluckerBlocks M.blk, (M.b p k' : ℝ) * L k'.1 =
@@ -30,6 +37,15 @@ theorem sum_dy (p : Ψ × Fin N) (L : K → ℝ) :
   · rw [dif_pos h, dif_pos h, if_neg (h p)]; simp
   · rw [dif_neg h, dif_neg h]; split_ifs <;> simp
 
+/- English proof (translation)
+Take `⟨F, G, hG, h, bh, dh, t, ht, rfl⟩` from `h1`. Take `⟨hF, hw, gd, -, -⟩` from `hgood _ _ _ _ hG`. Establish `hG'` using `htor _ _ _ _ (fun k => c k.1) (fun k => hc _) hG`. Establish `eb : basePart M.blk (torusSmul c z) = torusSmul (fun k => c k.1) (basePart M.blk z)` using `rfl`. Establish `ev : ∀ s, valAt M.x s (basePart M.blk (torusSmul c z)) = valAt M.x s (basePart M.blk z)` using `fun s => GlobalTheory.CompanionTheory.Ar.PB.WSq.Fib.valAt_eq_of_sameOrbit _ _ _ M.x s _ _ (hgood _ _ _ _ hG').2.1 ⟨fun k => c k.1, fun k => hc _, rfl⟩`.
+
+Establish `el : ∑ k', (M.b p k' : ℝ) * Real.log ‖basePart M.blk (torusSmul c z) ⟨k', F.c k'⟩‖ = ∑ k' : NonPluckerBlocks M.blk, (M.b p k' : ℝ) * Real.log ‖c k'.1‖ + ∑ k', (M.b p k' : ℝ) * Real.log ‖basePart M.blk z ⟨k', F.c k'⟩‖`. Rewrite using `[← Finset.sum_add_distrib]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[eb, torusSmul, norm_mul, Real.log_mul (norm_ne_zero_iff.2 (hc _)) (norm_ne_zero_iff.2 (ne_of_notMem (gd.1 k)))]`. Expand and normalize the polynomial expressions, which then agree.
+
+Use `⟨F, G, hG', h, bh, dh, t + (M.blk p).elim 0 (fun k => Real.log ‖c k‖), ?_, ?_⟩` and prove the remaining obligations. Break down `ht with ⟨k, a, hk, ha, hz, rfl⟩ | ⟨hk, rfl⟩` into its components or cases. Use `Or.inl ⟨k, c k * a, hk, mul_ne_zero (hc k) ha, fun m => ?_, ?_⟩` and prove the remaining obligations. Simplify using `only [ev]`. Rewrite using `[torusSmul, hz m, mul_assoc]`.
+
+Rewrite using `[hk, norm_mul, Real.log_mul (norm_ne_zero_iff.2 (hc _)) (norm_ne_zero_iff.2 ha), Option.elim_some, add_comm]`. Use `Or.inr ⟨hk, ?_⟩` and prove the remaining obligations. Rewrite using `[hk, ev, Option.elim_none, add_zero]`. Rewrite using `[el, sum_dy]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem Rel.smul
     (hgood : ∀ F τ w G, Gr F τ w G → M.IsFrame F ∧ w ∈ mcPts (mCoordIdeal M.x) ∧ M.GoodAt F (mCoordIdeal w) ∧
       IsBlockDiag j G ∧ G.PosDef)
@@ -61,6 +77,15 @@ theorem Rel.smul
   · rw [el, sum_dy]
     ring
 
+/- English proof (translation)
+Take `⟨F, G, hG, h, bh, dh, t, ht, rfl⟩` from `h1`. Take `⟨hF, hw, gd, -, -⟩` from `hgood _ _ _ _ hG`. Establish `hG'` using `hconj _ _ _ _ hG`. Establish `hw'` using `(hgood _ _ _ _ hG').2.1`. Establish `eb : basePart M.blk (conjVec z) = conjVec (basePart M.blk z)` using `rfl`.
+
+Use `⟨F, _, hG', h.map (starRingEnd ℂ), bh.map _, ?_, t, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[← RingHom.mapMatrix_apply, ← RingHom.map_det]`. Conclude with `(map_ne_zero _).2 dh`. Break down `ht with ⟨k, a, hk, ha, hz, rfl⟩ | ⟨hk, rfl⟩` into its components or cases. Use `Or.inl ⟨k, starRingEnd ℂ a, hk, (map_ne_zero _).2 ha, fun m => ?_, by simp⟩` and prove the remaining obligations.
+
+Rewrite using `[conjVec, hz m, map_mul, map_sum]`. Use `congr 1`. Use `Finset.sum_congr rfl fun I _ => ?_` and prove the remaining obligations. Rewrite using `[map_mul, eb, valAt_conj hw hw' (gd.2.1 _ I).1, minorIJ_map]`. Use `Or.inr ⟨hk, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[eb, valAt_conj hw hw' (gd.2.2 p hk).2.1, RCLike.norm_conj]`. Rewrite using `[pot_conj]`. Simplify using `only [eb, conjVec, RCLike.norm_conj]`.
+-/
 theorem Rel.conj
     (hgood : ∀ F τ w G, Gr F τ w G → M.IsFrame F ∧ w ∈ mcPts (mCoordIdeal M.x) ∧ M.GoodAt F (mCoordIdeal w) ∧
       IsBlockDiag j G ∧ G.PosDef)
@@ -85,6 +110,27 @@ theorem Rel.conj
   · rw [pot_conj]
     simp only [eb, conjVec, RCLike.norm_conj]
 
+/- English proof (translation)
+Set `f : ((Σ k, ι k) → ℂ) → ℝ` to `fun z => if h : ∃ r, Rel M Gr p z r then Real.exp h.choose else refNorm (M.dy p) z`. Establish `fr : ∀ z r, Rel M Gr p z r → f z = Real.exp r` using `fun z r h => by`. Establish `hex : ∃ r, Rel M Gr p z r` using `⟨r, h⟩`. Simplify using `only [f, dif_pos hex]`. Rewrite using `[Rel.unique hgood hcomp hex.choose_spec h]`.
+
+Use `⟨⟨M.dy p, f, fun z hz => ?_, fun c z hc => ?_⟩, rfl, fun F w G hG z hz ho hn h bh dh => ?_, fun z => ?_⟩` and prove the remaining obligations. Simplify using `only [f] split_ifs exacts [Real.exp_pos _, refNorm_pos _ hz]`. Express the relevant statement in the definitionally equal form `f (torusSmul c z) = _`. Distinguish the cases in `h : ∃ r, Rel M Gr p z r`. Take `⟨r, h⟩` from `h`.
+
+Rewrite using `[fr _ _ h, fr _ _ (h.smul hgood htor hc), Real.exp_add, mul_comm, Real.exp_sum]`. Use `congr 1`. Use `Finset.prod_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[← Real.log_zpow, Real.exp_log (zpow_pos (norm_pos_iff.2 (hc k)) _)]`. Establish `h' : ¬ ∃ r, Rel M Gr p (torusSmul c z) r`.
+
+Introduce and unpack `⟨r, hr⟩`. Use `hr.smul hgood htor (c := fun k => (c k)⁻¹) fun k => inv_ne_zero (hc k)` as an intermediate fact. Establish `e : torusSmul (fun k => (c k)⁻¹) (torusSmul c z) = z`. Use function extensionality and compare the values at `q`. Simplify using `[torusSmul, hc]`.
+
+Rewrite `this` using `[e]`. Conclude with `h ⟨_, this⟩`. Simplify using `only [f, dif_neg h, dif_neg h']`. Conclude with `refNorm_smul _ _ _`. Take `⟨c, hc, e⟩` from `ho`.
+
+Establish `hG' : Gr F p.1 (basePart M.blk z) G`. Rewrite using `[e]`. Conclude with `htor _ _ _ _ c hc hG`. Use `⟨fun k hk hz => ?_, fun hk => ?_⟩` and prove the remaining obligations. Use `show Real.log (f z) = _`.
+
+Rewrite using `[fr z _ ⟨F, G, hG', h, bh, dh, _, Or.inl ⟨k, 1, hk, one_ne_zero, fun m => by rw [one_mul, hz m], rfl⟩, rfl⟩, Real.log_exp]`. Simplify using `[hn]`. Use `show Real.log (f z) = _`. Rewrite using `[fr z _ ⟨F, G, hG', h, bh, dh, _, Or.inr ⟨hk, rfl⟩, rfl⟩, Real.log_exp]`. Simplify using `only [hn, norm_one, Real.log_one, mul_zero, Finset.sum_const_zero]`.
+
+Expand and normalize the polynomial expressions, which then agree. Use `show f _ = f z`. Distinguish the cases in `h : ∃ r, Rel M Gr p z r`. Take `⟨r, h⟩` from `h`. Rewrite using `[fr _ _ h, fr _ _ (h.conj hgood hconj)]`.
+
+Establish `h' : ¬ ∃ r, Rel M Gr p (conjVec z) r`. Introduce and unpack `⟨r, hr⟩`. Use `hr.conj hgood hconj` as an intermediate fact. Establish `e : conjVec (conjVec z) = z`. Use function extensionality and compare the values at `q`.
+
+Simplify using `[conjVec]`. Rewrite `this` using `[e]`. Conclude with `h ⟨_, this⟩`. Simplify using `only [f, dif_neg h, dif_neg h']`. Simplify using `[refNorm, conjVec]`.
+-/
 theorem exists_hom
     (hgood : ∀ F τ w G, Gr F τ w G → M.IsFrame F ∧ w ∈ mcPts (mCoordIdeal M.x) ∧ M.GoodAt F (mCoordIdeal w) ∧
       IsBlockDiag j G ∧ G.PosDef)

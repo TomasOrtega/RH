@@ -20,6 +20,9 @@ variable {K : FiniteSubfield} (S : Set (HeightOneSpectrum (𝓞 K.1)))
   (ιs : ∀ v : S, ℚ̄ →ₐ[K.1] AlgebraicClosure ((v : HeightOneSpectrum (𝓞 K.1)).adicCompletion K.1))
   (N : ℕ) [NeZero N]
 
+/- English proof (translation)
+Establish `hmor : 𝟙 _ ≫ gsRealRootsToUnits S ιr N w = (Rep.resFunctor (gsRealFamily S ιr w).toMonoidHom).map (rootsOfUnityToSUnits S (maxUnramifiedOutside K.1 ℚ̄ S) N) ≫ realUnitsMor S ιr w` using `Rep.Hom.ext (Representation.IntertwiningMap.ext (LinearMap.ext fun _ => rfl))`. Establish `key : (cohomologyMap (gsRealRootsToUnits S ιr N w) 2).hom (ptRes (gsRealFamily S ιr) (gsRoots S N) w 2 x) = (realUnitsRes S ιr 2 w).hom ((cohomologyMap (rootsOfUnityToSUnits S (maxUnramifiedOutside K.1 ℚ̄ S) N) 2).hom x)` using `(cohomologyMap_cohomologyMapAlong _ _ _ _ x).trans ((congrArg (fun f => (cohomologyMapAlong (gsRealFamily S ιr w).toMonoidHom (continuous_toMonoidHom _) f 2).hom x) hmor).trans (cohomologyMapAlong_cohomologyMap _ _ _ _ x).symm)`. Conclude with `(gsRealInvRootsQZ_apply S ιr N w _).trans ((realInv_eq_placeInv w.1 _).trans (congrArg _ (congrArg _ key)))`.
+-/
 theorem gsRealInvRootsQZ_ptRes (w : {v : InfinitePlace K.1 // v.IsReal}) (x : cohomology (gsRoots S N) 2) :
     gsRealInvRootsQZ S ιr N w (ptRes (gsRealFamily S ιr) (gsRoots S N) w 2 x) =
       placeInv (.inl w.1) (realLocalEquiv w 2 ((realUnitsRes S ιr 2 w).hom
@@ -39,6 +42,9 @@ theorem gsRealInvRootsQZ_ptRes (w : {v : InfinitePlace K.1 // v.IsReal}) (x : co
   exact (gsRealInvRootsQZ_apply S ιr N w _).trans
     ((realInv_eq_placeInv w.1 _).trans (congrArg _ (congrArg _ key)))
 
+/- English proof (translation)
+Use `(gsLocalInvRootsQZ_cohomologyMapAlong S ιs N v x).trans (Eq.symm ?_)` and prove the remaining obligations. Use `(congrArg (fun z => placeInv (K := K) (.inr (v : HeightOneSpectrum (𝓞 K.1))) (brauerLocal (gsLocalEmbeddings S ιs) z (.inr (v : HeightOneSpectrum (𝓞 K.1))))) (sUnitsBrauer_apply K S _)).trans ?_` and prove the remaining obligations. Use `(congrArg (placeInv (K := K) (.inr (v : HeightOneSpectrum (𝓞 K.1)))) (brauerLocal_gsBrauerInfl_inr K S _ _ _)).trans ?_` and prove the remaining obligations. Use `(placeInv_inr_apply _ _).trans ?_` and prove the remaining obligations. Simplify using `only [gsLocalEmbeddings_fin]`.
+-/
 theorem gsLocalInvRootsQZ_ptRes_eq (v : S) (x : cohomology (gsRoots S N) 2) :
     gsLocalInvRootsQZ S ιs N v (ptRes (gsFinFamily S ιs) (gsRoots S N) v 2 x) =
       placeInv (.inr (v : HeightOneSpectrum (𝓞 K.1))) (brauerLocal (gsLocalEmbeddings S ιs)
@@ -53,6 +59,9 @@ theorem gsLocalInvRootsQZ_ptRes_eq (v : S) (x : cohomology (gsRoots S N) 2) :
   refine (placeInv_inr_apply _ _).trans ?_
   simp only [gsLocalEmbeddings_fin]
 
+/- English proof (translation)
+The claim follows from `(gsRealInvRootsQZ_ptRes S ιr N w x).trans (congrArg (placeInv (K := K) (.inl w.1)) (realLocalEquiv_realUnitsRes S ιr (gsLocalEmbeddings S ιs) (by norm_num) w _).symm)`.
+-/
 theorem gsRealInvRootsQZ_ptRes_eq (w : {v : InfinitePlace K.1 // v.IsReal}) (x : cohomology (gsRoots S N) 2) :
     gsRealInvRootsQZ S ιr N w (ptRes (gsRealFamily S ιr) (gsRoots S N) w 2 x) =
       placeInv (.inl w.1) (brauerLocal (gsLocalEmbeddings S ιs)
@@ -63,6 +72,17 @@ theorem gsRealInvRootsQZ_ptRes_eq (w : {v : InfinitePlace K.1 // v.IsReal}) (x :
 
 omit [NeZero N] in
 
+/- English proof (translation)
+Set `A : Finset (Place K.1)` to `Finset.univ.image fun v : S => (Sum.inr (v : HeightOneSpectrum (𝓞 K.1)) : Place K.1)`. Set `B : Finset (Place K.1)` to `Finset.univ.image fun w : {v : InfinitePlace K.1 // v.IsReal} => (Sum.inl w.1 : Place K.1)`. Establish `hzT : ∀ p ∉ A ∪ B, placeInv p (brauerLocal ι z p) = 0`. Introduce `p hp`. Break down `p with w | v` into its components or cases.
+
+Establish `hw : ¬ w.IsReal` using `fun h => hp (Finset.mem_union_right _ (Finset.mem_image.2 ⟨⟨w, h⟩, Finset.mem_univ _, rfl⟩))`. Establish `hc : w.IsComplex` using `InfinitePlace.not_isReal_iff_isComplex.1 hw`. Establish `: Subsingleton (localGaloisCohomology K 2 (.inl w))` using `subsingleton_cohomology_two_of_isComplex w hc`. Conclude with `(congrArg (placeInv (.inl w)) (Subsingleton.elim _ 0)).trans (map_zero _)`. Establish `hv : v ∉ S` using `fun h => hp (Finset.mem_union_left _ (Finset.mem_image.2 ⟨⟨v, h⟩, Finset.mem_univ _, rfl⟩))`.
+
+Rewrite using `[hz v hv, map_zero]`. Establish `hdisj : Disjoint A B`. Rewrite using `[Finset.disjoint_left]`. Introduce `p hpA hpB`. Take `⟨v, -, rfl⟩` from `Finset.mem_image.1 hpA`.
+
+Take `⟨w, -, hw⟩` from `Finset.mem_image.1 hpB`. Conclude with `Sum.inl_ne_inr hw`. Establish `hsum : brauerSumInv ι z = ∑ v : S, placeInv (.inr (v : HeightOneSpectrum (𝓞 K.1))) (brauerLocal ι z (.inr (v : HeightOneSpectrum (𝓞 K.1)))) + ∑ w : {v : InfinitePlace K.1 // v.IsReal}, placeInv (.inl w.1) (brauerLocal ι z (.inl w.1))`. Use `(AddMonoidHom.comp_apply _ _ _).trans ?_` and prove the remaining obligations. Rewrite using `[sumPlaceInv_eq_sum_of_placeInv (A ∪ B) _ hzT, Finset.sum_union hdisj, Finset.sum_image (fun v _ w _ h => Subtype.ext (Sum.inr_injective h)), Finset.sum_image (fun v _ w _ h => Subtype.ext (Sum.inl_injective h))]`.
+
+Conclude with `hsum.symm.trans (brauerSumInv_eq_zero ι z)`.
+-/
 theorem sum_placeInv_inr_add_sum_placeInv_inl [Fintype S] (ι : LocalEmbeddings K) (z : cohomology (unitsLimitRep K) 2)
     (hz : ∀ v : HeightOneSpectrum (𝓞 K.1), v ∉ S → brauerLocal ι z (.inr v) = 0) :
     ∑ v : S, placeInv (.inr (v : HeightOneSpectrum (𝓞 K.1))) (brauerLocal ι z (.inr (v : HeightOneSpectrum (𝓞 K.1)))) +
@@ -98,6 +118,9 @@ theorem sum_placeInv_inr_add_sum_placeInv_inl [Fintype S] (ι : LocalEmbeddings 
       Finset.sum_image (fun v _ w _ h => Subtype.ext (Sum.inl_injective h))]
   exact hsum.symm.trans (brauerSumInv_eq_zero ι z)
 
+/- English proof (translation)
+The claim follows from `(congrArg₂ (· + ·) (Finset.sum_congr rfl fun v _ => gsLocalInvRootsQZ_ptRes_eq S ιs N v x) (Finset.sum_congr rfl fun w _ => gsRealInvRootsQZ_ptRes_eq S ιr ιs N w x)).trans (sum_placeInv_inr_add_sum_placeInv_inl S (gsLocalEmbeddings S ιs) _ (fun v hv => brauerLocal_sUnitsBrauer_in …`.
+-/
 theorem gsReciprocityReal [Fintype S] (x : cohomology (gsRoots S N) 2) :
     ∑ v, gsLocalInvRootsQZ S ιs N v (ptRes (gsFinFamily S ιs) (gsRoots S N) v 2 x) +
       ∑ w, gsRealInvRootsQZ S ιr N w (ptRes (gsRealFamily S ιr) (gsRoots S N) w 2 x) = 0 :=
@@ -117,11 +140,17 @@ def gsSumInvReal [Fintype S] : ptTLocal (gsFinFamily S ιs) (gsRealFamily S ιr)
     abel
 
 omit [NeZero N] in
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem gsSumInvReal_apply [Fintype S] (ξ : ptTLocal (gsFinFamily S ιs) (gsRealFamily S ιr) (gsRoots S N) 2) :
     gsSumInvReal S ιr ιs N ξ =
       ∑ v, gsLocalInvRootsQZ S ιs N v (ξ.1 v) + ∑ w, gsRealInvRootsQZ S ιr N w (ξ.2 w) :=
   rfl
 
+/- English proof (translation)
+Establish `e` using `ptTExact_local (gsFinFamily S ιs) (gsRealFamily S ιr) (gsRoots S N) 1`. Establish `e2` using `(e ξ).1 hξ`. Take `⟨x, hx⟩` from `e2`. Conclude with `(congrArg (gsSumInvReal S ιr ιs N) hx.symm).trans ((congrArg (gsSumInvReal S ιr ιs N) (ptTGlobalToLocal_apply _ _ (gsRoots S N) 2 x)).trans (gsReciprocityReal S ιr ιs N x))`.
+-/
 theorem gsSumInvReal_eq_zero_of [Fintype S] (ξ : ptTLocal (gsFinFamily S ιs) (gsRealFamily S ιr) (gsRoots S N) 2)
     (hξ : (ptTLocalToCompact (gsFinFamily S ιs) (gsRealFamily S ιr) (gsRoots S N) 2).hom ξ = 0) :
     gsSumInvReal S ιr ιs N ξ = 0 := by

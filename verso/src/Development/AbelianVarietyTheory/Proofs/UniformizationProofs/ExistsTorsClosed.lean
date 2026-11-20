@@ -16,6 +16,9 @@ open GlobalTheory.UT
 
 namespace GlobalTheory.TorsionIso
 
+/- English proof (translation)
+The claim follows from `GlobalTheory.T.uniformisation_torsion_identification_with_pairing GlobalTheory.T.all_uniformization_laws_hold`.
+-/
 theorem exists_tors_closed :
     AllUF fun {R} _ _ {I} {D} {A} {G} _ _ U F _ _ => ∀ (k : ℕ), 1 ≤ k → ∃ f, Tors U.toUnifPre F k f :=
   GlobalTheory.T.uniformisation_torsion_identification_with_pairing GlobalTheory.T.all_uniformization_laws_hold

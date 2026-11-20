@@ -15,6 +15,9 @@ noncomputable section
 
 variable {Y Z : Scheme.{u}}
 
+/- English proof (translation)
+The claim follows from `Scheme.Modules.Hom.app_smul _ r n`.
+-/
 lemma pullbackUnitApp_smul (f : Y ⟶ Z) (N : Z.Modules) (O : Z.Opens) (r : Γ(Z, O))
     (n : Γ(N, O)) : pullbackUnitApp f N O (r • n) = f.app O r • pullbackUnitApp f N O n :=
   Scheme.Modules.Hom.app_smul _ r n
@@ -35,6 +38,9 @@ def pullbackUnitIso (f : Y ⟶ Z) :
 def unitOne (Z : Scheme.{u}) (O : Z.Opens) : Γ(SheafOfModules.unit Z.ringCatSheaf, O) :=
   (1 : Γ(Z, O))
 
+/- English proof (translation)
+Use `(Scheme.Modules.pullbackPushforwardAdjunction f).unit.naturality φ` as an intermediate fact. Establish `h` using `congrArg (fun ψ => (Scheme.Modules.Hom.app ψ O).hom n) this`. Simplify using `only [Functor.id_map, Functor.comp_map, Scheme.Modules.Hom.comp_app, AddCommGrpCat.hom_comp, AddMonoidHom.coe_comp, Function.comp_apply] at h`. Conclude with `h.symm`.
+-/
 lemma pullbackUnitApp_naturality (f : Y ⟶ Z) {N N' : Z.Modules} (φ : N ⟶ N') (O : Z.Opens)
     (n : Γ(N, O)) :
     ((Scheme.Modules.pullback f).map φ).app (f ⁻¹ᵁ O) (pullbackUnitApp f N O n) =
@@ -47,6 +53,9 @@ lemma pullbackUnitApp_naturality (f : Y ⟶ Z) {N N' : Z.Modules} (φ : N ⟶ N'
 
 set_option backward.isDefEq.respectTransparency.types false in
 
+/- English proof (translation)
+Establish `h` using `SheafOfModules.pullbackPushforwardAdjunction_homEquiv_pullbackObjUnitToUnit f.toRingCatSheafHom`. Rewrite `h` using `[Adjunction.homEquiv_unit]`. Establish `h'` using `congrArg (fun ψ => ψ.val.app (op ⊤) (1 : Z.ringCatSheaf.obj.obj (op ⊤))) h`. Simplify using `only [SheafOfModules.unitToPushforwardObjUnit_val_app_apply, map_one] at h'`. Conclude with `h'`.
+-/
 lemma pullbackUnitIso_hom_one (f : Y ⟶ Z) :
     (pullbackUnitIso f).hom.app ⊤
       (pullbackUnitApp f (SheafOfModules.unit Z.ringCatSheaf) ⊤ (unitOne Z ⊤)) = unitOne Y ⊤ := by
@@ -57,6 +66,11 @@ lemma pullbackUnitIso_hom_one (f : Y ⟶ Z) :
   simp only [SheafOfModules.unitToPushforwardObjUnit_val_app_apply, map_one] at h'
   exact h'
 
+/- English proof (translation)
+Establish `hb : IsBasisOn ((preMod Y).obj (SheafOfModules.unit Y.ringCatSheaf)) ⊤ (unitOne Y ⊤)` using `isBasisOn_one ⊤`. Establish `h2` using `hb.map_iso (pullbackUnitIso f).symm`. Establish `hx : ((preMod Y).map (pullbackUnitIso f).symm.hom).app (op ⊤) ((pullbackUnitIso f).hom.app ⊤ (pullbackUnitApp f (SheafOfModules.unit Z.ringCatSheaf) ⊤ (unitOne Z ⊤))) = pullbackUnitApp f (SheafOfModules.unit Z.ringCatSheaf) ⊤ (unitOne Z ⊤)`. Establish `e2` using `congrArg (fun φ => (Scheme.Modules.Hom.app φ ⊤).hom (pullbackUnitApp f (SheafOfModules.unit Z.ringCatSheaf) ⊤ (unitOne Z ⊤))) (pullbackUnitIso f).hom_inv_id`. Conclude with `e2`.
+
+Rewrite `h2` using `[← pullbackUnitIso_hom_one f, hx]`. Conclude with `h2`.
+-/
 lemma isBasisOn_pullbackUnitApp_one (f : Y ⟶ Z) :
     IsBasisOn ((preMod Y).obj ((Scheme.Modules.pullback f).obj
       (SheafOfModules.unit Z.ringCatSheaf))) ⊤
@@ -75,6 +89,17 @@ lemma isBasisOn_pullbackUnitApp_one (f : Y ⟶ Z) :
   rw [← pullbackUnitIso_hom_one f, hx] at h2
   exact h2
 
+/- English proof (translation)
+Take `rfl : O = ⊤` from `top_le_iff.mp hO`. Set `sec : N.val.sections` to `⟨fun j => resM ((preMod Z).obj N) (le_top : j.unop ≤ ⊤) t, fun {j j'} g => by`. Conclude with `resM_resM _ _ _ _⟩`. Set `f₀ : 𝟙_ Z.Modules ⟶ N` to `(SheafOfModules.unitHomEquiv N).symm sec`. Establish `hf₀ : ∀ U : Z.Opens, Scheme.Modules.Hom.app f₀ U (unitOne Z U) = resM ((preMod Z).obj N) (le_top : U ≤ ⊤) t`.
+
+Introduce `U`. Use `SheafOfModules.unitHomEquiv_apply_coe N f₀ (op U)` as an intermediate fact. Rewrite `this` using `[Equiv.apply_symm_apply]`. Conclude with `this.symm`. Establish `hf₀t : Scheme.Modules.Hom.app f₀ ⊤ (unitOne Z ⊤) = t`.
+
+Rewrite using `[hf₀]`. Conclude with `resM_refl _ t`. Establish `: IsIso f₀` using `isIso_of_isBasisOn f₀ (fun _ => ⟨⊤, trivial, unitOne Z ⊤, isBasisOn_one ⊤, by`. Express the relevant statement in the definitionally equal form `IsBasisOn _ ⊤ (Scheme.Modules.Hom.app f₀ ⊤ (unitOne Z ⊤))`. Rewrite using `[hf₀t]`.
+
+Conclude with `ht⟩)`. Establish `h2` using `(isBasisOn_pullbackUnitApp_one f).map_iso (asIso ((Scheme.Modules.pullback f).map f₀))`. Establish `hx : ((preMod Y).map (asIso ((Scheme.Modules.pullback f).map f₀)).hom).app (op ⊤) (pullbackUnitApp f (SheafOfModules.unit Z.ringCatSheaf) ⊤ (unitOne Z ⊤)) = pullbackUnitApp f N ⊤ t`. Express the relevant statement in the definitionally equal form `Scheme.Modules.Hom.app ((Scheme.Modules.pullback f).map f₀) (f ⁻¹ᵁ ⊤) (pullbackUnitApp f (𝟙_ Z.Modules) ⊤ (unitOne Z ⊤)) = _`. Rewrite using `[pullbackUnitApp_naturality, hf₀t]`.
+
+Rewrite `h2` using `[hx]`. Conclude with `h2`.
+-/
 lemma isBasisOn_pullbackUnitApp_of_top (f : Y ⟶ Z) {N : Z.Modules} {O : Z.Opens} (hO : ⊤ ≤ O)
     {t : Γ(N, O)} (ht : IsBasisOn ((preMod Z).obj N) O t) :
     IsBasisOn ((preMod Y).obj ((Scheme.Modules.pullback f).obj N)) (f ⁻¹ᵁ O)
@@ -110,6 +135,9 @@ lemma isBasisOn_pullbackUnitApp_of_top (f : Y ⟶ Z) {N : Z.Modules} {O : Z.Open
 
 abbrev appR (j : Y ⟶ Z) (V : Z.Opens) : ringOn Z V →+* ringOn Y (j ⁻¹ᵁ V) := (j.app V).hom
 
+/- English proof (translation)
+Establish `e1` using `pullbackUnitApp_smul j N V r (resM ((preMod Z).obj N) h t)`. Establish `e2` using `pullbackUnitApp_res j N (homOfLE h) t`. Conclude with `e1.trans (congrArg _ e2)`.
+-/
 lemma pullbackUnitApp_smul_resM (j : Y ⟶ Z) (N : Z.Modules) {O V : Z.Opens} (h : V ≤ O)
     (r : ringOn Z V) (t : Γ(N, O)) :
     pullbackUnitApp j N V (r • resM ((preMod Z).obj N) h t) =
@@ -119,6 +147,17 @@ lemma pullbackUnitApp_smul_resM (j : Y ⟶ Z) (N : Z.Modules) {O V : Z.Opens} (h
   have e2 := pullbackUnitApp_res j N (homOfLE h) t
   exact e1.trans (congrArg _ e2)
 
+/- English proof (translation)
+Establish `key : ∀ (V : Z.Opens) (h : V ≤ O), Function.Bijective (fun r : ringOn Y (j ⁻¹ᵁ V) => r • resM ((preMod Y).obj ((Scheme.Modules.pullback j).obj N)) ((Opens.map j.base).monotone h) (pullbackUnitApp j N O t)) ↔ Function.Bijective (fun r : ringOn Z V => r • resM ((preMod Z).obj N) h …`. Introduce `V h`. Establish `hV : V ≤ j.opensRange` using `h.trans hO`. Establish `b1 : Function.Bijective (appR j V)`. Use `Scheme.Hom.isIso_app j V hV` as an intermediate fact.
+
+Conclude with `ConcreteCategory.bijective_of_isIso _`. Establish `b2` using `pullbackUnitApp_bijective j N hV`. Establish `comm : (fun r : ringOn Y (j ⁻¹ᵁ V) => r • resM ((preMod Y).obj ((Scheme.Modules.pullback j).obj N)) ((Opens.map j.base).monotone h) (pullbackUnitApp j N O t)) ∘ appR j V = pullbackUnitApp j N V ∘ (fun r : ringOn Z V => r • resM ((preMod Z).obj N) h t)`. Use function extensionality and compare the values at `r`. Conclude with `(pullbackUnitApp_smul_resM j N h r t).symm`.
+
+Prove the components needed by the constructor for the conclusion. Introduce `hl`. Use `hl.comp b1` as an intermediate fact. Rewrite `this` using `[comm]`. Conclude with `(Function.Bijective.of_comp_iff' b2 _).1 this`.
+
+Introduce `hr`. Use `b2.comp hr` as an intermediate fact. Rewrite `this` using `[← comm]`. Conclude with `(Function.Bijective.of_comp_iff _ b1).1 this`. Prove the components needed by the constructor for the conclusion.
+
+Introduce `hb V h`. Conclude with `(key V h).1 (hb (j ⁻¹ᵁ V) ((Opens.map j.base).monotone h))`. Introduce `hb V' h'`. Take `⟨V, hVO, rfl⟩ : ∃ V, V ≤ O ∧ V' = j ⁻¹ᵁ V` from `⟨j ''ᵁ V', (j.image_mono h').trans (j.image_preimage_le O), (j.preimage_image_eq V').symm⟩`. Conclude with `(key V hVO).2 (hb V hVO)`.
+-/
 lemma isBasisOn_pullbackUnitApp_iff (j : Y ⟶ Z) [IsOpenImmersion j] (N : Z.Modules) {O : Z.Opens}
     (hO : O ≤ j.opensRange) (t : Γ(N, O)) :
     IsBasisOn ((preMod Y).obj ((Scheme.Modules.pullback j).obj N)) (j ⁻¹ᵁ O)
@@ -157,6 +196,9 @@ lemma isBasisOn_pullbackUnitApp_iff (j : Y ⟶ Z) [IsOpenImmersion j] (N : Z.Mod
       ⟨j ''ᵁ V', (j.image_mono h').trans (j.image_preimage_le O), (j.preimage_image_eq V').symm⟩
     exact (key V hVO).2 (hb V hVO)
 
+/- English proof (translation)
+Establish `h2` using `h.map_iso ((Scheme.Modules.pullbackComp c d).app N).symm`. Establish `e` using `GroundTheory.Arith.Etale.pullbackUnitApp_comp c d N O t`. Express the relevant statement in the definitionally equal form `IsBasisOn _ _ (((Scheme.Modules.pullbackComp c d).inv.app N).app ((c ≫ d) ⁻¹ᵁ O) (pullbackUnitApp (c ≫ d) N O t)) at h2`. Rewrite `h2` using `[e]`. Conclude with `h2`.
+-/
 lemma isBasisOn_pullbackUnitApp_comp {T : Scheme.{u}} (c : T ⟶ Y) (d : Y ⟶ Z) (N : Z.Modules)
     (O : Z.Opens) (t : Γ(N, O))
     (h : IsBasisOn ((preMod T).obj ((Scheme.Modules.pullback (c ≫ d)).obj N)) ((c ≫ d) ⁻¹ᵁ O)
@@ -170,6 +212,9 @@ lemma isBasisOn_pullbackUnitApp_comp {T : Scheme.{u}} (c : T ⟶ Y) (d : Y ⟶ Z
   rw [e] at h2
   exact h2
 
+/- English proof (translation)
+Establish `h2` using `h.map_iso ((Scheme.Modules.pullbackComp c d).app N)`. Establish `e` using `GroundTheory.Arith.Etale.pullbackUnitApp_comp_hom c d N O t`. Express the relevant statement in the definitionally equal form `IsBasisOn _ _ (((Scheme.Modules.pullbackComp c d).hom.app N).app ((c ≫ d) ⁻¹ᵁ O) (pullbackUnitApp c _ (d ⁻¹ᵁ O) (pullbackUnitApp d N O t))) at h2`. Rewrite `h2` using `[e]`. Conclude with `h2`.
+-/
 lemma isBasisOn_of_pullbackUnitApp_comp {T : Scheme.{u}} (c : T ⟶ Y) (d : Y ⟶ Z) (N : Z.Modules)
     (O : Z.Opens) (t : Γ(N, O))
     (h : IsBasisOn ((preMod T).obj
@@ -184,6 +229,11 @@ lemma isBasisOn_of_pullbackUnitApp_comp {T : Scheme.{u}} (c : T ⟶ Y) (d : Y �
   rw [e] at h2
   exact h2
 
+/- English proof (translation)
+Establish `h1 : IsBasisOn ((preMod W.toScheme).obj ((Scheme.Modules.pullback W.ι).obj N)) (W.ι ⁻¹ᵁ W) (pullbackUnitApp W.ι N W t)` using `(isBasisOn_pullbackUnitApp_iff W.ι N (by rw [Scheme.Opens.opensRange_ι]) t).2 ht`. Establish `h2` using `isBasisOn_pullbackUnitApp_of_top (f ∣_ W) (by rw [Scheme.Opens.ι_preimage_self]) h1`. Establish `h3` using `isBasisOn_of_pullbackUnitApp_comp (f ∣_ W) W.ι N W t h2`. Rewrite `h3` using `[morphismRestrict_ι]`. Establish `h4` using `isBasisOn_pullbackUnitApp_comp (f ⁻¹ᵁ W).ι f N W t h3`.
+
+Conclude with `(isBasisOn_pullbackUnitApp_iff (f ⁻¹ᵁ W).ι _ (by rw [Scheme.Opens.opensRange_ι]) _).1 h4`.
+-/
 theorem isBasisOn_pullbackUnitApp (f : Y ⟶ Z) {N : Z.Modules} {W : Z.Opens} {t : Γ(N, W)}
     (ht : IsBasisOn ((preMod Z).obj N) W t) :
     IsBasisOn ((preMod Y).obj ((Scheme.Modules.pullback f).obj N)) (f ⁻¹ᵁ W)

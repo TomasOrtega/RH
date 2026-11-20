@@ -35,16 +35,31 @@ variable {S T S' T' : HSp D}
 private def rd (φ : WO S T ≃+ WO S' T') : (WO S T → ℂ) ≃ₗ[ℂ] (WO S' T' → ℂ) :=
   LinearEquiv.funCongrLeft ℂ ℂ φ.symm.toEquiv
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 private theorem rd_apply (φ : WO S T ≃+ WO S' T') (f : WO S T → ℂ) (w : WO S' T') : rd φ f w = f (φ.symm w) := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 private theorem rd_symm_apply (φ : WO S T ≃+ WO S' T') (g : WO S' T' → ℂ) (t : WO S T) : (rd φ).symm g t = g (φ t) := rfl
 
+/- English proof (translation)
+Use function extensionality and compare the values at `w`. Simplify using `[rd_apply]`.
+-/
 private theorem rd_symm_rd (φ : WO S T ≃+ WO S' T') (g : WO S T → ℂ) : rd φ.symm (rd φ g) = g := by
   funext w; simp [rd_apply]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `w`. Simplify using `[rd_apply]`.
+-/
 private theorem rd_rd_symm (φ : WO S T ≃+ WO S' T') (g : WO S' T' → ℂ) : rd φ (rd φ.symm g) = g := by
   funext w; simp [rd_apply]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `w`. Simplify using `only [heisO, rd_apply, symplOH, map_add, AddEquiv.symm_apply_apply]`. Rewrite using `[← hB (φ.symm w) w₀, AddEquiv.apply_symm_apply]`.
+-/
 private theorem heisO_move (ψ : AddChar (AF D.host.F) ℂ) (φ : WO S T ≃+ WO S' T')
     (hB : ∀ x y, symplO S' T' (φ x) (φ y) = symplO S T x y) (w₀ : WO S T) (f : WO S T → ℂ) :
     heisO ψ S' T' (φ w₀) (rd φ f) = rd φ (heisO ψ S T w₀ f) := by
@@ -52,6 +67,21 @@ private theorem heisO_move (ψ : AddChar (AF D.host.F) ℂ) (φ : WO S T ≃+ WO
   simp only [heisO, rd_apply, symplOH, map_add, AddEquiv.symm_apply_apply]
   rw [← hB (φ.symm w) w₀, AddEquiv.apply_symm_apply]
 
+/- English proof (translation)
+Establish `hSB : ∀ Φ', IsSBHalf e Λ' Φ' → IsSBHalf e Λ ((rd φ).symm Φ')`. Introduce and unpack `Φ' ⟨h1, k, hk, h2, h3⟩`. Use `⟨fun t ht => (hH e t).1 (h1 _ ht), k, hk, fun u hu hue t => ?_, fun t ht => ?_⟩` and prove the remaining obligations. Simplify using `only [rd_symm_apply, map_add, map_nsmul]`. Conclude with `h2 _ ((hΛ u).2 hu) ((hH e u).2 hue) _`.
+
+Use `h3 _ ht` as an intermediate fact. Express the relevant statement in the definitionally equal form `k • φ t ∈ Λ' at this`. Rewrite `this` using `[← map_nsmul]`. Conclude with `(hΛ _).1 this`. Use `⟨fun Φ' hΦ x hx => ?_, fun Φ' hΦ y hy => ?_, ?_⟩` and prove the remaining obligations.
+
+Establish `e1 : (rd φ).symm (fun t => Φ' (t + x)) = fun t => (rd φ).symm Φ' (t + φ.symm x)`. Use function extensionality and compare the values at `t`. Simplify using `only [rd_symm_apply, map_add, AddEquiv.apply_symm_apply]`. Establish `hx' : IsHalf e (φ.symm x)` using `(hH e _).1 (by rwa [AddEquiv.apply_symm_apply])`. Simplify using `only [LinearMap.comp_apply, LinearEquiv.coe_coe]`.
+
+Rewrite using `[e1, hT.trans _ (hSB Φ' hΦ) _ hx', ← heisO_move ψ φ hB, AddEquiv.apply_symm_apply]`. Establish `e1 : (rd φ).symm (fun t => ψ (symplO S' T' t y) * Φ' t) = fun t => ψ (symplO S T t (φ.symm y)) * (rd φ).symm Φ' t`. Use function extensionality and compare the values at `t`. Simplify using `only [rd_symm_apply]`. Rewrite using `[← hB, AddEquiv.apply_symm_apply]`.
+
+Establish `hy' : IsHalf (cA D e) (φ.symm y)` using `(hH _ _).1 (by rwa [AddEquiv.apply_symm_apply])`. Simplify using `only [LinearMap.comp_apply, LinearEquiv.coe_coe]`. Rewrite using `[e1, hT.modul _ (hSB Φ' hΦ) _ hy', ← heisO_move ψ φ hB, AddEquiv.apply_symm_apply]`. Establish `e1 : (rd φ).symm (c • halfInd e Λ') = c • halfInd e Λ`. Use function extensionality and compare the values at `t`.
+
+Simplify using `only [rd_symm_apply, Pi.smul_apply, halfInd]`. Use `congr 1`. Establish `key` using `and_congr (hΛ t) (hH e t)`. Distinguish the cases in `h : t ∈ Λ ∧ IsHalf e t`. Rewrite using `[if_pos (key.2 h), if_pos h]`.
+
+Rewrite using `[if_neg (fun h' => h (key.1 h')), if_neg h]`. Simplify using `only [LinearMap.comp_apply, LinearEquiv.coe_coe]`. Rewrite using `[e1, hT.vac]`.
+-/
 private theorem placeModel_move (ψ : AddChar (AF D.host.F) ℂ) (e : AE D) (Λ : AddSubgroup (WO S T))
     (Λ' : AddSubgroup (WO S' T')) (c : ℂ) (f₀ : WO S T → ℂ) (φ : WO S T ≃+ WO S' T')
     (hB : ∀ x y, symplO S' T' (φ x) (φ y) = symplO S T x y) (hH : ∀ a x, IsHalf a (φ x) ↔ IsHalf a x)
@@ -91,6 +121,13 @@ private theorem placeModel_move (ψ : AddChar (AF D.host.F) ℂ) (e : AE D) (Λ 
     simp only [LinearMap.comp_apply, LinearEquiv.coe_coe]
     rw [e1, hT.vac]
 
+/- English proof (translation)
+Establish `hB' : ∀ x y, symplO S T (φ.symm x) (φ.symm y) = symplO S' T' x y` using `fun x y => by`. Rewrite using `[← hB, AddEquiv.apply_symm_apply, AddEquiv.apply_symm_apply]`. Establish `hH' : ∀ a x, IsHalf a (φ.symm x) ↔ IsHalf a x` using `fun a x => by`. Rewrite using `[← hH, AddEquiv.apply_symm_apply]`. Establish `hΛ' : ∀ x, φ.symm x ∈ Λ ↔ x ∈ Λ'` using `fun x => by`.
+
+Rewrite using `[← hΛ, AddEquiv.apply_symm_apply]`. Take `⟨⟨Tm, hTm⟩, hall⟩` from `h`. Use `⟨⟨_, placeModel_move ψ e Λ Λ' c f₀ φ hB hH hΛ hTm⟩, fun Tn hTn => ?_⟩` and prove the remaining obligations. Establish `h2` using `placeModel_move ψ e Λ' Λ c (rd φ f₀) φ.symm hB' hH' hΛ' hTn`. Rewrite `h2` using `[rd_symm_rd]`.
+
+Establish `h3` using `hall _ h2`. Rewrite using `[h3]`. Simplify using `only [LinearMap.comp_apply, LinearEquiv.coe_coe]`. Establish `e1 : (rd φ.symm).symm Φ = rd φ Φ` using `rfl`. Rewrite using `[e1, rd_rd_symm]`.
+-/
 private theorem thetaAt_move (ψ : AddChar (AF D.host.F) ℂ) (e : AE D) (Λ : AddSubgroup (WO S T))
     (Λ' : AddSubgroup (WO S' T')) (c : ℂ) (φ : WO S T ≃+ WO S' T')
     (hB : ∀ x y, symplO S' T' (φ x) (φ y) = symplO S T x y) (hH : ∀ a x, IsHalf a (φ x) ↔ IsHalf a x)
@@ -132,15 +169,27 @@ private def sgnIso (ε : Bool) (I : IsoMat S S') : IsoMat (GlobalTheory.Grid.sgn
     · show Formalism.UG.cT _ I.P * (-S'.gram) * I.P = -S.gram
       rw [Matrix.mul_neg, Matrix.neg_mul, I.gram]
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 private theorem aP_eq_rat (I : IsoMat S S') : I.aP = rat I.P := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 private theorem aQ_eq (I : IsoMat S S') : I.aQ = rat I.Q := rfl
 
+/- English proof (translation)
+Establish `h : Matrix.conjTranspose I.P * S'.gram * I.P = S.gram` using `I.gram`. Rewrite using `[← h]`. Simplify using `only [Matrix.mul_assoc, I.PQ, Matrix.mul_one]`.
+-/
 private theorem gram_mul_Q (I : IsoMat S S') : S.gram * I.Q = Matrix.conjTranspose I.P * S'.gram := by
   have h : Matrix.conjTranspose I.P * S'.gram * I.P = S.gram := I.gram
   rw [← h]
   simp only [Matrix.mul_assoc, I.PQ, Matrix.mul_one]
 
+/- English proof (translation)
+Establish `h2 : S'.gram * I.P = Matrix.conjTranspose I.Q * S.gram` using `gram_mul_Q I.symm`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [Matrix.mul_assoc, Matrix.mul_nonsing_inv _ (gram_isUnit_det S), Matrix.mul_one]`. Use `_ = S'.gram⁻¹ * (S'.gram * I.P) * S.gram⁻¹ := by rw [h2]`. Use `_ = I.P * S.gram⁻¹ := by rw [← Matrix.mul_assoc, Matrix.nonsing_inv_mul _ (gram_isUnit_det S'), Matrix.one_mul]`.
+-/
 private theorem ginv_mul_Qh (I : IsoMat S S') : S'.gram⁻¹ * Matrix.conjTranspose I.Q = I.P * S.gram⁻¹ := by
   have h2 : S'.gram * I.P = Matrix.conjTranspose I.Q * S.gram := gram_mul_Q I.symm
   calc S'.gram⁻¹ * Matrix.conjTranspose I.Q = S'.gram⁻¹ * (Matrix.conjTranspose I.Q * S.gram) * S.gram⁻¹ := by
@@ -148,6 +197,13 @@ private theorem ginv_mul_Qh (I : IsoMat S S') : S'.gram⁻¹ * Matrix.conjTransp
     _ = S'.gram⁻¹ * (S'.gram * I.P) * S.gram⁻¹ := by rw [h2]
     _ = I.P * S.gram⁻¹ := by rw [← Matrix.mul_assoc, Matrix.nonsing_inv_mul _ (gram_isUnit_det S'), Matrix.one_mul]
 
+/- English proof (translation)
+Unfold `symplO GlobalTheory.IndefiniteRowSideFullHecke.SkewGramHalfModule.starAdj hO`. Use `congr 1`. Rewrite using `[Matrix.smul_mul, Matrix.trace_smul, smul_eq_mul]`. Use `congr 1`. Simplify using `only [Matrix.trace, Matrix.diag, Matrix.mul_apply, giA, gA, adj, rat, Matrix.map_apply, Matrix.transpose_apply, Finset.sum_mul, Finset.mul_sum]`.
+
+Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Use `symm`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun b _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_comm]`.
+
+Use `Finset.sum_congr rfl fun c _ => Finset.sum_congr rfl fun d _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+-/
 private theorem symplO_eq' (S T : HSp D) (x y : WO S T) :
     symplO S T x y = Algebra.trace (AF D.host.F) (AE D) (HMul.hMul (GlobalTheory.IndefiniteRowSideFullHecke.SkewGramHalfModule.starAdj S T y) x).trace := by
   unfold symplO GlobalTheory.IndefiniteRowSideFullHecke.SkewGramHalfModule.starAdj hO
@@ -164,6 +220,15 @@ private theorem symplO_eq' (S T : HSp D) (x y : WO S T) :
   refine Finset.sum_congr rfl fun c _ => Finset.sum_congr rfl fun d _ => ?_
   ring
 
+/- English proof (translation)
+Establish `hA : giA S' ⬝ adj IS.aQ = IS.aP ⬝ giA S`. Rewrite using `[aQ_eq, aP_eq_rat, giA, giA, ← rat_conjTranspose, ← rat_mul, ← rat_mul, ginv_mul_Qh]`. Establish `hB : adj IT.aP ⬝ gA T' ⬝ IT.aP = gA T`. Rewrite using `[aP_eq_rat, gA, gA, ← rat_conjTranspose, ← rat_mul, ← rat_mul]`. Use `congr 1`.
+
+Conclude with `IT.gram`. Establish `hA' : ∀ {k : ℕ} (M : Mx D S.rank k), giA S' ⬝ (adj IS.aQ ⬝ M) = IS.aP ⬝ (giA S ⬝ M)`. Introduce `k M`. Rewrite using `[← Matrix.mul_assoc, hA, Matrix.mul_assoc]`. Establish `hB' : ∀ {k : ℕ} (M : Mx D T.rank k), adj IT.aP ⬝ (gA T' ⬝ (IT.aP ⬝ M)) = gA T ⬝ M`.
+
+Introduce `k M`. Rewrite using `[← Matrix.mul_assoc, ← Matrix.mul_assoc, hB]`. Rewrite using `[symplO_eq', symplO_eq', homMap_apply, homMap_apply]`. Use `congr 1`. Simplify using `only [GlobalTheory.IndefiniteRowSideFullHecke.SkewGramHalfModule.starAdj, Matrix.smul_mul, Matrix.trace_smul]`.
+
+Use `congr 1`. Rewrite using `[adj_mul, adj_mul]`. Simplify using `only [Matrix.mul_assoc, hA', hB']`. Rewrite using `[Matrix.trace_mul_comm IS.aP]`. Simplify using `only [Matrix.mul_assoc, IS.aQ_aP, Matrix.mul_one]`.
+-/
 private theorem symplO_homMap (IS : IsoMat S S') (IT : IsoMat T T') (x y : WO S T) :
     symplO S' T' (homMap IS IT x) (homMap IS IT y) = symplO S T x y := by
   have hA : giA S' ⬝ adj IS.aQ = IS.aP ⬝ giA S := by
@@ -185,6 +250,9 @@ private theorem symplO_homMap (IS : IsoMat S S') (IT : IsoMat T T') (x y : WO S 
   rw [Matrix.trace_mul_comm IS.aP]
   simp only [Matrix.mul_assoc, IS.aQ_aP, Matrix.mul_one]
 
+/- English proof (translation)
+Establish `key : ∀ {m n : ℕ} (u : Mx D m n), IsHalf a u ↔ a • u = u` using `fun u => ⟨fun h => by ext i j; exact h i j, fun h i j => congrFun (congrFun h i) j⟩`. Establish `e : a • homMap IS IT x = homMap IS IT (a • x)`. Rewrite using `[homMap_apply, homMap_apply, Matrix.mul_smul, Matrix.smul_mul]`. Rewrite using `[key, key, e, (homMap IS IT).injective.eq_iff]`.
+-/
 private theorem isHalf_homMap (IS : IsoMat S S') (IT : IsoMat T T') (a : AE D) (x : WO S T) :
     IsHalf a (homMap IS IT x) ↔ IsHalf a x := by
   have key : ∀ {m n : ℕ} (u : Mx D m n), IsHalf a u ↔ a • u = u := fun u =>
@@ -193,6 +261,11 @@ private theorem isHalf_homMap (IS : IsoMat S S') (IT : IsoMat T T') (a : AE D) (
     rw [homMap_apply, homMap_apply, Matrix.mul_smul, Matrix.smul_mul]
   rw [key, key, e, (homMap IS IT).injective.eq_iff]
 
+/- English proof (translation)
+Rewrite using `[latMove, latMove, ← Submodule.map_comp]`. Use `(congrArg (fun g => Submodule.map g L) ?_).trans (Submodule.map_id L)` and prove the remaining obligations. Apply `LinearMap.ext` to reduce the goal to its premises. Introduce `v`. Use `show Matrix.mulVec I.Q (Matrix.mulVec I.P v) = v`.
+
+Rewrite using `[Matrix.mulVec_mulVec, I.QP, Matrix.one_mulVec]`.
+-/
 private theorem latMove_symm (I : IsoMat S S') (L : Submodule (𝓞 D.host.E) (Fin S.rank → D.host.E)) :
     latMove I.symm (latMove I L) = L := by
   rw [latMove, latMove, ← Submodule.map_comp]
@@ -202,10 +275,18 @@ private theorem latMove_symm (I : IsoMat S S') (L : Submodule (𝓞 D.host.E) (F
   show Matrix.mulVec I.Q (Matrix.mulVec I.P v) = v
   rw [Matrix.mulVec_mulVec, I.QP, Matrix.one_mulVec]
 
+/- English proof (translation)
+The claim follows from `(homMap IS IT).symm_apply_apply x`.
+-/
 private theorem homMap_symm_homMap (IS : IsoMat S S') (IT : IsoMat T T') (x : WO S T) :
     homMap IS.symm IT.symm (homMap IS IT x) = x :=
   (homMap IS IT).symm_apply_apply x
 
+/- English proof (translation)
+Establish `e : ∀ {U V : HSp D} (t : Fin V.rank → D.host.E) (s : Fin U.rank → D.host.E), (Matrix.of fun i j => x ⊗ₜ[D.host.F] (a * t i * ∑ k, star (s k) * U.gram k j) : WO U V) = GlobalTheory.AdjLatO.tensM x ((a • Matrix.vecMulVec t (star s)) * U.gram)`. Introduce `U V t s`. Use extensionality with `i j`. Simplify using `only [GlobalTheory.AdjLatO.tensM, Matrix.map_apply, Matrix.mul_apply, Matrix.of_apply, Matrix.smul_apply, Matrix.vecMulVec_apply, Pi.star_apply, smul_eq_mul, Finset.mul_sum, mul_assoc]`. Rewrite using `[e, e, homMap_apply, aP_eq_rat, aQ_eq, GlobalTheory.AdjLatO.rat_mul_tensM, GlobalTheory.AdjLatO.tensM_mul_rat]`.
+
+Use `congr 1`. Simplify using `only [Matrix.mul_assoc, gram_mul_Q IS]`. Rewrite using `[Matrix.smul_mul, Matrix.mul_smul, Matrix.smul_mul]`. Use `congr 1`. Rewrite using `[← Matrix.mul_assoc, ← Matrix.mul_assoc, Matrix.mul_vecMulVec, Matrix.vecMulVec_mul, Matrix.star_mulVec]`.
+-/
 private theorem homMap_gen (IS : IsoMat S S') (IT : IsoMat T T') (x : AF D.host.F) (a : D.host.E)
     (s : Fin S.rank → D.host.E) (t : Fin T.rank → D.host.E) :
     homMap IS IT (Matrix.of fun i j => x ⊗ₜ[D.host.F] (a * t i * ∑ k, star (s k) * S.gram k j)) =
@@ -224,6 +305,13 @@ private theorem homMap_gen (IS : IsoMat S S') (IT : IsoMat T T') (x : AF D.host.
   congr 1
   rw [← Matrix.mul_assoc, ← Matrix.mul_assoc, Matrix.mul_vecMulVec, Matrix.vecMulVec_mul, Matrix.star_mulVec]
 
+/- English proof (translation)
+Proceed by induction on `hx using AddSubgroup.closure_induction with`. Consider the case `mem w hw`. Take `⟨α, hα, hP, a, ha, s, hs, t, ht, rfl⟩` from `hw`. Apply `AddSubgroup.subset_closure` to reduce the goal to its premises. Conclude with `⟨α, hα, hP, a, ha, Matrix.mulVec IS.P s, ⟨s, hs, rfl⟩, Matrix.mulVec IT.P t, ⟨t, ht, rfl⟩, homMap_gen IS IT _ a s t⟩`.
+
+Consider the case `zero => rw [map_zero]`. Conclude with `zero_mem _`. Consider the case `add y z _ _ hy hz => rw [map_add]`. Conclude with `add_mem hy hz`. Consider the case `neg y _ hy => rw [map_neg]`.
+
+Conclude with `neg_mem hy`.
+-/
 private theorem homMap_mem_latO (IS : IsoMat S S') (IT : IsoMat T T') (LS : Submodule (𝓞 D.host.E) (Fin S.rank → D.host.E))
     (LT : Submodule (𝓞 D.host.E) (Fin T.rank → D.host.E)) (P : HeightOneSpectrum (𝓞 D.host.F) → Prop) (x : WO S T)
     (hx : x ∈ latO S T (LS : Set _) (LT : Set _) P) :
@@ -237,6 +325,9 @@ private theorem homMap_mem_latO (IS : IsoMat S S') (IT : IsoMat T T') (LS : Subm
   | add y z _ _ hy hz => rw [map_add]; exact add_mem hy hz
   | neg y _ hy => rw [map_neg]; exact neg_mem hy
 
+/- English proof (translation)
+Use `⟨fun hx => ?_, homMap_mem_latO IS IT LS LT P x⟩` and prove the remaining obligations. Establish `h` using `homMap_mem_latO IS.symm IT.symm _ _ P _ hx`. Rewrite `h` using `[latMove_symm, latMove_symm, homMap_symm_homMap]`. Then use the resulting hypothesis.
+-/
 private theorem homMap_mem_latO_iff (IS : IsoMat S S') (IT : IsoMat T T') (LS : Submodule (𝓞 D.host.E) (Fin S.rank → D.host.E))
     (LT : Submodule (𝓞 D.host.E) (Fin T.rank → D.host.E)) (P : HeightOneSpectrum (𝓞 D.host.F) → Prop) (x : WO S T) :
     homMap IS IT x ∈ latO S' T' (latMove IS LS : Set _) (latMove IT LT : Set _) P ↔
@@ -245,6 +336,9 @@ private theorem homMap_mem_latO_iff (IS : IsoMat S S') (IT : IsoMat T T') (LS : 
   have h := homMap_mem_latO IS.symm IT.symm _ _ P _ hx
   rwa [latMove_symm, latMove_symm, homMap_symm_homMap] at h
 
+/- English proof (translation)
+Introduce `D ψ ε S S' T T' IS IT e LS LT f₀ Φ f h`. Conclude with `thetaAt_move ψ e _ _ 1 (homMap (sgnIso ε IS) IT) (symplO_homMap _ _) (isHalf_homMap _ _) (homMap_mem_latO_iff (sgnIso ε IS) IT LS LT _) f₀ Φ f h`.
+-/
 theorem _root_.GlobalTheory.T.thetaAtIdempotent_hermitianHomIsometry_transport : ∀ {D : D7} (ψ : AddChar (AF D.host.F) ℂ) (ε : Bool) {S S' T T' : HSp D} (IS : GlobalTheory.Mem.Isom.IsoMat S S') (IT : GlobalTheory.Mem.Isom.IsoMat T T') (e : AE D) (LS : Submodule (𝓞 D.host.E) (Fin S.rank → D.host.E)) (LT : Submodule (𝓞 D.host.E) (Fin T.rank → D.host.E)) (f₀ Φ f : WO S T → ℂ),
   IsThetaAt ψ (symplO (GlobalTheory.Grid.sgn ε S) T) (heisO ψ (GlobalTheory.Grid.sgn ε S) T) e (latO (GlobalTheory.Grid.sgn ε S) T LS LT fun _ => True) 1 f₀ Φ f →
   IsThetaAt ψ (symplO (GlobalTheory.Grid.sgn ε S') T') (heisO ψ (GlobalTheory.Grid.sgn ε S') T') e (latO (GlobalTheory.Grid.sgn ε S') T' (GlobalTheory.TriMove.latMove (S' := S') IS LS) (GlobalTheory.TriMove.latMove (S' := T') IT LT) fun _ => True) 1 (GlobalTheory.TriMove.trH (S := S) (S' := S') (T := T) (T' := T') IS IT f₀) (GlobalTheory.TriMove.trH (S := S) (S' := S') (T := T) (T' := T') IS IT Φ) (GlobalTheory.TriMove.trH (S := S) (S' := S') (T := T) (T' := T') IS IT f) := by

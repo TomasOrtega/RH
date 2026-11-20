@@ -7,6 +7,9 @@ open scoped LaurentPolynomial
 
 namespace GlobalTheory.CompanionTheory.PfCompl
 
+/- English proof (translation)
+Introduce `B _ T _ π g h T₁ _ x hc`. Conclude with `existsUnique_comp_eq π g h.surj h.inj x hc`.
+-/
 theorem isCompl_existsUnique :
     ∀ (B : Type) [CommRing B] (T : Type) [CommRing T] (π : B) (g : B →+* T), IsCompl π g →
       ∀ (T₁ : Type) [CommRing T₁] (x : B →+* T₁), IsAdicComplete (Ideal.span {x π}) T₁ →

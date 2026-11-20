@@ -7,6 +7,9 @@ namespace GroundTheory.Heights₂.Heights.LowerBoundFree
 
 open MvPolynomial ReciprocityTheory.ChartRestriction.G.Geo Filter Topology
 
+/- English proof (translation)
+Unfold `ComponentSetting.mixN arLimFun`. Use `congr 1`. Use function extensionality and compare the values at `j`. Simplify using `[j.is_lt]`.
+-/
 theorem ComponentSetting.mixN_top {K : Type} [Fintype K] {ι : K → Type} [∀ k, Fintype (ι k)]
     {II : IntersectionSystem} {Ψ : Type} [Fintype Ψ] [DecidableEq Ψ] {Ω : Type} [Field Ω] [Algebra ℚ Ω]
     {E : Ψ → Type} [∀ τ, AddCommGroup (E τ)] [∀ τ, Module Ω (E τ)]
@@ -17,6 +20,13 @@ theorem ComponentSetting.mixN_top {K : Type} [Fintype K] {ι : K → Type} [∀ 
   funext j
   simp [j.is_lt]
 
+/- English proof (translation)
+Introduce `II Ψ _ _ K _ ι _ Ω _ _ E _ _ D O Lt _ _ _ X B p q hII hAr hp hpq`. Establish `hlim : ∀ k ∈ Finset.range (D.n + 2), ∃ L : ℝ, Tendsto (X.mixN B k) (𝓝[>] 0) (𝓝 L)`. Introduce `k hk`. Break down `Nat.lt_or_ge k (D.n + 1) with h | h` into its components or cases. Conclude with `hM II Ψ K ι Ω E D O Lt X B hII hAr k (Nat.lt_succ_iff.1 h)`.
+
+Establish `hk' : k = D.n + 1` using `le_antisymm (Nat.lt_succ_iff.1 (Finset.mem_range.1 hk)) h`. Substitute `hk'` using the available equality. Take `⟨L, hL⟩` from `hAr`. Conclude with `⟨L, hL.congr fun t => (X.mixN_top B t).symm⟩`. Use `choose! L hL using hlim`.
+
+Use `⟨∑ k ∈ Finset.range (D.n + 2), ((D.n + 1).choose k : ℝ) * ((p : ℝ) / q) ^ (D.n + 1 - k) * L k, ?_⟩` and prove the remaining obligations. Use `Tendsto.congr' ((hE II Ψ K ι Ω E D O Lt X B p q hII hp hpq).mono fun t ht => ht.symm) ?_` and prove the remaining obligations. Conclude with `tendsto_finsetSum _ fun k hk => (hL k hk).const_mul _`.
+-/
 theorem StokesLimitTTop.proof (hE : TopNMixedExpand.Statement) (hM : TopNMixedLimit.Statement) :
     StokesLimitTTop.Statement := by
   intro II Ψ _ _ K _ ι _ Ω _ _ E _ _ D O Lt _ _ _ X B p q hII hAr hp hpq

@@ -8,6 +8,9 @@ open Formalism.REAL (GlRel KHighest IsWeight)
 open CompanionTheory.D.DSIC (KUnit)
 open scoped InnerProductSpace
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.CompanionTheory.CliffordCoeff.commute_shifted_dirac | exact GlobalTheory.CompanionTheory.CliffordCoeff.commute_shifted_dirac | (intros; apply GlobalTheory.CompanionTheory.CliffordCoeff.commute_shifted_dirac <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.canonical_anticommutation_relations_consequence : ∀ (n : ℕ) (R : Type) [Ring R] (τ : Fin n → Fin n → Prop) [DecidableRel τ] (c d L : Fin n → Fin n → R) (p q : Fin n),
     (∀ a b a' b', c a b * c a' b' + c a' b' * c a b = 0) →
     (∀ a b a' b', d a b * d a' b' + d a' b' * d a b = 0) →

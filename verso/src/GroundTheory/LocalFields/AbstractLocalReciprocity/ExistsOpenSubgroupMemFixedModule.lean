@@ -15,19 +15,31 @@ def fixedModule (H : Subgroup G) : Subgroup A where
 
 variable {A}
 
+/- English proof (translation)
+Unfold both sides. The equivalence is reflexive.
+-/
 theorem mem_fixedModule {H : Subgroup G} {a : A} :
     a ∈ fixedModule A H ↔ ∀ g ∈ H, g • a = a :=
   Iff.rfl
 
+/- English proof (translation)
+Introduce `_ ha g hg` and use `ha g (h hg)`.
+-/
 theorem fixedModule_anti {H H' : Subgroup G} (h : H ≤ H') : fixedModule A H' ≤ fixedModule A H :=
   fun _ ha g hg => ha g (h hg)
 
+/- English proof (translation)
+Use extensionality with `a`. Simplify using `only [SetLike.mem_coe, mem_fixedModule, MulAction.mem_fixedPoints, Subtype.forall, Subgroup.mk_smul]`.
+-/
 theorem coe_fixedModule (H : Subgroup G) :
     (fixedModule A H : Set A) = MulAction.fixedPoints H A := by
   ext a
   simp only [SetLike.mem_coe, mem_fixedModule, MulAction.mem_fixedPoints, Subtype.forall,
     Subgroup.mk_smul]
 
+/- English proof (translation)
+Introduce and unpack `_ ⟨h, hh, rfl⟩`. Simplify using `only [MulEquiv.coe_toMonoidHom, MulAut.conj_apply, ← mul_smul]`. Rewrite using `[show g * h * g⁻¹ * g = g * h by group, mul_smul, ha h hh]`.
+-/
 theorem smul_mem_fixedModule {H : Subgroup G} {a : A} (ha : a ∈ fixedModule A H) (g : G) :
     g • a ∈ fixedModule A (H.map (MulAut.conj g).toMonoidHom) := by
   rintro _ ⟨h, hh, rfl⟩
@@ -45,6 +57,11 @@ class IsDiscreteModule (G : Type*) [Group G] [TopologicalSpace G] (A : Type*) [C
 variable {G : Type*} [Group G] [TopologicalSpace G] {A : Type*} [CommGroup A]
   [MulDistribMulAction G A]
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce `h a`. Conclude with `⟨⟨MulAction.stabilizer G a, h.isOpen_stabilizer a⟩, fun g hg => hg⟩`. Introduce `h`. Use `⟨fun a => ?_⟩` and prove the remaining obligations.
+
+Take `⟨U, hU⟩` from `h a`. Conclude with `Subgroup.isOpen_mono (H₁ := (U : Subgroup G)) (fun g hg => hU g hg) U.isOpen`.
+-/
 theorem isDiscreteModule_iff [ContinuousMul G] :
     IsDiscreteModule G A ↔ ∀ a : A, ∃ U : OpenSubgroup G, a ∈ fixedModule A (U : Subgroup G) := by
   constructor
@@ -55,6 +72,9 @@ theorem isDiscreteModule_iff [ContinuousMul G] :
     obtain ⟨U, hU⟩ := h a
     exact Subgroup.isOpen_mono (H₁ := (U : Subgroup G)) (fun g hg => hU g hg) U.isOpen
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨⟨MulAction.stabilizer G a, IsDiscreteModule.isOpen_stabilizer a⟩, fun _ hg => hg⟩`.
+-/
 theorem exists_openSubgroup_mem_fixedModule [IsDiscreteModule G A] (a : A) :
     ∃ U : OpenSubgroup G, a ∈ fixedModule A (U : Subgroup G) :=
   ⟨⟨MulAction.stabilizer G a, IsDiscreteModule.isOpen_stabilizer a⟩, fun _ hg => hg⟩
@@ -76,19 +96,31 @@ def cosetSMul (a : fixedModule A L) : K ⧸ L.subgroupOf K → A :=
 
 variable {A K L}
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem cosetSMul_mk (a : fixedModule A L) (σ : K) :
     cosetSMul A K L a (σ : K ⧸ L.subgroupOf K) = (σ : G) • (a : A) :=
   rfl
 
+/- English proof (translation)
+Proceed by induction on `q using QuotientGroup.induction_on with`. Consider the case `H σ => simp`.
+-/
 theorem cosetSMul_one (q : K ⧸ L.subgroupOf K) : cosetSMul A K L 1 q = 1 := by
   induction q using QuotientGroup.induction_on with
   | H σ => simp
 
+/- English proof (translation)
+Proceed by induction on `q using QuotientGroup.induction_on with`. Consider the case `H σ => simp [smul_mul']`.
+-/
 theorem cosetSMul_mul (a b : fixedModule A L) (q : K ⧸ L.subgroupOf K) :
     cosetSMul A K L (a * b) q = cosetSMul A K L a q * cosetSMul A K L b q := by
   induction q using QuotientGroup.induction_on with
   | H σ => simp [smul_mul']
 
+/- English proof (translation)
+Proceed by induction on `q using QuotientGroup.induction_on with`. Consider the case `H σ`. Rewrite using `[cosetSMul_mk, smul_smul]`. Both sides reduce to the same expression.
+-/
 theorem smul_cosetSMul (a : fixedModule A L) (g : K) (q : K ⧸ L.subgroupOf K) :
     (g : G) • cosetSMul A K L a q = cosetSMul A K L a (g • q) := by
   induction q using QuotientGroup.induction_on with
@@ -96,6 +128,9 @@ theorem smul_cosetSMul (a : fixedModule A L) (g : K) (q : K ⧸ L.subgroupOf K) 
     rw [cosetSMul_mk, smul_smul]
     rfl
 
+/- English proof (translation)
+Introduce `h hh`. Establish `hc : g⁻¹ * h * g ∈ L`. Use `hN.conj_mem ⟨h, hLK hh⟩ (by simpa [Subgroup.mem_subgroupOf] using hh) ⟨g, hg⟩⁻¹` as an intermediate fact. Simplify `this` using `[Subgroup.mem_subgroupOf, mul_assoc]`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem smul_mem_fixedModule_of_normal (hLK : L ≤ K) [hN : (L.subgroupOf K).Normal] {g : G}
     (hg : g ∈ K) {a : A} (ha : a ∈ fixedModule A L) : g • a ∈ fixedModule A L := by
   intro h hh
@@ -112,6 +147,9 @@ noncomputable def normFun (a : fixedModule A L) : A :=
 
 variable [(L.subgroupOf K).FiniteIndex]
 
+/- English proof (translation)
+Introduce `g hg`. Unfold `normFun`. Rewrite using `[smul_finprod']`. Repeatedly rewrite using `[smul_cosetSMul a ⟨g, hg⟩]`. Conclude with `finprod_comp_equiv (MulAction.toPerm (⟨g, hg⟩ : K))`.
+-/
 theorem normFun_mem_fixedModule (a : fixedModule A L) : normFun A K L a ∈ fixedModule A K := by
   intro g hg
   unfold normFun
@@ -133,10 +171,18 @@ noncomputable def norm : fixedModule A L →* fixedModule A K where
 
 variable {A K L}
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem coe_norm (a : fixedModule A L) :
     (norm A K L a : A) = ∏ᶠ q, cosetSMul A K L a q :=
   rfl
 
+/- English proof (translation)
+Use `ext`. Rewrite using `[coe_norm, coe_norm]`. Establish `h : ∀ q : K ⧸ L.subgroupOf K, cosetSMul A K L ⟨(g : G) • (a : A), hga⟩ q = cosetSMul A K L a (q * (g : K ⧸ L.subgroupOf K))`. Introduce `q`. Proceed by induction on `q using QuotientGroup.induction_on with`.
+
+Consider the case `H σ`. Rewrite using `[← QuotientGroup.mk_mul, cosetSMul_mk, cosetSMul_mk]`. Simplify using `[smul_smul]`. Repeatedly rewrite using `[h]`. Conclude with `finprod_comp_equiv (Equiv.mulRight _)`.
+-/
 theorem norm_smul [(L.subgroupOf K).Normal] (g : K) (a : fixedModule A L)
     (hga : (g : G) • (a : A) ∈ fixedModule A L) :
     norm A K L ⟨(g : G) • (a : A), hga⟩ = norm A K L a := by
@@ -166,6 +212,11 @@ abbrev tateNegOne : Type _ :=
 
 variable {A K L}
 
+/- English proof (translation)
+Rewrite using `[augmentation, Subgroup.closure_le]`. Introduce and unpack `_ ⟨g, hg, a, ha, rfl⟩`. Establish `hga` using `smul_mem_fixedModule_of_normal hLK hg ha`. Use `⟨⟨g • a, hga⟩ / ⟨a, ha⟩, ?_, rfl⟩` and prove the remaining obligations. Rewrite using `[SetLike.mem_coe, MonoidHom.mem_ker, map_div, div_eq_one]`.
+
+Conclude with `norm_smul ⟨g, hg⟩ ⟨a, ha⟩ hga`.
+-/
 theorem augmentation_le_map_ker (hLK : L ≤ K) [(L.subgroupOf K).Normal] :
     augmentation A K L ≤ (norm A K L).ker.map (fixedModule A L).subtype := by
   rw [augmentation, Subgroup.closure_le]

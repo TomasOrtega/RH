@@ -18,6 +18,13 @@ section Gen
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {M : ℕ}
   (R : Type) [CommRing R] [Algebra F R] (S : Set R)
 
+/- English proof (translation)
+Proceed by induction on `hz using AddSubgroup.closure_induction with`. Consider the case `mem z hz`. Take `⟨a, ha, x, hx, rfl⟩` from `hz`. Use `AddSubgroup.subset_closure ⟨a, ha, i • x, Submodule.smul_mem_smul hi hx, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `j`.
+
+Simplify using `[Algebra.TensorProduct.tmul_mul_tmul, Algebra.smul_def]`. Consider the case `zero => simp`. Consider the case `add x y _ _ hx hy => rw [smul_add]`. Conclude with `add_mem hx hy`. Consider the case `neg x _ hx => rw [smul_neg]`.
+
+Conclude with `neg_mem hx`.
+-/
 theorem tmul_smul_mem_genLat (Λ : Submodule (𝓞 E) (Fin M → E)) (I : Ideal (𝓞 E)) {i : 𝓞 E} (hi : i ∈ I)
     {z : Fin M → R ⊗[F] E} (hz : z ∈ genLat F R S (Λ : Set (Fin M → E))) :
     ((1 : R) ⊗ₜ[F] (i : E)) • z ∈ genLat F R S ((I • Λ : Submodule (𝓞 E) (Fin M → E)) : Set (Fin M → E)) := by
@@ -31,6 +38,17 @@ theorem tmul_smul_mem_genLat (Λ : Submodule (𝓞 E) (Fin M → E)) (I : Ideal 
   | add x y _ _ hx hy => rw [smul_add]; exact add_mem hx hy
   | neg x _ hx => rw [smul_neg]; exact neg_mem hx
 
+/- English proof (translation)
+Introduce `y hy`. Proceed by induction on `hy using AddSubgroup.closure_induction with`. Consider the case `mem z hz`. Take `⟨a, ha, x, hx, rfl⟩` from `hz`. Proceed by induction on `hx using Submodule.smul_induction_on' with`.
+
+Consider the case `smul i hi l hl`. Establish `e : (fun j => a ⊗ₜ[F] (i • l) j) = ((1 : R) ⊗ₜ[F] (i : E)) • fun j => a ⊗ₜ[F] l j`. Use function extensionality and compare the values at `j`. Simplify using `[Algebra.TensorProduct.tmul_mul_tmul, Algebra.smul_def]`. Rewrite using `[e, Matrix.mulVec_smul]`.
+
+Conclude with `tmul_smul_mem_genLat R S Λ I hi (hm _ (AddSubgroup.subset_closure ⟨a, ha, l, hl, rfl⟩))`. Consider the case `add x hx x' hx' h1 h2`. Establish `e : (fun j => a ⊗ₜ[F] (x + x') j) = (fun j => a ⊗ₜ[F] x j) + fun j => a ⊗ₜ[F] x' j`. Use function extensionality and compare the values at `j`. Simplify using `[TensorProduct.tmul_add]`.
+
+Rewrite using `[e, Matrix.mulVec_add]`. Conclude with `add_mem h1 h2`. Consider the case `zero => simp`. Consider the case `add x y _ _ hx hy => rw [Matrix.mulVec_add]`. Conclude with `add_mem hx hy`.
+
+Consider the case `neg x _ hx => rw [Matrix.mulVec_neg]`. Conclude with `neg_mem hx`.
+-/
 theorem mulVec_mem_genLat_smul (Λ : Submodule (𝓞 E) (Fin M → E)) (I : Ideal (𝓞 E))
     (m : Matrix (Fin M) (Fin M) (R ⊗[F] E))
     (hm : ∀ y ∈ genLat F R S (Λ : Set (Fin M → E)), m *ᵥ y ∈ genLat F R S (Λ : Set (Fin M → E))) :
@@ -57,6 +75,9 @@ theorem mulVec_mem_genLat_smul (Λ : Submodule (𝓞 E) (Fin M → E)) (I : Idea
   | add x y _ _ hx hy => rw [Matrix.mulVec_add]; exact add_mem hx hy
   | neg x _ hx => rw [Matrix.mulVec_neg]; exact neg_mem hx
 
+/- English proof (translation)
+Use `AddSubgroup.closure_mono ?_` and prove the remaining obligations. Introduce and unpack `y ⟨a, ha, x, hx, rfl⟩`. Conclude with `⟨a, ha, x, h hx, rfl⟩`.
+-/
 theorem genLat_mono {L L' : Set (Fin M → E)} (h : L ⊆ L') : genLat F R S L ≤ genLat F R S L' := by
   refine AddSubgroup.closure_mono ?_
   rintro y ⟨a, ha, x, hx, rfl⟩
@@ -69,17 +90,29 @@ section Adelic
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {M : ℕ}
   (σ : E →ₐ[F] E) (J : Matrix (Fin M) (Fin M) E)
 
+/- English proof (translation)
+Unfold `finMat`. Conclude with `Matrix.map_mul (f := (Algebra.TensorProduct.map (sndA F) (AlgHom.id F E)).toRingHom)`.
+-/
 theorem finMat_mul (g h : HA (AF F) σ J) : finMat σ J (g * h) = finMat σ J g * finMat σ J h := by
   unfold finMat
   exact Matrix.map_mul (f := (Algebra.TensorProduct.map (sndA F) (AlgHom.id F E)).toRingHom)
 
+/- English proof (translation)
+Unfold `finMat`. Conclude with `Matrix.map_one _ (map_zero _) (map_one _)`.
+-/
 theorem finMat_one : finMat σ J (1 : HA (AF F) σ J) = 1 := by
   unfold finMat
   exact Matrix.map_one _ (map_zero _) (map_one _)
 
+/- English proof (translation)
+Rewrite using `[← finMat_mul, inv_mul_cancel, finMat_one]`.
+-/
 theorem finMat_inv_mul (g : HA (AF F) σ J) : finMat σ J g⁻¹ * finMat σ J g = 1 := by
   rw [← finMat_mul, inv_mul_cancel, finMat_one]
 
+/- English proof (translation)
+Rewrite using `[← finMat_mul, mul_inv_cancel, finMat_one]`.
+-/
 theorem finMat_mul_inv (g : HA (AF F) σ J) : finMat σ J g * finMat σ J g⁻¹ = 1 := by
   rw [← finMat_mul, mul_inv_cancel, finMat_one]
 
@@ -88,17 +121,26 @@ def latK (Λ : Submodule (𝓞 E) (Fin M → E)) (v : HeightOneSpectrum (𝓞 F)
   latHat F E ((((v.asIdeal ^ k).map (algebraMap (𝓞 F) (𝓞 E))) • Λ : Submodule (𝓞 E) (Fin M → E)) :
     Set (Fin M → E))
 
+/- English proof (translation)
+Use `genLat_mono (Af F) (intAf F) ?_` and prove the remaining obligations. Use `Submodule.smul_mono_left (Ideal.map_mono (Ideal.pow_le_pow_right (Nat.le_succ k)))` and prove the remaining obligations.
+-/
 theorem latK_anti (Λ : Submodule (𝓞 E) (Fin M → E)) (v : HeightOneSpectrum (𝓞 F)) (k : ℕ) :
     latK Λ v (k + 1) ≤ latK Λ v k := by
   refine genLat_mono (Af F) (intAf F) ?_
   refine Submodule.smul_mono_left (Ideal.map_mono (Ideal.pow_le_pow_right (Nat.le_succ k)))
 
+/- English proof (translation)
+The claim follows from `mulVec_mem_genLat_smul (Af F) (intAf F) Λ _ m (fun y hy => (hm y).1 hy) y hy`.
+-/
 theorem mulVec_mem_latK (Λ : Submodule (𝓞 E) (Fin M → E)) (v : HeightOneSpectrum (𝓞 F)) (k : ℕ)
     (m : Matrix (Fin M) (Fin M) (Af F ⊗[F] E))
     (hm : ∀ y, y ∈ latHat F E (Λ : Set (Fin M → E)) ↔ m *ᵥ y ∈ latHat F E (Λ : Set (Fin M → E)))
     {y : Fin M → Af F ⊗[F] E} (hy : y ∈ latK Λ v k) : m *ᵥ y ∈ latK Λ v k :=
   mulVec_mem_genLat_smul (Af F) (intAf F) Λ _ m (fun y hy => (hm y).1 hy) y hy
 
+/- English proof (translation)
+Introduce `y`. Rewrite using `[finMat_mul, ← Matrix.mulVec_mulVec]`. Conclude with `(hh y).trans (hg _)`.
+-/
 theorem stabHat_mul {Λ : Set (Fin M → E)} {g h : HA (AF F) σ J}
     (hg : GlobalTheory.Mem.Vol.StabHat F Λ (finMat σ J g)) (hh : GlobalTheory.Mem.Vol.StabHat F Λ (finMat σ J h)) :
     GlobalTheory.Mem.Vol.StabHat F Λ (finMat σ J (g * h)) := by
@@ -106,6 +148,9 @@ theorem stabHat_mul {Λ : Set (Fin M → E)} {g h : HA (AF F) σ J}
   rw [finMat_mul, ← Matrix.mulVec_mulVec]
   exact (hh y).trans (hg _)
 
+/- English proof (translation)
+Introduce `y`. Use `hg (finMat σ J g⁻¹ *ᵥ y)` as an intermediate fact. Rewrite `this` using `[Matrix.mulVec_mulVec, finMat_mul_inv, Matrix.one_mulVec]`. Conclude with `this.symm`.
+-/
 theorem stabHat_inv {Λ : Set (Fin M → E)} {g : HA (AF F) σ J}
     (hg : GlobalTheory.Mem.Vol.StabHat F Λ (finMat σ J g)) : GlobalTheory.Mem.Vol.StabHat F Λ (finMat σ J g⁻¹) := by
   intro y
@@ -113,6 +158,9 @@ theorem stabHat_inv {Λ : Set (Fin M → E)} {g : HA (AF F) σ J}
   rw [Matrix.mulVec_mulVec, finMat_mul_inv, Matrix.one_mulVec] at this
   exact this.symm
 
+/- English proof (translation)
+Introduce `y`. Rewrite using `[finMat_one, Matrix.one_mulVec]`.
+-/
 theorem stabHat_one {Λ : Set (Fin M → E)} : GlobalTheory.Mem.Vol.StabHat F Λ (finMat σ J (1 : HA (AF F) σ J)) := by
   intro y
   rw [finMat_one, Matrix.one_mulVec]
@@ -148,9 +196,15 @@ def congG (Λ : Submodule (𝓞 E) (Fin M → E)) (v : HeightOneSpectrum (𝓞 F
     rw [e]
     exact neg_mem (mulVec_mem_latK Λ v k _ (stabHat_inv σ J ha.1) (ha.2 y hy))
 
+/- English proof (translation)
+Introduce `_ h` and use `h.1`.
+-/
 theorem congG_le_stabG (Λ : Submodule (𝓞 E) (Fin M → E)) (v : HeightOneSpectrum (𝓞 F)) (k : ℕ) :
     congG σ J Λ v k ≤ stabG σ J Λ := fun _ h => h.1
 
+/- English proof (translation)
+Introduce `_ h` and use `⟨h.1, fun y hy => latK_anti Λ v k (h.2 y hy)⟩`.
+-/
 theorem congG_anti (Λ : Submodule (𝓞 E) (Fin M → E)) (v : HeightOneSpectrum (𝓞 F)) (k : ℕ) :
     congG σ J Λ v (k + 1) ≤ congG σ J Λ v k :=
   fun _ h => ⟨h.1, fun y hy => latK_anti Λ v k (h.2 y hy)⟩
@@ -170,6 +224,9 @@ def compK (Λ : Submodule (𝓞 E) (Fin M → E)) (v : HeightOneSpectrum (𝓞 F
   compLat v ((((v.asIdeal ^ k).map (algebraMap (𝓞 F) (𝓞 E))) • Λ : Submodule (𝓞 E) (Fin M → E)) :
     Set (Fin M → E))
 
+/- English proof (translation)
+The claim follows from `mulVec_mem_genLat_smul (Fv F v) _ Λ _ m (fun y hy => (hm y).1 hy) y hy`.
+-/
 theorem mulVec_mem_compK (Λ : Submodule (𝓞 E) (Fin M → E)) (v : HeightOneSpectrum (𝓞 F)) (k : ℕ)
     (m : Matrix (Fin M) (Fin M) (Fv F v ⊗[F] E))
     (hm : ∀ y, y ∈ compLat v (Λ : Set (Fin M → E)) ↔ m *ᵥ y ∈ compLat v (Λ : Set (Fin M → E)))
@@ -222,6 +279,15 @@ section Count
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {M : ℕ}
   (σ : E →ₐ[F] E) (J : Matrix (Fin M) (Fin M) E)
 
+/- English proof (translation)
+Unfold `GlobalTheory.TamSU.locCount Subgroup.relIndex Subgroup.index`. Use `Nat.card_congr (Quot.congr (Equiv.subtypeEquivRight fun _ => Iff.rfl) fun a b => ?_)` and prove the remaining obligations. Use `Iff.trans ?_ QuotientGroup.leftRel_apply.symm` and prove the remaining obligations. Rewrite using `[Subgroup.mem_subgroupOf]`. Establish `hA : GlobalTheory.Mem.Vol.StabHat F (Λ : Set (Fin M → E)) (finMat σ J a.1.1)` using `a.2`.
+
+Establish `e1 : ∀ y, (finMat σ J (a.1⁻¹ * b.1).1 - 1) *ᵥ y = -(finMat σ J a.1.1⁻¹ *ᵥ ((finMat σ J a.1.1 - finMat σ J b.1.1) *ᵥ y))`. Introduce `y`. Rewrite using `[show (a.1⁻¹ * b.1).1 = a.1.1⁻¹ * b.1.1 from rfl, finMat_mul, Matrix.mulVec_mulVec, Matrix.mul_sub, finMat_inv_mul, ← Matrix.neg_mulVec, neg_sub]`. Establish `e2 : ∀ y, (finMat σ J a.1.1 - finMat σ J b.1.1) *ᵥ y = -(finMat σ J a.1.1 *ᵥ ((finMat σ J (a.1⁻¹ * b.1).1 - 1) *ᵥ y))`. Introduce `y`.
+
+Rewrite using `[show (a.1⁻¹ * b.1).1 = a.1.1⁻¹ * b.1.1 from rfl, finMat_mul, Matrix.mulVec_mulVec, Matrix.mul_sub, ← Matrix.mul_assoc, finMat_mul_inv, Matrix.one_mul, Matrix.mul_one, ← Matrix.neg_mulVec, neg_sub]`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Use `⟨(stabG σ J Λ).mul_mem ((stabG σ J Λ).inv_mem a.2) b.2, fun y hy => ?_⟩` and prove the remaining obligations. Use `neg_mem (mulVec_mem_latK Λ v k _ (stabHat_inv σ J hA) (h y hy))` as an intermediate fact.
+
+Rewrite `this` using `[← e1]`. Conclude with `this`. Introduce `h y hy`. Rewrite using `[e2]`. Conclude with `neg_mem (mulVec_mem_latK Λ v k _ hA (h.2 y hy))`.
+-/
 theorem locCount_eq_relIndex (Λ : Submodule (𝓞 E) (Fin M → E)) (v : HeightOneSpectrum (𝓞 F)) (k : ℕ) :
     GlobalTheory.TamSU.locCount σ J Λ v k = (congG σ J Λ v k).relIndex (stabG σ J Λ) := by
   unfold GlobalTheory.TamSU.locCount Subgroup.relIndex Subgroup.index

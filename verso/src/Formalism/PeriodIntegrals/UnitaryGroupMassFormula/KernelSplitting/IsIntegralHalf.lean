@@ -6,6 +6,9 @@ open NumberField Polynomial
 
 namespace PI.UnitaryGroupMassFormula.KerSplit
 
+/- English proof (translation)
+Use `⟨X ^ 2 + C (d : ℤ), monic_X_pow_add_C _ two_ne_zero, ?_⟩` and prove the remaining obligations. Establish `e : (algebraMap ℤ K) (d : ℤ) = (d : K)` using `by simp`. Rewrite using `[eval₂_add, eval₂_X_pow, eval₂_C, e]`. Take the linear combination `hs`.
+-/
 theorem isIntegral_sqrt {K : Type} [Field K] (d : ℕ) (s : K) (hs : s * s = -(d : K)) :
     IsIntegral ℤ s := by
   refine ⟨X ^ 2 + C (d : ℤ), monic_X_pow_add_C _ two_ne_zero, ?_⟩
@@ -13,6 +16,13 @@ theorem isIntegral_sqrt {K : Type} [Field K] (d : ℕ) (s : K) (hs : s * s = -(d
   rw [eval₂_add, eval₂_X_pow, eval₂_C, e]
   linear_combination hs
 
+/- English proof (translation)
+Take `⟨k, hk⟩ : ∃ k : ℕ, d + 1 = 4 * k` from `⟨(d + 1) / 4, by omega⟩`. Establish `hkK : (d : K) + 1 = 4 * (k : K)` using `by exact_mod_cast hk`. Use `⟨X ^ 2 - X + C (k : ℤ), ?_, ?_⟩` and prove the remaining obligations. Establish `e : (X ^ 2 - X + C (k : ℤ) : ℤ[X]) = X ^ 2 - (X - C (k : ℤ))` using `by ring`. Rewrite using `[e]`.
+
+Apply `monic_X_pow_sub` to reduce the goal to its premises. Rewrite using `[degree_X_sub_C]`. Conclude with `WithBot.coe_lt_coe.mpr (by norm_num)`. Establish `e : (algebraMap ℤ K) (k : ℤ) = (k : K)` using `by simp`. Rewrite using `[eval₂_add, eval₂_sub, eval₂_X_pow, eval₂_X, eval₂_C, e]`.
+
+Take the linear combination `(1 / 4 : K) * hs - (1 / 4 : K) * hkK`.
+-/
 theorem isIntegral_half {K : Type} [Field K] [CharZero K] (d : ℕ) (s : K) (hd : d % 8 = 7)
     (hs : s * s = -(d : K)) : IsIntegral ℤ ((1 + s) / 2) := by
   obtain ⟨k, hk⟩ : ∃ k : ℕ, d + 1 = 4 * k := ⟨(d + 1) / 4, by omega⟩
@@ -27,6 +37,17 @@ theorem isIntegral_half {K : Type} [Field K] [CharZero K] (d : ℕ) (s : K) (hd 
     rw [eval₂_add, eval₂_sub, eval₂_X_pow, eval₂_X, eval₂_C, e]
     linear_combination (1 / 4 : K) * hs - (1 / 4 : K) * hkK
 
+/- English proof (translation)
+Establish `hnu : ¬ IsUnit ((p : ℕ) : 𝓞 K)`. Introduce and unpack `⟨v, hv⟩`. Establish `h1 : algebraMap (𝓞 K) K (↑v⁻¹ : 𝓞 K) * (p : K) = 1`. Rewrite using `[← map_natCast (algebraMap (𝓞 K) K) p, ← map_mul, ← hv, Units.inv_mul, map_one]`. Establish `h2 : algebraMap (𝓞 K) K (↑v⁻¹ : 𝓞 K) = algebraMap ℚ K ((p : ℚ)⁻¹)`.
+
+Rewrite using `[map_inv₀, map_natCast]`. Conclude with `eq_inv_of_mul_eq_one_left h1`. Establish `hint : IsIntegral ℤ (algebraMap ℚ K ((p : ℚ)⁻¹))`. Rewrite using `[← h2]`. Conclude with `RingOfIntegers.isIntegral_coe _`.
+
+Establish `hq : IsIntegral ℤ ((p : ℚ)⁻¹)` using `(isIntegral_algHom_iff (IsScalarTower.toAlgHom ℤ ℚ K) (algebraMap ℚ K).injective).1 hint`. Take `⟨n, hn⟩` from `IsIntegrallyClosed.isIntegral_iff.1 hq`. Establish `hp0 : (p : ℚ) ≠ 0` using `by exact_mod_cast hp.ne_zero`. Establish `hn' : (n : ℚ) = (p : ℚ)⁻¹` using `by simpa using hn`. Establish `h4 : ((n * p : ℤ) : ℚ) = 1`.
+
+Use `push_cast`. Rewrite using `[hn']`. Conclude with `inv_mul_cancel₀ hp0`. Establish `h5 : n * (p : ℤ) = 1` using `by exact_mod_cast h4`. Establish `h6 : (p : ℤ) ∣ 1` using `⟨n, by rw [mul_comm]; exact h5.symm⟩`.
+
+Establish `h7` using `Int.eq_one_of_dvd_one (by positivity) h6`. Establish `h8 : p = 1` using `by exact_mod_cast h7`. Conclude with `hp.one_lt.ne' h8`. Take `⟨M, hM, hle⟩` from `Ideal.exists_le_maximal (Ideal.span {((p : ℕ) : 𝓞 K)}) (by rwa [Ne, Ideal.span_singleton_eq_top])`. Conclude with `⟨M, hM.isPrime, hle (Ideal.subset_span (Set.mem_singleton _))⟩`.
+-/
 private theorem exists_isPrime_natCast_mem {K : Type} [Field K] [NumberField K] (p : ℕ) (hp : p.Prime) :
     ∃ P : Ideal (𝓞 K), P.IsPrime ∧ ((p : ℕ) : 𝓞 K) ∈ P := by
   have hnu : ¬ IsUnit ((p : ℕ) : 𝓞 K) := by
@@ -57,6 +78,19 @@ private theorem exists_isPrime_natCast_mem {K : Type} [Field K] [NumberField K] 
     (by rwa [Ne, Ideal.span_singleton_eq_top])
   exact ⟨M, hM.isPrime, hle (Ideal.subset_span (Set.mem_singleton _))⟩
 
+/- English proof (translation)
+Take `⟨P, hP, h2P⟩` from `exists_isPrime_natCast_mem (K := K) 2 Nat.prime_two`. Take `⟨m, hm⟩ : ∃ m : ℕ, d + 1 = 8 * m` from `⟨(d + 1) / 8, by omega⟩`. Establish `hmK : (d : K) + 1 = 8 * (m : K)` using `by exact_mod_cast hm`. Take `⟨aO, haK⟩ : ∃ x : 𝓞 K, algebraMap (𝓞 K) K x = (1 + s) / 2` from `⟨⟨_, isIntegral_half d s hd hs⟩, rfl⟩`. Take `⟨bO, hbK⟩ : ∃ x : 𝓞 K, algebraMap (𝓞 K) K x = (1 + -s) / 2` from `⟨⟨_, isIntegral_half d (-s) hd (by rw [neg_mul_neg]; exact hs)⟩, rfl⟩`.
+
+Establish `hinj` using `IsFractionRing.injective (𝓞 K) K`. Establish `hsum : aO + bO = 1` using `hinj (by rw [map_add, haK, hbK, map_one]; ring)`. Establish `hprod : aO * bO = ((2 : ℕ) : 𝓞 K) * (m : 𝓞 K)` using `hinj (by`. Rewrite using `[map_mul, haK, hbK, map_mul, map_natCast, map_natCast]`. Use `push_cast`.
+
+Take the linear combination `(-1 / 4 : K) * hs + (1 / 4 : K) * hmK)`. Establish `hca : cj (algebraMap K E ((1 + s) / 2)) = algebraMap K E ((1 + -s) / 2)`. Simplify using `only [map_div₀, map_add, map_neg, map_one, map_ofNat, hcj]`. Establish `hcb : cj (algebraMap K E ((1 + -s) / 2)) = algebraMap K E ((1 + s) / 2)`. Simplify using `only [map_div₀, map_add, map_neg, map_one, map_ofNat, hcj, neg_neg]`.
+
+Establish `hab : aO * bO ∈ P`. Rewrite using `[hprod]`. Conclude with `P.mul_mem_right _ h2P`. Establish `hcoe : ∀ x : 𝓞 K, (x : K) = algebraMap (𝓞 K) K x` using `fun _ => rfl`. Break down `hP.mem_or_mem hab with ha | hb` into its components or cases.
+
+Use `⟨P, hP, h2P, aO, bO, ?_, ha, fun hb => hP.ne_top ?_⟩` and prove the remaining obligations. Rewrite using `[hcoe, hcoe, haK, hbK]`. Conclude with `hca`. Rewrite using `[Ideal.eq_top_iff_one, ← hsum]`. Conclude with `P.add_mem ha hb`.
+
+Use `⟨P, hP, h2P, bO, aO, ?_, hb, fun ha => hP.ne_top ?_⟩` and prove the remaining obligations. Rewrite using `[hcoe, hcoe, haK, hbK]`. Conclude with `hcb`. Rewrite using `[Ideal.eq_top_iff_one, ← hsum]`. Conclude with `P.add_mem ha hb`.
+-/
 theorem splitsAt_two {K E : Type} [Field K] [NumberField K] [Field E] [NumberField E] [Algebra K E]
     (cj : E ≃ₐ[ℚ] E) (d : ℕ) (s : K) (hd : d % 8 = 7) (hs : s * s = -(d : K))
     (hcj : cj (algebraMap K E s) = -algebraMap K E s) : PI.KerIso.SplitsAt K cj 2 := by
@@ -93,6 +127,35 @@ theorem splitsAt_two {K E : Type} [Field K] [NumberField K] [Field E] [NumberFie
     · rw [Ideal.eq_top_iff_one, ← hsum]
       exact P.add_mem ha hb
 
+/- English proof (translation)
+Use `haveI : NeZero p := ⟨hp.ne_zero⟩`. Use `haveI : Fact p.Prime := ⟨hp⟩`. Take `⟨P, hP, hpP⟩` from `exists_isPrime_natCast_mem (K := K) p hp`. Choose the witnesses or unpack the hypotheses as in `⟨r, t, ht⟩ : ∃ r t : ℤ, r * r + (d : ℤ) = (p : ℤ) * t := by`. Take `⟨c, hc⟩` from `ZMod.isSquare_of_jacobiSym_eq_one hJ`.
+
+Choose the witnesses or unpack the hypotheses as in `⟨t, ht⟩ : (p : ℤ) ∣ (c.val : ℤ) * (c.val : ℤ) + d := by`. Rewrite using `[← ZMod.intCast_zmod_eq_zero_iff_dvd]`. Use `push_cast`. Rewrite using `[ZMod.natCast_zmod_val]`. Move the coercions through the operations in `at hc`.
+
+Take the linear combination `-hc`. Conclude with `⟨_, t, ht⟩`. Establish `hg : Int.gcd (-(d : ℤ)) (p : ℤ) = 1`. Assume the negation of the conclusion as `h`. Establish `h0` using `(jacobiSym.eq_zero_iff_not_coprime (a := -(d : ℤ)) (b := p)).2 h`.
+
+Rewrite `h0` using `[hJ]`. Conclude with `one_ne_zero h0`. Take `⟨x, y, hxy⟩` from `Int.isCoprime_iff_gcd_eq_one.2 hg`. Take `⟨sO, hsK⟩ : ∃ z : 𝓞 K, algebraMap (𝓞 K) K z = s` from `⟨⟨s, isIntegral_sqrt d s hs⟩, rfl⟩`. Establish `hinj` using `IsFractionRing.injective (𝓞 K) K`.
+
+Establish `hss : sO * sO = -((d : ℕ) : 𝓞 K)` using `hinj (by rw [map_mul, hsK, map_neg, map_natCast]; exact hs)`. Establish `hprod : ((r : 𝓞 K) + sO) * ((r : 𝓞 K) - sO) = ((p : ℕ) : 𝓞 K) * (t : 𝓞 K)`. Establish `h1 : ((r * r + d : ℤ) : 𝓞 K) = ((p * t : ℤ) : 𝓞 K)` using `by rw [ht]`. Move the coercions through the operations in `at h1`. Take the linear combination `h1 - hss`.
+
+Establish `hab : ((r : 𝓞 K) + sO) * ((r : 𝓞 K) - sO) ∈ P`. Rewrite using `[hprod]`. Conclude with `P.mul_mem_right _ hpP`. Establish `hnot : ¬ ((r : 𝓞 K) + sO ∈ P ∧ (r : 𝓞 K) - sO ∈ P)`. Introduce and unpack `⟨h1, h2⟩`.
+
+Establish `h2s : (2 : 𝓞 K) * sO ∈ P`. Establish `h3` using `P.sub_mem h1 h2`. Rewrite `h3` using `[show (r : 𝓞 K) + sO - ((r : 𝓞 K) - sO) = 2 * sO by ring]`. Then use the resulting hypothesis. Take `⟨q, hq⟩` from `hp.odd_of_ne_two hp2`. Establish `hc' : (((q + 1 : ℕ)) : 𝓞 K) * 2 = ((p : ℕ) : 𝓞 K) + 1`.
+
+Rewrite using `[hq]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Establish `hsP : sO ∈ P`. Establish `e : sO = (((q + 1 : ℕ)) : 𝓞 K) * (2 * sO) - sO * ((p : ℕ) : 𝓞 K)`.
+
+Take the linear combination `(-sO) * hc'`. Rewrite using `[e]`. Conclude with `P.sub_mem (P.mul_mem_left _ h2s) (P.mul_mem_left _ hpP)`. Establish `hdP : ((d : ℕ) : 𝓞 K) ∈ P`. Establish `h4` using `P.mul_mem_left sO hsP`.
+
+Rewrite `h4` using `[hss]`. Conclude with `(P.neg_mem_iff).1 h4`. Apply `hP.ne_top` to reduce the goal to its premises. Rewrite using `[Ideal.eq_top_iff_one]`. Establish `e1 : (1 : 𝓞 K) = ((x : ℤ) : 𝓞 K) * (-((d : ℕ) : 𝓞 K)) + (y : 𝓞 K) * ((p : ℕ) : 𝓞 K)`.
+
+Establish `h5` using `congrArg (fun z : ℤ => (z : 𝓞 K)) hxy`. Move the coercions through the operations in `at h5`. Conclude with `h5.symm`. Rewrite using `[e1]`. Conclude with `P.add_mem (P.mul_mem_left _ (P.neg_mem hdP)) (P.mul_mem_left _ hpP)`.
+
+Establish `hca : cj (algebraMap K E (algebraMap (𝓞 K) K ((r : 𝓞 K) + sO))) = algebraMap K E (algebraMap (𝓞 K) K ((r : 𝓞 K) - sO))`. Simplify using `only [map_add, map_sub, map_neg, map_intCast, hsK, hcj, sub_eq_add_neg]`. Establish `hcb : cj (algebraMap K E (algebraMap (𝓞 K) K ((r : 𝓞 K) - sO))) = algebraMap K E (algebraMap (𝓞 K) K ((r : 𝓞 K) + sO))`. Simplify using `only [map_add, map_sub, map_neg, map_intCast, hsK, hcj, sub_eq_add_neg, neg_neg]`. Establish `hcoe : ∀ z : 𝓞 K, (z : K) = algebraMap (𝓞 K) K z` using `fun _ => rfl`.
+
+Break down `hP.mem_or_mem hab with ha | hb` into its components or cases. Use `⟨P, hP, hpP, (r : 𝓞 K) + sO, (r : 𝓞 K) - sO, ?_, ha, fun hb => hnot ⟨ha, hb⟩⟩` and prove the remaining obligations. Rewrite using `[hcoe, hcoe]`. Conclude with `hca`. Use `⟨P, hP, hpP, (r : 𝓞 K) - sO, (r : 𝓞 K) + sO, ?_, hb, fun ha => hnot ⟨ha, hb⟩⟩` and prove the remaining obligations.
+
+Rewrite using `[hcoe, hcoe]`. Conclude with `hcb`.
+-/
 theorem splitsAt_odd {K E : Type} [Field K] [NumberField K] [Field E] [NumberField E] [Algebra K E]
     (cj : E ≃ₐ[ℚ] E) (d p : ℕ) (s : K) (hs : s * s = -(d : K))
     (hcj : cj (algebraMap K E s) = -algebraMap K E s) (hp : p.Prime) (hp2 : p ≠ 2)

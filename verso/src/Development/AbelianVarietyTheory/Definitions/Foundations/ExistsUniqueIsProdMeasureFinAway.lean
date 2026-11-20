@@ -17,11 +17,19 @@ variable {G ι κ : Type} {H : ι → Type} {P : κ → Type} [Group G] [∀ i, 
 def cyl (S : Finset κ) (A : ∀ i, Set (H i)) (B : ∀ k, Set (P k)) : Set G :=
   {g | (∀ i, p i g ∈ A i) ∧ (∀ k ∈ S, q k g ∈ B k) ∧ ∀ k ∉ S, q k g ∈ K k}
 
+/- English proof (translation)
+Unfold both sides. The equivalence is reflexive.
+-/
 theorem mem_cyl {S : Finset κ} {A : ∀ i, Set (H i)} {B : ∀ k, Set (P k)} {g : G} :
     g ∈ cyl p q K S A B ↔ (∀ i, p i g ∈ A i) ∧ (∀ k ∈ S, q k g ∈ B k) ∧ ∀ k ∉ S, q k g ∈ K k := Iff.rfl
 
 open Classical in
 
+/- English proof (translation)
+Use extensionality with `g`. Use `and_congr_right fun _ => ⟨fun ⟨h1, h2⟩ => ⟨fun k _ => ?_, fun k hk => h2 k fun e => hk (h e)⟩, fun ⟨h1, h2⟩ => ⟨fun k hk => by simpa [hk] using h1 k (h hk), fun k hk => ?_⟩⟩` and prove the remaining obligations. Distinguish the cases in `e : k ∈ S`. Simplify `h1 k e` using `[e]`. Simplify `h2 k e` using `[e]`.
+
+Distinguish the cases in `e : k ∈ S'`. Simplify `h1 k e` using `[hk]`. Conclude with `h2 k e`.
+-/
 theorem cyl_eq_of_subset {S S' : Finset κ} (h : S ⊆ S') (A : ∀ i, Set (H i)) (B : ∀ k, Set (P k)) :
     cyl p q K S A B = cyl p q K S' A fun k => if k ∈ S then B k else K k := by
   ext g
@@ -59,15 +67,24 @@ variable {p q K} {μi : ∀ i, Measure (H i)} {μf : ∀ k, Measure (P k)} {μ :
 
 omit [∀ k, TopologicalSpace (P k)] in
 open Classical in
+/- English proof (translation)
+The claim follows from `(Finset.prod_subset h fun k _ hk => by rw [if_neg hk, hS k hk]).symm.trans (Finset.prod_congr rfl fun k hk => by rw [if_pos hk])`.
+-/
 theorem prod_ite_eq {S S' : Finset κ} (h : S ⊆ S') (hS : ∀ k ∉ S, μf k (K k) = 1) (B : ∀ k, Set (P k)) :
     ∏ k ∈ S', μf k (if k ∈ S then B k else K k) = ∏ k ∈ S, μf k (B k) :=
   (Finset.prod_subset h fun k _ hk => by rw [if_neg hk, hS k hk]).symm.trans
     (Finset.prod_congr rfl fun k hk => by rw [if_pos hk])
 
 omit [∀ k, TopologicalSpace (P k)] in
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨(eventually_cofinite.1 h).toFinset, fun k hk => by simpa using hk⟩`.
+-/
 theorem exists_finset_vol_one (h : ∀ᶠ k in cofinite, μf k (K k) = 1) : ∃ S : Finset κ, ∀ k ∉ S, μf k (K k) = 1 :=
   ⟨(eventually_cofinite.1 h).toFinset, fun k hk => by simpa using hk⟩
 
+/- English proof (translation)
+Use `⟨h.haar_inf, h.haar_fin, (h.vol_one.and e).mono fun k hk => hk.2 ▸ hk.1, h.haar, fun S hS A B hA hB => ?_⟩` and prove the remaining obligations. Take `⟨T, hT⟩ : ∃ T : Finset κ, ∀ k ∉ T, K k = K' k` from `⟨(eventually_cofinite.1 e).toFinset, fun k hk => by simpa using hk⟩`. Establish `hT' : ∀ k ∉ S ∪ T, K k = K' k` using `fun k hk => hT k fun e => hk (Finset.mem_union_right _ e)`. Establish `e1 : ∀ B, cyl p q K' (S ∪ T) A B = cyl p q K (S ∪ T) A B` using `fun B => Set.ext fun g => and_congr_right fun _ => and_congr_right fun _ => forall₂_congr fun k hk => by rw [hT' k hk]`. Rewrite using `[cyl_eq_of_subset p q K' (Finset.subset_union_left (s₂ := T)), e1, h.measure_cyl _ (fun k hk => hT' k hk ▸ hS k fun e => hk (Finset.mem_union_left _ e)) _ _ hA (fun k _ => by split_ifs with e; exacts [hB k e, hK' k]), prod_ite_eq Finset.subset_union_left hS]`.
+-/
 theorem IsRestrProd.congr (h : IsRestrProd p q K μi μf μ) {K' : ∀ k, Subgroup (P k)}
     (hK' : ∀ k, MeasurableSet (K' k : Set (P k))) (e : ∀ᶠ k in cofinite, K k = K' k) : IsRestrProd p q K' μi μf μ := by
   classical
@@ -81,6 +98,13 @@ theorem IsRestrProd.congr (h : IsRestrProd p q K μi μf μ) {K' : ∀ k, Subgro
     (fun k hk => hT' k hk ▸ hS k fun e => hk (Finset.mem_union_left _ e)) _ _ hA
     (fun k _ => by split_ifs with e; exacts [hB k e, hK' k]), prod_ite_eq Finset.subset_union_left hS]
 
+/- English proof (translation)
+Use `h.haar` as an intermediate fact. Use `h.haar_inf` as an intermediate fact. Use `⟨fun j => ?_, h.haar_fin, h.vol_one, .nnreal_smul _ hc, fun S hS A B hA hB => ?_⟩` and prove the remaining obligations. Distinguish the cases in `e : j = i`. Substitute `e` using the available equality.
+
+Rewrite using `[Function.update_self]`. Conclude with `.nnreal_smul _ hc`. Rewrite using `[Function.update_of_ne e]`. Conclude with `h.haar_inf j`. Rewrite using `[Measure.smul_apply, h.measure_cyl S hS A B hA hB, ← Finset.mul_prod_erase _ _ (Finset.mem_univ i), ← Finset.mul_prod_erase _ (fun j => Function.update μi i (c • μi i) j (A j)) (Finset.mem_univ i), Function.update_self, Finset.prod_congr (f := fun j => Function.update μi i (c • μ …`.
+
+Simplify using `only [Measure.smul_apply, ENNReal.smul_def, smul_eq_mul, mul_assoc]`.
+-/
 theorem IsRestrProd.smul_inf [DecidableEq ι] (h : IsRestrProd p q K μi μf μ) (i : ι) {c : ℝ≥0} (hc : c ≠ 0) :
     IsRestrProd p q K (Function.update μi i (c • μi i)) μf (c • μ) := by
   have := h.haar
@@ -95,6 +119,15 @@ theorem IsRestrProd.smul_inf [DecidableEq ι] (h : IsRestrProd p q K μi μf μ)
         (g := fun j => μi j (A j)) rfl fun j hj => by rw [Function.update_of_ne (Finset.ne_of_mem_erase hj)]]
     simp only [Measure.smul_apply, ENNReal.smul_def, smul_eq_mul, mul_assoc]
 
+/- English proof (translation)
+Use `h.haar` as an intermediate fact. Use `h.haar_fin` as an intermediate fact. Establish `key : ∀ S : Finset κ, k ∈ S → (∀ j ∉ S, Function.update μf k (c • μf k) j (K j) = 1) → ∀ A B, (∀ i, MeasurableSet (A i)) → (∀ j ∈ S, MeasurableSet (B j)) → (c • μ) (cyl p q K S A B) = (∏ i, μi i (A i)) * ∏ j ∈ S, Function.update μf k (c • μf k) j (B j)` using `fun S hk hS A B hA hB => by`. Rewrite using `[Measure.smul_apply, h.measure_cyl S (fun j hj => by`. Use `hS j hj` as an intermediate fact.
+
+Rewrite using `[Function.update_of_ne (by rintro rfl; exact hj hk)] at this) A B hA hB, ← Finset.mul_prod_erase _ _ hk,` and apply the resulting hypothesis. Use the proof step `← Finset.mul_prod_erase _ (fun j => Function.update μf k (c • μf k) j (B j)) hk,`. Use the proof step `Function.update_self, Finset.prod_congr (f := fun j => Function.update μf k (c • μf k) j (B j)) (g := fun j => μf j (B j)) rfl fun j hj => by rw [Function.update_of_ne (Finset.ne_of_mem_erase hj)]]`. Simplify using `only [Measure.smul_apply, ENNReal.smul_def, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree.
+
+Use `⟨h.haar_inf, fun j => ?_, ?_, .nnreal_smul _ hc, fun S hS A B hA hB => ?_⟩` and prove the remaining obligations. Distinguish the cases in `e : j = k`. Substitute `e` using the available equality. Rewrite using `[Function.update_self]`. Conclude with `.nnreal_smul _ hc`.
+
+Rewrite using `[Function.update_of_ne e]`. Conclude with `h.haar_fin j`. Use `filter_upwards [h.vol_one, (Set.finite_singleton k).compl_mem_cofinite] with j hj e`. Rewrite using `[Function.update_of_ne e]` and apply the resulting hypothesis. Rewrite using `[cyl_eq_of_subset p q K (Finset.subset_insert k S), key _ (Finset.mem_insert_self _ _) (fun j hj => hS j fun e => hj (Finset.mem_insert_of_mem e)) _ _ hA (fun j _ => by split_ifs with e; exacts [hB j e, hK j]), prod_ite_eq (Finset.subset_insert k S) hS]`.
+-/
 theorem IsRestrProd.smul_fin [DecidableEq κ] (h : IsRestrProd p q K μi μf μ)
     (hK : ∀ k, MeasurableSet (K k : Set (P k))) (k : κ) {c : ℝ≥0} (hc : c ≠ 0) :
     IsRestrProd p q K μi (Function.update μf k (c • μf k)) (c • μ) := by
@@ -129,6 +162,25 @@ variable [IsTopologicalGroup G] [BorelSpace G] [LocallyCompactSpace G] [SecondCo
 
 omit [LocallyCompactSpace G] [SecondCountableTopology G] in
 
+/- English proof (translation)
+Set `U : Subgroup G` to `⨅ k, ⨅ (_ : k ∉ S), (K k).comap (q k)`. Establish `hU : ∀ g, g ∈ U ↔ ∀ k ∉ S, q k g ∈ K k` using `fun g => by simp [U, Subgroup.mem_iInf]`. Establish `hUo : IsOpen (U : Set G)` using `Subgroup.isOpen_mono (H₁ := ⨅ k, (K k).comap (q k)) (fun g hg => (hU g).2 fun k _ => Subgroup.mem_iInf.1 hg k) (by convert D.isOpen_all using 1; ext g; simp [Subgroup.mem_iInf])`. Establish `hemb : Topology.IsOpenEmbedding U.subtype` using `hUo.isOpenEmbedding_subtypeVal`. Set `π : U →* (∀ i, H i) × (∀ k : S, P k)` to `((Pi.monoidHom p).prod (Pi.monoidHom fun k : S => q k)).comp U.subtype`.
+
+Establish `hπ : Continuous π` using `((continuous_pi D.cont_p).prodMk (continuous_pi fun k : S => D.cont_q k)).comp continuous_subtype_val`. Establish `hs : Function.Surjective π` using `fun x => by`. Take `⟨g, h1, h2, h3⟩` from `D.exists_comp S x.1 x.2`. Conclude with `⟨⟨g, (hU g).2 h3⟩, Prod.ext (funext h1) (funext h2)⟩`. Use `haveI : (ν.comap U.subtype).IsHaarMeasure := Measure.IsHaarMeasure.comap (mH := inferInstance) ν hemb`.
+
+Set `m` to `(ν.comap U.subtype).map π`. Establish `hm : ∀ A B, (∀ i, MeasurableSet (A i)) → (∀ k ∈ S, MeasurableSet (B k)) → m (Set.univ.pi A ×ˢ Set.univ.pi fun k : S => B k) = ν (cyl p q K S A B)` using `fun A B hA hB => by`. Rewrite using `[Measure.map_apply hπ.measurable ((MeasurableSet.univ_pi hA).prod (MeasurableSet.univ_pi fun k : S => hB k k.2)), hemb.measurableEmbedding.comap_apply]`. Use `congr 1`. Use extensionality with `g`.
+
+Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨u, ⟨h1, h2⟩, rfl⟩`. Conclude with `⟨fun i => h1 i trivial, fun k hk => h2 ⟨k, hk⟩ trivial, (hU u).1 u.2⟩`. Introduce and unpack `⟨h1, h2, h3⟩`. Conclude with `⟨⟨g, (hU g).2 h3⟩, ⟨fun i _ => h1 i, fun k _ => h2 k k.2⟩, rfl⟩`.
+
+Use `haveI : m.IsMulLeftInvariant := isMulLeftInvariant_map π.toMulHom hπ.measurable hs`. Use `haveI : IsFiniteMeasureOnCompacts m := ⟨fun C hC => by`. Set `A : ∀ i, Set (H i)` to `fun i => (fun x => x.1 i) '' C`. Set `B : ∀ k, Set (P k)` to `fun k => if h : k ∈ S then (fun x => x.2 ⟨k, h⟩) '' C else ∅`. Establish `hA : ∀ i, IsCompact (A i)` using `fun i => hC.image ((continuous_apply i).comp continuous_fst)`.
+
+Establish `hB : ∀ k ∈ S, IsCompact (B k)` using `fun k hk => by`. Simplify using `only [B, dif_pos hk]`. Conclude with `hC.image ((continuous_apply _).comp continuous_snd)`. Use `(measure_mono (t := Set.univ.pi A ×ˢ Set.univ.pi fun k : S => B k) fun x hx => ⟨fun i _ => ⟨x, hx, rfl⟩, fun k _ => ?_⟩).trans_lt ?_` and prove the remaining obligations. Simplify using `only [B, dif_pos k.2]`.
+
+Conclude with `⟨x, hx, rfl⟩`. Rewrite using `[hm A B (fun i => (hA i).measurableSet) fun k hk => (hB k hk).measurableSet]`. Conclude with `(D.isCompact_cyl S A B hA hB).measure_lt_top⟩`. Establish `e` using `Measure.isMulLeftInvariant_eq_smul m ((Measure.pi μi).prod (Measure.pi fun k : S => μf k))`. Use `⟨_, fun h0 => ?_, fun A B hA hB => by` and prove the remaining obligations.
+
+Rewrite using `[← hm A B hA hB, e, Measure.smul_apply, Measure.prod_prod, Measure.pi_pi, Measure.pi_pi, Finset.prod_coe_sort S fun k => μf k (B k)]`. Use the proof step `rfl⟩`. Rewrite `e` using `[h0, zero_smul]`. Establish `h1` using `hm (fun _ => Set.univ) (fun _ => Set.univ) (fun _ => .univ) fun _ _ => .univ`. Rewrite `h1` using `[e]`.
+
+Conclude with `(hUo.measure_pos ν ⟨1, U.one_mem⟩).ne' (measure_mono_null (t := cyl p q K S (fun _ => Set.univ) fun _ => Set.univ) (fun g hg => ⟨fun _ => trivial, fun _ _ => trivial, (hU g).1 hg⟩) h1.symm)`.
+-/
 theorem IsRestrGroup.exists_const (D : IsRestrGroup p q K) (μi : ∀ i, Measure (H i)) (μf : ∀ k, Measure (P k))
     [∀ i, (μi i).IsHaarMeasure] [∀ k, (μf k).IsHaarMeasure] (ν : Measure G) [ν.IsHaarMeasure] (S : Finset κ) :
     ∃ c : ℝ≥0, c ≠ 0 ∧ ∀ A B, (∀ i, MeasurableSet (A i)) → (∀ k ∈ S, MeasurableSet (B k)) →
@@ -188,6 +240,9 @@ theorem IsRestrGroup.exists_const (D : IsRestrGroup p q K) (μi : ∀ i, Measure
 omit [IsTopologicalGroup G] [BorelSpace G] [LocallyCompactSpace G] [SecondCountableTopology G]
   [∀ i, SecondCountableTopology (H i)] [∀ k, SecondCountableTopology (P k)] [MeasurableSpace G] [Group G]
   [TopologicalSpace G] in
+/- English proof (translation)
+Set `A` to `fun i => (Classical.arbitrary (TopologicalSpace.PositiveCompacts (H i)))`. Set `B` to `fun k => (Classical.arbitrary (TopologicalSpace.PositiveCompacts (P k)))`. Conclude with `⟨fun i => A i, fun k => B k, fun i => (A i).isCompact.measurableSet, fun k => (B k).isCompact.measurableSet, mul_ne_zero (Finset.prod_ne_zero_iff.2 fun i _ => (Measure.measure_pos_of_nonempty_interior _ (A i).interior_nonempty).ne') (Finset.prod_ne_zero_iff.2 fun k _ => (Measure. …`.
+-/
 theorem exists_box_pos (μi : ∀ i, Measure (H i)) (μf : ∀ k, Measure (P k))
     [∀ i, (μi i).IsHaarMeasure] [∀ k, (μf k).IsHaarMeasure] (S : Finset κ) :
     ∃ (A : ∀ i, Set (H i)) (B : ∀ k, Set (P k)), (∀ i, MeasurableSet (A i)) ∧ (∀ k, MeasurableSet (B k)) ∧
@@ -202,6 +257,11 @@ theorem exists_box_pos (μi : ∀ i, Measure (H i)) (μf : ∀ k, Measure (P k))
 
 omit [LocallyCompactSpace G] [SecondCountableTopology G] in
 
+/- English proof (translation)
+Use `choose c hc0 hc using D.exists_const μi μf ν`. Establish `key : ∀ S S' : Finset κ, S ⊆ S' → (∀ k ∉ S, μf k (K k) = 1) → c S = c S'` using `fun S S' h hS => by`. Take `⟨A, B, hA, hB, h0, ht⟩` from `exists_box_pos μi μf S`. Establish `e` using `hc S A B hA fun k _ => hB k`. Rewrite `e` using `[cyl_eq_of_subset p q K h, hc S' _ _ hA (fun k _ => by split_ifs; exacts [hB k, (D.isOpen_K k).measurableSet]), prod_ite_eq h hS]`.
+
+Conclude with `((ENNReal.mul_left_inj h0 ht).1 e).symm` after adjusting the coercions. Take `⟨T, hT⟩` from `exists_finset_vol_one h1`. Use `⟨(c T)⁻¹, inv_ne_zero (hc0 T), hi, hf, h1, .nnreal_smul _ (inv_ne_zero (hc0 T)), fun S hS A B hA hB => ?_⟩` and prove the remaining obligations. Rewrite using `[Measure.smul_apply, hc S A B hA hB, key S _ Finset.subset_union_left hS, ← key T _ Finset.subset_union_right hT, ENNReal.smul_def, smul_eq_mul, ← mul_assoc, ← ENNReal.coe_mul, inv_mul_cancel₀ (hc0 T), ENNReal.coe_one, one_mul]`.
+-/
 theorem IsRestrGroup.exists_smul (D : IsRestrGroup p q K) (hi : ∀ i, (μi i).IsHaarMeasure)
     (hf : ∀ k, (μf k).IsHaarMeasure) (h1 : ∀ᶠ k in cofinite, μf k (K k) = 1) (ν : Measure G) [ν.IsHaarMeasure] :
     ∃ c : ℝ≥0, c ≠ 0 ∧ IsRestrProd p q K μi μf (c • ν) := by
@@ -220,6 +280,13 @@ theorem IsRestrGroup.exists_smul (D : IsRestrGroup p q K) (hi : ∀ i, (μi i).I
 
 omit [∀ i, SecondCountableTopology (H i)] [∀ k, SecondCountableTopology (P k)] in
 
+/- English proof (translation)
+Use `h.haar` as an intermediate fact. Use `h'.haar` as an intermediate fact. Use `h.haar_inf` as an intermediate fact. Use `h.haar_fin` as an intermediate fact. Take `⟨S, hS⟩` from `exists_finset_vol_one h.vol_one`.
+
+Take `⟨A, B, hA, hB, h0, ht⟩` from `exists_box_pos μi μf S`. Establish `e` using `Measure.isMulLeftInvariant_eq_smul μ μ'`. Establish `e1` using `h.measure_cyl S hS A B hA fun k _ => hB k`. Rewrite `e1` using `[e, Measure.smul_apply, h'.measure_cyl S hS A B hA fun k _ => hB k, ENNReal.smul_def, smul_eq_mul]`. Establish `e2 : Measure.haarScalarFactor μ μ' = 1`.
+
+Conclude with `(ENNReal.mul_left_inj h0 ht).1 (e1.trans (one_mul _).symm)` after adjusting the coercions. Rewrite using `[e, e2, one_smul]`.
+-/
 theorem IsRestrProd.unique {μ' : Measure G} (h : IsRestrProd p q K μi μf μ) (h' : IsRestrProd p q K μi μf μ') :
     μ = μ' := by
   have := h.haar
@@ -235,6 +302,9 @@ theorem IsRestrProd.unique {μ' : Measure G} (h : IsRestrProd p q K μi μf μ) 
     exact_mod_cast (ENNReal.mul_left_inj h0 ht).1 (e1.trans (one_mul _).symm)
   rw [e, e2, one_smul]
 
+/- English proof (translation)
+The claim follows from `let ⟨_, _, h⟩ := D.exists_smul hi hf h1 Measure.haar ⟨_, h, fun _ h' => h'.unique h⟩`.
+-/
 theorem IsRestrGroup.existsUnique (D : IsRestrGroup p q K) (hi : ∀ i, (μi i).IsHaarMeasure)
     (hf : ∀ k, (μf k).IsHaarMeasure) (h1 : ∀ᶠ k in cofinite, μf k (K k) = 1) :
     ∃! μ, IsRestrProd p q K μi μf μ :=
@@ -269,6 +339,9 @@ omit [NumberField E]
 
 variable {σ J L}
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fun h => ⟨h.2, h.3, h.4, fun S hS B hB => by simpa [cyl] using h.5 S hS (fun _ => Set.univ) B (fun e => e.elim) hB⟩, fun h => ⟨fun e => e.elim, h.1, h.2.1, h.2.2.1, fun S hS A B _ hB => by simpa [cyl] using h.2.2.2 S hS B hB⟩⟩`.
+-/
 theorem isRestrProd_empty_iff {G κ : Type} {P : κ → Type} [Group G] [∀ k, Group (P k)] [TopologicalSpace G]
     [∀ k, TopologicalSpace (P k)] [MeasurableSpace G] [∀ k, MeasurableSpace (P k)] {q : ∀ k, G →* P k}
     {K : ∀ k, Subgroup (P k)} {μf : ∀ k, Measure (P k)} {μ : Measure G} :
@@ -280,6 +353,9 @@ theorem isRestrProd_empty_iff {G κ : Type} {P : κ → Type} [Group G] [∀ k, 
       simpa [cyl] using h.5 S hS (fun _ => Set.univ) B (fun e => e.elim) hB⟩,
     fun h => ⟨fun e => e.elim, h.1, h.2.1, h.2.2.1, fun S hS A B _ hB => by simpa [cyl] using h.2.2.2 S hS B hB⟩⟩
 
+/- English proof (translation)
+The claim follows from `isRestrProd_empty_iff`.
+-/
 theorem isProdMeasureFin_iff {μf : ∀ v, Measure (GLoc σ J v)} {μ : Measure (GFin σ J)} :
     IsProdMeasureFin σ J L μf μ ↔ (∀ v, (μf v).IsHaarMeasure) ∧
       (∀ᶠ v in cofinite, μf v (stabLoc σ J L v) = 1) ∧ μ.IsHaarMeasure ∧
@@ -288,6 +364,9 @@ theorem isProdMeasureFin_iff {μf : ∀ v, Measure (GLoc σ J v)} {μ : Measure 
           μ {g | (∀ v ∈ S, projFinLoc σ J v g ∈ B v) ∧ ∀ v ∉ S, projFinLoc σ J v g ∈ stabLoc σ J L v} =
             ∏ v ∈ S, μf v (B v) := isRestrProd_empty_iff
 
+/- English proof (translation)
+Establish `h` using `mem_atPts.1 (embAt_mem σ J S b)`. Conclude with `⟨fun w => by simp [mem_finPts_iff_forall.1 h.1 w], fun v => by simp, fun v hv => by simp [h.2 v hv]⟩`.
+-/
 theorem comp_glue {S : Finset (HeightOneSpectrum (𝓞 F))} (a : ∀ w, GArch σ J w) (b : ∀ v : S, GLoc σ J v) :
     (∀ w, projArch σ J w (ofInf σ J (embArchPi σ J a) * embAt σ J S b) = a w) ∧
     (∀ v : S, proj σ J v (ofInf σ J (embArchPi σ J a) * embAt σ J S b) = b v) ∧
@@ -297,11 +376,17 @@ theorem comp_glue {S : Finset (HeightOneSpectrum (𝓞 F))} (a : ∀ w, GArch σ
 
 end Unfold
 
+/- English proof (translation)
+The claim follows from `(Set.ext e : s = t) ▸ h`.
+-/
 theorem isCompact_of_ext {X : Type} [TopologicalSpace X] {s t : Set X} (h : IsCompact t) (e : ∀ x, x ∈ s ↔ x ∈ t) :
     IsCompact s := (Set.ext e : s = t) ▸ h
 
 variable [Submodule.IsLattice E L]
 
+/- English proof (translation)
+The claim follows from `continuous_projArch σ J cont_q := continuous_proj σ J isOpen_K := isOpen_stabLoc σ J L isOpen_all := by convert isOpen_levelOpen σ J L using 1 exact Set.ext fun _ => mem_levelOpen.symm isCompact_cyl S A B hA hB := by have hc := ((((isCompact_univ_pi hA).image (continuous_embArchP …`.
+-/
 theorem isRestrGroup_GAd : IsRestrGroup (projArch σ J) (proj σ J) (stabLoc σ J L) where
   cont_p := continuous_projArch σ J
   cont_q := continuous_proj σ J
@@ -332,6 +417,9 @@ theorem isRestrGroup_GAd : IsRestrGroup (projArch σ J) (proj σ J) (stabLoc σ 
   exists_comp S x y := ⟨_, (comp_glue x y).1, (comp_glue x y).2.1, fun v hv => by
     rw [(comp_glue x y).2.2 v hv]; exact one_mem _⟩
 
+/- English proof (translation)
+The claim follows from `e.elim cont_q := continuous_projFinLoc σ J isOpen_K := isOpen_stabLoc σ J L isOpen_all := by simpa using (isRestrGroup_GAd σ J L).isOpen_all.preimage (continuous_ofFin σ J) isCompact_cyl S A B _ hB := by have := (Function.LeftInverse.isClosedEmbedding (projFin_ofFin σ J) (continu …`.
+-/
 theorem isRestrGroup_GFin :
     IsRestrGroup (H := fun _ : Empty => Unit) (fun _ => 1) (projFinLoc σ J) (stabLoc σ J L) where
   cont_p e := e.elim
@@ -354,6 +442,11 @@ section Away
 variable (T : Finset (HeightOneSpectrum (𝓞 F)))
 
 omit [NumberField E] [Submodule.IsLattice E L] in
+/- English proof (translation)
+Take `⟨e1, e2, e3⟩` from `comp_glue (S := S.map (Function.Embedding.subtype _)) x fun v => y ⟨⟨v.1, Finset.property_of_mem_map_subtype S v.2⟩, by`. Take `⟨u, hu, e⟩` from `Finset.mem_map.1 v.2`. Use `hu using 1` and compare the differences between its conclusion and the goal. Conclude with `Subtype.ext e.symm⟩`. Conclude with `⟨_, mem_awayPts.2 fun v hv => e3 v fun h => Finset.property_of_mem_map_subtype S h hv, e1, fun v => e2 ⟨v.1.1, Finset.mem_map_of_mem _ v.2⟩, fun v hv => by`.
+
+Rewrite using `[e3 v (by simpa [v.2] using hv)]; exact one_mem _⟩`.
+-/
 theorem exists_away (S : Finset {v // v ∉ T}) (x : ∀ w, GArch σ J w) (y : ∀ v : S, GLoc σ J v.1) :
     ∃ g ∈ awayPts σ J T, (∀ w, projArch σ J w g = x w) ∧ (∀ v : S, proj σ J v.1 g = y v) ∧
       ∀ v ∉ S, proj σ J v.1 g ∈ stabLoc σ J L v := by
@@ -367,6 +460,9 @@ theorem exists_away (S : Finset {v // v ∉ T}) (x : ∀ w, GArch σ J w) (y : �
     fun v => e2 ⟨v.1.1, Finset.mem_map_of_mem _ v.2⟩, fun v hv => by
       rw [e3 v (by simpa [v.2] using hv)]; exact one_mem _⟩
 
+/- English proof (translation)
+The claim follows from `(isClosed_finPts σ J).inter (isClosed_awayPts σ J T)`.
+-/
 theorem isClosed_finAwayPts : IsClosed (finAwayPts σ J T : Set (GAd σ J)) :=
   (isClosed_finPts σ J).inter (isClosed_awayPts σ J T)
 
@@ -384,6 +480,9 @@ def haarLoc (v : HeightOneSpectrum (𝓞 F)) : Measure (GLoc σ J v) := Measure.
 
 instance (v : HeightOneSpectrum (𝓞 F)) : (haarLoc σ J L v).IsHaarMeasure := Measure.isHaarMeasure_haarMeasure _
 
+/- English proof (translation)
+The claim follows from `Measure.haarMeasure_self (K₀ := stabCompacts σ J L v)`.
+-/
 @[simp] theorem haarLoc_stabLoc (v : HeightOneSpectrum (𝓞 F)) : haarLoc σ J L v (stabLoc σ J L v) = 1 :=
   Measure.haarMeasure_self (K₀ := stabCompacts σ J L v)
 
@@ -391,6 +490,9 @@ variable {σ J L}
 
 variable (L) in
 
+/- English proof (translation)
+Take `⟨c, hc, h⟩` from `(isRestrGroup_GAd σ J L).exists_smul (μi := fun _ => Measure.haar) (μf := haarLoc σ J L) (fun _ => inferInstance) (fun _ => inferInstance) (.of_forall (haarLoc_stabLoc σ J L)) μ`. Take `⟨w⟩ : Nonempty (InfinitePlace F)` from `inferInstance`. Use `h.smul_inf w (inv_ne_zero hc)` as an intermediate fact. Rewrite `this` using `[smul_smul, inv_mul_cancel₀ hc, one_smul]`. Conclude with `⟨_, this⟩`.
+-/
 theorem exists_isProdMeasure_of_haar (μ : Measure (GAd σ J)) [μ.IsHaarMeasure] :
     ∃ μi : ∀ w, Measure (GArch σ J w), IsProdMeasure σ J L μi (haarLoc σ J L) μ := by
   classical
@@ -401,12 +503,18 @@ theorem exists_isProdMeasure_of_haar (μ : Measure (GAd σ J)) [μ.IsHaarMeasure
   rw [smul_smul, inv_mul_cancel₀ hc, one_smul] at this
   exact ⟨_, this⟩
 
+/- English proof (translation)
+Use `(isProdMeasureFin_iff.1 h).2.2.2 ∅ (fun v _ => haarLoc_stabLoc σ J L v) (fun _ => ∅) (by simp)` as an intermediate fact. Rewrite `this` using `[Finset.prod_empty]`. Rewrite using `[← this]`. Conclude with `congrArg μ (Set.ext fun g => by simp [mem_levelOffFin])`.
+-/
 example (μ : Measure (GFin σ J)) (h : IsProdMeasureFin σ J L (haarLoc σ J L) μ) : μ (levelOffFin σ J L ∅) = 1 := by
   have := (isProdMeasureFin_iff.1 h).2.2.2 ∅ (fun v _ => haarLoc_stabLoc σ J L v) (fun _ => ∅) (by simp)
   rw [Finset.prod_empty] at this
   rw [← this]
   exact congrArg μ (Set.ext fun g => by simp [mem_levelOffFin])
 
+/- English proof (translation)
+Introduce `h'` and use `by have := h.haar obtain ⟨C⟩ : Nonempty (TopologicalSpace.PositiveCompacts (GAd σ J)) := inferInstance have e := congrArg (fun ν : Measure (GAd σ J) => ν C) (IsRestrProd.unique h' h) simp only [Measure.smul_apply, ENNReal.smul_def, smul_eq_mul] at e have := (ENNReal.mul_left_inj …`.
+-/
 example {μi : ∀ w, Measure (GArch σ J w)} {μf : ∀ v, Measure (GLoc σ J v)} {μ : Measure (GAd σ J)}
     (h : IsProdMeasure σ J L μi μf μ) : ¬ IsProdMeasure σ J L μi μf ((2 : ℝ≥0) • μ) := fun h' => by
   have := h.haar

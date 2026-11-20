@@ -15,6 +15,33 @@ open scoped Matrix
 open NumberField IsDedekindDomain Filter Topology Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes GlobalTheory.WeilM GlobalTheory.AdelicU GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels UpperTheory.TP.BA
 namespace UpperTheory.SeparatedDualCondition
 variable {F : Type} [Field F] [NumberField F]
+/- English proof (translation)
+Establish `hx0 : x₀ ≠ 0`. Introduce and unpack `rfl`. Conclude with `hx₀ (AddChar.map_zero_eq_one ψ₀)`. Set `I : Ideal (v.adicCompletionIntegers F)` to `{ carrier := {o | ∀ y ∈ v.adicCompletionIntegers F, ψ₀ (x₀ * o * y) = 1} add_mem' := by`. Introduce `p q hp hq y hy`.
+
+Establish `e : x₀ * ((p + q : v.adicCompletionIntegers F) : Fv F v) * y = x₀ * p * y + x₀ * q * y` using `by push_cast; ring`. Rewrite using `[e, AddChar.map_add_eq_mul, hp y hy, hq y hy, one_mul]`. Use the proof step `zero_mem' := by`. Introduce `y _`. Simplify using the standard rewrite rules.
+
+Use the proof step `smul_mem' := by`. Introduce `r p hp y hy`. Establish `e : x₀ * ((r • p : v.adicCompletionIntegers F) : Fv F v) * y = x₀ * p * (r * y)`. Simplify using `only [smul_eq_mul]`. Use `push_cast`.
+
+Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e]`. Conclude with `hp _ (mul_mem r.2 hy) }`. Establish `hI : ∀ o : v.adicCompletionIntegers F, o ∈ I ↔ ∀ y ∈ v.adicCompletionIntegers F, ψ₀ (x₀ * o * y) = 1` using `fun _ => Iff.rfl`. Establish `key : ∀ x, (∀ y ∈ v.adicCompletionIntegers F, ψ₀ (x * y) = 1) → x₀⁻¹ * x ∈ v.adicCompletionIntegers F`.
+
+Introduce `x hx`. Distinguish the cases in `hx' : x = 0`. Substitute `hx'` using the available equality. Simplify using the standard rewrite rules. Use `((v.adicCompletionIntegers F).mem_or_inv_mem (x₀⁻¹ * x)).resolve_right fun h => hx₀ ?_` and prove the remaining obligations.
+
+Use `hx _ h` as an intermediate fact. Establish `e : x * (x₀⁻¹ * x)⁻¹ = x₀` using `by field_simp`. Rewrite `this` using `[e]`. Then use the resulting hypothesis. Take `⟨b, hb⟩` from `(IsPrincipalIdealRing.principal I).principal`. Establish `hbI : b ∈ I` using `by rw [hb]; exact Submodule.mem_span_singleton_self b`.
+
+Establish `hmem : ∀ o, o ∈ I ↔ ∃ t : v.adicCompletionIntegers F, o = t * b`. Introduce `o`. Rewrite using `[hb, Submodule.mem_span_singleton]`. Simplify using `[eq_comm]`. Establish `hb0 : (b : Fv F v) ≠ 0`.
+
+Introduce `h0`. Establish `h0' : b = 0` using `by exact_mod_cast h0`. Establish `hk` using `key a ha`. Establish `hin : (⟨_, hk⟩ : v.adicCompletionIntegers F) ∈ I`. Rewrite using `[hI]`.
+
+Introduce `y hy`. Use `ha y hy` as an intermediate fact. Simplify `this` using `[hx0, mul_assoc, mul_inv_cancel_left₀]`. Take `⟨t, ht⟩` from `(hmem _).1 hin`. Rewrite `ht` using `[h0', mul_zero]`.
+
+Use `congrArg Subtype.val ht` as an intermediate fact. Simplify using `[hx0, ha0] at this`. Use `⟨x₀ * b, mul_ne_zero hx0 hb0, fun x => ⟨fun hx => ?_, fun hx y hy => ?_⟩⟩` and prove the remaining obligations. Establish `hk` using `key x hx`. Establish `hin : (⟨_, hk⟩ : v.adicCompletionIntegers F) ∈ I`.
+
+Rewrite using `[hI]`. Introduce `y hy`. Use `hx y hy` as an intermediate fact. Simplify `this` using `[hx0, mul_assoc, mul_inv_cancel_left₀]`. Take `⟨t, ht⟩` from `(hmem _).1 hin`.
+
+Establish `h2 : x₀⁻¹ * x = t * b` using `by simpa using congrArg Subtype.val ht`. Establish `: (x₀ * b)⁻¹ * x = t`. Rewrite using `[mul_inv, mul_comm x₀⁻¹, mul_assoc, h2]`. Clear the denominators using the available nonvanishing facts. Rewrite using `[this]`.
+
+Conclude with `t.2`. Establish `hh` using `(hI b).1 hbI (((x₀ * b)⁻¹ * x) * y) (mul_mem hx hy)`. Establish `e : x₀ * b * ((x₀ * b)⁻¹ * x * y) = x * y`. Clear the denominators using the available nonvanishing facts. Rewrite `hh` using `[e]`. Then use the resulting hypothesis.
+-/
 private theorem exists_cond_pk (v : HeightOneSpectrum (𝓞 F)) (ψ₀ : AddChar (Fv F v) ℂ) (x₀ a : Fv F v) (hx₀ : ψ₀ x₀ ≠ 1)
     (ha0 : a ≠ 0) (ha : ∀ x ∈ v.adicCompletionIntegers F, ψ₀ (a * x) = 1) :
     ∃ c : Fv F v, c ≠ 0 ∧ ∀ x, (∀ y ∈ v.adicCompletionIntegers F, ψ₀ (x * y) = 1) ↔
@@ -87,6 +114,39 @@ private theorem exists_cond_pk (v : HeightOneSpectrum (𝓞 F)) (ψ₀ : AddChar
     have e : x₀ * b * ((x₀ * b)⁻¹ * x * y) = x * y := by
       field_simp
     rwa [e] at hh
+/- English proof (translation)
+Choose the witnesses or unpack the hypotheses as in `⟨x₀, hx₀⟩ : ∃ x₀, ψ₀ x₀ ≠ 1 := by`. Assume the negation of the conclusion as `h`. Use `push Not at h`. Conclude with `hy (hle ((hdual y).2 fun l _ => h _))`. Take `⟨c, hc0, hc⟩` from `exists_cond_pk v ψ₀ x₀ a hx₀ ha0 ha`.
+
+Set `O` to `v.adicCompletionIntegers F`. Set `L' : Submodule O ((κ → Fv F v) × (κ → Fv F v))` to `{ carrier := L add_mem' := fun h h' => L.add_mem h h' zero_mem' := L.zero_mem smul_mem' := fun t l hl => hst (t : Fv F v) t.2 l hl }`. Apply the tactic sequence `let φ : ((κ → O) × (κ → O)) →ₗ[O] ((κ → Fv F v) × (κ → Fv F v)) := { toFun := fun x => (fun i => c₀⁻¹ * (x.1 i : Fv F v), fun i => c₀⁻¹ * (x.2 i : Fv F v)) map_add' := by intro x y; ext i <;> simp [mul_add] map_smul' := by intro t x; ext i <;> simp [Algebra.smul_def] <;> ring }`. Establish `hle' : L' ≤ LinearMap.range φ`. Introduce `l hl`.
+
+Use `⟨(fun i => ⟨c₀ * l.1 i, (hbd l hl i).1⟩, fun i => ⟨c₀ * l.2 i, (hbd l hl i).2⟩), ?_⟩` and prove the remaining obligations. Apply the tactic sequence `ext i <;> simp [φ, hc₀]`. Use `haveI : IsNoetherian O (LinearMap.range φ) := isNoetherian_of_isNoetherianRing_of_finite _ _`. Use `haveI : IsNoetherian O L' := isNoetherian_of_le hle'`. Establish `hfg : L'.FG` using `Module.Finite.iff_fg.1 inferInstance`.
+
+Establish `hspan : Submodule.span (Fv F v) (L' : Set ((κ → Fv F v) × (κ → Fv F v))) = ⊤`. Use `eq_top_iff.2 fun w _ => ?_` and prove the remaining obligations. Take `⟨t, ht0, ht⟩` from `GlobalTheory.LatBound.exists_mul_mem_integers v (fun s : κ ⊕ κ => Sum.elim (fun k => (c * c₀)⁻¹ * w.1 k) (fun k => (c * c₀)⁻¹ * w.2 k) s)`. Establish `hw : t • w ∈ L` using `hle ((hdual _).2 fun l hl => by`. Establish `hm : c⁻¹ * ((t • w).1 ⬝ᵥ l.2 - l.1 ⬝ᵥ (t • w).2) ∈ v.adicCompletionIntegers F`.
+
+Rewrite using `[mul_sub]`. Simplify using `only [dotProduct, Finset.mul_sum]`. Use `sub_mem (sum_mem fun k _ => ?_) (sum_mem fun k _ => ?_)` and prove the remaining obligations. Use `mul_mem (ht (Sum.inl k)) (hbd l (hle hl) k).2` as an intermediate fact. Use `this using 1` and compare the differences between its conclusion and the goal.
+
+Simplify using `only [Sum.elim_inl, Prod.smul_fst, Pi.smul_apply, smul_eq_mul]`. Clear the denominators using the available nonvanishing facts. Use `mul_mem (ht (Sum.inr k)) (hbd l (hle hl) k).1` as an intermediate fact. Use `this using 1` and compare the differences between its conclusion and the goal. Simplify using `only [Sum.elim_inr, Prod.smul_snd, Pi.smul_apply, smul_eq_mul]`.
+
+Clear the denominators using the available nonvanishing facts. Establish `h1` using `(hc _).2 hm 1 (one_mem _)`. Rewrite using `[mul_one] at h1)` and apply the resulting hypothesis. Establish `e : w = t⁻¹ • (t • w)` using `by rw [smul_smul, inv_mul_cancel₀ ht0, one_smul]`. Rewrite using `[e]`.
+
+Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span hw)`. Use `haveI : L'.IsLattice (Fv F v) := ⟨hfg, hspan⟩`. Set `ψ' : AddChar (Fv F v) ℂ` to `ψ₀.compAddMonoidHom (AddMonoidHom.mulLeft c)`. Establish `hψ' : ∀ x, ψ' x = ψ₀ (c * x)` using `fun _ => rfl`. Establish `hsep : ∀ x, (∀ y : O, ψ' (x * algebraMap O (Fv F v) y) = 1) ↔ x ∈ (algebraMap O (Fv F v)).range`.
+
+Introduce `x`. Establish `e : c⁻¹ * (c * x) = x` using `by field_simp`. Establish `h` using `hc (c * x)`. Rewrite `h` using `[e]`. Prove the components needed by the constructor for the conclusion.
+
+Introduce `hx`. Establish `hm` using `h.1 fun y hy => by`. Use `hx ⟨y, hy⟩` as an intermediate fact. Rewrite `this` using `[hψ', ← mul_assoc]`. Conclude with `this`.
+
+Conclude with `⟨⟨x, hm⟩, rfl⟩`. Introduce and unpack `⟨o, rfl⟩ y`. Use `h.2 o.2 y y.2` as an intermediate fact. Rewrite using `[hψ', ← mul_assoc]`. Conclude with `this`.
+
+Take `⟨l, h1, h2⟩` from `GlobalTheory.ThK.Dbl.Bmp.sep ψ' hsep L' hy`. Set `e : κ → κ → Fv F v` to `fun k j => if k = j then 1 else 0`. Set `A : (κ → Fv F v) →ₗ[Fv F v] Fv F v` to `l ∘ₗ LinearMap.inl _ _ _`. Set `Bm : (κ → Fv F v) →ₗ[Fv F v] Fv F v` to `l ∘ₗ LinearMap.inr _ _ _`. Establish `hl : ∀ z, l z = ∑ k, z.1 k * A (e k) + ∑ k, z.2 k * Bm (e k)`.
+
+Introduce `z`. Establish `hz : z = (z.1, 0) + (0, z.2)` using `by simp`. Establish `h1` using `LinearMap.pi_apply_eq_sum_univ A z.1`. Establish `h2` using `LinearMap.pi_apply_eq_sum_univ Bm z.2`. Simplify using `only [smul_eq_mul] at h1 h2`.
+
+Rewrite using `[← h1, ← h2]`. Use `conv_lhs => rw [hz, map_add]`. Both sides reduce to the same expression. Establish `hu : ∀ z, ψ₀ ((fun k => c * Bm (e k)) ⬝ᵥ z.2 - z.1 ⬝ᵥ (fun k => -(c * A (e k)))) = ψ' (l z)`. Introduce `z`.
+
+Rewrite using `[hψ', hl, mul_add, Finset.mul_sum, Finset.mul_sum]`. Use `congr 1`. Simplify using `only [dotProduct]`. Rewrite using `[sub_eq_add_neg, ← Finset.sum_neg_distrib, add_comm]`. Apply the tactic sequence `congr 1 <;> exact Finset.sum_congr rfl fun k _ => by ring`.
+
+Conclude with `⟨(fun k => c * Bm (e k), fun k => -(c * A (e k))), fun z hz => (hu z).trans (h1 z hz), fun h => h2 ((hu y).symm.trans h)⟩`.
+-/
 private theorem sep_dual_pk (v : HeightOneSpectrum (𝓞 F)) {κ : Type} [Fintype κ] (ψ₀ : AddChar (Fv F v) ℂ)
     (Λ L : AddSubgroup ((κ → Fv F v) × (κ → Fv F v))) (hle : Λ ≤ L)
     (hdual : ∀ z, z ∈ Λ ↔ ∀ l ∈ Λ, ψ₀ (z.1 ⬝ᵥ l.2 - l.1 ⬝ᵥ z.2) = 1)
@@ -184,6 +244,15 @@ private theorem sep_dual_pk (v : HeightOneSpectrum (𝓞 F)) {κ : Type} [Fintyp
   exact ⟨(fun k => c * Bm (e k), fun k => -(c * A (e k))), fun z hz => (hu z).trans (h1 z hz), fun h => h2 ((hu y).symm.trans h)⟩
 open GlobalTheory.Idele in
 open GlobalTheory.StdDual (codiff codiff_ne_zero one_le_codiff) in
+/- English proof (translation)
+Establish `h1 : (1 : Af F) ∈ adelicIdeal (codiff F)`. Establish `h` using `(algebraMap_mem_adelicIdeal codiff_ne_zero (1 : F)).2 ((one_le_codiff (F := F)) (FractionalIdeal.one_mem_one _))`. Simplify using `using h`. Establish `h2` using `(GlobalTheory.SplitUnram.mem_adelicIdeal_codiff_iff hψ.1 (GlobalTheory.LatVacArith.psi_fin_rat hψ) 1).1 h1 (singleFin v x) (by`. Introduce `w`.
+
+Distinguish the cases in `h : w = v`. Substitute `h` using the available equality. Establish `e : (singleFin w x) w = x` using `evalV_singleFin_self w x`. Rewrite using `[e]`. Conclude with `hx`.
+
+Establish `e : (singleFin v x) w = 0` using `evalV_singleFin_ne h x`. Rewrite using `[e]`. Conclude with `zero_mem _)`. Rewrite `h2` using `[mul_one]`. Rewrite using `[one_mul]`.
+
+Conclude with `h2`.
+-/
 private theorem psi_triv_pk {ψ : AddChar (AF F) ℂ} (hψ : IsStd ψ) (v : Pl F) (x : Fv F v)
     (hx : x ∈ v.adicCompletionIntegers F) : GlobalTheory.LatVac.psiAt ψ v (1 * x) = 1 := by
   have h1 : (1 : Af F) ∈ adelicIdeal (codiff F) := by
@@ -203,11 +272,23 @@ private theorem psi_triv_pk {ψ : AddChar (AF F) ℂ} (hψ : IsStd ψ) (v : Pl F
   rw [mul_one] at h2
   rw [one_mul]
   exact h2
+/- English proof (translation)
+Simplify using `only [GlobalTheory.LatVac.locCo, AddMonoidHom.coe_mk, ZeroHom.coe_mk, map_smul]`. Apply the tactic sequence `ext k <;> simp [smul_eq_mul, map_mul]`.
+-/
 private theorem locCo_smul'_pk {W : Type} [AddCommGroup W] [Module (AF F) W] {B : W → W → AF F} {κ : Type} [Fintype κ]
     (co : GlobalTheory.WeilM.Darboux B κ) (v : Pl F) (a : AF F) (w : W) :
     GlobalTheory.LatVac.locCo co v (a • w) = evFin F v a • GlobalTheory.LatVac.locCo co v w := by
   simp only [GlobalTheory.LatVac.locCo, AddMonoidHom.coe_mk, ZeroHom.coe_mk, map_smul]
   ext k <;> simp [smul_eq_mul, map_mul]
+/- English proof (translation)
+Take `⟨p, hp⟩ : ∃ p : (κ → AF F) × (κ → AF F), p = (fun k => GlobalTheory.LatVac.liftV v (w.1 k), fun k => GlobalTheory.LatVac.liftV v (w.2 k))` from `⟨_, rfl⟩`. Use `⟨co.e.symm p, fun u hu => ?_, ?_⟩` and prove the remaining obligations. Establish `hp0 : u • p = 0`. Substitute `hp` using the available equality. Use `Prod.ext (funext fun k => ?_) (funext fun k => ?_)` and prove the remaining obligations.
+
+Conclude with `GlobalTheory.LatVac.at_liftV v (w.1 k) u hu`. Conclude with `GlobalTheory.LatVac.at_liftV v (w.2 k) u hu`. Rewrite using `[← map_smul, hp0, map_zero]`. Substitute `hp` using the available equality. Use `Prod.ext (funext fun k => ?_) (funext fun k => ?_)` and prove the remaining obligations.
+
+Use `show evFin F v ((co.e (co.e.symm _)).1 k) = w.1 k`. Rewrite using `[LinearEquiv.apply_symm_apply]`. Conclude with `GlobalTheory.LatVac.evFin_liftV v (w.1 k)`. Use `show evFin F v ((co.e (co.e.symm _)).2 k) = w.2 k`. Rewrite using `[LinearEquiv.apply_symm_apply]`.
+
+Conclude with `GlobalTheory.LatVac.evFin_liftV v (w.2 k)`.
+-/
 private theorem exists_at_pk {W : Type} [AddCommGroup W] [Module (AF F) W] {B : W → W → AF F} {κ : Type} [Fintype κ]
     (co : GlobalTheory.WeilM.Darboux B κ) (v : Pl F) (w : (κ → Fv F v) × (κ → Fv F v)) :
     ∃ z : W, At (evFin F v) z ∧ GlobalTheory.LatVac.locCo co v z = w := by
@@ -228,6 +309,13 @@ private theorem exists_at_pk {W : Type} [AddCommGroup W] [Module (AF F) W] {B : 
     · show evFin F v ((co.e (co.e.symm _)).2 k) = w.2 k
       rw [LinearEquiv.apply_symm_apply]
       exact GlobalTheory.LatVac.evFin_liftV v (w.2 k)
+/- English proof (translation)
+Establish `hz1 : GlobalTheory.LatVac.liftV v 1 • z = z`. Use `hz (1 - GlobalTheory.LatVac.liftV v 1) (by rw [map_sub, map_one, GlobalTheory.LatVac.evFin_liftV, sub_self])` as an intermediate fact. Rewrite `this` using `[sub_smul, one_smul, sub_eq_zero]`. Conclude with `this.symm`. Establish `he : co.e z = 0`.
+
+Rewrite using `[← hz1, map_smul]`. Use `Prod.ext (funext fun k => ?_) (funext fun k => ?_)` and prove the remaining obligations. Establish `h : evFin F v ((co.e z).1 k) = 0` using `congrFun (congrArg Prod.fst h0) k`. Use `GlobalTheory.LatVac.at_liftV v 1 _ h` as an intermediate fact. Simplify `this` using `[smul_eq_mul, mul_comm]`.
+
+Establish `h : evFin F v ((co.e z).2 k) = 0` using `congrFun (congrArg Prod.snd h0) k`. Use `GlobalTheory.LatVac.at_liftV v 1 _ h` as an intermediate fact. Simplify `this` using `[smul_eq_mul, mul_comm]`. Conclude with `(map_eq_zero_iff co.e co.e.injective).1 he`.
+-/
 private theorem at_inj_pk {W : Type} [AddCommGroup W] [Module (AF F) W] {B : W → W → AF F} {κ : Type} [Fintype κ]
     (co : GlobalTheory.WeilM.Darboux B κ) (v : Pl F) {z : W} (hz : At (evFin F v) z)
     (h0 : GlobalTheory.LatVac.locCo co v z = 0) : z = 0 := by
@@ -245,6 +333,11 @@ private theorem at_inj_pk {W : Type} [AddCommGroup W] [Module (AF F) W] {B : W �
       have := GlobalTheory.LatVac.at_liftV v 1 _ h
       simpa [smul_eq_mul, mul_comm] using this
   exact (map_eq_zero_iff co.e co.e.injective).1 he
+/- English proof (translation)
+Break down `(v.adicCompletionIntegers F).mem_or_inv_mem (c₁⁻¹ * c₂) with h | h` into its components or cases. Use `⟨c₂, h₂, fun x hx => ?_, fun x hx => hx⟩` and prove the remaining obligations. Use `mul_mem h hx` as an intermediate fact. Rewrite `this` using `[show c₁⁻¹ * c₂ * (c₁ * x) = c₂ * x by field_simp]`. Then use the resulting hypothesis. Use `⟨c₁, h₁, fun x hx => hx, fun x hx => ?_⟩` and prove the remaining obligations.
+
+Use `mul_mem h hx` as an intermediate fact. Rewrite `this` using `[show (c₁⁻¹ * c₂)⁻¹ * (c₂ * x) = c₁ * x by field_simp]`. Then use the resulting hypothesis.
+-/
 private theorem common_bound_pk (v : Pl F) {c₁ c₂ : Fv F v} (h₁ : c₁ ≠ 0) (h₂ : c₂ ≠ 0) :
     ∃ c : Fv F v, c ≠ 0 ∧ (∀ x, c₁ * x ∈ v.adicCompletionIntegers F → c * x ∈ v.adicCompletionIntegers F) ∧
       ∀ x, c₂ * x ∈ v.adicCompletionIntegers F → c * x ∈ v.adicCompletionIntegers F := by
@@ -257,6 +350,35 @@ private theorem common_bound_pk (v : Pl F) {c₁ c₂ : Fv F v} (h₁ : c₁ ≠
     rwa [show (c₁⁻¹ * c₂)⁻¹ * (c₂ * x) = c₁ * x by field_simp] at this
 end UpperTheory.SeparatedDualCondition
 open UpperTheory.SeparatedDualCondition in
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ B n d X W M r s r' s' hB hX hW v g _ y hy hne`. Establish `hat` using `(GlobalTheory.LatVac.latAtV_at_stable X W v).1`. Establish `hO` using `(GlobalTheory.LatVac.latAtV_at_stable X W v).2`. Establish `hself` using `_root_.GlobalTheory.LatSelfDualAll.latAtV_selfDual_k F E σ B n d X W r s r' s' hB hX hW v`. Establish `hsd` using `GlobalTheory.LatVac.DualLoc.map_selfDual v M.co B.ψ (latAtV X W v) hat hself`.
+
+Set `S : AddSubgroup (Matrix (Fin n) (Fin d) (AE F E))` to `{ carrier := {z | ∃ a ∈ latAtV X W v, ∃ b ∈ latAtV X W v, z = a + mat g⁻¹ * b} add_mem' := by`. Introduce and unpack `_ _ ⟨a, ha, b, hb, rfl⟩ ⟨a', ha', b', hb', rfl⟩`. Conclude with `⟨a + a', add_mem ha ha', b + b', add_mem hb hb', by rw [Matrix.mul_add]; abel⟩`. Use the proof step `zero_mem' := ⟨0, zero_mem _, 0, zero_mem _, by simp⟩`. Use the proof step `neg_mem' := by`.
+
+Introduce and unpack `_ ⟨a, ha, b, hb, rfl⟩`. Conclude with `⟨-a, neg_mem ha, -b, neg_mem hb, by rw [Matrix.mul_neg]; abel⟩ }`. Establish `hmulat : ∀ (A : Matrix (Fin n) (Fin n) (AE F E)) (z : Matrix (Fin n) (Fin d) (AE F E)), At (evFin F v) z → At (evFin F v) (A * z)` using `fun A z hz u hu => by`. Rewrite using `[← Matrix.mul_smul, hz u hu, Matrix.mul_zero]`. Establish `hSat : ∀ z ∈ S, At (evFin F v) z`.
+
+Introduce and unpack `_ ⟨a, ha, b, hb, rfl⟩ u hu`. Rewrite using `[smul_add, hat a ha u hu, hmulat _ b (hat b hb) u hu, add_zero]`. Take `⟨c₁, hc₁0, hc₁⟩` from `GlobalTheory.LatBound.locCo_latAtV_bounded X W v M.co hX.lat hW.lat`. Take `⟨Mt, _, gm, hgm⟩` from `GlobalTheory.LatParam.latAtV_param X W hX.lat hW.lat v`. Take `⟨c₂, hc₂0, hc₂⟩` from `GlobalTheory.LatBound.exists_mul_mem_integers v (fun t : Bool × Mt × (Fin n × Fin d) => if t.1 then (GlobalTheory.LatVac.locCo M.co v (mat g⁻¹ * incM F (gm t.2.1))).1 t.2.2 else (GlobalTheory.LatVac.locCo M.co v (mat g⁻¹ * incM F (gm t.2.1))).2 t.2.2)`.
+
+Establish `hb2 : ∀ b ∈ latAtV X W v, ∀ i, c₂ * (GlobalTheory.LatVac.locCo M.co v (mat g⁻¹ * b)).1 i ∈ v.adicCompletionIntegers F ∧ c₂ * (GlobalTheory.LatVac.locCo M.co v (mat g⁻¹ * b)).2 i ∈ v.adicCompletionIntegers F`. Introduce `b hb i`. Take `⟨a, rfl⟩` from `(hgm b).1 hb`. Simplify using `only [Matrix.mul_sum, Matrix.mul_smul, map_sum, locCo_smul'_pk, GlobalTheory.EmbChart.evFin_atPlace, Prod.fst_sum, Prod.snd_sum, Finset.sum_apply, Prod.smul_fst, Prod.smul_snd, Pi.smul_apply, smul_eq_mul, Finset.mul_sum]`. Prove the components needed by the constructor for the conclusion.
+
+Use `sum_mem fun m _ => ?_` and prove the remaining obligations. Rewrite using `[mul_left_comm]`. Conclude with `mul_mem (a m).2 (by simpa using hc₂ (true, m, i))`. Use `sum_mem fun m _ => ?_` and prove the remaining obligations. Rewrite using `[mul_left_comm]`.
+
+Conclude with `mul_mem (a m).2 (by simpa using hc₂ (false, m, i))`. Take `⟨c₀, hc₀, hb₁, hb₂⟩` from `common_bound_pk v hc₁0 hc₂0`. Establish `hbd : ∀ l ∈ S.map (GlobalTheory.LatVac.locCo M.co v), ∀ i, c₀ * l.1 i ∈ v.adicCompletionIntegers F ∧ c₀ * l.2 i ∈ v.adicCompletionIntegers F`. Introduce and unpack `_ ⟨_, ⟨a, ha, b, hb, rfl⟩, rfl⟩ i`. Rewrite using `[map_add]`.
+
+Simplify using `only [Prod.fst_add, Prod.snd_add, Pi.add_apply, mul_add]`. Conclude with `⟨add_mem (hb₁ _ (hc₁ a ha i).1) (hb₂ _ (hb2 b hb i).1), add_mem (hb₁ _ (hc₁ a ha i).2) (hb₂ _ (hb2 b hb i).2)⟩`. Establish `hst : ∀ t ∈ v.adicCompletionIntegers F, ∀ l ∈ S.map (GlobalTheory.LatVac.locCo M.co v), t • l ∈ S.map (GlobalTheory.LatVac.locCo M.co v)`. Introduce and unpack `t ht _ ⟨_, ⟨a, ha, b, hb, rfl⟩, rfl⟩`. Use `⟨GlobalTheory.LatVac.liftV v t • (a + mat g⁻¹ * b), ⟨GlobalTheory.LatVac.liftV v t • a, hO t ht a ha, GlobalTheory.LatVac.liftV v t • b, hO t ht b hb, by rw [smul_add, Matrix.mul_smul]⟩, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[locCo_smul'_pk, GlobalTheory.LatVac.evFin_liftV]`. Establish `hle : (latAtV X W v).map (GlobalTheory.LatVac.locCo M.co v) ≤ S.map (GlobalTheory.LatVac.locCo M.co v)`. Introduce and unpack `_ ⟨γ, hγ, rfl⟩`. Conclude with `⟨γ, ⟨γ, hγ, 0, zero_mem _, by simp⟩, rfl⟩`. Establish `hyL : GlobalTheory.LatVac.locCo M.co v y ∉ S.map (GlobalTheory.LatVac.locCo M.co v)`.
+
+Introduce and unpack `⟨z, hzS, hz⟩`. Take `⟨a, ha, b, hb, rfl⟩` from `id hzS`. Use `hne a ha b hb (sub_eq_zero.1 (at_inj_pk M.co v (fun u hu => ?_) ?_)).symm` and prove the remaining obligations. Rewrite using `[smul_sub, hy u hu, hSat _ hzS u hu, sub_zero]`. Rewrite using `[map_sub, hz, sub_self]`.
+
+Take `⟨w, hw1, hw2⟩` from `sep_dual_pk v (GlobalTheory.LatVac.psiAt B.ψ v) _ _ hle hsd hst c₀ hc₀ hbd 1 one_ne_zero (psi_triv_pk hB.std v) _ hyL`. Take `⟨z, hzat, rfl⟩` from `exists_at_pk M.co v w`. Establish `hform` using `fun γ => GlobalTheory.LatVac.DualLoc.psi_form M.co v B.ψ hzat γ`. Establish `hgg : mat g * mat g⁻¹ = 1` using `by show mat (g * g⁻¹) = 1`. Rewrite using `[mul_inv_cancel]`.
+
+Both sides reduce to the same expression. Use `⟨z, (hself z hzat).2 fun γ hγ => ?_, (hself _ (hmulat _ z hzat)).2 fun γ hγ => ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[hform]`. Conclude with `hw1 _ (hle ⟨γ, hγ, rfl⟩)`. Establish `e` using `GlobalTheory.SympInv.symp_act F E σ n d X W g 1 z (mat g⁻¹ * γ)`.
+
+Establish `h1 : mat (1 : UA σ W.J) = 1` using `rfl`. Rewrite `e` using `[h1, Matrix.transpose_one, Matrix.mul_one, Matrix.mul_one, ← Matrix.mul_assoc, hgg, Matrix.one_mul]`. Rewrite using `[e, hform]`. Conclude with `hw1 _ ⟨mat g⁻¹ * γ, ⟨0, zero_mem _, γ, hγ, by simp⟩, rfl⟩`. Rewrite using `[hform]`.
+
+Conclude with `hw2`.
+-/
 theorem UpperTheory.exists_separating_of_not_mem_lattice_coset :
     ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E) (n d : ℕ) (X : Spc F E n) (W : Spc F E d) (M : Model σ X W) (r s r' s' : ℕ), _root_.UpperTheory.TP.W.GoodK σ B → X.IsHerm σ B r s → W.IsSkew σ B r' s' → ∀ v : Pl F, ∀ g ∈ UAt σ X (evFin F v), ∀ y : Matrix (Fin n) (Fin d) (AE F E), At (evFin F v) y → (∀ a ∈ latAtV X W v, ∀ b ∈ latAtV X W v, y ≠ a + mat g⁻¹ * b) → ∃ u ∈ latAtV X W v, mat g * u ∈ latAtV X W v ∧ B.ψ (symp (R := AF F) (cA σ) (-1) (incM F X.J) (incM F W.J) u y) ≠ 1 := by
   intro F E _ _ _ _ _ σ B n d X W M r s r' s' hB hX hW v g _ y hy hne

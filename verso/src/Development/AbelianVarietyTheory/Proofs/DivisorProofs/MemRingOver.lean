@@ -14,6 +14,9 @@ variable {X : Scheme.{0}} [IsIntegral X]
 def ringOver (K' : IntermediateField X.functionField (Kbar X)) (U : AffOp X) : Subring U.Bp :=
   K'.toSubalgebra.toSubring.comap (algebraMap U.Bp (Kbar X))
 
+/- English proof (translation)
+Unfold both sides. The equivalence is reflexive.
+-/
 theorem mem_ringOver {K' : IntermediateField X.functionField (Kbar X)} {U : AffOp X} {x : U.Bp} :
     x ∈ ringOver K' U ↔ (x : Kbar X) ∈ K' := Iff.rfl
 
@@ -35,6 +38,9 @@ def descMod (K' : IntermediateField X.functionField (Kbar X)) (U : AffOp X) {h :
     change (fun i => ((c • a) i : U.Bp)) ∈ L
     rw [this]; exact L.smul_mem (c : U.Bp) ha
 
+/- English proof (translation)
+Unfold both sides. The equivalence is reflexive.
+-/
 theorem mem_descMod {K' : IntermediateField X.functionField (Kbar X)} {U : AffOp X} {h : ℕ}
     {L : Submodule U.Bp (Fin h → U.Bp)} {a : Fin h → ringOver K' U} :
     a ∈ descMod K' U L ↔ (fun i => (a i : U.Bp)) ∈ L := Iff.rfl

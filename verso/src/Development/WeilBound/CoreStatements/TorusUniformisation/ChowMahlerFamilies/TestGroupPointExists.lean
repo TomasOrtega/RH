@@ -18,6 +18,9 @@ open GlobalTheory.CompanionTheory.Ar.Num.FamEx GlobalTheory.CompanionTheory.Ar.B
 
 namespace PositivityTheory.Xgn.TestGroupPoint
 
+/- English proof (translation)
+Use `(AddSubgroup.closure_le _).2 ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨t, ht, _, ⟨a, ha, rfl⟩, rfl⟩`. Conclude with `hT t ht _ (h a ha)`.
+-/
 theorem spanOver_ind {o Ω C : Type} [CommRing o] [Field Ω] [Field C] [Algebra o C] [Algebra Ω C] (RC : Subalgebra o C)
     {r : ℕ} (L : AddSubgroup (Fin r → Ω)) (T : AddSubgroup (Fin r → C)) (hT : ∀ t ∈ RC, ∀ a ∈ T, t • a ∈ T)
     (h : ∀ a ∈ L, (fun k => algebraMap Ω C (a k)) ∈ T) : spanOver RC (bcMap Ω C _ '' L) ≤ T := by
@@ -25,6 +28,9 @@ theorem spanOver_ind {o Ω C : Type} [CommRing o] [Field Ω] [Field C] [Algebra 
   rintro _ ⟨t, ht, _, ⟨a, ha, rfl⟩, rfl⟩
   exact hT t ht _ (h a ha)
 
+/- English proof (translation)
+The claim follows from `AddSubgroup.subset_closure ⟨1, RC.one_mem, _, ⟨a, ha, rfl⟩, (one_smul _ _).symm⟩`.
+-/
 theorem mem_spanOver {o Ω C : Type} [CommRing o] [Field Ω] [Field C] [Algebra o C] [Algebra Ω C] (RC : Subalgebra o C)
     {r : ℕ} (L : AddSubgroup (Fin r → Ω)) {a : Fin r → Ω} (ha : a ∈ L) :
     (fun k => algebraMap Ω C (a k)) ∈ spanOver RC (bcMap Ω C _ '' L) :=
@@ -37,12 +43,62 @@ def smallSub {C : Type} [Field C] (v : Valuation C NNReal) (t : NNReal) {r : ℕ
   zero_mem' m := by simp
   neg_mem' ha m := by rw [map_neg, Valuation.map_neg]; exact ha m
 
+/- English proof (translation)
+The claim follows from `RingOfIntegers.ext (by rw [H.bar_eq, H.bar_eq, IsCMField.complexConj_apply_apply])`.
+-/
 theorem bar_bar {E : Type} [Field E] [NumberField E] [IsCMField E] (H : Host E) (a : 𝓞 E) : H.bar (H.bar a) = a :=
   RingOfIntegers.ext (by rw [H.bar_eq, H.bar_eq, IsCMField.complexConj_apply_apply])
 
 end PositivityTheory.Xgn.TestGroupPoint
 
 open PositivityTheory.Xgn.TestGroupPoint PositivityTheory.HtPt.Sgp in
+/- English proof (translation)
+Introduce `hF _ _ hHD hOC E _ _ _ H D l Xo c O₀ _ β Y S Ω _ K _ _ J _ y 𝔐 d hd hpq p _ hpS hfree hp2 hdisc b hb φ hφ A _ _ _ m _ hpm O _ _ _ _ _ _ _ t₀ Sg _ e φ' F _ _ _ pq sc w σF hO hsec G c' hc' P i hseq hbase C _ _ _ _ RC hT χ hχ _ _ _ v hv hvp τ hbm _ _ hW hcl`. Establish `hpp : p.Prime` using `Fact.out`. Use `haveI : NeZero p := ⟨hpp.ne_zero⟩`. Use `haveI : NeZero (p ^ 𝔐.R p) := ⟨pow_ne_zero _ hpp.ne_zero⟩`. Establish `hR4` using `𝔐.R_ge p hpS`.
+
+Take `⟨h0, hNoe, hIC, hFr⟩` from `Par.chart_facts E H D l Xo c O₀ β Y S Ω K J y 𝔐 d hd p hpS A m hpm O c' hc'`. Take `⟨-, hN, -⟩` from `GlobalTheory.T.hodge_tate_free_integral_models E H D l Xo c O₀ β Y S Ω K J y 𝔐 p hpS (Par.zp Ω p) (Par.mem_range_zp Ω p)`. Take `⟨AA, AW, hAA, hAW, hM, hret, -⟩` from `PositivityTheory.Xgn.test_order_sections E H D l Xo c O₀ β Y S Ω K J y 𝔐 d hd hpq p hpS hfree hp2 hdisc b hb φ hφ A m hpm O t₀ Sg e φ' F pq sc w σF hO hsec G c' hc' P i hseq hbase C RC hT χ hχ`. Take `⟨-, htight⟩` from `GlobalTheory.T.arith_variety_model_hodge_relay hHD hOC E H D l Xo c O₀ β Y S Ω K J y 𝔐 d hd hpq p hpS hfree hp2 hdisc b hb φ hφ A m hpm O t₀ Sg e φ' F pq sc w σF hO hsec G c' hc' P i hseq hbase C RC hT χ hχ v hv hvp`. Take `⟨g, io, ev, Hm, Eg, hio, hev, hcard, hEt, ⟨Ei, hEi, hiso⟩, hE, hH⟩` from `point_data hF E H D l Xo c O₀ β Y S Ω K J y 𝔐 d hd hpq p hpS A m hpm O G c' hc' P C RC w hO.2.2.2.2.2.2.2 hT`.
+
+Take `⟨Dv, hD, hDs, hDch⟩` from `exists_der hpS P hT.2.2.2 io`. Establish `hlat` using `fun t => lattices E H D l Xo c O₀ β Y S Ω K J y 𝔐 d hd hpq p hpS A m hpm O G c' hc' P C RC hdisc hT.2.2.2 io ev hio hev t (b t) (hb t).1 (hb t).2`. Use `haveI := hT.1`. Use `haveI : CharZero C := charZero_of_injective_algebraMap (algebraMap Ω C).injective`. Establish `hint : v.Integers RC` using `⟨Subtype.val_injective, fun x => (hv _).1 x.2, fun r hr => ⟨⟨r, (hv _).2 hr⟩, rfl⟩⟩`.
+
+Take `⟨φN, hφN⟩` from `exists_phiN E (D.p + D.q) p`. Establish `hζ : IsPrimitiveRoot (algebraMap Ω C (G.ζ ^ p ^ (𝔐.R p - 1))) p` using `(G.ζ_prim.pow (pow_pos hpp.pos _) (by rw [← pow_succ, Nat.sub_add_cancel (by omega)])).map_of_injective (algebraMap Ω C).injective`. Set `ih : (Fin (D.p + D.q) → 𝓞 E) →+ (Fin g → RC)` to `io.toAddMonoidHom.comp (P.Dh.h.codRestrict P.Dh.om P.Dh.h_mem)`. Take `⟨cp, hcp, k0, k1, k2, k3, k4⟩` from `core_pull hint hvp hp2 φN hφN AA _ hAA htight hcard (dvd_pow_self p (show 𝔐.R p ≠ 0 by omega)) G.e hζ (kernel_mem hpS P hT) Dv hD (Set.range io) hio (by rintro _ ⟨u, rfl⟩; exact hDs u) ih hDch Hm Eg Ei hEt hEi hiso hE hH`. Take `⟨σ, hσ, hσs, -⟩` from `PositivityTheory.Xgn.exists_cm_type_embedding E H D l Xo c O₀ β Y S Ω K J y 𝔐 (e τ)`.
+
+Take `⟨hσO, x₀, hx₀, o₀, ho₀⟩` from `PositivityTheory.Xgn.SequenceDifferentials.main E Ω p hdisc A m hpm O σ`. Establish `hOC' : ∀ o : O, algebraMap Ω C (algebraMap O Ω o) = algebraMap O C o` using `fun o => (IsScalarTower.algebraMap_apply O Ω C o).symm`. Take `⟨σ', s, hσ', hs, hdu⟩` from `exists_dualOf (R := RC) (C := C) Subtype.val_injective ((algebraMap Ω C).comp σ) (fun a => by`. Take `⟨o, ho⟩` from `hσO a`. Conclude with `⟨algebraMap O RC o, by rw [RingHom.comp_apply, ← ho, hOC']; rfl⟩)`.
+
+Use the proof step `(fun k => by`. Take `⟨z, hz⟩` from `HT.exists_different_mul_dualInt E x₀ hx₀ k`. Take `⟨o, ho⟩` from `hσO z`. Use `⟨algebraMap O RC (o₀ * o), ?_⟩` and prove the remaining obligations. Establish `: algebraMap O Ω (o₀ * o) = σ (HT.dualInt E k)`.
+
+Rewrite using `[map_mul, ho, hz, map_mul, ← _root_.mul_assoc, ho₀, _root_.one_mul]`. Rewrite using `[RingHom.comp_apply, ← this, hOC']`. Use the proof step `rfl)`. Take `⟨χ', hχ', hcong⟩` from `chi_cong p RC v hv pq sc hsec (σF τ) (χ τ) (hχ τ) σ' fun a => by`. Take `⟨o, ho, ho'⟩` from `hO.2.2.2.2.1 τ a`.
+
+Conclude with `⟨o, by rw [← hOC', ho, ← hσ]; exact (hσ' a).symm, ho'⟩`. Establish `hst` using `afLat_stable hdu φN hφN AA.carrier (fun a f hf => by rw [hAA] at hf ⊢; exact act_mem P a f hf) _ (mem_pull φN AA)`. Establish `hhh` using `(pt_af_type_main RC p (ReciprocityTheory.PGsh.Up.hopfPull φN AA).carrier (ReciprocityTheory.PGsh.Up.hopfPull φN AA).le_int ((chartD e b pq sc w P i).bc RC) χ' (Subtype.ext (by rw [← hχ', map_zero]; rfl)) (Subtype.ext (by rw [← hχ', map_one]; rfl)) (φN.symm.toAddMonoidHom.comp (Te …`. Express the relevant statement in the definitionally equal form `TestPt.fromNAdd pq (φN (φN.symm (TestPt.toNAdd sc z))) = z`. Rewrite using `[AddEquiv.apply_symm_apply]`.
+
+Conclude with `funext fun k => hsec.1 (z k))`. Use the proof step `(fun h hh => by`. Take `⟨f, hf, rfl⟩` from `(mem_pull φN AA h).1 hh`. Use `(mem_pull φN AA _).2 ⟨_, hret f hf, funext fun x => ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `_ = f (φN (φN.symm _))`.
+
+Rewrite using `[AddEquiv.apply_symm_apply]`. Use the proof step `rfl)`. Use the proof step `(by`. Rewrite using `[← hM, hAW, TestPt.testOrdW, ← hAA]`. Use `congr 1`.
+
+Use extensionality with `f`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨h, hh, rfl⟩`. Take `⟨f, hf, rfl⟩` from `(mem_pull φN AA h).1 hh`. Use `⟨f, hf, funext fun x => ?_⟩` and prove the remaining obligations.
+
+Express the relevant statement in the definitionally equal form `_ = f (φN (φN.symm _))`. Rewrite using `[AddEquiv.apply_symm_apply]`. Both sides reduce to the same expression. Introduce and unpack `⟨f, hf, rfl⟩`. Use `⟨_, (mem_pull φN AA _).2 ⟨f, hf, rfl⟩, funext fun x => ?_⟩` and prove the remaining obligations.
+
+Express the relevant statement in the definitionally equal form `f (φN (φN.symm _)) = _`. Rewrite using `[AddEquiv.apply_symm_apply]`. Use the proof step `rfl)`. Use the proof step `(Pm _ σ') (Jm _ s) (Pm_mul_Jm hdu) (Pm_cong pq φN hφN χ' hcong) hst).2`. Simplify using `only [← hχ'] at hhh`.
+
+Take `⟨u, hu, hwu⟩` from `hO.2.2.2.2.2.2.1.2.1`. Establish `hp3 : 2 ≤ p - 1` using `by have := hpp.two_le; omega`. Establish `hvw : v (algebraMap O C w) ^ (p - 1) = v (p : C)`. Rewrite using `[← map_pow, ← map_pow, hwu, map_mul, map_mul, map_natCast, show v (algebraMap O C u) = 1 from hint.one_of_isUnit (hu.map (algebraMap O RC)), _root_.one_mul]`. Establish `hw1 : v (algebraMap O C w) < 1` using `lt_of_not_ge fun h => absurd (hvw ▸ one_le_pow₀ h) (not_le.2 hvp)`.
+
+Establish `hw0 : algebraMap O C w ≠ 0` using `fun h => by`. Rewrite `hvw` using `[h, map_zero, zero_pow (by omega), eq_comm, Valuation.zero_iff]`. Conclude with `Nat.cast_ne_zero.2 hpp.ne_zero hvw`. Establish `hpw : v (p : C) ≤ v (algebraMap O C w) * v (algebraMap O C w)`. Rewrite using `[← hvw, ← sq]`.
+
+Conclude with `pow_le_pow_of_le_one zero_le hw1.le hp3`. Establish `hWl : ∀ a ∈ ((chartD e b pq sc w P i).bc RC).W τ, algebraMap O C w • a ∈ ((chartD e b pq sc w P i).bc RC).lie τ` using `fun a ha => spanOver_ind RC _ (divLat (algebraMap O C w) (((chartD e b pq sc w P i).bc RC).lie τ)) (fun t ht a ha => by`. Simplify using `only [divLat, AddSubgroup.mem_comap, DistribMulAction.toAddMonoidHom_apply] at ha ⊢`. Rewrite using `[smul_comm]`. Conclude with `smul_mem_spanOver RC _ ht ha)`.
+
+Use the proof step `(fun a ha => by`. Establish `h1 : algebraMap O Ω w • a ∈ (chartD e b pq sc w P i).lie τ` using `(hbase.incl τ).2.1 ha`. Establish `h2` using `mem_spanOver RC _ h1`. Establish `e : algebraMap O C w • (fun k => algebraMap Ω C (a k)) = fun k => algebraMap Ω C ((algebraMap O Ω w • a) k)`. Use function extensionality and compare the values at `k`.
+
+Express the relevant statement in the definitionally equal form `_ = algebraMap Ω C (algebraMap O Ω w * a k)`. Rewrite using `[map_mul, hOC']`. Both sides reduce to the same expression. Simplify using `only [divLat, AddSubgroup.mem_comap, DistribMulAction.toAddMonoidHom_apply]`. Rewrite using `[e]`.
+
+Conclude with `h2) ha`. Establish `heig : ∀ t a k, 𝔐.ρ a (b t k) = 𝔐.emb t a • b t k` using `fun t a k => by`. Establish `: b t k ∈ 𝔐.Vgen t` using `(hb t).2 ▸ Submodule.subset_span ⟨k, rfl⟩`. Simplify using `only [HodgeCpt.Vgen, GlobalTheory.CompanionTheory.Ar.eigSp, Submodule.mem_iInf, LinearMap.mem_ker, LinearMap.sub_apply, sub_eq_zero] at this`. Conclude with `this a`.
+
+Use `typed RC v hv (p : C) (algebraMap O C w) hw0 hw1 hpw cp (p : RC) ((pow_left_inj₀ zero_le zero_le (by omega)).1 (hcp.trans hvw.symm)) (SubringClass.coe_natCast _ _) _ Hm Eg Ei hEi k0 k1 k2 k3 k4 (Pm _ σ') (Jm _ s) (Pm_mul_Jm hdu) hst _ hhh (fun k => ev (b (e τ).swap k)) (fun k => …` and prove the remaining obligations. Rewrite using `[heig, ← hσs, H.bar_eq, RingHom.comp_apply]`. Use `congr 2`. Use `first`. Consider the case `exact IsCMField.complexConj_apply_apply E _`.
+
+Consider the case `simp [HT.cmConj]`. Set `f : Ix E (D.p + D.q) → ((Fin (labelRk D (e τ)) → C) →ₗ[C] C)` to `fun m => ∑ m', (Eg m m' : C) • (LinearMap.proj m' ∘ₗ ((Jm _ s).map (algebraMap RC C)).mulVecLin ∘ₗ TestPt.bcLin C (i τ)) + ∑ k, ev (b (e τ) k) (fun j => (Hm j m : C)) • LinearMap.proj k`. Establish `hf : ∀ m a, f m a = ∑ m', (Eg m m' : C) * ((Jm _ s).map (algebraMap RC C)).mulVec (TestPt.bcLin C (i τ) a) m' + ∑ k, a k * ev (b (e τ) k) fun j => (Hm j m : C)` using `fun m a => by`. Simplify using `only [f, LinearMap.add_apply, LinearMap.sum_apply, LinearMap.smul_apply, LinearMap.comp_apply, LinearMap.proj_apply, Matrix.mulVecLin_apply, smul_eq_mul, mul_comm (a _)]`. Introduce `m`.
+
+Rewrite using `[← hf]`. Use `spanOver_ind RC _ (smallSub v (v (algebraMap O C w)) f) (fun t ht a ha m => ?_) (fun a ha m => ?_) ha m` and prove the remaining obligations. Rewrite using `[map_smul, smul_eq_mul, map_mul]`. Conclude with `(mul_le_of_le_one_left zero_le ((hv _).1 ht)).trans (ha m)`. Rewrite using `[hf, show TestPt.bcLin C (i τ) (fun k => algebraMap Ω C (a k)) = fun l => algebraMap Ω C (i τ a l) from`.
+
+Use function extensionality and compare the values at `(bcLin_bc _ _)]`. Conclude with `hdual_chart P.Dh 𝔐.ρ H.bar io ev Hm (by omega) P.Dh_act hev hH (bar_bar H) (by rw [P.Dh_e]; exact G.adj) Eg (by rw [P.Dh_e]; exact hE) σ σ' hσ' s hs hdu (b (e τ)) (fun a k => by rw [heig, hσ]) v hv _ hw0 hw1.le hpw a (i τ a) (fun l => (hseq τ).1.1 a ha l (Set.mem_univ l)) (M := 𝔐 …`.
+-/
 theorem PositivityTheory.Xgn.test_group_point_exists : GlobalTheory.CompanionTheory.Ar.HT.FarguesHodgeTate → GlobalTheory.CompanionTheory.Ar.GR.QuotientByFiniteFlatStatement → GlobalTheory.CompanionTheory.Ar.GR.ZarhinStatement → GlobalTheory.CompanionTheory.Ar.GR.HodgeTateDatumStatement → GlobalTheory.CompanionTheory.Ar.GR.OrdinaryCurveStatement → ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (D : Datum H) (l : Level H) (Xo : Moduli D l) (c : Coeff l) (O₀ : Type) [CommRing O₀] (β : O₀ →+* c.F) (Y : Model Xo c β) (S : Finset ℕ) (Ω : Type) [Field Ω] (K : Type) [Fintype K] [DecidableEq K] (J : K → Type) [∀ k, Fintype (J k)] (y : (Σ k, J k) → Ω) (𝔐 : HodgeCpt Y S y) (d : ℕ), IsArithVar (mCoordIdeal y) (d + 1) → 0 < D.p + D.q → ∀ (p : ℕ) [Fact p.Prime], p ∈ S → HT.HTFree 𝔐 p → p ≠ 2 → ¬ (p : ℤ) ∣ NumberField.discr E → ∀ (b : ∀ t, Fin (labelRk D t) → 𝔐.Li), (∀ t, LinearIndependent Ω (b t) ∧ Submodule.span Ω (Set.range (b t)) = 𝔐.Vgen t) → ∀ φ : Equiv.Perm (CMType H ⊕ CMType H), IsFrobLabels c p φ → ∀ (A : Type) [CommRing A] [Algebra A Ω] [IsIntegralClosure A ℤ Ω] (m : Ideal A) [m.IsPrime], (p : A) ∈ m → ∀ (O : Type) [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] [Algebra A O] [IsLocalization.AtPrime O m] [Algebra O Ω] [IsScalarTower A O Ω], ∀ (t₀ : CMType H ⊕ CMType H) (Sg : Type) [Fintype Sg] (e : Sg → CMType H ⊕ CMType H) (φ' : Equiv.Perm Sg) (F : Type) [Field F] [Fintype F] [CharP F p] (pq : (𝓞 E ⧸ Ideal.span {(p : 𝓞 E)}) →+* F) (sc : F →+ (𝓞 E ⧸ Ideal.span {(p : 𝓞 E)})) (w : O) (σ : Sg → F →+* IsLocalRing.ResidueField O), IsOrbit O 𝔐 p φ t₀ e φ' pq w σ → IsSec pq sc → ∀ (G : GenTors 𝔐 p) (c' : ∀ k, J k), mseg y c' ≠ 0 → ∀ (P : ChartPack G O c') (i : ∀ τ, (Fin (labelRk D (e τ)) → Ω) →ₗ[Ω] (Fin (D.p + D.q) → Ω)), (∀ τ : Sg, SeqHyp (CR O y c') (algebraMap O Ω w) (coordLat O y (𝔐.HT p (e τ)) (b (e τ)) c') (dotDual (CR O y c') (coordLat O y (𝔐.HT p (e τ).swap) (b (e τ).swap) c')) (i τ) (qMap P (b (e τ).swap)) ∧ ∀ σE : E →+* Ω, (∀ a : 𝓞 E, σE (a : E) = 𝔐.emb (e τ) a) → DualSeq P σE (𝔐.R p - 2) (coordLat O y (𝔐.HT p (e τ)) (b (e τ)) c') (b (e τ)) (i τ)) → (chartD e b pq sc w P i).Base (CR O y c') p (algebraMap O Ω w) → ∀ (C : Type) [Field C] [Algebra O C] [Algebra Ω C] [IsScalarTower O Ω C] (RC : Subalgebra O C), IsTestPt p (CR O y c') RC → ∀ χ : Sg → F →*₀ C, (∀ τ a (o : O), IsLocalRing.residue O o = σ τ a → χ τ a - algebraMap O C o ∈ RC ∧ ∀ u ∈ RC, u * (χ τ a - algebraMap O C o) ≠ 1) → ∀ [DecidableEq F] [Fintype (GlobalTheory.CompanionTheory.Ar.Num.FamEx.TestPt.NAdd E (D.p + D.q) p)] [DecidableEq (GlobalTheory.CompanionTheory.Ar.Num.FamEx.TestPt.NAdd E (D.p + D.q) p)], ∀ (v : Valuation C NNReal), (∀ c, c ∈ RC ↔ v c ≤ 1) → v (p : C) < 1 → ∀ τ (hb : ((Fin (labelRk D (e τ)) → C) →ₗ[C] (Fin (D.p + D.q) → C))), Function.Injective hb → LinearMap.range hb = LinearMap.ker (GlobalTheory.CompanionTheory.Ar.Num.FamEx.TestPt.bcLin C (qMap P (b (e τ).swap))) → (stdLat RC _).comap hb.toAddMonoidHom = ((chartD e b pq sc w P i).bc RC).W τ → (∀ a ∈ ((chartD e b pq sc w P i).bc RC).W τ, hb a - GlobalTheory.CompanionTheory.Ar.Num.FamEx.TestPt.bcLin C (i τ) a ∈ mulLat (algebraMap O C w) (stdLat RC _)) → (((chartD e b pq sc w P i).bc RC).hh RC p (fun a => χ τ a)).map (GlobalTheory.CompanionTheory.Ar.Num.FamEx.TestPt.bcLin C (qMap P (b (e τ).swap))).toAddMonoidHom = ((chartD e b pq sc w P i).bc RC).om τ ∧ (((chartD e b pq sc w P i).bc RC).hh RC p (fun a => χ τ a)).comap hb.toAddMonoidHom = divLat (algebraMap O C w) (((chartD e b pq sc w P i).bc RC).lie τ) := by
   intro hF _ _ hHD hOC E _ _ _ H D l Xo c O₀ _ β Y S Ω _ K _ _ J _ y 𝔐 d hd hpq p _ hpS hfree hp2 hdisc b hb φ hφ A _ _ _ m _
     hpm O _ _ _ _ _ _ _ t₀ Sg _ e φ' F _ _ _ pq sc w σF hO hsec G c' hc' P i hseq hbase C _ _ _ _ RC hT χ hχ _ _ _ v hv hvp

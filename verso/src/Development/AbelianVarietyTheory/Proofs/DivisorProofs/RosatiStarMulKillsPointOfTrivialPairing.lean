@@ -21,6 +21,9 @@ namespace GlobalTheory.Mum
 
 open GlobalTheory.CechPic
 
+/- English proof (translation)
+The claim follows from `P.isAb.comm lam (cls P.L P.isLB) (x ≫ oA.act (star o)) z = lam (cls P.L P.isLB) x (z ≫ oA.act o) := by haveI := P.isAb.comm haveI := oA.hom (star o) haveI := oA.hom o have hr := oA.rosati (star o) rw [star_star] at hr obtain ⟨u, hu, -⟩ := exists_ros GlobalTheory.globalFns_holds P …`.
+-/
 theorem lam_rosati_field (K : Type) [Field K] (P : PolAV (Sp K)) (O : Type) [Ring O] [StarRing O] (oA : P.OAct O)
     (o : O) {T' : Over (Sp K)} (x z : T' ⟶ P.A) :
     haveI := P.isAb.comm
@@ -35,6 +38,17 @@ theorem lam_rosati_field (K : Type) [Field K] (P : PolAV (Sp K)) (O : Type) [Rin
   show _ - _ - _ + _ = _ - _ - _ + _
   rw [h]
 
+/- English proof (translation)
+Introduce `K _ P O _ _ oA e f H a r hra T y ⟨t, ht⟩`. Use `haveI := P.isAb.comm`. Establish `h0 : lam (cls P.L P.isLB) (snd H T ≫ y) (fst H T ≫ a ≫ oA.act f) = 0`. Use `(cls_eq_zero_iff (pull_isLB (GlobalTheory.FullSiegel.isLB_lam P.isLB) _)).2 ⟨t, ht⟩` as an intermediate fact. Rewrite `this` using `[GlobalTheory.FullSiegel.cls_lam_pull P.isLB]`. Then use the resulting hypothesis.
+
+Establish `h1 : lam (cls P.L P.isLB) (fst T P.A ≫ y) ((snd T P.A ≫ oA.act e) ≫ oA.act f) = 0`. Use `congrArg (pull (lift (snd T P.A ≫ r) (fst T P.A)).left) h0` as an intermediate fact. Rewrite `this` using `[pull_lam, map_zero, lift_snd_assoc, lift_fst_assoc, Category.assoc, reassoc_of% hra]`. Rewrite using `[Category.assoc]`. Conclude with `this`.
+
+Establish `h2` using `(lam_rosati_field K P O oA f _ _).trans h1`. Establish `h3` using `(lam_rosati_field K P O oA e _ (snd T P.A)).trans h2`. Establish `hb : ((fst T P.A ≫ y) ≫ oA.act (star f)) ≫ oA.act (star e) = fst T P.A ≫ y ≫ oA.act (star e * star f)`. Rewrite using `[oA.map_mul]`. Simplify using `only [Category.assoc]`.
+
+Rewrite `h3` using `[hb]`. Establish `h4` using `congrArg (pull (lift (snd P.A T) (fst P.A T)).left) h3`. Rewrite `h4` using `[pull_lam, map_zero, lift_fst_assoc, lift_snd]`. Establish `hg : ∃ t : ((abelian₂ P.A P.L).pull (lift (snd P.A T ≫ y ≫ oA.act (star e * star f)) (fst P.A T)).left).Gen, t.IsGen`. Use `(cls_eq_zero_iff (pull_isLB (GlobalTheory.FullSiegel.isLB_lam P.isLB) _)).1 ?_` and prove the remaining obligations.
+
+Rewrite using `[GlobalTheory.FullSiegel.cls_lam_pull P.isLB]`. Conclude with `h4`. Conclude with `(GlobalTheory.FullSiegel.eq_one_of_lam_triv P.isLB P.rigid P.ktriv T _ hg).trans (Hom.one_def ..)`.
+-/
 theorem kill_of_lam_triv : ∀ (K : Type) [Field K] (P : PolAV (Sp K)) (O : Type) [Ring O] [StarRing O] (oA : P.OAct O) (e f : O) (H : Over (Sp K)) (a : H ⟶ P.A) (r : P.A ⟶ H), r ≫ a = oA.act e → ∀ (T : Over (Sp K)) (y : T ⟶ P.A), (∃ t : LB.Gen (letI := P.isAb.comm; (abelian₂ P.A P.L).pull (lift (snd H T ≫ y) (fst H T ≫ a ≫ oA.act f) : H ⊗ T ⟶ G2 P.A).left), t.IsGen) → y ≫ oA.act (star e * star f) = toUnit T ≫ η[P.A] := by
   intro K _ P O _ _ oA e f H a r hra T y ⟨t, ht⟩
   haveI := P.isAb.comm

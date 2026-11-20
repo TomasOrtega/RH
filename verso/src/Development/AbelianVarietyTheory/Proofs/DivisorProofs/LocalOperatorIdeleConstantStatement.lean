@@ -9,6 +9,9 @@ open GlobalTheory.WeilM GlobalTheory.AdelicU GlobalTheory.LFun GlobalTheory.Inde
 open GlobalTheory.Doubling (absE)
 
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.SchrLocConst.shiftB_locOp_locallyConstant | exact GlobalTheory.SchrLocConst.shiftB_locOp_locallyConstant | (intros; apply GlobalTheory.SchrLocConst.shiftB_locOp_locallyConstant <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.local_operator_idele_locallyConstant : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E)
     (B : Base F E) {n d n₁ d₁ : ℕ} {X : Spc F E n} {W : Spc F E d} (M : Model σ X W) (H : Plane E n n₁)
     (H' : Plane E d d₁), Continuous B.ψ → ∀ (v : Pl F), ∀ ψ ∈ SB (Fin n × Fin d → Fv F v),

@@ -4,6 +4,9 @@ open NumberField IsDedekindDomain Matrix Polynomial Filter GlobalTheory.CuspRep 
 open scoped Classical TensorProduct
 attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField
 
+/- English proof (translation)
+Establish `hv : Valued.v x ≠ 0` using `(Valuation.ne_zero_iff _).2 hx`. Unfold `absHalf`. Rewrite using `[FinitePlace.norm_def, WithZeroMulInt.toNNReal_neg_apply _ hv, Formalism.UG.ordL, dif_neg hv, neg_neg]`. Simplify using `[Formalism.UG.qV]`.
+-/
 private theorem absHalf_eq_sqrt {E : Type} [Field E] [NumberField E] [IsCMField E] (u : HeightOneSpectrum (𝓞 E))
     (x : u.adicCompletion E) (hx : x ≠ 0) : absHalf u x = ((Real.sqrt ‖x‖ : ℝ) : ℂ) := by
   have hv : Valued.v x ≠ 0 := (Valuation.ne_zero_iff _).2 hx
@@ -11,6 +14,21 @@ private theorem absHalf_eq_sqrt {E : Type} [Field E] [NumberField E] [IsCMField 
   rw [FinitePlace.norm_def, WithZeroMulInt.toNNReal_neg_apply _ hv, Formalism.UG.ordL, dif_neg hv, neg_neg]
   simp [Formalism.UG.qV]
 
+/- English proof (translation)
+Introduce `E _ _ _ R hR`. Establish `hne : ∀ u : HeightOneSpectrum (𝓞 E), algebraMap E (u.adicCompletion E) R ≠ 0` using `fun u => (_root_.map_ne_zero _).2 hR`. Establish `hfun : (fun u : Pl E => absHalf u (algebraMap E (u.adicCompletion E) R)) = fun u : Pl E => ((Real.sqrt ‖algebraMap E (u.adicCompletion E) R‖ : ℝ) : ℂ)`. Use function extensionality and compare the values at `fun u => absHalf_eq_sqrt u _ (hne u)`. Establish `hmult : ∀ w : InfinitePlace E, w.mult = 2` using `fun w => InfinitePlace.mult_isComplex ⟨w, IsTotallyComplex.isComplex w⟩`.
+
+Establish `hPF` using `prod_abs_eq_one hR`. Simplify using `only [hmult] at hPF`. Establish `hfp : ∏ᶠ w : FinitePlace E, w R = ∏ᶠ v : HeightOneSpectrum (𝓞 E), ‖algebraMap E (v.adicCompletion E) R‖`. Rewrite using `[← finprod_comp_equiv FinitePlace.equivHeightOneSpectrum.symm]`. Simplify using `only [FinitePlace.equivHeightOneSpectrum_symm_apply]`.
+
+Both sides reduce to the same expression. Rewrite `hPF` using `[hfp]`. Establish `hgfin : (Function.mulSupport fun v : HeightOneSpectrum (𝓞 E) => ‖algebraMap E (v.adicCompletion E) R‖).Finite`. Use `((FinitePlace.hasFiniteMulSupport hR).preimage (FinitePlace.equivHeightOneSpectrum (K := E)).symm.injective.injOn).subset fun v hv => ?_` and prove the remaining obligations. Simplify using `only [Set.mem_preimage, Function.mem_mulSupport, FinitePlace.equivHeightOneSpectrum_symm_apply] at hv ⊢`.
+
+Conclude with `hv`. Establish `hsub : (Function.mulSupport fun u : Pl E => ((Real.sqrt ‖algebraMap E (u.adicCompletion E) R‖ : ℝ) : ℂ)) ⊆ (hgfin.toFinset : Set (Pl E))`. Introduce `u hu`. Rewrite using `[Set.Finite.coe_toFinset]`. Introduce `h1`.
+
+Apply `hu` to reduce the goal to its premises. Establish `h1' : ‖algebraMap E (u.adicCompletion E) R‖ = 1` using `h1`. Simplify using `only [h1', Real.sqrt_one, Complex.ofReal_one]`. Rewrite using `[hfun]`. Use `⟨(Finset.finite_toSet _).subset hsub, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[finprod_eq_prod_of_mulSupport_subset _ hsub]`. Rewrite `hPF` using `[finprod_eq_prod _ hgfin]`. Simplify using `only [InfinitePlace.norm_embedding_eq]`. Rewrite using `[← Complex.ofReal_prod, ← Complex.ofReal_prod, ← Complex.ofReal_mul, Complex.ofReal_eq_one]`. Establish `hnn : 0 ≤ (∏ u ∈ hgfin.toFinset, Real.sqrt ‖algebraMap E (u.adicCompletion E) R‖) * ∏ v : InfinitePlace E, v R` using `mul_nonneg (Finset.prod_nonneg fun _ _ => Real.sqrt_nonneg _) (Finset.prod_nonneg fun v _ => apply_nonneg v R)`.
+
+Use `(pow_eq_one_iff_of_nonneg hnn two_ne_zero).1 ?_` and prove the remaining obligations. Rewrite using `[mul_pow, ← Finset.prod_pow, ← Finset.prod_pow, mul_comm, ← hPF]`. Use `congr 1`. Conclude with `Finset.prod_congr rfl fun u _ => Real.sq_sqrt (norm_nonneg _)`.
+-/
 theorem UpperTheory.ConvolutionTheory.G2.absProd :
     UpperTheory.ConvolutionTheory.G2.AbsProd := by
   intro E _ _ _ R hR

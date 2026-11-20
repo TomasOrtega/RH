@@ -7,6 +7,15 @@ open NumberField MeasureTheory Formalism.MainNotions.GlobalTheoryTheory.GenusMas
 
 namespace GlobalTheory.ThK.ExpV
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ hσ B a a' G X om om' hKP hT c hc hcs Φ hΦ r Xf Yf hW K hK hA S s hs k hk`. Establish `hb` using `GlobalTheory.T.witt_frame_theta_integral_bound F E σ hσ B a a' G X om om' hKP hT c hc hcs Φ hΦ r Xf Yf hW K hK hA S s hs`. Establish `he` using `GlobalTheory.T.witt_frame_theta_integral_dual F E σ hσ B a a' G X om om' hKP hT c hc hcs Φ hΦ r Xf Yf hW K hK hA S s hs hb`. Establish `hr` using `GlobalTheory.T.witt_rank_le_signature_sum F E σ B a a' G X om om' hT c hc hcs r Xf Yf hW`. Establish `hlt : a' < a` using `hT.geo.lt`.
+
+Establish `hbig : 2 * (G.p + G.q) + 1 < a'` using `hT.geo.aBig`. Establish `key : ∀ i ∈ Finset.univ.filter (fun i : Fin r => i ≤ k), (s i).re < 0`. Introduce `i hi`. Establish `hik : i ≤ k` using `(Finset.mem_filter.1 hi).2`. Take `⟨j, hj, h⟩` from `he i (hb k hk i hik)`.
+
+Establish `hjr : j < G.p + G.q` using `lt_of_lt_of_le (lt_of_le_of_lt hj i.2) hr`. Establish `h1 : ((j : ℕ) : ℝ) + 1 ≤ ((G.p + G.q : ℕ) : ℝ)` using `by exact_mod_cast hjr`. Establish `h2 : (2 * ((G.p + G.q : ℕ) : ℝ)) + 1 < (a' : ℝ)` using `by exact_mod_cast hbig`. Establish `h3 : (a' : ℝ) < a` using `by exact_mod_cast hlt`. Apply the tactic sequence `rcases h with h | h <;> rw [h] <;> linarith`.
+
+Establish `hne : (Finset.univ.filter (fun i : Fin r => i ≤ k)).Nonempty` using `⟨k, by simp⟩`. Conclude with `Finset.sum_neg key hne`.
+-/
 theorem negative : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E)
     (hσ : ∀ x, σ (σ x) = x) (B : Base F E) (a a' : ℕ) (G : Geo σ a a') (X : Chars F E)
     (om : Rep σ G.V G.W) (om' : Rep σ G.V' G.W), GlobalTheory.ThK.KP → IsTriple B G X om om' →

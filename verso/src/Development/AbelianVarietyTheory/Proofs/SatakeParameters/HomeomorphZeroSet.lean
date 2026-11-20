@@ -17,6 +17,9 @@ def coords (φ : MvPolynomial (Fin k) ℂ →+* Γ(X, U)) (y : ↥(CxPts.ptsIn p
     Fin k → ℂ :=
   fun i => CxPts.ev p (RingHom.id ℂ) U (φ (MvPolynomial.X i)) y.1
 
+/- English proof (translation)
+Use `MvPolynomial.ringHom_ext (fun a => ?_) (fun i => ?_)` and prove the remaining obligations. Rewrite using `[RingHom.comp_apply, hC, MvPolynomial.eval_C, ← CxPts.ev_eq y.2, CxPts.ev_algX y.2, RingHom.id_apply]`. Rewrite using `[RingHom.comp_apply, MvPolynomial.eval_X, coords, CxPts.ev_eq y.2]`.
+-/
 theorem evHom_comp (φ : MvPolynomial (Fin k) ℂ →+* Γ(X, U))
     (hC : ∀ a, φ (MvPolynomial.C a) = algX p U a) (y : ↥(CxPts.ptsIn p (RingHom.id ℂ) U)) :
     (CxPts.evHom y.2).comp φ = MvPolynomial.eval (coords φ y) := by
@@ -29,6 +32,9 @@ def homAt {φ : MvPolynomial (Fin k) ℂ →+* Γ(X, U)} (hφ : Function.Surject
     (hz : RingHom.ker φ ≤ RingHom.ker (MvPolynomial.eval z)) : Γ(X, U) →+* ℂ :=
   φ.liftOfSurjective hφ ⟨MvPolynomial.eval z, hz⟩
 
+/- English proof (translation)
+The claim follows from `φ.liftOfSurjective_comp_apply hφ ⟨_, hz⟩ P`.
+-/
 theorem homAt_comp {φ : MvPolynomial (Fin k) ℂ →+* Γ(X, U)} (hφ : Function.Surjective φ)
     (z : Fin k → ℂ) (hz : RingHom.ker φ ≤ RingHom.ker (MvPolynomial.eval z))
     (P : MvPolynomial (Fin k) ℂ) : homAt hφ z hz (φ P) = MvPolynomial.eval z P :=
@@ -38,6 +44,27 @@ end GlobalTheory.AffCxPts
 
 open GlobalTheory.AffCxPts GlobalTheory.CxPts GlobalTheory.Points in
 
+/- English proof (translation)
+Introduce `X p U hU hft`. Use `letI := (algX p U).toAlgebra`. Take `⟨k, φa, hφ⟩` from `Algebra.FiniteType.iff_quotient_mvPolynomial''.1 hft`. Set `φ : MvPolynomial (Fin k) ℂ →+* Γ(X, U)` to `φa.toRingHom`. Establish `hφ' : Function.Surjective φ` using `hφ`.
+
+Establish `hC : ∀ a, φ (MvPolynomial.C a) = algX p U a` using `fun a => φa.commutes a`. Take `⟨G, hG⟩` from `(IsNoetherian.noetherian (RingHom.ker φ) :)`. Use `⟨k, G, ⟨?_⟩⟩` and prove the remaining obligations. Set `Z : Set (Fin k → ℂ)` to `{z | ∀ P ∈ G, MvPolynomial.eval z P = 0}`. Establish `hker (z : Z) : RingHom.ker φ ≤ RingHom.ker (MvPolynomial.eval (z : Fin k → ℂ))`.
+
+Rewrite using `[← hG]`. Conclude with `Ideal.span_le.2 fun P hP => RingHom.mem_ker.2 (z.2 P hP)`. Establish `hψ (z : Z) (a : ℂ) : homAt hφ' z (hker z) (algX p U a) = RingHom.id ℂ a`. Rewrite using `[← hC, homAt_comp, MvPolynomial.eval_C, RingHom.id_apply]`. Set `s (z : Z) : CxPts p (RingHom.id ℂ)` to `ofHom hU (homAt hφ' z (hker z)) (hψ z)`.
+
+Establish `hs_ev (z : Z) (f : Γ(X, U)) : ev p (RingHom.id ℂ) U f (s z) = homAt hφ' z (hker z) f` using `ev_ofHom hU _ (hψ z) f`. Establish `hcoords (z : Z) (i : Fin k) : ev p (RingHom.id ℂ) U (φ (MvPolynomial.X i)) (s z) = (z : Fin k → ℂ) i`. Rewrite using `[hs_ev, homAt_comp, MvPolynomial.eval_X]`. Establish `htZ (y : ↥(ptsIn p (RingHom.id ℂ) U)) : coords φ y ∈ Z` using `fun P hP => by`. Rewrite using `[← evHom_comp φ hC y, RingHom.comp_apply, RingHom.mem_ker.1 (hG ▸ Ideal.subset_span hP : P ∈ RingHom.ker φ), map_zero]`.
+
+Establish `hgen : Subring.closure (Set.range (ReciprocityTheory.ChartRestriction.G.Geo.Tor.constFn p U) ∪ Set.range fun i : Fin k => φ (MvPolynomial.X i)) = ⊤`. Rewrite using `[eq_top_iff]`. Introduce and unpack `f -`. Take `⟨P, rfl⟩` from `hφ' f`. Proceed by induction on `P using MvPolynomial.induction_on with`.
+
+Consider the case `C a => exact Subring.subset_closure (Or.inl ⟨a, (hC a).symm⟩)`. Consider the case `add P Q hP hQ => rw [map_add]`. Conclude with `add_mem hP hQ`. Consider the case `mul_X P i hP`. Rewrite using `[map_mul]`.
+
+Conclude with `mul_mem hP (Subring.subset_closure (Or.inr ⟨i, rfl⟩))`. Establish `hsc : Continuous s`. Use `continuous_iff_continuousAt.2 fun z => ?_` and prove the remaining obligations. Use `(PtsOver.tendsto_iff_of_generators hU (ofHom_mem hU _ (hψ z)) hgen).2 ⟨Eventually.of_forall fun w => ofHom_mem hU _ (hψ w), ?_⟩` and prove the remaining obligations. Introduce and unpack `_ ⟨i, rfl⟩`.
+
+Establish `e (w : Z) : ReciprocityTheory.ChartRestriction.G.Geo.Tor.valR (s w).1 U (φ (MvPolynomial.X i)) = (w : Fin k → ℂ) i` using `hcoords w i`. Rewrite using `[show (fun w : Z => ReciprocityTheory.ChartRestriction.G.Geo.Tor.valR (s w).1 U (φ (MvPolynomial.X i))) = fun w : Z => (w : Fin k → ℂ) i from funext e]`. Conclude with `(e z).symm ▸ ((continuous_apply i).comp continuous_subtype_val).tendsto z`. Conclude with `{ toFun := fun y => ⟨coords φ y, htZ y⟩ invFun := fun z => ⟨s z, ofHom_mem hU _ (hψ z)⟩ left_inv := fun y => by`. Use `Subtype.ext (Subtype.ext (ext_of_valR hU (ofHom_mem hU _ (hψ _)) y.2 fun f => ?_))` and prove the remaining obligations.
+
+Take `⟨P, rfl⟩` from `hφ' f`. Express the relevant statement in the definitionally equal form `ev p (RingHom.id ℂ) U (φ P) (s _) = ev p (RingHom.id ℂ) U (φ P) y.1`. Rewrite using `[hs_ev, homAt_comp, ev_eq y.2, ← RingHom.comp_apply, evHom_comp φ hC y]`. Use `right_inv := fun z => Subtype.ext (funext fun i => hcoords z i)`. Use `continuous_toFun := by`.
+
+Use `Continuous.subtype_mk (continuous_pi fun i => ?_) _` and prove the remaining obligations. Conclude with `(continuousOn_iff_continuous_restrict.1 (continuousOn_ev (φ (MvPolynomial.X i))))`. Use `continuous_invFun := hsc.subtype_mk _ }`.
+-/
 theorem GlobalTheory.AffCxPts.homeomorph_zeroSet : ∀ (X : Scheme.{0}) (p : X ⟶ Sp ℂ) (U : X.Opens),
     IsAffineOpen U → (algX p U).FiniteType → ∃ (k : ℕ) (G : Finset (MvPolynomial (Fin k) ℂ)),
       Nonempty (↥(GlobalTheory.CxPts.ptsIn p (RingHom.id ℂ) U) ≃ₜ

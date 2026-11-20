@@ -24,6 +24,9 @@ def Ik (c : Coef l) (n : ℕ) : Ideal c.O where
     rw [Subalgebra.coe_mul, norm_mul]
     exact (mul_le_of_le_one_left (norm_nonneg _) (CupCob.norm_le_one_of_mem c a.2)).trans hx
 
+/- English proof (translation)
+Unfold both sides. The equivalence is reflexive.
+-/
 theorem mem_Ik {c : Coef l} {n : ℕ} {x : c.O} : x ∈ Ik c n ↔ ‖(x : Qbar l)‖ ≤ ‖((l : ℕ) : Qbar l) ^ n‖ :=
   Iff.rfl
 
@@ -35,16 +38,30 @@ instance (c : Coef l) (n : ℕ) : DiscreteTopology (Qn c n) := ⟨rfl⟩
 
 def red (c : Coef l) (n : ℕ) : c.O →+* Qn c n := Ideal.Quotient.mk (Ik c n)
 
+/- English proof (translation)
+The claim follows from `Ideal.Quotient.mk_surjective`.
+-/
 theorem red_surjective (c : Coef l) (n : ℕ) : Function.Surjective (red c n) :=
   Ideal.Quotient.mk_surjective
 
+/- English proof (translation)
+The claim follows from `Ideal.Quotient.eq_zero_iff_mem`.
+-/
 theorem red_eq_zero_iff_mem {c : Coef l} {n : ℕ} (a : c.O) : red c n a = 0 ↔ a ∈ Ik c n :=
   Ideal.Quotient.eq_zero_iff_mem
 
+/- English proof (translation)
+Rewrite using `[← sub_eq_zero, ← map_sub, red_eq_zero_iff_mem, mem_Ik, Subalgebra.coe_sub]`. Both sides reduce to the same expression.
+-/
 theorem red_eq_iff {c : Coef l} {n : ℕ} (a b : c.O) : red c n a = red c n b ↔ Cg n (a : Qbar l) (b : Qbar l) := by
   rw [← sub_eq_zero, ← map_sub, red_eq_zero_iff_mem, mem_Ik, Subalgebra.coe_sub]
   rfl
 
+/- English proof (translation)
+Take `⟨w, rfl⟩` from `Ideal.mem_span_singleton'.1 ha`. Rewrite using `[mem_Ik, Subalgebra.coe_smul, Algebra.smul_def, norm_mul, map_mul, norm_mul, map_pow, map_natCast]`. Establish `h1 : ‖algebraMap ℤ_[l] (Qbar l) w‖ ≤ 1`. Rewrite using `[IsScalarTower.algebraMap_apply ℤ_[l] ℚ_[l] (PadicAlgCl l), norm_algebraMap']`. Conclude with `PadicInt.norm_le_one w`.
+
+Establish `h2` using `CupCob.norm_le_one_of_mem c y.2`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem smul_mem_Ik (c : Coef l) (n : ℕ) {a : ℤ_[l]} (ha : a ∈ Ideal.span {(l : ℤ_[l]) ^ n}) (y : c.O) :
     a • y ∈ Ik c n := by
   obtain ⟨w, rfl⟩ := Ideal.mem_span_singleton'.1 ha
@@ -56,6 +73,11 @@ theorem smul_mem_Ik (c : Coef l) (n : ℕ) {a : ℤ_[l]} (ha : a ∈ Ideal.span 
   calc _ ≤ 1 * ‖((l : ℕ) : Qbar l) ^ n‖ * 1 := by gcongr
     _ = _ := by ring
 
+/- English proof (translation)
+Rewrite using `[← map_nsmul, ← sub_eq_zero, ← map_sub, red_eq_zero_iff_mem]`. Establish `e : a • y - (PadicInt.toZModPow n a).val • y = (a - ((PadicInt.toZModPow n a).val : ℤ_[l])) • y`. Rewrite using `[sub_smul, Nat.cast_smul_eq_nsmul]`. Rewrite using `[e]`. Use `smul_mem_Ik c n ?_ y` and prove the remaining obligations.
+
+Rewrite using `[← PadicInt.ker_toZModPow, RingHom.mem_ker, map_sub, map_natCast, ZMod.natCast_zmod_val, sub_self]`.
+-/
 theorem red_smul (c : Coef l) (n : ℕ) (a : ℤ_[l]) (y : c.O) :
     red c n (a • y) = (PadicInt.toZModPow n a).val • red c n y := by
   rw [← map_nsmul, ← sub_eq_zero, ← map_sub, red_eq_zero_iff_mem]
@@ -65,6 +87,9 @@ theorem red_smul (c : Coef l) (n : ℕ) (a : ℤ_[l]) (y : c.O) :
   refine smul_mem_Ik c n ?_ y
   rw [← PadicInt.ker_toZModPow, RingHom.mem_ker, map_sub, map_natCast, ZMod.natCast_zmod_val, sub_self]
 
+/- English proof (translation)
+Take `⟨y, rfl⟩` from `red_surjective c n x`. Rewrite using `[← map_nsmul, red_eq_zero_iff_mem]`. Establish `e : (l ^ n) • y = ((l : ℤ_[l]) ^ n) • y` using `by rw [← Nat.cast_pow, Nat.cast_smul_eq_nsmul]`. Rewrite using `[e]`. Conclude with `smul_mem_Ik c n (Ideal.mem_span_singleton_self _) y`.
+-/
 theorem kill (c : Coef l) (n : ℕ) (x : Qn c n) : (l ^ n) • x = 0 := by
   obtain ⟨y, rfl⟩ := red_surjective c n x
   rw [← map_nsmul, red_eq_zero_iff_mem]
@@ -72,6 +97,9 @@ theorem kill (c : Coef l) (n : ℕ) (x : Qn c n) : (l ^ n) • x = 0 := by
   rw [e]
   exact smul_mem_Ik c n (Ideal.mem_span_singleton_self _) y
 
+/- English proof (translation)
+The claim follows from `pow_ne_zero _ (Fact.out : l.Prime).ne_zero`.
+-/
 theorem pow_ne_zero' (n : ℕ) : l ^ n ≠ 0 := pow_ne_zero _ (Fact.out : l.Prime).ne_zero
 
 instance neZeroPow (n : ℕ) : NeZero (l ^ n) := ⟨pow_ne_zero' n⟩
@@ -98,9 +126,17 @@ def matQ (c : Coef l) (n : ℕ) (W : R2 Ω l) (hint : ∀ s i j, mat W s i j ∈
     Matrix (Fin 2) (Fin 2) (Qn c n) :=
   Matrix.of fun i j => red c n ⟨mat W s i j, hint s i j⟩
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem matQ_apply (c : Coef l) (n : ℕ) (W : R2 Ω l) (hint : ∀ s i j, mat W s i j ∈ c.O) (s : G ℚ Ω) (i j : Fin 2) :
     matQ c n W hint s i j = red c n ⟨mat W s i j, hint s i j⟩ := rfl
 
+/- English proof (translation)
+Use extensionality with `i j`. Establish `e : (⟨mat W 1 i j, hint 1 i j⟩ : c.O) = (1 : Matrix (Fin 2) (Fin 2) c.O) i j`. Apply `Subtype.ext` to reduce the goal to its premises. Simplify using `only [mat, map_one, Matrix.GeneralLinearGroup.coe_one, Matrix.one_apply]`. Apply the tactic sequence `split_ifs <;> simp`.
+
+Rewrite using `[matQ_apply, e, Matrix.one_apply, Matrix.one_apply]`. Apply the tactic sequence `split_ifs <;> simp`.
+-/
 theorem matQ_one (c : Coef l) (n : ℕ) (W : R2 Ω l) (hint : ∀ s i j, mat W s i j ∈ c.O) :
     matQ c n W hint 1 = 1 := by
   ext i j
@@ -111,6 +147,11 @@ theorem matQ_one (c : Coef l) (n : ℕ) (W : R2 Ω l) (hint : ∀ s i j, mat W s
   rw [matQ_apply, e, Matrix.one_apply, Matrix.one_apply]
   split_ifs <;> simp
 
+/- English proof (translation)
+Use extensionality with `i j`. Establish `e : (⟨mat W (s * t) i j, hint _ i j⟩ : c.O) = ∑ k, (⟨mat W s i k, hint s i k⟩ : c.O) * ⟨mat W t k j, hint t k j⟩`. Apply `Subtype.ext` to reduce the goal to its premises. Simplify using `only [mat, map_mul, Matrix.GeneralLinearGroup.coe_mul, Matrix.mul_apply]`. Use `push_cast`.
+
+Both sides reduce to the same expression. Rewrite using `[matQ_apply, e, map_sum, Matrix.mul_apply]`. Simplify using `only [map_mul, matQ_apply]`.
+-/
 theorem matQ_mul (c : Coef l) (n : ℕ) (W : R2 Ω l) (hint : ∀ s i j, mat W s i j ∈ c.O) (s t : G ℚ Ω) :
     matQ c n W hint (s * t) = matQ c n W hint s * matQ c n W hint t := by
   ext i j
@@ -143,12 +184,18 @@ namespace GlobalTheory.Ord2.GwIneq
 
 variable {l : ℕ} [Fact l.Prime] {Ω : Type} [Field Ω] [Algebra ℚ Ω]
 
+/- English proof (translation)
+Establish `h` using `(unramOutside_iff (S : Set Pl) W hW.cont).2 fun v hv B hB σ hσ => hW.unr v (by simpa using hv) B hB (show σ ∈ Ine (F := ℚ) B from hσ)`. Conclude with `h`.
+-/
 theorem kills_NS {e : ℕ} {S : Finset Pl} {A : ValuationSubring Ω} {W : R2 Ω l} (hW : Nf e S A W) :
     ∀ a ∈ NS Ω (S : Set Pl), W a = 1 := by
   have h := (unramOutside_iff (S : Set Pl) W hW.cont).2 fun v hv B hB σ hσ =>
     hW.unr v (by simpa using hv) B hB (show σ ∈ Ine (F := ℚ) B from hσ)
   exact h
 
+/- English proof (translation)
+Rewrite using `[← matQ_one c n W hint]`. Use extensionality with `i j`. Rewrite using `[matQ_apply, matQ_apply]`. Use `congr 2`. Simplify using `only [mat, ha, map_one]`.
+-/
 theorem matQ_eq_one (c : Coef l) (n : ℕ) (W : R2 Ω l) (hint : ∀ s i j, mat W s i j ∈ c.O) {a : G ℚ Ω}
     (ha : W a = 1) : matQ c n W hint a = 1 := by
   rw [← matQ_one c n W hint]
@@ -165,10 +212,20 @@ def rhoS (c : Coef l) (n : ℕ) (W : R2 Ω l) (hint : ∀ s i j, mat W s i j ∈
     show matQ c n W hint a *ᵥ x = x
     rw [matQ_eq_one c n W hint (hN a ha), Matrix.one_mulVec])
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem rhoS_toGS (c : Coef l) (n : ℕ) (W : R2 Ω l) (hint : ∀ s i j, mat W s i j ∈ c.O) (S : Finset Pl)
     (hN : ∀ a ∈ NS Ω (S : Set Pl), W a = 1) (s : G ℚ Ω) (x : Mn c n) :
     rhoS c n W hint S hN (toGS Ω (S : Set Pl) s) x = matQ c n W hint s *ᵥ x := rfl
 
+/- English proof (translation)
+Establish `h0 : Continuous fun s => ((W s : GL (Fin 2) (Qbar l)) : Matrix (Fin 2) (Fin 2) (Qbar l))` using `Units.continuous_val.comp hcont`. Establish `hc : Continuous fun s => mat W s i j` using `h0.matrix_elem i j`. Use `continuous_discrete_rng.2 fun y => ?_` and prove the remaining obligations. Take `⟨z, rfl⟩` from `red_surjective c n y`. Establish `e : (fun s => matQ c n W hint s i j) ⁻¹' {red c n z} = (fun s => mat W s i j) ⁻¹' Metric.closedBall (z : Qbar l) ‖((l : ℕ) : Qbar l) ^ n‖`.
+
+Use extensionality with `s`. Simplify using `only [Set.mem_preimage, Set.mem_singleton_iff, Metric.mem_closedBall, dist_eq_norm, matQ_apply]`. Conclude with `red_eq_iff _ _`. Rewrite using `[e]`. Establish `hne : ‖((l : ℕ) : Qbar l) ^ n‖ ≠ 0`.
+
+Rewrite using `[norm_ne_zero_iff]`. Conclude with `pow_ne_zero _ (Nat.cast_ne_zero.2 (Fact.out : l.Prime).ne_zero)`. Conclude with `(IsUltrametricDist.isOpen_closedBall _ hne).preimage hc`.
+-/
 theorem continuous_matQ_apply (c : Coef l) (n : ℕ) (W : R2 Ω l) (hint : ∀ s i j, mat W s i j ∈ c.O)
     (hcont : Continuous W) (i j : Fin 2) : Continuous fun s => matQ c n W hint s i j := by
   have h0 : Continuous fun s => ((W s : GL (Fin 2) (Qbar l)) : Matrix (Fin 2) (Fin 2) (Qbar l)) :=
@@ -187,6 +244,11 @@ theorem continuous_matQ_apply (c : Coef l) (n : ℕ) (W : R2 Ω l) (hint : ∀ s
     exact pow_ne_zero _ (Nat.cast_ne_zero.2 (Fact.out : l.Prime).ne_zero)
   exact (IsUltrametricDist.isOpen_closedBall _ hne).preimage hc
 
+/- English proof (translation)
+Unfold `ReciprocityTheory.Gal.ContAction`. Rewrite using `[continuous_prod_of_discrete_right]`. Introduce `x`. Rewrite using `[(QuotientGroup.isQuotientMap_mk _).continuous_iff]`. Use `show Continuous fun s => matQ c n W hint s *ᵥ x`.
+
+Use `continuous_pi fun i => ?_` and prove the remaining obligations. Simplify using `only [Matrix.mulVec, dotProduct, Fin.sum_univ_two]`. Conclude with `((continuous_matQ_apply c n W hint hcont i 0).mul continuous_const).add ((continuous_matQ_apply c n W hint hcont i 1).mul continuous_const)`.
+-/
 theorem contAction_rhoS (c : Coef l) (n : ℕ) (W : R2 Ω l) (hint : ∀ s i j, mat W s i j ∈ c.O) (S : Finset Pl)
     (hN : ∀ a ∈ NS Ω (S : Set Pl), W a = 1) (hcont : Continuous W) : ReciprocityTheory.Gal.ContAction (rhoS c n W hint S hN) := by
   unfold ReciprocityTheory.Gal.ContAction
@@ -206,6 +268,9 @@ open Classical in
 def Av (A : ValuationSubring Ω) (S : Finset Pl) (v : S) : ValuationSubring Ω :=
   if IsPlaceOver A v.1 then A else placeOf Ω v.1
 
+/- English proof (translation)
+Unfold `Av`. Use `split_ifs with h`. Conclude with `h`. Conclude with `isPlaceOver_placeOf Ω v.1`.
+-/
 theorem isPlaceOver_Av (A : ValuationSubring Ω) (S : Finset Pl) (v : S) : IsPlaceOver (Av A S v) v.1 := by
   unfold Av
   split_ifs with h
@@ -226,6 +291,9 @@ def ordZ (c : Coef l) (n : ℕ) (W : R2 Ω l) (hint : ∀ s i j, mat W s i j ∈
     simp only [Pi.smul_apply, hx, Nat.cast_smul_eq_nsmul, nsmul_eq_mul]
     ring
 
+/- English proof (translation)
+Unfold both sides. The equivalence is reflexive.
+-/
 theorem mem_ordZ {c : Coef l} {n : ℕ} {W : R2 Ω l} {hint : ∀ s i j, mat W s i j ∈ c.O} {B : ValuationSubring Ω}
     (f : Dec (F := ℚ) B → Mn c n) :
     f ∈ ordZ c n W hint B ↔ ∃ x : Qn c n, ∀ s : Dec (F := ℚ) B, f s 1 = matQ c n W hint s 1 1 * x - x := Iff.rfl

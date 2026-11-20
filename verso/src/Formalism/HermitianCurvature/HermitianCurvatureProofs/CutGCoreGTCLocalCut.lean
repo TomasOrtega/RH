@@ -48,6 +48,9 @@ def GTCLFrame : Prop :=
 
 def GTCLocalOfCut : Prop := GTCLRadT → GTCLNab → GTCLFrame → GTCLocal
 
+/- English proof (translation)
+Introduce `hT hN hF Wp Wq _ _ _ _ _ _ P Bs X d hH e he hk`. Establish `hRT` using `hT Wp Wq P Bs hH.1 hH.2.1 hH.2.2.1 X`. Take `⟨h1, h2⟩` from `hN Wp Wq P Bs X d hH hRT e he hk`. Conclude with `hF Wp Wq P Bs X d hH e he hk h1 h2`.
+-/
 theorem gTCLocal_of_cut : GTCLocalOfCut := by
   intro hT hN hF Wp Wq _ _ _ _ _ _ P Bs X d hH e he hk
   have hRT := hT Wp Wq P Bs hH.1 hH.2.1 hH.2.2.1 X

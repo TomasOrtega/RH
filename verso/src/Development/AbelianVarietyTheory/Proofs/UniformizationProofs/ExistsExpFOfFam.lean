@@ -26,6 +26,11 @@ open GlobalTheory.UU
 
 namespace GlobalTheory.UU.ExpOnto
 
+/- English proof (translation)
+Proceed by induction on `n with`. Consider the case `zero => exact ⟨DVR.SecOps.secZero, fun j => by simp [DVR.SecOps.secZero]⟩`. Consider the case `succ n ih`. Take `⟨t, ht⟩` from `ih (fun i => r i.succ) (fun i => b i.succ)`. Use `⟨DVR.SecOps.secAdd (DVR.SecOps.secScale (r 0) (b 0)) t, fun j => ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[Fin.sum_univ_succ, ← ht j]`. Both sides reduce to the same expression.
+-/
 theorem exists_sec_comb {X : Scheme.{0}} {L : LB X} {n : ℕ} (r : Fin n → Γ(X, ⊤)) (b : Fin n → LB.Sec L) :
     ∃ t : LB.Sec L, ∀ j, t.f j = ∑ i, resTop _ (r i) * (b i).f j := by
   induction n with
@@ -36,6 +41,9 @@ theorem exists_sec_comb {X : Scheme.{0}} {L : LB X} {n : ℕ} (r : Fin n → Γ(
     rw [Fin.sum_univ_succ, ← ht j]
     rfl
 
+/- English proof (translation)
+Proceed by induction on `S using Finset.induction_on with`. Consider the case `empty => simp`. Consider the case `insert a S ha ih => rw [Finset.sum_insert ha, Finset.sum_insert ha, DVR.add_f, ih]`.
+-/
 theorem fam_sum_f {R : Type} [CommRing R] [IsDomain R] {D : DegPre R} {F : Type} [Field F]
     [Algebra (FractionRing R) F] {k : ℕ} {K : Type} (S : Finset K) (s : K → Fam D F k) (α : D.X) (j) :
     ((∑ i ∈ S, s i).s α).f j = ∑ i ∈ S, ((s i).s α).f j := by
@@ -44,6 +52,17 @@ theorem fam_sum_f {R : Type} [CommRing R] [IsDomain R] {D : DegPre R} {F : Type}
   | empty => simp
   | insert a S ha ih => rw [Finset.sum_insert ha, Finset.sum_insert ha, DVR.add_f, ih]
 
+/- English proof (translation)
+Introduce `hL hL2 V _ _ _ hV D A G _ _ U hB F _ _ k hk hFE s`. Take `⟨b, hb⟩` from `GlobalTheory.PowBasis.exists_basis_pow_field hL2.secTwist V A F k hk`. Use `choose e he using fun i => GlobalTheory.T.exists_fourierJacobi_expansion_over_field hL hL2 V hV D A G U F k hk (b i)`. Set `f : Fin (k ^ A.g) → Fam D F k` to `fun i => ⟨e i, hFE _ _ (he i)⟩`. Establish `comb : ∀ c : Fin (k ^ A.g) → F, ∃ t, (∀ j, t.f j = ∑ i, liftFun A.A _ ((Scheme.ΓSpecIso (CommRingCat.of F)).inv.hom (c i)) * (b i).f j) ∧ U.ExpF F k t (∑ i, c i • f i).s` using `fun c => by`.
+
+Take `⟨t, ht⟩` from `exists_sec_comb (fun i => (fst (TFK (R := V) F) A.A).left.appTop.hom ((Scheme.ΓSpecIso (CommRingCat.of F)).inv.hom (c i))) b`. Use `⟨t, ht, ExpLinC.expF_lincomb V hV D A G U F k _ c b e t _ he ht fun α j => ?_⟩` and prove the remaining obligations. Conclude with `fam_sum_f _ _ α j`. Establish `hli : LinearIndependent F f`. Rewrite using `[Fintype.linearIndependent_iff]`.
+
+Introduce `c hc`. Take `⟨t, ht, hE⟩` from `comb c`. Take `⟨t', ht', hE'⟩` from `comb 0`. Establish `h0 : (∑ i, (0 : Fin (k ^ A.g) → F) i • f i) = ∑ i, c i • f i`. Rewrite using `[hc]`.
+
+Simplify using the standard rewrite rules. Establish `htt : t = t'` using `(GlobalTheory.T.fourierJacobiExpansion_overField_injective V hV D A G U F k t t' _ _ hE hE').2 (by rw [h0])`. Substitute `htt` using the available equality. Conclude with `congrFun ((hb t).unique ht ht')`. Take `⟨hfin, hdim⟩` from `finrank_fam_of_laws hL hL2 V D hB F k hk`.
+
+Establish `hg : A.g = D.P.g + D.rank` using `PreU.dim_eq V hV D A G U`. Establish `hsp` using `hli.span_eq_top_of_card_eq_finrank' (by rw [hdim, Fintype.card_fin, hg])`. Take `⟨c, hc⟩` from `(Submodule.mem_span_range_iff_exists_fun F).1 (hsp ▸ Submodule.mem_top (x := s))`. Take `⟨t, -, hE⟩` from `comb c`. Conclude with `⟨t, hc ▸ hE⟩`.
+-/
 theorem exists_expF_of_fam : Laws → Laws2 → AllPre fun {V} _ _ _ {D} {_} {_} _ _ U => D.TauBimult → ∀ (F : Type) [Field F] [Algebra (FractionRing V) F] (k : ℕ), 1 ≤ k → U.FE F k → ∀ s : Fam D F k, ∃ t, U.ExpF F k t s.s := by
   intro hL hL2 V _ _ _ hV D A G _ _ U hB F _ _ k hk hFE s
   obtain ⟨b, hb⟩ := GlobalTheory.PowBasis.exists_basis_pow_field hL2.secTwist V A F k hk

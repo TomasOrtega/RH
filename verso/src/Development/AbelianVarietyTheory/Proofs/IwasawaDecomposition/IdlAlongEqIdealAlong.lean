@@ -10,6 +10,9 @@ open ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestrictio
 
 namespace GlobalTheory.LocM
 
+/- English proof (translation)
+Rewrite using `[ds_stalkId_eq_map _ ⟨⊤, isAffineOpen_top Y⟩ y trivial, Scheme.IdealSheafData.ofIdealTop_ideal, Ideal.map_map, ← CommRingCat.hom_comp]`. Use `congr 2`. Conclude with `Y.presheaf.germ_res (homOfLE (le_top : (⊤ : Y.Opens) ≤ ⊤)) y (by trivial)`.
+-/
 theorem stalkId_ofIdealTop {Y : Scheme.{0}} [IsAffine Y] (K : Ideal Γ(Y, ⊤)) (y : Y) :
     FinalTheorems.stalkId (Scheme.IdealSheafData.ofIdealTop K) y = K.map (Y.presheaf.germ ⊤ y trivial).hom := by
   rw [ds_stalkId_eq_map _ ⟨⊤, isAffineOpen_top Y⟩ y trivial, Scheme.IdealSheafData.ofIdealTop_ideal,
@@ -17,6 +20,11 @@ theorem stalkId_ofIdealTop {Y : Scheme.{0}} [IsAffine Y] (K : Ideal Γ(Y, ⊤)) 
   congr 2
   exact Y.presheaf.germ_res (homOfLE (le_top : (⊤ : Y.Opens) ≤ ⊤)) y (by trivial)
 
+/- English proof (translation)
+Rewrite using `[Scheme.IdealSheafData.ofIdealTop_ideal]`. Establish `: Y.presheaf.map (homOfLE (le_top : (⊤ : Y.Opens) ≤ ⊤)).op = 𝟙 _`. Rewrite using `[← Y.presheaf.map_id]`. Both sides reduce to the same expression. Rewrite using `[this]`.
+
+Simplify using the standard rewrite rules.
+-/
 theorem ideal_top_ofIdealTop {Y : Scheme.{0}} [IsAffine Y] (K : Ideal Γ(Y, ⊤)) :
     (Scheme.IdealSheafData.ofIdealTop K).ideal ⟨⊤, isAffineOpen_top Y⟩ = K := by
   rw [Scheme.IdealSheafData.ofIdealTop_ideal]
@@ -25,6 +33,9 @@ theorem ideal_top_ofIdealTop {Y : Scheme.{0}} [IsAffine Y] (K : Ideal Γ(Y, ⊤)
   rw [this]
   simp
 
+/- English proof (translation)
+Use `(GlobalTheory.Vanishing.eq_comap_of_stalk fun z => ?_).symm` and prove the remaining obligations. Establish `hz : χ z ∈ U.1` using `hle trivial`. Rewrite using `[stalkId_ofIdealTop, ds_stalkId_eq_map J U _ hz, Ideal.map_map, Ideal.map_map, ← CommRingCat.hom_comp, ← CommRingCat.hom_comp, Scheme.Hom.germ_stalkMap, Scheme.Hom.appLE, Category.assoc]`. Use `congr 3`. Conclude with `(Sp R).presheaf.germ_res (homOfLE hle) z (by trivial)`.
+-/
 theorem comap_eq_ofIdealTop (X : Scheme.{0}) (J : X.IdealSheafData) (R : Type) [CommRing R] [IsLocalRing R]
     (χ : Sp R ⟶ X) (U : X.affineOpens) (hle : ⊤ ≤ χ ⁻¹ᵁ U.1) :
     J.comap χ = Scheme.IdealSheafData.ofIdealTop ((J.ideal U).map (χ.appLE U.1 ⊤ hle).hom) := by
@@ -35,6 +46,9 @@ theorem comap_eq_ofIdealTop (X : Scheme.{0}) (J : X.IdealSheafData) (R : Type) [
   congr 3
   exact (Sp R).presheaf.germ_res (homOfLE hle) z (by trivial)
 
+/- English proof (translation)
+Take `⟨U, hU, hx, -⟩` from `Opens.isBasis_iff_nbhd.1 X.isBasis_affineOpens (show χ (closedPoint R) ∈ (⊤ : X.Opens) from trivial)`. Establish `hle : ⊤ ≤ χ ⁻¹ᵁ U` using `(Scheme.preimage_eq_top_of_closedPoint_mem χ hx).ge`. Unfold `idlAlong idealAlong`. Rewrite using `[comap_eq_ofIdealTop X J R χ ⟨U, hU⟩ hle, ideal_top_ofIdealTop, ds_stalkId_eq_map J ⟨U, hU⟩ _ hx, Ideal.map_map, Ideal.map_map, ← CommRingCat.hom_comp, ← CommRingCat.hom_comp, Scheme.germ_stalkClosedPointTo]`. Use `congr 2`.
+-/
 theorem idlAlong_eq_idealAlong (X : Scheme.{0}) (J : X.IdealSheafData) (R : Type) [CommRing R] [IsLocalRing R]
     (χ : Sp R ⟶ X) : idlAlong J χ = idealAlong J χ := by
   obtain ⟨U, hU, hx, -⟩ := Opens.isBasis_iff_nbhd.1 X.isBasis_affineOpens

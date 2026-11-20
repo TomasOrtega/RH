@@ -20,10 +20,16 @@ open GlobalTheory.ZM
 
 namespace GlobalTheory.SiegelMapProper
 
+/- English proof (translation)
+Rewrite using `[spMap, spMap, spMap, ← Spec.map_comp]`. Both sides reduce to the same expression.
+-/
 theorem spMap_comp_spMap {A B C : Type} [CommRing A] [CommRing B] [CommRing C] (f : A →+* B) (g : B →+* C) :
     spMap g ≫ spMap f = spMap (g.comp f) := by
   rw [spMap, spMap, spMap, ← Spec.map_comp]; rfl
 
+/- English proof (translation)
+Take `⟨N, i, h1, h2, h3⟩` from `(GlobalTheory.isQProjOver_baseChange_and_finite_restrict R R' j X s).1 hs`. Use `⟨N, h.isoPullback.hom ≫ i, inferInstance, inferInstance, ?_⟩` and prove the remaining obligations. Rewrite using `[Category.assoc, h3, h.isoPullback_hom_snd]`.
+-/
 theorem isQProjOver_of_isPullback {R R' : Type} [CommRing R] [CommRing R'] {j : R →+* R'} {X T : Scheme.{0}}
     {s : X ⟶ Sp R} {sT : T ⟶ Sp R'} {f : T ⟶ X} (h : IsPullback f sT s (spMap j)) (hs : IsQProjOver s) :
     IsQProjOver sT := by
@@ -31,6 +37,11 @@ theorem isQProjOver_of_isPullback {R R' : Type} [CommRing R] [CommRing R'] {j : 
   refine ⟨N, h.isoPullback.hom ≫ i, inferInstance, inferInstance, ?_⟩
   rw [Category.assoc, h3, h.isoPullback_hom_snd]
 
+/- English proof (translation)
+Set `pt : Sp K` to `(⊥ : PrimeSpectrum K)`. Establish `hs : x pt ∈ genericPoints T` using `hx ⟨pt, rfl⟩`. Take `⟨s', hs', e⟩` from `Flat.generalizingMap sT (genericPoint_specializes (sT (x pt)))`. Establish `h1 : closure {x pt} ⊆ closure ({s'} : Set T)` using `specializes_iff_closure_subset.mp hs'`. Establish `h2` using `hs.2 isIrreducible_singleton.closure h1`.
+
+Establish `h3 : sT (x pt) = genericPoint (Sp O)`. Rewrite using `[← e, (hs'.antisymm (specializes_iff_closure_subset.mpr h2)).eq]`. Rewrite `h3` using `[← Scheme.Hom.comp_apply, h, genericPoint_eq_bot_of_affine]`. Rewrite using `[RingHom.injective_iff_ker_eq_bot]`. Conclude with `congrArg PrimeSpectrum.asIdeal h3`.
+-/
 theorem injective_of_generic {O K : Type} [CommRing O] [IsDomain O] [Field K] {T : Scheme.{0}} (sT : T ⟶ Sp O)
     [Flat sT] (x : Sp K ⟶ T) (hx : Set.range x ⊆ genericPoints T) (δ : O →+* K) (h : x ≫ sT = spMap δ) :
     Function.Injective δ := by
@@ -45,6 +56,23 @@ theorem injective_of_generic {O K : Type} [CommRing O] [IsDomain O] [Field K] {T
   rw [RingHom.injective_iff_ker_eq_bot]
   exact congrArg PrimeSpectrum.asIdeal h3
 
+/- English proof (translation)
+Introduce `L1 L2 L3 E _ _ _ H D g J _ a w w' bas hpq hbas hw hw' hcl k o _ b em ρ _ _ hk hρ _ har X s t τ hrep hpel p Ag _ _ hS bas' hbas' O _ i z bb hi _ hbb hO T sT f hT tT c u htT hc hu hcu`. Establish `: IsDomain O` using `hi.isDomain i`. Establish `: CharZero O` using `i.charZero`. Establish `hbbi : Function.Injective bb` using `fun x y e => har.2.2 (by rw [← hbb x, ← hbb y, e])`. Use `hrep.flat` as an intermediate fact.
+
+Establish `: Flat sT` using `MorphismProperty.of_isPullback (P := @Flat) hT inferInstance`. Use `hS.1` as an intermediate fact. Use `Ag.smooth` as an intermediate fact. Establish `: Smooth Ag.s` using `SmoothOfRelativeDimension.smooth (g * (g + 1) / 2) Ag.s`. Use `GlobalTheory.T.valuative_lift_generic_point O T _ u (pullback.snd Ag.s (spMap z)) (hu ▸ isQProjOver_of_isPullback hT hrep.qproj) inferInstance inferInstance ?_` and prove the remaining obligations.
+
+Introduce `V K _ _ _ _ _ _ x y hx hxy`. Take `⟨δ', hδ⟩` from `Spec.map_surjective (y ≫ pullback.snd Ag.s (spMap z))`. Take `⟨δ, rfl⟩ : ∃ δ : O →+* V, CommRingCat.ofHom δ = δ'` from `⟨δ'.hom, rfl⟩`. Express the relevant statement in the definitionally equal form `spMap δ = _ at hδ`. Establish `hxs : x ≫ sT = spMap (algebraMap V K) ≫ spMap δ`.
+
+Rewrite using `[← hu, ← Category.assoc, hxy, Category.assoc, hδ]`. Establish `hinj : Function.Injective ((algebraMap V K).comp δ)` using `injective_of_generic sT x hx _ (by rw [hxs, spMap_comp_spMap])`. Establish `: CharZero K` using `charZero_of_injective_ringHom hinj`. Establish `hδi : Function.Injective δ` using `Function.Injective.of_comp (f := algebraMap V K) hinj`. Establish `hxf : (x ≫ f) ≫ s = spMap (algebraMap V K) ≫ spMap (δ.comp bb)`.
+
+Rewrite using `[Category.assoc, hT.w, ← Category.assoc, hxs, Category.assoc, spMap_comp_spMap]`. Establish `hid : spMap (RingHom.id (ZP p k)) = 𝟙 _` using `Spec.map_id _`. Establish `hV` using `GlobalTheory.T.siegelPre_pullback_principal_ringChange g k _ _ (zetaZP p k) (zetaZP p k) (RingHom.id _) _ _ Ag.s ((y ≫ pullback.fst _ _) ≫ Ag.s) (y ≫ pullback.fst Ag.s (spMap z)) rfl (by rw [hid, Category.comp_id])`. Take `⟨cV, hcV⟩` from `hV.1 Ag.univ`. Establish `hpr : cV.Principal` using `hV.2.1 _ _ hcV Ag.princ`.
+
+Take `⟨cK, hcK⟩` from `(GlobalTheory.T.siegelPre_pullback_principal_ringChange g k _ _ (zetaZP p k) (zetaZP p k) (RingHom.id _) _ _ (sT ≫ spMap z) (x ≫ sT ≫ spMap z) x rfl (by rw [hid, Category.comp_id])).1 c`. Take `⟨tK, htK⟩` from `GlobalTheory.tObj_pull o g k J b _ _ (sT ≫ spMap bb) ((x ≫ f) ≫ s) x tT (by rw [Category.assoc, hT.w])`. Establish `htKf : TMap tK t (x ≫ f)` using `((GlobalTheory.T.thetaLevelPullback_id_comp_cancel o g k J b _ _ _ _ _ _ t tT tK).2 f x htT).1 htK`. Take `⟨τK, hτK⟩` from `GlobalTheory.exists_isPEL_of_tmap E H D g J a bas k o b ρ _ _ _ _ t tK τ (x ≫ f) rfl htKf hpel`. Establish `hsK : TSieg bas bas' tK cK` using `(GlobalTheory.T.siegel_structure_pullback g k J _ bas bas' o _ b _ _ _ _ _ _ _ tT c tK cK x hc htK).1 hcK`.
+
+Establish `hcKV : SiegPB cK cV (spMap (algebraMap V K))`. Use `((GlobalTheory.SiegelPullComp.id_comp_cancel g k _ _ _ _ _ _ _ _ _ _ _ _ Ag.univ cV cK _ _).2 hcV).2 ?_` and prove the remaining obligations. Rewrite using `[← Category.assoc (spMap (algebraMap V K)), ← hxy, Category.assoc x u]`. Conclude with `((GlobalTheory.SiegelPullComp.id_comp_cancel g k _ _ _ _ _ _ _ _ _ _ _ _ Ag.univ c cK _ _).2 hcu).1 hcK`. Take `⟨tV, τV, hτV, htV⟩` from `GlobalTheory.T.symplectic_datum_moduli_family L1 L2 L3 E H D g J a w w' bas hpq hbas hw hw' hcl bas' hbas' k o _ b em ρ _ V K (δ.comp bb) _ _ _ cV cK tK τK hk hρ har hxf hpr hcKV hsK hτK`.
+
+Take `⟨fV, hfV, hmV⟩` from `hrep.rep V (δ.comp bb) tV τV (hδi.comp hbbi) hτV`. Establish `he : spMap (algebraMap V K) ≫ fV = x ≫ f` using `hrep.inj K _ _ _ tK (by rw [hxf, Category.assoc, hfV]) (((GlobalTheory.T.thetaLevelPullback_id_comp_cancel o g k J b _ _ _ _ _ _ t tV tK).2 fV _ hmV).1 htV) htKf`. Use `⟨hT.lift fV (spMap δ) (by rw [hfV, spMap_comp_spMap]), hT.hom_ext ?_ ?_⟩` and prove the remaining obligations. Rewrite using `[Category.assoc, hT.lift_fst, he]`. Rewrite using `[Category.assoc, hT.lift_snd, hxs]`.
+-/
 theorem isProper_toSiegel : Out.Laws → Out.Laws2 → (∀ (S : Scheme.{0}) (P : Out.PolAV S) (M : LB P.A.left), M.IsLB → ∃ t : LB.Gen (Theta P.A M), t.IsGen) → ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (D : Datum H) (g : ℕ) (J : Type) [Finite J] (a : J → 𝓞 E) (w w' : J) (bas : (Fin (2 * g) → ℤ) ≃ₗ[ℤ] D.La), 1 ≤ D.p + D.q → IsSympBasis D bas → a w = H.w0 → a w' = H.bar H.w0 → Subring.closure (Set.range a) = ⊤ → ∀ (k : ℕ) (o : Type) [CommRing o] (b : TBase o k) (em : o →+* ℂ) (ρ : o), Odd k → 3 ≤ k → (∃ N' : ℕ, k = N' ^ 2) → em ρ = H.rt0 → em (b.ζ : o) = zeta k → ArBase em → ∀ (X : Scheme.{0}) (s : X ⟶ Sp o) (t : TObj g k J b s) (τ : SAB H X), PELRep D a bas ρ t → IsPEL D a bas ρ t τ → ∀ (p : ℕ) (Ag : SiegelFamily g p k), p.Prime → k.Coprime p → SRep Ag → ∀ (bas' : (Fin g ⊕ Fin g → ℤ) ≃ₗ[ℤ] D.La), (∀ x y, D.EF (bas' x) (bas' y) = omegaStd x y) → ∀ (O : Type) [CommRing O] (i : O →+* ℂ) (z : ZP p k →+* O) (bb : o →+* O), Function.Injective i → GlobalTheory.Models.IsInc (ZP p k).subtype i z → GlobalTheory.Models.IsInc em i bb → IsNoetherianRing O → ∀ (T : Scheme.{0}) (sT : T ⟶ Sp O) (f : T ⟶ X), IsPullback f sT s (spMap bb) → ∀ (tT : TObj g k J b (sT ≫ spMap bb)) (c : SiegPre g k (zetaZP p k) (sT ≫ spMap z)) (u : T ⟶ pullback Ag.s (spMap z)), TMap tT t f → TSieg bas bas' tT c → u ≫ pullback.snd _ _ = sT → SiegPB c Ag.univ (u ≫ pullback.fst _ _) → IsProper u := by
   intro L1 L2 L3 E _ _ _ H D g J _ a w w' bas hpq hbas hw hw' hcl k o _ b em ρ _ _ hk hρ _ har X s t τ hrep hpel
     p Ag _ _ hS bas' hbas' O _ i z bb hi _ hbb hO T sT f hT tT c u htT hc hu hcu

@@ -11,6 +11,9 @@ namespace GlobalTheory.PMonE
 
 open Finset
 
+/- English proof (translation)
+Simplify using `only [Matrix.mulVec, dotProduct]`. Use `IsUltrametricDist.norm_sum_le_of_forall_le_of_nonneg zero_le_one (fun j _ => ?_)` and prove the remaining obligations. Rewrite using `[norm_mul]`. Conclude with `mul_le_one₀ (hA i j) (norm_nonneg _) (hx j)`.
+-/
 theorem norm_mulVec_le_one_of_integral_matrix {F : Type} [NormedField F] [IsUltrametricDist F] {m : Type} [Fintype m]
     (A : Matrix m m F) (hA : ∀ i j, ‖A i j‖ ≤ 1) (x : m → F) (hx : Integral x) (i : m) :
     ‖A.mulVec x i‖ ≤ 1 := by
@@ -19,6 +22,9 @@ theorem norm_mulVec_le_one_of_integral_matrix {F : Type} [NormedField F] [IsUltr
   rw [norm_mul]
   exact mul_le_one₀ (hA i j) (norm_nonneg _) (hx j)
 
+/- English proof (translation)
+Introduce `i`. Establish `h1 : ‖x i ^ q‖ ≤ 1` using `by rw [norm_pow]; exact pow_le_one₀ (norm_nonneg _) (hx i)`. Establish `h2` using `norm_mulVec_le_one_of_integral_matrix A hA x hx i`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem integralNormVector_pow_sub_mulVec {F : Type} [NormedField F] [IsUltrametricDist F] {m : Type} [Fintype m]
     (A : Matrix m m F) (hA : ∀ i j, ‖A i j‖ ≤ 1) (q : ℕ) (x : m → F) (hx : Integral x) :
     Integral (fun i => x i ^ q - A.mulVec x i) := by
@@ -29,6 +35,11 @@ theorem integralNormVector_pow_sub_mulVec {F : Type} [NormedField F] [IsUltramet
     _ ≤ max ‖x i ^ q‖ ‖-A.mulVec x i‖ := IsUltrametricDist.norm_add_le_max _ _
     _ ≤ 1 := by rw [norm_neg]; exact max_le h1 h2
 
+/- English proof (translation)
+Unfold `gsum`. Use `Finset.sum_eq_zero (fun n _ => ?_)` and prove the remaining obligations. Establish `: (fun _ : m => (0 : F) ^ q ^ n) = 0`. Use function extensionality and compare the values at `i`. Simplify using `[zero_pow (pow_pos hq n).ne']`.
+
+Rewrite using `[this, Matrix.mulVec_zero]`.
+-/
 theorem additiveSystemFrobeniusPowerSum_zero {F : Type} [NormedField F] {m : Type} [Fintype m] (q D : ℕ) (hq : 0 < q)
     (U : ℕ → Matrix m m F) : gsum q D U (fun _ => 0) = 0 := by
   unfold gsum
@@ -37,6 +48,21 @@ theorem additiveSystemFrobeniusPowerSum_zero {F : Type} [NormedField F] {m : Typ
     funext i; simp [zero_pow (pow_pos hq n).ne']
   rw [this, Matrix.mulVec_zero]
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce `F _ _ _ _ p _ _ m _ _ e D he hD M hM b hb`. Take `⟨A, U, hA, hU0, hUn, -, hfac⟩` from `GlobalTheory.T.additiveSystem_preparation_normalForm_one F p m e D he hD M hM`. Take `⟨y, ⟨hy, hyb⟩, -⟩` from `GlobalTheory.T.existsUnique_integral_additiveSystemFrobeniusPowerSum_eq F p m e D he U hU0 hUn b hb`. Take `⟨x, hx, hxy⟩` from `GlobalTheory.T.exists_integral_solution_frobenius_sub_mulVec_eq F p m e he A hA y hy`.
+
+Use `⟨x, hx, ?_⟩` and prove the remaining obligations. Rewrite using `[hfac]`. Establish `: (fun i => x i ^ p ^ e - A.mulVec x i) = y` using `funext hxy`. Rewrite using `[this, hyb]`. Introduce `F _ _ _ _ p _ _ m _ _ e D he hD M hM hdet`.
+
+Take `⟨A, U, hA, hU0, hUn, hM0, hfac⟩` from `GlobalTheory.T.additiveSystem_preparation_normalForm_one F p m e D he hD M hM`. Establish `hAdet : A.det ≠ 0`. Introduce `h`. Apply `hdet` to reduce the goal to its premises. Rewrite using `[hM0, Matrix.det_neg, Matrix.det_mul, h, mul_zero, mul_zero]`.
+
+Take `⟨hInt, hcard⟩` from `GlobalTheory.T.lang_count_frobenius_eq_mulVec_solutions F p m e he A hA hAdet`. Establish `hq : 0 < p ^ e` using `pow_pos (Fact.out : p.Prime).pos e`. Take `⟨z, -, hz⟩` from `GlobalTheory.T.existsUnique_integral_additiveSystemFrobeniusPowerSum_eq F p m e D he U hU0 hUn 0 (fun i => by simp)`. Establish `key : ∀ x : m → F, Integral x → (gsum (p ^ e) D M x = 0 ↔ ∀ i, x i ^ p ^ e = A.mulVec x i)`. Introduce `x hx`.
+
+Rewrite using `[hfac]`. Prove the components needed by the constructor for the conclusion. Introduce `h0`. Establish `h1` using `hz _ ⟨integralNormVector_pow_sub_mulVec A hA (p ^ e) x hx, h0⟩`. Establish `h2` using `hz (fun _ => 0) ⟨fun i => by simp, additiveSystemFrobeniusPowerSum_zero _ D hq U⟩`.
+
+Introduce `i`. Use `congrFun (h1.trans h2.symm) i` as an intermediate fact. Conclude with `sub_eq_zero.mp this`. Introduce `h`. Establish `: (fun i => x i ^ p ^ e - A.mulVec x i) = fun _ => 0` using `funext fun i => by rw [h i, sub_self]`.
+
+Rewrite using `[this]`. Conclude with `additiveSystemFrobeniusPowerSum_zero _ D hq U`. Establish `eqv : {x : m → F // Integral x ∧ gsum (p ^ e) D M x = 0} ≃ {x : m → F // ∀ i, x i ^ p ^ e = A.mulVec x i}` using `{ toFun := fun x => ⟨x.1, (key x.1 x.2.1).mp x.2.2⟩ invFun := fun x => ⟨x.1, hInt x.1 x.2, (key x.1 (hInt x.1 x.2)).mpr x.2⟩ left_inv := fun x => rfl right_inv := fun x => rfl }`. Rewrite using `[Nat.card_congr eqv, hcard, mul_one]`.
+-/
 theorem gl1 : GLOnto 1 ∧ GLCount 1 := by
   constructor
   · intro F _ _ _ _ p _ _ m _ _ e D he hD M hM b hb

@@ -11,6 +11,11 @@ open Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotions.N Formal
 attribute [local instance] Formalism.BasicNotions.Host.cmStar GlobalTheory.TypeRec.factG
 namespace GlobalTheory.HeightCounting.Up.ParCopy
 set_option maxHeartbeats 4000000 in
+/- English proof (translation)
+Take `⟨⟨D, cf, jE, A, cg, au, rep, row, low, Pq, S, hk, eig, θ, Bs, M, C, tp, ch, mt, big, L, Sp, Au, ss, eq⟩, pack⟩` from `nt`. Substitute `eq` using the available equality. Take `⟨-, h2⟩` from `Sigma.mk.inj_iff.mp pack`. Take `⟨hcf, -⟩` from `Sigma.mk.inj_iff.mp (eq_of_heq h2)`. Substitute `hcf` using the available equality.
+
+Establish `hr : rep = rep'` using `eq_of_heq hrep`. Substitute `hr` using the available equality. Set `T : GlobalTheory.RowTie.WDTie (withLoc L).nd (withLoc L).naut` to `{ A.wdT with }`. Set `Rw : RowSide (withLoc L)` to `{ A.row with }`. Use `⟨Rw, HEq.rfl, ⟨{ T := T, lab := A.lab, chr := { A.chr with }, cg := { cg with }, A := { A.au with }, au := au, row := row }⟩⟩` and prove the remaining obligations.
+-/
 theorem parIn_of_nTrue_alt {hL : _root_.UpperTheory.Zero.LLC.RecTExists} {D' : D7} {cf' : CharFrame D'} {C' : NChoice D'}
     {tp' : TupTied D' cf' C'} (nt : _root_.GlobalTheory.HeightCounting.NormChoiceRealisation hL D' cf' C' tp') (rep' : D'.what₂.FT → NG.FinTyp D'.host.E D'.R.r)
     (hrep : HEq nt.rep rep') :
@@ -26,6 +31,9 @@ theorem parIn_of_nTrue_alt {hL : _root_.UpperTheory.Zero.LLC.RecTExists} {D' : D
   let Rw : RowSide (withLoc L) := { A.row with }
   refine ⟨Rw, HEq.rfl, ⟨{ T := T, lab := A.lab, chr := { A.chr with }, cg := { cg with }, A := { A.au with }, au := au, row := row }⟩⟩
 set_option maxHeartbeats 4000000 in
+/- English proof (translation)
+Take `⟨⟨D, cf, jE, A, cg, au, rep, row, low, Pq, S, hk, eig, θ, Bs, M, C, tp, ch, mt, big, L, Sp, Au, ss, eq⟩, pack⟩` from `nt`. Substitute `eq` using the available equality. Establish `hm : mtL L M = M'` using `eq_of_heq hM`. Substitute `hm` using the available equality. Conclude with `⟨tp.tup, C.Q, { mt with }⟩`.
+-/
 theorem exists_mtInput_of_nTrue {hL : _root_.UpperTheory.Zero.LLC.RecTExists} {D' : D7} {cf' : CharFrame D'} {C' : NChoice D'}
     {tp' : TupTied D' cf' C'} (nt : _root_.GlobalTheory.HeightCounting.NormChoiceRealisation hL D' cf' C' tp') (M' : MtFam D') (hM : HEq (mtL nt.L nt.M) M') :
     ∃ tup Q, MtInput D' M' tup Q := by

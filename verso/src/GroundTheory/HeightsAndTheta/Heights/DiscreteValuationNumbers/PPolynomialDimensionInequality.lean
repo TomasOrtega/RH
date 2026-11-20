@@ -8,6 +8,31 @@ universe u
 
 open Polynomial
 
+/- English proof (translation)
+Introduce `A _ _ _ P _`. Use `set p := P.under A with hp`. Set `I : Ideal A[X]` to `p.map (algebraMap A A[X])`. Set `Pb : Ideal (A[X] ⧸ I)` to `P.map (Ideal.Quotient.mk I)`. Establish `hIP : I ≤ P` using `Ideal.map_comap_le`.
+
+Establish `hPb : Pb.IsPrime` using `Ideal.map_isPrime_of_surjective Ideal.Quotient.mk_surjective (by rw [Ideal.mk_ker]; exact hIP)`. Set `x : A[X] ⧸ P` to `Ideal.Quotient.mk P X`. Establish `key : ∀ f : A[X], aeval x (f.map (Ideal.Quotient.mk p)) = Ideal.Quotient.mk P f`. Introduce `f`. Rewrite using `[← Ideal.Quotient.algebraMap_eq, aeval_map_algebraMap]`.
+
+Express the relevant statement in the definitionally equal form `aeval (Ideal.Quotient.mkₐ A P X) f = _`. Rewrite using `[aeval_algHom_apply, aeval_X_left_apply]`. Both sides reduce to the same expression. Establish `hsurj : Function.Surjective (aeval (R` using `A ⧸ p) x) := by`. Introduce `y`.
+
+Take `⟨f, rfl⟩` from `Ideal.Quotient.mk_surjective y`. Conclude with `⟨_, key f⟩`. Establish `hPb1 : Pb.height ≤ 1`. Set `e : (A[X] ⧸ I) ≃+* (A ⧸ p)[X]` to `(Ideal.polynomialQuotientEquivQuotientPolynomial p).symm`. Set `Q : Ideal (A ⧸ p)[X]` to `Pb.map e`.
+
+Establish `hQ : Q.IsPrime` using `Ideal.map_isPrime_of_equiv e`. Establish `hQb : Q.comap (C : A ⧸ p →+* (A ⧸ p)[X]) = ⊥`. Use `le_bot_iff.mp fun a ha => ?_` and prove the remaining obligations. Take `⟨b, rfl⟩` from `Ideal.Quotient.mk_surjective a`. Rewrite `ha` using `[Ideal.mem_comap]`.
+
+Establish `he : C (Ideal.Quotient.mk p b) = e (Ideal.Quotient.mk I (C b))`. Express the relevant statement in the definitionally equal form `_ = (Ideal.polynomialQuotientEquivQuotientPolynomial p).symm (Ideal.Quotient.mk (p.map C) (C b))`. Rewrite using `[Ideal.polynomialQuotientEquivQuotientPolynomial_symm_mk, Polynomial.map_C]`. Rewrite `ha` using `[he]`. Take `⟨y, hy, hye⟩` from `(Ideal.mem_map_of_equiv e _).mp ha`.
+
+Rewrite `hy` using `[e.injective hye, Ideal.mem_quotient_iff_mem hIP]`. Rewrite using `[Ideal.mem_bot, Ideal.Quotient.eq_zero_iff_mem, hp, Ideal.under_def, Ideal.mem_comap, Polynomial.algebraMap_eq]`. Conclude with `hy`. Use `h (A ⧸ p) Q hQb` as an intermediate fact. Rewrite `this` using `[RingEquiv.height_map]`. Then use the resulting hypothesis.
+
+Establish `hht : P.height ≤ p.height + Pb.height` using `Ideal.height_le_height_add_of_liesOver p P`. Distinguish the cases in `hb : Pb = ⊥`. Establish `: Nontrivial (A[X] ⧸ I)` using `Ideal.Quotient.nontrivial_iff.mpr (ne_top_of_le_ne_top (Ideal.IsPrime.ne_top inferInstance) hIP)`. Rewrite `hht` using `[hb, Ideal.height_bot, add_zero]`. Establish `htr : Algebra.trdeg (A ⧸ p) (A[X] ⧸ P) ≤ 1` using `(trdeg_le_of_surjective _ hsurj).trans (Polynomial.trdeg_of_isDomain).le`.
+
+Conclude with `add_le_add (Cardinal.ofENat_le_ofENat.mpr hht) htr`. Take `⟨y, hyPb, hy0⟩` from `Submodule.exists_mem_ne_zero_of_ne_bot hb`. Take `⟨f, hfP, rfl⟩` from `(Ideal.mem_map_iff_of_surjective _ Ideal.Quotient.mk_surjective).mp hyPb`. Establish `hfI : f ∉ I` using `fun hf => hy0 (Ideal.Quotient.eq_zero_iff_mem.mpr hf)`. Establish `hg : f.map (Ideal.Quotient.mk p) ≠ 0`.
+
+Introduce `hg`. Apply `hfI` to reduce the goal to its premises. Rewrite using `[show I = p.map C from rfl, Ideal.mem_map_C_iff]`. Introduce `n`. Rewrite using `[← Ideal.Quotient.eq_zero_iff_mem, ← coeff_map, hg, coeff_zero]`.
+
+Establish `hx : IsAlgebraic (A ⧸ p) x` using `⟨_, hg, by rw [key]; exact Ideal.Quotient.eq_zero_iff_mem.mpr hfP⟩`. Establish `hadj : Algebra.adjoin (A ⧸ p) {x} = ⊤`. Rewrite using `[Algebra.adjoin_singleton_eq_range_aeval, AlgHom.range_eq_top]`. Conclude with `hsurj`. Establish `halg : Algebra.IsAlgebraic (A ⧸ p) (A[X] ⧸ P)`.
+
+Use `Algebra.isAlgebraic_adjoin_singleton_iff.mpr hx` as an intermediate fact. Rewrite `this` using `[hadj]`. Conclude with `⟨fun z => this z Algebra.mem_top⟩`. Rewrite using `[trdeg_eq_zero_iff.mpr halg, add_zero, ← Cardinal.ofENat_one, ← Cardinal.ofENat_add, Cardinal.ofENat_le_ofENat]`. Conclude with `hht.trans (add_le_add le_rfl hPb1)`.
+-/
 theorem PolynomialDimensionInequality.proof (h : PolynomialPrimeOverZeroHeight.Statement.{u}) :
     PolynomialDimensionInequality.Statement.{u} := by
   intro A _ _ _ P _

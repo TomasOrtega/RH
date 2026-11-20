@@ -13,6 +13,9 @@ noncomputable def md (φ : V → ℂ) : (n : ℕ) → (Fin n → V) → ℝ → 
   | 0, _, _, a => φ a
   | n + 1, v, h, a => (md φ n (Fin.tail v) h (a + h • v 0) - md φ n (Fin.tail v) h a) / h
 
+/- English proof (translation)
+The claim follows from `| 0, v, h, a, w => by simp only [md] have h1 : HasDerivAt (fun s : ℝ => a + s • w) w 0 := by simpa using ((hasDerivAt_id (0 : ℝ)).smul_const w).const_add a exact ((hφ.differentiable (by simp)) a).hasFDerivAt.comp_hasDerivAt_of_eq (0 : ℝ) h1 (by simp) | n + 1, v, h, a, w => by sim …`.
+-/
 theorem hasDerivAt_md_along_line {φ : V → ℂ} (hφ : ContDiff ℝ ∞ φ) : ∀ (n : ℕ) (v : Fin n → V) (h : ℝ) (a w : V),
     HasDerivAt (fun s : ℝ => md φ n v h (a + s • w)) (md (fun y => fderiv ℝ φ y w) n v h a) 0
   | 0, v, h, a, w => by
@@ -34,6 +37,9 @@ section MD2
 
 variable {V : Type} [NormedAddCommGroup V] [NormedSpace ℝ V]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `i`. Use `Fin.lastCases ?_ (fun j => ?_) i` and prove the remaining obligations. Simplify using `[finRotate_last]`. Simplify using `only [Fin.snoc_castSucc, Function.comp_apply]`. Rewrite using `[finRotate_succ_apply, Fin.coeSucc_eq_succ, Fin.cons_succ]`.
+-/
 theorem snoc_eq_cons_rot {n : ℕ} (w : V) (vs : Fin n → V) :
     (Fin.snoc vs w : Fin (n + 1) → V) = (Fin.cons w vs : Fin (n + 1) → V) ∘ finRotate (n + 1) := by
   funext i
@@ -42,6 +48,11 @@ theorem snoc_eq_cons_rot {n : ℕ} (w : V) (vs : Fin n → V) :
   · simp only [Fin.snoc_castSucc, Function.comp_apply]
     rw [finRotate_succ_apply, Fin.coeSucc_eq_succ, Fin.cons_succ]
 
+/- English proof (translation)
+Establish `hf : ContDiff ℝ ∞ (fderiv ℝ φ)` using `hφ.fderiv_right (m := ∞) (by simp)`. Establish `e1 : (fun y => fderiv ℝ φ y w) = (ContinuousLinearMap.apply ℝ ℂ w) ∘ fderiv ℝ φ` using `rfl`. Rewrite using `[e1, ContinuousLinearMap.iteratedFDeriv_comp_left _ hf.contDiffAt (natCast_lt_inf' n).le]`. Simplify using `only [ContinuousLinearMap.compContinuousMultilinearMap_coe, Function.comp_apply, ContinuousLinearMap.apply_apply]`. Establish `e2 : iteratedFDeriv ℝ (n + 1) φ a (Fin.snoc vs w) = iteratedFDeriv ℝ n (fderiv ℝ φ) a vs w`.
+
+Rewrite using `[iteratedFDeriv_succ_apply_right, Fin.init_snoc, Fin.snoc_last]`. Rewrite using `[← e2, snoc_eq_cons_rot, iterSymmR V ℂ φ hφ (n + 1) a _ (finRotate (n + 1))]`.
+-/
 theorem iter_fderiv_apply {φ : V → ℂ} (hφ : ContDiff ℝ ∞ φ) (n : ℕ) (w : V) (a : V) (vs : Fin n → V) :
     iteratedFDeriv ℝ n (fun y => fderiv ℝ φ y w) a vs = iteratedFDeriv ℝ (n + 1) φ a (Fin.cons w vs) := by
   have hf : ContDiff ℝ ∞ (fderiv ℝ φ) := hφ.fderiv_right (m := ∞) (by simp)
@@ -53,9 +64,25 @@ theorem iter_fderiv_apply {φ : V → ℂ} (hφ : ContDiff ℝ ∞ φ) (n : ℕ)
     rw [iteratedFDeriv_succ_apply_right, Fin.init_snoc, Fin.snoc_last]
   rw [← e2, snoc_eq_cons_rot, iterSymmR V ℂ φ hφ (n + 1) a _ (finRotate (n + 1))]
 
+/- English proof (translation)
+The claim follows from `(ContinuousLinearMap.apply ℝ ℂ w).contDiff.comp (hφ.fderiv_right (m := ∞) (by simp))`.
+-/
 theorem contDiff_fderiv_apply {φ : V → ℂ} (hφ : ContDiff ℝ ∞ φ) (w : V) : ContDiff ℝ ∞ (fun y => fderiv ℝ φ y w) :=
   (ContinuousLinearMap.apply ℝ ℂ w).contDiff.comp (hφ.fderiv_right (m := ∞) (by simp))
 
+/- English proof (translation)
+Use `set F : ℝ → ℂ := fun s => md φ n (Fin.tail v) h (b + s • v 0) - s • T`. Establish `hF : ∀ s, HasDerivAt F (md (fun y => fderiv ℝ φ y (v 0)) n (Fin.tail v) h (b + s • v 0) - T) s`. Introduce `s`. Establish `h1` using `hasDerivAt_md_along_line hφ n (Fin.tail v) h (b + s • v 0) (v 0)`. Establish `h1' : HasDerivAt (fun r : ℝ => md φ n (Fin.tail v) h (b + s • v 0 + r • v 0)) (md (fun y => fderiv ℝ φ y (v 0)) n (Fin.tail v) h (b + s • v 0)) (s - s)`.
+
+Rewrite using `[sub_self]`. Conclude with `h1`. Establish `h2` using `HasDerivAt.comp_sub_const s s h1'`. Establish `h3 : HasDerivAt (fun r : ℝ => md φ n (Fin.tail v) h (b + r • v 0)) (md (fun y => fderiv ℝ φ y (v 0)) n (Fin.tail v) h (b + s • v 0)) s`. Use `h2.congr_of_eventuallyEq (Eventually.of_forall fun r => ?_)` and prove the remaining obligations.
+
+Use `show md φ n (Fin.tail v) h (b + r • v 0) = md φ n (Fin.tail v) h (b + s • v 0 + (r - s) • v 0)`. Rewrite using `[add_assoc, ← add_smul, add_sub_cancel]`. Establish `h4` using `h3.sub ((hasDerivAt_id s).smul_const T)`. Rewrite `h4` using `[one_smul]`. Conclude with `h4`.
+
+Establish `hmv` using `norm_image_sub_le_of_norm_deriv_le_segment' (f := F) (a := 0) (b := h) (C := ε) (fun s _ => (hF s).hasDerivWithinAt) (fun s hs => hε s ⟨hs.1, hs.2.le⟩)`. Establish `hb` using `hmv h ⟨hh.le, le_rfl⟩`. Establish `hFe : F h - F 0 = md φ n (Fin.tail v) h (b + h • v 0) - h • T - md φ n (Fin.tail v) h b`. Simplify using `only [F, zero_smul, add_zero, sub_zero]`. Rewrite `hb` using `[hFe, sub_zero]`.
+
+Establish `e : md φ (n + 1) v h b - T = ((h : ℂ))⁻¹ * (md φ n (Fin.tail v) h (b + h • v 0) - h • T - md φ n (Fin.tail v) h b)`. Simplify using `only [md]`. Rewrite using `[Complex.real_smul]`. Establish `: (h : ℂ) ≠ 0` using `by exact_mod_cast hh.ne'`. Clear the denominators using the available nonvanishing facts.
+
+Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e, norm_mul, norm_inv, Complex.norm_real, Real.norm_of_nonneg hh.le]`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem md_succ_sub (φ : V → ℂ) (hφ : ContDiff ℝ ∞ φ) (n : ℕ) (v : Fin (n + 1) → V) {h : ℝ} (hh : 0 < h) (b : V)
     (T : ℂ) (ε : ℝ) (hε : ∀ s ∈ Set.Icc (0 : ℝ) h,
       ‖md (fun y => fderiv ℝ φ y (v 0)) n (Fin.tail v) h (b + s • v 0) - T‖ ≤ ε) :
@@ -100,6 +127,9 @@ section MD3
 
 variable {V : Type} [NormedAddCommGroup V] [NormedSpace ℝ V]
 
+/- English proof (translation)
+The claim follows from `| 0, φ, hφ, v, a, ε, hε => by obtain ⟨δ, hδ, hδε⟩ := Metric.continuous_iff.mp hφ.continuous a ε hε refine ⟨δ, hδ, fun h _ _ b hb => ?_⟩ simp only [md, iteratedFDeriv_zero_apply] have := hδε b (by rw [dist_eq_norm]; exact hb) rw [dist_eq_norm] at this exact this.le | n + 1, φ, hφ, …`.
+-/
 theorem md_tendsto : ∀ (n : ℕ) (φ : V → ℂ), ContDiff ℝ ∞ φ → ∀ (v : Fin n → V) (a : V) (ε : ℝ), 0 < ε →
     ∃ δ > 0, ∀ h, 0 < h → h < δ → ∀ b, ‖b - a‖ < δ → ‖md φ n v h b - iteratedFDeriv ℝ n φ a v‖ ≤ ε
   | 0, φ, hφ, v, a, ε, hε => by
@@ -135,6 +165,11 @@ theorem md_tendsto : ∀ (n : ℕ) (φ : V → ℂ), ContDiff ℝ ∞ φ → ∀
             apply div_le_div_of_nonneg_left hδ1.le (by norm_num); nlinarith [norm_nonneg (v 0)]
           linarith
 
+/- English proof (translation)
+Establish `hf : ContDiff ℝ ∞ (fderiv ℝ φ)` using `hφ.fderiv_right (m := ∞) (by simp)`. Establish `e1 : (fun z => fderiv ℝ φ z w) = (ContinuousLinearMap.apply ℝ ℂ w) ∘ fderiv ℝ φ` using `rfl`. Rewrite using `[e1]`. Use `((ContinuousLinearMap.apply ℝ ℂ w).norm_iteratedFDeriv_comp_left hf.contDiffAt (natCast_lt_inf' n).le).trans ?_` and prove the remaining obligations. Establish `hA : ‖ContinuousLinearMap.apply ℝ ℂ w‖ ≤ ‖w‖`.
+
+Use `ContinuousLinearMap.opNorm_le_bound _ (norm_nonneg _) fun T => ?_` and prove the remaining obligations. Rewrite using `[ContinuousLinearMap.apply_apply, mul_comm]`. Conclude with `T.le_opNorm w`. Rewrite using `[norm_iteratedFDeriv_fderiv]`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem norm_iter_fderiv_apply_le {φ : V → ℂ} (hφ : ContDiff ℝ ∞ φ) (n : ℕ) (w y : V) :
     ‖iteratedFDeriv ℝ n (fun z => fderiv ℝ φ z w) y‖ ≤ ‖iteratedFDeriv ℝ (n + 1) φ y‖ * ‖w‖ := by
   have hf : ContDiff ℝ ∞ (fderiv ℝ φ) := hφ.fderiv_right (m := ∞) (by simp)
@@ -150,6 +185,9 @@ theorem norm_iter_fderiv_apply_le {φ : V → ℂ} (hφ : ContDiff ℝ ∞ φ) (
   calc _ ≤ ‖w‖ * ‖iteratedFDeriv ℝ (n + 1) φ y‖ := mul_le_mul_of_nonneg_right hA (norm_nonneg _)
     _ = _ := mul_comm _ _
 
+/- English proof (translation)
+The claim follows from `| 0, φ, hφ, v, h, hh, b, M, hM => by simp only [md, Finset.univ_eq_empty, Finset.prod_empty, mul_one] have := hM b (by simp) rwa [norm_iteratedFDeriv_zero] at this | n + 1, φ, hφ, v, h, hh, b, M, hM => by have hM0 : 0 ≤ M := (norm_nonneg _).trans (hM b (by simp; positivity)) have …`.
+-/
 theorem md_bound : ∀ (n : ℕ) (φ : V → ℂ), ContDiff ℝ ∞ φ → ∀ (v : Fin n → V) (h : ℝ), 0 < h → ∀ (b : V) (M : ℝ),
     (∀ y, ‖y - b‖ ≤ h * ∑ i, ‖v i‖ → ‖iteratedFDeriv ℝ n φ y‖ ≤ M) → ‖md φ n v h b‖ ≤ M * ∏ i, ‖v i‖
   | 0, φ, hφ, v, h, hh, b, M, hM => by

@@ -36,6 +36,9 @@ def reS (D : D7) (Z : SNew D) : D7 :=
 
 def SNew.self (D : D7) : SNew D := ⟨D.s, D.s_HH, D.s_Cu, D.s_PlF, D.s_Cu_isom, D.sEE⟩
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem reS_self (D : D7) : reS D (SNew.self D) = D := rfl
 
 def reStage (X : Stages) (Z : SNew X.toD7) : SStage X.B X.C X.W where
@@ -51,17 +54,41 @@ def reStage (X : Stages) (Z : SNew X.toD7) : SStage X.B X.C X.W where
 
 def reStages (X : Stages) (Z : SNew X.toD7) : Stages := { X with S := reStage X Z }
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem refilledStages_record (X : Stages) (Z : SNew X.toD7) : (reStages X Z).toD7 = reS X.toD7 Z := rfl
 
 section
 variable (D : D7) (Z : SNew D)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem reS_atP : (reS D Z).s.atP = D.s.atP := rfl
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem reS_Del : (reS D Z).s.Del = D.s.Del := rfl
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem reS_letter : (reS D Z).s.letter = D.s.letter := rfl
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem reS_cdScale : (reS D Z).s.cdScale = D.s.cdScale := rfl
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem reS_dsig : (reS D Z).dsig = D.dsig := rfl
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem reS_rows : (reS D Z).what₂ = D.what₂ := rfl
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem reS_HH : (reS D Z).s.HH = Z.s.HH := rfl
 
 end

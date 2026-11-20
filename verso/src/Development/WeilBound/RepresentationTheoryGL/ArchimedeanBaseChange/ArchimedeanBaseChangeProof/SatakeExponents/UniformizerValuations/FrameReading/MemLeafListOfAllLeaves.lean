@@ -14,6 +14,9 @@ section Leaves
 
 variable {E : Type} [Field E] [NumberField E] [IsCMField E]
 
+/- English proof (translation)
+The claim follows from `| _, .leaf V z, h, x, hx => by simp only [Tr.leafList, List.mem_singleton] at hx subst hx exact h | _, .node t₁ t₂, h, x, hx => by simp only [Tr.leafList, List.mem_append] at hx rcases hx with hx | hx · exact mem_leafList_of_allLeaves t₁ h.1 x hx · exact mem_leafList_of_allLeaves …`.
+-/
 theorem mem_leafList_of_allLeaves {P : ∀ M : ℕ, Submodule ℂ (Sm E M) → Prop} :
     ∀ {N : ℕ} (t : Tr E N), t.AllLeaves P → ∀ x ∈ t.leafList, P x.1 x.2
   | _, .leaf V z, h, x, hx => by
@@ -26,6 +29,11 @@ theorem mem_leafList_of_allLeaves {P : ∀ M : ℕ, Submodule ℂ (Sm E M) → P
     · exact mem_leafList_of_allLeaves t₁ h.1 x hx
     · exact mem_leafList_of_allLeaves t₂ h.2 x hx
 
+/- English proof (translation)
+Introduce `x hx`. Establish `hx' : x ∈ t.leafList.filter fun y => 0 < y.1`. Rewrite using `[← ht]`. Conclude with `hx`. Rewrite `hx'` using `[List.mem_filter]`.
+
+Conclude with `⟨by simpa using hx'.2, mem_leafList_of_allLeaves t hl x hx'.1⟩`.
+-/
 theorem mem_parts_of_treeParts {N : ℕ} {t : Tr E N} {P : Pre E N} {Q : ∀ M : ℕ, Submodule ℂ (Sm E M) → Prop}
     (ht : TreeParts t P) (hl : t.AllLeaves Q) : ∀ x ∈ parts P, 0 < x.1 ∧ Q x.1 x.2 := by
   intro x hx
@@ -51,6 +59,11 @@ def mulK (N : ℕ) (χ : HChar E) : (Kinf E N → ℂ) →ₗ[ℂ] (Kinf E N →
     simp only [Pi.smul_apply, smul_eq_mul, RingHom.id_apply]
     ring
 
+/- English proof (translation)
+Take `⟨φ, hφV, hφ0, -, hT⟩` from `h`. Use `⟨mulChi N χ φ, Submodule.mem_map_of_mem hφV, ?_, fun g => ?_⟩` and prove the remaining obligations. Conclude with `(LinearEquiv.map_ne_zero_iff (mulChi N χ)).2 hφ0`. Establish `e : (fun k : Kinf E N => ((mulChi N χ φ : Sm E N) : GA E N → ℂ) (g * infGL E N (Unitary.toUnits k))) = (chiDet N χ g : ℂ) • mulK N χ (fun k : Kinf E N => (φ : GA E N → ℂ) (g * infGL E N (Unitary.toUnits k)))`. Use function extensionality and compare the values at `k`.
+
+Simplify using `only [mulChi_apply, map_mul, Units.val_mul, Pi.smul_apply, smul_eq_mul, mulK, LinearMap.coe_mk, AddHom.coe_mk]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e]`. Conclude with `Submodule.smul_mem _ _ (Submodule.mem_map_of_mem (hT g))`.
+-/
 theorem hasKType_twist {N : ℕ} (χ : HChar E) {K' : Subgroup (GL (Fin N) (Af E))} {W' : Submodule ℂ (Kinf E N → ℂ)}
     {V : Submodule ℂ (Sm E N)} (h : HasType K' W' V) :
     HasKType (W'.map (mulK N χ)) (V.map (mulChi N χ).toLinearMap) := by
@@ -66,6 +79,9 @@ theorem hasKType_twist {N : ℕ} (χ : HChar E) {K' : Subgroup (GL (Fin N) (Af E
     rw [e]
     exact Submodule.smul_mem _ _ (Submodule.mem_map_of_mem (hT g))
 
+/- English proof (translation)
+Take `⟨φ, hφ, h0, hW⟩` from `hV`. Conclude with `⟨φ, hφ, h0, fun g => h (hW g)⟩`.
+-/
 theorem HasKType.mono {N : ℕ} {W₁ W₂ : Submodule ℂ (Kinf E N → ℂ)} {V : Submodule ℂ (Sm E N)} (h : W₁ ≤ W₂)
     (hV : HasKType W₁ V) : HasKType W₂ V := by
   obtain ⟨φ, hφ, h0, hW⟩ := hV
@@ -73,6 +89,17 @@ theorem HasKType.mono {N : ℕ} {W₁ W₂ : Submodule ℂ (Kinf E N → ℂ)} {
 
 end Twist
 
+/- English proof (translation)
+Introduce `E _ _ _ n μ Ω hΩ`. Establish `: ∀ M, Finite (Ω M)` using `fun M => (hΩ M).1.to_subtype`. Set `W : ∀ N : ℕ, Submodule ℂ (Kinf E N → ℂ)` to `fun N => ⨆ p : Ω N × Fin (n + 1), (p.1 : Submodule ℂ (Kinf E N → ℂ)).map (mulK N (μ ^ (p.2 : ℕ)))`. Establish `hle : ∀ (N k : ℕ) (W' : Submodule ℂ (Kinf E N → ℂ)), W' ∈ Ω N → k ≤ n → W'.map (mulK N (μ ^ k)) ≤ W N` using `fun N k W' hW' hk => le_iSup (fun p : Ω N × Fin (n + 1) => (p.1 : Submodule ℂ (Kinf E N → ℂ)).map (mulK N (μ ^ (p.2 : ℕ)))) (⟨W', hW'⟩, ⟨k, Nat.lt_succ_of_le hk⟩)`. Use `⟨W, fun N => ?_, ?_⟩` and prove the remaining obligations.
+
+Establish `: ∀ p : Ω N × Fin (n + 1), FiniteDimensional ℂ ((p.1 : Submodule ℂ (Kinf E N → ℂ)).map (mulK N (μ ^ (p.2 : ℕ))))` using `fun p => by`. Use `(hΩ N).2 _ p.1.2` as an intermediate fact. Use `infer_instance`. Use `infer_instance`. Introduce `a b hab s₁ s₂ Pa Pb D hc h₁ h₂ i`.
+
+Establish `key : ∀ (k : ℕ), k ≤ n → ∀ x : Σ M : ℕ, Submodule ℂ (Sm E M), (0 < x.1 ∧ (x.1 = 0 ∨ ∃ K', ∃ W' ∈ Ω x.1, HasType K' W' x.2)) → HasKType (W (twPart (μ ^ k) x).1) (twPart (μ ^ k) x).2`. Introduce and unpack `k hk ⟨M, V⟩ ⟨hM, h0 | ⟨K', W', hW', hT⟩⟩`. Conclude with `absurd h0 (Nat.pos_iff_ne_zero.1 hM)`. Conclude with `HasKType.mono (hle M k W' hW' hk) (hasKType_twist (μ ^ k) hT)`. Establish `hmem : (⟨D.N i, D.V i⟩ : Σ M : ℕ, Submodule ℂ (Sm E M)) ∈ parts D` using `List.mem_ofFn.2 ⟨i, rfl⟩`.
+
+Establish `hj` using `hc.join`. Unfold `IsJoin at hj`. Rewrite `hmem` using `[hj, List.mem_append, List.mem_map, List.mem_map]`. Break down `hmem with ⟨x, hx, e⟩ | ⟨x, hx, e⟩` into its components or cases. Use `key b (by omega) x (mem_parts_of_treeParts hc.t₁ h₁ x hx)` as an intermediate fact.
+
+Rewrite `this` using `[e]`. Conclude with `this`. Use `key a (by omega) x (mem_parts_of_treeParts hc.t₂ h₂ x hx)` as an intermediate fact. Rewrite `this` using `[e]`. Conclude with `this`.
+-/
 theorem joinType : JoinType := by
   intro E _ _ _ n μ Ω hΩ
   have : ∀ M, Finite (Ω M) := fun M => (hΩ M).1.to_subtype

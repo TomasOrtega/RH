@@ -9,6 +9,9 @@ namespace GlobalTheory
 open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalCategory MonObj TopologicalSpace TensorProduct in
 open scoped CategoryTheory.Obj in
 
+/- English proof (translation)
+Introduce `k _ X f hf hc`. Use `haveI := _root_.GlobalTheory.isIntegral_of_smooth_field_of_connectedSpace f`. Use `infer_instance`.
+-/
 theorem _root_.GlobalTheory.irreducibleSpace_of_smooth_field_of_connectedSpace :
     ∀ (k : Type) [Field k] (X : Scheme.{0}) (f : X ⟶ Spec (CommRingCat.of k)), Smooth f →
       ConnectedSpace X → IrreducibleSpace X := by

@@ -5,6 +5,13 @@ noncomputable section
 namespace GlobalTheory.CartanInt.LamBall
 open Formalism.BasicNotions Matrix MeasureTheory
 
+/- English proof (translation)
+Establish `h1 : ∏ k ∈ Finset.range n, (k + 1) = n.factorial` using `Finset.prod_range_add_one_eq_factorial n`. Establish `h2 : ∏ k ∈ Finset.range n, (n - k) = n.factorial`. Combine the equalities or inequalities in the displayed calculation. Combine the equalities or inequalities in the displayed calculation. Apply `Finset.prod_le_prod'` to reduce the goal to its premises.
+
+Introduce `k hk`. Establish `hk` using `Finset.mem_range.1 hk`. Take `⟨m, hm⟩ : ∃ m, n - k = m + 1` from `⟨n - k - 1, by omega⟩`. Establish `hn : n = k + m + 1` using `by omega`. Rewrite using `[hm, hn]`.
+
+Use the polynomial consequences of the given equalities and inequalities. Use `_ = n.factorial ^ 2 := by rw [Finset.prod_mul_distrib, h1, h2, sq]`.
+-/
 theorem pow_self_le_factorial_sq (n : ℕ) : n ^ n ≤ n.factorial ^ 2 := by
   have h1 : ∏ k ∈ Finset.range n, (k + 1) = n.factorial := Finset.prod_range_add_one_eq_factorial n
   have h2 : ∏ k ∈ Finset.range n, (n - k) = n.factorial := by
@@ -23,11 +30,33 @@ theorem pow_self_le_factorial_sq (n : ℕ) : n ^ n ≤ n.factorial ^ 2 := by
         nlinarith
     _ = n.factorial ^ 2 := by rw [Finset.prod_mul_distrib, h1, h2, sq]
 
+/- English proof (translation)
+Establish `h` using `pow_self_le_factorial_sq (2 * N)`. Rewrite `h` using `[pow_mul']`. Conclude with `(Nat.pow_le_pow_iff_left two_ne_zero).1 h`.
+-/
 theorem two_mul_pow_le_factorial (N : ℕ) : (2 * N) ^ N ≤ (2 * N).factorial := by
   have h := pow_self_le_factorial_sq (2 * N)
   rw [pow_mul'] at h
   exact (Nat.pow_le_pow_iff_left two_ne_zero).1 h
 
+/- English proof (translation)
+Break down `Nat.eq_zero_or_pos a with rfl | ha0` into its components or cases. Establish `: IsEmpty ι` using `Fintype.card_eq_zero_iff.1 (by simpa using ha)`. Simplify using `only [ne_eq, OfNat.ofNat_ne_zero, not_false_eq_true, zero_pow, pow_zero, ENNReal.ofReal_one, one_pow]`. Rewrite using `[MeasureTheory.volume_pi, Measure.pi_of_empty]`. Conclude with `prob_le_one`.
+
+Establish `hnpos : (0 : ℝ) < Fintype.card ι` using `by rw [ha]; push_cast; positivity`. Establish `: Nonempty ι` using `Fintype.card_pos_iff.1 (by rw [ha]; positivity)`. Establish `hset : {z : ι → ℂ | ∑ i, ‖z i‖ < 2 * r} = {z | (∑ i, ‖z i‖ ^ (1 : ℝ)) ^ (1 / (1 : ℝ)) < 2 * r}`. Simplify using `only [Real.rpow_one, div_one]`. Establish `hG3 : Real.Gamma (2 / 1 + 1) = 2`.
+
+Use `Real.Gamma_nat_eq_factorial 2` as an intermediate fact. Evaluate the numerical expressions using `at this ⊢`. Establish `hGn : Real.Gamma (2 * (Fintype.card ι : ℝ) / 1 + 1) = ((2 * Fintype.card ι).factorial : ℝ)`. Rewrite using `[div_one, ← Real.Gamma_nat_eq_factorial]`. Use `push_cast`.
+
+Put the polynomial expressions in normal form. Rewrite using `[hset, Complex.volume_sum_rpow_lt ι le_rfl, hG3, hGn, ← ha, ← ENNReal.ofReal_pow (by positivity), ← ENNReal.ofReal_mul (by positivity), ← ENNReal.ofReal_pow (by positivity)]`. Apply `ENNReal.ofReal_le_ofReal` to reduce the goal to its premises. Use `set n := Fintype.card ι with hn`. Establish `hfac : ((2 : ℝ) * n) ^ n ≤ ((2 * n).factorial : ℝ)`.
+
+Conclude with `two_mul_pow_le_factorial n` after adjusting the coercions. Establish `han : (a : ℝ) ^ 2 = n` using `by exact_mod_cast ha.symm`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[pow_mul, ← mul_div_assoc, ← mul_pow]`. Use `congr 2`.
+
+Expand and normalize the polynomial expressions, which then agree. Use `_ ≤ (8 * Real.pi * r ^ 2) ^ n / ((2 : ℝ) * n) ^ n := div_le_div_of_nonneg_left (by positivity) (pow_pos (by positivity) n) hfac`. Use `_ = (4 * Real.pi * r ^ 2 / n) ^ n := by`. Rewrite using `[← div_pow]`. Use `congr 1`.
+
+Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Use `_ ≤ (324 / 25 * r ^ 2 / n) ^ n := by`. Apply `pow_le_pow_left₀ (by positivity)` to reduce the goal to its premises. Use `gcongr`.
+
+Combine the linear relations using `[Real.pi_lt_d2]`. Use `_ = ((18 / 5 * r / a) ^ 2) ^ n := by`. Use `congr 1`. Rewrite using `[div_pow, han]`. Expand and normalize the polynomial expressions, which then agree.
+
+Use `_ = ((18 / 5 * r / a) ^ n) ^ 2 := by rw [← pow_mul, ← pow_mul, Nat.mul_comm]`.
+-/
 theorem volume_l1_ball_le {ι : Type} [Fintype ι] (a : ℕ) (ha : Fintype.card ι = a ^ 2) (r : ℝ)
     (hr : 0 < r) : (volume : Measure (ι → ℂ)) {z | ∑ i, ‖z i‖ < 2 * r} ≤
       ENNReal.ofReal ((18 / 5 * r / (a : ℝ)) ^ (a ^ 2)) ^ 2 := by
@@ -80,6 +109,23 @@ theorem volume_l1_ball_le {ι : Type} [Fintype ι] (a : ℕ) (ha : Fintype.card 
           ring
       _ = ((18 / 5 * r / a) ^ n) ^ 2 := by rw [← pow_mul, ← pow_mul, Nat.mul_comm]
 
+/- English proof (translation)
+Take `⟨hHaar, hmap⟩` from `h`. Establish `: BorelSpace (lieU p q)` using `⟨rfl⟩`. Establish `hcont : Continuous fun X : Matrix (Fin p ⊕ Fin q) (Fin p ⊕ Fin q) ℂ => Xᴴ * Formalism.UG.Jpq p q + Formalism.UG.Jpq p q * X` using `(continuous_id.matrix_conjTranspose.matrix_mul continuous_const).add (continuous_const.matrix_mul continuous_id)`. Establish `hcl : IsClosed (lieU p q : Set (Matrix (Fin p ⊕ Fin q) (Fin p ⊕ Fin q) ℂ))` using `isClosed_eq hcont continuous_const`. Establish `: LocallyCompactSpace (Matrix (Fin p ⊕ Fin q) (Fin p ⊕ Fin q) ℂ)` using `inferInstanceAs (LocallyCompactSpace (Fin p ⊕ Fin q → Fin p ⊕ Fin q → ℂ))`.
+
+Establish `: SecondCountableTopology (Matrix (Fin p ⊕ Fin q) (Fin p ⊕ Fin q) ℂ)` using `inferInstanceAs (SecondCountableTopology (Fin p ⊕ Fin q → Fin p ⊕ Fin q → ℂ))`. Establish `: LocallyCompactSpace (lieU p q)` using `hcl.isClosedEmbedding_subtypeVal.locallyCompactSpace`. Establish `: SecondCountableTopology (lieU p q)` using `hcl.isClosedEmbedding_subtypeVal.isEmbedding.secondCountableTopology`. Establish `: OpensMeasurableSpace (lieU p q × lieU p q)` using `inferInstance`. Establish `: IsLocallyFiniteMeasure lam` using `inferInstance`.
+
+Establish `: SigmaFinite lam` using `inferInstance`. Establish `hc : Continuous fun ab : lieU p q × lieU p q => (ab.1 : Matrix (Fin p ⊕ Fin q) (Fin p ⊕ Fin q) ℂ) + Complex.I • (ab.2 : Matrix (Fin p ⊕ Fin q) (Fin p ⊕ Fin q) ℂ)`. Establish `h1 : Continuous fun ab : lieU p q × lieU p q => (ab.1 : Matrix (Fin p ⊕ Fin q) (Fin p ⊕ Fin q) ℂ)` using `continuous_subtype_val.comp continuous_fst`. Establish `h2 : Continuous fun ab : lieU p q × lieU p q => (ab.2 : Matrix (Fin p ⊕ Fin q) (Fin p ⊕ Fin q) ℂ)` using `continuous_subtype_val.comp continuous_snd`. Use the proof step `h1.add (h2.const_smul Complex.I)`.
+
+Establish `hΦ : Measurable fun ab : lieU p q × lieU p q => entries ((ab.1 : Matrix (Fin p ⊕ Fin q) (Fin p ⊕ Fin q) ℂ) + Complex.I • (ab.2 : Matrix (Fin p ⊕ Fin q) (Fin p ⊕ Fin q) ℂ))` using `(continuous_pi fun ij : (Fin p ⊕ Fin q) × (Fin p ⊕ Fin q) => hc.matrix_elem ij.1 ij.2).measurable`. Establish `hS : MeasurableSet {z : (Fin p ⊕ Fin q) × (Fin p ⊕ Fin q) → ℂ | ∑ i, ‖z i‖ < 2 * r}` using `(isOpen_lt (continuous_finsetSum _ fun i _ => (continuous_apply i).norm) continuous_const).measurableSet`. Establish `hsub : ballU p q r ×ˢ ballU p q r ⊆ (fun ab : lieU p q × lieU p q => entries ((ab.1 : Matrix (Fin p ⊕ Fin q) (Fin p ⊕ Fin q) ℂ) + Complex.I • (ab.2 : Matrix (Fin p ⊕ Fin q) (Fin p ⊕ Fin q) ℂ))) ⁻¹' {z | ∑ i, ‖z i‖ < 2 * r}`. Introduce and unpack `⟨X, Y⟩ ⟨hX, hY⟩`. Simplify using `only [ballU, Set.mem_ofPred_eq] at hX hY`.
+
+Simplify using `only [Set.mem_preimage, Set.mem_ofPred_eq, entries, Fintype.sum_prod_type]`. Combine the equalities or inequalities in the displayed calculation. Use `Finset.sum_le_sum fun i _ => Finset.sum_le_sum fun j _ => ?_` and prove the remaining obligations. Rewrite using `[Matrix.add_apply, Matrix.smul_apply, smul_eq_mul]`. Combine the equalities or inequalities in the displayed calculation.
+
+Use `_ = (∑ i, ∑ j, ‖(X : Matrix (Fin p ⊕ Fin q) (Fin p ⊕ Fin q) ℂ) i j‖) + ∑ i, ∑ j, ‖(Y : Matrix (Fin p ⊕ Fin q) (Fin p ⊕ Fin q) ℂ) i j‖ := by`. Simplify using `only [Finset.sum_add_distrib]`. Use `_ < r + r := add_lt_add hX hY`. Use `_ = 2 * r := by ring`. Establish `hvol` using `volume_l1_ball_le (ι := (Fin p ⊕ Fin q) × (Fin p ⊕ Fin q)) (p + q) (by simp [Fintype.card_prod, Fintype.card_sum, sq]) r hr`.
+
+Establish `key : lam (ballU p q r) ^ 2 ≤ ENNReal.ofReal ((18 / 5 * r / ((p + q : ℕ) : ℝ)) ^ ((p + q) ^ 2)) ^ 2`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Measure.prod_prod, sq]`. Use `_ ≤ (lam.prod lam) ((fun ab : lieU p q × lieU p q => entries ((ab.1 : Matrix (Fin p ⊕ Fin q) (Fin p ⊕ Fin q) ℂ) + Complex.I • (ab.2 : Matrix (Fin p ⊕ Fin q) (Fin p ⊕ Fin q) ℂ))) ⁻¹' {z | ∑ i, ‖z i‖ < 2 * r}) := measure_mono hsub`. Use `_ = ((lam.prod lam).map (fun ab : lieU p q × lieU p q => entries ((ab.1 : Matrix (Fin p ⊕ Fin q) (Fin p ⊕ Fin q) ℂ) + Complex.I • (ab.2 : Matrix (Fin p ⊕ Fin q) (Fin p ⊕ Fin q) ℂ)))) {z | ∑ i, ‖z i‖ < 2 * r} := (Measure.map_apply hΦ hS).symm`.
+
+Use `_ = volume {z : (Fin p ⊕ Fin q) × (Fin p ⊕ Fin q) → ℂ | ∑ i, ‖z i‖ < 2 * r} := by`. Rewrite using `[hmap]`. Use `_ ≤ _ := hvol`. Conclude with `(ENNReal.pow_le_pow_left_iff two_ne_zero).1 key`.
+-/
 theorem lam_ballU_le (p q : ℕ) (lam : Measure (lieU p q)) (h : IsOmegaLeb lam) (r : ℝ) (hr : 0 < r) :
     lam (ballU p q r) ≤ ENNReal.ofReal ((18 / 5 * r / ((p + q : ℕ) : ℝ)) ^ ((p + q) ^ 2)) := by
   classical

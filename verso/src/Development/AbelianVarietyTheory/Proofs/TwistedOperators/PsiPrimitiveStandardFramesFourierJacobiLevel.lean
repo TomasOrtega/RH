@@ -14,6 +14,31 @@ open GlobalTheory.AscFin
 
 open GlobalTheory.StairLine GlobalTheory.SeeSaw in
 
+/- English proof (translation)
+Introduce `D hOff T L μ0 hL sc G W M hM F hF ρ h v hv`. Take `⟨hc, he, -⟩` from `hF.hJ ρ h`. Establish `hlat` using `G.sp.colLat (2 * ρ + 1) (by omega) (by omega)`. Set `𝔟 : Fin ρ → FI D` to `fun p => FractionalIdeal.spanSingleton _ (((-D.host.xi0) ^ (p.1 + 1))⁻¹) * stairId (G.pl.stA sc) (G.pl.stAbar sc) (2 * ρ + 1 - 1) (Fin.castLE (by omega) p)`. Establish `hline : ∀ p : Fin ρ, ∀ a, GlobalTheory.FinPl.colMul (F.dJ ρ h).jX p a ∈ latV _ (G.Λ (.grid (2 * ρ + 1) 0)) (· = v) ↔ a ∈ idV (𝔟 p) v`.
+
+Introduce `p a`. Establish `e1 : GlobalTheory.FinPl.colMul (F.dJ ρ h).jX p a = fun k => a * incA D ((-D.host.xi0) ^ (p.1 + 1) * (G.colDec (2 * ρ + 1) (by omega) (by omega)).a k (Fin.castLE (by omega) p))`. Use function extensionality and compare the values at `k`. Simplify using `only [GlobalTheory.FinPl.colMul, HypDec.jX, rat, Matrix.map_apply, he, colsOf]`. Rewrite using `[e1]`.
+
+Establish `e2 : G.Λ (.grid (2 * ρ + 1) 0) = (G.colDec (2 * ρ + 1) (by omega) (by omega)).lat (G.Λ (.core (2 * ρ + 1))) (stairId (G.pl.stA sc) (G.pl.stAbar sc) (2 * ρ + 1 - 1))` using `hlat`. Rewrite using `[e2]`. Conclude with `line_mem_iff _ _ _ _ (by simp only [Fin.coe_castLE]; omega) (pow_ne_zero _ (neg_ne_zero.2 cmHost_imaginaryGenerator_ne_zero)) v a`. Introduce `i j hij s hs`. Establish `hN : ((G.pl.modul sc : Ideal (𝓞 D.host.E)) : FI D) ≠ 0` using `FractionalIdeal.coeIdeal_ne_zero.2 (G.pl.modul_ne_bot sc)`.
+
+Establish `hN' : ((G.pl.modulBar sc : Ideal (𝓞 D.host.E)) : FI D) ≠ 0`. Use `FractionalIdeal.coeIdeal_ne_zero.2 ?_` and prove the remaining obligations. Unfold `Places.modulBar`. Introduce `h0`. Apply `G.pl.modul_ne_bot sc` to reduce the goal to its premises.
+
+Establish `h1` using `congrArg (fun I : Ideal (𝓞 D.host.E) => D.host.conj⁻¹ • I) h0`. Simplify using `using h1`. Establish `hA : G.pl.stA sc ≠ 0` using `mul_ne_zero (GlobalTheory.CuspCharLattice.host_AA_ne_zero _) (inv_ne_zero hN')`. Establish `hB : G.pl.stAbar sc ≠ 0` using `mul_ne_zero (GlobalTheory.Member.LatSelfDual.AAbar_ne_zero D) (inv_ne_zero hN)`. Establish `hne : ∀ p, 𝔟 p ≠ 0` using `fun p => mul_ne_zero (by rw [Ne, FractionalIdeal.spanSingleton_eq_zero_iff]; exact inv_ne_zero (pow_ne_zero _ (neg_ne_zero.2 cmHost_imaginaryGenerator_ne_zero))) (by`.
+
+Unfold `stairId`. Use `mul_ne_zero (pow_ne_zero _ hA) (inv_ne_zero (pow_ne_zero _ hB)))` and prove the remaining obligations. Establish `key : (∀ a : AE D, GlobalTheory.FinPl.colMul (F.dJ ρ h).jX j a ∈ latV _ (G.Λ (.grid (2 * ρ + 1) 0)) (· = v) → GlobalTheory.FinPl.colMul (F.dJ ρ h).jX i (s * a) ∈ latV _ (G.Λ (.grid (2 * ρ + 1) 0)) (· = v)) ↔ ∀ a ∈ idV (𝔟 j) v, s * a ∈ idV (𝔟 i) v` using `⟨fun H a ha => (hline i _).1 (H a ((hline j a).2 ha)), fun H a hc => (hline i _).2 (H a ((hline j a).1 hc))⟩`. Rewrite using `[key, GlobalTheory.T.mul_fractionalIdealCompletion_subset_iff_mem_quotient D v _ _ (hne j) (hne i) s hs, ← DiffDual.idV_dI_iff D W.ψ W.ψ_std v s hs]`. Establish `hid : 𝔟 i * (𝔟 j)⁻¹ * (((G.pl.modul sc * G.pl.modulBar sc : Ideal (𝓞 D.host.E))) : FI D) = dI D`.
+
+Establish `hst` using `stairId_succ (𝔞 := G.pl.stA sc) (c := 2 * ρ + 1 - 1) hB (Fin.castLE (by omega) i) (Fin.castLE (by omega) j) (by simp only [Fin.coe_castLE]; exact hij)`. Establish `hSj : stairId (G.pl.stA sc) (G.pl.stAbar sc) (2 * ρ + 1 - 1) (Fin.castLE (by omega) j) ≠ 0`. Unfold `stairId`. Conclude with `mul_ne_zero (pow_ne_zero _ hA) (inv_ne_zero (pow_ne_zero _ hB))`. Use `show FractionalIdeal.spanSingleton _ (((-D.host.xi0) ^ (i.1 + 1))⁻¹) * stairId (G.pl.stA sc) (G.pl.stAbar sc) (2 * ρ + 1 - 1) (Fin.castLE (by omega) i) * (FractionalIdeal.spanSingleton _ (((-D.host.xi0) ^ (j.1 + 1))⁻¹) * stairId (G.pl.stA sc) (G.pl.stAbar sc) (2 * ρ + 1 - 1) (Fin …`.
+
+Rewrite using `[hst]`. Use `revert hSj`. Generalize the expression as in `stairId (G.pl.stA sc) (G.pl.stAbar sc) (2 * ρ + 1 - 1) (Fin.castLE (by omega) j) = Sj`. Introduce `hSj`. Rewrite using `[FractionalIdeal.coeIdeal_mul, mul_inv, FractionalIdeal.spanSingleton_inv, inv_inv]`.
+
+Unfold `Places.stA Places.stAbar dI`. Establish `hx : ((-D.host.xi0) ^ (i.1 + 1))⁻¹ * (-D.host.xi0) ^ (j.1 + 1) = -D.host.xi0`. Rewrite using `[hij, pow_succ (-D.host.xi0) (i.1 + 1), ← mul_assoc, inv_mul_cancel₀ (pow_ne_zero _ (neg_ne_zero.2 cmHost_imaginaryGenerator_ne_zero)), one_mul]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[mul_inv_cancel₀ hSj, mul_inv_cancel₀ hN, mul_inv_cancel₀ hN', FractionalIdeal.spanSingleton_mul_spanSingleton, hx, mul_one, mul_one, mul_one]`.
+
+Use `congr 2`. Rewrite using `[FractionalIdeal.spanSingleton_eq_spanSingleton]`. Conclude with `⟨-1, by simp⟩`. Prove the components needed by the constructor for the conclusion. Introduce `hs'`.
+
+Use `idV_le_of_loc (fun z hz => ?_) hs'` and prove the remaining obligations. Take `⟨t, ht, htm⟩` from `exists_modul G.pl sc hv`. Conclude with `⟨t, ht, by rw [← hid, mul_comm (algebraMap _ _ _)]; exact FractionalIdeal.mul_mem_mul hz htm⟩`. Introduce `hs'`. Use `GlobalTheory.SeeSaw.idV_mono ?_ v hs'` and prove the remaining obligations.
+
+Rewrite using `[← hid]`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem GlobalTheory.AscFin.primAt_jac_std : OnStd fun {D} _ _ {sc} {G} W F => ∀ ρ (h : 2 * ρ + 2 ≤ D.R.m), ∀ v ∉ G.pl.S0, PrimAt W.ψ (F.dJ ρ h) (G.Λ (.grid (2 * ρ + 1) 0)) v := by
   intro D hOff T L μ0 hL sc G W M hM F hF ρ h v hv
   obtain ⟨hc, he, -⟩ := hF.hJ ρ h

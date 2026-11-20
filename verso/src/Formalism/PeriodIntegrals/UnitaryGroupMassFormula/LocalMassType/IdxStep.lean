@@ -64,27 +64,44 @@ variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algeb
   {σ : E →ₐ[F] E} {n : ℕ} {J : Matrix (Fin n) (Fin n) E} {v : HeightOneSpectrum (𝓞 F)}
   {Λ : Set (Fin n → E)}
 
+/- English proof (translation)
+Use `congrFun (nat_osmul (n := 1) v g (fun _ => w)) 0` as an intermediate fact. Simplify `this` using `only [Pi.smul_apply, smul_eq_mul]`.
+-/
 theorem nat_osmul1 (g : ℕ) (w : Fv F v ⊗[F] E) :
     (g : v.adicCompletionIntegers F) • w = sc (E := E) v (g : Fv F v) * w := by
   have := congrFun (nat_osmul (n := 1) v g (fun _ => w)) 0
   simpa only [Pi.smul_apply, smul_eq_mul] using this
 
+/- English proof (translation)
+Rewrite using `[← map_natCast (algebraMap F (Fv F v))]`. Conclude with `(map_ne_zero _).2 (Nat.cast_ne_zero.2 hg.ne_zero)`.
+-/
 theorem natCast_ne {g : ℕ} (hg : g.Prime) : (g : Fv F v) ≠ 0 := by
   rw [← map_natCast (algebraMap F (Fv F v))]
   exact (map_ne_zero _).2 (Nat.cast_ne_zero.2 hg.ne_zero)
 
+/- English proof (translation)
+Distinguish the cases in `h1 : a = b`. Substitute `h1` using the available equality. Simplify using `[uMat]`. Apply the tactic sequence `by_cases h2 : a < b <;> simp [uMat, h1, h2]`.
+-/
 theorem uMat_split {r : ℕ} (u : UIdx r → Fv F v ⊗[F] E) (a b : Fin (r + 1)) :
     uMat v u a b = (if a = b then 1 else 0) + (if h : a < b then u ⟨(a, b), h⟩ else 0) := by
   by_cases h1 : a = b
   · subst h1; simp [uMat]
   · by_cases h2 : a < b <;> simp [uMat, h1, h2]
 
+/- English proof (translation)
+Simplify using `only [uMat_split, add_smul, Finset.sum_add_distrib, ite_smul, one_smul, zero_smul, Finset.sum_ite_eq', Finset.mem_univ, if_true]`.
+-/
 theorem sum_uMat {r : ℕ} (u : UIdx r → Fv F v ⊗[F] E) (X : Fin (r + 1) → Fin n → Fv F v ⊗[F] E)
     (b : Fin (r + 1)) :
     ∑ a, uMat v u a b • X a = X b + ∑ a, (if h : a < b then u ⟨(a, b), h⟩ else 0) • X a := by
   simp only [uMat_split, add_smul, Finset.sum_add_distrib, ite_smul, one_smul, zero_smul,
     Finset.sum_ite_eq', Finset.mem_univ, if_true]
 
+/- English proof (translation)
+Establish `hsplit` using `Fintype.sum_subtype_add_sum_subtype (fun a => a ∈ {a : Fin (r + 1) | a < b}) (fun a => (if h : a < b then c ⟨a, h⟩ else 0) • X a)`. Rewrite using `[← hsplit]`. Establish `h0 : ∀ i : {x // ¬ x ∈ {a : Fin (r + 1) | a < b}}, (if h : (i : Fin (r + 1)) < b then c ⟨i, h⟩ else 0) • X i = 0` using `fun i => by`. Rewrite using `[dif_neg (show ¬ ((i : Fin (r + 1)) < b) from i.2), zero_smul]`. Simplify using `only [h0, Finset.sum_const_zero, add_zero]`.
+
+Conclude with `Finset.sum_congr rfl fun i _ => by rw [dif_pos (show (i : Fin (r + 1)) < b from i.2)]`.
+-/
 theorem sum_dite_lt {r : ℕ} (b : Fin (r + 1))
     (c : {a // a ∈ {a : Fin (r + 1) | a < b}} → Fv F v ⊗[F] E) (X : Fin (r + 1) → Fin n → Fv F v ⊗[F] E) :
     ∑ a, (if h : a < b then c ⟨a, h⟩ else 0) • X a = ∑ i, c i • X i := by
@@ -97,6 +114,11 @@ theorem sum_dite_lt {r : ℕ} (b : Fin (r + 1))
   simp only [h0, Finset.sum_const_zero, add_zero]
   exact Finset.sum_congr rfl fun i _ => by rw [dif_pos (show (i : Fin (r + 1)) < b from i.2)]
 
+/- English proof (translation)
+Establish `hs' : UniC (Fv F v) σ J (F0 P) s` using `hs`. Establish `hc : ∀ b : Fin (r + 1), ∃ c : {a // a ∈ {a : Fin (r + 1) | a < b}} → Fv F v ⊗[F] E, ∑ i, c i • ratV (F` using `F) (Fv F v) (F0 P i) = lin (Fv F v) σ J s (ratV (F := F) (Fv F v) (F0 P b)) - ratV (F := F) (Fv F v) (F0 P b) := fun b => (Fintype.mem_span_image_iff_exists_fun _).1 (hs' b)`. Use `choose c hc using hc`. Use `⟨fun p => c p.1.2 ⟨p.1.1, p.2⟩, fun b => ?_⟩` and prove the remaining obligations. Rewrite using `[sum_uMat]`.
+
+Use `sum_dite_lt b (c b) (fun a => ratV (F := F) (Fv F v) (F0 P a))` as an intermediate fact. Rewrite using `[this, hc b]`. Normalize the expressions using the abelian group laws.
+-/
 theorem ssub_frU {r : ℕ} (P : Frame E n r) {s : HA (Fv F v) σ J}
     (hs : s ∈ Ssub (Fv F v) σ J P) : ∃ u : UIdx r → Fv F v ⊗[F] E, ∀ b,
       lin (Fv F v) σ J s (ratV (F := F) (Fv F v) (F0 P b)) =
@@ -113,6 +135,11 @@ theorem ssub_frU {r : ℕ} (P : Frame E n r) {s : HA (Fv F v) σ J}
   rw [this, hc b]
   abel
 
+/- English proof (translation)
+Introduce `b`. Use `show lin (Fv F v) σ J s (ratV (F := F) (Fv F v) (F0 P b)) - ratV (F := F) (Fv F v) (F0 P b) ∈ _`. Rewrite using `[hs b, sum_uMat, add_sub_cancel_left]`. Use `Submodule.sum_mem _ fun a _ => ?_` and prove the remaining obligations. Use `split_ifs with h`.
+
+Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span ⟨a, h, rfl⟩)`. Rewrite using `[zero_smul]`. Conclude with `Submodule.zero_mem _`.
+-/
 theorem ssub_of {r : ℕ} (P : Frame E n r) {s : HA (Fv F v) σ J} {u : UIdx r → Fv F v ⊗[F] E}
     (hs : ∀ b, lin (Fv F v) σ J s (ratV (F := F) (Fv F v) (F0 P b)) =
       ∑ a, uMat v u a b • ratV (F := F) (Fv F v) (F0 P a)) : s ∈ Ssub (Fv F v) σ J P := by
@@ -124,6 +151,9 @@ theorem ssub_of {r : ℕ} (P : Frame E n r) {s : HA (Fv F v) σ J} {u : UIdx r �
   · exact Submodule.smul_mem _ _ (Submodule.subset_span ⟨a, h, rfl⟩)
   · rw [zero_smul]; exact Submodule.zero_mem _
 
+/- English proof (translation)
+Unfold `Formalism.L2.SG.TypedSets.Kgv`. Simplify using `only [Set.mem_setOf_eq, Matrix.sub_mulVec, Matrix.one_mulVec, nat_osmul]`. Conclude with `Iff.rfl`.
+-/
 theorem kgv_iff {g : ℕ} (κ : HA (Fv F v) σ J) :
     κ ∈ Formalism.L2.SG.TypedSets.Kgv σ J Λ g v ↔ κ ∈ Formalism.L2.SG.TypedSets.Kv σ J Λ v ∧
       ∀ w ∈ latLoc (E := E) v Λ, ∃ z ∈ latLoc (E := E) v Λ,
@@ -132,9 +162,17 @@ theorem kgv_iff {g : ℕ} (κ : HA (Fv F v) σ J) :
   simp only [Set.mem_setOf_eq, Matrix.sub_mulVec, Matrix.one_mulVec, nat_osmul]
   exact Iff.rfl
 
+/- English proof (translation)
+The claim follows from `(kgv_iff 1).2 ⟨kv_one, fun w _ => ⟨0, Submodule.zero_mem _, by rw [lin_one, sub_self, smul_zero]⟩⟩`.
+-/
 theorem kgv_one {g : ℕ} : (1 : HA (Fv F v) σ J) ∈ Formalism.L2.SG.TypedSets.Kgv σ J Λ g v :=
   (kgv_iff 1).2 ⟨kv_one, fun w _ => ⟨0, Submodule.zero_mem _, by rw [lin_one, sub_self, smul_zero]⟩⟩
 
+/- English proof (translation)
+Rewrite `*` using `[kgv_iff]`. Use `⟨kv_mul h.1 h'.1, fun w hw => ?_⟩` and prove the remaining obligations. Take `⟨z', hz', hz'e⟩` from `h'.2 w hw`. Take `⟨z, hz, hze⟩` from `h.2 w hw`. Use `⟨lin (Fv F v) σ J κ z' + z, Submodule.add_mem _ (kv_lat h.1 hz') hz, ?_⟩` and prove the remaining obligations.
+
+Establish `e : lin (Fv F v) σ J (κ * κ') w - w = lin (Fv F v) σ J κ (lin (Fv F v) σ J κ' w - w) + (lin (Fv F v) σ J κ w - w)`. Rewrite using `[lin_mul, map_sub]`. Normalize the expressions using the abelian group laws. Rewrite using `[e, hz'e, hze, map_smul, smul_add]`.
+-/
 theorem kgv_mul {g : ℕ} {κ κ' : HA (Fv F v) σ J} (h : κ ∈ Formalism.L2.SG.TypedSets.Kgv σ J Λ g v)
     (h' : κ' ∈ Formalism.L2.SG.TypedSets.Kgv σ J Λ g v) : κ * κ' ∈ Formalism.L2.SG.TypedSets.Kgv σ J Λ g v := by
   rw [kgv_iff] at *
@@ -147,6 +185,11 @@ theorem kgv_mul {g : ℕ} {κ κ' : HA (Fv F v) σ J} (h : κ ∈ Formalism.L2.S
     rw [lin_mul, map_sub]; abel
   rw [e, hz'e, hze, map_smul, smul_add]
 
+/- English proof (translation)
+Rewrite `*` using `[kgv_iff]`. Use `⟨kv_mul (kv_mul (kv_inv hs) h.1) hs, fun w hw => ?_⟩` and prove the remaining obligations. Take `⟨z, hz, hze⟩` from `h.2 _ (kv_lat hs hw)`. Use `⟨lin (Fv F v) σ J s⁻¹ z, kv_lat (kv_inv hs) hz, ?_⟩` and prove the remaining obligations. Establish `e : lin (Fv F v) σ J (s⁻¹ * κ * s) w - w = lin (Fv F v) σ J s⁻¹ (lin (Fv F v) σ J κ (lin (Fv F v) σ J s w) - lin (Fv F v) σ J s w)`.
+
+Rewrite using `[map_sub, lin_inv_lin, lin_mul, lin_mul]`. Rewrite using `[e, hze, map_smul]`.
+-/
 theorem kgv_conj {g : ℕ} {s κ : HA (Fv F v) σ J} (hs : s ∈ Formalism.L2.SG.TypedSets.Kv σ J Λ v)
     (h : κ ∈ Formalism.L2.SG.TypedSets.Kgv σ J Λ g v) : s⁻¹ * κ * s ∈ Formalism.L2.SG.TypedSets.Kgv σ J Λ g v := by
   rw [kgv_iff] at *
@@ -158,6 +201,9 @@ theorem kgv_conj {g : ℕ} {s κ : HA (Fv F v) σ J} (hs : s ∈ Formalism.L2.SG
     rw [map_sub, lin_inv_lin, lin_mul, lin_mul]
   rw [e, hze, map_smul]
 
+/- English proof (translation)
+Take `⟨hxK, s, κ, hsS, hsK, hκ, rfl⟩` from `hx`. Take `⟨hyK, s', κ', hsS', hsK', hκ', rfl⟩` from `hy`. Conclude with `⟨kv_mul hxK hyK, s * s', s'⁻¹ * κ * s' * κ', Subgroup.mul_mem (Ssub (Fv F v) σ J P) hsS hsS', kv_mul hsK hsK', kgv_mul (kgv_conj hsK' hκ) hκ', by group⟩`.
+-/
 theorem knat_mul {r g : ℕ} {P : Frame E n r} {x y : HA (Fv F v) σ J}
     (hx : x ∈ Formalism.L2.SG.TypedSets.Knatv σ J Λ P g v) (hy : y ∈ Formalism.L2.SG.TypedSets.Knatv σ J Λ P g v) :
     x * y ∈ Formalism.L2.SG.TypedSets.Knatv σ J Λ P g v := by
@@ -166,6 +212,15 @@ theorem knat_mul {r g : ℕ} {P : Frame E n r} {x y : HA (Fv F v) σ J}
   exact ⟨kv_mul hxK hyK, s * s', s'⁻¹ * κ * s' * κ', Subgroup.mul_mem (Ssub (Fv F v) σ J P) hsS hsS',
     kv_mul hsK hsK', kgv_mul (kgv_conj hsK' hκ) hκ', by group⟩
 
+/- English proof (translation)
+Take `⟨-, s, κ, hsS, hsK, hκ, rfl⟩` from `hx`. Take `⟨u, hu⟩` from `ssub_frU P hsS`. Establish `hsX : ∀ b, locF v (s • ratTup (Fv F v) (F0 P)) b = locF v (frU v P u) b` using `fun b => by show sc (E := E) v (alp v r b) • lin (Fv F v) σ J s (ratV (F := F) (Fv F v) (F0 P b)) = sc (E := E) v (alp v r b) • ∑ a, uMat v u a b • ratV (F := F) (Fv F v) (F0 P a)`. Rewrite using `[hu b]`. Use `⟨u, ?_, ?_⟩` and prove the remaining obligations.
+
+Introduce and unpack `⟨⟨a, b⟩, hab⟩`. Establish `hin : locF v (frU v P u) b ∈ latLoc (E` using `E) v Λ := by`. Rewrite using `[← hsX, locF_act]`. Conclude with `kv_lat hsK (hP.1 b)`. Unfold `frU at hin`.
+
+Rewrite `hin` using `[locF_comb]`. Use `hP.2 _ hin a` as an intermediate fact. Establish `hu' : uMat v u a b = u ⟨(a, b), hab⟩` using `by simp [uMat, hab.ne, hab]`. Rewrite `this` using `[hu']`. Conclude with `this`.
+
+Introduce `b`. Take `⟨z, hz, hze⟩` from `((kgv_iff κ).1 hκ).2 _ (hP.1 b)`. Use `⟨lin (Fv F v) σ J s z, kv_lat hsK hz, ?_⟩` and prove the remaining obligations. Rewrite using `[← hsX, locF_act, locF_act, lin_mul, ← map_sub, hze, map_smul]`.
+-/
 theorem knat_cong {r g : ℕ} {P : Frame E n r} (hP : IsPrim v Λ (locF v (ratTup (Fv F v) (F0 P))))
     {x : HA (Fv F v) σ J} (hx : x ∈ Formalism.L2.SG.TypedSets.Knatv σ J Λ P g v) :
     ∃ u ∈ UO (E := E) v r, Cong σ J v Λ g P x u := by
@@ -190,6 +245,11 @@ theorem knat_cong {r g : ℕ} {P : Frame E n r} (hP : IsPrim v Λ (locF v (ratTu
     refine ⟨lin (Fv F v) σ J s z, kv_lat hsK hz, ?_⟩
     rw [← hsX, locF_act, locF_act, lin_mul, ← map_sub, hze, map_smul]
 
+/- English proof (translation)
+Introduce `p`. Rewrite using `[Pi.add_apply, mul_add]`. Use `oev_add v (hu p) ?_` and prove the remaining obligations. Establish `e : sc (E` using `E) v ((alp v r p.1.1)⁻¹ * alp v r p.1.2) = sc (E := E) v (g : Fv F v) * sc (E := E) v ((alp v r p.1.1)⁻¹ * alp v r p.1.2 * (g : Fv F v)⁻¹) := by`. Rewrite using `[sc_mul', mul_comm (g : Fv F v), mul_assoc, inv_mul_cancel₀ hg, mul_one]`.
+
+Rewrite using `[e, mul_assoc, ← nat_osmul1]`. Establish `hb'` using `hb p`. Rewrite `hb'`, the goal using `[mem_oev_iff]`. Conclude with `Submodule.smul_mem _ _ hb'`.
+-/
 theorem uo_add {r g : ℕ} (hg : (g : Fv F v) ≠ 0) {u b : UIdx r → Fv F v ⊗[F] E}
     (hu : u ∈ UO (E := E) v r) (hb : b ∈ UOgS (E := E) v g r) : u + b ∈ UO (E := E) v r := by
   intro p
@@ -237,11 +297,17 @@ def phi (σ : E →ₐ[F] E) (J : Matrix (Fin n) (Fin n) E) (v : HeightOneSpectr
     UIdx r → Fv F v ⊗[F] E :=
   if h : ∃ u ∈ UO (E := E) v r, Cong σ J v Λ g P x u then h.choose else 0
 
+/- English proof (translation)
+Unfold `phi`. Rewrite using `[dif_pos h]`. Conclude with `h.choose_spec`.
+-/
 theorem phi_spec {r g : ℕ} {P : Frame E n r} {x : HA (Fv F v) σ J}
     (h : ∃ u ∈ UO (E := E) v r, Cong σ J v Λ g P x u) :
     phi σ J v Λ g P x ∈ UO (E := E) v r ∧ Cong σ J v Λ g P x (phi σ J v Λ g P x) := by
   unfold phi; rw [dif_pos h]; exact h.choose_spec
 
+/- English proof (translation)
+Unfold `sdE`. Use `split_ifs with h`. Use `haveI := h.choose_spec.1`. Use `infer_instance`. Conclude with `⟨fun _ => Measure.map_zero _⟩`.
+-/
 theorem sdE_inv (ψ : AddChar (AF F) ℂ) (v : HeightOneSpectrum (𝓞 F)) (ι : Type) [Fintype ι] :
     (sdE (E := E) ψ v ι).IsAddLeftInvariant := by
   unfold sdE
@@ -251,6 +317,19 @@ theorem sdE_inv (ψ : AddChar (AF F) ℂ) (v : HeightOneSpectrum (𝓞 F)) (ι :
 
 end Prf
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ n J ψ v r g P Λ T μG μS0 hStd hP hSD hUn hg hgv hN hEta hPr hμG hLat hμS0 hS0`. Establish `hyp : IdxHyp σ J ψ v g P Λ T μS0` using `⟨hStd, hP, hSD, hUn, hg, hgv, hN, hEta, hPr, hLat, hμS0, hS0⟩`. Establish `hg0 : (g : Fv F v) ≠ 0` using `natCast_ne hg`. Use `haveI := hC (E := E) v r g hg`. Use `haveI := sdE_inv (E := E) ψ v (UIdx r)`.
+
+Establish `hNK : ∀ x ∈ Formalism.L2.SG.TypedSets.Knatv σ J Λ P g v, ∀ k ∈ principalCongruenceSubgroupAlt σ J v Λ g P, x * k ∈ Formalism.L2.SG.TypedSets.Knatv σ J Λ P g v` using `fun x hx k hk => knat_mul hx (hL σ J ψ v g P Λ T μS0 hyp hk)`. Establish `hφ : ∀ x ∈ Formalism.L2.SG.TypedSets.Knatv σ J Λ P g v, phi σ J v Λ g P x ∈ UO (E` using `E) v r := fun x hx => (phi_spec (knat_cong hPr hx)).1`. Establish `hco : ∀ x ∈ Formalism.L2.SG.TypedSets.Knatv σ J Λ P g v, ∀ y ∈ Formalism.L2.SG.TypedSets.Knatv σ J Λ P g v, x⁻¹ * y ∈ principalCongruenceSubgroupAlt σ J v Λ g P ↔ -phi σ J v Λ g P x + phi σ J v Λ g P y ∈ UOgS (E` using `E) v g r := fun x hx y hy => cong_iff hSD hPr hg0 hx.1 hy.1 (phi_spec (knat_cong hPr hx)).2 (phi_spec (knat_cong hPr hy)).2`. Establish `hsur : ∀ u ∈ UO (E` using `E) v r, ∃ x ∈ Formalism.L2.SG.TypedSets.Knatv σ J Λ P g v, -phi σ J v Λ g P x + u ∈ UOgS (E := E) v g r := by`. Introduce `u hu`.
+
+Take `⟨s, hsK, hs⟩` from `hU σ J ψ v g P Λ T μS0 hyp u hu`. Establish `hsN : s ∈ Formalism.L2.SG.TypedSets.Knatv σ J Λ P g v` using `⟨hsK, s, 1, ssub_of P hs, hsK, kgv_one, (mul_one s).symm⟩`. Establish `hcs : Cong σ J v Λ g P s u` using `fun b => ⟨0, Submodule.zero_mem _, by`. Rewrite using `[smul_zero, sub_eq_zero]`. Use `show sc (E := E) v (alp v r b) • lin (Fv F v) σ J s (ratV (F := F) (Fv F v) (F0 P b)) = sc (E := E) v (alp v r b) • ∑ a, uMat v u a b • ratV (F := F) (Fv F v) (F0 P a)`.
+
+Rewrite using `[hs b]⟩`. Use `⟨s, hsN, (cong_iff hSD hPr hg0 hsK hsK (phi_spec (knat_cong hPr hsN)).2 hcs).1 ?_⟩` and prove the remaining obligations. Rewrite using `[inv_mul_cancel]`. Conclude with `(principalCongruenceSubgroupAlt σ J v Λ g P).one_mem`. Use `haveI : BorelSpace (Fv F v ⊗[F] E) := ⟨rfl⟩`.
+
+Use `haveI : MeasurableAdd (Fv F v ⊗[F] E) := inferInstance`. Use `haveI : MeasurableAdd (UIdx r → Fv F v ⊗[F] E) := inferInstance`. Establish `key` using `idx_abs μG (sdE (E := E) ψ v (UIdx r)) (principalCongruenceSubgroupAlt σ J v Λ g P) (hM σ J ψ v g P Λ T μS0 hyp) (UOgS (E := E) v g r) (hMU (E := E) v r g hg) (Formalism.L2.SG.TypedSets.Knatv σ J Λ P g v) (UO (E := E) v r) (phi σ J v Λ g P) hNK (fun u hu b hb => uo_add hg0 hu hb) …`. Use `congrArg ENNReal.toReal key` as an intermediate fact. Rewrite `this` using `[ENNReal.toReal_mul, ENNReal.toReal_mul]`.
+
+Conclude with `this`.
+-/
 theorem stepIdx_of (hL : CongruenceSubgroupLift) (hU : KUnip1) (hM : CongruenceSubgroupMeasurable) (hMU : MeasUOg) (hC : CountUOg) :
     StepIdx := by
   intro F E _ _ _ _ _ σ n J ψ v r g P Λ T μG μS0 hStd hP hSD hUn hg hgv hN hEta hPr hμG hLat hμS0 hS0

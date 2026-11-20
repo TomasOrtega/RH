@@ -11,6 +11,21 @@ open scoped nonZeroDivisors
 
 universe u
 
+/- English proof (translation)
+Establish `key : ∀ (u : Valuation L ℤᵐ⁰) (f : L), f ≠ 0 → (u f < 1 ↔ ¬ u f⁻¹ ≤ 1)` using `fun u f hf => by rw [not_le, Valuation.one_lt_val_iff u (inv_ne_zero hf), inv_inv]`. Establish `hlt : ∀ f : L, f ≠ 0 → (w f < 1 ↔ v f < 1)` using `fun f hf => by`. Rewrite using `[key w f hf, key v f hf, h f⁻¹]`. Establish `hπ0 : π ≠ 0`. Introduce and unpack `rfl`.
+
+Rewrite `hπ` using `[map_zero]`. Conclude with `exp_ne_zero hπ.symm`. Establish `hwπ : w π < 1` using `(hlt π hπ0).mpr (by rw [hπ, ← exp_zero, exp_lt_exp]; norm_num)`. Establish `hwπ0 : w π ≠ 0` using `(Valuation.ne_zero_iff _).mpr hπ0`. Take `⟨c, hwπc⟩ : ∃ c : ℤ, w π = exp c` from `⟨_, (exp_log hwπ0).symm⟩`.
+
+Establish `hc0 : c < 0`. Use `hwπ` as an intermediate fact. Rewrite `this` using `[hwπc, ← exp_zero, exp_lt_exp]`. Then use the resulting hypothesis. Use `⟨c.natAbs, by omega, fun f => ?_⟩` and prove the remaining obligations. Break down `eq_or_ne f 0 with rfl | hf` into its components or cases.
+
+Rewrite using `[map_zero, map_zero, zero_pow (by omega)]`. Establish `hvf0 : v f ≠ 0` using `(Valuation.ne_zero_iff _).mpr hf`. Take `⟨l, hvf⟩ : ∃ l : ℤ, v f = exp l` from `⟨_, (exp_log hvf0).symm⟩`. Establish `hg : v (f * π ^ l) = 1`. Rewrite using `[map_mul, map_zpow₀, hπ, hvf, ← exp_zsmul, ← exp_add, ← exp_zero]`.
+
+Use `congr 1`. Simplify using the standard rewrite rules. Establish `hwg : w (f * π ^ l) = 1`. Establish `hg0 : f * π ^ l ≠ 0` using `mul_ne_zero hf (zpow_ne_zero _ hπ0)`. Use `le_antisymm ((h _).mpr hg.le) (not_lt.mp fun hl => ?_)` and prove the remaining obligations.
+
+Use `(hlt _ hg0).mp hl` as an intermediate fact. Rewrite `this` using `[hg]`. Conclude with `lt_irrefl _ this`. Rewrite `hwg` using `[map_mul, map_zpow₀, hwπc, ← exp_zsmul]`. Rewrite using `[eq_inv_of_mul_eq_one_left hwg, hvf, ← exp_nsmul, ← exp_neg]`.
+
+Use `congr 1`. Simplify using `only [smul_eq_mul, nsmul_eq_mul]`. Rewrite using `[Int.ofNat_natAbs_of_nonpos hc0.le]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem exists_eq_pow_of_le_one_iff {L : Type*} [Field L] (w v : Valuation L ℤᵐ⁰)
     (h : ∀ f, w f ≤ 1 ↔ v f ≤ 1) {π : L} (hπ : v π = exp (-1)) :
     ∃ e : ℕ, 0 < e ∧ ∀ f, w f = v f ^ e := by
@@ -54,10 +69,16 @@ variable {F : Type u} [Field F] (W : WeierstrassCurve F)
 
 section Poly
 
+/- English proof (translation)
+The claim follows from `(IsScalarTower.algebraMap_apply F F[X] W.toAffine.FunctionField c).symm`.
+-/
 theorem algebraMap_C_functionField (c : F) :
     algebraMap F[X] W.toAffine.FunctionField (C c) = algebraMap F W.toAffine.FunctionField c :=
   (IsScalarTower.algebraMap_apply F F[X] W.toAffine.FunctionField c).symm
 
+/- English proof (translation)
+Establish `e` using `(equation_iff _ _).mp (equation_gen W)`. Simplify `e` using `only [WeierstrassCurve.baseChange, WeierstrassCurve.map_a₁, WeierstrassCurve.map_a₂, WeierstrassCurve.map_a₃, WeierstrassCurve.map_a₄, WeierstrassCurve.map_a₆]`.
+-/
 theorem genY_sq_add : genY W ^ 2 + algebraMap F W.toAffine.FunctionField W.a₁ * genX W * genY W +
     algebraMap F W.toAffine.FunctionField W.a₃ * genY W = genX W ^ 3 +
       algebraMap F W.toAffine.FunctionField W.a₂ * genX W ^ 2 +
@@ -67,6 +88,9 @@ theorem genY_sq_add : genY W ^ 2 + algebraMap F W.toAffine.FunctionField W.a₁ 
   simpa only [WeierstrassCurve.baseChange, WeierstrassCurve.map_a₁, WeierstrassCurve.map_a₂,
     WeierstrassCurve.map_a₃, WeierstrassCurve.map_a₄, WeierstrassCurve.map_a₆] using e
 
+/- English proof (translation)
+Rewrite using `[map_add, Algebra.smul_def, Algebra.smul_def, mul_one, map_mul, ← IsScalarTower.algebraMap_apply, ← IsScalarTower.algebraMap_apply]`. Both sides reduce to the same expression.
+-/
 theorem algebraMap_smul_basis (p q : F[X]) :
     algebraMap W.toAffine.CoordinateRing W.toAffine.FunctionField
       (p • (1 : W.toAffine.CoordinateRing) + q • AdjoinRoot.mk W.toAffine.polynomial X) =
@@ -78,6 +102,13 @@ theorem algebraMap_smul_basis (p q : F[X]) :
 
 variable {W}
 
+/- English proof (translation)
+Proceed by induction on `p using Polynomial.induction_on with`. Consider the case `C c`. Rewrite using `[algebraMap_C_functionField]`. Break down `eq_or_ne c 0 with rfl | hc` into its components or cases. Simplify using the standard rewrite rules.
+
+Conclude with `(hF c hc).le`. Consider the case `add p q hp hq => rw [map_add]`. Conclude with `w.map_add_le hp hq`. Consider the case `monomial n c ih`. Rewrite using `[pow_succ, ← mul_assoc, map_mul, map_mul, ← genX_eq]`.
+
+Conclude with `mul_le_one' ih hx`.
+-/
 theorem valuation_poly_le_one (w : Valuation W.toAffine.FunctionField ℤᵐ⁰)
     (hF : ∀ c : F, c ≠ 0 → w (algebraMap F W.toAffine.FunctionField c) = 1)
     (hx : w (genX W) ≤ 1) (p : F[X]) : w (algebraMap F[X] W.toAffine.FunctionField p) ≤ 1 := by
@@ -92,6 +123,13 @@ theorem valuation_poly_le_one (w : Valuation W.toAffine.FunctionField ℤᵐ⁰)
     rw [pow_succ, ← mul_assoc, map_mul, map_mul, ← genX_eq]
     exact mul_le_one' ih hx
 
+/- English proof (translation)
+Proceed by induction on `h : p.natDegree using Nat.strong_induction_on generalizing p with`. Consider the case `_ d ih`. Establish `hlead : w (algebraMap F[X] W.toAffine.FunctionField (C p.leadingCoeff * X ^ p.natDegree)) = exp (d * k)`. Rewrite using `[map_mul, map_pow, algebraMap_C_functionField, Valuation.map_mul, Valuation.map_pow, hF _ (leadingCoeff_ne_zero.mpr hp), ← genX_eq, hk, one_mul, ← exp_nsmul, h, nsmul_eq_mul]`. Rewrite using `[← eraseLead_add_C_mul_X_pow p, map_add]`.
+
+Break down `(eraseLead_natDegree_lt_or_eraseLead_eq_zero p) with hlt | he` into its components or cases. Distinguish the cases in `he : p.eraseLead = 0`. Rewrite using `[he, map_zero, zero_add, hlead]`. Establish `hd : (p.eraseLead.natDegree : ℤ) < d` using `by exact_mod_cast h ▸ hlt`. Rewrite using `[Valuation.map_add_eq_of_lt_right _ ?_, hlead]`.
+
+Rewrite using `[hlead, ih _ (h ▸ hlt) he rfl, exp_lt_exp]`. Use the polynomial consequences of the given equalities and inequalities. Rewrite using `[he, map_zero, zero_add, hlead]`.
+-/
 theorem valuation_poly_of_one_lt (w : Valuation W.toAffine.FunctionField ℤᵐ⁰)
     (hF : ∀ c : F, c ≠ 0 → w (algebraMap F W.toAffine.FunctionField c) = 1) {k : ℤ} (hk0 : 0 < k)
     (hk : w (genX W) = exp k) {p : F[X]} (hp : p ≠ 0) :
@@ -112,6 +150,9 @@ theorem valuation_poly_of_one_lt (w : Valuation W.toAffine.FunctionField ℤᵐ�
         nlinarith
     · rw [he, map_zero, zero_add, hlead]
 
+/- English proof (translation)
+Break down `eq_or_ne p 0 with rfl | hp` into its components or cases. Simplify using the standard rewrite rules. Rewrite using `[valuation_poly_of_one_lt w hF hk0 hk hp, exp_le_exp]`. Establish `: (p.natDegree : ℤ) ≤ n` using `by exact_mod_cast hn`. Use the polynomial consequences of the given equalities and inequalities.
+-/
 theorem valuation_poly_le_of_one_lt (w : Valuation W.toAffine.FunctionField ℤᵐ⁰)
     (hF : ∀ c : F, c ≠ 0 → w (algebraMap F W.toAffine.FunctionField c) = 1) {k : ℤ} (hk0 : 0 < k)
     (hk : w (genX W) = exp k) (p : F[X]) {n : ℕ} (hn : p.natDegree ≤ n) :
@@ -130,6 +171,9 @@ noncomputable def weierstrassB : F[X] := C W.a₁ * X + C W.a₃
 
 noncomputable def weierstrassRHS : F[X] := X ^ 3 + C W.a₂ * X ^ 2 + C W.a₄ * X + C W.a₆
 
+/- English proof (translation)
+Simplify using `only [weierstrassB, weierstrassRHS, map_add, map_mul, map_pow, algebraMap_C_functionField, ← genX_eq]`. Take the linear combination `genY_sq_add W`.
+-/
 theorem genY_sq_add_weierstrassB :
     genY W ^ 2 + algebraMap F[X] W.toAffine.FunctionField (weierstrassB W) * genY W =
       algebraMap F[X] W.toAffine.FunctionField (weierstrassRHS W) := by
@@ -137,12 +181,21 @@ theorem genY_sq_add_weierstrassB :
     algebraMap_C_functionField, ← genX_eq]
   linear_combination genY_sq_add W
 
+/- English proof (translation)
+Unfold `weierstrassRHS`. Use `compute_degree!`.
+-/
 theorem natDegree_weierstrassRHS : (weierstrassRHS W).natDegree = 3 := by
   unfold weierstrassRHS; compute_degree!
 
+/- English proof (translation)
+Unfold `weierstrassB`. Use `compute_degree`.
+-/
 theorem natDegree_weierstrassB_le : (weierstrassB W).natDegree ≤ 1 := by
   unfold weierstrassB; compute_degree
 
+/- English proof (translation)
+Introduce `h`. Use `natDegree_weierstrassRHS W` as an intermediate fact. Rewrite `this` using `[h, natDegree_zero]`. Conclude with `absurd this (by norm_num)`.
+-/
 theorem weierstrassRHS_ne_zero : weierstrassRHS W ≠ 0 := by
   intro h
   have := natDegree_weierstrassRHS W
@@ -151,6 +204,17 @@ theorem weierstrassRHS_ne_zero : weierstrassRHS W ≠ 0 := by
 
 variable {W}
 
+/- English proof (translation)
+Establish `hy0 : w (genY W) ≠ 0` using `(Valuation.ne_zero_iff _).mpr (genY_ne_zero W)`. Take `⟨m, hm⟩ : ∃ m : ℤ, w (genY W) = exp m` from `⟨_, (exp_log hy0).symm⟩`. Use `⟨m, hm, ?_⟩` and prove the remaining obligations. Establish `hwQ : w (algebraMap F[X] W.toAffine.FunctionField (weierstrassRHS W)) = exp (3 * k)`. Rewrite using `[valuation_poly_of_one_lt w hF hk0 hk (weierstrassRHS_ne_zero W), natDegree_weierstrassRHS]`.
+
+Evaluate the numerical expressions. Establish `hwB : w (algebraMap F[X] W.toAffine.FunctionField (weierstrassB W)) ≤ exp (1 * k)` using `valuation_poly_le_of_one_lt w hF hk0 hk _ (natDegree_weierstrassB_le W)`. Establish `hwy2 : w (genY W ^ 2) = exp (2 * m)`. Rewrite using `[Valuation.map_pow, hm, ← exp_nsmul, nsmul_eq_mul]`. Evaluate the numerical expressions.
+
+Establish `hwBy : w (algebraMap F[X] W.toAffine.FunctionField (weierstrassB W) * genY W) ≤ exp (k + m)`. Rewrite using `[Valuation.map_mul, hm]`. Combine the equalities or inequalities in the displayed calculation. Establish `heq` using `congrArg w (genY_sq_add_weierstrassB W)`. Break down `lt_or_ge k m with hkm | hmk` into its components or cases.
+
+Establish `hlt : w (algebraMap F[X] W.toAffine.FunctionField (weierstrassB W) * genY W) < w (genY W ^ 2)`. Rewrite using `[hwy2]`. Conclude with `lt_of_le_of_lt hwBy (exp_lt_exp.mpr (by linarith))`. Rewrite `heq` using `[Valuation.map_add_eq_of_lt_left _ hlt, hwy2, hwQ]`. Conclude with `exp_inj.mp heq`.
+
+It suffices to derive a contradiction. Establish `hle : w (genY W ^ 2 + algebraMap F[X] W.toAffine.FunctionField (weierstrassB W) * genY W) ≤ exp (2 * k)` using `w.map_add_le (by rw [hwy2, exp_le_exp]; linarith) (hwBy.trans (by rw [exp_le_exp]; linarith))`. Rewrite `hle` using `[heq, hwQ, exp_le_exp]`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem valuation_genY_of_one_lt (w : Valuation W.toAffine.FunctionField ℤᵐ⁰)
     (hF : ∀ c : F, c ≠ 0 → w (algebraMap F W.toAffine.FunctionField c) = 1) {k : ℤ} (hk0 : 0 < k)
     (hk : w (genX W) = exp k) : ∃ m : ℤ, w (genY W) = exp m ∧ 2 * m = 3 * k := by
@@ -185,6 +249,15 @@ theorem valuation_genY_of_one_lt (w : Valuation W.toAffine.FunctionField ℤᵐ�
     rw [heq, hwQ, exp_le_exp] at hle
     linarith
 
+/- English proof (translation)
+Assume the negation of the conclusion as `hy`. Establish `hy0 : w (genY W) ≠ 0` using `(Valuation.ne_zero_iff _).mpr (genY_ne_zero W)`. Take `⟨m, hm⟩ : ∃ m : ℤ, w (genY W) = exp m` from `⟨_, (exp_log hy0).symm⟩`. Rewrite `hy` using `[not_le, hm, ← exp_zero, exp_lt_exp]`. Establish `hwB` using `valuation_poly_le_one w hF hx (weierstrassB W)`.
+
+Establish `hwQ` using `valuation_poly_le_one w hF hx (weierstrassRHS W)`. Establish `hwy2 : w (genY W ^ 2) = exp (2 * m)`. Rewrite using `[Valuation.map_pow, hm, ← exp_nsmul, nsmul_eq_mul]`. Evaluate the numerical expressions. Establish `hlt : w (algebraMap F[X] W.toAffine.FunctionField (weierstrassB W) * genY W) < w (genY W ^ 2)`.
+
+Rewrite using `[Valuation.map_mul, hm, hwy2]`. Combine the equalities or inequalities in the displayed calculation. Establish `heq` using `congrArg w (genY_sq_add_weierstrassB W)`. Rewrite `heq` using `[Valuation.map_add_eq_of_lt_left _ hlt, hwy2]`. Rewrite `hwQ` using `[← heq, ← exp_zero, exp_le_exp]`.
+
+Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem valuation_genY_le_one (w : Valuation W.toAffine.FunctionField ℤᵐ⁰)
     (hF : ∀ c : F, c ≠ 0 → w (algebraMap F W.toAffine.FunctionField c) = 1)
     (hx : w (genX W) ≤ 1) : w (genY W) ≤ 1 := by
@@ -207,12 +280,18 @@ theorem valuation_genY_le_one (w : Valuation W.toAffine.FunctionField ℤᵐ⁰)
   rw [← heq, ← exp_zero, exp_le_exp] at hwQ
   linarith
 
+/- English proof (translation)
+Rewrite using `[zero_smul, add_zero, Algebra.smul_def, mul_one, Algebra.norm_algebraMap, finrank_coordinateRing, natDegree_pow]`.
+-/
 theorem natDegree_norm_smul_basis_of_q_eq_zero {p : F[X]} :
     (Algebra.norm F[X] (p • (1 : W.toAffine.CoordinateRing) + (0 : F[X]) •
       AdjoinRoot.mk W.toAffine.polynomial X)).natDegree = 2 * p.natDegree := by
   rw [zero_smul, add_zero, Algebra.smul_def, mul_one, Algebra.norm_algebraMap,
     finrank_coordinateRing, natDegree_pow]
 
+/- English proof (translation)
+Establish `h` using `degree_norm_smul_basis (W' := W.toAffine) 0 q`. Rewrite `h` using `[degree_eq_natDegree hq, degree_zero]`. Apply `natDegree_eq_of_degree_eq_some` to reduce the goal to its premises. Rewrite using `[h, max_eq_right (by rw [two_nsmul, WithBot.bot_add]; exact bot_le)]`. Use `norm_cast`.
+-/
 theorem natDegree_norm_smul_basis_of_p_eq_zero {q : F[X]} (hq : q ≠ 0) :
     (Algebra.norm F[X] ((0 : F[X]) • (1 : W.toAffine.CoordinateRing) +
       q • AdjoinRoot.mk W.toAffine.polynomial X)).natDegree = 2 * q.natDegree + 3 := by
@@ -222,6 +301,9 @@ theorem natDegree_norm_smul_basis_of_p_eq_zero {q : F[X]} (hq : q ≠ 0) :
   rw [h, max_eq_right (by rw [two_nsmul, WithBot.bot_add]; exact bot_le)]
   norm_cast
 
+/- English proof (translation)
+Establish `h` using `degree_norm_smul_basis (W' := W.toAffine) p q`. Rewrite `h` using `[degree_eq_natDegree hq, degree_eq_natDegree hp]`. Apply `natDegree_eq_of_degree_eq_some` to reduce the goal to its premises. Rewrite using `[h]`. Use `norm_cast`.
+-/
 theorem natDegree_norm_smul_basis_of_ne_zero {p q : F[X]} (hp : p ≠ 0) (hq : q ≠ 0) :
     (Algebra.norm F[X] (p • (1 : W.toAffine.CoordinateRing) +
       q • AdjoinRoot.mk W.toAffine.polynomial X)).natDegree =
@@ -232,6 +314,23 @@ theorem natDegree_norm_smul_basis_of_ne_zero {p q : F[X]} (hp : p ≠ 0) (hq : q
   rw [h]
   norm_cast
 
+/- English proof (translation)
+Take `⟨m, hm, hm3⟩` from `valuation_genY_of_one_lt w hF two_pos hx`. Establish `hm' : m = 3` using `by linarith`. Substitute `hm'` using the available equality. Establish `hA : ∀ a : W.toAffine.CoordinateRing, w (algebraMap _ W.toAffine.FunctionField a) = valuationInfty W (algebraMap _ W.toAffine.FunctionField a)`. Introduce `a`.
+
+Break down `eq_or_ne a 0 with rfl | ha` into its components or cases. Simplify using the standard rewrite rules. Rewrite using `[valuationInfty_algebraMap, valuationInftyCoord_apply W ha]`. Take `⟨p, q, rfl⟩` from `exists_smul_basis_eq a`. Rewrite using `[algebraMap_smul_basis]`.
+
+Break down `eq_or_ne q 0 with rfl | hq` into its components or cases. Establish `hp : p ≠ 0` using `by rintro rfl; simp at ha`. Rewrite using `[natDegree_norm_smul_basis_of_q_eq_zero, map_zero, zero_mul, add_zero, valuation_poly_of_one_lt w hF two_pos hx hp]`. Use `push_cast`. Put the polynomial expressions in normal form.
+
+Establish `hwQy : w (algebraMap F[X] W.toAffine.FunctionField q * genY W) = exp (2 * (q.natDegree : ℤ) + 3)`. Rewrite using `[Valuation.map_mul, valuation_poly_of_one_lt w hF two_pos hx hq, hm, ← exp_add]`. Put the polynomial expressions in normal form. Break down `eq_or_ne p 0 with rfl | hp` into its components or cases. Rewrite using `[natDegree_norm_smul_basis_of_p_eq_zero hq, map_zero, zero_add, hwQy] push_cast`.
+
+Put the polynomial expressions in normal form. Rewrite using `[natDegree_norm_smul_basis_of_ne_zero hp hq]`. Establish `hwP` using `valuation_poly_of_one_lt w hF two_pos hx hp`. Break down `lt_or_gt_of_ne (show (2 * p.natDegree : ℤ) ≠ 2 * q.natDegree + 3 by omega) with hlt | hlt` into its components or cases. Rewrite using `[Valuation.map_add_eq_of_lt_right _ (by rw [hwP, hwQy, exp_lt_exp]; linarith), hwQy, max_eq_right (by omega)] push_cast; ring_nf`.
+
+Rewrite using `[Valuation.map_add_eq_of_lt_left _ (by rw [hwP, hwQy, exp_lt_exp]; linarith), hwP, max_eq_left (by omega)] push_cast; ring_nf`. Use `Valuation.ext fun f => ?_` and prove the remaining obligations. Take `⟨⟨a, s⟩, rfl⟩` from `IsLocalization.mk'_surjective W.toAffine.CoordinateRing⁰ f`. Simplify using `only`. Establish `hs : (s : W.toAffine.CoordinateRing) ≠ 0` using `nonZeroDivisors.ne_zero s.2`.
+
+Establish `hspec` using `IsLocalization.mk'_spec W.toAffine.FunctionField a s`. Establish `h1` using `congrArg w hspec`. Establish `h2` using `congrArg (valuationInfty W) hspec`. Rewrite `h1` using `[Valuation.map_mul, hA, hA]`. Rewrite `h2` using `[Valuation.map_mul]`.
+
+Establish `hvs : valuationInfty W (algebraMap _ W.toAffine.FunctionField (s : W.toAffine.CoordinateRing)) ≠ 0` using `(Valuation.ne_zero_iff _).mpr ((map_ne_zero_iff _ (IsFractionRing.injective _ _)).mpr hs)`. Conclude with `mul_right_cancel₀ hvs (h1.trans h2.symm)`.
+-/
 theorem eq_valuationInfty_of_genX (w : Valuation W.toAffine.FunctionField ℤᵐ⁰)
     (hF : ∀ c : F, c ≠ 0 → w (algebraMap F W.toAffine.FunctionField c) = 1)
     (hx : w (genX W) = exp 2) : w = valuationInfty W := by
@@ -283,6 +382,9 @@ theorem eq_valuationInfty_of_genX (w : Valuation W.toAffine.FunctionField ℤᵐ
     (Valuation.ne_zero_iff _).mpr ((map_ne_zero_iff _ (IsFractionRing.injective _ _)).mpr hs)
   exact mul_right_cancel₀ hvs (h1.trans h2.symm)
 
+/- English proof (translation)
+Take `⟨p, q, rfl⟩` from `exists_smul_basis_eq a`. Rewrite using `[algebraMap_smul_basis]`. Use `w.map_add_le (valuation_poly_le_one w hF hx p) ?_` and prove the remaining obligations. Rewrite using `[Valuation.map_mul]`. Conclude with `mul_le_one' (valuation_poly_le_one w hF hx q) (valuation_genY_le_one w hF hx)`.
+-/
 theorem valuation_coordinateRing_le_one (w : Valuation W.toAffine.FunctionField ℤᵐ⁰)
     (hF : ∀ c : F, c ≠ 0 → w (algebraMap F W.toAffine.FunctionField c) = 1)
     (hx : w (genX W) ≤ 1) (a : W.toAffine.CoordinateRing) :
@@ -299,6 +401,33 @@ section CaseA
 
 variable {W} [IsAlgClosed F] [W.IsElliptic]
 
+/- English proof (translation)
+Establish `hA` using `valuation_coordinateRing_le_one w hF hx`. Set `P : Ideal W.toAffine.CoordinateRing` to `{ carrier := {a | w (algebraMap _ W.toAffine.FunctionField a) < 1} zero_mem' := by simp add_mem' := fun {a b} ha hb => by`. Simplify using `only [Set.mem_ofPred_eq, map_add] at ha hb ⊢`. Conclude with `lt_of_le_of_lt (w.map_add _ _) (max_lt ha hb)`. Use the proof step `smul_mem' := fun c a ha => by`.
+
+Simplify using `only [Set.mem_ofPred_eq, smul_eq_mul, map_mul] at ha ⊢`. Combine the equalities or inequalities in the displayed calculation. Establish `hmem : ∀ a, a ∈ P ↔ w (algebraMap _ W.toAffine.FunctionField a) < 1` using `fun a => Iff.rfl`. Establish `hone : ∀ a, a ∉ P → w (algebraMap _ W.toAffine.FunctionField a) = 1` using `fun a ha => le_antisymm (hA a) (not_lt.mp ha)`. Establish `hPprime : P.IsPrime`.
+
+Use `⟨fun htop => ?_, fun {a b} hab => ?_⟩` and prove the remaining obligations. Establish `h1 : (1 : W.toAffine.CoordinateRing) ∈ P` using `htop ▸ Submodule.mem_top`. Rewrite `h1` using `[hmem, map_one, map_one]`. Conclude with `lt_irrefl _ h1`. Assume the negation of the conclusion as `hn push Not at hn`.
+
+Rewrite `hab` using `[hmem, map_mul, Valuation.map_mul, hone a hn.1, hone b hn.2, one_mul]`. Conclude with `lt_irrefl _ hab`. Establish `hP0 : P ≠ ⊥`. Introduce `hbot`. Take `⟨f, hf, hwf⟩` from `hnt`.
+
+Take `⟨⟨a, s⟩, rfl⟩` from `IsLocalization.mk'_surjective W.toAffine.CoordinateRing⁰ f`. Apply `hwf` to reduce the goal to its premises. Simplify using `only at hf ⊢`. Establish `hs : (s : W.toAffine.CoordinateRing) ≠ 0` using `nonZeroDivisors.ne_zero s.2`. Establish `ha : a ≠ 0` using `by rintro rfl; exact hf (IsLocalization.mk'_zero _)`.
+
+Establish `hnot : ∀ b : W.toAffine.CoordinateRing, b ≠ 0 → b ∉ P` using `fun b hb hbP => hb ((Submodule.mem_bot _).mp (hbot ▸ hbP))`. Establish `h1` using `congrArg w (IsLocalization.mk'_spec W.toAffine.FunctionField a s)`. Rewrite `h1` using `[Valuation.map_mul, hone _ (hnot _ hs), hone _ (hnot _ ha), mul_one]`. Conclude with `h1`. Set `v : HeightOneSpectrum W.toAffine.CoordinateRing` to `⟨P, hPprime, hP0⟩`.
+
+Use `⟨v, hmem, ?_⟩` and prove the remaining obligations. Establish `hval_one : ∀ d : W.toAffine.CoordinateRing, d ∉ v.asIdeal → v.valuation W.toAffine.FunctionField (algebraMap _ _ d) = 1` using `fun d hd => by`. Rewrite using `[HeightOneSpectrum.valuation_of_algebraMap, HeightOneSpectrum.intValuation_eq_one_iff_mem_primeCompl]`. Conclude with `hd`. Establish `hle : ∀ f, w f ≤ 1 ↔ v.valuation W.toAffine.FunctionField f ≤ 1`.
+
+Introduce `f`. Prove the components needed by the constructor for the conclusion. Introduce `hwf`. Assume the negation of the conclusion as `hvf`. Rewrite `hvf` using `[not_le]`.
+
+Establish `hf : f ≠ 0` using `by rintro rfl; simp at hvf`. Establish `hvf' : v.valuation W.toAffine.FunctionField f⁻¹ ≤ 1`. Rewrite using `[map_inv₀]`. Conclude with `(inv_lt_one_of_one_lt₀ hvf).le`. Take `⟨n, d, hnd⟩` from `HeightOneSpectrum.exists_primeCompl_mul_eq_of_integer (K := W.toAffine.FunctionField) v f⁻¹ hvf'`.
+
+Establish `hd : (d : W.toAffine.CoordinateRing) ∉ v.asIdeal` using `d.2`. Establish `hvn : v.valuation W.toAffine.FunctionField (algebraMap _ _ n) < 1`. Rewrite using `[← hnd, Valuation.map_mul, hval_one _ hd, mul_one, map_inv₀]`. Conclude with `inv_lt_one_of_one_lt₀ hvf`. Rewrite `hvn` using `[HeightOneSpectrum.valuation_lt_one_iff_mem]`.
+
+Establish `hwn` using `(hmem n).mp hvn`. Rewrite `hwn` using `[← hnd, Valuation.map_mul, hone _ hd, mul_one, map_inv₀]`. Establish `: 1 < w f`. Rewrite `hwn` using `[inv_lt_one₀ ((Valuation.pos_iff _).mpr hf)]`. Then use the resulting hypothesis. Conclude with `absurd hwf (not_le.mpr this)`.
+
+Introduce `hvf`. Take `⟨n, d, hnd⟩` from `HeightOneSpectrum.exists_primeCompl_mul_eq_of_integer (K := W.toAffine.FunctionField) v f hvf`. Establish `h1` using `congrArg w hnd`. Rewrite `h1` using `[Valuation.map_mul, hone _ d.2, mul_one]`. Conclude with `h1 ▸ hA n`.
+
+Take `⟨π, hπ⟩` from `v.valuation_exists_uniformizer W.toAffine.FunctionField`. Conclude with `exists_eq_pow_of_le_one_iff w _ hle hπ`.
+-/
 theorem exists_eq_pow_valuation_of_le_one (w : Valuation W.toAffine.FunctionField ℤᵐ⁰)
     (hF : ∀ c : F, c ≠ 0 → w (algebraMap F W.toAffine.FunctionField c) = 1)
     (hx : w (genX W) ≤ 1) (hnt : ∃ f, f ≠ 0 ∧ w f ≠ 1) :

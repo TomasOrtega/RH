@@ -16,6 +16,13 @@ namespace TwistIntersection
 
 variable {K : Type} [Fintype K] {ι : K → Type} [∀ k, Fintype (ι k)]
 
+/- English proof (translation)
+Unfold `sheetDensity`. Use `split_ifs with hγ`. Use `congr 1`. Establish `hev` using `hγ.choose_spec.2`. Establish `hH : ∀ k, cxHessian (fun y' => φ' k (hγ.choose y')) y = cxHessian (fun y' => φ k (hγ.choose y')) y`.
+
+Introduce `k`. Take `⟨c, hc⟩` from `h k _ hev.self_of_nhds.2.1`. Establish `h1 : (fun y' => φ' k (hγ.choose y')) =ᶠ[𝓝 y] fun y' => φ k (hγ.choose y') + c` using `hev.self_of_nhds.1.continuousAt.eventually hc`. Establish `h2 : fderiv ℝ (fun y' => φ' k (hγ.choose y')) =ᶠ[𝓝 y] fderiv ℝ (fun y' => φ k (hγ.choose y'))` using `by filter_upwards [h1.eventuallyEq_nhds] with x hx`. Rewrite using `[hx.fderiv_eq, fderiv_add_const]`.
+
+Unfold `cxHessian`. Rewrite using `[h2.fderiv_eq]`. Simplify using `only [maDensity, hH]`. Both sides reduce to the same expression.
+-/
 theorem sheetDensity_add_locConst (P : Ideal (MRing ι)) {e : ℕ} {φ φ' : Fin e → ((Σ k, ι k) → ℂ) → ℝ}
     (h : ∀ j, ∀ z ∈ mcPts P, ∃ c : ℝ, ∀ᶠ u in 𝓝 z, φ' j u = φ j u + c)
     (Ψ : (((k : K) → ι k) → ℂ) →ₗ[ℂ] (Fin (e + 1) → ℂ)) (g : ((Σ k, ι k) → ℂ) → ℝ)
@@ -40,6 +47,9 @@ theorem sheetDensity_add_locConst (P : Ideal (MRing ι)) {e : ℕ} {φ φ' : Fin
     simp only [maDensity, hH]
   · rfl
 
+/- English proof (translation)
+Unfold `ptsIntegral`. Use `split_ifs`. Simplify using `only [ptsIntegralAt, sheetDensity_add_locConst P h]`. Both sides reduce to the same expression.
+-/
 theorem ptsIntegral_add_locConst (P : Ideal (MRing ι)) {e : ℕ} {φ φ' : Fin e → ((Σ k, ι k) → ℂ) → ℝ}
     (h : ∀ j, ∀ z ∈ mcPts P, ∃ c : ℝ, ∀ᶠ u in 𝓝 z, φ' j u = φ j u + c) (g : ((Σ k, ι k) → ℂ) → ℝ) :
     ptsIntegral P φ' g = ptsIntegral P φ g := by
@@ -48,6 +58,15 @@ theorem ptsIntegral_add_locConst (P : Ideal (MRing ι)) {e : ℕ} {φ φ' : Fin 
   · simp only [ptsIntegralAt, sheetDensity_add_locConst P h]
   · rfl
 
+/- English proof (translation)
+Establish `hhom : IsMultiHomog (1 : MRing ι) 0`. Introduce `m hm k`. Rewrite `hm` using `[MvPolynomial.support_one, Finset.mem_singleton]`. Substitute `hm` using the available equality. Simplify using the standard rewrite rules.
+
+Establish `hnot : (1 : MRing ι) ∉ P` using `fun h => hP.2.1.1.ne_top ((Ideal.eq_top_iff_one P).2 h)`. Rewrite using `[hI.2.2 P n L B 1 0 hP hL hB (fun k => by simp [ha]) hhom hnot]`. Establish `hsupp : divSupp P (1 : MRing ι) = ∅`. Use extensionality with `W`. Use `⟨fun hW => ?_, fun h => h.elim⟩` and prove the remaining obligations.
+
+Establish `h1 : P ⊔ Ideal.span {(1 : MRing ι)} = ⊤` using `by simp`. Establish `hp : W.IsPrime` using `hW.1.1.1`. Establish `hle : P ⊔ Ideal.span {(1 : MRing ι)} ≤ W` using `hW.1.1.2`. Rewrite `hle` using `[h1]`. Conclude with `hp.ne_top (top_le_iff.1 hle)`.
+
+Unfold `recR arInt`. Simplify using `only [hsupp, finsum_mem_empty, zero_sub]`. Both sides reduce to the same expression.
+-/
 theorem I_snoc_degZero {I : Ideal (MRing ι) → (n : ℕ) → (Fin n → HermLine ι) → ℝ} (hI : IsIntersectionFamily I)
     {P : Ideal (MRing ι)} {n : ℕ} {L : Fin n → HermLine ι} {B : HermLine ι} (hP : IsArithVar P (n + 1))
     (hL : ∀ j, IsSmoothHerm (L j)) (hB : IsSmoothHerm B) (ha : B.a = 0) :
@@ -71,6 +90,39 @@ theorem I_snoc_degZero {I : Ideal (MRing ι) → (n : ℕ) → (Fin n → HermLi
   simp only [hsupp, finsum_mem_empty, zero_sub]
   rfl
 
+/- English proof (translation)
+Introduce `K _ ι _ Ω _ F _ _ _ y D a A B II Λ _ hII hP hbir _ hA hBa hB hΛ hex hloc`. Establish `hI : IsIntersectionFamily (II K ι)` using `hII K ι`. Establish `hC : IsSmoothHerm (A.tensor B)` using `hA.mul hB`. Establish `hopen : IsOpen {u : (Σ k, ι k) → ℂ | ∀ k, ∃ i, u ⟨k, i⟩ ≠ 0}`. Simplify using `only [Set.ofPred_forall, Set.ofPred_exists]`.
+
+Conclude with `isOpen_iInter_of_finite fun k => isOpen_iUnion fun i => isOpen_ne_fun (continuous_apply _) continuous_const`. Establish `hCloc : ∀ z ∈ mcPts (mCoordIdeal y), ∃ c : ℝ, ∀ᶠ u in 𝓝 z, Real.log ((A.tensor B).h u) = Real.log (A.h u) + c`. Introduce `z hz`. Take `⟨sg, hsg, -⟩` from `hex z hz`. Use `⟨Real.log (Λ sg), ?_⟩` and prove the remaining obligations.
+
+Use `filter_upwards [hloc z hz sg hsg, hopen.mem_nhds hz.1] with u hu hu'`. Use `show Real.log (A.h u * B.h u) = _`. Rewrite using `[hu, Real.log_mul (A.pos u hu').ne' (hΛ sg).ne']`. Set `L : Finset (Fin (D + 1)) → Fin (D + 1) → HermLine ι` to `fun S i => if i ∈ S then A.tensor B else A`. Establish `hLs : ∀ S i, IsSmoothHerm (L S i)`.
+
+Introduce `S i`. Simplify using `only [L]`. Use `split_ifs`. Use `exacts [hC, hA]`. Establish `hLpot : ∀ S i, ∀ z ∈ mcPts (mCoordIdeal y), ∃ c : ℝ, ∀ᶠ u in 𝓝 z, Real.log ((L S i).h u) = Real.log (A.h u) + c`.
+
+Introduce `S i z hz`. Simplify using `only [L]`. Use `split_ifs`. Conclude with `hCloc z hz`. Conclude with `⟨0, Eventually.of_forall fun u => by rw [add_zero]⟩`.
+
+Establish `step : ∀ (S : Finset (Fin (D + 1))) (j : Fin (D + 1)), j ∉ S → II K ι (mCoordIdeal y) (D + 1) (L (insert j S)) = II K ι (mCoordIdeal y) (D + 1) (L S) + -ptsIntegral (mCoordIdeal y) (pot fun _ : Fin D => A) (logNorm B 1)`. Introduce `S j hj`. Use `set σ : Equiv.Perm (Fin (D + 1)) := Equiv.swap j (Fin.last D) with hσ`. Use `set M : Fin D → HermLine ι := Fin.init (L S ∘ σ) with hMdef`. Establish `hσl : σ (Fin.last D) = j` using `Equiv.swap_apply_right _ _`.
+
+Establish `hne : ∀ i : Fin D, σ (Fin.castSucc i) ≠ j`. Introduce `i h'`. Rewrite `h'` using `[← hσl]`. Conclude with `(Fin.castSucc_lt_last i).ne (σ.injective h')`. Establish `hM : Fin.init (L (insert j S) ∘ σ) = M`.
+
+Use function extensionality and compare the values at `i`. Simplify using `only [hMdef, Fin.init, Function.comp, L, Finset.mem_insert, hne i, false_or]`. Establish `e0 : L S ∘ σ = Fin.snoc M A`. Establish `h0` using `Fin.snoc_init_self (q := L S ∘ σ)`. Establish `hl : (L S ∘ σ) (Fin.last D) = A` using `by simp [L, hσl, hj]`.
+
+Rewrite `h0` using `[hl]`. Conclude with `h0.symm`. Establish `e1 : L (insert j S) ∘ σ = Fin.snoc M (A.tensor B)`. Establish `h0` using `Fin.snoc_init_self (q := L (insert j S) ∘ σ)`. Establish `hl : (L (insert j S) ∘ σ) (Fin.last D) = A.tensor B` using `by simp [L, hσl]`.
+
+Rewrite `h0` using `[hl, hM]`. Conclude with `h0.symm`. Establish `hMs : ∀ i, IsSmoothHerm (M i)` using `fun i => hLs S _`. Establish `hint : ptsIntegral (mCoordIdeal y) (pot M) (logNorm B 1) = ptsIntegral (mCoordIdeal y) (pot fun _ : Fin D => A) (logNorm B 1)` using `ptsIntegral_add_locConst _ (fun i z hz => hLpot S (σ (Fin.castSucc i)) z hz) _`. Rewrite using `[← hI.1 _ (D + 1) (L (insert j S)) σ hP (hLs _), ← hI.1 _ (D + 1) (L S) σ hP (hLs S), e0, e1, hI.2.1 _ D M A B hP hMs hA hB, I_snoc_degZero hI hP hMs hB hBa, hint]`.
+
+Establish `hall : ∀ S : Finset (Fin (D + 1)), II K ι (mCoordIdeal y) (D + 1) (L S) = II K ι (mCoordIdeal y) (D + 1) (L ∅) + S.card * -ptsIntegral (mCoordIdeal y) (pot fun _ : Fin D => A) (logNorm B 1)`. Introduce `S`. Use `Finset.induction_on S (by simp) ?_` and prove the remaining obligations. Introduce `j S hj ih`. Rewrite using `[step S j hj, ih, Finset.card_insert_of_notMem hj]`.
+
+Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Establish `hL0 : L ∅ = fun _ => A`. Use function extensionality and compare the values at `i`. Simplify using `[L]`.
+
+Establish `hLu : L Finset.univ = fun _ => A.tensor B`. Use function extensionality and compare the values at `i`. Simplify using `[L]`. Establish `hw : ∀ z ∈ mcPts (mCoordIdeal y), ∀ sg : F →+* ℂ, LiesOver y sg z → logNorm B 1 =ᶠ[𝓝 z] fun _ => (fun sg => -Real.log (Λ sg)) sg`. Introduce `z hz sg hsg`.
+
+Use `filter_upwards [hloc z hz sg hsg] with u hu`. Simplify using `[logNorm, hu, Real.log_inv]`. Establish `hpc` using `hPc K ι Ω F y D (fun _ => A) (fun sg => -Real.log (Λ sg)) (logNorm B 1) hP hbir (fun _ => hA) hex hw`. Establish `hg : ptsIntegral (mCoordIdeal y) (pot fun _ : Fin D => A) (fun _ => 1) = (genDeg (mCoordIdeal y) D A.a : ℝ)`. Rewrite using `[hDG K ι (mCoordIdeal y) D (fun _ => A) hP (fun _ => hA)]`.
+
+Unfold `genDeg`. Reduce the equality to equality of the corresponding arguments. Use `hall Finset.univ` as an intermediate fact. Rewrite `this` using `[hL0, hLu, Finset.card_univ, Fintype.card_fin]`. Rewrite using `[this, hpc, hg, Finset.sum_neg_distrib]`.
+
+Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem proof (hPc : EmbeddingPieces.Statement) (hDG : GroundTheory.Heights₂.Heights.Inter.DegreeGeneric.Statement) :
     TwistIntersection.Statement := by
   intro K _ ι _ Ω _ F _ _ _ y D a A B II Λ _ hII hP hbir _ hA hBa hB hΛ hex hloc

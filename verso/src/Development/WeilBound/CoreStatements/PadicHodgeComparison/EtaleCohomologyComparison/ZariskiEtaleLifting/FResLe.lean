@@ -8,15 +8,35 @@ universe w w' v u v' u' v'' u''
 
 namespace CrystallineSemistableComparison.B
 
+/- English proof (translation)
+The claim follows from `((CrystallineSemistableComparison.P.cls_surj K n).2.1 a ha).2 h`.
+-/
 theorem resLe_cls_zero {R : Type} [CommRing R] (K : Cx.{w} R) (n : ℕ) (a : K.X n) (ha : K.d n a = 0)
     (h : a ∈ K.B n) : K.cls a ha = 0 := ((CrystallineSemistableComparison.P.cls_surj K n).2.1 a ha).2 h
 
+/- English proof (translation)
+The claim follows from `(CrystallineSemistableComparison.P.cls_surj K n).2.2.2.2 r a ha hb`.
+-/
 theorem resLe_cls_smul {R : Type} [CommRing R] (K : Cx.{w} R) (n : ℕ) (r : R) (a : K.X n) (ha : K.d n a = 0)
     (hb : K.d n (r • a) = 0) : K.cls (r • a) hb = r • K.cls a ha := (CrystallineSemistableComparison.P.cls_surj K n).2.2.2.2 r a ha hb
 
+/- English proof (translation)
+The claim follows from `(Submodule.mem_bot R).1 h`.
+-/
 theorem eq_zero_of_mem_boundaries_zero {R : Type} [CommRing R] (K : Cx.{w} R) (a : K.X 0) (h : a ∈ K.B 0) : a = 0 :=
   (Submodule.mem_bot R).1 h
 
+/- English proof (translation)
+Establish `hz : ∀ x : K.H (n + 1), x = 0`. Introduce `x`. Take `⟨a, ha, rfl⟩` from `(CrystallineSemistableComparison.P.cls_surj K (n + 1)).1 x`. Take `⟨b, hb⟩` from `hK a ha`. Conclude with `resLe_cls_zero K (n + 1) a ha ⟨b, by rw [hb, one_smul]⟩`.
+
+Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨-, hs⟩ y hy`. Take `⟨x, hx⟩` from `hs (L.cls y hy)`. Rewrite `hx` using `[hz x, map_zero]`. Establish `hy' : L.d (n + 1) (s • y) = 0` using `by rw [map_smul, hy, smul_zero]`.
+
+Rewrite `hx` using `[← resLe_cls_smul L (n + 1) s y hy hy']`. Establish `: s • y ∈ L.B (n + 1)` using `((CrystallineSemistableComparison.P.cls_surj L (n + 1)).2.1 _ hy').1 hx.symm`. Take `⟨c, hc⟩` from `this`. Conclude with `⟨c, hc⟩`. Introduce `h`.
+
+Use `⟨fun x _ => by rw [hz x, smul_zero], fun y => ⟨0, ?_⟩⟩` and prove the remaining obligations. Take `⟨b, hb, rfl⟩` from `(CrystallineSemistableComparison.P.cls_surj L (n + 1)).1 y`. Establish `hb' : L.d (n + 1) (s • b) = 0` using `by rw [map_smul, hb, smul_zero]`. Take `⟨c, hc⟩` from `h b hb`. Rewrite using `[map_zero, ← resLe_cls_smul L (n + 1) s b hb hb']`.
+
+Conclude with `(resLe_cls_zero L (n + 1) _ hb' ⟨c, hc⟩).symm`.
+-/
 theorem resLe_succ {R : Type} [CommRing R] {K : Cx.{w} R} {L : Cx.{w'} R} (φ : Cx.Hom K L (RingHom.id R))
     (n : ℕ) (hK : ExactUpTo (1 : R) (K.d n) (K.d (n + 1))) (s : R) :
     UpTo s (φ.mapH (n + 1)) ↔ ExactUpTo s (L.d n) (L.d (n + 1)) := by
@@ -42,6 +62,27 @@ theorem resLe_succ {R : Type} [CommRing R] {K : Cx.{w} R} {L : Cx.{w'} R} (φ : 
     rw [map_zero, ← resLe_cls_smul L (n + 1) s b hb hb']
     exact (resLe_cls_zero L (n + 1) _ hb' ⟨c, hc⟩).symm
 
+/- English proof (translation)
+Take `⟨hd, hi, he, -⟩` from `hK`. Establish `hLd : ∀ x, L.d 0 (φ.f 0 (ε x)) = 0` using `fun x => by rw [φ.comm, hd, map_zero]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨hI, hS⟩`. Use `⟨fun x hx => ?_, fun y hy => ?_⟩` and prove the remaining obligations.
+
+Establish `h1 : φ.mapH 0 (K.cls (ε x) (hd x)) = 0`. Rewrite using `[CrystallineSemistableComparison.P.mapH_cls φ 0 _ _ (hLd x)]`. Conclude with `resLe_cls_zero L 0 _ _ (by rw [show φ.f 0 (ε x) = 0 from hx]; exact Submodule.zero_mem _)`. Establish `h2` using `hI _ h1`. Establish `hs' : K.d 0 (s • ε x) = 0` using `by rw [map_smul, hd, smul_zero]`.
+
+Rewrite `h2` using `[← resLe_cls_smul K 0 s _ _ hs']`. Establish `h3 : s • ε x = 0` using `eq_zero_of_mem_boundaries_zero _ _ (((CrystallineSemistableComparison.P.cls_surj K 0).2.1 _ hs').1 h2)`. Rewrite `h3` using `[← map_smul]`. Use `hi _ h3` as an intermediate fact. Rewrite `this` using `[one_smul]`. Then use the resulting hypothesis.
+
+Take `⟨x, hx⟩` from `hS (L.cls y hy)`. Take `⟨a, ha, rfl⟩` from `(CrystallineSemistableComparison.P.cls_surj K 0).1 x`. Take `⟨m, hm⟩` from `he a ha`. Rewrite `hm` using `[one_smul]`. Use `⟨m, ?_⟩` and prove the remaining obligations.
+
+Establish `hy' : L.d 0 (s • y) = 0` using `by rw [map_smul, hy, smul_zero]`. Establish `hfa : L.d 0 (φ.f 0 a) = 0` using `by rw [φ.comm, ha, map_zero]`. Rewrite `hx` using `[CrystallineSemistableComparison.P.mapH_cls φ 0 a ha hfa, ← resLe_cls_smul L 0 s y hy hy']`. Use `((CrystallineSemistableComparison.P.cls_surj L 0).2.2.1 _ _ hfa hy').1 hx` as an intermediate fact. Express the relevant statement in the definitionally equal form `φ.f 0 (ε m) = s • y`.
+
+Rewrite using `[hm]`. Conclude with `sub_eq_zero.1 (eq_zero_of_mem_boundaries_zero _ _ this)`. Introduce and unpack `⟨hI, hE⟩`. Use `⟨fun x hx => ?_, fun y => ?_⟩` and prove the remaining obligations. Take `⟨a, ha, rfl⟩` from `(CrystallineSemistableComparison.P.cls_surj K 0).1 x`.
+
+Establish `hfa : L.d 0 (φ.f 0 a) = 0` using `by rw [φ.comm, ha, map_zero]`. Rewrite `hx` using `[CrystallineSemistableComparison.P.mapH_cls φ 0 a ha hfa]`. Establish `h0 : φ.f 0 a = 0` using `eq_zero_of_mem_boundaries_zero _ _ (((CrystallineSemistableComparison.P.cls_surj L 0).2.1 _ hfa).1 hx)`. Take `⟨m, hm⟩` from `he a ha`. Rewrite `hm` using `[one_smul]`.
+
+Establish `h1 : s • m = 0` using `hI m (by change φ.f 0 (ε m) = 0; rw [hm, h0])`. Establish `hs' : K.d 0 (s • a) = 0` using `by rw [map_smul, ha, smul_zero]`. Rewrite using `[← resLe_cls_smul K 0 s a ha hs']`. Conclude with `resLe_cls_zero K 0 _ hs' (by rw [← hm, ← map_smul, h1, map_zero]; exact Submodule.zero_mem _)`. Take `⟨b, hb, rfl⟩` from `(CrystallineSemistableComparison.P.cls_surj L 0).1 y`.
+
+Take `⟨m, hm⟩` from `hE b hb`. Use `⟨K.cls (ε m) (hd m), ?_⟩` and prove the remaining obligations. Establish `hb' : L.d 0 (s • b) = 0` using `by rw [map_smul, hb, smul_zero]`. Rewrite using `[CrystallineSemistableComparison.P.mapH_cls φ 0 _ _ (hLd m), ← resLe_cls_smul L 0 s b hb hb']`. Conclude with `((CrystallineSemistableComparison.P.cls_surj L 0).2.2.1 _ _ _ hb').2 (by`.
+
+Rewrite using `[show φ.f 0 (ε m) = s • b from hm, sub_self]`. Conclude with `Submodule.zero_mem _)`.
+-/
 theorem resLe_zero {R : Type} [CommRing R] {K : Cx.{w} R} {L : Cx.{w'} R} (φ : Cx.Hom K L (RingHom.id R))
     {M : Type u''} [AddCommGroup M] [Module R M] (ε : M →ₗ[R] K.X 0) (hK : K.ResUpTo 1 ε) (s : R) :
     UpTo s (φ.mapH 0) ↔ InjUpTo s (φ.f 0 ∘ₗ ε) ∧ ExactUpTo s (φ.f 0 ∘ₗ ε) (L.d 0) := by
@@ -92,6 +133,13 @@ theorem resLe_zero {R : Type} [CommRing R] {K : Cx.{w} R} {L : Cx.{w'} R} (φ : 
       exact ((CrystallineSemistableComparison.P.cls_surj L 0).2.2.1 _ _ _ hb').2 (by
         rw [show φ.f 0 (ε m) = s • b from hm, sub_self]; exact Submodule.zero_mem _)
 
+/- English proof (translation)
+Establish `hd : ∀ x, L.d 0 ((φ.f 0 ∘ₗ ε) x) = 0` using `fun x => by`. Express the relevant statement in the definitionally equal form `L.d 0 (φ.f 0 (ε x)) = 0`. Rewrite using `[φ.comm, hK.1, map_zero]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨-, hi, he, hn⟩ n`.
+
+Consider the cases of `n with`. Consider the case `zero => exact (resLe_zero φ ε hK s).2 ⟨hi, he⟩`. Consider the case `succ n => exact (resLe_succ φ n (hK.2.2.2 n) s).2 (hn n)`. Introduce `h`. Take `⟨hi, he⟩` from `(resLe_zero φ ε hK s).1 (h 0)`.
+
+Conclude with `⟨hd, hi, he, fun n => (resLe_succ φ n (hK.2.2.2 n) s).1 (h (n + 1))⟩`.
+-/
 theorem resLe_cx {R : Type} [CommRing R] {K : Cx.{w} R} {L : Cx.{w'} R} (φ : Cx.Hom K L (RingHom.id R))
     {M : Type u''} [AddCommGroup M] [Module R M] (ε : M →ₗ[R] K.X 0) (hK : K.ResUpTo 1 ε) (s : R) :
     L.ResUpTo s (φ.f 0 ∘ₗ ε) ↔ ∀ n, UpTo s (φ.mapH n) := by
@@ -109,6 +157,11 @@ theorem resLe_cx {R : Type} [CommRing R] {K : Cx.{w} R} {L : Cx.{w'} R} (φ : Cx
 
 end CrystallineSemistableComparison.B
 
+/- English proof (translation)
+Introduce `R _ C _ C' _ F F' m T₀ h s`. Establish `e : (aug F' fun T => (m.τ T) ∘ₗ (F.map (h.to _)).hom) = m.hom.f 0 ∘ₗ aug F fun T => (F.map (h.to T)).hom`. Apply `LinearMap.ext` to reduce the goal to its premises. Introduce `x`. Use function extensionality and compare the values at `c`.
+
+Both sides reduce to the same expression. Rewrite using `[e]`. Conclude with `CrystallineSemistableComparison.B.resLe_cx m.hom _ (CrystallineSemistableComparison.P.initial F T₀ h) s`.
+-/
 theorem CrystallineSemistableComparison.B.P.res_le : ∀ {R : Type} [CommRing R] {C : Type u} [Category.{v} C] {C' : Type u'} [Category.{v'} C'] (F : C ⥤ ModuleCat.{w} R) (F' : C' ⥤ ModuleCat.{w'} R) (m : Mor F F' (RingHom.id R)) (T₀ : C) (h : Limits.IsInitial T₀) (s : R), ((cx F').ResUpTo s (aug F' fun T => (m.τ T) ∘ₗ (F.map (h.to _)).hom) ↔ ∀ n, UpTo s (m.pull n)) := by
   intro R _ C _ C' _ F F' m T₀ h s
   have e : (aug F' fun T => (m.τ T) ∘ₗ (F.map (h.to _)).hom) = m.hom.f 0 ∘ₗ aug F fun T => (F.map (h.to T)).hom := by

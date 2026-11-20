@@ -19,6 +19,9 @@ def sqN (φ : Sm E a) : Submodule ℂ (Sm E a) :=
 
 variable (μ : Measure (GA E a)) [μ.IsHaarMeasure]
 
+/- English proof (translation)
+The claim follows from `memL2_iff_fundamental_domain (isFundamentalDomain_stdDom _ μ)`.
+-/
 theorem memL2_iff_std {f : GA E a → ℂ} : MemL2Quotient (latticeGL E a) μ f ↔
     LeftInv (latticeGL E a) f ∧ MemLp f 2 (μ.restrict (stdDom (latticeGL E a))) :=
   memL2_iff_fundamental_domain (isFundamentalDomain_stdDom _ μ)
@@ -33,12 +36,18 @@ def squareIntegrableSmoothSubmoduleGL : Submodule ℂ (Sm E a) where
     rw [Set.mem_setOf_eq, memL2_iff_std] at hx ⊢
     exact ⟨fun γ hγ g => by simp [hx.1 γ hγ g], hx.2.const_smul c⟩
 
+/- English proof (translation)
+Unfold both sides. The equivalence is reflexive.
+-/
 theorem mem_l2Sub {ψ : Sm E a} : ψ ∈ squareIntegrableSmoothSubmoduleGL μ ↔ MemL2Quotient (latticeGL E a) μ ψ.1 := Iff.rfl
 
 def l2Map : Sm E a →ₗ[ℂ] L2 (latticeGL E a) μ :=
   toL2ₗ μ (squareIntegrableSmoothSubmoduleGL μ) (fun _ h => (mem_l2Sub μ).1 h) ∘ₗ
     Submodule.linearProjOfIsCompl (squareIntegrableSmoothSubmoduleGL μ) _ (Classical.choose_spec (Submodule.exists_isCompl (squareIntegrableSmoothSubmoduleGL μ)))
 
+/- English proof (translation)
+Unfold `l2Map`. Rewrite using `[LinearMap.comp_apply]`. Establish `e` using `Submodule.linearProjOfIsCompl_apply_left (Classical.choose_spec (Submodule.exists_isCompl (squareIntegrableSmoothSubmoduleGL μ))) ⟨ψ, h⟩`. Use `erw [e]`. Both sides reduce to the same expression.
+-/
 theorem l2Map_apply {ψ : Sm E a} (h : ψ ∈ squareIntegrableSmoothSubmoduleGL μ) : l2Map μ ψ = ((mem_l2Sub μ).1 h).toL2 := by
   unfold l2Map
   rw [LinearMap.comp_apply]
@@ -48,11 +57,19 @@ theorem l2Map_apply {ψ : Sm E a} (h : ψ ∈ squareIntegrableSmoothSubmoduleGL 
 
 def l2Form : Sm E a →ₗ⋆[ℂ] Sm E a →ₗ[ℂ] ℂ := ((innerₛₗ ℂ).comp (l2Map μ)).compl₂ (l2Map μ)
 
+/- English proof (translation)
+Simplify using `only [l2Form, LinearMap.compl₂_apply, LinearMap.comp_apply, l2Map_apply μ hx, l2Map_apply μ hy]`. Both sides reduce to the same expression.
+-/
 theorem l2Form_apply {x y : Sm E a} (hx : x ∈ squareIntegrableSmoothSubmoduleGL μ) (hy : y ∈ squareIntegrableSmoothSubmoduleGL μ) :
     l2Form μ x y = ⟪((mem_l2Sub μ).1 hx).toL2, ((mem_l2Sub μ).1 hy).toL2⟫_ℂ := by
   simp only [l2Form, LinearMap.compl₂_apply, LinearMap.comp_apply, l2Map_apply μ hx, l2Map_apply μ hy]
   rfl
 
+/- English proof (translation)
+Rewrite using `[l2Form_apply μ hx hx]`. Establish `: ((mem_l2Sub μ).1 hx).toL2 ≠ 0` using `toL2_ne_zero _ hc fun e => h0 (Subtype.ext e)`. Use `first`. Consider the case `exact (re_inner_self_pos (𝕜 := ℂ)).2 this`. Consider the case `exact inner_self_pos.2 this`.
+
+Consider the case `exact (RCLike.inner_self_pos).2 this`. Consider the case `(rw [inner_self_eq_norm_sq_to_K]; norm_cast; simpa using this)`.
+-/
 theorem re_l2Form_pos {x : Sm E a} (hx : x ∈ squareIntegrableSmoothSubmoduleGL μ) (hc : Continuous x.1) (h0 : x ≠ 0) : 0 < (l2Form μ x x).re := by
   rw [l2Form_apply μ hx hx]
   have : ((mem_l2Sub μ).1 hx).toL2 ≠ 0 := toL2_ne_zero _ hc fun e => h0 (Subtype.ext e)
@@ -62,6 +79,9 @@ theorem re_l2Form_pos {x : Sm E a} (hx : x ∈ squareIntegrableSmoothSubmoduleGL
     | exact (RCLike.inner_self_pos).2 this
     | (rw [inner_self_eq_norm_sq_to_K]; norm_cast; simpa using this)
 
+/- English proof (translation)
+The claim follows from `memL2_of_isAutForm h h'`.
+-/
 theorem mem_l2Sub_of_isAutForm {ψ : Sm E a} (h : IsAutForm ψ) (h' : IsSqInt ψ.1) : ψ ∈ squareIntegrableSmoothSubmoduleGL μ :=
   memL2_of_isAutForm h h'
 

@@ -8,6 +8,13 @@ section Blocks
 
 variable {R : Type} [CommRing R] {m : ℕ}
 
+/- English proof (translation)
+Unfold `blk`. Rewrite using `[fromBlocks_multiply]`. Use `congr 1`. Use extensionality with `i j`. Simplify using `[Matrix.mul_apply, vecMulVec]`.
+
+Use extensionality with `i j`. Simplify using `[Matrix.mul_apply, mulVec, dotProduct, mul_comm]`. Use extensionality with `i j`. Simplify using `[Matrix.mul_apply, vecMul, dotProduct]`. Use extensionality with `i j`.
+
+Simplify using `[Matrix.mul_apply, dotProduct]`.
+-/
 lemma blk_mul_blk (A A' : Matrix (Fin (m+1)) (Fin (m+1)) R) (b c b' c' : Fin (m+1) → R) (d d' : R) :
     blk A b c d * blk A' b' c' d' =
       blk (A * A' + vecMulVec b c') (A *ᵥ b' + d' • b) (c ᵥ* A' + d • c') (c ⬝ᵥ b' + d * d') := by

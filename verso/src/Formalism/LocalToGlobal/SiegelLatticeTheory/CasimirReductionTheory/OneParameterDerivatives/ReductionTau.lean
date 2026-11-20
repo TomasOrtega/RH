@@ -5,6 +5,9 @@ set_option autoImplicit false
 
 namespace Formalism.L2.SG.Pf
 
+/- English proof (translation)
+The claim follows from `Tau.reductionTau`.
+-/
 theorem reduction_theory : Formalism.L2.SG.LitS.ReductionTau :=
   Tau.reductionTau
 

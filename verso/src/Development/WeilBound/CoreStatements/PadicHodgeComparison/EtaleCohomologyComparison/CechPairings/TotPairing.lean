@@ -9,6 +9,11 @@ universe w w' w'' t t' v u v' u' v'' u''
 namespace CrystallineSemistableComparison.Auxff
 open CategoryTheory CrystallineSemistableComparison CrystallineSemistableComparison.CH
 
+/- English proof (translation)
+Establish `e : (hg.functor ⋙ s).map (homOfLE (Fin.le_last (k (Fin.last p)))) ≫ s.map (homOfLE (Fin.le_last (g (Fin.last m)))) = s.map (homOfLE (Fin.le_last (g (k (Fin.last p)))))`. Express the relevant statement in the definitionally equal form `s.map _ ≫ s.map _ = _`. Rewrite using `[← s.map_comp]`. Both sides reduce to the same expression. Use `show (F.map ((hg.functor ⋙ s).map (homOfLE (Fin.le_last (k (Fin.last p))))) ≫ F.map (s.map (homOfLE (Fin.le_last (g (Fin.last m)))))).hom (f ((hg.comp hk).functor ⋙ s)) = _`.
+
+Rewrite using `[← F.map_comp, e]`. Both sides reduce to the same expression.
+-/
 theorem term_comp {R : Type} [CommRing R] {C : Type u} [Category.{v} C] (F : C ⥤ ModuleCat.{w} R) {p m n : ℕ}
     (s : ComposableArrows C n) (f : Cn F p)
     (g : Fin (m + 1) → Fin (n + 1)) (hg : Monotone g) (k : Fin (p + 1) → Fin (m + 1)) (hk : Monotone k) :
@@ -23,6 +28,9 @@ theorem term_comp {R : Type} [CommRing R] {C : Type u} [Category.{v} C] (F : C �
   rw [← F.map_comp, e]
   rfl
 
+/- English proof (translation)
+Establish `e : d F p f (hg.functor ⋙ s) = ∑ i : Fin (p + 2), (-1 : ℤ) ^ (i : ℕ) • term F (hg.functor ⋙ s) f i.succAbove (Fin.strictMono_succAbove i).monotone` using `rfl`. Use `show (F.map (s.map (homOfLE (Fin.le_last (g (Fin.last (p + 1))))))).hom (d F p f (hg.functor ⋙ s)) = _`. Rewrite using `[e, map_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[map_zsmul, term_comp]`.
+-/
 theorem term_d {R : Type} [CommRing R] {C : Type u} [Category.{v} C] (F : C ⥤ ModuleCat.{w} R) {p n : ℕ}
     (s : ComposableArrows C n) (f : Cn F p)
     (g : Fin (p + 2) → Fin (n + 1)) (hg : Monotone g) :
@@ -35,26 +43,49 @@ theorem term_d {R : Type} [CommRing R] {C : Type u} [Category.{v} C] (F : C ⥤ 
   refine Finset.sum_congr rfl fun i _ => ?_
   rw [map_zsmul, term_comp]
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem cupC_apply {R : Type} [CommRing R] {C : Type u} [Category.{v} C] {F₁ : C ⥤ ModuleCat.{w} R}
     {F₂ : C ⥤ ModuleCat.{w'} R} {F₃ : C ⥤ ModuleCat.{w''} R} (P : Pairing F₁ F₂ F₃) {p q n : ℕ} (h : p + q = n)
     (f : Cn F₁ p) (g : Cn F₂ q) (s : ComposableArrows C n) :
     P.cupC h f g s = P.μ _ (term F₁ s f (front h) (front_mono h)) (term F₂ s g (back h) (back_mono h)) := rfl
 
+/- English proof (translation)
+Substitute `e` using the available equality. Simplify using `[Fin.sum_univ_add]`.
+-/
 theorem sum_split {M : Type*} [AddCommMonoid M] {N a b : ℕ} (e : N = a + b) (φ : Fin N → M) :
     ∑ i, φ i = ∑ j : Fin a, φ (Fin.cast e.symm (Fin.castAdd b j)) + ∑ k : Fin b, φ (Fin.cast e.symm (Fin.natAdd a k)) := by
   subst e; simp [Fin.sum_univ_add]
 
+/- English proof (translation)
+Break down `lt_or_ge (t : ℕ) i with h | h` into its components or cases. Rewrite using `[Fin.succAbove_of_castSucc_lt _ _ (by simpa [Fin.lt_def] using h)]; simp [h]`. Rewrite using `[Fin.succAbove_of_le_castSucc _ _ (by simpa [Fin.le_def] using h)]; simp; omega`.
+-/
 theorem sa_val {N : ℕ} (i : Fin (N + 1)) (t : Fin N) : (i.succAbove t : ℕ) = if (t : ℕ) < i then (t : ℕ) else t + 1 := by
   rcases lt_or_ge (t : ℕ) i with h | h
   · rw [Fin.succAbove_of_castSucc_lt _ _ (by simpa [Fin.lt_def] using h)]; simp [h]
   · rw [Fin.succAbove_of_le_castSucc _ _ (by simpa [Fin.le_def] using h)]; simp; omega
 
+/- English proof (translation)
+Substitute `h1 h2` using the available equality. Rewrite using `[eq_neg_of_add_eq_zero_left h3]`. Normalize the expressions using the abelian group laws.
+-/
 theorem four {M : Type*} [AddCommGroup M] {x y A B a b : M} (h1 : x = A) (h2 : y = B) (h3 : a + b = 0) :
     x + y = (A + a) + (b + B) := by
   subst h1 h2; rw [eq_neg_of_add_eq_zero_left h3]; abel
 
 end CrystallineSemistableComparison.Auxff
 
+/- English proof (translation)
+Introduce `R _ C _ F₁ F₂ F₃ P p q n h f g`. Substitute `h` using the available equality. Use function extensionality and compare the values at `s`. Establish `hL : d F₃ (p + q) (P.cupC rfl f g) s = ∑ i : Fin (p + q + 2), (-1 : ℤ) ^ (i : ℕ) • P.μ _ (term F₁ s f (i.succAbove ∘ front (rfl : p + q = p + q)) ((Fin.strictMono_succAbove i).monotone.comp (front_mono _))) (term F₂ s g (i.succAbove ∘ back (rfl : p + q = p + q)) ((Fin.strictMono_ …` using `by show ∑ i : Fin (p + q + 2), (-1 : ℤ) ^ (i : ℕ) • (F₃.map (GlobalTheory.CatH.toLast i s)).hom (P.cupC rfl f g (GlobalTheory.CatH.face i s)) = _`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[CrystallineSemistableComparison.Auxff.cupC_apply, ← P.nat, term_face, term_face]`. Rewrite using `[hL, Pi.add_apply, Pi.smul_apply, CrystallineSemistableComparison.Auxff.cupC_apply, CrystallineSemistableComparison.Auxff.cupC_apply, CrystallineSemistableComparison.Auxff.term_d, CrystallineSemistableComparison.Auxff.term_d]`. Simplify using `only [map_sum, map_zsmul, LinearMap.sum_apply, LinearMap.smul_apply]`. Rewrite using `[CrystallineSemistableComparison.Auxff.sum_split (show p + q + 2 = (p + 1) + (q + 1) by omega), Fin.sum_univ_castSucc (n := p + 1), Fin.sum_univ_succ (n := q + 1), smul_add, Finset.smul_sum]`. Use `CrystallineSemistableComparison.Auxff.four (Finset.sum_congr rfl fun j _ => ?_) (Finset.sum_congr rfl fun k _ => ?_) ?_` and prove the remaining obligations.
+
+Use `congr 1`. Apply the tactic sequence `refine congrArg₂ (fun x y => P.μ _ x y) (term_congr _ _ _ _ _ ?_) (term_congr _ _ _ _ _ ?_) <;>`. Apply the tactic sequence `funext t <;> apply Fin.ext <;> simp only [Function.comp, CrystallineSemistableComparison.Auxff.sa_val, front, back, Fin.val_cast, Fin.val_castAdd, Fin.val_castSucc, Fin.val_natAdd, Fin.val_succ, Fin.val_last, Fin.val_zero] <;> split_ifs <;> omega`. Rewrite using `[smul_smul, ← pow_add]`. Use `congr 1`.
+
+Use `congr 1`. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Apply the tactic sequence `refine congrArg₂ (fun x y => P.μ _ x y) (term_congr _ _ _ _ _ ?_) (term_congr _ _ _ _ _ ?_) <;>`. Apply the tactic sequence `funext t <;> apply Fin.ext <;> simp only [Function.comp, CrystallineSemistableComparison.Auxff.sa_val, front, back, Fin.val_cast, Fin.val_castAdd, Fin.val_castSucc, Fin.val_natAdd, Fin.val_succ, Fin.val_last, Fin.val_zero] <;> split_ifs <;> omega`.
+
+Rewrite using `[smul_smul, ← pow_add, add_eq_zero_iff_eq_neg, ← neg_smul]`. Use `congr 1`. Simplify using `[pow_succ]`. Apply the tactic sequence `refine congrArg₂ (fun x y => P.μ _ x y) (term_congr _ _ _ _ _ ?_) (term_congr _ _ _ _ _ ?_) <;>`. Apply the tactic sequence `funext t <;> apply Fin.ext <;> simp only [Function.comp, CrystallineSemistableComparison.Auxff.sa_val, front, back, Fin.val_cast, Fin.val_castAdd, Fin.val_castSucc, Fin.val_natAdd, Fin.val_succ, Fin.val_last, Fin.val_zero] <;> split_ifs <;> omega`.
+-/
 theorem CrystallineSemistableComparison.P.leibniz : ∀ {R : Type} [CommRing R] {C : Type u} [Category.{v} C] {F₁ : C ⥤ ModuleCat.{w} R} {F₂ : C ⥤ ModuleCat.{w'} R} {F₃ : C ⥤ ModuleCat.{w''} R} (P : Pairing F₁ F₂ F₃) {p q n : ℕ} (h : p + q = n) (f : Cn F₁ p) (g : Cn F₂ q), d F₃ n (P.cupC h f g) = P.cupC (p := p + 1) (q := q) (by omega) (d F₁ p f) g + (-1 : ℤ) ^ p • P.cupC (p := p) (q := q + 1) (by omega) f (d F₂ q g) := by
   intro R _ C _ F₁ F₂ F₃ P p q n h f g
   subst h
@@ -87,9 +118,17 @@ theorem CrystallineSemistableComparison.P.leibniz : ∀ {R : Type} [CommRing R] 
 namespace CrystallineSemistableComparison.Auxff
 open CategoryTheory CrystallineSemistableComparison CrystallineSemistableComparison.CH
 
+/- English proof (translation)
+The claim follows from `Quotient.out_eq x`.
+-/
 theorem cls_out {R : Type} [CommRing R] (K : Cx.{w} R) {n : ℕ} (x : K.H n) :
     K.cls (Quotient.out x).1 (Quotient.out x).2 = x := Quotient.out_eq x
 
+/- English proof (translation)
+Break down `p with _ | p` into its components or cases. Establish `: x = 0` using `hx`. Rewrite using `[this, map_zero, LinearMap.zero_apply]`. Conclude with `Submodule.zero_mem _`. Take `⟨m, rfl⟩ : ∃ m, n = m + 1` from `⟨p + q, by omega⟩`.
+
+Take `⟨u, rfl⟩` from `hx`. Use `⟨P.μ (p := p) (q := q) (by omega) u b, ?_⟩` and prove the remaining obligations. Rewrite using `[P.leib, hb, map_zero, smul_zero, add_zero]`.
+-/
 theorem memB_left {R : Type} [CommRing R] {K : Cx.{w} R} {L : Cx.{w'} R} {M : Cx.{w''} R} (P : CxPairing K L M)
     {p q n : ℕ} (h : p + q = n) (x : K.X p) (hx : x ∈ K.B p) (b : L.X q) (hb : L.d q b = 0) : P.μ h x b ∈ M.B n := by
   rcases p with _ | p
@@ -100,6 +139,11 @@ theorem memB_left {R : Type} [CommRing R] {K : Cx.{w} R} {L : Cx.{w'} R} {M : Cx
     refine ⟨P.μ (p := p) (q := q) (by omega) u b, ?_⟩
     rw [P.leib, hb, map_zero, smul_zero, add_zero]
 
+/- English proof (translation)
+Break down `q with _ | q` into its components or cases. Establish `: y = 0` using `hy`. Rewrite using `[this, map_zero]`. Conclude with `Submodule.zero_mem _`. Take `⟨m, rfl⟩ : ∃ m, n = m + 1` from `⟨p + q, by omega⟩`.
+
+Take `⟨v, rfl⟩` from `hy`. Use `⟨(-1 : ℤ) ^ p • P.μ (p := p) (q := q) (by omega) a v, ?_⟩` and prove the remaining obligations. Rewrite using `[map_zsmul, P.leib, ha, map_zero, LinearMap.zero_apply, zero_add, smul_smul, ← pow_add, ← two_mul, pow_mul]`. Simplify using the standard rewrite rules.
+-/
 theorem memB_right {R : Type} [CommRing R] {K : Cx.{w} R} {L : Cx.{w'} R} {M : Cx.{w''} R} (P : CxPairing K L M)
     {p q n : ℕ} (h : p + q = n) (a : K.X p) (ha : K.d p a = 0) (y : L.X q) (hy : y ∈ L.B q) : P.μ h a y ∈ M.B n := by
   rcases q with _ | q
@@ -113,6 +157,11 @@ theorem memB_right {R : Type} [CommRing R] {K : Cx.{w} R} {L : Cx.{w'} R} {M : C
 
 end CrystallineSemistableComparison.Auxff
 
+/- English proof (translation)
+Introduce `R _ K L M P p q n h a b ha hb hc`. Unfold `CxPairing.cup`. Rewrite using `[(CrystallineSemistableComparison.P.cls_surj M n).2.2.1]`. Establish `h1 : (Quotient.out (K.cls a ha)).1 - a ∈ K.B p` using `((CrystallineSemistableComparison.P.cls_surj K p).2.2.1 _ _ _ ha).mp (CrystallineSemistableComparison.Auxff.cls_out K _)`. Establish `h2 : (Quotient.out (L.cls b hb)).1 - b ∈ L.B q` using `((CrystallineSemistableComparison.P.cls_surj L q).2.2.1 _ _ _ hb).mp (CrystallineSemistableComparison.Auxff.cls_out L _)`.
+
+Establish `e : P.μ h (Quotient.out (K.cls a ha)).1 (Quotient.out (L.cls b hb)).1 - P.μ h a b = P.μ h ((Quotient.out (K.cls a ha)).1 - a) (Quotient.out (L.cls b hb)).1 + P.μ h a ((Quotient.out (L.cls b hb)).1 - b)`. Simplify using `only [map_sub, LinearMap.sub_apply]`. Normalize the expressions using the abelian group laws. Rewrite using `[e]`. Conclude with `add_mem (CrystallineSemistableComparison.Auxff.memB_left P h _ h1 _ (Quotient.out (L.cls b hb)).2) (CrystallineSemistableComparison.Auxff.memB_right P h a ha _ h2)`.
+-/
 theorem CrystallineSemistableComparison.P.cxcup_cls : ∀ {R : Type} [CommRing R] {K : Cx.{w} R} {L : Cx.{w'} R} {M : Cx.{w''} R} (P : CxPairing K L M) {p q n : ℕ} (h : p + q = n) (a : K.X p) (b : L.X q) ha hb hc, P.cup h (K.cls a ha) (L.cls b hb) = M.cls (P.μ h a b) hc := by
   intro R _ K L M P p q n h a b ha hb hc
   unfold CxPairing.cup
@@ -138,6 +187,11 @@ noncomputable def toCx {R : Type} [CommRing R] {C : Type u} [Category.{v} C] {F�
   μ h := P.cupC h
   leib h x y := CrystallineSemistableComparison.P.leibniz P h x y
 
+/- English proof (translation)
+Unfold `Pairing.cup CxPairing.cup`. Use `split_ifs with hz`. Both sides reduce to the same expression. Conclude with `absurd ((toCx P).leib h _ _ |>.trans (by`. Rewrite using `[show d F₁ p (Quotient.out x).1 = 0 from (Quotient.out x).2, show d F₂ q (Quotient.out y).1 = 0 from (Quotient.out y).2]`.
+
+Use the proof step `simp)) hz`.
+-/
 theorem cup_eq {R : Type} [CommRing R] {C : Type u} [Category.{v} C] {F₁ : C ⥤ ModuleCat.{w} R}
     {F₂ : C ⥤ ModuleCat.{w'} R} {F₃ : C ⥤ ModuleCat.{w''} R} (P : Pairing F₁ F₂ F₃) {p q n : ℕ} (h : p + q = n)
     (x : H F₁ p) (y : H F₂ q) : P.cup h x y = (toCx P).cup h x y := by
@@ -148,11 +202,29 @@ theorem cup_eq {R : Type} [CommRing R] {C : Type u} [Category.{v} C] {F₁ : C �
       rw [show d F₁ p (Quotient.out x).1 = 0 from (Quotient.out x).2,
         show d F₂ q (Quotient.out y).1 = 0 from (Quotient.out y).2]; simp)) hz
 
+/- English proof (translation)
+Rewrite using `[Q.leib, ha, hb]`. Simplify using the standard rewrite rules.
+-/
 theorem closed {R : Type} [CommRing R] {K : Cx.{w} R} {L : Cx.{w'} R} {M : Cx.{w''} R} (Q : CxPairing K L M)
     {p q n : ℕ} (h : p + q = n) (a : K.X p) (b : L.X q) (ha : K.d p a = 0) (hb : L.d q b = 0) :
     M.d n (Q.μ h a b) = 0 := by
   rw [Q.leib, ha, hb]; simp
 
+/- English proof (translation)
+Establish `cc : ∀ (a : K.X p) (b : L.X q) ha hb, Q.cup h (K.cls a ha) (L.cls b hb) = M.cls (Q.μ h a b) (closed Q h a b ha hb)` using `fun a b ha hb => CrystallineSemistableComparison.P.cxcup_cls Q h a b ha hb _`. Use `⟨LinearMap.mk₂ R (fun x y => Q.cup h x y) ?_ ?_ ?_ ?_, fun x y => rfl⟩` and prove the remaining obligations. Introduce `x x' y`. Take `⟨a, ha, rfl⟩` from `(CrystallineSemistableComparison.P.cls_surj K p).1 x`. Take `⟨a', ha', rfl⟩` from `(CrystallineSemistableComparison.P.cls_surj K p).1 x'`.
+
+Take `⟨b, hb, rfl⟩` from `(CrystallineSemistableComparison.P.cls_surj L q).1 y`. Establish `hs : K.d p (a + a') = 0` using `by rw [map_add, ha, ha', add_zero]`. Rewrite using `[← (CrystallineSemistableComparison.P.cls_surj K p).2.2.2.1 a a' ha ha' hs, cc, cc, cc]`. Simplify using `only [map_add, LinearMap.add_apply]`. Conclude with `(CrystallineSemistableComparison.P.cls_surj M n).2.2.2.1 _ _ _ _ _`.
+
+Introduce `r x y`. Take `⟨a, ha, rfl⟩` from `(CrystallineSemistableComparison.P.cls_surj K p).1 x`. Take `⟨b, hb, rfl⟩` from `(CrystallineSemistableComparison.P.cls_surj L q).1 y`. Establish `hs : K.d p (r • a) = 0` using `by rw [map_smul, ha, smul_zero]`. Rewrite using `[← (CrystallineSemistableComparison.P.cls_surj K p).2.2.2.2 r a ha hs, cc, cc]`.
+
+Simplify using `only [map_smul, LinearMap.smul_apply]`. Conclude with `(CrystallineSemistableComparison.P.cls_surj M n).2.2.2.2 _ _ _ _`. Introduce `x y y'`. Take `⟨a, ha, rfl⟩` from `(CrystallineSemistableComparison.P.cls_surj K p).1 x`. Take `⟨b, hb, rfl⟩` from `(CrystallineSemistableComparison.P.cls_surj L q).1 y`.
+
+Take `⟨b', hb', rfl⟩` from `(CrystallineSemistableComparison.P.cls_surj L q).1 y'`. Establish `hs : L.d q (b + b') = 0` using `by rw [map_add, hb, hb', add_zero]`. Rewrite using `[← (CrystallineSemistableComparison.P.cls_surj L q).2.2.2.1 b b' hb hb' hs, cc, cc, cc]`. Simplify using `only [map_add]`. Conclude with `(CrystallineSemistableComparison.P.cls_surj M n).2.2.2.1 _ _ _ _ _`.
+
+Introduce `r x y`. Take `⟨a, ha, rfl⟩` from `(CrystallineSemistableComparison.P.cls_surj K p).1 x`. Take `⟨b, hb, rfl⟩` from `(CrystallineSemistableComparison.P.cls_surj L q).1 y`. Establish `hs : L.d q (r • b) = 0` using `by rw [map_smul, hb, smul_zero]`. Rewrite using `[← (CrystallineSemistableComparison.P.cls_surj L q).2.2.2.2 r b hb hs, cc, cc]`.
+
+Simplify using `only [map_smul]`. Conclude with `(CrystallineSemistableComparison.P.cls_surj M n).2.2.2.2 _ _ _ _`.
+-/
 theorem cx_bilin {R : Type} [CommRing R] {K : Cx.{w} R} {L : Cx.{w'} R} {M : Cx.{w''} R} (Q : CxPairing K L M)
     {p q n : ℕ} (h : p + q = n) : ∃ b : K.H p →ₗ[R] L.H q →ₗ[R] M.H n, ∀ x y, b x y = Q.cup h x y := by
   have cc : ∀ (a : K.X p) (b : L.X q) ha hb, Q.cup h (K.cls a ha) (L.cls b hb) = M.cls (Q.μ h a b) (closed Q h a b ha hb) :=
@@ -191,11 +263,17 @@ theorem cx_bilin {R : Type} [CommRing R] {K : Cx.{w} R} {L : Cx.{w'} R} {M : Cx.
 
 end CrystallineSemistableComparison.Auxff
 
+/- English proof (translation)
+Introduce `R _ C _ F₁ F₂ F₃ P p q n h a b ha hb`. Conclude with `⟨CrystallineSemistableComparison.Auxff.closed (CrystallineSemistableComparison.Auxff.toCx P) h a b ha hb, (CrystallineSemistableComparison.Auxff.cup_eq P h _ _).trans (CrystallineSemistableComparison.P.cxcup_cls (CrystallineSemistableComparison.Auxff.toCx P) h a b ha hb _)⟩`.
+-/
 theorem CrystallineSemistableComparison.P.cup_cls : ∀ {R : Type} [CommRing R] {C : Type u} [Category.{v} C] {F₁ : C ⥤ ModuleCat.{w} R} {F₂ : C ⥤ ModuleCat.{w'} R} {F₃ : C ⥤ ModuleCat.{w''} R} (P : Pairing F₁ F₂ F₃) {p q n : ℕ} (h : p + q = n) (a : Cn F₁ p) (b : Cn F₂ q) ha hb, ∃ hc, P.cup h ((cx F₁).cls a ha) ((cx F₂).cls b hb) = (cx F₃).cls (P.cupC h a b) hc := by
   intro R _ C _ F₁ F₂ F₃ P p q n h a b ha hb
   exact ⟨CrystallineSemistableComparison.Auxff.closed (CrystallineSemistableComparison.Auxff.toCx P) h a b ha hb,
     (CrystallineSemistableComparison.Auxff.cup_eq P h _ _).trans (CrystallineSemistableComparison.P.cxcup_cls (CrystallineSemistableComparison.Auxff.toCx P) h a b ha hb _)⟩
 
+/- English proof (translation)
+Introduce `R _ C _ F₁ F₂ F₃ P p q n h`. Take `⟨b, hb⟩` from `CrystallineSemistableComparison.Auxff.cx_bilin (CrystallineSemistableComparison.Auxff.toCx P) h`. Conclude with `⟨b, fun x y => (hb x y).trans (CrystallineSemistableComparison.Auxff.cup_eq P h x y).symm⟩`.
+-/
 theorem CrystallineSemistableComparison.P.cup_bilin : ∀ {R : Type} [CommRing R] {C : Type u} [Category.{v} C] {F₁ : C ⥤ ModuleCat.{w} R} {F₂ : C ⥤ ModuleCat.{w'} R} {F₃ : C ⥤ ModuleCat.{w''} R} (P : Pairing F₁ F₂ F₃) {p q n : ℕ} (h : p + q = n), ∃ b : H F₁ p →ₗ[R] H F₂ q →ₗ[R] H F₃ n, ∀ x y, b x y = P.cup h x y := by
   intro R _ C _ F₁ F₂ F₃ P p q n h
   obtain ⟨b, hb⟩ := CrystallineSemistableComparison.Auxff.cx_bilin (CrystallineSemistableComparison.Auxff.toCx P) h
@@ -204,10 +282,18 @@ theorem CrystallineSemistableComparison.P.cup_bilin : ∀ {R : Type} [CommRing R
 namespace CrystallineSemistableComparison.Auxff
 open CategoryTheory CrystallineSemistableComparison CrystallineSemistableComparison.CH
 
+/- English proof (translation)
+Substitute `e` using the available equality. Both sides reduce to the same expression.
+-/
 theorem cls_congr {R : Type} [CommRing R] (K : Cx.{w} R) {n : ℕ} {a b : K.X n} (e : a = b) (ha : K.d n a = 0)
     (hb : K.d n b = 0) : K.cls a ha = K.cls b hb := by
   subst e; rfl
 
+/- English proof (translation)
+Take `⟨a0, ha0, rfl⟩` from `(CrystallineSemistableComparison.P.cls_surj K p).1 x`. Take `⟨b0, hb0, rfl⟩` from `(CrystallineSemistableComparison.P.cls_surj L q).1 y`. Establish `ha1 : K'.d p (a.f p a0) = 0` using `by rw [a.comm, ha0, map_zero]`. Establish `hb1 : L'.d q (b.f q b0) = 0` using `by rw [b.comm, hb0, map_zero]`. Establish `hc1 : M'.d n (c.f n (P.μ h a0 b0)) = 0` using `by rw [c.comm, closed P h a0 b0 ha0 hb0, map_zero]`.
+
+Rewrite using `[CrystallineSemistableComparison.P.cxcup_cls P h a0 b0 ha0 hb0 (closed P h a0 b0 ha0 hb0), CrystallineSemistableComparison.P.mapH_cls a p a0 ha0 ha1, CrystallineSemistableComparison.P.mapH_cls b q b0 hb0 hb1, CrystallineSemistableComparison.P.cxcup_cls Q h _ _ ha1 hb1 (closed Q h …`. Conclude with `cls_congr _ (hc h a0 b0) _ _`.
+-/
 theorem cxmap {R R' : Type} [CommRing R] [CommRing R'] {σ : R →+* R'} {K : Cx.{w} R} {L : Cx.{w'} R} {M : Cx.{w''} R}
     {K' : Cx.{t} R'} {L' : Cx.{t'} R'} {M' : Cx.{u} R'} (P : CxPairing K L M) (Q : CxPairing K' L' M')
     (a : Cx.Hom K K' σ) (b : Cx.Hom L L' σ) (c : Cx.Hom M M' σ)
@@ -224,12 +310,18 @@ theorem cxmap {R R' : Type} [CommRing R] [CommRing R'] {σ : R →+* R'} {K : Cx
     CrystallineSemistableComparison.P.mapH_cls c n _ _ hc1]
   exact cls_congr _ (hc h a0 b0) _ _
 
+/- English proof (translation)
+The claim follows from `m.nat _ _`.
+-/
 theorem term_pull {R R' : Type} [CommRing R] [CommRing R'] {σ : R →+* R'} {C : Type u} [Category.{v} C]
     {C' : Type u'} [Category.{v'} C'] {F : C ⥤ ModuleCat.{w} R} {F' : C' ⥤ ModuleCat.{w'} R'} (m : Mor F F' σ)
     {p n : ℕ} (s : ComposableArrows C' n) (f : Cn F p) (g : Fin (p + 1) → Fin (n + 1)) (hg : Monotone g) :
     m.τ _ (term F (s ⋙ m.G) f g hg) = term F' s (m.pullC p f) g hg :=
   m.nat _ _
 
+/- English proof (translation)
+Conclude with `(P.nat (s.map (homOfLE (Fin.le_last (k (Fin.last a))))) _ _).symm.trans (congrArg₂ (fun x y => P.μ _ x y) (term_comp F₁ s f k hk (front h) (front_mono h)) (term_comp F₂ s g k hk (back h) (back_mono h)))`.
+-/
 theorem term_cupC {R : Type} [CommRing R] {C : Type u} [Category.{v} C] {F₁ : C ⥤ ModuleCat.{w} R}
     {F₂ : C ⥤ ModuleCat.{w'} R} {F₃ : C ⥤ ModuleCat.{w''} R} (P : Pairing F₁ F₂ F₃) {p q a m : ℕ} (h : p + q = a)
     (s : ComposableArrows C m) (f : Cn F₁ p) (g : Cn F₂ q) (k : Fin (a + 1) → Fin (m + 1)) (hk : Monotone k) :
@@ -239,6 +331,9 @@ theorem term_cupC {R : Type} [CommRing R] {C : Type u} [Category.{v} C] {F₁ : 
     (congrArg₂ (fun x y => P.μ _ x y) (term_comp F₁ s f k hk (front h) (front_mono h))
       (term_comp F₂ s g k hk (back h) (back_mono h)))
 
+/- English proof (translation)
+Rewrite using `[term_congr F s f hg monotone_id (funext fun t => Fin.ext (e t))]`. Use `show (F.map (s.map (𝟙 _))).hom (f s) = f s`. Simplify using the standard rewrite rules.
+-/
 theorem term_id {R : Type} [CommRing R] {C : Type u} [Category.{v} C] (F : C ⥤ ModuleCat.{w} R) {n : ℕ}
     (s : ComposableArrows C n) (f : Cn F n) (g : Fin (n + 1) → Fin (n + 1)) (hg : Monotone g) (e : ∀ t, (g t : ℕ) = t) :
     term F s f g hg = f s := by
@@ -246,11 +341,17 @@ theorem term_id {R : Type} [CommRing R] {C : Type u} [Category.{v} C] (F : C ⥤
   show (F.map (s.map (𝟙 _))).hom (f s) = f s
   simp
 
+/- English proof (translation)
+Simplify using `[term, modF]`.
+-/
 theorem term_one {R : Type} [CommRing R] {C : Type u} [Category.{v} C] (A : C ⥤ CommAlgCat.{w} R) {m : ℕ}
     (s : ComposableArrows C m) (g : Fin 1 → Fin (m + 1)) (hg : Monotone g) :
     term (modF A) s (fun s => (1 : A.obj (s.obj (Fin.last 0)))) g hg = (1 : A.obj (s.obj (Fin.last m))) := by
   simp [term, modF]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `s`. Rewrite using `[cupC_apply]`. Conclude with `(congrArg₂ (fun u v : A.obj (s.obj (Fin.last n)) => u * v) (term_one A s _ _) (term_id _ s f _ _ (fun t => by simp [back]))).trans (one_mul _)`.
+-/
 theorem unit_left {R : Type} [CommRing R] {C : Type u} [Category.{v} C] (A : C ⥤ CommAlgCat.{w} R) {n : ℕ}
     (f : Cn (modF A) n) : (mulP A).cupC (Nat.zero_add n) (fun s => (1 : A.obj (s.obj (Fin.last 0)))) f = f := by
   funext s
@@ -258,6 +359,9 @@ theorem unit_left {R : Type} [CommRing R] {C : Type u} [Category.{v} C] (A : C �
   exact (congrArg₂ (fun u v : A.obj (s.obj (Fin.last n)) => u * v) (term_one A s _ _)
     (term_id _ s f _ _ (fun t => by simp [back]))).trans (one_mul _)
 
+/- English proof (translation)
+Use function extensionality and compare the values at `s`. Rewrite using `[cupC_apply]`. Conclude with `(congrArg₂ (fun u v : A.obj (s.obj (Fin.last n)) => u * v) (term_id _ s f _ _ (fun t => by simp [front])) (term_one A s _ _)).trans (mul_one _)`.
+-/
 theorem unit_right {R : Type} [CommRing R] {C : Type u} [Category.{v} C] (A : C ⥤ CommAlgCat.{w} R) {n : ℕ}
     (f : Cn (modF A) n) : (mulP A).cupC (Nat.add_zero n) f (fun s => (1 : A.obj (s.obj (Fin.last 0)))) = f := by
   funext s
@@ -265,6 +369,9 @@ theorem unit_right {R : Type} [CommRing R] {C : Type u} [Category.{v} C] (A : C 
   exact (congrArg₂ (fun u v : A.obj (s.obj (Fin.last n)) => u * v)
     (term_id _ s f _ _ (fun t => by simp [front])) (term_one A s _ _)).trans (mul_one _)
 
+/- English proof (translation)
+Use function extensionality and compare the values at `s`. Rewrite using `[cupC_apply, cupC_apply, term_cupC, term_cupC]`. Use `(mul_assoc (G := A.obj (s.obj (Fin.last n))) _ _ _).trans ?_` and prove the remaining obligations. Apply the tactic sequence `refine congrArg₂ (fun u v : A.obj (s.obj (Fin.last n)) => u * v) (term_congr _ _ _ _ _ ?_) (congrArg₂ (fun u v : A.obj (s.obj (Fin.last n)) => u * v) (term_congr _ _ _ _ _ ?_) (term_congr _ _ _ _ _ ?_)) <;>`. Apply the tactic sequence `funext t <;> apply Fin.ext <;> simp [front, back] <;> omega`.
+-/
 theorem assoc {R : Type} [CommRing R] {C : Type u} [Category.{v} C] (A : C ⥤ CommAlgCat.{w} R)
     {p q r a b n : ℕ} (h₁ : p + q = a) (h₂ : a + r = n) (h₃ : q + r = b) (h₄ : p + b = n)
     (f : Cn (modF A) p) (g : Cn (modF A) q) (k : Cn (modF A) r) :
@@ -277,6 +384,11 @@ theorem assoc {R : Type} [CommRing R] {C : Type u} [Category.{v} C] (A : C ⥤ C
 
 end CrystallineSemistableComparison.Auxff
 
+/- English proof (translation)
+Introduce `R R' _ _ σ C _ C' _ F₁ F₂ F₃ E₁ E₂ E₃ P Q G τ₁ τ₂ τ₃ h₁ h₂ h₃ hμ p q n h x y`. Rewrite using `[CrystallineSemistableComparison.Auxff.cup_eq, CrystallineSemistableComparison.Auxff.cup_eq]`. Use `CrystallineSemistableComparison.Auxff.cxmap (CrystallineSemistableComparison.Auxff.toCx P) (CrystallineSemistableComparison.Auxff.toCx Q) (Mor.mk G τ₁ h₁ : Mor F₁ E₁ σ).hom (Mor.mk G τ₂ h₂ : Mor F₂ E₂ σ).hom (Mor.mk G τ₃ h₃ : Mor F₃ E₃ σ).hom ?_ h x y` and prove the remaining obligations. Introduce `p q n h f g`. Use function extensionality and compare the values at `s`.
+
+Conclude with `(hμ _ _ _).trans (congrArg₂ (fun a b => Q.μ _ a b) (CrystallineSemistableComparison.Auxff.term_pull (Mor.mk G τ₁ h₁ : Mor F₁ E₁ σ) s f _ _) (CrystallineSemistableComparison.Auxff.term_pull (Mor.mk G τ₂ h₂ : Mor F₂ E₂ σ) s g _ _))`.
+-/
 theorem CrystallineSemistableComparison.P.cup_pull : ∀ {R R' : Type} [CommRing R] [CommRing R'] {σ : R →+* R'} {C : Type u} [Category.{v} C] {C' : Type u'} [Category.{v'} C'] {F₁ : C ⥤ ModuleCat.{w} R} {F₂ : C ⥤ ModuleCat.{w'} R} {F₃ : C ⥤ ModuleCat.{w''} R} {E₁ : C' ⥤ ModuleCat.{t} R'} {E₂ : C' ⥤ ModuleCat.{t'} R'} {E₃ : C' ⥤ ModuleCat.{u''} R'} (P : Pairing F₁ F₂ F₃) (Q : Pairing E₁ E₂ E₃) (G : C' ⥤ C) (τ₁ : ∀ T, F₁.obj (G.obj T) →ₛₗ[σ] E₁.obj T) (τ₂ : ∀ T, F₂.obj (G.obj T) →ₛₗ[σ] E₂.obj T) (τ₃ : ∀ T, F₃.obj (G.obj T) →ₛₗ[σ] E₃.obj T) h₁ h₂ h₃, (∀ T x y, τ₃ T (P.μ _ x y) = Q.μ T (τ₁ T x) (τ₂ T y)) → ∀ {p q n : ℕ} (h : p + q = n) x y, (Mor.mk G τ₃ h₃ : Mor F₃ E₃ σ).pull n (P.cup h x y) = Q.cup h ((Mor.mk G τ₁ h₁ : Mor F₁ E₁ σ).pull p x) ((Mor.mk G τ₂ h₂ : Mor F₂ E₂ σ).pull q y) := by
   intro R R' _ _ σ C _ C' _ F₁ F₂ F₃ E₁ E₂ E₃ P Q G τ₁ τ₂ τ₃ h₁ h₂ h₃ hμ p q n h x y
   rw [CrystallineSemistableComparison.Auxff.cup_eq, CrystallineSemistableComparison.Auxff.cup_eq]
@@ -288,6 +400,15 @@ theorem CrystallineSemistableComparison.P.cup_pull : ∀ {R R' : Type} [CommRing
     (CrystallineSemistableComparison.Auxff.term_pull (Mor.mk G τ₁ h₁ : Mor F₁ E₁ σ) s f _ _)
     (CrystallineSemistableComparison.Auxff.term_pull (Mor.mk G τ₂ h₂ : Mor F₂ E₂ σ) s g _ _))
 
+/- English proof (translation)
+Introduce `R _ C _ A`. Use `⟨fun n x => ?_, fun {p q r a b n} h₁ h₂ h₃ h₄ x y z => ?_⟩` and prove the remaining obligations. Take `⟨f, hf, rfl⟩` from `(CrystallineSemistableComparison.P.cls_surj (cx (modF A)) n).1 x`. Prove the components needed by the constructor for the conclusion. Take `⟨hc, e⟩` from `CrystallineSemistableComparison.P.cup_cls (mulP A) (Nat.zero_add n) (fun s => (1 : A.obj (s.obj (Fin.last 0)))) f (oneH._proof_1 A) hf`.
+
+Conclude with `e.trans (CrystallineSemistableComparison.Auxff.cls_congr _ (CrystallineSemistableComparison.Auxff.unit_left A f) _ _)`. Take `⟨hc, e⟩` from `CrystallineSemistableComparison.P.cup_cls (mulP A) (Nat.add_zero n) f (fun s => (1 : A.obj (s.obj (Fin.last 0)))) hf (oneH._proof_1 A)`. Conclude with `e.trans (CrystallineSemistableComparison.Auxff.cls_congr _ (CrystallineSemistableComparison.Auxff.unit_right A f) _ _)`. Take `⟨f, hf, rfl⟩` from `(CrystallineSemistableComparison.P.cls_surj (cx (modF A)) p).1 x`. Take `⟨g, hg, rfl⟩` from `(CrystallineSemistableComparison.P.cls_surj (cx (modF A)) q).1 y`.
+
+Take `⟨k, hk, rfl⟩` from `(CrystallineSemistableComparison.P.cls_surj (cx (modF A)) r).1 z`. Take `⟨c1, e1⟩` from `CrystallineSemistableComparison.P.cup_cls (mulP A) h₁ f g hf hg`. Take `⟨c3, e3⟩` from `CrystallineSemistableComparison.P.cup_cls (mulP A) h₃ g k hg hk`. Rewrite using `[e1, e3]`. Take `⟨c2, e2⟩` from `CrystallineSemistableComparison.P.cup_cls (mulP A) h₂ _ k c1 hk`.
+
+Take `⟨c4, e4⟩` from `CrystallineSemistableComparison.P.cup_cls (mulP A) h₄ f _ hf c3`. Rewrite using `[e2, e4]`. Conclude with `CrystallineSemistableComparison.Auxff.cls_congr _ (CrystallineSemistableComparison.Auxff.assoc A h₁ h₂ h₃ h₄ f g k) _ _`.
+-/
 theorem CrystallineSemistableComparison.P.cup_ring : ∀ {R : Type} [CommRing R] {C : Type u} [Category.{v} C] (A : C ⥤ CommAlgCat.{w} R), (∀ n (x : H (modF A) n), (mulP A).cup (Nat.zero_add n) (oneH A) x = x ∧ (mulP A).cup (Nat.add_zero n) x (oneH A) = x) ∧ ∀ {p q r a b n : ℕ} (h₁ : p + q = a) (h₂ : a + r = n) (h₃ : q + r = b) (h₄ : p + b = n) x y z, (mulP A).cup h₂ ((mulP A).cup h₁ x y) z = (mulP A).cup h₄ x ((mulP A).cup h₃ y z) := by
   intro R _ C _ A
   refine ⟨fun n x => ?_, fun {p q r a b n} h₁ h₂ h₃ h₄ x y z => ?_⟩

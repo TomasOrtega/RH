@@ -10,6 +10,13 @@ noncomputable section
 
 namespace GlobalTheory.PrismSplit
 
+/- English proof (translation)
+Assume the negation of the conclusion as `hn`. Establish `h1` using `(Commute.all a b).geom_sum₂_mul m`. Rewrite `h1` using `[ha, hb, sub_self]`. Establish `h2` using `(mul_eq_zero.mp h1).resolve_right (sub_ne_zero.mpr h)`. Establish `h3 : IsLocalRing.residue O a = IsLocalRing.residue O b`.
+
+Rewrite using `[← sub_eq_zero, ← map_sub, IsLocalRing.residue_eq_zero_iff]`. Conclude with `hn`. Establish `h4` using `congrArg (IsLocalRing.residue O) h2`. Simplify using `only [map_sum, map_mul, map_pow, h3, map_zero] at h4`. Rewrite `h4` using `[geom_sum₂_self]`.
+
+Establish `hbu : IsUnit b` using `IsUnit.of_pow_eq_one hb hm0.ne'`. Establish `h5 : IsUnit ((m : IsLocalRing.ResidueField O) * IsLocalRing.residue O b ^ (m - 1))`. Use `IsUnit.mul ?_ ((hbu.map _).pow _)` and prove the remaining obligations. Simplify using `using hm.map (IsLocalRing.residue O)`. Conclude with `h5.ne_zero h4`.
+-/
 theorem isUnit_sub_of_pow_eq_one {O : Type} [CommRing O] [IsDomain O] [IsLocalRing O] {m : ℕ}
     (hm0 : 0 < m) (hm : IsUnit (m : O)) {a b : O} (ha : a ^ m = 1) (hb : b ^ m = 1) (h : a ≠ b) :
     IsUnit (a - b) := by
@@ -29,6 +36,31 @@ theorem isUnit_sub_of_pow_eq_one {O : Type} [CommRing O] [IsDomain O] [IsLocalRi
     simpa using hm.map (IsLocalRing.residue O)
   exact h5.ne_zero h4
 
+/- English proof (translation)
+Set `F : (Fin d → W) →ₗ[R] (ι → O)` to `{ toFun := fun c k => ∑ i, o i * φ k (c i) map_add' := fun c c' => by`. Use function extensionality and compare the values at `k`. Simplify using `[mul_add, Finset.sum_add_distrib]`. Use the proof step `map_smul' := fun r c => by`. Use function extensionality and compare the values at `k`.
+
+Simplify using `[Finset.smul_sum] }`. Set `Φ : O ⊗[R] W →ₐ[O] (ι → O)` to `Algebra.TensorProduct.lift (Algebra.ofId O (ι → O)) (Pi.algHom R _ φ) (fun _ _ => Commute.all _ _)`. Establish `hΦ : ∀ (a : O) (w : W) (k : ι), Φ (a ⊗ₜ w) k = a * φ k w`. Introduce `a w k`. Simplify using `[Φ]`.
+
+Establish `h1 : ∀ t, Φ t ∈ LinearMap.range F`. Introduce `t`. Proceed by induction on `t with`. Consider the case `zero => simp`. Consider the case `add s t hs ht => rw [map_add]`.
+
+Conclude with `add_mem hs ht`. Consider the case `tmul a w`. Use `⟨fun i => o.repr a i • w, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `k`. Rewrite using `[hΦ]`.
+
+Use `conv_rhs => rw [← o.sum_repr a]`. Rewrite using `[Finset.sum_mul]`. Simplify using `[F]`. Establish `h2 : ∀ i, Pi.single i (1 : O) ∈ Φ.range`. Introduce `i`.
+
+Use `choose w hw using hs i`. Establish `: (Pi.single i (1 : O) : ι → O) = ∏ j : {j // i ≠ j}, (((hw j.1 j.2).unit⁻¹ : Oˣ) : O) • (Φ (1 ⊗ₜ w j.1 j.2) - algebraMap O (ι → O) (φ j.1 (w j.1 j.2)))`. Use function extensionality and compare the values at `k`. Rewrite using `[Finset.prod_apply]`. Distinguish the cases in `hk : i = k`.
+
+Substitute `hk` using the available equality. Rewrite using `[Pi.single_eq_same, eq_comm]`. Use `Finset.prod_eq_one fun j _ => ?_` and prove the remaining obligations. Simplify using `[hΦ]`. Rewrite using `[Pi.single_eq_of_ne (Ne.symm hk), eq_comm]`.
+
+Use `Finset.prod_eq_zero (Finset.mem_univ ⟨k, hk⟩) ?_` and prove the remaining obligations. Simplify using `[hΦ]`. Rewrite using `[this]`. Use `Subalgebra.prod_mem _ fun j _ => Subalgebra.smul_mem _ (sub_mem (AlgHom.mem_range_self Φ _) ?_) _` and prove the remaining obligations. Conclude with `Subalgebra.algebraMap_mem _ _`.
+
+Establish `h3 : Function.Surjective F`. Introduce `y`. Establish `: y ∈ Φ.range`. Rewrite using `[← Finset.univ_sum_single y]`. Use `sum_mem fun i _ => ?_` and prove the remaining obligations.
+
+Establish `: (Pi.single i (y i) : ι → O) = y i • (Pi.single i (1 : O) : ι → O)`. Rewrite using `[← Pi.single_smul, smul_eq_mul, mul_one]`. Rewrite using `[this]`. Conclude with `Subalgebra.smul_mem _ (h2 i) _`. Take `⟨t, rfl⟩` from `this`.
+
+Conclude with `h1 t`. Establish `: Module.Free R O` using `Module.Free.of_basis o`. Establish `: Module.Finite R O` using `Module.Finite.of_basis o`. Establish `e : (Fin d → W) ≃ₗ[R] (ι → O)` using `LinearEquiv.ofFinrankEq _ _ (by`. Simplify using `[Module.finrank_pi_fintype, hr, Module.finrank_eq_card_basis o, mul_comm])`.
+
+Establish `h4 : Function.Injective F` using `OrzechProperty.injective_of_surjective_of_injective e.toLinearMap F e.injective h3`. Take `⟨c, hc⟩` from `h3 y`. Use `⟨c, fun k => (congrFun hc k).symm, fun c' hc' => h4 ?_⟩` and prove the remaining obligations. Rewrite using `[hc]`. Conclude with `funext fun k => (hc' k).symm`.
+-/
 theorem existsUnique_of_separated {R W O ι : Type} [CommRing R] [Nontrivial R] [CommRing W]
     [CommRing O] [Algebra R W] [Algebra R O] [Fintype ι] [Module.Free R W] [Module.Finite R W]
     (hr : Module.finrank R W = Fintype.card ι) (φ : ι → (W →ₐ[R] O))
@@ -99,6 +131,17 @@ theorem existsUnique_of_separated {R W O ι : Type} [CommRing R] [Nontrivial R] 
   rw [hc]
   exact funext fun k => (hc' k).symm
 
+/- English proof (translation)
+Assume the negation of the conclusion as `hn`. Use `push Not at hn`. Apply `h` to reduce the goal to its premises. Use `ext1 x`. Take `⟨a, ha⟩` from `NormedField.exists_lt_norm ℚ_[l] ‖(x : Om l)‖`.
+
+Establish `ha0 : 0 < ‖a‖` using `(norm_nonneg _).trans_lt ha`. Establish `ha1 : a ≠ 0` using `norm_pos_iff.mp ha0`. Take `⟨n, z, ω, hω, hx⟩` from `GlobalTheory.UnramSpan.exists_sum_rootsOfUnity l K (algebraMap ℚ_[l] (Om l) a⁻¹ * x) (algebraMap ℚ_[l] ↥(K0 K) a⁻¹ * x).2 (by`. Rewrite using `[← Algebra.smul_def, norm_smul, norm_inv, inv_mul_le_iff₀ ha0, mul_one]`. Conclude with `ha.le)`.
+
+Establish `hx' : algebraMap ℚ_[l] ↥(K0 K) a⁻¹ * x = ∑ i, algebraMap ℚ_[l] ↥(K0 K) (z i : ℚ_[l]) * (⟨ω i, (hω i).1⟩ : ↥(K0 K))`. Apply `Subtype.ext` to reduce the goal to its premises. Rewrite using `[AddSubmonoidClass.coe_finset_sum]`. Conclude with `hx`. Establish `: e (algebraMap ℚ_[l] ↥(K0 K) a⁻¹ * x) = e' (algebraMap ℚ_[l] ↥(K0 K) a⁻¹ * x)`.
+
+Rewrite using `[hx', map_sum, map_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Take `⟨m, hm, hl, h1⟩` from `(hω i).2`. Rewrite using `[map_mul, map_mul, e.commutes, e'.commutes, hn _ m hm hl (Subtype.ext (by simpa using h1))]`. Rewrite `this` using `[map_mul, map_mul, e.commutes, e'.commutes]`.
+
+Conclude with `mul_left_cancel₀ ((_root_.map_ne_zero _).mpr (inv_ne_zero ha1)) this`.
+-/
 theorem exists_root_ne {l : ℕ} [Fact l.Prime] {K LL : FinExt l}
     {e e' : ↥(K0 K) →ₐ[ℚ_[l]] ↥LL.1} (h : e ≠ e') :
     ∃ (ω : ↥(K0 K)) (m : ℕ), 0 < m ∧ ¬ l ∣ m ∧ ω ^ m = 1 ∧ e ω ≠ e' ω := by
@@ -126,6 +169,11 @@ theorem exists_root_ne {l : ℕ} [Fact l.Prime] {K LL : FinExt l}
   rw [map_mul, map_mul, e.commutes, e'.commutes] at this
   exact mul_left_cancel₀ ((_root_.map_ne_zero _).mpr (inv_ne_zero ha1)) this
 
+/- English proof (translation)
+Establish `hu : IsUnit (m : ℤ_[l])`. Rewrite using `[PadicInt.isUnit_iff]`. Use `le_antisymm (PadicInt.norm_le_one _) (not_lt.mp fun h => hl ?_)` and prove the remaining obligations. Use `(PadicInt.norm_int_lt_one_iff_dvd (p := l) (m : ℤ)).mp (by simpa using h)` as an intermediate fact. Conclude with `this` after adjusting the coercions.
+
+Simplify using `using hu.map (algebraMap ℤ_[l] O)`.
+-/
 theorem isUnit_natCast {l : ℕ} [Fact l.Prime] (O : Type) [CommRing O] [Algebra ℤ_[l] O] {m : ℕ}
     (hl : ¬ l ∣ m) : IsUnit (m : O) := by
   have hu : IsUnit (m : ℤ_[l]) := by
@@ -135,6 +183,11 @@ theorem isUnit_natCast {l : ℕ} [Fact l.Prime] (O : Type) [CommRing O] [Algebra
     exact_mod_cast this
   simpa using hu.map (algebraMap ℤ_[l] O)
 
+/- English proof (translation)
+Take `⟨_, -⟩` from `GlobalTheory.Per.integers_completeDVR l LL`. Take `⟨ω, m, hm, hl, h1, hne⟩` from `exists_root_ne h`. Establish `hi : IsIntegral ℤ_[l] ω` using `IsIntegral.of_pow hm (by rw [h1]; exact isIntegral_one)`. Establish `hp : ∀ f : ↥(K0 K) →ₐ[ℚ_[l]] ↥LL.1, embW f ⟨ω, hi⟩ ^ m = 1`. Introduce `f`.
+
+Apply `Subtype.ext` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `f ω ^ m = 1`. Rewrite using `[← map_pow, h1, map_one]`. Conclude with `⟨⟨ω, hi⟩, isUnit_sub_of_pow_eq_one hm (isUnit_natCast _ hl) (hp e) (hp e') fun h => hne (congrArg Subtype.val h)⟩`.
+-/
 theorem exists_isUnit_sub {l : ℕ} [Fact l.Prime] {K LL : FinExt l}
     {e e' : ↥(K0 K) →ₐ[ℚ_[l]] ↥LL.1} (h : e ≠ e') : ∃ w, IsUnit (embW e w - embW e' w) := by
   obtain ⟨_, -⟩ := GlobalTheory.Per.integers_completeDVR l LL
@@ -148,6 +201,13 @@ theorem exists_isUnit_sub {l : ℕ} [Fact l.Prime] {K LL : FinExt l}
   exact ⟨⟨ω, hi⟩, isUnit_sub_of_pow_eq_one hm (isUnit_natCast _ hl) (hp e) (hp e')
     fun h => hne (congrArg Subtype.val h)⟩
 
+/- English proof (translation)
+Introduce `l _ K LL emb hemb d o y`. Establish `hfd : FiniteDimensional ℚ_[l] ↥(K0 K)` using `(unr K).2`. Establish `: NeZero (Module.finrank ℚ_[l] ↥(K0 K))` using `⟨Module.finrank_pos.ne'⟩`. Take `⟨_, -, -, -, hfree, hfin, -⟩` from `GlobalTheory.Per.integers_completeDVR l (unr K)`. Establish `: Module.IsTorsionFree ℤ_[l] ↥(K0 K)`.
+
+Rewrite using `[Module.isTorsionFree_iff_faithfulSMul, faithfulSMul_iff_algebraMap_injective, IsScalarTower.algebraMap_eq ℤ_[l] ℚ_[l] ↥(K0 K)]`. Conclude with `(algebraMap ℚ_[l] ↥(K0 K)).injective.comp (IsFractionRing.injective ℤ_[l] ℚ_[l])`. Use `existsUnique_of_separated ?_ (fun k => embW (emb k)) ?_ o y` and prove the remaining obligations. Rewrite using `[ZMod.card]`. Conclude with `IsIntegralClosure.rank ℤ_[l] ℚ_[l] ↥(K0 K) (integralClosure ℤ_[l] ↥(K0 K))`.
+
+Conclude with `fun i j hij => exists_isUnit_sub (hemb.ne hij)`.
+-/
 theorem existsUnique_coords : ∀ (l : ℕ) [Fact l.Prime] (K LL : FinExt l) (emb : ZMod (Module.finrank ℚ_[l] ↥(K0 K)) → (↥(K0 K) →ₐ[ℚ_[l]] ↥LL.1)), Function.Injective emb → ∀ (d : ℕ) (o : Module.Basis (Fin d) ℤ_[l] ↥(OL LL)) (y : ZMod (Module.finrank ℚ_[l] ↥(K0 K)) → ↥(OL LL)), ∃! c : Fin d → WK K, ∀ k, y k = ∑ i, o i * embW (emb k) (c i) := by
   intro l _ K LL emb hemb d o y
   have hfd : FiniteDimensional ℚ_[l] ↥(K0 K) := (unr K).2

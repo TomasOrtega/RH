@@ -11,6 +11,25 @@ open scoped nonZeroDivisors
 
 namespace GlobalTheory.FunObj.SqNum
 
+/- English proof (translation)
+Establish `key : ∀ L' : Submodule (𝓞 D.host.E) (Fin d → D.host.E), (∀ x ∈ stdL D a, w.mulVec x ∈ L') → pt D (tor0 D ⊤ δ) δ w ∈ La D (tor0 D ⊤ δ) (stdL D a) L'`. Introduce `L' hL'`. Use `AddSubgroup.subset_closure ⟨δ, AddSubgroup.subset_closure ⟨1, trivial, by simp⟩, w, ?_, rfl⟩` and prove the remaining obligations. Use `Submodule.subset_span ⟨1, ?_, w, Submodule.subset_span hL', (one_smul _ _).symm⟩` and prove the remaining obligations. Use `FractionalIdeal.one_mem_inv_coe_ideal fun h => ?_` and prove the remaining obligations.
+
+Establish `h2` using `D.host.𝔟_spec.2`. Rewrite `h2` using `[h, Ideal.smul_bot, sup_bot_eq]`. Conclude with `bot_ne_top h2`. Establish `hent : ∀ x ∈ stdL D a, ∀ i, w.mulVec x i ∈ ((𝔪 : FractionalIdeal (𝓞 D.host.E)⁰ D.host.E) : Submodule (𝓞 D.host.E) D.host.E)`. Introduce `x hx i`.
+
+Use `show ∑ j, w i j * x j ∈ _`. Use `Submodule.sum_mem _ fun j _ => ?_` and prove the remaining obligations. Take `⟨b, hb, hbw⟩` from `hw i j`. Take `⟨y, hy⟩` from `Submodule.mem_one.1 (hx j trivial)`. Use `(FractionalIdeal.mem_coeIdeal _).2 ⟨b * y, 𝔪.mul_mem_right y hb, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[hbw, ← hy, map_mul]`. Use `⟨key _ fun x hx i _ => ?_, key _ fun x hx i _ => ?_⟩` and prove the remaining obligations. Use `(FractionalIdeal.coe_le_coe.2 FractionalIdeal.coeIdeal_le_one) (hent x hx i)` as an intermediate fact. Rewrite `this` using `[FractionalIdeal.coe_one]`. Conclude with `this`.
+
+Distinguish the cases in `h𝔪 : 𝔪 = ⊥`. Use `hent x hx i` as an intermediate fact. Rewrite `this` using `[h𝔪, FractionalIdeal.coeIdeal_bot]`. Establish `h0 : w.mulVec x i = 0` using `by simpa using this`. Rewrite using `[h0]`.
+
+Conclude with `zero_mem _`. Establish `hne : ((D.host.conj • 𝔪 : Ideal (𝓞 D.host.E)) : FractionalIdeal (𝓞 D.host.E)⁰ D.host.E) ≠ 0`. Rewrite using `[Ne, FractionalIdeal.coeIdeal_eq_zero]`. Introduce `h`. Apply `h𝔪` to reduce the goal to its premises.
+
+Use `congrArg (fun J : Ideal (𝓞 D.host.E) => D.host.conj⁻¹ • J) h` as an intermediate fact. Simplify using `using this`. Establish `hle : (𝔪 : FractionalIdeal (𝓞 D.host.E)⁰ D.host.E) ≤ (𝔪 : FractionalIdeal (𝓞 D.host.E)⁰ D.host.E) / ((D.host.conj • 𝔪 : Ideal (𝓞 D.host.E)) : FractionalIdeal (𝓞 D.host.E)⁰ D.host.E)`. Rewrite using `[FractionalIdeal.le_div_iff_mul_le hne]`. Use `first`.
+
+Consider the case `exact mul_le_of_le_one_right' FractionalIdeal.coeIdeal_le_one`. Consider the case `exact mul_le_of_le_one_right (zero_le _) FractionalIdeal.coeIdeal_le_one`. Consider the case `exact (mul_le_mul_left FractionalIdeal.coeIdeal_le_one _).trans_eq (mul_one _)`. Consider the case `exact (FractionalIdeal.mul_le_mul_left FractionalIdeal.coeIdeal_le_one _).trans_eq (mul_one _)`. Consider the case `exact (mul_le_mul_of_nonneg_left FractionalIdeal.coeIdeal_le_one (zero_le _)).trans_eq (mul_one _)`.
+
+Conclude with `(FractionalIdeal.coe_le_coe.2 hle) (hent x hx i)`.
+-/
 theorem pt_mem_of_entries_mem (D : D7) (δ : ℂ) (𝔪 : Ideal (𝓞 D.host.E)) {a d : ℕ}
     (w : Matrix (Fin d) (Fin a) D.host.E) (hw : ∀ i j, ∃ b ∈ 𝔪, w i j = (b : D.host.E)) :
     pt D (tor0 D ⊤ δ) δ w ∈ La0 D (tor0 D ⊤ δ) a d ∧

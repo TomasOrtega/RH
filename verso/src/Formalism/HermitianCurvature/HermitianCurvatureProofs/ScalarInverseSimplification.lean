@@ -6,6 +6,13 @@ namespace Formalism.FourierDecayAlt.P.SignAntidiagonal
 
 open Formalism.FourierDecayAlt.C3 Formalism.REAL Formalism.QuantumDeterminants
 
+/- English proof (translation)
+Unfold `sgnW`. Establish `e : (s + 2) * (s + 2 - 1) / 2 = s * (s - 1) / 2 + (2 * s + 1)`. Establish `e2 : (s + 2) * (s + 2 - 1) = s * (s - 1) + 2 * (2 * s + 1)`. Rewrite using `[show s + 2 - 1 = s + 1 by omega]`. Consider the cases of `s with`.
+
+Consider the case `zero => rfl`. Consider the case `succ k`. Rewrite using `[show k + 1 - 1 = k by omega]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e2, Nat.add_mul_div_left _ _ (by norm_num : 0 < 2)]`.
+
+Rewrite using `[e, pow_add, pow_succ, pow_mul]`. Evaluate the numerical expressions.
+-/
 theorem sign_alternates_add_two (s : ℕ) : sgnW (s + 2) = - sgnW s := by
   unfold sgnW
   have e : (s + 2) * (s + 2 - 1) / 2 = s * (s - 1) / 2 + (2 * s + 1) := by
@@ -20,6 +27,49 @@ theorem sign_alternates_add_two (s : ℕ) : sgnW (s + 2) = - sgnW s := by
   rw [e, pow_add, pow_succ, pow_mul]
   norm_num
 
+/- English proof (translation)
+Introduce `A _ _ M _ _ k r z' yb E La xi i0 s h t u hs hj hR hh ht hz' hyb hzy hxa hxi0`. Take `⟨s'', rfl⟩ : ∃ s'', s = s'' + 2` from `⟨s - 2, by omega⟩`. Take `rfl : r = i0 + s'' + 1` from `by omega`. Use `set i : Fin (i0 + s'' + 1) := ⟨i0, by omega⟩ with hidef`. Use `set f : Fin (i0 + s'') → Fin (2 * (i0 + s'' + 1) + k + 1) := fun l => xR k (i0 + s'' + 1) (i0 + s'' + 1) le_rfl (i.succAbove l) with hfdef`.
+
+Establish `hfv : ∀ l, (f l).val = (i.succAbove l).val` using `by intro l; simp [f, xR, eI]`. Establish `hf : StrictMono f`. Introduce `a b hab`. Use `show (f a).val < (f b).val`. Rewrite using `[hfv, hfv]`.
+
+Conclude with `Fin.strictMono_succAbove _ hab`. Use `set ew : Fin (k + 1) → Fin (i0 + s'' + 1) → Fin (2 * (i0 + s'' + 1) + k + 1) := fun w => Fin.snoc (α := fun _ => Fin (2 * (i0 + s'' + 1) + k + 1)) f (wI k (i0 + s'' + 1) w) with hewdef`. Establish `hew : ∀ w, StrictMono (ew w)`. Introduce `w`. Apply `strictMono_snoc f hf` to reduce the goal to its premises.
+
+Introduce `l`. Use `show (f l).val < (wI k _ w).val`. Rewrite using `[hfv]`. Simplify using `[wI]`. Use `(i.succAbove l).isLt` as an intermediate fact.
+
+Use linear arithmetic over natural numbers and integers. Establish `hew_last : ∀ w (j : Fin (i0 + s'' + 1)), ew w j = wI k _ w ↔ j = Fin.last _`. Introduce `w j`. Prove the components needed by the constructor for the conclusion. Introduce `hj`.
+
+Assume the negation of the conclusion as `hne`. Take `⟨l, rfl⟩` from `Fin.exists_castSucc_eq.mpr hne`. Use `congrArg Fin.val hj` as an intermediate fact. Simplify using `only [ew, Fin.snoc_castSucc] at this`. Rewrite `this` using `[hfv]`.
+
+Simplify using `[wI] at this`. Use `(i.succAbove l).isLt` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Introduce and unpack `rfl`. Simplify using `[ew]`.
+
+Establish `hdet : ∀ w, (Matrix.of fun a l => if a = i then (if ew w l = wI k _ w then (1 : ℂ) else 0) else xi (Fin.castLE le_rfl a) (ew w l)).det = (-1) ^ s'' * (h.det * t ^ s'' * sgnW s'')`. Introduce `w`. Rewrite using `[Matrix.det_succ_row _ i, Finset.sum_eq_single (Fin.last _)]`. Simplify using `only [Matrix.of_apply, if_pos rfl, (hew_last w (Fin.last _)).mpr rfl, if_true, mul_one, Fin.succAbove_last]`. Establish `hsub : (Matrix.of fun a l => if a = i then (if ew w l = wI k _ w then (1 : ℂ) else 0) else xi (Fin.castLE le_rfl a) (ew w l)).submatrix i.succAbove Fin.castSucc = Matrix.of fun a b : Fin (i0 + s'') => Zb i0 (s'' + 2) h t ((⟨i0, by omega⟩ : Fin (i0 + s'' + 1)).succAbove a).val ((⟨ …`.
+
+Use extensionality with `a b`. Simplify using `only [Matrix.submatrix_apply, Matrix.of_apply]`. Rewrite using `[if_neg (Fin.succAbove_ne i a)]`. Simplify using `only [ew, Fin.snoc_castSucc]`. Establish `hb` using `(i.succAbove b).isLt`.
+
+Establish `hbne : (i.succAbove b).val ≠ i0` using `fun h' => Fin.succAbove_ne i b (Fin.ext h')`. Establish `hane : (i.succAbove a).val ≠ i0` using `fun h' => Fin.succAbove_ne i a (Fin.ext h')`. Rewrite using `[hxa _ _ (by simpa using hane), if_pos ⟨by rw [hfv]; omega, by rw [hfv]; exact hbne⟩, hfv]`. Simplify using `[i]`. Rewrite using `[hsub, third_polynomial_expansion]`.
+
+Simplify using `only [Fin.val_last]`. Rewrite using `[show i.val + (i0 + s'') = (i0 + i0) + s'' by simp [i]; ring, pow_add, ← two_mul, pow_mul]`. Evaluate the numerical expressions. Introduce `j _ hj`. Simplify using `only [Matrix.of_apply, if_pos rfl]`.
+
+Rewrite using `[if_neg (fun h' => hj ((hew_last w j).mp h'))]`. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish `hAA : AAx k (i0 + s'' + 1) E xi (i0 + s'' + 1) le_rfl u = ((-1) ^ s'' * (h.det * t ^ s'' * sgnW s'')) • ∑ w, herm (Hpk k _) (bvec (wI k _ w)) yb • qminor E (xR k _ (i0 + s'' + 1) le_rfl) (ew w) u`. Unfold `AAx`.
+
+Rewrite using `[sum_lin (fun c => StrictMono c) (fun a p => xi (Fin.castLE le_rfl a) p) i (fun w => herm (Hpk k _) (bvec (wI k _ w)) yb) (fun w p => if p = wI k _ w then 1 else 0) (fun p => by rw [hxi0 _ _ (by simp [i])]; exact herm_bvec_sum k _ yb hyb p)]`. Rewrite using `[Finset.smul_sum]`. Use `congr 1`. Use extensionality with `w`. Rewrite using `[sum_single (fun c => StrictMono c) (fun a p => if a = i then (if p = wI k _ w then (1 : ℂ) else 0) else xi (Fin.castLE le_rfl a) p) (Set.range (ew w)) ?_ (ew w) (hew w) ?_, hdet w, smul_comm]`.
+
+Introduce `a p hp`. Distinguish the cases in `ha : a = i`. Rewrite using `[if_pos ha, if_neg]; intro hpw; apply hp; exact ⟨Fin.last _, by rw [hpw]; simp [ew]⟩`. Rewrite using `[if_neg ha]`. Establish `hane : a.val ≠ i0` using `fun h' => ha (Fin.ext h')`.
+
+Rewrite using `[hxa _ _ (by simpa using hane)]`. Rewrite using `[if_neg]`. Introduce and unpack `⟨hp1, hp2⟩`. Apply `hp` to reduce the goal to its premises. Apply the tactic sequence `refine ⟨Fin.castSucc ⟨if p.val < i0 then p.val else p.val - 1, by split_ifs <;> omega⟩, ?_⟩`.
+
+Apply the tactic sequence `ext; simp only [ew, Fin.snoc_castSucc]; rw [hfv, succAbove_val]; simp only [i]; split_ifs <;> omega`. Introduce `c hc hS`. Conclude with `uniq_mono _ _ (hew w) hc hS`. Establish `hhead : AAx k (i0 + s'' + 1) E xi i0 (by omega) u = h.det • qminor E (xR k _ i0 (by omega)) (xR k _ i0 (by omega)) u`. Apply `AAx_head` to reduce the goal to its premises.
+
+Introduce `a p ha hp`. Rewrite using `[hxa _ _ (by omega)]`. Use `split_ifs`. Unfold `Zb; rw [dif_pos ha, dif_neg (by omega)]`. Both sides reduce to the same expression.
+
+Introduce `a b`. Establish `hb` using `b.isLt`. Rewrite using `[hxa _ _ (by simp; omega), if_pos (by simp [xR, eI]; omega)]`. Unfold `Zb`. Simplify using `[xR, eI]`.
+
+Establish `hP` using `second_peeling_identity A k (i0 + s'') z' yb E i u hz'`. Establish `hLa : (∑ w, herm (Hpk k _) (bvec (wI k _ w)) yb • La (qminor E (xR k _ (i0 + s'' + 1) le_rfl) (ew w) u)) = t • La (qminor E (xR k _ i0 (by omega)) (xR k _ i0 (by omega)) u)`. Use `la_congr hR hP` as an intermediate fact. Rewrite `this` using `[map_sum]`. Simplify using `only [map_smul] at this`.
+
+Rewrite `this` using `[hzy]`. Conclude with `this`. Establish `hD : Dlead i0 (s'' + 2) h t (i0 + s'' + 1 + 1) = h.det * t ^ (s'' + 2) * -sgnW s''`. Rewrite using `[show i0 + s'' + 1 + 1 = i0 + (s'' + 2) by omega, (derivative_leading_zb i0 (s'' + 2) h t).2, sign_alternates_add_two]`. Rewrite using `[hAA, hhead, map_smul, map_smul, map_sum]`.
+
+Simplify using `only [map_smul]`. Rewrite using `[hLa, hD, (derivative_leading_zb i0 (s'' + 2) h t).1, smul_smul, smul_smul, smul_smul, smul_smul]`. Use `congr 1`. Rewrite using `[show s'' + 2 - 1 = s'' + 1 by omega]`. Apply the tactic sequence `rcases mul_self_eq_one_iff.mp (sgnW_sq s'') with h1 | h1 <;> rw [h1] <;> field_simp <;> ring`.
+-/
 theorem column_indicator_expansion : ExpansionCovector := by
   intro A _ _ M _ _ k r z' yb E La xi i0 s h t u hs hj hR hh ht hz' hyb hzy hxa hxi0
   obtain ⟨s'', rfl⟩ : ∃ s'', s = s'' + 2 := ⟨s - 2, by omega⟩

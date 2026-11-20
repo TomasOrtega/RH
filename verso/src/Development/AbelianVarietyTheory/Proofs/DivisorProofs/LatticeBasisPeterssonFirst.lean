@@ -38,6 +38,9 @@ namespace GlobalTheory.CovTop.ShortSpanUnitCover
 
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E}
 
+/- English proof (translation)
+The claim follows from `|(FlagTan.kap Dw τ k : ℝ)| ≤ ((Dw.p + Dw.q : ℕ) : ℝ) := by have hk := k.2 have h : |FlagTan.kap Dw τ k| ≤ ((Dw.p + Dw.q : ℕ) : ℤ) := by simp only [FlagTan.kap] rw [abs_le] split_ifs <;> push_cast <;> constructor <;> omega rw [← Int.cast_abs]; exact_mod_cast h`.
+-/
 theorem abs_kap_le (Dw : Datum H) (τ : Psi H) (k : Fin (Dw.p + Dw.q)) :
     |(FlagTan.kap Dw τ k : ℝ)| ≤ ((Dw.p + Dw.q : ℕ) : ℝ) := by
   have hk := k.2
@@ -47,12 +50,22 @@ theorem abs_kap_le (Dw : Datum H) (τ : Psi H) (k : Fin (Dw.p + Dw.q)) :
     split_ifs <;> push_cast <;> constructor <;> omega
   rw [← Int.cast_abs]; exact_mod_cast h
 
+/- English proof (translation)
+Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem sum_abs_kap_le (Dw : Datum H) :
     ∑ τ, ∑ k, |(FlagTan.kap Dw τ k : ℝ)| ≤ (Fintype.card (Psi H) : ℝ) * ((Dw.p + Dw.q : ℕ) : ℝ) ^ 2 := by
   calc ∑ τ, ∑ k, |(FlagTan.kap Dw τ k : ℝ)| ≤ ∑ _τ : Psi H, ∑ _k : Fin (Dw.p + Dw.q), ((Dw.p + Dw.q : ℕ) : ℝ) :=
         Finset.sum_le_sum fun τ _ => Finset.sum_le_sum fun k _ => abs_kap_le Dw τ k
     _ = _ := by simp [Finset.sum_const, Finset.card_univ]; ring
 
+/- English proof (translation)
+Simplify using `only [Finset.mul_sum, ← Finset.sum_add_distrib]`. Use `Finset.sum_le_sum fun τ _ => Finset.sum_le_sum fun k _ => ?_` and prove the remaining obligations. Establish `e : (P.wt 0 τ k : ℝ) = (FlagTan.kap Dw τ k : ℝ) + (P.u₂ τ k : ℝ) + (FlagTan.dimFlag Dw : ℝ) * (P.u₁ τ k : ℝ)`. Simplify using `only [WtPar.wt, WtPar.uc, Pi.add_apply, Pi.smul_apply, zero_smul, add_zero, Pi.zero_apply]`. Simplify using `only [nsmul_eq_mul]`.
+
+Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[abs_mul, Nat.abs_cast]`.
+
+Combine the linear relations using `[abs_add_le (FlagTan.kap Dw τ k : ℝ) (P.u₂ τ k : ℝ)]`.
+-/
 theorem sum_abs_weightZero_le_components (Dw : Datum H) (P : WtPar Dw) :
     ∑ τ, ∑ k, |(P.wt 0 τ k : ℝ)| ≤ ∑ τ, ∑ k, |(FlagTan.kap Dw τ k : ℝ)| + ∑ τ, ∑ k, |(P.u₂ τ k : ℝ)| +
       (FlagTan.dimFlag Dw : ℝ) * ∑ τ, ∑ k, |(P.u₁ τ k : ℝ)| := by
@@ -68,6 +81,11 @@ theorem sum_abs_weightZero_le_components (Dw : Datum H) (P : WtPar Dw) :
       rw [abs_mul, Nat.abs_cast]
       linarith [abs_add_le (FlagTan.kap Dw τ k : ℝ) (P.u₂ τ k : ℝ)]
 
+/- English proof (translation)
+Establish `hr` using `(P.gap_rem τ k).1`. Establish `hk : -2 ≤ FlagTan.kap Dw τ ⟨k, by omega⟩ - FlagTan.kap Dw τ ⟨k + 1, h⟩`. Simplify using `only [FlagTan.kap, Fin.val_mk]`. Apply the tactic sequence `split_ifs <;> push_cast <;> omega`. Rewrite `hr`, `hg`, the goal using `[gap, dif_pos h]`.
+
+Simplify using `only [WtPar.wt, WtPar.uc, WtPar.u₂, Pi.add_apply, Pi.smul_apply, zero_smul, add_zero, Pi.zero_apply] at hr ⊢`. Simplify using `only [nsmul_eq_mul] at hr ⊢`. Establish `hD : (0 : ℤ) ≤ (FlagTan.dimFlag Dw : ℤ) + 1` using `by positivity`. Use polynomial arithmetic with `[mul_le_mul_of_nonneg_left hg hD]`.
+-/
 theorem consecutiveGap_weightZero_ge (Dw : Datum H) (P : WtPar Dw) (τ : Psi H) {k : ℕ} (h : k + 1 < Dw.p + Dw.q) (g : ℤ)
     (hg : g ≤ gap (P.u₁ τ) k) : ((FlagTan.dimFlag Dw : ℤ) + 1) * g - 2 ≤ gap (P.wt 0 τ) k := by
   have hr := (P.gap_rem τ k).1
@@ -84,6 +102,15 @@ end GlobalTheory.CovTop.ShortSpanUnitCover
 
 namespace GlobalTheory.CovTop.ShortSpanUnitCover
 
+/- English proof (translation)
+Establish `hZ1 : 1 ≤ Zr` using `by linarith`. Establish `hZ0 : 0 ≤ Zr` using `by linarith`. Establish `hZ5 : 0 ≤ Zr ^ 5` using `by positivity`. Establish `hDX : 1 ≤ Dc * X` using `by nlinarith`. Establish `h1 : Zr ^ 3 * S ≤ 3 * (Dc * X) * Zr ^ 5`.
+
+Use `mul_le_mul_of_nonneg_left hS (by positivity : (0 : ℝ) ≤ Zr ^ 3)` as an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Establish `h2 : Zr ^ 5 ≤ (Dc * X) * Zr ^ 5` using `by nlinarith`. Establish `h3 : C * (Zr ^ 3 * S + Zr ^ 5) ≤ (Dc * X) * (4 * C * Zr ^ 5)`. Use `mul_le_mul_of_nonneg_left (add_le_add h1 h2) hC` as an intermediate fact.
+
+Use the polynomial consequences of the given equalities and inequalities. Establish `h4 : 4 * C * Zr ^ 5 ≤ PP`. Establish `a : Zr ≤ Zr ^ 7`. Combine the equalities or inequalities in the displayed calculation. Establish `b : 4 * C ≤ Zr ^ 7` using `by linarith`.
+
+Establish `c : 4 * C * Zr ^ 5 ≤ Zr ^ 7 * Zr ^ 5` using `mul_le_mul_of_nonneg_right b hZ5`. Combine the equalities or inequalities in the displayed calculation. Establish `h5 : (Dc * X) * (4 * C * Zr ^ 5) ≤ (Dc * X) * PP` using `mul_le_mul_of_nonneg_left h4 (by linarith)`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem final_le {C Zr S Dc PP X abelian₂ L : ℝ} (hC : 0 ≤ C) (hL : 4 * C + 1 ≤ L) (hZL : L ≤ Zr) (hPP : Zr ^ 12 ≤ PP)
     (hDc : 1 ≤ Dc) (hX : 1 ≤ X) (hS : S ≤ 3 * Dc * Zr ^ 2 * X) (hLam : Real.log abelian₂ ≤ C * (Zr ^ 3 * S + Zr ^ 5)) :
     Real.log abelian₂ ≤ Dc * PP * X := by
@@ -113,11 +140,21 @@ theorem final_le {C Zr S Dc PP X abelian₂ L : ℝ} (hC : 0 ≤ C) (hL : 4 * C 
     _ ≤ _ := h5
     _ = Dc * PP * X := by ring
 
+/- English proof (translation)
+Use `mul_le_mul_of_nonneg_left h1 (by linarith : (0 : ℝ) ≤ Dc)` as an intermediate fact. Use the polynomial consequences of the given equalities and inequalities.
+-/
 theorem sum_le {S K A1 A2 Dc W : ℝ} (hSle : S ≤ K + A2 + Dc * A1) (hK : K ≤ W) (h1 : A1 ≤ W) (h2 : A2 ≤ W)
     (hDc : 1 ≤ Dc) (hW : 0 ≤ W) : S ≤ 3 * Dc * W := by
   have := mul_le_mul_of_nonneg_left h1 (by linarith : (0 : ℝ) ≤ Dc)
   nlinarith
 
+/- English proof (translation)
+Break down `hS0.eq_or_lt with h | h` into its components or cases. Rewrite using `[← h, Real.log_zero]`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hZ : 0 < fr * L` using `by positivity`. Establish `hk0 : 0 < k`.
+
+Assume the negation of the conclusion as `hk0`. Use `push_neg at hk0`. Establish `: (fr * L) ^ 2 * k ≤ 0` using `mul_nonpos_of_nonneg_of_nonpos (by positivity) hk0`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hlogL : Real.log L ≤ L` using `(Real.log_le_sub_one_of_pos (by linarith)).trans (by linarith)`.
+
+Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Real.log_mul (by positivity) hk0.ne', Real.log_pow, Real.log_mul (by linarith) (by linarith)]; push_cast; ring`. Use `_ ≤ 10 * L := by linarith`.
+-/
 theorem log_sum_le {S k fr L : ℝ} (hS0 : 0 ≤ S) (hSk : S ≤ (fr * L) ^ 2 * k) (hk : Real.log k ≤ 2 * L)
     (hfr : Real.log fr ≤ L) (hL1 : 1 ≤ L) (hfr1 : 1 ≤ fr) : Real.log S ≤ 10 * L := by
   rcases hS0.eq_or_lt with h | h
@@ -140,6 +177,37 @@ namespace GlobalTheory.CovTop.ShortSpanUnitCover
 
 set_option maxHeartbeats 1000000 in
 
+/- English proof (translation)
+Introduce `hP2 _hDG hSz hFD`. Take `⟨C, hC0, hH3⟩` from `GlobalTheory.T.flat_constant_abs_le_nine_explicit hP2`. Establish `hGd` using `GlobalTheory.T.good_weight_antitone_gap hP2`. Use `((((((GlobalTheory.T.size_bounds_for_family hSz).and (GlobalTheory.T.weight_parameter_strict_antitone hSz)).and (Sizes.hostN (4 * C + 1))).and WtShape.wtN).and GlobalTheory.HSApp.wtBig_run).and hFD).imp fun Fm CH _ hh => ?_` and prove the remaining obligations. Take `⟨⟨⟨⟨⟨⟨C1, -, a1, h1⟩, ⟨C2, -, a2, h2⟩⟩, ⟨C3, -, a3, h3⟩⟩, ⟨C4, -, a4, h4⟩⟩, ⟨C5, -, a5, h5⟩⟩, ⟨C6, -, a6, h6⟩⟩` from `hh`.
+
+Use `⟨0, le_rfl, max a1 (max a2 (max a3 (max a4 (max a5 a6)))), fun x hx hle ι p hp i hi Y hY => ?_⟩` and prove the remaining obligations. Establish `s1` using `h1 x hx (le_trans (by simp) hle) ι p hp i hi Y hY`. Establish `s2` using `h2 x hx (le_trans (by simp) hle) ι p hp i hi`. Establish `s3` using `h3 x hx (le_trans (by simp) hle) ι p hp i`. Establish `s4` using `h4 x hx (le_trans (by simp) hle) ι p hp i`.
+
+Establish `s5` using `h5 x hx (le_trans (by simp) hle) ι p hp i hi`. Establish `s6` using `h6 x hx (le_trans (by simp) hle) ι p hp i hi Y hY`. Take `⟨hLaws, hInR, hL1, hM, hfs, hfr, -, -, hf8, hr100, hflat, hkap, hPP, -, -, -, hu12, hwt⟩` from `s1`. Take `⟨hp1, hq1, hfin, -, hsa, -⟩` from `s2`. Introduce `Z`.
+
+Use `set P : WtPar (dat p i) := (⟨uW p i, cZero (Fm.D x ι) ((i : ℕ) + 1), (Fm.D x ι).R.k - 2, lenT p i (Fm.parT x hx ι).PP⟩ : WtPar (dat p i)) with hP`. Establish `hpq : (dat p i).p + (dat p i).q = (Fm.D x ι).R.r` using `s4.sig.2.2`. Establish `hr2 : 0 < (Fm.D x ι).R.r.choose 2` using `Nat.choose_pos (by omega)`. Establish `hDf : (Fm.D x ι).R.f ≤ FlagTan.dimFlag (dat p i)`. Rewrite using `[← GlobalTheory.CompHS.dimFlag_eq, s4.dim]`.
+
+Conclude with `Nat.le_mul_of_pos_right _ hr2`. Establish `hD2 : 2 ≤ FlagTan.dimFlag (dat p i) + 0` using `by omega`. Establish `hAnt` using `fun τ => GlobalTheory.CompHS.WtPar.antitone_wt_gap_bar (dat p i) P 0 (fun τ => (hsa τ).1) hD2 hp1 hq1 τ`. Establish `hgap : ∀ τ, ((8 * (Fm.D x ι).R.f * (Fm.D x ι).R.r + 10 : ℕ) : ℤ) ≤ gap (P.wt 0 τ) ((dat p i).p - 1)`. Introduce `τ`.
+
+Establish `hk : (dat p i).p - 1 + 1 < (dat p i).p + (dat p i).q` using `by omega`. Take `⟨G, hG⟩ : ∃ G : ℕ, G = (FlagTan.dimFlag (dat p i) + 3) * ((FlagTan.dimFlag (dat p i) + 1).choose 2 + 4 * ((dat p i).p + (dat p i).q) + FlagTan.dimFlag (dat p i) + 3)` from `⟨_, rfl⟩`. Establish `hg : (G : ℤ) ≤ gap (P.u₁ τ) ((dat p i).p - 1)` using `hG ▸ s5.gaps τ _ hk`. Establish `h1` using `consecutiveGap_weightZero_ge (dat p i) P τ hk _ hg`. Establish `hG12 : 12 * (Fm.D x ι).R.r ≤ G`.
+
+Rewrite using `[hG, hpq]`. Use `Nat.mul_le_mul (show 3 ≤ FlagTan.dimFlag (dat p i) + 3 by omega) (show 4 * (Fm.D x ι).R.r ≤ (FlagTan.dimFlag (dat p i) + 1).choose 2 + 4 * (Fm.D x ι).R.r + FlagTan.dimFlag (dat p i) + 3 by omega)` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish `hN : 8 * (Fm.D x ι).R.f * (Fm.D x ι).R.r + 12 ≤ (FlagTan.dimFlag (dat p i) + 1) * G`. Use `Nat.mul_le_mul (show (Fm.D x ι).R.f + 1 ≤ FlagTan.dimFlag (dat p i) + 1 by omega) hG12` as an intermediate fact.
+
+Use the polynomial consequences of the given equalities and inequalities. Establish `hN' : ((8 * (Fm.D x ι).R.f * (Fm.D x ι).R.r + 12 : ℕ) : ℤ) ≤ (((FlagTan.dimFlag (dat p i) + 1) * G : ℕ) : ℤ)`. Conclude with `hN` after adjusting the coercions. Move the coercions through the operations in `at hN' ⊢`. Combine the linear equalities and inequalities to obtain the conclusion.
+
+Establish `hf1 : (1 : ℝ) ≤ (Fm.D x ι).R.f` using `by exact_mod_cast (by omega : 1 ≤ (Fm.D x ι).R.f)`. Establish `hr1 : (1 : ℝ) ≤ (Fm.D x ι).R.r` using `by exact_mod_cast (by omega : 1 ≤ (Fm.D x ι).R.r)`. Establish `hfr1 : (1 : ℝ) ≤ (Fm.D x ι).R.f * (Fm.D x ι).R.r` using `by nlinarith`. Establish `hS0 : 0 ≤ ∑ τ, ∑ k, |(P.wt 0 τ k : ℝ)|` using `by positivity`. Establish `hw0` using `hwt 0 (Nat.zero_le _)`.
+
+Establish `hlog` using `log_sum_le hS0 hw0 hkap hfr hL1 hfr1`. Take `⟨n, w, abelian₂, hSG, hLam, -⟩` from `hH3 (Fm.D x ι) p.T hLaws ((i : ℕ) + 1) hp1 hq1 hfin hInR Y _ _ hY.1 _ hL1 hM hfs hfr le_rfl _ s6 (by rw [abs_neg]; exact hflat) (P.wt 0) (fun τ => (hAnt τ).1) hgap hlog Z`. Use `⟨n, w, fun q => (hSG.gen _).2 (Submodule.subset_span ⟨q, rfl⟩), ?_, fun q σ => ?_⟩` and prove the remaining obligations. Establish `hGO` using `((hGd (Fm.D x ι) p.T hLaws _ hp1 hq1 hfin hInR Y _ _ hY.1 (P.wt 0) (fun τ => (hAnt τ).1) (fun τ => (hAnt τ).2)).2 Z).2.2`. Rewrite using `[eq_top_iff, ← hGO]`.
+
+Conclude with `Submodule.span_le.2 fun y hy => Submodule.span_le_restrictScalars ℤ _ _ ((hSG.gen y).1 hy)`. Use `(hSG.le q σ).trans ?_` and prove the remaining obligations. Rewrite using `[← Real.exp_log (lt_of_lt_of_le one_pos hSG.one_le), GlobalTheory.CompHS.dimFlag_eq]`. Use `Real.exp_le_exp.2 ?_` and prove the remaining obligations. Establish `hZ : 0 < zBase (Fm.L x ι)` using `by unfold zBase; positivity`.
+
+Establish `hkap0 : 0 ≤ kap p i`. Establish `: 0 ≤ zBase (Fm.L x ι) ^ 2 * kap p i` using `hS0.trans hw0`. Conclude with `(mul_nonneg_iff_of_pos_left (by positivity)).1 this`. Establish `hX : 1 ≤ kap p i / lenT p i (Fm.parT x hx ι).PP + 1`. Use `div_nonneg hkap0 (Nat.cast_nonneg (lenT p i (Fm.parT x hx ι).PP))` as an intermediate fact.
+
+Combine the linear equalities and inequalities to obtain the conclusion. Establish `hW : 0 ≤ zBase (Fm.L x ι) ^ 2 * (kap p i / lenT p i (Fm.parT x hx ι).PP + 1)` using `by positivity`. Establish `hcard : Fintype.card (Psi p.T.Q.H) = (Fm.D x ι).R.f` using `by rw [← Nat.card_eq_fintype_card]; exact s4.card`. Establish `hK : ∑ τ, ∑ k, |(FlagTan.kap (dat p i) τ k : ℝ)| ≤ zBase (Fm.L x ι) ^ 2 * (kap p i / lenT p i (Fm.parT x hx ι).PP + 1)`. Use `(sum_abs_kap_le (dat p i)).trans ?_` and prove the remaining obligations.
+
+Rewrite using `[hcard, hpq]`. Establish `a : 1 ≤ ((Fm.D x ι).R.f : ℝ) * (Fm.L x ι).sc.L ^ 2` using `by nlinarith`. Establish `b : ((Fm.D x ι).R.f : ℝ) * ((Fm.D x ι).R.r : ℝ) ^ 2 ≤ zBase (Fm.L x ι) ^ 2`. Unfold `zBase`. Combine the equalities or inequalities in the displayed calculation.
+
+Combine the equalities or inequalities in the displayed calculation. Establish `hDc : (1 : ℝ) ≤ (FlagTan.dimFlag (dat p i) : ℝ)` using `by exact_mod_cast (by omega : 1 ≤ FlagTan.dimFlag (dat p i))`. Establish `hSs` using `sum_le (sum_abs_weightZero_le_components (dat p i) P) hK (hu12 _ (Set.mem_insert _ _)) (hu12 _ (Set.mem_insert_of_mem _ (Set.mem_singleton _))) hDc hW`. Establish `hZL : (Fm.L x ι).sc.L ≤ zBase (Fm.L x ι)` using `le_mul_of_one_le_left (by linarith) hfr1`. Conclude with `final_le hC0 s3.big.1 hZL hPP hDc hX (by linarith) hLam`.
+-/
 theorem short_span_uc : Hypotheses2 → DeepGood → Size → FlatDeg → Covers fun Fm x _ ι p i Y PP _ => ∀ Z, ∃ (m : ℕ) (v : Fin m → Cusp Z Y.U ((⟨uW p i, cZero (Fm.D x ι) ((i : ℕ) + 1), (Fm.D x ι).R.k - 2, lenT p i PP⟩ : WtPar (dat p i)).wt 0)), (∀ q, v q ∈ latOn Y.U Z _) ∧ Submodule.span Y.d.c₂.F (Set.range v) = ⊤ ∧ ∀ q σ, petOn Y.U (xiR (Fm.D x ι)) (fun _ => (Fm.D x ι).sp.W ((i : ℕ) + 1)) Y.dict Z (wtOf (dat p i) ((⟨uW p i, cZero (Fm.D x ι) ((i : ℕ) + 1), (Fm.D x ι).R.k - 2, lenT p i PP⟩ : WtPar (dat p i)).wt 0) 0) σ (v q).1 ≤ Real.exp (CompHt.dimFlag (dat p i) * PP * (kap p i / lenT p i PP + 1)) := by
   intro hP2 _hDG hSz hFD
   obtain ⟨C, hC0, hH3⟩ := GlobalTheory.T.flat_constant_abs_le_nine_explicit hP2

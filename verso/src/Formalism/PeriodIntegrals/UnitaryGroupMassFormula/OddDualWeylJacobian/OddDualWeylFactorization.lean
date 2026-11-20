@@ -13,6 +13,9 @@ import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.OddDualWeylJacobian.Hig
 
 namespace PI.OddDualWeyl
 
+/- English proof (translation)
+The claim follows from `oddDualWeyl_of rowOpIntertwining highest_weight_multiplicity highest_weight_divisibility hermitianDiagonalization lowestWeightMem (highestWeightDual_of jacobiMinorReverse) weight_homomorphism degreeBalance evalDuality highest_weight_vector_unique columnSpanDual reverseSignUnit tw …`.
+-/
 theorem odd_dual_weyl_factorization {K : Type} [Field K] (O : Type) [CommRing O] [Algebra O K] (m : ℕ)
     (lam : Fin (m + 1) → ℤ) : OddFact (K := K) O m lam :=
   oddDualWeyl_of rowOpIntertwining highest_weight_multiplicity highest_weight_divisibility hermitianDiagonalization lowestWeightMem (highestWeightDual_of jacobiMinorReverse) weight_homomorphism degreeBalance

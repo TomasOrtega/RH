@@ -11,6 +11,17 @@ namespace GlobalTheory.HWL.Letter
 
 variable {l : ℕ} [Fact l.Prime]
 
+/- English proof (translation)
+Establish `h1 : ∀ c : ↥(K0 K), ‖(c : Om l)‖ ≤ 1 → σ c = τ c`. Introduce `c hc`. Take `⟨n, z, ω, hω, hsum⟩` from `GlobalTheory.UnramSpan.exists_sum_rootsOfUnity l K c c.2 hc`. Establish `h2 : c = ∑ i, (z i : ℚ_[l]) • (⟨ω i, (hω i).1⟩ : ↥(K0 K))`. Apply `Subtype.ext` to reduce the goal to its premises.
+
+Rewrite using `[hsum]`. Use `push_cast`. Simplify using `only [Algebra.smul_def]`. Rewrite using `[h2, map_sum, map_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations.
+
+Take `⟨m, hm, hl, hx⟩` from `(hω i).2`. Rewrite using `[map_smul, map_smul, h _ m hm hl hx]`. Establish `hl : ‖(l : Om l)‖ < 1`. Rewrite using `[← map_natCast (algebraMap ℚ_[l] (Om l)), PadicAlgCl.norm_extends]`. Conclude with `Padic.norm_p_lt_one`.
+
+Establish `ht` using `(tendsto_pow_atTop_nhds_zero_of_lt_one (norm_nonneg _) hl).mul_const ‖(c : Om l)‖`. Rewrite `ht` using `[zero_mul]`. Take `⟨n, hn⟩` from `(ht.eventually (ge_mem_nhds one_pos)).exists`. Establish `h3` using `h1 (((l : ℚ_[l]) ^ n) • c) (by`. Rewrite using `[Algebra.smul_def]`.
+
+Use `push_cast`. Rewrite using `[norm_mul, norm_pow])` and apply the resulting hypothesis. Rewrite `h3` using `[map_smul, map_smul]`. Establish `h0 : ((l : ℚ_[l]) ^ n) ≠ 0` using `pow_ne_zero _ (Nat.cast_ne_zero.2 (Fact.out : l.Prime).ne_zero)`. Rewrite using `[← inv_smul_smul₀ h0 (σ c), h3, inv_smul_smul₀ h0]`.
+-/
 theorem lin_ext (K : FinExt l) {M : Type} [AddCommGroup M] [Module ℚ_[l] M] (σ τ : ↥(K0 K) →ₗ[ℚ_[l]] M)
     (h : ∀ (c : ↥(K0 K)) (m : ℕ), 0 < m → ¬ l ∣ m → (c : Om l) ^ m = 1 → σ c = τ c) (c : ↥(K0 K)) :
     σ c = τ c := by
@@ -40,6 +51,9 @@ theorem lin_ext (K : FinExt l) {M : Type} [AddCommGroup M] [Module ℚ_[l] M] (�
   have h0 : ((l : ℚ_[l]) ^ n) ≠ 0 := pow_ne_zero _ (Nat.cast_ne_zero.2 (Fact.out : l.Prime).ne_zero)
   rw [← inv_smul_smul₀ h0 (σ c), h3, inv_smul_smul₀ h0]
 
+/- English proof (translation)
+The claim follows from `lin_ext K ((LinearMap.mulRight ℚ_[l] x).comp ((TensorProduct.mk ℚ_[l] L B 1).comp f.toLinearMap)) (((LinearMap.toSpanSingleton L _ x).restrictScalars ℚ_[l]).comp e.toLinearMap) h c`.
+-/
 theorem mul_ext (K : FinExt l) {L B : Type} [Field L] [Algebra ℚ_[l] L] [CommRing B] [Algebra ℚ_[l] B]
     (e : ↥(K0 K) →ₐ[ℚ_[l]] L) (f : ↥(K0 K) →ₐ[ℚ_[l]] B) (x : L ⊗[ℚ_[l]] B)
     (h : ∀ (c : ↥(K0 K)) (m : ℕ), 0 < m → ¬ l ∣ m → (c : Om l) ^ m = 1 →
@@ -47,6 +61,9 @@ theorem mul_ext (K : FinExt l) {L B : Type} [Field L] [Algebra ℚ_[l] L] [CommR
   lin_ext K ((LinearMap.mulRight ℚ_[l] x).comp ((TensorProduct.mk ℚ_[l] L B 1).comp f.toLinearMap))
     (((LinearMap.toSpanSingleton L _ x).restrictScalars ℚ_[l]).comp e.toLinearMap) h c
 
+/- English proof (translation)
+Use function extensionality and compare the values at `j`. Distinguish the cases in `hj : j = i`. Substitute `hj` using the available equality. Both sides reduce to the same expression. Simplify using `[letE, hj]`.
+-/
 theorem const_mul_letE {O : Type} [CommRing O] {n : ℕ} (o : ZMod n → O) (i : ZMod n) :
     (fun j => PowerSeries.C (o j) : LetA O n) * letE i = algebraMap O (LetA O n) (o i) * letE i := by
   funext j
@@ -54,6 +71,9 @@ theorem const_mul_letE {O : Type} [CommRing O] {n : ℕ} (o : ZMod n → O) (i :
   · subst hj; rfl
   · simp [letE, hj]
 
+/- English proof (translation)
+Rewrite using `[← h3, ← map_mul, ← map_mul, const_mul_letE, map_mul, AlgHom.commutes, map_mul, h5, Algebra.smul_def]`. Both sides reduce to the same expression.
+-/
 theorem step {O R Q L B : Type} [CommRing O] [CommRing R] [Algebra O R] [Field Q] [Field L] [Algebra Q L]
     [CommRing B] [Algebra Q B] {n : ℕ} (io : LetA O n →ₐ[O] R) (β : R →+* L ⊗[Q] B) (o : ZMod n → O)
     (i : ZMod n) (a : L) (b : B) (h3 : β (io (fun j => PowerSeries.C (o j))) = (1 : L) ⊗ₜ[Q] b)
@@ -62,6 +82,13 @@ theorem step {O R Q L B : Type} [CommRing O] [CommRing R] [Algebra O R] [Field Q
   rw [← h3, ← map_mul, ← map_mul, const_mul_letE, map_mul, AlgHom.commutes, map_mul, h5, Algebra.smul_def]
   rfl
 
+/- English proof (translation)
+Introduce `l _ P AI _ K s LL _ Γ R I hI β hβ i c`. Use `mul_ext K (Γ.emb i) (IsScalarTower.toAlgHom ℚ_[l] ↥(K0 K) P.R.B) _ (fun c m hm hl hc => ?_) c` and prove the remaining obligations. Take `⟨xb, hxb⟩` from `GlobalTheory.MemLoc.exists_isTiltOf (c : Om l) m hm hl hc`. Establish `hc' : c ^ m = 1` using `by exact_mod_cast hc`. Take `⟨o, ho⟩` from `GlobalTheory.UnramIdem.exists_vec Γ.emb hm hc'`.
+
+Establish `h1` using `hI c m hm hl hc xb hxb o ho`. Establish `h2 : AI.ιA (WittVector.teichmuller l xb) = algebraMap ↥(K0 K) P.R.B c` using `AI.ιA_teich ⟨c, c.2.2⟩ m hm hl hc xb hxb`. Establish `h3` using `hβ 1 (WittVector.teichmuller l xb)`. Establish `h5` using `hβ (o i) 1`. Rewrite `h5` using `[map_one, ho]`.
+
+Rewrite `h3` using `[h2]`. Conclude with `step I.io β o i _ _ ((congrArg β h1).trans h3) h5`.
+-/
 theorem letter : ∀ (l : ℕ) [Fact l.Prime] (P : LocPrime l) (AI : LocAinf l P), LocTied l P AI → ∀ (K : FinExt l) (s : ℕ) (LL : FinExt l), Good K s LL → ∀ (Γ : GamS P K s LL) (R : WSer Γ) (I : IoS AI R), IoW I → ∀ β : RA LL →+* ↥LL.1 ⊗[ℚ_[l]] P.R.B, IsBeta AI β → ∀ (i : ZMod (Module.finrank ℚ_[l] ↥(K0 K))) (c : ↥(K0 K)), ((1 : ↥LL.1) ⊗ₜ[ℚ_[l]] algebraMap ↥(K0 K) P.R.B c) * β (I.io (letE i)) = Γ.emb i c • β (I.io (letE i)) := by
   intro l _ P AI _ K s LL _ Γ R I hI β hβ i c
   refine mul_ext K (Γ.emb i) (IsScalarTower.toAlgHom ℚ_[l] ↥(K0 K) P.R.B) _ (fun c m hm hl hc => ?_) c

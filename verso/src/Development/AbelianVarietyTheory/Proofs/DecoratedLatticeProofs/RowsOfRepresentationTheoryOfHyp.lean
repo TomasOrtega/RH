@@ -57,6 +57,9 @@ def Placed {D : D7} {G' : Type} [Group G'] [Fintype G'] {Pl0 T : Type} {A : FamI
   SeeAt R F P.X P.inst t ∧ EvalTieT (MP R) R.ν0 R.fd0 (EP R F) P.X P.G (iotaX P.X P.inst).toMulEquiv t c ∧
     RowJ R eE P.X P.inst P.G t S.j
 
+/- English proof (translation)
+Substitute `hF` using the available equality. Take `rfl` from `eq_of_heq hP`. Take `rfl` from `eq_of_heq hS`. Conclude with `h`.
+-/
 theorem Placed.of_heq {D : D7} {G' : Type} [Group G'] [Fintype G'] {Pl0 T : Type} {A : FamIn D.what₂.LL G' Pl0 T D.R.m} {Ks : Type}
     [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] {R : RealDat D A Ks} {F : Face D A} {eE : D.what₂.EE →ₗ[ℂ] R.HE.H}
     {F0 F0' : ∀ u, Formalism.L2.Forms.Forms0 D u} (hF : F0 = F0') {P : SPack D F0} {S : SRest P} {P' : SPack D F0'} {S' : SRest P'}
@@ -68,6 +71,9 @@ theorem Placed.of_heq {D : D7} {G' : Type} [Group G'] [Fintype G'] {Pl0 T : Type
 
 set_option maxHeartbeats 1000000 in
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨⟨h.1.fin, h.1.conj, h.1.mat⟩, h.2.1, h.2.2⟩`.
+-/
 theorem placed_upd {D : D7} {G : Type} [Group G] [Fintype G] {Pl0 I0 T : Type}
     {A3 : FamIn3 D.what₂.LL G Pl0 I0 (List ℕ) T D.R.m} {Ks : Type} [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL]
     (R : RealDat3 D A3 Ks) (k : ℝ) (lam : type_of% R.lam3) (e : type_of% (R.updS k lam).err0) (F : Face3 D A3)
@@ -80,6 +86,9 @@ theorem placed_upd {D : D7} {G : Type} [Group G] [Fintype G] {Pl0 I0 T : Type}
 
 set_option maxHeartbeats 1000000 in
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨h.ItY, h.ItX, h.ioY, h.ioX, h.Th, h.ioP, h.thF, h.thG⟩`.
+-/
 theorem exAt_upd {D : D7} {G : Type} [Group G] [Fintype G] {Pl0 I0 T : Type}
     {A3 : FamIn3 D.what₂.LL G Pl0 I0 (List ℕ) T D.R.m} {Ks : Type} [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL]
     (R : RealDat3 D A3 Ks) (k : ℝ) (lam : type_of% R.lam3) (e : type_of% (R.updS k lam).err0) (h : R.toRealDat.ExAt) :
@@ -97,6 +106,9 @@ variable {K : Ctx} {B : GlobalTheory.Mem.Base} {f : Fr B.toPre} {T : TwDat B} {w
 
 set_option maxHeartbeats 1000000 in
 
+/- English proof (translation)
+Take `rfl` from `eq_of_heq hx`. Establish `e` using `congrArg (fun s => match s with`. Consider the case `⟨_, _, _, _, _, _, _, _, _, R, _, _⟩ => R.toRealDat.ExAt) a.pack`. Conclude with `e.mpr (exAt_upd _ _ _ _ t.exAt)`.
+-/
 theorem exAt_of_args (a : TwArgs ex t) (x : TwIn ex) (hx : HEq a.x x) : x.R.toRealDat.ExAt := by
   obtain rfl := eq_of_heq hx
   have e := congrArg (fun s => match s with
@@ -105,6 +117,11 @@ theorem exAt_of_args (a : TwArgs ex t) (x : TwIn ex) (hx : HEq a.x x) : x.R.toRe
 
 set_option maxHeartbeats 1000000 in
 
+/- English proof (translation)
+Take `rfl` from `eq_of_heq hx`. Establish `e` using `congrArg (fun s => match s with`. Consider the case `⟨_, _, _, _, _, _, _, _, _, R, F, _⟩ => ∀ eE : (w.st Z).toD7.what₂.EE →ₗ[ℂ] R.HE.H, HEq eE t.r.Y.eE → Placed R.toRealDat F.lv2 eE P S g c) a.pack`. Use `e.mpr (fun eE he => ?_) _ a.eE` and prove the remaining obligations. Take `rfl : eE = t.r.Y.eE` from `eq_of_heq he`.
+
+Conclude with `placed_upd _ _ _ _ _ _ _ _ _ _ _ _ _ h`.
+-/
 theorem placed_of_args (a : TwArgs ex t) (x : TwIn ex) (hx : HEq a.x x)
     {F0 : ∀ u, Formalism.L2.Forms.Forms0 (w.st Z).toD7 u} (P : SPack (w.st Z).toD7 F0) (S : SRest P)
     (g : GA (w.st Z).toD7 ((w.st Z).toD7.sp.Y 0)) (c : ℝ)
@@ -122,6 +139,9 @@ end Args
 
 set_option maxHeartbeats 1000000 in
 
+/- English proof (translation)
+Substitute `hS` using the available equality. Establish `hSch : SchurAll D` using `fun V _ S θ M J χ μ 𝓕 => (GlobalTheory.MultFinite.hcFinite_and_schurMult h5.2.2.2.1 h5.2.2.2.2 D θ V S M J χ μ 𝓕).2`. Establish `hL` using `(GlobalTheory.T.rowLattices_metrics_agree_of_realGroupTheorems h5 D _ _ _ _ x.A3 _ x.R x.F x.cG ex.p0 x.Y x.Z x.pins hH).1`. Conclude with `⟨(GlobalTheory.Mem.JPin.seeEx_joinPin _ _ _ _ _ _ _ _ _ x Rc P S y c hH h.1 h.2.1 h.2.2).1, (GlobalTheory.T.join_subspace_real_data_exists _ _ _ _ _ _ _ _ _ x Rc P S y c 1 hSch hP hH hH.ok hH.sep hL (rowConditions_at_companion_from_readings _ _ _ _ _ _ _ _ _ x).2.1 h.1 h.2.1 h.2. …`.
+-/
 theorem see_join (h5 : GlobalTheory.Published.DiscreteSeriesCover ∧ GlobalTheory.Published.HarishChandraModules ∧ GlobalTheory.Published.CasselmanWallach ∧
       GlobalTheory.Published.HarishChandraFinite ∧ GlobalTheory.Published.CuspRapidDecay)
     {D : D7} {L : SizeData₂ D} {hT : GatTies D} {Gi : Formalism.MainNotions.G.Inst D L} {Gl : Formalism.MainNotions.G.LatInst D} {K : Formalism.MainNotions.G.Consts}
@@ -144,24 +164,42 @@ section Wit
 
 variable {hL : GlobalTheory.Published.LocalLanglandsGL} {p : Bl.Prm hL} {K : Ctx} {q : Bl.WPt p.s K} {c : ℝ} {b : Bundle (q.w.D q.Z) q.O c}
 
+/- English proof (translation)
+The claim follows from `congrArg Bl.RPk.P w.y.eq`.
+-/
 theorem bundle_pack_eq_adelic_data (w : Bl.BWit q b) : b.P = R3.divisionPairOfAdelicFormsFaceColumnsData w.x := congrArg Bl.RPk.P w.y.eq
 
+/- English proof (translation)
+Rewrite using `[bundle_pack_eq_adelic_data w]`. Conclude with `(GlobalTheory.Mem.R3.rowConditions_at_companion_from_readings _ _ _ _ _ _ _ _ _ w.x).2.2.1`.
+-/
 theorem dc_of_wit (w : Bl.BWit q b) : DcPtG b.P := by
   rw [bundle_pack_eq_adelic_data w]
   exact (GlobalTheory.Mem.R3.rowConditions_at_companion_from_readings _ _ _ _ _ _ _ _ _ w.x).2.2.1
 
+/- English proof (translation)
+The claim follows from `(GlobalTheory.T.characters_match_bundle q b w).2.2.2.2.2.1`.
+-/
 theorem pins_of_wit (w : Bl.BWit q b) : Formalism.IndefR.RealPins b.B.Q := (GlobalTheory.T.characters_match_bundle q b w).2.2.2.2.2.1
 
+/- English proof (translation)
+Use `letI := b.B.alg`. Conclude with `GlobalTheory.FramesAtReal.framesEx_of_realisation _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ b.B.Q (pins_of_wit w)`.
+-/
 theorem frames_of_wit (w : Bl.BWit q b) : Formalism.IndefR.RealT.FramesEx b.B.Q := by
   letI := b.B.alg
   exact GlobalTheory.FramesAtReal.framesEx_of_realisation _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ b.B.Q (pins_of_wit w)
 
+/- English proof (translation)
+Establish `h : (fun r : Bl.RPk b.R b.S => Formalism.IndefR.Links.PrimRows3 r.B.Q.Rl r.B.Q.F ∧ r.P.A3.fam3.TypesSep3) (Bl.rpkX w.y.y)` using `⟨w.y.intersectionNumber_baseChange.prim, w.y.intersectionNumber_baseChange.sep⟩`. Rewrite `h` using `[← w.y.eq]`. Conclude with `h`.
+-/
 theorem prim_of_wit (w : Bl.BWit q b) : Formalism.IndefR.Links.PrimRows3 b.B.Q.Rl b.B.Q.F ∧ b.P.A3.fam3.TypesSep3 := by
   have h : (fun r : Bl.RPk b.R b.S => Formalism.IndefR.Links.PrimRows3 r.B.Q.Rl r.B.Q.F ∧ r.P.A3.fam3.TypesSep3) (Bl.rpkX w.y.y) :=
     ⟨w.y.intersectionNumber_baseChange.prim, w.y.intersectionNumber_baseChange.sep⟩
   rw [← w.y.eq] at h
   exact h
 
+/- English proof (translation)
+Establish `h : (fun r : Bl.RPk b.R b.S => r.B.Q.Rl.toRealDat.ExAt) (Bl.rpkX w.y.y)` using `exAt_of_args w.a w.x w.ax`. Rewrite `h` using `[← w.y.eq]`. Conclude with `h`.
+-/
 theorem ex_of_wit (w : Bl.BWit q b) : b.B.Q.Rl.toRealDat.ExAt := by
   have h : (fun r : Bl.RPk b.R b.S => r.B.Q.Rl.toRealDat.ExAt) (Bl.rpkX w.y.y) := exAt_of_args w.a w.x w.ax
   rw [← w.y.eq] at h
@@ -169,6 +207,13 @@ theorem ex_of_wit (w : Bl.BWit q b) : b.B.Q.Rl.toRealDat.ExAt := by
 
 set_option maxHeartbeats 1000000 in
 
+/- English proof (translation)
+Take `⟨sP, sS, hP, hS, e⟩` from `w.s`. Establish `hpin : (fun r : Bl.RPk b.R b.S => Formalism.IndefR.RealPins r.B.Q) (Bl.rpkB b)` using `pins_of_wit w`. Rewrite `hpin` using `[w.y.eq]`. Establish `h0` using `placed_of_args w.a w.x w.ax q.sat.P q.sat.S q.sat.t q.sat.c ⟨q.sat.see, q.sat.ev, q.sat.rowJ⟩`. Establish `ht : w.y.y.tS = q.sat.t` using `eq_of_heq w.pt.1`.
+
+Establish `hF : (fun u => (b.R.T.cols.forms u).to0) = fun u => (q.x.col.C.forms u).to0` using `congrArg (fun C : type_of% q.x.col.C => fun u => (C.forms u).to0) w.recPin.s.cols`. Establish `h1` using `Placed.of_heq hF hP hS h0`. Rewrite `h1` using `[← ht]`. Establish `h : (fun r : Bl.RPk b.R b.S => Formalism.IndefR.SeeEx r.B.Q ∧ Nonempty (Formalism.L2.SG.JoinSI.JoinSI b.R b.S r.B.Q)) (Bl.rpkX w.y.y)` using `see_join h5 w.x b.R sP sS b.S e w.y.y q.sat.c w.y.intersectionNumber_baseChange hpin h1`. Rewrite `h` using `[← w.y.eq]`.
+
+Conclude with `h`.
+-/
 theorem see_join_of_wit (h5 : GlobalTheory.Published.DiscreteSeriesCover ∧ GlobalTheory.Published.HarishChandraModules ∧ GlobalTheory.Published.CasselmanWallach ∧
       GlobalTheory.Published.HarishChandraFinite ∧ GlobalTheory.Published.CuspRapidDecay) (w : Bl.BWit q b) :
     Formalism.IndefR.SeeEx b.B.Q ∧ Nonempty (Formalism.L2.SG.JoinSI.JoinSI b.R b.S b.B.Q) := by
@@ -188,6 +233,13 @@ theorem see_join_of_wit (h5 : GlobalTheory.Published.DiscreteSeriesCover ∧ Glo
 
 end Wit
 
+/- English proof (translation)
+Establish `HL` using `H.2.2.1`. Take `⟨hS, hr⟩` from `GlobalTheory.Core.Rk.HdGap.scale_of hCl HL`. Establish `hr0 : (0 : ℝ) ≤ (D.R.r : ℝ) ^ 19` using `by positivity`. Use `⟨hr, fun τ j hj => ?_⟩` and prove the remaining obligations. Use `GlobalTheory.Core.Rk.HdGap.gap_of HL τ j.1 hj` as an intermediate fact.
+
+Simplify using `only [Fin.eta] at this`. Establish `key : (((16 : ℚ) * (D.R.r : ℚ) ^ 19 : ℚ) : ℝ) ≤ (((D.hc τ).b ⟨j.1 + 1, hj⟩ - (D.hc τ).b j : ℚ) : ℝ)`. Rewrite using `[Rat.cast_sub]`. Use `push_cast`. Combine the linear equalities and inequalities to obtain the conclusion.
+
+Conclude with `key` after adjusting the coercions.
+-/
 theorem gapHyp_of_hd {D : D7} {L C' Cl Cg cb Cu cT CT : ℝ} (hCl : 1801 ≤ Cl) (H : GlobalTheory.Core.Rk.HD D L C' Cl Cg cb Cu cT CT) :
     Formalism.L2.SG.ConcreteSettingExists.GapHyp D := by
   have HL := H.2.2.1
@@ -201,6 +253,11 @@ theorem gapHyp_of_hd {D : D7} {L C' Cl Cg cb Cu cT CT : ℝ} (hCl : 1801 ≤ Cl)
     rw [Rat.cast_sub]; push_cast; linarith
   exact_mod_cast key
 
+/- English proof (translation)
+Introduce `h1 h2 h3 h4 h5 hL p`. Take `⟨Cl₀, hnc⟩` from `GlobalTheory.Core.Rk.HdNc.hd_nc`. Use `(GlobalTheory.T.constants_exist_for_bundle hL p (fun _ _ => 0) (fun _ _ => max 1801 Cl₀) (fun _ _ => 0)).imp ?_` and prove the remaining obligations. Introduce and unpack `κ K β c b - - ⟨q, b', ⟨w⟩, he⟩ ⟨C', Cl, Cg, CT, -, hCl, -, hHD, -, -, hB, hrS⟩`. Establish `key : ∀ s t : (Σ (D : D7) (O : Obj D), Bundle D O c), s = t → (Nonempty (Formalism.L2.SG.JoinSI.JoinSI t.2.2.R t.2.2.S t.2.2.B.Q) ∧ DcPtG t.2.2.P ∧ Formalism.IndefR.RealT.FramesEx t.2.2.B.Q ∧ Formalism.IndefR.SeeEx t.2.2.B.Q ∧ t.2.2.B.Q.Rl.toRealDat.ExAt ∧ (Formalism.IndefR.Links …`.
+
+Introduce and unpack `_ _ rfl h`. Conclude with `h`. Establish `hsj` using `see_join_of_wit ⟨h1, h2, h3, h4, h5⟩ w`. Take `⟨a1, a2, a3, a4, a5, a6⟩` from `key ⟨β.D, β.O, b⟩ ⟨q.w.D q.Z, q.O, b'⟩ he ⟨hsj.2, dc_of_wit w, frames_of_wit w, hsj.1, ex_of_wit w, prim_of_wit w⟩`. Conclude with `⟨a1, a2, a3, a4, a5, a6, GlobalTheory.Core.Rk.finX_of_gap _ b.S.toSTies (gapHyp_of_hd ((le_max_left _ _).trans hCl) hHD), hnc _ _ _ _ _ _ _ _ _ ((le_max_right _ _).trans hCl) hHD b.S.X, GlobalTheory.Core.Rk.GapOfNodes.harishChandraNodesFarApart_of_cubic_node_gap _ hB, hrS⟩`.
+-/
 theorem ptRows_at_member : GlobalTheory.Published.DiscreteSeriesCover → GlobalTheory.Published.HarishChandraModules → GlobalTheory.Published.CasselmanWallach → GlobalTheory.Published.HarishChandraFinite → GlobalTheory.Published.CuspRapidDecay → ∀ (hL : GlobalTheory.Published.LocalLanglandsGL) (p : Bl.Prm hL), GlobalTheory.Fc.RowE (Bl.IsGoodE p.s) (Bl.IsLinked p) (fun _ _ _ _ b => PtRows b) := by
   intro h1 h2 h3 h4 h5 hL p
   obtain ⟨Cl₀, hnc⟩ := GlobalTheory.Core.Rk.HdNc.hd_nc

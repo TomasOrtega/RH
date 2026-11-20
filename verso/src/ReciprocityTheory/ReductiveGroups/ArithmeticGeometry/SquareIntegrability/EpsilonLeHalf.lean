@@ -7,6 +7,19 @@ open MeasureTheory Complex NumberField
 
 noncomputable section
 
+/- English proof (translation)
+Establish `h6` using `P.C6`. Establish `hr0 : (0:ℝ) ≤ X.r` using `Nat.cast_nonneg _`. Establish `hr : 0 ≤ (X.r : ℝ) * Real.log X.r` using `mul_nonneg hr0 (Real.log_natCast_nonneg _)`. Establish `hrest : 0 ≤ ((DF : ℝ) + 1) * (X.r * Real.log X.r + 3 * X.r + 3)` using `mul_nonneg (by positivity) (by linarith)`. Establish `e1` using `Real.exp_one_gt_d9`.
+
+Establish `e2 : Real.exp 2 = Real.exp 1 ^ 2` using `by rw [← Real.exp_nat_mul]; norm_num`. Establish `e3 : Real.exp 3 = Real.exp 1 ^ 3` using `by rw [← Real.exp_nat_mul]; norm_num`. Establish `p2 : (2.7:ℝ) ^ 2 ≤ Real.exp 1 ^ 2` using `by gcongr; linarith`. Establish `p3 : (2.7:ℝ) ^ 3 ≤ Real.exp 1 ^ 3` using `by gcongr; linarith`. Establish `hl43 : Real.log 4.3 ≤ 2`.
+
+Rewrite using `[Real.log_le_iff_le_exp (by norm_num), e2]`. Evaluate the numerical expressions using `at p2`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hl14 : Real.log 7 + Real.log 2 ≤ 3`. Rewrite using `[← Real.log_mul (by norm_num) (by norm_num), Real.log_le_iff_le_exp (by norm_num), e3]`.
+
+Evaluate the numerical expressions using `at p3`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hds : (dstar (E` using `E) P.m : ℝ) * Real.log 4.3 ≤ 2 * dstar (E := E) P.m := by`. Establish `h` using `mul_le_mul_of_nonneg_left hl43 (Nat.cast_nonneg (α := ℝ) (dstar (E := E) P.m))`. Combine the linear equalities and inequalities to obtain the conclusion.
+
+Establish `key : (7:ℝ) * 2 ^ X.gA * (4.3:ℝ) ^ dstar (E` using `E) P.m = Real.exp (Real.log 7 + X.gA * Real.log 2 + dstar (E := E) P.m * Real.log 4.3) := by`. Rewrite using `[Real.exp_add, Real.exp_add, Real.exp_log (by norm_num), Real.exp_nat_mul, Real.exp_nat_mul, Real.exp_log (by norm_num), Real.exp_log (by norm_num)]`. Unfold `Par.eps1`. Rewrite using `[key, ← Real.exp_add]`. Establish `half : (1:ℝ) / 2 = Real.exp (-Real.log 2)`.
+
+Rewrite using `[Real.exp_neg, Real.exp_log (by norm_num)]`. Evaluate the numerical expressions. Rewrite using `[half, Real.exp_le_exp]`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem epsilon_le_half {E : Type} [Field E] [NumberField E] {X : PT E} {DF : ℕ} (P : Par X DF) :
     P.eps1 ≤ 1 / 2 := by
   have h6 := P.C6

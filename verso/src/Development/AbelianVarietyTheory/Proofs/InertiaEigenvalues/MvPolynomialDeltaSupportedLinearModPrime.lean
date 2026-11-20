@@ -6,6 +6,29 @@ open scoped Formalism.Per NNReal
 
 namespace GlobalTheory.BSP
 
+/- English proof (translation)
+Introduce `s hs`. Establish `hX : ∀ (U : Set ℕ) (j : ℕ), j ∈ U → (MvPolynomial.X j : MvPolynomial ℕ A) ∈ MvPolynomial.supported A U` using `fun U j hj => by`. Rewrite using `[MvPolynomial.supported_eq_adjoin_X]`. Conclude with `Algebra.subset_adjoin ⟨j, hj, rfl⟩`. Establish `hC : ∀ (U : Subalgebra A (MvPolynomial ℕ A)) (a : A), MvPolynomial.C a ∈ U` using `fun U a => U.algebraMap_mem a`.
+
+Use `set S := MvPolynomial.supported A (Set.Iic i) with hS`. Use `set T := MvPolynomial.supported A (Set.Iic (i + 1)) with hT`. Establish `hST : S ≤ T` using `MvPolynomial.supported_mono (Set.Iic_subset_Iic.2 (Nat.le_succ i))`. Establish `hcc : ∀ x y, x ∈ S → y ∈ S → cc l x y ∈ S`. Introduce `x y hx hy`.
+
+Unfold `cc`. Use `Subalgebra.sum_mem _ fun k _ => ?_` and prove the remaining obligations. Use `Subalgebra.mul_mem _ (Subalgebra.mul_mem _ (Subalgebra.natCast_mem _ _) (Subalgebra.pow_mem _ hx _)) (Subalgebra.pow_mem _ hy _)` and prove the remaining obligations. Establish `hS' : S = Algebra.adjoin A (MvPolynomial.X '' Set.Iic i)` using `MvPolynomial.supported_eq_adjoin_X _`. Rewrite `hs` using `[hS']`.
+
+Proceed by induction on `hs using Algebra.adjoin_induction with`. Consider the case `mem x hx`. Take `⟨j, hj, rfl⟩` from `hx`. Establish `hj' : j ≤ i` using `Set.mem_Iic.1 hj`. Rewrite using `[polyDelta_X]`.
+
+Use `⟨hX _ _ (Set.mem_Iic.2 (by omega)), ?_⟩` and prove the remaining obligations. Break down `Nat.lt_or_ge j i with h | h` into its components or cases. Use `⟨0, Subalgebra.zero_mem _, MvPolynomial.X (j + 1), hX _ _ (Set.mem_Iic.2 (by omega)), ?_⟩` and prove the remaining obligations. Simplify using the standard rewrite rules. Establish `: j = i` using `le_antisymm hj' h`.
+
+Substitute `this` using the available equality. Use `⟨1, Subalgebra.one_mem _, 0, Subalgebra.zero_mem _, ?_⟩` and prove the remaining obligations. Simplify using the standard rewrite rules. Consider the case `algebraMap a`. Rewrite using `[MvPolynomial.algebraMap_eq, polyDelta_C]`.
+
+Use `⟨hC _ _, 0, Subalgebra.zero_mem _, MvPolynomial.C (D.δ a), hC _ _, ?_⟩` and prove the remaining obligations. Simplify using the standard rewrite rules. Consider the case `add x y hx hy ihx ihy`. Rewrite `hx`, `hy` using `[← hS']`. Take `⟨hx1, a1, ha1, b1, hb1, hx2⟩` from `ihx`.
+
+Take `⟨hy1, a2, ha2, b2, hb2, hy2⟩` from `ihy`. Establish `hd : (polyDelta D).δ (x + y) = (polyDelta D).δ x + (polyDelta D).δ y - cc l x y` using `(polyDelta D).δ_add x y`. Rewrite using `[hd]`. Use `⟨T.sub_mem (T.add_mem hx1 hy1) (hST (hcc x y hx hy)), a1 + a2, S.add_mem ha1 ha2, b1 + b2 - cc l x y, S.sub_mem (S.add_mem hb1 hb2) (hcc x y hx hy), ?_⟩` and prove the remaining obligations. Use `Ideal.add_mem _ hx2 hy2` as an intermediate fact.
+
+Use `this using 1` and compare the differences between its conclusion and the goal. Expand and normalize the polynomial expressions, which then agree. Consider the case `mul x y hx hy ihx ihy`. Rewrite `hx`, `hy` using `[← hS']`. Take `⟨hx1, a1, ha1, b1, hb1, hx2⟩` from `ihx`.
+
+Take `⟨hy1, a2, ha2, b2, hb2, hy2⟩` from `ihy`. Establish `hd : (polyDelta D).δ (x * y) = x ^ l * (polyDelta D).δ y + y ^ l * (polyDelta D).δ x + (l : MvPolynomial ℕ A) * (polyDelta D).δ x * (polyDelta D).δ y` using `(polyDelta D).δ_mul x y`. Rewrite using `[hd]`. Use `⟨T.add_mem (T.add_mem (T.mul_mem (T.pow_mem (hST hx) _) hy1) (T.mul_mem (T.pow_mem (hST hy) _) hx1)) (T.mul_mem (T.mul_mem (T.natCast_mem _) hx1) hy1), x ^ l * a2 + y ^ l * a1, S.add_mem (S.mul_mem (S.pow_mem hx _) ha2) (S.mul_mem (S.pow_mem hy _) ha1), x ^ l * b2 + y ^ l * b1, S …` and prove the remaining obligations. Establish `h3 : (l : MvPolynomial ℕ A) * (polyDelta D).δ x * (polyDelta D).δ y ∈ Ideal.span {(l : MvPolynomial ℕ A)}` using `Ideal.mul_mem_right _ _ (Ideal.mul_mem_right _ _ (Ideal.subset_span rfl))`.
+
+Use `Ideal.add_mem _ (Ideal.add_mem _ (Ideal.mul_mem_left _ (x ^ l) hy2) (Ideal.mul_mem_left _ (y ^ l) hx2)) h3` as an intermediate fact. Use `this using 1` and compare the differences between its conclusion and the goal. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem polyDelta_supported_linear_mod (l : ℕ) [Fact l.Prime] (A : Type) [CommRing A] (D : Delta l A) (i : ℕ) :
     ∀ s ∈ MvPolynomial.supported A (Set.Iic i), (polyDelta D).δ s ∈ MvPolynomial.supported A (Set.Iic (i + 1)) ∧
       ∃ a ∈ MvPolynomial.supported A (Set.Iic i), ∃ b ∈ MvPolynomial.supported A (Set.Iic i),

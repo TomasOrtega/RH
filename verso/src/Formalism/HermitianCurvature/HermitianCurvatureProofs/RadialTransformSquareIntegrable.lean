@@ -16,6 +16,9 @@ variable {k r : ℕ} {z z' : Fin (2 * r + k + 1) → ℂ} {Wp Wq : Type} [Normed
 
 def wt0 (c' : Cf r 0) : ℂ := ((∏ l, ‖c' l‖ ^ (-2 : ℤ) : ℝ) : ℂ)
 
+/- English proof (translation)
+Unfold `wt0`. Establish `e : ∀ x : ℝ, x ^ (-2 : ℤ) = (x ^ 2)⁻¹` using `fun x => by rw [zpow_neg]; norm_cast`. Repeatedly rewrite using `[e]`. Conclude with `Complex.measurable_ofReal.comp (Finset.measurable_prod _ fun l _ => ((measurable_norm.comp (measurable_pi_apply l)).pow_const 2).inv)`.
+-/
 theorem level_zero_weight_measurable : Measurable (wt0 (r := r)) := by
   unfold wt0
   have e : ∀ x : ℝ, x ^ (-2 : ℤ) = (x ^ 2)⁻¹ := fun x => by rw [zpow_neg]; norm_cast
@@ -26,16 +29,25 @@ theorem level_zero_weight_measurable : Measurable (wt0 (r := r)) := by
 def LevelZeroSquareIntegrable (μ : Measure (Mt k r)) (u : RadSp k r z z' π π') (c : Fin r → ℂ) : Prop :=
   Integrable (fun c' : Cf r 0 => wt0 c' * pairAt μ u u (glue 0 c c'))
 
+/- English proof (translation)
+The claim follows from `(pair_measurable c u v).stronglyMeasurable.integral_prod_right'`.
+-/
 theorem pairAt_meas0 (μ : Measure (Mt k r)) [SFinite μ] (u v : RadSp k r z z' π π') (c : Fin r → ℂ) :
     StronglyMeasurable (fun c' : Cf r 0 => pairAt μ u v (glue 0 c c')) :=
   (pair_measurable c u v).stronglyMeasurable.integral_prod_right'
 
+/- English proof (translation)
+Unfold `B.hsInner`. Rewrite using `[inner_self_eq_norm_sq_to_K (𝕜 := ℂ) (B.hsVec A)]`. Use `push_cast`. Both sides reduce to the same expression.
+-/
 theorem hsInner_self_ofReal (A : Wq →L[ℂ] Wp) : B.hsInner A A = ((‖B.hsVec A‖ ^ 2 : ℝ) : ℂ) := by
   unfold B.hsInner
   rw [inner_self_eq_norm_sq_to_K (𝕜 := ℂ) (B.hsVec A)]
   push_cast
   rfl
 
+/- English proof (translation)
+Unfold `pairAt`. Repeatedly rewrite using `[hsInner_self_ofReal]`. Rewrite using `[integral_complex_ofReal, Complex.norm_real, Real.norm_of_nonneg (integral_nonneg fun g => by positivity)]`. Use `integral_congr_ae (Filter.Eventually.of_forall fun g => ?_)` and prove the remaining obligations. Simplify using `only [Complex.norm_real, Real.norm_of_nonneg (sq_nonneg _)]`.
+-/
 theorem norm_pairAt_self (μ : Measure (Mt k r)) (u : RadSp k r z z' π π') (c : Fin r → ℂ) :
     ‖pairAt μ u u c‖ = ∫ g : Mt k r, ‖B.hsInner ((u : Fn k r (Wq →L[ℂ] Wp)) c (Matrix.of g))
       ((u : Fn k r (Wq →L[ℂ] Wp)) c (Matrix.of g))‖ ∂μ := by
@@ -45,6 +57,9 @@ theorem norm_pairAt_self (μ : Measure (Mt k r)) (u : RadSp k r z z' π π') (c 
   refine integral_congr_ae (Filter.Eventually.of_forall fun g => ?_)
   simp only [Complex.norm_real, Real.norm_of_nonneg (sq_nonneg _)]
 
+/- English proof (translation)
+Rewrite using `[norm_pairAt_self, norm_pairAt_self]`. Unfold `pairAt`. Use `(norm_integral_le_integral_norm _).trans ?_` and prove the remaining obligations. Rewrite using `[← integral_add (int_lc μ hμ hu hu c).norm (int_lc μ hμ hv hv c).norm]`. Conclude with `integral_mono (int_lc μ hμ hu hv c).norm ((int_lc μ hμ hu hu c).norm.add (int_lc μ hμ hv hv c).norm) fun g => norm_hs_le _ _`.
+-/
 theorem norm_pairAt_le (μ : Measure (Mt k r)) (hμ : B.IsHaarOn (Glev k r (Fin.last r)) μ) {u v : RadSp k r z z' π π'}
     (hu : u ∈ lcSub k r z z' π π') (hv : v ∈ lcSub k r z z' π π') (c : Fin r → ℂ) :
     ‖pairAt μ u v c‖ ≤ ‖pairAt μ u u c‖ + ‖pairAt μ v v c‖ := by
@@ -55,6 +70,9 @@ theorem norm_pairAt_le (μ : Measure (Mt k r)) (hμ : B.IsHaarOn (Glev k r (Fin.
   exact integral_mono (int_lc μ hμ hu hv c).norm ((int_lc μ hμ hu hu c).norm.add (int_lc μ hμ hv hv c).norm)
     fun g => norm_hs_le _ _
 
+/- English proof (translation)
+Use `(Iu.norm.add Iv.norm).mono' (level_zero_weight_measurable.aestronglyMeasurable.mul (pairAt_meas0 μ u v c).aestronglyMeasurable) (Filter.Eventually.of_forall fun c' => ?_)` and prove the remaining obligations. Use `show ‖wt0 c' * pairAt μ u v (glue 0 c c')‖ ≤ ‖wt0 c' * pairAt μ u u (glue 0 c c')‖ + ‖wt0 c' * pairAt μ v v (glue 0 c c')‖`. Rewrite using `[norm_mul, norm_mul, norm_mul, ← mul_add]`. Conclude with `mul_le_mul_of_nonneg_left (norm_pairAt_le μ hμ hu hv _) (norm_nonneg _)`.
+-/
 theorem int_cross (μ : Measure (Mt k r)) [SFinite μ] (hμ : B.IsHaarOn (Glev k r (Fin.last r)) μ)
     {u v : RadSp k r z z' π π'} (hu : u ∈ lcSub k r z z' π π') (hv : v ∈ lcSub k r z z' π π') (c : Fin r → ℂ)
     (Iu : LevelZeroSquareIntegrable μ u c) (Iv : LevelZeroSquareIntegrable μ v c) :
@@ -67,11 +85,21 @@ theorem int_cross (μ : Measure (Mt k r)) [SFinite μ] (hμ : B.IsHaarOn (Glev k
   rw [norm_mul, norm_mul, norm_mul, ← mul_add]
   exact mul_le_mul_of_nonneg_left (norm_pairAt_le μ hμ hu hv _) (norm_nonneg _)
 
+/- English proof (translation)
+Unfold `pairAt`. Simplify using `[hsInner_zero_left]`.
+-/
 theorem pairAt_zero_zero (μ : Measure (Mt k r)) (c : Fin r → ℂ) :
     pairAt μ (0 : RadSp k r z z' π π') 0 c = 0 := by
   unfold pairAt
   simp [hsInner_zero_left]
 
+/- English proof (translation)
+Unfold `pairAt`. Establish `e : ∀ g : Mt k r, B.hsInner (((u + v : RadSp k r z z' π π') : Fn k r (Wq →L[ℂ] Wp)) c (Matrix.of g)) (((u + v : RadSp k r z z' π π') : Fn k r (Wq →L[ℂ] Wp)) c (Matrix.of g)) = B.hsInner ((u : Fn k r (Wq →L[ℂ] Wp)) c (Matrix.of g)) ((u : Fn k r (Wq →L[ℂ] Wp)) c (Matrix.of g)) + B. …`. Introduce `g`. Use `show B.hsInner ((u : Fn k r (Wq →L[ℂ] Wp)) c (Matrix.of g) + (v : Fn k r (Wq →L[ℂ] Wp)) c (Matrix.of g)) ((u : Fn k r (Wq →L[ℂ] Wp)) c (Matrix.of g) + (v : Fn k r (Wq →L[ℂ] Wp)) c (Matrix.of g)) = _`. Rewrite using `[Formalism.FourierDecayAlt.P.B6.hsInner_add_left, Formalism.FourierDecayAlt.P.B6.hsInner_add_right, Formalism.FourierDecayAlt.P.B6.hsInner_add_right]`.
+
+Expand and normalize the polynomial expressions, which then agree. Establish `e2 : (∫ g : Mt k r, B.hsInner (((u + v : RadSp k r z z' π π') : Fn k r (Wq →L[ℂ] Wp)) c (Matrix.of g)) (((u + v : RadSp k r z z' π π') : Fn k r (Wq →L[ℂ] Wp)) c (Matrix.of g)) ∂μ) = ∫ g, ((fun g : Mt k r => B.hsInner ((u : Fn k r (Wq →L[ℂ] Wp)) c (Matrix.of g)) ((u : Fn k r (Wq → …`. Use `congr 1`. Use function extensionality and compare the values at `g`. Rewrite using `[e g]`.
+
+Both sides reduce to the same expression. Rewrite using `[e2, integral_add' (((int_lc μ hμ hu hu c).add (int_lc μ hμ hu hv c)).add (int_lc μ hμ hv hu c)) (int_lc μ hμ hv hv c), integral_add' ((int_lc μ hμ hu hu c).add (int_lc μ hμ hu hv c)) (int_lc μ hμ hv hu c), integral_add' (int_lc μ hμ hu hu c) (int_lc μ hμ hu hv c)]`.
+-/
 theorem pairAt_add_add (μ : Measure (Mt k r)) (hμ : B.IsHaarOn (Glev k r (Fin.last r)) μ) {u v : RadSp k r z z' π π'}
     (hu : u ∈ lcSub k r z z' π π') (hv : v ∈ lcSub k r z z' π π') (c : Fin r → ℂ) :
     pairAt μ (u + v) (u + v) c = pairAt μ u u c + pairAt μ u v c + pairAt μ v u c + pairAt μ v v c := by
@@ -126,6 +154,13 @@ def squareIntegrableSmoothSubmoduleGL (μ : Measure (Mt k r)) [SFinite μ] (hμ 
     rw [e]
     exact (Iu c).const_mul _
 
+/- English proof (translation)
+Introduce and unpack `u ⟨hu, Iu⟩`. Use `⟨mul_lc hW u hu, fun c => ?_⟩` and prove the remaining obligations. Establish `e : ∀ c0, pairAt μ (W u) (W u) c0 = pairAt μ u u c0`. Introduce `c0`. Unfold `pairAt`.
+
+Use `integral_congr_ae (Filter.Eventually.of_forall fun g => ?_)` and prove the remaining obligations. Use `show B.hsInner ((W u : Fn k r (Wq →L[ℂ] Wp)) c0 (Matrix.of g)) ((W u : Fn k r (Wq →L[ℂ] Wp)) c0 (Matrix.of g)) = _`. Rewrite using `[hW u c0 (Matrix.of g), hsInner_smul_left', hsInner_smul_right', ← mul_assoc, Complex.mul_conj, Complex.normSq_eq_norm_sq, hm]`. Simplify using the standard rewrite rules. Unfold `LevelZeroSquareIntegrable`.
+
+Repeatedly rewrite using `[e]`. Conclude with `Iu c`.
+-/
 theorem unimodular_multiplier_preserves_L2 (μ : Measure (Mt k r)) [SFinite μ] (hμ : B.IsHaarOn (Glev k r (Fin.last r)) μ)
     {W : Module.End ℂ (RadSp k r z z' π π')} {m : (Fin r → ℂ) → Mx k r → ℂ} (hW : multiplicationOperator W m)
     (hm : ∀ c g, ‖m c g‖ = 1) : ∀ u ∈ squareIntegrableSmoothSubmoduleGL k r z z' π π' μ hμ, W u ∈ squareIntegrableSmoothSubmoduleGL k r z z' π π' μ hμ := by
@@ -143,6 +178,9 @@ theorem unimodular_multiplier_preserves_L2 (μ : Measure (Mt k r)) [SFinite μ] 
   simp_rw [e]
   exact Iu c
 
+/- English proof (translation)
+Unfold `fsv`. Rewrite using `[Complex.norm_exp]`. Establish `: (s * t - (starRingEnd ℂ) s * (starRingEnd ℂ) t).re = 0`. Rewrite using `[← map_mul, Complex.sub_re, Complex.conj_re, sub_self]`. Rewrite using `[this, Real.exp_zero]`.
+-/
 theorem norm_fsv (s t : ℂ) : ‖fsv s t‖ = 1 := by
   unfold fsv
   rw [Complex.norm_exp]
@@ -157,6 +195,9 @@ section Classes
 variable {Wp Wq : Type} [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp] [NormedAddCommGroup Wq]
   [InnerProductSpace ℂ Wq] [FiniteDimensional ℂ Wp] [FiniteDimensional ℂ Wq] {S : Type} [Fintype S] [DecidableEq S]
 
+/- English proof (translation)
+Use `⟨jfCptLocAll Wp Wq P z z' π π' D F Φ hP hz hz' hπ hπ' hF hΦ, fun c => ?_⟩` and prove the remaining obligations. Substitute `hz hz' hπ hπ'` using the available equality. Establish `h` using `level_zero_form_integrable_compact (S := Empty) D μ hμ (fun _ => F) (fun _ => F) (fun _ => Φ) (fun _ => Φ) (fun _ => hF.1.1) (fun _ => hF.1.1) (fun _ => hΦ) (fun _ => hΦ) c`. Unfold `LevelZeroSquareIntegrable`. Simplify `h` using `[wt0]`.
+-/
 theorem radial_transform_square_integrable (P : M.Par) (z z' : Fin (2 * P.r + P.k + 1) → ℂ) (π : Mx P.k P.r → (Wp →L[ℂ] Wp))
     (π' : Mx P.k P.r → (Wq →L[ℂ] Wq)) (μ : Measure (Mt P.k P.r)) [SFinite μ]
     (hμ : B.IsHaarOn (Glev P.k P.r (Fin.last P.r)) μ) (D : B.RealPlaceData P.k P.r Wp Wq) (hP : IsPlace P z z' π π')
@@ -170,6 +211,13 @@ theorem radial_transform_square_integrable (P : M.Par) (z z' : Fin (2 * P.r + P.
   unfold LevelZeroSquareIntegrable
   simpa [wt0] using h
 
+/- English proof (translation)
+Use `Submodule.span_le.mpr fun Φ hΦ => ?_` and prove the remaining obligations. Establish `key : ∀ (i : Fin (P.r + 1)) (Ψ : RadSp P.k P.r z z' π π'), HerGenC S P z z' π π' L st l0 D i Ψ → i = 0 → Ψ ∈ squareIntegrableSmoothSubmoduleGL P.k P.r z z' π π' μ hμ`. Introduce `i Ψ h`. Proceed by induction on `h with`. Consider the case `jf F Φ hF hΦ => exact fun _ => radial_transform_square_integrable P z z' π π' μ hμ D hP hz hz' hπ hπ' F hF Φ hΦ`.
+
+Consider the case `slice l w a b Φ _ _ _ => exact fun h => absurd h (Fin.succ_ne_zero l)`. Consider the case `waveC l w s Wv Wv' a b Φ _ h1 h2 _ ih`. Introduce `h`. Establish `hm : (Vw (mkP Wv Wv') s w : SlopeTestRemainingChoices S (Pr (RadSp P.k P.r z z' π π'))) ∈ entSub (presAlg (squareIntegrableSmoothSubmoduleGL P.k P.r z z' π π' μ hμ))` using `(entSub _).mul_mem (Formalism.FourierDecayAlt.P5.HerA.io_mem (show mkP Wv Wv' ∈ presAlg _ from ⟨unimodular_multiplier_preserves_L2 μ hμ h1 (fun c _ => norm_fsv _ _), unimodular_multiplier_preserves_L2 μ hμ h2 (fun c _ => norm_fsv _ _)⟩)) (UUiw_mem s w)`. Conclude with `(hm a b).1 Φ (ih h)`.
+
+Consider the case `waveZ w s Wv Wv' a b Φ _ h1 h2 _ ih`. Introduce `h`. Establish `hm : (Vw (mkP Wv Wv') s w : SlopeTestRemainingChoices S (Pr (RadSp P.k P.r z z' π π'))) ∈ entSub (presAlg (squareIntegrableSmoothSubmoduleGL P.k P.r z z' π π' μ hμ))` using `(entSub _).mul_mem (Formalism.FourierDecayAlt.P5.HerA.io_mem (show mkP Wv Wv' ∈ presAlg _ from ⟨unimodular_multiplier_preserves_L2 μ hμ h1 (fun _ _ => norm_fsv _ _), unimodular_multiplier_preserves_L2 μ hμ h2 (fun _ _ => norm_fsv _ _)⟩)) (UUiw_mem s w)`. Conclude with `(hm a b).1 Φ (ih h)`. Conclude with `key 0 Φ hΦ rfl`.
+-/
 theorem compact_kernel_le_L2 (P : M.Par) (z z' : Fin (2 * P.r + P.k + 1) → ℂ) (π : Mx P.k P.r → (Wp →L[ℂ] Wp))
     (π' : Mx P.k P.r → (Wq →L[ℂ] Wq)) (μ : Measure (Mt P.k P.r)) [SFinite μ]
     (hμ : B.IsHaarOn (Glev P.k P.r (Fin.last P.r)) μ) (L : R.LevelData (Pr (RadSp P.k P.r z z' π π')) P.r)

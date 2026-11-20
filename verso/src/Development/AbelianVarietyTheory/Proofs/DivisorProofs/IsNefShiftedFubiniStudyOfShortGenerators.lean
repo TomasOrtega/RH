@@ -18,6 +18,17 @@ open CategoryTheory AlgebraicGeometry
 
 namespace GlobalTheory.ImageModel
 
+/- English proof (translation)
+Introduce `k _ X p D hX L hL Z i _ _ _ hc hd`. Establish `hZ : GlobalTheory.IsArithVar (i ≫ p) 0` using `hX.of_isClosedImmersion i hc hd`. Take `⟨u, hu1, hu⟩` from `hL (i (genericPoint Z))`. Establish `hu' : genericPoint Z ∈ ReciprocityTheory.ChartRestriction.G.Out.nonzeroLocus (GlobalTheory.secPull u i)`. Rewrite using `[GlobalTheory.nonzeroLocus_secPull]`.
+
+Conclude with `hu`. Establish `h0 : ∀ σ (y : GlobalTheory.CxPts (i ≫ p) σ), y ∈ GlobalTheory.CxPts.ptsIn _ σ (ReciprocityTheory.ChartRestriction.G.Out.nonzeroLocus (GlobalTheory.secPull u i))` using `fun σ y => by`. Rewrite using `[GlobalTheory.CxPts.mem_ptsIn]`. Establish `e` using `hZ.under_eq_genericPoint y`. Simplify using `only [GlobalTheory.Cartier.under] at e`.
+
+Rewrite using `[e]`. Conclude with `hu'`. Use `⟨_, GlobalTheory.Cartier.isRatSec_ratOfSec _ hu', ?_⟩` and prove the remaining obligations. Rewrite using `[GlobalTheory.HermLB.curveDeg_sec (L := L) i _ hu' h0]`. Use `sub_nonneg.2 (le_trans ?_ (finsum_nonneg fun z => mul_nonneg (by exact_mod_cast GlobalTheory.Cartier.mult_divOfSec_nonneg z) (Real.log_natCast_nonneg _)))` and prove the remaining obligations.
+
+Rewrite using `[← neg_nonneg, ← finsum_neg_distrib]`. Use `finsum_nonneg fun σ => ?_` and prove the remaining obligations. Rewrite using `[← finsum_neg_distrib]`. Use `finsum_nonneg fun y => ?_` and prove the remaining obligations. Establish `h1` using `hu1 σ (GlobalTheory.Points.PtsOver.map i rfl _ y)`.
+
+Establish `h2` using `GlobalTheory.Weight.nsq_nonneg (L.φ σ) (GlobalTheory.CxPts.secVal _ σ u) (GlobalTheory.Points.PtsOver.map i rfl _ y)`. Establish `h3` using `Real.log_nonpos h2 h1`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem horizontal_of_small : ∀ (k : Type) [CommRing k] (X : AlgebraicGeometry.Scheme.{0}) (p : X ⟶ Sp k) (D : ℕ), GlobalTheory.IsArithVar p D → ∀ (L : GlobalTheory.HermLB p), (∀ x : X, ∃ u ∈ L.smallSec, x ∈ ReciprocityTheory.ChartRestriction.G.Out.nonzeroLocus u) → ∀ (Z : AlgebraicGeometry.Scheme.{0}) (i : Z ⟶ X) [AlgebraicGeometry.IsClosedImmersion i] [AlgebraicGeometry.IsIntegral Z] [AlgebraicGeometry.IsLocallyNoetherian Z], CharZero Γ(Z, ⊤) → topologicalKrullDim Z = 1 → ∃ (r : (L.restr i).B.ι → Z.functionFieldˣ) (hr : GlobalTheory.Cartier.IsRatSec (L.restr i).B r), 0 ≤ (L.restr i).curveDeg hr := by
   intro k _ X p D hX L hL Z i _ _ _ hc hd
   have hZ : GlobalTheory.IsArithVar (i ≫ p) 0 := hX.of_isClosedImmersion i hc hd
@@ -45,6 +56,13 @@ theorem horizontal_of_small : ∀ (k : Type) [CommRing k] (X : AlgebraicGeometry
   have h3 := Real.log_nonpos h2 h1
   linarith
 
+/- English proof (translation)
+Introduce `K V Ω _ _ _ _ _ _ _ _ Nm W ev D X _ p L ψ s n w abelian₂ t hM hev hS ht`. Establish `hw : ∀ j, w j ∈ W` using `fun j => (hS.gen _).2 (Submodule.subset_span ⟨j, rfl⟩)`. Establish `hX : GlobalTheory.IsArithVar p D` using `hM.arith`. Establish `hg` using `GlobalTheory.T.exists_nonzero_shortGenerator_section_imageModel K V Ω Nm W ev D X p L ψ s hM hev n w abelian₂ hS`. Establish `hs` using `GlobalTheory.T.shortGenerator_sections_small_shifted_fubiniStudy K V Ω Nm W ev D X p L ψ s hM hev n w abelian₂ t hS ht`.
+
+Use `⟨(GlobalTheory.T.imageModel_metrics_semiPositive K V Ω Nm W ev D X p L ψ s hM hev).shift _ _, ?_, ?_⟩` and prove the remaining obligations. Use `GlobalTheory.TrueGeo.OfLattice.nefFib_of_isGenerated hX _ (GlobalTheory.isGenerated_of_finite (fun j => s ⟨w j, hw j⟩) ?_)` and prove the remaining obligations. Use `top_le_iff.1 fun x _ => ?_` and prove the remaining obligations. Take `⟨j, hj, hx⟩` from `hg x`. Conclude with `TopologicalSpace.Opens.mem_iSup.2 ⟨j, hx⟩`.
+
+Introduce `Z i _ _ _ hc hd`. Conclude with `horizontal_of_small _ X p D hX _ (fun x => by`. Take `⟨j, hj, hx⟩` from `hg x`. Conclude with `⟨_, hs j hj, hx⟩) Z i hc hd`.
+-/
 theorem isNef_shift_of_isShortGen : ∀ (K V Ω : Type) [Field K] [NumberField K] [AddCommGroup V] [Module K V] [Module (𝓞 K) V] [IsScalarTower (𝓞 K) K V] [Field Ω] [Algebra K Ω] (Nm : (K →+* ℂ) → V → ℝ) (W : Submodule (𝓞 K) V) (ev : V →ₗ[K] Ω) (D : ℕ) (X : AlgebraicGeometry.Scheme.{0}) [AlgebraicGeometry.IsIntegral X] (p : X ⟶ Sp (𝓞 K)) (L : GlobalTheory.HermLB p) (ψ : Ω →+* X.functionField) (s : W → L.B.Sec) (n : ℕ) (w : Fin n → V) (abelian₂ t : ℝ), GlobalTheory.ImageModel.IsModelOf Nm W ev D p L ψ s → ev ≠ 0 → IsShortGen Nm W w abelian₂ → Real.log abelian₂ ≤ t → (L.shift (fun _ => t) (fun _ => rfl)).IsNef D := by
   intro K V Ω _ _ _ _ _ _ _ _ Nm W ev D X _ p L ψ s n w abelian₂ t hM hev hS ht
   have hw : ∀ j, w j ∈ W := fun j => (hS.gen _).2 (Submodule.subset_span ⟨j, rfl⟩)

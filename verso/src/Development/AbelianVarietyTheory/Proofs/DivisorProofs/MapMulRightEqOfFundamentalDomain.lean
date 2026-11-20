@@ -5,6 +5,15 @@ open scoped ENNReal NNReal
 
 namespace GlobalTheory.ConjModulus
 
+/- English proof (translation)
+Use `haveI : (ρ.map (· * x₀)).IsHaarMeasure := Measure.isHaarMeasure_map_mul_right ρ x₀`. Establish `hc` using `Measure.isMulLeftInvariant_eq_smul (ρ.map (· * x₀)) ρ`. Use `set c := Measure.haarScalarFactor (ρ.map (· * x₀)) ρ`. Establish `h' : IsFundamentalDomain Λ ((· * x₀) ⁻¹' 𝓡) ρ`. Use `h𝓡.preimage_of_equiv (quasiMeasurePreserving_mul_right ρ x₀) (e := id) Function.bijective_id ?_` and prove the remaining obligations.
+
+Introduce `g x`. Simplify using `only [id, Subgroup.smul_def, smul_eq_mul, mul_assoc]`. Establish `hm : ρ ((· * x₀) ⁻¹' 𝓡) = ρ 𝓡` using `h'.measure_eq h𝓡`. Establish `h0 : ρ 𝓡 ≠ 0` using `h𝓡.measure_ne_zero (NeZero.ne ρ)`. Establish `hmap : (ρ.map (· * x₀)) 𝓡 = ρ ((· * x₀) ⁻¹' 𝓡)` using `MeasurableEquiv.map_apply (MeasurableEquiv.mulRight x₀) 𝓡`.
+
+Establish `h1 : (c : ℝ≥0∞) * ρ 𝓡 = 1 * ρ 𝓡`. Combine the equalities or inequalities in the displayed calculation. Establish `hc1 : c = 1`. Use `(ENNReal.mul_left_inj h0 hfin).1 h1` as an intermediate fact. Conclude with `this` after adjusting the coercions.
+
+Rewrite using `[hc, hc1, one_smul]`.
+-/
 theorem map_mul_right_eq_of_fundamentalDomain {H : Type} [Group H] [TopologicalSpace H]
     [IsTopologicalGroup H] [LocallyCompactSpace H] [SecondCountableTopology H] [T2Space H]
     [MeasurableSpace H] [BorelSpace H] (Λ : Subgroup H) [Countable Λ] (ρ : Measure H)
@@ -48,6 +57,9 @@ def conjCME {H G : Type} [Group H] [Group G] [TopologicalSpace G] [IsTopological
   continuous_invFun := continuous_induced_rng.2
     ((continuous_const.mul continuous_subtype_val).mul continuous_const)
 
+/- English proof (translation)
+Use function extensionality and compare the values at `b`. Apply `Subtype.ext` to reduce the goal to its premises. Simplify using `[conjB, mul_assoc]`.
+-/
 theorem conjB_mul {H G : Type} [Group H] [Group G] (ι : H →* G) (B : Subgroup G)
     (hB : ∀ x : H, ∀ b ∈ B, ι x * b * (ι x)⁻¹ ∈ B) (x y : H) :
     conjB ι B hB (x * y) = conjB ι B hB x ∘ conjB ι B hB y := by
@@ -57,6 +69,49 @@ end GlobalTheory.ConjModulus
 
 namespace GlobalTheory.ConjModulus
 
+/- English proof (translation)
+Introduce `H _ _ _ _ _ _ _ _ G _ _ _ _ _ _ _ _ ι hι B hBc hB β hβ Λ _ ρ 𝓡 hρ h𝓡 hfin hΛ`. Use `haveI := hβ`. Use `haveI := hρ`. Use `haveI : LocallyCompactSpace B := hBc.locallyCompactSpace`. Use `haveI : SecondCountableTopology B := TopologicalSpace.Subtype.secondCountableTopology (B : Set G)`.
+
+Use `haveI : SigmaCompactSpace B := inferInstance`. Use `haveI : SigmaFinite β := inferInstance`. Establish `hΛ' : ∀ x ∈ Λ, β.map (conjB ι B hB x) = β` using `hΛ`. Use `show ∀ x : H, β.map (conjB ι B hB x) = β`. Establish `hφm : ∀ x, Measurable (conjB ι B hB x)` using `fun x => (conjCME ι B hB x).continuous.measurable`.
+
+Establish `hHaar : ∀ x, (β.map (conjB ι B hB x)).IsHaarMeasure` using `fun x => (conjCME ι B hB x).isHaarMeasure_map β`. Take `⟨d, hdβ⟩ : ∃ d : H → ℝ≥0, ∀ x, β.map (conjB ι B hB x) = d x • β` from `⟨fun x => Measure.haarScalarFactor (β.map (conjB ι B hB x)) β, fun x => by haveI := hHaar x; exact Measure.isMulLeftInvariant_eq_smul _ _⟩`. Take `⟨K, hKc, hK1⟩` from `exists_compact_mem_nhds (1 : B)`. Establish `hK0 : β K ≠ 0` using `(Measure.measure_pos_of_mem_nhds β hK1).ne'`. Establish `hKt : β K ≠ ⊤` using `hKc.measure_lt_top.ne`.
+
+Establish `hcancel : ∀ a b : ℝ≥0, a • β = b • β → a = b`. Introduce `a b h`. Establish `h2 : (a : ℝ≥0∞) * β K = (b : ℝ≥0∞) * β K`. Use `congrArg (fun m : Measure B => m K) h` as an intermediate fact. Simplify `this` using `[Measure.smul_apply]`.
+
+Conclude with `(ENNReal.mul_left_inj hK0 hKt).1 h2` after adjusting the coercions. Establish `hmul : ∀ x y, d (x * y) = d x * d y`. Introduce `x y`. Apply `hcancel` to reduce the goal to its premises. Rewrite using `[← hdβ, conjB_mul, ← Measure.map_map (hφm x) (hφm y), hdβ y, Measure.map_smul, hdβ x, smul_smul, mul_comm]`.
+
+Establish `hdΛ : ∀ x ∈ Λ, d x = 1`. Introduce `x hx`. Apply `hcancel` to reduce the goal to its premises. Rewrite using `[← hdβ, hΛ' x hx, one_smul]`. Establish `hpos : ∀ x, 0 < d x`.
+
+Introduce `x`. Rewrite using `[pos_iff_ne_zero]`. Introduce `h0`. Establish `h1` using `congrArg (fun m : Measure B => m Set.univ) (hdβ x)`. Simplify using `only [h0, zero_smul, Measure.coe_zero, Pi.zero_apply] at h1`.
+
+Rewrite `h1` using `[Measure.map_apply (hφm x) MeasurableSet.univ, Set.preimage_univ]`. Conclude with `(Measure.measure_univ_pos.2 (NeZero.ne β)).ne' h1`. Establish `hΦ : Continuous (fun p : H × B => conjB ι B hB p.1 p.2)` using `continuous_induced_rng.2 (((hι.comp continuous_fst).mul (continuous_subtype_val.comp continuous_snd)).mul (hι.comp continuous_fst).inv)`. Establish `hS : MeasurableSet ((fun p : H × B => conjB ι B hB p.1 p.2) ⁻¹' K)` using `(hKc.isClosed.preimage hΦ).measurableSet`. Establish `hDm : Measurable fun x => β (conjB ι B hB x ⁻¹' K)` using `measurable_measure_prodMk_left hS`.
+
+Establish `hdK : ∀ x, (d x : ℝ≥0∞) = β (conjB ι B hB x ⁻¹' K) / β K`. Introduce `x`. Rewrite using `[ENNReal.eq_div_iff hK0 hKt, ← Measure.map_apply (hφm x) hKc.isClosed.measurableSet, hdβ x]`. Simplify using `[Measure.smul_apply, mul_comm]`. Establish `hdm : Measurable d`.
+
+Apply `measurable_coe_nnreal_ennreal_iff.1` to reduce the goal to its premises. Repeatedly rewrite using `[hdK]`. Conclude with `hDm.div_const _`. Choose the witnesses or unpack the hypotheses as in `⟨g, hgm, hgs, hg1⟩ : ∃ g : ℝ≥0 → ℝ≥0∞, Measurable g ∧ (∀ a b : ℝ≥0, 0 < a → a < b → g a < g b) ∧ ∀ t, g t ≤ 1 := by`. Use `⟨fun t => ENNReal.ofReal ((t : ℝ) / (1 + t)), ?_, ?_, ?_⟩` and prove the remaining obligations.
+
+Conclude with `(measurable_coe_nnreal_real.div (measurable_const.add measurable_coe_nnreal_real)).ennreal_ofReal`. Introduce `a b ha hab`. Establish `ha' : (0 : ℝ) < a` using `ha`. Establish `hab' : (a : ℝ) < b` using `hab`. Establish `hb' : (0 : ℝ) < b` using `ha'.trans hab'`.
+
+Establish `hpos' : (0 : ℝ) < (b : ℝ) / (1 + b)` using `div_pos hb' (by linarith)`. Simplify using `only`. Rewrite using `[ENNReal.ofReal_lt_ofReal_iff hpos', div_lt_div_iff₀ (by linarith) (by linarith)]`. Use the polynomial consequences of the given equalities and inequalities. Introduce `t`.
+
+Apply `ENNReal.ofReal_le_one.2` to reduce the goal to its premises. Rewrite using `[div_le_one (by positivity)]`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hR : ∀ x₀ : H, ρ.map (· * x₀) = ρ` using `map_mul_right_eq_of_fundamentalDomain Λ ρ 𝓡 h𝓡 hfin`. Establish `hfΛ : ∀ (l : Λ) (z : H), g (d (l • z)) = g (d z)`.
+
+Introduce `l z`. Rewrite using `[Subgroup.smul_def, smul_eq_mul, hmul, hdΛ _ l.2, one_mul]`. Establish `hshift : ∀ x₀ : H, ∫⁻ z in 𝓡, g (d z) ∂ρ = ∫⁻ z in 𝓡, g (d z * d x₀) ∂ρ`. Introduce `x₀`. Establish `hmp : MeasurePreserving (· * x₀) ρ ρ` using `⟨measurable_mul_const x₀, hR x₀⟩`.
+
+Establish `hemb : MeasurableEmbedding (· * x₀ : H → H)` using `(MeasurableEquiv.mulRight x₀).measurableEmbedding`. Establish `h' : IsFundamentalDomain Λ ((· * x₀) '' 𝓡) ρ`. Rewrite using `[Set.image_mul_right]`. Use `h𝓡.preimage_of_equiv (quasiMeasurePreserving_mul_right ρ x₀⁻¹) (e := id) Function.bijective_id ?_` and prove the remaining obligations. Introduce `l y`.
+
+Simplify using `only [id, Subgroup.smul_def, smul_eq_mul, mul_assoc]`. Use `(h𝓡.setLIntegral_eq h' (fun z => g (d z)) hfΛ).trans (hmp.setLIntegral_comp_emb hemb (fun z => g (d z)) 𝓡).symm` as an intermediate fact. Simplify `this` using `[hmul]`. Establish `hne : ρ.restrict 𝓡 ≠ 0`. Rewrite using `[Ne, Measure.restrict_eq_zero]`.
+
+Conclude with `h𝓡.measure_ne_zero (NeZero.ne ρ)`. Establish `hfinI : ∀ c : ℝ≥0, ∫⁻ z in 𝓡, g (d z * c) ∂ρ ≠ ⊤`. Introduce `c`. Use `ne_top_of_le_ne_top (b := ∫⁻ _ in 𝓡, 1 ∂ρ) ?_ (lintegral_mono fun z => hg1 _)` and prove the remaining obligations. Rewrite using `[setLIntegral_const, one_mul]`.
+
+Conclude with `hfin`. Establish `hd1 : ∀ x, d x = 1`. Introduce `x₀`. Assume the negation of the conclusion as `hne1`. Establish `hsh` using `hshift x₀`.
+
+Break down `lt_or_gt_of_ne hne1 with hlt | hgt` into its components or cases. Establish `hlt' : ∫⁻ z in 𝓡, g (d z * d x₀) ∂ρ < ∫⁻ z in 𝓡, g (d z) ∂ρ`. Use `lintegral_strict_mono hne (hgm.comp hdm).aemeasurable (hfinI _) (Filter.Eventually.of_forall fun z => ?_)` and prove the remaining obligations. Conclude with `hgs _ _ (mul_pos (hpos z) (hpos x₀)) (mul_lt_of_lt_one_right (hpos z) hlt)`. Conclude with `hlt'.ne hsh.symm`.
+
+Establish `hlt' : ∫⁻ z in 𝓡, g (d z) ∂ρ < ∫⁻ z in 𝓡, g (d z * d x₀) ∂ρ`. Establish `h1` using `hfinI 1`. Simplify using `only [mul_one] at h1`. Use `lintegral_strict_mono hne ((hgm.comp (hdm.mul_const _))).aemeasurable h1 (Filter.Eventually.of_forall fun z => ?_)` and prove the remaining obligations. Conclude with `hgs _ _ (hpos z) (lt_mul_of_one_lt_right (hpos z) hgt)`.
+
+Conclude with `hlt'.ne hsh`. Introduce `x`. Rewrite using `[hdβ x, hd1 x, one_smul]`.
+-/
 theorem map_conj_eq_self_of_lattice : ∀ (H : Type) [Group H] [TopologicalSpace H] [IsTopologicalGroup H] [LocallyCompactSpace H] [SecondCountableTopology H] [T2Space H] [MeasurableSpace H] [BorelSpace H] (G : Type) [Group G] [TopologicalSpace G] [IsTopologicalGroup G] [LocallyCompactSpace G] [SecondCountableTopology G] [T2Space G] [MeasurableSpace G] [BorelSpace G] (ι : H →* G), Continuous ι → ∀ B : Subgroup G, IsClosed (B : Set G) →
     ∀ (hB : ∀ x : H, ∀ b ∈ B, ι x * b * (ι x)⁻¹ ∈ B) (β : Measure B), β.IsHaarMeasure →
     ∀ (Λ : Subgroup H) [Countable Λ] (ρ : Measure H) (𝓡 : Set H), ρ.IsHaarMeasure → IsFundamentalDomain Λ 𝓡 ρ → ρ 𝓡 ≠ ⊤ →

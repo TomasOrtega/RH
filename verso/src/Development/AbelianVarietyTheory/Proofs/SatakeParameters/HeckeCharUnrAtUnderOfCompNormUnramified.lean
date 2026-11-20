@@ -28,6 +28,15 @@ open scoped GroundTheory.Global.AdeleBaseChange GroundTheory.Global.SemiLocal
 namespace GlobalTheory.NormBelow
 open GlobalTheory.UnitaryHeckeBaseChange
 
+/- English proof (translation)
+Apply `Units.ext` to reduce the goal to its premises. Take `⟨z, hz⟩` from `(adeleEquiv (isCMExt_real E)).surjective (x : AdeleRing (𝓞 E) E)`. Establish `h : adeleNorm E (adeleEquiv (isCMExt_real E) z) = Algebra.norm _ z` using `congrArg (Algebra.norm _) ((adeleEquiv (isCMExt_real E)).symm_apply_apply z)`. Establish `h2 : ∀ z, toAdele (maximalRealSubfield E) E z = GroundTheory.Global.AdeleBaseChange.adeleTensorAlgEquivLeft (maximalRealSubfield E) E z`. Introduce `z`.
+
+Proceed by induction on `z using TensorProduct.induction_on with`. Consider the case `zero => rw [map_zero, map_zero]`. Consider the case `tmul a l`. Rewrite using `[toAdele_tmul, GroundTheory.Global.AdeleBaseChange.adeleTensorAlgEquivLeft_tmul]`. Conclude with `mul_comm _ _`.
+
+Consider the case `add a b ha hb => rw [map_add, map_add, ha, hb]`. Express the relevant statement in the definitionally equal form `adeleNorm E (x : AdeleRing (𝓞 E) E) = _`. Rewrite using `[GroundTheory.Global.coe_ideleNorm, ← hz, h]`. Establish `h3 : adeleEquiv (isCMExt_real E) z = _` using `h2 z`. Rewrite using `[h3]`.
+
+Conclude with `(Algebra.norm_eq_of_algEquiv _ _).symm`.
+-/
 theorem ideleNorm_eq_found (E : Type) [Field E] [NumberField E] [IsCMField E] (x : (AdeleRing (𝓞 E) E)ˣ) :
     ideleNorm E x = GroundTheory.Global.ideleNorm (maximalRealSubfield E) E x := by
   apply Units.ext
@@ -49,6 +58,9 @@ theorem ideleNorm_eq_found (E : Type) [Field E] [NumberField E] [IsCMField E] (x
   rw [h3]
   exact (Algebra.norm_eq_of_algEquiv _ _).symm
 
+/- English proof (translation)
+Rewrite using `[ideleNorm_eq_found]`. Conclude with `GroundTheory.Global.ideleNorm_finiteEmbedding (K := maximalRealSubfield E) w y`.
+-/
 theorem ideleNorm_localIdele (E : Type) [Field E] [NumberField E] [IsCMField E] (w : HeightOneSpectrum (𝓞 E))
     (y : (w.adicCompletion E)ˣ) :
     ideleNorm E (localIdele E w y) = localIdele (maximalRealSubfield E) (w.under (𝓞 (maximalRealSubfield E)))
@@ -61,6 +73,19 @@ end GlobalTheory.NormBelow
 namespace GlobalTheory.NormBelow
 open GlobalTheory.UnitaryHeckeBaseChange
 
+/- English proof (translation)
+Introduce `E _ _ _ χ w _ hur hχ x hx`. Establish `he : w.asIdeal.ramificationIdx (𝓞 (maximalRealSubfield E)) = 1` using `Ideal.ramificationIdx_eq_one w.asIdeal (𝓞 (maximalRealSubfield E))`. Use `haveI : w.asIdeal.LiesOver (w.under (𝓞 (maximalRealSubfield E))).asIdeal := ⟨rfl⟩`. Establish `hxm : x ∈ (Submonoid.ofClass ((w.under (𝓞 (maximalRealSubfield E))).adicCompletionIntegers (maximalRealSubfield E))).units`. Unfold `IsUnitAt at hx`.
+
+Use `(Submonoid.mem_units_iff _ _).2 ⟨?_, ?_⟩` and prove the remaining obligations. Conclude with `(HeightOneSpectrum.mem_adicCompletionIntegers _ _ _).2 hx.le`. Use `(HeightOneSpectrum.mem_adicCompletionIntegers _ _ _).2 ?_` and prove the remaining obligations. Rewrite using `[Units.val_inv_eq_inv_val, map_inv₀, hx, inv_one]`. Take `⟨y, hy, hyn⟩` from `GroundTheory.Global.IdeleNorm.exists_norm_eq_of_ramificationIdx_eq_one _ w he hxm`.
+
+Establish `hyu : IsUnitAt w y`. Take `⟨h1, h2⟩` from `(Submonoid.mem_units_iff _ _).1 hy`. Establish `h1'` using `(HeightOneSpectrum.mem_adicCompletionIntegers _ _ _).1 h1`. Establish `h2'` using `(HeightOneSpectrum.mem_adicCompletionIntegers _ _ _).1 h2`. Unfold `IsUnitAt`.
+
+Use `le_antisymm h1' ?_` and prove the remaining obligations. Establish `e : Valued.v (y : w.adicCompletion E) * Valued.v ((y⁻¹ : (w.adicCompletion E)ˣ) : w.adicCompletion E) = 1`. Rewrite using `[← map_mul, Units.mul_inv, map_one]`. Combine the equalities or inequalities in the displayed calculation. Establish `key : χ.loc (w.under (𝓞 (maximalRealSubfield E))) x = (compNorm E χ).loc w y` using `by show χ.1 (localIdele _ _ x) = χ.1 (ideleNorm E (localIdele E w y))`.
+
+Rewrite using `[ideleNorm_localIdele]`. Use `congr 2`. Apply `Units.ext` to reduce the goal to its premises. Rewrite using `[GroundTheory.LocalField.coe_normUnits]`. Conclude with `hyn.symm`.
+
+Rewrite using `[key]`. Conclude with `hχ y hyu`.
+-/
 theorem unrAt_under_of_compNorm : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E]
     (χ : HChar (maximalRealSubfield E)) (w : HeightOneSpectrum (𝓞 E)), ¬ GlobalTheory.UnitaryBC.IsSplitAt w →
     Algebra.IsUnramifiedAt (𝓞 (maximalRealSubfield E)) w.asIdeal → (compNorm E χ).UnrAt w →

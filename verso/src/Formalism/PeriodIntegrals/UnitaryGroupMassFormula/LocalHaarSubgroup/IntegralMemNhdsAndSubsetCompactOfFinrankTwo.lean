@@ -12,6 +12,35 @@ section None
 variable {K V : Type*} [Field K] [ValuativeRel K] [TopologicalSpace K] [IsNonarchimedeanLocalField K]
   [CharZero K] [CommRing V] [Algebra K V]
 
+/- English proof (translation)
+Choose the witnesses or unpack the hypotheses as in `⟨hxi, hx'⟩ : IsIntegral 𝒪[K] (algebraMap K V a + algebraMap K V b * θ) ∧ IsIntegral 𝒪[K] (algebraMap K V a - algebraMap K V b * θ) := by`. Use `⟨hx, ?_⟩` and prove the remaining obligations. Distinguish the cases in `hb : b = 0`. Substitute `hb` using the available equality. Simplify using `using hx`.
+
+Take `⟨p, hpm, hp⟩` from `hx`. Establish `hqm : ((X - C a) ^ 2 - C (b ^ 2 * d) : K[X]).Monic` using `by monicity!`. Establish `hqd : ((X - C a) ^ 2 - C (b ^ 2 * d) : K[X]).natDegree = 2` using `by compute_degree!`. Establish `hQx : ∀ y : V, (y - algebraMap K V a) ^ 2 = algebraMap K V (b ^ 2 * d) → aeval y ((X - C a) ^ 2 - C (b ^ 2 * d) : K[X]) = 0`. Introduce `y hy`.
+
+Simplify using `only [map_sub, map_pow, aeval_X, aeval_C, hy, sub_self]`. Generalize the expression as in `((X - C a) ^ 2 - C (b ^ 2 * d) : K[X]) = Q at hqm hqd hQx`. Establish `e : ∀ y : V, aeval y (p.map (algebraMap 𝒪[K] K)) = eval₂ (algebraMap 𝒪[K] V) y p` using `fun y => by rw [aeval_map_algebraMap, aeval_def]`. Generalize the expression as in `p.map (algebraMap 𝒪[K] K) = P at e`. Establish `key : ∀ y : V, aeval y Q = 0 → aeval y P = aeval y (P %ₘ Q)`.
+
+Introduce `y hy`. Use `conv_lhs => rw [← modByMonic_add_div P Q]`. Simplify using `[hy]`. Establish `hQ1 : Q ≠ 1`. Introduce and unpack `rfl`.
+
+Simplify using `at hqd`. Establish `hrd : (P %ₘ Q).natDegree ≤ 1`. Use `natDegree_modByMonic_lt P hqm hQ1` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Generalize the expression as in `P %ₘ Q = r at key hrd`.
+
+Establish `hr` using `eq_X_add_C_of_natDegree_le_one hrd`. Establish `hx1 : (algebraMap K V a + algebraMap K V b * θ - algebraMap K V a) ^ 2 = algebraMap K V (b ^ 2 * d)`. Rewrite using `[map_mul, map_pow, ← hθ]`. Expand and normalize the polynomial expressions, which then agree. Establish `hx2 : (algebraMap K V a - algebraMap K V b * θ - algebraMap K V a) ^ 2 = algebraMap K V (b ^ 2 * d)`.
+
+Rewrite using `[map_mul, map_pow, ← hθ]`. Expand and normalize the polynomial expressions, which then agree. Establish `hrx : aeval (algebraMap K V a + algebraMap K V b * θ) r = 0`. Rewrite using `[← key _ (hQx _ hx1), e]`. Conclude with `hp`.
+
+Rewrite `hrx` using `[hr]`. Simplify using `only [map_add, map_mul, aeval_X, aeval_C] at hrx`. Establish `hw : r.coeff 1 = 0`. Assume the negation of the conclusion as `hw`. Apply `hθr` to reduce the goal to its premises.
+
+Establish `hwb : r.coeff 1 * b ≠ 0` using `mul_ne_zero hw hb`. Establish `hinv : algebraMap K V (r.coeff 1 * b)⁻¹ * (algebraMap K V (r.coeff 1) * algebraMap K V b) = 1`. Rewrite using `[← map_mul, ← map_mul, inv_mul_cancel₀ hwb, map_one]`. Use `⟨-(r.coeff 1 * a + r.coeff 0) * (r.coeff 1 * b)⁻¹, ?_⟩` and prove the remaining obligations. Rewrite using `[map_mul, map_neg, map_add, map_mul]`.
+
+Take the linear combination `(-(algebraMap K V (r.coeff 1 * b)⁻¹)) * hrx + θ * hinv`. Establish `hu : r.coeff 0 = 0`. Rewrite `hrx` using `[hw]`. Apply `(algebraMap K V).injective` to reduce the goal to its premises. Simplify using `using hrx`.
+
+Use `⟨p, hpm, ?_⟩` and prove the remaining obligations. Rewrite using `[← e, key _ (hQx _ hx2), hr, hw, hu]`. Simplify using the standard rewrite rules. Establish `hθi : IsIntegral 𝒪[K] θ`. Use `IsIntegral.of_pow (n := 2) (by norm_num) ?_` and prove the remaining obligations.
+
+Rewrite using `[pow_two, hθ]`. Conclude with `integral_V_of_memO hdO`. Establish `hA : algebraMap K V (2 * a) = (algebraMap K V a + algebraMap K V b * θ) + (algebraMap K V a - algebraMap K V b * θ)`. Rewrite using `[map_mul, map_ofNat]`. Expand and normalize the polynomial expressions, which then agree.
+
+Establish `hB : algebraMap K V (2 * b * d) = (algebraMap K V a + algebraMap K V b * θ) * θ + (algebraMap K V a - algebraMap K V b * θ) * (-θ)`. Rewrite using `[map_mul, map_mul, map_ofNat]`. Take the linear combination `(-2 * algebraMap K V b) * hθ`. Use `⟨memO_of_integral_V (V := V) ?_, memO_of_integral_V (V := V) ?_⟩` and prove the remaining obligations. Rewrite using `[hA]`.
+
+Conclude with `hxi.add hx'`. Rewrite using `[hB]`. Conclude with `(hxi.mul hθi).add (hx'.mul hθi.neg)`.
+-/
 theorem key_bound [Nontrivial V] [Module.Finite K V] {θ : V} {d : K}
     (hθr : θ ∉ (algebraMap K V).range) (hθ : θ * θ = algebraMap K V d) (hdO : d ∈ 𝒪[K])
     {a b : K} (hx : IsIntegral 𝒪[K] (algebraMap K V a + algebraMap K V b * θ)) :
@@ -88,6 +117,29 @@ theorem key_bound [Nontrivial V] [Module.Finite K V] {θ : V} {d : K}
   · rw [hA]; exact hxi.add hx'
   · rw [hB]; exact (hxi.mul hθi).add (hx'.mul hθi.neg)
 
+/- English proof (translation)
+Take `⟨θ, d, hθr, hθ, hd0, hdO⟩` from `exists_sq (K := K) (V := V) hr`. Use `haveI : Module.Finite K V := Module.finite_of_finrank_pos (by rw [hr]; norm_num)`. Use `haveI : Nontrivial V := Module.nontrivial_of_finrank_pos (R := K) (by rw [hr]; norm_num)`. Establish `hθi : IsIntegral 𝒪[K] θ`. Use `IsIntegral.of_pow (n := 2) (by norm_num) ?_` and prove the remaining obligations.
+
+Rewrite using `[pow_two, hθ]`. Conclude with `integral_V_of_memO hdO`. Set `L : K × K →ₗ[K] V` to `(LinearMap.fst K K K).smulRight (1 : V) + (LinearMap.snd K K K).smulRight θ`. Establish `hL : ∀ p : K × K, L p = algebraMap K V p.1 + algebraMap K V p.2 * θ`. Introduce `p`.
+
+Simplify using `[L, Algebra.smul_def]`. Establish `hinj : Function.Injective L`. Rewrite using `[← LinearMap.ker_eq_bot, LinearMap.ker_eq_bot']`. Introduce `p hp`. Rewrite `hp` using `[hL]`.
+
+Establish `hb : p.2 = 0`. Assume the negation of the conclusion as `hb`. Apply `hθr` to reduce the goal to its premises. Use `⟨-p.1 * p.2⁻¹, ?_⟩` and prove the remaining obligations. Establish `hinv : algebraMap K V p.2⁻¹ * algebraMap K V p.2 = 1`.
+
+Rewrite using `[← map_mul, inv_mul_cancel₀ hb, map_one]`. Rewrite using `[map_mul, map_neg]`. Take the linear combination `(-(algebraMap K V p.2⁻¹)) * hp + θ * hinv`. Establish `ha : p.1 = 0`. Rewrite `hp` using `[hb]`.
+
+Apply `(algebraMap K V).injective` to reduce the goal to its premises. Simplify using `using hp`. Conclude with `Prod.ext ha hb`. Establish `hsurj : Function.Surjective L`. Establish `: Module.finrank K (K × K) = Module.finrank K V`.
+
+Rewrite using `[Module.finrank_prod, Module.finrank_self, hr]`. Conclude with `(LinearMap.injective_iff_surjective_of_finrank_eq_finrank this).mp hinj`. Take `⟨e, he⟩ : ∃ e : (K × K) ≃ₗ[K] V, ∀ p, e p = algebraMap K V p.1 + algebraMap K V p.2 * θ` from `⟨LinearEquiv.ofBijective L (show Function.Bijective L from ⟨hinj, hsurj⟩), fun p => hL p⟩`. Use `haveI : ContinuousAdd V := IsModuleTopology.toContinuousAdd (R := K) (A := V)`. Use `haveI : ContinuousSMul K V := IsModuleTopology.toContinuousSMul (R := K) (A := V)`.
+
+Take `⟨h, hh⟩ : ∃ h : K × K ≃ₜ V, ∀ p, h p = e p` from `⟨{ toEquiv := e.toEquiv continuous_toFun := IsModuleTopology.continuous_of_linearMap e.toLinearMap continuous_invFun := IsModuleTopology.continuous_of_linearMap e.symm.toLinearMap }, fun _ => rfl⟩`. Use `⟨h, ?_, ?_⟩` and prove the remaining obligations. Establish `hsub : h '' ((𝒪[K] : Set K) ×ˢ (𝒪[K] : Set K)) ⊆ (O : Set V)`. Introduce and unpack `_ ⟨p, ⟨hp1, hp2⟩, rfl⟩`. Use `show h p ∈ O`.
+
+Rewrite using `[hO, hh, he]`. Conclude with `(integral_V_of_memO hp1).add ((integral_V_of_memO hp2).mul hθi)`. Establish `hopen : IsOpen (h '' ((𝒪[K] : Set K) ×ˢ (𝒪[K] : Set K)))` using `h.isOpenMap _ ((isOpen_integer' (K := K)).prod (isOpen_integer' (K := K)))`. Establish `h0 : (0 : V) ∈ h '' ((𝒪[K] : Set K) ×ˢ (𝒪[K] : Set K))` using `⟨(0, 0), ⟨Subring.zero_mem _, Subring.zero_mem _⟩, by rw [hh]; exact map_zero e⟩`. Conclude with `Filter.mem_of_superset (hopen.mem_nhds h0) hsub`.
+
+Use `⟨h '' ((fun q : K × K => (q.1 * 2⁻¹, q.2 * (2 * d)⁻¹)) '' ((𝒪[K] : Set K) ×ˢ (𝒪[K] : Set K))), ?_, ?_⟩` and prove the remaining obligations. Conclude with `(((isCompact_integer (K := K)).prod (isCompact_integer (K := K))).image (by fun_prop)).image h.continuous`. Introduce `x hx`. Establish `hpx : h (h.symm x) = x` using `h.apply_symm_apply x`. Establish `hint : IsIntegral 𝒪[K] (algebraMap K V (h.symm x).1 + algebraMap K V (h.symm x).2 * θ)`.
+
+Rewrite using `[← he, ← hh, hpx]`. Conclude with `(hO x).mp hx`. Take `⟨h1, h2⟩` from `key_bound hθr hθ hdO hint`. Use `⟨h.symm x, ⟨(2 * (h.symm x).1, 2 * (h.symm x).2 * d), ⟨h1, h2⟩, ?_⟩, hpx⟩` and prove the remaining obligations. Apply the tactic sequence `refine Prod.ext ?_ ?_ <;> dsimp only <;> first | (field_simp; done) | (field_simp; ring)`.
+-/
 theorem integral_mem_nhds_and_subset_compact_of_finrank_two [Module.Free K V] (hr : Module.finrank K V = 2) [IsReduced V]
     [TopologicalSpace V] [IsModuleTopology K V]
     (O : Subring V) (hO : ∀ x, x ∈ O ↔ IsIntegral 𝒪[K] x) :

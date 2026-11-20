@@ -34,6 +34,9 @@ structure QOpen (q : QLoc hc n Q Θ) : Prop where
 
 variable (q : QLoc hc n Q Θ) (H : Subgroup (GLG E n SG))
 
+/- English proof (translation)
+Unfold `levUQ`. Rewrite using `[Subgroup.mem_inf]`. Simplify using `only [Subgroup.mem_iInf, Subgroup.mem_comap]`. Both sides reduce to the same expression.
+-/
 theorem mem_levUQ {x : GL (Fin n) 𝒜} :
     x ∈ levUQ hc n ST SG Q H q ↔ x ∈ levU hc n ST SG H ∧ ∀ P : Q, q.at P x ∈ q.U P := by
   unfold levUQ
@@ -41,6 +44,9 @@ theorem mem_levUQ {x : GL (Fin n) 𝒜} :
   simp only [Subgroup.mem_iInf, Subgroup.mem_comap]
   rfl
 
+/- English proof (translation)
+The claim follows from `inf_le_left`.
+-/
 theorem levUQ_le : levUQ hc n ST SG Q H q ≤ levU hc n ST SG H := inf_le_left
 
 def lqRes (P : Q) : levUQ hc n ST SG Q H q →* q.U P where
@@ -62,6 +68,9 @@ variable (ST) in
 def qUloc (v : HeightOneSpectrum (𝓞 F)) : Subgroup (GL (Fin n) (E ⊗[F] v.adicCompletion F)) :=
   levLoc hc n ST SG H v ⊓ ⨅ (P : Q) (h : qv F P.1 = v), h ▸ (q.U P).comap (qFst q P)
 
+/- English proof (translation)
+Unfold `qUloc`. Rewrite using `[Subgroup.mem_inf]`. Simplify using `only [Subgroup.mem_iInf]`.
+-/
 theorem mem_qUloc (v : HeightOneSpectrum (𝓞 F)) (x : GL (Fin n) (E ⊗[F] v.adicCompletion F)) :
     x ∈ qUloc ST q H v ↔ x ∈ levLoc hc n ST SG H v ∧ ∀ (P : Q) (h : qv F P.1 = v), x ∈ h ▸ (q.U P).comap (qFst q P) := by
   unfold qUloc
@@ -72,6 +81,23 @@ section Top
 
 attribute [local instance] rlt_top rlt_topRing adeles_t2Space
 
+/- English proof (translation)
+Take `⟨a1, ha10, ha1⟩` from `hQ.glob`. Take `⟨a0, ha00, ha0⟩` from `rlt_exists_a (ST ∪ SG)`. Use `set a : 𝓞 E := a1 * a0 with ha_def`. Establish `ha0' : (algebraMap (𝓞 E) E a) ≠ 0`. Rewrite using `[ha_def, map_mul]`.
+
+Conclude with `mul_ne_zero (by simpa using ha10) (by simpa using ha00)`. Use `set c : 𝒜 := iA F E (algebraMap (𝓞 E) E a)⁻¹ with hc'`. Establish `hca : iA F E (algebraMap (𝓞 E) E a) * c = 1`. Rewrite using `[hc', ← map_mul, mul_inv_cancel₀ ha0', map_one]`. Set `W : Set (GL (Fin n) 𝒜)` to `{u | ∀ i j, c * ((u : Matrix (Fin n) (Fin n) 𝒜) i j - (1 : Matrix (Fin n) (Fin n) 𝒜) i j) ∈ Formalism.L2.Herm.intAf F E}`.
+
+Establish `hWo : IsOpen W`. Establish `: W = ⋂ i, ⋂ j, (fun u : GL (Fin n) 𝒜 => c * ((u : Matrix (Fin n) (Fin n) 𝒜) i j - (1 : Matrix (Fin n) (Fin n) 𝒜) i j)) ⁻¹' (Formalism.L2.Herm.intAf F E : Set 𝒜)`. Use extensionality with `u`. Simplify using `[W]`. Rewrite using `[this]`.
+
+Use `isOpen_iInter_of_finite fun i => isOpen_iInter_of_finite fun j => rlt_isOpen_intAf.preimage ?_` and prove the remaining obligations. Conclude with `continuous_const.mul ((Units.continuous_val.matrix_elem i j).sub continuous_const)`. Establish `hW1 : (1 : GL (Fin n) 𝒜) ∈ W`. Introduce `i j`. Simplify using the standard rewrite rules.
+
+Establish `hsub : ∀ u ∈ UAd hc n, u ∈ W → u ∈ levUQ hc n ST SG Q H q`. Introduce `u hu hW`. Establish `hs : ∀ i j, (u : Matrix (Fin n) (Fin n) 𝒜) i j = (1 : Matrix (Fin n) (Fin n) 𝒜) i j + iA F E (algebraMap (𝓞 E) E a) * (⟨_, hW i j⟩ : Formalism.L2.Herm.intAf F E)`. Introduce `i j`. Use `show _ = _ + iA F E (algebraMap (𝓞 E) E a) * (c * _)`.
+
+Rewrite using `[← mul_assoc, hca, one_mul]`. Expand and normalize the polynomial expressions, which then agree. Use `(mem_levUQ q H).2 ⟨kOne_le_unipotentLevel hc n ST SG H (mem_kOne_of_congruent_one hc n ST SG a (fun P hP => Ideal.mul_mem_left _ _ (ha0 P (Finset.mem_union_left _ hP))) (fun P hP => Ideal.mul_mem_left _ _ (ha0 P (Finset.mem_union_right _ hP))) hu (fun i j => ⟨_, hW i j⟩) hs), ?_⟩` and prove the remaining obligations. Use `ha1 u hu (fun i j => Formalism.L2.DIV.oToS F E a0 * ⟨_, hW i j⟩) (fun i j => ?_)` and prove the remaining obligations. Use `(hs i j).trans ?_` and prove the remaining obligations.
+
+Establish `e : (iA F E (algebraMap (𝓞 E) E a) : 𝒜) = iA F E (algebraMap (𝓞 E) E a1) * ((Formalism.L2.DIV.oToS F E a0 : Formalism.L2.Herm.intAf F E) : 𝒜)`. Rewrite using `[ha_def, map_mul, map_mul]`. Both sides reduce to the same expression. Use `show _ = _ + _ * (((Formalism.L2.DIV.oToS F E a0 : Formalism.L2.Herm.intAf F E) : 𝒜) * _)`. Rewrite using `[e, mul_assoc]`.
+
+Establish `hnh : (((levUQ hc n ST SG Q H q).subgroupOf (UAd hc n) : Subgroup (UAd hc n)) : Set (UAd hc n)) ∈ nhds (1 : UAd hc n)`. Use `Filter.mem_of_superset ((hWo.preimage continuous_subtype_val).mem_nhds hW1) ?_` and prove the remaining obligations. Introduce `x hx`. Conclude with `hsub x.1 x.2 hx`. Conclude with `Subgroup.isOpen_of_mem_nhds _ hnh`.
+-/
 theorem lq_open (hQ : QOpen q) : IsOpen {x : UAd hc n | (x : GL (Fin n) 𝒜) ∈ levUQ hc n ST SG Q H q} := by
   classical
   obtain ⟨a1, ha10, ha1⟩ := hQ.glob
@@ -120,6 +146,13 @@ theorem lq_open (hQ : QOpen q) : IsOpen {x : UAd hc n | (x : GL (Fin n) 𝒜) �
     exact hsub x.1 x.2 hx
   exact Subgroup.isOpen_of_mem_nhds _ hnh
 
+/- English proof (translation)
+Establish `hcl : IsClosed (((levUQ hc n ST SG Q H q).subgroupOf (UAd hc n) : Subgroup (UAd hc n)) : Set (UAd hc n))` using `Subgroup.isClosed_of_isOpen _ (lq_open q H hQ)`. Establish `hUA : levUQ hc n ST SG Q H q ≤ UAd hc n` using `(levUQ_le q H).trans (levU_le_UAd hc n ST SG H)`. Establish `himg : (levUQ hc n ST SG Q H q : Set (GL (Fin n) 𝒜)) = Subtype.val '' (((levUQ hc n ST SG Q H q).subgroupOf (UAd hc n) : Subgroup (UAd hc n)) : Set (UAd hc n))`. Use extensionality with `u`. Prove the components needed by the constructor for the conclusion.
+
+Introduce `hu`. Conclude with `⟨⟨u, hUA hu⟩, hu, rfl⟩`. Introduce and unpack `⟨x, hx, rfl⟩`. Conclude with `hx`. Establish `hclosed : IsClosed (levUQ hc n ST SG Q H q : Set (GL (Fin n) 𝒜))`.
+
+Rewrite using `[himg]`. Conclude with `(rlt_isClosed_UAd hc n).isClosedEmbedding_subtypeVal.isClosedMap _ hcl`. Conclude with `(levU_compact hc n ST SG H).of_isClosed_subset hclosed (levUQ_le q H)`.
+-/
 theorem lq_compact (hQ : QOpen q) : IsCompact (levUQ hc n ST SG Q H q : Set (GL (Fin n) 𝒜)) := by
   have hcl : IsClosed (((levUQ hc n ST SG Q H q).subgroupOf (UAd hc n) : Subgroup (UAd hc n)) : Set (UAd hc n)) :=
     Subgroup.isClosed_of_isOpen _ (lq_open q H hQ)
@@ -147,6 +180,9 @@ def badQ' (SG Q : Finset (Pl E)) : Set (HeightOneSpectrum (𝓞 F)) := plUnder F
 
 variable (q : QLoc hc n Q Θ)
 
+/- English proof (translation)
+Apply `le_antisymm` to reduce the goal to its premises. Introduce `x hx`. Conclude with `((mem_qUloc q _ v x).1 hx).1`. Introduce `x hx`. Conclude with `(mem_qUloc q _ v x).2 ⟨hx, fun P h => absurd h (hv P)⟩`.
+-/
 theorem qUloc_of_not (v : HeightOneSpectrum (𝓞 F)) (hv : ∀ P : Q, qv F P.1 ≠ v) :
     qUloc ST q (Subgroup.pi Set.univ Hw) v = levLoc hc n ST SG (Subgroup.pi Set.univ Hw) v := by
   apply le_antisymm
@@ -155,6 +191,11 @@ theorem qUloc_of_not (v : HeightOneSpectrum (𝓞 F)) (hv : ∀ P : Q, qv F P.1 
   · intro x hx
     exact (mem_qUloc q _ v x).2 ⟨hx, fun P h => absurd h (hv P)⟩
 
+/- English proof (translation)
+Rewrite using `[mem_levUQ, levU_eq_prod hc n ST SG Hw x]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨⟨hU, hloc⟩, hQ⟩`. Use `⟨hU, fun v => (mem_qUloc q _ v _).2 ⟨hloc v, fun P h => ?_⟩⟩` and prove the remaining obligations. Substitute `h` using the available equality.
+
+Conclude with `hQ P`. Introduce and unpack `⟨hU, hloc⟩`. Use `⟨⟨hU, fun v => ((mem_qUloc q _ v _).1 (hloc v)).1⟩, fun P => ?_⟩` and prove the remaining obligations. Conclude with `((mem_qUloc q _ _ _).1 (hloc (qv F P.1))).2 P rfl`.
+-/
 theorem levUQ_eq_prod (x : GL (Fin n) 𝒜) :
     x ∈ levUQ hc n ST SG Q (Subgroup.pi Set.univ Hw) q ↔
       x ∈ UPts hc.sig (1 : Matrix (Fin n) (Fin n) E) (FiniteAdeleRing (𝓞 F) F) ∧
@@ -223,6 +264,9 @@ def stepOfQ (hB : BasePi ST π) (hTπ : π * cO E π = (T : 𝓞 E)) (hST : ∀ 
     show levTyp lam (Subgroup.inclusion (levUQ_le q _) x) * (chiQ q _ σ₀ x)⁻¹ = 1
     rw [h1, h2, inv_one, one_mul]
 
+/- English proof (translation)
+Unfold `chiQ`. Rewrite using `[MonoidHom.finsetProd_apply, ← Finset.prod_pow]`. Use `Finset.prod_eq_one fun P _ => ?_` and prove the remaining obligations. Take `⟨M', hM'⟩` from `hM P`. Rewrite using `[hM', pow_mul, MonoidHom.comp_apply, MonoidHom.comp_apply, ← map_pow, h2, map_one, one_pow]`.
+-/
 theorem chiQ_pow_eq_one (σ₀ : K →+* ℂ) (x : levUQ hc n ST SG Q (Subgroup.pi Set.univ Hw) q) (m2 : Q → ℕ)
     (h2 : ∀ (P : Q) (k : q.U P), q.chr P k ^ m2 P = 1) (M : ℕ) (hM : ∀ P : Q, m2 P ∣ M) : chiQ q _ σ₀ x ^ M = 1 := by
   unfold chiQ
@@ -231,6 +275,11 @@ theorem chiQ_pow_eq_one (σ₀ : K →+* ℂ) (x : levUQ hc n ST SG Q (Subgroup.
   obtain ⟨M', hM'⟩ := hM P
   rw [hM', pow_mul, MonoidHom.comp_apply, MonoidHom.comp_apply, ← map_pow, h2, map_one, one_pow]
 
+/- English proof (translation)
+Unfold `chiQ`. Rewrite using `[MonoidHom.finsetProd_apply]`. Use `Finset.prod_eq_one fun P _ => ?_` and prove the remaining obligations. Establish `hx : lqRes q (Subgroup.pi Set.univ Hw) P x = 1` using `by ext1 show q.at P x.1 = 1`. Simplify using `only [QLoc.at]`.
+
+Rewrite using `[h1 P, map_one]`. Simplify using `only [MonoidHom.comp_apply, hx, map_one]`.
+-/
 theorem chiQ_eq_one_of (σ₀ : K →+* ℂ) (x : levUQ hc n ST SG Q (Subgroup.pi Set.univ Hw) q)
     (h1 : ∀ P : Q, bc (prV (E := E) (qv F P.1)) x.1 = 1) : chiQ q _ σ₀ x = 1 := by
   unfold chiQ
@@ -243,6 +292,11 @@ theorem chiQ_eq_one_of (σ₀ : K →+* ℂ) (x : levUQ hc n ST SG Q (Subgroup.p
     rw [h1 P, map_one]
   simp only [MonoidHom.comp_apply, hx, map_one]
 
+/- English proof (translation)
+Take `⟨m1, hm1, h1⟩` from `hlam`. Use `choose m2 hm2 h2 using hchr`. Use `⟨m1 * ∏ P : Q, m2 P, Nat.mul_pos hm1 (Finset.prod_pos fun P _ => hm2 P), fun κ => ?_⟩` and prove the remaining obligations. Use `show ((levTyp lam).comp (Subgroup.inclusion (levUQ_le q _)) κ * (chiQ q _ σ₀ κ)⁻¹) ^ _ = 1`. Rewrite using `[mul_pow, inv_pow]`.
+
+Establish `ha : ((levTyp lam).comp (Subgroup.inclusion (levUQ_le q _)) κ) ^ (m1 * ∏ P : Q, m2 P) = 1` using `by show ((lam (levRed hc n ST SG _ (Subgroup.inclusion (levUQ_le q _) κ)))⁻¹) ^ _ = 1`. Rewrite using `[inv_pow, pow_mul, h1, one_pow, inv_one]`. Establish `hb : (chiQ q _ σ₀ κ) ^ (m1 * ∏ P : Q, m2 P) = 1` using `chiQ_pow_eq_one hc n Hw q σ₀ (κ : levUQ hc n ST SG Q (Subgroup.pi Set.univ Hw) q) m2 h2 _ (fun P => Dvd.dvd.mul_left (Finset.dvd_prod_of_mem m2 (Finset.mem_univ P)) _)`. Rewrite using `[ha, hb, inv_one, one_mul]`.
+-/
 theorem stepOfQ_chi_fin (hB : BasePi ST π) (hTπ : π * cO E π = (T : 𝓞 E)) (hST : ∀ P : Pl E, P ∈ ST ↔ π ∈ P.asIdeal)
     (hcard : ∀ P ∈ ST, Nat.card (𝓞 E ⧸ P.asIdeal) = T) (hSG : ∀ v : HeightOneSpectrum (𝓞 F), (T : 𝓞 F) ∈ v.asIdeal → v ∉ plUnder F SG)
     (hidx : (baseLb E n ST).toAddSubgroup.relIndex
@@ -265,6 +319,9 @@ theorem stepOfQ_chi_fin (hB : BasePi ST π) (hTπ : π * cO E π = (T : 𝓞 E))
       (fun P => Dvd.dvd.mul_left (Finset.dvd_prod_of_mem m2 (Finset.mem_univ P)) _)
   rw [ha, hb, inv_one, one_mul]
 
+/- English proof (translation)
+Establish `h2 : chiQ q _ σ₀ κ = 1` using `chiQ_eq_one_of hc n Hw q σ₀ (κ : levUQ hc n ST SG Q (Subgroup.pi Set.univ Hw) q) h1`. Use `show levTyp lam (Subgroup.inclusion (levUQ_le q _) κ) * (chiQ q _ σ₀ κ)⁻¹ = levTyp lam κ'`. Rewrite using `[h2, inv_one, mul_one]`. Use `congr 1`. Conclude with `Subtype.ext he`.
+-/
 theorem stepOfQ_chi_off (hB : BasePi ST π) (hTπ : π * cO E π = (T : 𝓞 E)) (hST : ∀ P : Pl E, P ∈ ST ↔ π ∈ P.asIdeal)
     (hcard : ∀ P ∈ ST, Nat.card (𝓞 E ⧸ P.asIdeal) = T) (hSG : ∀ v : HeightOneSpectrum (𝓞 F), (T : 𝓞 F) ∈ v.asIdeal → v ∉ plUnder F SG)
     (hidx : (baseLb E n ST).toAddSubgroup.relIndex

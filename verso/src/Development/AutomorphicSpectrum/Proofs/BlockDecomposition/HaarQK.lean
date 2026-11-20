@@ -16,11 +16,17 @@ def HaarQK : Prop := ∀ {G : Type} [Group G] [TopologicalSpace G] [IsTopologica
   ∃ c : ℝ≥0∞, c ≠ 0 ∧ c ≠ ∞ ∧
     μ = c • (νQ.prod κ).map (fun p : Q × K => (p.1 : G) * (p.2 : G))
 
+/- English proof (translation)
+Combine the equalities or inequalities in the displayed calculation.
+-/
 private theorem cancel_lemma_0 {a b s : ℝ≥0∞} (h0 : s ≠ 0) (ht : s ≠ ⊤) (h : s * a = s * b) : a = b := by
   calc a = s⁻¹ * (s * a) := by rw [← mul_assoc, ENNReal.inv_mul_cancel h0 ht, one_mul]
     _ = s⁻¹ * (s * b) := by rw [h]
     _ = b := by rw [← mul_assoc, ENNReal.inv_mul_cancel h0 ht, one_mul]
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce `b`. Rewrite using `[Measure.map_map (measurable_const_mul b) (measurable_mul_const a)]`. Rewrite using `[show ((b * ·) ∘ (· * a)) = ((· * a) ∘ (b * ·)) from funext fun x => (mul_assoc b x a).symm]`. Rewrite using `[← Measure.map_map (measurable_mul_const a) (measurable_const_mul b), MeasureTheory.map_mul_left_eq_self]`.
+-/
 private theorem mapMulRight_lemma {H : Type} [Group H] [MeasurableSpace H] [MeasurableMul H]
     (ν : Measure H) [ν.IsMulLeftInvariant] (a : H) : (ν.map (· * a)).IsMulLeftInvariant := by
   constructor
@@ -29,6 +35,11 @@ private theorem mapMulRight_lemma {H : Type} [Group H] [MeasurableSpace H] [Meas
   rw [show ((b * ·) ∘ (· * a)) = ((· * a) ∘ (b * ·)) from funext fun x => (mul_assoc b x a).symm]
   rw [← Measure.map_map (measurable_mul_const a) (measurable_const_mul b), MeasureTheory.map_mul_left_eq_self]
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce `a`. Use `haveI := mapMulRight_lemma κ a`. Establish `h` using `Measure.isMulLeftInvariant_eq_smul (κ.map (· * a)) κ`. Establish `hu` using `congrArg (fun ν : Measure H => ν Set.univ) h`.
+
+Simplify using `only [Measure.map_apply (measurable_mul_const a) MeasurableSet.univ, Set.preimage_univ, Measure.nnreal_smul_coe_apply] at hu`. Establish `h0 : κ Set.univ ≠ 0` using `(isOpen_univ.measure_pos κ Set.univ_nonempty).ne'`. Establish `ht : κ Set.univ ≠ ⊤` using `measure_ne_top κ _`. Establish `hc : ((κ.map (· * a)).haarScalarFactor κ : ℝ≥0∞) = 1` using `cancel_lemma_0 h0 ht (by rw [mul_one, mul_comm]; exact hu.symm)`. Rewrite using `[h, show (κ.map (· * a)).haarScalarFactor κ = 1 from ENNReal.coe_eq_one.1 hc, one_smul]`.
+-/
 private theorem cptRight_lemma_2 {H : Type} [Group H] [TopologicalSpace H] [IsTopologicalGroup H]
     [CompactSpace H] [LocallyCompactSpace H] [SecondCountableTopology H] [MeasurableSpace H] [BorelSpace H]
     (κ : Measure H) [κ.IsHaarMeasure] : κ.IsMulRightInvariant := by
@@ -45,6 +56,61 @@ private theorem cptRight_lemma_2 {H : Type} [Group H] [TopologicalSpace H] [IsTo
     cancel_lemma_0 h0 ht (by rw [mul_one, mul_comm]; exact hu.symm)
   rw [h, show (κ.map (· * a)).haarScalarFactor κ = 1 from ENNReal.coe_eq_one.1 hc, one_smul]
 
+/- English proof (translation)
+Unfold `HaarQK`. Introduce `G _ _ _ _ _ _ _ _ μ _ _ Q K hQ hK hQK νQ _ κ _`. Use `haveI : SecondCountableTopology K := TopologicalSpace.Subtype.secondCountableTopology _`. Use `haveI : SecondCountableTopology Q := TopologicalSpace.Subtype.secondCountableTopology _`. Use `haveI : LocallyCompactSpace Q := hQ.isClosedEmbedding_subtypeVal.locallyCompactSpace`.
+
+Use `haveI : CompactSpace K := isCompact_iff_compactSpace.mp hK`. Use `haveI : κ.IsMulRightInvariant := cptRight_lemma_2 κ`. Establish `hνR : ∀ q0 : Q, ∃ c : NNReal, νQ.map (· * q0) = c • νQ`. Introduce `q0`. Use `haveI := mapMulRight_lemma νQ q0`.
+
+Use `haveI : IsFiniteMeasureOnCompacts (νQ.map (· * q0)) := ⟨fun C hC => by`. Rewrite using `[Measure.map_apply (measurable_mul_const q0) hC.measurableSet]`. Conclude with `((Homeomorph.mulRight q0).isCompact_preimage.2 hC).measure_lt_top⟩`. Conclude with `⟨_, Measure.isMulLeftInvariant_eq_smul (νQ.map (· * q0)) νQ⟩`. Establish `hT : ∀ g : G, ∃ c : ℝ≥0∞, ∀ f : G → ℝ≥0∞, Measurable f → ∫⁻ h : Q × K, f ((h.1 : G) * g * (h.2 : G)) ∂(νQ.prod κ) = c * ∫⁻ h : Q × K, f ((h.1 : G) * (h.2 : G)) ∂(νQ.prod κ)`.
+
+Introduce `g`. Take `⟨q0, hq0, k0, hk0, rfl⟩` from `hQK g`. Take `⟨c, hc⟩` from `hνR ⟨q0, hq0⟩`. Use `⟨(c : ℝ≥0∞), fun f hf => ?_⟩` and prove the remaining obligations. Establish `hF : Measurable (fun p : Q × K => f ((p.1 : G) * (p.2 : G)))` using `by fun_prop`.
+
+Rewrite using `[lintegral_prod _ (by fun_prop), lintegral_prod _ hF.aemeasurable]`. Establish `h1 : ∀ q : Q, ∫⁻ k : K, f ((q : G) * (q0 * k0) * (k : G)) ∂κ = ∫⁻ k : K, f (((q * ⟨q0, hq0⟩ : Q) : G) * (k : G)) ∂κ`. Introduce `q`. Rewrite using `[← lintegral_mul_left_eq_self (fun k : K => f (((q * ⟨q0, hq0⟩ : Q) : G) * (k : G))) ⟨k0, hk0⟩]`. Use `congr 1`.
+
+Use function extensionality and compare the values at `k`. Simplify using `[mul_assoc]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[hc, lintegral_smul_measure]`. Both sides reduce to the same expression.
+
+Establish `hswap : ∀ f φ : G → ℝ≥0∞, Measurable f → Measurable φ → ∫⁻ g, φ g * ∫⁻ h : Q × K, f ((h.1 : G) * g * (h.2 : G)) ∂(νQ.prod κ) ∂μ = ∫⁻ g, f g * ∫⁻ h : Q × K, φ ((h.1 : G)⁻¹ * g * (h.2 : G)⁻¹) ∂(νQ.prod κ) ∂μ`. Introduce `f φ hf hφ`. Establish `e1 : ∀ g, φ g * ∫⁻ h : Q × K, f ((h.1 : G) * g * (h.2 : G)) ∂(νQ.prod κ) = ∫⁻ h : Q × K, φ g * f ((h.1 : G) * g * (h.2 : G)) ∂(νQ.prod κ)` using `fun g => (lintegral_const_mul _ (by fun_prop)).symm`. Establish `e2 : ∀ g, f g * ∫⁻ h : Q × K, φ ((h.1 : G)⁻¹ * g * (h.2 : G)⁻¹) ∂(νQ.prod κ) = ∫⁻ h : Q × K, f g * φ ((h.1 : G)⁻¹ * g * (h.2 : G)⁻¹) ∂(νQ.prod κ)` using `fun g => (lintegral_const_mul _ (by fun_prop)).symm`. Rewrite using `[lintegral_congr e1, lintegral_congr e2]`.
+
+Establish `m1 : Measurable (fun p : G × (Q × K) => φ p.1 * f ((p.2.1 : G) * p.1 * (p.2.2 : G)))` using `by fun_prop`. Establish `m2 : Measurable (fun p : G × (Q × K) => f p.1 * φ ((p.2.1 : G)⁻¹ * p.1 * (p.2.2 : G)⁻¹))` using `by fun_prop`. Rewrite using `[lintegral_lintegral_swap m1.aemeasurable]`. Use `conv_rhs => rw [lintegral_lintegral_swap m2.aemeasurable]`. Use `lintegral_congr fun h => ?_` and prove the remaining obligations.
+
+Establish `inv : ∀ F : G → ℝ≥0∞, ∫⁻ g, F ((h.1 : G) * g * (h.2 : G)) ∂μ = ∫⁻ g, F g ∂μ`. Introduce `F`. Rewrite using `[lintegral_mul_left_eq_self (fun x => F (x * (h.2 : G))) (h.1 : G), lintegral_mul_right_eq_self F (h.2 : G)]`. Rewrite using `[← inv (fun g => f g * φ ((h.1 : G)⁻¹ * g * (h.2 : G)⁻¹))]`. Use `lintegral_congr fun g => ?_` and prove the remaining obligations.
+
+Rewrite using `[mul_comm]`. Simplify using `[mul_assoc]`. Establish `hS : ∀ φ : G → ℝ≥0∞, Measurable φ → ∀ g : G, ∫⁻ h : Q × K, φ ((h.1 : G)⁻¹ * g * (h.2 : G)⁻¹) ∂(νQ.prod κ) = ∫⁻ h : Q × K, φ ((h.1 : G)⁻¹ * (h.2 : G)⁻¹) ∂(νQ.prod κ)`. Introduce `φ hφ g`. Take `⟨q0, hq0, k0, hk0, rfl⟩` from `hQK g`.
+
+Rewrite using `[lintegral_prod _ (by fun_prop), lintegral_prod _ (by fun_prop)]`. Establish `hin : ∀ x : G, ∫⁻ k : K, φ (x * k0 * (k : G)⁻¹) ∂κ = ∫⁻ k : K, φ (x * (k : G)⁻¹) ∂κ`. Introduce `x`. Rewrite using `[← lintegral_mul_right_eq_self (fun k : K => φ (x * k0 * (k : G)⁻¹)) ⟨k0, hk0⟩]`. Use `lintegral_congr fun k => ?_` and prove the remaining obligations.
+
+Simplify using `[mul_assoc]`. Establish `hΨ : Measurable (fun p : G × K => φ (p.1 * (p.2 : G)⁻¹))` using `by fun_prop`. Combine the equalities or inequalities in the displayed calculation. Use `lintegral_congr fun q => ?_` and prove the remaining obligations. Use `show _ = ∫⁻ k : K, φ ((q : G)⁻¹ * q0 * (k : G)⁻¹) ∂κ`.
+
+Rewrite using `[← hin ((q : G)⁻¹ * q0)]`. Simplify using `only [mul_assoc]`. Use `_ = ∫⁻ q : Q, (fun x : G => ∫⁻ k : K, φ (x * (k : G)⁻¹) ∂κ) (((⟨q0, hq0⟩ * q : Q) : G)⁻¹ * q0) ∂νQ := (lintegral_mul_left_eq_self (fun q : Q => (fun x : G => ∫⁻ k : K, φ (x * (k : G)⁻¹) ∂κ) ((q : G)⁻¹ * q0)) ⟨q0, hq0⟩).symm`. Use `_ = ∫⁻ q : Q, ∫⁻ k : K, φ ((q : G)⁻¹ * (k : G)⁻¹) ∂κ ∂νQ := by`. Use `lintegral_congr fun q => ?_` and prove the remaining obligations.
+
+Simplify using `[mul_assoc]`. Take `⟨C, hCc, hC1⟩` from `exists_compact_mem_nhds (1 : G)`. Establish `hCm : MeasurableSet C` using `hCc.isClosed.measurableSet`. Establish `h1C : (1 : G) ∈ interior C` using `mem_interior_iff_mem_nhds.2 hC1`. Take `⟨f0, hf0⟩ : ∃ f0 : G → ℝ≥0∞, f0 = C.indicator 1` from `⟨_, rfl⟩`.
+
+Establish `hf0m : Measurable f0` using `hf0 ▸ measurable_one.indicator hCm`. Establish `hΦm : Measurable (fun p : Q × K => (p.1 : G) * (p.2 : G))` using `by fun_prop`. Establish `hΦc : Continuous (fun p : Q × K => (p.1 : G) * (p.2 : G))` using `by fun_prop`. Establish `hΨm : Measurable (fun p : Q × K => (p.1 : G)⁻¹ * (p.2 : G)⁻¹)` using `by fun_prop`. Establish `hΨc : Continuous (fun p : Q × K => (p.1 : G)⁻¹ * (p.2 : G)⁻¹)` using `by fun_prop`.
+
+Take `⟨ρ, hρ⟩ : ∃ ρ : Measure G, ρ = (νQ.prod κ).map (fun p : Q × K => (p.1 : G) * (p.2 : G))` from `⟨_, rfl⟩`. Establish `hPρ : ∀ f : G → ℝ≥0∞, Measurable f → ∫⁻ h : Q × K, f ((h.1 : G) * (h.2 : G)) ∂(νQ.prod κ) = ∫⁻ g, f g ∂ρ` using `fun f hf => by`. Rewrite using `[hρ, lintegral_map hf hΦm]`. Establish `hρC : ρ C = (νQ.prod κ) ((fun p : Q × K => (p.1 : G) * (p.2 : G)) ⁻¹' C)`. Rewrite using `[hρ, Measure.map_apply hΦm hCm]`.
+
+Establish `hρCt : ρ C ≠ ⊤`. Rewrite using `[hρC]`. Use `ne_of_lt (lt_of_le_of_lt (measure_mono (t := (Subtype.val ⁻¹' ((fun x : G × G => x.1 * x.2) '' (C ×ˢ (K : Set G))) : Set Q) ×ˢ (Set.univ : Set K)) ?_) ((hQ.isClosedEmbedding_subtypeVal.isCompact_preimage ((hCc.prod hK).image continuous_mul)).prod isCompact_univ).measure_lt_top)` and prove the remaining obligations. Introduce `p hp`. Use `⟨?_, Set.mem_univ _⟩` and prove the remaining obligations.
+
+Conclude with `⟨((p.1 : G) * (p.2 : G), ((p.2 : K) : G)⁻¹), ⟨hp, K.inv_mem p.2.2⟩, by simp⟩`. Establish `hρC0 : ρ C ≠ 0`. Rewrite using `[hρC]`. Conclude with `((isOpen_interior.preimage hΦc).measure_pos _ ⟨(1, 1), by simpa using h1C⟩).trans_le (measure_mono (Set.preimage_mono interior_subset)) |>.ne'`. Establish `hμCt : μ C ≠ ⊤` using `hCc.measure_lt_top.ne`.
+
+Establish `hμC0 : μ C ≠ 0` using `((isOpen_interior.measure_pos μ ⟨1, h1C⟩).trans_le (measure_mono interior_subset)).ne'`. Establish `hs : ∫⁻ h : Q × K, f0 ((h.1 : G)⁻¹ * (h.2 : G)⁻¹) ∂(νQ.prod κ) = (νQ.prod κ) ((fun p : Q × K => (p.1 : G)⁻¹ * (p.2 : G)⁻¹) ⁻¹' C)`. Rewrite using `[lintegral_map (f := f0) hf0m hΨm |>.symm, hf0, lintegral_indicator_one hCm, Measure.map_apply hΨm hCm]`. Establish `hst : ∫⁻ h : Q × K, f0 ((h.1 : G)⁻¹ * (h.2 : G)⁻¹) ∂(νQ.prod κ) ≠ ⊤`. Rewrite using `[hs]`.
+
+Use `ne_of_lt (lt_of_le_of_lt (measure_mono (t := (Subtype.val ⁻¹' ((fun x : G × G => x.1 * x.2⁻¹) '' ((K : Set G) ×ˢ C)) : Set Q) ×ˢ (Set.univ : Set K)) ?_) ((hQ.isClosedEmbedding_subtypeVal.isCompact_preimage ((hK.prod hCc).image (by fun_prop))).prod isCompact_univ).measure_lt_top)` and prove the remaining obligations. Introduce `p hp`. Use `⟨?_, Set.mem_univ _⟩` and prove the remaining obligations. Conclude with `⟨(((p.2 : K) : G)⁻¹, (p.1 : G)⁻¹ * (p.2 : G)⁻¹), ⟨K.inv_mem p.2.2, hp⟩, by group⟩`. Establish `hs0 : ∫⁻ h : Q × K, f0 ((h.1 : G)⁻¹ * (h.2 : G)⁻¹) ∂(νQ.prod κ) ≠ 0`.
+
+Rewrite using `[hs]`. Conclude with `((isOpen_interior.preimage hΨc).measure_pos _ ⟨(1, 1), by simpa using h1C⟩).trans_le (measure_mono (Set.preimage_mono interior_subset)) |>.ne'`. Establish `hμf0 : ∫⁻ g, f0 g ∂μ = μ C` using `by rw [hf0, lintegral_indicator_one hCm]`. Establish `hρf0 : ∫⁻ g, f0 g ∂ρ = ρ C` using `by rw [hf0, lintegral_indicator_one hCm]`. Use `choose c hc using hT`.
+
+Establish `hTm : Measurable (fun g : G => ∫⁻ h : Q × K, f0 ((h.1 : G) * g * (h.2 : G)) ∂(νQ.prod κ))` using `(by fun_prop : Measurable (fun p : G × (Q × K) => f0 ((p.2.1 : G) * p.1 * (p.2.2 : G)))).lintegral_prod_right'`. Establish `key : ∀ f : G → ℝ≥0∞, Measurable f → (∫⁻ g, f g ∂μ) * ρ C = μ C * ∫⁻ g, f g ∂ρ`. Introduce `f hf`. Use `set s0 := ∫⁻ h : Q × K, f0 ((h.1 : G)⁻¹ * (h.2 : G)⁻¹) ∂(νQ.prod κ) with hs0def`. Establish `A` using `hswap f f0 hf hf0m`.
+
+Establish `B` using `hswap f0 f0 hf0m hf0m`. Simplify using `only [hS f0 hf0m] at A B`. Rewrite `A` using `[lintegral_mul_const _ hf]`. Rewrite `B` using `[lintegral_mul_const _ hf0m, hμf0]`. Establish `e : ∀ g, f0 g * (∫⁻ h : Q × K, f ((h.1 : G) * g * (h.2 : G)) ∂(νQ.prod κ)) * ρ C = f0 g * (∫⁻ h : Q × K, f0 ((h.1 : G) * g * (h.2 : G)) ∂(νQ.prod κ)) * ∫⁻ x, f x ∂ρ`.
+
+Introduce `g`. Rewrite using `[hc g f hf, hc g f0 hf0m, hPρ f hf, hPρ f0 hf0m, hρf0]`. Expand and normalize the polynomial expressions, which then agree. Establish `hmain : s0 * ((∫⁻ g, f g ∂μ) * ρ C) = s0 * (μ C * ∫⁻ g, f g ∂ρ)`. Combine the equalities or inequalities in the displayed calculation.
+
+Rewrite using `[A]`. Use `_ = ∫⁻ g, f0 g * (∫⁻ h : Q × K, f ((h.1 : G) * g * (h.2 : G)) ∂(νQ.prod κ)) * ρ C ∂μ := (lintegral_mul_const' _ _ hρCt).symm`. Use `_ = ∫⁻ g, f0 g * (∫⁻ h : Q × K, f0 ((h.1 : G) * g * (h.2 : G)) ∂(νQ.prod κ)) * ∫⁻ x, f x ∂ρ ∂μ := lintegral_congr e`. Use `_ = (∫⁻ g, f0 g * ∫⁻ h : Q × K, f0 ((h.1 : G) * g * (h.2 : G)) ∂(νQ.prod κ) ∂μ) * ∫⁻ x, f x ∂ρ := lintegral_mul_const _ (hf0m.mul hTm)`. Use `_ = s0 * (μ C * ∫⁻ g, f g ∂ρ) := by rw [B]; ring`.
+
+Conclude with `cancel_lemma_0 hs0 hst hmain`. Use `⟨μ C * (ρ C)⁻¹, mul_ne_zero hμC0 (ENNReal.inv_ne_zero.2 hρCt), ENNReal.mul_ne_top hμCt (ENNReal.inv_ne_top.2 hρC0), ?_⟩` and prove the remaining obligations. Rewrite using `[← hρ]`. Use extensionality with `B hB`. Establish `hk` using `key (B.indicator 1) (measurable_one.indicator hB)`.
+
+Rewrite `hk` using `[lintegral_indicator_one hB, lintegral_indicator_one hB]`. Rewrite using `[Measure.smul_apply, smul_eq_mul]`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem haarQK : HaarQK := by
   unfold HaarQK
   intro G _ _ _ _ _ _ _ _ μ _ _ Q K hQ hK hQK νQ _ κ _

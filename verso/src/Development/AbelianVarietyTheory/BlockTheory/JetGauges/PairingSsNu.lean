@@ -44,8 +44,14 @@ def Separates (g : ℕ) (ξ : Module.Dual ℤ X) (be : LinearMap.BilinForm ℤ X
   SSPlus E g ξ χ₀ ∧ ssPair g be χ₀ = j ∧
     ∀ χ, SSPlus E g ξ χ → ssPair g be χ = j → ssNu E g ξ χ = ssNu E g ξ χ₀
 
+/- English proof (translation)
+Introduce `τ` and use `by simp [ssNu]`.
+-/
 example (g : ℕ) (ξ : Module.Dual ℤ X) : SSPlus E g ξ 0 := fun τ => by simp [ssNu]
 
+/- English proof (translation)
+Simplify using `[ssPair]`.
+-/
 example (be : LinearMap.BilinForm ℤ X) (x y : X) : ssPair 1 be (Finsupp.single (x, y) 1) = be x y := by
   simp [ssPair]
 

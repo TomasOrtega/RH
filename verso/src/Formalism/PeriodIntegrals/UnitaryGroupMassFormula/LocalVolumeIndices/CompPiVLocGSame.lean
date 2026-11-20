@@ -12,17 +12,41 @@ open Formalism.MainNotions.S (AutInst)
 
 variable (I : AutInst)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem Comp_mul_apply (a b : Af I.F) (v : HeightOneSpectrum (𝓞 I.F)) : (a * b) v = a v * b v := rfl
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem Comp_add_apply (a b : Af I.F) (v : HeightOneSpectrum (𝓞 I.F)) : (a + b) v = a v + b v := rfl
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem Comp_sub_apply (a b : Af I.F) (v : HeightOneSpectrum (𝓞 I.F)) : (a - b) v = a v - b v := rfl
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem Comp_one_apply (v : HeightOneSpectrum (𝓞 I.F)) : (1 : Af I.F) v = 1 := rfl
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem Comp_zero_apply (v : HeightOneSpectrum (𝓞 I.F)) : (0 : Af I.F) v = 0 := rfl
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem Comp_evalV (v : HeightOneSpectrum (𝓞 I.F)) (a : Af I.F) : evalV I.F v a = a v := rfl
 
+/- English proof (translation)
+Conclude with `Pi.single_eq_same (M := fun w => Fv I.F w) p y`.
+-/
 theorem Comp_single_same (p : HeightOneSpectrum (𝓞 I.F)) (y : Fv I.F p) : singleV I.F p y p = y := by
   classical
   exact Pi.single_eq_same (M := fun w => Fv I.F w) p y
 
+/- English proof (translation)
+Conclude with `Pi.single_eq_of_ne (M := fun w => Fv I.F w) h y`.
+-/
 theorem Comp_single_ne (p v : HeightOneSpectrum (𝓞 I.F)) (h : v ≠ p) (y : Fv I.F p) :
     singleV I.F p y v = 0 := by
   classical
@@ -30,11 +54,22 @@ theorem Comp_single_ne (p v : HeightOneSpectrum (𝓞 I.F)) (h : v ≠ p) (y : F
 
 def chi (p : HeightOneSpectrum (𝓞 I.F)) : Af I.F := singleV I.F p 1
 
+/- English proof (translation)
+The claim follows from `Comp_single_same I p 1`.
+-/
 theorem Comp_chi_same (p : HeightOneSpectrum (𝓞 I.F)) : chi I p p = 1 := Comp_single_same I p 1
 
+/- English proof (translation)
+The claim follows from `Comp_single_ne I p v h 1`.
+-/
 theorem Comp_chi_ne (p v : HeightOneSpectrum (𝓞 I.F)) (h : v ≠ p) : chi I p v = 0 :=
   Comp_single_ne I p v h 1
 
+/- English proof (translation)
+Apply `FiniteAdeleRing.ext` to reduce the goal to its premises. Introduce `v`. Rewrite using `[Comp_mul_apply]`. Distinguish the cases in `h : v = p`. Substitute `h` using the available equality.
+
+Rewrite using `[Comp_chi_same]`. Simplify using the standard rewrite rules. Rewrite using `[Comp_chi_ne I p v h]`. Simplify using the standard rewrite rules.
+-/
 theorem Comp_chi_idem (p : HeightOneSpectrum (𝓞 I.F)) : chi I p * chi I p = chi I p := by
   apply FiniteAdeleRing.ext
   intro v
@@ -43,6 +78,11 @@ theorem Comp_chi_idem (p : HeightOneSpectrum (𝓞 I.F)) : chi I p * chi I p = c
   · subst h; rw [Comp_chi_same]; simp
   · rw [Comp_chi_ne I p v h]; simp
 
+/- English proof (translation)
+Apply `FiniteAdeleRing.ext` to reduce the goal to its premises. Introduce `v`. Rewrite using `[Comp_mul_apply, Comp_zero_apply]`. Distinguish the cases in `h : v = p`. Substitute `h` using the available equality.
+
+Rewrite using `[Comp_chi_ne I q v hpq]`. Simplify using the standard rewrite rules. Rewrite using `[Comp_chi_ne I p v h]`. Simplify using the standard rewrite rules.
+-/
 theorem Comp_chi_orth (p q : HeightOneSpectrum (𝓞 I.F)) (hpq : p ≠ q) : chi I p * chi I q = 0 := by
   apply FiniteAdeleRing.ext
   intro v
@@ -51,6 +91,11 @@ theorem Comp_chi_orth (p q : HeightOneSpectrum (𝓞 I.F)) (hpq : p ≠ q) : chi
   · subst h; rw [Comp_chi_ne I q v hpq]; simp
   · rw [Comp_chi_ne I p v h]; simp
 
+/- English proof (translation)
+Introduce `v`. Distinguish the cases in `h : v = p`. Substitute `h` using the available equality. Use `show chi I v v ∈ _`. Rewrite using `[Comp_chi_same]`.
+
+Conclude with `one_mem _`. Use `show chi I p v ∈ _`. Rewrite using `[Comp_chi_ne I p v h]`. Conclude with `zero_mem _`.
+-/
 theorem Comp_chi_int (p : HeightOneSpectrum (𝓞 I.F)) : chi I p ∈ Formalism.UG.intAd I.F := by
   intro v
   by_cases h : v = p
@@ -60,6 +105,9 @@ theorem Comp_chi_int (p : HeightOneSpectrum (𝓞 I.F)) : chi I p ∈ Formalism.
 abbrev piV (v : HeightOneSpectrum (𝓞 I.F)) : HA (Af I.F) I.cm.sig I.J →* HA (Fv I.F v) I.cm.sig I.J :=
   haMap I.cm.sig I.J (evalV I.F v)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem Comp_piV_mat (v : HeightOneSpectrum (𝓞 I.F)) (h : HA (Af I.F) I.cm.sig I.J) :
     ((HA.mat (Fv I.F v) I.cm.sig I.J (piV I v h) : GL (Fin I.n) (Fv I.F v ⊗[I.F] I.E)) :
       Matrix (Fin I.n) (Fin I.n) (Fv I.F v ⊗[I.F] I.E)) =
@@ -68,6 +116,9 @@ theorem Comp_piV_mat (v : HeightOneSpectrum (𝓞 I.F)) (h : HA (Af I.F) I.cm.si
 
 variable (hb : Formalism.L2.SG.AdBridge.AdBridgeIso I)
 
+/- English proof (translation)
+Rewrite using `[Bridge_mat, Bridge_mat, LocB_fmat I a ha]`. Use `Loc_locM_map ((swapE I : I.E ⊗[I.F] Af I.F ≃ₐ[I.F] Af I.F ⊗[I.F] I.E) : I.E ⊗[I.F] Af I.F →+* Af I.F ⊗[I.F] I.E) (eOf I a) (I.fmat z)` as an intermediate fact. Apply the tactic sequence `convert this using 2 <;> rfl`.
+-/
 theorem Comp_tf_locG (a : Af I.F) (ha : a * a = a) (z : I.Gf) :
     ((HA.mat (Af I.F) I.cm.sig I.J (tf I hb (locG I a z)) : GL (Fin I.n) (Af I.F ⊗[I.F] I.E)) :
       Matrix (Fin I.n) (Fin I.n) (Af I.F ⊗[I.F] I.E)) =
@@ -97,6 +148,15 @@ def sL (p : HeightOneSpectrum (𝓞 I.F)) : Fv I.F p →ₗ[I.F] Af I.F where
 def thetaP (p : HeightOneSpectrum (𝓞 I.F)) : Fv I.F p ⊗[I.F] I.E →ₗ[I.F] Af I.F ⊗[I.F] I.E :=
   TensorProduct.map (sL I p) LinearMap.id
 
+/- English proof (translation)
+Proceed by induction on `t using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul a x`. Rewrite using `[Algebra.TensorProduct.tmul_mul_tmul, one_mul]`. Use `show _ = thetaP I p ((Algebra.TensorProduct.map (evalV I.F p) (AlgHom.id I.F I.E)) (a ⊗ₜ x))`.
+
+Rewrite using `[Algebra.TensorProduct.map_tmul, thetaP, TensorProduct.map_tmul]`. Use `congr 1`. Apply `FiniteAdeleRing.ext` to reduce the goal to its premises. Introduce `v`. Rewrite using `[Comp_mul_apply]`.
+
+Use `show _ = singleV I.F p (a p) v`. Distinguish the cases in `h : v = p`. Substitute `h` using the available equality. Rewrite using `[Comp_chi_same, Comp_single_same, one_mul]`. Rewrite using `[Comp_chi_ne I p v h, Comp_single_ne I p v h, zero_mul]`.
+
+Consider the case `add x y hx hy => rw [mul_add, hx, hy, map_add, map_add]`.
+-/
 theorem Comp_chi_mul (p : HeightOneSpectrum (𝓞 I.F)) (t : Af I.F ⊗[I.F] I.E) :
     (chi I p ⊗ₜ[I.F] (1 : I.E)) * t = thetaP I p (tensMap (E := I.E) (evalV I.F p) t) := by
   induction t using TensorProduct.induction_on with
@@ -114,6 +174,13 @@ theorem Comp_chi_mul (p : HeightOneSpectrum (𝓞 I.F)) (t : Af I.F ⊗[I.F] I.E
     · rw [Comp_chi_ne I p v h, Comp_single_ne I p v h, zero_mul]
   | add x y hx hy => rw [mul_add, hx, hy, map_add, map_add]
 
+/- English proof (translation)
+Apply `Bridge_tf_injective I hb` to reduce the goal to its premises. Apply `Bridge_HA_ext` to reduce the goal to its premises. Rewrite using `[Comp_tf_locG I hb _ (Comp_chi_idem I p), Comp_tf_locG I hb _ (Comp_chi_idem I p)]`. Establish `hM` using `congrArg (fun k => ((HA.mat (Fv I.F p) I.cm.sig I.J k : GL (Fin I.n) (Fv I.F p ⊗[I.F] I.E)) : Matrix (Fin I.n) (Fin I.n) (Fv I.F p ⊗[I.F] I.E))) h`. Simplify using `only [Comp_piV_mat] at hM`.
+
+Use extensionality with `i j`. Establish `hij` using `congrArg (fun M => M i j) hM`. Simplify using `only [Matrix.map_apply] at hij`. Simplify using `only [locM, Matrix.add_apply, Matrix.smul_apply, Matrix.sub_apply, smul_eq_mul, mul_sub]`. Simplify using `only [Comp_chi_mul]`.
+
+Rewrite using `[hij]`.
+-/
 theorem Comp_sep (p : HeightOneSpectrum (𝓞 I.F)) (z w : I.Gf)
     (h : piV I p (tf I hb z) = piV I p (tf I hb w)) : locG I (chi I p) z = locG I (chi I p) w := by
   apply Bridge_tf_injective I hb

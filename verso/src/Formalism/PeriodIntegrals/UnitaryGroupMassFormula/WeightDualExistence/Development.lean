@@ -29,6 +29,9 @@ def AlgDualCore : Prop := UnitaryOfMatch L n → ConjEmb L → AlgDual L n
 
 variable {L n}
 
+/- English proof (translation)
+Use `first`. Consider the case `exact a.alg.1`. Consider the case `(have h := a.alg; unfold Formalism.AUTREP.IsAlgWeight at h; exact h.1)`.
+-/
 theorem finDim (a : AlgWt L n) : FiniteDimensional ℂ a.W := by
   first
     | exact a.alg.1

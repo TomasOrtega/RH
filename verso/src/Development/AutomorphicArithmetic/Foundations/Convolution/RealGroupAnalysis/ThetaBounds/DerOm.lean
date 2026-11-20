@@ -11,6 +11,19 @@ open Neutral.B1 Formalism.L2.Host Formalism.ConjugateSelfDual GlobalTheory.CuspR
 open UpperTheory.ConvolutionTheory.R2 UpperTheory.ConvolutionTheory.R2.Ff
 open scoped Classical
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ _ _ D W M π f hf φ hφ φ' hφ' G hG hG0 hD h`. Establish `hc : Continuous fun g : G1 F => f.1 (gl g * dM (nu F h))` using `(decay F π f hf).1.comp (Matrix.SpecialLinearGroup.continuous_toGL.mul continuous_const)`. Use `haveI : IsFiniteMeasure (M.μ.restrict M.D) := ⟨by simpa using vol F M⟩`. Establish `hm : ∀ ψ₀ : S4 F, AEStronglyMeasurable (fun g => f.1 (gl g * dM (nu F h)) * Th (W.Om g ψ₀).1) (M.μ.restrict M.D)` using `fun ψ₀ => (hc.measurable.mul (thMeas F E D W ψ₀).1).aestronglyMeasurable`. Establish `hP : Continuous fun s : ℝ => (gl (cD (nu F h) (G s)))⁻¹ * dM (nu F h)` using `(continuous_gl.comp (continuous_cD.comp (continuous_const.prodMk hG))).inv.mul continuous_const`.
+
+Establish `key : ∀ φ₀ ∈ Fock D.δ, ∃ B : ℝ, ∀ s ∈ Metric.closedBall (0 : ℝ) 1, ∀ g, ‖f.1 (gl g * dM (nu F h)) * Th (W.Om g (W.L h (W.Om (G s) φ₀))).1‖ ≤ B`. Introduce `φ₀ hφ₀`. Take `⟨B, hB⟩` from `thBoundH F E D W π f hf φ₀ hφ₀ h _ ((isCompact_closedBall (0 : ℝ) 1).image hP) {1} isCompact_singleton (by rintro _ rfl; simp [Ff.One, nu])`. Use `⟨B, fun s hs g => ?_⟩` and prove the remaining obligations. Establish `e1 : W.L h (W.Om (G s) φ₀) = W.Om (cD (nu F h) (G s)) (W.L h φ₀)` using `LinearMap.congr_fun (W.comm h (G s)) φ₀`.
+
+Establish `e2 : W.Om g (W.Om (cD (nu F h) (G s)) (W.L h φ₀)) = W.Om (g * cD (nu F h) (G s)) (W.L h φ₀)`. Rewrite using `[map_mul]`. Both sides reduce to the same expression. Establish `e3 : gl g * dM (nu F h) = gl (g * cD (nu F h) (G s)) * ((gl (cD (nu F h) (G s)))⁻¹ * dM (nu F h))`. Rewrite using `[gl_mul, mul_assoc, mul_inv_cancel_left]`.
+
+Establish `h1` using `hB (g * cD (nu F h) (G s)) _ ⟨s, hs, rfl⟩ 1 rfl`. Rewrite `h1` using `[← e3]`. Rewrite using `[e1, e2]`. Simplify using `using h1`. Take `⟨B, hB⟩` from `key φ' hφ'`.
+
+Take `⟨B₀, hB₀⟩` from `key φ hφ`. Establish `hmain` using `hasDerivAt_integral_of_dominated_loc_of_deriv_le (μ := M.μ.restrict M.D) (F := fun s g => f.1 (gl g * dM (nu F h)) * Th (W.Om g (W.L h (W.Om (G s) φ))).1) (F' := fun s g => f.1 (gl g * dM (nu F h)) * Th (W.Om g (W.L h (W.Om (G s) φ'))).1) (x₀ := (0 : ℝ)) (s := Metric.closedBall 0 …`. Establish `e : (∫ g in M.D, f.1 (gl g * dM (nu F h)) * Th (W.Om g (W.L h (W.Om (G 0) φ'))).1 ∂M.μ) = lift W M f.1 φ' h`. Simplify using `[lift, hG0]`. Use `hmain.2` as an intermediate fact.
+
+Rewrite `this` using `[e]`. Conclude with `this`.
+-/
 theorem UpperTheory.ConvolutionTheory.R2.Ff.derOm :
     ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] [IsTotallyReal F] [IsTotallyComplex E] (D : Dat F E) (W : Weil D) (M : Meas F) (π : TR.CuspSub F 2), DerOm W M π := by
   intro F E _ _ _ _ _ _ _ D W M π f hf φ hφ φ' hφ' G hG hG0 hD h

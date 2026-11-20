@@ -16,6 +16,11 @@ instance isZariskiLocalAtTarget_smoothDim (n : ℕ) : IsZariskiLocalAtTarget (@S
   HasRingHomProperty.instIsZariskiLocalAtTarget (@SmoothOfRelativeDimension n)
     (Q := RingHom.Locally (RingHom.IsStandardSmoothOfRelativeDimension n))
 
+/- English proof (translation)
+Establish `big` using `(isPullback_morphismRestrict (pullback.snd b t) (t ⁻¹ᵁ U)).flip.paste_horiz (IsPullback.of_hasPullback b t)`. Rewrite `big` using `[← morphismRestrict_ι t U]`. Establish `hc : ((pullback.snd b t ⁻¹ᵁ (t ⁻¹ᵁ U)).ι ≫ pullback.fst b t) ≫ b = (pullback.snd b t ∣_ (t ⁻¹ᵁ U) ≫ t ∣_ U) ≫ U.ι`. Simplify using `only [Category.assoc, pullback.condition, morphismRestrict_ι, morphismRestrict_ι_assoc]`. Establish `sq` using `IsPullback.of_right (h₁₁ := pullback.lift _ _ hc) (by rw [pullback.lift_fst]; exact big) (pullback.lift_snd _ _ _) (IsPullback.of_hasPullback b U.ι)`.
+
+Conclude with `(smoothOfRelativeDimension_isStableUnderBaseChange n).of_isPullback sq h`.
+-/
 theorem smoothDim_restrict_pullback {S T X : Scheme.{0}} (b : X ⟶ S) (t : T ⟶ S) (U : S.Opens) {n : ℕ}
     (h : SmoothOfRelativeDimension n (pullback.snd b U.ι)) :
     SmoothOfRelativeDimension n (pullback.snd b t ∣_ (t ⁻¹ᵁ U)) := by
@@ -29,6 +34,15 @@ theorem smoothDim_restrict_pullback {S T X : Scheme.{0}} (b : X ⟶ S) (t : T �
     (pullback.lift_snd _ _ _) (IsPullback.of_hasPullback b U.ι)
   exact (smoothOfRelativeDimension_isStableUnderBaseChange n).of_isPullback sq h
 
+/- English proof (translation)
+Introduce `S A B hs Ix V g hV hA hB n T t hn`. Establish `hcov : iSup (fun i => t ⁻¹ᵁ V i) = ⊤`. Rewrite using `[eq_top_iff]`. Introduce `y _`. Take `⟨i, hi⟩` from `hV (t y)`.
+
+Conclude with `TopologicalSpace.Opens.mem_iSup.2 ⟨i, hi⟩`. Use `IsZariskiLocalAtTarget.of_iSup_eq_top (P := @SmoothOfRelativeDimension n) _ hcov fun i => ?_` and prove the remaining obligations. Distinguish the cases in `hne : ∃ y, y ∈ t ⁻¹ᵁ V i`. Take `⟨y, hy⟩` from `hne`. Establish `: Surjective (pullback.snd A.hom t)` using `by haveI := hs; infer_instance`.
+
+Take `⟨x, hx⟩` from `(pullback.snd A.hom t).surjective y`. Establish `h1 : SmoothOfRelativeDimension n (pullback.snd A.hom t ∣_ (t ⁻¹ᵁ V i))` using `IsZariskiLocalAtTarget.restrict hn _`. Establish `h2` using `smoothDim_restrict_pullback A.hom t (V i) (hA i)`. Establish `e : n = g i` using `ReciprocityTheory.ChartRestriction.G.H1.dim_unique _ h1 h2 ⟨x, by rw [Scheme.Hom.mem_preimage, hx]; exact hy⟩`. Rewrite using `[e]`.
+
+Conclude with `smoothDim_restrict_pullback B.hom t (V i) (hB i)`. Use `push_neg at hne`. Conclude with `⟨fun x => (hne _ x.2).elim⟩`.
+-/
 theorem dimLe_of_local : ∀ (S : Scheme.{0}) (A B : Over S), Surjective A.hom → ∀ (Ix : Type) (V : Ix → S.Opens) (g : Ix → ℕ), (∀ s : S, ∃ i, s ∈ V i) → (∀ i, SmoothOfRelativeDimension (g i) (pullback.snd A.hom (V i).ι)) → (∀ i, SmoothOfRelativeDimension (g i) (pullback.snd B.hom (V i).ι)) → DimLe A B := by
   intro S A B hs Ix V g hV hA hB n T t hn
   have hcov : iSup (fun i => t ⁻¹ᵁ V i) = ⊤ := by

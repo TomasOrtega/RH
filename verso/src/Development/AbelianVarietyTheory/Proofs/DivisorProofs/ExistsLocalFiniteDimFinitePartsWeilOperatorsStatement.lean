@@ -15,6 +15,9 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 open scoped Classical
 
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.WeilCont.exists_local_finite_parts | exact GlobalTheory.WeilCont.exists_local_finite_parts | (intros; apply GlobalTheory.WeilCont.exists_local_finite_parts <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.exists_local_finiteDim_finiteParts_weilOperators : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ), IsStdChar D ψ (-1) →
     ∀ (S T : HSp D) (χS χT : (AE D)ˣ →* Circle), IsHeckeChar D χS → IsHeckeChar D χT →
       ResEta D χS S.rank → ResEta D χT T.rank →

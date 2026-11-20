@@ -7,19 +7,37 @@ namespace GlobalTheory.CuspGL.PrimOrth
 
 variable {F : Type} [Field F] {V : Type} [AddCommGroup V] [Module F V]
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fun x => by simpa using hh.1 x, fun x hx => by simpa using hh.2 x hx⟩`.
+-/
 theorem neg_mem_nilRad {A : Submodule F V} {h : Module.End F V} (hh : h ∈ nilRad A) : -h ∈ nilRad A :=
   ⟨fun x => by simpa using hh.1 x, fun x hx => by simpa using hh.2 x hx⟩
 
+/- English proof (translation)
+Introduce `x hx` and use `A.add_mem (hg x hx) (hh.1 x)`.
+-/
 theorem add_preserves {A : Submodule F V} {g h : Module.End F V} (hh : h ∈ nilRad A)
     (hg : ∀ x ∈ A, g x ∈ A) : ∀ x ∈ A, (g + h) x ∈ A :=
   fun x hx => A.add_mem (hg x hx) (hh.1 x)
 
+/- English proof (translation)
+Use `⟨fun H => ?_, add_preserves hh⟩` and prove the remaining obligations. Use `add_preserves (neg_mem_nilRad hh) H` as an intermediate fact. Simplify using `using this`.
+-/
 theorem add_preserves_iff {A : Submodule F V} {g h : Module.End F V} (hh : h ∈ nilRad A) :
     (∀ x ∈ A, (g + h) x ∈ A) ↔ ∀ x ∈ A, g x ∈ A := by
   refine ⟨fun H => ?_, add_preserves hh⟩
   have := add_preserves (neg_mem_nilRad hh) H
   simpa using this
 
+/- English proof (translation)
+Rewrite `hu` using `[LinearMap.isUnit_iff_ker_eq_bot, LinearMap.ker_eq_bot]`. Rewrite using `[LinearMap.isUnit_iff_ker_eq_bot, LinearMap.ker_eq_bot']`. Introduce `x hx`. Establish `hinj : Function.Injective (g.restrict hg)`. Introduce `a b hab`.
+
+Conclude with `Subtype.ext (hu (congrArg Subtype.val hab))`. Establish `hsurj` using `LinearMap.injective_iff_surjective.mp hinj`. Establish `hx' : g x + h x = 0` using `hx`. Establish `hgx : g x ∈ A`. Rewrite using `[eq_neg_of_add_eq_zero_left hx']`.
+
+Conclude with `A.neg_mem (hh.1 x)`. Take `⟨w, hw⟩` from `hsurj ⟨g x, hgx⟩`. Establish `hwx : (w : V) = x` using `hu (congrArg Subtype.val hw)`. Establish `hxA : x ∈ A` using `hwx ▸ w.2`. Rewrite `hx'` using `[hh.2 x hxA, add_zero]`.
+
+Conclude with `hu (by rw [hx', map_zero])`.
+-/
 theorem isUnit_add [FiniteDimensional F V] {A : Submodule F V} {g h : Module.End F V} (hh : h ∈ nilRad A)
     (hg : ∀ x ∈ A, g x ∈ A) (hu : IsUnit g) : IsUnit (g + h) := by
   rw [LinearMap.isUnit_iff_ker_eq_bot, LinearMap.ker_eq_bot] at hu
@@ -39,12 +57,26 @@ theorem isUnit_add [FiniteDimensional F V] {A : Submodule F V} {g h : Module.End
   rw [hh.2 x hxA, add_zero] at hx'
   exact hu (by rw [hx', map_zero])
 
+/- English proof (translation)
+Use `⟨fun H => ?_, isUnit_add hh hg⟩` and prove the remaining obligations. Use `isUnit_add (neg_mem_nilRad hh) (add_preserves hh hg) H` as an intermediate fact. Simplify using `using this`.
+-/
 theorem isUnit_add_iff [FiniteDimensional F V] {A : Submodule F V} {g h : Module.End F V} (hh : h ∈ nilRad A)
     (hg : ∀ x ∈ A, g x ∈ A) : IsUnit (g + h) ↔ IsUnit g := by
   refine ⟨fun H => ?_, isUnit_add hh hg⟩
   have := isUnit_add (neg_mem_nilRad hh) (add_preserves hh hg) H
   simpa using this
 
+/- English proof (translation)
+Establish `hfin : (nilRad A).Finite` using `Set.toFinite _`. Establish `hne : (hfin.toFinset.card : ℂ) ≠ 0`. Establish `: hfin.toFinset.Nonempty` using `⟨0, by`. Rewrite using `[Set.Finite.mem_toFinset]`. Conclude with `⟨fun x => by simp, fun x _ => by simp⟩⟩`.
+
+Conclude with `this.card_pos.ne'` after adjusting the coercions. Establish `key : ∑ h ∈ hfin.toFinset, ∑ g, φ g * f g = 0`. Establish `: ∀ h ∈ hfin.toFinset, ∑ g, φ g * f g = ∑ g, φ (g + h) * f g`. Introduce `h hh`. Rewrite `hh` using `[Set.Finite.mem_toFinset]`.
+
+Rewrite using `[← Equiv.sum_comp (Equiv.addRight h)]`. Use `Finset.sum_congr rfl fun g _ => ?_` and prove the remaining obligations. Simplify using `only [Equiv.coe_addRight, hf g h hh]`. Rewrite using `[Finset.sum_congr rfl this, Finset.sum_comm]`. Use `Finset.sum_eq_zero fun g _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[← Finset.sum_mul]`. Distinguish the cases in `hg : ∀ x ∈ A, g x ∈ A`. Use `hφ A h0 h1 g hg` as an intermediate fact. Rewrite `this` using `[finsum_mem_eq_finite_toFinset_sum _ hfin]`. Rewrite using `[this, zero_mul]`.
+
+Rewrite using `[hf0 g hg, mul_zero]`. Rewrite `key` using `[Finset.sum_const, nsmul_eq_mul]`. Conclude with `(mul_eq_zero.mp key).resolve_left hne`.
+-/
 theorem sum_mul_eq_zero [Fintype (Module.End F V)] {φ : Module.End F V → ℂ} (hφ : IsPrimitive φ)
     {A : Submodule F V} (h0 : A ≠ ⊥) (h1 : A ≠ ⊤) (f : Module.End F V → ℂ)
     (hf : ∀ g, ∀ h ∈ nilRad A, f (g + h) = f g) (hf0 : ∀ g, ¬ (∀ x ∈ A, g x ∈ A) → f g = 0) :
@@ -74,6 +106,11 @@ theorem sum_mul_eq_zero [Fintype (Module.End F V)] {φ : Module.End F V → ℂ}
   rw [Finset.sum_const, nsmul_eq_mul] at key
   exact (mul_eq_zero.mp key).resolve_left hne
 
+/- English proof (translation)
+Establish `h1 : s 1 = 0`. Use `hs 1 1 monic_one monic_one` as an intermediate fact. Simplify using `using this`. Establish `hc : LinearMap.charpoly g = 1`. Establish `hm` using `LinearMap.charpoly_monic g`.
+
+Rewrite using `[← hm.natDegree_eq_zero, LinearMap.charpoly_natDegree]`. Conclude with `Module.finrank_zero_of_subsingleton`. Use `haveI : IsEmpty {W : Submodule F U // W ≠ ⊤ ∧ ∀ x ∈ W, g x ∈ W} := ⟨fun W => W.2.1 (Subsingleton.elim _ _)⟩`. Rewrite using `[psi_eq, hc, h1, finsum_of_isEmpty, sub_zero]`.
+-/
 theorem psi_bot {s : F[X] → ℂ} (hs : IsAdditive s) (U : Type) [AddCommGroup U] [Module F U]
     [FiniteDimensional F U] [Subsingleton U] (g : Module.End F U) : psi s U g = 0 := by
   have h1 : s 1 = 0 := by
@@ -89,6 +126,33 @@ theorem psi_bot {s : F[X] → ℂ} (hs : IsAdditive s) (U : Type) [AddCommGroup 
 
 open Classical in
 
+/- English proof (translation)
+Use `haveI : Finite V := Module.finite_of_finite F`. Use `haveI : Finite (Module.End F V) := Finite.of_injective _ (DFunLike.coe_injective (F := V →ₗ[F] V))`. Use `haveI : Finite (Submodule F V) := Finite.of_injective _ (SetLike.coe_injective (A := Submodule F V))`. Use `letI := Fintype.ofFinite (Module.End F V)`. Use `letI := Fintype.ofFinite (Submodule F V)`.
+
+Set `R : Submodule F V → Module.End F V → ℂ` to `fun W g => if h : W ≠ ⊤ ∧ ∀ x ∈ W, g x ∈ W then psi s W (g.restrict h.2) else 0`. Establish `hR : ∀ g, psi s V g = s (LinearMap.charpoly g) - ∑ W, R W g`. Introduce `g`. Rewrite using `[psi_eq, finsum_eq_sum_of_fintype]`. Use `congr 1`.
+
+Rewrite using `[← Finset.sum_filter_add_sum_filter_not Finset.univ (fun W : Submodule F V => W ≠ ⊤ ∧ ∀ x ∈ W, g x ∈ W)]`. Rewrite using `[Finset.sum_eq_zero (s := Finset.univ.filter fun W : Submodule F V => ¬ (W ≠ ⊤ ∧ ∀ x ∈ W, g x ∈ W)), add_zero, Finset.sum_subtype (p := fun W : Submodule F V => W ≠ ⊤ ∧ ∀ x ∈ W, g x ∈ W) _ (by simp)]`. Use `Finset.sum_congr rfl fun W _ => ?_` and prove the remaining obligations. Simplify using `only [R, dif_pos W.2]`. Introduce `W hW`.
+
+Simplify using `only [R, dif_neg (Finset.mem_filter.mp hW).2]`. Establish `hW : ∀ W, ∑ g, φ g * (if IsUnit g then star (R W g) else 0) = 0`. Introduce `W`. Distinguish the cases in `h1 : W = ⊤`. Use `Finset.sum_eq_zero fun g _ => ?_` and prove the remaining obligations.
+
+Establish `: R W g = 0` using `dif_neg (fun h => h.1 h1)`. Simplify using `[this]`. Distinguish the cases in `h0 : W = ⊥`. Use `Finset.sum_eq_zero fun g _ => ?_` and prove the remaining obligations. Establish `: R W g = 0`.
+
+Substitute `h0` using the available equality. Simplify using `only [R]`. Use `split_ifs`. Conclude with `psi_bot hs _ _`. Both sides reduce to the same expression.
+
+Simplify using `[this]`. Use `sum_mul_eq_zero hφ h0 h1 _ ?_ ?_` and prove the remaining obligations. Introduce `g h hh`. Distinguish the cases in `hg : ∀ x ∈ W, g x ∈ W`. Establish `e : R W (g + h) = R W g`.
+
+Simplify using `only [R]`. Rewrite using `[dif_pos ⟨h1, add_preserves hh hg⟩, dif_pos ⟨h1, hg⟩]`. Use `congr 1`. Use extensionality with `x`. Simplify using `[LinearMap.restrict_apply, hh.2 x x.2]`.
+
+Simplify using `only [e, isUnit_add_iff hh hg]`. Establish `e1 : R W g = 0` using `dif_neg (fun H => hg H.2)`. Establish `e2 : R W (g + h) = 0` using `dif_neg (fun H => hg ((add_preserves_iff hh).mp H.2))`. Simplify using `[e1, e2]`. Introduce `g hg`.
+
+Establish `e1 : R W g = 0` using `dif_neg (fun H => hg H.2)`. Simplify using `[e1]`. Establish `hsum : ∀ ψ : Module.End F V → ℂ, ipGL φ ψ = ∑ g, φ g * (if IsUnit g then star (ψ g) else 0)`. Introduce `ψ`. Rewrite using `[ipGL, finsum_mem_def, finsum_eq_sum_of_fintype]`.
+
+Use `Finset.sum_congr rfl fun g _ => ?_` and prove the remaining obligations. Distinguish the cases in `hg : IsUnit g`. Simplify using `[Set.indicator, hg]`. Simplify using `[Set.indicator, hg]`. Rewrite using `[hsum, hsum, ← sub_eq_zero, ← Finset.sum_sub_distrib]`.
+
+Establish `h2 : ∑ W, ∑ g, φ g * (if IsUnit g then star (R W g) else 0) = 0` using `Finset.sum_eq_zero fun W _ => hW W`. Rewrite `h2` using `[Finset.sum_comm, ← neg_eq_zero, ← Finset.sum_neg_distrib]`. Rewrite using `[← h2]`. Use `Finset.sum_congr rfl fun g _ => ?_` and prove the remaining obligations. Distinguish the cases in `hg : IsUnit g`.
+
+Simplify using `only [if_pos hg, hR g, star_sub, star_sum, ← Finset.mul_sum]`. Expand and normalize the polynomial expressions, which then agree. Simplify using `[hg]`.
+-/
 theorem ipGL_psi_eq (F : Type) [Field F] [Finite F] (V : Type) [AddCommGroup V] [Module F V]
     [FiniteDimensional F V] (s : F[X] → ℂ) (hs : IsAdditive s) (φ : Module.End F V → ℂ)
     (hφ : IsPrimitive φ) : ipGL φ (psi s V) = ipGL φ (fun g => s (LinearMap.charpoly g)) := by

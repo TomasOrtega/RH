@@ -24,6 +24,9 @@ structure IsQuasiFam (ψ : AddChar (AF D.host.F) ℂ) (S L : HSp D) (Y : GA D S 
   quasi : ∀ h γ w, Y h (ratW L S γ + w) = ψ (-(symplOH S L (ratW L S γ) w)) * Y h w
   left : ∀ γ ∈ GQ S, ∀ h w, Y (γ * h) w = Y h (w ⬝ mt S γ)
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨hY.cont, fun h => (hY.theta h).quasi, hY.left⟩`.
+-/
 theorem isQuasiFam_of_isThetaFam {S L : HSp D} {Y : GA D S → WO S L → ℂ} (hY : IsThetaFam ψ S L Y) : IsQuasiFam ψ S L Y :=
   ⟨hY.cont, fun h => (hY.theta h).quasi, hY.left⟩
 
@@ -61,6 +64,9 @@ def PeriodLinkQuasi (D : D7) : Prop :=
       IsQuasiFam ψ J.W₀ L' (handBF s l φ Ξ) ∧
       ∀ G' : GA D J.W → ℂ, RapidDec J.W G' → PeriodsAgree s l φ Ξ G'
 
+/- English proof (translation)
+Introduce `ψ ρ B J s L' ζ' hL l` and use `⟨(H ψ ρ B J s L' ζ' hL l).1, fun φ hφ Ξ hΞ => ⟨isQuasiFam_of_isThetaFam ((H ψ ρ B J s L' ζ' hL l).2 φ hφ Ξ hΞ).1, ((H ψ ρ B J s L' ζ' hL l).2 φ hφ Ξ hΞ).2⟩⟩`.
+-/
 theorem PeriodLink.quasi (H : PeriodLink D) : PeriodLinkQuasi D := fun ψ ρ B J s L' ζ' hL l =>
   ⟨(H ψ ρ B J s L' ζ' hL l).1, fun φ hφ Ξ hΞ =>
     ⟨isQuasiFam_of_isThetaFam ((H ψ ρ B J s L' ζ' hL l).2 φ hφ Ξ hΞ).1, ((H ψ ρ B J s L' ζ' hL l).2 φ hφ Ξ hΞ).2⟩⟩
@@ -70,6 +76,9 @@ def LinkClass (D : D7) : Prop :=
     ((∃ a : D.host.E, a ≠ 0 ∧ Nonempty (Link B L' (a • ζ₁))) ↔
       ∃ t : D.host.E, t ≠ 0 ∧ star ζ₁ ⬝ᵥ L'.gram *ᵥ ζ₁ = (star B.ζ ⬝ᵥ B.L.gram *ᵥ B.ζ) * (t * star t))
 
+/- English proof (translation)
+Use `⟨⟨(-D.host.xi0) • 1, ?_, ?_⟩⟩` and prove the remaining obligations. Rewrite using `[Matrix.smul_mulVec, Matrix.one_mulVec, smul_smul, neg_mul, mul_inv_cancel₀ h0, neg_smul, one_smul]`. Establish `h1 : star D.host.xi0 ≠ 0` using `star_ne_zero.2 h0`. Rewrite using `[star_smul, Matrix.mulVec_smul, smul_dotProduct, dotProduct_smul, smul_eq_mul, smul_eq_mul, star_inv₀]`. Clear the denominators using the available nonvanishing facts.
+-/
 example (B : BesLev D ρ) (h0 : D.host.xi0 ≠ 0) : Nonempty (Link B B.L (D.host.xi0⁻¹ • B.ζ)) := by
   refine ⟨⟨(-D.host.xi0) • 1, ?_, ?_⟩⟩
   · rw [Matrix.smul_mulVec, Matrix.one_mulVec, smul_smul, neg_mul, mul_inv_cancel₀ h0, neg_smul, one_smul]
@@ -77,6 +86,9 @@ example (B : BesLev D ρ) (h0 : D.host.xi0 ≠ 0) : Nonempty (Link B B.L (D.host
     rw [star_smul, Matrix.mulVec_smul, smul_dotProduct, dotProduct_smul, smul_eq_mul, smul_eq_mul, star_inv₀]
     field_simp
 
+/- English proof (translation)
+Rewrite using `[jacT_one, jacS_one]`. Both sides reduce to the same expression.
+-/
 example (l : Link B L' ζ') (f : WO B.L J.W₀ → ℂ) :
     conjTr l J.W₀ (jacT ψ J.d B.L (yZero B.L ρ B.ζ) 1 f) = jacS ψ J.d L' (zEll L' ρ ζ') 1 (conjTr l J.W₀ f) := by
   rw [jacT_one, jacS_one]; rfl

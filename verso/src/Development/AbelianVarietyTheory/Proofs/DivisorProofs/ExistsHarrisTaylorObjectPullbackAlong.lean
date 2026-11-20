@@ -11,6 +11,17 @@ open scoped CategoryTheory.Obj
 
 namespace GlobalTheory.UPel.HT.Pull
 
+/- English proof (translation)
+Establish `one : (1 : Over.mk (x ≫ f) ⟶ A).left = (1 : Over.mk x ⟶ A').left ≫ φ` using `(congrArg (fun z => z.left) (map_one (pushHom h (Over.mk x)))).symm`. Establish `sc : spMap (epsScaleR c) ≫ spMap (algebraMap R' (DualNumber R')) = spMap (algebraMap R' (DualNumber R'))`. Use `(Spec.map_comp _ _).symm.trans (congrArg Spec.map ?_)` and prove the remaining obligations. Apply the tactic sequence `ext a <;> simp [epsScaleR, TrivSqZeroExt.algebraMap_eq_inl]`. Establish `fs : spMap (TrivSqZeroExt.fstHom R' R' R').toRingHom ≫ spMap (algebraMap R' (DualNumber R')) = 𝟙 _`.
+
+Use `(Spec.map_comp _ _).symm.trans ((congrArg Spec.map ?_).trans (Spec.map_id _))` and prove the remaining obligations. Use extensionality with `a`. Simplify using `[TrivSqZeroExt.algebraMap_eq_inl]`. Establish `E : (v₀ ≫ act.act b).left = (v ≫ act'.act b).left ≫ φ`. Rewrite using `[Over.comp_left, Over.comp_left, hv, Category.assoc, Category.assoc, hact]`.
+
+Use `and_congr ?_ ?_` and prove the remaining obligations. Rewrite using `[one, hv]`. Use `⟨fun E => by rw [← E]; exact (Category.assoc _ _ _).symm, fun E => h.1.hom_ext ((Category.assoc _ _ _).trans E) ?_⟩` and prove the remaining obligations. Use `((Category.assoc _ _ _).trans ?_).trans (Over.w (1 : Over.mk x ⟶ A')).symm` and prove the remaining obligations. Use `(congrArg (spMap (TrivSqZeroExt.fstHom R' R' R').toRingHom ≫ ·) (Over.w v)).trans ?_` and prove the remaining obligations.
+
+Conclude with `(Category.assoc _ _ _).symm.trans ((congrArg (· ≫ x) fs).trans (Category.id_comp _))`. Rewrite using `[E, hv]`. Use `⟨fun E' => by rw [E']; exact Category.assoc _ _ _, fun E' => h.1.hom_ext (E'.trans (Category.assoc _ _ _).symm) ?_⟩` and prove the remaining obligations. Use `(Over.w (v ≫ act'.act b)).trans (Eq.symm ((Category.assoc _ _ _).trans ?_))` and prove the remaining obligations. Use `(congrArg (spMap (epsScaleR c) ≫ ·) (Over.w v)).trans ?_` and prove the remaining obligations.
+
+Conclude with `(Category.assoc _ _ _).symm.trans (congrArg (· ≫ x) sc)`.
+-/
 theorem tanScal_iff {S S' : Scheme.{0}} (f : S' ⟶ S) {O : Type} [Ring O] (A : Over S) [GrpObj A] (A' : Over S')
     [GrpObj A'] (φ : A'.left ⟶ A.left) (act : GlobalTheory.UPel.HT.OActN O A) (act' : GlobalTheory.UPel.HT.OActN O A')
     (h : IsGrpPullback A' A f φ) (hact : ∀ c, (act'.act c).left ≫ φ = φ ≫ (act.act c).left) (R' : Type) [CommRing R']
@@ -43,6 +54,15 @@ theorem tanScal_iff {S S' : Scheme.{0}} (f : S' ⟶ S) {O : Type} [Ring O] (A : 
     refine (congrArg (spMap (epsScaleR c) ≫ ·) (Over.w v)).trans ?_
     exact (Category.assoc _ _ _).symm.trans (congrArg (· ≫ x) sc)
 
+/- English proof (translation)
+Take `⟨t, ht⟩` from `ht`. Set `T₀ : Over S` to `Over.mk (T.hom ≫ f)`. Set `Z' : Over S'` to `Over.mk ((snd A T₀).left ≫ T.hom)`. Establish `eq : (fst A T₀).left ≫ A.hom = Z'.hom ≫ f` using `(Over.w (fst A T₀)).trans ((Over.w (snd A T₀)).symm.trans (Category.assoc _ _ _).symm)`. Set `a' : Z' ⟶ A'` to `Over.homMk (h.1.lift (fst A T₀).left Z'.hom eq) (h.1.lift_snd _ _ _)`.
+
+Set `t' : Z' ⟶ T` to `Over.homMk (snd A T₀).left rfl`. Set `u : Over.mk (Z'.hom ≫ f) ⟶ A ⊗ T₀` to `Over.homMk (𝟙 _) (by show 𝟙 _ ≫ (A ⊗ T₀).hom = ((snd A T₀).left ≫ T.hom) ≫ f`. Rewrite using `[Category.id_comp, Category.assoc]`. Conclude with `(Over.w (snd A T₀)).symm)`. Establish `hc : (lift (t' ≫ x) a').left ≫ sqMap h.1.w = u.left ≫ (lift (snd A T₀ ≫ pushPt h.1.w x) (fst A T₀)).left` using `sqMap_of h.1.w u _ _ _ _ (Over.OverMorphism.ext (by show ((snd A T₀).left ≫ x.left) ≫ φ = 𝟙 _ ≫ (snd A T₀).left ≫ x.left ≫ φ`.
+
+Rewrite using `[Category.id_comp, Category.assoc]))`. Use the proof step `(Over.OverMorphism.ext (by show h.1.lift (fst A T₀).left Z'.hom eq ≫ φ = 𝟙 _ ≫ (fst A T₀).left`. Rewrite using `[Category.id_comp, h.1.lift_fst]))`. Establish `hψ : (lift a' t').left ≫ (lift (snd A' T ≫ x) (fst A' T)).left = (lift (t' ≫ x) a').left`. Rewrite using `[← Over.comp_left, comp_lift, lift_snd_assoc, lift_fst]`.
+
+Take `⟨t₁, ht₁⟩` from `gen_chartPull (chartPullIn P (fun _ : PUnit => sqMap h.1.w) (fun _ => 1) (lift (snd A' T ≫ x) (fst A' T)).left) t ht`. Use `gen_chartPull (chartPullSame P (fun _ : PUnit => (lift (snd A T₀ ≫ pushPt h.1.w x) (fst A T₀)).left) (fun _ => (lift (snd A' T ≫ x) (fst A' T)).left ≫ sqMap h.1.w) (fun _ => 1) (lift a' t').left fun _ => ?_) t₁ ht₁` and prove the remaining obligations. Rewrite using `[← Category.assoc, hψ, hc]`. Conclude with `(Category.id_comp _).symm`.
+-/
 theorem kerGen {S S' : Scheme.{0}} {f : S' ⟶ S} (A : Over S) [GrpObj A] (A' : Over S') [GrpObj A']
     (φ : A'.left ⟶ A.left) (h : IsGrpPullback A' A f φ) (P : LB (G2 A).left) (T : Over S') (x : T ⟶ A')
     (ht : ∃ t : ((P.pull (sqMap h.1.w)).pull (lift (snd A' T ≫ x) (fst A' T)).left).Gen, t.IsGen) :
@@ -81,6 +101,37 @@ namespace GlobalTheory.UPel.HT.Pull
 
 open GlobalTheory.UPel.HT
 
+/- English proof (translation)
+Introduce `p _ D R _ b N S S' s f o`. Establish `h` using `isGrpPullback_pullback o.A f`. Establish `hact` using `OActN.pullback_left f o.A o.act`. Establish `w` using `h.1.w`. Set `A'` to `(Over.pullback f).obj o.A`.
+
+Set `φ` to `pullback.fst o.A.hom f`. Set `act'` to `OActN.pullback f o.A o.act`. Set `φ₂` to `sqMap w`. Set `P'` to `o.P.pull φ₂`. Set `u : Over.mk (A'.hom ≫ f) ⟶ o.A` to `Over.homMk φ w`.
+
+Set `U : Over.mk ((G2 A').hom ≫ f) ⟶ G2 o.A` to `lift (pushPt w (fst A' A')) (pushPt w (snd A' A'))`. Establish `pa : ∀ {T : Over S'} (x : T ⟶ A') c, pushPt w (x ≫ act'.act c) = pushPt w x ≫ o.act.act c` using `fun x c => Over.OverMorphism.ext (by show (x.left ≫ _) ≫ _ = (x.left ≫ _) ≫ _`. Rewrite using `[Category.assoc, hact, Category.assoc])`. Establish `p1 : ∀ (T : Over S'), pushPt w (1 : T ⟶ A') = 1` using `fun T => map_one (pushHom h T)`. Establish `hP' : P'.IsLB` using `pull_isLB o.isLB φ₂`.
+
+Establish `hΔ : (lift (𝟙 A') (𝟙 A')).left ≫ φ₂ = φ ≫ (lift (𝟙 o.A) (𝟙 o.A)).left` using `sqMap_of w u _ _ _ _ (Over.OverMorphism.ext (by simp [u, φ, pushPt_left])) (Over.OverMorphism.ext (by simp [u, φ, pushPt_left]))`. Establish `hL : LBIso (P'.pull (lift (𝟙 A') (𝟙 A')).left) ((o.P.pull (lift (𝟙 o.A) (𝟙 o.A)).left).pull φ)` using `LBIso.chartPull (chartPullOut o.P (fun _ => φ₂) (fun _ => 1) _ (fun _ => _ ≫ φ₂) fun _ => rfl) (chartPullOut o.P (fun _ => _) (fun _ => 1) φ (fun _ => _ ≫ φ₂) fun _ => hΔ) (GlobalTheory.PolBaseChange.lbIso_refl (pull_isLB o.isLB _))`. Take `⟨hab, hamp, -⟩` from `GlobalTheory.PolPull.pol_pull_of_relAmple_local GlobalTheory.AmpleLocal.relAmple_of_locally S S' o.A A' f φ _ _ (pull_isLB o.isLB _) (pull_isLB hP' _) o.ab h hL`. Establish `r₁ : (lift (1 : A' ⟶ A') (𝟙 A')).left ≫ φ₂ = φ ≫ (lift (1 : o.A ⟶ o.A) (𝟙 o.A)).left` using `sqMap_of w u _ _ _ _ ((p1 A').trans (MonObj.comp_one u).symm) (Over.OverMorphism.ext (by simp [u, φ, pushPt_left]))`. Establish `r₂ : (lift (𝟙 A') (1 : A' ⟶ A')).left ≫ φ₂ = φ ≫ (lift (𝟙 o.A) (1 : o.A ⟶ o.A)).left` using `sqMap_of w u _ _ _ _ (Over.OverMorphism.ext (by simp [u, φ, pushPt_left])) ((p1 A').trans (MonObj.comp_one u).symm)`.
+
+Establish `sw : (lift (snd A' A') (fst A' A')).left ≫ φ₂ = φ₂ ≫ (lift (snd o.A o.A) (fst o.A o.A)).left` using `sqMap_of w U _ _ _ _ (lift_snd _ _).symm (lift_fst _ _).symm`. Establish `ro : ∀ c : D.O, (lift (fst A' A' ≫ act'.act c) (snd A' A')).left ≫ φ₂ = φ₂ ≫ (lift (fst o.A o.A ≫ o.act.act c) (snd o.A o.A)).left` using `fun c => sqMap_of w U _ _ _ _ (by rw [pa, ← Category.assoc, lift_fst]) (lift_snd _ _).symm`. Establish `ro' : ∀ c : D.O, (lift (fst A' A') (snd A' A' ≫ act'.act c)).left ≫ φ₂ = φ₂ ≫ (lift (fst o.A o.A) (snd o.A o.A ≫ o.act.act c)).left` using `fun c => sqMap_of w U _ _ _ _ (lift_fst _ _).symm (by rw [pa, ← Category.assoc, lift_snd])`. Establish `pul : ∀ {Y : Scheme.{0}} (g' : Y ⟶ (G2 A').left) {Y₀ : Scheme.{0}} (k : Y ⟶ Y₀) (g₀ : Y₀ ⟶ (G2 o.A).left), g' ≫ φ₂ = k ≫ g₀ → ChartPull (P'.pull g') (o.P.pull g₀) k` using `fun g' _ k g₀ e => chartPullLinComb o.P φ₂ (fun _ => g') (fun _ => g₀) (fun _ => 1) k fun _ => e`. Use `⟨{ A := A' ab := hab act := act' P := P' isLB := hP' rig₁ := ?_ rig₂ := ?_` and prove the remaining obligations.
+
+Use symmetry as in `:= ?_`. Use `ample := hamp o.ample`. Use `kerP := ?_`. Use `rosati := ?_`. Use `lie := ?_`.
+
+Use `lieRank := ?_`. Use `eta := fun y => GlobalTheory.ObjPull.secPull h (o.eta y)`. Use `eta_add := fun x y => by rw [o.eta_add, map_mul]`. Use `eta_lin := ?_`. Use `eta_ker := fun x => by rw [o.eta_ker, map_one]`.
+
+Use `geom := ?_ },`. Use the proof step `⟨{ φ := φ φ₂ := φ₂ cart := h sq := isSquare_sqMap w act := hact pol := GlobalTheory.PolBaseChange.lbIso_refl hP' eta := fun y => GlobalTheory.ObjPull.secPull_left h _ }⟩⟩`. Take `⟨t, ht⟩` from `o.rig₁`. Conclude with `gen_chartPull (pul _ φ _ r₁) t ht`. Take `⟨t, ht⟩` from `o.rig₂`.
+
+Conclude with `gen_chartPull (pul _ φ _ r₂) t ht`. Conclude with `LBIso.chartPull (ReciprocityTheory.ChartRestriction.G.Geo.Tor.chartPullPull o.P φ₂ φ₂ rfl) (pul _ φ₂ _ sw) o.symm`. Take `⟨e, he, hk⟩` from `o.kerP`. Use `⟨e, he, fun T x hx => ?_⟩` and prove the remaining obligations. Establish `h0` using `hk _ (pushPt w x) (kerGen o.A A' φ h o.P T x hx)`.
+
+Apply `(GlobalTheory.ObjPull.pushEquiv h T).injective` to reduce the goal to its premises. Rewrite using `[map_pow, map_one]`. Conclude with `h0`. Introduce `c`. Conclude with `LBIso.chartPull (pul _ φ₂ _ (ro c)) (pul _ φ₂ _ (ro' _)) (o.rosati c)`.
+
+Introduce `R' _ β x hx v hv`. Take `⟨e, he⟩` from `GlobalTheory.LiePull.exists_pushEquiv h (epsPtR x) (spMap (algebraMap R' (DualNumber R')) ≫ x ≫ f) (Category.assoc _ _ _).symm`. Establish `key` using `fun (c : D.O) (r : R') (v : epsPtR x ⟶ A') => tanScal_iff f o.A A' φ o.act act' h hact R' x c r v (e v) (he v)`. Take `⟨w₀, hw₀, hv₀⟩` from `o.lie R' β (x ≫ f) (by rw [Category.assoc]; exact hx) (e v) ((key _ _ v).1 hv)`. Use `⟨fun i => e.symm (w₀ i), fun i c => (key _ _ _).2 (by rw [MulEquiv.apply_symm_apply]; exact hw₀ i c), ?_⟩` and prove the remaining obligations.
+
+Apply `e.injective` to reduce the goal to its premises. Rewrite using `[hv₀, map_list_prod, List.map_ofFn]`. Simplify using `[Function.comp_def]`. Introduce `k _ _ x β hx i`. Conclude with `(GlobalTheory.LiePull.lieMult_pull _ S S' o.A A' f φ (o.act.toF D) (act'.toF D) h (fun c => hact _) k x _ _).2 (o.lieRank k (x ≫ f) β (by rw [Category.assoc]; exact hx) i)`.
+
+Introduce `c y`. Rewrite using `[o.eta_lin]`. Apply `(GlobalTheory.ObjPull.pushEquiv h _).injective` to reduce the goal to its premises. Apply `Over.OverMorphism.ext` to reduce the goal to its premises. Use `show (GlobalTheory.ObjPull.secPull h (o.eta y ≫ o.act.act c)).left ≫ φ = (GlobalTheory.ObjPull.secPull h (o.eta y) ≫ act'.act c).left ≫ φ`.
+
+Rewrite using `[GlobalTheory.ObjPull.secPull_left, Over.comp_left, Over.comp_left, Category.assoc, hact, reassoc_of% (GlobalTheory.ObjPull.secPull_left h (o.eta y))]`. Introduce `k _ _ x β hx`. Take `⟨I, hI⟩` from `o.geom k (x ≫ f) β (by rw [Category.assoc]; exact hx)`. Use `⟨tateMoveO (GlobalTheory.ObjPull.pushEquiv h (Over.mk x)) (fun c g => ?_) (fun n g g' z hz => ?_) I, fun y => ?_⟩` and prove the remaining obligations. Apply `Over.OverMorphism.ext show (g.left ≫ _) ≫ φ = (g.left ≫ φ) ≫ _` to reduce the goal to its premises.
+
+Rewrite using `[Category.assoc, hact, Category.assoc]`. Conclude with `(GlobalTheory.weilIs_grpPullback_of_comm S S' o.A A' f φ _ _ (pull_isLB o.isLB _) (pull_isLB hP' _) h hL (Over.mk x) n g g' _ _ _ rfl rfl).2 hz`. Rewrite using `[tateMoveO_ev]`. Conclude with `(MulEquiv.eq_symm_apply _).2 ((GlobalTheory.ObjPull.pushEquiv_secPull h _ _).trans (hI y))`.
+-/
 theorem exists_objMap : ∀ (p : ℕ) [Fact p.Prime] (D : GlobalTheory.UPel.HT.Datum p) (R : Type) [CommRing R] (b : GlobalTheory.UPel.HT.Base D R) (N : ℕ) (S S' : Scheme.{0}) (s : S ⟶ Sp R) (f : S' ⟶ S) (o : GlobalTheory.UPel.HT.Obj b N s), ∃ o' : GlobalTheory.UPel.HT.Obj b N (f ≫ s), Nonempty (GlobalTheory.UPel.HT.ObjMap o' o f) := by
   intro p _ D R _ b N S S' s f o
   have h := isGrpPullback_pullback o.A f

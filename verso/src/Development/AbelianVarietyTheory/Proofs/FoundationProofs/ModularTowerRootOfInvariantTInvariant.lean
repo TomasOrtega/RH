@@ -10,6 +10,9 @@ namespace GlobalTheory.TInv
 
 open GlobalTheory.KZ GlobalTheory.CyclotomicQExpansion GlobalTheory.Glue
 
+/- English proof (translation)
+Establish `hint : IsIntegral Ω x` using `IsIntegral.of_pow hL (by rw [hx]; exact isIntegral_one)`. Establish `hdeg` using `IsAlgClosed.degree_eq_one_of_irreducible Ω (minpoly.irreducible hint)`. Take `⟨c, hc⟩` from `RingHom.mem_range.mp (minpoly.mem_range_of_degree_eq_one (hx := hdeg))`. Conclude with `⟨c, hc⟩`.
+-/
 theorem const_of_pow_eq_one {Ω : Type} [Field Ω] [Algebra ℚ Ω] [IsAlgClosed Ω] {ε : Ω →+* ℂ} (X : Tower Ω ε)
     {L : ℕ} (hL : 0 < L) {x : X.K} (hx : x ^ L = 1) : ∃ c : Ω, algebraMap Ω X.K c = x := by
   have hint : IsIntegral Ω x := IsIntegral.of_pow hL (by rw [hx]; exact isIntegral_one)
@@ -17,8 +20,18 @@ theorem const_of_pow_eq_one {Ω : Type} [Field Ω] [Algebra ℚ Ω] [IsAlgClosed
   obtain ⟨c, hc⟩ := RingHom.mem_range.mp (minpoly.mem_range_of_degree_eq_one (hx := hdeg))
   exact ⟨c, hc⟩
 
+/- English proof (translation)
+The claim follows from `((ZMod.intCast_eq_intCast_iff_dvd_sub c y d).mpr h).symm`.
+-/
 theorem cast_eq_of_dvd {d : ℕ} {y c : ℤ} (h : (d : ℤ) ∣ y - c) : (y : ZMod d) = (c : ZMod d) := ((ZMod.intCast_eq_intCast_iff_dvd_sub c y d).mpr h).symm
 
+/- English proof (translation)
+Take `⟨u, v, huv⟩ : IsCoprime ((A₁ : ℤ) ^ 2) ((A₂ : ℤ) ^ 2)` from `(Nat.isCoprime_iff_coprime.mpr hcop).pow`. Use `⟨⟨!![v * (A₂ : ℤ) ^ 2 - u * (A₁ : ℤ) ^ 2, (A₁ : ℤ) * A₂; -4 * u * v * ((A₁ : ℤ) * A₂), v * (A₂ : ℤ) ^ 2 - u * (A₁ : ℤ) ^ 2], ?_⟩, ?_, ?_, ?_, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[Matrix.det_fin_two_of]`. Take the linear combination `(u * (A₁ : ℤ) ^ 2 + v * (A₂ : ℤ) ^ 2 + 1) * huv`. Conclude with `⟨-2 * u * A₁, by show v * (A₂ : ℤ) ^ 2 - u * (A₁ : ℤ) ^ 2 - 1 = _`.
+
+Take the linear combination `huv⟩`. Conclude with `⟨-2 * u * A₁, by show v * (A₂ : ℤ) ^ 2 - u * (A₁ : ℤ) ^ 2 - 1 = _`. Take the linear combination `huv⟩`. Conclude with `⟨-4 * u * v, by show -4 * u * v * ((A₁ : ℤ) * A₂) = _ ring⟩`. Conclude with `⟨1, by show (A₁ : ℤ) * A₂ = _ ring⟩`.
+
+Conclude with `⟨2 * v * A₂, by show v * (A₂ : ℤ) ^ 2 - u * (A₁ : ℤ) ^ 2 + 1 = _`. Take the linear combination `(-1 : ℤ) * huv⟩`. Conclude with `⟨2 * v * A₂, by show v * (A₂ : ℤ) ^ 2 - u * (A₁ : ℤ) ^ 2 + 1 = _`. Take the linear combination `(-1 : ℤ) * huv⟩`. Conclude with `⟨0, by show v * (A₂ : ℤ) ^ 2 - u * (A₁ : ℤ) ^ 2 - (v * (A₂ : ℤ) ^ 2 - u * (A₁ : ℤ) ^ 2) = _ ring⟩`.
+-/
 theorem exists_sl2_scalar_mod_coprime (A₁ A₂ : ℕ) (hcop : Nat.Coprime A₁ A₂) :
     ∃ δ : SL(2, ℤ), (A₁ : ℤ) ∣ δ 0 0 - 1 ∧ (A₁ : ℤ) ∣ δ 1 1 - 1 ∧ ((A₁ : ℤ) * A₂) ∣ δ 1 0 ∧
       ((A₁ : ℤ) * A₂) ∣ δ 0 1 ∧ (A₂ : ℤ) ∣ δ 0 0 + 1 ∧ (A₂ : ℤ) ∣ δ 1 1 + 1 ∧ ((A₁ : ℤ) * A₂) ∣ δ 0 0 - δ 1 1 := by
@@ -50,6 +63,11 @@ theorem exists_sl2_scalar_mod_coprime (A₁ A₂ : ℕ) (hcop : Nat.Coprime A₁
       show v * (A₂ : ℤ) ^ 2 - u * (A₁ : ℤ) ^ 2 - (v * (A₂ : ℤ) ^ 2 - u * (A₁ : ℤ) ^ 2) = _
       ring⟩
 
+/- English proof (translation)
+Establish `hc' : ((δ 1 0 : ℤ) : ZMod M) = 0`. Simplify `hc)` using `using cast_eq_of_dvd (d := M) (c := 0) (by simpa`. Establish `had' : ((δ 0 0 : ℤ) : ZMod M) = ((δ 1 1 : ℤ) : ZMod M)` using `cast_eq_of_dvd had`. Rewrite using `[CongruenceSubgroup.Gamma_mem', map_mul, map_mul, map_mul, map_inv, map_inv, mul_inv_eq_one, mul_assoc, inv_mul_eq_iff_eq_mul]`. Use extensionality with `i j`.
+
+Apply the tactic sequence `fin_cases i <;> fin_cases j <;>`. Apply the tactic sequence `simp [Matrix.mul_apply, Fin.sum_univ_two, ModularGroup.coe_T, hc', had'] <;> ring`.
+-/
 private lemma t_inv_mul_mul_t_mul_inv_mem_gamma {M : ℕ} (δ : SL(2, ℤ)) (hc : (M : ℤ) ∣ δ 1 0) (had : (M : ℤ) ∣ δ 0 0 - δ 1 1) :
     ModularGroup.T⁻¹ * δ * ModularGroup.T * δ⁻¹ ∈ CongruenceSubgroup.Gamma M := by
   have hc' : ((δ 1 0 : ℤ) : ZMod M) = 0 := by
@@ -61,6 +79,19 @@ private lemma t_inv_mul_mul_t_mul_inv_mem_gamma {M : ℕ} (δ : SL(2, ℤ)) (hc 
   fin_cases i <;> fin_cases j <;>
     simp [Matrix.mul_apply, Fin.sum_univ_two, ModularGroup.coe_T, hc', had'] <;> ring
 
+/- English proof (translation)
+Take `⟨e, m, hlm, hM'⟩` from `Nat.exists_eq_pow_mul_and_not_dvd hM.ne' l hl.one_lt.ne'`. Establish `hcl : Nat.Coprime l m` using `(Nat.Prime.coprime_iff_not_dvd hl).mpr hlm`. Establish `hcN : Nat.Coprime l N` using `(Nat.Prime.coprime_iff_not_dvd hl).mpr hlN`. Establish `hcop : Nat.Coprime (N * m) (l ^ (n + e))` using `Nat.Coprime.pow_right _ (Nat.Coprime.mul hcN.symm hcl.symm)`. Take `⟨δ, h1, h2, h3, h4, h5, h6, h7⟩` from `exists_sl2_scalar_mod_coprime (N * m) (l ^ (n + e)) hcop`.
+
+Establish `hN1 : (N : ℤ) ∣ ((N * m : ℕ) : ℤ)` using `Int.natCast_dvd_natCast.mpr (Dvd.intro m rfl)`. Establish `hln : ((l ^ n : ℕ) : ℤ) ∣ ((l ^ (n + e) : ℕ) : ℤ)` using `Int.natCast_dvd_natCast.mpr (pow_dvd_pow l (Nat.le_add_right n e))`. Establish `hln' : ((l ^ n : ℕ) : ℤ) ∣ ((N * m : ℕ) : ℤ) * ((l ^ (n + e) : ℕ) : ℤ)` using `Dvd.dvd.mul_left hln _`. Establish `hMd : (M : ℤ) ∣ ((N * m : ℕ) : ℤ) * ((l ^ (n + e) : ℕ) : ℤ)`. Establish `: M ∣ (N * m) * l ^ (n + e)`.
+
+Rewrite using `[hM']`. Conclude with `⟨N * l ^ n, by ring⟩`. Conclude with `this` after adjusting the coercions. Use `⟨δ, ?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[CongruenceSubgroup.Gamma1_mem]`.
+
+Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Simplify using `using cast_eq_of_dvd (d := N) (dvd_trans hN1 h1)`. Simplify using `using cast_eq_of_dvd (d := N) (dvd_trans hN1 h2)`. Simplify using `using cast_eq_of_dvd (d := N) (c := 0) (by rw [sub_zero]; exact dvd_trans (hN1.mul_right _) h3)`. Rewrite using `[CongruenceSubgroup.Gamma_mem]`.
+
+Simplify using `only [Matrix.SpecialLinearGroup.coe_neg, Matrix.neg_apply]`. Use `⟨?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Simplify using `using cast_eq_of_dvd (d := l ^ n) (y := -δ 0 0) (c := 1) (by rw [← neg_add']; exact (dvd_trans hln h5).neg_right)`. Simplify using `using cast_eq_of_dvd (d := l ^ n) (y := -δ 0 1) (c := 0) (by rw [sub_zero]; exact (dvd_trans hln' h4).neg_right)`. Simplify using `using cast_eq_of_dvd (d := l ^ n) (y := -δ 1 0) (c := 0) (by rw [sub_zero]; exact (dvd_trans hln' h3).neg_right)`.
+
+Simplify using `using cast_eq_of_dvd (d := l ^ n) (y := -δ 1 1) (c := 1) (by rw [← neg_add']; exact (dvd_trans hln h6).neg_right)`. Conclude with `t_inv_mul_mul_t_mul_inv_mem_gamma δ (dvd_trans hMd h3) (dvd_trans hMd h7)`.
+-/
 theorem exists_delta (N M l n : ℕ) (hl : l.Prime) (hlN : ¬ l ∣ N) (hN : 1 ≤ N) (hM : 0 < M) :
     ∃ δ : SL(2, ℤ), δ ∈ CongruenceSubgroup.Gamma1 N ∧ -δ ∈ CongruenceSubgroup.Gamma (l ^ n) ∧
       ModularGroup.T⁻¹ * δ * ModularGroup.T * δ⁻¹ ∈ CongruenceSubgroup.Gamma M := by
@@ -94,11 +125,31 @@ theorem exists_delta (N M l n : ℕ) (hl : l.Prime) (hlN : ¬ l ∣ N) (hN : 1 �
     · simpa using cast_eq_of_dvd (d := l ^ n) (y := -δ 1 1) (c := 1) (by rw [← neg_add']; exact (dvd_trans hln h6).neg_right)
   · exact t_inv_mul_mul_t_mul_inv_mem_gamma δ (dvd_trans hMd h3) (dvd_trans hMd h7)
 
+/- English proof (translation)
+Take `⟨c, rfl⟩` from `const_of_pow_eq_one X hL hx`. Conclude with `(X.sl g).commutes c`.
+-/
 private lemma sl_eq_self_of_pow_eq_one {Ω : Type} [Field Ω] [Algebra ℚ Ω] [IsAlgClosed Ω] {ε : Ω →+* ℂ} (X : Tower Ω ε)
     {L : ℕ} (hL : 0 < L) {x : X.K} (hx : x ^ L = 1) (g : GQ) : X.sl g x = x := by
   obtain ⟨c, rfl⟩ := const_of_pow_eq_one X hL hx
   exact (X.sl g).commutes c
 
+/- English proof (translation)
+Establish `hL : 0 < l ^ n` using `pow_pos hl.pos n`. Establish `hT : ModularGroup.T ∈ CongruenceSubgroup.Gamma1 (N * l ^ n)`. Rewrite using `[CongruenceSubgroup.Gamma1_mem]`. Simplify using `[ModularGroup.coe_T]`. Establish `huL : u ^ (l ^ n) ≠ 0` using `pow_ne_zero _ hu`.
+
+Take `⟨ζ, hTu⟩ : ∃ ζ : X.K, X.sl (ofSL ModularGroup.T) u = ζ * u` from `⟨X.sl (ofSL ModularGroup.T) u / u, (div_mul_cancel₀ _ hu).symm⟩`. Establish `hζL : ζ ^ (l ^ n) = 1`. Establish `h1 : X.sl (ofSL ModularGroup.T) (u ^ (l ^ n)) = u ^ (l ^ n)` using `hinv _ hT`. Rewrite `h1` using `[map_pow, hTu, mul_pow]`. Conclude with `mul_right_cancel₀ huL (h1.trans (one_mul _).symm)`.
+
+Establish `hζfix : ∀ h : GQ, X.sl h ζ = ζ` using `fun h => sl_eq_self_of_pow_eq_one X hL hζL h`. Take `⟨M, hM, hMu⟩` from `X.level u`. Take `⟨δ, hδ1, hδl, hδM⟩` from `exists_delta N M l n hl hlN hN hM`. Take `⟨g, hg, hgL⟩` from `hδ δ hδ1 hδl`. Establish `hsu : X.sl (ofSL δ) u ≠ 0` using `fun h => hu ((X.sl (ofSL δ)).injective (h.trans (map_zero _).symm))`.
+
+Establish `hP0 : u * X.sl (ofSL δ) u ≠ 0` using `mul_ne_zero hu hsu`. Establish `hg0 : g ≠ 0`. Introduce and unpack `rfl`. Rewrite `hgL` using `[zero_pow hL.ne']`. Conclude with `hP0 ((pow_eq_zero_iff hL.ne').mp hgL)`.
+
+Establish `hw : (u * X.sl (ofSL δ) u / g) ^ (l ^ n) = 1`. Rewrite using `[div_pow, hgL, div_self (pow_ne_zero _ hg0)]`. Establish `hTP : X.sl (ofSL ModularGroup.T) (u * X.sl (ofSL δ) u) = u * X.sl (ofSL δ) u`. Rewrite using `[← div_mul_cancel₀ (u * X.sl (ofSL δ) u) hg0, map_mul, sl_eq_self_of_pow_eq_one X hL hw, hg _ hT]`. Take `⟨γ, hγ, hγeq⟩ : ∃ γ ∈ CongruenceSubgroup.Gamma M, δ * ModularGroup.T = ModularGroup.T * γ * δ` from `⟨_, hδM, by group⟩`.
+
+Establish `hTδ : X.sl (ofSL ModularGroup.T) (X.sl (ofSL δ) u) = ζ * X.sl (ofSL δ) u`. Rewrite using `[← X.sl_mul, ← map_mul ofSL δ ModularGroup.T, hγeq, map_mul, map_mul, X.sl_mul, X.sl_mul, hTu, map_mul (X.sl (ofSL γ)), hζfix, hMu γ hγ, map_mul (X.sl (ofSL δ)), hζfix]`. Establish `hsq : ζ ^ 2 = 1`. Establish `h` using `hTP`. Rewrite `h` using `[map_mul, hTu, hTδ]`.
+
+Establish `h2 : ζ ^ 2 * (u * X.sl (ofSL δ) u) = 1 * (u * X.sl (ofSL δ) u)`. Take the linear combination `h`. Conclude with `mul_right_cancel₀ hP0 h2`. Establish `hodd : Odd (l ^ n)` using `(hl.odd_of_ne_two hl2).pow`. Take `⟨k, hk⟩` from `hodd`.
+
+Establish `hζ1 : ζ = 1`. Establish `h3 : ζ ^ (l ^ n) = ζ` using `by rw [hk, pow_succ, pow_mul, hsq, one_pow, one_mul]`. Rewrite using `[← h3, hζL]`. Rewrite using `[hTu, hζ1, one_mul]`.
+-/
 theorem sl_T_eq {Ω : Type} [Field Ω] [Algebra ℚ Ω] [IsAlgClosed Ω] {ε : Ω →+* ℂ} (X : Tower Ω ε) (N l n : ℕ)
     (hl : l.Prime) (hl2 : l ≠ 2) (hlN : ¬ l ∣ N) (hN : 1 ≤ N) (u : X.K) (hu : u ≠ 0)
     (hinv : Inv X (CongruenceSubgroup.Gamma1 (N * l ^ n)) (u ^ (l ^ n)))

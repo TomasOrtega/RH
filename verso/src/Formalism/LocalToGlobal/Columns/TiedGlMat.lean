@@ -9,6 +9,11 @@ namespace Formalism.L2.Col
 
 open Formalism.L2.Forms (blkOf entN InJ blkMat)
 
+/- English proof (translation)
+Proceed by induction on `j generalizing x with`. Consider the case `zero => simp [blkIdx]`. Consider the case `succ j ih`. Simplify using `only [List.replicate_succ, blkIdx]`. Use `split_ifs with h`.
+
+Rewrite using `[Nat.div_eq_of_lt h]`. Use linear arithmetic over natural numbers and integers. Establish `hx : x / t = (x - t) / t + 1` using `Nat.div_eq_sub_div ht (by omega)`. Rewrite using `[ih, hx]`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem glm_blkIdx {t : ℕ} (ht : 0 < t) (j x : ℕ) : blkIdx (List.replicate j t) x = min (x / t) j := by
   induction j generalizing x with
   | zero => simp [blkIdx]
@@ -19,6 +24,9 @@ theorem glm_blkIdx {t : ℕ} (ht : 0 < t) (j x : ℕ) : blkIdx (List.replicate j
     · have hx : x / t = (x - t) / t + 1 := Nat.div_eq_sub_div ht (by omega)
       rw [ih, hx]; omega
 
+/- English proof (translation)
+Simplify using `only [fine, blkOf]`. Use `split_ifs with h`. Both sides reduce to the same expression. Rewrite using `[glm_blkIdx ht, min_eq_left]`. Conclude with `Nat.div_le_of_le_mul (by rw [Nat.mul_comm]; omega)`.
+-/
 theorem glm_fine {a t j x : ℕ} (ht : 0 < t) (hx : x ≤ a + j * t) : fine a (List.replicate j t) x = blkOf a t x := by
   simp only [fine, blkOf]
   split_ifs with h
@@ -30,6 +38,11 @@ section Grp
 
 variable {κ k' : Type} [CommRing κ] [Field k'] {n : ℕ}
 
+/- English proof (translation)
+Establish `hf : ∀ x : Fin n, fine a (List.replicate j t) x = blkOf a t x` using `fun x => glm_fine ht (by have := x.isLt; omega)`. Use `show (M ∈ btG n κ (fine a (List.replicate j t)) ∧ ∀ i : Fin n, i.val < a → (M : Matrix (Fin n) (Fin n) κ) i i = 1) ↔ _`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨h1, h2⟩`. Use `⟨fun x y hxy => h1 (by simp only [hf]; exact hxy), h2⟩` and prove the remaining obligations.
+
+Introduce and unpack `⟨h1, h2⟩`. Use `⟨?_, h2⟩` and prove the remaining obligations. Introduce `x y hxy`. Conclude with `h1 x y (by simpa only [hf] using hxy)`.
+-/
 theorem glm_mem_uniUT {a t j : ℕ} (ht : 0 < t) (hn : n ≤ a + j * t + 1) (M : GL (Fin n) κ) :
     M ∈ uniUT n κ a (List.replicate j t) ↔
       (∀ x y : Fin n, blkOf a t y < blkOf a t x → (M : Matrix (Fin n) (Fin n) κ) x y = 0) ∧
@@ -46,6 +59,11 @@ theorem glm_mem_uniUT {a t j : ℕ} (ht : 0 < t) (hn : n ≤ a + j * t + 1) (M :
     intro x y hxy
     exact h1 x y (by simpa only [hf] using hxy)
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce `h x y hy`. Rewrite using `[← Matrix.one_apply]`. Conclude with `h x y hy`. Introduce `h x y hy`.
+
+Rewrite using `[Matrix.one_apply]`. Conclude with `h x y hy`.
+-/
 theorem glm_mem_fixCol (c : ℕ) (M : GL (Fin n) κ) :
     M ∈ fixCol n κ c ↔ ∀ x y : Fin n, (y : ℕ) = c → (M : Matrix (Fin n) (Fin n) κ) x y = if x = y then 1 else 0 := by
   constructor
@@ -62,6 +80,11 @@ def glmInJ (a t fc : ℕ) (zl : Bool) (M : Matrix (Fin n) (Fin n) κ) : Prop :=
   (zl = true → ∀ x y : Fin n, (y : ℕ) + 1 = n →
     M x y = (if x = y then 1 else 0) ∧ M y x = (if x = y then 1 else 0))
 
+/- English proof (translation)
+Unfold `InJ glmInJ`. Simplify using `only [Matrix.map_apply]`. Establish `h0 : ∀ z : κ, e z = 0 ↔ z = 0` using `fun z => map_eq_zero_iff e e.injective`. Establish `h1 : ∀ z : κ, e z = 1 ↔ z = 1` using `fun z => by rw [← map_one e, e.injective.eq_iff]`. Establish `hd : ∀ (x y : Fin n) (z : κ), e z = (if x = y then 1 else 0) ↔ z = (if x = y then 1 else 0)`.
+
+Introduce `x y z`. Use `split_ifs`. Use `exacts [h1 z, h0 z]`. Simplify using `only [h0, h1, hd]`.
+-/
 theorem glm_InJ_map (e : κ ≃+* k') (a t fc : ℕ) (zl : Bool) (M : Matrix (Fin n) (Fin n) κ) :
     InJ a t fc zl (M.map e) ↔ glmInJ a t fc zl M := by
   unfold InJ glmInJ
@@ -74,6 +97,11 @@ theorem glm_InJ_map (e : κ ≃+* k') (a t fc : ℕ) (zl : Bool) (M : Matrix (Fi
     exacts [h1 z, h0 z]
   simp only [h0, h1, hd]
 
+/- English proof (translation)
+Rewrite using `[Subgroup.mem_inf, glm_mem_uniUT ht hn, glm_mem_fixCol]`. Unfold `glmInJ`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨h1, h2, h3, -⟩`. Conclude with `⟨⟨h1, h2⟩, h3⟩`.
+
+Introduce and unpack `⟨⟨h1, h2⟩, h3⟩`. Conclude with `⟨h1, h2, h3, fun h => by cases h⟩`.
+-/
 theorem glm_InJ_false {a t j : ℕ} (ht : 0 < t) (hn : n ≤ a + j * t + 1) (fc : ℕ) (M : GL (Fin n) κ) :
     glmInJ a t fc false (M : Matrix (Fin n) (Fin n) κ) ↔ M ∈ uniUT n κ a (List.replicate j t) ⊓ fixCol n κ fc := by
   rw [Subgroup.mem_inf, glm_mem_uniUT ht hn, glm_mem_fixCol]
@@ -84,6 +112,11 @@ theorem glm_InJ_false {a t j : ℕ} (ht : 0 < t) (hn : n ≤ a + j * t + 1) (fc 
   · rintro ⟨⟨h1, h2⟩, h3⟩
     exact ⟨h1, h2, h3, fun h => by cases h⟩
 
+/- English proof (translation)
+Rewrite using `[eq_top_iff]`. Introduce `M _`. Rewrite using `[glm_mem_fixCol]`. Introduce `x y hy`. It suffices to derive a contradiction.
+
+Use `y.isLt` as an intermediate fact. Use linear arithmetic over natural numbers and integers.
+-/
 theorem glm_fixCol_top {c : ℕ} (hc : n ≤ c) : fixCol n κ c = ⊤ := by
   rw [eq_top_iff]
   intro M _
@@ -93,6 +126,19 @@ theorem glm_fixCol_top {c : ℕ} (hc : n ≤ c) : fixCol n κ c = ⊤ := by
   have := y.isLt
   omega
 
+/- English proof (translation)
+Rewrite using `[Subgroup.mem_inf, Subgroup.mem_inf, glm_mem_uniUT ht (le_of_eq hn), glm_mem_fixCol, glm_mem_fixCol]`. Unfold `glmInJ`. Establish `hblk : ∀ x y : Fin n, (y : ℕ) = a + j * t → x ≠ y → blkOf a t x < blkOf a t y`. Introduce `x y hy hxy`. Establish `hxl` using `x.isLt`.
+
+Establish `hne : (x : ℕ) ≠ y` using `fun h => hxy (Fin.ext h)`. Establish `hx : (x : ℕ) < a + j * t` using `by omega`. Establish `hyb : blkOf a t y = a + j`. Unfold `blkOf`. Rewrite using `[if_neg (show ¬ (y : ℕ) < a by omega), show (y : ℕ) - a = j * t by omega, Nat.mul_div_cancel _ ht]`.
+
+Rewrite using `[hyb]`. Unfold `blkOf`. Use `split_ifs with h`. Use linear arithmetic over natural numbers and integers. Establish `h2 : ((x : ℕ) - a) / t < j` using `Nat.div_lt_of_lt_mul (by rw [Nat.mul_comm]; omega)`.
+
+Use linear arithmetic over natural numbers and integers. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨h1, h2, h3, h4⟩`. Conclude with `⟨⟨⟨h1, h2⟩, fun x y hy => (h4 rfl x y (by omega)).1⟩, h3⟩`. Introduce and unpack `⟨⟨⟨h1, h2⟩, h5⟩, h3⟩`.
+
+Use `⟨h1, h2, h3, fun _ x y hy => ⟨h5 x y (by omega), ?_⟩⟩` and prove the remaining obligations. Distinguish the cases in `hxy : x = y`. Substitute `hxy` using the available equality. Conclude with `h5 x x (by omega)`. Rewrite using `[if_neg hxy]`.
+
+Conclude with `h1 y x (hblk x y (by omega) hxy)`.
+-/
 theorem glm_InJ_true {a t j : ℕ} (ht : 0 < t) (hn : n = a + j * t + 1) (fc : ℕ) (M : GL (Fin n) κ) :
     glmInJ a t fc true (M : Matrix (Fin n) (Fin n) κ) ↔
       M ∈ (uniUT n κ a (List.replicate j t) ⊓ fixCol n κ (a + j * t)) ⊓ fixCol n κ fc := by
@@ -134,6 +180,9 @@ def glmPsi (e : κ ≃+* k') (σ₀ : K →+* ℂ) (ψ : AddChar κ K) : AddChar
   map_zero_eq_one' := by rw [map_zero, AddChar.map_zero_eq_one, map_one]
   map_add_eq_mul' x y := by rw [map_add, AddChar.map_add_eq_mul, map_mul]
 
+/- English proof (translation)
+Use `show σ₀ (ψ (e.symm (e x))) = σ₀ (ψ x)`. Rewrite using `[e.symm_apply_apply]`.
+-/
 theorem glmPsi_apply (e : κ ≃+* k') (σ₀ : K →+* ℂ) (ψ : AddChar κ K) (x : κ) : glmPsi e σ₀ ψ (e x) = σ₀ (ψ x) := by
   show σ₀ (ψ (e.symm (e x))) = σ₀ (ψ x)
   rw [e.symm_apply_apply]
@@ -143,6 +192,11 @@ open Classical in
 def glmChi (e : κ ≃+* k') (σ₀ : K →+* ℂ) (χ : κˣ →* Kˣ) : MulChar k' ℂ :=
   MulChar.ofUnitHom ((Units.map σ₀.toMonoidHom).comp (χ.comp (Units.map e.symm.toRingHom.toMonoidHom)))
 
+/- English proof (translation)
+Establish `h : e (x : κ) = ((Units.map e.toRingHom.toMonoidHom x : k'ˣ) : k')` using `rfl`. Rewrite using `[h]`. Unfold `glmChi`. Rewrite using `[MulChar.ofUnitHom_coe]`. Establish `h2 : (Units.map e.symm.toRingHom.toMonoidHom) (Units.map e.toRingHom.toMonoidHom x) = x`.
+
+Use `ext`. Simplify using the standard rewrite rules. Simplify using `only [MonoidHom.comp_apply, h2]`. Both sides reduce to the same expression.
+-/
 theorem glmChi_apply (e : κ ≃+* k') (σ₀ : K →+* ℂ) (χ : κˣ →* Kˣ) (x : κˣ) :
     glmChi e σ₀ χ (e (x : κ)) = σ₀ ((χ x : Kˣ) : K) := by
   have h : e (x : κ) = ((Units.map e.toRingHom.toMonoidHom x : k'ˣ) : k') := rfl
@@ -199,6 +253,11 @@ def equalBlockPositionsEquiv {a t j s : ℕ} (ht : 0 < t) (hs : s < j) (hn : a +
     rw [h3, Nat.mul_comm] at h4
     omega
 
+/- English proof (translation)
+Establish `hA : ((blkDet n κ (coarse a (List.replicate j t)) (s + 1) M : κˣ) : κ) = ((M.1 : Matrix (Fin n) (Fin n) κ).toSquareBlock (fun i => coarse a (List.replicate j t) i.val) (s + 1)).det` using `rfl`. Rewrite using `[hA, RingEquiv.map_det, RingEquiv.mapMatrix_apply]`. Use `(Matrix.det_submatrix_equiv_self (equalBlockPositionsEquiv ht hs hn) _).symm.trans (congrArg Matrix.det ?_)` and prove the remaining obligations. Use extensionality with `c d`. Establish `hc : a + s * t + (c : ℕ) < n` using `((equalBlockPositionsEquiv ht hs hn) c).1.isLt`.
+
+Establish `hd : a + s * t + (d : ℕ) < n` using `((equalBlockPositionsEquiv ht hs hn) d).1.isLt`. Simplify using `only [blkMat, entN, dif_pos (And.intro hc hd)]`. Both sides reduce to the same expression.
+-/
 theorem glm_blkDet (e : κ ≃+* k') {a t j s : ℕ} (ht : 0 < t) (hs : s < j) (hn : a + j * t ≤ n)
     (M : ↥(blockUT n κ a (List.replicate j t))) :
     e ((blkDet n κ (coarse a (List.replicate j t)) (s + 1) M : κˣ) : κ) =
@@ -213,6 +272,21 @@ theorem glm_blkDet (e : κ ≃+* k') {a t j s : ℕ} (ht : 0 < t) (hs : s < j) (
   simp only [blkMat, entN, dif_pos (And.intro hc hd)]
   rfl
 
+/- English proof (translation)
+Establish `hsum : e (supSum a S (M.1 : Matrix (Fin n) (Fin n) κ)) = ∑ x : Fin n, ∑ y : Fin n, if (x : ℕ) + 1 = y ∧ (y : ℕ) < a ∧ (y : ℕ) ≠ skip then ((M.1 : Matrix (Fin n) (Fin n) κ).map e) x y else 0`. Unfold `supSum`. Rewrite using `[map_sum]`. Use `Finset.sum_congr rfl fun x _ => ?_` and prove the remaining obligations. Rewrite using `[map_sum]`.
+
+Use `Finset.sum_congr rfl fun y _ => ?_` and prove the remaining obligations. Establish `hc : ((x : ℕ) + 1 = y ∧ (y : ℕ) < a ∧ (x : ℕ) ∈ S) ↔ ((x : ℕ) + 1 = y ∧ (y : ℕ) < a ∧ (y : ℕ) ≠ skip)`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨h1, h2, h3⟩`. Conclude with `⟨h1, h2, by rw [← h1]; exact (hS x (by omega)).1 h3⟩`.
+
+Introduce and unpack `⟨h1, h2, h3⟩`. Conclude with `⟨h1, h2, (hS x (by omega)).2 (by rw [h1]; exact h3)⟩`. Rewrite using `[apply_ite e, map_zero, Matrix.map_apply]`. Conclude with `if_congr hc rfl rfl`. Establish `hM : ∀ i ∈ Finset.range j, σ₀ (((χ i) (blkDet n κ (coarse a (List.replicate j t)) (i + 1) (Subgroup.inclusion (uniUT_le_blockUT n κ a (List.replicate j t)) M)) : Kˣ) : K) = glmChi e σ₀ (χ i) (Formalism.L2.Forms.blkMat a t i ((M.1 : Matrix (Fin n) (Fin n) κ).map e)).det`.
+
+Introduce `i hi`. Establish `h1` using `glm_blkDet e ht (Finset.mem_range.1 hi) hn (Subgroup.inclusion (uniUT_le_blockUT n κ a (List.replicate j t)) M)`. Establish `h2` using `glmChi_apply e σ₀ (χ i) (blkDet n κ (coarse a (List.replicate j t)) (i + 1) (Subgroup.inclusion (uniUT_le_blockUT n κ a (List.replicate j t)) M))`. Rewrite `h2` using `[h1]`. Conclude with `h2.symm`.
+
+Establish `hsup : ((supChar ψ n a (List.replicate j t) S M : Kˣ) : K) = ψ (supSum a S (M.1 : Matrix (Fin n) (Fin n) κ))` using `rfl`. Establish `hdet : ((detChar χ n a (List.replicate j t) (Subgroup.inclusion (uniUT_le_blockUT n κ a (List.replicate j t)) M) : Kˣ) : K) = ∏ i ∈ Finset.range j, (((χ i) (blkDet n κ (coarse a (List.replicate j t)) (i + 1) (Subgroup.inclusion (uniUT_le_blockUT n κ a (List.replicate j t)) M)) : …`. Unfold `detChar`. Rewrite using `[MonoidHom.finset_prod_apply, Units.coe_prod, List.length_replicate]`. Both sides reduce to the same expression.
+
+Establish `hL : ((lamGen ψ χ n a (List.replicate j t) S M : Kˣ) : K) = ((supChar ψ n a (List.replicate j t) S M : Kˣ) : K) * ((detChar χ n a (List.replicate j t) (Subgroup.inclusion (uniUT_le_blockUT n κ a (List.replicate j t)) M) : Kˣ) : K)` using `rfl`. Rewrite using `[hL, hsup, hdet, map_mul, map_prod]`. Unfold `Formalism.L2.Forms.lamJ`. Use `congr 1`. Rewrite using `[← glmPsi_apply e σ₀ ψ, hsum]`.
+
+Conclude with `Finset.prod_congr rfl hM`.
+-/
 theorem glm_lamGen (e : κ ≃+* k') (σ₀ : K →+* ℂ) (ψ : AddChar κ K) (χ : ℕ → κˣ →* Kˣ) {a t j skip : ℕ} (S : Finset ℕ)
     (ht : 0 < t) (hn : a + j * t ≤ n) (hS : ∀ x, x + 1 < a → (x ∈ S ↔ x + 1 ≠ skip))
     (M : ↥(uniUT n κ a (List.replicate j t))) :

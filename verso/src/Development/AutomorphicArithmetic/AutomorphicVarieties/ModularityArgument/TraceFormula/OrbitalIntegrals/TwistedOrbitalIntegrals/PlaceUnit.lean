@@ -4,6 +4,13 @@ open MeasureTheory NumberField IsDedekindDomain PositivityTheory.Rg.Tf.Loc Upper
 open PositivityTheory.Rg.Tf.Geo (mapGL incFin galFin)
 open scoped ENNReal
 
+/- English proof (translation)
+Introduce `hM hU hD hL hI hB F E _ _ _ _ _ _ σ hσ v w hw hur n _ _ _ _ mE mF hE hF vE vF`. Take `⟨i1, i2, i3, i4, s, hs, hr, h1, h2, h3⟩` from `hD F E σ hσ v w hw`. Use `letI : MeasurableSpace (GL (Fin n) (w.1.adicCompletion E)) := borel _`. Use `haveI : BorelSpace (GL (Fin n) (w.1.adicCompletion E)) := ⟨rfl⟩`. Use `haveI : CharZero (v.adicCompletion F) := algebraRat.charZero _`.
+
+Take `⟨hH, hP⟩` from `@hL F E _ _ _ _ _ _ σ hσ v w hw i1 i2 i3 i4 s hs hr h1 h2 n _ _ _ _ mE mF hE hF _ _`. Establish `hc : Continuous (mapGL n (Pi.evalRingHom (fun w : PlacesOver E v => w.1.adicCompletion E) w))` using `Continuous.units_map _ (continuous_id.matrix_map (continuous_apply w))`. Establish `hm` using `@hM hB _ _ _ _ _ _ _ _ _ _ _ i1 i2 i3 i4 (h3 hur) s hs n _ _ _ _ _ mF hH hF (by rw [Measure.map_apply hc.measurable (hU _ n).1.measurableSet, ← hI.2 F E v w hw n, vE]) (by rw [hI.1 F v n, vF])`. Use `hP _ (hU _ n).2.2 _ (hU _ n).2.2 hm` as an intermediate fact. Rewrite using `[hI.2 F E v w hw n, ← hI.1 F v n]`.
+
+Conclude with `this`.
+-/
 theorem UpperTheory.V.Z.Tf.Orb.placeUnit :
     UpperTheory.V.Z.Tf.Orb.UnitMatch → UpperTheory.V.Z.Tf.Orb.UnitSB → UpperTheory.V.Z.Tf.Orb.PlaceData → UpperTheory.V.Z.Tf.Orb.PlaceOfLocal → UpperTheory.V.Z.Tf.Orb.PlaceInt → UpperTheory.V.Z.Tf.Orb.PlaceUnit := by
   intro hM hU hD hL hI hB F E _ _ _ _ _ _ σ hσ v w hw hur n _ _ _ _ mE mF hE hF vE vF

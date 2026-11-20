@@ -5,6 +5,13 @@ open scoped Matrix TensorProduct
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Introduce `R E _ _ _ c β _ _ J g`. Establish `hg : ((g : GL β E) : Matrix β β E)ᵀ * J * ((g : GL β E) : Matrix β β E).map c = J` using `g.2`. Establish `h1 : ((g : GL β E) : Matrix β β E) * (((g : GL β E)⁻¹ : GL β E) : Matrix β β E) = 1` using `Units.mul_inv _`. Establish `h2 : (((g : GL β E)⁻¹ : GL β E) : Matrix β β E) * ((g : GL β E) : Matrix β β E) = 1` using `Units.inv_mul _`. Establish `hm1 : (1 : Matrix β β E).map c = 1` using `Matrix.map_one _ (map_zero c) (map_one c)`.
+
+Establish `hm0 : (0 : Matrix β β E).map c = 0` using `Matrix.map_zero _ (map_zero c)`. Use `⟨⟨⟨Matrix.fromBlocks ((g : GL β E) : Matrix β β E) 0 0 1, Matrix.fromBlocks (((g : GL β E)⁻¹ : GL β E) : Matrix β β E) 0 0 1, ?_, ?_⟩, ?_⟩, rfl⟩` and prove the remaining obligations. Rewrite using `[Matrix.fromBlocks_multiply]`. Simplify using `[h1, Matrix.fromBlocks_one]`. Rewrite using `[Matrix.fromBlocks_multiply]`.
+
+Simplify using `[h2, Matrix.fromBlocks_one]`. Use `show (Matrix.fromBlocks ((g : GL β E) : Matrix β β E) 0 0 1)ᵀ * dbl J * (Matrix.fromBlocks ((g : GL β E) : Matrix β β E) 0 0 1).map c = dbl J`. Rewrite using `[dbl, Matrix.fromBlocks_transpose, Matrix.fromBlocks_map, hm0, hm1, Matrix.fromBlocks_multiply, Matrix.fromBlocks_multiply]`. Simplify using `[hg]`.
+-/
 theorem unitary_diag_one_mem_dbl : ∀ (R E : Type) [CommRing R] [CommRing E] [Algebra R E] (c : E →ₐ[R] E) (β : Type)
     [Fintype β] [DecidableEq β] (J : Matrix β β E) (g : UG c J), ∃ gd : UG c (dbl J),
     ((gd : GL (β ⊕ β) E) : Matrix (β ⊕ β) (β ⊕ β) E) = Matrix.fromBlocks ((g : GL β E) : Matrix β β E) 0 0 1 := by

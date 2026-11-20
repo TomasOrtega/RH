@@ -10,6 +10,39 @@ namespace Formalism.HermitianLattices.Ext.PrimesInProgressions
 
 open Formalism.HermitianLattices.Ext.LogarithmicIntegralBounds Formalism.ZeroFreeDirichlet
 
+/- English proof (translation)
+Establish `hA2 : 0 < A₁ + 2` using `by linarith`. Establish `hℓ0 : 0 < ℓ` using `by linarith`. Establish `hAℓ : 0 < (A₁ + 2) * ℓ` using `mul_pos hA2 hℓ0`. Take `⟨g, hgdef⟩ : ∃ g, g = Real.log (ℓ + 2)` from `⟨_, rfl⟩`. Take `⟨r, hr⟩ : ∃ r, r = 2 / c2` from `⟨_, rfl⟩`.
+
+Take `⟨s, hs⟩ : ∃ s, s = 4 * (B + 1) / cZ` from `⟨_, rfl⟩`. Take `⟨μ, hμdef⟩ : ∃ μ, μ = Y / ((A₁ + 2) * ℓ)` from `⟨_, rfl⟩`. Establish `hl2` using `Real.log_two_gt_d9`. Establish `hl2'` using `Real.log_two_lt_d9`. Establish `hg4 : Real.log 4 ≤ g` using `by rw [hgdef]; exact Real.log_le_log (by norm_num) (by linarith)`.
+
+Establish `hl4 : Real.log 4 = 2 * Real.log 2`. Rewrite using `[show (4 : ℝ) = 2 * 2 by norm_num, Real.log_mul (by norm_num) (by norm_num)]; ring`. Establish `hg : 1.38 ≤ g` using `by linarith`. Establish `hg0 : 0 ≤ g` using `by linarith`. Establish `hr0 : 0 ≤ r` using `by rw [hr]; exact (div_pos two_pos hc2).le`.
+
+Establish `hs0 : 0 ≤ s` using `by rw [hs]; exact (div_pos (by linarith) hcZ).le`. Establish `hQ : (A₁ + 2) * (a + 1 + 2 / c2) + (B + 1) / (cZ / (4 * (A₁ + 2))) = (A₁ + 2) * (a + 1 + r + s)`. Rewrite using `[hr, hs]`. Clear the denominators using the available nonvanishing facts. Rewrite `hY` using `[hQ, ← hgdef]`.
+
+Establish `hμP : (a + 1 + r + s) * g ≤ μ`. Rewrite using `[hμdef, le_div_iff₀ hAℓ]`. Establish `: (a + 1 + r + s) * g * ((A₁ + 2) * ℓ) = (A₁ + 2) * (a + 1 + r + s) * ℓ * g` using `by ring`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hμ0 : 0 ≤ μ` using `le_trans (mul_nonneg (by linarith) hg0) hμP`.
+
+Establish `hw0 : 0 ≤ w` using `by linarith`. Establish `hwl : w * μ ≤ w * Y / L`. Rewrite using `[le_div_iff₀ hL0]`. Combine the equalities or inequalities in the displayed calculation. Establish `hwμ : w * ((a + 1 + r + s) * g) ≤ w * μ` using `mul_le_mul_of_nonneg_left hμP hw0`.
+
+Establish `hn1 : 0 ≤ (n : ℝ) - 1`. Establish `: (1 : ℝ) ≤ n` using `by exact_mod_cast hn`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hk : a + Real.log 2 ≤ 3 / 4 * (g * (a + 1))`. Combine the linear relations using `[mul_nonneg (sub_nonneg.mpr hg) (sub_nonneg.mpr ha)]`.
+
+Establish `T1 : (a + Real.log 2) * ((n : ℝ) - 1) ≤ 3 / 4 * (w * g * (a + 1))`. Combine the equalities or inequalities in the displayed calculation. Establish `hlθ : 0 ≤ Real.log (1 / θ)` using `Real.log_nonneg (by rw [le_div_iff₀ hθ0]; linarith)`. Establish `hlog1θ : Real.log (1 / θ) = -Real.log θ` using `by rw [one_div, Real.log_inv]`. Establish `hwr : 2 * Real.log (1 / θ) ≤ w * r`.
+
+Establish `h` using `mul_le_mul_of_nonneg_right hw2 hr0`. Establish `: c2 * Real.log (1 / θ) * r = 2 * Real.log (1 / θ)` using `by rw [hr]; field_simp`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `T2 : -Real.log θ ≤ 3 / 4 * (w * g * r)`. Establish `h3 : 3 / 4 * g * (2 * Real.log (1 / θ)) ≤ 3 / 4 * g * (w * r)` using `mul_le_mul_of_nonneg_left hwr (mul_nonneg (by norm_num) hg0)`.
+
+Establish `h4 : Real.log (1 / θ) ≤ 3 / 4 * g * (2 * Real.log (1 / θ))`. Combine the linear relations using `[mul_nonneg (sub_nonneg.mpr hg) hlθ]`. Establish `: 3 / 4 * g * (w * r) = 3 / 4 * (w * g * r)` using `by ring`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hws : 4 * (B + 1) ≤ w * s`.
+
+Establish `h` using `mul_le_mul_of_nonneg_right hw1 hs0`. Establish `: cZ * s = 4 * (B + 1)` using `by rw [hs]; field_simp`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `T3 : (B + 1) * g ≤ 3 / 4 * (w * g * s)`. Establish `h7 : 3 / 4 * g * (4 * (B + 1)) ≤ 3 / 4 * g * (w * s)` using `mul_le_mul_of_nonneg_left hws (mul_nonneg (by norm_num) hg0)`.
+
+Establish `h8 : 0 ≤ g * (B + 1)` using `mul_nonneg hg0 (by linarith)`. Establish `: 3 / 4 * g * (w * s) = 3 / 4 * (w * g * s)` using `by ring`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `T4 : cZ / (4 * (A₁ + 2)) * Y / ℓ ≤ 1 / 4 * (w * μ)`. Establish `he : cZ / (4 * (A₁ + 2)) * Y / ℓ = cZ / 4 * μ` using `by rw [hμdef]; field_simp`.
+
+Rewrite using `[he]`. Use `mul_le_mul_of_nonneg_right hw1 hμ0` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hexp : w * ((a + 1 + r + s) * g) = w * g * (a + 1) + w * g * r + w * g * s` using `by ring`. Establish `hlogL : Real.log L ≤ Real.log (A₁ + 2) + g`.
+
+Combine the equalities or inequalities in the displayed calculation. Use `Real.log_le_log hℓ0 (by linarith : ℓ ≤ ℓ + 2)` as an intermediate fact. Rewrite using `[hgdef]`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hlogLB : Real.log L * (B + 1) ≤ (Real.log (A₁ + 2) + g) * (B + 1)` using `mul_le_mul_of_nonneg_right hlogL (by linarith)`.
+
+Establish `hLHS : L ^ (B + 1) * Real.exp (-(w * Y / L)) = Real.exp (Real.log L * (B + 1) + -(w * Y / L))`. Rewrite using `[Real.rpow_def_of_pos hL0, ← Real.exp_add]`. Establish `hRHS : (A₁ + 2) ^ (B + 1) * (Real.exp (-((a + Real.log 2) * ((n : ℝ) - 1))) * θ * Real.exp (-(cZ / (4 * (A₁ + 2)) * Y / ℓ))) = Real.exp (Real.log (A₁ + 2) * (B + 1) + (-((a + Real.log 2) * ((n : ℝ) - 1)) + Real.log θ + -(cZ / (4 * (A₁ + 2)) * Y / ℓ)))`. Rewrite using `[Real.rpow_def_of_pos hA2]`. Simplify using `only [Real.exp_add, Real.exp_log hθ0]`.
+
+Rewrite using `[hLHS, hRHS]`. Apply `Real.exp_le_exp.mpr` to reduce the goal to its premises. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 private theorem pow_mul_exp_neg_le_of_large_Y (a B c2 θ cZ A₁ ℓ Y L w : ℝ) (n : ℕ) (ha : 1 ≤ a) (hB : 0 ≤ B)
     (hc2 : 0 < c2) (hcZ : 0 < cZ) (hA₁ : 1 ≤ A₁) (hθ0 : 0 < θ) (hθ1 : θ ≤ 1) (hℓ : 2 ≤ ℓ) (hL0 : 0 < L)
     (hLℓ : L ≤ (A₁ + 2) * ℓ) (hw1 : cZ ≤ w) (hw2 : c2 * Real.log (1 / θ) ≤ w) (hn : 1 ≤ n)
@@ -109,6 +142,49 @@ private theorem pow_mul_exp_neg_le_of_large_Y (a B c2 θ cZ A₁ ℓ Y L w : ℝ
   apply Real.exp_le_exp.mpr
   linarith
 
+/- English proof (translation)
+Choose the witnesses or unpack the hypotheses as in `⟨rep, hrep⟩ : ∃ rep : DirichletCharacter ℂ M → ℤ → ℂ, ∀ χ k, k ∈ (V χ).image (fun ρ => ⌊ρ.im⌋) → rep χ k ∈ V χ ∧ ⌊(rep χ k).im⌋ = k := by`. Use `⟨fun χ k => if h : ∃ ρ ∈ V χ, ⌊ρ.im⌋ = k then h.choose else 0, ?_⟩` and prove the remaining obligations. Introduce `χ k hk`. Establish `h : ∃ ρ ∈ V χ, ⌊ρ.im⌋ = k` using `Finset.mem_image.mp hk`. Simplify using `only [dif_pos h]`.
+
+Conclude with `h.choose_spec`. Establish `hper : ∀ χ, ∑ ρ ∈ V χ, (m χ ρ : ℝ) ≤ (((V χ).image (fun ρ => ⌊ρ.im⌋)).card : ℝ) * K`. Introduce `χ`. Combine the equalities or inequalities in the displayed calculation. Apply `Finset.sum_le_sum` to reduce the goal to its premises.
+
+Introduce `k hk`. Take `⟨hr1, hr2⟩` from `hrep χ k hk`. Use `le_trans ?_ (hwinV χ (rep χ k) hr1)` and prove the remaining obligations. Use `push_cast`. Apply `Finset.sum_le_sum_of_subset_of_nonneg` to reduce the goal to its premises.
+
+Introduce `ρ hρ`. Rewrite `hρ`, the goal using `[Finset.mem_filter]`. Use `⟨hρ.1, ?_⟩` and prove the remaining obligations. Establish `hk' : ⌊ρ.im⌋ = k` using `hρ.2`. Establish `e1` using `Int.floor_le ρ.im`.
+
+Establish `e2` using `Int.lt_floor_add_one ρ.im`. Establish `e3` using `Int.floor_le (rep χ k).im`. Establish `e4` using `Int.lt_floor_add_one (rep χ k).im`. Rewrite `e1`, `e2` using `[hk']`. Rewrite `e3`, `e4` using `[hr2]`.
+
+Rewrite using `[abs_le]`. Apply the tactic sequence `constructor <;> linarith`. Introduce `ρ _ _`. Conclude with `Nat.cast_nonneg _`. Use `_ = (((V χ).image (fun ρ => ⌊ρ.im⌋)).card : ℝ) * K := by rw [Finset.sum_const, nsmul_eq_mul]`.
+
+Establish `hpar : ∀ r : ℤ, (∑ χ : DirichletCharacter ℂ M, ((((V χ).image (fun ρ => ⌊ρ.im⌋)).filter (fun k => k % 2 = r)).card : ℝ)) ≤ R`. Introduce `r`. Establish `hcard` using `Finset.card_sigma (Finset.univ : Finset (DirichletCharacter ℂ M)) (fun χ => ((V χ).image (fun ρ => ⌊ρ.im⌋)).filter (fun k => k % 2 = r))`. Establish `hinj : Set.InjOn (fun q : (Σ _ : DirichletCharacter ℂ M, ℤ) => (q.1, rep q.1 q.2)) ((Finset.univ : Finset (DirichletCharacter ℂ M)).sigma (fun χ => ((V χ).image (fun ρ => ⌊ρ.im⌋)).filter (fun k => k % 2 = r)) : Set _)`. Introduce and unpack `⟨χ, k⟩ hq ⟨χ', k'⟩ hq' heq`.
+
+Simplify using `only [Prod.mk.injEq] at heq`. Take `⟨h1, h2⟩` from `heq`. Substitute `h1` using the available equality. Establish `m1` using `Finset.mem_filter.mp (Finset.mem_sigma.mp hq).2`. Establish `m2` using `Finset.mem_filter.mp (Finset.mem_sigma.mp hq').2`.
+
+Establish `f1` using `(hrep χ k m1.1).2`. Establish `f2` using `(hrep χ k' m2.1).2`. Rewrite `f1` using `[h2]`. Establish `hkk : k = k'` using `f1.symm.trans f2`. Substitute `hkk` using the available equality.
+
+Both sides reduce to the same expression. Establish `hS` using `hsep (((Finset.univ : Finset (DirichletCharacter ℂ M)).sigma (fun χ => ((V χ).image (fun ρ => ⌊ρ.im⌋)).filter (fun k => k % 2 = r))).image (fun q => (q.1, rep q.1 q.2))) ?_ ?_`. Rewrite `hS` using `[Finset.card_image_of_injOn hinj, hcard]`. Move the coercions through the operations in `at hS`. Conclude with `hS`.
+
+Introduce `p hp`. Take `⟨⟨χ, k⟩, hq, rfl⟩` from `Finset.mem_image.mp hp`. Conclude with `(hrep χ k (Finset.mem_filter.mp (Finset.mem_sigma.mp hq).2).1).1`. Introduce `p hp p' hp' hne hfst`. Take `⟨⟨χ, k⟩, hq, rfl⟩` from `Finset.mem_image.mp hp`.
+
+Take `⟨⟨χ', k'⟩, hq', rfl⟩` from `Finset.mem_image.mp hp'`. Establish `hχ : χ = χ'` using `hfst`. Substitute `hχ` using the available equality. Establish `hkk : k ≠ k'`. Introduce `h`.
+
+Apply `hne` to reduce the goal to its premises. Substitute `h` using the available equality. Both sides reduce to the same expression. Establish `m1` using `Finset.mem_filter.mp (Finset.mem_sigma.mp hq).2`. Establish `m2` using `Finset.mem_filter.mp (Finset.mem_sigma.mp hq').2`.
+
+Establish `f1` using `(hrep χ k m1.1).2`. Establish `f2` using `(hrep χ k' m2.1).2`. Establish `e1` using `Int.floor_le (rep χ k).im`. Establish `e2` using `Int.lt_floor_add_one (rep χ k).im`. Establish `e3` using `Int.floor_le (rep χ k').im`.
+
+Establish `e4` using `Int.lt_floor_add_one (rep χ k').im`. Rewrite `e1`, `e2` using `[f1]`. Rewrite `e3`, `e4` using `[f2]`. Establish `hr1 : k % 2 = r` using `m1.2`. Establish `hr2 : k' % 2 = r` using `m2.2`.
+
+Establish `hpar2 : k + 2 ≤ k' ∨ k' + 2 ≤ k` using `by omega`. Use `show 1 ≤ |(rep χ k).im - (rep χ k').im|`. Break down `hpar2 with h | h` into its components or cases. Establish `h' : (k : ℝ) + 2 ≤ k'` using `by exact_mod_cast h`. Rewrite using `[abs_sub_comm]`.
+
+Conclude with `le_abs.mpr (Or.inl (by linarith))`. Establish `h' : (k' : ℝ) + 2 ≤ k` using `by exact_mod_cast h`. Conclude with `le_abs.mpr (Or.inl (by linarith))`. Establish `htot : ∀ χ, ((V χ).image (fun ρ => ⌊ρ.im⌋)).card ≤ (((V χ).image (fun ρ => ⌊ρ.im⌋)).filter (fun k => k % 2 = 0)).card + (((V χ).image (fun ρ => ⌊ρ.im⌋)).filter (fun k => k % 2 = 1)).card`. Introduce `χ`.
+
+Establish `hsub : (V χ).image (fun ρ => ⌊ρ.im⌋) ⊆ ((V χ).image (fun ρ => ⌊ρ.im⌋)).filter (fun k => k % 2 = 0) ∪ ((V χ).image (fun ρ => ⌊ρ.im⌋)).filter (fun k => k % 2 = 1)`. Introduce `k hk`. Rewrite using `[Finset.mem_union, Finset.mem_filter, Finset.mem_filter]`. Break down `Int.emod_two_eq_zero_or_one k with h | h` into its components or cases. Conclude with `Or.inl ⟨hk, h⟩`.
+
+Conclude with `Or.inr ⟨hk, h⟩`. Conclude with `(Finset.card_le_card hsub).trans (Finset.card_union_le _ _)`. Combine the equalities or inequalities in the displayed calculation. Apply `Finset.sum_le_sum` to reduce the goal to its premises. Introduce `χ _`.
+
+Apply `mul_le_mul_of_nonneg_right _ hK` to reduce the goal to its premises. Conclude with `htot χ` after adjusting the coercions. Use `_ = ((∑ χ, ((((V χ).image (fun ρ => ⌊ρ.im⌋)).filter (fun k => k % 2 = 0)).card : ℝ)) + (∑ χ, ((((V χ).image (fun ρ => ⌊ρ.im⌋)).filter (fun k => k % 2 = 1)).card : ℝ))) * K := by`. Rewrite using `[← Finset.sum_add_distrib, Finset.sum_mul]`. Use `_ ≤ (R + R) * K := mul_le_mul_of_nonneg_right (add_le_add (hpar 0) (hpar 1)) hK`.
+
+Use `_ = 2 * R * K := by ring`.
+-/
 private theorem sum_zero_multiplicity_le_two_mul_of_separated {M : ℕ} [NeZero M] (V : DirichletCharacter ℂ M → Finset ℂ)
     (m : DirichletCharacter ℂ M → ℂ → ℕ) (R K : ℝ) (hK : 0 ≤ K)
     (hwinV : ∀ χ, ∀ ρ ∈ V χ, ((∑ ρ' ∈ (V χ).filter (fun ρ' => |ρ'.im - ρ.im| ≤ 1), m χ ρ' : ℕ) : ℝ) ≤ K)
@@ -237,6 +313,93 @@ private theorem sum_zero_multiplicity_le_two_mul_of_separated {M : ℕ} [NeZero 
     _ ≤ (R + R) * K := mul_le_mul_of_nonneg_right (add_le_add (hpar 0) (hpar 1)) hK
     _ = 2 * R * K := by ring
 
+/- English proof (translation)
+Establish `hM8 : 8 ≤ M` using `Nat.le_of_dvd (Nat.pos_of_ne_zero (NeZero.ne M)) h8`. Establish `hM3 : 3 ≤ M` using `by omega`. Establish `hMr : (8 : ℝ) ≤ M` using `by exact_mod_cast hM8`. Establish `hl2` using `Real.log_two_gt_d9`. Establish `hℓ : 2 ≤ Real.log M`.
+
+Establish `h8' : Real.log 8 = 3 * Real.log 2`. Rewrite using `[show (8 : ℝ) = 2 * 2 * 2 by norm_num, Real.log_mul (by norm_num) (by norm_num), Real.log_mul (by norm_num) (by norm_num)]`. Expand and normalize the polynomial expressions, which then agree. Use `Real.log_le_log (by norm_num) hMr` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
+
+Establish `hpow1 : 1 ≤ (M : ℝ) ^ A₁` using `Real.one_le_rpow (by linarith) (by linarith)`. Take `⟨L, hLdef⟩ : ∃ L, L = Real.log ((M : ℝ) * ((M : ℝ) ^ A₁ + 3))` from `⟨_, rfl⟩`. Rewrite `hθ` using `[← hLdef]`. Establish `hLpos : 0 < L` using `by rw [hLdef]; exact Real.log_pos (by nlinarith)`. Establish `hLT : L ≤ (A₁ + 2) * Real.log M`.
+
+Establish `hstep : (M : ℝ) * ((M : ℝ) ^ A₁ + 3) ≤ (M : ℝ) ^ (A₁ + 2)`. Rewrite using `[Real.rpow_add (by linarith : (0 : ℝ) < M), Real.rpow_two]`. Use polynomial arithmetic with `[mul_nonneg (sub_nonneg.mpr hpow1) (by nlinarith : (0 : ℝ) ≤ (M : ℝ) * ((M : ℝ) - 1)), mul_nonneg (sub_nonneg.mpr hMr) (by linarith : (0 : ℝ) ≤ (M : ℝ))]`. Rewrite using `[hLdef]`. Combine the equalities or inequalities in the displayed calculation.
+
+Establish `hcZ : 0 < cZ`. Establish `hch` using `(Classical.choose_spec Formalism.ZeroFreeDirichlet.zFRDirichlet).1`. Unfold `cZ`. Conclude with `lt_min hch (by norm_num)`. Establish `hcZc : cZ ≤ Classical.choose Formalism.ZeroFreeDirichlet.zFRDirichlet` using `by unfold cZ; exact min_le_left _ _`.
+
+Establish `hcZ20 : cZ ≤ 1 / 20` using `by unfold cZ; exact min_le_right _ _`. Establish `hy0 : 0 < y` using `by linarith`. Establish `hlogt : ∀ χ, ∀ ρ ∈ Z χ, 0 < Real.log ((M : ℝ) * (|ρ.im| + 2)) ∧ Real.log ((M : ℝ) * (|ρ.im| + 2)) ≤ L`. Introduce `χ ρ hρ`. Establish `him` using `(hZ χ ρ hρ).2.2`.
+
+Establish `ha0` using `abs_nonneg ρ.im`. Prove the components needed by the constructor for the conclusion. Conclude with `Real.log_pos (by nlinarith)`. Rewrite using `[hLdef]`. Conclude with `Real.log_le_log (mul_pos (by linarith) (by linarith)) (mul_le_mul_of_nonneg_left (by linarith) (by linarith))`.
+
+Establish `hw : ∀ χ, ∀ ρ ∈ Z χ, ¬ InRegion cZ M ρ → cZ ≤ L * (1 - ρ.re)`. Introduce `χ ρ hρ hnr`. Unfold `InRegion at hnr`. Use `push_neg at hnr`. Take `⟨h1, h2⟩` from `hlogt χ ρ hρ`.
+
+Establish `h3 : cZ / Real.log ((M : ℝ) * (|ρ.im| + 2)) < 1 - ρ.re` using `by linarith`. Rewrite `h3` using `[div_lt_iff₀ h1]`. Establish `h4 : 0 < 1 - ρ.re`. Assume the negation of the conclusion as `hc`. Use `push_neg at hc`.
+
+Use the polynomial consequences of the given equalities and inequalities. Use polynomial arithmetic with `[mul_le_mul_of_nonneg_left h2 h4.le]`. Establish `hZFR` using `(Classical.choose_spec Formalism.ZeroFreeDirichlet.zFRDirichlet).2`. Establish `hwide : ∀ s : ℂ, InRegion cZ M s → InRegion (Classical.choose Formalism.ZeroFreeDirichlet.zFRDirichlet) M s`. Introduce `s hs`.
+
+Unfold `InRegion at hs ⊢`. Establish `hl : 0 < Real.log ((M : ℝ) * (|s.im| + 2))` using `Real.log_pos (by nlinarith [abs_nonneg s.im])`. Establish `: cZ / Real.log ((M : ℝ) * (|s.im| + 2)) ≤ Classical.choose Formalism.ZeroFreeDirichlet.zFRDirichlet / Real.log ((M : ℝ) * (|s.im| + 2))`. Rewrite using `[div_eq_mul_inv, div_eq_mul_inv]`. Conclude with `mul_le_mul_of_nonneg_right hcZc (inv_nonneg.mpr hl.le)`.
+
+Conclude with `(sub_le_sub_left this 1).trans hs`. Establish `hin : ∀ χ, ∀ ρ ∈ Z χ, InRegion cZ M ρ → ((m χ ρ : ℝ) - (excW (eOf M) χ ρ : ℝ)) * y ^ (ρ.re - 1) ≤ 0`. Introduce `χ ρ hρ hir`. Take `⟨hsq, hne, him0, hder, _⟩` from `hZFR M χ ρ (hwide ρ hir) (hZ χ ρ hρ).1`. Establish `hm1 : m χ ρ = 1` using `hms χ ρ hρ hder`.
+
+Establish `hρeq : ((ρ.re : ℝ) : ℂ) = ρ` using `Complex.ext (by simp) (by simp [him0])`. Establish `hre1 : ρ.re < 1`. Assume the negation of the conclusion as `hc`. Use `push_neg at hc`. Conclude with `DirichletCharacter.LFunction_ne_zero_of_one_le_re χ (Or.inl hne) hc (hZ χ ρ hρ).1.2`.
+
+Establish `hlow : 1 - 1 / (8 * Real.log M) < ρ.re`. Establish `hir'` using `hir`. Unfold `InRegion at hir'`. Rewrite `hir'` using `[him0, abs_zero, zero_add]`. Establish `hlM : 0 < Real.log M` using `by linarith`.
+
+Establish `hl2M : Real.log M < Real.log ((M : ℝ) * 2)` using `Real.log_lt_log (by linarith) (by linarith)`. Establish `hpos2 : 0 < Real.log ((M : ℝ) * 2)` using `by linarith`. Establish `hq : 1 / (8 * Real.log M) * Real.log M = 1 / 8` using `by field_simp`. Establish `hq2 : 1 / (8 * Real.log M) * Real.log M < 1 / (8 * Real.log M) * Real.log ((M : ℝ) * 2)` using `mul_lt_mul_of_pos_left hl2M (by positivity)`. Establish `: cZ / Real.log ((M : ℝ) * 2) < 1 / (8 * Real.log M)`.
+
+Rewrite using `[div_lt_iff₀ hpos2]`. Combine the linear equalities and inequalities to obtain the conclusion. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hExc : IsExcPair χ ρ.re` using `⟨hsq, hne, by rw [hρeq]; exact (hZ χ ρ hρ).1.2, hlow, hre1⟩`. Establish `hirc : InRegion cZ M ((ρ.re : ℝ) : ℂ)` using `by rw [hρeq]; exact hir`.
+
+Establish `hex : ∃ p : DirichletCharacter ℂ M × ℝ, IsExcPair p.1 p.2 ∧ InRegion cZ M (p.2 : ℂ)` using `⟨(χ, ρ.re), hExc, hirc⟩`. Establish `heOf : eOf M = some hex.choose` using `by unfold eOf; rw [dif_pos hex]`. Take `⟨⟨χ₁, β₁⟩, hq⟩ : ∃ q, hex.choose = q` from `⟨_, rfl⟩`. Establish `hspec` using `hex.choose_spec`. Rewrite `hspec`, `heOf` using `[hq]`.
+
+Take `⟨⟨_, hne1, hL1, _, _⟩, hir1⟩` from `hspec`. Establish `hz1 : IsLZero χ₁ (β₁ : ℂ)` using `⟨Or.inl hne1, hL1⟩`. Take `⟨hχeq, hβeq⟩` from `(hZFR M χ₁ (β₁ : ℂ) (hwide _ hir1) hz1).2.2.2.2 χ ρ (hwide ρ hir) (hZ χ ρ hρ).1`. Establish `hexc1 : excW (eOf M) χ ρ = 1`. Rewrite using `[heOf]`.
+
+Simplify using `only [excW]`. Rewrite using `[if_pos ⟨hχeq, hβeq⟩]`. Rewrite using `[hexc1, hm1]`. Simplify using the standard rewrite rules. Establish `hout : ∀ χ, ∀ ρ ∈ Z χ, ¬ InRegion cZ M ρ → ((m χ ρ : ℝ) - (excW (eOf M) χ ρ : ℝ)) * y ^ (ρ.re - 1) ≤ (m χ ρ : ℝ) * Real.exp (-(L * (1 - ρ.re) * Real.log y / L))`.
+
+Introduce `χ ρ _ _`. Establish `hdiv : L * (1 - ρ.re) * Real.log y / L = (1 - ρ.re) * Real.log y`. Rewrite using `[mul_assoc]`. Conclude with `mul_div_cancel_left₀ _ hLpos.ne'`. Establish `hyr : y ^ (ρ.re - 1) = Real.exp (-(L * (1 - ρ.re) * Real.log y / L))`.
+
+Rewrite using `[Real.rpow_def_of_pos hy0, hdiv]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hyr]`. Establish `hE` using `Real.exp_pos (-(L * (1 - ρ.re) * Real.log y / L))`.
+
+Establish `hex0 : (0 : ℝ) ≤ excW (eOf M) χ ρ` using `Nat.cast_nonneg _`. Use polynomial arithmetic with `[mul_nonneg hex0 hE.le]`. Take `⟨W, hWdef⟩ : ∃ W : DirichletCharacter ℂ M → Finset ℂ, W = fun χ => (Z χ).filter (fun ρ => ¬ InRegion cZ M ρ)` from `⟨_, rfl⟩`. Establish `hWmem : ∀ χ ρ, ρ ∈ W χ ↔ ρ ∈ Z χ ∧ ¬ InRegion cZ M ρ`. Introduce `χ ρ`.
+
+Simplify using `only [hWdef, Finset.mem_filter]`. Establish `hsplit : ∀ χ, ∑ ρ ∈ Z χ, ((m χ ρ : ℝ) - (excW (eOf M) χ ρ : ℝ)) * y ^ (ρ.re - 1) ≤ ∑ ρ ∈ W χ, (m χ ρ : ℝ) * Real.exp (-(L * (1 - ρ.re) * Real.log y / L))`. Introduce `χ`. Rewrite using `[← Finset.sum_filter_add_sum_filter_not (Z χ) (InRegion cZ M)]`. Establish `h1 : ∑ ρ ∈ (Z χ).filter (fun ρ => InRegion cZ M ρ), ((m χ ρ : ℝ) - (excW (eOf M) χ ρ : ℝ)) * y ^ (ρ.re - 1) ≤ 0` using `Finset.sum_nonpos (fun ρ hρ => hin χ ρ (Finset.mem_filter.mp hρ).1 (Finset.mem_filter.mp hρ).2)`.
+
+Establish `h2` using `Finset.sum_le_sum (s := (Z χ).filter (fun ρ => ¬ InRegion cZ M ρ)) (fun ρ hρ => hout χ ρ (Finset.mem_filter.mp hρ).1 (Finset.mem_filter.mp hρ).2)`. Establish `h3 : W χ = (Z χ).filter (fun ρ => ¬ InRegion cZ M ρ)` using `by rw [hWdef]`. Rewrite using `[h3]`. Combine the linear equalities and inequalities to obtain the conclusion. Take `⟨lev, hlev⟩ : ∃ lev : ℂ → ℕ, lev = fun ρ => ⌈L * (1 - ρ.re)⌉₊ - 1` from `⟨_, rfl⟩`.
+
+Establish `hlev' : ∀ ρ, lev ρ = ⌈L * (1 - ρ.re)⌉₊ - 1` using `by intro ρ; rw [hlev]`. Establish `hlevinfo : ∀ χ, ∀ ρ ∈ W χ, lev ρ < ⌈L⌉₊ ∧ (lev ρ : ℝ) < L * (1 - ρ.re) ∧ L * (1 - ρ.re) ≤ (lev ρ : ℝ) + 1`. Introduce `χ ρ hρ`. Take `⟨hρZ, hnr⟩` from `(hWmem χ ρ).mp hρ`. Establish `hwc` using `hw χ ρ hρZ hnr`.
+
+Establish `hre1` using `(hZ χ ρ hρZ).2.1`. Establish `hw0 : 0 < L * (1 - ρ.re)` using `by linarith`. Establish `hwL : L * (1 - ρ.re) ≤ L` using `mul_le_of_le_one_right hLpos.le (by linarith)`. Establish `h1 : 0 < ⌈L * (1 - ρ.re)⌉₊` using `Nat.ceil_pos.mpr hw0`. Establish `h2 : ⌈L * (1 - ρ.re)⌉₊ ≤ ⌈L⌉₊` using `Nat.ceil_mono hwL`.
+
+Establish `h3 : (⌈L * (1 - ρ.re)⌉₊ : ℝ) < L * (1 - ρ.re) + 1` using `Nat.ceil_lt_add_one hw0.le`. Establish `h4 : L * (1 - ρ.re) ≤ (⌈L * (1 - ρ.re)⌉₊ : ℝ)` using `Nat.le_ceil _`. Establish `hc : ((⌈L * (1 - ρ.re)⌉₊ - 1 : ℕ) : ℝ) = (⌈L * (1 - ρ.re)⌉₊ : ℝ) - 1` using `Nat.cast_pred h1`. Rewrite using `[hlev', hc]`. Use `⟨by omega, by linarith, by linarith⟩` and prove the remaining obligations.
+
+Establish `hK0 : 0 ≤ |C₁| * L` using `mul_nonneg (abs_nonneg _) hLpos.le`. Establish `hLB : 0 < L ^ (B + 1)` using `Real.rpow_pos_of_pos hLpos _`. Establish `hlevel : ∀ j : ℕ, ∑ χ, ∑ ρ ∈ (W χ).filter (fun ρ => lev ρ = j), (m χ ρ : ℝ) * Real.exp (-(L * (1 - ρ.re) * Real.log y / L)) ≤ 2 * |C₁| * C * (A₁ + 2) ^ (B + 1) * θ * Real.exp (-(cZ / (4 * (A₁ + 2)) * Real.log y / Real.log M)) * Real.exp a * (1 / 2) ^ j`. Introduce `j`. Establish `hVsub : ∀ χ, ∀ ρ ∈ (W χ).filter (fun ρ => lev ρ = j), ρ ∈ Z χ ∧ ¬ InRegion cZ M ρ ∧ lev ρ = j`.
+
+Introduce `χ ρ hρ`. Take `⟨h1, h2⟩` from `Finset.mem_filter.mp hρ`. Conclude with `⟨((hWmem χ ρ).mp h1).1, ((hWmem χ ρ).mp h1).2, h2⟩`. Establish `hpt : ∀ χ, ∀ ρ ∈ (W χ).filter (fun ρ => lev ρ = j), Real.exp (-(L * (1 - ρ.re) * Real.log y / L)) ≤ (A₁ + 2) ^ (B + 1) * (Real.exp (-((a + Real.log 2) * (((j + 1 : ℕ) : ℝ) - 1))) * θ * Real.exp (-(cZ / (4 * (A₁ + 2)) * Real.log y / Real.log M))) / L ^ (B + 1)`. Introduce `χ ρ hρ`.
+
+Take `⟨hρZ, hnr, hlj⟩` from `hVsub χ ρ hρ`. Establish `hinfo` using `hlevinfo χ ρ ((hWmem χ ρ).mpr ⟨hρZ, hnr⟩)`. Rewrite `hinfo` using `[hlj]`. Establish `H` using `pow_mul_exp_neg_le_of_large_Y a B c2 θ cZ A₁ (Real.log M) (Real.log y) L (L * (1 - ρ.re)) (j + 1) ha hB hc2 hcZ hA₁ hθ0 hθ1 hℓ hLpos hLT (hw χ ρ hρZ hnr) (hθ χ ρ hρZ hnr) (by omega) (by push_cast; linarith [hinfo.2.1]) hL`. Rewrite using `[le_div_iff₀ hLB]`.
+
+Combine the linear relations using `[H]`. Establish `hwinV : ∀ χ, ∀ ρ ∈ (W χ).filter (fun ρ => lev ρ = j), ((∑ ρ' ∈ ((W χ).filter (fun ρ => lev ρ = j)).filter (fun ρ' => |ρ'.im - ρ.im| ≤ 1), m χ ρ' : ℕ) : ℝ) ≤ |C₁| * L`. Introduce `χ ρ hρ`. Establish `hρZ` using `(hVsub χ ρ hρ).1`. Establish `hsubZ : (W χ).filter (fun ρ => lev ρ = j) ⊆ Z χ` using `fun x hx => (hVsub χ x hx).1`.
+
+Establish `h1 : (∑ ρ' ∈ ((W χ).filter (fun ρ => lev ρ = j)).filter (fun ρ' => |ρ'.im - ρ.im| ≤ 1), m χ ρ') ≤ ∑ ρ' ∈ (Z χ).filter (fun ρ' => |ρ'.im - ρ.im| ≤ 1), m χ ρ'` using `Finset.sum_le_sum_of_subset (Finset.filter_subset_filter _ hsubZ)`. Establish `h2` using `hwin χ ρ.im`. Take `⟨hlg, hlgL⟩` from `hlogt χ ρ hρZ`. Combine the equalities or inequalities in the displayed calculation. Conclude with `h1` after adjusting the coercions.
+
+Use `_ ≤ C₁ * Real.log ((M : ℝ) * (|ρ.im| + 2)) := h2`. Use `_ ≤ |C₁| * Real.log ((M : ℝ) * (|ρ.im| + 2)) := mul_le_mul_of_nonneg_right (le_abs_self _) hlg.le`. Use `_ ≤ |C₁| * L := mul_le_mul_of_nonneg_left hlgL (abs_nonneg _)`. Establish `hsepS : ∀ S : Finset (DirichletCharacter ℂ M × ℂ), (∀ p ∈ S, p.2 ∈ (W p.1).filter (fun ρ => lev ρ = j)) → (∀ p ∈ S, ∀ p' ∈ S, p ≠ p' → p.1 = p'.1 → 1 ≤ |p.2.im - p'.2.im|) → (S.card : ℝ) ≤ C * Real.exp (a * ((j : ℝ) + 1)) * L ^ B`. Introduce `S hS hsep'`.
+
+Establish `hcond : ∀ p ∈ S, 1 / 2 ≤ p.2.re ∧ p.2.re ≤ 1 ∧ Real.log ((M : ℝ) * ((M : ℝ) ^ A₁ + 3)) * (1 - p.2.re) ≤ (j : ℝ) + 1 ∧ |p.2.im| ≤ (M : ℝ) ^ A₁ + 3 ∧ IsLZero p.1 p.2`. Introduce `p hp`. Take `⟨hρZ, hnr, hlj⟩` from `hVsub p.1 p.2 (hS p hp)`. Establish `hinfo` using `hlevinfo p.1 p.2 ((hWmem p.1 p.2).mpr ⟨hρZ, hnr⟩)`. Rewrite `hinfo` using `[hlj]`.
+
+Establish `hwc` using `hw p.1 p.2 hρZ hnr`. Take `⟨hz, hre1, him⟩` from `hZ p.1 p.2 hρZ`. Establish `hre2 : p.2.re ≤ 1`. Assume the negation of the conclusion as `hc`. Use `push_neg at hc`.
+
+Use the polynomial consequences of the given equalities and inequalities. Use `⟨by linarith, hre2, ?_, by linarith, hz⟩` and prove the remaining obligations. Rewrite using `[← hLdef]`. Conclude with `hinfo.2.2`. Establish `hd` using `hdens M ((M : ℝ) ^ A₁ + 3) ((j : ℝ) + 1) S hM3 (by linarith) hcond hsep'`.
+
+Rewrite `hd` using `[← hLdef]`. Conclude with `hd`. Establish `hcnt` using `sum_zero_multiplicity_le_two_mul_of_separated (fun χ => (W χ).filter (fun ρ => lev ρ = j)) m (C * Real.exp (a * ((j : ℝ) + 1)) * L ^ B) (|C₁| * L) hK0 hwinV hsepS`. Establish `hexpj : Real.exp (a * ((j : ℝ) + 1)) * Real.exp (-((a + Real.log 2) * (((j + 1 : ℕ) : ℝ) - 1))) = Real.exp a * (1 / 2 : ℝ) ^ j`. Establish `h2 : (1 / 2 : ℝ) ^ j = Real.exp (j * Real.log (1 / 2))`.
+
+Rewrite using `[Real.exp_nat_mul, Real.exp_log (by norm_num)]`. Rewrite using `[h2, ← Real.exp_add, ← Real.exp_add]`. Use `congr 1`. Rewrite using `[one_div, Real.log_inv]`. Use `push_cast`.
+
+Expand and normalize the polynomial expressions, which then agree. Establish `hG0 : 0 ≤ (A₁ + 2) ^ (B + 1) * (Real.exp (-((a + Real.log 2) * (((j + 1 : ℕ) : ℝ) - 1))) * θ * Real.exp (-(cZ / (4 * (A₁ + 2)) * Real.log y / Real.log M)))` using `mul_nonneg (Real.rpow_nonneg (by linarith) _) (mul_nonneg (mul_nonneg (Real.exp_pos _).le hθ0.le) (Real.exp_pos _).le)`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Finset.sum_mul]`. Conclude with `Finset.sum_congr rfl (fun χ _ => by rw [Finset.sum_mul])`.
+
+Use `_ ≤ (2 * (C * Real.exp (a * ((j : ℝ) + 1)) * L ^ B) * (|C₁| * L)) * ((A₁ + 2) ^ (B + 1) * (Real.exp (-((a + Real.log 2) * (((j + 1 : ℕ) : ℝ) - 1))) * θ * Real.exp (-(cZ / (4 * (A₁ + 2)) * Real.log y / Real.log M))) / L ^ (B + 1)) := mul_le_mul_of_nonneg_right hcnt (div_nonneg hG0 …`. Use `_ = 2 * |C₁| * C * (A₁ + 2) ^ (B + 1) * θ * Real.exp (-(cZ / (4 * (A₁ + 2)) * Real.log y / Real.log M)) * (Real.exp (a * ((j : ℝ) + 1)) * Real.exp (-((a + Real.log 2) * (((j + 1 : ℕ) : ℝ) - 1)))) * ((L ^ B * L) / L ^ (B + 1)) := by ring`. Use `_ = 2 * |C₁| * C * (A₁ + 2) ^ (B + 1) * θ * Real.exp (-(cZ / (4 * (A₁ + 2)) * Real.log y / Real.log M)) * (Real.exp a * (1 / 2 : ℝ) ^ j) * 1 := by`. Rewrite using `[hexpj, ← Real.rpow_add_one hLpos.ne', div_self hLB.ne']`. Use `_ = 2 * |C₁| * C * (A₁ + 2) ^ (B + 1) * θ * Real.exp (-(cZ / (4 * (A₁ + 2)) * Real.log y / Real.log M)) * Real.exp a * (1 / 2) ^ j := by`.
+
+Expand and normalize the polynomial expressions, which then agree. Establish `hWlev : ∀ χ, ∑ ρ ∈ W χ, (m χ ρ : ℝ) * Real.exp (-(L * (1 - ρ.re) * Real.log y / L)) = ∑ j ∈ Finset.range ⌈L⌉₊, ∑ ρ ∈ (W χ).filter (fun ρ => lev ρ = j), (m χ ρ : ℝ) * Real.exp (-(L * (1 - ρ.re) * Real.log y / L))`. Introduce `χ`. Conclude with `(Finset.sum_fiberwise_of_maps_to (s := W χ) (t := Finset.range ⌈L⌉₊) (g := lev) (fun ρ hρ => Finset.mem_range.mpr (hlevinfo χ ρ hρ).1) (fun ρ => (m χ ρ : ℝ) * Real.exp (-(L * (1 - ρ.re) * Real.log y / L)))).symm`. Establish `hC0 : 0 ≤ C` using `by linarith`.
+
+Establish `hrp0 : 0 ≤ (A₁ + 2) ^ (B + 1)` using `Real.rpow_nonneg (by linarith) _`. Establish `hE0` using `Real.exp_pos (-(cZ / (4 * (A₁ + 2)) * Real.log y / Real.log M))`. Establish `hQ0 : 0 ≤ 2 * |C₁| * C * (A₁ + 2) ^ (B + 1) * θ * Real.exp (-(cZ / (4 * (A₁ + 2)) * Real.log y / Real.log M)) * Real.exp a` using `mul_nonneg (mul_nonneg (mul_nonneg (mul_nonneg (mul_nonneg (mul_nonneg (by norm_num) (abs_nonneg _)) hC0) hrp0) hθ0.le) hE0.le) (Real.exp_pos _).le`. Establish `hX0 : 0 ≤ 4 * |C₁| * C * (A₁ + 2) ^ (B + 1) * θ * Real.exp (-(cZ / (4 * (A₁ + 2)) * Real.log y / Real.log M))` using `mul_nonneg (mul_nonneg (mul_nonneg (mul_nonneg (mul_nonneg (by norm_num) (abs_nonneg _)) hC0) hrp0) hθ0.le) hE0.le`. Establish `hea : Real.exp a ≤ Real.exp (a + a * cZ / 2)`.
+
+Apply `Real.exp_le_exp.mpr` to reduce the goal to its premises. Use `mul_nonneg (by linarith : (0 : ℝ) ≤ a) hcZ.le` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem zeroSum_core (a B C : ℝ) (ha : 1 ≤ a) (hB : 0 ≤ B) (hC : 1 ≤ C)
     (hdens : ∀ (M : ℕ) [NeZero M] (T v : ℝ) (S : Finset (DirichletCharacter ℂ M × ℂ)), 3 ≤ M → 2 ≤ T →
       (∀ p ∈ S, 1 / 2 ≤ p.2.re ∧ p.2.re ≤ 1 ∧ Real.log ((M : ℝ) * T) * (1 - p.2.re) ≤ v ∧ |p.2.im| ≤ T ∧

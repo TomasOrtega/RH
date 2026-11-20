@@ -10,6 +10,11 @@ open GlobalTheory.WeilM GlobalTheory.AdelicU GlobalTheory.LFun GlobalTheory.Inde
 
 namespace GlobalTheory.RestPure
 
+/- English proof (translation)
+Establish `hu : evI F (pairA F 0 1) = 0` using `by show InfiniteAdeleRing.ringEquiv_mixedSpace F 0 = 0`. Conclude with `map_zero _`. Establish `h1 : evFin F v (pairA F 0 1) = 1` using `by show Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.evalV F v 1 = 1`. Conclude with `map_one _`. Establish `h` using `congrFun (hz _ hu) i`.
+
+Simplify using `only [Pi.smul_apply, smul_eq_mul, Pi.zero_apply] at h`. Establish `h2` using `congrArg (evFin F v) h`. Rewrite `h2` using `[map_mul, h1, one_mul, map_zero]`. Then use the resulting hypothesis.
+-/
 theorem evFin_eq_zero {F : Type} [Field F] [NumberField F] {κ : Type} (z : κ → AF F) (hz : At (evI F) z) (v : Pl F) (i : κ) :
     evFin F v (z i) = 0 := by
 
@@ -24,6 +29,11 @@ theorem evFin_eq_zero {F : Type} [Field F] [NumberField F] {κ : Type} (z : κ �
   have h2 := congrArg (evFin F v) h
   rwa [map_mul, h1, one_mul, map_zero] at h2
 
+/- English proof (translation)
+Introduce `F _ _ κ _ φ hφ hcof f`. Use `⟨fun x z hz => ?_, ?_⟩` and prove the remaining obligations. Establish `hc : ∀ v i, evFin F v ((x + z) i) = evFin F v (x i)` using `fun v i => by`. Rewrite using `[Pi.add_apply, map_add, evFin_eq_zero z hz v i, add_zero]`. Simplify using `only [hc]`.
+
+Establish `hg : (fun y : κ → FiniteAdeleRing (𝓞 F) F => ∏ᶠ v, φ v fun i => Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.evalV F v (y i)) ∈ SB (κ → FiniteAdeleRing (𝓞 F) F)` using `⟨GlobalTheory.WeilM.isLocallyConstant_finprod_evalV φ hφ hcof, GlobalTheory.AdelicCoordSupport.hasCompactSupport_finprod φ hφ hcof⟩`. Use `show _ ∈ Submodule.span ℂ _`. Conclude with `Submodule.subset_span ⟨f, _, hg, rfl⟩`.
+-/
 theorem rest_evI_finprod : ∀ (F : Type) [Field F] [NumberField F] (κ : Type) [Fintype κ] (φ : ∀ v : Pl F, (κ → Fv F v) → ℂ),
     (∀ v, φ v ∈ SB _) → (∀ᶠ v in cofinite, φ v = Set.indicator {x | ∀ i, x i ∈ v.adicCompletionIntegers F} 1) →
     ∀ f : SInf F κ, Rest (evI F) (⇑f) (fun x => ∏ᶠ v, φ v fun i => evFin F v (x i)) := by

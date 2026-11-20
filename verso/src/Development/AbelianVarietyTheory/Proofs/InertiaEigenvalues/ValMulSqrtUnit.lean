@@ -21,11 +21,19 @@ set_option synthInstance.maxHeartbeats 400000
 
 namespace GlobalTheory.UnitOverP
 
+/- English proof (translation)
+Rewrite `h` using `[map_pow]`. Conclude with `((pow_eq_one_iff).1 h).resolve_right hm`.
+-/
 theorem val_eq_one_of_pow (A : ValuationSubring ℂ) {z : ℂ} {m : ℕ} (hm : m ≠ 0) (h : A.valuation (z ^ m) = 1) :
     A.valuation z = 1 := by
   rw [map_pow] at h
   exact ((pow_eq_one_iff).1 h).resolve_right hm
 
+/- English proof (translation)
+Establish `hP : P.asIdeal ∈ nonZeroDivisors (Ideal (𝓞 K))` using `mem_nonZeroDivisors_of_ne_zero P.ne_bot`. Use `set h := Fintype.card (ClassGroup (𝓞 K))`. Establish `hPh : P.asIdeal ^ h ∈ nonZeroDivisors (Ideal (𝓞 K))` using `pow_mem hP h`. Establish `h1 : ClassGroup.mk0 ⟨P.asIdeal ^ h, hPh⟩ = 1`. Establish `e : (⟨P.asIdeal ^ h, hPh⟩ : nonZeroDivisors (Ideal (𝓞 K))) = ⟨P.asIdeal, hP⟩ ^ h` using `Subtype.ext (by simp)`.
+
+Rewrite using `[e, map_pow, pow_card_eq_one]`. Use `haveI := (ClassGroup.mk0_eq_one_iff hPh).1 h1`. Conclude with `⟨h, Fintype.card_pos, _, Ideal.span_singleton_generator _⟩`.
+-/
 theorem exists_gen {K : Type} [Field K] [NumberField K] (P : HeightOneSpectrum (𝓞 K)) :
     ∃ h : ℕ, 0 < h ∧ ∃ α : 𝓞 K, Ideal.span {α} = P.asIdeal ^ h := by
   have hP : P.asIdeal ∈ nonZeroDivisors (Ideal (𝓞 K)) := mem_nonZeroDivisors_of_ne_zero P.ne_bot
@@ -43,6 +51,53 @@ namespace GlobalTheory.UnitOverP
 
 open Formalism.L2.Host in
 
+/- English proof (translation)
+Introduce `D V W B hB χ hχ p A hp hpA bad hpb hbad P hP`. Establish `hpP : ((p : ℕ) : 𝓞 D.host.E) ∉ P.asIdeal`. Introduce `h`. Apply `hP` to reduce the goal to its premises. Take `⟨r, rfl⟩` from `hpb`.
+
+Rewrite using `[Nat.cast_mul]`. Conclude with `Ideal.mul_mem_right _ _ h`. Establish `hinf : ∀ τ, HasInfExp D (B.mu * B.eta⁻¹) τ (((B.w.c τ : ℚ) - ((B.w.p τ : ℚ) - B.w.q τ) / 2 + 1 / 2) + -(1 / 2))` using `fun τ => GlobalTheory.Chain.StepVac.hasInfExp_mul (GlobalTheory.RealFockAction.hasInfExp_mul_of_isOpen_ker (hB.inf τ) hB.de.isOpen) (GlobalTheory.Chain.StepVac.hasInfExp_inv (hB.eta.2.2.2 τ))`. Take `⟨n, -, hχinf⟩` from `GlobalTheory.HeckeInfExp.hasInfQ_of_hasInfExp D _ χ _ hχ hinf`. Take `⟨h, hh, α, hα⟩` from `exists_gen P`.
+
+Establish `hα0 : (α : D.host.E) ≠ 0`. Introduce `h0`. Establish `h1 : α = 0` using `by exact_mod_cast h0`. Rewrite `hα` using `[h1, Ideal.span_singleton_eq_bot.2 rfl]`. Conclude with `(pow_ne_zero h P.ne_bot) hα.symm`.
+
+Use `set k : D.host.Eˣ := Units.mk0 _ hα0 with hk`. Establish `hmem : ∀ v : HeightOneSpectrum (𝓞 D.host.E), α ∈ v.asIdeal ↔ v = P`. Introduce `v`. Prove the components needed by the constructor for the conclusion. Introduce `hv`.
+
+Establish `h1 : P.asIdeal ^ h ≤ v.asIdeal`. Rewrite using `[← hα, Ideal.span_le, Set.singleton_subset_iff]`. Conclude with `hv`. Establish `h2 : P.asIdeal ≤ v.asIdeal` using `v.isPrime.le_of_pow_le h1`. Conclude with `HeightOneSpectrum.ext ((P.isMaximal.eq_of_le v.isPrime.ne_top h2).symm)`.
+
+Introduce and unpack `rfl`. Establish `h1 : α ∈ Ideal.span {α}` using `Ideal.subset_span rfl`. Rewrite `h1` using `[hα]`. Conclude with `Ideal.pow_le_self hh.ne' h1`. Establish `hval : ∀ v : HeightOneSpectrum (𝓞 D.host.E), v.valuation D.host.E (k : D.host.E) = v.intValuation α` using `fun v => HeightOneSpectrum.valuation_of_algebraMap v α`.
+
+Establish `hv1 : ∀ v, v ≠ P → v.valuation D.host.E (k : D.host.E) = 1` using `fun v hv => by`. Rewrite using `[hval]`. Conclude with `le_antisymm (v.intValuation_le_one α) (not_lt.1 fun h' => hv ((hmem v).1 ((v.intValuation_lt_one_iff_mem α).1 h')))`. Establish `hord : ∀ v, v ≠ P → ordF v k = 0` using `fun v hv => by`. Unfold `ordF`.
+
+Rewrite using `[hv1 v hv]`. Simplify using the standard rewrite rules. Establish `hatFin : ∀ (v : HeightOneSpectrum (𝓞 D.host.E)) (x : D.host.Eˣ), Valued.v ((atFin v x : (v.adicCompletion D.host.E)ˣ) : v.adicCompletion D.host.E) = v.valuation D.host.E (x : D.host.E)` using `fun v x => HeightOneSpectrum.valuedAdicCompletion_eq_valuation' v (x : D.host.E)`. Use `set N := ordF P k with hNdef`. Establish `hPv : P.valuation D.host.E (k : D.host.E) = WithZero.exp (-N)`.
+
+Establish `h0 : P.valuation D.host.E (k : D.host.E) ≠ 0` using `by simp`. Rewrite using `[hNdef, ordF, neg_neg]`. Conclude with `(WithZero.exp_log h0).symm`. Establish `hN : 0 < N`. Establish `h1 : P.valuation D.host.E (k : D.host.E) < 1`.
+
+Rewrite using `[hval]`. Conclude with `(P.intValuation_lt_one_iff_mem α).2 ((hmem P).2 rfl)`. Rewrite `h1` using `[hPv, ← WithZero.exp_zero, WithZero.exp_lt_exp]`. Use linear arithmetic over natural numbers and integers. Establish `hfin` using `GlobalTheory.Mem.UnrAe.finite_ramified χ`.
+
+Use `set S := insert P hfin.toFinset with hSdef`. Establish `hS : ∀ v, v ∉ S → χ.UnrAt v` using `fun v hv => by`. Assume the negation of the conclusion as `h'`. Conclude with `hv (Finset.mem_insert_of_mem (hfin.mem_toFinset.2 h'))`. Establish `hpr` using `χ.productRule S hS k`.
+
+Establish `hfp : (∏ᶠ (v : HeightOneSpectrum (𝓞 D.host.E)) (_ : v ∉ S), χ.val v ^ ordF v k) = 1` using `finprod_eq_one_of_forall_eq_one fun v => by`. Rewrite using `[finprod_eq_if]`. Use `split_ifs with hv`. Both sides reduce to the same expression. Rewrite using `[hord v (fun e => hv (e ▸ Finset.mem_insert_self _ _)), zpow_zero]`.
+
+Rewrite `hpr` using `[hfp, mul_one, ← Finset.mul_prod_erase S _ (Finset.mem_insert_self P _)]`. Use `set u : D.host.Eˣ := k * (unif P ^ N)⁻¹ with hudef`. Establish `hku : k = u * unif P ^ N` using `by rw [hudef, inv_mul_cancel_right]`. Establish `hlocP : χ.locK P k = χ.locK P u * χ.val P ^ N`. Rewrite using `[hku, map_mul, map_zpow]`.
+
+Both sides reduce to the same expression. Establish `hu : IsUnitAt P (atFin P u)`. Establish `h1` using `unif_spec P`. Unfold `IsUnifAt at h1`. Unfold `IsUnitAt`.
+
+Rewrite using `[hudef, map_mul, map_inv, map_zpow, Units.val_mul, Units.val_inv_eq_inv_val, Units.val_zpow_eq_zpow_val, map_mul, map_inv₀, map_zpow₀, h1, hatFin, hPv, ← WithZero.exp_zsmul, ← WithZero.exp_neg, ← WithZero.exp_add]`. Simplify using the standard rewrite rules. Establish `hroot : ∀ (v : HeightOneSpectrum (𝓞 D.host.E)) (x : D.host.Eˣ), IsUnitAt v (atFin v x) → A.valuation ((χ.locK v x : ℂˣ) : ℂ) = 1`. Introduce `v x hx`. Take `⟨m, hm, hxm⟩` from `GlobalTheory.T.heckeChar_loc_pow_eq_one_on_localUnits _ χ v _ hx`.
+
+Apply `val_eq_one_of_pow A hm.ne'` to reduce the goal to its premises. Rewrite using `[← Units.val_pow_eq_pow_val, show χ.locK v x = χ.loc v (atFin v x) from rfl, hxm, Units.val_one, map_one]`. Establish `hw : ∀ τ, A.valuation (tauE D τ (k : D.host.E) / ((‖tauE D τ (k : D.host.E)‖ : ℝ) : ℂ)) = 1`. Introduce `τ`. Apply `val_eq_one_of_pow A two_ne_zero` to reduce the goal to its premises.
+
+Establish `hz : tauE D τ (k : D.host.E) ≠ 0` using `(map_ne_zero _).2 k.ne_zero`. Establish `hz' : starRingEnd ℂ (tauE D τ (k : D.host.E)) ≠ 0` using `(map_ne_zero _).2 hz`. Establish `hn : ((‖tauE D τ (k : D.host.E)‖ : ℝ) : ℂ) ^ 2 = tauE D τ (k : D.host.E) * starRingEnd ℂ (tauE D τ (k : D.host.E))`. Rewrite using `[Complex.mul_conj, Complex.normSq_eq_norm_sq]`. Use `push_cast`.
+
+Expand and normalize the polynomial expressions, which then agree. Establish `e : (tauE D τ (k : D.host.E) / ((‖tauE D τ (k : D.host.E)‖ : ℝ) : ℂ)) ^ 2 = tauE D τ (k : D.host.E) / starRingEnd ℂ (tauE D τ (k : D.host.E))`. Rewrite using `[div_pow, hn]`. Clear the denominators using the available nonvanishing facts. Establish `h1 : A.valuation (tauE D τ (k : D.host.E)) = 1` using `GlobalTheory.T.valuation_embedding_generator_eq_one' _ A p hp hpA P hpP α h hα (tauE D τ)`.
+
+Establish `h2 : A.valuation (starRingEnd ℂ (tauE D τ (k : D.host.E))) = 1` using `GlobalTheory.T.valuation_embedding_generator_eq_one' _ A p hp hpA P hpP α h hα ((starRingEnd ℂ).comp (tauE D τ))`. Rewrite using `[e, map_div₀, h1, h2, div_one]`. Establish `hinfv : A.valuation ((χ.inf k : ℂˣ) : ℂ) = 1`. Rewrite using `[hχinf k, map_prod]`. Conclude with `Finset.prod_eq_one fun τ _ => by rw [map_zpow₀, hw τ, _root_.one_zpow]`.
+
+Establish `hrest : A.valuation ((∏ v ∈ S.erase P, χ.locK v k : ℂˣ) : ℂ) = 1`. Rewrite using `[Units.coe_prod, map_prod]`. Use `Finset.prod_eq_one fun v hv => hroot v k ?_` and prove the remaining obligations. Unfold `IsUnitAt`. Rewrite using `[hatFin]`.
+
+Conclude with `hv1 v (Finset.ne_of_mem_erase hv)`. Establish `key` using `congrArg (fun x : ℂˣ => A.valuation (x : ℂ)) hpr`. Simplify using `only [hlocP, Units.val_mul, map_mul, Units.val_one, map_one, Units.val_zpow_eq_zpow_val, map_zpow₀, hinfv, hrest, hroot P u hu, one_mul, mul_one] at key`. Establish `hvalP : A.valuation ((χ.val P : ℂˣ) : ℂ) = 1`. Take `⟨M, hM⟩` from `Int.eq_ofNat_of_zero_le hN.le`.
+
+Rewrite `key` using `[hM, zpow_natCast]`. Use `val_eq_one_of_pow A (m := M) (by have h3 := hN; rw [hM] at h3; omega) ?_` and prove the remaining obligations. Rewrite using `[map_pow]`. Conclude with `key`. Establish `hfinal : A.valuation (((χ.val P : ℂˣ) : ℂ) * ((Real.sqrt (Ideal.absNorm P.asIdeal) : ℝ) : ℂ)) = 1`.
+
+Rewrite using `[map_mul, hvalP, GlobalTheory.T.valuation_sqrt_absNorm_eq_one' _ A p hp hpA P hpP, one_mul]`. Conclude with `⟨(A.valuation_le_one_iff _).1 hfinal.le, (A.valuation_le_one_iff _).1 (by rw [map_inv₀, hfinal, inv_one])⟩`.
+-/
 theorem val_mul_sqrt_unit : ∀ (D : D7) (V W : HSp D) (B : Base V W), B.Good → ∀ χ : Formalism.L2.Host.HChar D.host.E, ChrEq (B.mu * B.eta⁻¹) χ → ∀ (p : ℕ) (A : ValuationSubring ℂ), p.Prime → (p : ℂ) ∈ A.nonunits → ∀ bad : ℕ, p ∣ bad → (∀ PP, PP ∈ B.G.Pg ∨ PP ∈ B.de.Q → (bad : 𝓞 D.host.E) ∈ PP.asIdeal) → ∀ P : HeightOneSpectrum (𝓞 D.host.E), (bad : 𝓞 D.host.E) ∉ P.asIdeal → ((χ.val P : ℂˣ) : ℂ) * ((Real.sqrt (Ideal.absNorm P.asIdeal) : ℝ) : ℂ) ∈ A ∧ (((χ.val P : ℂˣ) : ℂ) * ((Real.sqrt (Ideal.absNorm P.asIdeal) : ℝ) : ℂ))⁻¹ ∈ A := by
   intro D V W B hB χ hχ p A hp hpA bad hpb hbad P hP
   classical

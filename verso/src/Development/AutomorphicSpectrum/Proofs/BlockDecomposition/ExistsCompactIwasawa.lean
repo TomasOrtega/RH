@@ -25,6 +25,13 @@ abbrev phiFin : AF F ⊗[F] E →ₐ[F] Af F ⊗[F] E := Algebra.TensorProduct.m
 
 omit [NumberField E] in
 
+/- English proof (translation)
+Take `⟨y, hy⟩ : ∃ y : AF F ⊗[F] E, y = z - z' + 1` from `⟨_, rfl⟩`. Use `GlobalTheory.AutFunCounterexample.tens_inj (F := F) (E := E) (A := Ainf F) (B := Af F) (n := 1) (Matrix.of fun _ _ => y) (by` as an intermediate fact. Use extensionality with `i j`. Rewrite using `[Subsingleton.elim i j, Matrix.one_apply_eq]`. Express the relevant statement in the definitionally equal form `phiInf F E y = 1`.
+
+Rewrite using `[hy, map_add, map_sub, h₁, sub_self, zero_add, map_one])`. Use the proof step `(by`. Use extensionality with `i j`. Rewrite using `[Subsingleton.elim i j, Matrix.one_apply_eq]`. Express the relevant statement in the definitionally equal form `phiFin F E y = 1`.
+
+Rewrite using `[hy, map_add, map_sub, h₂, sub_self, zero_add, map_one])`. Establish `h3 : z - z' + 1 = 1` using `hy.symm.trans (congrFun (congrFun this 0) 0)`. Conclude with `sub_eq_zero.1 (add_right_cancel (h3.trans (zero_add 1).symm))`.
+-/
 theorem tens_ext {z z' : AF F ⊗[F] E} (h₁ : phiInf F E z = phiInf F E z') (h₂ : phiFin F E z = phiFin F E z') :
     z = z' := by
   obtain ⟨y, hy⟩ : ∃ y : AF F ⊗[F] E, y = z - z' + 1 := ⟨_, rfl⟩
@@ -44,16 +51,34 @@ theorem tens_ext {z z' : AF F ⊗[F] E} (h₁ : phiInf F E z = phiInf F E z') (h
   exact sub_eq_zero.1 (add_right_cancel (h3.trans (zero_add 1).symm))
 
 omit [NumberField E] in
+/- English proof (translation)
+The claim follows from `Matrix.ext fun i j => tens_ext (congrFun (congrFun h₁ i) j) (congrFun (congrFun h₂ i) j)`.
+-/
 theorem matrix_tens_ext {a b : Type} {P Q : Matrix a b (AF F ⊗[F] E)} (h₁ : P.map (phiInf F E) = Q.map (phiInf F E))
     (h₂ : P.map (phiFin F E) = Q.map (phiFin F E)) : P = Q :=
   Matrix.ext fun i j => tens_ext (congrFun (congrFun h₁ i) j) (congrFun (congrFun h₂ i) j)
 
 omit [NumberField E] in
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem mat_projInf (g : GAd σ J) : (matHom _ σ J (projInf σ J g)).1 = (matHom _ σ J g).1.map (phiInf F E) := rfl
 
 omit [NumberField E] in
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem mat_projFin (g : GAd σ J) : (matHom _ σ J (projFin σ J g)).1 = (matHom _ σ J g).1.map (phiFin F E) := rfl
 
+/- English proof (translation)
+Take `⟨B, hB, e⟩` from `hp`. Set `e₀ : AF F ⊗[F] E` to `(((1 : Ainf F), (0 : Af F)) : AF F) ⊗ₜ[F] (1 : E)`. Establish `e₁ : phiInf F E e₀ = 1` using `rfl`. Establish `e₂ : phiFin F E e₀ = 0` using `TensorProduct.zero_tmul _ _`. Set `B' : Matrix (Fin r) (Fin r) (AF F ⊗[F] E)` to `Matrix.of fun i j => (1 : Matrix (Fin r) (Fin r) (AF F ⊗[F] E)) i j + e₀ * (B i j - (1 : Matrix (Fin r) (Fin r) (AF F ⊗[F] E)) i j)`.
+
+Establish `b₁ : B'.map (phiInf F E) = B.map (phiInf F E)` using `Matrix.ext fun i j => by`. Simplify using `[B', e₁]`. Establish `b₂ : B'.map (phiFin F E) = 1` using `Matrix.ext fun i j => by`. Distinguish the cases in `hij : i = j`. Substitute `hij` using the available equality.
+
+Simplify using `[B', e₂]`. Simplify using `[B', e₂, Matrix.one_apply_ne hij]`. Use `⟨B', fun i j hij => ?_, matrix_tens_ext ?_ ?_⟩` and prove the remaining obligations. Establish `hne : i ≠ j` using `fun e => by subst e; exact lt_irrefl _ hij`. Simplify using `[B', hB hij, Matrix.one_apply_ne hne]`.
+
+Rewrite using `[Matrix.map_mul, Matrix.map_mul, ← mat_projInf, h₁, mat_projInf, b₁, ← Matrix.map_mul, e, Matrix.map_mul]`. Rewrite using `[Matrix.map_mul, Matrix.map_mul, ← mat_projFin, h₂, b₂]`. Simplify using the standard rewrite rules.
+-/
 theorem mem_minPar_of_parts {p q : GAd σ J} (hp : p ∈ minPar σ J X) (h₁ : projInf σ J q = projInf σ J p)
     (h₂ : projFin σ J q = 1) : q ∈ minPar σ J X := by
   obtain ⟨B, hB, e⟩ := hp
@@ -76,6 +101,9 @@ theorem mem_minPar_of_parts {p q : GAd σ J} (hp : p ∈ minPar σ J X) (h₁ : 
   · rw [Matrix.map_mul, Matrix.map_mul, ← mat_projFin, h₂, b₂]
     simp
 
+/- English proof (translation)
+Establish `ha' : a ∈ (ofInf σ J).range` using `by rw [range_ofInf]; exact ha`. Establish `hb' : b ∈ (ofFin σ J).range` using `by rw [range_ofFin]; exact hb`. Take `⟨x, rfl⟩` from `ha'`. Take `⟨y, rfl⟩` from `hb'`. Conclude with `commute_ofInf_ofFin σ J x y`.
+-/
 theorem commute_of_mem {a b : GAd σ J} (ha : a ∈ infPts σ J) (hb : b ∈ finPts σ J) : Commute a b := by
   have ha' : a ∈ (ofInf σ J).range := by rw [range_ofInf]; exact ha
   have hb' : b ∈ (ofFin σ J).range := by rw [range_ofFin]; exact hb
@@ -83,6 +111,11 @@ theorem commute_of_mem {a b : GAd σ J} (ha : a ∈ infPts σ J) (hb : b ∈ fin
   obtain ⟨y, rfl⟩ := hb'
   exact commute_ofInf_ofFin σ J x y
 
+/- English proof (translation)
+Take `⟨d₁, d₁', e₁, e₁'⟩` from `ha`. Take `⟨d₂, d₂', e₂, e₂'⟩` from `hb`. Use `⟨d₁ * d₂, d₁' * d₂', ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[map_mul, Units.val_mul, Matrix.mul_assoc, e₂, ← Matrix.mul_assoc, e₁, Matrix.mul_assoc, diagonal_mul_diagonal]`. Both sides reduce to the same expression.
+
+Rewrite using `[map_mul, Units.val_mul, Matrix.mul_assoc, e₂', ← Matrix.mul_assoc, e₁', Matrix.mul_assoc, diagonal_mul_diagonal]`. Both sides reduce to the same expression.
+-/
 theorem mul_mem_leviMin {a b : GAd σ J} (ha : a ∈ leviMin σ J X Y) (hb : b ∈ leviMin σ J X Y) :
     a * b ∈ leviMin σ J X Y := by
   obtain ⟨d₁, d₁', e₁, e₁'⟩ := ha
@@ -115,6 +148,15 @@ end GlobalTheory.CompanionTheory.SiegelAssemble
 
 open GlobalTheory.CompanionTheory.SiegelAssemble in
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ h n J hJ r X Y hW K₁ K₂ h₁ h₂ c₁ c₂ iw₁ iw₂ hlev hgood`. Use `⟨prodSub K₁ K₂ h₁ h₂, (show IsCompact ((K₁ : Set (GAd σ J)) * (K₂ : Set (GAd σ J))) from c₁.mul c₂), fun g => ?_, ?_⟩` and prove the remaining obligations. Take `⟨p₁, hp₁, hp₁', k₁, hk₁, e₁⟩` from `iw₁ (ofInf σ J (projInf σ J g)) (mem_infPts.2 (by simp))`. Take `⟨p₂, hp₂, hp₂', k₂, hk₂, e₂⟩` from `iw₂ (ofFin σ J (projFin σ J g)) (mem_finPts.2 (by simp))`. Use `⟨p₁ * p₂, mul_mem_minimal_parabolic hp₁ hp₂, k₁ * k₂, ⟨k₁, hk₁, k₂, hk₂, rfl⟩, ?_⟩` and prove the remaining obligations.
+
+Establish `c : k₁ * p₂ = p₂ * k₁` using `(commute_of_mem (h₁ hk₁) hp₂').eq`. Combine the equalities or inequalities in the displayed calculation. Introduce and unpack `_ hp ⟨k₁, hk₁, k₂, hk₂, rfl⟩`. Establish `i₁ : projFin σ J k₁ = 1` using `mem_infPts.1 (h₁ hk₁)`. Establish `i₂ : projInf σ J k₂ = 1` using `mem_finPts.1 (h₂ hk₂)`.
+
+Establish `m₁ : k₁ ∈ minPar σ J X` using `mem_minPar_of_parts hp (by simp [i₂]) i₁`. Establish `m₂ : k₂ ∈ minPar σ J X`. Use `mul_mem_minimal_parabolic (inv_mem_minimal_parabolic h hJ hW m₁) hp` as an intermediate fact. Simplify using `using this`. Take `⟨m, hm, hmK, u, hu, huK, rfl⟩` from `hgood k₂ m₂ hk₂`.
+
+Conclude with `⟨k₁ * m, mul_mem_leviMin (hlev k₁ m₁ hk₁) hm, ⟨k₁, hk₁, m, hmK, rfl⟩, u, hu, ⟨1, K₁.one_mem, u, huK, one_mul u⟩, by simp only [mul_assoc]⟩`.
+-/
 theorem GlobalTheory.CompanionTheory.SiegelAssemble.exists_compact_iwasawa : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E), IsCMExt F E σ → ∀ (n : ℕ) (J : Matrix (Fin n) (Fin n) E), IsHermND σ J → ∀ (r : ℕ) (X Y : Matrix (Fin n) (Fin r) E), IsWittFrame σ J X Y → ∀ K₁ K₂ : Subgroup (GAd σ J), K₁ ≤ infPts σ J → K₂ ≤ finPts σ J → IsCompact (K₁ : Set (GAd σ J)) → IsCompact (K₂ : Set (GAd σ J)) → (∀ g ∈ infPts σ J, ∃ p ∈ minPar σ J X, p ∈ infPts σ J ∧ ∃ k ∈ K₁, g = p * k) → (∀ g ∈ finPts σ J, ∃ p ∈ minPar σ J X, p ∈ finPts σ J ∧ ∃ k ∈ K₂, g = p * k) → (∀ p ∈ minPar σ J X, p ∈ K₁ → p ∈ leviMin σ J X Y) → GoodPosition σ J X Y K₂ → ∃ K : Subgroup (GAd σ J), IsCompact (K : Set (GAd σ J)) ∧ (∀ g, ∃ p ∈ minPar σ J X, ∃ k ∈ K, g = p * k) ∧ GoodPosition σ J X Y K := by
   intro F E _ _ _ _ _ σ h n J hJ r X Y hW K₁ K₂ h₁ h₂ c₁ c₂ iw₁ iw₂ hlev hgood
   refine ⟨prodSub K₁ K₂ h₁ h₂, (show IsCompact ((K₁ : Set (GAd σ J)) * (K₂ : Set (GAd σ J))) from c₁.mul c₂), fun g => ?_, ?_⟩

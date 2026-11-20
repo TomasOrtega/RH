@@ -9,6 +9,17 @@ open GlobalTheory.Models
 
 namespace GlobalTheory.TorRef
 
+/- English proof (translation)
+Introduce `E _ _ _ H D l l₂ Xo Xo₂ c c₂ Y Y₂ T T₂ φ b _ htw hm hpol hpol₂ hd hb`. Use `c.fin` as an intermediate fact. Use `c₂.fin` as an intermediate fact. Establish `: NumberField c.F` using `{}`. Establish `: NumberField c₂.F` using `{}`.
+
+Establish `hc : c.F ≤ c₂.F`. Introduce `z hz`. Take `⟨x, y, -, h⟩` from `IsFractionRing.div_surjective (A := 𝓞 c.F) (⟨z, hz⟩ : c.F)`. Establish `key : ∀ x : 𝓞 c.F, ((x : c.F) : ℂ) ∈ c₂.F` using `fun x => hb x ▸ ((b x : 𝓞 c₂.F) : c₂.F).2`. Establish `e : z = ((x : c.F) : ℂ) / ((y : c.F) : ℂ)` using `(congrArg Subtype.val h).symm`.
+
+Conclude with `e ▸ div_mem (key x) (key y)`. Take `⟨r, ν, hr, hl⟩` from `GlobalTheory.FiniteTransition.exists_levelMap_coeff T.Z T₂.Z hd hc`. Establish `hbβ : (algebraMap (𝓞 c₂.F) c₂.F).comp b = (IntermediateField.inclusion hc).toRingHom.comp (algebraMap (𝓞 c.F) c.F)` using `RingHom.ext fun x => Subtype.ext (hb x)`. Take `⟨hβ, -, -⟩` from `CoeffRings.coeff_isDedFrac E H l c`. Take `⟨hβ₂, hft, -⟩` from `CoeffRings.coeff_isDedFrac E H l₂ c₂`.
+
+Establish `hrs : r ≫ T.Z.j ≫ T.Z.s = T₂.Z.j ≫ T₂.Z.s ≫ spMap b`. Rewrite using `[GlobalTheory.FiniteTransition.openImmersion_comp_structure_eq_generic, reassoc_of% hr, ← Category.assoc T₂.Z.j, GlobalTheory.FiniteTransition.openImmersion_comp_structure_eq_generic, Category.assoc, ← Spec.map_comp, ← Spec.map_comp, ← CommRingCat.ofHom_comp, ← CommRingCat.ofHom_ …`. Rewrite `hpol₂` using `[← hm]`. Take `⟨π, hπ, mu, hfin, hj, hφ, hBD⟩` from `hM E H D l l₂ Xo Xo₂ c c₂ _ _ _ _ T.Z T₂.Z T.BD T₂.BD φ T₂.m0 b (RingEquiv.refl _) r ((TwMap.reflEquiv _ _ _).symm ν) hβ hβ₂ hft htw rfl (hm ▸ hpol) hpol₂ hrs`. Establish `hφ' : T₂.Z.m.φ ≫ (TwMap.reflEquiv _ _ _ mu).φ = ν.φ ≫ T.Z.m.φ` using `hφ`.
+
+Use `⟨hm, π, ⟨pullback.lift π T₂.Z.s hπ, TwMap.reflEquiv _ _ _ mu, r, pullback.lift_fst _ _ _, pullback.lift_snd _ _ _, hfin, hj, fun x => ?_, fun x => ?_⟩, hBD⟩` and prove the remaining obligations. Conclude with `(congrArg (_ ≫ ·) hφ').trans ((Category.assoc _ _ _).symm.trans ((congrArg (· ≫ T.Z.m.φ) (hl.1 x)).trans (Category.assoc _ _ _)))`. Conclude with `(congrArg (_ ≫ ·) hφ').trans ((Category.assoc _ _ _).symm.trans ((congrArg (· ≫ T.Z.m.φ) (hl.2 x)).trans (Category.assoc _ _ _)))`.
+-/
 theorem polTransSt_of_polMapSt (hM : PolMapSt) : PolTransSt := by
   intro E _ _ _ H D l l₂ Xo Xo₂ c c₂ Y Y₂ T T₂ φ b _ htw hm hpol hpol₂ hd hb
   have := c.fin

@@ -5,6 +5,15 @@ open Formalism.BasicNotions Formalism.BasicNotions.Loc ReciprocityTheory.Gal Mod
 section SlopeTestRemainingChoices
 open MvPowerSeries
 
+/- English proof (translation)
+Establish `hI : MvPolynomial.idealOfVars σ R ≤ m.comap (MvPolynomial.coeToMvPowerSeries.ringHom)`. Rewrite using `[MvPolynomial.idealOfVars, Ideal.span_le]`. Introduce and unpack `_ ⟨s, rfl⟩`. Simplify using `using hF s`. Establish `hIn : MvPolynomial.idealOfVars σ R ^ n ≤ (m ^ n).comap (MvPolynomial.coeToMvPowerSeries.ringHom)` using `(Ideal.pow_right_mono hI n).trans (Ideal.le_comap_pow _ n)`.
+
+Set `e` to `toAdicCompletionAlgEquiv σ R`. Establish `key : ∀ y ∈ (MvPolynomial.idealOfVars σ R ^ n • ⊤ : Submodule (MvPolynomial σ R) (AdicCompletion (MvPolynomial.idealOfVars σ R) (MvPolynomial σ R))), (e.symm y) ∈ m ^ n`. Introduce `y hy`. Use `Submodule.smul_induction_on hy (fun p hp z _ => ?_) (fun a b ha hb => ?_)` and prove the remaining obligations. Rewrite using `[map_smul, Algebra.smul_def]`.
+
+Conclude with `Ideal.mul_mem_right _ _ (hIn hp)`. Rewrite using `[map_add]`. Conclude with `add_mem ha hb`. Establish `h` using `key (e g) (by`. Rewrite using `[AdicCompletion.pow_smul_top_eq_ker_eval (MvPolynomial.idealOfVars_fg σ R), LinearMap.mem_ker, AdicCompletion.eval_apply, toAdicCompletionAlgEquiv_apply, toAdicCompletion_apply_eq_mk_truncTotal]`.
+
+Rewrite using `[hg]`. Use the proof step `rfl)`. Rewrite `h` using `[AlgEquiv.symm_apply_apply]`. Then use the resulting hypothesis.
+-/
 private theorem low_mem {R σ : Type} [CommRing R] [Finite σ] (m : Ideal (MvPowerSeries σ R))
     (hF : ∀ s, (MvPowerSeries.X s : MvPowerSeries σ R) ∈ m) (n : ℕ) (g : MvPowerSeries σ R)
     (hg : truncTotal n g = 0) : g ∈ m ^ n := by
@@ -30,10 +39,16 @@ private theorem low_mem {R σ : Type} [CommRing R] [Finite σ] (m : Ideal (MvPow
     rfl)
   rwa [AlgEquiv.symm_apply_apply] at h
 
+/- English proof (translation)
+Rewrite using `[mem_maximalIdeal, mem_nonunits_iff, MvPowerSeries.isUnit_iff_constantCoeff, isUnit_iff_ne_zero, not_not]`.
+-/
 private theorem mem_max {E σ : Type} [Field E] (a : MvPowerSeries σ E) :
     a ∈ maximalIdeal _ ↔ MvPowerSeries.constantCoeff a = 0 := by
   rw [mem_maximalIdeal, mem_nonunits_iff, MvPowerSeries.isUnit_iff_constantCoeff, isUnit_iff_ne_zero, not_not]
 
+/- English proof (translation)
+Rewrite using `[MvPowerSeries.coeff_mul, Finsupp.antidiagonal_single, Finset.sum_map]`. Simplify using `[Finset.Nat.antidiagonal_succ, mul_comm]`.
+-/
 private theorem coeff_single_mul {E σ : Type} [CommRing E] (i : σ) (f g : MvPowerSeries σ E) :
     MvPowerSeries.coeff (Finsupp.single i 1) (f * g) =
       MvPowerSeries.constantCoeff f * MvPowerSeries.coeff (Finsupp.single i 1) g +
@@ -42,6 +57,15 @@ private theorem coeff_single_mul {E σ : Type} [CommRing E] (i : σ) (f g : MvPo
   rw [MvPowerSeries.coeff_mul, Finsupp.antidiagonal_single, Finset.sum_map]
   simp [Finset.Nat.antidiagonal_succ, mul_comm]
 
+/- English proof (translation)
+Use `low_mem _ (fun s => (mem_max _).2 (by simp)) 2 g ?_` and prove the remaining obligations. Use extensionality with `d`. Rewrite using `[coeff_truncTotal_eq_ite]`. Use `split_ifs with hd`. Establish `: d.degree = 0 ∨ d.degree = 1` using `by omega`.
+
+Break down `this with h | h` into its components or cases. Rewrite `h` using `[Finsupp.degree_eq_zero_iff]`. Substitute `h` using the available equality. Simplify using `using h0`. Choose the witnesses or unpack the hypotheses as in `⟨i, rfl⟩ : ∃ i, Finsupp.single i 1 = d := by`.
+
+Establish `: d ∈ Set.range (fun i : σ => Finsupp.single i 1)`. Rewrite using `[Finsupp.range_single_one]`. Conclude with `h`. Conclude with `this`. Simplify using `using h1 i`.
+
+Simplify using the standard rewrite rules.
+-/
 private theorem mem_sq {E σ : Type} [Field E] [Finite σ] (g : MvPowerSeries σ E)
     (h0 : MvPowerSeries.constantCoeff g = 0) (h1 : ∀ i, MvPowerSeries.coeff (Finsupp.single i 1) g = 0) :
     g ∈ maximalIdeal (MvPowerSeries σ E) ^ 2 := by
@@ -61,6 +85,9 @@ private theorem mem_sq {E σ : Type} [Field E] [Finite σ] (g : MvPowerSeries σ
       simpa using h1 i
   · simp
 
+/- English proof (translation)
+Rewrite `h` using `[pow_two]`. Use `Submodule.mul_induction_on h (fun a ha b hb => ?_) (fun a b ha hb => ?_)` and prove the remaining obligations. Rewrite using `[coeff_single_mul, (mem_max _).1 ha, (mem_max _).1 hb]`. Simplify using the standard rewrite rules. Rewrite using `[map_add, ha, hb, add_zero]`.
+-/
 private theorem of_mem_sq {E σ : Type} [Field E] (g : MvPowerSeries σ E)
     (h : g ∈ maximalIdeal (MvPowerSeries σ E) ^ 2) (i : σ) :
     MvPowerSeries.coeff (Finsupp.single i 1) g = 0 := by
@@ -71,6 +98,37 @@ private theorem of_mem_sq {E σ : Type} [Field E] (g : MvPowerSeries σ E)
 
 end SlopeTestRemainingChoices
 
+/- English proof (translation)
+Introduce `O R E _ _ _ _ _ _ _ n P x φ H T hT`. Establish `hinj : Function.Injective (algebraMap O E)` using `IsFractionRing.injective O E`. Establish `hne : ∀ c : O, c ≠ 0 → algebraMap O E c ≠ 0` using `fun c hc h => hc (hinj (by simpa using h))`. Set `D : Fin n → (R →ₗ[O] E)` to `fun i => ((MvPowerSeries.coeff (Finsupp.single i 1) : MvPowerSeries (Fin n) E →ₗ[E] E).restrictScalars O).comp φ.toLinearMap`. Establish `hD : ∀ i a, D i a = MvPowerSeries.coeff (Finsupp.single i 1) (φ a)` using `fun i a => rfl`.
+
+Establish `hDT : ∀ i, D i ∈ T` using `fun i => (hT _).2 ⟨fun a b => by`. Rewrite using `[hD, hD, hD, map_mul, coeff_single_mul, H.const, H.const], fun a ha => by`. Rewrite `ha` using `[← H.ker, RingHom.mem_ker]`. Rewrite using `[hD, ha, map_zero]⟩`. Establish `hex : ∀ i : Fin n, ∃ (a : R) (c : O), c ≠ 0 ∧ ∀ j, D j a = if j = i then algebraMap O E c else 0`.
+
+Introduce `i`. Take `⟨a, c, hc, h⟩` from `H.dense 2 (MvPowerSeries.X i)`. Use `⟨a, c, hc, fun j => ?_⟩` and prove the remaining obligations. Use `of_mem_sq _ h j` as an intermediate fact. Rewrite `this` using `[map_sub, sub_eq_zero, ← hD, ← algebraMap_smul E c, map_smul, MvPowerSeries.coeff_X]`.
+
+Rewrite using `[← this]`. Simplify using `[Finsupp.single_left_inj]`. Use `choose a c hc ha using hex`. Establish `h1 : ∀ δ ∈ T, δ 1 = 0` using `fun δ hδ => by`. Use `((hT δ).1 hδ).1 1 1` as an intermediate fact.
+
+Simplify using `using this`. Establish `hker : ∀ δ ∈ T, ∀ r, (∀ i, D i r = 0) → δ r = 0`. Introduce `δ hδ r hr`. Establish `hsub : ∀ δ ∈ T, δ (r - x r • 1) = δ r` using `fun δ hδ => by`. Rewrite using `[map_sub, map_smul, h1 δ hδ, smul_zero, sub_zero]`.
+
+Establish `hm : φ (r - x r • 1) ∈ maximalIdeal (MvPowerSeries (Fin n) E) ^ 2`. Use `mem_sq _ ?_ fun i => ?_` and prove the remaining obligations. Rewrite using `[H.const]`. Simplify using the standard rewrite rules. Rewrite using `[← hD, hsub _ (hDT i), hr]`.
+
+Take `⟨k, hk, hmem⟩` from `H.inj 2 _ hm`. Establish `hz : ∀ s ∈ RingHom.ker x ^ 2 ⊔ P, δ s = 0`. Introduce `s hs`. Take `⟨u, hu, v, hv, rfl⟩` from `Submodule.mem_sup.1 hs`. Rewrite using `[map_add, ((hT δ).1 hδ).2 v hv, add_zero]`.
+
+Rewrite `hu` using `[pow_two]`. Use `Submodule.mul_induction_on hu (fun p hp q hq => ?_) (fun p q hp hq => ?_)` and prove the remaining obligations. Rewrite `hp`, `hq` using `[RingHom.mem_ker]`. Rewrite using `[((hT δ).1 hδ).1, hp, hq]`. Simplify using the standard rewrite rules.
+
+Rewrite using `[map_add, hp, hq, add_zero]`. Use `hz _ hmem` as an intermediate fact. Rewrite `this` using `[map_smul, hsub δ hδ, Algebra.smul_def]`. Conclude with `(mul_eq_zero.1 this).resolve_left (hne k hk)`. Set `ev : T →ₗ[E] (Fin n → E)` to `LinearMap.pi fun i => (LinearMap.applyₗ' E (a i)).comp T.subtype`.
+
+Establish `hev : ∀ (δ : T) i, ev δ i = (δ : R →ₗ[O] E) (a i)` using `fun _ _ => rfl`. Establish `hbij : Function.Bijective ev`. Prove the components needed by the constructor for the conclusion. Rewrite using `[injective_iff_map_eq_zero]`. Introduce `δ hδ`.
+
+Use extensionality with `r`. Take `⟨k, hk⟩` from `IsLocalization.exist_integer_multiples (nonZeroDivisors O) Finset.univ (fun i => D i r / algebraMap O E (c i))`. Use `choose! b hb using hk`. Establish `hz` using `hker δ δ.2 ((k : O) • r - ∑ i, b i • a i) (fun j => by`. Rewrite using `[map_sub, map_sum, map_smul]`.
+
+Simplify using `only [map_smul, ha, smul_ite, smul_zero, Finset.sum_ite_eq, Finset.mem_univ, if_true]`. Rewrite using `[Algebra.smul_def, Algebra.smul_def, hb j (Finset.mem_univ _), Algebra.smul_def]`. Use `hne _ (hc j)` as an intermediate fact. Clear the denominators using the available nonvanishing facts. Use the proof step `ring)`.
+
+Rewrite `hz` using `[map_sub, map_sum, map_smul]`. Simplify using `only [map_smul, ← hev, hδ, Pi.zero_apply, smul_zero, Finset.sum_const_zero, sub_zero] at hz`. Rewrite `hz` using `[Algebra.smul_def]`. Conclude with `(mul_eq_zero.1 hz).resolve_left (hne k (nonZeroDivisors.coe_ne_zero k))`. Introduce `v`.
+
+Use `⟨∑ j, (v j / algebraMap O E (c j)) • ⟨D j, hDT j⟩, ?_⟩` and prove the remaining obligations. Use extensionality with `i`. Rewrite using `[map_sum, Finset.sum_apply]`. Simplify using `only [hev, Submodule.coe_smul, LinearMap.smul_apply, ha, smul_ite, smul_zero, Finset.sum_ite_eq', Finset.mem_univ, if_true]`. Rewrite using `[smul_eq_mul, div_mul_cancel₀ _ (hne _ (hc i))]`.
+
+Rewrite using `[(LinearEquiv.ofBijective ev hbij).finrank_eq]`. Simplify using the standard rewrite rules.
+-/
 theorem UpperTheory.finrank_pointDerivations_vanishing_eq_of_isCompl :
     ∀ {O R E : Type} [CommRing O] [IsDomain O] [CommRing R] [Algebra O R] [Field E] [Algebra O E] [IsFractionRing O E] (n : ℕ) (P : Ideal R) (x : R →ₐ[O] O) (φ : R →ₐ[O] MvPowerSeries (Fin n) E), UpperTheory.V.Loc.IsCompl P x φ → ∀ T : Submodule E (R →ₗ[O] E), (∀ δ, δ ∈ T ↔ (∀ a b, δ (a * b) = algebraMap O E (x a) * δ b + algebraMap O E (x b) * δ a) ∧ ∀ a ∈ P, δ a = 0) → Module.finrank E ↥T = n := by
   intro O R E _ _ _ _ _ _ _ n P x φ H T hT

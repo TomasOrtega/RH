@@ -11,6 +11,11 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 namespace GlobalTheory.EvalAtUnitVector
 
+/- English proof (translation)
+Introduce `D V S M H _ _ e d μ 𝓕 hip v hv x y hxy`. Establish `h0 : e (x - y) v = 0`. Rewrite using `[map_sub]`. Conclude with `sub_eq_zero.2 hxy`. Establish `h1` using `hip (x - y) (x - y)`.
+
+Rewrite `h1` using `[ipM_self_eq_zero M μ 𝓕 _ v hv h0, mul_zero]`. Conclude with `sub_eq_zero.1 (inner_self_eq_zero.1 h1)`.
+-/
 theorem eval_injective : ∀ {D : D7} {V : HSp D} {S : D.what₂.Tau → SPar} (M : DSModel V S), ∀ (H : Type) [NormedAddCommGroup H] [InnerProductSpace ℂ H] (e : H →ₗ[ℂ] MMap M) (d : ℂ) (μ : Measure (GA D V)) (𝓕 : Set (GA D V)), (∀ x y, inner ℂ x y = d * ipM M μ 𝓕 (e x) (e y)) → ∀ v : M.Vec, (∀ τ, ‖(v τ : M.H τ)‖ = 1) → Function.Injective (fun h : H => e h v) := by
   intro D V S M H _ _ e d μ 𝓕 hip v hv x y hxy
   have h0 : e (x - y) v = 0 := by

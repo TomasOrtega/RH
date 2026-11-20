@@ -27,6 +27,11 @@ namespace GlobalTheory.DblDatum
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E} {B : Base F E}
   {n d : ℕ} {X : Spc F E n} {W : Spc F E d}
 
+/- English proof (translation)
+Take `⟨w⟩ : Nonempty (InfinitePlace F)` from `inferInstance`. Establish `e` using `(hX.sig w).1`. Use `GlobalTheory.DefiniteAniso.anisotropic_of_definite hB.cm (B := B) ?_` and prove the remaining obligations. Break down `Nat.min_eq_zero_iff.1 h with rfl | rfl` into its components or cases. Rewrite `e` using `[zero_add]`.
+
+Substitute `e` using the available equality. Conclude with `Or.inr hX`. Rewrite `e` using `[add_zero]`. Substitute `e` using the available equality. Conclude with `Or.inl hX`.
+-/
 theorem aniso_of_min_eq_zero {r s : ℕ} (hB : B.IsGood σ) (hX : X.IsHerm σ B r s) (h : min r s = 0) :
     ∀ x, form σ X.J x x = 0 → x = 0 := by
   obtain ⟨w⟩ : Nonempty (InfinitePlace F) := inferInstance
@@ -36,6 +41,13 @@ theorem aniso_of_min_eq_zero {r s : ℕ} (hB : B.IsGood σ) (hX : X.IsHerm σ B 
   · rw [zero_add] at e; subst e; exact Or.inr hX
   · rw [add_zero] at e; subst e; exact Or.inl hX
 
+/- English proof (translation)
+Establish `hσ` using `GlobalTheory.SiegelSet.sigma_sigma hB.cm`. Take `⟨C, hC, hcov⟩` from `LiftContDef.cocompact_of_aniso hK.siegelSetUnitary hB.cm X.J (one_ne_zero : (1 : E) ≠ 0) (by rw [one_smul]; exact GlobalTheory.UnitaryVol.isHermND_map hσ hX) han`. Take `⟨hTG, h2, h3, h4⟩` from `GlobalTheory.UnitaryAdelicTop.lcsc_UA F E σ n X.J`. Use `haveI : BorelSpace (UA σ X.J) := ⟨rfl⟩`. Use `haveI := hM.haar`.
+
+Use `haveI := GlobalTheory.UnitaryVol.countable_ratU σ X.J`. Establish `h5` using `(GlobalTheory.ThK.DefCovol.of_compact_cover (ratU σ X.J) C hC hcov M.μ M.dom hM.dom).1`. Use `haveI : SMulInvariantMeasure (ratU σ X.J) (UA σ X.J) M.μ := ⟨fun c s _ => measure_preimage_mul M.μ (c : UA σ X.J) s⟩`. Use `haveI : MeasurableConstSMul (ratU σ X.J) (UA σ X.J) := ⟨fun c => measurable_const_mul (c : UA σ X.J)⟩`. Establish `h6 : M.μ M.dom ≠ 0` using `hM.dom.measure_ne_zero (NeZero.ne _)`.
+
+Conclude with `ENNReal.toReal_ne_zero.2 ⟨h6, h5.ne⟩`.
+-/
 theorem vol_ne (hK : KP) {M : Model σ X W} {r s : ℕ} (hB : B.IsGood σ) (hX : X.IsHerm σ B r s) (hM : M.IsGood B.ψ)
     (han : ∀ x, form σ X.J x x = 0 → x = 0) : (M.μ M.dom).toReal ≠ 0 := by
   have hσ := GlobalTheory.SiegelSet.sigma_sigma hB.cm
@@ -54,6 +66,15 @@ theorem vol_ne (hK : KP) {M : Model σ X W} {r s : ℕ} (hB : B.IsGood σ) (hX :
 
 end GlobalTheory.DblDatum
 
+/- English proof (translation)
+Introduce `hK F E _ _ _ _ _ σ B n d X W M χX χW om r s r₁ s₁ hP hmin hn hd Φ₂ h₂ Φ₁ h₁ W₂ hJ hL hθ i hi`. Establish `hB` using `hP.base`. Establish `hψ` using `GlobalTheory.StdCharFromIsStd.isCharAF hB.std`. Establish `han` using `GlobalTheory.DblDatum.aniso_of_min_eq_zero hB hP.herm hmin`. Take `⟨co, hco, hdiag, hanti⟩` from `GlobalTheory.T.darboux_coordinates_doubled_space F E σ d n X.J W.J W₂.J hJ M.co hP.good.rat`.
+
+Take `⟨om₂, hom₂⟩` from `GlobalTheory.T.doubling_darboux_pair_setting hK.base F E σ B n d X W M χX χW om r s r₁ s₁ hP W₂ hJ co hco`. Take `⟨K, hKs, hKi⟩` from `GlobalTheory.T.self_dual_lattice_cartan_involution F E σ hB.cm hB.unram B d W hP.skew.skew hP.skew.lat hP.skew.dual hP.skew.cartan W₂ hJ hL hθ`. Take `⟨Φ, hΦ, hf, c, hc, hth⟩` from `GlobalTheory.T.doubling_polarized_data_integral F E σ B n d X W M χX χW om r s r₁ s₁ hP Φ₁ h₁ Φ₂ h₂ W₂ hJ hL hθ i hi co hco hdiag hanti om₂ hom₂ K hKs`. Establish `hmem` using `GlobalTheory.T.darboux_symplectic_doubled_hermitian F E σ hB.cm B hψ d n W hP.skew.skew W₂ hJ X hP.herm.herm co hco hdiag hanti χX hP.hX hP.resX om₂ hom₂ K hKs hKi Φ hΦ hf`. Take `⟨-, hconv, hhol⟩` from `hK.siegelWeilAnisotropicHermitian F E σ hB.cm hB.unram B hψ d n hd hn W hP.skew.skew hP.skew.lat hP.skew.dual hP.skew.cartan W₂ hJ hL hθ X hP.herm.herm han co hco hdiag hanti χX hP.hX hP.resX om₂ hom₂ K hKs hKi Φ hΦ hf M.μ M.dom hP.good.haar hP.good.dom`.
+
+Establish `hv : ((M.μ M.dom).toReal : ℂ) ≠ 0` using `Complex.ofReal_ne_zero.2 (GlobalTheory.DblDatum.vol_ne hK hB hP.herm hP.good han)`. Apply the tactic sequence `have ht : (if d < n then 1 else 2 : ℂ) ≠ 0 := by split_ifs <;> norm_num`. Use `⟨K, _, _, c * ((M.μ M.dom).toReal : ℂ) / (if d < n then 1 else 2 : ℂ), hKs, hKi, hmem, hconv, hhol, div_ne_zero (mul_ne_zero hc hv) ht, fun h h' => ?_⟩` and prove the remaining obligations. Generalize the expression as in `(if d < n then 1 else 2 : ℂ) = t at ht`. Simplify using `only [GlobalTheory.ThKLiftCusp.kern, hth, setAverage_eq, integral_const_mul, integral_mul_const, Complex.real_smul, Complex.ofReal_inv, Measure.real, GlobalTheory.ThK.DblKer.chiInv]`.
+
+Clear the denominators using the available nonvanishing facts.
+-/
 theorem GlobalTheory.DblDatum.datum : GlobalTheory.ThK.KP → ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E) (n d : ℕ) (Xs : Spc F E n) (W : Spc F E d) (M : Model σ Xs W) (χX χW : Chr F E) (om : Rep σ Xs W) (r s' r₁ s₁ : ℕ),
     IsPair B M χX χW om r s' r₁ s₁ → min r s' = 0 → 1 ≤ n → 1 ≤ d →
     ∀ Φ₂' ∈ PolData B M, ∀ Ψ' ∈ PolData B M,

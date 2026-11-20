@@ -9,6 +9,13 @@ open GlobalTheory.LGrp GlobalTheory.BorelUMod Formalism.UG
 noncomputable section
 namespace GlobalTheory.BorelUMod.Cayley
 
+/- English proof (translation)
+Establish `h' : ∀ u u' : K, (QuotientGroup.leftRel (H.subgroupOf K)) u u' ↔ (QuotientAddGroup.leftRel (B.addSubgroupOf D)) (f u) (f u')` using `fun u u' => by`. Rewrite using `[QuotientGroup.leftRel_apply, QuotientAddGroup.leftRel_apply]`. Conclude with `h u u'`. Use `Nat.card_congr (Equiv.ofBijective (Quotient.map' f fun a b e => (h' a b).1 e) ⟨?_, ?_⟩)` and prove the remaining obligations. Introduce `x y`.
+
+Use `Quotient.inductionOn₂' x y fun a b e => ?_` and prove the remaining obligations. Conclude with `Quotient.sound' ((h' a b).2 (Quotient.exact' e))`. Introduce `x`. Use `Quotient.inductionOn' x fun a => ?_` and prove the remaining obligations. Take `⟨b, rfl⟩` from `hf a`.
+
+Conclude with `⟨Quotient.mk'' b, rfl⟩`.
+-/
 theorem relIndex_eq_of_surj {G A : Type} [Group G] [AddGroup A] (H K : Subgroup G) (B D : AddSubgroup A)
     (f : K → D) (hf : Function.Surjective f)
     (h : ∀ u u' : K, (u : G)⁻¹ * u' ∈ H ↔ -(f u : A) + f u' ∈ B) : H.relIndex K = B.relIndex D := by
@@ -28,6 +35,11 @@ theorem relIndex_eq_of_surj {G A : Type} [Group G] [AddGroup A] (H K : Subgroup 
 variable {L : Type} [Field L] [Valued L (WithZero (Multiplicative ℤ))] {n : ℕ}
 
 omit [Valued L (WithZero (Multiplicative ℤ))] in
+/- English proof (translation)
+Use `first`. Consider the case `exact @_root_.GlobalTheory.StrictUpperNilpotent.pow_apply_eq_zero_of_strictUpper`. Consider the case `exact _root_.GlobalTheory.StrictUpperNilpotent.pow_apply_eq_zero_of_strictUpper`. Consider the case `(apply _root_.GlobalTheory.StrictUpperNilpotent.pow_apply_eq_zero_of_strictUpper <;> assumption)`. Consider the case `(intros; apply _root_.GlobalTheory.StrictUpperNilpotent.pow_apply_eq_zero_of_strictUpper <;> assumption)`.
+
+Consider the case `(intros; apply @_root_.GlobalTheory.StrictUpperNilpotent.pow_apply_eq_zero_of_strictUpper <;> first | assumption | infer_instance)`. Consider the case `(intros; exact _root_.GlobalTheory.StrictUpperNilpotent.pow_apply_eq_zero_of_strictUpper ..)`.
+-/
 theorem pow_apply_eq_zero {y : Matrix (Fin n) (Fin n) L} (hy : ∀ i j, j ≤ i → y i j = 0) (k : ℕ) :
     ∀ i j : Fin n, j.val < i.val + k → (y ^ k) i j = 0 := by
   first
@@ -38,12 +50,20 @@ theorem pow_apply_eq_zero {y : Matrix (Fin n) (Fin n) L} (hy : ∀ i j, j ≤ i 
   | (intros; apply @_root_.GlobalTheory.StrictUpperNilpotent.pow_apply_eq_zero_of_strictUpper <;> first | assumption | infer_instance)
   | (intros; exact _root_.GlobalTheory.StrictUpperNilpotent.pow_apply_eq_zero_of_strictUpper ..)
 
+/- English proof (translation)
+Proceed by induction on `k with`. Consider the case `zero => simpa using hy`. Consider the case `succ k ih => rw [pow_succ]`. Conclude with `mul_mem_upLat hc.2 ih hy`.
+-/
 theorem pow_succ_mem {c : Fin n → Fin n → ℤ} (hc : IsWeight c) {y : Matrix (Fin n) (Fin n) L}
     (hy : y ∈ upLat L c) (k : ℕ) : y ^ (k + 1) ∈ upLat L c := by
   induction k with
   | zero => simpa using hy
   | succ k ih => rw [pow_succ]; exact mul_mem_upLat hc.2 ih hy
 
+/- English proof (translation)
+Establish `hy' : -y ∈ upLat L c` using `neg_mem hy`. Establish `h0 : (-y) ^ (n + 1) = 0`. Use extensionality with `i j`. Conclude with `pow_apply_eq_zero hy'.1 _ i j (by have := j.2; omega)`. Establish `h1 : (1 + y) * (1 + ∑ k ∈ Finset.range n, (-y) ^ (k + 1)) = 1`.
+
+Use `mul_neg_geom_sum (-y) (n + 1)` as an intermediate fact. Rewrite `this` using `[h0, sub_zero, sub_neg_eq_add, Finset.sum_range_succ', pow_zero, add_comm _ (1 : Matrix (Fin n) (Fin n) L)]`. Simplify `this` using `[add_comm]`. Conclude with `⟨_, sum_mem fun k _ => pow_succ_mem hc hy' k, h1, mul_eq_one_comm.1 h1⟩`.
+-/
 theorem exists_inv {c : Fin n → Fin n → ℤ} (hc : IsWeight c) {y : Matrix (Fin n) (Fin n) L}
     (hy : y ∈ upLat L c) : ∃ z ∈ upLat L c, (1 + y) * (1 + z) = 1 ∧ (1 + z) * (1 + y) = 1 := by
   have hy' : -y ∈ upLat L c := neg_mem hy
@@ -56,6 +76,9 @@ theorem exists_inv {c : Fin n → Fin n → ℤ} (hc : IsWeight c) {y : Matrix (
     simpa [add_comm] using this
   exact ⟨_, sum_mem fun k _ => pow_succ_mem hc hy' k, h1, mul_eq_one_comm.1 h1⟩
 
+/- English proof (translation)
+Establish `h1 : (1 + a) * x ∈ upLat L C`. Rewrite using `[add_mul, one_mul]`. Conclude with `add_mem hx (mul_mem_upLat hI.2.1 ha hx)`. Rewrite using `[mul_add, mul_one]`. Conclude with `add_mem h1 (mul_mem_upLat hI.2.2 h1 hb)`.
+-/
 theorem unit_mul_mem {c C : Fin n → Fin n → ℤ} (hI : IsIdealWeight c C) {a b x : Matrix (Fin n) (Fin n) L}
     (ha : a ∈ upLat L c) (hb : b ∈ upLat L c) (hx : x ∈ upLat L C) : (1 + a) * x * (1 + b) ∈ upLat L C := by
   have h1 : (1 + a) * x ∈ upLat L C := by
@@ -63,6 +86,9 @@ theorem unit_mul_mem {c C : Fin n → Fin n → ℤ} (hI : IsIdealWeight c C) {a
   rw [mul_add, mul_one]
   exact add_mem h1 (mul_mem_upLat hI.2.2 h1 hb)
 
+/- English proof (translation)
+Use `⟨fun hx => ?_, unit_mul_mem hI ha hb⟩` and prove the remaining obligations. Take `⟨a', ha', -, e1⟩` from `exists_inv hc ha`. Take `⟨b', hb', e2, -⟩` from `exists_inv hc hb`. Use `unit_mul_mem hI ha' hb' hx` as an intermediate fact. Rewrite `this` using `[← mul_assoc, ← mul_assoc, e1, one_mul, mul_assoc, e2, mul_one]`. Then use the resulting hypothesis.
+-/
 theorem unit_mul_mem_iff {c C : Fin n → Fin n → ℤ} (hc : IsWeight c) (hI : IsIdealWeight c C)
     {a b x : Matrix (Fin n) (Fin n) L} (ha : a ∈ upLat L c) (hb : b ∈ upLat L c) :
     (1 + a) * x * (1 + b) ∈ upLat L C ↔ x ∈ upLat L C := by
@@ -74,6 +100,9 @@ theorem unit_mul_mem_iff {c C : Fin n → Fin n → ℤ} (hc : IsWeight c) (hI :
 
 def cay (t : L) (u : Matrix (Fin n) (Fin n) L) : Matrix (Fin n) (Fin n) L := (1 + t • (u - 1))⁻¹ * (u - 1)
 
+/- English proof (translation)
+Take `⟨z, hz, e1, e2⟩` from `exists_inv hc (smul_mem_upLat ht hu)`. Conclude with `⟨z, hz, e1, e2, by rw [cay, Matrix.inv_eq_right_inv e1]⟩`.
+-/
 theorem cay_eq {c : Fin n → Fin n → ℤ} (hc : IsWeight c) {t : L} (ht : Valued.v t ≤ 1)
     {u : Matrix (Fin n) (Fin n) L} (hu : u - 1 ∈ upLat L c) :
     ∃ z ∈ upLat L c, (1 + t • (u - 1)) * (1 + z) = 1 ∧ (1 + z) * (1 + t • (u - 1)) = 1 ∧
@@ -81,12 +110,22 @@ theorem cay_eq {c : Fin n → Fin n → ℤ} (hc : IsWeight c) {t : L} (ht : Val
   obtain ⟨z, hz, e1, e2⟩ := exists_inv hc (smul_mem_upLat ht hu)
   exact ⟨z, hz, e1, e2, by rw [cay, Matrix.inv_eq_right_inv e1]⟩
 
+/- English proof (translation)
+Take `⟨z, hz, -, -, e⟩` from `cay_eq hc ht hu`. Rewrite using `[e, add_mul, one_mul]`. Conclude with `add_mem hu (mul_mem_upLat hc.2 hz hu)`.
+-/
 theorem cay_mem {c : Fin n → Fin n → ℤ} (hc : IsWeight c) {t : L} (ht : Valued.v t ≤ 1)
     {u : Matrix (Fin n) (Fin n) L} (hu : u - 1 ∈ upLat L c) : cay t u ∈ upLat L c := by
   obtain ⟨z, hz, -, -, e⟩ := cay_eq hc ht hu
   rw [e, add_mul, one_mul]
   exact add_mem hu (mul_mem_upLat hc.2 hz hu)
 
+/- English proof (translation)
+Take `⟨z, -, e1, e2, e⟩` from `cay_eq hc ht hu`. Establish `e3` using `congrArg (adjJ σ) e2`. Rewrite `e3` using `[adjJ_mul, adjJ_one, adjJ_add, adjJ_smul, adjJ_sub, adjJ_one]`. Rewrite using `[mem_skewJ, e, adjJ_mul, adjJ_sub, adjJ_one]`. Use `set v := adjJ σ u`.
+
+Use `set W := 1 + z`. Use `set W' := adjJ σ W`. Establish `hs : σ t = 1 - t` using `by linear_combination hσ`. Establish `key : (1 + t • (u - 1)) * (v - 1) = -((u - 1) * (1 + σ t • (v - 1)))`. Simplify using `only [hs, add_mul, mul_add, sub_mul, mul_sub, smul_mul_assoc, mul_smul_comm, one_mul, mul_one, huv]`.
+
+Use `module`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[key, mul_neg, neg_mul, mul_assoc, mul_assoc, e3, mul_one]`.
+-/
 theorem cay_skew {c : Fin n → Fin n → ℤ} (hc : IsWeight c) {σ : L →+* L} {t : L} (ht : Valued.v t ≤ 1)
     (hσ : t + σ t = 1) {u : Matrix (Fin n) (Fin n) L} (hu : u - 1 ∈ upLat L c) (huv : u * adjJ σ u = 1) :
     cay t u ∈ skewJ σ n := by
@@ -105,6 +144,15 @@ theorem cay_skew {c : Fin n → Fin n → ℤ} (hc : IsWeight c) {σ : L →+* L
     _ = -(W * (u - 1)) := by
       rw [key, mul_neg, neg_mul, mul_assoc, mul_assoc, e3, mul_one]
 
+/- English proof (translation)
+Take `⟨z, hz, e1, e2, e⟩` from `cay_eq hc ht hu`. Take `⟨z', hz', e1', e2', e'⟩` from `cay_eq hc ht hu'`. Rewrite using `[← unit_mul_mem_iff hc hI hz hz' (x := u' - u)]`. Establish `hcomm : (1 + z') * (u' - 1) = (u' - 1) * (1 + z')`. Establish `: (u' - 1) * (1 + t • (u' - 1)) = (1 + t • (u' - 1)) * (u' - 1)`.
+
+Simplify using `only [add_mul, mul_add, smul_mul_assoc, mul_smul_comm, one_mul, mul_one]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[mul_assoc, mul_assoc, e1', mul_one]`. Use `_ = _ := by rw [this, ← mul_assoc, e2', one_mul]`. Establish `key : u' - u = (1 + t • (u - 1)) * (u' - 1) - (u - 1) * (1 + t • (u' - 1))`.
+
+Simplify using `only [add_mul, mul_add, smul_mul_assoc, mul_smul_comm, one_mul, mul_one]`. Normalize the expressions using the abelian group laws. Establish `: (1 + z) * (u' - u) * (1 + z') = -cay t u + cay t u'`. Rewrite using `[key, mul_sub, sub_mul, ← mul_assoc, e2, one_mul, mul_assoc, mul_assoc, e1', mul_one, e, e', hcomm]`. Normalize the expressions using the abelian group laws.
+
+Rewrite using `[this]`.
+-/
 theorem cay_sub_mem_iff {c C : Fin n → Fin n → ℤ} (hc : IsWeight c) (hI : IsIdealWeight c C) {t : L}
     (ht : Valued.v t ≤ 1) {u u' : Matrix (Fin n) (Fin n) L} (hu : u - 1 ∈ upLat L c) (hu' : u' - 1 ∈ upLat L c) :
     -cay t u + cay t u' ∈ upLat L C ↔ u' - u ∈ upLat L C := by
@@ -125,6 +173,19 @@ theorem cay_sub_mem_iff {c C : Fin n → Fin n → ℤ} (hc : IsWeight c) (hI : 
     abel
   rw [this]
 
+/- English proof (translation)
+Take `⟨z, hz, e1, e2⟩` from `exists_inv hc (neg_mem (smul_mem_upLat ht hX))`. Rewrite `hs` using `[mem_skewJ]`. Establish `hst : σ t = 1 - t` using `by linear_combination hσ`. Establish `e3` using `congrArg (adjJ σ) e1`. Rewrite `e1`, `e2`, `e3` using `[← sub_eq_add_neg]`.
+
+Rewrite `e3` using `[adjJ_mul, adjJ_one, adjJ_sub, adjJ_smul, adjJ_one, hs, smul_neg, sub_neg_eq_add]`. Use `set T := 1 + z with hT`. Establish `h1 : (1 + σ t • X) * T - 1 = X * T`. Establish `: (1 + σ t • X) = X + (1 - t • X)` using `by rw [hst]; module`. Rewrite using `[this, add_mul, e1, add_sub_cancel_right]`.
+
+Use `⟨(1 + σ t • X) * T, ?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[h1, hT, mul_add, mul_one]`. Conclude with `add_mem hX (mul_mem_upLat hc.2 hX hz)`. Rewrite using `[adjJ_mul, adjJ_add σ 1 (σ t • X), adjJ_smul, adjJ_one, hs, hσσ, smul_neg, ← sub_eq_add_neg]`. Establish `: (1 - t • X) * (1 + σ t • X) = (1 + σ t • X) * (1 - t • X)`.
+
+Simplify using `only [add_mul, mul_add, sub_mul, mul_sub, smul_mul_assoc, mul_smul_comm, one_mul, mul_one]`. Use `module`. Rewrite using `[mul_assoc, ← mul_assoc (1 - t • X), this, mul_assoc, e1, mul_one, e3]`. Establish `h2 : 1 + t • (X * T) = T`. Use `e1` as an intermediate fact.
+
+Rewrite `this` using `[sub_mul, one_mul, smul_mul_assoc]`. Rewrite using `[← this]`. Normalize the expressions using the abelian group laws. Establish `h3 : (1 - t • X) * X = X * (1 - t • X)`. Simplify using `only [sub_mul, mul_sub, smul_mul_assoc, mul_smul_comm, one_mul, mul_one]`.
+
+Rewrite using `[cay, h1, h2, Matrix.inv_eq_left_inv e1, ← mul_assoc, h3, mul_assoc, e1, mul_one]`.
+-/
 theorem cay_surj {c : Fin n → Fin n → ℤ} (hc : IsWeight c) {σ : L →+* L} (hσσ : ∀ x, σ (σ x) = x) {t : L}
     (ht : Valued.v t ≤ 1) (hσ : t + σ t = 1) {X : Matrix (Fin n) (Fin n) L} (hX : X ∈ upLat L c)
     (hs : X ∈ skewJ σ n) : ∃ u, u - 1 ∈ upLat L c ∧ adjJ σ u * u = 1 ∧ cay t u = X := by
@@ -154,6 +215,17 @@ theorem cay_surj {c : Fin n → Fin n → ℤ} (hc : IsWeight c) {σ : L →+* L
       simp only [sub_mul, mul_sub, smul_mul_assoc, mul_smul_comm, one_mul, mul_one]
     rw [cay, h1, h2, Matrix.inv_eq_left_inv e1, ← mul_assoc, h3, mul_assoc, e1, mul_one]
 
+/- English proof (translation)
+Take `⟨⟨t, ht, hσ⟩, -⟩` from `exists_trace_one h`. Establish `hadj : ∀ u : (borelU σ n).U, (u.1.1⁻¹).val = adjJ σ u.1.1.val` using `fun u => (mem_GU_iff_adjJ σ _).1 u.1.2`. Establish `hsk : ∀ u : unipLat h.2.1 hc, cay t u.1.1.1.val ∈ skewJ σ n` using `fun u => cay_skew hc ht hσ u.2 (by rw [← hadj, Units.mul_inv])`. Use `relIndex_eq_of_surj _ _ _ _ (fun u => ⟨cay t u.1.1.1.val, cay_mem hc ht u.2, hsk u⟩) ?_ ?_` and prove the remaining obligations. Introduce and unpack `⟨X, hX, hs⟩`.
+
+Take `⟨u, hu, e1, e⟩` from `cay_surj hc h.1 ht hσ hX hs`. Set `g : GL (Fin n) L` to `⟨u, adjJ σ u, mul_eq_one_comm.1 e1, e1⟩`. Establish `hg : g ∈ GU σ n` using `(mem_GU_iff_adjJ σ g).2 rfl`. Establish `hU : (⟨g, hg⟩ : GU σ n) ∈ (borelU σ n).U`. Rewrite using `[mem_borelU_U]`.
+
+Use `⟨fun i j e => ?_, fun i => ?_⟩` and prove the remaining obligations. Use `hu.1 i j (le_of_lt e)` as an intermediate fact. Rewrite `this` using `[Matrix.sub_apply, Matrix.one_apply_ne (ne_of_gt e), sub_zero]`. Conclude with `this`. Use `hu.1 i i le_rfl` as an intermediate fact.
+
+Rewrite `this` using `[Matrix.sub_apply, Matrix.one_apply_eq, sub_eq_zero]`. Conclude with `this`. Conclude with `⟨⟨⟨⟨g, hg⟩, hU⟩, hu⟩, Subtype.ext e⟩`. Introduce `u u'`. Establish `h1 : (u.1.1.1⁻¹).val - 1 ∈ upLat L c` using `(unipLat h.2.1 hc).inv_mem u.2`.
+
+Establish `h2` using `unit_mul_mem_iff hc hI (x := u'.1.1.1.val - u.1.1.1.val) h1 (zero_mem _)`. Rewrite `h2` using `[add_zero, mul_one, add_sub_cancel, mul_sub, Units.inv_mul]`. Use `show (u.1.1.1⁻¹).val * u'.1.1.1.val - 1 ∈ upLat L C ↔ -cay t u.1.1.1.val + cay t u'.1.1.1.val ∈ upLat L C ⊓ skewJ σ n`. Rewrite using `[h2, AddSubgroup.mem_inf, cay_sub_mem_iff hc hI ht u.2 u'.2]`. Conclude with `⟨fun e => ⟨e, add_mem (neg_mem (hsk u)) (hsk u')⟩, fun e => e.1⟩`.
+-/
 theorem relIndex_unipLat (L : Type) [Field L] [Valued L (WithZero (Multiplicative ℤ))] (ϖ : L) (σ : L →+* L) (q n : ℕ)
     (h : IsUnramInv ϖ σ q) (c C : Fin n → Fin n → ℤ) (hc : IsWeight c) (hC : IsWeight C) (hI : IsIdealWeight c C) :
     (unipLat h.2.1 hC).relIndex (unipLat h.2.1 hc) =

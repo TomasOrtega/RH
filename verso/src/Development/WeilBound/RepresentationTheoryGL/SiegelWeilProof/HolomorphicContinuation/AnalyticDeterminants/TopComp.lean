@@ -17,6 +17,9 @@ attribute [local instance] Matrix.normedAddCommGroup Matrix.normedSpace
 
 variable {n : ℕ}
 
+/- English proof (translation)
+Unfold `detD`. Use `Finset.sum_congr rfl fun σ _ => ?_` and prove the remaining obligations. Use `erw [hA (M2 n) (Matrix (Fin n) (Fin n) ℂ) F Ω hΩ hF g hg L]`. Both sides reduce to the same expression.
+-/
 theorem detD_affine (hA : IterAffine) {F : M2 n → ℂ} {Ω : Set (M2 n)} (hΩ : IsOpen Ω) (hF : ContDiffOn ℂ ∞ F Ω)
     {g : M2 n} (hg : g ∈ Ω) (L : Matrix (Fin n) (Fin n) ℂ →L[ℂ] M2 n) :
     detD (fun t => F (g + L t)) = ∑ σ : Equiv.Perm (Fin n), (Equiv.Perm.sign σ : ℂ) *
@@ -27,6 +30,15 @@ theorem detD_affine (hA : IterAffine) {F : M2 n → ℂ} {Ω : Set (M2 n)} (hΩ 
   erw [hA (M2 n) (Matrix (Fin n) (Fin n) ℂ) F Ω hΩ hF g hg L]
   rfl
 
+/- English proof (translation)
+Establish `hgΩ : g ∈ Ω` using `hG hg`. Establish `key : ∀ θ : ℝ, ∑ σ : Equiv.Perm (Fin n), (Equiv.Perm.sign σ : ℂ) * iteratedFDeriv ℂ (Fintype.card (Fin n)) F g (fun i => rotL g j θ (single ((Fintype.equivFin (Fin n)).symm i) (σ ((Fintype.equivFin (Fin n)).symm i)) 1)) = 0`. Introduce `θ`. Establish `h0` using `hhyp (g * rot j θ) (rot j θ)⁻¹ (TC.inG_mul hg (rot_inG j θ)) (inG_inv (rot_inG j θ))`. Simplify using `only [rot_nU] at h0`.
+
+Rewrite `h0` using `[detD_affine hA hΩ hF hgΩ]`. Then use the resulting hypothesis. Rewrite using `[detD_affine hA hΩ hF hgΩ]`. Simplify using `only [topL_single]`. Establish `hv` using `top_vanish (iteratedFDeriv ℂ (Fintype.card (Fin n)) F g) (fun σ : Equiv.Perm (Fin n) => (Equiv.Perm.sign σ : ℂ)) (fun σ i m => g * (Cm n * (![zLow j, zMid j, zTop j] m) ((Fintype.equivFin (Fin n)).symm i) (σ ((Fintype.equivFin (Fin n)).symm i)) * CmI n)) ?_`. Simplify using `using hv`.
+
+Introduce `θ`. Establish `h1 : ∀ σ : Equiv.Perm (Fin n), (Equiv.Perm.sign σ : ℂ) * iteratedFDeriv ℂ (Fintype.card (Fin n)) F g (fun i => g * (Cm n * zLow j ((Fintype.equivFin (Fin n)).symm i) (σ ((Fintype.equivFin (Fin n)).symm i)) * CmI n) + Complex.exp (2 * ↑θ * Complex.I) • (g * (Cm n * zMid j ((Fintyp …`. Introduce `σ`. Repeatedly rewrite using `[← rotL_single]`. Rewrite using `[ContinuousMultilinearMap.map_smul_univ, Finset.prod_const, Finset.card_univ, Fintype.card_fin, smul_eq_mul]`.
+
+Expand and normalize the polynomial expressions, which then agree. Use `(Finset.sum_congr rfl fun σ _ => h1 σ).trans ?_` and prove the remaining obligations. Rewrite using `[← Finset.mul_sum, key θ, mul_zero]`.
+-/
 theorem top_zero (hA : IterAffine) {j : ℕ} {F : M2 n → ℂ} {Ω : Set (M2 n)} (hΩ : IsOpen Ω) (hG : GSet n ⊆ Ω)
     (hF : ContDiffOn ℂ ∞ F Ω) (hhyp : ∀ a b, InG a → InG b → detD (fun H => F (a * nU H * b)) = 0)
     {g : M2 n} (hg : InG g) : detD (fun t => F (g + topL g j t)) = 0 := by
@@ -64,30 +76,45 @@ theorem top_zero (hA : IterAffine) {j : ℕ} {F : M2 n → ℂ} {Ω : Set (M2 n)
   refine (Finset.sum_congr rfl fun σ _ => h1 σ).trans ?_
   rw [← Finset.mul_sum, key θ, mul_zero]
 
+/- English proof (translation)
+Use extensionality with `a b`. Apply the tactic sequence `by_cases ha : a ∈ blkA j <;> by_cases hb : b ∈ blkA j <;>`. Simplify using `[matrixBlockRestriction, embOn, blkB, ha, hb]`.
+-/
 theorem block_part_embedding_first (j : ℕ) (T : Matrix (blkA (n := n) j) (blkA j) ℂ) (S : Matrix (blkB (n := n) j) (blkB j) ℂ) :
     matrixBlockRestriction (blkA j) (blkA j) (embOn (blkA j) T + embOn (blkB j) S) = embOn (blkA j) T := by
   ext a b
   by_cases ha : a ∈ blkA j <;> by_cases hb : b ∈ blkA j <;>
     simp [matrixBlockRestriction, embOn, blkB, ha, hb]
 
+/- English proof (translation)
+Use extensionality with `a b`. Apply the tactic sequence `by_cases ha : a ∈ blkA j <;> by_cases hb : b ∈ blkA j <;>`. Simplify using `[matrixBlockRestriction, embOn, blkB, ha, hb]`.
+-/
 theorem block_part_embedding_second (j : ℕ) (T : Matrix (blkA (n := n) j) (blkA j) ℂ) (S : Matrix (blkB (n := n) j) (blkB j) ℂ) :
     matrixBlockRestriction (blkB j) (blkB j) (embOn (blkA j) T + embOn (blkB j) S) = embOn (blkB j) S := by
   ext a b
   by_cases ha : a ∈ blkA j <;> by_cases hb : b ∈ blkA j <;>
     simp [matrixBlockRestriction, embOn, blkB, ha, hb]
 
+/- English proof (translation)
+Use extensionality with `a b`. Apply the tactic sequence `by_cases ha : a ∈ blkA j <;> by_cases hb : b ∈ blkA j <;>`. Simplify using `[matrixBlockRestriction, bdiag, blkB, ha, hb]`.
+-/
 theorem block_part_diagonal_first (j : ℕ) (c c' : ℂ) (t : Matrix (Fin n) (Fin n) ℂ) :
     matrixBlockRestriction (blkA j) (blkA j) (bdiag j c c' t) = c • matrixBlockRestriction (blkA j) (blkA j) t := by
   ext a b
   by_cases ha : a ∈ blkA j <;> by_cases hb : b ∈ blkA j <;>
     simp [matrixBlockRestriction, bdiag, blkB, ha, hb]
 
+/- English proof (translation)
+Use extensionality with `a b`. Apply the tactic sequence `by_cases ha : a ∈ blkA j <;> by_cases hb : b ∈ blkA j <;>`. Simplify using `[matrixBlockRestriction, bdiag, blkB, ha, hb]`.
+-/
 theorem block_part_diagonal_second (j : ℕ) (c c' : ℂ) (t : Matrix (Fin n) (Fin n) ℂ) :
     matrixBlockRestriction (blkB j) (blkB j) (bdiag j c c' t) = c' • matrixBlockRestriction (blkB j) (blkB j) t := by
   ext a b
   by_cases ha : a ∈ blkA j <;> by_cases hb : b ∈ blkA j <;>
     simp [matrixBlockRestriction, bdiag, blkB, ha, hb]
 
+/- English proof (translation)
+Establish `h : fromBlocks (1 + P) Q R (1 + S) = (1 : M2 n) + fromBlocks P Q R S`. Rewrite using `[← fromBlocks_one, fromBlocks_add]`. Simplify using the standard rewrite rules. Simplify using `only [mX, cm_inv, h, mul_add, add_mul, mul_one, cm_mul_cmI]`.
+-/
 theorem g_mX (g : M2 n) (P Q R S : Matrix (Fin n) (Fin n) ℂ) :
     g * mX (1 + P) Q R (1 + S) = g + g * (Cm n * fromBlocks P Q R S * CmI n) := by
   have h : fromBlocks (1 + P) Q R (1 + S) = (1 : M2 n) + fromBlocks P Q R S := by
@@ -95,6 +122,9 @@ theorem g_mX (g : M2 n) (P Q R S : Matrix (Fin n) (Fin n) ℂ) :
     simp
   simp only [mX, cm_inv, h, mul_add, add_mul, mul_one, cm_mul_cmI]
 
+/- English proof (translation)
+Introduce `a b h`. Assume the negation of the conclusion as `hn`. Apply `h` to reduce the goal to its premises. Simplify using `only [Matrix.smul_apply, matrixBlockRestriction, if_neg hn, smul_zero]`.
+-/
 theorem supp_smul {s t : Finset (Fin n)} (c : ℂ) (x : Matrix (Fin n) (Fin n) ℂ) :
     ∀ a b, (c • matrixBlockRestriction s t x) a b ≠ 0 → a ∈ s ∧ b ∈ t := by
   intro a b h
@@ -102,6 +132,9 @@ theorem supp_smul {s t : Finset (Fin n)} (c : ℂ) (x : Matrix (Fin n) (Fin n) �
   apply h
   simp only [Matrix.smul_apply, matrixBlockRestriction, if_neg hn, smul_zero]
 
+/- English proof (translation)
+Rewrite using `[mul_assoc, ← mX_factor j _ _ _ _ (supp_smul _ _) (supp_smul _ _) (supp_smul _ _) (supp_smul _ _), g_mX]`. Simplify using `only [topL, conjL_apply, ContinuousLinearMap.smul_apply, ContinuousLinearMap.neg_apply, block_part_linear_apply, neg_smul]`.
+-/
 private theorem eq_mul_mX_mul_mX_blockEntries (g : M2 n) (j : ℕ) (t : Matrix (Fin n) (Fin n) ℂ) :
     g + topL g j t = g * mX 1 ((2 * Complex.I)⁻¹ • matrixBlockRestriction (blkA j) (blkA j) t)
       ((-(2 * Complex.I)⁻¹) • matrixBlockRestriction (blkB j) (blkB j) t) 1 *
@@ -111,6 +144,9 @@ private theorem eq_mul_mX_mul_mX_blockEntries (g : M2 n) (j : ℕ) (t : Matrix (
   simp only [topL, conjL_apply, ContinuousLinearMap.smul_apply, ContinuousLinearMap.neg_apply, block_part_linear_apply,
     neg_smul]
 
+/- English proof (translation)
+Establish `h` using `g_mX g 0 ((2 * Complex.I)⁻¹ • matrixBlockRestriction (blkA j) (blkA j) t) ((-(2 * Complex.I)⁻¹) • matrixBlockRestriction (blkB j) (blkB j) t) 0`. Simplify using `only [add_zero] at h`. Rewrite using `[h, conjL_apply]`. Simplify using `only [ContinuousLinearMap.zero_apply, block_part_linear_apply, block_part_diagonal_first, block_part_diagonal_second]`.
+-/
 private theorem conjL_bdiag_eq_mul_mX_blockEntries (g : M2 n) (j : ℕ) (t : Matrix (Fin n) (Fin n) ℂ) :
     g + conjL g 0 (matrixBlockRestrictionLinear (blkA j) (blkA j)) (matrixBlockRestrictionLinear (blkB j) (blkB j)) 0
       (bdiag j (2 * Complex.I)⁻¹ (-(2 * Complex.I)⁻¹) t) =
@@ -122,6 +158,9 @@ private theorem conjL_bdiag_eq_mul_mX_blockEntries (g : M2 n) (j : ℕ) (t : Mat
   rw [h, conjL_apply]
   simp only [ContinuousLinearMap.zero_apply, block_part_linear_apply, block_part_diagonal_first, block_part_diagonal_second]
 
+/- English proof (translation)
+Establish `h` using `g_mX g 0 (embOn (blkA j) T) (embOn (blkB j) S) 0`. Simplify using `only [add_zero] at h`. Rewrite using `[h, conjL_apply]`. Simplify using `only [ContinuousLinearMap.zero_apply, block_part_linear_apply, block_part_embedding_first, block_part_embedding_second]`.
+-/
 private theorem comp_blockEntries_eq (g : M2 n) (j : ℕ) (T : Matrix (blkA (n := n) j) (blkA j) ℂ)
     (S : Matrix (blkB (n := n) j) (blkB j) ℂ) :
     g * mX 1 (embOn (blkA j) T) (embOn (blkB j) S) 1 =
@@ -133,6 +172,21 @@ private theorem comp_blockEntries_eq (g : M2 n) (j : ℕ) (T : Matrix (blkA (n :
   simp only [ContinuousLinearMap.zero_apply, block_part_linear_apply, block_part_embedding_first, block_part_embedding_second]
 
 set_option maxHeartbeats 800000 in
+/- English proof (translation)
+Introduce `n j F Ω hΩ hG hF hinv hhyp g hg`. Establish `hgΩ : g ∈ Ω` using `hG hg`. Establish `hc : (2 * Complex.I)⁻¹ ≠ 0` using `by simp [Complex.I_ne_zero]`. Establish `hLc : Continuous fun t : Matrix (Fin n) (Fin n) ℂ => g + conjL g 0 (matrixBlockRestrictionLinear (blkA j) (blkA j)) (matrixBlockRestrictionLinear (blkB j) (blkB j)) 0 t` using `continuous_const.add (ContinuousLinearMap.continuous _)`. Establish `hΩ' : IsOpen ((fun t : Matrix (Fin n) (Fin n) ℂ => g + conjL g 0 (matrixBlockRestrictionLinear (blkA j) (blkA j)) (matrixBlockRestrictionLinear (blkB j) (blkB j)) 0 t) ⁻¹' Ω)` using `hΩ.preimage hLc`.
+
+Establish `h0 : (0 : Matrix (Fin n) (Fin n) ℂ) ∈ (fun t : Matrix (Fin n) (Fin n) ℂ => g + conjL g 0 (matrixBlockRestrictionLinear (blkA j) (blkA j)) (matrixBlockRestrictionLinear (blkB j) (blkB j)) 0 t) ⁻¹' Ω`. Simplify using `only [Set.mem_preimage, map_zero, add_zero]`. Conclude with `hgΩ`. Establish `hψ : ContDiffOn ℂ ∞ (fun t : Matrix (Fin n) (Fin n) ℂ => F (g + conjL g 0 (matrixBlockRestrictionLinear (blkA j) (blkA j)) (matrixBlockRestrictionLinear (blkB j) (blkB j)) 0 t)) ((fun t : Matrix (Fin n) (Fin n) ℂ => g + conjL g 0 (matrixBlockRestrictionLinear (blkA j) (blkA j)) ( …` using `hF.comp (contDiff_const.add (ContinuousLinearMap.contDiff _)).contDiffOn (fun t ht => ht)`. Establish `hmain` using `hB n j (2 * Complex.I)⁻¹ (-(2 * Complex.I)⁻¹) _ _ hΩ' h0 hψ`.
+
+Establish `hzero : (detD fun t : Matrix (Fin n) (Fin n) ℂ => F (g + conjL g 0 (matrixBlockRestrictionLinear (blkA j) (blkA j)) (matrixBlockRestrictionLinear (blkB j) (blkB j)) 0 (bdiag j (2 * Complex.I)⁻¹ (-(2 * Complex.I)⁻¹) t))) = 0`. Use `Eq.trans ?_ (top_zero (j := j) hA hΩ hG hF hhyp hg)` and prove the remaining obligations. Establish `hev : (fun t : Matrix (Fin n) (Fin n) ℂ => F (g + conjL g 0 (matrixBlockRestrictionLinear (blkA j) (blkA j)) (matrixBlockRestrictionLinear (blkB j) (blkB j)) 0 (bdiag j (2 * Complex.I)⁻¹ (-(2 * Complex.I)⁻¹) t))) =ᶠ[𝓝 0] fun t => F (g + topL g j t)`. Establish `e1 : ∀ᶠ t in 𝓝 (0 : Matrix (Fin n) (Fin n) ℂ), g + topL g j t ∈ Ω` using `(continuous_const.add (topL g j).continuous).continuousAt.preimage_mem_nhds (by simpa using hΩ.mem_nhds hgΩ)`. Establish `hc2 : Continuous fun t : Matrix (Fin n) (Fin n) ℂ => g + conjL g 0 (matrixBlockRestrictionLinear (blkA j) (blkA j)) (matrixBlockRestrictionLinear (blkB j) (blkB j)) 0 (bdL j (2 * Complex.I)⁻¹ (-(2 * Complex.I)⁻¹) t)` using `continuous_const.add ((ContinuousLinearMap.continuous _).comp (ContinuousLinearMap.continuous _))`.
+
+Establish `e2 : ∀ᶠ t in 𝓝 (0 : Matrix (Fin n) (Fin n) ℂ), g + conjL g 0 (matrixBlockRestrictionLinear (blkA j) (blkA j)) (matrixBlockRestrictionLinear (blkB j) (blkB j)) 0 (bdL j (2 * Complex.I)⁻¹ (-(2 * Complex.I)⁻¹) t) ∈ Ω`. Establish `hm : Ω ∈ 𝓝 (g + conjL g 0 (matrixBlockRestrictionLinear (blkA j) (blkA j)) (matrixBlockRestrictionLinear (blkB j) (blkB j)) 0 (bdL j (2 * Complex.I)⁻¹ (-(2 * Complex.I)⁻¹) 0))`. Rewrite using `[map_zero, map_zero, add_zero]`. Conclude with `hΩ.mem_nhds hgΩ`. Conclude with `hc2.continuousAt.preimage_mem_nhds hm`.
+
+Use `filter_upwards [e1, e2] with t ht1 ht2`. Rewrite `ht2` using `[bdL_apply, conjL_bdiag_eq_mul_mX_blockEntries]`. Rewrite `ht1` using `[eq_mul_mX_mul_mX_blockEntries]`. Rewrite using `[conjL_bdiag_eq_mul_mX_blockEntries, eq_mul_mX_mul_mX_blockEntries]`. Conclude with `(hinv _ _ _ ht1 ht2 (supp_smul _ _) (supp_smul _ _)).symm`.
+
+Establish `hI` using `(hev.iteratedFDeriv ℂ (Fintype.card (Fin n))).eq_of_nhds`. Unfold `detD`. Rewrite using `[hI]`. Rewrite `hmain` using `[hzero]`. Establish `hX` using `(mul_eq_zero.mp hmain.symm).resolve_left (mul_ne_zero (pow_ne_zero _ hc) (pow_ne_zero _ (neg_ne_zero.mpr hc)))`.
+
+Simplify `hX` using `only [comp_blockEntries_eq]`.
+-/
 theorem topComp_of (hA : IterAffine) (hB : DetDBlock) : TopComp := by
   intro n j F Ω hΩ hG hF hinv hhyp g hg
   have hgΩ : g ∈ Ω := hG hg
@@ -186,12 +240,18 @@ theorem topComp_of (hA : IterAffine) (hB : DetDBlock) : TopComp := by
     (mul_ne_zero (pow_ne_zero _ hc) (pow_ne_zero _ (neg_ne_zero.mpr hc)))
   simpa only [comp_blockEntries_eq] using hX
 
+/- English proof (translation)
+The claim follows from `topComp_of iterAffine (detDBlock_of iterAffine iterSymm iterNested)`.
+-/
 theorem topComp : TopComp := topComp_of iterAffine (detDBlock_of iterAffine iterSymm iterNested)
 
 end PositivityTheory.Rg.Sw.LVs.TC
 
 namespace PositivityTheory.Rg.Sw.LVs
 
+/- English proof (translation)
+The claim follows from `TC.topComp`.
+-/
 theorem topComp : TopComp := TC.topComp
 
 end PositivityTheory.Rg.Sw.LVs

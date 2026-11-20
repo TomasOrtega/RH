@@ -27,18 +27,29 @@ noncomputable section
 
 namespace GlobalTheory.LamPull
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨congrArg (fun z => z.left) (lift_fst (pushPt w (fst G' G')) (pushPt w (snd G' G'))), congrArg (fun z => z.left) (lift_snd (pushPt w (fst G' G')) (pushPt w (snd G' G')))⟩`.
+-/
 theorem exists_isSquare {S S' : Scheme.{0}} {G : Over S} {G' : Over S'} {f : S' ⟶ S} {φ : G'.left ⟶ G.left}
     (w : φ ≫ G.hom = G'.hom ≫ f) :
     IsSquare φ (lift (pushPt w (fst G' G')) (pushPt w (snd G' G'))).left :=
   ⟨congrArg (fun z => z.left) (lift_fst (pushPt w (fst G' G')) (pushPt w (snd G' G'))),
     congrArg (fun z => z.left) (lift_snd (pushPt w (fst G' G')) (pushPt w (snd G' G')))⟩
 
+/- English proof (translation)
+Apply `pullback.hom_ext` to reduce the goal to its premises. Conclude with `ha.1.trans hb.1.symm`. Conclude with `ha.2.trans hb.2.symm`.
+-/
 theorem isSquare_unique {S S' : Scheme.{0}} {G : Over S} {G' : Over S'} {φ : G'.left ⟶ G.left}
     {a b : (G' ⊗ G').left ⟶ (G ⊗ G).left} (ha : IsSquare φ a) (hb : IsSquare φ b) : a = b := by
   apply pullback.hom_ext
   · exact ha.1.trans hb.1.symm
   · exact ha.2.trans hb.2.symm
 
+/- English proof (translation)
+Take `rfl` from `isSquare_unique hφ (exists_isSquare h.1.w)`. Establish `hΛ : (abelian₂ G L).IsLB` using `DVR.linComb_isLB L hL _ _`. Establish `h₁ : LBIso (abelian₂ G' L') (abelian₂ G' (L.pull φ))`. Take `⟨w, hw⟩` from `H`. Conclude with `⟨LB.linCombIso w _ _, DVR.linCombIso_isGen w hw _ _⟩`.
+
+Set `U` to `lift (pushPt h.1.w (fst G' G')) (pushPt h.1.w (snd G' G'))`. Establish `h₂ : LBIso (abelian₂ G' (L.pull φ)) ((abelian₂ G L).pull U.left)`. Use `LBIso.chartPull (chartPullLinComb L _ _ _ _ U.left fun I => psum_push h _ _ U (fun i => ?_) I.down) (Geo.Tor.chartPullPull (abelian₂ G L) _ U.left rfl) ⟨idIso _, idIso_isGen hΛ⟩` and prove the remaining obligations. Apply the tactic sequence `fin_cases i <;> simp [U, x2]`. Conclude with `LBIso.trans (DVR.linComb_isLB L' hL' _ _) (DVR.linComb_isLB _ (pull_isLB hL φ) _ _) (pull_isLB hΛ _) h₁ h₂`.
+-/
 theorem lbIso_lam_pull {S S' : Scheme.{0}} {G : Over S} {G' : Over S'} [GrpObj G] [IsCommMonObj G] [GrpObj G']
     [IsCommMonObj G'] {f : S' ⟶ S} {φ : G'.left ⟶ G.left} (h : IsGrpPullback G' G f φ) {L : LB G.left}
     {L' : LB G'.left} (hL : L.IsLB) (hL' : L'.IsLB) (H : LBIso L' (L.pull φ))
@@ -56,6 +67,9 @@ theorem lbIso_lam_pull {S S' : Scheme.{0}} {G : Over S} {G' : Over S'} [GrpObj G
     fin_cases i <;> simp [U, x2]
   exact LBIso.trans (DVR.linComb_isLB L' hL' _ _) (DVR.linComb_isLB _ (pull_isLB hL φ) _ _) (pull_isLB hΛ _) h₁ h₂
 
+/- English proof (translation)
+Introduce `E _ _ _ H S S' t t' f`. Use `⟨fun φ w => ⟨_, exists_isSquare w⟩, fun ν φ₂ hφ => ?_⟩` and prove the remaining obligations. Take `⟨w, hw, -⟩` from `ν.lin`. Conclude with `lbIso_lam_pull ν.cart t.PP.isLB t'.PP.isLB ⟨w, hw⟩ hφ`.
+-/
 theorem lam_pull : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (S S' : Scheme.{0}) (t : SAB H S) (t' : SAB H S') (f : S' ⟶ S), (∀ φ : t'.G.left ⟶ t.G.left, φ ≫ t.G.hom = t'.G.hom ≫ f → ∃ φ₂ : (G2 t'.G).left ⟶ (G2 t.G).left, IsSquare φ φ₂) ∧ ∀ (ν : SABMap t' t f) (φ₂ : (G2 t'.G).left ⟶ (G2 t.G).left), IsSquare ν.φ φ₂ → LBIso (abelian₂ t'.G t'.PP.L) ((abelian₂ t.G t.PP.L).pull φ₂) := by
   intro E _ _ _ H S S' t t' f
   refine ⟨fun φ w => ⟨_, exists_isSquare w⟩, fun ν φ₂ hφ => ?_⟩

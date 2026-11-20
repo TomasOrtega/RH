@@ -2,6 +2,9 @@ import Mathlib
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ContourShiftParametrisedIntegral
 universe u
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.CompanionTheory.EisTube.laplaceEntire_firstCountable | exact GlobalTheory.CompanionTheory.EisTube.laplaceEntire_firstCountable | (intros; apply GlobalTheory.CompanionTheory.EisTube.laplaceEntire_firstCountable <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.contour_shift_parametrised_integral : ∀ (ι : Type) [Fintype ι] (P : Type u) [TopologicalSpace P] [FirstCountableTopology P] (h : P → ℝ), (∀ p, 0 ≤ h p) →
     (∀ p, ∃ U ∈ nhds p, BddAbove (h '' U)) →
     ∀ ψ : P → (ι → ℝ) → ℂ, (∀ p, MeasureTheory.AEStronglyMeasurable (ψ p)) →

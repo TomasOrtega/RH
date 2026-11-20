@@ -13,6 +13,9 @@ attribute [local instance 100] LieRing.ofAssociativeRing
 
 def leftTranslate {M : Type*} [Mul M] {F : Type*} (a : M) (f : M → F) (g : M) : F := f (a * g)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem leftTranslate_apply {M : Type*} [Mul M] {F : Type*} (a : M) (f : M → F) (g : M) :
     leftTranslate a f g = f (a * g) := rfl
 
@@ -24,12 +27,18 @@ namespace IsExpLieAlgebra
 variable (h : IsExpLieAlgebra G 𝔤)
 variable {F : Type*} [NormedAddCommGroup F] [NormedSpace ℂ F]
 
+/- English proof (translation)
+Rewrite `hf`, the goal using `[h.isSmoothFun_iff]`. Introduce `g`. Simplify `hf (a * g)` using `only [leftTranslate, mul_assoc]`.
+-/
 theorem isSmoothFun_leftTranslate {f : G → F} (hf : h.IsSmoothFun f) (a : G) :
     h.IsSmoothFun (leftTranslate a f) := by
   rw [h.isSmoothFun_iff] at hf ⊢
   intro g
   simpa only [leftTranslate, mul_assoc] using hf (a * g)
 
+/- English proof (translation)
+Use function extensionality and compare the values at `g`. Simplify using `only [rightDeriv, leftTranslate, mul_assoc]`.
+-/
 theorem rightDeriv_leftTranslate (X : 𝔤) (f : G → F) (a : G) :
     h.rightDeriv X (leftTranslate a f) = leftTranslate a (h.rightDeriv X f) := by
   funext g
@@ -40,24 +49,42 @@ def leftTranslateEnd (a : G) : Module.End ℂ (h.smoothFuns (F := F)) where
   map_add' _ _ := rfl
   map_smul' _ _ := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem coe_leftTranslateEnd (a : G) (f : h.smoothFuns (F := F)) :
     ((h.leftTranslateEnd a f : h.smoothFuns (F := F)) : G → F) = leftTranslate a f := rfl
 
+/- English proof (translation)
+The claim follows from `LinearMap.ext fun f => Subtype.ext (funext fun g => by simp [leftTranslate, mul_assoc])`.
+-/
 theorem leftTranslateEnd_mul (a b : G) :
     h.leftTranslateEnd (F := F) a * h.leftTranslateEnd b = h.leftTranslateEnd (b * a) :=
   LinearMap.ext fun f => Subtype.ext (funext fun g => by simp [leftTranslate, mul_assoc])
 
+/- English proof (translation)
+The claim follows from `LinearMap.ext fun f => Subtype.ext (funext fun g => by simp [leftTranslate])`.
+-/
 theorem leftTranslateEnd_one : h.leftTranslateEnd (F := F) 1 = 1 :=
   LinearMap.ext fun f => Subtype.ext (funext fun g => by simp [leftTranslate])
 
+/- English proof (translation)
+Rewrite using `[leftTranslateEnd_mul, mul_inv_cancel, leftTranslateEnd_one]`.
+-/
 theorem leftTranslateEnd_inv_mul (a : G) :
     h.leftTranslateEnd (F := F) a⁻¹ * h.leftTranslateEnd a = 1 := by
   rw [leftTranslateEnd_mul, mul_inv_cancel, leftTranslateEnd_one]
 
+/- English proof (translation)
+Rewrite using `[leftTranslateEnd_mul, inv_mul_cancel, leftTranslateEnd_one]`.
+-/
 theorem leftTranslateEnd_mul_inv (a : G) :
     h.leftTranslateEnd (F := F) a * h.leftTranslateEnd a⁻¹ = 1 := by
   rw [leftTranslateEnd_mul, inv_mul_cancel, leftTranslateEnd_one]
 
+/- English proof (translation)
+The claim follows from `LinearMap.ext fun f => Subtype.ext (h.rightDeriv_leftTranslate X (f : G → F) a)`.
+-/
 theorem rightDerivEnd_mul_leftTranslateEnd (X : 𝔤) (a : G) :
     h.rightDerivEnd (F := F) X * h.leftTranslateEnd a = h.leftTranslateEnd a * h.rightDerivEnd X :=
   LinearMap.ext fun f => Subtype.ext (h.rightDeriv_leftTranslate X (f : G → F) a)
@@ -77,6 +104,11 @@ def conjLeft (a : G) :
     simp only [Algebra.algebraMap_eq_smul_one, mul_smul_comm, smul_mul_assoc, mul_one]
     rw [leftTranslateEnd_inv_mul]
 
+/- English proof (translation)
+Use `UniversalEnvelopingAlgebra.hom_ext ℝ (A := Module.End ℂ (h.smoothFuns (F := F))) ?_` and prove the remaining obligations. Apply `LieHom.ext` to reduce the goal to its premises. Introduce `X`. Simplify using `only [LieHom.coe_comp, Function.comp_apply, AlgHom.coe_toLieHom, AlgHom.coe_comp, rightUAction_ι]`. Simplify using `only [conjLeft, AlgHom.coe_mk, RingHom.coe_mk, MonoidHom.coe_mk, OneHom.coe_mk]`.
+
+Rewrite using `[mul_assoc, rightDerivEnd_mul_leftTranslateEnd, ← mul_assoc, leftTranslateEnd_inv_mul, one_mul]`.
+-/
 theorem conjLeft_comp_rightUAction (a : G) :
     (h.conjLeft (F := F) a).comp (h.rightUAction (F := F)) = h.rightUAction (F := F) := by
   refine UniversalEnvelopingAlgebra.hom_ext ℝ (A := Module.End ℂ (h.smoothFuns (F := F))) ?_
@@ -88,6 +120,9 @@ theorem conjLeft_comp_rightUAction (a : G) :
   rw [mul_assoc, rightDerivEnd_mul_leftTranslateEnd, ← mul_assoc, leftTranslateEnd_inv_mul,
     one_mul]
 
+/- English proof (translation)
+Use `congrArg (fun φ => φ u) (h.conjLeft_comp_rightUAction (F := F) a)` as an intermediate fact. Simplify using `only [AlgHom.comp_apply, conjLeft, AlgHom.coe_mk, RingHom.coe_mk, MonoidHom.coe_mk, OneHom.coe_mk] at this`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[← mul_assoc, ← mul_assoc, leftTranslateEnd_mul_inv, one_mul]`. Use `_ = h.leftTranslateEnd a * h.rightUAction u := by rw [this]`.
+-/
 theorem rightUAction_mul_leftTranslateEnd (a : G)
     (u : UniversalEnvelopingAlgebra ℝ h.lieSubalgebra) :
     h.rightUAction (F := F) u * h.leftTranslateEnd a = h.leftTranslateEnd a * h.rightUAction u := by
@@ -100,6 +135,9 @@ theorem rightUAction_mul_leftTranslateEnd (a : G)
         rw [← mul_assoc, ← mul_assoc, leftTranslateEnd_mul_inv, one_mul]
     _ = h.leftTranslateEnd a * h.rightUAction u := by rw [this]
 
+/- English proof (translation)
+The claim follows from `congrArg (fun T : Module.End ℂ (h.smoothFuns (F := F)) => (T f : G → F) g) (h.rightUAction_mul_leftTranslateEnd a u)`.
+-/
 theorem rightUAction_leftTranslate_apply (u : UniversalEnvelopingAlgebra ℝ h.lieSubalgebra)
     (a : G) (f : h.smoothFuns (F := F)) (g : G) :
     (h.rightUAction u (h.leftTranslateEnd a f) : G → F) g = (h.rightUAction u f : G → F) (a * g) :=

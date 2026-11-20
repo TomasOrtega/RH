@@ -14,6 +14,9 @@ open GlobalTheory.Mum
 
 namespace GlobalTheory.ThetaDescentLevel
 
+/- English proof (translation)
+Use `⟨H.1, H.2.1, fun p => ?_⟩` and prove the remaining obligations. Take `⟨V, hV, th, s1, α, τ, U, s2, w, u, a1, a2, a3, a4, a5, a6, a7, a8⟩` from `H.2.2 p`. Conclude with `⟨V, hV, th, s1, α, τ, fun i => U (f i), fun i => s2 (f i), fun i => w (f i), u, a1, a2, a3, a4, fun i => a5 _, fun i => a6 _, fun i => a7 _, fun i => a8 _⟩`.
+-/
 theorem isThetaPt_reindex {S : Scheme.{0}} {P : PolAV S} {k : ℕ} {T : Over S} {I I' : Type}
     {x : I → (T ⟶ P.A)} {v : I → Γ(T.left, ⊤)} (H : IsThetaPt P k x v) (f : I' → I) :
     IsThetaPt P k (fun i => x (f i)) fun i => v (f i) := by
@@ -22,6 +25,17 @@ theorem isThetaPt_reindex {S : Scheme.{0}} {P : PolAV S} {k : ℕ} {T : Over S} 
   exact ⟨V, hV, th, s1, α, τ, fun i => U (f i), fun i => s2 (f i), fun i => w (f i), u, a1, a2, a3, a4,
     fun i => a5 _, fun i => a6 _, fun i => a7 _, fun i => a8 _⟩
 
+/- English proof (translation)
+Introduce `F Ω _ _ _ _ _ em A n J hn _ Ix x v hx hv`. Establish `hF : (n : F) ≠ 0` using `Nat.cast_ne_zero.2 hn.ne_zero`. Establish `hΩ : (n : Ω) ≠ 0`. Rewrite using `[← map_natCast em]`. Conclude with `(map_ne_zero _).2 hF`.
+
+Establish `hlev` using `nonempty_level_prime_pow GlobalTheory.abelianSchemeLaws_all.1 Ω A n (J * 2) hn hΩ`. Rewrite `hlev` using `[pow_mul]`. Establish `hM : (n ^ J) ^ 2 ≠ 0` using `pow_ne_zero _ (pow_ne_zero _ hn.ne_zero)`. Generalize the expression as in `n ^ J = m at *`. Establish `: NeZero (m ^ 2)` using `⟨hM⟩`.
+
+Establish `: NeZero ((m ^ 2 : ℕ) : F)` using `⟨Nat.cast_ne_zero.2 hM⟩`. Take `⟨z, hz⟩` from `HasEnoughRootsOfUnity.exists_primitiveRoot F (m ^ 2)`. Establish `hζ` using `hz.isUnit_unit (NeZero.ne _)`. Generalize the expression as in `(hz.isUnit (NeZero.ne _)).unit = ζ at hζ`. Establish `inj : Function.Injective (Scheme.ΓSpecIso (CommRingCat.of Ω)).inv.hom` using `(Scheme.ΓSpecIso (CommRingCat.of Ω)).symm.commRingCatIsoToRingEquiv.injective`.
+
+Establish `hζ' : IsPrimitiveRoot (Units.map em.toMonoidHom ζ) (m ^ 2)` using `hζ.map_of_injective (Units.map_injective em.injective)`. Take `⟨lev⟩` from `hlev (unitOn (Units.map em.toMonoidHom ζ)) (hζ'.map_of_injective (Units.map_injective inj))`. Use `choose i hi using fun a => hx _ (ThetaPtDet.levelPoint_pow lev rfl a)`. Use `⟨ζ, lev, fun a => v (i a), hζ, ?_⟩` and prove the remaining obligations. Establish `h` using `isThetaPt_reindex hv i`.
+
+Rewrite `h` using `[show (fun a => x (i a)) = GlobalTheory.levelPoint lev rfl from funext hi]`. Then use the resulting hypothesis.
+-/
 theorem exists_level : ∀ (F Ω : Type) [Field F] [IsAlgClosed F] [CharZero F] [Field Ω] [IsAlgClosed Ω] (em : F →+* Ω) (A : PolAV (Sp Ω)) (n J : ℕ), n.Prime → 1 ≤ J → ∀ (Ix : Type) (x : Ix → (baseOver (Sp Ω) ⟶ A.A)) (v : Ix → F), (∀ z : baseOver (Sp Ω) ⟶ A.A, z ^ ((n ^ J) ^ 2) = 1 → ∃ i, x i = z) → IsThetaPt A (n ^ J) x (fun i => (Scheme.ΓSpecIso (CommRingCat.of Ω)).inv.hom (em (v i))) → ∃ (ζ : Fˣ) (lev : Level A ((n ^ J) ^ 2) (unitOn (Units.map em.toMonoidHom ζ))) (v' : (Fin (2 * A.g) → ZMod ((n ^ J) ^ 2)) → F), IsPrimitiveRoot ζ ((n ^ J) ^ 2) ∧ IsThetaPt A (n ^ J) (GlobalTheory.levelPoint lev rfl) (fun a => (Scheme.ΓSpecIso (CommRingCat.of Ω)).inv.hom (em (v' a))) := by
   intro F Ω _ _ _ _ _ em A n J hn _ Ix x v hx hv
   have hF : (n : F) ≠ 0 := Nat.cast_ne_zero.2 hn.ne_zero

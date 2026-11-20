@@ -15,6 +15,25 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 namespace GlobalTheory.AdTh.RecPairCore
 open GlobalTheory.AdTh.RecPair
 
+/- English proof (translation)
+Introduce `D G _ _ Pl0 T0 A Ks _ _ _ R F h i t hV`. Establish `hL` using `h.lev`. Establish `hW` using `h.thP.ωP i t`. Establish `hr : Odd D.R.r`. Use `D.R.m_add_three_le_k` as an intermediate fact.
+
+Take `⟨a, ha⟩` from `D.R.k_even`. Take `⟨b, hb⟩` from `D.R.m_even`. Conclude with `⟨a + b - 1, by simp only [Ranks.r]; omega⟩`. Establish `rV : (Vc D i).rank = D.R.r + D.R.t` using `D.sp.V_rank _ (Nat.le_add_left _ _) i.2`. Establish `rW : (Wc D i).rank = D.R.r` using `D.sp.W_rank _ (Nat.le_add_left _ _) i.2`.
+
+Establish `hev : Even (Vc D i).rank` using `rV ▸ hr.add_odd D.R.t_odd`. Establish `hη : GlobalTheory.WeilParts.IsEtaTilde D R.eta` using `GlobalTheory.EtaTildeOddParity.isEtaTilde_of_odd D _ _ hL.eta R.C.isEta _ _ _ hW.resS hW.resT (hev.add_odd (rW ▸ hr))`. Establish `lV` using `coe_eq_of_frame (hL.βV i)`. Establish `lW` using `coe_eq_of_frame (hL.βW i)`. Use `⟨⟨hW, h.models.inf, hV.1, hev, D.sp.V_sig _, D.sp.W_sig _, exp_mu hL i t, fun τ => ?_, fun v ε hv => ?_, ⟨_, hη⟩⟩, ?_, lV, lW, selfDual_of_coe lV, selfDual_of_coe lW, ?_⟩` and prove the remaining obligations.
+
+Take `⟨a, ha⟩` from `exp_mu hL i t τ`. Take `⟨s, hs⟩` from `hr`. Use `⟨a - s - 1, ?_⟩` and prove the remaining obligations. Establish `h3` using `GlobalTheory.Mem.HeckeExp.hasInfExp_mul ha (GlobalTheory.Mem.HeckeExp.hasInfExp_inv (hη.2.2.2 τ))`. Establish `e : ((a - s - 1 : ℤ) : ℚ) + ((Wc D i).rank : ℚ) / 2 = (a : ℚ) + -(1 / 2)`.
+
+Rewrite using `[rW, hs]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e]`. Conclude with `h3`.
+
+Take `⟨-, e, ⟨⟨es, hes, -⟩, -⟩, -⟩` from `h.thP.vP i t`. Establish `key` using `fun P (hP : P.under (𝓞 D.host.F) = v) => (GlobalTheory.levCh_unramified_places D T0 R.toLevCh A.μ0 hL t).2.2.2 P fun PP hPP => by`. Rewrite using `[hP]`. Conclude with `under_ne (hes PP (Finset.mem_union.2 hPP)) hv`. Establish `u1` using `GlobalTheory.UnramOver.unramAt_of_unrAt D _ _ (hL.mu0 i) v ε hv.1 fun P hP => (key P hP).2 i`.
+
+Establish `u2` using `GlobalTheory.UnramOver.unramAt_of_unrAt D _ _ (hL.xi t) v ε hv.1 fun P hP => (key P hP).1`. Establish `u3` using `GlobalTheory.UnramOver.unramAt_of_unrAt D _ _ hL.eta v ε hv.1 fun P _ => R.C.isEta.unr P`. Establish `u4 : GlobalTheory.WeilParts.UnramAt ε (R.toLevCh.mu t ((i : ℕ) + 1))` using `fun x a b c => by show R.mu0 ((i : ℕ) + 1) x * R.xi t x = 1`. Rewrite using `[u1 x a b c, u2 x a b c, one_mul]`. Use `⟨u4, fun x a b c => ?_⟩` and prove the remaining obligations.
+
+Use `show R.toLevCh.mu t ((i : ℕ) + 1) x * (R.eta x)⁻¹ = 1`. Rewrite using `[u4 x a b c, u3 x a b c, inv_one, one_mul]`. Rewrite using `[rV]`. Conclude with `(Nat.add_pos_left hr.pos _).ne'`. Rewrite using `[lV, ← GlobalTheory.Equiv.StdSpace.identityClassLattice_eq_selfDualFrameLattice, hV.2]`.
+
+Both sides reduce to the same expression.
+-/
 theorem isPair_record_core : ∀ (D : D7) (G : Type) [Group G] [Fintype G] (Pl0 T0 : Type) (A : Formalism.L2.DIV.FamIn D.what₂.LL G Pl0 T0 D.R.m) (Ks : Type) [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] (R : RealDat D A Ks) (F : Face D A), GlobalTheory.Hk3.Core R F → ∀ (i : Fin D.R.m) (t : T0), VStd D i → IsPair R.ψ R.θ (Vc D i) (Wc D i) (Lift.chrTh (R.toLevCh.mu t) R.eta ((i : ℕ) + 1)).1 (Lift.chrTh (R.toLevCh.mu t) R.eta ((i : ℕ) + 1)).2 (R.ωP i t) ∧ (Vc D i).rank ≠ 0 ∧ (R.ΛV i : Set (Fin (Vc D i).rank → D.host.E)) = L0c D (Vc D i) ∧ (R.ΛW i : Set (Fin (Wc D i).rank → D.host.E)) = L0c D (Wc D i) ∧ IsSelfDualC (Vc D i) (R.ΛV i) ∧ IsSelfDualC (Wc D i) (R.ΛW i) ∧ (R.ΛV i : Set (Fin (Vc D i).rank → D.host.E)) = (Formalism.L2.Pj.stdLat D.host.E (Vc D i).rank : Set (Fin (Vc D i).rank → D.host.E)) := by
   intro D G _ _ Pl0 T0 A Ks _ _ _ R F h i t hV
   have hL := h.lev

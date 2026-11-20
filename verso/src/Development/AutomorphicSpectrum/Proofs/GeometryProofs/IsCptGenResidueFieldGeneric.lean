@@ -7,6 +7,13 @@ open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalC
 
 namespace GlobalTheory.CompanionTheory.Ar
 
+/- English proof (translation)
+Set `z : PrimeSpectrum (X.presheaf.stalk p)` to `⟨⊥, Ideal.isPrime_bot⟩`. Set `q : PrimeSpectrum (X.presheaf.stalk p)` to `PrimeSpectrum.comap φ.hom (IsLocalRing.closedPoint Ω)`. Establish `hs : z ⤳ q` using `(PrimeSpectrum.le_iff_specializes z q).1 bot_le`. Establish `hq : (Spec.map φ ≫ X.fromSpecStalk p) (IsLocalRing.closedPoint Ω) = X.fromSpecStalk p q` using `rfl`. Rewrite `h` using `[hq]`.
+
+Establish `h1 : X.fromSpecStalk p z = X.fromSpecStalk p q` using `h _ (hs.map (X.fromSpecStalk p).continuous)`. Establish `h2 : z = q` using `(X.fromSpecStalk p).isEmbedding.injective h1`. Use `(injective_iff_map_eq_zero _).2 fun a ha => ?_` and prove the remaining obligations. Establish `h3 : a ∈ q.asIdeal`. Express the relevant statement in the definitionally equal form `φ.hom a ∈ (IsLocalRing.closedPoint Ω).asIdeal`.
+
+Rewrite using `[ha]`. Conclude with `Ideal.zero_mem _`. Rewrite `h3` using `[← h2]`. Conclude with `h3`.
+-/
 theorem injective_of_maximal_point {X : Scheme.{0}} {Ω : Type} [Field Ω] (p : X)
     [IsDomain (X.presheaf.stalk p)] (φ : X.presheaf.stalk p ⟶ CommRingCat.of Ω)
     (h : ∀ y : X, y ⤳ (Spec.map φ ≫ X.fromSpecStalk p) (IsLocalRing.closedPoint Ω) →
@@ -28,6 +35,13 @@ theorem injective_of_maximal_point {X : Scheme.{0}} {Ω : Type} [Field Ω] (p : 
   rw [← h2] at h3
   exact h3
 
+/- English proof (translation)
+Use `⟨⟨?_, hs⟩, fun p => ?_⟩` and prove the remaining obligations. Use `hX (ξ (IsLocalRing.closedPoint Ω))` as an intermediate fact. Use `injective_of_maximal_point _ (Scheme.stalkClosedPointTo ξ) ?_` and prove the remaining obligations. Rewrite using `[Scheme.Spec_stalkClosedPointTo_fromSpecStalk]`. Conclude with `h`.
+
+Take `⟨p, hp⟩` from `p`. Use `hX p` as an intermediate fact. Establish `hp' : ξ (IsLocalRing.closedPoint Ω) ⤳ p` using `hp`. Use `injective_of_maximal_point p (X.presheaf.stalkSpecializes hp' ≫ Scheme.stalkClosedPointTo ξ) ?_` and prove the remaining obligations. Establish `e : Spec.map (X.presheaf.stalkSpecializes hp' ≫ Scheme.stalkClosedPointTo ξ) ≫ X.fromSpecStalk p = ξ`.
+
+Rewrite using `[Spec.map_comp, Category.assoc, Scheme.SpecMap_stalkSpecializes_fromSpecStalk]`. Conclude with `Scheme.Spec_stalkClosedPointTo_fromSpecStalk ξ`. Rewrite using `[e]`. Conclude with `h`.
+-/
 theorem isCptGen_of_maximal_of_surjective {X : Scheme.{0}} {Ω : Type} [Field Ω]
     (hX : ∀ x : X, IsDomain (X.presheaf.stalk x)) (ξ : Spec (CommRingCat.of Ω) ⟶ X)
     (h : ∀ y : X, y ⤳ genPt ξ → y = genPt ξ)
@@ -49,6 +63,11 @@ theorem isCptGen_of_maximal_of_surjective {X : Scheme.{0}} {Ω : Type} [Field Ω
     rw [e]
     exact h
 
+/- English proof (translation)
+Introduce `X hX x h`. Establish `e : genPt (Ω` using `X.residueField x) (X.fromSpecResidueField x) = x := X.fromSpecResidueField_apply x _`. Use `isCptGen_of_maximal_of_surjective hX _ (by rw [e]; exact h) ?_` and prove the remaining obligations. Unfold `Scheme.stalkClosedPointTo`. Rewrite using `[CommRingCat.hom_comp, RingHom.coe_comp]`.
+
+Conclude with `(ConcreteCategory.bijective_of_isIso (stalkClosedPointIso _).hom).2.comp ((X.fromSpecResidueField x).stalkMap_surjective _)`.
+-/
 theorem isCptGen_of_maximal : ∀ (X : Scheme.{0}), (∀ x : X, IsDomain (X.presheaf.stalk x)) → ∀ x : X,
     (∀ y : X, y ⤳ x → y = x) → IsCptGen (Ω := X.residueField x) (X.fromSpecResidueField x) := by
   intro X hX x h

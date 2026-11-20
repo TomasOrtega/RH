@@ -19,6 +19,11 @@ def Comp : Prop := ∀ {P : Scheme.{0}} [CompactSpace P] [QuasiSeparatedSpace P]
     ∃ (J : Type) (_ : SmallCategory J) (_ : IsCofiltered J) (D : J ⥤ Scheme.{0}) (c : Cone D) (ι : ∀ j, D.obj j ⟶ w.normalization),
       ClopenSys y D c ι ∧ AICSch c.pt
 
+/- English proof (translation)
+Introduce `P _ _`. Take `⟨W, _, w, hW, hs⟩` from `hP (P := P)`. Use `⟨w.normalization, w.fromNormalization, inferInstance, ?_, fun y => ?_⟩` and prove the remaining obligations. Establish `h` using `hs`. Rewrite `h` using `[← w.toNormalization_fromNormalization]`.
+
+Conclude with `⟨Function.Surjective.of_comp h.surj⟩`. Take `⟨J, _, _, D, c, ι, hc, hA⟩` from `hC W w hW y`. Use `⟨J, inferInstance, inferInstance, D, c, ι, hc, hA, fun j => ?_⟩` and prove the remaining obligations. Use `hL y D c ι hc j` as an intermediate fact. Use `infer_instance`.
+-/
 theorem goal_of (hP : Pts) (hL : LimInt) (hC : Comp) : Build := by
   intro P _ _
   obtain ⟨W, _, w, hW, hs⟩ := hP (P := P)

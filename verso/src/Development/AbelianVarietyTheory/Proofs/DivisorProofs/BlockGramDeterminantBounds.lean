@@ -12,12 +12,18 @@ noncomputable section
 
 namespace GlobalTheory.HodgeLocGeo.Pointwise
 
+/- English proof (translation)
+Rewrite using `[Real.log_prod (fun i _ => (Real.rpow_pos_of_pos (hx i) _).ne'), ← Finset.sum_neg_distrib]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[Real.log_rpow (hx i)]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem log_prod_rpow_neg {κ : Type} [Fintype κ] (x l : κ → ℝ) (hx : ∀ i, 0 < x i) :
     Real.log (∏ i, x i ^ (-l i)) = -∑ i, l i * Real.log (x i) := by
   rw [Real.log_prod (fun i _ => (Real.rpow_pos_of_pos (hx i) _).ne'), ← Finset.sum_neg_distrib]
   refine Finset.sum_congr rfl fun i _ => ?_
   rw [Real.log_rpow (hx i)]; ring
 
+/- English proof (translation)
+Unfold `rootNorm`. Rewrite using `[dif_pos (by simp)]`. Conclude with `congrArg _ (Fin.ext (by simp))`.
+-/
 theorem rootNorm_castAdd {N j : ℕ} (hpq : j + (N - j) = N) (cW cΩ : ℝ)
     (GW : Matrix (Fin j) (Fin j) ℂ) (GΩ : Matrix (Fin (N - j)) (Fin (N - j)) ℂ)
     (Z : Matrix (Fin j) (Fin (N - j)) ℂ) (i : Fin j) :
@@ -27,6 +33,11 @@ theorem rootNorm_castAdd {N j : ℕ} (hpq : j + (N - j) = N) (cW cΩ : ℝ)
   rw [dif_pos (by simp)]
   exact congrArg _ (Fin.ext (by simp))
 
+/- English proof (translation)
+Unfold `rootNorm`. Rewrite using `[dif_neg (by simp)]`. Use `congr 2`. Use `ext`. Simplify using `[Fin.val_rev]`.
+
+Use linear arithmetic over natural numbers and integers.
+-/
 theorem rootNorm_natAdd {N j : ℕ} (hpq : j + (N - j) = N) (cW cΩ : ℝ)
     (GW : Matrix (Fin j) (Fin j) ℂ) (GΩ : Matrix (Fin (N - j)) (Fin (N - j)) ℂ)
     (Z : Matrix (Fin j) (Fin (N - j)) ℂ) (k : Fin (N - j)) :
@@ -37,12 +48,21 @@ theorem rootNorm_natAdd {N j : ℕ} (hpq : j + (N - j) = N) (cW cΩ : ℝ)
   congr 2
   ext; simp [Fin.val_rev]; omega
 
+/- English proof (translation)
+Unfold `Matrix.conjTranspose`. Use extensionality with `a b`. Simplify using the standard rewrite rules.
+-/
 theorem conjT_eq {m n : Type} (A : Matrix m n ℂ) : Aᴴᵀ = A.map (starRingEnd ℂ) := by
   unfold Matrix.conjTranspose; ext a b; simp
 
+/- English proof (translation)
+Use extensionality with `a b`. Simplify using the standard rewrite rules.
+-/
 theorem conjT_conjTranspose {m n : Type} (A : Matrix m n ℂ) : (Aᴴᵀ)ᴴ = Aᵀ := by
   ext a b; simp
 
+/- English proof (translation)
+Establish `e : ((G v)ᵀ)ᴴᵀ = (G v)ᴴ` using `by unfold Matrix.conjTranspose; ext a b; simp`. Simplify using `only [GlobalTheory.IndefiniteRowSideFullHecke.HodgeFrameGram.adaptedGram, id, transpose_transpose, e, hQ, wLine, Matrix.mul_smul, Matrix.smul_mul]`.
+-/
 theorem adaptedGram_smul_quotGram_eq_wLine {ι : Type} [Fintype ι] {j q : ℕ} (c : ℝ)
     (G : (ι → ℂ) → Matrix (Fin j) (Fin j) ℂ) (Z : (ι → ℂ) → Matrix (Fin j) (Fin q) ℂ) (v : ι → ℂ)
     (hQ : GlobalTheory.HermFrame.quotGram (modelHodgeGram (Z v)) = (1 - (Z v).map (starRingEnd ℂ) * (Z v)ᵀ)⁻¹) :
@@ -52,6 +72,9 @@ theorem adaptedGram_smul_quotGram_eq_wLine {ι : Type} [Fintype ι] {j q : ℕ} 
   simp only [GlobalTheory.IndefiniteRowSideFullHecke.HodgeFrameGram.adaptedGram, id, transpose_transpose, e, hQ, wLine, Matrix.mul_smul,
     Matrix.smul_mul]
 
+/- English proof (translation)
+Use `Matrix.det_permute Fin.revPerm G` as an intermediate fact. Establish `e0 : G.submatrix Fin.rev id = G.submatrix (⇑Fin.revPerm) id` using `by ext a b; simp`. Rewrite using `[e0, this]`. Apply the tactic sequence `rcases Int.units_eq_one_or (Equiv.Perm.sign (Fin.revPerm (n := q))) with e | e <;> simp [e, h.ne_zero]`.
+-/
 theorem det_rev_isUnit {q : ℕ} (G : Matrix (Fin q) (Fin q) ℂ) (h : IsUnit G.det) :
     IsUnit (G.submatrix Fin.rev id).det := by
   have := Matrix.det_permute Fin.revPerm G
@@ -59,6 +82,19 @@ theorem det_rev_isUnit {q : ℕ} (G : Matrix (Fin q) (Fin q) ℂ) (h : IsUnit G.
   rw [e0, this]
   rcases Int.units_eq_one_or (Equiv.Perm.sign (Fin.revPerm (n := q))) with e | e <;> simp [e, h.ne_zero]
 
+/- English proof (translation)
+Use `set R := G.submatrix Fin.rev id with hR`. Establish `hRu : IsUnit R.det` using `det_rev_isUnit G hG`. Establish `hYu : IsUnit Y.det` using `(isUnit_iff_isUnit_det _).1 hY.isUnit`. Establish `hc' : (0 : ℂ) < (((c)⁻¹ : ℝ) : ℂ)` using `Complex.zero_lt_real.2 (inv_pos.2 hc)`. Prove the components needed by the constructor for the conclusion.
+
+Establish `hB : IsUnit ((R⁻¹)ᴴᵀ).det`. Rewrite using `[det_transpose, det_conjTranspose]`. Conclude with `(isUnit_nonsing_inv_det R hRu).star`. Use `(hY.smul hc').conjTranspose_mul_mul_same (mulVec_injective_of_isUnit ((isUnit_iff_isUnit_det _).2 hB))` as an intermediate fact. Rewrite `this` using `[conjT_conjTranspose]`. Then use the resulting hypothesis.
+
+Establish `e1 : (R⁻¹)ᴴᵀ * Rᴴᵀ = 1`. Rewrite using `[← transpose_mul, ← conjTranspose_mul, nonsing_inv_mul R hRu, conjTranspose_one, transpose_one]`. Establish `e2 : ((((c)⁻¹ : ℝ) : ℂ) • Y) * ((c : ℂ) • Y⁻¹) = 1`. Rewrite using `[Matrix.smul_mul, Matrix.mul_smul, smul_smul, mul_nonsing_inv Y hYu]`. Establish `: (((c)⁻¹ : ℝ) : ℂ) * (c : ℂ) = 1` using `by push_cast; exact inv_mul_cancel₀ (by exact_mod_cast hc.ne')`.
+
+Rewrite using `[this, one_smul]`. Establish `e3 : (R⁻¹)ᵀ * Rᵀ = 1`. Rewrite using `[← transpose_mul, mul_nonsing_inv R hRu, transpose_one]`. Establish `hK : ((R⁻¹)ᵀ * ((((c)⁻¹ : ℝ) : ℂ) • Y) * (R⁻¹)ᴴᵀ)⁻¹ = Rᴴᵀ * ((c : ℂ) • Y⁻¹) * Rᵀ`. Apply `inv_eq_right_inv` to reduce the goal to its premises.
+
+Combine the equalities or inequalities in the displayed calculation. Simplify using `only [Matrix.mul_assoc]`. Use `_ = 1 := by rw [e1, Matrix.one_mul, ← Matrix.mul_assoc ((((c)⁻¹ : ℝ) : ℂ) • Y), e2, Matrix.one_mul, e3]`. Rewrite using `[hK]`. Use extensionality with `a b`.
+
+Simplify using `only [transpose_mul, transpose_transpose, transpose_smul, transpose_nonsing_inv, submatrix_apply, mul_apply, Matrix.smul_apply, conjTranspose_apply, hR, id, Fin.rev_rev, smul_eq_mul, transpose_apply, Finset.mul_sum, Finset.sum_mul]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun x _ => Finset.sum_congr rfl fun y _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem adaptedOmega {q : ℕ} (c : ℝ) (hc : 0 < c) (G : Matrix (Fin q) (Fin q) ℂ) (hG : IsUnit G.det)
     (Y : Matrix (Fin q) (Fin q) ℂ) (hY : Y.PosDef) :
     (((G.submatrix Fin.rev id)⁻¹)ᵀ * ((((c)⁻¹ : ℝ) : ℂ) • Y) * ((G.submatrix Fin.rev id)⁻¹)ᴴᵀ).PosDef ∧
@@ -102,11 +138,29 @@ end GlobalTheory.HodgeLocGeo.Pointwise
 
 namespace GlobalTheory.HodgeLocGeo.Pointwise
 
+/- English proof (translation)
+Rewrite using `[transpose_sub, transpose_one, transpose_mul, transpose_transpose]`. Both sides reduce to the same expression.
+-/
 theorem transpose_modelY {p q : ℕ} (Z : Matrix (Fin p) (Fin q) ℂ) :
     (1 - Zᵀ * Z.map (starRingEnd ℂ))ᵀ = 1 - Zᴴ * Z := by
   rw [transpose_sub, transpose_one, transpose_mul, transpose_transpose]
   rfl
 
+/- English proof (translation)
+Introduce `T _ ι _ N j hpq Zm GW GΩ cW cΩ v hcW hcΩ hZ hGW hGΩ u`. Establish `hWl : ∀ τ (i : Fin j), (GlobalTheory.IndefiniteRowSideFullHecke.HodgeFrameGram.lineGram (fun x => (cW τ : ℂ) • GlobalTheory.HermFrame.quotGram (modelHodgeGram (Zm τ x))) id (fun x => (GW τ x)ᵀ) i v () ()).re = rootNorm N j (cW τ) (cΩ τ) (GW τ v) (GΩ τ v) (Zm τ v) (Fin.cast hpq (F …`. Introduce `τ i`. Take `⟨h1, -, h3, -⟩` from `GlobalTheory.T.model_hodge_gram_pos_def_quotient (Zm τ v) (hZ τ)`. Establish `hP : (wLine (cW τ) (GW τ v) (Zm τ v)).PosDef`.
+
+Unfold `wLine`. Conclude with `(h1.inv.mul_mul_conjTranspose_same (vecMul_injective_of_isUnit ((isUnit_iff_isUnit_det _).2 (hGW τ)))).smul (Complex.zero_lt_real.2 (hcW τ))`. Rewrite using `[rootNorm_castAdd]`. Use `⟨?_, GlobalTheory.GradedNorm.grSq_pos hP i⟩` and prove the remaining obligations. Rewrite using `[GlobalTheory.IndefiniteRowSideFullHecke.HodgeFrameGram.lineGram, adaptedGram_smul_quotGram_eq_wLine _ _ _ _ h3]`.
+
+Conclude with `GlobalTheory.T.graded_gram_re_eq_sq _ hP i`. Establish `hΩl : ∀ τ (k : Fin (N - j)), (GlobalTheory.IndefiniteRowSideFullHecke.HodgeFrameGram.lineGram (fun x => (((cΩ τ)⁻¹ : ℝ) : ℂ) • -GlobalTheory.HermFrame.subGram (modelHodgeGram (Zm τ x))) id (fun x => ((GΩ τ x).submatrix Fin.rev id)⁻¹) k v () ()).re = rootNorm N j (cW τ) (cΩ τ) (GW …`. Introduce `τ k`. Take `⟨-, h2, -, h4⟩` from `GlobalTheory.T.model_hodge_gram_pos_def_quotient (Zm τ v) (hZ τ)`. Take `⟨hP, hI⟩` from `adaptedOmega (cΩ τ) (hcΩ τ) (GΩ τ v) (hGΩ τ) _ h2`.
+
+Establish `hA : GlobalTheory.IndefiniteRowSideFullHecke.HodgeFrameGram.adaptedGram (fun x => (((cΩ τ)⁻¹ : ℝ) : ℂ) • -GlobalTheory.HermFrame.subGram (modelHodgeGram (Zm τ x))) id (fun x => ((GΩ τ x).submatrix Fin.rev id)⁻¹) v = ((GΩ τ v).submatrix Fin.rev id)⁻¹ᵀ * ((((cΩ τ)⁻¹ : ℝ) : ℂ) • (1 …`. Simplify using `only [GlobalTheory.IndefiniteRowSideFullHecke.HodgeFrameGram.adaptedGram, id, h4]`. Rewrite `hI` using `[transpose_modelY]`. Rewrite using `[rootNorm_natAdd, GlobalTheory.IndefiniteRowSideFullHecke.HodgeFrameGram.lineGram, hA, GlobalTheory.T.graded_gram_re_eq_sq _ hP k]`. Establish `hd` using `GlobalTheory.T.graded_sq_inverse_transpose_rev _ hP k`.
+
+Rewrite `hd` using `[hI]`. Establish `hoL : oLine (cΩ τ) (GΩ τ v) (Zm τ v) = (cΩ τ : ℂ) • (GΩ τ v * (1 - (Zm τ v)ᴴ * Zm τ v)⁻¹ * (GΩ τ v)ᴴ)` using `rfl`. Rewrite using `[hoL, hd, inv_inv]`. Conclude with `⟨rfl, GlobalTheory.GradedNorm.grSq_pos hP k⟩`. Establish `hW1` using `fun τ i => (hWl τ i).1`.
+
+Establish `hΩ1` using `fun τ k => (hΩl τ k).1`. Simplify using `only [GlobalTheory.IndefiniteRowSideFullHecke.HodgeFrameGram.pairWeightNormSq, GlobalTheory.IndefiniteRowSideFullHecke.HodgeFrameGram.weightNormSq, hW1, hΩ1]`. Rewrite using `[Real.log_prod (fun τ _ => (mul_pos (Finset.prod_pos fun i _ => Real.rpow_pos_of_pos (hWl τ i).2 _) (Finset.prod_pos fun k _ => Real.rpow_pos_of_pos (hΩl τ k).2 _)).ne')]`. Rewrite using `[Fintype.sum_prod_type, neg_div, Finset.sum_div, ← Finset.sum_neg_distrib]`. Use `Finset.sum_congr rfl fun τ _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[Real.log_mul (Finset.prod_pos fun i _ => Real.rpow_pos_of_pos (hWl τ i).2 _).ne' (Finset.prod_pos fun k _ => Real.rpow_pos_of_pos (hΩl τ k).2 _).ne', log_prod_rpow_neg _ _ fun i => (hWl τ i).2, log_prod_rpow_neg _ _ fun k => (hΩl τ k).2, ← Fin.sum_congr' _ hpq, Fin.sum_univ_add]`. Simplify using `only [← mul_div_assoc, ← Finset.sum_div]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem pointwise : ∀ {T : Type} [Fintype T] {ι : Type} [Fintype ι] {N j : ℕ} (hpq : j + (N - j) = N)
     (Zm : T → (ι → ℂ) → Matrix (Fin j) (Fin (N - j)) ℂ) (GW : T → (ι → ℂ) → Matrix (Fin j) (Fin j) ℂ)
     (GΩ : T → (ι → ℂ) → Matrix (Fin (N - j)) (Fin (N - j)) ℂ) (cW cΩ : T → ℝ) (v : ι → ℂ),

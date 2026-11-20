@@ -18,12 +18,22 @@ noncomputable section
 
 namespace GlobalTheory.AbCoh
 
+/- English proof (translation)
+Use function extensionality and compare the values at `T`. Simplify using `only [wsum, Fin.sum_univ_add, Fin.append_left, Fin.append_right, Pi.add_apply]`.
+-/
 theorem wsum_append {R : Type} [CommRing R] {C : Type} [Category.{0} C] (F : C ⥤ CommAlgCat.{0} R)
     {n n' : ℕ} (u v : Fin n → Glob1 F) (u' v' : Fin n' → Glob1 F) :
     wsum F (Fin.append u u') (Fin.append v v') = wsum F u v + wsum F u' v' := by
   funext T
   simp only [wsum, Fin.sum_univ_add, Fin.append_left, Fin.append_right, Pi.add_apply]
 
+/- English proof (translation)
+Introduce `R _ A _ g hA hg x`. Take `⟨m, u, v, hx⟩` from `GlobalTheory.T.exists_connection_sumWedgeCurvature_abelianScheme R A g hA hg x`. Take `⟨-, -, hAA, hgAA⟩` from `GlobalTheory.T.abelianScheme_oneFormFrame_and_square R A g hA hg`. Establish `hcl : Closed1 (OAff (A ⊗ A).hom) = ⊤` using `GlobalTheory.T.abelianScheme_globalOneForms_closed R (A ⊗ A) (g + g) hAA hgAA`. Establish `hμ` using `GlobalTheory.T.connectionCurvatureSumWedge_semilinearPullback R R _ _ A.hom (A ⊗ A).hom (RingHom.id R) (μ[A]).left (ovw μ[A]) x m u v hx`.
+
+Establish `h1` using `GlobalTheory.T.connectionCurvatureSumWedge_semilinearPullback R R _ _ A.hom (A ⊗ A).hom (RingHom.id R) (fst A A).left (ovw (fst A A)) x m u v hx`. Establish `h2` using `GlobalTheory.T.connectionCurvatureSumWedge_semilinearPullback R R _ _ A.hom (A ⊗ A).hom (RingHom.id R) (snd A A).left (ovw (snd A A)) x m u v hx`. Establish `hsum` using `(GlobalTheory.T.derivativeCurvatureClosedness_relations_add R _ (OAff (A ⊗ A).hom)).2.1 _ _ m m _ _ _ _ h1 h2`. Establish `hprim : pullHO1 (ovw μ[A]) x = pullHO1 (ovw (fst A A)) x + pullHO1 (ovw (snd A A)) x` using `GlobalTheory.T.primitive_h1_structure_abelian R A g hA hg x`. Rewrite `hsum` using `[← hprim]`.
+
+Establish `heq` using `(GlobalTheory.T.curvatureSumWedge_wellDefined_and_deRhamLift R _ (OAff (A ⊗ A).hom)).1 hcl _ m (m + m) _ _ _ _ hμ hsum`. Rewrite `heq` using `[wsum_append]`. Establish `h0 : wsum (OAff A.hom) u v = 0` using `GlobalTheory.T.sum_wedge_primitive_oneForms_eq_zero_abelianScheme R A g hA hg m u v heq`. Conclude with `(GlobalTheory.T.curvatureSumWedge_wellDefined_and_deRhamLift R _ (OAff A.hom)).2 x m u v hx h0`.
+-/
 theorem toHO1_surjective : ∀ (R : Type) [CommRing R] (A : Over (Sp R)) [GrpObj A] (g : ℕ), IsAbelianScheme A →
     SmoothOfRelativeDimension g A.hom → Function.Surjective (toHO1 A.hom) := by
   intro R _ A _ g hA hg x

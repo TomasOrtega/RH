@@ -9,6 +9,11 @@ namespace GroundTheory.Heights₂.Heights.IndefiniteRowSideFullHecke.FourB
 
 open IsDedekindDomain NumberField Polynomial Rat.HeightOneSpectrum
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨q, hq, hx⟩`. Conclude with `⟨q.map (φ : A →+* B), hq.map _, by rwa [eval₂_map]⟩`. Introduce and unpack `⟨q, hq, hx⟩`. Use `⟨q.map (φ.symm : B →+* A), hq.map _, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[eval₂_map, RingHom.comp_assoc]`. Establish `: (φ : A →+* B).comp (φ.symm : B →+* A) = RingHom.id B` using `RingHom.ext fun b => by simp`. Rewrite using `[this, RingHom.comp_id]` and apply the resulting hypothesis.
+-/
 theorem isIntegralElem_comp_ringEquiv {A B S : Type*} [CommRing A] [CommRing B] [CommRing S]
     (φ : A ≃+* B) (f : B →+* S) (x : S) :
     (f.comp (φ : A →+* B)).IsIntegralElem x ↔ f.IsIntegralElem x := by
@@ -22,6 +27,15 @@ theorem isIntegralElem_comp_ringEquiv {A B S : Type*} [CommRing A] [CommRing B] 
       RingHom.ext fun b => by simp
     rwa [this, RingHom.comp_id]
 
+/- English proof (translation)
+Establish `hx : IsIntegral ℚ_[p] x` using `Algebra.IsIntegral.isIntegral x`. Rewrite using `[NormedAlgebra.norm_eq_spectralNorm ℚ_[p] x, spectralNorm, spectralValue_le_one_iff (minpoly.monic hx)]`. Set `: Algebra ℤ_[p] K` to `((algebraMap ℚ_[p] K).comp (algebraMap ℤ_[p] ℚ_[p])).toAlgebra`. Establish `: IsScalarTower ℤ_[p] ℚ_[p] K` using `IsScalarTower.of_algebraMap_eq fun _ => rfl`. Prove the components needed by the constructor for the conclusion.
+
+Introduce `h`. Establish `hl : minpoly ℚ_[p] x ∈ Polynomial.lifts (algebraMap ℤ_[p] ℚ_[p])`. Rewrite using `[lifts_iff_coeff_lifts]`. Introduce `n`. Conclude with `⟨⟨_, h n⟩, rfl⟩`.
+
+Take `⟨q, hq, -, hmon⟩` from `lifts_and_natDegree_eq_and_monic hl (minpoly.monic hx)`. Use `⟨q, hmon, ?_⟩` and prove the remaining obligations. Establish `h0 : eval₂ (algebraMap ℚ_[p] K) x (q.map (algebraMap ℤ_[p] ℚ_[p])) = 0`. Rewrite using `[hq]`. Conclude with `minpoly.aeval ℚ_[p] x`.
+
+Rewrite `h0` using `[eval₂_map]`. Then use the resulting hypothesis. Introduce `h n`. Establish `hxZ : IsIntegral ℤ_[p] x` using `h`. Rewrite using `[minpoly.isIntegrallyClosed_eq_field_fractions' ℚ_[p] hxZ, coeff_map, PadicInt.algebraMap_apply]`. Conclude with `PadicInt.norm_le_one _`.
+-/
 theorem norm_le_one_iff_isIntegralElem_padicInt (p : ℕ) [Fact p.Prime] {K : Type*}
     [NormedField K] [NormedAlgebra ℚ_[p] K] [FiniteDimensional ℚ_[p] K] (x : K) :
     ‖x‖ ≤ 1 ↔ ((algebraMap ℚ_[p] K).comp (algebraMap ℤ_[p] ℚ_[p])).IsIntegralElem x := by
@@ -47,6 +61,9 @@ theorem norm_le_one_iff_isIntegralElem_padicInt (p : ℕ) [Fact p.Prime] {K : Ty
       PadicInt.algebraMap_apply]
     exact PadicInt.norm_le_one _
 
+/- English proof (translation)
+Rewrite using `[norm_le_one_iff_isIntegralElem_padicInt p, ← isIntegralElem_comp_ringEquiv ψ]`. Establish `: (algebraMap ℚ_[p] K).comp (algebraMap ℤ_[p] ℚ_[p]) = ((algebraMap E K).comp ι).comp (ψ : ℤ_[p] →+* O)` using `RingHom.ext fun z => by simp [he, hψ]`. Rewrite using `[this]`.
+-/
 theorem norm_le_one_iff_isIntegralElem_of_equiv (p : ℕ) [Fact p.Prime] {E O K : Type*} [Field E]
     [CommRing O] [NormedField K] [NormedAlgebra ℚ_[p] K] [FiniteDimensional ℚ_[p] K]
     [Algebra E K] (ι : O →+* E) (e : ℚ_[p] →+* E) (ψ : ℤ_[p] ≃+* O)
@@ -59,6 +76,9 @@ theorem norm_le_one_iff_isIntegralElem_of_equiv (p : ℕ) [Fact p.Prime] {E O K 
     RingHom.ext fun z => by simp [he, hψ]
   rw [this]
 
+/- English proof (translation)
+Set `: Algebra E₂ E₁` to `(e : E₂ →+* E₁).toAlgebra`. Establish `: IsScalarTower E₂ E₁ L` using `IsScalarTower.of_algebraMap_eq fun z => by rw [he]; rfl`. Establish `: Module.Finite E₂ E₁` using `Module.Finite.of_surjective (Algebra.linearMap E₂ E₁) e.surjective`. Conclude with `Module.Finite.trans E₁ L`.
+-/
 theorem finiteDimensional_of_ringEquiv {E₁ E₂ L : Type*} [Field E₁] [Field E₂] [Field L]
     [Algebra E₁ L] [Algebra E₂ L] (e : E₂ ≃+* E₁)
     (he : algebraMap E₂ L = (algebraMap E₁ L).comp (e : E₂ →+* E₁)) [FiniteDimensional E₁ L] :
@@ -73,6 +93,19 @@ def IntegralOnModelRat : Prop :=
     [Algebra.FiniteType (𝓞 ℚ) R] [IsIntegrallyClosed R] (r g : R) (s : 𝓞 ℚ),
     FourB.IntegralOnModel.Hyp ℚ R r g s → ∃ r' : R, r = algebraMap (𝓞 ℚ) R s * r'
 
+/- English proof (translation)
+Introduce `A _ h a N ⟨hft, hdom, hic, htf, hh, hN, hint⟩`. Set `_ : Algebra (𝓞 ℚ) A` to `((Int.castRingHom A).comp (Rat.ringOfIntegersEquiv : 𝓞 ℚ →+* ℤ)).toAlgebra`. Establish `: IsDomain A` using `hdom`. Establish `: Algebra.FiniteType (𝓞 ℚ) A` using `Algebra.FiniteType.of_restrictScalars_finiteType ℤ (𝓞 ℚ) A`. Establish `hmap : ∀ c : 𝓞 ℚ, c ≠ 0 → algebraMap (𝓞 ℚ) A c ≠ 0` using `fun c hc => htf _ fun h0 => hc (Rat.ringOfIntegersEquiv.injective (by simpa using h0))`.
+
+Establish `: Module.IsTorsionFree (𝓞 ℚ) A` using `⟨fun c hc x y hxy => by`. Establish `hc0 : c ≠ 0` using `hc.ne_zero`. Simplify using `only [Algebra.smul_def] at hxy`. Conclude with `mul_left_cancel₀ (hmap c hc0) hxy⟩`. Establish `hNQ : (N : 𝓞 ℚ) ≠ 0` using `by exact_mod_cast hN.ne'`.
+
+It suffices to establish `hH : FourB.IntegralOnModel.Hyp ℚ A a h (N : 𝓞 ℚ) by`. Take `⟨r', hr'⟩` from `hA A a h (N : 𝓞 ℚ) hH`. Conclude with `⟨r', by rw [hr', map_natCast]⟩`. Use `⟨hNQ, hh, fun v L _ _ _ y _ hyint hyg => ?_⟩` and prove the remaining obligations. Set `P` to `primesEquiv v`.
+
+Establish `: Fact (P : ℕ).Prime` using `⟨P.2⟩`. Set `e : ℚ_[P] ≃+* v.adicCompletion ℚ` to `(adicCompletion.padicEquiv v).symm.toAlgEquiv.toRingEquiv`. Set `_ : Algebra ℚ_[P] L` to `((algebraMap (v.adicCompletion ℚ) L).comp (e : ℚ_[P] →+* v.adicCompletion ℚ)).toAlgebra`. Establish `: FiniteDimensional ℚ_[P] L` using `finiteDimensional_of_ringEquiv e rfl`. Establish `: Algebra.IsAlgebraic ℚ_[P] L` using `inferInstance`.
+
+Set `_ : NormedField L` to `spectralNorm.normedField ℚ_[P] L`. Set `_ : NormedAlgebra ℚ_[P] L` to `spectralNorm.normedAlgebra ℚ_[P] L`. Establish `key : ∀ x : L, ‖x‖ ≤ 1 ↔ ((algebraMap (v.adicCompletion ℚ) L).comp (v.adicCompletionIntegers ℚ).subtype).IsIntegralElem x` using `fun x => norm_le_one_iff_isIntegralElem_of_equiv (P : ℕ) (v.adicCompletionIntegers ℚ).subtype (e : ℚ_[P] →+* v.adicCompletion ℚ) (adicCompletionIntegers.padicIntEquiv v).symm.toAlgEquiv.toRingEquiv (fun z => adicCompletionIntegers.coe_padicIntEquiv_symm_apply v z) rfl x`. Establish `hle` using `hint (P : ℕ) L y (fun b => (key _).2 (hyint b)) hyg`. Rewrite using `[← key, map_natCast, map_natCast, norm_div]`.
+
+Establish `hpos : 0 < ‖(N : L)‖`. Rewrite using `[← map_natCast (algebraMap ℚ_[P] L), norm_algebraMap', norm_pos_iff]`. Conclude with `hN.ne'` after adjusting the coercions. Conclude with `(div_le_one hpos).2 hle`.
+-/
 theorem Normality.of_rat (hA : IntegralOnModelRat) : Normality.Statement := by
   intro A _ h a N ⟨hft, hdom, hic, htf, hh, hN, hint⟩
   let _ : Algebra (𝓞 ℚ) A :=
@@ -111,6 +144,9 @@ theorem Normality.of_rat (hA : IntegralOnModelRat) : Normality.Statement := by
     exact_mod_cast hN.ne'
   exact (div_le_one hpos).2 hle
 
+/- English proof (translation)
+The claim follows from `Normality.of_rat fun R _ _ _ _ _ _ r g s hH => hA ℚ R r g s hH`.
+-/
 theorem Normality.of_integralOnModel (hA : FourB.IntegralOnModel.Statement) :
     Normality.Statement :=
   Normality.of_rat fun R _ _ _ _ _ _ r g s hH => hA ℚ R r g s hH

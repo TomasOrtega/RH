@@ -27,6 +27,11 @@ variable {R : Type} [CommRing R] [IsDomain R] {I : Ideal R} {D : DegData R I}
 open RigidIsoCube in
 include U in
 
+/- English proof (translation)
+Use `U.smooth` as an intermediate fact. Establish `: IsDominant (jK R)` using `⟨(PrimeSpectrum.denseRange_comap_iff_ker_le_nilRadical _).2 (((RingHom.injective_iff_ker_eq_bot _).1 (IsFractionRing.injective R (FractionRing R))).le.trans bot_le)⟩`. Use `IsSchemeTheoreticallyDominant.of_isDominant (jK R)` as an intermediate fact. Establish `hg : IsPullback (U.gen.inv.left ≫ pullback.fst G.hom (jK R)) A.A.hom G.hom (jK R)`. Establish `: IsIso U.gen.inv.left` using `inferInstanceAs (IsIso ((Over.forget _).map U.gen.inv))`.
+
+Establish `s : IsPullback U.gen.inv.left A.A.hom (pullback.snd G.hom (jK R)) (𝟙 _)` using `IsPullback.of_horiz_isIso ⟨(Over.w U.gen.inv).trans (Category.comp_id _).symm⟩`. Simplify using `using s.paste_horiz (IsPullback.of_hasPullback G.hom (jK R))`. Establish `s₁ : Function.Surjective G.hom.appTop.hom` using `surjective_appTop_of_baseChange hg (eSec G) (Over.w η[G]) (hG _ _ A.isAb).2`. Establish `: Flat (G ⊗ G).hom` using `by rw [Over.tensorObj_hom]; infer_instance`. Conclude with `⟨s₁, surj_comp (surjective_snd_of_generic hG (jK R) G A.isAb hg _) (surj_comp (surjective_snd_of_generic hG (jK R) G A.isAb hg _) s₁)⟩`.
+-/
 theorem surj_base (hG : GlobalFnsSt) : Function.Surjective G.hom.appTop.hom ∧
     Function.Surjective ((snd G (G ⊗ G)).left ≫ (snd G G).left ≫ G.hom).appTop.hom := by
   have := U.smooth
@@ -46,11 +51,17 @@ theorem surj_base (hG : GlobalFnsSt) : Function.Surjective G.hom.appTop.hom ∧
 
 def cube3 (a : G ⟶ G) : G3 G ⟶ G3 G := lift (x3 G 0 ≫ a) (lift (x3 G 1 ≫ a) (x3 G 2 ≫ a))
 
+/- English proof (translation)
+The claim follows from `psum_hom (MonoidHom.mk' (fun z : T ⟶ H => z ≫ a) fun b c => MonObj.mul_comp b c a) x s`.
+-/
 theorem psum_comp {S : Scheme.{0}} {T H H' : Over S} [GrpObj H] [IsCommMonObj H] [GrpObj H'] [IsCommMonObj H']
     (a : H ⟶ H') [IsMonHom a] (x : Fin 3 → (T ⟶ H)) (s : Finset (Fin 3)) :
     psum H x s ≫ a = psum H' (fun i => x i ≫ a) s :=
   psum_hom (MonoidHom.mk' (fun z : T ⟶ H => z ≫ a) fun b c => MonObj.mul_comp b c a) x s
 
+/- English proof (translation)
+The claim follows from `(isCub_cubV U.cubG hJ).face 1 1`.
+-/
 theorem val_cub_one (y : (𝟙_ (Over (Spec (CommRingCat.of R)))).left) (J) (hJ : Good U.LG.L y J) :
     val (L := U.LG.L) (φ := thφ G (x3 G)) (ε := thε) U.cubG.t
       (lift (1 : 𝟙_ (Over (Spec (CommRingCat.of R))) ⟶ G) (lift 1 1) : _ ⟶ G3 G).left y J = 1 :=
@@ -60,6 +71,17 @@ variable (a : K → (G ⟶ G)) [∀ k, IsMonHom (a k)] (β : LB.Gen (LB.LinComb 
   (hβ : β.IsGen) (nβ : ∀ y J, Good U.LG.L y J → val β (eSec G) y J = 1)
 include hβ nβ
 
+/- English proof (translation)
+Set `e : 𝟙_ (Over (Spec (CommRingCat.of R))) ⟶ G3 G` to `lift 1 (lift 1 1)`. Establish `he : e.left ≫ (snd G (G ⊗ G)).left ≫ (snd G G).left ≫ G.hom = 𝟙 _`. Rewrite using `[Over.w, Over.w]`. Conclude with `Over.w e`. Use `prod_comm_val U.LG.isLB (θ := thφ G (x3 G)) (δ := thε) β hβ U.cubG.t U.cubG.isGen (thφ G (x3 G)) (fun k => (cube3 (a k)).left) (fun i k => ?_) _ e.left he (surj_base U hG).2 (fun i y J hJ => ?_) (fun k y J hJ => ?_) Z r z J hJ` and prove the remaining obligations.
+
+Apply the tactic sequence `refine congrArg (fun q => q.left) ((psum_comp (a k) (x3 G) i.down).trans (Eq.trans (congrArg (fun q => psum G q i.down) (funext fun j => ?_)) (psum_hom (preHom (cube3 (a k))) (x3 G) i.down).symm)) fin_cases j <;> simp [preHom, x3, cube3]`. Establish `: e ≫ psum G (x3 G) i.down = η[G]`. Use `(psum_hom (preHom e) (x3 G) i.down).trans (Eq.trans (congrArg (fun q => psum G q i.down) (funext fun j => ?_)) ((psum_hom (1 : (G3 G ⟶ G) →* (𝟙_ _ ⟶ G)) (x3 G) i.down).symm.trans ?_))` and prove the remaining obligations. Apply the tactic sequence `fin_cases j <;> simp [preHom, x3, e]`. Simplify using `[Hom.one_def]`.
+
+Establish `t : e.left ≫ thφ G (x3 G) i = eSec G` using `congrArg (fun q => q.left) this`. Use `show val β (e.left ≫ thφ G (x3 G) i) y J = 1`. Rewrite using `[t]`. Conclude with `nβ y J hJ`. Establish `: e ≫ cube3 (a k) = e`.
+
+Simplify using `only [cube3, comp_lift, ← Category.assoc]`. Simplify using `[x3, e, MonObj.one_comp]`. Establish `t : e.left ≫ (cube3 (a k)).left = e.left` using `congrArg (fun q => q.left) this`. Use `show val (L := U.LG.L) (φ := thφ G (x3 G)) (ε := thε) U.cubG.t (e.left ≫ (cube3 (a k)).left) y J = 1`. Rewrite using `[t]`.
+
+Conclude with `val_cub_one U y J hJ`.
+-/
 theorem gen_cube (hG : GlobalFnsSt) (Z : Scheme.{0}) (r : Z ⟶ (G3 G).left) (z : Z) (J) (hJ : Good U.LG.L z J) :
     ∏ i, val β (r ≫ thφ G (x3 G) i) z J ^ thε i =
       ∏ k, val (L := U.LG.L) (φ := thφ G (x3 G)) (ε := thε) U.cubG.t (r ≫ (cube3 (a k)).left) z J ^ ε k := by
@@ -89,6 +111,13 @@ theorem gen_cube (hG : GlobalFnsSt) (Z : Scheme.{0}) (r : Z ⟶ (G3 G).left) (z 
     rw [t]
     exact val_cub_one U y J hJ
 
+/- English proof (translation)
+Use `prod_comm_val U.LG.isLB β hβ U.symG U.symG_gen ![(ι[G]).left, 𝟙 G.left] (fun k => (a k).left) (fun i k => by fin_cases i` as an intermediate fact. Conclude with `EvenPull.inv_left_comp (a k)`. Conclude with `(Category.id_comp _).trans (Category.comp_id _).symm)`. Use the proof step `G.hom (eSec G) (Over.w η[G]) (surj_base U hG).1 (fun i y J hJ => by fin_cases i`. Conclude with `(congrArg (fun q => val β q y J) (EvenPull.eSec_inv G)).trans (nβ y J hJ)`.
+
+Conclude with `(congrArg (fun q => val β q y J) (Category.comp_id _)).trans (nβ y J hJ))`. Use the proof step `(fun k y J hJ => by`. Establish `b` using `val_corr hJ U.symG_rig (𝟙 _)`. Rewrite `b` using `[val_pull hJ, val_one, Category.id_comp]`. Establish `: eSec G ≫ (a k).left = eSec G` using `congrArg (fun q => q.left) (IsMonHom.one_hom (a k))`.
+
+Rewrite using `[this, b]) Z r z J hJ`. Rewrite `this` using `[Fin.prod_univ_two]`. Rewrite using `[← this]`. Use `show _ = _ * (val β (r ≫ (ι[G]).left) z J ^ (1 : ℤ) * val β (r ≫ 𝟙 _) z J ^ (-1 : ℤ))`. Rewrite using `[Category.comp_id, zpow_one, zpow_neg_one, mul_comm, inv_mul_cancel_right]`.
+-/
 theorem gen_even (hG : GlobalFnsSt) (Z : Scheme.{0}) (r : Z ⟶ G.left) (z : Z) (J) (hJ : Good U.LG.L z J) :
     val β (r ≫ (ι[G]).left) z J = val β r z J * ∏ k, val U.symG (r ≫ (a k).left) z J ^ ε k := by
   have := prod_comm_val U.LG.isLB β hβ U.symG U.symG_gen ![(ι[G]).left, 𝟙 G.left] (fun k => (a k).left)
@@ -112,6 +141,9 @@ theorem gen_even (hG : GlobalFnsSt) (Z : Scheme.{0}) (r : Z ⟶ G.left) (z : Z) 
 
 omit hβ nβ
 
+/- English proof (translation)
+Simplify using `only [h₂, mul_zpow, Finset.prod_mul_distrib, h₁, ← Finset.prod_zpow, ← zpow_mul]`. Rewrite using `[mul_comm, Finset.prod_comm]`. Simplify using `only [mul_comm]`.
+-/
 theorem prod_swap {V K K' : Type} [CommGroup V] [Fintype K] [Fintype K'] (ε : K → ℤ) (δ : K' → ℤ) (b : K' → V)
     (W : K' → K → V) (c m : K → V) (h₁ : ∏ i, b i ^ δ i = ∏ k, c k ^ ε k) (h₂ : ∀ k, m k = (∏ i, W i k ^ δ i) * c k) :
     ∏ i, (b i * ∏ k, W i k ^ ε k) ^ δ i = ∏ k, m k ^ ε k := by
@@ -120,11 +152,17 @@ theorem prod_swap {V K K' : Type} [CommGroup V] [Fintype K] [Fintype K'] (ε : K
   simp only [mul_comm]
 
 omit [IsDomain R] in
+/- English proof (translation)
+The claim follows from `pullback.lift_fst _ _ _`.
+-/
 theorem map_fstG (e : ℕ) {H H' : Over (Spec (CommRingCat.of R))} (b : H ⟶ H') :
     ((Over.pullback (thick R I e)).map b).left ≫ (fstG I e H').left = (fstG I e H).left ≫ b.left :=
   pullback.lift_fst _ _ _
 
 omit [IsDomain R] in
+/- English proof (translation)
+Use `show eSec (thickObj R I e H) ≫ pullback.fst H.hom (thick R I e) = _`. Simplify using `[eSec]`. Rewrite using `[pullback.lift_fst, ← Category.assoc, ← pullback.condition, Category.comp_id]`.
+-/
 theorem eSec_fstG (e : ℕ) (H : Over (Spec (CommRingCat.of R))) [GrpObj H] :
     eSec (thickObj R I e H) ≫ (fstG I e H).left = thick R I e ≫ eSec H := by
   show eSec (thickObj R I e H) ≫ pullback.fst H.hom (thick R I e) = _
@@ -137,6 +175,13 @@ def aV (e : ℕ) {Z : Scheme.{0}} (z : Z) (J : (Z ⟶ D.toPre.P.A.left) → D.to
     ∏ k, wVal U e z J N (x ≫ ((Over.pullback (thick R I e)).map (a k)).left) ^ ε k
 
 include hβ nβ in
+/- English proof (translation)
+Establish `c₁` using `gen_cube U a β hβ nβ hG _ (tri (thick R I e) (fstG I e G) x) z N hN`. Establish `f₃` using `tri_thφ (thick R I e) (fstG I e G) x (𝟙 _) (Category.id_comp _).symm`. Use `prod_swap ε thε _ _ _ _ ((Finset.prod_congr rfl fun i _ => congrArg (fun q => val β q z N ^ thε i) (f₃ i).symm).trans c₁) fun k => ?_` and prove the remaining obligations. Use `(cube_val U (fun i => x i ≫ (Over.pullback (thick R I e)).map (a k)) hJ hN).trans (congrArg₂ (· * ·) (Finset.prod_congr rfl fun i _ => ?_) ?_)` and prove the remaining obligations. Rewrite using `[← psum_comp, Over.comp_left]`.
+
+Establish `m : ∀ y : T ⟶ thickObj R I e G, (Over.map (thick R I e)).map (y ≫ (Over.pullback (thick R I e)).map (a k)) ≫ fstG I e G = ((Over.map (thick R I e)).map y ≫ fstG I e G) ≫ a k` using `fun y => Over.OverMorphism.ext ((Category.assoc _ _ _).trans ((congrArg (y.left ≫ ·) (map_fstG e (a k))).trans (Category.assoc _ _ _).symm))`. Establish `t : tri (thick R I e) (fstG I e G) (fun i => x i ≫ (Over.pullback (thick R I e)).map (a k)) = tri (thick R I e) (fstG I e G) x ≫ (cube3 (a k)).left`. Rewrite using `[← Over.comp_left]`. Use `congrArg (fun q : (Over.map (thick R I e)).obj T ⟶ G3 G => q.left) ?_` and prove the remaining obligations. Simplify using `only [m, cube3, comp_lift]`.
+
+Simplify using `[x3]`. Rewrite using `[t]`.
+-/
 theorem aV_cube (hG : GlobalFnsSt) (e : ℕ) {T : Over (Spec (CommRingCat.of (R ⧸ I ^ (e + 1))))}
     (x : Fin 3 → (T ⟶ thickObj R I e G)) {z : T.left} {J} {N} (hJ : Good D.toPre.P.L z J) (hN : Good U.LG.L z N) :
     ∏ i : thK.{0}, aV U a β e z J N (psum (thickObj R I e G) x i.down).left ^ thε i =
@@ -162,6 +207,11 @@ theorem aV_cube (hG : GlobalFnsSt) (e : ℕ) {T : Over (Spec (CommRingCat.of (R 
     rw [t]
 
 include hβ nβ in
+/- English proof (translation)
+Establish `iF : (ι[thickObj R I e G]).left ≫ (fstG I e G).left = (fstG I e G).left ≫ (ι[G]).left` using `EvenPull.inv_fst _ G`. Establish `e₁ : (r ≫ (ι[thickObj R I e G]).left) ≫ (fstG I e G).left = (r ≫ (fstG I e G).left) ≫ (ι[G]).left` using `(Category.assoc _ _ _).trans ((congrArg (r ≫ ·) iF).trans (Category.assoc _ _ _).symm)`. Rewrite using `[aV, aV, e₁, gen_even U a β hβ nβ hG _ _ z N hN, _root_.mul_assoc, _root_.mul_assoc, ← Finset.prod_mul_distrib, ← Finset.prod_mul_distrib]`. Use `congrArg (_ * ·) (Finset.prod_congr rfl fun k _ => ?_)` and prove the remaining obligations. Rewrite using `[← mul_zpow, ← mul_zpow]`.
+
+Use `congrArg (· ^ ε k) ?_` and prove the remaining obligations. Establish `e₂ : (r ≫ (ι[thickObj R I e G]).left) ≫ ((Over.pullback (thick R I e)).map (a k)).left = (r ≫ ((Over.pullback (thick R I e)).map (a k)).left) ≫ (ι[thickObj R I e G]).left` using `(Category.assoc _ _ _).trans ((congrArg (r ≫ ·) (EvenPull.inv_left_comp ((Over.pullback (thick R I e)).map (a k)))).trans (Category.assoc _ _ _).symm)`. Establish `e₃ : (r ≫ (fstG I e G).left) ≫ (a k).left = (r ≫ ((Over.pullback (thick R I e)).map (a k)).left) ≫ (fstG I e G).left` using `(Category.assoc _ _ _).trans ((congrArg (r ≫ ·) (map_fstG e (a k)).symm).trans (Category.assoc _ _ _).symm)`. Rewrite using `[e₂, e₃]`. Conclude with `(mul_comm _ _).trans ((even_val U _ hJ hN).symm.trans (mul_comm _ _))`.
+-/
 theorem aV_even (hG : GlobalFnsSt) (e : ℕ) {Z : Scheme.{0}} (r : Z ⟶ (thickObj R I e G).left) {z : Z} {J} {N}
     (hJ : Good D.toPre.P.L z J) (hN : Good U.LG.L z N) :
     aV U a β e z J N (r ≫ (ι[thickObj R I e G]).left) = aV U a β e z J N r *
@@ -192,6 +242,27 @@ variable (b : K → (D.toPre.P.A ⟶ D.toPre.P.A))
 set_option maxHeartbeats 800000 in
 include hβ nβ hq in
 
+/- English proof (translation)
+Use `(U.gt e).q_hom` as an intermediate fact. Use `(U.gt e).i_hom` as an intermediate fact. Use `(U.gt e).q_flat` as an intermediate fact. Use `(U.gt e).q_surj` as an intermediate fact. Use `(U.gt e).q_affine` as an intermediate fact.
+
+Use `hS.geomConnected` as an intermediate fact. Use `EndTorus.connectedSpace_thickening I e` as an intermediate fact. Establish `: GeometricallyConnected (thickObj R I e G).hom` using `inferInstanceAs (GeometricallyConnected (pullback.snd G.hom (thick R I e)))`. Establish `: ConnectedSpace (thickObj R I e G).left` using `GroupConn.connectedSpace_of_section (thickObj R I e G).hom (η : 𝟙_ _ ⟶ thickObj R I e G).left (Over.w _)`. Take `⟨t, ht, hv⟩` from `exists_transport U.LG.isLB D.toPre.P.isLB (U.w_gen e) (Y := (thickObj R I e G).left) (fun k => ((Over.pullback (thick R I e)).map (a k)).left) (φf := fun k => (fstG I e G).left ≫ (a k).left) (φp := fun k => (U.gt e).q.left ≫ (fstG I e D.toPre.P.A).left ≫ (b k).left) (fun k => map …`.
+
+Establish `hv' : ∀ (Z : Scheme.{0}) (x : Z ⟶ (thickObj R I e G).left) (z : Z) (J) (N), Good D.toPre.P.L z J → Good U.LG.L z N → val t x z J = aV U a β e z J N x` using `fun Z x z J N hJ hN => (hv Z x z N J hN hJ).trans (congrArg (· * _) (val_pull hN _ _ _))`. Establish `h1 : ∀ {Z : Over (Spec (CommRingCat.of (R ⧸ I ^ (e + 1))))} (τ : Z ⟶ splitTorus _ D.toPre.X), (τ ≫ (U.gt e).i) ≫ (U.gt e).q = (1 : Z ⟶ thickObj R I e G) ≫ (U.gt e).q` using `fun τ => by`. Rewrite using `[Category.assoc, (U.gt e).isKernel.w, MonObj.one_comp, ← Category.assoc, comp_toUnit, Hom.one_def]`. Establish `h2 : ∀ {Z : Over (Spec (CommRingCat.of (R ⧸ I ^ (e + 1))))} (τ : Z ⟶ splitTorus _ D.toPre.X) k, ((τ ≫ (U.gt e).i) ≫ (Over.pullback (thick R I e)).map (a k)) ≫ (U.gt e).q = ((1 : Z ⟶ thickObj R I e G) ≫ (Over.pullback (thick R I e)).map (a k)) ≫ (U.gt e).q` using `fun τ k => by`. Rewrite using `[Category.assoc, hq, ← Category.assoc, h1, Category.assoc, Category.assoc, hq]`.
+
+Take `⟨ρ, hρ⟩` from `exists_ratio D.toPre.P.isLB t ht ((fst (splitTorus _ D.toPre.X) (thickObj R I e G) ≫ (U.gt e).i) * snd _ _).left (snd _ (thickObj R I e G)).left (fun k => by`. Establish `: ((fst (splitTorus _ D.toPre.X) (thickObj R I e G) ≫ (U.gt e).i) * snd _ _) ≫ (U.gt e).q = snd _ _ ≫ (U.gt e).q` using `by rw [MonObj.mul_comp, h1, ← MonObj.mul_comp, _root_.one_mul]`. Conclude with `(Category.assoc _ _ _).symm.trans ((congrArg (fun q => q.left ≫ (fstG I e D.toPre.P.A).left ≫ (b k).left) this).trans (Category.assoc _ _ _)))`. Establish `key : ∀ (Z : Over (Spec (CommRingCat.of (R ⧸ I ^ (e + 1))))) (τ : Z ⟶ splitTorus _ D.toPre.X) (y : Z ⟶ thickObj R I e G) (z : Z.left) (J), Good D.toPre.P.L z J → val t ((τ ≫ (U.gt e).i) * y).left z J = gm (𝟙 Z.left) z ⊤ (pullTop (lift τ y) ρ) * val t y.left z J` using `fun Z τ y z J hJ => by`. Use `hρ _ (lift τ y).left z J hJ` as an intermediate fact.
+
+Rewrite `this` using `[← Over.comp_left, ← Over.comp_left, lift_snd, MonObj.comp_mul, lift_fst_assoc, lift_snd, ← gm_pullTop]`. Then use the resulting hypothesis. Establish `triv` using `ratio_eq_one (U.gt e).i ρ (fun Z z => by choose J hJ using fun χ : Z.left ⟶ D.toPre.P.A.left => exists_chart D.toPre.P.isLB (χ z) choose N hN using fun χ : Z.left ⟶ G.left => exists_chart U.LG.isLB (χ z)`. Use `⟨aV U a β e z J N, fun τ y => ?_, fun τ τ' y => ?_, fun τ => ?_⟩` and prove the remaining obligations. Rewrite using `[← hv' _ _ z J N hJ hN, ← hv' _ _ z J N hJ hN]`. Conclude with `key Z τ y z J hJ`.
+
+Rewrite using `[aV_cube U a β hβ nβ hG e _ hJ hN, aV_cube U a β hβ nβ hG e _ hJ hN]`. Use `Finset.prod_congr rfl fun k _ => ?_` and prove the remaining obligations. Conclude with `congrArg (fun q => val (L := D.toPre.P.L) (φ := thφ D.toPre.P.A (x3 D.toPre.P.A)) (ε := thε) D.toPre.cub.t q z J ^ ε k) (tri_congr (U.gt e) (y ≫ (Over.pullback (thick R I e)).map (a k)) (h2 τ k) (h2 τ' k))`. Rewrite using `[aV_even U a β hβ nβ hG e _ hJ hN, aV_even U a β hβ nβ hG e _ hJ hN, mul_right_comm, ← _root_.mul_assoc]`. Use `congrArg₂ (· * ·) rfl (Finset.prod_congr rfl fun k _ => ?_)` and prove the remaining obligations.
+
+Conclude with `congrArg (fun q => val D.toPre.sym q z J ^ ε k) (pG_congr (U.gt e) (h2 τ k)))`. Take `⟨s, hs, vs⟩` from `exists_descend D.toPre.P.isLB (U.gt e).q.left (fun k => (fstG I e D.toPre.P.A).left ≫ (b k).left) t ht (fun Z g₁ g₂ z J hJ h => by`. Set `Z' : Over (Spec (CommRingCat.of (R ⧸ I ^ (e + 1))))` to `Over.mk (g₂ ≫ (thickObj R I e G).hom)`. Set `k₂ : Z' ⟶ thickObj R I e G` to `Over.homMk g₂ rfl`. Set `k₁ : Z' ⟶ thickObj R I e G` to `Over.homMk g₁ (by`.
+
+Express the relevant statement in the definitionally equal form `g₁ ≫ (thickObj R I e G).hom = g₂ ≫ (thickObj R I e G).hom`. Rewrite using `[← Over.w (U.gt e).q, reassoc_of% h])`. Establish `e' : k₁ ≫ (U.gt e).q = k₂ ≫ (U.gt e).q` using `Over.OverMorphism.ext h`. Establish `w : (k₁ * k₂⁻¹) ≫ (U.gt e).q = toUnit Z' ≫ η[thickObj R I e D.toPre.P.A]`. Rewrite using `[MonObj.mul_comp, GrpObj.inv_comp, e', mul_inv_cancel]`.
+
+Both sides reduce to the same expression. Establish `ht : ((U.gt e).isKernel.lift _ _ w ≫ (U.gt e).i) * k₂ = k₁`. Rewrite using `[(U.gt e).isKernel.lift_fst, inv_mul_cancel_right]`. Use `key Z' ((U.gt e).isKernel.lift _ _ w) k₂ z J hJ` as an intermediate fact. Rewrite `this` using `[ht, triv, map_one, _root_.one_mul]`.
+
+Conclude with `this)`. Conclude with `⟨s, hs, fun Z x z J N hJ hN => (vs Z x z J hJ).trans (hv' Z x z J N hJ hN)⟩`.
+-/
 theorem exists_level (hG : GlobalFnsSt) (hS : IsSemiAbelian G) [IsAdicComplete I R] (e : ℕ) :
     ∃ s : LB.Gen (LB.LinComb D.toPre.P.L (fun k => (fstG I e D.toPre.P.A).left ≫ (b k).left) ε), s.IsGen ∧
       ∀ (Z : Scheme.{0}) (x : Z ⟶ (thickObj R I e G).left) (z : Z) (J) (N), Good D.toPre.P.L z J →
@@ -277,6 +348,23 @@ variable {R : Type} [CommRing R] [IsDomain R] {I : Ideal R} {D : DegData R I}
   {A : PolAV (Spec (CommRingCat.of (FractionRing R)))} {G : Over (Spec (CommRingCat.of R))} [GrpObj G]
   [IsCommMonObj G] (U : UnifPre I D A G) {K : Type} [Fintype K] {ε : K → ℤ}
 
+/- English proof (translation)
+Take `rfl : (fun k => (a k).left) = φ` from `funext hφ`. Take `rfl : (fun k => (b k).left) = ψ` from `funext hψ`. Establish `hM` using `D.toPre.P.isLB`. Establish `nβ : ∀ (Z : Scheme.{0}) (r : Z ⟶ (𝟙_ (Over (Spec (CommRingCat.of R)))).left) (z : Z) (N), Good U.LG.L z N → val β (r ≫ eSec G) z N = 1` using `fun Z r z N hN => (val_pull hN _ _ _).symm.trans ((val_corr hN hn r).trans (val_one _))`. Use `choose s hs vs using exists_level U a β hβ (fun y N hN => by`.
+
+Use `nβ _ (𝟙 _) y N hN` as an intermediate fact. Rewrite using `[Category.id_comp] at this) b hq hG hS` and apply the resulting hypothesis. Establish `ob : ∀ k, eSec D.toPre.P.A ≫ (b k).left = eSec D.toPre.P.A` using `fun k => congrArg (fun q => q.left) (IsMonHom.one_hom (b k))`. Take `⟨t₀, ht₀, -⟩` from `exists_gen hM (φ' := fun k => eSec D.toPre.P.A ≫ (b k).left) (ε' := ε) (fun V _ h => (Fintype.prod_empty _).trans (by simp only [ob, hε])) (LB.oneGen D.toPre.P.L) (fun _ _ => (map_one _).trans ((congrArg₂ (· * ·) (Fintype.prod_empty _) (map_one _)).trans (_root_.mul_one _)).symm)`. Establish `proj : AbLaw.IsProjBy D.toPre.P.A.hom`.
+
+Take `⟨d, -, n, s, hs⟩` from `(GlobalTheory.Unif.relAmple_iff_veryAmpleBy R D.toPre.P.A D.toPre.P.L hM).1 D.toPre.P.ample`. Conclude with `⟨_, AbLaw.isLB_pw hM _, n, s, hs⟩`. Take `⟨κ₀, h₀⟩` from `triv_of_thick hG I D.toPre.P.A D.toPre.P.isAb proj _ (LB.isLB_linComb hM (fun k => (b k).left) ε) (triv_pull _ t₀ ht₀) (fun e => triv_pull _ (s e) (hs e))`. Set `n` to `(1 : D.toPre.P.A ⟶ D.toPre.P.A).left`. Establish `nb : ∀ k, n ≫ (b k).left = n` using `fun k => congrArg (fun q : D.toPre.P.A ⟶ D.toPre.P.A => q.left) (MonObj.one_comp (b k))`.
+
+Establish `on : eSec D.toPre.P.A ≫ n = eSec D.toPre.P.A`. Establish `: η[D.toPre.P.A] ≫ (1 : D.toPre.P.A ⟶ D.toPre.P.A) = η[D.toPre.P.A]` using `by simp [Hom.one_def]`. Conclude with `congrArg (fun q => q.left) this`. Take `⟨κ, hκ, vκ⟩` from `exists_gen hM (φ' := fun k => (b k).left) (ε' := ε) (fun V _ h => by`. Use `(Fintype.prod_sum_type _).trans ?_` and prove the remaining obligations.
+
+Simplify using `only [Sum.elim_inl, Sum.elim_inr, zpow_neg, Finset.prod_inv_distrib, nb, hε, inv_one, _root_.mul_one])`. Use the proof step `(LB.mulGen D.toPre.P.L _ _ _ _ κ₀ (LB.invGen D.toPre.P.L _ _ (LB.pullGen D.toPre.P.L _ _ κ₀ n)))`. Use the proof step `(mulGen_isGen _ _ _ _ _ _ _ h₀ (invGen_isGen _ _ _ _ (pullGen_isGen _ _ _ _ h₀ _)))`. Establish `nκ : ∀ (Z : Scheme.{0}) (r : Z ⟶ (𝟙_ (Over (Spec (CommRingCat.of R)))).left) (z : Z) (J), Good D.toPre.P.L z J → val κ (r ≫ eSec D.toPre.P.A) z J = 1` using `fun Z r z J hJ => by`. Rewrite using `[vκ _ _ z J hJ, val_mul hJ, val_inv, val_pull hJ, Category.assoc, on, mul_inv_cancel]`.
+
+Use `⟨κ, ⟨hκ, corr_of_val hM fun y J hJ => (val_pull hJ _ _ _).trans ((nκ _ _ y J hJ).trans (val_one _).symm)⟩, fun e Z x z N J hN hJ => ?_⟩` and prove the remaining obligations. Use `(U.gt e).q_hom` as an intermediate fact. Establish `key` using `gen_unique hM (thickObj R I e D.toPre.P.A).hom (eSec (thickObj R I e D.toPre.P.A)) (Over.w _) (hG _ _ (TLinPf.isAb_pullback (thick R I e) _ D.toPre.P.isAb)).2 (pullGen_isGen _ _ _ _ hκ (fstG I e D.toPre.P.A).left) (hs e) (fun y J hJ => by choose N hN using fun χ : _ ⟶ G.left => e …`. Establish `q₀ : eSec (thickObj R I e G) ≫ (U.gt e).q.left = eSec (thickObj R I e D.toPre.P.A)` using `congrArg (fun q => q.left) (IsMonHom.one_hom (U.gt e).q)`. Establish `a₀ : ∀ k, eSec (thickObj R I e G) ≫ ((Over.pullback (thick R I e)).map (a k)).left = eSec (thickObj R I e G)` using `fun k => congrArg (fun q => q.left) (IsMonHom.one_hom ((Over.pullback (thick R I e)).map (a k)))`.
+
+Establish `v` using `vs e _ (eSec (thickObj R I e G)) y J N hJ hN`. Rewrite `v` using `[q₀, aV]`. Simplify using `only [a₀, hε, _root_.mul_one] at v`. Use `(val_pull hJ _ _ _).trans (Eq.trans ?_ v.symm)` and prove the remaining obligations. Conclude with `((congrArg (fun q => val κ q y J) (eSec_fstG e D.toPre.P.A)).trans (nκ _ _ y J hJ)).trans ((congrArg (fun q => val β q y N) (eSec_fstG e G)).trans (nβ _ _ y N hN)).symm)`.
+
+Use `Z (x ≫ (U.gt e).q.left) z J hJ`. Conclude with `((congrArg (fun q => val κ q z J) (Category.assoc _ _ _).symm).trans (val_pull hJ _ _ _).symm).trans (key.trans (vs e Z x z J N hJ hN))`.
+-/
 theorem exists_descent (hG : GlobalFnsSt) (hS : IsSemiAbelian G) [IsAdicComplete I R]
     (hε : ∀ (V : Type) [CommGroup V] (c : V), ∏ k, c ^ ε k = 1)
     (a : K → (G ⟶ G)) [∀ k, IsMonHom (a k)] (b : K → (D.toPre.P.A ⟶ D.toPre.P.A)) [∀ k, IsMonHom (b k)]
@@ -348,6 +436,19 @@ theorem exists_descent (hG : GlobalFnsSt) (hS : IsSemiAbelian G) [IsAdicComplete
 
 end Main
 
+/- English proof (translation)
+Introduce `hL R _ _ _ I hI D A G _ _ hS U E k' k β hβ hn`. Use `hI.2.2.2` as an intermediate fact. Use `E.homG` as an intermediate fact. Use `E.homB` as an intermediate fact. Establish `: ∀ i, IsMonHom ((![𝟙 G, E.aG, 1] : Fin 3 → (G ⟶ G)) i)` using `fun i => by fin_cases i exacts [inferInstanceAs (IsMonHom (𝟙 G)), E.homG, inferInstanceAs (IsMonHom (toUnit G ≫ η[G]))]`.
+
+Establish `: ∀ i, IsMonHom ((![𝟙 _, E.aB, 1] : Fin 3 → (D.toPre.P.A ⟶ D.toPre.P.A)) i)` using `fun i => by fin_cases i exacts [inferInstanceAs (IsMonHom (𝟙 _)), E.homB, inferInstanceAs (IsMonHom (toUnit _ ≫ η[D.toPre.P.A]))]`. Take `⟨κ, hκ, hv⟩` from `exists_descent U.toUnifPre hL.1.globalFns hS (fun V _ c => by`. Rewrite using `[Fin.prod_univ_three]`. Use `show c ^ (k' : ℤ) * c ^ (-(k : ℤ)) * c ^ ((k : ℤ) - k') = 1`. Rewrite using `[← zpow_add, ← zpow_add, show (k' : ℤ) + -(k : ℤ) + ((k : ℤ) - k') = 0 by ring, zpow_zero])`.
+
+Use the proof step `![𝟙 G, E.aG, 1] ![𝟙 _, E.aB, 1] (fun e i => by`. Use `(U.gt e).q_hom` as an intermediate fact. Use `fin_cases i`. Use `show (Over.pullback (thick R I e)).map (𝟙 G) ≫ _ = _ ≫ (Over.pullback (thick R I e)).map (𝟙 _)`. Rewrite using `[CategoryTheory.Functor.map_id, CategoryTheory.Functor.map_id, Category.id_comp, Category.comp_id]`.
+
+Conclude with `E.q_lin e`. Use `show (Over.pullback (thick R I e)).map (1 : G ⟶ G) ≫ _ = _ ≫ (Over.pullback (thick R I e)).map (1 : D.toPre.P.A ⟶ D.toPre.P.A)`. Rewrite using `[CategoryTheory.Functor.map_one, CategoryTheory.Functor.map_one, MonObj.one_comp, MonObj.comp_one])`. Apply the tactic sequence `(fun i => by fin_cases i <;> rfl)`. Apply the tactic sequence `(ψ := ![𝟙 _, E.aB.left, (1 : D.toPre.P.A ⟶ D.toPre.P.A).left]) (fun i => by fin_cases i <;> rfl) β hβ hn`.
+
+Use `⟨κ, hκ, fun e Z x o z JG J hG hJ ho W hW => ?_⟩` and prove the remaining obligations. Take `rfl : W = TorusInvariance.wVal U.toUnifPre e z J JG` from `funext hW`. Rewrite using `[hv e Z x z JG J hG hJ, Fin.prod_univ_three, ← _root_.mul_assoc, ← _root_.mul_assoc, ho]`. Establish `e₀ : x ≫ ((Over.pullback (thick R I e)).map (𝟙 G)).left = x`. Rewrite using `[CategoryTheory.Functor.map_id]`.
+
+Conclude with `Category.comp_id _`. Establish `e₂ : ((Over.pullback (thick R I e)).map (1 : G ⟶ G)) = (1 : thickObj R I e G ⟶ thickObj R I e G)` using `CategoryTheory.Functor.map_one _`. Rewrite using `[← e₂]`. Conclude with `congrArg (fun q => _ * TorusInvariance.wVal U.toUnifPre e z J JG q ^ (k' : ℤ) * _ * _) e₀`.
+-/
 theorem main : LL → AllU fun {R} _ _ {I} {D} {A} {G} _ _ U => ∀ (E : EndU U.toUnifPre) (k' k : ℕ) (β : LB.Gen (LB.LinComb U.LG.L (K := Fin 3) ![𝟙 _, E.aG.left, (1 : G ⟶ G).left] ![(k' : ℤ), -(k : ℤ), (k : ℤ) - k'])), β.IsGen → LB.Gen.Corr U.LG.L _ _ _ _ (LB.pullGen U.LG.L _ _ β (eSec G)) (LB.oneGen U.LG.L) → ∃ κ : LB.Gen (kapLB D.toPre E.aB k' k), Normd κ ∧ ∀ (e : ℕ) (Z : Scheme.{0}) (x o : Z ⟶ (thickObj R I e G).left) (z : Z) (JG) (J), Good U.LG.L z JG → Good D.toPre.P.L z J → o = x ≫ (1 : thickObj R I e G ⟶ thickObj R I e G).left → ∀ W : (Z ⟶ (thickObj R I e G).left) → (Z.presheaf.stalk z)ˣ, (∀ y, W y = gw (U.w e) y z (J (y ≫ (U.gt e).pG.left)) (fun _ => JG (y ≫ (fstG I e G).left))) → val κ (x ≫ (U.gt e).pG.left) z J = val β (x ≫ (fstG I e G).left) z JG * W x ^ (k' : ℤ) * W (x ≫ ((Over.pullback (thick R I e)).map E.aG).left) ^ (-(k : ℤ)) * W o ^ ((k : ℤ) - k') := by
   intro hL R _ _ _ I hI D A G _ _ hS U E k' k β hβ hn
   have := hI.2.2.2

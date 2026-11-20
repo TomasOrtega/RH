@@ -16,6 +16,9 @@ def SsCmp {K Ω : Type} [Field Ω] [Field K] [NumberField K] [Algebra K Ω] [IsA
     {v : HeightOneSpectrum (𝓞 K)} {h : IsPlaceOver A v} (x y : WD h) : Prop :=
   AbW x ∨ AbW y → ∀ s, x.charPol s = y.charPol s
 
+/- English proof (translation)
+Introduce `_ _` and use `by rw [e]`.
+-/
 theorem SsCmp.of_eq {K Ω : Type} [Field Ω] [Field K] [NumberField K] [Algebra K Ω] [IsAlgClosure K Ω] {A : ValuationSubring Ω}
     {v : HeightOneSpectrum (𝓞 K)} {h : IsPlaceOver A v} {x y : WD h} (e : x = y) : SsCmp x y := fun _ _ => by rw [e]
 
@@ -51,6 +54,9 @@ def CsdSs : Prop :=
           IsPstAt P Bw (R.comp (Dec (F := E) A).subtype) ∧ ∀ σ, π.IsLocComp w σ → ∀ rc, IsRec h rc →
             SsCmp (wdAt P ι Bw h hj (R.comp (Dec (F := E) A).subtype)) (rc (algNorm σ))
 
+/- English proof (translation)
+Introduce `E Ω _ _ _ _ _ _ l _ ι a ha π hd hc`. Take `⟨R, h1, h2, h3, h4⟩` from `H E Ω l ι a ha π hd hc`. Use `⟨R, h1, h2, h3, fun P AI hT w A h O _ _ _ Bw hj => ?_⟩` and prove the remaining obligations. Conclude with `⟨(h4 P AI hT w A h O Bw hj).1, fun σ hσ rc hrc => SsCmp.of_eq ((h4 P AI hT w A h O Bw hj).2 σ hσ rc hrc)⟩`.
+-/
 theorem csdSs_of_full (H : GlobalTheory.Published.CaraianiLocalGlobalDual) : CsdSs := by
   intro E Ω _ _ _ _ _ _ l _ ι a ha π hd hc
   obtain ⟨R, h1, h2, h3, h4⟩ := H E Ω l ι a ha π hd hc

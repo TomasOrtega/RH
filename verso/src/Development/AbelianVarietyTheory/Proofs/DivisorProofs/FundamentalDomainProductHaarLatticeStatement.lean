@@ -7,6 +7,9 @@ open scoped TensorProduct NNReal Matrix
 open NumberField IsDedekindDomain MeasureTheory Filter Topology Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes
 open GlobalTheory.WeilM GlobalTheory.AdelicU GlobalTheory.LFun GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels GlobalTheory.ThK GlobalTheory.Doubling GlobalTheory.ThK.Bot GlobalTheory.DblBox
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.DblBox.integral_setAverage_eq_zero_of_cocompact | exact GlobalTheory.DblBox.integral_setAverage_eq_zero_of_cocompact | (intros; apply GlobalTheory.DblBox.integral_setAverage_eq_zero_of_cocompact <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.fundamental_domain_product_haar_lattice : ∀ (G H : Type) [Group G] [TopologicalSpace G] [IsTopologicalGroup G] [SecondCountableTopology G] [MeasurableSpace G] [BorelSpace G]
     [Group H] [TopologicalSpace H] [IsTopologicalGroup H] [SecondCountableTopology H] [MeasurableSpace H] [BorelSpace H]
     (Γ : Subgroup G) (Δ : Subgroup H) [Countable Γ] [Countable Δ] (μ : Measure G) (ν : Measure H), μ.IsHaarMeasure → ν.IsHaarMeasure →

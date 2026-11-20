@@ -11,6 +11,17 @@ noncomputable section
 
 namespace LatticeCountVolume
 
+/- English proof (translation)
+Establish `: MeasurableVAdd La E` using `(inferInstance : MeasurableVAdd La.toAddSubgroup E)`. Establish `: VAddInvariantMeasure La E μ` using `(inferInstance : VAddInvariantMeasure La.toAddSubgroup E μ)`. Establish `: Countable La` using `inferInstance`. Use `set A := {x : E | x ∈ La ∧ x ∈ T} with hAdef`. Establish `key : ∀ y : E, ∑' g : La, S.indicator (1 : E → ℝ≥0∞) (g +ᵥ y) ≤ ((A.encard : ℕ∞) : ℝ≥0∞)`.
+
+Introduce `y`. Use `set U : Set La := {g | (g : E) + y ∈ S} with hUdef`. Establish `h1 : ∑' g : La, S.indicator (1 : E → ℝ≥0∞) (g +ᵥ y) = ∑' g : La, U.indicator (1 : La → ℝ≥0∞) g`. Use `congr 1`. Rewrite using `[h1, ← tsum_subtype]`.
+
+Simplify using `only [Pi.one_apply]`. Rewrite using `[ENNReal.tsum_set_one]`. Use `ENat.toENNReal_le.mpr ?_` and prove the remaining obligations. Break down `U.eq_empty_or_nonempty with hU | ⟨g₀, hg₀⟩` into its components or cases. Simplify using `[hU]`.
+
+Use `Set.encard_le_encard_of_injOn (f := fun g : La => (g : E) - g₀) ?_ ?_` and prove the remaining obligations. Introduce `g hg`. Use `⟨La.sub_mem g.2 g₀.2, ?_⟩` and prove the remaining obligations. Establish `hsub : (g : E) - g₀ = ((g : E) + y) - ((g₀ : E) + y)` using `by abel`. Use `show (g : E) - g₀ ∈ T`.
+
+Rewrite using `[hsub]`. Conclude with `hST _ hg _ hg₀`. Introduce `g _ g' _ h`. Conclude with `Subtype.ext (sub_left_injective h)`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem measure_le_encard_mul {E : Type} [NormedAddCommGroup E] [NormedSpace ℝ E]
     [FiniteDimensional ℝ E] [MeasurableSpace E] [BorelSpace E] (μ : Measure E)
     [μ.IsAddHaarMeasure] (La : Submodule ℤ E) [DiscreteTopology La] [IsZLattice ℝ La]
@@ -54,6 +65,11 @@ theorem measure_le_encard_mul {E : Type} [NormedAddCommGroup E] [NormedSpace ℝ
 
 open scoped Classical in
 
+/- English proof (translation)
+Introduce `E _ _ _ _ _ μ _ La _ _ S T hS hST`. Use `set b := Module.Free.chooseBasis ℤ La`. Establish `fund` using `ZLattice.isAddFundamentalDomain b μ`. Establish `hcov` using `ZLattice.covolume_eq_measure_fundamentalDomain La μ fund`. Establish `hFtop : μ (ZSpan.fundamentalDomain (b.ofZLatticeBasis ℝ)) ≠ ⊤` using `(ZSpan.fundamentalDomain_isBounded _).measure_lt_top.ne`.
+
+Rewrite using `[hcov, measureReal_def, ENNReal.ofReal_toReal hFtop]`. Conclude with `measure_le_encard_mul μ La S T hS hST fund`.
+-/
 theorem proof : LatticeCountVolume.Statement := by
   intro E _ _ _ _ _ μ _ La _ _ S T hS hST
   set b := Module.Free.chooseBasis ℤ La

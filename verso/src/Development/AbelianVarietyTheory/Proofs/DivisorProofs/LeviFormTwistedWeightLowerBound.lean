@@ -7,6 +7,27 @@ open scoped ENNReal ContDiff
 
 namespace GlobalTheory.LeviTwistLower
 
+/- English proof (translation)
+Introduce `n M _ _ _ _ _ z φ ψ δ κ hz hφ hψ hψ0 hδ hκ hκ' hL`. Take `⟨hκd, hκ1⟩` from `contDiff_infty_iff_deriv.1 hκ`. Establish `hκdd : Differentiable ℝ (deriv κ)` using `(contDiff_infty_iff_deriv.1 hκ1).1`. Use `set k : ℝ → ℝ := fun t => κ (δ * t) with hkdef`. Establish `hk : ContDiff ℝ ∞ k` using `hκ.comp (contDiff_const.mul contDiff_id)`.
+
+Establish `hD : ∀ t, HasDerivAt k (deriv κ (δ * t) * δ) t`. Introduce `t`. Establish `h` using `(hκd (δ * t)).hasDerivAt.comp t ((hasDerivAt_id t).const_mul δ)`. Simplify `h` using `[hkdef, Function.comp_def]`. Establish `hDk : deriv k = fun t => deriv κ (δ * t) * δ` using `funext fun t => (hD t).deriv`.
+
+Establish `hDD : ∀ t, deriv (deriv k) t = deriv (deriv κ) (δ * t) * δ ^ 2`. Introduce `t`. Rewrite using `[hDk]`. Establish `h` using `((hκdd (δ * t)).hasDerivAt.comp t ((hasDerivAt_id t).const_mul δ)).mul_const δ`. Conclude with `h.deriv.trans (by ring)`.
+
+Establish `hks : SmoothR n z (fun x => κ (δ * ψ x))` using `SmoothR.comp n z k hk ψ hψ`. Use `⟨hks, fun x ξ => ⟨?_, ?_⟩⟩` and prove the remaining obligations. Unfold `dbarDot`. Rewrite using `[Finset.mul_sum]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations.
+
+Use `db_comp_real n z k hk ψ (SmoothR.ckR n z 1 _ hψ) j x` as an intermediate fact. Rewrite `this` using `[(hD (ψ x)).deriv]`. Express the relevant statement in the definitionally equal form `db n z j (fun y => ((k (ψ y) : ℝ) : ℂ)) x * _ = _`. Rewrite using `[this]`. Expand and normalize the polynomial expressions, which then agree.
+
+Establish `hC` using `chain n M z hz k ψ (contDiff_infty.1 hk 2) hψ x ξ`. Rewrite `hC` using `[(hD (ψ x)).deriv, hDD (ψ x)]`. Establish `hnorm : ‖dbarDot n z (fun y => (ψ y : ℂ)) x ξ‖ = ‖dDot n z (fun y => (ψ y : ℂ)) x ξ‖`. Establish `: dbarDot n z (fun y => (ψ y : ℂ)) x ξ = (starRingEnd ℂ) (dDot n z (fun y => (ψ y : ℂ)) x ξ)`. Unfold `dbarDot dDot`.
+
+Rewrite using `[map_sum]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[db_ofReal n z ψ j x, map_mul]`. Rewrite using `[this, Complex.norm_conj]`. Establish `hsum : Levi n z (fun y => (φ y + ψ y) + κ (δ * ψ y)) x ξ = Levi n z φ x ξ + Levi n z ψ x ξ + Levi n z (fun y => k (ψ y)) x ξ`.
+
+Rewrite using `[levi_add n z (fun y => φ y + ψ y) (fun y => κ (δ * ψ y)) (SmoothR.ckR n z 2 _ (SmoothR.add n z _ _ hφ hψ)) (SmoothR.ckR n z 2 _ hks) x ξ, levi_add n z φ ψ (SmoothR.ckR n z 2 _ hφ) (SmoothR.ckR n z 2 _ hψ) x ξ]`. Use `set α : ℝ := 1 + δ * deriv κ (δ * ψ x) with hα`. Establish `hmem : α ∈ Set.Icc (1 : ℝ) (1 + δ)`. Take `⟨h0, h1⟩` from `hκ' (δ * ψ x) (mul_nonpos_of_nonneg_of_nonpos hδ.le (hψ0 x))`. Prove the components needed by the constructor for the conclusion.
+
+Use the polynomial consequences of the given equalities and inequalities. Use the polynomial consequences of the given equalities and inequalities. Establish `hnn` using `hL α hmem x ξ`. Rewrite `hnn` using `[levi_add n z φ (fun y => α * ψ y) (SmoothR.ckR n z 2 _ hφ) (SmoothR.ckR n z 2 _ (SmoothR.mul n z _ _ (smoothR_const n z α) hψ)) x ξ, levi_const_mul n z α ψ (SmoothR.ckR n z 2 _ hψ) x ξ]`. Rewrite using `[hsum, hC, hnorm]`.
+
+Simplify using `only [Complex.add_re, Complex.re_ofReal_mul, Complex.ofReal_re] at hnn ⊢`. Rewrite `hnn` using `[hα]`. Use the polynomial consequences of the given equalities and inequalities.
+-/
 theorem main : ∀ (n : ℕ) (M : Type) [TopologicalSpace M] [T2Space M] [SecondCountableTopology M] [MeasurableSpace M] [BorelSpace M], ∀ (z : M → V n) (φ ψ : M → ℝ) (δ : ℝ) (κ : ℝ → ℝ), IsLocalHomeomorph z → SmoothR n z φ → SmoothR n z ψ → (∀ x, ψ x ≤ 0) → 0 < δ → ContDiff ℝ ∞ κ → (∀ t, t ≤ 0 → 0 ≤ deriv κ t ∧ deriv κ t ≤ 1) → (∀ α ∈ Set.Icc (1 : ℝ) (1 + δ), LeviNonneg n z (fun x => φ x + α * ψ x)) → SmoothR n z (fun x => κ (δ * ψ x)) ∧ ∀ (x : M) (ξ : Fin n → ℂ), dbarDot n z (fun y => ((κ (δ * ψ y) : ℝ) : ℂ)) x ξ = ((deriv κ (δ * ψ x) * δ : ℝ) : ℂ) * dbarDot n z (fun y => (ψ y : ℂ)) x ξ ∧ deriv (deriv κ) (δ * ψ x) * (δ ^ 2 * ‖dbarDot n z (fun y => (ψ y : ℂ)) x ξ‖ ^ 2) ≤ (Levi n z (fun y => (φ y + ψ y) + κ (δ * ψ y)) x ξ).re := by
   intro n M _ _ _ _ _ z φ ψ δ κ hz hφ hψ hψ0 hδ hκ hκ' hL
   obtain ⟨hκd, hκ1⟩ := contDiff_infty_iff_deriv.1 hκ

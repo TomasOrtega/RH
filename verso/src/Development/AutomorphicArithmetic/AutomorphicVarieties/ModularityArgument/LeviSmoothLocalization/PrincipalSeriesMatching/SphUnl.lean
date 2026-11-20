@@ -9,6 +9,11 @@ open GlobalTheory.CuspRep GlobalTheory.SmGL GlobalTheory.LocGL ValuativeRel
 
 attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField
 
+/- English proof (translation)
+Take `⟨p, hp⟩` from `valuation_surjective (uniformizer k : ValueGroupWithZero k)`. Establish `hp0 : p ≠ 0`. Introduce and unpack `rfl`. Rewrite `hp` using `[map_zero]`. Conclude with `uniformizer_ne_zero hp.symm`.
+
+Establish `h` using `Classical.epsilon_spec (p := fun p : kˣ => valuation k (p : k) < 1 ∧ ∀ x : k, valuation k x < 1 → valuation k x ≤ valuation k (p : k)) ⟨Units.mk0 p hp0, by rw [Units.val_mk0, hp]; exact uniformizer_lt_one, fun x hx => by rw [Units.val_mk0, hp]; exact le_uniformizer_iff.2 hx⟩`. Conclude with `le_antisymm (le_uniformizer_iff.2 h.1) (hp ▸ h.2 p (hp ▸ uniformizer_lt_one))`.
+-/
 private theorem val_unif (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] :
     valuation k (unif k : k) = uniformizer k := by
   obtain ⟨p, hp⟩ := valuation_surjective (uniformizer k : ValueGroupWithZero k)
@@ -22,6 +27,15 @@ private theorem val_unif (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace
       fun x hx => by rw [Units.val_mk0, hp]; exact le_uniformizer_iff.2 hx⟩
   exact le_antisymm (le_uniformizer_iff.2 h.1) (hp ▸ h.2 p (hp ▸ uniformizer_lt_one))
 
+/- English proof (translation)
+Introduce `K _ _ _ n hn π v B hB`. Take `⟨⟨s₀, hs₀⟩, huniq, htor, hunr, -⟩` from `suppFacts K n hn π v`. Use `⟨(htor s₀ hs₀).1.2 fun y hy => ?_, fun s hs => ?_⟩` and prove the remaining obligations. Take `⟨μ, hμ, rfl⟩` from `hunr s₀ B hs₀ hB y hy`. Both sides reduce to the same expression.
+
+Take `⟨σ, hσ, -⟩` from `id hs`. Take `⟨α, hα, hS⟩` from `GlobalTheory.LFun.SphComp.hasSatake_of_isLocComp π ((CG.hasSat_mk π v B).1 hB) hσ`. Use `haveI : CharZero (v.adicCompletion K) := charZero_of_injective_algebraMap (algebraMap K _).injective`. Establish `h` using `GlobalTheory.LocLanglands.hasSupport_of_isSubquotient_prinSeries (v.adicCompletion K) n (fun i => unrChar _ (α i)) (fun i => isSmoothChar_of_isUnram (isUnram_unrChar _ (α i))) ⟨σ.V, σ.ρ, σ.smooth, σ.irred⟩ hS.2.2`. Establish `key : ∀ ξ ∈ chars s, ξ (unif _) ∈ B`.
+
+Introduce and unpack `ξ ⟨hξ, hm⟩`. Rewrite `hm` using `[huniq s _ hs ⟨σ, hσ, h⟩]`. Take `⟨i, hi, e⟩` from `Multiset.mem_map.1 hm`. Rewrite using `[← IrrGL.ofChar_inj.1 e, unrChar_uniformizer _ _ (val_unif _), ← hα]`. Conclude with `Multiset.mem_map_of_mem _ hi`.
+
+Introduce `ξ hξ ξ' hξ' _ e`. Use `UpperTheory.ConvolutionTheory.Sph.unlinked K n hn π v B hB _ (key ξ hξ) _ (key ξ' hξ') ?_` and prove the remaining obligations. Rewrite using `[← e, MonoidHom.mul_apply, MonoidHom.inv_apply, ← Units.val_mul, inv_mul_cancel_right]`.
+-/
 theorem UpperTheory.V.Z.ImaginaryQuadraticEtaCharacter.sphUnl :
     UpperTheory.V.Z.ImaginaryQuadraticEtaCharacter.SphUnl := by
   intro K _ _ _ n hn π v B hB

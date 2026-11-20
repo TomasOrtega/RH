@@ -13,8 +13,16 @@ def smapEquiv (σ : R ≃+* R) : PowerSeries R ≃+* PowerSeries R :=
     (by ext h n; simp [PowerSeries.coeff_map])
     (by ext h n; simp [PowerSeries.coeff_map])
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem smapEquiv_apply (σ : R ≃+* R) (h : PowerSeries R) : smapEquiv σ h = smap σ h := rfl
 
+/- English proof (translation)
+Unfold `phi`. Rewrite using `[PowerSeries.coe_substAlgHom]`. Establish `key` using `PowerSeries.map_subst (hasSubst_om (R := R) p hp) (h := f) h`. Establish `e : (MvPowerSeries.map f) (((1 + PowerSeries.X : PowerSeries R) ^ p) - 1) = ((1 + PowerSeries.X : PowerSeries R) ^ p) - 1`. Express the relevant statement in the definitionally equal form `PowerSeries.map f _ = _`.
+
+Simplify using the standard rewrite rules. Rewrite `key` using `[e]`. Conclude with `key`.
+-/
 theorem map_phi (p : ℕ) (hp : 0 < p) (f : R →+* R) (h : PowerSeries R) :
     PowerSeries.map f (phi (R := R) p hp h) = phi (R := R) p hp (PowerSeries.map f h) := by
   unfold phi
@@ -27,6 +35,9 @@ theorem map_phi (p : ℕ) (hp : 0 < p) (f : R →+* R) (h : PowerSeries R) :
   rw [e] at key
   exact key
 
+/- English proof (translation)
+Establish `key` using `@Algebra.norm_eq_of_equiv_equiv (PowerSeries R) (PowerSeries R) (PowerSeries R) (PowerSeries R) _ _ _ _ (phi (R := R) p hp.out.pos).toRingHom.toAlgebra (phi (R := R) p hp.out.pos).toRingHom.toAlgebra (smapEquiv σ) (smapEquiv σ) (by ext1 x`. Conclude with `(map_phi p hp.out.pos (σ : R →+* R) x).symm) h`. Establish `key2 : normOp p h = (smapEquiv σ).symm (normOp p (smap σ h))` using `key`. Rewrite using `[key2, ← smapEquiv_apply, ← smapEquiv_apply, RingEquiv.apply_symm_apply]`.
+-/
 theorem normOp_smap (R : Type) [CommRing R] (p : ℕ) [hp : Fact p.Prime] (σ : R ≃+* R) (h : PowerSeries R) :
     normOp p (smap σ h) = smap σ (normOp p h) := by
   have key := @Algebra.norm_eq_of_equiv_equiv (PowerSeries R) (PowerSeries R) (PowerSeries R) (PowerSeries R)

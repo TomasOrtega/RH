@@ -8,6 +8,11 @@ open GlobalTheory.GLq GlobalTheory.Whittaker GlobalTheory.SmGL Matrix
 
 namespace DiscreteGroups.sglob.DzFe
 
+/- English proof (translation)
+Use extensionality with `i k`. Rewrite using `[Matrix.mul_apply, Matrix.one_apply]`. Take `⟨l, rfl⟩` from `(finRotate n).surjective i`. Rewrite using `[Finset.sum_eq_single l]`. Rewrite using `[Matrix.of_apply, Matrix.of_apply, if_pos rfl, one_mul]`.
+
+Introduce `b _ hb`. Establish `: ¬ finRotate n l = finRotate n b` using `fun h => hb ((finRotate n).injective h).symm`. Rewrite using `[Matrix.of_apply, Matrix.of_apply, if_neg this, zero_mul]`. Simplify using the standard rewrite rules.
+-/
 theorem cycM_mul_tr (g n : ℕ) :
     (Matrix.of fun i k : Fin n => if i = finRotate n k then (1 : ZMod g) else 0) *
       (Matrix.of fun i k : Fin n => if finRotate n i = k then (1 : ZMod g) else 0) = 1 := by
@@ -21,6 +26,13 @@ theorem cycM_mul_tr (g n : ℕ) :
     rw [Matrix.of_apply, Matrix.of_apply, if_neg this, zero_mul]
   · simp
 
+/- English proof (translation)
+Use extensionality with `i k`. Rewrite using `[Matrix.mul_apply, Matrix.one_apply]`. Rewrite using `[Finset.sum_eq_single (finRotate n i)]`. Rewrite using `[Matrix.of_apply, Matrix.of_apply, if_pos rfl, one_mul]`. Distinguish the cases in `h : i = k`.
+
+Substitute `h` using the available equality. Simplify using the standard rewrite rules. Rewrite using `[if_neg h, if_neg (fun e => h ((finRotate n).injective e))]`. Introduce `b _ hb`. Rewrite using `[Matrix.of_apply, Matrix.of_apply, if_neg (Ne.symm hb), zero_mul]`.
+
+Simplify using the standard rewrite rules.
+-/
 theorem tr_mul_cycM (g n : ℕ) :
     (Matrix.of fun i k : Fin n => if finRotate n i = k then (1 : ZMod g) else 0) *
       (Matrix.of fun i k : Fin n => if i = finRotate n k then (1 : ZMod g) else 0) = 1 := by

@@ -17,6 +17,11 @@ namespace GlobalTheory.Mem.LiftFin
 variable {D : D7} {θ : InfF D} {V W : HSp D} {M : Type} [AddCommGroup M] [Module ℂ M]
   {κ : M →ₗ[ℂ] (GA D V → GA D W → ℂ)}
 
+/- English proof (translation)
+Proceed by induction on `l with`. Consider the case `nil => exact ⟨f, fun _ => rfl⟩`. Consider the case `cons p l ih`. Take `⟨f', e⟩` from `ih fun q hq => hl q (List.mem_cons_of_mem _ hq)`. Take `⟨f'', e'⟩` from `hκ.derV p.1 p.2 (hl p List.mem_cons_self) f'`.
+
+Use `⟨f'', fun h => ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `Rder θ V p.1 p.2 (word θ V l fun g => κ f g h) = _`. Rewrite using `[e h]`. Use function extensionality and compare the values at `g`. Conclude with `(e' g h).deriv`.
+-/
 theorem word_ker (hκ : IsKerSys θ V W κ) (l : List (D.what₂.Tau × Matrix (Fin V.rank) (Fin V.rank) ℂ))
     (hl : ∀ p ∈ l, p.2 ∈ lieAt V p.1) (f : M) : ∃ f', ∀ h, word θ V l (fun g => κ f g h) = fun g => κ f' g h := by
   induction l with
@@ -30,6 +35,13 @@ theorem word_ker (hκ : IsKerSys θ V W κ) (l : List (D.what₂.Tau × Matrix (
     funext g
     exact (e' g h).deriv
 
+/- English proof (translation)
+Establish `hc : ∀ f, Continuous fun g => κ f g h` using `fun f => (hκ.cont f).comp (Continuous.prodMk_left h)`. Use `⟨GlobalTheory.T.mem_smoothFunctions_of_closed_rightDerivatives D θ hθ V (Set.range fun f g => κ f g h) ?_ ?_ _ ⟨f, rfl⟩, fun γ hγ g => ?_, fun l hl => ?_⟩` and prove the remaining obligations. Introduce and unpack `_ ⟨f, rfl⟩`. Conclude with `hc f`. Introduce and unpack `_ ⟨f, rfl⟩ τ X hX`.
+
+Take `⟨f', e⟩` from `hκ.derV τ X hX f`. Conclude with `⟨_, ⟨f', rfl⟩, fun g => e g h⟩`. Simplify using `using hκ.left f γ hγ 1 (one_mem _) g h`. Take `⟨f', e⟩` from `word_ker hκ l hl f`. Take `⟨N, hN⟩` from `hκ.growth`.
+
+Take `⟨C, hC⟩` from `hN f'`. Rewrite using `[e h]`. Use `⟨hc f', N, C * (height θ W h : ℝ) ^ N, fun g => (hC g h).trans_eq ?_⟩` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem isMod_ker (hθ : IsInfFam θ) (hκ : IsKerSys θ V W κ) (f : M) (h : GA D W) : IsMod θ V fun g => κ f g h := by
   have hc : ∀ f, Continuous fun g => κ f g h := fun f => (hκ.cont f).comp (Continuous.prodMk_left h)
   refine ⟨GlobalTheory.T.mem_smoothFunctions_of_closed_rightDerivatives D θ hθ V (Set.range fun f g => κ f g h) ?_ ?_ _ ⟨f, rfl⟩, fun γ hγ g => ?_, fun l hl => ?_⟩
@@ -53,6 +65,9 @@ def lift (μ : Measure (GA D V)) (𝓕 : Set (GA D V)) (f : M) (F : GA D V → �
 
 variable {μ : Measure (GA D V)} {𝓕 : Set (GA D V)}
 
+/- English proof (translation)
+Establish `I` using `(GlobalTheory.T.thetaKernelLift_converges_continuous_growth_deriv D θ hθ V W M κ hκ μ 𝓕 hq F hF).1`. Use function extensionality and compare the values at `h`. Simplify using `only [lift, map_add, Pi.add_apply, add_mul]`. Conclude with `integral_add (I f h) (I f' h)`.
+-/
 theorem lift_add_left (hθ : IsInfFam θ) (hκ : IsKerSys θ V W κ) (hq : IsQuot V μ 𝓕) {F : GA D V → ℂ}
     (hF : F ∈ Decay θ V) (f f' : M) : lift κ μ 𝓕 (f + f') F = lift κ μ 𝓕 f F + lift κ μ 𝓕 f' F := by
   have I := (GlobalTheory.T.thetaKernelLift_converges_continuous_growth_deriv D θ hθ V W M κ hκ μ 𝓕 hq F hF).1
@@ -60,6 +75,9 @@ theorem lift_add_left (hθ : IsInfFam θ) (hκ : IsKerSys θ V W κ) (hq : IsQuo
   simp only [lift, map_add, Pi.add_apply, add_mul]
   exact integral_add (I f h) (I f' h)
 
+/- English proof (translation)
+Use function extensionality and compare the values at `h`. Simplify using `only [lift, Pi.add_apply, mul_add]`. Conclude with `integral_add ((GlobalTheory.T.thetaKernelLift_converges_continuous_growth_deriv D θ hθ V W M κ hκ μ 𝓕 hq F hF).1 f h) ((GlobalTheory.T.thetaKernelLift_converges_continuous_growth_deriv D θ hθ V W M κ hκ μ 𝓕 hq F' hF').1 f h)`.
+-/
 theorem lift_add_right (hθ : IsInfFam θ) (hκ : IsKerSys θ V W κ) (hq : IsQuot V μ 𝓕) {F F' : GA D V → ℂ}
     (hF : F ∈ Decay θ V) (hF' : F' ∈ Decay θ V) (f : M) :
     lift κ μ 𝓕 f (F + F') = lift κ μ 𝓕 f F + lift κ μ 𝓕 f F' := by
@@ -68,11 +86,17 @@ theorem lift_add_right (hθ : IsInfFam θ) (hκ : IsKerSys θ V W κ) (hq : IsQu
   exact integral_add ((GlobalTheory.T.thetaKernelLift_converges_continuous_growth_deriv D θ hθ V W M κ hκ μ 𝓕 hq F hF).1 f h)
     ((GlobalTheory.T.thetaKernelLift_converges_continuous_growth_deriv D θ hθ V W M κ hκ μ 𝓕 hq F' hF').1 f h)
 
+/- English proof (translation)
+Use function extensionality and compare the values at `h`. Simplify using `only [lift, map_smul, Pi.smul_apply, smul_eq_mul, mul_assoc]`. Conclude with `integral_const_mul _ _`.
+-/
 theorem lift_smul_left (c : ℂ) (F : GA D V → ℂ) (f : M) : lift κ μ 𝓕 (c • f) F = c • lift κ μ 𝓕 f F := by
   funext h
   simp only [lift, map_smul, Pi.smul_apply, smul_eq_mul, mul_assoc]
   exact integral_const_mul _ _
 
+/- English proof (translation)
+Use function extensionality and compare the values at `h`. Simplify using `only [lift, Pi.smul_apply, smul_eq_mul, mul_left_comm _ c]`. Conclude with `integral_const_mul _ _`.
+-/
 theorem lift_smul_right (c : ℂ) (F : GA D V → ℂ) (f : M) : lift κ μ 𝓕 f (c • F) = c • lift κ μ 𝓕 f F := by
   funext h
   simp only [lift, Pi.smul_apply, smul_eq_mul, mul_left_comm _ c]
@@ -83,14 +107,23 @@ variable (θ κ μ 𝓕) in
 def Compat (T : (GA D W → ℂ) → (GA D W → ℂ)) : Prop :=
   ∀ f, ∃ f', (∀ g, T (κ f g) = κ f' g) ∧ ∀ F ∈ Decay θ V, T (lift κ μ 𝓕 f F) = lift κ μ 𝓕 f' F
 
+/- English proof (translation)
+Introduce `f` and use `⟨f, fun _ => rfl, fun _ _ => rfl⟩`.
+-/
 theorem compat_id : Compat θ κ μ 𝓕 fun φ => φ := fun f => ⟨f, fun _ => rfl, fun _ _ => rfl⟩
 
+/- English proof (translation)
+Introduce `f` and use `by obtain ⟨f', a, b⟩ := hT f obtain ⟨f'', c, d⟩ := hS f' exact ⟨f'', fun g => by simp only [a, c], fun F hF => by simp only [b F hF, d F hF]⟩`.
+-/
 theorem Compat.comp {S T : (GA D W → ℂ) → (GA D W → ℂ)} (hS : Compat θ κ μ 𝓕 S) (hT : Compat θ κ μ 𝓕 T) :
     Compat θ κ μ 𝓕 fun φ => S (T φ) := fun f => by
   obtain ⟨f', a, b⟩ := hT f
   obtain ⟨f'', c, d⟩ := hS f'
   exact ⟨f'', fun g => by simp only [a, c], fun F hF => by simp only [b F hF, d F hF]⟩
 
+/- English proof (translation)
+Introduce `f` and use `by obtain ⟨f', a, b⟩ := hS f obtain ⟨f'', c, d⟩ := hT f exact ⟨f' + f'', fun g => by simp only [a, c, map_add, Pi.add_apply], fun F hF => by simp only [b F hF, d F hF, lift_add_left hθ hκ hq hF]⟩`.
+-/
 theorem Compat.add (hθ : IsInfFam θ) (hκ : IsKerSys θ V W κ) (hq : IsQuot V μ 𝓕)
     {S T : (GA D W → ℂ) → (GA D W → ℂ)} (hS : Compat θ κ μ 𝓕 S) (hT : Compat θ κ μ 𝓕 T) :
     Compat θ κ μ 𝓕 fun φ => S φ + T φ := fun f => by
@@ -99,11 +132,17 @@ theorem Compat.add (hθ : IsInfFam θ) (hκ : IsKerSys θ V W κ) (hq : IsQuot V
   exact ⟨f' + f'', fun g => by simp only [a, c, map_add, Pi.add_apply],
     fun F hF => by simp only [b F hF, d F hF, lift_add_left hθ hκ hq hF]⟩
 
+/- English proof (translation)
+Introduce `f` and use `by obtain ⟨f', a, b⟩ := hT f exact ⟨c • f', fun g => by simp only [a, map_smul, Pi.smul_apply], fun F hF => by simp only [b F hF, lift_smul_left]⟩`.
+-/
 theorem Compat.smul (c : ℂ) {T : (GA D W → ℂ) → (GA D W → ℂ)} (hT : Compat θ κ μ 𝓕 T) :
     Compat θ κ μ 𝓕 fun φ => c • T φ := fun f => by
   obtain ⟨f', a, b⟩ := hT f
   exact ⟨c • f', fun g => by simp only [a, map_smul, Pi.smul_apply], fun F hF => by simp only [b F hF, lift_smul_left]⟩
 
+/- English proof (translation)
+Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simpa using (compat_id (θ := θ) (κ := κ) (μ := μ) (𝓕 := 𝓕)).smul 0`. Consider the case `insert i s hi ih => simpa only [Finset.sum_insert hi] using (hT i).add hθ hκ hq ih`.
+-/
 theorem compat_sum (hθ : IsInfFam θ) (hκ : IsKerSys θ V W κ) (hq : IsQuot V μ 𝓕) {ι : Type} (s : Finset ι)
     (T : ι → (GA D W → ℂ) → (GA D W → ℂ)) (hT : ∀ i, Compat θ κ μ 𝓕 (T i)) :
     Compat θ κ μ 𝓕 fun φ => ∑ i ∈ s, T i φ := by
@@ -112,18 +151,27 @@ theorem compat_sum (hθ : IsInfFam θ) (hκ : IsKerSys θ V W κ) (hq : IsQuot V
   | empty => simpa using (compat_id (θ := θ) (κ := κ) (μ := μ) (𝓕 := 𝓕)).smul 0
   | insert i s hi ih => simpa only [Finset.sum_insert hi] using (hT i).add hθ hκ hq ih
 
+/- English proof (translation)
+Proceed by induction on `l with`. Consider the case `nil => exact compat_id`. Consider the case `cons T l ih => exact (hl T List.mem_cons_self).comp (ih fun S hS => hl S (List.mem_cons_of_mem _ hS))`.
+-/
 theorem compat_foldr (l : List ((GA D W → ℂ) → (GA D W → ℂ))) (hl : ∀ T ∈ l, Compat θ κ μ 𝓕 T) :
     Compat θ κ μ 𝓕 fun φ => l.foldr (fun T acc => T acc) φ := by
   induction l with
   | nil => exact compat_id
   | cons T l ih => exact (hl T List.mem_cons_self).comp (ih fun S hS => hl S (List.mem_cons_of_mem _ hS))
 
+/- English proof (translation)
+Introduce `f` and use `by obtain ⟨f', e⟩ := hκ.derW τ X hX f exact ⟨f', fun g => funext fun h => (e g h).deriv, fun F hF => funext fun h => ((GlobalTheory.T.thetaKernelLift_converges_continuous_growth_deriv D θ hθ V W M κ hκ μ 𝓕 hq F hF).2.2.2 τ X hX f f' e h).deriv⟩`.
+-/
 theorem compat_Rder (hθ : IsInfFam θ) (hκ : IsKerSys θ V W κ) (hq : IsQuot V μ 𝓕) {τ : D.what₂.Tau}
     {X : Matrix (Fin W.rank) (Fin W.rank) ℂ} (hX : X ∈ lieAt W τ) : Compat θ κ μ 𝓕 (Rder θ W τ X) := fun f => by
   obtain ⟨f', e⟩ := hκ.derW τ X hX f
   exact ⟨f', fun g => funext fun h => (e g h).deriv, fun F hF => funext fun h =>
     ((GlobalTheory.T.thetaKernelLift_converges_continuous_growth_deriv D θ hθ V W M κ hκ μ 𝓕 hq F hF).2.2.2 τ X hX f f' e h).deriv⟩
 
+/- English proof (translation)
+Use `compat_sum hθ hκ hq Finset.univ _ fun idx : Fin (k + 1) → Fin W.rank => compat_foldr (List.ofFn fun a : Fin (k + 1) => RderC θ W τ (Matrix.single (idx a) (idx (a + 1)) 1)) fun T hT => ?_` and prove the remaining obligations. Take `⟨a, rfl⟩` from `List.mem_ofFn.1 hT`. Take `⟨h1, h2⟩` from `GlobalTheory.SmoothAutCheck.parts_mem W τ (Matrix.single (idx a) (idx (a + 1)) 1)`. Conclude with `(compat_Rder hθ hκ hq h1).add hθ hκ hq ((compat_Rder hθ hκ hq h2).smul Complex.I)`.
+-/
 theorem compat_gelf (hθ : IsInfFam θ) (hκ : IsKerSys θ V W κ) (hq : IsQuot V μ 𝓕) (τ : D.what₂.Tau) (k : ℕ) :
     Compat θ κ μ 𝓕 (gelf θ W τ k) := by
   refine compat_sum hθ hκ hq Finset.univ _ fun idx : Fin (k + 1) → Fin W.rank =>
@@ -132,6 +180,17 @@ theorem compat_gelf (hθ : IsInfFam θ) (hκ : IsKerSys θ V W κ) (hq : IsQuot 
   obtain ⟨h1, h2⟩ := GlobalTheory.SmoothAutCheck.parts_mem W τ (Matrix.single (idx a) (idx (a + 1)) 1)
   exact (compat_Rder hθ hκ hq h1).add hθ hκ hq ((compat_Rder hθ hκ hq h2).smul Complex.I)
 
+/- English proof (translation)
+Proceed by induction on `hx using Algebra.adjoin_induction with`. Consider the case `mem x hx`. Take `⟨k, rfl⟩` from `hx`. Introduce `f F hF`. Take `⟨F', hF', e⟩` from `GlobalTheory.T.gelfand_operator_adjoint_decaying D θ hθ V μ 𝓕 hq τ Z hZ k F hF`.
+
+Use `⟨F', hF', funext fun h => ?_⟩` and prove the remaining obligations. Use `e _ (isMod_ker hθ hκ f h)` as an intermediate fact. Rewrite `this` using `[ha]`. Conclude with `this`. Consider the case `algebraMap r`.
+
+Introduce `f F hF`. Conclude with `⟨r • F, Submodule.smul_mem _ r hF, by rw [Module.algebraMap_end_apply, lift_smul_left, lift_smul_right]⟩`. Consider the case `add x y _ _ hx hy`. Introduce `f F hF`. Take `⟨F₁, h₁, e₁⟩` from `hx f F hF`.
+
+Take `⟨F₂, h₂, e₂⟩` from `hy f F hF`. Conclude with `⟨F₁ + F₂, add_mem h₁ h₂, by`. Rewrite using `[LinearMap.add_apply, lift_add_left hθ hκ hq hF.1, lift_add_right hθ hκ hq h₁.1 h₂.1, e₁, e₂]⟩`. Consider the case `mul x y _ _ hx hy`. Introduce `f F hF`.
+
+Take `⟨F₁, h₁, e₁⟩` from `hx (y f) F hF`. Take `⟨F₂, h₂, e₂⟩` from `hy f F₁ h₁`. Conclude with `⟨F₂, h₂, by rw [Module.End.mul_apply, e₁, e₂]⟩`.
+-/
 theorem lift_adjoin (hθ : IsInfFam θ) (hκ : IsKerSys θ V W κ) (hq : IsQuot V μ 𝓕) {τ : D.what₂.Tau}
     {a : ℕ → Module.End ℂ M} (ha : ∀ k f h, gelf θ V τ k (fun g => κ f g h) = fun g => κ (a k f) g h)
     {Z : Submodule ℂ (GA D V → ℂ)} (hZ : ∀ k, ∀ f ∈ Z, gelf θ V τ k f ∈ Z) {x : Module.End ℂ M}
@@ -161,6 +220,13 @@ theorem lift_adjoin (hθ : IsInfFam θ) (hκ : IsKerSys θ V W κ) (hq : IsQuot 
     obtain ⟨F₂, h₂, e₂⟩ := hy f F₁ h₁
     exact ⟨F₂, h₂, by rw [Module.End.mul_apply, e₁, e₂]⟩
 
+/- English proof (translation)
+Introduce and unpack `D θ hθ V W M _ _ κ hκ μ 𝓕 hq F hF ⟨Z, hfin, hFZ, hZ⟩ f`. Set `L : ↥(Decay θ V ⊓ Z) →ₗ[ℂ] (GA D W → ℂ)` to `{ toFun := fun F' => lift κ μ 𝓕 f F'.1 map_add' := fun F₁ F₂ => lift_add_right hθ hκ hq F₁.2.1 F₂.2.1 f map_smul' := fun c F' => lift_smul_right c F'.1 f }`. Use `⟨LinearMap.range L, inferInstance, ⟨⟨F, hF, hFZ⟩, rfl⟩, ?_⟩` and prove the remaining obligations. Introduce and unpack `τ k _ ⟨F₁, rfl⟩`. Take `⟨a, b, ha, hb, hab⟩` from `hκ.cap τ`.
+
+Take `⟨f', e, e'⟩` from `compat_gelf hθ hκ hq τ k f`. Take `⟨F₂, h₂, e₂⟩` from `lift_adjoin hθ hκ hq ha (hZ τ) (hab ▸ Algebra.subset_adjoin ⟨k, rfl⟩ : b k ∈ _) f F₁.1 F₁.2`. Use `⟨⟨F₂, h₂⟩, ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `lift κ μ 𝓕 f F₂ = gelf θ W τ k (lift κ μ 𝓕 f F₁.1)`. Rewrite using `[e' _ F₁.2.1, ← e₂]`.
+
+Use function extensionality and compare the values at `h`. Simplify using `only [lift, ← e, hb]`.
+-/
 theorem lift_zfin : ∀ (D : D7) (θ : InfF D), IsInfFam θ → ∀ (V W : HSp D) (M : Type) [AddCommGroup M] [Module ℂ M] (κ : M →ₗ[ℂ] (GA D V → GA D W → ℂ)), IsKerSys θ V W κ → ∀ μ 𝓕, IsQuot V μ 𝓕 → ∀ F ∈ Decay θ V, (∃ Z : Submodule ℂ (GA D V → ℂ), FiniteDimensional ℂ Z ∧ F ∈ Z ∧ ∀ τ k, ∀ f ∈ Z, gelf θ V τ k f ∈ Z) → ∀ f, ∃ Z : Submodule ℂ (GA D W → ℂ), FiniteDimensional ℂ Z ∧ (fun h => ∫ g in 𝓕, κ f g h * F g ∂μ) ∈ Z ∧ ∀ τ k, ∀ φ ∈ Z, gelf θ W τ k φ ∈ Z := by
   rintro D θ hθ V W M _ _ κ hκ μ 𝓕 hq F hF ⟨Z, hfin, hFZ, hZ⟩ f
   let L : ↥(Decay θ V ⊓ Z) →ₗ[ℂ] (GA D W → ℂ) :=

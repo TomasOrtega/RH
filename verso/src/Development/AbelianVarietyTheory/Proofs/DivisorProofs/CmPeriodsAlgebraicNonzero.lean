@@ -13,6 +13,23 @@ attribute [local instance] Over.cartesianMonoidalCategory
 
 namespace GlobalTheory.EigenFunctional
 
+/- English proof (translation)
+Use `set W := LinearMap.range (T - c • 1) with hW`. Establish `vanish : ∀ (g : Module.Dual K V), (∀ x, g (T x) = c * g x) → ∀ w ∈ W, g w = 0`. Introduce and unpack `g hg w ⟨v, rfl⟩`. Simplify using `[hg, smul_eq_mul]`. Establish `hyW : y₀ ∉ W`.
+
+Introduce `h`. Establish `hk : y₀ ∈ LinearMap.ker (T - c • 1)` using `by simp [hTy]`. Conclude with `hy ((Submodule.disjoint_def.1 hdis) y₀ hk h)`. Assume the negation of the conclusion as `hD`. Establish `hD' : f x * f' y - f y * f' x ≠ 0` using `sub_ne_zero.2 hD`.
+
+Establish `hli : LinearIndependent K ![W.mkQ y₀, W.mkQ x, W.mkQ y]`. Rewrite using `[Fintype.linearIndependent_iff]`. Introduce `g hg`. Rewrite `hg` using `[Fin.sum_univ_three]`. Use `replace hg : g 0 • y₀ + g 1 • x + g 2 • y ∈ W := by`.
+
+Rewrite using `[← Submodule.Quotient.mk_eq_zero]`. Simplify `hg` using `[Submodule.Quotient.mk_add, Submodule.Quotient.mk_smul]`. Establish `e1` using `vanish f hf _ hg`. Establish `e2` using `vanish f' hf' _ hg`. Simplify using `only [map_add, map_smul, smul_eq_mul, hf0, hf'0, mul_zero, zero_add] at e1 e2`.
+
+Establish `hb : g 1 = 0`. Establish `: g 1 * (f x * f' y - f y * f' x) = 0` using `by linear_combination f' y * e1 - f y * e2`. Conclude with `(mul_eq_zero.1 this).resolve_right hD'`. Establish `hc : g 2 = 0`. Establish `: g 2 * (f x * f' y - f y * f' x) = 0` using `by linear_combination f x * e2 - f' x * e1`.
+
+Conclude with `(mul_eq_zero.1 this).resolve_right hD'`. Rewrite `hg` using `[hb, hc, zero_smul, zero_smul, add_zero, add_zero]`. Establish `ha : g 0 = 0`. Assume the negation of the conclusion as `ha`. Conclude with `hyW ((W.smul_mem_iff ha).1 hg)`.
+
+Apply the tactic sequence `intro j; fin_cases j <;> assumption`. Use `hli.cardinal_lift_le_rank` as an intermediate fact. Simplify using `only [Cardinal.mk_fintype, Fintype.card_fin, Nat.cast_ofNat, Cardinal.lift_ofNat] at this`. Establish `h3 : (3 : Cardinal) ≤ 2`. Use `this.trans (Cardinal.lift_le.2 hrk)` as an intermediate fact.
+
+Simplify using `using this`. Evaluate the numerical expressions using `at h3`.
+-/
 theorem mul_comm_of_rank_coker {K V : Type*} [Field K] [AddCommGroup V] [Module K V] (T : Module.End K V) (c : K)
     (hrk : Module.rank K (V ⧸ LinearMap.range (T - c • 1)) ≤ 2)
     (hdis : Disjoint (LinearMap.ker (T - c • 1)) (LinearMap.range (T - c • 1)))
@@ -61,6 +78,13 @@ end GlobalTheory.EigenFunctional
 
 namespace GlobalTheory.EigenFunctional
 
+/- English proof (translation)
+Introduce `hPC hDR E _ _ _ I _ φ L 𝔠 X₀ X p U hcm hp i y₀ hy0 hy f f' hf0 hf'0 hff x y`. Take `⟨b₀, hb₀⟩` from `GlobalTheory.T.cm_type_separating_integer E I φ hcm i`. Establish `halg : IsAlgebraic ℚ (φ i ((b₀ : FR E) : E))`. Establish `h1 : IsIntegral ℤ (φ i ((b₀ : FR E) : E))` using `((b₀.2.map (algebraMap (FR E) E).toIntAlgHom).map (φ i).toIntAlgHom)`. Conclude with `(h1.tower_top (A := ℚ)).isAlgebraic`.
+
+Set `β₀ : Qb` to `⟨φ i ((b₀ : FR E) : E), mem_algebraicClosure_iff.2 halg⟩`. Establish `hβ : algebraMap Qb ℂ β₀ = φ i ((b₀ : FR E) : E)` using `rfl`. Take `⟨hC1, hC2⟩` from `GlobalTheory.T.cm_de_rham_eigenspace_corank_le_two hPC hDR E I φ L 𝔠 X U hcm i b₀ hb₀`. Rewrite `hC1`, `hC2` using `[← hβ]`. Take `⟨hQ1, hQ2⟩` from `GlobalTheory.T.algebraic_endomorphism_corank_de_rham hDR (FR E) 𝔠 X₀ X p hp b₀ β₀ hC1 hC2`.
+
+Conclude with `mul_comm_of_rank_coker _ β₀ hQ1 hQ2 y₀ hy0 (hy b₀ β₀ hβ) f f' hf0 hf'0 (fun z ↦ (hff b₀ β₀ hβ z).1) (fun z ↦ (hff b₀ β₀ hβ z).2) x y`.
+-/
 theorem mul_comm_of_eigen : GlobalTheory.Published.PeriodComparison → GlobalTheory.Published.AbelianDeRham →
     ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (I : Type) [Fintype I] (φ : I → E →+* ℂ) (L : Set E)
       (𝔠 : FracId (FR E)) (X₀ : Obj (FR E) 𝔠 (Sp Qb)) (X : Obj (FR E) 𝔠 (Sp ℂ)) (p : X.A.left ⟶ X₀.A.left)

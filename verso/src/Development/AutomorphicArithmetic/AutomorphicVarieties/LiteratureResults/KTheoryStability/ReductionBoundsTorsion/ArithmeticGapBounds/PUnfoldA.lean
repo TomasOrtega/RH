@@ -12,25 +12,40 @@ variable {Λ S : Type} [Group Λ] [Group S]
 
 abbrev RQ (B K : Subgroup Λ) := Quotient (QuotientGroup.rightRel (B.subgroupOf K))
 
+/- English proof (translation)
+Rewrite using `[Subgroup.index_eq_card]`. Conclude with `Nat.card_congr (QuotientGroup.quotientRightRelEquivQuotientLeftRel _)`.
+-/
 theorem card_Q (B K : Subgroup Λ) : Nat.card (RQ B K) = (B.subgroupOf K).index := by
   rw [Subgroup.index_eq_card]
   exact Nat.card_congr (QuotientGroup.quotientRightRelEquivQuotientLeftRel _)
 
+/- English proof (translation)
+Establish `h : Nat.card (RQ B K) ≠ 0` using `by rw [card_Q]; exact hi`. Conclude with `(Nat.card_ne_zero.mp h).2`.
+-/
 theorem finite_Q (B K : Subgroup Λ) (hi : (B.subgroupOf K).index ≠ 0) : Finite (RQ B K) := by
   have h : Nat.card (RQ B K) ≠ 0 := by rw [card_Q]; exact hi
   exact (Nat.card_ne_zero.mp h).2
 
+/- English proof (translation)
+Rewrite using `[avg, finsum_eq_sum_of_fintype]`.
+-/
 theorem avg_eq_sum (j : Λ →* S) (B K : Subgroup Λ) [Fintype (RQ B K)] (u : S → ℝ) (x : S) :
     avg j B K u x = ((B.subgroupOf K).index : ℝ)⁻¹ *
       ∑ c : RQ B K, u (j ((c.out : K) : Λ) * x) := by
   rw [avg, finsum_eq_sum_of_fintype]
 
+/- English proof (translation)
+Rewrite using `[Quotient.eq]`. Conclude with `QuotientGroup.rightRel_apply.trans (by rw [Subgroup.mem_subgroupOf]; simp)`.
+-/
 theorem mk_eq_iff {B K : Subgroup Λ} (a b : K) :
     Quotient.mk (QuotientGroup.rightRel (B.subgroupOf K)) a = Quotient.mk _ b ↔
       (b : Λ) * (a : Λ)⁻¹ ∈ B := by
   rw [Quotient.eq]
   exact QuotientGroup.rightRel_apply.trans (by rw [Subgroup.mem_subgroupOf]; simp)
 
+/- English proof (translation)
+Establish `h : Quotient.mk (QuotientGroup.rightRel (B.subgroupOf K)) (Quotient.mk (QuotientGroup.rightRel (B.subgroupOf K)) k).out = Quotient.mk _ k` using `Quotient.out_eq _`. Rewrite `h` using `[mk_eq_iff]`. Simplify `B.inv_mem h` using `[mul_inv_rev]`.
+-/
 theorem out_mk {B K : Subgroup Λ} (k : K) :
     (((Quotient.mk (QuotientGroup.rightRel (B.subgroupOf K)) k).out : K) : Λ) * (k : Λ)⁻¹ ∈ B := by
   have h : Quotient.mk (QuotientGroup.rightRel (B.subgroupOf K))
@@ -39,6 +54,9 @@ theorem out_mk {B K : Subgroup Λ} (k : K) :
   rw [mk_eq_iff] at h
   simpa [mul_inv_rev] using B.inv_mem h
 
+/- English proof (translation)
+Establish `h` using `out_mk (B := B) k`. Use `set o : Λ := (((Quotient.mk (QuotientGroup.rightRel (B.subgroupOf K)) k).out : K) : Λ)`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[← mul_assoc, ← map_mul, inv_mul_cancel_right]`. Use `_ = u (j (k : Λ) * x) := hu _ h _`.
+-/
 theorem linv_out {j : Λ →* S} {B K : Subgroup Λ} {u : S → ℝ} (hu : LInv j B u) (k : K) (x : S) :
     u (j (((Quotient.mk (QuotientGroup.rightRel (B.subgroupOf K)) k).out : K) : Λ) * x) =
       u (j (k : Λ) * x) := by
@@ -48,6 +66,13 @@ theorem linv_out {j : Λ →* S} {B K : Subgroup Λ} {u : S → ℝ} (hu : LInv 
         rw [← mul_assoc, ← map_mul, inv_mul_cancel_right]
     _ = u (j (k : Λ) * x) := hu _ h _
 
+/- English proof (translation)
+Use `haveI := finite_Q B K hi`. Use `letI := Fintype.ofFinite (RQ B K)`. Introduce `γ hγ x`. Rewrite using `[avg_eq_sum, avg_eq_sum]`. Use `congr 1`.
+
+Set `g : K` to `⟨γ, hγ⟩`. Set `e : RQ B K ≃ RQ B K` to `Quotient.congr (Equiv.mulRight g) (fun a b => by`. Simplify using `only [Equiv.coe_mulRight]`. Rewrite using `[QuotientGroup.rightRel_apply, QuotientGroup.rightRel_apply, show b * g * (a * g)⁻¹ = b * a⁻¹ by group])`. Use `Fintype.sum_equiv e _ _ (fun c => ?_)` and prove the remaining obligations.
+
+Establish `hc : e c = Quotient.mk _ (c.out * g)` using `by conv_lhs => rw [← Quotient.out_eq c]`. Conclude with `Quotient.congr_mk _ _ _`. Rewrite using `[hc, linv_out hu, Subgroup.coe_mul, map_mul, mul_assoc]`.
+-/
 theorem avg_linv (j : Λ →* S) (B K : Subgroup Λ) (hi : (B.subgroupOf K).index ≠ 0) (u : S → ℝ)
     (hu : LInv j B u) : LInv j K (avg j B K u) := by
   haveI := finite_Q B K hi
@@ -66,6 +91,11 @@ theorem avg_linv (j : Λ →* S) (B K : Subgroup Λ) (hi : (B.subgroupOf K).inde
     exact Quotient.congr_mk _ _ _
   rw [hc, linv_out hu, Subgroup.coe_mul, map_mul, mul_assoc]
 
+/- English proof (translation)
+Use `haveI := finite_Q B K hi`. Use `letI := Fintype.ofFinite (RQ B K)`. Use function extensionality and compare the values at `x`. Rewrite using `[avg_eq_sum]`. Establish `h : ∀ c : RQ B K, u (j ((c.out : K) : Λ) * x) = u x` using `fun c => hu _ (c.out : K).2 x`.
+
+Simplify using `only [h, Finset.sum_const, Finset.card_univ, nsmul_eq_mul]`. Rewrite using `[← Nat.card_eq_fintype_card, card_Q]`. Conclude with `inv_mul_cancel_left₀ (Nat.cast_ne_zero.mpr hi) _`.
+-/
 theorem avg_of_linv (j : Λ →* S) (B K : Subgroup Λ) (hi : (B.subgroupOf K).index ≠ 0) (u : S → ℝ)
     (hu : LInv j K u) : avg j B K u = u := by
   haveI := finite_Q B K hi
@@ -77,6 +107,9 @@ theorem avg_of_linv (j : Λ →* S) (B K : Subgroup Λ) (hi : (B.subgroupOf K).i
   rw [← Nat.card_eq_fintype_card, card_Q]
   exact inv_mul_cancel_left₀ (Nat.cast_ne_zero.mpr hi) _
 
+/- English proof (translation)
+Use `haveI := finite_Q B K hi`. Use `letI := Fintype.ofFinite (RQ B K)`. Establish `h : avg j B K u = fun x => ((B.subgroupOf K).index : ℝ)⁻¹ * ∑ c : RQ B K, u (j ((c.out : K) : Λ) * x)` using `funext (avg_eq_sum j B K u)`. Rewrite using `[h]`. Conclude with `measurable_const.mul (Finset.measurable_sum _ fun c _ => hu.comp (measurable_const_mul _))`.
+-/
 theorem avg_meas [MeasurableSpace S] [MeasurableMul S] (j : Λ →* S) (B K : Subgroup Λ)
     (hi : (B.subgroupOf K).index ≠ 0) (u : S → ℝ) (hu : Measurable u) :
     Measurable (avg j B K u) := by
@@ -88,6 +121,25 @@ theorem avg_meas [MeasurableSpace S] [MeasurableMul S] (j : Λ →* S) (B K : Su
   exact measurable_const.mul
     (Finset.measurable_sum _ fun c _ => hu.comp (measurable_const_mul _))
 
+/- English proof (translation)
+Establish `hmul : (B.subgroupOf E).index * (E.subgroupOf K).index = (B.subgroupOf K).index` using `Subgroup.relIndex_mul_relIndex B E K hBE hEK`. Establish `hBEi : (B.subgroupOf E).index ≠ 0` using `fun h => hi (by rw [← hmul, h, zero_mul])`. Establish `hEKi : (E.subgroupOf K).index ≠ 0` using `fun h => hi (by rw [← hmul, h, mul_zero])`. Use `haveI := finite_Q B K hi`. Use `haveI := finite_Q B E hBEi`.
+
+Use `haveI := finite_Q E K hEKi`. Use `letI := Fintype.ofFinite (RQ B K)`. Use `letI := Fintype.ofFinite (RQ B E)`. Use `letI := Fintype.ofFinite (RQ E K)`. Set `φ : RQ E K × RQ B E → RQ B K` to `fun p => Quotient.mk _ (⟨((p.2.out : E) : Λ) * ((p.1.out : K) : Λ), K.mul_mem (hEK (p.2.out : E).2) (p.1.out : K).2⟩ : K)`.
+
+Establish `hinj : Function.Injective φ`. Introduce and unpack `⟨c, d⟩ ⟨c', d'⟩ h`. Establish `h1` using `(mk_eq_iff _ _).mp h`. Simplify using `only at h1`. Establish `hc : c = c'`.
+
+Rewrite using `[← Quotient.out_eq c, ← Quotient.out_eq c', mk_eq_iff]`. Establish `: ((c'.out : K) : Λ) * ((c.out : K) : Λ)⁻¹ = ((d'.out : E) : Λ)⁻¹ * ((((d'.out : E) : Λ) * ((c'.out : K) : Λ)) * (((d.out : E) : Λ) * ((c.out : K) : Λ))⁻¹) * ((d.out : E) : Λ)` using `by group`. Rewrite using `[this]`. Conclude with `E.mul_mem (E.mul_mem (E.inv_mem (d'.out : E).2) (hBE h1)) (d.out : E).2`. Substitute `hc` using the available equality.
+
+Establish `hd : d = d'`. Rewrite using `[← Quotient.out_eq d, ← Quotient.out_eq d', mk_eq_iff]`. Establish `: ((d'.out : E) : Λ) * ((d.out : E) : Λ)⁻¹ = (((d'.out : E) : Λ) * ((c.out : K) : Λ)) * (((d.out : E) : Λ) * ((c.out : K) : Λ))⁻¹` using `by group`. Rewrite using `[this]`. Conclude with `h1`.
+
+Rewrite using `[hd]`. Establish `hcard : Fintype.card (RQ E K × RQ B E) = Fintype.card (RQ B K)`. Rewrite using `[Fintype.card_prod, ← Nat.card_eq_fintype_card, ← Nat.card_eq_fintype_card, ← Nat.card_eq_fintype_card, card_Q, card_Q, card_Q, ← hmul, mul_comm]`. Establish `hbij : Function.Bijective φ` using `(Fintype.bijective_iff_injective_and_card φ).mpr ⟨hinj, hcard⟩`. Use function extensionality and compare the values at `x`.
+
+Rewrite using `[avg_eq_sum j E K, avg_eq_sum j B K]`. Repeatedly rewrite using `[avg_eq_sum j B E u]`. Establish `hs : ∑ q : RQ B K, u (j ((q.out : K) : Λ) * x) = ∑ c : RQ E K, ∑ d : RQ B E, u (j ((d.out : E) : Λ) * (j ((c.out : K) : Λ) * x))`. Rewrite using `[← Fintype.sum_prod_type']`. Use `(Fintype.sum_bijective φ hbij _ _ (fun p => ?_)).symm` and prove the remaining obligations.
+
+Simplify using `only [φ]`. Rewrite using `[linv_out hu]`. Simplify using `only`. Rewrite using `[map_mul, mul_assoc]`. Rewrite using `[hs, ← Finset.mul_sum, ← hmul, Nat.cast_mul]`.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem avg_tower (j : Λ →* S) (B E K : Subgroup Λ) (hBE : B ≤ E) (hEK : E ≤ K)
     (hi : (B.subgroupOf K).index ≠ 0) (u : S → ℝ) (hu : LInv j B u) :
     avg j E K (avg j B E u) = avg j B K u := by

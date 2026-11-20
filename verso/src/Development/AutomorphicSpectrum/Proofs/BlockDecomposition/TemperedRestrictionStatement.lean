@@ -3,5 +3,8 @@ import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.TemperedRestric
 import Development.WeilBound.CoreStatements.AutomorphicKernels.LocalGlobalCompatibility.TemperedLocalGlobal.TemperednessTransfer
 open LocalGlobalAboveLAlt
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.CompanionTheory.TempRes.tempRes | exact GlobalTheory.CompanionTheory.TempRes.tempRes | (intros; apply GlobalTheory.CompanionTheory.TempRes.tempRes <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.tempered_restriction : TempRes := by
   first | exact @GlobalTheory.CompanionTheory.TempRes.tempRes | exact GlobalTheory.CompanionTheory.TempRes.tempRes | (intros; apply GlobalTheory.CompanionTheory.TempRes.tempRes <;> assumption)

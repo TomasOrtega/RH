@@ -27,19 +27,31 @@ def locE {k : ℕ} (M : Formalism.MainNotions.N.GE D.nd →* Matrix (Fin k) (Fin
 def chiE (χ : Formalism.MainNotions.N.GE D.nd →* (D.nd.O i)ˣ) : Br.G D.nbr i w hw →* (↥L'.1)ˣ :=
   (Units.map (inc D i w hw L' h).toMonoidHom).comp (Br.locChi D.nbr i w hw χ)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem locE_apply {k : ℕ} (M : Formalism.MainNotions.N.GE D.nd →* Matrix (Fin k) (Fin k) (D.nd.O i)) (g : Br.G D.nbr i w hw)
     (a b : Fin k) : locE D i w hw L' h M g a b = inc D i w hw L' h (Br.loc D.nbr i w hw M g a b) := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem chiE_apply (χ : Formalism.MainNotions.N.GE D.nd →* (D.nd.O i)ˣ) (g : Br.G D.nbr i w hw) :
     ((chiE D i w hw L' h χ g : (↥L'.1)ˣ) : ↥L'.1) =
       inc D i w hw L' h ((Br.locChi D.nbr i w hw χ g : (Br.LL D.nbr i w hw)ˣ) : Br.LL D.nbr i w hw) := rfl
 
 include h in
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨((D.nbr i w hw).Kw.1.val).codRestrict L'.1.toSubalgebra fun x => h ((D.nbr i w hw).LL_split (D.nbr i w hw).Kw.1.val x)⟩`.
+-/
 theorem nonempty_embE : Nonempty (Br.Kw D.nbr i w hw →ₐ[ℚ_[D.nd.l i]] ↥L'.1) :=
   ⟨((D.nbr i w hw).Kw.1.val).codRestrict L'.1.toSubalgebra
     fun x => h ((D.nbr i w hw).LL_split (D.nbr i w hw).Kw.1.val x)⟩
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 example {k : ℕ} (M : Formalism.MainNotions.N.GE D.nd →* Matrix (Fin k) (Fin k) (D.nd.O i)) :
     locE D i w hw (D.nbr i w hw).LL le_rfl M = Br.loc D.nbr i w hw M := rfl
 
@@ -78,6 +90,9 @@ def EpsAll (i : D.nd.Loc) : Prop :=
     ((cycZ (F := D.host.E) (Ω := D.nd.Om) (D.nd.l i) g : ℤ_[D.nd.l i]ˣ) : ℤ_[D.nd.l i]) =
       1 + (D.nd.l i : ℤ_[D.nd.l i]) ^ D.nd.s0 i * z
 
+/- English proof (translation)
+Simplify using `using h w hw 1`.
+-/
 theorem EpsAll.exists_generator {D : D7} {i : D.nd.Loc} (h : EpsAll D i) (w : HeightOneSpectrum (𝓞 D.host.E))
     (hw : w ∈ placesOver D.host.E (D.nd.l i)) : ∃ g ∈ Ine (F := D.host.E) (D.nd.plOm.1 w),
     ((cycZ (F := D.host.E) (Ω := D.nd.Om) (D.nd.l i) g : ℤ_[D.nd.l i]ˣ) : ℤ_[D.nd.l i]) =
@@ -94,10 +109,16 @@ def TameCyc (C : NChoice D) : Prop :=
 def AttachedIn (a : D.nd.Loc) (π : D.nd.X a) (j : D.ntw.Tw) (s : D.ntw.Sig j) : Prop :=
   ∃ h : D.ntw.twOf a = j, GlobalTheory.IndefiniteRowSideFullHecke.LatticeConditions.Attached D a π (cast (congrArg D.ntw.Sig h.symm) s)
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fun ⟨_, h⟩ => h, fun h => ⟨rfl, h⟩⟩`.
+-/
 theorem attachedIn_self (a : D.nd.Loc) (π : D.nd.X a) (s : D.ntw.Sig (D.ntw.twOf a)) :
     AttachedIn D a π _ s ↔ GlobalTheory.IndefiniteRowSideFullHecke.LatticeConditions.Attached D a π s :=
   ⟨fun ⟨_, h⟩ => h, fun h => ⟨rfl, h⟩⟩
 
+/- English proof (translation)
+Take `⟨rfl, _, _, -, -, -, ht⟩` from `h`. Conclude with `⟨ht.1, ht.2.1⟩`.
+-/
 theorem AttachedIn.jS_side {D : D7} {a : D.nd.Loc} {π : D.nd.X a} {j : D.ntw.Tw} {s : D.ntw.Sig j}
     (h : AttachedIn D a π j s) : D.ntw.jS j s = D.nd.j a ∧ D.ntw.side j s = D.ntw.twSide a := by
   obtain ⟨rfl, _, _, -, -, -, ht⟩ := h
@@ -112,6 +133,9 @@ def SelCore (C : NChoice D) (ρ : ∀ i : D.nd.Loc, D.nd.X i → (Formalism.Main
       BlochKatoReduction.Gen.sLen (BlochKatoReduction.bk0 D) (C.twI (D.nd.w i)) s (C.k' (D.nd.w i)) (C.Q (D.nd.w i)) (psiG D C (D.nd.w i)) ∧
     AttachedIn D i π (C.twI (D.nd.w i)) s
 
+/- English proof (translation)
+Introduce `π hπ`. Take `⟨s, h1, h2, h3, h4, h6⟩` from `h i π hπ`. Establish `h5` using `hs s h1 h6.jS_side.1 h2`. Conclude with `⟨h3 (ne_top_of_le_ne_top ENNReal.ofReal_ne_top h5), (ENNReal.ofReal_le_ofReal_iff hb).1 (h4.trans h5)⟩`.
+-/
 theorem SelCore.bound {D : D7} {C : NChoice D}
     {ρ : ∀ i : D.nd.Loc, D.nd.X i → (Formalism.MainNotions.N.GE D.nd →* GL (Fin D.R.r) (D.nd.O i))} (h : SelCore D C ρ)
     (i : D.nd.Loc) (b : ℝ) (hb : 0 ≤ b)
@@ -134,6 +158,9 @@ def GoodPtRow : Prop :=
   ∀ (a : D.nd.Loc), ∀ π ∈ D.nd.Zgood a, ∃ (σ : D.what₂.FT) (Sg : List (Part D.naut.CG)),
     GlobalTheory.IndefiniteRowSideFullHecke.LatticeConditions.GoodRowOf D (D.nd.j a) σ ∧ HasParamW D.nd D.naut a σ Sg ∧ HasParamX D.nd D.naut a π Sg
 
+/- English proof (translation)
+Take `⟨σ, Sg, h1, h2, h3⟩` from `hG a π hπ`. Take `⟨s, h4, h5⟩` from `hT a σ Sg h1 h2`. Conclude with `⟨s, ⟨σ, Sg, h1, h2, h3, h4⟩, h5⟩`.
+-/
 theorem GoodPtRow.exists_attached {D : D7} (hG : GoodPtRow D) (hT : TriplesGood D) (a : D.nd.Loc)
     (π : D.nd.X a) (hπ : π ∈ D.nd.Zgood a) :
     ∃ s, GlobalTheory.IndefiniteRowSideFullHecke.LatticeConditions.Attached D a π s ∧ BlochKatoReduction.Gen.goodS (BlochKatoReduction.bk0 D) (D.ntw.twOf a) s := by
@@ -149,6 +176,11 @@ def SameTwistAt (a : D.nd.Loc) (j : D.ntw.Tw) (k : ℕ) (ψ : Formalism.MainNoti
   ∃ h : D.ntw.twOf a = j, GlobalTheory.IndefiniteRowSideFullHecke.LatticeConditions.SameChar (D.ntw.twist₂ a) (BlochKatoReduction.Gen.phiK D.ntw (D.ntw.twOf a) k)
     (D.ntw.psiL a) (cast (congrArg (fun j => Formalism.MainNotions.N.GE D.nd →* (D.ntw.Ok j k)ˣ) h.symm) ψ)
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨rfl, h⟩`. Conclude with `⟨rfl, _, HEq.rfl, h⟩`. Introduce and unpack `⟨rfl, f, hf, h⟩`. Take `rfl` from `eq_of_heq hf`.
+
+Conclude with `⟨rfl, h⟩`.
+-/
 theorem sameTwistAt_iff (a : D.nd.Loc) (j : D.ntw.Tw) (k : ℕ) (ψ : Formalism.MainNotions.N.GE D.nd →* (D.ntw.Ok j k)ˣ) :
     SameTwistAt D a j k ψ ↔ D.ntw.twOf a = j ∧ ∃ f : D.ntw.O0 j →+* D.nd.O a, HEq f (D.ntw.twist₂ a) ∧
       GlobalTheory.IndefiniteRowSideFullHecke.LatticeConditions.SameChar f (BlochKatoReduction.Gen.phiK D.ntw j k) (D.ntw.psiL a) ψ := by
@@ -162,9 +194,15 @@ theorem sameTwistAt_iff (a : D.nd.Loc) (j : D.ntw.Tw) (k : ℕ) (ψ : Formalism.
 def SameTwist (C : NChoice D) : Prop :=
   ∀ a : D.nd.Loc, SameTwistAt D a (C.twI (D.nd.w a)) (C.k' (D.nd.w a)) (psiG D C (D.nd.w a))
 
+/- English proof (translation)
+The claim follows from `(h a).1`.
+-/
 theorem SameTwist.twOf_eq {D : D7} {C : NChoice D} (h : SameTwist D C) (a : D.nd.Loc) :
     D.ntw.twOf a = C.twI (D.nd.w a) := (h a).1
 
+/- English proof (translation)
+The claim follows from `((sameTwistAt_iff D a _ _ _).1 (h a)).2`.
+-/
 theorem SameTwist.exists_heq {D : D7} {C : NChoice D} (h : SameTwist D C) (a : D.nd.Loc) :
     ∃ f : D.ntw.O0 (C.twI (D.nd.w a)) →+* D.nd.O a, HEq f (D.ntw.twist₂ a) ∧
       GlobalTheory.IndefiniteRowSideFullHecke.LatticeConditions.SameChar f (BlochKatoReduction.Gen.phiK D.ntw (C.twI (D.nd.w a)) (C.k' (D.nd.w a))) (D.ntw.psiL a)
@@ -175,12 +213,32 @@ section Splitting
 
 open GlobalTheory.IndefiniteRowSideFullHecke GlobalTheory.BlockJumps
 
+/- English proof (translation)
+Take `⟨e, he⟩` from `h.rho`. Conclude with `⟨h.cont, r, hr, e, fun g u => he g u⟩`.
+-/
 theorem isRhoPt_of_splitting (i : D.nd.Loc) (π : D.nd.X i)
     (r : Formalism.MainNotions.N.GE D.nd →* GL (Fin D.R.nV) (D.nd.O i)) (ρ : Formalism.MainNotions.N.GE D.nd →* GL (Fin D.R.r) (D.nd.O i))
     (hr : IsHeckeGalois D.nd i π r) (h : BlockRepresentationsSemisimple.IsComplement D.nd i r ρ) : LatticeConditions.IsRhoPt D i π ρ := by
   obtain ⟨e, he⟩ := h.rho
   exact ⟨h.cont, r, hr, e, fun g u => he g u⟩
 
+/- English proof (translation)
+Use `⟨h.cont, ?_, (RepresentationOverSumChar.isRhoAt_iff D.nd i π ρ).1 (GlobalTheory.ComplementCompare.second_of_first D.nd i π r ρ hr h).1⟩` and prove the remaining obligations. Introduce `W hW`. Set `P : Subrepresentation (BlockRepresentationsSemisimple.blockRep ρ (D.nd.chi i) D.R.t)` to `⟨W.prod ⊥, fun g v hv => by`. Rewrite using `[BlockRepresentationsSemisimple.blockRep_apply]`. Use `⟨hW g _ hv.1, ?_⟩` and prove the remaining obligations.
+
+Establish `h2 : v.2 = 0` using `hv.2`. Express the relevant statement in the definitionally equal form `_ = 0`. Use function extensionality and compare the values at `c`. Simplify using `[h2]⟩`. Take `⟨Q, hQ⟩` from `h.ss.exists_isCompl P`.
+
+Establish `hQ'` using `(GlobalTheory.ComplementCompare.isCompl_sub_iff P Q).1 hQ`. Use `⟨Q.toSubmodule.comap (LinearMap.inl _ _ _), fun g v hv => ?_, ?_, ?_⟩` and prove the remaining obligations. Use `Q.apply_mem_toSubmodule g hv` as an intermediate fact. Rewrite `this` using `[BlockRepresentationsSemisimple.blockRep_apply]`. Express the relevant statement in the definitionally equal form `(_, (0 : Fin D.R.t → _)) ∈ Q.toSubmodule`.
+
+Use `this using 2` and compare the differences between its conclusion and the goal. Both sides reduce to the same expression. Use function extensionality and compare the values at `c`. Simplify using the standard rewrite rules. Rewrite using `[Submodule.disjoint_def]`.
+
+Introduce `x hx hx'`. Use `(Submodule.disjoint_def.1 hQ'.disjoint) (x, 0) ⟨hx, rfl⟩ hx'` as an intermediate fact. Conclude with `congrArg Prod.fst this`. Rewrite using `[codisjoint_iff, eq_top_iff]`. Introduce `x _`.
+
+Establish `hx : ((x, 0) : _ × (Fin D.R.t → FractionRing (D.nd.O i))) ∈ P.toSubmodule ⊔ Q.toSubmodule`. Rewrite using `[hQ'.sup_eq_top]`. Discharge the goal by the elementary cases of `trivial`. Take `⟨p, hp, q, hq, hpq⟩` from `Submodule.mem_sup.1 hx`. Establish `hp2 : p.2 = 0` using `hp.2`.
+
+Establish `hq2 : q.2 = 0`. Use `congrArg Prod.snd hpq` as an intermediate fact. Simplify `this` using `[hp2]`. Use `Submodule.mem_sup.2 ⟨p.1, hp.1, q.1, ?_, congrArg Prod.fst hpq⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `(q.1, (0 : Fin D.R.t → _)) ∈ Q.toSubmodule`.
+
+Rewrite using `[← hq2]`. Conclude with `hq`.
+-/
 theorem RhoFrob.of_splitting (i : D.nd.Loc) (π : D.nd.X i)
     (r : Formalism.MainNotions.N.GE D.nd →* GL (Fin D.R.nV) (D.nd.O i)) (ρ : Formalism.MainNotions.N.GE D.nd →* GL (Fin D.R.r) (D.nd.O i))
     (hr : IsHeckeGalois D.nd i π r) (h : BlockRepresentationsSemisimple.IsComplement D.nd i r ρ) : RhoFrob D i π ρ := by
@@ -233,6 +291,11 @@ variable {G : Type} [Group G] {Qp K₀ K : Type} [Field Qp] [Field K₀] [Field 
     (PD : PeriodData G Qp K₀ K B BdR)
     {LL : Type} [Field LL] [Algebra Qp LL]
 
+/- English proof (translation)
+Set `χ : G →* LLˣ` to `((Units.map (algebraMap Qp LL).toMonoidHom).comp PD.χ)⁻¹ ^ e`. Establish `hχ : ∀ g, ((χ g : LLˣ) : LL) = ((algebraMap Qp LL (PD.χ g : Qp))⁻¹) ^ e` using `fun g => by`. Simplify using `[χ]`. Establish `: σ = diagRep fun _ : Fin 1 => χ` using `by ext1 g`. Use `LinearMap.ext fun u => funext fun c => ?_` and prove the remaining obligations.
+
+Rewrite using `[Subsingleton.elim c 0, h, diagRep_apply, hχ]`. Rewrite using `[this, multV_diagRep PD hF, Fin.sum_univ_one]`. Conclude with `multV_twist PD hs (Formalism.WeaklyAdmissibleFiltrations.charRep χ) e (fun g x => by rw [← hχ]; rfl) τ a`.
+-/
 theorem multV_cycPow_line [Algebra.IsSeparable Qp K] [FiniteDimensional Qp LL] (hF : IsField BdR)
     (hs : ∃ s ∈ PD.Fil (-1), PD.ι PD.t * s = 1) (σ : Representation LL G (Fin 1 → LL)) (e : ℕ)
     (h : ∀ g u, σ g u 0 = ((algebraMap Qp LL (PD.χ g : Qp))⁻¹) ^ e * u 0) (τ : K →ₐ[Qp] LL) (a : ℤ) :
@@ -251,6 +314,31 @@ end Periods
 
 set_option maxHeartbeats 1600000 in
 
+/- English proof (translation)
+Choose the witnesses or unpack the hypotheses as in `⟨e, he⟩ : BlockJumpCount.IsBlockSum D.nd i r ρ π := by`. Take `⟨e, he⟩` from `hc.rho`. Conclude with `⟨e, fun g u => he g u⟩`. Introduce `w hw L' h τ`. Use `haveI : IsAlgClosed D.nd.Om := IsAlgClosure.isAlgClosed D.host.E`.
+
+Use `haveI := L'.2`. Set `s : Br.G D.nbr i w hw → Formalism.MainNotions.N.GE D.nd` to `fun g => decS D.nd w (Br.iota D.nbr i w hw g)`. Set `f` to `(inc D i w hw L' h).comp (Br.toLLK (D.nbr i w hw))`. Establish `hf : ∀ c, f (toK D.nd i c) = inc D i w hw L' h ((D.nbr i w hw).toLL c)` using `fun c => congrArg (inc D i w hw L' h) (Br.toLLK_alg (D.nbr i w hw) c)`. Establish `hχ : ∀ (c : ℕ), c < D.R.t → ∀ g, (chiU D.nd i 1)⁻¹ g * chiU D.nd i (c + 1) g = (epsU D.nd i g)⁻¹ ^ c` using `fun c hc g => by`.
+
+Establish `h` using `D.nd.chi_def i (c + 1) (by omega) hc`. Express the relevant statement in the definitionally equal form `(D.nd.chi i 1)⁻¹ g * D.nd.chi i (c + 1) g = _`. Rewrite using `[h, MonoidHom.mul_apply, MonoidHom.inv_apply, inv_mul_cancel_left, Nat.cast_add, Nat.cast_one, add_sub_cancel_right, MonoidHom.zpow_apply, zpow_neg, zpow_natCast, inv_pow]`. Both sides reduce to the same expression. Take `⟨e', he'⟩` from `split_map f (fun g => mapM (toK D.nd i) (rTwO D.nd i r π) (s g)) (fun g => mapM (toK D.nd i) (WpO D.nd i ρ π) (s g)) (fun g c => toK D.nd i (((epsU D.nd i (s g))⁻¹ ^ (c : ℕ) : (D.nd.O i)ˣ) : D.nd.O i)) e (fun g u => by`.
+
+Establish `h1 : ∀ {k : ℕ} (M : Formalism.MainNotions.N.GE D.nd →* Matrix (Fin k) (Fin k) (D.nd.O i)) v, (mapM (toK D.nd i) (twistM M (chiU D.nd i 1)⁻¹) (s g)).mulVec v = toK D.nd i (((chiU D.nd i 1)⁻¹ (s g) : (D.nd.O i)ˣ) : D.nd.O i) • (mapM (toK D.nd i) M (s g)).mulVec v` using `fun M v => by`. Rewrite using `[← Matrix.smul_mulVec]`. Use `congr 1`. Use extensionality with `a b`. Conclude with `map_mul (toK D.nd i) _ _`.
+
+Rewrite using `[rTwO, WpO, h1, h1, map_smul, he]`. Use `Prod.ext rfl (funext fun c => ?_)` and prove the remaining obligations. Simplify using `only [← hχ _ c.2, Units.val_mul, map_mul, mul_assoc]`. Use the proof step `rfl)`. Establish `hε : ∀ g, inc D i w hw L' h ((D.nbr i w hw).toLL ((epsU D.nd i (s g) : (D.nd.O i)ˣ) : D.nd.O i)) = algebraMap ℚ_[D.nd.l i] ↥L'.1 ((Br.PD D.loc D.nbr i w hw).χ g : ℚ_[D.nd.l i])`.
+
+Introduce `g`. Establish `h0 : (D.nbr i w hw).toLL ((epsU D.nd i (s g) : (D.nd.O i)ˣ) : D.nd.O i) = algebraMap ℚ_[D.nd.l i] (Br.LL D.nbr i w hw) ((Br.PD D.loc D.nbr i w hw).χ g : ℚ_[D.nd.l i])`. Rewrite using `[Br.PD, (D.loc _).PD_χ, ← cycZ_eq_chi (D.nbr i w hw) (D.loc _) g]`. Conclude with `congrArg Subtype.val ((D.nbr i w hw).eO_alg _)`. Rewrite using `[h0]`.
+
+Conclude with `(IntermediateField.inclusion h).commutes _`. Establish `hM : ∀ {k : ℕ} (M : Formalism.MainNotions.N.GE D.nd →* Matrix (Fin k) (Fin k) (D.nd.O i)) g v, matRep (locE D i w hw L' h M) g v = ((mapM (toK D.nd i) M (s g)).map f).mulVec v` using `fun M g v => by`. Rewrite using `[show (mapM (toK D.nd i) M (s g)).map f = locE D i w hw L' h M g from Matrix.ext fun a b => hf _]`. Both sides reduce to the same expression. Establish `hs : ∃ x ∈ (Br.PD D.loc D.nbr i w hw).Fil (-1), (Br.PD D.loc D.nbr i w hw).ι (Br.PD D.loc D.nbr i w hw).t * x = 1`.
+
+Take `⟨x, hx, hx1⟩` from `GlobalTheory.ThetaTie.exists_inverse_fontaineElement_mem_fil_neg_one (D.locT (D.nd.l i))`. Use `⟨x, ?_, by rw [Br.PD, (D.loc _).PD_ι, (D.loc _).period_datum_t_eq, hx1]⟩` and prove the remaining obligations. Conclude with `((D.locT _).fil _ _ _).2 (((D.locT _).fil _ _ _).1 hx)`. Establish `hF` using `GlobalTheory.SmallJumpExample.isField_bdR D (D.nd.l i)`. Use `⟨fun a => ?_, fun c hc a => ?_⟩` and prove the remaining obligations.
+
+Take `⟨J, h1, h2⟩` from `jumps_of_split (Br.PD D.loc D.nbr i w hw) hF hs (matRep (locE D i w hw L' h (rTwO D.nd i r π))) (matRep (locE D i w hw L' h (WpO D.nd i ρ π))) e' (fun g u => by`. Rewrite using `[hM, hM, he']`. Use `Prod.ext rfl (funext fun c => ?_)` and prove the remaining obligations. Use `congrArg (· * (e' u).2 c) ?_` and prove the remaining obligations. Rewrite using `[hf, Units.val_pow_eq_pow_val, map_pow, map_pow, map_units_inv, map_inv₀, hε]) τ`.
+
+Rewrite using `[h1.2, h2.2, Multiset.count_add, BlockJumpCount.count_blockJumps]`. Use `push_cast`. Both sides reduce to the same expression. Take `⟨c, rfl⟩ : ∃ c', c = c' + 1` from `⟨c - 1, by have := (Finset.mem_Icc.1 hc).1; omega⟩`. Establish `hc' : c < D.R.t` using `(Finset.mem_Icc.1 hc).2`.
+
+Rewrite using `[multV_cycPow_line (Br.PD D.loc D.nbr i w hw) hF hs _ c (fun g u => by`. Rewrite using `[hM]`. Establish `h1 : ((mapM (toK D.nd i) (chiRatO D.nd i (c + 1)) (s g)).map f) 0 0 = f (toK D.nd i (((epsU D.nd i (s g))⁻¹ ^ c : (D.nd.O i)ˣ) : D.nd.O i))`. Rewrite using `[← hχ c hc', mul_comm]`. Express the relevant statement in the definitionally equal form `f (toK D.nd i (_ * (1 : Matrix (Fin 1) (Fin 1) (D.nd.O i)) 0 0)) = _`.
+
+Rewrite using `[Matrix.one_apply_eq, mul_one]`. Both sides reduce to the same expression. Rewrite using `[Matrix.mulVec, dotProduct, Fin.sum_univ_one, h1, hf, Units.val_pow_eq_pow_val, map_pow, map_pow, map_units_inv, map_inv₀, hε]) τ a]`. Use `push_cast`. Rewrite using `[add_sub_cancel_right]`.
+-/
 theorem BlockE.of_splitting (i : D.nd.Loc) (r : D.nd.X i → (Formalism.MainNotions.N.GE D.nd →* GL (Fin D.R.nV) (D.nd.O i)))
     (ρ : D.nd.X i → (Formalism.MainNotions.N.GE D.nd →* GL (Fin D.R.r) (D.nd.O i))) (π : D.nd.X i)
     (hc : BlockRepresentationsSemisimple.IsComplement D.nd i (r π) (ρ π)) : BlockE D i r ρ π := by
@@ -349,15 +437,29 @@ namespace PtFam
 variable {D} {r : ∀ i : D.nd.Loc, D.nd.X i → (Formalism.MainNotions.N.GE D.nd →* GL (Fin D.R.nV) (D.nd.O i))}
   {ρ : ∀ i : D.nd.Loc, D.nd.X i → (Formalism.MainNotions.N.GE D.nd →* GL (Fin D.R.r) (D.nd.O i))}
 
+/- English proof (translation)
+Introduce `i π hπ` and use `RhoFrob.of_splitting D i π _ _ (h.good i π) (h.compl i π hπ)`.
+-/
 theorem frob (h : PtFam D r ρ) : ∀ i, ∀ π ∈ D.nd.Z i, RhoFrob D i π (ρ i π) :=
   fun i π hπ => RhoFrob.of_splitting D i π _ _ (h.good i π) (h.compl i π hπ)
 
+/- English proof (translation)
+Introduce `i π hπ` and use `isRhoPt_of_splitting D i π _ _ (h.good i π) (h.compl i π hπ)`.
+-/
 theorem pt (h : PtFam D r ρ) : ∀ i, ∀ π ∈ D.nd.Z i, GlobalTheory.IndefiniteRowSideFullHecke.LatticeConditions.IsRhoPt D i π (ρ i π) :=
   fun i π hπ => isRhoPt_of_splitting D i π _ _ (h.good i π) (h.compl i π hπ)
 
+/- English proof (translation)
+Introduce `i π hπ` and use `BlockE.of_splitting D i _ _ π (h.compl i π hπ)`.
+-/
 theorem block (h : PtFam D r ρ) : ∀ i, ∀ π ∈ D.nd.Z i, BlockE D i (r i) (ρ i) π :=
   fun i π hπ => BlockE.of_splitting D i _ _ π (h.compl i π hπ)
 
+/- English proof (translation)
+Use `⟨fun i π => if hπ : π ∈ D.nd.Z i then (hC i π hπ (r i π) (hr i π)).choose else 1, hr, fun i π => ?_, fun i π hπ => ?_⟩` and prove the remaining obligations. Distinguish the cases in `hπ : π ∈ D.nd.Z i`. Simplify using `only [dif_pos hπ]`. Conclude with `(hC i π hπ (r i π) (hr i π)).choose_spec.cont`. Simplify using `only [dif_neg hπ]`.
+
+Conclude with `continuous_const`. Simplify using `only [dif_pos hπ]`. Conclude with `(hC i π hπ (r i π) (hr i π)).choose_spec`.
+-/
 theorem exists_extend (hC : GlobalTheory.IndefiniteRowSideFullHecke.BlockRepresentationsSemisimple.Complement_at D) (hr : ∀ i, GoodR D.nd i (r i)) :
     ∃ ρ, PtFam D r ρ := by
   classical
@@ -371,11 +473,17 @@ theorem exists_extend (hC : GlobalTheory.IndefiniteRowSideFullHecke.BlockReprese
   · simp only [dif_pos hπ]
     exact (hC i π hπ (r i π) (hr i π)).choose_spec
 
+/- English proof (translation)
+Use `choose r hr using hr`. Conclude with `⟨r, exists_extend hC hr⟩`.
+-/
 theorem exists_pair (hC : GlobalTheory.IndefiniteRowSideFullHecke.BlockRepresentationsSemisimple.Complement_at D) (hr : ∀ i, ∃ r, GoodR D.nd i r) :
     ∃ r ρ, PtFam D r ρ := by
   choose r hr using hr
   exact ⟨r, exists_extend hC hr⟩
 
+/- English proof (translation)
+Establish `h0` using `(h.block i π hπ w hw L' hL τ).1`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Rewrite using `[h0 0, if_pos ⟨le_rfl, by exact_mod_cast ht⟩]`. Rewrite using `[h0 (-1), if_neg (by omega), add_zero]`.
+-/
 example (h : PtFam D r ρ) (ht : 0 < D.R.t) (i : D.nd.Loc) (π : D.nd.X i) (hπ : π ∈ D.nd.Z i)
     (w : HeightOneSpectrum (𝓞 D.host.E)) (hw : w ∈ placesOver D.host.E (D.nd.l i))
     (L' : FinExt (D.nd.l i)) (hL : (D.nbr i w hw).LL.1 ≤ L'.1) (τ : Br.Kw D.nbr i w hw →ₐ[ℚ_[D.nd.l i]] ↥L'.1) :

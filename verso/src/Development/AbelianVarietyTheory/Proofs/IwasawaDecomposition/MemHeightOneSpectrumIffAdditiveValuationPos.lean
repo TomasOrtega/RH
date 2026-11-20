@@ -17,6 +17,9 @@ open Classical in
 noncomputable def pickIxTw {B : Base} {px : PreX B.toPre} (I : Col2.ColIn B px) (χ : Formalism.L2.Host.HChar B.host.E) : I.ι :=
   if h : ∃ a, I.xi a = χ then h.choose else I.mu0
 
+/- English proof (translation)
+Establish `h' : ∃ a, I.xi a = χ` using `h`. Unfold `pickIxTw`. Rewrite using `[dif_pos h']`. Conclude with `h'.choose_spec`.
+-/
 theorem xi_pickIxTw {B : Base} {px : PreX B.toPre} (I : Col2.ColIn B px) {χ : Formalism.L2.Host.HChar B.host.E}
     (h : χ ∈ Set.range I.xi) : I.xi (pickIxTw I χ) = χ := by
   have h' : ∃ a, I.xi a = χ := h
@@ -24,6 +27,11 @@ theorem xi_pickIxTw {B : Base} {px : PreX B.toPre} (I : Col2.ColIn B px) {χ : F
   rw [dif_pos h']
   exact h'.choose_spec
 
+/- English proof (translation)
+Establish `hd : Formalism.EigenvalueLevelCeiling.plc v ∣ p`. Unfold `Formalism.EigenvalueLevelCeiling.plc`. Rewrite using `[← ringChar.spec, ← map_natCast (Ideal.Quotient.mk v.asIdeal), Ideal.Quotient.eq_zero_iff_mem]`. Conclude with `h`. Use `haveI : Nontrivial (𝓞 F ⧸ v.asIdeal) := Ideal.Quotient.nontrivial_iff.mpr v.isPrime.ne_top`.
+
+Break down `(Nat.dvd_prime hp).1 hd with h1 | h1` into its components or cases. Conclude with `absurd h1 (CharP.ringChar_ne_one)`. Conclude with `h1`.
+-/
 theorem plc_eq_of_natCast_mem {F : Type} [Field F] [NumberField F] (v : HeightOneSpectrum (𝓞 F)) {p : ℕ} (hp : p.Prime)
     (h : (p : 𝓞 F) ∈ v.asIdeal) : Formalism.EigenvalueLevelCeiling.plc v = p := by
   have hd : Formalism.EigenvalueLevelCeiling.plc v ∣ p := by
@@ -38,6 +46,11 @@ theorem plc_eq_of_natCast_mem {F : Type} [Field F] [NumberField F] (v : HeightOn
 section UnitConjugation
 open Formalism.BasicNotions.DV
 
+/- English proof (translation)
+Distinguish the cases in `hx : x = 0`. Substitute `hx` using the available equality. Simplify using `[vAdd]`. Establish `h1` using `D.conj_val w x`. Rewrite `h1` using `[D.val_eq _ x hx, D.val_eq _ (star x) (star_ne_zero.2 hx)]`.
+
+Conclude with `h1` after adjusting the coercions.
+-/
 theorem additiveValuation_conjugatePlace_eq_star (D : D7) (w : D.what₂.places.Pl) (x : D.what₂.LL) :
     vAdd (D.plEq (D.what₂.places.conj w)) x = vAdd (D.plEq w) (star x) := by
   by_cases hx : x = 0
@@ -46,6 +59,9 @@ theorem additiveValuation_conjugatePlace_eq_star (D : D7) (w : D.what₂.places.
     rw [D.val_eq _ x hx, D.val_eq _ (star x) (star_ne_zero.2 hx)] at h1
     exact_mod_cast h1
 
+/- English proof (translation)
+Establish `hx' : w.valuation K (x : K) ≠ 0` using `(map_ne_zero _).2 (by exact_mod_cast hx)`. Rewrite using `[← HeightOneSpectrum.valuation_lt_one_iff_mem (K := K)]`. Unfold `vAdd`. Rewrite using `[neg_pos, ← WithZero.log_one, WithZero.log_lt_log hx' one_ne_zero]`.
+-/
 theorem mem_heightOneSpectrum_iff_additiveValuation_pos {K : Type} [Field K] [NumberField K] (w : HeightOneSpectrum (𝓞 K)) (x : 𝓞 K)
     (hx : x ≠ 0) : x ∈ w.asIdeal ↔ 0 < vAdd w (x : K) := by
   have hx' : w.valuation K (x : K) ≠ 0 := (map_ne_zero _).2 (by exact_mod_cast hx)
@@ -53,6 +69,15 @@ theorem mem_heightOneSpectrum_iff_additiveValuation_pos {K : Type} [Field K] [Nu
   unfold vAdd
   rw [neg_pos, ← WithZero.log_one, WithZero.log_lt_log hx' one_ne_zero]
 
+/- English proof (translation)
+Apply `HeightOneSpectrum.ext` to reduce the goal to its premises. Use extensionality with `x`. Establish `key : ∀ y : 𝓞 D.what₂.LL, y ∈ (D.plEq (D.what₂.places.conj w)).asIdeal ↔ Formalism.DivisionValues.cO D.what₂.LL y ∈ (D.plEq w).asIdeal`. Introduce `y`. Distinguish the cases in `hy : y = 0`.
+
+Substitute `hy` using the available equality. Simplify using the standard rewrite rules. Rewrite using `[mem_heightOneSpectrum_iff_additiveValuation_pos _ y hy, mem_heightOneSpectrum_iff_additiveValuation_pos _ _ ((map_ne_zero_iff _ (Formalism.DivisionValues.cO D.what₂.LL).injective).2 hy), additiveValuation_conjugatePlace_eq_star, Formalism.DivisionValues.ValuationRepresentative.c …`. Rewrite using `[key]`. Express the relevant statement in the definitionally equal form `_ ↔ x ∈ (D.plEq w).asIdeal.map (Formalism.DivisionValues.cO D.what₂.LL)`.
+
+Rewrite using `[Ideal.mem_map_of_equiv]`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Conclude with `⟨_, h, Formalism.DivisionValues.ValuationRepresentative.cO_cO x⟩`. Introduce and unpack `⟨y, hy, rfl⟩`.
+
+Rewrite using `[Formalism.DivisionValues.ValuationRepresentative.cO_cO]` and apply the resulting hypothesis.
+-/
 theorem plEq_conjPl (D : D7) (w : D.what₂.places.Pl) :
     D.plEq (D.what₂.places.conj w) = Formalism.DivisionValues.conjPl (D.plEq w) := by
   apply HeightOneSpectrum.ext
@@ -79,6 +104,47 @@ end GlobalTheory.Mem.R3
 
 open GlobalTheory.Mem.R3 in
 
+/- English proof (translation)
+Introduce `X px I hX T Wt L hWf hWc hI hrng hC hxi`. Establish `hmemR : ∀ w ∈ Wt, T.xiTw I.C w ∈ Set.range I.xi` using `fun w _ => by`. Rewrite using `[hrng]`. Conclude with `Or.inr ⟨w, rfl⟩`. Establish `hpickU : ∀ w ∈ Wt, pickIxTw I (T.xiTw I.C w) ∈ (usedOf I T Wt)` using `fun w hw => ⟨w, hw, xi_pickIxTw I (hmemR w hw)⟩`.
+
+Set `muP : X.B.places.Pl → TupU I (usedOf I T Wt)` to `fun w => if h : w ∈ Wt then ⟨I.tup (pickIxTw I (T.xiTw I.C w)), Or.inr ((tup_mem_tuOf I).2 (hpickU w h))⟩ else mu0F (X := X.B.fields) (tuOf I (usedOf I T Wt))`. Establish `muP_in : ∀ w (h : w ∈ Wt), muP w = ⟨I.tup (pickIxTw I (T.xiTw I.C w)), Or.inr ((tup_mem_tuOf I).2 (hpickU w h))⟩` using `fun w h => dif_pos h`. Establish `muP_of_notMem : ∀ w, w ∉ Wt → muP w = mu0F (X` using `X.B.fields) (tuOf I (usedOf I T Wt)) := fun w h => dif_neg h`. Establish `ix_in : ∀ w ∈ Wt, ixOf I (usedOf I T Wt) (muP w) = pickIxTw I (T.xiTw I.C w)` using `fun w h => by`. Rewrite using `[muP_in w h]`.
+
+Conclude with `ixOf_eq I rfl`. Establish `hcc : ∀ w, X.B.places.conj (X.B.places.conj w) = w` using `fun w => by`. Apply `X.toD7.plEq.injective` to reduce the goal to its premises. Establish `e1` using `plEq_conjPl X.toD7 (X.toD7.what₂.places.conj w)`. Establish `e2` using `plEq_conjPl X.toD7 w`.
+
+Express the relevant statement in the definitionally equal form `X.toD7.plEq (X.toD7.what₂.places.conj (X.toD7.what₂.places.conj w)) = X.toD7.plEq w`. Rewrite using `[e1, e2, Formalism.DivisionValues.ValuationRepresentative.conjPl_conjPl]`. Establish `hconjIff : ∀ w, X.B.places.conj w ∈ Wt ↔ w ∈ Wt` using `fun w => ⟨fun h => hcc w ▸ hWc _ h, hWc w⟩`. Establish `muP_conj : ∀ w, muP (X.B.places.conj w) = muP w` using `fun w => by`. Distinguish the cases in `h : w ∈ Wt`.
+
+Rewrite using `[muP_in w h, muP_in _ ((hconjIff w).2 h)]`. Use `congr 2`. Rewrite using `[(GlobalTheory.Mem.Top.TwFin.tw_fin X.B I.C T).2.2.1 w]`. Rewrite using `[muP_of_notMem w h, muP_of_notMem _ (fun h' => h ((hconjIff w).1 h'))]`. Establish `hss : ∀ w : X.B.places.Pl, muP (X.toD7.plEq.symm (X.toD7.plEq w)) = muP w` using `fun w => congrArg muP (X.toD7.plEq.symm_apply_apply w)`.
+
+Use `⟨fun v => muP (X.toD7.plEq.symm v), hWf.toFinset.image X.toD7.plEq, ?_, ?_⟩` and prove the remaining obligations. Introduce `w`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Use `erw [Finset.mem_image]`. Prove the components needed by the constructor for the conclusion.
+
+Introduce and unpack `⟨w', hw', e⟩`. Rewrite `hw'` using `[X.toD7.plEq.injective e]`. Conclude with `(Set.Finite.mem_toFinset hWf).1 hw'`. Introduce `h`. Conclude with `⟨w, (Set.Finite.mem_toFinset hWf).2 h, rfl⟩`.
+
+Use `show I.xi (ixOf I (usedOf I T Wt) (muP (X.toD7.plEq.symm (X.toD7.plEq w)))) = _`. Rewrite using `[hss]`. Distinguish the cases in `h : w ∈ Wt`. Rewrite using `[if_pos h, ix_in w h, xi_pickIxTw I (hmemR w h)]`. Rewrite using `[if_neg h, muP_of_notMem w h, ixOf_mu0F]`.
+
+Conclude with `hI.trueColumnChoices_heckeChar_reference_eq_one`. Introduce `Xg tr`. Establish `hμ0 : (famR X I hX (usedOf I T Wt) Xg tr).A.μ0 = mu0F (X` using `X.B.fields) (tuOf I (usedOf I T Wt)) := rfl`. Establish `memTw : ∀ v, v ∈ hWf.toFinset.image X.toD7.plEq ↔ X.toD7.plEq.symm v ∈ Wt` using `fun v => by erw [Finset.mem_image]`. Prove the components needed by the constructor for the conclusion.
+
+Introduce and unpack `⟨w', hw', rfl⟩`. Rewrite using `[Equiv.symm_apply_apply]`. Conclude with `(Set.Finite.mem_toFinset hWf).1 hw'`. Introduce `h`. Conclude with `⟨_, (Set.Finite.mem_toFinset hWf).2 h, Equiv.apply_symm_apply _ _⟩`.
+
+Use `⟨?_, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `v hv`. Rewrite using `[hμ0]`. Conclude with `muP_of_notMem _ (fun h => hv ((memTw v).2 h))`. Introduce `t`.
+
+Rewrite using `[hμ0]`. Break down `t.2 with h | h` into its components or cases. Conclude with `Or.inl (Subtype.ext h)`. Use `right`. Take `⟨b, hb, e⟩` from `(mem_tuOf I).1 h`.
+
+Take `⟨w, hw, hbw⟩` from `hb`. Use `⟨X.toD7.plEq w, ?_⟩` and prove the remaining obligations. Use `show muP (X.toD7.plEq.symm (X.toD7.plEq w)) = t`. Rewrite using `[hss, muP_in w hw]`. Apply `Subtype.ext` to reduce the goal to its premises.
+
+Use `show I.tup (pickIxTw I (T.xiTw I.C w)) = t.1`. Rewrite using `[← e]`. Use `congr 1`. Apply `hI.xi_inj` to reduce the goal to its premises. Rewrite using `[xi_pickIxTw I (hmemR w hw), hbw]`.
+
+Introduce `v hv e`. Rewrite `e` using `[hμ0]`. Establish `hw` using `(memTw v).1 hv`. Establish `h1` using `congrArg (ixOf I (usedOf I T Wt)) e`. Rewrite `h1` using `[ix_in _ hw, ixOf_mu0F]`.
+
+Establish `h2` using `congrArg I.xi h1`. Rewrite `h2` using `[xi_pickIxTw I (hmemR _ hw), hI.trueColumnChoices_heckeChar_reference_eq_one]`. Conclude with `(GlobalTheory.Mem.Top.TwFin.tw_fin X.B I.C T).2.1 _ h2`. Introduce `v`. Establish `e : Formalism.DivisionValues.conjPl v = X.toD7.plEq (X.B.places.conj (X.toD7.plEq.symm v))`.
+
+Use `plEq_conjPl X.toD7 (X.toD7.plEq.symm v)` as an intermediate fact. Rewrite `this` using `[Equiv.apply_symm_apply]`. Conclude with `this.symm`. Use `show muP (X.toD7.plEq.symm (Formalism.DivisionValues.conjPl v)) = muP (X.toD7.plEq.symm v)`. Rewrite using `[e, hss]`.
+
+Conclude with `muP_conj _`. Introduce `v hv`. Establish `hw` using `(memTw v).1 hv`. Use `set w := X.toD7.plEq.symm v with hwdef`. Establish `hv' : v = X.toD7.plEq w` using `by rw [hwdef, Equiv.apply_symm_apply]`.
+
+Establish `hpl : Formalism.EigenvalueLevelCeiling.plc v = X.B.places.resChar w`. Rewrite using `[hv']`. Conclude with `plc_eq_of_natCast_mem _ (X.B.places.resChar_prime w) (GlobalTheory.LvT.Inh.resChar_mem_plEq X.toD7 w)`. Use `⟨T.psi w, T.Q w, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[hpl]`.
+
+Conclude with `T.psi_is w`. Rewrite using `[hxi, hpl, hC] show I.xi (ixOf I (usedOf I T Wt) (muP w)) = _`. Rewrite using `[ix_in w hw, xi_pickIxTw I (hmemR w hw)]`. Both sides reduce to the same expression.
+-/
 theorem GlobalTheory.Mem.R3.tupL_of_twisted : ∀ (X : Stages) (px : PreX X.B.toPre) (I : Col2.ColIn X.B px) (hX : X.B.fields.Ok) (T : Top.TwDat X.B) (Wt : Set X.B.places.Pl) (L : Formalism.IndefR.Links.LevCh X.toD7 (TupU I (usedOf I T Wt))), Wt.Finite → (∀ w ∈ Wt, X.B.places.conj w ∈ Wt) → I.Ok → Set.range I.xi = T.set I.C → L.C = Top.Fr.at X I.C → (∀ t, L.xiH t = I.xi (ixOf I (usedOf I T Wt) t)) → ∃ (mu : HeightOneSpectrum (𝓞 X.toD7.what₂.LL) → TupU I (usedOf I T Wt)) (twPl : Finset (HeightOneSpectrum (𝓞 X.toD7.what₂.LL))), MuOf X I T Wt mu twPl ∧ ∀ Xg tr, Seed.TupL (famR X I hX (usedOf I T Wt) Xg tr) L mu twPl := by
   classical
   intro X px I hX T Wt L hWf hWc hI hrng hC hxi

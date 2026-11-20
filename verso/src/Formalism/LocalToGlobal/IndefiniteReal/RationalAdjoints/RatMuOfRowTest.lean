@@ -11,6 +11,9 @@ namespace Formalism.IndefR.Rat
 
 open Formalism.DivisionValues Formalism.L2.Indef Formalism.L2.DIV Formalism.IndefR.Cx Formalism.IndefR.Cx.CxData
 
+/- English proof (translation)
+Establish `hex : ∃ y, f y = e` using `he`. Unfold `solve`. Rewrite using `[dif_pos hex]`. Conclude with `hex.choose_spec`.
+-/
 theorem solve_spec {E : Type} [AddCommGroup E] [Module ℂ E] {n : ℕ} (f : (Fin n → ℂ) →ₗ[ℂ] E) (e : E)
     (he : e ∈ LinearMap.range f) : f (solve f e) = e := by
   have hex : ∃ y, f y = e := he
@@ -18,10 +21,18 @@ theorem solve_spec {E : Type} [AddCommGroup E] [Module ℂ E] {n : ℕ} (f : (Fi
   rw [dif_pos hex]
   exact hex.choose_spec
 
+/- English proof (translation)
+Simplify using `[lin, Fintype.linearCombination_apply_single]`.
+-/
 theorem lin_single {E : Type} [AddCommGroup E] [Module ℂ E] {n : ℕ} (v : Fin n → E) (k : Fin n) :
     lin v (Pi.single k 1) = v k := by
   simp [lin, Fintype.linearCombination_apply_single]
 
+/- English proof (translation)
+Introduce `K _ _ _ Bs A X fc cr b hT hH2`. Take `⟨N, ψ, hψ, hr⟩` from `hT`. Take `⟨hinj0, hall, -⟩` from `hH2`. Introduce `t i k`. Establish `hmem : X.iC cr b t (Pi.single k 1) ∈ LinearMap.range (X.iC cr b Bs.μ0)`.
+
+Rewrite using `[← (hall t).2]`. Conclude with `LinearMap.mem_range_self _ _`. Establish `key` using `coord_rat Bs.v0.embedding ψ hψ (X.iC cr b Bs.μ0) hinj0 (fun j l => by rw [CxData.iC, lin_single]; exact hr _ _ _) (solve (X.iC cr b Bs.μ0) (X.iC cr b t (Pi.single k 1))) (fun j => by rw [solve_spec _ _ hmem, CxData.iC, lin_single]; exact hr _ _ _) i`. Take `⟨a, ha⟩` from `key`. Conclude with `⟨a, by simpa [CxData.rowMatC, relMat] using ha⟩`.
+-/
 theorem ratMuOfRowTest : RatMuOfRowTest := by
   intro K _ _ _ Bs A X fc cr b hT hH2
   obtain ⟨N, ψ, hψ, hr⟩ := hT

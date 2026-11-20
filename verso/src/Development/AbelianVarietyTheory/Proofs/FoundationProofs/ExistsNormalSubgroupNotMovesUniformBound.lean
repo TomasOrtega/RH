@@ -8,6 +8,11 @@ namespace GlobalTheory.AlmostEt
 
 variable {L : Type} [Field L] {G : Type} [Group G] [MulSemiringAction G L]
 
+/- English proof (translation)
+Unfold `Moves`. Use `push_neg`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨r, hr, h⟩`. Conclude with `⟨r, hr, fun x hx => h x (Subfield.mem_top x) hx⟩`.
+
+Introduce and unpack `⟨r, hr, h⟩`. Conclude with `⟨r, hr, fun x _ hx => h x hx⟩`.
+-/
 theorem not_moves_top_iff (v : Valuation L ℝ≥0) (σ : G) :
     ¬ Moves v ⊤ σ ↔ ∃ r : ℝ≥0, r < 1 ∧ ∀ x : L, v x ≤ 1 → v (σ • x - x) ≤ r := by
   unfold Moves
@@ -46,6 +51,13 @@ def smallSubgroup (v : Valuation L ℝ≥0) (hv : ∀ (g : G) (x : L), v (g • 
     rw [e, Valuation.map_neg]
     exact h1 _ hy
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce `σ hσ g`. Express the relevant statement in the definitionally equal form `¬ Moves v ⊤ σ at hσ`. Express the relevant statement in the definitionally equal form `¬ Moves v ⊤ (g * σ * g⁻¹)`. Rewrite `hσ`, the goal using `[not_moves_top_iff]`.
+
+Take `⟨r, hr, h1⟩` from `hσ`. Use `⟨r, hr, fun x hx => ?_⟩` and prove the remaining obligations. Establish `hy : v (g⁻¹ • x) ≤ 1` using `by rw [hv]; exact hx`. Establish `e : (g * σ * g⁻¹) • x - x = g • (σ • (g⁻¹ • x) - g⁻¹ • x)`. Rewrite using `[smul_sub, mul_smul, mul_smul, smul_inv_smul]`.
+
+Rewrite using `[e, hv]`. Conclude with `h1 _ hy`.
+-/
 theorem smallSubgroup_normal (v : Valuation L ℝ≥0) (hv : ∀ (g : G) (x : L), v (g • x) = v x) :
     (smallSubgroup v hv).Normal := by
   constructor
@@ -61,6 +73,13 @@ theorem smallSubgroup_normal (v : Valuation L ℝ≥0) (hv : ∀ (g : G) (x : L)
   rw [e, hv]
   exact h1 _ hy
 
+/- English proof (translation)
+Introduce `L _ v G _ _ _ hv`. Use `⟨smallSubgroup v hv, smallSubgroup_normal v hv, fun σ => Iff.rfl, ?_⟩` and prove the remaining obligations. Establish `hc : ∀ τ : G, ∃ r : ℝ≥0, r < 1 ∧ (¬ Moves v ⊤ τ → ∀ x : L, v x ≤ 1 → v (τ • x - x) ≤ r)`. Introduce `τ`. Distinguish the cases in `h : Moves v ⊤ τ`.
+
+Conclude with `⟨0, zero_lt_one, fun h' => absurd h h'⟩`. Take `⟨r, hr, h1⟩` from `(not_moves_top_iff v τ).1 h`. Conclude with `⟨r, hr, fun _ => h1⟩`. Use `choose f hf1 hf2 using hc`. Use `letI := Fintype.ofFinite G`.
+
+Use `⟨Finset.univ.sup f, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[Finset.sup_lt_iff zero_lt_one]`. Conclude with `fun τ _ => hf1 τ`. Introduce `τ hτ x hx`. Conclude with `(hf2 τ hτ x hx).trans (Finset.le_sup (f := f) (Finset.mem_univ τ))`.
+-/
 theorem exists_normal_not_moves_uniform :
     ∀ (L : Type) [Field L] (v : Valuation L ℝ≥0) (G : Type) [Group G] [MulSemiringAction G L]
       [Finite G], (∀ (g : G) (x : L), v (g • x) = v x) →

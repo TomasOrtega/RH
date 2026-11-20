@@ -14,6 +14,17 @@ open scoped TensorProduct
 
 namespace UpperTheory.Lit.HoweDuality
 
+/- English proof (translation)
+Establish `hstep` using `step ball (loc ball) nf rk (core ball rk)`. Establish `hgerm` using `germ ball`. Establish `huniq` using `uniq ball`. Establish `hnz` using `nz ball (loc ball) nf`. Establish `hlaw` using `law ball cov`.
+
+Take `⟨B, hB0, hE⟩` from `hθ`. Use `letI : MeasurableSpace k := borel k`. Use `haveI : BorelSpace k := ⟨rfl⟩`. Take `⟨ν, hν⟩` from `GlobalTheory.SplitWeil.Model.exists_isUnitVol (k := k)`. Establish `down : ∀ j, j ≤ r → VanRk B j → VanRk B 0` using `fun j => by`.
+
+Proceed by induction on `j with`. Consider the case `zero => exact fun _ h => h`. Consider the case `succ j ih => exact fun hj h => ih (by omega) (hstep k (r + t) r μ V W σ π B j (by omega) (by omega) hμu hσu hE h)`. Take `⟨ev, hev⟩` from `huniq k ν hν (r + t) r V W B _ (hgerm k ν hν r t μ V W σ π B hμs hπs hE)`. Establish `hev0 : ev ≠ 0` using `fun e => hB0 (LinearMap.ext fun Φ => down r le_rfl (hnz k ν hν r t μ V W σ π B hE fun w => (hev w 0).2 (by rw [e]; rfl)) Φ fun _ h => absurd h (Nat.not_lt_zero _))`.
+
+Take `⟨f, hf⟩` from `frob k r t μ V W σ π ev hπs hev0 (hlaw k ν hν r t μ V W σ π B hE ev hev)`. Use `haveI := hπi`. Use `haveI := hIi`. Break down `Representation.IsIrreducible.bijective_or_eq_zero f with h | h` into its components or cases. Conclude with `⟨.mk (LinearEquiv.ofBijective f.toLinearMap h) f.isIntertwining'⟩`.
+
+Conclude with `absurd (by rw [h]; rfl) hf`.
+-/
 theorem lift_of_irr (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] (r t : ℕ)
     (μ : kˣ →* ℂˣ) (V : Type) [AddCommGroup V] [Module ℂ V] (W : Type) [AddCommGroup W] [Module ℂ W]
     (σ : Representation ℂ (GL (Fin r) k) V) (π : Representation ℂ (GL (Fin (r + t)) k) W) (hrt : r < t)

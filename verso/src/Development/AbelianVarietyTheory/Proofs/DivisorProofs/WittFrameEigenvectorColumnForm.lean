@@ -7,6 +7,21 @@ open scoped TensorProduct
 
 namespace GlobalTheory.TorusCentRow
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ n J r X Y hCM hJ hW g k γ hγ i`. Use `set S := sigR (AF F) σ with hS`. Use `set M : Matrix (Fin n) (Fin n) (AF F ⊗[F] E) := (matHom _ σ J g).1 with hMdef`. Use `set Mi : Matrix (Fin n) (Fin n) (AF F ⊗[F] E) := (matHom _ σ J g⁻¹).1 with hMidef`. Establish `hinv : matHom (AF F) σ J g⁻¹ = (matHom (AF F) σ J g)⁻¹` using `map_inv _ g`.
+
+Establish `hMMi : M * Mi = 1`. Rewrite using `[hMdef, hMidef, hinv]`. Conclude with `Units.mul_inv _`. Establish `hU : cT S M * adMat F J * M = adMat F J` using `g.2`. Establish `hadY : adMat F (cT (σ : E →+* E) Y * J) = cT S (adMat F Y) * adMat F J`.
+
+Rewrite using `[adMat, Matrix.map_mul]`. Use `congr 1`. Establish `hJM : adMat F J * M = cT S Mi * adMat F J`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[← Formalism.UG.cT_mul, hMMi, Formalism.UG.cT_one, Matrix.one_mul]`.
+
+Use `_ = cT S Mi * (cT S M * adMat F J * M) := by simp only [Matrix.mul_assoc]`. Use `_ = cT S Mi * adMat F J := by rw [hU]`. Establish `hcol : ∀ j, (Mi * adMat F Y) j k = γ * adMat F Y j k`. Introduce `j`. Use `congrFun hγ j` as an intermediate fact.
+
+Simplify `this` using `[Matrix.mulVec, dotProduct, Matrix.mul_apply]`. Establish `hrow : ∀ i, (adMat F (cT (σ : E →+* E) Y * J) * M) k i = S γ * adMat F (cT (σ : E →+* E) Y * J) k i`. Introduce `i`. Rewrite using `[hadY, Matrix.mul_assoc, hJM, ← Matrix.mul_assoc, ← Formalism.UG.cT_mul]`. Simplify using `only [Matrix.mul_apply, cT, Matrix.transpose_apply, Matrix.map_apply, hcol, map_mul, Finset.mul_sum, mul_assoc]`.
+
+Establish `hyx : adMat F (cT (σ : E →+* E) Y * J) * adMat F X = 1`. Rewrite using `[adMat, adMat, ← Matrix.map_mul, GlobalTheory.StdPar.yx hCM hJ hW]`. Conclude with `Matrix.map_one _ (map_zero _) (map_one _)`. Establish `hkk : (adMat F (cT (σ : E →+* E) Y * J) * M * adMat F X) k k = S γ`. Rewrite using `[Matrix.mul_apply]`.
+
+Repeatedly rewrite using `[hrow, mul_assoc, ← Finset.mul_sum, ← Matrix.mul_apply, hyx, Matrix.one_apply_eq, mul_one]`. Rewrite using `[hkk, hrow]`.
+-/
 theorem row_scalar : ∀ {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E} {n : ℕ}
     {J : Matrix (Fin n) (Fin n) E} {r : ℕ} {X Y : Matrix (Fin n) (Fin r) E}, IsCMExt F E σ → IsHermND σ J → IsWittFrame σ J X Y → ∀ {g : GAd σ J} {k : Fin r} (γ : AF F ⊗[F] E),
     (matHom _ σ J g⁻¹).1 *ᵥ (fun i => adMat F Y i k) = γ • (fun i => adMat F Y i k) → ∀ i,

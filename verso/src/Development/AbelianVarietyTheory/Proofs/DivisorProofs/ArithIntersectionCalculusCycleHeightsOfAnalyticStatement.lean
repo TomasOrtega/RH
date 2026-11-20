@@ -6,5 +6,8 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.S
 open ReciprocityTheory.ChartRestriction.G.Out (nonzeroLocus)
 open GlobalTheory GlobalTheory.CechPic GlobalTheory.CxPts GlobalTheory.Cartier GlobalTheory.ArInt GlobalTheory.MixHt
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.MixHt.arCalc_cycleHeights_of_analytic | exact GlobalTheory.MixHt.arCalc_cycleHeights_of_analytic | (intros; apply GlobalTheory.MixHt.arCalc_cycleHeights_of_analytic <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.arithIntersectionCalculus_cycleHeights_of_analytic : ArchInteg → ArchRecip → GlobalTheory.Published.ArCalc ∧ GlobalTheory.Published.CycleHeights := by
   first | exact @GlobalTheory.MixHt.arCalc_cycleHeights_of_analytic | exact GlobalTheory.MixHt.arCalc_cycleHeights_of_analytic | (intros; apply GlobalTheory.MixHt.arCalc_cycleHeights_of_analytic <;> assumption)

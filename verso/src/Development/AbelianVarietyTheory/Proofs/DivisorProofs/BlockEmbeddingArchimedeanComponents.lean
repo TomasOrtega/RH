@@ -29,6 +29,9 @@ variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algeb
 def evTens (w : InfinitePlace F) : Ainf F ⊗[F] E →+* w.Completion ⊗[F] E :=
   (Algebra.TensorProduct.map (GlobalTheory.AutFunCompare.evW w) (AlgHom.id F E)).toRingHom
 
+/- English proof (translation)
+Proceed by induction on `z using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul a x => rfl`. Consider the case `add x y hx hy => simp only [map_add, hx, hy]`.
+-/
 theorem compInf_eq_evTens (w : InfinitePlace F) (z : AF F ⊗[F] E) :
     GlobalTheory.AdelicU.compInf F E w z = evTens w (GlobalTheory.LFun.infTens F E z) := by
   induction z using TensorProduct.induction_on with
@@ -36,6 +39,9 @@ theorem compInf_eq_evTens (w : InfinitePlace F) (z : AF F ⊗[F] E) :
   | tmul a x => rfl
   | add x y hx hy => simp only [map_add, hx, hy]
 
+/- English proof (translation)
+Proceed by induction on `z using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul a x => rfl`. Consider the case `add x y hx hy => simp only [map_add, hx, hy]`.
+-/
 theorem map_sigR {R R' : Type} [CommRing R] [Algebra F R] [CommRing R'] [Algebra F R'] (a : R →ₐ[F] R')
     (σ : E →ₐ[F] E) (z : R ⊗[F] E) :
     Algebra.TensorProduct.map a (AlgHom.id F E) (sigR R σ z) =
@@ -45,6 +51,9 @@ theorem map_sigR {R R' : Type} [CommRing R] [Algebra F R] [CommRing R'] [Algebra
   | tmul a x => rfl
   | add x y hx hy => simp only [map_add, hx, hy]
 
+/- English proof (translation)
+Use extensionality with `i k`. Conclude with `map_sigR a σ (M k i)`.
+-/
 theorem map_cT_sigR_map {R R' : Type} [CommRing R] [Algebra F R] [CommRing R'] [Algebra F R'] (a : R →ₐ[F] R')
     (σ : E →ₐ[F] E) {m p : Type} (M : Matrix m p (R ⊗[F] E)) :
     (cT (sigR R σ) M).map (Algebra.TensorProduct.map a (AlgHom.id F E)) =
@@ -52,6 +61,9 @@ theorem map_cT_sigR_map {R R' : Type} [CommRing R] [Algebra F R] [CommRing R'] [
   ext i k
   exact map_sigR a σ (M k i)
 
+/- English proof (translation)
+Use extensionality with `i k`. Simplify using `[inclR]`.
+-/
 theorem map_inclR_map {R R' : Type} [CommRing R] [Algebra F R] [CommRing R'] [Algebra F R'] (a : R →ₐ[F] R')
     {m p : Type} (M : Matrix m p E) :
     (M.map (inclR (F := F) R)).map (Algebra.TensorProduct.map a (AlgHom.id F E)) = M.map (inclR (F := F) R') := by
@@ -79,24 +91,46 @@ variable {Φ : AF F ⊗[F] E ≃+* AdeleRing (𝓞 E) E} {j : Ainf F ⊗[F] E �
   (hs : ∀ z, Φ z = (j (GlobalTheory.LFun.infTens F E z), GlobalTheory.LFun.finAdEquiv F E (GlobalTheory.LFun.finTens F E z)))
 include hs
 
+/- English proof (translation)
+Establish `h` using `hs (Φ.symm (sInf E x))`. Rewrite `h` using `[Φ.apply_symm_apply]`. Establish `h1` using `congrArg Prod.fst h`. Conclude with `j.injective ((j.apply_symm_apply _).trans h1).symm`.
+-/
 theorem infTens_symm_sInf (x : Cinf E) : GlobalTheory.LFun.infTens F E (Φ.symm (sInf E x)) = j.symm (infEq E x) := by
   have h := hs (Φ.symm (sInf E x))
   rw [Φ.apply_symm_apply] at h
   have h1 := congrArg Prod.fst h
   exact j.injective ((j.apply_symm_apply _).trans h1).symm
 
+/- English proof (translation)
+Establish `h` using `hs (Φ.symm (sInf E x))`. Rewrite `h` using `[Φ.apply_symm_apply]`. Establish `h1` using `congrArg Prod.snd h`. Conclude with `(GlobalTheory.LFun.finAdEquiv F E).injective (((map_zero _).trans h1).symm)`.
+-/
 theorem finTens_symm_sInf (x : Cinf E) : GlobalTheory.LFun.finTens F E (Φ.symm (sInf E x)) = 0 := by
   have h := hs (Φ.symm (sInf E x))
   rw [Φ.apply_symm_apply] at h
   have h1 := congrArg Prod.snd h
   exact (GlobalTheory.LFun.finAdEquiv F E).injective (((map_zero _).trans h1).symm)
 
+/- English proof (translation)
+Rewrite using `[compInf_eq_evTens, infTens_symm_sInf hs]`. Both sides reduce to the same expression.
+-/
 theorem compInf_symm_sInf (w : InfinitePlace F) (x : Cinf E) :
     GlobalTheory.AdelicU.compInf F E w (Φ.symm (sInf E x)) = rhoW j w x := by
   rw [compInf_eq_evTens, infTens_symm_sInf hs]; rfl
 
 end Split
 
+/- English proof (translation)
+Choose the witnesses or unpack the hypotheses as in `⟨i, hi⟩ : ∃ i, ψ (Pi.single i 1) ≠ 0 := by`. Assume the negation of the conclusion as `hc`. Use `push_neg at hc`. Establish `h1 : ψ 1 = ∑ i, ψ (Pi.single i 1)`. Rewrite using `[← map_sum]`.
+
+Use `congr 1`. Conclude with `(Finset.univ_sum_single (1 : ι → ℂ)).symm`. Rewrite `h1` using `[map_one, Finset.sum_eq_zero fun i _ => hc i]`. Conclude with `one_ne_zero h1`. Establish `he : ψ (Pi.single i 1) = 1`.
+
+Establish `h2 : ψ (Pi.single i 1) * ψ (Pi.single i 1) = ψ (Pi.single i 1) * 1`. Rewrite using `[← map_mul, mul_one, ← Pi.single_mul, mul_one]`. Conclude with `mul_left_cancel₀ hi h2`. Set `φ : ℂ →+* ℂ` to `ψ.comp (Pi.constRingHom ι ℂ)`. Establish `hφ : Continuous φ` using `hψ.comp (continuous_pi fun _ => continuous_id)`.
+
+Establish `key : ∀ y : ι → ℂ, ψ y = φ (y i)` using `fun y => by`. Establish `h3 : y * Pi.single i 1 = Pi.constRingHom ι ℂ (y i) * Pi.single i 1`. Use function extensionality and compare the values at `k`. Distinguish the cases in `hk : k = i`. Substitute `hk` using the available equality.
+
+Simplify using the standard rewrite rules. Simplify using `[Pi.single_apply, hk]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[key, key, Pi.star_apply]`. Break down `Complex.ringHom_eq_id_or_conj_of_continuous hφ with h | h` into its components or cases.
+
+Rewrite using `[h]`. Both sides reduce to the same expression. Rewrite using `[h]`. Simplify using the standard rewrite rules.
+-/
 theorem map_star_of_continuous {ι : Type} [Fintype ι] (ψ : (ι → ℂ) →+* ℂ) (hψ : Continuous ψ)
     (z : ι → ℂ) : ψ (star z) = star (ψ z) := by
   classical
@@ -140,6 +174,11 @@ open GlobalTheory.CuspRep Formalism.UG
 
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
 
+/- English proof (translation)
+Proceed by induction on `s using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul a x`. Express the relevant statement in the definitionally equal form `(GlobalTheory.AutFunCompare.evW w (GlobalTheory.AutFunCompare.sgW w a)) ⊗ₜ[F] x = a ⊗ₜ[F] x`. Use `congr 1`.
+
+Conclude with `Pi.single_eq_same w a`. Consider the case `add x y hx hy => simp only [map_add, hx, hy]`.
+-/
 theorem evTens_rTensor_self (w : InfinitePlace F) (s : w.Completion ⊗[F] E) :
     evTens w (LinearMap.rTensor E (GlobalTheory.AutFunCompare.sgW w) s) = s := by
   classical
@@ -151,6 +190,11 @@ theorem evTens_rTensor_self (w : InfinitePlace F) (s : w.Completion ⊗[F] E) :
     exact Pi.single_eq_same w a
   | add x y hx hy => simp only [map_add, hx, hy]
 
+/- English proof (translation)
+Proceed by induction on `s using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul a x`. Express the relevant statement in the definitionally equal form `(GlobalTheory.AutFunCompare.evW u (GlobalTheory.AutFunCompare.sgW w a)) ⊗ₜ[F] x = 0`. Rewrite using `[show GlobalTheory.AutFunCompare.evW u (GlobalTheory.AutFunCompare.sgW w a) = 0 from Pi.single_eq_of_ne h a]`.
+
+Conclude with `TensorProduct.zero_tmul _ _`. Consider the case `add x y hx hy => simp only [map_add, hx, hy, add_zero]`.
+-/
 theorem evTens_rTensor_ne {w u : InfinitePlace F} (h : u ≠ w) (s : w.Completion ⊗[F] E) :
     evTens u (LinearMap.rTensor E (GlobalTheory.AutFunCompare.sgW w) s) = 0 := by
   classical
@@ -162,6 +206,9 @@ theorem evTens_rTensor_ne {w u : InfinitePlace F} (h : u ≠ w) (s : w.Completio
     exact TensorProduct.zero_tmul _ _
   | add x y hx hy => simp only [map_add, hx, hy, add_zero]
 
+/- English proof (translation)
+Use `⟨fun z z' h => GlobalTheory.AutFunCompare.infTens_ext fun w => congrFun h w, fun t => ?_⟩` and prove the remaining obligations. Use `⟨∑ w, LinearMap.rTensor E (GlobalTheory.AutFunCompare.sgW w) (t w), funext fun u => ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `evTens u (∑ w, LinearMap.rTensor E (GlobalTheory.AutFunCompare.sgW w) (t w)) = t u`. Rewrite using `[map_sum, Finset.sum_eq_single u (fun w _ hw => evTens_rTensor_ne (Ne.symm hw) _) (by simp), evTens_rTensor_self]`.
+-/
 theorem evTens_pi_bijective : Function.Bijective (Pi.ringHom fun w : InfinitePlace F => (evTens w : Ainf F ⊗[F] E →+* _)) := by
   classical
   refine ⟨fun z z' h => GlobalTheory.AutFunCompare.infTens_ext fun w => congrFun h w, fun t => ?_⟩
@@ -172,10 +219,22 @@ theorem evTens_pi_bijective : Function.Bijective (Pi.ringHom fun w : InfinitePla
 
 variable [IsTotallyComplex E]
 
+/- English proof (translation)
+The claim follows from `(evTens_pi_bijective (E := E)).comp (j.symm.bijective.comp (infEq E).bijective)`.
+-/
 theorem rhoW_pi_bijective (j : Ainf F ⊗[F] E ≃+* InfiniteAdeleRing E) :
     Function.Bijective (Pi.ringHom fun w : InfinitePlace F => rhoW j w) :=
   (evTens_pi_bijective (E := E)).comp (j.symm.bijective.comp (infEq E).bijective)
 
+/- English proof (translation)
+Set `e` to `RingEquiv.ofBijective _ (rhoW_pi_bijective (F := F) (E := E) j)`. Establish `he : ∀ x w, rhoW j w x = e x w` using `fun _ _ => rfl`. Set `Y : Matrix (Fin d) (Fin d) (Cinf E)` to `Matrix.of fun a b => e.symm fun w => (m w).1 a b`. Set `Yi : Matrix (Fin d) (Fin d) (Cinf E)` to `Matrix.of fun a b => e.symm fun w => ((m w)⁻¹).1 a b`. Establish `hY : ∀ w, Y.map (rhoW j w) = (m w).1` using `fun w => by`.
+
+Use extensionality with `a b`. Simplify using `only [Matrix.map_apply, he, Y, Matrix.of_apply, e.apply_symm_apply]`. Establish `hYi : ∀ w, Yi.map (rhoW j w) = ((m w)⁻¹).1` using `fun w => by`. Use extensionality with `a b`. Simplify using `only [Matrix.map_apply, he, Yi, Matrix.of_apply, e.apply_symm_apply]`.
+
+Establish `inj : ∀ {M N : Matrix (Fin d) (Fin d) (Cinf E)}, (∀ w, M.map (rhoW j w) = N.map (rhoW j w)) → M = N` using `fun {M N} h => Matrix.ext fun a b => e.injective (funext fun w => congrArg (fun P : Matrix (Fin d) (Fin d) _ => P a b) (h w))`. Establish `h1 : Y * Yi = 1` using `inj fun w => by`. Rewrite using `[Matrix.map_mul, hY, hYi, Matrix.map_one _ (map_zero _) (map_one _)]`. Conclude with `(m w).mul_inv`. Establish `h2 : Yi * Y = 1` using `inj fun w => by`.
+
+Rewrite using `[Matrix.map_mul, hY, hYi, Matrix.map_one _ (map_zero _) (map_one _)]`. Conclude with `(m w).inv_mul`. Conclude with `⟨⟨Y, Yi, h1, h2⟩, fun w => Units.ext (hY w)⟩`.
+-/
 theorem exists_lift_GL (j : Ainf F ⊗[F] E ≃+* InfiniteAdeleRing E) {d : ℕ}
     (m : ∀ w : InfinitePlace F, GL (Fin d) (w.Completion ⊗[F] E)) :
     ∃ y : GL (Fin d) (Cinf E), ∀ w, Matrix.GeneralLinearGroup.map (rhoW j w) y = m w := by
@@ -206,6 +265,9 @@ open GlobalTheory.CuspRep Formalism.UG
 
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
 
+/- English proof (translation)
+Simplify using `only [Matrix.map_add f (map_add f), Matrix.map_sub f (map_sub f), Matrix.map_mul, Matrix.map_one f (map_zero f) (map_one f)]`.
+-/
 theorem map_blockForm {R S : Type} [CommRing R] [CommRing S] (f : R →+* S) {n d : Type} [Fintype d] [Fintype n]
     [DecidableEq n] [DecidableEq d] (A : Matrix n d R) (B : Matrix d d R) (C : Matrix d n R) (D : Matrix n d R)
     (B' : Matrix d d R) (C' : Matrix d n R) :
@@ -214,6 +276,9 @@ theorem map_blockForm {R S : Type} [CommRing R] [CommRing S] (f : R →+* S) {n 
   simp only [Matrix.map_add f (map_add f), Matrix.map_sub f (map_sub f), Matrix.map_mul,
     Matrix.map_one f (map_zero f) (map_one f)]
 
+/- English proof (translation)
+The claim follows from `(continuous_infEq E).prodMk continuous_const`.
+-/
 theorem continuous_sInf [IsTotallyComplex E] : Continuous (sInf E) :=
   (continuous_infEq E).prodMk continuous_const
 
@@ -221,6 +286,23 @@ end GlobalTheory.BlockArch
 
 open GlobalTheory.CuspRep GlobalTheory.BlockArch in
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ _ σ hcm n J r Xf Yf l d h ι hB`. Take `⟨Φ, j, -, hΦs, -, hs, hform⟩` from `hB`. Use `⟨rhoW j, fun w z => ?_, fun m => exists_lift_GL j m, fun y => ⟨?_, fun w => ?_⟩⟩` and prove the remaining obligations. Take `⟨τ⟩ : Nonempty (GlobalTheory.AdelicU.EmbOver E w)` from `inferInstance`. Establish `hc : Continuous ((GlobalTheory.AdelicU.infEmb τ).comp (rhoW j w))`.
+
+Establish `e : ⇑((GlobalTheory.AdelicU.infEmb τ).comp (rhoW j w)) = fun x => GlobalTheory.AdelicU.infEmb τ (compInf F E w (Φ.symm (sInf E x)))`. Use function extensionality and compare the values at `fun x => by rw [compInf_symm_sInf hs]; rfl`. Rewrite using `[e]`. Conclude with `(GlobalTheory.Grow.continuous_infEmb_compInf F w τ).comp (hΦs.comp continuous_sInf)`. Apply `(GlobalTheory.AdelicU.infEmb_bijective hcm τ).1` to reduce the goal to its premises.
+
+Rewrite using `[← GlobalTheory.AdelicU.infEmb_sigR hcm τ]`. Conclude with `map_star_of_continuous _ hc z`. Establish `hq : ((infGL E d y).1.map Φ.symm).map (GlobalTheory.LFun.finTens F E) = 1`. Rewrite using `[Matrix.map_map]`. Conclude with `congrArg Units.val (map_cornerGL_of_zero (sInf E) ((GlobalTheory.LFun.finTens F E).comp Φ.symm.toRingHom) (finTens_symm_sInf hs) y)`.
+
+Establish `hq' : ((infGL E d y⁻¹).1.map Φ.symm).map (GlobalTheory.LFun.finTens F E) = 1`. Rewrite using `[Matrix.map_map]`. Conclude with `congrArg Units.val (map_cornerGL_of_zero (sInf E) ((GlobalTheory.LFun.finTens F E).comp Φ.symm.toRingHom) (finTens_symm_sInf hs) y⁻¹)`. Establish `hA : ∀ {m p : Type} (M : Matrix m p E), (adMat F M).map (GlobalTheory.LFun.finTens F E) = M.map (inclR (F` using `F) (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.Af F)) := fun M => map_inclR_map (sndA F) M`. Establish `hC : ∀ {m p : Type} (M : Matrix m p (AF F ⊗[F] E)), (Formalism.UG.cT (sigR (AF F) σ) M).map (GlobalTheory.LFun.finTens F E) = Formalism.UG.cT (sigR (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.Af F) σ) (M.map (GlobalTheory.LFun.finTens F E))` using `fun M => map_cT_sigR_map (sndA F) σ M`.
+
+Use `show ι (infGL E d y) ∈ MonoidHom.ker _`. Rewrite using `[MonoidHom.mem_ker]`. Apply `Units.ext` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `((matHom _ σ J (ι (infGL E d y))).1).map (GlobalTheory.LFun.finTens F E) = 1`. Rewrite using `[hform, ← map_inv]`.
+
+Rewrite using `[map_blockForm, hC, hq, hq', Formalism.UG.cT_one]`. Simplify using the standard rewrite rules. Establish `hp : ∀ y : GL (Fin d) (Cinf E), ((infGL E d y).1.map Φ.symm).map (compInf F E w) = (Matrix.GeneralLinearGroup.map (rhoW j w) y).1` using `fun y => by`. Rewrite using `[Matrix.map_map]`. Conclude with `congrArg Units.val (map_cornerGL_of_hom (sInf E) ((compInf F E w).comp Φ.symm.toRingHom) (rhoW j w) (compInf_symm_sInf hs w) y)`.
+
+Establish `hA : ∀ {m p : Type} (M : Matrix m p E), (adMat F M).map (compInf F E w) = M.map (inclR (F` using `F) w.Completion) := fun M => map_inclR_map (evInf F w) M`. Establish `hC : ∀ {m p : Type} (M : Matrix m p (AF F ⊗[F] E)), (Formalism.UG.cT (sigR (AF F) σ) M).map (compInf F E w) = Formalism.UG.cT (sigR w.Completion σ) (M.map (compInf F E w))` using `fun M => map_cT_sigR_map (evInf F w) σ M`. Rewrite using `[matHom_projArch]`. Express the relevant statement in the definitionally equal form `((matHom _ σ J (ι (infGL E d y))).1).map (compInf F E w) = _`. Rewrite using `[hform, ← map_inv]`.
+
+Rewrite using `[map_blockForm, hA, hA, hA, hA, hC, hp, hp, map_inv]`.
+-/
 theorem GlobalTheory.BlockForms.exists_archComp_of_isBlockEmb : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [IsTotallyComplex E] [Algebra F E]
     (σ : E →ₐ[F] E), IsCMExt F E σ → ∀ (n : ℕ) (J : Matrix (Fin n) (Fin n) E)
     (r : ℕ) (Xf Yf : Matrix (Fin n) (Fin r) E) (l d : ℕ) (h : l + d ≤ r) (ι : GlobalTheory.CuspRep.GA E d →* GAd σ J),

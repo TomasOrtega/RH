@@ -17,6 +17,13 @@ open GlobalTheory.UT ReciprocityTheory.ChartRestriction.G.DVR
 noncomputable section
 namespace GlobalTheory.Poinc.Tors.LiesOverExt
 
+/- English proof (translation)
+Use `letI : Module R (FractionRing R) := Module.compHom (FractionRing R) (algebraMap R (FractionRing R))`. Use `letI : Module R F := Module.compHom F (algebraMap R (FractionRing R))`. Take `⟨N, hN, hs, hx, hS⟩` from `h`. Set `φ : FractionRing R →ₗ[R] F` to `{ toFun := algebraMap (FractionRing R) F map_add' := map_add _ map_smul' := fun r y => by show algebraMap (FractionRing R) F (algebraMap R (FractionRing R) r • y) = algebraMap R (FractionRing R) r • algebraMap (FractionRing R) F y`. Rewrite using `[smul_eq_mul, map_mul, Algebra.smul_def] }`.
+
+Use `⟨N.map φ, hN.map φ, Submodule.mem_map_of_mem hs, fun i => Submodule.mem_map_of_mem (hx i), fun n => ?_⟩` and prove the remaining obligations. Take `⟨S, hS⟩` from `hS n`. Use `⟨S, fun T hT => ?_⟩` and prove the remaining obligations. Use `Submodule.mem_map_of_mem (f := φ) (hS T hT)` as an intermediate fact. Rewrite `this` using `[Submodule.map_smul'']`.
+
+Simplify `this` using `[φ, map_sub, map_sum]`.
+-/
 theorem sumF_algebraMap {R : Type} [CommRing R] [IsDomain R] (I : Ideal R) (F : Type) [Field F]
     [Algebra (FractionRing R) F] {Ix : Type} (x : Ix → FractionRing R) (s : FractionRing R)
     (h : SumF I (FractionRing R) x s) :
@@ -38,6 +45,11 @@ theorem sumF_algebraMap {R : Type} [CommRing R] [IsDomain R] (I : Ideal R) (F : 
   rw [Submodule.map_smul''] at this
   simpa [φ, map_sub, map_sum] using this
 
+/- English proof (translation)
+Establish `hb` using `GlobalTheory.TorusExt.gtExt_b (D := D) (algebraMap (FractionRing R) F) (RingHom.comp_id _) g`. Establish `h0 : spMap (algebraMap (FractionRing R) F) ≫ (DegPre.zeroF D (FractionRing R)).left = (DegPre.zeroF D F).left` using `congrArg (fun q => q.left) (MonObj.comp_one (M := D.P.A) (GlobalTheory.TorusExt.extMap (R := R) (algebraMap (FractionRing R) F) (RingHom.comp_id _)))`. Take `⟨w', hw', hv⟩` from `exists_gen D.P.isLB (φ' := DegPre.lineφ D F (GlobalTheory.TorusExt.gtExt D (algebraMap (FractionRing R) F) (RingHom.comp_id _) g).b) (ε' := DegPre.lineε k) (fun U _ h => Finset.prod_congr rfl fun i _ => by fin_cases i`. Conclude with `congrArg (fun q => h q ^ _) h0`. Conclude with `congrArg (fun q => h q ^ _) (congrArg (fun q => q.left) hb).symm)`.
+
+Use the proof step `(LB.pullGen D.P.L _ _ w (spMap (algebraMap (FractionRing R) F))) (pullGen_isGen _ _ _ _ hw _)`. Conclude with `⟨w', hw', fun Z r z J hJ => (hv Z r z J hJ).trans (val_pull hJ _ _ _)⟩`.
+-/
 theorem exists_frm_pull {R : Type} [CommRing R] [IsDomain R] (D : DegPre R) (F : Type) [Field F]
     [Algebra (FractionRing R) F] {k : ℕ} (g : GtPtF D (FractionRing R)) (w : Frm D (FractionRing R) k g.b)
     (hw : w.IsGen) :
@@ -59,6 +71,9 @@ theorem exists_frm_pull {R : Type} [CommRing R] [IsDomain R] (D : DegPre R) (F :
     (LB.pullGen D.P.L _ _ w (spMap (algebraMap (FractionRing R) F))) (pullGen_isGen _ _ _ _ hw _)
   exact ⟨w', hw', fun Z r z J hJ => (hv Z r z J hJ).trans (val_pull hJ _ _ _)⟩
 
+/- English proof (translation)
+Take `⟨fr', hfr', hv⟩` from `exists_gen A.isLB (φ' := fun _ : Fin 1 => x'.left) (ε' := fun _ => 1) (fun U _ h => Finset.prod_congr rfl fun i _ => by rw [hx]) (LB.pullGen A.L _ _ fr (spMap (algebraMap (FractionRing R) F))) (pullGen_isGen _ _ _ _ hfr _)`. Conclude with `⟨fr', hfr', fun Z r z J hJ => (hv Z r z J hJ).trans (val_pull hJ _ _ _)⟩`.
+-/
 theorem exists_frAt_pull {R : Type} [CommRing R] [IsDomain R] {A : PolAV (Spec (CommRingCat.of (FractionRing R)))}
     {F : Type} [Field F] [Algebra (FractionRing R) F] (x : TFK (R := R) (FractionRing R) ⟶ A.A) (fr : FrAt x)
     (hfr : fr.IsGen) (x' : TFK (R := R) F ⟶ A.A) (hx : x'.left = spMap (algebraMap (FractionRing R) F) ≫ x.left) :
@@ -69,6 +84,9 @@ theorem exists_frAt_pull {R : Type} [CommRing R] [IsDomain R] {A : PolAV (Spec (
     (LB.pullGen A.L _ _ fr (spMap (algebraMap (FractionRing R) F))) (pullGen_isGen _ _ _ _ hfr _)
   exact ⟨fr', hfr', fun Z r z J hJ => (hv Z r z J hJ).trans (val_pull hJ _ _ _)⟩
 
+/- English proof (translation)
+Apply the tactic sequence `obtain ⟨wk, hwk, hv⟩ := exists_gen D.P.isLB (φ' := DegPre.lineφ D F b) (ε' := DegPre.lineε k) (fun U _ h => Finset.prod_congr rfl fun i _ => by fin_cases i <;> simp [DegPre.lineε]) (GeneratorPullback.powGen D.P.L _ _ w k) (powGen_isGen _ _ _ _ hw k)`. Conclude with `⟨wk, hwk, fun Z r z J hJ => (hv Z r z J hJ).trans (val_pow _ _ _ _ _)⟩`.
+-/
 theorem exists_frm_pow {R : Type} [CommRing R] [IsDomain R] {D : DegPre R} {F : Type} [Field F]
     [Algebra (FractionRing R) F] {b : TF (R := R) F ⟶ D.P.A} (w : Frm D F 1 b) (hw : w.IsGen) (k : ℕ) :
     ∃ wk : Frm D F k b, wk.IsGen ∧ ∀ (Z : Scheme.{0}) (r : Z ⟶ (TF (R := R) F).left) (z : Z) (J), Good D.P.L z J →
@@ -80,6 +98,25 @@ theorem exists_frm_pow {R : Type} [CommRing R] [IsDomain R] {D : DegPre R} {F : 
 
 open GlobalTheory.TorsionExt GlobalTheory.FieldBaseChange in
 
+/- English proof (translation)
+Introduce `R _ _ _ I hI D A G _ _ hGs U F _ _ _ w₀ hw₀ g w x fr hw hfr hlies x' hx'`. Establish `hG : GlobalFnsSt` using `GlobalTheory.firstFiveLaws.1.globalFns`. Take `⟨w', hw', hvw'⟩` from `exists_frm_pull D.toPre F g w hw`. Take `⟨fr', hfr', hvfr'⟩` from `exists_frAt_pull x fr hfr x' hx'`. Use `⟨w', fr', hw', hfr', ?_⟩` and prove the remaining obligations.
+
+Introduce `k hk wk' hwk'v hwk' s s'' v hexp hval`. Take `⟨wk, hwk, hwkv⟩` from `exists_frm_pow w hw k`. Take `⟨wkF, hwkF, hvwkF⟩` from `exists_frm_pull D.toPre F g wk hwk`. Establish `hc : ∀ χ, coef s'' (GlobalTheory.TorusExt.gtExt D.toPre (algebraMap (FractionRing R) F) (RingHom.comp_id _) g) wk' χ = coef s'' (GlobalTheory.TorusExt.gtExt D.toPre (algebraMap (FractionRing R) F) (RingHom.comp_id _) g) wkF χ` using `fun χ => GlobalTheory.UT.ThetaSum.coef_congr _ hwkF (fun z J hJ => by`. Rewrite using `[hwk'v z J hJ, hvw' _ _ z J hJ, hvwkF _ _ z J hJ, hwkv _ _ z J hJ]) s'' χ`.
+
+Take `⟨e, he⟩` from `GlobalTheory.exists_linearEquiv_expandsF hG U (FractionRing R) hk w₀ hw₀`. Take `⟨e', he'⟩` from `GlobalTheory.exists_linearEquiv_expandsF hG U F hk w₀ hw₀`. Establish `cc : ∀ t, e' (abPull (FractionRing R) F A k t) = famPull D.toPre (FractionRing R) F hG k (e t)` using `fun t => (he' _ _).1 (expandsF_pull U.toUnifPre hG ((he _ _).2 rfl))`. Take `⟨n, c, σ, hσ⟩` from `(isExtension_famPull D.toPre (FractionRing R) F hG hk).exists_sum s''`. Use `choose a ha using fun i => GlobalTheory.ZH.SecComb.exists_valAt (e.symm (σ i)) hfr`.
+
+Establish `sK : ∀ i, SumF I (FractionRing R) (coef (σ i) g wk) (a i)` using `fun i => hlies k hk wk (fun z J hJ => hwkv _ _ z J hJ) hwk (e.symm (σ i)) (σ i) (a i) ((he _ _).2 (e.apply_symm_apply _)) (ha i)`. Establish `comb` using `GlobalTheory.UT.EvalZero.sumF_comb hI F Finset.univ c _ _ fun i => sumF_algebraMap I F _ _ (sK i)`. Establish `lin` using `((GlobalTheory.UT.CoefBasic.coef_basic R D.toPre F k (GlobalTheory.TorusExt.gtExt D.toPre (algebraMap (FractionRing R) F) (RingHom.comp_id _) g)).2.2 wkF hwkF).2.1`. Establish `hcoef : ∀ χ, coef s'' (GlobalTheory.TorusExt.gtExt D.toPre (algebraMap (FractionRing R) F) (RingHom.comp_id _) g) wk' χ = ∑ i, c i * algebraMap (FractionRing R) F (coef (σ i) g wk χ)` using `fun χ => by`. Establish `h0 : coef 0 (GlobalTheory.TorusExt.gtExt D.toPre (algebraMap (FractionRing R) F) (RingHom.comp_id _) g) wkF χ = 0`.
+
+Use `lin 0 0 1 χ` as an intermediate fact. Rewrite `this` using `[smul_zero, add_zero, _root_.one_mul]`. Conclude with `left_eq_add.1 this`. Set `Lc : Fam D.toPre F k →ₗ[F] F` to `{ toFun := fun s => coef s (GlobalTheory.TorusExt.gtExt D.toPre (algebraMap (FractionRing R) F) (RingHom.comp_id _) g) wkF χ map_add' := fun s s' => by simpa using lin s s' 1 χ map_smul' := fun c s => by simpa [h0] using lin s 0 c χ }`. Rewrite using `[hc χ, hσ]`.
+
+Use `show Lc _ = _`. Rewrite using `[map_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[map_smul, smul_eq_mul]`. Conclude with `congrArg (c i * ·) (GlobalTheory.T.fourierCoefficient_familyPullback_fractionField R D.toPre F hG k (σ i) g wk wkF hwk hwkF (fun z J hJ => hvwkF _ _ z J hJ) χ)`.
+
+Set `u : Fin n → AbSec A F k` to `fun i => abPull (FractionRing R) F A k (e.symm (σ i))`. Establish `hs : (s : AbSec A F k) = ∑ i, c i • u i`. Apply `e'.injective` to reduce the goal to its premises. Rewrite using `[(he' _ _).1 hexp, map_sum, hσ]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[map_smul, cc, e.apply_symm_apply]`. Establish `hcomb : IsComb u c s` using `fun j => by`. Rewrite using `[hs]`. Conclude with `(map_sum (chartLin (abelianBase A F) _ j) (fun i => c i • u i) Finset.univ).trans rfl`. Establish `hvu : ∀ i, ValAt (u i) x' fr' (algebraMap (FractionRing R) F (a i))` using `fun i => GlobalTheory.T.value_pulledBackSection_eq_image_fieldExtension R A F k _ x fr x' fr' hx' hfr (fun z J hJ => hvfr' _ _ z J hJ) _ (ha i)`.
+
+Establish `hval'` using `((GlobalTheory.ZH.SecComb.lin_comb_value_act R A F k).2 (Fin n) c u).2 s hcomb |>.1 x' fr' _ hvu`. Establish `hv : v = ∑ i, c i * algebraMap (FractionRing R) F (a i)` using `((GlobalTheory.ZH.SecComb.lin_comb_value_act R A F k).1 s x' fr' hfr').unique hval hval'`. Rewrite using `[hv, funext hcoef]`. Conclude with `comb`.
+-/
 theorem liesOver_ext : ∀ (R : Type) [CommRing R] [IsDomain R] [CharZero R] (I : Ideal R), AdmBase R I → ∀ (D : DegData R I) (A : PolAV (Spec (CommRingCat.of (FractionRing R)))) (G : Over (Spec (CommRingCat.of R))) [GrpObj G] [IsCommMonObj G], IsSemiAbelian G → ∀ (U : Unif I D A G) (F : Type) [Field F] [IsAlgClosed F] [Algebra (FractionRing R) F] (w₀ : W0 U.toUnifPre), w₀.IsGen → ∀ (g : GtPtF D.toPre (FractionRing R)) (w : Frm D.toPre (FractionRing R) 1 g.b) (x : TFK (R := R) (FractionRing R) ⟶ A.A) (fr : FrAt x), w.IsGen → fr.IsGen → GlobalTheory.Poinc.Tors.LiesOver U.toUnifPre w₀ g w x fr → ∀ (x' : TFK (R := R) F ⟶ A.A), x'.left = spMap (algebraMap (FractionRing R) F) ≫ x.left → ∃ (w' : Frm D.toPre F 1 (GlobalTheory.TorusExt.gtExt D.toPre (algebraMap (FractionRing R) F) (RingHom.comp_id _) g).b) (fr' : FrAt x'), w'.IsGen ∧ fr'.IsGen ∧ GlobalTheory.Poinc.Tors.LiesOver U.toUnifPre w₀ (GlobalTheory.TorusExt.gtExt D.toPre (algebraMap (FractionRing R) F) (RingHom.comp_id _) g) w' x' fr' := by
   intro R _ _ _ I hI D A G _ _ hGs U F _ _ _ w₀ hw₀ g w x fr hw hfr hlies x' hx'
   have hG : GlobalFnsSt := GlobalTheory.firstFiveLaws.1.globalFns

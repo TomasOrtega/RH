@@ -46,6 +46,9 @@ def RestLabG : Prop :=
       (Go : MvPolynomial (ML J Dt.nL r × Fin r) O),
       MH p O Fr deg Y N₁ G' cP d Dt dPl dNo ka rho No Go → LabAt p O Fr Dt rho
 
+/- English proof (translation)
+Introduce `J _ Dt dPl dNo ka rho N0 hT hB hNT Gp g1 g2 g4`. Take `⟨Go, rfl⟩` from `exists_map_of_coefGe S Gp g1`. Take `⟨No, rfl⟩` from `exists_map_of_coefGe S N0 hNT.1`. Establish `hMH : MH p O Fr deg Y N₁ G' cP d Dt dPl dNo ka rho No Go` using `⟨hT, hB, hNT, g2, fun mo hmo => g4 mo (by rw [support_of_map]; exact hmo)⟩`. Conclude with `membAt_core p O hk Fr deg Y N₁ G' cP d Dt rho No Go (hDec p O S Fr TT L₁ L₂ N₁ G' deg d Y cP hM J Dt dPl dNo ka rho No Go hMH) (hAlg p O S hk Fr TT L₁ L₂ N₁ G' deg d Y cP hM J Dt dPl dNo ka rho No Go hMH) (hDeg p O S hk Fr TT L₁ L₂ N₁ G' deg d Y cP hM J Dt dPl dNo ka rho No Go hM …`.
+-/
 theorem membAt_of (hDec : RestDecG) (hAlg : RestAlgG) (hDeg : RestDegG) (hLab : RestLabG)
     (p : ℕ) [Fact p.Prime] {n' r K m : ℕ} [NeZero n'] [NeZero r] [NeZero K] (O : Type) [CommRing O] [IsDomain O]
     [IsDiscreteValuationRing O] (S : UniformizedDVR p O) (hk : m + 1 = r + K) (Fr : Frames n' r) (TT : Finset (Fin n'))
@@ -62,12 +65,36 @@ theorem membAt_of (hDec : RestDecG) (hAlg : RestAlgG) (hDeg : RestDegG) (hLab : 
     (hDeg p O S hk Fr TT L₁ L₂ N₁ G' deg d Y cP hM J Dt dPl dNo ka rho No Go hMH)
     (hLab p O S Fr TT L₁ L₂ N₁ G' deg d Y cP hM J Dt dPl dNo ka rho No Go hMH)
 
+/- English proof (translation)
+Establish `hr' : (2 : ℝ) ≤ (r : ℝ)` using `by exact_mod_cast hr`. Establish `h4 : (4 : ℝ) ≤ (r : ℝ) ^ 2` using `by nlinarith`. Establish `: 400 * c ≤ 100 * (r : ℝ) ^ 2 * c` using `by nlinarith`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem margin_real (r : ℕ) (c s : ℝ) (hr : 2 ≤ r) (hc : 0 ≤ c) (h : 100 * (r : ℝ) ^ 2 * c ≤ s) : 128 * c ≤ s := by
   have hr' : (2 : ℝ) ≤ (r : ℝ) := by exact_mod_cast hr
   have h4 : (4 : ℝ) ≤ (r : ℝ) ^ 2 := by nlinarith
   have : 400 * c ≤ 100 * (r : ℝ) ^ 2 * c := by nlinarith
   linarith
 
+/- English proof (translation)
+Take `⟨C0, hC0, H0⟩` from `Formalism.CountingSumsFrames.Top.paramsII0 1 1 le_rfl le_rfl`. Use `⟨max C0 1, lt_of_lt_of_le (by norm_num) (le_max_right _ _), ?_⟩` and prove the remaining obligations. Introduce `C hC CLa p W Qq O Kf _ _ _ _ _ _ _ _ _ _ ι σ j w n' m r hpF _ TT L₁ L₂ de h x lam0 aT bT a Y cpp c0 Dp cStar K _ _ hk F nb B hD`. Take `⟨_, H, hF, _, _, _⟩` from `hD`. Establish `hC0' : C0 ≤ C` using `le_trans (le_max_left _ _) hC`.
+
+Establish `hC1 : 1 ≤ C` using `le_trans (le_max_right _ _) hC`. Establish `hB` using `hyps_basic hC1 H`. Establish `hnb` using `nb_of hC1 H`. Establish `cg0` using `counting_hypotheses_of_hyps hC0 (hyps_mono hC0 hC0' H) 0 (Nat.zero_le _) (Nat.zero_le _)`. Take `⟨h1, h2, h3, _, h5, _, _, _, _, h10, h11, _⟩` from `H`.
+
+Establish `ha0 : 0 ≤ a` using `by linarith [hnb.two_le_a]`. Establish `hfd` using `fun s hs => flatDeg_bounds (by have := hB.m_ge; omega) ha0 h5 s hs`. Establish `hcPe : ((cPrime n' r TT.card c0 cpp cStar : ℕ) : ℝ) = Formalism.CountingSumsFrames.cPrII r TT.card n' c0 cpp cStar`. Unfold `cPrime Formalism.CountingSumsFrames.cPrII Formalism.CountingSumsFrames.omII`. Use `push_cast`.
+
+Expand and normalize the polynomial expressions, which then agree. Rewrite `cg0` using `[hk]`. Establish `A0` using `(H0 p r TT.card (orbitWindowCount r de h x) 0 1 (r + K) n' L₁ (goodG' r de h x) Y a 0 c0 cpp Dp cStar cg0 le_rfl (by unfold Formalism.CountingSumsFrames.QII; positivity)).2.1`. Establish `hp1 : (1 : ℝ) ≤ (p : ℝ)` using `by exact_mod_cast (by omega : 1 ≤ p)`. Use `⟨hpF.out, h2, hF, ?_, ?_, ?_⟩` and prove the remaining obligations.
+
+Introduce `s hs`. Rewrite `hs` using `[hF.1]`. Unfold `dT`. Rewrite using `[if_pos hs]`. Introduce `s hs`.
+
+Rewrite `hs` using `[hF.1]`. Unfold `dT`. Rewrite using `[if_neg hs]`. Introduce `jj xx hx hW`. Establish `hBo` using `Bo_ge hF.2.1 (by omega) p (by omega) (flatDeg lam0) a (fun s hs => (hfd s (by rw [hF.1] at hs; exact hs)).1) jj xx hx hW`.
+
+Establish `hE : (F.fr jj (r - 1) - F.fr (jj - 1) 0).toNat ≤ goodG' r de h x`. Use `hF.2.2.1 jj` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish `hq : a / Formalism.CountingSumsFrames.QII p (goodG' r de h x) ≤ Bo p F (flatDeg lam0) jj xx`. Use `le_trans ?_ hBo` and prove the remaining obligations.
+
+Apply `div_le_div_of_nonneg_left ha0 (by positivity)` to reduce the goal to its premises. Conclude with `pow_le_pow_right₀ hp1 hE`. Establish `q` using `(A0 _ hq).1`. Establish `n1 : 0 ≤ 24 * (((orbitWindowCount r de h x : ℕ) : ℝ) + r) * c0` using `by positivity`. Establish `n2 : 0 ≤ Formalism.CountingSumsFrames.mStarII (orbitWindowCount r de h x) (r + K) (Formalism.CountingSumsFrames.QII p (goodG' r de h x)) (Formalism.CountingSumsFrames.cPrII r TT.card n' c0 cpp cStar) 0`.
+
+Unfold `Formalism.CountingSumsFrames.mStarII Formalism.CountingSumsFrames.cPrII Formalism.CountingSumsFrames.omII Formalism.CountingSumsFrames.QII`. Check the signs of the components of the expression. Establish `q2 : 100 * (r : ℝ) ^ 2 * ((cPrime n' r TT.card c0 cpp cStar : ℕ) : ℝ) ≤ (sl p F (flatDeg lam0) Y (r + K) jj xx : ℝ)`. Rewrite using `[hcPe]`. Establish `e : (sl p F (flatDeg lam0) Y (r + K) jj xx : ℝ) = Formalism.CountingSumsFrames.slII Y (r + K) (Bo p F (flatDeg lam0) jj xx)` using `rfl`.
+
+Rewrite using `[e]`. Combine the linear equalities and inequalities to obtain the conclusion. Conclude with `margin_real r _ _ h2 (Nat.cast_nonneg _) q2`.
+-/
 theorem mfh_of : ∃ C₁ : ℝ, 0 < C₁ ∧ ∀ C : ℝ, C₁ ≤ C → ∀ CLa : ℝ,
     ∀ (p : ℕ) (W Qq O Kf : Type) [CommRing W] [IsDomain W] [IsDiscreteValuationRing W] [Field Qq] [Algebra W Qq]
     [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] [Field Kf] [Algebra O Kf]
@@ -134,6 +161,9 @@ theorem mfh_of : ∃ C₁ : ℝ, 0 < C₁ ∧ ∀ C : ℝ, C₁ ≤ C → ∀ CL
       linarith
     exact margin_real r _ _ h2 (Nat.cast_nonneg _) q2
 
+/- English proof (translation)
+Introduce `_`. Take `⟨C₁, h1, h2⟩` from `mfh_of`. Use `⟨C₁, h1, fun C hC => ?_⟩` and prove the remaining obligations. Introduce `p W Qq O Kf _ _ _ _ _ _ _ _ _ _ ι σ j w n' m r _ _ TT L₁ L₂ de h x lam0 aT bT a Y cpp c0 Dp cStar K _ _ hk F nb B hD`. Conclude with `membAt_of hDec hAlg hDeg hLab p O (dvrOfStd hD.1) hk F TT L₁ L₂ _ _ _ _ Y _ (h2 C hC CLa p W Qq O Kf ι σ j w n' m r TT L₁ L₂ de h x lam0 aT bT a Y cpp c0 Dp cStar K hk F nb B hD)`.
+-/
 theorem membership_of_four_parts (hDec : RestDecG) (hAlg : RestAlgG) (hDeg : RestDegG) (hLab : RestLabG)
     (D : Formalism.BasicNotions.D7) (CLa Ck Crk Cdeg : ℝ) : RestMemb D CLa Ck Crk Cdeg := by
   intro _

@@ -105,6 +105,9 @@ def StIwahori : Prop := ForAll fun L _ V _ _ s δ h => ∀ (l : ℕ) (e f : Fin 
       ∀ (u : Fin l → L) (t : V ≃ₗ[L] V), (∀ i, u i ≠ 0) → (Monotone fun i => ‖u i‖) → (∀ i, ‖u i‖ ≤ 1) →
         IsTor s e f W u t → IsCong Λ π (t * a * t⁻¹) ∧ IsCong Λ π (t⁻¹ * b * t)
 
+/- English proof (translation)
+Use `⟨⟨⟨⟨{x | ∀ i, ‖x i‖ ≤ 1}, fun {a b} ha hb i => ?_⟩, fun i => by simp⟩, fun {a} ha i => by simpa using ha i⟩, ⟨n, Pi.basisFun L (Fin n), fun x => by simp⟩, fun x hx => ⟨x, hx, by simp⟩⟩` and prove the remaining obligations. Conclude with `(IsUltrametricDist.norm_add_le_max _ _).trans (max_le (ha i) (hb i))`.
+-/
 theorem inhabited (L : Type) [NontriviallyNormedField L] (n : ℕ) [IsUltrametricDist L] :
     ∃ Λ : AddSubgroup (Fin n → L), IsLat L Λ ∧ IsCong Λ (0 : L) (1 : (Fin n → L) ≃ₗ[L] (Fin n → L)) := by
   refine ⟨⟨⟨⟨{x | ∀ i, ‖x i‖ ≤ 1}, fun {a b} ha hb i => ?_⟩, fun i => by simp⟩, fun {a} ha i => by simpa using ha i⟩,

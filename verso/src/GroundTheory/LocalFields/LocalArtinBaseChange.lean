@@ -16,11 +16,21 @@ def restrictScalarsHom : (Ω ≃ₐ[E] Ω) →* (Ω ≃ₐ[K] Ω) :=
   (E.fixingSubgroup.subtype).comp (IntermediateField.fixingSubgroupEquiv E).symm.toMonoidHom
 
 @[simp]
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem restrictScalarsHom_apply (σ : Ω ≃ₐ[E] Ω) (x : Ω) : restrictScalarsHom E σ x = σ x :=
   rfl
 
 variable [FiniteDimensional K E]
 
+/- English proof (translation)
+Use `continuous_of_continuousAt_one _ ?_` and prove the remaining obligations. Rewrite using `[ContinuousAt, map_one]`. Introduce `s hs`. Take `⟨M, hM, hMs⟩` from `(krullTopology_mem_nhds_one_iff K Ω s).1 hs`. Establish `: FiniteDimensional K (M ⊔ E : IntermediateField K Ω)` using `inferInstance`.
+
+Establish `: FiniteDimensional E (IntermediateField.extendScalars (le_sup_right : E ≤ M ⊔ E))` using `finiteDimensional_extendScalars _`. Rewrite using `[Filter.mem_map, krullTopology_mem_nhds_one_iff]`. Use `⟨IntermediateField.extendScalars (le_sup_right : E ≤ M ⊔ E), inferInstance, fun σ hσ => ?_⟩` and prove the remaining obligations. Apply `hMs` to reduce the goal to its premises. Rewrite using `[SetLike.mem_coe, IntermediateField.mem_fixingSubgroup_iff]`.
+
+Introduce `x hx`. Conclude with `(IntermediateField.mem_fixingSubgroup_iff _ _).1 hσ x ((IntermediateField.mem_extendScalars _).2 (le_sup_left (a := M) (b := E) hx))`.
+-/
 theorem continuous_restrictScalarsHom : Continuous (restrictScalarsHom (K := K) (Ω := Ω) E) := by
   refine continuous_of_continuousAt_one _ ?_
   rw [ContinuousAt, map_one]
@@ -52,6 +62,9 @@ def fixingSubgroupHomeomorph :
       continuous_invFun := (hc.homeoOfEquivCompactToT2 (f := e.toEquiv)).symm.continuous }
 
 @[simp]
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem fixingSubgroupHomeomorph_apply
     (σ : ((fixingOpenSubgroup E : OpenSubgroup (Ω ≃ₐ[K] Ω)) : Subgroup (Ω ≃ₐ[K] Ω))) (x : Ω) :
     fixingSubgroupHomeomorph E σ x = (σ : Ω ≃ₐ[K] Ω) x :=
@@ -59,6 +72,13 @@ theorem fixingSubgroupHomeomorph_apply
 
 omit [IsGalois K Ω] in
 
+/- English proof (translation)
+Introduce `y hy`. Rewrite using `[IntermediateField.mem_restrictScalars]`. Express the relevant statement in the definitionally equal form `y ∈ IntermediateField.fixedField _`. Rewrite using `[IntermediateField.mem_fixedField_iff]`. Introduce `g hg`.
+
+Establish `hle : (commutator (Ω ≃ₐ[E] Ω)).topologicalClosure ≤ (commutator (Ω ≃ₐ[K] Ω)).topologicalClosure.comap (restrictScalarsHom E)`. Use `Subgroup.topologicalClosure_minimal _ ?_ ((Subgroup.isClosed_topologicalClosure _).preimage (continuous_restrictScalarsHom E))` and prove the remaining obligations. Rewrite using `[commutator, Subgroup.commutator_le]`. Introduce `a _ b _`. Rewrite using `[Subgroup.mem_comap, map_commutatorElement]`.
+
+Conclude with `Subgroup.le_topologicalClosure _ (Subgroup.commutator_mem_commutator (Subgroup.mem_top _) (Subgroup.mem_top _))`. Conclude with `(IntermediateField.mem_fixedField_iff _ _).1 hy _ (hle hg)`.
+-/
 theorem maximalAbelianExtension_le_restrictScalars :
     maximalAbelianExtension K Ω ≤ (maximalAbelianExtension E Ω).restrictScalars K := by
   intro y hy
@@ -98,6 +118,9 @@ def unitsEquivFixingOpen :
     (mem_iff_forall_of_fixingSubgroup_eq ((fixingOpenSubgroup E : OpenSubgroup (Ω ≃ₐ[K] Ω)) :
       Subgroup (Ω ≃ₐ[K] Ω)) rfl)
 
+/- English proof (translation)
+Establish `: IsSepClosed Ω` using `IsSepClosure.sep_closed K`. Establish `hi : inertiaDegree (unramifiedDegree K Ω) ((fixingOpenSubgroup E : OpenSubgroup (Ω ≃ₐ[K] Ω)) : Subgroup (Ω ≃ₐ[K] Ω)) = residueDegree K E` using `inertiaDegree_unramifiedDegree_fixingSubgroup E`. Rewrite using `[ClassFieldData.relDeg_eq_iff, localClassFieldData_deg, hi]`. Conclude with `unramifiedDegree_fixingSubgroup E σ`.
+-/
 theorem relDeg_fixingOpenSubgroup
     (σ : ((fixingOpenSubgroup E : OpenSubgroup (Ω ≃ₐ[K] Ω)) : Subgroup (Ω ≃ₐ[K] Ω))) :
     (localClassFieldData K Ω).relDeg (fixingOpenSubgroup E) σ =
@@ -109,6 +132,13 @@ theorem relDeg_fixingOpenSubgroup
   rw [ClassFieldData.relDeg_eq_iff, localClassFieldData_deg, hi]
   exact unramifiedDegree_fixingSubgroup E σ
 
+/- English proof (translation)
+Establish `: IsSepClosed Ω` using `IsSepClosure.sep_closed K`. Establish `hf : residueDegree K E ≠ 0` using `(residueDegree_pos K E).ne'`. Establish `h` using `(localClassFieldData K Ω).valuation_pow (fixingOpenSubgroup E) a`. Establish `hi : inertiaDegree (unramifiedDegree K Ω) ((fixingOpenSubgroup E : OpenSubgroup (Ω ≃ₐ[K] Ω)) : Subgroup (Ω ≃ₐ[K] Ω)) = residueDegree K E` using `inertiaDegree_unramifiedDegree_fixingSubgroup E`. Rewrite `h` using `[localClassFieldData_deg, hi, localClassFieldData_val, localValuation_apply]`.
+
+Establish `: (E.fixingSubgroup.subgroupOf ⊤).FiniteIndex` using `inferInstanceAs (((fixingOpenSubgroup E : Subgroup (Ω ≃ₐ[K] Ω)).subgroupOf ((⊤ : OpenSubgroup (Ω ≃ₐ[K] Ω)) : Subgroup (Ω ≃ₐ[K] Ω))).FiniteIndex)`. Use `erw [baseUnitsEquiv_norm E a] at h`. Rewrite using `[← Abstract.ProfiniteInteger.pow_left_inj hf, h]`. Apply `Multiplicative.toAdd.injective` to reduce the goal to its premises. Rewrite using `[toAdd_ordUnitsHom, coe_normUnits, ord_norm, toAdd_pow, toAdd_ofAdd, Int.cast_mul, Int.cast_natCast, nsmul_eq_mul]`.
+
+Both sides reduce to the same expression.
+-/
 theorem valuation_fixingOpenSubgroup
     (a : fixedModule Ωˣ ((fixingOpenSubgroup E : OpenSubgroup (Ω ≃ₐ[K] Ω)) : Subgroup (Ω ≃ₐ[K] Ω))) :
     (localClassFieldData K Ω).valuation (fixingOpenSubgroup E) a =
@@ -144,6 +174,9 @@ attribute [local instance] isDiscreteModule_units
 omit [ValuativeRel K] [TopologicalSpace K] [IsNonarchimedeanLocalField K] [ValuativeRel Ω]
   [TopologicalSpace Ω] [IsValuativeTopology Ω] [ValuativeExtension K Ω] [IsSepClosure K Ω]
   [FiniteDimensional K E] in
+/- English proof (translation)
+Introduce `x hx` and use `by rw [IntermediateField.mem_restrictScalars] exact L.algebraMap_mem ⟨x, hx⟩`.
+-/
 theorem le_restrictScalars (L : IntermediateField E Ω) : E ≤ L.restrictScalars K := fun x hx => by
   rw [IntermediateField.mem_restrictScalars]
   exact L.algebraMap_mem ⟨x, hx⟩
@@ -151,6 +184,9 @@ theorem le_restrictScalars (L : IntermediateField E Ω) : E ≤ L.restrictScalar
 omit [ValuativeRel K] [TopologicalSpace K] [IsNonarchimedeanLocalField K] [ValuativeRel Ω]
   [TopologicalSpace Ω] [IsValuativeTopology Ω] [ValuativeExtension K Ω] [IsSepClosure K Ω]
   [FiniteDimensional K E] in
+/- English proof (translation)
+Use extensionality with `x`. Rewrite using `[IntermediateField.mem_extendScalars, IntermediateField.mem_restrictScalars]`.
+-/
 theorem extendScalars_restrictScalars' (L : IntermediateField E Ω) :
     IntermediateField.extendScalars (le_restrictScalars E L) = L := by
   ext x
@@ -167,6 +203,11 @@ def baseChangeArtinMap : Eˣ →* (maximalAbelianExtension E Ω ≃ₐ[E] maxima
 
 omit [ValuativeRel Ω] [TopologicalSpace Ω] [IsValuativeTopology Ω] [ValuativeExtension K Ω] in
 
+/- English proof (translation)
+Establish `h : baseChangeArtinMap K E x = topologicalAbelianizationEquiv E Ω (topologicalAbelianizationMap (fixingSubgroupHomeomorph E).toMulEquiv.toMonoidHom (fixingSubgroupHomeomorph E).continuous ((localClassFieldData K Ω).reciprocityLimit (classFieldAxiom_units K Ω) (fixingOpenSubgroup …`. Both sides reduce to the same expression. Rewrite using `[h, ← hg]`. Express the relevant statement in the definitionally equal form `((topologicalAbelianizationEquiv E Ω (QuotientGroup.mk (fixingSubgroupHomeomorph E g) : TopologicalAbelianization (Ω ≃ₐ[E] Ω)) y : maximalAbelianExtension E Ω) : Ω) = _`. Rewrite using `[topologicalAbelianizationEquiv_mk_apply]`.
+
+Both sides reduce to the same expression.
+-/
 theorem baseChangeArtinMap_apply (x : Eˣ)
     (g : ((fixingOpenSubgroup E : OpenSubgroup (Ω ≃ₐ[K] Ω)) : Subgroup (Ω ≃ₐ[K] Ω)))
     (hg : (QuotientGroup.mk g : TopologicalAbelianization _) =
@@ -201,6 +242,11 @@ omit [ValuativeRel K] [TopologicalSpace K] [IsNonarchimedeanLocalField K] [Valua
   [TopologicalSpace Ω] [IsValuativeTopology Ω] [ValuativeExtension K Ω] in
 variable {E} in
 
+/- English proof (translation)
+Use `⟨fixingOpenSubgroup_anti h, ?_⟩` and prove the remaining obligations. Set `r : ((fixingOpenSubgroup E : OpenSubgroup (Ω ≃ₐ[K] Ω)) : Subgroup (Ω ≃ₐ[K] Ω)) →* (IntermediateField.extendScalars h ≃ₐ[E] IntermediateField.extendScalars h)` to `(AlgEquiv.restrictNormalHom (IntermediateField.extendScalars h)).comp (fixingSubgroupHomeomorph E).toMulEquiv.toMonoidHom`. Use `(commutator_le_ker_of_comm r).trans fun σ hσ => ?_` and prove the remaining obligations. Rewrite `hσ` using `[MonoidHom.mem_ker]`. Rewrite using `[Subgroup.mem_subgroupOf, coe_fixingOpenSubgroup, IntermediateField.mem_fixingSubgroup_iff]`.
+
+Introduce `y hy`. Use `congrArg (fun ρ : IntermediateField.extendScalars h ≃ₐ[E] IntermediateField.extendScalars h => ((ρ ⟨y, (IntermediateField.mem_extendScalars h).2 hy⟩ : IntermediateField.extendScalars h) : Ω)) hσ` as an intermediate fact. Simplify using `only [r] at this`. Rewrite `this` using `[MonoidHom.comp_apply, AlgEquiv.restrictNormalHom_apply]`. Conclude with `this`.
+-/
 theorem isAbelianExtension_fixingOpenSubgroup_of_le {F : IntermediateField K Ω} (h : E ≤ F)
     [FiniteDimensional K F] [IsAbelianGalois E (IntermediateField.extendScalars h)] :
     IsAbelianExtension (fixingOpenSubgroup E) (fixingOpenSubgroup F) := by
@@ -222,6 +268,15 @@ theorem isAbelianExtension_fixingOpenSubgroup_of_le {F : IntermediateField K Ω}
 omit [ValuativeRel Ω] [TopologicalSpace Ω] [IsValuativeTopology Ω] [ValuativeExtension K Ω] in
 variable {E} in
 
+/- English proof (translation)
+Establish `hUV` using `isAbelianExtension_fixingOpenSubgroup_of_le h`. Use `hUV.normal` as an intermediate fact. Use `set a := (unitsEquivFixingOpen K E).symm x with ha`. Take `⟨g, hg⟩` from `QuotientGroup.mk_surjective ((localClassFieldData K Ω).reciprocityLimit (classFieldAxiom_units K Ω) (fixingOpenSubgroup E) a)`. Establish `hna : a ∈ (norm Ωˣ ((fixingOpenSubgroup E : OpenSubgroup (Ω ≃ₐ[K] Ω)) : Subgroup (Ω ≃ₐ[K] Ω)) ((fixingOpenSubgroup F : OpenSubgroup (Ω ≃ₐ[K] Ω)) : Subgroup (Ω ≃ₐ[K] Ω))).range`.
+
+Rewrite `hx` using `[← map_unitsEquivOfForall_range_norm h (fixingOpenSubgroup E) (fixingOpenSubgroup F) rfl rfl]`. Take `⟨c, hc, hcx⟩` from `hx`. Establish `: c = a`. Rewrite using `[ha, MulEquiv.eq_symm_apply]`. Conclude with `hcx`.
+
+Rewrite using `[← this]` and apply the resulting hypothesis. Establish `h1 : abelianizationRestrict hUV ((localClassFieldData K Ω).reciprocityLimit (classFieldAxiom_units K Ω) (fixingOpenSubgroup E) a) = 1`. Rewrite using `[ClassFieldData.abelianizationRestrict_reciprocityLimit, MulEquiv.map_eq_one_iff, QuotientGroup.eq_one_iff]`. Conclude with `hna`. Rewrite `h1` using `[← hg, abelianizationRestrict_mk, QuotientGroup.eq_one_iff, Subgroup.mem_subgroupOf, coe_fixingOpenSubgroup, IntermediateField.mem_fixingSubgroup_iff]`.
+
+Use extensionality with `y`. Rewrite using `[restrictAb_apply, baseChangeArtinMap_apply E x g hg, AlgEquiv.one_apply]`. Conclude with `h1 y ((IntermediateField.mem_extendScalars h).1 y.2)`.
+-/
 theorem restrictAb_baseChangeArtinMap_eq_one {F : IntermediateField K Ω} (h : E ≤ F)
     [FiniteDimensional K F] [IsAbelianGalois E (IntermediateField.extendScalars h)] (x : Eˣ)
     (hx : x ∈ (normUnits E (IntermediateField.extendScalars h)).range) :
@@ -266,6 +321,9 @@ attribute [local instance] isDiscreteModule_units
 omit [ValuativeRel K] [TopologicalSpace K] [IsNonarchimedeanLocalField K] [ValuativeRel Ω]
   [TopologicalSpace Ω] [IsValuativeTopology Ω] [ValuativeExtension K Ω] [IsSepClosure K Ω]
   [FiniteDimensional K E] in
+/- English proof (translation)
+Use `(injective_iff_map_eq_one _).2 fun σ hσ => ?_` and prove the remaining obligations. Rewrite `hσ` using `[← MonoidHom.mem_ker, Abelianization.ker_of, commutator, Subgroup.commutator_eq_bot_iff_le_centralizer.2 (fun x _ y _ => mul_comm' y x)]`. Conclude with `hσ`.
+-/
 theorem abelianization_of_injective_of_comm {G : Type*} [Group G] [IsMulCommutative G] :
     Function.Injective (Abelianization.of : G →* Abelianization G) := by
   refine (injective_iff_map_eq_one _).2 fun σ hσ => ?_
@@ -273,6 +331,27 @@ theorem abelianization_of_injective_of_comm {G : Type*} [Group G] [IsMulCommutat
     Subgroup.commutator_eq_bot_iff_le_centralizer.2 (fun x _ y _ => mul_comm' y x)] at hσ
   exact hσ
 
+/- English proof (translation)
+Establish `: IsSepClosed Ω` using `IsSepClosure.sep_closed K`. Use extensionality with `⟨y, hy⟩`. Take `⟨E', hE', hyE'⟩` from `(mem_maximalUnramifiedExtension_iff (K := E)).1 hy`. Take `⟨F, h, rfl⟩ : ∃ (F : IntermediateField K Ω) (h : E ≤ F), E' = IntermediateField.extendScalars h` from `⟨_, _, (extendScalars_restrictScalars' E E').symm⟩`. Use `hE'.1` as an intermediate fact.
+
+Use `hE'.isGalois` as an intermediate fact. Establish `hEur` using `hE'.le_maximalUnramifiedExtension`. Establish `: IsAbelianGalois E (IntermediateField.extendScalars h)` using `isAbelianGalois_of_le_maximalAbelianExtension _ (hEur.trans maximalUnramifiedExtension_le_maximalAbelianExtension)`. Establish `: FiniteDimensional K F` using `(FiniteDimensional.trans K E (IntermediateField.extendScalars h) :)`. Establish `hUV` using `isAbelianExtension_fixingOpenSubgroup_of_le h`.
+
+Use `hUV.normal` as an intermediate fact. Establish `hmc` using `hUV.isMulCommutative`. Use `set σ₀ : ((fixingOpenSubgroup E : OpenSubgroup (Ω ≃ₐ[K] Ω)) : Subgroup (Ω ≃ₐ[K] Ω)) := (fixingSubgroupHomeomorph E).symm ((maximalUnramifiedExtensionFrobenius E Ω).liftNormal Ω) with hσ₀`. Establish `hφ : (localClassFieldData K Ω).relDeg (fixingOpenSubgroup E) σ₀ = Multiplicative.ofAdd 1`. Rewrite using `[relDeg_fixingOpenSubgroup, hσ₀, ContinuousMulEquiv.apply_symm_apply]`.
+
+Conclude with `(restrictNormal_eq_maximalUnramifiedExtensionFrobenius_iff _).1 (AlgEquiv.restrict_liftNormal _ _)`. Establish `hu : ((fixingOpenSubgroup E : OpenSubgroup (Ω ≃ₐ[K] Ω)) : Subgroup (Ω ≃ₐ[K] Ω)) ⊓ (localClassFieldData K Ω).deg.ker ≤ (fixingOpenSubgroup F : Subgroup (Ω ≃ₐ[K] Ω))`. Introduce and unpack `τ ⟨hτU, hτ⟩`. Use `replace hτ : (localClassFieldData K Ω).deg τ = 1 := hτ`. Establish `h1 : (localClassFieldData K Ω).relDeg (fixingOpenSubgroup E) ⟨τ, hτU⟩ = 1`.
+
+Rewrite using `[ClassFieldData.relDeg_eq_iff, one_pow]`. Conclude with `hτ`. Rewrite `h1` using `[relDeg_fixingOpenSubgroup, unramifiedDegree_eq_one_iff]`. Rewrite using `[coe_fixingOpenSubgroup, IntermediateField.mem_fixingSubgroup_iff]`. Introduce `z hz`.
+
+Establish `hz' : z ∈ maximalUnramifiedExtension E Ω` using `hEur ((IntermediateField.mem_extendScalars h).2 hz)`. Use `(ker_unramifiedDegree (K := E) (Ω := Ω)) ▸ (MonoidHom.mem_ker.2 ((unramifiedDegree_eq_one_iff _).2 h1))` as an intermediate fact. Conclude with `(IntermediateField.mem_fixingSubgroup_iff _ _).1 this z hz'`. Use `set a := (unitsEquivFixingOpen K E).symm ϖ with ha`. Establish `hval : (localClassFieldData K Ω).valuation (fixingOpenSubgroup E) a = Multiplicative.ofAdd ((1 : ℤ) : ℤ̂)`.
+
+Rewrite using `[valuation_fixingOpenSubgroup, ha, MulEquiv.apply_symm_apply, hϖ]`. Establish `key` using `(localClassFieldData K Ω).reciprocityAbEquiv_symm_of_unramified_of_valuation hUV.le (classFieldAxiom_units K Ω) hu hφ a 1 hval`. Establish `hq : Abelianization.of (abelianizationRestrict hUV ((localClassFieldData K Ω).reciprocityLimit (classFieldAxiom_units K Ω) (fixingOpenSubgroup E) a)) = ((localClassFieldData K Ω).reciprocityAbEquiv hUV.le (classFieldAxiom_units K Ω)).symm (a : tateZero Ωˣ _ _)`. Rewrite using `[MulEquiv.eq_symm_apply, ClassFieldData.reciprocityAbEquiv_of, (localClassFieldData K Ω).abelianizationRestrict_reciprocityLimit (classFieldAxiom_units K Ω) hUV, ← (localClassFieldData K Ω).reciprocityAbelianEquiv_apply (classFieldAxiom_units K Ω) hUV, MulEquiv.apply_symm_apply]`. Rewrite `hq` using `[key, zpow_one]`.
+
+Establish `hq'` using `abelianization_of_injective_of_comm hq`. Take `⟨g, hg⟩` from `QuotientGroup.mk_surjective ((localClassFieldData K Ω).reciprocityLimit (classFieldAxiom_units K Ω) (fixingOpenSubgroup E) a)`. Rewrite `hq'` using `[← hg, abelianizationRestrict_mk, QuotientGroup.eq, Subgroup.mem_subgroupOf, coe_fixingOpenSubgroup, IntermediateField.mem_fixingSubgroup_iff]`. Establish `hyF : y ∈ F` using `(IntermediateField.mem_extendScalars h).1 hyE'`. Establish `e1` using `hq' y hyF`.
+
+Rewrite using `[restrictAb_apply, baseChangeArtinMap_apply E ϖ g hg]`. Express the relevant statement in the definitionally equal form `(g : Ω ≃ₐ[K] Ω) y = _`. Establish `e2 : ((σ₀ : Ω ≃ₐ[K] Ω) y) = ((maximalUnramifiedExtensionFrobenius E Ω (⟨y, hy⟩ : maximalUnramifiedExtension E Ω) : maximalUnramifiedExtension E Ω) : Ω)`. Rewrite using `[← fixingSubgroupHomeomorph_apply, hσ₀, ContinuousMulEquiv.apply_symm_apply]`. Conclude with `AlgEquiv.liftNormal_commutes _ Ω (⟨y, hy⟩ : maximalUnramifiedExtension E Ω)`.
+
+Establish `e3 : (g : Ω ≃ₐ[K] Ω) y = (σ₀ : Ω ≃ₐ[K] Ω) y`. Use `congrArg (g : Ω ≃ₐ[K] Ω) e1` as an intermediate fact. Rewrite `this` using `[Subgroup.coe_mul, Subgroup.coe_inv, AlgEquiv.mul_apply, AlgEquiv.aut_inv, AlgEquiv.apply_symm_apply]`. Conclude with `this.symm`. Rewrite using `[e3, e2]`.
+-/
 theorem restrictAb_baseChangeArtinMap_uniformizer {ϖ : Eˣ} (hϖ : ord (ϖ : E) = 1) :
     restrictAb (maximalUnramifiedExtension E Ω) maximalUnramifiedExtension_le_maximalAbelianExtension
       (baseChangeArtinMap K E ϖ) = maximalUnramifiedExtensionFrobenius E Ω := by
@@ -360,6 +439,9 @@ variable {K : Type*} [Field K] [ValuativeRel K] [TopologicalSpace K] [IsNonarchi
 
 attribute [local instance] isDiscreteModule_units
 
+/- English proof (translation)
+Use `eq_localArtinMap_of (fun π hπ => restrictAb_baseChangeArtinMap_uniformizer E hπ) ?_` and prove the remaining obligations. Introduce `L _ _ x hx`. Take `⟨F, h, rfl⟩ : ∃ (F : IntermediateField K Ω) (h : E ≤ F), L = IntermediateField.extendScalars h` from `⟨_, _, (extendScalars_restrictScalars' E L).symm⟩`. Establish `: FiniteDimensional K F` using `(FiniteDimensional.trans K E (IntermediateField.extendScalars h) :)`. Conclude with `restrictAb_baseChangeArtinMap_eq_one h x hx`.
+-/
 theorem baseChangeArtinMap_eq : baseChangeArtinMap K E = localArtinMap E Ω := by
   refine eq_localArtinMap_of (fun π hπ => restrictAb_baseChangeArtinMap_uniformizer E hπ) ?_
   intro L _ _ x hx
@@ -370,6 +452,11 @@ theorem baseChangeArtinMap_eq : baseChangeArtinMap K E = localArtinMap E Ω := b
     (FiniteDimensional.trans K E (IntermediateField.extendScalars h) :)
   exact restrictAb_baseChangeArtinMap_eq_one h x hx
 
+/- English proof (translation)
+Rewrite using `[← baseChangeArtinMap_eq]`. Use `set a := (unitsEquivFixingOpen K E).symm x with ha`. Take `⟨g, hg⟩` from `QuotientGroup.mk_surjective ((localClassFieldData K Ω).reciprocityLimit (classFieldAxiom_units K Ω) (fixingOpenSubgroup E) a)`. Rewrite using `[baseChangeArtinMap_apply E x g hg]`. Establish `hE : (E.fixingSubgroup.subgroupOf ⊤).FiniteIndex` using `inferInstanceAs (((fixingOpenSubgroup E : Subgroup (Ω ≃ₐ[K] Ω)).subgroupOf ((⊤ : OpenSubgroup (Ω ≃ₐ[K] Ω)) : Subgroup (Ω ≃ₐ[K] Ω))).FiniteIndex)`.
+
+Establish `hN : normUnits K E x = baseUnitsEquiv (norm Ωˣ ((⊤ : OpenSubgroup (Ω ≃ₐ[K] Ω)) : Subgroup (Ω ≃ₐ[K] Ω)) ((fixingOpenSubgroup E : OpenSubgroup (Ω ≃ₐ[K] Ω)) : Subgroup (Ω ≃ₐ[K] Ω)) a)` using `by erw [baseUnitsEquiv_norm E a]`. Use `congr 1`. Establish `hlim` using `(localClassFieldData K Ω).limitRestrict_reciprocityLimit (classFieldAxiom_units K Ω) (le_top : fixingOpenSubgroup E ≤ ⊤) a`. Rewrite `hlim` using `[← hg, limitRestrict_mk]`. Rewrite using `[hN, localArtinMap_apply, localReciprocityLimit_baseUnitsEquiv, ← hlim, topAbelianizationEquiv_mk, topologicalAbelianizationEquiv_mk_apply]`.
+-/
 theorem localArtinMap_apply_of_mem (x : Eˣ) {y : Ω} (hy : y ∈ maximalAbelianExtension K Ω) :
     ((localArtinMap E Ω x ⟨y, maximalAbelianExtension_le_restrictScalars E hy⟩ :
       maximalAbelianExtension E Ω) : Ω) =

@@ -15,8 +15,14 @@ variable {T κ : Type} [Fintype T] [DecidableEq T] [Fintype κ] [DecidableEq κ]
 noncomputable def piK : (T → Matrix κ κ ℂ) →* Matrix (T → κ) (T → κ) ℂ :=
   _root_.UpperTheory.Reformulated.B.ProjectionCompact.piK
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem piK_apply (A : T → Matrix κ κ ℂ) (f g : T → κ) : piK A f g = ∏ t, A t (f t) (g t) := rfl
 
+/- English proof (translation)
+Rewrite using `[piK_apply, ← Finset.mul_prod_erase _ _ (Finset.mem_univ t), Pi.mulSingle_eq_same]`. Use `congr 1`. Conclude with `Finset.prod_congr rfl fun s hs => by rw [Pi.mulSingle_eq_of_ne (Finset.ne_of_mem_erase hs)]`.
+-/
 theorem piK_mulSingle (t : T) (A : Matrix κ κ ℂ) (f g : T → κ) :
     piK (Pi.mulSingle t A) f g = A (f t) (g t) * ∏ s ∈ Finset.univ.erase t, (1 : Matrix κ κ ℂ) (f s) (g s) := by
   rw [piK_apply, ← Finset.mul_prod_erase _ _ (Finset.mem_univ t), Pi.mulSingle_eq_same]
@@ -30,6 +36,9 @@ def intersection_update_fsHerm_neg_one (t : T) : Matrix κ κ ℂ →ₐ[ℂ] Ma
       map_smul' := fun c A => by ext f g; simp [piK_mulSingle, mul_assoc] }
     (by simp) (fun A B => by simp [Pi.mulSingle_mul])
 
+/- English proof (translation)
+The claim follows from `piK_mulSingle t A f g`.
+-/
 theorem position_apply (t : T) (A : Matrix κ κ ℂ) (f g : T → κ) :
     intersection_update_fsHerm_neg_one t A f g = A (f t) (g t) * ∏ s ∈ Finset.univ.erase t, (1 : Matrix κ κ ℂ) (f s) (g s) :=
   piK_mulSingle t A f g
@@ -46,8 +55,14 @@ def dOf (M : GL (Fin a) (Cinf E) → Matrix ι κ ℂ) (X : Lie E a) : Matrix ι
 def eOf (M : GL (Fin a) (Cinf E) → Matrix ι κ ℂ) (τ : E →+* ℂ) (i j : Fin a) : Matrix ι κ ℂ :=
   (1 / 2 : ℂ) • (dOf M (toL (Matrix.single i j (atEmb τ 1))) - Complex.I • dOf M (toL (Matrix.single i j (atEmb τ Complex.I))))
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem dmat_eq (Ξ : AlgRep E a) (X : Lie E a) : Ξ.dmat X = dOf Ξ.mat X := rfl
 
+/- English proof (translation)
+Unfold both sides. The equivalence is reflexive.
+-/
 theorem algInfChar_iff (Ξ : AlgRep E a) (τ : E →+* ℂ) (m : Multiset ℂ) :
     UpperTheory.V.Af.AlgInfChar Ξ τ m ↔ Multiset.card m = a ∧ ∀ u : ℂ, Formalism.REAL.qdet (eOf Ξ.mat τ) (u + ((a : ℂ) - 1) / 2) =
       (m.map (u + ·)).prod • (1 : Matrix (Fin Ξ.d) (Fin Ξ.d) ℂ) := Iff.rfl

@@ -19,6 +19,9 @@ attribute [local instance] Over.cartesianMonoidalCategory
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨abelianSchemeLaws_all.1, abelianSchemeLaws_all.2, furtherLaws_of_laws abelianSchemeLaws_all.1 twistBaseChange⟩`.
+-/
 theorem allSixLaws : Laws ∧ Laws2 ∧ Laws3 ∧ Laws4 ∧ Laws5 ∧ Laws6 :=
   ⟨abelianSchemeLaws_all.1, abelianSchemeLaws_all.2,
     furtherLaws_of_laws abelianSchemeLaws_all.1 twistBaseChange⟩

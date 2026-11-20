@@ -11,6 +11,13 @@ namespace ObjectsChow
 
 open MvPolynomial
 
+/- English proof (translation)
+Take `⟨i, j⟩` from `ij`. Proceed by induction on `i using Fin.cases with`. Consider the case `zero`. Establish `h0 : (fun i : Fin k => groupWeight (k + 1) n ((0 : Fin (k + 1)), j) i.succ) = 0`. Use function extensionality and compare the values at `i`.
+
+Simplify using `[groupWeight, Fin.succ_ne_zero i]`. Rewrite using `[h0]`. Simplify `isWeightedHomogeneous_C (groupWeight k n) (u j)` using `[specFirstVar]`. Consider the case `succ i'`. Establish `h1 : (fun i : Fin k => groupWeight (k + 1) n (i'.succ, j) i.succ) = groupWeight k n (i', j)`.
+
+Use function extensionality and compare the values at `i`. Simplify using `[groupWeight, Pi.single_apply]`. Rewrite using `[h1]`. Simplify `isWeightedHomogeneous_X R (groupWeight k n) (i', j)` using `[specFirstVar]`.
+-/
 theorem specFirstVar_isWeightedHomogeneous' {R : Type*} [CommSemiring R] {k n : ℕ} (u : Fin n → R)
     (ij : Fin (k + 1) × Fin n) :
     IsWeightedHomogeneous (groupWeight k n) (specFirstVar u ij)
@@ -30,6 +37,13 @@ theorem specFirstVar_isWeightedHomogeneous' {R : Type*} [CommSemiring R] {k n : 
     rw [h1]
     simpa [specFirstVar] using isWeightedHomogeneous_X R (groupWeight k n) (i', j)
 
+/- English proof (translation)
+Unfold `IsMultiHomog specFirst`. Rewrite using `[f.as_sum, map_sum]`. Use `IsWeightedHomogeneous.sum _ _ _ fun d hd => ?_` and prove the remaining obligations. Rewrite using `[bind₁_monomial]`. Establish `hdeg : (fun _ : Fin k => δ) = ∑ ij ∈ d.support, d ij • (fun i : Fin k => groupWeight (k + 1) n ij i.succ)`.
+
+Establish `hw` using `hf (mem_support_iff.mp hd)`. Use function extensionality and compare the values at `i`. Use `congrFun hw i.succ` as an intermediate fact. Rewrite `this` using `[Finsupp.weight_apply, Finsupp.sum, Finset.sum_apply]`. Rewrite using `[Finset.sum_apply, ← this]`.
+
+Both sides reduce to the same expression. Rewrite using `[hdeg]`. Use `IsWeightedHomogeneous.C_mul ?_ _` and prove the remaining obligations. Use `IsWeightedHomogeneous.prod _ _ _ fun ij _ => ?_` and prove the remaining obligations. Conclude with `(specFirstVar_isWeightedHomogeneous' u ij).pow _`.
+-/
 theorem isMultiHomog_specFirst {R : Type*} [CommSemiring R] {k n δ : ℕ}
     {f : MvPolynomial (Fin (k + 1) × Fin n) R} (u : Fin n → R) (hf : IsMultiHomog δ f) :
     IsMultiHomog δ (specFirst f u) := by
@@ -50,6 +64,13 @@ theorem isMultiHomog_specFirst {R : Type*} [CommSemiring R] {k n δ : ℕ}
   refine IsWeightedHomogeneous.prod _ _ _ fun ij _ => ?_
   exact (specFirstVar_isWeightedHomogeneous' u ij).pow _
 
+/- English proof (translation)
+Introduce `F _ _ n e I u hI hdim hu`. Take `⟨f, hf⟩` from `chowFormExists F n (e + 2) I hI hdim`. Establish `hfδ : IsMultiHomog (chowDegree I (e + 2)) f` using `Vertical.ChowFormHomog.proof F n (e + 2) I f hf`. Take `⟨c, hc, g, hg, hfu⟩` from `h F n (e + 1) I f u hI hf hu`. Establish `hsδ : IsMultiHomog (chowDegree I (e + 2)) (specFirst f u)` using `isMultiHomog_specFirst u hfδ`.
+
+Establish `hne : C c * ∏ W ∈ (divCycle I u).support, g W ^ (divCycle I u) W ≠ 0`. Use `mul_ne_zero (C_ne_zero.mpr hc) (Finset.prod_ne_zero_iff.mpr fun W hW => ?_)` and prove the remaining obligations. Conclude with `pow_ne_zero _ (hg W hW).1`. Rewrite `hsδ` using `[hfu]`. Take `⟨δW, hδW, hsum⟩` from `exists_degrees_of_chowFormCycle (Nat.succ_pos e) (divCycle I u) c g hg hsδ hne`.
+
+Rewrite using `[← hsum, Finsupp.sum]`. Use `Finset.sum_congr rfl fun W hW => ?_` and prove the remaining obligations. Use `congr 1`. Conclude with `Vertical.chowForm_degree_unique (Nat.succ_pos e) (hg W hW) (hg W hW) (hδW W hW) (Vertical.ChowFormHomog.proof F n (e + 1) W (g W) (hg W hW))`.
+-/
 theorem ChowDegreeSection.proof (h : ChowFormSectionPerfect.Statement) : ChowDegreeSection.Statement := by
   intro F _ _ n e I u hI hdim hu
   obtain ⟨f, hf⟩ := chowFormExists F n (e + 2) I hI hdim

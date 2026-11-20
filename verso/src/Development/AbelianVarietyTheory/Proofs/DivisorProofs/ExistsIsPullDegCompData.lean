@@ -19,6 +19,17 @@ open GlobalTheory.PsiEvenPull (proj)
 
 variable {R R' : Type} [CommRing R] [IsDomain R] [CommRing R'] [IsDomain R']
 
+/- English proof (translation)
+Take `⟨e, e_hom, he⟩` from `grpPullback_iso gp (isGrpPullback_pullback D.P.A (specOf i))`. Substitute `he` using the available equality. Establish `hE : eSec D'.P.A ≫ e.hom.left ≫ pullback.fst D.P.A.hom (specOf i) = specOf i ≫ eSec D.P.A` using `(cubeMapOf gp).e_comm`. Establish `hx : ∀ x, g ≫ (toUnit (TW W) ≫ D.c (xe x)).left = D'.xK x ≫ e.hom.left ≫ pullback.fst D.P.A.hom (specOf i)` using `fun x => by show g ≫ W.ι ≫ (D.c (xe x)).left = (jK R' ≫ (D'.c x).left) ≫ _`. Rewrite using `[Category.assoc, hc, ← Category.assoc, hg, Category.assoc]`.
+
+Use `choose b hb vb using fun x => exists_gen D.P.isLB (K' := PUnit) (φ' := fun _ => D'.xK x ≫ e.hom.left ≫ pullback.fst D.P.A.hom (specOf i)) (ε' := fun _ => -1) (fun U _ h => Finset.prod_congr rfl fun _ _ => congrArg (fun q => h q ^ (-1 : ℤ)) (hx x)) (LB.pullGen D.P.L _ _ (ψW.psi (x …`. Use `choose psi hpsi vpsi using fun x => DegPull.exists_down_val hw D.P.isLB D'.P.isLB (K := PUnit) (φ' := fun _ => D'.xK x) (ε := fun _ => -1) (fun _ => rfl) (b x) (hb x)`. Establish `eψ : ∀ x, psi x = D'.psi x` using `fun x => TorusExt.gen_ext_val D'.P.isLB (hpsi x) (D'.psi_gen x) fun y J' hJ' => by`. Take `⟨J, hJ⟩` from `DegPull.exists_good' D.P.isLB y`. Establish `v` using `vpsi x _ (𝟙 _) y _ _ (hJ.mem _ (𝟙 _)) (hJ'.mem _ (𝟙 _))`.
+
+Establish `u` using `hψ x y J J' hJ hJ'`. Establish `v₁ : val (b x) (𝟙 _) y J = val (ψW.psi (xe x)) g y J` using `(vb x _ _ y J hJ).trans ((val_pull hJ _ _ _).trans (by rw [Category.id_comp]))`. Establish `v₂ : val (b x) (𝟙 _) y J = (om w y J J' (D'.xK x))⁻¹ * val (psi x) (𝟙 _) y J'`. Use `v.trans (congrArg₂ (· * ·) ?_ rfl)` and prove the remaining obligations. Rewrite using `[pw, Fintype.prod_unique, zpow_neg_one]`.
+
+Simplify using `only [om, Category.id_comp]`. Conclude with `mul_left_cancel (v₂.symm.trans (v₁.trans u))`. Use `⟨⟨e, e_hom, w, (isGen_iff w).2 hw, hE, ?_, xe, hc, W, ψW, g, hg, fun x => ⟨b x, fun jN jL => ?_, corr_of_val D.P.isLB fun y J hJ => vb x _ _ y J hJ⟩⟩, rfl, fun _ => rfl, fun _ _ _ _ _ => rfl⟩` and prove the remaining obligations. Conclude with `(maps_iff w _ (fun _ => eSec D.P.A) _ D'.rig D.rig (specOf i) _ (rigPull_le (G' := D'.P.A) (G := D.P.A) _ (specOf i) hE D.P.L) (fun _ => rfl)).2 hr`. Rewrite using `[← eψ]`.
+
+Use `unit_ext fun y hy => ?_` and prove the remaining obligations. Establish `v` using `vpsi x _ (𝟙 _) y jN (fun _ => jL) (GeneratorPullback.mapsAt_le_b _ _ _ _ jN jL hy) (GeneratorPullback.mapsAt_le_a _ _ _ _ jN jL hy)`. Use `(gm_res _ y _ hy _).trans (v.trans (Eq.symm ((map_mul _ _ _).trans (congrArg₂ (· * ·) ?_ (gm_res _ y _ hy _)))))` and prove the remaining obligations. Rewrite using `[pw, Fintype.prod_unique]`. Conclude with `(map_zpow _ _ _).trans (congrArg (· ^ (-1 : ℤ)) (gm_pull (𝟙 _) _ y _ hy _))`.
+-/
 theorem exists_isPullDeg_of_valW {i : R →+* R'} (D : DegPre R) (D' : DegPre R')
     {W : (Sp R).Opens} (ψW : PsiOn D W) (g : (TK R').left ⟶ (TW W).left) (hg : g ≫ W.ι = jK R' ≫ specOf i)
     {Φ : D'.P.A.left ⟶ D.P.A.left} (gp : IsGrpPullback D'.P.A D.P.A (spMap i) Φ)

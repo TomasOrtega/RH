@@ -9,6 +9,13 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.S
 
 namespace GlobalTheory.ThetaPull
 
+/- English proof (translation)
+Introduce `E _ _ _ H S S' t t' f m U V hVU θ hθ hnv`. Establish `hW : t'.G.hom ⁻¹ᵁ V ≤ m.cm.F ⁻¹ᵁ (t.G.hom ⁻¹ᵁ U)` using `fun y hy => by show t.G.hom (m.cm.F y) ∈ U`. Rewrite using `[← Scheme.Hom.comp_apply, m.cart.1.w, Scheme.Hom.comp_apply]`. Conclude with `hVU hy`. Take `⟨θ', hθ', hb⟩` from `GlobalTheory.AbLocusPull.exists_secOn_pull t.PP.isLB t'.PP.isLB (GlobalTheory.LevCover.sabMap_lbIso m) hW hθ`.
+
+Use `⟨θ', hθ', fun y hy => ?_⟩` and prove the remaining obligations. Take `⟨g, i, hg, hi⟩` from `hnv (f y) (hVU hy)`. Take `⟨g', h₁, h₂⟩` from `Scheme.exists_preimage_of_isPullback m.cart.1 g y hg`. Take `⟨k, hk⟩` from `exists_chart t'.PP.isLB g'`. Use `⟨g', k, h₂, hb g' ?_ i k hk (h₁ ▸ hi)⟩` and prove the remaining obligations.
+
+Use `show t'.G.hom g' ∈ V`. Rewrite using `[h₂]`. Conclude with `hy`.
+-/
 theorem pull_theta_gen : ∀ {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {S S' : Scheme.{0}} (t : SAB H S) (t' : SAB H S') (f : S' ⟶ S) (m : SABMap t' t f) (U : S.Opens) (V : S'.Opens), V ≤ f ⁻¹ᵁ U → ∀ (θ : ∀ i, Γ(t.G.left, t.G.hom ⁻¹ᵁ U ⊓ t.PP.L.U i)), θ ∈ secOn t.PP.L (t.G.hom ⁻¹ᵁ U) → (∀ y ∈ U, ∃ (g : t.G.left) (i : t.PP.L.ι), t.G.hom g = y ∧ g ∈ t.G.left.basicOpen (θ i)) → ∃ θ' : ∀ i, Γ(t'.G.left, t'.G.hom ⁻¹ᵁ V ⊓ t'.PP.L.U i), θ' ∈ secOn t'.PP.L (t'.G.hom ⁻¹ᵁ V) ∧ ∀ y ∈ V, ∃ (g : t'.G.left) (i : t'.PP.L.ι), t'.G.hom g = y ∧ g ∈ t'.G.left.basicOpen (θ' i) := by
   intro E _ _ _ H S S' t t' f m U V hVU θ hθ hnv
   have hW : t'.G.hom ⁻¹ᵁ V ≤ m.cm.F ⁻¹ᵁ (t.G.hom ⁻¹ᵁ U) := fun y hy => by

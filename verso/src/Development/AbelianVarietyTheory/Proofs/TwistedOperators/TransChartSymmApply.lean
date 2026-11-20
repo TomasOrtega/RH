@@ -17,15 +17,27 @@ def transChart (φ : OpenPartialHomeomorph G (EuclideanSpace ℝ (Fin d))) (a : 
 
 variable (φ : OpenPartialHomeomorph G (EuclideanSpace ℝ (Fin d)))
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem transChart_apply (a x : G) : transChart φ a x = φ (a⁻¹ * x) := rfl
 
+/- English proof (translation)
+Simplify using `[transChart, Homeomorph.mulLeft_symm]`.
+-/
 @[simp] theorem transChart_symm_apply (a : G) (y : EuclideanSpace ℝ (Fin d)) :
     (transChart φ a).symm y = a * φ.symm y := by
   simp [transChart, Homeomorph.mulLeft_symm]
 
+/- English proof (translation)
+Use extensionality with `x`. Simplify using `[transChart]`.
+-/
 @[simp] theorem transChart_source (a : G) : (transChart φ a).source = {x | a⁻¹ * x ∈ φ.source} := by
   ext x; simp [transChart]
 
+/- English proof (translation)
+Use extensionality with `y`. Simplify using `[transChart]`.
+-/
 @[simp] theorem transChart_target (a : G) : (transChart φ a).target = φ.target := by
   ext y; simp [transChart]
 

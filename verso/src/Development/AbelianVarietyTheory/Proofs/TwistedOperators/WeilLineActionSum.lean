@@ -18,6 +18,15 @@ open GlobalTheory.ArchUniq MeasureTheory
 
 namespace GlobalTheory.OscQuad
 
+/- English proof (translation)
+Introduce `hP F E _ _ _ _ _ σ n d X W M ψ χX χW om hCM hψ hW γ hγ`. Take `⟨T, hT, hadd, h0⟩` from `GlobalTheory.T.weil_line_one_parameter hP M ψ χX χW om hCM hψ hW γ hγ`. Take `⟨A, hAc, hA⟩` from `GlobalTheory.T.archimedeanLine_intertwines_realSchrodinger M ψ χX χW om hψ hW γ hγ T hT`. Use `haveI : BorelSpace (Fin n × Fin d → mixedEmbedding.mixedSpace F) := Pi.borelSpace`. Set `μ : Measure (Fin n × Fin d → mixedEmbedding.mixedSpace F)` to `Measure.addHaar`.
+
+Establish `hiso : ∀ t f, ∫ x, ‖T t f x‖ ^ 2 ∂μ = ∫ x, ‖f x‖ ^ 2 ∂μ` using `fun t f => GlobalTheory.T.weil_representation_integral_action M ψ χX χW om hW μ inferInstance (γ (Multiplicative.ofAdd t)) f (T t f) (hT t f)`. Take `⟨hc1, hc2⟩` from `GlobalTheory.T.archimedeanOneParameterFamily_continuous M ψ χX χW om hW γ hγ T hT`. Take `⟨m, a, b, c, c₀, hR⟩` from `GlobalTheory.T.realMetaplectic_family_derivative_quadratic hP.realMetaplecticRepresentation (Fin n × Fin d → mixedEmbedding.mixedSpace F) μ inferInstance _ (GlobalTheory.ArchUniq.Coord.isPairing_trP (F := F) (Fin n × Fin d)) A T hAc hadd h0 hA hiso hc1 (hc2 μ inferInstance)`. Use `choose u hu hDu using fun i => GlobalTheory.T.exists_heisenbergLine_derivative_formula M ψ hψ (a i)`. Use `choose v hv hDv using fun i => GlobalTheory.T.exists_heisenbergLine_derivative_formula M ψ hψ (b i)`.
+
+Take `⟨r₀, hr₀, hinj⟩` from `GlobalTheory.T.exists_admissible_finiteFactor_archimedeanSchwartz (F := F) (Fin n × Fin d)`. Use `⟨m, u, v, c, c₀, fun i => ⟨hu i, hv i⟩, ?_⟩` and prove the remaining obligations. Introduce `f g₁ g₂ h1 h2 F₁ hF y`. Establish `eF : ∀ t, F₁ t = T t f` using `fun t => hinj _ _ ((hF t r₀ (hr₀ f)).symm.trans (hT t f r₀ (hr₀ f)))`. Simplify using `only [eF]`.
+
+Conclude with `hR f g₁ g₂ (fun i y => hDv i f (g₁ i) (h1 i) y) (fun i y => hDu i (g₁ i) (g₂ i) (h2 i) y) y`.
+-/
 theorem deriv_line_quad : GlobalTheory.FunPr.Hypotheses₂ → ∀ {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E}
     {n d : ℕ} {X : Spc F E n} {W : Spc F E d} (M : Model σ X W) (ψ : AddChar (AF F) ℂ) (χX χW : Chr F E) (om : Rep σ X W),
     IsCMExt F E σ → IsStd ψ → M.IsWeil ψ χX χW om →

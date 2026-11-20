@@ -3,6 +3,11 @@ import Development.AutomorphicArithmetic.Foundations.GaloisRepresentations.Trans
 
 open CategoryTheory Limits AlgebraicGeometry Opposite CochainComplex CochainComplex.HomComplex GlobalTheory.EtC UpperTheory.Gal.TranscendenceTraces
 
+/- English proof (translation)
+Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty`. Simplify using `only [Finset.sum_empty]`. Conclude with `IsLocallyConstant.const 0`. Consider the case `insert a s ha ih`.
+
+Simplify using `only [Finset.sum_insert ha]`. Conclude with `(h a).add ih`.
+-/
 private theorem isLC_sum {X ι : Type*} [TopologicalSpace X] (s : Finset ι) (f : ι → X → ℤ)
     (h : ∀ j, IsLocallyConstant (f j)) : IsLocallyConstant (fun t => ∑ j ∈ s, f j t) := by
   classical
@@ -14,6 +19,21 @@ private theorem isLC_sum {X ι : Type*} [TopologicalSpace X] (s : Finset ι) (f 
     simp only [Finset.sum_insert ha]
     exact (h a).add ih
 
+/- English proof (translation)
+Use `haveI : IsFinite A.r := A.finite`. Establish `hfin` using `hFib A.r Ω (x1 ≫ g)`. Establish `hmem : ∀ j, x1 ≫ τ j ∈ fib A.r (x1 ≫ g)` using `fun j => by show (x1 ≫ τ j) ≫ A.r = x1 ≫ g`. Rewrite using `[Category.assoc, hτr]`. Establish `hiff : ∀ z ∈ fib A.r (x1 ≫ g), ∀ j, (x1 ≫ f) ≫ σ j = z ≫ A.v ↔ x1 ≫ τ j = z`.
+
+Introduce `z hz j`. Establish `hz' : z ≫ A.r = x1 ≫ g` using `hz`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Apply `A.pb.hom_ext` to reduce the goal to its premises.
+
+Rewrite using `[Category.assoc, hτv, ← Category.assoc, h]`. Rewrite using `[Category.assoc, hτr, hz']`. Introduce `h`. Rewrite using `[← h, Category.assoc, Category.assoc, hτv]`. Establish `hw : ∀ z ∈ fib A.r (x1 ≫ g), w Ω (z ≫ A.v) = ∑ j, if x1 ≫ τ j = z then m j else 0`.
+
+Introduce `z hz`. Establish `hz' : z ≫ A.r = x1 ≫ g` using `hz`. Establish `hsq : (z ≫ A.v) ≫ p = (x1 ≫ f) ≫ π`. Rewrite using `[Category.assoc, A.pb.w, ← Category.assoc, hz', Category.assoc, ← hfg, Category.assoc]`. Rewrite using `[hC Ω (x1 ≫ f) (z ≫ A.v) hsq, finsum_mem_def, finsum_eq_sum_of_fintype]`.
+
+Apply `Finset.sum_congr rfl` to reduce the goal to its premises. Introduce `j _`. Distinguish the cases in `h : x1 ≫ τ j = z`. Rewrite using `[Set.indicator_of_mem (show j ∈ {j | (x1 ≫ f) ≫ σ j = z ≫ A.v} from (hiff z hz j).mpr h) m, if_pos h]`. Rewrite using `[Set.indicator_of_notMem (show j ∉ {j | (x1 ≫ f) ≫ σ j = z ≫ A.v} from fun h' => h ((hiff z hz j).mp h')) m, if_neg h]`.
+
+Rewrite using `[finsum_mem_eq_finite_toFinset_sum _ hfin]`. Rewrite using `[Finset.sum_congr rfl (g := fun z => (∑ j, if x1 ≫ τ j = z then m j else 0) * φ (pt z)) (fun z hz => by rw [hw z (hfin.mem_toFinset.mp hz)])]`. Simplify using `only [Finset.sum_mul]`. Rewrite using `[Finset.sum_comm]`. Apply `Finset.sum_congr rfl` to reduce the goal to its premises.
+
+Introduce `j _`. Simplify using `only [ite_mul, zero_mul]`. Rewrite using `[Finset.sum_ite_eq, if_pos (hfin.mem_toFinset.mpr (hmem j)), pt_comp]`.
+-/
 private theorem key {T Z S : Scheme.{0}} {p : Z ⟶ S} {π : T ⟶ S} {ι : Type} [Fintype ι] [IsFinite p]
     (hFib : FibFin) (σ : ι → (T ⟶ Z)) (m : ι → ℤ) (w : Wt Z) (hC : Counts p π σ m w) (A : Sq p)
     (φ : A.V → ℤ) (Ω : Type) [Field Ω] [IsAlgClosed Ω] {U1 : Scheme.{0}} (f : U1 ⟶ T) (g : U1 ⟶ A.U)
@@ -62,6 +82,25 @@ private theorem key {T Z S : Scheme.{0}} {p : Z ⟶ S} {π : T ⟶ S} {ι : Type
   simp only [ite_mul, zero_mul]
   rw [Finset.sum_ite_eq, if_pos (hfin.mem_toFinset.mpr (hmem j)), pt_comp]
 
+/- English proof (translation)
+Introduce `hPE hPL hFib T Z S p π _ _ _ ι _ σ m w hσ hC`. Use `haveI := Fintype.ofFinite ι`. Introduce `A φ hφ`. Set `f : pullback π A.u ⟶ T` to `pullback.fst π A.u`. Set `g : pullback π A.u ⟶ A.U` to `pullback.snd π A.u`.
+
+Establish `hfg : f ≫ π = g ≫ A.u` using `pullback.condition`. Establish `hpb1 : IsPullback f g π A.u` using `IsPullback.of_hasPullback π A.u`. Use `haveI : Surjective g := MorphismProperty.of_isPullback (P := @Surjective) hpb1 inferInstance`. Use `haveI : IsIntegralHom g := MorphismProperty.of_isPullback (P := @IsIntegralHom) hpb1 inferInstance`. Set `τ : ι → (pullback π A.u ⟶ A.V)` to `fun j => A.pb.lift (f ≫ σ j) g (by rw [Category.assoc, hσ j, hfg])`.
+
+Establish `hτv : ∀ j, τ j ≫ A.v = f ≫ σ j` using `fun j => A.pb.lift_fst _ _ _`. Establish `hτr : ∀ j, τ j ≫ A.r = g` using `fun j => A.pb.lift_snd _ _ _`. Set `χ : ↥(pullback π A.u) → ℤ` to `fun t => ∑ j, m j * φ (τ j t)`. Establish `hχ : IsLocallyConstant χ` using `isLC_sum Finset.univ (fun j t => m j * φ (τ j t)) (fun j => (hφ.comp_continuous (τ j).continuous).comp (fun a => m j * a))`. Establish `hconst : ∀ t1 t2, g t1 = g t2 → χ t1 = χ t2`.
+
+Introduce `t1 t2 h`. Take `⟨Ω, hF, hA, x1, hx1⟩` from `hPE _ t1`. Use `letI := hF`. Use `haveI := hA`. Take `⟨z, hz, hzt⟩` from `hPL g Ω (x1 ≫ g) t2 (by rw [pt_comp, hx1, h])`.
+
+Establish `k1` using `key hFib σ m w hC A φ Ω f g hfg τ hτv hτr x1`. Establish `k2` using `key hFib σ m w hC A φ Ω f g hfg τ hτv hτr z`. Rewrite `k2` using `[hz]`. Use `show ∑ j, m j * φ (τ j t1) = ∑ j, m j * φ (τ j t2)`. Rewrite using `[← hx1, ← hzt, k1, k2]`.
+
+Establish `hsurj : Function.Surjective g` using `g.surjective`. Set `ψ : A.U → ℤ` to `fun s => χ (Function.surjInv hsurj s)`. Establish `hψg : ∀ t, ψ (g t) = χ t` using `fun t => hconst _ _ (Function.surjInv_eq hsurj _)`. Use `⟨ψ, ?_, ?_⟩` and prove the remaining obligations. Establish `hq : Topology.IsQuotientMap g` using `g.isClosedMap.isQuotientMap g.continuous hsurj`.
+
+Introduce `s`. Rewrite using `[← hq.isOpen_preimage]`. Establish `hpre : g ⁻¹' (ψ ⁻¹' s) = χ ⁻¹' s`. Use extensionality with `t`. Simplify using `only [Set.mem_preimage, hψg]`.
+
+Rewrite using `[hpre]`. Conclude with `hχ s`. Introduce `Ω _ _ x`. Take `⟨t, ht⟩` from `hsurj (pt x)`. Take `⟨z, hz, _⟩` from `hPL g Ω x t ht`.
+
+Rewrite using `[← hz, pt_comp, hψg]`. Conclude with `key hFib σ m w hC A φ Ω f g hfg τ hτv hτr z`.
+-/
 theorem UpperTheory.Gal.TranscendenceTraces.countWt_of :
     PtEx → PtLift → FibFin → CountWt := by
   intro hPE hPL hFib T Z S p π _ _ _ ι _ σ m w hσ hC

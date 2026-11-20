@@ -11,6 +11,19 @@ namespace GlobalTheory.AbMonoIsoAny
 
 open GlobalTheory.NearFibreIso GlobalTheory.DenseFibreIso
 
+/- English proof (translation)
+Set `I : Submodule A A` to `LinearMap.ker (Algebra.linearMap A B)`. Establish `: Module.Finite A I` using `Module.Finite.iff_fg.2 hfg`. Establish `hex : Function.Exact I.subtype (Algebra.linearMap A B)` using `LinearMap.exact_subtype_ker_map _`. Establish `hinj : Function.Injective ((I.subtype.restrictScalars R).rTensor K)` using `(LinearMap.lTensor_inj_iff_rTensor_inj K _).1 (LinearMap.lTensor_injective_of_exact_of_flat ((Algebra.linearMap A B).restrictScalars R) hs (I.subtype.restrictScalars R) Subtype.val_injective hex K)`. Establish `h1 : Subsingleton (I ⊗[R] K)`.
+
+Use `subsingleton_of_forall_eq 0 fun z => hinj (h ?_)` and prove the remaining obligations. Rewrite using `[map_zero, map_zero]`. Proceed by induction on `z with`. Consider the case `zero => rw [map_zero, map_zero]`. Consider the case `add y z hy hz => rw [map_add, map_add, hy, hz, add_zero]`.
+
+Consider the case `tmul x c`. Establish `e : (x : A) ⊗ₜ[R] c = (x : A) • ((1 : A) ⊗ₜ[R] c)`. Rewrite using `[TensorProduct.smul_tmul', smul_eq_mul, _root_.mul_one]`. Establish `hx : (x : A) • (1 : B) = 0`. Rewrite using `[← Algebra.algebraMap_eq_smul_one]`.
+
+Conclude with `x.2`. Express the relevant statement in the definitionally equal form `((x : A) ⊗ₜ[R] c) ⊗ₜ[A] (1 : B) = 0`. Rewrite using `[e, TensorProduct.smul_tmul, hx, TensorProduct.tmul_zero]`. Establish `h2 : Subsingleton ((A ⊗[R] K) ⊗[A] I)` using `((TensorProduct.comm A _ _).trans (TensorProduct.AlgebraTensorModule.cancelBaseChange R A A I K)).toEquiv.subsingleton`. Take `⟨a, ha, ha'⟩` from `exists_smul_eq_zero (A := A) (N := I) (A ⊗[R] K) m`.
+
+Use `⟨a, ha, ?_⟩` and prove the remaining obligations. Establish `h3` using `subsingleton_of_isUnit ha' (Localization.Away a) (IsLocalization.Away.algebraMap_isUnit a)`. Rewrite using `[includeLeft_eq, EquivLike.bijective_comp]`. Use `⟨(injective_iff_map_eq_zero _).2 fun z hz => ?_, LinearMap.lTensor_surjective _ hs⟩` and prove the remaining obligations. Take `⟨y, rfl⟩` from `(lTensor_exact (Localization.Away a) hex hs z).1 hz`.
+
+Rewrite using `[Subsingleton.elim y 0, map_zero]`.
+-/
 theorem exists_away_bijective_of_fg {A B : Type} [CommRing A] [CommRing B] [Algebra A B]
     (R K : Type) [CommRing R] [CommRing K]
     [Algebra R K] [Algebra R A] [Algebra R B] [IsScalarTower R A B] [Module.Flat R B]
@@ -56,6 +69,19 @@ theorem exists_away_bijective_of_fg {A B : Type} [CommRing A] [CommRing B] [Alge
 
 set_option backward.isDefEq.respectTransparency.types false in
 
+/- English proof (translation)
+Use `local_of_ring (K := K) s f _ (fun A B _ _ _ _ _ _ j j' _ H hj hb m => ?_) x hx` and prove the remaining obligations. Establish `h1 : IsClosedImmersion (spMap (algebraMap A B))` using `MorphismProperty.of_isPullback (P := @IsClosedImmersion) H.flip hcl`. Establish `hs : Function.Surjective (algebraMap A B)`. Establish `h2` using `(IsClosedImmersion.isAffine_surjective_of_isAffine (spMap (algebraMap A B))).2`. Establish `e` using `Scheme.ΓSpecIso_naturality (CommRingCat.ofHom (algebraMap A B))`.
+
+Establish `h3` using `(ConcreteCategory.bijective_of_isIso (Scheme.ΓSpecIso (CommRingCat.of B)).hom).2.comp h2`. Rewrite `h3` using `[← ConcreteCategory.coe_comp, e, ConcreteCategory.coe_comp]`. Conclude with `h3.of_comp`. Establish `: IsOpenImmersion j'` using `MorphismProperty.of_isPullback (P := @IsOpenImmersion) H ‹_›`. Establish `e : spMap (algebraMap R B) = j' ≫ f ≫ s`.
+
+Rewrite using `[← H.w_assoc, hj, ← Spec.map_comp, IsScalarTower.algebraMap_eq R A B]`. Both sides reduce to the same expression. Establish `h2 : Flat (spMap (algebraMap R B))`. Rewrite using `[e]`. Use `infer_instance`.
+
+Establish `: Module.Flat R B` using `RingHom.flat_algebraMap_iff.1 (Flat.SpecMap_iff.1 h2)`. Establish `h3 : LocallyOfFinitePresentation (spMap (algebraMap R B))`. Rewrite using `[e]`. Use `infer_instance`. Establish `h4 : LocallyOfFinitePresentation (spMap (algebraMap R A))`.
+
+Rewrite using `[← hj]`. Use `infer_instance`. Establish `: Algebra.FinitePresentation R B` using `RingHom.finitePresentation_algebraMap.1 ((HasRingHomProperty.Spec_iff (P := @LocallyOfFinitePresentation)).1 h3)`. Establish `: Algebra.FinitePresentation R A` using `RingHom.finitePresentation_algebraMap.1 ((HasRingHomProperty.Spec_iff (P := @LocallyOfFinitePresentation)).1 h4)`. Establish `hfg : (RingHom.ker (algebraMap A B)).FG` using `Algebra.FinitePresentation.ker_fG_of_surjective (IsScalarTower.toAlgHom R A B) hs`.
+
+Take `⟨a, ha, ha'⟩` from `exists_away_bijective_of_fg R K hs hfg hb.1 m`. Conclude with `⟨a, ha, isIso_SpecMap_iff.2 ha'⟩`.
+-/
 theorem near_isIso_of_finitePresentation {R : Type} [CommRing R] {Y X : Scheme.{0}} (s : X ⟶ Sp R)
     (f : Y ⟶ X) (K : Type) [Field K] [Algebra R K] [hcl : IsClosedImmersion f]
     [LocallyOfFinitePresentation s] [LocallyOfFinitePresentation (f ≫ s)] [Flat (f ≫ s)]
@@ -91,6 +117,19 @@ theorem near_isIso_of_finitePresentation {R : Type} [CommRing R] {Y X : Scheme.{
   obtain ⟨a, ha, ha'⟩ := exists_away_bijective_of_fg R K hs hfg hb.1 m
   exact ⟨a, ha, isIso_SpecMap_iff.2 ha'⟩
 
+/- English proof (translation)
+Establish `hn : ∀ y : X, Near f (MorphismProperty.isomorphisms _) y`. Introduce `y`. Take `⟨_, ⟨U, hU, rfl⟩, hyU, -⟩` from `S.isBasis_affineOpens.exists_subset_of_mem_open (Set.mem_univ (p y)) isOpen_univ`. Use `replace hU : IsAffineOpen U := hU`. Set `j : Sp Γ(S, U) ⟶ S` to `hU.fromSpec`.
+
+Take `⟨z, hz⟩ : p y ∈ Set.range j` from `by rw [hU.range_fromSpec]; exact hyU`. Set `gX` to `pullback.fst p j`. Set `s` to `pullback.snd p j`. Set `f'` to `pullback.snd f gX`. Establish `HX` using `IsPullback.of_hasPullback p j`.
+
+Establish `HY` using `IsPullback.of_hasPullback f gX`. Establish `HYS` using `HY.paste_vert HX`. Take `⟨y', hy', hy's⟩` from `Scheme.Pullback.exists_preimage_pullback (f := p) (g := j) y z hz.symm`. Establish `: Surjective (f' ≫ s)` using `MorphismProperty.of_isPullback HYS ‹_›`. Establish `h₁ : SmoothOfRelativeDimension g' s` using `(smoothOfRelativeDimension_isStableUnderBaseChange g').of_isPullback HX hg'`.
+
+Establish `h₂ : SmoothOfRelativeDimension g (f' ≫ s)` using `(smoothOfRelativeDimension_isStableUnderBaseChange g).of_isPullback HYS hg`. Establish `: Smooth s` using `h₁.smooth`. Establish `: Smooth (f' ≫ s)` using `h₂.smooth`. Establish `: (s y').asIdeal.IsPrime` using `(s y').isPrime`. Use `GlobalTheory.AbMonoIso.fibre_isIso s f' h₁ h₂ hle (s y').asIdeal.ResidueField` as an intermediate fact.
+
+Establish `h` using `near_isIso_of_finitePresentation s f' (s y').asIdeal.ResidueField y' (Ideal.ker_algebraMap_residueField (s y').asIdeal)`. Establish `h'` using `Near.of_pullback f HY.flip h`. Rewrite `h'` using `[hy']`. Then use the resulting hypothesis. Establish `h` using `isIso_of_near f (𝟙 _) (fun y => by simpa using hn y)`. Establish `e : f = inv (pullback.fst f (𝟙 X)) ≫ pullback.snd f (𝟙 X)`.
+
+Rewrite using `[IsIso.eq_inv_comp, pullback.condition, Category.comp_id]`. Rewrite using `[e]`. Use `infer_instance`.
+-/
 theorem isIso_of_isClosedImmersion {S X Y : Scheme.{0}} (p : X ⟶ S)
     (f : Y ⟶ X) [IsClosedImmersion f] [GeometricallyConnected p] [Surjective (f ≫ p)]
     {g g' : ℕ} (hg' : SmoothOfRelativeDimension g' p)
@@ -128,6 +167,13 @@ theorem isIso_of_isClosedImmersion {S X Y : Scheme.{0}} (p : X ⟶ S)
   rw [e]
   infer_instance
 
+/- English proof (translation)
+Introduce `S B B' _ _ hB hB' g hg hg' x _ _`. Use `hB.proper` as an intermediate fact. Use `hB'.proper` as an intermediate fact. Use `hB'.geomConnected` as an intermediate fact. Establish `: Mono x.left` using `inferInstanceAs (Mono ((Over.forget S).map x))`.
+
+Establish `: IsProper (x.left ≫ B'.hom)` using `by rw [Over.w]; infer_instance`. Establish `: IsProper x.left` using `IsProper.of_comp x.left B'.hom`. Establish `: IsClosedImmersion x.left` using `(IsClosedImmersion.iff_isProper_and_mono _).2 ⟨‹_›, ‹_›⟩`. Establish `hs : Surjective B.hom` using `⟨fun t => ⟨(η[B] : 𝟙_ (Over S) ⟶ B).left t, by`. Rewrite using `[← Scheme.Hom.comp_apply, Over.w]`.
+
+Use the proof step `rfl⟩⟩`. Establish `: Surjective (x.left ≫ B'.hom)` using `by rw [Over.w]; exact hs`. Establish `: IsIso x.left` using `isIso_of_isClosedImmersion B'.hom x.left hg' (by rw [Over.w]; exact hg) le_rfl`. Establish `: IsIso ((Over.forget _).map x)` using `‹_›`. Conclude with `isIso_of_reflects_iso x (Over.forget _)`.
+-/
 theorem isIso_of_mono : ∀ (S : Scheme.{0}) (B B' : Over S) [GrpObj B] [GrpObj B'], IsAbelianScheme B → IsAbelianScheme B' → ∀ g : ℕ, SmoothOfRelativeDimension g B.hom → SmoothOfRelativeDimension g B'.hom → ∀ x : B ⟶ B', IsMonHom x → Mono x → IsIso x := by
   intro S B B' _ _ hB hB' g hg hg' x _ _
   have := hB.proper

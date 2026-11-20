@@ -48,6 +48,9 @@ def VerticalDivisorsCommute.Statement : Prop :=
 
 section Examples
 
+/- English proof (translation)
+Unfold `divCycle at h`. Use `split_ifs at h with hW`. Conclude with `hW.1.1.1`. Conclude with `absurd rfl h`.
+-/
 theorem isPrime_of_divCycle_ne_zero {K : Type*} {ι : K → Type*} {R : Type*} [CommRing R]
     {P : Ideal (MRing ι R)} {f : MRing ι R} {W : Ideal (MRing ι R)} (h : divCycle P f W ≠ 0) :
     W.IsPrime := by

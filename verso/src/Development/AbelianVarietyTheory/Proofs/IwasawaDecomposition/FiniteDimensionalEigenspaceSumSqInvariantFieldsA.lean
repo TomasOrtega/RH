@@ -7,6 +7,37 @@ open scoped ContDiff
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Introduce `K _ _ _ _ _ L _ _ _ S hS e he he0 hU d hadd hsmul hder ι _ X hX lam`. Use `letI : MeasurableSpace K := borel K`. Use `haveI : BorelSpace K := ⟨rfl⟩`. Use `set μ : Measure K := haarProb K with hμ`. Establish `hc : ∀ f : S, Continuous f.1` using `fun f => hS f.1 f.2`.
+
+Establish `hint : ∀ {F : Type} [NormedAddCommGroup F] {g : K → F}, Continuous g → Integrable g μ` using `fun hg => hg.integrable_of_hasCompactSupport (HasCompactSupport.of_compactSpace _)`. Establish `hi2 : ∀ f g : S, Integrable (fun x => (starRingEnd ℂ) (f.1 x) * g.1 x) μ` using `fun f g => hint ((Complex.continuous_conj.comp (hc f)).mul (hc g))`. Establish `hskew : ∀ (Y : L) (f : S), ((∫ x, ‖(d Y f).1 x‖ ^ 2 ∂μ : ℝ) : ℂ) + ∫ x, (starRingEnd ℂ) (f.1 x) * (d Y (d Y f)).1 x ∂μ = 0`. Introduce `Y f`. Establish `c1 : Continuous fun x => (starRingEnd ℂ) (f.1 x)` using `Complex.continuous_conj.comp (hc f)`.
+
+Establish `c2 : Continuous fun x => (starRingEnd ℂ) ((d Y f).1 x)` using `Complex.continuous_conj.comp (hc _)`. Establish `h` using `(GlobalTheory.T.right_translation_curve_sq_le_and_integral_deriv_eq_zero_alt K μ (fun t => e (t • Y)) (he Y) (by simp [he0]) (fun x => (starRingEnd ℂ) (f.1 x) * (d Y f).1 x) (fun x => (starRingEnd ℂ) ((d Y f).1 x) * (d Y f).1 x + (starRingEnd ℂ) (f.1 x) * (d Y (d Y f)).1 x) (c1.m …`. Rewrite `h` using `[integral_add (hi2 _ _) (hi2 _ _)]`. Rewrite using `[← h, ← integral_complex_ofReal]`. Use `congr 1`.
+
+Use `integral_congr_ae (Eventually.of_forall fun x => ?_)` and prove the remaining obligations. Simplify using `[Complex.conj_mul']`. Establish `hsum : ∀ f : S, f ∈ Module.End.eigenspace (∑ i, d (X i) * d (X i)) lam → ∑ i, ∫ x, ‖(d (X i) f).1 x‖ ^ 2 ∂μ ≤ ‖lam‖ * ∫ x, ‖f.1 x‖ ^ 2 ∂μ`. Introduce `f hf`. Rewrite `hf` using `[Module.End.mem_eigenspace_iff]`.
+
+Establish `h1 : ∑ i, ∫ x, (starRingEnd ℂ) (f.1 x) * (d (X i) (d (X i) f)).1 x ∂μ = lam * ((∫ x, ‖f.1 x‖ ^ 2 ∂μ : ℝ) : ℂ)`. Rewrite using `[← integral_finsetSum _ (fun i _ => hi2 _ _), ← integral_complex_ofReal, ← integral_const_mul]`. Use `integral_congr_ae (Eventually.of_forall fun x => ?_)` and prove the remaining obligations. Establish `h2` using `congrArg (fun g : S => g.1 x) hf`. Simplify using `only [LinearMap.sum_apply, Module.End.mul_apply, Submodule.coe_sum, Finset.sum_apply, Submodule.coe_smul, Pi.smul_apply, smul_eq_mul] at h2`.
+
+Simplify using `only`. Rewrite using `[← Finset.mul_sum, h2, mul_left_comm, Complex.conj_mul']`. Simplify using the standard rewrite rules. Establish `h3 : ((∑ i, ∫ x, ‖(d (X i) f).1 x‖ ^ 2 ∂μ : ℝ) : ℂ) = - (lam * ((∫ x, ‖f.1 x‖ ^ 2 ∂μ : ℝ) : ℂ))`. Rewrite using `[← h1, Complex.ofReal_sum, eq_neg_iff_add_eq_zero, ← Finset.sum_add_distrib]`.
+
+Conclude with `Finset.sum_eq_zero fun i _ => hskew _ _`. Establish `h4` using `congrArg norm h3`. Rewrite `h4` using `[norm_neg, norm_mul, Complex.norm_real, Complex.norm_real, Real.norm_eq_abs, Real.norm_eq_abs, abs_of_nonneg (a := ∫ x, ‖f.1 x‖ ^ 2 ∂μ) (integral_nonneg fun x => by positivity)]`. Rewrite using `[← h4]`. Conclude with `le_abs_self _`.
+
+Take `⟨a, ha⟩` from `(Fintype.linearCombination ℝ X).exists_rightInverse_of_surjective (by rw [Fintype.range_linearCombination, hX])`. Establish `hac : Continuous a` using `a.continuous_of_finiteDimensional`. Establish `hd0 : d 0 = 0`. Use `hsmul 0 0` as an intermediate fact. Simplify using `using this`.
+
+Establish `hdY : ∀ Y, d Y = ∑ i, ((a Y i : ℝ) : ℂ) • d (X i)`. Introduce `Y`. Establish `h1 : Y = ∑ i, a Y i • X i`. Use `LinearMap.congr_fun ha Y` as an intermediate fact. Simplify `this.symm` using `[Fintype.linearCombination_apply]`.
+
+Set `D : L →+ Module.End ℂ S` to `⟨⟨d, hd0⟩, hadd⟩`. Combine the equalities or inequalities in the displayed calculation. Establish `hbound : ∀ (Y : L) (f : S), ∫ x, ‖(d Y f).1 x‖ ^ 2 ∂μ ≤ (∑ i, (a Y i) ^ 2) * ∑ i, ∫ x, ‖(d (X i) f).1 x‖ ^ 2 ∂μ`. Introduce `Y f`. Establish `ci : ∀ g : S, Continuous fun x => ‖g.1 x‖ ^ 2` using `fun g => (hc g).norm.pow 2`.
+
+Rewrite using `[← integral_finsetSum _ (fun i _ => hint (ci _)), ← integral_const_mul]`. Use `integral_mono (hint (ci _)) (hint (continuous_const.mul (continuous_finset_sum _ fun i _ => ci _))) fun x => ?_` and prove the remaining obligations. Establish `h1 : ‖(d Y f).1 x‖ ≤ ∑ i, |a Y i| * ‖(d (X i) f).1 x‖`. Rewrite using `[hdY Y]`. Simplify using `only [LinearMap.sum_apply, LinearMap.smul_apply, Submodule.coe_sum, Finset.sum_apply, Submodule.coe_smul, Pi.smul_apply, smul_eq_mul]`.
+
+Use `(norm_sum_le _ _).trans (le_of_eq ?_)` and prove the remaining obligations. Simplify using the standard rewrite rules. Establish `h2` using `Finset.sum_mul_sq_le_sq_mul_sq Finset.univ (fun i => |a Y i|) (fun i => ‖(d (X i) f).1 x‖)`. Simplify using `only [sq_abs] at h2`. Conclude with `(pow_le_pow_left₀ (norm_nonneg _) h1 2).trans h2`.
+
+Establish `hcont : Continuous fun Y : L => (∑ i, (a Y i) ^ 2) * ‖lam‖` using `by fun_prop`. Establish `hev : ∀ᶠ Y in 𝓝 (0 : L), (∑ i, (a Y i) ^ 2) * ‖lam‖ < 1 / 4` using `hcont.continuousAt.eventually_lt continuousAt_const (by simp)`. Take `⟨r, hr, hball⟩` from `Metric.eventually_nhds_iff_ball.mp hev`. Establish `hfin` using `GlobalTheory.T.finiteDimensional_of_uniformly_almost_invariant_alt K μ ((Module.End.eigenspace (∑ i, d (X i) * d (X i)) lam).map S.subtype) (by rintro _ ⟨f, -, rfl⟩; exact hc f) _ (hU r hr) (by`. Introduce and unpack `_ ⟨f, hf, rfl⟩ _ ⟨Y, hY, rfl⟩`.
+
+Establish `h` using `(GlobalTheory.T.right_translation_curve_sq_le_and_integral_deriv_eq_zero_alt K μ (fun t => e (t • Y)) (he Y) (by simp [he0]) f.1 (d Y f).1 (hc _) (hc _) (hder Y f)).1`. Simplify using `only [one_smul] at h`. Establish `hn : 0 ≤ ∫ x, ‖f.1 x‖ ^ 2 ∂μ` using `integral_nonneg fun x => by positivity`. Establish `hs : 0 ≤ ∑ i, (a Y i) ^ 2` using `Finset.sum_nonneg fun i _ => by positivity`. Combine the equalities or inequalities in the displayed calculation.
+
+Conclude with `(Submodule.equivMapOfInjective S.subtype S.subtype_injective _).symm.finiteDimensional`.
+-/
 theorem finiteDimensional_eigenspace_sum_sq_invariantFields : ∀ (K : Type) [Group K] [TopologicalSpace K] [IsTopologicalGroup K] [CompactSpace K] [T2Space K] (L : Type) [NormedAddCommGroup L] [NormedSpace ℝ L] [FiniteDimensional ℝ L] (S : Submodule ℂ (K → ℂ)), (∀ f ∈ S, Continuous f) → ∀ e : L → K, (∀ X : L, Continuous fun t : ℝ => e (t • X)) → e 0 = 1 → (∀ r : ℝ, 0 < r → e '' Metric.ball 0 r ∈ 𝓝 (1 : K)) → ∀ d : L → Module.End ℂ S, (∀ X Y, d (X + Y) = d X + d Y) → (∀ (a : ℝ) X, d (a • X) = (a : ℂ) • d X) → (∀ (X : L) (f : S) (x : K) (t : ℝ), HasDerivAt (fun t : ℝ => f.1 (x * e (t • X))) ((d X f).1 (x * e (t • X))) t) → ∀ (ι : Type) [Fintype ι] (X : ι → L), Submodule.span ℝ (Set.range X) = ⊤ → ∀ lam : ℂ, FiniteDimensional ℂ (Module.End.eigenspace (∑ i, d (X i) * d (X i)) lam) := by
   intro K _ _ _ _ _ L _ _ _ S hS e he he0 hU d hadd hsmul hder ι _ X hX lam
   classical

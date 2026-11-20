@@ -11,6 +11,11 @@ attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalDat
 
 namespace GlobalTheory.TraceConj
 
+/- English proof (translation)
+Introduce `Γ k _ _ _ n r r' hr hr' htr`. Take `⟨P, hP⟩` from `Formalism.MainNotions.SumRepresentations.brauerNesbitt_matrix r r' hr hr' (fun g => by`. Use `GlobalTheory.QuadKernelConj.charpoly_eq_of_trace_pow _ _ fun m => ?_` and prove the remaining obligations. Rewrite using `[← Units.val_pow_eq_pow_val, ← Units.val_pow_eq_pow_val, ← map_pow, ← map_pow]`. Conclude with `htr (g ^ m))`.
+
+Conclude with `⟨P⁻¹, fun s => by rw [hP s, inv_inv]⟩`.
+-/
 theorem main : ∀ (Γ k : Type) [Group Γ] [Field k] [CharZero k] (n : ℕ) (r r' : Γ →* GL (Fin n) k), IsSSRep r → IsSSRep r' → (∀ s, ((r s : GL (Fin n) k) : Matrix (Fin n) (Fin n) k).trace = ((r' s : GL (Fin n) k) : Matrix (Fin n) (Fin n) k).trace) → RepIso r r' := by
   intro Γ k _ _ _ n r r' hr hr' htr
   obtain ⟨P, hP⟩ := Formalism.MainNotions.SumRepresentations.brauerNesbitt_matrix r r' hr hr' (fun g => by

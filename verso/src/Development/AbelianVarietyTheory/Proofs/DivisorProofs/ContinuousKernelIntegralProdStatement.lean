@@ -9,6 +9,9 @@ open NumberField IsDedekindDomain MeasureTheory Filter Topology Formalism.MainNo
 open GlobalTheory.WeilM GlobalTheory.AdelicU GlobalTheory.LFun GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels GlobalTheory.ThK
 open Classical
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.bump_iterated_integral_ne_zero | exact GlobalTheory.bump_iterated_integral_ne_zero | (intros; apply GlobalTheory.bump_iterated_integral_ne_zero <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.continuous_kernel_integral_prod : ∀ {α β : Type} [TopologicalSpace α] [MeasurableSpace α] [BorelSpace α] [SecondCountableTopology α]
     [TopologicalSpace β] [MeasurableSpace β] [BorelSpace β] [SecondCountableTopology β]
     (μa : Measure α) (μb : Measure β) [IsFiniteMeasureOnCompacts μa] [IsFiniteMeasureOnCompacts μb]

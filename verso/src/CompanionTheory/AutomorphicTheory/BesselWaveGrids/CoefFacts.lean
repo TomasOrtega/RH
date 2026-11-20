@@ -15,6 +15,11 @@ variable {k r : ℕ} {Wp Wq : Type} [NormedAddCommGroup Wp] [InnerProductSpace �
   [NormedAddCommGroup Wq] [InnerProductSpace ℂ Wq] [FiniteDimensional ℂ Wq] [CompleteSpace Wp]
   {ε : Fin (2 * r + k + 1) → Bool} {μ : Fin (2 * r + k + 1) → ℝ} {f : B.Mat k r → (Wq →L[ℂ] Wp)}
 
+/- English proof (translation)
+Take `⟨H, i1, i2, i3, σ, Pm, Qm, hlam, hσ, hQ, hP, hfG⟩` from `hf`. Set `ea` to `stdOrthonormalBasis ℂ Wp`. Set `eb` to `stdOrthonormalBasis ℂ Wq`. Set `φ : Fin (Module.finrank ℂ Wp) → Fin (Module.finrank ℂ Wq) → B.Mat k r → ℂ` to `fun a b g => ⟪ContinuousLinearMap.adjoint Pm (ea a), σ g (Qm (eb b))⟫_ℂ`. Establish `hφ : ∀ a b, IsCoef k r ε μ (φ a b)` using `fun a b => ⟨H, i1, i2, i3, σ, Qm (eb b), ContinuousLinearMap.adjoint Pm (ea a), hlam, hσ, hQ _, hP _, fun _ _ => rfl⟩`.
+
+Use `⟨∑ a, ∑ b, fun g => φ a b g • (innerSL ℂ (eb b)).smulRight (ea a), Submodule.sum_mem _ fun a _ => Submodule.sum_mem _ fun b _ => Submodule.subset_span ⟨φ a b, _, hφ a b, rfl⟩, fun g hg => ?_⟩` and prove the remaining obligations. Rewrite using `[op_expand (f g), hfG g hg]`. Simplify using `only [Finset.sum_apply, φ, ContinuousLinearMap.adjoint_inner_left, ContinuousLinearMap.comp_apply, ea, eb]`.
+-/
 theorem kfin_wsp (hf : KFinDSCoef ε μ f) : ∃ F ∈ Wsp k r Wp Wq ε μ, ∀ g ∈ B.GV k r, F g = f g := by
   classical
   obtain ⟨H, i1, i2, i3, σ, Pm, Qm, hlam, hσ, hQ, hP, hfG⟩ := hf
@@ -30,10 +35,20 @@ theorem kfin_wsp (hf : KFinDSCoef ε μ f) : ∃ F ∈ Wsp k r Wp Wq ε μ, ∀ 
   rw [op_expand (f g), hfG g hg]
   simp only [Finset.sum_apply, φ, ContinuousLinearMap.adjoint_inner_left, ContinuousLinearMap.comp_apply, ea, eb]
 
+/- English proof (translation)
+Take `⟨F, hF, he⟩` from `kfin_wsp hf`. Conclude with `Qb1.ckOn_congr he (wsp_ckOn hK hS hF)`.
+-/
 theorem kfin_ckOn (hK : PI.KFinSmooth) (hS : CoefSmooth) (hf : KFinDSCoef ε μ f) : B.CkOn ⊤ (B.GV k r) f := by
   obtain ⟨F, hF, he⟩ := kfin_wsp hf
   exact Qb1.ckOn_congr he (wsp_ckOn hK hS hF)
 
+/- English proof (translation)
+Take `⟨F, hF, he⟩` from `kfin_wsp hf`. Establish `hFm : B.InCC A m F` using `by clear he`. Proceed by induction on `hF using Submodule.span_induction with`. Consider the case `mem F h'`. Take `⟨φ, T, hφ, rfl⟩` from `h'`.
+
+Conclude with `hC hK k r ε A h hD μ φ _ T m hφ hg`. Consider the case `zero => exact JCx2.sq_inCC_zero`. Consider the case `add F F' _ _ h h' => exact JCx2.sq_inCC_add h h'`. Consider the case `smul c F _ h => exact JCx2.sq_inCC_smul c h`. Take `⟨c, hc⟩` from `hFm`.
+
+Conclude with `⟨c, JCx2.mn_ccle_congr he hc⟩`.
+-/
 theorem kfin_inCC (hK : PI.KFinSmooth) (hC : CoefCC) {A h : ℝ} (hD : KDecay k r ε A h)
     (hg : PI.ZuckTensor.GapAtLeast ε μ h) (hf : KFinDSCoef ε μ f) (m : ℕ) : B.InCC A m f := by
   obtain ⟨F, hF, he⟩ := kfin_wsp hf
@@ -49,6 +64,9 @@ theorem kfin_inCC (hK : PI.KFinSmooth) (hC : CoefCC) {A h : ℝ} (hD : KDecay k 
   obtain ⟨c, hc⟩ := hFm
   exact ⟨c, JCx2.mn_ccle_congr he hc⟩
 
+/- English proof (translation)
+Take `⟨F, hF, he⟩` from `kfin_wsp hf`. Introduce `g hg`. Rewrite using `[← he g hg, ← wsp_eig hK hS hE Y hF g hg]`. Conclude with `(Dx1.LZ.good_CV (k := k) (r := r) (E := Wq →L[ℂ] Wp) Y).loc f F (fun y hy => (he y hy.1.1).symm) g (Dx1.LZ.glev0 hg)`.
+-/
 theorem kfin_eig (hK : PI.KFinSmooth) (hS : CoefSmooth) (hE : CoefEig) (hf : KFinDSCoef ε μ f) (Y : ℂ) :
     ∀ g ∈ B.GV k r, Q.CV k r Y f g = Formalism.QuantumDeterminants.capP (fun s => (μ s : ℂ)) Y • f g := by
   obtain ⟨F, hF, he⟩ := kfin_wsp hf
@@ -67,6 +85,9 @@ def SmoothKB : Prop :=
     (∀ Y : ℝ, ∃ c : ℂ, ∀ g ∈ B.GV P.k P.r, Q.CV P.k P.r (Y : ℂ) f g = c • f g) →
     Q.SmoothLev P.k P.r 0 (Q.OmPlus P.k P.r p.T.base.z p.T.base.z') (B.JF p.T.base f)
 
+/- English proof (translation)
+Establish `hs` using `hB P Wp Wq p f A hA (kfin_ckOn hK hS hf) hcc fun Y => ⟨_, kfin_eig hK hS hE hf Y⟩`. Conclude with `EqShift.jf_ff_of_smooth p.T.base f (OmKB p) fun g₀ hg₀ => hs g₀ ⟨hg₀.1, (CutMP.jdc_om_of _ _ hg₀.1.1 hg₀.2).2⟩`.
+-/
 theorem kfin_ffkb {P : M.Par} {Wp Wq : Type} [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp]
     [FiniteDimensional ℂ Wp] [NormedAddCommGroup Wq] [InnerProductSpace ℂ Wq] [FiniteDimensional ℂ Wq]
     [CompleteSpace Wp] (hK : PI.KFinSmooth) (hS : CoefSmooth) (hE : CoefEig) (hB : SmoothKB)
@@ -81,6 +102,11 @@ theorem kfin_ffkb {P : M.Par} {Wp Wq : Type} [NormedAddCommGroup Wp] [InnerProdu
 def thrX (k r : ℕ) : ℝ :=
   ((r : ℝ) + 1) ^ 4 * (((3 * (r + 1) : ℕ) : ℝ) * (2 * (r : ℝ) + k + 1) ^ 2 + (2 * (r : ℝ) + k + 1) ^ 3)
 
+/- English proof (translation)
+Establish `hr : (0 : ℝ) ≤ r` using `Nat.cast_nonneg _`. Establish `hk : (0 : ℝ) ≤ k` using `Nat.cast_nonneg _`. Establish `h1 : ((r : ℝ) + 1) ^ 2 ≤ ((r : ℝ) + 1) ^ 4` using `pow_le_pow_right₀ (by linarith) (by norm_num)`. Establish `h2 : (2 * (r : ℝ) + k + 1) ^ 2 ≤ (2 * (r : ℝ) + k + 1) ^ 3` using `pow_le_pow_right₀ (by linarith) (by norm_num)`. Establish `h3 : (0 : ℝ) ≤ ((3 * (r + 1) : ℕ) : ℝ) * (2 * (r : ℝ) + k + 1) ^ 2` using `by positivity`.
+
+Conclude with `mul_le_mul h1 (by linarith) (by positivity) (by positivity)`.
+-/
 theorem sq_le_thrX (k r : ℕ) : ((r : ℝ) + 1) ^ 2 * (2 * (r : ℝ) + k + 1) ^ 2 ≤ thrX k r := by
   have hr : (0 : ℝ) ≤ r := Nat.cast_nonneg _
   have hk : (0 : ℝ) ≤ k := Nat.cast_nonneg _
@@ -89,13 +115,24 @@ theorem sq_le_thrX (k r : ℕ) : ((r : ℝ) + 1) ^ 2 * (2 * (r : ℝ) + k + 1) ^
   have h3 : (0 : ℝ) ≤ ((3 * (r + 1) : ℕ) : ℝ) * (2 * (r : ℝ) + k + 1) ^ 2 := by positivity
   exact mul_le_mul h1 (by linarith) (by positivity) (by positivity)
 
+/- English proof (translation)
+The claim follows from `le_trans (by positivity) (sq_le_thrX k r)`.
+-/
 theorem thrX_nonneg (k r : ℕ) : 0 ≤ thrX k r := le_trans (by positivity) (sq_le_thrX k r)
 
+/- English proof (translation)
+Rewrite using `[mul_assoc]`. Conclude with `(mul_le_mul_of_nonneg_right hc (thrX_nonneg k r)).trans h`.
+-/
 theorem thr_main {c C A : ℝ} (k r : ℕ) (hc : c ≤ C) (h : C * thrX k r ≤ A) :
     c * ((r : ℝ) + 1) ^ 4 * (((3 * (r + 1) : ℕ) : ℝ) * (2 * (r : ℝ) + k + 1) ^ 2 + (2 * (r : ℝ) + k + 1) ^ 3) ≤ A := by
   rw [mul_assoc]
   exact (mul_le_mul_of_nonneg_right hc (thrX_nonneg k r)).trans h
 
+/- English proof (translation)
+Establish `hr : (0 : ℝ) ≤ r` using `Nat.cast_nonneg _`. Establish `hk : (0 : ℝ) ≤ k` using `Nat.cast_nonneg _`. Establish `h1 : (r : ℝ) * ((2 * r + k + 1 : ℕ) : ℝ) + 1 ≤ (2 * (r : ℝ) + k + 1) ^ 2` using `by push_cast; nlinarith`. Establish `h2 : ((r : ℝ) + 1) ^ 2 * ((r : ℝ) * ((2 * r + k + 1 : ℕ) : ℝ) + 1) ≤ thrX k r` using `(mul_le_mul_of_nonneg_left h1 (by positivity)).trans (sq_le_thrX k r)`. Rewrite using `[mul_assoc]`.
+
+Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem thr_conv {c C A : ℝ} (k r : ℕ) (hc : c ≤ C) (hC : 0 ≤ C) (h : C * thrX k r ≤ A) :
     c * ((r : ℝ) + 1) ^ 2 * ((r : ℝ) * ((2 * r + k + 1 : ℕ) : ℝ) + 1) ≤ A := by
   have hr : (0 : ℝ) ≤ r := Nat.cast_nonneg _
@@ -109,6 +146,11 @@ theorem thr_conv {c C A : ℝ} (k r : ℕ) (hc : c ≤ C) (hC : 0 ≤ C) (h : C 
     _ ≤ C * thrX k r := mul_le_mul_of_nonneg_left h2 hC
     _ ≤ A := h
 
+/- English proof (translation)
+Establish `hr : (0 : ℝ) ≤ r` using `Nat.cast_nonneg _`. Establish `hk : (0 : ℝ) ≤ k` using `Nat.cast_nonneg _`. Establish `h1` using `sq_le_thrX k r`. Establish `h2` using `mul_le_mul_of_nonneg_right hC (thrX_nonneg k r)`. Establish `h3 : (2 * (r : ℝ) + k + 1) ^ 2 ≤ ((r : ℝ) + 1) ^ 2 * (2 * (r : ℝ) + k + 1) ^ 2` using `le_mul_of_one_le_left (by positivity) (by nlinarith)`.
+
+Unfold `B.AB`. Use polynomial arithmetic with `[mul_nonneg hk hr, sq_nonneg (k : ℝ), sq_nonneg (r : ℝ)]`.
+-/
 theorem thr_AB {C A : ℝ} (k r : ℕ) (hC : 46 ≤ C) (h : C * thrX k r ≤ A) : B.AB k r ≤ A := by
   have hr : (0 : ℝ) ≤ r := Nat.cast_nonneg _
   have hk : (0 : ℝ) ≤ k := Nat.cast_nonneg _
@@ -119,6 +161,15 @@ theorem thr_AB {C A : ℝ} (k r : ℕ) (hC : 46 ≤ C) (h : C * thrX k r ≤ A) 
   unfold B.AB
   nlinarith [mul_nonneg hk hr, sq_nonneg (k : ℝ), sq_nonneg (r : ℝ)]
 
+/- English proof (translation)
+Establish `hr : (0 : ℝ) ≤ r` using `Nat.cast_nonneg _`. Establish `hk : (0 : ℝ) ≤ k` using `Nat.cast_nonneg _`. Establish `h1` using `sq_le_thrX k r`. Establish `h2` using `mul_le_mul_of_nonneg_right hC (thrX_nonneg k r)`. Establish `hmR : (m : ℝ) ≤ 2 * (2 * (r : ℝ) + k + 1) * (2 * r * (2 * (r : ℝ) + k + 1) + 1)`.
+
+Establish `: (m : ℝ) ≤ (CompanionTheory.JfS.NN k r : ℝ)` using `by exact_mod_cast hm`. Unfold `CompanionTheory.JfS.NN at this`. Move the coercions through the operations in `at this`. Conclude with `this`. Unfold `JF.TransportedAlt`.
+
+Rewrite using `[lt_div_iff₀ (by positivity)]`. Use `push_cast`. Use `set n : ℝ := 2 * (r : ℝ) + k + 1 with hn`. Establish `hn1 : 1 ≤ n` using `by linarith`. Establish `h4 : 6 * (r : ℝ) * m ≤ 6 * r * (2 * n * (2 * r * n + 1))` using `mul_le_mul_of_nonneg_left hmR (by positivity)`.
+
+Establish `h5 : (r : ℝ) * n ≤ r * n ^ 2` using `mul_le_mul_of_nonneg_left (by nlinarith) hr`. Establish `h6 : 0 < n ^ 2` using `by positivity`. Establish `h7 : 0 ≤ (r : ℝ) * n ^ 2` using `by positivity`. Establish `h8 : 0 ≤ (r : ℝ) ^ 2 * n ^ 2` using `by positivity`. Use the polynomial consequences of the given equalities and inequalities.
+-/
 theorem thr_JF {C A : ℝ} (k r m : ℕ) (hm : m ≤ CompanionTheory.JfS.NN k r) (hC : 46 ≤ C) (h : C * thrX k r ≤ A) :
     JF.TransportedAlt k r A m := by
   have hr : (0 : ℝ) ≤ r := Nat.cast_nonneg _

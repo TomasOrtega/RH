@@ -17,6 +17,23 @@ namespace GlobalTheory.TwoLat
 
 open GlobalTheory.ArLieBase.MetOfEig
 
+/- English proof (translation)
+Introduce `E _ _ _ H Dw l Xo c Oz _ β Z F _ _ e X W q jB πB hpb M M' r τ hr t t' g G h h' _ _ hLF hLF' hMt hLM hLM'`. Substitute `hr` using the available equality. Introduce `σ₀ V s s' y hy`. Take `⟨σ, rfl⟩` from `exists_comp_eq σ₀`. Establish `h₁` using `h.isVB.mem_pick y`.
+
+Establish `h₂` using `h'.isVB.mem_pick y`. Use `set c₁ := h.isVB.pick y`. Use `set c₂ := h'.isVB.pick y`. Set `ch : VB.Chart M (Dw.mult τ)` to `⟨c₁.U ⊓ c₂.U, fun i => Twist.resM M inf_le_left (c₁.e i), c₁.isFrame.res inf_le_left⟩`. Set `ch' : VB.Chart M' (Dw.mult τ)` to `⟨c₁.U ⊓ c₂.U, fun i => Twist.resM M' inf_le_right (c₂.e i), c₂.isFrame.res inf_le_right⟩`.
+
+Establish `hy₀ : y ∈ CxPts.ptsIn q _ (c₁.U ⊓ c₂.U)` using `CxPts.mem_ptsIn_inf.2 ⟨h₁, h₂⟩`. Set `zg : Sp ℂ ⟶ W` to `hpb.lift y.1 (spMap σ) (by rw [y.2, MetOfEig.spMap_comp])`. Establish `hzg : zg ≫ jB = y.1` using `hpb.lift_fst _ _ _`. Establish `hzs : zg ≫ πB ≫ genStr Z ≫ spMap e.toRingHom = spMap σ` using `hpb.lift_snd _ _ _`. Set `yc : CxPts (genStr Z) (σ.comp e.symm.toRingHom)` to `⟨zg ≫ πB, genStr_of hzs⟩`.
+
+Establish `hx : ⊤ ≤ (zg ≫ jB) ⁻¹ᵁ (c₁.U ⊓ c₂.U)` using `by rw [hzg]; exact hy₀`. Establish `hb` using `hLF.1 ch.U ch.e ch.isFrame ℂ zg hx σ hzs`. Establish `hb'` using `hLF'.1 ch'.U ch'.e ch'.isFrame ℂ zg hx σ hzs`. Take `⟨gF, hgF⟩` from `exists_frame_part yc (u := t ch.U ch.e ch.isFrame ℂ zg hx) (by simpa only [yc, Category.assoc] using hb)`. Take `⟨gF', hgF'⟩` from `exists_frame_part yc (u := t' ch'.U ch'.e ch'.isFrame ℂ zg hx) (by simpa only [yc, Category.assoc] using hb')`.
+
+Establish `hM` using `hLM σ y zg yc hzg rfl ch hx gF (fun i => by simp [hgF])`. Establish `hM'` using `hLM' σ y zg yc hzg rfl ch' hx gF' (fun i => by simp [hgF'])`. Simplify using `only [cond, Fin.cast_eq_self, Matrix.submatrix_id_id] at hM hM'`. Establish `hco : gF'.co gF τ = Matrix.of fun a b => ch'.crd q _ (g.app ch.U (ch.e b)) y a` using `EigFrame.co_eq fun i => by`. Use `hMt (c₁.U ⊓ c₂.U) ch.e ch'.e ch.isFrame ch'.isFrame ℂ zg hx i` as an intermediate fact.
+
+Rewrite using `[hgF, hgF']`. Establish `hcf : (fun a => (Matrix.of fun a b => ch'.crd q _ (g.app ch.U (ch.e b)) y a) a i) = fun b => TangentOrigin.evalPt (zg ≫ jB) (c₁.U ⊓ c₂.U) hx ((ch'.isFrame.basis le_rfl).repr (Twist.resM M' le_rfl (g.app (c₁.U ⊓ c₂.U) (ch.e i))) b)`. Use function extensionality and compare the values at `b`. Rewrite using `[Matrix.of_apply, ch'.crd_eq _ le_rfl le_rfl hy₀ b, CxPts.ev_eq hy₀, CxPts.evHom_eq_evalPt]`. Conclude with `evalPt_congr hzg.symm _ _ _ _`.
+
+Rewrite using `[hcf]`. Simplify `this` using `only [yc, Category.assoc]`. Rewrite using `[(h'.met _).form_eq ch' hy₀ _ _ hy, (h.met _).form_eq ch hy₀ _ _ hy, ch'.crd_app ch g s hy hy₀, ch'.crd_app ch g s' hy hy₀, ← HermFrame.form_chg, hM, hM', (G _).change yc gF' gF τ, hco]`. Use `congr 1`. Establish `hsub : ∀ (K : Matrix (Fin (Dw.mult τ)) (Fin (Dw.mult τ)) ℂ) (hh : Dw.mult τ = Dw.mult τ), K.submatrix (Fin.cast hh) (Fin.cast hh) = K` using `fun K hh => by ext; simp`.
+
+Rewrite using `[hsub, hsub]`. Simplify using `only [HermFrame.chg, Matrix.transpose_mul, Matrix.mul_assoc]`.
+-/
 theorem isoHom_of_lieMet : ∀ {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E}
     {Dw : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Datum H} {l : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Level H}
     {Xo : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Moduli Dw l} {c : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Coeff l} {Oz : Type} [CommRing Oz]

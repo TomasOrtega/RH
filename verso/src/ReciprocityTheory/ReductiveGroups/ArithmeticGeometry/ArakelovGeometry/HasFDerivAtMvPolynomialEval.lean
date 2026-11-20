@@ -10,6 +10,11 @@ section
 
 variable {D : ℕ}
 
+/- English proof (translation)
+Establish `key : ∀ (u w : Fin D → V), B (∑ i, u i) (∑ j, w j) = ∑ i, ∑ j, B (u i) (w j)`. Introduce `u w`. Simplify using `only [map_sum, ContinuousLinearMap.sum_apply]`. Use `first`. Consider the case `rfl`.
+
+Consider the case `exact Finset.sum_comm`. Rewrite using `[key]`. Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Simplify using `only [map_add, map_smul, ContinuousLinearMap.add_apply, ContinuousLinearMap.smul_apply, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem bilinear_real_imag_expand {V : Type*} [NormedAddCommGroup V] [NormedSpace ℝ V] (B : V →L[ℝ] V →L[ℝ] ℝ)
     (a b : Fin D → ℝ) (e f : Fin D → V) :
     B (∑ i, (a i • e i + b i • f i)) (∑ j, (a j • e j + b j • f j)) =
@@ -26,6 +31,9 @@ theorem bilinear_real_imag_expand {V : Type*} [NormedAddCommGroup V] [NormedSpac
   simp only [map_add, map_smul, ContinuousLinearMap.add_apply, ContinuousLinearMap.smul_apply, smul_eq_mul]
   ring
 
+/- English proof (translation)
+Use function extensionality and compare the values at `k`. Rewrite using `[Finset.sum_apply]`. Simplify using `only [Pi.add_apply, Pi.smul_apply, Pi.single_apply, Finset.sum_add_distrib]`. Apply the tactic sequence `apply Complex.ext <;> simp`.
+-/
 theorem decompose_real_imag_basis (v : Fin D → ℂ) :
     v = ∑ i, ((v i).re • (Pi.single i (1 : ℂ) : Fin D → ℂ) +
       (v i).im • (I • (Pi.single i (1 : ℂ) : Fin D → ℂ))) := by
@@ -34,6 +42,15 @@ theorem decompose_real_imag_basis (v : Fin D → ℂ) :
   simp only [Pi.add_apply, Pi.smul_apply, Pi.single_apply, Finset.sum_add_distrib]
   apply Complex.ext <;> simp
 
+/- English proof (translation)
+Establish `hw` using `decompose_real_imag_basis w`. Establish `hIw : I • w = ∑ i, ((-(w i).im) • (Pi.single i (1 : ℂ) : Fin D → ℂ) + (w i).re • (I • (Pi.single i (1 : ℂ) : Fin D → ℂ)))`. Rewrite using `[decompose_real_imag_basis (I • w)]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[Pi.smul_apply, smul_eq_mul, Complex.I_mul_re, Complex.I_mul_im]`.
+
+Establish `e1` using `bilinear_real_imag_expand (fderiv ℝ (fderiv ℝ φ) y) (fun i => (w i).re) (fun i => (w i).im) (fun i => (Pi.single i (1 : ℂ) : Fin D → ℂ)) (fun i => I • (Pi.single i (1 : ℂ) : Fin D → ℂ))`. Establish `e2` using `bilinear_real_imag_expand (fderiv ℝ (fderiv ℝ φ) y) (fun i => -(w i).im) (fun i => (w i).re) (fun i => (Pi.single i (1 : ℂ) : Fin D → ℂ)) (fun i => I • (Pi.single i (1 : ℂ) : Fin D → ℂ))`. Simplify using `only [← hw] at e1`. Simplify using `only [← hIw] at e2`. Rewrite using `[e1, e2, ← Finset.sum_add_distrib]`.
+
+Simplify using `only [Complex.re_sum]`. Rewrite using `[Finset.sum_comm (s := (Finset.univ : Finset (Fin D))) (t := Finset.univ) (f := fun i j => ((starRingEnd ℂ) (w i) * cxHessian φ y j i * w j).re)]`. Rewrite using `[div_eq_iff (by norm_num : (4 : ℝ) ≠ 0), Finset.sum_mul]`. Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Rewrite using `[← Finset.sum_add_distrib, Finset.sum_mul]`.
+
+Use `Finset.sum_congr rfl fun b _ => ?_` and prove the remaining obligations. Simplify using `only [cxHessian]`. Simplify using `[Complex.mul_re, Complex.mul_im, Complex.add_re, Complex.add_im, Complex.ofReal_re, Complex.ofReal_im, Complex.I_re, Complex.I_im, Complex.div_re, Complex.div_im, Complex.conj_re, Complex.conj_im, Complex.normSq]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem leviForm_eq_complexHessian (φ : (Fin D → ℂ) → ℝ) (y w : Fin D → ℂ) :
     (fderiv ℝ (fderiv ℝ φ) y w w + fderiv ℝ (fderiv ℝ φ) y (I • w) (I • w)) / 4 =
       (∑ i, ∑ j, starRingEnd ℂ (w i) * cxHessian φ y j i * w j).re := by

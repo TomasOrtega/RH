@@ -11,6 +11,11 @@ namespace GlobalTheory.UPel.HT.LieType
 
 open GlobalTheory.UPel.HT
 
+/- English proof (translation)
+Use `first`. Consider the case `exact @_root_.GlobalTheory.LieEigenspaceFinrank.lie_type_of_unif`. Consider the case `exact _root_.GlobalTheory.LieEigenspaceFinrank.lie_type_of_unif`. Consider the case `(apply _root_.GlobalTheory.LieEigenspaceFinrank.lie_type_of_unif <;> assumption)`. Consider the case `(intros; apply _root_.GlobalTheory.LieEigenspaceFinrank.lie_type_of_unif <;> assumption)`.
+
+Consider the case `(intros; apply @_root_.GlobalTheory.LieEigenspaceFinrank.lie_type_of_unif <;> first | assumption | infer_instance)`. Consider the case `(intros; exact _root_.GlobalTheory.LieEigenspaceFinrank.lie_type_of_unif ..)`.
+-/
 theorem lieEigen_rank_cover : ∀ (p : ℕ) [Fact p.Prime] (D : Datum p) (R : Type) [CommRing R] (b : Base D R) (N : ℕ)
     (σ : R →+* ℂ) (ρ : D.O →+* Matrix (Fin D.g) (Fin D.g) ℂ) (o : Obj b N (spMap σ)) h hL (D' : PLat D.O D.inv) t Q e,
     UnifAt (o.fam h hL) σ ρ N D' t Q (𝟙 _) e → ∀ τ : Fin D.a → (D.F →+* ℂ),

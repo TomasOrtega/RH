@@ -8,6 +8,13 @@ attribute [-instance] Formalism.DoubleCosetMeasures.instMeasGL
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Introduce `k _ _ _ _ n d Y hY`. Take `⟨-, f, hf⟩` from `hY`. Establish `hdet : (Y.submatrix id f).det ≠ 0`. Introduce `h0`. Rewrite `hf` using `[h0, map_zero]`.
+
+Conclude with `zero_ne_one hf`. Establish `hunit : IsUnit (Y.submatrix id f)` using `(Matrix.isUnit_iff_isUnit_det _).mpr (isUnit_iff_ne_zero.mpr hdet)`. Establish `hsub : (Y.submatrix id f).rank = n`. Rewrite using `[Matrix.rank_of_isUnit _ hunit, Fintype.card_fin]`. Establish `hmul : Y * (1 : Matrix (Fin d) (Fin d) k).submatrix (Equiv.refl (Fin d)) f = Y.submatrix id f`.
+
+Rewrite using `[Matrix.mul_submatrix_one]`. Both sides reduce to the same expression. Apply `le_antisymm (Matrix.rank_le_height Y)` to reduce the goal to its premises. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem unitMinorSet_rank_eq : ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] (n d : ℕ)
     (Y : Matrix (Fin n) (Fin d) k), Y ∈ GlobalTheory.FullRankCoinv.UnitMinor.unitMinorSet k n d → Y.rank = n := by
   intro k _ _ _ _ n d Y hY

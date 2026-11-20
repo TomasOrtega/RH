@@ -25,6 +25,9 @@ section Pairing
 
 variable {X : Scheme.{0}} (t : SAB H X) {k : Type} [CommRing k] {x : Sp k ⟶ X} {v : Sp (DualNumber k) ⟶ t.G.left}
 
+/- English proof (translation)
+The claim follows from `hv.2`.
+-/
 theorem epsZero_comp_of_isTanAtG (hv : IsTanAtG t x v) : sec (epsZero k) ≫ v = x ≫ unitSec t.G :=
   hv.2
 
@@ -35,11 +38,19 @@ def tanForm (hv : IsTanAtG t x v) :
 def tanEv (hv : IsTanAtG t x v) {V : X.Opens} (h : ⊤ ≤ x ⁻¹ᵁ V) (s : Γ(omega t.G, V)) : k :=
   (Scheme.ΓSpecIso (.of k)).hom ((tanForm t hv).app ⊤ (pullbackSections x (omega t.G) h s))
 
+/- English proof (translation)
+Simplify using `only [tanEv, map_add]`. Conclude with `map_add (Scheme.ΓSpecIso (.of k)).hom.hom _ _`.
+-/
 theorem tanEv_add (hv : IsTanAtG t x v) {V : X.Opens} (h : ⊤ ≤ x ⁻¹ᵁ V) (s s' : Γ(omega t.G, V)) :
     tanEv t hv h (s + s') = tanEv t hv h s + tanEv t hv h s' := by
   simp only [tanEv, map_add]
   exact map_add (Scheme.ΓSpecIso (.of k)).hom.hom _ _
 
+/- English proof (translation)
+Establish `e2 : (tanForm t hv).app ⊤ (pullbackSections x (omega t.G) h (a • s)) = x.appLE V ⊤ h a • (tanForm t hv).app ⊤ (pullbackSections x (omega t.G) h s)`. Establish `e : pullbackSections x (omega t.G) h (a • s) = x.appLE V ⊤ h a • pullbackSections x (omega t.G) h s` using `QCoh.pullbackSections_smul x (omega t.G) h a s`. Rewrite using `[e]`. Conclude with `Scheme.Modules.Hom.app_smul _ _ _`. Unfold `tanEv`.
+
+Rewrite using `[e2]`. Conclude with `map_mul (Scheme.ΓSpecIso (.of k)).hom.hom _ _`.
+-/
 theorem tanEv_smul (hv : IsTanAtG t x v) {V : X.Opens} (h : ⊤ ≤ x ⁻¹ᵁ V) (a : Γ(X, V)) (s : Γ(omega t.G, V)) :
     tanEv t hv h (a • s) = (Scheme.ΓSpecIso (.of k)).hom (x.appLE V ⊤ h a) * tanEv t hv h s := by
   have e2 : (tanForm t hv).app ⊤ (pullbackSections x (omega t.G) h (a • s)) =
@@ -52,12 +63,28 @@ theorem tanEv_smul (hv : IsTanAtG t x v) {V : X.Opens} (h : ⊤ ≤ x ⁻¹ᵁ V
   rw [e2]
   exact map_mul (Scheme.ΓSpecIso (.of k)).hom.hom _ _
 
+/- English proof (translation)
+Unfold `tanEv`. Use `congr 2`. Conclude with `QCoh.pullbackSections_res x (omega t.G) h h' s`.
+-/
 theorem tanEv_resM (hv : IsTanAtG t x v) {V V' : X.Opens} (h : ⊤ ≤ x ⁻¹ᵁ V') (h' : V' ≤ V) (s : Γ(omega t.G, V)) :
     tanEv t hv h (resM _ h' s) = tanEv t hv (h.trans (x.preimage_mono h')) s := by
   unfold tanEv
   congr 2
   exact QCoh.pullbackSections_res x (omega t.G) h h' s
 
+/- English proof (translation)
+Establish `h1 : (baseMap (π` using `t.G.hom) (φ := v) (f := x) (sec_hom (epsZero k)) hv.1 (epsZero_comp_of_isTanAtG t hv)).app ⊤ (pullbackSections x (conormal (unitSec t.G)) h (d (sec_hom η[t.G]) hW f)) = d (sec_hom (epsZero k)) (le_preimage_top _ ⊤) (v.appLE W ⊤ hv' f) := baseMap_d (sec_hom η) (sec_hom (epsZero k) …`. Establish `h2 (P Q : Γ(Sp (DualNumber k), ⊤)) : d (sec_hom (epsZero k)) (le_preimage_top _ ⊤) (P * Q) = (sec (epsZero k)).appLE ⊤ ⊤ (le_preimage_top _ ⊤) P • d (sec_hom (epsZero k)) (le_preimage_top _ ⊤) Q + (sec (epsZero k)).appLE ⊤ ⊤ (le_preimage_top _ ⊤) Q • d (sec_hom (epsZero k)) (le_p …` using `d_mul (sec_hom (epsZero k)) (le_preimage_top (LieVB.sec (epsZero k)) ⊤) P Q`. Establish `h3 (a : Γ(Sp k, ⊤)) : d (sec_hom (epsZero k)) (le_preimage_top _ ⊤) ((specO k (DualNumber k)).hom.appLE ⊤ ⊤ (le_preimage_top _ ⊤) a) = 0` using `d_base (sec_hom (epsZero k)) (le_preimage_top (LieVB.sec (epsZero k)) ⊤) (le_preimage_top (specO k (DualNumber k)).hom ⊤) a`. Establish `hB (c : k) : (specO k (DualNumber k)).hom.appLE ⊤ ⊤ (le_preimage_top _ ⊤) (cst k c) = (Scheme.ΓSpecIso (.of (DualNumber k))).inv (algebraMap k (DualNumber k) c)`. Rewrite using `[appLE_top]`.
+
+Establish `e` using `congrArg (fun g => g.hom c) (Scheme.ΓSpecIso_inv_naturality (CommRingCat.ofHom (algebraMap k (DualNumber k))))`. Simplify using `only [CommRingCat.hom_comp, RingHom.comp_apply, CommRingCat.hom_ofHom] at e`. Conclude with `e.symm`. Establish `hP (a : Γ(Sp k, ⊤)) : (sec (epsZero k)).appLE ⊤ ⊤ (le_preimage_top _ ⊤) ((specO k (DualNumber k)).hom.appLE ⊤ ⊤ (le_preimage_top _ ⊤) a) = a`. Rewrite using `[appLE_top, appLE_top]`.
+
+Establish `e` using `congrArg (fun g : Sp k ⟶ Sp k => g.appTop a) (sec_hom (epsZero k))`. Simplify using `at e`. Conclude with `e`. Use `set F := v.appLE W ⊤ hv' f`. Use `set D := (Scheme.ΓSpecIso (.of (DualNumber k))).hom F with hD`.
+
+Establish `hdec : F = (specO k (DualNumber k)).hom.appLE ⊤ ⊤ (le_preimage_top _ ⊤) (cst k D.fst) + (specO k (DualNumber k)).hom.appLE ⊤ ⊤ (le_preimage_top _ ⊤) (cst k D.snd) * epsFn k`. Rewrite using `[hB, hB, epsFn, ← map_mul, ← map_add]`. Establish `e : algebraMap k (DualNumber k) D.fst + algebraMap k (DualNumber k) D.snd * DualNumber.eps = D`. Apply the tactic sequence `ext <;> simp [TrivSqZeroExt.algebraMap_eq_inl]`. Rewrite using `[e, hD, Iso.hom_inv_id_apply]`.
+
+Establish `hdF : d (sec_hom (epsZero k)) (le_preimage_top _ ⊤) F = (sec (epsZero k)).appLE ⊤ ⊤ (le_preimage_top _ ⊤) ((specO k (DualNumber k)).hom.appLE ⊤ ⊤ (le_preimage_top _ ⊤) (cst k D.snd)) • d (sec_hom (epsZero k)) (le_preimage_top _ ⊤) (epsFn k)`. Rewrite using `[hdec, map_add, h3, h2, h3, smul_zero, add_zero, zero_add]`. Establish `h4 : (tanForm t hv).app ⊤ (pullbackSections x (omega t.G) h (dUnit t.G hW f)) = (epsIso k).hom.app ⊤ (d (sec_hom (epsZero k)) (le_preimage_top _ ⊤) F)`. Rewrite using `[← h1]`. Conclude with `(QCoh.app_app _ _ _ _).symm`.
+
+Rewrite using `[tanEv, h4, hdF]`. Use `erw [Scheme.Modules.Hom.app_smul, epsIso_d, hP]`. Use `erw [smul_eq_mul, _root_.mul_one]`. Simplify using the standard rewrite rules.
+-/
 theorem tanEv_dUnit (hv : IsTanAtG t x v) {V : X.Opens} (h : ⊤ ≤ x ⁻¹ᵁ V) {W : t.G.left.Opens}
     (hW : V ≤ unitSec t.G ⁻¹ᵁ W) (hv' : ⊤ ≤ v ⁻¹ᵁ W) (f : Γ(t.G.left, W)) :
     tanEv t hv h (dUnit t.G hW f) = ((Scheme.ΓSpecIso (.of (DualNumber k))).hom (v.appLE W ⊤ hv' f)).snd := by
@@ -138,6 +165,13 @@ def rangeSub {X : Scheme.{0}} {F G : X.Modules} (θ : F ⟶ G) [Mono θ] : VB.Su
     exact ⟨r, Twist.sec_ext_of_cover U hU hc fun x =>
       (app_resM θ _ r).symm.trans ((congrArg _ (hr x)).trans (ht' x))⟩
 
+/- English proof (translation)
+Use `set φ := (rangeSub θ).lift θ fun _ s => ⟨s, rfl⟩`. Establish `hfac : φ ≫ (rangeSub θ).incl = θ` using `(rangeSub θ).lift_incl θ _`. Establish `hsurj (V : X.Opens) (s : Γ((rangeSub θ).toMod, V)) : ∃ r, φ.app V r = s`. Take `⟨r, hr⟩` from `(rangeSub θ).incl_app_mem s`. Use `⟨r, (rangeSub θ).incl_app_injective V ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[QCoh.app_app, hfac]`. Simplify using `using hr`. Establish `: Mono φ` using `mono_of_mono_fac hfac`. Establish `: Epi φ` using `⟨fun {Z} g₁ g₂ h => by`. Use extensionality with `V s`.
+
+Take `⟨r, rfl⟩` from `hsurj V s`. Rewrite using `[QCoh.app_app, QCoh.app_app, h]⟩`. Conclude with `isIso_of_mono_of_epi φ`.
+-/
 theorem isIso_lift_rangeSub {X : Scheme.{0}} {F G : X.Modules} (θ : F ⟶ G) [Mono θ] :
     IsIso ((rangeSub θ).lift θ fun _ s => ⟨s, rfl⟩) := by
   set φ := (rangeSub θ).lift θ fun _ s => ⟨s, rfl⟩
@@ -168,6 +202,9 @@ def ofBundle {F : B.X.Modules} (θ : F ⟶ B.om) [Mono θ]
     ⟨V, n, _, hx, hm.map_iso ((rangeSub θ).lift θ fun _ s => ⟨s, rfl⟩)⟩
   gen V h := LinearMap.range_eq_top.2 (hθ V h)
 
+/- English proof (translation)
+Express the relevant statement in the definitionally equal form `s ∈ LinearMap.range (QCoh.appLinear θ V) ↔ _`. Simplify using `[LinearMap.mem_range]`.
+-/
 theorem mem_ofBundle {F : B.X.Modules} (θ : F ⟶ B.om) [Mono θ] (hF hθ) {V : B.X.Opens} {s : Γ(B.om, V)} :
     s ∈ (ofBundle θ hF hθ).N.sec V ↔ ∃ r, θ.app V r = s := by
   change s ∈ LinearMap.range (QCoh.appLinear θ V) ↔ _
@@ -180,15 +217,24 @@ def top : Lat B :=
 
 def IsTop (L : Lat B) : Prop := ∀ V, L.N.sec V = ⊤
 
+/- English proof (translation)
+Introduce `_` and use `eq_top_iff.2 fun s _ => (mem_ofBundle _ _ _).2 ⟨s, rfl⟩`.
+-/
 theorem isTop_top : (top B).IsTop := fun _ =>
   eq_top_iff.2 fun s _ => (mem_ofBundle _ _ _).2 ⟨s, rfl⟩
 
+/- English proof (translation)
+Take `⟨⟨N, r, m⟩, f, g⟩` from `L`. Take `⟨⟨N', r', m'⟩, f', g'⟩` from `L'`. Take `rfl : N = N'` from `funext h`. Both sides reduce to the same expression.
+-/
 theorem ext {L L' : Lat B} (h : ∀ V, L.N.sec V = L'.N.sec V) : L = L' := by
   obtain ⟨⟨N, r, m⟩, f, g⟩ := L
   obtain ⟨⟨N', r', m'⟩, f', g'⟩ := L'
   obtain rfl : N = N' := funext h
   rfl
 
+/- English proof (translation)
+Use `⟨fun hL => ext fun V => (hL V).trans (isTop_top V).symm, ?_⟩` and prove the remaining obligations. Introduce and unpack `rfl`. Conclude with `isTop_top`.
+-/
 theorem isTop_iff {L : Lat B} : L.IsTop ↔ L = top B := by
   refine ⟨fun hL => ext fun V => (hL V).trans (isTop_top V).symm, ?_⟩
   rintro rfl
@@ -228,6 +274,9 @@ open Classical in
 
 def stepTy (s : Finset (Step Y i₀)) (σ : E →+* ℂ) : Finset ℕ := (s.filter fun t => t.σ = σ).image Step.k
 
+/- English proof (translation)
+Simplify using `[stepTy, and_assoc]`.
+-/
 theorem mem_stepTy {s : Finset (Step Y i₀)} {σ : E →+* ℂ} {r : ℕ} : r ∈ stepTy s σ ↔ ∃ t ∈ s, t.σ = σ ∧ t.k = r := by
   simp [stepTy, and_assoc]
 
@@ -239,14 +288,23 @@ open Classical in
 
 def flagClosure (Z : Mdl Y i₀) (s : Finset (Step Y i₀)) : Mdl Y i₀ := if h : ∃ Z', IsFlagCl Z s Z' then h.choose else Z
 
+/- English proof (translation)
+Rewrite using `[flagClosure, dif_pos h]`. Conclude with `h.choose_spec`.
+-/
 theorem isFlagCl_flagClosure {Z : Mdl Y i₀} {s : Finset (Step Y i₀)} (h : ∃ Z', IsFlagCl Z s Z') :
     IsFlagCl Z s (flagClosure Z s) := by
   rw [flagClosure, dif_pos h]
   exact h.choose_spec
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨rfl, fun σ => by simp [stepTy], h, by simp, fun _ hg _ => hg⟩`.
+-/
 theorem isFlagCl_empty {Z : Mdl Y i₀} (h : ∃ f, IsMap Z Z f) : IsFlagCl Z ∅ Z :=
   ⟨rfl, fun σ => by simp [stepTy], h, by simp, fun _ hg _ => hg⟩
 
+/- English proof (translation)
+The claim follows from `h₂.2.2.2.2 Z₁ h₁.2.2.1 h₁.2.2.2.1`.
+-/
 theorem IsFlagCl.exists_isMap {Z Z₁ Z₂ : Mdl Y i₀} {s : Finset (Step Y i₀)} (h₁ : IsFlagCl Z s Z₁) (h₂ : IsFlagCl Z s Z₂) :
     ∃ f, IsMap Z₁ Z₂ f :=
   h₂.2.2.2.2 Z₁ h₁.2.2.1 h₁.2.2.2.1
@@ -256,6 +314,11 @@ open Classical in
 def allSteps {B : Mdl Y i₀} (L : Lat B) : Finset (Step Y i₀) :=
   Finset.univ.image fun q : Σ σ : E →+* ℂ, Fin (Dw.mult σ + 1) => ⟨B, L, q.1, q.2, Nat.lt_succ_iff.1 q.2.2⟩
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce and unpack `h`. Take `⟨⟨σ, r⟩, -, rfl⟩` from `Finset.mem_image.1 h`. Conclude with `⟨σ, r, _, rfl⟩`. Introduce and unpack `⟨σ, r, hr, rfl⟩`.
+
+Conclude with `Finset.mem_image.2 ⟨⟨σ, ⟨r, Nat.lt_succ_iff.2 hr⟩⟩, Finset.mem_univ _, rfl⟩`.
+-/
 theorem mem_allSteps {B : Mdl Y i₀} {L : Lat B} {t : Step Y i₀} :
     t ∈ allSteps L ↔ ∃ σ r hr, t = ⟨B, L, σ, r, hr⟩ := by
   classical
@@ -266,6 +329,11 @@ theorem mem_allSteps {B : Mdl Y i₀} {L : Lat B} {t : Step Y i₀} :
   · rintro ⟨σ, r, hr, rfl⟩
     exact Finset.mem_image.2 ⟨⟨σ, ⟨r, Nat.lt_succ_iff.2 hr⟩⟩, Finset.mem_univ _, rfl⟩
 
+/- English proof (translation)
+Use extensionality with `r`. Rewrite using `[mem_stepTy, Finset.mem_range]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨t, ht, rfl, rfl⟩`. Take `⟨σ', r', hr', rfl⟩` from `mem_allSteps.1 ht`.
+
+Conclude with `Nat.lt_succ_iff.2 hr'`. Introduce `h`. Conclude with `⟨⟨B, L, σ, r, Nat.lt_succ_iff.1 h⟩, mem_allSteps.2 ⟨σ, r, _, rfl⟩, rfl, rfl⟩`.
+-/
 theorem stepTy_allSteps {B : Mdl Y i₀} (L : Lat B) (σ : E →+* ℂ) :
     stepTy (allSteps L) σ = Finset.range (Dw.mult σ + 1) := by
   ext r
@@ -277,6 +345,9 @@ theorem stepTy_allSteps {B : Mdl Y i₀} (L : Lat B) (σ : E →+* ℂ) :
   · intro h
     exact ⟨⟨B, L, σ, r, Nat.lt_succ_iff.1 h⟩, mem_allSteps.2 ⟨σ, r, _, rfl⟩, rfl, rfl⟩
 
+/- English proof (translation)
+Introduce `h`. Take `⟨σ⟩ : Nonempty (E →+* ℂ)` from `inferInstance`. Establish `hm : (⟨B, L, σ, 0, Nat.zero_le _⟩ : Step Y i₀) ∈ allSteps L` using `mem_allSteps.2 ⟨σ, 0, _, rfl⟩`. Rewrite `hm` using `[h]`. Conclude with `Finset.notMem_empty _ hm`.
+-/
 theorem allSteps_ne_empty {B : Mdl Y i₀} (L : Lat B) : allSteps L ≠ ∅ := by
   intro h
   obtain ⟨σ⟩ : Nonempty (E →+* ℂ) := inferInstance
@@ -314,12 +385,23 @@ open Classical in
 def At.flagCl (ct : At S κ p) (Z : ct.Mdl) (s : Finset (Step ct.Y ⟨κ.l, κ.c, κ.good p ct.hp⟩)) : ct.Mdl :=
   if s = ∅ then Z else if s = allSteps (Lat.top Z) ∧ IsDRFlag Z ct.YY then ct.YY else flagClosure Z s
 
+/- English proof (translation)
+Simplify using `[At.flagCl]`.
+-/
 theorem At.flagCl_empty (ct : At S κ p) (Z : ct.Mdl) : ct.flagCl Z ∅ = Z := by
   simp [At.flagCl]
 
+/- English proof (translation)
+Rewrite using `[At.flagCl, if_neg (allSteps_ne_empty _), if_pos ⟨rfl, ct.isYY⟩]`.
+-/
 theorem At.flagCl_allSteps (ct : At S κ p) : ct.flagCl ct.Xm (allSteps (Lat.top ct.Xm)) = ct.YY := by
   rw [At.flagCl, if_neg (allSteps_ne_empty _), if_pos ⟨rfl, ct.isYY⟩]
 
+/- English proof (translation)
+Rewrite using `[At.flagCl]`. Use `split_ifs with h₀ h₁`. Substitute `h₀` using the available equality. Conclude with `isFlagCl_empty hid`. Take `⟨rfl, h₂⟩` from `h₁`.
+
+Conclude with `hdr h₂`. Conclude with `isFlagCl_flagClosure hex`.
+-/
 theorem At.isFlagCl_flagCl (ct : At S κ p) (Z : ct.Mdl) (s : Finset (Step ct.Y ⟨κ.l, κ.c, κ.good p ct.hp⟩))
     (hid : ∃ f, IsMap Z Z f) (hdr : IsDRFlag Z ct.YY → IsFlagCl Z (allSteps (Lat.top Z)) ct.YY)
     (hex : ∃ Z', IsFlagCl Z s Z') : IsFlagCl Z s (ct.flagCl Z s) := by
@@ -337,9 +419,15 @@ def flgOf (ct : At S κ p) (P : ∀ B : ct.Mdl, Lat B → Prop) : FlgSt ct where
   allFlags := FlagFam.deRham ct.Xm
   YY_eq := ct.flagCl_allSteps.symm
 
+/- English proof (translation)
+The claim follows from `ct.flagCl_empty Z`.
+-/
 example (ct : At S κ p) (P : ∀ B : ct.Mdl, Lat B → Prop) (Z : ct.Mdl) :
     (flgOf ct P).flagCl Z (FlagFam.empty Z) = Z := ct.flagCl_empty Z
 
+/- English proof (translation)
+The claim follows from `(stepTy_allSteps _ σ).trans (ct.isYY.2.1.1 σ).symm`.
+-/
 example (ct : At S κ p) (P : ∀ B : ct.Mdl, Lat B → Prop) (σ : D.host.E →+* ℂ) :
     stepTy (flgOf ct P).allFlags.1 σ = ct.YY.ty σ := (stepTy_allSteps _ σ).trans (ct.isYY.2.1.1 σ).symm
 

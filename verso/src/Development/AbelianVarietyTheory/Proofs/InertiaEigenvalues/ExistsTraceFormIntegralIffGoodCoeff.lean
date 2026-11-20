@@ -9,6 +9,31 @@ open Formalism Formalism.BasicNotions Formalism.BasicNotions.Loc Formalism.Weakl
 
 namespace GlobalTheory.GoodCoeff
 
+/- English proof (translation)
+Introduce `l _ LL _ _ _ O _ _ hG`. Establish `hint` using `(good_coeff_integers l LL O hG).1`. Take `⟨⟨hD, hDVR, hFr⟩, hfin, hmod, htop, hopen⟩` from `hG`. Use `haveI := hD`. Use `haveI := hDVR`.
+
+Use `haveI := hFr`. Use `haveI : FiniteDimensional ℚ_[l] LL := hfin`. Use `letI : Algebra ℤ_[l] LL := ((algebraMap ℚ_[l] LL).comp (algebraMap ℤ_[l] ℚ_[l])).toAlgebra`. Use `haveI : IsScalarTower ℤ_[l] ℚ_[l] LL := IsScalarTower.of_algebraMap_eq (fun _ => rfl)`. Set `A : Subring LL` to `(algebraMap O LL).range`.
+
+Establish `hZ : ∀ u : ℤ_[l], algebraMap ℤ_[l] LL u ∈ A` using `fun u => padicInt_mem A (by rw [RingHom.coe_range]; exact hopen) u`. Establish `hinj : Function.Injective (algebraMap O LL)` using `IsFractionRing.injective O LL`. Set `ψ : O ≃+* A` to `RingEquiv.ofBijective (algebraMap O LL).rangeRestrict ⟨fun a b h => hinj (congrArg Subtype.val h), (algebraMap O LL).rangeRestrict_surjective⟩`. Establish `hψ : ∀ a : A, algebraMap O LL (ψ.symm a) = a` using `fun a => congrArg Subtype.val (ψ.apply_symm_apply a)`. Set `f : ℤ_[l] →+* O` to `ψ.symm.toRingHom.comp ((algebraMap ℤ_[l] LL).codRestrict A hZ)`.
+
+Use `letI : Algebra ℤ_[l] O := f.toAlgebra`. Use `haveI : IsScalarTower ℤ_[l] O LL := IsScalarTower.of_algebraMap_eq (fun u => (hψ ((algebraMap ℤ_[l] LL).codRestrict A hZ u)).symm)`. Use `haveI : IsIntegralClosure O ℤ_[l] LL := { algebraMap_injective := hinj isIntegral_iff := fun {x} => by`. Rewrite using `[← Set.mem_range]`. Conclude with `(hint x).symm }`.
+
+Set `D : FractionalIdeal (nonZeroDivisors O) LL` to `FractionalIdeal.dual ℤ_[l] ℚ_[l] 1`. Establish `hD0 : D ≠ 0` using `FractionalIdeal.dual_ne_zero ℤ_[l] ℚ_[l] one_ne_zero`. Use `haveI hP : (D : Submodule O LL).IsPrincipal := FractionalIdeal.isPrincipal D`. Use `set c : LL := Submodule.IsPrincipal.generator (D : Submodule O LL) with hc`. Establish `hDc : (D : Submodule O LL) = Submodule.span O {c}` using `(Submodule.IsPrincipal.span_singleton_generator _).symm`.
+
+Establish `hc0 : c ≠ 0`. Introduce `h`. Apply `hD0` to reduce the goal to its premises. Apply `FractionalIdeal.coeToSubmodule_injective` to reduce the goal to its premises. Use `show (D : Submodule O LL) = ((0 : FractionalIdeal (nonZeroDivisors O) LL) : Submodule O LL)`.
+
+Rewrite using `[hDc, h, FractionalIdeal.coe_zero]`. Conclude with `Submodule.span_singleton_eq_bot.2 rfl`. Use `⟨(Algebra.trace ℚ_[l] LL).comp (LinearMap.mulLeft ℚ_[l] c), fun a => ?_⟩` and prove the remaining obligations. Establish `key : (∀ b : O, ∃ u : ℤ_[l], (Algebra.trace ℚ_[l] LL) (c * (a * algebraMap O LL b)) = (u : ℚ_[l])) ↔ c * a ∈ D`. Rewrite using `[FractionalIdeal.mem_dual (one_ne_zero : (1 : FractionalIdeal (nonZeroDivisors O) LL) ≠ 0)]`.
+
+Prove the components needed by the constructor for the conclusion. Introduce `h y hy`. Take `⟨b, rfl⟩` from `(FractionalIdeal.mem_one_iff _).1 hy`. Take `⟨u, hu⟩` from `h b`. Use `⟨u, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[Algebra.traceForm_apply, mul_assoc, hu]`. Both sides reduce to the same expression. Introduce `h b`. Take `⟨u, hu⟩` from `h _ ((FractionalIdeal.mem_one_iff _).2 ⟨b, rfl⟩)`. Use `⟨u, ?_⟩` and prove the remaining obligations.
+
+Rewrite `hu` using `[Algebra.traceForm_apply, mul_assoc]`. Rewrite using `[← hu]`. Both sides reduce to the same expression. Simplify using `only [LinearMap.comp_apply, LinearMap.mulLeft_apply]`. Rewrite using `[key, ← FractionalIdeal.mem_coe, hDc, Submodule.mem_span_singleton]`.
+
+Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨z, hz⟩`. Use `⟨z, ?_⟩` and prove the remaining obligations. Rewrite `hz` using `[Algebra.smul_def, mul_comm]`. Conclude with `mul_left_cancel₀ hc0 hz`.
+
+Introduce and unpack `⟨z, rfl⟩`. Conclude with `⟨z, by rw [Algebra.smul_def, mul_comm]⟩`.
+-/
 theorem exists_trace_form_integral_iff : ∀ (l : ℕ) [Fact l.Prime] (LL : Type) [Field LL] [Algebra ℚ_[l] LL] [TopologicalSpace LL] (O : Type) [CommRing O] [Algebra O LL], GoodO (Qp := ℚ_[l]) LL O → ∃ lam : LL →ₗ[ℚ_[l]] ℚ_[l], ∀ a : LL, (∀ b : O, ∃ u : ℤ_[l], lam (a * algebraMap O LL b) = (u : ℚ_[l])) ↔ ∃ b : O, algebraMap O LL b = a := by
   intro l _ LL _ _ _ O _ _ hG
   have hint := (good_coeff_integers l LL O hG).1

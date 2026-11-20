@@ -14,6 +14,11 @@ open Formalism.L2.SG.KappaOffDiagonal
 
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
+/- English proof (translation)
+Introduce `D X u u' Λ Λ' q hrel hG`. Take `⟨σ⟩ : Nonempty (D.host.E →+* ℂ)` from `inferInstance`. Establish `hpos : ∀ w : D.what₂.Word, 0 < (σ ((Tu D w : ℕ) : D.host.E)).re`. Introduce `w`. Rewrite using `[map_natCast, Complex.natCast_re]`.
+
+Conclude with `tie_Tu_pos D w` after adjusting the coercions. Take `⟨j, hj, c, hN⟩` from `Formalism.HermitianLatticeCounting.Final.S6.normalForm D.host.E (VS D).V σ (nfH (VS D)) D.R.rS (nfF (lf D (X.Fu u)).fl (nf_T_ne D u)) (nfF (frq X q).fl (nf_T_ne D u')) (fun x => p_starConj D σ x) (hpos u) (hpos u') (nf_pos _ _ (p_posX D _ (tie_Tu_pos D u) _) σ) (nf_pos _ _ (p_pos …`. Take `⟨-, -, -, -, ⟨h1, h2⟩, ⟨-, h3⟩⟩` from `nf_gen _ _ _ _ j hj c hN`. Conclude with `⟨h1, h2, h3⟩`.
+-/
 theorem nfRat : NFRat := by
   intro D X u u' Λ Λ' q hrel hG
   obtain ⟨σ⟩ : Nonempty (D.host.E →+* ℂ) := inferInstance
@@ -29,6 +34,9 @@ theorem nfRat : NFRat := by
   obtain ⟨-, -, -, -, ⟨h1, h2⟩, ⟨-, h3⟩⟩ := nf_gen _ _ _ _ j hj c hN
   exact ⟨h1, h2, h3⟩
 
+/- English proof (translation)
+The claim follows from `cplxNF_of nfRat`.
+-/
 theorem cplxNF : CplxNF := cplxNF_of nfRat
 
 end PI.SchurPlaces

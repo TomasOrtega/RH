@@ -4,6 +4,9 @@ import Development.AutomorphicArithmetic.CommutativeAlgebra.LocallyHoldsOfForall
 
 open CategoryTheory Limits AlgebraicGeometry Opposite UpperTheory.Et
 
+/- English proof (translation)
+Use `choose V g hg hx hP' using h`. Use `⟨Sieve.ofArrows V g, ?_, ?_⟩` and prove the remaining obligations. Conclude with `Precoverage.generate_mem_toGrothendieck ((Scheme.ofArrows_mem_precoverage_iff _).2 ⟨fun x => ⟨x, hx x⟩, hg⟩)`. Introduce and unpack `W f ⟨Y, k, _, ⟨i⟩, rfl⟩`. Conclude with `hP _ _ _ _ (hP' i)`.
+-/
 private theorem UpperTheory.locally_of_etale_cover (U : Scheme.{0}) (P : ∀ V : Scheme.{0}, (V ⟶ U) → Prop)
     (hP : ∀ (V W : Scheme.{0}) (g : V ⟶ U) (k : W ⟶ V), P V g → P W (k ≫ g))
     (h : ∀ x : U, ∃ (V : Scheme.{0}) (g : V ⟶ U), Etale g ∧ x ∈ Set.range g ∧ P V g) :
@@ -15,6 +18,11 @@ private theorem UpperTheory.locally_of_etale_cover (U : Scheme.{0}) (P : ∀ V :
   · rintro W f ⟨Y, k, _, ⟨i⟩, rfl⟩
     exact hP _ _ _ _ (hP' i)
 
+/- English proof (translation)
+Introduce `U P hP`. Use `⟨UpperTheory.locally_of_etale_cover U P hP, fun hA => ?_⟩` and prove the remaining obligations. Take `⟨-, -, -, h4, h5, -⟩` from `UpperTheory.locallyHolds_of_forall_and_mono_and_inter_and_pullback Scheme.etaleTopology`. Apply `h5` to reduce the goal to its premises. Apply `UpperTheory.locally_of_etale_cover U _` to reduce the goal to its premises.
+
+Introduce `V W g k hV`. Simplify `h4 V W k _ hV` using `only [Category.assoc]`. Introduce `x`. Conclude with `⟨_, U.affineCover.f (U.affineCover.idx x), inferInstance, U.affineCover.covers x, hA _ _⟩`.
+-/
 theorem UpperTheory.etaleLocallyHolds_of_pointwise_cover_or_affine_local :
     ∀ (U : Scheme.{0}) (P : ∀ V : Scheme.{0}, (V ⟶ U) → Prop), (∀ (V W : Scheme.{0}) (g : V ⟶ U) (k : W ⟶ V), P V g → P W (k ≫ g)) →
     ((∀ x : U, ∃ (V : Scheme.{0}) (g : V ⟶ U), Etale g ∧ x ∈ Set.range g ∧ P V g) → LocT Scheme.etaleTopology U P) ∧

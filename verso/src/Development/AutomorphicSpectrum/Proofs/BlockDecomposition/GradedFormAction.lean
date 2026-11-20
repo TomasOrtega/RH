@@ -35,6 +35,9 @@ end Abstract
 
 variable {O : Type} [CommRing O] {X : Scheme.{0}} {q : X ⟶ Spec (CommRingCat.of O)}
 
+/- English proof (translation)
+Use `Ideal.Quotient.eq.1 ?_` and prove the remaining obligations. Rewrite using `[hv', ev_nat φ h h', ← hv]`. Both sides reduce to the same expression.
+-/
 theorem sub_mem_of_lift {W : X.Opens} {T T' : Thick (LL q)} (φ : T ⟶ T') (h : InU W T) (h' : InU W T') (f : Γ(X, W))
     (v : T.B) (v' : T'.B) (hv : Ideal.Quotient.mk T.J v = ev T h f) (hv' : Ideal.Quotient.mk T'.J v' = ev T' h' f) :
     v' - φ.φ v ∈ T'.J := by
@@ -42,11 +45,19 @@ theorem sub_mem_of_lift {W : X.Opens} {T T' : Thick (LL q)} (φ : T ⟶ T') (h :
   rw [hv', ev_nat φ h h', ← hv]
   rfl
 
+/- English proof (translation)
+Use `Ideal.Quotient.eq.1 ?_` and prove the remaining obligations. Rewrite using `[map_mul, lft_spec T h, lft_spec T h, lft_spec T h, map_mul]`.
+-/
 theorem lft_mul_sub {W : X.Opens} (T : Thick (LL q)) (h : InU W T) (f g : Γ(X, W)) :
     lft W T f * lft W T g - lft W T (f * g) ∈ T.J := by
   refine Ideal.Quotient.eq.1 ?_
   rw [map_mul, lft_spec T h, lft_spec T h, lft_spec T h, map_mul]
 
+/- English proof (translation)
+Establish `hF` using `GlobalTheory.CompanionTheory.DPFil.isFil_sFil P`. Establish `h1 : v ∈ (sFil P 1).S T`. Establish `e` using `hF.one T`. Rewrite using `[e]`. Conclude with `hv`.
+
+Use `hF.mul 1 r T (x := v) (y := w) h1 hw` as an intermediate fact. Establish `e : (((1 + r : ℕ)) : ℤ) = (r : ℤ) + 1` using `by push_cast; ring`. Rewrite `this` using `[e]`. Then use the resulting hypothesis.
+-/
 theorem J_mul_sFil (P : ObjectProperty (Thick (LL q))) (r : ℕ) (T : P.FullSubcategory) {v w : (sP P).A.obj T}
     (hv : v ∈ (sP P).J.S T) (hw : w ∈ (sFil P r).S T) : v * w ∈ (sFil P ((r : ℤ) + 1)).S T := by
   have hF := GlobalTheory.CompanionTheory.DPFil.isFil_sFil P
@@ -65,8 +76,20 @@ def mulZ {W : X.Opens} (P : ObjectProperty (Thick (LL q))) (hP : ∀ T, P T → 
       (lft_spec _ (hP _ T.property) z) (lft_spec _ (hP _ T'.property) z))
     (fun T _ _ hv hw => J_mul_sFil P r T hv hw)
 
+/- English proof (translation)
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem units_mul_relation_rearrange_commRing {S : Type} [CommRing S] (y w l l' : S) : y * (w * l) - w * l' = (y * l - l') * w := by ring
 
+/- English proof (translation)
+Introduce `O _ X q W P hP r z`. Use `⟨((mulZ P hP r z).pull r).toAddMonoidHom, ?_⟩` and prove the remaining obligations. Introduce `d t u hu x c hc`. Take `⟨f, hf, rfl, hfs⟩` from `hc`. Use `⟨(mulZ P hP r z).pullC r f, ?_, rfl, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[CH.Mor.d_pullC, hf, map_zero]`. Introduce `s`. Establish `hF` using `GlobalTheory.CompanionTheory.DPFil.isFil_sFil P`. Set `uu : Fin d → ∀ T : P.FullSubcategory, (sP P).A.obj T` to `fun i T => u i T.obj`. Establish `hl : ∀ i {T T' : P.FullSubcategory} (φ : T ⟶ T'), uu i T' - ((sP P).A.map φ).hom (uu i T) ∈ (sP P).J.S T'` using `fun i {T T'} φ => sub_mem_of_lift φ.hom (hP _ T.property) (hP _ T'.property) (t i) _ _ (hu i _ (hP _ T.property)) (hu i _ (hP _ T'.property))`.
+
+Express the relevant statement in the definitionally equal form `Ideal.Quotient.mk _ (show (sP P).A.obj (s.obj (Fin.last r)) from lft W (s.obj (Fin.last r)).obj z) * (show sqM (sFil P r) (sFil P ((r : ℤ) + 1)) _ from f s).1 = _`. Rewrite using `[hfs s, ← map_mul, Ideal.Quotient.eq, Finset.mul_sum, ← Finset.sum_sub_distrib]`. Use `Ideal.sum_mem _ fun I _ => ?_` and prove the remaining obligations. Establish `hw` using `wz_mem hF uu hl I.1 s`. Establish `hd` using `lft_mul_sub _ (hP _ (s.obj (Fin.last r)).property) z (x I)`.
+
+Use `J_mul_sFil P r _ hd hw` as an intermediate fact. Establish `e` using `units_mul_relation_rearrange_commRing (S := (sP P).A.obj (s.obj (Fin.last r))) (lft W (s.obj (Fin.last r)).obj z) (wz uu I.1 s) (lft W (s.obj (Fin.last r)).obj (x I)) (lft W (s.obj (Fin.last r)).obj (z * x I))`. Conclude with `Eq.mpr (congrArg (fun v => v ∈ (sFil P ((r : ℤ) + 1)).S (s.obj (Fin.last r))) e) this`.
+-/
 theorem stAct : StAct := by
   intro O _ X q W P hP r z
   refine ⟨((mulZ P hP r z).pull r).toAddMonoidHom, ?_⟩

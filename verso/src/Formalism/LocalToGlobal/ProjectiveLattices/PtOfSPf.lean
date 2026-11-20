@@ -14,6 +14,21 @@ namespace Formalism.L2.Pj
 open CategoryTheory AlgebraicGeometry NumberField IsDedekindDomain Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotions.WeightAlgebra Formalism.MainNotions.Gaps.EtaleWeightGaps
 open ReciprocityTheory.ChartRestriction.G.Geo.Tor TensorProduct
 
+/- English proof (translation)
+Use `choose a p hp hr using hloc`. Establish `key : ∀ r a' p', ψ p' ≠ 0 → φZ p' * r = φZ a' → ψ (a r) / ψ (p r) = ψ a' / ψ p'`. Introduce `r a' p' hp' hr'`. Establish `h0 : φZ (a r * p' - a' * p r) = 0`. Rewrite using `[map_sub, map_mul, map_mul, ← hr r, ← hr']`.
+
+Expand and normalize the polynomial expressions, which then agree. Establish `h1` using `hker _ h0`. Rewrite `h1` using `[map_sub, map_mul, map_mul, sub_eq_zero]`. Rewrite using `[div_eq_div_iff (hp r) hp', h1]`. Set `χf : R → L` to `fun r => ψ (a r) / ψ (p r)`.
+
+Establish `hχ : ∀ r a' p', ψ p' ≠ 0 → φZ p' * r = φZ a' → χf r = ψ a' / ψ p'` using `key`. Use `⟨{ toFun := χf, map_one' := ?_, map_mul' := ?_, map_zero' := ?_, map_add' := ?_, commutes' := ?_ }, ?_⟩` and prove the remaining obligations. Rewrite using `[hχ 1 1 1 (by simp) (by simp)]`. Simplify using the standard rewrite rules. Introduce `r s`.
+
+Rewrite using `[hχ (r * s) (a r * a s) (p r * p s) (by rw [map_mul]; exact mul_ne_zero (hp r) (hp s)) (by rw [map_mul, map_mul, ← hr r, ← hr s]; ring)]`. Simplify using `only [χf, map_mul]`. Rewrite using `[mul_div_mul_comm]`. Rewrite using `[hχ 0 0 1 (by simp) (by simp)]`. Simplify using the standard rewrite rules.
+
+Introduce `r s`. Rewrite using `[hχ (r + s) (a r * p s + a s * p r) (p r * p s) (by rw [map_mul]; exact mul_ne_zero (hp r) (hp s)) (by simp only [map_add, map_mul]; rw [← hr r, ← hr s]; ring)]`. Simplify using `only [χf, map_add, map_mul]`. Rewrite using `[div_add_div _ _ (hp r) (hp s)]`. Expand and normalize the polynomial expressions, which then agree.
+
+Introduce `k show χf (algebraMap K' R k) = algebraMap K' L k`. Rewrite using `[hχ _ (algebraMap K' Fr k) 1 (by simp) (by simp)]`. Simplify using the standard rewrite rules. Introduce `f show χf (φZ f) = ψ f`. Rewrite using `[hχ _ f 1 (by simp) (by simp)]`.
+
+Simplify using the standard rewrite rules.
+-/
 theorem pos_factor {K' Fr R L : Type} [Field K'] [CommRing Fr] [CommRing R] [Field L] [Algebra K' Fr] [Algebra K' R]
     [Algebra K' L] (φZ : Fr →ₐ[K'] R) (ψ : Fr →ₐ[K'] L) (hker : ∀ f, φZ f = 0 → ψ f = 0)
     (hloc : ∀ r, ∃ a p, ψ p ≠ 0 ∧ φZ p * r = φZ a) : ∃ χ : R →ₐ[K'] L, ∀ f, χ (φZ f) = ψ f := by
@@ -59,10 +74,22 @@ section Gen
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {Dw : Datum H} {l : Level H}
   {Xo : Moduli Dw l} {c : Coeff l}
 
+/- English proof (translation)
+The claim follows from `RingHom.ext fun x => by ext <;> simp [dualMap]`.
+-/
 theorem pos_dualMap_comp {R S T : Type} [CommRing R] [CommRing S] [CommRing T] (f : R →+* S) (g : S →+* T) :
     dualMap (g.comp f) = (dualMap g).comp (dualMap f) :=
   RingHom.ext fun x => by ext <;> simp [dualMap]
 
+/- English proof (translation)
+Take `⟨hx1, hu1, pm1, hs1, hf1, ha1⟩` from `h₁`. Take `⟨hx2, hu2, pm2, hs2, hf2, ha2⟩` from `h₂`. Establish `esp : spMap (ψ.comp φ).toRingHom = spMap ψ.toRingHom ≫ spMap φ.toRingHom` using `by show Spec.map (CommRingCat.ofHom (ψ.toRingHom.comp φ.toRingHom)) = _`. Rewrite using `[CommRingCat.ofHom_comp, Spec.map_comp]`. Use `⟨?_, ?_, pm2 ≫ pm1, ?_, ?_, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[hx2, hx1, esp, CategoryTheory.Category.assoc]`. Introduce `τ i`. Rewrite using `[hu2 τ i, hu1 τ i, ← CategoryTheory.Category.assoc]`. Use `congr 1`. Use `show _ = Spec.map (CommRingCat.ofHom (dualMap (ψ.toRingHom.comp φ.toRingHom)))`.
+
+Rewrite using `[pos_dualMap_comp, CommRingCat.ofHom_comp, Spec.map_comp]`. Rewrite using `[CategoryTheory.Category.assoc, hs1, hs2]`. Rewrite using `[CategoryTheory.Category.assoc, hf1, ← CategoryTheory.Category.assoc, hf2, esp, CategoryTheory.Category.assoc]`. Introduce `i h`. Establish `h1'` using `pos_ppx_le pm1 hs1 i`.
+
+Establish `h2'` using `pos_ppx_le pm2 hs2 i`. Establish `e : (pm2 ≫ pm1).appLE _ _ h = pm1.appLE _ _ h1' ≫ pm2.appLE _ _ h2'` using `(AlgebraicGeometry.Scheme.Hom.appLE_comp_appLE pm2 pm1 _ _ _ h1' h2').symm`. Rewrite using `[e, CommRingCat.hom_comp, RingHom.comp_apply, ha1 i h1', ha2 i h2']`.
+-/
 theorem pos_frMap_trans {S T U : Type} [CommRing S] [Algebra c.F S] [CommRing T] [Algebra c.F T] [CommRing U]
     [Algebra c.F U] {φ : S →ₐ[c.F] T} {ψ : T →ₐ[c.F] U} {y : FrPt Xo c S} {z : FrPt Xo c T} {w : FrPt Xo c U}
     (h₁ : FrMap φ y z) (h₂ : FrMap ψ z w) : FrMap (ψ.comp φ) y w := by
@@ -87,6 +114,11 @@ theorem pos_frMap_trans {S T U : Type} [CommRing S] [Algebra c.F S] [CommRing T]
       (AlgebraicGeometry.Scheme.Hom.appLE_comp_appLE pm2 pm1 _ _ _ h1' h2').symm
     rw [e, CommRingCat.hom_comp, RingHom.comp_apply, ha1 i h1', ha2 i h2']
 
+/- English proof (translation)
+Establish `hT2 : FromTest (K` using `c.F) (fun S _ _ => FrPt Xo c S) (fun φ y z => FrMap φ y z) y₂ := by`. Take `⟨p, ψ, y', hy'⟩` from `hT1`. Conclude with `⟨p, φ.comp ψ, y', pos_frMap_trans hy' hm⟩`. Unfold `evR evalAt`. Rewrite using `[dif_pos hT2, dif_pos hT1]`.
+
+Conclude with `hWD f hf K₂ _ _ _ _ _ _ y₂ hT2.choose_spec.choose_spec.choose_spec (pos_frMap_trans hT1.choose_spec.choose_spec.choose_spec hm)`.
+-/
 theorem pos_evR (hWD : EvalWD (K := c.F) (fun S _ _ => FrPt Xo c S) (fun φ y z => FrMap φ y z)) (f : Rul Xo c)
     (hf : IsNatural (K := c.F) (fun S _ _ => FrPt Xo c S) (fun φ y z => FrMap φ y z) f)
     {K₁ K₂ : Type} [CommRing K₁] [Algebra c.F K₁] [CommRing K₂] [Algebra c.F K₂] (φ : K₁ →ₐ[c.F] K₂)
@@ -108,6 +140,9 @@ variable {D : D7} {B : WeightFamilies.Prov D} {P : ModuliIntegralCharts.Prov D} 
   (N : ℕ) {wL : WeightFamilies.Wt D j} (w : Fin N → B.Cusp j wL) {Ω : Type} [Field Ω] [Algebra B.KO Ω]
   (gF : X.Forms →ₐ[B.KO] Ω) {L : Type} [Field L] [Algebra (Kp X la N) L] (χ : RZs X la N Ω gF w →ₐ[Kp X la N] L)
 
+/- English proof (translation)
+Rewrite using `[CurveLoc.psiZ_apply]`. Establish `e1 : ((1 : X.Kl la) ⊗ₜ[B.KO] algebraMap B.KO Ω a : X.Kl la ⊗[B.KO] Ω) = algebraMap B.KO (X.Kl la) a ⊗ₜ[B.KO] (1 : Ω)`. Rewrite using `[Algebra.algebraMap_eq_smul_one (A := Ω), Algebra.algebraMap_eq_smul_one (A := X.Kl la), ← TensorProduct.smul_tmul]`. Rewrite using `[e1, CurveLoc.tmul_eq, one_mul, IsScalarTower.algebraMap_apply (Kp X la N) (RZ X la N Ω) (RZs X la N Ω gF w), Algebra.algebraMap_eq_smul_one (A := RZ X la N Ω)]`. Both sides reduce to the same expression.
+-/
 theorem pos_psiZ_alg (a : B.KO) :
     CurveLoc.psiZ X la N w gF (algebraMap B.KO Ω a) = algebraMap (Kp X la N) (RZs X la N Ω gF w)
       (algebraMap (X.Kl la) (Kp X la N) (algebraMap B.KO (X.Kl la) a)) := by
@@ -119,6 +154,9 @@ theorem pos_psiZ_alg (a : B.KO) :
     Algebra.algebraMap_eq_smul_one (A := RZ X la N Ω)]
   rfl
 
+/- English proof (translation)
+Establish `e` using `congrArg χ (CurveLoc.weight_zero_section_mul_inv X la N w gF)`. Rewrite `e` using `[map_mul, map_one]`. Conclude with `eq_inv_of_mul_eq_one_right e`.
+-/
 theorem pos_inv :
     χ (CurveLoc.invS X la N w gF) = (χ (algebraMap (RZ X la N Ω) (RZs X la N Ω gF w)
       (rzMap X la N Ω gF (Formalism.MainNotions.Gaps.EtaleWeightGaps.sec X la w 0))))⁻¹ := by
@@ -126,12 +164,20 @@ theorem pos_inv :
   rw [map_mul, map_one] at e
   exact eq_inv_of_mul_eq_one_right e
 
+/- English proof (translation)
+Establish `e` using `congrArg χ (CurveLoc.weight_zero_section_mul_inv X la N w gF)`. Rewrite `e` using `[map_mul, map_one]`. Conclude with `left_ne_zero_of_mul_eq_one e`.
+-/
 theorem pos_sec_ne :
     χ (algebraMap (RZ X la N Ω) (RZs X la N Ω gF w) (rzMap X la N Ω gF (Formalism.MainNotions.Gaps.EtaleWeightGaps.sec X la w 0))) ≠ 0 := by
   have e := congrArg χ (CurveLoc.weight_zero_section_mul_inv X la N w gF)
   rw [map_mul, map_one] at e
   exact left_ne_zero_of_mul_eq_one e
 
+/- English proof (translation)
+Establish `e : rzMap X la N Ω gF (Formalism.MainNotions.Gaps.EtaleWeightGaps.sec X la w 0) = ∑ k, (algebraMap (Op X la N) (Kp X la N) (Tv X la N (0, k))) • rzMap X la N Ω gF (emb X la N (X.inc wL (w k)))`. Unfold `Formalism.MainNotions.Gaps.EtaleWeightGaps.sec`. Rewrite using `[map_sum]`. Simplify using `only [map_smul]`. Use `(congrArg (fun v => χ (algebraMap (RZ X la N Ω) (RZs X la N Ω gF w) v)) e).trans ?_` and prove the remaining obligations.
+
+Simplify using `only [map_sum]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[Algebra.smul_def, map_mul, map_mul, ← IsScalarTower.algebraMap_apply, AlgHom.commutes, CurveLoc.alg_rzMap_emb]`.
+-/
 theorem pos_sec_eval :
     χ (algebraMap (RZ X la N Ω) (RZs X la N Ω gF w) (rzMap X la N Ω gF (Formalism.MainNotions.Gaps.EtaleWeightGaps.sec X la w 0))) =
       ∑ k, algebraMap (Kp X la N) L (algebraMap (Op X la N) (Kp X la N) (Tv X la N (0, k))) *
@@ -147,6 +193,9 @@ theorem pos_sec_eval :
   rw [Algebra.smul_def, map_mul, map_mul, ← IsScalarTower.algebraMap_apply, AlgHom.commutes,
     CurveLoc.alg_rzMap_emb]
 
+/- English proof (translation)
+Rewrite using `[CurveLoc.phiZ_of_eq X la N w gF _ k _ rfl, map_mul, map_pow, CurveLoc.alg_rzMap_emb, pos_inv]`.
+-/
 theorem phi_fraction_base_value (k : ℕ) (F : X.Forms) (hF : emb X la N F ∈ Vw X la N (addL (wt0 D j) wL k)) :
     χ (phiZ X la N Ω gF w (fr0 X la w k ⟨emb X la N F, hF⟩)) =
       χ (CurveLoc.psiZ X la N w gF (gF F)) *
@@ -159,10 +208,18 @@ section Inst
 
 variable {D : D7} {T : Top D} (h : LawsP T) (j : ℕ) (hj : InR D j) (hG : GenFrEx (T.Q.Xo j) T.Q.c)
 
+/- English proof (translation)
+The claim follows from `(cusp_le_sec (T.Q.Xo j) T.Q.c (T.U j) _ _ (cutR_le T.C j u F.2)).1`.
+-/
 theorem pos_natural {u : WeightFamilies.Wt D j} (F : (recB h.toLawsCore).Cusp j u) :
     IsNatural (K := T.Q.c.F) (fun S _ _ => FrPt (T.Q.Xo j) T.Q.c S) (fun φ y z => FrMap φ y z) (F : T.R j) :=
   (cusp_le_sec (T.Q.Xo j) T.Q.c (T.U j) _ _ (cutR_le T.C j u F.2)).1
 
+/- English proof (translation)
+Introduce `a`. Take `⟨k, g, p, hp, hne, he⟩` from `hB Z a`. Establish `hw : (fun i => formsEvR j hG hFT Z ((recPlus h j hj).inc wL (G.w i))) = fun i => evC hG Z ((G.w i : (recB h.toLawsCore).Cusp j wL) : T.R j)`. Use function extensionality and compare the values at `fun i => curveUnit_gF_inc h j hj hG hFT Z wL (G.w i)`. Establish `e` using `congrArg (fun v => MvPolynomial.aeval v p) hw`.
+
+Use `⟨k, g, p, hp, fun h0 => hne (e.symm.trans h0), ?_⟩` and prove the remaining obligations. Conclude with `(congrArg (a * ·) e).trans (he.trans (curveUnit_gF_inc h j hj hG hFT Z _ g).symm)`.
+-/
 theorem pos_birAt (hFT : GenFromTest (T.Q.Xo j) T.Q.c hG) {ka wL wF : WeightFamilies.Wt D j} (G : GlobalFamilyData (recPlus h j hj) ka wL wF)
     (hB : BIRSt h j hj hG G) (Z : Comp (T.Q.Xo j) T.Q.c) :
     CurveLoc.BirAt (recPlus h j hj) G.N G.w (formsEvR j hG hFT Z) := by
@@ -199,6 +256,21 @@ def PtOfSBody (h : LawsP T) (j : ℕ) (hj : InR D j) (hG : GenFrEx (T.Q.Xo j) T.
 
 set_option maxHeartbeats 1000000 in
 
+/- English proof (translation)
+Use `Fintype.ofFinite (Comp (T.Q.Xo j) T.Q.c)` as an intermediate fact. Introduce `L _ _ φ`. Set `ψ : ↥(Frac0 (recPlus h j hj) la G.w) →ₐ[Kp (recPlus h j hj) la G.N] L` to `φ.comp (toOsK (recPlus h j hj) la G.w)`. Establish `hψ : ∀ f, ψ f = φ (toOsK (recPlus h j hj) la G.w f)` using `fun f => rfl`. Establish `hQ : (RingHom.ker ψ).IsPrime` using `RingHom.ker_isPrime _`.
+
+Establish `hJ : Jid (recPlus h j hj) la G.w ≤ RingHom.ker ψ` using `fun x hx => by`. Rewrite using `[RingHom.mem_ker, hψ, (toOsK_eq_zero_iff (recPlus h j hj) la G.w x).2 hx, map_zero]`. Establish `hinf : (Finset.univ : Finset (Comp (T.Q.Xo j) T.Q.c)).inf (fun Z => RingHom.ker (phiZ (recPlus h j hj) la G.N (Om Z) (formsEvR j hG hFT Z) G.w)) ≤ RingHom.ker ψ`. Introduce `f hf`. Establish `hf' : ∀ Z, phiZ (recPlus h j hj) la G.N (Om Z) (formsEvR j hG hFT Z) G.w f = 0` using `fun Z => RingHom.mem_ker.1 (Finset.inf_le (f := fun Z => RingHom.ker (phiZ (recPlus h j hj) la G.N (Om Z) (formsEvR j hG hFT Z) G.w)) (Finset.mem_univ Z) hf)`.
+
+Rewrite using `[curveInj h j hj hG hFT hV G la f hf']`. Conclude with `Ideal.zero_mem _`. Take `⟨Z, -, hZ⟩` from `(Ideal.IsPrime.inf_le' hQ).1 hinf`. Take `⟨χ, hχ⟩` from `pos_factor (phiZ (recPlus h j hj) la G.N (Om Z) (formsEvR j hG hFT Z) G.w) ψ (fun f hf => RingHom.mem_ker.1 (hZ (RingHom.mem_ker.2 hf))) (fun r => by`. Take `⟨a, p, hp, hr⟩` from `CurveLoc.loc_of_bir (recPlus h j hj) la G.N G.w (formsEvR j hG hFT Z) (pos_birAt h j hj hG hFT G hB Z) (hC Z) r`.
+
+Conclude with `⟨a, p, fun h0 => hp _ hQ hJ hZ (RingHom.mem_ker.2 h0), hr⟩)`. Establish `hgF : ∀ (u : WeightFamilies.Wt D j) (F : (recB h.toLawsCore).Cusp j u), formsEvR j hG hFT Z ((recPlus h j hj).inc u F) = evC hG Z (F : T.R j)` using `fun u F => curveUnit_gF_inc h j hj hG hFT Z u F`. Set `alg : T.Q.c.F →+* L` to `(algebraMap (Kp (recPlus h j hj) la G.N) L).comp ((@algebraMap ((recPlus h j hj).Kl la) (Kp (recPlus h j hj) la G.N) _ _ (Kp.algKl (recPlus h j hj) la G.N)).comp (algebraMap T.Q.c.F ((recPlus h j hj).Kl la)))`. Set `_ : Algebra T.Q.c.F L` to `alg.toAlgebra`. Set `ι : Om Z →+* L` to `χ.toRingHom.comp (CurveLoc.psiZ (recPlus h j hj) la G.N G.w (formsEvR j hG hFT Z))`.
+
+Establish `hι : ∀ a : T.Q.c.F, ι (algebraMap T.Q.c.F (Om Z) a) = alg a` using `fun a => (congrArg χ (pos_psiZ_alg (recPlus h j hj) la G.N G.w (formsEvR j hG hFT Z) a)).trans (χ.commutes _)`. Set `ιA : Om Z →ₐ[T.Q.c.F] L` to `{ ι with commutes' := hι }`. Take `⟨y, hy⟩` from `pos_frMap hS hTw ιA (genFr hG Z)`. Establish `hval : ∀ {u : WeightFamilies.Wt D j} (F : (recB h.toLawsCore).Cusp j u), evR (T.Q.Xo j) T.Q.c (F : T.R j) y = ι (evC hG Z (F : T.R j))` using `fun F => pos_evR (h.evalWD j hj) _ (pos_natural h j F) ιA (genFr hG Z) (hFT Z) y hy`. Establish `hF : ∀ {u : WeightFamilies.Wt D j} (F : (recB h.toLawsCore).Cusp j u), χ (CurveLoc.psiZ (recPlus h j hj) la G.N G.w (formsEvR j hG hFT Z) (formsEvR j hG hFT Z ((recPlus h j hj).inc u F))) = evR (T.Q.Xo j) T.Q.c (F : T.R j) y` using `fun F => (congrArg (fun v => χ (CurveLoc.psiZ (recPlus h j hj) la G.N G.w (formsEvR j hG hFT Z) v)) (hgF _ F)).trans (hval F).symm`.
+
+Establish `hs : χ (algebraMap (RZ (recPlus h j hj) la G.N (Om Z)) (RZs (recPlus h j hj) la G.N (Om Z) (formsEvR j hG hFT Z) G.w) (rzMap (recPlus h j hj) la G.N (Om Z) (formsEvR j hG hFT Z) (Formalism.MainNotions.Gaps.EtaleWeightGaps.sec (recPlus h j hj) la G.w 0))) = ∑ k, algebraMap (Kp (re …` using `(pos_sec_eval (recPlus h j hj) la G.N G.w (formsEvR j hG hFT Z) χ).trans (Finset.sum_congr rfl fun k _ => congrArg _ (hF (G.w k)))`. Use `⟨alg, y, ⟨Z, ιA, hy⟩, fun a => rfl, ?_, fun k g => ?_⟩` and prove the remaining obligations. Rewrite using `[← hs]`. Conclude with `pos_sec_ne (recPlus h j hj) la G.N G.w (formsEvR j hG hFT Z) χ`. Use `((hχ _).trans (hψ _)).symm.trans ((phi_fraction_base_value (recPlus h j hj) la G.N G.w (formsEvR j hG hFT Z) χ k ((recPlus h j hj).inc _ g) (emb_mem_Vw (recPlus h j hj) la G.N _ g)).trans ?_)` and prove the remaining obligations.
+
+Rewrite using `[hs, div_eq_mul_inv, inv_pow]`. Conclude with `congrArg (· * _) (hF g)`.
+-/
 theorem ptOfS_all [Finite (Comp (T.Q.Xo j) T.Q.c)] (hS : ReciprocityTheory.ChartRestriction.G.Out.SecBaseChangeAnySt)
     (hTw : ReciprocityTheory.ChartRestriction.G.Out.SecTwistSt) (hFT : GenFromTest (T.Q.Xo j) T.Q.c hG) (hV : GenValInjSt h j hG)
     {ka wL wF : WeightFamilies.Wt D j} (G : GlobalFamilyData (recPlus h j hj) ka wL wF) (hB : BIRSt h j hj hG G)
@@ -262,6 +334,9 @@ theorem ptOfS_all [Finite (Comp (T.Q.Xo j) T.Q.c)] (hS : ReciprocityTheory.Chart
     rw [hs, div_eq_mul_inv, inv_pow]
     exact congrArg (· * _) (hF g)
 
+/- English proof (translation)
+Introduce `_` and use `ptOfS_all h j hj hG hS hTw hFT hV G hB la hC`.
+-/
 theorem ptOfS_of [Finite (Comp (T.Q.Xo j) T.Q.c)] (hS : ReciprocityTheory.ChartRestriction.G.Out.SecBaseChangeAnySt)
     (hTw : ReciprocityTheory.ChartRestriction.G.Out.SecTwistSt) (hFT : GenFromTest (T.Q.Xo j) T.Q.c hG) (hV : GenValInjSt h j hG)
     {ka wL wF : WeightFamilies.Wt D j} (G : GlobalFamilyData (recPlus h j hj) ka wL wF) (hB : BIRSt h j hj hG G)

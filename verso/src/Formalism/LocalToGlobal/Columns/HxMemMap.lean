@@ -14,6 +14,11 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 variable {D : ColRec}
 
+/- English proof (translation)
+Rewrite using `[Formalism.L2.Herm.hT_crd D.sp.cm (D.sp.X i) x y]`. Unfold `hform`. Rewrite using `[← (finCongr (CF.rankN D i hi)).symm.sum_comp]`. Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Rewrite using `[← (finCongr (CF.rankN D i hi)).symm.sum_comp]`.
+
+Conclude with `Finset.sum_congr rfl fun b _ => rfl`.
+-/
 theorem hx_hform (i : ℕ) (hi : i ≤ D.R.m) (x y : (D.sp.X i).V) :
     (D.sp.X i).hT x y = hform (CF.sigD D : D.host.E →+* D.host.E) (CF.gramN D i hi) (CF.crdN D i hi x) (CF.crdN D i hi y) := by
   rw [Formalism.L2.Herm.hT_crd D.sp.cm (D.sp.X i) x y]
@@ -25,10 +30,20 @@ theorem hx_hform (i : ℕ) (hi : i ≤ D.R.m) (x y : (D.sp.X i).V) :
 
 variable (u : D.what₂.Word)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem hx_clsCrd (i : ℕ) (hi : i ≤ D.R.m) (c : (D.mem u).C.cls i) :
     CF.clsCrd D u i hi c = (D.clsLat u i c).map
       ((CF.crdN D i hi : (D.sp.X i).V →ₗ[D.host.E] (Fin (D.R.N i) → D.host.E)).restrictScalars (𝓞 D.host.E)) := rfl
 
+/- English proof (translation)
+Establish `key : (((CH.Ld D u i c).map ((CF.crdN D i hi : (D.sp.X i).V →ₗ[D.host.E] (Fin (D.R.N i) → D.host.E)).restrictScalars (𝓞 D.host.E)) : Submodule (𝓞 D.host.E) (Fin (D.R.N i) → D.host.E)) : Set (Fin (D.R.N i) → D.host.E)) = dualSet (CF.sigD D : D.host.E →+* D.host.E) (CF.gramN D i hi …`. Use extensionality with `t`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨x, hx, rfl⟩ s ⟨y, hy, rfl⟩`. Use `(Formalism.L2.Herm.mem_dual (D.sp.X i) (D.clsLat u i c) x).1 hx y hy` as an intermediate fact.
+
+Rewrite `this` using `[hx_hform i hi]`. Conclude with `this`. Introduce `ht`. Use `⟨(CF.crdN D i hi).symm t, ?_, (CF.crdN D i hi).apply_symm_apply t⟩` and prove the remaining obligations. Use `(Formalism.L2.Herm.mem_dual (D.sp.X i) (D.clsLat u i c) _).2 fun y hy => ?_` and prove the remaining obligations.
+
+Rewrite using `[hx_hform i hi, LinearEquiv.apply_symm_apply]`. Conclude with `ht (CF.crdN D i hi y) ⟨y, hy, rfl⟩`. Use `show Submodule.span (𝓞 D.host.E) (dualSet _ _ _) = _`. Rewrite using `[← key, Submodule.span_eq]`.
+-/
 theorem hx_Ld_eq (i : ℕ) (hi : i ≤ D.R.m) (c : (D.mem u).C.cls i) :
     CF.Ld D u i hi c = (CH.Ld D u i c).map
       ((CF.crdN D i hi : (D.sp.X i).V →ₗ[D.host.E] (Fin (D.R.N i) → D.host.E)).restrictScalars (𝓞 D.host.E)) := by
@@ -50,6 +65,9 @@ theorem hx_Ld_eq (i : ℕ) (hi : i ≤ D.R.m) (c : (D.mem u).C.cls i) :
   show Submodule.span (𝓞 D.host.E) (dualSet _ _ _) = _
   rw [← key, Submodule.span_eq]
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨y, hy, e⟩`. Establish `: y = x` using `(CF.crdN D i hi).injective e`. Conclude with `this ▸ hy`. Conclude with `fun h => ⟨x, h, rfl⟩`.
+-/
 theorem hx_mem_map {i : ℕ} (hi : i ≤ D.R.m) (M : Submodule (𝓞 D.host.E) (D.sp.X i).V) (x : (D.sp.X i).V) :
     CF.crdN D i hi x ∈ M.map
       ((CF.crdN D i hi : (D.sp.X i).V →ₗ[D.host.E] (Fin (D.R.N i) → D.host.E)).restrictScalars (𝓞 D.host.E)) ↔ x ∈ M := by
@@ -59,15 +77,24 @@ theorem hx_mem_map {i : ℕ} (hi : i ≤ D.R.m) (M : Submodule (𝓞 D.host.E) (
     exact this ▸ hy
   · exact fun h => ⟨x, h, rfl⟩
 
+/- English proof (translation)
+Rewrite using `[hx_Ld_eq, hx_mem_map]`.
+-/
 theorem hx_mem_Ld (i : ℕ) (hi : i ≤ D.R.m) (c : (D.mem u).C.cls i) (x : (D.sp.X i).V) :
     CF.crdN D i hi x ∈ CF.Ld D u i hi c ↔ x ∈ CH.Ld D u i c := by
   rw [hx_Ld_eq, hx_mem_map]
 
+/- English proof (translation)
+Rewrite using `[hx_Ld_eq, Submodule.map_smul'']`.
+-/
 theorem hx_smul_Ld (I : Ideal (𝓞 D.host.E)) (i : ℕ) (hi : i ≤ D.R.m) (c : (D.mem u).C.cls i) :
     I • CF.Ld D u i hi c = (I • CH.Ld D u i c).map
       ((CF.crdN D i hi : (D.sp.X i).V →ₗ[D.host.E] (Fin (D.R.N i) → D.host.E)).restrictScalars (𝓞 D.host.E)) := by
   rw [hx_Ld_eq, Submodule.map_smul'']
 
+/- English proof (translation)
+Rewrite using `[hx_smul_Ld, hx_clsCrd, ← Submodule.map_sup]`.
+-/
 theorem hx_Lk_eq (I : Ideal (𝓞 D.host.E)) (i : ℕ) (hi : i ≤ D.R.m) (c : (D.mem u).C.cls i) :
     CF.clsCrd D u i hi c ⊔ I • CF.Ld D u i hi c = (CH.Lk D u I i c).map
       ((CF.crdN D i hi : (D.sp.X i).V →ₗ[D.host.E] (Fin (D.R.N i) → D.host.E)).restrictScalars (𝓞 D.host.E)) := by
@@ -75,6 +102,9 @@ theorem hx_Lk_eq (I : Ideal (𝓞 D.host.E)) (i : ℕ) (hi : i ≤ D.R.m) (c : (
 
 variable {u} (A : CF.AtTTied u) (P : ∀ i hi, CF.LvTied u A i hi)
 
+/- English proof (translation)
+Use `show CF.crdN D i hi x ∈ CF.clsCrd D u i hi c ⊔ A.Pv v • CF.Ld D u i hi c ↔ _`. Rewrite using `[hx_Lk_eq, hx_mem_map]`.
+-/
 theorem hx_mem_Lk (i : ℕ) (hi : i ≤ D.R.m) (v : (D.mem u).A.vT) (c : (D.mem u).C.cls i) (x : (D.sp.X i).V) :
     CF.crdN D i hi x ∈ CF.Lk A i hi v c ↔ x ∈ CH.Lk D u (A.Pv v) i c := by
   show CF.crdN D i hi x ∈ CF.clsCrd D u i hi c ⊔ A.Pv v • CF.Ld D u i hi c ↔ _
@@ -101,14 +131,25 @@ open Classical in
 def hxPrk (i : ℕ) (v : (D.mem u).A.vT) (c : (D.mem u).C.cls i) : ↥(CH.Lk D u (A.Pv v) i c) →+ (D.fm u).lk i v c :=
   if hi : i ≤ D.R.m then ((P i hi).prk v c).comp (hxLk A i hi v c) else 0
 
+/- English proof (translation)
+Unfold `hxPr`. Rewrite using `[dif_pos hi]`. Both sides reduce to the same expression.
+-/
 theorem hxPr_eq (i : ℕ) (hi : i ≤ D.R.m) (v : (D.mem u).A.vT) (c : (D.mem u).C.cls i) (z : ↥(CH.Ld D u i c)) :
     hxPr A P i v c z = (P i hi).pr v c (hxLd i hi c z) := by
   unfold hxPr; rw [dif_pos hi]; rfl
 
+/- English proof (translation)
+Unfold `hxPrk`. Rewrite using `[dif_pos hi]`. Both sides reduce to the same expression.
+-/
 theorem hxPrk_eq (i : ℕ) (hi : i ≤ D.R.m) (v : (D.mem u).A.vT) (c : (D.mem u).C.cls i) (z : ↥(CH.Lk D u (A.Pv v) i c)) :
     hxPrk A P i v c z = (P i hi).prk v c (hxLk A i hi v c z) := by
   unfold hxPrk; rw [dif_pos hi]; rfl
 
+/- English proof (translation)
+Introduce `q`. Take `⟨z, rfl⟩` from `(P i hi).pr_surj v c q`. Use `⟨⟨(CF.crdN D i hi).symm z.1, (hx_mem_Ld u i hi c _).1 (by rw [LinearEquiv.apply_symm_apply]; exact z.2)⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[hxPr_eq A P i hi]`. Use `congr 1`.
+
+Conclude with `Subtype.ext ((CF.crdN D i hi).apply_symm_apply z.1)`.
+-/
 theorem hxPr_surj (i : ℕ) (hi : i ≤ D.R.m) (v : (D.mem u).A.vT) (c : (D.mem u).C.cls i) :
     Function.Surjective (hxPr A P i v c) := by
   intro q
@@ -118,6 +159,11 @@ theorem hxPr_surj (i : ℕ) (hi : i ≤ D.R.m) (v : (D.mem u).A.vT) (c : (D.mem 
   congr 1
   exact Subtype.ext ((CF.crdN D i hi).apply_symm_apply z.1)
 
+/- English proof (translation)
+Distinguish the cases in `hi : i ≤ D.R.m`. Rewrite using `[hxPr_eq A P i hi, hxPr_eq A P i hi, ← (P i hi).pr_smul]`. Use `congr 1`. Conclude with `Subtype.ext (((CF.crdN D i hi : (D.sp.X i).V →ₗ[D.host.E] (Fin (D.R.N i) → D.host.E)).restrictScalars (𝓞 D.host.E)).map_smul r z.1)`. Unfold `hxPr`.
+
+Rewrite using `[dif_neg hi]`. Simplify using the standard rewrite rules.
+-/
 theorem hxPr_smul (i : ℕ) (v : (D.mem u).A.vT) (c : (D.mem u).C.cls i) (r : 𝓞 D.host.E) (z : ↥(CH.Ld D u i c)) :
     hxPr A P i v c (r • z) = A.res v r • hxPr A P i v c z := by
   by_cases hi : i ≤ D.R.m
@@ -127,16 +173,27 @@ theorem hxPr_smul (i : ℕ) (v : (D.mem u).A.vT) (c : (D.mem u).C.cls i) (r : �
       (𝓞 D.host.E)).map_smul r z.1)
   · unfold hxPr; rw [dif_neg hi]; simp
 
+/- English proof (translation)
+Rewrite using `[hxPr_eq A P i hi, (P i hi).pr_ker, hx_smul_Ld]`. Conclude with `hx_mem_map hi _ z.1`.
+-/
 theorem hxPr_ker (i : ℕ) (hi : i ≤ D.R.m) (v : (D.mem u).A.vT) (c : (D.mem u).C.cls i) (z : ↥(CH.Ld D u i c)) :
     hxPr A P i v c z = 0 ↔ z.1 ∈ A.Pv v • CH.Ld D u i c := by
   rw [hxPr_eq A P i hi, (P i hi).pr_ker, hx_smul_Ld]
   exact hx_mem_map hi _ z.1
 
+/- English proof (translation)
+Rewrite using `[hxPr_eq A P i hi, (P i hi).fv_ker]`. Conclude with `hx_mem_Lk A i hi v c z.1`.
+-/
 theorem hx_fv_ker (i : ℕ) (hi : i ≤ D.R.m) (v : (D.mem u).A.vT) (c : (D.mem u).C.cls i) (z : ↥(CH.Ld D u i c)) :
     (D.fm u).fv i v c (hxPr A P i v c z) = 0 ↔ z.1 ∈ CH.Lk D u (A.Pv v) i c := by
   rw [hxPr_eq A P i hi, (P i hi).fv_ker]
   exact hx_mem_Lk A i hi v c z.1
 
+/- English proof (translation)
+Introduce `q`. Take `⟨z, rfl⟩` from `(P i hi).prk_surj v c q`. Use `⟨⟨(CF.crdN D i hi).symm z.1, (hx_mem_Lk A i hi v c _).1 (by rw [LinearEquiv.apply_symm_apply]; exact z.2)⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[hxPrk_eq A P i hi]`. Use `congr 1`.
+
+Conclude with `Subtype.ext ((CF.crdN D i hi).apply_symm_apply z.1)`.
+-/
 theorem hxPrk_surj (i : ℕ) (hi : i ≤ D.R.m) (v : (D.mem u).A.vT) (c : (D.mem u).C.cls i) :
     Function.Surjective (hxPrk A P i v c) := by
   intro q
@@ -146,6 +203,11 @@ theorem hxPrk_surj (i : ℕ) (hi : i ≤ D.R.m) (v : (D.mem u).A.vT) (c : (D.mem
   congr 1
   exact Subtype.ext ((CF.crdN D i hi).apply_symm_apply z.1)
 
+/- English proof (translation)
+Distinguish the cases in `hi : i ≤ D.R.m`. Rewrite using `[hxPrk_eq A P i hi, hxPrk_eq A P i hi, ← (P i hi).prk_smul]`. Use `congr 1`. Conclude with `Subtype.ext (((CF.crdN D i hi : (D.sp.X i).V →ₗ[D.host.E] (Fin (D.R.N i) → D.host.E)).restrictScalars (𝓞 D.host.E)).map_smul r z.1)`. Unfold `hxPrk`.
+
+Rewrite using `[dif_neg hi]`. Simplify using the standard rewrite rules.
+-/
 theorem hxPrk_smul (i : ℕ) (v : (D.mem u).A.vT) (c : (D.mem u).C.cls i) (r : 𝓞 D.host.E) (z : ↥(CH.Lk D u (A.Pv v) i c)) :
     hxPrk A P i v c (r • z) = A.res v r • hxPrk A P i v c z := by
   by_cases hi : i ≤ D.R.m
@@ -155,6 +217,9 @@ theorem hxPrk_smul (i : ℕ) (v : (D.mem u).A.vT) (c : (D.mem u).C.cls i) (r : �
       (𝓞 D.host.E)).map_smul r z.1)
   · unfold hxPrk; rw [dif_neg hi]; simp
 
+/- English proof (translation)
+Rewrite using `[hxPrk_eq A P i hi, (P i hi).prk_ker]`. Use `show CF.crdN D i hi z.1 ∈ A.Pv v • (CF.clsCrd D u i hi c ⊔ A.Pv v • CF.Ld D u i hi c) ↔ _`. Rewrite using `[hx_Lk_eq, ← Submodule.map_smul'']`. Conclude with `hx_mem_map hi _ z.1`.
+-/
 theorem hxPrk_ker (i : ℕ) (hi : i ≤ D.R.m) (v : (D.mem u).A.vT) (c : (D.mem u).C.cls i) (z : ↥(CH.Lk D u (A.Pv v) i c)) :
     hxPrk A P i v c z = 0 ↔ z.1 ∈ A.Pv v • CH.Lk D u (A.Pv v) i c := by
   rw [hxPrk_eq A P i hi, (P i hi).prk_ker]
@@ -162,6 +227,13 @@ theorem hxPrk_ker (i : ℕ) (hi : i ≤ D.R.m) (v : (D.mem u).A.vT) (c : (D.mem 
   rw [hx_Lk_eq, ← Submodule.map_smul'']
   exact hx_mem_map hi _ z.1
 
+/- English proof (translation)
+Rewrite `hz` using `[hxPr_eq A P i hi]`. Establish `e : CF.crdN D i hi (((D.mem u).A.T : D.host.E) • z.1) = (((D.mem u).A.T : ℕ) : 𝓞 D.host.E) • (hxLd i hi c z).1`. Rewrite using `[map_smul]`. Use `show _ = (((D.mem u).A.T : ℕ) : 𝓞 D.host.E) • CF.crdN D i hi z.1`. Apply the tactic sequence `rw [Algebra.smul_def' , map_natCast] <;> rfl`.
+
+Establish `h' : (((D.mem u).A.T : ℕ) : 𝓞 D.host.E) • (hxLd i hi c z).1 ∈ CF.Lk A i hi v c`. Rewrite using `[← e]`. Conclude with `(hx_mem_Lk A i hi v c _).2 h`. Rewrite using `[hxPrk_eq A P i hi, ← (P i hi).te v c (hxLd i hi c z) hz h']`. Use `congr 1`.
+
+Conclude with `Subtype.ext e`.
+-/
 theorem hx_te (i : ℕ) (hi : i ≤ D.R.m) (v : (D.mem u).A.vT) (c : (D.mem u).C.cls i) (z : ↥(CH.Ld D u i c))
     (hz : (D.fm u).fv i v c (hxPr A P i v c z) = 1)
     (h : ((D.mem u).A.T : D.host.E) • z.1 ∈ CH.Lk D u (A.Pv v) i c) :

@@ -8,6 +8,11 @@ noncomputable section
 
 namespace GlobalTheory.SWTrans
 
+/- English proof (translation)
+Take `⟨C, hC⟩` from `S.exists_isCompl`. Set `e` to `S.prodEquivOfIsCompl C hC`. Set `P : G →* Module.End ℂ (S × C)` to `{ toFun := fun g => LinearMap.prodMap (ρ g) LinearMap.id map_one' := by rw [map_one]; exact LinearMap.prodMap_one map_mul' := fun g h => by rw [map_mul, LinearMap.prodMap_mul]; rfl }`. Use `⟨(e.conjRingEquiv.toRingHom.toMonoidHom).comp P, fun g Φ => ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `e (P g (e.symm Φ.1)) = _`.
+
+Rewrite using `[Submodule.prodEquivOfIsCompl_symm_apply_left]`. Simplify using `[P, e]`.
+-/
 theorem exists_extend {G X : Type} [Monoid G] [AddCommGroup X] [Module ℂ X] (S : Submodule ℂ X)
     (ρ : G →* Module.End ℂ S) : ∃ om : G →* Module.End ℂ X, ∀ g (Φ : S), om g Φ.1 = (ρ g Φ).1 := by
   obtain ⟨C, hC⟩ := S.exists_isCompl
@@ -21,6 +26,13 @@ theorem exists_extend {G X : Type} [Monoid G] [AddCommGroup X] [Module ℂ X] (S
   rw [Submodule.prodEquivOfIsCompl_symm_apply_left]
   simp [P, e]
 
+/- English proof (translation)
+Set `L : H →* Module.End ℂ S` to `{ toFun := fun h => (LinearMap.funLeft ℂ ℂ (a h)).restrict (hS h) map_one' := by`. Use extensionality with `Φ x`. Conclude with `congrArg Φ.1 (h1 x)`. Use the proof step `map_mul' := fun h h' => by`. Use extensionality with `Φ x`.
+
+Conclude with `congrArg Φ.1 (hm h h' x) }`. Establish `hL : ∀ h g, Commute (L h) (ω g)` using `fun h g => by`. Use extensionality with `Φ x`. Conclude with `(hc h g Φ (L h Φ) (fun _ => rfl) x).symm`. Take `⟨om, hom⟩` from `exists_extend S (L.noncommCoprod ω hL)`.
+
+Set `c : (X → ℂ) ≃ₗ[ℂ] (Y → ℂ)` to `LinearEquiv.funCongrLeft ℂ ℂ e.symm`. Use `⟨(c.conjRingEquiv.toRingHom.toMonoidHom).comp om, fun h g φ Φ hφ x => ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `om (h, g) (φ ∘ e) (e.symm (e x)) = _`. Rewrite using `[hφ, hom, e.symm_apply_apply]`. Both sides reduce to the same expression.
+-/
 theorem exists_trans {G H X Y : Type} [Monoid G] [Monoid H] (S : Submodule ℂ (X → ℂ)) (e : X ≃ Y) (a : H → X → X)
     (h1 : ∀ x, a 1 x = x) (hm : ∀ h h' x, a (h * h') x = a h' (a h x))
     (hS : ∀ h, ∀ Φ ∈ S, (fun x => Φ (a h x)) ∈ S) (ω : G →* Module.End ℂ S)
@@ -56,6 +68,13 @@ open scoped GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 open GlobalTheory.SWLink
 
+/- English proof (translation)
+Introduce `D n V ψ χ θ hθ μ 𝓕 hμ ω hω J₂ d ε ι κ`. Establish `key` using `GlobalTheory.WeilSchComm.subst_mem_and_comm D n V ψ χ θ hθ μ 𝓕 hμ ω hω`. Take `⟨om, hom⟩` from `exists_trans (H := UD D (-V.gram)) (schwartzA θ V.rank n) (coordL ε V.rank n).toEquiv (fun h x => (mt V (ι h)⁻¹ ⬝ x : Mx D V.rank n)) (fun x => by simp only [map_one, inv_one, GlobalTheory.MixModel.mt_one, Matrix.one_mul]) (fun h h' x => by simp only [map_mul, mul_inv_rev, Global …`. Use `⟨om, ?_, fun h g φ _ Φ hφ x => hom h g φ Φ hφ x⟩` and prove the remaining obligations. Introduce and unpack `⟨h, g⟩ φ hφ`.
+
+Establish `h1` using `GlobalTheory.SchwartzCoord.mem_schwartzA_comp_coord D θ hθ V.rank n d ε ⟨φ, hφ⟩`. Take `⟨φ', h2⟩` from `GlobalTheory.SchwartzCoord.exists_schA_comp_coord_eq D θ hθ V.rank n d ε _ ((key (ι h)⁻¹).1 _ (ω (κ g) ⟨_, h1⟩).2)`. Establish `h3 : om (h, g) φ = φ'.1`. Use function extensionality and compare the values at `y`. Take `⟨x, rfl⟩` from `(coord_bijective (m := V.rank) (n := n) ε).2 y`.
+
+Conclude with `(hom h g φ ⟨_, h1⟩ rfl x).trans (congrFun h2 x).symm`. Rewrite using `[h3]`. Conclude with `φ'.2`.
+-/
 theorem exists_isTrans : ∀ (D : D7) (n : ℕ) (V : HSp D) (ψ : AddChar (AF D.host.F) ℂ) (χ : (AE D)ˣ →* Circle) (θ : InfFam D), IsInfFam θ → ∀ (μ : Measure (Mx D V.rank n)) (𝓕 : Set (Mx D V.rank n)), IsCovolOne (ratMx D V.rank n) μ 𝓕 → ∀ ω : GlobalTheory.StdUnn.G D n →* Module.End ℂ (schwartzA θ V.rank n), GlobalTheory.StdUnn.IsWeilSch ψ χ θ V μ ω → ∀ (J₂ : Matrix (Fin (n + n)) (Fin (n + n)) D.host.E) (d : ℕ) (ε : Module.Basis (Fin d) D.host.F D.host.E) (ι : UD D (-V.gram) ≃ₜ* GA D V) (κ : UD D J₂ ≃* GlobalTheory.StdUnn.G D n), ∃ om, IsTrans ε ι κ ω om := by
   intro D n V ψ χ θ hθ μ 𝓕 hμ ω hω J₂ d ε ι κ
   have key := GlobalTheory.WeilSchComm.subst_mem_and_comm D n V ψ χ θ hθ μ 𝓕 hμ ω hω

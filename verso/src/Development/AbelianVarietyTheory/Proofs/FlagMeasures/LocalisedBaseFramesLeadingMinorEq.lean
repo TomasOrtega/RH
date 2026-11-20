@@ -8,6 +8,25 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 namespace GlobalTheory.LocMinor
 
+/- English proof (translation)
+Introduce `D Z p T T' F F' Tn T'n P hP l`. Take `⟨hA, hB, -, -⟩` from `hP`. Establish `hent : ∀ a b, (locH Z p).Zhat P.A.f P.B.f a b = (Z.M p).L.cj (frFac Z.δ p a) * (frFac Z.δ p b * (D.s.atP p).ιE (Formalism.MainNotions.S.Zhat F.fl F'.fl a b))`. Introduce `a b`. Rewrite using `[hA, hB]`.
+
+Use `show LocFacts₂ Z.M p (frFac Z.δ p b • baseChange₂ D p (frame F' b)) (frFac Z.δ p a • baseChange₂ D p (frame F a)) = _`. Rewrite using `[Formalism.L2.SG.Pf.LocFacts.localForm_smul_left₂, Formalism.L2.SG.Pf.LocFacts.localForm_smul_right, baseChangeAt_form Z.M p (Z.hcj p)]`. Simplify using `only [Formalism.MainNotions.S.Zhat, frame]`. Expand and normalize the polynomial expressions, which then agree. Use `show (locH Z p).Dl P.A.f P.B.f l = _`.
+
+Unfold `Loc.HermSp.Dl Formalism.MainNotions.S.Dl Formalism.MainNotions.S.leadMinorE`. Use `split_ifs with hl`. Rewrite using `[RingHom.map_det]`. Establish `hM : ((locH Z p).Zhat P.A.f P.B.f).submatrix (Fin.castLE hl) (Fin.castLE hl) = Matrix.of fun i j => (Z.M p).L.cj (frFac Z.δ p (Fin.castLE hl i)) * (frFac Z.δ p (Fin.castLE hl j) * (((Formalism.MainNotions.S.Zhat F.fl F'.fl).submatrix (Fin.castLE hl) (Fin.castLE hl)).map (D.s.atP …`. Use extensionality with `i j`.
+
+Simplify using `only [Matrix.submatrix_apply, Matrix.of_apply, Matrix.map_apply, hent]`. Establish `e1` using `Matrix.det_mul_column (fun i : Fin l => (Z.M p).L.cj (frFac Z.δ p (Fin.castLE hl i))) (Matrix.of fun i j => frFac Z.δ p (Fin.castLE hl j) * (((Formalism.MainNotions.S.Zhat F.fl F'.fl).submatrix (Fin.castLE hl) (Fin.castLE hl)).map (D.s.atP p).ιE) i j)`. Establish `e2` using `Matrix.det_mul_row (fun j : Fin l => frFac Z.δ p (Fin.castLE hl j)) (((Formalism.MainNotions.S.Zhat F.fl F'.fl).submatrix (Fin.castLE hl) (Fin.castLE hl)).map (D.s.atP p).ιE)`. Simplify using `only [Matrix.of_apply] at e1`. Rewrite using `[RingHom.mapMatrix_apply, hM, e1, e2, ← mul_assoc, ← Finset.prod_mul_distrib]`.
+
+Use `congr 1`. Use `set g : ℕ → (D.s.atP p).Ep := fun k => if h : k < D.R.rS + 1 then (Z.M p).L.cj (frFac Z.δ p ⟨k, h⟩) * frFac Z.δ p ⟨k, h⟩ else 1 with hg`. Establish `h1 : (∏ a : Fin (D.R.rS + 1), if a.val < l then (Z.M p).L.cj (frFac Z.δ p a) * frFac Z.δ p a else 1) = ∏ k ∈ Finset.range (D.R.rS + 1), if k < l then g k else 1`. Rewrite using `[← Fin.prod_univ_eq_prod_range (fun k => if k < l then g k else 1)]`. Use `Finset.prod_congr rfl fun a _ => ?_` and prove the remaining obligations.
+
+Use `show _ = (if a.val < l then g a.val else 1)`. Rewrite using `[hg]`. Simplify using `only`. Rewrite using `[dif_pos a.isLt]`. Establish `h2 : (∏ i : Fin l, (Z.M p).L.cj (frFac Z.δ p (Fin.castLE hl i)) * frFac Z.δ p (Fin.castLE hl i)) = ∏ k ∈ Finset.range l, g k`.
+
+Rewrite using `[← Fin.prod_univ_eq_prod_range g]`. Use `Finset.prod_congr rfl fun i _ => ?_` and prove the remaining obligations. Establish `: i.val < D.R.rS + 1` using `lt_of_lt_of_le i.isLt hl`. Use `show _ = g i.val`. Rewrite using `[hg]`.
+
+Simplify using `only`. Rewrite using `[dif_pos this]`. Both sides reduce to the same expression. Rewrite using `[h1, h2, ← Finset.prod_filter]`. Use `congr 1`.
+
+Use extensionality with `k`. Simplify using `only [Finset.mem_filter, Finset.mem_range]`. Use linear arithmetic over natural numbers and integers. Simplify using the standard rewrite rules.
+-/
 theorem leadMinor_atBase : ∀ (D : D7) (Z : LocDat D) (p : PlF D) {T T' : D.host.E} (F : LFlag (VS D) D.R.rS T)
     (F' : LFlag (VS D) D.R.rS T') (Tn T'n : ℕ) (P : Formalism.MainNotions.S.LocNG.FPair (locH Z p) D.R.rS),
     AtBase Z p F F' Tn T'n P → ∀ l : ℕ, P.Dm l =

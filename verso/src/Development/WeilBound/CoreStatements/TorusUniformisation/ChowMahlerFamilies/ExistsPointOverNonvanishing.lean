@@ -6,6 +6,9 @@ open MvPolynomial NumberField ReciprocityTheory.ChartRestriction.G.Geo Reciproci
 
 namespace PositivityTheory.Xgn.PointOverExistence
 
+/- English proof (translation)
+Take `⟨m, hm⟩` from `Ideal.exists_maximal R`. Use `letI : Field (R ⧸ m) := Ideal.Quotient.field m`. Use `haveI : Module.Finite F (R ⧸ m) := finite_of_finite_type_of_isJacobsonRing F (R ⧸ m)`. Conclude with `⟨(IsAlgClosed.lift : (R ⧸ m) →ₐ[F] ℂ).comp (Ideal.Quotient.mkₐ F m)⟩`.
+-/
 theorem exists_algHom (F R : Type) [Field F] [CommRing R] [Nontrivial R] [Algebra F R]
     [Algebra.FiniteType F R] [Algebra F ℂ] : Nonempty (R →ₐ[F] ℂ) := by
   obtain ⟨m, hm⟩ := Ideal.exists_maximal R
@@ -15,6 +18,11 @@ theorem exists_algHom (F R : Type) [Field F] [CommRing R] [Nontrivial R] [Algebr
 
 variable {K : Type} [Fintype K] {ι : K → Type} [∀ k, Fintype (ι k)]
 
+/- English proof (translation)
+Rewrite using `[aeval_def, aeval_def, eval₂_eq', eval₂_eq', Finset.mul_sum]`. Use `Finset.sum_congr rfl fun m hm => ?_` and prove the remaining obligations. Establish `h : ∏ p : Σ k, ι k, t p.1 ^ m p = ∏ k, t k ^ d k`. Rewrite using `[Fintype.prod_sigma]`. Use `Finset.prod_congr rfl fun k _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[← hg m hm k]`. Conclude with `Finset.prod_pow_eq_pow_sum Finset.univ (fun i => m ⟨k, i⟩) (t k)`. Simplify using `only [mul_pow, Finset.prod_mul_distrib, h]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem scale {S : Type} [CommRing S] (t : K → S) (u : (Σ k, ι k) → S) {g : MRing ι} {d : K → ℕ}
     (hg : IsMultiHomog g d) :
     aeval (fun p : Σ k, ι k => t p.1 * u p) g = (∏ k, t k ^ d k) * aeval u g := by
@@ -29,6 +37,9 @@ theorem scale {S : Type} [CommRing S] (t : K → S) (u : (Σ k, ι k) → S) {g 
   simp only [mul_pow, Finset.prod_mul_distrib, h]
   ring
 
+/- English proof (translation)
+Proceed by induction on `g using MvPolynomial.induction_on with`. Consider the case `C a => simp`. Consider the case `add p q hp hq => simp only [map_add, hp, hq]`. Consider the case `mul_X p i hp => simp only [map_mul, hp, aeval_X]`.
+-/
 theorem map_aeval' {S T : Type} [CommRing S] [CommRing T] (j : S →+* T) (u : (Σ k, ι k) → S)
     (g : MRing ι) : j (aeval u g) = aeval (fun p => j (u p)) g := by
   induction g using MvPolynomial.induction_on with
@@ -36,6 +47,11 @@ theorem map_aeval' {S T : Type} [CommRing S] [CommRing T] (j : S →+* T) (u : (
   | add p q hp hq => simp only [map_add, hp, hq]
   | mul_X p i hp => simp only [map_mul, hp, aeval_X]
 
+/- English proof (translation)
+Proceed by induction on `g using MvPolynomial.induction_on with`. Consider the case `C a => simp [evC]`. Consider the case `add p q hp hq => simp only [evC, map_add] at *`. Rewrite using `[hp, hq]`. Consider the case `mul_X p i hp => simp only [evC, map_mul, map_X, eval_X, aeval_X] at *`.
+
+Rewrite using `[hp]`.
+-/
 theorem evC_eq (z : (Σ k, ι k) → ℂ) (g : MRing ι) : evC z g = aeval z g := by
   induction g using MvPolynomial.induction_on with
   | C a => simp [evC]
@@ -44,6 +60,9 @@ theorem evC_eq (z : (Σ k, ι k) → ℂ) (g : MRing ι) : evC z g = aeval z g :
 
 variable {Ω : Type} [Field Ω]
 
+/- English proof (translation)
+Proceed by induction on `g using MvPolynomial.induction_on with`. Consider the case `C a => simp only [eq_intCast, map_intCast]`. Consider the case `add p q hp hq => simp only [map_add, hp, hq]`. Consider the case `mul_X p i hp => rw [map_mul, map_mul, hp, aeval_X, mConeMap, aeval_X, mul_comm (C _)]`.
+-/
 theorem cone_eq (y : (Σ k, ι k) → Ω) (g : MRing ι) : mConeMap y g =
     @aeval ℤ (MvPolynomial K Ω) _ _ _ (Ring.toIntAlgebra _) (fun p : Σ k, ι k => X p.1 * C (y p)) g := by
   induction g using MvPolynomial.induction_on with
@@ -51,6 +70,11 @@ theorem cone_eq (y : (Σ k, ι k) → Ω) (g : MRing ι) : mConeMap y g =
   | add p q hp hq => simp only [map_add, hp, hq]
   | mul_X p i hp => rw [map_mul, map_mul, hp, aeval_X, mConeMap, aeval_X, mul_comm (C _)]
 
+/- English proof (translation)
+Introduce `h0`. Apply `hn` to reduce the goal to its premises. Establish `h` using `scale (S := MvPolynomial K Ω) (fun k => X k) (fun p => C (y p)) hg`. Rewrite `h` using `[← map_aeval' (C : Ω →+* MvPolynomial K Ω) y g, h0, map_zero, mul_zero]`. Use `show mConeMap y g = 0`.
+
+Rewrite using `[cone_eq, h]`.
+-/
 theorem aeval_ne_zero {y : (Σ k, ι k) → Ω} {g : MRing ι} {d : K → ℕ} (hg : IsMultiHomog g d)
     (hn : g ∉ mCoordIdeal y) : aeval y g ≠ 0 := by
   intro h0
@@ -60,6 +84,9 @@ theorem aeval_ne_zero {y : (Σ k, ι k) → Ω} {g : MRing ι} {d : K → ℕ} (
   show mConeMap y g = 0
   rw [cone_eq, h]
 
+/- English proof (translation)
+Establish `h0 : mConeMap y f = 0` using `hf`. Establish `h` using `map_aeval' (eval t : MvPolynomial K Ω →+* Ω) (fun p : Σ k, ι k => X p.1 * C (y p)) f`. Rewrite `h` using `[← cone_eq, h0, map_zero]`. Rewrite using `[h]`. Simplify using `only [map_mul, eval_C, eval_X]`.
+-/
 theorem aeval_eq_zero {y : (Σ k, ι k) → Ω} (t : K → Ω) {f : MRing ι} (hf : f ∈ mCoordIdeal y) :
     aeval (fun p : Σ k, ι k => t p.1 * y p) f = 0 := by
   have h0 : mConeMap y f = 0 := hf
@@ -72,6 +99,23 @@ theorem aeval_eq_zero {y : (Σ k, ι k) → Ω} (t : K → Ω) {f : MRing ι} (h
 end PositivityTheory.Xgn.PointOverExistence
 
 open PositivityTheory.Xgn.PointOverExistence in
+/- English proof (translation)
+Introduce `K _ ι _ Ω _ F _ _ y φ σ g d hO hg hn`. Use `choose c hc using hO.1`. Use `letI : Algebra F Ω := φ.toAlgebra`. Use `letI : Algebra F ℂ := σ.toAlgebra`. Set `t : K → Ω` to `fun k => (y ⟨k, c k⟩)⁻¹`.
+
+Set `w : (Σ k, ι k) → Ω` to `fun p => t p.1 * y p`. Establish `hγ : aeval w g ≠ 0`. Rewrite using `[scale t y hg]`. Conclude with `mul_ne_zero (Finset.prod_ne_zero_iff.mpr fun k _ => pow_ne_zero _ (inv_ne_zero (hc k))) (aeval_ne_zero hg hn)`. Set `A : Subalgebra F Ω` to `Algebra.adjoin F (insert (aeval w g)⁻¹ (Set.range w))`.
+
+Use `haveI : Algebra.FiniteType F A := Algebra.FiniteType.adjoin_of_finite ((Set.finite_range w).insert _)`. Take `⟨ψ⟩` from `exists_algHom F A`. Set `wA : (Σ k, ι k) → A` to `fun p => ⟨w p, Algebra.subset_adjoin (Or.inr ⟨p, rfl⟩)⟩`. Set `δ : A` to `⟨(aeval w g)⁻¹, Algebra.subset_adjoin (Or.inl rfl)⟩`. Establish `hco : ∀ f : MRing ι, ((aeval wA f : A) : Ω) = aeval w f` using `fun f => map_aeval' (A.val : A →+* Ω) wA f`.
+
+Establish `hev : ∀ f : MRing ι, evC (fun p => ψ (wA p)) f = ψ (aeval wA f)` using `fun f => by`. Rewrite using `[evC_eq]`. Conclude with `(map_aeval' (ψ : A →+* ℂ) wA f).symm`. Use `⟨fun p => ψ (wA p), ⟨⟨fun k => ⟨c k, ?_⟩, fun f hf => ?_⟩, fun a e f h hf hh H => ?_⟩, ?_⟩` and prove the remaining obligations. Establish `: wA ⟨k, c k⟩ = 1` using `Subtype.ext (inv_mul_cancel₀ (hc k))`.
+
+Simplify using `only [this, map_one]`. Conclude with `one_ne_zero`. Establish `: aeval wA f = 0` using `Subtype.ext ((hco f).trans (aeval_eq_zero t hf))`. Conclude with `(hev f).trans (by rw [this, map_zero])`. Establish `: aeval wA f = algebraMap F A a * aeval wA h`.
+
+Apply `Subtype.ext` to reduce the goal to its premises. Rewrite using `[MulMemClass.coe_mul, hco, hco, scale t y hf, scale t y hh, H]`. Use `show _ = φ a * _`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hev, hev, this, map_mul, ψ.commutes]`.
+
+Both sides reduce to the same expression. Establish `: aeval wA g * δ = 1`. Apply `Subtype.ext` to reduce the goal to its premises. Rewrite using `[MulMemClass.coe_mul, hco]`. Conclude with `mul_inv_cancel₀ hγ`.
+
+Rewrite using `[hev]`. Conclude with `left_ne_zero_of_mul_eq_one (b := ψ δ) (by rw [← map_mul, this, map_one])`.
+-/
 theorem PositivityTheory.Xgn.exists_point_over_nonvanishing : ∀ (K : Type) [Fintype K] (ι : K → Type) [∀ k, Fintype (ι k)] (Ω : Type) [Field Ω] (F : Type) [Field F] [NumberField F] (y : (Σ k, ι k) → Ω) (φ : F →+* Ω) (σ : F →+* ℂ) (g : MRing ι) (d : K → ℕ), OverInt y φ → IsMultiHomog g d → g ∉ mCoordIdeal y → ∃ z, PtOver y φ σ z ∧ evC z g ≠ 0 := by
   intro K _ ι _ Ω _ F _ _ y φ σ g d hO hg hn
   choose c hc using hO.1

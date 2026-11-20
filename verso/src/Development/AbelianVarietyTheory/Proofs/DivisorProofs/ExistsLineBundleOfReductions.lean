@@ -13,6 +13,21 @@ namespace GlobalTheory.LBAlgComplete
 
 open GlobalTheory.CechPic GlobalTheory.ZV
 
+/- English proof (translation)
+Introduce `hP R _ _ I hI X hX Y β b hb hc N hN hv`. Establish `hpr : IsProper X.hom` using `isProper_of_isProjBy R _ _ hX`. Take `⟨H, hH, m, σ, hσ⟩` from `hX`. Establish `hA : IsAmpleLB H` using `isAmpleLB_of_veryAmpleBy hσ`. Establish `hY : ∀ e, IsProper (Y e).hom` using `fun e => MorphismProperty.of_isPullback (P := @IsProper) (hb e) hpr`.
+
+Establish `hβ : ∀ e, IsPullback (β e) (Y e).hom (Y (e + 1)).hom (thickTrans R I e)` using `fun e => by`. Use `IsPullback.of_right (h₁₂ := b (e + 1)) (h₂₂ := thick R I (e + 1)) (v₁₃ := X.hom) ?_ ?_ (hb (e + 1))` and prove the remaining obligations. Rewrite using `[hc, thickTrans_comp]`. Conclude with `hb e`. Establish `: Mono (thick R I (e + 1))`.
+
+Establish `: IsClosedImmersion (thick R I (e + 1))` using `IsClosedImmersion.spec_of_surjective _ Ideal.Quotient.mk_surjective`. Use `infer_instance`. Rewrite using `[← cancel_mono (thick R I (e + 1)), Category.assoc, Category.assoc, thickTrans_comp, ← (hb (e + 1)).w, ← Category.assoc, hc, (hb e).w]`. Establish `hL : ∀ e, (H.pull (b e)).IsLB` using `fun e => LB.isLB_pull hH _`. Establish `hA₀ : IsAmpleLB (H.pull (b 0))`.
+
+Establish `: IsClosedImmersion (thick R I 0)` using `IsClosedImmersion.spec_of_surjective _ Ideal.Quotient.mk_surjective`. Establish `: IsClosedImmersion (b 0)` using `MorphismProperty.of_isPullback (P := @IsClosedImmersion) (hb 0).flip this`. Conclude with `hA.pull_of_isClosedImmersion _`. Use `hY 0` as an intermediate fact. Take `⟨t, ht⟩` from `(AmpleDominates.eventually_isAmpleLB (Y 0).hom hA₀ (hN 0)).exists`.
+
+Establish `hT : ∀ e, (LB.div (lbPow (H.pull (b e)) t) (N e)).IsLB` using `fun e => LB.isLB_div (isLB_lbPow (hL e) t) (hN e)`. Establish `eT : ∀ e, cls _ (hT e) = t • CechPic.pull (b e) (cls H hH) - cls _ (hN e)` using `fun e => by`. Rewrite using `[cls_div (isLB_lbPow (hL e) t) (hN e), cls_lbPow (hL e), cls_pull hH]`. Take `⟨X', M, b', hX', hM, -, hb', hc', hM'⟩` from `hP.2 R I hI Y β hβ hY (fun e => LB.div (lbPow (H.pull (b e)) t) (N e)) hT (fun e => (cls_eq_iff (hT e) (LB.isLB_pull (hT (e + 1)) _)).1 (by`. Rewrite using `[cls_pull (hT (e + 1)), eT, eT, (cls_eq_iff (hN e) (LB.isLB_pull (hN (e + 1)) _)).2 (hv e), cls_pull (hN (e + 1)), map_sub, map_nsmul, ← CechPic.pull_comp, hc]))`.
+
+Use the proof step `((relAmple_iff_isAmpleLB_of_isAffine (Y 0) (hT 0)).2 ht)`. Take `⟨g, hg, -⟩` from `hP.1.exists_iso hI hb hc hb' hc'`. Establish `hMg : (M.pull g.hom.left).IsLB` using `LB.isLB_pull hM _`. Establish `hF : (LB.div (lbPow H t) (M.pull g.hom.left)).IsLB` using `LB.isLB_div (isLB_lbPow hH t) hMg`. Use `⟨_, hF, fun e => (cls_eq_iff (hN e) (LB.isLB_pull hF _)).1 ?_⟩` and prove the remaining obligations.
+
+Establish `e₁` using `(cls_eq_iff (hT e) (LB.isLB_pull hM _)).2 (hM' e)`. Rewrite `e₁` using `[eT, cls_pull hM]`. Rewrite using `[cls_pull hF, cls_div (isLB_lbPow hH t) hMg, cls_lbPow hH, cls_pull hM, map_sub, map_nsmul, ← CechPic.pull_comp, hg, ← e₁, sub_sub_cancel]`.
+-/
 theorem exists_lineBundle_of_reductions : GlobalTheory.Published.FormalAlgebraisation → ∀ (R : Type) [CommRing R] [IsNoetherianRing R] (I : Ideal R), IsAdicComplete I R → ∀ (X : Over (Spec (CommRingCat.of R))), IsProjBy X.hom → ∀ (Y : ∀ e : ℕ, Over (Spec (CommRingCat.of (R ⧸ I ^ (e + 1))))) (β : ∀ e, (Y e).left ⟶ (Y (e + 1)).left) (b : ∀ e, (Y e).left ⟶ X.left), (∀ e, IsPullback (b e) (Y e).hom X.hom (thick R I e)) → (∀ e, β e ≫ b (e + 1) = b e) → ∀ N : ∀ e, LB (Y e).left, (∀ e, (N e).IsLB) → (∀ e, LBIso (N e) ((N (e + 1)).pull (β e))) → ∃ M : LB X.left, M.IsLB ∧ ∀ e, LBIso (N e) (M.pull (b e)) := by
   intro hP R _ _ I hI X hX Y β b hb hc N hN hv
   have hpr : IsProper X.hom := isProper_of_isProjBy R _ _ hX

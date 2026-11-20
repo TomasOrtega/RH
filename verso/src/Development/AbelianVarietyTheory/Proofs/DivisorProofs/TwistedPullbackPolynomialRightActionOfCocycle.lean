@@ -12,6 +12,15 @@ namespace GlobalTheory.CuspEmb
 
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {r : ℕ} {U C : Type} [Group U] [MulAction U C]
 
+/- English proof (translation)
+Apply `Subtype.ext` to reduce the goal to its premises. Use function extensionality and compare the values at `c x`. Use `show f.1 (u • v • c) ⟨lact (M.tr u (v • c)) (lact (M.tr v c) x.1), _⟩ = f.1 ((u * v) • c) ⟨lact (M.tr (u * v) c) x.1, _⟩`. Rewrite using `[show u • v • c = (u * v) • c from (mul_smul u v c).symm]`. Establish `hγ` using `M.tr_mul u v c`.
+
+Establish `hy : lact (M.tr u (v • c) * M.tr v c) x.1 ∈ M.dom`. Rewrite using `[ReciprocityTheory.ChartRestriction.G.AR.Up.FundSetPf.lact_mul]`. Conclude with `lact_tr_mem M u _ (lact_tr_mem M v c x.2)`. Establish `e : lact (M.tr (u * v) c * (M.tr u (v • c) * M.tr v c)⁻¹) (lact (M.tr u (v • c) * M.tr v c) x.1) = lact (M.tr (u * v) c) x.1`. Rewrite using `[← ReciprocityTheory.ChartRestriction.G.AR.Up.FundSetPf.lact_mul, inv_mul_cancel_right]`.
+
+Establish `hz : lact (M.tr (u * v) c * (M.tr u (v • c) * M.tr v c)⁻¹) (⟨lact (M.tr u (v • c) * M.tr v c) x.1, hy⟩ : M.dom).1 ∈ M.dom` using `by show lact _ (lact _ x.1) ∈ M.dom`. Rewrite using `[e]`. Conclude with `lact_tr_mem M (u * v) c x.2`. Establish `key` using `f.2.2 ((u * v) • c) _ hγ ⟨lact (M.tr u (v • c) * M.tr v c) x.1, hy⟩ hz`. Rewrite using `[show (⟨lact (M.tr (u * v) c) x.1, lact_tr_mem M (u * v) c x.2⟩ : M.dom) = ⟨lact (M.tr (u * v) c * (M.tr u (v • c) * M.tr v c)⁻¹) (lact (M.tr u (v • c) * M.tr v c) x.1), hz⟩ from Subtype.ext e.symm, key]`.
+
+Conclude with `congrArg (f.1 _) (Subtype.ext (ReciprocityTheory.ChartRestriction.G.AR.Up.FundSetPf.lact_mul _ _ _).symm)`.
+-/
 theorem pbA_comp (M : TwoLevels E r U C) (u v : U) (f : HA M) :
     pbA M v (pbA M u f) = pbA M (u * v) f := by
   apply Subtype.ext
@@ -36,6 +45,13 @@ theorem pbA_comp (M : TwoLevels E r U C) (u v : U) (f : HA M) :
       from Subtype.ext e.symm, key]
   exact congrArg (f.1 _) (Subtype.ext (ReciprocityTheory.ChartRestriction.G.AR.Up.FundSetPf.lact_mul _ _ _).symm)
 
+/- English proof (translation)
+Apply `Subtype.ext` to reduce the goal to its premises. Use function extensionality and compare the values at `c x`. Use `show f.1 ((1 : U) • c) ⟨lact (M.tr 1 c) x.1, _⟩ = f.1 c x`. Establish `hγ` using `M.tr_mul 1 1 c`. Simplify using `only [mul_one, one_smul] at hγ`.
+
+Rewrite `hγ` using `[mul_inv_rev, mul_inv_cancel_left]`. Establish `hz : lact (M.tr 1 c)⁻¹ (lact (M.tr 1 c) x.1) ∈ M.dom`. Rewrite using `[← ReciprocityTheory.ChartRestriction.G.AR.Up.FundSetPf.lact_mul, inv_mul_cancel, ReciprocityTheory.ChartRestriction.G.AR.Up.FundSetPf.lact_one]`. Conclude with `x.2`. Establish `key` using `f.2.2 c _ hγ ⟨lact (M.tr 1 c) x.1, lact_tr_mem M 1 c x.2⟩ hz`.
+
+Simplify using `only [one_smul]`. Rewrite using `[← key]`. Use `congrArg (f.1 c) (Subtype.ext ?_)` and prove the remaining obligations. Use `show lact (M.tr 1 c)⁻¹ (lact (M.tr 1 c) x.1) = x.1`. Rewrite using `[← ReciprocityTheory.ChartRestriction.G.AR.Up.FundSetPf.lact_mul, inv_mul_cancel, ReciprocityTheory.ChartRestriction.G.AR.Up.FundSetPf.lact_one]`.
+-/
 theorem pbA_one (M : TwoLevels E r U C) (f : HA M) : pbA M 1 f = f := by
   apply Subtype.ext
   funext c x
@@ -53,6 +69,19 @@ theorem pbA_one (M : TwoLevels E r U C) (f : HA M) : pbA M 1 f = f := by
   show lact (M.tr 1 c)⁻¹ (lact (M.tr 1 c) x.1) = x.1
   rw [← ReciprocityTheory.ChartRestriction.G.AR.Up.FundSetPf.lact_mul, inv_mul_cancel, ReciprocityTheory.ChartRestriction.G.AR.Up.FundSetPf.lact_one]
 
+/- English proof (translation)
+Use `⟨?_, fun u v => ?_⟩` and prove the remaining obligations. Apply `AlgHom.coe_ringHom_injective` to reduce the goal to its premises. Apply `Polynomial.ringHom_ext` to reduce the goal to its premises. Introduce `f show tw M _ 1 (Polynomial.C f) = Polynomial.C f`. Rewrite using `[tw_C, pbA_one]`.
+
+Use `show tw M _ 1 Polynomial.X = Polynomial.X`. Rewrite using `[tw_X]`. Establish `h1 : cst M (fun c => (a 1 c : ℂ)) = 1`. Apply `Subtype.ext` to reduce the goal to its premises. Use function extensionality and compare the values at `c x`.
+
+Use `show (a 1 c : ℂ) = 1`. Establish `h` using `ha 1 1 c`. Rewrite `h` using `[one_mul, one_smul]`. Establish `h' : a 1 c = 1`. Use `congrArg (fun t => (a 1 c)⁻¹ * t) h` as an intermediate fact.
+
+Simplify using `using this.symm`. Rewrite using `[h', Units.val_one]`. Rewrite using `[h1, map_one, one_mul]`. Apply `AlgHom.coe_ringHom_injective` to reduce the goal to its premises. Apply `Polynomial.ringHom_ext` to reduce the goal to its premises.
+
+Introduce `f show tw M _ v (tw M _ u (Polynomial.C f)) = tw M _ (u * v) (Polynomial.C f)`. Rewrite using `[tw_C, tw_C, tw_C, pbA_comp]`. Use `show tw M _ v (tw M _ u Polynomial.X) = tw M _ (u * v) Polynomial.X`. Rewrite using `[tw_X, map_mul, tw_C, tw_X, tw_X, ← mul_assoc, ← Polynomial.C_mul]`. Use `congr 2`.
+
+Apply `Subtype.ext` to reduce the goal to its premises. Use function extensionality and compare the values at `c x`. Use `show (a u (v • c) : ℂ) * (a v c : ℂ) = (a (u * v) c : ℂ)`. Rewrite using `[ha v u c, Units.val_mul, mul_comm]`.
+-/
 theorem tw_law (E : Type) [Field E] [NumberField E] [IsCMField E] (r : ℕ) (U C : Type) [Group U] [MulAction U C]
     (M : TwoLevels E r U C) (a : U → C → ℂˣ) (ha : ∀ (g h : U) (c : C), a (h * g) c = a g c * a h (g • c)) :
     tw M (fun c => (a 1 c : ℂ)) 1 = AlgHom.id ℂ _ ∧

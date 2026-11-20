@@ -24,6 +24,11 @@ def cubeB (e : κ → P) (M : P → ModuleCat.{0} R) (b : P) : Cube.{0} κ R :=
   Cube.mk (fun s ↦ ModuleCat.of R (BV e M b s)) (fun h ↦ bRes e M b h) (fun _ _ ↦ rfl)
     (fun _ _ _ ↦ rfl)
 
+/- English proof (translation)
+Establish `key : ∀ hs : PLift (∀ j ∈ s, b ≤ e j), ∀ j ∈ insert i s, b ≤ e j` using `fun hs j hj ↦ by`. Break down `Finset.mem_insert.1 hj with rfl | hj` into its components or cases. Conclude with `hi.ge`. Conclude with `hs.down j hj`. Prove the components needed by the constructor for the conclusion.
+
+Introduce `x y h`. Conclude with `funext fun hs ↦ congrFun h ⟨key hs⟩`. Introduce `y`. Conclude with `⟨fun hs ↦ (show BV e M b (insert i s) from y) ⟨key hs⟩, rfl⟩`.
+-/
 theorem cubeB_bijective [DecidableEq κ] (e : κ → P) (M : P → ModuleCat.{0} R) {b : P} {i : κ} (hi : e i = b)
     (s : Finset κ) (_his : i ∉ s) :
     Function.Bijective (Cube.res (cubeB e M b) (Finset.subset_insert i s)) := by
@@ -53,12 +58,18 @@ def prj (e : κ → P) (M : P → ModuleCat.{0} R) (b : P) (s : Finset κ) :
     · simp only [dif_pos hs]; rfl
     · simp only [dif_neg hs]; show (0 : M b) = r • (0 : M b); exact (smul_zero r).symm
 
+/- English proof (translation)
+The claim follows from `dif_pos hs`.
+-/
 theorem prj_apply (e : κ → P) (M : P → ModuleCat.{0} R) (b : P) {s : Finset κ} (hs : s.Nonempty)
     (x : (cubeOf e (coind M)).obj s) (h : PLift (∀ j ∈ s, b ≤ e j)) :
     (show BV e M b s from prj e M b s x) h =
       (show AV e M s from x) ⟨hs⟩ ⟨b, Finset.le_inf' hs e h.down⟩ :=
   dif_pos hs
 
+/- English proof (translation)
+The claim follows from `funext fun _ ↦ dif_neg hs`.
+-/
 theorem prj_empty (e : κ → P) (M : P → ModuleCat.{0} R) (b : P) {s : Finset κ} (hs : ¬ s.Nonempty)
     (x : (cubeOf e (coind M)).obj s) : prj e M b s x = 0 :=
   funext fun _ ↦ dif_neg hs
@@ -80,6 +91,9 @@ def prjHom (e : κ → P) (M : P → ModuleCat.{0} R) (b : P) : cubeOf e (coind 
         exact congrFun this _
       · exact prj_empty e M b ht _
 
+/- English proof (translation)
+Use function extensionality and compare the values at `s`. Use `funext fun hs ↦ funext fun b ↦ ?_` and prove the remaining obligations. Establish `hle : ∀ j ∈ s.1, b.1 ≤ e j` using `fun j hj ↦ b.2.trans (Finset.inf'_le e hj)`. Establish `h1` using `congrFun (congrFun (h b.1) s) ⟨hle⟩`. Conclude with `(prj_apply e M b.1 hs.down (u s) ⟨hle⟩).symm.trans (h1.trans (prj_apply e M b.1 hs.down (v s) ⟨hle⟩))`.
+-/
 theorem term_ext (e : κ → P) (M : P → ModuleCat.{0} R) {q : ℕ}
     (u v : Cube.Term (cubeOf e (coind M)) (q + 1))
     (h : ∀ b, Cube.termMap (prjHom e M b) (q + 1) u = Cube.termMap (prjHom e M b) (q + 1) v) :
@@ -95,6 +109,9 @@ def asm (e : κ → P) (M : P → ModuleCat.{0} R) {q : ℕ} (y : ∀ b, Cube.Te
   fun s ↦ (show AV e M s.1 from fun _ b ↦
     (show BV e M b.1 s.1 from y b.1 s) ⟨fun _ hj ↦ b.2.trans (Finset.inf'_le e hj)⟩)
 
+/- English proof (translation)
+Use function extensionality and compare the values at `s`. Use `funext fun h ↦ ?_` and prove the remaining obligations. Establish `hs : s.1.Nonempty` using `Finset.card_pos.1 (by have := s.2; omega)`. Conclude with `prj_apply e M b hs (asm e M y s) h`.
+-/
 theorem termMap_asm (e : κ → P) (M : P → ModuleCat.{0} R) {q : ℕ}
     (y : ∀ b, Cube.Term (cubeB e M b) (q + 1)) (b : P) :
     Cube.termMap (prjHom e M b) (q + 1) (asm e M y) = y b := by
@@ -105,6 +122,11 @@ theorem termMap_asm (e : κ → P) (M : P → ModuleCat.{0} R) {q : ℕ}
 
 variable [LinearOrder κ]
 
+/- English proof (translation)
+Introduce `x`. Use `⟨fun hx ↦ ?_, by rintro ⟨y, rfl⟩; exact Cube.d_d _ _ y⟩` and prove the remaining obligations. Establish `hb : ∀ b, ∃ y : Cube.Term (cubeB e M b) (p + 1), Cube.d (cubeB e M b) (p + 1) y = Cube.termMap (prjHom e M b) (p + 2) x`. Introduce `b`. Take `⟨i, hi⟩` from `he b`.
+
+Use `(Cube.exact_d_of_bijective (cubeB e M b) i (cubeB_bijective e M hi) (p + 1) _).1 ?_` and prove the remaining obligations. Rewrite using `[← Cube.termMap_d, hx, map_zero]`. Use `choose y hy using hb`. Use `⟨asm e M y, term_ext e M _ _ fun b ↦ ?_⟩` and prove the remaining obligations. Rewrite using `[Cube.termMap_d, termMap_asm, hy]`.
+-/
 theorem exact_d (e : κ → P) (he : Function.Surjective e) (M : P → ModuleCat.{0} R) (p : ℕ) :
     Function.Exact (Cube.d (cubeOf e (coind M)) (p + 1)) (Cube.d (cubeOf e (coind M)) (p + 2)) := by
   intro x
@@ -119,11 +141,17 @@ theorem exact_d (e : κ → P) (he : Function.Surjective e) (M : P → ModuleCat
   refine ⟨asm e M y, term_ext e M _ _ fun b ↦ ?_⟩
   rw [Cube.termMap_d, termMap_asm, hy]
 
+/- English proof (translation)
+The claim follows from `(HomologicalComplex.exactAt_iff_isZero_homology _ _).1 ((cechComplex_exactAt_succ_iff (cubeOf e (coind M)) n).2 (exact_d e he M n))`.
+-/
 theorem isZero_homology (e : κ → P) (he : Function.Surjective e) (M : P → ModuleCat.{0} R) (n : ℕ) :
     IsZero (((cechOf e).obj (coind M)).homology (n + 1)) :=
   (HomologicalComplex.exactAt_iff_isZero_homology _ _).1
     ((cechComplex_exactAt_succ_iff (cubeOf e (coind M)) n).2 (exact_d e he M n))
 
+/- English proof (translation)
+The claim follows from `fun e he M n ↦ isZero_homology e he M n`.
+-/
 example : ∀ {R : Type} [CommRing R] {P : Type} [SemilatticeInf P] {κ : Type} [LinearOrder κ] (e : κ → P),
     Function.Surjective e → ∀ (M : P → ModuleCat.{0} R) (n : ℕ),
     IsZero (((cechOf e).obj (coind M)).homology (n + 1)) :=

@@ -19,6 +19,9 @@ attribute [local instance] SplitExt.free SplitExt.finite MvPolynomial.gradedAlge
 noncomputable section
 namespace GlobalTheory.ZH.TorsionSection
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨X.residueField w, inferInstance, X.fromSpecResidueField w, Scheme.fromSpecResidueField_apply w _⟩`.
+-/
 theorem exists_field_point {X : Scheme.{0}} (w : X) :
     ∃ (K : Type) (_ : Field K) (y : Sp K ⟶ X), y (IsLocalRing.closedPoint K) = w :=
   ⟨X.residueField w, inferInstance, X.fromSpecResidueField w, Scheme.fromSpecResidueField_apply w _⟩
@@ -27,6 +30,9 @@ def trivSec {X : Scheme.{0}} {W : X.Opens} (f : Γ(X, W)) : LB.Sec (Inh.trivLB W
   f := fun _ => (W.ι.appLE W ⊤ W.ι_preimage_self.ge).hom f
   compat := fun _ _ => (_root_.one_mul _).symm
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨PUnit.unit, 1, GlobalTheory.Points.le_preimage_top y, fun j => (GlobalTheory.Points.valR_appLE y W.ι _ (GlobalTheory.Points.le_preimage_top y) (f j)).symm.trans (_root_.one_mul _).symm⟩`.
+-/
 theorem crd_trivSec {X : Scheme.{0}} {W : X.Opens} {J : Type} (f : J → Γ(X, W)) {R : Type} [CommRing R]
     (y : Sp R ⟶ W.toScheme) :
     Crd (Inh.trivLB W.toScheme) (fun j => trivSec (f j)) y (fun j => valR (y ≫ W.ι) W (f j)) :=
@@ -36,6 +42,9 @@ theorem crd_trivSec {X : Scheme.{0}} {W : X.Opens} {J : Type} (f : J → Γ(X, W
 variable {o Ω : Type} [CommRing o] [Field Ω] [Algebra o Ω] {S : ThetaSys o Ω} {ρ : S.Real} {M : RatModel o Ω}
   {U₀ : M.Z.Opens} {EE : M.Lat S.J}
 
+/- English proof (translation)
+Take `⟨z', ⟨h1, h2⟩, h3⟩` from `nonempty_inter_closedPoints (Z := {z' | S.supI M z ⊆ S.supI M z'} ∩ closure {z}) ⟨z, fun _ h => h, subset_closure rfl⟩ ((OpenPart.isOpen_supI_subset z).isLocallyClosed.inter isClosed_closure.isLocallyClosed)`. Establish `hs : z ⤳ z'` using `specializes_iff_mem_closure.2 h2`. Use `⟨z', h3, hs, congrArg AddSubgroup.closure (Set.Subset.antisymm (fun _ h => ?_) h1)⟩` and prove the remaining obligations. Conclude with `RatModel.Div.of_specializes h hs`.
+-/
 theorem exists_closed (hj : JacobsonSpace M.Z) (z : M.Z) :
     ∃ z' : M.Z, IsClosed ({z'} : Set M.Z) ∧ z ⤳ z' ∧ S.HH M z' = S.HH M z := by
   obtain ⟨z', ⟨h1, h2⟩, h3⟩ := nonempty_inter_closedPoints
@@ -45,6 +54,25 @@ theorem exists_closed (hj : JacobsonSpace M.Z) (z : M.Z) :
   refine ⟨z', h3, hs, congrArg AddSubgroup.closure (Set.Subset.antisymm (fun _ h => ?_) h1)⟩
   exact RatModel.Div.of_specializes h hs
 
+/- English proof (translation)
+Take `⟨x₀, hx₀⟩` from `hB.ov.div z'`. Take `⟨h1, i, h2, h3⟩` from `hB.sec z' x₀ hx₀ a ha`. Take `⟨l, hl⟩` from `TopologicalSpace.Opens.mem_iSup.1 (Q.cover.ge (Set.mem_univ z'))`. Use `set d := (fun j => algebraMap o Ω (S.proj (S.TT M z') 0 j i)) ⬝ᵥ S.ev a with hd`. Set `V : M.Z.Opens` to `⟨(⋂ k, {w | (Q.B l k ⬝ᵥ S.ev a) / S.th x₀ ∈ M.O w}) ∩ {w | S.th x₀ / d ∈ M.O w} ∩ {w | S.supI M z' ⊆ S.supI M w}, ((isOpen_iInter_of_finite fun _ => M.isOpen_setOf_mem_O _).inter (M.isOpen_setOf_mem_O _)).inter (OpenPart.isOpen_supI_subset z')⟩`.
+
+Establish `hz : z' ∈ V ⊓ Q.W l` using `⟨⟨⟨Set.mem_iInter.2 fun k => h1 _ (by`. Rewrite using `[Q.basis l z' hl]`. Conclude with `Submodule.subset_span ⟨k, rfl⟩), h3⟩, fun _ h => h⟩, hl⟩`. Establish `hne : ((V ⊓ Q.W l : M.Z.Opens) : Set M.Z).Nonempty` using `⟨z', hz⟩`. Use `choose f hf using fun k => (RatModel.mem_ringOn_iff_exists hne (x := (Q.B l k ⬝ᵥ S.ev a) / S.th x₀)).1 (RatModel.mem_ringOn.2 fun w hw => Set.mem_iInter.1 hw.1.1.1 k)`.
+
+Take `⟨u, hu⟩` from `(RatModel.mem_ringOn_iff_exists hne (x := S.th x₀ / d)).1 (RatModel.mem_ringOn.2 fun w hw => hw.1.1.2)`. Use `⟨V ⊓ Q.W l, l, inf_le_right, S.th x₀, i, f, hz, hx₀.1, fun w hw => hw.1.2, hf, ?_⟩` and prove the remaining obligations. Establish `key : ∀ (K : Type) [Field K] (y : Sp K ⟶ M.Z) (ψ : o →+* K) (hy : ⊤ ≤ y ⁻¹ᵁ (V ⊓ Q.W l)), y ≫ M.s = spMap ψ → CrdCalc.valHom y _ hy (∑ j, constFn M.s _ (S.proj (S.TT M z') 0 j i) * ∑ k, resG M.Z inf_le_right (Q.c l j k) * f k) = ∑ j, ψ (S.proj (S.TT M z') 0 j i) * ((Q.c l).map (v …`. Introduce `K _ y ψ hy hψ`. Rewrite using `[map_sum]`.
+
+Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[map_mul, map_sum, ← CrdCalc.valR_eq, GlobalTheory.Points.valR_constFn_of_over M.s ψ y hψ _ hy]`. Use `congrArg _ (Finset.sum_congr rfl fun k _ => ?_)` and prove the remaining obligations. Rewrite using `[map_mul, ← CrdCalc.valR_eq, ← CrdCalc.valR_eq, CrdCalc.valR_res y _ hy]`. Both sides reduce to the same expression.
+
+Establish `hone : u * (∑ j, constFn M.s _ (S.proj (S.TT M z') 0 j i) * ∑ k, resG M.Z inf_le_right (Q.c l j k) * f k) = 1`. Establish `hp` using `M.top_le_preimage_pt hne`. Use `M.res_injective _ hne ?_` and prove the remaining obligations. Rewrite using `[map_one, map_mul, M.res_apply, hu]`. Establish `e` using `key Ω M.pt _ hp M.pt_s`.
+
+Establish `e2 : (fun k => valR M.pt _ (f k)) = (S.th x₀)⁻¹ • (Q.B l).mulVec (S.ev a)`. Use function extensionality and compare the values at `k`. Conclude with `(hf k).trans (by rw [div_eq_inv_mul]; rfl)`. Establish `e3 : (Q.c l).map (valR M.pt (Q.W l)) * Q.B l = 1` using `Q.c_inv l`. Rewrite `e` using `[e2, Matrix.mulVec_smul, Matrix.mulVec_mulVec, e3, Matrix.one_mulVec]`.
+
+Establish `e4 : ∑ j, algebraMap o Ω (S.proj (S.TT M z') 0 j i) * ((S.th x₀)⁻¹ • S.ev a) j = (S.th x₀)⁻¹ * d`. Rewrite using `[hd, dotProduct, Finset.mul_sum]`. Conclude with `Finset.sum_congr rfl fun j _ => by rw [Pi.smul_apply, smul_eq_mul, mul_left_comm]`. Rewrite using `[M.res_apply, ← valR_of_field, CrdCalc.valR_eq _ _ hp, e, e4]`. Use `hx₀.1` as an intermediate fact.
+
+Clear the denominators using the available nonvanishing facts. Introduce `K _ y ψ hy hψ`. Rewrite using `[← key K y ψ hy hψ]`. Use `congrArg (CrdCalc.valHom y _ hy) hone` as an intermediate fact. Rewrite `this` using `[map_mul, map_one]`.
+
+Conclude with `right_ne_zero_of_mul_eq_one this`.
+-/
 theorem exists_functions (hB : BaseFacts S M U₀ EE) (Q : Clos ρ M U₀ EE) (z' : M.Z) {a : S.Gam}
     (ha : a ∈ S.HH M z') :
     ∃ (W : M.Z.Opens) (l : Q.Λ) (_ : W ≤ Q.W l) (t : Ω) (i : S.J) (f : S.J → Γ(M.Z, W)), z' ∈ W ∧ t ≠ 0 ∧
@@ -108,9 +136,23 @@ def torsSec (Q : Clos ρ M U₀ EE) (a : S.Gam) : U₀.toScheme ⟶ pullback ρ.
     rw [Category.assoc, Category.id_comp]
     exact (congrArg (Q.u₀ ≫ ·) h).trans (Category.comp_id _))
 
+/- English proof (translation)
+Rewrite using `[Q.cart.w, torsSec, pullback.lift_snd_assoc, Category.id_comp]`.
+-/
 theorem torsSec_over (Q : Clos ρ M U₀ EE) (a : S.Gam) : torsSec Q a ≫ Q.a₀ ≫ Q.P.hom = U₀.ι := by
   rw [Q.cart.w, torsSec, pullback.lift_snd_assoc, Category.id_comp]
 
+/- English proof (translation)
+Establish `lift : ∀ {F : Type} [Field F] (y : Sp F ⟶ W.toScheme) (y₀ : Sp F ⟶ U₀.toScheme), y ≫ W.ι = y₀ ≫ U₀.ι → ∃ v : Sp F ⟶ (W ⊓ U₀).toScheme, v ≫ M.Z.homOfLE inf_le_left = y ∧ v ≫ M.Z.homOfLE inf_le_right = y₀`. Introduce `F _ y y₀ hy`. Establish `hr : Set.range (y ≫ W.ι) ⊆ Set.range (W ⊓ U₀).ι`. Rewrite using `[Scheme.Opens.range_ι]`. Introduce and unpack `_ ⟨w, rfl⟩`.
+
+Conclude with `⟨(y w).2, hy ▸ (y₀ w).2⟩`. Use `⟨IsOpenImmersion.lift (W ⊓ U₀).ι _ hr, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[← cancel_mono W.ι, Category.assoc, Scheme.homOfLE_ι, IsOpenImmersion.lift_fac]`. Rewrite using `[← cancel_mono U₀.ι, Category.assoc, Scheme.homOfLE_ι, IsOpenImmersion.lift_fac, hy]`. Take `⟨v, hv, hv₀⟩` from `lift e e₀ (he.trans he₀.symm)`.
+
+Establish `hvι : v ≫ (W ⊓ U₀).ι = M.pt`. Rewrite using `[← Scheme.homOfLE_ι M.Z (inf_le_left : W ⊓ U₀ ≤ W), ← Category.assoc, hv, he]`. Establish `: IsDominant (v ≫ (W ⊓ U₀).ι)` using `hvι ▸ M.isDominant_pt`. Establish `: IsDominant v` using `IsDominant.of_comp_of_isOpenImmersion v (W ⊓ U₀).ι`. Use `Q.proper` as an intermediate fact.
+
+Establish `E : M.Z.homOfLE (inf_le_left : W ⊓ U₀ ≤ W) ≫ h = M.Z.homOfLE (inf_le_right : W ⊓ U₀ ≤ U₀) ≫ torsSec Q a ≫ Q.a₀`. Use `ext_of_isDominant_of_isSeparated Q.P.hom ?_ v ?_` and prove the remaining obligations. Simplify using `only [Category.assoc, hh, torsSec_over, Scheme.homOfLE_ι]`. Rewrite using `[← Category.assoc, hv, ← Category.assoc, hv₀, hg]`. Take `⟨y, hy, hy₀⟩` from `lift x (x' ≫ pullback.snd _ _) (by rw [h1, Category.assoc])`.
+
+Establish `hx' : (x' ≫ pullback.snd _ _) ≫ torsSec Q a = x'`. Use `pullback.hom_ext ?_ ?_` and prove the remaining obligations. Rewrite using `[Category.assoc, torsSec, pullback.lift_fst, h2, Category.assoc]`. Rewrite using `[Category.assoc, torsSec, pullback.lift_snd, Category.comp_id]`. Rewrite using `[← hy, Category.assoc, E, ← Category.assoc, hy₀, ← Category.assoc, hx']`.
+-/
 theorem agree (Q : Clos ρ M U₀ EE) (a : S.Gam) {W : M.Z.Opens} (h : W.toScheme ⟶ Q.P.left)
     (hh : h ≫ Q.P.hom = W.ι) (e : Sp Ω ⟶ W.toScheme) (he : e ≫ W.ι = M.pt) (e₀ : Sp Ω ⟶ U₀.toScheme)
     (he₀ : e₀ ≫ U₀.ι = M.pt) (hg : e ≫ h = e₀ ≫ torsSec Q a ≫ Q.a₀) {K : Type} [Field K]
@@ -145,6 +187,13 @@ theorem agree (Q : Clos ρ M U₀ EE) (a : S.Gam) {W : M.Z.Opens} (h : W.toSchem
     · rw [Category.assoc, torsSec, pullback.lift_snd, Category.comp_id]
   rw [← hy, Category.assoc, E, ← Category.assoc, hy₀, ← Category.assoc, hx']
 
+/- English proof (translation)
+Take `⟨w, hw⟩` from `CrdCalc.crd_exists (LB.isLB_pull Q.isLB (Q.P.hom ⁻¹ᵁ Q.W l).ι) (Q.σ l) x`. Establish `h1` using `Q.rel l Ω x w hw`. Rewrite `h1` using `[hx]`. Take `⟨c, hc⟩` from `CrdCalc.crd_unique h1 hc`. Establish `e3 : (Q.c l).map (valR M.pt (Q.W l)) * Q.B l = 1` using `Q.c_inv l`.
+
+Establish `e4` using `mul_eq_one_comm.1 e3`. Establish `e5 : S.ev a = (c : Ω) • ((Q.c l).map (valR M.pt (Q.W l))).mulVec w` using `funext hc`. Establish `e6 : (Q.B l).mulVec (S.ev a) = (c : Ω) • w`. Rewrite using `[e5, Matrix.mulVec_smul, Matrix.mulVec_mulVec, e4, Matrix.one_mulVec]`. Use `CrdCalc.crd_smul ((Units.mk0 t ht)⁻¹ * c) hw` as an intermediate fact.
+
+Use `this using 2 with k` and compare the differences between its conclusion and the goal. Establish `e7 : Q.B l k ⬝ᵥ S.ev a = c * w k` using `congrFun e6 k`. Rewrite using `[e7, Units.val_mul, Units.val_inv_eq_inv_val, Units.val_mk0, div_eq_inv_mul, _root_.mul_assoc]`.
+-/
 theorem crd_generic (Q : Clos ρ M U₀ EE) (a : S.Gam) (l : Q.Λ) {t : Ω} (ht : t ≠ 0)
     (x : Sp Ω ⟶ (Q.P.hom ⁻¹ᵁ Q.W l).toScheme) (hx : x ≫ (Q.P.hom ⁻¹ᵁ Q.W l).ι ≫ Q.P.hom = M.pt)
     (hc : Crd Q.O1 Q.st (x ≫ (Q.P.hom ⁻¹ᵁ Q.W l).ι) (S.ev a)) :
@@ -163,6 +212,33 @@ theorem crd_generic (Q : Clos ρ M U₀ EE) (a : S.Gam) (l : Q.Λ) {t : Ω} (ht 
   have e7 : Q.B l k ⬝ᵥ S.ev a = c * w k := congrFun e6 k
   rw [e7, Units.val_mul, Units.val_inv_eq_inv_val, Units.val_mk0, div_eq_inv_mul, _root_.mul_assoc]
 
+/- English proof (translation)
+Introduce `hL o Ω _ _ _ _ S ρ M U₀ EE hB Q z a ha`. Take `⟨z', hcl, hs, hH⟩` from `exists_closed (S := S) hB.jac z`. Take `⟨W, l, hle, t, i, f, hz', ht, hsup, hf, hkey⟩` from `exists_functions hB Q z' (hH ▸ ha)`. Establish `liftPt : ∀ {X : Scheme.{0}} (y : Sp Ω ⟶ X) (V : X.Opens), ⊤ ≤ y ⁻¹ᵁ V → ∃ e : Sp Ω ⟶ V.toScheme, e ≫ V.ι = y` using `fun y V hV => ⟨IsOpenImmersion.lift V.ι y (by rw [Scheme.Opens.range_ι]; exact (top_le_preimage_iff _ _).1 hV), IsOpenImmersion.lift_fac _ _ _⟩`. Take `⟨e, he⟩` from `liftPt M.pt W (M.top_le_preimage_pt ⟨z', hz'⟩)`.
+
+Take `⟨e₀, he₀⟩` from `liftPt M.pt U₀ (M.top_le_preimage_pt hB.ov.ne)`. Establish `hp : (e₀ ≫ torsSec Q a ≫ Q.a₀) ≫ Q.P.hom = M.pt`. Simplify using `only [Category.assoc, torsSec_over, he₀]`. Take `⟨e', he'⟩` from `liftPt (e₀ ≫ torsSec Q a ≫ Q.a₀) (Q.P.hom ⁻¹ᵁ Q.W l) (by`. Express the relevant statement in the definitionally equal form `⊤ ≤ ((e₀ ≫ torsSec Q a ≫ Q.a₀) ≫ Q.P.hom) ⁻¹ᵁ Q.W l`.
+
+Rewrite using `[hp]`. Conclude with `M.top_le_preimage_pt (Q.ne l))`. Establish `hp' : e' ≫ (Q.P.hom ⁻¹ᵁ Q.W l).ι ≫ Q.P.hom = M.pt` using `by rw [← Category.assoc, he', hp]`. Establish `hc : Crd Q.O1 Q.st (e' ≫ (Q.P.hom ⁻¹ᵁ Q.W l).ι) (S.ev a)`. Rewrite using `[he', ← Category.assoc]`.
+
+Use `Q.crd Ω _ _ ?_` and prove the remaining obligations. Rewrite using `[Category.assoc, torsSec, pullback.lift_fst, ← Category.assoc, Q.u₀_pt e₀ he₀]`. Conclude with `(GlobalTheory.T.torsionValues_coords_operator_permute hL o Ω S ρ).1 Ω S.R.val.toRingHom a`. Establish `hval : ∀ {K : Type} [Field K] (y : Sp K ⟶ W.toScheme), ∃ ψ : o →+* K, (y ≫ W.ι) ≫ M.s = spMap ψ ∧ ∑ j, ψ (S.proj (S.TT M z') 0 j i) * ((Q.c l).map (valR (y ≫ W.ι) (Q.W l))).mulVec (fun k => valR (y ≫ W.ι) W (f k)) j ≠ 0` using `fun y => ⟨(Spec.preimage ((y ≫ W.ι) ≫ M.s)).hom, (Spec.map_preimage _).symm, hkey _ _ _ (fun w _ => (y w).2) (Spec.map_preimage _).symm⟩`. Establish `hcov : ⨆ j, nonzeroLocus (trivSec (f j)) = ⊤`.
+
+Use `top_unique fun w _ => ?_` and prove the remaining obligations. Take `⟨K, _, y, rfl⟩` from `exists_field_point w`. Take `⟨ψ, -, hψ⟩` from `hval y`. Establish `: ∃ k, valR (y ≫ W.ι) W (f k) ≠ 0`. Assume the negation of the conclusion as `hn`.
+
+Use `push_neg at hn`. Simplify using `[hn, Matrix.mulVec, dotProduct] at hψ`. Take `⟨k, hk⟩` from `this`. Conclude with `TopologicalSpace.Opens.mem_iSup.2 ⟨k, (CrdCalc.top_le_iff y _).1 ((CrdCalc.crd_isUnit_iff k (crd_trivSec f y)).1 (isUnit_iff_ne_zero.2 hk))⟩`. Establish `: IsDominant (e ≫ W.ι)` using `he ▸ M.isDominant_pt`.
+
+Establish `hdom : IsDominant e` using `IsDominant.of_comp_of_isOpenImmersion e W.ι`. Take `⟨g, hg, hge, hgc⟩` from `GlobalTheory.T.exists_factor_closedImmersion_dense_points Γ(M.Z, Q.W l) _ W.toScheme ((Q.P.hom ∣_ Q.W l) ≫ (Q.aff l).isoSpec.hom) (M.Z.homOfLE hle ≫ (Q.aff l).isoSpec.hom) _ _ S.J (Q.σ l) (fun j => trivSec (f j)) (LB.isLB_pull Q.isLB _) (Inh.trivLB_isLB _) (Q.imm l) hcov Ω Unit ( …`. Rewrite using `[← Category.assoc, ← Category.assoc]`. Use `congr 1`. Rewrite using `[← cancel_mono (Q.W l).ι, Category.assoc, morphismRestrict_ι, hp', Category.assoc, Scheme.homOfLE_ι, he],`.
+
+Use the proof step `_, crd_trivSec f e, by`. Use `crd_generic Q a l ht e' hp' hc` as an intermediate fact. Use `this using 2 with k` and compare the differences between its conclusion and the goal. Rewrite using `[he]`. Conclude with `hf k⟩)`.
+
+Establish `hg' : g ≫ (Q.P.hom ⁻¹ᵁ Q.W l).ι ≫ Q.P.hom = W.ι`. Rewrite `hg` using `[← Category.assoc, cancel_mono]`. Rewrite using `[← morphismRestrict_ι, ← Category.assoc, hg, Scheme.homOfLE_ι]`. Establish `hG : Set.range (g ≫ (Q.P.hom ⁻¹ᵁ Q.W l).ι) ⊆ Set.range Q.G.ι`. Rewrite using `[Scheme.Opens.range_ι]`.
+
+Introduce and unpack `_ ⟨w, rfl⟩`. Take `⟨K, _, y, rfl⟩` from `exists_field_point w`. Take `⟨ψ, hψ, hne⟩` from `hval y`. Establish `h1` using `Q.rel l K _ _ (hgc K y _ (crd_trivSec f y))`. Rewrite `h1` using `[Category.assoc y g (_ ≫ _), hg']`.
+
+Take `⟨φ, hφ, -⟩` from `GlobalTheory.SecRatio.existsUnique_isLin (Q.P.hom ≫ M.s) Q.st (fun j => S.proj (S.TT M z') 0 j i)`. Establish `h2` using `(OpenPart.le_nonzeroLocus_iff hφ (x := (y ≫ g) ≫ (Q.P.hom ⁻¹ᵁ Q.W l).ι) (ψ := ψ) (by`. Rewrite using `[← hψ, ← hg']`. Simplify using `only [Category.assoc]) h1).2 hne`. Simplify using `only [Clos.G, SetLike.mem_coe, TopologicalSpace.Opens.mem_iSup]`.
+
+Use `⟨z', hcl, W, hsup, i, φ, hφ, ?_, (CrdCalc.top_le_iff _ _).1 h2⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `(g ≫ (Q.P.hom ⁻¹ᵁ Q.W l).ι ≫ Q.P.hom) (y (IsLocalRing.closedPoint K)) ∈ W`. Rewrite using `[hg']`. Conclude with `(y _).2`. Establish `hfac` using `IsOpenImmersion.lift_fac Q.G.ι _ hG`.
+
+Use `⟨W, IsOpenImmersion.lift Q.G.ι _ hG, hs.mem_open W.isOpen hz', ?_, fun K _ x x' h1 h2 => ?_⟩` and prove the remaining obligations. Rewrite using `[← Category.assoc, hfac, Category.assoc, hg']`. Rewrite using `[hfac]`. Use `agree Q a _ (by rw [Category.assoc, hg']) e he e₀ he₀ ?_ x x' h1 h2` and prove the remaining obligations. Rewrite using `[← Category.assoc, hge (), he']`.
+-/
 theorem exists_section : GlobalTheory.UT.LL → ∀ (o Ω : Type) [CommRing o] [Field Ω] [Algebra o Ω] [ArithBase o Ω] (S : ThetaSys o Ω) (ρ : S.Real) (M : RatModel o Ω) (U₀ : M.Z.Opens) (EE : M.Lat S.J), BaseFacts S M U₀ EE → ∀ (Q : Clos ρ M U₀ EE), ∀ z, ∀ a ∈ S.HH M z, ∃ (W : M.Z.Opens) (h : W.toScheme ⟶ Q.G.toScheme), z ∈ W ∧ h ≫ Q.G.ι ≫ Q.P.hom = W.ι ∧ ∀ (K : Type) [Field K] (x : Sp K ⟶ W.toScheme) (x' : Sp K ⟶ pullback ρ.P.A.hom Q.u₀), x ≫ W.ι = x' ≫ pullback.snd _ _ ≫ U₀.ι → x' ≫ pullback.fst _ _ = x' ≫ pullback.snd _ _ ≫ Q.u₀ ≫ (ρ.pt a).left → x ≫ h ≫ Q.G.ι = x' ≫ Q.a₀ := by
   intro hL o Ω _ _ _ _ S ρ M U₀ EE hB Q z a ha
   obtain ⟨z', hcl, hs, hH⟩ := exists_closed (S := S) hB.jac z

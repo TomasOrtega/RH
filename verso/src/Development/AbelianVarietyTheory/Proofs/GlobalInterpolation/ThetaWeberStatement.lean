@@ -5,6 +5,9 @@ import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.JacobiProduct
 
 namespace GlobalTheory.ThetaWeberObj
 
+/- English proof (translation)
+The claim follows from `GlobalTheory.ThetaWeberRoad.thetaWeberStatement_of Formalism.L2.Th1.F.thetaLine Formalism.L2.Th1.F.sgStarBasic Formalism.L2.Th1.F.sgStarAdd`.
+-/
 theorem thetaWeberStatement : GlobalTheory.IndefiniteRowSideFullHecke.ThetaConstantWeber.ThetaWeberStatement :=
   GlobalTheory.ThetaWeberRoad.thetaWeberStatement_of Formalism.L2.Th1.F.thetaLine Formalism.L2.Th1.F.sgStarBasic
     Formalism.L2.Th1.F.sgStarAdd

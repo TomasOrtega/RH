@@ -22,18 +22,33 @@ section Twist
 
 def cj (s : Bool) : ℂ →+* ℂ := cond s (starRingEnd ℂ) (RingHom.id ℂ)
 
+/- English proof (translation)
+Apply the tactic sequence `cases s <;> simp [cj]`.
+-/
 theorem cj_cj (s : Bool) (z : ℂ) : cj s (cj s z) = z := by
   cases s <;> simp [cj]
 
+/- English proof (translation)
+Apply the tactic sequence `cases s <;> simp [cj]`.
+-/
 theorem norm_cj (s : Bool) (z : ℂ) : ‖cj s z‖ = ‖z‖ := by
   cases s <;> simp [cj]
 
+/- English proof (translation)
+Apply the tactic sequence `cases s <;> simp [cj]`.
+-/
 theorem cj_conj (s : Bool) (z : ℂ) : cj s (starRingEnd ℂ z) = starRingEnd ℂ (cj s z) := by
   cases s <;> simp [cj]
 
+/- English proof (translation)
+Apply the tactic sequence `cases s <;> simp [cj]`.
+-/
 theorem re_cj (s : Bool) (z : ℂ) : (cj s z).re = z.re := by
   cases s <;> simp [cj]
 
+/- English proof (translation)
+Apply the tactic sequence `cases s <;> simp [cj]`.
+-/
 theorem cj_ofReal (s : Bool) (x : ℝ) : cj s (x : ℂ) = x := by
   cases s <;> simp [cj]
 
@@ -51,8 +66,14 @@ def mk (s : Bool) (x : E) : Tw s E := x
 
 instance : Module ℂ (Tw s E) := Module.compHom E (cj s)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem out_smul (z : ℂ) (x : Tw s E) : out (z • x) = cj s z • out x := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem out_add (x y : Tw s E) : out (x + y) = out x + out y := rfl
 
 instance : NormedSpace ℂ (Tw s E) where
@@ -75,6 +96,9 @@ instance : InnerProductSpace ℂ (Tw s E) where
     show cj s (inner ℂ (cj s r • out x) (out y)) = starRingEnd ℂ r * cj s (inner ℂ (out x) (out y))
     rw [inner_smul_left, map_mul, cj_conj, cj_cj]
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem inner_eq (x y : Tw s E) : inner ℂ x y = cj s (inner ℂ (out x) (out y)) := rfl
 
 def mkL (s : Bool) (E : Type) [NormedAddCommGroup E] [InnerProductSpace ℂ E] : E →ₛₗ[cj s] Tw s E where
@@ -113,6 +137,9 @@ def rep (s : Bool) {G : Type} [Group G] (ρ : Representation ℂ G E) : Represen
   map_one' := by ext x; show ρ 1 (out x) = out x; rw [map_one]; rfl
   map_mul' g h := by ext x; show ρ (g * h) (out x) = ρ g (ρ h (out x)); rw [map_mul]; rfl
 
+/- English proof (translation)
+Rewrite `h`, the goal using `[Fintype.linearIndependent_iff]`. Introduce `g hg i`. Establish `h2` using `h (fun i => cj s (g i)) hg i`. Establish `h3` using `congrArg (cj s) h2`. Rewrite `h3` using `[cj_cj, map_zero]`. Then use the resulting hypothesis.
+-/
 theorem linInd (s : Bool) {ι : Type} [Fintype ι] {v : ι → E} (h : LinearIndependent ℂ v) :
     LinearIndependent ℂ fun i => mk s (v i) := by
   rw [Fintype.linearIndependent_iff] at h ⊢
@@ -121,6 +148,11 @@ theorem linInd (s : Bool) {ι : Type} [Fintype ι] {v : ι → E} (h : LinearInd
   have h3 := congrArg (cj s) h2
   rwa [cj_cj, map_zero] at h3
 
+/- English proof (translation)
+Establish `h1 : Set.range (fun i => mk s (v i)) = (mkL s E) '' Set.range v`. Rewrite using `[← Set.range_comp]`. Both sides reduce to the same expression. Rewrite using `[h1, ← Submodule.map_span, h, Submodule.map_top, LinearMap.range_eq_top]`. Introduce `x`.
+
+Conclude with `⟨out x, rfl⟩`.
+-/
 theorem span_top (s : Bool) {ι : Type} [Fintype ι] {v : ι → E} (h : Submodule.span ℂ (Set.range v) = ⊤) :
     Submodule.span ℂ (Set.range fun i => mk s (v i)) = ⊤ := by
   have h1 : Set.range (fun i => mk s (v i)) = (mkL s E) '' Set.range v := by
@@ -141,6 +173,13 @@ open Classical in
 
 def twAt (σ₀ : K →+* ℂ) (v : InfinitePlace K) : Bool := if v.embedding = sgAt σ₀ v then false else true
 
+/- English proof (translation)
+Unfold `twAt`. Use `split_ifs with h`. Rewrite using `[h]`. Both sides reduce to the same expression. Unfold `sgAt at h ⊢ split_ifs at h ⊢ with hv`.
+
+Substitute `hv` using the available equality. Break down `InfinitePlace.embedding_mk_eq σ₀ with h' | h'` into its components or cases. Conclude with `absurd h' h`. Rewrite using `[h', NumberField.ComplexEmbedding.conjugate_coe_eq]`. Both sides reduce to the same expression.
+
+Conclude with `absurd rfl h`.
+-/
 theorem emb_eq (σ₀ : K →+* ℂ) (v : InfinitePlace K) (a : K) : v.embedding a = cj (twAt σ₀ v) (sgAt σ₀ v a) := by
   unfold twAt
   split_ifs with h
@@ -153,6 +192,9 @@ theorem emb_eq (σ₀ : K →+* ℂ) (v : InfinitePlace K) (a : K) : v.embedding
       · rw [h', NumberField.ComplexEmbedding.conjugate_coe_eq]; rfl
     · exact absurd rfl h
 
+/- English proof (translation)
+Simplify using `[sgAt, hv]`.
+-/
 theorem sgAt_mk (σ₀ : K →+* ℂ) {v : InfinitePlace K} (hv : v = InfinitePlace.mk σ₀) : sgAt σ₀ v = σ₀ := by
   simp [sgAt, hv]
 
@@ -365,19 +407,31 @@ variable (D) in
 
 abbrev Vc (i : Fin D.R.m) : HSp D := D.sp.V ((i : ℕ) + 1)
 
+/- English proof (translation)
+Use `show D.R.r ≤ (D.sp.Y (min j D.R.m)).rank`. Rewrite using `[D.sp.Y_rank _ (min_le_right _ _)]`. Conclude with `Nat.le_add_right _ _`.
+-/
 theorem r_le_Y (j : ℕ) : D.R.r ≤ (Yc D j).rank := by
   show D.R.r ≤ (D.sp.Y (min j D.R.m)).rank
   rw [D.sp.Y_rank _ (min_le_right _ _)]
   exact Nat.le_add_right _ _
 
+/- English proof (translation)
+Rewrite using `[D.sp.X'_rank]`. Conclude with `Nat.le_add_right _ _`.
+-/
 theorem r_le_X : D.R.r ≤ D.sp.X'.rank := by
   rw [D.sp.X'_rank]
   exact Nat.le_add_right _ _
 
+/- English proof (translation)
+Use `show D.R.r ≤ (D.sp.W ((i : ℕ) + 1)).rank`. Rewrite using `[D.sp.W_rank _ (Nat.succ_pos _) i.2]`.
+-/
 theorem r_le_rank_Wc (i : Fin D.R.m) : D.R.r ≤ (Wc D i).rank := by
   show D.R.r ≤ (D.sp.W ((i : ℕ) + 1)).rank
   rw [D.sp.W_rank _ (Nat.succ_pos _) i.2]
 
+/- English proof (translation)
+Use `show D.R.r ≤ (D.sp.V ((i : ℕ) + 1)).rank`. Rewrite using `[D.sp.V_rank _ (Nat.succ_pos _) i.2]`. Conclude with `Nat.le_add_right _ _`.
+-/
 theorem r_le_V (i : Fin D.R.m) : D.R.r ≤ (Vc D i).rank := by
   show D.R.r ≤ (D.sp.V ((i : ℕ) + 1)).rank
   rw [D.sp.V_rank _ (Nat.succ_pos _) i.2]
@@ -681,6 +735,9 @@ def WS (b : Bool) (i : Fin D.R.m) (σ : D.what₂.LL →+* ℂ) : Submodule ℂ 
   Submodule.span ℂ (Set.range (R.bC F b i σ))
 
 include R in
+/- English proof (translation)
+Rewrite using `[emb_eq D.what₂.embLL A.v0 a, sgAt_mk _ R.hv0]`.
+-/
 theorem emb0 (a : D.what₂.LL) : A.v0.embedding a = cj (twAt D.what₂.embLL A.v0) (D.what₂.embLL a) := by
   rw [emb_eq D.what₂.embLL A.v0 a, sgAt_mk _ R.hv0]
 

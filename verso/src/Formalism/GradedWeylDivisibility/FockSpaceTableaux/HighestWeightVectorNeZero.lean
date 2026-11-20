@@ -5,6 +5,11 @@ namespace Formalism.GradedWeylDivisibility
 
 open MvPolynomial
 
+/- English proof (translation)
+Introduce `R _ _ r n hn ν h`. Establish `key : ∀ (s : ℕ) (hr : s ≤ r) (hs : s ≤ n), eval (fun v : Fin r × Fin n => if v.1.val = v.2.val then (1 : R) else 0) (lpMinor R s hr hs) = 1`. Introduce `s hr hs`. Unfold `lpMinor`. Rewrite using `[RingHom.map_det]`.
+
+Use `Matrix.det_one (R := R) (n := Fin s)` and compare the differences between its conclusion and the goal. Use extensionality with `p q`. Simplify using `[RingHom.mapMatrix_apply, Matrix.one_apply, Fin.ext_iff]`. Establish `h2` using `congrArg (eval (fun v : Fin r × Fin n => if v.1.val = v.2.val then (1 : R) else 0)) h`. Simplify using `[hw, map_prod, map_pow, key] at h2`.
+-/
 theorem highestWeightVectorNeZero : HWNe := by
   intro R _ _ r n hn ν h
   have key : ∀ (s : ℕ) (hr : s ≤ r) (hs : s ≤ n),

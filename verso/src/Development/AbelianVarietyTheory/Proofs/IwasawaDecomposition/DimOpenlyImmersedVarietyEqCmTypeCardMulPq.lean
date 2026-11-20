@@ -12,6 +12,13 @@ open ReciprocityTheory.ChartRestriction.G.FD (Frame mat)
 
 namespace GlobalTheory.OpenBaseDim
 
+/- English proof (translation)
+Introduce `E _ _ _ H Dw l Xo c O _ β Y T F _ e σ U _ _ X j hoi _ _ k`. Use `haveI := hoi`. Establish `hcard : (U.X k).Ψ.card = Module.finrank ℚ E / 2`. Rewrite using `[← Fintype.card_coe]`. Conclude with `ReciprocityTheory.ChartRestriction.G.FD.QuadraticCoefficientForms.card_Psi (U.X k)`.
+
+Take `⟨Uo, hUo, hx, -⟩` from `TopologicalSpace.Opens.isBasis_iff_nbhd.1 X.X.isBasis_affineOpens (TopologicalSpace.Opens.mem_top (genericPoint X.X))`. Establish `h1` using `GlobalTheory.SmoothDim.ringKrullDim_affineOpen F X.X X.str X.dim inferInstance Uo hUo ⟨_, hx⟩`. Establish `h2` using `GlobalTheory.SmoothDim.ringKrullDim_affineOpen c.F (gen T.Z) (genStr T.Z) Dw.dim T.smooth (j ''ᵁ Uo) (hUo.image_of_isOpenImmersion j) ⟨j (genericPoint X.X), ⟨_, hx, rfl⟩⟩`. Rewrite `h2` using `[ringKrullDim_eq_of_ringEquiv (j.appIso Uo).commRingCatIsoToRingEquiv, h1]`. Establish `hd : X.dim = Dw.dim` using `by exact_mod_cast h2`.
+
+Rewrite using `[hd, Datum.dim, hcard, mul_assoc]`.
+-/
 theorem dim_eq : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l) (O : Type) [CommRing O] (β : O →+* c.F) (Y : Model Xo c β) (T : TorModel Y) (F : Type) [Field F] (e : F ≃+* c.F) (σ : c.F →+* ℂ) (U : Formalism.L2.PjFree.Unf Xo c σ (Dw.p + Dw.q)), Formalism.L2.PjFree.GoodEmb c σ → Formalism.L2.PjFree.IsUnf U → ∀ (X : Var F) (j : X.X ⟶ gen T.Z), IsOpenImmersion j → ∀ (hj : j ≫ genStr T.Z ≫ spMap e.toRingHom = X.str), (∃ y, y ∈ ptsIn X.str (σ.comp e.toRingHom) (openPart j)) → ∀ k : U.Comp, X.dim = (U.X k).Ψ.card * (Dw.p * Dw.q) := by
   intro E _ _ _ H Dw l Xo c O _ β Y T F _ e σ U _ _ X j hoi _ _ k
   haveI := hoi

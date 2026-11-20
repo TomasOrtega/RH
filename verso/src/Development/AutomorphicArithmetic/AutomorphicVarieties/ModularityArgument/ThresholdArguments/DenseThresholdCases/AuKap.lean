@@ -9,6 +9,13 @@ set_option synthInstance.maxHeartbeats 200000
 
 section
 open NumberField IsDedekindDomain Formalism.ConjugateSelfDual Formalism.HC ReciprocityTheory.Gal IsLocalRing Polynomial UpperTheory.V UpperTheory.V.Base UpperTheory.V.Alg UpperTheory.V.HV UpperTheory.V.GradeZeroInterpolatingElement UpperTheory.V.Ws GlobalTheory.GalOfCusp
+/- English proof (translation)
+Introduce `hP Ω _ _ _ l _ c D T c' h K ι`. Use `(_root_.UpperTheory.V.Af.algOfCyc_s hP T.L Ω l ι).1 _ (auCont c' K.κ K.κ_cont) fun w hw => ?_` and prove the remaining obligations. Take `⟨A, hA⟩ : ∃ A : ValuationSubring Ω, IsPlaceOver A w` from `exists_isPlaceOver Ω w`. Establish `hl : A.valuation (l : Ω) < 1`. Establish `h1` using `(hA ((l : ℕ) : 𝓞 T.L)).2 hw`.
+
+Establish `e : algebraMap T.L Ω (((l : ℕ) : 𝓞 T.L) : T.L) = (l : Ω)` using `by simp`. Rewrite `h1` using `[e]`. Then use the resulting hypothesis. Take `⟨a, b, k, hk, -, H⟩` from `K.cyc A hl`. Use `⟨A, hA, a, k, hk, fun s hs => ?_⟩` and prove the remaining obligations. Rewrite using `[← (auChi T.L Ω c').1]`.
+
+Establish `h2` using `congrArg (Units.map (algebraMap c'.O (PadicAlgCl l)).toMonoidHom) (H s hs).1`. Rewrite `h2` using `[map_pow, map_mul, map_zpow, map_one]`. Conclude with `h2`.
+-/
 theorem UpperTheory.V.Ws.isAlgChar_pushCh_link_kappa :
     _root_.UpperTheory.V.Af.HypothesesH' → ∀ {Ω : Type} [Field Ω] [CharZero Ω] [IsAlgClosure ℚ Ω] {l : ℕ} [Fact l.Prime] {c : Coef l} (D : Raw Ω c) (T : Tower D) (c' : Coef l) (h : c.O ≤ c'.O) (K : Link T c' h) (ι : PadicAlgCl l ≃+* ℂ), Af.IsAlgChar ι (W.pushCh (algebraMap c'.O (PadicAlgCl l)) K.κ) := by
   intro hP Ω _ _ _ l _ c D T c' h K ι

@@ -17,6 +17,15 @@ noncomputable section
 
 namespace GlobalTheory.LocOpLin
 
+/- English proof (translation)
+Introduce `F _ _ κ _ v Op c φ φ' η η' ζ hφ hφ' h₁ h₂ h₃`. Take `⟨R, hR0, hR⟩` from `GlobalTheory.T.exists_complementary_adelicSchwartz_restFunction κ v`. Establish `hs : c • φ + φ' ∈ SB (κ → Fv F v)` using `add_mem ((SB _).smul_mem c hφ) hφ'`. Establish `e : ∀ α β : (κ → Fv F v) → ℂ, tens (evFin F v) (c • α + β) R = c • tens (evFin F v) α R + tens (evFin F v) β R`. Introduce `α β`.
+
+Use function extensionality and compare the values at `x`. Simplify using `only [tens, Pi.add_apply, Pi.smul_apply, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree. Establish `key : tens (evFin F v) ζ R = tens (evFin F v) (c • η + η') R`. Rewrite using `[← h₃ R (hR _ hs), e, map_add, map_smul, h₁ R (hR φ hφ), h₂ R (hR φ' hφ'), e]`.
+
+Use function extensionality and compare the values at `y`. Establish `hz : At (evFin F v) (fun i => GlobalTheory.LatVac.liftV v (y i))`. Introduce `u' hu'`. Use function extensionality and compare the values at `i`. Conclude with `GlobalTheory.LatVac.at_liftV v _ u' hu'`.
+
+Establish `hRz : R (fun i => GlobalTheory.LatVac.liftV v (y i)) = R 0`. Simplify using `using (hR φ hφ).1 0 _ hz`. Use `congrFun key (fun i => GlobalTheory.LatVac.liftV v (y i))` as an intermediate fact. Simplify using `only [tens, GlobalTheory.LatVac.evFin_liftV, hRz] at this`. Conclude with `mul_right_cancel₀ hR0 this`.
+-/
 theorem acts_lin : ∀ (F : Type) [Field F] [NumberField F] (κ : Type) [Fintype κ] (v : Pl F) (Op : Module.End ℂ ((κ → AF F) → ℂ)) (c : ℂ)
     (φ φ' η η' ζ : (κ → Fv F v) → ℂ), φ ∈ SB (κ → Fv F v) → φ' ∈ SB (κ → Fv F v) →
     Acts (evFin F v) Op φ η → Acts (evFin F v) Op φ' η' → Acts (evFin F v) Op (c • φ + φ') ζ → ζ = c • η + η' := by

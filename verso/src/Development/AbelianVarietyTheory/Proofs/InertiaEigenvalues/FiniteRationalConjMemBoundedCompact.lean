@@ -16,6 +16,13 @@ variable {L : Type} [Field L] [NumberField L] [IsCMField L] {n : ℕ}
 
 local notation3 "L⁺" => NumberField.maximalRealSubfield L
 
+/- English proof (translation)
+Establish `h0 : (g : Matrix (Fin n) (Fin n) L) * conjT (IsCMField.complexConj L : L →+* L) g = 1` using `hg`. Establish `h1` using `congrFun (congrFun h0 i) i`. Simplify using `only [Matrix.mul_apply, conjT, Matrix.transpose_apply, Matrix.map_apply, Matrix.one_apply_eq] at h1`. Establish `h2` using `congrArg φ h1`. Simplify using `only [map_sum, map_mul, map_one] at h2`.
+
+Establish `h3 : ∑ k, ((‖φ ((g : Matrix (Fin n) (Fin n) L) i k)‖ ^ 2 : ℝ) : ℂ) = 1`. Rewrite using `[← h2]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Use `IsCMField.complexEmbedding_complexConj L φ ((g : Matrix (Fin n) (Fin n) L) i k)` as an intermediate fact. Rewrite using `[show ((IsCMField.complexConj L : L →+* L) ((g : Matrix (Fin n) (Fin n) L) i k)) = IsCMField.complexConj L ((g : Matrix (Fin n) (Fin n) L) i k) from rfl, this, Complex.mul_conj', Complex.ofReal_pow]`.
+
+Establish `h4 : ∑ k, ‖φ ((g : Matrix (Fin n) (Fin n) L) i k)‖ ^ 2 = 1` using `by exact_mod_cast h3`. Establish `h5 : ‖φ ((g : Matrix (Fin n) (Fin n) L) i j)‖ ^ 2 ≤ 1`. Rewrite using `[← h4]`. Conclude with `Finset.single_le_sum (f := fun k => ‖φ ((g : Matrix (Fin n) (Fin n) L) i k)‖ ^ 2) (fun k _ => sq_nonneg _) (Finset.mem_univ j)`. Use polynomial arithmetic with `[norm_nonneg (φ ((g : Matrix (Fin n) (Fin n) L) i j))]`.
+-/
 theorem norm_entry_le_one {g : GL (Fin n) L} (hg : g ∈ GQ0 L n) (φ : L →+* ℂ) (i j : Fin n) :
     ‖φ ((g : Matrix (Fin n) (Fin n) L) i j)‖ ≤ 1 := by
   have h0 : (g : Matrix (Fin n) (Fin n) L) * conjT (IsCMField.complexConj L : L →+* L) g = 1 := hg
@@ -36,6 +43,9 @@ theorem norm_entry_le_one {g : GL (Fin n) L} (hg : g ∈ GQ0 L n) (φ : L →+* 
       (fun k _ => sq_nonneg _) (Finset.mem_univ j)
   nlinarith [norm_nonneg (φ ((g : Matrix (Fin n) (Fin n) L) i j))]
 
+/- English proof (translation)
+Use `choose d hd0 hd using fun a => Formalism.IndefR.principalLevelFrame.cong_nat_denom (x a)`. Use `⟨∏ a, d a, Finset.prod_pos fun a _ => hd0 a, fun a => ?_⟩` and prove the remaining obligations. Rewrite using `[← Finset.mul_prod_erase _ _ (Finset.mem_univ a), Nat.cast_mul, mul_comm ((d a : ℕ) : AL L), mul_assoc]`. Conclude with `Subring.mul_mem _ (natCast_mem _ _) (hd a)`.
+-/
 theorem exists_common_denom {ι : Type} [Fintype ι] (x : ι → AL L) :
     ∃ D : ℕ, 0 < D ∧ ∀ a, (D : AL L) * x a ∈ ALint L := by
   classical
@@ -44,6 +54,9 @@ theorem exists_common_denom {ι : Type} [Fintype ι] (x : ι → AL L) :
   rw [← Finset.mul_prod_erase _ _ (Finset.mem_univ a), Nat.cast_mul, mul_comm ((d a : ℕ) : AL L), mul_assoc]
   exact Subring.mul_mem _ (natCast_mem _ _) (hd a)
 
+/- English proof (translation)
+Establish `h : ((γ : GAf L n) : GL (Fin n) (AL L)) ∈ (GQ0 L n).map (Matrix.GeneralLinearGroup.map (Algebra.TensorProduct.includeLeftRingHom : L →+* AL L))` using `Subgroup.mem_subgroupOf.1 γ.2`. Take `⟨g, hg, he⟩` from `Subgroup.mem_map.1 h`. Use `⟨g, hg, fun i j => ?_⟩` and prove the remaining obligations. Rewrite using `[← he]`. Both sides reduce to the same expression.
+-/
 theorem exists_rat (γ : GQ L n) : ∃ g : GL (Fin n) L, g ∈ GQ0 L n ∧
     ∀ i j, (((γ : GAf L n) : GL (Fin n) (AL L)) : Matrix (Fin n) (Fin n) (AL L)) i j =
       ((g : Matrix (Fin n) (Fin n) L) i j) ⊗ₜ[L⁺] (1 : AFplus L) := by
@@ -54,6 +67,9 @@ theorem exists_rat (γ : GQ L n) : ∃ g : GL (Fin n) L, g ∈ GQ0 L n ∧
   rw [← he]
   rfl
 
+/- English proof (translation)
+The claim follows from `Formalism.UG.P.csGlob_int (F := L⁺) z (GlobalTheory.AlgFormsFin.ALint_le L hz)`.
+-/
 theorem isIntegral_of_mem (z : L) (hz : z ⊗ₜ[L⁺] (1 : AFplus L) ∈ ALint L) : IsIntegral ℤ z :=
   Formalism.UG.P.csGlob_int (F := L⁺) z (GlobalTheory.AlgFormsFin.ALint_le L hz)
 
@@ -63,6 +79,27 @@ open scoped TensorProduct
 
 namespace GlobalTheory.StabFin
 
+/- English proof (translation)
+Introduce `L _ _ _ n J hJ t`. Take `⟨F, hF⟩` from `hJ`. Set `M : GAf L n → Matrix (Fin n) (Fin n) (AL L)` to `fun a => ((a : GL (Fin n) (AL L)) : Matrix (Fin n) (Fin n) (AL L))`. Take `⟨D, hD0, hD⟩` from `exists_common_denom (L := L) (ι := (F × Fin n × Fin n) ⊕ (Fin n × Fin n)) (fun a => match a with`. Consider the case `.inl ⟨f, i, k⟩ => M (t * f) i k`.
+
+Consider the case `.inr ⟨l, j⟩ => M t⁻¹ l j)`. Establish `key : ∀ γ : GQ L n, t⁻¹ * (γ : GAf L n) * t ∈ J → ∀ i j, ((D : AL L) * D) * M γ i j ∈ ALint L`. Introduce `γ hγ i j`. Take `⟨f, hf, hu⟩` from `hF _ hγ`. Establish `hu' : ∀ a b, M (f⁻¹ * (t⁻¹ * (γ : GAf L n) * t)) a b ∈ ALint L` using `hu`.
+
+Establish `e : (γ : GAf L n) = (t * f) * (f⁻¹ * (t⁻¹ * (γ : GAf L n) * t)) * t⁻¹` using `by group`. Establish `eM : M γ = M (t * f) * M (f⁻¹ * (t⁻¹ * (γ : GAf L n) * t)) * M t⁻¹` using `by conv_lhs => rw [e]`. Simplify using `only [M, Subgroup.coe_mul, Units.val_mul]`. Rewrite using `[eM, Matrix.mul_apply, Finset.mul_sum]`. Use `Subring.sum_mem _ fun l _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[Matrix.mul_apply, Finset.sum_mul, Finset.mul_sum]`. Use `Subring.sum_mem _ fun k _ => ?_` and prove the remaining obligations. Establish `e2 : ((D : AL L) * D) * (M (t * f) i k * M (f⁻¹ * (t⁻¹ * (γ : GAf L n) * t)) k l * M t⁻¹ l j) = ((D : AL L) * M (t * f) i k) * M (f⁻¹ * (t⁻¹ * (γ : GAf L n) * t)) k l * ((D : AL L) * M t⁻¹ l j)` using `by ring`. Rewrite using `[e2]`. Conclude with `Subring.mul_mem _ (Subring.mul_mem _ (hD (.inl ⟨⟨f, hf⟩, i, k⟩)) (hu' k l)) (hD (.inr ⟨l, j⟩))`.
+
+Use `set T : Set L := {z : L | IsIntegral ℤ z ∧ ∀ φ : L →+* ℂ, ‖φ z‖ ≤ ((D * D : ℕ) : ℝ)} with hT`. Establish `hTfin : T.Finite` using `NumberField.Embeddings.finite_of_norm_le L ℂ _`. Establish `: Finite T` using `hTfin.to_subtype`. Use `choose gs hgs0 hgs using exists_rat (L := L) (n := n)`. Establish `hmem : ∀ x : {γ : GQ L n // t⁻¹ * (γ : GAf L n) * t ∈ J}, ∀ i j, ((D * D : ℕ) : L) * (gs x.1 : Matrix (Fin n) (Fin n) L) i j ∈ T`.
+
+Introduce `x i j`. Use `⟨isIntegral_of_mem _ ?_, fun φ => ?_⟩` and prove the remaining obligations. Establish `e : (((D * D : ℕ) : L) * (gs x.1 : Matrix (Fin n) (Fin n) L) i j) ⊗ₜ[NumberField.maximalRealSubfield L] (1 : AFplus L) = ((D : AL L) * D) * M x.1 i j`. Simplify using `only [M]`. Rewrite using `[hgs, ← Algebra.TensorProduct.includeLeftRingHom_apply, ← Algebra.TensorProduct.includeLeftRingHom_apply, map_mul, map_natCast]`.
+
+Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e]`. Conclude with `key x.1 x.2 i j`. Rewrite using `[map_mul, map_natCast, norm_mul, Complex.norm_natCast]`.
+
+Conclude with `mul_le_of_le_one_right (Nat.cast_nonneg _) (norm_entry_le_one (hgs0 x.1) φ i j)`. Use `Finite.of_injective (fun x => fun i j => (⟨_, hmem x i j⟩ : T)) ?_` and prove the remaining obligations. Introduce `x y hxy`. Establish `hD' : ((D * D : ℕ) : L) ≠ 0` using `by exact_mod_cast (Nat.mul_pos hD0 hD0).ne'`. Establish `hg : ∀ i j, (gs x.1 : Matrix (Fin n) (Fin n) L) i j = (gs y.1 : Matrix (Fin n) (Fin n) L) i j`.
+
+Introduce `i j`. Use `congrArg Subtype.val (congrFun (congrFun hxy i) j)` as an intermediate fact. Conclude with `mul_left_cancel₀ hD' this`. Apply `Subtype.ext` to reduce the goal to its premises. Apply `Subtype.ext` to reduce the goal to its premises.
+
+Apply `Subtype.ext` to reduce the goal to its premises. Apply `Units.ext` to reduce the goal to its premises. Use extensionality with `i j`. Rewrite using `[hgs x.1 i j, hgs y.1 i j, hg i j]`.
+-/
 theorem finite_conj_mem : ∀ (L : Type) [Field L] [NumberField L] [IsCMField L] (n : ℕ) (J : Subgroup (GAf L n)),
     IsBounded J → ∀ t : GAf L n, Finite {γ : GQ L n // t⁻¹ * (γ : GAf L n) * t ∈ J} := by
   intro L _ _ _ n J hJ t

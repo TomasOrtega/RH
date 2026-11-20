@@ -15,6 +15,9 @@ variable {ι n : Type} [Fintype ι] [Fintype n]
 
 def nsq (M : ι → Matrix n n ℂ) (v : ι → n → ℂ) : ℝ := ∑ τ, (star (v τ) ⬝ᵥ M τ *ᵥ v τ).re
 
+/- English proof (translation)
+Take `⟨τ, hτ⟩` from `Function.ne_iff.mp hv`. Establish `hnn : ∀ σ, 0 ≤ (star (v σ) ⬝ᵥ M σ *ᵥ v σ).re` using `fun σ => (Complex.nonneg_iff.mp ((hM σ).posSemidef.dotProduct_mulVec_nonneg (v σ))).1`. Establish `hp : 0 < (star (v τ) ⬝ᵥ M τ *ᵥ v τ).re` using `(Complex.pos_iff.mp ((hM τ).dotProduct_mulVec_pos hτ)).1`. Unfold `nsq`. Conclude with `Finset.sum_pos' (fun σ _ => hnn σ) ⟨τ, Finset.mem_univ _, hp⟩`.
+-/
 theorem nsq_pos {M : ι → Matrix n n ℂ} (hM : ∀ τ, (M τ).PosDef) {v : ι → n → ℂ} (hv : v ≠ 0) : 0 < nsq M v := by
   obtain ⟨τ, hτ⟩ := Function.ne_iff.mp hv
   have hnn : ∀ σ, 0 ≤ (star (v σ) ⬝ᵥ M σ *ᵥ v σ).re := fun σ =>
@@ -24,6 +27,9 @@ theorem nsq_pos {M : ι → Matrix n n ℂ} (hM : ∀ τ, (M τ).PosDef) {v : ι
   unfold nsq
   exact Finset.sum_pos' (fun σ _ => hnn σ) ⟨τ, Finset.mem_univ _, hp⟩
 
+/- English proof (translation)
+Simplify using `only [nsq, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun τ _ => ?_` and prove the remaining obligations. Rewrite using `[Pi.smul_apply, star_smul, star_trivial, Matrix.mulVec_smul, dotProduct_smul, smul_dotProduct, Complex.smul_re, Complex.smul_re, smul_eq_mul, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem nsq_smul (M : ι → Matrix n n ℂ) (t : ℝ) (v : ι → n → ℂ) : nsq M (t • v) = t ^ 2 * nsq M v := by
   simp only [nsq, Finset.mul_sum]
   refine Finset.sum_congr rfl fun τ _ => ?_
@@ -31,19 +37,43 @@ theorem nsq_smul (M : ι → Matrix n n ℂ) (t : ℝ) (v : ι → n → ℂ) : 
     Complex.smul_re, Complex.smul_re, smul_eq_mul, smul_eq_mul]
   ring
 
+/- English proof (translation)
+Simplify using `[nsq]`.
+-/
 theorem nsq_zero (M : ι → Matrix n n ℂ) : nsq M 0 = 0 := by simp [nsq]
 
+/- English proof (translation)
+Unfold `nsq`. Use `continuous_finset_sum _ fun τ _ => Complex.continuous_re.comp ?_` and prove the remaining obligations. Conclude with `((continuous_apply τ).star).dotProduct (continuous_const.matrix_mulVec (continuous_apply τ))`.
+-/
 theorem continuous_nsq (M : ι → Matrix n n ℂ) : Continuous (nsq M) := by
   unfold nsq
   refine continuous_finset_sum _ fun τ _ => Complex.continuous_re.comp ?_
   exact ((continuous_apply τ).star).dotProduct (continuous_const.matrix_mulVec (continuous_apply τ))
 
+/- English proof (translation)
+Unfold `nsq`. Use `Finset.sum_congr rfl fun τ _ => ?_` and prove the remaining obligations. Simplify using `only [← Matrix.mulVec_mulVec, Matrix.dotProduct_mulVec, Matrix.star_mulVec]`.
+-/
 theorem nsq_conj (M T : ι → Matrix n n ℂ) (v : ι → n → ℂ) :
     nsq (fun τ => (T τ)ᴴ * M τ * T τ) v = nsq M (fun τ => T τ *ᵥ v τ) := by
   unfold nsq
   refine Finset.sum_congr rfl fun τ _ => ?_
   simp only [← Matrix.mulVec_mulVec, Matrix.dotProduct_mulVec, Matrix.star_mulVec]
 
+/- English proof (translation)
+Establish `hc` using `continuous_nsq M`. Establish `hpos : ∀ v ∈ Metric.sphere (0 : ι → n → ℂ) 1, 0 < nsq M v`. Introduce `v hv`. Use `nsq_pos hM ?_` and prove the remaining obligations. Introduce and unpack `rfl`.
+
+Simplify using `at hv`. Establish `hom : ∀ v : ι → n → ℂ, v ≠ 0 → nsq M v = ‖v‖ ^ 2 * nsq M (‖v‖⁻¹ • v)`. Introduce `v hv`. Rewrite using `[nsq_smul, ← mul_assoc, ← mul_pow, mul_inv_cancel₀ (norm_ne_zero_iff.mpr hv), one_pow, one_mul]`. Establish `mem : ∀ v : ι → n → ℂ, v ≠ 0 → ‖v‖⁻¹ • v ∈ Metric.sphere (0 : ι → n → ℂ) 1`.
+
+Introduce `v hv`. Rewrite using `[mem_sphere_zero_iff_norm, norm_smul, norm_inv, norm_norm, inv_mul_cancel₀ (norm_ne_zero_iff.mpr hv)]`. Break down `(Metric.sphere (0 : ι → n → ℂ) 1).eq_empty_or_nonempty with hE | hne` into its components or cases. Use `⟨1, 1, one_pos, one_pos, fun v => ?_⟩` and prove the remaining obligations. Establish `hv : v = 0`.
+
+Assume the negation of the conclusion as `hv`. Establish `h1` using `mem v hv`. Rewrite `h1` using `[hE]`. Conclude with `h1`. Substitute `hv` using the available equality.
+
+Simplify using `[nsq_zero]`. Take `⟨u, hu, hmin⟩` from `(isCompact_sphere (0 : ι → n → ℂ) 1).exists_isMinOn hne hc.continuousOn`. Take `⟨w, -, hmax⟩` from `(isCompact_sphere (0 : ι → n → ℂ) 1).exists_isMaxOn hne hc.continuousOn`. Use `⟨nsq M u, max (nsq M w) 1, hpos u hu, lt_of_lt_of_le one_pos (le_max_right _ _), fun v => ?_⟩` and prove the remaining obligations. Break down `eq_or_ne v 0 with rfl | hv` into its components or cases.
+
+Simplify using `[nsq_zero]`. Rewrite using `[hom v hv]`. Establish `h1` using `isMinOn_iff.mp hmin _ (mem v hv)`. Establish `h2` using `isMaxOn_iff.mp hmax _ (mem v hv)`. Establish `hn : 0 ≤ ‖v‖ ^ 2` using `by positivity`.
+
+Prove the components needed by the constructor for the conclusion. Rewrite using `[mul_comm (nsq M u)]`. Conclude with `mul_le_mul_of_nonneg_left h1 hn`. Rewrite using `[mul_comm (max _ _)]`. Conclude with `mul_le_mul_of_nonneg_left (h2.trans (le_max_left _ _)) hn`.
+-/
 theorem exists_bounds {M : ι → Matrix n n ℂ} (hM : ∀ τ, (M τ).PosDef) :
     ∃ a b : ℝ, 0 < a ∧ 0 < b ∧ ∀ v, a * ‖v‖ ^ 2 ≤ nsq M v ∧ nsq M v ≤ b * ‖v‖ ^ 2 := by
   have hc := continuous_nsq M
@@ -90,12 +120,22 @@ def eigUp (h h0 : ι → Matrix n n ℂ) : ℝ := sSup (ratios h h0)
 
 variable {h h0 : ι → Matrix n n ℂ}
 
+/- English proof (translation)
+Use `⟨_, fun _ _ => 1, ?_, rfl⟩` and prove the remaining obligations. Introduce `hv0`. Establish `h1` using `congrFun (congrFun hv0 (Classical.arbitrary ι)) (Classical.arbitrary n)`. Simplify using `at h1`.
+-/
 theorem ratios_nonempty [Nonempty ι] [Nonempty n] : (ratios h h0).Nonempty := by
   refine ⟨_, fun _ _ => 1, ?_, rfl⟩
   intro hv0
   have h1 := congrFun (congrFun hv0 (Classical.arbitrary ι)) (Classical.arbitrary n)
   simp at h1
 
+/- English proof (translation)
+Take `⟨a1, b1, ha1, hb1, H1⟩` from `exists_bounds hh`. Take `⟨a0, b0, ha0, hb0, H0⟩` from `exists_bounds hh0`. Use `⟨a1 / b0, b1 / a0, div_pos ha1 hb0, ?_⟩` and prove the remaining obligations. Introduce and unpack `t ⟨v, hv, rfl⟩`. Establish `hp0 : 0 < nsq h0 v` using `nsq_pos hh0 hv`.
+
+Take `⟨l1, u1⟩` from `H1 v`. Take `⟨l0, u0⟩` from `H0 v`. Prove the components needed by the constructor for the conclusion. Rewrite using `[div_le_div_iff₀ hb0 hp0]`. Use polynomial arithmetic with `[mul_le_mul_of_nonneg_left u0 ha1.le, mul_le_mul_of_nonneg_left l1 hb0.le]`.
+
+Rewrite using `[div_le_div_iff₀ hp0 ha0]`. Use polynomial arithmetic with `[mul_le_mul_of_nonneg_left u1 ha0.le, mul_le_mul_of_nonneg_left l0 hb1.le]`.
+-/
 theorem ratios_bounds (hh : ∀ τ, (h τ).PosDef) (hh0 : ∀ τ, (h0 τ).PosDef) :
     ∃ a b : ℝ, 0 < a ∧ ∀ t ∈ ratios h h0, a ≤ t ∧ t ≤ b := by
   obtain ⟨a1, b1, ha1, hb1, H1⟩ := exists_bounds hh
@@ -111,6 +151,11 @@ theorem ratios_bounds (hh : ∀ τ, (h τ).PosDef) (hh0 : ∀ τ, (h0 τ).PosDef
   · rw [div_le_div_iff₀ hp0 ha0]
     nlinarith [mul_le_mul_of_nonneg_left u1 ha0.le, mul_le_mul_of_nonneg_left l0 hb1.le]
 
+/- English proof (translation)
+Take `⟨a, b, ha, hab⟩` from `ratios_bounds hh hh0`. Establish `hne : (ratios h h0).Nonempty` using `ratios_nonempty`. Establish `hbb : BddBelow (ratios h h0)` using `⟨a, fun t ht => (hab t ht).1⟩`. Establish `hba : BddAbove (ratios h h0)` using `⟨b, fun t ht => (hab t ht).2⟩`. Unfold `eigLo eigUp`.
+
+Conclude with `⟨lt_of_lt_of_le ha (le_csInf hne fun t ht => (hab t ht).1), csInf_le_csSup hne hbb hba⟩`.
+-/
 theorem eigLo_pos [Nonempty ι] [Nonempty n] (hh : ∀ τ, (h τ).PosDef) (hh0 : ∀ τ, (h0 τ).PosDef) :
     0 < eigLo h h0 ∧ eigLo h h0 ≤ eigUp h h0 := by
   obtain ⟨a, b, ha, hab⟩ := ratios_bounds hh hh0
@@ -120,6 +165,13 @@ theorem eigLo_pos [Nonempty ι] [Nonempty n] (hh : ∀ τ, (h τ).PosDef) (hh0 :
   unfold eigLo eigUp
   exact ⟨lt_of_lt_of_le ha (le_csInf hne fun t ht => (hab t ht).1), csInf_le_csSup hne hbb hba⟩
 
+/- English proof (translation)
+Take `⟨a, b, ha, hab⟩` from `ratios_bounds hh hh0`. Establish `hne : (ratios h h0).Nonempty` using `ratios_nonempty`. Establish `hbb : BddBelow (ratios h h0)` using `⟨a, fun t ht => (hab t ht).1⟩`. Unfold `eigLo`. Rewrite using `[le_csInf_iff hbb hne]`.
+
+Prove the components needed by the constructor for the conclusion. Introduce `H v`. Break down `eq_or_ne v 0 with rfl | hv` into its components or cases. Simplify using `[nsq_zero]`. Establish `h1` using `H _ ⟨v, hv, rfl⟩`.
+
+Rewrite `h1` using `[le_div_iff₀ (nsq_pos hh0 hv)]`. Then use the resulting hypothesis. Introduce and unpack `H t ⟨v, hv, rfl⟩`. Rewrite using `[le_div_iff₀ (nsq_pos hh0 hv)]`. Conclude with `H v`.
+-/
 theorem le_eigLo_iff [Nonempty ι] [Nonempty n] (hh : ∀ τ, (h τ).PosDef) (hh0 : ∀ τ, (h0 τ).PosDef) (c : ℝ) :
     c ≤ eigLo h h0 ↔ ∀ v, c * nsq h0 v ≤ nsq h v := by
   obtain ⟨a, b, ha, hab⟩ := ratios_bounds hh hh0
@@ -137,6 +189,13 @@ theorem le_eigLo_iff [Nonempty ι] [Nonempty n] (hh : ∀ τ, (h τ).PosDef) (hh
     rw [le_div_iff₀ (nsq_pos hh0 hv)]
     exact H v
 
+/- English proof (translation)
+Take `⟨a, b, ha, hab⟩` from `ratios_bounds hh hh0`. Establish `hne : (ratios h h0).Nonempty` using `ratios_nonempty`. Establish `hba : BddAbove (ratios h h0)` using `⟨b, fun t ht => (hab t ht).2⟩`. Unfold `eigUp`. Rewrite using `[csSup_le_iff hba hne]`.
+
+Prove the components needed by the constructor for the conclusion. Introduce `H v`. Break down `eq_or_ne v 0 with rfl | hv` into its components or cases. Simplify using `[nsq_zero]`. Establish `h1` using `H _ ⟨v, hv, rfl⟩`.
+
+Rewrite `h1` using `[div_le_iff₀ (nsq_pos hh0 hv)]`. Then use the resulting hypothesis. Introduce and unpack `H t ⟨v, hv, rfl⟩`. Rewrite using `[div_le_iff₀ (nsq_pos hh0 hv)]`. Conclude with `H v`.
+-/
 theorem eigUp_le_iff [Nonempty ι] [Nonempty n] (hh : ∀ τ, (h τ).PosDef) (hh0 : ∀ τ, (h0 τ).PosDef) (c : ℝ) :
     eigUp h h0 ≤ c ↔ ∀ v, nsq h v ≤ c * nsq h0 v := by
   obtain ⟨a, b, ha, hab⟩ := ratios_bounds hh hh0
@@ -154,6 +213,19 @@ theorem eigUp_le_iff [Nonempty ι] [Nonempty n] (hh : ∀ τ, (h τ).PosDef) (hh
     rw [div_le_iff₀ (nsq_pos hh0 hv)]
     exact H v
 
+/- English proof (translation)
+Establish `inj : ∀ v : ι → n → ℂ, (fun τ => T τ *ᵥ v τ) = 0 → v = 0`. Introduce `v hv`. Use function extensionality and compare the values at `τ`. Use `show v τ = 0`. Establish `h1 : T τ *ᵥ v τ = 0` using `congrFun hv τ`.
+
+Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Matrix.mulVec_mulVec, Matrix.nonsing_inv_mul _ (hT τ), Matrix.one_mulVec]`. Use `_ = 0 := by rw [h1, Matrix.mulVec_zero]`. Use extensionality with `t`. Prove the components needed by the constructor for the conclusion.
+
+Introduce and unpack `⟨v, hv, rfl⟩`. Conclude with `⟨fun τ => T τ *ᵥ v τ, fun h' => hv (inj v h'), by rw [nsq_conj, nsq_conj]⟩`. Introduce and unpack `⟨w, hw, rfl⟩`. Use `⟨fun τ => (T τ)⁻¹ *ᵥ w τ, ?_, ?_⟩` and prove the remaining obligations. Introduce `h'`.
+
+Apply `hw` to reduce the goal to its premises. Use function extensionality and compare the values at `τ`. Use `show w τ = 0`. Establish `h1 : (T τ)⁻¹ *ᵥ w τ = 0` using `congrFun h' τ`. Combine the equalities or inequalities in the displayed calculation.
+
+Rewrite using `[Matrix.mulVec_mulVec, Matrix.mul_nonsing_inv _ (hT τ), Matrix.one_mulVec]`. Use `_ = 0 := by rw [h1, Matrix.mulVec_zero]`. Establish `e : (fun τ => T τ *ᵥ (fun τ => (T τ)⁻¹ *ᵥ w τ) τ) = w`. Use function extensionality and compare the values at `τ`. Use `show T τ *ᵥ ((T τ)⁻¹ *ᵥ w τ) = w τ`.
+
+Rewrite using `[Matrix.mulVec_mulVec, Matrix.mul_nonsing_inv _ (hT τ), Matrix.one_mulVec]`. Rewrite using `[nsq_conj, nsq_conj, e]`.
+-/
 theorem ratios_conj [DecidableEq n] (h h0 T : ι → Matrix n n ℂ) (hT : ∀ τ, IsUnit (T τ).det) :
     ratios (fun τ => (T τ)ᴴ * h τ * T τ) (fun τ => (T τ)ᴴ * h0 τ * T τ) = ratios h h0 := by
   have inj : ∀ v : ι → n → ℂ, (fun τ => T τ *ᵥ v τ) = 0 → v = 0 := by
@@ -219,6 +291,9 @@ def curvNorm (h : Pt ι p q → ι → Matrix n n ℂ) (β : Pt ι p q → Pt ι
   sSup {t | ∃ ξ η v, β z ξ ≤ 1 ∧ β z η ≤ 1 ∧ nsq (h z) v ≤ 1 ∧
     t = Real.sqrt (nsq (h z) fun τ => curvMat h z ξ η τ *ᵥ v τ)}
 
+/- English proof (translation)
+Unfold `connNorm`. Use `Real.sSup_nonneg ?_` and prove the remaining obligations. Introduce and unpack `t ⟨ξ, v, -, -, rfl⟩`. Conclude with `Real.sqrt_nonneg _`.
+-/
 theorem connNorm_nonneg (h h0 : Pt ι p q → ι → Matrix n n ℂ) (β : Pt ι p q → Pt ι p q → ℝ) (z : Pt ι p q) :
     0 ≤ connNorm h h0 β z := by
   unfold connNorm
@@ -226,6 +301,9 @@ theorem connNorm_nonneg (h h0 : Pt ι p q → ι → Matrix n n ℂ) (β : Pt ι
   rintro t ⟨ξ, v, -, -, rfl⟩
   exact Real.sqrt_nonneg _
 
+/- English proof (translation)
+Unfold `curvNorm`. Use `Real.sSup_nonneg ?_` and prove the remaining obligations. Introduce and unpack `t ⟨ξ, η, v, -, -, -, rfl⟩`. Conclude with `Real.sqrt_nonneg _`.
+-/
 theorem curvNorm_nonneg (h : Pt ι p q → ι → Matrix n n ℂ) (β : Pt ι p q → Pt ι p q → ℝ) (z : Pt ι p q) :
     0 ≤ curvNorm h β z := by
   unfold curvNorm
@@ -233,6 +311,9 @@ theorem curvNorm_nonneg (h : Pt ι p q → ι → Matrix n n ℂ) (β : Pt ι p 
   rintro t ⟨ξ, η, v, -, -, -, rfl⟩
   exact Real.sqrt_nonneg _
 
+/- English proof (translation)
+Use `le_antisymm ?_ (connNorm_nonneg h h β z)` and prove the remaining obligations. Unfold `connNorm`. Use `Real.sSup_nonpos ?_` and prove the remaining obligations. Introduce and unpack `t ⟨ξ, v, -, -, rfl⟩`. Simplify using `[nsq]`.
+-/
 theorem connNorm_self (h : Pt ι p q → ι → Matrix n n ℂ) (β : Pt ι p q → Pt ι p q → ℝ) (z : Pt ι p q) :
     connNorm h h β z = 0 := by
   refine le_antisymm ?_ (connNorm_nonneg h h β z)
@@ -241,8 +322,18 @@ theorem connNorm_self (h : Pt ι p q → ι → Matrix n n ℂ) (β : Pt ι p q 
   rintro t ⟨ξ, v, -, -, rfl⟩
   simp [nsq]
 
+/- English proof (translation)
+Simplify using `[ddc, dHol, dAnti, dR]`.
+-/
 theorem ddc_const (c : ℝ) (z ξ : Pt ι p q) : ddc (fun _ => c) z ξ = 0 := by simp [ddc, dHol, dAnti, dR]
 
+/- English proof (translation)
+Establish `key : ∀ ζ : Pt ι p q, dR (fun w => w τ a b) z ζ = ζ τ a b`. Introduce `ζ`. Use `show fderiv ℝ (fun v : ι × Fin p × Fin q → ℂ => unflat v τ a b) (flat z) (flat ζ) = ζ τ a b`. Establish `e : (fun v : ι × Fin p × Fin q → ℂ => unflat v τ a b) = fun v => v (τ, a, b)`. Use function extensionality and compare the values at `v`.
+
+Simplify using `[unflat]`. Rewrite using `[e, (hasFDerivAt_apply (𝕜 := ℝ) (τ, a, b) (flat z)).fderiv]`. Simplify using `[flat]`. Establish `hI : (Complex.I • ξ) τ a b = Complex.I * ξ τ a b` using `rfl`. Simplify using `only [dHol, dAnti, key, hI]`.
+
+Prove the components needed by the constructor for the conclusion. Take the linear combination `(-(ξ τ a b) / 2) * Complex.I_mul_I`. Take the linear combination `(ξ τ a b / 2) * Complex.I_mul_I`.
+-/
 theorem dHol_coord (τ : ι) (a : Fin p) (b : Fin q) (z ξ : Pt ι p q) :
     dHol (fun w => w τ a b) z ξ = ξ τ a b ∧ dAnti (fun w => w τ a b) z ξ = 0 := by
   have key : ∀ ζ : Pt ι p q, dR (fun w => w τ a b) z ζ = ζ τ a b := by
@@ -316,6 +407,9 @@ def met (z : Pt ι p q) (τ : ι) : Matrix (Fin p ⊕ Fin q) (Fin p ⊕ Fin q) �
 def IsKaehler : Prop :=
   ∀ z ∈ DomI ι p q, ∀ ξ ζ η, dHol (fun w => B.kae w ξ η) z ζ = dHol (fun w => B.kae w ζ η) z ξ
 
+/- English proof (translation)
+Unfold `ri`. Establish `h1` using `B.nrm_pos i z hz`. Establish `h2` using `B.nrm_le i z hz`. Establish `h3 : Real.log (B.nrm i z ^ 2) ≤ 0` using `Real.log_nonpos (by positivity) (pow_le_one₀ h1.le h2)`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem exp_le_ri (i : Fin B.m) {z : Pt ι p q} (hz : z ∈ DomI ι p q) : Real.exp 1 ≤ B.ri i z := by
   unfold ri
   have h1 := B.nrm_pos i z hz
@@ -323,6 +417,9 @@ theorem exp_le_ri (i : Fin B.m) {z : Pt ι p q} (hz : z ∈ DomI ι p q) : Real.
   have h3 : Real.log (B.nrm i z ^ 2) ≤ 0 := Real.log_nonpos (by positivity) (pow_le_one₀ h1.le h2)
   linarith
 
+/- English proof (translation)
+Unfold `r`. Establish `h0 : 0 ≤ ∏ i, B.nrm i z` using `Finset.prod_nonneg fun i _ => (B.nrm_pos i z hz).le`. Establish `h1 : ∏ i, B.nrm i z ≤ 1` using `Finset.prod_le_one (fun i _ => (B.nrm_pos i z hz).le) fun i _ => B.nrm_le i z hz`. Establish `h3 : Real.log ((∏ i, B.nrm i z) ^ 2) ≤ 0` using `Real.log_nonpos (by positivity) (pow_le_one₀ h0 h1)`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem exp_le_r {z : Pt ι p q} (hz : z ∈ DomI ι p q) : Real.exp 1 ≤ B.r z := by
   unfold r
   have h0 : 0 ≤ ∏ i, B.nrm i z := Finset.prod_nonneg fun i _ => (B.nrm_pos i z hz).le
@@ -331,27 +428,44 @@ theorem exp_le_r {z : Pt ι p q} (hz : z ∈ DomI ι p q) : Real.exp 1 ≤ B.r z
   have h3 : Real.log ((∏ i, B.nrm i z) ^ 2) ≤ 0 := Real.log_nonpos (by positivity) (pow_le_one₀ h0 h1)
   linarith
 
+/- English proof (translation)
+Unfold `r ri`. Rewrite using `[← Finset.prod_pow, Real.log_prod fun i _ => pow_ne_zero 2 (B.nrm_pos i z hz).ne', Finset.sum_sub_distrib, Finset.sum_const, Finset.card_univ, Fintype.card_fin, nsmul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem r_eq {z : Pt ι p q} (hz : z ∈ DomI ι p q) : B.r z = ∑ i, B.ri i z - (B.m - 1) * Real.exp 1 := by
   unfold r ri
   rw [← Finset.prod_pow, Real.log_prod fun i _ => pow_ne_zero 2 (B.nrm_pos i z hz).ne',
     Finset.sum_sub_distrib, Finset.sum_const, Finset.card_univ, Fintype.card_fin, nsmul_eq_mul]
   ring
 
+/- English proof (translation)
+Establish `H : ∀ i, B.nrm i (moebI γ z) = B.nrm i z` using `fun i => B.nrm_inv i γ hγ z hz`. Unfold `r`. Simplify using `only [H]`.
+-/
 theorem r_moeb {γ : ι → GL (Fin p ⊕ Fin q) ℂ} (hγ : γ ∈ Γ) {z : Pt ι p q} (hz : z ∈ DomI ι p q) :
     B.r (moebI γ z) = B.r z := by
   have H : ∀ i, B.nrm i (moebI γ z) = B.nrm i z := fun i => B.nrm_inv i γ hγ z hz
   unfold r
   simp only [H]
 
+/- English proof (translation)
+Unfold `met`. Conclude with `blkMet_posDef (B.metW_pos z hz τ) (B.metOm_pos z hz τ)`.
+-/
 theorem met_posDef {z : Pt ι p q} (hz : z ∈ DomI ι p q) (τ : ι) : (B.met z τ).PosDef := by
   unfold met
   exact blkMet_posDef (B.metW_pos z hz τ) (B.metOm_pos z hz τ)
 
+/- English proof (translation)
+Unfold `met`. Rewrite using `[autE_blkMet, B.metW_inv γ hγ z hz τ, B.metOm_inv γ hγ z hz τ]`.
+-/
 theorem met_moeb {γ : ι → GL (Fin p ⊕ Fin q) ℂ} (hγ : γ ∈ Γ) {z : Pt ι p q} (hz : z ∈ DomI ι p q) (τ : ι) :
     (autE (γ τ) (z τ))ᴴ * B.met (moebI γ z) τ * autE (γ τ) (z τ) = B.met z τ := by
   unfold met
   rw [autE_blkMet, B.metW_inv γ hγ z hz τ, B.metOm_inv γ hγ z hz τ]
 
+/- English proof (translation)
+Establish `hg : ∀ τ, γ τ ∈ Upq p q` using `fun τ => (Subgroup.mem_pi _).mp (hΓ hγ) τ (Set.mem_univ τ)`. Establish `hT : ∀ τ, IsUnit (autE (γ τ) (z τ)).det` using `fun τ => autE_isUnit (hg τ) (hz τ)`. Rewrite using `[← ratios_conj (hodgeI c (moebI γ z)) (B.met (moebI γ z)) (fun τ => autE (γ τ) (z τ)) hT]`. Use `congr 1`. Use function extensionality and compare the values at `τ`.
+
+Conclude with `hodge_moeb (c τ) (hg τ) (hz τ)`. Use function extensionality and compare the values at `τ`. Conclude with `B.met_moeb hγ hz τ`.
+-/
 theorem ratios_moeb (hΓ : Γ ≤ UpqI ι p q) (c : ι → ℝ) {γ : ι → GL (Fin p ⊕ Fin q) ℂ} (hγ : γ ∈ Γ) {z : Pt ι p q}
     (hz : z ∈ DomI ι p q) : ratios (hodgeI c (moebI γ z)) (B.met (moebI γ z)) = ratios (hodgeI c z) (B.met z) := by
   have hg : ∀ τ, γ τ ∈ Upq p q := fun τ => (Subgroup.mem_pi _).mp (hΓ hγ) τ (Set.mem_univ τ)
@@ -367,6 +481,9 @@ end BdData
 
 def detNorm (c : ι → ℝ) (s : ℂ) (z : Pt ι p q) (τ : ι) : ℝ := ‖s‖ * Real.sqrt (hodgeI c z τ).det.re
 
+/- English proof (translation)
+Unfold `detNorm hodgeI`. Rewrite using `[det_hodge (c τ) (hz τ), ← Complex.ofReal_pow, Complex.ofReal_re]`.
+-/
 theorem detNorm_eq (c : ι → ℝ) (s : ℂ) {z : Pt ι p q} (hz : z ∈ DomI ι p q) (τ : ι) :
     detNorm c s z τ = ‖s‖ * Real.sqrt (c τ ^ (p + q)) := by
   unfold detNorm hodgeI
@@ -375,6 +492,13 @@ theorem detNorm_eq (c : ι → ℝ) (s : ℂ) {z : Pt ι p q} (hz : z ∈ DomI �
 def onQuot {Γ : Subgroup (ι → GL (Fin p ⊕ Fin q) ℂ)} (f : Pt ι p q → ℝ) (x : XCc ι p q Γ) : ℝ :=
   f (Quot.out x : DomI ι p q)
 
+/- English proof (translation)
+Establish `key : ∀ x y : DomI ι p q, Relation.EqvGen (orbR Γ) x y → f x = f y`. Introduce `x y H`. Proceed by induction on `H with`. Consider the case `rel x y hxy`. Take `⟨γ, hγ, hxy⟩` from `hxy`.
+
+Rewrite using `[← hxy]`. Conclude with `(hf γ hγ x x.2).symm`. Consider the case `refl => rfl`. Consider the case `symm x y _ ih => exact ih.symm`. Consider the case `trans x y w _ _ ih1 ih2 => exact ih1.trans ih2`.
+
+Conclude with `key _ _ (Quot.eqvGen_exact (Quot.out_eq _))`.
+-/
 theorem onQuot_mk {Γ : Subgroup (ι → GL (Fin p ⊕ Fin q) ℂ)} {f : Pt ι p q → ℝ}
     (hf : ∀ γ ∈ Γ, ∀ z ∈ DomI ι p q, f (moebI γ z) = f z) (z : DomI ι p q) :
     onQuot (Γ := Γ) f (Quot.mk _ z) = f z := by

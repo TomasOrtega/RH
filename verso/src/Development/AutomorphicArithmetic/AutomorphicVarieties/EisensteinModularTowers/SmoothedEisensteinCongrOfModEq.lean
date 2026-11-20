@@ -4,6 +4,11 @@ import Development.AbelianVarietyTheory.Definitions.Foundations.IsLamOfLSmulIff
 open scoped MatrixGroups Matrix
 open GlobalTheory.KZ GlobalTheory.K4 GlobalTheory.Glue GlobalTheory.KummerEisensteinGalois UpperTheory.Kd.L
 
+/- English proof (translation)
+Take `⟨k, hk⟩` from `h.dvd`. Establish `hz : ζ ^ (M : ℤ) = 1`. Rewrite using `[zpow_natCast, hζ]`. Establish `hb : b = a + M * k`. Use linear arithmetic over natural numbers and integers.
+
+Rewrite using `[hb, zpow_add₀ (by rintro rfl; simp [zero_pow hM.ne'] at hζ), zpow_mul, hz, one_zpow, mul_one]`.
+-/
 private theorem zpow_congr_mod {K : Type} [Field K] {M : ℕ} {ζ : K} (hM : 0 < M) (hζ : ζ ^ M = 1) {a b : ℤ}
     (h : a ≡ b [ZMOD M]) : ζ ^ a = ζ ^ b := by
   obtain ⟨k, hk⟩ := h.dvd
@@ -13,6 +18,13 @@ private theorem zpow_congr_mod {K : Type} [Field K] {M : ℕ} {ζ : K} (hM : 0 <
     omega
   rw [hb, zpow_add₀ (by rintro rfl; simp [zero_pow hM.ne'] at hζ), zpow_mul, hz, one_zpow, mul_one]
 
+/- English proof (translation)
+Unfold `eisF`. Use `split_ifs`. Unfold `const0 frc`. Establish `hd : ((M : ℤ) ∣ a₁ ↔ (M : ℤ) ∣ b₁)`. Rewrite using `[Int.dvd_iff_emod_eq_zero, Int.dvd_iff_emod_eq_zero, h₁]`.
+
+Rewrite using `[zpow_congr_mod hM hζ h₂, show a₁ % (M : ℤ) = b₁ % M from h₁]`. Simplify using `only [hd]`. Unfold `coefPos`. Use `Finset.sum_congr rfl fun d _ => ?_` and prove the remaining obligations. Establish `hc : ∀ x : ℤ, (x ≡ a₁ [ZMOD M] ↔ x ≡ b₁ [ZMOD M])` using `fun x => ⟨fun h => h.trans h₁, fun h => h.trans h₁.symm⟩`.
+
+Simplify using `only [hc, zpow_congr_mod hM hζ (h₂.mul_right (d : ℤ)), zpow_congr_mod hM hζ (h₂.mul_right (d : ℤ)).neg]`.
+-/
 private theorem eisF_congr_mod {K : Type} [Field K] [CharZero K] (j : ℕ) {M : ℕ} {ζ : K} (hM : 0 < M) (hζ : ζ ^ M = 1)
     {a₁ b₁ a₂ b₂ : ℤ} (h₁ : a₁ ≡ b₁ [ZMOD M]) (h₂ : a₂ ≡ b₂ [ZMOD M]) (n : ℕ) :
     eisF j M ζ a₁ a₂ n = eisF j M ζ b₁ b₂ n := by
@@ -30,6 +42,9 @@ private theorem eisF_congr_mod {K : Type} [Field K] [CharZero K] (j : ℕ) {M : 
     simp only [hc, zpow_congr_mod hM hζ (h₂.mul_right (d : ℤ)),
       zpow_congr_mod hM hζ (h₂.mul_right (d : ℤ)).neg]
 
+/- English proof (translation)
+Introduce `K _ _ c j M ζ hM hζ a₁ b₁ a₂ b₂ h₁ h₂`. Use function extensionality and compare the values at `n`. Unfold `smF`. Rewrite using `[eisF_congr_mod j hM hζ h₁ h₂, eisF_congr_mod j hM hζ (h₁.mul_left c) (h₂.mul_left c)]`.
+-/
 theorem UpperTheory.smoothedEisenstein_congr_of_modEq :
     ∀ {K : Type} [Field K] [CharZero K] (c : ℤ) (j M : ℕ) (ζ : K), 0 < M → ζ ^ M = 1 → ∀ {a₁ b₁ a₂ b₂ : ℤ}, a₁ ≡ b₁ [ZMOD M] → a₂ ≡ b₂ [ZMOD M] → smF c j M ζ a₁ a₂ = smF c j M ζ b₁ b₂ := by
   intro K _ _ c j M ζ hM hζ a₁ b₁ a₂ b₂ h₁ h₂

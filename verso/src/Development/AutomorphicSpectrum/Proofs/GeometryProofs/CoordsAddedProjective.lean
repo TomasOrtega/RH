@@ -17,6 +17,13 @@ namespace GlobalTheory.CompanionTheory.Ar.FlagStep.TieBlocks
 
 variable {X : Scheme.{0}} {Ω : Type} [Field Ω]
 
+/- English proof (translation)
+Take `⟨h0, hc⟩` from `hc`. Establish `hck : ∀ k, y ⟨k, c k⟩ ≠ 0` using `fun k => (Finset.prod_ne_zero_iff.1 h0) k (Finset.mem_univ k)`. Use `⟨hck k, ?_⟩` and prove the remaining obligations. Establish `h` using `hc (Function.update c k i)`. Establish `e : (∏ k', y ⟨k', Function.update c k i k'⟩) / (∏ k', y ⟨k', c k'⟩) = y ⟨k, i⟩ / y ⟨k, c k⟩`.
+
+Rewrite using `[← Finset.prod_div_distrib, Finset.prod_eq_single k]`. Simplify using the standard rewrite rules. Introduce `b _ hb`. Rewrite using `[Function.update_of_ne hb]`. Conclude with `div_self (hck b)`.
+
+Simplify using the standard rewrite rules. Rewrite using `[← e]`. Conclude with `h`.
+-/
 theorem block_ratio_mem {K : Type} [Fintype K] {J : K → Type} {y : (Σ k, J k) → Ω}
     {ξ : Spec (CommRingCat.of Ω) ⟶ X} {c : (k : K) → J k} {p : Cpt ξ}
     (hc : InChart ξ (fun c' : (k : K) → J k => ∏ k, y ⟨k, c' k⟩) c p) (k : K) (i : J k) :
@@ -36,6 +43,13 @@ theorem block_ratio_mem {K : Type} [Fintype K] {J : K → Type} {y : (Σ k, J k)
   rw [← e]
   exact h
 
+/- English proof (translation)
+Introduce `X X' Ω₀ Ω _ _ _ ξ ξ' f K _ J _ y N x' _ hy hx hd`. Establish `h1 : CoordTie ℤ ξ' (fun c' : (k : Unit) → (fun _ : Unit => Fin (N + 1)) k => ∏ k, (fun p : (Σ _ : Unit, Fin (N + 1)) => x' p.2) ⟨k, c' k⟩)`. Simplify using `using CoordBase.coordTie_reindex (Equiv.funUnique Unit (Fin (N + 1))) hx`. Establish `h2 : ∀ (k : K) (p : Cpt ξ'), ∃ i, InChart ξ' (fun i' : J k => (fun p : (Σ k, J k) => algebraMap Ω₀ Ω (y p)) ⟨k, i'⟩) i p`. Introduce `k p`.
+
+Take `⟨h, hreg, -⟩` from `RegAtDom.regAt_dominates X Ω₀ ξ X' Ω ξ' f (algebraMap Ω₀ Ω) hd p`. Take `⟨c, hc⟩` from `hy.cover ⟨f p.1, h⟩`. Use `⟨c k, ?_, fun i => ?_⟩` and prove the remaining obligations. Conclude with `(map_ne_zero _).2 (block_ratio_mem hc k (c k)).1`. Use `hreg _ (block_ratio_mem hc k i).2` as an intermediate fact.
+
+Rewrite `this` using `[map_div₀]`. Then use the resulting hypothesis. Establish `h3` using `GlobalTheory.T.coords_join_blocks X' Ω ξ' Unit (fun _ => Fin (N + 1)) (fun p => x' p.2) K J (fun p => algebraMap Ω₀ Ω (y p)) h1 h2`. Use `h3 using 2 with c'` and compare the differences between its conclusion and the goal. Conclude with `Fintype.prod_sum_type _`.
+-/
 theorem tie_blocks : ∀ (X X' : Scheme.{0}) (Ω₀ Ω : Type) [Field Ω₀] [Field Ω] [Algebra Ω₀ Ω]
     (ξ : Spec (CommRingCat.of Ω₀) ⟶ X) (ξ' : Spec (CommRingCat.of Ω) ⟶ X') (f : X' ⟶ X)
     (K : Type) [Fintype K] (J : K → Type) [∀ k, Fintype (J k)] (y : (Σ k, J k) → Ω₀) (N : ℕ) (x' : Fin (N + 1) → Ω),

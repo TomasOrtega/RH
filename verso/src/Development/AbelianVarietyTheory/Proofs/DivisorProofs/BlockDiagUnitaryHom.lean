@@ -12,10 +12,20 @@ open GlobalTheory.Doubling
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Simplify using `[blkMat, Matrix.fromBlocks_transpose, Matrix.transpose_submatrix]`.
+-/
 theorem blockDiag_transpose {A : Type} [CommRing A] {m n ι : Type} (e : m ⊕ n ≃ ι) (x : Matrix m m A) (y : Matrix n n A) :
     (blkMat e x y)ᵀ = blkMat e xᵀ yᵀ := by
   simp [blkMat, Matrix.fromBlocks_transpose, Matrix.transpose_submatrix]
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ n W W₂ hW`. Establish `hJ : incM F W₂.J = blkMat finSumFinEquiv (incM F W.J) (-incM F W.J)`. Rewrite using `[hW, incM, dblGram, blkMat_map _ _ (map_zero _)]`. Use `congr 1`. Use extensionality with `i j`.
+
+Simplify using `[incM]`. Use `⟨((blkGL finSumFinEquiv).comp ((UG (cA σ) (incM F W.J)).subtype.prodMap (UG (cA σ) (incM F W.J)).subtype)).codRestrict _ ?_, fun h h' => rfl⟩` and prove the remaining obligations. Introduce and unpack `⟨⟨x, hx⟩, ⟨y, hy⟩⟩`. Express the relevant statement in the definitionally equal form `(blkMat finSumFinEquiv x.1 y.1)ᵀ * incM F W₂.J * (blkMat finSumFinEquiv x.1 y.1).map (cA σ) = incM F W₂.J`. Establish `hx' : (x : Matrix (Fin n) (Fin n) (AE F E))ᵀ * incM F W.J * (x : Matrix (Fin n) (Fin n) (AE F E)).map (cA σ) = incM F W.J` using `hx`.
+
+Establish `hy' : (y : Matrix (Fin n) (Fin n) (AE F E))ᵀ * incM F W.J * (y : Matrix (Fin n) (Fin n) (AE F E)).map (cA σ) = incM F W.J` using `hy`. Rewrite using `[hJ, blockDiag_transpose, blkMat_map _ _ (map_zero _), blkMat_mul, blkMat_mul, hx']`. Use `congr 1`. Rewrite using `[Matrix.mul_neg, Matrix.neg_mul, hy']`.
+-/
 theorem blockDiag_unitary_hom : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (n : ℕ) (W : Spc F E n)
     (W₂ : Spc F E (n + n)), W₂.J = dblGram finSumFinEquiv W.J →
     ∃ i : UA σ W.J × UA σ W.J →* UA σ W₂.J, ∀ h h', mat (i (h, h')) = blkMat finSumFinEquiv (mat h) (mat h') := by

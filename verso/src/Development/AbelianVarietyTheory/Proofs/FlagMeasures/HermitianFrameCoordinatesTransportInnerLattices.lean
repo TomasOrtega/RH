@@ -16,6 +16,11 @@ open CoordInnerSnd
 open ValuativeRel in
 open scoped Pointwise ENNReal Classical in
 
+/- English proof (translation)
+Introduce `F _ _ _ E _ _ _ _ M hM V _ _ H r k P S c`. Use `haveI := hM.loc`. Use `haveI := hM.char0`. Take `⟨ϖ, hϖ⟩` from `IsDiscreteValuationRing.exists_irreducible 𝒪[F]`. Establish `hPID : IsPrincipalIdealRing M.L.O` using `(_root_.GlobalTheory.UnramOrder.order_facts M.L ϖ hϖ).2.2.2.1`.
+
+Establish `hcj : ∀ x ∈ M.L.O, M.L.cj x ∈ M.L.O` using `fun x hx => _root_.GlobalTheory.UnramOrder.cj_mem M.L hx`. Establish `hT : P.A.T ≠ 0`. Rewrite using `[← c.T_eq]`. Conclude with `Units.ne_zero _`. Conclude with `⟨_root_.GlobalTheory.HL.CoordInnerSnd.inn_inj P.A c, fun L => _root_.GlobalTheory.HL.CoordInnerSnd.isInner_iff P.A c S.f S.es hcj hPID hT c.f_eq c.es_eq L, _root_.GlobalTheory.HL.CoordInnerSnd.inn_surj P.A c S.f S.es c.f_eq, _root_.GlobalTheory.HL.CoordInnerSnd.lat_lamStd P.A c S …`.
+-/
 theorem _root_.GlobalTheory.HL.CoordInnerFst.transport : ∀ {F : Type} [Field F] [ValuativeRel F]
     [TopologicalSpace F] {E : Type} [CommRing E] [Algebra F E] [TopologicalSpace E]
     [MeasurableSpace E] (M : _root_.Formalism.MainNotions.S.Loc.Model F E), M.OK → ∀ {V : Type} [AddCommGroup V] [Module E V]

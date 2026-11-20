@@ -11,6 +11,21 @@ namespace GlobalTheory.FrameGlob
 
 open Matrix
 
+/- English proof (translation)
+Establish `key : ∀ (Λ : Submodule 𝒪[k] (n → k)), Λ.IsLattice k → ∃ e : (Fin (Fintype.card n) → k) ≃ₗ[k] (n → k), ∀ y, e y ∈ Λ ↔ ∀ i, y i ∈ 𝒪[k]`. Introduce `Λ hΛ`. Set `b` to `Module.finBasisOfFinrankEq 𝒪[k] Λ (Submodule.IsLattice.finrank_of_pi k Λ)`. Set `b'` to `b.extendOfIsLattice k`. Establish `hkey : ∀ c : Fin (Fintype.card n) → 𝒪[k], b'.equivFun.symm (fun i => (c i : k)) = ((∑ i, c i • b i : Λ) : n → k)`.
+
+Introduce `c`. Rewrite using `[Module.Basis.equivFun_symm_apply, Submodule.coe_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[Module.Basis.extendOfIsLattice_apply]`. Both sides reduce to the same expression.
+
+Use `⟨b'.equivFun.symm, fun y => ⟨fun h => ?_, fun h => ?_⟩⟩` and prove the remaining obligations. Establish `h1` using `hkey (b.repr ⟨_, h⟩)`. Rewrite `h1` using `[b.sum_repr]`. Rewrite using `[← b'.equivFun.symm.injective h1]`. Conclude with `fun i => (b.repr ⟨_, h⟩ i).2`.
+
+Establish `h1` using `hkey fun i => ⟨y i, h i⟩`. Establish `h2 : b'.equivFun.symm y = _` using `h1`. Rewrite using `[h2]`. Conclude with `Subtype.property _`. Take `⟨e₁, he₁⟩` from `key Λ₁ h₁`.
+
+Take `⟨e₂, he₂⟩` from `key Λ₂ h₂`. Set `φ : (n → k) ≃ₗ[k] (n → k)` to `e₁.symm.trans e₂`. Use `⟨⟨LinearMap.toMatrix' φ.toLinearMap, LinearMap.toMatrix' φ.symm.toLinearMap, ?_, ?_⟩, fun z => ?_⟩` and prove the remaining obligations. Rewrite using `[← LinearMap.toMatrix'_mul]`. Establish `: φ.toLinearMap * φ.symm.toLinearMap = LinearMap.id` using `by ext; simp`.
+
+Rewrite using `[this, LinearMap.toMatrix'_id]`. Rewrite using `[← LinearMap.toMatrix'_mul]`. Establish `: φ.symm.toLinearMap * φ.toLinearMap = LinearMap.id` using `by ext; simp`. Rewrite using `[this, LinearMap.toMatrix'_id]`. Use `show z ∈ Λ₁ ↔ LinearMap.toMatrix' φ.toLinearMap *ᵥ z ∈ Λ₂`.
+
+Rewrite using `[LinearMap.toMatrix'_mulVec]`. Establish `h` using `he₁ (e₁.symm z)`. Rewrite `h` using `[LinearEquiv.apply_symm_apply]`. Rewrite using `[h, LinearEquiv.coe_coe, ← he₂]`. Both sides reduce to the same expression.
+-/
 theorem exists_gl_of_lattices {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
     {n : Type} [Fintype n] [DecidableEq n] (Λ₁ Λ₂ : Submodule 𝒪[k] (n → k)) (h₁ : Λ₁.IsLattice k)
     (h₂ : Λ₂.IsLattice k) : ∃ g : GL n k, ∀ z, z ∈ Λ₁ ↔ g.val *ᵥ z ∈ Λ₂ := by
@@ -60,22 +75,38 @@ open Matrix
 
 variable {D : D7} {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
 
+/- English proof (translation)
+Take `⟨ε, hε, hsum⟩` from `p.above`. Take `⟨hee, hec, -⟩` from `p.split`. Use `((GlobalTheory.T.placeIdempotent_acts_on_supportedAndOff D p.v ε hε).1 p.e).2 ?_` and prove the remaining obligations. Rewrite using `[← hsum, add_mul, hee, mul_comm (cA D p.e), hec, add_zero]`.
+-/
 theorem e_mem_idAt (p : SplitPt D k) : p.e ∈ idAt D (· = p.v) := by
   obtain ⟨ε, hε, hsum⟩ := p.above
   obtain ⟨hee, hec, -⟩ := p.split
   refine ((GlobalTheory.T.placeIdempotent_acts_on_supportedAndOff D p.v ε hε).1 p.e).2 ?_
   rw [← hsum, add_mul, hee, mul_comm (cA D p.e), hec, add_zero]
 
+/- English proof (translation)
+Establish `h` using `p.sec_pr (p.sec a)`. Rewrite `h` using `[p.pr_sec]`. Then use the resulting hypothesis.
+-/
 theorem sec_eq_mul (p : SplitPt D k) (a : k) : p.sec a = p.e * p.sec a := by
   have h := p.sec_pr (p.sec a)
   rwa [p.pr_sec] at h
 
+/- English proof (translation)
+Rewrite using `[sec_eq_mul]`. Conclude with `Ideal.mul_mem_right _ _ (e_mem_idAt p)`.
+-/
 theorem sec_mem_idAt (p : SplitPt D k) (a : k) : p.sec a ∈ idAt D (· = p.v) := by
   rw [sec_eq_mul]
   exact Ideal.mul_mem_right _ _ (e_mem_idAt p)
 
 variable {S : HSp D} {n : Type} [Fintype n] [DecidableEq n]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `i`. Use `set m := mt S (β.gl g)`. Use `set y : Fin S.rank → AE D := fun i => p.sec ((β.b *ᵥ z) i)`. Establish `he : (m *ᵥ y) i = p.e * (m *ᵥ y) i`. Simplify using `only [Matrix.mulVec, dotProduct, Finset.mul_sum]`.
+
+Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Use `show m i j * p.sec _ = p.e * (m i j * p.sec _)`. Use `conv_lhs => rw [sec_eq_mul]`. Expand and normalize the polynomial expressions, which then agree. Establish `hpr : p.pr ((m *ᵥ y) i) = ((m.map p.pr) *ᵥ (β.b *ᵥ z)) i`.
+
+Simplify using `only [Matrix.mulVec, dotProduct, map_sum, map_mul, Matrix.map_apply, y, p.pr_sec]`. Rewrite using `[he, ← p.sec_pr, hpr, β.gl_mat, Matrix.mulVec_mulVec, Matrix.mulVec_mulVec, Matrix.mul_assoc, Matrix.mul_assoc, β.b'b, Matrix.mul_one]`.
+-/
 theorem mt_gl_vec {p : SplitPt D k} (β : Frame p S n) (g : GL n k) (z : n → k) :
     mt S (β.gl g) *ᵥ (fun i => p.sec ((β.b *ᵥ z) i)) = fun i => p.sec ((β.b *ᵥ (g.val *ᵥ z)) i) := by
   funext i
@@ -92,6 +123,11 @@ theorem mt_gl_vec {p : SplitPt D k} (β : Frame p S n) (g : GL n k) (z : n → k
   rw [he, ← p.sec_pr, hpr, β.gl_mat, Matrix.mulVec_mulVec, Matrix.mulVec_mulVec, Matrix.mul_assoc,
     Matrix.mul_assoc, β.b'b, Matrix.mul_one]
 
+/- English proof (translation)
+Take `⟨ε, hε, hsum⟩` from `p.above`. Establish `h0 : (mt S (β.gl g) - 1) *ᵥ y = 0`. Use function extensionality and compare the values at `i`. Simplify using `only [Matrix.mulVec, dotProduct, Pi.zero_apply]`. Use `Finset.sum_eq_zero fun j _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[← β.gl_supp g i j, hsum]`. Combine the equalities or inequalities in the displayed calculation. Rewrite `h0` using `[Matrix.sub_mulVec, Matrix.one_mulVec, sub_eq_zero]`. Conclude with `h0`.
+-/
 theorem mt_gl_off {p : SplitPt D k} (β : Frame p S n) (g : GL n k) (y : Fin S.rank → AE D)
     (hy : ∀ i, y i ∈ idAt D (· ≠ p.v)) : mt S (β.gl g) *ᵥ y = y := by
   obtain ⟨ε, hε, hsum⟩ := p.above
@@ -106,6 +142,15 @@ theorem mt_gl_off {p : SplitPt D k} (β : Frame p S n) (g : GL n k) (y : Fin S.r
   rw [Matrix.sub_mulVec, Matrix.one_mulVec, sub_eq_zero] at h0
   exact h0
 
+/- English proof (translation)
+Introduce `D k _ _ _ _ p S n _ _ β L Λ hL hΛ`. Take `⟨Λ₁, hΛ₁, hLat₁, -⟩` from `GlobalTheory.T.selfDual_splitComponent_isLattice_stabilizer_eq D k p S n β L hL`. Take `⟨g, hg⟩` from `exists_gl_of_lattices Λ₁ Λ hΛ₁ hΛ`. Take `⟨M, hM, hMv⟩` from `(GlobalTheory.T.selfDual_image_adelicPoint_wittCore D S L hL).1 (β.gl g)`. Establish `supp : ∀ (N : Lat S), IsSelfDualC S N → ∀ y, y ∈ latV S N (· ≠ p.v) → ∀ i, y i ∈ idAt D (· ≠ p.v)` using `fun N hN y hy => (((GlobalTheory.T.adelicPoint_components_atPlaces_lattices_vacua D (· ≠ p.v)).2 S).2.2.2 N y hN.1 |>.1 hy).1`.
+
+Use `⟨M, hM, fun x => ?_, ?_⟩` and prove the remaining obligations. Establish `hx : x = g.val *ᵥ ((g⁻¹).val *ᵥ x)`. Rewrite using `[Matrix.mulVec_mulVec, ← Units.val_mul, mul_inv_cancel, Units.val_one, Matrix.one_mulVec]`. Rewrite using `[hx, ← hg, hLat₁, hMv (· = p.v) _ (fun i => sec_mem_idAt p _), mt_gl_vec]`. Use extensionality with `y`.
+
+Prove the components needed by the constructor for the conclusion. Introduce `hy`. Establish `hs` using `supp M hM y hy`. Rewrite `hy` using `[← mt_gl_off β g y hs]`. Conclude with `(hMv (· ≠ p.v) y hs).2 hy`.
+
+Introduce `hy`. Establish `hs` using `supp L hL y hy`. Establish `h` using `(hMv (· ≠ p.v) y hs).1 hy`. Rewrite `h` using `[mt_gl_off β g y hs]`. Then use the resulting hypothesis.
+-/
 theorem main : ∀ (D : D7) (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
     (p : SplitPt D k) (S : HSp D) (n : Type) [Fintype n] [DecidableEq n] (β : Frame p S n) (L : Lat S)
     (Λ : Submodule 𝒪[k] (n → k)), IsSelfDualC S L → Λ.IsLattice k →

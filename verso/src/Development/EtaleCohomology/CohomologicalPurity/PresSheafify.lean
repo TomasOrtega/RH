@@ -31,6 +31,9 @@ def isoN (k : ℕ) : chainsN R ⋙ HomologicalComplex.eval _ _ k ≅
 instance pres_N (k : ℕ) : PreservesColimitsOfShape WalkingSpan (chainsN R ⋙ HomologicalComplex.eval _ _ k) :=
   preservesColimitsOfShape_of_natIso (isoN R k).symm
 
+/- English proof (translation)
+Simplify using the standard rewrite rules.
+-/
 theorem hk (k : ℕ) : ComplexShape.embeddingDownNat.f k = -(k : ℤ) := by simp
 
 def isoC (k : ℕ) : chains R ⋙ HomologicalComplex.eval _ _ (-(k : ℤ)) ≅ chainsN R ⋙ HomologicalComplex.eval _ _ k :=
@@ -42,6 +45,11 @@ def isoC (k : ℕ) : chains R ⋙ HomologicalComplex.eval _ _ (-(k : ℤ)) ≅ c
       rw [HomologicalComplex.extendMap_f _ _ (hk k)]
       simp)
 
+/- English proof (translation)
+Distinguish the cases in `hp : ∃ k : ℕ, ComplexShape.embeddingDownNat.f k = p`. Take `⟨k, rfl⟩` from `hp`. Use `pres_N R k` as an intermediate fact. Conclude with `preservesColimitsOfShape_of_natIso (isoC R k).symm`. Use `push Not at hp`.
+
+Apply `Functor.preservesColimitsOfShape_of_isZero` to reduce the goal to its premises. Rewrite using `[Functor.isZero_iff]`. Introduce `X`. Conclude with `HomologicalComplex.isZero_extend_X _ _ _ hp`.
+-/
 theorem pres (p : ℤ) : PreservesColimitsOfShape WalkingSpan (chains R ⋙ HomologicalComplex.eval _ _ p) := by
   by_cases hp : ∃ k : ℕ, ComplexShape.embeddingDownNat.f k = p
   · obtain ⟨k, rfl⟩ := hp
@@ -56,6 +64,9 @@ theorem pres (p : ℤ) : PreservesColimitsOfShape WalkingSpan (chains R ⋙ Homo
 end LateralTheory.CohomologicalPurity.Bd.PushPf
 
 open LateralTheory.CohomologicalPurity.Bd.PushPf in
+/- English proof (translation)
+Introduce `R _ U E E' D f g l r h p`. Use `pres R p` as an intermediate fact. Conclude with `(chains R ⋙ HomologicalComplex.eval _ _ p).map_isPushout h`.
+-/
 theorem LateralTheory.CohomologicalPurity.Bd.LeafPush_of : LateralTheory.CohomologicalPurity.Bd.LeafPush := by
   intro R _ U E E' D f g l r h p
   have := pres R p

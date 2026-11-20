@@ -31,17 +31,39 @@ def cw (x : Fin n → K) : Fin n → K' := fun k => φ (x k)
 def IsBC (V : Submodule K (Fin n → K)) (V' : Submodule K' (Fin n → K')) : Prop :=
   V' = Submodule.span K' (cw φ '' (V : Set (Fin n → K)))
 
+/- English proof (translation)
+Use function extensionality and compare the values at `k`. Simplify using `[cw]`.
+-/
 theorem cw_zero : cw φ (0 : Fin n → K) = 0 := by funext k; simp [cw]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `k`. Simplify using `[cw]`.
+-/
 theorem cw_add (x y : Fin n → K) : cw φ (x + y) = cw φ x + cw φ y := by funext k; simp [cw]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `k`. Simplify using `[cw]`.
+-/
 theorem cw_sub (x y : Fin n → K) : cw φ (x - y) = cw φ x - cw φ y := by funext k; simp [cw]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `k`. Simplify using `[cw]`.
+-/
 theorem cw_smul (a : K) (x : Fin n → K) : cw φ (a • x) = φ a • cw φ x := by funext k; simp [cw]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `k`. Simplify using `[cw, Finset.sum_apply, map_sum]`.
+-/
 theorem cw_sum {ι : Type} (s : Finset ι) (x : ι → Fin n → K) : cw φ (∑ i ∈ s, x i) = ∑ i ∈ s, cw φ (x i) := by
   funext k; simp [cw, Finset.sum_apply, map_sum]
 
+/- English proof (translation)
+Apply `le_antisymm` to reduce the goal to its premises. Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨x, hx, rfl⟩`. Proceed by induction on `hx using Submodule.span_induction with`. Consider the case `mem y hy => exact Submodule.subset_span ⟨y, hy, rfl⟩`.
+
+Consider the case `zero => rw [cw_zero]`. Conclude with `Submodule.zero_mem _`. Consider the case `add y z _ _ hy hz => rw [cw_add]`. Conclude with `Submodule.add_mem _ hy hz`. Consider the case `smul a y _ hy => rw [cw_smul]`.
+
+Conclude with `Submodule.smul_mem _ _ hy`. Conclude with `Submodule.span_mono (Set.image_mono Submodule.subset_span)`.
+-/
 theorem span_cw_span (X : Set (Fin n → K)) :
     Submodule.span K' (cw φ '' (Submodule.span K X : Set (Fin n → K))) = Submodule.span K' (cw φ '' X) := by
   apply le_antisymm
@@ -54,6 +76,13 @@ theorem span_cw_span (X : Set (Fin n → K)) :
     | smul a y _ hy => rw [cw_smul]; exact Submodule.smul_mem _ _ hy
   · exact Submodule.span_mono (Set.image_mono Submodule.subset_span)
 
+/- English proof (translation)
+Use `set b := Module.finBasis K V`. Establish `hV : Submodule.span K (Set.range fun i => (b i : Fin n → K)) = V`. Establish `: (Set.range fun i => (b i : Fin n → K)) = V.subtype '' Set.range b`. Use extensionality with `y`. Simplify using the standard rewrite rules.
+
+Rewrite using `[this, Submodule.span_image, b.span_eq, Submodule.map_subtype_top]`. Establish `hs : Submodule.span K' (cw φ '' (V : Set (Fin n → K))) = Submodule.span K' (Set.range fun i => cw φ (b i : Fin n → K))` using `by conv_lhs => rw [← hV]`. Rewrite using `[span_cw_span, ← Set.range_comp]`. Both sides reduce to the same expression. Establish `hli : LinearIndependent K' fun i => cw φ (b i : Fin n → K)`.
+
+Use `letI := φ.toAlgebra`. Establish `h0 : LinearIndependent K (fun i => (b i : Fin n → K))` using `b.linearIndependent.map' V.subtype V.ker_subtype`. Conclude with `(linearIndependent_algebraMap_comp_iff).2 h0`. Rewrite using `[hs, finrank_span_eq_card hli, Fintype.card_fin]`.
+-/
 theorem finrank_span_cw (V : Submodule K (Fin n → K)) :
     finrank K' (Submodule.span K' (cw φ '' (V : Set (Fin n → K)))) = finrank K V := by
   set b := Module.finBasis K V
@@ -72,6 +101,15 @@ theorem finrank_span_cw (V : Submodule K (Fin n → K)) :
     exact (linearIndependent_algebraMap_comp_iff).2 h0
   rw [hs, finrank_span_eq_card hli, Fintype.card_fin]
 
+/- English proof (translation)
+Unfold `IsBC at *`. Substitute `hS hT` using the available equality. Establish `hle : Submodule.span K' (cw φ '' ((S ⊓ T : Submodule K (Fin n → K)) : Set (Fin n → K))) ≤ Submodule.span K' (cw φ '' (S : Set (Fin n → K))) ⊓ Submodule.span K' (cw φ '' (T : Set (Fin n → K)))`. Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨x, hx, rfl⟩`.
+
+Conclude with `⟨Submodule.subset_span ⟨x, hx.1, rfl⟩, Submodule.subset_span ⟨x, hx.2, rfl⟩⟩`. Establish `hST : S ⊔ T = Submodule.span K ((S : Set (Fin n → K)) ∪ T)`. Rewrite using `[Submodule.span_union, Submodule.span_eq, Submodule.span_eq]`. Establish `hsup : Submodule.span K' (cw φ '' (S : Set (Fin n → K))) ⊔ Submodule.span K' (cw φ '' (T : Set (Fin n → K))) = Submodule.span K' (cw φ '' ((S ⊔ T : Submodule K (Fin n → K)) : Set (Fin n → K)))`. Rewrite using `[hST, span_cw_span, Set.image_union, Submodule.span_union]`.
+
+Use `(Submodule.eq_of_le_of_finrank_eq hle ?_).symm` and prove the remaining obligations. Establish `h1` using `Submodule.finrank_sup_add_finrank_inf_eq S T`. Establish `h2` using `Submodule.finrank_sup_add_finrank_inf_eq (Submodule.span K' (cw φ '' (S : Set (Fin n → K)))) (Submodule.span K' (cw φ '' (T : Set (Fin n → K))))`. Rewrite `h2` using `[hsup]`. Simplify using `only [finrank_span_cw] at h2`.
+
+Rewrite using `[finrank_span_cw]`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem isBC_inf {S T : Submodule K (Fin n → K)} {S' T' : Submodule K' (Fin n → K')} (hS : IsBC φ S S')
     (hT : IsBC φ T T') : IsBC φ (S ⊓ T) (S' ⊓ T') := by
   unfold IsBC at *
@@ -95,6 +133,15 @@ theorem isBC_inf {S T : Submodule K (Fin n → K)} {S' T' : Submodule K' (Fin n 
   rw [finrank_span_cw]
   omega
 
+/- English proof (translation)
+Unfold `IsBC`. Apply `le_antisymm` to reduce the goal to its premises. Introduce and unpack `_ ⟨x', rfl⟩`. Establish `hx : x' = ∑ i, x' i • cw φ (Pi.single i (1 : K))` using `by conv_lhs => rw [pi_eq_sum_univ x']`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations.
+
+Use `congr 1`. Use function extensionality and compare the values at `j`. Distinguish the cases in `hij : i = j`. Substitute `hij` using the available equality. Simplify using `[cw]`.
+
+Simplify using `[cw, hij, Pi.single_apply, Ne.symm hij]`. Rewrite using `[hx, map_sum]`. Use `Submodule.sum_mem _ fun i _ => ?_` and prove the remaining obligations. Rewrite using `[map_smul, h]`. Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span ⟨_, ⟨_, rfl⟩, rfl⟩)`.
+
+Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨_, ⟨x, rfl⟩, rfl⟩`. Conclude with `⟨cw φ x, h x⟩`.
+-/
 theorem isBC_range (f : (Fin n → K) →ₗ[K] (Fin n → K)) (f' : (Fin n → K') →ₗ[K'] (Fin n → K'))
     (h : ∀ x, f' (cw φ x) = cw φ (f x)) : IsBC φ (LinearMap.range f) (LinearMap.range f') := by
   unfold IsBC
@@ -116,6 +163,13 @@ theorem isBC_range (f : (Fin n → K) →ₗ[K] (Fin n → K)) (f' : (Fin n → 
     rintro _ ⟨_, ⟨x, rfl⟩, rfl⟩
     exact ⟨cw φ x, h x⟩
 
+/- English proof (translation)
+Unfold `IsBC`. Establish `hle : Submodule.span K' (cw φ '' (LinearMap.ker f : Set (Fin n → K))) ≤ LinearMap.ker f'`. Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨x, hx, rfl⟩`. Use `show f' (cw φ x) = 0`.
+
+Rewrite using `[h, LinearMap.mem_ker.1 hx, cw_zero]`. Use `(Submodule.eq_of_le_of_finrank_eq hle ?_).symm` and prove the remaining obligations. Establish `hr` using `isBC_range φ f f' h`. Unfold `IsBC at hr`. Establish `h1` using `LinearMap.finrank_range_add_finrank_ker f`.
+
+Establish `h2` using `LinearMap.finrank_range_add_finrank_ker f'`. Rewrite `h2` using `[hr, finrank_span_cw]`. Rewrite using `[finrank_span_cw]`. Simplify using `only [Module.finrank_fin_fun] at h1 h2`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem isBC_ker (f : (Fin n → K) →ₗ[K] (Fin n → K)) (f' : (Fin n → K') →ₗ[K'] (Fin n → K'))
     (h : ∀ x, f' (cw φ x) = cw φ (f x)) : IsBC φ (LinearMap.ker f) (LinearMap.ker f') := by
   unfold IsBC
@@ -134,10 +188,16 @@ theorem isBC_ker (f : (Fin n → K) →ₗ[K] (Fin n → K)) (f' : (Fin n → K'
   simp only [Module.finrank_fin_fun] at h1 h2
   omega
 
+/- English proof (translation)
+Use `isBC_ker φ (0 : (Fin n → K) →ₗ[K] (Fin n → K)) 0 (fun x => by simp [cw_zero])` as an intermediate fact. Simplify `this` using `only [LinearMap.ker_zero]`.
+-/
 theorem isBC_top : IsBC φ (⊤ : Submodule K (Fin n → K)) (⊤ : Submodule K' (Fin n → K')) := by
   have := isBC_ker φ (0 : (Fin n → K) →ₗ[K] (Fin n → K)) 0 (fun x => by simp [cw_zero])
   simpa only [LinearMap.ker_zero] using this
 
+/- English proof (translation)
+Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simpa using isBC_top φ`. Consider the case `insert a s _ ih`. Rewrite using `[Finset.iInf_insert, Finset.iInf_insert]`. Conclude with `isBC_inf φ (h a) ih`.
+-/
 theorem isBC_biInf {ι : Type} (s : Finset ι) (S : ι → Submodule K (Fin n → K)) (S' : ι → Submodule K' (Fin n → K'))
     (h : ∀ i, IsBC φ (S i) (S' i)) : IsBC φ (⨅ i ∈ s, S i) (⨅ i ∈ s, S' i) := by
   classical
@@ -153,6 +213,21 @@ namespace GlobalTheory.Mem.R3.GoodBC
 
 open Formalism.IndefR.Arith Module
 
+/- English proof (translation)
+Establish `hT : A.typeP J0 lam0 = ⨅ p ∈ (Finset.univ : Finset J0), LinearMap.ker (A.ρ p - ((A.chi p * lam0 p : LLˣ) : LL) • LinearMap.id)`. Use extensionality with `x`. Simplify using `only [Finset.mem_univ, iInf_pos, Submodule.mem_iInf, LinearMap.mem_ker, LinearMap.sub_apply, LinearMap.smul_apply, LinearMap.id_apply, sub_eq_zero]`. Both sides reduce to the same expression. Establish `hT' : A'.typeP J0' lam0' = ⨅ p ∈ (Finset.univ : Finset J0), LinearMap.ker (A'.ρ (e p) - ((A'.chi (e p) * lam0' ⟨e p, (hJ p).2 p.2⟩ : LL'ˣ) : LL') • LinearMap.id)`.
+
+Use extensionality with `x`. Simplify using `only [Finset.mem_univ, iInf_pos, Submodule.mem_iInf, LinearMap.mem_ker, LinearMap.sub_apply, LinearMap.smul_apply, LinearMap.id_apply, sub_eq_zero]`. Prove the components needed by the constructor for the conclusion. Introduce `h p`. Conclude with `h ⟨e p, (hJ p).2 p.2⟩`.
+
+Introduce `h p'`. Take `⟨g, hg⟩` from `e.surjective p'`. Establish `hm : g ∈ J0` using `(hJ g).1 (hg ▸ p'.2)`. Use `h ⟨g, hm⟩` as an intermediate fact. Establish `hp : p' = ⟨e g, (hJ g).2 hm⟩` using `Subtype.ext hg.symm`.
+
+Substitute `hp` using the available equality. Conclude with `this`. Establish `hTy : IsBC φ (A.typeP J0 lam0) (A'.typeP J0' lam0')`. Rewrite using `[hT, hT']`. Use `isBC_biInf φ _ _ _ fun p => isBC_ker φ _ _ fun x => ?_` and prove the remaining obligations.
+
+Simplify using `only [LinearMap.sub_apply, LinearMap.smul_apply, LinearMap.id_apply]`. Rewrite using `[hρ, cw_sub, cw_smul, Units.val_mul, Units.val_mul, map_mul, hchi, hlam p p.2]`. Establish `hE : ∀ x, A'.eOp eC' (cw φ x) = cw φ (A.eOp eC x)`. Introduce `x`. Unfold `FormsL.eOp`.
+
+Rewrite using `[← Equiv.sum_comp e.toEquiv]`. Simplify using `only [LinearMap.sum_apply, LinearMap.smul_apply, MulEquiv.toEquiv_eq_coe, MulEquiv.coe_toEquiv]`. Rewrite using `[cw_sum]`. Use `Finset.sum_congr rfl fun g _ => ?_` and prove the remaining obligations. Rewrite using `[hρ, cw_smul, map_mul, heC, Units.val_inv_eq_inv_val, Units.val_inv_eq_inv_val, map_inv₀, hchi]`.
+
+Establish `hG : IsBC φ (A.good eC) (A'.good eC')` using `isBC_range φ _ _ hE`. Conclude with `isBC_inf φ hTy hG`.
+-/
 theorem wgood_bc {LL LL' Ks Ks' : Type} [Field LL] [NumberField LL] [Field LL'] [NumberField LL'] [Field Ks] [NumberField Ks]
     [Field Ks'] [NumberField Ks'] [Algebra Ks LL] [Algebra Ks' LL'] {n : ℕ}
     [Module Ks (Fin n → LL)] [IsScalarTower Ks LL (Fin n → LL)] [Module Ks' (Fin n → LL')] [IsScalarTower Ks' LL' (Fin n → LL')]
@@ -212,6 +287,13 @@ namespace GlobalTheory.Mem.R3.GoodBC
 
 open Formalism.IndefR.Arith Module
 
+/- English proof (translation)
+Substitute `hn` using the available equality. Establish `hS : {x' : Fin n → LL' | ∃ x ∈ A.Wgood J0 lam0 eC, ∀ (k k' : Fin n), (k : ℕ) = k' → x' k' = φ (x k)} = cw φ '' (A.Wgood J0 lam0 eC : Set (Fin n → LL))`. Use extensionality with `x'`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨x, hx, h⟩`.
+
+Conclude with `⟨x, hx, funext fun k => (h k k rfl).symm⟩`. Introduce and unpack `⟨x, hx, rfl⟩`. Conclude with `⟨x, hx, fun k k' hk => by rw [Fin.ext hk]; rfl⟩`. Rewrite using `[hS]`. Use `wgood_bc A A' φ e J0 lam0 eC J0' lam0' eC' (fun g x => ?_) hchi hJ hlam heC` and prove the remaining obligations.
+
+Use function extensionality and compare the values at `k`. Conclude with `hρ g x (cw φ x) (fun k k' hk => by rw [Fin.ext hk]; rfl) k k rfl`.
+-/
 theorem wgood_bc_rel {LL LL' Ks Ks' : Type} [Field LL] [NumberField LL] [Field LL'] [NumberField LL'] [Field Ks] [NumberField Ks]
     [Field Ks'] [NumberField Ks'] [Algebra Ks LL] [Algebra Ks' LL'] {n n' : ℕ} (hn : n = n')
     [Module Ks (Fin n → LL)] [IsScalarTower Ks LL (Fin n → LL)] [Module Ks' (Fin n' → LL')] [IsScalarTower Ks' LL' (Fin n' → LL')]
@@ -246,6 +328,11 @@ end GlobalTheory.Mem.R3.GoodBC
 
 namespace GlobalTheory.Mem.R3.GoodBC
 
+/- English proof (translation)
+Take `⟨P, r⟩` from `B`. Take `⟨P', r'⟩` from `B'`. Simplify using `only at h px px' hp`. Substitute `h` using the available equality. Consider the cases of `hp`.
+
+Conclude with `⟨MulEquiv.refl _, fun g => HEq.rfl⟩`.
+-/
 theorem gc_iso (B B' : Base) (h : B'.toPre = B.toPre) (px : PreX B.toPre) (px' : PreX B'.toPre) (hp : HEq px' px) :
     ∃ e : Gc B px ≃* Gc B' px', ∀ g, HEq (e g) g := by
   obtain ⟨P, r⟩ := B
@@ -255,6 +342,9 @@ theorem gc_iso (B B' : Base) (h : B'.toPre = B.toPre) (px : PreX B.toPre) (px' :
   cases hp
   exact ⟨MulEquiv.refl _, fun g => HEq.rfl⟩
 
+/- English proof (translation)
+Substitute `hm` using the available equality. Consider the cases of `h`. Rewrite using `[Fin.ext hi]`.
+-/
 theorem nat_heq_app {m m' : ℕ} (hm : m' = m) (f : Fin m → ℕ) (f' : Fin m' → ℕ) (h : HEq f' f) (i : Fin m) (i' : Fin m')
     (hi : (i : ℕ) = i') : f' i' = f i := by
   subst hm

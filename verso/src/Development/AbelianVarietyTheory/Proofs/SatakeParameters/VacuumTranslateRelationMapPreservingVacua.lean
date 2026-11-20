@@ -14,6 +14,39 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 namespace GlobalTheory.Hk3
 
+/- English proof (translation)
+Introduce `L _ _ _ _ ϖ σ q δ n n' JS JT ψ M _ _ ρ ω hP φ hφ f hf hsum`. Take `⟨hU, -, hSint, hTint, hS, hT, hδ, -, hpsi_ne, hρ0, hρ, -, -, -⟩` from `hP`. Establish `hσ` using `hU.1`. Establish `hA : ∀ x y : Matrix (Fin n') (Fin n) L, σ (locH σ δ JS JT x y) = - locH σ δ JS JT y x` using `locH_conj σ hσ δ hδ.2 JS JT hS hT`. Establish `hψinv : ∀ a, ψ a * ψ (-a) = 1` using `fun a => by`.
+
+Rewrite using `[← AddChar.map_add_eq_mul, add_neg_cancel, AddChar.map_zero_eq_one]`. Establish `hshift : ∀ t, LocVac ρ t → ∀ x u, u ∈ intMatSub (L` using `L) n n' → ρ (x + u) t = ψ (-((locH σ δ JS JT x u + σ (locH σ δ JS JT x u)) / 2)) • ρ x t := by`. Introduce `t ht x u hu`. Establish `h1 : ρ x t = ψ ((locH σ δ JS JT x u + σ (locH σ δ JS JT x u)) / 2) • ρ (x + u) t`. Use `congrArg (fun f => f t) (hρ x u)` as an intermediate fact.
+
+Simplify using `only [Module.End.mul_apply, LinearMap.smul_apply] at this`. Rewrite `this` using `[ht u hu]`. Then use the resulting hypothesis. Rewrite using `[h1, smul_smul, mul_comm, hψinv, one_smul]`. Establish `heig : ∀ t, LocVac ρ t → ∀ x u, u ∈ intMatSub (L` using `L) n n' → ρ u (ρ x t) = ψ (locH σ δ JS JT u x + σ (locH σ δ JS JT u x)) • ρ x t := by`. Introduce `t ht x u hu`.
+
+Use `congrArg (fun f => f t) (hρ u x)` as an intermediate fact. Simplify using `only [Module.End.mul_apply, LinearMap.smul_apply] at this`. Rewrite using `[this, add_comm u x, hshift t ht x u hu, smul_smul, ← AddChar.map_add_eq_mul]`. Use `congr 2`. Rewrite using `[hA u x, hA x u]`.
+
+Expand and normalize the polynomial expressions, which then agree. Establish `hdist : ∀ x y : Matrix (Fin n') (Fin n) L, (∀ u ∈ intMatSub (L` using `L) n n', ψ (locH σ δ JS JT u x + σ (locH σ δ JS JT u x)) = ψ (locH σ δ JS JT u y + σ (locH σ δ JS JT u y))) → x - y ∈ intMatSub (L := L) n n' := by`. Introduce `x y hxy`. Use `intMat_of_psi hU hδ.1 hSint hTint ψ hpsi_ne (x - y) (fun u hu => ?_)` and prove the remaining obligations. Establish `e : locH σ δ JS JT u (x - y) + σ (locH σ δ JS JT u (x - y)) = (locH σ δ JS JT u x + σ (locH σ δ JS JT u x)) + -(locH σ δ JS JT u y + σ (locH σ δ JS JT u y))`.
+
+Rewrite using `[locH_sub_right, map_sub]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e, AddChar.map_add_eq_mul, hxy u hu, hψinv]`. Establish `hinj : ∀ x t, ρ x t = 0 → t = 0`. Introduce `x t h0`.
+
+Use `congrArg (fun f => f t) (hρ (-x) x)` as an intermediate fact. Simplify using `only [Module.End.mul_apply, LinearMap.smul_apply, h0, map_zero, neg_add_cancel, hρ0, Module.End.one_apply] at this`. Establish `hne : ψ ((locH σ δ JS JT (-x) x + σ (locH σ δ JS JT (-x) x)) / 2) ≠ 0`. Introduce `h`. Use `hψinv ((locH σ δ JS JT (-x) x + σ (locH σ δ JS JT (-x) x)) / 2)` as an intermediate fact.
+
+Rewrite `this` using `[h, zero_mul]`. Conclude with `zero_ne_one this`. Conclude with `(smul_eq_zero.mp this.symm).resolve_left hne`. Use `set Λ := intMatSub (L := L) n n' with hΛ`. Establish `hmem : ∀ x : Matrix (Fin n') (Fin n) L, -(QuotientAddGroup.mk x : _ ⧸ Λ).out + x ∈ Λ`.
+
+Introduce `x`. Rewrite using `[← QuotientAddGroup.eq, QuotientAddGroup.out_eq']`. Use `set κ : Matrix (Fin n') (Fin n) L → ℂ := fun x => ψ (-((locH σ δ JS JT (QuotientAddGroup.mk x : _ ⧸ Λ).out (-(QuotientAddGroup.mk x : _ ⧸ Λ).out + x) + σ (locH σ δ JS JT (QuotientAddGroup.mk x : _ ⧸ Λ).out (-(QuotientAddGroup.mk x : _ ⧸ Λ).out + x))) / 2)) with hκ`. Establish `hdec1 : ∀ t, LocVac ρ t → ∀ x, ρ x t = κ x • ρ (QuotientAddGroup.mk x : _ ⧸ Λ).out t`. Introduce `t ht x`.
+
+Use `hshift t ht (QuotientAddGroup.mk x : _ ⧸ Λ).out _ (hmem x)` as an intermediate fact. Rewrite `this` using `[add_neg_cancel_left]`. Then use the resulting hypothesis. Use `set I : Finset (Matrix (Fin n') (Fin n) L ⧸ Λ) := f.support.image (fun x => (QuotientAddGroup.mk x : _ ⧸ Λ)) with hI`. Set `cl : (Matrix (Fin n') (Fin n) L → M) → (Matrix (Fin n') (Fin n) L ⧸ Λ) → M` to `fun g y => ∑ x ∈ f.support with (QuotientAddGroup.mk x : _ ⧸ Λ) = y, κ x • g x`. Establish `hdec : ∀ g : Matrix (Fin n') (Fin n) L → M, (∀ x, LocVac ρ (g x)) → ∑ x ∈ f.support, ρ x (g x) = ∑ y ∈ I, ρ y.out (cl g y)`.
+
+Introduce `g hg`. Establish `e1 : ∑ x ∈ f.support, ρ x (g x) = ∑ x ∈ f.support, κ x • ρ (QuotientAddGroup.mk x : _ ⧸ Λ).out (g x)` using `Finset.sum_congr rfl fun x _ => hdec1 _ (hg x) x`. Rewrite using `[e1, ← Finset.sum_fiberwise_of_maps_to (s := f.support) (t := I) (g := fun x => (QuotientAddGroup.mk x : _ ⧸ Λ)) (fun x hx => Finset.mem_image_of_mem _ hx)]`. Use `Finset.sum_congr rfl fun y _ => ?_` and prove the remaining obligations. Simplify using `only [cl, map_sum, map_smul]`.
+
+Use `Finset.sum_congr rfl fun x hx => ?_` and prove the remaining obligations. Rewrite using `[(Finset.mem_filter.mp hx).2]`. Establish `hclvac : ∀ y, LocVac ρ (cl f y)`. Introduce `y u hu`. Simplify using `only [cl, map_sum, map_smul]`.
+
+Conclude with `Finset.sum_congr rfl fun x _ => by rw [hf x u hu]`. Establish `hcl0 : ∀ y ∈ I, cl f y = 0`. Introduce `y hy`. Establish `hsum' : ∑ y ∈ I, ρ y.out (cl f y) = 0`. Rewrite using `[← hdec f hf]`.
+
+Conclude with `hsum`. Establish `hind` using `GlobalTheory.joint_eigenvectors_eq_zero_of_sum_eq_zero Λ (Matrix (Fin n') (Fin n) L ⧸ Λ) M (fun u : Λ => ρ (u : Matrix (Fin n') (Fin n) L)) (fun (y : Matrix (Fin n') (Fin n) L ⧸ Λ) (u : Λ) => ψ (locH σ δ JS JT (u : Matrix (Fin n') (Fin n) L) y.out + σ (locH σ δ JS JT (u : Matrix …`. Introduce `y _ y' _ hyy`. Establish `hm` using `hdist y.out y'.out (fun u hu => congrFun hyy ⟨u, hu⟩)`. Rewrite using `[← QuotientAddGroup.out_eq' y, ← QuotientAddGroup.out_eq' y', QuotientAddGroup.eq_iff_sub_mem]`.
+
+Conclude with `hm)`. Use the proof step `hsum' y hy`. Conclude with `hinj _ _ hind`. Establish `hφcl : ∀ y, cl (fun x => φ (f x)) y = φ (cl f y)`. Introduce `y`.
+
+Simplify using `only [cl, map_sum, map_smul]`. Use `show ∑ x ∈ f.support, ρ x (φ (f x)) = 0`. Rewrite using `[hdec (fun x => φ (f x)) (fun x => hφ _ (hf x))]`. Conclude with `Finset.sum_eq_zero fun y hy => by rw [hφcl, hcl0 y hy, map_zero, map_zero]`.
+-/
 theorem locVac_rel_map : ∀ (L : Type) [Field L] [CharZero L] [Valued L (WithZero (Multiplicative ℤ))] [CompleteSpace L] (ϖ : L) (σ : L →+* L) (q : ℕ) (δ : L) (n n' : ℕ) (JS : GL (Fin n) L) (JT : GL (Fin n') L) (ψ : AddChar L ℂ) (M : Type) [AddCommGroup M] [Module ℂ M] (ρ : Matrix (Fin n') (Fin n) L → Module.End ℂ M) (ω : Formalism.UG.UJ σ (JS : Matrix (Fin n) (Fin n) L) × Formalism.UG.UJ σ (JT : Matrix (Fin n') (Fin n') L) →* Module.End ℂ M), LocPair ϖ σ q δ JS JT ψ ρ ω → ∀ φ : M →ₗ[ℂ] M, (∀ s, LocVac ρ s → LocVac ρ (φ s)) → ∀ f : Matrix (Fin n') (Fin n) L →₀ M, (∀ x, LocVac ρ (f x)) → (f.sum fun x m => ρ x m) = 0 → (f.sum fun x m => ρ x (φ m)) = 0 := by
   intro L _ _ _ _ ϖ σ q δ n n' JS JT ψ M _ _ ρ ω hP φ hφ f hf hsum
   classical

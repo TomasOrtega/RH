@@ -9,6 +9,15 @@ namespace ReciprocityTheory.ChartRestriction.DS.Lap.S0.Fdeg
 
 open Formalism.QuantumDeterminants
 
+/- English proof (translation)
+Take `⟨_, hS⟩` from `hF`. Establish `h1` using `(hS w w w w).2`. Establish `hww : ⟪w, w⟫_ℂ = 1`. Rewrite using `[inner_self_eq_norm_sq_to_K, hw]`. Simplify using the standard rewrite rules.
+
+Rewrite `h1` using `[hww]`. Establish `hfun : (fun g : Mt k r => ⟪w, σ (Matrix.of g) w⟫_ℂ * star ⟪w, σ (Matrix.of g) w⟫_ℂ) = fun g => ((‖⟪w, σ (Matrix.of g) w⟫_ℂ‖ ^ 2 : ℝ) : ℂ)`. Use function extensionality and compare the values at `g`. Rewrite using `[Complex.star_def, RCLike.mul_conj]`. Use `push_cast`.
+
+Both sides reduce to the same expression. Rewrite `h1` using `[hfun, integral_complex_ofReal]`. Establish `h2 : ((∫ x, ‖⟪w, σ (Matrix.of x) w⟫_ℂ‖ ^ 2 ∂μG : ℝ) : ℂ) = ((1 / d : ℝ) : ℂ)`. Rewrite using `[h1]`. Use `push_cast`.
+
+Expand and normalize the polynomial expressions, which then agree. Conclude with `h2` after adjusting the coercions.
+-/
 theorem integral_normSq_coef (k r : ℕ) (H : Type) [NormedAddCommGroup H] [InnerProductSpace ℂ H]
     (σ : Mat k r → (H →L[ℂ] H)) (w : H) (d : ℝ) (μG : Measure (Mt k r)) (hw : ‖w‖ = 1)
     (hF : IsFdegB μG σ d) :
@@ -28,6 +37,9 @@ theorem integral_normSq_coef (k r : ℕ) (H : Type) [NormedAddCommGroup H] [Inne
     rw [h1]; push_cast; ring
   exact_mod_cast h2
 
+/- English proof (translation)
+Introduce `k r H _ _ σ w d μG hw hF`. Unfold `Formalism.MainNotions.S.fdegH`. Rewrite using `[integral_normSq_coef k r H σ w d μG hw hF, hw]`. Establish `hd : d ≠ 0` using `ne_of_gt hF.1`. Clear the denominators using the available nonvanishing facts.
+-/
 theorem fdegH_eq : FdegHEqStatement := by
   intro k r H _ _ σ w d μG hw hF
   unfold Formalism.MainNotions.S.fdegH

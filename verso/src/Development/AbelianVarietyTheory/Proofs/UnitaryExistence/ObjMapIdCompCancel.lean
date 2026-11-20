@@ -24,12 +24,20 @@ def idPullIso (L : LB X) : LB.Iso L (L.pull (𝟙 X)) :=
   ⟨fun p => res (fun _ hy => ⟨mem_pull.1 hy.1, hy.2⟩ :
     (L.pull (𝟙 X)).U p.1 ⊓ L.U p.2 ≤ L.U (p.1 PUnit.unit) ⊓ L.U p.2) (L.g (p.1 PUnit.unit) p.2)⟩
 
+/- English proof (translation)
+Establish `hm : f y ∈ (L.pull (𝟙 X)).U (fun _ => j) ⊓ L.U k` using `⟨mem_pull.2 hj, hk⟩`. Use `show gm f y _ (res _ (L.g j k)) = _`. Conclude with `gm_res f y _ hm _`.
+-/
 theorem gw_idPullIso (L : LB X) {Y : Scheme.{0}} (f : Y ⟶ X) (y : Y) (j k : L.ι) (hj : f y ∈ L.U j)
     (hk : f y ∈ L.U k) : gw (idPullIso L) f y j k = gm f y _ (L.g j k) := by
   have hm : f y ∈ (L.pull (𝟙 X)).U (fun _ => j) ⊓ L.U k := ⟨mem_pull.2 hj, hk⟩
   show gm f y _ (res _ (L.g j k)) = _
   exact gm_res f y _ hm _
 
+/- English proof (translation)
+Introduce `Y f y j j' k k' hj hj' hk hk'`. Establish `hj₀ : f y ∈ L.U j` using `hj`. Establish `hj₀' : f y ∈ L.U j'` using `hj'`. Rewrite using `[gw_idPullIso L f y j k hj₀ hk, gw_idPullIso L f y j' k' hj₀' hk', Category.comp_id]`. Establish `a` using `gm_cocycle hL f y hj₀ hk hk'`.
+
+Establish `b` using `gm_cocycle hL f y hj₀ hj₀' hk'`. Rewrite using `[mul_right_comm, b, ← a, mul_inv_cancel_right]`.
+-/
 theorem pgen_idPullIso {L : LB X} (hL : L.IsLB) : PGen (idPullIso L) := by
   intro Y f y j j' k k' hj hj' hk hk'
   have hj₀ : f y ∈ L.U j := hj
@@ -39,6 +47,11 @@ theorem pgen_idPullIso {L : LB X} (hL : L.IsLB) : PGen (idPullIso L) := by
   have b := gm_cocycle hL f y hj₀ hj₀' hk'
   rw [mul_right_comm, b, ← a, mul_inv_cancel_right]
 
+/- English proof (translation)
+Introduce `Z r z p q hp hq`. Establish `hp₀ : ∀ k, φ k (r z) ∈ L.U (p k)` using `hp`. Establish `hm : r z ∈ LB.wchart L φ p ⊓ LB.wchart L φ q` using `⟨Set.mem_iInter.2 hp₀, Set.mem_iInter.2 hq⟩`. Establish `e` using `congrArg (gm r z (LB.wchart L φ p ⊓ LB.wchart L φ q)) (ht p q)`. Rewrite using `[Category.comp_id]`.
+
+Use `(gm_res r z _ hm _).symm.trans (e.trans ((map_mul _ _ _).trans (congrArg₂ (· * ·) ?_ (gm_res r z _ hm _))))` and prove the remaining obligations. Use `(map_prod _ _ _).trans (Finset.prod_congr rfl fun k _ => (map_zpow _ _ _).trans (congrArg (· ^ ε k) ?_))` and prove the remaining obligations. Rewrite using `[gw_idPullIso L (r ≫ φ k) z (p k) (q k) (hp₀ k) (hq k)]`. Conclude with `(gm_res r z _ hm _).trans (gm_pull r (φ k) z (L.U (p k) ⊓ L.U (q k)) ⟨hp₀ k, hq k⟩ _)`.
+-/
 theorem pmaps_idPullIso (L : LB X) {K : Type} [Fintype K] {Y : Scheme.{0}} (φ : K → (Y ⟶ X)) (ε : K → ℤ)
     (t : LB.Gen (LB.LinComb L φ ε)) (ht : t.IsGen) : PMaps (idPullIso L) φ φ ε t t (𝟙 Y) := by
   intro Z r z p q hp hq
@@ -57,6 +70,9 @@ section Group
 
 variable {S : Scheme.{0}} (G : Over S) [GrpObj G]
 
+/- English proof (translation)
+Use `⟨IsPullback.of_horiz_isIso ⟨by simp⟩, fun T x y x₀ y₀ hx hy => ?_⟩` and prove the remaining obligations. Conclude with `(mul_left_congr (b := T.hom) (Category.comp_id _) x₀ y₀ x y (hx.trans (Category.comp_id _)) (hy.trans (Category.comp_id _))).trans (Category.comp_id _).symm`.
+-/
 theorem isGrpPullback_id : IsGrpPullback G G (𝟙 S) (𝟙 G.left) := by
   refine ⟨IsPullback.of_horiz_isIso ⟨by simp⟩, fun T x y x₀ y₀ hx hy => ?_⟩
   exact (mul_left_congr (b := T.hom) (Category.comp_id _) x₀ y₀ x y (hx.trans (Category.comp_id _))
@@ -71,6 +87,9 @@ def cubeMapId : CubeMap G G where
   e_comm := by rw [Category.comp_id, Category.id_comp]
   psum_comm := fun _ => by rw [Category.comp_id, Category.id_comp]
 
+/- English proof (translation)
+The claim follows from `(isPullCubical_iff _ c c).2 ⟨idPullIso L.L, pgen_idPullIso L.isLB, pmaps_idPullIso L.L _ _ L.rig L.rigGen, pmaps_idPullIso L.L _ _ c.t c.isGen⟩`.
+-/
 theorem isPullCubical_id {L : RigLB G} (c : CubicalStr G L) : (cubeMapId G).IsPullCubical c c :=
   (isPullCubical_iff _ c c).2 ⟨idPullIso L.L, pgen_idPullIso L.isLB,
     pmaps_idPullIso L.L _ _ L.rig L.rigGen, pmaps_idPullIso L.L _ _ c.t c.isGen⟩
@@ -100,11 +119,17 @@ variable {B B' B'' : Type} [CommRing B] [CommRing B'] [CommRing B''] {b : Base l
   {S S' S'' : Scheme.{0}} {s : S ⟶ Sp B} {s' : S' ⟶ Sp B'} {s'' : S'' ⟶ Sp B''}
   {o : Obj D l b s} {o' : Obj D l b' s'} {o'' : Obj D l b'' s''} {f : S' ⟶ S} {f' : S'' ⟶ S'}
 
+/- English proof (translation)
+Rewrite using `[← Category.assoc, h', Category.assoc, h, Category.assoc]`.
+-/
 theorem sec_comp {G : Over S} {G' : Over S'} {G'' : Over S''} {φ : G'.left ⟶ G.left} {φ' : G''.left ⟶ G'.left}
     {x : S ⟶ G.left} {x' : S' ⟶ G'.left} {x'' : S'' ⟶ G''.left} (h : x' ≫ φ = f ≫ x) (h' : x'' ≫ φ' = f' ≫ x') :
     x'' ≫ φ' ≫ φ = (f' ≫ f) ≫ x := by
   rw [← Category.assoc, h', Category.assoc, h, Category.assoc]
 
+/- English proof (translation)
+Apply `hp.hom_ext` to reduce the goal to its premises. Rewrite using `[Category.assoc, h'', Category.assoc, Category.assoc, h]`. Rewrite using `[Category.assoc, w, ← Category.assoc, hx'', Category.assoc, hx']`. Simplify using the standard rewrite rules.
+-/
 theorem sec_cancel {G : Over S} {G' : Over S'} {G'' : Over S''} {φ : G'.left ⟶ G.left} {φ' : G''.left ⟶ G'.left}
     (hp : IsPullback φ G'.hom G.hom f) (w : φ' ≫ G'.hom = G''.hom ≫ f')
     {x : S ⟶ G.left} {x' : S' ⟶ G'.left} {x'' : S'' ⟶ G''.left} (hx' : x' ≫ G'.hom = 𝟙 _) (hx'' : x'' ≫ G''.hom = 𝟙 _)
@@ -113,6 +138,9 @@ theorem sec_cancel {G : Over S} {G' : Over S'} {G'' : Over S''} {φ : G'.left �
   · rw [Category.assoc, h'', Category.assoc, Category.assoc, h]
   · rw [Category.assoc, w, ← Category.assoc, hx'', Category.assoc, hx']; simp
 
+/- English proof (translation)
+Take `⟨n, hn⟩` from `sabComp pullCubComp E H S S' S'' o.t o'.t o''.t f f' m.toSABMap m'.toSABMap`. Establish `hn' : n.cm.F = m'.cm.F ≫ m.cm.F` using `hn`. Conclude with `⟨⟨n, fun a => by rw [hn']; exact sec_comp (m.eta a) (m'.eta a), fun a => by rw [hn']; exact sec_comp (m.etaA a) (m'.etaA a)⟩, hn⟩`.
+-/
 theorem objMap_comp (m : ObjMap o' o f) (m' : ObjMap o'' o' f') :
     ∃ n : ObjMap o'' o (f' ≫ f), n.toSABMap.φ = m'.toSABMap.φ ≫ m.toSABMap.φ := by
   obtain ⟨n, hn⟩ := sabComp pullCubComp E H S S' S'' o.t o'.t o''.t f f' m.toSABMap m'.toSABMap
@@ -120,6 +148,9 @@ theorem objMap_comp (m : ObjMap o' o f) (m' : ObjMap o'' o' f') :
   exact ⟨⟨n, fun a => by rw [hn']; exact sec_comp (m.eta a) (m'.eta a),
     fun a => by rw [hn']; exact sec_comp (m.etaA a) (m'.etaA a)⟩, hn⟩
 
+/- English proof (translation)
+Take `⟨m', hn⟩` from `sabCancel pullCubCancel E H S S' S'' o.t o'.t o''.t f f' m.toSABMap n.toSABMap`. Establish `hn' : n.cm.F = m'.cm.F ≫ m.cm.F` using `hn`. Conclude with `⟨⟨m', fun a => sec_cancel m.cart.1 m'.cart.1.w (Over.w (o'.eta a)) (Over.w (o''.eta a)) (m.eta a) (by rw [← hn']; exact n.eta a), fun a => sec_cancel m.cart.1 m'.cart.1.w (Over.w (o'.etaA a)) (Over.w (o''.etaA a)) (m.etaA a) (by rw [← hn']; exact n.etaA a)⟩, hn⟩`.
+-/
 theorem objMap_cancel (m : ObjMap o' o f) (n : ObjMap o'' o (f' ≫ f)) :
     ∃ m' : ObjMap o'' o' f', n.toSABMap.φ = m'.toSABMap.φ ≫ m.toSABMap.φ := by
   obtain ⟨m', hn⟩ := sabCancel pullCubCancel E H S S' S'' o.t o'.t o''.t f f' m.toSABMap n.toSABMap

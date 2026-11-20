@@ -14,10 +14,16 @@ attribute [local instance] Over.cartesianMonoidalCategory
 noncomputable section
 namespace GlobalTheory.ZH.PsiNormPull
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem valF_eq_valR' {F : Type} [Field F] {X : Scheme.{0}} (x : Sp F ⟶ X) (U : X.Opens) (f : Γ(X, U)) :
     valF x U f = valR x U f := by
   rfl
 
+/- English proof (translation)
+Take `⟨h', e⟩` from `CrdCalc.valR_spMap ψ x U h`. Rewrite using `[← e, ← valF_eq_valR']`. Conclude with `toStk_valF _ U z (h' trivial) a`.
+-/
 theorem toStk_map_valR {A F : Type} [CommRing A] [Field F] (ψ : A →+* F) {X : Scheme.{0}} (x : Sp A ⟶ X)
     (U : X.Opens) (h : ⊤ ≤ x ⁻¹ᵁ U) (z : Sp F) (a : Γ(X, U)ˣ) :
     toStk z (ψ (valR x U a.val)) = (gm (spMap ψ ≫ x) z U a).val := by
@@ -25,6 +31,9 @@ theorem toStk_map_valR {A F : Type} [CommRing A] [Field F] (ψ : A →+* F) {X :
   rw [← e, ← valF_eq_valR']
   exact toStk_valF _ U z (h' trivial) a
 
+/- English proof (translation)
+Take `⟨u, rfl⟩` from `ha`. Establish `e : ‖ψ u.val‖ * ‖ψ (u⁻¹).val‖ = 1` using `by rw [← norm_mul, ← map_mul, u.mul_inv, map_one, norm_one]`. Use `le_antisymm (hψ _) ?_` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem norm_eq_one_of_isUnit {A F : Type} [CommRing A] [NormedField F] (ψ : A →+* F) (hψ : ∀ a, ‖ψ a‖ ≤ 1)
     {a : A} (ha : IsUnit a) : ‖ψ a‖ = 1 := by
   obtain ⟨u, rfl⟩ := ha
@@ -34,6 +43,23 @@ theorem norm_eq_one_of_isUnit {A F : Type} [CommRing A] [NormedField F] (ψ : A 
     _ ≤ ‖ψ u.val‖ * 1 := mul_le_mul_of_nonneg_left (hψ _) (norm_nonneg _)
     _ = _ := _root_.mul_one _
 
+/- English proof (translation)
+Introduce `p _ V V' _ _ _ _ _ _ _ _ φ hφ hn D D' hD χ j j' hj hj'`. Set `F` to `PadicAlgCl p`. Set `ψ' : V' →+* F` to `(algebraMap (FractionRing V') F).comp (algebraMap V' (FractionRing V'))`. Establish `hsq : jFK (R` using `V') F ≫ jK V' ≫ spMap φ = jFK (R := V) F ≫ jK V := by`. Use `((congrArg (jFK (R := V') F ≫ ·) (spMap_comp φ _).symm).trans (spMap_comp _ _).symm).trans ((congrArg spMap ?_).trans (spMap_comp _ _))` and prove the remaining obligations.
+
+Conclude with `RingHom.ext fun v => (hφ v).symm`. Establish `z : Sp F` using `(default : PrimeSpectrum F)`. Set `Φ` to `hD.e.hom.left ≫ pullback.fst D.P.A.hom (specOf φ)`. Establish `hΦ : ⊤ ≤ ((D'.c χ).left ≫ Φ) ⁻¹ᵁ D.P.L.U j`. Rewrite using `[show (D'.c χ).left ≫ Φ = _ from hD.c_pr χ]`.
+
+Conclude with `fun y _ => hj (Set.mem_univ ((specOf φ) y))`. Set `U` to `(D.P.L.pull Φ).U (fun _ => j) ⊓ D'.P.L.U j'`. Establish `hU : ⊤ ≤ (D'.c χ).left ⁻¹ᵁ U` using `fun y _ => ⟨mem_pull.2 (hΦ (Set.mem_univ y)), hj' (Set.mem_univ y)⟩`. Establish `m' : ∀ y, D'.xK χ y ∈ D'.P.L.U j'` using `fun y => hj' (Set.mem_univ (jK V' y))`. Establish `m : ∀ y, D.xK (hD.xe χ) y ∈ D.P.L.U j` using `fun y => hj (Set.mem_univ (jK V y))`.
+
+Establish `e` using `pmaps_psi hD F hsq χ _ (𝟙 _) z (fun _ => j) (fun _ => j') (fun _ => hΦ (Set.mem_univ (jK V' (jFK (R := V') F z)))) (fun _ => m' _)`. Establish `g₁` using `gm_pullGen D.P.L (fun _ : PUnit => D.xK (hD.xe χ)) (fun _ => -1) (D.psi (hD.xe χ)) (jFK (R := V) F) (𝟙 _ ≫ 𝟙 _) z (fun _ => j) (Set.mem_iInter.2 fun _ => m _)`. Establish `g₂` using `gm_pullGen D'.P.L (fun _ : PUnit => D'.xK χ) (fun _ => -1) (D'.psi χ) (jFK (R := V') F) (𝟙 _) z (fun _ => j') (Set.mem_iInter.2 fun _ => m' _)`. Rewrite `e` using `[Fintype.prod_unique]`. Use `replace e := g₁.symm.trans (e.trans (congrArg₂ (· * ·) (zpow_neg_one _) g₂))`.
+
+Rewrite `e` using `[eq_inv_mul_iff_mul_eq]`. Simplify using `only [Category.id_comp] at e`. Establish `a` using `toStk_map_valR (algebraMap (FractionRing V) F) (𝟙 _) (LB.wchart D.P.L (fun _ : PUnit => D.xK (hD.xe χ)) fun _ => j) (fun y _ => Set.mem_iInter.2 fun _ => m y) z ((D.psi (hD.xe χ)).s fun _ => j)`. Establish `a'` using `toStk_map_valR (algebraMap (FractionRing V') F) (𝟙 _) (LB.wchart D'.P.L (fun _ : PUnit => D'.xK χ) fun _ => j') (fun y _ => Set.mem_iInter.2 fun _ => m' y) z ((D'.psi χ).s fun _ => j')`. Rewrite `a`, `a'` using `[Category.comp_id, ← valF_eq_valR']`.
+
+Establish `b` using `toStk_map_valR ψ' (D'.c χ).left U hU z (hD.w.s (fun _ => j, j'))`. Establish `hpt : spMap ψ' ≫ (D'.c χ).left = jFK (R` using `V') F ≫ D'.xK χ := (congrArg (· ≫ (D'.c χ).left) (spMap_comp _ _)).trans (Category.assoc _ _ _)`. Establish `b' : toStk z (ψ' (valR (D'.c χ).left U (hD.w.s (fun _ => j, j')).val)) = (gw hD.w (jFK (R` using `V') F ≫ D'.xK χ) z j j').val := by`. Rewrite using `[← hpt]`. Conclude with `b`.
+
+Establish `hu : IsUnit (valR (D'.c χ).left U (hD.w.s (fun _ => j, j')).val)`. Conclude with `(congrArg IsUnit (CrdCalc.valR_eq (R := V') (D'.c χ).left U hU _)).mpr ((Units.isUnit _).map _)`. Establish `key` using `(toStk z).injective (a'.trans ((congrArg Units.val e).symm.trans ((Units.val_mul _ _).trans ((congrArg₂ (· * ·) b' a).symm.trans (map_mul _ _ _).symm))))`. Use `(congrArg norm key).trans ?_` and prove the remaining obligations. Rewrite using `[norm_mul, norm_eq_one_of_isUnit ψ' hn hu, _root_.one_mul]`.
+
+Both sides reduce to the same expression.
+-/
 theorem norm_psi_pull : ∀ (p : ℕ) [Fact p.Prime] (V V' : Type) [CommRing V] [IsDomain V] [IsLocalRing V] [CommRing V'] [IsDomain V'] [IsLocalRing V'] [Algebra (FractionRing V) (PadicAlgCl p)] [Algebra (FractionRing V') (PadicAlgCl p)] (φ : V →+* V'), (∀ v : V, algebraMap (FractionRing V) (PadicAlgCl p) (algebraMap V _ v) = algebraMap (FractionRing V') (PadicAlgCl p) (algebraMap V' _ (φ v))) → (∀ v : V', ‖algebraMap (FractionRing V') (PadicAlgCl p) (algebraMap V' _ v)‖ ≤ 1) → ∀ (D : DegPre V) (D' : DegPre V') (hD : IsPullDeg φ D D') (χ : D'.X) (j : D.P.L.ι) (j' : D'.P.L.ι), ⊤ ≤ (D.c (hD.xe χ)).left ⁻¹ᵁ D.P.L.U j → ⊤ ≤ (D'.c χ).left ⁻¹ᵁ D'.P.L.U j' → ‖algebraMap (FractionRing V') (PadicAlgCl p) (valF (𝟙 (Sp (FractionRing V'))) _ ((D'.psi χ).s fun _ => j').val)‖ = ‖algebraMap (FractionRing V) (PadicAlgCl p) (valF (𝟙 (Sp (FractionRing V))) _ ((D.psi (hD.xe χ)).s fun _ => j).val)‖ := by
   intro p _ V V' _ _ _ _ _ _ _ _ φ hφ hn D D' hD χ j j' hj hj'
   let F := PadicAlgCl p

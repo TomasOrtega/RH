@@ -19,24 +19,48 @@ local notation "Mat" => Matrix (Fin r) (Fin r) ℂ
 
 def cj (M : Mat) : Mat := M.map conj
 
+/- English proof (translation)
+The claim follows from `Matrix.map_mul`.
+-/
 theorem cj_mul (M N : Mat) : cj (M * N) = cj M * cj N := Matrix.map_mul
 
+/- English proof (translation)
+Use `ext`. Simplify using `[cj]`.
+-/
 theorem cj_cj (M : Mat) : cj (cj M) = M := by ext; simp [cj]
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem cj_transpose (M : Mat) : cj Mᵀ = (cj M)ᵀ := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem conjTranspose_eq (M : Mat) : Mᴴ = (cj M)ᵀ := rfl
 
+/- English proof (translation)
+Establish `h` using `congrArg transpose (conjTranspose_nonsing_inv M)`. Rewrite `h` using `[transpose_nonsing_inv]`. Then use the resulting hypothesis.
+-/
 theorem cj_inv (M : Mat) : cj M⁻¹ = (cj M)⁻¹ := by
   have h := congrArg transpose (conjTranspose_nonsing_inv M)
   rwa [transpose_nonsing_inv] at h
 
+/- English proof (translation)
+The claim follows from `((starRingEnd ℂ).map_det M).symm`.
+-/
 theorem det_cj (M : Mat) : (cj M).det = conj M.det := ((starRingEnd ℂ).map_det M).symm
 
+/- English proof (translation)
+Use `ext`. Simplify using `[cj]`.
+-/
 theorem cj_smul (c : ℂ) (M : Mat) : cj (c • M) = conj c • cj M := by ext; simp [cj]
 
 def mix (p : ℕ) (M N : Mat) : Mat := Matrix.of fun a c => if (a : ℕ) < p then M a c else N a c
 
+/- English proof (translation)
+Use extensionality with `a c`. Simplify using `only [mix, mul_apply, of_apply]`. Apply the tactic sequence `split_ifs <;> rfl`.
+-/
 theorem mix_mul (p : ℕ) (M N U : Mat) : mix p M N * U = mix p (M * U) (N * U) := by
   ext a c
   simp only [mix, mul_apply, of_apply]
@@ -47,15 +71,24 @@ def ptZ (κ : ℂ) (G S A : Mat) : Mat := (κ / 4) • ((A⁻¹ * S * A)ᵀ * G)
 def expM (κ : ℂ) (G S A B : Mat) : Mat :=
   (-(κ / 2) * (κ / 2)) • (A⁻¹ᵀ * G * (imH (ptZ κ G S A))⁻¹ * G * B⁻¹)
 
+/- English proof (translation)
+Simplify using `only [imH, conjTranspose_mul, conjTranspose_conjTranspose, Matrix.mul_smul, Matrix.smul_mul, Matrix.mul_sub, Matrix.sub_mul, Matrix.mul_assoc]`.
+-/
 theorem imH_conj (Z V : Mat) : imH (Vᴴ * Z * V) = Vᴴ * imH Z * V := by
   simp only [imH, conjTranspose_mul, conjTranspose_conjTranspose, Matrix.mul_smul, Matrix.smul_mul,
     Matrix.mul_sub, Matrix.sub_mul, Matrix.mul_assoc]
 
+/- English proof (translation)
+Simplify using `only [imH, conjTranspose_neg, conjTranspose_conjTranspose]`. Use `congr 1`. Normalize the expressions using the abelian group laws.
+-/
 theorem imH_neg_conjTranspose (Z : Mat) : imH (-Zᴴ) = imH Z := by
   simp only [imH, conjTranspose_neg, conjTranspose_conjTranspose]
   congr 1
   abel
 
+/- English proof (translation)
+Unfold `imH`. Rewrite using `[conjTranspose_smul, conjTranspose_sub, conjTranspose_conjTranspose, ← neg_sub Z, smul_neg, ← neg_smul]`. Use `congr 1`. Simplify using the standard rewrite rules.
+-/
 theorem imH_conjTranspose (Z : Mat) : (imH Z)ᴴ = imH Z := by
   unfold imH
   rw [conjTranspose_smul, conjTranspose_sub, conjTranspose_conjTranspose,
@@ -63,6 +96,9 @@ theorem imH_conjTranspose (Z : Mat) : (imH Z)ᴴ = imH Z := by
   congr 1
   simp
 
+/- English proof (translation)
+Establish `h` using `congrArg det hU`. Rewrite `h` using `[det_mul, det_mul, det_transpose]`. Apply `mul_left_cancel₀ hG` to reduce the goal to its premises. Take the linear combination `h`.
+-/
 theorem det_mul_det_cj {G U : Mat} (hG : G.det ≠ 0) (hU : Uᵀ * G * cj U = G) :
     U.det * (cj U).det = 1 := by
   have h := congrArg det hU
@@ -70,6 +106,13 @@ theorem det_mul_det_cj {G U : Mat} (hG : G.det ≠ 0) (hU : Uᵀ * G * cj U = G)
   apply mul_left_cancel₀ hG
   linear_combination h
 
+/- English proof (translation)
+Establish `hd` using `det_mul_det_cj hG hU`. Establish `h1 : IsUnit U.det` using `IsUnit.of_mul_eq_one _ hd`. Establish `h2 : IsUnit (cj U).det` using `IsUnit.of_mul_eq_one_right _ hd`. Establish `h3 : Uᵀ * G = G * (cj U)⁻¹` using `by conv_rhs => rw [← hU, mul_nonsing_inv_cancel_right _ _ h2]`. Establish `h4 : ((cj U)⁻¹)ᴴ = U⁻¹ᵀ` using `by rw [conjTranspose_eq, cj_inv, cj_cj]`.
+
+Establish `h5 : ptZ κ G S (A * U⁻¹) = ((cj U)⁻¹)ᴴ * ptZ κ G S A * (cj U)⁻¹`. Simplify using `only [ptZ, h4, Matrix.mul_inv_rev, nonsing_inv_nonsing_inv _ h1, transpose_mul, Matrix.mul_smul, Matrix.smul_mul, Matrix.mul_assoc, h3]`. Establish `h6 (M : Mat) : Uᵀ * (G * (cj U * M)) = G * M`. Rewrite using `[← Matrix.mul_assoc, ← Matrix.mul_assoc, hU]`. Rewrite using `[expM, h5, imH_conj]`.
+
+Simplify using `only [expM, h4, Matrix.mul_inv_rev, nonsing_inv_nonsing_inv _ h1, nonsing_inv_nonsing_inv _ h2, transpose_mul, ← transpose_nonsing_inv, Matrix.mul_assoc, h6]`.
+-/
 theorem expM_unitary (κ : ℂ) {G U : Mat} (S A B : Mat) (hG : G.det ≠ 0) (hU : Uᵀ * G * cj U = G) :
     expM κ G S (A * U⁻¹) (B * (cj U)⁻¹) = expM κ G S A B := by
   have hd := det_mul_det_cj hG hU
@@ -87,6 +130,15 @@ theorem expM_unitary (κ : ℂ) {G U : Mat} (S A B : Mat) (hG : G.det ≠ 0) (hU
   simp only [expM, h4, Matrix.mul_inv_rev, nonsing_inv_nonsing_inv _ h1,
     nonsing_inv_nonsing_inv _ h2, transpose_mul, ← transpose_nonsing_inv, Matrix.mul_assoc, h6]
 
+/- English proof (translation)
+Establish `uA : IsUnit A.det` using `isUnit_iff_ne_zero.2 hA`. Establish `uB : IsUnit Bᵀ.det` using `isUnit_iff_ne_zero.2 (by rwa [det_transpose])`. Establish `uG : IsUnit Gᵀ.det` using `isUnit_iff_ne_zero.2 (by rwa [det_transpose])`. Establish `hG' : cj Gᵀ = G` using `hG`. Establish `h1 : Bᵀ * S * Bᵀ⁻¹ * Gᵀ = Gᵀ * (A⁻¹ * S * A)`.
+
+Use `congrArg (fun M => Gᵀ * A⁻¹ * M * Bᵀ⁻¹ * Gᵀ) h` as an intermediate fact. Simplify `this` using `only [Matrix.mul_assoc, nonsing_inv_mul_cancel_left _ _ uA, mul_nonsing_inv_cancel_left _ _ uG, mul_nonsing_inv_cancel_left _ _ uB, nonsing_inv_mul _ uG, Matrix.mul_one]`. Establish `h2` using `congrArg cj h1`. Simplify using `only [cj_mul, cj_inv, hG', hS] at h2`. Establish `h3 : ptZ κ G S (cj B) = -(ptZ κ G S A)ᴴ`.
+
+Simplify using `only [ptZ, conjTranspose_smul, conjTranspose_mul, hG]`. Rewrite using `[conjTranspose_eq, cj_transpose, transpose_transpose, cj_mul, cj_mul, cj_inv, hS, ← h2, ← neg_smul, transpose_mul, transpose_mul, hS', transpose_nonsing_inv, cj_transpose, ← Matrix.mul_assoc]`. Use `congr 1`. Simplify using `[hκ, neg_div]`. Simplify using `only [expM, h3, imH_neg_conjTranspose, conjTranspose_smul, conjTranspose_mul, hG, conjTranspose_nonsing_inv, imH_conjTranspose, Matrix.mul_assoc, transpose_nonsing_inv]`.
+
+Use `congr 1`. Simplify using `[hκ, neg_div]`.
+-/
 theorem expM_swap {κ : ℂ} {G S A B : Mat} (hκ : conj κ = -κ) (hG : Gᴴ = G) (hS : cj S = S)
     (hS' : Sᵀ = S) (hd : G.det ≠ 0) (hA : A.det ≠ 0) (hB : B.det ≠ 0)
     (h : A * Gᵀ⁻¹ * Bᵀ * S = S * (A * Gᵀ⁻¹ * Bᵀ)) :
@@ -114,6 +166,21 @@ theorem expM_swap {κ : ℂ} {G S A B : Mat} (hκ : conj κ = -κ) (hG : Gᴴ = 
   congr 1
   simp [hκ, neg_div]
 
+/- English proof (translation)
+Establish `hd` using `congrArg det hx`. Establish `hd'` using `congrArg det hS`. Rewrite `hd` using `[det_mul, det_mul, det_transpose]`. Rewrite `hd'` using `[det_mul, det_one]`. Establish `h0 : x.det * G.det * (cj x).det ≠ 0` using `by rw [hd]; exact left_ne_zero_of_mul_eq_one hd'`.
+
+Establish `h1 : IsUnit x.det` using `isUnit_iff_ne_zero.2 (left_ne_zero_of_mul (left_ne_zero_of_mul h0))`. Establish `h1' : IsUnit xᵀ.det` using `by rwa [det_transpose]`. Establish `h2 : IsUnit (cj x).det` using `isUnit_iff_ne_zero.2 (right_ne_zero_of_mul h0)`. Establish `h3 : xᵀ * G = S * (cj x)⁻¹` using `by rw [← hx, mul_nonsing_inv_cancel_right _ _ h2]`. Establish `h3' : G * cj x = xᵀ⁻¹ * S`.
+
+Rewrite using `[← hx, Matrix.mul_assoc, nonsing_inv_mul_cancel_left _ _ h1']`. Establish `hS1 (M : Mat) : S * (S * M) = M` using `by rw [← Matrix.mul_assoc, hS, Matrix.one_mul]`. Establish `h4 : ((cj x)⁻¹)ᴴ = xᵀ⁻¹` using `by rw [conjTranspose_eq, cj_inv, cj_cj, transpose_nonsing_inv]`. Establish `h5 : ptZ (-(I * t)) G (-S) x⁻¹ = ((cj x)⁻¹)ᴴ * ((I * t / 4 : ℂ) • (1 : Mat)) * (cj x)⁻¹`. Simplify using `only [ptZ, h4, nonsing_inv_nonsing_inv _ h1, transpose_mul, transpose_neg, transpose_nonsing_inv, Matrix.mul_assoc, Matrix.mul_neg, Matrix.neg_mul, h3, hSt, hS1, Matrix.mul_smul, Matrix.smul_mul, Matrix.one_mul, neg_div, neg_smul, smul_neg, neg_neg]`.
+
+Establish `ht' : (t : ℂ) ≠ 0` using `ofReal_ne_zero.2 ht`. Establish `h6 : (imH ((I * t / 4 : ℂ) • (1 : Mat)))⁻¹ = (4 / t : ℂ) • (1 : Mat)`. Apply `inv_eq_left_inv` to reduce the goal to its premises. Rewrite using `[imH, conjTranspose_smul, conjTranspose_one, ← sub_smul, smul_smul, Matrix.smul_mul, Matrix.one_mul, smul_smul]`. Use `one_smul ℂ (1 : Mat)` and compare the differences between its conclusion and the goal.
+
+Simplify using `only [star_div₀, star_mul', star_ofNat, Complex.star_def, conj_I, conj_ofReal]`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Establish `h7 (M : Mat) : xᵀ * (G * (cj x * M)) = S * M`. Rewrite using `[← Matrix.mul_assoc, ← Matrix.mul_assoc, hx]`.
+
+Establish `h8 : xᵀ * (G * cj x) = S` using `by rw [← Matrix.mul_assoc, hx]`. Rewrite using `[expM, h5, imH_conj]`. Simplify using `only [Matrix.mul_inv_rev, h4, h6, nonsing_inv_nonsing_inv _ h1, nonsing_inv_nonsing_inv _ h1', nonsing_inv_nonsing_inv _ h2, Matrix.mul_assoc, Matrix.mul_smul, Matrix.smul_mul, Matrix.one_mul, h7, h8, hS, smul_smul]`. Use `congr 1`. Clear the denominators using the available nonvanishing facts.
+
+Take the linear combination `(-4 : ℂ) * I_sq`.
+-/
 theorem expM_ortho {t : ℝ} (ht : t ≠ 0) {G S x : Mat} (hS : S * S = 1) (hSt : Sᵀ = S)
     (hx : xᵀ * G * cj x = S) :
     expM (-(I * t)) G (-S) x⁻¹ (cj x)⁻¹ = (t : ℂ) • (1 : Mat) := by
@@ -159,25 +226,40 @@ end Matrices
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {r g q0 n : ℕ} (X : Data E r)
   (hr : X.p0 + q0 = r) (idx : Fin g ≃ X.Ψ × Fin r)
 
+/- English proof (translation)
+Use extensionality with `a c`. Simplify using `only [aLin, mix, of_apply, mul_apply, transpose_apply, map_apply, cj, mat, mul_comm]`.
+-/
 theorem aLin_eq (x₁ x₂ : Frame X.Ψ r) (τ : X.Ψ) :
     aLin X x₁ x₂ τ = mix X.p0 ((cj (mat x₂ τ))ᵀ * (X.Gm.map τ.1)ᵀ) (mat x₁ τ)⁻¹ := by
   ext a c
   simp only [aLin, mix, of_apply, mul_apply, transpose_apply, map_apply, cj, mat, mul_comm]
 
+/- English proof (translation)
+Rewrite using `[← cj_inv]`. Use extensionality with `a c`. Simplify using `only [aAnti, mix, of_apply, mul_apply, transpose_apply, map_apply, cj, mat]`.
+-/
 theorem aAnti_eq (x₁ x₂ : Frame X.Ψ r) (τ : X.Ψ) :
     aAnti X x₁ x₂ τ = mix X.p0 ((mat x₁ τ)ᵀ * X.Gm.map τ.1) (cj (mat x₂ τ))⁻¹ := by
   rw [← cj_inv]
   ext a c
   simp only [aAnti, mix, of_apply, mul_apply, transpose_apply, map_apply, cj, mat]
 
+/- English proof (translation)
+Use extensionality with `a b`. Simplify using `only [conjTranspose_apply, map_apply, Complex.star_def, ← emb_cc, X.Gm_herm]`.
+-/
 theorem map_Gm_conjTranspose (τ : X.Ψ) : (X.Gm.map τ.1)ᴴ = X.Gm.map τ.1 := by
   ext a b
   simp only [conjTranspose_apply, map_apply, Complex.star_def, ← emb_cc, X.Gm_herm]
 
+/- English proof (translation)
+Rewrite using `[← RingHom.mapMatrix_apply, ← RingHom.map_det]`. Conclude with `(map_ne_zero τ.1).2 X.Gm_det`.
+-/
 theorem det_map_Gm (τ : X.Ψ) : (X.Gm.map τ.1).det ≠ 0 := by
   rw [← RingHom.mapMatrix_apply, ← RingHom.map_det]
   exact (map_ne_zero τ.1).2 X.Gm_det
 
+/- English proof (translation)
+Use extensionality with `a b`. Simplify using `only [FD.gram, hermC, FD.col, of_apply, mul_apply, transpose_apply, map_apply, cj, Finset.sum_mul]`. Rewrite using `[Finset.sum_comm]`.
+-/
 theorem gram_eq_mul (τ : X.Ψ) (M : Matrix (Fin r) (Fin r) ℂ) :
     gram τ.1 X.Gm M = Mᵀ * X.Gm.map τ.1 * cj M := by
   ext a b
@@ -191,6 +273,11 @@ def mixV (τ : X.Ψ) (z w : Fin g → ℂ) : Fin r → ℂ := fun a =>
 def kM (x₁ x₂ : Frame X.Ψ r) (τ : X.Ψ) : Matrix (Fin r) (Fin r) ℂ :=
   expM (τ.1 X.κ0) (X.Gm.map τ.1) (-sgnM X) (aLin X x₁ x₂ τ) (aAnti X x₁ x₂ τ)
 
+/- English proof (translation)
+Use `Finset.prod_congr rfl fun τ _ => ?_` and prove the remaining obligations. Use `congr 3`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Establish `h : dblZ X x₁ x₂ τ = ptZ (τ.1 X.κ0) (X.Gm.map τ.1) (-sgnM X) (aLin X x₁ x₂ τ)`. Rewrite using `[ptZ, sgnM, diagonal_neg]`.
+
+Both sides reduce to the same expression. Rewrite using `[h, kM, expM]`. Express the relevant statement in the definitionally equal form `((τ.1 X.κ0 / 2) • ((_ *ᵥ mixV X idx τ (w k) (z k)) ᵥ* _)) ⬝ᵥ _ *ᵥ ((-(τ.1 X.κ0 / 2)) • (_ *ᵥ _ *ᵥ mixV X idx τ (z k) (w k))) = _`. Rewrite using `[smul_dotProduct, mulVec_smul, dotProduct_smul, smul_mulVec, dotProduct_smul, smul_smul, mul_comm, ← vecMul_transpose, ← dotProduct_mulVec, ← dotProduct_mulVec]`. Simplify using `only [mulVec_mulVec, Matrix.mul_assoc]`.
+-/
 theorem kZero_eq (x₁ x₂ : Frame X.Ψ r) (z w : Fin n → Fin g → ℂ) :
     kZero X idx x₁ x₂ z w =
       ∏ τ : X.Ψ, (((aLin X x₁ x₂ τ).det * (aAnti X x₁ x₂ τ).det) ^ (n / 2))⁻¹ *
@@ -208,6 +295,9 @@ theorem kZero_eq (x₁ x₂ : Frame X.Ψ r) (z w : Fin n → Fin g → ℂ) :
     mul_comm, ← vecMul_transpose, ← dotProduct_mulVec, ← dotProduct_mulVec]
   simp only [mulVec_mulVec, Matrix.mul_assoc]
 
+/- English proof (translation)
+Simplify using `only [kZero_eq, dotProduct, mulVec]`. Use `Finset.analyticAt_fun_prod _ fun τ _ => SCV.analyticAt_iff_eventually_differentiableAt.2 (.of_forall fun p => ?_)` and prove the remaining obligations. Establish `h (τ : X.Ψ) (k : Fin n) : DifferentiableAt ℂ (fun p : (Fin n → Fin g → ℂ) × (Fin n → Fin g → ℂ) => mixV X idx τ (p.1 k) (p.2 k)) p ∧ DifferentiableAt ℂ (fun p : (Fin n → Fin g → ℂ) × (Fin n → Fin g → ℂ) => mixV X idx τ (p.2 k) (p.1 k)) p`. Apply the tactic sequence `constructor <;> refine differentiableAt_pi.2 fun a => ?_ <;> unfold mixV <;> split_ifs <;> fun_prop`. Conclude with `.const_mul (.cexp (.const_mul (.fun_sum fun k _ => .fun_sum fun a _ => .fun_mul (differentiableAt_pi.1 (h τ k).2 a) (.fun_sum fun b _ => .const_mul (differentiableAt_pi.1 (h τ k).1 b) _)) _)) _`.
+-/
 theorem analyticAt_kZero (x₁ x₂ : Frame X.Ψ r) (p : (Fin n → Fin g → ℂ) × (Fin n → Fin g → ℂ)) :
     AnalyticAt ℂ (fun p : (Fin n → Fin g → ℂ) × (Fin n → Fin g → ℂ) =>
       kZero X idx x₁ x₂ p.1 p.2) p := by
@@ -224,6 +314,17 @@ theorem analyticAt_kZero (x₁ x₂ : Frame X.Ψ r) (p : (Fin n → Fin g → �
     .fun_sum fun a _ => .fun_mul (differentiableAt_pi.1 (h τ k).2 a) (.fun_sum fun b _ =>
       .const_mul (differentiableAt_pi.1 (h τ k).1 b) _)) _)) _
 
+/- English proof (translation)
+Use function extensionality and compare the values at `z w`. Rewrite using `[kZero_eq, kZero_eq]`. Use `Finset.prod_congr rfl fun τ _ => ?_` and prove the remaining obligations. Establish `hU : (u τ)ᵀ * X.Gm.map τ.1 * cj (u τ) = X.Gm.map τ.1`. Rewrite using `[← gram_eq_mul]`.
+
+Use extensionality with `a b`. Use `hu τ (Pi.single a 1) (Pi.single b 1)` as an intermediate fact. Simplify using `only [mulVec_single_one] at this`. Use `this.trans ?_` and prove the remaining obligations. Simplify using `[hermC, Pi.single_apply, apply_ite]`.
+
+Establish `hd` using `det_mul_det_cj (det_map_Gm X τ) hU`. Establish `h1 : IsUnit (u τ).det` using `IsUnit.of_mul_eq_one _ hd`. Establish `h2 : IsUnit (cj (u τ)).det` using `IsUnit.of_mul_eq_one_right _ hd`. Establish `hm (x : Frame X.Ψ r) : mat (X.lmulC u x) τ = u τ * mat x τ` using `rfl`. Establish `h3 : (u τ)ᵀ * X.Gm.map τ.1 = X.Gm.map τ.1 * (cj (u τ))⁻¹` using `by conv_rhs => rw [← hU, mul_nonsing_inv_cancel_right _ _ h2]`.
+
+Establish `h4 : (cj (u τ))ᵀ * (X.Gm.map τ.1)ᵀ = (X.Gm.map τ.1)ᵀ * (u τ)⁻¹` using `by conv_rhs => rw [← hU, transpose_mul, transpose_mul, transpose_transpose, ← Matrix.mul_assoc, mul_nonsing_inv_cancel_right _ _ h1]`. Establish `hA : aLin X (X.lmulC u x₁) (X.lmulC u x₂) τ = aLin X x₁ x₂ τ * (u τ)⁻¹`. Simplify using `only [aLin_eq, mix_mul, hm, cj_mul, transpose_mul, Matrix.mul_inv_rev, Matrix.mul_assoc, h4]`. Establish `hB : aAnti X (X.lmulC u x₁) (X.lmulC u x₂) τ = aAnti X x₁ x₂ τ * (cj (u τ))⁻¹`. Simplify using `only [aAnti_eq, mix_mul, hm, cj_mul, transpose_mul, Matrix.mul_inv_rev, Matrix.mul_assoc, h3]`.
+
+Rewrite using `[kM, kM, hA, hB, expM_unitary _ _ _ _ (det_map_Gm X τ) hU, det_mul, det_mul, det_nonsing_inv, det_nonsing_inv, Ring.inverse_eq_inv', mul_mul_mul_comm, ← mul_inv, hd, inv_one, mul_one]`.
+-/
 theorem kZero_lmulC {u : X.Ψ → Matrix (Fin r) (Fin r) ℂ}
     (hu : ∀ (τ : X.Ψ) v w, hermC τ.1 X.Gm (u τ *ᵥ v) (u τ *ᵥ w) = hermC τ.1 X.Gm v w)
     (x₁ x₂ : Frame X.Ψ r) :
@@ -255,6 +356,9 @@ theorem kZero_lmulC {u : X.Ψ → Matrix (Fin r) (Fin r) ℂ}
   rw [kM, kM, hA, hB, expM_unitary _ _ _ _ (det_map_Gm X τ) hU, det_mul, det_mul, det_nonsing_inv,
     det_nonsing_inv, Ring.inverse_eq_inv', mul_mul_mul_comm, ← mul_inv, hd, inv_one, mul_one]
 
+/- English proof (translation)
+Rewrite using `[sgnM, diagonal_mul_diagonal, ← diagonal_one]`. Use `congr 1`. Use function extensionality and compare the values at `a`. Unfold `sgn`. Apply the tactic sequence `split_ifs <;> simp`.
+-/
 theorem sgnM_mul_self : sgnM X * sgnM X = 1 := by
   rw [sgnM, diagonal_mul_diagonal, ← diagonal_one]
   congr 1
@@ -262,12 +366,22 @@ theorem sgnM_mul_self : sgnM X * sgnM X = 1 := by
   unfold sgn
   split_ifs <;> simp
 
+/- English proof (translation)
+Use extensionality with `a b`. Apply the tactic sequence `by_cases h : a = b <;> simp [cj, sgnM, diagonal_apply, h]`.
+-/
 theorem cj_sgnM : cj (-sgnM X) = -sgnM X := by
   ext a b
   by_cases h : a = b <;> simp [cj, sgnM, diagonal_apply, h]
 
 variable {X} in
 
+/- English proof (translation)
+Establish `uG : IsUnit (X.Gm.map τ.1).det` using `isUnit_iff_ne_zero.2 (det_map_Gm X τ)`. Establish `uG' : IsUnit (X.Gm.map τ.1)ᵀ.det` using `by rwa [det_transpose]`. Establish `u₁ : IsUnit (mat x₁ τ)ᵀ.det` using `isUnit_iff_ne_zero.2 (by rw [det_transpose]; exact (h₁ τ).1)`. Establish `u₂ : IsUnit (cj (mat x₂ τ)).det` using `isUnit_iff_ne_zero.2 (by rw [det_cj]; exact (map_ne_zero _).2 (h₂ τ).1)`. Establish `e (N : Matrix (Fin r) (Fin r) ℂ) (a b : Fin r) : (N * (aAnti X x₁ x₂ τ)ᵀ) a b = (aAnti X x₁ x₂ τ * Nᵀ) b a`.
+
+Rewrite using `[← transpose_apply (aAnti X x₁ x₂ τ * Nᵀ), transpose_mul, transpose_transpose]`. Use extensionality with `a b`. Rewrite using `[Matrix.mul_neg, Matrix.neg_mul, neg_apply, neg_apply, sgnM, mul_diagonal, diagonal_mul, aLin_eq, mix_mul, mix_mul, mul_nonsing_inv_cancel_right _ _ uG', mix, of_apply, e, e, aAnti_eq, mix_mul, mix_mul, transpose_transpose, nonsing_inv_mul _ u₂, transpose_mul, transpose_nonsing_i …`. Simplify using `only [mix, of_apply, sgn]`. Use `split_ifs with ha hb hb`.
+
+Conclude with `congrArg _ (mul_comm _ _)`. Rewrite using `[one_apply_ne (by rintro rfl; exact hb ha)]; simp`. Rewrite using `[one_apply_ne (by rintro rfl; exact ha hb)]; simp`. Conclude with `congrArg _ (mul_comm _ _)`.
+-/
 theorem aLin_aAnti_comm {x₁ x₂ : Frame X.Ψ r} (h₁ : x₁ ∈ X.dom) (h₂ : x₂ ∈ X.dom) (τ : X.Ψ) :
     aLin X x₁ x₂ τ * (X.Gm.map τ.1)ᵀ⁻¹ * (aAnti X x₁ x₂ τ)ᵀ * -sgnM X =
       -sgnM X * (aLin X x₁ x₂ τ * (X.Gm.map τ.1)ᵀ⁻¹ * (aAnti X x₁ x₂ τ)ᵀ) := by
@@ -292,11 +406,23 @@ theorem aLin_aAnti_comm {x₁ x₂ : Frame X.Ψ r} (h₁ : x₁ ∈ X.dom) (h₂
   · rw [one_apply_ne (by rintro rfl; exact ha hb)]; simp
   · exact congrArg _ (mul_comm _ _)
 
+/- English proof (translation)
+The claim follows from `Complex.ext (by simp [DblPoint.re_kappa]) (by simp)`.
+-/
 theorem conj_kappa (τ : X.Ψ) : conj (τ.1 X.κ0) = -τ.1 X.κ0 :=
   Complex.ext (by simp [DblPoint.re_kappa]) (by simp)
 
 variable {X} in
 
+/- English proof (translation)
+Rewrite using `[kZero_eq, kZero_eq, map_prod]`. Use `Finset.prod_congr rfl fun τ _ => ?_` and prove the remaining obligations. Establish `hA : aLin X x₂ x₁ τ = cj (aAnti X x₁ x₂ τ)` using `DblPoint.aLin_swap X x₁ x₂ τ`. Establish `hB : aAnti X x₂ x₁ τ = cj (aLin X x₁ x₂ τ)`. Rewrite using `[← cj_cj (aAnti X x₂ x₁ τ)]`.
+
+Conclude with `congrArg cj (DblPoint.aLin_swap X x₂ x₁ τ).symm`. Establish `hM : kM X x₂ x₁ τ = (kM X x₁ x₂ τ)ᴴ`. Rewrite using `[kM, hA, hB]`. Conclude with `expM_swap (conj_kappa X τ) (map_Gm_conjTranspose X τ) (cj_sgnM X) (by rw [transpose_neg, sgnM, diagonal_transpose]) (det_map_Gm X τ) (DblPoint.det_aLin_ne_zero h₁ h₂ τ) (DblPoint.det_aAnti_ne_zero h₁ h₂ τ) (aLin_aAnti_comm h₁ h₂ τ)`. Establish `hv (a b : Fin g → ℂ) : mixV X idx τ (star a) (star b) = star (mixV X idx τ a b)`.
+
+Use function extensionality and compare the values at `c`. Simplify using `only [mixV, Pi.star_apply, apply_ite star]`. Rewrite using `[hM, hA, hB, det_cj, det_cj, map_mul, map_inv₀, map_pow, map_mul, ← Complex.exp_conj, map_mul, conj_ofReal, map_sum, mul_comm (conj _) (conj _)]`. Use `congr 3`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations.
+
+Simplify using `only [Pi.star_apply, hv]`. Simplify using `only [dotProduct, mulVec, conjTranspose_apply, Pi.star_apply, Complex.star_def, map_sum, map_mul, Complex.conj_conj, Finset.mul_sum]`. Rewrite using `[Finset.sum_comm]`. Conclude with `Finset.sum_congr rfl fun a _ => Finset.sum_congr rfl fun b _ => by ring`.
+-/
 theorem kZero_swap {x₁ x₂ : Frame X.Ψ r} (h₁ : x₁ ∈ X.dom) (h₂ : x₂ ∈ X.dom)
     (z w : Fin n → Fin g → ℂ) :
     kZero X idx x₂ x₁ z w = conj (kZero X idx x₁ x₂ (star w) (star z)) := by
@@ -327,6 +453,21 @@ theorem kZero_swap {x₁ x₂ : Frame X.Ψ r} (h₁ : x₁ ∈ X.dom) (h₂ : x�
 
 variable {X} in
 
+/- English proof (translation)
+Rewrite using `[kZero_eq, Complex.exp_sum, ofReal_prod, ← Finset.prod_mul_distrib]`. Use `Finset.prod_congr rfl fun τ _ => ?_` and prove the remaining obligations. Establish `h` using `hx τ`. Rewrite `h` using `[gram_eq_mul]`. Establish `hd` using `congrArg det h`.
+
+Establish `hd'` using `congrArg det (sgnM_mul_self X)`. Rewrite `hd` using `[det_mul, det_mul, det_transpose]`. Rewrite `hd'` using `[det_mul, det_one]`. Establish `h0` using `left_ne_zero_of_mul_eq_one hd'`. Rewrite `h0` using `[← hd]`.
+
+Establish `h1 : IsUnit (mat x τ).det` using `isUnit_iff_ne_zero.2 (left_ne_zero_of_mul (left_ne_zero_of_mul h0))`. Establish `h2 : IsUnit (cj (mat x τ)).det` using `isUnit_iff_ne_zero.2 (right_ne_zero_of_mul h0)`. Establish `hSt : (sgnM X)ᵀ = sgnM X` using `by rw [sgnM, diagonal_transpose]`. Establish `hmix (M : Matrix (Fin r) (Fin r) ℂ) : mix X.p0 (sgnM X * M) M = M`. Use extensionality with `a c`.
+
+Simplify using `only [mix, of_apply, sgnM, diagonal_mul, sgn]`. Apply the tactic sequence `split_ifs <;> simp`. Establish `hA : aLin X x x τ = (mat x τ)⁻¹`. Use `(aLin_eq X x x τ).trans ((congrArg (mix X.p0 · _) ?_).trans (hmix _))` and prove the remaining obligations. Rewrite using `[← hSt, ← h, transpose_mul, transpose_mul, transpose_transpose, ← Matrix.mul_assoc, mul_nonsing_inv_cancel_right _ _ h1]`.
+
+Establish `hB : aAnti X x x τ = (cj (mat x τ))⁻¹`. Use `(aAnti_eq X x x τ).trans ((congrArg (mix X.p0 · _) ?_).trans (hmix _))` and prove the remaining obligations. Rewrite using `[← h, mul_nonsing_inv_cancel_right _ _ h2]`. Establish `hκ : τ.1 X.κ0 = -(I * (-(τ.1 X.κ0).im : ℝ))` using `Complex.ext (by simp [DblPoint.re_kappa]) (by simp)`. Establish `hM : kM X x x τ = ((-(τ.1 X.κ0).im : ℝ) : ℂ) • (1 : Matrix (Fin r) (Fin r) ℂ)`.
+
+Rewrite using `[kM, hA, hB, ← expM_ortho (neg_pos.2 (X.κ0_sign τ)).ne' (sgnM_mul_self X) hSt h, ← hκ]`. Rewrite using `[hM, hA, hB, det_nonsing_inv, det_nonsing_inv, Ring.inverse_eq_inv', ← mul_inv, inv_pow, inv_inv, det_cj, mul_conj, ofReal_pow, Finset.sum_comm, Finset.mul_sum]`. Use `congr 2`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[smul_mulVec, one_mulVec, dotProduct, Finset.mul_sum]`.
+
+Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Simplify using `only [mixV, Pi.smul_apply, smul_eq_mul, ofReal_mul]`. Apply the tactic sequence `split_ifs <;> ring`.
+-/
 theorem kZero_ortho {x : Frame X.Ψ r} (hx : ∀ τ : X.Ψ, gram τ.1 X.Gm (mat x τ) = sgnM X)
     (z w : Fin n → Fin g → ℂ) :
     kZero X idx x x z w = ((∏ τ : X.Ψ, normSq (mat x τ).det ^ (n / 2) : ℝ) : ℂ) *
@@ -375,6 +516,9 @@ def letterCoord (l : Harm.Var X.Ψ q0 X.p0 (Fin n)) : (Fin n → Fin g → ℂ) 
     (idx.symm (rowOf X hr (l.1, l.2.1)))).comp
     (ContinuousLinearMap.proj (R := ℂ) (φ := fun _ : Fin n => Fin g → ℂ) l.2.2)
 
+/- English proof (translation)
+Take `⟨τ, a, k⟩` from `l`. Take `⟨τ', a', k'⟩` from `l'`. Apply the tactic sequence `by_cases hk : k = k' <;> simp [letterCoord, letterDir, Pi.single_apply, hk, -rowOf_apply]`.
+-/
 theorem letterCoord_letterDir (l l' : Harm.Var X.Ψ q0 X.p0 (Fin n)) :
     letterCoord X hr idx l (letterDir X hr idx l') = if l = l' then 1 else 0 := by
   obtain ⟨τ, a, k⟩ := l
@@ -383,6 +527,17 @@ theorem letterCoord_letterDir (l l' : Harm.Var X.Ψ q0 X.p0 (Fin n)) :
 
 variable {X} in
 
+/- English proof (translation)
+Use `set t : Harm.Var X.Ψ q0 X.p0 (Fin n) → ℝ := fun l => π * -(l.1.1 X.κ0).im with ht`. Establish `tpos (l) : 0 < t l` using `mul_pos Real.pi_pos (neg_pos.2 (X.κ0_sign l.1))`. Establish `hC : 0 < ∏ τ : X.Ψ, normSq (mat x τ).det ^ (n / 2)`. Use `Finset.prod_pos fun τ _ => pow_pos (normSq_pos.2 fun h0 => ?_) _` and prove the remaining obligations. Establish `hd` using `congrArg det (hx τ)`.
+
+Establish `hd'` using `congrArg det (sgnM_mul_self X)`. Rewrite `hd` using `[gram_eq_mul, det_mul, det_mul, det_transpose, h0, zero_mul, zero_mul]`. Rewrite `hd'` using `[det_mul, det_one, ← hd, zero_mul]`. Conclude with `zero_ne_one hd'`. Establish `h (z : Fin n → Fin g → ℂ) : kZero X idx x x z = fun w => ((∏ τ : X.Ψ, normSq (mat x τ).det ^ (n / 2) : ℝ) : ℂ) * cexp (∑ l, t l * letterCoord X hr idx l z * letterCoord X hr idx l w)`.
+
+Use function extensionality and compare the values at `w`. Rewrite using `[kZero_ortho idx hx, Fintype.sum_prod_type]`. Use `congr 2`. Use `Finset.sum_congr rfl fun τ _ => ?_` and prove the remaining obligations. Rewrite using `[Fintype.sum_prod_type, ← (rowIdx hr).sum_comp]`.
+
+Both sides reduce to the same expression. Simplify using `only [kern, biDeriv, h, polyDeriv_barP_exp _ _ _ (letterCoord_letterDir X hr idx), re_sum, ofReal_re]`. Take `⟨j, hj⟩` from `hP`. Use `Finset.sum_pos' (fun i _ => ?_) ⟨j, Finset.mem_univ _, mul_pos hC (apolar_norm_pos hj tpos)⟩` and prove the remaining obligations. Distinguish the cases in `hi : P i = 0`.
+
+Simplify using `[hi]`. Conclude with `(mul_pos hC (apolar_norm_pos hi tpos)).le`.
+-/
 theorem kern_pos {m : ℕ} (P : Fin m → Harm.Poly ℂ X.Ψ q0 X.p0 (Fin n)) (hP : ∃ j, P j ≠ 0)
     {x : Frame X.Ψ r} (hx : ∀ τ : X.Ψ, gram τ.1 X.Gm (mat x τ) = sgnM X) :
     0 < (kern X hr idx P x x).re := by
@@ -414,6 +569,9 @@ theorem kern_pos {m : ℕ} (P : Fin m → Harm.Poly ℂ X.Ψ q0 X.p0 (Fin n)) (h
 
 variable {X} in
 
+/- English proof (translation)
+Rewrite using `[kern, kern, biDeriv, biDeriv, map_sum]`. Use `Finset.sum_congr rfl fun j _ => polyDeriv_barP_symm _ _ (fun l => ?_) (analyticAt_kZero X idx x₁ x₂) (analyticAt_kZero X idx x₂ x₁) (kZero_swap idx h₁ h₂)` and prove the remaining obligations. Simplify using `[letterDir]`.
+-/
 theorem kern_swap {m : ℕ} (P : Fin m → Harm.Poly ℂ X.Ψ q0 X.p0 (Fin n)) {x₁ x₂ : Frame X.Ψ r}
     (h₁ : x₁ ∈ X.dom) (h₂ : x₂ ∈ X.dom) :
     kern X hr idx P x₂ x₁ = conj (kern X hr idx P x₁ x₂) := by
@@ -428,6 +586,9 @@ end GlobalTheory.SW.KernSym
 
 namespace GlobalTheory.SW
 
+/- English proof (translation)
+Introduce `_ _ _ _ _ X _ _ hr idx _ _ _ _ P _ _` and use `⟨fun _ hu x₁ _ x₂ _ => by rw [kern, kern, KernSym.kZero_lmulC X idx hu], fun _ h₁ _ h₂ => KernSym.kern_swap hr idx P h₁ h₂, fun hP _ hx => KernSym.kern_pos hr idx P hP hx⟩`.
+-/
 theorem kern_invariant_symm_pos : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (r : ℕ) (X : Data E r) (g q0 : ℕ) (hr : X.p0 + q0 = r) (idx : Fin g ≃ X.Ψ × Fin r) (n : ℕ) (c : X.Ψ → Fin q0 → ℕ) (c' : X.Ψ → Fin X.p0 → ℕ) (m : ℕ) (P : Fin m → Harm.Poly ℂ X.Ψ q0 X.p0 (Fin n)), Even n → (∀ j, P j ∈ Harm.rowHighest ℂ c c') → (∀ u : X.Ψ → Matrix (Fin r) (Fin r) ℂ, (∀ (τ : X.Ψ) v w, hermC τ.1 X.Gm (u τ *ᵥ v) (u τ *ᵥ w) = hermC τ.1 X.Gm v w) → ∀ x₁ ∈ X.dom, ∀ x₂ ∈ X.dom, kern X hr idx P (X.lmulC u x₁) (X.lmulC u x₂) = kern X hr idx P x₁ x₂) ∧ (∀ x₁ ∈ X.dom, ∀ x₂ ∈ X.dom, kern X hr idx P x₂ x₁ = conj (kern X hr idx P x₁ x₂)) ∧ ((∃ j, P j ≠ 0) → ∀ x₀ : Frame X.Ψ r, (∀ τ : X.Ψ, gram τ.1 X.Gm (mat x₀ τ) = sgnM X) → 0 < (kern X hr idx P x₀ x₀).re) :=
   fun _ _ _ _ _ X _ _ hr idx _ _ _ _ P _ _ =>
     ⟨fun _ hu x₁ _ x₂ _ => by rw [kern, kern, KernSym.kZero_lmulC X idx hu],

@@ -7,10 +7,22 @@ noncomputable section
 
 namespace PI.UnitaryGroupMassFormula.QmRowForm
 
+/- English proof (translation)
+Rewrite using `[← Int.cast_mul, ← Units.val_mul, Int.units_mul_self, Units.val_one, Int.cast_one]`.
+-/
 theorem sign_sq_cast {A : Type*} [Ring A] {t : ℕ} (τ : Equiv.Perm (Fin t)) :
     ((Equiv.Perm.sign τ : ℤ) : A) * ((Equiv.Perm.sign τ : ℤ) : A) = 1 := by
   rw [← Int.cast_mul, ← Units.val_mul, Int.units_mul_self, Units.val_one, Int.cast_one]
 
+/- English proof (translation)
+Unfold `DblDec`. Introduce `A _ _ n t E hE a b u`. Establish `hcol` using `Formalism.REAL.quantumMinorColSkew_holds A n t E hE a b`. Unfold `doubleRowFormSum`. Rewrite using `[Finset.sum_comm]`.
+
+Rewrite using `[show (t.factorial : ℂ) • qminor E a b u = ∑ _τ : Equiv.Perm (Fin t), qminor E a b u by`. Rewrite using `[Finset.sum_const, Finset.card_univ, Fintype.card_perm, Fintype.card_fin, Nat.cast_smul_eq_nsmul]]`. Use `Finset.sum_congr rfl fun τ _ => ?_` and prove the remaining obligations. Establish `h` using `hcol τ u`. Unfold `qminor at h`.
+
+Simplify using `only [Function.comp_apply] at h`. Establish `e : ∀ σ : Equiv.Perm (Fin t), (((Equiv.Perm.sign σ : ℤ) * (Equiv.Perm.sign τ : ℤ) : ℤ) : A) = ((Equiv.Perm.sign τ : ℤ) : A) * ((Equiv.Perm.sign σ : ℤ) : A)`. Introduce `σ`. Rewrite using `[Int.cast_mul, (Int.cast_commute _ _).eq]`. Repeatedly rewrite using `[e, mul_assoc, ← Finset.mul_sum]`.
+
+Rewrite using `[h, ← mul_assoc, sign_sq_cast, one_mul]`. Both sides reduce to the same expression.
+-/
 theorem double_row_decreasing : DblDec := by
   unfold DblDec
   intro A _ _ n t E hE a b u

@@ -9,5 +9,8 @@ open NumberField MvPolynomial Filter Topology Formalism.BasicNotions Formalism.M
 open CategoryTheory AlgebraicGeometry ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Geo.Tor GlobalTheory GlobalTheory.ArInt
 open scoped Classical
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.CovTest.BunModelEx.bunSt_holds | exact GlobalTheory.CovTest.BunModelEx.bunSt_holds | (intros; apply GlobalTheory.CovTest.BunModelEx.bunSt_holds <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.bundle_statement_of_prismatic : Hypotheses2 → HypothesesH → RegularAlteration → ScholzeWeinsteinB → PrismaticDieudonnePerfd → BunSt := by
   first | exact @GlobalTheory.CovTest.BunModelEx.bunSt_holds | exact GlobalTheory.CovTest.BunModelEx.bunSt_holds | (intros; apply GlobalTheory.CovTest.BunModelEx.bunSt_holds <;> assumption)

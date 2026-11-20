@@ -47,6 +47,9 @@ abbrev S : Type := (Wq l bk.a)⟦X⟧
 
 abbrev E : bk.S := (bk.Ep : (Wq l bk.a)⟦X⟧)
 
+/- English proof (translation)
+Introduce `h` and use `bk.monic.ne_zero (Polynomial.coe_eq_zero_iff.1 h)`.
+-/
 theorem E_ne_zero : bk.E ≠ 0 := fun h => bk.monic.ne_zero (Polynomial.coe_eq_zero_iff.1 h)
 
 def prism : Obj l ↥(OL K) where

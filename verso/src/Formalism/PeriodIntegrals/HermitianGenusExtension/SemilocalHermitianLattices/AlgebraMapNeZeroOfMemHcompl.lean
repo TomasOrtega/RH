@@ -10,21 +10,38 @@ namespace ReciprocityTheory.ChartRestriction.L3.WA
 
 variable {K : Type} [Field K] [NumberField K] [StarRing K]
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem algebraMap_conjO (r : 𝓞 K) :
     algebraMap (𝓞 K) K (conjO K r) = star (algebraMap (𝓞 K) K r) := rfl
 
+/- English proof (translation)
+The claim follows from `ReciprocityTheory.ChartRestriction.L3.conjO_conjO r`.
+-/
 theorem conjO_conjO (r : 𝓞 K) : conjO K (conjO K r) = r := ReciprocityTheory.ChartRestriction.L3.conjO_conjO r
 
+/- English proof (translation)
+Rewrite using `[ReciprocityTheory.ChartRestriction.L3.conjIdeal_eq_comap, Ideal.mem_comap]`.
+-/
 theorem mem_conjIdeal_iff (p : Ideal (𝓞 K)) (r : 𝓞 K) :
     r ∈ Formalism.HermitianLatticesTheory.conjIdeal (K := K) p ↔ conjO K r ∈ p := by
   rw [ReciprocityTheory.ChartRestriction.L3.conjIdeal_eq_comap, Ideal.mem_comap]
 
+/- English proof (translation)
+Use `haveI := hp`. Rewrite using `[ReciprocityTheory.ChartRestriction.L3.conjIdeal_eq_comap]`. Use `infer_instance`.
+-/
 theorem conjIdeal_isPrime {p : Ideal (𝓞 K)} (hp : p.IsPrime) :
     (Formalism.HermitianLatticesTheory.conjIdeal (K := K) p).IsPrime := by
   haveI := hp
   rw [ReciprocityTheory.ChartRestriction.L3.conjIdeal_eq_comap]
   infer_instance
 
+/- English proof (translation)
+Unfold `Formalism.HermitianLatticesTheory.hcompl`. Use `congr 1`. Use extensionality with `s`. Simplify using `only [Set.mem_setOf_eq]`. Use `and_congr_right fun _ => ⟨fun h => h _ (algebraMap_conjO s), fun h t ht => ?_⟩` and prove the remaining obligations.
+
+Establish `e : t = conjO K s` using `IsFractionRing.injective (𝓞 K) K (ht.trans (algebraMap_conjO s).symm)`. Rewrite using `[e]`. Conclude with `h`.
+-/
 theorem hcompl_eq_closure (p : Ideal (𝓞 K)) :
     Formalism.HermitianLatticesTheory.hcompl (K := K) p = Submonoid.closure {s : 𝓞 K | s ∉ p ∧ conjO K s ∉ p} := by
   unfold Formalism.HermitianLatticesTheory.hcompl
@@ -36,6 +53,13 @@ theorem hcompl_eq_closure (p : Ideal (𝓞 K)) :
   rw [e]
   exact h
 
+/- English proof (translation)
+Rewrite using `[hcompl_eq_closure, mem_conjIdeal_iff]`. Prove the components needed by the constructor for the conclusion. Introduce `hs`. Proceed by induction on `hs using Submonoid.closure_induction with`. Consider the case `mem x hx => exact hx`.
+
+Consider the case `one`. Use `⟨fun h => hp.ne_top ((Ideal.eq_top_iff_one _).2 h), ?_⟩` and prove the remaining obligations. Rewrite using `[map_one]`. Conclude with `fun h => hp.ne_top ((Ideal.eq_top_iff_one _).2 h)`. Consider the case `mul x y _ _ hx hy`.
+
+Use `⟨fun h => (hp.mem_or_mem h).elim hx.1 hy.1, ?_⟩` and prove the remaining obligations. Rewrite using `[map_mul]`. Conclude with `fun h => (hp.mem_or_mem h).elim hx.2 hy.2`. Introduce `h`. Conclude with `Submonoid.subset_closure h`.
+-/
 theorem mem_hcompl_iff {p : Ideal (𝓞 K)} (hp : p.IsPrime) (s : 𝓞 K) :
     s ∈ Formalism.HermitianLatticesTheory.hcompl (K := K) p ↔ s ∉ p ∧ s ∉ Formalism.HermitianLatticesTheory.conjIdeal (K := K) p := by
   rw [hcompl_eq_closure, mem_conjIdeal_iff]
@@ -54,6 +78,11 @@ theorem mem_hcompl_iff {p : Ideal (𝓞 K)} (hp : p.IsPrime) (s : 𝓞 K) :
   · intro h
     exact Submonoid.subset_closure h
 
+/- English proof (translation)
+Rewrite `hs`, the goal using `[hcompl_eq_closure]`. Proceed by induction on `hs using Submonoid.closure_induction with`. Consider the case `mem x hx`. Use `Submonoid.subset_closure ⟨hx.2, ?_⟩` and prove the remaining obligations. Rewrite using `[ReciprocityTheory.ChartRestriction.L3.conjO_conjO]`.
+
+Conclude with `hx.1`. Consider the case `one => rw [map_one]`. Conclude with `one_mem _`. Consider the case `mul x y _ _ hx hy => rw [map_mul]`. Conclude with `mul_mem hx hy`.
+-/
 theorem conjO_mem_hcompl {p : Ideal (𝓞 K)} {s : 𝓞 K} (hs : s ∈ Formalism.HermitianLatticesTheory.hcompl (K := K) p) :
     conjO K s ∈ Formalism.HermitianLatticesTheory.hcompl (K := K) p := by
   rw [hcompl_eq_closure] at hs ⊢
@@ -65,12 +94,20 @@ theorem conjO_mem_hcompl {p : Ideal (𝓞 K)} {s : 𝓞 K} (hs : s ∈ Formalism
   | one => rw [map_one]; exact one_mem _
   | mul x y _ _ hx hy => rw [map_mul]; exact mul_mem hx hy
 
+/- English proof (translation)
+Introduce `h`. Establish `hs0 : s = 0` using `IsFractionRing.injective (𝓞 K) K (by rw [h, map_zero])`. Conclude with `((mem_hcompl_iff hp s).1 hs).1 (by rw [hs0]; exact p.zero_mem)`.
+-/
 theorem algebraMap_ne_zero_of_mem_hcompl {p : Ideal (𝓞 K)} (hp : p.IsPrime) {s : 𝓞 K}
     (hs : s ∈ Formalism.HermitianLatticesTheory.hcompl (K := K) p) : algebraMap (𝓞 K) K s ≠ 0 := by
   intro h
   have hs0 : s = 0 := IsFractionRing.injective (𝓞 K) K (by rw [h, map_zero])
   exact ((mem_hcompl_iff hp s).1 hs).1 (by rw [hs0]; exact p.zero_mem)
 
+/- English proof (translation)
+Rewrite using `[Formalism.HermitianLatticesTheory.locDual_mem_locR]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨s, hs, hr⟩`. Take `⟨r, hr⟩` from `Submodule.mem_one.1 hr`. Use `⟨r, s, hs, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[eq_div_iff (algebraMap_ne_zero_of_mem_hcompl hp hs), hr, mul_comm]`. Introduce and unpack `⟨r, s, hs, rfl⟩`. Establish `hne` using `algebraMap_ne_zero_of_mem_hcompl hp hs`. Use `⟨s, hs, Submodule.mem_one.2 ⟨r, ?_⟩⟩` and prove the remaining obligations. Clear the denominators using the available nonvanishing facts.
+-/
 theorem mem_locR_iff {p : Ideal (𝓞 K)} (hp : p.IsPrime) (a : K) :
     a ∈ Formalism.HermitianLatticesTheory.locR (K := K) p ↔
       ∃ r : 𝓞 K, ∃ s ∈ Formalism.HermitianLatticesTheory.hcompl (K := K) p,
@@ -110,9 +147,15 @@ def locRing (p : Ideal (𝓞 K)) : Subring K where
   zero_mem' := (Formalism.HermitianLatticesTheory.locR (K := K) p).zero_mem
   neg_mem' := fun ha => (Formalism.HermitianLatticesTheory.locR (K := K) p).neg_mem ha
 
+/- English proof (translation)
+Unfold both sides. The equivalence is reflexive.
+-/
 theorem mem_locRing (p : Ideal (𝓞 K)) (a : K) :
     a ∈ locRing p ↔ a ∈ Formalism.HermitianLatticesTheory.locR (K := K) p := Iff.rfl
 
+/- English proof (translation)
+Rewrite using `[mem_locRing, Formalism.HermitianLatticesTheory.locDual_mem_locR]`. Use `⟨1, one_mem _, ?_⟩` and prove the remaining obligations. Rewrite using `[map_one, one_mul]`. Conclude with `Submodule.mem_one.2 ⟨r, rfl⟩`.
+-/
 theorem algebraMap_mem_locRing (p : Ideal (𝓞 K)) (r : 𝓞 K) :
     algebraMap (𝓞 K) K r ∈ locRing p := by
   rw [mem_locRing, Formalism.HermitianLatticesTheory.locDual_mem_locR]
@@ -120,6 +163,9 @@ theorem algebraMap_mem_locRing (p : Ideal (𝓞 K)) (r : 𝓞 K) :
   rw [map_one, one_mul]
   exact Submodule.mem_one.2 ⟨r, rfl⟩
 
+/- English proof (translation)
+Take `⟨xd, hxd⟩` from `IsLocalization.surj (nonZeroDivisors (𝓞 K)) a`. Use `⟨algebraMap (𝓞 K) K xd.2, algebraMap_mem_locRing p _, ?_, ?_⟩` and prove the remaining obligations. Conclude with `(map_ne_zero_iff _ (IsFractionRing.injective (𝓞 K) K)).2 (nonZeroDivisors.coe_ne_zero xd.2)`. Rewrite using `[mul_comm, hxd]`. Conclude with `algebraMap_mem_locRing p _`.
+-/
 theorem frac_locRing (p : Ideal (𝓞 K)) (a : K) : ∃ t ∈ locRing p, t ≠ 0 ∧ t * a ∈ locRing p := by
   obtain ⟨xd, hxd⟩ := IsLocalization.surj (nonZeroDivisors (𝓞 K)) a
   refine ⟨algebraMap (𝓞 K) K xd.2, algebraMap_mem_locRing p _, ?_, ?_⟩
@@ -127,6 +173,9 @@ theorem frac_locRing (p : Ideal (𝓞 K)) (a : K) : ∃ t ∈ locRing p, t ≠ 0
   · rw [mul_comm, hxd]
     exact algebraMap_mem_locRing p _
 
+/- English proof (translation)
+Rewrite `ha`, the goal using `[mem_locRing, mem_locR_iff hp]`. Take `⟨r, s, hs, rfl⟩` from `ha`. Use `⟨conjO K r, conjO K s, conjO_mem_hcompl hs, ?_⟩` and prove the remaining obligations. Rewrite using `[star_div₀, algebraMap_conjO, algebraMap_conjO]`.
+-/
 theorem star_mem_locRing {p : Ideal (𝓞 K)} (hp : p.IsPrime) {a : K} (ha : a ∈ locRing p) :
     star a ∈ locRing p := by
   rw [mem_locRing, mem_locR_iff hp] at ha ⊢
@@ -134,6 +183,17 @@ theorem star_mem_locRing {p : Ideal (𝓞 K)} (hp : p.IsPrime) {a : K} (ha : a �
   refine ⟨conjO K r, conjO K s, conjO_mem_hcompl hs, ?_⟩
   rw [star_div₀, algebraMap_conjO, algebraMap_conjO]
 
+/- English proof (translation)
+Establish `hsne` using `algebraMap_ne_zero_of_mem_hcompl hp hs`. Unfold `IsUnitIn`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨hne, -, hinv⟩`. Establish `hrne : algebraMap (𝓞 K) K r ≠ 0` using `fun h => hne (by rw [h, zero_div])`.
+
+Rewrite `hinv` using `[inv_div, mem_locRing, mem_locR_iff hp]`. Take `⟨r', s', hs', he⟩` from `hinv`. Establish `hs'ne` using `algebraMap_ne_zero_of_mem_hcompl hp hs'`. Rewrite `he` using `[div_eq_div_iff hrne hs'ne]`. Establish `he' : s * s' = r' * r` using `IsFractionRing.injective (𝓞 K) K (by rw [map_mul, map_mul, he])`.
+
+Establish `hm : s * s' ∈ Formalism.HermitianLatticesTheory.hcompl (K` using `K) p := mul_mem hs hs'`. Rewrite `hm` using `[mem_hcompl_iff hp, he']`. Rewrite using `[mem_hcompl_iff hp]`. Conclude with `⟨fun h => hm.1 (Ideal.mul_mem_left _ _ h), fun h => hm.2 (Ideal.mul_mem_left _ _ h)⟩`. Introduce `hr`.
+
+Establish `hrne` using `algebraMap_ne_zero_of_mem_hcompl hp hr`. Use `⟨div_ne_zero hrne hsne, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[mem_locRing, mem_locR_iff hp]`. Conclude with `⟨r, s, hs, rfl⟩`. Rewrite using `[inv_div, mem_locRing, mem_locR_iff hp]`.
+
+Conclude with `⟨s, r, hr, rfl⟩`.
+-/
 theorem isUnitIn_div_iff {p : Ideal (𝓞 K)} (hp : p.IsPrime) (r : 𝓞 K) {s : 𝓞 K}
     (hs : s ∈ Formalism.HermitianLatticesTheory.hcompl (K := K) p) :
     IsUnitIn (locRing p) (algebraMap (𝓞 K) K r / algebraMap (𝓞 K) K s) ↔
@@ -160,6 +220,13 @@ theorem isUnitIn_div_iff {p : Ideal (𝓞 K)} (hp : p.IsPrime) (r : 𝓞 K) {s :
     · rw [inv_div, mem_locRing, mem_locR_iff hp]
       exact ⟨s, r, hr, rfl⟩
 
+/- English proof (translation)
+Take `⟨θ, hθ⟩` from `ReciprocityTheory.ChartRestriction.L3.exists_sub_conjO_notMem hK hp`. Establish `hpr` using `hp.isPrime`. Establish `hx : θ - conjO K θ ∈ Formalism.HermitianLatticesTheory.hcompl (K` using `K) p := by`. Rewrite using `[mem_hcompl_iff hpr, mem_conjIdeal_iff]`. Use `⟨hθ, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[map_sub, ReciprocityTheory.ChartRestriction.L3.conjO_conjO]`. Introduce `h`. Conclude with `hθ (by rw [← neg_sub]; exact neg_mem h)`. Use `⟨algebraMap (𝓞 K) K θ, algebraMap_mem_locRing p θ, ?_⟩` and prove the remaining obligations. Establish `hu` using `(isUnitIn_div_iff hpr (θ - conjO K θ) (one_mem _)).2 hx`.
+
+Rewrite `hu` using `[map_one, div_one, map_sub, algebraMap_conjO]`. Then use the resulting hypothesis.
+-/
 theorem unram_locRing (hK : Formalism.HermitianLatticesTheory.IsCMUnram K) {p : Ideal (𝓞 K)} (hp : p.IsMaximal) :
     ∃ θ ∈ locRing p, IsUnitIn (locRing p) (θ - star θ) := by
   obtain ⟨θ, hθ⟩ := ReciprocityTheory.ChartRestriction.L3.exists_sub_conjO_notMem hK hp

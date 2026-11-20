@@ -23,6 +23,15 @@ noncomputable section
 
 namespace GlobalTheory.FubiniStudyPull
 
+/- English proof (translation)
+Introduce `Y π hπ`. Take `⟨hPI, hPdim, hPproj, hPsm⟩` from `GlobalTheory.T.projectiveSpace_integral_smooth_projective_dim ℂ Y.dim`. Use `haveI := hPI`. Distinguish the cases in `hη : π (genericPoint Y.X) = genericPoint (PSpace ℂ Y.dim)`. Establish `hδ` using `GlobalTheory.T.residueDegree_genericPoint_ne_zero_projective_same_dim ℂ (PSpace ℂ Y.dim) Y.X (PSpace.str ℂ Y.dim) Y.str Y.dim hPproj Y.isProjOver hPdim Y.topologicalKrullDim_eq π hπ hη`.
+
+Establish `hm` using `fun ε => GlobalTheory.T.chernMass_pull_mul_degree_field ℂ (PSpace ℂ Y.dim) Y.X (PSpace.str ℂ Y.dim) Y.str (RingHom.id ℂ) Y.dim hPproj Y.isProjOver hPsm π hπ hη hδ (ProjSpace.hermitianTwistingSheaf ℂ Y.dim).B ((ProjSpace.hermitianTwistingSheaf ℂ Y.dim).φ (RingHom.id ℂ)) ((ProjSpac …`. Take `⟨h1, h0⟩` from `GlobalTheory.T.chern_form_fubini_study_total Y.dim`. Establish `hi` using `GlobalTheory.T.topSelfIntersection_pullback_eq_degree_mul ℂ (PSpace ℂ Y.dim) Y.X (PSpace.str ℂ Y.dim) Y.str Y.dim hPproj Y.isProjOver hPdim.le π hπ hη hδ (ProjSpace.O1 ℂ Y.dim) (ProjSpace.O1_isLB ℂ Y.dim)`. Establish `ht` using `GlobalTheory.T.top_self_intersection_O1_projective ℂ Y.dim`. Rewrite using `[GdegPullProof.chernInt_one, hm 1, hm (-1), h1, h0]`.
+
+Express the relevant statement in the definitionally equal form `_ = ((topSelfIntersection ℂ ((ProjSpace.O1 ℂ Y.dim).pull π) Y.dim : ℤ) : ℝ)`. Rewrite using `[hi, ht]`. Simplify using the standard rewrite rules. Establish `hc` using `GlobalTheory.T.chernInt_pull_fubiniStudy_eq_zero_of_not_specializes Y π hπ ⟨genericPoint (PSpace ℂ Y.dim), fun h => hη (h.antisymm (genericPoint_specializes _)).eq⟩`. Establish `hn` using `GlobalTheory.T.topSelfIntersection_pullback_eq_zero_of_not_dominant ℂ (PSpace ℂ Y.dim) Y.X (PSpace.str ℂ Y.dim) Y.str Y.dim Y.isProjOver hPdim.le Y.topologicalKrullDim_eq.le π hη (ProjSpace.O1 ℂ Y.dim) (ProjSpace.O1_isLB ℂ Y.dim)`.
+
+Rewrite using `[hc]`. Express the relevant statement in the definitionally equal form `(0 : ℝ) = ((topSelfIntersection ℂ ((ProjSpace.O1 ℂ Y.dim).pull π) Y.dim : ℤ) : ℝ)`. Rewrite using `[hn]`. Simplify using the standard rewrite rules.
+-/
 theorem fubiniStudy_pullback_chern_mass_eq_degree : ∀ (Y : Var ℂ) (π : Y.X ⟶ PSpace ℂ Y.dim)
     (hπ : π ≫ PSpace.str ℂ Y.dim = Y.str),
     Weight.chernInt (((ProjSpace.hermitianTwistingSheaf ℂ Y.dim).φ (RingHom.id ℂ)).pull π hπ) Y.dim Set.univ

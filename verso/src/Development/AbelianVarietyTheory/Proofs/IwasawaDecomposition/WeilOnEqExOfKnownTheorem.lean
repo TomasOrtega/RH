@@ -17,6 +17,9 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 variable {D : D7}
 
+/- English proof (translation)
+The claim follows from `continuous_coord S T cont' := continuous_coord_symm S T sympl := symplOH_eq S T hr rat x := by constructor · rintro ⟨γ, rfl⟩ exact ⟨(γ * S.gram⁻¹)ᵀ, (coord_ratW S T γ).symm⟩ · rintro ⟨γ, hγ⟩ have hγ' : ratW S T γ = coord S T x := hγ refine ⟨γᵀ * S.gram, ?_⟩ change ratW T S _ = x …`.
+-/
 theorem isCoord_coord (S T : HSp D) (hr : S.rank ≤ T.rank) : IsCoord S T S T (coord S T) where
   cont := continuous_coord S T
   cont' := continuous_coord_symm S T
@@ -38,6 +41,9 @@ theorem isCoord_coord (S T : HSp D) (hr : S.rank ≤ T.rank) : IsCoord S T S T (
     show a * ∑ k, x j k * incA D (S.gram⁻¹ k i) = ∑ k, x j k * incA D (S.gram⁻¹ k i)
     simp only [Finset.mul_sum, ← mul_assoc, h]
 
+/- English proof (translation)
+Introduce `hP D ψ hψ V W χ χ' ⟨hr, h1, h2, h3, h4⟩`. Take `⟨om, H⟩` from `hP D ψ V W χ χ' hψ h1.1 h2.1 h3 h4`. Use `exists_isWeilOn_of_coord (isCoord_coord V W hr.le) H (MonoidHom.id _) continuous_id (fun g h x => (GlobalTheory.OrientedSmall.bridgeSmall D V W hr.le).2 g h x) (fun _ a _ b => ⟨a, b⟩) fun e g h hg hh x y hx hy => ⟨x, y, hg, hh, hx, hy, ?_⟩` and prove the remaining obligations. Unfold `splitFacO splitFac`. Rewrite using `[if_pos hr.le]`.
+-/
 theorem weilOnEqEx_of_weilRepresentation : GlobalTheory.Published.WeilRepresentationUnitaryPair → ∀ D : D7, WeilOnEqEx D := by
   intro hP D ψ hψ V W χ χ' ⟨hr, h1, h2, h3, h4⟩
   obtain ⟨om, H⟩ := hP D ψ V W χ χ' hψ h1.1 h2.1 h3 h4

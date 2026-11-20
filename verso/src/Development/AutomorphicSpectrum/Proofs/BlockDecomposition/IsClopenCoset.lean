@@ -21,6 +21,9 @@ variable (k d) in
 def gHom (g : GL (Fin d) k) : (Fin d → k) →+ (Fin d → k) :=
   (Matrix.mulVecLin (g : Matrix (Fin d) (Fin d) k)).toAddMonoidHom
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem gHom_apply (g : GL (Fin d) k) (y : Fin d → k) : gHom g y = (g : Matrix (Fin d) (Fin d) k).mulVec y := rfl
 
 def COSub.act (L : COSub k d) (g : GL (Fin d) k) : COSub k d where
@@ -28,21 +31,36 @@ def COSub.act (L : COSub k d) (g : GL (Fin d) k) : COSub k d where
   isOpen := L.isOpen.preimage (glHomeo g).symm.continuous
   isCompact := (glHomeo g).symm.isCompact_preimage.2 L.isCompact
 
+/- English proof (translation)
+Unfold both sides. The equivalence is reflexive.
+-/
 theorem COSub.mem_act {L : COSub k d} {g : GL (Fin d) k} {y : Fin d → k} :
     y ∈ (L.act g).sub ↔ ((g⁻¹ : GL (Fin d) k) : Matrix (Fin d) (Fin d) k).mulVec y ∈ L.sub := Iff.rfl
 
+/- English proof (translation)
+Rewrite using `[COSub.mem_act, mulVec_mulVec, ← Units.val_mul, inv_mul_cancel, Units.val_one, one_mulVec]`.
+-/
 theorem COSub.mulVec_mem_act {L : COSub k d} (g : GL (Fin d) k) {y : Fin d → k} :
     (g : Matrix (Fin d) (Fin d) k).mulVec y ∈ (L.act g).sub ↔ y ∈ L.sub := by
   rw [COSub.mem_act, mulVec_mulVec, ← Units.val_mul, inv_mul_cancel, Units.val_one, one_mulVec]
 
+/- English proof (translation)
+Use extensionality with `y`. Simplify using `[COSub.mem_act]`.
+-/
 theorem COSub.act_one (L : COSub k d) : L.act 1 = L := by
   ext y
   simp [COSub.mem_act]
 
+/- English proof (translation)
+Use extensionality with `y`. Simplify using `only [COSub.mem_act, mulVec_mulVec, ← Units.val_mul, _root_.mul_inv_rev]`.
+-/
 theorem COSub.act_act (L : COSub k d) (g h : GL (Fin d) k) : (L.act g).act h = L.act (h * g) := by
   ext y
   simp only [COSub.mem_act, mulVec_mulVec, ← Units.val_mul, _root_.mul_inv_rev]
 
+/- English proof (translation)
+Introduce `_ hy` and use `h hy`.
+-/
 theorem COSub.act_mono {L L' : COSub k d} (h : L'.sub ≤ L.sub) (g : GL (Fin d) k) :
     (L'.act g).sub ≤ (L.act g).sub := fun _ hy => h hy
 
@@ -76,6 +94,9 @@ def latZ (z : GL (Fin d) k) (r : ℤ) : COSub k d := lat0.act (z ^ r)
 def IsReps (L' L : COSub k d) (S : Finset (Fin d → k)) : Prop :=
   (∀ s ∈ S, s ∈ L.sub) ∧ ∀ y ∈ L.sub, ∃! s, s ∈ S ∧ y - s ∈ L'.sub
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨L.isCompact.isClosed.preimage (continuous_id.sub continuous_const), L.isOpen.preimage (continuous_id.sub continuous_const)⟩`.
+-/
 theorem isClopen_coset (L : COSub k d) (c : Fin d → k) : IsClopen {y | y - c ∈ L.sub} :=
   ⟨L.isCompact.isClosed.preimage (continuous_id.sub continuous_const),
     L.isOpen.preimage (continuous_id.sub continuous_const)⟩
@@ -98,9 +119,17 @@ def ind (L : COSub k d) (c : Fin d → k) (a : V) : SchF k d V :=
       exact hx ⟨x - c, h, by simp⟩⟩
 
 open Classical in
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem ind_apply (L : COSub k d) (c y : Fin d → k) (a : V) :
     (ind L c a).1 y = if y - c ∈ L.sub then a else 0 := rfl
 
+/- English proof (translation)
+Use `Subtype.ext (funext fun y => ?_)` and prove the remaining obligations. Rewrite using `[ind_apply, ind_apply]`. Establish `: y - (x + l) ∈ L.sub ↔ y - x ∈ L.sub`. Establish `e : y - (x + l) = y - x - l` using `by abel`. Rewrite using `[e]`.
+
+Conclude with `⟨fun h => by simpa using L.sub.add_mem h hl, fun h => L.sub.sub_mem h hl⟩`. Distinguish the cases in `h : y - x ∈ L.sub`. Rewrite using `[if_pos h, if_pos (this.2 h)]`. Rewrite using `[if_neg h, if_neg (mt this.1 h)]`.
+-/
 theorem ind_add_mem (L : COSub k d) (x : Fin d → k) {l : Fin d → k} (hl : l ∈ L.sub) (a : V) :
     ind L (x + l) a = ind L x a := by
   refine Subtype.ext (funext fun y => ?_)
@@ -113,24 +142,38 @@ theorem ind_add_mem (L : COSub k d) (x : Fin d → k) {l : Fin d → k} (hl : l 
   · rw [if_pos h, if_pos (this.2 h)]
   · rw [if_neg h, if_neg (mt this.1 h)]
 
+/- English proof (translation)
+Use `Subtype.ext (funext fun y => ?_)` and prove the remaining obligations. Use `show (ind L c (a + b)).1 y = (ind L c a).1 y + (ind L c b).1 y`. Simplify using `only [ind_apply]`. Apply the tactic sequence `split_ifs <;> simp`.
+-/
 theorem ind_add (L : COSub k d) (c : Fin d → k) (a b : V) : ind L c (a + b) = ind L c a + ind L c b := by
   refine Subtype.ext (funext fun y => ?_)
   show (ind L c (a + b)).1 y = (ind L c a).1 y + (ind L c b).1 y
   simp only [ind_apply]
   split_ifs <;> simp
 
+/- English proof (translation)
+Use `Subtype.ext (funext fun y => ?_)` and prove the remaining obligations. Use `show (ind L c (t • a)).1 y = t • (ind L c a).1 y`. Simplify using `only [ind_apply]`. Apply the tactic sequence `split_ifs <;> simp`.
+-/
 theorem ind_smul (L : COSub k d) (c : Fin d → k) (t : ℂ) (a : V) : ind L c (t • a) = t • ind L c a := by
   refine Subtype.ext (funext fun y => ?_)
   show (ind L c (t • a)).1 y = t • (ind L c a).1 y
   simp only [ind_apply]
   split_ifs <;> simp
 
+/- English proof (translation)
+Use `Subtype.ext (funext fun y => ?_)` and prove the remaining obligations. Rewrite using `[shiftF_apply, ind_apply, ind_apply]`. Establish `e : y + x - c = y - (c - x)` using `by abel`. Rewrite using `[e]`.
+-/
 theorem shiftF_ind (L : COSub k d) (x c : Fin d → k) (a : V) : shiftF x (ind L c a) = ind L (c - x) a := by
   refine Subtype.ext (funext fun y => ?_)
   rw [shiftF_apply, ind_apply, ind_apply]
   have e : y + x - c = y - (c - x) := by abel
   rw [e]
 
+/- English proof (translation)
+Use `Subtype.ext (funext fun y => ?_)` and prove the remaining obligations. Rewrite using `[actF_apply, ind_apply, ind_apply]`. Establish `e : ((g⁻¹ : GL (Fin d) k) : Matrix (Fin d) (Fin d) k).mulVec (y - (g : Matrix (Fin d) (Fin d) k).mulVec c) = ((g⁻¹ : GL (Fin d) k) : Matrix (Fin d) (Fin d) k).mulVec y - c`. Rewrite using `[mulVec_sub, mulVec_mulVec, ← Units.val_mul, inv_mul_cancel, Units.val_one, one_mulVec]`. Establish `h : (y - (g : Matrix (Fin d) (Fin d) k).mulVec c ∈ (L.act g).sub) ↔ ((g⁻¹ : GL (Fin d) k) : Matrix (Fin d) (Fin d) k).mulVec y - c ∈ L.sub`.
+
+Rewrite using `[COSub.mem_act, e]`. Distinguish the cases in `hc : ((g⁻¹ : GL (Fin d) k) : Matrix (Fin d) (Fin d) k).mulVec y - c ∈ L.sub`. Rewrite using `[if_pos hc, if_pos (h.2 hc)]`. Rewrite using `[if_neg hc, if_neg (mt h.1 hc), map_zero]`.
+-/
 theorem actF_ind (X : Representation ℂ (GL (Fin d) k) V) (g : GL (Fin d) k) (L : COSub k d) (c : Fin d → k) (a : V) :
     actF X g (ind L c a) = ind (L.act g) ((g : Matrix (Fin d) (Fin d) k).mulVec c) (X g a) := by
   refine Subtype.ext (funext fun y => ?_)
@@ -148,11 +191,17 @@ theorem actF_ind (X : Representation ℂ (GL (Fin d) k) V) (g : GL (Fin d) k) (L
 def mL (B : SchF k d V →ₗ[ℂ] SchF k d V' →ₗ[ℂ] ℂ) (L : COSub k d) (x : Fin d → k) (a : V) (a' : V') : ℂ :=
   B (ind L x a) (ind L 0 a')
 
+/- English proof (translation)
+Rewrite using `[mL, ← hT c' (ind L c a) (ind L c' a'), shiftF_ind, shiftF_ind, sub_self]`.
+-/
 theorem B_ind_ind (B : SchF k d V →ₗ[ℂ] SchF k d V' →ₗ[ℂ] ℂ)
     (hT : ∀ x f f', B (shiftF x f) (shiftF x f') = B f f') (L : COSub k d) (c c' : Fin d → k) (a : V) (a' : V') :
     B (ind L c a) (ind L c' a') = mL B L (c - c') a a' := by
   rw [mL, ← hT c' (ind L c a) (ind L c' a'), shiftF_ind, shiftF_ind, sub_self]
 
+/- English proof (translation)
+Rewrite using `[mL, mL, ← hG g (ind L x a) (ind L 0 a'), actF_ind, actF_ind, mulVec_zero]`.
+-/
 theorem mL_act (X : Representation ℂ (GL (Fin d) k) V) (Y : Representation ℂ (GL (Fin d) k) V')
     (B : SchF k d V →ₗ[ℂ] SchF k d V' →ₗ[ℂ] ℂ)
     (hG : ∀ g f f', B (actF X g f) (actF Y g f') = B f f') (g : GL (Fin d) k) (L : COSub k d) (x : Fin d → k)
@@ -160,22 +209,37 @@ theorem mL_act (X : Representation ℂ (GL (Fin d) k) V) (Y : Representation ℂ
     mL B (L.act g) ((g : Matrix (Fin d) (Fin d) k).mulVec x) (X g a) (Y g a') = mL B L x a a' := by
   rw [mL, mL, ← hG g (ind L x a) (ind L 0 a'), actF_ind, actF_ind, mulVec_zero]
 
+/- English proof (translation)
+Rewrite using `[mL, mL, ind_add_mem L x hl]`.
+-/
 theorem mL_add_mem (B : SchF k d V →ₗ[ℂ] SchF k d V' →ₗ[ℂ] ℂ) (L : COSub k d) (x : Fin d → k) {l : Fin d → k}
     (hl : l ∈ L.sub) (a : V) (a' : V') : mL B L (x + l) a a' = mL B L x a a' := by
   rw [mL, mL, ind_add_mem L x hl]
 
+/- English proof (translation)
+Simplify using `[mL, ind_add]`.
+-/
 theorem mL_add_left (B : SchF k d V →ₗ[ℂ] SchF k d V' →ₗ[ℂ] ℂ) (L : COSub k d) (x : Fin d → k) (a b : V) (a' : V') :
     mL B L x (a + b) a' = mL B L x a a' + mL B L x b a' := by
   simp [mL, ind_add]
 
+/- English proof (translation)
+Simplify using `[mL, ind_add]`.
+-/
 theorem mL_add_right (B : SchF k d V →ₗ[ℂ] SchF k d V' →ₗ[ℂ] ℂ) (L : COSub k d) (x : Fin d → k) (a : V) (a' b' : V') :
     mL B L x a (a' + b') = mL B L x a a' + mL B L x a b' := by
   simp [mL, ind_add]
 
+/- English proof (translation)
+Simplify using `[mL, ind_smul]`.
+-/
 theorem mL_smul_left (B : SchF k d V →ₗ[ℂ] SchF k d V' →ₗ[ℂ] ℂ) (L : COSub k d) (x : Fin d → k) (t : ℂ) (a : V) (a' : V') :
     mL B L x (t • a) a' = t * mL B L x a a' := by
   simp [mL, ind_smul]
 
+/- English proof (translation)
+Simplify using `[mL, ind_smul]`.
+-/
 theorem mL_smul_right (B : SchF k d V →ₗ[ℂ] SchF k d V' →ₗ[ℂ] ℂ) (L : COSub k d) (x : Fin d → k) (a : V) (t : ℂ) (a' : V') :
     mL B L x a (t • a') = t * mL B L x a a' := by
   simp [mL, ind_smul]

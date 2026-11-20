@@ -18,6 +18,9 @@ attribute [local instance] algPadicInt algPadicField towerPadic factPadic Global
 open GlobalTheory.FlatModel
 
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.FrameChangePair.exists_frPt_comb_pair | exact GlobalTheory.FrameChangePair.exists_frPt_comb_pair | (intros; apply GlobalTheory.FrameChangePair.exists_frPt_comb_pair <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.frame_point_tangent_matrices : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (Dw : Datum H)
     (l : Level H) (Xo : Moduli Dw l) (c : Coeff l) (L : Type) [CommRing L] [Algebra c.F L] (z₀ : FrPt Xo c L)
     (τ : Psi H) (g₁ : Matrix (Fin (Dw.mult τ.1)) (Fin (Dw.mult τ.1)) L)

@@ -29,11 +29,19 @@ section Lattices
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {n : ℕ}
 
 omit [NumberField E] [IsCMField E] in
+/- English proof (translation)
+Simplify using `[UnitaryAdjointCongruence.actLat]`.
+-/
 theorem mem_actLat (γ : Matrix (Fin n) (Fin n) E) (Λ : GenLat E n) (v' : Fin n → E) :
     v' ∈ (UnitaryAdjointCongruence.actLat γ Λ).La ↔ ∃ v ∈ Λ.La, γ.mulVec v = v' := by
   simp [UnitaryAdjointCongruence.actLat]
 
 omit [NumberField E] [IsCMField E] in
+/- English proof (translation)
+Rewrite using `[Submodule.ideal_span_singleton_smul]`. Prove the components needed by the constructor for the conclusion. Introduce `h v hv`. Rewrite using `[← Nat.cast_smul_eq_nsmul (𝓞 E)]`. Conclude with `h (Submodule.smul_mem_pointwise_smul v _ A hv)`.
+
+Introduce and unpack `h _ ⟨v, hv, rfl⟩`. Use `h v hv` as an intermediate fact. Rewrite `this` using `[← Nat.cast_smul_eq_nsmul (𝓞 E)]`. Then use the resulting hypothesis.
+-/
 theorem smul_le_iff (k : ℕ) (A B : Submodule (𝓞 E) (Fin n → E)) :
     Ideal.span {(k : 𝓞 E)} • A ≤ B ↔ ∀ v ∈ A, k • v ∈ B := by
   rw [Submodule.ideal_span_singleton_smul]
@@ -46,6 +54,9 @@ theorem smul_le_iff (k : ℕ) (A B : Submodule (𝓞 E) (Fin n → E)) :
     rwa [← Nat.cast_smul_eq_nsmul (𝓞 E)] at this
 
 omit [NumberField E] [IsCMField E] in
+/- English proof (translation)
+Establish `e : Nat.gcd k k' • v = Nat.gcdA k k' • (k • v) + Nat.gcdB k k' • (k' • v)`. Rewrite using `[← natCast_zsmul, Nat.gcd_eq_gcd_ab, add_zsmul, mul_comm (k : ℤ), mul_comm (k' : ℤ), mul_zsmul, mul_zsmul, natCast_zsmul, natCast_zsmul]`. Rewrite using `[e]`. Conclude with `B.add_mem (zsmul_mem h _) (zsmul_mem h' _)`.
+-/
 theorem gcd_smul_mem {B : Submodule (𝓞 E) (Fin n → E)} {v : Fin n → E} {k k' : ℕ} (h : k • v ∈ B) (h' : k' • v ∈ B) :
     Nat.gcd k k' • v ∈ B := by
   have e : Nat.gcd k k' • v = Nat.gcdA k k' • (k • v) + Nat.gcdB k k' • (k' • v) := by
@@ -55,6 +66,11 @@ theorem gcd_smul_mem {B : Submodule (𝓞 E) (Fin n → E)} {v : Fin n → E} {k
   exact B.add_mem (zsmul_mem h _) (zsmul_mem h' _)
 
 omit [NumberField E] [IsCMField E] in
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨k, hk, h⟩`. Conclude with `⟨⟨k, hk.coprime_mul_right_right, h⟩, ⟨k, hk.coprime_mul_left_right, h⟩⟩`. Introduce and unpack `⟨⟨k, hk, h1, h2⟩, ⟨k', hk', h1', h2'⟩⟩`. Rewrite `h1`, `h2`, `h1'`, `h2'` using `[smul_le_iff]`.
+
+Apply the tactic sequence `refine ⟨Nat.gcd k k', Nat.Coprime.mul_right (hk.coprime_dvd_left (Nat.gcd_dvd_left _ _)) (hk'.coprime_dvd_left (Nat.gcd_dvd_right _ _)), ?_, ?_⟩ <;> rw [smul_le_iff]`. Use `exacts [fun v hv => gcd_smul_mem (h1 v hv) (h1' v hv), fun v hv => gcd_smul_mem (h2 v hv) (h2' v hv)]`.
+-/
 theorem trivAt_mul (Λ : GenLat E n) (a b : ℕ) : Λ.TrivAt (a * b) ↔ Λ.TrivAt a ∧ Λ.TrivAt b := by
   constructor
   · rintro ⟨k, hk, h⟩
@@ -66,11 +82,19 @@ theorem trivAt_mul (Λ : GenLat E n) (a b : ℕ) : Λ.TrivAt (a * b) ↔ Λ.Triv
     exacts [fun v hv => gcd_smul_mem (h1 v hv) (h1' v hv), fun v hv => gcd_smul_mem (h2 v hv) (h2' v hv)]
 
 omit [NumberField E] [IsCMField E] in
+/- English proof (translation)
+Take `⟨k, hk, h⟩` from `h`. Conclude with `⟨k, hk.coprime_dvd_right hab, h⟩`.
+-/
 theorem trivAt_of_dvd {Λ : GenLat E n} {a b : ℕ} (hab : a ∣ b) (h : Λ.TrivAt b) : Λ.TrivAt a := by
   obtain ⟨k, hk, h⟩ := h
   exact ⟨k, hk.coprime_dvd_right hab, h⟩
 
 omit [NumberField E] [IsCMField E] in
+/- English proof (translation)
+Take `⟨k, hk, -, h⟩` from `h`. Rewrite `h` using `[smul_le_iff]`. Use `⟨M * k, hM.mul (Nat.coprime_two_right.1 (hk.coprime_dvd_right h2)), dvd_mul_right _ _, ?_⟩` and prove the remaining obligations. Rewrite using `[smul_le_iff]`. Introduce `v hv`.
+
+Use `⟨?_, nsmul_mem hv _⟩` and prove the remaining obligations. Rewrite using `[mul_nsmul']`. Conclude with `nsmul_mem (h v hv) _`.
+-/
 theorem exists_levOK {Λ : GenLat E n} {bad M : ℕ} (h2 : 2 ∣ bad) (hM : Odd M) (h : Λ.TrivAt bad) :
     ∃ N, Λ.LevOK N M := by
   obtain ⟨k, hk, -, h⟩ := h
@@ -82,9 +106,15 @@ theorem exists_levOK {Λ : GenLat E n} {bad M : ℕ} (h2 : 2 ∣ bad) (hM : Odd 
   rw [mul_nsmul']
   exact nsmul_mem (h v hv) _
 
+/- English proof (translation)
+The claim follows from `mul_eq_one_comm.1 h`.
+-/
 theorem mul_adj {γ : Matrix (Fin n) (Fin n) E} (h : UnitaryAdjointCongruence.IsUnitaryM γ) : γ * UnitaryAdjointCongruence.adjM γ = 1 :=
   mul_eq_one_comm.1 h
 
+/- English proof (translation)
+Simplify using `only [Matrix.mulVec, dotProduct, UnitaryAdjointCongruence.adjM, Matrix.of_apply, map_sum, map_mul, IsCMField.complexConj_apply_apply, Finset.mul_sum, Finset.sum_mul]`. Rewrite using `[Finset.sum_comm]`. Conclude with `Finset.sum_congr rfl fun _ _ => Finset.sum_congr rfl fun _ _ => by ring`.
+-/
 theorem form_adj (γ : Matrix (Fin n) (Fin n) E) (v w : Fin n → E) :
     ∑ j, IsCMField.complexConj E (v j) * γ.mulVec w j =
       ∑ j, IsCMField.complexConj E ((UnitaryAdjointCongruence.adjM γ).mulVec v j) * w j := by
@@ -93,6 +123,15 @@ theorem form_adj (γ : Matrix (Fin n) (Fin n) E) (v w : Fin n → E) :
   rw [Finset.sum_comm]
   exact Finset.sum_congr rfl fun _ _ => Finset.sum_congr rfl fun _ _ => by ring
 
+/- English proof (translation)
+Introduce `v`. Establish `e : v ∈ (UnitaryAdjointCongruence.actLat γ Λ).La ↔ (UnitaryAdjointCongruence.adjM γ).mulVec v ∈ Λ.La`. Rewrite using `[mem_actLat]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨u, hu, rfl⟩`.
+
+Rewrite using `[Matrix.mulVec_mulVec, h, Matrix.one_mulVec]` and apply the resulting hypothesis. Introduce `hv`. Conclude with `⟨_, hv, by rw [Matrix.mulVec_mulVec, mul_adj h, Matrix.one_mulVec]⟩`. Rewrite using `[e, hΛ]`. Prove the components needed by the constructor for the conclusion.
+
+Introduce `hv w hw`. Take `⟨u, hu, rfl⟩` from `(mem_actLat _ _ _).1 hw`. Rewrite using `[form_adj]`. Conclude with `hv u hu`. Introduce `hv w hw`.
+
+Rewrite using `[← form_adj]`. Conclude with `hv _ ((mem_actLat _ _ _).2 ⟨w, hw, rfl⟩)`.
+-/
 theorem unimod_act {γ : Matrix (Fin n) (Fin n) E} (h : UnitaryAdjointCongruence.IsUnitaryM γ) {Λ : GenLat E n} (hΛ : Λ.Unimod) :
     (UnitaryAdjointCongruence.actLat γ Λ).Unimod := by
   intro v
@@ -121,6 +160,11 @@ section Letters
 
 variable (c : Coeff l) {n : ℕ}
 
+/- English proof (translation)
+Take `⟨⟨h1, h2, h3⟩, h4⟩` from `hP`. Use `⟨⟨GlobalTheory.PushHarm.push_mem_harmK E H Dw l c n γ P h h1, (GlobalTheory.Proof.ColumnMapShift.push_rows E H Dw l c n γ P fun τ i => a (τ, i)).1 h2, (GlobalTheory.Proof.ColumnMapShift.push_rows E H Dw l c n γ P fun τ i => a (τ, i)).2 h3⟩, ?_⟩` and prove the remaining obligations. Establish `: symO (Dw` using `Dw) c Λ ≤ (symO c (UnitaryAdjointCongruence.actLat γ Λ)).comap (UnitaryAdjointCongruence.pushLet c γ).toRingHom := by`. Use `Subring.closure_le.2 ?_` and prove the remaining obligations. Introduce and unpack `_ (⟨o, rfl⟩ | ⟨σ, i, b, hb, rfl⟩)`.
+
+Use `Subring.subset_closure (Or.inl ⟨o, ?_⟩)` and prove the remaining obligations. Conclude with `(algHom_C (UnitaryAdjointCongruence.pushLet c γ) (o : c.F)).symm`. Conclude with `Subring.subset_closure (Or.inr ⟨σ, i, _, (mem_actLat _ _ _).2 ⟨b, hb, rfl⟩, UnitaryAdjointCongruence.pushLet_letB c γ σ i b⟩)`. Conclude with `this h4`.
+-/
 theorem push_mem {γ : Matrix (Fin n) (Fin n) E} (h : UnitaryAdjointCongruence.IsUnitaryM γ) {Λ : GenLat E n}
     {a : (E →+* ℂ) × ℕ → ℕ} {P : MvPolynomial (LtN Dw n) c.F} (hP : P ∈ harmL c Λ a) :
     UnitaryAdjointCongruence.pushLet c γ P ∈ harmL c (UnitaryAdjointCongruence.actLat γ Λ) a := by
@@ -150,6 +194,9 @@ structure FrameLaws : Prop where
   bc : ∀ (S T : Type) [CommRing S] [Algebra c.F S] [CommRing T] [Algebra c.F T] (φ : S →ₐ[c.F] T) (y : FrPt Xo c S),
     ∃ z : FrPt Xo c T, FrMap φ y z
 
+/- English proof (translation)
+The claim follows from `have hB := GlobalTheory.allSixLaws.1.secBaseChange ⟨GlobalTheory.Frames.chartCoverF_of_secBaseChange hB E H Dw l Xo c, GlobalTheory.Frames.allTest_of_secBaseChange hB E H Dw l Xo c, fun S T _ _ _ _ φ y => GlobalTheory.Frames.FramedBaseChange.exists_frMap hB E H Dw l Xo c S T φ y⟩`.
+-/
 theorem frameLaws : FrameLaws Xo c :=
   have hB := GlobalTheory.allSixLaws.1.secBaseChange
   ⟨GlobalTheory.Frames.chartCoverF_of_secBaseChange hB E H Dw l Xo c, GlobalTheory.Frames.allTest_of_secBaseChange hB E H Dw l Xo c,
@@ -179,10 +226,16 @@ instance (K : Type) [Field K] (p : TRing K) : IsReduced p.R := (Ideal.isRadical_
 
 variable {Xo c} {nab : NabV Xo c} {n : ℕ}
 
+/- English proof (translation)
+Take `⟨k, hk, e⟩` from `h`. Conclude with `⟨k, hk, by rw [inv_pow, e, inv_one]⟩`.
+-/
 theorem root_inv {K : Type} [Field K] {ζ : K} (h : ∃ k : ℕ, 0 < k ∧ ζ ^ k = 1) : ∃ k : ℕ, 0 < k ∧ ζ⁻¹ ^ k = 1 := by
   obtain ⟨k, hk, e⟩ := h
   exact ⟨k, hk, by rw [inv_pow, e, inv_one]⟩
 
+/- English proof (translation)
+Take `⟨k, hk, e⟩` from `h`. Take `⟨j, hj, e'⟩` from `h'`. Conclude with `⟨k * j, Nat.mul_pos hk hj, by rw [mul_pow, pow_mul, e, one_pow, one_mul, pow_mul', e', one_pow]⟩`.
+-/
 theorem root_mul {K : Type} [Field K] {ζ ξ : K} (h : ∃ k : ℕ, 0 < k ∧ ζ ^ k = 1) (h' : ∃ k : ℕ, 0 < k ∧ ξ ^ k = 1) :
     ∃ k : ℕ, 0 < k ∧ (ζ * ξ) ^ k = 1 := by
   obtain ⟨k, hk, e⟩ := h

@@ -16,6 +16,11 @@ noncomputable section
 
 namespace GlobalTheory.FlagCov
 
+/- English proof (translation)
+Establish `e : (X.fromSpecStalk (genericPoint X)).appLE (j ⁻¹ᵁ W) ⊤ hx ≫ (Scheme.ΓSpecIso (X.presheaf.stalk (genericPoint X))).hom = X.presheaf.germ (j ⁻¹ᵁ W) (genericPoint X) h`. Establish `k : ∀ (V : X.Opens) (h : genericPoint X ∈ V) (hx : ⊤ ≤ (X.fromSpecStalk (genericPoint X)) ⁻¹ᵁ V), (X.fromSpecStalk (genericPoint X)).appLE V ⊤ hx ≫ (Scheme.ΓSpecIso (X.presheaf.stalk (genericPoint X))).hom = X.presheaf.germ V (genericPoint X) h`. Introduce `V h hx`. Simplify using `only [Scheme.Hom.appLE, Scheme.fromSpecStalk_app h, Category.assoc]`. Rewrite using `[← Functor.map_comp_assoc, Subsingleton.elim ((homOfLE le_top).op ≫ (homOfLE hx).op) (𝟙 _), CategoryTheory.Functor.map_id, Category.id_comp, Iso.inv_hom_id, Category.comp_id]`.
+
+Conclude with `k _ h hx`. Establish `e2` using `Scheme.Hom.comp_appLE (X.fromSpecStalk (genericPoint X)) j W ⊤ hx`. Express the relevant statement in the definitionally equal form `((X.fromSpecStalk (genericPoint X) ≫ j).appLE W ⊤ hx ≫ (Scheme.ΓSpecIso (X.presheaf.stalk (genericPoint X))).hom).hom a = _`. Rewrite using `[e2, Category.assoc, e]`. Both sides reduce to the same expression.
+-/
 theorem evalPt_genPt_comp {X Y : Scheme.{0}} [IsIntegral X] (j : X ⟶ Y) (W : Y.Opens)
     (hx : ⊤ ≤ (GlobalTheory.FlagCov.genPt X ≫ j) ⁻¹ᵁ W) (h : genericPoint X ∈ j ⁻¹ᵁ W) (a : Γ(Y, W)) :
     TangentOrigin.evalPt (GlobalTheory.FlagCov.genPt X ≫ j) W hx a = fnOf (j ⁻¹ᵁ W) h ((j.app W).hom a) := by
@@ -37,6 +42,9 @@ theorem evalPt_genPt_comp {X Y : Scheme.{0}} [IsIntegral X] (j : X ⟶ Y) (W : Y
   rw [e2, Category.assoc, e]
   rfl
 
+/- English proof (translation)
+Rewrite using `[VB.IsFrame.val_detUnit, Module.Basis.det_apply, Matrix.det_unique, Module.Basis.toMatrix_apply]`. Use `(he.basis h).sum_repr (Twist.resM F h' (e' 0))` as an intermediate fact. Rewrite `this` using `[Fin.sum_univ_one, VB.IsFrame.basis_apply]`. Conclude with `this.symm`.
+-/
 theorem resM_frame_eq_detUnit_smul {Y : Scheme.{0}} {F : Y.Modules} {U U' V : Y.Opens}
     {e : Fin 1 → Γ(F, U)} {e' : Fin 1 → Γ(F, U')} (he : VB.IsFrame e) (he' : VB.IsFrame e')
     (h : V ≤ U) (h' : V ≤ U') :
@@ -46,6 +54,9 @@ theorem resM_frame_eq_detUnit_smul {Y : Scheme.{0}} {F : Y.Modules} {U U' V : Y.
   rw [Fin.sum_univ_one, VB.IsFrame.basis_apply] at this
   exact this.symm
 
+/- English proof (translation)
+Establish `e : (L.pull j).g c c' = Semi.res (le_inf (inf_le_left.trans (LB.wchart_le L (fun _ => j) c PUnit.unit)) (inf_le_right.trans (LB.wchart_le L (fun _ => j) c' PUnit.unit))) (pullU j _ (L.g (c PUnit.unit) (c' PUnit.unit)))`. Establish `k : ∀ {G : Type} [CommGroup G] (f : PUnit.{1} → G), ∏ k, f k ^ (1 : ℤ) = f PUnit.unit` using `fun f => by simp`. Conclude with `k (G := Γ(X, LB.wchart L (fun _ : PUnit.{1} => j) c ⊓ LB.wchart L (fun _ : PUnit.{1} => j) c')ˣ) (fun u => Semi.res (le_inf (inf_le_left.trans (LB.wchart_le L (fun _ => j) c u)) (inf_le_right.trans (LB.wchart_le L (fun _ => j) c' u))) (pullU j _ (L.g (c u) (c' u))))`. Rewrite using `[e]`. Conclude with `fnOf_resG _ h _`.
+-/
 theorem fnOf_pull_g {X Y : Scheme.{0}} [IsIntegral X] (j : X ⟶ Y) (L : LB Y) (c c' : (L.pull j).ι)
     (h : genericPoint X ∈ (L.pull j).U c ⊓ (L.pull j).U c')
     (h' : genericPoint X ∈ j ⁻¹ᵁ (L.U (c PUnit.unit) ⊓ L.U (c' PUnit.unit))) :
@@ -62,6 +73,17 @@ theorem fnOf_pull_g {X Y : Scheme.{0}} [IsIntegral X] (j : X ⟶ Y) (L : LB Y) (
   rw [e]
   exact fnOf_resG _ h _
 
+/- English proof (translation)
+Introduce `X Y₀ _ j M N fl i r H ch ch' h`. Take `⟨W, hW, hx, lam, hlam, ⟨t, ht⟩, h1, h2⟩` from `H ch ch' h`. Establish `hWj : genericPoint X ∈ j ⁻¹ᵁ W`. Use `hx (Set.mem_univ (IsLocalRing.closedPoint (X.presheaf.stalk (genericPoint X))))` as an intermediate fact. Express the relevant statement in the definitionally equal form `j ((X.fromSpecStalk (genericPoint X)) (IsLocalRing.closedPoint _)) ∈ W at this`.
+
+Rewrite `this` using `[Scheme.fromSpecStalk_closedPoint]`. Then use the resulting hypothesis. Establish `h' : genericPoint X ∈ j ⁻¹ᵁ ((ch PUnit.unit).U ⊓ (ch' PUnit.unit).U)` using `hW hWj`. Establish `hx' : ⊤ ≤ (GlobalTheory.FlagCov.genPt X ≫ j) ⁻¹ᵁ ((ch PUnit.unit).U ⊓ (ch' PUnit.unit).U)` using `fun y hy => hW (hx hy)`. Use `set g : Γ(Y₀, W)ˣ := (ch PUnit.unit).isFrame.detUnit (ch' PUnit.unit).isFrame (hW.trans inf_le_left) (hW.trans inf_le_right) with hg`. Establish `e1` using `h2 ((g : Γ(Y₀, W)) • t) (by`.
+
+Rewrite using `[Scheme.Modules.Hom.app_smul, ht]`. Conclude with `(resM_frame_eq_detUnit_smul _ _ _ _).symm)`. Rewrite `e1` using `[hlam, h1 t ht]`. Establish `e2 : TangentOrigin.evalPt (GlobalTheory.FlagCov.genPt X ≫ j) W hx (g : Γ(Y₀, W)) = fnOf _ h (((fl.root i).pull j).g ch ch' : Γ(X, _))`. Rewrite using `[fnOf_pull_g j (fl.root i) ch ch' h h']`.
+
+Use `Eq.trans ?_ (evalPt_genPt_comp j _ hx' h' _)` and prove the remaining obligations. Use `Eq.trans ?_ (TangentOrigin.evalPt_res _ hW hx' hx _)` and prove the remaining obligations. Use `congrArg _ ?_` and prove the remaining obligations. Conclude with `(congrArg Units.val (VB.IsFrame.res_detUnit (ch PUnit.unit).isFrame (ch' PUnit.unit).isFrame inf_le_left inf_le_right hW)).symm`. Rewrite `e1` using `[e2, Units.val_inv_eq_inv_val, Units.val_inv_eq_inv_val]`.
+
+Establish `a` using `(r ch).ne_zero`. Establish `b` using `(r ch').ne_zero`. Clear denominators, using `at e1` for the nonvanishing conditions. Take the linear combination `-e1`.
+-/
 theorem isRatSec_pull_root_of_scaling : ∀ {X Y₀ : Scheme.{0}} [IsIntegral X] (j : X ⟶ Y₀) {M : Y₀.Modules} {N : ℕ} (fl : Vert.Flag M N) (i : Fin N)
     (r : ((fl.root i).pull j).ι → X.functionFieldˣ),
     (∀ ch ch' : ((fl.root i).pull j).ι, genericPoint X ∈ ((fl.root i).pull j).U ch ⊓ ((fl.root i).pull j).U ch' →

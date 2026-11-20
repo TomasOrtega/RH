@@ -27,6 +27,9 @@ def basisOfCard {k M : Type*} [Field k] [AddCommGroup M] [Module k M] [FiniteDim
     rw [← hcard, h1]
     rfl)
 
+/- English proof (translation)
+The claim follows from `Basis.mk_apply _ _ _`.
+-/
 theorem basisOfCard_apply {k M : Type*} [Field k] [AddCommGroup M] [Module k M]
     [FiniteDimensional k M] {n : Type*} [Fintype n] {v : n → M} (hli : LinearIndependent k v)
     (hcard : Fintype.card n = finrank k M) (i : n) : basisOfCard hli hcard i = v i :=
@@ -38,6 +41,11 @@ variable {H : Matrix ι ι E}
 
 omit [Field E] [Algebra K E] [Algebra.IsQuadraticExtension K E] [DecidableEq ι] [Fintype ι]
   [Fintype κ] in
+/- English proof (translation)
+Rewrite `*` using `[Fintype.linearIndependent_iff]`. Introduce `g hg i`. Use `hli (fun i => (g i : ℝ)) (by` as an intermediate fact. Use function extensionality and compare the values at `j`. Use `congrFun hg j` as an intermediate fact.
+
+Simplify using `only [Finset.sum_apply, Pi.smul_apply, smul_eq_mul, Pi.zero_apply] at this ⊢`. Simplify using `only [ratEmb]`. Conclude with `this) i` after adjusting the coercions. Conclude with `this` after adjusting the coercions.
+-/
 theorem linearIndependent_ratCoords {E : Type*} [CommRing E] [Algebra K E] {N : ℕ}
     {b : Basis κ K E} {x : Fin N → ι → K ⊗[K] E}
     (hli : LinearIndependent ℝ fun i => ratEmb b (x i)) :

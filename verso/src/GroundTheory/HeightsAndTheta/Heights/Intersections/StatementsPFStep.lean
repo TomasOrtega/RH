@@ -29,10 +29,18 @@ section Inhabitants
 
 abbrev PointLineBlocks : Unit ⊕ Unit → Type := Sum.elim (PBlk 1) (PBlk 2)
 
+/- English proof (translation)
+The claim follows from `Ideal.comap_bot_of_injective _ (rename_injective _ isBlockMap_inl.2.1)`.
+-/
 theorem imageZ_inlV_bot :
     imageZ (inlV (ι := PBlk 1) (ι₂ := PBlk 2)) (⊥ : Ideal (MRing PointLineBlocks)) = ⊥ :=
   Ideal.comap_bot_of_injective _ (rename_injective _ isBlockMap_inl.2.1)
 
+/- English proof (translation)
+Proceed by induction on `f using MvPolynomial.induction_on with`. Consider the case `C a`. Rewrite using `[aeval_C, eq_intCast (algebraMap ℤ Φ) a]`. Conclude with `(eq_intCast ((algebraMap (MvPolynomial σ ℤ) Φ).comp C) a).symm`. Consider the case `add p q hp hq => rw [map_add, map_add, hp, hq]`.
+
+Consider the case `mul_X p n hp => rw [map_mul, map_mul, hp, aeval_X]`.
+-/
 theorem aeval_algebraMap_X_eq {σ : Type} {Φ : Type} [CommRing Φ] [Algebra (MvPolynomial σ ℤ) Φ]
     (f : MvPolynomial σ ℤ) :
     aeval (R := ℤ) (fun p => algebraMap (MvPolynomial σ ℤ) Φ (X p)) f = algebraMap (MvPolynomial σ ℤ) Φ f := by
@@ -47,6 +55,9 @@ abbrev lineAlgBase : Algebra (MRing (PBlk 1)) (FractionRing (MRing PointLineBloc
   ((algebraMap (MRing PointLineBlocks) (FractionRing (MRing PointLineBlocks))).comp
     (rename (inlV (ι := PBlk 1) (ι₂ := PBlk 2))).toRingHom).toAlgebra
 
+/- English proof (translation)
+The claim follows from `(IsFractionRing.injective (MRing PointLineBlocks) (FractionRing (MRing PointLineBlocks))).comp (rename_injective _ isBlockMap_inl.2.1)`.
+-/
 theorem lineAlgBase_injective :
     Function.Injective (@algebraMap (MRing (PBlk 1)) (FractionRing (MRing PointLineBlocks)) _ _ lineAlgBase) :=
   (IsFractionRing.injective (MRing PointLineBlocks) (FractionRing (MRing PointLineBlocks))).comp
@@ -58,6 +69,9 @@ abbrev lineAlg : Algebra (FractionRing (MRing (PBlk 1))) (FractionRing (MRing Po
     (faithfulSMul_iff_algebraMap_injective _ _).mpr lineAlgBase_injective
   FractionRing.liftAlgebra _ _
 
+/- English proof (translation)
+Set `` to `lineAlgBase`. Establish `: FaithfulSMul (MRing (PBlk 1)) (FractionRing (MRing PointLineBlocks))` using `(faithfulSMul_iff_algebraMap_injective _ _).mpr lineAlgBase_injective`. Conclude with `IsFractionRing.lift_algebraMap lineAlgBase_injective f`.
+-/
 theorem lineAlg_algebraMap (f : MRing (PBlk 1)) :
     @algebraMap _ _ _ _ lineAlg (algebraMap (MRing (PBlk 1)) (FractionRing (MRing (PBlk 1))) f) =
       algebraMap (MRing PointLineBlocks) (FractionRing (MRing PointLineBlocks))

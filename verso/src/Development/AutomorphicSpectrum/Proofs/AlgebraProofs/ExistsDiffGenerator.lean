@@ -7,12 +7,24 @@ namespace GlobalTheory.CompanionTheory.Ar.HT
 
 open Module NumberField
 
+/- English proof (translation)
+Establish `h1 : IsIntegral ℤ (σ (a : E))` using `(RingOfIntegers.isIntegral_coe a).map σ.toIntAlgHom`. Establish `h2 : IsIntegral v.integer (σ (a : E))` using `h1.tower_top`. Conclude with `(Valuation.integer.integers v).mem_of_integral h2`.
+-/
 theorem diffGen_v_le_one {C : Type} [Field C] (v : Valuation C NNReal)
     {E : Type} [Field E] [NumberField E] (σ : E →+* C) (a : 𝓞 E) : v (σ (a : E)) ≤ 1 := by
   have h1 : IsIntegral ℤ (σ (a : E)) := (RingOfIntegers.isIntegral_coe a).map σ.toIntAlgHom
   have h2 : IsIntegral v.integer (σ (a : E)) := h1.tower_top
   exact (Valuation.integer.integers v).mem_of_integral h2
 
+/- English proof (translation)
+Take `⟨s, hs⟩` from `(IsNoetherian.noetherian D : D.FG)`. Break down `s.eq_empty_or_nonempty with h | h` into its components or cases. Use `⟨0, D.zero_mem, fun x hx => ?_⟩` and prove the remaining obligations. Rewrite `hx` using `[← hs, h, Finset.coe_empty, Submodule.span_empty, Submodule.mem_bot]`. Simplify using `[hx]`.
+
+Take `⟨x₀, hx₀s, hmax⟩` from `s.exists_max_image (fun g : 𝓞 E => v (σ (g : E))) h`. Use `⟨x₀, ?_, fun x hx => ?_⟩` and prove the remaining obligations. Rewrite using `[← hs]`. Conclude with `Submodule.subset_span hx₀s`. Rewrite `hx` using `[← hs]`.
+
+Proceed by induction on `hx using Submodule.span_induction with`. Consider the case `mem y hy => exact hmax y hy`. Consider the case `zero => simp`. Consider the case `add y z _ _ hy hz`. Combine the equalities or inequalities in the displayed calculation.
+
+Consider the case `smul r y _ hy`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem diffGen_exists_max {C : Type} [Field C] (v : Valuation C NNReal)
     {E : Type} [Field E] [NumberField E] (σ : E →+* C) (D : Ideal (𝓞 E)) :
     ∃ x₀ ∈ D, ∀ x ∈ D, v (σ ((x : 𝓞 E) : E)) ≤ v (σ ((x₀ : 𝓞 E) : E)) := by
@@ -39,6 +51,21 @@ theorem diffGen_exists_max {C : Type} [Field C] (v : Valuation C NNReal)
         _ ≤ 1 * v (σ (x₀ : E)) := mul_le_mul' (diffGen_v_le_one v σ r) hy
         _ = _ := one_mul _
 
+/- English proof (translation)
+Establish `hint : ∀ a : 𝓞 E, σ (a : E) ∈ (algebraMap O C).range`. Introduce `a`. Establish `h1 : IsIntegral ℤ (σ (a : E))` using `(a.isIntegral_coe).map σ.toIntAlgHom`. Establish `h3 : σ (a : E) ∈ v.integer` using `hv.mem_of_integral (h1.tower_top (A := O))`. Conclude with `RingHom.mem_range.2 (hv.exists_of_le_one ((Valuation.mem_integer_iff v _).1 h3))`.
+
+Use `⟨hint, ?_⟩` and prove the remaining obligations. Take `⟨x₀, hx₀, hmax⟩` from `diffGen_exists_max v σ (differentIdeal ℤ (𝓞 E))`. Take `⟨d, hd⟩` from `RingHom.mem_range.1 (hint x₀)`. Establish `hne : differentIdeal ℤ (𝓞 E) ≠ ⊥` using `differentIdeal_ne_bot`. Take `⟨z, hz, hz0⟩` from `Submodule.exists_mem_ne_zero_of_ne_bot hne`.
+
+Establish `hσz : σ (z : E) ≠ 0` using `(map_ne_zero σ).2 (by simpa using hz0)`. Establish `hx0ne : σ (x₀ : E) ≠ 0`. Introduce `h`. Establish `hle` using `hmax z hz`. Rewrite `hle` using `[h, map_zero]`.
+
+Conclude with `(v.ne_zero_iff.2 hσz) (le_antisymm hle zero_le)`. Use `⟨d, by rw [hd]; exact hx0ne, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[hd, diffAbs]`. Apply `le_antisymm` to reduce the goal to its premises. Conclude with `le_ciSup (f := fun x : differentIdeal ℤ (𝓞 E) => v (σ ((x : 𝓞 E) : E))) ⟨v (σ (x₀ : E)), by rintro _ ⟨x, rfl⟩; exact hmax x x.2⟩ ⟨x₀, hx₀⟩`.
+
+Conclude with `ciSup_le fun x => hmax x x.2`. Rewrite using `[hd]`. Apply `le_antisymm` to reduce the goal to its premises. Rewrite using `[Submodule.span_le, Set.singleton_subset_iff]`. Conclude with `Submodule.subset_span ⟨x₀, hx₀, rfl⟩`.
+
+Rewrite using `[Submodule.span_le]`. Introduce and unpack `y ⟨x, hx, rfl⟩`. Establish `hle : v (σ (x : E) / σ (x₀ : E)) ≤ 1`. Rewrite using `[map_div₀]`. Conclude with `div_le_one_of_le₀ (hmax x hx) zero_le`.
+
+Take `⟨c, hc⟩` from `hv.exists_of_le_one hle`. Rewrite using `[SetLike.mem_coe, Submodule.mem_span_singleton]`. Use `⟨c, ?_⟩` and prove the remaining obligations. Rewrite using `[Algebra.smul_def, hc, div_mul_cancel₀ _ hx0ne]`.
+-/
 theorem exists_diff_generator (C : Type) [Field C] (v : Valuation C NNReal) (O : Type) [CommRing O]
     [Algebra O C] (hv : v.Integers O) [CharZero C] (E : Type) [Field E] [NumberField E]
     (σ : E →+* C) :

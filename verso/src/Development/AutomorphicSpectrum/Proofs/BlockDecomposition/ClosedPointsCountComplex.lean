@@ -14,6 +14,15 @@ open IsLocalRing
 open GlobalTheory.CompanionTheory.KoszulCount
 namespace GlobalTheory.CompanionTheory.KoszulCount
 
+/- English proof (translation)
+Take `⟨U, hU, hx, -⟩` from `exists_isAffineOpen_mem_and_subset (X := X) (x := y.1 (closedPoint ℂ)) (U := ⊤) trivial`. Establish `hy : y ∈ ptsIn p (RingHom.id ℂ) U` using `mem_ptsIn.2 hx`. Establish `hy' : y' ∈ ptsIn p (RingHom.id ℂ) U` using `mem_ptsIn.2 (h ▸ hx)`. Establish `hv : ∀ g : Γ(X, U), ev p (RingHom.id ℂ) U g y = 0 → ev p (RingHom.id ℂ) U g y' = 0`. Introduce `g hg`.
+
+Assume the negation of the conclusion as `hne`. Establish `h₁` using `(mem_ptsIn_basicOpen hy' g).2 hne`. Establish `h₂ : y ∈ ptsIn p (RingHom.id ℂ) (X.basicOpen g)` using `mem_ptsIn.2 (h ▸ mem_ptsIn.1 h₁)`. Conclude with `(mem_ptsIn_basicOpen hy g).1 h₂ hg`. Use `Subtype.ext (GlobalTheory.Points.ext_of_valR hU hy hy' fun f => ?_)` and prove the remaining obligations.
+
+Establish `e₀ : ev p (RingHom.id ℂ) U (f - ReciprocityTheory.ChartRestriction.G.DVR.FlatBC.algX p U (ev p (RingHom.id ℂ) U f y)) y = 0`. Rewrite using `[ev_eq hy, map_sub, ← ev_eq hy, ← ev_eq hy, ev_algX hy]`. Simplify using the standard rewrite rules. Establish `e₁` using `hv _ e₀`. Rewrite `e₁` using `[ev_eq hy', map_sub, ← ev_eq hy', ← ev_eq hy', ev_algX hy']`.
+
+Conclude with `(sub_eq_zero.1 e₁).symm`.
+-/
 theorem cxPts_eq_of_pt_eq {X : Scheme.{0}} {p : X ⟶ Sp ℂ} {y y' : CxPts p (RingHom.id ℂ)}
     (h : y.1 (closedPoint ℂ) = y'.1 (closedPoint ℂ)) : y = y' := by
   obtain ⟨U, hU, hx, -⟩ := exists_isAffineOpen_mem_and_subset (X := X)
@@ -35,6 +44,9 @@ theorem cxPts_eq_of_pt_eq {X : Scheme.{0}} {p : X ⟶ Sp ℂ} {y y' : CxPts p (R
   rw [ev_eq hy', map_sub, ← ev_eq hy', ← ev_eq hy', ev_algX hy'] at e₁
   exact (sub_eq_zero.1 e₁).symm
 
+/- English proof (translation)
+Take `⟨U, hU, hxU, -⟩` from `exists_isAffineOpen_mem_and_subset (X := X) (x := x) (U := ⊤) trivial`. Take `⟨⟨y, -, hs⟩, -⟩` from `GlobalTheory.SpecialisationPts.nonempty_and_isPreconnected X p inferInstance U hU x hxU`. Conclude with `⟨y, (hs.mem_closed hx rfl : _ ∈ ({x} : Set X))⟩`.
+-/
 theorem exists_cxPts_pt_eq {X : Scheme.{0}} (p : X ⟶ Sp ℂ) [LocallyOfFiniteType p] {x : X}
     (hx : IsClosed ({x} : Set X)) :
     ∃ y : CxPts p (RingHom.id ℂ), y.1 (closedPoint ℂ) = x := by
@@ -43,6 +55,13 @@ theorem exists_cxPts_pt_eq {X : Scheme.{0}} (p : X ⟶ Sp ℂ) [LocallyOfFiniteT
     GlobalTheory.SpecialisationPts.nonempty_and_isPreconnected X p inferInstance U hU x hxU
   exact ⟨y, (hs.mem_closed hx rfl : _ ∈ ({x} : Set X))⟩
 
+/- English proof (translation)
+Introduce `Y Z hZ`. Establish `: LocallyOfFiniteType Y.str` using `inferInstance`. Establish `him : (fun y : CxPts Y.str (RingHom.id ℂ) => y.1 (closedPoint ℂ)) '' {y : CxPts Y.str (RingHom.id ℂ) | y.1 (closedPoint ℂ) ∈ Z} = Z`. Use extensionality with `x`. Prove the components needed by the constructor for the conclusion.
+
+Introduce and unpack `⟨y, hy, rfl⟩`. Conclude with `hy`. Introduce `hx`. Take `⟨y, rfl⟩` from `exists_cxPts_pt_eq Y.str (hZ x hx)`. Conclude with `⟨y, hx, rfl⟩`.
+
+Use `conv_rhs => rw [← him]`. Conclude with `(Set.ncard_image_of_injOn fun _ _ _ _ h => cxPts_eq_of_pt_eq h).symm`.
+-/
 theorem ncard_cxPts_over_closed : ∀ (Y : Var ℂ) (Z : Set Y.X), (∀ x ∈ Z, IsClosed ({x} : Set Y.X)) → ({y : CxPts Y.str (RingHom.id ℂ) | y.1 (IsLocalRing.closedPoint ℂ) ∈ Z}).ncard = Z.ncard := by
   intro Y Z hZ
   have : LocallyOfFiniteType Y.str := inferInstance

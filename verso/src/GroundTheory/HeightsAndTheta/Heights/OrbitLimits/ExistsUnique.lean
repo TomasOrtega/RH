@@ -12,6 +12,9 @@ open ReciprocityTheory.ChartRestriction.G.AI.I1 GroundTheory.Heights₂.Heights.
 
 universe u v w
 
+/- English proof (translation)
+Conclude with `Numbers.existsUnique hN hUq (IntNumPoint.proof hBase) hBase`.
+-/
 theorem ExistsUnique.of_found (hN : IntNumIsFieldIntersection.Statement.{u})
     (hUq : FieldNumbers.IntNumUnique.Statement.{u}) (hBase : FieldNumbers.IntNumBase.Statement.{u})
     (F : Type u) [Field F] {K : Type} [Fintype K] (ι : K → Type) [∀ k, Fintype (ι k)] :
@@ -19,6 +22,9 @@ theorem ExistsUnique.of_found (hN : IntNumIsFieldIntersection.Statement.{u})
   classical
   exact Numbers.existsUnique hN hUq (IntNumPoint.proof hBase) hBase
 
+/- English proof (translation)
+The claim follows from `ExistsUnique.of_found IntNumIsFieldIntersection.full FieldNumbers.IntNumUnique.full FieldNumbers.IntNumBase.full F ι`.
+-/
 theorem ExistsUnique.full (F : Type u) [Field F] {K : Type} [Fintype K] (ι : K → Type)
     [∀ k, Fintype (ι k)] : ExistsUniqueStatement F ι :=
   ExistsUnique.of_found IntNumIsFieldIntersection.full FieldNumbers.IntNumUnique.full

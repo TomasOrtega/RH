@@ -17,27 +17,50 @@ namespace GlobalTheory.DblUnfoldCont
 
 open Matrix
 
+/- English proof (translation)
+Simplify using `only [dotProduct]`. Rewrite using `[← finSumFinEquiv.sum_comp, Fintype.sum_sum_type]`. Simplify using `only [pairVec_inl, pairVec_inr]`.
+-/
 theorem pairVec_dotProduct {n : ℕ} (x y x' y' : Fin n → ℂ) :
     pairVec finSumFinEquiv x y ⬝ᵥ pairVec finSumFinEquiv x' y' = x ⬝ᵥ x' + y ⬝ᵥ y' := by
   simp only [dotProduct]
   rw [← finSumFinEquiv.sum_comp, Fintype.sum_sum_type]
   simp only [pairVec_inl, pairVec_inr]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `j`. Apply the tactic sequence `obtain ⟨i | i, rfl⟩ := finSumFinEquiv.surjective j <;> simp only [Pi.star_apply, pairVec_inl, pairVec_inr]`.
+-/
 theorem star_pairVec {n : ℕ} (x y : Fin n → ℂ) :
     star (pairVec finSumFinEquiv x y) = pairVec finSumFinEquiv (star x) (star y) := by
   funext j
   obtain ⟨i | i, rfl⟩ := finSumFinEquiv.surjective j <;> simp only [Pi.star_apply, pairVec_inl, pairVec_inr]
 
+/- English proof (translation)
+Simplify using `[blkMat, Matrix.fromBlocks_transpose]`.
+-/
 theorem transpose_blkMat {n : ℕ} (x y : Matrix (Fin n) (Fin n) ℂ) :
     (blkMat finSumFinEquiv x y)ᵀ = blkMat finSumFinEquiv xᵀ yᵀ := by
   simp [blkMat, Matrix.fromBlocks_transpose]
 
+/- English proof (translation)
+Simplify using `only [blkMat]`. Rewrite using `[show fromBlocks (c • x) 0 0 (c • y) = c • fromBlocks x 0 0 y by rw [Matrix.fromBlocks_smul, smul_zero]]`. Both sides reduce to the same expression.
+-/
 theorem smul_blkMat {n : ℕ} (c : ℂ) (x y : Matrix (Fin n) (Fin n) ℂ) :
     c • blkMat finSumFinEquiv x y = blkMat finSumFinEquiv (c • x) (c • y) := by
   simp only [blkMat]
   rw [show fromBlocks (c • x) 0 0 (c • y) = c • fromBlocks x 0 0 y by rw [Matrix.fromBlocks_smul, smul_zero]]
   rfl
 
+/- English proof (translation)
+Take `⟨h1, h2, h3⟩` from `h`. Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[blkMat_mul, neg_mul_neg, h1, blkMat_one]`. Rewrite using `[transpose_blkMat, blkMat_map _ _ (star_zero _), blkMat_mul, blkMat_mul]`. Establish `hs : (-θ).map star = -(θ.map star)` using `by ext i j; simp`.
+
+Simplify using `only [Matrix.transpose_neg, hs, neg_mul_neg, Matrix.mul_neg, h2]`. Introduce `x hx`. Rewrite `hx`, the goal using `[← pairVec_eta finSumFinEquiv x]`. Use `set u : Fin n → ℂ := fun i => x (finSumFinEquiv (.inl i))`. Use `set v : Fin n → ℂ := fun i => x (finSumFinEquiv (.inr i))`.
+
+Rewrite using `[star_pairVec, blkMat_mulVec, blkMat_mulVec, pairVec_dotProduct, Complex.add_re, Matrix.neg_mulVec, Matrix.neg_mulVec, neg_dotProduct, dotProduct_neg, neg_neg]`. Establish `key : ∀ z : Fin n → ℂ, 0 ≤ ((θ *ᵥ z) ⬝ᵥ M *ᵥ star z).re` using `fun z => by`. Distinguish the cases in `hz : z = 0`. Simplify using `[hz]`. Conclude with `(h3 z hz).le`.
+
+Distinguish the cases in `hu : u = 0`. Establish `hv : v ≠ 0`. Introduce and unpack `hv`. Apply `hx` to reduce the goal to its premises. Rewrite using `[hu, hv]`.
+
+Use function extensionality and compare the values at `j`. Apply the tactic sequence `obtain ⟨i | i, rfl⟩ := finSumFinEquiv.surjective j <;> simp only [pairVec_inl, pairVec_inr, Pi.zero_apply]`. Conclude with `add_pos_of_nonneg_of_pos (key u) (h3 v hv)`. Conclude with `add_pos_of_pos_of_nonneg (h3 u hu) (key v)`.
+-/
 theorem isCartan_dbl {n : ℕ} (M θ : Matrix (Fin n) (Fin n) ℂ) (h : IsCartan M θ) :
     IsCartan (blkMat finSumFinEquiv M (-M)) (blkMat finSumFinEquiv θ (-θ)) := by
   obtain ⟨h1, h2, h3⟩ := h
@@ -63,6 +86,25 @@ theorem isCartan_dbl {n : ℕ} (M θ : Matrix (Fin n) (Fin n) ℂ) (h : IsCartan
       exact add_pos_of_nonneg_of_pos (key u) (h3 v hv)
     · exact add_pos_of_pos_of_nonneg (h3 u hu) (key v)
 
+/- English proof (translation)
+Establish `e : K = GlobalTheory.StabHaar.stabK B X`. Use extensionality with `g`. Rewrite using `[hK g, GlobalTheory.StabHaar.isStab_stabK B X g]`. Substitute `e` using the available equality. Establish `hJ : X.J.det ≠ 0`.
+
+Introduce `h0`. Take `⟨w⟩ : Nonempty (InfinitePlace F)` from `inferInstance`. Establish `hd : (X.J.map (B.emb w).1).det = 0`. Rewrite using `[← RingHom.mapMatrix_apply, ← RingHom.map_det, h0, map_zero]`. Take `⟨v, hv, hMv⟩` from `Matrix.exists_mulVec_eq_zero_iff.2 hd`.
+
+Establish `hx : star v ≠ 0` using `by simpa using hv`. Use `(hθ w).2.2 (star v) hx` as an intermediate fact. Rewrite `this` using `[star_star, Matrix.smul_mulVec, hMv, smul_zero, dotProduct_zero, Complex.zero_re]`. Conclude with `lt_irrefl _ this`. Use `choose Rw hRw using fun w => GlobalTheory.T.cartan_commuting_isometries_bounded _ _ (hθ w)`.
+
+Use `set R : ℝ := ∑ w, |Rw w|`. Take `⟨Cf, hCf, hCfe⟩` from `GlobalTheory.StabCompact.exists_compact_entries F E X.L hL.fg hL.span_eq_top`. Take `⟨K, hK, hKe⟩` from `GlobalTheory.T.bounded_norm_compact_preimage F E σ hcm B.emb Cf hCf R`. Take `⟨C, hC, hCe⟩` from `GlobalTheory.T.unitary_group_bounded_entries_compact F E σ n X.J hJ K hK`. Establish `hsub : ((GlobalTheory.StabHaar.stabK B X : Subgroup (UA σ X.J)) : Set (UA σ X.J)) ⊆ C`.
+
+Use `fun g hg => hCe g fun i j => hKe _ ?_ ?_` and prove the remaining obligations. Conclude with `hCfe _ (GlobalTheory.T.lattice_completion_stable_base_change F E n X (mat g) fun z hz => (hg.2 z hz).1) i j`. Introduce `w`. Establish `hu : ((mat g).map (piInf (B.emb w))).transpose * X.J.map (B.emb w).1 * ((mat g).map (piInf (B.emb w))).map star = X.J.map (B.emb w).1`. Establish `h2` using `congrArg (fun Y : Matrix (Fin n) (Fin n) (AE F E) => Y.map (piInf (B.emb w))) (show (mat g).transpose * incM F X.J * (mat g).map (cA σ) = incM F X.J from g.2)`.
+
+Simplify using `only [Matrix.map_mul] at h2`. Establish `e1 : (incM F X.J).map (piInf (B.emb w)) = X.J.map (B.emb w).1`. Use extensionality with `i j`. Simplify using `[incM, piInf, compInf, inclR, infEmb_tmul]`. Establish `e2 : ((mat g).map (cA σ)).map (piInf (B.emb w)) = ((mat g).map (piInf (B.emb w))).map star`.
+
+Use extensionality with `i j`. Simplify using `only [Matrix.map_apply]`. Conclude with `GlobalTheory.StabBounded.cA_piInf hcm _ _`. Rewrite `h2` using `[e1]`. Rewrite using `[← e2, ← Matrix.transpose_map]`.
+
+Conclude with `h2`. Establish `hu' : ((mat g).map (piInf (B.emb w))).transpose * (Complex.I • X.J.map (B.emb w).1) * ((mat g).map (piInf (B.emb w))).map star = Complex.I • X.J.map (B.emb w).1`. Rewrite using `[Matrix.mul_smul, Matrix.smul_mul, hu]`. Establish `hb` using `hRw w _ hu' (hg.1 w).eq i j`. Combine the equalities or inequalities in the displayed calculation.
+
+Conclude with `hC.of_isClosed_subset (GlobalTheory.StabHaar.isClosed_stabK B X (GlobalTheory.LatHatClosed.isClosed_latHat F E n X hL)) hsub`.
+-/
 theorem isCompact_of_isStab_skew {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
     {σ : E →ₐ[F] E} (hcm : IsCMExt F E σ) (B : Base F E) {n : ℕ} (X : Spc F E n) (hL : X.L.IsLattice E)
     (hθ : ∀ w, IsCartan (Complex.I • X.J.map (B.emb w).1) (X.θ w)) {K : Subgroup (UA σ X.J)} (hK : IsStab B K) :
@@ -114,6 +156,19 @@ theorem isCompact_of_isStab_skew {F E : Type} [Field F] [NumberField F] [Field E
         _ ≤ R := Finset.single_le_sum (f := fun w => |Rw w|) (fun _ _ => abs_nonneg _) (Finset.mem_univ w)
   exact hC.of_isClosed_subset (GlobalTheory.StabHaar.isClosed_stabK B X (GlobalTheory.LatHatClosed.isClosed_latHat F E n X hL)) hsub
 
+/- English proof (translation)
+Introduce `hSE hKP F E _ _ _ _ _ σ B a a' G X om om' R Rf hM hq hp W₂ hJ hL hθ i hi K hK hIw φ₀ hφ₀ hconv μ hμ`. Use `haveI : Module.Finite F E := Module.Finite.of_restrictScalars_finite ℚ F E`. Use `haveI : IsModuleTopology (AF F) (AE F E) := ⟨rfl⟩`. Use `haveI : IsTopologicalRing (AE F E) := IsModuleTopology.isTopologicalRing (AF F) _`. Use `haveI := GlobalTheory.AdelicUnitaryTop.t2Space_adeleRing_numberField F`.
+
+Take `⟨eh⟩` from `GlobalTheory.AdelicUnitaryTop.nonempty_homeomorph (F := F) (E := E) (AF F)`. Use `haveI : T2Space (AE F E) := eh.isEmbedding.t2Space`. Use `haveI := (GlobalTheory.UnipCT.topFacts σ W₂.J).1`. Establish `hW` using `hM.triple.geo.hW`. Establish `hcm` using `hM.triple.base.cm`.
+
+Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Establish `h1 : (Subtype.val ∘ i : UA σ G.W.J × UA σ G.W.J → GL (Fin _) (AE F E)) = fun x => blkGL finSumFinEquiv ((x.1 : GL (Fin _) (AE F E)), (x.2 : GL (Fin _) (AE F E)))`. Use function extensionality and compare the values at `fun x => Units.ext (hi x.1 x.2)`. Use `continuous_induced_rng.2 ?_` and prove the remaining obligations. Rewrite using `[h1]`.
+
+Conclude with `(continuous_blkGL _).comp (continuous_subtype_val.prodMap continuous_subtype_val)`. Establish `hL₂ : W₂.L.IsLattice E` using `by rw [hL]; haveI : Submodule.IsLattice E G.W.L := hW.lat; infer_instance`. Establish `hθ₂ : ∀ w, IsCartan (Complex.I • W₂.J.map (B.emb w).1) (W₂.θ w)`. Introduce `w`. Rewrite using `[hθ w, hJ, dblGram, blkMat_map _ _ (map_zero _), Matrix.map_neg _ (map_neg _), smul_blkMat, smul_neg]`.
+
+Conclude with `isCartan_dbl _ _ (hW.cartan w)`. Establish `hKc` using `isCompact_of_isStab_skew hcm B W₂ hL₂ hθ₂ hK`. Introduce `s`. Establish `hh` using `hIw.continuous_hgtOf continuous_subtype_val continuous_absE hKc`. Establish `e1 : flatOf finSumFinEquiv (UG (cA σ) (incM F W₂.J)).subtype (absE F E) K φ₀ (-(a : ℂ) / 2) s = fun g => φ₀ g * npow (hgtOf finSumFinEquiv (UG (cA σ) (incM F W₂.J)).subtype (absE F E) K g) (s - (-(a : ℂ) / 2))`.
+
+Use function extensionality and compare the values at `fun g => flatOf_apply _ _ _ g`. Rewrite using `[e1]`. Conclude with `(mem_degPSOf.1 hφ₀).2.1.mul (continuous_npow hh (fun g => hgtOf_pos g) _)`. Establish `hα : Continuous X.α` using `hM.triple.chars.heckeα.1`. Conclude with `continuous_subtype_val.comp ((hα.comp (Matrix.GeneralLinearGroup.continuous_det.comp continuous_subtype_val)).inv)`.
+-/
 theorem continuity : GlobalTheory.Published.SiegelEisensteinDoubled → GlobalTheory.ThK.KP → ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E) (a a' : ℕ) (G : Geo σ a a') (X : Chars F E)
     (om : Rep σ G.V G.W) (om' : Rep σ G.V' G.W) (R : RealMaps F a a') (Rf : FinMaps F a a'), IsMatched B G X om om' R Rf → G.q = 0 → 1 ≤ G.p →
     ∀ W₂ : Spc F E ((a + a') + (a + a')), W₂.J = dblGram finSumFinEquiv G.W.J → W₂.L = sumLat finSumFinEquiv G.W.L G.W.L →
@@ -159,6 +214,19 @@ theorem continuity : GlobalTheory.Published.SiegelEisensteinDoubled → GlobalTh
   · have hα : Continuous X.α := hM.triple.chars.heckeα.1
     exact continuous_subtype_val.comp ((hα.comp (Matrix.GeneralLinearGroup.continuous_det.comp continuous_subtype_val)).inv)
 
+/- English proof (translation)
+Introduce `hKP F E _ _ _ _ _ σ B n d Xs W M χX χW om r s' r₁ s₁ hP hd W₂ hJ hL hθ i hi K hK hIw φ₀ hφ₀ hconv μ hμ`. Use `haveI : Module.Finite F E := Module.Finite.of_restrictScalars_finite ℚ F E`. Use `haveI : IsModuleTopology (AF F) (AE F E) := ⟨rfl⟩`. Use `haveI : IsTopologicalRing (AE F E) := IsModuleTopology.isTopologicalRing (AF F) _`. Use `haveI := GlobalTheory.AdelicUnitaryTop.t2Space_adeleRing_numberField F`.
+
+Take `⟨eh⟩` from `GlobalTheory.AdelicUnitaryTop.nonempty_homeomorph (F := F) (E := E) (AF F)`. Use `haveI : T2Space (AE F E) := eh.isEmbedding.t2Space`. Use `haveI := (GlobalTheory.UnipCT.topFacts σ W₂.J).1`. Establish `hW` using `hP.skew`. Establish `hcm` using `hP.base.cm`.
+
+Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Establish `h1 : (Subtype.val ∘ i : UA σ W.J × UA σ W.J → GL (Fin _) (AE F E)) = fun x => blkGL finSumFinEquiv ((x.1 : GL (Fin _) (AE F E)), (x.2 : GL (Fin _) (AE F E)))`. Use function extensionality and compare the values at `fun x => Units.ext (hi x.1 x.2)`. Use `continuous_induced_rng.2 ?_` and prove the remaining obligations. Rewrite using `[h1]`.
+
+Conclude with `(continuous_blkGL _).comp (continuous_subtype_val.prodMap continuous_subtype_val)`. Establish `hL₂ : W₂.L.IsLattice E` using `by rw [hL]; haveI : Submodule.IsLattice E W.L := hW.lat; infer_instance`. Establish `hθ₂ : ∀ w, IsCartan (Complex.I • W₂.J.map (B.emb w).1) (W₂.θ w)`. Introduce `w`. Rewrite using `[hθ w, hJ, dblGram, blkMat_map _ _ (map_zero _), Matrix.map_neg _ (map_neg _), smul_blkMat, smul_neg]`.
+
+Conclude with `isCartan_dbl _ _ (hW.cartan w)`. Establish `hKc` using `isCompact_of_isStab_skew hcm B W₂ hL₂ hθ₂ hK`. Introduce `s`. Establish `hh` using `hIw.continuous_hgtOf continuous_subtype_val continuous_absE hKc`. Establish `e1 : flatOf finSumFinEquiv (UG (cA σ) (incM F W₂.J)).subtype (absE F E) K φ₀ (((n : ℂ) - (d : ℂ)) / 2) s = fun g => φ₀ g * npow (hgtOf finSumFinEquiv (UG (cA σ) (incM F W₂.J)).subtype (absE F E) K g) (s - (((n : ℂ) - (d : ℂ)) / 2))`.
+
+Use function extensionality and compare the values at `fun g => flatOf_apply _ _ _ g`. Rewrite using `[e1]`. Conclude with `(mem_degPSOf.1 hφ₀).2.1.mul (continuous_npow hh (fun g => hgtOf_pos g) _)`. Establish `hα : Continuous χX` using `hP.hX.1`. Conclude with `continuous_subtype_val.comp ((hα.comp (Matrix.GeneralLinearGroup.continuous_det.comp continuous_subtype_val)).inv)`.
+-/
 theorem continuity_pair : GlobalTheory.ThK.KP → ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E) (n d : ℕ) (Xs : Spc F E n) (W : Spc F E d) (M : Model σ Xs W) (χX χW : Chr F E) (om : Rep σ Xs W) (r s' r₁ s₁ : ℕ),
     IsPair B M χX χW om r s' r₁ s₁ → 1 ≤ d →
     ∀ W₂ : Spc F E (d + d), W₂.J = dblGram finSumFinEquiv W.J → W₂.L = sumLat finSumFinEquiv W.L W.L →

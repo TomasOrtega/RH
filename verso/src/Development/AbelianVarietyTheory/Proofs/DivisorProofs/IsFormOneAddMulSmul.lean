@@ -9,24 +9,45 @@ namespace GlobalTheory.CxForm.HolAtlas
 
 variable {M : Type} [TopologicalSpace M] {n : ℕ} (A : HolAtlas M n)
 
+/- English proof (translation)
+Rewrite using `[HolAtlas.loc, dif_pos hv]`. Both sides reduce to the same expression.
+-/
 theorem loc_one {i : A.ι} {v : V n} (hv : v ∈ (A.e i).target) : A.loc 1 i v = 1 := by
   rw [HolAtlas.loc, dif_pos hv]; rfl
 
+/- English proof (translation)
+Distinguish the cases in `hv : v ∈ (A.e i).target`. Rewrite using `[HolAtlas.loc, HolAtlas.loc, HolAtlas.loc, dif_pos hv, dif_pos hv, dif_pos hv]`. Both sides reduce to the same expression. Rewrite using `[HolAtlas.loc, HolAtlas.loc, HolAtlas.loc, dif_neg hv, dif_neg hv, dif_neg hv, add_zero]`.
+-/
 theorem loc_add (α β : A.Fld) (i : A.ι) (v : V n) : A.loc (α + β) i v = A.loc α i v + A.loc β i v := by
   by_cases hv : v ∈ (A.e i).target
   · rw [HolAtlas.loc, HolAtlas.loc, HolAtlas.loc, dif_pos hv, dif_pos hv, dif_pos hv]; rfl
   · rw [HolAtlas.loc, HolAtlas.loc, HolAtlas.loc, dif_neg hv, dif_neg hv, dif_neg hv, add_zero]
 
+/- English proof (translation)
+Distinguish the cases in `hv : v ∈ (A.e i).target`. Rewrite using `[HolAtlas.loc, HolAtlas.loc, HolAtlas.loc, dif_pos hv, dif_pos hv, dif_pos hv]`. Both sides reduce to the same expression. Rewrite using `[HolAtlas.loc, HolAtlas.loc, HolAtlas.loc, dif_neg hv, dif_neg hv, dif_neg hv, mul_zero]`.
+-/
 theorem loc_mul (α β : A.Fld) (i : A.ι) (v : V n) : A.loc (α * β) i v = A.loc α i v * A.loc β i v := by
   by_cases hv : v ∈ (A.e i).target
   · rw [HolAtlas.loc, HolAtlas.loc, HolAtlas.loc, dif_pos hv, dif_pos hv, dif_pos hv]; rfl
   · rw [HolAtlas.loc, HolAtlas.loc, HolAtlas.loc, dif_neg hv, dif_neg hv, dif_neg hv, mul_zero]
 
+/- English proof (translation)
+Distinguish the cases in `hv : v ∈ (A.e i).target`. Rewrite using `[HolAtlas.loc, HolAtlas.loc, dif_pos hv, dif_pos hv]`. Both sides reduce to the same expression. Rewrite using `[HolAtlas.loc, HolAtlas.loc, dif_neg hv, dif_neg hv, smul_zero]`.
+-/
 theorem loc_smul (c : ℂ) (α : A.Fld) (i : A.ι) (v : V n) : A.loc (c • α) i v = c • A.loc α i v := by
   by_cases hv : v ∈ (A.e i).target
   · rw [HolAtlas.loc, HolAtlas.loc, dif_pos hv, dif_pos hv]; rfl
   · rw [HolAtlas.loc, HolAtlas.loc, dif_neg hv, dif_neg hv, smul_zero]
 
+/- English proof (translation)
+Introduce `M _ n A`. Use `⟨⟨fun i S => ?_, fun x x' _ => ?_⟩, fun c α β hα hβ => ⟨⟨fun i S => ?_, fun x x' h => ?_⟩, ⟨fun i S => ?_, fun x x' h => ?_⟩, ⟨fun i S => ?_, fun x x' h => ?_⟩⟩⟩` and prove the remaining obligations. Conclude with `(contDiffOn_const (c := (bas n).repr (1 : Alt n) S)).congr fun v hv => by`. Rewrite using `[loc_one A hv]`. Conclude with `(map_one _).symm`.
+
+Conclude with `((hα.smooth i S).add (hβ.smooth i S)).congr fun v _ => by`. Rewrite using `[loc_add, map_add, Finsupp.add_apply]`. Express the relevant statement in the definitionally equal form `α x + β x = pull _ (α x' + β x')`. Rewrite using `[map_add, ← hα.compat x x' h, ← hβ.compat x x' h]`. Conclude with `((GlobalTheory.T.contDiffOn_coefficients_complexForm_mul n n (A.loc α i) (A.loc β i)).1 _ (hα.smooth i) (hβ.smooth i) S).congr fun v _ => by`.
+
+Rewrite using `[loc_mul]`. Express the relevant statement in the definitionally equal form `α x * β x = pull _ (α x' * β x')`. Rewrite using `[map_mul, ← hα.compat x x' h, ← hβ.compat x x' h]`. Conclude with `((hα.smooth i S).const_smul c).congr fun v _ => by`. Rewrite using `[loc_smul, map_smul, Finsupp.smul_apply, smul_eq_mul]`.
+
+Express the relevant statement in the definitionally equal form `c • α x = pull _ (c • α x')`. Rewrite using `[map_smul, ← hα.compat x x' h]`.
+-/
 theorem isForm_algebra : ∀ (M : Type) [TopologicalSpace M] (n : ℕ) (A : HolAtlas M n), A.IsForm 1 ∧
     ∀ (c : ℂ) (α β : A.Fld), A.IsForm α → A.IsForm β → A.IsForm (α + β) ∧ A.IsForm (α * β) ∧ A.IsForm (c • α) := by
   intro M _ n A

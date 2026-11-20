@@ -20,6 +20,23 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 namespace GlobalTheory.RegSch
 
+/- English proof (translation)
+Introduce `D ψ θ A T χ om ν 𝓨 μ κ omS hP a p hC f hf hK h Φ hΦ`. Establish `lin` using `fun (g g' : WO (dblSp A) T → ℂ) (hg : IsThetaFunO ψ (dblSp A) T g) (hg' : IsThetaFunO ψ (dblSp A) T g') (c : ℂ) => GlobalTheory.StdUnn.sch_linear D ψ hP.weil.std A T ν 𝓨 hP.cov g g' hg hg' c`. Use `set S := Submodule.span ℂ {v : WO (dblSp A) T → ℂ | ∃ k ∈ Khat A a, v = om (k, 1) f} with hSdef`. Establish `hSth : ∀ v ∈ S, IsThetaFunO ψ (dblSp A) T v`. Introduce `v hv`.
+
+Proceed by induction on `hv using Submodule.span_induction with`. Consider the case `mem x hx => obtain ⟨k, -, rfl⟩ := hx`. Conclude with `hP.weil.om_pres _ _ hf`. Consider the case `zero => simpa using (lin f f hf hf 0).2.1`. Consider the case `add x y _ _ hx hy => exact (lin x y hx hy 1).1`.
+
+Consider the case `smul c x _ hx => exact (lin x x hx hx c).2.1`. Set `q : GA D (dblSp A) × GA D T` to `((p : GA D (dblSp A))⁻¹, h)`. Set `L : S →ₗ[ℂ] (Mx D T.rank A.rank → ℂ)` to `{ toFun := fun v => sch ψ A T ν 𝓨 (om q v.1) map_add' := fun v w => by`. Establish `hv` using `hP.weil.om_pres q _ (hSth v.1 v.2)`. Establish `hw` using `hP.weil.om_pres q _ (hSth w.1 w.2)`.
+
+Simplify using `only [Submodule.coe_add, map_add]`. Conclude with `(lin _ _ hv hw 1).2.2.1`. Use the proof step `map_smul' := fun c v => by`. Establish `hv` using `hP.weil.om_pres q _ (hSth v.1 v.2)`. Simplify using `only [Submodule.coe_smul, map_smul, RingHom.id_apply]`.
+
+Conclude with `(lin _ _ hv hv c).2.2.2 }`. Use `haveI : FiniteDimensional ℂ S := hK`. Establish `hle : Submodule.map (schwartzA θ T.rank A.rank).subtype (Submodule.span ℂ {Ψ : schwartzA θ T.rank A.rank | ∃ k ∈ StdUnn.K D A.rank, Ψ = omS k Φ}) ≤ LinearMap.range L`. Rewrite using `[Submodule.map_span, Submodule.span_le]`. Introduce and unpack `_ ⟨Ψ, ⟨k, hk, rfl⟩, rfl⟩`.
+
+Establish `hk' : (p : GA D (dblSp A)) * κ.symm k * (p : GA D (dblSp A))⁻¹ ∈ Khat A a`. Rewrite using `[hC]`. Simplify `hk` using `[mul_assoc]`. Use `⟨⟨om ((p : GA D (dblSp A)) * κ.symm k * (p : GA D (dblSp A))⁻¹, 1) f, Submodule.subset_span ⟨_, hk', rfl⟩⟩, ?_⟩` and prove the remaining obligations. Establish `htr` using `hP.trans (κ.symm k) (om q f) (hP.weil.om_pres q f hf) Φ hΦ`.
+
+Rewrite `htr` using `[MulEquiv.apply_symm_apply]`. Use `show sch ψ A T ν 𝓨 (om q (om ((p : GA D (dblSp A)) * κ.symm k * (p : GA D (dblSp A))⁻¹, 1) f)) = (omS k Φ).1`. Rewrite using `[htr, ← Module.End.mul_apply, ← map_mul, ← Module.End.mul_apply, ← map_mul]`. Use `congr 3`. Apply the tactic sequence `ext <;> simp [q, mul_assoc]`.
+
+Use `haveI : FiniteDimensional ℂ (Submodule.map (schwartzA θ T.rank A.rank).subtype (Submodule.span ℂ {Ψ : schwartzA θ T.rank A.rank | ∃ k ∈ StdUnn.K D A.rank, Ψ = omS k Φ})) := Submodule.finiteDimensional_of_le hle`. Conclude with `LinearEquiv.finiteDimensional (Submodule.equivMapOfInjective _ (Submodule.injective_subtype _) _).symm`.
+-/
 theorem kfin_of_conj : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ) (θ : InfFam D) (A T : HSp D) (χ : (AE D)ˣ →* Circle) (om : GA D (dblSp A) × GA D T →* Module.End ℂ (WO (dblSp A) T → ℂ)) (ν : Measure (WO A T)) (𝓨 : Set (WO A T)) (μ : D.host.E) (κ : GA D (dblSp A) ≃* GlobalTheory.StdUnn.G D A.rank) (omS : GlobalTheory.StdUnn.G D A.rank →* Module.End ℂ (schwartzA θ T.rank A.rank)), Pass ψ θ A T χ om ν 𝓨 μ κ omS → ∀ (a : GL (Fin A.rank) (AE D)) (p : siegel A), GlobalTheory.StdUnn.IsConj A a κ p → ∀ f, IsThetaFunO ψ (dblSp A) T f → IsKFinVec om (Khat A a) f → ∀ (h : GA D T) (Φ : schwartzA θ T.rank A.rank), Φ.1 = sch ψ A T ν 𝓨 (om ((p : GA D (dblSp A))⁻¹, h) f) → KFin omS Φ := by
   intro D ψ θ A T χ om ν 𝓨 μ κ omS hP a p hC f hf hK h Φ hΦ
   have lin := fun (g g' : WO (dblSp A) T → ℂ) (hg : IsThetaFunO ψ (dblSp A) T g)

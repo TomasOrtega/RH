@@ -26,14 +26,31 @@ private def jor (X : Herm E a) : HV E a →L[ℝ] HV E a :=
         change X.1 * (c • Matrix.of p.1) + (c • Matrix.of p.1) * X.1 = c • (X.1 * Matrix.of p.1 + Matrix.of p.1 * X.1)
         rw [mul_smul_comm, smul_mul_assoc, smul_add]) }
 
+/- English proof (translation)
+The claim follows from `Subtype.ext (by change X.1 * 1 + 1 * X.1 = (2 : ℝ) • X.1 rw [mul_one, one_mul, two_smul])`.
+-/
 private theorem jor_one (X : Herm E a) : jor X (hOne E a) = (2 : ℝ) • hv X := Subtype.ext (by
   change X.1 * 1 + 1 * X.1 = (2 : ℝ) • X.1
   rw [mul_one, one_mul, two_smul])
 
+/- English proof (translation)
+The claim follows from `Subtype.ext (by change X.1 * Y.1 + Y.1 * X.1 = Y.1 * X.1 + X.1 * Y.1 rw [add_comm])`.
+-/
 private theorem jor_comm (X Y : Herm E a) : jor X (hv Y) = jor Y (hv X) := Subtype.ext (by
   change X.1 * Y.1 + Y.1 * X.1 = Y.1 * X.1 + X.1 * Y.1
   rw [add_comm])
 
+/- English proof (translation)
+Establish `hX : star X.1 = X.1` using `X.2`. Establish `hu : ∀ᶠ t : ℝ in nhds 0, IsUnit (1 + t • X.1)`. Establish `hc : Continuous fun t : ℝ => (1 + t • X.1).det` using `(continuous_const.add (continuous_id.smul continuous_const)).matrix_det`. Establish `h : ∀ᶠ t : ℝ in nhds 0, IsUnit (1 + t • X.1).det` using `hc.continuousAt.eventually (Units.isOpen.mem_nhds (by simp))`. Conclude with `h.mono fun t ht => (Matrix.isUnit_iff_isUnit_det _).2 ht`.
+
+Set `c : ℝ → GL (Fin a) (Cinf E)` to `fun t => if h : IsUnit (1 + t • X.1) then h.unit else 1`. Establish `hc : ∀ᶠ t : ℝ in nhds 0, (c t).val = 1 + t • X.1` using `hu.mono fun t ht => by simp only [c, dif_pos ht, IsUnit.unit_spec]`. Use `⟨c, Units.ext (by simpa using hc.self_of_nhds), ?_, fun v => ?_⟩` and prove the remaining obligations. Establish `h` using `(((hasDerivAt_id (0 : ℝ)).smul_const (toL X.1)).const_add (toL (1 : Matrix (Fin a) (Fin a) (Cinf E))))`. Rewrite `h` using `[one_smul]`.
+
+Conclude with `h.congr_of_eventuallyEq (hc.mono fun t ht => by beta_reduce`. Rewrite using `[ht]`. Use the proof step `rfl)`. Set `B : HV E a` to `⟨toL (X.1 * Matrix.of v.1 * star X.1), IsSelfAdjoint.conjugate v.2 X.1⟩`. Establish `h` using `(((hasDerivAt_id (0 : ℝ)).smul_const (jor X v)).const_add v).add (((hasDerivAt_id (0 : ℝ)).mul (hasDerivAt_id (0 : ℝ))).smul_const B)`.
+
+Simplify using `only [id, mul_zero, zero_mul, add_zero, zero_smul, one_smul] at h`. Use `h.congr_of_eventuallyEq (hc.mono fun t ht => Subtype.ext ?_)` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `(c t).val * Matrix.of v.1 * star (c t).val = Matrix.of v.1 + t • (X.1 * Matrix.of v.1 + Matrix.of v.1 * X.1) + (t * t) • (X.1 * Matrix.of v.1 * star X.1)`. Rewrite using `[ht, star_add, star_one, star_smul, star_trivial t, hX]`. Simplify using `only [mul_add, add_mul, one_mul, mul_one, smul_mul_assoc, mul_smul_comm, smul_add, smul_smul]`.
+
+Normalize the expressions using the abelian group laws.
+-/
 private theorem exists_curve (X : Herm E a) : ∃ c : ℝ → GL (Fin a) (Cinf E), c 0 = 1 ∧
     HasDerivAt (fun t => toL (c t).val) (toL X.1) 0 ∧
     ∀ v : HV E a, HasDerivAt (fun t => sand (c t) v) (jor X v) 0 := by
@@ -65,6 +82,19 @@ private theorem exists_curve (X : Herm E a) : ∃ c : ℝ → GL (Fin a) (Cinf E
     simp only [mul_add, add_mul, one_mul, mul_one, smul_mul_assoc, mul_smul_comm, smul_add, smul_smul]
     abel
 
+/- English proof (translation)
+Introduce `E _ _ _ a ho U Ξ q α w h g x X`. Use `choose c hc0 hc1 hc2 using fun i => exists_curve (X i)`. Establish `hp : sand g (hOne E a) ∈ (geo ho U Ξ).Y` using `⟨g, rfl⟩`. Establish `hinv : ∀ v : HV E a, sand g⁻¹ (sand g v) = v` using `fun v => by`. Rewrite using `[← ContinuousLinearMap.mul_apply, ← map_mul, inv_mul_cancel, map_one]`.
+
+Both sides reduce to the same expression. Set `L : Fin (q + 1) → HV E a →L[ℝ] HV E a` to `fun i => (sand g).comp ((jor (X i)).comp (sand g⁻¹))`. Establish `hL : ∀ i v, L i (sand g v) = sand g (jor (X i) v)` using `fun i v => by`. Simplify using `only [L, ContinuousLinearMap.comp_apply, hinv]`. Establish `hL1 : ∀ i, L i (sand g (hOne E a)) = (2 : ℝ) • sand g (hv (X i))` using `fun i => by`.
+
+Rewrite using `[hL, jor_one, map_smul]`. Establish `hL2 : ∀ i j, L j (L i (sand g (hOne E a))) = (2 : ℝ) • sand g (jor (X i) (hv (X j)))` using `fun i j => by`. Rewrite using `[hL1, map_smul, hL, jor_comm]`. Establish `hd : ∀ i v, HasDerivAt (fun t => sand (g * c i t) v) (sand g (jor (X i) v)) 0` using `fun i v => by`. Establish `h1` using `(sand g).hasFDerivAt.comp_hasDerivAt (0 : ℝ) (hc2 i v)`.
+
+Use `h1.congr_of_eventuallyEq (Filter.Eventually.of_forall fun t => ?_)` and prove the remaining obligations. Use `beta_reduce`. Rewrite using `[map_mul]`. Both sides reduce to the same expression. Establish `key` using `altSym (HV E a) (Fin Ξ.d → ℂ) q (w.1 (x : GL (Fin a) (Af E) ⧸ U)) (sand g (hOne E a)) L (fun i t => sand (g * c i t) (hOne E a)) (fun i j t => (2 : ℝ) • sand (g * c i t) (hv (X j))) (fun i => Ξ.mat g *ᵥ ev (smLie Ξ (toL (X i).1) (α (i.removeNth X))) (infGL E a g * finGL E a x)) ( …`.
+
+Use `(evDeriv E a Ξ (α (i.removeNth X)) g x (c i) _ (hc0 i) (hc1 i)).congr_of_eventuallyEq (Filter.Eventually.of_forall fun t => ?_)` and prove the remaining obligations. Conclude with `h (g * c i t) x (i.removeNth X))`. Rewrite using `[Geo.dOm_apply _ w _ hp]`. Simplify using `only [hL1] at key`. Rewrite using `[key, dCo_apply, map_sum, Finset.sum_apply, Matrix.mulVec_sum]`.
+
+Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[map_zsmul, Pi.smul_apply, Matrix.mulVec_smul]`.
+-/
 theorem corrD : CorrD := by
   intro E _ _ _ a ho U Ξ q α w h g x X
   choose c hc0 hc1 hc2 using fun i => exists_curve (X i)

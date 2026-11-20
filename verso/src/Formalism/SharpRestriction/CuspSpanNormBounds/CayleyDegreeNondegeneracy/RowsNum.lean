@@ -2,10 +2,20 @@ import Mathlib
 
 namespace Formalism.MainNotions.BridgeLemma₂
 
+/- English proof (translation)
+Rewrite using `[← Real.rpow_natCast, ← Real.rpow_mul hx]`.
+-/
 private theorem pow_rpow_eq_rpow_mul {x : ℝ} (hx : 0 ≤ x) (n : ℕ) (z : ℝ) :
     (x ^ n) ^ z = x ^ ((n : ℝ) * z) := by
   rw [← Real.rpow_natCast, ← Real.rpow_mul hx]
 
+/- English proof (translation)
+Establish `hσ0 : 0 < σ` using `by linarith`. Establish `hP0 : 0 < P` using `by linarith`. Establish `hh0 : 0 ≤ h` using `by linarith`. Establish `key : h ^ cr ≤ P ^ cr * σ ^ (4 * cr)`. Combine the equalities or inequalities in the displayed calculation.
+
+Establish `hsq : (h ^ cr) ^ 2 ≤ (P ^ cr * σ ^ (4 * cr)) ^ 2`. Rewrite using `[sq, sq]`. Conclude with `mul_le_mul key key (Real.rpow_nonneg hh0 _) (le_trans (Real.rpow_nonneg hh0 _) key)`. Establish `e : σ ^ (8 * cr + a2 - dq) = σ ^ (4 * cr) * σ ^ (4 * cr) * σ ^ a2 * σ ^ (-dq)`. Rewrite using `[← Real.rpow_add hσ0, ← Real.rpow_add hσ0, ← Real.rpow_add hσ0]`.
+
+Use `congr 1`. Expand and normalize the polynomial expressions, which then agree. Establish `hnn : 0 ≤ Γ * σ ^ a2 * σ ^ (-dq)` using `mul_nonneg (mul_nonneg hΓ (Real.rpow_nonneg hσ0.le _)) (Real.rpow_nonneg hσ0.le _)`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem rows_num_l {P σ h cr Γ a2 dq : ℝ} (hP : 1 ≤ P) (hσ : 1 ≤ σ) (h1 : 1 ≤ h) (hh : h ≤ P * σ ^ 4)
     (hcr : 0 ≤ cr) (hΓ : 0 ≤ Γ) :
     (h ^ cr) ^ 2 * (Γ * σ ^ a2) * σ ^ (-dq) ≤ (P ^ cr) ^ 2 * Γ * σ ^ (8 * cr + a2 - dq) := by
@@ -29,6 +39,27 @@ theorem rows_num_l {P σ h cr Γ a2 dq : ℝ} (hP : 1 ≤ P) (hσ : 1 ≤ σ) (h
     _ ≤ (P ^ cr * σ ^ (4 * cr)) ^ 2 * (Γ * σ ^ a2 * σ ^ (-dq)) := mul_le_mul_of_nonneg_right hsq hnn
     _ = (P ^ cr) ^ 2 * Γ * σ ^ (8 * cr + a2 - dq) := by rw [e]; ring
 
+/- English proof (translation)
+Establish `hP0 : 0 < P` using `by linarith`. Establish `hσ₁0 : 0 < σ₁` using `by linarith`. Establish `hσ₂0 : 0 < σ₂` using `by linarith`. Establish `hS1 : 1 ≤ σ₁ * σ₂` using `by nlinarith`. Establish `hS0 : 0 < σ₁ * σ₂` using `by linarith`.
+
+Establish `hA : 0 ≤ (P ^ cr) ^ 2 * Γ` using `mul_nonneg (sq_nonneg _) hΓ`. Establish `hb₁ : l₁ ≤ (P ^ cr) ^ 2 * Γ * σ₁ ^ (8 * cr + a2 - dq)`. Rewrite using `[hl₁]`. Conclude with `rows_num_l hP hσ₁ h1₁ hh₁ hcr hΓ`. Establish `hb₂ : l₂ ≤ (P ^ cr) ^ 2 * Γ * σ₂ ^ (8 * cr + a2 - dq)`.
+
+Rewrite using `[hl₂]`. Conclude with `rows_num_l hP hσ₂ h1₂ hh₂ hcr hΓ`. Establish `hl₂0 : 0 ≤ l₂`. Rewrite using `[hl₂]`. Conclude with `mul_nonneg (mul_nonneg (sq_nonneg _) (mul_nonneg hΓ (Real.rpow_nonneg hσ₂0.le _))) (Real.rpow_nonneg hσ₂0.le _)`.
+
+Establish `hhalf : (σ₁ * σ₂) ^ ((8 * cr + a2 - dq) / 2) * (σ₁ * σ₂) ^ ((8 * cr + a2 - dq) / 2) = σ₁ ^ (8 * cr + a2 - dq) * σ₂ ^ (8 * cr + a2 - dq)`. Rewrite using `[← Real.rpow_add hS0, ← Real.mul_rpow hσ₁0.le hσ₂0.le]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree. Establish `hsq : Real.sqrt (l₁ * l₂) ≤ (P ^ cr) ^ 2 * Γ * (σ₁ * σ₂) ^ ((8 * cr + a2 - dq) / 2)`.
+
+Establish `hprod : l₁ * l₂ ≤ ((P ^ cr) ^ 2 * Γ * (σ₁ * σ₂) ^ ((8 * cr + a2 - dq) / 2)) ^ 2`. Combine the equalities or inequalities in the displayed calculation. Combine the equalities or inequalities in the displayed calculation. Establish `hE : (h₁ * h₂) ^ E1 ≤ (P ^ E1) ^ 2 * (σ₁ * σ₂) ^ (4 * E1)`. Establish `hprod : h₁ * h₂ ≤ P ^ 2 * (σ₁ * σ₂) ^ 4`.
+
+Combine the equalities or inequalities in the displayed calculation. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[pow_rpow_eq_rpow_mul hS0.le, sq, sq, Real.mul_rpow hP0.le hP0.le]`. Evaluate the numerical expressions. Establish `hSck : 0 < (σ₁ * σ₂) ^ (4 * ck)` using `Real.rpow_pos_of_pos hS0 _`.
+
+Establish `hXiP : 0 ≤ XiP`. Assume the negation of the conclusion as `hneg`. Use `push_neg at hneg`. Use `mul_neg_of_neg_of_pos hneg hSck` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
+
+Establish `hC : 0 ≤ XiP * ((P ^ E1) ^ 2 * (P ^ cr) ^ 2 * F6 * Γ)` using `mul_nonneg hXiP (mul_nonneg (mul_nonneg (mul_nonneg (sq_nonneg _) (sq_nonneg _)) hF6) hΓ)`. Combine the equalities or inequalities in the displayed calculation. Use `mul_le_mul ?_ hsq (Real.sqrt_nonneg _) ?_` and prove the remaining obligations. Conclude with `mul_le_mul hXi (mul_le_mul_of_nonneg_right hE hF6) (mul_nonneg (Real.rpow_nonneg (mul_nonneg (by linarith) (by linarith)) _) hF6) (mul_nonneg hXiP hSck.le)`. Conclude with `mul_nonneg (mul_nonneg hXiP hSck.le) (mul_nonneg (mul_nonneg (sq_nonneg _) (Real.rpow_nonneg hS0.le _)) hF6)`.
+
+Use `_ = XiP * ((P ^ E1) ^ 2 * (P ^ cr) ^ 2 * F6 * Γ) * ((σ₁ * σ₂) ^ (4 * ck) * (σ₁ * σ₂) ^ (4 * E1) * (σ₁ * σ₂) ^ ((8 * cr + a2 - dq) / 2)) := by`. Expand and normalize the polynomial expressions, which then agree. Use `_ = XiP * ((P ^ E1) ^ 2 * (P ^ cr) ^ 2 * F6 * Γ) * (σ₁ * σ₂) ^ (4 * ck + 4 * E1 + (8 * cr + a2 - dq) / 2) := by`. Rewrite using `[Real.rpow_add hS0, Real.rpow_add hS0]`. Use `_ ≤ XiP * ((P ^ E1) ^ 2 * (P ^ cr) ^ 2 * F6 * Γ) * (σ₁ * σ₂) ^ (-e) := mul_le_mul_of_nonneg_left (Real.rpow_le_rpow_of_exponent_le hS1 (by linarith)) hC`.
+
+Use `_ = XiP * ((P ^ E1) ^ 2 * (P ^ cr) ^ 2 * F6 * Γ) * (σ₁ ^ (-e) * σ₂ ^ (-e)) := by`. Rewrite using `[Real.mul_rpow hσ₁0.le hσ₂0.le]`.
+-/
 theorem rows_num_pair {P σ₁ σ₂ h₁ h₂ cr Γ a2 dq E1 F6 XiH XiP ck e l₁ l₂ : ℝ} (hP : 1 ≤ P) (hσ₁ : 1 ≤ σ₁) (hσ₂ : 1 ≤ σ₂)
     (h1₁ : 1 ≤ h₁) (h1₂ : 1 ≤ h₂) (hh₁ : h₁ ≤ P * σ₁ ^ 4) (hh₂ : h₂ ≤ P * σ₂ ^ 4) (hcr : 0 ≤ cr) (hΓ : 0 ≤ Γ)
     (hE1 : 0 ≤ E1) (hF6 : 0 ≤ F6) (hXiH : 0 ≤ XiH) (hXi : XiH ≤ XiP * (σ₁ * σ₂) ^ (4 * ck))

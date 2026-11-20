@@ -15,6 +15,11 @@ section Lagrange
 
 open Polynomial
 
+/- English proof (translation)
+Proceed by induction on `p using Polynomial.induction_on with`. Consider the case `C a => rw [aeval_C]`. Conclude with `(Algebra.commutes a B).symm`. Consider the case `add p q hp hq => rw [map_add]`. Conclude with `hp.add_right hq`.
+
+Consider the case `monomial n a _`. Rewrite using `[map_mul, map_pow, aeval_X, aeval_C]`. Conclude with `(Commute.symm (Algebra.commutes a B)).mul_right (h.pow_right (n + 1))`.
+-/
 theorem chainLagrange_commute_aeval {V : Type} [AddCommGroup V] [Module ℂ V]
     {B T : Module.End ℂ V} (h : Commute B T) (p : ℂ[X]) : Commute B (aeval T p) := by
   induction p using Polynomial.induction_on with
@@ -24,6 +29,21 @@ theorem chainLagrange_commute_aeval {V : Type} [AddCommGroup V] [Module ℂ V]
     rw [map_mul, map_pow, aeval_X, aeval_C]
     exact (Commute.symm (Algebra.commutes a B)).mul_right (h.pow_right (n + 1))
 
+/- English proof (translation)
+Introduce `k`. Proceed by induction on `k with`. Consider the case `zero`. Introduce `hk v hv`. Establish `h0 : (⟨0, by omega⟩ : Fin (M+1)) = 0` using `rfl`.
+
+Rewrite `hv` using `[h0, hS0]`. Establish `: v = 0` using `by simpa using hv`. Simplify using `[this]`. Consider the case `succ k ih`. Introduce `hk v hv`.
+
+Rewrite using `[Finset.prod_range_succ]`. Distinguish the cases in `hkt : k = t`. Substitute `hkt` using the available equality. Establish `hle : ¬ (k + 1 ≤ k)` using `by omega`. Rewrite using `[if_neg hle, if_pos rfl, mul_one, Module.End.mul_apply]`.
+
+Establish `hc : Commute B (aeval T (∏ s ∈ Finset.range k, if s = k then 1 else (X - C (lam s))))` using `chainLagrange_commute_aeval hTB _`. Use `ih (by omega) (B v) (hB (by omega) v hv)` as an intermediate fact. Rewrite `this` using `[if_pos le_rfl]`. Rewrite using `[← Module.End.mul_apply, hc.eq, Module.End.mul_apply, this]`. Rewrite using `[if_neg hkt, map_mul, aeval_sub, aeval_X, aeval_C]`.
+
+Establish `hw` using `hT k (by omega) hkt v hv`. Establish `hw' : (T - algebraMap ℂ (Module.End ℂ V) (lam k)) v = T v - lam k • v`. Simplify using `[Module.algebraMap_end_apply]`. Distinguish the cases in `hkt' : k + 1 ≤ t`. Establish `h2 : k ≤ t` using `by omega`.
+
+Use `ih (by omega) _ hw` as an intermediate fact. Rewrite `this` using `[if_pos h2]`. Rewrite using `[if_pos hkt', Module.End.mul_apply, hw', this]`. Establish `h2 : ¬ k ≤ t` using `by omega`. Use `ih (by omega) _ hw` as an intermediate fact.
+
+Rewrite `this` using `[if_neg h2]`. Rewrite using `[if_neg hkt', ← mul_assoc, Module.End.mul_apply, hw', this]`.
+-/
 theorem chainLagrange_kill {V : Type} [AddCommGroup V] [Module ℂ V] (M : ℕ)
     (S : Fin (M + 1) → Submodule ℂ V) (hS0 : S 0 = ⊥)
     (T B : Module.End ℂ V) (hTB : Commute B T)
@@ -67,6 +87,11 @@ theorem chainLagrange_kill {V : Type} [AddCommGroup V] [Module ℂ V] (M : ℕ)
         rw [if_neg h2] at this
         rw [if_neg hkt', ← mul_assoc, Module.End.mul_apply, hw', this]
 
+/- English proof (translation)
+Simplify using `only [Lagrange.basis, Lagrange.basisDivisor]`. Rewrite using `[Finset.prod_mul_distrib, ← map_prod C]`. Use `congr 1`. Rewrite using `[← Fin.prod_univ_eq_prod_range (fun s => if s = t.val then (1 : ℂ[X]) else (X - C (if h : s < M then lam ⟨s, h⟩ else 0))) M, ← Finset.mul_prod_erase Finset.univ _ (Finset.mem_univ t)]`. Simplify using `only [if_true, one_mul]`.
+
+Use `Finset.prod_congr rfl fun j hj => ?_` and prove the remaining obligations. Establish `hjt : j ≠ t` using `Finset.ne_of_mem_erase hj`. Establish `hjt' : (j : ℕ) ≠ t.val` using `fun h => hjt (Fin.ext h)`. Simplify using `[hjt', j.isLt]`.
+-/
 theorem chainLagrange_basis_eq {M : ℕ} (lam : Fin M → ℂ) (t : Fin M) :
     Lagrange.basis Finset.univ lam t =
       C (∏ j ∈ Finset.univ.erase t, (lam t - lam j)⁻¹) *
@@ -84,6 +109,21 @@ theorem chainLagrange_basis_eq {M : ℕ} (lam : Fin M → ℂ) (t : Fin M) :
   have hjt' : (j : ℕ) ≠ t.val := fun h => hjt (Fin.ext h)
   simp [hjt', j.isLt]
 
+/- English proof (translation)
+Introduce `V ι _ _ M S hS0 hSt T R hR lam hlam nu hT hRS v`. Break down `Nat.eq_zero_or_pos M with hM | hM` into its components or cases. Substitute `hM` using the available equality. Establish `hv : v ∈ S 0`. Establish `: S (Fin.last 0) = S 0` using `rfl`.
+
+Rewrite using `[← this, hSt]`. Conclude with `Submodule.mem_top`. Rewrite `hv` using `[hS0]`. Use `⟨fun _ => 0, ?_, fun t => t.elim0⟩` and prove the remaining obligations. Simplify using `using hv`.
+
+Use `⟨fun t => aeval T (Lagrange.basis Finset.univ lam t) v, ?_, ?_⟩` and prove the remaining obligations. Establish `hsum : ∑ t, Lagrange.basis Finset.univ lam t = 1` using `Lagrange.sum_basis (fun a _ b _ h => hlam h) ⟨⟨0, hM⟩, Finset.mem_univ _⟩`. Rewrite using `[← LinearMap.sum_apply, ← map_sum, hsum, map_one, Module.End.one_apply]`. Introduce `t y set lam' : ℕ → ℂ := fun s => if h : s < M then lam ⟨s, h⟩ else 0 with hlam' set B : Module.End ℂ V := R y - algebraMap ℂ (Module.End ℂ V) (nu t y) with hBdef`. Establish `hBT : Commute B T` using `(hR y).sub_left (Algebra.commutes _ _)`.
+
+Establish `hBv : ∀ u, B u = R y u - nu t y • u` using `fun u => by`. Simplify using `[hBdef, Module.algebraMap_end_apply]`. Establish `key` using `chainLagrange_kill M S hS0 T B hBT lam' t.val (fun k hk _ u hu => by`. Use `hT ⟨k, hk⟩ u hu` as an intermediate fact. Simplify `this)` using `[hlam', hk]`.
+
+Use the proof step `(fun _ u hu => by rw [hBv]; exact hRS t y u hu)`. Use `M le_rfl v (by`. Establish `: S ⟨M, by omega⟩ = S (Fin.last M)` using `rfl`. Rewrite using `[this, hSt]`. Conclude with `Submodule.mem_top)`.
+
+Rewrite `key` using `[if_neg (by have := t.isLt; omega)]`. Establish `hzero : B (aeval T (Lagrange.basis Finset.univ lam t) v) = 0`. Rewrite using `[chainLagrange_basis_eq, map_mul, aeval_C, Module.End.mul_apply, Module.algebraMap_end_apply, map_smul]`. Rewrite `key` using `[Module.End.mul_apply]`. Simplify using `only [hlam'] at key`.
+
+Rewrite using `[key, smul_zero]`. Rewrite `hzero` using `[hBv, sub_eq_zero]`. Conclude with `hzero`.
+-/
 theorem chain_split_simultaneous_eigen : ∀ {V ι : Type} [AddCommGroup V] [Module ℂ V] (M : ℕ)
     (S : Fin (M + 1) → Submodule ℂ V), S 0 = ⊥ → S (Fin.last M) = ⊤ →
     ∀ (T : Module.End ℂ V) (R : ι → Module.End ℂ V), (∀ y, Commute (R y) T) →
@@ -142,6 +182,9 @@ def thirdBlockScalar (N : ℕ) (x : kˣ) : Levi k (fun j : Fin 3 => Fin (tripSiz
 
 variable {k}
 
+/- English proof (translation)
+Unfold `firstBlockScalar`. Distinguish the cases in `h : j = 0`. Substitute `h` using the available equality. Simplify using the standard rewrite rules. Rewrite using `[MonoidHom.mulSingle_apply, Pi.mulSingle_eq_of_ne h, if_neg h, map_one]`.
+-/
 theorem firstBlockScalar_apply (N : ℕ) (x : kˣ) (j : Fin 3) :
     firstBlockScalar k N x j = Matrix.GeneralLinearGroup.scalar _ (if j = 0 then x else 1) := by
   unfold firstBlockScalar
@@ -149,6 +192,9 @@ theorem firstBlockScalar_apply (N : ℕ) (x : kˣ) (j : Fin 3) :
   · subst h; simp
   · rw [MonoidHom.mulSingle_apply, Pi.mulSingle_eq_of_ne h, if_neg h, map_one]
 
+/- English proof (translation)
+Unfold `thirdBlockScalar`. Distinguish the cases in `h : j = 2`. Substitute `h` using the available equality. Simplify using the standard rewrite rules. Rewrite using `[MonoidHom.mulSingle_apply, Pi.mulSingle_eq_of_ne h, if_neg h, map_one]`.
+-/
 theorem thirdBlockScalar_apply (N : ℕ) (x : kˣ) (j : Fin 3) :
     thirdBlockScalar k N x j = Matrix.GeneralLinearGroup.scalar _ (if j = 2 then x else 1) := by
   unfold thirdBlockScalar
@@ -156,6 +202,9 @@ theorem thirdBlockScalar_apply (N : ℕ) (x : kˣ) (j : Fin 3) :
   · subst h; simp
   · rw [MonoidHom.mulSingle_apply, Pi.mulSingle_eq_of_ne h, if_neg h, map_one]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `j`. Rewrite using `[Pi.mul_apply, Pi.mul_apply, hx j]`. Use `ext1`. Simplify using `only [Units.val_mul, Matrix.GeneralLinearGroup.scalar, Units.coe_map, MonoidHom.coe_coe]`. Conclude with `(Matrix.scalar_commute _ (fun r => Commute.all _ r) _).symm.eq`.
+-/
 theorem comm_of_scalar {β : Type} {m' : β → Type} [∀ j, Fintype (m' j)] [∀ j, DecidableEq (m' j)]
     (x : Levi k m') (s : β → kˣ) (hx : ∀ j, x j = Matrix.GeneralLinearGroup.scalar (m' j) (s j))
     (y : Levi k m') : y * x = x * y := by
@@ -165,6 +214,9 @@ theorem comm_of_scalar {β : Type} {m' : β → Type} [∀ j, Fintype (m' j)] [�
   simp only [Units.val_mul, Matrix.GeneralLinearGroup.scalar, Units.coe_map, MonoidHom.coe_coe]
   exact (Matrix.scalar_commute _ (fun r => Commute.all _ r) _).symm.eq
 
+/- English proof (translation)
+Introduce `j _`. Rewrite using `[hx j]`. Use `mem_parab.2 fun a b hab => ?_` and prove the remaining obligations. Establish `hne : a ≠ b` using `by rintro rfl; exact lt_irrefl _ hab`. Simplify using `[Matrix.GeneralLinearGroup.scalar, hne]`.
+-/
 theorem mem_relParab_of_scalar {β γ : Type} [Fintype β] [Fintype γ] [LinearOrder γ]
     {m' : β → Type} [∀ j, Fintype (m' j)] [∀ j, DecidableEq (m' j)]
     {c : β → γ → Type} [∀ j r, Fintype (c j r)] [∀ j r, DecidableEq (c j r)]
@@ -176,20 +228,32 @@ theorem mem_relParab_of_scalar {β γ : Type} [Fintype β] [Fintype γ] [LinearO
   have hne : a ≠ b := by rintro rfl; exact lt_irrefl _ hab
   simp [Matrix.GeneralLinearGroup.scalar, hne]
 
+/- English proof (translation)
+The claim follows from `mem_relParab_of_scalar g _ _ (firstBlockScalar_apply N x)`.
+-/
 theorem firstBlockScalar_mem_relParab {N : ℕ} {γ : Type} [Fintype γ] [LinearOrder γ]
     {c : Fin 3 → γ → Type} [∀ j r, Fintype (c j r)] [∀ j r, DecidableEq (c j r)]
     (g : ∀ j, (Σ r, c j r) ≃ Fin (tripSizes 1 (N - 2) N j)) (x : kˣ) : firstBlockScalar k N x ∈ relParab k g :=
   mem_relParab_of_scalar g _ _ (firstBlockScalar_apply N x)
 
+/- English proof (translation)
+The claim follows from `mem_relParab_of_scalar g _ _ (thirdBlockScalar_apply N x)`.
+-/
 theorem thirdBlockScalar_mem_relParab {N : ℕ} {γ : Type} [Fintype γ] [LinearOrder γ]
     {c : Fin 3 → γ → Type} [∀ j r, Fintype (c j r)] [∀ j r, DecidableEq (c j r)]
     (g : ∀ j, (Σ r, c j r) ≃ Fin (tripSizes 1 (N - 2) N j)) (x : kˣ) : thirdBlockScalar k N x ∈ relParab k g :=
   mem_relParab_of_scalar g _ _ (thirdBlockScalar_apply N x)
 
+/- English proof (translation)
+The claim follows from `comm_of_scalar _ _ (firstBlockScalar_apply N x) y`.
+-/
 theorem firstBlockScalar_comm (N : ℕ) (x : kˣ) (y : Levi k (fun j : Fin 3 => Fin (tripSizes 1 (N - 2) N j))) :
     y * firstBlockScalar k N x = firstBlockScalar k N x * y :=
   comm_of_scalar _ _ (firstBlockScalar_apply N x) y
 
+/- English proof (translation)
+Simplify using `only [cellScalar, map_mul, mul_inv]`. The two sides agree by associativity and commutativity.
+-/
 theorem cellScalar_mul {α β : Type} [Fintype α] [LinearOrder α] [Fintype β] [LinearOrder β]
     {m : α → Type} [∀ i, Fintype (m i)] [∀ i, DecidableEq (m i)]
     {m' : β → Type} [∀ j, Fintype (m' j)] [∀ j, DecidableEq (m' j)]
@@ -205,6 +269,11 @@ section Cell
 
 variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
 
+/- English proof (translation)
+Use extensionality with `p q`. Use `(leviProj_apply k (g j) ⟨firstBlockScalar k N y j, firstBlockScalar_mem_relParab g y j trivial⟩ r p q).trans ?_` and prove the remaining obligations. Use `show ((firstBlockScalar k N y j : GL (Fin (tripSizes 1 (N - 2) N j)) k) : Matrix (Fin (tripSizes 1 (N - 2) N j)) (Fin (tripSizes 1 (N - 2) N j)) k) _ _ = _`. Rewrite using `[firstBlockScalar_apply]`. Distinguish the cases in `h : p = q`.
+
+Substitute `h` using the available equality. Simplify using `[Matrix.GeneralLinearGroup.scalar]`. Establish `h' : g j ⟨r, p⟩ ≠ g j ⟨r, q⟩` using `by simpa using h`. Simplify using `[Matrix.GeneralLinearGroup.scalar, h, h']`.
+-/
 theorem relProj_firstBlockScalar {N : ℕ} {γ : Type} [Fintype γ] [LinearOrder γ]
     {c : Fin 3 → γ → Type} [∀ j r, Fintype (c j r)] [∀ j r, DecidableEq (c j r)]
     (g : ∀ j, (Σ r, c j r) ≃ Fin (tripSizes 1 (N - 2) N j)) (y : kˣ) (j : Fin 3) (r : γ) :
@@ -220,10 +289,38 @@ theorem relProj_firstBlockScalar {N : ℕ} {γ : Type} [Fintype γ] [LinearOrder
   · have h' : g j ⟨r, p⟩ ≠ g j ⟨r, q⟩ := by simpa using h
     simp [Matrix.GeneralLinearGroup.scalar, h, h']
 
+/- English proof (translation)
+Simplify using `[modExp, Finset.sum_filter, Fin.sum_univ_three]`.
+-/
 theorem modExp_three_zero (m : Fin 3 → Type) [∀ a, Fintype (m a)] :
     modExp m 0 = (Fintype.card (m 1) : ℤ) + Fintype.card (m 2) := by
   simp [modExp, Finset.sum_filter, Fin.sum_univ_three]
 
+/- English proof (translation)
+Establish `hy` using `relProj_firstBlockScalar (k := k) (N := a + a') g y`. Use `set P := relProj k g ⟨firstBlockScalar k (a + a') y, firstBlockScalar_mem_relParab g y⟩ with hP`. Establish `hcol : b.1 0 0 + b.1 1 0 = 1`. Use `b.2.2 0` as an intermediate fact. Rewrite `this` using `[Fintype.card_fin, Fin.sum_univ_two]`.
+
+Simplify `this` using `[tripSizes]`. Establish `hrow : ∀ r, b.1 r 0 + b.1 r 1 + b.1 r 2 = ![a, a'] r`. Introduce `r`. Use `b.2.1 r` as an intermediate fact. Simplify `this` using `[Fin.sum_univ_three]`.
+
+Establish `hdet : ∀ j r, Matrix.GeneralLinearGroup.det (P j r) = (if j = 0 then y else 1) ^ b.1 r j`. Introduce `j r`. Rewrite using `[hy, det_scalar', Fintype.card_fin]`. Establish `hA : relDeltaHalf k (fun j r => Fin (b.1 r j)) P = 1`. Rewrite using `[relDeltaHalf_apply]`.
+
+Use `Finset.prod_eq_one fun j _ => ?_` and prove the remaining obligations. Rewrite using `[deltaHalf_apply, Fin.prod_univ_two, hdet, hdet, modExp_two_zero, modExp_two_one]`. Use `split_ifs with h`. Substitute `h` using the available equality. Simplify using `only [Fintype.card_fin]`.
+
+Apply the tactic sequence `rcases (by omega : (b.1 0 0 = 0 ∧ b.1 1 0 = 1) ∨ (b.1 0 0 = 1 ∧ b.1 1 0 = 0)) with ⟨h0, h1⟩ | ⟨h0, h1⟩ <;> simp [h0, h1]`. Simplify using the standard rewrite rules. Establish `hB : ∀ r, deltaHalf k (fun j => Fin (b.1 r j)) (swapBlocks k (fun r j => Fin (b.1 r j)) P r) = absPow k ((modExp (fun j => Fin (b.1 r j)) 0 : ℂ) / 2) (y ^ b.1 r 0)`. Introduce `r`. Rewrite using `[deltaHalf_apply, Fin.prod_univ_three]`.
+
+Use `show absPow k _ (Matrix.GeneralLinearGroup.det (P 0 r)) * absPow k _ (Matrix.GeneralLinearGroup.det (P 1 r)) * absPow k _ (Matrix.GeneralLinearGroup.det (P 2 r)) = _`. Rewrite using `[hdet, hdet, hdet]`. Simplify using the standard rewrite rules. Establish `hC : pairChar k ![a, a'] χ (relEmb k f (swapBlocks k (fun r j => Fin (b.1 r j)) P)) = χ 0 (y ^ b.1 0 0) * χ 1 (y ^ b.1 1 0)`. Simplify using `only [pairChar, Fin.prod_univ_two, MonoidHom.mul_apply, MonoidHom.comp_apply, Pi.evalMonoidHom_apply, detChar_apply, relEmb_apply, det_leviEmb]`.
+
+Rewrite using `[Fin.prod_univ_three, Fin.prod_univ_three]`. Use `show χ 0 (Matrix.GeneralLinearGroup.det (P 0 0) * Matrix.GeneralLinearGroup.det (P 1 0) * Matrix.GeneralLinearGroup.det (P 2 0)) * χ 1 (Matrix.GeneralLinearGroup.det (P 0 1) * Matrix.GeneralLinearGroup.det (P 1 1) * Matrix.GeneralLinearGroup.det (P 2 1)) = _`. Simplify using `[hdet]`. Simplify using `only [cellScalar]`. Rewrite using `[hA, relDeltaHalf_apply, Fin.prod_univ_two, hB, hB, hC]`.
+
+Establish `hrow' : ∀ r, b.1 r 0 = 1 → (modExp (fun j => Fin (b.1 r j)) 0 : ℂ) = ((![a, a'] r : ℕ) : ℂ) - 1`. Introduce `r hr`. Rewrite using `[modExp_three_zero]`. Simplify using `only [Fintype.card_fin]`. Establish `h1` using `hrow r`.
+
+Rewrite `h1` using `[hr]`. Establish `h2 : ((b.1 r 1 + b.1 r 2 : ℕ) : ℂ) = ((![a, a'] r : ℕ) : ℂ) - 1`. Rewrite using `[← h1]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+
+Move the coercions through the operations in `at h2 ⊢`. Conclude with `h2`. Establish `hneg : ∀ A : ℂ, absPow k ((1 - A) / 2) y = (absPow k ((A - 1) / 2) y)⁻¹`. Introduce `A`. Rewrite using `[show (1 - A) / 2 = -((A - 1) / 2) by ring, absPow_neg, MonoidHom.inv_apply]`.
+
+Rewrite using `[hneg]`. Apply the tactic sequence `rcases (show i = 0 ∨ i = 1 by fin_cases i <;> simp) with rfl | rfl`. Establish `h1 : b.1 1 0 = 0` using `by omega`. Rewrite using `[h1, pow_zero, map_one, map_one, hi, pow_one, ← hrow' 0 hi]`. Simplify using `only [Units.val_mul, Units.val_inv_eq_inv_val, Units.val_one]`.
+
+Expand and normalize the polynomial expressions, which then agree. Establish `h0 : b.1 0 0 = 0` using `by omega`. Rewrite using `[h0, pow_zero, map_one, map_one, hi, pow_one, ← hrow' 1 hi]`. Simplify using `only [Units.val_mul, Units.val_inv_eq_inv_val, Units.val_one]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem cellScalar_positionOne_pair {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k]
     [IsNonarchimedeanLocalField k] (a a' : ℕ) (χ : Fin 2 → kˣ →* ℂˣ)
     (b : SizeMatrix (fun j : Fin 2 => Fin (![a, a'] j))
@@ -296,6 +393,11 @@ theorem cellScalar_positionOne_pair {k : Type} [Field k] [ValuativeRel k] [Topol
     simp only [Units.val_mul, Units.val_inv_eq_inv_val, Units.val_one]
     ring
 
+/- English proof (translation)
+Use extensionality with `p q`. Use `(leviProj_apply k (g j) ⟨thirdBlockScalar k N y j, thirdBlockScalar_mem_relParab g y j trivial⟩ r p q).trans ?_` and prove the remaining obligations. Use `show ((thirdBlockScalar k N y j : GL (Fin (tripSizes 1 (N - 2) N j)) k) : Matrix (Fin (tripSizes 1 (N - 2) N j)) (Fin (tripSizes 1 (N - 2) N j)) k) _ _ = _`. Rewrite using `[thirdBlockScalar_apply]`. Distinguish the cases in `h : p = q`.
+
+Substitute `h` using the available equality. Simplify using `[Matrix.GeneralLinearGroup.scalar]`. Establish `h' : g j ⟨r, p⟩ ≠ g j ⟨r, q⟩` using `by simpa using h`. Simplify using `[Matrix.GeneralLinearGroup.scalar, h, h']`.
+-/
 theorem relProj_thirdBlockScalar {N : ℕ} {γ : Type} [Fintype γ] [LinearOrder γ]
     {c : Fin 3 → γ → Type} [∀ j r, Fintype (c j r)] [∀ j r, DecidableEq (c j r)]
     (g : ∀ j, (Σ r, c j r) ≃ Fin (tripSizes 1 (N - 2) N j)) (y : kˣ) (j : Fin 3) (r : γ) :
@@ -311,10 +413,40 @@ theorem relProj_thirdBlockScalar {N : ℕ} {γ : Type} [Fintype γ] [LinearOrder
   · have h' : g j ⟨r, p⟩ ≠ g j ⟨r, q⟩ := by simpa using h
     simp [Matrix.GeneralLinearGroup.scalar, h, h']
 
+/- English proof (translation)
+Simplify using `[modExp, Finset.sum_filter, Fin.sum_univ_three]`.
+-/
 theorem modExp_three_two (m : Fin 3 → Type) [∀ a, Fintype (m a)] :
     modExp m 2 = -((Fintype.card (m 0) : ℤ) + Fintype.card (m 1)) := by
   simp [modExp, Finset.sum_filter, Fin.sum_univ_three]
 
+/- English proof (translation)
+Establish `hy` using `relProj_thirdBlockScalar (k := k) (N := a + a') g y`. Use `set P := relProj k g ⟨thirdBlockScalar k (a + a') y, thirdBlockScalar_mem_relParab g y⟩ with hP`. Establish `hcol : b.1 0 2 + b.1 1 2 = 1`. Use `b.2.2 2` as an intermediate fact. Rewrite `this` using `[Fintype.card_fin, Fin.sum_univ_two]`.
+
+Simplify using `[tripSizes] at this`. Use linear arithmetic over natural numbers and integers. Establish `hrow : ∀ r, b.1 r 0 + b.1 r 1 + b.1 r 2 = ![a, a'] r`. Introduce `r`. Use `b.2.1 r` as an intermediate fact.
+
+Simplify `this` using `[Fin.sum_univ_three]`. Establish `hdet : ∀ j r, Matrix.GeneralLinearGroup.det (P j r) = (if j = 2 then y else 1) ^ b.1 r j`. Introduce `j r`. Rewrite using `[hy, det_scalar', Fintype.card_fin]`. Establish `hA : relDeltaHalf k (fun j r => Fin (b.1 r j)) P = 1`.
+
+Rewrite using `[relDeltaHalf_apply]`. Use `Finset.prod_eq_one fun j _ => ?_` and prove the remaining obligations. Rewrite using `[deltaHalf_apply, Fin.prod_univ_two, hdet, hdet, modExp_two_zero, modExp_two_one]`. Use `split_ifs with h`. Substitute `h` using the available equality.
+
+Simplify using `only [Fintype.card_fin]`. Apply the tactic sequence `rcases (by omega : (b.1 0 2 = 0 ∧ b.1 1 2 = 1) ∨ (b.1 0 2 = 1 ∧ b.1 1 2 = 0)) with ⟨h0, h1⟩ | ⟨h0, h1⟩ <;> simp [h0, h1]`. Simplify using the standard rewrite rules. Establish `hB : ∀ r, deltaHalf k (fun j => Fin (b.1 r j)) (swapBlocks k (fun r j => Fin (b.1 r j)) P r) = absPow k ((modExp (fun j => Fin (b.1 r j)) 2 : ℂ) / 2) (y ^ b.1 r 2)`. Introduce `r`.
+
+Rewrite using `[deltaHalf_apply, Fin.prod_univ_three]`. Use `show absPow k _ (Matrix.GeneralLinearGroup.det (P 0 r)) * absPow k _ (Matrix.GeneralLinearGroup.det (P 1 r)) * absPow k _ (Matrix.GeneralLinearGroup.det (P 2 r)) = _`. Rewrite using `[hdet, hdet, hdet]`. Simplify using the standard rewrite rules. Establish `hC : pairChar k ![a, a'] χ (relEmb k f (swapBlocks k (fun r j => Fin (b.1 r j)) P)) = χ 0 (y ^ b.1 0 2) * χ 1 (y ^ b.1 1 2)`.
+
+Simplify using `only [pairChar, Fin.prod_univ_two, MonoidHom.mul_apply, MonoidHom.comp_apply, Pi.evalMonoidHom_apply, detChar_apply, relEmb_apply, det_leviEmb]`. Rewrite using `[Fin.prod_univ_three, Fin.prod_univ_three]`. Use `show χ 0 (Matrix.GeneralLinearGroup.det (P 0 0) * Matrix.GeneralLinearGroup.det (P 1 0) * Matrix.GeneralLinearGroup.det (P 2 0)) * χ 1 (Matrix.GeneralLinearGroup.det (P 0 1) * Matrix.GeneralLinearGroup.det (P 1 1) * Matrix.GeneralLinearGroup.det (P 2 1)) = _`. Simplify using `[hdet]`. Simplify using `only [cellScalar]`.
+
+Rewrite using `[hA, relDeltaHalf_apply, Fin.prod_univ_two, hB, hB, hC]`. Establish `hrow' : ∀ r, b.1 r 2 = 1 → (modExp (fun j => Fin (b.1 r j)) 2 : ℂ) = 1 - ((![a, a'] r : ℕ) : ℂ)`. Introduce `r hr`. Rewrite using `[modExp_three_two]`. Simplify using `only [Fintype.card_fin]`.
+
+Establish `h1` using `hrow r`. Rewrite `h1` using `[hr]`. Establish `h2 : ((b.1 r 0 + b.1 r 1 : ℕ) : ℂ) = ((![a, a'] r : ℕ) : ℂ) - 1`. Rewrite using `[← h1]`. Use `push_cast`.
+
+Expand and normalize the polynomial expressions, which then agree. Move the coercions through the operations in `at h2 ⊢`. Rewrite using `[h2]`. Expand and normalize the polynomial expressions, which then agree. Establish `hneg : ∀ A : ℂ, absPow k ((A - 1) / 2) y = (absPow k ((1 - A) / 2) y)⁻¹`.
+
+Introduce `A`. Rewrite using `[show (A - 1) / 2 = -((1 - A) / 2) by ring, absPow_neg, MonoidHom.inv_apply]`. Rewrite using `[hneg]`. Apply the tactic sequence `rcases (show i = 0 ∨ i = 1 by fin_cases i <;> simp) with rfl | rfl`. Establish `h1 : b.1 1 2 = 0` using `by omega`.
+
+Rewrite using `[h1, pow_zero, map_one, map_one, hi, pow_one, ← hrow' 0 hi]`. Simplify using `only [Units.val_mul, Units.val_inv_eq_inv_val, Units.val_one]`. Expand and normalize the polynomial expressions, which then agree. Establish `h0 : b.1 0 2 = 0` using `by omega`. Rewrite using `[h0, pow_zero, map_one, map_one, hi, pow_one, ← hrow' 1 hi]`.
+
+Simplify using `only [Units.val_mul, Units.val_inv_eq_inv_val, Units.val_one]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem cellScalar_positionThree_pair {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k]
     [IsNonarchimedeanLocalField k] (a a' : ℕ) (χ : Fin 2 → kˣ →* ℂˣ)
     (b : SizeMatrix (fun j : Fin 2 => Fin (![a, a'] j))

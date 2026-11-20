@@ -27,6 +27,15 @@ section Inhabitants
 
 instance : BorelSpace C2 := ⟨(borel_eq_top_of_discrete).symm⟩
 
+/- English proof (translation)
+Use `⟨MonoidHom.inl C2 C2, MonoidHom.fst C2 C2, MonoidHom.inr C2 C2, Measure.haar, inferInstance, Measure.haar, inferInstance, ⊤, Set.univ, Set.univ, Measure.haar, inferInstance, continuous_of_discreteTopology, continuous_of_discreteTopology, continuous_of_discreteTopology.isClosedEmb …` and prove the remaining obligations. Introduce and unpack `⟨a, b⟩`. Prove the components needed by the constructor for the conclusion. Introduce `hg`. Use `⟨b, ?_⟩` and prove the remaining obligations.
+
+Simplify using `only [MonoidHom.coe_fst] at hg`. Simplify using `[hg]`. Introduce and unpack `⟨n, hn⟩`. Rewrite using `[← hn]`. Simplify using the standard rewrite rules.
+
+Introduce `l`. Use `congr 1`. Use function extensionality and compare the values at `n`. Apply the tactic sequence `ext <;> simp`. Introduce `h1`.
+
+Use `congrArg (fun f => (f (Multiplicative.ofAdd 1)).1) h1` as an intermediate fact. Simplify using `at this`. Introduce `h1`. Use `congrArg (fun f => (f (Multiplicative.ofAdd 1)).2) h1` as an intermediate fact. Simplify using `at this`.
+-/
 theorem SemidirectCovering.hypotheses_met : ∃ (i : C2 →* C2 × C2) (q : C2 × C2 →* C2)
     (j : C2 →* C2 × C2) (μL : Measure C2) (_ : μL.IsHaarMeasure) (μN : Measure C2)
     (_ : μN.IsHaarMeasure) (Γ : Subgroup (C2 × C2)) (C : Set C2) (T : Set C2)

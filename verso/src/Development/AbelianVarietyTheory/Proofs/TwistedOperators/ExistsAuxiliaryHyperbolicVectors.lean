@@ -16,6 +16,9 @@ def stdGram (K : Type) [Field K] (ρ ε : ℕ) (t : K) :
     Matrix ((Fin ρ ⊕ Fin ρ) ⊕ Fin ε) ((Fin ρ ⊕ Fin ρ) ⊕ Fin ε) K :=
   fromBlocks (fromBlocks 0 1 1 0) 0 0 ((-t) • 1)
 
+/- English proof (translation)
+Take `⟨c, Q, hQ⟩` from `Formalism.UG.P.sig_data _ _ _ h`. Use `hasSignature_of_frame (by rw [Fintype.card_congr e, c]) (Q.submatrix e id) ?_` and prove the remaining obligations. Rewrite using `[Matrix.conjTranspose_submatrix, Matrix.submatrix_mul_equiv, Matrix.submatrix_mul_equiv, Matrix.submatrix_id_id, hQ]`.
+-/
 theorem hasSignature_submatrix {n m : Type} [Fintype n] [DecidableEq n] [Fintype m] [DecidableEq m]
     {J : Matrix n n ℂ} {p q : ℕ} (h : Formalism.UG.HasSignature J p q) (e : m ≃ n) :
     Formalism.UG.HasSignature (J.submatrix e e) p q := by
@@ -24,6 +27,17 @@ theorem hasSignature_submatrix {n m : Type} [Fintype n] [DecidableEq n] [Fintype
   rw [Matrix.conjTranspose_submatrix, Matrix.submatrix_mul_equiv, Matrix.submatrix_mul_equiv,
     Matrix.submatrix_id_id, hQ]
 
+/- English proof (translation)
+Use `hasSignature_fromBlocks ?_ ?_` and prove the remaining obligations. Use `hasSignature_of_frame (by simp) (fromBlocks 1 1 ((1 / 2 : ℂ) • 1) ((-1 / 2 : ℂ) • 1)) ?_` and prove the remaining obligations. Simplify using `only [fromBlocks_conjTranspose, fromBlocks_multiply, Formalism.UG.Jpq, conjTranspose_smul, conjTranspose_one]`. Apply the tactic sequence `ext (r | r) (s | s) <;> by_cases h : r = s <;> simp [h] <;> norm_num`. Establish `h1 : ((√(T : ℝ) : ℝ) : ℂ) * ((√(T : ℝ) : ℝ) : ℂ) = T`.
+
+Rewrite using `[← Complex.ofReal_mul, Real.mul_self_sqrt (Nat.cast_nonneg T)]`. Simplify using the standard rewrite rules. Establish `h2 : ((√(T : ℝ) : ℝ) : ℂ) ≠ 0` using `fun h => by`. Rewrite `h1` using `[h, mul_zero]`. Conclude with `hT.ne' (by exact_mod_cast h1.symm)`.
+
+Use `hasSignature_of_frame (by simp) (fromCols 0 ((((√(T : ℝ) : ℝ) : ℂ))⁻¹ • 1)) ?_` and prove the remaining obligations. Use extensionality with `(r | r) (s | s)`. Conclude with `r.elim0`. Conclude with `r.elim0`. Conclude with `s.elim0`.
+
+Rewrite using `[conjTranspose_fromCols_eq_fromRows_conjTranspose, fromRows_mul, fromRows_mul_fromCols]`. Distinguish the cases in `h : r = s`. Simplify using `[h, Formalism.UG.Jpq]`. Rewrite using `[← h1]`. Clear the denominators using the available nonvanishing facts.
+
+Simplify using `[h, Formalism.UG.Jpq]`.
+-/
 theorem hasSignature_stdGram (ρ ε : ℕ) {T : ℕ} (hT : 0 < T) :
     Formalism.UG.HasSignature (stdGram ℂ ρ ε (T : ℂ)) (ρ + 0) (ρ + ε) := by
   refine hasSignature_fromBlocks ?_ ?_
@@ -46,6 +60,9 @@ theorem hasSignature_stdGram (ρ ε : ℕ) {T : ℕ} (hT : 0 < T) :
         rw [← h1]; field_simp
       · simp [h, Formalism.UG.Jpq]
 
+/- English proof (translation)
+Use `⟨(fromBlocks 0 1 1 0 : Matrix (Fin ρ ⊕ Fin ρ) (Fin ρ ⊕ Fin ρ) K).det, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[← Matrix.det_mul, Matrix.fromBlocks_multiply]`. Simplify using the standard rewrite rules. Rewrite using `[stdGram, det_fromBlocks_zero₂₁, det_smul, det_one, mul_one, Fintype.card_fin]`.
+-/
 theorem det_stdGram (K : Type) [Field K] (ρ ε : ℕ) (t : K) :
     ∃ s : K, s * s = 1 ∧ (stdGram K ρ ε t).det = s * (-t) ^ ε := by
   refine ⟨(fromBlocks 0 1 1 0 : Matrix (Fin ρ ⊕ Fin ρ) (Fin ρ ⊕ Fin ρ) K).det, ?_, ?_⟩
@@ -53,6 +70,9 @@ theorem det_stdGram (K : Type) [Field K] (ρ ε : ℕ) (t : K) :
     simp
   · rw [stdGram, det_fromBlocks_zero₂₁, det_smul, det_one, mul_one, Fintype.card_fin]
 
+/- English proof (translation)
+Simplify using `only [Matrix.of_apply, Matrix.mul_apply, Matrix.conjTranspose_apply, map_sum, map_smul, LinearMap.map_smulₛₗ₂, LinearMap.sum_apply, LinearMap.smul_apply, smul_eq_mul, starRingEnd_apply, Finset.sum_mul, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun _ _ => Finset.sum_congr rfl fun _ _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem gram_comb {E : Type} [Field E] [NumberField E] [StarRing E] (Y : HSpace E) {c : ℕ} (b : Fin c → Y.V)
     (P : Matrix (Fin c) (Fin c) E) (k l : Fin c) :
     Y.hT (∑ i, P i k • b i) (∑ i, P i l • b i) = (Pᴴ * (Matrix.of fun i l => Y.hT (b i) (b l)) * P) k l := by
@@ -62,11 +82,29 @@ theorem gram_comb {E : Type} [Field E] [NumberField E] [StarRing E] (Y : HSpace 
   refine Finset.sum_congr rfl fun _ _ => Finset.sum_congr rfl fun _ _ => ?_
   ring
 
+/- English proof (translation)
+Proceed by induction on `n with`. Consider the case `zero => simpa using isN_star (D := D) 1`. Consider the case `succ n ih => rw [pow_succ]`. Conclude with `ih.mul h`.
+-/
 theorem isN_pow {D : D7} {x : D.host.E} (h : IsN D x) (n : ℕ) : IsN D (x ^ n) := by
   induction n with
   | zero => simpa using isN_star (D := D) 1
   | succ n ih => rw [pow_succ]; exact ih.mul h
 
+/- English proof (translation)
+Take `⟨b, hb, hd, hs, a, ha, hdet⟩` from `exists_complement_XY D j hj`. Generalize the expression as in `D.R.m - 1 - j = c at *`. Establish `hT : 0 < D.sp.T` using `D.sp.T_prime.pos`. Take `⟨e⟩ : Nonempty (Fin c ≃ (Fin (c / 2) ⊕ Fin (c / 2)) ⊕ Fin (c % 2))` from `Fintype.card_eq.1 (by simp; omega)`. Take `⟨s, hs1, hs2⟩` from `det_stdGram D.host.E (c / 2) (c % 2) (D.sp.T : D.host.E)`.
+
+Establish `hsN : IsN D s ∧ star s = s`. Break down `mul_self_eq_one_iff.1 hs1 with h | h` into its components or cases. Rewrite using `[h]; exact ⟨by simpa using isN_star (D := D) 1, star_one _⟩`. Rewrite using `[h]; exact ⟨isN_neg_one, by simp⟩`. Establish `hs0 : s ≠ 0` using `fun h => by simp [h] at hs1`.
+
+Establish `hT0 : (D.sp.T : D.host.E) ≠ 0` using `Nat.cast_ne_zero.2 hT.ne'`. Establish `hX` using `GlobalTheory.FrameComplement.gram_det_ne (D.sp.X j)`. Take `⟨P, -, hP⟩` from `GlobalTheory.HermAdelicNorm.congr_of_signature_of_adelic_norm D.host.F D.host.E D.sp.cm c (Matrix.of fun i l => (D.sp.Y j).hT (b i) (b l)) ((stdGram D.host.E (c / 2) (c % 2) (D.sp.T : D.host.E)).submatrix e e) (Matrix.ext fun i l => (D.sp.Y j).herm.eq _ _) (by simp [stdGram, conj …`. Establish `h1 : ((stdGram D.host.E (c / 2) (c % 2) (D.sp.T : D.host.E)).submatrix e e).map τ = (stdGram ℂ (c / 2) (c % 2) (D.sp.T : ℂ)).submatrix e e`. Use extensionality with `r t`.
+
+Simplify using `only [map_apply, submatrix_apply]`. Apply the tactic sequence `rcases e r with (r | r) | r <;> rcases e t with (t | t) | t <;>`. Simplify using `[stdGram, Matrix.one_apply, apply_ite τ]`. Rewrite using `[h1]`. Apply the tactic sequence `convert hasSignature_submatrix (hasSignature_stdGram (c / 2) (c % 2) hT) e using 1 <;> omega⟩)`.
+
+Use the proof step `(by`. Establish `h1 : IsN D (-(D.sp.T : D.host.E))` using `by simpa using (isN_neg_one (D := D)).mul isNormFromTensorFiniteAdele_levelNormT`. Establish `h2` using `(((isN_det (D.sp.Y j)).mul ((isN_det (D.sp.X j)).inv (star_det _))).mul (isN_star a⁻¹)).mul ((hsN.1.mul (isN_pow h1 (c % 2))).inv (by simp [hsN.2]))`. Establish `ha' : star a ≠ 0` using `star_ne_zero.2 ha`. Establish `h3 : ∀ x g u : D.host.E, x ≠ 0 → star a * a * x * g * x⁻¹ * (star a⁻¹ * a⁻¹) * u⁻¹ = g / u` using `fun x g u hx => by rw [star_inv₀, div_eq_mul_inv]; field_simp`.
+
+Rewrite `h2` using `[hdet, h3 _ _ _ hX]`. Rewrite using `[det_submatrix_equiv_self, hs2]`. Conclude with `h2)`. Use `⟨fun k => ∑ i, P i (e.symm k) • b i, fun k x => ?_, fun k l => ?_⟩` and prove the remaining obligations. Simplify using `[hb]`.
+
+Rewrite using `[gram_comb, hP, submatrix_apply, e.apply_symm_apply, e.apply_symm_apply]`.
+-/
 theorem exists_std (D : D7) (j : ℕ) (hj : j < D.R.m) :
     ∃ w : (Fin ((D.R.m - 1 - j) / 2) ⊕ Fin ((D.R.m - 1 - j) / 2)) ⊕ Fin ((D.R.m - 1 - j) % 2) → (D.sp.Y j).V,
       (∀ k x, (D.sp.Y j).hT (D.sp.iXY j x) (w k) = 0) ∧
@@ -113,6 +151,15 @@ theorem exists_std (D : D7) (j : ℕ) (hj : j < D.R.m) :
   · simp [hb]
   · rw [gram_comb, hP, submatrix_apply, e.apply_symm_apply, e.apply_symm_apply]
 
+/- English proof (translation)
+Introduce `D j hj`. Take `⟨w, h0, hw⟩` from `exists_std D j hj`. Use `⟨fun i => if h : i < (D.R.m - 1 - j) / 2 then w (.inl (.inl ⟨i, h⟩)) else 0, fun i => if h : i < (D.R.m - 1 - j) / 2 then w (.inl (.inr ⟨i, h⟩)) else 0, if h : 0 < (D.R.m - 1 - j) % 2 then w (.inr ⟨0, h⟩) else 0, ?_⟩` and prove the remaining obligations. Unfold `GlobalTheory.IndefiniteRowSideFullHecke.ChainMatrices.IsAuxiliaryHeckeCharacter GlobalTheory.IndefiniteRowSideFullHecke.ChainMatrices.nAux HSpace.hD`. Use `⟨fun i hi l hl => ?_, fun i hi x => ?_, fun he => ?_⟩` and prove the remaining obligations.
+
+Simplify using `only [dif_pos hi, dif_pos hl, hw]`. Simplify using `[stdGram, Matrix.one_apply, Fin.ext_iff, eq_comm]`. Simplify using `only [dif_pos hi, h0, and_self]`. Establish `h : 0 < (D.R.m - 1 - j) % 2`. Take `⟨a, ha⟩` from `D.R.m_even`.
+
+Take `⟨b, hb⟩` from `he`. Use linear arithmetic over natural numbers and integers. Use `⟨?_, fun x => ?_, fun i hi => ?_⟩` and prove the remaining obligations. Simplify using `only [dif_pos h, hw]`. Simplify using `[stdGram]`.
+
+Simplify using `only [dif_pos h, h0]`. Simplify using `only [dif_pos h, dif_pos hi, hw]`. Simplify using `[stdGram]`.
+-/
 theorem exists_auxiliaryHyperbolicVectors : ∀ (D : D7) (j : ℕ), j < D.R.m → ∃ (E Ev : ℕ → (D.sp.Y j).V) (z : (D.sp.Y j).V), GlobalTheory.IndefiniteRowSideFullHecke.ChainMatrices.IsAuxiliaryHeckeCharacter D j E Ev z := by
   intro D j hj
   obtain ⟨w, h0, hw⟩ := exists_std D j hj

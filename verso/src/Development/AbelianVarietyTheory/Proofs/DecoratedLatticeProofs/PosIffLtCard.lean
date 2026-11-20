@@ -2,6 +2,17 @@ import Mathlib
 
 namespace GlobalTheory.PositiveIffLtCard
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce `h`. Establish `hsub : Finset.Iic i ⊆ ({j : Fin N | (0 : ℤ) < e j} : Finset (Fin N))`. Introduce `j hj`. Rewrite `hj` using `[Finset.mem_Iic]`.
+
+Simplify using `only [Finset.mem_filter, Finset.mem_univ, true_and]`. Conclude with `lt_of_lt_of_le h (he hj)`. Establish `hc` using `Finset.card_le_card hsub`. Rewrite `hc` using `[Fin.card_Iic]`. Use linear arithmetic over natural numbers and integers.
+
+Introduce `h`. Assume the negation of the conclusion as `hn`. Establish `hsub : ({j : Fin N | (0 : ℤ) < e j} : Finset (Fin N)) ⊆ Finset.Iio i`. Introduce `j hj`. Simplify using `only [Finset.mem_filter, Finset.mem_univ, true_and] at hj`.
+
+Rewrite using `[Finset.mem_Iio]`. Assume the negation of the conclusion as `hji`. Conclude with `hn (lt_of_lt_of_le hj (he (not_lt.mp hji)))`. Establish `hc` using `Finset.card_le_card hsub`. Rewrite `hc` using `[Fin.card_Iio]`.
+
+Use linear arithmetic over natural numbers and integers.
+-/
 theorem pos_iff_lt_card {N : ℕ} {e : Fin N → ℤ} (he : Antitone e) (i : Fin N) :
     (0 : ℤ) < e i ↔ (i : ℕ) < Finset.card {j : Fin N | (0 : ℤ) < e j} := by
   constructor

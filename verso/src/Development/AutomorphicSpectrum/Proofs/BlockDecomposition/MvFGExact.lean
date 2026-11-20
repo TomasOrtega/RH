@@ -28,9 +28,21 @@ abbrev infP (U V : ObjectProperty C) : ObjectProperty C := fun T => U T ∧ V T
 
 variable {U V : ObjectProperty C}
 
+/- English proof (translation)
+Introduce `_ h` and use `Or.inl h`.
+-/
 theorem le_supL : U ≤ supP U V := fun _ h => Or.inl h
+/- English proof (translation)
+Introduce `_ h` and use `Or.inr h`.
+-/
 theorem le_supR : V ≤ supP U V := fun _ h => Or.inr h
+/- English proof (translation)
+Introduce `_ h` and use `h.1`.
+-/
 theorem inf_leL : infP U V ≤ U := fun _ h => h.1
+/- English proof (translation)
+Introduce `_ h` and use `h.2`.
+-/
 theorem inf_leR : infP U V ≤ V := fun _ h => h.2
 
 def liftW {W P : ObjectProperty C} (hP : Cosieve P) {n : ℕ} (t : ComposableArrows W.FullSubcategory n)
@@ -52,6 +64,9 @@ def mvG : Cx.Hom (prodCx (cw F U) (cw F V)) (cw F (infP U V)) (RingHom.id R) whe
 
 variable {U V}
 
+/- English proof (translation)
+Use `(injective_iff_map_eq_zero _).2 fun x hx => ?_` and prove the remaining obligations. Use function extensionality and compare the values at `t`. Break down `(t.obj 0).property with h | h` into its components or cases. Conclude with `congrFun (congrArg Prod.fst hx) (liftW hU t h)`. Conclude with `congrFun (congrArg Prod.snd hx) (liftW hV t h)`.
+-/
 theorem mvF_inj (hU : Cosieve U) (hV : Cosieve V) (n : ℕ) : Function.Injective ((mvF F U V).f n) := by
   refine (injective_iff_map_eq_zero _).2 fun x hx => ?_
   funext t
@@ -60,6 +75,15 @@ theorem mvF_inj (hU : Cosieve U) (hV : Cosieve V) (n : ℕ) : Function.Injective
   · exact congrFun (congrArg Prod.snd hx) (liftW hV t h)
 
 open Classical in
+/- English proof (translation)
+Introduce `y`. Prove the components needed by the constructor for the conclusion. Introduce `hy`. Take `⟨a, b⟩` from `y`. Establish `hab : ∀ s : ComposableArrows (infP U V).FullSubcategory n, (resU F inf_leL).pullC n a s = (resU F inf_leR).pullC n b s` using `fun s => sub_eq_zero.1 (congrFun hy s)`.
+
+Use `⟨fun t => if h : U (t.obj 0).obj then a (liftW hU t h) else b (liftW hV t ((t.obj 0).property.resolve_left h)), Prod.ext ?_ ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `s`. Conclude with `dif_pos (s.obj 0).property`. Use function extensionality and compare the values at `s`. Distinguish the cases in `h : U (s.obj 0).obj`.
+
+Use `(dif_pos h).trans ?_` and prove the remaining obligations. Conclude with `hab (liftW (P := infP U V) (fun _ _ f h => ⟨hU f h.1, hV f h.2⟩) s ⟨h, (s.obj 0).property⟩)`. Conclude with `dif_neg h`. Introduce and unpack `⟨x, rfl⟩`. Use `sub_eq_zero.2 ?_` and prove the remaining obligations.
+
+Both sides reduce to the same expression.
+-/
 theorem mvFG_exact (hU : Cosieve U) (hV : Cosieve V) (n : ℕ) : Function.Exact ((mvF F U V).f n) ((mvG F U V).f n) := by
   intro y
   constructor
@@ -87,6 +111,11 @@ def extV (hU : Cosieve U) (hV : Cosieve V) {n : ℕ} (y : CH.Cn ((infP U V).ι �
   fun t => if h : V (t.obj 0).obj then
     y (liftW (P := infP U V) (fun _ _ f h => ⟨hU f h.1, hV f h.2⟩) t ⟨(t.obj 0).property, h⟩) else 0
 
+/- English proof (translation)
+Introduce `y`. Use `⟨(extV F hU hV y, 0), funext fun s => ?_⟩` and prove the remaining obligations. Establish `e1 : (resU F inf_leL).pullC n (extV F hU hV y) s = y s` using `dif_pos (s.obj 0).property.2`. Establish `e2 : (resU F inf_leR).pullC n (0 : CH.Cn (V.ι ⋙ F) n) s = 0` using `congrFun (map_zero _) s`. Express the relevant statement in the definitionally equal form `(resU F inf_leL).pullC n (extV F hU hV y) s - (resU F inf_leR).pullC n (0 : CH.Cn (V.ι ⋙ F) n) s = y s`.
+
+Rewrite using `[e1, e2, sub_zero]`.
+-/
 theorem mvG_surj (hU : Cosieve U) (hV : Cosieve V) (n : ℕ) : Function.Surjective ((mvG F U V).f n) := by
   intro y
   refine ⟨(extV F hU hV y, 0), funext fun s => ?_⟩
@@ -113,16 +142,25 @@ def Phi {W : ObjectProperty C} {W' : ObjectProperty C'} (h : ∀ T, W' T → W (
 
 variable {G F F' τ hτ}
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fun i n n' k x => funext fun s => hadd i n n' _ _, fun i r n k x => funext fun s => hsm i r n _ _⟩`.
+-/
 theorem phi_lin (hadd : ∀ i n n' T x, τ i (n + n') T x = τ i n T x + τ i n' T x)
     (hsm : ∀ i (r : R) n T x, τ i (r • n) T x = σ r • τ i n T x) {W : ObjectProperty C} {W' : ObjectProperty C'}
     (h : ∀ T, W' T → W (G.obj T)) : Lin (Phi G F F' τ hτ h) :=
   ⟨fun i n n' k x => funext fun s => hadd i n n' _ _, fun i r n k x => funext fun s => hsm i r n _ _⟩
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fun i n n' k x => Prod.ext (hφ.1 i n n' k x.1) (hψ.1 i n n' k x.2), fun i r n k x => Prod.ext (hφ.2 i r n k x.1) (hψ.2 i r n k x.2)⟩`.
+-/
 theorem lin_prod {K L : ι → Cx.{w} R} {K' L' : Cx.{w'} R'} {φ : ∀ i, N i → Cx.Hom (K i) K' σ}
     {ψ : ∀ i, N i → Cx.Hom (L i) L' σ} (hφ : Lin φ) (hψ : Lin ψ) : Lin fun i n => prodHom (φ i n) (ψ i n) :=
   ⟨fun i n n' k x => Prod.ext (hφ.1 i n n' k x.1) (hψ.1 i n n' k x.2),
     fun i r n k x => Prod.ext (hφ.2 i r n k x.1) (hψ.2 i r n k x.2)⟩
 
+/- English proof (translation)
+Use `(bc_ses (fun i => mvF (F i) U V) (fun i => mvG (F i) U V) (mvF F' U' V') (mvG F' U' V') (fun i n => mvF_inj _ hU hV n) (fun i n => mvFG_exact _ hU hV n) (fun i n => mvG_surj _ hU hV n) (fun n => mvF_inj _ hU' hV' n) (fun n => mvFG_exact _ hU' hV' n) (fun n => mvG_surj _ hU' hV' n …` and prove the remaining obligations. Conclude with `fun i m k x => rfl`. Introduce `i m k x`. Use function extensionality and compare the values at `s`. Conclude with `map_sub (τ i m _) _ _`.
+-/
 theorem bc_sup [Fintype ι] [DecidableEq ι] [∀ i, Module.Flat R (N i)]
     (hadd : ∀ i n n' T x, τ i (n + n') T x = τ i n T x + τ i n' T x)
     (hsm : ∀ i (r : R) n T x, τ i (r • n) T x = σ r • τ i n T x) {U V : ObjectProperty C} {U' V' : ObjectProperty C'}

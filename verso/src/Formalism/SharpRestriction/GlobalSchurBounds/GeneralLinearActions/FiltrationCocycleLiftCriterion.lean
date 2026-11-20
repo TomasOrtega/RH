@@ -86,6 +86,13 @@ def TailSum {N : ℕ} (χ : DirichletCharacter ℂ N) (z : ℝ) (S : ℂ) : Prop
   Filter.Tendsto (fun M : ℕ => ∑ n ∈ Finset.Ioc ⌊z⌋₊ M, (abelian₂ n : ℂ) * χ (n : ZMod N) / n)
     Filter.atTop (nhds S)
 
+/- English proof (translation)
+Unfold `G Gfun`. Establish `hs : (∑ n ∈ Finset.Icc 1 ⌊y⌋₊, abelian₂ n * max (y / n - 1) 0) = ∑ n ∈ Finset.Icc 1 ⌊y⌋₊, (ArithmeticFunction.vonMangoldt n : ℝ) * (y / n - 1)`. Use `Finset.sum_congr rfl fun n hn => ?_` and prove the remaining obligations. Take `⟨hn1, hny⟩` from `Finset.mem_Icc.mp hn`. Establish `hnpos : (0 : ℝ) < n` using `by exact_mod_cast hn1`.
+
+Establish `hle : (n : ℝ) ≤ y` using `(Nat.le_floor_iff' (by omega)).mp hny`. Establish `h0 : 0 ≤ y / n - 1`. Rewrite using `[sub_nonneg, le_div_iff₀ hnpos, one_mul]`. Conclude with `hle`. Rewrite using `[max_eq_left h0]`.
+
+Rewrite using `[hs]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem G_eq_Gfun (y : ℝ) : G y = Gfun y := by
   unfold G Gfun
   have hs : (∑ n ∈ Finset.Icc 1 ⌊y⌋₊, abelian₂ n * max (y / n - 1) 0) =

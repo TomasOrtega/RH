@@ -17,6 +17,23 @@ noncomputable section
 
 namespace GlobalTheory.LogDR
 
+/- English proof (translation)
+Rewrite using `[GlobalTheory.T.mem_chart_forms_iff K A n x J t a η]`. Establish `ht : (t : K) ≠ 0` using `t.ne_zero`. Establish `hP : ∀ I : Finset (Fin n), ∏ j ∈ I \ J, (x j : K) ≠ 0` using `fun I => Finset.prod_ne_zero_iff.2 fun j _ => (x j).ne_zero`. Establish `hsplit : ∀ f : Finset (Fin n) → abelian₂ K, (∀ I, I.card ≠ a → f I = 0) → ∑ I, f I = ∑ I : {I : Finset (Fin n) // I.card = a}, f I.1`. Introduce `f hf`.
+
+Rewrite using `[← Fintype.sum_subtype_add_sum_subtype (fun I : Finset (Fin n) => I.card = a) f, Finset.sum_eq_zero (s := (Finset.univ : Finset {I : Finset (Fin n) // ¬ I.card = a})) (fun I _ => hf I.1 I.2), add_zero]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨c, hc0, hcA, rfl⟩`. Use `⟨fun I => c I.1 * t / ∏ j ∈ I.1 \ J, (x j : K), fun I => hcA I.1, ?_⟩` and prove the remaining obligations. Rewrite using `[hsplit (fun I => c I • logWedge x I) (fun I hI => by simp only [hc0 I hI, zero_smul])]`.
+
+Use `Finset.sum_congr rfl fun I _ => ?_` and prove the remaining obligations. Rewrite using `[smul_smul]`. Use `congr 1`. Use `hP I.1` as an intermediate fact. Use `push_cast`.
+
+Clear the denominators using the available nonvanishing facts. Introduce and unpack `⟨d, hdA, rfl⟩`. Use `⟨fun I => if h : I.card = a then d ⟨I, h⟩ * ((t⁻¹ * ∏ j ∈ I \ J, x j : Kˣ) : K) else 0, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `I hI`. Simplify using `[hI]`.
+
+Introduce `I`. Distinguish the cases in `hI : I.card = a`. Simplify using `only`. Rewrite using `[dif_pos hI]`. Establish `e : d ⟨I, hI⟩ * ((t⁻¹ * ∏ j ∈ I \ J, x j : Kˣ) : K) * t / ∏ j ∈ I \ J, (x j : K) = d ⟨I, hI⟩`.
+
+Use `hP I` as an intermediate fact. Use `push_cast`. Clear the denominators using the available nonvanishing facts. Rewrite using `[e]`. Conclude with `hdA _`.
+
+Simplify using `only`. Rewrite using `[dif_neg hI, zero_mul, zero_div]`. Conclude with `zero_mem A`. Rewrite using `[hsplit (fun I => (if h : I.card = a then d ⟨I, h⟩ * ((t⁻¹ * ∏ j ∈ I \ J, x j : Kˣ) : K) else 0) • logWedge x I) (fun I hI => by simp only [dif_neg hI, zero_smul])]`. Use `Finset.sum_congr rfl fun I _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[dif_pos I.2, smul_smul]`.
+-/
 theorem mem_chartForms_iff_sum_card {K : Type} [Field K] (A : Subring K) {n : ℕ} (x : Fin n → Kˣ)
     (J : Finset (Fin n)) (t : Kˣ) (a : ℕ) (η : abelian₂ K) :
     η ∈ chartForms A x J t a ↔ ∃ d : {I : Finset (Fin n) // I.card = a} → K, (∀ I, d I ∈ A) ∧
@@ -66,6 +83,19 @@ theorem mem_chartForms_iff_sum_card {K : Type} [Field K] (A : Subring K) {n : �
       refine Finset.sum_congr rfl fun I _ => ?_
       rw [dif_pos I.2, smul_smul]
 
+/- English proof (translation)
+Introduce `X _ C _ E n ι 𝒜 G a F hF`. Use `GlobalTheory.T.lattice_model_finite_quasicoherent X _ F hF fun y => ?_` and prove the remaining obligations. Choose the witnesses or unpack the hypotheses as in `⟨i, hi⟩ : ∃ i, y ∈ 𝒜.U i := by`. Establish `: y ∈ (⨆ i, 𝒜.U i)` using `by rw [𝒜.cover]; trivial`. Simplify `this` using `[Opens.mem_iSup]`.
+
+Take `⟨t, ht⟩` from `G.exists_isEqn y`. Take `⟨W, hyW, hW⟩` from `ht.exists_nhds`. Take `⟨f, hfW, hyf⟩` from `(𝒜.affine i).exists_basicOpen_le (V := W) ⟨y, hyW⟩ hi`. Set `S` to `{I : Finset (Fin n) // I.card = a}`. Set `e : Fin (Fintype.card S) ≃ S` to `(Fintype.equivFin S).symm`.
+
+Set `u : S → X.functionFieldˣ` to `fun I => t⁻¹ * ∏ j ∈ I.1 \ 𝒜.J i, 𝒜.x i j`. Set `g : S → abelian₂ X.functionField` to `fun I => ((u I : X.functionFieldˣ) : X.functionField) • logWedge (𝒜.x i) I.1`. Use `⟨X.basicOpen f, Fintype.card S, fun k => g (e k), hyf, (𝒜.affine i).basicOpen f, ?_, ?_⟩` and prove the remaining obligations. Establish `hc : IsCoord (𝒜.x i)` using `((𝒜.chart i).chart _ (𝒜.gen i)).coord`. Establish `h1` using `(GlobalTheory.LogDR.logWedge_basis _ n (𝒜.x i) hc).1.comp (fun k => (e k).1) (Subtype.val_injective.comp e.injective)`.
+
+Conclude with `h1.units_smul (fun k => u (e k))`. Introduce `z hz w`. Establish `hzU : z ∈ 𝒜.U i` using `X.basicOpen_le f hz`. Establish `hzt : G.IsEqn z t` using `hW z (hfW hz)`. Rewrite using `[GlobalTheory.T.log_forms_eq_chart_forms (suppAll E) (𝒜.U i) (𝒜.x i) (𝒜.J i) G z t a (𝒜.chart i) hzU hzt, mem_chartForms_iff_sum_card]`.
+
+Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨d, hd, rfl⟩`. Conclude with `⟨fun k => d (e k), fun k => hd _, (e.sum_comp fun I => d I • g I).symm⟩`. Introduce and unpack `⟨c, hc, rfl⟩`. Use `⟨fun I => c (e.symm I), fun I => hc _, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[← e.sum_comp]`. Simplify using `only [Equiv.symm_apply_apply]`. Both sides reduce to the same expression.
+-/
 theorem latModel_logAt_isFiniteQC : ∀ (X : Scheme.{0}) [IsIntegral X] {C : Type} [Fintype C]
     (E : C → CartierDiv X) {n : ℕ} {ι : Type} (𝒜 : SncAtlas E n ι) (G : CartierDiv X) (a : ℕ)
     (F : X.Modules), LatModel (logAt (suppAll E) G a) F → GlobalTheory.QCoh.IsFiniteQC F := by

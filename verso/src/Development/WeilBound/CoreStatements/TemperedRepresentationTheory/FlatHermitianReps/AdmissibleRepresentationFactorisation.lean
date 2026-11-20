@@ -13,6 +13,15 @@ namespace MainStatements.Flath2
 open GlobalTheory.PRep (fixed smoothPart smoothRep IsSmooth)
 open scoped Topology
 
+/- English proof (translation)
+Use `set Y := X.topologicalClosure with hYdef`. Establish `hcl : IsClosed {x : E | c * ‖x‖ ≤ ‖T x‖}` using `isClosed_le (continuous_const.mul continuous_norm) (continuous_norm.comp T.continuous)`. Establish `hY : ∀ y ∈ Y, c * ‖y‖ ≤ ‖T y‖`. Introduce `y hy`. Establish `hy' : y ∈ closure (X : Set E)` using `by rwa [← Submodule.topologicalClosure_coe]`.
+
+Conclude with `closure_minimal (fun x hx => hX x hx) hcl hy'`. Use `haveI : CompleteSpace Y := X.isClosed_topologicalClosure.completeSpace_coe`. Set `f : Y →L[ℂ] E` to `T ∘L Y.subtypeL`. Establish `hanti : AntilipschitzWith (Real.toNNReal c⁻¹) f`. Use `f.antilipschitz_of_bound fun y => ?_` and prove the remaining obligations.
+
+Rewrite using `[Real.coe_toNNReal _ (inv_nonneg.2 hc.le)]`. Conclude with `(le_inv_mul_iff₀ hc).2 (hY y y.2)`. Establish `hemb : Topology.IsClosedEmbedding f` using `hanti.isClosedEmbedding f.uniformContinuous`. Establish `hK` using `hT.isCompact_closure_image_closedBall 1`. Establish `hpre : IsCompact (f ⁻¹' closure (T '' Metric.closedBall 0 1))` using `hemb.isCompact_preimage hK`.
+
+Establish `hball : IsCompact (Metric.closedBall (0 : Y) 1)` using `hpre.of_isClosed_subset Metric.isClosed_closedBall fun y hy => subset_closure ⟨(y : E), mem_closedBall_zero_iff.2 (mem_closedBall_zero_iff.1 hy), rfl⟩`. Use `haveI : FiniteDimensional ℂ Y := FiniteDimensional.of_isCompact_closedBall₀ (𝕜 := ℂ) zero_lt_one hball`. Conclude with `Submodule.finiteDimensional_of_le X.le_topologicalClosure`.
+-/
 theorem finiteDimensional_of_compact_bdd {E : Type} [NormedAddCommGroup E] [InnerProductSpace ℂ E] [CompleteSpace E]
     (T : E →L[ℂ] E) (hT : IsCompactOperator T) (X : Submodule ℂ E) {c : ℝ} (hc : 0 < c)
     (hX : ∀ x ∈ X, c * ‖x‖ ≤ ‖T x‖) : FiniteDimensional ℂ X := by
@@ -38,6 +47,9 @@ theorem finiteDimensional_of_compact_bdd {E : Type} [NormedAddCommGroup E] [Inne
   haveI : FiniteDimensional ℂ Y := FiniteDimensional.of_isCompact_closedBall₀ (𝕜 := ℂ) zero_lt_one hball
   exact Submodule.finiteDimensional_of_le X.le_topologicalClosure
 
+/- English proof (translation)
+Introduce `g hg` and use `by simpa using h ⟨g, hg⟩`.
+-/
 theorem mem_fixed_imp {G X : Type} [Group G] [AddCommGroup X] [Module ℂ X] {ρ : Representation ℂ G X}
     {K : Subgroup G} {x : X} (h : x ∈ fixed ρ K) : ∀ g ∈ K, ρ g x = x := fun g hg => by
   simpa using h ⟨g, hg⟩
@@ -45,12 +57,20 @@ theorem mem_fixed_imp {G X : Type} [Group G] [AddCommGroup X] [Module ℂ X] {ρ
 noncomputable def phiDS {D : D7} {V : HSp D} {S : D.what₂.Tau → SPar} (M : DSModel V S) (g : GA D V) : ℂ :=
   ∏ τ, ⟪unitVec (M.H τ), dsRep M τ (projArch D.sp.cm.sig V.gram (placeOf D τ) g) (unitVec (M.H τ))⟫_ℂ
 
+/- English proof (translation)
+Unfold `phiDS`. Use `continuous_finsetProd _ fun τ _ => continuous_const.inner ?_` and prove the remaining obligations. Conclude with `((isIrrUnitary_dsRep M τ).unitary.continuous_apply (unitVec (M.H τ))).comp (continuous_projArch D.sp.cm.sig V.gram (placeOf D τ))`.
+-/
 theorem continuous_phiDS {D : D7} {V : HSp D} {S : D.what₂.Tau → SPar} (M : DSModel V S) : Continuous (phiDS M) := by
   unfold phiDS
   refine continuous_finsetProd _ fun τ _ => continuous_const.inner ?_
   exact ((isIrrUnitary_dsRep M τ).unitary.continuous_apply (unitVec (M.H τ))).comp
     (continuous_projArch D.sp.cm.sig V.gram (placeOf D τ))
 
+/- English proof (translation)
+Unfold `phiDS`. Use `Finset.prod_eq_one fun τ _ => ?_` and prove the remaining obligations. Establish `: Nontrivial (M.H τ)` using `(isIrrUnitary_dsRep M τ).irred.1`. Simplify using `only [map_one, ContinuousLinearMap.one_apply]`. Rewrite using `[inner_self_eq_norm_sq_to_K, norm_unitVec]`.
+
+Simplify using the standard rewrite rules.
+-/
 theorem phiDS_one {D : D7} {V : HSp D} {S : D.what₂.Tau → SPar} (M : DSModel V S) : phiDS M 1 = 1 := by
   unfold phiDS
   refine Finset.prod_eq_one fun τ _ => ?_
@@ -60,6 +80,11 @@ theorem phiDS_one {D : D7} {V : HSp D} {S : D.what₂.Tau → SPar} (M : DSModel
   simp
 
 set_option maxHeartbeats 400000 in
+/- English proof (translation)
+Establish `e1 : π g (Φ (fun τ => unitVec (M.H τ))) = π (toInf V g : GA D V) (π (toFin V g : GA D V) (Φ (fun τ => unitVec (M.H τ))))` using `by conv_lhs => rw [← toInf_mul_toFin g]`. Rewrite using `[map_mul]`. Both sides reduce to the same expression. Rewrite using `[e1, hfix _ hg, GlobalTheory.TrAct.toInf_apply_homDS D V S M H π ⊤ Φ hΦ g]`. Rewrite using `[inner_eq_bePi (fun τ => isIrrUnitary_dsRep M τ) hπ hΦ hΦ]`.
+
+Both sides reduce to the same expression.
+-/
 theorem inner_apply_homDS {D : D7} {V : HSp D} {S : D.what₂.Tau → SPar} {M : DSModel V S} {H : Type}
     [NormedAddCommGroup H] [InnerProductSpace ℂ H] [CompleteSpace H] {π : GA D V →* (H →L[ℂ] H)}
     (hπ : IsUnitaryRep π) {K : Subgroup (GfC V)} {Φ : ContinuousMultilinearMap ℂ M.H H} (hΦ : Φ ∈ homDS M π ⊤)
@@ -76,6 +101,9 @@ theorem inner_apply_homDS {D : D7} {V : HSp D} {S : D.what₂.Tau → SPar} {M :
   rfl
 
 set_option maxHeartbeats 400000 in
+/- English proof (translation)
+Assume the negation of the conclusion as `hne`. Establish `hpos` using `bePi_self_pos (fun τ => isIrrUnitary_dsRep M τ) hπ hΦ hne`. Simplify using `only [bePi] at hpos`. Rewrite `hpos` using `[h0, inner_zero_left]`. Simplify using `at hpos`.
+-/
 theorem eq_zero_of_apply_unitVec {D : D7} {V : HSp D} {S : D.what₂.Tau → SPar} {M : DSModel V S} {H : Type}
     [NormedAddCommGroup H] [InnerProductSpace ℂ H] [CompleteSpace H] {π : GA D V →* (H →L[ℂ] H)}
     (hπ : IsUnitaryRep π) {Φ : ContinuousMultilinearMap ℂ M.H H} (hΦ : Φ ∈ homDS M π ⊤)
@@ -89,6 +117,29 @@ theorem eq_zero_of_apply_unitVec {D : D7} {V : HSp D} {S : D.what₂.Tau → SPa
 
 set_option maxHeartbeats 400000 in
 
+/- English proof (translation)
+Use `set N : Set G := A ∩ {g | 1 / 2 < (φ g).re} with hNdef`. Establish `hN : N ∈ 𝓝 (1 : G)`. Use `IsOpen.mem_nhds (hA.inter (isOpen_lt continuous_const (Complex.continuous_re.comp hφc))) ⟨h1, ?_⟩` and prove the remaining obligations. Use `show 1 / 2 < (φ 1).re`. Rewrite using `[hφ1]`.
+
+Evaluate the numerical expressions. Take `⟨b, hbc, hbcs, hb0, hb1, hbs, hcpt⟩` from `hbump N hN`. Use `set f : G → ℂ := fun g => (b g : ℂ) with hfdef`. Establish `hfc : Continuous f` using `Complex.continuous_ofReal.comp hbc`. Establish `hfcs : HasCompactSupport f` using `hbcs.comp_left Complex.ofReal_zero`.
+
+Use `set J : ℂ := ∫ g, f g * φ g ∂μ with hJdef`. Establish `hint : Integrable (fun g => f g * φ g) μ` using `(hfc.mul hφc).integrable_of_hasCompactSupport (hfcs.mono (Function.support_mul_subset_left _ _))`. Establish `hsupp : ∀ g, b g ≠ 0 → g ∈ N` using `fun g hg => hbs (Function.mem_support.2 hg)`. Establish `hJre : J.re = ∫ g, b g * (φ g).re ∂μ`. Rewrite using `[hJdef, ← RCLike.re_to_complex, ← integral_re hint]`.
+
+Use `congr 1`. Use function extensionality and compare the values at `g`. Simplify using `[hfdef]`. Establish `hJpos : 0 < J.re`. Rewrite using `[hJre]`.
+
+Use `(hbc.mul (Complex.continuous_re.comp hφc)).integral_pos_of_hasCompactSupport_nonneg_nonzero (x := 1) ?_ ?_ ?_` and prove the remaining obligations. Conclude with `hbcs.mono (Function.support_mul_subset_left _ _)`. Introduce `g`. Distinguish the cases in `hg : b g = 0`. Simplify using `[hg]`.
+
+Conclude with `mul_nonneg (hb0 g) ((hsupp g hg).2.le.trans' (by norm_num))`. Simplify using `[hb1, hφ1]`. Establish `hJ0 : J ≠ 0` using `fun h => by rw [h] at hJpos; simp at hJpos`. Establish `hbound : ∀ x ∈ X, ‖J‖ * ‖x‖ ≤ ‖repOp π μ f x‖`. Introduce `x hxX`.
+
+Establish `hx : ⟪x, repOp π μ f x⟫_ℂ = ⟪x, x⟫_ℂ * J`. Rewrite using `[hπ.inner_repOp hfc hfcs, hJdef, ← integral_const_mul]`. Use `congr 1`. Use function extensionality and compare the values at `g`. Distinguish the cases in `hg : b g = 0`.
+
+Simplify using `[hfdef, hg]`. Rewrite using `[hX x hxX g (hsupp g hg).1]`. Expand and normalize the polynomial expressions, which then agree. Establish `hn : ‖⟪x, x⟫_ℂ * J‖ = ‖x‖ ^ 2 * ‖J‖`. Rewrite using `[norm_mul, inner_self_eq_norm_sq_to_K]`.
+
+Simplify using the standard rewrite rules. Establish `hcs : ‖x‖ ^ 2 * ‖J‖ ≤ ‖x‖ * ‖repOp π μ f x‖`. Rewrite using `[← hn, ← hx]`. Conclude with `norm_inner_le_norm _ _`. Break down `(norm_nonneg x).eq_or_lt with h0 | hpos` into its components or cases.
+
+Rewrite using `[← h0]`. Simplify using the standard rewrite rules. Use `le_of_mul_le_mul_left ?_ hpos` and prove the remaining obligations. Establish `: ‖x‖ * (‖J‖ * ‖x‖) = ‖x‖ ^ 2 * ‖J‖` using `by ring`. Combine the linear equalities and inequalities to obtain the conclusion.
+
+Conclude with `finiteDimensional_of_compact_bdd _ hcpt X (norm_pos_iff.2 hJ0) hbound`.
+-/
 theorem finiteDimensional_of_bump {G E : Type} [Group G] [TopologicalSpace G] [MeasurableSpace G]
     [OpensMeasurableSpace G] [NormedAddCommGroup E] [InnerProductSpace ℂ E] [CompleteSpace E]
     {π : G →* (E →L[ℂ] E)} (hπ : IsUnitaryRep π) (μ : Measure G) [IsFiniteMeasureOnCompacts μ] [μ.IsOpenPosMeasure]
@@ -146,6 +197,17 @@ theorem finiteDimensional_of_bump {G E : Type} [Group G] [TopologicalSpace G] [M
   exact finiteDimensional_of_compact_bdd _ hcpt X (norm_pos_iff.2 hJ0) hbound
 
 set_option maxHeartbeats 400000 in
+/- English proof (translation)
+Introduce `D V S M μ _ H _ _ _ π hπ hcpt hU`. Use `⟨isSmooth_smoothRep _, fun K hKo hKc => ?_⟩` and prove the remaining obligations. Set `ev : fixed (finPartDSSm M hU) K →ₗ[ℂ] H` to `(ContinuousMultilinearMap.apply ℂ M.H H (fun τ => unitVec (M.H τ))).toLinearMap ∘ₗ (homDS M π ⊤).subtype ∘ₗ (smoothPart (finPartDS M hU)).subtype ∘ₗ (fixed (finPartDSSm M hU) K).subtype`. Establish `hev : ∀ Φ : fixed (finPartDSSm M hU) K, ev Φ = (((Φ : smoothPart (finPartDS M hU)) : homDS M π ⊤) : ContinuousMultilinearMap ℂ M.H H) (fun τ => unitVec (M.H τ))` using `fun Φ => rfl`. Establish `hfix : ∀ Φ : fixed (finPartDSSm M hU) K, ∀ k ∈ K, ∀ y, π (k : GA D V) ((((Φ : smoothPart (finPartDS M hU)) : homDS M π ⊤) : ContinuousMultilinearMap ℂ M.H H) y) = (((Φ : smoothPart (finPartDS M hU)) : homDS M π ⊤) : ContinuousMultilinearMap ℂ M.H H) y` using `fun Φ k hk y => congrArg (fun Ψ : smoothPart (finPartDS M hU) => ((Ψ : homDS M π ⊤) : ContinuousMultilinearMap ℂ M.H H) y) (mem_fixed_imp Φ.2 k hk)`.
+
+Establish `hX : ∀ x ∈ LinearMap.range ev, ∀ g ∈ {g : GA D V | toFin V g ∈ K}, ⟪x, π g x⟫_ℂ = ⟪x, x⟫_ℂ * phiDS M g`. Introduce and unpack `_ ⟨Φ, rfl⟩ g hg`. Rewrite using `[hev Φ]`. Conclude with `inner_apply_homDS hπ ((Φ : smoothPart (finPartDS M hU)) : homDS M π ⊤).2 (hfix Φ) g hg`. Establish `hbump : ∀ N ∈ 𝓝 (1 : GA D V), ∃ b : GA D V → ℝ, Continuous b ∧ HasCompactSupport b ∧ 0 ≤ b ∧ b 1 = 1 ∧ Function.support b ⊆ N ∧ IsCompactOperator (repOp π μ fun g => (b g : ℂ))`.
+
+Introduce `N hN`. Take `⟨b, hb, hb0, hb1, hbs⟩` from `GlobalTheory.CuspSpectrum.exists_bump_ccAd (isCMExt_host D) hN`. Establish `hfc` using `continuous_of_mem_ccAd hb`. Conclude with `⟨b, Complex.continuous_re.comp hfc.1, hfc.2.comp_left (g := Complex.re) Complex.zero_re, hb0, hb1, hbs, hcpt _ hb⟩`. Establish `h1 : (1 : GA D V) ∈ {g : GA D V | toFin V g ∈ K}` using `by show toFin V 1 ∈ K`.
+
+Rewrite using `[map_one]`. Conclude with `K.one_mem`. Establish `: FiniteDimensional ℂ (LinearMap.range ev)` using `finiteDimensional_of_bump hπ μ (continuous_phiDS M) (phiDS_one M) (hKo.preimage (continuous_toFin V)) h1 hbump _ hX`. Establish `hinj : Function.Injective ev`. Rewrite using `[← LinearMap.ker_eq_bot, LinearMap.ker_eq_bot']`.
+
+Introduce `Φ hΦ`. Rewrite `hΦ` using `[hev Φ]`. Establish `h0` using `eq_zero_of_apply_unitVec hπ ((Φ : smoothPart (finPartDS M hU)) : homDS M π ⊤).2 hΦ`. Conclude with `Subtype.ext (Subtype.ext (Subtype.ext h0))`. Conclude with `Module.Finite.of_injective ev.rangeRestrict fun a b e => hinj (congrArg Subtype.val e)`.
+-/
 theorem admissible_representation_factorisation : AdmSt := by
   intro D V S M μ _ H _ _ _ π hπ hcpt hU
   classical

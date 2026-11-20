@@ -3,6 +3,23 @@ open MeasureTheory
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Use `set C : G ⧸ K → Set G := fun x => (fun y => x.out⁻¹ * y) ⁻¹' (K : Set G) with hCdef`. Establish `hCmeas : ∀ x, MeasurableSet (C x)` using `fun x => (hK.preimage (continuous_const.mul continuous_id)).measurableSet`. Establish `hCμ : ∀ x, μ (C x) = 1`. Introduce `x`. Simplify using `only [C]`.
+
+Rewrite using `[measure_preimage_mul]`. Conclude with `hμ`. Establish `hconst : ∀ x, ∀ y ∈ C x, F y = F x.out`. Introduce `x y hy`. Establish `hy' : x.out⁻¹ * y ∈ K` using `hy`.
+
+Use `hF x.out _ hy'` as an intermediate fact. Simplify using `using this`. Establish `hmk : ∀ x, ∀ y ∈ C x, (QuotientGroup.mk y : G ⧸ K) = x`. Introduce `x y hy`. Establish `hy' : x.out⁻¹ * y ∈ K` using `hy`.
+
+Establish `h1 : (QuotientGroup.mk y : G ⧸ K) = QuotientGroup.mk x.out` using `(QuotientGroup.eq.mpr hy').symm`. Rewrite using `[h1]`. Conclude with `Quotient.out_eq x`. Establish `hdisj : Pairwise (Function.onFun Disjoint C)`. Introduce `x y hxy`.
+
+Rewrite using `[Function.onFun, Set.disjoint_left]`. Introduce `z hzx hzy`. Conclude with `hxy ((hmk x z hzx).symm.trans (hmk y z hzy))`. Establish `hnorm : Integrable (fun y => ‖F y‖) μ` using `hint.norm`. Establish `hterm : ∀ x, ∫ y in C x, ‖F y‖ ∂μ = ‖F x.out‖`.
+
+Introduce `x`. Rewrite using `[setIntegral_congr_fun (hCmeas x) (g := fun _ => ‖F x.out‖) (fun y hy => by`. Simplify using `only`. Rewrite using `[hconst x y hy])]`. Rewrite using `[setIntegral_const]`.
+
+Simplify using `[Measure.real, hCμ x]`. Use `summable_of_sum_le (c := ∫ y, ‖F y‖ ∂μ) (fun x => norm_nonneg _) ?_` and prove the remaining obligations. Introduce `S`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [hterm]`.
+
+Use `_ = ∫ y in ⋃ x ∈ S, C x, ‖F y‖ ∂μ := by`. Rewrite using `[integral_biUnion_finset S (fun x _ => hCmeas x) (hdisj.set_pairwise _) (fun x _ => hnorm.integrableOn)]`. Use `_ ≤ ∫ y, ‖F y‖ ∂μ := setIntegral_le_integral hnorm (Filter.Eventually.of_forall (fun y => norm_nonneg _))`.
+-/
 theorem summable_norm_coset_out (G : Type) [Group G] [TopologicalSpace G] [IsTopologicalGroup G]
     [MeasurableSpace G] [BorelSpace G] (μ : Measure G) [μ.IsMulLeftInvariant] (K : Subgroup G)
     (hK : IsOpen (K : Set G)) (hμ : μ K = 1) (F : G → ℂ)

@@ -15,18 +15,34 @@ namespace CrystallineSemistableComparison.Pb.Kap.DividedPowerIdealFacts
 
 variable {A B : Type} [CommRing A] [CommRing B] {I : Ideal A} {J : Ideal B}
 
+/- English proof (translation)
+Use `Ideal.span_le.2 ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨L, hL, hr, rfl⟩`. Conclude with `Ideal.subset_span ⟨L, hL, h.trans hr, rfl⟩`.
+-/
 theorem dividedPowerFiltration_anti (γ : DividedPowers I) {r r' : ℕ} (h : r ≤ r') : pdP γ r' ≤ pdP γ r := by
   refine Ideal.span_le.2 ?_
   rintro _ ⟨L, hL, hr, rfl⟩
   exact Ideal.subset_span ⟨L, hL, h.trans hr, rfl⟩
 
+/- English proof (translation)
+Rewrite using `[Ideal.eq_top_iff_one]`. Conclude with `Ideal.subset_span ⟨[], by simp, by simp, by simp⟩`.
+-/
 theorem dividedPowerFiltration_zero (γ : DividedPowers I) : pdP γ 0 = ⊤ := by
   rw [Ideal.eq_top_iff_one]
   exact Ideal.subset_span ⟨[], by simp, by simp, by simp⟩
 
+/- English proof (translation)
+The claim follows from `Ideal.subset_span ⟨[(n, x)], by simpa using hx, by simp, by simp⟩`.
+-/
 theorem dpow_mem_pdP (γ : DividedPowers I) (n : ℕ) {x : A} (hx : x ∈ I) : γ.dpow n x ∈ pdP γ n :=
   Ideal.subset_span ⟨[(n, x)], by simpa using hx, by simp, by simp⟩
 
+/- English proof (translation)
+Unfold `pdP`. Rewrite using `[Ideal.span_mul_span']`. Use `Ideal.span_le.2 ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨x, ⟨L1, h1, r1, rfl⟩, y, ⟨L2, h2, r2, rfl⟩, rfl⟩`. Use `Ideal.subset_span ⟨L1 ++ L2, ?_, ?_, ?_⟩` and prove the remaining obligations.
+
+Introduce `q hq`. Break down `List.mem_append.1 hq with hq | hq` into its components or cases. Conclude with `h1 q hq`. Conclude with `h2 q hq`. Simplify using `only [List.map_append, List.sum_append]`.
+
+Use linear arithmetic over natural numbers and integers. Simplify using `[List.prod_append]`.
+-/
 theorem dividedPowerFiltration_mul (γ : DividedPowers I) (a b : ℕ) : pdP γ a * pdP γ b ≤ pdP γ (a + b) := by
   unfold pdP
   rw [Ideal.span_mul_span']
@@ -40,6 +56,25 @@ theorem dividedPowerFiltration_mul (γ : DividedPowers I) (a b : ℕ) : pdP γ a
   · simp only [List.map_append, List.sum_append]; omega
   · simp [List.prod_append]
 
+/- English proof (translation)
+Establish `key : ∀ x ∈ J, ∀ n, δ.dpow n x ∈ (pdP γ n).map f`. Introduce `x hx`. Establish `hx' : x ∈ I.map f` using `hJ ▸ hx`. Proceed by induction on `hx' using Submodule.span_induction with`. Consider the case `mem y hy`.
+
+Take `⟨a, ha, rfl⟩` from `hy`. Introduce `n`. Rewrite using `[hf.dpow_comp (n := n) a ha]`. Conclude with `Ideal.mem_map_of_mem _ (dpow_mem_pdP γ n ha)`. Consider the case `zero`.
+
+Introduce `n`. Break down `Nat.eq_zero_or_pos n with rfl | hn` into its components or cases. Rewrite using `[δ.dpow_zero J.zero_mem, dividedPowerFiltration_zero, Ideal.map_top]`. Conclude with `Submodule.mem_top`. Rewrite using `[δ.dpow_eval_zero hn.ne']`.
+
+Conclude with `Ideal.zero_mem _`. Consider the case `add y z hy hz ihy ihz`. Introduce `n`. Establish `hyJ : y ∈ J` using `hJ ▸ hy`. Establish `hzJ : z ∈ J` using `hJ ▸ hz`.
+
+Rewrite using `[δ.dpow_add hyJ hzJ]`. Use `Ideal.sum_mem _ fun k hk => ?_` and prove the remaining obligations. Establish `hk' : k.1 + k.2 = n` using `Finset.HasAntidiagonal.mem_antidiagonal.1 hk`. Use `Ideal.mul_mem_mul (ihy hyJ k.1) (ihz hzJ k.2)` as an intermediate fact. Rewrite `this` using `[← Ideal.map_mul]`.
+
+Rewrite using `[← hk']`. Conclude with `Ideal.map_mono (dividedPowerFiltration_mul γ k.1 k.2) this`. Consider the case `smul c y hy ihy`. Introduce `n`. Establish `hyJ : y ∈ J` using `hJ ▸ hy`.
+
+Rewrite using `[smul_eq_mul, δ.dpow_mul hyJ]`. Conclude with `Ideal.mul_mem_left _ _ (ihy hyJ n)`. Use `Ideal.span_le.2 ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨L, hL, hr, rfl⟩`. Use `Ideal.map_mono (dividedPowerFiltration_anti γ hr) ?_` and prove the remaining obligations.
+
+Use `clear hr`. Proceed by induction on `L with`. Consider the case `nil => simp [dividedPowerFiltration_zero, Ideal.map_top]`. Consider the case `cons q L ih`. Simplify using `only [List.map_cons, List.prod_cons, List.sum_cons]`.
+
+Establish `h1` using `key q.2 (hL q (by simp)) q.1`. Establish `h2` using `ih (fun q' hq' => hL q' (by simp [hq']))`. Use `Ideal.mul_mem_mul h1 h2` as an intermediate fact. Rewrite `this` using `[← Ideal.map_mul]`. Conclude with `Ideal.map_mono (dividedPowerFiltration_mul γ _ _) this`.
+-/
 theorem dividedPowerFiltration_le_map (γ : DividedPowers I) (δ : DividedPowers J) (f : A →+* B) (hf : IsDPMorphism γ δ f)
     (hJ : J = I.map f) (r : ℕ) : pdP δ r ≤ (pdP γ r).map f := by
 
@@ -95,6 +130,13 @@ namespace CgEmpty
 
 variable {O' : Type} [CommRing O'] {R' : Type} [CommRing R'] {I' : Ideal R'}
 
+/- English proof (translation)
+Establish `h1 : Subsingleton (T.B ⧸ T.J)`. Assume the negation of the conclusion as `hn`. Rewrite `hn` using `[not_subsingleton_iff_nontrivial]`. Take `⟨M, hM⟩` from `Ideal.exists_maximal (T.B ⧸ T.J)`. Conclude with `hX.elim ((pt T).base ⟨M, hM.isPrime⟩)`.
+
+Establish `hJ : T.J = ⊤` using `Ideal.Quotient.subsingleton_iff.1 h1`. Take `⟨n, hn⟩` from `T.adm.2 rfl`. Rewrite `hn` using `[hJ, Ideal.top_pow]`. Establish `h2 : (1 : T.B) ∈ (⊤ : Ideal T.B)` using `Submodule.mem_top`. Rewrite `h2` using `[hn]`.
+
+Conclude with `subsingleton_of_zero_eq_one ((Submodule.mem_bot _).1 h2).symm`.
+-/
 theorem thick_sub {γ : DividedPowers I'} {X : Scheme.{0}} {q : X ⟶ Spec (CommRingCat.of O')} {κ : O' →+* R' ⧸ I'}
     (hX : IsEmpty X) (T : Thick (nlFun γ 0 X q κ)) : Subsingleton T.B := by
   have h1 : Subsingleton (T.B ⧸ T.J) := by
@@ -109,6 +151,11 @@ theorem thick_sub {γ : DividedPowers I'} {X : Scheme.{0}} {q : X ⟶ Spec (Comm
   rw [hn] at h2
   exact subsingleton_of_zero_eq_one ((Submodule.mem_bot _).1 h2).symm
 
+/- English proof (translation)
+Establish `hc : Subsingleton (CH.Cn (CH.modF (sP Q).A) j)` using `⟨fun f g => funext fun s => @Subsingleton.elim _ (thick_sub hX (s.obj (Fin.last j)).obj) (f s) (g s)⟩`. Use `⟨fun x y => ?_⟩` and prove the remaining obligations. Take `⟨x, rfl⟩` from `Submodule.Quotient.mk_surjective _ x`. Take `⟨y, rfl⟩` from `Submodule.Quotient.mk_surjective _ y`. Use `congr 1`.
+
+Conclude with `Subtype.ext (hc.elim _ _)`.
+-/
 theorem HO_sub {γ : DividedPowers I'} {X : Scheme.{0}} {q : X ⟶ Spec (CommRingCat.of O')} {κ : O' →+* R' ⧸ I'}
     (hX : IsEmpty X) (Q : ObjectProperty (Thick (nlFun γ 0 X q κ))) (j : ℕ) : Subsingleton (HO Q j) := by
   have hc : Subsingleton (CH.Cn (CH.modF (sP Q).A) j) :=
@@ -119,6 +166,11 @@ theorem HO_sub {γ : DividedPowers I'} {X : Scheme.{0}} {q : X ⟶ Spec (CommRin
   congr 1
   exact Subtype.ext (hc.elim _ _)
 
+/- English proof (translation)
+Establish `hc : Subsingleton (GlobalTheory.CatH.Cn (O (smFun X q)) j)` using `⟨fun f g => funext fun s => @Subsingleton.elim _ (thick_sub hX (s.obj (Fin.last j))) (f s) (g s)⟩`. Use `⟨fun x y => ?_⟩` and prove the remaining obligations. Unfold `HdR at x y`. Take `⟨x, rfl⟩` from `Submodule.Quotient.mk_surjective _ x`. Take `⟨y, rfl⟩` from `Submodule.Quotient.mk_surjective _ y`.
+
+Use `congr 1`. Conclude with `Subtype.ext (hc.elim _ _)`.
+-/
 theorem HdR_sub {K' : Type} [CommRing K'] {X : Scheme.{0}} (q : X ⟶ Spec (CommRingCat.of K')) (hX : IsEmpty X) (j : ℕ) :
     Subsingleton (HdR q j) := by
   have hc : Subsingleton (GlobalTheory.CatH.Cn (O (smFun X q)) j) :=
@@ -134,11 +186,21 @@ end CgEmpty
 
 variable {l : ℕ} [Fact l.Prime] {K : IntermediateField ℚ_[l] (PadicAlgCl l)} {R : Per l K} {m : ℕ}
 
+/- English proof (translation)
+Establish `h` using `DividedPowerIdealFacts.dividedPowerFiltration_le_map L.γ L.γB L.ι hL.ι_dp hL.IB_eq m`. Rewrite `h` using `[(hL.lat m le_rfl).tf.nil, Ideal.map_bot]`. Conclude with `le_bot_iff.1 h`.
+-/
 theorem cg_basis_pdP {L : Lev R m} (hL : L.Good) : pdP L.γB m = ⊥ := by
   have h := DividedPowerIdealFacts.dividedPowerFiltration_le_map L.γ L.γB L.ι hL.ι_dp hL.IB_eq m
   rw [(hL.lat m le_rfl).tf.nil, Ideal.map_bot] at h
   exact le_bot_iff.1 h
 
+/- English proof (translation)
+Establish `hX : IsEmpty M.gen`. Establish `h` using `U.cover`. Rewrite `h` using `[iSup_of_empty]`. Use `⟨fun x => ?_⟩` and prove the remaining obligations. Establish `hx : x ∈ (⊤ : M.gen.Opens)` using `trivial`.
+
+Rewrite `hx` using `[← h]`. Simplify using `at hx`. Use `haveI := CgEmpty.HO_sub hX (QB L M s) j`. Use `haveI := CgEmpty.HdR_sub M.q hX j`. Establish `ha : a = 0`.
+
+Assume the negation of the conclusion as `h`. Conclude with `bs.ne_zero ⟨0, Nat.pos_of_ne_zero h⟩ (Subsingleton.elim _ _)`. Substitute `ha` using the available equality. Conclude with `⟨Fin.elim0, Subsingleton.elim _ _, fun g _ => funext fun t => t.elim0⟩`.
+-/
 theorem cg_basis_empty {L : Lev R m} (hL : L.Good) (M : Model l K) (hM : M.Sm) (s : ℕ) (U : Cov M.q)
     (hU0 : IsEmpty U.ι) (j : ℕ) {a : ℕ} (bs : Module.Basis (Fin a) K (HdR M.q j)) (w : HO (QB L M s) j) :
     ∃! g : Fin a → L.B, w = ∑ t, g t • muB L.γB M.q 1 s {⊤} j (bs t) := by
@@ -157,6 +219,9 @@ theorem cg_basis_empty {L : Lev R m} (hL : L.Good) (M : Model l K) (hM : M.Sm) (
   subst ha
   exact ⟨Fin.elim0, Subsingleton.elim _ _, fun g _ => funext fun t => t.elim0⟩
 
+/- English proof (translation)
+Break down `isEmpty_or_nonempty U.ι with h0 | h1` into its components or cases. Conclude with `cg_basis_empty hL M hM s U h0 j bs w`. Take `⟨α⟩` from `h1`. Establish `hms : m ≤ s` using `le_trans (Nat.le_add_left _ _) (hU α)`. Conclude with `(basisB L.γB s m (cg_basis_pdP hL) hms M.q U hU {⊤} sSup_singleton j bs).1 w`.
+-/
 theorem cg_basis_pf {L : Lev R m} (hL : L.Good) (M : Model l K) (hM : M.Sm) (s : ℕ) (U : Cov M.q) (hU : ∀ α, U.d α + m ≤ s)
     (j : ℕ) {a : ℕ} (bs : Module.Basis (Fin a) K (HdR M.q j)) (w : HO (QB L M s) j) :
     ∃! g : Fin a → L.B, w = ∑ t, g t • muB L.γB M.q 1 s {⊤} j (bs t) := by

@@ -16,6 +16,9 @@ instance countable_field : Countable F := Finsupp.Countable.of_moduleFinite (R :
 
 instance countable_ringOfIntegers : Countable (𝓞 F) := Finsupp.Countable.of_moduleFinite (R := ℤ)
 
+/- English proof (translation)
+Establish `hs : Function.Surjective (fun s : Finset (𝓞 F) => Ideal.span (s : Set (𝓞 F)))`. Introduce `I`. Take `⟨s, hs⟩` from `(IsNoetherian.noetherian I : I.FG)`. Conclude with `⟨s, hs⟩`. Conclude with `hs.countable`.
+-/
 theorem countable_ideal : Countable (Ideal (𝓞 F)) := by
   have hs : Function.Surjective (fun s : Finset (𝓞 F) => Ideal.span (s : Set (𝓞 F))) := by
     intro I
@@ -42,6 +45,9 @@ instance secondCountable_adicCompletion (v : HeightOneSpectrum (𝓞 F)) :
     SecondCountableTopology (v.adicCompletion F) :=
   UniformSpace.secondCountable_of_separable _
 
+/- English proof (translation)
+The claim follows from `Valued.isOpen_integer _`.
+-/
 theorem isOpen_integers (v : HeightOneSpectrum (𝓞 F)) :
     IsOpen (v.adicCompletionIntegers F : Set (v.adicCompletion F)) :=
   Valued.isOpen_integer _
@@ -81,6 +87,9 @@ variable {F} {E : Type} [Field E] [Algebra F E] [FiniteDimensional F E]
 
 instance secondCountable_tensAF : SecondCountableTopology (AF F ⊗[F] E) := inferInstance
 
+/- English proof (translation)
+Use `haveI : SecondCountableTopology (R ⊗[F] E) := inferInstance`. Use `haveI hm : SecondCountableTopology (Matrix (Fin M) (Fin M) (R ⊗[F] E)) := inferInstanceAs (SecondCountableTopology (Fin M → Fin M → R ⊗[F] E))`. Use `haveI : SecondCountableTopology (Matrix (Fin M) (Fin M) (R ⊗[F] E))ᵐᵒᵖ := (MulOpposite.opHomeomorph (M := Matrix (Fin M) (Fin M) (R ⊗[F] E))).symm.secondCountableTopology`. Use `haveI : SecondCountableTopology (GL (Fin M) (R ⊗[F] E)) := Units.isEmbedding_embedProduct.isInducing.secondCountableTopology`. Conclude with `(Topology.IsInducing.subtypeVal (t := (HR R σ J : Set (GL (Fin M) (R ⊗[F] E))))).secondCountableTopology`.
+-/
 theorem secondCountable_HA_of (R : Type) [CommRing R] [Algebra F R] [TopologicalSpace R]
     [IsTopologicalRing R] [SecondCountableTopology R] (σ : E →ₐ[F] E) {M : ℕ}
     (J : Matrix (Fin M) (Fin M) E) : SecondCountableTopology (HA R σ J) := by

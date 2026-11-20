@@ -19,6 +19,11 @@ open scoped ComplexOrder
 
 namespace GlobalTheory.ArDegIndep.CloseOther
 
+/- English proof (translation)
+Use `PosSemidef.of_dotProduct_mulVec_nonneg ((hM.smul (show star (a : ℂ) = a from Complex.conj_ofReal a)).sub hN) fun v => ?_` and prove the remaining obligations. Establish `e : star v ⬝ᵥ ((a : ℂ) • M - N) *ᵥ v = (a : ℂ) * (star v ⬝ᵥ M *ᵥ v) - star v ⬝ᵥ N *ᵥ v`. Rewrite using `[sub_mulVec, dotProduct_sub, smul_mulVec, dotProduct_smul, smul_eq_mul]`. Rewrite using `[e, Complex.nonneg_iff]`. Establish `h1 : (star v ⬝ᵥ M *ᵥ v).im = 0` using `hM.im_star_dotProduct_mulVec_self v`.
+
+Establish `h2 : (star v ⬝ᵥ N *ᵥ v).im = 0` using `hN.im_star_dotProduct_mulVec_self v`. Prove the components needed by the constructor for the conclusion. Simplify using `only [Complex.sub_re, Complex.mul_re, Complex.ofReal_re, Complex.ofReal_im, zero_mul, sub_zero]`. Combine the linear relations using `[h v]`. Simplify using `[Complex.sub_im, Complex.mul_im, h1, h2]`.
+-/
 theorem psd_smul_sub {n : ℕ} {M N : Matrix (Fin n) (Fin n) ℂ} (hM : M.IsHermitian) (hN : N.IsHermitian) (a : ℝ)
     (h : ∀ v : Fin n → ℂ, (star v ⬝ᵥ N *ᵥ v).re ≤ a * (star v ⬝ᵥ M *ᵥ v).re) : ((a : ℂ) • M - N).PosSemidef := by
   refine PosSemidef.of_dotProduct_mulVec_nonneg ((hM.smul (show star (a : ℂ) = a from Complex.conj_ofReal a)).sub hN) fun v => ?_
@@ -37,17 +42,28 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheo
   {l : Level H} {Xo : Moduli Dw l} {c : Coeff l} {O : Type} [CommRing O] {β : O →+* c.F} {Z : Model Xo c β}
   {F : Type} [Field F] [NumberField F] {e : F ≃+* c.F} (Y : FlagCpt Z e) {σ : F →+* ℂ}
 
+/- English proof (translation)
+Rewrite using `[pn_eq (FlagCpt.prodPow_mem n (Y.exists_adapted p).choose_spec.1), FlagCpt.met_h G n (Y.exists_adapted p).choose_spec.2]`. Simplify using `[prodPow]`.
+-/
 theorem pn_met_chosen (G : EigMet Z (embOf e σ)) (n : Letter Dw → ℤ) (f : Y.Y.FnC σ) (p : Y.Y.pts σ) :
     pn Y.Y σ _ (Y.met G n) f p =
       ‖fval (prodPow (Y.exists_adapted p).choose.1 n) f p‖ ^ 2 * Y.genSq G n (Y.exists_adapted p).choose.2 := by
   rw [pn_eq (FlagCpt.prodPow_mem n (Y.exists_adapted p).choose_spec.1), FlagCpt.met_h G n (Y.exists_adapted p).choose_spec.2]
   simp [prodPow]
 
+/- English proof (translation)
+Rewrite using `[FlagCpt.genSq, Real.log_prod (fun w _ => (zpow_pos (grSq_pos (G.pos _ _ _) _) _).ne')]`. Conclude with `Finset.sum_congr rfl fun w _ => Real.log_zpow _ _`.
+-/
 theorem log_genSq (G : EigMet Z (embOf e σ)) (n : Letter Dw → ℤ) {p : Y.Y.pts σ} (g : Y.FrameAt p) :
     Real.log (Y.genSq G n g) = ∑ w : Letter Dw, (n w : ℝ) * Real.log (grSq (G.gram _ g w.1) w.2) := by
   rw [FlagCpt.genSq, Real.log_prod (fun w _ => (zpow_pos (grSq_pos (G.pos _ _ _) _) _).ne')]
   exact Finset.sum_congr rfl fun w _ => Real.log_zpow _ _
 
+/- English proof (translation)
+Rewrite `h`, the goal using `[pn_met_chosen]`. Rewrite using `[pn_met_chosen]`. Establish `ha : ‖fval (prodPow (Y.exists_adapted p).choose.1 n) f p‖ ^ 2 ≠ 0`. Introduce `h0`. Rewrite `h` using `[h0, zero_mul]`.
+
+Conclude with `lt_irrefl _ h`. Rewrite using `[Real.log_mul ha (Y.genSq_pos G n _).ne', Real.log_mul ha (Y.genSq_pos G' n _).ne', log_genSq, log_genSq]`. Simplify using `only [mul_sub, Finset.sum_sub_distrib]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem log_pn_sub (G G' : EigMet Z (embOf e σ)) (n : Letter Dw → ℤ) (f : Y.Y.FnC σ) (p : Y.Y.pts σ)
     (h : 0 < pn Y.Y σ _ (Y.met G n) f p) :
     Real.log (pn Y.Y σ _ (Y.met G n) f p) - Real.log (pn Y.Y σ _ (Y.met G' n) f p) =
@@ -63,6 +79,11 @@ theorem log_pn_sub (G G' : EigMet Z (embOf e σ)) (n : Letter Dw → ℤ) (f : Y
 
 end Flag
 
+/- English proof (translation)
+Establish `hR0 : 0 < R` using `by linarith`. Establish `hm : (1 - R⁻¹)⁻¹ = R / (R - 1)` using `by field_simp`. Establish `hR1 : 0 < R - 1` using `by linarith`. Rewrite using `[hm]`. Use `(Real.log_le_sub_one_of_pos (div_pos hR0 hR1)).trans ?_` and prove the remaining obligations.
+
+Rewrite using `[div_sub_one hR1.ne', div_le_div_iff₀ hR1 hR0]`. Use the polynomial consequences of the given equalities and inequalities.
+-/
 theorem log_inv_one_sub_le {R : ℝ} (hR : 2 ≤ R) : Real.log (1 - R⁻¹)⁻¹ ≤ 2 / R := by
   have hR0 : 0 < R := by linarith
   have hm : (1 - R⁻¹)⁻¹ = R / (R - 1) := by field_simp
@@ -72,6 +93,9 @@ theorem log_inv_one_sub_le {R : ℝ} (hR : 2 ≤ R) : Real.log (1 - R⁻¹)⁻¹
   rw [div_sub_one hR1.ne', div_le_div_iff₀ hR1 hR0]
   nlinarith
 
+/- English proof (translation)
+Establish `h1 : 0 < 1 - R⁻¹`. Establish `: R⁻¹ ≤ 1 / 2` using `by rw [inv_eq_one_div]; exact one_div_le_one_div_of_le (by norm_num) hR`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `h2 : 1 - R⁻¹ ≤ 1` using `by have := inv_nonneg.2 (show (0:ℝ) ≤ R by linarith); linarith`. Conclude with `one_le_inv₀ h1 |>.2 h2`.
+-/
 theorem one_le_inv_one_sub {R : ℝ} (hR : 2 ≤ R) : 1 ≤ (1 - R⁻¹)⁻¹ := by
   have h1 : 0 < 1 - R⁻¹ := by
     have : R⁻¹ ≤ 1 / 2 := by rw [inv_eq_one_div]; exact one_div_le_one_div_of_le (by norm_num) hR
@@ -83,6 +107,9 @@ section SlopeTestRemainingChoices
 
 variable {D : D7} {A : Amb D} {N j : ℕ} {S : Sig A N j} {κ : Lv A} {s : FinalTheorems S κ}
 
+/- English proof (translation)
+The claim follows from `continuous_iff_continuousAt.2 fun y => by obtain ⟨V', t, f, hy, -, hf, e⟩ := (x.nrm_div σ i).2 y have ho := isOpen_ptsIn (p := genStr s.T.Z) (σ := σ) V'.1 have h1 : ContinuousOn (fun z => √(‖ev (genStr s.T.Z) σ V'.1 t z‖ ^ 2 * Real.exp (-f z))) (ptsIn _ σ V'.1) := (((((manifold s …`.
+-/
 theorem continuous_nrm (x : ToroidalCompactificationData s) (σ : κ.c.F →+* ℂ) (i : Fin x.m) : Continuous (x.nrm σ i) :=
   continuous_iff_continuousAt.2 fun y => by
     obtain ⟨V', t, f, hy, -, hf, e⟩ := (x.nrm_div σ i).2 y
@@ -93,6 +120,15 @@ theorem continuous_nrm (x : ToroidalCompactificationData s) (σ : κ.c.F →+* �
     refine (h1.continuousAt (ho.mem_nhds hy)).congr (Filter.eventuallyEq_of_mem (ho.mem_nhds hy) fun z hz => ?_)
     rw [← e z hz, Real.sqrt_sq ((x.nrm_div σ i).1 z).1]
 
+/- English proof (translation)
+Establish `: CompactSpace (CxPts (genStr s.T.Z) σ)` using `CxPts.compactSpace σ (ProjSpace.isProjOver_pullback_snd _ s.T.Z.proj)`. Establish `hc : ∀ x : ToroidalCompactificationData s, Continuous fun y => (∏ i, x.nrm σ i y) ^ 2` using `fun x => (continuous_finset_prod _ fun i _ => continuous_nrm x σ i).pow 2`. Establish `hK : IsCompact {y : CxPts (genStr s.T.Z) σ | Real.exp (Real.exp 1 - ℓ) ≤ (∏ i, x.nrm σ i y) ^ 2}` using `(isClosed_le continuous_const (hc x)).isCompact`. Establish `hoff : ∀ y ∈ {y : CxPts (genStr s.T.Z) σ | Real.exp (Real.exp 1 - ℓ) ≤ (∏ i, x.nrm σ i y) ^ 2}, ¬ LiesIn y (genBd s.T.Z)` using `fun y hy hL => by`. Take `⟨i, hi⟩` from `(x.liesIn_genBd_iff y).1 hL`.
+
+Establish `h0 : x.nrm σ i y = 0` using `le_antisymm (not_lt.1 fun h => ((x.nrm_div σ i).pos_iff y).1 h hi) ((x.nrm_div σ i).1 y).1`. Establish `hy' : Real.exp (Real.exp 1 - ℓ) ≤ (∏ i, x.nrm σ i y) ^ 2` using `hy`. Rewrite `hy'` using `[Finset.prod_eq_zero (Finset.mem_univ i) h0]`. Use `Real.exp_pos (Real.exp 1 - ℓ)` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
+
+Establish `hcr : ContinuousOn (x'.r σ) {y : CxPts (genStr s.T.Z) σ | Real.exp (Real.exp 1 - ℓ) ≤ (∏ i, x.nrm σ i y) ^ 2}` using `continuousOn_const.sub ((hc x').continuousOn.log fun y hy => (pow_pos (Finset.prod_pos fun i _ => x'.nrm_pos (hoff y hy) i) 2).ne')`. Take `⟨L, hL⟩` from `hK.bddAbove_image hcr`. Use `⟨L, fun y hy hr => hL ⟨y, ?_, rfl⟩⟩` and prove the remaining obligations. Establish `hpos : 0 < (∏ i, x.nrm σ i y) ^ 2` using `pow_pos (Finset.prod_pos fun i _ => x.nrm_pos hy i) 2`. Use `(Real.le_log_iff_exp_le hpos).1 ?_` and prove the remaining obligations.
+
+Simplify using `only [OddPrimesWithRootsOfUnity.r] at hr`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem exists_r_le (x x' : ToroidalCompactificationData s) (σ : κ.c.F →+* ℂ) (ℓ : ℝ) : ∃ L : ℝ, ∀ y : CxPts (genStr s.T.Z) σ,
     ¬ LiesIn y (genBd s.T.Z) → x.r σ y ≤ ℓ → x'.r σ y ≤ L := by
   have : CompactSpace (CxPts (genStr s.T.Z) σ) :=
@@ -120,12 +156,18 @@ theorem exists_r_le (x x' : ToroidalCompactificationData s) (σ : κ.c.F →+* �
   simp only [OddPrimesWithRootsOfUnity.r] at hr
   linarith
 
+/- English proof (translation)
+Take `⟨f, hf⟩` from `FinalTheorems.exists_isHodgeFrame_iff.2 hy`. Rewrite using `[x.hodge_gram hf, x'.hodge_gram hf]`.
+-/
 theorem hodge_gram_eq (x x' : ToroidalCompactificationData s) {σ : κ.c.F →+* ℂ} {y : CxPts (genStr s.T.Z) σ}
     (hy : ¬ LiesIn y (genBd s.T.Z)) (g : EigFrame s.T.Z σ (y.1 ≫ genι s.T.Z)) (τ : D.host.E →+* ℂ) :
     (x.hodge σ).gram y g τ = (x'.hodge σ).gram y g τ := by
   obtain ⟨f, hf⟩ := FinalTheorems.exists_isHodgeFrame_iff.2 hy
   rw [x.hodge_gram hf, x'.hodge_gram hf]
 
+/- English proof (translation)
+The claim follows from `|Real.log (grSq ((x.eigMetAt σ (some R)).gram y q w.1) w.2) - Real.log (grSq ((x.hodge σ).gram y q w.1) w.2)| ≤ 2 * (S.Dw.mult w.1 : ℝ) * (2 / R) := by obtain ⟨hC0, hmu⟩ := x.isMuExp_muExp (ToroidalCompactificationData.exists_isMuExp x) have hr1 : 1 ≤ x.r σ y := (by linarith [Rea …`.
+-/
 theorem abs_log_grSq_sub_le (x : ToroidalCompactificationData s) {R : ℝ} (hR : 2 ≤ R) (σ : κ.c.F →+* ℂ) (y : CxPts (genStr s.T.Z) σ)
     (hy : ¬ LiesIn y (genBd s.T.Z)) (hr' : x.r σ y ≤ Real.sqrt R) (q : EigFrame s.T.Z σ (y.1 ≫ genι s.T.Z))
     (w : Letter S.Dw) :
@@ -191,6 +233,13 @@ variable {D : D7} {O : Setup D} {x : ToroidalCompactificationData O.s} {P : PolO
 def bnd (O : Setup D) : ℝ :=
   ∑ y : DV.Rt D.what₂.Tau O.N, ∑ w : Letter O.S.Dw, |(O.ex y w : ℝ)| * (2 * (O.S.Dw.mult w.1 : ℝ))
 
+/- English proof (translation)
+Simplify using `only [Setup.chg, chgWith, ← Finset.sum_sub_distrib]`. Use `Finset.sum_congr rfl fun y _ => ?_` and prove the remaining obligations. Establish `hp : PosAt (metsOf x' O.Φ c (some R) σ (O.ex y)) z` using `posAt_of_posSet (posSet_metsOf x' O.Φ c (some R) σ (O.ex y)) z`. Unfold `PosAt at hp`. Establish `key` using `log_pn_sub (O.Φ.C c) (x'.eigMetAt (embOf O.κ.e σ) (some R)) (x.eigMetAt (embOf O.κ.e σ) none) (O.ex y) _ z hp`.
+
+Establish `e : lnN (metsOf x' O.Φ c (some R) σ (O.ex y)) (genAt (divOf (O.Φ.C c) (O.ex y)) (under z)) z - lnN (O.met.hm c none σ (O.ex y)) (genAt (divOf (O.Φ.C c) (O.ex y)) (under z)) z = (∑ w : Letter O.S.Dw, (O.ex y w : ℝ) * (Real.log (grSq ((x'.eigMetAt (embOf O.κ.e σ) (some R)).gram _ ( …`. Rewrite using `[hW.hm_eq]`. Simplify using `only [lnN]`. Rewrite using `[← sub_div, ← key]`. Both sides reduce to the same expression.
+
+Simplify using `only [lnRatio]`. Take the linear combination `u y.1 y.2 * e`.
+-/
 theorem chg_sub (hW : O.CoreWith x P) (x' : ToroidalCompactificationData O.s) (c : O.s.Comp) (R : ℝ) (u : D.what₂.Tau → Fin O.N → ℝ)
     (σ : D.what₂.LL →+* ℂ) (z : Pts (O.var c) σ) :
     chgWith O (metsOf x' O.Φ) c (some R) u σ z - O.chg c none u σ z =
@@ -216,6 +265,9 @@ theorem chg_sub (hW : O.CoreWith x P) (x' : ToroidalCompactificationData O.s) (c
   simp only [lnRatio]
   linear_combination u y.1 y.2 * e
 
+/- English proof (translation)
+The claim follows from `|chgWith O (metsOf x' O.Φ) c (some R) u σ z - O.chg c none u σ z| ≤ bnd O * ‖u‖ / R := by have hR0 : 0 < R := by linarith rw [chg_sub hW] refine (Finset.abs_sum_le_sum_abs _ _).trans ?_ rw [bnd, Finset.sum_mul, Finset.sum_div] refine Finset.sum_le_sum fun y _ => ?_ have hu : |u y …`.
+-/
 theorem abs_chg_sub_le (hW : O.CoreWith x P) (x' : ToroidalCompactificationData O.s) (c : O.s.Comp) {R : ℝ} (hR : 2 ≤ R)
     (u : D.what₂.Tau → Fin O.N → ℝ) (σ : D.what₂.LL →+* ℂ) (z : Pts (O.var c) σ)
     (hz : ¬ LiesIn ((O.Φ.C c).down z) (genBd O.s.T.Z))
@@ -255,6 +307,13 @@ theorem abs_chg_sub_le (hW : O.CoreWith x P) (x' : ToroidalCompactificationData 
 
 end Obj
 
+/- English proof (translation)
+Introduce `_ _ D O hC _ A T H h x' c u ℓ δ hδ`. Take `⟨x, P, hW⟩` from `hC`. Use `choose L hL using fun a : Fin ((T.M c).n + 1) => exists_r_le x x' (embOf O.κ.e ((h.man c).ε a)) ℓ`. Establish `h1 : ∀ᶠ R : ℝ in atTop, ∀ a, L a ≤ Real.sqrt R` using `eventually_all.2 fun a => Real.tendsto_sqrt_atTop.eventually_ge_atTop (L a)`. Establish `h2 : ∀ᶠ R : ℝ in atTop, bnd O * ‖u‖ / R ≤ δ` using `(tendsto_const_nhds.div_atTop tendsto_id).eventually (ge_mem_nhds hδ)`.
+
+Use `filter_upwards [h1, h2, eventually_ge_atTop (2 : ℝ)] with R hR1 hR2 hR a z hz hr`. Establish `e2` using `(h.an c).ph u a z hz`. Use `erw [e2]`. Establish `hz' : ¬ LiesIn ((O.Φ.C c).down ((h.man c).pt a z)) (genBd O.s.T.Z)` using `((h.an c).Z a z).not.1 hz`. Rewrite `hr` using `[(h.an c).r a z hz, hW.r_eq]`.
+
+Conclude with `(abs_chg_sub_le hW x' c hR u _ _ hz' ((hL a _ hz' hr).trans (hR1 a))).trans hR2`.
+-/
 theorem psiOf_close_hodge : Hypotheses2 → HypothesesH → OnObj fun D O A T H h => ∀ x' : GlobalTheory.ShFam.ToroidalCompactificationData O.s, ∀ (c : O.Y.Comp) (u : Wt O.Y) (ℓ δ : ℝ), 0 < δ → ∀ᶠ R in atTop, ∀ (σ : Fin ((T.M c).n + 1)) (z : (T.M c).X σ), z ∉ (T.M c).Z σ → (T.M c).r σ z ≤ ℓ → |psiOf h x' R u c σ z - (T.F c).ph u σ z| ≤ δ := by
   intro _ _ D O hC _ A T H h x' c u ℓ δ hδ
   obtain ⟨x, P, hW⟩ := hC

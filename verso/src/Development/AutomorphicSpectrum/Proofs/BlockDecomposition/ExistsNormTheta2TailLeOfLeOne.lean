@@ -12,6 +12,11 @@ section Majorant
 
 variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
 
+/- English proof (translation)
+Establish `hg : (fun y ↦ f (a • y)) = f ∘ (a • ContinuousLinearMap.id ℝ E)` using `rfl`. Establish `hle : ‖a • ContinuousLinearMap.id ℝ E‖ ≤ 1`. Use `(norm_smul_le _ _).trans ?_` and prove the remaining obligations. Rewrite using `[Real.norm_of_nonneg ha0]`. Conclude with `mul_le_one₀ ha1 (norm_nonneg _) ContinuousLinearMap.norm_id_le`.
+
+Rewrite using `[hg, ContinuousLinearMap.iteratedFDeriv_comp_right _ (f.smooth ⊤) x (by exact_mod_cast le_top)]`. Use `(ContinuousMultilinearMap.norm_compContinuousLinearMap_le _ _).trans ?_` and prove the remaining obligations. Use `mul_le_of_le_one_right (norm_nonneg _) ?_` and prove the remaining obligations. Conclude with `Finset.prod_le_one (fun _ _ ↦ norm_nonneg _) fun _ _ ↦ hle`.
+-/
 theorem norm_iteratedFDeriv_dilate_le (f : 𝓢(E, ℝ)) {a : ℝ} (ha0 : 0 ≤ a) (ha1 : a ≤ 1) (n : ℕ)
     (x : E) :
     ‖iteratedFDeriv ℝ n (fun y ↦ f (a • y)) x‖ ≤ ‖iteratedFDeriv ℝ n f (a • x)‖ := by
@@ -26,6 +31,39 @@ theorem norm_iteratedFDeriv_dilate_le (f : 𝓢(E, ℝ)) {a : ℝ} (ha0 : 0 ≤ 
   refine mul_le_of_le_one_right (norm_nonneg _) ?_
   exact Finset.prod_le_one (fun _ _ ↦ norm_nonneg _) fun _ _ ↦ hle
 
+/- English proof (translation)
+Set `b : ContDiffBump (0 : E)` to `⟨1, 2, one_pos, by norm_num⟩`. Set `χ : 𝓢(E, ℝ)` to `b.hasCompactSupport.toSchwartzMap b.contDiff`. Establish `hχ0 : ∀ y, 0 ≤ χ y` using `fun y ↦ b.nonneg`. Establish `hχ1 : ∀ y, χ y ≤ 1` using `fun y ↦ b.le_one`. Establish `hχb : ∀ y, ‖y‖ ≤ 1 → χ y = 1` using `fun y hy ↦ b.one_of_mem_closedBall (by simpa [b] using hy)`.
+
+Establish `hAex : ∀ m : ℕ, ∃ A : ℝ, ∀ y, (1 + ‖y‖) ^ m * ‖φ y‖ ≤ A` using `fun m ↦ ⟨_, fun y ↦ by`. Simplify using `using SchwartzMap.one_add_le_sup_seminorm_apply (𝕜 := ℂ) (m := (m, 0)) le_rfl le_rfl φ y⟩`. Use `choose A hA using hAex`. Establish `hA0 : ∀ m, 0 ≤ A m` using `fun m ↦ (by positivity : 0 ≤ (1 + ‖(0 : E)‖) ^ m * ‖φ 0‖).trans (hA m 0)`. Set `c : ℕ → ℝ` to `fun k ↦ ⨅ m : ℕ, A m / ((2 : ℝ) ^ k) ^ m`.
+
+Establish `hbdd : ∀ k : ℕ, BddBelow (Set.range fun m : ℕ ↦ A m / ((2 : ℝ) ^ k) ^ m)` using `fun k ↦ ⟨0, by rintro _ ⟨m, rfl⟩; exact div_nonneg (hA0 m) (by positivity)⟩`. Establish `hc0 : ∀ k, 0 ≤ c k` using `fun k ↦ le_ciInf fun m ↦ div_nonneg (hA0 m) (by positivity)`. Establish `hcle : ∀ k m, c k ≤ A m / ((2 : ℝ) ^ k) ^ m` using `fun k m ↦ ciInf_le (hbdd k) m`. Establish `hsum : ∀ m : ℕ, Summable fun k : ℕ ↦ c k * ((2 : ℝ) ^ (k + 1)) ^ m`. Introduce `m`.
+
+Use `Summable.of_nonneg_of_le (fun k ↦ mul_nonneg (hc0 k) (by positivity)) (fun k ↦ ?_) (summable_geometric_two.mul_left (A (m + 1) * 2 ^ m))` and prove the remaining obligations. Establish `e1 : ((2 : ℝ) ^ (k + 1)) ^ m = ((2 : ℝ) ^ k) ^ m * 2 ^ m`. Rewrite using `[pow_succ, mul_pow]`. Establish `e2 : ((2 : ℝ) ^ k) ^ (m + 1) = ((2 : ℝ) ^ k) ^ m * 2 ^ k` using `by rw [pow_succ]`. Combine the equalities or inequalities in the displayed calculation.
+
+Conclude with `hcle k (m + 1)`. Use `_ = A (m + 1) * 2 ^ m * (1 / 2) ^ k := by`. Rewrite using `[e1, e2, one_div, inv_pow]`. Clear the denominators using the available nonvanishing facts. Set `a : ℕ → ℝ` to `fun k ↦ ((2 : ℝ) ^ (k + 1))⁻¹`.
+
+Establish `ha0 : ∀ k, 0 ≤ a k` using `fun k ↦ by positivity`. Establish `ha1 : ∀ k, a k ≤ 1` using `fun k ↦ inv_le_one_of_one_le₀ (one_le_pow₀ (by norm_num))`. Set `f : ℕ → E → ℝ` to `fun k y ↦ c k * χ (a k • y)`. Establish `hfsm : ∀ k, ContDiff ℝ ((⊤ : ℕ∞) : WithTop ℕ∞) (f k)` using `fun k ↦ contDiff_const.mul ((χ.smooth ⊤).comp (contDiff_const.smul contDiff_id))`. Use `choose D hD using fun (m n : ℕ) ↦ χ.decay' m n`.
+
+Establish `hfd : ∀ (k m n : ℕ) (x : E), ‖x‖ ^ m * ‖iteratedFDeriv ℝ n (f k) x‖ ≤ c k * ((2 : ℝ) ^ (k + 1)) ^ m * D m n`. Introduce `k m n x`. Establish `e1 : iteratedFDeriv ℝ n (f k) x = c k • iteratedFDeriv ℝ n (fun y ↦ χ (a k • y)) x` using `iteratedFDeriv_const_smul_apply (a := c k) (f := fun y ↦ χ (a k • y)) (((χ.smooth ⊤).comp (contDiff_const.smul contDiff_id)).contDiffAt.of_le (by exact_mod_cast le_top))`. Establish `e2 : ‖x‖ = (2 : ℝ) ^ (k + 1) * ‖a k • x‖`. Rewrite using `[norm_smul, Real.norm_of_nonneg (ha0 k), ← mul_assoc, mul_inv_cancel₀ (by positivity), one_mul]`.
+
+Rewrite using `[e1, norm_smul, Real.norm_of_nonneg (hc0 k)]`. Combine the equalities or inequalities in the displayed calculation. Use `norm_iteratedFDeriv_dilate_le χ (ha0 k) (ha1 k) n x` as an intermediate fact. Use `hc0 k` as an intermediate fact. Use `gcongr`.
+
+Use `_ = c k * ((2 : ℝ) ^ (k + 1)) ^ m * (‖a k • x‖ ^ m * ‖iteratedFDeriv ℝ n χ (a k • x)‖) := by`. Rewrite using `[e2, mul_pow]`. Expand and normalize the polynomial expressions, which then agree. Use `_ ≤ c k * ((2 : ℝ) ^ (k + 1)) ^ m * D m n := by`. Conclude with `mul_le_mul_of_nonneg_left (hD m n (a k • x)) (mul_nonneg (hc0 k) (by positivity))`.
+
+Establish `hfv : ∀ (n k : ℕ) (x : E), ‖iteratedFDeriv ℝ n (f k) x‖ ≤ c k * D 0 n`. Introduce `n k x`. Simplify using `using hfd k 0 n x`. Establish `hsv : ∀ n : ℕ, Summable fun k ↦ c k * D 0 n` using `fun n ↦ by`. Simplify using `using (hsum 0).mul_right (D 0 n)`.
+
+Establish `hsmooth : ContDiff ℝ ((⊤ : ℕ∞) : WithTop ℕ∞) fun y ↦ ∑' k, f k y` using `contDiff_tsum (v := fun n k ↦ c k * D 0 n) hfsm (fun n _ ↦ hsv n) fun n k x _ ↦ hfv n k x`. Set `Φr : 𝓢(E, ℝ)` to `{ toFun := fun y ↦ ∑' k, f k y smooth' := hsmooth decay' := by`. Introduce `m n`. Use `⟨(∑' k, c k * ((2 : ℝ) ^ (k + 1)) ^ m) * D m n, fun x ↦ ?_⟩` and prove the remaining obligations. Rewrite using `[iteratedFDeriv_tsum_apply (v := fun n k ↦ c k * D 0 n) hfsm (fun n _ ↦ hsv n) (fun n k x _ ↦ hfv n k x) (by exact_mod_cast le_top) x]`.
+
+Establish `hs1 : Summable fun k ↦ ‖iteratedFDeriv ℝ n (f k) x‖` using `Summable.of_nonneg_of_le (fun _ ↦ norm_nonneg _) (fun k ↦ hfv n k x) (hsv n)`. Establish `hs2 : Summable fun k ↦ c k * ((2 : ℝ) ^ (k + 1)) ^ m * D m n` using `(hsum m).mul_right _`. Combine the equalities or inequalities in the displayed calculation. Conclude with `norm_tsum_le_tsum_norm hs1`. Use `_ = ∑' k, ‖x‖ ^ m * ‖iteratedFDeriv ℝ n (f k) x‖ := tsum_mul_left.symm`.
+
+Use `_ ≤ ∑' k, c k * ((2 : ℝ) ^ (k + 1)) ^ m * D m n := (hs1.mul_left _).tsum_le_tsum (fun k ↦ hfd k m n x) hs2`. Use `_ = (∑' k, c k * ((2 : ℝ) ^ (k + 1)) ^ m) * D m n := tsum_mul_right }`. Use `⟨SchwartzMap.postcompCLM (𝕜 := ℝ) Complex.ofRealCLM Φr, Φr, fun y ↦ rfl, fun y ↦ ?_⟩` and prove the remaining obligations. Establish `hf0 : ∀ k, 0 ≤ f k y` using `fun k ↦ mul_nonneg (hc0 k) (hχ0 _)`. Establish `hfs : Summable fun k ↦ f k y`.
+
+Use `Summable.of_nonneg_of_le hf0 (fun k ↦ ?_) (by simpa using hsum 0)` and prove the remaining obligations. Conclude with `mul_le_of_le_one_right (hc0 k) (hχ1 _)`. Take `⟨k, hk1, hk2⟩` from `exists_nat_pow_near (x := 1 + ‖y‖) (y := (2 : ℝ)) (by linarith [norm_nonneg y]) (by norm_num)`. Establish `h1 : ‖φ y‖ ≤ c k`. Use `le_ciInf fun m ↦ ?_` and prove the remaining obligations.
+
+Rewrite using `[le_div_iff₀ (by positivity), mul_comm]`. Use `le_trans ?_ (hA m y)` and prove the remaining obligations. Use `gcongr`. Establish `h2 : f k y = c k`. Establish `: χ (a k • y) = 1`.
+
+Use `hχb _ ?_` and prove the remaining obligations. Rewrite using `[norm_smul, Real.norm_of_nonneg (ha0 k), inv_mul_le_iff₀ (by positivity), mul_one]`. Combine the linear equalities and inequalities to obtain the conclusion. Simplify using `only [f, this, mul_one]`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem exists_schwartz_majorant [FiniteDimensional ℝ E] (φ : 𝓢(E, ℂ)) :
     ∃ Φ : 𝓢(E, ℂ), ∃ r : E → ℝ, (∀ y, Φ y = (r y : ℂ)) ∧ ∀ y, ‖φ y‖ ≤ r y := by
   let b : ContDiffBump (0 : E) := ⟨1, 2, one_pos, by norm_num⟩

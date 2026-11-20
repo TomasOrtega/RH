@@ -4,6 +4,11 @@ open Formalism.BasicNotions Formalism.BasicNotions.TH Formalism.MainNotions.Schu
 
 namespace GlobalTheory.CartanInt
 
+/- English proof (translation)
+Establish `h` using `Complex.integral_exp_neg_mul_rpow (p := 1) (b := b) le_rfl hb`. Simplify using `only [Real.rpow_one, neg_mul, div_one] at h`. Rewrite using `[h]`. Establish `h3 : Real.Gamma (2 + 1) = 2`. Use `Real.Gamma_nat_eq_factorial 2` as an intermediate fact.
+
+Simplify `this` using `[Nat.factorial]`. Rewrite using `[h3, Real.rpow_neg hb.le, Real.rpow_two]`. Clear the denominators using the available nonvanishing facts.
+-/
 theorem integral_exp_neg_mul_norm_complex (b : ℝ) (hb : 0 < b) :
     ∫ z : ℂ, Real.exp (-(b * ‖z‖)) = 2 * Real.pi / b ^ 2 := by
   have h := Complex.integral_exp_neg_mul_rpow (p := 1) (b := b) le_rfl hb
@@ -15,6 +20,17 @@ theorem integral_exp_neg_mul_norm_complex (b : ℝ) (hb : 0 < b) :
   rw [h3, Real.rpow_neg hb.le, Real.rpow_two]
   field_simp
 
+/- English proof (translation)
+Establish `h1` using `integral_exp_neg_mul_norm_complex b hb`. Establish `hne : (2 * Real.pi / b ^ 2) ≠ 0` using `by positivity`. Establish `hi : Integrable (fun z : ℂ => Real.exp (-(b * ‖z‖)))` using `Integrable.of_integral_ne_zero (by rw [h1]; exact hne)`. Establish `hprod : ∀ B : Fin p → Fin q → ℂ, Real.exp (-(b * ∑ i, ∑ j, ‖B i j‖)) = ∏ i, ∏ j, Real.exp (-(b * ‖B i j‖))`. Introduce `B`.
+
+Simplify using `only [Finset.mul_sum, ← Finset.sum_neg_distrib, Real.exp_sum]`. Establish `hrow : Integrable (fun v : Fin q → ℂ => ∏ j, Real.exp (-(b * ‖v j‖)))`. Rewrite using `[volume_pi]`. Conclude with `Integrable.fintype_prod (f := fun _ (z : ℂ) => Real.exp (-(b * ‖z‖))) (fun _ => hi)`. Establish `hall : Integrable (fun B : Fin p → Fin q → ℂ => ∏ i, ∏ j, Real.exp (-(b * ‖B i j‖)))`.
+
+Rewrite using `[volume_pi]`. Conclude with `Integrable.fintype_prod (f := fun _ (v : Fin q → ℂ) => ∏ j, Real.exp (-(b * ‖v j‖))) (fun _ => hrow)`. Establish `hrowv : ∫ v : Fin q → ℂ, ∏ j, Real.exp (-(b * ‖v j‖)) = (2 * Real.pi / b ^ 2) ^ q`. Rewrite using `[volume_pi, integral_fintype_prod_eq_prod (f := fun _ (z : ℂ) => Real.exp (-(b * ‖z‖)))]`. Simplify using `only [h1, Finset.prod_const, Finset.card_univ, Fintype.card_fin]`.
+
+Establish `hallv : ∫ B : Fin p → Fin q → ℂ, ∏ i, ∏ j, Real.exp (-(b * ‖B i j‖)) = (2 * Real.pi / b ^ 2) ^ (p * q)`. Rewrite using `[volume_pi, integral_fintype_prod_eq_prod (f := fun _ (v : Fin q → ℂ) => ∏ j, Real.exp (-(b * ‖v j‖)))]`. Simplify using `only [hrowv, Finset.prod_const, Finset.card_univ, Fintype.card_fin]`. Rewrite using `[← pow_mul, mul_comm q p]`. Simplify using `only [hprod]`.
+
+Rewrite using `[← hallv, ofReal_integral_eq_lintegral_ofReal hall]`. Conclude with `Filter.Eventually.of_forall fun B => by positivity`.
+-/
 theorem lintegral_exp_neg_mul_sum_norm (p q : ℕ) (b : ℝ) (hb : 0 < b) :
     ∫⁻ B : Fin p → Fin q → ℂ, ENNReal.ofReal (Real.exp (-(b * ∑ i, ∑ j, ‖B i j‖))) =
       ENNReal.ofReal ((2 * Real.pi / b ^ 2) ^ (p * q)) := by

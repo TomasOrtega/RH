@@ -13,11 +13,19 @@ namespace GlobalTheory.CompanionTheory.OmGlobTerm
 section Cap
 variable {K : Type} [CommRing K] {X : Scheme.{0}} (q : X ⟶ Spec (CommRingCat.of K))
 
+/- English proof (translation)
+Introduce `x hx` and use `h (hT hx)`.
+-/
 theorem inU_mono {V W : X.Opens} (h : V ≤ W) (T : Thick (smFun X q))
     (hT : InU (γ := dividedPowersBot K) (p := 0) (q := q) (κ := Ideal.Quotient.mk ⊥) V T) :
     InU (γ := dividedPowersBot K) (p := 0) (q := q) (κ := Ideal.Quotient.mk ⊥) W T :=
   fun x hx => h (hT hx)
 
+/- English proof (translation)
+Establish `h : capO U i = Finset.univ.inf fun k => U (i k)`. Rewrite using `[Finset.inf_univ_eq_iInf]`. Both sides reduce to the same expression. Rewrite using `[h, TopologicalSpace.Opens.coe_finset_inf]`. Use extensionality with `x`.
+
+Simplify using `[Finset.inf_eq_iInf]`.
+-/
 theorem coe_capO {ι : Type} (U : ι → X.Opens) {n : ℕ} (i : Fin n → ι) :
     ((capO U i : X.Opens) : Set X) = ⋂ k, (U (i k) : Set X) := by
   have h : capO U i = Finset.univ.inf fun k => U (i k) := by
@@ -26,6 +34,11 @@ theorem coe_capO {ι : Type} (U : ι → X.Opens) {n : ℕ} (i : Fin n → ι) :
   ext x
   simp [Finset.inf_eq_iInf]
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Conclude with `fun h k => inU_mono q (capO_le U i k) T h`. Introduce `h x hx`. Establish `: (pt T x) ∈ ((capO U i : X.Opens) : Set X)`. Rewrite using `[coe_capO]`.
+
+Conclude with `Set.mem_iInter.2 fun k => h k hx`. Conclude with `this`.
+-/
 theorem inU_capO {ι : Type} (U : ι → X.Opens) {n : ℕ} (i : Fin n → ι) (T : Thick (smFun X q)) :
     InU (γ := dividedPowersBot K) (p := 0) (q := q) (κ := Ideal.Quotient.mk ⊥) (capO U i) T ↔
       ∀ k, InU (γ := dividedPowersBot K) (p := 0) (q := q) (κ := Ideal.Quotient.mk ⊥) (U (i k)) T := by
@@ -39,10 +52,16 @@ theorem inU_capO {ι : Type} (U : ι → X.Opens) {n : ℕ} (i : Fin n → ι) (
 
 variable (U : Cov q) (a n : ℕ) (i : Fin (n + 1) → U.ι)
 
+/- English proof (translation)
+Take `⟨h1, V, rfl, h2⟩` from `h`. Conclude with `⟨h1, U.U (i 0), ⟨_, rfl⟩, inU_mono q (capO_le U.U i 0) T h2⟩`.
+-/
 theorem kc_of_ks (T : Thick (smFun X q)) (h : KS q (a + 1) {capO U.U i} T) : KC q U a T := by
   obtain ⟨h1, V, rfl, h2⟩ := h
   exact ⟨h1, U.U (i 0), ⟨_, rfl⟩, inU_mono q (capO_le U.U i 0) T h2⟩
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨T.property.1, _, rfl, (inU_capO q U.U i T.obj).2 h⟩`.
+-/
 theorem ks_of_cap (T : (KC q U a).FullSubcategory) (h : capT (Vk q U a) i T) : KS q (a + 1) {capO U.U i} T.obj :=
   ⟨T.property.1, _, rfl, (inU_capO q U.U i T.obj).2 h⟩
 
@@ -67,6 +86,9 @@ def capM : CH.Mor ((capT (Vk q U a) i).ι ⋙ Fk q U a) ((KS q (a + 1) {capO U.U
   τ _ := LinearMap.id
   nat _ _ := rfl
 
+/- English proof (translation)
+Use `haveI : (capM q U a n i).G.IsLeftAdjoint := (capE q U a n i).isLeftAdjoint_functor`. Conclude with `CrystallineSemistableComparison.P.adj_mor (capM q U a n i) (fun _ => Function.bijective_id) r`.
+-/
 theorem capM_bij (r : ℕ) : Function.Bijective ((capM q U a n i).pull r) := by
   haveI : (capM q U a n i).G.IsLeftAdjoint := (capE q U a n i).isLeftAdjoint_functor
   exact CrystallineSemistableComparison.P.adj_mor (capM q U a n i) (fun _ => Function.bijective_id) r
@@ -80,11 +102,17 @@ namespace GlobalTheory.CompanionTheory.OmGlobTerm
 section Nat
 variable {K : Type} [CommRing K] {X Y : Scheme.{0}} {q : X ⟶ Spec (CommRingCat.of K)} {p : Y ⟶ Spec (CommRingCat.of K)}
 
+/- English proof (translation)
+Take `⟨h1, V', rfl, h2⟩` from `hT`. Conclude with `⟨h1, W, rfl, fun x hx => h (h2 hx)⟩`.
+-/
 theorem ks_pull (u : X ⟶ Y) (hu : u ≫ p = q) {V : X.Opens} {W : Y.Opens} (h : V ≤ u ⁻¹ᵁ W) (s a : ℕ) (T : Thick (smFun X q))
     (hT : KS q s {V} T) : KS p s {W} ((pullM u hu a).G.obj T) := by
   obtain ⟨h1, V', rfl, h2⟩ := hT
   exact ⟨h1, W, rfl, fun x hx => h (h2 hx)⟩
 
+/- English proof (translation)
+Take `⟨z, rfl⟩` from `Submodule.Quotient.mk_surjective _ x`. Both sides reduce to the same expression.
+-/
 theorem capM_res (U : Cov q) (a m n : ℕ) (i : Fin (n + 1) → U.ι) (θ : Fin (m + 1) → Fin (n + 1))
     (x : HU (Fk q U a) (capT (Vk q U a) (i ∘ θ)) a) :
     (capM q U a n i).pull a ((resU (Fk q U a) (U := capT (Vk q U a) (i ∘ θ)) (V := capT (Vk q U a) i) fun T hT k => hT (θ k)).pull a x) =
@@ -94,6 +122,9 @@ theorem capM_res (U : Cov q) (a m n : ℕ) (i : Fin (n + 1) → U.ι) (θ : Fin 
   obtain ⟨z, rfl⟩ := Submodule.Quotient.mk_surjective _ x
   rfl
 
+/- English proof (translation)
+Take `⟨z, rfl⟩` from `Submodule.Quotient.mk_surjective _ x`. Both sides reduce to the same expression.
+-/
 theorem capM_pull (u : X ⟶ Y) (hu : u ≫ p = q) (U : Cov q) (W : Cov p) (τ : U.ι → W.ι) (a : ℕ)
     (hG : ∀ T, KC q U a T → KC p W a ((pullM u hu a).G.obj T)) (n : ℕ) (i : Fin (n + 1) → U.ι)
     (hG' : ∀ T, capT (Vk q U a) i T →
@@ -124,6 +155,11 @@ def idT (hu : 𝟙 X ≫ q = q) (T : Thick (smFun X q)) : T ⟶ (smMor (𝟙 X) 
     refine Eq.trans (congrFun (congrArg (fun f => (ConcreteCategory.hom f : _ → _)) ((nlFun (dividedPowersBot K) 0 X q (Ideal.Quotient.mk ⊥)).Pt.map_id _)) T.y) ?_
     exact Subtype.ext (Prod.ext rfl (Category.comp_id _).symm))
 
+/- English proof (translation)
+Use `symm`. Use `CrystallineSemistableComparison.P.prism (resU (HT.grT (smFun X q) a) hle) (morU (pullM (𝟙 X) hu a) (U := Q) (U' := Q') h) { app := fun T => ObjectProperty.homMk (idT hu T.obj) naturality := fun T T' f => ?_ } ?_ n x` and prove the remaining obligations. Use `ObjectProperty.hom_ext _ ?_` and prove the remaining obligations. Conclude with `hom_ext (γ := dividedPowersBot K) (p := 0) (q := q) (κ := Ideal.Quotient.mk ⊥) rfl`. Introduce `T x`.
+
+Take `⟨y, hy, rfl⟩` from `HT.sq_surj _ _ x`. Both sides reduce to the same expression.
+-/
 theorem morU_id (hu : 𝟙 X ≫ q = q) (a : ℕ) (Q Q' : ObjectProperty (Thick (smFun X q)))
     (h : ∀ T, Q' T → Q ((pullM (𝟙 X) hu a).G.obj T)) (hle : Q' ≤ Q) (n : ℕ) (x) :
     (morU (pullM (𝟙 X) hu a) (U := Q) (U' := Q') h).pull n x = (resU (HT.grT (smFun X q) a) hle).pull n x := by

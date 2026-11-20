@@ -14,6 +14,13 @@ open IsLocalRing
 section
 variable {K : Type} [Field K] [NumberField K] (la : HeightOneSpectrum (𝓞 K))
 
+/- English proof (translation)
+Rewrite using `[mem_maximalIdeal, mem_nonunits_iff, HeightOneSpectrum.adicCompletionIntegers.isUnit_iff_valued_eq_one]`. Establish `h1 : Valued.v (x : la.adicCompletion K) ≤ 1` using `(HeightOneSpectrum.mem_adicCompletionIntegers (𝓞 K) K la).1 x.2`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Establish `h2` using `lt_of_le_of_ne h1 h`.
+
+Break down `eq_or_ne (Valued.v (x : la.adicCompletion K)) 0 with h0 | h0` into its components or cases. Rewrite using `[h0]`. Conclude with `zero_le'`. Rewrite `h2`, the goal using `[← WithZero.exp_log h0]`. Rewrite `h2` using `[← WithZero.exp_zero, WithZero.exp_lt_exp]`.
+
+Rewrite using `[WithZero.exp_le_exp]`. Use linear arithmetic over natural numbers and integers. Introduce `h h2`. Rewrite `h` using `[h2, ← WithZero.exp_zero, WithZero.exp_le_exp]`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem mem_maximalIdeal_iff (x : la.adicCompletionIntegers K) :
     x ∈ maximalIdeal (la.adicCompletionIntegers K) ↔
       Valued.v (x : la.adicCompletion K) ≤ WithZero.exp (-((1 : ℕ) : ℤ)) := by
@@ -34,6 +41,9 @@ theorem mem_maximalIdeal_iff (x : la.adicCompletionIntegers K) :
     rw [h2, ← WithZero.exp_zero, WithZero.exp_le_exp] at h
     omega
 
+/- English proof (translation)
+Introduce `a b h`. Establish `h1` using `congrArg (fun x : la.adicCompletionIntegers K => (x : la.adicCompletion K)) h`. Simplify using `only [Formalism.MainNotions.Gaps.LocalGlobalPassage.coe_algO] at h1`. Conclude with `IsFractionRing.injective (𝓞 K) K ((algebraMap K (la.adicCompletion K)).injective h1)`.
+-/
 theorem algebraMap_injective :
     Function.Injective (algebraMap (𝓞 K) (la.adicCompletionIntegers K)) := by
   intro a b h
@@ -41,6 +51,13 @@ theorem algebraMap_injective :
   simp only [Formalism.MainNotions.Gaps.LocalGlobalPassage.coe_algO] at h1
   exact IsFractionRing.injective (𝓞 K) K ((algebraMap K (la.adicCompletion K)).injective h1)
 
+/- English proof (translation)
+Apply `le_antisymm` to reduce the goal to its premises. Rewrite using `[Ideal.map_le_iff_le_comap]`. Introduce `a ha`. Rewrite using `[Ideal.mem_comap, mem_maximalIdeal_iff, Formalism.MainNotions.Gaps.LocalGlobalPassage.coe_algO, Formalism.MainNotions.Gaps.LocalGlobalPassage.val_alg, HeightOneSpectrum.valuation_of_algebraMap, la.intValuation_le_pow_iff_mem, pow_one]`. Conclude with `ha`.
+
+Introduce `x hx`. Take `⟨π, hπ⟩` from `la.intValuation_exists_uniformizer`. Take `⟨d, hd⟩` from `Formalism.MainNotions.Gaps.LocalGlobalPassage.exists_factor (K := K) la hπ 1 x ((mem_maximalIdeal_iff la x).1 hx)`. Rewrite using `[hd, pow_one]`. Use `Ideal.mul_mem_right _ _ (Ideal.mem_map_of_mem _ ?_)` and prove the remaining obligations.
+
+Rewrite using `[← la.intValuation_lt_one_iff_mem, hπ, ← WithZero.exp_zero, WithZero.exp_lt_exp]`. Evaluate the numerical expressions.
+-/
 theorem map_asIdeal :
     Ideal.map (algebraMap (𝓞 K) (la.adicCompletionIntegers K)) la.asIdeal =
       maximalIdeal (la.adicCompletionIntegers K) := by
@@ -59,6 +76,9 @@ theorem map_asIdeal :
     rw [← la.intValuation_lt_one_iff_mem, hπ, ← WithZero.exp_zero, WithZero.exp_lt_exp]
     norm_num
 
+/- English proof (translation)
+Take `⟨r, hr⟩` from `Formalism.MainNotions.Gaps.LocalGlobalPassage.approx (K := K) la x 1`. Conclude with `⟨r, (mem_maximalIdeal_iff la _).2 hr⟩`.
+-/
 theorem exists_sub_mem (x : la.adicCompletionIntegers K) :
     ∃ a : 𝓞 K, x - algebraMap (𝓞 K) (la.adicCompletionIntegers K) a ∈
       maximalIdeal (la.adicCompletionIntegers K) := by
@@ -67,6 +87,17 @@ theorem exists_sub_mem (x : la.adicCompletionIntegers K) :
 
 end
 
+/- English proof (translation)
+Establish `h` using `IsLocalization.isLocalization_of_base_ringEquiv Q.primeCompl O₂ (MvPolynomial.renameEquiv O₁ e).toRingEquiv.symm`. Establish `hmap : Ideal.map (MvPolynomial.renameEquiv O₁ e).toRingEquiv.toRingHom P = Q`. Rewrite using `[hP, hQ, Ideal.map_map]`. Use `congr 1`. Use extensionality with `a`.
+
+Simplify using the standard rewrite rules. Establish `hmem : ∀ x, (MvPolynomial.renameEquiv O₁ e).toRingEquiv x ∈ Q ↔ x ∈ P`. Introduce `x`. Establish `hb` using `Ideal.comap_map_of_bijective (MvPolynomial.renameEquiv O₁ e).toRingEquiv.toRingHom (MvPolynomial.renameEquiv O₁ e).toRingEquiv.bijective (I := P)`. Rewrite `hb` using `[hmap]`.
+
+Rewrite using `[← hb]`. Conclude with `Iff.rfl`. Establish `hM : Q.primeCompl.map (MvPolynomial.renameEquiv O₁ e).toRingEquiv.symm = P.primeCompl`. Use extensionality with `x`. Prove the components needed by the constructor for the conclusion.
+
+Introduce and unpack `⟨y, hy, rfl⟩ hx`. Apply `hy` to reduce the goal to its premises. Use `(hmem _).2 hx` as an intermediate fact. Rewrite `this` using `[RingEquiv.apply_symm_apply]`. Then use the resulting hypothesis. Introduce `hx`.
+
+Conclude with `⟨_, fun hy => hx ((hmem x).1 hy), RingEquiv.symm_apply_apply _ _⟩`. Rewrite `h` using `[hM]`. Conclude with `h`.
+-/
 theorem isLocalization_rename {σ τ O₁ O₂ : Type} [CommRing O₁] [CommRing O₂] (I : Ideal O₁)
     (e : σ ≃ τ) (Q : Ideal (MvPolynomial τ O₁)) [Q.IsPrime] (hQ : Q = Ideal.map MvPolynomial.C I)
     (P : Ideal (MvPolynomial σ O₁)) [P.IsPrime] (hP : P = Ideal.map MvPolynomial.C I)
@@ -101,6 +132,25 @@ theorem isLocalization_rename {σ τ O₁ O₂ : Type} [CommRing O₁] [CommRing
   rw [hM] at h
   exact h
 
+/- English proof (translation)
+Introduce `D B P j X la N D' N' e`. Use `letI alg : Algebra (MvPolynomial (ReciprocityTheory.ChartRestriction.G.T0.TVar D' N') (X.Ol la)) (Formalism.MainNotions.Gaps.EtaleWeightGaps.Op X la N) := ((algebraMap (Pol X la N) (Formalism.MainNotions.Gaps.EtaleWeightGaps.Op X la N)).comp (MvPolynomial.renameEquiv (X.Ol la) e) …`. Establish `halg : ∀ p, algebraMap (MvPolynomial (ReciprocityTheory.ChartRestriction.G.T0.TVar D' N') (X.Ol la)) (Formalism.MainNotions.Gaps.EtaleWeightGaps.Op X la N) p = algebraMap (Pol X la N) (Formalism.MainNotions.Gaps.EtaleWeightGaps.Op X la N) (MvPolynomial.rename e p)` using `fun _ => rfl`. Use `haveI hprime := Formalism.DV.GaussP.gaussIdeal_isPrime (ReciprocityTheory.ChartRestriction.G.T0.TVar D' N') (X.Ol la)`. Use `haveI hloc : IsLocalization.AtPrime (Formalism.MainNotions.Gaps.EtaleWeightGaps.Op X la N) (Formalism.DV.gaussIdeal (ReciprocityTheory.ChartRestriction.G.T0.TVar D' N') (X.Ol la)) := isLocalization_rename (maximalIdeal (X.Ol la)) e (gI X la N) rfl (Formalism.DV.gaussIdeal (Recipr …`.
+
+Take `⟨-, f, hf, hflat, hloc', hmax, hres⟩` from `GlobalTheory.gaussRing_completion B.KO D' N' la (X.Ol la) (algebraMap_injective la) (map_asIdeal la) (exists_sub_mem la) (Formalism.DV.gaussIdeal (ReciprocityTheory.ChartRestriction.G.T0.TVar D' N') (X.Ol la)) rfl (Formalism.MainNotions.Gaps.EtaleWeightGaps.Op X la N)`. Establish `hinj₂ : Function.Injective (algebraMap (Pol X la N) (Formalism.MainNotions.Gaps.EtaleWeightGaps.Op X la N))` using `IsLocalization.injective _ (gI X la N).primeCompl_le_nonZeroDivisors`. Establish `hfinj : Function.Injective f`. Rewrite using `[injective_iff_map_eq_zero]`. Introduce `x hx`.
+
+Take `⟨⟨p, s⟩, h⟩` from `IsLocalization.surj (ReciprocityTheory.ChartRestriction.G.T0.laT D' N' la).primeCompl x`. Establish `h1` using `congrArg f h`. Rewrite `h1` using `[map_mul, hx, zero_mul, hf, halg]`. Establish `h2 : p = 0`. Establish `h3` using `hinj₂ (h1.symm.trans (map_zero _).symm)`.
+
+Establish `h4` using `MvPolynomial.rename_injective e e.injective (h3.trans (map_zero _).symm)`. Conclude with `MvPolynomial.map_injective _ (algebraMap_injective la) (h4.trans (map_zero _).symm)`. Simplify using `only [h2, map_zero] at h`. Conclude with `(IsLocalization.map_units (ReciprocityTheory.ChartRestriction.G.T0.Op D' N' la) s).mul_left_eq_zero.mp h`. Use `letI := ReciprocityTheory.ChartRestriction.G.T0.algOpKT (K := B.KO) D' N' la`.
+
+Use `haveI := ReciprocityTheory.ChartRestriction.G.T0.isFractionRing_Op (K := B.KO) D' N' la`. Establish `hg : Function.Injective ((algebraMap (Formalism.MainNotions.Gaps.EtaleWeightGaps.Op X la N) (Kp X la N)).comp f)` using `(IsFractionRing.injective (Formalism.MainNotions.Gaps.EtaleWeightGaps.Op X la N) (Kp X la N)).comp hfinj`. Set `φ : ReciprocityTheory.ChartRestriction.G.T0.KTf B.KO D' N' →+* Kp X la N` to `IsFractionRing.lift (A := ReciprocityTheory.ChartRestriction.G.T0.Op D' N' la) hg`. Establish `hφ : ∀ r, φ (ReciprocityTheory.ChartRestriction.G.T0.OpToKT D' N' la r) = algebraMap (Formalism.MainNotions.Gaps.EtaleWeightGaps.Op X la N) (Kp X la N) (f r)` using `fun r => IsFractionRing.lift_algebraMap (A := ReciprocityTheory.ChartRestriction.G.T0.Op D' N' la) hg r`. Establish `hφp : ∀ p : ReciprocityTheory.ChartRestriction.G.T0.OT B.KO D' N', φ (algebraMap (ReciprocityTheory.ChartRestriction.G.T0.KTp B.KO D' N') (ReciprocityTheory.ChartRestriction.G.T0.KTf B.KO D' N') (MvPolynomial.map (algebraMap (𝓞 B.KO) B.KO) p)) = algebraMap (Formalism.MainNotions. …`.
+
+Introduce `p`. Rewrite using `[← halg, ← hf, ← hφ, ReciprocityTheory.ChartRestriction.G.T0.OpToKT, IsLocalization.lift_eq]`. Both sides reduce to the same expression. Use `⟨f, φ, hflat, hloc', hmax, hres, hφ, ?_, ?_⟩` and prove the remaining obligations. Establish `key : (φ.comp ((algebraMap (ReciprocityTheory.ChartRestriction.G.T0.KTp B.KO D' N') (ReciprocityTheory.ChartRestriction.G.T0.KTf B.KO D' N')).comp MvPolynomial.C)) = (algebraMap (X.Kl la) (Kp X la N)).comp (algebraMap B.KO (X.Kl la))`.
+
+Use `IsFractionRing.ringHom_ext (A := 𝓞 B.KO) fun a => ?_` and prove the remaining obligations. Establish `h1` using `hφp (MvPolynomial.C a)`. Rewrite `h1` using `[MvPolynomial.map_C, MvPolynomial.map_C, MvPolynomial.rename_C]`. Simplify using `only [RingHom.comp_apply]`. Rewrite using `[h1, ← Formalism.MainNotions.Gaps.LocalGlobalPassage.coe_algO]`.
+
+Express the relevant statement in the definitionally equal form `_ = algebraMap (X.Kl la) (Kp X la N) (algebraMap (X.Ol la) (X.Kl la) (algebraMap (𝓞 B.KO) (X.Ol la) a))`. Rewrite using `[← IsScalarTower.algebraMap_apply (X.Ol la) (X.Kl la) (Kp X la N), IsScalarTower.algebraMap_apply (X.Ol la) (Formalism.MainNotions.Gaps.EtaleWeightGaps.Op X la N) (Kp X la N), IsScalarTower.algebraMap_apply (X.Ol la) (Pol X la N) (Formalism.MainNotions.Gaps.EtaleWeightGaps.Op X l …`. Introduce `a`. Conclude with `DFunLike.congr_fun key a`. Introduce `p`.
+
+Establish `h1` using `hφp (MvPolynomial.X p)`. Rewrite `h1` using `[MvPolynomial.map_X, MvPolynomial.map_X, MvPolynomial.rename_X]`. Conclude with `h1`.
+-/
 theorem gaussRing_completion_rename :
     ∀ (D : D7) (B : WeightFamilies.Prov D) (P : ModuliIntegralCharts.Prov D) (j : ℕ) (X : PJ D B P j) (la : HeightOneSpectrum (𝓞 B.KO)) (N D' N' : ℕ) (e : ReciprocityTheory.ChartRestriction.G.T0.TVar D' N' ≃ Idx D j N), ∃ (f : ReciprocityTheory.ChartRestriction.G.T0.Op D' N' la →+* Formalism.MainNotions.Gaps.EtaleWeightGaps.Op X la N) (φ : ReciprocityTheory.ChartRestriction.G.T0.KTf B.KO D' N' →+* Kp X la N), f.Flat ∧ IsLocalHom f ∧ Ideal.map f (IsLocalRing.maximalIdeal (ReciprocityTheory.ChartRestriction.G.T0.Op D' N' la)) = IsLocalRing.maximalIdeal (Formalism.MainNotions.Gaps.EtaleWeightGaps.Op X la N) ∧ (∀ x : Formalism.MainNotions.Gaps.EtaleWeightGaps.Op X la N, ∃ a, x - f a ∈ IsLocalRing.maximalIdeal (Formalism.MainNotions.Gaps.EtaleWeightGaps.Op X la N)) ∧ (∀ r, φ (ReciprocityTheory.ChartRestriction.G.T0.OpToKT D' N' la r) = algebraMap (Formalism.MainNotions.Gaps.EtaleWeightGaps.Op X la N) (Kp X la N) (f r)) ∧ (∀ a : B.KO, φ (algebraMap (ReciprocityTheory.ChartRestriction.G.T0.KTp B.KO D' N') (ReciprocityTheory.ChartRestriction.G.T0.KTf B.KO D' N') (MvPolynomial.C a)) = algebraMap (X.Kl la) (Kp X la N) (algebraMap B.KO (X.Kl la) a)) ∧ ∀ p, φ (algebraMap (ReciprocityTheory.ChartRestriction.G.T0.KTp B.KO D' N') (ReciprocityTheory.ChartRestriction.G.T0.KTf B.KO D' N') (MvPolynomial.X p)) = algebraMap (Formalism.MainNotions.Gaps.EtaleWeightGaps.Op X la N) (Kp X la N) (Tv X la N (e p)) := by
   intro D B P j X la N D' N' e

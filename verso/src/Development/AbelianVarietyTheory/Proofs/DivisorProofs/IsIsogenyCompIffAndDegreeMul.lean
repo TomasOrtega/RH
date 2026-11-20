@@ -10,6 +10,21 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.S
 open GlobalTheory GlobalTheory.HTLat GlobalTheory.Published.AbVarRed GlobalTheory.CechPic GlobalTheory.AV GlobalTheory.AV.AbVar
 attribute [local instance] Over.cartesianMonoidalCategory
 
+/- English proof (translation)
+Introduce `K _ A B C f g hAB hBC`. Establish `hleft : (f ≫ g).hom.left = f.hom.left ≫ g.hom.left`. Rewrite using `[comp_hom, Over.comp_left]`. Establish `key : IsIsogeny (f ≫ g) ↔ IsIsogeny f ∧ IsIsogeny g`. Prove the components needed by the constructor for the conclusion.
+
+Introduce and unpack `⟨hfin, hsurj⟩`. Establish `hs2 : Surjective (f.hom.left ≫ g.hom.left)` using `by rw [← hleft]; exact hsurj`. Establish `hgs : Surjective g.hom.left` using `Surjective.of_comp f.hom.left g.hom.left`. Establish `hgf : IsFinite g.hom.left` using `GlobalTheory.T.isFinite_of_surjective_of_dim_eq' K B C g hBC hgs`. Establish `hker : Finite (ptMap (f ≫ g)).ker` using `(GlobalTheory.T.isFinite_iff_finite_ker' K A C (f ≫ g)).1 hfin`.
+
+Establish `hle : (ptMap f).ker ≤ (ptMap (f ≫ g)).ker`. Introduce `x hx`. Rewrite `hx`, the goal using `[MonoidHom.mem_ker]`. Establish `hx' : x ≫ f.hom = 1` using `hx`. Use `show x ≫ (f ≫ g).hom = 1`.
+
+Rewrite using `[comp_hom, ← Category.assoc, hx', MonObj.one_comp]`. Establish `hfk : Finite (ptMap f).ker` using `Finite.of_injective (Subgroup.inclusion hle) (Subgroup.inclusion_injective hle)`. Establish `hff : IsFinite f.hom.left` using `(GlobalTheory.T.isFinite_iff_finite_ker' K A B f).2 hfk`. Conclude with `⟨⟨hff, GlobalTheory.T.surjective_of_isFinite_of_dim_eq_abelianVarietyHom K A B f hAB hff⟩, ⟨hgf, hgs⟩⟩`. Introduce and unpack `⟨hf, hg⟩`.
+
+Conclude with `(GlobalTheory.T.isogeny_comp_and_degree_mul K A B C f g hf hg).1`. Use `⟨key, ?_⟩` and prove the remaining obligations. Distinguish the cases in `h : IsIsogeny f ∧ IsIsogeny g`. Conclude with `(GlobalTheory.T.isogeny_comp_and_degree_mul K A B C f g h.1 h.2).2`. Establish `h0 : deg (f ≫ g) = 0`.
+
+Unfold `deg`. Rewrite using `[if_neg (fun h' => h (key.1 h'))]`. Rewrite using `[h0]`. Break down `not_and_or.1 h with hf | hg` into its components or cases. Establish `: deg f = 0` using `by unfold deg; rw [if_neg hf]`.
+
+Rewrite using `[this, zero_mul]`. Establish `: deg g = 0` using `by unfold deg; rw [if_neg hg]`. Rewrite using `[this, mul_zero]`.
+-/
 theorem GlobalTheory.AV.AbVar.isIsogeny_comp_iff_and_deg_comp : ∀ (K : Type) [Field K] (A B C : AbVar K) (f : A ⟶ B) (g : B ⟶ C),
     A.dim = B.dim → B.dim = C.dim →
       (IsIsogeny (f ≫ g) ↔ IsIsogeny f ∧ IsIsogeny g) ∧ deg (f ≫ g) = deg f * deg g := by

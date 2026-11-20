@@ -4,6 +4,11 @@ open MeasureTheory NumberField IsDedekindDomain PositivityTheory.Rg.Tf.Loc Upper
 open PositivityTheory.Rg.Tf.Geo (mapGL incFin galFin)
 open scoped ENNReal
 
+/- English proof (translation)
+Use `⟨?_, fun a ha b hb => ?_⟩` and prove the remaining obligations. Establish `: ((Subgroup.centralizer {γ} : Subgroup (GL (Fin n) k)) : Set (GL (Fin n) k)) = {x | x * γ = γ * x}`. Use extensionality with `x`. Simplify using `[Subgroup.mem_centralizer_singleton_iff]`. Rewrite using `[this]`.
+
+Conclude with `isClosed_eq (continuous_id.mul continuous_const) (continuous_const.mul continuous_id)`. Rewrite `ha`, `hb` using `[Subgroup.mem_centralizer_singleton_iff]`. Conclude with `Units.ext (hCC k n γ a b hγ (congrArg Units.val ha) (congrArg Units.val hb))`.
+-/
 private theorem cent_facts (hCC : CentComm) {k : Type} [Field k] [TopologicalSpace k] {n : ℕ} [T2Space (GL (Fin n) k)]
     [ContinuousMul (GL (Fin n) k)] {γ : GL (Fin n) k} (hγ : IsRegSemisimple γ) :
     IsClosed ((Subgroup.centralizer {γ} : Subgroup (GL (Fin n) k)) : Set (GL (Fin n) k)) ∧
@@ -18,6 +23,21 @@ private theorem cent_facts (hCC : CentComm) {k : Type} [Field k] [TopologicalSpa
     exact Units.ext (hCC k n γ a b hγ (congrArg Units.val ha) (congrArg Units.val hb))
 
 open GlobalTheory.PRep GlobalTheory.SplitWeil GlobalTheory.IndefiniteRowSideFullHecke.IwahoriDoubleCosets in
+/- English proof (translation)
+Take `⟨x1, x2⟩` from `hX _ _ _ e he he' ι (algebraMap k E) t₀ (s : E →+* E) h1 h2 n (Module.finrank k E) mE mF`. Establish `hμ` using `x1 hE`. Use `⟨hμ, fun φ hφ f hf hM γ hγ ν hν => ?_⟩` and prove the remaining obligations. Establish `hM'` using `hG k E s hs n _ mF hμ hF φ hφ f hf hM γ hγ ν hν`. Take `⟨y1, y2⟩` from `x2 γ`.
+
+Establish `hl : ∀ x, mapGL n (e.symm : E →+* S) (mapGL n (e : S →+* E) x) = x` using `fun x => Units.ext (Matrix.ext fun i j => e.symm_apply_apply _)`. Establish `hrt : ∀ x, mapGL n (e : S →+* E) (mapGL n (e.symm : E →+* S) x) = x` using `fun x => Units.ext (Matrix.ext fun i j => e.apply_symm_apply _)`. Use `⟨fun δ hδ => ?_, fun hn => hM'.2 fun ⟨δ', h'⟩ => hn ⟨mapGL n (e.symm : E →+* S) δ', (y1 _).2 (by rw [hrt]; exact h')⟩⟩` and prove the remaining obligations. Establish `hδ'` using `(y1 δ).1 hδ`. Rewrite using `[← hM'.1 _ hδ']`.
+
+Take `⟨a1, a2, a3, -⟩` from `hT E n`. Take `⟨b1, b2, b3, -⟩` from `hT k n`. Take `⟨c1, c2⟩` from `cent_facts hCC hγ`. Take `⟨s1, s2, -⟩` from `hH _ _ c1 c2 ν hν`. Take `⟨d1, d2⟩` from `(hC k E).2.2 n`.
+
+Use `set δ' := mapGL n (e : S →+* E) δ with hδe`. Establish `hS` using `(hI k E s hs n δ' γ hγ hδ').2`. Set `Φ : GL (Fin n) E → ℂ` to `fun x => φ (twConj (sigmaGL s) x δ')`. Establish `hΦc : Continuous Φ` using `hφ.1.continuous.comp ((continuous_inv.mul continuous_const).mul (d2 s))`. Establish `hΦe : ∀ x, φ (mapGL n (e : S →+* E) (x⁻¹ * δ * mapGL n t₀ x)) = Φ (mapGL n (e : S →+* E) x)` using `fun x => by`.
+
+Rewrite using `[map_mul, map_mul, map_inv]`. Use `congrArg (fun z => φ ((mapGL n (e : S →+* E) x)⁻¹ * δ' * z)) (?_ : mapGL n (e : S →+* E) (mapGL n t₀ x) = sigmaGL s (mapGL n (e : S →+* E) x))` and prove the remaining obligations. Conclude with `Units.ext (Matrix.ext fun i j => h2 _)`. Unfold `PositivityTheory.Rg.Tf.Geo.twOrb`. Simplify using `only [hΦe]`.
+
+Distinguish the cases in `hex : ∃ ρ, PositivityTheory.Rg.Tf.Geo.IsNormAlong id (fun t : Subgroup.centralizer {γ} => mapGL n ι (t : GL (Fin n) k)) ν ρ`. Establish `hρ` using `(y2 ν fun g => hex.choose (mapGL n (e.symm : E →+* S) g)).1.2 (by simp only [hl]; exact hex.choose_spec) haveI : MeasurableInv (Subgroup.centralizer {γ} : Subgroup (GL (Fin n) k)) := ⟨(measurable_subtype_coe.inv).subtype_mk⟩`. Establish `k1` using `hA _ _ (mE.map (mapGL n (e : S →+* E))) ν ((incl : GL (Fin n) k →* GL (Fin n) E).comp (Subgroup.centralizer {γ}).subtype) (d1.measurable.comp measurable_subtype_coe) Φ hΦc.measurable (fun t g => congrArg φ (twConj_mul_left _ _ (hS ▸ ⟨t, t.2, rfl⟩) g)) _ hρ`. Use `Eq.trans ?_ k1.symm` and prove the remaining obligations. Rewrite using `[(y2 ν _).2, PositivityTheory.Rg.Tf.Geo.quotInt, dif_pos hex]`.
+
+Simplify using `only [hl, id]`. Rewrite using `[PositivityTheory.Rg.Tf.Geo.quotInt, dif_neg hex, PositivityTheory.Rg.Tf.Geo.quotInt, dif_neg fun ⟨ρ', h'⟩ => hex ⟨_, (y2 ν ρ').1.1 h'⟩]`.
+-/
 private theorem key (hT : GLTop) (hC : ExtCont) (hCC : CentComm) (hH : HaarComm) (hI : TwCentImg) (hG : GeoOfMatch) (hX : GeoTransport)
     (hA : AlongIndep) (k E S : Type) [Field k] [CharZero k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
     [Field E] [ValuativeRel E] [TopologicalSpace E] [IsNonarchimedeanLocalField E]
@@ -72,6 +92,11 @@ private theorem key (hT : GLTop) (hC : ExtCont) (hCC : CentComm) (hH : HaarComm)
     simp only [hl, id]
   · rw [PositivityTheory.Rg.Tf.Geo.quotInt, dif_neg hex, PositivityTheory.Rg.Tf.Geo.quotInt, dif_neg fun ⟨ρ', h'⟩ => hex ⟨_, (y2 ν ρ').1.1 h'⟩]
 
+/- English proof (translation)
+Introduce `hT hC hCC hH hI hG hX hA F E _ _ _ _ _ _ σ hσ v w hw i1 i2 i3 i4 s hs hr h1 h2 n _ _ _ _ mE mF hE hF _ _`. Use `letI : Unique (PlacesOver E v) := ⟨⟨w⟩, hw⟩`. Use `haveI : CharZero (v.adicCompletion F) := algebraRat.charZero _`. Set `e : CompletionsOver E v ≃+* w.1.adicCompletion E` to `RingEquiv.piUnique fun u : PlacesOver E v => u.1.adicCompletion E`. Establish `he : Continuous e` using `continuous_apply w`.
+
+Establish `he' : Continuous e.symm` using `(Homeomorph.piUnique fun u : PlacesOver E v => u.1.adicCompletion E).symm.continuous`. Rewrite using `[← hr]`. Conclude with `@key hT hC hCC hH hI hG hX hA _ _ _ _ _ _ _ _ _ _ _ _ i1 i2 i3 i4 s hs _ _ _ e he he' _ _ h1 h2 n _ _ _ _ mE mF hE hF _ _`.
+-/
 theorem UpperTheory.V.Z.Tf.Orb.placeOfLocal :
     UpperTheory.V.Z.Tf.Orb.GLTop → UpperTheory.V.Z.Tf.Orb.ExtCont → UpperTheory.V.Z.Tf.Orb.CentComm → UpperTheory.V.Z.Tf.Orb.HaarComm → UpperTheory.V.Z.Tf.Orb.TwCentImg → UpperTheory.V.Z.Tf.Orb.GeoOfMatch → UpperTheory.V.Z.Tf.Orb.GeoTransport → UpperTheory.V.Z.Tf.Orb.AlongIndep → UpperTheory.V.Z.Tf.Orb.PlaceOfLocal := by
   intro hT hC hCC hH hI hG hX hA F E _ _ _ _ _ _ σ hσ v w hw i1 i2 i3 i4 s hs hr h1 h2 n _ _ _ _ mE mF hE hF _ _

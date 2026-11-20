@@ -16,6 +16,9 @@ open PositivityTheory.RgUd.T PositivityTheory.RgUd.T.Nil PositivityTheory.RgUd.T
 
 variable (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
 
+/- English proof (translation)
+Substitute `h` using the available equality. Both sides reduce to the same expression.
+-/
 private theorem det_restrict_toLin_congr {n : ℕ} (A B : Matrix (Fin n) (Fin n) k) (h : A = B)
     (W : Submodule k (Fin n → k)) (hA : ∀ y ∈ W, Matrix.toLin' A y ∈ W)
     (hB : ∀ y ∈ W, Matrix.toLin' B y ∈ W) :
@@ -23,6 +26,49 @@ private theorem det_restrict_toLin_congr {n : ℕ} (A B : Matrix (Fin n) (Fin n)
   subst h
   rfl
 
+/- English proof (translation)
+Introduce `n Z hZ hd c hc p P w hp hnil hv hg hcent`. Take `⟨τ, h1, h2, -⟩` from `hT n Z hZ`. Establish `hτ : PositivityTheory.RgUd.TP.Nil.Orb.Mod.IsTau Z τ` using `⟨h1, h2⟩`. Establish `hR : PositivityTheory.RgUd.T.Nil.Orb.BModbound.RatioP k n` using `fun V γ hγ φ X Y hX hY => PositivityTheory.RgUd.T.Nil.Orb.BModbound.ratio V γ hγ φ X Y hX hY`. Use `haveI : Infinite k := PositivityTheory.RgUd.TP.Nil.Orb.Mod.infinite_local`.
+
+Establish `hxB : p.1 - c ∈ Bz Z`. Introduce `a ha`. Rewrite using `[mul_sub, sub_mul, hp a ha, hZ.1 a ha c hc]`. Set `gt : kˣ → GL (Fin n) k` to `fun t => P * ⟨diagonal (fun i => ((t ^ w i : kˣ) : k)), diagonal (fun i => (((t ^ w i)⁻¹ : kˣ) : k)), by`. Rewrite using `[diagonal_mul_diagonal, ← diagonal_one]`.
+
+Use `congr 1`. Use function extensionality and compare the values at `i`. Conclude with `Units.mul_inv _,`. Use `by`. Rewrite using `[diagonal_mul_diagonal, ← diagonal_one]`.
+
+Use `congr 1`. Use function extensionality and compare the values at `i`. Conclude with `Units.inv_mul _⟩ * P⁻¹`. Establish `hval : ∀ t : kˣ, ((gt t : GL (Fin n) k) : Matrix (Fin n) (Fin n) k) = P.val * diagonal (fun i => ((t ^ w i : kˣ) : k)) * P⁻¹.val` using `fun t => rfl`. Establish `hgZ : ∀ t : kˣ, gt t ∈ Gz Z`.
+
+Introduce `t a ha`. Establish `h : a * ((gt t : GL (Fin n) k) : Matrix (Fin n) (Fin n) k) = ((gt t : GL (Fin n) k) : Matrix (Fin n) (Fin n) k) * a` using `(hg t).1 a ha`. Conclude with `h`. Establish `hgx : ∀ t : kˣ, ((gt t : GL (Fin n) k) : Matrix (Fin n) (Fin n) k) * (p.1 - c) * (((gt t)⁻¹ : GL (Fin n) k) : Matrix (Fin n) (Fin n) k) = (t : k) • (p.1 - c)`. Introduce `t`.
+
+Establish `h : ((gt t : GL (Fin n) k) : Matrix (Fin n) (Fin n) k) * (p.1 - c) = (t : k) • ((p.1 - c) * ((gt t : GL (Fin n) k) : Matrix (Fin n) (Fin n) k))` using `(hg t).2.1`. Rewrite using `[h, smul_mul_assoc, mul_assoc, Units.mul_inv, mul_one]`. Establish `hgv : ∀ t : kˣ, ((gt t : GL (Fin n) k) : Matrix (Fin n) (Fin n) k) *ᵥ p.2 = p.2` using `fun t => (hg t).2.2`. Establish `hinv : ∀ t : kˣ, ∀ y ∈ cAv Z (p.1 - c) p.2, (Matrix.toLin' (P.val * diagonal (fun i => ((t ^ w i : kˣ) : k)) * P⁻¹.val)) y ∈ cAv Z (p.1 - c) p.2` using `fun t => cAv_inv Z (p.1 - c) p.2 (gt t) (hgZ t) (t : k) t.ne_zero (hgx t) (hgv t)`. Establish `hW : ∀ y ∈ cAv Z (p.1 - c) p.2, ∃ u : Fin n → k, y = P.val *ᵥ u ∧ ∀ i, w i < 0 → u i = 0`.
+
+Introduce and unpack `y ⟨a, ⟨haB, hax⟩, rfl⟩`. Establish `hap : a * p.1 = p.1 * a`. Establish `hca : c * a = a * c` using `haB c hc`. Establish `h3` using `hax`. Rewrite `h3` using `[mul_sub, sub_mul, hca]`.
+
+Conclude with `sub_left_inj.mp h3`. Take `⟨u, hu1, hu2⟩` from `hcent a (fun z hz => haB z hz) hap`. Conclude with `⟨u, hu1, hu2⟩`. Take `⟨m, hm⟩` from `PositivityTheory.RgUd.TP.Nil.Orb.Mod.wtI P w (cAv Z (p.1 - c) p.2) hinv hW`. Establish `hZle : Subalgebra.toSubmodule Z ≤ cA Z (p.1 - c)`.
+
+Introduce `a ha`. Conclude with `⟨fun z hz => hZ.1 z hz a ha, hxB a ha⟩`. Establish `hcAle : cA Z (p.1 - c) ≤ Subalgebra.toSubmodule (Subalgebra.centralizer k (Z : Set (Matrix (Fin n) (Fin n) k)))`. Introduce `a ha`. Conclude with `(PositivityTheory.RgUd.T.Nil.Orb.BModbound.mem_C_iff Z a).2 ha.1`.
+
+Establish `hdB : dB0 Z = finrank k (Subalgebra.centralizer k (Z : Set (Matrix (Fin n) (Fin n) k))) - finrank k Z` using `rfl`. Establish `hlt : finrank k Z < finrank k (cA Z (p.1 - c))`. Rewrite using `[← Subalgebra.finrank_toSubmodule]`. Break down `(Submodule.finrank_mono hZle).lt_or_eq with h | h` into its components or cases. Conclude with `h`.
+
+It suffices to derive a contradiction. Establish `heq` using `Submodule.eq_of_le_of_finrank_eq hZle h`. Establish `hxZ : p.1 - c ∈ Z`. Establish `h4 : p.1 - c ∈ cA Z (p.1 - c)` using `⟨hxB, rfl⟩`. Rewrite `h4` using `[← heq]`.
+
+Conclude with `h4`. Establish `hx0 : p.1 - c = 0`. Establish `hn : IsNilpotent (⟨p.1 - c, hxZ⟩ : Z)`. Take `⟨j, hj⟩` from `hnil`. Conclude with `⟨j, Subtype.ext (by simpa using hj)⟩`.
+
+Use `haveI := hZ.2`. Establish `h5` using `hn.eq_zero`. Simplify using `using congrArg Subtype.val h5`. Establish `hCle : Subalgebra.toSubmodule (Subalgebra.centralizer k (Z : Set (Matrix (Fin n) (Fin n) k))) ≤ cA Z (p.1 - c)`. Introduce `a ha`.
+
+Use `⟨(PositivityTheory.RgUd.T.Nil.Orb.BModbound.mem_C_iff Z a).1 ha, ?_⟩` and prove the remaining obligations. Rewrite using `[hx0, mul_zero, zero_mul]`. Establish `h6` using `Submodule.finrank_mono hCle`. Rewrite `h6` using `[← heq, Subalgebra.finrank_toSubmodule, Subalgebra.finrank_toSubmodule]`. Use linear arithmetic over natural numbers and integers.
+
+Establish `h7` using `Submodule.finrank_mono hcAle`. Rewrite `h7` using `[Subalgebra.finrank_toSubmodule]`. Use `set D := finrank k (Subalgebra.centralizer k (Z : Set (Matrix (Fin n) (Fin n) k))) - finrank k (cA Z (p.1 - c)) with hD`. Establish `hDlt : D < dB0 Z` using `by omega`. Use `⟨(D : ℝ) / 2 - m, ?_, ?_⟩` and prove the remaining obligations.
+
+Establish `h8 : (D : ℝ) < (dB0 Z : ℝ)` using `by exact_mod_cast hDlt`. Establish `hm0 : (0 : ℝ) ≤ m` using `Nat.cast_nonneg m`. Combine the linear equalities and inequalities to obtain the conclusion. Introduce `t _`. Take `⟨K, L, u, hu, hK1, hK2, hK3, hL1, hL2, hL3, hL4, hmod⟩` from `PositivityTheory.RgUd.TP.Nil.Orb.Mod.modul_eqT hR Z hZ τ hτ c hc p hp (gt t) (hgZ t) (t : k) t.ne_zero (hgx t) (hgv t)`.
+
+Use `⟨K, L, gt t, hK1, hK2, hK3, hL1, hL2, hL3, hL4, hval t, ?_⟩` and prove the remaining obligations. Rewrite using `[hmod]`. Establish `hs` using `det_split Z (p.1 - c) p.2 (gt t) (hgZ t) (t : k) t.ne_zero (hgx t) (hgv t)`. Establish `hq` using `PositivityTheory.RgUd.TP.Nil.Orb.Mod.det_sqT Z τ hτ (p.1 - c) hxB (gt t) (hgZ t) (t : k) t.ne_zero (hgx t)`. Establish `hw : LinearMap.det ((Matrix.toLin' ((gt t : GL (Fin n) k) : Matrix (Fin n) (Fin n) k)).restrict (cAv_inv Z (p.1 - c) p.2 (gt t) (hgZ t) (t : k) t.ne_zero (hgx t) (hgv t))) = (t : k) ^ m`.
+
+Rewrite using `[← hm t]`. Conclude with `det_restrict_toLin_congr k _ _ (hval t) _ _ _`. Rewrite `hs` using `[hw, ← hu]`. Rewrite `hq` using `[hs]`. Establish `hU : (u * t ^ m) ^ 2 = t ^ D` using `Units.ext (by push_cast; exact hq)`.
+
+Establish `hN` using `congrArg (nabs k) hU`. Rewrite `hN` using `[PositivityTheory.RgUd.T.Nil.Orb.BModbound.nabs_pow, PositivityTheory.RgUd.T.Nil.Orb.BModbound.nabs_mul, PositivityTheory.RgUd.T.Nil.Orb.BModbound.nabs_pow, PositivityTheory.RgUd.T.Nil.Orb.BModbound.nabs_pow]`. Establish `hv0` using `PositivityTheory.RgUd.T.Nil.Orb.BModbound.nabs_pos u`. Establish `hs0` using `PositivityTheory.RgUd.T.Nil.Orb.BModbound.nabs_pos t`. Establish `hlog` using `congrArg Real.log hN`.
+
+Rewrite `hlog` using `[Real.log_pow, Real.log_mul hv0.ne' (pow_pos hs0 m).ne', Real.log_pow, Real.log_pow]`. Rewrite using `[Real.rpow_def_of_pos (inv_pos.2 hs0), Real.log_inv]`. Rewrite using `[← Real.exp_log (inv_pos.2 hv0), Real.log_inv]`. Use `congr 1`. Move the coercions through the operations in `at hlog`.
+
+Take the linear combination `(-1 / 2) * hlog`.
+-/
 theorem modBoundT (hT : PositivityTheory.RgUd.TP.TraceForm k) : ModBound (k := k) := by
   intro n Z hZ hd c hc p P w hp hnil hv hg hcent
   obtain ⟨τ, h1, h2, -⟩ := hT n Z hZ
@@ -146,6 +192,9 @@ theorem modBoundT (hT : PositivityTheory.RgUd.TP.TraceForm k) : ModBound (k := k
     push_cast at hlog
     linear_combination (-1 / 2) * hlog
 
+/- English proof (translation)
+Introduce `n Z hZ hd p P w hp hnil hv hg hcent`. Establish `h0 : (0 : Matrix (Fin n) (Fin n) k) ∈ Z` using `Z.zero_mem`. Conclude with `modBoundT k hT n Z hZ hd 0 h0 p P w hp (by simpa using hnil) hv (by simpa using hg) hcent`.
+-/
 theorem modBound0 (hT : PositivityTheory.RgUd.TP.TraceForm k) :
     ∀ (n : ℕ) (Z : Subalgebra k (Matrix (Fin n) (Fin n) k)), CR Z → 0 < dB0 Z → ∀ (p : Sp k n) (P : GL (Fin n) k)
     (w : Fin n → ℤ), p.1 ∈ Bz Z → IsNilpotent p.1 → p.2 ≠ 0 →

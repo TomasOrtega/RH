@@ -15,6 +15,9 @@ open UpperTheory.GalS (TmW)
 def IsQpBig {E : Type} [Field E] [NumberField E] (w : HeightOneSpectrum (𝓞 E)) (n : ℕ) : Prop :=
   ∃ (g : ℕ) (_ : Fact g.Prime) (i : ℚ_[g] ≃+* w.adicCompletion E), Continuous i ∧ (n = 1 ∨ 16 * n ^ 2 < g)
 
+/- English proof (translation)
+Take `⟨g, p, i, c, -⟩` from `k`. Conclude with `⟨g, p, i, c⟩`.
+-/
 theorem IsQpBig.isQp {E : Type} [Field E] [NumberField E] {w : HeightOneSpectrum (𝓞 E)} {n : ℕ} (k : IsQpBig w n) : IsQp w := by
   obtain ⟨g, p, i, c, -⟩ := k
   exact ⟨g, p, i, c⟩
@@ -30,6 +33,9 @@ structure AwayB (x y : WD h) : Prop where
 
   tame0 : IsQpBig w y.lpDim → TmW y → Sqf y → y.mono0 → x.mono0 ∧ ∀ g : ↥(Weil h), deg g = 0 → x.charPol g = y.charPol g
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨k.dim, k.tor, fun q => k.tame0 q.isQp⟩`.
+-/
 theorem Away.big {x y : WD h} (k : Away x y) : AwayB x y := ⟨k.dim, k.tor, fun q => k.tame0 q.isQp⟩
 end Local
 
@@ -72,6 +78,9 @@ def Row0b : Prop :=
     ∀ (π : CuspSub E a) (χ : HChar (maximalRealSubfield E)), (CG.mk π).IsRegAlg → GlobalTheory.ContraPair.PolarizedPair π χ →
       ∃ (r : G E Ω →* GL (Fin a) (Qbar l)) (wt : ℤ) (HT : (E →+* Qbar l) → Multiset ℤ), PropsB Rc π ι r wt HT
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨k.cont, k.ss, fun w hl A h rc hrc σ hσ => (k.away w hl A h rc hrc σ hσ).big, k.weights, k.weights_conj, fun P AI T w A h O _ _ _ Bw hj => have j := k.above P AI T w A h O Bw hj ⟨j.crys, fun σ hσ rc hrc g m => have n := j.nice σ hσ rc hrc (g.imp (fun q => ⟨q.1.isQp, q.2⟩) id) m ⟨ …`.
+-/
 theorem Props.big {π : CuspSub E a} {ι : Qbar l ≃+* ℂ} {r : G E Ω →* GL (Fin a) (Qbar l)} {wt : ℤ}
     {HT : (E →+* Qbar l) → Multiset ℤ} (k : Props Rc π ι r wt HT) : PropsB Rc π ι r wt HT :=
   ⟨k.cont, k.ss, fun w hl A h rc hrc σ hσ => (k.away w hl A h rc hrc σ hσ).big, k.weights, k.weights_conj,
@@ -81,6 +90,9 @@ theorem Props.big {π : CuspSub E a} {ι : Qbar l ≃+* ℂ} {r : G E Ω →* GL
         have n := j.nice σ hσ rc hrc (g.imp (fun q => ⟨q.1.isQp, q.2⟩) id) m
         ⟨n.1, n.2.1, n.2.2.1, n.2.2.2.big⟩⟩⟩
 
+/- English proof (translation)
+Introduce `E Ω _ _ _ _ _ _ l _ ι a ha π χ hr hp` and use `by obtain ⟨r, wt, HT, k⟩ := H E Ω l ι a ha π χ hr hp exact ⟨r, wt, HT, k.big Rc⟩`.
+-/
 theorem Row0.row0b (H : Row0 Rc) : Row0b Rc := fun E Ω _ _ _ _ _ _ l _ ι a ha π χ hr hp => by
   obtain ⟨r, wt, HT, k⟩ := H E Ω l ι a ha π χ hr hp
   exact ⟨r, wt, HT, k.big Rc⟩

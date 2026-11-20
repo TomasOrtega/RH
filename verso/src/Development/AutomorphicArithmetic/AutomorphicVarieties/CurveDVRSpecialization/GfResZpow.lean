@@ -19,6 +19,9 @@ open UpperTheory.V.Alg
 
 variable {O : Type} [CommRing O] [IsLocalRing O] {Γ : Type} [Group Γ]
 
+/- English proof (translation)
+Establish `h1 : Units.map (res O R : R →* ResidueField O) t = 1` using `Units.ext ht`. Establish `h2` using `map_zpow (Units.map (res O R : R →* ResidueField O)) t j`. Rewrite `h2` using `[h1, _root_.one_zpow]`. Conclude with `congrArg Units.val h2`.
+-/
 private theorem gf_res_zpow {R : Type} [CommRing R] [Algebra O R] [IsCO O R]
     (t : Rˣ) (ht : res O R t = 1) (j : ℤ) : res O R ((t ^ j : Rˣ) : R) = 1 := by
   have h1 : Units.map (res O R : R →* ResidueField O) t = 1 := Units.ext ht
@@ -40,6 +43,11 @@ private def gf_torLift [TopologicalSpace Γ]
     show res O R ((conjBy (tor R t) r.hom g).mat a b) = res O R ((r.hom g).mat a b)
     rw [(conjBy_tor r.hom t).1, map_mul, gf_res_zpow t ht, one_mul]
 
+/- English proof (translation)
+Introduce `a b`. Rewrite using `[Matrix.sub_apply, tor_val]`. Distinguish the cases in `h : a = b`. Substitute `h` using the available equality. Rewrite using `[Matrix.diagonal_apply_eq, Matrix.one_apply_eq, ← res_eq_zero_iff O, map_sub, gf_res_zpow t ht, map_one, sub_self]`.
+
+Rewrite using `[Matrix.diagonal_apply_ne _ h, Matrix.one_apply_ne h, sub_self]`. Conclude with `zero_mem _`.
+-/
 private theorem gf_congOne {R : Type} [CommRing R] [Algebra O R] [IsCO O R]
     (t : Rˣ) (ht : res O R t = 1) : CongOne (maximalIdeal R) (tor R t) := by
   intro a b
@@ -51,6 +59,9 @@ private theorem gf_congOne {R : Type} [CommRing R] [Algebra O R] [IsCO O R]
   · rw [Matrix.diagonal_apply_ne _ h, Matrix.one_apply_ne h, sub_self]
     exact zero_mem _
 
+/- English proof (translation)
+Simplify using `only [GG.mat, unitaryThreeReflection_left, tor_val, Matrix.diagonal_apply]`. Use `split_ifs`. Conclude with `(congrArg Units.val (map_zpow (Units.map (residue O).toMonoidHom) (Ψ g) (wt1 a))).symm`. Simplify using the standard rewrite rules.
+-/
 private theorem gf_bar (η : Γ →* ℤˣ) (Ψ : Γ →* Oˣ) (g : Γ) (a b : Fin 3) :
     (r0 η (barChar O Ψ) g).mat a b = residue O ((r0 η Ψ g).mat a b) := by
   simp only [GG.mat, unitaryThreeReflection_left, tor_val, Matrix.diagonal_apply]
@@ -59,11 +70,31 @@ private theorem gf_bar (η : Γ →* ℤˣ) (Ψ : Γ →* Oˣ) (g : Γ) (a b : F
   · simp
 
 omit [IsLocalRing O] in
+/- English proof (translation)
+Simplify using `only [GG.mat, unitaryThreeReflection_left, tor_val]`. Conclude with `Matrix.diagonal_apply_ne _ (by rintro rfl; exact h (sub_self _))`.
+-/
 private theorem gf_off (η : Γ →* ℤˣ) (Ψ : Γ →* Oˣ) (g : Γ) (a b : Fin 3) (h : wt a b ≠ 0) :
     (r0 η Ψ g).mat a b = 0 := by
   simp only [GG.mat, unitaryThreeReflection_left, tor_val]
   exact Matrix.diagonal_apply_ne _ (by rintro rfl; exact h (sub_self _))
 
+/- English proof (translation)
+Establish `hm : ∀ g a b, (S.r.hom g).mat a b - algebraMap O _ ((r0 η Ψ g).mat a b) ∈ maximalIdeal S.R`. Introduce `g a b`. Rewrite using `[← res_eq_zero_iff O, map_sub, AlgHom.commutes, sub_eq_zero]`. Conclude with `(congrArg (fun x => GG.mat x a b) (S.r.red g)).trans (gf_bar η Ψ g a b)`. Take `⟨W, u, hu, he⟩` from `coord_grading O ℤ S.R (Γ × Fin 3 × Fin 3) (fun s => (S.r.hom s.1).mat s.2.1 s.2.2 - algebraMap O _ ((r0 η Ψ s.1).mat s.2.1 s.2.2)) (fun s => wt s.2.1 s.2.2) (fun s => hm _ _ _) (fun R' _ _ _ f f' h => by`.
+
+Establish `h1 : S.r.map f = S.r.map f'`. Use `GLift.ext (MonoidHom.ext fun g => SemidirectProduct.ext (Units.ext ?_) rfl)` and prove the remaining obligations. Use extensionality with `a b`. Use `h (g, a, b)` as an intermediate fact. Simplify using `only [map_sub, AlgHom.commutes, sub_left_inj] at this`.
+
+Conclude with `this`. Conclude with `((S.rep R').2 _ ((S.rep R').1 f')).unique h1 rfl)`. Use the proof step `(fun R' _ _ _ f t ht => by`. Take `⟨h1, h2, h3⟩` from `(S.rep R').1 f`. Take `⟨f', hf', -⟩` from `(S.rep R').2 (gf_torLift (S.r.map f) (t (Multiplicative.ofAdd 1)) (ht _)) ⟨(conjBy_tor _ _).2.2.1 c g₁ h1, fun g hg => by show MulAut.conj _ ((S.r.map f).hom g) = 1`.
+
+Rewrite using `[h2 g hg, map_one],`. Use `hI R' ((S.r.map f).comap ι hι) _ _ (gf_congOne _ (ht _)) rfl h3⟩`. Establish `htj : ∀ j : ℤ, t (Multiplicative.ofAdd 1) ^ j = t (Multiplicative.ofAdd j)` using `fun j => by`. Rewrite using `[← map_zpow, ← ofAdd_zsmul, smul_eq_mul, mul_one]`. Use `⟨f', fun ⟨g, a, b⟩ => ?_⟩` and prove the remaining obligations.
+
+Simplify using `only`. Establish `e` using `(conjBy_tor (S.r.map f).hom (t (Multiplicative.ofAdd 1))).1 g a b`. Establish `e' : f' ((S.r.hom g).mat a b) = _` using `(congrArg (fun x => (x.hom g).mat a b) hf').trans e`. Rewrite using `[map_sub, map_sub f, AlgHom.commutes, AlgHom.commutes, e', htj, mul_sub]`. Use `congr 1`.
+
+Distinguish the cases in `hab : wt a b = 0`. Simplify using `[hab]`. Simplify using `[gf_off η Ψ g a b hab])`. Use `⟨W, fun i => (hu i).1 ▸ hm _ _ _, fun i => ⟨(u i).1, (u i).2.1, (u i).2.2, hu i⟩, fun g a b => ?_⟩` and prove the remaining obligations. Establish `h1` using `he (g, a, b)`.
+
+Establish `h2 : algebraMap O S.R ((r0 η Ψ g).mat a b) ∈ W.part (wt a b)`. Distinguish the cases in `hab : wt a b = 0`. Rewrite using `[hab, Algebra.algebraMap_eq_smul_one]`. Conclude with `Submodule.smul_mem _ _ (SetLike.GradedOne.one_mem : (1 : S.R) ∈ W.part 0)`. Rewrite using `[gf_off η Ψ g a b hab, map_zero]`.
+
+Conclude with `zero_mem _`. Simplify `add_mem h1 h2` using `only [sub_add_cancel]`.
+-/
 private theorem gf_pres [IsDomain O] [IsNoetherianRing O] [IsAdicComplete (maximalIdeal O) O] [TopologicalSpace Γ]
     {H : Type} [Group H] [TopologicalSpace H] {η : Γ →* ℤˣ} {Ψ : Γ →* Oˣ} {N : Set Γ} {ι : H →* Γ}
     {hι : Continuous ι} {U : Univ (GCond.noCondition O (η.comp ι) (Ψ.comp ι))} {I : Ideal U.R} {c g₁ : Γ}
@@ -115,6 +146,13 @@ private theorem gf_pres [IsDomain O] [IsNoetherianRing O] [IsAdicComplete (maxim
   simpa only [sub_add_cancel] using add_mem h1 h2
 
 omit [IsLocalRing O] in
+/- English proof (translation)
+Establish `h1 : ∀ L : List (Γ × Fin 3 × Fin 3), (L.map fun s => (r s.1).mat s.2.1 s.2.2).prod ∈ W.part (L.map fun s => wt s.2.1 s.2.2).sum`. Introduce `L`. Proceed by induction on `L with`. Consider the case `nil => exact (SetLike.GradedOne.one_mem : (1 : R) ∈ W.part 0)`. Consider the case `cons s L ih`.
+
+Simplify using `only [List.map_cons, List.prod_cons, List.sum_cons]`. Conclude with `SetLike.GradedMul.mul_mem (h _ _ _) ih`. Set `P : Subalgebra O R` to `(W.part 0).toSubalgebra (SetLike.GradedOne.one_mem : (1 : R) ∈ W.part 0) fun x y hx hy => by simpa using (SetLike.GradedMul.mul_mem hx hy : x * y ∈ W.part (0 + 0))`. Establish `h2 : weightZeroSubalgebra O r ≤ P` using `Algebra.adjoin_le (by`. Introduce and unpack `x ⟨L, hL, rfl⟩`.
+
+Use `h1 L` as an intermediate fact. Rewrite `this` using `[hL]`. Conclude with `this)`. Establish `h3 : (weightZeroSubalgebra O r).toSubmodule ≤ W.part 0` using `h2`. Conclude with `Module.Finite.of_injective (Submodule.inclusion h3) (Submodule.inclusion_injective h3)`.
+-/
 private theorem gf_fin [IsNoetherianRing O] {R : Type} [CommRing R] [Algebra O R] (W : WPres O ℤ R)
     (r : Γ →* GG 3 R) (h : ∀ g a b, (r g).mat a b ∈ W.part (wt a b)) (hf : Module.Finite O (W.part 0)) :
     Module.Finite O (weightZeroSubalgebra O r) := by
@@ -136,6 +174,19 @@ private theorem gf_fin [IsNoetherianRing O] {R : Type} [CommRing R] [Algebra O R
   have h3 : (weightZeroSubalgebra O r).toSubmodule ≤ W.part 0 := h2
   exact Module.Finite.of_injective (Submodule.inclusion h3) (Submodule.inclusion_injective h3)
 
+/- English proof (translation)
+Use `letI : Algebra (ResidueField O) A := (Ideal.Quotient.lift (maximalIdeal O) (algebraMap O A) h0).toAlgebra`. Establish `e : ∀ g a b, algebraMap (ResidueField O) A ((r0 η (barChar O Ψ) g).mat a b) = algebraMap O A ((r0 η Ψ g).mat a b)` using `fun g a b => by`. Rewrite using `[gf_bar]`. Both sides reduce to the same expression. Establish `e' : ∀ g, ((r0 η (barChar O Ψ) g).mat).map (algebraMap (ResidueField O) A) = ((r0 η Ψ g).mat).map (algebraMap O A)` using `fun g => Matrix.ext (e g)`.
+
+Establish `h2' : (2 : ResidueField O) ≠ 0`. Use `(h2.map (residue O)).ne_zero` as an intermediate fact. Rewrite `this` using `[map_ofNat]`. Then use the resulting hypothesis. Establish `hM' : Marks η (barChar O Ψ) c g₁`. Use `⟨hM.csq, hM.ηc, ?_, hM.ηg, ?_⟩` and prove the remaining obligations.
+
+Use `show Units.map _ (Ψ c) = 1`. Rewrite using `[hM.Ψc, map_one]`. Use `hM.Ψg.map (residue O)` as an intermediate fact. Rewrite `this` using `[map_sub, map_pow, map_one]`. Conclude with `this`.
+
+Take `⟨hT, hd⟩` from `constOfChar Γ (ResidueField O) A h2' η (barChar O Ψ) c g₁ hM' r hr.mult (fun g => e' g ▸ hr.red g) hN U hU fun g hg hη => e' g ▸ hc g hg hη`. Establish `key : ∀ g, ∃ g' ∈ η.ker, (r g).mat = (r g').mat`. Introduce `g`. Break down `Int.units_eq_one_or (η g) with hg | hg` into its components or cases. Conclude with `⟨g, hg, rfl⟩`.
+
+Establish `hl : (r c).left = 1` using `Units.ext hN.atc`. Use `⟨g * c, by rw [MonoidHom.mem_ker, map_mul, hg, hM.ηc]; rfl, ?_⟩` and prove the remaining obligations. Rewrite using `[map_mul, GG.mat, GG.mat, SemidirectProduct.mul_left, hl, map_one, mul_one]`. Apply the tactic sequence `refine ⟨fun g a => (hd g a).trans (e g a a), hT.imp (fun h g a b hab => ?_) fun h g a b hab => ?_⟩ <;>`. Take `⟨g', hg', e⟩` from `key g`.
+
+Rewrite using `[e]`. Conclude with `h g' hg' a b hab`.
+-/
 private theorem diag_eq_and_triangular_of_charpoly_eq [Finite (ResidueField O)] (h2 : IsUnit (2 : O)) {A : Type} [CommRing A] [IsDomain A]
     [IsLocalRing A] [Algebra O A] (h0 : ∀ a ∈ maximalIdeal O, algebraMap O A a = 0) {η : Γ →* ℤˣ} {Ψ : Γ →* Oˣ}
     {c g₁ : Γ} (hM : Marks η Ψ c g₁) (r : Γ →* GG 3 A) (hr : UnitaryThreeInertia.Red η Ψ r) (hN : Normalised c g₁ r)
@@ -176,6 +227,17 @@ private theorem diag_eq_and_triangular_of_charpoly_eq [Finite (ResidueField O)] 
 
 end Gen
 
+/- English proof (translation)
+Introduce `hP Ω _ _ _ K _ _ _ l _ c N _ e ψ D g₁ hM B hB ⟨V, hV, hE⟩ U S`. Take `⟨W, hz, hw, hp⟩` from `gf_pres (Loc.locGood hP D.loc U).conj S`. Use `gf_fin W _ hp (finCrit c.O S.R W hz fun A _ _ hA f hf h0 => ?_)` and prove the remaining obligations. Use `haveI := hA.toIsDomain`. Use `haveI := hA.toIsDiscreteValuationRing`.
+
+Use `haveI := hA.complete`. Establish `hO` using `ordPt_of_gd hP D g₁ hM U S B hB A f hf`. Take `⟨hd, hT⟩` from `diag_eq_and_triangular_of_charpoly_eq (dat_facts D).2.2.2.2.2.2.1 h0 hM _ hO.red hO.norm V hV (hE A h0 _ hO)`. Use `⟨fun i hi => ?_, hT.imp (fun h i hi => ?_) fun h i hi => ?_⟩` and prove the remaining obligations. Take `⟨g, a, b, e1, e2⟩` from `hw i`.
+
+Choose the witnesses or unpack the hypotheses as in `rfl : a = b := by`. Rewrite `hi` using `[e2]`. Use `revert hi`. Apply the tactic sequence `fin_cases a <;> fin_cases b <;> decide`. Rewrite using `[e1, map_sub, AlgHom.commutes, sub_eq_zero]`.
+
+Conclude with `hd g a`. Take `⟨g, a, b, e1, e2⟩` from `hw i`. Rewrite `hi` using `[e2]`. Rewrite using `[e1, gf_off _ _ g a b hi.ne, map_zero, sub_zero]`. Conclude with `h g a b hi`.
+
+Take `⟨g, a, b, e1, e2⟩` from `hw i`. Rewrite `hi` using `[e2]`. Rewrite using `[e1, gf_off _ _ g a b hi.ne', map_zero, sub_zero]`. Conclude with `h g a b hi`.
+-/
 theorem UpperTheory.V.Pr.finA_of_end :
     Loc.LocalPublishedTheorems → ∀ {Ω : Type} [Field Ω] [CharZero Ω] [IsAlgClosure ℚ Ω] {K : Type} [Field K] [NumberField K] [Algebra K Ω] {l : ℕ} [Fact l.Prime] {c : Coef l} {N : ℕ} [NeZero N] {e : ℕ} {ψ : DirichletCharacter c.O N} (D : Dat Ω K c e ψ) (g₁ : G ℚ Ω), D.Marked g₁ →
     ∀ (B : ValuationSubring Ω), (∀ x, x ∈ B ↔ ‖D.j x‖ ≤ 1) → FinEnd l D.η D.Ψ D.cc g₁ B → FinA D g₁ := by

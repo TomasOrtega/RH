@@ -15,6 +15,33 @@ namespace GlobalTheory.ChernReg.ExphOn
 
 open Set
 
+/- English proof (translation)
+Introduce `k _ Y p σ d a c E E' ρ W W' W₀ O₁ ε ε' ε'' r hE hE' hW₀o hO₁o hW₀ hO₁ hρc hρ01 hρ1 hts hW' hε hε' hball hEc hE'c hρs c₀ c' v hv hy ξ hξ hg`. Establish `hsymm : ContinuousAt c₀.e.symm v` using `c₀.e.continuousAt_symm hv`. Establish `hfst : ContinuousAt (fun q : ReciprocityTheory.L2DbarEstimates.V d × ReciprocityTheory.L2DbarEstimates.V d => c₀.e.symm q.1) (v, ξ)` using `ContinuousAt.comp (g := c₀.e.symm) hsymm continuousAt_fst`. Establish `hy0 : c₀.e.symm v ∈ c₀.e.source` using `c₀.e.map_target hv`. Distinguish the cases in `h1 : c₀.e.symm v ∈ tsupport ρ`.
+
+Distinguish the cases in `h2 : c₀.e.symm v ∈ O₁`. Establish `hyW' : c₀.e.symm v ∈ W'` using `hO₁ h2`. Establish `hξ' : a c₀ (c₀.e.symm v) ξ.ofLp < ε'` using `hξ.trans_le hε'`. Establish `hE'y` using `(hE'c c₀ _ h1 hy0 ξ.ofLp hξ).1`. Establish `key : ∀ y' ξ', y' ∈ O₁ → E' c₀ y' ξ' ∈ c.e.source → glue c ρ E E' c₀ y' ξ' = E' c₀ y' ξ'`.
+
+Introduce `y' ξ' hy' hs`. Simplify using `[glue, hρ1 y' hy', c.e.left_inv hs]`. Establish `hg' : E' c₀ (c₀.e.symm v) ξ.ofLp ∈ c'.e.source` using `by rwa [key _ _ h2 hE'y] at hg`. Establish `hs` using `hE'.smooth c₀ c' v hv hyW' ξ hξ' hg'`. Establish `ev1` using `(hE'.cont c₀ v hv hyW' ξ hξ').preimage_mem_nhds (c.e.open_source.mem_nhds hE'y)`.
+
+Establish `ev2` using `hfst.preimage_mem_nhds (hO₁o.mem_nhds h2)`. Use `hs.congr_of_eventuallyEq ?_` and prove the remaining obligations. Use `filter_upwards [ev1, ev2] with q hq1 hq2`. Simplify using `only [key _ _ hq2 hq1]`. Establish `hyW₀ : c₀.e.symm v ∈ W₀` using `hy.resolve_right h2`.
+
+Establish `hyW : c₀.e.symm v ∈ W` using `hW₀ hyW₀`. Establish `hyW' : c₀.e.symm v ∈ W'` using `hts h1`. Establish `hyc : c₀.e.symm v ∈ c.e.source` using `hW' hyW'`. Establish `hEy` using `hEc c₀ _ ⟨hyW₀, h1⟩ hy0 ξ.ofLp hξ`. Establish `hE'y` using `hE'c c₀ _ h1 hy0 ξ.ofLp hξ`.
+
+Establish `hf1` using `hE.smooth c₀ c v hv hyW ξ (hξ.trans_le hε) hEy.1`. Establish `hf2` using `hE'.smooth c₀ c v hv hyW' ξ (hξ.trans_le hε') hE'y.1`. Establish `hgs : ContDiffAt ℝ ∞ (fun q : ReciprocityTheory.L2DbarEstimates.V d × ReciprocityTheory.L2DbarEstimates.V d => ρ (c₀.e.symm q.1)) (v, ξ)`. Establish `i1 : ContDiffAt ℝ ∞ (c.e ∘ c₀.e.symm) v` using `contDiffAt_trans c₀ c hv hyc`. Establish `i2 : ContDiffAt ℝ ∞ (ρ ∘ c.e.symm) ((c.e ∘ c₀.e.symm) v)` using `hρs.contDiffAt (c.e.open_target.mem_nhds (c.e.map_source hyc))`.
+
+Establish `i3` using `i2.comp v i1`. Establish `i4 : (ρ ∘ c.e.symm) ∘ (c.e ∘ c₀.e.symm) =ᶠ[𝓝 v] ρ ∘ c₀.e.symm` using `Filter.eventually_of_mem (hsymm.preimage_mem_nhds (c.e.open_source.mem_nhds hyc)) fun v' hv' => by`. Simplify using `only [Function.comp_apply, c.e.left_inv hv']`. Conclude with `ContDiffAt.comp (g := ρ ∘ c₀.e.symm) (f := Prod.fst) (v, ξ) (i3.congr_of_eventuallyEq i4.symm) contDiffAt_fst`. Use `set comb : ReciprocityTheory.L2DbarEstimates.V d × ReciprocityTheory.L2DbarEstimates.V d → ReciprocityTheory.L2DbarEstimates.V d := fun q => (1 - ρ (c₀.e.symm q.1)) • c.e (E c₀ (c₀.e.symm q.1) q.2.ofLp) + ρ (c₀.e.symm q.1) • c.e (E' c₀ (c₀.e.symm q.1) q.2.ofLp) with hcomb_def`.
+
+Establish `hcomb : ContDiffAt ℝ ∞ comb (v, ξ)` using `((contDiffAt_const.sub hgs).smul hf1).add (hgs.smul hf2)`. Establish `hcombv : comb (v, ξ) ∈ Metric.ball (c.e (c₀.e.symm v)) r` using `convex_ball _ _ hEy.2 hE'y.2 (sub_nonneg.2 (hρ01 _).2) (hρ01 _).1 (sub_add_cancel 1 _)`. Establish `hcombt` using `hball _ ⟨hyW₀, h1⟩ hcombv`. Establish `key : ∀ q : ReciprocityTheory.L2DbarEstimates.V d × ReciprocityTheory.L2DbarEstimates.V d, E c₀ (c₀.e.symm q.1) q.2.ofLp ∈ c.e.source → glue c ρ E E' c₀ (c₀.e.symm q.1) q.2.ofLp = c.e.symm (comb q)`. Introduce `q hq`.
+
+Unfold `glue`. Use `split_ifs with h0`. Simplify using `[hcomb_def, h0, c.e.left_inv hq]`. Both sides reduce to the same expression. Establish `hg' : c.e.symm (comb (v, ξ)) ∈ c'.e.source` using `by rwa [key (v, ξ) hEy.1] at hg`.
+
+Establish `hmain` using `(contDiffAt_trans c c' hcombt hg').comp (v, ξ) hcomb`. Establish `ev1` using `(hE.cont c₀ v hv hyW ξ (hξ.trans_le hε)).preimage_mem_nhds (c.e.open_source.mem_nhds hEy.1)`. Use `hmain.congr_of_eventuallyEq ?_` and prove the remaining obligations. Use `filter_upwards [ev1] with q hq`. Simplify using `only [Function.comp_apply, key q hq]`.
+
+Establish `hρy : ρ (c₀.e.symm v) = 0` using `image_eq_zero_of_notMem_tsupport h1`. Establish `hyW : c₀.e.symm v ∈ W`. Break down `hy with h | h` into its components or cases. Conclude with `hW₀ h`. Conclude with `absurd (subset_tsupport ρ (by simp [hρ1 _ h])) h1`.
+
+Establish `hg' : E c₀ (c₀.e.symm v) ξ.ofLp ∈ c'.e.source` using `by simpa [glue, hρy] using hg`. Establish `hs` using `hE.smooth c₀ c' v hv hyW ξ (hξ.trans_le hε) hg'`. Establish `ev` using `hfst.preimage_mem_nhds ((isClosed_tsupport ρ).isOpen_compl.mem_nhds h1)`. Use `hs.congr_of_eventuallyEq ?_` and prove the remaining obligations. Use `filter_upwards [ev] with q hq`.
+
+Simplify using `[glue, image_eq_zero_of_notMem_tsupport hq]`.
+-/
 theorem glue_smooth : ∀ (k : Type) [CommRing k] (Y : Scheme.{0}) (p : Y ⟶ Sp k) (σ : k →+* ℂ) (d : ℕ) (a : ChartForm p σ d) (c : AlgChart p σ d) (E E' : ChartMap p σ d) (ρ : CxPts p σ → ℝ) (W W' W₀ O₁ : Set (CxPts p σ)) (ε ε' ε'' r : ℝ), ExphOn.IsExphOn a E W ε → ExphOn.IsExphOn a E' W' ε' → IsOpen W₀ → IsOpen O₁ → W₀ ⊆ W → O₁ ⊆ W' → Continuous ρ → (∀ y, 0 ≤ ρ y ∧ ρ y ≤ 1) → (∀ y ∈ O₁, ρ y = 1) → tsupport ρ ⊆ W' → W' ⊆ c.e.source → ε'' ≤ ε → ε'' ≤ ε' → (∀ y ∈ W₀ ∩ tsupport ρ, Metric.ball (c.e y) r ⊆ c.e.target) → (∀ c₀ : AlgChart p σ d, ∀ y ∈ W₀ ∩ tsupport ρ, y ∈ c₀.e.source → ∀ ξ, a c₀ y ξ < ε'' → E c₀ y ξ ∈ c.e.source ∧ c.e (E c₀ y ξ) ∈ Metric.ball (c.e y) r) → (∀ c₀ : AlgChart p σ d, ∀ y ∈ tsupport ρ, y ∈ c₀.e.source → ∀ ξ, a c₀ y ξ < ε'' → E' c₀ y ξ ∈ c.e.source ∧ c.e (E' c₀ y ξ) ∈ Metric.ball (c.e y) r) → ContDiffOn ℝ ∞ (ρ ∘ c.e.symm) c.e.target → ∀ c₀ c' : AlgChart p σ d, ∀ v ∈ c₀.e.target, c₀.e.symm v ∈ W₀ ∪ O₁ → ∀ ξ : ReciprocityTheory.L2DbarEstimates.V d, a c₀ (c₀.e.symm v) ξ.ofLp < ε'' → ExphOn.glue c ρ E E' c₀ (c₀.e.symm v) ξ.ofLp ∈ c'.e.source → ContDiffAt ℝ ∞ (fun q : ReciprocityTheory.L2DbarEstimates.V d × ReciprocityTheory.L2DbarEstimates.V d => c'.e (ExphOn.glue c ρ E E' c₀ (c₀.e.symm q.1) q.2.ofLp)) (v, ξ) := by
   intro k _ Y p σ d a c E E' ρ W W' W₀ O₁ ε ε' ε'' r hE hE' hW₀o hO₁o hW₀ hO₁ hρc hρ01 hρ1 hts hW' hε hε' hball hEc
     hE'c hρs c₀ c' v hv hy ξ hξ hg

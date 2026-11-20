@@ -8,6 +8,11 @@ namespace Formalism.MainNotions.SelectionLemmas.Pf
 
 open Formalism.MainNotions.G Formalism.MainNotions.SelectionLemmas Formalism.MainNotions.G.Joints.StandardMonomialSpace
 
+/- English proof (translation)
+Rewrite using `[Matrix.det_apply]`. Use `degAt_sum _ _ fun σ _ => ?_` and prove the remaining obligations. Rewrite using `[Units.smul_def, zsmul_eq_mul]`. Establish `h1 : (((Equiv.Perm.sign σ : ℤˣ) : ℤ) : MvPolynomial (ℤ × Fin n) R) = C (((Equiv.Perm.sign σ : ℤˣ) : ℤ) : R)`. Simplify using the standard rewrite rules.
+
+Rewrite using `[h1]`. Use `degAt_C_mul _ ?_` and prove the remaining obligations. Establish `h2` using `degAt_prod (R := R) (x := t) Finset.univ (fun i : Fin n => (MvPolynomial.X (y (σ i), i) : MvPolynomial (ℤ × Fin n) R)) (fun i => if y (σ i) = t then 1 else 0) (fun i _ => degAt_X (x := t) (y (σ i), i))`. Rewrite `h2` using `[Equiv.sum_comp σ (fun a => if y a = t then 1 else 0)]`. Conclude with `h2`.
+-/
 theorem mem_degAt_det {R : Type} [CommRing R] {n : ℕ} (y : Fin n → ℤ) (t : ℤ) :
     DegAt t (∑ a : Fin n, if y a = t then 1 else 0)
       (Matrix.det (Matrix.of fun a c : Fin n => (MvPolynomial.X (y a, c) : MvPolynomial (ℤ × Fin n) R))) := by
@@ -45,6 +50,9 @@ section Deg
 
 variable {p n' r K : ℕ} [NeZero n'] [NeZero r] [NeZero K] {X : Dat n' r}
 
+/- English proof (translation)
+Unfold `Dat.discPowerMonomialDegree Dat.discPowerTimesMonomial Dat.Dw`. Use `degAt_mul (degAt_pow (mem_degAt_det _ x) _) ?_` and prove the remaining obligations. Conclude with `degAt_prod Finset.univ _ _ fun i _ => degAt_pow (degAt_X (x := x) (X.F.fr (j - 1) i.val, (0 : Fin r))) _`.
+-/
 theorem degAt_disc_power_monomial (O : Type) [CommRing O] (j : ℤ) (b : ℤ → ℕ) (x : ℤ) :
     DegAt x (X.discPowerMonomialDegree p K j b x) (X.discPowerTimesMonomial p K O j b) := by
   classical
@@ -52,22 +60,34 @@ theorem degAt_disc_power_monomial (O : Type) [CommRing O] (j : ℤ) (b : ℤ →
   refine degAt_mul (degAt_pow (mem_degAt_det _ x) _) ?_
   exact degAt_prod Finset.univ _ _ fun i _ => degAt_pow (degAt_X (x := x) (X.F.fr (j - 1) i.val, (0 : Fin r))) _
 
+/- English proof (translation)
+Unfold `Dat.memdMu Dat.memMu`. Conclude with `degAt_prod Finset.univ _ _ fun v _ => degAt_pow (degAt_X (x := x) (X.F.fr j v.1.val, v.2)) _`.
+-/
 theorem mem_degAt_Mu (O : Type) [CommRing O] (j : ℤ) (u : Fin r × Fin r → ℕ) (x : ℤ) :
     DegAt x (X.memdMu j u x) (X.memMu O j u) := by
   classical
   unfold Dat.memdMu Dat.memMu
   exact degAt_prod Finset.univ _ _ fun v _ => degAt_pow (degAt_X (x := x) (X.F.fr j v.1.val, v.2)) _
 
+/- English proof (translation)
+Unfold `Dat.discPowerMonomialDegree`. Simplify using `[h]`.
+-/
 theorem disc_power_monomial_degree_off (j : ℤ) (b : ℤ → ℕ) (x : ℤ) (h : ∀ a : Fin r, X.F.fr (j - 1) a.val ≠ x) :
     X.discPowerMonomialDegree p K j b x = 0 := by
   unfold Dat.discPowerMonomialDegree
   simp [h]
 
+/- English proof (translation)
+Unfold `Dat.memdMu`. Simplify using `[h]`.
+-/
 theorem mem_dMu_off (j : ℤ) (u : Fin r × Fin r → ℕ) (x : ℤ) (h : ∀ a : Fin r, X.F.fr j a.val ≠ x) :
     X.memdMu j u x = 0 := by
   unfold Dat.memdMu
   simp [h]
 
+/- English proof (translation)
+Establish `hinj` using `fr_injective X.F hX.valid (j - 1)`. Establish `hiff : ∀ a : Fin r, (X.F.fr (j - 1) a.val = X.F.fr (j - 1) a0.val) ↔ a = a0` using `fun a => ⟨fun h => hinj h, fun h => by rw [h]⟩`. Unfold `Dat.discPowerMonomialDegree`. Simplify using `only [hiff]`. Simplify using the standard rewrite rules.
+-/
 theorem disc_power_monomial_degree_at_w (hX : X.Hyp p K) (j : ℤ) (b : ℤ → ℕ) (a0 : Fin r) :
     X.discPowerMonomialDegree p K j b (X.F.fr (j - 1) a0.val) =
       X.m0 K + ((b (X.F.fr (j - 1) a0.val) : ℤ) - X.Bw p K j (X.F.fr (j - 1) a0.val)).toNat := by
@@ -79,6 +99,13 @@ theorem disc_power_monomial_degree_at_w (hX : X.Hyp p K) (j : ℤ) (b : ℤ → 
   simp only [hiff]
   simp
 
+/- English proof (translation)
+Establish `hinj` using `fr_injective X.F hX.valid j`. Establish `hiff : ∀ a : Fin r, (X.F.fr j a.val = X.F.fr j t.val) ↔ a = t` using `fun a => ⟨fun h => hinj h, fun h => by rw [h]⟩`. Unfold `Dat.memdMu`. Rewrite using `[Fintype.sum_prod_type]`. Simplify using `only [hiff]`.
+
+Rewrite using `[Finset.sum_eq_single t]`. Simplify using the standard rewrite rules. Introduce `a _ ha`. Simplify using `[ha]`. Introduce `h`.
+
+Conclude with `absurd (Finset.mem_univ _) h`.
+-/
 theorem mem_dMu_tau (hX : X.Hyp p K) (j : ℤ) (u : Fin r × Fin r → ℕ) (t : Fin r) :
     X.memdMu j u (X.F.fr j t.val) = ∑ c, u (t, c) := by
   classical
@@ -94,6 +121,11 @@ theorem mem_dMu_tau (hX : X.Hyp p K) (j : ℤ) (u : Fin r × Fin r → ℕ) (t :
     simp [ha]
   · intro h; exact absurd (Finset.mem_univ _) h
 
+/- English proof (translation)
+Use `degAt_of_supported {v : ℤ × Fin n | v.1 ∈ X.F.letters j} ?_ ?_` and prove the remaining obligations. Use `mem_supported.mpr fun v hv => ?_` and prove the remaining obligations. Take `⟨u, _, rfl⟩` from `mem_vars_rename _ _ (Finset.mem_coe.mp hv)`. Conclude with `segE_mem X.F j u.1`. Introduce `v hv h`.
+
+Conclude with `hx (h ▸ hv)`.
+-/
 theorem mem_degAt_segRen_off {R : Type} [CommRing R] (j : ℤ) {n : ℕ} (A : MvPolynomial (Fin (segN X.F j) × Fin n) R)
     (x : ℤ) (hx : x ∉ X.F.letters j) : DegAt x 0 (segRen X.F j R n A) := by
   refine degAt_of_supported {v : ℤ × Fin n | v.1 ∈ X.F.letters j} ?_ ?_
@@ -105,6 +137,25 @@ theorem mem_degAt_segRen_off {R : Type} [CommRing R] (j : ℤ) {n : ℕ} (A : Mv
 
 end Deg
 
+/- English proof (translation)
+Introduce `p n' r K _ _ _ X O _ _ _ S hX hLa hk j b hb q mm hmm x hx hW`. Establish `: Fact p.Prime` using `⟨hX.prime⟩`. Establish `hV` using `hX.valid`. Establish `hA3 : Formalism.MainNotions.CovariantDegrees.DefiniteRankOne D` using `hAdm.2.2.2.2.2.2.2.2.1`. Take `⟨dd, b', b'', P, P1, P2, hPμ, h1, h2, hsum, hC, hPATH, hGood, hSt, hu, hd⟩` from `exists_path_decomposition D hAdm hX j b q`.
+
+Establish `H` using `plHyp_of X p K hX j _ _ dd hPATH`. Establish `hI' : IsSt P1.mu (Ican P1.mu)` using `by rw [h1]; exact mem_isSt_Ican H`. Establish `hI'' : IsSt P2.mu q.1.2.1` using `by rw [h2]; exact hSt`. Establish `u1` using `(standard_polynomial_mem_bounds (segLL X.F j) b' (fun th M => (hA3 p O S _ r (segLL X.F j) b' th M).1) P1 _ hI').1`. Establish `u2` using `(standard_polynomial_mem_bounds (segLL X.F j) b'' (fun th M => (hA3 p O S _ K (segLL X.F j) b'' th M).1) P2 _ hI'').1`.
+
+Rewrite `u1` using `[h1]`. Rewrite `u2` using `[h2]`. Take `⟨i, rfl⟩` from `segE_surj X.F j hx`. Establish `hevW : ∀ a : Fin r, Even (X.F.fr (j - 1) a.val)` using `fun a => (hV.2.2.2.2.1 (j - 1) a.val a.isLt).2`. Establish `hevT : ∀ a : Fin r, Even (X.F.fr j a.val)` using `fun a => (hV.2.2.2.2.1 j a.val a.isLt).2`.
+
+Establish `hA : ¬ Even (segE X.F j i) → DegAt (segE X.F j i) (0 + 0 + b' i) (X.memA p K O j b q.1)`. Introduce `ho`. Unfold `Dat.memA`. Use `degAt_mul (degAt_mul ?_ ?_) (degAt_segRen X.F j u1 i)` and prove the remaining obligations. Use `degAt_of_supported {v : ℤ × Fin r | Even v.1} (disc_power_monomial_mem_supported O j b _ fun a _ => hevW a) ?_` and prove the remaining obligations.
+
+Introduce `v hv h`. Conclude with `ho (h ▸ hv)`. Use `degAt_of_supported {v : ℤ × Fin r | Even v.1} (mem_Mu_supported O j _ _ fun a _ => hevT a) ?_` and prove the remaining obligations. Introduce `v hv h`. Conclude with `ho (h ▸ hv)`.
+
+Establish `hG : Even (segE X.F j i) → DegAt (segE X.F j i) (b'' i) (X.memG K O j q.1)` using `fun _ => degAt_segRen X.F j u2 i`. Rewrite using `[ordDeg_prod hA hG mm hmm]`. Take `⟨-, gE, gO⟩` from `hGood i hW`. Use `split_ifs with he`. Establish `hs` using `(T.step_vec P2 i ((comb_vec X.F j i).mpr he)).2.2`.
+
+Rewrite `hs` using `[h2]`. Use `gE he` as an intermediate fact. Rewrite `this` using `[hs]`. Conclude with `this` after adjusting the coercions. Establish `hvec : (segLL X.F j).vec i = false`.
+
+Assume the negation of the conclusion as `h`. Conclude with `he ((comb_vec X.F j i).mp (by simpa using h))`. Establish `hs` using `(T.step_cov P1 i hvec).2.2`. Rewrite `hs` using `[h1]`. Use `gO he` as an intermediate fact.
+
+Rewrite `this` using `[hs]`. Simplify using `using this`.
+-/
 theorem restMemB_of (D : Formalism.BasicNotions.D7) (hAdm : AdmB D) (C₀ : ℝ) : RestMemB C₀ := by
   intro p n' r K _ _ _ X O _ _ _ S hX hLa hk j b hb q mm hmm x hx hW
   classical

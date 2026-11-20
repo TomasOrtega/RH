@@ -12,6 +12,15 @@ open UpperTheory.V.Z UpperTheory.V.Z.Ord
 
 set_option synthInstance.maxHeartbeats 200000
 
+/- English proof (translation)
+Introduce `hL L Ω _ _ _ _ _ l _ n c H hA A _ _ _ θ hθ ι P hP a K _ _ D ψ hU lam hlam y hy`. Set `x : A →ₐ[c.O] Qbar l` to `y.comp (IsScalarTower.toAlgHom c.O A (H.TK θ a K))`. Establish `hx : y.toRingHom.comp (algebraMap A _) = x.toRingHom` using `rfl`. Rewrite `hy` using `[hx]`. Take `⟨d, ξ, c0, sp, hsp⟩` from `UpperTheory.V.Hi.spec L Ω l n c H hA A θ hθ ι x lam hy`.
+
+Take `⟨Y, F, hY, hF0, hF, hop⟩` from `UpperTheory.V.Z.Ord.partPt hL L Ω l n c H hA A θ hθ ι P hP x lam d ξ c0 sp hsp hlam a K y hx`. Take `⟨hD, hch⟩` from `UpperTheory.V.Hi.coreEig hL L Ω l n c H hA A θ hθ ι a K D ψ hU y lam d ξ Y F hF.1 hF0 fun w j => hop _`. Use `⟨d, ξ, Y, hY, hD, fun v => ?_⟩` and prove the remaining obligations. Establish `hle : H.OrdAt θ ι x.toRingHom lam ξ K c0 ≤ H.ClAt θ ι x.toRingHom lam ξ K c0`. Unfold `HSet.OrdAt`.
+
+Conclude with `iSup_le fun _ => inf_le_left`. Establish `hC : F ∈ Y.Y ⊓ H.ClAt θ ι x.toRingHom lam ξ K c0` using `⟨hF.1, hle hF.2⟩`. Establish `hne : ∀ j : Fin n, ι (y (H.gen θ a K (.inr (v, j)))) ≠ 0` using `fun j => by`. Take `⟨s, hs⟩` from `(hA.art_spec v).surj (unif _)`. Rewrite using `[← hU.ψ_unif v j s (Subgroup.inclusion (Weil_le_Dec (H.ovr v)) s) rfl hs]`.
+
+Conclude with `(map_ne_zero ι).2 ((Units.isUnit _).map y).ne_zero`. Take `⟨ω, hsm, hPS, hinv, hb⟩` from `UpperTheory.V.Z.Ord.ordScal hL L Ω l n c H hA A θ hθ ι x lam d ξ c0 sp hsp Y K c0 le_rfl F hC hF0 v (fun j => ι (y (H.gen θ a K (.inr (v, j))))) fun j => ⟨hne j, hop _⟩`. Conclude with `⟨ω, hPS, hch v ω hsm hinv hb⟩`.
+-/
 theorem UpperTheory.V.Z.Ord.coreOrd :
     GlobalTheory.Mem.LiteralAutomorphy.LitN → CoreOrd := by
   intro hL L Ω _ _ _ _ _ l _ n c H hA A _ _ _ θ hθ ι P hP a K _ _ D ψ hU lam hlam y hy

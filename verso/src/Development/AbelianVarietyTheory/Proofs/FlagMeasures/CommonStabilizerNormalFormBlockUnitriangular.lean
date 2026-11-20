@@ -14,6 +14,11 @@ namespace GlobalTheory.Amp.StabNormal
 
 variable {k r : ℕ}
 
+/- English proof (translation)
+Unfold `XstJ Xst`. Use `congr 1`. Use extensionality with `v`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨a, rfl⟩`.
+
+Conclude with `⟨a.1, rfl⟩`. Introduce and unpack `⟨a, rfl⟩`. Conclude with `⟨⟨a, a.2⟩, rfl⟩`.
+-/
 theorem xstJ_self : XstJ k r r = Xst k r := by
   unfold XstJ Xst
   congr 1
@@ -24,6 +29,11 @@ theorem xstJ_self : XstJ k r r = Xst k r := by
   · rintro ⟨a, rfl⟩
     exact ⟨⟨a, a.2⟩, rfl⟩
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨hg, -, -, -, -, hX, -, hB⟩`. Use `⟨hg, fun a => ?_, hB⟩` and prove the remaining obligations. Rewrite using `[← xstJ_self]`. Conclude with `hX a a.2`.
+
+Introduce and unpack `⟨hg, hX, hB⟩`. Use `⟨hg, by simp, by simp, hB.1, fun a b hb => absurd b.2 (not_lt.2 hb), fun a _ => ?_, fun a ha => absurd a.2 (not_lt.2 ha), hB⟩` and prove the remaining obligations. Rewrite using `[xstJ_self]`. Conclude with `hX a`.
+-/
 theorem isNormal0_iff {β : Fin r → ℕ} {g : Mat k r} (z' : Fin (2 * r + k + 1) → ℂ) :
     IsNormal0 k r le_rfl β 1 (g *ᵥ z') z' g ↔ IsNormal k r β g := by
   constructor
@@ -37,6 +47,13 @@ theorem isNormal0_iff {β : Fin r → ℕ} {g : Mat k r} (z' : Fin (2 * r + k + 
     rw [xstJ_self]
     exact hX a
 
+/- English proof (translation)
+Establish `h1 : (fun a : Fin r => if h : r ≤ a.val then q.1 ⟨a, h⟩ else 0) = 0`. Use function extensionality and compare the values at `fun a => dif_neg (not_le.2 a.2)`. Establish `h2 : (fun p : UT r => if h : r ≤ p.1.1.val then q.2.1 ⟨p, h⟩ else 0) = 0`. Use function extensionality and compare the values at `fun p => dif_neg (not_le.2 p.1.1.2)`. Establish `h3 : (fun a : Fin r => if h : r ≤ a.val then q.2.2 ⟨a, h⟩ else 0) = 0`.
+
+Use function extensionality and compare the values at `fun a => dif_neg (not_le.2 a.2)`. Establish `hs : skewM (0 : UT r → ℂ) (0 : Fin r → ℝ) = 0`. Use extensionality with `a b`. Simplify using `only [skewM]`. Apply the tactic sequence `split_ifs <;> simp`.
+
+Use `show pEl k r (fun a : Fin r => if h : r ≤ a.val then q.1 ⟨a, h⟩ else 0) (skewM (fun p : UT r => if h : r ≤ p.1.1.val then q.2.1 ⟨p, h⟩ else 0) (fun a : Fin r => if h : r ≤ a.val then q.2.2 ⟨a, h⟩ else 0)) = 1`. Rewrite using `[h1, h2, h3, hs]`. Conclude with `Rad.pEl_zero`.
+-/
 theorem pTop_self (q : PTop k r r) : pTop k r r q = 1 := by
   have h1 : (fun a : Fin r => if h : r ≤ a.val then q.1 ⟨a, h⟩ else 0) = 0 :=
     funext fun a => dif_neg (not_le.2 a.2)
@@ -54,10 +71,18 @@ theorem pTop_self (q : PTop k r r) : pTop k r r q = 1 := by
   rw [h1, h2, h3, hs]
   exact Rad.pEl_zero
 
+/- English proof (translation)
+Use `show uEmb k r (upperIn β q.1) * pTop k r r q.2 = _`. Rewrite using `[pTop_self, mul_one]`.
+-/
 theorem rEl_self (β : Fin r → ℕ) (q : (UTin β → ℂ) × PTop k r r) : rEl k r r β q = uEmb k r (upperIn β q.1) := by
   show uEmb k r (upperIn β q.1) * pTop k r r q.2 = _
   rw [pTop_self, mul_one]
 
+/- English proof (translation)
+Use extensionality with `m`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨q, rfl⟩`. Conclude with `⟨q.1, (rEl_self β q).symm⟩`. Introduce and unpack `⟨x, rfl⟩`.
+
+Conclude with `⟨(x, 0), rEl_self β (x, 0)⟩`.
+-/
 theorem range_rEl (β : Fin r → ℕ) :
     Set.range (rEl k r r β) = Set.range fun x : UTin β → ℂ => uEmb k r (upperIn β x) := by
   ext m
@@ -67,6 +92,9 @@ theorem range_rEl (β : Fin r → ℕ) :
   · rintro ⟨x, rfl⟩
     exact ⟨(x, 0), rEl_self β (x, 0)⟩
 
+/- English proof (translation)
+Use `haveI : IsEmpty {a : Fin r // r ≤ a.val} := ⟨fun a => absurd a.2 (not_le.2 a.1.2)⟩`. Use `haveI : IsEmpty {p : UT r // r ≤ p.1.1.val} := ⟨fun p => absurd p.2 (not_le.2 p.1.1.1.2)⟩`. Rewrite using `[← Set.univ_prod_univ, Measure.volume_eq_prod, Measure.prod_prod, ← Set.univ_prod_univ, Measure.volume_eq_prod, Measure.prod_prod]`. Simplify using `[volume_pi, Measure.pi_univ]`.
+-/
 theorem volume_pTop : (volume : Measure (PTop k r r)) Set.univ = 1 := by
   haveI : IsEmpty {a : Fin r // r ≤ a.val} := ⟨fun a => absurd a.2 (not_le.2 a.1.2)⟩
   haveI : IsEmpty {p : UT r // r ≤ p.1.1.val} := ⟨fun p => absurd p.2 (not_le.2 p.1.1.1.2)⟩
@@ -74,6 +102,11 @@ theorem volume_pTop : (volume : Measure (PTop k r r)) Set.univ = 1 := by
     Measure.volume_eq_prod, Measure.prod_prod]
   simp [volume_pi, Measure.pi_univ]
 
+/- English proof (translation)
+Establish `hc : Continuous fun x : UTin β → ℂ => Matrix.of.symm (uEmb k r (upperIn β x))`. Establish `h` using `(RConj.continuous_rEl (k := k) (r := r) r β).comp (continuous_id.prodMk (continuous_const : Continuous fun _ : UTin β → ℂ => (0 : PTop k r r)))`. Use `continuous_pi fun i => continuous_pi fun j => ?_` and prove the remaining obligations. Use `h.matrix_elem i j` as an intermediate fact. Simplify `this` using `[Function.comp_def, rEl_self]`.
+
+Establish `hf : (fun q : (UTin β → ℂ) × PTop k r r => Matrix.of.symm (rEl k r r β q)) = (fun x : UTin β → ℂ => Matrix.of.symm (uEmb k r (upperIn β x))) ∘ Prod.fst`. Use function extensionality and compare the values at `q`. Simplify using `[rEl_self]`. Rewrite using `[lebR0, lebR, hf, ← Measure.map_map hc.measurable measurable_fst, Measure.volume_eq_prod, Measure.map_fst_prod, volume_pTop, one_smul]`.
+-/
 theorem lebesgueCommonStabilizerNormalForm_full_eq (β : Fin r → ℕ) : lebR0 k r r β = lebR k r β := by
   have hc : Continuous fun x : UTin β → ℂ => Matrix.of.symm (uEmb k r (upperIn β x)) := by
     have h := (RConj.continuous_rEl (k := k) (r := r) r β).comp
@@ -88,6 +121,11 @@ theorem lebesgueCommonStabilizerNormalForm_full_eq (β : Fin r → ℕ) : lebR0 
   rw [lebR0, lebR, hf, ← Measure.map_map hc.measurable measurable_fst, Measure.volume_eq_prod,
     Measure.map_fst_prod, volume_pTop, one_smul]
 
+/- English proof (translation)
+Establish `hv : (wI k r (Fin.last k)).val = r + k` using `rfl`. Establish `hH : Hpk k r (wI k r (Fin.last k)) (wI k r (Fin.last k)) = -1`. Unfold `Hpk`. Rewrite using `[hv]`. Simplify using the standard rewrite rules.
+
+Establish `he : herm (Hpk k r) (bvec (wI k r (Fin.last k))) (bvec (wI k r (Fin.last k))) = Hpk k r (wI k r (Fin.last k)) (wI k r (Fin.last k))`. Simplify using `[herm, bvec, Matrix.mulVec_single, dotProduct, Pi.single_apply]`. Unfold `Tz`. Rewrite using `[he, hH]`. Evaluate the numerical expressions.
+-/
 theorem tz_last : 0 < Tz k r (bvec (wI k r (Fin.last k))) := by
   have hv : (wI k r (Fin.last k)).val = r + k := rfl
   have hH : Hpk k r (wI k r (Fin.last k)) (wI k r (Fin.last k)) = -1 := by
@@ -101,6 +139,17 @@ theorem tz_last : 0 < Tz k r (bvec (wI k r (Fin.last k))) := by
   rw [he, hH]
   norm_num
 
+/- English proof (translation)
+Introduce `k r g₀ β hN`. Take `⟨w, hw⟩ : ∃ w : Fin (2 * r + k + 1) → ℂ, w = bvec (wI k r (Fin.last k))` from `⟨_, rfl⟩`. Establish `h0 : IsNormal0 k r le_rfl β 1 (g₀ *ᵥ w) w g₀` using `(isNormal0_iff w).2 hN`. Establish `hwW : inWb k r w` using `hw ▸ NfMid.inWb_bvec _`. Establish `hzW : inWb k r (g₀ *ᵥ w)` using `NfMid.inWb_mulVec h0 hwW`.
+
+Establish `hT : 0 < Tz k r (g₀ *ᵥ w)`. Rewrite using `[← NfMid.tz_eq h0, hw]`. Conclude with `tz_last`. Take `⟨hR, hC⟩` from `GlobalTheory.T.commonStabilizerSet_eq_range_normalForm k r r le_rfl (g₀ *ᵥ w) w g₀ β 1 hzW hwW hT h0`. Take `⟨hH, hU⟩` from `GlobalTheory.T.stabilizer_haar_unimodular_normal k r r le_rfl (g₀ *ᵥ w) w g₀ β 1 hzW hwW hT h0`.
+
+Establish `hM` using `RConj.lebR0_map_conjM_eq_of_isNormalZero k r r le_rfl (g₀ *ᵥ w) w g₀ β 1 hzW hwW hT h0`. Rewrite `hH`, `hU`, `hM` using `[lebesgueCommonStabilizerNormalForm_full_eq]`. Rewrite `hR` using `[range_rEl]`. Use `⟨hR, hC, hH, hU, ?_, hM⟩` and prove the remaining obligations. Establish `hi` using `NfMid.isNormal0_inv h0`.
+
+Rewrite `hi` using `[inv_one]`. Establish `hback : g₀⁻¹ *ᵥ (g₀ *ᵥ w) = w` using `NfMid.inv_mul_vec hN.1 w`. Establish `hi' : IsNormal0 k r le_rfl β 1 (g₀⁻¹ *ᵥ (g₀ *ᵥ w)) (g₀ *ᵥ w) g₀⁻¹`. Rewrite using `[hback]`. Conclude with `hi`.
+
+Conclude with `(isNormal0_iff (g₀ *ᵥ w)).1 hi'`.
+-/
 theorem stabiliser_normal : ∀ (k r : ℕ) (g₀ : Mat k r) (β : Fin r → ℕ), IsNormal k r β g₀ → Rset k r g₀ = Set.range (fun x : UTin β → ℂ => uEmb k r (upperIn β x)) ∧ IsClosedSub k r (Rset k r g₀) ∧ IsHaarOn (Rset k r g₀) (lebR k r β) ∧ IsUnimod (Rset k r g₀) (lebR k r β) ∧ IsNormal k r β g₀⁻¹ ∧ (lebR k r β).map (conjM g₀) = lebR k r β := by
   intro k r g₀ β hN
   obtain ⟨w, hw⟩ : ∃ w : Fin (2 * r + k + 1) → ℂ, w = bvec (wI k r (Fin.last k)) := ⟨_, rfl⟩

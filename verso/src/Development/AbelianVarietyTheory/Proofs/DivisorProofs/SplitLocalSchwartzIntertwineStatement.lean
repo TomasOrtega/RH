@@ -13,6 +13,9 @@ open GlobalTheory.Doubling (absE)
 attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField
 
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.EvZeroStd.map_stdB | exact GlobalTheory.EvZeroStd.map_stdB | (intros; apply GlobalTheory.EvZeroStd.map_stdB <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.split_local_schwartz_intertwine : ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] (ψ₀ : AddChar k ℂ),
     (∀ x : k, (∀ y ∈ 𝒪[k], ψ₀ (x * y) = 1) ↔ x ∈ 𝒪[k]) →
     ∀ (ν : kˣ →* ℂˣ) (ϖ : kˣ), GlobalTheory.SplitFlip.IsUnif ϖ → ∀ (c b a' : ℕ)

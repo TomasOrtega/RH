@@ -19,11 +19,19 @@ variable {D : D7}
 
 abbrev ht (D : D7) (n : ℕ) (g : G D n) : ℝ≥0 := iwAbs (modP (D := D) (n := n)) (K D n) g
 
+/- English proof (translation)
+Conclude with `(GlobalTheory.StdUnn.PolesModel.isIwasawa (D := D) (n := n)).continuous_iwAbs GlobalTheory.StdUnn.HeightExists.isClosed_P GlobalTheory.StdUnn.PolesModel.continuous_modP GlobalTheory.StdUnn.HeightExists.isCompact_K`.
+-/
 theorem continuous_ht (n : ℕ) : Continuous (ht D n) := by
   exact (GlobalTheory.StdUnn.PolesModel.isIwasawa (D := D) (n := n)).continuous_iwAbs
     GlobalTheory.StdUnn.HeightExists.isClosed_P GlobalTheory.StdUnn.PolesModel.continuous_modP
     GlobalTheory.StdUnn.HeightExists.isCompact_K
 
+/- English proof (translation)
+Take `⟨C, hC⟩` from `(GlobalTheory.StdUnn.HeightExists.isCompact_K (D := D) (n := n)).exists_bound_of_continuousOn hc.continuousOn`. Use `⟨max C 0, le_max_right _ _, fun g => ?_⟩` and prove the remaining obligations. Establish `hlaw : GlobalTheory.Doubling.IndLaw GlobalTheory.StdUnn.PolesModel.modP (χ.comp GlobalTheory.StdUnn.PolesModel.detP) t f`. Introduce `p g`. Conclude with `hl p.1 p.2 (GlobalTheory.StdUnn.HeightExists.leviBlock p) rfl g`.
+
+Conclude with `(GlobalTheory.StdUnn.PolesModel.isIwasawa (D := D) (n := n)).norm_le hlaw (fun k hk => (hC k hk).trans (le_max_left _ _)) g`.
+-/
 theorem norm_le_of_law {n : ℕ} {χ : (AE D)ˣ →* Circle} {t : ℂ} {f : G D n → ℂ} (hc : Continuous f)
     (hl : ∀ p ∈ P D n, ∀ a : GL (Fin n) (AE D), blkA (mat p) = a.1 → ∀ g,
       f (p * g) = (χ (Matrix.GeneralLinearGroup.det a) : ℂ) *
@@ -38,6 +46,11 @@ theorem norm_le_of_law {n : ℕ} {χ : (AE D)ˣ →* Circle} {t : ℂ} {f : G D 
   exact (GlobalTheory.StdUnn.PolesModel.isIwasawa (D := D) (n := n)).norm_le hlaw
     (fun k hk => (hC k hk).trans (le_max_left _ _)) g
 
+/- English proof (translation)
+Take `⟨C, hC⟩` from `((GlobalTheory.StdUnn.HeightExists.isCompact_K (D := D) (n := n)).prod hS).image ((continuous_ht (D := D) n).comp continuous_mul) |>.bddAbove`. Use `⟨C, fun x u hu => ?_⟩` and prove the remaining obligations. Take `⟨p, k, hk, rfl⟩` from `(GlobalTheory.StdUnn.PolesModel.isIwasawa (D := D) (n := n)).1 x`. Establish `h1 : ht D n (↑p * k * u) = GlobalTheory.StdUnn.PolesModel.modP p * ht D n (k * u)`. Rewrite using `[mul_assoc]`.
+
+Conclude with `(GlobalTheory.StdUnn.PolesModel.isIwasawa (D := D) (n := n)).iwAbs_left p (k * u)`. Establish `h2 : ht D n (↑p * k) = GlobalTheory.StdUnn.PolesModel.modP p` using `(GlobalTheory.StdUnn.PolesModel.isIwasawa (D := D) (n := n)).iwAbs_mul p hk`. Establish `h3 : ht D n (k * u) ≤ C` using `hC ⟨(k, u), Set.mk_mem_prod hk hu, rfl⟩`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem ht_mul_le {n : ℕ} {S : Set (G D n)} (hS : IsCompact S) :
     ∃ C : ℝ≥0, ∀ x, ∀ u ∈ S, ht D n (x * u) ≤ C * ht D n x := by
   obtain ⟨C, hC⟩ := ((GlobalTheory.StdUnn.HeightExists.isCompact_K (D := D) (n := n)).prod hS).image
@@ -54,11 +67,21 @@ theorem ht_mul_le {n : ℕ} {S : Set (G D n)} (hS : IsCompact S) :
     _ ≤ GlobalTheory.StdUnn.PolesModel.modP p * C := by gcongr
     _ = C * ht D n (↑p * k) := by rw [h2, mul_comm]
 
+/- English proof (translation)
+Unfold `GlobalTheory.StdUnn.blk4`. Conclude with `(Continuous.matrix_fromBlocks continuous_const hf continuous_const continuous_const).matrix_submatrix _ _`.
+-/
 theorem continuous_block_matrix {n : ℕ} {X : Type} [TopologicalSpace X] {f : X → Mx D n n} (hf : Continuous f) :
     Continuous fun x => (blk4 1 (f x) 0 1 : Mx D (n + n) (n + n)) := by
   unfold GlobalTheory.StdUnn.blk4
   exact (Continuous.matrix_fromBlocks continuous_const hf continuous_const continuous_const).matrix_submatrix _ _
 
+/- English proof (translation)
+Establish `hex : ∀ b : hermA D n, ∃ g : G D n, mat g = blk4 1 b.1 0 1` using `fun b => (GlobalTheory.StdUnn.Model.exists_unip (D := D) b.1).2 b.2`. Use `choose N hN using hex`. Use `⟨N, ?_, hN⟩` and prove the remaining obligations. Establish `hinv : ∀ b, mat (N b)⁻¹ = blk4 1 (-b.1) 0 1`. Introduce `b`.
+
+Establish `h1 : mat (N b) * blk4 1 (-b.1) 0 1 = 1`. Rewrite using `[hN, GlobalTheory.StdUnn.Model.submatrix_fromBlocks_mul]`. Simplify using `[GlobalTheory.StdUnn.Model.block_matrix_one]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[← mul_assoc, ← GlobalTheory.StdUnn.LeftInvSect.mat_mul, inv_mul_cancel, GlobalTheory.StdUnn.LeftInvSect.mat_one, one_mul]`.
+
+Use `continuous_induced_rng.2 ?_` and prove the remaining obligations. Rewrite using `[Units.continuous_iff]`. Prove the components needed by the constructor for the conclusion. Conclude with `(continuous_block_matrix continuous_subtype_val).congr (fun b => (hN b).symm)`. Conclude with `(continuous_block_matrix continuous_subtype_val.neg).congr (fun b => (hinv b).symm)`.
+-/
 theorem exists_continuous_unip (n : ℕ) :
     ∃ N : hermA D n → G D n, Continuous N ∧ ∀ b, mat (N b) = blk4 1 b.1 0 1 := by
   have hex : ∀ b : hermA D n, ∃ g : G D n, mat g = blk4 1 b.1 0 1 :=
@@ -80,6 +103,13 @@ theorem exists_continuous_unip (n : ℕ) :
   · exact (continuous_block_matrix continuous_subtype_val).congr (fun b => (hN b).symm)
   · exact (continuous_block_matrix continuous_subtype_val.neg).congr (fun b => (hinv b).symm)
 
+/- English proof (translation)
+Take `⟨M, hM⟩` from `c.2`. Use `⟨⟨M, fun i j => ?_⟩, hM⟩` and prove the remaining obligations. Establish `hM' : M.map (incA D) = c.1.1` using `hM`. Establish `hh : GlobalTheory.MixModel.adj (c.1.1 : Mx D n n) = c.1.1` using `c.1.2`. Establish `hij` using `congrFun (congrFun hh i) j`.
+
+Rewrite `hij` using `[← hM']`. Establish `hij' : Formalism.L2.Theta.cA D (incA D (M j i)) = incA D (M i j)`. Simplify `hij` using `[GlobalTheory.MixModel.adj]`. Apply `GlobalTheory.RatAut.incA_inj` to reduce the goal to its premises. Rewrite using `[← hij']`.
+
+Simplify using `[Formalism.L2.Theta.cA, Formalism.L2.Theta.incA, Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.sigR, Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.inclR, Algebra.TensorProduct.includeRight_apply, Algebra.TensorProduct.map_tmul]`.
+-/
 theorem exists_hermQ {n : ℕ} (c : ratHerm D n) : ∃ b : HermQ D n, b.1.map (incA D) = c.1.1 := by
   obtain ⟨M, hM⟩ := c.2
   refine ⟨⟨M, fun i j => ?_⟩, hM⟩
@@ -94,6 +124,11 @@ theorem exists_hermQ {n : ℕ} (c : ratHerm D n) : ∃ b : HermQ D n, b.1.map (i
   simp [Formalism.L2.Theta.cA, Formalism.L2.Theta.incA, Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.sigR, Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.inclR,
     Algebra.TensorProduct.includeRight_apply, Algebra.TensorProduct.map_tmul]
 
+/- English proof (translation)
+Introduce `γ hγ g`. Take `⟨u, hu⟩` from `GlobalTheory.StdUnn.LeftInvSect.det_rat hγ.2 (GlobalTheory.StdUnn.HeightExists.leviBlock ⟨γ, hγ.1⟩) rfl`. Establish `h1 : GlobalTheory.StdUnn.PolesModel.modP (⟨γ, hγ.1⟩ : P D n) = 1` using `by show GlobalTheory.Doubling.absA D (Matrix.GeneralLinearGroup.det (GlobalTheory.StdUnn.HeightExists.leviBlock ⟨γ, hγ.1⟩)) = 1`. Rewrite using `[hu]`. Conclude with `GlobalTheory.Doubling.absE_inclR u`.
+
+Establish `h` using `(GlobalTheory.StdUnn.PolesModel.isIwasawa (D := D) (n := n)).iwAbs_left ⟨γ, hγ.1⟩ g`. Rewrite `h` using `[h1, one_mul]`. Conclude with `h`.
+-/
 private theorem leftInv_ht {n : ℕ} : GlobalTheory.AutomorphicL2Unitary.LeftInv (P D n ⊓ GF D n) (ht D n) := by
   intro γ hγ g
   obtain ⟨u, hu⟩ := GlobalTheory.StdUnn.LeftInvSect.det_rat hγ.2 (GlobalTheory.StdUnn.HeightExists.leviBlock ⟨γ, hγ.1⟩) rfl
@@ -105,6 +140,15 @@ private theorem leftInv_ht {n : ℕ} : GlobalTheory.AutomorphicL2Unitary.LeftInv
   rw [h1, one_mul] at h
   exact h
 
+/- English proof (translation)
+Establish `hmem : ∀ c : ratHerm D n, w * N c.1 ∈ GF D n` using `fun c => by`. Take `⟨b, hb⟩` from `exists_hermQ c`. Conclude with `GlobalTheory.CompanionTheory.Hypotheses₂.WeilU.cell_mem_GF hw b (by rw [hN, hb])`. Set `i : ratHerm D n → GlobalTheory.Eis.Cosets (P D n) (GF D n)` to `fun c => GlobalTheory.AutomorphicL2Unitary.mk ((P D n).subgroupOf (GF D n)) ⟨w * N c.1, hmem c⟩`. Establish `hi : Function.Injective i`.
+
+Introduce `c c' h`. Establish `h' : (⟨w * N c'.1, hmem c'⟩ : GF D n) * (⟨w * N c.1, hmem c⟩)⁻¹ ∈ (P D n).subgroupOf (GF D n)` using `QuotientGroup.rightRel_apply.mp (Quotient.exact h)`. Rewrite `h'` using `[Subgroup.mem_subgroupOf]`. Establish `e` using `GlobalTheory.CompanionTheory.Hypotheses₂.WeilU.cell_inj hw (hN c.1) (hN c'.1) (by simpa using h')`. Conclude with `Subtype.ext (Subtype.ext e)`.
+
+Establish `hs'` using `(GlobalTheory.StdUnn.PolesModel.summable_spherical (D := D) (n := n) s₁.re hs).comp_injective hi`. Use `hs'.congr (fun c => ?_)` and prove the remaining obligations. Simplify using `only [Function.comp_apply, i]`. Rewrite using `[GlobalTheory.Eis.term_mk leftInv_ht, mul_one]`. Use `congr 1`.
+
+Simplify using the standard rewrite rules.
+-/
 theorem summable_ht {n : ℕ} {s₁ : ℂ} (hs : (n : ℝ) / 2 < s₁.re) {w : G D n} (hw : mat w = blk4 0 1 (-1) 0)
     {N : hermA D n → G D n} (hN : ∀ b, mat (N b) = blk4 1 b.1 0 1) :
     Summable fun c : ratHerm D n => (ht D n (w * N c.1) : ℝ) ^ (s₁ + (n : ℂ) / 2).re := by
@@ -127,6 +171,17 @@ theorem summable_ht {n : ℕ} {s₁ : ℂ} (hs : (n : ℝ) / 2 < s₁.re) {w : G
   congr 1
   simp
 
+/- English proof (translation)
+Take `⟨w, hw⟩` from `GlobalTheory.StdUnn.Model.exists_weyl (D := D) (n := r)`. Take `⟨N, hNc, hN⟩` from `exists_continuous_unip (D := D) r`. Take `⟨C, hC0, hC⟩` from `norm_le_of_law (t := GlobalTheory.StdUnn.s0 V r + (r : ℂ) / 2) hc (fun p hp a ha g => GlobalTheory.CompanionTheory.WeilLaw.weil_parabolic_law D r ψ χ θ V μ ω hω Φ p hp a ha g)`. Take `⟨C', hC'⟩` from `ht_mul_le (D := D) (n := r) (hK.image hNc)`. Establish `hV' : (2 * r : ℝ) < V.rank` using `by exact_mod_cast hV`.
+
+Establish `hs : (r : ℝ) / 2 < (GlobalTheory.StdUnn.s0 V r).re`. Simplify using `[GlobalTheory.StdUnn.s0]`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hsum` using `summable_ht hs hw hN`. Establish `ht0 : 0 ≤ (GlobalTheory.StdUnn.s0 V r + (r : ℂ) / 2).re`.
+
+Simplify using `[GlobalTheory.StdUnn.s0]`. Check the signs of the components of the expression. Use `⟨fun c => C * (C' : ℝ) ^ (GlobalTheory.StdUnn.s0 V r + (r : ℂ) / 2).re * (ht D r (w * N c.1) : ℝ) ^ (GlobalTheory.StdUnn.s0 V r + (r : ℂ) / 2).re, hsum.mul_left _, fun c b hb => ?_⟩` and prove the remaining obligations. Establish `e1 : Jt ψ V μ Φ.1 (b + c.1) = (ω (w * N (b + c.1)) Φ).1 0` using `(GlobalTheory.CompanionTheory.Hypotheses₂.WeilU.cell_value hω hw (hN (b + c.1)) Φ).symm`. Establish `e2 : N (b + c.1) = N c.1 * N b`.
+
+Apply `GlobalTheory.StdUnn.LeftInvSect.mat_inj` to reduce the goal to its premises. Rewrite using `[GlobalTheory.StdUnn.LeftInvSect.mat_mul, hN, hN, hN, GlobalTheory.StdUnn.Model.submatrix_fromBlocks_mul]`. Simplify using the standard rewrite rules. Establish `h2 : ht D r (w * N c.1 * N b) ≤ C' * ht D r (w * N c.1)` using `hC' _ _ ⟨b, hb, rfl⟩`. Establish `h2' : (ht D r (w * N c.1 * N b) : ℝ) ≤ (C' : ℝ) * ht D r (w * N c.1)` using `by exact_mod_cast h2`.
+
+Rewrite using `[e1, e2, ← mul_assoc]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Real.mul_rpow (by positivity) (by positivity)]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem jt_bound {r : ℕ} {V : HSp D} (hV : 2 * r < V.rank) {ψ : AddChar (AF D.host.F) ℂ} {χ : (AE D)ˣ →* Circle}
     {θ : InfFam D} {μ : Measure (Mx D V.rank r)} {ω : G D r →* Module.End ℂ (schwartzA θ V.rank r)}
     (hω : IsWeilSch ψ χ θ V μ ω) (Φ : schwartzA θ V.rank r) (hc : Continuous fun g : G D r => (ω g Φ).1 0)
@@ -165,6 +220,23 @@ theorem jt_bound {r : ℕ} {V : HSp D} (hV : 2 * r < V.rank) {ψ : AddChar (AF D
         rw [Real.mul_rpow (by positivity) (by positivity)]
         ring
 
+/- English proof (translation)
+Establish `hlamE : algebraMap D.host.F D.host.E lam ≠ 0` using `(map_ne_zero _).2 hlam0`. Establish `hxi : D.host.xi0 ≠ 0` using `GlobalTheory.DualPairCompare.embedding_xi_zero_ne_zero D`. Use `set μ : D.host.E := -D.host.xi0 / algebraMap D.host.F D.host.E lam with hμ'`. Establish `hμ : IsSkew μ`. Use `⟨div_ne_zero (neg_ne_zero.2 hxi) hlamE, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[hμ', star_div₀, star_neg, GlobalTheory.DualPairCheck.star_purely_imaginary_eq_neg, Formalism.IndefR.Eqv.star_algebraMapF]`. Expand and normalize the polynomial expressions, which then agree. Establish `hlam : algebraMap D.host.F D.host.E lam = -D.host.xi0 / μ`. Rewrite using `[hμ']`. Clear the denominators using the available nonvanishing facts.
+
+Take `⟨κ, hκ⟩` from `GlobalTheory.StdUnn.chart_exists D A μ hμ`. Take `⟨χ, hχ₁, hχ₂⟩` from `GlobalTheory.RawLift.exists_hecke_resEta D B.rank`. Establish `hr1 : ResEta D 1 (dblSp A).rank`. Use `GlobalTheory.Eis.SimplePoleModel.resEta_one_two_mul D A.rank` as an intermediate fact. Use `this using 2` and compare the differences between its conclusion and the goal.
+
+Simplify using `[GlobalTheory.Doubling.dblSp]`. Use linear arithmetic over natural numbers and integers. Take `⟨ω, hW⟩` from `GlobalTheory.weilRepresentationUnitaryPair D ψ (dblSp A) B 1 χ hψ ⟨continuous_const, fun _ => rfl⟩ hχ₁ hr1 hχ₂`. Take `⟨omS, hT⟩` from `GlobalTheory.StdUnn.exists_transport_std D ψ A B χ ω hW ν 𝓖 hcov θ hθ κ`. Establish `hWS : IsWeilSch (shift ψ lam) χ⁻¹ θ B ν omS` using `⟨GlobalTheory.StdUnn.transport_levi D ψ A B χ ω hW ν 𝓖 hcov θ hθ μ hμ κ hκ omS hT lam hlam, GlobalTheory.StdUnn.Unip.transport_unip D ψ A B χ ω hW ν 𝓖 hcov θ hθ μ hμ κ hκ omS hT lam hlam, GlobalTheory.StdUnn.WeylStd.main D ψ A B χ ω hW ν 𝓖 hcov θ hθ μ hμ κ hκ omS hT lam hlam⟩`.
+
+Take `⟨f, hf, hfΦ⟩` from `((GlobalTheory.SchSchwartzAll.schSchwartz D) ψ hψ θ hθ A B ν 𝓖 hcov).2.1 Φ.1 Φ.2`. Establish `hΦ : Φ.1 = sch ψ A B ν 𝓖 (ω (((1 : siegel A) : GA D (dblSp A))⁻¹, 1) f)`. Simplify using `only [OneMemClass.coe_one, inv_one, Prod.mk_one_one, map_one, Module.End.one_apply]`. Conclude with `hfΦ.symm`. Take `⟨-, -, hact⟩` from `GlobalTheory.StdUnn.flat_swSec_eq_sect D ψ A B χ ω hW ν 𝓖 hcov θ hθ μ hμ κ hκ omS hT lam hlam 1 1 f hf Φ hΦ`.
+
+Establish `hact' : ∀ g, (omS (κ g) Φ).1 = sch ψ A B ν 𝓖 (ω (g, 1) f)` using `fun g => by`. Use `hact g` as an intermediate fact. Rewrite `this` using `[OneMemClass.coe_one, mul_one]`. Then use the resulting hypothesis. Establish `hval : ∀ g, swSection A B ν 𝓖 ω f g = 1 * (fun γ => (omS γ Φ).1 0) (κ (g * 1))` using `fun g => by`. Simplify using `only [one_mul, mul_one]`.
+
+Rewrite using `[hact' g, GlobalTheory.Core.Rk.IP.swSection_eq_swSec]`. Simplify using `only [GlobalTheory.IndefiniteRowSideFullHecke.SphericalZero.swSec, sch, mixS_dblDec_zero]`. Use `⟨χ⁻¹, omS, hWS, ?_⟩` and prove the remaining obligations. Establish `e : (fun γ : G D A.rank => (omS γ Φ).1 0) = swSection A B ν 𝓖 ω f ∘ κ.symm`. Use function extensionality and compare the values at `γ`.
+
+Use `hval (κ.symm γ)` as an intermediate fact. Simplify using `only [one_mul, mul_one, MulEquiv.apply_symm_apply] at this`. Conclude with `this.symm`. Rewrite using `[e]`. Conclude with `(GlobalTheory.CompanionTheory.SiegelWeil.swSection_continuous D ψ A B χ ω hW f hf ν 𝓖 hcov).comp (GlobalTheory.CompanionTheory.ChartSymm.continuous_symm D A μ hμ κ hκ)`.
+-/
 theorem exists_weil_value (A B : HSp D) (ψ : AddChar (AF D.host.F) ℂ) (hψ : IsStdChar D ψ (-1))
     (lam : D.host.F) (hlam0 : lam ≠ 0) (θ : InfFam D) (hθ : IsInfFam θ) (ν : Measure (Mx D B.rank A.rank))
     (𝓖 : Set (Mx D B.rank A.rank)) (hcov : IsCovolOne (ratMx D B.rank A.rank) ν 𝓖) (Φ : schwartzA θ B.rank A.rank) :
@@ -214,6 +286,11 @@ theorem exists_weil_value (A B : HSp D) (ψ : AddChar (AF D.host.F) ℂ) (hψ : 
   exact (GlobalTheory.CompanionTheory.SiegelWeil.swSection_continuous D ψ A B χ ω hW f hf ν 𝓖 hcov).comp
     (GlobalTheory.CompanionTheory.ChartSymm.continuous_symm D A μ hμ κ hκ)
 
+/- English proof (translation)
+Introduce `D r V ψ θ μ φ hV hψ hθ h𝓕 hφ Kc hK`. Take `⟨𝓕, h𝓕⟩` from `h𝓕`. Take `⟨A, hA⟩ : ∃ A : HSp D, A.rank = r` from `⟨Formalism.BasicNotions.Examples₂.stdSpace (fun x hx => hx.map (starRingEnd D.host.E).toIntAlgHom) r (fun _ => false) 0 0, rfl⟩`. Substitute `hA` using the available equality. Take `⟨ψ₀, hstd, a, ha, hψa⟩` from `GlobalTheory.ThetaAllChar.exists_std hψ`.
+
+Establish `hsh : ψ = GlobalTheory.StdUnn.shift ψ₀ a` using `AddChar.ext _ _ (fun x => by rw [hψa]; rfl)`. Take `⟨χ, ω, hω, hc⟩` from `exists_weil_value A V ψ₀ hstd a ha θ hθ μ 𝓕 h𝓕 ⟨φ, hφ⟩`. Substitute `hsh` using the available equality. Conclude with `jt_bound hV hω ⟨φ, hφ⟩ hc Kc hK`.
+-/
 theorem jt_unif : ∀ (D : D7) (r : ℕ) (V : HSp D) (ψ : AddChar (AF D.host.F) ℂ) (θ : InfFam D) (μ : Measure (Mx D V.rank r))
     (φ : Mx D V.rank r → ℂ), 2 * r < V.rank → IsCharAF D.host.F ψ → IsInfFam θ →
     (∃ 𝓕, IsCovolOne (ratMx D V.rank r) μ 𝓕) → φ ∈ schwartzA θ V.rank r →

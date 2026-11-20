@@ -15,6 +15,11 @@ namespace GlobalTheory.SecForm.ChernTwo
 
 variable {n : ℕ}
 
+/- English proof (translation)
+Apply `Subtype.ext` to reduce the goal to its premises. Establish `h (u w : Fin n ⊕ Fin n → ℂ) : ExteriorAlgebra.ι ℂ u * ExteriorAlgebra.ι ℂ w = -(ExteriorAlgebra.ι ℂ w * ExteriorAlgebra.ι ℂ u)` using `eq_neg_of_add_eq_zero_left (ExteriorAlgebra.ι_add_mul_swap u w)`. Establish `h3 : dzb b * (dz c * dzb d) = -(dzb d * (dz c * dzb b))`. Establish `e1 : dzb b * dz c = -(dz c * dzb b)` using `h _ _`. Establish `e2 : dzb b * dzb d = -(dzb d * dzb b)` using `h _ _`.
+
+Establish `e3 : dz c * dzb d = -(dzb d * dz c)` using `h _ _`. Rewrite using `[← mul_assoc, e1, neg_mul, mul_assoc, e2, mul_neg, ← mul_assoc, e3, neg_mul, neg_neg, mul_assoc]`. Express the relevant statement in the definitionally equal form `dz a * dzb b * (dz c * dzb d) = -(dz a * dzb d * (dz c * dzb b))`. Rewrite using `[mul_assoc, h3, mul_neg, mul_assoc]`.
+-/
 theorem sym_mul_swap (a b c d : Fin n) : sym (a, b) * sym (c, d) = -(sym (a, d) * sym (c, b)) := by
   apply Subtype.ext
   have h (u w : Fin n ⊕ Fin n → ℂ) : ExteriorAlgebra.ι ℂ u * ExteriorAlgebra.ι ℂ w =
@@ -31,15 +36,24 @@ theorem sym_mul_swap (a b c d : Fin n) : sym (a, b) * sym (c, d) = -(sym (a, d) 
 def four (f : Fin n → Fin n → Fin n → Fin n → ℂ) : Ev n :=
   ∑ a, ∑ b, ∑ c, ∑ d, f a b c d • (sym (a, b) * sym (c, d))
 
+/- English proof (translation)
+Simplify using `only [four, Fintype.sum_prod_type]`.
+-/
 theorem four_eq (f : Fin n → Fin n → Fin n → Fin n → ℂ) :
     four f = ∑ x : (Fin n × Fin n) × (Fin n × Fin n), f x.1.1 x.1.2 x.2.1 x.2.2 • (sym x.1 * sym x.2) := by
   simp only [four, Fintype.sum_prod_type]
 
+/- English proof (translation)
+Rewrite using `[four_eq, four_eq]`. Use `Fintype.sum_equiv (Equiv.prodComm _ _) _ _ fun x => ?_` and prove the remaining obligations. Simplify using `[mul_comm]`.
+-/
 theorem four_swap (f : Fin n → Fin n → Fin n → Fin n → ℂ) : four (fun a b c d => f c d a b) = four f := by
   rw [four_eq, four_eq]
   refine Fintype.sum_equiv (Equiv.prodComm _ _) _ _ fun x => ?_
   simp [mul_comm]
 
+/- English proof (translation)
+Rewrite using `[four_eq, four_eq, ← Finset.sum_neg_distrib]`. Use `Fintype.sum_equiv (⟨fun x => ((x.1.1, x.2.2), (x.2.1, x.1.2)), fun x => ((x.1.1, x.2.2), (x.2.1, x.1.2)), fun _ => rfl, fun _ => rfl⟩) _ _ ?_` and prove the remaining obligations. Introduce and unpack `⟨⟨a, b⟩, c, d⟩`. Simplify using `only [Equiv.coe_fn_mk]`. Rewrite using `[sym_mul_swap, smul_neg]`.
+-/
 theorem four_swap' (f : Fin n → Fin n → Fin n → Fin n → ℂ) : four (fun a b c d => f a d c b) = -four f := by
   rw [four_eq, four_eq, ← Finset.sum_neg_distrib]
   refine Fintype.sum_equiv (⟨fun x => ((x.1.1, x.2.2), (x.2.1, x.1.2)), fun x => ((x.1.1, x.2.2), (x.2.1, x.1.2)),
@@ -48,18 +62,34 @@ theorem four_swap' (f : Fin n → Fin n → Fin n → Fin n → ℂ) : four (fun
   simp only [Equiv.coe_fn_mk]
   rw [sym_mul_swap, smul_neg]
 
+/- English proof (translation)
+Simplify using `only [four, add_smul, Finset.sum_add_distrib]`.
+-/
 theorem four_add (f g : Fin n → Fin n → Fin n → Fin n → ℂ) :
     four (fun a b c d => f a b c d + g a b c d) = four f + four g := by
   simp only [four, add_smul, Finset.sum_add_distrib]
 
+/- English proof (translation)
+Simplify using `only [four, sub_smul, Finset.sum_sub_distrib]`.
+-/
 theorem four_sub (f g : Fin n → Fin n → Fin n → Fin n → ℂ) :
     four (fun a b c d => f a b c d - g a b c d) = four f - four g := by
   simp only [four, sub_smul, Finset.sum_sub_distrib]
 
+/- English proof (translation)
+Simplify using `only [four, mul_smul, Finset.smul_sum]`.
+-/
 theorem four_mul (t : ℂ) (f : Fin n → Fin n → Fin n → Fin n → ℂ) :
     four (fun a b c d => t * f a b c d) = t • four f := by
   simp only [four, mul_smul, Finset.smul_sum]
 
+/- English proof (translation)
+Use `set f : Fin n → Fin n → Fin n → Fin n → ℂ := fun a b c d => α (coordVec a) (coordVec b) * β (coordVec c) (coordVec d) with hf`. Establish `e0 : ofValues α * ofValues β = four f`. Simplify using `only [ofValues, four, Finset.sum_mul]`. Simplify using `only [Finset.mul_sum, smul_mul_smul_comm, hf]`. Establish `e1` using `four_swap f`.
+
+Establish `e2` using `four_swap' f`. Establish `e3` using `four_swap' fun a b c d => f c d a b`. Establish `e : four (fun a b c d => wedge α β (coordVec a) (coordVec b) (coordVec c) (coordVec d)) = four f + four (fun a b c d => f c d a b) - four (fun a b c d => f a d c b) - four (fun a b c d => f c b a d)`. Rewrite using `[← four_add, ← four_sub, ← four_sub]`. Both sides reduce to the same expression.
+
+Rewrite using `[e, e3, e1, e2, e0]`. Use `module`.
+-/
 theorem four_wedge (α β : V n → V n → ℂ) :
     four (fun a b c d => wedge α β (coordVec a) (coordVec b) (coordVec c) (coordVec d)) =
       (4 : ℂ) • (ofValues α * ofValues β) := by
@@ -77,6 +107,15 @@ theorem four_wedge (α β : V n → V n → ℂ) :
   rw [e, e3, e1, e2, e0]
   module
 
+/- English proof (translation)
+Rewrite using `[Matrix.charpolyRev, ← Matrix.det_submatrix_equiv_self (finSumFinEquiv (m := 1) (n := 1)).symm]`. Establish `h0 : (finSumFinEquiv (m` using `1) (n := 1)).symm (0 : Fin 2) = .inl 0 := rfl`. Establish `h1 : (finSumFinEquiv (m` using `1) (n := 1)).symm (1 : Fin 2) = .inr 0 := rfl`. Rewrite using `[Matrix.det_fin_two]`. Simplify using `only [Matrix.submatrix_apply, h0, h1]`.
+
+Establish `: ∀ p q : Fin 1 ⊕ Fin 1, (1 - (Polynomial.X : Polynomial R) • (-F).map Polynomial.C) p q = (if p = q then 1 else 0) + Polynomial.C (F p q) * Polynomial.X`. Introduce `p q`. Rewrite using `[Matrix.sub_apply, Matrix.smul_apply, Matrix.map_apply, Matrix.neg_apply, Matrix.one_apply, map_neg, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree. Simplify using `only [this]`.
+
+Establish `e : ∀ a b c d : R, ((1 + Polynomial.C a * Polynomial.X) * (1 + Polynomial.C d * Polynomial.X) - (0 + Polynomial.C b * Polynomial.X) * (0 + Polynomial.C c * Polynomial.X)) = 1 + Polynomial.C (a + d) * Polynomial.X + Polynomial.C (a * d - b * c) * Polynomial.X ^ 2`. Introduce `a b c d`. Simplify using `only [map_add, map_sub, map_mul]`. Expand and normalize the polynomial expressions, which then agree. Simplify using `only [if_true, reduceCtorEq, if_false, e]`.
+
+Simplify using `[Polynomial.coeff_one, Polynomial.coeff_X, -map_add, -map_sub, -map_mul]`.
+-/
 theorem coeff_two {R : Type} [CommRing R] (F : Matrix (Fin 1 ⊕ Fin 1) (Fin 1 ⊕ Fin 1) R) :
     (Matrix.charpolyRev (-F)).coeff 2 =
       F (.inl 0) (.inl 0) * F (.inr 0) (.inr 0) - F (.inl 0) (.inr 0) * F (.inr 0) (.inl 0) := by
@@ -99,6 +138,9 @@ theorem coeff_two {R : Type} [CommRing R] (F : Matrix (Fin 1 ⊕ Fin 1) (Fin 1 �
   simp only [if_true, reduceCtorEq, if_false, e]
   simp [Polynomial.coeff_one, Polynomial.coeff_X, -map_add, -map_sub, -map_mul]
 
+/- English proof (translation)
+Simplify using `[GlobalTheory.GoodMetric.curvPoly, ofValues, Algebra.smul_def]`.
+-/
 theorem aeval_curvPoly {r : Type} [Fintype r] [DecidableEq r] (G : V n → Matrix r r ℂ) (v : V n) (p q : r) :
     MvPolynomial.aeval sym (GlobalTheory.GoodMetric.curvPoly G v p q) = ofValues (fun ξ η => curv G v ξ η p q) := by
   simp [GlobalTheory.GoodMetric.curvPoly, ofValues, Algebra.smul_def]
@@ -109,6 +151,13 @@ namespace GlobalTheory.SecForm
 
 open ChernTwo
 
+/- English proof (translation)
+Establish `hc : ∀ a b c d, chernTwo G v a b c d = kappa ^ 2 * curvMinor G v (.inl 0) (.inr 0) a b c d`. Introduce `a b c d`. Simplify using `only [chernTwo, Fintype.sum_sum_type, Finset.univ_unique, Finset.sum_singleton, curvMinor_self, Fin.default_eq_zero, curvMinor_comm G v (.inr 0) (.inl 0)]`. Expand and normalize the polynomial expressions, which then agree. Establish `e : ofValuesTwo (chernTwo G v) = (1 / 4 : ℂ) • four fun a b c d => kappa ^ 2 * curvMinor G v (.inl 0) (.inr 0) (coordVec a) (coordVec b) (coordVec c) (coordVec d)`.
+
+Simplify using `only [ofValuesTwo, four, hc]`. Rewrite using `[e, four_mul]`. Simplify using `only [curvMinor]`. Rewrite using `[four_sub, four_wedge, four_wedge, chernAt, GlobalTheory.GoodMetric.chernPoly, coeff_two, map_sub, map_mul, map_mul]`. Simplify using `only [aeval_curvPoly]`.
+
+Use `module`.
+-/
 theorem chernAt_two_eq {n : ℕ} (G : V n → Matrix (Fin 1 ⊕ Fin 1) (Fin 1 ⊕ Fin 1) ℂ) (v : V n) :
     chernAt G v 2 = ofValuesTwo (chernTwo G v) := by
   have hc : ∀ a b c d, chernTwo G v a b c d = kappa ^ 2 * curvMinor G v (.inl 0) (.inr 0) a b c d := by

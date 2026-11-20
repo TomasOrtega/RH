@@ -20,12 +20,18 @@ namespace GlobalTheory.CompanionTheory.MPSmooth
 
 variable {m : ℕ} {n : Fin (m + 1) → ℕ}
 
+/- English proof (translation)
+Unfold both sides. The equivalence is reflexive.
+-/
 theorem mem_blockChart_iff (y : CxPts (mpStr ℤ m n) σ₀) (k : Fin (m + 1)) (i : Bk n k) :
     y ∈ ptsIn (mpStr ℤ m n) σ₀ (blockChart n k i) ↔
       GlobalTheory.Points.PtsOver.map (prB n k) (GroundTheory.Arith.SchemeCoh.ProjSpace.pr_toSpecBase ℤ m n k) _ y ∈
         ptsIn (PSpace.str ℤ (n k)) σ₀ (chart ℤ (n k) i) :=
   Iff.rfl
 
+/- English proof (translation)
+Establish `e : pullRatio (prB n k) (blockChart n k i) i le_rfl j = (prB n k).app (chart ℤ (n k) i) (ratio ℤ (n k) i j)`. Rewrite using `[Scheme.Hom.app_eq_appLE]`. Both sides reduce to the same expression. Rewrite using `[e]`. Conclude with `CxPts.ev_app (p := PSpace.str ℤ (n k)) (q := mpStr ℤ m n) (prB n k) (GroundTheory.Arith.SchemeCoh.ProjSpace.pr_toSpecBase ℤ m n k) (chart ℤ (n k) i) (ratio ℤ (n k) i j) y`.
+-/
 theorem ev_pullRatio (y : CxPts (mpStr ℤ m n) σ₀) (k : Fin (m + 1)) (i j : Bk n k) :
     CxPts.ev (mpStr ℤ m n) σ₀ (blockChart n k i) (pullRatio (prB n k) _ i le_rfl j) y =
       CxPts.ev (PSpace.str ℤ (n k)) σ₀ (chart ℤ (n k) i) (ratio ℤ (n k) i j)
@@ -37,6 +43,11 @@ theorem ev_pullRatio (y : CxPts (mpStr ℤ m n) σ₀) (k : Fin (m + 1)) (i j : 
   exact CxPts.ev_app (p := PSpace.str ℤ (n k)) (q := mpStr ℤ m n) (prB n k)
     (GroundTheory.Arith.SchemeCoh.ProjSpace.pr_toSpecBase ℤ m n k) (chart ℤ (n k) i) (ratio ℤ (n k) i j) y
 
+/- English proof (translation)
+Establish `H : IsUnder (multiprojectivePoint c z) z` using `fun k i => by`. Take `⟨h₁, h₂⟩` from `GlobalTheory.T.projective_point_chart_ratio (n k) (c k) (fun i => z ⟨k, i⟩) (hz k)`. Establish `e` using `map_prB_ptMP c z k`. Use `⟨?_, fun j hy => ?_⟩` and prove the remaining obligations. Rewrite using `[mem_blockChart_iff, e]`.
+
+Conclude with `h₁ i`. Rewrite using `[ev_pullRatio, e]`. Conclude with `h₂ i j (by rw [← e]; exact (mem_blockChart_iff _ k i).1 hy)`. Use `⟨H, CxPts.mem_ptsIn.2 (Set.mem_iInter.2 fun k => ?_)⟩` and prove the remaining obligations. Conclude with `CxPts.mem_ptsIn.1 ((H k (c k)).1.2 (hz k))`.
+-/
 theorem isUnder_ptMP (m : ℕ) (n : Fin (m + 1) → ℕ) (c : ∀ k, Bk n k) (z : (Σ k, Bk n k) → ℂ)
     (hz : ∀ k, z ⟨k, c k⟩ ≠ 0) :
     IsUnder (GlobalTheory.CompanionTheory.MPSmooth.multiprojectivePoint c z) z ∧ GlobalTheory.CompanionTheory.MPSmooth.multiprojectivePoint c z ∈ ptsIn (mpStr ℤ m n) σ₀ (mchart c) := by

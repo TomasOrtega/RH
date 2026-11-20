@@ -13,10 +13,16 @@ section Man
 
 variable {e : ℕ} {X : Type} [TopologicalSpace X] (A : FinHolAtlas e X)
 
+/- English proof (translation)
+Introduce `j t ht` and use `(hf _ ht.2.2).comp (f := A.chart k ∘ (A.chart j).symm) (A.holo j k t ⟨ht.1, ht.2.1⟩)`.
+-/
 theorem holoOn_chart (k : Fin A.n) {V : Set (Fin e → ℂ)} {f : (Fin e → ℂ) → ℂ} (hf : AnalyticOnNhd ℂ f V) :
     A.HoloOn ((A.chart k).source ∩ A.chart k ⁻¹' V) fun y => f (A.chart k y) := fun j t ht =>
   (hf _ ht.2.2).comp (f := A.chart k ∘ (A.chart j).symm) (A.holo j k t ⟨ht.1, ht.2.1⟩)
 
+/- English proof (translation)
+Use `choose G hG hGe using hp`. Take `⟨V', h', hV', hx'⟩` from `eventually_nhds_iff.1 ((hV.eventually_mem hxV).and ((Filter.eventually_all.2 fun p => (hG p).eventually_analyticAt).and (Filter.eventually_all.2 hGe)))`. Use `⟨(A.chart k).source ∩ A.chart k ⁻¹' V', (A.chart k).isOpen_inter_preimage hV', ⟨hx, hx'⟩, fun τ a b => holoOn_chart A k ((ha τ a b).mono fun t ht => (h' t ht).1), fun τ y hy => hd _ (h' _ hy.2).1 τ, fun p => ⟨fun y => G p (A.chart k y), holoOn_chart A k fun t ht => (h' t ht).2.1 …` and prove the remaining obligations. Use `(h' _ hy.2).2.2 p` as an intermediate fact. Rewrite `this` using `[(A.chart k).left_inv hy.1]`. Then use the resulting hypothesis.
+-/
 theorem periodChart {Ψ : Type} [Finite Ψ] {N j : ℕ} (pot : Ψ × Fin N → LocPot X) (k : Fin A.n) {V : Set (Fin e → ℂ)}
     {gm : Ψ → (Fin e → ℂ) → Matrix (Fin N) (Fin N) ℂ} (hV : IsOpen V) {x : X} (hx : x ∈ (A.chart k).source)
     (hxV : A.chart k x ∈ V) (ha : ∀ τ a b, AnalyticOnNhd ℂ (fun t => gm τ t a b) V) (hd : ∀ t ∈ V, ∀ τ, InFlagDomain N j (gm τ t))
@@ -32,6 +38,21 @@ theorem periodChart {Ψ : Type} [Finite Ψ] {N j : ℕ} (pot : Ψ × Fin N → L
   have := (h' _ hy.2).2.2 p
   rwa [(A.chart k).left_inv hy.1] at this
 
+/- English proof (translation)
+Introduce `k' hx' v hv`. Set `T` to `A.chart k ∘ (A.chart k').symm`. Set `T'` to `A.chart k' ∘ (A.chart k).symm`. Establish `e₁ : T (A.chart k' x) = A.chart k x` using `congrArg _ ((A.chart k').left_inv hx')`. Establish `hT : DifferentiableAt ℂ T (A.chart k' x)` using `(A.holo k' k _ ⟨(A.chart k').map_source hx', by`.
+
+Rewrite using `[Set.mem_preimage]`. Rewrite using `[(A.chart k').left_inv hx']⟩).differentiableAt` and apply the resulting hypothesis. Establish `hT' : DifferentiableAt ℂ T' (T (A.chart k' x))`. Rewrite using `[e₁]`. Conclude with `(A.holo k k' _ ⟨(A.chart k).map_source hx, by`.
+
+Rewrite using `[Set.mem_preimage]`. Rewrite using `[(A.chart k).left_inv hx]⟩).differentiableAt` and apply the resulting hypothesis. Establish `h0 : fderiv ℂ T (A.chart k' x) v = 0` using `h _ fun τ => by`. Establish `e₂ : (Matrix.of fun a b => fderiv ℂ (fun z => gm τ z a b) (A.chart k x) (fderiv ℂ T (A.chart k' x) v)) = Matrix.of fun a b => fderiv ℂ (fun z => gm τ (A.chart k ((A.chart k').symm z)) a b) (A.chart k' x) v`. Use extensionality with `a b`.
+
+Establish `h1 : DifferentiableAt ℂ (fun t => gm τ t a b) (T (A.chart k' x))`. Rewrite using `[e₁]`. Conclude with `(ha τ a b).differentiableAt`. Establish `h2` using `fderiv_comp _ h1 hT`. Rewrite `h2` using `[e₁]`.
+
+Conclude with `(congrArg (fun L : (Fin e → ℂ) →L[ℂ] ℂ => L v) h2).symm`. Rewrite using `[e₂]`. Conclude with `hv τ`. Establish `hid : T' ∘ T =ᶠ[𝓝 (A.chart k' x)] id`. Establish `hc : ContinuousAt (A.chart k').symm (A.chart k' x)` using `(A.chart k').continuousAt_symm ((A.chart k').map_source hx')`.
+
+Establish `h1 : ∀ᶠ t in 𝓝 (A.chart k' x), (A.chart k').symm t ∈ (A.chart k).source` using `hc.eventually_mem ((A.chart k).open_source.mem_nhds (by rwa [(A.chart k').left_inv hx']))`. Use `filter_upwards [h1, (A.chart k').open_target.mem_nhds ((A.chart k').map_source hx')] with t h1 h2`. Use `show A.chart k' ((A.chart k).symm (A.chart k ((A.chart k').symm t))) = t`. Rewrite using `[(A.chart k).left_inv h1, (A.chart k').right_inv h2]`. Establish `h3` using `hid.fderiv_eq (𝕜 := ℂ)`.
+
+Rewrite `h3` using `[fderiv_comp _ hT' hT, fderiv_id]`. Establish `h4` using `congrArg (fun L => L v) h3`. Simplify `h4.symm` using `[h0]`.
+-/
 theorem flagImmersion {Ψ : Type} {N : ℕ} (k : Fin A.n) {gm : Ψ → (Fin e → ℂ) → Matrix (Fin N) (Fin N) ℂ} {x : X}
     (hx : x ∈ (A.chart k).source) (ha : ∀ τ a b, AnalyticAt ℂ (fun t => gm τ t a b) (A.chart k x))
     (h : ∀ v : Fin e → ℂ, (∀ τ, ((gm τ (A.chart k x))⁻¹ *
@@ -74,6 +95,17 @@ theorem flagImmersion {Ψ : Type} {N : ℕ} (k : Fin A.n) {gm : Ψ → (Fin e �
 
 end Man
 
+/- English proof (translation)
+Take `⟨ψ, hψ, hπ, hπ'⟩` from `hB E H D l Xo c Y ∅ RM Sys Fx Or hJ hd hA`. Take `⟨z, hzi, hzc, hzh, hzU⟩` from `hPts E H D l Xo c Y ∅ RM Sys Fx Or ψ hJ hψ hπ hπ'`. Prove the components needed by the constructor for the conclusion. Introduce `x hx`. Take `⟨k, hk⟩` from `Sys.A.cover x`.
+
+Take `⟨V, gm, hV, hxV, -, -, ha, hfd, hp, -⟩` from `locChart hLP hT hFV hPM hPot hG hN Or ψ hψ hπ z hzi hzc k (hzh k) ⊤ x hx hk trivial`. Take `⟨W, hW⟩` from `periodChart Sys.A (fun p => Sys.potH (some p)) k hV hk hxV ha hfd fun p => by`. Use `hp _ hxV p` as an intermediate fact. Rewrite `this` using `[(Sys.A.chart k).left_inv hk]`. Then use the resulting hypothesis. Conclude with `⟨W, _, hW⟩`.
+
+Take `⟨U, hU, hcnt⟩` from `hC hG E H D l Xo c Y RM.Ω RM.K RM.ι RM.y Or.𝔐 Or.Fl hN hd`. Take `⟨x, hx, hxU⟩` from `hzU U hU`. Take `⟨k, hk⟩` from `Sys.A.cover x`. Take `⟨V, gm, hV, hxV, hVt, hVo, ha, hfd, hp, hcV⟩` from `locChart hLP hT hFV hPM hPot hG hN Or ψ hψ hπ z hzi hzc k (hzh k) U x hx hk hxU`. Take `⟨t, ht, him⟩` from `hFI (CMType H) _ _ V gm hV ⟨_, hxV⟩ ha (fun t ht τ => (hfd t ht τ).1) (hcV hcnt)`.
+
+Establish `e : Sys.A.chart k ((Sys.A.chart k).symm t) = t` using `(Sys.A.chart k).right_inv (hVt ht)`. Establish `hs` using `(Sys.A.chart k).map_target (hVt ht)`. Take `⟨W, hW⟩` from `periodChart Sys.A (fun p => Sys.potH (some p)) k hV hs (by rwa [e]) ha hfd fun p => by`. Rewrite using `[e]`. Conclude with `hp t ht p`.
+
+Conclude with `⟨_, hVo t ht, W, _, hW, flagImmersion Sys.A k hs (fun τ a b => by rw [e]; exact ha τ a b t ht) (by rwa [e])⟩`.
+-/
 theorem unif_of (hB : Biholo) (hLP : LocPer) (hT : Transport) (hFV : FrameVals) (hPM : PerMat) (hFI : FlagImm)
     (hC : CountGen) (hPot : PotLoc) (hPts : PtsFam) (hG : Top.Given) {E : Type} [Field E] [NumberField E] [IsCMField E]
     {H : Host E} {D : Datum H} {l : Tor.Level H} {Xo : Moduli D l} {c : Coeff l} {Y : Model Xo c (algebraMap (𝓞 c.F) c.F)}

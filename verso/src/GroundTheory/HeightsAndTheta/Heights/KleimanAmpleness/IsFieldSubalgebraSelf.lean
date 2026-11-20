@@ -388,10 +388,20 @@ abbrev pnField (N : ℕ) : Type := FractionRing (MvPolynomial (Σ k, pnIdx N k) 
 def pnPt (N : ℕ) : (Σ k, pnIdx N k) → pnField F N :=
   fun p => algebraMap (MvPolynomial (Σ k, pnIdx N k) F) (pnField F N) (X p)
 
+/- English proof (translation)
+The claim follows from `(map_ne_zero_iff _ (IsFractionRing.injective (MvPolynomial (Σ k, pnIdx N k) F) (pnField F N))).mpr (MvPolynomial.X_ne_zero p)`.
+-/
 theorem pnPt_ne_zero (N : ℕ) (p : Σ k, pnIdx N k) : pnPt F N p ≠ 0 :=
   (map_ne_zero_iff _ (IsFractionRing.injective (MvPolynomial (Σ k, pnIdx N k) F)
     (pnField F N))).mpr (MvPolynomial.X_ne_zero p)
 
+/- English proof (translation)
+Rewrite using `[eq_bot_iff]`. Introduce `f hf`. Rewrite using `[Ideal.mem_bot]`. Establish `hcomp : ((MvPolynomial.aeval (R` using `pnField F N) (fun _ : Unit => (1 : pnField F N))).restrictScalars F).comp (ReciprocityTheory.ChartRestriction.G.ArakelovGeometry.KH.mConeMapOver F (pnPt F N)) = IsScalarTower.toAlgHom F (MvPolynomial (Σ k, pnIdx N k) F) (pnField F N) := by`. Apply `MvPolynomial.algHom_ext` to reduce the goal to its premises.
+
+Introduce `p`. Simplify using `[ReciprocityTheory.ChartRestriction.G.ArakelovGeometry.KH.mConeMapOver, pnPt]`. Establish `h1` using `AlgHom.congr_fun hcomp f`. Establish `hf' : ReciprocityTheory.ChartRestriction.G.ArakelovGeometry.KH.mConeMapOver F (pnPt F N) f = 0` using `hf`. Rewrite `h1` using `[AlgHom.comp_apply, hf', map_zero]`.
+
+Conclude with `(IsFractionRing.injective _ (pnField F N)) (by rw [IsScalarTower.toAlgHom_apply] at h1; rw [← h1, map_zero])`.
+-/
 theorem mIdealOver_pnPt (N : ℕ) : mIdealOver F (pnPt F N) = ⊥ := by
   rw [eq_bot_iff]
   intro f hf
@@ -407,14 +417,25 @@ theorem mIdealOver_pnPt (N : ℕ) : mIdealOver F (pnPt F N) = ⊥ := by
   rw [AlgHom.comp_apply, hf', map_zero] at h1
   exact (IsFractionRing.injective _ (pnField F N)) (by rw [IsScalarTower.toAlgHom_apply] at h1; rw [← h1, map_zero])
 
+/- English proof (translation)
+Rewrite using `[mIdealOver_pnPt]`. Conclude with `GroundTheory.Heights₂.Heights.FieldNumbers.relDim_projectiveSpace N`.
+-/
 theorem relDim_pnPt (N : ℕ) :
     relDim (mIdealOver F (pnPt F N)) = ((N : ℕ) : WithBot (WithTop ℤ)) := by
   rw [mIdealOver_pnPt]
   exact GroundTheory.Heights₂.Heights.FieldNumbers.relDim_projectiveSpace N
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fun _ => ⟨0, pnPt_ne_zero F N _⟩, rfl⟩`.
+-/
 theorem isModelWithBase_pnPt (N : ℕ) : IsModelWithBase F (pnPt F N) () :=
   ⟨fun _ => ⟨0, pnPt_ne_zero F N _⟩, rfl⟩
 
+/- English proof (translation)
+Simplify using `only [secOver, Submodule.mem_iInf, Submodule.mem_comap, LinearMap.mulRight_apply, Subalgebra.mem_toSubmodule]`. Introduce `c _`. Establish `e : pnPt F N ⟨(), j⟩ * ∏ k, pnPt F N ⟨k, c k⟩ ^ (-baseDeg () k) = pnPt F N ⟨(), j⟩ / pnPt F N ⟨(), c ()⟩`. Simplify using `[baseDeg, div_eq_mul_inv]`. Rewrite using `[e]`.
+
+Conclude with `Algebra.subset_adjoin ⟨⟨(), j⟩, rfl⟩`.
+-/
 theorem pnPt_mem_secOver (N : ℕ) (j : Fin (N + 1)) :
     pnPt F N ⟨(), j⟩ ∈ secOver F (pnPt F N) (baseDeg ()) := by
   simp only [secOver, Submodule.mem_iInf, Submodule.mem_comap, LinearMap.mulRight_apply,
@@ -426,6 +447,11 @@ theorem pnPt_mem_secOver (N : ℕ) (j : Fin (N + 1)) :
   rw [e]
   exact Algebra.subset_adjoin ⟨⟨(), j⟩, rfl⟩
 
+/- English proof (translation)
+Introduce `c hc`. Use `⟨fun j => if j = c () then 1 else 0, fun j => ?_, ?_⟩` and prove the remaining obligations. Use `show (if j = c () then (1 : pnField F N) else 0) ∈ _ split_ifs`. Conclude with `one_mem _`. Conclude with `zero_mem _`.
+
+Simplify using `[baseDeg, Finset.sum_ite_eq']`. Conclude with `mul_inv_cancel₀ (hc ())`.
+-/
 theorem pnPt_generates (N : ℕ) :
     GeneratesOver F (pnPt F N) (baseDeg ()) (fun j : Fin (N + 1) => pnPt F N ⟨(), j⟩) := by
   intro c hc
@@ -437,25 +463,40 @@ theorem pnPt_generates (N : ℕ) :
   · simp [baseDeg, Finset.sum_ite_eq']
     exact mul_inv_cancel₀ (hc ())
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨N + 1, fun j => pnPt F N ⟨(), j⟩, pnPt_mem_secOver F N, pnPt_generates F N, rfl⟩`.
+-/
 theorem veryAmple_pnPt (N : ℕ) : VeryAmple F (pnPt F N) (baseDeg ()) :=
   ⟨N + 1, fun j => pnPt F N ⟨(), j⟩, pnPt_mem_secOver F N, pnPt_generates F N, rfl⟩
 
+/- English proof (translation)
+Introduce `W _ _ _`. Rewrite using `[(GroundTheory.Heights₂.Heights.FieldNumbers.IntNumZeroSlot.full F K ι W).1 1 ![0] 0 rfl]`.
+-/
 theorem isNef_zero {K : Type} [Fintype K] [DecidableEq K] {ι : K → Type} [∀ k, Fintype (ι k)]
     {Ω : Type} [Field Ω] [Algebra F Ω] (y : (Σ k, ι k) → Ω) : IsNef F y (0 : K → ℤ) := by
   intro W _ _ _
   rw [(GroundTheory.Heights₂.Heights.FieldNumbers.IntNumZeroSlot.full F K ι W).1 1 ![0] 0 rfl]
 
+/- English proof (translation)
+Introduce `W _ _ _`. Rewrite using `[(GroundTheory.Heights₂.Heights.FieldNumbers.IntNumZeroSlot.full F K ι W).1 1 ![0] 0 rfl]`.
+-/
 theorem isNefIdeal_zero {K : Type} [Fintype K] [DecidableEq K] {ι : K → Type}
     [∀ k, Fintype (ι k)] (P : Ideal (MRing ι F)) : IsNefIdeal F P (0 : K → ℤ) := by
   intro W _ _ _
   rw [(GroundTheory.Heights₂.Heights.FieldNumbers.IntNumZeroSlot.full F K ι W).1 1 ![0] 0 rfl]
 
+/- English proof (translation)
+Introduce `z hz` and use `⟨z, hz, le_rfl, fun _ _ h => h⟩`.
+-/
 theorem dominates_self {S : Type} [CommRing S] {Ω : Type} [Field Ω] [Algebra S Ω] {K : Type}
     {ι : K → Type} (y : (Σ k, ι k) → Ω) : Dominates S y y :=
   fun z hz => ⟨z, hz, le_rfl, fun _ _ h => h⟩
 
 def ptOne : (Σ _ : Unit, Fin 1) → F := fun _ => 1
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨0, 1, zero_ne_one⟩ mul_comm := mul_comm mul_inv_cancel {a} ha := by refine ⟨⟨(a : F)⁻¹, by simpa using A.algebraMap_mem (a : F)⁻¹⟩, Subtype.ext ?_⟩ have : (a : F) ≠ 0 := fun h => ha (Subtype.ext h) simp [this]`.
+-/
 theorem isField_subalgebra_self (A : Subalgebra F F) : IsField A where
   exists_pair_ne := ⟨0, 1, zero_ne_one⟩
   mul_comm := mul_comm
@@ -464,31 +505,49 @@ theorem isField_subalgebra_self (A : Subalgebra F F) : IsField A where
     have : (a : F) ≠ 0 := fun h => ha (Subtype.ext h)
     simp [this]
 
+/- English proof (translation)
+Introduce `c _`. Rewrite using `[eq_top_iff]`. Introduce `u _`. Conclude with `Subfield.subset_closure (by simpa using (chartRingOver F (ptOne F) c).algebraMap_mem u)`.
+-/
 theorem isBirational_ptOne : IsBirational F (ptOne F) := by
   intro c _
   rw [eq_top_iff]
   intro u _
   exact Subfield.subset_closure (by simpa using (chartRingOver F (ptOne F) c).algebraMap_mem u)
 
+/- English proof (translation)
+Introduce `c _`. Set `_ : Field (chartRingOver F (ptOne F) c)` to `(isField_subalgebra_self F _).toField`. Conclude with `Field.instIsIntegrallyClosed _`.
+-/
 theorem isNormalModel_ptOne : IsNormalModel F (ptOne F) := by
   intro c _
   let _ : Field (chartRingOver F (ptOne F) c) := (isField_subalgebra_self F _).toField
   exact Field.instIsIntegrallyClosed _
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fun _ => ⟨0, one_ne_zero⟩, rfl⟩`.
+-/
 theorem isModelWithBase_ptOne : IsModelWithBase F (ptOne F) () :=
   ⟨fun _ => ⟨0, one_ne_zero⟩, rfl⟩
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨inferInstance, isModelWithBase_pnPt F 1, IsLocalization.self bot_le⟩`.
+-/
 theorem FiniteSections.hypotheses_example :
     IsNoetherianRing F ∧ IsModelWithBase F (pnPt F 1) () ∧
       IsLocalization (⊥ : Submonoid F) F :=
   ⟨inferInstance, isModelWithBase_pnPt F 1, IsLocalization.self bot_le⟩
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨inferInstance, fun _ => ⟨0, pnPt_ne_zero F 1 _⟩, pnPt_mem_secOver F 1, pnPt_generates F 1⟩`.
+-/
 theorem FiniteTwists.hypotheses_example :
     IsNoetherianRing F ∧ (∀ k, ∃ i, pnPt F 1 ⟨k, i⟩ ≠ 0) ∧
       (∀ j, pnPt F 1 ⟨(), j⟩ ∈ secOver F (pnPt F 1) (baseDeg ())) ∧
       GeneratesOver F (pnPt F 1) (baseDeg ()) (fun j : Fin 2 => pnPt F 1 ⟨(), j⟩) :=
   ⟨inferInstance, fun _ => ⟨0, pnPt_ne_zero F 1 _⟩, pnPt_mem_secOver F 1, pnPt_generates F 1⟩
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨⟨inferInstance, fun _ => ⟨0, pnPt_ne_zero F 1 _⟩, isModelWithBase_pnPt F 1, dominates_self _, IsFractionRing.self_iff_nonZeroDivisors_le_isUnit.mpr (fun x hx => show IsUnit x from isUnit_iff_ne_zero.mpr (nonZeroDivisors.ne_zero hx)), rfl⟩, ⟨inferInstance, fun _ => ⟨0, one_ne_zer …`.
+-/
 theorem Domination.hypotheses_example :
     (IsNoetherianRing F ∧ (∀ k, ∃ i, pnPt F 1 ⟨k, i⟩ ≠ 0) ∧ IsModelWithBase F (pnPt F 1) () ∧
       Dominates F (pnPt F 1) (pnPt F 1) ∧ IsFractionRing F F ∧ SameModel F (pnPt F 1) (pnPt F 1)) ∧
@@ -500,6 +559,9 @@ theorem Domination.hypotheses_example :
     ⟨inferInstance, fun _ => ⟨0, one_ne_zero⟩, isModelWithBase_ptOne F, dominates_self _,
       isBirational_ptOne F, isNormalModel_ptOne F⟩⟩
 
+/- English proof (translation)
+Use `⟨inferInstance, isModelWithBase_pnPt F 1, ?_, le_rfl⟩` and prove the remaining obligations. Rewrite using `[mIdealOver_pnPt]`. Conclude with `⟨∅, fun _ h => absurd h (Set.notMem_empty _), by rw [Ideal.span_empty]⟩`.
+-/
 theorem SurjectiveClosed.hypotheses_example :
     IsNoetherianRing F ∧ IsModelWithBase F (pnPt F 1) () ∧
       ReciprocityTheory.ChartRestriction.G.Geo.IsMultiHomogIdeal (mIdealOver F (pnPt F 1)) ∧
@@ -508,6 +570,9 @@ theorem SurjectiveClosed.hypotheses_example :
   rw [mIdealOver_pnPt]
   exact ⟨∅, fun _ h => absurd h (Set.notMem_empty _), by rw [Ideal.span_empty]⟩
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨rfl, fun _ => pnPt_ne_zero F 1 _, Ideal.isPrime_bot, rfl⟩`.
+-/
 theorem Restriction.hypotheses_example :
     SameModel F (pnPt F 1) (pnPt F 1) ∧ (∀ k, pnPt F 1 ⟨k, (fun _ => 0 : ∀ k, pnIdx 1 k) k⟩ ≠ 0) ∧
       (⊥ : Ideal (chartRingOver F (pnPt F 1) (fun _ => 0))).IsPrime ∧
@@ -515,28 +580,43 @@ theorem Restriction.hypotheses_example :
         locIn (chartRingOver F (pnPt F 1) (fun _ => 0)) ⊥ :=
   ⟨rfl, fun _ => pnPt_ne_zero F 1 _, Ideal.isPrime_bot, rfl⟩
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨⟨0, pnPt_ne_zero F 0 _⟩, relDim_pnPt F 0⟩`.
+-/
 theorem HilbertPoint.hypotheses_example :
     (∃ i, (fun j : Fin 1 => pnPt F 0 ⟨(), j⟩) i ≠ 0) ∧
       relDim (mIdealOver F (oneBlock (fun j : Fin 1 => pnPt F 0 ⟨(), j⟩))) =
         ((0 : ℕ) : WithBot (WithTop ℤ)) :=
   ⟨⟨0, pnPt_ne_zero F 0 _⟩, relDim_pnPt F 0⟩
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨⟨0, pnPt_ne_zero F 1 _⟩, le_rfl, relDim_pnPt F 1⟩`.
+-/
 theorem HilbertPositive.hypotheses_example :
     (∃ i, (fun j : Fin 2 => pnPt F 1 ⟨(), j⟩) i ≠ 0) ∧ 1 ≤ 1 ∧
       relDim (mIdealOver F (oneBlock (fun j : Fin 2 => pnPt F 1 ⟨(), j⟩))) =
         ((1 : ℕ) : WithBot (WithTop ℤ)) :=
   ⟨⟨0, pnPt_ne_zero F 1 _⟩, le_rfl, relDim_pnPt F 1⟩
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨isModelWithBase_pnPt F 1, relDim_pnPt F 1, veryAmple_pnPt F 1, le_rfl⟩`.
+-/
 theorem SectionCount.hypotheses_example :
     IsModelWithBase F (pnPt F 1) () ∧
       relDim (mIdealOver F (pnPt F 1)) = ((0 + 1 : ℕ) : WithBot (WithTop ℤ)) ∧
       VeryAmple F (pnPt F 1) (baseDeg ()) ∧ 1 ≤ 1 :=
   ⟨isModelWithBase_pnPt F 1, relDim_pnPt F 1, veryAmple_pnPt F 1, le_rfl⟩
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨1, 1, le_rfl, by norm_num, by simpa using veryAmple_pnPt F 1⟩`.
+-/
 theorem multipleVeryAmple_pnPt :
     MultipleVeryAmple F (pnPt F 1) (0 : Unit → ℤ) (baseDeg ()) 1 :=
   ⟨1, 1, le_rfl, by norm_num, by simpa using veryAmple_pnPt F 1⟩
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨isModelWithBase_pnPt F 1, relDim_pnPt F 1, isNef_zero F _, by norm_num, by norm_num, multipleVeryAmple_pnPt F⟩`.
+-/
 theorem SectionExists.hypotheses_example :
     IsModelWithBase F (pnPt F 1) () ∧
       relDim (mIdealOver F (pnPt F 1)) = ((0 + 1 : ℕ) : WithBot (WithTop ℤ)) ∧
@@ -545,6 +625,11 @@ theorem SectionExists.hypotheses_example :
   ⟨isModelWithBase_pnPt F 1, relDim_pnPt F 1, isNef_zero F _, by norm_num, by norm_num,
     multipleVeryAmple_pnPt F⟩
 
+/- English proof (translation)
+Use `⟨isModelWithBase_pnPt F 1, relDim_pnPt F 1, isNef_zero F _, by norm_num, by norm_num, by norm_num, le_rfl, ?_, one_ne_zero⟩` and prove the remaining obligations. Establish `e : stepL () (0 : Unit → ℤ) 2 1 - ((1 : ℕ) : ℤ) • baseDeg () = 0`. Use function extensionality and compare the values at `k`. Simplify using `[stepL, baseDeg]`. Rewrite using `[e]`.
+
+Simplify using `only [secOver, Submodule.mem_iInf, Submodule.mem_comap, LinearMap.mulRight_apply, Subalgebra.mem_toSubmodule]`. Introduce `c _`. Simplify using the standard rewrite rules.
+-/
 theorem isStepData_example :
     IsStepData F (pnPt F 1) () 1 0 (1 / 2) 2 1 1 1 := by
   refine ⟨isModelWithBase_pnPt F 1, relDim_pnPt F 1, isNef_zero F _, by norm_num, by norm_num,
@@ -558,12 +643,24 @@ theorem isStepData_example :
   intro c _
   simp
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨isModelWithBase_pnPt F 1, relDim_pnPt F 1, isNef_zero F _, one_pos⟩`.
+-/
 theorem VeryAmpleNefPlusAmple.hypotheses_example :
     IsModelWithBase F (pnPt F 1) () ∧
       relDim (mIdealOver F (pnPt F 1)) = ((1 : ℕ) : WithBot (WithTop ℤ)) ∧
       IsNef F (pnPt F 1) 0 ∧ (0 : ℚ) < 1 :=
   ⟨isModelWithBase_pnPt F 1, relDim_pnPt F 1, isNef_zero F _, one_pos⟩
 
+/- English proof (translation)
+Use `⟨1, N + 1, fun j => pnPt F N ⟨(), j⟩, le_rfl, ?_, ?_, ?_⟩` and prove the remaining obligations. Simplify using `using pnPt_mem_secOver F N`. Simplify using `using pnPt_generates F N`. Introduce `j _`. Use `⟨1, ![1], fun _ => by simp, ?_⟩` and prove the remaining obligations.
+
+Introduce `s hs`. Establish `hs' : s ∈ chartRingOver F (joinVec (pnPt F N) (oneBlock fun j => pnPt F N ⟨(), j⟩)) (joinChart (fun _ => j) (fun _ : Unit => j))`. Unfold `preimRing at hs`. Conclude with `Algebra.mem_iInf.mp (Algebra.mem_iInf.mp hs (fun _ => j)) (fun _ => pnPt_ne_zero F N _)`. Establish `hle : chartRingOver F (joinVec (pnPt F N) (oneBlock fun j => pnPt F N ⟨(), j⟩)) (joinChart (fun _ => j) (fun _ : Unit => j)) ≤ ReciprocityTheory.ChartRestriction.G.Geo.chartRing F (fun j => pnPt F N ⟨(), j⟩) j`.
+
+Apply `Algebra.adjoin_le` to reduce the goal to its premises. Introduce and unpack `_ ⟨⟨k | k, i⟩, rfl⟩`. Conclude with `Algebra.subset_adjoin ⟨i, rfl⟩`. Conclude with `Algebra.subset_adjoin ⟨i, rfl⟩`. Establish `hs''` using `hle hs'`.
+
+Establish `h1 : (1 : pnField F N) ∈ Submodule.span (ReciprocityTheory.ChartRestriction.G.Geo.chartRing F (fun j => pnPt F N ⟨(), j⟩) j) (Set.range ![(1 : pnField F N)])` using `Submodule.subset_span ⟨0, rfl⟩`. Use `Submodule.smul_mem _ (⟨s, hs''⟩ : ReciprocityTheory.ChartRestriction.G.Geo.chartRing F (fun j => pnPt F N ⟨(), j⟩) j) h1` as an intermediate fact. Simplify `this` using `[Subalgebra.smul_def]`.
+-/
 theorem isAmpleByFiniteMap_pnPt (N : ℕ) : IsAmpleByFiniteMap F (pnPt F N) (baseDeg ()) := by
   refine ⟨1, N + 1, fun j => pnPt F N ⟨(), j⟩, le_rfl, ?_, ?_, ?_⟩
   · simpa using pnPt_mem_secOver F N
@@ -589,11 +686,17 @@ theorem isAmpleByFiniteMap_pnPt (N : ℕ) : IsAmpleByFiniteMap F (pnPt F N) (bas
     have := Submodule.smul_mem _ (⟨s, hs''⟩ : ReciprocityTheory.ChartRestriction.G.Geo.chartRing F (fun j => pnPt F N ⟨(), j⟩) j) h1
     simpa [Subalgebra.smul_def] using this
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fun _ => ⟨0, pnPt_ne_zero F 1 _⟩, isAmpleByFiniteMap_pnPt F 1, isNef_zero F _, one_pos⟩`.
+-/
 theorem NefPlusAmple.hypotheses_example :
     (∀ k, ∃ i, pnPt F 1 ⟨k, i⟩ ≠ 0) ∧ IsAmpleByFiniteMap F (pnPt F 1) (baseDeg ()) ∧
       IsNef F (pnPt F 1) 0 ∧ (0 : ℚ) < 1 :=
   ⟨fun _ => ⟨0, pnPt_ne_zero F 1 _⟩, isAmpleByFiniteMap_pnPt F 1, isNef_zero F _, one_pos⟩
 
+/- English proof (translation)
+Use `⟨fun _ => ⟨0, pnPt_ne_zero F 1 _⟩, relDim_pnPt F 1, fun j => ?_⟩` and prove the remaining obligations. Rewrite using `[Subsingleton.elim j 0]`. Conclude with `isNef_zero F _`.
+-/
 theorem NefProductNonneg.hypotheses_example :
     (∀ k, ∃ i, pnPt F 1 ⟨k, i⟩ ≠ 0) ∧
       relDim (mIdealOver F (pnPt F 1)) = ((1 : ℕ) : WithBot (WithTop ℤ)) ∧
@@ -604,6 +707,9 @@ theorem NefProductNonneg.hypotheses_example :
 
 end Examples
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨GroundTheory.Heights₂.Heights.NumbersDVR.isModelOver_projectiveSpace 1, isNefIdeal_zero _ _⟩`.
+-/
 theorem NefGeneric.hypotheses_example :
     IsModelOver (⊥ : Ideal (MRing (fun _ : Unit => Fin 2) (PowerSeries ℚ))) 1 ∧
       IsNefIdeal (IsLocalRing.ResidueField (PowerSeries ℚ))
@@ -614,13 +720,22 @@ section Fit
 
 variable (F : Type) [Field F]
 
+/- English proof (translation)
+The claim follows from `h F Unit (pnIdx 1) (pnField F 1) (pnPt F 1) () inferInstance (isModelWithBase_pnPt F 1) (baseDeg ())`.
+-/
 example (h : FiniteSections.Statement) :=
   h F Unit (pnIdx 1) (pnField F 1) (pnPt F 1) () inferInstance (isModelWithBase_pnPt F 1) (baseDeg ())
 
+/- English proof (translation)
+The claim follows from `h F Unit (pnIdx 1) (pnField F 1) (pnPt F 1) 0 (baseDeg ()) 2 (fun j => pnPt F 1 ⟨(), j⟩) inferInstance (fun _ => ⟨0, pnPt_ne_zero F 1 _⟩) (pnPt_mem_secOver F 1) (pnPt_generates F 1)`.
+-/
 example (h : FiniteTwists.Statement) :=
   h F Unit (pnIdx 1) (pnField F 1) (pnPt F 1) 0 (baseDeg ()) 2 (fun j => pnPt F 1 ⟨(), j⟩)
     inferInstance (fun _ => ⟨0, pnPt_ne_zero F 1 _⟩) (pnPt_mem_secOver F 1) (pnPt_generates F 1)
 
+/- English proof (translation)
+The claim follows from `haveI : IsFractionRing F F := (Domination.hypotheses_example F).1.2.2.2.2.1 And.intro ((h F Unit (pnIdx 1) Unit (pnIdx 1) (pnField F 1) (pnPt F 1) (pnPt F 1) () inferInstance (fun _ => ⟨0, pnPt_ne_zero F 1 _⟩) (isModelWithBase_pnPt F 1) (dominates_self _)).1 F rfl) ((h F Unit (fu …`.
+-/
 example (h : Domination.Statement) :=
   haveI : IsFractionRing F F := (Domination.hypotheses_example F).1.2.2.2.2.1
   And.intro ((h F Unit (pnIdx 1) Unit (pnIdx 1) (pnField F 1) (pnPt F 1) (pnPt F 1) () inferInstance
@@ -629,50 +744,89 @@ example (h : Domination.Statement) :=
     (fun _ => ⟨0, one_ne_zero⟩) (isModelWithBase_ptOne F) (dominates_self _)).2.1
       (isBirational_ptOne F) (isBirational_ptOne F) (isNormalModel_ptOne F))
 
+/- English proof (translation)
+The claim follows from `h F Unit (pnIdx 1) (pnField F 1) (pnPt F 1) () (mIdealOver F (pnPt F 1)) le_rfl inferInstance (isModelWithBase_pnPt F 1) (SurjectiveClosed.hypotheses_example F).2.2.1 (baseDeg ())`.
+-/
 example (h : SurjectiveClosed.Statement) :=
   h F Unit (pnIdx 1) (pnField F 1) (pnPt F 1) () (mIdealOver F (pnPt F 1)) le_rfl inferInstance
     (isModelWithBase_pnPt F 1) (SurjectiveClosed.hypotheses_example F).2.2.1 (baseDeg ())
 
+/- English proof (translation)
+The claim follows from `h F Unit (pnIdx 1) Unit (pnIdx 1) (pnField F 1) (pnPt F 1) (pnPt F 1) rfl (fun _ => 0) ⊥ (fun _ => pnPt_ne_zero F 1 _)`.
+-/
 example (h : Restriction.Statement) :=
   h F Unit (pnIdx 1) Unit (pnIdx 1) (pnField F 1) (pnPt F 1) (pnPt F 1) rfl (fun _ => 0) ⊥
     (fun _ => pnPt_ne_zero F 1 _)
 
+/- English proof (translation)
+The claim follows from `h F (Fin 1) (pnField F 0) (fun j => pnPt F 0 ⟨(), j⟩) ⟨0, pnPt_ne_zero F 0 _⟩ (relDim_pnPt F 0)`.
+-/
 example (h : HilbertPoint.Statement) :=
   h F (Fin 1) (pnField F 0) (fun j => pnPt F 0 ⟨(), j⟩) ⟨0, pnPt_ne_zero F 0 _⟩ (relDim_pnPt F 0)
 
+/- English proof (translation)
+The claim follows from `h F (Fin 2) (pnField F 1) (fun j => pnPt F 1 ⟨(), j⟩) 1 ⟨0, pnPt_ne_zero F 1 _⟩ le_rfl (relDim_pnPt F 1)`.
+-/
 example (h : HilbertPositive.Statement) :=
   h F (Fin 2) (pnField F 1) (fun j => pnPt F 1 ⟨(), j⟩) 1 ⟨0, pnPt_ne_zero F 1 _⟩ le_rfl
     (relDim_pnPt F 1)
 
+/- English proof (translation)
+The claim follows from `h F Unit (pnIdx 1) (pnField F 1) (pnPt F 1) () 0 (baseDeg ()) 1 (isModelWithBase_pnPt F 1) (relDim_pnPt F 1) (veryAmple_pnPt F 1) le_rfl`.
+-/
 example (h : SectionCount.Statement) :=
   h F Unit (pnIdx 1) (pnField F 1) (pnPt F 1) () 0 (baseDeg ()) 1 (isModelWithBase_pnPt F 1)
     (relDim_pnPt F 1) (veryAmple_pnPt F 1) le_rfl
 
+/- English proof (translation)
+The claim follows from `h F Unit (pnIdx 1) (pnField F 1) (pnPt F 1) () 0 0 1 (1 / 2) (isModelWithBase_pnPt F 1) (relDim_pnPt F 1) (isNef_zero F _) (by norm_num) (by norm_num) (multipleVeryAmple_pnPt F)`.
+-/
 example (h : SectionExists.Statement) :=
   h F Unit (pnIdx 1) (pnField F 1) (pnPt F 1) () 0 0 1 (1 / 2) (isModelWithBase_pnPt F 1)
     (relDim_pnPt F 1) (isNef_zero F _) (by norm_num) (by norm_num) (multipleVeryAmple_pnPt F)
 
+/- English proof (translation)
+The claim follows from `h 1 F Unit (pnIdx 1) (pnField F 1) (pnPt F 1) () (isModelWithBase_pnPt F 1) (relDim_pnPt F 1) 0 (isNef_zero F _) 1 one_pos`.
+-/
 example (h : VeryAmpleNefPlusAmple.Statement) :=
   h 1 F Unit (pnIdx 1) (pnField F 1) (pnPt F 1) () (isModelWithBase_pnPt F 1) (relDim_pnPt F 1) 0
     (isNef_zero F _) 1 one_pos
 
+/- English proof (translation)
+The claim follows from `h 1 hK F Unit (pnIdx 1) (pnField F 1) (pnPt F 1) () 0 (1 / 2) 2 1 1 1 (isStepData_example F)`.
+-/
 example (h : StepTwo.Statement) (hK : ∀ d' < 1, KAt d') :=
   h 1 hK F Unit (pnIdx 1) (pnField F 1) (pnPt F 1) () 0 (1 / 2) 2 1 1 1 (isStepData_example F)
 
+/- English proof (translation)
+The claim follows from `h 1 hK F Unit (pnIdx 1) (pnField F 1) (pnPt F 1) () 0 (1 / 2) 2 1 1 1 (isStepData_example F)`.
+-/
 example (h : ClaimVanish.Statement) (hK : ∀ d' < 1, KAt d') :=
   h 1 hK F Unit (pnIdx 1) (pnField F 1) (pnPt F 1) () 0 (1 / 2) 2 1 1 1 (isStepData_example F)
 
+/- English proof (translation)
+The claim follows from `h 1 hK F Unit (pnIdx 1) (pnField F 1) (pnPt F 1) () 0 (1 / 2) 2 1 1 1 (isStepData_example F)`.
+-/
 example (h : StepThree.Statement) (hK : ∀ d' < 1, KAt d') :=
   h 1 hK F Unit (pnIdx 1) (pnField F 1) (pnPt F 1) () 0 (1 / 2) 2 1 1 1 (isStepData_example F)
 
+/- English proof (translation)
+The claim follows from `h F Unit (pnIdx 1) (pnField F 1) (pnPt F 1) (baseDeg ()) 0 1 (fun _ => ⟨0, pnPt_ne_zero F 1 _⟩) (isAmpleByFiniteMap_pnPt F 1) (isNef_zero F _) one_pos`.
+-/
 example (h : NefPlusAmple.Statement) :=
   h F Unit (pnIdx 1) (pnField F 1) (pnPt F 1) (baseDeg ()) 0 1 (fun _ => ⟨0, pnPt_ne_zero F 1 _⟩)
     (isAmpleByFiniteMap_pnPt F 1) (isNef_zero F _) one_pos
 
+/- English proof (translation)
+The claim follows from `h F Unit (pnIdx 1) (pnField F 1) (pnPt F 1) 1 ![0] (fun _ => ⟨0, pnPt_ne_zero F 1 _⟩) (relDim_pnPt F 1) (NefProductNonneg.hypotheses_example F).2.2`.
+-/
 example (h : NefProductNonneg.Statement) :=
   h F Unit (pnIdx 1) (pnField F 1) (pnPt F 1) 1 ![0] (fun _ => ⟨0, pnPt_ne_zero F 1 _⟩)
     (relDim_pnPt F 1) (NefProductNonneg.hypotheses_example F).2.2
 
+/- English proof (translation)
+The claim follows from `h (PowerSeries ℚ) Unit (fun _ => Fin 2) ⊥ 1 0 NefGeneric.hypotheses_example.1 NefGeneric.hypotheses_example.2`.
+-/
 example (h : NefGeneric.Statement) :=
   h (PowerSeries ℚ) Unit (fun _ => Fin 2) ⊥ 1 0 NefGeneric.hypotheses_example.1
     NefGeneric.hypotheses_example.2

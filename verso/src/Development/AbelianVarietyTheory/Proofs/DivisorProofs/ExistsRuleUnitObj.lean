@@ -10,6 +10,9 @@ attribute [local instance] Over.cartesianMonoidalCategory
 
 namespace GlobalTheory.RealMult.RuleDescend
 
+/- English proof (translation)
+The claim follows from `exists_rule_unitObj_of_covers (exists_faithfullyFlat_level_of torsion_free_rank_two)`.
+-/
 theorem exists_rule_unitObj :
     ∀ (F : Type) [Field F] [NumberField F] [IsTotallyReal F] (𝔠 : FracId F) (N : ℕ), 1 ≤ N →
   ∀ (R₀ : Type) [CommRing R₀] (k : ℕ) (r₀ : Rule (rapObj 𝔠) R₀ k) (r : Rule (levObj 𝔠 N) R₀ k),

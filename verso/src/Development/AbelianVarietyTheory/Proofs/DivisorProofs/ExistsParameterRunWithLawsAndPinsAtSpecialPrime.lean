@@ -21,6 +21,9 @@ namespace GlobalTheory.RunOnto
 
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
+/- English proof (translation)
+Establish `h : D.conjF = D.sp.cm.sig` using `AlgHom.ext fun a => (D.conjF_eq a).trans (GlobalTheory.TwistFieldCompare.cF_eq a).symm`. Unfold `cjFin sigR`. Rewrite using `[h]`. Both sides reduce to the same expression.
+-/
 theorem cjFin_val_eq (D : D7) (y : (Af D.host.F ⊗[D.host.F] D.host.E)ˣ) :
     ((cjFin D y : (Af D.host.F ⊗[D.host.F] D.host.E)ˣ) : Af D.host.F ⊗[D.host.F] D.host.E) =
       sigR (Af D.host.F) D.sp.cm.sig (y : Af D.host.F ⊗[D.host.F] D.host.E) := by
@@ -30,6 +33,9 @@ theorem cjFin_val_eq (D : D7) (y : (Af D.host.F ⊗[D.host.F] D.host.E)ˣ) :
   rw [h]
   rfl
 
+/- English proof (translation)
+Rewrite using `[← GlobalTheory.AntiCycRead.quo_of_isDetRoot D V g x hx, ← h]`. Use `congr 1`. Apply `GlobalTheory.AntiCycRead.quo_eq_of` to reduce the goal to its premises. Establish `e : (Formalism.L2.Theta.finPart D (x : Formalism.L2.Theta.AE D)) = ((Units.map (Formalism.L2.Theta.finPart D).toMonoidHom x : (Af D.host.F ⊗[D.host.F] D.host.E)ˣ) : _)` using `rfl`. Rewrite using `[e, ← cjFin_val_eq, ← Units.val_mul, div_mul_cancel]`.
+-/
 theorem xi_det_of_isDetRoot {D : D7} {xi de : (Af D.host.F ⊗[D.host.F] D.host.E)ˣ →* ℂˣ} (h : XiTilde xi de)
     (V : Formalism.BasicNotions.TH.HSp D) (g : Formalism.L2.Theta.GA D V) (x : (Formalism.L2.Theta.AE D)ˣ) (hx : Formalism.L2.Theta.IsDetRoot V g x) :
     xi (Matrix.GeneralLinearGroup.det (Formalism.L2.Theta.finHom V g)) =
@@ -41,6 +47,35 @@ theorem xi_det_of_isDetRoot {D : D7} {xi de : (Af D.host.F ⊗[D.host.F] D.host.
       ((Units.map (Formalism.L2.Theta.finPart D).toMonoidHom x : (Af D.host.F ⊗[D.host.F] D.host.E)ˣ) : _) := rfl
   rw [e, ← cjFin_val_eq, ← Units.val_mul, div_mul_cancel]
 
+/- English proof (translation)
+Introduce `D L hT Gi Gl Kc Y cX ex Csz p _ hC l hl`. Take `⟨δ, hδdef⟩ : ∃ δ : Formalism.L2.Host.HChar D.host.E, δ = if l = D.host.pde then (R2 p).C.del else (R2 p).C.del'` from `⟨_, rfl⟩`. Establish `hδ : Formalism.L2.Host.IsDelta (H` using `D.host) l δ := by`. Break down `hl with rfl | rfl` into its components or cases. Rewrite using `[hδdef, if_pos rfl]`.
+
+Conclude with `(R2 p).C.isDel`. Rewrite using `[hδdef, if_neg D.host.pde_ne.symm]`. Conclude with `(R2 p).C.isDel'`. Establish `hδv : ∀ x, ((δ.1 x : ℂˣ) : ℂ) ∈ FO D`. Introduce `x`.
+
+Distinguish the cases in `h : l = D.host.pde`. Rewrite using `[hδdef, if_pos h]`. Conclude with `hC.delVal x`. Rewrite using `[hδdef, if_neg h]`. Conclude with `hC.delVal' x`.
+
+Take `⟨χ, de, hχ, hd, hfin⟩` from `GlobalTheory.TameFinitePart.exists_xiRec D l δ hl hδ hδv`. Establish `hF : GlobalTheory.FinalJoin2.FieldOK0 D l`. Break down `hl with rfl | rfl` into its components or cases. Use `exacts [hC.field₁, hC.field₂]`. Take `⟨Pk, hPk⟩` from `hC.oneHalf`.
+
+Choose the witnesses or unpack the hypotheses as in `⟨P, hP, hPv⟩ : ∃ P : HeightOneSpectrum (𝓞 D.host.K), ((l : ℕ) : 𝓞 D.host.K) ∈ P.asIdeal ∧ ∀ v ∈ (R2 p).twPl, ownAt D v = l → ∀ PP ∈ placesOver (R2 p) ((R2 p).mu v) (ownAt D v), P.asIdeal.map (algebraMap (𝓞 D.host.K) (𝓞 D.host.E)) ≤ PP.asIdeal := by`. Distinguish the cases in `hex : ∃ v ∈ (R2 p).twPl, ownAt D v = l`. Take `⟨v, hv, hvl⟩` from `hex`. Use `⟨Pk l, by rw [← hvl]; exact (hPk v hv).1, fun w hw hwl PP hPP => ?_⟩` and prove the remaining obligations. Use `(hPk w hw).2 PP hPP` as an intermediate fact.
+
+Rewrite `this` using `[hwl]`. Then use the resulting hypothesis. Establish `hlp : l.Prime`. Break down `hl with rfl | rfl` into its components or cases. Use `exacts [D.host.pde_prime, D.host.pde'_prime]`. Take `⟨P, hP⟩` from `GlobalTheory.exists_heightOneSpectrum_natCast_mem D.host.K hlp`.
+
+Conclude with `⟨P, hP, fun w hw hwl => absurd ⟨w, hw, hwl⟩ hex⟩`. Establish `hJ : LawsJ p.T` using `(fw2 p).laws`. Take `⟨T, hT, hTc⟩` from `GlobalTheory.FinalJoin.exists_top_of_core D p.T.toCore hC.laws hC.rank hF.kpsi`. Establish `hcan : T.Q.Canon`. Establish `e : T.toCore.Q = p.T.toCore.Q` using `congrArg (fun C => C.Q) hTc`.
+
+Rewrite using `[show T.Q = p.T.Q from e]`. Conclude with `hC.canon`. Take `⟨dd, TF, hTF, -, hJ', hxi, hh, hcov⟩` from `GlobalTheory.FinalJoin2.FullExt.exists_full_of_xiRec D p.T T hJ hT hTc hcan l hF P hP de hd`. Choose the witnesses or unpack the hypotheses as in `⟨r, rfl⟩ : ∃ r : GlobalTheory.RealIndexBound.RunData p.T, r.full = TF := by`. Rewrite using `[← hJ']`.
+
+Conclude with `⟨GlobalTheory.RealIndexBound.RunData.of TF, rfl⟩`. Establish `hInR : ∀ i : Fin D.R.m, InR D ((i : ℕ) + 1)` using `fun i => ⟨Nat.le_add_left _ _, i.2⟩`. Use `⟨r, hTF, fun i => (hcov _ (hInR i)).1, fun j n hj => (hcov j hj).2 n, ?_, ?_⟩` and prove the remaining obligations. Introduce `i γ₀ hγ`. Take `⟨x, hx⟩` from `(GlobalTheory.Member.isDetRoot_laws D _).2.2.1 γ₀ hγ`.
+
+Rewrite using `[xi_det_of_isDetRoot hxi _ _ _ hx]`. Conclude with `hd.rat _ x rfl`. Introduce `v hv hvl i`. Use `letI : Algebra r.full.J.Q.c.F D.what₂.LL := p.alg`. Use `⟨rfl, ?_, ?_, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[hvl]`. Conclude with `(hcov _ (hInR i)).2 _`. Introduce `PP hPP`. Rewrite using `[hh]`. Conclude with `hPv v hv hvl PP hPP`.
+
+Establish `hδv' : (R2 p).C.delAt (Formalism.EigenvalueLevelCeiling.plc v) = δ`. Unfold `ownAt at hvl`. Unfold `Formalism.L2.Host.CharFrame.delAt`. Distinguish the cases in `h : Formalism.EigenvalueLevelCeiling.plc v = D.host.pde`. Rewrite `hvl`, the goal using `[if_pos h]`.
+
+Rewrite using `[hδdef, ← hvl, if_neg D.host.pde_ne.symm]`. Rewrite `hvl`, the goal using `[if_neg h]`. Rewrite using `[hδdef, ← hvl, if_pos rfl]`. Use `⟨χ, hδv' ▸ hχ, fun g x hx => ?_⟩` and prove the remaining obligations. Rewrite using `[xi_det_of_isDetRoot hxi _ _ _ hx]`.
+
+Conclude with `hfin x _ rfl`.
+-/
 theorem exists_run_pins : ∀ (D : D7) (L : SizeData₂ D) (hT : GatTies D) (Gi : Formalism.MainNotions.G.Inst D L) (Gl : Formalism.MainNotions.G.LatInst D) (Kc : Formalism.MainNotions.G.Consts) (Y : DivX D) (cX : ExtraC) (ex : Extra D L hT Gi Gl Kc Y cX) (Csz : ℝ) (p : PtAt ex Csz), Links2 p → CoreTies L ex.errX p.T (R2 p) → ∀ l : ℕ, (l = D.host.pde ∨ l = D.host.pde') → ∃ r : GlobalTheory.RealIndexBound.RunData p.T, LawsFull r.full ∧ (∀ i : Fin D.R.m, GlobalTheory.FormTies.OneCover r.full.toTop ((i : ℕ) + 1)) ∧ (∀ j n : ℕ, InR D j → (r.full.dδ j n).pd = l) ∧ (∀ i : Fin D.R.m, ∀ γ₀ ∈ Formalism.L2.Theta.GQ (r.full.V ((i : ℕ) + 1) r.full.σ₀), r.full.xi (Matrix.GeneralLinearGroup.det (Formalism.L2.Theta.finHom (r.full.V ((i : ℕ) + 1) r.full.σ₀) γ₀)) = 1) ∧ ∀ v ∈ (R2 p).twPl, ownAt D v = l → ∀ i : Fin D.R.m, letI : Algebra r.full.J.Q.c.F D.what₂.LL := p.alg; RunPin (T := r.full) (R2 p) i (p.κ i).n v (ownAt D v) := by
   intro D L hT Gi Gl Kc Y cX ex Csz p _ hC l hl
 

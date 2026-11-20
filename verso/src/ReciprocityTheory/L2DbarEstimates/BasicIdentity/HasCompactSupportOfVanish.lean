@@ -11,6 +11,11 @@ open scoped ComplexConjugate
 
 noncomputable section
 
+/- English proof (translation)
+Establish `hint : Integrable (fun x => ∑ j, ∑ k, h j k x) μ` using `integrable_finset_sum _ fun j _ => integrable_finset_sum _ fun k _ => hi j k`. Establish `h1` using `integral_re (𝕜 := ℂ) hint`. Simplify using `only [RCLike.re_to_complex] at h1`. Rewrite using `[h1, integral_finset_sum _ fun j _ => integrable_finset_sum _ fun k _ => hi j k]`. Use `congr 1`.
+
+Conclude with `Finset.sum_congr rfl fun j _ => integral_finset_sum _ fun k _ => hi j k`.
+-/
 theorem integral_re_double_sum {M : Type*} [MeasurableSpace M] (μ : Measure M) (n : ℕ)
     (h : Fin n → Fin n → M → ℂ) (hi : ∀ j k, Integrable (h j k) μ) :
     ∫ x, (∑ j, ∑ k, h j k x).re ∂μ = (∑ j, ∑ k, ∫ x, h j k x ∂μ).re := by
@@ -22,10 +27,40 @@ theorem integral_re_double_sum {M : Type*} [MeasurableSpace M] (μ : Measure M) 
   congr 1
   exact Finset.sum_congr rfl fun j _ => integral_finset_sum _ fun k _ => hi j k
 
+/- English proof (translation)
+The claim follows from `hu.mono' fun x hx => subset_tsupport u (mt (h x) hx)`.
+-/
 theorem hasCompactSupport_of_vanish {M : Type*} [TopologicalSpace M] (u F : M → ℂ)
     (hu : HasCompactSupport u) (h : ∀ x, u x = 0 → F x = 0) : HasCompactSupport F :=
   hu.mono' fun x hx => subset_tsupport u (mt (h x) hx)
 
+/- English proof (translation)
+Introduce `z hz ph f hph hf`. Establish `hph1 : CkR n z 1 ph` using `Ck.mono n z 1 2 (by norm_num) _ hph`. Establish `hE : Ck n z 1 (fun x => (Real.exp (-ph x) : ℂ))` using `ck_expNeg n z 1 ph hph1`. Establish `hEc : Continuous (fun x => (Real.exp (-ph x) : ℂ))` using `Ck.continuous n z hz 1 _ hE`. Establish `hFc : ∀ j, Continuous (fun y => f y j)` using `fun j => Ck.continuous n z hz 2 _ (hf j).1`.
+
+Establish `hTc : ∀ j, Continuous (dTw n z ph j (fun y => f y j))` using `fun j => Ck.continuous n z hz 1 _ (ck_dTw n z 1 ph j _ hph (hf j).1)`. Establish `hDc : ∀ j k, Continuous (db n z k (fun y => f y j))` using `fun j k => Ck.continuous n z hz 1 _ (Ck.db n z 1 k _ (hf j).1)`. Establish `hLc : ∀ j k, Continuous (d n z j (db n z k (fun y => (ph y : ℂ))))` using `fun j k => Ck.continuous n z hz 0 _ (Ck.d n z 0 j _ (Ck.db n z 1 k _ hph))`. Establish `hcc : ∀ {g : M → ℂ}, Continuous g → Continuous (fun x => conj (g x))` using `fun hg => Complex.continuous_conj.comp hg`. Use `set D : Fin n → Fin n → M → ℂ := fun j k x => dTw n z ph j (fun y => f y j) x * conj (dTw n z ph k (fun y => f y k) x) * (Real.exp (-ph x) : ℂ) with hD`.
+
+Use `set L : Fin n → Fin n → M → ℂ := fun j k x => d n z j (db n z k (fun y => (ph y : ℂ))) x * f x j * conj (f x k) * (Real.exp (-ph x) : ℂ) with hL`. Use `set C : Fin n → Fin n → M → ℂ := fun j k x => db n z k (fun y => f y j) x * conj (db n z j (fun y => f y k) x) * (Real.exp (-ph x) : ℂ) with hC`. Use `set Q : Fin n → Fin n → M → ℂ := fun j k x => db n z k (fun y => f y j) x * conj (db n z k (fun y => f y j) x) * (Real.exp (-ph x) : ℂ) with hQ`. Establish `iD : ∀ j k, Integrable (D j k) (vol n z)`. Introduce `j k`.
+
+Apply `integrable_of_continuous n z hz` to reduce the goal to its premises. Conclude with `((hTc j).mul (hcc (hTc k))).mul hEc`. Conclude with `hasCompactSupport_of_vanish _ _ (hasCompactSupport_dTw n z ph j _ (hf j).2) (fun x h0 => by simp [hD, h0])`. Establish `iL : ∀ j k, Integrable (L j k) (vol n z)`. Introduce `j k`.
+
+Apply `integrable_of_continuous n z hz` to reduce the goal to its premises. Conclude with `(((hLc j k).mul (hFc j)).mul (hcc (hFc k))).mul hEc`. Conclude with `hasCompactSupport_of_vanish _ _ (hf j).2 (fun x h0 => by simp [hL, h0])`. Establish `iC : ∀ j k, Integrable (C j k) (vol n z)`. Introduce `j k`.
+
+Apply `integrable_of_continuous n z hz` to reduce the goal to its premises. Conclude with `((hDc j k).mul (hcc (hDc k j))).mul hEc`. Conclude with `hasCompactSupport_of_vanish _ _ (hasCompactSupport_db n z k _ (hf j).2) (fun x h0 => by simp [hC, h0])`. Establish `iQ : ∀ j k, Integrable (Q j k) (vol n z)`. Introduce `j k`.
+
+Apply `integrable_of_continuous n z hz` to reduce the goal to its premises. Conclude with `((hDc j k).mul (hcc (hDc j k))).mul hEc`. Conclude with `hasCompactSupport_of_vanish _ _ (hasCompactSupport_db n z k _ (hf j).2) (fun x h0 => by simp [hQ, h0])`. Establish `iQC : ∀ j k, Integrable (fun x => Q j k x - C j k x) (vol n z)` using `fun j k => (iQ j k).sub (iC j k)`. Establish `pA : ∀ x, ‖∑ j, dTw n z ph j (fun y => f y j) x‖ ^ 2 * Real.exp (-ph x) = (∑ j, ∑ k, D j k x).re`.
+
+Introduce `x`. Rewrite using `[norm_sum_sq_eq]`. Simplify using `only [hD, Complex.re_sum, Complex.re_mul_ofReal, Finset.sum_mul]`. Establish `pL : ∀ x, (Levi n z ph x (fun j => f x j)).re * Real.exp (-ph x) = (∑ j, ∑ k, L j k x).re`. Introduce `x`.
+
+Simplify using `only [Levi, hL, Complex.re_sum, Complex.re_mul_ofReal, Finset.sum_mul]`. Establish `hnq : ∀ w : ℂ, ‖w‖ ^ 2 = (w * conj w).re`. Introduce `w`. Rewrite using `[Complex.mul_conj, Complex.ofReal_re, Complex.normSq_eq_norm_sq]`. Establish `pQ : ∀ x, (∑ j, ∑ k, ‖db n z k (fun y => f y j) x‖ ^ 2) * Real.exp (-ph x) = (∑ j, ∑ k, Q j k x).re`.
+
+Introduce `x`. Simplify using `only [hQ, hnq, Complex.re_sum, Complex.re_mul_ofReal, Finset.sum_mul]`. Establish `pS : ∀ x, sq2 n (sbar n z f x) * Real.exp (-ph x) = (∑ j, ∑ k, (Q j k x - C j k x)).re`. Introduce `x`. Establish `h` using `half_sum_norm_sub_sq (fun j k => db n z j (fun y => f y k) x)`.
+
+Simplify using `only at h`. Unfold `sq2 sbar`. Rewrite using `[h]`. Simplify using `only [hQ, hC, hnq, Complex.re_sum, Complex.sub_re, Complex.re_mul_ofReal, Finset.sum_sub_distrib, sub_mul, Finset.sum_mul]`. Establish `hA` using `integral_re_double_sum (vol n z) n D iD`.
+
+Establish `hLi` using `integral_re_double_sum (vol n z) n L iL`. Establish `hQi` using `integral_re_double_sum (vol n z) n Q iQ`. Establish `hSi` using `integral_re_double_sum (vol n z) n (fun j k x => Q j k x - C j k x) iQC`. Establish `hpair : ∀ j k, ∫ x, D j k x ∂vol n z = (∫ x, L j k x ∂vol n z) + ∫ x, C j k x ∂vol n z` using `fun j k => pair n z hz ph hph (fun y => f y j) (fun y => f y k) (hf j).1 (hf j).2 (hf k).1 (hf k).2 j k`. Establish `hsub : ∀ j k, ∫ x, (Q j k x - C j k x) ∂vol n z = (∫ x, Q j k x ∂vol n z) - ∫ x, C j k x ∂vol n z` using `fun j k => integral_sub (iQ j k) (iC j k)`.
+
+Rewrite using `[integral_congr_ae (Filter.Eventually.of_forall pA), integral_congr_ae (Filter.Eventually.of_forall pS), integral_congr_ae (Filter.Eventually.of_forall pL), integral_congr_ae (Filter.Eventually.of_forall pQ), hA, hLi, hQi, hSi]`. Simplify using `only [hpair, hsub, Finset.sum_add_distrib, Finset.sum_sub_distrib, Complex.add_re, Complex.sub_re]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem basicIdentity (n : ℕ) (M : Type*) [TopologicalSpace M] [T2Space M]
     [SecondCountableTopology M] [MeasurableSpace M] [BorelSpace M] :
     BasicIdentityStatement n M := by

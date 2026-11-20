@@ -13,15 +13,26 @@ open scoped CategoryTheory.Obj
 
 namespace GlobalTheory.ExtUnique
 
+/- English proof (translation)
+Use `Opens.isDominant_ι (X := S) hU` as an intermediate fact. Conclude with `⟨inferInstance, .of_isDominant _⟩`.
+-/
 theorem dense_open {S : Scheme.{u}} [IsReduced S] [IsLocallyNoetherian S] (U : S.Opens)
     (hU : Dense (U : Set S)) : QuasiCompact U.ι ∧ IsSchemeTheoreticallyDominant U.ι := by
   have := Opens.isDominant_ι (X := S) hU
   exact ⟨inferInstance, .of_isDominant _⟩
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨inferInstance, .of_isDominant _⟩`.
+-/
 theorem dense_openImmersion {U S : Scheme.{u}} [IsReduced S] [IsLocallyNoetherian S] (j : U ⟶ S)
     [IsOpenImmersion j] [IsDominant j] : QuasiCompact j ∧ IsSchemeTheoreticallyDominant j :=
   ⟨inferInstance, .of_isDominant _⟩
 
+/- English proof (translation)
+Use `first`. Consider the case `exact @_root_.GlobalTheory.SchemeDominantSpecMap.isSchemeTheoreticallyDominant_specMap`. Consider the case `exact _root_.GlobalTheory.SchemeDominantSpecMap.isSchemeTheoreticallyDominant_specMap`. Consider the case `(apply _root_.GlobalTheory.SchemeDominantSpecMap.isSchemeTheoreticallyDominant_specMap <;> assumption)`. Consider the case `(intros; apply _root_.GlobalTheory.SchemeDominantSpecMap.isSchemeTheoreticallyDominant_specMap <;> assumption)`.
+
+Consider the case `(intros; apply @_root_.GlobalTheory.SchemeDominantSpecMap.isSchemeTheoreticallyDominant_specMap <;> first | assumption | infer_instance)`. Consider the case `(intros; exact _root_.GlobalTheory.SchemeDominantSpecMap.isSchemeTheoreticallyDominant_specMap ..)`.
+-/
 theorem isSchemeTheoreticallyDominant_spec_of_injective {R A : CommRingCat.{u}} (φ : R ⟶ A)
     (hφ : Function.Injective φ) : IsSchemeTheoreticallyDominant (Spec.map φ) := by
   first
@@ -32,11 +43,23 @@ theorem isSchemeTheoreticallyDominant_spec_of_injective {R A : CommRingCat.{u}} 
   | (intros; apply @_root_.GlobalTheory.SchemeDominantSpecMap.isSchemeTheoreticallyDominant_specMap <;> first | assumption | infer_instance)
   | (intros; exact _root_.GlobalTheory.SchemeDominantSpecMap.isSchemeTheoreticallyDominant_specMap ..)
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨inferInstance, isSchemeTheoreticallyDominant_spec_of_injective _ (IsFractionRing.injective R K)⟩`.
+-/
 theorem spec_fractionRing (R K : Type u) [CommRing R] [CommRing K] [Algebra R K] [IsFractionRing R K] :
     QuasiCompact (Spec.map (CommRingCat.ofHom (algebraMap R K))) ∧
       IsSchemeTheoreticallyDominant (Spec.map (CommRingCat.ofHom (algebraMap R K))) :=
   ⟨inferInstance, isSchemeTheoreticallyDominant_spec_of_injective _ (IsFractionRing.injective R K)⟩
 
+/- English proof (translation)
+Set `X' : Over Z` to `Over.mk (f ≫ s)`. Set `Y' : Over Z` to `Over.mk s`. Set `W' : Over Z` to `Over.mk (w ≫ f ≫ s)`. Set `f' : X' ⟶ Y'` to `Over.homMk f`. Set `g' : X' ⟶ Y'` to `Over.homMk g h.symm`.
+
+Set `w' : W' ⟶ X'` to `Over.homMk w`. Establish `: IsSeparated Y'.hom` using `‹_›`. Establish `hw' : w' ≫ f' = w' ≫ g'` using `Over.OverMorphism.ext hw`. Establish `e : (equalizer.lift w' hw').left ≫ (equalizer.ι f' g').left = w`. Rewrite using `[← Over.comp_left, equalizer.lift_ι]`.
+
+Both sides reduce to the same expression. Establish `hk : (equalizer.ι f' g').left.ker = ⊥`. Establish `h₁` using `Scheme.Hom.le_ker_comp (equalizer.lift w' hw').left (equalizer.ι f' g').left`. Rewrite `h₁` using `[e, w.ker_eq_bot]`. Conclude with `le_bot_iff.1 h₁`.
+
+Establish `: IsIso (equalizer.ι f' g').left` using `IsClosedImmersion.isIso_iff_ker_eq_bot.2 hk`. Establish `c : (equalizer.ι f' g').left ≫ f'.left = (equalizer.ι f' g').left ≫ g'.left`. Rewrite using `[← Over.comp_left, ← Over.comp_left, equalizer.condition]`. Conclude with `(cancel_epi _).1 c`.
+-/
 theorem hom_ext_of_dominant {W X Y Z : Scheme.{u}} {f g : X ⟶ Y} (s : Y ⟶ Z) [IsSeparated s]
     (h : f ≫ s = g ≫ s) (w : W ⟶ X) [IsSchemeTheoreticallyDominant w] (hw : w ≫ f = w ≫ g) : f = g := by
   let X' : Over Z := Over.mk (f ≫ s)
@@ -62,6 +85,9 @@ variable {U S : Scheme.{u}} (j : U ⟶ S) [QuasiCompact j] [IsSchemeTheoreticall
 
 variable {j} in
 
+/- English proof (translation)
+Establish `: IsSchemeTheoreticallyDominant φ` using `.of_isPullback h.flip`. Conclude with `Over.OverMorphism.ext (hom_ext_of_dominant Y.hom (by rw [Over.w, Over.w]) φ hfg)`.
+-/
 theorem over_hom_ext_of_isPullback {X Y : Over S} [Flat X.hom] [IsSeparated Y.hom] {X' : Scheme.{u}}
     {φ : X' ⟶ X.left} {p : X' ⟶ U} (h : IsPullback φ p X.hom j) {f g : X ⟶ Y}
     (hfg : φ ≫ f.left = φ ≫ g.left) : f = g := by
@@ -69,21 +95,33 @@ theorem over_hom_ext_of_isPullback {X Y : Over S} [Flat X.hom] [IsSeparated Y.ho
   exact Over.OverMorphism.ext (hom_ext_of_dominant Y.hom (by rw [Over.w, Over.w]) φ hfg)
 
 omit [QuasiCompact j] [IsSchemeTheoreticallyDominant j] in
+/- English proof (translation)
+The claim follows from `pullback.lift_fst _ _ _`.
+-/
 theorem pullback_map_left_fst {X Y : Over S} (a : X ⟶ Y) :
     ((Over.pullback j).map a).left ≫ pullback.fst Y.hom j = pullback.fst X.hom j ≫ a.left :=
   pullback.lift_fst _ _ _
 
+/- English proof (translation)
+Introduce `f g h` and use `over_hom_ext_of_isPullback (IsPullback.of_hasPullback X.hom j) (by rw [← pullback_map_left_fst, ← pullback_map_left_fst, h])`.
+-/
 theorem pullback_map_injective (X Y : Over S) [Flat X.hom] [IsSeparated Y.hom] :
     Function.Injective ((Over.pullback j).map : (X ⟶ Y) → _) := fun f g h =>
   over_hom_ext_of_isPullback (IsPullback.of_hasPullback X.hom j)
     (by rw [← pullback_map_left_fst, ← pullback_map_left_fst, h])
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨pullback_map_injective j X X (by simp [hf, hg]), pullback_map_injective j Y Y (by simp [hf, hg])⟩`.
+-/
 theorem comp_eq_id_of_pullback {X Y : Over S} [Flat X.hom] [IsSeparated X.hom] [Flat Y.hom] [IsSeparated Y.hom]
     (e : (Over.pullback j).obj X ≅ (Over.pullback j).obj Y) (f : X ⟶ Y) (g : Y ⟶ X)
     (hf : (Over.pullback j).map f = e.hom) (hg : (Over.pullback j).map g = e.inv) :
     f ≫ g = 𝟙 X ∧ g ≫ f = 𝟙 Y :=
   ⟨pullback_map_injective j X X (by simp [hf, hg]), pullback_map_injective j Y Y (by simp [hf, hg])⟩
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨g, comp_eq_id_of_pullback j e f g hf hg⟩`.
+-/
 theorem isIso_of_pullback {X Y : Over S} [Flat X.hom] [IsSeparated X.hom] [Flat Y.hom] [IsSeparated Y.hom]
     (e : (Over.pullback j).obj X ≅ (Over.pullback j).obj Y) (f : X ⟶ Y) (g : Y ⟶ X)
     (hf : (Over.pullback j).map f = e.hom) (hg : (Over.pullback j).map g = e.inv) : IsIso f :=
@@ -91,6 +129,9 @@ theorem isIso_of_pullback {X Y : Over S} [Flat X.hom] [IsSeparated X.hom] [Flat 
 
 variable {j} in
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Use `over_hom_ext_of_isPullback hX ?_` and prove the remaining obligations. Rewrite using `[Over.comp_left, ← Category.assoc, ← hf, Category.assoc, ← hg, ← Category.assoc, ← Over.comp_left, e.hom_inv_id, Over.id_left, Over.id_left, Category.id_comp, Category.comp_id]`. Use `over_hom_ext_of_isPullback hY ?_` and prove the remaining obligations. Rewrite using `[Over.comp_left, ← Category.assoc, ← hg, Category.assoc, ← hf, ← Category.assoc, ← Over.comp_left, e.inv_hom_id, Over.id_left, Over.id_left, Category.id_comp, Category.comp_id]`.
+-/
 theorem comp_eq_id_of_isPullback {X Y : Over S} [Flat X.hom] [IsSeparated X.hom] [Flat Y.hom] [IsSeparated Y.hom]
     {X' Y' : Over U} {φ : X'.left ⟶ X.left} {ψ : Y'.left ⟶ Y.left}
     (hX : IsPullback φ X'.hom X.hom j) (hY : IsPullback ψ Y'.hom Y.hom j) (e : X' ≅ Y') (f : X ⟶ Y) (g : Y ⟶ X)
@@ -106,20 +147,36 @@ theorem comp_eq_id_of_isPullback {X Y : Over S} [Flat X.hom] [IsSeparated X.hom]
 
 variable {j} in
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨g, comp_eq_id_of_isPullback hX hY e f g hf hg⟩`.
+-/
 theorem isIso_of_isPullback {X Y : Over S} [Flat X.hom] [IsSeparated X.hom] [Flat Y.hom] [IsSeparated Y.hom]
     {X' Y' : Over U} {φ : X'.left ⟶ X.left} {ψ : Y'.left ⟶ Y.left}
     (hX : IsPullback φ X'.hom X.hom j) (hY : IsPullback ψ Y'.hom Y.hom j) (e : X' ≅ Y') (f : X ⟶ Y) (g : Y ⟶ X)
     (hf : e.hom.left ≫ ψ = φ ≫ f.left) (hg : e.inv.left ≫ φ = ψ ≫ g.left) : IsIso f :=
   ⟨g, comp_eq_id_of_isPullback hX hY e f g hf hg⟩
 
+/- English proof (translation)
+Express the relevant statement in the definitionally equal form `Flat (pullback.fst X.hom Y.hom ≫ X.hom)`. Use `infer_instance`.
+-/
 theorem flat_tensorObj (X Y : Over S) [Flat X.hom] [Flat Y.hom] : Flat (X ⊗ Y).hom := by
   change Flat (pullback.fst X.hom Y.hom ≫ X.hom)
   infer_instance
 
+/- English proof (translation)
+Express the relevant statement in the definitionally equal form `Flat (𝟙 S)`. Use `infer_instance`.
+-/
 theorem flat_tensorUnit : Flat (𝟙_ (Over S)).hom := by
   change Flat (𝟙 S)
   infer_instance
 
+/- English proof (translation)
+Use `flat_tensorObj G G` as an intermediate fact. Use `flat_tensorUnit (S := S)` as an intermediate fact. Prove the components needed by the constructor for the conclusion. Apply `pullback_map_injective j` to reduce the goal to its premises. Establish `h` using `hf.one_hom`.
+
+Rewrite `h` using `[Functor.obj.η_def, Functor.obj.η_def, Category.assoc, cancel_epi]`. Rewrite using `[Functor.map_comp, h]`. Apply `pullback_map_injective j` to reduce the goal to its premises. Establish `h` using `hf.mul_hom`. Rewrite `h` using `[Functor.obj.μ_def, Functor.obj.μ_def, Functor.LaxMonoidal.μ_natural_assoc, Category.assoc, cancel_epi]`.
+
+Rewrite using `[Functor.map_comp, Functor.map_comp, h]`.
+-/
 theorem isMonHom_of_pullback {G H : Over S} [MonObj G] [MonObj H] [Flat G.hom] [IsSeparated H.hom] (f : G ⟶ H)
     (hf : IsMonHom ((Over.pullback j).map f)) : IsMonHom f := by
   have := flat_tensorObj G G
@@ -135,6 +192,9 @@ theorem isMonHom_of_pullback {G H : Over S} [MonObj G] [MonObj H] [Flat G.hom] [
       cancel_epi] at h
     rw [Functor.map_comp, Functor.map_comp, h]
 
+/- English proof (translation)
+Introduce `f g h` and use `by ext1 exact pullback_map_injective j G.X H.X (congrArg (fun z => z.hom.hom) h)`.
+-/
 theorem mapGrp_map_injective (G H : Grp (Over S)) [Flat G.X.hom] [IsSeparated H.X.hom] :
     Function.Injective ((Over.pullback j).mapGrp.map : (G ⟶ H) → _) := fun f g h => by
   ext1
@@ -146,6 +206,11 @@ namespace GlobalTheory.ExtUnique
 
 variable {U S : Scheme.{0}} {j : U ⟶ S} [QuasiCompact j] [IsSchemeTheoreticallyDominant j]
 
+/- English proof (translation)
+Take `⟨a, ha, ha'⟩` from `grpPullback_iso (isGrpPullback_pullback G j) hG`. Take `⟨b, hb, hb'⟩` from `grpPullback_iso hH (isGrpPullback_pullback H j)`. Establish `e : (Over.pullback j).map f = a.hom ≫ f' ≫ b.hom`. Apply `Over.OverMorphism.ext` to reduce the goal to its premises. Apply `pullback.hom_ext` to reduce the goal to its premises.
+
+Rewrite using `[pullback_map_left_fst, Over.comp_left, Over.comp_left, Category.assoc, Category.assoc, hb', hf, ← Category.assoc, ha']`. Conclude with `(Over.w _).trans (Over.w _).symm`. Conclude with `isMonHom_of_pullback j f (by rw [e]; infer_instance)`.
+-/
 theorem isMonHom_of_isGrpPullback {G H : Over S} [GrpObj G] [GrpObj H] [Flat G.hom] [IsSeparated H.hom]
     {G' H' : Over U} [GrpObj G'] [GrpObj H'] {φ : G'.left ⟶ G.left} {ψ : H'.left ⟶ H.left}
     (hG : IsGrpPullback G' G j φ) (hH : IsGrpPullback H' H j ψ) (f' : G' ⟶ H') [IsMonHom f'] (f : G ⟶ H)
@@ -160,6 +225,9 @@ theorem isMonHom_of_isGrpPullback {G H : Over S} [GrpObj G] [GrpObj H] [Flat G.h
     · exact (Over.w _).trans (Over.w _).symm
   exact isMonHom_of_pullback j f (by rw [e]; infer_instance)
 
+/- English proof (translation)
+Take `⟨a, _, _, _, _⟩` from `a`. Take `⟨b, _, _, _, _⟩` from `b`. Take `rfl : a = b` from `funext h`. Both sides reduce to the same expression.
+-/
 theorem oAct_ext {O : Type} [CommRing O] {G : Over S} [GrpObj G] {a b : OAct O G} (h : ∀ x, a.act x = b.act x) :
     a = b := by
   obtain ⟨a, _, _, _, _⟩ := a
@@ -167,6 +235,13 @@ theorem oAct_ext {O : Type} [CommRing O] {G : Over S} [GrpObj G] {a b : OAct O G
   obtain rfl : a = b := funext h
   rfl
 
+/- English proof (translation)
+Use `choose f hf using hi`. Use `⟨⟨f, fun x => ?_, ?_, fun x y => ?_, fun x y => ?_⟩, hf, fun b hb => oAct_ext fun x => ?_⟩` and prove the remaining obligations. Use `i.hom x` as an intermediate fact. Conclude with `isMonHom_of_isGrpPullback hG hG (i.act x) (f x) (hf x)`. Use `over_hom_ext_of_isPullback hG.1 ?_` and prove the remaining obligations.
+
+Rewrite using `[← hf, i.one, Over.id_left, Over.id_left, Category.id_comp, Category.comp_id]`. Use `over_hom_ext_of_isPullback hG.1 ?_` and prove the remaining obligations. Rewrite using `[← hf, i.mul, Over.comp_left, Over.comp_left, Category.assoc, hf, ← Category.assoc, hf, Category.assoc]`. Use `over_hom_ext_of_isPullback hG.1 ?_` and prove the remaining obligations. Set `φ₀ : Over.mk (G'.hom ≫ j) ⟶ G` to `Over.homMk φ hG.1.w`.
+
+Establish `h` using `hG.2 G' (i.act x) (i.act y) (φ₀ ≫ f x) (φ₀ ≫ f y) (hf x).symm (hf y).symm`. Rewrite `h` using `[← MonObj.comp_mul]`. Rewrite using `[← hf, i.add, ← h]`. Both sides reduce to the same expression. Conclude with `over_hom_ext_of_isPullback hG.1 ((hb x).symm.trans (hf x))`.
+-/
 theorem existsUnique_oAct_of_isGrpPullback {O : Type} [CommRing O] {G : Over S} [GrpObj G] [Flat G.hom]
     [IsSeparated G.hom] {G' : Over U} [GrpObj G'] {φ : G'.left ⟶ G.left} (hG : IsGrpPullback G' G j φ)
     (i : OAct O G') (hi : ∀ x, ∃ f : G ⟶ G, (i.act x).left ≫ φ = φ ≫ f.left) :
@@ -189,6 +264,11 @@ theorem existsUnique_oAct_of_isGrpPullback {O : Type} [CommRing O] {G : Over S} 
 
 variable (j) in
 
+/- English proof (translation)
+Take `⟨a, ha, hu⟩` from `existsUnique_oAct_of_isGrpPullback (isGrpPullback_pullback G j) i fun x => by`. Take `⟨f, hf⟩` from `hi x`. Conclude with `⟨f, by rw [← hf, pullback_map_left_fst]⟩`. Use `⟨a, oAct_ext fun x => ?_, fun b hb => hu b fun x => ?_⟩` and prove the remaining obligations. Apply `Over.OverMorphism.ext` to reduce the goal to its premises.
+
+Apply `pullback.hom_ext` to reduce the goal to its premises. Conclude with `(pullback_map_left_fst j _).trans (ha x).symm`. Conclude with `(Over.w _).trans (Over.w _).symm`. Rewrite using `[← hb]`. Conclude with `pullback_map_left_fst j _`.
+-/
 theorem existsUnique_oAct_pullback {O : Type} [CommRing O] {G : Over S} [GrpObj G] [IsCommMonObj G] [Flat G.hom]
     [IsSeparated G.hom] (i : OAct O ((Over.pullback j).obj G))
     (hi : ∀ x, ∃ f : G ⟶ G, (Over.pullback j).map f = i.act x) :
@@ -204,6 +284,9 @@ theorem existsUnique_oAct_pullback {O : Type} [CommRing O] {G : Over S} [GrpObj 
   · rw [← hb]
     exact pullback_map_left_fst j _
 
+/- English proof (translation)
+Use `h.smooth` as an intermediate fact. Conclude with `⟨inferInstance, h.separated⟩`.
+-/
 theorem flat_and_isSeparated_of_isSemiAbelian {S : Scheme.{u}} (G : Over S) [GrpObj G] (h : IsSemiAbelian G) :
     Flat G.hom ∧ IsSeparated G.hom := by
   have := h.smooth
@@ -220,12 +303,18 @@ def intAct {S : Scheme.{0}} (G : Over S) [GrpObj G] [IsCommMonObj G] : OAct ℤ 
   mul a b := by rw [GrpObj.comp_zpow, Category.comp_id, zpow_mul]
   add a b := zpow_add _ _ _
 
+/- English proof (translation)
+Establish `h` using `map_zpow (MonoidHom.mk' (fun f : G ⟶ G => (Over.pullback j).map f) fun _ _ => CategoryTheory.Functor.map_mul _ _ _) (𝟙 G) n`. Simplify `h` using `[intAct]`.
+-/
 theorem intAct_pullback {U S : Scheme.{0}} (j : U ⟶ S) (G : Over S) [GrpObj G] [IsCommMonObj G] (n : ℤ) :
     (Over.pullback j).map ((intAct G).act n) = (intAct ((Over.pullback j).obj G)).act n := by
   have h := map_zpow (MonoidHom.mk' (fun f : G ⟶ G => (Over.pullback j).map f)
     fun _ _ => CategoryTheory.Functor.map_mul _ _ _) (𝟙 G) n
   simpa [intAct] using h
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Express the relevant statement in the definitionally equal form `Flat (Spec.map (CommRingCat.ofHom (algebraMap R (AddMonoidAlgebra R X))))`. Rewrite using `[Flat.SpecMap_iff]`. Conclude with `RingHom.flat_algebraMap_iff.2 inferInstance`. Express the relevant statement in the definitionally equal form `IsSeparated (Spec.map (CommRingCat.ofHom (algebraMap R (AddMonoidAlgebra R X)))) infer_instance`.
+-/
 theorem splitTorusAff_flat_and_isSeparated (R : CommRingCat.{u}) (X : Type u) [AddCommGroup X] :
     Flat (splitTorusAff R X).hom ∧ IsSeparated (splitTorusAff R X).hom := by
   constructor
@@ -235,6 +324,13 @@ theorem splitTorusAff_flat_and_isSeparated (R : CommRingCat.{u}) (X : Type u) [A
   · change IsSeparated (Spec.map (CommRingCat.ofHom (algebraMap R (AddMonoidAlgebra R X))))
     infer_instance
 
+/- English proof (translation)
+Introduce `h`. Rewrite `h` using `[(intAct _).one]`. Express the relevant statement in the definitionally equal form `(𝟙 _ : splitTorusAff R X ⟶ _) ^ (0 : ℤ) = _ at h`. Rewrite `h` using `[zpow_zero, Hom.one_def]`. Establish `h₁ : Spec.map (CommRingCat.ofHom (algebraMap R (AddMonoidAlgebra R X))) ≫ (η[splitTorusAff R X]).left = 𝟙 (Spec (torusRing R X))` using `congrArg (fun z => z.left) h`.
+
+Take `⟨ψ, hψ⟩` from `Spec.map_surjective (R := torusRing R X) (S := R) (η[splitTorusAff R X]).left`. Rewrite `h₁` using `[← hψ]`. Establish `h₂ : ψ ≫ CommRingCat.ofHom (algebraMap R (AddMonoidAlgebra R X)) = 𝟙 (torusRing R X)` using `Spec.map_injective (by rw [Spec.map_comp, Spec.map_id]; exact h₁)`. Take `⟨x, hx⟩` from `exists_ne (0 : X)`. Establish `h₃ : algebraMap R (AddMonoidAlgebra R X) (ψ (AddMonoidAlgebra.single x 1)) = AddMonoidAlgebra.single x 1` using `congrArg (fun z => z.hom (AddMonoidAlgebra.single x 1)) h₂`.
+
+Rewrite `h₃` using `[AddMonoidAlgebra.coe_algebraMap, Function.comp_apply]`. Establish `h₄` using `congrArg (fun z : AddMonoidAlgebra R X => z.coeff x) h₃`. Simplify using `[hx] at h₄`.
+-/
 theorem intAct_splitTorusAff_zero_ne_one (R : CommRingCat.{0}) [Nontrivial R] (X : Type) [AddCommGroup X]
     [Nontrivial X] : (intAct (splitTorusAff R X)).act 0 ≠ (intAct (splitTorusAff R X)).act 1 := by
   intro h
@@ -254,6 +350,9 @@ theorem intAct_splitTorusAff_zero_ne_one (R : CommRingCat.{0}) [Nontrivial R] (X
   have h₄ := congrArg (fun z : AddMonoidAlgebra R X => z.coeff x) h₃
   simp [hx] at h₄
 
+/- English proof (translation)
+Take `⟨_, _⟩` from `spec_fractionRing ℤ ℚ`. Take `⟨_, _⟩` from `splitTorusAff_flat_and_isSeparated (CommRingCat.of ℤ) ℤ`. Conclude with `(existsUnique_oAct_pullback _ _ fun n => ⟨_, intAct_pullback _ _ n⟩).unique ha (oAct_ext fun n => intAct_pullback _ _ n)`.
+-/
 theorem intAct_unique_extension (a : OAct ℤ (splitTorusAff (CommRingCat.of ℤ) ℤ))
     (ha : OAct.pullback (Spec.map (CommRingCat.ofHom (algebraMap ℤ ℚ))) _ a = intAct _) : a = intAct _ := by
   obtain ⟨_, _⟩ := spec_fractionRing ℤ ℚ
@@ -267,6 +366,9 @@ namespace GlobalTheory
 
 open ExtUnique
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fun _ _ _ U hU => dense_open U hU, fun R K _ _ _ _ => spec_fractionRing R K, fun _ _ j _ _ => ⟨⟨fun X Y _ _ _ _ h => pullback_map_injective j X Y h, fun _ _ _ _ _ _ _ h _ _ e => over_hom_ext_of_isPullback h e⟩, ⟨fun _ _ _ _ _ _ f h => isMonHom_of_pullback j f h, fun _ _ _ _ _ _ …`.
+-/
 theorem extension_unique :
     (∀ (S : Scheme.{0}) [IsReduced S] [IsLocallyNoetherian S] (U : S.Opens), Dense (U : Set S) →
       QuasiCompact U.ι ∧ IsSchemeTheoreticallyDominant U.ι) ∧

@@ -9,6 +9,15 @@ attribute [local instance] Over.cartesianMonoidalCategory
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Take `⟨hfin, -, hrk⟩` from `GlobalTheory.Published.AbelianDeRham.Free.prim HF hA hg`. Take `⟨-, -, hfin1, -, hrk1⟩` from `HH k A g hA hg`. Establish `p : PrimeSpectrum k` using `IsLocalRing.closedPoint k`. Establish `h1 : Module.finrank k (primDR A) = 2 * g`. Use `hrk p` as an intermediate fact.
+
+Rewrite `this` using `[Module.rankAtStalk_eq_finrank_of_free]`. Then use the resulting hypothesis. Establish `h2 : Module.finrank k (PrimitiveSubmodule A) = g`. Use `hrk1 p` as an intermediate fact. Rewrite `this` using `[Module.rankAtStalk_eq_finrank_of_free]`. Then use the resulting hypothesis. Establish `hd : Module.finrank k (HdR A) = 2 * g`.
+
+Express the relevant statement in the definitionally equal form `Module.finrank k (Module.Dual k (primDR A)) = 2 * g`. Rewrite using `[Subspace.dual_finrank_eq, h1]`. Use `⟨?_, hd, ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `FiniteDimensional k (Module.Dual k (primDR A)) infer_instance`. Use `Subspace.finrank_add_finrank_dualAnnihilator_eq (PrimitiveSubmodule A)` as an intermediate fact.
+
+Rewrite `this` using `[h2, h1]`. Express the relevant statement in the definitionally equal form `Module.finrank k (PrimitiveSubmodule A).dualAnnihilator = g`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem finrank_HdR_Fil_of_field (HF : GlobalTheory.Published.AbelianDeRham.Free)
     (HH : GlobalTheory.Published.AbelianDeRham.Hodge) (k : Type) [Field k] (A : Over (Sp k)) [GrpObj A] (g : ℕ)
     (hA : IsAbelianScheme A) (hg : SmoothOfRelativeDimension g A.hom) :

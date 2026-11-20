@@ -7,6 +7,19 @@ namespace PositivityTheory.SiegelWeilFormula.Densx
 open HeckeCharacterZeroLocus.SiegelWeilU NumberField IsDedekindDomain MeasureTheory Topology Filter GlobalTheory.CompanionTheory.SW
 open scoped TensorProduct ENNReal NNReal
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ hσ n`. Proceed by induction on `n with`. Consider the case `zero`. Introduce `J hJ _ T hT hd`. Conclude with `hB F E σ hσ J hJ T hT hd`.
+
+Consider the case `succ n ih`. Introduce `J hJ ha T hT hd`. Take `⟨t, x, ht, hx⟩` from `GlobalTheory.CompanionTheory.SW.HermRep.exists_repr F E σ hσ (n + 1) T ⟨hT, hd⟩`. Take `⟨g, T₁, hT₁, hb, -⟩` from `GlobalTheory.CompanionTheory.SW.AlgSplit.split_anisotropic F E σ hσ (n + 1) T ⟨hT, hd⟩ t x ht hx`. Take `⟨hdet, hblk, -, -⟩` from `GlobalTheory.CompanionTheory.SW.BlockAlg.block_alg F E σ hσ (n + 1) T₁ t`.
+
+Establish `hT'` using `hblk hT₁.1`. Establish `htE : algebraMap F E t ≠ 0`. Simplify using `using ht`. Establish `hd' : (blockOne (algebraMap F E t) T₁).det ≠ 0`. Rewrite using `[hdet]`.
+
+Conclude with `mul_ne_zero htE hT₁.2`. Use `hS F E σ hσ (n + 2) J hJ (n + 2) T hT hd g _ hT' hb ?_` and prove the remaining obligations. Distinguish the cases in `hrep : ∃ y : Fin (n + 2) → E, hE σ J y y = algebraMap F E t`. Take `⟨y, hy⟩` from `hrep`. Take `⟨g', J₁, hJ₁, hb', -⟩` from `GlobalTheory.CompanionTheory.SW.AlgSplit.split_anisotropic F E σ hσ (n + 1) J hJ t y ht hy`.
+
+Establish `ha' : PositivityTheory.PfSWUS.HMass.IsAnisoH σ (blockOne (algebraMap F E t) J₁)`. Rewrite using `[hb']`. Apply the tactic sequence `exact PositivityTheory.PfSWUS.HMass.isAnisoH_of_isometry σ J g' ha`. Use `hI F E σ hσ (n + 2) J hJ g' _ hb' (n + 2) _ hT' hd' ?_` and prove the remaining obligations. Conclude with `hSt F E σ hσ (n + 1) J₁ hJ₁ (by omega) t ht ha' T₁ hT₁.1 hT₁.2 hT' (ih J₁ hJ₁ (PositivityTheory.PfSWUS.HMass.isAnisoH_of_block σ _ J₁ ha') T₁ hT₁.1 hT₁.2)`.
+
+Conclude with `hN F E σ hσ (n + 1) J hJ (by omega) ha t ht T₁ hT₁.1 hT₁.2 hT' (fun y hy => hrep ⟨y, hy⟩)`.
+-/
 theorem swMeasC_succ (hB : BaseOne) (hI : IsomC) (hS : ScaleC) (hSt : StepC) (hN : NotRepC) :
     ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E), IsCMExt F E σ →
     ∀ (n : ℕ) (J : Matrix (Fin (n + 1)) (Fin (n + 1)) E), IsHermND σ J → PositivityTheory.PfSWUS.HMass.IsAnisoH σ J →
@@ -41,6 +54,9 @@ theorem swMeasC_succ (hB : BaseOne) (hI : IsomC) (hS : ScaleC) (hSt : StepC) (hN
         (ih J₁ hJ₁ (PositivityTheory.PfSWUS.HMass.isAnisoH_of_block σ _ J₁ ha') T₁ hT₁.1 hT₁.2)
     · exact hN F E σ hσ (n + 1) J hJ (by omega) ha t ht T₁ hT₁.1 hT₁.2 hT' (fun y hy => hrep ⟨y, hy⟩)
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ hσ M hM J hJ ha T hT hd`. Take `⟨n, rfl⟩ : ∃ n, M = n + 1` from `⟨M - 1, by omega⟩`. Conclude with `swMeasC_succ hB hI hS hSt hN F E σ hσ n J hJ ha T hT hd`.
+-/
 theorem swMeasCAll_of (hB : BaseOne) (hI : IsomC) (hS : ScaleC) (hSt : StepC) (hN : NotRepC) : SWMeasCAll := by
   intro F E _ _ _ _ _ σ hσ M hM J hJ ha T hT hd
   obtain ⟨n, rfl⟩ : ∃ n, M = n + 1 := ⟨M - 1, by omega⟩

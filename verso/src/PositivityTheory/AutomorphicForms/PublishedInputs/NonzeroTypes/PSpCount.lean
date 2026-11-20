@@ -15,11 +15,21 @@ variable {M W : Type} [Group M] [AddCommGroup W] [Module ℂ W]
 def eS (H : Subgroup M) (η : M → ℂ) (ρ : Representation ℂ M W) : Submodule ℂ W :=
   ⨅ (m : M) (_ : m ∈ H), LinearMap.ker (ρ m - η m • LinearMap.id)
 
+/- English proof (translation)
+Simplify using `only [eS, Submodule.mem_iInf, LinearMap.mem_ker, LinearMap.sub_apply, LinearMap.smul_apply, LinearMap.id_apply, sub_eq_zero]`.
+-/
 theorem mem_eS {H : Subgroup M} {η : M → ℂ} {ρ : Representation ℂ M W} {w : W} :
     w ∈ eS H η ρ ↔ ∀ m ∈ H, ρ m w = η m • w := by
   simp only [eS, Submodule.mem_iInf, LinearMap.mem_ker, LinearMap.sub_apply, LinearMap.smul_apply,
     LinearMap.id_apply, sub_eq_zero]
 
+/- English proof (translation)
+Establish `hmem : ∀ w : ↥(eS H η ρ), φ.toLinearEquiv.toLinearMap ((eS H η ρ).subtype w) ∈ eS H η τ`. Introduce `w`. Rewrite using `[mem_eS]`. Introduce `m hm`. Establish `h1` using `φ.toIntertwiningMap.isIntertwining _ _ m (w : W)`.
+
+Establish `h2` using `mem_eS.1 w.2 m hm`. Express the relevant statement in the definitionally equal form `φ.toLinearEquiv (ρ m w) = τ m (φ.toLinearEquiv w) at h1`. Express the relevant statement in the definitionally equal form `τ m (φ.toLinearEquiv w) = η m • φ.toLinearEquiv w`. Rewrite using `[← h1, h2, map_smul]`. Set `f : ↥(eS H η ρ) →ₗ[ℂ] ↥(eS H η τ)` to `LinearMap.codRestrict (eS H η τ) (φ.toLinearEquiv.toLinearMap.comp (eS H η ρ).subtype) hmem`.
+
+Use `LinearMap.rank_le_of_injective f fun x y hxy => ?_` and prove the remaining obligations. Establish `: φ.toLinearEquiv (x : W) = φ.toLinearEquiv (y : W)` using `congrArg Subtype.val hxy`. Conclude with `Subtype.ext (φ.toLinearEquiv.injective this)`.
+-/
 theorem rank_eS_le_of_equiv {X : Type} [AddCommGroup X] [Module ℂ X] (H : Subgroup M) (η : M → ℂ)
     {ρ : Representation ℂ M W} {τ : Representation ℂ M X} (φ : ρ.Equiv τ) :
     Module.rank ℂ ↥(eS H η ρ) ≤ Module.rank ℂ ↥(eS H η τ) := by
@@ -38,11 +48,25 @@ theorem rank_eS_le_of_equiv {X : Type} [AddCommGroup X] [Module ℂ X] (H : Subg
   have : φ.toLinearEquiv (x : W) = φ.toLinearEquiv (y : W) := congrArg Subtype.val hxy
   exact Subtype.ext (φ.toLinearEquiv.injective this)
 
+/- English proof (translation)
+Establish `h : eS H η ρ = ⊥` using `eq_bot_iff.2 fun w hw => (Submodule.mem_bot ℂ).2 (hz w hw)`. Rewrite using `[h, rank_bot]`.
+-/
 theorem rank_eS_eq_zero (H : Subgroup M) (η : M → ℂ) (ρ : Representation ℂ M W)
     (hz : ∀ w ∈ eS H η ρ, w = 0) : Module.rank ℂ ↥(eS H η ρ) = 0 := by
   have h : eS H η ρ = ⊥ := eq_bot_iff.2 fun w hw => (Submodule.mem_bot ℂ).2 (hz w hw)
   rw [h, rank_bot]
 
+/- English proof (translation)
+Set `f : ↥(eS H η ρ ⊓ S.toSubmodule) →ₗ[ℂ] (S.toSubmodule ⧸ T.toSubmodule.comap S.toSubmodule.subtype)` to `(Submodule.mkQ _).comp (Submodule.inclusion inf_le_right)`. Establish `hrange : LinearMap.range f ≤ eS H η (subQuot S T)`. Introduce and unpack `_ ⟨x, rfl⟩`. Rewrite using `[mem_eS]`. Introduce `m hm`.
+
+Establish `hx` using `mem_eS.1 (Submodule.mem_inf.1 x.2).1 m hm`. Express the relevant statement in the definitionally equal form `Submodule.Quotient.mk (S.toRepresentation m (Submodule.inclusion inf_le_right x)) = η m • Submodule.Quotient.mk (Submodule.inclusion inf_le_right x)`. Rewrite using `[← Submodule.Quotient.mk_smul]`. Use `congr 1`. Conclude with `Subtype.ext hx`.
+
+Establish `hker : ∀ x : ↥(eS H η ρ ⊓ S.toSubmodule), x ∈ LinearMap.ker f → (x : W) ∈ eS H η ρ ⊓ T.toSubmodule`. Introduce `x hx`. Rewrite `hx` using `[LinearMap.mem_ker]`. Use `Submodule.mem_inf.2 ⟨(Submodule.mem_inf.1 x.2).1, ?_⟩` and prove the remaining obligations. Establish `h2 : Submodule.inclusion inf_le_right x ∈ T.toSubmodule.comap S.toSubmodule.subtype` using `(Submodule.Quotient.mk_eq_zero _).1 hx`.
+
+Conclude with `h2`. Set `g : ↥(LinearMap.ker f) →ₗ[ℂ] ↥(eS H η ρ ⊓ T.toSubmodule)` to `LinearMap.codRestrict _ (((eS H η ρ ⊓ S.toSubmodule).subtype).comp (LinearMap.ker f).subtype) (fun x => hker x.1 x.2)`. Establish `hg : Function.Injective g`. Introduce `x y h`. Establish `h'` using `congrArg (fun z : ↥(eS H η ρ ⊓ T.toSubmodule) => (z : W)) h`.
+
+Simplify using `only [g] at h'`. Conclude with `Subtype.ext (Subtype.ext h')`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem rank_step {ρ : Representation ℂ M W} (H : Subgroup M) (η : M → ℂ) (S T : Subrepresentation ρ)
     (_hTS : T ≤ S) :
     Module.rank ℂ ↥(eS H η ρ ⊓ S.toSubmodule) ≤
@@ -83,6 +107,21 @@ theorem rank_step {ρ : Representation ℂ M W} (H : Subgroup M) (η : M → ℂ
         add_le_add (Submodule.rank_mono hrange) (LinearMap.rank_le_of_injective g hg)
     _ = _ := add_comm _ _
 
+/- English proof (translation)
+Set `r' : ℕ → Cardinal` to `fun u => if h : u < N then r ⟨u, h⟩ else 0`. Establish `key : ∀ j (hj : j < N + 1), Module.rank ℂ ↥(eS H η ρ ⊓ (S ⟨j, hj⟩).toSubmodule) ≤ ∑ u ∈ Finset.range j, r' u`. Introduce `j`. Proceed by induction on `j with`. Consider the case `zero`.
+
+Introduce `hj`. Establish `h00 : S ⟨0, hj⟩ = ⊥` using `h0`. Establish `h' : eS H η ρ ⊓ (S ⟨0, hj⟩).toSubmodule = ⊥`. Rewrite using `[h00]`. Conclude with `inf_bot_eq _`.
+
+Rewrite using `[h', rank_bot]`. Conclude with `zero_le`. Consider the case `succ j ih`. Introduce `hj`. Establish `hjN : j < N` using `by omega`.
+
+Establish `hle : S ⟨j, by omega⟩ ≤ S ⟨j + 1, hj⟩` using `hmono (Fin.mk_le_mk.2 (Nat.le_succ j))`. Establish `hst` using `rank_step H η (S ⟨j + 1, hj⟩) (S ⟨j, by omega⟩) hle`. Establish `hq : Module.rank ℂ ↥(eS H η (subQuot (S ⟨j + 1, hj⟩) (S ⟨j, by omega⟩))) ≤ r' j`. Use `hr ⟨j, hjN⟩` as an intermediate fact. Simplify using `only [r', dif_pos hjN]`.
+
+Conclude with `this`. Rewrite using `[Finset.sum_range_succ]`. Conclude with `hst.trans (add_le_add (ih (by omega)) hq)`. Establish `hfin` using `key N (Nat.lt_succ_self N)`. Establish `hNN : S ⟨N, Nat.lt_succ_self N⟩ = ⊤` using `hN`.
+
+Establish `htop : eS H η ρ ⊓ (S ⟨N, Nat.lt_succ_self N⟩).toSubmodule = eS H η ρ`. Rewrite using `[hNN]`. Conclude with `inf_top_eq _`. Rewrite `hfin` using `[htop]`. Use `hfin.trans (le_of_eq ?_)` and prove the remaining obligations.
+
+Rewrite using `[← Fin.sum_univ_eq_sum_range]`. Use `Finset.sum_congr rfl fun t _ => ?_` and prove the remaining obligations. Simplify using `only [r', dif_pos t.2]`.
+-/
 theorem rank_le_of_filtration {ρ : Representation ℂ M W} (H : Subgroup M) (η : M → ℂ) {N : ℕ}
     (S : Fin (N + 1) → Subrepresentation ρ) (hmono : Monotone S) (h0 : S 0 = ⊥)
     (hN : S (Fin.last N) = ⊤) (r : Fin N → Cardinal)
@@ -129,6 +168,9 @@ section Local
 
 variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
 
+/- English proof (translation)
+Use extensionality with `x`. Simplify using `only [mem_eS]`. Use `forall₂_congr fun g hg => ?_` and prove the remaining obligations. Rewrite using `[jac, twist_apply, MonoidHom.inv_apply, deltaHalf_of_mem_leviK hg, inv_one, Units.val_one, one_smul]`.
+-/
 theorem eS_jacU_eq {α n : Type} [Fintype α] [LinearOrder α] {m : α → Type} [∀ a, Fintype (m a)]
     [∀ a, DecidableEq (m a)] [Fintype n] [DecidableEq n] {V : Type} [AddCommGroup V] [Module ℂ V]
     (e : (Σ a, m a) ≃ n) (π : Representation ℂ (GL n k) V) (η : Levi k m → ℂ) :
@@ -138,6 +180,9 @@ theorem eS_jacU_eq {α n : Type} [Fintype α] [LinearOrder α] {m : α → Type}
   refine forall₂_congr fun g hg => ?_
   rw [jac, twist_apply, MonoidHom.inv_apply, deltaHalf_of_mem_leviK hg, inv_one, Units.val_one, one_smul]
 
+/- English proof (translation)
+Use `choose p w hw hx using fun a => MultiIrr.exists_parab_mul (g a) (x a)`. Use `⟨fun a => (p a : GL (m a) k), ?_, w, ?_, funext hx⟩` and prove the remaining obligations. Conclude with `(Subgroup.mem_pi _).2 fun a _ => (p a).2`. Conclude with `(Subgroup.mem_pi _).2 fun a _ => hw a`.
+-/
 theorem levi_iwasawa {A B : Type} [Fintype A] [Fintype B] [LinearOrder B] {m : A → Type}
     [∀ a, Fintype (m a)] [∀ a, DecidableEq (m a)] {c : A → B → Type} [∀ a j, Fintype (c a j)]
     [∀ a j, DecidableEq (c a j)] (g : ∀ a, (Σ j, c a j) ≃ m a) (x : Levi k m) :
@@ -147,6 +192,13 @@ theorem levi_iwasawa {A B : Type} [Fintype A] [Fintype B] [LinearOrder B] {m : A
   · exact (Subgroup.mem_pi _).2 fun a _ => (p a).2
   · exact (Subgroup.mem_pi _).2 fun a _ => hw a
 
+/- English proof (translation)
+Establish `hK : ∀ w ∈ leviK k m, F.1.1 w = 0`. Introduce `w hw`. Establish `h` using `congrArg (fun F' : smoothPart (ind (relParab k g) τ) => F'.1.1 1) (mem_eS.1 hF w hw)`. Express the relevant statement in the definitionally equal form `F.1.1 (1 * w) = η w • F.1.1 1 at h`. Rewrite `h` using `[one_mul, h1, smul_zero]`.
+
+Conclude with `h`. Apply `Subtype.ext` to reduce the goal to its premises. Apply `Subtype.ext` to reduce the goal to its premises. Use function extensionality and compare the values at `x`. Take `⟨p, hp, w, hw, rfl⟩` from `levi_iwasawa g x`.
+
+Establish `h` using `F.1.2 ⟨p, hp⟩ w`. Express the relevant statement in the definitionally equal form `F.1.1 (p * w) = τ ⟨p, hp⟩ (F.1.1 w) at h`. Rewrite using `[h, hK w hw, map_zero]`. Both sides reduce to the same expression.
+-/
 theorem eq_zero_of_eval {A B : Type} [Fintype A] [Fintype B] [LinearOrder B] {m : A → Type}
     [∀ a, Fintype (m a)] [∀ a, DecidableEq (m a)] {c : A → B → Type} [∀ a j, Fintype (c a j)]
     [∀ a j, DecidableEq (c a j)] (g : ∀ a, (Σ j, c a j) ≃ m a) {X : Type} [AddCommGroup X] [Module ℂ X]
@@ -168,6 +220,11 @@ theorem eq_zero_of_eval {A B : Type} [Fintype A] [Fintype B] [LinearOrder B] {m 
   rw [h, hK w hw, map_zero]
   rfl
 
+/- English proof (translation)
+Set `ev : ↥(eS (leviK k m) η (smInd (relParab k g) τ)) →ₗ[ℂ] X` to `{ toFun := fun F => (F : smoothPart (ind (relParab k g) τ)).1.1 1 map_add' := fun _ _ => rfl map_smul' := fun _ _ => rfl }`. Use `LinearMap.rank_le_of_injective ev fun F F' h => ?_` and prove the remaining obligations. Establish `hd : ((F - F' : ↥(eS (leviK k m) η (smInd (relParab k g) τ))) : smoothPart (ind (relParab k g) τ)) = 0`. Apply `eq_zero_of_eval g τ η _ (F - F').2` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `F.1.1.1 1 - F'.1.1.1 1 = 0`.
+
+Rewrite using `[sub_eq_zero]`. Conclude with `h`. Conclude with `sub_eq_zero.1 (Subtype.ext hd)`.
+-/
 theorem rank_eS_le {A B : Type} [Fintype A] [Fintype B] [LinearOrder B] {m : A → Type}
     [∀ a, Fintype (m a)] [∀ a, DecidableEq (m a)] {c : A → B → Type} [∀ a j, Fintype (c a j)]
     [∀ a j, DecidableEq (c a j)] (g : ∀ a, (Σ j, c a j) ≃ m a) {X : Type} [AddCommGroup X] [Module ℂ X]
@@ -190,6 +247,9 @@ variable {n : ℕ}
 abbrev ρc (c : Fin n → kˣ →* ℂˣ) : Representation ℂ (Levi k fun _ : Fin n => Unit) ℂ :=
   (ofChar (torusChar c)).comp (leviTorus k (Fin n)).symm.toMonoidHom
 
+/- English proof (translation)
+Use `isSmooth_comp ((isSmooth_ofChar_iff _).2 ?_) _ ?_` and prove the remaining obligations. Unfold `torusChar`. Use `Finset.prod_induction _ IsSmoothChar (fun _ _ => IsSmoothChar.mul) isSmoothChar_one fun i _ => ?_` and prove the remaining obligations. Conclude with `(hc i).comp _ (continuous_apply i)`. Conclude with `continuous_pi fun i => continuous_glDet.comp (continuous_apply i)`.
+-/
 theorem isSmooth_ρc (c : Fin n → kˣ →* ℂˣ) (hc : ∀ i, IsSmoothChar (c i)) : IsSmooth (ρc c) := by
   refine isSmooth_comp ((isSmooth_ofChar_iff _).2 ?_) _ ?_
   · unfold torusChar
@@ -203,10 +263,18 @@ variable (G : Grp k n)
 def Good (bb : SizeMatrix (fun _ : Fin n => Unit) (fun a : Fin G.s => Fin (G.d a))) : Prop :=
   ∀ i a, bb.1 i a ≠ 0 → a = G.bl i
 
+/- English proof (translation)
+Simplify using `using bb.2.1 i`.
+-/
 theorem row_sum (bb : SizeMatrix (fun _ : Fin n => Unit) (fun a : Fin G.s => Fin (G.d a))) (i : Fin n) :
     ∑ a, bb.1 i a = 1 := by
   simpa using bb.2.1 i
 
+/- English proof (translation)
+Establish `hs` using `row_sum G bb i`. Establish `hle : bb.1 i a0 ≤ ∑ a', bb.1 i a'` using `Finset.single_le_sum (f := fun a' => bb.1 i a') (fun _ _ => Nat.zero_le _) (Finset.mem_univ a0)`. Use `split_ifs with ha`. Substitute `ha` using the available equality. Use linear arithmetic over natural numbers and integers.
+
+Establish `h2 : bb.1 i a + bb.1 i a0 ≤ ∑ a', bb.1 i a'`. Rewrite using `[← Finset.sum_pair ha]`. Conclude with `Finset.sum_le_sum_of_subset (Finset.subset_univ _)`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem row_eq (bb : SizeMatrix (fun _ : Fin n => Unit) (fun a : Fin G.s => Fin (G.d a))) {i : Fin n}
     {a0 : Fin G.s} (h0 : bb.1 i a0 ≠ 0) (a : Fin G.s) : bb.1 i a = if a = a0 then 1 else 0 := by
   have hs := row_sum G bb i
@@ -220,6 +288,13 @@ theorem row_eq (bb : SizeMatrix (fun _ : Fin n => Unit) (fun a : Fin G.s => Fin 
       exact Finset.sum_le_sum_of_subset (Finset.subset_univ _)
     omega
 
+/- English proof (translation)
+Establish `hrow : ∀ x : SizeMatrix (fun _ : Fin n => Unit) (fun a : Fin G.s => Fin (G.d a)), Good G x → ∀ i a, x.1 i a = if a = G.bl i then 1 else 0`. Introduce `x hx i a`. Establish `hs` using `row_sum G x i`. Establish `hne : x.1 i (G.bl i) ≠ 0`. Introduce `hz`.
+
+Establish `: ∑ a', x.1 i a' = 0` using `Finset.sum_eq_zero fun a' _ => by`. Assume the negation of the conclusion as `h3`. Use `hx i a' h3` as an intermediate fact. Substitute `this` using the available equality. Conclude with `h3 hz`.
+
+Use linear arithmetic over natural numbers and integers. Conclude with `row_eq G x hne a`. Apply `Subtype.ext` to reduce the goal to its premises. Use function extensionality and compare the values at `i a`. Rewrite using `[hrow bb h, hrow bb' h']`.
+-/
 theorem good_unique {bb bb' : SizeMatrix (fun _ : Fin n => Unit) (fun a : Fin G.s => Fin (G.d a))}
     (h : Good G bb) (h' : Good G bb') : bb = bb' := by
   have hrow : ∀ x : SizeMatrix (fun _ : Fin n => Unit) (fun a : Fin G.s => Fin (G.d a)), Good G x →
@@ -247,6 +322,9 @@ def cellRep (c : Fin n → kˣ →* ℂˣ)
   (twist ((relJac f (ρc c)).comp (swapBlocks k (fun i j => Fin (bb.1 i j))))
     (relDeltaHalf k (fun j i => Fin (bb.1 i j)))).comp (relProj k g)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem cellRep_apply (c : Fin n → kˣ →* ℂˣ)
     (bb : SizeMatrix (fun _ : Fin n => Unit) (fun a : Fin G.s => Fin (G.d a)))
     (f : ∀ i, (Σ j, Fin (bb.1 i j)) ≃ (fun _ : Fin n => Unit) i)
@@ -257,6 +335,33 @@ theorem cellRep_apply (c : Fin n → kˣ →* ℂˣ)
 
 set_option maxHeartbeats 800000 in
 
+/- English proof (translation)
+Set `x : Fin n → 𝒪[k]ˣ` to `fun i => if i = i0 then w else 1`. Set `y : ∀ a : Fin G.s, Levi k (fun i : Fin n => Fin (bb.1 i a))` to `fun a i => GeneralLinearGroup.scalar (Fin (bb.1 i a)) (unitIncl k (x i))`. Establish `hyK : ∀ a, y a ∈ leviK k (fun i : Fin n => Fin (bb.1 i a))` using `fun a => (Subgroup.mem_pi _).2 fun i _ => scalar_mem_KO _`. Establish `hyK' : ∀ i, (fun a => y a i) ∈ leviK k (fun a : Fin G.s => Fin (bb.1 i a))` using `fun i => (Subgroup.mem_pi _).2 fun a _ => scalar_mem_KO _`. Establish `hdety : ∀ a i, GeneralLinearGroup.det (y a i) = unitIncl k (x i) ^ bb.1 i a`.
+
+Introduce `a i`. Express the relevant statement in the definitionally equal form `GeneralLinearGroup.det (GeneralLinearGroup.scalar (Fin (bb.1 i a)) (unitIncl k (x i))) = _`. Rewrite using `[GeneralLinearGroup.det_scalar, Fintype.card_fin]`. Set `t : Levi k (fun a : Fin G.s => Fin (G.d a))` to `relEmb k g y`. Establish `htP : t ∈ relParab k g` using `(Subgroup.mem_pi _).2 fun a _ => leviEmb_mem_parab k (g a) (y a)`.
+
+Establish `htK : t ∈ leviK k (fun a : Fin G.s => Fin (G.d a))` using `(Subgroup.mem_pi _).2 fun a _ => leviEmb_mem_KO (g a) (hyK a)`. Establish `hproj : relProj k g ⟨t, htP⟩ = y` using `funext fun a => leviProj_leviEmb k (g a) (y a)`. Establish `hF1 : F.1.1 1 ≠ 0` using `fun h => hne (eq_zero_of_eval g (cellRep G c bb f g) G.eta F hF h)`. Establish `hE1 : F.1.1 t = G.eta t • F.1.1 1`. Establish `h` using `congrArg (fun F' : smoothPart (ind (relParab k g) (cellRep G c bb f g)) => F'.1.1 1) (mem_eS.1 hF t htK)`.
+
+Express the relevant statement in the definitionally equal form `F.1.1 (1 * t) = G.eta t • F.1.1 1 at h`. Rewrite `h` using `[one_mul]`. Then use the resulting hypothesis. Establish `hd1 : relDeltaHalf k (fun j i => Fin (bb.1 i j)) y = 1`. Rewrite using `[relDeltaHalf_apply]`. Conclude with `Finset.prod_eq_one fun a _ => deltaHalf_of_mem_leviK (hyK a)`.
+
+Establish `hd2 : relDeltaHalf k (fun i j => Fin (bb.1 i j)) (swapBlocks k (fun i j => Fin (bb.1 i j)) y) = 1`. Rewrite using `[relDeltaHalf_apply]`. Conclude with `Finset.prod_eq_one fun i _ => deltaHalf_of_mem_leviK (hyK' i)`. Establish `hdetz : ∀ i, GeneralLinearGroup.det (relEmb k f (swapBlocks k (fun i j => Fin (bb.1 i j)) y) i) = unitIncl k (x i)`. Introduce `i`.
+
+Rewrite using `[relEmb_apply, det_leviEmb]`. Express the relevant statement in the definitionally equal form `∏ a, GeneralLinearGroup.det (y a i) = _`. Simplify using `only [hdety]`. Rewrite using `[Finset.prod_pow_eq_pow_sum, row_sum G bb i, pow_one]`. Establish `hT : torusChar c ((leviTorus k (Fin n)).symm (relEmb k f (swapBlocks k (fun i j => Fin (bb.1 i j)) y))) = c i0 (unitIncl k w)`.
+
+Rewrite using `[torusChar_apply]`. Express the relevant statement in the definitionally equal form `∏ i, c i (GeneralLinearGroup.det (relEmb k f (swapBlocks k (fun i j => Fin (bb.1 i j)) y) i)) = _`. Simplify using `only [hdetz]`. Rewrite using `[Finset.prod_eq_single i0 (fun i _ hi => by simp [x, hi]) (by simp)]`. Simplify using `[x]`.
+
+Establish `hdett : ∀ a, GeneralLinearGroup.det (t a) = unitIncl k w ^ bb.1 i0 a`. Introduce `a`. Express the relevant statement in the definitionally equal form `GeneralLinearGroup.det (leviEmb k (g a) (y a)) = _`. Rewrite using `[det_leviEmb]`. Simplify using `only [hdety]`.
+
+Rewrite using `[Finset.prod_eq_single i0 (fun i _ hi => by simp [x, hi]) (by simp)]`. Simplify using `[x]`. Establish `hEta : G.eta t = ((G.μ a0 (unitIncl k w) : ℂˣ) : ℂ)`. Unfold `Grp.eta`. Simplify using `only [hdett, map_pow, Units.val_pow_eq_pow_val]`.
+
+Rewrite using `[Finset.prod_eq_single a0 (fun a _ ha => by rw [row_eq G bb h0 a, if_neg ha, pow_zero]) (by simp), row_eq G bb h0 a0, if_pos rfl, pow_one]`. Take `⟨v, hv⟩` from `Submodule.Quotient.mk_surjective _ (F.1.1 1)`. Establish `key : ((c i0 (unitIncl k w) : ℂˣ) : ℂ) • F.1.1 1 = ((G.μ a0 (unitIncl k w) : ℂˣ) : ℂ) • F.1.1 1`. Establish `h2 : F.1.1 t = cellRep G c bb f g ⟨t, htP⟩ (F.1.1 1)`. Establish `h2'` using `F.1.2 ⟨t, htP⟩ 1`.
+
+Rewrite `h2'` using `[mul_one]`. Conclude with `h2'`. Rewrite `h2` using `[cellRep_apply, hproj, hd1, Units.val_one, one_smul]`. Rewrite using `[← hEta, ← hE1, h2, ← hv, relJac_mk, hd2, inv_one, Units.val_one, one_smul]`. Express the relevant statement in the definitionally equal form `_ = Submodule.Quotient.mk (ofChar (torusChar c) ((leviTorus k (Fin n)).symm (relEmb k f (swapBlocks k (fun i j => Fin (bb.1 i j)) y))) v)`.
+
+Rewrite using `[ofChar_apply, hT, ← smul_eq_mul, Submodule.Quotient.mk_smul]`. Establish `h3` using `sub_eq_zero.2 key`. Rewrite `h3` using `[← sub_smul, smul_eq_zero]`. Break down `h3 with h | h` into its components or cases. Conclude with `Units.ext (sub_eq_zero.1 h)`.
+
+Conclude with `absurd h hF1`.
+-/
 theorem cell_char (c : Fin n → kˣ →* ℂˣ)
     (bb : SizeMatrix (fun _ : Fin n => Unit) (fun a : Fin G.s => Fin (G.d a)))
     (f : ∀ i, (Σ j, Fin (bb.1 i j)) ≃ (fun _ : Fin n => Unit) i)
@@ -350,6 +455,23 @@ variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchim
 open scoped Classical in
 set_option maxHeartbeats 800000 in
 
+/- English proof (translation)
+Introduce `hL c hc hres`. Establish `hE : G.etaSp (jacU G.e (prinSeries c)) = eS (leviK k (fun a : Fin G.s => Fin (G.d a))) G.eta (jac G.e (parInd (points (Fin n)) (ρc c)))` using `eS_jacU_eq G.e (parInd (points (Fin n)) (ρc c)) G.eta`. Take `⟨N, b, hb⟩` from `(hL.loc.geo k).1 (Fin n) (Fin G.s) (Fin n) (fun _ => Unit) (fun a => Fin (G.d a)) (points (Fin n)) G.e`. Take `⟨S, hmono, h0, hN, hS⟩` from `hb ℂ (ρc c) (isSmooth_ρc c hc)`. Take `⟨fr⟩ : Nonempty (∀ t : Fin N, ∀ i, (Σ j, Fin ((b t).1 i j)) ≃ (fun _ : Fin n => Unit) i)` from `⟨fun t => (b t).nonempty_rows.some⟩`.
+
+Take `⟨gc⟩ : Nonempty (∀ t : Fin N, ∀ j, (Σ i, Fin ((b t).1 i j)) ≃ (fun a : Fin G.s => Fin (G.d a)) j)` from `⟨fun t => (b t).nonempty_cols.some⟩`. Establish `hr : ∀ t : Fin N, Module.rank ℂ ↥(eS (leviK k (fun a : Fin G.s => Fin (G.d a))) G.eta (subQuot (S t.succ) (S t.castSucc))) ≤ Module.rank ℂ ↥(eS (leviK k (fun a : Fin G.s => Fin (G.d a))) G.eta (smInd (relParab k (gc t)) (cellRep G c (b t) (fr t) (gc t))))`. Introduce `t`. Establish `e : Nonempty ((subQuot (S t.succ) (S t.castSucc)).Equiv (smInd (relParab k (gc t)) (cellRep G c (b t) (fr t) (gc t))))` using `hS t (fr t) (gc t)`. Conclude with `rank_eS_le_of_equiv _ _ e.some`.
+
+Establish `hr1 : ∀ t, Module.rank ℂ ↥(eS (leviK k (fun a : Fin G.s => Fin (G.d a))) G.eta (smInd (relParab k (gc t)) (cellRep G c (b t) (fr t) (gc t)))) ≤ ((if Good G (b t) then 1 else 0 : ℕ) : Cardinal)`. Introduce `t`. Use `split_ifs with hP`. Use `(rank_eS_le (gc t) (cellRep G c (b t) (fr t) (gc t)) G.eta).trans ((rank_quotient_le _).trans (le_of_eq ?_))` and prove the remaining obligations. Rewrite using `[Module.rank_self, Nat.cast_one]`.
+
+Use `(rank_eS_eq_zero _ _ _ ?_).trans_le zero_le` and prove the remaining obligations. Introduce `F hF`. Assume the negation of the conclusion as `hne`. Apply `hP` to reduce the goal to its premises. Introduce `i a h`.
+
+Assume the negation of the conclusion as `hab`. Apply `G.dist a (G.bl i) hab` to reduce the goal to its premises. Use `MonoidHom.ext fun w => ?_` and prove the remaining obligations. Establish `h1` using `cell_char G c (b t) (fr t) (gc t) F hF hne i a h w`. Establish `h2 : c i (unitIncl k w) = G.μ (G.bl i) (unitIncl k w)` using `DFunLike.congr_fun (hres i) w`.
+
+Conclude with `h1.symm.trans h2`. Establish `hsum : ∑ t : Fin N, (if Good G (b t) then 1 else 0 : ℕ) ≤ 1`. Rewrite using `[← Finset.card_filter]`. Use `Finset.card_le_one.2 fun t ht t' ht' => ?_` and prove the remaining obligations. Simplify using `only [Finset.mem_filter, Finset.mem_univ, true_and] at ht ht'`.
+
+Conclude with `b.injective (good_unique G ht ht')`. Establish `hrank : Module.rank ℂ ↥(eS (leviK k (fun a : Fin G.s => Fin (G.d a))) G.eta (jac G.e (parInd (points (Fin n)) (ρc c)))) ≤ 1`. Combine the equalities or inequalities in the displayed calculation. Use `haveI : Module.Free ℂ ↥(eS (leviK k (fun a : Fin G.s => Fin (G.d a))) G.eta (jac G.e (parInd (points (Fin n)) (ρc c)))) := Module.Free.of_divisionRing ℂ _`. Establish `hfin : FiniteDimensional ℂ ↥(eS (leviK k (fun a : Fin G.s => Fin (G.d a))) G.eta (jac G.e (parInd (points (Fin n)) (ρc c))))` using `Module.rank_lt_aleph0_iff.1 (hrank.trans_lt Cardinal.one_lt_aleph0)`.
+
+Establish `hfr : Module.finrank ℂ ↥(eS (leviK k (fun a : Fin G.s => Fin (G.d a))) G.eta (jac G.e (parInd (points (Fin n)) (ρc c)))) ≤ 1` using `Module.finrank_le_of_rank_le (n := 1) (by rw [Nat.cast_one]; exact hrank)`. Rewrite using `[hE]`. Conclude with `⟨hfin, hfr⟩`.
+-/
 theorem step_spCount {n : ℕ} (G : Grp k n) : G.SpecialCountProp := by
   intro hL c hc hres
   have hE : G.etaSp (jacU G.e (prinSeries c)) =

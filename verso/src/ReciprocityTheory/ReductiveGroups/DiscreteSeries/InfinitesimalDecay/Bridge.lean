@@ -13,6 +13,13 @@ namespace ReciprocityTheory.ChartRestriction.DS.DecInf
 
 variable {k r : ℕ} {H : Type*} [NormedAddCommGroup H] [InnerProductSpace ℂ H]
 
+/- English proof (translation)
+Take `⟨⟨_, hJ⟩, hU⟩` from `hP`. Establish `h1 : P * Pᴴ = 1`. Use `Matrix.mem_unitaryGroup_iff.1 hU` as an intermediate fact. Rewrite `this` using `[Matrix.star_eq_conjTranspose]`. Then use the resulting hypothesis. Establish `h2 : Pᴴ * P = 1`.
+
+Use `Matrix.mem_unitaryGroup_iff'.1 hU` as an intermediate fact. Rewrite `this` using `[Matrix.star_eq_conjTranspose]`. Then use the resulting hypothesis. Use `⟨Matrix.inv_eq_left_inv h2, h1, h2, ?_⟩` and prove the remaining obligations. Establish `hJe : Jm ε = Formalism.REAL.Jm ε` using `rfl`. Rewrite using `[hJe, ← hJ]`.
+
+Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem br_facts {ε : Fin (2 * r + k + 1) → Bool} {P : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ}
     (hP : Formalism.MainNotions.S.IsCayleyU k r ε P) :
     P⁻¹ = Pᴴ ∧ P * Pᴴ = 1 ∧ Pᴴ * P = 1 ∧ Jm ε = P * Formalism.QuantumDeterminants.Hpk k r * Pᴴ := by
@@ -29,6 +36,15 @@ theorem br_facts {ε : Fin (2 * r + k + 1) → Bool} {P : Matrix (Fin (2 * r + k
   calc Formalism.REAL.Jm ε = (P * Pᴴ) * Formalism.REAL.Jm ε * (P * Pᴴ) := by rw [h1, Matrix.one_mul, Matrix.mul_one]
     _ = P * (Pᴴ * Formalism.REAL.Jm ε * P) * Pᴴ := by simp only [Matrix.mul_assoc]
 
+/- English proof (translation)
+Take `⟨hinv, h1, h2, hJ⟩` from `br_facts hP`. Establish `hJ' : Pᴴ * Jm ε * P = Formalism.QuantumDeterminants.Hpk k r` using `hP.1.2`. Establish `key : ∀ Y : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ, Pᴴ * (P * Y * Pᴴ) * P = Y` using `fun Y => by`. Combine the equalities or inequalities in the displayed calculation. Establish `e : (P * g * P⁻¹)ᴴ * Jm ε * (P * g * P⁻¹) = P * (gᴴ * Formalism.QuantumDeterminants.Hpk k r * g) * Pᴴ`.
+
+Rewrite using `[hinv, ← hJ']`. Simplify using `only [Matrix.conjTranspose_mul, Matrix.conjTranspose_conjTranspose, Matrix.mul_assoc]`. Use `show gᴴ * Formalism.QuantumDeterminants.Hpk k r * g = Formalism.QuantumDeterminants.Hpk k r ↔ inUJ ε (P * g * P⁻¹)`. Unfold `inUJ`. Rewrite using `[e, hJ]`.
+
+Prove the components needed by the constructor for the conclusion. Introduce `h`. Rewrite using `[h]`. Introduce `h`. Use `congrArg (fun M => Pᴴ * M * P) h` as an intermediate fact.
+
+Simplify using `only [key] at this`. Conclude with `this`.
+-/
 theorem bridge_group {ε : Fin (2 * r + k + 1) → Bool} {P : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ}
     (hP : Formalism.MainNotions.S.IsCayleyU k r ε P) (g : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ) :
     g ∈ Formalism.QuantumDeterminants.UH (Formalism.QuantumDeterminants.Hpk k r) ↔ P * g * P⁻¹ ∈ UJset ε := by
@@ -51,6 +67,15 @@ theorem bridge_group {ε : Fin (2 * r + k + 1) → Bool} {P : Matrix (Fin (2 * r
     simp only [key] at this
     exact this
 
+/- English proof (translation)
+Take `⟨hinv, h1, h2, hJ⟩` from `br_facts hP`. Establish `h2' : ∀ Z : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ, Pᴴ * (P * Z) = Z` using `fun Z => by`. Rewrite using `[← Matrix.mul_assoc, h2, Matrix.one_mul]`. Establish `key : ∀ Y : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ, Pᴴ * (P * Y * Pᴴ) * P = Y` using `fun Y => by`. Combine the equalities or inequalities in the displayed calculation.
+
+Establish `e : (P * X * P⁻¹)ᴴ * Jm ε + Jm ε * (P * X * P⁻¹) = P * (Xᴴ * Formalism.QuantumDeterminants.Hpk k r + Formalism.QuantumDeterminants.Hpk k r * X) * Pᴴ`. Rewrite using `[hinv, hJ]`. Simplify using `only [Matrix.conjTranspose_mul, Matrix.conjTranspose_conjTranspose, Matrix.mul_add, Matrix.add_mul, Matrix.mul_assoc, h2']`. Use `show Xᴴ * Formalism.QuantumDeterminants.Hpk k r + Formalism.QuantumDeterminants.Hpk k r * X = 0 ↔ inG ε (P * X * P⁻¹)`. Unfold `inG`.
+
+Rewrite using `[e]`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Rewrite using `[h, Matrix.mul_zero, Matrix.zero_mul]`. Introduce `h`.
+
+Use `congrArg (fun M => Pᴴ * M * P) h` as an intermediate fact. Simplify using `only [key, Matrix.mul_zero, Matrix.zero_mul] at this`. Conclude with `this`.
+-/
 theorem bridge_lie {ε : Fin (2 * r + k + 1) → Bool} {P : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ}
     (hP : Formalism.MainNotions.S.IsCayleyU k r ε P) (X : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ) :
     Formalism.MainNotions.S.InLieHpk k r X ↔ inG ε (P * X * P⁻¹) := by
@@ -76,6 +101,15 @@ theorem bridge_lie {ε : Fin (2 * r + k + 1) → Bool} {P : Matrix (Fin (2 * r +
     simp only [key, Matrix.mul_zero, Matrix.zero_mul] at this
     exact this
 
+/- English proof (translation)
+Take `⟨hi, h2, h1, -⟩` from `br_facts hP`. Establish `key : ∀ M : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ, ∑ i, ∑ j, ‖M i j‖ ^ 2 = (Matrix.trace (Mᴴ * M)).re`. Introduce `M`. Rewrite using `[Matrix.trace, Complex.re_sum, Finset.sum_comm]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[Matrix.diag_apply, Matrix.mul_apply, Complex.re_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[conjTranspose_apply, ← Complex.normSq_eq_norm_sq, Complex.normSq_apply]`. Simplify using `[Complex.mul_re]`. Unfold `Formalism.FourierDecayAlt.B.gN S7.hs`.
+
+Use `congr 1`. Establish `e1 : ∑ i, ∑ j, Complex.normSq (g i j) = ∑ i, ∑ j, ‖g i j‖ ^ 2`. Simplify using `[Complex.normSq_eq_norm_sq]`. Establish `e2 : (P * g * Pᴴ)ᴴ * (P * g * Pᴴ) = P * ((gᴴ * g) * Pᴴ)`. Simplify using `only [conjTranspose_mul, conjTranspose_conjTranspose, Matrix.mul_assoc]`.
+
+Rewrite using `[← Matrix.mul_assoc Pᴴ P, h1, Matrix.one_mul]`. Establish `L : ∑ i, ∑ j, ‖g i j‖ ^ 2 = (gᴴ * g).trace.re` using `key g`. Establish `R : ∑ i, ∑ j, ‖(P * g * Pᴴ) i j‖ ^ 2 = ((P * g * Pᴴ)ᴴ * (P * g * Pᴴ)).trace.re` using `key _`. Rewrite using `[e1, hi, L, R, e2, Matrix.trace_mul_comm P, Matrix.mul_assoc, h1, Matrix.mul_one]`.
+-/
 theorem bridge_gN {ε : Fin (2 * r + k + 1) → Bool} {P : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ}
     (hP : Formalism.MainNotions.S.IsCayleyU k r ε P) (g : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ) :
     Formalism.FourierDecayAlt.B.gN (k := k) (r := r) g = Real.sqrt (S7.hs (P * g * P⁻¹)) := by
@@ -100,6 +134,21 @@ theorem bridge_gN {ε : Fin (2 * r + k + 1) → Bool} {P : Matrix (Fin (2 * r + 
   have R : ∑ i, ∑ j, ‖(P * g * Pᴴ) i j‖ ^ 2 = ((P * g * Pᴴ)ᴴ * (P * g * Pᴴ)).trace.re := key _
   rw [e1, hi, L, R, e2, Matrix.trace_mul_comm P, Matrix.mul_assoc, h1, Matrix.mul_one]
 
+/- English proof (translation)
+Take `⟨hinv, h1, h2, hJ⟩` from `br_facts hP`. Establish `hPu : IsUnit P` using `hP.1.1`. Establish `hPd : IsUnit P.det` using `(Matrix.isUnit_iff_isUnit_det P).1 hPu`. Set `cA : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ →L[ℝ] Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ` to `LinearMap.toContinuousLinearMap ((LinearMap.mulLeft ℝ P⁻¹).comp (LinearMap.mulRight ℝ P))`. Set `cB : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ →L[ℝ] Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ` to `LinearMap.toContinuousLinearMap ((LinearMap.mulLeft ℝ P).comp (LinearMap.mulRight ℝ P⁻¹))`.
+
+Establish `hcA : ∀ g, cA g = P⁻¹ * g * P` using `fun g => by simp [cA, Matrix.mul_assoc]`. Establish `hcB : ∀ g, cB g = P * g * P⁻¹` using `fun g => by simp [cB, Matrix.mul_assoc]`. Establish `hAB : ∀ g : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ, P⁻¹ * (P * g * P⁻¹) * P = g` using `fun g => by`. Rewrite using `[← Matrix.mul_assoc, ← Matrix.mul_assoc, Matrix.nonsing_inv_mul P hPd, Matrix.one_mul, Matrix.mul_assoc, Matrix.nonsing_inv_mul P hPd, Matrix.mul_one]`. Establish `hBA : ∀ g : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ, P * (P⁻¹ * g * P) * P⁻¹ = g` using `fun g => by`.
+
+Rewrite using `[← Matrix.mul_assoc, ← Matrix.mul_assoc, Matrix.mul_nonsing_inv P hPd, Matrix.one_mul, Matrix.mul_assoc, Matrix.mul_nonsing_inv P hPd, Matrix.mul_one]`. Establish `hmem : ∀ g, Formalism.QuantumDeterminants.inUH (Formalism.QuantumDeterminants.Hpk k r) g ↔ inUJ ε (P * g * P⁻¹)` using `fun g => bridge_group hP g`. Simplify using `only [Formalism.MainNotions.S.smoothVecs, Set.mem_setOf_eq, Formalism.MainNotions.S.IsSmoothVec, IsSmoothVecU]`. Prove the components needed by the constructor for the conclusion. Introduce `hv g₀ hg₀`.
+
+Establish `hg₁ : Formalism.QuantumDeterminants.inUH (Formalism.QuantumDeterminants.Hpk k r) (P⁻¹ * g₀ * P)` using `(hmem _).2 (by rw [hBA]; exact hg₀)`. Take `⟨U, F, hU, hxU, hF, hfF⟩` from `hv _ hg₁`. Use `⟨cA ⁻¹' U, F ∘ cA, hU.preimage cA.continuous, by simp [hcA, hxU], hF.comp cA.contDiff.contDiffOn (fun x hx => hx), fun g hg hgJ => ?_⟩` and prove the remaining obligations. Establish `hgH : Formalism.QuantumDeterminants.inUH (Formalism.QuantumDeterminants.Hpk k r) (P⁻¹ * g * P)` using `(hmem _).2 (by rw [hBA]; exact hgJ)`. Establish `h3` using `hfF _ (by simpa [hcA] using hg) hgH`.
+
+Simplify using `only at h3`. Simplify using `only [Function.comp_apply, hcA]`. Conclude with `h3`. Introduce `hv g₀ hg₀`. Establish `hg₁ : inUJ ε (P * g₀ * P⁻¹)` using `(hmem g₀).1 hg₀`.
+
+Take `⟨U, F, hU, hxU, hF, hfF⟩` from `hv _ hg₁`. Use `⟨cB ⁻¹' U, F ∘ cB, hU.preimage cB.continuous, by simp [hcB, hxU], hF.comp cB.contDiff.contDiffOn (fun x hx => hx), fun g hg hgH => ?_⟩` and prove the remaining obligations. Establish `h3` using `hfF _ (by simpa [hcB] using hg) ((hmem g).1 hgH)`. Simplify using `only at h3`. Simplify using `only [Function.comp_apply, hcB]`.
+
+Rewrite using `[← h3, hAB]`.
+-/
 theorem bridge_smooth {ε : Fin (2 * r + k + 1) → Bool} {P : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ}
     (hP : Formalism.MainNotions.S.IsCayleyU k r ε P) (σ : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ → (H →L[ℂ] H)) (v : H) :
     v ∈ Formalism.MainNotions.S.smoothVecs (k := k) (r := r) σ ↔ IsSmoothVecU ε (fun g => σ (P⁻¹ * g * P)) v := by
@@ -141,6 +190,15 @@ theorem bridge_smooth {ε : Fin (2 * r + k + 1) → Bool} {P : Matrix (Fin (2 * 
     simp only [Function.comp_apply, hcB]
     rw [← h3, hAB]
 
+/- English proof (translation)
+Establish `hPu : IsUnit P` using `hP.1.1`. Establish `hPd : IsUnit P.det` using `(Matrix.isUnit_iff_isUnit_det P).1 hPu`. Establish `hE : ∀ (X : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ) (t : ℝ), P⁻¹ * NormedSpace.exp ((t : ℂ) • (P * X * P⁻¹)) * P = NormedSpace.exp ((t : ℂ) • X)`. Introduce `X t`. Establish `e1 : ((t : ℂ) • (P * X * P⁻¹)) = P * ((t : ℂ) • X) * P⁻¹`.
+
+Rewrite using `[Matrix.mul_smul, Matrix.smul_mul]`. Rewrite using `[e1, Matrix.exp_conj P ((t : ℂ) • X) hPu]`. Rewrite using `[← Matrix.mul_assoc, ← Matrix.mul_assoc, Matrix.nonsing_inv_mul P hPd, Matrix.one_mul, Matrix.mul_assoc, Matrix.nonsing_inv_mul P hPd, Matrix.mul_one]`. Establish `hconj : ∀ (X : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ) (u : H), Formalism.MainNotions.S.dsig (k` using `k) (r := r) σ X u = dS (fun g => σ (P⁻¹ * g * P)) (P * X * P⁻¹) u := by`. Introduce `X u`.
+
+Unfold `Formalism.MainNotions.S.dsig dS`. Simplify using `only [hE]`. Proceed by induction on `w generalizing v with`. Consider the case `nil => rfl`. Consider the case `cons X w ih => show Formalism.MainNotions.S.dsig (k := k) (r := r) σ X (Formalism.MainNotions.S.dsigW (k := k) (r := r) σ w v) = dS (fun g => σ (P⁻¹ * g * P)) (P * X * P⁻¹) (dSW (fun g => σ (P⁻¹ * g * P)) (w.map fun X => P * X * P⁻¹) v)`.
+
+Rewrite using `[ih, hconj]`.
+-/
 theorem bridge_dsigW {ε : Fin (2 * r + k + 1) → Bool} {P : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ}
     (hP : Formalism.MainNotions.S.IsCayleyU k r ε P) (σ : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ → (H →L[ℂ] H)) (w : List (Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ)) (v : H) :
     Formalism.MainNotions.S.dsigW (k := k) (r := r) σ w v =

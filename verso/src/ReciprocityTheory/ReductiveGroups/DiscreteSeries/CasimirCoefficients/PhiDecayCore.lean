@@ -24,6 +24,37 @@ variable {ε : Fin n → Bool} {lam : Fin n → ℝ}
 def phiReal (ν : Fin n → ℝ) (x : Matrix (Fin n) (Fin n) ℂ) : ℝ :=
   ∏ i : Fin n, (lead ((i : ℕ) + 1) x).re ^ (-(ν i - nuNext ν i))
 
+/- English proof (translation)
+Distinguish the cases in `h0 : hs Y = 0`. Establish `hY0 : Y = 0`. Use extensionality with `a b`. Establish `hsum` using `(Finset.sum_eq_zero_iff_of_nonneg (fun a _ => Finset.sum_nonneg fun b _ => sq_nonneg ‖Y a b‖)).mp h0 a (Finset.mem_univ _)`. Use `(Finset.sum_eq_zero_iff_of_nonneg (fun b _ => sq_nonneg ‖Y a b‖)).mp hsum b (Finset.mem_univ _)` as an intermediate fact.
+
+Simplify using `using this`. Substitute `hY0` using the available equality. Establish `hl : ∀ i : Fin n, lead ((i : ℕ) + 1) (1 : Matrix (Fin n) (Fin n) ℂ) = 1` using `fun i => by`. Unfold `lead`. Rewrite using `[dif_pos (show (i : ℕ) + 1 ≤ n from i.isLt), Matrix.submatrix_one _ (Fin.castLE_injective _), Matrix.det_one]`.
+
+Unfold `phiReal`. Rewrite using `[NormedSpace.exp_zero, h0]`. Simplify using `[hl]`. Establish `hpos : 0 < hs Y` using `lt_of_le_of_ne (by unfold hs; positivity) (Ne.symm h0)`. Take `⟨U, y, hU, hYe⟩` from `decA_spec hY`.
+
+Establish `hq' : (0 : ℝ) < 2 * q0 ε`. Establish `: (1 : ℝ) ≤ q0 ε` using `by exact_mod_cast hq`. Combine the linear equalities and inequalities to obtain the conclusion. Use `set R := Real.sqrt (2 * q0 ε) * Real.sqrt (hs Y) with hRdef`. Establish `hR : 0 < R` using `mul_pos (Real.sqrt_pos.mpr hq') (Real.sqrt_pos.mpr hpos)`.
+
+Use `set t := min 1 (1 / R) with htdef`. Establish `ht0 : 0 ≤ t` using `le_min zero_le_one (by positivity)`. Use `set V : Fin n → ℝ := fun i => ∑ a : Fin n, ∑ b : Fin n, if (b : ℕ) ≤ (i : ℕ) ∧ (i : ℕ) < (a : ℕ) then ‖Y a b‖ ^ 2 else 0 with hVdef`. Establish `hx` using `exp_noncompactPart_posDef hY`. Use `set c : Fin n → ℝ := fun i => (lead ((i : ℕ) + 1) (NormedSpace.exp Y)).re with hcdef`.
+
+Establish `hc : ∀ i, 0 < c i` using `fun i => (lead_posDef hx _ i.isLt).1`. Establish `hterm : ∀ i : Fin n, (ν i - nuNext ν i) * (t * V i / 4) ≤ (ν i - nuNext ν i) * Real.log (c i)`. Introduce `i`. Distinguish the cases in `hlast : (i : ℕ) + 1 < n`. Establish `hnn : 0 ≤ ν i - nuNext ν i`.
+
+Simplify using `only [nuNext, dif_pos hlast]`. Conclude with `sub_nonneg.mpr (hν (show i ≤ ⟨(i : ℕ) + 1, hlast⟩ from Fin.le_def.mpr (by simp)))`. Apply `mul_le_mul_of_nonneg_left _ hnn` to reduce the goal to its premises. Establish `h` using `decA_log_lower hY hU hYe hq hpos ((i : ℕ) + 1) i.isLt`. Simplify using `only [Nat.lt_add_one_iff, Nat.add_one_le_iff] at h`.
+
+Conclude with `h`. Establish `hV : V i = 0` using `Finset.sum_eq_zero fun a _ => Finset.sum_eq_zero fun b _ => if_neg (by have := a.isLt; omega)`. Establish `hn : (i : ℕ) + 1 = n` using `by have := i.isLt; omega`. Establish `hL : c i = 1`. Simplify using `only [hcdef, hn]`.
+
+Conclude with `decA_lead_last hY hU hYe`. Rewrite using `[hV, hL, Real.log_one]`. Simplify using the standard rewrite rules. Establish `hsum : t * (g * hs Y / 2) / 4 ≤ ∑ i, (ν i - nuNext ν i) * Real.log (c i)`. Establish `hw` using `dec_weighted ν hν hg hY`.
+
+Combine the equalities or inequalities in the displayed calculation. Use `mul_le_mul_of_nonneg_left hw ht0` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Use `_ = ∑ i, (ν i - nuNext ν i) * (t * V i / 4) := by`. Rewrite using `[Finset.mul_sum, Finset.sum_div]`.
+
+Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree. Use `_ ≤ _ := Finset.sum_le_sum fun i _ => hterm i`. Establish `hphi : phiReal ν (NormedSpace.exp Y) = Real.exp (-∑ i, (ν i - nuNext ν i) * Real.log (c i))`. Unfold `phiReal`.
+
+Rewrite using `[← Finset.sum_neg_distrib, Real.exp_sum]`. Use `Finset.prod_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[Real.rpow_def_of_pos (hc i)]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree.
+
+Establish `hmin : t * hs Y = min (hs Y) (Real.sqrt (hs Y) / Real.sqrt (2 * q0 ε))`. Rewrite using `[htdef, min_mul_of_nonneg _ _ hpos.le, one_mul]`. Use `congr 1`. Establish `hs2 : hs Y = Real.sqrt (hs Y) * Real.sqrt (hs Y)` using `(Real.mul_self_sqrt hpos.le).symm`. Establish `hsq : 0 < Real.sqrt (hs Y)` using `Real.sqrt_pos.mpr hpos`.
+
+Establish `hsq2 : 0 < Real.sqrt (2 * q0 ε)` using `Real.sqrt_pos.mpr hq'`. Rewrite using `[hRdef]`. Clear the denominators using the available nonvanishing facts. Use polynomial arithmetic with `[Real.sq_sqrt hpos.le, Real.mul_self_sqrt hpos.le]`. Rewrite using `[hphi]`.
+
+Apply `Real.exp_le_exp.mpr` to reduce the goal to its premises. Rewrite using `[← hmin]`. Use polynomial arithmetic with `[hsum]`.
+-/
 theorem phi_decay_core (ν : Fin n → ℝ) (hν : Antitone ν) {g : ℝ}
     (hg : ∀ a b : Fin n, ε a ≠ ε b → b < a → g ≤ ν b - ν a) (hq : 1 ≤ q0 ε) {Y : Matrix (Fin n) (Fin n) ℂ}
     (hY : inP ε Y) :
@@ -108,6 +139,11 @@ theorem phi_decay_core (ν : Fin n → ℝ) (hν : Antitone ν) {g : ℝ}
   rw [← hmin]
   nlinarith [hsum]
 
+/- English proof (translation)
+Establish `hB : (NormedSpace.exp ((2 : ℂ)⁻¹ • Y))ᴴ = NormedSpace.exp ((2 : ℂ)⁻¹ • Y)`. Rewrite using `[← Matrix.exp_conjTranspose]`. Use `congr 1`. Simplify using `[hY]`. Establish `hBB : NormedSpace.exp Y = (NormedSpace.exp ((2 : ℂ)⁻¹ • Y))ᴴ * 1 * NormedSpace.exp ((2 : ℂ)⁻¹ • Y)`.
+
+Rewrite using `[hB, Matrix.mul_one, ← Matrix.exp_add_of_commute _ _ (Commute.refl _), ← add_smul]`. Evaluate the numerical expressions. Rewrite using `[hBB]`. Conclude with `Matrix.PosDef.one.conjTranspose_mul_mul_same (Matrix.mulVec_injective_iff_isUnit.2 (Matrix.isUnit_exp _))`.
+-/
 private lemma posDef_exp_of_hermitian {Y : Matrix (Fin n) (Fin n) ℂ} (hY : Yᴴ = Y) :
     (NormedSpace.exp Y).PosDef := by
   have hB : (NormedSpace.exp ((2 : ℂ)⁻¹ • Y))ᴴ = NormedSpace.exp ((2 : ℂ)⁻¹ • Y) := by
@@ -122,12 +158,34 @@ private lemma posDef_exp_of_hermitian {Y : Matrix (Fin n) (Fin n) ℂ} (hY : Y�
   exact Matrix.PosDef.one.conjTranspose_mul_mul_same
     (Matrix.mulVec_injective_iff_isUnit.2 (Matrix.isUnit_exp _))
 
+/- English proof (translation)
+Establish `hle : (i : ℕ) + 1 ≤ n` using `i.isLt`. Rewrite using `[lead, dif_pos hle]`. Conclude with `((posDef_exp_of_hermitian hY).submatrix (Fin.castLE_injective hle)).det_pos`.
+-/
 private lemma lead_exp_pos_of_hermitian {Y : Matrix (Fin n) (Fin n) ℂ} (hY : Yᴴ = Y) (i : Fin n) :
     0 < lead ((i : ℕ) + 1) (NormedSpace.exp Y) := by
   have hle : (i : ℕ) + 1 ≤ n := i.isLt
   rw [lead, dif_pos hle]
   exact ((posDef_exp_of_hermitian hY).submatrix (Fin.castLE_injective hle)).det_pos
 
+/- English proof (translation)
+Establish `hYh : Yᴴ = Y`. Take `⟨h1, h2⟩` from `hY`. Establish `h1' : Yᴴ * Jm ε + Jm ε * Y = 0` using `h1`. Establish `hJ : Jm ε * Jm ε = 1`. Rewrite using `[Jm, Matrix.diagonal_mul_diagonal, ← Matrix.diagonal_one]`.
+
+Use `congr 1`. Use function extensionality and compare the values at `a`. Apply the tactic sequence `split_ifs <;> norm_num`. Establish `h3 : Yᴴ * Jm ε = Y * Jm ε`. Rewrite using `[h2]`.
+
+Conclude with `eq_neg_of_add_eq_zero_left h1'`. Combine the equalities or inequalities in the displayed calculation. Establish `hpos : ∀ i : Fin n, 0 < lead ((i : ℕ) + 1) (NormedSpace.exp Y)` using `fun i => lead_exp_pos_of_hermitian hYh i`. Establish `hν : Antitone fun i => (μ i : ℝ)`. Introduce `a b hab`.
+
+Use `show (μ b : ℝ) ≤ μ a`. Rewrite using `[hμ a, hμ b]`. Establish `h1` using `hlam.1.antitone hab`. Establish `h2 : ((a : ℕ) : ℝ) ≤ ((b : ℕ) : ℝ)` using `Nat.cast_le.2 (Fin.le_def.1 hab)`. Simplify using `only [rho]`.
+
+Combine the linear equalities and inequalities to obtain the conclusion. Establish `hg : ∀ a b : Fin n, ε a ≠ ε b → b < a → h ≤ (μ b : ℝ) - μ a`. Introduce `a b hne hba`. Establish `h1` using `hgap a b hne`. Establish `h2` using `hlam.1 hba`.
+
+Rewrite `h1` using `[abs_of_neg (by linarith)]`. Rewrite using `[hμ a, hμ b]`. Establish `h3 : ((b : ℕ) : ℝ) ≤ ((a : ℕ) : ℝ)` using `Nat.cast_le.2 (Fin.le_def.1 hba.le)`. Simplify using `only [rho]`. Combine the linear equalities and inequalities to obtain the conclusion.
+
+Establish `hcore` using `phi_decay_core (fun i => (μ i : ℝ)) hν hg hq hY`. Use `le_trans (le_of_eq ?_) hcore` and prove the remaining obligations. Establish `hfac : ∀ i : Fin n, lead ((i : ℕ) + 1) (NormedSpace.exp Y) ^ (-(μ i - muNext μ i)) = (((lead ((i : ℕ) + 1) (NormedSpace.exp Y)).re ^ (-((μ i : ℝ) - nuNext (fun j => (μ j : ℝ)) i)) : ℝ) : ℂ)`. Introduce `i`. Establish `him : (lead ((i : ℕ) + 1) (NormedSpace.exp Y)).im = 0`.
+
+Use `(Complex.lt_def.1 (hpos i)).2` as an intermediate fact. Simplify using `using this.symm`. Establish `hre : lead ((i : ℕ) + 1) (NormedSpace.exp Y) = ((lead ((i : ℕ) + 1) (NormedSpace.exp Y)).re : ℂ)` using `Complex.ext (by simp) (by simp [him])`. Establish `hexp : (-((μ i : ℝ) - nuNext (fun j => (μ j : ℝ)) i)) = ((-(μ i - muNext μ i) : ℤ) : ℝ)`. Simplify using `only [nuNext, muNext]`.
+
+Apply the tactic sequence `split_ifs <;> push_cast <;> ring`. Rewrite using `[hexp, Real.rpow_intCast, Complex.ofReal_zpow, ← hre]`. Simplify using `only [PhiM, phiReal]`. Rewrite using `[Finset.prod_congr rfl fun i _ => hfac i, ← Complex.ofReal_prod, Complex.ofReal_re]`.
+-/
 theorem phiM_exp_le (μ : Fin n → ℤ) (hμ : IsMu lam μ) (hlam : IsHCParam lam) {h : ℝ}
     (hgap : GapAtLeast ε lam h) (hq : 1 ≤ q0 ε) {Y : Matrix (Fin n) (Fin n) ℂ} (hY : inP ε Y) :
     (PhiM μ (NormedSpace.exp Y)).re ≤
@@ -183,6 +241,11 @@ theorem phiM_exp_le (μ : Fin n → ℤ) (hμ : IsMu lam μ) (hlam : IsHCParam l
   simp only [PhiM, phiReal]
   rw [Finset.prod_congr rfl fun i _ => hfac i, ← Complex.ofReal_prod, Complex.ofReal_re]
 
+/- English proof (translation)
+Rewrite using `[psiM_kexp T μ k hX]`. Establish `hB : ∀ k' : KG ε, (PhiM μ (toMK k'⁻¹ * NormedSpace.exp X * toMK k')).re ≤ Real.exp (-(h / 8) * min (hs X) (Real.sqrt (hs X) / Real.sqrt (2 * q0 ε)))`. Introduce `k'`. Take `⟨hP, hE⟩` from `inP_conj k'⁻¹ hX`. Rewrite `hP`, `hE` using `[inv_inv]`.
+
+Rewrite using `[← hE]`. Use `phiM_exp_le μ hμ hlam hgap hq hP` as an intermediate fact. Rewrite `this` using `[toMK_inv, decA_hs_conj (toMK_facts k').2.1]`. Rewrite using `[toMK_inv]` and apply the resulting hypothesis. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem psiM_dec (T : KType ε (lowK ε lam)) (μ : Fin n → ℤ) (hμ : IsMu lam μ) (hlam : IsHCParam lam)
     {h : ℝ} (hgap : GapAtLeast ε lam h) (hq : 1 ≤ q0 ε) (k : KG ε) {X : Matrix (Fin n) (Fin n) ℂ} (hX : inP ε X) :
     ‖PsiM T μ (toMK k * NormedSpace.exp X)‖ ≤

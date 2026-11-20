@@ -20,9 +20,17 @@ def WDOfTie (T : WDTie N A) : Prop :=
       Matrix (Fin a) (Fin a) (Qbar (N.l i)))) →
     T.e w (A.wdOf i r w) = wdOf (N.plOm.2 w) hl (A.iotaQC i) r
 
+/- English proof (translation)
+The claim follows from `((IsAlgClosed.splits p).eq_prod_roots_of_monic hp).symm`.
+-/
 theorem prod_roots_of_monic {p : ℂ[X]} (hp : p.Monic) : (p.roots.map fun α => X - C α).prod = p :=
   ((IsAlgClosed.splits p).eq_prod_roots_of_monic hp).symm
 
+/- English proof (translation)
+Introduce `R H what₂ N A T hT i a ρ hρ w hw σ hσ`. Establish `hW : σ ∈ Weil (N.plOm.2 w)` using `mem_Weil_of_isFrob _ hσ`. Establish `hr : Continuous (fun g => ((mapRep (iotaOQ N A i) ρ g : GL (Fin a) (Qbar (N.l i))) : Matrix (Fin a) (Fin a) (Qbar (N.l i))))` using `Continuous.matrix_map hρ (GlobalTheory.CoeffEmbedding.continuous_iotaOQ R H what₂ N A i)`. Establish `hcomp : iotaO N A i = (A.iotaQC i).toRingHom.comp (iotaOQ N A i)` using `rfl`. Rewrite using `[WDTie.eig, GlobalTheory.LocalInv.wd, hT i a _ w hw hr, WD.inePol_of_mem _ hW, prod_roots_of_monic (WD.charPol_monic _ _), charPol_wdOf hw (A.iotaQC i) hr ⟨σ, hW⟩, hcomp, ← Polynomial.map_map, ← Matrix.charpoly_map]`.
+
+Both sides reduce to the same expression.
+-/
 theorem eigAway_of_wdOfTie : ∀ (R : Ranks) (H : Host R) (what₂ : Rows.Data R) (N : NData R H what₂)
     (A : NAut N) (T : WDTie N A), WDOfTie T → GlobalTheory.LocalInv.EigAway N A T.eig := by
   intro R H what₂ N A T hT i a ρ hρ w hw σ hσ

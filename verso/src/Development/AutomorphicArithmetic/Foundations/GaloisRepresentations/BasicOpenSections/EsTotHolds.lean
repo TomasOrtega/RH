@@ -11,6 +11,9 @@ import Development.AutomorphicArithmetic.Foundations.GaloisRepresentations.Basic
 
 namespace UpperTheory.Gal.Mod
 
+/- English proof (translation)
+The claim follows from `esGen h esPt_holds nwtOne (frobQ frobTors) baseFacts denseGen frEx @corrPull @corrComm`.
+-/
 theorem esGen_holds (h : GlobalTheory.EtC.SpecGood) : ESGen :=
   esGen h esPt_holds nwtOne (frobQ frobTors) baseFacts denseGen frEx @corrPull @corrComm
 

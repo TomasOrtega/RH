@@ -13,6 +13,11 @@ attribute [local instance] Formalism.MainNotions.G.GAtP.ringO Formalism.MainNoti
 
 variable {p : ℕ} [hp : Fact p.Prime] (X : Sys p)
 
+/- English proof (translation)
+Unfold `ea_GtV Gt`. Rewrite using `[th_ren_sum]`. Use `Finset.sum_congr rfl fun e _ => ?_` and prove the remaining obligations. Rewrite using `[th_ren_ren]`. Use `congr 1`.
+
+Use function extensionality and compare the values at `k`. Apply the tactic sequence `fin_cases k <;> rfl`.
+-/
 theorem th_GtV_eq (j : ℕ) (v : X.Pl) (c c' : K0 p) :
     ea_GtV X j v c c' = ren (Sum.map (Sigma.mk v) (Sigma.mk v))
       (Gt p (Eidx (X.G.P.n' v) (NN X.G.P.m X.t j) (NN X.G.P.m X.t (j + 1))) c c') := by
@@ -24,6 +29,15 @@ theorem th_GtV_eq (j : ℕ) (v : X.Pl) (c c' : K0 p) :
   funext k
   fin_cases k <;> rfl
 
+/- English proof (translation)
+Introduce `c hc j v K' _ _ vp hvp μ hμ0 hμ`. Establish `hs` using `X.std v`. Take `⟨u, hu, V, hV, heq⟩` from `hG hs.five_le c hc (X.G.P.n' v) (NN X.G.P.m X.t j) (NN X.G.P.m X.t (j + 1)) hs.two_le hs.even (X.om v) K' vp hvp μ hμ0 hμ`. Set `ρ : Zidx (X.G.P.n' v) (NN X.G.P.m X.t j) (NN X.G.P.m X.t (j + 1)) → X.ZA j` to `fun z => ⟨v, z⟩`. Use `⟨u, hu, ren ρ V, th_IntR_ren ρ hV, ?_⟩` and prove the remaining obligations.
+
+Establish `hT : MvPowerSeries.HasSubst (tOf vp μ (X.coordZA K' j))` using `MvPowerSeries.hasSubst_of_constantCoeff_zero (th_tOf_const vp μ hμ0 _ (coordZA_const X K' j))`. Establish `hT' : MvPowerSeries.HasSubst (tOf vp μ (coordZ (r0` using `NN X.G.P.m X.t j) (r1 := NN X.G.P.m X.t (j + 1)) (X.om v) K' 1)) := MvPowerSeries.hasSubst_of_constantCoeff_zero (th_tOf_const vp μ hμ0 _ (coordZ_const (X.om v) K' 1))`. Establish `hg : MvPowerSeries.constantCoeff (-(MvPowerSeries.map (algebraMap (K0 p) K')) (Gt p (Eidx (X.G.P.n' v) (NN X.G.P.m X.t j) (NN X.G.P.m X.t (j + 1))) (wK p c) (wK p ((sigW p) c)))) = 0`. Simplify using `[th_Gt_const]`. Establish `hh : MvPowerSeries.constantCoeff (-(MvPowerSeries.C (vp ^ (p + 1) / (p : K')) * hhS p K' u : MvPowerSeries (Zidx (X.G.P.n' v) (NN X.G.P.m X.t j) (NN X.G.P.m X.t (j + 1))) K')) = 0`.
+
+Simplify using `[hhS_const]`. Establish `hfun : (fun k => tOf vp μ (X.coordZA K' j) (Sum.map (Sigma.mk v) (Sigma.mk v) k)) = fun k => ren ρ (tOf vp μ (coordZ (X.om v) K' 1) k)`. Use function extensionality and compare the values at `k`. Simplify using `only [tOf]`. Rewrite using `[th_coordZA_eq, th_ren_psubst ρ (coordZ_const (X.om v) K' 1 k)]`.
+
+Rewrite using `[th_GtV_eq, th_map_ren, ← th_ren_neg, ← th_ren_expK _ hg, th_subst_ren _ hT, hfun, ← th_ren_subst ρ hT', heq, th_ren_mul, th_ren_expK ρ hh, th_ren_neg, th_ren_mul, th_ren_C, th_hhA_eq]`.
+-/
 theorem th_restGcV_of (hG : RestGc p) : ea_RestGcV X := by
   intro c hc j v K' _ _ vp hvp μ hμ0 hμ
   have hs := X.std v

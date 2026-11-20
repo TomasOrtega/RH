@@ -18,10 +18,18 @@ variable {D : D7} (c : LatCmp D) (Tw : TwForms D) (u : D.what₂.Word) (μ : D.w
 def cmpZeroMu : ((Tw.fm u μ).lat 0).V →ₛₗ[c.embW u w h] (D.gat u w h).Fn :=
   (cmpSl c u w h).comp (Tw.e0 u μ).symm.toLinearMap
 
+/- English proof (translation)
+Use `show c.cmp u w h ((Tw.e0 u μ).symm (Tw.e0 u μ x)) = _`. Rewrite using `[LinearEquiv.symm_apply_apply]`.
+-/
 theorem comparison_zero_weight_base (x : ((D.fm u).lat 0).V) : cmpZeroMu c Tw u μ w h (Tw.e0 u μ x) = c.cmp u w h x := by
   show c.cmp u w h ((Tw.e0 u μ).symm (Tw.e0 u μ x)) = _
   rw [LinearEquiv.symm_apply_apply]
 
+/- English proof (translation)
+Use `li_basis (cmpZeroMu c Tw u μ w h) (((D.fm u).lat 0).b.map (Tw.e0 u μ)) ?_ _` and prove the remaining obligations. Establish `h1 : (fun a => cmpZeroMu c Tw u μ w h ((((D.fm u).lat 0).b.map (Tw.e0 u μ)) a)) = fun a => c.cmp u w h (((D.fm u).lat 0).b a)`. Use function extensionality and compare the values at `a`. Rewrite using `[Module.Basis.map_apply, comparison_zero_weight_base]`. Rewrite using `[h1]`.
+
+Conclude with `c.cmp_li u w h`.
+-/
 theorem cmpZeroMu_li : LinearIndependent (D.gat u w h).Kf
     fun a => cmpZeroMu c Tw u μ w h (((Tw.fm u μ).lat 0).b a) := by
   refine li_basis (cmpZeroMu c Tw u μ w h) (((D.fm u).lat 0).b.map (Tw.e0 u μ)) ?_ _
@@ -32,6 +40,11 @@ theorem cmpZeroMu_li : LinearIndependent (D.gat u w h).Kf
   rw [h1]
   exact c.cmp_li u w h
 
+/- English proof (translation)
+Use extensionality with `F`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨y, hy, rfl⟩`. Use `⟨(Tw.e0 u μ).symm y, ?_, rfl⟩` and prove the remaining obligations. Rewrite using `[SetLike.mem_coe, Tw.twist_preserves_base_lattice u μ, LinearEquiv.apply_symm_apply]`.
+
+Conclude with `hy`. Introduce and unpack `⟨x, hx, rfl⟩`. Conclude with `⟨Tw.e0 u μ x, (Tw.twist_preserves_base_lattice u μ x).1 hx, comparison_zero_weight_base c Tw u μ w h x⟩`.
+-/
 theorem cmpZeroMu_image : cmpZeroMu c Tw u μ w h '' (((Tw.fm u μ).lat 0).L : Set _) =
     c.cmp u w h '' (((D.fm u).lat 0).L : Set _) := by
   ext F
@@ -43,10 +56,16 @@ theorem cmpZeroMu_image : cmpZeroMu c Tw u μ w h '' (((Tw.fm u μ).lat 0).L : S
   · rintro ⟨x, hx, rfl⟩
     exact ⟨Tw.e0 u μ x, (Tw.twist_preserves_base_lattice u μ x).1 hx, comparison_zero_weight_base c Tw u μ w h x⟩
 
+/- English proof (translation)
+Rewrite using `[cmpZeroMu_image, c.cmp_M]`.
+-/
 theorem cmpZeroMu_int : Submodule.span (D.gat u w h).O
     (cmpZeroMu c Tw u μ w h '' (((Tw.fm u μ).lat 0).L : Set _)) = (D.gat u w h).M := by
   rw [cmpZeroMu_image, c.cmp_M]
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem cmpZeroMu_muAt : cmpZeroMu c Tw u (D.what₂.muAt w) w h = cmpZero c Tw u w h := rfl
 
 end Zero
@@ -60,13 +79,22 @@ def KLxMu (j : ℕ) : ((Tw.fm u μ).lat j).V →ₗ[D.what₂.LL] ((Tw.fm u μ).
 
 variable {Tw u μ}
 
+/- English proof (translation)
+The claim follows from `ratMap_eq _ _ _ _ x y hxy`.
+-/
 theorem KLxMu_eq (j : ℕ) (x : ((Tw.fm u μ).lat j).V) (y : ((Tw.fm u μ).lat (j + 1)).V)
     (hxy : (Tw.fm u μ).emb (j + 1) y = (D.chTw u μ).K j ((Tw.fm u μ).emb j x)) : KLxMu Tw u μ j x = y :=
   ratMap_eq _ _ _ _ x y hxy
 
+/- English proof (translation)
+The claim follows from `LinearMap.ext fun x => KLxMu_eq j x _ ((Tw.fm u μ).KL_spec j hK x)`.
+-/
 theorem KLxMu_eq_KL (j : ℕ) (hK : (Tw.fm u μ).KRat j) : KLxMu Tw u μ j = (Tw.fm u μ).KL j hK :=
   LinearMap.ext fun x => KLxMu_eq j x _ ((Tw.fm u μ).KL_spec j hK x)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem KLxMu_muAt (w : D.what₂.places.Pl) (j : ℕ) : KLxMu Tw u (D.what₂.muAt w) j = KLx Tw u w j := rfl
 
 end KL
@@ -86,14 +114,23 @@ def CmpUpMu.cmp (S : CmpUpMu c Tw u μ w h Lv) : (j : ℕ) → ((Tw.fm u μ).lat
   | 0 => cmpZeroMu c Tw u μ w h
   | j + 1 => S.cmpS j
 
+/- English proof (translation)
+The claim follows from `| 0, _ => cmpZeroMu_li c Tw u μ w h | j + 1, hj => S.liS j hj`.
+-/
 theorem CmpUpMu.li (S : CmpUpMu c Tw u μ w h Lv) : ∀ j, j ≤ D.R.m →
     LinearIndependent (D.gat u w h).Kf fun a => S.cmp j (((Tw.fm u μ).lat j).b a)
   | 0, _ => cmpZeroMu_li c Tw u μ w h
   | j + 1, hj => S.liS j hj
 
+/- English proof (translation)
+The claim follows from `Formalism.L2.G.Cmp.inj_of_li (S.cmp j) ((Tw.fm u μ).lat j).b (S.li j hj)`.
+-/
 theorem CmpUpMu.inj (S : CmpUpMu c Tw u μ w h Lv) (j : ℕ) (hj : j ≤ D.R.m) : Function.Injective (S.cmp j) :=
   Formalism.L2.G.Cmp.inj_of_li (S.cmp j) ((Tw.fm u μ).lat j).b (S.li j hj)
 
+/- English proof (translation)
+The claim follows from `comparison_zero_weight_base c Tw u μ w h x`.
+-/
 theorem CmpUpMu.cmp_zero (S : CmpUpMu c Tw u μ w h Lv) (x : ((D.fm u).lat 0).V) :
     S.cmp 0 (Tw.e0 u μ x) = c.cmp u w h x := comparison_zero_weight_base c Tw u μ w h x
 
@@ -104,14 +141,23 @@ def chainMu (S : CmpUpMu c Tw u μ w h Lv) : Chain Lv where
       extK (S.cmp j) (S.cmp (j + 1)) ((Tw.fm u μ).lat j).b (S.li j hj.le) (KLxMu Tw u μ j)
     else 0
 
+/- English proof (translation)
+The claim follows from `dif_pos hj`.
+-/
 theorem chainMu_Kz (S : CmpUpMu c Tw u μ w h Lv) (j : ℕ) (hj : j < D.R.m) :
     (chainMu S).Kz j = extK (S.cmp j) (S.cmp (j + 1)) ((Tw.fm u μ).lat j).b (S.li j hj.le) (KLxMu Tw u μ j) :=
   dif_pos hj
 
+/- English proof (translation)
+Rewrite using `[chainMu_Kz S j hj, extK_apply]`.
+-/
 theorem chainMu_apply (S : CmpUpMu c Tw u μ w h Lv) (j : ℕ) (hj : j < D.R.m) (x : ((Tw.fm u μ).lat j).V) :
     (chainMu S).Kz j (S.cmp j x) = S.cmp (j + 1) (KLxMu Tw u μ j x) := by
   rw [chainMu_Kz S j hj, extK_apply]
 
+/- English proof (translation)
+Introduce `j hj x y hxy`. Rewrite using `[chainMu_apply S j hj, KLxMu_eq j x y hxy]`.
+-/
 theorem chainMu_cmp_K (S : CmpUpMu c Tw u μ w h Lv) : ∀ j, j < D.R.m →
     ∀ (x : ((Tw.fm u μ).lat j).V) (y : ((Tw.fm u μ).lat (j + 1)).V),
     (Tw.fm u μ).emb (j + 1) y = (D.chTw u μ).K j ((Tw.fm u μ).emb j x) →
@@ -119,10 +165,16 @@ theorem chainMu_cmp_K (S : CmpUpMu c Tw u μ w h Lv) : ∀ j, j < D.R.m →
   intro j hj x y hxy
   rw [chainMu_apply S j hj, KLxMu_eq j x y hxy]
 
+/- English proof (translation)
+Rewrite using `[chainMu_apply S j hj, KLxMu_eq_KL j hK]`.
+-/
 theorem chainMu_KL (S : CmpUpMu c Tw u μ w h Lv) (j : ℕ) (hj : j < D.R.m) (hK : (Tw.fm u μ).KRat j)
     (x : ((Tw.fm u μ).lat j).V) : (chainMu S).Kz j (S.cmp j x) = S.cmp (j + 1) ((Tw.fm u μ).KL j hK x) := by
   rw [chainMu_apply S j hj, KLxMu_eq_KL j hK]
 
+/- English proof (translation)
+Rewrite using `[chainMu_Kz S j hj]`. Use `extK_unique _ _ _ _ _ (Ch.Kz j) (fun x => ?_) F hF` and prove the remaining obligations. Rewrite using `[KLxMu_eq_KL j hK]`. Conclude with `(hC x _ ((Tw.fm u μ).KL_spec j hK x)).symm`.
+-/
 theorem chainMu_unique (S : CmpUpMu c Tw u μ w h Lv) (Ch : Chain Lv) (j : ℕ) (hj : j < D.R.m)
     (hK : (Tw.fm u μ).KRat j)
     (hC : ∀ (x : ((Tw.fm u μ).lat j).V) (y : ((Tw.fm u μ).lat (j + 1)).V),
@@ -133,6 +185,9 @@ theorem chainMu_unique (S : CmpUpMu c Tw u μ w h Lv) (Ch : Chain Lv) (j : ℕ) 
   rw [KLxMu_eq_KL j hK]
   exact (hC x _ ((Tw.fm u μ).KL_spec j hK x)).symm
 
+/- English proof (translation)
+Consider the cases of `j with`. Consider the case `zero => exact hF`. Consider the case `succ j => show (chainMu S).Kz j ((chainMu S).chainK j F) ∈ _`. Rewrite using `[chainMu_Kz S j (by omega)]`. Conclude with `extK_mem_spanK _ _ _ _ _ _`.
+-/
 theorem chainMu_chainK_mem (S : CmpUpMu c Tw u μ w h Lv) (j : ℕ) (hj : j ≤ D.R.m) (F : Lv.Fm 0)
     (hF : F ∈ spanK (S.cmp 0)) : (chainMu S).chainK j F ∈ spanK (S.cmp j) := by
   cases j with
@@ -142,6 +197,9 @@ theorem chainMu_chainK_mem (S : CmpUpMu c Tw u μ w h Lv) (j : ℕ) (hj : j ≤ 
     rw [chainMu_Kz S j (by omega)]
     exact extK_mem_spanK _ _ _ _ _ _
 
+/- English proof (translation)
+Proceed by induction on `j with`. Consider the case `zero => rfl`. Consider the case `succ j ih => show Ch.Kz j (Ch.chainK j F) = (chainMu S).Kz j ((chainMu S).chainK j F)`. Rewrite using `[ih (by omega)]`. Conclude with `chainMu_unique S Ch j (by omega) (hK j (by omega)) (hC j (by omega)) _ (chainMu_chainK_mem S j (by omega) F hF)`.
+-/
 theorem chainK_forcedMu (S : CmpUpMu c Tw u μ w h Lv) (Ch : Chain Lv)
     (hK : ∀ j, j < D.R.m → (Tw.fm u μ).KRat j)
     (hC : ∀ j, j < D.R.m → ∀ (x : ((Tw.fm u μ).lat j).V) (y : ((Tw.fm u μ).lat (j + 1)).V),
@@ -156,6 +214,9 @@ theorem chainK_forcedMu (S : CmpUpMu c Tw u μ w h Lv) (Ch : Chain Lv)
     exact chainMu_unique S Ch j (by omega) (hK j (by omega)) (hC j (by omega)) _
       (chainMu_chainK_mem S j (by omega) F hF)
 
+/- English proof (translation)
+The claim follows from `li_of_rat (c.embW u w h) (evP (Fl.Pj j) (Lv.comp j)) f.toAddMonoidHom (eq_zero_of_forall_evalCoeff_eq_zero (Fl.Pj j) (Lv.comp j)) (fun a x => LinearMap.map_smulₛₗ f a x) (fun x => (isRational_iff (Fl.Pj j) (Lv.comp j) (c.embW u w h) (f x)).1 (hrat x)) hinj _ ((Tw.fm u μ).lat j).b …`.
+-/
 theorem li_stepMu (j : ℕ) (f : ((Tw.fm u μ).lat j).V →ₛₗ[c.embW u w h] Lv.Fm j) (hinj : Function.Injective f)
     (hrat : ∀ x, RatFnP (Fl.Pj j) (Lv.comp j) (c.embW u w h) (f x)) :
     LinearIndependent (D.gat u w h).Kf fun a => f (((Tw.fm u μ).lat j).b a) :=
@@ -190,14 +251,23 @@ variable {c Tw u μ w h Lv}
 
 def StepsMu.up (X : StepsMu c Tw u μ w h Lv) : CmpUpMu c Tw u μ w h Lv := CmpUpMu.ofRat X.cmpS X.injS X.ratS
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem StepsMu.up_cmp_succ (X : StepsMu c Tw u μ w h Lv) (j : ℕ) : X.up.cmp (j + 1) = X.cmpS j := rfl
 
+/- English proof (translation)
+The claim follows from `span_image_of_surj (Fl.Pj (j + 1)) (Lv.comp (j + 1)) (c.embW u w h) (Lv.Int (j + 1)) (X.cmpS j) (Formalism.BasicNotions.intW D.what₂.places w) (fun a ha => (c.embW_int u w h a).1 ha) _ (X.surjS j hj) (X.latS j hj) (hd j hj)`.
+-/
 theorem StepsMu.intS (X : StepsMu c Tw u μ w h Lv) (hd : DescUp c u w h Lv) (j : ℕ) (hj : j + 1 ≤ D.R.m) :
     Submodule.span (D.gat u w h).O
       (X.up.cmp (j + 1) '' (((Tw.fm u μ).lat (j + 1)).L : Set ((Tw.fm u μ).lat (j + 1)).V)) = Lv.Int (j + 1) :=
   span_image_of_surj (Fl.Pj (j + 1)) (Lv.comp (j + 1)) (c.embW u w h) (Lv.Int (j + 1)) (X.cmpS j)
     (Formalism.BasicNotions.intW D.what₂.places w) (fun a ha => (c.embW_int u w h a).1 ha) _ (X.surjS j hj) (X.latS j hj) (hd j hj)
 
+/- English proof (translation)
+The claim follows from `| 0, _ => cmpZeroMu_int c Tw u μ w h | j + 1, hj => X.intS hd j hj`.
+-/
 theorem StepsMu.cmp_int (X : StepsMu c Tw u μ w h Lv) (hd : DescUp c u w h Lv) : ∀ j, j ≤ D.R.m →
     Submodule.span (D.gat u w h).O (X.up.cmp j '' (((Tw.fm u μ).lat j).L : Set ((Tw.fm u μ).lat j).V)) = Lv.Int j
   | 0, _ => cmpZeroMu_int c Tw u μ w h
@@ -210,6 +280,11 @@ section ValGen
 variable {LL Kf O V W ι : Type} [Field LL] [Field Kf] [CommRing O] [Algebra O Kf] [AddCommGroup V] [Module LL V]
   [AddCommGroup W] [Module Kf W] [Module O W] [IsScalarTower O Kf W] {e : LL →+* Kf}
 
+/- English proof (translation)
+Establish `h1 : val d = val a + val (a⁻¹ * d)` using `by rw [← AddValuation.map_mul, mul_inv_cancel_left₀ ha]`. Assume the negation of the conclusion as `hneg`. Rewrite `hneg` using `[not_le]`. Establish `hatop : val a ≠ ⊤`. Rewrite using `[Ne, AddValuation.top_iff]`.
+
+Conclude with `ha`. Establish `h2 : val a + val (a⁻¹ * d) < val a + 0` using `WithTop.add_lt_add_left hatop hneg`. Rewrite `h2` using `[add_zero, ← h1]`. Conclude with `absurd hle (not_le.2 h2)`.
+-/
 theorem val_quot_nonneg (val : AddValuation LL (WithTop ℤ)) {a d : LL} (ha : a ≠ 0) (hle : val a ≤ val d) :
     0 ≤ val (a⁻¹ * d) := by
   have h1 : val d = val a + val (a⁻¹ * d) := by rw [← AddValuation.map_mul, mul_inv_cancel_left₀ ha]
@@ -222,6 +297,23 @@ theorem val_quot_nonneg (val : AddValuation LL (WithTop ℤ)) {a d : LL} (ha : a
   rw [add_zero, ← h1] at h2
   exact absurd hle (not_le.2 h2)
 
+/- English proof (translation)
+Take `⟨F, hF, hFy⟩` from `hy`. Express the relevant statement in the definitionally equal form `t • F = f y at hFy`. Take `⟨l, hl⟩` from `(Finsupp.mem_span_range_iff_exists_finsupp).1 (hN hF)`. Distinguish the cases in `hy0 : y = 0`. Conclude with `⟨0, 0, Submodule.zero_mem _, by rw [hy0, smul_zero], Or.inl rfl⟩`.
+
+Establish `hsupp : (b.repr y).support.Nonempty`. Rewrite using `[Finsupp.support_nonempty_iff]`. Introduce `h0`. Conclude with `hy0 (b.repr.map_eq_zero_iff.1 h0)`. Take `⟨i0, hi0, hmin⟩` from `Finset.exists_min_image _ (fun i => val (b.repr y i)) hsupp`.
+
+Establish `ha : b.repr y i0 ≠ 0` using `Finsupp.mem_support_iff.1 hi0`. Establish `hyy : y = ∑ i ∈ (b.repr y).support, (b.repr y) i • b i`. Establish `h1` using `(b.linearCombination_repr y).symm`. Rewrite `h1` using `[Finsupp.linearCombination_apply, Finsupp.sum]`. Then use the resulting hypothesis. Establish `e1 : f y = Finsupp.linearCombination Kf (fun i => f (b i)) ((b.repr y).mapRange e (map_zero e))`.
+
+Rewrite using `[Finsupp.linearCombination_apply, Finsupp.sum_mapRange_index (h := fun i (a : Kf) => a • f (b i)) (fun i => zero_smul _ _)]`. Establish `h1` using `congrArg f hyy`. Rewrite `h1` using `[map_sum]`. Rewrite using `[h1]`. Conclude with `Finset.sum_congr rfl fun i _ => LinearMap.map_smulₛₗ f _ _`.
+
+Establish `e2 : t • F = Finsupp.linearCombination Kf (fun i => f (b i)) (l.mapRange (fun o => t * algebraMap O Kf o) (by rw [map_zero, mul_zero]))`. Rewrite using `[Finsupp.linearCombination_apply, Finsupp.sum_mapRange_index (h := fun i (a : Kf) => a • f (b i)) (fun i => zero_smul _ _), ← hl, Finsupp.smul_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Use `show t • (l i • f (b i)) = (t * algebraMap O Kf (l i)) • f (b i)`. Rewrite using `[mul_smul, algebraMap_smul]`.
+
+Establish `h3` using `hli (e1.symm.trans (hFy.symm.trans e2))`. Establish `h4 : e (b.repr y i0) = t * algebraMap O Kf (l i0)`. Use `DFunLike.congr_fun h3 i0` as an intermediate fact. Rewrite `this` using `[Finsupp.mapRange_apply, Finsupp.mapRange_apply]`. Then use the resulting hypothesis. Use `⟨b.repr y i0, (b.repr y i0)⁻¹ • y, ?_, by rw [smul_smul, mul_inv_cancel₀ ha, one_smul], Or.inr ⟨l i0, h4⟩⟩` and prove the remaining obligations.
+
+Establish `hz : (b.repr y i0)⁻¹ • y = ∑ i ∈ (b.repr y).support, ((b.repr y i0)⁻¹ * (b.repr y) i) • b i`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Finset.smul_sum]`. Conclude with `Finset.sum_congr rfl fun i _ => smul_smul _ _ _`. Rewrite using `[hz]`.
+
+Use `Submodule.sum_mem _ fun i hi => ?_` and prove the remaining obligations. Establish `hc : (b.repr y i0)⁻¹ * (b.repr y) i ∈ A` using `(hval _).2 (val_quot_nonneg val ha (hmin i hi))`. Conclude with `Submodule.smul_mem (Submodule.span A (Set.range b)) ⟨_, hc⟩ (Submodule.subset_span ⟨i, rfl⟩)`.
+-/
 theorem val_gen (f : V →ₛₗ[e] W) (A : Subring LL) (val : AddValuation LL (WithTop ℤ)) (hval : ∀ a, a ∈ A ↔ 0 ≤ val a)
     (b : Module.Basis ι LL V) (hli : LinearIndependent Kf fun i => f (b i)) (N : Submodule O W)
     (hN : N ≤ Submodule.span O (Set.range fun i => f (b i))) (t : Kf) (y : V) (hy : f y ∈ scale t N) :
@@ -268,6 +360,15 @@ theorem val_gen (f : V →ₛₗ[e] W) (A : Subring LL) (val : AddValuation LL (
   have hc : (b.repr y i0)⁻¹ * (b.repr y) i ∈ A := (hval _).2 (val_quot_nonneg val ha (hmin i hi))
   exact Submodule.smul_mem (Submodule.span A (Set.range b)) ⟨_, hc⟩ (Submodule.subset_span ⟨i, rfl⟩)
 
+/- English proof (translation)
+Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨x, hx, rfl⟩`. Establish `hx'` using `hS hx`. Use `clear hx`. Use `show f x ∈ _`.
+
+Proceed by induction on `hx' using Submodule.span_induction with`. Consider the case `mem z hz`. Take `⟨i, rfl⟩` from `hz`. Conclude with `Submodule.subset_span ⟨i, rfl⟩`. Consider the case `zero => rw [map_zero]`.
+
+Conclude with `Submodule.zero_mem _`. Consider the case `add y z _ _ h1 h2 => rw [map_add]`. Conclude with `Submodule.add_mem _ h1 h2`. Consider the case `smul a y _ h1`. Take `⟨o, ho⟩` from `hA a.1 a.2`.
+
+Establish `: f (a • y) = o • f y`. Rewrite using `[Subring.smul_def, LinearMap.map_smulₛₗ, ← ho, algebraMap_smul]`. Rewrite using `[this]`. Conclude with `Submodule.smul_mem _ _ h1`.
+-/
 theorem span_image_le (f : V →ₛₗ[e] W) (A : Subring LL) (hA : ∀ a ∈ A, e a ∈ Set.range (algebraMap O Kf))
     (b : ι → V) (S : Set V) (hS : S ⊆ Submodule.span A (Set.range b)) :
     Submodule.span O (f '' S) ≤ Submodule.span O (Set.range fun i => f (b i)) := by
@@ -310,6 +411,13 @@ def LocFree (j : ℕ) : Prop :=
 
 variable {c Tw u μ w h} {Fl : Fills (D.gat u w h)} {Lv : Levels Fl}
 
+/- English proof (translation)
+Take `⟨ϖ, hϖ, hmem⟩` from `hv`. Take `⟨ι, b, hb⟩` from `hf`. Establish `hli : LinearIndependent (D.gat u w h).Kf fun i => S.cmp j (b i)` using `li_of_li (S.cmp j) ((Tw.fm u μ).lat j).b (S.li j hj) b b.linearIndependent`. Establish `hN : Lv.Int j ≤ Submodule.span (D.gat u w h).O (Set.range fun i => S.cmp j (b i))`. Rewrite using `[← hint]`.
+
+Use `span_image_le (S.cmp j) (Formalism.BasicNotions.intW D.what₂.places w) (fun a ha => (c.embW_int u w h a).1 ha) b _ ?_` and prove the remaining obligations. Introduce `x hx`. Rewrite using `[← hb]`. Conclude with `Submodule.subset_span hx`. Take `⟨a, z, hz, hy, ha⟩` from `val_gen (S.cmp j) (Formalism.BasicNotions.intW D.what₂.places w) (D.what₂.places.val w) (fun _ => Iff.rfl) b hli (Lv.Int j) hN _ y hmem`.
+
+Use `⟨a, z, by rw [hb]; exact hz, hy, ?_⟩` and prove the remaining obligations. Distinguish the cases in `ha0 : a = 0`. Conclude with `Or.inl ha0`. Conclude with `Or.inr (hs a s ϖ ha0 hϖ (ha.resolve_left ha0))`.
+-/
 theorem CmpUpMu.val_of (S : CmpUpMu c Tw u μ w h Lv) (j : ℕ) (hj : j ≤ D.R.m)
     (hint : Submodule.span (D.gat u w h).O (S.cmp j '' (((Tw.fm u μ).lat j).L : Set ((Tw.fm u μ).lat j).V)) = Lv.Int j)
     (hs : ValScalar c u w h) (hf : LocFree Tw u μ w j) (y : ((Tw.fm u μ).lat j).V) (s : ℝ)

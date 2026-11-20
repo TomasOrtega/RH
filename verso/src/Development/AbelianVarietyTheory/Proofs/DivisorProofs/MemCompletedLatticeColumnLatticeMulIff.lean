@@ -15,6 +15,15 @@ namespace GlobalTheory.LatMulAd
 
 variable {D : D7}
 
+/- English proof (translation)
+Unfold `Formalism.L2.Herm.hatL Formalism.UG.latS at hy ⊢`. Proceed by induction on `hy using Submodule.span_induction with`. Consider the case `mem y hy`. Take `⟨x, hx, rfl⟩` from `hy`. Apply `Submodule.subset_span` to reduce the goal to its premises.
+
+Use `⟨g *ᵥ x, hg x hx, ?_⟩` and prove the remaining obligations. Use extensionality with `i`. Simplify using `only [Matrix.mulVec, dotProduct, Matrix.map_apply, map_sum, map_mul]`. Both sides reduce to the same expression. Consider the case `zero => simp`.
+
+Consider the case `add a b _ _ ha hb => rw [Matrix.mulVec_add]`. Conclude with `add_mem ha hb`. Consider the case `smul r a _ ha`. Establish `: g.map (eToEAf D) *ᵥ (r • a) = r • (g.map (eToEAf D) *ᵥ a)` using `by show _ = (r : EAf D) • (g.map (eToEAf D) *ᵥ a)`. Rewrite using `[← Matrix.mulVec_smul]`.
+
+Both sides reduce to the same expression. Rewrite using `[this]`. Conclude with `Submodule.smul_mem _ r ha`.
+-/
 theorem mulVec_map_mem_hatL {n : ℕ} (g : Matrix (Fin n) (Fin n) D.host.E)
     (Λ Λ' : Submodule (𝓞 D.host.E) (Fin n → D.host.E))
     (hg : ∀ x ∈ Λ, g *ᵥ x ∈ Λ') (y : Fin n → EAf D)
@@ -38,6 +47,15 @@ theorem mulVec_map_mem_hatL {n : ℕ} (g : Matrix (Fin n) (Fin n) D.host.E)
       rfl
     rw [this]; exact Submodule.smul_mem _ r ha
 
+/- English proof (translation)
+Introduce `v`. Establish `h1 : ∀ x ∈ colLat B, (γ : Matrix (Fin n) (Fin n) D.host.E) *ᵥ x ∈ colLat (γ * B)`. Introduce `x hx`. Rewrite using `[colLat_mul]`. Conclude with `⟨x, hx, rfl⟩`.
+
+Establish `h2 : ∀ x ∈ colLat (γ * B), ((γ⁻¹ : GL (Fin n) D.host.E) : Matrix (Fin n) (Fin n) D.host.E) *ᵥ x ∈ colLat B`. Introduce `x hx`. Rewrite `hx` using `[colLat_mul]`. Take `⟨y, hy, rfl⟩` from `hx`. Use `show ((γ⁻¹ : GL (Fin n) D.host.E) : Matrix (Fin n) (Fin n) D.host.E) *ᵥ ((γ : Matrix (Fin n) (Fin n) D.host.E) *ᵥ y) ∈ _`.
+
+Rewrite using `[Matrix.mulVec_mulVec, Units.inv_mul, Matrix.one_mulVec]`. Conclude with `hy`. Prove the components needed by the constructor for the conclusion. Introduce `hv`. Conclude with `mulVec_map_mem_hatL _ _ _ h2 v hv`.
+
+Introduce `hv`. Use `mulVec_map_mem_hatL _ _ _ h1 _ hv` as an intermediate fact. Rewrite `this` using `[Matrix.mulVec_mulVec, ← Matrix.map_mul, Units.mul_inv, Matrix.map_one _ (map_zero _) (map_one _), Matrix.one_mulVec]`. Then use the resulting hypothesis.
+-/
 theorem mem_hatL_colLat_mul (D : D7) {n : ℕ} (γ B : GL (Fin n) D.host.E) : ∀ v, v ∈ Formalism.L2.Herm.hatL (F := D.host.F) (colLat (γ * B)) ↔
       (γ⁻¹).1.map (eToEAf D) *ᵥ v ∈ Formalism.L2.Herm.hatL (F := D.host.F) (colLat B) := by
   intro v

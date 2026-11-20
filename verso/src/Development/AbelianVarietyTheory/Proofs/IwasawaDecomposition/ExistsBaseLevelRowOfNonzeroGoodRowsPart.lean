@@ -16,6 +16,11 @@ noncomputable section
 
 namespace GlobalTheory.RowsAtBase
 
+/- English proof (translation)
+Introduce `D G _ _ Pl0 I0 T A3 Ks _ _ _ R F cG _ hP hH _ hG p hp`. Establish `hC` using `hP.char`. Establish `hE` using `hH.aux.ex`. Establish `hX : ∀ χ ∈ A3.A.X, IsAbsIrrChar χ` using `hH.ok.ok2.irr`. Establish `key` using `GlobalTheory.LevelRows.rowsOfLevel_of_models R.toRealDat F.lv2 hC.base.models.HE hC.base.models.gE false`.
+
+Take `⟨u, huU, hu0, hup⟩` from `GlobalTheory.Hk3.exists_level_vector D.what₂.embLL A3.A.X F.P0 F.ψ0 R.gE (R.EEp3 p) hX hG (fun g => GlobalTheory.RowsSum3.rowTypePart_map_finiteGroup_le R F hC hE p g) hp (fun u _ => by simpa [RealDat.eC] using GlobalTheory.ChainScalar.sum_gE hC.base.models.HE hC.base.models.gE u …`. Rewrite using `[Submodule.ne_bot_iff]`. Conclude with `⟨Tw.mk (twAt D.what₂.embLL A3.A.v0) u, ⟨huU, (key u).2 hup⟩, hu0⟩`.
+-/
 theorem exists_base_row_of_pins : ∀ (D : D7) (G : Type) [Group G] [Fintype G] (Pl0 I0 T : Type) (A3 : FamIn3 D.what₂.LL G Pl0 I0 (List ℕ) T D.R.m) (Ks : Type) [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] (R : RealDat3 D A3 Ks) (F : Face3 D A3) (cG : G0 R.Pg D.R.r ≃* G0g D.nd), Inputs D → Pins R F cG → Holds R F → GlobalTheory.CuspMult.MultEq R.toRealDat → (∀ χ ∈ A3.A.X, chiIdem χ * lvlIdem F.P0 F.ψ0 ≠ 0) → ∀ p, R.EEp3 p ≠ ⊥ → (R.toCx3 F).EEp p ⊓ (R.toCx3 F).EEl false ≠ ⊥ := by
   intro D G _ _ Pl0 I0 T A3 Ks _ _ _ R F cG _ hP hH _ hG p hp
   have hC := hP.char

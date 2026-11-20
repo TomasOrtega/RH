@@ -28,11 +28,19 @@ def Carries (φ : X' ⟶ X) {H : LB X} {H' : LB X'} (w : LB.Iso H' (H.pull φ)) 
   ∀ j z (k : H.ι) (k' : H'.ι), φ z ∈ H.U k → z ∈ H'.U k' →
     gs φ z _ ((s j).f k) = (Geo.Tor.gw w (𝟙 _) z k k').val * gs (𝟙 _) z _ ((s' j).f k')
 
+/- English proof (translation)
+Rewrite using `[gs_eq q (r z) W h, gs_eq (r ≫ q) z W h]`. Conclude with `Scheme.Hom.germ_stalkMap_apply r (q ⁻¹ᵁ W) z h _`.
+-/
 theorem gs_stalk (r : X'' ⟶ X') (q : X' ⟶ X) (z : X'') (W : X.Opens) (h : q (r z) ∈ W)
     (a : Γ(X, W)) : (r.stalkMap z).hom (gs q (r z) W a) = gs (r ≫ q) z W a := by
   rw [gs_eq q (r z) W h, gs_eq (r ≫ q) z W h]
   exact Scheme.Hom.germ_stalkMap_apply r (q ⁻¹ᵁ W) z h _
 
+/- English proof (translation)
+Establish `hm : r z ∈ (H.pull φ).U (fun _ => k) ⊓ H'.U k'` using `⟨mem_pull.2 hk, hk'⟩`. Establish `e` using `congrArg (r.stalkMap z).hom (h j (r z) k k' hk hk')`. Establish `g : ∀ a, (r.stalkMap z).hom (gm (𝟙 X') (r z) ((H.pull φ).U (fun _ => k) ⊓ H'.U k') a).val = (gm r z _ a).val` using `fun a => by`. Rewrite using `[← gs_unit (𝟙 X') (r z) _ hm, gs_stalk r (𝟙 X') z _ hm, Category.comp_id, gs_unit r z _ hm]`. Rewrite `e` using `[gs_stalk r φ z _ hk, map_mul, gs_stalk r (𝟙 X') z _ hk', Category.comp_id]`.
+
+Use `e.trans (congrArg (· * _) ?_)` and prove the remaining obligations. Conclude with `g _`.
+-/
 theorem Carries.at {φ : X' ⟶ X} {H : LB X} {H' : LB X'} {w : LB.Iso H' (H.pull φ)} {s : κ → LB.Sec H}
     {s' : κ → LB.Sec H'} (h : Carries φ w s s') (r : X'' ⟶ X') (j : κ) (z : X'') (k : H.ι) (k' : H'.ι)
     (hk : φ (r z) ∈ H.U k) (hk' : r z ∈ H'.U k') :
@@ -49,6 +57,9 @@ theorem Carries.at {φ : X' ⟶ X} {H : LB X} {H' : LB X'} {w : LB.Iso H' (H.pul
 def IsPull (φ : X' ⟶ X) {H : LB X} {H' : LB X'} (s : κ → LB.Sec H) (s' : κ → LB.Sec H') : Prop :=
   ∃ w : LB.Iso H' (H.pull φ), w.IsGen ∧ Carries φ w s s'
 
+/- English proof (translation)
+Establish `hL` using `LB.isLB_pull hH φ`. Establish `hw` using `CubePf.idIsoL_isGen hL`. Use `choose s' hs' using fun j => GlobalTheory.SecPullIso.exists_pull φ H (H.pull φ) _ hH hL hw (s j)`. Conclude with `⟨s', _, hw, hs'⟩`.
+-/
 theorem exists_isPull (φ : X' ⟶ X) {H : LB X} (hH : H.IsLB) (s : κ → LB.Sec H) :
     ∃ s' : κ → LB.Sec (H.pull φ), IsPull φ s s' := by
   have hL := LB.isLB_pull hH φ
@@ -59,6 +70,11 @@ theorem exists_isPull (φ : X' ⟶ X) {H : LB X} (hH : H.IsLB) (s : κ → LB.Se
 variable {F : X' ⟶ X} {F' : X'' ⟶ X'} {H : LB X} {H' : LB X'} {H'' : LB X''} {s : κ → LB.Sec H}
   {s' : κ → LB.Sec H'} {s'' : κ → LB.Sec H''}
 
+/- English proof (translation)
+Take `⟨w, hw, c⟩` from `a`. Take `⟨w', hw', c'⟩` from `b`. Rewrite `hw`, `hw'` using `[isGen_iff]`. Take `⟨w'', T⟩` from `exists_comp hH' w w' hw hw' hH hH''`. Use `⟨w'', (isGen_iff _).2 (T.pgen_comp hH' hw hw'), fun j z k k'' hk hk'' => ?_⟩` and prove the remaining obligations.
+
+Take `⟨i, hi⟩` from `exists_chart hH' (F' z)`. Rewrite using `[c.at F' j z k i hk hi, c' j z i k'' hi hk'', T _ (𝟙 _) z k i k'' hk hi hk'', Category.id_comp, Units.val_mul, _root_.mul_assoc]`.
+-/
 theorem IsPull.comp (hH : H.IsLB) (hH' : H'.IsLB) (hH'' : H''.IsLB) (a : IsPull F s s') (b : IsPull F' s' s'') :
     IsPull (F' ≫ F) s s'' := by
   obtain ⟨w, hw, c⟩ := a
@@ -70,6 +86,11 @@ theorem IsPull.comp (hH : H.IsLB) (hH' : H'.IsLB) (hH'' : H''.IsLB) (a : IsPull 
   rw [c.at F' j z k i hk hi, c' j z i k'' hi hk'', T _ (𝟙 _) z k i k'' hk hi hk'', Category.id_comp,
     Units.val_mul, _root_.mul_assoc]
 
+/- English proof (translation)
+Take `⟨w, hw, c⟩` from `a`. Take `⟨w'', hw'', c''⟩` from `b`. Rewrite `hw`, `hw''` using `[isGen_iff]`. Take `⟨w', T⟩` from `exists_cancel hH w w'' hw hw'' hH' hH''`. Use `⟨w', (isGen_iff _).2 (T.pgen_cancel hH hw hw''), fun j z i k'' hi hk'' => ?_⟩` and prove the remaining obligations.
+
+Take `⟨k, hk⟩` from `exists_chart hH (F (F' z))`. Establish `e` using `c'' j z k k'' hk hk''`. Rewrite `e` using `[c.at F' j z k i hk hi, T _ (𝟙 _) z k i k'' hk hi hk'', Category.id_comp, Units.val_mul, _root_.mul_assoc]`. Conclude with `(Units.mul_right_inj _).1 e`.
+-/
 theorem IsPull.cancel (hH : H.IsLB) (hH' : H'.IsLB) (hH'' : H''.IsLB) (a : IsPull F s s')
     (b : IsPull (F' ≫ F) s s'') : IsPull F' s' s'' := by
   obtain ⟨w, hw, c⟩ := a
@@ -83,6 +104,11 @@ theorem IsPull.cancel (hH : H.IsLB) (hH' : H'.IsLB) (hH'' : H''.IsLB) (a : IsPul
     Units.val_mul, _root_.mul_assoc] at e
   exact (Units.mul_right_inj _).1 e
 
+/- English proof (translation)
+Rewrite using `[MvPolynomial.eval₂_eq, MvPolynomial.eval₂_eq, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun a ha => ?_` and prove the remaining obligations. Establish `hd : ∑ j ∈ a.support, a j = e`. Use `hP (MvPolynomial.mem_support_iff.1 ha)` as an intermediate fact. Rewrite using `[← this, Finsupp.weight_apply, Finsupp.sum]`.
+
+Simplify using the standard rewrite rules. Simplify using `only [mul_pow, Finset.prod_mul_distrib, Finset.prod_pow_eq_pow_sum, hd]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem eval₂_scale {σ R A : Type} [CommRing R] [CommRing A] (φ : R →+* A) (c : A) (x : σ → A)
     {P : MvPolynomial σ R} {e : ℕ} (hP : P.IsHomogeneous e) :
     MvPolynomial.eval₂ φ (fun j => c * x j) P = c ^ e * MvPolynomial.eval₂ φ x P := by
@@ -95,6 +121,11 @@ theorem eval₂_scale {σ R A : Type} [CommRing R] [CommRing A] (φ : R →+* A)
   simp only [mul_pow, Finset.prod_mul_distrib, Finset.prod_pow_eq_pow_sum, hd]
   ring
 
+/- English proof (translation)
+Set `G : Γ(X, U) →+* X'.presheaf.stalk z` to `(X'.presheaf.germ (φ ⁻¹ᵁ U) z h).hom.comp (φ.app U).hom`. Establish `hG : ∀ a, gs φ z U a = G a` using `fun a => gs_eq φ z U h a`. Simplify using `only [hG]`. Rewrite using `[MvPolynomial.coe_eval₂Hom, MvPolynomial.eval₂_comp_left]`. Use `congr 1`.
+
+Use extensionality with `a`. Rewrite using `[RingHom.comp_apply, ← hG, ← rs_cst f (le_top : U ≤ ⊤) a, gs_res _ z _ h, gs_eq φ z ⊤ trivial, RingHom.comp_apply]`. Use `congr 1`. Simplify using `only [AbLaw.cst, RingHom.comp_apply, rs_self]`. Both sides reduce to the same expression.
+-/
 theorem gs_eval {R : Type} [CommRing R] (f : X ⟶ Spec (CommRingCat.of R)) (φ : X' ⟶ X) (z : X') (U : X.Opens)
     (h : φ z ∈ U) (x : κ → Γ(X, U)) (P : MvPolynomial κ R) :
     gs φ z U (MvPolynomial.eval₂Hom (cst f U) x P) =
@@ -111,6 +142,11 @@ theorem gs_eval {R : Type} [CommRing R] (f : X ⟶ Spec (CommRingCat.of R)) (φ 
   simp only [AbLaw.cst, RingHom.comp_apply, rs_self]
   rfl
 
+/- English proof (translation)
+Take `⟨w, -, c⟩` from `a`. Use `fn_ext fun z hz => ?_` and prove the remaining obligations. Take `⟨k, hk⟩` from `exists_chart hH (F z)`. Establish `e` using `congrArg (gs F z _) (h k)`. Rewrite `e` using `[gs_eval f F z _ hk, gs_eq F z _ hk 0, map_zero, map_zero]`.
+
+Simplify using `only [fun j => c j z k k' hk hz] at e`. Rewrite `e` using `[eval₂_scale _ _ _ hP]`. Rewrite using `[gs_eval (F ≫ f) (𝟙 _) z _ hz, gs_eq (𝟙 X') z _ hz 0, map_zero, map_zero, Category.id_comp]`. Conclude with `((Units.isUnit _).pow t).mul_right_eq_zero.1 e`.
+-/
 theorem IsPull.eqn {R : Type} [CommRing R] (f : X ⟶ Spec (CommRingCat.of R)) (hH : H.IsLB) (a : IsPull F s s')
     {t : ℕ} {P : MvPolynomial κ R} (hP : P.IsHomogeneous t)
     (h : ∀ k, MvPolynomial.eval₂Hom (cst f (H.U k)) (fun j => (s j).f k) P = 0) (k' : H'.ι) :
@@ -125,6 +161,29 @@ theorem IsPull.eqn {R : Type} [CommRing R] (f : X ⟶ Spec (CommRingCat.of R)) (
   rw [gs_eval (F ≫ f) (𝟙 _) z _ hz, gs_eq (𝟙 X') z _ hz 0, map_zero, map_zero, Category.id_comp]
   exact ((Units.isUnit _).pow t).mul_right_eq_zero.1 e
 
+/- English proof (translation)
+Take `⟨H, hH, n, s, hs⟩` from `hP`. Establish `hL : ∀ e, (H.pull (j e)).IsLB` using `fun e => LB.isLB_pull hH _`. Use `choose t ht using fun e => exists_isPull (j e) hH s`. Establish `hv : ∀ e, IsPull (thickMap V (IsLocalRing.maximalIdeal V) e Y) (t (e + 1)) (t e)` using `fun e => IsPull.cancel hH (hL _) (hL _) (ht (e + 1)) (by rw [hj]; exact ht e)`. Use `choose v hv cv using hv`.
+
+Establish `hjV : ∀ e, j e ≫ P.hom = (thickObj V (IsLocalRing.maximalIdeal V) e Y).hom ≫ thick V (IsLocalRing.maximalIdeal V) e` using `fun e => by`. Rewrite using `[← Over.w q, ← Category.assoc, hq]`. Conclude with `pullback.condition`. Establish `hci : ∀ e, IsClosedImmersion (thick V (IsLocalRing.maximalIdeal V) e)` using `fun e => IsClosedImmersion.spec_of_surjective _ Ideal.Quotient.mk_surjective`. Establish `hva : VeryAmpleBy (thickObj V (IsLocalRing.maximalIdeal V) 0 Y).hom (H.pull (j 0)) (t 0)`.
+
+Take `⟨w, hw, c⟩` from `ht 0`. Use `GlobalTheory.AbLaw.VeryAmplePull.veryAmpleBy_pull V P.left P.hom H n s hH hs _ (Ideal.Quotient.mk (IsLocalRing.maximalIdeal V ^ (0 + 1))) _ _ (j 0) (hjV 0) ?_ _ w _ (hL 0) hw c` and prove the remaining obligations. Establish `h₁ : IsClosedImmersion (j 0 ≫ q.left)`. Rewrite using `[hq]`. Use `hci 0` as an intermediate fact.
+
+Use `infer_instance`. Establish `h₂ : IsClosedImmersion (j 0)` using `IsClosedImmersion.of_comp _ q.left`. Establish `h₃ : IsClosedImmersion (pullback.lift (j 0) (thickObj V (IsLocalRing.maximalIdeal V) 0 Y).hom (hjV 0) ≫ pullback.fst P.hom (thick V (IsLocalRing.maximalIdeal V) 0))`. Rewrite using `[pullback.lift_fst]`. Conclude with `h₂`.
+
+Conclude with `IsClosedImmersion.of_comp _ (pullback.fst P.hom (thick V (IsLocalRing.maximalIdeal V) 0))`. Establish `hpb : ∀ e, IsPullback (thickMap V (IsLocalRing.maximalIdeal V) e Y) (thickObj V (IsLocalRing.maximalIdeal V) e Y).hom (thickObj V (IsLocalRing.maximalIdeal V) (e + 1) Y).hom (thickTrans V (IsLocalRing.maximalIdeal V) e)` using `fun e => by`. Use `IsPullback.of_right (h₁₂ := pullback.fst Y.hom (thick V (IsLocalRing.maximalIdeal V) (e + 1))) (h₂₂ := thick V (IsLocalRing.maximalIdeal V) (e + 1)) (v₁₃ := Y.hom) ?_ (pullback.lift_snd _ _ _) (IsPullback.of_hasPullback _ _)` and prove the remaining obligations. Rewrite using `[thickTrans_comp, pullback.lift_fst, Category.comp_id]`. Conclude with `IsPullback.of_hasPullback _ _`.
+
+Take `⟨B, H', s', b, w, hH', hs', hb, -, hw, heq⟩` from `GlobalTheory.T.exists_projective_algebraisation_formal_embedding V (fun e => thickObj V (IsLocalRing.maximalIdeal V) e Y) (fun e => thickMap V (IsLocalRing.maximalIdeal V) e Y) hpb (fun e => inferInstanceAs (Flat (pullback.snd Y.hom (thick V (IsLocalRing.maximalIdeal V) e)))) (fu …`. Take `⟨φ, u, hφ, hu, cu⟩` from `GlobalTheory.exists_hom_of_veryAmpleBy V P.left P.hom H n s hH hs B.left B.hom H' s' hH' hs'.1 fun d F hF h0 => heq d F hF fun e k => by`. Rewrite using `[← hjV]`. Conclude with `(ht e).eqn P.hom hH hF h0 k`. Establish `hbφ : ∀ e, b e ≫ φ = j e` using `fun e => by`.
+
+Take `⟨w₁, hw₁, c₁⟩` from `IsPull.comp hH hH' (hL e) ⟨u, hu, cu⟩ ⟨w e, (hw e).1, (hw e).2⟩`. Take `⟨w₂, hw₂, c₂⟩` from `ht e`. Use `GlobalTheory.MapUniq.hom_eq_of_pull_sections V P.left P.hom H n s hH hs _ _ (t e) _ _ w₁ w₂ (hL e) ?_ hw₁ hw₂ c₁ c₂` and prove the remaining obligations. Rewrite using `[Category.assoc, hφ, hjV]`. Conclude with `(hb e).w`.
+
+Set `φ' : B ⟶ P` to `Over.homMk φ hφ`. Establish `hbp : ∀ e, b e ≫ (φ' ≫ q).left = pullback.fst Y.hom (thick V (IsLocalRing.maximalIdeal V) e)` using `fun e => by`. Rewrite using `[← hq, ← hbφ]`. Conclude with `(Category.assoc _ _ _).symm`. Establish `hB : IsProper ((φ' ≫ q).left ≫ Y.hom)`.
+
+Rewrite using `[Over.w]`. Conclude with `GlobalTheory.AbLaw.isProper_of_isProjBy V _ _ ⟨H', hH', n, s', hs'⟩`. Establish `hp : IsProper (φ' ≫ q).left` using `IsProper.of_comp _ Y.hom`. Establish `hiso : IsIso (φ' ≫ q)` using `GlobalTheory.IsoLimit.main V B Y (φ' ≫ q) fun e => by`. Establish `h₁ : (hb e).isoPullback.hom ≫ ((Over.pullback (thick V (IsLocalRing.maximalIdeal V) e)).map (φ' ≫ q)).left = 𝟙 _`.
+
+Apply `pullback.hom_ext` to reduce the goal to its premises. Simplify using `only [Over.pullback_map_left, Category.assoc, pullback.lift_fst, Category.id_comp]`. Rewrite using `[← hbp e, IsPullback.isoPullback_hom_fst_assoc]`. Simplify using `only [Over.pullback_map_left, Category.assoc, pullback.lift_snd, Category.id_comp]`. Conclude with `(hb e).isoPullback_hom_snd`.
+
+Establish `h₂ : IsIso ((Over.forget _).map ((Over.pullback (thick V (IsLocalRing.maximalIdeal V) e)).map (φ' ≫ q)))` using `@IsIso.of_isIso_fac_left _ _ _ _ _ _ _ _ (Iso.isIso_hom _) (IsIso.id _) h₁`. Conclude with `isIso_of_reflects_iso _ (Over.forget _)`. Use `⟨inv (φ' ≫ q) ≫ φ', fun e => ?_⟩` and prove the remaining obligations. Rewrite using `[← hbp, Category.assoc, ← Over.comp_left, IsIso.hom_inv_id_assoc]`. Conclude with `hbφ e`.
+-/
 theorem exists_section (V : Type) [CommRing V] [IsDomain V] [IsDiscreteValuationRing V]
     [IsAdicComplete (IsLocalRing.maximalIdeal V) V] (Y P : Over (Spec (CommRingCat.of V))) (q : P ⟶ Y)
     [IsSeparated q.left] [IsProper Y.hom] [Flat Y.hom] (hP : IsProjBy P.hom)
@@ -198,6 +257,13 @@ theorem exists_section (V : Type) [CommRing V] [IsDomain V] [IsDiscreteValuation
   rw [← hbp, Category.assoc, ← Over.comp_left, IsIso.hom_inv_id_assoc]
   exact hbφ e
 
+/- English proof (translation)
+Introduce `V _ _ _ _ Y Z hY hZ hfl f hf hc`. Establish `pY` using `GlobalTheory.AbLaw.isProper_of_isProjBy V _ _ hY`. Establish `pZ` using `GlobalTheory.AbLaw.isProper_of_isProjBy V _ _ hZ`. Establish `hsep : IsSeparated (fst Y Z).left` using `inferInstanceAs (IsSeparated (pullback.fst Y.hom Z.hom))`. Take `⟨g, hg⟩` from `exists_section V Y (Y ⊗ Z) (fst Y Z) (GlobalTheory.AbLaw.isProjBy_tensor V Y Z hY hZ) (fun e => pullback.lift (pullback.fst Y.hom (thick V _ e)) (f e) (hf e).symm) (fun e => pullback.lift_fst _ _ _) (fun e => by`.
+
+Apply `pullback.hom_ext` to reduce the goal to its premises. Use `erw [Category.assoc, pullback.lift_fst, pullback.lift_fst, pullback.lift_fst, Category.comp_id]`. Use `erw [Category.assoc, pullback.lift_snd, pullback.lift_snd, hc])`. Use `⟨g ≫ snd Y Z, fun e => ?_⟩` and prove the remaining obligations. Use `congrArg (· ≫ pullback.snd Y.hom Z.hom) (hg e)` as an intermediate fact.
+
+Conclude with `((Category.assoc _ _ _).symm.trans this).trans (pullback.lift_snd _ _ _)`.
+-/
 theorem exists_hom_of_thickenings : ∀ (V : Type) [CommRing V] [IsDomain V] [IsDiscreteValuationRing V] [IsAdicComplete (IsLocalRing.maximalIdeal V) V] (Y Z : Over (Spec (CommRingCat.of V))), IsProjBy Y.hom → IsProjBy Z.hom → Flat Y.hom → ∀ f : ∀ e, (thickObj V (IsLocalRing.maximalIdeal V) e Y).left ⟶ Z.left, (∀ e, f e ≫ Z.hom = (fstG (IsLocalRing.maximalIdeal V) e Y).left ≫ Y.hom) → (∀ e, thickMap V (IsLocalRing.maximalIdeal V) e Y ≫ f (e + 1) = f e) → ∃ g : Y ⟶ Z, ∀ e, (fstG (IsLocalRing.maximalIdeal V) e Y).left ≫ g.left = f e := by
   intro V _ _ _ _ Y Z hY hZ hfl f hf hc
   have pY := GlobalTheory.AbLaw.isProper_of_isProjBy V _ _ hY

@@ -34,20 +34,35 @@ def Compat {T T' : HSp D} {t : ℕ} (d : HypDec T T' t) (l : Lvl T) (l' : Lvl T'
   ∀ w, l.form.map (compInf D.host.F D.host.E w) =
     (adj d.pX ⬝ d.pX + adj d.p0 ⬝ (l'.form ⬝ d.p0) + adj d.pY ⬝ d.pY : Mx D T.rank T.rank).map (compInf D.host.F D.host.E w)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem Lvl.K_frameLat (V : HSp D) (a : GL (Fin V.rank) (AE D)) : Lvl.K (⟨frameLat V, a⟩ : Lvl V) = Kmax V a := rfl
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨SelfDual.isLattice_frameLat V, SelfDual.isSelfDualAt_frameLat D V, ha⟩`.
+-/
 theorem Lvl.good_frameLat (V : HSp D) {a : GL (Fin V.rank) (AE D)} (ha : IsMaj V a) :
     Lvl.Good (⟨frameLat V, a⟩ : Lvl V) :=
   ⟨SelfDual.isLattice_frameLat V, SelfDual.isSelfDualAt_frameLat D V, ha⟩
 
+/- English proof (translation)
+The claim follows from `let ⟨a, ha⟩ := exists_isMaj V ⟨⟨frameLat V, a⟩, Lvl.good_frameLat V ha, rfl⟩`.
+-/
 theorem Lvl.exists_good (V : HSp D) : ∃ l : Lvl V, l.Good ∧ l.K = Kmax V l.c :=
   let ⟨a, ha⟩ := exists_isMaj V
   ⟨⟨frameLat V, a⟩, Lvl.good_frameLat V ha, rfl⟩
 
+/- English proof (translation)
+The claim follows from `haveI := h.1 isCompact_levelAll (isCMExt_host D) _ _ _`.
+-/
 theorem Lvl.Good.isCompact_K {V : HSp D} {l : Lvl V} (h : l.Good) : IsCompact (l.K : Set (GA D V)) :=
   haveI := h.1
   isCompact_levelAll (isCMExt_host D) _ _ _
 
+/- English proof (translation)
+Establish `h : ((l.c⁻¹).1 * l.c.1 : Matrix _ _ (AE D)) = 1` using `l.c.inv_mul`. Express the relevant statement in the definitionally equal form `Formalism.UG.cT _ l.c.1 * (Formalism.UG.cT _ (l.c⁻¹).1 * (l.c⁻¹).1 * l.c.1) = (1 : Matrix _ _ (AE D))`. Rewrite using `[Matrix.mul_assoc, h, Matrix.mul_one, ← Formalism.UG.cT_mul, h, Formalism.UG.cT_one]`.
+-/
 theorem Lvl.form_frame {V : HSp D} (l : Lvl V) : (adj l.c.1 ⬝ (l.form ⬝ l.c.1) : Mx D V.rank V.rank) = 1 := by
   have h : ((l.c⁻¹).1 * l.c.1 : Matrix _ _ (AE D)) = 1 := l.c.inv_mul
   change Formalism.UG.cT _ l.c.1 * (Formalism.UG.cT _ (l.c⁻¹).1 * (l.c⁻¹).1 * l.c.1) = (1 : Matrix _ _ (AE D))
@@ -63,6 +78,9 @@ def sphericalEisensteinSeriesOnGroup (h : GA D T) : ℂ → ℂ := fun s => cose
 
 def residueFieldAlt : ℂ := laurent (sphericalEisensteinSeriesOnGroup d K 1) (rhoH T r) (-1)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem sphericalSection_maximalCompact (b : GL (Fin T.rank) (AE D)) : sphericalSectionIwasawa d (Kmax T b) = sphericalSection d b := rfl
 
 end SlopeTestRemainingChoices
@@ -81,6 +99,11 @@ def rderG (X : Matrix (Fin (n + n)) (Fin (n + n)) ℂ) (f : StdUnn.G D n → ℂ
 def conjG (Z : Matrix (Fin (n + n)) (Fin (n + n)) ℂ) : Matrix (Fin (n + n)) (Fin (n + n)) ℂ :=
   -((StdUnn.blk4 (0 : Matrix (Fin n) (Fin n) ℂ) 1 (-1) 0)⁻¹ * Zᴴ * StdUnn.blk4 (0 : Matrix (Fin n) (Fin n) ℂ) 1 (-1) 0)
 
+/- English proof (translation)
+Establish `h : StdUnn.blk4 (0 : Matrix (Fin n) (Fin n) ℂ) 1 (-1) 0 * StdUnn.blk4 (0 : Matrix (Fin n) (Fin n) ℂ) (-1) 1 0 = 1`. Simplify using `[StdUnn.blk4, Matrix.submatrix_mul_equiv, Matrix.fromBlocks_multiply]`. Establish `hu` using `Matrix.isUnit_det_of_right_inverse h`. Unfold `conjG`. Rewrite using `[Matrix.conjTranspose_smul, Matrix.conjTranspose_one, Matrix.mul_smul, Matrix.mul_one, Matrix.smul_mul, Matrix.nonsing_inv_mul _ hu]`.
+
+Simplify using the standard rewrite rules.
+-/
 theorem conjG_I_smul_one : conjG n (Complex.I • 1) = Complex.I • 1 := by
   have h : StdUnn.blk4 (0 : Matrix (Fin n) (Fin n) ℂ) 1 (-1) 0 * StdUnn.blk4 (0 : Matrix (Fin n) (Fin n) ℂ) (-1) 1 0 = 1 := by
     simp [StdUnn.blk4, Matrix.submatrix_mul_equiv, Matrix.fromBlocks_multiply]
@@ -111,6 +134,9 @@ def projS {T : HSp D} {K : Subgroup (GA D T)} (ν : Measure K) (Φ : Mx D T.rank
 def ikS {T T' : HSp D} {t : ℕ} (d : HypDec T T' t) (μ : Measure (Mx D t n)) (Φ : Mx D T.rank n → ℂ) : Mx D T'.rank n → ℂ :=
   fun a => ∫ x, Φ (d.jX ⬝ x + d.j0 ⬝ a) ∂μ
 
+/- English proof (translation)
+Use function extensionality and compare the values at `x`. Establish `: ∀ k : K, Φ (mt T (k : GA D T)⁻¹ ⬝ x) = Φ x` using `fun k => h _ (K.inv_mem k.2) x`. Simplify using `[projS, this]`.
+-/
 theorem projS_of_invariant {T : HSp D} {K : Subgroup (GA D T)} (ν : Measure K) [IsProbabilityMeasure ν]
     {Φ : Mx D T.rank n → ℂ} (h : ∀ k ∈ K, ∀ x : Mx D T.rank n, Φ (mt T k ⬝ x) = Φ x) : projS ν Φ = Φ := by
   funext x

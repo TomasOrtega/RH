@@ -26,6 +26,13 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 namespace GlobalTheory.Core.Rk.UpInjScal
 
+/- English proof (translation)
+Take `⟨κ, -, hs⟩` from `hsc`. Take `⟨⟨B, hB⟩, hall⟩` from `hs t c hne`. Take `⟨hstep, htop⟩` from `hall B hB`. Establish `h : ∀ i : Fin D.R.m, ∃ l, GlobalTheory.IndefiniteRowSideFullHecke.LabelSettingScalars.IsLValue R t B ((i : ℕ) + 1) l`. Introduce `i`.
+
+Distinguish the cases in `hi : (i : ℕ) + 1 < D.R.m`. Take `⟨l, hl, -⟩` from `hstep i hi`. Conclude with `⟨l, hl⟩`. Establish `e : (i : ℕ) + 1 = D.R.m` using `by omega`. Take `⟨l, hl, -⟩` from `htop`.
+
+Conclude with `⟨l, by rw [e]; exact hl⟩`. Use `choose z hz using h`. Conclude with `⟨z, fun i => (hz i).2.1, fun i => ⟨B, hB, hz i⟩⟩`.
+-/
 theorem exists_lvals {D : D7} {G : Type} [Group G] [Fintype G] {Pl0 T : Type} {A : FamIn D.what₂.LL G Pl0 T D.R.m}
     {Ks : Type} [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] (R : RealDat D A Ks)
     (hsc : GlobalTheory.IndefiniteRowSideFullHecke.LabelSettingScalars.Scalars R) (t : T) (c : GlobalTheory.IndefiniteRowSideFullHecke.LabelSettingScalars.EigSys D)
@@ -49,6 +56,17 @@ end GlobalTheory.Core.Rk.UpInjScal
 
 open GlobalTheory.Hk3 in
 
+/- English proof (translation)
+Introduce `D G _ _ Pl0 T A Ks _ _ _ R F hC hS hI hsc SF hSF hB`. Take `⟨κ₀, hκ₀, hE⟩` from `hB`. Establish `hM` using `hC.models`. Establish `hs : ∀ (t : T) (c : Eig D), ∃ s : ℝ, 0 < s ∧ ∀ x ∈ EEc R SF c, R.Th t (LinearMap.adjoint (R.Th t) x) = ((s : ℝ) : ℂ) • x`. Introduce `t c`.
+
+Distinguish the cases in `hne : GlobalTheory.IndefiniteRowSideFullHecke.LabelSettingScalars.rowPart R (GlobalTheory.IndefiniteRowSideFullHecke.LabelSettingScalars.badPl R t) c = ⊥`. Use `⟨1, one_pos, fun x hx => ?_⟩` and prove the remaining obligations. Establish `h1 : R.HE.e x ∈ GlobalTheory.IndefiniteRowSideFullHecke.LabelSettingScalars.rowPart R (GlobalTheory.IndefiniteRowSideFullHecke.LabelSettingScalars.badPl R t) c` using `(GlobalTheory.ChainScalar.mem_rowPart (R := R) hM.HE).1 (GlobalTheory.ChainScalar.eec_le (R := R) hSF t c hM.HE hx)`. Rewrite `h1` using `[hne, Submodule.mem_bot]`. Establish `hx0 : x = 0` using `hM.HE.1 (h1.trans (LinearMap.map_zero _).symm)`.
+
+Substitute `hx0` using the available equality. Conclude with `((congrArg (R.Th t) (LinearMap.map_zero _)).trans (LinearMap.map_zero _)).trans (smul_zero _).symm`. Establish `hz0 : ∃ z : Fin D.R.m → ℝ, (∀ i, 0 < z i) ∧ ∀ i, IsLval R i t c (z i)` using `GlobalTheory.Core.Rk.UpInjScal.exists_lvals (T := T) R hsc t c hne`. Take `⟨z, hz, hl⟩` from `hz0`. Conclude with `⟨κ₀ * ∏ i, z i, mul_pos hκ₀ (Finset.prod_pos fun i _ => hz i), hE t c z hl⟩`.
+
+Introduce `t`. Use `choose s hs0 hsE using hs t`. Use `(injective_iff_map_eq_zero _).2 fun x h0 => ?_` and prove the remaining obligations. Take `⟨h, -, -, hsp, -⟩` from `GlobalTheory.Hk3.OpsRows.exists_opsE R F hC hS SF hSF`. Use `GlobalTheory.AdjointInjectiveOfParts.adjoint_inj_of_parts (R.Th t) (fun c => EEc R SF c) (fun c => ((s c : ℝ) : ℂ)) (fun c => Complex.ofReal_ne_zero.2 (hs0 c).ne') (fun c x hx => hsE c x hx) ?_ h0` and prove the remaining obligations.
+
+Rewrite using `[hsp]`. Discharge the goal by the elementary cases of `trivial`.
+-/
 theorem GlobalTheory.Core.Rk.upInj_of_bForm : ∀ {D : D7} {G : Type} [Group G] [Fintype G] {Pl0 T : Type} {A : FamIn D.what₂.LL G Pl0 T D.R.m} {Ks : Type} [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] (R : RealDat D A Ks) (F : Face D A), GlobalTheory.Hk3.Core R F → GlobalTheory.Hk3.SchurAll R → (∀ χ ∈ A.X, IsAbsIrrChar χ) → GlobalTheory.IndefiniteRowSideFullHecke.LabelSettingScalars.Scalars R → ∀ SF, GlobalTheory.Hk3.IsSF R SF → BForm R SF → UpInj R := by
   intro D G _ _ Pl0 T A Ks _ _ _ R F hC hS hI hsc SF hSF hB
   obtain ⟨κ₀, hκ₀, hE⟩ := hB

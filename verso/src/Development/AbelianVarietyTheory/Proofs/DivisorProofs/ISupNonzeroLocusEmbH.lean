@@ -30,6 +30,9 @@ def TraitRed {R : Type} [CommRing R] [IsDomain R] [IsLocalRing R] (M : Modif R) 
 
 def embH {X : Scheme.{0}} {B : LB X} {N : ℕ} (s : Fin (N + 1) → B.Sec) : X.Opens := ⨆ i, nonzeroLocus (s i)
 
+/- English proof (translation)
+Simplify using `only [GlobalTheory.nonzeroLocus_secPull]`. Rewrite using `[← Scheme.Hom.preimage_iSup]`. Conclude with `Scheme.Opens.ι_preimage_self _`.
+-/
 theorem iSup_nonzeroLocus_embH {X : Scheme.{0}} {B : LB X} {N : ℕ} (s : Fin (N + 1) → B.Sec) :
     ⨆ i, nonzeroLocus (GlobalTheory.secPull (s i) (embH s).ι) = ⊤ := by
   simp only [GlobalTheory.nonzeroLocus_secPull]

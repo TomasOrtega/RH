@@ -11,11 +11,20 @@ namespace Formalism.L2.SG.Pf.KppLoc
 open Formalism.BasicNotions Formalism.MainNotions.S Formalism.L2.SG.HidaSetting Formalism.L2.SG.Pf.RowDictPf PIW.AdelClassFin Formalism.L2.SG.Pf.RedBasicsPf
   Formalism.L2.SG.Pf.unitaryCongruence Formalism.L2.SG.Pf.AllRowsRedKerA Formalism.L2.SG.Pf.KppRedW Formalism.L2.SG.Pf.KppFrameW Formalism.L2.SG.Pf.KppIdx
 
+/- English proof (translation)
+Introduce `e` and use `h (congrArg Fin.val e)`.
+-/
 theorem ne_val {r : ℕ} {i j : Fin r} (h : i.1 ≠ j.1) : i ≠ j := fun e => h (congrArg Fin.val e)
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fun h => by rw [← rv_rv a, h, rv_rv], fun h => h ▸ rfl⟩`.
+-/
 theorem rv_inj {n : ℕ} {a b : Fin n} : rv a = rv b ↔ a = b :=
   ⟨fun h => by rw [← rv_rv a, h, rv_rv], fun h => h ▸ rfl⟩
 
+/- English proof (translation)
+Establish `e : (if P then (1 : I.E ⊗[I.F] Af I.F) else 0) = if Q then 1 else 0`. Distinguish the cases in `hp : P`. Rewrite using `[if_pos hp, if_pos (hPQ.1 hp)]`. Rewrite using `[if_neg hp, if_neg (fun hq => hp (hPQ.2 hq))]`. Rewrite `h` using `[e]`. Then use the resulting hypothesis.
+-/
 theorem gram_of {I : AutInst} {w : HeightOneSpectrum (𝓞 I.E)} {u v : VA I} {P Q : Prop} [Decidable P] [Decidable Q]
     (h : hhat I u v - (if P then 1 else 0) ∈ Wq I w) (hPQ : P ↔ Q) :
     hhat I u v - (if Q then 1 else 0) ∈ Wq I w := by
@@ -25,34 +34,112 @@ theorem gram_of {I : AutInst} {w : HeightOneSpectrum (𝓞 I.E)} {u v : VA I} {P
     · rw [if_neg hp, if_neg (fun hq => hp (hPQ.2 hq))]
   rwa [e] at h
 
+/- English proof (translation)
+Rewrite using `[if_neg hQ, sub_zero]` and apply the resulting hypothesis.
+-/
 theorem gram_ne {I : AutInst} {w : HeightOneSpectrum (𝓞 I.E)} {u v : VA I} {Q : Prop} [Decidable Q]
     (h : hhat I u v ∈ Wq I w) (hQ : ¬ Q) : hhat I u v - (if Q then 1 else 0) ∈ Wq I w := by
   rwa [if_neg hQ, sub_zero]
 
 variable {D : D7} (X : HidaSetting D)
 
+/- English proof (translation)
+The claim follows from `hhat_conj X.B.I u v`.
+-/
 theorem sg_hA (u v : VA X.B.I) : sg X.B.I (hA X.B.I u v) = hhat X.B.I v u := hhat_conj X.B.I u v
 
+/- English proof (translation)
+Rewrite using `[fr_w]`. Both sides reduce to the same expression.
+-/
 theorem fr_wt (i : Fin D.R.k) : fr X true (wI (hrD D) i) = X.bw i := by rw [fr_w]; rfl
+/- English proof (translation)
+Rewrite using `[fr_w]`. Both sides reduce to the same expression.
+-/
 theorem fr_wf (i : Fin D.R.k) : fr X false (wI (hrD D) i) = X.bwd (rv i) := by rw [fr_w]; rfl
+/- English proof (translation)
+Rewrite using `[frd_w]`. Both sides reduce to the same expression.
+-/
 theorem frd_wt (i : Fin D.R.k) : frd X true (wI (hrD D) i) = X.bwd i := by rw [frd_w]; rfl
+/- English proof (translation)
+Rewrite using `[frd_w]`. Both sides reduce to the same expression.
+-/
 theorem frd_wf (i : Fin D.R.k) : frd X false (wI (hrD D) i) = X.bw (rv i) := by rw [frd_w]; rfl
 
 variable {w : HeightOneSpectrum (𝓞 X.B.I.E)}
 
+/- English proof (translation)
+The claim follows from `zmod_Wq hg h`.
+-/
 theorem wq (hg : ((X.B.g : ℕ) : 𝓞 X.B.I.E) ∈ w.asIdeal) {c : X.B.I.E ⊗[X.B.I.F] Af X.B.I.F}
     (h : ZMod' X.B.I X.B.g c) : c ∈ Wq X.B.I w := zmod_Wq hg h
 
+/- English proof (translation)
+The claim follows from `zmod_Wq hg (zmod_sg h)`.
+-/
 theorem wqs (hg : ((X.B.g : ℕ) : 𝓞 X.B.I.E) ∈ w.asIdeal) {c : X.B.I.E ⊗[X.B.I.F] Af X.B.I.F}
     (h : ZMod' X.B.I X.B.g c) : sg X.B.I c ∈ Wq X.B.I w := zmod_Wq hg (zmod_sg h)
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fun h => Fin.ext (by have := congrArg Fin.val h; simpa using this), fun h => h ▸ rfl⟩`.
+-/
 theorem xI_inj {a b : Fin D.R.rS} : xI (hrD D) a = xI (hrD D) b ↔ a = b :=
   ⟨fun h => Fin.ext (by have := congrArg Fin.val h; simpa using this), fun h => h ▸ rfl⟩
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fun h => Fin.ext (by have := congrArg Fin.val h; simpa using this), fun h => h ▸ rfl⟩`.
+-/
 theorem wI_inj {a b : Fin D.R.k} : wI (hrD D) a = wI (hrD D) b ↔ a = b :=
   ⟨fun h => Fin.ext (by have := congrArg Fin.val h; simpa using this), fun h => h ▸ rfl⟩
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fun h => Fin.ext (by have := congrArg Fin.val h; simpa using this), fun h => h ▸ rfl⟩`.
+-/
 theorem yI_inj {a b : Fin D.R.rS} : yI (hrD D) a = yI (hrD D) b ↔ a = b :=
   ⟨fun h => Fin.ext (by have := congrArg Fin.val h; simpa using this), fun h => h ▸ rfl⟩
 
+/- English proof (translation)
+Introduce `i j`. Establish `sg_ite : ∀ (P : Prop) [Decidable P], sg X.B.I (if P then (1 : X.B.I.E ⊗[X.B.I.F] Af X.B.I.F) else 0) = if P then 1 else 0`. Apply the tactic sequence `intro P _; split_ifs <;> simp`. Apply the tactic sequence `rcases kind_cases (hrD D) i with ⟨a, rfl⟩ | ⟨a, rfl⟩ | rfl | ⟨a, rfl⟩ <;>`. Break down `kind_cases (hrD D) j with ⟨b, rfl⟩ | ⟨b, rfl⟩ | rfl | ⟨b, rfl⟩` into its components or cases.
+
+Rewrite using `[dual_frame_isotropic, frame_isotropic]`. Establish `h` using `wqs X hg ((X.gramIntegral b a).2.2)`. Rewrite `h` using `[map_sub, sg_hA, sg_ite]`. Conclude with `gram_of h (by rw [xI_inj]; exact eq_comm)`. Apply the tactic sequence `refine gram_ne ?_ (ne_val (by simp <;> omega))`.
+
+Consider the cases of `ob`. Rewrite using `[dual_frame_isotropic, fr_wf]`. Conclude with `wq X hg ((X.weightVectorsIntegral (rv b)).2.2 a).2.2.2`. Rewrite using `[dual_frame_isotropic, fr_wt]`. Conclude with `wq X hg ((X.weightVectorsIntegral b).2.2 a).2.1`.
+
+Apply the tactic sequence `refine gram_ne ?_ (ne_val (by simp <;> omega))`. Rewrite using `[dual_frame_isotropic, frame_anisotropic]`. Conclude with `wq X hg (X.formsAtZero.2 a).2`. Apply the tactic sequence `refine gram_ne ?_ (ne_val (by simp <;> omega))`. Rewrite using `[dual_frame_isotropic, fr_y]`.
+
+Conclude with `wq X hg (X.gramIntegral a (rv b)).2.1`. Apply the tactic sequence `refine gram_ne ?_ (ne_val (by simp <;> omega))`. Consider the cases of `ob`. Rewrite using `[frd_wf, frame_isotropic]`. Use `wqs X hg ((X.weightVectorsIntegral (rv a)).2.2 b).1` as an intermediate fact.
+
+Rewrite `this` using `[sg_hA]`. Then use the resulting hypothesis. Rewrite using `[frd_wt, frame_isotropic]`. Use `wqs X hg ((X.weightVectorsIntegral a).2.2 b).2.2.1` as an intermediate fact. Rewrite `this` using `[sg_hA]`. Then use the resulting hypothesis. Consider the cases of `ob`.
+
+Rewrite using `[frd_wf, fr_wf]`. Simplify using `only [Bool.false_eq_true, if_false] at hsew`. Establish `h` using `wqs X hg (X.bw_dual (rv b) (rv a))`. Rewrite `h` using `[map_sub, sg_hA]`. Distinguish the cases in `hab : a = b`.
+
+Substitute `hab` using the available equality. Rewrite `h`, the goal using `[if_pos rfl]`. Use `add_mem h hsew` as an intermediate fact. Use `this using 1` and compare the differences between its conclusion and the goal. Expand and normalize the polynomial expressions, which then agree.
+
+Rewrite `h` using `[if_neg (fun h' => hab (rv_inj.1 h'.symm)), map_zero, sub_zero]`. Conclude with `gram_ne h (fun h' => hab (wI_inj.1 h'))`. Rewrite using `[frd_wt, fr_wt]`. Simplify using `only [if_true] at hew`. Establish `h` using `wq X hg (X.bw_dual a b)`.
+
+Distinguish the cases in `hab : a = b`. Substitute `hab` using the available equality. Rewrite `h`, the goal using `[if_pos rfl]`. Express the relevant statement in the definitionally equal form `hhat X.B.I (X.bwd a) (X.bw a) - X.ew ∈ _ at h`. Use `add_mem h hew` as an intermediate fact.
+
+Use `this using 1` and compare the differences between its conclusion and the goal. Expand and normalize the polynomial expressions, which then agree. Rewrite `h` using `[if_neg hab, sub_zero]`. Conclude with `gram_ne h (fun h' => hab (wI_inj.1 h'))`. Apply the tactic sequence `refine gram_ne ?_ (ne_val (by simp <;> omega))`.
+
+Consider the cases of `ob`. Rewrite using `[frd_wf, frame_anisotropic]`. Use `wqs X hg (X.weightVectorsIntegral (rv a)).1` as an intermediate fact. Rewrite `this` using `[sg_hA]`. Then use the resulting hypothesis. Rewrite using `[frd_wt, frame_anisotropic]`.
+
+Use `wqs X hg (X.weightVectorsIntegral a).2.1` as an intermediate fact. Rewrite `this` using `[sg_hA]`. Then use the resulting hypothesis. Apply the tactic sequence `refine gram_ne ?_ (ne_val (by simp <;> omega))`. Consider the cases of `ob`. Rewrite using `[frd_wf, fr_y]`.
+
+Use `wqs X hg ((X.weightVectorsIntegral (rv a)).2.2 (rv b)).2.1` as an intermediate fact. Rewrite `this` using `[sg_hA]`. Then use the resulting hypothesis. Rewrite using `[frd_wt, fr_y]`. Use `wqs X hg ((X.weightVectorsIntegral a).2.2 (rv b)).2.2.2` as an intermediate fact. Rewrite `this` using `[sg_hA]`. Then use the resulting hypothesis.
+
+Apply the tactic sequence `refine gram_ne ?_ (ne_val (by simp <;> omega))`. Rewrite using `[dual_frame_anisotropic, frame_isotropic, hhat_neg_left]`. Use `neg_mem ?_` and prove the remaining obligations. Use `wqs X hg (X.formsAtZero.2 b).1` as an intermediate fact. Rewrite `this` using `[sg_hA]`. Then use the resulting hypothesis.
+
+Apply the tactic sequence `refine gram_ne ?_ (ne_val (by simp <;> omega))`. Consider the cases of `ob`. Rewrite using `[dual_frame_anisotropic, fr_wf, hhat_neg_left]`. Conclude with `neg_mem (wq X hg (X.weightVectorsIntegral (rv b)).2.1)`. Rewrite using `[dual_frame_anisotropic, fr_wt, hhat_neg_left]`.
+
+Conclude with `neg_mem (wq X hg (X.weightVectorsIntegral b).1)`. Rewrite using `[dual_frame_anisotropic, frame_anisotropic, hhat_neg_left, if_pos rfl]`. Use `neg_mem (wq X hg X.formsAtZero.1)` as an intermediate fact. Use `this using 1` and compare the differences between its conclusion and the goal. Use `show -hhat X.B.I X.z0 X.z0 - 1 = -(hA X.B.I X.z0 X.z0 + 1)`.
+
+Rewrite using `[show hA X.B.I X.z0 X.z0 = hhat X.B.I X.z0 X.z0 from rfl]`. Expand and normalize the polynomial expressions, which then agree. Apply the tactic sequence `refine gram_ne ?_ (ne_val (by simp <;> omega))`. Rewrite using `[dual_frame_anisotropic, fr_y, hhat_neg_left]`. Use `neg_mem ?_` and prove the remaining obligations.
+
+Use `wqs X hg (X.formsAtZero.2 (rv b)).2` as an intermediate fact. Rewrite `this` using `[sg_hA]`. Then use the resulting hypothesis. Apply the tactic sequence `refine gram_ne ?_ (ne_val (by simp <;> omega))`. Rewrite using `[frd_y, frame_isotropic]`. Conclude with `wq X hg (X.gramIntegral (rv a) b).1`.
+
+Apply the tactic sequence `refine gram_ne ?_ (ne_val (by simp <;> omega))`. Consider the cases of `ob`. Rewrite using `[frd_y, fr_wf]`. Conclude with `wq X hg ((X.weightVectorsIntegral (rv b)).2.2 (rv a)).2.2.1`. Rewrite using `[frd_y, fr_wt]`.
+
+Conclude with `wq X hg ((X.weightVectorsIntegral b).2.2 (rv a)).1`. Apply the tactic sequence `refine gram_ne ?_ (ne_val (by simp <;> omega))`. Rewrite using `[frd_y, frame_anisotropic]`. Conclude with `wq X hg (X.formsAtZero.2 (rv a)).1`. Rewrite using `[frd_y, fr_y]`.
+
+Conclude with `gram_of (wq X hg (X.gramIntegral (rv a) (rv b)).2.2) (by rw [rv_inj, yI_inj])`.
+-/
 theorem gram (ob : Bool) (hg : ((X.B.g : ℕ) : 𝓞 X.B.I.E) ∈ w.asIdeal)
     (hew : X.ew - (if ob then 1 else 0) ∈ Wq X.B.I w) (hsew : sg X.B.I X.ew - (if ob then 0 else 1) ∈ Wq X.B.I w) :
     GramW w (fr X ob) (frd X ob) := by

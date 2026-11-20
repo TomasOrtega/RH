@@ -6,6 +6,11 @@ open Formalism.BasicNotions NumberField IsDedekindDomain Formalism.MainNotions F
 
 namespace GlobalTheory.TwV.Xc
 
+/- English proof (translation)
+Proceed by induction on `m with`. Consider the case `zero => simp`. Consider the case `succ m ih`. Rewrite using `[show 2 * (m + 1) = 2 * m + 1 + 1 by ring, Finset.sum_range_succ, Finset.sum_range_succ, ih]`. Establish `h1 : (2 * m) % 2 = 0` using `by omega`.
+
+Establish `h2 : (2 * m + 1) % 2 = 1` using `by omega`. Simplify using `[h1, h2]`.
+-/
 theorem sum_alt_sign_range (m : ℕ) :
     ∑ i ∈ Finset.range (2 * m), (if i % 2 = 1 then (-1 : ℤ) else 1) = 0 := by
   induction m with
@@ -16,6 +21,9 @@ theorem sum_alt_sign_range (m : ℕ) :
     have h2 : (2 * m + 1) % 2 = 1 := by omega
     simp [h1, h2]
 
+/- English proof (translation)
+Take `⟨m, rfl⟩` from `hn`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[← Fin.sum_univ_eq_sum_range]`. Both sides reduce to the same expression. Use `_ = 0 := by simpa [two_mul] using sum_alt_sign_range m`.
+-/
 theorem sum_alt_sign_pos (n' : ℕ) (hn : Even n') :
     ∑ s : Fin n', (if IsOddPos s then (-1 : ℤ) else 1) = 0 := by
   obtain ⟨m, rfl⟩ := hn
@@ -24,6 +32,13 @@ theorem sum_alt_sign_pos (n' : ℕ) (hn : Even n') :
           rw [← Fin.sum_univ_eq_sum_range]; rfl
     _ = 0 := by simpa [two_mul] using sum_alt_sign_range m
 
+/- English proof (translation)
+Establish `hw : ∑ s : Fin (X.G.P.n' v), (if IsOddPos s then -1 else 1) * X.w v l s = X.vm v l`. Unfold `Sys.vm`. Rewrite using `[Finset.sum_filter, Finset.sum_filter, ← Finset.sum_sub_distrib]`. Use `Finset.sum_congr rfl fun s _ => ?_` and prove the remaining obligations. Apply the tactic sequence `by_cases h : IsOddPos s <;> simp [h]`.
+
+Rewrite using `[← hw]`. Establish `e1 : ∀ s, (if IsOddPos s then (-1 : ℤ) else 1) * X.w v l s = (if IsOddPos s then -1 else 1) * e s - (if IsOddPos s then (-1 : ℤ) else 1) * k`. Introduce `s`. Rewrite using `[hk s]`. Expand and normalize the polynomial expressions, which then agree.
+
+Rewrite using `[Finset.sum_congr rfl (fun s _ => e1 s), Finset.sum_sub_distrib, ← Finset.sum_mul, sum_alt_sign_pos _ (X.G.P.setting v).even, zero_mul, sub_zero]`.
+-/
 theorem vm_eq_of_shift (p : ℕ) [Fact p.Prime] (X : Sys p) (v : X.Pl) (l : ℕ) (e : Fin (X.G.P.n' v) → ℤ) (k : ℤ)
     (hk : ∀ s, X.w v l s = e s - k) :
     X.vm v l = ∑ s : Fin (X.G.P.n' v), (if IsOddPos s then -1 else 1) * e s := by
@@ -39,6 +54,9 @@ theorem vm_eq_of_shift (p : ℕ) [Fact p.Prime] (X : Sys p) (v : X.Pl) (l : ℕ)
   rw [Finset.sum_congr rfl (fun s _ => e1 s), Finset.sum_sub_distrib, ← Finset.sum_mul,
     sum_alt_sign_pos _ (X.G.P.setting v).even, zero_mul, sub_zero]
 
+/- English proof (translation)
+Introduce `p _ X v l e k hk` and use `vm_eq_of_shift p X v l e k hk`.
+-/
 theorem vm_shift_cancels : ∀ (p : ℕ) [Fact p.Prime] (X : Sys p) (v : X.Pl) (l : ℕ) (e : Fin (X.G.P.n' v) → ℤ) (k : ℤ),
     (∀ s, X.w v l s = e s - k) → X.vm v l = ∑ s : Fin (X.G.P.n' v), (if IsOddPos s then -1 else 1) * e s :=
   fun p _ X v l e k hk => vm_eq_of_shift p X v l e k hk

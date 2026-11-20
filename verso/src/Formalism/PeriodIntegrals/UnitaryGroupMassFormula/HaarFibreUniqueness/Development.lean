@@ -41,18 +41,27 @@ variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algeb
   (σ : E →ₐ[F] E) {n : ℕ} (J : Matrix (Fin n) (Fin n) E) (ψ : AddChar (AF F) ℂ)
   (v : HeightOneSpectrum (𝓞 F)) (a : ℕ)
 
+/- English proof (translation)
+Unfold `dX`. Rewrite using `[dif_pos h]`. Conclude with `h.choose_spec.1`.
+-/
 theorem dX_haar (h : ∃ μ, SdW F E σ n J (Fv F v) (psiV F ψ v) a μ) :
     (dX σ J ψ v a).IsAddHaarMeasure := by
   unfold dX
   rw [dif_pos h]
   exact h.choose_spec.1
 
+/- English proof (translation)
+Unfold `dT`. Rewrite using `[dif_pos h]`. Conclude with `h.choose_spec.1`.
+-/
 theorem dT_haar (h : ∃ ν, SdHerm F E σ (Fv F v) (psiV F ψ v) a ν) :
     (dT σ ψ v a).IsAddHaarMeasure := by
   unfold dT
   rw [dif_pos h]
   exact h.choose_spec.1
 
+/- English proof (translation)
+Introduce `hS`. Take `⟨hX, hT⟩` from `h0 σ J ψ v a hS`. Conclude with `⟨h1 σ J v a hS.1 hS.2.1 _ _ (dX_haar σ J ψ v a hX) (dT_haar σ ψ v a hT), fun fib fib' h h' => h4 σ J v a _ _ (dT_haar σ ψ v a hT) fib fib' h h'⟩`.
+-/
 theorem omUnique_of (h0 : SdEx) (h1 : FibEx) (h4 : FibUniq) : OmUnique σ J ψ v a := by
   intro hS
   obtain ⟨hX, hT⟩ := h0 σ J ψ v a hS

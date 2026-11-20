@@ -26,6 +26,11 @@ open GlobalTheory.LB (resG_resG)
 
 namespace GlobalTheory.FlagZ.TautCell
 
+/- English proof (translation)
+Establish `hF` using `VB.isFrame_freeFrame X (Fin N)`. Use `VB.isFrame_of_basis (fun V h => (hF.basis (le_top : V ≤ ⊤)).map (Matrix.toLinearEquiv (hF.basis (le_top : V ≤ ⊤)) ((resG X h).mapMatrix M.1) ?_)) fun V h j => ?_` and prove the remaining obligations. Rewrite using `[← RingHom.map_det]`. Conclude with `(Matrix.isUnits_det_units M).map _`. Rewrite using `[Module.Basis.map_apply, Matrix.toLinearEquiv_apply, Matrix.toLin_self]`.
+
+Simplify using `only [colOn, map_sum, resM_smul, resM_resM, VB.IsFrame.basis_apply]`. Both sides reduce to the same expression.
+-/
 theorem isFrame_colOn (N : ℕ) (X : Scheme.{0}) (U : X.Opens) (M : GL (Fin N) Γ(X, U)) :
     GlobalTheory.VB.IsFrame (GlobalTheory.FlagZ.TautCell.colOn M.1) := by
   classical

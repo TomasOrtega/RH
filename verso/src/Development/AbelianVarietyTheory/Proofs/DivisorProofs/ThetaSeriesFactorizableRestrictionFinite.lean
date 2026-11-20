@@ -16,6 +16,19 @@ noncomputable section
 namespace GlobalTheory.SplitSvN
 open MeasureTheory Matrix ComplexConjugate
 
+/- English proof (translation)
+Set `H₁ : AddSubgroup G` to `(AddMonoidHom.id G - p).ker`. Set `H₂ : AddSubgroup G` to `p.ker`. Establish `m₁ : ∀ x, x ∈ H₁ ↔ x - p x = 0` using `fun x => Iff.rfl`. Establish `m₂ : ∀ x, x ∈ H₂ ↔ p x = 0` using `fun x => Iff.rfl`. Establish `c₁ : IsClosed (H₁ : Set G)` using `isClosed_eq (continuous_id.sub hp) continuous_const`.
+
+Establish `c₂ : IsClosed (H₂ : Set G)` using `isClosed_eq hp continuous_const`. Use `haveI : LocallyCompactSpace H₁ := c₁.locallyCompactSpace`. Use `haveI : LocallyCompactSpace H₂ := c₂.locallyCompactSpace`. Use `haveI : SecondCountableTopology H₁ := TopologicalSpace.Subtype.secondCountableTopology _`. Use `haveI : SecondCountableTopology H₂ := TopologicalSpace.Subtype.secondCountableTopology _`.
+
+Establish `k₁ : ∀ z : H₁ × H₂, p ((z.1 : G) + z.2) = z.1` using `fun z => by`. Rewrite using `[map_add, (m₂ _).1 z.2.2, add_zero]`. Conclude with `(sub_eq_zero.1 ((m₁ _).1 z.1.2)).symm`. Set `e : (H₁ × H₂) ≃ₜ+ G` to `{ toFun := fun z => (z.1 : G) + z.2 invFun := fun x => (⟨p x, (m₁ _).2 (by rw [hpp, sub_self])⟩, ⟨x - p x, (m₂ _).2 (by rw [map_sub, hpp, sub_self])⟩) left_inv := fun z => Prod.ext (Subtype.ext (k₁ z)) (Subtype.ext (by show (z.1 : G) + z.2 - p ((z.1 : G) + z.2) = z.2`. Rewrite using `[k₁, add_sub_cancel_left]))`.
+
+Use `right_inv := fun x => add_sub_cancel _ _`. Use the proof step `map_add' := fun z w => by`. Simplify using `only [Prod.fst_add, Prod.snd_add, AddSubgroup.coe_add]`. Normalize the expressions using the abelian group laws. Use `continuous_toFun := by fun_prop`.
+
+Use `continuous_invFun := (hp.subtype_mk _).prodMk ((continuous_id.sub hp).subtype_mk _) }`. Set `ν : Measure (H₁ × H₂)` to `(Measure.addHaar : Measure H₁).prod (Measure.addHaar : Measure H₂)`. Use `haveI : ν.IsAddHaarMeasure := Measure.prod.instIsAddHaarMeasure _ _`. Use `⟨ν.map e, e.isAddHaarMeasure_map ν, fun a => ∫ x : H₁, a x ∂Measure.addHaar, fun b => ∫ x : H₂, b x ∂Measure.addHaar, fun a b => ?_⟩` and prove the remaining obligations. Use `integral_map_equiv (μ := ν) e.toHomeomorph.toMeasurableEquiv (fun x => a (p x) * b (x - p x))` as an intermediate fact.
+
+Use `this.trans ?_` and prove the remaining obligations. Rewrite using `[← integral_prod_mul]`. Use `integral_congr_ae (Filter.Eventually.of_forall fun z => ?_)` and prove the remaining obligations. Use `show a (p ((z.1 : G) + z.2)) * b ((z.1 : G) + z.2 - p ((z.1 : G) + z.2)) = _`. Rewrite using `[k₁, add_sub_cancel_left]`.
+-/
 theorem exists_haar_factor {G : Type} [AddCommGroup G] [TopologicalSpace G] [IsTopologicalAddGroup G]
     [LocallyCompactSpace G] [SecondCountableTopology G] [T2Space G] [MeasurableSpace G] [BorelSpace G]
     (p : G →+ G) (hp : Continuous p) (hpp : ∀ x, p (p x) = p x) :
@@ -57,6 +70,15 @@ theorem exists_haar_factor {G : Type} [AddCommGroup G] [TopologicalSpace G] [IsT
   show a (p ((z.1 : G) + z.2)) * b ((z.1 : G) + z.2 - p ((z.1 : G) + z.2)) = _
   rw [k₁, add_sub_cancel_left]
 
+/- English proof (translation)
+Establish `h0 : ∀ x, Ψ x * conj (Ψ x) = Φ x * conj (Φ x)` using `fun x => by simpa using h x 0 (map_zero p)`. Distinguish the cases in `hz : Ψ = 0`. Conclude with `⟨0, by rw [hz, zero_smul]⟩`. Take `⟨x₀, hx₀⟩` from `Function.ne_iff.1 hz`. Establish `hx₀' : Ψ x₀ ≠ 0` using `hx₀`.
+
+Establish `hv : v (x₀ - p x₀) ≠ 0` using `fun hv => hx₀' (by rw [hΨ, hv, mul_zero])`. Use `⟨conj (Φ x₀) / conj (Ψ x₀), funext fun x => ?_⟩` and prove the remaining obligations. Establish `h1` using `h x₀ (p x - p x₀) (by rw [map_sub, hpp, hpp])`. Establish `e1 : p (x₀ + (p x - p x₀)) = p x` using `by rw [map_add, map_sub, hpp, hpp, add_sub_cancel]`. Establish `e2 : x₀ + (p x - p x₀) - p x = x₀ - p x₀` using `by abel`.
+
+Rewrite `h1` using `[hΨ (x₀ + _), hΦ (x₀ + _), e1, e2]`. Establish `h2` using `congrArg conj h1`. Simplify using `only [map_mul, Complex.conj_conj] at h2`. Establish `h3 : conj (Ψ x₀) * b (p x) = conj (Φ x₀) * a (p x)` using `mul_right_cancel₀ hv (by linear_combination h2)`. Establish `hc : conj (Ψ x₀) ≠ 0` using `by simpa using hx₀'`.
+
+Rewrite using `[Pi.smul_apply, smul_eq_mul, hΨ x, hΦ x]`. Clear the denominators using the available nonvanishing facts. Take the linear combination `v (x - p x) * h3`.
+-/
 theorem proportional {G : Type} [AddCommGroup G] (p : G →+ G) (hpp : ∀ x, p (p x) = p x) (a b v Φ Ψ : G → ℂ)
     (hΦ : ∀ x, Φ x = a (p x) * v (x - p x)) (hΨ : ∀ x, Ψ x = b (p x) * v (x - p x))
     (h : ∀ x x₁, p x₁ = x₁ → Ψ x * conj (Ψ (x + x₁)) = Φ x * conj (Φ (x + x₁))) : ∃ c : ℂ, Ψ = c • Φ := by
@@ -80,6 +102,31 @@ theorem proportional {G : Type} [AddCommGroup G] (p : G →+ G) (hpp : ∀ x, p 
   field_simp
   linear_combination v (x - p x) * h3
 
+/- English proof (translation)
+Set `p : (κ → R) →+ (κ → R)` to `DistribSMul.toAddMonoidHom (κ → R) e`. Establish `hp : ∀ x, p x = e • x` using `fun x => rfl`. Establish `hee : ∀ x : κ → R, e • e • x = e • x` using `fun x => by rw [smul_smul, he]`. Take `⟨μ, hμ, I, J, hIJ⟩` from `exists_haar_factor p (continuous_const_smul e) hee`. Simplify using `only [hp] at hIJ`.
+
+Establish `hψ0 : ∀ x, ψ x ≠ 0` using `fun x hx => by simpa [hx] using hψn x`. Establish `hint : ∀ Θ : (κ → R) → ℂ, Continuous Θ → (∃ C, ∀ x, ‖Θ x‖ ≤ C) → Integrable Θ μ → ∀ x₁, Continuous (fun x => Θ x * conj (Θ (x + x₁))) ∧ Integrable (fun x => Θ x * conj (Θ (x + x₁))) μ`. Introduce `Θ hc ⟨C, hC⟩ hi x₁`. Establish `hc' : Continuous fun x => conj (Θ (x + x₁))` using `Complex.continuous_conj.comp (hc.comp (continuous_id.add continuous_const))`. Conclude with `⟨hc.mul hc', hi.mul_bdd hc'.aestronglyMeasurable (Filter.Eventually.of_forall fun x => by rw [RCLike.norm_conj]; exact hC _)⟩`.
+
+Establish `hfac : ∀ (c Θ : (κ → R) → ℂ), (∀ x, Θ x = c (e • x) * v (x - e • x)) → ∀ x₁ y : κ → R, e • x₁ = x₁ → (∫ x, conj (ψ (x ⬝ᵥ y)) * (Θ x * conj (Θ (x + x₁))) ∂μ = I (fun z => conj (ψ (z ⬝ᵥ (e • y))) * (c z * conj (c (z + x₁)))) * J (fun z => conj (ψ (z ⬝ᵥ y)) * (v z * conj (v z)))) ∧ …`. Introduce `c Θ hΘ x₁ y hx₁`. Establish `e1 : ∀ x, Θ (x + x₁) = c (e • x + x₁) * v (x - e • x)` using `fun x => by`. Rewrite using `[hΘ, smul_add, hx₁, add_sub_add_right_eq_sub]`. Establish `e2 : ∀ x : κ → R, (e • x) ⬝ᵥ (e • y) = x ⬝ᵥ (e • y)` using `fun x => by`.
+
+Rewrite using `[smul_dotProduct, ← dotProduct_smul, hee]`. Establish `e3 : ∀ x : κ → R, x ⬝ᵥ y = x ⬝ᵥ (e • y) + (x - e • x) ⬝ᵥ y` using `fun x => by`. Rewrite using `[sub_dotProduct, smul_dotProduct, dotProduct_smul, add_sub_cancel]`. Prove the components needed by the constructor for the conclusion. Rewrite using `[← hIJ]`.
+
+Use `integral_congr_ae (Filter.Eventually.of_forall fun x => ?_)` and prove the remaining obligations. Use `beta_reduce`. Rewrite using `[e1, hΘ x, e2, e3 x, AddChar.map_add_eq_mul]`. Simplify using `only [map_mul]`. Expand and normalize the polynomial expressions, which then agree.
+
+Rewrite using `[← hIJ, ← integral_const_mul]`. Use `integral_congr_ae (Filter.Eventually.of_forall fun x => ?_)` and prove the remaining obligations. Simplify using `only [schr]`. Rewrite using `[e1, hΘ x, e2, AddChar.map_add_eq_mul]`. Simplify using `only [map_mul]`.
+
+Expand and normalize the polynomial expressions, which then agree. Distinguish the cases in `hJ : J (fun z => v z * conj (v z)) = 0`. Establish `h1` using `(hfac b Ψ hΨ 0 0 (smul_zero e)).2`. Rewrite `h1` using `[hJ, mul_zero, mul_zero]`. Simplify using `only [schr, smul_zero, dotProduct_zero, mul_zero, add_zero, AddChar.map_zero_eq_one, one_mul, Complex.mul_conj] at h1`.
+
+Rewrite `h1` using `[integral_complex_ofReal, Complex.ofReal_eq_zero]`. Establish `hi : Integrable (fun x => Complex.normSq (Ψ x)) μ`. Use `(hint Ψ cΨ bΨ (iΨ μ hμ) 0).2.re` as an intermediate fact. Simplify `this` using `[Complex.mul_conj]`. Establish `h2` using `(integral_eq_zero_iff_of_nonneg (fun x => Complex.normSq_nonneg (Ψ x)) hi).1 h1`.
+
+Establish `h3` using `(Continuous.ae_eq_iff_eq μ (Complex.continuous_normSq.comp cΨ) continuous_const).1 h2`. Use `⟨0, funext fun x => ?_⟩` and prove the remaining obligations. Rewrite using `[zero_smul]`. Conclude with `Complex.normSq_eq_zero.1 (congrFun h3 x)`. Use `proportional p hee a b v Φ Ψ hΦ hΨ fun x x₁ hx₁ => ?_` and prove the remaining obligations.
+
+Establish `hx₁' : e • x₁ = x₁` using `hx₁`. Take `⟨c1, i1⟩` from `hint Φ cΦ bΦ (iΦ μ hμ) x₁`. Take `⟨c2, i2⟩` from `hint Ψ cΨ bΨ (iΨ μ hμ) x₁`. Establish `hχc : ∀ y : κ → R, Continuous fun x : κ → R => conj (ψ (x ⬝ᵥ y))` using `fun y => Complex.continuous_conj.comp (hψc.comp (continuous_id.dotProduct continuous_const))`. Establish `hχn : ∀ y x : κ → R, ‖conj (ψ (x ⬝ᵥ y))‖ = 1` using `fun y x => by rw [RCLike.norm_conj, hψn]`.
+
+Establish `key` using `GlobalTheory.CharFourierInj.eq_zero (fun (y x : κ → R) => conj (ψ (x ⬝ᵥ y))) hχc (fun y x x' => by simp only [add_dotProduct, AddChar.map_add_eq_mul, map_mul]) (fun y y' x => by simp only [dotProduct_add, AddChar.map_add_eq_mul, map_mul]) (fun x => by simp) hχn (fun x hx => funex …`. Use `congrArg conj (hx (Pi.single i t))` as an intermediate fact. Simplify using `using this)`. Use `μ (fun x => Ψ x * conj (Ψ (x + x₁)) - Φ x * conj (Φ (x + x₁))) (c2.sub c1) (i2.sub i1) (fun y => by`. Simplify using `only [mul_sub]`.
+
+Rewrite using `[integral_sub (i2.bdd_mul (hχc y).aestronglyMeasurable (Filter.Eventually.of_forall fun x => (hχn y x).le)) (i1.bdd_mul (hχc y).aestronglyMeasurable (Filter.Eventually.of_forall fun x => (hχn y x).le)), (hfac a Φ hΦ x₁ y hx₁').1, (hfac b Ψ hΨ x₁ y hx₁').1]`. Establish `h1` using `h x₁ (e • y) hx₁' (hee y) μ hμ`. Rewrite `h1` using `[(hfac a Φ hΦ x₁ y hx₁').2, (hfac b Ψ hΨ x₁ y hx₁').2]`. Rewrite using `[mul_right_cancel₀ hJ (mul_left_cancel₀ (by simpa using hψ0 _) h1), sub_self])`. Conclude with `sub_eq_zero.1 (congrFun key x)`.
+-/
 theorem proportional_of_coeff {R : Type} [CommRing R] [Invertible (2 : R)] [TopologicalSpace R] [IsTopologicalRing R]
     [LocallyCompactSpace R] [SecondCountableTopology R] [T2Space R] {κ : Type} [Fintype κ]
     [MeasurableSpace (κ → R)] [BorelSpace (κ → R)] (ψ : AddChar R ℂ) (hψc : Continuous ψ) (hψn : ∀ x, ‖ψ x‖ = 1)
@@ -174,6 +221,15 @@ theorem proportional_of_coeff {R : Type} [CommRing R] [Invertible (2 : R)] [Topo
 
 variable {F : Type} [Field F] [NumberField F]
 
+/- English proof (translation)
+Use `haveI := GlobalTheory.AdelicUnitaryTop.locallyCompact_adele F`. Use `haveI := GlobalTheory.AdelicUnitaryTop.secondCountable_adele F`. Use `haveI := GlobalTheory.AdelicUnitaryTop.t2Space_adeleRing_numberField F`. Use `haveI : BorelSpace (AF F) := ⟨rfl⟩`. Set `j : Fin (Fintype.card κ) ≃ κ` to `(Fintype.equivFin κ).symm`.
+
+Set `r : (κ → AF F) ≃ₜ+ (Fin (Fintype.card κ) → AF F)` to `{ toFun := fun x => x ∘ j invFun := fun y => y ∘ j.symm left_inv := fun x => funext fun i => by simp right_inv := fun y => funext fun i => by simp map_add' := fun _ _ => rfl continuous_toFun := continuous_pi fun i => continuous_apply _ continuous_invFun := continuous_pi fun i => …`. Establish `hd` using `GlobalTheory.SchwartzDecay.decay_of_mem_schA F _ _ (GlobalTheory.RestrSchA.mem_schA_comp_extend F j j.injective Φ hΦ)`. Use `set Φ' := fun y : Fin (Fintype.card κ) → AF F => Φ (Function.extend j y 0) with hΦ'`. Establish `e : Φ = Φ' ∘ r` using `funext fun x => by show Φ x = Φ (Function.extend j (x ∘ j) 0)`. Use `congr 1`.
+
+Use function extensionality and compare the values at `i`. Take `⟨k, rfl⟩` from `j.surjective i`. Rewrite using `[j.injective.extend_apply]`. Both sides reduce to the same expression. Use `⟨e ▸ hd.1.comp r.continuous, ?_, fun μ hμ => ?_⟩` and prove the remaining obligations.
+
+Take `⟨C, hC⟩` from `hd.2.2 0`. Conclude with `⟨C, fun x => by rw [e]; simpa using hC (r x)⟩`. Establish `hi` using `(GlobalTheory.decay_integrable_periodise F _ hF Φ' hd).1 (μ.map r) (r.isAddHaarMeasure_map μ)`. Rewrite using `[e]`. Conclude with `hi.comp_measurable r.continuous.measurable`.
+-/
 theorem schA_facts (hF : IsTotallyReal F) {κ : Type} [Fintype κ] [MeasurableSpace (κ → AF F)] [BorelSpace (κ → AF F)]
     {Φ : (κ → AF F) → ℂ} (hΦ : Φ ∈ schA F κ) : Continuous Φ ∧ (∃ C, ∀ x, ‖Φ x‖ ≤ C) ∧
       ∀ μ : Measure (κ → AF F), μ.IsAddHaarMeasure → Integrable Φ μ := by
@@ -211,12 +267,20 @@ def infOne : AF F := ((1 : InfiniteAdeleRing F), (0 : FiniteAdeleRing (𝓞 F) F
 def idem (S : Finset (Pl F)) : AF F :=
   infOne + ∑ w ∈ S, GlobalTheory.LatVac.liftV w 1
 
+/- English proof (translation)
+Establish `h0 : fstA F (infOne (F` using `F)) = 1 := rfl`. Establish `hl : ∀ w : Pl F, fstA F (GlobalTheory.LatVac.liftV w 1) = 0` using `fun w => rfl`. Rewrite using `[idem, map_add, map_sum, h0, Finset.sum_eq_zero fun w _ => hl w, add_zero]`.
+-/
 theorem fstA_idem (S : Finset (Pl F)) : fstA F (idem S) = 1 := by
   have h0 : fstA F (infOne (F := F)) = 1 := rfl
   have hl : ∀ w : Pl F, fstA F (GlobalTheory.LatVac.liftV w 1) = 0 := fun w => rfl
   rw [idem, map_add, map_sum, h0, Finset.sum_eq_zero fun w _ => hl w, add_zero]
 
 open Classical in
+/- English proof (translation)
+Establish `h0 : evFin F w (infOne (F` using `F)) = 0 := map_zero (evalV F w)`. Establish `hs : ∑ x ∈ S, evFin F w (GlobalTheory.LatVac.liftV x 1) = ∑ x ∈ S, if w = x then (1 : Fv F w) else 0`. Use `Finset.sum_congr rfl fun x _ => ?_` and prove the remaining obligations. Distinguish the cases in `hx : w = x`. Substitute `hx` using the available equality.
+
+Rewrite using `[if_pos rfl, GlobalTheory.LatVac.evFin_liftV]`. Rewrite using `[if_neg hx]`. Conclude with `evalV_singleFin_ne hx _`. Rewrite using `[idem, map_add, map_sum, h0, hs, Finset.sum_ite_eq S w (fun _ => (1 : Fv F w)), zero_add]`.
+-/
 theorem evFin_idem (S : Finset (Pl F)) (w : Pl F) : evFin F w (idem S) = if w ∈ S then 1 else 0 := by
   have h0 : evFin F w (infOne (F := F)) = 0 :=
     map_zero (evalV F w)
@@ -227,11 +291,19 @@ theorem evFin_idem (S : Finset (Pl F)) (w : Pl F) : evFin F w (idem S) = if w �
     · rw [if_neg hx]; exact evalV_singleFin_ne hx _
   rw [idem, map_add, map_sum, h0, hs, Finset.sum_ite_eq S w (fun _ => (1 : Fv F w)), zero_add]
 
+/- English proof (translation)
+Express the relevant statement in the definitionally equal form `InfiniteAdeleRing.ringEquiv_mixedSpace F (fstA F (idem S * t)) = InfiniteAdeleRing.ringEquiv_mixedSpace F (fstA F t)`. Rewrite using `[map_mul (fstA F), fstA_idem, one_mul]`.
+-/
 theorem evI_idem_mul (S : Finset (Pl F)) (t : AF F) : evI F (idem S * t) = evI F t := by
   change InfiniteAdeleRing.ringEquiv_mixedSpace F (fstA F (idem S * t)) =
     InfiniteAdeleRing.ringEquiv_mixedSpace F (fstA F t)
   rw [map_mul (fstA F), fstA_idem, one_mul]
 
+/- English proof (translation)
+Establish `h3 : fstA F t = 0` using `(InfiniteAdeleRing.ringEquiv_mixedSpace F).injective (by rw [map_zero]; exact h1)`. Use `Prod.ext ?_ (RestrictedProduct.ext _ _ fun w => ?_)` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `fstA F (t * idem S) = 0`. Rewrite using `[map_mul, h3, zero_mul]`. Express the relevant statement in the definitionally equal form `evFin F w (t * idem S) = 0`.
+
+Rewrite using `[map_mul, evFin_idem]`. Use `split_ifs with hw`. Rewrite using `[h2 w hw, zero_mul]`. Rewrite using `[mul_zero]`.
+-/
 theorem mul_idem_eq_zero (S : Finset (Pl F)) (t : AF F) (h1 : evI F t = 0) (h2 : ∀ w ∈ S, evFin F w t = 0) :
     t * idem S = 0 := by
   classical
@@ -245,6 +317,11 @@ theorem mul_idem_eq_zero (S : Finset (Pl F)) (t : AF F) (h1 : evI F t = 0) (h2 :
     · rw [h2 w hw, zero_mul]
     · rw [mul_zero]
 
+/- English proof (translation)
+Use `mul_idem_eq_zero S (1 - idem S) (by` as an intermediate fact. Express the relevant statement in the definitionally equal form `InfiniteAdeleRing.ringEquiv_mixedSpace F (fstA F (1 - idem S)) = 0`. Rewrite using `[map_sub (fstA F), map_one, fstA_idem, sub_self, map_zero]) (fun w hw => by`. Rewrite using `[map_sub, map_one, evFin_idem, if_pos hw, sub_self])`. Rewrite `this` using `[sub_mul, one_mul, sub_eq_zero]`.
+
+Conclude with `this.symm`.
+-/
 theorem idem_mul_idem (S : Finset (Pl F)) : idem S * idem S = idem S := by
   classical
   have := mul_idem_eq_zero S (1 - idem S) (by
@@ -256,6 +333,21 @@ theorem idem_mul_idem (S : Finset (Pl F)) : idem S * idem S = idem S := by
 
 open Classical in
 
+/- English proof (translation)
+Establish `e1 : ∏ w ∈ S, φ w (fun i => evFin F w ((idem S • x) i)) = ∏ᶠ w, if w ∈ S then φ w (fun i => evFin F w (x i)) else 1`. Rewrite using `[finprod_eq_prod_of_mulSupport_subset (s := S) _ (fun w hw => by`. Assume the negation of the conclusion as `h`. Conclude with `hw (if_neg h))]`. Use `Finset.prod_congr rfl fun w hw => ?_` and prove the remaining obligations.
+
+Rewrite using `[if_pos hw]`. Use `congr 1`. Use function extensionality and compare the values at `i`. Rewrite using `[Pi.smul_apply, smul_eq_mul, map_mul, evFin_idem, if_pos hw, one_mul]`. Establish `e2 : (∏ᶠ w, if w ∈ S then (1 : ℂ) else ω w fun i => evFin F w ((x - idem S • x) i)) = ∏ᶠ w, if w ∈ S then (1 : ℂ) else ω w fun i => evFin F w (x i)`.
+
+Use `finprod_congr fun w => ?_` and prove the remaining obligations. Use `split_ifs with hw`. Both sides reduce to the same expression. Use `congr 1`. Use function extensionality and compare the values at `i`.
+
+Rewrite using `[Pi.sub_apply, Pi.smul_apply, smul_eq_mul, map_sub, map_mul, evFin_idem, if_neg hw, zero_mul, sub_zero]`. Simplify using `only [GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.pure]`. Rewrite using `[e1, e2, mul_assoc, ← finprod_mul_distrib]`. Use `congr 1`. Simplify using `only [Pi.smul_apply, smul_eq_mul, evI_idem_mul]`.
+
+Use `finprod_congr fun w => ?_ split_ifs with hw` and prove the remaining obligations. Rewrite using `[mul_one]`. Rewrite using `[one_mul, hφ w hw]`. Conclude with `S.finite_toSet.subset fun w hw => by`. Assume the negation of the conclusion as `h`.
+
+Conclude with `hw (if_neg h)`. Conclude with `(GlobalTheory.PureFactor.mulSupport_finite ω hω x).subset fun w hw => by`. Introduce `h`. Apply `hw` to reduce the goal to its premises. Use `beta_reduce at h ⊢`.
+
+Rewrite using `[h, ite_self]`.
+-/
 theorem pure_split {κ : Type} [Fintype κ] (S : Finset (Pl F)) (f : SInf F κ) (φ ω : ∀ w : Pl F, (κ → Fv F w) → ℂ)
     (hω : ∀ᶠ w in Filter.cofinite, ω w = Set.indicator {x | ∀ i, x i ∈ w.adicCompletionIntegers F} 1)
     (hφ : ∀ w, w ∉ S → φ w = ω w) (x : κ → AF F) :
@@ -296,6 +388,15 @@ theorem pure_split {κ : Type} [Fintype κ] (S : Finset (Pl F)) (f : SInf F κ) 
       beta_reduce at h ⊢
       rw [h, ite_self]
 
+/- English proof (translation)
+Introduce `_ F E _ _ _ _ _ σ B a a' G X om om' hT S f φ hSB hvac m f' φ' hSB' hvac' h`. Use `letI : MeasurableSpace (Fin a' × Fin (a + a') → AF F) := borel _`. Use `haveI : BorelSpace (Fin a' × Fin (a + a') → AF F) := ⟨rfl⟩`. Use `haveI := GlobalTheory.AdelicUnitaryTop.locallyCompact_adele F`. Use `haveI := GlobalTheory.AdelicUnitaryTop.secondCountable_adele F`.
+
+Use `haveI := GlobalTheory.AdelicUnitaryTop.t2Space_adeleRing_numberField F`. Establish `hF : IsTotallyReal F` using `hT.base.cm.1`. Establish `hψ` using `GlobalTheory.StdCharFromIsStd.isCharAF hT.base.std`. Establish `hω` using `hT.geo.hM'.std`. Establish `hmem : ∀ (g : SInf F (Fin a' × Fin (a + a'))) (χ : ∀ w : Pl F, (Fin a' × Fin (a + a') → Fv F w) → ℂ), (∀ w, χ w ∈ SB (Fin a' × Fin (a + a') → Fv F w)) → (∀ w, w ∉ S → χ w = G.M'.vac w) → pure g χ ∈ schA F (Fin a' × Fin (a + a'))` using `fun g χ h1 h2 => GlobalTheory.TensUniq.pure_mem_schA g χ h1 (by filter_upwards [hω, S.finite_toSet.compl_mem_cofinite] with v hv hvS`.
+
+Rewrite using `[h2 v hvS, hv])`. Take `⟨c1, b1, i1⟩` from `schA_facts hF (hmem f φ hSB hvac)`. Take `⟨c2, b2, i2⟩` from `schA_facts hF (Submodule.sum_mem _ fun i (_ : i ∈ Finset.univ) => hmem (f' i) (φ' i) (hSB' i) (hvac' i))`. Use `proportional_of_coeff B.ψ hψ.1 hψ.2.1 (GlobalTheory.SWQ.Annihilator.self_annihilator F hF B.ψ hψ).1 (idem S) (idem_mul_idem S) (fun z => f (fun i => evI F (z i)) * ∏ w ∈ S, φ w fun i => evFin F w (z i)) (fun z => ∑ k, f' k (fun i => evI F (z i)) * ∏ w ∈ S, φ' k w fun i => evFin F …` and prove the remaining obligations. Rewrite using `[Finset.sum_apply, Finset.sum_mul]`.
+
+Conclude with `Finset.sum_congr rfl fun k _ => pure_split S (f' k) (φ' k) G.M'.vac hω (hvac' k) x`. Use `h (G.M'.co.e.symm (x₁, y₁)) (fun t h1 h2 => by` as an intermediate fact. Rewrite using `[← hx, ← hy, ← Prod.smul_mk, ← map_smul, smul_smul, mul_idem_eq_zero S t h1 h2, zero_smul, map_zero]) μ hμ`. Simplify `this` using `only [Darboux.rho, LinearEquiv.apply_symm_apply]`.
+-/
 theorem scalar_of_coeff : GlobalTheory.FunPr.Hypotheses₂ → ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E)
     (a a' : ℕ) (G : Geo σ a a') (X : Chars F E) (om : Rep σ G.V G.W) (om' : Rep σ G.V' G.W), IsTriple B G X om om' →
     ∀ (S : Finset (Pl F)) (f : SInf F (Fin a' × Fin (a + a'))) (φ : ∀ w : Pl F, (Fin a' × Fin (a + a') → Fv F w) → ℂ),

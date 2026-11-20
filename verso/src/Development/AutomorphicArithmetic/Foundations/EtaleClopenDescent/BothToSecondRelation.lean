@@ -91,6 +91,9 @@ def RF.subι (X : RF) (P : ∀ {A : Type} [CommRing A], X.obj A → Prop)
   app _ _ x := x.1
   nat _ _ := rfl
 
+/- English proof (translation)
+Introduce `h` and use `h`.
+-/
 theorem RF.subι_rel (X : RF) (P : ∀ {A : Type} [CommRing A], X.obj A → Prop)
     (hP : ∀ {A B : Type} [CommRing A] [CommRing B] (f : A →+* B) {x : X.obj A}, P x → P (X.map f x)) :
     (X.subι P hP).Rel := fun h => h
@@ -127,6 +130,9 @@ def P2 {d : ℕ} {A : Type} [CommRing A] (x : (Vec D (d + 1)).obj A) : Prop :=
 
 def P1 {d : ℕ} {A : Type} [CommRing A] (x : (Vec D (d + 1)).obj A) : Prop := IsUnit (x.1.2 (Fin.last d))
 
+/- English proof (translation)
+Establish `: (Set.range fun j : Fin d => ((Vec D (d + 1)).map f x).1.2 j.castSucc) = f '' (Set.range fun j : Fin d => x.1.2 j.castSucc)`. Rewrite using `[← Set.range_comp]`. Both sides reduce to the same expression. Rewrite using `[P2, this, ← Ideal.map_span, h, Ideal.map_top]`.
+-/
 theorem second_property_map {d : ℕ} {A B : Type} [CommRing A] [CommRing B] (f : A →+* B) {x : (Vec D (d + 1)).obj A} (h : P2 x) :
     P2 ((Vec D (d + 1)).map f x) := by
   have : (Set.range fun j : Fin d => ((Vec D (d + 1)).map f x).1.2 j.castSucc) =
@@ -134,6 +140,9 @@ theorem second_property_map {d : ℕ} {A B : Type} [CommRing A] [CommRing B] (f 
     rw [← Set.range_comp]; rfl
   rw [P2, this, ← Ideal.map_span, h, Ideal.map_top]
 
+/- English proof (translation)
+The claim follows from `h.map f`.
+-/
 theorem first_property_map {d : ℕ} {A B : Type} [CommRing A] [CommRing B] (f : A →+* B) {x : (Vec D (d + 1)).obj A} (h : P1 x) :
     P1 ((Vec D (d + 1)).map f x) := h.map f
 
@@ -145,6 +154,9 @@ abbrev L1 (d : ℕ) : RF := (Vec D (d + 1)).sub P1 first_property_map
 
 abbrev lift_levelP_alt₂ (d : ℕ) : RF := (Vec D (d + 1)).sub (fun x => P2 x ∧ P1 x) fun f _ h => ⟨second_property_map f h.1, first_property_map f h.2⟩
 
+/- English proof (translation)
+Rewrite using `[eq_top_iff, ← h]`. Use `Ideal.span_mono ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨j, rfl⟩`. Conclude with `⟨j.castSucc, by simp⟩`.
+-/
 theorem span_snoc {A : Type} [CommRing A] {N : ℕ} (v : Fin N → A) (w : A) (h : Ideal.span (Set.range v) = ⊤) :
     Ideal.span (Set.range (Fin.snoc (α := fun _ => A) v w)) = ⊤ := by
   rw [eq_top_iff, ← h]
@@ -152,6 +164,9 @@ theorem span_snoc {A : Type} [CommRing A] {N : ℕ} (v : Fin N → A) (w : A) (h
   rintro _ ⟨j, rfl⟩
   exact ⟨j.castSucc, by simp⟩
 
+/- English proof (translation)
+Use function extensionality and compare the values at `j`. Apply the tactic sequence `refine Fin.lastCases ?_ (fun j => ?_) j <;> simp`.
+-/
 theorem comp_snoc' {A B : Type} [CommRing A] [CommRing B] (f : A →+* B) {N : ℕ} (v : Fin N → A) (w : A) :
     f ∘ (Fin.snoc (α := fun _ => A) v w) = Fin.snoc (α := fun _ => B) (f ∘ v) (f w) := by
   funext j
@@ -175,6 +190,9 @@ def fstV (d : ℕ) : (L2 D d).Hom (Vec D d) where
 
 def lastInv {d : ℕ} {A : Type} [CommRing A] (x : (Vec D (d + 1)).obj A) : A := Ring.inverse (x.1.2 (Fin.last d))
 
+/- English proof (translation)
+Take `⟨u, rfl⟩` from `h`. Establish `h1 : f (u : A) = ((Units.map (f : A →* B) u : Bˣ) : B)` using `rfl`. Rewrite using `[Ring.inverse_unit, h1, Ring.inverse_unit]`. Both sides reduce to the same expression.
+-/
 theorem map_inverse {A B : Type} [CommRing A] [CommRing B] (f : A →+* B) {a : A} (h : IsUnit a) :
     f (Ring.inverse a) = Ring.inverse (f a) := by
   obtain ⟨u, rfl⟩ := h
@@ -182,6 +200,9 @@ theorem map_inverse {A B : Type} [CommRing A] [CommRing B] (f : A →+* B) {a : 
   rw [Ring.inverse_unit, h1, Ring.inverse_unit]
   rfl
 
+/- English proof (translation)
+The claim follows from `(map_inverse f h).symm`.
+-/
 theorem lastInv_map {d : ℕ} {A B : Type} [CommRing A] [CommRing B] (f : A →+* B) {x : (Vec D (d + 1)).obj A} (h : P1 x) :
     lastInv D ((Vec D (d + 1)).map f x) = f (lastInv D x) :=
   (map_inverse f h).symm
@@ -192,6 +213,11 @@ def ratio1 (d : ℕ) : (L1 D d).Hom (Aff D d) where
     change f (x.1.1.2 j.castSucc) * lastInv D ((Vec D (d + 1)).map f x.1) = f (x.1.1.2 j.castSucc * lastInv D x.1)
     rw [lastInv_map D f x.2, map_mul])
 
+/- English proof (translation)
+Rewrite using `[eq_top_iff, ← h]`. Use `Ideal.span_le.2 ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨j, rfl⟩`. Take `⟨u, rfl⟩` from `hc`. Establish `h1 : v j = ((u⁻¹ : Aˣ) : A) * (v j * u)`.
+
+Rewrite using `[mul_comm (v j), ← mul_assoc, Units.inv_mul, one_mul]`. Rewrite using `[h1]`. Conclude with `Ideal.mul_mem_left _ _ (Ideal.subset_span ⟨j, rfl⟩)`.
+-/
 theorem span_mul_unit {A : Type} [CommRing A] {N : ℕ} (v : Fin N → A) {c : A} (hc : IsUnit c)
     (h : Ideal.span (Set.range v) = ⊤) : Ideal.span (Set.range fun j => v j * c) = ⊤ := by
   rw [eq_top_iff, ← h]
@@ -203,6 +229,9 @@ theorem span_mul_unit {A : Type} [CommRing A] {N : ℕ} (v : Fin N → A) {c : A
   rw [h1]
   exact Ideal.mul_mem_left _ _ (Ideal.subset_span ⟨j, rfl⟩)
 
+/- English proof (translation)
+Take `⟨u, hu⟩` from `h`. Rewrite using `[lastInv, ← hu, Ring.inverse_unit]`. Conclude with `(u⁻¹).isUnit`.
+-/
 theorem isUnit_lastInv {d : ℕ} {A : Type} [CommRing A] {x : (Vec D (d + 1)).obj A} (h : P1 x) :
     IsUnit (lastInv D x) := by
   obtain ⟨u, hu⟩ := h
@@ -223,6 +252,11 @@ def bothToSecond (d : ℕ) : (lift_levelP_alt₂ D d).Hom (L2 D d) where
   app _ _ x := ⟨x.1, x.2.1⟩
   nat _ _ := rfl
 
+/- English proof (translation)
+Introduce `A _ x y h`. Take `⟨h1, u, h2⟩` from `h`. Use `⟨h1, u, funext fun j => ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `Fin.snoc (α := fun _ => A) x.1.2 0 j = (u : A) * Fin.snoc (α := fun _ => A) y.1.2 0 j`. Use `Fin.lastCases ?_ (fun j => ?_) j` and prove the remaining obligations.
+
+Simplify using the standard rewrite rules. Simplify using `[h2]`.
+-/
 theorem incl_rel (d : ℕ) : (incl D d).Rel := by
   intro A _ x y h
   obtain ⟨h1, u, h2⟩ := h
@@ -232,17 +266,34 @@ theorem incl_rel (d : ℕ) : (incl D d).Rel := by
   · simp
   · simp [h2]
 
+/- English proof (translation)
+Introduce `h` and use `incl_rel D d h`.
+-/
 theorem inclusion_two_relation (d : ℕ) : (incl2 D d).Rel := fun h => incl_rel D d h
 
+/- English proof (translation)
+Introduce `A _ x y h`. Take `⟨h1, u, h2⟩` from `h`. Conclude with `⟨h1, u, funext fun j => congrFun h2 j.castSucc⟩`.
+-/
 theorem fstV_rel (d : ℕ) : (fstV D d).Rel := by
   intro A _ x y h
   obtain ⟨h1, u, h2⟩ := h
   exact ⟨h1, u, funext fun j => congrFun h2 j.castSucc⟩
 
+/- English proof (translation)
+Introduce `h` and use `h`.
+-/
 theorem both_to_first_relation (d : ℕ) : (bothToFirst D d).Rel := fun h => h
 
+/- English proof (translation)
+Introduce `h` and use `h`.
+-/
 theorem both_to_second_relation (d : ℕ) : (bothToSecond D d).Rel := fun h => h
 
+/- English proof (translation)
+Introduce `A _ x y h`. Take `⟨h1, u, h2⟩` from `h`. Establish `hy : IsUnit (y.1.1.2 (Fin.last d))` using `y.2`. Establish `hx : x.1.1.2 (Fin.last d) = (u : A) * y.1.1.2 (Fin.last d)` using `congrFun h2 _`. Take `⟨w, hw⟩` from `hy`.
+
+Use `Prod.ext h1 (funext fun j => ?_)` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `x.1.1.2 j.castSucc * Ring.inverse (x.1.1.2 (Fin.last d)) = y.1.1.2 j.castSucc * Ring.inverse (y.1.1.2 (Fin.last d))`. Rewrite using `[hx, congrFun h2 j.castSucc, ← hw, ← Units.val_mul, Ring.inverse_unit, Ring.inverse_unit, mul_inv, Units.val_mul, mul_comm ((u⁻¹ : Aˣ) : A)]`. Simplify using `only [Units.val_mul, mul_assoc]`. Take the linear combination `((y.1.1.2 j.castSucc) * ((w⁻¹ : Aˣ) : A)) * Units.mul_inv u`.
+-/
 theorem ratio1_const (d : ℕ) : (ratio1 D d).Const := by
   intro A _ x y h
   obtain ⟨h1, u, h2⟩ := h
@@ -257,6 +308,9 @@ theorem ratio1_const (d : ℕ) : (ratio1 D d).Const := by
   simp only [Units.val_mul, mul_assoc]
   linear_combination ((y.1.1.2 j.castSucc) * ((w⁻¹ : Aˣ) : A)) * Units.mul_inv u
 
+/- English proof (translation)
+Introduce `A _ x y h`. Conclude with `Subtype.ext (ratio1_const D d (x := bothToFirst D d |>.app A x) (y := bothToFirst D d |>.app A y) h)`.
+-/
 theorem ratio_both_constant (d : ℕ) : (ratioBoth D d).Const := by
   intro A _ x y h
   exact Subtype.ext (ratio1_const D d (x := bothToFirst D d |>.app A x) (y := bothToFirst D d |>.app A y) h)
@@ -271,6 +325,9 @@ def sec1 (d : ℕ) : (Aff D d).Hom (L1 D d) where
 def specOf {B : Type} [CommRing B] {T : Scheme.{0}} (ψ : B →+* Γ(T, ⊤)) : T ⟶ Spec (CommRingCat.of B) :=
   T.toSpecΓ ≫ Spec.map (CommRingCat.ofHom ψ)
 
+/- English proof (translation)
+Rewrite using `[specOf, specOf, ← Category.assoc, Scheme.toSpecΓ_naturality, Category.assoc, ← Spec.map_comp]`. Both sides reduce to the same expression.
+-/
 theorem comp_specOf {B : Type} [CommRing B] {T T' : Scheme.{0}} (f : T' ⟶ T) (ψ : B →+* Γ(T, ⊤)) :
     f ≫ specOf ψ = specOf (f.appTop.hom.comp ψ) := by
   rw [specOf, specOf, ← Category.assoc, Scheme.toSpecΓ_naturality, Category.assoc, ← Spec.map_comp]
@@ -281,6 +338,9 @@ variable {D} in
 def ringOf {N : ℕ} {A : Type} [CommRing A] (x : (Aff D N).obj A) : MvPolynomial (Fin N) D →+* A :=
   MvPolynomial.eval₂Hom x.1 x.2
 
+/- English proof (translation)
+Use `MvPolynomial.ringHom_ext (fun c => ?_) (fun j => ?_)` and prove the remaining obligations. Simplify using `[ringOf, Aff]`. Simplify using `[ringOf, Aff]`.
+-/
 theorem ringOf_map {N : ℕ} {A B : Type} [CommRing A] [CommRing B] (f : A →+* B) (x : (Aff D N).obj A) :
     ringOf ((Aff D N).map f x) = f.comp (ringOf x) := by
   refine MvPolynomial.ringHom_ext (fun c => ?_) (fun j => ?_)
@@ -299,6 +359,11 @@ section Formal
 open LateralTheory.E.t_E6Cut
 variable {R : Type} [CommRing R] (F : Shv R)
 
+/- English proof (translation)
+Introduce `n`. Establish `hl : Function.LeftInverse (pull R s F n) (pull R p F n)` using `fun x => by`. Rewrite using `[← pull_comp, h, pull_id]`. Use `(Function.bijective_iff_has_inverse).2 ⟨pull R p F n, ?_, hl⟩` and prove the remaining obligations. Conclude with `fun y => by`.
+
+Take `⟨x, rfl⟩` from `(hp n).2 y`. Rewrite using `[hl x]`.
+-/
 theorem eqv_section {E E' : Spc} (s : E ⟶ E') (p : E' ⟶ E) (h : s ≫ p = 𝟙 E) (hp : Eqv R p F) : Eqv R s F := by
   intro n
   have hl : Function.LeftInverse (pull R s F n) (pull R p F n) := fun x => by
@@ -308,6 +373,13 @@ theorem eqv_section {E E' : Spc} (s : E ⟶ E') (p : E' ⟶ E) (h : s ≫ p = �
     obtain ⟨x, rfl⟩ := (hp n).2 y
     rw [hl x]
 
+/- English proof (translation)
+Establish `key : ∀ n, (pull R f F n ∘ pull R v F n) = pull R u F n ∘ pull R f' F n` using `fun n => by`. Use function extensionality and compare the values at `x`. Simplify using `only [Function.comp]`. Rewrite using `[← pull_comp, ← pull_comp, h]`. Establish `hb : ∀ n, Function.Bijective (pull R f F n) ↔ Function.Bijective (pull R f' F n)` using `fun n => by`.
+
+Rewrite using `[← Function.Bijective.of_comp_iff (pull R f F n) (hv n), key n, Function.Bijective.of_comp_iff' (hu n)]`. Establish `hi : ∀ n, Function.Injective (pull R f F n) ↔ Function.Injective (pull R f' F n)` using `fun n => by`. Rewrite using `[← Function.Injective.of_comp_iff' (pull R f F n) (hv n), key n, Function.Injective.of_comp_iff (hu n).1]`. Prove the components needed by the constructor for the conclusion. Introduce `hc n`.
+
+Conclude with `⟨fun h' => (hb n).1 ((hc n).1 h'), fun h' => (hi n).1 ((hc n).2 h')⟩`. Introduce `hc n`. Conclude with `⟨fun h' => (hb n).2 ((hc n).1 h'), fun h' => (hi n).2 ((hc n).2 h')⟩`.
+-/
 theorem conn_sq (c : ℤ) {A B A' B' : Spc} (f : A ⟶ B) (f' : A' ⟶ B') (u : A ⟶ A') (v : B ⟶ B') (h : f ≫ v = u ≫ f')
     (hu : Eqv R u F) (hv : Eqv R v F) : Conn R F c f ↔ Conn R F c f' := by
   have key : ∀ n, (pull R f F n ∘ pull R v F n) = pull R u F n ∘ pull R f' F n := fun n => by

@@ -23,6 +23,9 @@ variable {G : Type} [Group G] {Qp K₀ K K₀' K' : Type} [Field Qp] [Field K₀
     {V : Type} [AddCommGroup V] [Module LL V] [Module Qp V] [IsScalarTower Qp LL V]
     {V' : Type} [AddCommGroup V'] [Module LL V'] [Module Qp V'] [IsScalarTower Qp LL V']
 
+/- English proof (translation)
+Unfold `actVB`. Rewrite using `[SumJumps.ext1_comm f (σ g) (σ' g) (hf g)]`.
+-/
 theorem linearMap_tensorOne_comm_diagonalAction {H : Type} [Group H] {K₁ K₂ : Type} [Field K₁] [Field K₂]
     [Algebra Qp K₁] [Algebra Qp K₂] [Algebra K₁ K₂] [IsScalarTower Qp K₁ K₂]
     [Algebra K₁ B] [IsScalarTower Qp K₁ B]
@@ -34,6 +37,11 @@ theorem linearMap_tensorOne_comm_diagonalAction {H : Type} [Group H] {K₁ K₂ 
   unfold actVB
   rw [SumJumps.ext1_comm f (σ g) (σ' g) (hf g)]
 
+/- English proof (translation)
+Apply `le_antisymm` to reduce the goal to its premises. Introduce `x hx`. Use `⟨_, a x hx, ?_⟩` and prove the remaining obligations. Rewrite using `[SumJumps.ext1_comp_ext1]`. Use `SumJumps.ext1_id (LL := LL) x` and compare the differences between its conclusion and the goal.
+
+Use extensionality with `v`. Simplify using the standard rewrite rules. Introduce and unpack `_ ⟨y, hy, rfl⟩`. Conclude with `b y hy`.
+-/
 theorem eq_map_of_equiv_tensor (e : V ≃ₗ[LL] V')
     (S : Submodule LL (V ⊗[Qp] B)) (S' : Submodule LL (V' ⊗[Qp] B))
     (a : ∀ x ∈ S, SumJumps.ext1 Qp B e.toLinearMap x ∈ S')
@@ -50,10 +58,16 @@ theorem eq_map_of_equiv_tensor (e : V ≃ₗ[LL] V')
 
 variable {ρ : Representation LL G V} {ρ' : Representation LL G V'}
 
+/- English proof (translation)
+The claim follows from `SumJumps.dcris_map PC.PD' (ρ := PC.resH ρ) (ρ' := PC.resH ρ') f (fun h v => hf (h : G) v)`.
+-/
 theorem dpcris_map (f : V →ₗ[LL] V') (hf : ∀ g v, f (ρ g v) = ρ' g (f v)) :
     ∀ x ∈ PC.Dpcris ρ, SumJumps.ext1 Qp B f x ∈ PC.Dpcris ρ' :=
   SumJumps.dcris_map PC.PD' (ρ := PC.resH ρ) (ρ' := PC.resH ρ') f (fun h v => hf (h : G) v)
 
+/- English proof (translation)
+Introduce `x hx`. Simplify using `only [PotCrysData.Eig, Submodule.mem_inf, Submodule.mem_iInf, LinearMap.mem_ker, LinearMap.sub_apply, LinearMap.smul_apply, LinearMap.id_apply, sub_eq_zero] at hx ⊢`. Use `⟨dpcris_map PC f hf x hx.1, fun g => ?_⟩` and prove the remaining obligations. Rewrite using `[← linearMap_tensorOne_comm_diagonalAction PC.PD f hf, hx.2 g, map_smul]`.
+-/
 theorem eig_map (f : V →ₗ[LL] V') (hf : ∀ g v, f (ρ g v) = ρ' g (f v)) (I : Subgroup G)
     (a : I →* LLˣ) : ∀ x ∈ PC.Eig ρ I a, SumJumps.ext1 Qp B f x ∈ PC.Eig ρ' I a := by
   intro x hx
@@ -62,6 +76,11 @@ theorem eig_map (f : V →ₗ[LL] V') (hf : ∀ g v, f (ρ g v) = ρ' g (f v)) (
   refine ⟨dpcris_map PC f hf x hx.1, fun g => ?_⟩
   rw [← linearMap_tensorOne_comm_diagonalAction PC.PD f hf, hx.2 g, map_smul]
 
+/- English proof (translation)
+Establish `he' : ∀ g v, e.symm.toLinearMap (ρ' g v) = ρ g (e.symm.toLinearMap v)` using `symm_equivariant e he`. Use `⟨fun h => isCrys_of_equiv PC.PD' (ρ := PC.resH ρ) (ρ' := PC.resH ρ') e (fun h v => he (h : G) v) h, fun S hS => ?_⟩` and prove the remaining obligations. Take `⟨h1, h2, h3⟩` from `hS`. Use `⟨h1, h2, ?_⟩` and prove the remaining obligations. Establish `hD : PC.Dpcris ρ = (PC.Dpcris ρ').map (SumJumps.ext1 Qp B e.symm.toLinearMap)` using `eq_map_of_equiv_tensor e _ _ (dpcris_map PC e.toLinearMap he) (dpcris_map PC e.symm.toLinearMap he')`.
+
+Establish `hE : ∀ a, PC.Eig ρ PC.Iner a = (PC.Eig ρ' PC.Iner a).map (SumJumps.ext1 Qp B e.symm.toLinearMap)` using `fun a => eq_map_of_equiv_tensor e _ _ (eig_map PC e.toLinearMap he _ a) (eig_map PC e.symm.toLinearMap he' _ a)`. Rewrite using `[hD, h3, Submodule.map_iSup]`. Use `congr 1`. Use extensionality with `a`. Rewrite using `[Submodule.map_iSup, hE]`.
+-/
 theorem potCrys_inertiaThrough_of_equiv (e : V ≃ₗ[LL] V') (he : ∀ g v, e (ρ g v) = ρ' g (e v)) :
     (PC.IsPotCrys ρ' → PC.IsPotCrys ρ) ∧
       ∀ S : Finset (PC.Iner →* LLˣ), PC.InertiaThrough ρ' S → PC.InertiaThrough ρ S := by
@@ -85,6 +104,9 @@ end PotTransport
 
 end GlobalTheory.HTW.Rec
 
+/- English proof (translation)
+Use `intros`. Conclude with `GlobalTheory.HTW.Rec.potCrys_inertiaThrough_of_equiv _ ‹_› ‹_›`.
+-/
 theorem GlobalTheory.HTW.Rec.potCrysData_transport : ∀ {G : Type} [Group G] {Qp K₀ K K₀' K' : Type} [Field Qp] [Field K₀] [Field K] [Field K₀'] [Field K']
     [Algebra Qp K₀] [Algebra Qp K] [Algebra K₀ K] [IsScalarTower Qp K₀ K]
     [Algebra Qp K₀'] [Algebra Qp K'] [Algebra K₀' K'] [IsScalarTower Qp K₀' K']

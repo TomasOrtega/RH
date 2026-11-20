@@ -19,6 +19,11 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 namespace GlobalTheory.HeightCounting.Up
 set_option maxHeartbeats 4000000 in
 set_option synthInstance.maxHeartbeats 400000 in
+/- English proof (translation)
+Introduce `hL hP`. Use `StepW.of_all fun K B f T w _ _ _ P x l => ?_` and prove the remaining obligations. Use `⟨fun _ => ∅, fun L _ _ => ?_⟩` and prove the remaining obligations. Set `T' : GlobalTheory.RowTie.WDTie (withLoc L).nd (withLoc L).naut` to `{ l.a.A.wdT with }`. Set `A' : _root_.GlobalTheory.HeightCounting.AUSideAlt (withLoc L)` to `{ l.a.A.au with }`.
+
+Establish `cg : _root_.GlobalTheory.HeightCounting.CGTrueT hL (withLoc L) T'` using `{ l.a.cg with }`. Establish `au : _root_.GlobalTheory.HeightCounting.AutomorphicSideRealised hL (withLoc L) T' A'` using `fun j h1 h2 π s σ h => l.a.au j h1 h2 π s σ h`. Conclude with `_root_.UpperTheory.BaseChangeIdentities.Conclusion1_alt_alt_alt hP.bc hP.what₂.bern hP.gen hP.std hL (withLoc L) T' A' cg au`.
+-/
 theorem upper_ramification_third_jump_holds_alt : ∀ hL : _root_.UpperTheory.Zero.LLC.RecTExists, _root_.GlobalTheory.HeightCounting.Up.PublishedInputsThirdLayerAlt → AllSt fun _ _ _ _ _ _ x => ∀ l : _root_.GlobalTheory.HeightCounting.Up.StrictHenselianAcyclicLevel hL x, _root_.GlobalTheory.CoefDuty.ForcedByAutomorphicSemisimpleData l.a.A l.mt.M l.c.ch l.c.tp.tup fun D' => SumRepresentations.hypO D' → SphericalInertData.Conclusion1 D' := by
   intro hL hP
   refine StepW.of_all fun K B f T w _ _ _ P x l => ?_
@@ -34,6 +39,9 @@ section
 open Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotions.N Formalism.L2 Formalism.L2.Host Formalism.IndefR.NX ReciprocityTheory.Aut Formalism.AUTREP NumberField IsDedekindDomain GlobalTheory.Mem GlobalTheory.Mem.Col2 GlobalTheory.Mem.Top GlobalTheory.Mem.Top.GroupRetwisting GlobalTheory.Mem.Top.Bl GlobalTheory.Mem.R3 GlobalTheory.Mem.R3.Rw GlobalTheory.HeightCounting GlobalTheory.HeightCounting.Up
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @_root_.GlobalTheory.HeightCounting.Up.upper_ramification_third_jump_holds_alt | exact _root_.GlobalTheory.HeightCounting.Up.upper_ramification_third_jump_holds_alt | (intros; apply _root_.GlobalTheory.HeightCounting.Up.upper_ramification_third_jump_holds_alt <;> as …`.
+-/
 theorem _root_.GlobalTheory.T.third_member_upper_ramification' : ∀ hL : _root_.UpperTheory.Zero.LLC.RecTExists, _root_.GlobalTheory.HeightCounting.Up.PublishedInputsThirdLayerAlt → AllSt fun _ _ _ _ _ _ x => ∀ l : _root_.GlobalTheory.HeightCounting.Up.StrictHenselianAcyclicLevel hL x, _root_.GlobalTheory.CoefDuty.ForcedByAutomorphicSemisimpleData l.a.A l.mt.M l.c.ch l.c.tp.tup fun D' => SumRepresentations.hypO D' → SphericalInertData.Conclusion1 D' := by
   first | exact @_root_.GlobalTheory.HeightCounting.Up.upper_ramification_third_jump_holds_alt | exact _root_.GlobalTheory.HeightCounting.Up.upper_ramification_third_jump_holds_alt | (intros; apply _root_.GlobalTheory.HeightCounting.Up.upper_ramification_third_jump_holds_alt <;> assumption)
 end

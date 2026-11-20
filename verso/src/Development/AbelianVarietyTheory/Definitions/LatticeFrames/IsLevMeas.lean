@@ -220,8 +220,14 @@ def StepLam (D : D7) : Prop := ForStepQ D fun c w k s s' p => ∀ ipD ip ipD' ip
         ∀ (u₂ : s.CC c) (x₂ : s'.CC c), (∀ y, ip' y x₂ = ip (p.io y) u₂) → ip' x₁ x₂ * ipD' w₀ w₀ =
           conj (kapOf w k p m X mR φ v H₀ * GlobalTheory.LFun.LSD D c.S B (c.μ (k + 1)) ((1 + (D.R.t : ℂ)) / 2)) * ip u₁ u₂
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 example (c : Com D) (PP : Pl D.host.E) (x : (AE D)ˣ) : qPar c PP x 0 = 0 := rfl
 
+/- English proof (translation)
+Simplify using `[blockL]`.
+-/
 example (c : Com D) (PP : Pl D.host.E) : blockL c 0 PP = 1 := by simp [blockL]
 
 end GlobalTheory.ChainTw

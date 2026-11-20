@@ -12,12 +12,20 @@ open GlobalTheory.MumFam GlobalTheory.MumProd
 
 namespace GlobalTheory.MumProd.PsumCancel
 
+/- English proof (translation)
+Unfold `padd`. Rewrite using `[Category.assoc, IsMonHom.mul_hom, ← Category.assoc, lift_map, ha, lift_comp_one_left]`.
+-/
 theorem padd_comp_of_kill {S : Scheme.{0}} {B B₂ T : Over S} [GrpObj B] [IsCommMonObj B] [GrpObj B₂]
     [IsCommMonObj B₂] (p : B ⟶ B₂) [IsMonHom p] (a s : T ⟶ B) (ha : a ≫ p = toUnit T ≫ η[B₂]) :
     padd B a s ≫ p = s ≫ p := by
   unfold padd
   rw [Category.assoc, IsMonHom.mul_hom, ← Category.assoc, lift_map, ha, lift_comp_one_left]
 
+/- English proof (translation)
+Introduce `S B B₂ T _ _ _ _ p x hp hx I`. Establish `hI : I = ∅ ∨ I = {0} ∨ I = {1} ∨ I = {0, 1}` using `by revert I; decide`. Break down `hI with rfl | rfl | rfl | rfl` into its components or cases. Apply the tactic sequence `all_goals first`. Consider the case `rw [Finset.insert_eq_of_mem (by decide)]`.
+
+Consider the case `(simp only [psum, List.foldr_cons, List.foldr_nil, show (List.finRange 2) = [0, 1] by decide, List.filter_cons, List.filter_nil] try simp only [Finset.mem_insert, Finset.mem_singleton, Finset.notMem_empty, decide_true, decide_false, Fin.isValue, zero_ne_one, one_ne_zero, or_true, …`.
+-/
 theorem psum_insert_zero_comp : ∀ (S : Scheme.{0}) (B B₂ T : Over S) [GrpObj B] [IsCommMonObj B] [GrpObj B₂]
     [IsCommMonObj B₂] (p : B ⟶ B₂) (x : Fin 2 → (T ⟶ B)), IsMonHom p → x 0 ≫ p = toUnit T ≫ η[B₂] →
     ∀ I : Finset (Fin 2), psum B x I ≫ p = psum B x (insert 0 I) ≫ p := by

@@ -15,6 +15,13 @@ namespace GlobalTheory.FinZeta
 
 variable {D : D7}
 
+/- English proof (translation)
+Introduce `P hP`. Establish `hPv : P.under (𝓞 D.host.F) = v` using `HeightOneSpectrum.ext hP`. Establish `hmem : ∀ Q : HeightOneSpectrum (𝓞 D.host.E), Q ∈ Formalism.L2.Host.aboveF (L` using `D.host.E) D.host.F (P.under (𝓞 D.host.F)) ↔ Q.under (𝓞 D.host.F) = v := by`. Introduce `Q`. Rewrite using `[hPv]`.
+
+Simplify using `only [Formalism.L2.Host.aboveF, Set.Finite.mem_toFinset, Set.mem_setOf_eq]`. Establish `h1 : (Formalism.L2.Host.aboveF (L` using `D.host.E) D.host.F (P.under (𝓞 D.host.F))).card = 1 := by`. Use `Finset.card_eq_one.2 ⟨P, Finset.eq_singleton_iff_unique_mem.2 ⟨(hmem P).2 hPv, fun Q hQ => ?_⟩⟩` and prove the remaining obligations. Assume the negation of the conclusion as `hne`. Conclude with `hs ⟨Q, P, hne, congrArg HeightOneSpectrum.asIdeal ((hmem Q).1 hQ), hP⟩`.
+
+Conclude with `PI.UnitaryGroupMassFormula.HostPrimeFacts.unram D.R D.host P h1`.
+-/
 theorem isUnram_of_not_isSplit {v : HeightOneSpectrum (𝓞 D.host.F)} (hs : ¬ IsSplit (E := D.host.E) v) :
     Formalism.MainNotions.SchurIrreducible.IsUnram (E := D.host.E) v := by
   intro P hP
@@ -30,6 +37,19 @@ theorem isUnram_of_not_isSplit {v : HeightOneSpectrum (𝓞 D.host.F)} (hs : ¬ 
     exact hs ⟨Q, P, hne, congrArg HeightOneSpectrum.asIdeal ((hmem Q).1 hQ), hP⟩
   exact PI.UnitaryGroupMassFormula.HostPrimeFacts.unram D.R D.host P h1
 
+/- English proof (translation)
+Establish `hL` using `GlobalTheory.HeckeDual.isLattice_frameLat V`. Establish `hH` using `(GlobalTheory.Mem.Vol.cmData_isCMExt_and_gram_isHermND _ _ D.sp.cm).2 V`. Establish `hd` using `GlobalTheory.AdelicU.SelfDual.isSelfDualAt_frameLat D V v`. Distinguish the cases in `hsp : IsSplit (E := D.host.E) v`. Take `⟨w, -, -, hw, -⟩` from `id hsp`.
+
+Establish `h : w.under (𝓞 D.host.F) = v` using `HeightOneSpectrum.ext hw`. Take `⟨e, ⟨⟨a, ha, e1⟩, e2⟩, -⟩` from `GlobalTheory.LFun.SplitChart.exists_isSplitChart (isCMExt_host D) hH hL.fg hL.span_eq_top h hsp hd`. Use `⟨w, h, fun g => ?_⟩` and prove the remaining obligations. Take `⟨ϖ, hϖ⟩` from `exists_isUnifV w`. Take `⟨d, hdA, k₁, h₁, k₂, h₂, eg⟩` from `Formalism.UG.Final.CartanDecomp D.host.E w V.rank ϖ (mem_Ov_of_isUnifV hϖ) hϖ (e g)`.
+
+Use `⟨e.symm k₁, (e2 _).2 (by simpa using h₁), e.symm k₂, (e2 _).2 (by simpa using h₂), e.symm (k₁⁻¹ * e g * k₂⁻¹), a, d, fun i => ϖ ^ d i, ha, hdA, fun i => ?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[map_zpow₀, show Valued.v ϖ = WithZero.exp (-1 : ℤ) from hϖ, ← WithZero.exp_zsmul]`. Simplify using the standard rewrite rules. Rewrite using `[← e1, e.apply_symm_apply, Units.val_mul, Units.val_mul, eg, ← Matrix.mul_assoc, ← Matrix.mul_assoc, Units.inv_mul, Matrix.one_mul, Matrix.mul_assoc, Units.mul_inv, Matrix.mul_one]`. Both sides reduce to the same expression.
+
+Apply `e.injective` to reduce the goal to its premises. Simplify using `only [map_mul, e.apply_symm_apply]`. Use `group`. Take `⟨w, hw⟩` from `((exists_isInertChart _ (isCMExt_host D) v).1 (isUnram_of_not_isSplit hsp)).resolve_left hsp`. Establish `h : w.under (𝓞 D.host.F) = v` using `(GlobalTheory.LFun.InertChart.under_eq_iff hw w).2 rfl`.
+
+Take `⟨-, ⟨c, hc, -⟩, -, -, hrest⟩` from `(exists_isInertChart _ (isCMExt_host D) v).2 w h hw`. Take `⟨⟨ϖ, hU⟩, hch⟩` from `hrest c hc`. Take `⟨e, ⟨-, ⟨a, ha, -, e1⟩, e2⟩, -⟩` from `hch _ _ _ hH hL.fg hL.span_eq_top hd`. Use `⟨w, h, fun g => ?_⟩` and prove the remaining obligations. Take `⟨d, t, hdA, ht, k₁, h₁, k₂, h₂, eg⟩` from `GlobalTheory.LFun.cartanU hU (e g)`.
+
+Use `⟨e.symm k₁, (e2 _).2 (by simpa using h₁), e.symm k₂, (e2 _).2 (by simpa using h₂), e.symm t, a, d, fun i => ϖ ^ d i, ha, hdA, fun i => ?_, by rw [← e1, e.apply_symm_apply, ht], ?_⟩` and prove the remaining obligations. Rewrite using `[map_zpow₀, show Valued.v ϖ = WithZero.exp (-1 : ℤ) from hU.2.2.2.1, ← WithZero.exp_zsmul]`. Simplify using the standard rewrite rules. Apply `e.injective` to reduce the goal to its premises. Simplify using `only [map_mul, e.apply_symm_apply, eg]`.
+-/
 theorem exists_cartan (V : HSp D) (v : HeightOneSpectrum (𝓞 D.host.F)) :
     ∃ (w : HeightOneSpectrum (𝓞 D.host.E)) (h : w.under (𝓞 D.host.F) = v), ∀ g : Gv V v,
       ∃ k₁ ∈ Kv V v, ∃ k₂ ∈ Kv V v, ∃ (g' : Gv V v) (a : GL (Fin V.rank) (w.adicCompletion D.host.E))
@@ -71,6 +91,13 @@ theorem exists_cartan (V : HSp D) (v : HeightOneSpectrum (𝓞 D.host.F)) :
     · apply e.injective
       simp only [map_mul, e.apply_symm_apply, eg]
 
+/- English proof (translation)
+Introduce `D V J χ Sb hJ v hv f hf c hc`. Establish `hfix : f ∈ fixed ((rightReg ℂ (GA D V) ℂ).comp (embV V v)) (Kv V v)` using `GlobalTheory.LGrp.mem_fixed.2 fun k hk => funext (fixed_of_level hJ hv hf hk)`. Use `⟨hfix, fun x hx => ?_⟩` and prove the remaining obligations. Take `⟨w, h, hcart⟩` from `exists_cartan V v`. Establish `hs` using `isEigenSys_of_heckeLin hJ hv h hfix (hc w)`.
+
+Use `GlobalTheory.HeckeDual.isLattice_frameLat V` as an intermediate fact. Establish `hK : IsCommensurated (Kv V v)` using `PI.UnitaryGroupMassFormula.AdIndexEq.commensurated_of_isOpen_isCompact _ (isOpen_stabLoc D.sp.cm.sig V.gram (frameLat V) v) (isCompact_stabLoc D.sp.cm.sig V.gram (frameLat V) v)`. Establish `hm` using `Formalism.UG.Final.DosetIndMem (Gv V v) (Kv V v) ℂ`. Use `GlobalTheory.LFun.hecke_induction (K := Kv V v) (p := fun h => ∃ a : ℂ, heckeVec ((rightReg ℂ (GA D V) ℂ).comp (embV V v)) (Kv V v) h f = a • f) ⟨0, by simp [heckeVec]⟩ ?_ ?_ hx` and prove the remaining obligations. Introduce and unpack `g1 hg1 g2 hg2 ⟨a1, e1⟩ ⟨a2, e2⟩`.
+
+Conclude with `⟨a1 + a2, by rw [GlobalTheory.LFun.heckeVec_add hK _ hg1 hg2, e1, e2, add_smul]⟩`. Introduce `r g`. Take `⟨k₁, hk₁, k₂, hk₂, g', a, d, u, ha, hd, hu, hg, rfl⟩` from `hcart g`. Use `⟨r * c w (List.ofFn d), ?_⟩` and prove the remaining obligations. Rewrite using `[GlobalTheory.LFun.dosetInd_mul hk₁ hk₂, GlobalTheory.LFun.heckeVec_smul hK _ r (hm g'), hs a g' d u ha hd hu hg, smul_smul]`.
+-/
 theorem eigen_heckeAlg : ∀ (D : D7) (V : HSp D) (J : Set (GA D V)) (χ : GA D V → ℂ) (Sb : Finset (HeightOneSpectrum (𝓞 D.host.F))), SphOff J χ Sb → ∀ v ∉ Sb, ∀ f : GA D V → ℂ, (∀ k ∈ J, ∀ g, f (g * k) = χ k * f g) → ∀ c : HeightOneSpectrum (𝓞 D.host.E) → List ℤ → ℂ, (∀ w d R, Hecke₂ V J χ Sb w d R → heckeLin V R f = c w d • f) → f ∈ fixed ((rightReg ℂ (GA D V) ℂ).comp (embV V v)) (Kv V v) ∧ ∀ h ∈ Hecke ℂ (Kv V v), ∃ a : ℂ, heckeVec ((rightReg ℂ (GA D V) ℂ).comp (embV V v)) (Kv V v) h f = a • f := by
   intro D V J χ Sb hJ v hv f hf c hc
   have hfix : f ∈ fixed ((rightReg ℂ (GA D V) ℂ).comp (embV V v)) (Kv V v) :=

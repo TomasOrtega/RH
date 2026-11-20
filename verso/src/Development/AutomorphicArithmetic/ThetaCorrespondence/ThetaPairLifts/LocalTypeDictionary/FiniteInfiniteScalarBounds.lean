@@ -46,6 +46,9 @@ section Core
 variable {D : D7} {Γ : Type} [Group Γ] [Fintype Γ] {Pl0 T : Type} {A : FamIn D.what₂.LL Γ Pl0 T D.R.m}
   {Ks : Type} [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] {R : RealDat D A Ks}
 end Core
+/- English proof (translation)
+Introduce `_`. Use `⟨⟨0, fun CF _ => ⟨2, fun ε C hC => ⟨0, fun D large₂ _ _ Γ _ _ Pl0 T A Ks _ _ _ R F s ch _ _ hF => ?_⟩⟩⟩, ⟨0, fun CF _ => ⟨2, fun ε C hC => ⟨0, fun D large₂ _ _ Γ _ _ Pl0 T A Ks _ _ _ R F s ch _ _ hF => ?_⟩⟩⟩⟩` and prove the remaining obligations. Conclude with `(core s ch hF hC).1`. Conclude with `(core s ch hF hC).2`.
+-/
 theorem finScalK_and_infScalK_of_theta_inputs : _root_.GlobalTheory.FunPr.ThetaLocalInputs → FinScalK ∧ InfScalK := by
   intro _
   refine ⟨⟨0, fun CF _ => ⟨2, fun ε C hC => ⟨0, fun D large₂ _ _ Γ _ _ Pl0 T A Ks _ _ _ R F s ch _ _ hF => ?_⟩⟩⟩,
@@ -62,6 +65,9 @@ end
 section
 open GlobalTheory.SumSize GlobalTheory.RowClaim
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @_root_.GlobalTheory.ScalAA.finScalK_and_infScalK_of_theta_inputs | exact _root_.GlobalTheory.ScalAA.finScalK_and_infScalK_of_theta_inputs | (intros; apply _root_.GlobalTheory.ScalAA.finScalK_and_infScalK_of_theta_inputs <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.finite_and_infinite_scalar_bounds : _root_.GlobalTheory.FunPr.ThetaLocalInputs → FinScalK ∧ InfScalK := by
   first | exact @_root_.GlobalTheory.ScalAA.finScalK_and_infScalK_of_theta_inputs | exact _root_.GlobalTheory.ScalAA.finScalK_and_infScalK_of_theta_inputs | (intros; apply _root_.GlobalTheory.ScalAA.finScalK_and_infScalK_of_theta_inputs <;> assumption)
 end

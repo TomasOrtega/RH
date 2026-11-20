@@ -10,6 +10,15 @@ open AlgebraicGeometry CategoryTheory ReciprocityTheory.ChartRestriction.G Globa
 
 namespace GlobalTheory.HkAnyFieldOf
 
+/- English proof (translation)
+Introduce `hHI E _ _ _ H Dw l Xo c la 𝔓 p i hP hpla T io e hla y hy Ω _ _ _ k yΩ hyΩ C z hz`. Use `letI : Algebra c.F T.Fr := io.toAlgebra`. Use `letI : Algebra T.Fr Ω := k.toRingHom.toAlgebra`. Use `haveI : IsScalarTower c.F T.Fr Ω := IsScalarTower.of_algebraMap_eq fun a => (k.commutes a).symm`. Set `k₀ : T.Fr →ₐ[c.F] AlgebraicClosure T.Fr` to `IsScalarTower.toAlgHom c.F T.Fr (AlgebraicClosure T.Fr)`.
+
+Set `φ₀ : AlgebraicClosure T.Fr →ₐ[T.Fr] Ω` to `IsAlgClosed.lift`. Set `φ : AlgebraicClosure T.Fr →ₐ[c.F] Ω` to `φ₀.restrictScalars c.F`. Establish `hφk : ∀ a, φ (k₀ a) = k a` using `fun a => φ₀.commutes a`. Take `⟨yK, hyK⟩` from `exists_frMap k₀ y.1`. Establish `hKΩ : FrMap φ yK yΩ` using `frMap_of_comp hyK hyΩ hφk`.
+
+Take `⟨C₀, z₀, hz₀, hz₀z⟩` from `GlobalTheory.HkAnyField.exists_hkRelFr_down hP φ hKΩ C hz`. Establish `halg : (letI` using `k₀.toRingHom.toAlgebra; Algebra.IsAlgebraic T.Fr (AlgebraicClosure T.Fr)) := by`. Establish `hA : k₀.toRingHom.toAlgebra = AlgebraicClosure.instAlgebra T.Fr` using `Algebra.algebra_ext _ _ fun _ => rfl`. Conclude with `hA ▸ AlgebraicClosure.isAlgebraic T.Fr`. Establish `h₀` using `(hHI E H Dw l Xo c).2.1 la 𝔓 p i hP hpla T io e hla y hy trivial (AlgebraicClosure T.Fr) k₀ halg yK hyK C₀ z₀ hz₀`.
+
+Establish `h₁` using `GlobalTheory.HkAnyField.isIntegralUpToUnits_up φ hz₀z h₀`. Establish `hcomp : φ.toRingHom.comp k₀.toRingHom = k.toRingHom` using `RingHom.ext hφk`. Rewrite `h₁` using `[hcomp]`. Then use the resulting hypothesis.
+-/
 theorem heckeFrameInt_anyField_of : GlobalTheory.IndefiniteRowSideFullHecke.UnusedSlot39.HeckeInt → ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l) (la : HeightOneSpectrum (𝓞 c.F)) (𝔓 : Ideal (𝓞 E)) (p i : ℕ), GlobalTheory.IndefiniteRowSideFullHecke.UnusedSlot39.IsHeckePrime H l 𝔓 p → (p : 𝓞 c.F) ∉ la.asIdeal → ∀ (T : CDVR) (io : c.F →+* T.Fr) (e : ℕ), OverLa la T.V io e → ∀ y : IntFr Xo c T io, algCls Xo c T io y → ∀ (Ω : Type) [Field Ω] [IsAlgClosed Ω] [Algebra c.F Ω], letI := io.toAlgebra; ∀ k : T.Fr →ₐ[c.F] Ω, ∀ yΩ : FrPt Xo c Ω, FrMap k y.1 yΩ → ∀ (C : hkKer (Xo := Xo) 𝔓 p i Ω yΩ) (z : FrPt Xo c Ω), hkRelFr 𝔓 p i (GlobalTheory.ThetaTrace.hkTr Xo c p) Ω yΩ C z → GlobalTheory.IndefiniteRowSideFullHecke.UnusedSlot39.IsIntegralUpToUnits (GlobalTheory.IndefiniteRowSideFullHecke.UnusedSlot39.trivialClassCondition Xo c) T io k.toRingHom z := by
   intro hHI E _ _ _ H Dw l Xo c la 𝔓 p i hP hpla T io e hla y hy Ω _ _ _ k yΩ hyΩ C z hz
   letI : Algebra c.F T.Fr := io.toAlgebra

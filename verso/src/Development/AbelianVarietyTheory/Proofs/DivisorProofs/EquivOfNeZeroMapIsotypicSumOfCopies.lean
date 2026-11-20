@@ -11,6 +11,11 @@ open Representation
 variable {H V V' W : Type} [Group H] [AddCommGroup V] [Module ℂ V] [AddCommGroup V'] [Module ℂ V']
   [AddCommGroup W] [Module ℂ W]
 
+/- English proof (translation)
+Assume the negation of the conclusion as `hc`. Use `push Not at hc`. Apply `hT` to reduce the goal to its premises. Apply `IntertwiningMap.ext` to reduce the goal to its premises. Rewrite using `[IntertwiningMap.zero_toLinearMap, ← LinearMap.ker_eq_top, ← top_le_iff, ← (show _ = _ from h)]`.
+
+Use `iSup_le fun f => ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨w, rfl⟩`. Conclude with `congrArg (fun g : IntertwiningMap ρ τ' => g w) (hc f)`.
+-/
 theorem exists_comp_ne_zero {τ : Representation ℂ H V} {τ' : Representation ℂ H V'} {ρ : Representation ℂ H W}
     (h : IsIsotypicOf τ ρ) (T : IntertwiningMap τ τ') (hT : T ≠ 0) :
     ∃ f : IntertwiningMap ρ τ, T.comp f ≠ 0 := by
@@ -23,6 +28,9 @@ theorem exists_comp_ne_zero {τ : Representation ℂ H V} {τ' : Representation 
   rintro _ ⟨w, rfl⟩
   exact congrArg (fun g : IntertwiningMap ρ τ' => g w) (hc f)
 
+/- English proof (translation)
+Establish `: NeZero (Nat.card H : ℂ)` using `⟨Nat.cast_ne_zero.2 Nat.card_pos.ne'⟩`. Take `⟨g, hg⟩` from `MonoidAlgebra.exists_leftInverse_of_injective (IntertwiningMap.equivLinearMapAsModule ρ τ f) (LinearMap.ker_eq_bot.2 hf)`. Conclude with `⟨(IntertwiningMap.equivLinearMapAsModule τ ρ).symm g, fun w => LinearMap.congr_fun hg w⟩`.
+-/
 theorem exists_leftInverse [Finite H] {τ : Representation ℂ H V} {ρ : Representation ℂ H W}
     (f : IntertwiningMap ρ τ) (hf : Function.Injective f) :
     ∃ s : IntertwiningMap τ ρ, ∀ w, s (f w) = w := by
@@ -31,6 +39,13 @@ theorem exists_leftInverse [Finite H] {τ : Representation ℂ H V} {ρ : Repres
     (IntertwiningMap.equivLinearMapAsModule ρ τ f) (LinearMap.ker_eq_bot.2 hf)
   exact ⟨(IntertwiningMap.equivLinearMapAsModule τ ρ).symm g, fun w => LinearMap.congr_fun hg w⟩
 
+/- English proof (translation)
+Introduce `H _ _ V V' W W' _ _ _ _ _ _ _ _ τ τ' ρ ρ' hρ hρ' h h' T hT`. Take `⟨f, hf⟩` from `exists_comp_ne_zero h T hT`. Establish `hi` using `(Representation.IsIrreducible.injective_or_eq_zero (T.comp f)).resolve_right hf`. Take `⟨s, hs⟩` from `exists_leftInverse (T.comp f) hi`. Establish `hs0 : s ≠ 0`.
+
+Introduce and unpack `rfl`. Apply `hf` to reduce the goal to its premises. Apply `IntertwiningMap.ext` to reduce the goal to its premises. Use extensionality with `w`. Establish `hw : w = 0` using `(hs w).symm`.
+
+Substitute `hw` using the available equality. Simplify using the standard rewrite rules. Take `⟨f', hf'⟩` from `exists_comp_ne_zero h' s hs0`. Establish `hb` using `(Representation.IsIrreducible.bijective_or_eq_zero (s.comp f')).resolve_right hf'`. Conclude with `⟨(IntertwiningMap.ofBijective _ hb).symm⟩`.
+-/
 theorem equiv_of_isotypic_map : ∀ (H : Type) [Group H] [Finite H] (V V' W W' : Type) [AddCommGroup V] [Module ℂ V] [AddCommGroup V'] [Module ℂ V'] [AddCommGroup W] [Module ℂ W] [AddCommGroup W'] [Module ℂ W'] (τ : Representation ℂ H V) (τ' : Representation ℂ H V') (ρ : Representation ℂ H W) (ρ' : Representation ℂ H W'), ρ.IsIrreducible → ρ'.IsIrreducible → IsIsotypicOf τ ρ → IsIsotypicOf τ' ρ' → ∀ T : Representation.IntertwiningMap τ τ', T ≠ 0 → Nonempty (Representation.Equiv ρ ρ') := by
   intro H _ _ V V' W W' _ _ _ _ _ _ _ _ τ τ' ρ ρ' hρ hρ' h h' T hT
   obtain ⟨f, hf⟩ := exists_comp_ne_zero h T hT

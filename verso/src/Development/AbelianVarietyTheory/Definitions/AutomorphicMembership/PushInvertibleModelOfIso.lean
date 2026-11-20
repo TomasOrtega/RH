@@ -35,12 +35,23 @@ def genInv : pullback Y.s (spMap β) ⟶ pullback (π ≫ Y.s) (spMap β) :=
 
 instance isIso_genInv : IsIso (genInv Y π) := by unfold genInv; infer_instance
 
+/- English proof (translation)
+Rewrite using `[genInv, pullback.lift_fst_assoc, Category.assoc, IsIso.inv_hom_id, Category.comp_id]`.
+-/
 theorem genInv_fst : genInv Y π ≫ pullback.fst _ _ ≫ π = pullback.fst _ _ := by
   rw [genInv, pullback.lift_fst_assoc, Category.assoc, IsIso.inv_hom_id, Category.comp_id]
 
+/- English proof (translation)
+Rewrite using `[genInv, pullback.lift_snd, Category.comp_id]`.
+-/
 theorem genInv_snd : genInv Y π ≫ pullback.snd _ _ = pullback.snd _ _ := by
   rw [genInv, pullback.lift_snd, Category.comp_id]
 
+/- English proof (translation)
+Establish `e : ((Y.jQ ≫ genInv Y π) ≫ pullback.fst _ _) ≫ π = Y.jQ ≫ pullback.fst _ _`. Simplify using `only [Category.assoc, genInv_fst]`. Choose the witnesses or unpack the hypotheses as in `⟨n', hn'⟩ : ∃ n' : SABMap Y.oF.t Y.t (((Y.jQ ≫ genInv Y π) ≫ pullback.fst _ _) ≫ π), n'.φ = Y.m.φ := by`. Rewrite using `[e]`. Conclude with `⟨Y.m, rfl⟩`.
+
+Take `⟨n, hn⟩` from `sabCancel pullCubCancel E H _ _ _ _ _ _ _ _ m n'`. Conclude with `⟨n, hn.symm.trans hn'⟩`.
+-/
 theorem exists_sabMap_genInv {t : SAB H X} (m : SABMap t Y.t π) :
     ∃ n : SABMap Y.oF.t t ((Y.jQ ≫ genInv Y π) ≫ pullback.fst _ _), n.φ ≫ m.φ = Y.m.φ := by
   have e : ((Y.jQ ≫ genInv Y π) ≫ pullback.fst _ _) ≫ π = Y.jQ ≫ pullback.fst _ _ := by
@@ -80,10 +91,16 @@ theorem exists_sabMap_genInv {t : SAB H X} (m : SABMap t Y.t π) :
     · rintro ⟨x, hx⟩
       exact ⟨x, (genInv Y π).homeomorph.injective ((Scheme.Hom.comp_apply _ _ _).symm.trans hx)⟩
 
+/- English proof (translation)
+Simplify using `only [Model.j, Category.assoc, genInv_fst]`.
+-/
 theorem modelOfIso_j (hn : ReciprocityTheory.ChartRestriction.G.Geo.Tor.IsNormalScheme X) (t : SAB H X) (m : SABMap t Y.t π) :
     (modelOfIso Y π hn t m).j ≫ π = Y.j := by
   simp only [Model.j, Category.assoc, genInv_fst]
 
+/- English proof (translation)
+Take `⟨l₁, l₂, l₃, -, -⟩` from `GlobalTheory.firstFiveLaws`. Set `C` to `modelOfIso Y π hn t m`. Conclude with `GlobalTheory.PushInv.pushInvertible_of_model l₁ l₂ l₃ E H Dw l _ _ _ _ _ _ Y.oF _ β ⟨C.X, C.s, C.normal, C.proj, C.flat, C.jQ, C.jQ_over, C.jQ_open, C.jQ_dense, C.t, C.m, C.ab_gen⟩ hD ((GlobalTheory.AbLocusPull.abLocus_sections_pull _ _ π Y.t.G t.G m.φ Y.t.semi m.cart).2 _ _ Y.t. …`. Take `⟨V, hV, θ, hθ, -, nz⟩` from `hY x`. Conclude with `⟨V, hV, θ, hθ, nz⟩)`.
+-/
 theorem pushInvertible_modelOfIso (hn : ReciprocityTheory.ChartRestriction.G.Geo.Tor.IsNormalScheme X) (t : SAB H X) (m : SABMap t Y.t π)
     (hD : GlobalTheory.Models.IsDedFrac β) (hY : PushInvertible Y.t.G Y.t.PP.L) : PushInvertible t.G t.PP.L := by
   obtain ⟨l₁, l₂, l₃, -, -⟩ := GlobalTheory.firstFiveLaws
@@ -103,6 +120,9 @@ def pushMod {X : Scheme.{0}} (t : SAB H X) : X.Modules := (Scheme.Modules.pushfo
 
 def thetaSec (M : GChart Y) : Γ(pushMod Y.t, M.U) := GlobalTheory.LB.mkSec M.θ M.θ_mem
 
+/- English proof (translation)
+Introduce `V h` and use `by rw [Function.bijective_iff_existsUnique] intro s refine (existsUnique_congr fun a => ?_).1 (M.gen V h _ (GlobalTheory.LB.coord_mem (L := Y.t.PP.L) s)) exact ⟨fun e => GlobalTheory.LB.sec_ext (L := Y.t.PP.L) fun i => (e i).symm, fun e i => (congrArg (fun s => GlobalTheory.LB.co …`.
+-/
 theorem isFrame_thetaSec (M : GChart Y) : GlobalTheory.LB.IsFrame (thetaSec M) := fun V h => by
   rw [Function.bijective_iff_existsUnique]
   intro s
@@ -110,12 +130,20 @@ theorem isFrame_thetaSec (M : GChart Y) : GlobalTheory.LB.IsFrame (thetaSec M) :
   exact ⟨fun e => GlobalTheory.LB.sec_ext (L := Y.t.PP.L) fun i => (e i).symm,
     fun e i => (congrArg (fun s => GlobalTheory.LB.coord (L := Y.t.PP.L) s i) e).symm⟩
 
+/- English proof (translation)
+The claim follows from `GlobalTheory.LB.sec_ext (L := Y.t.PP.L) fun i => (M.gen _ inf_le_left _ (GlobalTheory.ModelChart.res_mem_secOn _ (Y.t.G.hom.preimage_mono inf_le_right) M'.θ_mem)).exists.choose_spec i`.
+-/
 theorem thetaSec_change (M M' : GChart Y) :
     (pushMod Y.t).presheaf.map (homOfLE (inf_le_right : M.U ⊓ M'.U ≤ M'.U)).op (thetaSec M') =
       thRat M M' • (pushMod Y.t).presheaf.map (homOfLE (inf_le_left : M.U ⊓ M'.U ≤ M.U)).op (thetaSec M) :=
   GlobalTheory.LB.sec_ext (L := Y.t.PP.L) fun i => (M.gen _ inf_le_left _
     (GlobalTheory.ModelChart.res_mem_secOn _ (Y.t.G.hom.preimage_mono inf_le_right) M'.θ_mem)).exists.choose_spec i
 
+/- English proof (translation)
+Unfold `pushPP GlobalTheory.LB.ofFrames`. Use `congr 1`. Use function extensionality and compare the values at `M M'`. Use `Units.ext ?_` and prove the remaining obligations. Establish `e` using `GlobalTheory.LB.resG_ofFrames_g (fun M : GChart Y => isFrame_thetaSec M) M M' le_rfl`.
+
+Rewrite `e` using `[GlobalTheory.LB.resG_self]`. Conclude with `e.trans ((isFrame_thetaSec M).repr_eq _ (thetaSec_change M M').symm)`.
+-/
 theorem ofFrames_thetaSec : GlobalTheory.LB.ofFrames (fun M : GChart Y => isFrame_thetaSec M) = pushPP Y := by
   unfold pushPP GlobalTheory.LB.ofFrames
   congr 1
@@ -125,15 +153,24 @@ theorem ofFrames_thetaSec : GlobalTheory.LB.ofFrames (fun M : GChart Y => isFram
   rw [GlobalTheory.LB.resG_self] at e
   exact e.trans ((isFrame_thetaSec M).repr_eq _ (thetaSec_change M M').symm)
 
+/- English proof (translation)
+The claim follows from `ofFrames_thetaSec (Y := Y) ▸ ⟨GlobalTheory.LB.ofFramesIso (fun M : GChart Y => isFrame_thetaSec M) h.cover⟩`.
+-/
 theorem nonempty_pushMod_iso (h : (pushPP Y).IsLB) : Nonempty (pushMod Y.t ≅ toMod (pushPP Y)) :=
   ofFrames_thetaSec (Y := Y) ▸ ⟨GlobalTheory.LB.ofFramesIso (fun M : GChart Y => isFrame_thetaSec M) h.cover⟩
 
+/- English proof (translation)
+The claim follows from `(GlobalTheory.VB.isVB_toMod h).of_iso (nonempty_pushMod_iso h).some.symm`.
+-/
 theorem isVB_pushMod (h : (pushPP Y).IsLB) : GlobalTheory.VB.IsVB (pushMod Y.t) 1 :=
   (GlobalTheory.VB.isVB_toMod h).of_iso (nonempty_pushMod_iso h).some.symm
 
 def keyUnit (k : ℕ) (M M' : GChart Y) : Γ(Y.X, M.U ⊓ M'.U)ˣ :=
   (thUnit M M')⁻¹ ^ (2 * k) * detChg M.toMChart M'.toMChart ^ k
 
+/- English proof (translation)
+Establish `: thUnit M M' ^ (2 * k) * keyUnit k M M' = detChg M.toMChart M'.toMChart ^ k`. Simplify using `only [keyUnit, inv_pow, mul_inv_cancel_left]`. Simplify `congrArg Units.val this` using `only [Units.val_mul, Units.val_pow_eq_pow_val, GlobalTheory.FlagMod.thUnit_val]`.
+-/
 theorem thRat_pow_mul_keyUnit (k : ℕ) (M M' : GChart Y) :
     thRat M M' ^ (2 * k) * (keyUnit k M M').val = (detChg M.toMChart M'.toMChart).val ^ k := by
   have : thUnit M M' ^ (2 * k) * keyUnit k M M' = detChg M.toMChart M'.toMChart ^ k := by
@@ -148,6 +185,9 @@ def keyHomLB (Y : Model Xo c β) (k : ℕ) : LB Y.X :=
 def keyPowLB (Y : Model Xo c β) (k : ℕ) : LB Y.X :=
   lbPow (GlobalTheory.CechPic.tens (lbPow (de Y) 2) (GlobalTheory.CechPic.dual (detOm Y))) k
 
+/- English proof (translation)
+Rewrite using `[keyUnit, map_mul, map_pow, map_pow, map_inv]`.
+-/
 theorem gm_keyUnit (k : ℕ) (M M' : GChart Y) (y : Y.X) :
     gm (𝟙 Y.X) y _ (keyUnit k M M') =
       (gm (𝟙 Y.X) y _ (thUnit M M'))⁻¹ ^ (2 * k) * gm (𝟙 Y.X) y _ (detChg M.toMChart M'.toMChart) ^ k := by
@@ -158,6 +198,9 @@ section Cover
 variable [IsNoetherianRing O] (hP : PushInvertible Y.t.G Y.t.PP.L)
 include hP
 
+/- English proof (translation)
+Use `GlobalTheory.LBLimit.isLB_of_germs _ (GlobalTheory.FlagMod.exists_gChart hP) fun a b d y ha hb hd => ?_` and prove the remaining obligations. Establish `e₁ : gm (𝟙 Y.X) y _ (thUnit a b) * gm (𝟙 Y.X) y _ (thUnit b d) = gm (𝟙 Y.X) y _ (thUnit a d)` using `gm_cocycle (GlobalTheory.FlagMod.isLB_pushPP hP) (𝟙 Y.X) y ha hb hd`. Establish `e₂ : gm (𝟙 Y.X) y _ (detChg a.toMChart b.toMChart) * gm (𝟙 Y.X) y _ (detChg b.toMChart d.toMChart) = gm (𝟙 Y.X) y _ (detChg a.toMChart d.toMChart)` using `gm_cocycle (GlobalTheory.FlagMod.isLB_detLie hP) (𝟙 Y.X) y (i := a.toMChart) (j := b.toMChart) (k := d.toMChart) ha hb hd`. Use `(congrArg₂ (· * ·) (gm_keyUnit k a b y) (gm_keyUnit k b d y)).trans (Eq.trans ?_ (gm_keyUnit k a d y).symm)` and prove the remaining obligations. Rewrite using `[← e₁, ← e₂, mul_inv, mul_pow, mul_pow, _root_.mul_mul_mul_comm]`.
+-/
 theorem isLB_keyLB (k : ℕ) : (keyLB Y k).IsLB := by
   refine GlobalTheory.LBLimit.isLB_of_germs _ (GlobalTheory.FlagMod.exists_gChart hP) fun a b d y ha hb hd => ?_
   have e₁ : gm (𝟙 Y.X) y _ (thUnit a b) * gm (𝟙 Y.X) y _ (thUnit b d) = gm (𝟙 Y.X) y _ (thUnit a d) :=
@@ -195,6 +238,11 @@ variable (ct : At S κ p)
   haveI := ct.B.iso none
   modelOfIso (ct.Y ct.Xm.i) ct.Xm.π (@GlobalTheory.IsNormalScheme.pred _ ct.Xm.normal) ct.Xm.t ct.Xm.tMap
 
+/- English proof (translation)
+Use `haveI := ct.B.iso none`. Establish `e : ct.base.j ≫ ct.Xm.π = (ct.Y ct.Xm.i).j` using `modelOfIso_j _ _ _ _ _`. Use extensionality with `x`. Rewrite using `[Pre.opn, ← e]`. Prove the components needed by the constructor for the conclusion.
+
+Introduce and unpack `⟨y, rfl⟩`. Conclude with `⟨y, Scheme.Hom.comp_apply _ _ _⟩`. Introduce and unpack `⟨y, hy⟩`. Conclude with `⟨y, ct.Xm.π.homeomorph.injective ((Scheme.Hom.comp_apply _ _ _).symm.trans hy)⟩`.
+-/
 theorem range_base_j : Set.range ct.base.j = ct.Xm.opn := by
   haveI := ct.B.iso none
   have e : ct.base.j ≫ ct.Xm.π = (ct.Y ct.Xm.i).j := modelOfIso_j _ _ _ _ _
@@ -209,6 +257,9 @@ theorem range_base_j : Set.range ct.base.j = ct.Xm.opn := by
 instance isNoetherianRing_base : IsNoetherianRing (ct.Xm.i.c.V ct.W) :=
   GlobalTheory.ModelPresentation.isNoetherianRing_place _ _ ct.hp.ne_zero ct.hW
 
+/- English proof (translation)
+The claim follows from `haveI := ct.B.iso none pushInvertible_modelOfIso (ct.Y ct.Xm.i) ct.Xm.π (@GlobalTheory.IsNormalScheme.pred _ ct.Xm.normal) ct.Xm.t ct.Xm.tMap ((GlobalTheory.CoeffRings.coeff_isDedFrac _ A.H _ ct.Xm.i.c).2.2.2 p ct.W ct.hp ct.hW).1 ((S.sys.clauses p ct.W ct.hp ct.hW).1.1 ct.Xm.i). …`.
+-/
 theorem pushInvertible : PushInvertible ct.Xm.t.G ct.Xm.t.PP.L :=
   haveI := ct.B.iso none
   pushInvertible_modelOfIso (ct.Y ct.Xm.i) ct.Xm.π (@GlobalTheory.IsNormalScheme.pred _ ct.Xm.normal) ct.Xm.t ct.Xm.tMap
@@ -219,6 +270,9 @@ abbrev KeyChart : Type := GChart ct.base
 
 def keyL (c : ℕ) : LB ct.Xm.X := keyLB ct.base c
 
+/- English proof (translation)
+The claim follows from `isLB_keyLB (Y := ct.base) ct.pushInvertible c`.
+-/
 theorem isLB_keyL (c : ℕ) : (ct.keyL c).IsLB := isLB_keyLB (Y := ct.base) ct.pushInvertible c
 
 def ofModIso {Z : ct.Mdl} {F : Z.X.Modules} (h : GlobalTheory.VB.IsVB F 1) : (Z.ofMod F).toMod ≅ F :=
@@ -229,6 +283,9 @@ def piPP : ct.Sh ct.Xm := ct.Xm.ofMod (pushMod ct.Xm.t)
 
 def keySh (c : ℕ) : ct.Sh ct.Xm := ct.Xm.ofMod (toMod (ct.keyL c))
 
+/- English proof (translation)
+The claim follows from `GlobalTheory.LocM.isVB_pushMod (Y := ct.base) (GlobalTheory.FlagMod.isLB_pushPP ct.pushInvertible)`.
+-/
 theorem isVB_pushMod : GlobalTheory.VB.IsVB (pushMod ct.Xm.t) 1 :=
   GlobalTheory.LocM.isVB_pushMod (Y := ct.base) (GlobalTheory.FlagMod.isLB_pushPP ct.pushInvertible)
 
@@ -236,8 +293,14 @@ def piIso : ct.piPP.toMod ≅ pushMod ct.Xm.t := ct.ofModIso ct.isVB_pushMod
 
 def keyIso (c : ℕ) : (ct.keySh c).toMod ≅ toMod (ct.keyL c) := ct.ofModIso (GlobalTheory.VB.isVB_toMod (ct.isLB_keyL c))
 
+/- English proof (translation)
+The claim follows from `ct.isVB_pushMod.of_iso ct.piIso.symm`.
+-/
 theorem isInv_piPP : ct.IsInv ct.piPP := ct.isVB_pushMod.of_iso ct.piIso.symm
 
+/- English proof (translation)
+The claim follows from `(GlobalTheory.VB.isVB_toMod (ct.isLB_keyL c)).of_iso (ct.keyIso c).symm`.
+-/
 theorem isInv_keySh (c : ℕ) : ct.IsInv (ct.keySh c) :=
   (GlobalTheory.VB.isVB_toMod (ct.isLB_keyL c)).of_iso (ct.keyIso c).symm
 
@@ -248,6 +311,9 @@ def piGen (M : ct.KeyChart) : Γ(ct.piPP.toMod, M.U) := ct.piIso.inv.app M.U (th
 def keyGen (c : ℕ) (M : ct.KeyChart) : Γ((ct.keySh c).toMod, M.U) :=
   (ct.keyIso c).inv.app M.U (GlobalTheory.LB.chartSec (ct.isLB_keyL c) M)
 
+/- English proof (translation)
+The claim follows from `(GlobalTheory.LB.isFrame_chartSec (ct.isLB_keyL c) M).app (ct.keyIso c).symm`.
+-/
 theorem isFrame_keyGen (c : ℕ) (M : ct.KeyChart) : GlobalTheory.LB.IsFrame (keyGen c M) :=
   (GlobalTheory.LB.isFrame_chartSec (ct.isLB_keyL c) M).app (ct.keyIso c).symm
 
@@ -258,6 +324,9 @@ def keyMk (c : ℕ) {V : ct.Xm.X.Opens} (f : ∀ M : ct.KeyChart, Γ(ct.Xm.X, V 
     Γ((ct.keySh c).toMod, V) :=
   (GlobalTheory.LB.appLinearEquiv (ct.keyIso c) V).symm (GlobalTheory.LB.mkSec f hf)
 
+/- English proof (translation)
+The claim follows from `congrArg GlobalTheory.LB.coord ((GlobalTheory.LB.appLinearEquiv (ct.keyIso c) V).apply_symm_apply _)`.
+-/
 theorem keyCoef_keyMk (c : ℕ) {V : ct.Xm.X.Opens} (f : ∀ M : ct.KeyChart, Γ(ct.Xm.X, V ⊓ M.U))
     (hf : f ∈ secOn (ct.keyL c) V) : keyCoef (keyMk c f hf) = f :=
   congrArg GlobalTheory.LB.coord ((GlobalTheory.LB.appLinearEquiv (ct.keyIso c) V).apply_symm_apply _)
@@ -280,15 +349,24 @@ def keyTrue (ct : At S κ p) : KeySt ct where
   keySh := ct.keySh
   keySh_inv _ := ct.isInv_keySh
 
+/- English proof (translation)
+Use `⟨At.keyMk 0 (fun _ => 1) fun M M' => ?_, fun M => congrFun (At.keyCoef_keyMk _ _ _) M⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `resG _ _ 1 = resG _ _ (keyUnit 0 M M').val * resG _ _ 1`. Simplify using `[keyUnit]`.
+-/
 example (ct : At S κ p) : ∃ s : Γ((ct.keySh 0).toMod, ⊤), ∀ M, At.keyCoef s M = 1 := by
   refine ⟨At.keyMk 0 (fun _ => 1) fun M M' => ?_, fun M => congrFun (At.keyCoef_keyMk _ _ _) M⟩
   change resG _ _ 1 = resG _ _ (keyUnit 0 M M').val * resG _ _ 1
   simp [keyUnit]
 
+/- English proof (translation)
+Simplify `thRat_pow_mul_keyUnit 1 M M'` using `only [Nat.mul_one, pow_one, GlobalTheory.FlagMod.detChg_val]`.
+-/
 example (ct : At S κ p) (M M' : ct.KeyChart) :
     thRat M M' ^ 2 * (keyUnit 1 M M').val = GlobalTheory.FlagMod.rdet (GlobalTheory.FlagMod.chg M.toMChart M'.toMChart) := by
   simpa only [Nat.mul_one, pow_one, GlobalTheory.FlagMod.detChg_val] using thRat_pow_mul_keyUnit 1 M M'
 
+/- English proof (translation)
+Introduce `h` and use `by have := M.dom refine one_ne_zero ((At.isFrame_keyGen c M M.U le_rfl).1 ?_) simp only [h, map_zero, smul_zero]`.
+-/
 example (ct : At S κ p) (c : ℕ) (M : ct.KeyChart) : At.keyGen c M ≠ 0 := fun h => by
   have := M.dom
   refine one_ne_zero ((At.isFrame_keyGen c M M.U le_rfl).1 ?_)

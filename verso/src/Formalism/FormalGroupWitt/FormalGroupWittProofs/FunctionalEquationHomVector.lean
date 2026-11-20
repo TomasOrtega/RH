@@ -14,6 +14,11 @@ open Formalism.G Formalism.LT
 
 variable {K : Type u} [NormedField K] [IsUltrametricDist K]
 
+/- English proof (translation)
+Unfold `IntegralMv at ha hb ⊢`. Introduce `d`. Rewrite using `[map_sub, sub_eq_add_neg]`. Use `(IsUltrametricDist.norm_add_le_max _ _).trans (max_le (ha d) ?_)` and prove the remaining obligations. Rewrite using `[norm_neg]`.
+
+Conclude with `hb d`.
+-/
 theorem integralMv_sub {τ : Type w} {a b : MvPowerSeries τ K} (ha : IntegralMv a)
     (hb : IntegralMv b) : IntegralMv (a - b) := by
   unfold IntegralMv at ha hb ⊢
@@ -23,6 +28,9 @@ theorem integralMv_sub {τ : Type w} {a b : MvPowerSeries τ K} (ha : IntegralMv
   rw [norm_neg]
   exact hb d
 
+/- English proof (translation)
+Introduce `j`. Use `integralMv_sub (ha j) (hb j) using 1` and compare the differences between its conclusion and the goal. Simplify using `only [Pi.sub_apply, map_sub, smul_sub, Finset.sum_sub_distrib]`. Normalize the expressions using the abelian group laws.
+-/
 theorem funEqV_sub {ι : Type v} [Fintype ι] {τ : Type w} {p q : ℕ} (hq : q ≠ 0) (σ : K →+* K)
     (M : ι → ι → K) {a b : ι → MvPowerSeries τ K} (ha : IsFunEqTypeV p q hq σ M a)
     (hb : IsFunEqTypeV p q hq σ M b) : IsFunEqTypeV p q hq σ M (a - b) := by
@@ -31,6 +39,9 @@ theorem funEqV_sub {ι : Type v} [Fintype ι] {τ : Type w} {p q : ℕ} (hq : q 
   simp only [Pi.sub_apply, map_sub, smul_sub, Finset.sum_sub_distrib]
   abel
 
+/- English proof (translation)
+Unfold `FunctionalEquationSetting at h`. Take `⟨hp, ⟨k, hk, rfl⟩, -, -⟩` from `h`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem two_le_q {p q : ℕ} {σ : K →+* K} (h : FunctionalEquationSetting K p q σ) : 2 ≤ q := by
   unfold FunctionalEquationSetting at h
   obtain ⟨hp, ⟨k, hk, rfl⟩, -, -⟩ := h
@@ -38,6 +49,11 @@ theorem two_le_q {p q : ℕ} {σ : K →+* K} (h : FunctionalEquationSetting K p
     _ = p ^ 1 := (pow_one p).symm
     _ ≤ p ^ k := Nat.pow_le_pow_right hp.pos hk
 
+/- English proof (translation)
+Introduce `K _ _ _ p q hq σ hS ι _ _ M hM f hf hfF τ _ g hg0 hgF`. Take `⟨h, h0, hsub⟩` from `hSol K ι τ f g hf hg0`. Use `⟨h, h0, ?_, hsub⟩` and prove the remaining obligations. Establish `hC : IsFunEqTypeV p q hq σ M (fun j => MvPowerSeries.subst h (f j))`. Establish `e : (fun j => MvPowerSeries.subst h (f j)) = g` using `funext hsub`.
+
+Rewrite using `[e]`. Conclude with `hgF`. Conclude with `hInv K ι τ (IsFunEqTypeV p q hq σ M) f hf (fun a b ha hb => funEqV_sub hq σ M ha hb) (fun P hP0 hPI => hKey K p q hq σ hS ι M hM f hf.1 hfF τ P hP0 hPI) (fun D hD N hN hlow => hLow K p q hq σ (two_le_q hS) ι M τ D hD N hN hlow) h h0 hC`.
+-/
 theorem main (hSol : Formalism.FG.SolveExistsV.{u, v, w}) (hInv : Formalism.FG.InvIntegralV.{u, v, w})
     (hLow : Formalism.FG.LowCoeffV.{u, v, w}) (hKey : Formalism.FG.FunEqSubstV.{u, v, w}) :
     Formalism.FG.FunEqHomV.{u, v, w} := by
@@ -58,11 +74,17 @@ end Formalism.FG.FunctionalEquationHom
 
 namespace Formalism.FG
 
+/- English proof (translation)
+The claim follows from `FunctionalEquationHom.main hSol hInv hLow hKey`.
+-/
 theorem FunEqHomV_of (hSol : Formalism.FG.SolveExistsV.{u, v, w}) (hInv : Formalism.FG.InvIntegralV.{u, v, w})
     (hLow : Formalism.FG.LowCoeffV.{u, v, w}) (hKey : Formalism.FG.FunEqSubstV.{u, v, w}) :
     Formalism.FG.FunEqHomV.{u, v, w} :=
   FunctionalEquationHom.main hSol hInv hLow hKey
 
+/- English proof (translation)
+The claim follows from `FunEqHomV_of solve_exists_vector inverse_integral_vector low_coeff_vector functional_equation_subst_vector`.
+-/
 theorem functional_equation_hom_vector : Formalism.FG.FunEqHomV.{u, v, w} :=
   FunEqHomV_of solve_exists_vector inverse_integral_vector low_coeff_vector functional_equation_subst_vector
 

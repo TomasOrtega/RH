@@ -9,6 +9,89 @@ open scoped ComplexConjugate Topology Real
 
 variable {E : Type} [Field E] [NumberField E] [NumberField.IsCMField E]
 
+/- English proof (translation)
+Introduce `r X la P M w hP hM hw hw0 htr z0 hz0 hhalf hpos v hv hv0`. Assume the negation of the conclusion as `hcon`. Use `push_neg at hcon`. Establish `hf : (1 : ℝ) ≤ (fdeg E : ℝ)` using `one_le_field_half_degree (E := E)`. Establish `hk0 : 0 < X.k0` using `X.minWeight_pos`.
+
+Establish `hlog2 : 0 < Real.log 2` using `Real.log_pos one_lt_two`. Establish `hD : 0 < M * ((fdeg E : ℝ) * w + 2) * X.k0 * Real.log 2` using `by positivity`. Establish `hεdef : epStar M (fdeg E) w X.k0 = min 1 (Real.pi / (M * ((fdeg E : ℝ) * w + 2) * X.k0 * Real.log 2))` using `rfl`. Take `⟨ε, hεe⟩ : ∃ ε, ε = epStar M (fdeg E) w X.k0` from `⟨_, rfl⟩`. Rewrite `hcon` using `[← hεe]`.
+
+Establish `hε1 : ε ≤ 1` using `by rw [hεe, hεdef]; exact min_le_left _ _`. Establish `hε2 : ε * (M * ((fdeg E : ℝ) * w + 2) * X.k0 * Real.log 2) ≤ Real.pi`. Establish `h : ε ≤ Real.pi / (M * ((fdeg E : ℝ) * w + 2) * X.k0 * Real.log 2)`. Rewrite using `[hεe, hεdef]`. Conclude with `min_le_right _ _`.
+
+Conclude with `(le_div_iff₀ hD).mp h`. Establish `hεpos : 0 < ε`. Rewrite using `[hεe, hεdef]`. Conclude with `lt_min one_pos (div_pos Real.pi_pos hD)`. Establish `hvv : herm X.Gm v v = 0` using `flowTermNormDecay.herm_eq_zero X hz0 hv (fun τ => lt_of_lt_of_le (hcon τ) hε1)`.
+
+Establish `hemb0 : ∀ τ : X.Ψ, Data.emb τ.1 v ≠ 0`. Introduce `τ h`. Apply `hv0` to reduce the goal to its premises. Use function extensionality and compare the values at `a`. Establish `h2` using `congrFun h a`.
+
+Simplify using `only [Data.emb, Pi.zero_apply, map_eq_zero] at h2`. Simplify using `using h2`. Establish `hIsoV : X.IsIsoV (fun τ : X.Ψ => Data.emb τ.1 v)`. Introduce `τ`. Use `⟨?_, hemb0 τ⟩` and prove the remaining obligations.
+
+Use `show hermC τ.1 X.Gm (Data.emb τ.1 v) (Data.emb τ.1 v) = 0`. Rewrite using `[hermC_emb, hvv, map_zero]`. Establish `hc : ∀ τ : X.Ψ, X.c τ = X.k0`. Introduce `τ`. Use `show 2 * ‖τ.1 X.ξ0‖ = X.k0`.
+
+Rewrite using `[X.ξ0_abs τ]`. Expand and normalize the polynomial expressions, which then agree. Establish `hmaj : ∀ τ : X.Ψ, 0 < X.maj z0 τ (Data.emb τ.1 v)` using `fun τ => Data.maj_pos (X := X.toData) hz0 τ (hemb0 τ)`. Establish `httV : ∀ (s : ℂ) (τ : X.Ψ), s.im / X.ttV (fun τ : X.Ψ => Data.emb τ.1 v) z0 τ = s.im * (X.k0 * X.maj z0 τ (Data.emb τ.1 v))`. Introduce `s τ`.
+
+Use `show s.im / (1 / (X.c τ * X.maj z0 τ (Data.emb τ.1 v))) = _`. Rewrite using `[hc τ, one_div, div_inv_eq_mul]`. Establish `hdomiff : ∀ ζ : ℂ, X.flow v (fun _ => ζ) z0 ∈ X.dom ↔ ∀ τ : X.Ψ, 0 < 1 + ζ.im * (X.k0 * X.maj z0 τ (Data.emb τ.1 v))`. Introduce `ζ`. Establish `h` using `(flowDomainCriterion_holds (E := E) r X.toData (fun τ : X.Ψ => Data.emb τ.1 v) hIsoV z0 hz0 (fun _ => ζ)).1`.
+
+Rewrite using `[show X.flow v (fun _ => ζ) z0 = X.flowV (fun τ : X.Ψ => Data.emb τ.1 v) (fun _ => ζ) z0 from rfl, h]`. Conclude with `forall_congr' fun τ => by rw [httV ζ τ]`. Establish `hcc : cc (1 : E) = 1` using `by simp [cc]`. Take `⟨γ, hγΓ, hχ, hγmap⟩` from `htr v hv hvv 1 hcc isIntegral_one`. Establish `hP'` using `hP`.
+
+Take `⟨⟨⟨hSecD, -, hSecΓ⟩, -⟩, -⟩` from `hP'`. Establish `hflowmat : ∀ (ζ : ℂ) (τ : X.Ψ), mat (X.flow v (fun _ => ζ) z0) τ = X.flowMat v τ ζ * mat z0 τ` using `fun _ _ => rfl`. Establish `hshift : ∀ ζ : ℂ, X.flow v (fun _ => ζ + (M : ℂ)) z0 = lact γ (X.flow v (fun _ => ζ) z0)`. Introduce `ζ`. Use function extensionality and compare the values at `τ`.
+
+Use `show X.flowMat v τ (ζ + (M : ℂ)) * mat z0 τ = (γ : Matrix (Fin r) (Fin r) E).map τ.1 * mat (X.flow v (fun _ => ζ) z0) τ`. Rewrite using `[hγmap τ, map_one, mul_one, hflowmat ζ τ, ← Matrix.mul_assoc, EmbeddingHermitianPairs.flowMat_mul (X := X.toData) hvv τ (M : ℂ) ζ, add_comm]`. Take `⟨G, hG⟩ : ∃ G : ℂ → ℂ, ∀ ζ, G ζ = if (∀ τ : X.Ψ, 0 < 1 + ζ.im * (X.k0 * X.maj z0 τ (Data.emb τ.1 v))) then P (X.flow v (fun _ => ζ) z0) else 0` from `⟨_, fun _ => rfl⟩`. Establish `hGper : Function.Periodic G (M : ℂ)`. Introduce `ζ`.
+
+Establish `him : (ζ + (M : ℂ)).im = ζ.im` using `by simp`. Rewrite using `[hG, hG]`. Simplify using `only [him]`. Use `split_ifs with hcond`. Rewrite using `[hshift ζ, hSecΓ γ hγΓ _ ((hdomiff ζ).2 hcond), hχ, one_mul]`.
+
+Both sides reduce to the same expression. Take `⟨t, ht⟩ : ∃ t : ℝ, t = 1 / (2 * X.k0 * ε)` from `⟨_, rfl⟩`. Take `⟨T, hT⟩ : ∃ T : ℝ, T = 1 / (X.k0 * ε)` from `⟨_, rfl⟩`. Establish `hkε : 0 < X.k0 * ε` using `mul_pos hk0 hεpos`. Establish `htpos : 0 < t` using `by rw [ht]; positivity`.
+
+Establish `hTpos : 0 < T` using `by rw [hT]; positivity`. Establish `htT : t < T`. Rewrite using `[ht, hT]`. Apply `one_div_lt_one_div_of_lt hkε` to reduce the goal to its premises. Use the polynomial consequences of the given equalities and inequalities.
+
+Establish `hTk : T * (X.k0 * ε) = 1`. Rewrite using `[hT, div_mul_eq_mul_div, one_mul, div_self hkε.ne']`. Establish `htk : t * (X.k0 * ε) = 1 / 2`. Rewrite using `[ht, div_mul_eq_mul_div, one_mul, div_eq_iff (by positivity)]`. Expand and normalize the polynomial expressions, which then agree.
+
+Establish `hcondT : ∀ ζ : ℂ, -T < ζ.im → ∀ τ : X.Ψ, 0 < 1 + ζ.im * (X.k0 * X.maj z0 τ (Data.emb τ.1 v))`. Introduce `ζ hζ τ`. Establish `hpos' : 0 < X.k0 * X.maj z0 τ (Data.emb τ.1 v)` using `mul_pos hk0 (hmaj τ)`. Establish `hb : X.k0 * X.maj z0 τ (Data.emb τ.1 v) < X.k0 * ε` using `mul_lt_mul_of_pos_left (hcon τ) hk0`. Use polynomial arithmetic with `[mul_pos (show 0 < ζ.im + T by linarith) hpos', mul_pos hTpos (show 0 < X.k0 * ε - X.k0 * X.maj z0 τ (Data.emb τ.1 v) by linarith)]`.
+
+Establish `hdom0 : ∀ ζ : ℂ, 0 ≤ ζ.im → X.flow v (fun _ => ζ) z0 ∈ X.dom`. Introduce `ζ hζ`. Conclude with `(hdomiff ζ).2 (hcondT ζ (by linarith))`. Establish `hφd : Differentiable ℂ (fun ζ : ℂ => X.flow v (fun _ => ζ) z0)`. Rewrite using `[differentiable_pi]`.
+
+Introduce `τ`. Rewrite using `[differentiable_pi]`. Introduce `a`. Rewrite using `[differentiable_pi]`. Introduce `b`.
+
+Simplify using `only [Data.flow, Data.flowMat, mat, Matrix.mul_apply, Matrix.of_apply]`. Use `fun_prop`. Establish `hdiff : ∀ z : ℂ, -T < z.im → DifferentiableAt ℂ G z`. Introduce `z hz`. Establish `hU : IsOpen {ζ : ℂ | -T < ζ.im}` using `isOpen_lt continuous_const Complex.continuous_im`.
+
+Establish `hmem : ∀ ζ : ℂ, -T < ζ.im → X.flow v (fun _ => ζ) z0 ∈ X.dom` using `fun ζ h => (hdomiff ζ).2 (hcondT ζ h)`. Establish `h1 : DifferentiableWithinAt ℂ (fun ζ : ℂ => P (X.flow v (fun _ => ζ) z0)) {ζ : ℂ | -T < ζ.im} z` using `(hSecD _ (hmem z hz)).comp z (hφd z).differentiableWithinAt (fun ζ h => hmem ζ h)`. Establish `h2` using `h1.differentiableAt (hU.mem_nhds hz)`. Use `h2.congr_of_eventuallyEq ?_` and prove the remaining obligations. Use `filter_upwards [hU.mem_nhds hz] with ζ hζ`.
+
+Rewrite using `[hG, if_pos (hcondT ζ hζ)]`. Establish `hzero : Tendsto G (comap im atTop) (𝓝 0)` using `flowTermNormDecay.tendsto_zero X la P hP hz0 hv hvv hv0 hdom0 G (fun ζ hζ => by`. Rewrite using `[hG, if_pos (hcondT ζ (by linarith))])`. Establish `hpn : ∀ x, X.pnorm la P x = ‖P x‖ * X.nfac la x` using `fun _ => rfl`. Establish `hnf_nonneg : ∀ x, 0 ≤ X.nfac la x`.
+
+Introduce `x`. Unfold `Data.nfac`. Conclude with `Finset.prod_nonneg fun τ _ => Finset.prod_nonneg fun i _ => Real.rpow_nonneg (norm_nonneg _) _`. Establish `hN0 : 0 < X.nfac la z0`. Establish `h` using `hpos`.
+
+Rewrite `h` using `[hpn]`. Break down `(hnf_nonneg z0).lt_or_eq with h' | h'` into its components or cases. Conclude with `h'`. Rewrite `h` using `[← h', mul_zero]`. Conclude with `absurd h (lt_irrefl 0)`.
+
+Establish `hK : ∀ z : ℂ, z.im = -t → ‖G z‖ ≤ 2 * X.pnorm la P z0 * (2 : ℝ) ^ (w / 2) / X.nfac la z0`. Introduce `z hz`. Establish `hcz` using `hcondT z (by rw [hz]; linarith)`. Establish `hy` using `(hdomiff z).2 hcz`. Rewrite using `[hG, if_pos hcz]`.
+
+Establish `hN` using `m3bNorm_holds (E := E) r X.toData (fun τ : X.Ψ => Data.emb τ.1 v) hIsoV la z0 hz0 (fun _ => z) hy`. Simplify using `only at hN`. Establish `hq : ∀ τ : X.Ψ, 1 / 2 < 1 + z.im / X.ttV (fun τ : X.Ψ => Data.emb τ.1 v) z0 τ ∧ 1 + z.im / X.ttV (fun τ : X.Ψ => Data.emb τ.1 v) z0 τ ≤ 1`. Introduce `τ`. Rewrite using `[httV z τ, hz]`.
+
+Establish `ha` using `mul_pos hk0 (hmaj τ)`. Establish `hb : X.k0 * X.maj z0 τ (Data.emb τ.1 v) < X.k0 * ε` using `mul_lt_mul_of_pos_left (hcon τ) hk0`. Prove the components needed by the constructor for the conclusion. Use polynomial arithmetic with `[mul_lt_mul_of_pos_left hb htpos]`. Use polynomial arithmetic with `[mul_pos htpos ha]`.
+
+Establish `hmax : ∏ τ : X.Ψ, max (1 + z.im / X.ttV (fun τ : X.Ψ => Data.emb τ.1 v) z0 τ) (1 + z.im / X.ttV (fun τ : X.Ψ => Data.emb τ.1 v) z0 τ)⁻¹ ^ (X.spread la τ / 2) ≤ (2 : ℝ) ^ (w / 2)`. Combine the equalities or inequalities in the displayed calculation. Apply `Finset.prod_le_prod` to reduce the goal to its premises. Introduce `τ _`. Take `⟨h1, -⟩` from `hq τ`.
+
+Conclude with `Real.rpow_nonneg (le_trans (by linarith) (le_max_left _ _)) _`. Introduce `τ _`. Take `⟨h1, h2⟩` from `hq τ`. Apply `Real.rpow_le_rpow (le_trans (by linarith) (le_max_left _ _)) _ (div_nonneg (flowTermNormDecay.spread_nonneg' X.toData la τ) (by norm_num))` to reduce the goal to its premises. Apply `max_le (by linarith)` to reduce the goal to its premises.
+
+Rewrite using `[inv_le_comm₀ (by linarith) (by norm_num)]`. Combine the linear equalities and inequalities to obtain the conclusion. Use `_ = (2 : ℝ) ^ (∑ τ : X.Ψ, X.spread la τ / 2) := (Real.rpow_sum_of_pos (by norm_num) _ _).symm`. Use `_ ≤ (2 : ℝ) ^ (w / 2) := by`. Apply `Real.rpow_le_rpow_of_exponent_le (by norm_num)` to reduce the goal to its premises.
+
+Rewrite using `[← Finset.sum_div]`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hmin : 0 < ∏ τ : X.Ψ, min (1 + z.im / X.ttV (fun τ : X.Ψ => Data.emb τ.1 v) z0 τ) (1 + z.im / X.ttV (fun τ : X.Ψ => Data.emb τ.1 v) z0 τ)⁻¹ ^ (X.spread la τ / 2)`. Apply `Finset.prod_pos` to reduce the goal to its premises. Introduce `τ _`.
+
+Take `⟨h1, -⟩` from `hq τ`. Conclude with `Real.rpow_pos_of_pos (lt_min (by linarith) (inv_pos.mpr (by linarith))) _`. Establish `hratio : 0 < X.nfac la z0 / X.nfac la (X.flow v (fun _ => z) z0)` using `lt_of_lt_of_le hmin hN.1`. Establish `hNy : 0 < X.nfac la (X.flow v (fun _ => z) z0)`. Break down `(hnf_nonneg (X.flow v (fun _ => z) z0)).lt_or_eq with h | h` into its components or cases.
+
+Conclude with `h`. Rewrite `hratio` using `[← h, div_zero]`. Conclude with `absurd hratio (lt_irrefl 0)`. Establish `hr2 : X.nfac la z0 / X.nfac la (X.flow v (fun _ => z) z0) ≤ (2 : ℝ) ^ (w / 2)` using `le_trans hN.2 hmax`. Establish `hN0le : X.nfac la z0 ≤ (2 : ℝ) ^ (w / 2) * X.nfac la (X.flow v (fun _ => z) z0)`.
+
+Rewrite `hr2` using `[div_le_iff₀ hNy]`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hPy` using `hhalf _ hy`. Rewrite `hPy` using `[hpn]`. Establish `hPn` using `norm_nonneg (P (X.flow v (fun _ => z) z0))`.
+
+Establish `hK0 : 0 ≤ (2 : ℝ) ^ (w / 2)` using `by positivity`. Rewrite using `[le_div_iff₀ hN0]`. Use polynomial arithmetic with `[mul_le_mul_of_nonneg_left hN0le hPn, mul_le_mul_of_nonneg_left hPy hK0]`. Establish `hS` using `PeriodicSchwarzLemma.periodic_schwarz hM htpos htT hGper hdiff hzero hK`. Establish `hG0 : G 0 = P z0`.
+
+Rewrite using `[hG, if_pos (fun τ => by simp)]`. Use `congr 1`. Use function extensionality and compare the values at `τ`. Use `show X.flowMat v τ 0 * mat z0 τ = z0 τ`. Rewrite using `[EmbeddingHermitianPairs.flowMat_zero (X := X.toData) v τ, Matrix.one_mul]`.
+
+Both sides reduce to the same expression. Rewrite `hS` using `[hG0]`. Establish `h1'` using `mul_le_mul_of_nonneg_right hS hN0.le`. Establish `h1 : X.pnorm la P z0 ≤ Real.exp (-2 * π * t / M) * (2 * X.pnorm la P z0 * (2 : ℝ) ^ (w / 2))`. Combine the equalities or inequalities in the displayed calculation.
+
+Establish `h2 : 1 ≤ Real.exp (-2 * π * t / M) * (2 * (2 : ℝ) ^ (w / 2))`. Assume the negation of the conclusion as `hh`. Use `push_neg at hh`. Use polynomial arithmetic with `[mul_lt_mul_of_pos_left hh hpos]`. Establish `hkey : ((fdeg E : ℝ) * w + 2) * Real.log 2 ≤ 2 * π * t / M`.
+
+Establish `he : 2 * π * t / M = π / (M * X.k0 * ε)`. Apply the tactic sequence `rw [ht]; field_simp <;> ring`. Rewrite using `[he, le_div_iff₀ (by positivity)]`. Combine the equalities or inequalities in the displayed calculation. Establish `hfin : Real.exp (-2 * π * t / M) * (2 * (2 : ℝ) ^ (w / 2)) < 1`.
+
+Rewrite using `[Real.rpow_def_of_pos (by norm_num : (0 : ℝ) < 2)]`. Rewrite using `[show (2 : ℝ) * Real.exp (Real.log 2 * (w / 2)) = Real.exp (Real.log 2) * Real.exp (Real.log 2 * (w / 2)) by`. Rewrite using `[Real.exp_log (by norm_num)],`. Use the proof step `← Real.exp_add, ← Real.exp_add]`. Use `lt_of_lt_of_eq (Real.exp_lt_exp.mpr ?_) Real.exp_zero` and prove the remaining obligations.
+
+Establish `hneg : -2 * π * t / M = -(2 * π * t / M)` using `by ring`. Rewrite using `[hneg]`. Use polynomial arithmetic with `[hkey, mul_le_mul_of_nonneg_right hf (le_of_lt (mul_pos hw0 hlog2)), mul_pos hw0 hlog2]`. Conclude with `absurd h2 (not_le.mpr hfin)`.
+-/
 theorem maxBound_holds : MaxBoundStatement (E := E) := by
   classical
   intro r X la P M w hP hM hw hw0 htr z0 hz0 hhalf hpos v hv hv0

@@ -35,14 +35,25 @@ instance (j w) : Module.Finite ℤ_[what₂.places.resChar w] (OcC X j w) :=
 instance (j w) : TopologicalSpace (OcC X j w) := inferInstanceAs (TopologicalSpace ↥(OL (X.Kx j w)))
 instance (j w) : IsTopologicalRing (OcC X j w) := inferInstanceAs (IsTopologicalRing ↥(OL (X.Kx j w)))
 
+/- English proof (translation)
+The claim follows from `Formalism.BasicNotions.Examples₂.LB.OL_adic (X.Kx j w)`.
+-/
 theorem oc_adic (j w) : IsAdic (IsLocalRing.maximalIdeal (OcC X j w)) := Formalism.BasicNotions.Examples₂.LB.OL_adic (X.Kx j w)
 
+/- English proof (translation)
+The claim follows from `Formalism.L2.G.IntCl.complete ℤ_[what₂.places.resChar w] ℚ_[what₂.places.resChar w] ↥(X.Kx j w).1 inferInstance`.
+-/
 theorem oc_complete (j w) : IsAdicComplete (IsLocalRing.maximalIdeal (OcC X j w)) (OcC X j w) :=
   Formalism.L2.G.IntCl.complete ℤ_[what₂.places.resChar w] ℚ_[what₂.places.resChar w] ↥(X.Kx j w).1 inferInstance
 
 def ecC (j : ℕ) (w : what₂.places.Pl) : what₂.LL →+* FractionRing (OcC X j w) :=
   Formalism.BasicNotions.Examples₂.TwB.embF (X.Kx j w) (X.E.emb w) (X.hKx j w)
 
+/- English proof (translation)
+Rewrite using `[X.E.emb_w]`. Prove the components needed by the constructor for the conclusion. Introduce `hx`. Establish `hm : Formalism.BasicNotions.Examples₂.TwB.phiL (X.Kx j w) (X.E.emb w) (X.hKx j w) x ∈ OL (X.Kx j w)` using `(Formalism.BasicNotions.Examples₂.LB.mem_OL (X.Kx j w) _).mpr hx`. Conclude with `⟨⟨_, hm⟩, (Formalism.BasicNotions.Examples₂.LB.toFrac_eq_iff (X.Kx j w) _ ⟨_, hm⟩).mpr rfl⟩`.
+
+Introduce and unpack `⟨a, ha⟩`. Establish `h1` using `(Formalism.BasicNotions.Examples₂.LB.toFrac_eq_iff (X.Kx j w) _ a).mp ha`. Establish `h2` using `(Formalism.BasicNotions.Examples₂.LB.mem_OL (X.Kx j w) _).mp a.2`. Rewrite `h2` using `[h1]`. Conclude with `h2`.
+-/
 theorem ecC_w (j : ℕ) (w : what₂.places.Pl) (x : what₂.LL) :
     0 ≤ what₂.places.val w x ↔ ecC X j w x ∈ (algebraMap (OcC X j w) (FractionRing (OcC X j w))).range := by
   rw [X.E.emb_w]
@@ -78,6 +89,11 @@ def iVC (j : ℕ) (w : what₂.places.Pl) : what₂.MtL (what₂.muTw w) j →�
     rw [← TensorProduct.smul_tmul, TensorProduct.smul_tmul', Algebra.smul_def, mul_one, smul_eq_mul, mul_one]
     rfl
 
+/- English proof (translation)
+Establish `e : (fun a => iVC X j w (b a)) = fun a => b.baseChange (FractionRing (OcC X j w)) a`. Use function extensionality and compare the values at `a`. Rewrite using `[Module.Basis.baseChange_apply]`. Both sides reduce to the same expression. Rewrite using `[e]`.
+
+Conclude with `⟨(b.baseChange _).linearIndependent, (b.baseChange _).span_eq⟩`.
+-/
 theorem iVC_basis (j : ℕ) (w : what₂.places.Pl)
     (b : Module.Basis (Module.Free.ChooseBasisIndex what₂.LL (what₂.MtL (what₂.muTw w) j)) what₂.LL (what₂.MtL (what₂.muTw w) j)) :
     LinearIndependent (FractionRing (OcC X j w)) (fun a => iVC X j w (b a)) ∧

@@ -22,6 +22,9 @@ open ValuativeRel
 open scoped GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels
 
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.SelfDualFirstProj.exists_pair_of_annihilator | exact GlobalTheory.SelfDualFirstProj.exists_pair_of_annihilator | (intros; apply GlobalTheory.SelfDualFirstProj.exists_pair_of_annihilator <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.selfDualLocalSubgroup_firstProj_eq_annihilator : ∀ {F : Type} [Field F] [NumberField F] (v : IsDedekindDomain.HeightOneSpectrum (𝓞 F)) {κ : Type} [Fintype κ]
     [DecidableEq κ] (ψk : AddChar (Fv F v) ℂ) (Λ : AddSubgroup ((κ → Fv F v) × (κ → Fv F v))) (c : Fv F v), c ≠ 0 →
     (∀ x : Fv F v, (∀ y ∈ v.adicCompletionIntegers F, ψk (x * y) = 1) ↔ x ∈ v.adicCompletionIntegers F) →

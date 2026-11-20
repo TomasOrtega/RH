@@ -7,6 +7,31 @@ noncomputable section
 namespace GlobalTheory.CompanionTheory.Ar.Cmp.SncRes.Reg
 open MvPolynomial ReciprocityTheory.ChartRestriction.G.Geo GlobalTheory.CompanionTheory.Ar.Cmp
 
+/- English proof (translation)
+Proceed by induction on `g using MvPolynomial.induction_on with`. Consider the case `C a`. Use `⟨a.den, MvPolynomial.C a.num, 1, by exact_mod_cast a.den_ne_zero, ?_, ?_, by simp⟩` and prove the remaining obligations. Establish `h1 : ((a.den : ℤ) : Ω) * algebraMap ℚ Ω a = (a.num : Ω)`. Combine the equalities or inequalities in the displayed calculation.
+
+Rewrite using `[map_mul]`. Simplify using the standard rewrite rules. Use `_ = _ := by rw [Rat.den_mul_eq_num]; simp`. Simplify using `only [aeval_C, map_one, mul_one, h1]`. Simplify using `[mConeMap]`.
+
+Establish `h1 : ((a.den : ℤ) : ℂ) * algebraMap ℚ ℂ a = (a.num : ℂ)`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[map_mul]`. Simplify using the standard rewrite rules. Use `_ = _ := by rw [Rat.den_mul_eq_num]; simp`.
+
+Establish `: map (Int.castRingHom ℂ) (MvPolynomial.C a.num : MRing ι) - MvPolynomial.C ((a.den : ℤ) : ℂ) * map (algebraMap ℚ ℂ) (MvPolynomial.C a) = 0`. Rewrite using `[map_C, map_C, ← map_mul, h1]`. Simplify using the standard rewrite rules. Rewrite using `[this]`. Conclude with `I.zero_mem`.
+
+Consider the case `add p q hp hq`. Take `⟨d₁, H₁, E₁, hd₁, ha₁, hb₁, he₁⟩` from `hp`. Take `⟨d₂, H₂, E₂, hd₂, ha₂, hb₂, he₂⟩` from `hq`. Establish `hC : ∀ d : ℤ, mConeMap y (MvPolynomial.C d) = MvPolynomial.C (d : Ω)` using `fun d => by`. Rewrite using `[mConeMap, aeval_C]`.
+
+Simplify using the standard rewrite rules. Establish `hZ : ∀ d : ℤ, map (Int.castRingHom ℂ) (MvPolynomial.C d : MRing ι) = MvPolynomial.C (d : ℂ)` using `fun d => by rw [map_C]; simp`. Use `⟨d₁ * d₂, MvPolynomial.C d₂ * H₁ * E₂ + MvPolynomial.C d₁ * H₂ * E₁, E₁ * E₂, mul_ne_zero hd₁ hd₂, ?_, ?_, ?_⟩` and prove the remaining obligations. Simplify using `only [map_add, map_mul, ha₁, ha₂, hC, Int.cast_mul, mul_add]`. Expand and normalize the polynomial expressions, which then agree.
+
+Establish `e : map (Int.castRingHom ℂ) (MvPolynomial.C d₂ * H₁ * E₂ + MvPolynomial.C d₁ * H₂ * E₁ : MRing ι) - MvPolynomial.C ((d₁ * d₂ : ℤ) : ℂ) * map (algebraMap ℚ ℂ) (p + q) = (MvPolynomial.C (d₂ : ℂ) * map (Int.castRingHom ℂ) E₂) * (map (Int.castRingHom ℂ) H₁ - MvPolynomial.C (d₁ : ℂ) * …`. Simplify using `only [map_add, map_mul, hZ, Int.cast_mul]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e]`. Conclude with `I.add_mem (I.add_mem (I.add_mem (I.mul_mem_left _ hb₁) (I.mul_mem_left _ hb₂)) (I.mul_mem_left _ he₂)) (I.mul_mem_left _ he₁)`.
+
+Establish `e : map (Int.castRingHom ℂ) (E₁ * E₂ : MRing ι) - 1 = map (Int.castRingHom ℂ) E₂ * (map (Int.castRingHom ℂ) E₁ - 1) + (map (Int.castRingHom ℂ) E₂ - 1)`. Rewrite using `[map_mul]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e]`. Conclude with `I.add_mem (I.mul_mem_left _ he₁) he₂`.
+
+Consider the case `mul_X p s hp`. Take `⟨d, H, E, hd, ha, hb, he⟩` from `hp`. Establish `hX : mConeMap y (X s) = MvPolynomial.C (y s / y ⟨s.1, c s.1⟩) * mConeMap y (X ⟨s.1, c s.1⟩)`. Simplify using `only [mConeMap, aeval_X, ← mul_assoc, ← map_mul, div_mul_cancel₀ _ (hc s.1)]`. Use `⟨d, H * X s, E * X ⟨s.1, c s.1⟩, hd, ?_, ?_, ?_⟩` and prove the remaining obligations.
+
+Simplify using `only [map_mul, ha, hX, aeval_X]`. Expand and normalize the polynomial expressions, which then agree. Establish `e : map (Int.castRingHom ℂ) (H * X s : MRing ι) - MvPolynomial.C (d : ℂ) * map (algebraMap ℚ ℂ) (p * X s) = X s * (map (Int.castRingHom ℂ) H - MvPolynomial.C (d : ℂ) * map (algebraMap ℚ ℂ) p)`. Simplify using `only [map_mul, map_X]`. Expand and normalize the polynomial expressions, which then agree.
+
+Rewrite using `[e]`. Conclude with `I.mul_mem_left _ hb`. Establish `e : map (Int.castRingHom ℂ) (E * X ⟨s.1, c s.1⟩ : MRing ι) - 1 = X ⟨s.1, c s.1⟩ * (map (Int.castRingHom ℂ) E - 1) + (X ⟨s.1, c s.1⟩ - 1)`. Simplify using `only [map_mul, map_X]`. Expand and normalize the polynomial expressions, which then agree.
+
+Rewrite using `[e]`. Conclude with `I.add_mem (I.mul_mem_left _ he) (hI s.1)`.
+-/
 theorem exists_homogenised (K : Type) [Fintype K] (ι : K → Type) [∀ k, Fintype (ι k)] (Ω : Type) [Field Ω]
     [CharZero Ω] (y : (Σ k, ι k) → Ω) (c : (k : K) → ι k) (hc : ∀ k, y ⟨k, c k⟩ ≠ 0)
     (I : Ideal (MvPolynomial (Σ k, ι k) ℂ))
@@ -87,6 +112,13 @@ theorem exists_homogenised (K : Type) [Fintype K] (ι : K → Type) [∀ k, Fint
       rw [e]
       exact I.add_mem (I.mul_mem_left _ he) (hI s.1)
 
+/- English proof (translation)
+Take `⟨d, H, E, hd, ha, hb, -⟩` from `exists_homogenised K ι Ω y c hc (ReciprocityTheory.AnForm.R.chartIdeal (pC (mCoordIdeal y)) c) (fun k => Ideal.mem_sup_right (Ideal.subset_span ⟨k, rfl⟩)) g`. Establish `hH : H ∈ mCoordIdeal y`. Rewrite using `[mCoordIdeal, RingHom.mem_ker]`. Rewrite using `[ha, hg]`. Simplify using the standard rewrite rules.
+
+Establish `hHC : map (Int.castRingHom ℂ) H ∈ ReciprocityTheory.AnForm.R.chartIdeal (pC (mCoordIdeal y)) c` using `Ideal.mem_sup_left (Ideal.subset_span ⟨H, hH, rfl⟩)`. Establish `h2 : MvPolynomial.C (d : ℂ) * map (algebraMap ℚ ℂ) g ∈ ReciprocityTheory.AnForm.R.chartIdeal (pC (mCoordIdeal y)) c`. Use `Ideal.sub_mem _ hHC hb` as an intermediate fact. Simplify using `using this`. Establish `hd' : (d : ℂ) ≠ 0` using `by exact_mod_cast hd`.
+
+Establish `h3` using `Ideal.mul_mem_left _ (MvPolynomial.C (d : ℂ)⁻¹) h2`. Rewrite `h3` using `[← mul_assoc, ← map_mul, inv_mul_cancel₀ hd', map_one, one_mul]`. Then use the resulting hypothesis.
+-/
 theorem ker_le_chart (K : Type) [Fintype K] (ι : K → Type) [∀ k, Fintype (ι k)] (Ω : Type) [Field Ω] [CharZero Ω]
     (y : (Σ k, ι k) → Ω) (c : (k : K) → ι k) (hc : ∀ k, y ⟨k, c k⟩ ≠ 0) (g : MvPolynomial (Σ k, ι k) ℚ)
     (hg : aeval (fun q : Σ k, ι k => y q / y ⟨q.1, c q.1⟩) g = 0) :
@@ -108,6 +140,17 @@ theorem ker_le_chart (K : Type) [Fintype K] (ι : K → Type) [∀ k, Fintype (�
   have h3 := Ideal.mul_mem_left _ (MvPolynomial.C (d : ℂ)⁻¹) h2
   rwa [← mul_assoc, ← map_mul, inv_mul_cancel₀ hd', map_one, one_mul] at h3
 
+/- English proof (translation)
+Proceed by induction on `h using MvPolynomial.induction_on with`. Consider the case `C r => exact ⟨0, MvPolynomial.C r, by simp, by simp⟩`. Consider the case `add p q hp hq`. Take `⟨n₁, g₁, h₁, h₁'⟩` from `hp`. Take `⟨n₂, g₂, h₂, h₂'⟩` from `hq`.
+
+Use `⟨n₁ + n₂, F ^ n₂ * g₁ + F ^ n₁ * g₂, ?_, ?_⟩` and prove the remaining obligations. Simplify using `only [map_add, map_mul, map_pow, ← h₁, ← h₂]`. Expand and normalize the polynomial expressions, which then agree. Simplify using `only [map_add, map_mul, map_pow, ← h₁', ← h₂']`. Expand and normalize the polynomial expressions, which then agree.
+
+Consider the case `mul_X p o hp`. Take `⟨n, g, h₁, h₁'⟩` from `hp`. Consider the cases of `o with`. Consider the case `none`. Use `⟨n + 1, g, ?_, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[← h₁, map_mul, aeval_X, Option.elim_none]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[← h₁', map_mul, aeval_X, Option.elim_none]`. Combine the equalities or inequalities in the displayed calculation. Consider the case `some q`.
+
+Use `⟨n, g * X q, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[map_mul, map_mul, aeval_X, aeval_X, Option.elim_some, ← h₁]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[map_mul, map_mul, aeval_X, aeval_X, Option.elim_some, ← h₁']`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem exists_clear {σ Ω C : Type} [Field Ω] [CharZero Ω] [CommRing C] [Algebra ℚ C] (u : σ → Ω) (t : σ → C)
     (F : MvPolynomial σ ℚ) (a : Ω) (b : C) (ha : a * aeval u F = 1) (hb : b * aeval t F = 1)
     (h : MvPolynomial (Option σ) ℚ) :
@@ -138,6 +181,35 @@ theorem exists_clear {σ Ω C : Type} [Field Ω] [CharZero Ω] [CommRing C] [Alg
       · rw [map_mul, map_mul, aeval_X, aeval_X, Option.elim_some, ← h₁]; ring
       · rw [map_mul, map_mul, aeval_X, aeval_X, Option.elim_some, ← h₁']; ring
 
+/- English proof (translation)
+Take `⟨b, hb⟩ : ∃ b, b * aeval t F = 1` from `hunit.exists_left_inv`. Establish `ha : (aeval u F)⁻¹ * aeval u F = 1` using `inv_mul_cancel₀ hF`. Set `π₀ : Option σ → Ω` to `fun o => o.elim (aeval u F)⁻¹ u`. Set `τ : Option σ → C` to `fun o => o.elim b t`. Establish `hrange : Set.range π₀ = insert (aeval u F)⁻¹ (Set.range u)`.
+
+Use extensionality with `x`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨o, rfl⟩`. Consider the cases of `o with`. Consider the case `none => exact Set.mem_insert _ _`.
+
+Consider the case `some q => exact Set.mem_insert_of_mem _ ⟨q, rfl⟩`. Introduce and unpack `(rfl | ⟨q, rfl⟩)`. Conclude with `⟨none, rfl⟩`. Conclude with `⟨some q, rfl⟩`. Establish `hS' : S = (aeval π₀ : MvPolynomial (Option σ) ℚ →ₐ[ℚ] Ω).range`.
+
+Rewrite using `[hS, ← hrange, Algebra.adjoin_range_eq_range_aeval]`. Use `clear hS`. Substitute `hS'` using the available equality. Establish `hkle : ∀ h : MvPolynomial (Option σ) ℚ, aeval π₀ h = 0 → aeval τ h = 0`. Introduce `h hh`.
+
+Take `⟨n, g, h₁, h₂⟩` from `exists_clear u t F _ b ha hb h`. Establish `hg : aeval u g = 0`. Rewrite using `[← h₁]`. Establish `: aeval (fun o : Option σ => o.elim (aeval u F)⁻¹ u) h = 0` using `hh`. Rewrite using `[this, mul_zero]`.
+
+Establish `h₃ : aeval t F ^ n * aeval τ h = 0`. Establish `: aeval t F ^ n * aeval (fun o : Option σ => o.elim b t) h = 0` using `by rw [h₂, hker g hg]`. Conclude with `this`. Conclude with `(hunit.pow n).mul_right_eq_zero.1 h₃`. Set `π : MvPolynomial (Option σ) ℚ →ₐ[ℚ] (aeval π₀ : MvPolynomial (Option σ) ℚ →ₐ[ℚ] Ω).range` to `(aeval π₀).rangeRestrict`.
+
+Establish `hs : Function.Surjective π` using `AlgHom.rangeRestrict_surjective _`. Establish `hle : RingHom.ker π.toRingHom ≤ RingHom.ker (aeval τ : MvPolynomial (Option σ) ℚ →ₐ[ℚ] C).toRingHom`. Introduce `h hh`. Use `RingHom.mem_ker.2 (hkle h ?_)` and prove the remaining obligations. Establish `: π h = 0` using `RingHom.mem_ker.1 hh`.
+
+Conclude with `congrArg Subtype.val this`. Set `Φ₀` to `RingHom.liftOfSurjective π.toRingHom hs ⟨(aeval τ).toRingHom, hle⟩`. Establish `hΦ₀ : ∀ x, Φ₀ (π x) = aeval τ x` using `fun x => RingHom.liftOfRightInverse_comp_apply π.toRingHom _ _ ⟨(aeval τ).toRingHom, hle⟩ x`. Establish `huπ : ∀ q, (⟨u q, hu q⟩ : (aeval π₀ : MvPolynomial (Option σ) ℚ →ₐ[ℚ] Ω).range) = π (X (some q))` using `fun q => Subtype.ext (by simp [π, π₀])`. Use `⟨Φ₀.toRatAlgHom, fun q => ?_, fun Φ' hΦ' => ?_⟩` and prove the remaining obligations.
+
+Use `show Φ₀ _ = _`. Rewrite using `[huπ, hΦ₀, aeval_X]`. Both sides reduce to the same expression. Establish `h1 : Φ'.comp π = aeval τ`. Use `MvPolynomial.algHom_ext fun o => ?_` and prove the remaining obligations.
+
+Consider the cases of `o with`. Consider the case `some q => show Φ' (π (X (some q))) = _`. Rewrite using `[← huπ, hΦ', aeval_X]`. Both sides reduce to the same expression. Consider the case `none`.
+
+Establish `h2 : (Φ'.comp π).comp (rename some : MvPolynomial σ ℚ →ₐ[ℚ] _) = aeval t`. Use `MvPolynomial.algHom_ext fun q => ?_` and prove the remaining obligations. Use `show Φ' (π (rename some (X q))) = _`. Rewrite using `[rename_X, ← huπ, hΦ', aeval_X]`. Establish `h3 : π (X none) * π (rename some F) = 1`.
+
+Use `Subtype.ext ?_` and prove the remaining obligations. Use `show aeval π₀ (X none) * aeval π₀ (rename some F) = 1`. Rewrite using `[aeval_X, aeval_rename]`. Conclude with `ha`. Establish `h4 : Φ' (π (X none)) * aeval t F = 1`.
+
+Establish `: Φ' (π (rename some F)) = aeval t F` using `DFunLike.congr_fun h2 F`. Rewrite using `[← this, ← map_mul, h3, map_one]`. Use `show Φ' (π (X none)) = _`. Rewrite using `[aeval_X]`. Conclude with `hunit.mul_right_cancel (h4.trans hb.symm)`.
+
+Use `AlgHom.ext fun s => ?_` and prove the remaining obligations. Take `⟨x, rfl⟩` from `hs s`. Establish `: Φ' (π x) = aeval τ x` using `DFunLike.congr_fun h1 x`. Rewrite using `[this]`. Conclude with `(hΦ₀ x).symm`.
+-/
 theorem exists_unique_lift (σ : Type) (Ω : Type) [Field Ω] [CharZero Ω] (C : Type) [CommRing C] [Algebra ℚ C]
     (u : σ → Ω) (t : σ → C) (hker : ∀ g : MvPolynomial σ ℚ, aeval u g = 0 → aeval t g = 0)
     (F : MvPolynomial σ ℚ) (hF : aeval u F ≠ 0) (hunit : IsUnit (aeval t F : C))
@@ -220,6 +292,19 @@ theorem exists_unique_lift (σ : Type) (Ω : Type) [Field Ω] [CharZero Ω] (C :
     rw [this]
     exact (hΦ₀ x).symm
 
+/- English proof (translation)
+Establish `hmem : ∀ q, ∃ c : Fin e → S, ∑ i, c i • KaehlerDifferential.D ℚ S (z i) = KaehlerDifferential.D ℚ S (u q)`. Introduce `q`. Establish `h : KaehlerDifferential.D ℚ S (u q) ∈ Submodule.span S (Set.range fun i => KaehlerDifferential.D ℚ S (z i))` using `hz ▸ Submodule.mem_top`. Conclude with `(Submodule.mem_span_range_iff_exists_fun S).1 h`. Use `choose c hc using hmem`.
+
+Use `⟨fun i q => ψ (c q i), fun Φ hΦ => ?_⟩` and prove the remaining obligations. Establish `hfst : ∀ s, (Φ s).fst = ψ s` using `fun s => DFunLike.congr_fun hΦ s`. Set `_ : Module S ℂ` to `Module.compHom ℂ (ψ : S →+* ℂ)`. Establish `hsm : ∀ (s : S) (x : ℂ), s • x = ψ s * x` using `fun _ _ => rfl`. Establish `: IsScalarTower ℚ S ℂ` using `⟨fun r s x => by`.
+
+Rewrite using `[hsm, hsm, map_smul, smul_mul_assoc]⟩`. Set `d : Derivation ℚ S ℂ` to `Derivation.mk' (((TrivSqZeroExt.sndHom ℂ ℂ).restrictScalars ℚ).comp Φ.toLinearMap) (fun a b => by show (Φ (a * b)).snd = a • (Φ b).snd + b • (Φ a).snd`. Rewrite using `[map_mul, TrivSqZeroExt.snd_mul, hfst, hfst, hsm, hsm]`. Simplify using `[mul_comm])`. Establish `hd : ∀ s, d s = (Φ s).snd` using `fun _ => rfl`.
+
+Establish `key : ∀ q, (Φ (u q)).snd = ∑ i, ψ (c q i) * (Φ (z i)).snd`. Introduce `q`. Establish `h` using `congrArg d.liftKaehlerDifferential (hc q)`. Rewrite `h` using `[Derivation.liftKaehlerDifferential_comp_D, map_sum]`. Rewrite using `[← hd, ← h]`.
+
+Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[map_smul, Derivation.liftKaehlerDifferential_comp_D, hsm, hd]`. Establish `he : (fun q => (Φ (u q)).snd) = ∑ i, (Φ (z i)).snd • (fun q => ψ (c q i))`. Use function extensionality and compare the values at `q`. Rewrite using `[key, Finset.sum_apply]`.
+
+Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Simplify using `[mul_comm]`. Rewrite using `[he]`. Conclude with `Submodule.sum_mem _ fun i _ => Submodule.smul_mem _ _ (Submodule.subset_span ⟨i, rfl⟩)`.
+-/
 theorem exists_span_of_derivations (S : Type) [CommRing S] [Algebra ℚ S] (σ : Type) (u : σ → S) (e : ℕ)
     (z : Fin e → S)
     (hz : Submodule.span S (Set.range fun i => KaehlerDifferential.D ℚ S (z i)) = ⊤) (ψ : S →ₐ[ℚ] ℂ) :
@@ -261,6 +346,19 @@ theorem exists_span_of_derivations (S : Type) [CommRing S] [Algebra ℚ S] (σ :
   rw [he]
   exact Submodule.sum_mem _ fun i _ => Submodule.smul_mem _ _ (Submodule.subset_span ⟨i, rfl⟩)
 
+/- English proof (translation)
+Proceed by induction on `g using MvPolynomial.induction_on with`. Consider the case `C a`. Prove the components needed by the constructor for the conclusion. Rewrite using `[aeval_C, TrivSqZeroExt.algebraMap_eq_inl', TrivSqZeroExt.fst_inl, map_C, eval_C]`. Rewrite using `[aeval_C, TrivSqZeroExt.algebraMap_eq_inl', TrivSqZeroExt.snd_inl, map_C]`.
+
+Simplify using the standard rewrite rules. Consider the case `add p q hp hq`. Prove the components needed by the constructor for the conclusion. Simplify using `only [map_add, TrivSqZeroExt.fst_add, hp.1, hq.1]`. Simplify using `only [map_add, TrivSqZeroExt.snd_add, hp.2, hq.2, add_mul, Finset.sum_add_distrib]`.
+
+Consider the case `mul_X p s hp`. Prove the components needed by the constructor for the conclusion. Rewrite using `[map_mul, aeval_X, TrivSqZeroExt.fst_mul, hp.1]`. Simplify using `only [TrivSqZeroExt.fst_add, TrivSqZeroExt.fst_inl, TrivSqZeroExt.fst_inr, add_zero, map_mul, map_X, eval_X]`. Rewrite using `[map_mul, aeval_X, TrivSqZeroExt.snd_mul, hp.2, hp.1]`.
+
+Simplify using `only [TrivSqZeroExt.fst_add, TrivSqZeroExt.fst_inl, TrivSqZeroExt.fst_inr, add_zero, TrivSqZeroExt.snd_add, TrivSqZeroExt.snd_inl, TrivSqZeroExt.snd_inr, zero_add, smul_eq_mul, MulOpposite.smul_eq_mul_unop, MulOpposite.unop_op]`. Establish `h : ∀ q, eval w (pderiv q (map (algebraMap ℚ ℂ) (p * X s))) * v q = (if q = s then eval w (map (algebraMap ℚ ℂ) p) * v q else 0) + w s * (eval w (pderiv q (map (algebraMap ℚ ℂ) p)) * v q)`. Introduce `q`. Rewrite using `[map_mul, map_X, Derivation.leibniz]`. Distinguish the cases in `hq : q = s`.
+
+Substitute `hq` using the available equality. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Simplify using `[pderiv_X_of_ne (Ne.symm hq), hq]`. Expand and normalize the polynomial expressions, which then agree.
+
+Simplify using `only [h, Finset.sum_add_distrib, Finset.sum_ite_eq', Finset.mem_univ, if_true, ← Finset.mul_sum]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem aeval_dual (σ : Type) [Fintype σ] (w v : σ → ℂ) (g : MvPolynomial σ ℚ) :
     (aeval (fun q => (TrivSqZeroExt.inl (w q) + TrivSqZeroExt.inr (v q) : TrivSqZeroExt ℂ ℂ)) g).fst =
         eval w (map (algebraMap ℚ ℂ) g) ∧
@@ -300,6 +398,15 @@ theorem aeval_dual (σ : Type) [Fintype σ] (w v : σ → ℂ) (g : MvPolynomial
       simp only [h, Finset.sum_add_distrib, Finset.sum_ite_eq', Finset.mem_univ, if_true, ← Finset.mul_sum]
       ring
 
+/- English proof (translation)
+Set `B : (σ → ℂ) →ₗ[ℂ] (σ → ℂ) →ₗ[ℂ] ℂ` to `LinearMap.mk₂ ℂ (fun v a => ∑ q, a q * v q) (fun v v' a => by simp [mul_add, Finset.sum_add_distrib]) (fun c v a => by simp [Finset.mul_sum]; exact Finset.sum_congr rfl fun _ _ => by ring) (fun v a a' => by simp [add_mul, Finset.sum_add_distrib]) (fun c v a => by simp [Finset.mul …`. Set `T : (σ → ℂ) →ₗ[ℂ] Module.Dual ℂ V` to `B.compl₂ V.subtype`. Establish `hk : LinearMap.ker T ≤ Submodule.span ℂ (Set.range b)`. Introduce `v hv`. Use `h v fun a ha => ?_` and prove the remaining obligations.
+
+Use `DFunLike.congr_fun (LinearMap.mem_ker.1 hv) ⟨a, ha⟩` as an intermediate fact. Conclude with `this`. Establish `h1` using `LinearMap.finrank_range_add_finrank_ker T`. Establish `h2 : Module.finrank ℂ (LinearMap.range T) ≤ Module.finrank ℂ V`. Combine the equalities or inequalities in the displayed calculation.
+
+Establish `h3 : Module.finrank ℂ (LinearMap.ker T) ≤ e`. Combine the equalities or inequalities in the displayed calculation. Use `finrank_range_le_card (R := ℂ) b` as an intermediate fact. Simplify `this` using `[Set.finrank]`. Simplify using `only [Module.finrank_fintype_fun_eq_card] at h1`.
+
+Use linear arithmetic over natural numbers and integers.
+-/
 theorem card_le_finrank_add (σ : Type) [Fintype σ] (V : Submodule ℂ (σ → ℂ)) (e : ℕ) (b : Fin e → σ → ℂ)
     (h : ∀ v : σ → ℂ, (∀ a ∈ V, ∑ q, a q * v q = 0) → v ∈ Submodule.span ℂ (Set.range b)) :
     Fintype.card σ ≤ Module.finrank ℂ V + e := by
@@ -326,6 +433,19 @@ theorem card_le_finrank_add (σ : Type) [Fintype σ] (V : Submodule ℂ (σ → 
   simp only [Module.finrank_fintype_fun_eq_card] at h1
   omega
 
+/- English proof (translation)
+Establish `huS : ∀ q, u q ∈ S` using `fun q => hS ▸ Algebra.subset_adjoin (Set.mem_insert_of_mem _ ⟨q, rfl⟩)`. Establish `haw : ∀ g : MvPolynomial σ ℚ, (aeval w g : ℂ) = eval w (map (algebraMap ℚ ℂ) g)` using `fun g => by`. Rewrite using `[eval_map, aeval_def]`. Take `⟨ψ, hψ, hψu⟩` from `exists_unique_lift σ Ω ℂ u w (fun g hg => by rw [haw]; exact hker g hg) F hF (by rw [haw]; exact isUnit_iff_ne_zero.2 hFw) S hS huS`. Take `⟨b, hb⟩` from `exists_span_of_derivations S σ (fun q => ⟨u q, huS q⟩) e z hz ψ`.
+
+Use `card_le_finrank_add _ _ e b fun v hv => ?_` and prove the remaining obligations. Set `t : σ → TrivSqZeroExt ℂ ℂ` to `fun q => TrivSqZeroExt.inl (w q) + TrivSqZeroExt.inr (v q)`. Take `⟨Φ, hΦ, -⟩` from `exists_unique_lift σ Ω (TrivSqZeroExt ℂ ℂ) u t (fun g hg => by`. Take `⟨h1, h2⟩` from `aeval_dual σ w v g`. Use `TrivSqZeroExt.ext ?_ ?_` and prove the remaining obligations.
+
+Rewrite using `[h1, hker g hg]`. Both sides reduce to the same expression. Rewrite using `[h2]`. Use `hv _ (hV g hg)` as an intermediate fact. Conclude with `this)`.
+
+Use `F hF`. Use the proof step `(by`. Rewrite using `[TrivSqZeroExt.isUnit_iff_isUnit_fst, (aeval_dual σ w v F).1]`. Conclude with `isUnit_iff_ne_zero.2 hFw) S hS huS`. Establish `hfst : (TrivSqZeroExt.fstHom ℚ ℂ ℂ).comp Φ = ψ` using `hψu _ fun q => by`.
+
+Simplify using `[hΦ, t]`. Use `hb Φ hfst` as an intermediate fact. Establish `hv' : (fun q => (Φ ⟨u q, huS q⟩).snd) = v`. Use function extensionality and compare the values at `q`. Simplify using `[hΦ, t]`.
+
+Rewrite `this` using `[hv']`. Then use the resulting hypothesis.
+-/
 theorem card_le_of_kaehler (σ : Type) [Fintype σ] (Ω : Type) [Field Ω] [CharZero Ω] (u : σ → Ω)
     (V : Submodule ℂ (σ → ℂ)) (w : σ → ℂ) (F : MvPolynomial σ ℚ) (hF : aeval u F ≠ 0)
     (hFw : eval w (map (algebraMap ℚ ℂ) F) ≠ 0)
@@ -365,6 +485,15 @@ theorem card_le_of_kaehler (σ : Type) [Fintype σ] (Ω : Type) [Field Ω] [Char
     simp [hΦ, t]
   rwa [hv'] at this
 
+/- English proof (translation)
+Establish `hkerC` using `ker_le_chart K ι Ω y p hp`. Establish `hkerw : ∀ g : MvPolynomial (Σ k, ι k) ℚ, aeval (fun q : Σ k, ι k => y q / y ⟨q.1, p q.1⟩) g = 0 → eval w (map (algebraMap ℚ ℂ) g) = 0` using `fun g hg => hw _ (hkerC g hg)`. Take `⟨m, f, a, hf, ha, hsum, hS⟩` from `hsnc p hp`. Establish `hadj : ∀ s ∈ Algebra.adjoin ℚ (Set.range fun q : Σ k, ι k => y q / y ⟨q.1, p q.1⟩), ∃ F : MvPolynomial (Σ k, ι k) ℚ, aeval (fun q : Σ k, ι k => y q / y ⟨q.1, p q.1⟩) F = s`. Introduce `s hs`.
+
+Rewrite `hs` using `[Algebra.adjoin_range_eq_range_aeval]`. Conclude with `hs`. Use `choose F hF using fun l => hadj (f l) (hf l)`. Use `choose A hA using fun l => hadj (a l) (ha l)`. Choose the witnesses or unpack the hypotheses as in `⟨l, hl⟩ : ∃ l, eval w (map (algebraMap ℚ ℂ) (F l)) ≠ 0 := by`.
+
+Assume the negation of the conclusion as `hcon`. Use `push Not at hcon`. Establish `h0` using `hkerw (∑ l, A l * F l - 1) (by`. Simplify using `only [map_sub, map_sum, map_mul, map_one, hF, hA]`. Rewrite using `[hsum, sub_self])`.
+
+Simplify using `[hcon] at h0`. Establish `hfl : f l ≠ 0` using `fun h0 => hl (hkerw _ (by rw [hF, h0]))`. Take `⟨-, z, n, -, -, hspan, -⟩` from `hS l hfl _ rfl`. Use `card_le_of_kaehler (Σ k, ι k) Ω _ (ReciprocityTheory.AnForm.R.jacSpanAt _ w) w (F l) (by rw [hF]; exact hfl) hl hkerw (fun g hg => Submodule.subset_span ⟨_, hkerC g hg, rfl⟩) _ (by rw [hF]) e z hspan` and prove the remaining obligations.
+-/
 theorem card_le_finrank_jacSpanAt (K : Type) [Fintype K] (ι : K → Type) [∀ k, Fintype (ι k)] (Ω : Type) [Field Ω]
     [CharZero Ω] (y : (Σ k, ι k) → Ω) (e : ℕ) (J : Ideal (MRing ι)) (hsnc : IsSncModel y e J)
     (p : (k : K) → ι k) (hp : ∀ k, y ⟨k, p k⟩ ≠ 0) (w : (Σ k, ι k) → ℂ)
@@ -396,6 +525,17 @@ theorem card_le_finrank_jacSpanAt (K : Type) [Fintype K] (ι : K → Type) [∀ 
   refine card_le_of_kaehler (Σ k, ι k) Ω _ (ReciprocityTheory.AnForm.R.jacSpanAt _ w) w (F l) (by rw [hF]; exact hfl) hl hkerw
     (fun g hg => Submodule.subset_span ⟨_, hkerC g hg, rfl⟩) _ (by rw [hF]) e z hspan
 
+/- English proof (translation)
+Introduce `K _ ι _ Ω _ _ y e J hP hsnc p x hx`. Establish `hPh : ReciprocityTheory.AnForm.R.IsMultiHomogIdeal (pC (mCoordIdeal y))` using `isMultiHomogIdeal_pC hP.2.1.2.1`. Establish `hz` using `rep_mem x`. Establish `hw` using `(ReciprocityTheory.AnForm.R.mem_conePts_iff_chartIdeal hPh p (rep x) hx).1 hz`. Establish `hy : ∀ k, y ⟨k, p k⟩ ≠ 0`.
+
+Introduce `k h0`. Establish `hX : (X ⟨k, p k⟩ : MRing ι) ∈ mCoordIdeal y`. Rewrite using `[mCoordIdeal, RingHom.mem_ker, mConeMap, aeval_X, h0]`. Simplify using the standard rewrite rules. Establish `h1` using `hz.2 _ (Ideal.subset_span ⟨_, hX, rfl⟩)`.
+
+Rewrite `h1` using `[map_X, eval_X]`. Conclude with `hx k h1`. Take `⟨hloc, hnoeth⟩` from `ReciprocityTheory.AnForm.R.locAt_isLocalRing_isNoetherian _ _ hw`. Establish `hd` using `ReciprocityTheory.AnForm.R.ringKrullDim_locAt_chart _ hPh e (pcEquidim K ι _ e hP) p _ hw`. Establish `hcot` using `ReciprocityTheory.AnForm.R.finrank_cotangentSpace_locAt (ReciprocityTheory.AnForm.R.chartIdeal (pC (mCoordIdeal y)) p) (ReciprocityTheory.AnForm.R.affCoord p (rep x))`.
+
+Establish `hrank` using `card_le_finrank_jacSpanAt K ι Ω y e J hsnc p hy _ hw`. Establish `hreg : IsRegularLocalRing (ReciprocityTheory.AnForm.R.locAt (ReciprocityTheory.AnForm.R.chartIdeal (pC (mCoordIdeal y)) p) (ReciprocityTheory.AnForm.R.affCoord p (rep x)))`. Use `IsRegularLocalRing.of_spanFinrank_maximalIdeal_le _ ?_` and prove the remaining obligations. Rewrite using `[IsLocalRing.spanFinrank_maximalIdeal_eq_finrank_cotangentSpace, hd]`. Establish `: Module.finrank (IsLocalRing.ResidueField (ReciprocityTheory.AnForm.R.locAt (ReciprocityTheory.AnForm.R.chartIdeal (pC (mCoordIdeal y)) p) (ReciprocityTheory.AnForm.R.affCoord p (rep x)))) (IsLocalRing.CotangentSpace (ReciprocityTheory.AnForm.R.locAt (ReciprocityTheory.AnForm.R. …` using `by omega`.
+
+Conclude with `this` after adjusting the coercions. Conclude with `⟨IsRegularLocalRing.of_ringEquiv (ReciprocityTheory.AnForm.R.locAtEquiv _ _), (ringKrullDim_eq_of_ringEquiv (ReciprocityTheory.AnForm.R.locAtEquiv _ _)).symm.trans hd⟩`.
+-/
 theorem isRegularLocalRing_chart : ∀ (K : Type) [Fintype K] (ι : K → Type) [∀ k, Fintype (ι k)] (Ω : Type) [Field Ω] [CharZero Ω] (y : (Σ k, ι k) → Ω) (e : ℕ) (J : Ideal (MRing ι)), IsArithVar (mCoordIdeal y) (e + 1) → IsSncModel y e J → ∀ p : (k : K) → ι k, ∀ x ∈ SncRes.src (pC (mCoordIdeal y)) p, IsRegularLocalRing (ReciprocityTheory.AnForm.R.locRing (SncRes.ideal (pC (mCoordIdeal y)) p) (SncRes.coord (pC (mCoordIdeal y)) p x)) ∧ ringKrullDim (ReciprocityTheory.AnForm.R.locRing (SncRes.ideal (pC (mCoordIdeal y)) p) (SncRes.coord (pC (mCoordIdeal y)) p x)) = e := by
   intro K _ ι _ Ω _ _ y e J hP hsnc p x hx
   classical

@@ -8,13 +8,25 @@ import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.PairMaximalComp
 
 namespace PositivityTheory.Rg.BcB.F.FA
 
+/- English proof (translation)
+The claim follows from `GlobalTheory.CompanionTheory.FactorAction.actAlg`.
+-/
 theorem position_action_algebra : ActAlg := GlobalTheory.CompanionTheory.FactorAction.actAlg
 
+/- English proof (translation)
+The claim follows from `GlobalTheory.CompanionTheory.FinActS.finActOf h1 h2 h3 position_action_algebra`.
+-/
 theorem finAct_of (h1 : IntHint) (h2 : Slots) (h3 : FinConv) : FinAct := GlobalTheory.CompanionTheory.FinActS.finActOf h1 h2 h3 position_action_algebra
 
+/- English proof (translation)
+The claim follows from `fmOneOf_holds (fmOff_holds h3 (finAct_of h1 h2 h3)) actIdem_holds`.
+-/
 theorem fmOne_of (h1 : IntHint) (h2 : Slots) (h3 : FinConv) : Tail.FmOne :=
   fmOneOf_holds (fmOff_holds h3 (finAct_of h1 h2 h3)) actIdem_holds
 
+/- English proof (translation)
+The claim follows from `fmPowOf_holds h4 (fmAtP_holds h3 (finAct_of h1 h2 h3)) convMul_holds position_action_algebra actIdem_holds`.
+-/
 theorem fmPow_of (h1 : IntHint) (h2 : Slots) (h3 : FinConv) (h4 : FmAlg) : Tail.FmPow :=
   fmPowOf_holds h4 (fmAtP_holds h3 (finAct_of h1 h2 h3)) convMul_holds position_action_algebra actIdem_holds
 

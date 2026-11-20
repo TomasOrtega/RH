@@ -21,6 +21,11 @@ def vmv {E : Type} [Field E] {n r : ℕ} (v : Fin n → E) : (Fin r → E) →+ 
   AddMonoidHom.mk' (fun u => vecMulVec v u)
     fun u u' => Matrix.ext fun k a => mul_add (v k) (u a) (u' a)
 
+/- English proof (translation)
+Use `Matrix.ext fun i j => ?_` and prove the remaining obligations. Simplify using `only [gen, AddMonoidHom.mk'_apply, Matrix.of_apply]`. Use `congr 1`. Rewrite using `[hS]`. Simplify using `only [Matrix.one_apply, mul_ite, mul_one, mul_zero, Finset.sum_ite_eq', Finset.mem_univ, if_true, vecMulVec_apply, Pi.star_apply, Pi.smul_apply, smul_eq_mul]`.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem gen_eq {D : D7} (S T : HSp D) (hS : S.gram = 1) (α : Af D.host.F) (a : D.host.E)
     (s : Fin S.rank → D.host.E) (t : Fin T.rank → D.host.E) :
     (Matrix.of fun i j => (pairA D.host.F 0 α) ⊗ₜ[D.host.F] (a * t i * ∑ k, star (s k) * S.gram k j) : WO S T)
@@ -33,6 +38,21 @@ theorem gen_eq {D : D7} (S T : HSp D) (hS : S.gram = 1) (α : Af D.host.F) (a : 
     Finset.mem_univ, if_true, vecMulVec_apply, Pi.star_apply, Pi.smul_apply, smul_eq_mul]
   ring
 
+/- English proof (translation)
+Introduce `D S T C LS Λ LT L hΛ hL`. Establish `hS : S.gram = 1` using `C.m.gS`. Establish `hmem : ∀ α : Af D.host.F, α ∈ intAf D.host.F → ∀ a : D.host.E, a ∈ D.host.AA → ∀ v : Fin S.rank → D.host.E, v ∈ Λ → ∀ t : Fin T.rank → D.host.E, t ∈ LT → gen S T α (vecMulVec v (a • t)) ∈ latO S T (LS : Set (Fin S.rank → D.host.E)) (LT : Set (Fin T.rank → D.host.E)) (fun _ => Tru …`. Introduce `α hα a ha v hv t ht`. Unfold `latO`.
+
+Apply `AddSubgroup.subset_closure` to reduce the goal to its premises. Use `⟨α, hα, fun _ h => absurd trivial h, a, ha, star v, (hΛ v).1 hv, t, ht, ?_⟩` and prove the remaining obligations. Rewrite using `[gen_eq S T hS α a (star v) t, star_star]`. Apply `le_antisymm` to reduce the goal to its premises. Unfold `latO`.
+
+Rewrite using `[AddSubgroup.closure_le]`. Introduce and unpack `w ⟨α, hα, -, a, ha, s, hs, t, ht, rfl⟩`. Rewrite using `[gen_eq S T hS α a s t]`. Unfold `hatA`. Apply `AddSubgroup.subset_closure` to reduce the goal to its premises.
+
+Establish `hsΛ : star s ∈ Λ` using `(hΛ (star s)).2 (by rw [star_star]; exact hs)`. Establish `htL : a • t ∈ L` using `(hL (a • t)).2 (AddSubgroup.subset_closure ⟨a, ha, t, ht, rfl⟩)`. Conclude with `⟨α, hα, vecMulVec (star s) (a • t), AddSubgroup.subset_closure ⟨star s, hsΛ, a • t, htL, rfl⟩, rfl⟩`. Unfold `hatA`. Rewrite using `[AddSubgroup.closure_le]`.
+
+Introduce and unpack `w ⟨α, hα, y, hy, rfl⟩`. Establish `hT : tens Λ L ≤ (latO S T (LS : Set (Fin S.rank → D.host.E)) (LT : Set (Fin T.rank → D.host.E)) (fun _ => True)).comap (gen S T α)`. Unfold `tens`. Rewrite using `[AddSubgroup.closure_le]`. Introduce and unpack `_ ⟨v, hv, u, hu, rfl⟩`.
+
+Establish `hL' : AddSubgroup.closure {u | ∃ a : D.host.E, a ∈ D.host.AA ∧ ∃ t ∈ LT, u = a • t} ≤ (latO S T (LS : Set (Fin S.rank → D.host.E)) (LT : Set (Fin T.rank → D.host.E)) (fun _ => True)).comap ((gen S T α).comp (vmv v))`. Rewrite using `[AddSubgroup.closure_le]`. Introduce and unpack `_ ⟨a, ha, t, ht, rfl⟩`. Conclude with `hmem α hα a ha v hv t ht`. Conclude with `hL' ((hL u).1 hu)`.
+
+Conclude with `hT hy`.
+-/
 theorem latO_eq_hatA : ∀ (D : D7) (S T : HSp D) (C : Ctx S T), ∀ (LS Λ : Lt D.host.E S.rank) (LT L : Lt D.host.E T.rank), (∀ v, v ∈ Λ ↔ star v ∈ LS) → IsAA L LT → latO S T (LS : Set (Fin S.rank → D.host.E)) (LT : Set (Fin T.rank → D.host.E)) (fun _ => True) = hatA S T (tens Λ L) := by
   intro D S T C LS Λ LT L hΛ hL
   have hS : S.gram = 1 := C.m.gS

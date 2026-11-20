@@ -16,6 +16,9 @@ variable {G : Type} [Group G] [TopologicalSpace G] {Qp K₀ K : Type} [Field Qp]
     {v : AddValuation LL (WithTop ℚ)} {n : ℕ} [NeZero n] {W : LocWach PD LL O v n}
     {Lb : LevB W} {hR : Ring9 W} {uZ : ℤ_[PD.p]ˣ} {ιZ : ℤ_[PD.p] →+* O}
 
+/- English proof (translation)
+Rewrite using `[map_prod, map_prod]`. Use `Finset.prod_induction _ IsUnit (fun _ _ ha hb => ha.mul hb) isUnit_one ?_` and prove the remaining obligations. Introduce `x hx`. Rewrite using `[map_pow, map_pow]`. Conclude with `(hp x (Finset.mem_range.1 hx)).pow _`.
+-/
 theorem Pf_KapUnit_prod (hR : Ring9 W) (c : ZMod n) (ell : ℕ) (e : ℕ → ℕ) (s : ℕ)
     (hp : ∀ s' < ell, IsUnit (HahnSeries.ofPowerSeries ℤ (KsW W s)
       (rhoL hR c s ((baseIdOf hR).Bs.p s')))) :
@@ -27,6 +30,15 @@ theorem Pf_KapUnit_prod (hR : Ring9 W) (c : ZMod n) (ell : ℕ) (e : ℕ → ℕ
   rw [map_pow, map_pow]
   exact (hp x (Finset.mem_range.1 hx)).pow _
 
+/- English proof (translation)
+Introduce `s hs`. Establish `hp : ∀ s' < ell, IsUnit (HahnSeries.ofPowerSeries ℤ (KsW W s) (rhoL hR c s ((baseIdOf hR).Bs.p s')))`. Introduce `s' hs'`. Distinguish the cases in `h : s' = s`. Substitute `h` using the available equality.
+
+Take `⟨ε, hε⟩` from `k1b s' hs`. Establish `hε' : rhoL hR c s' ((baseIdOf hR).Bs.p s') = (ε : PowerSeries (KsW W s')) * PowerSeries.X` using `hε`. Rewrite using `[hε', map_mul, HahnSeries.ofPowerSeries_X]`. Use `(ε.isUnit.map _).mul (isUnit_iff_exists_inv.2 ⟨HahnSeries.single (-1 : ℤ) 1, ?_⟩)` and prove the remaining obligations. Rewrite using `[HahnSeries.single_mul_single]`.
+
+Simplify using the standard rewrite rules. Conclude with `((unitsAt s hs).2 s' hs' h).map _`. Establish `hΛ` using `Pf_KapUnit_prod hR c ell H s hp`. Establish `hP` using `Pf_KapUnit_prod hR c ell (fun _ => m) s hp`. Rewrite using `[hκ, map_mul, map_mul]`.
+
+Use `IsUnit.mul ?_ hP` and prove the remaining obligations. Rewrite using `[Formalism.ExponentWindows.abelian₂]`. Conclude with `hΛ`.
+-/
 theorem kapUnit_holds {T : LocLat G Qp LL O} {C : Coord W (baseIdOf hR) T} {c : ZMod n} {ell : ℕ}
     {H : ℕ → ℕ} {κ : PowerSeries O} {r : ℕ} {lam : Fin r → Dc W T c}
     (Hy : LvHyp Lb hR uZ ιZ C c ell (Formalism.ExponentWindows.abelian₂ (baseIdOf hR).Bs.p H ell) κ lam) (j M g η : ℕ)

@@ -4,6 +4,13 @@ open GlobalTheory.KeyKa
 
 namespace GlobalTheory.KeyKa
 
+/- English proof (translation)
+Introduce `R Ix _ _ _ deg D R' _ f t H`. Take `⟨h, h1, h2, e, h3⟩` from `H`. Use `⟨h.map f, ?_, ?_, e, ?_⟩` and prove the remaining obligations. Introduce `p q hpq`. Simplify using `[Matrix.map_apply, h1 p q hpq]`.
+
+Use `congrArg (f.mapMatrix : Matrix Ix Ix R →+* Matrix Ix Ix R') h2` as an intermediate fact. Rewrite `this` using `[map_add, map_mul, map_mul, map_one]`. Conclude with `this`. Rewrite using `[h3, map_pow, RingHom.map_det]`. Use `congr 2`.
+
+Use extensionality with `p q`. Simplify using `[Matrix.map_apply]`.
+-/
 theorem torsSq_map : ∀ (R Ix : Type) [CommRing R] [Fintype Ix] [DecidableEq Ix] (deg : Ix → ℕ) (D : Matrix Ix Ix R) (R' : Type) [CommRing R'] (f : R →+* R') (t : R), TorsSq deg D t → TorsSq deg (D.map f) (f t) := by
   intro R Ix _ _ _ deg D R' _ f t H
   obtain ⟨h, h1, h2, e, h3⟩ := H

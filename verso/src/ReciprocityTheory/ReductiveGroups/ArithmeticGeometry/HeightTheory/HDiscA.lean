@@ -17,6 +17,13 @@ namespace Data
 
 variable (d : Data K ι Ω WT A)
 
+/- English proof (translation)
+Establish `key : ∀ la : IsDedekindDomain.HeightOneSpectrum (𝓞 K), (d.htOf hd h).Ila la ≠ ⊤ ∧ d.De hd h ≠ 0 ∧ 2 * d.IL h hd.sel hd.a4.choose la ≤ d.gOrd la (d.De hd h) + 2 * d.NlaG h d.wF hd.a4.choose la`. Introduce `la`. Take `⟨n, t, N, hI, hN, u, hu, hDe⟩` from `d.disc_at hd h la`. Establish `hIL : d.IL h hd.sel hd.a4.choose la = (((d.htOf hd h).Ila la).toNat : ℝ)` using `rfl`. Use `⟨by rw [hI]; exact ENat.coe_ne_top n, ?_, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[hDe, algK_unif]`. Conclude with `mul_ne_zero (zpow_ne_zero _ ((map_ne_zero_iff _ (OpToKT_injective d.D d.N la)).mpr (unifOp_irreducible d.D d.N la).ne_zero)) ((map_ne_zero_iff _ (OpToKT_injective d.D d.N la)).mpr hu.ne_zero)`. Rewrite using `[hIL, hI, d.gOrd_eq la hu hDe, hN, ENat.toNat_natCast]`. Use `push_cast`. Establish `ht : (0 : ℝ) ≤ t` using `Nat.cast_nonneg t`.
+
+Combine the linear equalities and inequalities to obtain the conclusion. Take `⟨M, hM⟩` from `Ideal.exists_maximal (𝓞 K)`. Set `la0 : IsDedekindDomain.HeightOneSpectrum (𝓞 K)` to `⟨M, hM.isPrime, Ring.ne_bot_of_isMaximal_of_not_isField hM (NumberField.RingOfIntegers.not_isField K)⟩`. Conclude with `⟨(key la0).2.1, fun la => ⟨(key la).1, (key la).2.2⟩⟩`.
+-/
 theorem disc_lattice (hd : d.AxH 𝒜) (h : d.S1) :
     d.De hd h ≠ 0 ∧ ∀ la, (d.htOf hd h).Ila la ≠ ⊤ ∧
       2 * d.IL h hd.sel hd.a4.choose la ≤

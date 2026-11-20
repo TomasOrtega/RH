@@ -17,12 +17,20 @@ open GlobalTheory.InertBigCell
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
   {v : Pl F} {w : HeightOneSpectrum (𝓞 E)}
 
+/- English proof (translation)
+Introduce `y` and use `by show toCompl _ (sigR (Fv F v) σ ((InertChart.complEquiv hw (under_eq_of_isInertAt hw)).symm (toCompl _ y))) = _ congr 2 exact (InertChart.complEquiv hw (under_eq_of_isInertAt hw)).symm_apply_apply y`.
+-/
 theorem isConjAt_conjW (σ : E →ₐ[F] E) (hw : Formalism.UG.IsInertAt F E v w) :
     IsConjAt σ (under_eq_of_isInertAt hw) (conjW σ hw) := fun y => by
   show toCompl _ (sigR (Fv F v) σ ((InertChart.complEquiv hw (under_eq_of_isInertAt hw)).symm (toCompl _ y))) = _
   congr 2
   exact (InertChart.complEquiv hw (under_eq_of_isInertAt hw)).symm_apply_apply y
 
+/- English proof (translation)
+Take `⟨y, rfl⟩` from `InertChart.toCompl_surjective (under_eq_of_isInertAt hw) x`. Rewrite using `[isConjAt_conjW σ hw, isConjAt_conjW σ hw]`. Use `congr 1`. Proceed by induction on `y using TensorProduct.induction_on with`. Consider the case `zero => simp`.
+
+Consider the case `tmul a e`. Simplify using `only [sigR, AlgHom.toRingHom_eq_coe, RingHom.coe_coe, Algebra.TensorProduct.map_tmul, AlgHom.id_apply, hσ]`. Consider the case `add x y hx hy => rw [map_add, map_add, hx, hy]`.
+-/
 theorem conjW_conjW (σ : E →ₐ[F] E) (hσ : ∀ x, σ (σ x) = x) (hw : Formalism.UG.IsInertAt F E v w)
     (x : w.adicCompletion E) : conjW σ hw (conjW σ hw x) = x := by
   obtain ⟨y, rfl⟩ := InertChart.toCompl_surjective (under_eq_of_isInertAt hw) x
@@ -34,18 +42,27 @@ theorem conjW_conjW (σ : E →ₐ[F] E) (hσ : ∀ x, σ (σ x) = x) (hw : Form
     simp only [sigR, AlgHom.toRingHom_eq_coe, RingHom.coe_coe, Algebra.TensorProduct.map_tmul, AlgHom.id_apply, hσ]
   | add x y hx hy => rw [map_add, map_add, hx, hy]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `i`. Simplify using `only [Matrix.mulVec, dotProduct, Matrix.map_apply, map_sum, iotaW_mul]`.
+-/
 theorem iotaW_mulVec (hw : Formalism.UG.IsInertAt F E v w) {l m : Type} [Fintype m]
     (M : Matrix l m (w.adicCompletion E)) (y : m → w.adicCompletion E) :
     (fun i => iotaW hw ((M *ᵥ y) i)) = M.map (iotaW hw) *ᵥ fun i => iotaW hw (y i) := by
   funext i
   simp only [Matrix.mulVec, dotProduct, Matrix.map_apply, map_sum, iotaW_mul]
 
+/- English proof (translation)
+Use extensionality with `i j`. Simplify using `only [Matrix.mul_apply, Matrix.map_apply, map_sum, iotaW_mul]`.
+-/
 theorem map_iotaW_mul (hw : Formalism.UG.IsInertAt F E v w) {l m p : Type} [Fintype m]
     (M : Matrix l m (w.adicCompletion E)) (N : Matrix m p (w.adicCompletion E)) :
     M.map (iotaW hw) * N.map (iotaW hw) = (M * N).map (iotaW hw) := by
   ext i j
   simp only [Matrix.mul_apply, Matrix.map_apply, map_sum, iotaW_mul]
 
+/- English proof (translation)
+Use extensionality with `i j`. Simplify using `only [Matrix.map_apply, Matrix.smul_apply, Matrix.one_apply, smul_eq_mul]`. Apply the tactic sequence `split_ifs <;> simp`.
+-/
 theorem one_map_iotaW (hw : Formalism.UG.IsInertAt F E v w) (n : ℕ) :
     (1 : Matrix (Fin n) (Fin n) (w.adicCompletion E)).map (iotaW hw) =
       iotaW hw 1 • (1 : Matrix (Fin n) (Fin n) (AE F E)) := by
@@ -53,6 +70,9 @@ theorem one_map_iotaW (hw : Formalism.UG.IsInertAt F E v w) (n : ℕ) :
   simp only [Matrix.map_apply, Matrix.smul_apply, Matrix.one_apply, smul_eq_mul]
   split_ifs <;> simp
 
+/- English proof (translation)
+Simplify using `only [Formalism.UG.cT, Matrix.mul_apply, Matrix.transpose_apply, Matrix.map_apply, map_sum, map_mul, hτ, hM, Finset.sum_mul]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun k _ => Finset.sum_congr rfl fun l _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem herm_gram {R : Type} [CommRing R] (τ : R →+* R) (hτ : ∀ x, τ (τ x) = x) {n : ℕ}
     (A M : Matrix (Fin n) (Fin n) R) (hM : ∀ i j, τ (M i j) = M j i) (i j : Fin n) :
     τ ((Formalism.UG.cT τ A * M * A) i j) = (Formalism.UG.cT τ A * M * A) j i := by
@@ -62,6 +82,9 @@ theorem herm_gram {R : Type} [CommRing R] (τ : R →+* R) (hτ : ∀ x, τ (τ 
   refine Finset.sum_congr rfl fun k _ => Finset.sum_congr rfl fun l _ => ?_
   ring
 
+/- English proof (translation)
+Establish `h0 : (t : w.adicCompletion E) ≠ 0` using `fun h0 => by rw [h0, map_zero] at ht; exact zero_ne_one ht`. Establish `hm : (t : w.adicCompletion E)⁻¹ ∈ Formalism.UG.Ov E w` using `by show _ ∈ w.adicCompletionIntegers E`. Rewrite using `[HeightOneSpectrum.mem_adicCompletionIntegers, map_inv₀, ht, inv_one]`. Conclude with `isUnit_iff_exists_inv.2 ⟨⟨_, hm⟩, Subtype.ext (mul_inv_cancel₀ h0)⟩`.
+-/
 theorem isUnit_of_val_eq_one {t : Formalism.UG.Ov E w} (ht : Valued.v (t : w.adicCompletion E) = 1) : IsUnit t := by
   have h0 : (t : w.adicCompletion E) ≠ 0 := fun h0 => by rw [h0, map_zero] at ht; exact zero_ne_one ht
   have hm : (t : w.adicCompletion E)⁻¹ ∈ Formalism.UG.Ov E w := by
@@ -75,6 +98,41 @@ namespace GlobalTheory.InertLocDict
 
 open GlobalTheory.InertBigCell
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ B n r s X hB hX v w hw`. Establish `h` using `under_eq_of_isInertAt hw`. Establish `hc : IsConjAt σ h (conjW σ hw)` using `isConjAt_conjW σ hw`. Establish `hσ : ∀ x, σ (σ x) = x` using `InertChart.conj_conj hB.cm`. Use `haveI : IsLocalRing (Formalism.UG.Ov E w) := inferInstanceAs (IsLocalRing (w.adicCompletionIntegers E))`.
+
+Set `c : Formalism.UG.Ov E w →+* Formalism.UG.Ov E w` to `((conjW σ hw).comp (Formalism.UG.Ov E w).subtype).codRestrict (Formalism.UG.Ov E w) (fun x => InertChart.conj_mem hw hc x.2)`. Set `ι : Formalism.UG.Ov E w →ₙ+* AE F E` to `{ toFun := fun x => iotaW hw (x : w.adicCompletion E) map_mul' := fun x y => iotaW_mul hw _ _ map_zero' := map_zero _ map_add' := fun x y => map_add _ _ _ }`. Establish `hι : ∀ x, ι x = iotaW hw (x : w.adicCompletion E)` using `fun _ => rfl`. Establish `hι1 : ι 1 = iotaW hw 1` using `rfl`. Establish `hcv : ∀ x, ((c x : Formalism.UG.Ov E w) : w.adicCompletion E) = conjW σ hw x` using `fun _ => rfl`.
+
+Take `⟨a, ha⟩` from `InertChart.exists_isFrameAt (L := X.L) hw hX.lat.fg hX.lat.span_eq_top`. Establish `hJ : (X.Jᵀ).det ≠ 0`. Rewrite using `[Matrix.det_transpose]`. Conclude with `GlobalTheory.HermSelfDualLoc.det_ne_zero_of_isHerm σ B hX`. Take `⟨Bm, ⟨k, hk⟩, eB⟩` from `InertChart.exists_gram hw hc hJ (GlobalTheory.HermSelfDualLoc.isSelfDualAt_transpose F E σ B n X r s hB hX v) ha`.
+
+Establish `hkij : ∀ i j, ((k.1 i j : Formalism.UG.Ov E w) : w.adicCompletion E) = Bm.1 i j` using `fun i j => by`. Rewrite using `[← hk]`. Both sides reduce to the same expression. Establish `hBt : Bm.1ᵀ = a.1ᵀ * X.J.map (algebraMap E (w.adicCompletion E)) * a.1.map (conjW σ hw)`. Rewrite using `[eB, Matrix.transpose_mul, Matrix.transpose_mul, Formalism.UG.cT, Matrix.transpose_transpose, Matrix.transpose_map, Matrix.transpose_transpose, Matrix.mul_assoc]`.
+
+Use `⟨Formalism.UG.Ov E w, inferInstance, c, ι, a.1.map (iotaW hw), (a⁻¹).1.map (iotaW hw), k.1ᵀ, inferInstance, fun x => Subtype.ext (conjW_conjW σ hσ hw x), ?_, ?_, ?_, ?_, ?_, ?_, ?_, ?_, ?_, ?_, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Establish `h2 : (2 : w.adicCompletion E) ≠ 0`. Rewrite using `[← map_ofNat (algebraMap E (w.adicCompletion E)) 2]`. Conclude with `(map_ne_zero _).2 two_ne_zero`. Establish `hm : (2 : w.adicCompletion E)⁻¹ ∈ Formalism.UG.Ov E w`.
+
+Use `complMap_mem h (GlobalTheory.InertLocField.half_mem v (hB.inert v w hw).1)` as an intermediate fact. Rewrite `this` using `[complMap_algebraMap, map_inv₀, map_inv₀, map_ofNat, map_ofNat]`. Then use the resulting hypothesis. Conclude with `isUnit_iff_exists_inv.2 ⟨⟨_, hm⟩, Subtype.ext (mul_inv_cancel₀ h2)⟩`. Take `⟨x, hx⟩` from `InertChart.exists_conj_sub_unit hB.cm hw`. Establish `hval : ∀ a : E, Valued.v (algebraMap E (w.adicCompletion E) a) = w.valuation E a` using `fun a => HeightOneSpectrum.valuedAdicCompletion_eq_valuation' w _`.
+
+Establish `hxm : algebraMap E (w.adicCompletion E) (x : E) ∈ Formalism.UG.Ov E w` using `by show _ ∈ w.adicCompletionIntegers E`. Rewrite using `[HeightOneSpectrum.mem_adicCompletionIntegers, hval]`. Conclude with `w.valuation_le_one x`. Use `⟨⟨_, hxm⟩, ?_⟩` and prove the remaining obligations. Use `isUnit_of_val_eq_one ?_` and prove the remaining obligations.
+
+Use `show Valued.v (conjW σ hw (algebraMap E _ (x : E)) - algebraMap E _ (x : E)) = 1`. Rewrite using `[InertChart.conj_algebraMap hc, ← map_sub, hval, hx]`. Conclude with `fun x y hxy => Subtype.ext (iotaW_injective hw hxy)`. Rewrite using `[hι1, iotaW_apply]`. Conclude with `GlobalTheory.InertLocField.at_liftT v _`.
+
+Introduce `y hy`. Establish `h1` using `hy _ (GlobalTheory.InertLocField.evFin_one_sub v)`. Rewrite `h1` using `[sub_smul, one_smul, sub_eq_zero]`. Rewrite using `[hι1, iotaW_one, ← Algebra.smul_def]`. Conclude with `h1.symm`.
+
+Introduce `x`. Rewrite using `[hι, hι, hcv, iotaW_conjW]`. Rewrite using `[map_iotaW_mul, Units.mul_inv, one_map_iotaW, hι1]`. Rewrite using `[map_iotaW_mul, Units.inv_mul, one_map_iotaW, hι1]`. Use extensionality with `i j`.
+
+Simplify using `only [Matrix.smul_apply, Matrix.map_apply, smul_eq_mul, hι1, ← iotaW_mul, one_mul]`. Use extensionality with `i j`. Simplify using `only [Matrix.smul_apply, Matrix.map_apply, smul_eq_mul, hι1, ← iotaW_mul, one_mul]`. Introduce `i j`. Apply `Subtype.ext` to reduce the goal to its premises.
+
+Rewrite using `[hcv, Matrix.transpose_apply, Matrix.transpose_apply, hkij, hkij, eB]`. Use `herm_gram (conjW σ hw) (conjW_conjW σ hσ hw) a.1 (X.Jᵀ.map (algebraMap E (w.adicCompletion E))) (fun p q => ?_) i j` and prove the remaining obligations. Simplify using `only [Matrix.map_apply, Matrix.transpose_apply, InertChart.conj_algebraMap hc, hX.herm]`. Rewrite using `[Matrix.det_transpose]`. Conclude with `(Matrix.isUnit_iff_isUnit_det _).1 k.isUnit`.
+
+Establish `e1 : (a.1.map (iotaW hw))ᵀ = (1 - algebraMap (AF F) (AE F E) (GlobalTheory.LatVac.liftV v 1)) • (0 : Matrix (Fin n) (Fin n) (AE F E)) + a.1ᵀ.map (iotaW hw)`. Rewrite using `[smul_zero, zero_add, Matrix.transpose_map]`. Establish `e2 : (a.1.map (iotaW hw)).map (cA σ) = (1 - algebraMap (AF F) (AE F E) (GlobalTheory.LatVac.liftV v 1)) • (0 : Matrix (Fin n) (Fin n) (AE F E)) + (a.1.map (conjW σ hw)).map (iotaW hw)`. Rewrite using `[smul_zero, zero_add]`. Use extensionality with `i j`.
+
+Simplify using `only [Matrix.map_apply, iotaW_conjW]`. Rewrite using `[e1, e2, incM_split hw X.J, idem_split_mul _ (iotaW hw) (one_sub_idem v) (one_sub_mul_iotaW hw) (iotaW_mul hw), idem_split_mul _ (iotaW hw) (one_sub_idem v) (one_sub_mul_iotaW hw) (iotaW_mul hw), Matrix.zero_mul, Matrix.zero_mul, smul_zero, zero_add, ← hBt]`. Use extensionality with `i j`. Simplify using `only [Matrix.map_apply, Matrix.transpose_apply, hι, hkij]`. Introduce `z`.
+
+Rewrite using `[GlobalTheory.InertSphLat.mem_latAt_iff hw X z]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨u, hu, rfl⟩`. Establish `e : a.1 *ᵥ ((a⁻¹).1 *ᵥ u) = u`. Rewrite using `[Matrix.mulVec_mulVec, Units.mul_inv, Matrix.one_mulVec]`.
+
+Establish `hint` using `(ha ((a⁻¹).1 *ᵥ u)).2 (by rw [e]; exact hu)`. Use `⟨fun i => ⟨_, hint i⟩, ?_⟩` and prove the remaining obligations. Use `show (fun i => iotaW hw (u i)) = a.1.map (iotaW hw) *ᵥ fun i => iotaW hw (((a⁻¹).1 *ᵥ u) i)`. Rewrite using `[← iotaW_mulVec, e]`. Introduce and unpack `⟨b, rfl⟩`.
+
+Use `⟨a.1 *ᵥ fun i => (b i : w.adicCompletion E), (ha _).1 fun i => (b i).2, ?_⟩` and prove the remaining obligations. Rewrite using `[iotaW_mulVec]`. Both sides reduce to the same expression.
+-/
 theorem exists_local_dictionary : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E)
     (n r s : ℕ) (X : Spc F E n), B.IsGood σ → X.IsHerm σ B r s →
     ∀ (v : Pl F) (w : HeightOneSpectrum (𝓞 E)), Formalism.UG.IsInertAt F E v w →

@@ -29,6 +29,13 @@ section Pairing
 
 variable {S : Scheme.{0}} {G A : Over S} [GrpObj G] [GrpObj A]
 
+/- English proof (translation)
+Establish `hg : ∀ i j : K → L.ι, (LB.LinComb (dual L) φ ε).g i j = ((LB.LinComb L φ ε).g i j)⁻¹` using `fun i j => by show ∏ k, res (le_inf (inf_le_left.trans (LB.wchart_le L φ i k)) (inf_le_right.trans (LB.wchart_le L φ j k)) : LB.wchart L φ i ⊓ LB.wchart L φ j ≤ φ k ⁻¹ᵁ (L.U (i k) ⊓ L.U (j k))) (pullU (φ k) (L.U (i k) ⊓ L.U (j k)) (L.g (i k) (j k))⁻¹) ^ ε k = (∏ k, res (le_inf (i …`. Rewrite using `[← Finset.prod_inv_distrib]`. Use `Finset.prod_congr rfl fun k _ => ?_` and prove the remaining obligations. Establish `e : ∀ {U V : Y.Opens} (h : V ≤ U) (a : Γ(Y, U)ˣ) (n : ℤ), res h a⁻¹ ^ n = (res h a ^ n)⁻¹` using `fun h a n => by`. Rewrite using `[map_inv, inv_zpow]`.
+
+Rewrite using `[map_inv (pullU _ _)]`. Conclude with `e _ _ _`. Use `⟨⟨fun j => (t.s j)⁻¹⟩, fun i j => ?_, fun Z r z J => map_inv _ _⟩` and prove the remaining obligations. Establish `h` using `congrArg (·⁻¹) (ht i j)`. Simplify using `only [mul_inv, ← map_inv] at h`.
+
+Conclude with `h.trans (congrArg (· * _) (hg i j).symm)`.
+-/
 theorem exists_gen_dual {X Y : Scheme.{0}} {L : LB X} {K : Type} [Fintype K] (φ : K → (Y ⟶ X)) (ε : K → ℤ)
     (t : LB.Gen (LB.LinComb L φ ε)) (ht : t.IsGen) : ∃ u : LB.Gen (LB.LinComb (dual L) φ ε), u.IsGen ∧
       ∀ (Z : Scheme.{0}) (r : Z ⟶ Y) (z : Z) (J : (Z ⟶ X) → L.ι), val (L := dual L) u r z J = (val t r z J)⁻¹ := by
@@ -50,6 +57,9 @@ theorem exists_gen_dual {X Y : Scheme.{0}} {L : LB X} {K : Type} [Fintype K] (φ
   simp only [mul_inv, ← map_inv] at h
   exact h.trans (congrArg (· * _) (hg i j).symm)
 
+/- English proof (translation)
+Take `⟨u, hu, hv⟩` from `exists_gen_dual (L := L) (K := Fin 2) ![(snd T G).left, (Out.translPt G θ.pt).left] ![k, -k] θ.φ θ.isGen`. Conclude with `⟨⟨θ.pt, u, hu⟩, rfl, fun Z t a z J => hv _ _ z J⟩`.
+-/
 theorem exists_theta_dual {L : LB G.left} {k : ℤ} {T : Over S} (θ : Out.ThetaGrp G L k T) :
     ∃ θ' : Out.ThetaGrp G (dual L) k T, θ'.pt = θ.pt ∧ ∀ (Z : Over S) (t : Z ⟶ T) (a : Z ⟶ G) (z : Z.left) (J),
       thetaVal θ' t a z J = (thetaVal θ t a z J)⁻¹ := by
@@ -57,6 +67,13 @@ theorem exists_theta_dual {L : LB G.left} {k : ℤ} {T : Over S} (θ : Out.Theta
     θ.φ θ.isGen
   exact ⟨⟨θ.pt, u, hu⟩, rfl, fun Z t a z J => hv _ _ z J⟩
 
+/- English proof (translation)
+Use `WeilIsogeny.weilIs_of_local hG hA (isLB_dual hL) fun p => ?_` and prove the remaining obligations. Take `⟨V, hV, ⟨θx, θy, ex, ey⟩, H⟩` from `h p`. Take `⟨θx', fx, vx⟩` from `exists_theta_dual θx`. Take `⟨θy', fy, vy⟩` from `exists_theta_dual θy`. Use `⟨V, hV, θx', θy', fx.trans ex, fy.trans ey, (commIsOf_iff (isLB_dual hL) _ _ _).2 fun Z t a z J hJ => ?_⟩` and prove the remaining obligations.
+
+Establish `e` using `(commIsOf_iff hL _ _ _).1 (H θx θy ex ey) Z t a z J hJ`. Establish `e' : Out.unitRes V c⁻¹ = (Out.unitRes V c)⁻¹` using `map_inv _ _`. Rewrite using `[e', map_inv, ← e]`. Unfold `commVal`. Rewrite using `[vx, vx, vy, vy, fx, fy]`.
+
+Simplify using `only [mul_inv]`.
+-/
 theorem weilIs_dual (hG : Out.GlobalFnsSt) (hA : IsAbelianScheme G) {L : LB G.left} (hL : L.IsLB) {n : ℤ} {T : Over S}
     {x y : T ⟶ G} {c : Γ(T.left, ⊤)ˣ} (h : Out.WeilIs G L n x y c) : Out.WeilIs G (dual L) n x y c⁻¹ := by
   refine WeilIsogeny.weilIs_of_local hG hA (isLB_dual hL) fun p => ?_
@@ -71,6 +88,9 @@ theorem weilIs_dual (hG : Out.GlobalFnsSt) (hA : IsAbelianScheme G) {L : LB G.le
   rw [vx, vx, vy, vy, fx, fy]
   simp only [mul_inv]
 
+/- English proof (translation)
+Establish `h₁ : (lbPow L 1).IsLB` using `LB.isLB_linComb hL _ _`. Use `WeilIsogeny.weilIs_pull_hom hG hA hL hM ψ (d := 1) ((cls_eq_iff h₁ (pull_isLB hM _)).1 (by rw [cls_lbPow hL, one_smul, e]; rfl)) h` as an intermediate fact. Simplify using `using this`.
+-/
 theorem weilIs_of_cls (hG : Out.GlobalFnsSt) (hA : IsAbelianScheme G) {L : LB G.left} (hL : L.IsLB) {M : LB A.left}
     (hM : M.IsLB) (ψ : G ⟶ A) [IsMonHom ψ] (e : cls L hL = pull ψ.left (cls M hM)) {n : ℤ} {T : Over S}
     {x y : T ⟶ G} {c : Γ(T.left, ⊤)ˣ} (h : Out.WeilIs A M n (x ≫ ψ) (y ≫ ψ) c) : Out.WeilIs G L n x y c := by
@@ -108,11 +128,21 @@ def pairGroup (hG : Out.GlobalFnsSt) (hA : IsAbelianScheme G) (n : ℤ) {T : Ove
       have := add h (neg h)
       rwa [add_neg_cancel] at this }
 
+/- English proof (translation)
+Unfold both sides. The equivalence is reflexive.
+-/
 theorem mem_pairGroup (hG : Out.GlobalFnsSt) (hA : IsAbelianScheme G) (n : ℤ) {T : Over S} (x y : T ⟶ G)
     {L₀ : LB G.left} (hL₀ : L₀.IsLB) {c₀ : Γ(T.left, ⊤)ˣ} (h₀ : Out.WeilIs G L₀ n x y c₀)
     (κ : CechPic.Pic G.left) (c : Additive Γ(T.left, ⊤)ˣ) :
     (κ, c) ∈ pairGroup hG hA n x y hL₀ h₀ ↔ ∃ L hL, cls L hL = κ ∧ Out.WeilIs G L n x y c.toMul := Iff.rfl
 
+/- English proof (translation)
+Establish `h₁` using `(pairGroup hG hA n x y hL h).zsmul_mem ((mem_pairGroup hG hA n x y hL h _ (Additive.ofMul c)).2 ⟨L, hL, rfl, h⟩) m`. Establish `h₂` using `(pairGroup hG hA n x y hL h).sum_mem (t := Finset.univ) fun i _ => (pairGroup hG hA n x y hL h).zsmul_mem ((mem_pairGroup hG hA n x y hL h (pull (f i).left (cls D hD)) (Additive.ofMul (d i))).2 ⟨D.pull (f i).left, pull_isLB hD _, cls_pull hD _ _, weilIs_of_cls hG hA (pull_isLB hD …`. Establish `e₀ : ∑ i, ε i • (pull (f i).left (cls D hD), Additive.ofMul (d i)) = (m • cls L hL, Additive.ofMul (∏ i, d i ^ ε i))`. Use `Prod.ext ?_ ?_` and prove the remaining obligations. Rewrite using `[Prod.fst_sum]`.
+
+Conclude with `e.symm`. Rewrite using `[Prod.snd_sum, ofMul_prod]`. Both sides reduce to the same expression. Rewrite `h₂` using `[e₀, mem_pairGroup]`. Rewrite `h₁` using `[Prod.smul_mk, mem_pairGroup]`.
+
+Take `⟨M, hM, e₁, w₁⟩` from `h₁`. Take `⟨M', hM', e₂, w₂⟩` from `h₂`. Establish `w₃` using `weilIs_of_cls hG hA hM hM' (𝟙 G) ((e₁.trans e₂.symm).trans (pull_id _).symm) (x := x) (y := y) (by rw [Category.comp_id, Category.comp_id]; exact w₂)`. Conclude with `weilIs_unique hG hA hM w₁ w₃`.
+-/
 theorem pow_eq_prod (hG : Out.GlobalFnsSt) (hA : IsAbelianScheme G) {L : LB G.left} (hL : L.IsLB) {D : LB A.left}
     (hD : D.IsLB) {K : Type} [Fintype K] (f : K → (G ⟶ A)) (hf : ∀ i, IsMonHom (f i)) (ε : K → ℤ) (m : ℤ)
     (e : m • cls L hL = ∑ i, ε i • pull (f i).left (cls D hD)) {n : ℤ} {T : Over S} {x y : T ⟶ G}
@@ -141,6 +171,11 @@ theorem pow_eq_prod (hG : Out.GlobalFnsSt) (hA : IsAbelianScheme G) {L : LB G.le
 
 end Pairing
 
+/- English proof (translation)
+Establish `H : ∀ n : ℕ, Out.WeilIs P.A P.L k (x ^ (n + 1)) y (c ^ (n + 1))` using `fun n => by`. Proceed by induction on `n with`. Consider the case `zero => simpa using h`. Consider the case `succ n ih => simpa only [← pow_succ] using weilIs_mul_left hG S P k T _ x y _ c ih h`. Establish `h₁` using `H k`.
+
+Rewrite `h₁` using `[pow_succ, hx, _root_.one_mul]`. Use `weilIs_unique hG P.isAb P.isLB h₁ h` as an intermediate fact. Rewrite `this` using `[pow_succ, mul_eq_right]`. Then use the resulting hypothesis.
+-/
 theorem pow_eq_one_of_weilIs (hG : Out.GlobalFnsSt) {S : Scheme.{0}} (P : Out.PolAV S) (k : ℕ) {T : Over S}
     {x y : T ⟶ P.A} {c : Γ(T.left, ⊤)ˣ} (hx : x ^ k = 1) (h : Out.WeilIs P.A P.L k x y c) : c ^ k = 1 := by
   have H : ∀ n : ℕ, Out.WeilIs P.A P.L k (x ^ (n + 1)) y (c ^ (n + 1)) := fun n => by
@@ -152,6 +187,17 @@ theorem pow_eq_one_of_weilIs (hG : Out.GlobalFnsSt) {S : Scheme.{0}} (P : Out.Po
   have := weilIs_unique hG P.isAb P.isLB h₁ h
   rwa [pow_succ, mul_eq_right] at this
 
+/- English proof (translation)
+Establish `hs : IsUnit (∑ i ∈ Finset.range k, u ^ i)`. Use `(RingedSpace.isUnit_of_isUnit_germ S.toRingedSpace ⊤ _ fun p _ => ?_)` and prove the remaining obligations. Set `κ` to `S.residueField p`. Set `K` to `AlgebraicClosure κ`. Set `x : Sp K ⟶ S` to `spMap (algebraMap κ K) ≫ S.fromSpecResidueField p`.
+
+Take `⟨h₁, h₂⟩` from `h K x`. Establish `h₃ : x.appTop.hom u = 1`. Take `⟨m, rfl⟩` from `hk`. Use `congrArg x.appTop.hom hu` as an intermediate fact. Rewrite `this` using `[map_pow, map_one, pow_succ, pow_mul, h₂, one_pow, _root_.one_mul]`. Then use the resulting hypothesis.
+
+Establish `h₄ : IsUnit (x.appTop.hom (∑ i ∈ Finset.range k, u ^ i))`. Simplify using `only [map_sum, map_pow, h₃, one_pow, Finset.sum_const, Finset.card_range, nsmul_eq_mul, _root_.mul_one]`. Use `(Ne.isUnit h₁).map (Scheme.ΓSpecIso (CommRingCat.of K)).inv.hom` as an intermediate fact. Rewrite `this` using `[map_natCast]`. Then use the resulting hypothesis. Establish `h₅ : x (default : PrimeSpectrum K) = p` using `(Scheme.Hom.comp_apply _ _ _).trans (Scheme.fromSpecResidueField_apply p _)`.
+
+Establish `h₆ : x (default : PrimeSpectrum K) ∈ S.basicOpen (∑ i ∈ Finset.range k, u ^ i)` using `by show (default : PrimeSpectrum K) ∈ x ⁻¹ᵁ S.basicOpen _`. Rewrite using `[Scheme.preimage_basicOpen_top, Scheme.basicOpen_of_isUnit _ h₄]`. Discharge the goal by the elementary cases of `trivial`. Rewrite `h₆` using `[h₅]`. Conclude with `(S.mem_basicOpen_top _ _).1 h₆`.
+
+Use `geom_sum_mul u k` as an intermediate fact. Rewrite `this` using `[hu, sub_self]`. Conclude with `sub_eq_zero.1 (hs.mul_right_eq_zero.1 this)`.
+-/
 theorem eq_one_of_geometric {S : Scheme.{0}} {k : ℕ} (hk : Odd k) (u : Γ(S, ⊤)) (hu : u ^ k = 1)
     (h : ∀ (K : Type) [Field K] [IsAlgClosed K] (x : Sp K ⟶ S), (k : K) ≠ 0 ∧ x.appTop.hom u ^ 2 = 1) : u = 1 := by
   have hs : IsUnit (∑ i ∈ Finset.range k, u ^ i) := by
@@ -180,6 +226,21 @@ theorem eq_one_of_geometric {S : Scheme.{0}} {k : ℕ} (hk : Odd k) (u : Γ(S, �
   rw [hu, sub_self] at this
   exact sub_eq_zero.1 (hs.mul_right_eq_zero.1 this)
 
+/- English proof (translation)
+Use `hG.smooth` as an intermediate fact. Use `hG.geomConnected` as an intermediate fact. Use `choose m W hW hd using H1.exists_dim G.hom`. Establish `: IsZariskiLocalAtSource (@SmoothOfRelativeDimension g)` using `HasRingHomProperty.instIsZariskiLocalAtSource`. Use `IsZariskiLocalAtSource.of_iSup_eq_top W (top_le_iff.1 fun y _ => TopologicalSpace.Opens.mem_iSup.2 ⟨y, hW y⟩) fun y => ?_` and prove the remaining obligations.
+
+Set `κ` to `S.residueField (G.hom y)`. Set `k` to `AlgebraicClosure κ`. Set `x : Sp k ⟶ S` to `spMap (algebraMap κ k) ≫ S.fromSpecResidueField (G.hom y)`. Establish `hq` using `isGrpPullback_pullback G x`. Establish `hp` using `hq.1`.
+
+Take `⟨y', hy', -⟩` from `Scheme.exists_preimage_of_isPullback hp y (default : PrimeSpectrum k) (Scheme.fromSpecResidueField_apply _ _).symm`. Establish `hab` using `Out.TLinPf.isAb_pullback x G hG`. Use `hab.smooth` as an intermediate fact. Establish `: ConnectedSpace ((Over.pullback x).obj G).left` using `GeometricallyConnected.geometrically_connectedSpace (f := G.hom) x _ _ hp`. Take `⟨d, hd'⟩` from `exists_dim_of_preconnected ((Over.pullback x).obj G).hom y'`.
+
+Establish `hL'` using `pull_isLB hL (pullback.fst G.hom x)`. Take `⟨h₁, h₂⟩` from `amplePt S k x G _ _ hq L _ hL hL' (PolBaseChange.lbIso_refl hL') ample ktriv`. Set `P : Out.PolAV (Sp k)` to `{ A := (Over.pullback x).obj G, isAb := hab, g := d, smoothDim := hd', L := L.pull (pullback.fst G.hom x) isLB := hL', rigid := PolBaseChange.rigidified_pull hq rigid, sym := PolBaseChange.sym_pull hq sym ample := h₁, ktriv := h₂ }`. Take `⟨h₃, h₄⟩` from `h k (𝟙 _ ≫ x)`. Establish `h₅` using `(hM _ P n (by omega)).2.2.2.2 k (𝟙 _) h₃`.
+
+Establish `hb : Function.Bijective (pushHom hq (Over.mk (𝟙 _)))`. Use `⟨fun a b e => Over.OverMorphism.ext (hp.hom_ext (congrArg (fun q => q.left) e) (by rw [Over.w, Over.w])), fun a => ⟨Over.homMk (hp.lift a.left (𝟙 _) (Over.w a)) (hp.lift_snd _ _ _), Over.OverMorphism.ext (hp.lift_fst _ _ _)⟩⟩` and prove the remaining obligations. Set `e` to `MulEquiv.ofBijective _ hb`. Establish `h₆ : n ^ (2 * d) = n ^ (2 * g)`. Use `h₅.symm.trans (Eq.trans (Nat.card_congr (e.toEquiv.subtypeEquiv fun a => ?_)) h₄)` and prove the remaining obligations.
+
+Conclude with `((map_eq_one_iff e e.injective).symm.trans (by rw [map_pow]; rfl))`. Establish `h₇ : d = g`. Use `Nat.pow_right_injective hn h₆` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Rewrite using `[← h₇, ← H1.dim_base hp (hd y) hd' y' (by rw [hy']; exact hW y)]`.
+
+Conclude with `hd y`.
+-/
 theorem smoothOfRelativeDimension_of_card (hM : Out.MulNSt) {S : Scheme.{0}} (G : Over S) [GrpObj G]
     (hG : IsAbelianScheme G) {L : LB G.left} (hL : L.IsLB) (rigid : Out.Rigidified G L) (sym : Out.Sym G L)
     (ample : Out.RelAmple G L) (ktriv : Out.KTriv G L) {n g : ℕ} (hn : 2 ≤ n)
@@ -241,15 +302,24 @@ def quad (B : Γ → Γ → M) {n : ℕ} (W : Matrix (Fin n) (Fin n) ℤ) (x : F
   ∑ uv : Fin n × Fin n, W uv.1 uv.2 • B (x uv.1) (x uv.2)
 
 include hB in
+/- English proof (translation)
+Use `hB 1 1 y` as an intermediate fact. Rewrite `this` using `[_root_.mul_one, left_eq_add]`. Then use the resulting hypothesis.
+-/
 theorem biadd_one (y : Γ) : B 1 y = 0 := by
   have := hB 1 1 y
   rwa [_root_.mul_one, left_eq_add] at this
 
 include hB in
+/- English proof (translation)
+Rewrite using `[eq_neg_iff_add_eq_zero, ← hB, inv_mul_cancel, biadd_one hB]`.
+-/
 theorem biadd_inv (x y : Γ) : B x⁻¹ y = -B x y := by
   rw [eq_neg_iff_add_eq_zero, ← hB, inv_mul_cancel, biadd_one hB]
 
 include hB in
+/- English proof (translation)
+Proceed by induction on `k with`. Consider the case `zero => rw [pow_zero, biadd_one hB, zero_smul]`. Consider the case `succ k ih => rw [pow_succ, hB, ih, succ_nsmul]`.
+-/
 theorem biadd_pow (x y : Γ) (k : ℕ) : B (x ^ k) y = k • B x y := by
   induction k with
   | zero => rw [pow_zero, biadd_one hB, zero_smul]
@@ -258,14 +328,25 @@ theorem biadd_pow (x y : Γ) (k : ℕ) : B (x ^ k) y = k • B x y := by
 variable {n : ℕ} (W : Matrix (Fin n) (Fin n) ℤ)
 
 include hB in
+/- English proof (translation)
+Simplify using `[quad, biadd_one hB]`.
+-/
 theorem quad_one : quad B W (fun _ => 1) = 0 := by simp [quad, biadd_one hB]
 
 include hB hs in
+/- English proof (translation)
+Use `Finset.sum_congr rfl fun uv _ => ?_` and prove the remaining obligations. Rewrite using `[biadd_inv hB, hs, biadd_inv hB, neg_neg, hs]`.
+-/
 theorem quad_inv (x : Fin n → Γ) : quad B W (fun u => (x u)⁻¹) = quad B W x := by
   refine Finset.sum_congr rfl fun uv _ => ?_
   rw [biadd_inv hB, hs, biadd_inv hB, neg_neg, hs]
 
 include hB hs in
+/- English proof (translation)
+Establish `e : ∑ v, B (∏ u, x u ^ (W + W.transpose) u v) (a v) = ∑ uv : Fin n × Fin n, W uv.1 uv.2 • B (x uv.1) (a uv.2) + ∑ uv : Fin n × Fin n, W uv.1 uv.2 • B (x uv.2) (a uv.1)`. Rewrite using `[Fintype.sum_prod_type_right, Fintype.sum_prod_type, ← Finset.sum_add_distrib]`. Use `Finset.sum_congr rfl fun v _ => ?_` and prove the remaining obligations. Rewrite using `[BilinCalc.map_prod_zpow (fun z => B z (a v)) (fun p q => hB p q _), ← Finset.sum_add_distrib]`. Simplify using `only [Matrix.add_apply, Matrix.transpose_apply, add_smul]`.
+
+Rewrite using `[e, quad, quad, quad, ← Finset.sum_add_distrib, ← Finset.sum_add_distrib, ← Finset.sum_add_distrib]`. Use `Finset.sum_congr rfl fun uv _ => ?_` and prove the remaining obligations. Rewrite using `[hB, hs (x uv.1), hB, hs (a uv.1), hB, hs (x uv.2) (x uv.1), hs (a uv.2) (x uv.1), hs (a uv.2) (a uv.1)]`. Simplify using `only [smul_add]`. Normalize the expressions using the abelian group laws.
+-/
 theorem quad_mul (x a : Fin n → Γ) : quad B W (fun u => x u * a u) =
     quad B W x + quad B W a + ∑ v, B (∏ u, x u ^ (W + W.transpose) u v) (a v) := by
   have e : ∑ v, B (∏ u, x u ^ (W + W.transpose) u v) (a v) =
@@ -282,6 +363,13 @@ theorem quad_mul (x a : Fin n → Γ) : quad B W (fun u => x u * a u) =
   abel
 
 include hB hs in
+/- English proof (translation)
+Establish `e₁ : k • quad B W x = 0`. Rewrite using `[quad, Finset.smul_sum]`. Use `Finset.sum_eq_zero fun uv _ => ?_` and prove the remaining obligations. Rewrite using `[smul_comm, ← biadd_pow hB, hx, biadd_one hB, smul_zero]`. Establish `e₂ : k • ∑ v, B (∏ u, x u ^ (W + W.transpose) u v) (a v) = 0`.
+
+Rewrite using `[Finset.smul_sum]`. Use `Finset.sum_eq_zero fun v _ => ?_` and prove the remaining obligations. Rewrite using `[← biadd_pow hB, ← Finset.prod_pow]`. Simplify using `only [← zpow_natCast, ← zpow_mul, mul_comm _ (k : ℤ)]`. Simplify using `only [zpow_mul, zpow_natCast, hx, one_zpow, Finset.prod_const_one, biadd_one hB]`.
+
+Rewrite using `[quad_mul hB hs, neg_smul]`. Simplify using `only [natCast_zsmul, smul_add, e₁, e₂, zero_add, add_zero, add_neg_cancel]`.
+-/
 theorem smul_quad_mul {k : ℕ} (x a : Fin n → Γ) (hx : ∀ u, x u ^ k = 1) :
     (k : ℤ) • quad B W a + (-(k : ℤ)) • quad B W (fun u => x u * a u) = 0 := by
   have e₁ : k • quad B W x = 0 := by
@@ -298,6 +386,9 @@ theorem smul_quad_mul {k : ℕ} (x a : Fin n → Γ) (hx : ∀ u, x u ^ k = 1) :
   simp only [natCast_zsmul, smul_add, e₁, e₂, zero_add, add_zero, add_neg_cancel]
 
 include hB hs in
+/- English proof (translation)
+Rewrite using `[quad, Finset.smul_sum, Fintype.sum_prod_type (f := fun i : (Fin n × Fin n) × Fin 3 => _)]`. Use `Finset.sum_congr rfl fun uv _ => ?_` and prove the remaining obligations. Simplify using `only [Fin.sum_univ_three, Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.cons_val, mul_smul, one_smul, neg_smul, smul_neg]`. Rewrite using `[hB, hs (x uv.1) (x uv.1 * x uv.2), hB, hs (x uv.2) (x uv.1 * x uv.2), hB, hs (x uv.2) (x uv.1)]`. Use `module`.
+-/
 theorem two_smul_quad (x : Fin n → Γ) : (2 : ℤ) • quad B W x =
     ∑ i : (Fin n × Fin n) × Fin 3, (W i.1.1 i.1.2 * ![1, -1, -1] i.2) •
       B (![x i.1.1 * x i.1.2, x i.1.1, x i.1.2] i.2) (![x i.1.1 * x i.1.2, x i.1.1, x i.1.2] i.2) := by
@@ -308,9 +399,19 @@ theorem two_smul_quad (x : Fin n → Γ) : (2 : ℤ) • quad B W x =
   rw [hB, hs (x uv.1) (x uv.1 * x uv.2), hB, hs (x uv.2) (x uv.1 * x uv.2), hB, hs (x uv.2) (x uv.1)]
   module
 
+/- English proof (translation)
+The claim follows from `(map_sum (zmultiplesHom (Additive Γ) (Additive.ofMul x)) _ _).symm`.
+-/
 theorem prod_zpow_eq {I : Type*} [Fintype I] (x : Γ) (f : I → ℤ) : ∏ i, x ^ f i = x ^ ∑ i, f i :=
   (map_sum (zmultiplesHom (Additive Γ) (Additive.ofMul x)) _ _).symm
 
+/- English proof (translation)
+Establish `e : ∏ v, (∏ u, x u ^ E u v) ^ E.adjugate v w = x w`. Simplify using `only [← Finset.prod_zpow, ← zpow_mul]`. Rewrite using `[Finset.prod_comm]`. Establish `: ∀ u, ∏ v, x u ^ (E u v * E.adjugate v w) = x u ^ (1 : Matrix (Fin n) (Fin n) ℤ) u w` using `fun u => by`. Rewrite using `[← one_smul ℤ (1 : Matrix (Fin n) (Fin n) ℤ), ← hE, ← Matrix.mul_adjugate, Matrix.mul_apply]`.
+
+Conclude with `prod_zpow_eq _ _`. Simplify using `only [this]`. Rewrite using `[Finset.prod_eq_single w (fun u _ hu => by rw [Matrix.one_apply_ne hu, zpow_zero]) (by simp)]`. Simplify using the standard rewrite rules. Rewrite using `[← e]`.
+
+Simplify using `[h]`.
+-/
 theorem eq_one_of_det (E : Matrix (Fin n) (Fin n) ℤ) (hE : E.det = 1) (x : Fin n → Γ)
     (h : ∀ v, ∏ u, x u ^ E u v = 1) (w : Fin n) : x w = 1 := by
   have e : ∏ v, (∏ u, x u ^ E u v) ^ E.adjugate v w = x w := by
@@ -325,6 +426,21 @@ theorem eq_one_of_det (E : Matrix (Fin n) (Fin n) ℤ) (hE : E.det = 1) (x : Fin
   rw [← e]
   simp [h]
 
+/- English proof (translation)
+Use `haveI : NeZero k := ⟨hk⟩`. Set `F : Λ →+ Additive Γ` to `AddMonoidHom.mk' (fun a => Additive.ofMul (l a)) fun a b => by rw [add, ofMul_mul]`. Establish `hF : ∀ a b, l a = l b ↔ ∃ e, a - b = k • e` using `fun a b => by`. Rewrite using `[← ker]`. Use `show F a = F b ↔ F (a - b) = 0`.
+
+Rewrite using `[map_sub, sub_eq_zero]`. Establish `e : ∀ (c : Fin m → ℕ) u, ∏ i, l (bas (Pi.single i 1) u) ^ c i = l (bas (fun i => (c i : ℤ)) u)` using `fun c u => by`. Establish `h₁ : (fun i => (c i : ℤ)) = ∑ i, c i • (Pi.single i 1 : Fin m → ℤ)`. Use extensionality with `j`. Simplify using `[Pi.single_apply]`.
+
+Apply `Additive.ofMul.injective` to reduce the goal to its premises. Use `show _ = F _`. Rewrite using `[h₁, map_sum, Finset.sum_apply, map_sum, ofMul_prod]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[map_nsmul, Pi.smul_apply, map_nsmul, ofMul_pow]`.
+
+Both sides reduce to the same expression. Use `choose a ha using fun u => onto (y u) (hy u)`. Use `⟨fun i => (bas.symm a i : ZMod k), fun u => ?_, fun c hc => ?_⟩` and prove the remaining obligations. Establish `: ∀ i, ∃ d : ℤ, ((bas.symm a i : ZMod k).val : ℤ) - bas.symm a i = k * d` using `fun i => (ZMod.intCast_eq_intCast_iff_dvd_sub _ _ k).1 (by simp) choose d hd using this`. Rewrite using `[e, ← ha, hF]`.
+
+Use `⟨bas d u, ?_⟩` and prove the remaining obligations. Establish `h₂ : (fun i => ((bas.symm a i : ZMod k).val : ℤ)) - bas.symm a = k • d`. Use extensionality with `i`. Simplify using `using hd i`. Establish `h₃` using `congrFun (congrArg bas h₂) u`.
+
+Rewrite `h₃` using `[map_sub, map_nsmul, LinearEquiv.apply_symm_apply]`. Then use the resulting hypothesis. Use `choose d hd using fun u => (hF _ _).1 (((e _ u).symm.trans (hc u)).trans (ha u).symm)`. Establish `h₂ : (fun i => ((c i).val : ℤ)) - bas.symm a = k • bas.symm d`. Apply `bas.injective` to reduce the goal to its premises. Rewrite using `[map_sub, map_nsmul, LinearEquiv.apply_symm_apply, LinearEquiv.apply_symm_apply]`.
+
+Conclude with `funext hd`. Use extensionality with `i`. Establish `h₃` using `congrArg (Int.cast : ℤ → ZMod k) (congrFun h₂ i)`. Simplify `h₃` using `[sub_eq_zero]`.
+-/
 theorem existsUnique_coord {Λ I : Type} [AddCommGroup Λ] {m k : ℕ} (hk : k ≠ 0) (l : Λ → Γ)
     (add : ∀ a b, l (a + b) = l a * l b) (ker : ∀ a, l a = 1 ↔ ∃ b, a = k • b)
     (onto : ∀ y : Γ, y ^ k = 1 → ∃ a, l a = y) (bas : (Fin m → ℤ) ≃ₗ[ℤ] (I → Λ)) (y : I → Γ) (hy : ∀ u, y u ^ k = 1) :
@@ -366,6 +482,11 @@ theorem existsUnique_coord {Λ I : Type} [AddCommGroup Λ] {m k : ℕ} (hk : k �
     have h₃ := congrArg (Int.cast : ℤ → ZMod k) (congrFun h₂ i)
     simpa [sub_eq_zero] using h₃
 
+/- English proof (translation)
+Establish `e : ∑ u, ∑ v, (W + W.transpose) u v * omegaStd (a u) (b v) = ∑ uv : Fin n × Fin n, W uv.1 uv.2 * (omegaStd (a uv.1) (b uv.2) + omegaStd (a uv.2) (b uv.1))`. Simplify using `only [Matrix.add_apply, Matrix.transpose_apply, add_mul, mul_add, Finset.sum_add_distrib]`. Rewrite using `[Fintype.sum_prod_type, Fintype.sum_prod_type_right]`. Establish `o : ∀ p q r t : Fin h ⊕ Fin h → ℤ, omegaStd (p + q) (r + t) = omegaStd p r + omegaStd p t + omegaStd q r + omegaStd q t` using `fun p q r t => by`. Simplify using `only [omegaStd, ← Finset.sum_add_distrib, Pi.add_apply]`.
+
+Conclude with `Finset.sum_congr rfl fun _ _ => by ring`. Rewrite using `[e, Finset.sum_mul, Fintype.sum_prod_type (f := fun i : (Fin n × Fin n) × Fin 3 => _)]`. Use `Finset.sum_congr rfl fun uv _ => ?_` and prove the remaining obligations. Simplify using `only [Fin.sum_univ_three, Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.cons_val, o]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem sum_omega {h : ℕ} (a b : Fin n → (Fin h ⊕ Fin h → ℤ)) :
     ∑ i : (Fin n × Fin n) × Fin 3, 2 * omegaStd (![a i.1.1 + a i.1.2, a i.1.1, a i.1.2] i.2)
       (![b i.1.1 + b i.1.2, b i.1.1, b i.1.2] i.2) * (W i.1.1 i.1.2 * ![1, -1, -1] i.2) =
@@ -401,12 +522,18 @@ abbrev sharp (Pb : LB (G2 A).left) {n : ℕ} (pr : Fin n → (G ⟶ A)) (W : Mat
   LB.LinComb Pb (K := Fin n × Fin n) (fun uv => (lift (pr uv.1) (pr uv.2)).left) (fun uv => W uv.1 uv.2)
 
 omit [GrpObj A] [IsCommMonObj A] in
+/- English proof (translation)
+Rewrite using `[bi, ← pull_comp, ← Over.comp_left, comp_lift, bi]`.
+-/
 theorem pull_bi {T T' : Over S} (h : T' ⟶ T) (a b : T ⟶ A) : pull h.left (bi hP a b) = bi hP (h ≫ a) (h ≫ b) := by
   rw [bi, ← pull_comp, ← Over.comp_left, comp_lift, bi]
 
 variable {n : ℕ} (pr : Fin n → (G ⟶ A)) (W : Matrix (Fin n) (Fin n) ℤ)
 
 omit [GrpObj A] [IsCommMonObj A] [GrpObj G] in
+/- English proof (translation)
+Rewrite using `[cls_linComb hP, map_sum]`. Use `Finset.sum_congr rfl fun uv _ => ?_` and prove the remaining obligations. Rewrite using `[map_zsmul]`. Conclude with `congrArg _ (pull_bi hP a _ _)`.
+-/
 theorem pull_sharp {T : Over S} (a : T ⟶ G) (h : (sharp Pb pr W).IsLB) :
     pull a.left (cls _ h) = quad (bi hP) W (fun u => a ≫ pr u) := by
   rw [cls_linComb hP, map_sum]
@@ -419,6 +546,9 @@ variable (hpr : ∀ u, IsMonHom (pr u))
   (hs : ∀ (T : Over S) (x y : T ⟶ A), bi hP x y = bi hP y x)
 
 include hpr hB in
+/- English proof (translation)
+Establish `h : (sharp Pb pr W).IsLB` using `LB.isLB_linComb hP _ _`. Use `(cls_eq_zero_iff (pull_isLB h _)).1 ((pull_sharp hP pr W η[G] h).trans ?_)` and prove the remaining obligations. Establish `e : (fun u => η[G] ≫ pr u) = fun _ => 1` using `funext fun u => by simp [Hom.one_def]`. Rewrite using `[e]`. Conclude with `quad_one (hB _) W`.
+-/
 theorem rigidified_sharp : Out.Rigidified G (sharp Pb pr W) := by
   have h : (sharp Pb pr W).IsLB := LB.isLB_linComb hP _ _
   refine (cls_eq_zero_iff (pull_isLB h _)).1 ((pull_sharp hP pr W η[G] h).trans ?_)
@@ -427,6 +557,13 @@ theorem rigidified_sharp : Out.Rigidified G (sharp Pb pr W) := by
   exact quad_one (hB _) W
 
 include hpr hB hs in
+/- English proof (translation)
+Establish `h : (sharp Pb pr W).IsLB` using `LB.isLB_linComb hP _ _`. Introduce `s`. Use `⟨⊤, trivial, (cls_eq_zero_iff (LB.isLB_linComb h _ _)).1 ?_⟩` and prove the remaining obligations. Establish `e : pull (GrpObj.inv : G ⟶ G).left (cls _ h) = cls _ h`. Use `(pull_sharp hP pr W _ h).trans (Eq.trans ?_ ((pull_sharp hP pr W (𝟙 G) h).symm.trans (pull_id _)))` and prove the remaining obligations.
+
+Rewrite using `[← quad_inv (hB _) (hs _) W fun u => 𝟙 G ≫ pr u]`. Use `congr 1`. Use function extensionality and compare the values at `u`. Rewrite using `[Category.id_comp, Hom.inv_def]`. Conclude with `(GrpObj.inv_hom (pr u))`.
+
+Rewrite using `[cls_linComb h, Fin.sum_univ_two]`. Use `show (1 : ℤ) • pull (_ ≫ _) _ + (-1 : ℤ) • pull (G.hom ⁻¹ᵁ ⊤).ι _ = 0`. Rewrite using `[pull_comp, e, one_smul, neg_smul, one_smul, add_neg_cancel]`.
+-/
 theorem sym_sharp : Out.Sym G (sharp Pb pr W) := by
   have h : (sharp Pb pr W).IsLB := LB.isLB_linComb hP _ _
   intro s
@@ -443,6 +580,11 @@ theorem sym_sharp : Out.Sym G (sharp Pb pr W) := by
   rw [pull_comp, e, one_smul, neg_smul, one_smul, add_neg_cancel]
 
 include hpr hB hs in
+/- English proof (translation)
+Establish `h : (sharp Pb pr W).IsLB` using `LB.isLB_linComb hP _ _`. Choose the witnesses or unpack the hypotheses as in `⟨t, ht⟩ : ∃ t : LB.Gen (Out.thetaLB G (sharp Pb pr W) k x), t.IsGen := by`. Use `(cls_eq_zero_iff (LB.isLB_linComb h _ _)).1 ?_` and prove the remaining obligations. Rewrite using `[cls_linComb h, Fin.sum_univ_two]`. Use `show (k : ℤ) • pull (snd T G).left _ + (-(k : ℤ)) • pull ((fst T G ≫ x) * snd T G).left _ = 0`.
+
+Rewrite using `[pull_sharp hP, pull_sharp hP]`. Simplify using `only [MonObj.mul_comp]`. Use `smul_quad_mul (hB _) (hs _) W _ _ fun u => ?_` and prove the remaining obligations. Rewrite using `[← MonObj.pow_comp, ← MonObj.comp_pow, hx, MonObj.comp_one, MonObj.one_comp]`. Conclude with `⟨⟨x, t, ht⟩, rfl⟩`.
+-/
 theorem exists_theta_sharp {k : ℕ} {T : Over S} (x : T ⟶ G) (hx : x ^ k = 1) :
     ∃ θ : Out.ThetaGrp G (sharp Pb pr W) k T, θ.pt = x := by
   have h : (sharp Pb pr W).IsLB := LB.isLB_linComb hP _ _
@@ -457,6 +599,23 @@ theorem exists_theta_sharp {k : ℕ} {T : Over S} (x : T ⟶ G) (hx : x ^ k = 1)
   exact ⟨⟨x, t, ht⟩, rfl⟩
 
 include hpr hB hs in
+/- English proof (translation)
+Establish `h : (sharp Pb pr W).IsLB` using `LB.isLB_linComb hP _ _`. Introduce `R _ t x hx`. Use `Over.OverMorphism.ext (Scheme.hom_ext_of_forall _ _ fun p => ?_)` and prove the remaining obligations. Take `⟨V, hV, hc⟩` from `hx p`. Use `⟨V, hV, ?_⟩` and prove the remaining obligations.
+
+Set `T : Over S` to `Over.mk t`. Set `j : Out.overRes (T` to `T) V ⟶ T := Out.overResι (T := T) V`. Establish `hD : (Out.translDiff G (sharp Pb pr W) x).IsLB` using `LB.isLB_linComb h _ _`. Establish `h₀ : pull ((fst T G).left ⁻¹ᵁ V).ι (cls _ hD) = 0` using `(cls_eq_zero_iff (pull_isLB hD _)).2 hc`. Establish `h₁ : ∀ (Z : Over S) (r : Z ⟶ Out.overRes (T` using `T) V) (a : Z ⟶ G), quad (bi hP) W (fun u => (r ≫ j ≫ x) ≫ pr u) + ∑ v, bi hP (∏ u, ((r ≫ j ≫ x) ≫ pr u) ^ (W + W.transpose) u v) (a ≫ pr v) = 0 := fun Z r a => by`.
+
+Establish `e` using `IsOpenImmersion.lift_fac ((fst T G).left ⁻¹ᵁ V).ι (lift (r ≫ j) a).left (by`. Introduce and unpack `_ ⟨z, rfl⟩`. Rewrite using `[Scheme.Opens.range_ι]`. Conclude with `(congrArg (fun q => q.left z ∈ V) (lift_fst (r ≫ j) a)).mpr (r.left z).2)`. Establish `e₁ : pull (lift (r ≫ j) a).left (cls _ hD) = 0` using `by rw [← e, pull_comp, h₀, map_zero]`.
+
+Establish `e₂ : cls _ hD = (1 : ℤ) • pull ((fst T G ≫ x) * snd T G).left (cls _ h) + (-1 : ℤ) • pull (snd T G).left (cls _ h)` using `(cls_linComb h _ _ hD).trans (Fin.sum_univ_two _)`. Rewrite `e₁` using `[e₂, one_smul, neg_smul, one_smul, map_add, map_neg, ← pull_comp, ← pull_comp, ← Over.comp_left, ← Over.comp_left, MonObj.comp_mul, lift_fst_assoc, lift_snd, pull_sharp hP, pull_sharp hP, Category.assoc]`. Simplify using `only [MonObj.mul_comp] at e₁`. Rewrite `e₁` using `[quad_mul (hB _) (hs _)]`. Rewrite using `[← e₁]`.
+
+Normalize the expressions using the abelian group laws. Establish `h₂ : ∀ v, ∏ u, ((j ≫ x) ≫ pr u) ^ (W + W.transpose) u v = 1` using `fun v => by`. Use `hK _ _ ((cls_eq_zero_iff (pull_isLB hP _)).1 ?_)` and prove the remaining obligations. Take `⟨a, ha, -⟩` from `hu _ (Pi.mulSingle v (fst A (Out.overRes (T := T) V)))`. Establish `one : ∀ y : A ⊗ Out.overRes (T` using `T) V ⟶ A, bi hP y 1 = 0 := fun y => by rw [hs, biadd_one (hB _)]`.
+
+Establish `e₁` using `h₁ _ (snd A _) 1`. Establish `e₂` using `h₁ _ (snd A _) a`. Simplify using `only [MonObj.one_comp, one, Finset.sum_const_zero, add_zero] at e₁`. Rewrite `e₂` using `[e₁, zero_add, Finset.sum_eq_single v (fun w _ hw => by rw [ha, Pi.mulSingle_eq_of_ne hw, one]) (by simp), ha, Pi.mulSingle_eq_same]`. Use `Eq.trans (congrArg (fun q => bi hP q (fst A _)) ?_) e₂` and prove the remaining obligations.
+
+Use `(map_prod (preHom (G := A) (snd A (Out.overRes (T := T) V))) _ _).trans (Finset.prod_congr rfl fun u _ => ?_)` and prove the remaining obligations. Rewrite using `[map_zpow, Category.assoc (snd A _)]`. Both sides reduce to the same expression. Establish `h₃ : j ≫ x = j ≫ 1`. Use `(hu _ fun _ => 1).unique (eq_one_of_det _ hW _ h₂) fun u => ?_` and prove the remaining obligations.
+
+Rewrite using `[MonObj.comp_one, MonObj.one_comp]`. Conclude with `congrArg (fun q => q.left) h₃`.
+-/
 theorem kTriv_sharp (hu : ∀ (T : Over S) (y : Fin n → (T ⟶ A)), ∃! x : T ⟶ G, ∀ u, x ≫ pr u = y u)
     (hW : (W + W.transpose).det = 1)
     (hK : ∀ (T : Over S) (x : T ⟶ A), (∃ t : (Pb.pull (lift (snd A T ≫ x) (fst A T)).left).Gen, t.IsGen) → x = 1) :
@@ -505,6 +664,11 @@ theorem kTriv_sharp (hu : ∀ (T : Over S) (y : Fin n → (T ⟶ A)), ∃! x : T
   exact congrArg (fun q => q.left) h₃
 
 include hB hs in
+/- English proof (translation)
+Rewrite using `[← pull_id (cls _ h)]`. Use `(congrArg _ (pull_sharp hP pr W (𝟙 G) h)).trans ?_` and prove the remaining obligations. Simplify using `only [Category.id_comp]`. Use `(two_smul_quad (hB _) (hs _) W pr).trans (Finset.sum_congr rfl fun i _ => congrArg _ ?_)` and prove the remaining obligations. Use `Eq.trans ?_ (pull_bi hP _ (𝟙 A) (𝟙 A)).symm` and prove the remaining obligations.
+
+Rewrite using `[Category.comp_id]`.
+-/
 theorem two_smul_sharp (h : (sharp Pb pr W).IsLB) : (2 : ℤ) • cls _ h =
     ∑ i : (Fin n × Fin n) × Fin 3, (W i.1.1 i.1.2 * ![1, -1, -1] i.2) •
       pull (![pr i.1.1 * pr i.1.2, pr i.1.1, pr i.1.2] i.2).left
@@ -518,6 +682,9 @@ theorem two_smul_sharp (h : (sharp Pb pr W).IsLB) : (2 : ℤ) • cls _ h =
 
 end Geometry
 
+/- English proof (translation)
+Establish `e : unitS (spMap β) u = unitOn (Units.map β.toMonoidHom u)` using `Units.ext (congrArg (fun k => k.hom (u : o)) (Scheme.ΓSpecIso_inv_naturality (CommRingCat.ofHom β))).symm`. Rewrite using `[← e, ← hβ]`. Both sides reduce to the same expression.
+-/
 theorem unitS_pull {o K : Type} [CommRing o] [CommRing K] {S : Scheme.{0}} (x : Sp K ⟶ S) (s : S ⟶ Sp o)
     (β : o →+* K) (hβ : x ≫ s = spMap β) (u : oˣ) :
     Units.map x.appTop.hom.toMonoidHom (unitS s u) = unitOn (Units.map β.toMonoidHom u) := by
@@ -532,6 +699,53 @@ namespace GlobalTheory.SiegelPower
 
 open GlobalTheory.CechPic
 
+/- English proof (translation)
+Introduce `hL _ h g W J a bas hW hbas k o _ b S s c hk h3 hζ hc`. Establish `hG` using `hL.globalFns`. Establish `hk0 : k ≠ 0` using `by omega`. Use `haveI : NeZero k := ⟨hk0⟩`. Take `⟨G, _, pr, hab, hpr, hu⟩ : ∃ (G : Over S) (_ : GrpObj G) (pr : Fin 8 → (G ⟶ c.A)), IsAbelianScheme G ∧ (∀ u, IsMonHom (pr u)) ∧ ∀ (T : Over S) (y : Fin 8 → (T ⟶ c.A)), ∃! x : T ⟶ G, ∀ u, x ≫ pr u = y u` from `⟨Out.powObj c.A 8, inferInstance, Out.powPr c.A, AbelianSchemeGerms.isAbelianScheme_powObj c.A c.ab 7, fun u => inferInstance, fun T y => ⟨(Out.powIsLimit c.A 8).lift (Fan.mk T y), fun u => (Out.powIsLimit c.A 8).fac (Fan.mk T y) ⟨u⟩, fun x hx => (Out.powIsLimit c.A 8).uniq (Fan. …`.
+
+Use `hab.comm` as an intermediate fact. Establish `hP` using `c.isLB`. Establish `hD : c.diag.IsLB` using `pull_isLB hP _`. Establish `hB : ∀ (T : Over S) (x x' y : T ⟶ c.A), bi hP (x * x') y = bi hP x y + bi hP x' y` using `fun T x x' y => by`. Establish `e` using `(cls_eq_zero_iff (LB.isLB_linComb hP _ _)).2 (GlobalTheory.T.biadditive_of_trivial_on_axes hG S c.A c.diag c.ab hD hc.1 c.P hP c.rig₁ c.rig₂ T x x' y).1`.
+
+Rewrite `e` using `[cls_linComb hP, Fin.sum_univ_three]`. Simplify using `only [Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.cons_val, one_smul, neg_smul] at e`. Rewrite using `[← sub_eq_zero, ← e]`. Simplify using `only [bi]`. Normalize the expressions using the abelian group laws.
+
+Establish `hs : ∀ (T : Over S) (x y : T ⟶ c.A), bi hP x y = bi hP y x` using `fun T x y => by`. Establish `e : cls c.P hP = bi hP (snd c.A c.A) (fst c.A c.A)` using `(cls_eq_iff hP (pull_isLB hP _)).2 c.symm`. Rewrite using `[bi, e, pull_bi, lift_fst, lift_snd]`. Establish `hLB : (sharp c.P pr W).IsLB` using `LB.isLB_linComb hP _ _`. Establish `rigid` using `rigidified_sharp hP pr W hpr hB`.
+
+Establish `sym` using `sym_sharp hP pr W hpr hB hs`. Establish `ample : Out.RelAmple G (sharp c.P pr W)` using `GlobalTheory.T.relAmple_formBundle_power_of_posDef hG h k 8 o b.ζ S s c G pr W hpr hu hc.1 hW.1`. Establish `ktriv` using `kTriv_sharp hP pr W hpr hB hs hu hW.2 hc.2`. Establish `ext : ∀ {T : Over S} {x y : T ⟶ G}, (∀ u, x ≫ pr u = y ≫ pr u) → x = y` using `fun {T x y} e => (hu T fun u => y ≫ pr u).unique e fun _ => rfl`. Use `choose act hact using fun j => (hu G fun u => (List.ofFn fun v => pr v ^ a j u v).prod).exists`.
+
+Use `choose pt hpt using fun i => (hu (Out.baseOver S) fun u => toUnit _ ≫ c.lev (bas (Pi.single i 1) u)).exists`. Establish `hact' : ∀ j, IsMonHom (act j)` using `fun j => hL.rigidity S G G hab hab _ (ext fun u => by`. Establish `e : ∀ v, η[G] ≫ pr v = 1` using `fun v => by simp [Hom.one_def]`. Rewrite using `[Category.assoc, hact, e, List.prod_ofFn]`. Use `(map_prod (preHom (G := c.A) η[G]) _ _).trans (Finset.prod_eq_one fun v _ => ?_)` and prove the remaining obligations.
+
+Rewrite using `[map_zpow]`. Conclude with `(congrArg (· ^ a j u v) (e v)).trans (one_zpow _))`. Establish `tor : ∀ i, pt i ^ k = 1` using `fun i => ext fun u => by`. Rewrite using `[MonObj.pow_comp, hpt, ← MonObj.comp_pow, c.lev_tors, MonObj.comp_one, MonObj.one_comp]`. Establish `hpt' : ∀ {T : Over S} (r : T ⟶ Out.baseOver S) i u, (r ≫ pt i) ≫ pr u = toUnit T ≫ c.lev (bas (Pi.single i 1) u)` using `fun r i u => by`.
+
+Rewrite using `[Category.assoc, hpt, comp_toUnit_assoc]`. Establish `lin : ∀ {T : Over S} (p : Fin (2 * g) → (T ⟶ G)) (m : Fin (2 * g) → ℕ) u, Out.linComb p m ≫ pr u = ∏ i, (p i ≫ pr u) ^ m i` using `fun {T} p m u => by`. Set `F : (T ⟶ G) →* (T ⟶ c.A)` to `MonoidHom.mk' (· ≫ pr u) fun x y => MonObj.mul_comp x y _`. Rewrite using `[Out.linComb, List.prod_ofFn]`. Conclude with `(map_prod F _ _).trans (Finset.prod_congr rfl fun i _ => map_pow F _ _)`.
+
+Establish `geo : ∀ (K : Type) [Field K] (x : Sp K ⟶ S), ∃ β : o →+* K, x ≫ s = spMap β ∧ (k : K) ≠ 0` using `fun K _ x => ⟨(Spec.preimage (x ≫ s)).hom, (Spec.map_preimage _).symm, by`. Simplify using `using (b.unit.map (Spec.preimage (x ≫ s)).hom).ne_zero⟩`. Establish `bij : ∀ (K : Type) [Field K] [IsAlgClosed K] (x : Sp K ⟶ S) (y : Over.mk x ⟶ G), y ^ k = 1 → ∃! cc : Ix g k, Out.linComb (fun i => (Over.homMk x (by simp) : Over.mk x ⟶ Out.baseOver S) ≫ pt i) (fun i => (cc i).val) = y` using `fun K _ _ x y hy => by`. Take `⟨β, hβ, -⟩` from `geo K x`. Take `⟨g₁, g₂, -⟩` from `c.geom K x β (Units.map β.toMonoidHom b.ζ) hβ rfl`.
+
+Use `(existsUnique_congr fun cc => ?_).1 (existsUnique_coord hk0 (fun e => toUnit (Over.mk x) ≫ c.lev e) (fun e e' => by rw [c.lev_add, MonObj.comp_mul]) g₁ g₂ bas (fun u => y ≫ pr u) fun u => by rw [← MonObj.pow_comp, hy, MonObj.one_comp])` and prove the remaining obligations. Use `⟨fun H => ext fun u => ?_, fun H u => ?_⟩` and prove the remaining obligations. Rewrite using `[lin, ← H u]`. Simplify using `only [hpt']`. Rewrite using `[← H, lin]`.
+
+Simplify using `only [hpt']`. Establish `dim : SmoothOfRelativeDimension g G.hom`. Use `smoothOfRelativeDimension_of_card hL.mulN G hab hLB rigid sym ample ktriv (n := k) (by omega) fun K _ _ x => ⟨(geo K x).choose_spec.2, ?_⟩` and prove the remaining obligations. Set `F : Ix g k → {y : Over.mk x ⟶ G // y ^ k = 1}` to `fun cc => ⟨Out.linComb (fun i => (Over.homMk x (by simp) : Over.mk x ⟶ Out.baseOver S) ≫ pt i) (fun i => (cc i).val), by`. Rewrite using `[Out.linComb, List.prod_ofFn, ← Finset.prod_pow]`.
+
+Use `Finset.prod_eq_one fun i _ => ?_` and prove the remaining obligations. Rewrite using `[← pow_mul, mul_comm, pow_mul, ← MonObj.comp_pow, tor, MonObj.comp_one, one_pow]⟩`. Establish `hF : Function.Bijective F` using `(Function.bijective_iff_existsUnique F).2 fun y => (existsUnique_congr fun cc => Subtype.ext_iff.symm).1 (bij K x y.1 y.2)`. Rewrite using `[← Nat.card_eq_of_bijective F hF, Nat.card_fun, Nat.card_zmod, Nat.card_eq_fintype_card, Fintype.card_fin]`. Set `P : Out.PolAV S` to `{ A := G, isAb := hab, g := g, smoothDim := dim, L := sharp c.P pr W, isLB := hLB, rigid := rigid, sym := sym ample := ample, ktriv := ktriv }`.
+
+Establish `pairing : ∀ i j, Out.WeilIs G (sharp c.P pr W) k (pt i) (pt j) (unitS s b.ζ ^ Out.stdSymp g i j)`. Introduce `i j`. Establish `th : ∀ i (p : (Out.baseOver S).left), ∃ V : (Out.baseOver S).left.Opens, p ∈ V ∧ ∃ θ : Out.ThetaGrp G (sharp c.P pr W) k (Out.overRes V), θ.pt = Out.overResι V ≫ pt i` using `fun i p => ⟨⊤, trivial, exists_theta_sharp hP pr W hpr hB hs _ (by rw [← MonObj.comp_pow, tor, MonObj.comp_one])⟩`. Take `⟨d, hd⟩` from `CommutatorPairing.exists_weilIs hG hab hLB (th i) (th j)`. Establish `h₁ : d ^ k = 1` using `pow_eq_one_of_weilIs hG P k (tor i) hd`.
+
+Establish `h₂ : unitS s b.ζ ^ k = 1`. Unfold `unitS unitOn`. Rewrite using `[← map_pow, ← map_pow, hζ, map_one, map_one]`. Set `e : Γ(S, ⊤)ˣ` to `unitS s b.ζ ^ Out.stdSymp g i j`. Set `d' : Γ(S, ⊤)ˣ` to `d`.
+
+Establish `h₁' : d' ^ k = 1` using `h₁`. Establish `h₃ : (d' * e⁻¹) ^ k = 1`. Rewrite using `[mul_pow, h₁', inv_pow, ← zpow_natCast, ← zpow_mul, mul_comm _ (k : ℤ), zpow_mul, zpow_natCast, h₂, one_zpow, inv_one, _root_.mul_one]`. Establish `h₄ : (d' * e⁻¹).val = 1`. Use `eq_one_of_geometric hk _ (by rw [← Units.val_pow_eq_pow_val, h₃, Units.val_one]) fun K _ _ x => ?_` and prove the remaining obligations.
+
+Take `⟨β, hβ, hK⟩` from `geo K x`. Use `⟨hK, ?_⟩` and prove the remaining obligations. Set `z : Kˣ` to `Units.map β.toMonoidHom b.ζ`. Take `⟨-, -, g₃⟩` from `c.geom K x β z hβ rfl`. Set `r : Over.mk x ⟶ Out.baseOver S` to `Over.homMk x (by simp)`.
+
+Set `φ : Γ(S, ⊤)ˣ →* Γ(Sp K, ⊤)ˣ` to `Units.map x.appTop.hom.toMonoidHom`. Establish `w : Out.WeilIs G (sharp c.P pr W) k (r ≫ pt i) (r ≫ pt j) (φ d')` using `CommPairing.weilIs_pull hG hab hLB r hd`. Establish `lv : ∀ i (q : (Fin 8 × Fin 8) × Fin 3), (r ≫ pt i) ≫ ![pr q.1.1 * pr q.1.2, pr q.1.1, pr q.1.2] q.2 = toUnit _ ≫ c.lev (![bas (Pi.single i 1) q.1.1 + bas (Pi.single i 1) q.1.2, bas (Pi.single i 1) q.1.1, bas (Pi.single i 1) q.1.2] q.2)`. Introduce and unpack `i ⟨uv, l⟩`. Use `fin_cases l`.
+
+Use `show (r ≫ pt i) ≫ (_ * _) = toUnit _ ≫ c.lev (_ + _)`. Rewrite using `[MonObj.comp_mul, hpt', hpt', c.lev_add, MonObj.comp_mul]`. Conclude with `hpt' r i _`. Conclude with `hpt' r i _`. Establish `w₂` using `pow_eq_prod hG hab hLB hD (fun q : (Fin 8 × Fin 8) × Fin 3 => ![pr q.1.1 * pr q.1.2, pr q.1.1, pr q.1.2] q.2) (by`.
+
+Introduce and unpack `⟨uv, l⟩`. Use `fin_cases l`. Conclude with `inferInstanceAs (IsMonHom (lift (pr uv.1) (pr uv.2) ≫ μ[c.A]))`. Conclude with `hpr _`. Conclude with `hpr _) _ 2 (two_smul_sharp hP pr W hB hs hLB) w`.
+
+Use the proof step `(fun q => by rw [lv, lv]; exact g₃ _ _)`. Establish `hz : φ (unitS s b.ζ) = unitOn z` using `unitS_pull x s β hβ b.ζ`. Establish `on : ∀ m : ℤ, unitOn (z ^ m) = unitOn z ^ m` using `fun m => map_zpow _ _ _`. Establish `w₃ : φ d' ^ (2 : ℤ) = φ e ^ (2 : ℤ)`. Use `w₂.trans ?_` and prove the remaining obligations.
+
+Rewrite using `[map_zpow, hz, ← zpow_mul, ← hbas i j, ← sum_omega]`. Use `Eq.trans (Finset.prod_congr rfl fun q _ => ?_) (prod_zpow_eq (unitOn z) _)` and prove the remaining obligations. Conclude with `(congrArg (· ^ _) (on _)).trans (zpow_mul _ _ _).symm`. Establish `w₄ : φ (d' * e⁻¹) ^ 2 = 1`. Rewrite using `[map_mul, map_inv, ← zpow_natCast, mul_zpow, inv_zpow]`.
+
+Conclude with `mul_inv_eq_one.2 w₃`. Conclude with `congrArg Units.val w₄`. Establish `h₅ : d' = e` using `mul_inv_eq_one.1 (Units.ext h₄)`. Conclude with `(congrArg (Out.WeilIs G (sharp c.P pr W) k (pt i) (pt j)) h₅).mp hd`. Conclude with `⟨{ A := G, ab := hab, dim := dim, L := sharp c.P pr W, isLB := hLB, rigid := rigid, sym := sym, ample := ample ktriv := ktriv, pt := pt, torsion := tor, bij := bij, pairing := pairing, act := act, hom := hact' }, pr, hpr, hu, PolBaseChange.lbIso_refl hLB, hact, fun i u => by`.
+
+Use `(congrArg (fun q => q.left) (hpt i u)).trans ?_` and prove the remaining obligations. Conclude with `Category.id_comp _⟩`.
+-/
 theorem exists_tObj_isSharp : Out.Laws → Out.Laws2 → ∀ (h g : ℕ) (W : Matrix (Fin 8) (Fin 8) ℤ) (J : Type) (a : J → Matrix (Fin 8) (Fin 8) ℤ) (bas : (Fin (2 * g) → ℤ) ≃ₗ[ℤ] (Fin 8 → (Fin h ⊕ Fin h → ℤ))), IsE8 W → IsSharpBasis W bas → ∀ (k : ℕ) (o : Type) [CommRing o] (b : TBase o k) (S : Scheme.{0}) (s : S ⟶ Sp o) (c : SiegPre h k (b.ζ : o) s), Odd k → 3 ≤ k → b.ζ ^ k = 1 → c.Principal → ∃ t : TObj g k J b s, IsSharp W a bas t c := by
   intro hL _ h g W J a bas hW hbas k o _ b S s c hk h3 hζ hc
   have hG := hL.globalFns

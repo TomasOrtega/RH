@@ -12,6 +12,17 @@ namespace GlobalTheory.Mem.JPin
 
 set_option maxHeartbeats 4000000 in
 
+/- English proof (translation)
+Introduce `D L hT Gi Gl K Yd cX ex x Rc P S y c _ hS hE hR`. Establish `hι : y.ιS = (iotaX P.X P.inst).toMulEquiv` using `(GlobalTheory.Mem.JIota.heq_iota_iff D P.X P.inst y.ιS).1 y.ιS_eq`. Establish `hinj : Function.Injective x.R.HE.e` using `x.pins.char.base.models.HE.1`. Establish `hread : ∀ y1, x.Y.eE (D.jEE (x.Z.eRR y1)) = Tw.out (s` using `twAt D.what₂.embLL x.A3.A.v0) (E := x.R.HE.H) ((x.R.toCx3 x.F).iC x.F.cr true x.A3.A.μ0 (cpt x.A3.A.v0.embedding y1)) := by`. Introduce `y1`.
+
+Establish `h1` using `x.Y.eE_read (D.jEE (x.Z.eRR y1))`. Rewrite `h1` using `[x.Z.jEE y1]`. Conclude with `hinj ((PiTensorProduct.lift : Mult.MMap (x.R.MY 0) ≃ₗ[ℂ] _).injective h1).symm`. Use `⟨⟨⟨y.tS, hS.fin, ?_, ?_⟩, c, ?_⟩, x.Y.eE, ?_, ?_⟩` and prove the remaining obligations. Use `show ConjLevel y.tS⁻¹ (JR x.R.toRealDat x.F.lv2) (chiR x.R.toRealDat x.F.lv2) (y.ιS ⁻¹' concreteLevelAdelicSubset P.X) (fun k => adelicCharacterOfHidaSetting P.X (y.ιS k))`.
+
+Rewrite using `[hι]`. Conclude with `hS.conj`. Conclude with `hS.mat`. Use `show EvalTieT (MP x.R.toRealDat) x.R.toRealDat.ν0 x.R.toRealDat.fd0 (EP x.R.toRealDat x.F.lv2) P.X P.G y.ιS y.tS c`. Rewrite using `[hι]`.
+
+Conclude with `hE`. Introduce `y1 y' h`. Take `rfl` from `eq_of_heq h`. Conclude with `hread y1`. Introduce `hF`.
+
+Establish `hj : Formalism.L2.SG.JoinSI.jOf (S.toSTiesR Rc) hF = S.j` using `Formalism.L2.SG.JoinSI.jOf_eq (S.toSTiesR Rc) hF S.j fun F => S.rowPin F`. Rewrite using `[hj]`. Conclude with `hR`.
+-/
 theorem seeEx_joinPin : ∀ (D : D7) (L : SizeData₂ D) (hT : GatTies D) (Gi : Formalism.MainNotions.G.Inst D L) (Gl : Formalism.MainNotions.G.LatInst D) (K : Formalism.MainNotions.G.Consts) (Yd : DivX D) (cX : ExtraC) (ex : Extra D L hT Gi Gl K Yd cX) (x : TwIn ex) (Rc : Formalism.L2.RecT ex) (P : SPack D fun u => (Rc.T.cols.forms u).to0) (S : SRest P) (y : RealIn x Rc (S.toSTiesR Rc)) (c : ℝ), Holds x.R x.F → SeeAt x.R.toRealDat x.F.lv2 P.X P.inst y.tS → EvalTieT (MP x.R.toRealDat) x.R.toRealDat.ν0 x.R.toRealDat.fd0 (EP x.R.toRealDat x.F.lv2) P.X P.G (iotaX P.X P.inst).toMulEquiv y.tS c → RowJ x.R.toRealDat x.Y.eE P.X P.inst P.G y.tS S.j → SeeEx (realTOf y) ∧ GlobalTheory.Mem.JTop.JoinPin (realTOf y) := by
   intro D L hT Gi Gl K Yd cX ex x Rc P S y c _ hS hE hR
   have hι : y.ιS = (iotaX P.X P.inst).toMulEquiv :=

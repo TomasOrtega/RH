@@ -24,6 +24,11 @@ def pmat {ε : Fin n → Bool} (z : PCoord ε → ℂ) : Matrix (Fin n) (Fin n) 
   if h : b < a ∧ ε a ≠ ε b then z ⟨(a, b), h⟩
   else if h' : a < b ∧ ε b ≠ ε a then star (z ⟨(b, a), h'⟩) else 0
 
+/- English proof (translation)
+Apply `Matrix.IsHermitian.ext` to reduce the goal to its premises. Introduce `a b`. Simplify using `only [pmat]`. Distinguish the cases in `h1 : b < a ∧ ε a ≠ ε b`. Establish `hn : ¬ (a < b ∧ ε b ≠ ε a)` using `fun h => absurd h.1 (not_lt.2 h1.1.le)`.
+
+Simplify using `only [dif_neg hn, dif_pos h1, star_star]`. Distinguish the cases in `h2 : a < b ∧ ε b ≠ ε a`. Simplify using `only [dif_pos h2, dif_neg h1]`. Simplify using `only [dif_neg h1, dif_neg h2, star_zero]`.
+-/
 theorem pmat_isHermitian {ε : Fin n → Bool} (z : PCoord ε → ℂ) : (pmat z).IsHermitian := by
   apply Matrix.IsHermitian.ext
   intro a b

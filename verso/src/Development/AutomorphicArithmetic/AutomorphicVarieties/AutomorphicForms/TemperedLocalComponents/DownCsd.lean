@@ -10,19 +10,31 @@ import Development.AutomorphicArithmetic.IntegralCasts.CapelliIdentities.Cycloto
 
 open NumberField Formalism.ConjugateSelfDual ReciprocityTheory.Gal GlobalTheory.GalOfCusp UpperTheory.V.Base
 
+/- English proof (translation)
+The claim follows from `DivisionSemiring.to_moduleIsTorsionFree`.
+-/
 private theorem tf (L Ω : Type) [Field L] [Field Ω] [Algebra L Ω] : Module.IsTorsionFree L Ω :=
   DivisionSemiring.to_moduleIsTorsionFree
 
 attribute [local instance] tf
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨IsAlgClosure.isAlgClosed ℚ, Algebra.IsAlgebraic.tower_top (K := ℚ) L⟩`.
+-/
 private theorem algClo (L Ω : Type) [Field L] [CharZero L] [Field Ω] [CharZero Ω] [IsAlgClosure ℚ Ω] [Algebra L Ω] :
     IsAlgClosure L Ω :=
   ⟨IsAlgClosure.isAlgClosed ℚ, Algebra.IsAlgebraic.tower_top (K := ℚ) L⟩
 
+/- English proof (translation)
+The claim follows from `_root_.UpperTheory.Reformulated.B.ContinuityOfCyclotomicCharacter.cyc_cont F Ω l`.
+-/
 private theorem cyc_cont (F Ω : Type) [Field F] [NumberField F] [Field Ω] [Algebra F Ω] (l : ℕ) [Fact l.Prime] :
     Continuous (cycBar F Ω l) :=
   _root_.UpperTheory.Reformulated.B.ContinuityOfCyclotomicCharacter.cyc_cont F Ω l
 
+/- English proof (translation)
+Establish `h1 : cycZ F Ω l c = -1` using `UpperTheory.V.IsConjOm.cyc (E := F) (σ := c.toRingEquiv) h`. Establish `h2 : cycZ F Ω l c' = -1` using `UpperTheory.V.IsConjOm.cyc (E := F) (σ := c'.toRingEquiv) h'`. Simplify using `only [cycBar, MonoidHom.comp_apply, h1, h2]`.
+-/
 private theorem cyc_conj {F Ω : Type} [Field F] [NumberField F] [Field Ω] [Algebra F Ω] [IsAlgClosure F Ω] (l : ℕ) [Fact l.Prime]
     {c c' : G F Ω} (h : UpperTheory.V.Af.IsConjEl c) (h' : UpperTheory.V.Af.IsConjEl c') : cycBar F Ω l c = cycBar F Ω l c' := by
   have h1 : cycZ F Ω l c = -1 := UpperTheory.V.IsConjOm.cyc (E := F) (σ := c.toRingEquiv) h

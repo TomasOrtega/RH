@@ -323,581 +323,1121 @@ set_option maxSynthPendingDepth 1
 
 namespace GroundTheory.Heights₂.Heights
 
+/- English proof (translation)
+The claim follows from `GroundTheory.Heights₂.Heights.AffineChartTrdeg.proof`.
+-/
 theorem AffineChartTrdeg.full : GroundTheory.Heights₂.Heights.AffineChartTrdeg.Statement :=
   GroundTheory.Heights₂.Heights.AffineChartTrdeg.proof
 
+/- English proof (translation)
+The claim follows from `GroundTheory.Heights₂.Heights.AreaGraphPiece.proof`.
+-/
 theorem AreaGraphPiece.full : GroundTheory.Heights₂.Heights.AreaGraphPiece.Statement :=
   GroundTheory.Heights₂.Heights.AreaGraphPiece.proof
 
+/- English proof (translation)
+The claim follows from `GroundTheory.Heights₂.Heights.AreaGraphPartition.proof`.
+-/
 theorem AreaGraphPartition.full : GroundTheory.Heights₂.Heights.AreaGraphPartition.Statement :=
   GroundTheory.Heights₂.Heights.AreaGraphPartition.proof
 
+/- English proof (translation)
+The claim follows from `GroundTheory.Heights₂.Heights.GraphJacContinuous.proof`.
+-/
 theorem GraphJacContinuous.full : GroundTheory.Heights₂.Heights.GraphJacContinuous.Statement :=
   GroundTheory.Heights₂.Heights.GraphJacContinuous.proof
 
+/- English proof (translation)
+The claim follows from `GroundTheory.Heights₂.Heights.AreaGraphBound.proof GroundTheory.Heights₂.Heights.AreaGraphPiece.full GroundTheory.Heights₂.Heights.AreaGraphPartition.full GroundTheory.Heights₂.Heights.GraphJacContinuous.full`.
+-/
 theorem AreaGraphBound.full : GroundTheory.Heights₂.Heights.AreaGraphBound.Statement :=
   GroundTheory.Heights₂.Heights.AreaGraphBound.proof GroundTheory.Heights₂.Heights.AreaGraphPiece.full GroundTheory.Heights₂.Heights.AreaGraphPartition.full GroundTheory.Heights₂.Heights.GraphJacContinuous.full
 
+/- English proof (translation)
+The claim follows from `GroundTheory.Heights₂.Heights.AreaGraph.proof GroundTheory.Heights₂.Heights.AreaGraphBound.full`.
+-/
 theorem AreaGraph.full : GroundTheory.Heights₂.Heights.AreaGraph.Statement :=
   GroundTheory.Heights₂.Heights.AreaGraph.proof GroundTheory.Heights₂.Heights.AreaGraphBound.full
 
+/- English proof (translation)
+The claim follows from `GroundTheory.Heights₂.Heights.AreaLinear.proof`.
+-/
 theorem AreaLinear.full : GroundTheory.Heights₂.Heights.AreaLinear.Statement :=
   GroundTheory.Heights₂.Heights.AreaLinear.proof
 
+/- English proof (translation)
+The claim follows from `GroundTheory.Heights₂.Heights.AreaMultiplicity.proof`.
+-/
 theorem AreaMultiplicity.full : GroundTheory.Heights₂.Heights.AreaMultiplicity.Statement :=
   GroundTheory.Heights₂.Heights.AreaMultiplicity.proof
 
+/- English proof (translation)
+The claim follows from `GroundTheory.Heights₂.Heights.CauchyBinetMinors.proof`.
+-/
 theorem CauchyBinetMinors.full : GroundTheory.Heights₂.Heights.CauchyBinetMinors.Statement :=
   GroundTheory.Heights₂.Heights.CauchyBinetMinors.proof
 
+/- English proof (translation)
+The claim follows from `GroundTheory.Heights₂.Heights.ChartChoice.proof GroundTheory.Heights₂.Heights.IncIdealPrime.full GroundTheory.Heights₂.Heights.ChowFormMultiHomog.full`.
+-/
 theorem ChartChoice.full : GroundTheory.Heights₂.Heights.ChartChoice.Statement :=
   GroundTheory.Heights₂.Heights.ChartChoice.proof GroundTheory.Heights₂.Heights.IncIdealPrime.full GroundTheory.Heights₂.Heights.ChowFormMultiHomog.full
 
+/- English proof (translation)
+The claim follows from `GroundTheory.Heights₂.Heights.ChartDehomog.proof`.
+-/
 theorem ChartDehomog.full : GroundTheory.Heights₂.Heights.ChartDehomog.Statement :=
   GroundTheory.Heights₂.Heights.ChartDehomog.proof
 
+/- English proof (translation)
+The claim follows from `GroundTheory.Heights₂.Heights.ChartFinite.proof`.
+-/
 theorem ChartFinite.full : GroundTheory.Heights₂.Heights.ChartFinite.Statement :=
   GroundTheory.Heights₂.Heights.ChartFinite.proof
 
+/- English proof (translation)
+The claim follows from `GroundTheory.Heights₂.Heights.ChartFirstGroupDvd.proof GroundTheory.Heights₂.Heights.IncidenceGeneric.full`.
+-/
 theorem ChartFirstGroupDvd.full : GroundTheory.Heights₂.Heights.ChartFirstGroupDvd.Statement :=
   GroundTheory.Heights₂.Heights.ChartFirstGroupDvd.proof GroundTheory.Heights₂.Heights.IncidenceGeneric.full
 
+/- English proof (translation)
+The claim follows from `GroundTheory.Heights₂.Heights.IncIdealBelow.proof GroundTheory.Heights₂.Heights.ChowFormMultiHomog.full`.
+-/
 theorem IncIdealBelow.full : GroundTheory.Heights₂.Heights.IncIdealBelow.Statement :=
   GroundTheory.Heights₂.Heights.IncIdealBelow.proof GroundTheory.Heights₂.Heights.ChowFormMultiHomog.full
 
+/- English proof (translation)
+The claim follows from `GroundTheory.Heights₂.Heights.ChartFirstGroupPrime.proof GroundTheory.Heights₂.Heights.IncIdealPrime.full GroundTheory.Heights₂.Heights.IncIdealBelow.full`.
+-/
 theorem ChartFirstGroupPrime.full : GroundTheory.Heights₂.Heights.ChartFirstGroupPrime.Statement :=
   GroundTheory.Heights₂.Heights.ChartFirstGroupPrime.proof GroundTheory.Heights₂.Heights.IncIdealPrime.full GroundTheory.Heights₂.Heights.IncIdealBelow.full
 
+/- English proof (translation)
+The claim follows from `GroundTheory.Heights₂.Heights.ChartHomogenise.proof`.
+-/
 theorem ChartHomogenise.full : GroundTheory.Heights₂.Heights.ChartHomogenise.Statement :=
   GroundTheory.Heights₂.Heights.ChartHomogenise.proof
 
+/- English proof (translation)
+The claim follows from `GroundTheory.Heights₂.Heights.ChartIncDomain.proof`.
+-/
 theorem ChartIncDomain.full : GroundTheory.Heights₂.Heights.ChartIncDomain.Statement :=
   GroundTheory.Heights₂.Heights.ChartIncDomain.proof
 
+/- English proof (translation)
+The claim follows from `GroundTheory.Heights₂.Heights.ChartIncOrd.proof GroundTheory.Heights₂.Heights.OrdPolynomialLocalization.full`.
+-/
 theorem ChartIncOrd.full : GroundTheory.Heights₂.Heights.ChartIncOrd.Statement :=
   GroundTheory.Heights₂.Heights.ChartIncOrd.proof GroundTheory.Heights₂.Heights.OrdPolynomialLocalization.full
 
+/- English proof (translation)
+The claim follows from `GroundTheory.Heights₂.Heights.ChartKernel.proof GroundTheory.Heights₂.Heights.IncidenceGeneric.full GroundTheory.Heights₂.Heights.ChartIncDomain.full`.
+-/
 theorem ChartKernel.full : GroundTheory.Heights₂.Heights.ChartKernel.Statement :=
   GroundTheory.Heights₂.Heights.ChartKernel.proof GroundTheory.Heights₂.Heights.IncidenceGeneric.full GroundTheory.Heights₂.Heights.ChartIncDomain.full
 
+/- English proof (translation)
+The claim follows from `GroundTheory.Heights₂.Heights.SpecFirstMemIncIdeal.proof`.
+-/
 theorem SpecFirstMemIncIdeal.full : GroundTheory.Heights₂.Heights.SpecFirstMemIncIdeal.Statement :=
   GroundTheory.Heights₂.Heights.SpecFirstMemIncIdeal.proof
 
+/- English proof (translation)
+The claim follows from `GroundTheory.Heights₂.Heights.LengthFiniteAlgebra.proof`.
+-/
 theorem LengthFiniteAlgebra.full : GroundTheory.Heights₂.Heights.LengthFiniteAlgebra.Statement :=
   GroundTheory.Heights₂.Heights.LengthFiniteAlgebra.proof
 
+/- English proof (translation)
+The claim follows from `GroundTheory.Heights₂.Heights.IncIdealDim.proof GroundTheory.Heights₂.Heights.IncidenceGeneric.full GroundTheory.Heights₂.Heights.GenericLinearTrdeg.full GroundTheory.Heights₂.Heights.AffineChartTrdeg.full`.
+-/
 theorem IncIdealDim.full : GroundTheory.Heights₂.Heights.IncIdealDim.Statement :=
   GroundTheory.Heights₂.Heights.IncIdealDim.proof GroundTheory.Heights₂.Heights.IncidenceGeneric.full GroundTheory.Heights₂.Heights.GenericLinearTrdeg.full GroundTheory.Heights₂.Heights.AffineChartTrdeg.full
 
+/- English proof (translation)
+The claim follows from `GroundTheory.Heights₂.Heights.ConeDimOfChowForm.proof GroundTheory.Heights₂.Heights.IncIdealDim.full GroundTheory.Heights₂.Heights.IncIdealPrime.full`.
+-/
 theorem ConeDimOfChowForm.full : GroundTheory.Heights₂.Heights.ConeDimOfChowForm.Statement :=
   GroundTheory.Heights₂.Heights.ConeDimOfChowForm.proof GroundTheory.Heights₂.Heights.IncIdealDim.full GroundTheory.Heights₂.Heights.IncIdealPrime.full
 
+/- English proof (translation)
+The claim follows from `GroundTheory.Heights₂.Heights.ComponentOfIncIdeal.proof GroundTheory.Heights₂.Heights.IncIdealDim.full GroundTheory.Heights₂.Heights.IncIdealPrime.full GroundTheory.Heights₂.Heights.ConeDimComponent.full`.
+-/
 theorem ComponentOfIncIdeal.full : GroundTheory.Heights₂.Heights.ComponentOfIncIdeal.Statement :=
   GroundTheory.Heights₂.Heights.ComponentOfIncIdeal.proof GroundTheory.Heights₂.Heights.IncIdealDim.full GroundTheory.Heights₂.Heights.IncIdealPrime.full GroundTheory.Heights₂.Heights.ConeDimComponent.full
 
+/- English proof (translation)
+The claim follows from `GroundTheory.Heights₂.Heights.ChartMaxIdeals.proof GroundTheory.Heights₂.Heights.ConeDimOfChowForm.full GroundTheory.Heights₂.Heights.ConeDimComponent.full GroundTheory.Heights₂.Heights.SpecFirstMemIncIdeal.full GroundTheory.Heights₂.Heights.ChartFinite.full GroundTheory.Heights₂ …`.
+-/
 theorem ChartMaxIdeals.full : GroundTheory.Heights₂.Heights.ChartMaxIdeals.Statement :=
   GroundTheory.Heights₂.Heights.ChartMaxIdeals.proof GroundTheory.Heights₂.Heights.ConeDimOfChowForm.full GroundTheory.Heights₂.Heights.ConeDimComponent.full GroundTheory.Heights₂.Heights.SpecFirstMemIncIdeal.full GroundTheory.Heights₂.Heights.ChartFinite.full GroundTheory.Heights₂.Heights.ChartIncDomain.full GroundTheory.Heights₂.Heights.ChartKernel.full GroundTheory.Heights₂.Heights.ChartHomogenise.full GroundTheory.Heights₂.Heights.ChartDehomog.full GroundTheory.Heights₂.Heights.ComponentOfIncIdeal.full
 
+/- English proof (translation)
+The claim follows from `GroundTheory.Heights₂.Heights.ChowFormExists.proof GroundTheory.Heights₂.Heights.IncIdealDim.full GroundTheory.Heights₂.Heights.IncIdealPrime.full`.
+-/
 theorem ChowFormExists.full : GroundTheory.Heights₂.Heights.ChowFormExists.Statement :=
   GroundTheory.Heights₂.Heights.ChowFormExists.proof GroundTheory.Heights₂.Heights.IncIdealDim.full GroundTheory.Heights₂.Heights.IncIdealPrime.full
 
+/- English proof (translation)
+The claim follows from `GroundTheory.Heights₂.Heights.DehomogOrd.proof GroundTheory.Heights₂.Heights.OrdPolynomialLocalization.full`.
+-/
 theorem DehomogOrd.full : GroundTheory.Heights₂.Heights.DehomogOrd.Statement :=
   GroundTheory.Heights₂.Heights.DehomogOrd.proof GroundTheory.Heights₂.Heights.OrdPolynomialLocalization.full
 
+/- English proof (translation)
+The claim follows from `GroundTheory.Heights₂.Heights.LocalMultOrd.proof`.
+-/
 theorem LocalMultOrd.full : GroundTheory.Heights₂.Heights.LocalMultOrd.Statement :=
   GroundTheory.Heights₂.Heights.LocalMultOrd.proof
 
+/- English proof (translation)
+The claim follows from `GroundTheory.Heights₂.Heights.ChartLocalOrder.proof GroundTheory.Heights₂.Heights.ChartIncDomain.full GroundTheory.Heights₂.Heights.ChartKernel.full GroundTheory.Heights₂.Heights.ConeDimOfChowForm.full GroundTheory.Heights₂.Heights.ConeDimComponent.full GroundTheory.Heights₂.Heig …`.
+-/
 theorem ChartLocalOrder.full : GroundTheory.Heights₂.Heights.ChartLocalOrder.Statement :=
   GroundTheory.Heights₂.Heights.ChartLocalOrder.proof GroundTheory.Heights₂.Heights.ChartIncDomain.full GroundTheory.Heights₂.Heights.ChartKernel.full GroundTheory.Heights₂.Heights.ConeDimOfChowForm.full GroundTheory.Heights₂.Heights.ConeDimComponent.full GroundTheory.Heights₂.Heights.ChowFormExists.full GroundTheory.Heights₂.Heights.IncIdealPrime.full GroundTheory.Heights₂.Heights.ChartIncOrd.full GroundTheory.Heights₂.Heights.DehomogOrd.full GroundTheory.Heights₂.Heights.LocalMultOrd.full
 
+/- English proof (translation)
+The claim follows from `GroundTheory.Heights₂.Heights.ChartResidueDegree.proof GroundTheory.Heights₂.Heights.ChowFormBirational.full GroundTheory.Heights₂.Heights.ChartFinite.full GroundTheory.Heights₂.Heights.ChartKernel.full GroundTheory.Heights₂.Heights.ConeDimOfChowForm.full GroundTheory.Heights₂.He …`.
+-/
 theorem ChartResidueDegree.full : GroundTheory.Heights₂.Heights.ChartResidueDegree.Statement :=
   GroundTheory.Heights₂.Heights.ChartResidueDegree.proof GroundTheory.Heights₂.Heights.ChowFormBirational.full GroundTheory.Heights₂.Heights.ChartFinite.full GroundTheory.Heights₂.Heights.ChartKernel.full GroundTheory.Heights₂.Heights.ConeDimOfChowForm.full GroundTheory.Heights₂.Heights.ConeDimComponent.full GroundTheory.Heights₂.Heights.ChowFormExists.full GroundTheory.Heights₂.Heights.IncidenceGeneric.full GroundTheory.Heights₂.Heights.ChartLocalOrder.full
 
+/- English proof (translation)
+The claim follows from `GroundTheory.Heights₂.Heights.ChartLength.proof GroundTheory.Heights₂.Heights.IncIdealBelow.full GroundTheory.Heights₂.Heights.SpecFirstMemIncIdeal.full GroundTheory.Heights₂.Heights.ChartFinite.full GroundTheory.Heights₂.Heights.LengthFiniteAlgebra.full GroundTheory.Heights₂.Hei …`.
+-/
 theorem ChartLength.full : GroundTheory.Heights₂.Heights.ChartLength.Statement :=
   GroundTheory.Heights₂.Heights.ChartLength.proof GroundTheory.Heights₂.Heights.IncIdealBelow.full GroundTheory.Heights₂.Heights.SpecFirstMemIncIdeal.full GroundTheory.Heights₂.Heights.ChartFinite.full GroundTheory.Heights₂.Heights.LengthFiniteAlgebra.full GroundTheory.Heights₂.Heights.ChartMaxIdeals.full GroundTheory.Heights₂.Heights.ChartLocalOrder.full GroundTheory.Heights₂.Heights.ChartResidueDegree.full
 
+/- English proof (translation)
+The claim follows from `GroundTheory.Heights₂.Heights.ChartLocDomain.proof GroundTheory.Heights₂.Heights.IncIdealBelow.full GroundTheory.Heights₂.Heights.ChartIncDomain.full GroundTheory.Heights₂.Heights.ChartKernel.full`.
+-/
 theorem ChartLocDomain.full : GroundTheory.Heights₂.Heights.ChartLocDomain.Statement :=
   GroundTheory.Heights₂.Heights.ChartLocDomain.proof GroundTheory.Heights₂.Heights.IncIdealBelow.full GroundTheory.Heights₂.Heights.ChartIncDomain.full GroundTheory.Heights₂.Heights.ChartKernel.full
 
+/- English proof (translation)
+The claim follows from `GroundTheory.Heights₂.Heights.SheetComass.proof`.
+-/
 theorem SheetComass.full : GroundTheory.Heights₂.Heights.SheetComass.Statement :=
   GroundTheory.Heights₂.Heights.SheetComass.proof
 
+/- English proof (translation)
+The claim follows from `GroundTheory.Heights₂.Heights.SheetImageArea.proof hSheetImageAreaSet`.
+-/
 theorem SheetImageArea.of_open (hSheetImageAreaSet : GroundTheory.Heights₂.Heights.SheetImageAreaSet.Statement) :
     GroundTheory.Heights₂.Heights.SheetImageArea.Statement :=
   GroundTheory.Heights₂.Heights.SheetImageArea.proof hSheetImageAreaSet
 
+/- English proof (translation)
+The claim follows from `GroundTheory.Heights₂.Heights.SheetAreaCompare.proof (GroundTheory.Heights₂.Heights.SheetImageArea.of_open hSheetImageAreaSet)`.
+-/
 theorem SheetAreaCompare.of_open (hSheetImageAreaSet : GroundTheory.Heights₂.Heights.SheetImageAreaSet.Statement) :
     GroundTheory.Heights₂.Heights.SheetAreaCompare.Statement :=
   GroundTheory.Heights₂.Heights.SheetAreaCompare.proof (GroundTheory.Heights₂.Heights.SheetImageArea.of_open hSheetImageAreaSet)
 
+/- English proof (translation)
+The claim follows from `GroundTheory.Heights₂.Heights.ChartMassCompare.proof GroundTheory.Heights₂.Heights.SheetComass.full (GroundTheory.Heights₂.Heights.SheetAreaCompare.of_open hSheetImageAreaSet)`.
+-/
 theorem ChartMassCompare.of_open (hSheetImageAreaSet : GroundTheory.Heights₂.Heights.SheetImageAreaSet.Statement) :
     GroundTheory.Heights₂.Heights.ChartMassCompare.Statement :=
   GroundTheory.Heights₂.Heights.ChartMassCompare.proof GroundTheory.Heights₂.Heights.SheetComass.full (GroundTheory.Heights₂.Heights.SheetAreaCompare.of_open hSheetImageAreaSet)
 
+/- English proof (translation)
+The claim follows from `GroundTheory.Heights₂.Heights.ComplexSets.ConeAvoidsFinite.proof`.
+-/
 theorem ComplexSets.ConeAvoidsFinite.full : GroundTheory.Heights₂.Heights.ComplexSets.ConeAvoidsFinite.Statement :=
   GroundTheory.Heights₂.Heights.ComplexSets.ConeAvoidsFinite.proof
 
+/- English proof (translation)
+The claim follows from `GroundTheory.Heights₂.Heights.ComplexSets.FiniteProjHomInjective.proof`.
+-/
 theorem ComplexSets.FiniteProjHomInjective.full : GroundTheory.Heights₂.Heights.ComplexSets.FiniteProjHomInjective.Statement :=
   GroundTheory.Heights₂.Heights.ComplexSets.FiniteProjHomInjective.proof
 
+/- English proof (translation)
+The claim follows from `GroundTheory.Heights₂.Heights.ComplexSets.ConeAvoidsOpen.proof`.
+-/
 theorem ComplexSets.ConeAvoidsOpen.full : GroundTheory.Heights₂.Heights.ComplexSets.ConeAvoidsOpen.Statement :=
   GroundTheory.Heights₂.Heights.ComplexSets.ConeAvoidsOpen.proof
 
+/- English proof (translation)
+The claim follows from `GroundTheory.Heights₂.Heights.ComplexSets.LeadIdealDim.proof`.
+-/
 theorem ComplexSets.LeadIdealDim.full : GroundTheory.Heights₂.Heights.ComplexSets.LeadIdealDim.Statement :=
   GroundTheory.Heights₂.Heights.ComplexSets.LeadIdealDim.proof
 
+/- English proof (translation)
+The claim follows from `GroundTheory.Heights₂.Heights.ComplexSets.LinearFormCut.proof`.
+-/
 theorem ComplexSets.LinearFormCut.full : GroundTheory.Heights₂.Heights.ComplexSets.LinearFormCut.Statement :=
   GroundTheory.Heights₂.Heights.ComplexSets.LinearFormCut.proof
 
+/- English proof (translation)
+The claim follows from `GroundTheory.Heights₂.Heights.ComplexSets.HomogDimZeroPow.proof`.
+-/
 theorem ComplexSets.HomogDimZeroPow.full : GroundTheory.Heights₂.Heights.ComplexSets.HomogDimZeroPow.Statement :=
   GroundTheory.Heights₂.Heights.ComplexSets.HomogDimZeroPow.proof
 
+/- English proof (translation)
+The claim follows from `GroundTheory.Heights₂.Heights.ComplexSets.ConeAvoidsExists.proof GroundTheory.Heights₂.Heights.ComplexSets.LeadIdealDim.full GroundTheory.Heights₂.Heights.ComplexSets.LinearFormCut.full GroundTheory.Heights₂.Heights.ComplexSets.HomogDimZeroPow.full`.
+-/
 theorem ComplexSets.ConeAvoidsExists.full : GroundTheory.Heights₂.Heights.ComplexSets.ConeAvoidsExists.Statement :=
   GroundTheory.Heights₂.Heights.ComplexSets.ConeAvoidsExists.proof GroundTheory.Heights₂.Heights.ComplexSets.LeadIdealDim.full GroundTheory.Heights₂.Heights.ComplexSets.LinearFormCut.full GroundTheory.Heights₂.Heights.ComplexSets.HomogDimZeroPow.full
 
+/- English proof (translation)
+The claim follows from `GroundTheory.Heights₂.Heights.ComplexSets.FiniteProjectionsContainOpen.proof GroundTheory.Heights₂.Heights.ComplexSets.ConeAvoidsFinite.full GroundTheory.Heights₂.Heights.ComplexSets.FiniteProjHomInjective.full GroundTheory.Heights₂.Heights.ComplexSets.ConeAvoidsOpen.full GroundT …`.
+-/
 theorem ComplexSets.FiniteProjectionsContainOpen.full : GroundTheory.Heights₂.Heights.ComplexSets.FiniteProjectionsContainOpen.Statement :=
   GroundTheory.Heights₂.Heights.ComplexSets.FiniteProjectionsContainOpen.proof GroundTheory.Heights₂.Heights.ComplexSets.ConeAvoidsFinite.full GroundTheory.Heights₂.Heights.ComplexSets.FiniteProjHomInjective.full GroundTheory.Heights₂.Heights.ComplexSets.ConeAvoidsOpen.full GroundTheory.Heights₂.Heights.ComplexSets.ConeAvoidsExists.full
 
+/- English proof (translation)
+The claim follows from `GroundTheory.Heights₂.Heights.ComplexSets.UnitaryZariskiDense.proof`.
+-/
 theorem ComplexSets.UnitaryZariskiDense.full : GroundTheory.Heights₂.Heights.ComplexSets.UnitaryZariskiDense.Statement :=
   GroundTheory.Heights₂.Heights.ComplexSets.UnitaryZariskiDense.proof
 
+/- English proof (translation)
+The claim follows from `GroundTheory.Heights₂.Heights.ComplexSets.GenericProjectionFinite.proof GroundTheory.Heights₂.Heights.ComplexSets.FiniteProjectionsContainOpen.full GroundTheory.Heights₂.Heights.ComplexSets.UnitaryZariskiDense.full`.
+-/
 theorem ComplexSets.GenericProjectionFinite.full : GroundTheory.Heights₂.Heights.ComplexSets.GenericProjectionFinite.Statement :=
   GroundTheory.Heights₂.Heights.ComplexSets.GenericProjectionFinite.proof GroundTheory.Heights₂.Heights.ComplexSets.FiniteProjectionsContainOpen.full GroundTheory.Heights₂.Heights.ComplexSets.UnitaryZariskiDense.full
 
+/- English proof (translation)
+The claim follows from `GroundTheory.Heights₂.Heights.ComplexSets.FibreBound.proof`.
+-/
 theorem ComplexSets.FibreBound.full : GroundTheory.Heights₂.Heights.ComplexSets.FibreBound.Statement :=
   GroundTheory.Heights₂.Heights.ComplexSets.FibreBound.proof
 
+/- English proof (translation)
+The claim follows from `GroundTheory.Heights₂.Heights.ComplexSets.PrimitiveElementFibres.proof`.
+-/
 theorem ComplexSets.PrimitiveElementFibres.full : GroundTheory.Heights₂.Heights.ComplexSets.PrimitiveElementFibres.Statement :=
   GroundTheory.Heights₂.Heights.ComplexSets.PrimitiveElementFibres.proof
 
+/- English proof (translation)
+The claim follows from `GroundTheory.Heights₂.Heights.ComplexSets.DiscriminantCover.proof GroundTheory.Heights₂.Heights.ComplexSets.PrimitiveElementFibres.full`.
+-/
 theorem ComplexSets.DiscriminantCover.full : GroundTheory.Heights₂.Heights.ComplexSets.DiscriminantCover.Statement :=
   GroundTheory.Heights₂.Heights.ComplexSets.DiscriminantCover.proof GroundTheory.Heights₂.Heights.ComplexSets.PrimitiveElementFibres.full
 
+/- English proof (translation)
+The claim follows from `GroundTheory.Heights₂.Heights.NullSmaller.proof`.
+-/
 theorem NullSmaller.full : GroundTheory.Heights₂.Heights.NullSmaller.Statement :=
   GroundTheory.Heights₂.Heights.NullSmaller.proof
 
+/- English proof (translation)
+The claim follows from `GroundTheory.Heights₂.Heights.FrameJacobianSum.proof`.
+-/
 theorem FrameJacobianSum.full : GroundTheory.Heights₂.Heights.FrameJacobianSum.Statement :=
   GroundTheory.Heights₂.Heights.FrameJacobianSum.proof
 
+/- English proof (translation)
+The claim follows from `GroundTheory.Heights₂.Heights.GraphAreaHolomorphic.proof GroundTheory.Heights₂.Heights.AreaGraph.full`.
+-/
 theorem GraphAreaHolomorphic.full : GroundTheory.Heights₂.Heights.GraphAreaHolomorphic.Statement :=
   GroundTheory.Heights₂.Heights.GraphAreaHolomorphic.proof GroundTheory.Heights₂.Heights.AreaGraph.full
 
+/- English proof (translation)
+The claim follows from `GroundTheory.Heights₂.Heights.ProjectionFormula.proof GroundTheory.Heights₂.Heights.AreaMultiplicity.full GroundTheory.Heights₂.Heights.FrameJacobianSum.full GroundTheory.Heights₂.Heights.GraphAreaHolomorphic.full`.
+-/
 theorem ProjectionFormula.full : GroundTheory.Heights₂.Heights.ProjectionFormula.Statement :=
   GroundTheory.Heights₂.Heights.ProjectionFormula.proof GroundTheory.Heights₂.Heights.AreaMultiplicity.full GroundTheory.Heights₂.Heights.FrameJacobianSum.full GroundTheory.Heights₂.Heights.GraphAreaHolomorphic.full
 
+/- English proof (translation)
+The claim follows from `GroundTheory.Heights₂.Heights.LocalGraphMass.proof GroundTheory.Heights₂.Heights.ProjectionFormula.full`.
+-/
 theorem LocalGraphMass.full : GroundTheory.Heights₂.Heights.LocalGraphMass.Statement :=
   GroundTheory.Heights₂.Heights.LocalGraphMass.proof GroundTheory.Heights₂.Heights.ProjectionFormula.full
 
+/- English proof (translation)
+The claim follows from `GroundTheory.Heights₂.Heights.MassFinite.proof GroundTheory.Heights₂.Heights.ComplexSets.GenericProjectionFinite.full GroundTheory.Heights₂.Heights.ComplexSets.FibreBound.full GroundTheory.Heights₂.Heights.ComplexSets.DiscriminantCover.full GroundTheory.Heights₂.Heights.NullSmall …`.
+-/
 theorem MassFinite.full : GroundTheory.Heights₂.Heights.MassFinite.Statement :=
   GroundTheory.Heights₂.Heights.MassFinite.proof GroundTheory.Heights₂.Heights.ComplexSets.GenericProjectionFinite.full GroundTheory.Heights₂.Heights.ComplexSets.FibreBound.full GroundTheory.Heights₂.Heights.ComplexSets.DiscriminantCover.full GroundTheory.Heights₂.Heights.NullSmaller.full GroundTheory.Heights₂.Heights.LocalGraphMass.full
 
+/- English proof (translation)
+The claim follows from `GroundTheory.Heights₂.Heights.ChartMassCompact.proof (GroundTheory.Heights₂.Heights.ChartMassCompare.of_open hSheetImageAreaSet) GroundTheory.Heights₂.Heights.MassFinite.full`.
+-/
 theorem ChartMassCompact.of_open (hSheetImageAreaSet : GroundTheory.Heights₂.Heights.SheetImageAreaSet.Statement) :
     GroundTheory.Heights₂.Heights.ChartMassCompact.Statement :=
   GroundTheory.Heights₂.Heights.ChartMassCompact.proof (GroundTheory.Heights₂.Heights.ChartMassCompare.of_open hSheetImageAreaSet) GroundTheory.Heights₂.Heights.MassFinite.full
 
+/- English proof (translation)
+The claim follows from `GroundTheory.Heights₂.Heights.LocalizationPrimeDVR.proof`.
+-/
 theorem LocalizationPrimeDVR.full : GroundTheory.Heights₂.Heights.LocalizationPrimeDVR.Statement :=
   GroundTheory.Heights₂.Heights.LocalizationPrimeDVR.proof
 
+/- English proof (translation)
+The claim follows from `GroundTheory.Heights₂.Heights.NormFormEval.proof`.
+-/
 theorem NormFormEval.full : GroundTheory.Heights₂.Heights.NormFormEval.Statement :=
   GroundTheory.Heights₂.Heights.NormFormEval.proof
 
+/- English proof (translation)
+The claim follows from `GroundTheory.Heights₂.Heights.NormFormEmbeddings.proof GroundTheory.Heights₂.Heights.NormFormEval.full`.
+-/
 theorem NormFormEmbeddings.full : GroundTheory.Heights₂.Heights.NormFormEmbeddings.Statement :=
   GroundTheory.Heights₂.Heights.NormFormEmbeddings.proof GroundTheory.Heights₂.Heights.NormFormEval.full
 
+/- English proof (translation)
+The claim follows from `GroundTheory.Heights₂.Heights.LinearFormPrime.proof`.
+-/
 theorem LinearFormPrime.full : GroundTheory.Heights₂.Heights.LinearFormPrime.Statement :=
   GroundTheory.Heights₂.Heights.LinearFormPrime.proof
 
+/- English proof (translation)
+The claim follows from `GroundTheory.Heights₂.Heights.MapDvdDescent.proof`.
+-/
 theorem MapDvdDescent.full : GroundTheory.Heights₂.Heights.MapDvdDescent.Statement :=
   GroundTheory.Heights₂.Heights.MapDvdDescent.proof
 
+/- English proof (translation)
+The claim follows from `GroundTheory.Heights₂.Heights.NormFormDvd.proof GroundTheory.Heights₂.Heights.NormFormEmbeddings.full GroundTheory.Heights₂.Heights.LinearFormPrime.full GroundTheory.Heights₂.Heights.MapDvdDescent.full`.
+-/
 theorem NormFormDvd.full : GroundTheory.Heights₂.Heights.NormFormDvd.Statement :=
   GroundTheory.Heights₂.Heights.NormFormDvd.proof GroundTheory.Heights₂.Heights.NormFormEmbeddings.full GroundTheory.Heights₂.Heights.LinearFormPrime.full GroundTheory.Heights₂.Heights.MapDvdDescent.full
 
+/- English proof (translation)
+The claim follows from `GroundTheory.Heights₂.Heights.PrimeMapFractionRing.proof`.
+-/
 theorem PrimeMapFractionRing.full : GroundTheory.Heights₂.Heights.PrimeMapFractionRing.Statement :=
   GroundTheory.Heights₂.Heights.PrimeMapFractionRing.proof
 
+/- English proof (translation)
+The claim follows from `GroundTheory.Heights₂.Heights.NormOfDividedForm.proof GroundTheory.Heights₂.Heights.NormFormEval.full GroundTheory.Heights₂.Heights.NormFormDvd.full GroundTheory.Heights₂.Heights.PrimeMapFractionRing.full`.
+-/
 theorem NormOfDividedForm.full : GroundTheory.Heights₂.Heights.NormOfDividedForm.Statement :=
   GroundTheory.Heights₂.Heights.NormOfDividedForm.proof GroundTheory.Heights₂.Heights.NormFormEval.full GroundTheory.Heights₂.Heights.NormFormDvd.full GroundTheory.Heights₂.Heights.PrimeMapFractionRing.full
 
+/- English proof (translation)
+The claim follows from `GroundTheory.Heights₂.Heights.ChartNorm.proof GroundTheory.Heights₂.Heights.IncIdealBelow.full GroundTheory.Heights₂.Heights.SpecFirstMemIncIdeal.full GroundTheory.Heights₂.Heights.LocalizationPrimeDVR.full GroundTheory.Heights₂.Heights.ChartFinite.full GroundTheory.Heights₂.Heig …`.
+-/
 theorem ChartNorm.full : GroundTheory.Heights₂.Heights.ChartNorm.Statement :=
   GroundTheory.Heights₂.Heights.ChartNorm.proof GroundTheory.Heights₂.Heights.IncIdealBelow.full GroundTheory.Heights₂.Heights.SpecFirstMemIncIdeal.full GroundTheory.Heights₂.Heights.LocalizationPrimeDVR.full GroundTheory.Heights₂.Heights.ChartFinite.full GroundTheory.Heights₂.Heights.ChartLocDomain.full GroundTheory.Heights₂.Heights.ChartFirstGroupPrime.full GroundTheory.Heights₂.Heights.ChartFirstGroupDvd.full GroundTheory.Heights₂.Heights.NormOfDividedForm.full
 
+/- English proof (translation)
+The claim follows from `GroundTheory.Heights₂.Heights.ChowFormDimLe.proof`.
+-/
 theorem ChowFormDimLe.full : GroundTheory.Heights₂.Heights.ChowFormDimLe.Statement :=
   GroundTheory.Heights₂.Heights.ChowFormDimLe.proof
 
+/- English proof (translation)
+The claim follows from `GroundTheory.Heights₂.Heights.SpecFirstNe.proof GroundTheory.Heights₂.Heights.IncIdealBelow.full GroundTheory.Heights₂.Heights.SpecFirstMemIncIdeal.full GroundTheory.Heights₂.Heights.ChartLocDomain.full GroundTheory.Heights₂.Heights.ChartNorm.full`.
+-/
 theorem SpecFirstNe.full : GroundTheory.Heights₂.Heights.SpecFirstNe.Statement :=
   GroundTheory.Heights₂.Heights.SpecFirstNe.proof GroundTheory.Heights₂.Heights.IncIdealBelow.full GroundTheory.Heights₂.Heights.SpecFirstMemIncIdeal.full GroundTheory.Heights₂.Heights.ChartLocDomain.full GroundTheory.Heights₂.Heights.ChartNorm.full
 
+/- English proof (translation)
+The claim follows from `GroundTheory.Heights₂.Heights.EmultiplicityOrd.proof GroundTheory.Heights₂.Heights.LocalizationPrimeDVR.full`.
+-/
 theorem EmultiplicityOrd.full : GroundTheory.Heights₂.Heights.EmultiplicityOrd.Statement :=
   GroundTheory.Heights₂.Heights.EmultiplicityOrd.proof GroundTheory.Heights₂.Heights.LocalizationPrimeDVR.full
 
+/- English proof (translation)
+The claim follows from `GroundTheory.Heights₂.Heights.SectionOrder.proof GroundTheory.Heights₂.Heights.IncIdealBelow.full GroundTheory.Heights₂.Heights.SpecFirstMemIncIdeal.full GroundTheory.Heights₂.Heights.ChartChoice.full GroundTheory.Heights₂.Heights.SpecFirstNe.full GroundTheory.Heights₂.Heights.Lo …`.
+-/
 theorem SectionOrder.full : GroundTheory.Heights₂.Heights.SectionOrder.Statement :=
   GroundTheory.Heights₂.Heights.SectionOrder.proof GroundTheory.Heights₂.Heights.IncIdealBelow.full GroundTheory.Heights₂.Heights.SpecFirstMemIncIdeal.full GroundTheory.Heights₂.Heights.ChartChoice.full GroundTheory.Heights₂.Heights.SpecFirstNe.full GroundTheory.Heights₂.Heights.LocalizationPrimeDVR.full GroundTheory.Heights₂.Heights.EmultiplicityOrd.full GroundTheory.Heights₂.Heights.ChartFinite.full GroundTheory.Heights₂.Heights.ChartLocDomain.full GroundTheory.Heights₂.Heights.ChartNorm.full GroundTheory.Heights₂.Heights.ChartLength.full GroundTheory.Heights₂.Heights.LengthQuotientDet.full
 
+/- English proof (translation)
+The claim follows from `GroundTheory.Heights₂.Heights.ChowFormSection.proof GroundTheory.Heights₂.Heights.ConeDimOfChowForm.full GroundTheory.Heights₂.Heights.ConeDimComponent.full GroundTheory.Heights₂.Heights.ChowFormExists.full GroundTheory.Heights₂.Heights.IncIdealPrime.full GroundTheory.Heights₂.He …`.
+-/
 theorem ChowFormSection.full : GroundTheory.Heights₂.Heights.ChowFormSection.Statement :=
   GroundTheory.Heights₂.Heights.ChowFormSection.proof GroundTheory.Heights₂.Heights.ConeDimOfChowForm.full GroundTheory.Heights₂.Heights.ConeDimComponent.full GroundTheory.Heights₂.Heights.ChowFormExists.full GroundTheory.Heights₂.Heights.IncIdealPrime.full GroundTheory.Heights₂.Heights.SectionOrder.full
 
+/- English proof (translation)
+The claim follows from `GroundTheory.Heights₂.Heights.ComplexJacobian.proof`.
+-/
 theorem ComplexJacobian.full : GroundTheory.Heights₂.Heights.ComplexJacobian.Statement :=
   GroundTheory.Heights₂.Heights.ComplexJacobian.proof
 
+/- English proof (translation)
+The claim follows from `GroundTheory.Heights₂.Heights.ComplexSets.BadSetSmaller.proof`.
+-/
 theorem ComplexSets.BadSetSmaller.full : GroundTheory.Heights₂.Heights.ComplexSets.BadSetSmaller.Statement :=
   GroundTheory.Heights₂.Heights.ComplexSets.BadSetSmaller.proof
 
+/- English proof (translation)
+The claim follows from `GroundTheory.Heights₂.Heights.ComplexSets.ConeScaling.proof`.
+-/
 theorem ComplexSets.ConeScaling.full : GroundTheory.Heights₂.Heights.ComplexSets.ConeScaling.Statement :=
   GroundTheory.Heights₂.Heights.ComplexSets.ConeScaling.proof
 
+/- English proof (translation)
+The claim follows from `GroundTheory.Heights₂.Heights.ComplexSets.FiniteProjectionsGeneric.proof GroundTheory.Heights₂.Heights.ComplexSets.FiniteProjectionsContainOpen.full GroundTheory.Heights₂.Heights.ComplexSets.UnitaryZariskiDense.full`.
+-/
 theorem ComplexSets.FiniteProjectionsGeneric.full : GroundTheory.Heights₂.Heights.ComplexSets.FiniteProjectionsGeneric.Statement :=
   GroundTheory.Heights₂.Heights.ComplexSets.FiniteProjectionsGeneric.proof GroundTheory.Heights₂.Heights.ComplexSets.FiniteProjectionsContainOpen.full GroundTheory.Heights₂.Heights.ComplexSets.UnitaryZariskiDense.full
 
+/- English proof (translation)
+The claim follows from `GroundTheory.Heights₂.Heights.ComplexSets.FunctionFieldDegree.proof`.
+-/
 theorem ComplexSets.FunctionFieldDegree.full : GroundTheory.Heights₂.Heights.ComplexSets.FunctionFieldDegree.Statement :=
   GroundTheory.Heights₂.Heights.ComplexSets.FunctionFieldDegree.proof
 
+/- English proof (translation)
+The claim follows from `GroundTheory.Heights₂.Heights.ComplexSets.GenericPrimitive.proof`.
+-/
 theorem ComplexSets.GenericPrimitive.full : GroundTheory.Heights₂.Heights.ComplexSets.GenericPrimitive.Statement :=
   GroundTheory.Heights₂.Heights.ComplexSets.GenericPrimitive.proof
 
+/- English proof (translation)
+The claim follows from `GroundTheory.Heights₂.Heights.ComplexSets.SimpleRootBranch.proof`.
+-/
 theorem ComplexSets.SimpleRootBranch.full : GroundTheory.Heights₂.Heights.ComplexSets.SimpleRootBranch.Statement :=
   GroundTheory.Heights₂.Heights.ComplexSets.SimpleRootBranch.proof
 
+/- English proof (translation)
+The claim follows from `GroundTheory.Heights₂.Heights.SliceDim.proof`.
+-/
 theorem SliceDim.full : GroundTheory.Heights₂.Heights.SliceDim.Statement :=
   GroundTheory.Heights₂.Heights.SliceDim.proof
 
+/- English proof (translation)
+The claim follows from `GroundTheory.Heights₂.Heights.ConeSheetGram.proof hConeSheetGramLintegral`.
+-/
 theorem ConeSheetGram.of_open (hConeSheetGramLintegral : GroundTheory.Heights₂.Heights.ConeSheetGramLintegral.Statement) :
     GroundTheory.Heights₂.Heights.ConeSheetGram.Statement :=
   GroundTheory.Heights₂.Heights.ConeSheetGram.proof hConeSheetGramLintegral
 
+/- English proof (translation)
+The claim follows from `GroundTheory.Heights₂.Heights.ConeChartGram.proof (GroundTheory.Heights₂.Heights.ConeSheetGram.of_open hConeSheetGramLintegral) GroundTheory.Heights₂.Heights.MassFinite.full`.
+-/
 theorem ConeChartGram.of_open (hConeSheetGramLintegral : GroundTheory.Heights₂.Heights.ConeSheetGramLintegral.Statement) :
     GroundTheory.Heights₂.Heights.ConeChartGram.Statement :=
   GroundTheory.Heights₂.Heights.ConeChartGram.proof (GroundTheory.Heights₂.Heights.ConeSheetGram.of_open hConeSheetGramLintegral) GroundTheory.Heights₂.Heights.MassFinite.full
 
+/- English proof (translation)
+The claim follows from `GroundTheory.Heights₂.Heights.ConePolar.proof GroundTheory.Heights₂.Heights.SliceDim.full hLinearNoetherNormalization (GroundTheory.Heights₂.Heights.ConeChartGram.of_open hConeSheetGramLintegral)`.
+-/
 theorem ConePolar.of_open (hLinearNoetherNormalization : GroundTheory.Heights₂.Heights.ComplexSets.LinearNoetherNormalization.Statement) (hConeSheetGramLintegral : GroundTheory.Heights₂.Heights.ConeSheetGramLintegral.Statement) :
     GroundTheory.Heights₂.Heights.ConePolar.Statement :=
   GroundTheory.Heights₂.Heights.ConePolar.proof GroundTheory.Heights₂.Heights.SliceDim.full hLinearNoetherNormalization (GroundTheory.Heights₂.Heights.ConeChartGram.of_open hConeSheetGramLintegral)
 
+/- English proof (translation)
+The claim follows from `GroundTheory.Heights₂.Heights.IndefiniteRowSideFullHecke.ComplexSets.FiniteMapOpen.proof`.
+-/
 theorem IndefiniteRowSideFullHecke.ComplexSets.FiniteMapOpen.full : GroundTheory.Heights₂.Heights.IndefiniteRowSideFullHecke.ComplexSets.FiniteMapOpen.Statement :=
   GroundTheory.Heights₂.Heights.IndefiniteRowSideFullHecke.ComplexSets.FiniteMapOpen.proof
 
+/- English proof (translation)
+The claim follows from `GroundTheory.Heights₂.Heights.IndefiniteRowSideFullHecke.ComplexSets.CriticalImageNull.proof`.
+-/
 theorem IndefiniteRowSideFullHecke.ComplexSets.CriticalImageNull.full : GroundTheory.Heights₂.Heights.IndefiniteRowSideFullHecke.ComplexSets.CriticalImageNull.Statement :=
   GroundTheory.Heights₂.Heights.IndefiniteRowSideFullHecke.ComplexSets.CriticalImageNull.proof
 
+/- English proof (translation)
+The claim follows from `GroundTheory.Heights₂.Heights.SheetOnlyNull.proof GroundTheory.Heights₂.Heights.IndefiniteRowSideFullHecke.ComplexSets.FiniteMapOpen.full GroundTheory.Heights₂.Heights.IndefiniteRowSideFullHecke.ComplexSets.CriticalImageNull.full`.
+-/
 theorem SheetOnlyNull.full : GroundTheory.Heights₂.Heights.SheetOnlyNull.Statement :=
   GroundTheory.Heights₂.Heights.SheetOnlyNull.proof GroundTheory.Heights₂.Heights.IndefiniteRowSideFullHecke.ComplexSets.FiniteMapOpen.full GroundTheory.Heights₂.Heights.IndefiniteRowSideFullHecke.ComplexSets.CriticalImageNull.full
 
+/- English proof (translation)
+The claim follows from `GroundTheory.Heights₂.Heights.PosPartLocal.proof`.
+-/
 theorem PosPartLocal.full : GroundTheory.Heights₂.Heights.PosPartLocal.Statement :=
   GroundTheory.Heights₂.Heights.PosPartLocal.proof
 
+/- English proof (translation)
+The claim follows from `GroundTheory.Heights₂.Heights.PosPartSplit.proof`.
+-/
 theorem PosPartSplit.full : GroundTheory.Heights₂.Heights.PosPartSplit.Statement :=
   GroundTheory.Heights₂.Heights.PosPartSplit.proof
 
+/- English proof (translation)
+The claim follows from `GroundTheory.Heights₂.Heights.PosPartIndep.proof GroundTheory.Heights₂.Heights.SheetOnlyNull.full GroundTheory.Heights₂.Heights.PosPartLocal.full GroundTheory.Heights₂.Heights.PosPartSplit.full`.
+-/
 theorem PosPartIndep.full : GroundTheory.Heights₂.Heights.PosPartIndep.Statement :=
   GroundTheory.Heights₂.Heights.PosPartIndep.proof GroundTheory.Heights₂.Heights.SheetOnlyNull.full GroundTheory.Heights₂.Heights.PosPartLocal.full GroundTheory.Heights₂.Heights.PosPartSplit.full
 
+/- English proof (translation)
+The claim follows from `GroundTheory.Heights₂.Heights.IntegralIndep.proof GroundTheory.Heights₂.Heights.PosPartIndep.full`.
+-/
 theorem IntegralIndep.full : GroundTheory.Heights₂.Heights.IntegralIndep.Statement :=
   GroundTheory.Heights₂.Heights.IntegralIndep.proof GroundTheory.Heights₂.Heights.PosPartIndep.full
 
+/- English proof (translation)
+The claim follows from `GroundTheory.Heights₂.Heights.PlaneSliceMass.proof GroundTheory.Heights₂.Heights.IntegralIndep.full`.
+-/
 theorem PlaneSliceMass.full : GroundTheory.Heights₂.Heights.PlaneSliceMass.Statement :=
   GroundTheory.Heights₂.Heights.PlaneSliceMass.proof GroundTheory.Heights₂.Heights.IntegralIndep.full
 
+/- English proof (translation)
+The claim follows from `GroundTheory.Heights₂.Heights.ConeToProjective.proof GroundTheory.Heights₂.Heights.ConeDimOfChowForm.full (GroundTheory.Heights₂.Heights.ConePolar.of_open hLinearNoetherNormalization hConeSheetGramLintegral) GroundTheory.Heights₂.Heights.PlaneSliceMass.full`.
+-/
 theorem ConeToProjective.of_open (hLinearNoetherNormalization : GroundTheory.Heights₂.Heights.ComplexSets.LinearNoetherNormalization.Statement) (hConeSheetGramLintegral : GroundTheory.Heights₂.Heights.ConeSheetGramLintegral.Statement) :
     GroundTheory.Heights₂.Heights.ConeToProjective.Statement :=
   GroundTheory.Heights₂.Heights.ConeToProjective.proof GroundTheory.Heights₂.Heights.ConeDimOfChowForm.full (GroundTheory.Heights₂.Heights.ConePolar.of_open hLinearNoetherNormalization hConeSheetGramLintegral) GroundTheory.Heights₂.Heights.PlaneSliceMass.full
 
+/- English proof (translation)
+The claim follows from `GroundTheory.Heights₂.Heights.StokesOffDiscriminant.proof`.
+-/
 theorem StokesOffDiscriminant.full : GroundTheory.Heights₂.Heights.StokesOffDiscriminant.Statement :=
   GroundTheory.Heights₂.Heights.StokesOffDiscriminant.proof
 
+/- English proof (translation)
+The claim follows from `GroundTheory.Heights₂.Heights.CutOffShape.proof`.
+-/
 theorem CutOffShape.full : GroundTheory.Heights₂.Heights.CutOffShape.Statement :=
   GroundTheory.Heights₂.Heights.CutOffShape.proof
 
+/- English proof (translation)
+The claim follows from `GroundTheory.Heights₂.Heights.TubeFormCompare.proof`.
+-/
 theorem TubeFormCompare.full : GroundTheory.Heights₂.Heights.TubeFormCompare.Statement :=
   GroundTheory.Heights₂.Heights.TubeFormCompare.proof
 
+/- English proof (translation)
+The claim follows from `GroundTheory.Heights₂.Heights.CutOffTube.proof GroundTheory.Heights₂.Heights.TubeFormCompare.full hTubeEuclMass`.
+-/
 theorem CutOffTube.of_open (hTubeEuclMass : GroundTheory.Heights₂.Heights.TubeEuclMass.Statement) :
     GroundTheory.Heights₂.Heights.CutOffTube.Statement :=
   GroundTheory.Heights₂.Heights.CutOffTube.proof GroundTheory.Heights₂.Heights.TubeFormCompare.full hTubeEuclMass
 
+/- English proof (translation)
+The claim follows from `GroundTheory.Heights₂.Heights.HessCCompPluri.proof`.
+-/
 theorem HessCCompPluri.full : GroundTheory.Heights₂.Heights.HessCCompPluri.Statement :=
   GroundTheory.Heights₂.Heights.HessCCompPluri.proof
 
+/- English proof (translation)
+The claim follows from `GroundTheory.Heights₂.Heights.LogLogCutHess.proof GroundTheory.Heights₂.Heights.HessCCompPluri.full`.
+-/
 theorem LogLogCutHess.full : GroundTheory.Heights₂.Heights.LogLogCutHess.Statement :=
   GroundTheory.Heights₂.Heights.LogLogCutHess.proof GroundTheory.Heights₂.Heights.HessCCompPluri.full
 
+/- English proof (translation)
+The claim follows from `GroundTheory.Heights₂.Heights.CutOffGradient.proof GroundTheory.Heights₂.Heights.LogLogCutHess.full`.
+-/
 theorem CutOffGradient.full : GroundTheory.Heights₂.Heights.CutOffGradient.Statement :=
   GroundTheory.Heights₂.Heights.CutOffGradient.proof GroundTheory.Heights₂.Heights.LogLogCutHess.full
 
+/- English proof (translation)
+The claim follows from `GroundTheory.Heights₂.Heights.CutOff.proof GroundTheory.Heights₂.Heights.CutOffShape.full (GroundTheory.Heights₂.Heights.CutOffTube.of_open hTubeEuclMass) GroundTheory.Heights₂.Heights.CutOffGradient.full`.
+-/
 theorem CutOff.of_open (hTubeEuclMass : GroundTheory.Heights₂.Heights.TubeEuclMass.Statement) :
     GroundTheory.Heights₂.Heights.CutOff.Statement :=
   GroundTheory.Heights₂.Heights.CutOff.proof GroundTheory.Heights₂.Heights.CutOffShape.full (GroundTheory.Heights₂.Heights.CutOffTube.of_open hTubeEuclMass) GroundTheory.Heights₂.Heights.CutOffGradient.full
 
+/- English proof (translation)
+The claim follows from `GroundTheory.Heights₂.Heights.CutOffDominated.proof`.
+-/
 theorem CutOffDominated.full : GroundTheory.Heights₂.Heights.CutOffDominated.Statement :=
   GroundTheory.Heights₂.Heights.CutOffDominated.proof
 
+/- English proof (translation)
+The claim follows from `GroundTheory.Heights₂.Heights.MaDensLeibniz.proof`.
+-/
 theorem MaDensLeibniz.full : GroundTheory.Heights₂.Heights.MaDensLeibniz.Statement :=
   GroundTheory.Heights₂.Heights.MaDensLeibniz.proof
 
+/- English proof (translation)
+The claim follows from `GroundTheory.Heights₂.Heights.EnergyDensNonneg.proof`.
+-/
 theorem EnergyDensNonneg.full : GroundTheory.Heights₂.Heights.EnergyDensNonneg.Statement :=
   GroundTheory.Heights₂.Heights.EnergyDensNonneg.proof
 
+/- English proof (translation)
+The claim follows from `GroundTheory.Heights₂.Heights.GradDensSheetBound.proof`.
+-/
 theorem GradDensSheetBound.full : GroundTheory.Heights₂.Heights.GradDensSheetBound.Statement :=
   GroundTheory.Heights₂.Heights.GradDensSheetBound.proof
 
+/- English proof (translation)
+The claim follows from `GroundTheory.Heights₂.Heights.CutOffBoundaryBound.proof (GroundTheory.Heights₂.Heights.ChartMassCompact.of_open hSheetImageAreaSet) GroundTheory.Heights₂.Heights.MaDensLeibniz.full GroundTheory.Heights₂.Heights.EnergyDensNonneg.full GroundTheory.Heights₂.Heights.GradDensSheetBoun …`.
+-/
 theorem CutOffBoundaryBound.of_open (hSheetImageAreaSet : GroundTheory.Heights₂.Heights.SheetImageAreaSet.Statement) :
     GroundTheory.Heights₂.Heights.CutOffBoundaryBound.Statement :=
   GroundTheory.Heights₂.Heights.CutOffBoundaryBound.proof (GroundTheory.Heights₂.Heights.ChartMassCompact.of_open hSheetImageAreaSet) GroundTheory.Heights₂.Heights.MaDensLeibniz.full GroundTheory.Heights₂.Heights.EnergyDensNonneg.full GroundTheory.Heights₂.Heights.GradDensSheetBound.full
 
+/- English proof (translation)
+The claim follows from `GroundTheory.Heights₂.Heights.CutOffLimit.proof (GroundTheory.Heights₂.Heights.CutOff.of_open hTubeEuclMass) (GroundTheory.Heights₂.Heights.ChartMassCompact.of_open hSheetImageAreaSet) GroundTheory.Heights₂.Heights.CutOffDominated.full (GroundTheory.Heights₂.Heights.CutOffBoundar …`.
+-/
 theorem CutOffLimit.of_open (hSheetImageAreaSet : GroundTheory.Heights₂.Heights.SheetImageAreaSet.Statement) (hTubeEuclMass : GroundTheory.Heights₂.Heights.TubeEuclMass.Statement) :
     GroundTheory.Heights₂.Heights.CutOffLimit.Statement :=
   GroundTheory.Heights₂.Heights.CutOffLimit.proof (GroundTheory.Heights₂.Heights.CutOff.of_open hTubeEuclMass) (GroundTheory.Heights₂.Heights.ChartMassCompact.of_open hSheetImageAreaSet) GroundTheory.Heights₂.Heights.CutOffDominated.full (GroundTheory.Heights₂.Heights.CutOffBoundaryBound.of_open hSheetImageAreaSet)
 
+/- English proof (translation)
+The claim follows from `GroundTheory.Heights₂.Heights.StokesOnVariety.proof GroundTheory.Heights₂.Heights.ComplexSets.DiscriminantCover.full GroundTheory.Heights₂.Heights.StokesOffDiscriminant.full (GroundTheory.Heights₂.Heights.CutOffLimit.of_open hSheetImageAreaSet hTubeEuclMass)`.
+-/
 theorem StokesOnVariety.of_open (hSheetImageAreaSet : GroundTheory.Heights₂.Heights.SheetImageAreaSet.Statement) (hTubeEuclMass : GroundTheory.Heights₂.Heights.TubeEuclMass.Statement) :
     GroundTheory.Heights₂.Heights.StokesOnVariety.Statement :=
   GroundTheory.Heights₂.Heights.StokesOnVariety.proof GroundTheory.Heights₂.Heights.ComplexSets.DiscriminantCover.full GroundTheory.Heights₂.Heights.StokesOffDiscriminant.full (GroundTheory.Heights₂.Heights.CutOffLimit.of_open hSheetImageAreaSet hTubeEuclMass)
 
+/- English proof (translation)
+The claim follows from `GroundTheory.Heights₂.Heights.SheetSumMeasurable.proof`.
+-/
 theorem SheetSumMeasurable.full : GroundTheory.Heights₂.Heights.SheetSumMeasurable.Statement :=
   GroundTheory.Heights₂.Heights.SheetSumMeasurable.proof
 
+/- English proof (translation)
+The claim follows from `GroundTheory.Heights₂.Heights.LocalGraphProjectionMass.proof GroundTheory.Heights₂.Heights.ProjectionFormula.full`.
+-/
 theorem LocalGraphProjectionMass.full : GroundTheory.Heights₂.Heights.LocalGraphProjectionMass.Statement :=
   GroundTheory.Heights₂.Heights.LocalGraphProjectionMass.proof GroundTheory.Heights₂.Heights.ProjectionFormula.full
 
+/- English proof (translation)
+The claim follows from `GroundTheory.Heights₂.Heights.VarietyProjectionMass.proof GroundTheory.Heights₂.Heights.ComplexSets.GenericProjectionFinite.full GroundTheory.Heights₂.Heights.ComplexSets.DiscriminantCover.full GroundTheory.Heights₂.Heights.LocalGraphProjectionMass.full`.
+-/
 theorem VarietyProjectionMass.full : GroundTheory.Heights₂.Heights.VarietyProjectionMass.Statement :=
   GroundTheory.Heights₂.Heights.VarietyProjectionMass.proof GroundTheory.Heights₂.Heights.ComplexSets.GenericProjectionFinite.full GroundTheory.Heights₂.Heights.ComplexSets.DiscriminantCover.full GroundTheory.Heights₂.Heights.LocalGraphProjectionMass.full
 
+/- English proof (translation)
+The claim follows from `GroundTheory.Heights₂.Heights.IndefiniteRowSideFullHecke.ComplexSets.PolySublevel.proof`.
+-/
 theorem IndefiniteRowSideFullHecke.ComplexSets.PolySublevel.full : GroundTheory.Heights₂.Heights.IndefiniteRowSideFullHecke.ComplexSets.PolySublevel.Statement :=
   GroundTheory.Heights₂.Heights.IndefiniteRowSideFullHecke.ComplexSets.PolySublevel.proof
 
+/- English proof (translation)
+The claim follows from `GroundTheory.Heights₂.Heights.VarietySlabMeasure.proof GroundTheory.Heights₂.Heights.ComplexSets.FiniteProjectionsGeneric.full GroundTheory.Heights₂.Heights.VarietyProjectionMass.full GroundTheory.Heights₂.Heights.IndefiniteRowSideFullHecke.ComplexSets.PolySublevel.full`.
+-/
 theorem VarietySlabMeasure.full : GroundTheory.Heights₂.Heights.VarietySlabMeasure.Statement :=
   GroundTheory.Heights₂.Heights.VarietySlabMeasure.proof GroundTheory.Heights₂.Heights.ComplexSets.FiniteProjectionsGeneric.full GroundTheory.Heights₂.Heights.VarietyProjectionMass.full GroundTheory.Heights₂.Heights.IndefiniteRowSideFullHecke.ComplexSets.PolySublevel.full
 
+/- English proof (translation)
+The claim follows from `GroundTheory.Heights₂.Heights.VarSlabMeasure.proof GroundTheory.Heights₂.Heights.VarietySlabMeasure.full`.
+-/
 theorem VarSlabMeasure.full : GroundTheory.Heights₂.Heights.VarSlabMeasure.Statement :=
   GroundTheory.Heights₂.Heights.VarSlabMeasure.proof GroundTheory.Heights₂.Heights.VarietySlabMeasure.full
 
+/- English proof (translation)
+The claim follows from `GroundTheory.Heights₂.Heights.LogIntegrable.proof GroundTheory.Heights₂.Heights.SheetSumMeasurable.full (GroundTheory.Heights₂.Heights.ChartMassCompare.of_open hSheetImageAreaSet) GroundTheory.Heights₂.Heights.VarSlabMeasure.full GroundTheory.Heights₂.Heights.MassFinite.full`.
+-/
 theorem LogIntegrable.of_open (hSheetImageAreaSet : GroundTheory.Heights₂.Heights.SheetImageAreaSet.Statement) :
     GroundTheory.Heights₂.Heights.LogIntegrable.Statement :=
   GroundTheory.Heights₂.Heights.LogIntegrable.proof GroundTheory.Heights₂.Heights.SheetSumMeasurable.full (GroundTheory.Heights₂.Heights.ChartMassCompare.of_open hSheetImageAreaSet) GroundTheory.Heights₂.Heights.VarSlabMeasure.full GroundTheory.Heights₂.Heights.MassFinite.full
 
+/- English proof (translation)
+The claim follows from `GroundTheory.Heights₂.Heights.LelongRegularise.proof (GroundTheory.Heights₂.Heights.LogIntegrable.of_open hSheetImageAreaSet)`.
+-/
 theorem LelongRegularise.of_open (hSheetImageAreaSet : GroundTheory.Heights₂.Heights.SheetImageAreaSet.Statement) :
     GroundTheory.Heights₂.Heights.LelongRegularise.Statement :=
   GroundTheory.Heights₂.Heights.LelongRegularise.proof (GroundTheory.Heights₂.Heights.LogIntegrable.of_open hSheetImageAreaSet)
 
+/- English proof (translation)
+The claim follows from `GroundTheory.Heights₂.Heights.LelongLimitOffZero.proof (GroundTheory.Heights₂.Heights.ChartMassCompact.of_open hSheetImageAreaSet)`.
+-/
 theorem LelongLimitOffZero.of_open (hSheetImageAreaSet : GroundTheory.Heights₂.Heights.SheetImageAreaSet.Statement) :
     GroundTheory.Heights₂.Heights.LelongLimitOffZero.Statement :=
   GroundTheory.Heights₂.Heights.LelongLimitOffZero.proof (GroundTheory.Heights₂.Heights.ChartMassCompact.of_open hSheetImageAreaSet)
 
+/- English proof (translation)
+The claim follows from `GroundTheory.Heights₂.Heights.VarIntAdd.proof (GroundTheory.Heights₂.Heights.ChartMassCompact.of_open hSheetImageAreaSet)`.
+-/
 theorem VarIntAdd.of_open (hSheetImageAreaSet : GroundTheory.Heights₂.Heights.SheetImageAreaSet.Statement) :
     GroundTheory.Heights₂.Heights.VarIntAdd.Statement :=
   GroundTheory.Heights₂.Heights.VarIntAdd.proof (GroundTheory.Heights₂.Heights.ChartMassCompact.of_open hSheetImageAreaSet)
 
+/- English proof (translation)
+The claim follows from `GroundTheory.Heights₂.Heights.LelongLimit.proof (GroundTheory.Heights₂.Heights.LelongLimitOffZero.of_open hSheetImageAreaSet) hLelongLimitOnZero (GroundTheory.Heights₂.Heights.VarIntAdd.of_open hSheetImageAreaSet)`.
+-/
 theorem LelongLimit.of_open (hLelongLimitOnZero : GroundTheory.Heights₂.Heights.LelongLimitOnZero.Statement) (hSheetImageAreaSet : GroundTheory.Heights₂.Heights.SheetImageAreaSet.Statement) :
     GroundTheory.Heights₂.Heights.LelongLimit.Statement :=
   GroundTheory.Heights₂.Heights.LelongLimit.proof (GroundTheory.Heights₂.Heights.LelongLimitOffZero.of_open hSheetImageAreaSet) hLelongLimitOnZero (GroundTheory.Heights₂.Heights.VarIntAdd.of_open hSheetImageAreaSet)
 
+/- English proof (translation)
+The claim follows from `GroundTheory.Heights₂.Heights.PoincareLelong.proof (GroundTheory.Heights₂.Heights.StokesOnVariety.of_open hSheetImageAreaSet hTubeEuclMass) (GroundTheory.Heights₂.Heights.LelongRegularise.of_open hSheetImageAreaSet) (GroundTheory.Heights₂.Heights.LelongLimit.of_open hLelongLimitO …`.
+-/
 theorem PoincareLelong.of_open (hLelongLimitOnZero : GroundTheory.Heights₂.Heights.LelongLimitOnZero.Statement) (hSheetImageAreaSet : GroundTheory.Heights₂.Heights.SheetImageAreaSet.Statement) (hTubeEuclMass : GroundTheory.Heights₂.Heights.TubeEuclMass.Statement) :
     GroundTheory.Heights₂.Heights.PoincareLelong.Statement :=
   GroundTheory.Heights₂.Heights.PoincareLelong.proof (GroundTheory.Heights₂.Heights.StokesOnVariety.of_open hSheetImageAreaSet hTubeEuclMass) (GroundTheory.Heights₂.Heights.LelongRegularise.of_open hSheetImageAreaSet) (GroundTheory.Heights₂.Heights.LelongLimit.of_open hLelongLimitOnZero hSheetImageAreaSet)
 
+/- English proof (translation)
+The claim follows from `GroundTheory.Heights₂.Heights.SliceIdeal.proof`.
+-/
 theorem SliceIdeal.full : GroundTheory.Heights₂.Heights.SliceIdeal.Statement :=
   GroundTheory.Heights₂.Heights.SliceIdeal.proof
 
+/- English proof (translation)
+The claim follows from `GroundTheory.Heights₂.Heights.SliceComponents.proof`.
+-/
 theorem SliceComponents.full : GroundTheory.Heights₂.Heights.SliceComponents.Statement :=
   GroundTheory.Heights₂.Heights.SliceComponents.proof
 
+/- English proof (translation)
+The claim follows from `GroundTheory.Heights₂.Heights.SliceExhaustion.proof GroundTheory.Heights₂.Heights.SliceIdeal.full GroundTheory.Heights₂.Heights.SliceComponents.full hSliceMassFinite hSliceLelongError`.
+-/
 theorem SliceExhaustion.of_open (hSliceLelongError : GroundTheory.Heights₂.Heights.SliceLelongError.Statement) (hSliceMassFinite : GroundTheory.Heights₂.Heights.SliceMassFinite.Statement) :
     GroundTheory.Heights₂.Heights.SliceExhaustion.Statement :=
   GroundTheory.Heights₂.Heights.SliceExhaustion.proof GroundTheory.Heights₂.Heights.SliceIdeal.full GroundTheory.Heights₂.Heights.SliceComponents.full hSliceMassFinite hSliceLelongError
 
+/- English proof (translation)
+The claim follows from `GroundTheory.Heights₂.Heights.SliceSectionMass.proof (GroundTheory.Heights₂.Heights.StokesOnVariety.of_open hSheetImageAreaSet hTubeEuclMass) (GroundTheory.Heights₂.Heights.PoincareLelong.of_open hLelongLimitOnZero hSheetImageAreaSet hTubeEuclMass) GroundTheory.Heights₂.Heights.S …`.
+-/
 theorem SliceSectionMass.of_open (hLelongLimitOnZero : GroundTheory.Heights₂.Heights.LelongLimitOnZero.Statement) (hSheetImageAreaSet : GroundTheory.Heights₂.Heights.SheetImageAreaSet.Statement) (hSliceLelongError : GroundTheory.Heights₂.Heights.SliceLelongError.Statement) (hSliceMassFinite : GroundTheory.Heights₂.Heights.SliceMassFinite.Statement) (hTubeEuclMass : GroundTheory.Heights₂.Heights.TubeEuclMass.Statement) :
     GroundTheory.Heights₂.Heights.SliceSectionMass.Statement :=
   GroundTheory.Heights₂.Heights.SliceSectionMass.proof (GroundTheory.Heights₂.Heights.StokesOnVariety.of_open hSheetImageAreaSet hTubeEuclMass) (GroundTheory.Heights₂.Heights.PoincareLelong.of_open hLelongLimitOnZero hSheetImageAreaSet hTubeEuclMass) GroundTheory.Heights₂.Heights.SliceIdeal.full GroundTheory.Heights₂.Heights.SliceComponents.full (GroundTheory.Heights₂.Heights.SliceExhaustion.of_open hSliceLelongError hSliceMassFinite)
 
+/- English proof (translation)
+The claim follows from `GroundTheory.Heights₂.Heights.SectionHyperplaneAvoid.proof`.
+-/
 theorem SectionHyperplaneAvoid.full : GroundTheory.Heights₂.Heights.SectionHyperplaneAvoid.Statement :=
   GroundTheory.Heights₂.Heights.SectionHyperplaneAvoid.proof
 
+/- English proof (translation)
+The claim follows from `GroundTheory.Heights₂.Heights.SectionDegreeSum.proof GroundTheory.Heights₂.Heights.ChowFormSection.full`.
+-/
 theorem SectionDegreeSum.full : GroundTheory.Heights₂.Heights.SectionDegreeSum.Statement :=
   GroundTheory.Heights₂.Heights.SectionDegreeSum.proof GroundTheory.Heights₂.Heights.ChowFormSection.full
 
+/- English proof (translation)
+The claim follows from `GroundTheory.Heights₂.Heights.PointSliceMass.proof`.
+-/
 theorem PointSliceMass.full : GroundTheory.Heights₂.Heights.PointSliceMass.Statement :=
   GroundTheory.Heights₂.Heights.PointSliceMass.proof
 
+/- English proof (translation)
+The claim follows from `GroundTheory.Heights₂.Heights.ConeIntegralMass.of_slices (GroundTheory.Heights₂.Heights.ConeToProjective.of_open hLinearNoetherNormalization hConeSheetGramLintegral) (GroundTheory.Heights₂.Heights.SliceSectionMass.of_open hLelongLimitOnZero hSheetImageAreaSet hSliceLelongError hS …`.
+-/
 theorem ConeIntegralMass.of_open (hLinearNoetherNormalization : GroundTheory.Heights₂.Heights.ComplexSets.LinearNoetherNormalization.Statement) (hConeSheetGramLintegral : GroundTheory.Heights₂.Heights.ConeSheetGramLintegral.Statement) (hLelongLimitOnZero : GroundTheory.Heights₂.Heights.LelongLimitOnZero.Statement) (hSheetImageAreaSet : GroundTheory.Heights₂.Heights.SheetImageAreaSet.Statement) (hSliceLelongError : GroundTheory.Heights₂.Heights.SliceLelongError.Statement) (hSliceMassFinite : GroundTheory.Heights₂.Heights.SliceMassFinite.Statement) (hTubeEuclMass : GroundTheory.Heights₂.Heights.TubeEuclMass.Statement) :
     GroundTheory.Heights₂.Heights.ConeIntegralMass.Statement :=
   GroundTheory.Heights₂.Heights.ConeIntegralMass.of_slices (GroundTheory.Heights₂.Heights.ConeToProjective.of_open hLinearNoetherNormalization hConeSheetGramLintegral) (GroundTheory.Heights₂.Heights.SliceSectionMass.of_open hLelongLimitOnZero hSheetImageAreaSet hSliceLelongError hSliceMassFinite hTubeEuclMass) GroundTheory.Heights₂.Heights.SectionHyperplaneAvoid.full GroundTheory.Heights₂.Heights.SectionDegreeSum.full GroundTheory.Heights₂.Heights.PointSliceMass.full
 
+/- English proof (translation)
+The claim follows from `GroundTheory.Heights₂.Heights.ConeBallFinite.proof (GroundTheory.Heights₂.Heights.ConeIntegralMass.of_open hLinearNoetherNormalization hConeSheetGramLintegral hLelongLimitOnZero hSheetImageAreaSet hSliceLelongError hSliceMassFinite hTubeEuclMass)`.
+-/
 theorem ConeBallFinite.of_open (hLinearNoetherNormalization : GroundTheory.Heights₂.Heights.ComplexSets.LinearNoetherNormalization.Statement) (hConeSheetGramLintegral : GroundTheory.Heights₂.Heights.ConeSheetGramLintegral.Statement) (hLelongLimitOnZero : GroundTheory.Heights₂.Heights.LelongLimitOnZero.Statement) (hSheetImageAreaSet : GroundTheory.Heights₂.Heights.SheetImageAreaSet.Statement) (hSliceLelongError : GroundTheory.Heights₂.Heights.SliceLelongError.Statement) (hSliceMassFinite : GroundTheory.Heights₂.Heights.SliceMassFinite.Statement) (hTubeEuclMass : GroundTheory.Heights₂.Heights.TubeEuclMass.Statement) :
     GroundTheory.Heights₂.Heights.ConeBallFinite.Statement :=
   GroundTheory.Heights₂.Heights.ConeBallFinite.proof (GroundTheory.Heights₂.Heights.ConeIntegralMass.of_open hLinearNoetherNormalization hConeSheetGramLintegral hLelongLimitOnZero hSheetImageAreaSet hSliceLelongError hSliceMassFinite hTubeEuclMass)
 
+/- English proof (translation)
+The claim follows from `GroundTheory.Heights₂.Heights.ConeSlabBound.proof GroundTheory.Heights₂.Heights.VarietySlabMeasure.full`.
+-/
 theorem ConeSlabBound.full : GroundTheory.Heights₂.Heights.ConeSlabBound.Statement :=
   GroundTheory.Heights₂.Heights.ConeSlabBound.proof GroundTheory.Heights₂.Heights.VarietySlabMeasure.full
 
+/- English proof (translation)
+The claim follows from `GroundTheory.Heights₂.Heights.ConeFsLogIntegrable.proof (GroundTheory.Heights₂.Heights.ConeBallFinite.of_open hLinearNoetherNormalization hConeSheetGramLintegral hLelongLimitOnZero hSheetImageAreaSet hSliceLelongError hSliceMassFinite hTubeEuclMass) GroundTheory.Heights₂.Heights. …`.
+-/
 theorem ConeFsLogIntegrable.of_open (hLinearNoetherNormalization : GroundTheory.Heights₂.Heights.ComplexSets.LinearNoetherNormalization.Statement) (hConeSheetGramLintegral : GroundTheory.Heights₂.Heights.ConeSheetGramLintegral.Statement) (hLelongLimitOnZero : GroundTheory.Heights₂.Heights.LelongLimitOnZero.Statement) (hSheetImageAreaSet : GroundTheory.Heights₂.Heights.SheetImageAreaSet.Statement) (hSliceLelongError : GroundTheory.Heights₂.Heights.SliceLelongError.Statement) (hSliceMassFinite : GroundTheory.Heights₂.Heights.SliceMassFinite.Statement) (hTubeEuclMass : GroundTheory.Heights₂.Heights.TubeEuclMass.Statement) :
     GroundTheory.Heights₂.Heights.ConeFsLogIntegrable.Statement :=
   GroundTheory.Heights₂.Heights.ConeFsLogIntegrable.proof (GroundTheory.Heights₂.Heights.ConeBallFinite.of_open hLinearNoetherNormalization hConeSheetGramLintegral hLelongLimitOnZero hSheetImageAreaSet hSliceLelongError hSliceMassFinite hTubeEuclMass) GroundTheory.Heights₂.Heights.ConeSlabBound.full
 
+/- English proof (translation)
+The claim follows from `GroundTheory.Heights₂.Heights.ZeroLocusDimH.proof`.
+-/
 theorem ZeroLocusDimH.full : GroundTheory.Heights₂.Heights.ZeroLocusDimH.Statement :=
   GroundTheory.Heights₂.Heights.ZeroLocusDimH.proof
 
+/- English proof (translation)
+The claim follows from `GroundTheory.Heights₂.Heights.ConeHyperplaneNull.proof GroundTheory.Heights₂.Heights.ZeroLocusDimH.full GroundTheory.Heights₂.Heights.ChowFormDimLe.full`.
+-/
 theorem ConeHyperplaneNull.full : GroundTheory.Heights₂.Heights.ConeHyperplaneNull.Statement :=
   GroundTheory.Heights₂.Heights.ConeHyperplaneNull.proof GroundTheory.Heights₂.Heights.ZeroLocusDimH.full GroundTheory.Heights₂.Heights.ChowFormDimLe.full
 
+/- English proof (translation)
+The claim follows from `GroundTheory.Heights₂.Heights.FormIntLelong.proof (GroundTheory.Heights₂.Heights.ConeToProjective.of_open hLinearNoetherNormalization hConeSheetGramLintegral) hChowFormSectionAlgClosed hFormIntSlice hSliceFormLelong`.
+-/
 theorem FormIntLelong.of_open (hChowFormSectionAlgClosed : GroundTheory.Heights₂.Heights.ChowFormSectionAlgClosed.Statement) (hLinearNoetherNormalization : GroundTheory.Heights₂.Heights.ComplexSets.LinearNoetherNormalization.Statement) (hConeSheetGramLintegral : GroundTheory.Heights₂.Heights.ConeSheetGramLintegral.Statement) (hFormIntSlice : GroundTheory.Heights₂.Heights.FormIntSlice.Statement) (hSliceFormLelong : GroundTheory.Heights₂.Heights.SliceFormLelong.Statement) :
     GroundTheory.Heights₂.Heights.FormIntLelong.Statement :=
   GroundTheory.Heights₂.Heights.FormIntLelong.proof (GroundTheory.Heights₂.Heights.ConeToProjective.of_open hLinearNoetherNormalization hConeSheetGramLintegral) hChowFormSectionAlgClosed hFormIntSlice hSliceFormLelong
 
+/- English proof (translation)
+The claim follows from `GroundTheory.Heights₂.Heights.SliceFormMass.proof GroundTheory.Heights₂.Heights.SliceIdeal.full hSliceMassFinite hSheetFormCompare`.
+-/
 theorem SliceFormMass.of_open (hSheetFormCompare : GroundTheory.Heights₂.Heights.SheetFormCompare.Statement) (hSliceMassFinite : GroundTheory.Heights₂.Heights.SliceMassFinite.Statement) :
     GroundTheory.Heights₂.Heights.SliceFormMass.Statement :=
   GroundTheory.Heights₂.Heights.SliceFormMass.proof GroundTheory.Heights₂.Heights.SliceIdeal.full hSliceMassFinite hSheetFormCompare
 
+/- English proof (translation)
+The claim follows from `GroundTheory.Heights₂.Heights.SheetLogNormDens.proof`.
+-/
 theorem SheetLogNormDens.full : GroundTheory.Heights₂.Heights.SheetLogNormDens.Statement :=
   GroundTheory.Heights₂.Heights.SheetLogNormDens.proof
 
+/- English proof (translation)
+The claim follows from `GroundTheory.Heights₂.Heights.FormIntPos.proof (GroundTheory.Heights₂.Heights.ConeToProjective.of_open hLinearNoetherNormalization hConeSheetGramLintegral) (GroundTheory.Heights₂.Heights.SliceFormMass.of_open hSheetFormCompare hSliceMassFinite) GroundTheory.Heights₂.Heights.Sheet …`.
+-/
 theorem FormIntPos.of_open (hLinearNoetherNormalization : GroundTheory.Heights₂.Heights.ComplexSets.LinearNoetherNormalization.Statement) (hConeSheetGramLintegral : GroundTheory.Heights₂.Heights.ConeSheetGramLintegral.Statement) (hSheetFormCompare : GroundTheory.Heights₂.Heights.SheetFormCompare.Statement) (hSliceMassFinite : GroundTheory.Heights₂.Heights.SliceMassFinite.Statement) :
     GroundTheory.Heights₂.Heights.FormIntPos.Statement :=
   GroundTheory.Heights₂.Heights.FormIntPos.proof (GroundTheory.Heights₂.Heights.ConeToProjective.of_open hLinearNoetherNormalization hConeSheetGramLintegral) (GroundTheory.Heights₂.Heights.SliceFormMass.of_open hSheetFormCompare hSliceMassFinite) GroundTheory.Heights₂.Heights.SheetLogNormDens.full
 
+/- English proof (translation)
+The claim follows from `GroundTheory.Heights₂.Heights.SliceCutBoundary.proof hSliceBoundaryBound hSliceCutDecay`.
+-/
 theorem SliceCutBoundary.of_open (hSliceBoundaryBound : GroundTheory.Heights₂.Heights.SliceBoundaryBound.Statement) (hSliceCutDecay : GroundTheory.Heights₂.Heights.SliceCutDecay.Statement) :
     GroundTheory.Heights₂.Heights.SliceCutBoundary.Statement :=
   GroundTheory.Heights₂.Heights.SliceCutBoundary.proof hSliceBoundaryBound hSliceCutDecay
 
+/- English proof (translation)
+The claim follows from `GroundTheory.Heights₂.Heights.SliceCutOffLimit.proof GroundTheory.Heights₂.Heights.SliceIdeal.full (GroundTheory.Heights₂.Heights.SliceFormMass.of_open hSheetFormCompare hSliceMassFinite) (GroundTheory.Heights₂.Heights.SliceCutBoundary.of_open hSliceBoundaryBound hSliceCutDecay)`.
+-/
 theorem SliceCutOffLimit.of_open (hSheetFormCompare : GroundTheory.Heights₂.Heights.SheetFormCompare.Statement) (hSliceBoundaryBound : GroundTheory.Heights₂.Heights.SliceBoundaryBound.Statement) (hSliceCutDecay : GroundTheory.Heights₂.Heights.SliceCutDecay.Statement) (hSliceMassFinite : GroundTheory.Heights₂.Heights.SliceMassFinite.Statement) :
     GroundTheory.Heights₂.Heights.SliceCutOffLimit.Statement :=
   GroundTheory.Heights₂.Heights.SliceCutOffLimit.proof GroundTheory.Heights₂.Heights.SliceIdeal.full (GroundTheory.Heights₂.Heights.SliceFormMass.of_open hSheetFormCompare hSliceMassFinite) (GroundTheory.Heights₂.Heights.SliceCutBoundary.of_open hSliceBoundaryBound hSliceCutDecay)
 
+/- English proof (translation)
+The claim follows from `GroundTheory.Heights₂.Heights.FormIntSymm.proof GroundTheory.Heights₂.Heights.SliceIdeal.full (GroundTheory.Heights₂.Heights.StokesOnVariety.of_open hSheetImageAreaSet hTubeEuclMass) (GroundTheory.Heights₂.Heights.SliceCutOffLimit.of_open hSheetFormCompare hSliceBoundaryBound hSl …`.
+-/
 theorem FormIntSymm.of_open (hSheetFormCompare : GroundTheory.Heights₂.Heights.SheetFormCompare.Statement) (hSheetImageAreaSet : GroundTheory.Heights₂.Heights.SheetImageAreaSet.Statement) (hSliceBoundaryBound : GroundTheory.Heights₂.Heights.SliceBoundaryBound.Statement) (hSliceCutDecay : GroundTheory.Heights₂.Heights.SliceCutDecay.Statement) (hSliceMassFinite : GroundTheory.Heights₂.Heights.SliceMassFinite.Statement) (hTubeEuclMass : GroundTheory.Heights₂.Heights.TubeEuclMass.Statement) :
     GroundTheory.Heights₂.Heights.FormIntSymm.Statement :=
   GroundTheory.Heights₂.Heights.FormIntSymm.proof GroundTheory.Heights₂.Heights.SliceIdeal.full (GroundTheory.Heights₂.Heights.StokesOnVariety.of_open hSheetImageAreaSet hTubeEuclMass) (GroundTheory.Heights₂.Heights.SliceCutOffLimit.of_open hSheetFormCompare hSliceBoundaryBound hSliceCutDecay hSliceMassFinite)
 
+/- English proof (translation)
+The claim follows from `GroundTheory.Heights₂.Heights.RegConeLimit.proof (GroundTheory.Heights₂.Heights.ConeBallFinite.of_open hLinearNoetherNormalization hConeSheetGramLintegral hLelongLimitOnZero hSheetImageAreaSet hSliceLelongError hSliceMassFinite hTubeEuclMass) (GroundTheory.Heights₂.Heights.ConeFs …`.
+-/
 theorem RegConeLimit.of_open (hLinearNoetherNormalization : GroundTheory.Heights₂.Heights.ComplexSets.LinearNoetherNormalization.Statement) (hConeSheetGramLintegral : GroundTheory.Heights₂.Heights.ConeSheetGramLintegral.Statement) (hLelongLimitOnZero : GroundTheory.Heights₂.Heights.LelongLimitOnZero.Statement) (hSheetImageAreaSet : GroundTheory.Heights₂.Heights.SheetImageAreaSet.Statement) (hSliceLelongError : GroundTheory.Heights₂.Heights.SliceLelongError.Statement) (hSliceMassFinite : GroundTheory.Heights₂.Heights.SliceMassFinite.Statement) (hTubeEuclMass : GroundTheory.Heights₂.Heights.TubeEuclMass.Statement) :
     GroundTheory.Heights₂.Heights.RegConeLimit.Statement :=
   GroundTheory.Heights₂.Heights.RegConeLimit.proof (GroundTheory.Heights₂.Heights.ConeBallFinite.of_open hLinearNoetherNormalization hConeSheetGramLintegral hLelongLimitOnZero hSheetImageAreaSet hSliceLelongError hSliceMassFinite hTubeEuclMass) (GroundTheory.Heights₂.Heights.ConeFsLogIntegrable.of_open hLinearNoetherNormalization hConeSheetGramLintegral hLelongLimitOnZero hSheetImageAreaSet hSliceLelongError hSliceMassFinite hTubeEuclMass) GroundTheory.Heights₂.Heights.ConeHyperplaneNull.full
 
+/- English proof (translation)
+The claim follows from `GroundTheory.Heights₂.Heights.GreenFromLelong.proof (GroundTheory.Heights₂.Heights.FormIntSymm.of_open hSheetFormCompare hSheetImageAreaSet hSliceBoundaryBound hSliceCutDecay hSliceMassFinite hTubeEuclMass) (GroundTheory.Heights₂.Heights.FormIntPos.of_open hLinearNoetherNormaliza …`.
+-/
 theorem GreenFromLelong.of_open (hChowFormSectionAlgClosed : GroundTheory.Heights₂.Heights.ChowFormSectionAlgClosed.Statement) (hLinearNoetherNormalization : GroundTheory.Heights₂.Heights.ComplexSets.LinearNoetherNormalization.Statement) (hConeSheetGramLintegral : GroundTheory.Heights₂.Heights.ConeSheetGramLintegral.Statement) (hFormIntSlice : GroundTheory.Heights₂.Heights.FormIntSlice.Statement) (hLelongLimitOnZero : GroundTheory.Heights₂.Heights.LelongLimitOnZero.Statement) (hSheetFormCompare : GroundTheory.Heights₂.Heights.SheetFormCompare.Statement) (hSheetImageAreaSet : GroundTheory.Heights₂.Heights.SheetImageAreaSet.Statement) (hSliceBoundaryBound : GroundTheory.Heights₂.Heights.SliceBoundaryBound.Statement) (hSliceCutDecay : GroundTheory.Heights₂.Heights.SliceCutDecay.Statement) (hSliceFormLelong : GroundTheory.Heights₂.Heights.SliceFormLelong.Statement) (hSliceLelongError : GroundTheory.Heights₂.Heights.SliceLelongError.Statement) (hSliceMassFinite : GroundTheory.Heights₂.Heights.SliceMassFinite.Statement) (hTubeEuclMass : GroundTheory.Heights₂.Heights.TubeEuclMass.Statement) :
     GroundTheory.Heights₂.Heights.GreenFromLelong.Statement :=
   GroundTheory.Heights₂.Heights.GreenFromLelong.proof (GroundTheory.Heights₂.Heights.FormIntSymm.of_open hSheetFormCompare hSheetImageAreaSet hSliceBoundaryBound hSliceCutDecay hSliceMassFinite hTubeEuclMass) (GroundTheory.Heights₂.Heights.FormIntPos.of_open hLinearNoetherNormalization hConeSheetGramLintegral hSheetFormCompare hSliceMassFinite) (GroundTheory.Heights₂.Heights.FormIntLelong.of_open hChowFormSectionAlgClosed hLinearNoetherNormalization hConeSheetGramLintegral hFormIntSlice hSliceFormLelong) (GroundTheory.Heights₂.Heights.RegConeLimit.of_open hLinearNoetherNormalization hConeSheetGramLintegral hLelongLimitOnZero hSheetImageAreaSet hSliceLelongError hSliceMassFinite hTubeEuclMass) hChowFormSectionAlgClosed
 
+/- English proof (translation)
+The claim follows from `(GroundTheory.Heights₂.Heights.GreenFromLelong.of_open hChowFormSectionAlgClosed hLinearNoetherNormalization hConeSheetGramLintegral hFormIntSlice hLelongLimitOnZero hSheetFormCompare hSheetImageAreaSet hSliceBoundaryBound hSliceCutDecay hSliceFormLelong hSliceLelongError hSliceM …`.
+-/
 theorem GreenSymmetry.of_open (hChowFormSectionAlgClosed : GroundTheory.Heights₂.Heights.ChowFormSectionAlgClosed.Statement) (hLinearNoetherNormalization : GroundTheory.Heights₂.Heights.ComplexSets.LinearNoetherNormalization.Statement) (hConeSheetGramLintegral : GroundTheory.Heights₂.Heights.ConeSheetGramLintegral.Statement) (hFormIntSlice : GroundTheory.Heights₂.Heights.FormIntSlice.Statement) (hLelongLimitOnZero : GroundTheory.Heights₂.Heights.LelongLimitOnZero.Statement) (hSheetFormCompare : GroundTheory.Heights₂.Heights.SheetFormCompare.Statement) (hSheetImageAreaSet : GroundTheory.Heights₂.Heights.SheetImageAreaSet.Statement) (hSliceBoundaryBound : GroundTheory.Heights₂.Heights.SliceBoundaryBound.Statement) (hSliceCutDecay : GroundTheory.Heights₂.Heights.SliceCutDecay.Statement) (hSliceFormLelong : GroundTheory.Heights₂.Heights.SliceFormLelong.Statement) (hSliceLelongError : GroundTheory.Heights₂.Heights.SliceLelongError.Statement) (hSliceMassFinite : GroundTheory.Heights₂.Heights.SliceMassFinite.Statement) (hTubeEuclMass : GroundTheory.Heights₂.Heights.TubeEuclMass.Statement) :
     GroundTheory.Heights₂.Heights.GreenSymmetry.Statement :=
   (GroundTheory.Heights₂.Heights.GreenFromLelong.of_open hChowFormSectionAlgClosed hLinearNoetherNormalization hConeSheetGramLintegral hFormIntSlice hLelongLimitOnZero hSheetFormCompare hSheetImageAreaSet hSliceBoundaryBound hSliceCutDecay hSliceFormLelong hSliceLelongError hSliceMassFinite hTubeEuclMass) GroundTheory.Heights₂.Heights.IntegralIndep.full (GroundTheory.Heights₂.Heights.CutOff.of_open hTubeEuclMass) (GroundTheory.Heights₂.Heights.StokesOnVariety.of_open hSheetImageAreaSet hTubeEuclMass) (GroundTheory.Heights₂.Heights.LogIntegrable.of_open hSheetImageAreaSet) (GroundTheory.Heights₂.Heights.PoincareLelong.of_open hLelongLimitOnZero hSheetImageAreaSet hTubeEuclMass) (GroundTheory.Heights₂.Heights.ConeToProjective.of_open hLinearNoetherNormalization hConeSheetGramLintegral)
 
+/- English proof (translation)
+The claim follows from `GroundTheory.Heights₂.Heights.ImplicitCurve.proof`.
+-/
 theorem ImplicitCurve.full : GroundTheory.Heights₂.Heights.ImplicitCurve.Statement :=
   GroundTheory.Heights₂.Heights.ImplicitCurve.proof
 
+/- English proof (translation)
+The claim follows from `GroundTheory.Heights₂.Heights.PlaneSliceMass.line GroundTheory.Heights₂.Heights.PlaneSliceMass.full`.
+-/
 theorem LineSliceMass.full : GroundTheory.Heights₂.Heights.LineSliceMass.Statement :=
   GroundTheory.Heights₂.Heights.PlaneSliceMass.line GroundTheory.Heights₂.Heights.PlaneSliceMass.full
 
+/- English proof (translation)
+The claim follows from `GroundTheory.Heights₂.Heights.MassFromLelong.proof (GroundTheory.Heights₂.Heights.SliceSectionMass.of_open hLelongLimitOnZero hSheetImageAreaSet hSliceLelongError hSliceMassFinite hTubeEuclMass) GroundTheory.Heights₂.Heights.SectionHyperplaneAvoid.full GroundTheory.Heights₂.Heigh …`.
+-/
 theorem MassFromLelong.of_open (hLelongLimitOnZero : GroundTheory.Heights₂.Heights.LelongLimitOnZero.Statement) (hSheetImageAreaSet : GroundTheory.Heights₂.Heights.SheetImageAreaSet.Statement) (hSliceLelongError : GroundTheory.Heights₂.Heights.SliceLelongError.Statement) (hSliceMassFinite : GroundTheory.Heights₂.Heights.SliceMassFinite.Statement) (hTubeEuclMass : GroundTheory.Heights₂.Heights.TubeEuclMass.Statement) :
     GroundTheory.Heights₂.Heights.MassFromLelong.Statement :=
   GroundTheory.Heights₂.Heights.MassFromLelong.proof (GroundTheory.Heights₂.Heights.SliceSectionMass.of_open hLelongLimitOnZero hSheetImageAreaSet hSliceLelongError hSliceMassFinite hTubeEuclMass) GroundTheory.Heights₂.Heights.SectionHyperplaneAvoid.full GroundTheory.Heights₂.Heights.SectionDegreeSum.full GroundTheory.Heights₂.Heights.PointSliceMass.full
 
+/- English proof (translation)
+The claim follows from `GroundTheory.Heights₂.Heights.PointIntegral.proof`.
+-/
 theorem PointIntegral.full : GroundTheory.Heights₂.Heights.PointIntegral.Statement :=
   GroundTheory.Heights₂.Heights.PointIntegral.proof
 
+/- English proof (translation)
+The claim follows from `GroundTheory.Heights₂.Heights.PolySublevel.proof`.
+-/
 theorem PolySublevel.full : GroundTheory.Heights₂.Heights.PolySublevel.Statement :=
   GroundTheory.Heights₂.Heights.PolySublevel.proof
 
+/- English proof (translation)
+The claim follows from `GroundTheory.Heights₂.Heights.SlabBound.proof`.
+-/
 theorem SlabBound.full : GroundTheory.Heights₂.Heights.SlabBound.Statement :=
   GroundTheory.Heights₂.Heights.SlabBound.proof
 
+/- English proof (translation)
+The claim follows from `GroundTheory.Heights₂.Heights.SliceMatricesOpen.proof`.
+-/
 theorem SliceMatricesOpen.full : GroundTheory.Heights₂.Heights.SliceMatricesOpen.Statement :=
   GroundTheory.Heights₂.Heights.SliceMatricesOpen.proof
 
+/- English proof (translation)
+The claim follows from `GroundTheory.Heights₂.Heights.IndefiniteRowSideFullHecke.ComplexSets.AreaLinear.dividedDifference_real_holds`.
+-/
 theorem IndefiniteRowSideFullHecke.ComplexSets.AreaLinear.full : GroundTheory.Heights₂.Heights.IndefiniteRowSideFullHecke.ComplexSets.AreaLinear.Statement :=
   GroundTheory.Heights₂.Heights.IndefiniteRowSideFullHecke.ComplexSets.AreaLinear.dividedDifference_real_holds
 
+/- English proof (translation)
+The claim follows from `GroundTheory.Heights₂.Heights.IndefiniteRowSideFullHecke.ComplexSets.ContinuousRootHolomorphic.proof`.
+-/
 theorem IndefiniteRowSideFullHecke.ComplexSets.ContinuousRootHolomorphic.full : GroundTheory.Heights₂.Heights.IndefiniteRowSideFullHecke.ComplexSets.ContinuousRootHolomorphic.Statement :=
   GroundTheory.Heights₂.Heights.IndefiniteRowSideFullHecke.ComplexSets.ContinuousRootHolomorphic.proof
 
+/- English proof (translation)
+The claim follows from `GroundTheory.Heights₂.Heights.IndefiniteRowSideFullHecke.ComplexSets.ProjectionCoordinateEquation.proof`.
+-/
 theorem IndefiniteRowSideFullHecke.ComplexSets.ProjectionCoordinateEquation.full : GroundTheory.Heights₂.Heights.IndefiniteRowSideFullHecke.ComplexSets.ProjectionCoordinateEquation.Statement :=
   GroundTheory.Heights₂.Heights.IndefiniteRowSideFullHecke.ComplexSets.ProjectionCoordinateEquation.proof
 
+/- English proof (translation)
+The claim follows from `GroundTheory.Heights₂.Heights.IndefiniteRowSideFullHecke.ComplexSets.RiemannExtensionPolynomial.proof`.
+-/
 theorem IndefiniteRowSideFullHecke.ComplexSets.RiemannExtensionPolynomial.full : GroundTheory.Heights₂.Heights.IndefiniteRowSideFullHecke.ComplexSets.RiemannExtensionPolynomial.Statement :=
   GroundTheory.Heights₂.Heights.IndefiniteRowSideFullHecke.ComplexSets.RiemannExtensionPolynomial.proof
 
+/- English proof (translation)
+The claim follows from `GroundTheory.Heights₂.Heights.IndefiniteRowSideFullHecke.ComplexSets.ContinuousSectionHolomorphic.proof GroundTheory.Heights₂.Heights.IndefiniteRowSideFullHecke.ComplexSets.ProjectionCoordinateEquation.full GroundTheory.Heights₂.Heights.IndefiniteRowSideFullHecke.ComplexSets.Cont …`.
+-/
 theorem IndefiniteRowSideFullHecke.ComplexSets.ContinuousSectionHolomorphic.full : GroundTheory.Heights₂.Heights.IndefiniteRowSideFullHecke.ComplexSets.ContinuousSectionHolomorphic.Statement :=
   GroundTheory.Heights₂.Heights.IndefiniteRowSideFullHecke.ComplexSets.ContinuousSectionHolomorphic.proof GroundTheory.Heights₂.Heights.IndefiniteRowSideFullHecke.ComplexSets.ProjectionCoordinateEquation.full GroundTheory.Heights₂.Heights.IndefiniteRowSideFullHecke.ComplexSets.ContinuousRootHolomorphic.full GroundTheory.Heights₂.Heights.IndefiniteRowSideFullHecke.ComplexSets.RiemannExtensionPolynomial.full
 
+/- English proof (translation)
+The claim follows from `GroundTheory.Heights₂.Heights.IndefiniteRowSideFullHecke.ComplexSets.FibreSectionsCovering.proof`.
+-/
 theorem IndefiniteRowSideFullHecke.ComplexSets.FibreSectionsCovering.full : GroundTheory.Heights₂.Heights.IndefiniteRowSideFullHecke.ComplexSets.FibreSectionsCovering.Statement :=
   GroundTheory.Heights₂.Heights.IndefiniteRowSideFullHecke.ComplexSets.FibreSectionsCovering.proof
 
+/- English proof (translation)
+The claim follows from `GroundTheory.Heights₂.Heights.IndefiniteRowSideFullHecke.ComplexSets.FiniteCoverPuncturedPolydisc.proof`.
+-/
 theorem IndefiniteRowSideFullHecke.ComplexSets.FiniteCoverPuncturedPolydisc.full : GroundTheory.Heights₂.Heights.IndefiniteRowSideFullHecke.ComplexSets.FiniteCoverPuncturedPolydisc.Statement :=
   GroundTheory.Heights₂.Heights.IndefiniteRowSideFullHecke.ComplexSets.FiniteCoverPuncturedPolydisc.proof
 
+/- English proof (translation)
+The claim follows from `GroundTheory.Heights₂.Heights.IndefiniteRowSideFullHecke.ComplexSets.GeneralProjection.proof`.
+-/
 theorem IndefiniteRowSideFullHecke.ComplexSets.GeneralProjection.full : GroundTheory.Heights₂.Heights.IndefiniteRowSideFullHecke.ComplexSets.GeneralProjection.Statement :=
   GroundTheory.Heights₂.Heights.IndefiniteRowSideFullHecke.ComplexSets.GeneralProjection.proof
 
+/- English proof (translation)
+The claim follows from `GroundTheory.Heights₂.Heights.IndefiniteRowSideFullHecke.ComplexSets.VanishNearPoint.proof GroundTheory.Heights₂.Heights.IndefiniteRowSideFullHecke.ComplexSets.FiniteMapOpen.full`.
+-/
 theorem IndefiniteRowSideFullHecke.ComplexSets.VanishNearPoint.full : GroundTheory.Heights₂.Heights.IndefiniteRowSideFullHecke.ComplexSets.VanishNearPoint.Statement :=
   GroundTheory.Heights₂.Heights.IndefiniteRowSideFullHecke.ComplexSets.VanishNearPoint.proof GroundTheory.Heights₂.Heights.IndefiniteRowSideFullHecke.ComplexSets.FiniteMapOpen.full
 
+/- English proof (translation)
+The claim follows from `GroundTheory.Heights₂.Heights.IndefiniteRowSideFullHecke.ComplexSets.OneComponentGeneralPoint.proof GroundTheory.Heights₂.Heights.IndefiniteRowSideFullHecke.ComplexSets.VanishNearPoint.full`.
+-/
 theorem IndefiniteRowSideFullHecke.ComplexSets.OneComponentGeneralPoint.full : GroundTheory.Heights₂.Heights.IndefiniteRowSideFullHecke.ComplexSets.OneComponentGeneralPoint.Statement :=
   GroundTheory.Heights₂.Heights.IndefiniteRowSideFullHecke.ComplexSets.OneComponentGeneralPoint.proof GroundTheory.Heights₂.Heights.IndefiniteRowSideFullHecke.ComplexSets.VanishNearPoint.full
 
+/- English proof (translation)
+The claim follows from `GroundTheory.Heights₂.Heights.IndefiniteRowSideFullHecke.ComplexSets.PowerUnitCount.proof`.
+-/
 theorem IndefiniteRowSideFullHecke.ComplexSets.PowerUnitCount.full : GroundTheory.Heights₂.Heights.IndefiniteRowSideFullHecke.ComplexSets.PowerUnitCount.Statement :=
   GroundTheory.Heights₂.Heights.IndefiniteRowSideFullHecke.ComplexSets.PowerUnitCount.proof
 
+/- English proof (translation)
+The claim follows from `GroundTheory.Heights₂.Heights.IndefiniteRowSideFullHecke.ComplexSets.PuncturedCoverCycles.proof GroundTheory.Heights₂.Heights.IndefiniteRowSideFullHecke.ComplexSets.FibreSectionsCovering.full GroundTheory.Heights₂.Heights.IndefiniteRowSideFullHecke.ComplexSets.FiniteCoverPuncture …`.
+-/
 theorem IndefiniteRowSideFullHecke.ComplexSets.PuncturedCoverCycles.full : GroundTheory.Heights₂.Heights.IndefiniteRowSideFullHecke.ComplexSets.PuncturedCoverCycles.Statement :=
   GroundTheory.Heights₂.Heights.IndefiniteRowSideFullHecke.ComplexSets.PuncturedCoverCycles.proof GroundTheory.Heights₂.Heights.IndefiniteRowSideFullHecke.ComplexSets.FibreSectionsCovering.full GroundTheory.Heights₂.Heights.IndefiniteRowSideFullHecke.ComplexSets.FiniteCoverPuncturedPolydisc.full
 
+/- English proof (translation)
+The claim follows from `GroundTheory.Heights₂.Heights.IndefiniteRowSideFullHecke.ComplexSets.RemovableHyperplane.proof`.
+-/
 theorem IndefiniteRowSideFullHecke.ComplexSets.RemovableHyperplane.full : GroundTheory.Heights₂.Heights.IndefiniteRowSideFullHecke.ComplexSets.RemovableHyperplane.Statement :=
   GroundTheory.Heights₂.Heights.IndefiniteRowSideFullHecke.ComplexSets.RemovableHyperplane.proof
 
+/- English proof (translation)
+The claim follows from `GroundTheory.Heights₂.Heights.IndefiniteRowSideFullHecke.ComplexSets.ZeroSetOpenMass.proof GroundTheory.Heights₂.Heights.ComplexSets.GenericProjectionFinite.full GroundTheory.Heights₂.Heights.ComplexSets.DiscriminantCover.full GroundTheory.Heights₂.Heights.IndefiniteRowSideFullHe …`.
+-/
 theorem IndefiniteRowSideFullHecke.ComplexSets.ZeroSetOpenMass.full : GroundTheory.Heights₂.Heights.IndefiniteRowSideFullHecke.ComplexSets.ZeroSetOpenMass.Statement :=
   GroundTheory.Heights₂.Heights.IndefiniteRowSideFullHecke.ComplexSets.ZeroSetOpenMass.proof GroundTheory.Heights₂.Heights.ComplexSets.GenericProjectionFinite.full GroundTheory.Heights₂.Heights.ComplexSets.DiscriminantCover.full GroundTheory.Heights₂.Heights.IndefiniteRowSideFullHecke.ComplexSets.FiniteMapOpen.full
 
+/- English proof (translation)
+The claim follows from `GroundTheory.Heights₂.Heights.IndefiniteRowSideFullHecke.ComplexSets.SliceImmersiveGeneral.proof GroundTheory.Heights₂.Heights.IndefiniteRowSideFullHecke.ComplexSets.CriticalImageNull.full GroundTheory.Heights₂.Heights.IndefiniteRowSideFullHecke.ComplexSets.ZeroSetOpenMass.full`.
+-/
 theorem IndefiniteRowSideFullHecke.ComplexSets.SliceImmersiveGeneral.full : GroundTheory.Heights₂.Heights.IndefiniteRowSideFullHecke.ComplexSets.SliceImmersiveGeneral.Statement :=
   GroundTheory.Heights₂.Heights.IndefiniteRowSideFullHecke.ComplexSets.SliceImmersiveGeneral.proof GroundTheory.Heights₂.Heights.IndefiniteRowSideFullHecke.ComplexSets.CriticalImageNull.full GroundTheory.Heights₂.Heights.IndefiniteRowSideFullHecke.ComplexSets.ZeroSetOpenMass.full
 
+/- English proof (translation)
+The claim follows from `GroundTheory.Heights₂.Heights.ConeAreaFormula.proof hConeGraphCover hGraphAreaFibre`.
+-/
 theorem ConeAreaFormula.of_open (hConeGraphCover : GroundTheory.Heights₂.Heights.ConeGraphCover.Statement) (hGraphAreaFibre : GroundTheory.Heights₂.Heights.GraphAreaFibre.Statement) :
     GroundTheory.Heights₂.Heights.ConeAreaFormula.Statement :=
   GroundTheory.Heights₂.Heights.ConeAreaFormula.proof hConeGraphCover hGraphAreaFibre
 
+/- English proof (translation)
+The claim follows from `GroundTheory.Heights₂.Heights.ConeLocalMass.proof hConeFiniteFibreDim GroundTheory.Heights₂.Heights.MassFinite.full GroundTheory.Heights₂.Heights.NullSmaller.full`.
+-/
 theorem ConeLocalMass.of_open (hConeFiniteFibreDim : GroundTheory.Heights₂.Heights.ConeFiniteFibreDim.Statement) :
     GroundTheory.Heights₂.Heights.ConeLocalMass.Statement :=
   GroundTheory.Heights₂.Heights.ConeLocalMass.proof hConeFiniteFibreDim GroundTheory.Heights₂.Heights.MassFinite.full GroundTheory.Heights₂.Heights.NullSmaller.full
 
+/- English proof (translation)
+The claim follows from `GroundTheory.Heights₂.Heights.ConeTangentAverage.proof (GroundTheory.Heights₂.Heights.ConeLocalMass.of_open hConeFiniteFibreDim) hConeJacMeasurable hConeTangentDim hTangentGaussInvariant`.
+-/
 theorem ConeTangentAverage.of_open (hConeFiniteFibreDim : GroundTheory.Heights₂.Heights.ConeFiniteFibreDim.Statement) (hConeJacMeasurable : GroundTheory.Heights₂.Heights.ConeJacMeasurable.Statement) (hConeTangentDim : GroundTheory.Heights₂.Heights.ConeTangentDim.Statement) (hTangentGaussInvariant : GroundTheory.Heights₂.Heights.TangentGaussInvariant.Statement) :
     GroundTheory.Heights₂.Heights.ConeTangentAverage.Statement :=
   GroundTheory.Heights₂.Heights.ConeTangentAverage.proof (GroundTheory.Heights₂.Heights.ConeLocalMass.of_open hConeFiniteFibreDim) hConeJacMeasurable hConeTangentDim hTangentGaussInvariant
 
+/- English proof (translation)
+The claim follows from `GroundTheory.Heights₂.Heights.ConeRadialIntegral.proof`.
+-/
 theorem ConeRadialIntegral.full : GroundTheory.Heights₂.Heights.ConeRadialIntegral.Statement :=
   GroundTheory.Heights₂.Heights.ConeRadialIntegral.proof
 
+/- English proof (translation)
+The claim follows from `GroundTheory.Heights₂.Heights.LeadPlaneJac.proof`.
+-/
 theorem LeadPlaneJac.full : GroundTheory.Heights₂.Heights.LeadPlaneJac.Statement :=
   GroundTheory.Heights₂.Heights.LeadPlaneJac.proof
 
+/- English proof (translation)
+The claim follows from `GroundTheory.Heights₂.Heights.LeadBlockGaussTail.proof`.
+-/
 theorem LeadBlockGaussTail.full : GroundTheory.Heights₂.Heights.LeadBlockGaussTail.Statement :=
   GroundTheory.Heights₂.Heights.LeadBlockGaussTail.proof
 
+/- English proof (translation)
+The claim follows from `GroundTheory.Heights₂.Heights.TangentGaussMoment.proof GroundTheory.Heights₂.Heights.LeadPlaneJac.full GroundTheory.Heights₂.Heights.LeadBlockGaussTail.full`.
+-/
 theorem TangentGaussMoment.full : GroundTheory.Heights₂.Heights.TangentGaussMoment.Statement :=
   GroundTheory.Heights₂.Heights.TangentGaussMoment.proof GroundTheory.Heights₂.Heights.LeadPlaneJac.full GroundTheory.Heights₂.Heights.LeadBlockGaussTail.full
 
+/- English proof (translation)
+The claim follows from `GroundTheory.Heights₂.Heights.ConeFibreAverage.proof (GroundTheory.Heights₂.Heights.ConeAreaFormula.of_open hConeGraphCover hGraphAreaFibre) (GroundTheory.Heights₂.Heights.ConeTangentAverage.of_open hConeFiniteFibreDim hConeJacMeasurable hConeTangentDim hTangentGaussInvariant) Gr …`.
+-/
 theorem ConeFibreAverage.of_open (hConeFiniteFibreDim : GroundTheory.Heights₂.Heights.ConeFiniteFibreDim.Statement) (hConeGraphCover : GroundTheory.Heights₂.Heights.ConeGraphCover.Statement) (hConeJacMeasurable : GroundTheory.Heights₂.Heights.ConeJacMeasurable.Statement) (hConeTangentDim : GroundTheory.Heights₂.Heights.ConeTangentDim.Statement) (hGraphAreaFibre : GroundTheory.Heights₂.Heights.GraphAreaFibre.Statement) (hTangentGaussInvariant : GroundTheory.Heights₂.Heights.TangentGaussInvariant.Statement) :
     GroundTheory.Heights₂.Heights.ConeFibreAverage.Statement :=
   GroundTheory.Heights₂.Heights.ConeFibreAverage.proof (GroundTheory.Heights₂.Heights.ConeAreaFormula.of_open hConeGraphCover hGraphAreaFibre) (GroundTheory.Heights₂.Heights.ConeTangentAverage.of_open hConeFiniteFibreDim hConeJacMeasurable hConeTangentDim hTangentGaussInvariant) GroundTheory.Heights₂.Heights.ConeRadialIntegral.full GroundTheory.Heights₂.Heights.TangentGaussMoment.full
 
+/- English proof (translation)
+The claim follows from `GroundTheory.Heights₂.Heights.ProjSecDegree.proof`.
+-/
 theorem ProjSecDegree.full : GroundTheory.Heights₂.Heights.ProjSecDegree.Statement :=
   GroundTheory.Heights₂.Heights.ProjSecDegree.proof
 
+/- English proof (translation)
+The claim follows from `GroundTheory.Heights₂.Heights.ProjSecDomain.proof`.
+-/
 theorem ProjSecDomain.full : GroundTheory.Heights₂.Heights.ProjSecDomain.Statement :=
   GroundTheory.Heights₂.Heights.ProjSecDomain.proof
 
+/- English proof (translation)
+The claim follows from `GroundTheory.Heights₂.Heights.ProjChowNonzero.proof`.
+-/
 theorem ProjChowNonzero.full : GroundTheory.Heights₂.Heights.ProjChowNonzero.Statement :=
   GroundTheory.Heights₂.Heights.ProjChowNonzero.proof
 
+/- English proof (translation)
+The claim follows from `GroundTheory.Heights₂.Heights.SecDegreeLe.proof`.
+-/
 theorem SecDegreeLe.full : GroundTheory.Heights₂.Heights.SecDegreeLe.Statement :=
   GroundTheory.Heights₂.Heights.SecDegreeLe.proof
 
+/- English proof (translation)
+The claim follows from `GroundTheory.Heights₂.Heights.SecFiniteUnit.proof`.
+-/
 theorem SecFiniteUnit.full : GroundTheory.Heights₂.Heights.SecFiniteUnit.Statement :=
   GroundTheory.Heights₂.Heights.SecFiniteUnit.proof
 
+/- English proof (translation)
+The claim follows from `GroundTheory.Heights₂.Heights.SecRankSpecialize.proof`.
+-/
 theorem SecRankSpecialize.full : GroundTheory.Heights₂.Heights.SecRankSpecialize.Statement :=
   GroundTheory.Heights₂.Heights.SecRankSpecialize.proof
 
+/- English proof (translation)
+The claim follows from `GroundTheory.Heights₂.Heights.SecDegreeGe.proof GroundTheory.Heights₂.Heights.SecFiniteUnit.full GroundTheory.Heights₂.Heights.SecRankSpecialize.full`.
+-/
 theorem SecDegreeGe.full : GroundTheory.Heights₂.Heights.SecDegreeGe.Statement :=
   GroundTheory.Heights₂.Heights.SecDegreeGe.proof GroundTheory.Heights₂.Heights.SecFiniteUnit.full GroundTheory.Heights₂.Heights.SecRankSpecialize.full
 
+/- English proof (translation)
+The claim follows from `GroundTheory.Heights₂.Heights.ProjDegreeChow.proof GroundTheory.Heights₂.Heights.ProjSecDegree.full GroundTheory.Heights₂.Heights.ProjSecDomain.full GroundTheory.Heights₂.Heights.ProjChowNonzero.full GroundTheory.Heights₂.Heights.SecDegreeLe.full GroundTheory.Heights₂.Heights.Sec …`.
+-/
 theorem ProjDegreeChow.full : GroundTheory.Heights₂.Heights.ProjDegreeChow.Statement :=
   GroundTheory.Heights₂.Heights.ProjDegreeChow.proof GroundTheory.Heights₂.Heights.ProjSecDegree.full GroundTheory.Heights₂.Heights.ProjSecDomain.full GroundTheory.Heights₂.Heights.ProjChowNonzero.full GroundTheory.Heights₂.Heights.SecDegreeLe.full GroundTheory.Heights₂.Heights.SecDegreeGe.full
 
+/- English proof (translation)
+The claim follows from `GroundTheory.Heights₂.Heights.ConeFibreDegree.proof GroundTheory.Heights₂.Heights.ConeDimOfChowForm.full GroundTheory.Heights₂.Heights.ComplexSets.GenericProjectionFinite.full GroundTheory.Heights₂.Heights.ComplexSets.DiscriminantCover.full GroundTheory.Heights₂.Heights.ProjDegre …`.
+-/
 theorem ConeFibreDegree.full : GroundTheory.Heights₂.Heights.ConeFibreDegree.Statement :=
   GroundTheory.Heights₂.Heights.ConeFibreDegree.proof GroundTheory.Heights₂.Heights.ConeDimOfChowForm.full GroundTheory.Heights₂.Heights.ComplexSets.GenericProjectionFinite.full GroundTheory.Heights₂.Heights.ComplexSets.DiscriminantCover.full GroundTheory.Heights₂.Heights.ProjDegreeChow.full
 
+/- English proof (translation)
+The claim follows from `GroundTheory.Heights₂.Heights.ConeMassOfFibre.proof (GroundTheory.Heights₂.Heights.ConeFibreAverage.of_open hConeFiniteFibreDim hConeGraphCover hConeJacMeasurable hConeTangentDim hGraphAreaFibre hTangentGaussInvariant)`.
+-/
 theorem ConeMassOfFibre.of_open (hConeFiniteFibreDim : GroundTheory.Heights₂.Heights.ConeFiniteFibreDim.Statement) (hConeGraphCover : GroundTheory.Heights₂.Heights.ConeGraphCover.Statement) (hConeJacMeasurable : GroundTheory.Heights₂.Heights.ConeJacMeasurable.Statement) (hConeTangentDim : GroundTheory.Heights₂.Heights.ConeTangentDim.Statement) (hGraphAreaFibre : GroundTheory.Heights₂.Heights.GraphAreaFibre.Statement) (hTangentGaussInvariant : GroundTheory.Heights₂.Heights.TangentGaussInvariant.Statement) :
     GroundTheory.Heights₂.Heights.ConeMassOfFibre.Statement :=
   GroundTheory.Heights₂.Heights.ConeMassOfFibre.proof (GroundTheory.Heights₂.Heights.ConeFibreAverage.of_open hConeFiniteFibreDim hConeGraphCover hConeJacMeasurable hConeTangentDim hGraphAreaFibre hTangentGaussInvariant)

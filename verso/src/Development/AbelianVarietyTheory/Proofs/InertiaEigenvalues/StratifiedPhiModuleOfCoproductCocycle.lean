@@ -6,6 +6,19 @@ open scoped Formalism.Per NNReal
 noncomputable section
 namespace GlobalTheory.BSP
 
+/- English proof (translation)
+Introduce `l _ K bk En d a b A A' hA ε hφ hε`. Establish `comp_assoc : ∀ {P P' P'' P''' : Obj l ↥(OL K)} (h : Hom P'' P''') (g : Hom P' P'') (f : Hom P P'), (h.comp g).comp f = h.comp (g.comp f)` using `fun _ _ _ => Hom.ext' rfl`. Set `c : ∀ {B : Obj l ↥(OL K)}, Hom bk.prism B → Hom bk.prism B → Hom En.Q B` to `fun {B} f g => (En.univ B f g).choose`. Establish `hc : ∀ {B : Obj l ↥(OL K)} (f g : Hom bk.prism B), (c f g).comp En.inl = f ∧ (c f g).comp En.inr = g` using `fun {B} f g => (En.univ B f g).choose_spec.1`. Establish `hu : ∀ {B : Obj l ↥(OL K)} (k : Hom En.Q B), c (k.comp En.inl) (k.comp En.inr) = k` using `fun {B} k => ((En.univ B _ _).choose_spec.2 k ⟨rfl, rfl⟩).symm`.
+
+Use `clear_value c`. Use `⟨Strat.mk a b A A' hA (fun f g => ε.map (c f g).f) ?_ ?_ ?_ ?_, rfl, rfl, ?_⟩` and prove the remaining obligations. Introduce `B f`. Conclude with `(hε B).1 (c f f) ((hc f f).1.trans (hc f f).2.symm)`. Introduce `B f g h`.
+
+Conclude with `(hε B).2 (c f g) (c g h) (c f h) ((hc f g).2.trans (hc g h).1.symm) ((hc f g).1.trans (hc f h).1.symm) ((hc g h).2.trans (hc f h).2.symm)`. Introduce `B B' k f g`. Establish `e : c (k.comp f) (k.comp g) = k.comp (c f g)` using `(En.univ B' (k.comp f) (k.comp g)).unique (hc _ _) ⟨by rw [comp_assoc, (hc f g).1], by rw [comp_assoc, (hc f g).2]⟩`. Use `Eq.trans ?_ (congrArg (fun k' : Hom En.Q B' => ε.map k'.f) e).symm` and prove the remaining obligations. Use extensionality with `i j`.
+
+Both sides reduce to the same expression. Introduce `B f g`. Establish `e1 : ∀ x, (c f g).f (BK.hf En.inl x) = BK.hf f x` using `fun x => congrArg (fun k : Hom bk.prism B => k.f x) (hc f g).1`. Establish `e2 : ∀ x, (c f g).f (BK.hf En.inr x) = BK.hf g x` using `fun x => congrArg (fun k : Hom bk.prism B => k.f x) (hc f g).2`. Establish `e3 : ∀ x, (c f g).f (En.Q.D.φ x) = B.D.φ ((c f g).f x)` using `(c f g).f_φ`.
+
+Use extensionality with `i j`. Establish `h` using `congrArg (fun M => (c f g).f (M i j)) hφ`. Simplify using `only [Matrix.smul_apply, smul_eq_mul, Matrix.mul_apply, map_mul, map_pow, map_sum, Matrix.map_apply, e1, e2, e3] at h`. Simplify `h` using `only [Matrix.smul_apply, smul_eq_mul, Matrix.mul_apply, Matrix.map_apply]`. Introduce `B k`.
+
+Conclude with `congrArg (fun k' : Hom En.Q B => ε.map k'.f) (hu k)`.
+-/
 theorem strat_of_envCocycle : ∀ (l : ℕ) [Fact l.Prime] (K : FinExt l) (bk : BK K) (En : Env bk bk.prism (bk.toP bk.E) (bk.toP X)) (d a b : ℕ) (A A' : Matrix (Fin d) (Fin d) bk.S), A * A' = bk.E ^ b • (1 : Matrix (Fin d) (Fin d) bk.S) → ∀ ε : Matrix (Fin d) (Fin d) En.Q.A, BK.hf En.inr bk.E ^ a • (A.map (BK.hf En.inl) * ε.map En.Q.D.φ) = BK.hf En.inl bk.E ^ a • (ε * A.map (BK.hf En.inr)) → (∀ (B : Obj l ↥(OL K)), (∀ k : Hom En.Q B, k.comp En.inl = k.comp En.inr → ε.map k.f = 1) ∧ ∀ k₁ k₂ k₃ : Hom En.Q B, k₁.comp En.inr = k₂.comp En.inl → k₁.comp En.inl = k₃.comp En.inl → k₂.comp En.inr = k₃.comp En.inr → ε.map k₁.f * ε.map k₂.f = ε.map k₃.f) → ∃ S : Strat bk d, S.a = a ∧ S.A = A ∧ ∀ (B : Obj l ↥(OL K)) (k : Hom En.Q B), S.ε (k.comp En.inl) (k.comp En.inr) = ε.map k.f := by
   intro l _ K bk En d a b A A' hA ε hφ hε
   have comp_assoc : ∀ {P P' P'' P''' : Obj l ↥(OL K)} (h : Hom P'' P''') (g : Hom P' P'') (f : Hom P P'),

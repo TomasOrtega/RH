@@ -20,6 +20,9 @@ attribute [local instance] borelG borelF borelA GlobalTheory.LocalData.complRel 
 
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {n : ℕ}
 
+/- English proof (translation)
+The claim follows from `| _, .leaf V _, hp => h _ V hp | _, .node t₁ t₂, hp => ⟨allLeaves_imp h t₁ hp.1, allLeaves_imp h t₂ hp.2⟩`.
+-/
 theorem allLeaves_imp {P Q : ∀ M : ℕ, Submodule ℂ (Sm E M) → Prop} (h : ∀ M V, P M V → Q M V) :
     ∀ {N : ℕ} (t : Tr E N), t.AllLeaves P → t.AllLeaves Q
   | _, .leaf V _, hp => h _ V hp
@@ -66,6 +69,9 @@ def CandLev : Prop := ∀ (hR : Rd.ReadLimit) (E : Type) [Field E] [NumberField 
     (convF (F.B i).ν (F.ψ i (F.d.betaL _ (F₀.C.le i))))^[F.m] G ≠ 0 →
     ∀ w, GlobalTheory.LGrp.IsSpherical (prodAt D w) (F₀.K w)
 
+/- English proof (translation)
+Introduce `hR E _ _ _ hE n hn π hπ S T F₀ F hF i s₁ s₂ Pa Pb D A G hc hG hl hne hwt hgood`. Use `tout_of hwt hgood (hS hR E hE n hn π hπ S T F₀ F hF i s₁ s₂ Pa Pb D A G hc hG hl hne) (hT hR E hE n hn π hπ S T F₀ F hF i s₁ s₂ Pa Pb D A G hc hG hl hne) (hL hR E hE n hn π hπ S T F₀ F hF i s₁ s₂ Pa Pb D A G hc hG hl hne) (F₀.W_join i s₁ s₂ Pa Pb D hc.ctx ?_ ?_)` and prove the remaining obligations. Conclude with `allLeaves_imp (fun _ _ h => h.imp_right fun ⟨K', _, W', hW', h'⟩ => ⟨K', W', hW', h'⟩) _ hc.leaves₁`. Conclude with `allLeaves_imp (fun _ _ h => h.imp_right fun ⟨K', _, W', hW', h'⟩ => ⟨K', W', hW', h'⟩) _ hc.leaves₂`.
+-/
 theorem candTOut_of (hS : CandS) (hT : CandT) (hL : CandLev) : CandTOut := by
   intro hR E _ _ _ hE n hn π hπ S T F₀ F hF i s₁ s₂ Pa Pb D A G hc hG hl hne hwt hgood
   refine tout_of hwt hgood (hS hR E hE n hn π hπ S T F₀ F hF i s₁ s₂ Pa Pb D A G hc hG hl hne)

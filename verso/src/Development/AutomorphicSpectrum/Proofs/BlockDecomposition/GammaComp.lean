@@ -13,6 +13,9 @@ variable {O : Type} [CommRing O] {F : Fn O} {d : ℕ} (s : F.Small d) {b : Base}
   (𝓛 : Lift s.a (fun k => (s.T k : s.R)) b.R b.I κ) (δ : DividedPowers (b.I.map 𝓛.i))
   (hδ : IsDPMorphism b.γ δ 𝓛.i) (hp : b.p ≠ 0) (hn : IsNilpotent (b.p : b.R))
 
+/- English proof (translation)
+Take `⟨g, -, hg, hU⟩` from `GlobalTheory.CompanionTheory.ThickHom.main s ht 𝓛 δ hδ hp hn T`. Take `⟨g₀, -, h₀⟩` from `s.univ (CommRingCat.of (T.B ⧸ T.J)) T.y.1.2 (T.y.1.1.comp κ) T.y.2`. Establish `e : g' = g` using `(h₀ g' hg').trans (h₀ g hg).symm`. Substitute `e` using the available equality. Conclude with `(hU u hu).exists`.
+-/
 theorem arrow_ex (T : Thick (F.cr b ht κ)) (g' : s.R →+* T.B ⧸ T.J)
     (hg' : F.Pt.map (CommRingCat.ofHom g') s.y₀ = T.y.1.2) (u : Fin d → T.B)
     (hu : ∀ k, Ideal.Quotient.mk T.J (u k) = g' (s.T k)) :
@@ -23,6 +26,9 @@ theorem arrow_ex (T : Thick (F.cr b ht κ)) (g' : s.R →+* T.B ⧸ T.J)
   subst e
   exact (hU u hu).exists
 
+/- English proof (translation)
+Take `⟨g, hc, -, hU⟩` from `GlobalTheory.CompanionTheory.ThickHom.main s ht 𝓛 δ hδ hp hn T`. Conclude with `(hU (fun k => c'.φ (𝓛.t k)) (fun k => hc c' _ _ (𝓛.hT k).symm)).unique h fun _ => rfl`.
+-/
 theorem arrow_uniq (T : Thick (F.cr b ht κ)) (c c' : liftObj s ht 𝓛 δ hδ hp hn ⟶ T)
     (h : ∀ k, c.φ (𝓛.t k) = c'.φ (𝓛.t k)) : c = c' := by
   obtain ⟨g, hc, -, hU⟩ := GlobalTheory.CompanionTheory.ThickHom.main s ht 𝓛 δ hδ hp hn T
@@ -30,6 +36,9 @@ theorem arrow_uniq (T : Thick (F.cr b ht κ)) (c c' : liftObj s ht 𝓛 δ hδ h
 
 end Gen
 
+/- English proof (translation)
+Express the relevant statement in the definitionally equal form `A.act _ (𝟙 D) ≫ θ = _`. Rewrite using `[A.act_comp, Category.id_comp]`. Use `congr 1`. Use function extensionality and compare the values at `k`. Rewrite using `[map_pow, U.map_q]`.
+-/
 theorem gamma_comp {C C₀ : Type*} [Category C] [Category C₀] {j : C₀ ⥤ C} {U : UF C} {d : ℕ} {D T : C}
     (A : Act j U d D) (a : Gam d) (θ : D ⟶ T) :
     (A.γ a : D ⟶ D) ≫ θ = A.act (fun k => U.q T ^ (Multiplicative.toAdd a k)) θ := by
@@ -39,16 +48,31 @@ theorem gamma_comp {C C₀ : Type*} [Category C] [Category C₀] {j : C₀ ⥤ C
   funext k
   rw [map_pow, U.map_q]
 
+/- English proof (translation)
+Rewrite using `[ε.qU_val, mapAcr_cris, ε.cris_qk]`.
+-/
 theorem i_qU {l : ℕ} [Fact l.Prime] (ε : Eps l) (A : PAlg l) (n : ℕ) :
     mapAcr A.fromBase n (ε.qU n : (base l).Acr n) = A.toAcr n (WittVector.teichmuller l (A.s (ε.e 0))) := by
   rw [ε.qU_val, mapAcr_cris, ε.cris_qk]
 
+/- English proof (translation)
+Rewrite using `[mapAcr_toAcr, mapW, WittVector.map_teichmuller, h, map_mul, map_pow, map_mul, map_pow]`.
+-/
 theorem teich_step {l : ℕ} [Fact l.Prime] (A : PAlg l) (f : A ⟶ A) (n m : ℕ) (e c : A.A)
     (h : Hom.f f c = e ^ m * c) :
     A.toAcr n (WittVector.teichmuller l e) ^ m * A.toAcr n (WittVector.teichmuller l c) =
       mapAcr f n (A.toAcr n (WittVector.teichmuller l c)) := by
   rw [mapAcr_toAcr, mapW, WittVector.map_teichmuller, h, map_mul, map_pow, map_mul, map_pow]
 
+/- English proof (translation)
+Introduce `l _ O _ F κ d s 𝒯 k n 𝓛 δ hδ hp hn ε A A' hA hA'`. Establish `hy : F.Pt.map (CommRingCat.ofHom ((uJ k 𝒯.A n).comp 𝒯.g)) s.y₀ = ((gE F κ k n).obj 𝒯.obj).y.1.2`. Rewrite using `[CommRingCat.ofHom_comp, F.Pt.map_comp]`. Both sides reduce to the same expression. Establish `hu : ∀ j, Ideal.Quotient.mk (JJ k 𝒯.A n) (𝒯.A.toAcr n (WittVector.teichmuller l (𝒯.c j 0 : 𝒯.A.A))) = (uJ k 𝒯.A n).comp 𝒯.g (s.T j)` using `fun j => by`.
+
+Rewrite using `[RingHom.comp_apply, ← 𝒯.c_sharp j]`. Conclude with `(uJ_th k 𝒯.A n _).symm`. Take `⟨θ, hθ⟩` from `arrow_ex s rfl 𝓛 δ hδ hp hn ((gE F κ k n).obj 𝒯.obj) ((uJ k 𝒯.A n).comp 𝒯.g) hy (fun j => 𝒯.A.toAcr n (WittVector.teichmuller l (𝒯.c j 0 : 𝒯.A.A))) hu`. Use `⟨θ, hθ, fun a => arrow_uniq s rfl 𝓛 δ hδ hp hn _ _ _ fun j => ?_⟩` and prove the remaining obligations. Establish `h1 : ((A.γ a : liftObj s (b` using `bs l k n) rfl 𝓛 δ hδ hp hn ⟶ _) ≫ θ).φ (𝓛.t j) = 𝒯.A.toAcr n (WittVector.teichmuller l (𝒯.A.s (ε.e 0))) ^ (Multiplicative.toAdd a j) * 𝒯.A.toAcr n (WittVector.teichmuller l (𝒯.c j 0 : 𝒯.A.A)) := by`.
+
+Rewrite using `[gamma_comp A a θ, hA _ _ θ j, hθ j, ← i_qU]`. Both sides reduce to the same expression. Establish `h2 : PAlg.Hom.f (A'.γ a : 𝒯.obj ⟶ 𝒯.obj).1 (𝒯.c j 0).val = (𝒯.A.s (ε.e 0)) ^ (Multiplicative.toAdd a j) * (𝒯.c j 0).val` using `hA' 𝒯.obj _ (𝟙 𝒯.obj) j`. Establish `h3 : (θ ≫ (gE F κ k n).map (A'.γ a)).φ (𝓛.t j) = mapAcr (A'.γ a : 𝒯.obj ⟶ 𝒯.obj).1 n (𝒯.A.toAcr n (WittVector.teichmuller l (𝒯.c j 0 : 𝒯.A.A)))` using `congrArg (mapAcr (A'.γ a : 𝒯.obj ⟶ 𝒯.obj).1 n) (hθ j)`. Rewrite using `[h1, h3]`.
+
+Conclude with `teich_step 𝒯.A _ n _ _ _ h2`.
+-/
 theorem main : ∀ {l : ℕ} [Fact l.Prime] {O : Type} [CommRing O] {F : Fn O} {κ : O →+* OC l} {d : ℕ} {s : F.Small d} (𝒯 : Tower κ s) (k : Bool) (n : ℕ) (𝓛 : Lift s.a (fun k => (s.T k : s.R)) (bs l k n).R (bs l k n).I (κb κ k n)) (δ : DividedPowers ((bs l k n).I.map 𝓛.i)) (hδ : IsDPMorphism (bs l k n).γ δ 𝓛.i) (hp : (bs l k n).p ≠ 0) (hn : IsNilpotent ((bs l k n).p : (bs l k n).R)) (ε : Eps l) (A : Act (𝟭 _) (thU (Lc F κ k n) (ε.qU n) (ε.qU_mem k n)) d (liftObj s (b := bs l k n) rfl 𝓛 δ hδ hp hn)) (A' : Act (jE (F.pt κ)) (epsU ε (F.pt κ)) d 𝒯.obj), (∀ (T : Thick (Lc F κ k n)) (a : Fin d → (thU (Lc F κ k n) (ε.qU n) (ε.qU_mem k n)).U T) (c : liftObj s (b := bs l k n) rfl 𝓛 δ hδ hp hn ⟶ T) (j : Fin d), (A.act a c).φ (𝓛.t j) = ((a j).1 : T.B) * c.φ (𝓛.t j)) → (∀ (T : (F.pt κ).Elements) (a : Fin d → (epsU ε (F.pt κ)).U T) (φ : 𝒯.obj ⟶ T) (j : Fin d), PAlg.Hom.f (A'.act a φ).1 (𝒯.c j 0).val = ((a j).1 : T.1.A) * PAlg.Hom.f φ.1 (𝒯.c j 0).val) → ∃ θ : liftObj s (b := bs l k n) rfl 𝓛 δ hδ hp hn ⟶ (gE F κ k n).obj 𝒯.obj, (∀ j, θ.φ (𝓛.t j) = 𝒯.A.toAcr n (WittVector.teichmuller l (𝒯.c j 0 : 𝒯.A.A))) ∧ ∀ a, (A.γ a : liftObj s (b := bs l k n) rfl 𝓛 δ hδ hp hn ⟶ liftObj s (b := bs l k n) rfl 𝓛 δ hδ hp hn) ≫ θ = θ ≫ (gE F κ k n).map (A'.γ a) := by
   intro l _ O _ F κ d s 𝒯 k n 𝓛 δ hδ hp hn ε A A' hA hA'
   have hy : F.Pt.map (CommRingCat.ofHom ((uJ k 𝒯.A n).comp 𝒯.g)) s.y₀ = ((gE F κ k n).obj 𝒯.obj).y.1.2 := by

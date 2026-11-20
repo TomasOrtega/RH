@@ -20,16 +20,25 @@ section Dual
 
 variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
 
+/- English proof (translation)
+Substitute `e` using the available equality. Conclude with `⟨1, IrrRep.det (Fin 1) χ hχ, IrrRep.det (Fin 1) χ⁻¹ hψ, rfl, rfl, ProjLine.nonempty_equiv_contra_ofChar (χ := detChar (Fin 1) χ) hχ.detChar⟩`.
+-/
 theorem dualCl_ofChar (χ ψ : kˣ →* ℂˣ) (hχ : IsSmoothChar χ) (hψ : IsSmoothChar ψ) (e : ψ = χ⁻¹) :
     DualCl (IrrGL.ofChar χ hχ) (IrrGL.ofChar ψ hψ) := by
   subst e
   exact ⟨1, IrrRep.det (Fin 1) χ hχ, IrrRep.det (Fin 1) χ⁻¹ hψ, rfl, rfl,
     ProjLine.nonempty_equiv_contra_ofChar (χ := detChar (Fin 1) χ) hχ.detChar⟩
 
+/- English proof (translation)
+Take `⟨n, π, π', rfl, rfl, -⟩` from `H`. Both sides reduce to the same expression.
+-/
 theorem dualCl_fst {x y : IrrGL k} (H : DualCl x y) : y.1 = x.1 := by
   obtain ⟨n, π, π', rfl, rfl, -⟩ := H
   rfl
 
+/- English proof (translation)
+Take `⟨n, π, σ, rfl, rfl, ⟨e⟩⟩` from `H`. Take `⟨n', π', σ', h1, rfl, ⟨e'⟩⟩` from `H'`. Take `rfl : n = n'` from `congrArg Sigma.fst h1`. Take `⟨f⟩` from `IrrRep.cl_eq_iff.1 (sigma_mk_injective (β := fun n => IrrCl (GL (Fin n) k)) h1)`. Conclude with `congrArg (Sigma.mk n) (IrrRep.cl_eq_iff.2 ⟨(e.trans (ContraRefl.contraEquiv f.symm)).trans e'.symm⟩)`.
+-/
 theorem dualCl_unique {x y y' : IrrGL k} (H : DualCl x y) (H' : DualCl x y') : y = y' := by
   obtain ⟨n, π, σ, rfl, rfl, ⟨e⟩⟩ := H
   obtain ⟨n', π', σ', h1, rfl, ⟨e'⟩⟩ := H'
@@ -37,9 +46,15 @@ theorem dualCl_unique {x y y' : IrrGL k} (H : DualCl x y) (H' : DualCl x y') : y
   obtain ⟨f⟩ := IrrRep.cl_eq_iff.1 (sigma_mk_injective (β := fun n => IrrCl (GL (Fin n) k)) h1)
   exact congrArg (Sigma.mk n) (IrrRep.cl_eq_iff.2 ⟨(e.trans (ContraRefl.contraEquiv f.symm)).trans e'.symm⟩)
 
+/- English proof (translation)
+The claim follows from `Segment.ext_first (dualCl_unique H.2 H'.2) (H.1.trans H'.1.symm)`.
+-/
 theorem segDual_unique {Δ Γ Γ' : Segment k} (H : SegDual Δ Γ) (H' : SegDual Δ Γ') : Γ = Γ' :=
   Segment.ext_first (dualCl_unique H.2 H'.2) (H.1.trans H'.1.symm)
 
+/- English proof (translation)
+Use `⟨rfl, ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `DualCl ((IrrGL.ofChar χ hχ).nu ((l : ℂ) - 1)) ((IrrGL.ofChar χ⁻¹ hχ').nu (1 - (l : ℂ)))`. Rewrite using `[IrrGL.nu, IrrGL.nu, IrrGL.tw_ofChar, IrrGL.tw_ofChar]`. Use `dualCl_ofChar _ _ _ _ ?_` and prove the remaining obligations. Rewrite using `[mul_inv, ← absPow_neg, neg_sub]`.
+-/
 theorem segDual_ofChar (χ : kˣ →* ℂˣ) (hχ : IsSmoothChar χ) (hχ' : IsSmoothChar χ⁻¹) (l : ℕ) (hl : 0 < l) :
     SegDual (Segment.ofChar χ hχ l hl) ((Segment.ofChar χ⁻¹ hχ' l hl).nu (1 - (l : ℂ))) := by
   refine ⟨rfl, ?_⟩
@@ -48,6 +63,11 @@ theorem segDual_ofChar (χ : kˣ →* ℂˣ) (hχ : IsSmoothChar χ) (hχ' : IsS
   refine dualCl_ofChar _ _ _ _ ?_
   rw [mul_inv, ← absPow_neg, neg_sub]
 
+/- English proof (translation)
+Introduce `H`. Establish `h0 : IsSmoothChar (1 : kˣ →* ℂˣ)⁻¹` using `by rw [inv_one]; exact isSmoothChar_one`. Establish `h1` using `congrArg Segment.first (segDual_unique H (segDual_ofChar 1 isSmoothChar_one h0 2 two_pos))`. Express the relevant statement in the definitionally equal form `IrrGL.ofChar 1 isSmoothChar_one = (IrrGL.ofChar 1⁻¹ h0).nu (1 - ((2 : ℕ) : ℂ)) at h1`. Simplify using `only [inv_one] at h1`.
+
+Establish `h2 : (IrrGL.ofChar (1 : kˣ →* ℂˣ) isSmoothChar_one).nu (0 : ℝ) = (IrrGL.ofChar 1 isSmoothChar_one).nu ((-1 : ℝ) : ℂ)`. Rewrite using `[Complex.ofReal_zero, IrrGL.nu_zero, show ((-1 : ℝ) : ℂ) = 1 - ((2 : ℕ) : ℂ) by push_cast; ring]`. Conclude with `h1`. Use `(IrrGL.nu_ofChar_inj _ _).1 h2` as an intermediate fact. Evaluate the numerical expressions using `at this`.
+-/
 theorem not_segDual_self :
     ¬ SegDual (Segment.ofChar (1 : kˣ →* ℂˣ) isSmoothChar_one 2 two_pos) (.ofChar 1 isSmoothChar_one 2 two_pos) := by
   intro H
@@ -69,8 +89,14 @@ variable {E Ω : Type} [Field E] [NumberField E] [Field Ω] [Algebra E Ω] [IsAl
   {a : Weil h →* (w.adicCompletion E)ˣ} {ha : IsLocalArtin h a}
   {e : AddChar (w.adicCompletion E) Circle → WD h → ℂˣ} {r rc : IrrGL (w.adicCompletion E) → WD h}
 
+/- English proof (translation)
+The claim follows from `H.langlands`.
+-/
 theorem isLExt_self (H : LawsMin a ha e rc) : IsLExt rc rc := H.langlands
 
+/- English proof (translation)
+Establish `h1` using `H [.single x hx] x (single_spec hx).2.2.2`. Rewrite using `[h1]`. Express the relevant statement in the definitionally equal form `(((r x).lpTw ((((1 : ℕ) : ℝ) - 1) / 2)).lpChar (WD.lpSp h 1)).lpSum (WD.lpZero h) = r x`. Rewrite using `[WD.lpSum_zero, Test.lpChar_lpSp_one]`. Simplify using `[WD.lpTw_zero]`.
+-/
 theorem eq_of_isLExt (H : IsLExt r rc) {x : IrrGL (w.adicCompletion E)} (hx : x.IsCusp) : rc x = r x := by
   have h1 := H [.single x hx] x (single_spec hx).2.2.2
   rw [h1]
@@ -78,6 +104,9 @@ theorem eq_of_isLExt (H : IsLExt r rc) {x : IrrGL (w.adicCompletion E)} (hx : x.
   rw [WD.lpSum_zero, Test.lpChar_lpSp_one]
   simp [WD.lpTw_zero]
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fun x hx => (H.cusp x).1 hx, H.bij.1.injOn, fun y hy => by obtain ⟨x, rfl⟩ := H.bij.2 y exact ⟨x, (H.cusp x).2 hy, rfl⟩⟩ dim x _ := H.dim x twist x _ χ hχ := by rw [H.twist, H.one, lpChar_lpOfChar] central x _ := H.central x dual x y _ _ := by rintro ⟨n, π, π', rfl, rfl, hd⟩ exa …`.
+-/
 theorem cuspLaws_of_lawsLit (H : LawsLit a ha e rc)
     (hgap : ∀ ψ : AddChar (w.adicCompletion E) Circle, Continuous ψ → ψ ≠ 1 →
       ∀ x y : IrrGL (w.adicCompletion E), x.IsCusp → y.IsCusp → y.1 + 1 < x.1 →
@@ -103,6 +132,25 @@ theorem cuspLaws_of_lawsLit (H : LawsLit a ha e rc)
       exact (GammaModel.hasPairGamma_succ_iff ht _ _ _).2 this
     · exact hgap ψ hc h1 x y hx hy h2
 
+/- English proof (translation)
+Establish `hc` using `IrrGL.isCusp_ofChar χ hχ`. Establish `hd` using `H.dim _ hc`. Establish `hω : HasCentralChar (IrrGL.ofChar χ hχ).rep χ`. Introduce `z v`. Set `φ` to `equivRep (IrrRep.det (Fin 1) χ hχ)`.
+
+Take `⟨u, rfl⟩` from `φ.toLinearEquiv.surjective v`. Establish `h1` using `φ.toIntertwiningMap.isIntertwining _ _ (GeneralLinearGroup.scalar (Fin 1) z) u`. Establish `h2 : GeneralLinearGroup.det (GeneralLinearGroup.scalar (Fin 1) z) = z` using `by ext; simp [GeneralLinearGroup.scalar]`. Use `h1.symm.trans ?_` and prove the remaining obligations. Use `Eq.trans ?_ (φ.toLinearEquiv.map_smul _ u)` and prove the remaining obligations.
+
+Use `congrArg φ.toLinearEquiv ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `((χ (GeneralLinearGroup.det (GeneralLinearGroup.scalar (Fin 1) z)) : ℂˣ) : ℂ) • u = _`. Rewrite using `[h2]`. Establish `he` using `H.central _ hc χ hω`. Take `⟨n, b, hb⟩` from `(r (.ofChar χ hχ)).exists_rep`.
+
+Rewrite `hd`, `he`, the goal using `[← hb]`. Take `rfl : n = 1` from `by simpa [IrrGL.ofChar] using hd`. Establish `one : ∀ f : Module.End ℂ (Fin 1 → ℂ), ∀ v, f v = f (fun _ => 1) 0 • v` using `fun f v => by`. Establish `hv : v = v 0 • fun _ => (1 : ℂ)` using `funext fun i => by simp [Subsingleton.elim i 0]`. Use function extensionality and compare the values at `i`.
+
+Rewrite using `[Subsingleton.elim i 0]`. Use `conv_lhs => rw [hv, map_smul]`. Simplify using `[mul_comm]`. Use `WD.sound ⟨.refl _ _, fun σ v => ?_, fun v => ?_⟩` and prove the remaining obligations. Establish `h1` using `he σ`.
+
+Rewrite `h1` using `[WD.eig_mk]`. Establish `h2 : (b.ρ σ).charpoly.roots.prod = LinearMap.det (b.ρ σ)`. Rewrite using `[← LinearMap.charpoly_toMatrix _ (Pi.basisFun ℂ (Fin 1)), ← Matrix.det_eq_prod_roots_charpoly, LinearMap.det_toMatrix]`. Establish `h3 : b.ρ σ = b.ρ σ (fun _ => 1) 0 • LinearMap.id` using `LinearMap.ext (one _)`. Establish `h4 : LinearMap.det (b.ρ σ) = b.ρ σ (fun _ => 1) 0` using `by conv_lhs => rw [h3]`.
+
+Simplify using the standard rewrite rules. Use function extensionality and compare the values at `i`. Use `congrFun (one (b.ρ σ) v) i` as an intermediate fact. Rewrite `this` using `[← h4, ← h2, h1]`. Simplify using `using this`.
+
+Take `⟨m, hm⟩` from `b.nilpotent`. Establish `h3 : b.N = b.N (fun _ => 1) 0 • 1` using `LinearMap.ext (one _)`. Establish `h4 : b.N (fun _ => 1) 0 ^ m = 0`. Rewrite `hm` using `[h3, _root_.smul_pow, one_pow]`. Simplify using `using congrFun (LinearMap.congr_fun hm fun _ => 1) 0`.
+
+Establish `h5 : b.N (fun _ => 1) 0 = 0` using `eq_zero_of_pow_eq_zero h4`. Establish `h6` using `one b.N v`. Rewrite `h6` using `[h5, zero_smul]`. Simplify using `using h6`.
+-/
 theorem one_of_cuspLaws (H : CuspLaws a ha e r) (χ : (w.adicCompletion E)ˣ →* ℂˣ) (hχ : IsSmoothChar χ) :
     r (.ofChar χ hχ) = WD.lpOfChar h (χ.comp a) (ha.smooth hχ) := by
   have hc := IrrGL.isCusp_ofChar χ hχ
@@ -153,6 +201,9 @@ theorem one_of_cuspLaws (H : CuspLaws a ha e r) (χ : (w.adicCompletion E)ˣ →
     rw [h5, zero_smul] at h6
     simpa using h6
 
+/- English proof (translation)
+Introduce `H` and use `by have := H.bij.injOn ((IrrGL.isCusp_ofChar 1 isSmoothChar_one).nu (0 : ℝ)) ((IrrGL.isCusp_ofChar 1 isSmoothChar_one).nu (1 : ℝ)) rfl exact zero_ne_one ((IrrGL.nu_ofChar_inj _ _).1 this)`.
+-/
 theorem not_cuspLaws_const (y : WD h) : ¬ CuspLaws a ha e fun _ => y := fun H => by
   have := H.bij.injOn ((IrrGL.isCusp_ofChar 1 isSmoothChar_one).nu (0 : ℝ))
     ((IrrGL.isCusp_ofChar 1 isSmoothChar_one).nu (1 : ℝ)) rfl

@@ -17,35 +17,59 @@ section OkThms
 variable {X : Fields} {Pr : Primes X} {R : Ranks} (W : Wts X Pr.Word R) (Ch : Chars X Pr R.m)
   (sel : HeightOneSpectrum (𝓞 X.F) → HeightOneSpectrum (𝓞 X.E)) {S : Set ℕ} (mu : Tup X.F X.E X.K S)
 
+/- English proof (translation)
+The claim follows from `rowVal_nab_smul W del_smul := rowVal_del_smul W inv := squarePk_inv X _ _ hX.emb_star`.
+-/
 theorem rowVal_eqv (hX : X.Ok) (SG : Finset (HeightOneSpectrum (𝓞 X.E))) : (rowVal W SG).Eqv where
   nab_smul := rowVal_nab_smul W
   del_smul := rowVal_del_smul W
   inv := squarePk_inv X _ _ hX.emb_star
 
+/- English proof (translation)
+The claim follows from `mtVal_nab_smul W j del_smul := mtVal_del_smul W j inv := roundPk_inv X _ _ hX.emb_star`.
+-/
 theorem mtVal_eqv (hX : X.Ok) (j : ℕ) (SG : Finset (HeightOneSpectrum (𝓞 X.E))) : (mtVal W j SG).Eqv where
   nab_smul := mtVal_nab_smul W j
   del_smul := mtVal_del_smul W j
   inv := roundPk_inv X _ _ hX.emb_star
 
+/- English proof (translation)
+The claim follows from `formGSD_ok _ _ hX (rowVal_eqv W hX _)`.
+-/
 theorem mtildeOk (hX : X.Ok) (P : LevFam X.E X.K R.r Pr.vGs) : (mtildeGSD W Ch sel mu P).Ok :=
   formGSD_ok _ _ hX (rowVal_eqv W hX _)
 
+/- English proof (translation)
+The claim follows from `formGSD_ok _ _ hX (rowVal_eqv W hX _)`.
+-/
 theorem mtildeKOk (hX : X.Ok) : (mtildeKGSD W Ch sel mu).Ok := formGSD_ok _ _ hX (rowVal_eqv W hX _)
 
+/- English proof (translation)
+The claim follows from `formGSD_ok _ _ hX (mtVal_eqv W hX j _)`.
+-/
 theorem mtOk (hX : X.Ok) (P : LevFam X.E X.K R.r Pr.vGs) (j : ℕ) : (mtGSD W Ch sel mu P j).Ok :=
   formGSD_ok _ _ hX (mtVal_eqv W hX j _)
 
+/- English proof (translation)
+The claim follows from `formGSD_ok _ _ hX (mtVal_eqv W hX j _)`.
+-/
 theorem mtKOk (hX : X.Ok) (j : ℕ) : (mtKGSD W Ch sel mu j).Ok := formGSD_ok _ _ hX (mtVal_eqv W hX j _)
 
 end OkThms
 
 section Mu0
 
+/- English proof (translation)
+Use extensionality with `v`. Simplify using `[Qprime, MonoidHom.ker_one]`.
+-/
 theorem rf_Qprime_one (F E L : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] [Field L] :
     Qprime (1 : Chr F E L) = ∅ := by
   ext v
   simp [Qprime, MonoidHom.ker_one]
 
+/- English proof (translation)
+Establish `h : ((mu0 X.F X.E X.K S : Tup X.F X.E X.K S) : Chr X.F X.E X.K) = 1` using `rfl`. Rewrite using `[h]`. Unfold `QE`. Simplify using `[rf_Qprime_one]`.
+-/
 theorem twistPrimes_trivialTuple_empty {X : Fields} (sel : HeightOneSpectrum (𝓞 X.F) → HeightOneSpectrum (𝓞 X.E)) (S : Set ℕ) :
     QE sel ((mu0 X.F X.E X.K S : Tup X.F X.E X.K S) : Chr X.F X.E X.K) = ∅ := by
   have h : ((mu0 X.F X.E X.K S : Tup X.F X.E X.K S) : Chr X.F X.E X.K) = 1 := rfl
@@ -59,6 +83,15 @@ section Ties
 
 variable {κ K : Type} [CommRing κ] [Field K] {n r : ℕ}
 
+/- English proof (translation)
+Unfold `supSum`. Apply `Finset.sum_of_injOn (Fin.castLE h) (fun x _ y _ hxy => Fin.castLE_injective h hxy) (by simp [Set.MapsTo])` to reduce the goal to its premises. Introduce `i _ hi`. Establish `hi' : ¬ i.val < r` using `fun hlt => hi ⟨⟨i.val, hlt⟩, by simp, Fin.ext rfl⟩`. Apply `Finset.sum_eq_zero` to reduce the goal to its premises.
+
+Introduce `j _`. Rewrite using `[if_neg]`. Introduce and unpack `⟨h1, h2, -⟩`. Use linear arithmetic over natural numbers and integers. Introduce `i _`.
+
+Apply `Finset.sum_of_injOn (Fin.castLE h) (fun x _ y _ hxy => Fin.castLE_injective h hxy) (by simp [Set.MapsTo])` to reduce the goal to its premises. Introduce `j _ hj`. Establish `hj' : ¬ j.val < r` using `fun hlt => hj ⟨⟨j.val, hlt⟩, by simp, Fin.ext rfl⟩`. Rewrite using `[if_neg]`. Introduce and unpack `⟨-, h2, -⟩`.
+
+Conclude with `hj' h2`. Introduce `j _`. Both sides reduce to the same expression.
+-/
 theorem supSum_restr (h : r ≤ n) (S : Finset ℕ) (A : Matrix (Fin n) (Fin n) κ) :
     supSum r S (restr h A) = supSum r S A := by
   unfold supSum
@@ -80,6 +113,11 @@ theorem supSum_restr (h : r ≤ n) (S : Finset ℕ) (A : Matrix (Fin n) (Fin n) 
     · intro j _
       rfl
 
+/- English proof (translation)
+Unfold `lamPar lamGen`. Rewrite using `[MonoidHom.mul_apply, MonoidHom.mul_apply]`. Use `congr 1`. Apply `Units.ext` to reduce the goal to its premises. Rewrite using `[supChar_val]`.
+
+Use `show ψ (supSum r (Finset.range (r - 1)) (restr h (M : Matrix (Fin n) (Fin n) κ))) = _`. Rewrite using `[supSum_restr]`.
+-/
 theorem lamPar_psiU (h : r ≤ n) (bl : List ℕ) (ψ : AddChar κ K) (χ : ℕ → κˣ →* Kˣ) (M : GL (Fin n) κ)
     (h1 : M ∈ HPar n κ h bl (HU κ r)) (h2 : M ∈ uniUT n κ r bl) :
     lamPar h bl (psiU ψ r) χ ⟨M, h1⟩ = lamGen ψ χ n r bl (Finset.range (r - 1)) ⟨M, h2⟩ := by
@@ -91,6 +129,9 @@ theorem lamPar_psiU (h : r ≤ n) (bl : List ℕ) (ψ : AddChar κ K) (χ : ℕ 
   show ψ (supSum r (Finset.range (r - 1)) (restr h (M : Matrix (Fin n) (Fin n) κ))) = _
   rw [supSum_restr]
 
+/- English proof (translation)
+Unfold `lamPar lamK`. Rewrite using `[MonoidHom.mul_apply, MonoidHom.comp_apply, MonoidHom.one_apply, one_mul]`. Both sides reduce to the same expression.
+-/
 theorem lamPar_bot (h : r ≤ n) (bl : List ℕ) (χ : ℕ → κˣ →* Kˣ) (M : GL (Fin n) κ)
     (h1 : M ∈ HPar n κ h bl ⊥) (h2 : M ∈ HK n κ r bl) :
     lamPar h bl (1 : ↥(⊥ : Subgroup (GL (Fin r) κ)) →* Kˣ) χ ⟨M, h1⟩ = lamK χ n r bl ⟨M, h2⟩ := by
@@ -98,6 +139,19 @@ theorem lamPar_bot (h : r ≤ n) (bl : List ℕ) (χ : ℕ → κˣ →* Kˣ) (M
   rw [MonoidHom.mul_apply, MonoidHom.comp_apply, MonoidHom.one_apply, one_mul]
   rfl
 
+/- English proof (translation)
+Use extensionality with `M`. Rewrite using `[Subgroup.mem_inf, uniUT_eq_HPar h bl, mem_HPar, mem_HPar]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨hM, h1, h2⟩`. Use `⟨⟨hM, h1⟩, fun i j hj => ?_⟩` and prove the remaining obligations.
+
+Distinguish the cases in `hi : i.val < r`. Use `h2 ⟨i.val, hi⟩ ⟨j.val, by omega⟩ hj` as an intermediate fact. Rewrite `this` using `[blockZero_val]`. Establish `e : restr h (M : Matrix (Fin n) (Fin n) κ) ⟨i.val, hi⟩ ⟨j.val, by omega⟩ = (M : Matrix (Fin n) (Fin n) κ) i j` using `rfl`. Rewrite `this` using `[e]`.
+
+Rewrite using `[this]`. Simplify using `only [Matrix.one_apply, Fin.ext_iff]`. Establish `h0 : (M : Matrix (Fin n) (Fin n) κ) i j = 0`. Apply `hM` to reduce the goal to its premises. Use `show coarse r bl j.val < coarse r bl i.val`.
+
+Rewrite using `[coarse_of_lt (by omega), coarse_of_le (Nat.not_lt.mp hi)]`. Use linear arithmetic over natural numbers and integers. Rewrite using `[h0, Matrix.one_apply_ne]`. Introduce `e`. Rewrite `hi` using `[e]`.
+
+Use linear arithmetic over natural numbers and integers. Introduce and unpack `⟨⟨hM, h1⟩, h2⟩`. Use `⟨hM, h1, fun i j hj => ?_⟩` and prove the remaining obligations. Rewrite using `[blockZero_val]`. Use `h2 (Fin.castLE h i) (Fin.castLE h j) hj` as an intermediate fact.
+
+Use `show (M : Matrix (Fin n) (Fin n) κ) (Fin.castLE h i) (Fin.castLE h j) = _`. Rewrite using `[this]`. Simplify using `only [Matrix.one_apply, Fin.ext_iff, Fin.val_castLE]`.
+-/
 theorem HPar_inf_fixCol (h : r ≤ n) (bl : List ℕ) {c : ℕ} (hc : c < r) :
     HPar n κ h bl (HU κ r ⊓ fixCol r κ c) = uniUT n κ r bl ⊓ fixCol n κ c := by
   ext M
@@ -129,17 +183,26 @@ theorem HPar_inf_fixCol (h : r ≤ n) (bl : List ℕ) {c : ℕ} (hc : c < r) :
     rw [this]
     simp only [Matrix.one_apply, Fin.ext_iff, Fin.val_castLE]
 
+/- English proof (translation)
+Use extensionality with `M`. Rewrite using `[MonoidHom.inv_apply, supChar_val, Units.val_inv_eq_inv_val, supChar_val, AddChar.inv_apply, AddChar.map_neg_eq_inv]`.
+-/
 theorem supChar_inv (ψ : AddChar κ K) (a : ℕ) (bl : List ℕ) (S : Finset ℕ) :
     supChar ψ⁻¹ n a bl S = (supChar ψ n a bl S)⁻¹ := by
   ext M
   rw [MonoidHom.inv_apply, supChar_val, Units.val_inv_eq_inv_val, supChar_val, AddChar.inv_apply, AddChar.map_neg_eq_inv]
 
+/- English proof (translation)
+Use extensionality with `M`. Rewrite using `[MonoidHom.inv_apply, detChar_apply, detChar_apply, ← Finset.prod_inv_distrib]`. Both sides reduce to the same expression.
+-/
 theorem detChar_inv (χ : ℕ → κˣ →* Kˣ) (a : ℕ) (bl : List ℕ) :
     detChar (fun s => (χ s)⁻¹) n a bl = (detChar χ n a bl)⁻¹ := by
   ext M
   rw [MonoidHom.inv_apply, detChar_apply, detChar_apply, ← Finset.prod_inv_distrib]
   rfl
 
+/- English proof (translation)
+Unfold `lamGen`. Rewrite using `[supChar_inv, detChar_inv, mul_inv]`. Both sides reduce to the same expression.
+-/
 theorem lamGen_inv (ψ : AddChar κ K) (χ : ℕ → κˣ →* Kˣ) (a : ℕ) (bl : List ℕ) (S : Finset ℕ) :
     lamGen ψ⁻¹ (fun s => (χ s)⁻¹) n a bl S = (lamGen ψ χ n a bl S)⁻¹ := by
   unfold lamGen
@@ -152,27 +215,48 @@ section Ties2
 
 variable {X : Fields} {Pr : Primes X} {R : Ranks} (Ch : Chars X Pr R.m) (w : {w // w ∈ Pr.vGs})
 
+/- English proof (translation)
+The claim follows from `(uniUT_eq_HPar (r_le_X' R) _).symm`.
+-/
 theorem rowLevel_unipotent_group : (rowTyG Ch (rP0 Ch) w).H = HJ (𝓞 X.E ⧸ w.1.asIdeal) (R.N R.m - 1) R.r R.t R.m :=
   (uniUT_eq_HPar (r_le_X' R) _).symm
 
+/- English proof (translation)
+The claim follows from `lamPar_psiU (r_le_X' R) _ _ _ M h1 h2`.
+-/
 theorem rowLevel_unipotent_character (M : GL (Fin (R.N R.m - 1)) (𝓞 X.E ⧸ w.1.asIdeal)) (h1 : M ∈ (rowTyG Ch (rP0 Ch) w).H)
     (h2 : M ∈ HJ (𝓞 X.E ⧸ w.1.asIdeal) (R.N R.m - 1) R.r R.t R.m) :
     (rowTyG Ch (rP0 Ch) w).lam ⟨M, h1⟩ = lamJ (Ch.psi0 w) (chiAt Ch w) (R.N R.m - 1) R.r R.t R.m ⟨M, h2⟩ :=
   lamPar_psiU (r_le_X' R) _ _ _ M h1 h2
 
+/- English proof (translation)
+The claim follows from `HPar_inf_fixCol (r_le_X' R) _ (by have := R.two_le_m; unfold Ranks.r; omega)`.
+-/
 theorem rowTyG_sharp_H :
     (rowTyG Ch (rPsharp Ch) w).H = HJsharp (𝓞 X.E ⧸ w.1.asIdeal) (R.N R.m - 1) R.k R.r R.t R.m :=
   HPar_inf_fixCol (r_le_X' R) _ (by have := R.two_le_m; unfold Ranks.r; omega)
 
+/- English proof (translation)
+The claim follows from `(HK_eq_HPar (r_le_X' R) _).symm`.
+-/
 theorem rowTyG_Kg_H : (rowTyG Ch (rKg X Pr R) w).H = (rowTyK Ch w).H := (HK_eq_HPar (r_le_X' R) _).symm
 
+/- English proof (translation)
+The claim follows from `lamPar_bot (r_le_X' R) _ _ M h1 h2`.
+-/
 theorem rowTyG_Kg_lam (M : GL (Fin (R.N R.m - 1)) (𝓞 X.E ⧸ w.1.asIdeal)) (h1 : M ∈ (rowTyG Ch (rKg X Pr R) w).H)
     (h2 : M ∈ (rowTyK Ch w).H) : (rowTyG Ch (rKg X Pr R) w).lam ⟨M, h1⟩ = (rowTyK Ch w).lam ⟨M, h2⟩ :=
   lamPar_bot (r_le_X' R) _ _ M h1 h2
 
+/- English proof (translation)
+The claim follows from `(uniUT_eq_HPar (r_le_nV R) _).symm`.
+-/
 theorem levelV_unipotent_group (j : ℕ) : (mtTyG Ch (rP0 Ch) j w).H = HV (𝓞 X.E ⧸ w.1.asIdeal) R.nV R.r R.t :=
   (uniUT_eq_HPar (r_le_nV R) _).symm
 
+/- English proof (translation)
+Unfold `lamV`. Rewrite using `[lamGen_inv (Ch.psi0 w) (fun _ => chiAt Ch w (j - 1)), MonoidHom.inv_apply, ← lamPar_psiU (r_le_nV R) _ _ _ M h1 h2]`. Both sides reduce to the same expression.
+-/
 theorem levelV_unipotent_character (j : ℕ) (M : GL (Fin R.nV) (𝓞 X.E ⧸ w.1.asIdeal)) (h1 : M ∈ (mtTyG Ch (rP0 Ch) j w).H)
     (h2 : M ∈ HV (𝓞 X.E ⧸ w.1.asIdeal) R.nV R.r R.t) :
     (mtTyG Ch (rP0 Ch) j w).lam ⟨M, h1⟩ = lamV (Ch.psi0 w) (chiAt Ch w (j - 1)) R.nV R.r R.t ⟨M, h2⟩ := by
@@ -181,8 +265,14 @@ theorem levelV_unipotent_character (j : ℕ) (M : GL (Fin R.nV) (𝓞 X.E ⧸ w.
     ← lamPar_psiU (r_le_nV R) _ _ _ M h1 h2]
   rfl
 
+/- English proof (translation)
+The claim follows from `(HK_eq_HPar (r_le_nV R) _).symm`.
+-/
 theorem mtTyG_Kg_H (j : ℕ) : (mtTyG Ch (rKg X Pr R) j w).H = (mtTyK Ch j w).H := (HK_eq_HPar (r_le_nV R) _).symm
 
+/- English proof (translation)
+Use `show (lamPar (r_le_nV R) [R.t] (1 : ↥(⊥ : Subgroup _) →* X.Kˣ) fun _ => chiAt Ch w (j - 1))⁻¹ ⟨M, h1⟩ = lamK (fun _ => (chiAt Ch w (j - 1))⁻¹) R.nV R.r [R.t] ⟨M, h2⟩`. Rewrite using `[MonoidHom.inv_apply, lamPar_bot (r_le_nV R) _ _ M h1 h2]`. Unfold `lamK`. Rewrite using `[detChar_inv (fun _ => chiAt Ch w (j - 1))]`. Both sides reduce to the same expression.
+-/
 theorem mtTyG_Kg_lam (j : ℕ) (M : GL (Fin R.nV) (𝓞 X.E ⧸ w.1.asIdeal)) (h1 : M ∈ (mtTyG Ch (rKg X Pr R) j w).H)
     (h2 : M ∈ (mtTyK Ch j w).H) : (mtTyG Ch (rKg X Pr R) j w).lam ⟨M, h1⟩ = (mtTyK Ch j w).lam ⟨M, h2⟩ := by
   show (lamPar (r_le_nV R) [R.t] (1 : ↥(⊥ : Subgroup _) →* X.Kˣ) fun _ => chiAt Ch w (j - 1))⁻¹ ⟨M, h1⟩ =
@@ -199,6 +289,11 @@ section Iso
 variable {X : Fields} {n : ℕ} {ST SG : Finset (HeightOneSpectrum (𝓞 X.E))}
   (C : CoefPk X n (DecoSet X.E n ST SG)) (Λ : LevFam X.E X.K n SG)
 
+/- English proof (translation)
+Take `⟨h', e1, e2⟩` from `Λ.normBy a ha h`. Establish `e : a⁻¹ * h.1 * a = h'.1` using `by rw [e1, inv_mul_cancel_right]`. Use `⟨e ▸ h'.2, ?_⟩` and prove the remaining obligations. Rewrite using `[← e2]`. Use `congr 1`.
+
+Conclude with `Subtype.ext e`.
+-/
 theorem LevFam.conj_inv_spec (a : GLG X.E n SG) (ha : ∀ w, (Λ w).NormBy (a w)) (h : ↥Λ.grp) :
     ∃ hm : a⁻¹ * h.1 * a ∈ Λ.grp, Λ.chr ⟨_, hm⟩ = Λ.chr h := by
   obtain ⟨h', e1, e2⟩ := Λ.normBy a ha h
@@ -208,6 +303,9 @@ theorem LevFam.conj_inv_spec (a : GLG X.E n SG) (ha : ∀ w, (Λ w).NormBy (a w)
   congr 1
   exact Subtype.ext e
 
+/- English proof (translation)
+Take `⟨hm, e⟩` from `Λ.conj_inv_spec a⁻¹ ha h`. Simplify using `only [inv_inv] at hm e`. Conclude with `⟨hm, e⟩`.
+-/
 theorem LevFam.conj_spec (a : GLG X.E n SG) (ha : ∀ w, (Λ w).NormBy (a⁻¹ w)) (h : ↥Λ.grp) :
     ∃ hm : a * h.1 * a⁻¹ ∈ Λ.grp, Λ.chr ⟨_, hm⟩ = Λ.chr h := by
   obtain ⟨hm, e⟩ := Λ.conj_inv_spec a⁻¹ ha h
@@ -267,10 +365,16 @@ def trIso (hC : C.Eqv) (a : GLG X.E n SG) (ha : ∀ w, (Λ w).NormBy (a w)) (ha'
 variable {A : Type} [Group A] (ι : A →* GLG X.E n SG) (hι : ∀ a w, (Λ w).NormBy (ι a w))
 
 include hι in
+/- English proof (translation)
+Rewrite using `[← map_inv]`. Conclude with `hι a⁻¹ w`.
+-/
 theorem normBy_inv_of (a : A) (w : SG) : (Λ w).NormBy ((ι a)⁻¹ w) := by
   rw [← map_inv]
   exact hι a⁻¹ w
 
+/- English proof (translation)
+Apply `Subtype.ext` to reduce the goal to its premises. Use function extensionality and compare the values at `d`. Use `show (φ : DecoSet X.E n ST SG → C.V) (((1 : UF X.E n), (ι a)⁻¹) • d) = (φ : DecoSet X.E n ST SG → C.V) ((((1 : UF X.E n), ι a) : UF X.E n × GLG X.E n SG)⁻¹ • d)`. Rewrite using `[Prod.inv_mk, inv_one]`.
+-/
 theorem trRep_eq_onForms (hC : C.Eqv) (a : A) (φ : (formGSD C Λ).EqFun) :
     trRep C Λ ι hι a φ = (trIso C Λ hC (ι a) (hι a) (normBy_inv_of Λ ι hι a)).onForms φ := by
   apply Subtype.ext
@@ -279,16 +383,25 @@ theorem trRep_eq_onForms (hC : C.Eqv) (a : A) (φ : (formGSD C Λ).EqFun) :
     (φ : DecoSet X.E n ST SG → C.V) ((((1 : UF X.E n), ι a) : UF X.E n × GLG X.E n SG)⁻¹ • d)
   rw [Prod.inv_mk, inv_one]
 
+/- English proof (translation)
+Rewrite using `[trRep_eq_onForms C Λ ι hι hC, trRep_eq_onForms C Λ ι hι hC]`. Conclude with `GSD.Iso.ipOf_onForms _ h h s s φ ψ`.
+-/
 theorem trRep_ip (hC : C.Eqv) (h : (formGSD C Λ).Ok) (s : (formGSD C Λ).Sec) (a : A) (φ ψ : (formGSD C Λ).EqFun) :
     (formGSD C Λ).ipOf h s (trRep C Λ ι hι a φ) (trRep C Λ ι hι a ψ) = (formGSD C Λ).ipOf h s φ ψ := by
   rw [trRep_eq_onForms C Λ ι hι hC, trRep_eq_onForms C Λ ι hι hC]
   exact GSD.Iso.ipOf_onForms _ h h s s φ ψ
 
+/- English proof (translation)
+Rewrite using `[trRep_eq_onForms C Λ ι hι hC]`. Conclude with `GSD.Iso.mem_intNab _ φ`.
+-/
 theorem trRep_mem_intNab (hC : C.Eqv) (a : A) (φ : (formGSD C Λ).EqFun) :
     trRep C Λ ι hι a φ ∈ (formGSD C Λ).intNab ↔ φ ∈ (formGSD C Λ).intNab := by
   rw [trRep_eq_onForms C Λ ι hι hC]
   exact GSD.Iso.mem_intNab _ φ
 
+/- English proof (translation)
+Rewrite using `[trRep_eq_onForms C Λ ι hι hC]`. Conclude with `GSD.Iso.mem_intDel _ φ`.
+-/
 theorem trRep_mem_intDel (hC : C.Eqv) (a : A) (φ : (formGSD C Λ).EqFun) :
     trRep C Λ ι hι a φ ∈ (formGSD C Λ).intDel ↔ φ ∈ (formGSD C Λ).intDel := by
   rw [trRep_eq_onForms C Λ ι hι hC]
@@ -296,6 +409,17 @@ theorem trRep_mem_intDel (hC : C.Eqv) (a : A) (φ : (formGSD C Λ).EqFun) :
 
 end Iso
 
+/- English proof (translation)
+Establish `e` using `h1 t ((S.res h).symm f) ((S.res h).symm g)`. Establish `e1 : S.ip h ((S.res h).symm f) ((S.res h).symm g) = (S.toCSD h).csum ((S.res h ((S.res h).symm f)).1 : S.Cl → S.V) ((S.res h ((S.res h).symm g)).1 : S.Cl → S.V)` using `rfl`. Rewrite `e` using `[e1, LinearEquiv.apply_symm_apply, LinearEquiv.apply_symm_apply]`. Conclude with `e`. Use `nab_stable t f hf c := by`.
+
+Establish `e : (S.res h).symm f ∈ S.intNab`. Rewrite using `[S.mem_intNab_iff h S.outSec]`. Introduce `c`. Establish `: ((S.res h ((S.res h).symm f)).1 : S.Cl → S.V) c ∈ S.Nab (S.outSec.rep c)`. Rewrite using `[LinearEquiv.apply_symm_apply]`.
+
+Conclude with `hf c`. Conclude with `this`. Conclude with `(S.mem_intNab_iff h S.outSec _).mp (h2 t _ e) c`. Use `del_stable t f hf c := by`. Establish `e : (S.res h).symm f ∈ S.intDel`.
+
+Rewrite using `[S.mem_intDel_iff h S.outSec]`. Introduce `c`. Establish `: ((S.res h ((S.res h).symm f)).1 : S.Cl → S.V) c ∈ S.Del (S.outSec.rep c)`. Rewrite using `[LinearEquiv.apply_symm_apply]`. Conclude with `hf c`.
+
+Conclude with `this`. Conclude with `(S.mem_intDel_iff h S.outSec _).mp (h3 t _ e) c`.
+-/
 theorem GSD.repCSD_actGood {K : Type} [Field K] [NumberField K] [StarRing K] (S : GSD K) (h : S.Ok) {A : Type} [Group A]
     [Fintype A] (r : Representation K A S.EqFun)
     (h1 : ∀ a φ ψ, S.ip h (r a φ) (r a ψ) = S.ip h φ ψ)
@@ -331,33 +455,51 @@ section G0Good
 variable {X : Fields} {Pr : Primes X} {R : Ranks} (W : Wts X Pr.Word R) (Ch : Chars X Pr R.m)
   (sel : HeightOneSpectrum (𝓞 X.F) → HeightOneSpectrum (𝓞 X.E)) {S : Set ℕ} (mu : Tup X.F X.E X.K S)
 
+/- English proof (translation)
+The claim follows from `GSD.repCSD_actGood _ h _ (fun a φ ψ => trRep_ip _ _ _ _ (rowVal_eqv W hX _) h _ a φ ψ) (fun a φ hφ => (trRep_mem_intNab _ _ _ _ (rowVal_eqv W hX _) a φ).mpr hφ) (fun a φ hφ => (trRep_mem_intDel _ _ _ _ (rowVal_eqv W hX _) a φ).mpr hφ)`.
+-/
 theorem unipotentActionForms_good (hX : X.Ok) (h : (mtildeKGSD W Ch sel mu).Ok) :
     (MtildeKCSD W Ch sel mu h).ActGood (g0Act W Ch sel mu h) :=
   GSD.repCSD_actGood _ h _ (fun a φ ψ => trRep_ip _ _ _ _ (rowVal_eqv W hX _) h _ a φ ψ)
     (fun a φ hφ => (trRep_mem_intNab _ _ _ _ (rowVal_eqv W hX _) a φ).mpr hφ)
     (fun a φ hφ => (trRep_mem_intDel _ _ _ _ (rowVal_eqv W hX _) a φ).mpr hφ)
 
+/- English proof (translation)
+The claim follows from `GSD.repCSD_actGood _ h _ (fun a φ ψ => trRep_ip _ _ _ _ (mtVal_eqv W hX j _) h _ a φ ψ) (fun a φ hφ => (trRep_mem_intNab _ _ _ _ (mtVal_eqv W hX j _) a φ).mpr hφ) (fun a φ hφ => (trRep_mem_intDel _ _ _ _ (mtVal_eqv W hX j _) a φ).mpr hφ)`.
+-/
 theorem unipotentActionClassSum_good (hX : X.Ok) (j : ℕ) (h : (mtKGSD W Ch sel mu j).Ok) :
     (MtKCSD W Ch sel mu j h).ActGood (unipotentRightActionOnForms W Ch sel mu j h) :=
   GSD.repCSD_actGood _ h _ (fun a φ ψ => trRep_ip _ _ _ _ (mtVal_eqv W hX j _) h _ a φ ψ)
     (fun a φ hφ => (trRep_mem_intNab _ _ _ _ (mtVal_eqv W hX j _) a φ).mpr hφ)
     (fun a φ hφ => (trRep_mem_intDel _ _ _ _ (mtVal_eqv W hX j _) a φ).mpr hφ)
 
+/- English proof (translation)
+Rewrite using `[rank_X'_eq]`. Use `R.m_add_three_le_k` as an intermediate fact. Unfold `Ranks.r`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem X'_pos (R : Ranks) : 0 < R.N R.m - 1 := by
   rw [rank_X'_eq]
   have := R.m_add_three_le_k
   unfold Ranks.r
   omega
 
+/- English proof (translation)
+Use `R.m_add_three_le_k` as an intermediate fact. Unfold `Ranks.nV Ranks.r`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem nV_pos (R : Ranks) : 0 < R.nV := by
   have := R.m_add_three_le_k
   unfold Ranks.nV Ranks.r
   omega
 
+/- English proof (translation)
+The claim follows from `have : NeZero (R.N R.m - 1) := ⟨(X'_pos R).ne'⟩ ⟨(mtildeGSD W Ch sel mu P).cls (DecoSet.base X.E (R.N R.m - 1) ∅ (rowSG Pr sel mu))⟩`.
+-/
 theorem mtilde_cl_nonempty (P : LevFam X.E X.K R.r Pr.vGs) : Nonempty (mtildeGSD W Ch sel mu P).Cl :=
   have : NeZero (R.N R.m - 1) := ⟨(X'_pos R).ne'⟩
   ⟨(mtildeGSD W Ch sel mu P).cls (DecoSet.base X.E (R.N R.m - 1) ∅ (rowSG Pr sel mu))⟩
 
+/- English proof (translation)
+The claim follows from `have : NeZero R.nV := ⟨(nV_pos R).ne'⟩ ⟨(mtGSD W Ch sel mu P j).cls (DecoSet.base X.E R.nV ∅ (rowSG Pr sel mu))⟩`.
+-/
 theorem mt_cl_nonempty (P : LevFam X.E X.K R.r Pr.vGs) (j : ℕ) : Nonempty (mtGSD W Ch sel mu P j).Cl :=
   have : NeZero R.nV := ⟨(nV_pos R).ne'⟩
   ⟨(mtGSD W Ch sel mu P j).cls (DecoSet.base X.E R.nV ∅ (rowSG Pr sel mu))⟩
@@ -372,6 +514,9 @@ open Classical in
 
 def Lev.ev (l : Lev κ K n) (M : GL (Fin n) κ) : Kˣ := if h : M ∈ l.H then l.lam ⟨M, h⟩ else 1
 
+/- English proof (translation)
+The claim follows from `dif_pos h`.
+-/
 theorem Lev.ev_of_mem (l : Lev κ K n) {M : GL (Fin n) κ} (h : M ∈ l.H) : l.ev M = l.lam ⟨M, h⟩ := dif_pos h
 
 structure Lev.Split (e : GL (Fin r) κ →* GL (Fin n) κ) (lP lK : Lev κ K n) (l0 : Lev κ K r) : Prop where
@@ -379,6 +524,13 @@ structure Lev.Split (e : GL (Fin r) κ →* GL (Fin n) κ) (lP lK : Lev κ K n) 
   emb : ∀ a ∈ l0.H, e a ∈ lP.H ∧ lP.ev (e a) = l0.ev a
   sub : ∀ k ∈ lK.H, k ∈ lP.H ∧ lP.ev k = lK.ev k
 
+/- English proof (translation)
+Apply `Units.ext` to reduce the goal to its premises. Rewrite using `[blkDet_val, Units.val_one]`. Establish `: ((diagEmb κ h g : GL (Fin n) κ) : Matrix (Fin n) (Fin n) κ).toSquareBlock (fun i => coarse r bl i.val) (c + 1) = 1`. Use extensionality with `i j`. Establish `hi : ¬ i.1.val < r` using `fun hlt => by`.
+
+Use `i.2` as an intermediate fact. Rewrite `this` using `[coarse_of_lt hlt]`. Use linear arithmetic over natural numbers and integers. Rewrite using `[Matrix.toSquareBlock_def, Matrix.of_apply, diagEmb_val, diagMat_of_not_left _ _ hi]`. Simplify using `only [Matrix.one_apply, Subtype.ext_iff]`.
+
+Rewrite using `[this, Matrix.det_one]`.
+-/
 theorem blkDet_diagEmb_one (h : r ≤ n) (bl : List ℕ) (c : ℕ) (g : GL (Fin r) κ) :
     blkDet n κ (coarse r bl) (c + 1) ⟨diagEmb κ h g, diagEmb_mem_blockUT h bl g⟩ = 1 := by
   apply Units.ext
@@ -393,6 +545,9 @@ theorem blkDet_diagEmb_one (h : r ≤ n) (bl : List ℕ) (c : ℕ) (g : GL (Fin 
     simp only [Matrix.one_apply, Subtype.ext_iff]
   rw [this, Matrix.det_one]
 
+/- English proof (translation)
+Rewrite using `[detChar_apply]`. Apply `Finset.prod_eq_one` to reduce the goal to its premises. Introduce `s _`. Rewrite using `[blkDet_diagEmb_one, map_one]`.
+-/
 theorem detChar_diagEmb (h : r ≤ n) (bl : List ℕ) (χ : ℕ → κˣ →* Kˣ) (g : GL (Fin r) κ) :
     detChar χ n r bl ⟨diagEmb κ h g, diagEmb_mem_blockUT h bl g⟩ = 1 := by
   rw [detChar_apply]
@@ -400,6 +555,11 @@ theorem detChar_diagEmb (h : r ≤ n) (bl : List ℕ) (χ : ℕ → κˣ →* K�
   intro s _
   rw [blkDet_diagEmb_one, map_one]
 
+/- English proof (translation)
+Apply `Units.ext` to reduce the goal to its premises. Rewrite using `[blockZero_val]`. Use extensionality with `i j`. Use `show diagMat r n (g : Matrix (Fin r) (Fin r) κ) (Fin.castLE h i) (Fin.castLE h j) = _`. Rewrite using `[diagMat_of_lt _ (show (Fin.castLE h i).val < r from i.2) (show (Fin.castLE h j).val < r from j.2)]`.
+
+Both sides reduce to the same expression.
+-/
 theorem firstBlock_diagEmb_eq (h : r ≤ n) (bl : List ℕ) (g : GL (Fin r) κ) :
     blk0 n κ h bl ⟨diagEmb κ h g, diagEmb_mem_blockUT h bl g⟩ = g := by
   apply Units.ext
@@ -409,11 +569,31 @@ theorem firstBlock_diagEmb_eq (h : r ≤ n) (bl : List ℕ) (g : GL (Fin r) κ) 
   rw [diagMat_of_lt _ (show (Fin.castLE h i).val < r from i.2) (show (Fin.castLE h j).val < r from j.2)]
   rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem lamPar_apply (h : r ≤ n) (bl : List ℕ) {H₀ : Subgroup (GL (Fin r) κ)} (lam₀ : ↥H₀ →* Kˣ) (χ : ℕ → κˣ →* Kˣ)
     (M : GL (Fin n) κ) (hM : M ∈ HPar n κ h bl H₀) :
     lamPar h bl lam₀ χ ⟨M, hM⟩ = lam₀ ⟨blk0 n κ h bl ⟨M, HPar_le h bl H₀ hM⟩, (mem_HPar.mp hM).2⟩ *
       detChar χ n r bl ⟨M, HPar_le h bl H₀ hM⟩ := rfl
 
+/- English proof (translation)
+Establish `hM' : M ∈ HPar n κ h bl H₀` using `hM`. Take `⟨hB, h0⟩` from `mem_HPar.mp hM'`. Use `set a := blk0 n κ h bl ⟨M, hB⟩ with ha`. Establish `hkB : (diagEmb κ h a)⁻¹ * M ∈ blockUT n κ r bl` using `Subgroup.mul_mem _ (Subgroup.inv_mem _ (diagEmb_mem_blockUT h bl a)) hB`. Establish `hk : (diagEmb κ h a)⁻¹ * M ∈ HK n κ r bl`.
+
+Rewrite using `[HK_eq_HPar h bl, mem_HPar]`. Use `⟨hkB, ?_⟩` and prove the remaining obligations. Establish `e : (⟨(diagEmb κ h a)⁻¹ * M, hkB⟩ : ↥(blockUT n κ r bl)) = (⟨diagEmb κ h a, diagEmb_mem_blockUT h bl a⟩ : ↥(blockUT n κ r bl))⁻¹ * ⟨M, hB⟩` using `rfl`. Rewrite using `[e, map_mul, map_inv, firstBlock_diagEmb_eq, ← ha, inv_mul_cancel]`. Conclude with `Subgroup.mem_bot.mpr rfl`.
+
+Use `⟨a, h0, _, hk, (mul_inv_cancel_left _ _).symm, ?_⟩` and prove the remaining obligations. Rewrite using `[Lev.ev_of_mem _ hM, Lev.ev_of_mem (⟨H₀, lam₀⟩ : Lev κ K r) h0, Lev.ev_of_mem (⟨HK n κ r bl, lamK χ n r bl⟩ : Lev κ K n) hk]`. Use `show lamPar h bl lam₀ χ ⟨M, hM'⟩ = lam₀ ⟨a, h0⟩ * lamK χ n r bl ⟨_, hk⟩`. Rewrite using `[lamPar_apply]`. Use `congr 1`.
+
+Use `show detChar χ n r bl ⟨M, hB⟩ = detChar χ n r bl ⟨(diagEmb κ h a)⁻¹ * M, hkB⟩`. Establish `e : (⟨(diagEmb κ h a)⁻¹ * M, hkB⟩ : ↥(blockUT n κ r bl)) = (⟨diagEmb κ h a, diagEmb_mem_blockUT h bl a⟩ : ↥(blockUT n κ r bl))⁻¹ * ⟨M, hB⟩` using `rfl`. Rewrite using `[e, map_mul, map_inv, detChar_diagEmb, inv_one, one_mul]`. Use `emb a ha := by`. Establish `hm : diagEmb κ h a ∈ HPar n κ h bl H₀` using `mem_HPar.mpr ⟨diagEmb_mem_blockUT h bl a, by rw [firstBlock_diagEmb_eq]; exact ha⟩`.
+
+Use `⟨hm, ?_⟩` and prove the remaining obligations. Rewrite using `[Lev.ev_of_mem (⟨HPar n κ h bl H₀, lamPar h bl lam₀ χ⟩ : Lev κ K n) hm, Lev.ev_of_mem (⟨H₀, lam₀⟩ : Lev κ K r) ha]`. Use `show lamPar h bl lam₀ χ ⟨_, hm⟩ = lam₀ ⟨a, ha⟩`. Rewrite using `[lamPar_apply, detChar_diagEmb, mul_one]`. Use `congr 1`.
+
+Conclude with `Subtype.ext (firstBlock_diagEmb_eq h bl a)`. Use `sub k hk := by`. Establish `hk' : k ∈ HK n κ r bl` using `hk`. Establish `hb : k ∈ HPar n κ h bl ⊥` using `by rw [← HK_eq_HPar h bl]; exact hk'`. Take `⟨hB, h0⟩` from `mem_HPar.mp hb`.
+
+Establish `h1 : blk0 n κ h bl ⟨k, hB⟩ = 1` using `Subgroup.mem_bot.mp h0`. Establish `hm : k ∈ HPar n κ h bl H₀` using `mem_HPar.mpr ⟨hB, by rw [h1]; exact H₀.one_mem⟩`. Use `⟨hm, ?_⟩` and prove the remaining obligations. Rewrite using `[Lev.ev_of_mem (⟨HPar n κ h bl H₀, lamPar h bl lam₀ χ⟩ : Lev κ K n) hm, Lev.ev_of_mem (⟨HK n κ r bl, lamK χ n r bl⟩ : Lev κ K n) hk']`. Use `show lamPar h bl lam₀ χ ⟨_, hm⟩ = lamK χ n r bl ⟨k, hk'⟩`.
+
+Rewrite using `[lamPar_apply]`. Establish `e : (⟨blk0 n κ h bl ⟨k, HPar_le h bl H₀ hm⟩, (mem_HPar.mp hm).2⟩ : ↥H₀) = 1` using `Subtype.ext h1`. Rewrite using `[e, map_one, one_mul]`. Both sides reduce to the same expression.
+-/
 theorem HPar_split (h : r ≤ n) (bl : List ℕ) (H₀ : Subgroup (GL (Fin r) κ)) (lam₀ : ↥H₀ →* Kˣ) (χ : ℕ → κˣ →* Kˣ) :
     Lev.Split (diagEmb κ h) (⟨HPar n κ h bl H₀, lamPar h bl lam₀ χ⟩ : Lev κ K n) ⟨HK n κ r bl, lamK χ n r bl⟩
       ⟨H₀, lam₀⟩ where
@@ -465,6 +645,9 @@ theorem HPar_split (h : r ≤ n) (bl : List ℕ) (H₀ : Subgroup (GL (Fin r) κ
     rw [e, map_one, one_mul]
     rfl
 
+/- English proof (translation)
+Distinguish the cases in `h : M ∈ l.H`. Rewrite using `[Lev.ev_of_mem l h, Lev.ev_of_mem l.inv (show M ∈ l.inv.H from h)]`. Both sides reduce to the same expression. Unfold `Lev.ev`. Rewrite using `[dif_neg h, dif_neg (show M ∉ l.inv.H from h), inv_one]`.
+-/
 theorem Lev.inv_ev (l : Lev κ K n) (M : GL (Fin n) κ) : l.inv.ev M = (l.ev M)⁻¹ := by
   by_cases h : M ∈ l.H
   · rw [Lev.ev_of_mem l h, Lev.ev_of_mem l.inv (show M ∈ l.inv.H from h)]
@@ -472,6 +655,9 @@ theorem Lev.inv_ev (l : Lev κ K n) (M : GL (Fin n) κ) : l.inv.ev M = (l.ev M)�
   · unfold Lev.ev
     rw [dif_neg h, dif_neg (show M ∉ l.inv.H from h), inv_one]
 
+/- English proof (translation)
+Take `⟨a, ha, k, hk, e1, e2⟩` from `H.fac M hM`. Conclude with `⟨a, ha, k, hk, e1, by rw [Lev.inv_ev, Lev.inv_ev, Lev.inv_ev, e2, mul_inv]⟩`. Use `emb a ha := ⟨(H.emb a ha).1, by rw [Lev.inv_ev, Lev.inv_ev, (H.emb a ha).2]⟩`. Use `sub k hk := ⟨(H.sub k hk).1, by rw [Lev.inv_ev, Lev.inv_ev, (H.sub k hk).2]⟩`.
+-/
 theorem Lev.Split.inv {e : GL (Fin r) κ →* GL (Fin n) κ} {lP lK : Lev κ K n} {l0 : Lev κ K r}
     (H : Lev.Split e lP lK l0) : Lev.Split e lP.inv lK.inv l0.inv where
   fac M hM := by
@@ -486,11 +672,17 @@ section SplitFam
 
 variable {X : Fields} {n r : ℕ}
 
+/- English proof (translation)
+Rewrite using `[LevFam.chr_apply]`. Conclude with `Finset.prod_congr rfl fun w _ => (Lev.ev_of_mem _ _).symm`.
+-/
 theorem LevFam.chr_ev {SG : Finset (HeightOneSpectrum (𝓞 X.E))} (Λ : LevFam X.E X.K n SG) (h : ↥Λ.grp) :
     Λ.chr h = ∏ w, (Λ w).ev (h.1 w) := by
   rw [LevFam.chr_apply]
   exact Finset.prod_congr rfl fun w _ => (Lev.ev_of_mem _ _).symm
 
+/- English proof (translation)
+The claim follows from `h.2 w (Set.mem_univ w)`.
+-/
 theorem LevFam.mem_at {SG : Finset (HeightOneSpectrum (𝓞 X.E))} (Λ : LevFam X.E X.K n SG) (h : ↥Λ.grp) (w : SG) :
     h.1 w ∈ (Λ w).H := h.2 w (Set.mem_univ w)
 
@@ -507,6 +699,13 @@ open Classical in
 def inlSG (w : SG0) : uSG SG0 Q := ⟨w.1, Finset.mem_union_left _ w.2⟩
 
 open Classical in
+/- English proof (translation)
+Use `symm`. Apply `Fintype.prod_of_injective (inlSG (Q := Q))` to reduce the goal to its premises. Introduce `a b hab`. Conclude with `Subtype.ext (congrArg (fun w : uSG SG0 Q => w.1) hab)`. Introduce `w hw`.
+
+Rewrite using `[dif_neg]`. Introduce `hm`. Conclude with `hw ⟨⟨w.1, hm⟩, rfl⟩`. Introduce `w`. Rewrite using `[dif_pos (show (inlSG (Q := Q) w).1 ∈ SG0 from w.2)]`.
+
+Both sides reduce to the same expression.
+-/
 theorem prod_uSG {M : Type} [CommMonoid M] (f : SG0 → M) :
     (∏ w : uSG SG0 Q, if hw : w.1 ∈ SG0 then f ⟨w.1, hw⟩ else 1) = ∏ w : SG0, f w := by
   symm
@@ -523,6 +722,39 @@ theorem prod_uSG {M : Type} [CommMonoid M] (f : SG0 → M) :
 
 open Classical in
 
+/- English proof (translation)
+Establish `hx : ∀ w : SG0, x.1 (inlSG w) ∈ (TP w).H` using `fun w => by`. Use `(TP.glue B).mem_at x (inlSG w)` as an intermediate fact. Rewrite `this` using `[LevFam.glue_of_mem TP B (inlSG w) w.2]`. Conclude with `this`. Use `choose a ha k hk e1 e2 using fun w : SG0 => (H w).fac _ (hx w)`.
+
+Set `kk : GLG X.E n (uSG SG0 Q)` to `fun w => if hw : w.1 ∈ SG0 then k ⟨w.1, hw⟩ else x.1 w`. Establish `hkk : kk ∈ (TK.glue B).grp`. Introduce `w _`. Distinguish the cases in `hw : w.1 ∈ SG0`. Use `show kk w ∈ (TK.glue B w).H`.
+
+Rewrite using `[LevFam.glue_of_mem TK B w hw, show kk w = k ⟨w.1, hw⟩ from dif_pos hw]`. Conclude with `hk _`. Use `show kk w ∈ (TK.glue B w).H`. Rewrite using `[LevFam.glue_of_not TK B w hw, show kk w = x.1 w from dif_neg hw]`. Use `(TP.glue B).mem_at x w` as an intermediate fact.
+
+Rewrite `this` using `[LevFam.glue_of_not TP B w hw]`. Conclude with `this`. Establish `haa : a ∈ P.grp` using `fun w _ => ha w`. Use `⟨⟨a, haa⟩, ⟨kk, hkk⟩, ?_, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `w`.
+
+Distinguish the cases in `hw : w.1 ∈ SG0`. Use `show x.1 w = extGLG Q (diagonalEmbeddingProduct SG0 h a) w * kk w`. Rewrite using `[extGLG_of_mem _ w hw, show kk w = k ⟨w.1, hw⟩ from dif_pos hw]`. Conclude with `e1 ⟨w.1, hw⟩`. Use `show x.1 w = extGLG Q (diagonalEmbeddingProduct SG0 h a) w * kk w`.
+
+Rewrite using `[extGLG_of_not _ w hw, show kk w = x.1 w from dif_neg hw, one_mul]`. Establish `E1 : (TP.glue B).chr x = ∏ w, (TP.glue B w).ev (x.1 w)` using `LevFam.chr_ev _ x`. Establish `E2 : P.chr ⟨a, haa⟩ = ∏ w, (P w).ev (a w)` using `LevFam.chr_ev P ⟨a, haa⟩`. Establish `E3 : (TK.glue B).chr ⟨kk, hkk⟩ = ∏ w, (TK.glue B w).ev (kk w)` using `LevFam.chr_ev _ ⟨kk, hkk⟩`. Rewrite using `[E1, E2, E3, ← prod_uSG (Q := Q) fun w : SG0 => (P w).ev (a w), ← Finset.prod_mul_distrib]`.
+
+Use `Finset.prod_congr rfl fun w _ => ?_` and prove the remaining obligations. Distinguish the cases in `hw : w.1 ∈ SG0`. Establish `hkw : kk w = k ⟨w.1, hw⟩` using `dif_pos hw`. Rewrite using `[hkw, dif_pos hw, LevFam.glue_of_mem TP B w hw, LevFam.glue_of_mem TK B w hw]`. Conclude with `e2 ⟨w.1, hw⟩`.
+
+Establish `hkw : kk w = x.1 w` using `dif_neg hw`. Rewrite using `[hkw, dif_neg hw, LevFam.glue_of_not TP B w hw, LevFam.glue_of_not TK B w hw, one_mul]`. Use `emb a := by`. Establish `hm : ((extGLG Q).comp (diagonalEmbeddingProduct SG0 h)) a.1 ∈ (TP.glue B).grp`. Introduce `w _`.
+
+Use `show extGLG Q (diagonalEmbeddingProduct SG0 h a.1) w ∈ (TP.glue B w).H`. Distinguish the cases in `hw : w.1 ∈ SG0`. Rewrite using `[LevFam.glue_of_mem TP B w hw, extGLG_of_mem _ w hw]`. Conclude with `((H ⟨w.1, hw⟩).emb _ (P.mem_at a ⟨w.1, hw⟩)).1`. Rewrite using `[extGLG_of_not _ w hw]`.
+
+Conclude with `Subgroup.one_mem _`. Use `⟨hm, ?_⟩` and prove the remaining obligations. Establish `E1 : (TP.glue B).chr ⟨_, hm⟩ = ∏ w, (TP.glue B w).ev (extGLG Q (diagonalEmbeddingProduct SG0 h a.1) w)` using `LevFam.chr_ev _ ⟨_, hm⟩`. Rewrite using `[E1, LevFam.chr_ev P a, ← prod_uSG (Q := Q) fun w : SG0 => (P w).ev (a.1 w)]`. Use `Finset.prod_congr rfl fun w _ => ?_` and prove the remaining obligations.
+
+Distinguish the cases in `hw : w.1 ∈ SG0`. Rewrite using `[dif_pos hw, LevFam.glue_of_mem TP B w hw, extGLG_of_mem _ w hw]`. Conclude with `((H ⟨w.1, hw⟩).emb _ (P.mem_at a ⟨w.1, hw⟩)).2`. Rewrite using `[dif_neg hw, extGLG_of_not _ w hw, Lev.ev_of_mem _ (Subgroup.one_mem _)]`. Conclude with `map_one _`.
+
+Use `sub k := by`. Establish `hm : k.1 ∈ (TP.glue B).grp`. Introduce `w _`. Use `(TK.glue B).mem_at k w` as an intermediate fact. Use `show k.1 w ∈ (TP.glue B w).H`.
+
+Distinguish the cases in `hw : w.1 ∈ SG0`. Rewrite `this` using `[LevFam.glue_of_mem TK B w hw]`. Rewrite using `[LevFam.glue_of_mem TP B w hw]`. Conclude with `((H ⟨w.1, hw⟩).sub _ this).1`. Rewrite `this` using `[LevFam.glue_of_not TK B w hw]`.
+
+Rewrite using `[LevFam.glue_of_not TP B w hw]`. Conclude with `this`. Use `⟨hm, ?_⟩` and prove the remaining obligations. Establish `E1 : (TP.glue B).chr ⟨_, hm⟩ = ∏ w, (TP.glue B w).ev (k.1 w)` using `LevFam.chr_ev _ ⟨_, hm⟩`. Rewrite using `[E1, LevFam.chr_ev _ k]`.
+
+Use `Finset.prod_congr rfl fun w _ => ?_` and prove the remaining obligations. Use `(TK.glue B).mem_at k w` as an intermediate fact. Distinguish the cases in `hw : w.1 ∈ SG0`. Rewrite `this` using `[LevFam.glue_of_mem TK B w hw]`. Rewrite using `[LevFam.glue_of_mem TP B w hw, LevFam.glue_of_mem TK B w hw]`.
+
+Conclude with `((H ⟨w.1, hw⟩).sub _ this).2`. Rewrite using `[LevFam.glue_of_not TP B w hw, LevFam.glue_of_not TK B w hw]`.
+-/
 theorem LevFam.glue_split (h : r ≤ n) (TP TK : LevFam X.E X.K n SG0) (P : LevFam X.E X.K r SG0)
     (B : LevFam X.E X.K n Q) (H : ∀ w : SG0, Lev.Split (diagEmb _ h) (TP w) (TK w) (P w)) :
     LevFam.Split ((extGLG Q).comp (diagonalEmbeddingProduct SG0 h)) (TP.glue B) (TK.glue B) P where
@@ -605,11 +837,19 @@ theorem LevFam.glue_split (h : r ≤ n) (TP TK : LevFam X.E X.K n SG0) (P : LevF
       exact ((H ⟨w.1, hw⟩).sub _ this).2
     · rw [LevFam.glue_of_not TP B w hw, LevFam.glue_of_not TK B w hw]
 
+/- English proof (translation)
+Rewrite using `[LevFam.chr_ev, LevFam.chr_ev, ← Finset.prod_inv_distrib]`. Conclude with `Finset.prod_congr rfl fun w _ => Lev.inv_ev _ _`.
+-/
 theorem LevFam.inv_chr {SG : Finset (HeightOneSpectrum (𝓞 X.E))} (Λ : LevFam X.E X.K n SG) (h : ↥Λ.grp) :
     Λ.inv.chr (⟨h.1, h.2⟩ : ↥Λ.inv.grp) = (Λ.chr h)⁻¹ := by
   rw [LevFam.chr_ev, LevFam.chr_ev, ← Finset.prod_inv_distrib]
   exact Finset.prod_congr rfl fun w _ => Lev.inv_ev _ _
 
+/- English proof (translation)
+Take `⟨a, k, e1, e2⟩` from `H.fac ⟨h.1, h.2⟩`. Use `⟨⟨a.1, a.2⟩, ⟨k.1, k.2⟩, e1, ?_⟩` and prove the remaining obligations. Rewrite using `[ΛP.inv_chr ⟨h.1, h.2⟩, Λ0.inv_chr a, ΛK.inv_chr k, e2, mul_inv]`. Use `emb a := by`. Take `⟨hm, e⟩` from `H.emb ⟨a.1, a.2⟩`.
+
+Conclude with `⟨hm, by rw [ΛP.inv_chr ⟨_, hm⟩, Λ0.inv_chr ⟨a.1, a.2⟩, e]⟩`. Use `sub k := by`. Take `⟨hm, e⟩` from `H.sub ⟨k.1, k.2⟩`. Conclude with `⟨hm, by rw [ΛP.inv_chr ⟨_, hm⟩, ΛK.inv_chr ⟨k.1, k.2⟩, e]⟩`.
+-/
 theorem LevFam.Split.inv {SG : Finset (HeightOneSpectrum (𝓞 X.E))} {ι : GLG X.E r SG0 →* GLG X.E n SG}
     {ΛP ΛK : LevFam X.E X.K n SG} {Λ0 : LevFam X.E X.K r SG0} (H : LevFam.Split ι ΛP ΛK Λ0) :
     LevFam.Split ι ΛP.inv ΛK.inv Λ0.inv where
@@ -624,6 +864,17 @@ theorem LevFam.Split.inv {SG : Finset (HeightOneSpectrum (𝓞 X.E))} {ι : GLG 
     obtain ⟨hm, e⟩ := H.sub ⟨k.1, k.2⟩
     exact ⟨hm, by rw [ΛP.inv_chr ⟨_, hm⟩, ΛK.inv_chr ⟨k.1, k.2⟩, e]⟩
 
+/- English proof (translation)
+Rewrite using `[mem_formGSD_EqFun, mem_formGSD_EqFun]`. Prove the components needed by the constructor for the conclusion. Introduce `hφ`. Use `⟨fun γ k d => ?_, fun a => ?_⟩` and prove the remaining obligations. Take `⟨hm, e⟩` from `H.sub k`.
+
+Rewrite using `[← e]`. Conclude with `hφ γ ⟨k.1, hm⟩ d`. Use function extensionality and compare the values at `d`. Take `⟨hm, e⟩` from `H.emb a⁻¹`. Establish `h1` using `hφ 1 ⟨_, hm⟩ d`.
+
+Rewrite `h1` using `[e, map_one, map_inv]`. Rewrite using `[trF_apply, Pi.smul_apply, ← map_inv]`. Conclude with `h1`. Introduce and unpack `⟨h1, h2⟩ γ h d`. Take `⟨a, k, e1, e2⟩` from `H.fac h`.
+
+Establish `h3` using `congrFun (h2 a⁻¹) ((γ, (k.1 : GLG X.E n SG)) • d)`. Rewrite `h3` using `[trF_apply, Pi.smul_apply, h1 γ k d, smul_smul, Prod.mk_mul_mk, one_mul, map_inv, inv_inv]`. Establish `e3 : (ι ((a⁻¹ : ↥Λ0.grp) : GLG X.E r SG0))⁻¹ = ι a.1`. Rewrite using `[Subgroup.coe_inv, map_inv, inv_inv]`. Rewrite `h3` using `[e3]`.
+
+Rewrite using `[e1, h3, e2, smul_smul, Units.val_mul]`.
+-/
 theorem mem_EqFun_split {ST SG : Finset (HeightOneSpectrum (𝓞 X.E))} (C : CoefPk X n (DecoSet X.E n ST SG))
     {ι : GLG X.E r SG0 →* GLG X.E n SG} {ΛP ΛK : LevFam X.E X.K n SG} {Λ0 : LevFam X.E X.K r SG0}
     (H : LevFam.Split ι ΛP ΛK Λ0) (φ : DecoSet X.E n ST SG → C.V) :
@@ -659,9 +910,19 @@ variable {X : Fields} {Pr : Primes X} {R : Ranks} (W : Wts X Pr.Word R) (Ch : Ch
   (sel : HeightOneSpectrum (𝓞 X.F) → HeightOneSpectrum (𝓞 X.E)) {S : Set ℕ} (mu : Tup X.F X.E X.K S)
   (P : LevFam X.E X.K R.r Pr.vGs)
 
+/- English proof (translation)
+The claim follows from `LevFam.glue_split (r_le_X' R) _ _ P _ fun w => HPar_split (r_le_X' R) _ (P w).H (P w).lam (chiAt Ch w)`.
+-/
 theorem rowTy_split : LevFam.Split (unipotentGroupBlockEmbedding Pr sel mu (r_le_X' R)) (rowTy Ch sel mu P) (rowTyKK Ch sel mu) P :=
   LevFam.glue_split (r_le_X' R) _ _ P _ fun w => HPar_split (r_le_X' R) _ (P w).H (P w).lam (chiAt Ch w)
 
+/- English proof (translation)
+Use `(mem_EqFun_split (rowVal W (rowSG Pr sel mu)) (rowTy_split Ch sel mu P).inv φ).trans ?_` and prove the remaining obligations. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨h1, h2⟩`. Use `⟨h1, fun a => Subtype.ext ?_⟩` and prove the remaining obligations. Use `h2 ⟨a.1, a.2⟩` as an intermediate fact.
+
+Rewrite `this` using `[P.inv_chr a, inv_inv]`. Conclude with `this`. Introduce and unpack `⟨h1, h2⟩`. Use `⟨h1, fun a => ?_⟩` and prove the remaining obligations. Use `congrArg Subtype.val (h2 ⟨a.1, a.2⟩)` as an intermediate fact.
+
+Rewrite using `[P.inv_chr ⟨a.1, a.2⟩, inv_inv]`. Conclude with `this`.
+-/
 theorem mem_MtildeV_iff (φ : DecoSet X.E (R.N R.m - 1) ∅ (rowSG Pr sel mu) → VV X.K W.sgTrue) :
     φ ∈ (mtildeGSD W Ch sel mu P).EqFun ↔ ∃ hφ : φ ∈ (mtildeKGSD W Ch sel mu).EqFun,
       ∀ a : ↥P.grp, g0HatRepEqFunX W Ch sel mu a.1 ⟨φ, hφ⟩ = ((P.chr a : X.Kˣ) : X.K) • (⟨φ, hφ⟩ : (mtildeKGSD W Ch sel mu).EqFun) := by
@@ -686,12 +947,18 @@ variable {X : Fields} {Pr : Primes X} {R : Ranks} (W : Wts X Pr.Word R) (Ch : Ch
   (sel : HeightOneSpectrum (𝓞 X.F) → HeightOneSpectrum (𝓞 X.E)) {S : Set ℕ} (mu : Tup X.F X.E X.K S)
   (P : LevFam X.E X.K R.r Pr.vGs)
 
+/- English proof (translation)
+Unfold `lamK`. Rewrite using `[detChar_inv]`. Both sides reduce to the same expression.
+-/
 theorem lamK_inv {κ K : Type} [CommRing κ] [Field K] {n : ℕ} (χ : ℕ → κˣ →* Kˣ) (r : ℕ) (bl : List ℕ) :
     lamK (fun s => (χ s)⁻¹) n r bl = (lamK χ n r bl)⁻¹ := by
   unfold lamK
   rw [detChar_inv]
   rfl
 
+/- English proof (translation)
+Establish `e : mtTyK Ch j w = (⟨HK R.nV _ R.r [R.t], lamK (fun _ => chiAt Ch w (j - 1)) R.nV R.r [R.t]⟩ : Lev _ X.K R.nV).inv` using `congrArg (Lev.mk (HK R.nV (𝓞 X.E ⧸ w.1.asIdeal) R.r [R.t])) (lamK_inv (fun _ => chiAt Ch w (j - 1)) R.r [R.t])`. Rewrite using `[e]`. Conclude with `(HPar_split (r_le_nV R) [R.t] (P w).H (P w).lam fun _ => chiAt Ch w (j - 1)).inv`.
+-/
 theorem mtTyG_split (j : ℕ) (w : {w // w ∈ Pr.vGs}) :
     Lev.Split (diagEmb _ (r_le_nV R)) (mtTyG Ch P j w) (mtTyK Ch j w) (P w).inv := by
   have e : mtTyK Ch j w =
@@ -700,10 +967,20 @@ theorem mtTyG_split (j : ℕ) (w : {w // w ∈ Pr.vGs}) :
   rw [e]
   exact (HPar_split (r_le_nV R) [R.t] (P w).H (P w).lam fun _ => chiAt Ch w (j - 1)).inv
 
+/- English proof (translation)
+The claim follows from `LevFam.glue_split (r_le_nV R) _ _ P.inv _ fun w => mtTyG_split Ch P j w`.
+-/
 theorem mtTy_split (j : ℕ) :
     LevFam.Split (unipotentGroupBlockEmbedding Pr sel mu (r_le_nV R)) (mtTy Ch sel mu P j) (mtTyKK Ch sel mu j) P.inv :=
   LevFam.glue_split (r_le_nV R) _ _ P.inv _ fun w => mtTyG_split Ch P j w
 
+/- English proof (translation)
+Use `(mem_EqFun_split (mtVal W j (rowSG Pr sel mu)) (mtTy_split Ch sel mu P j).inv φ).trans ?_` and prove the remaining obligations. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨h1, h2⟩`. Use `⟨h1, fun a => Subtype.ext ?_⟩` and prove the remaining obligations. Use `h2 ⟨a.1, a.2⟩` as an intermediate fact.
+
+Rewrite `this` using `[P.inv.inv_chr ⟨a.1, a.2⟩, P.inv_chr a, inv_inv]`. Conclude with `this`. Introduce and unpack `⟨h1, h2⟩`. Use `⟨h1, fun a => ?_⟩` and prove the remaining obligations. Use `congrArg Subtype.val (h2 ⟨a.1, a.2⟩)` as an intermediate fact.
+
+Rewrite using `[P.inv.inv_chr ⟨a.1, a.2⟩, P.inv_chr ⟨a.1, a.2⟩, inv_inv]`. Conclude with `this`.
+-/
 theorem mem_MtV_iff (j : ℕ) (φ : DecoSet X.E R.nV ∅ (rowSG Pr sel mu) → VV X.K (W.lamV j)) :
     φ ∈ (mtGSD W Ch sel mu P j).EqFun ↔ ∃ hφ : φ ∈ (mtKGSD W Ch sel mu j).EqFun,
       ∀ a : ↥P.grp, unipotentRightActionFormsV W Ch sel mu j a.1 ⟨φ, hφ⟩ =

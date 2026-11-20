@@ -26,6 +26,9 @@ abbrev qpStr (n' m : ℕ) (n : Fin (m + 1) → ℕ) : QP n' m n ⟶ Sp ℤ := pu
 
 abbrev qpSnd (n' m : ℕ) (n : Fin (m + 1) → ℕ) : QP n' m n ⟶ MP ℤ m n := pullback.snd _ _
 
+/- English proof (translation)
+The claim follows from `pullback.condition.symm`.
+-/
 theorem qpSnd_str (n' m : ℕ) (n : Fin (m + 1) → ℕ) : qpSnd n' m n ≫ mpStr ℤ m n = qpStr n' m n :=
   pullback.condition.symm
 

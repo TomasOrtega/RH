@@ -5,6 +5,11 @@ open NumberField ReciprocityTheory.ChartRestriction.G.I2
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Rewrite using `[norm_prod]`. Combine the equalities or inequalities in the displayed calculation. Use `Finset.prod_le_prod (fun _ _ => norm_nonneg _) fun k _ => ?_` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[norm_mul]`.
+
+Conclude with `mul_le_mul (hc k t) (hz k t) (norm_nonneg _) hC`. Use `_ = M * (C * B) := by simp`. Use `_ = _ := by simp`.
+-/
 theorem norm_prod_sum_mul_le_pow {N M : ℕ} (c z : Fin N → Fin M → ℂ) {C B : ℝ}
     (hC : 0 ≤ C) (hc : ∀ k t, ‖c k t‖ ≤ C) (hz : ∀ k t, ‖z k t‖ ≤ B) :
     ‖∏ k, ∑ t, c k t * z k t‖ ≤ (M * (C * B)) ^ N := by
@@ -18,6 +23,11 @@ theorem norm_prod_sum_mul_le_pow {N M : ℕ} (c z : Fin N → Fin M → ℂ) {C 
           _ = M * (C * B) := by simp
     _ = _ := by simp
 
+/- English proof (translation)
+Establish `h1 : κ * φ = (A * κ) * (φ / A)` using `by field_simp`. Establish `h2 : Real.log (φ / A) ≤ φ / A - 1` using `Real.log_le_sub_one_of_pos (by positivity)`. Rewrite using `[h1, Real.log_mul (by positivity) (by positivity)]`. Establish `h3 : A * Real.log (φ / A) ≤ A * (φ / A - 1)` using `mul_le_mul_of_nonneg_left h2 hA.le`. Establish `h4 : A * (φ / A - 1) = φ - A` using `by field_simp`.
+
+Use the polynomial consequences of the given equalities and inequalities.
+-/
 theorem mul_log_mul_le_add_mul_log {A κ φ : ℝ} (hA : 0 < A) (hκ : 0 < κ) (hφ : 0 < φ) :
     A * Real.log (κ * φ) ≤ φ + A * Real.log (A * κ) := by
   have h1 : κ * φ = (A * κ) * (φ / A) := by field_simp
@@ -27,6 +37,43 @@ theorem mul_log_mul_le_add_mul_log {A κ φ : ℝ} (hA : 0 < A) (hκ : 0 < κ) (
   have h4 : A * (φ / A - 1) = φ - A := by field_simp
   nlinarith
 
+/- English proof (translation)
+Introduce `hT E _ _ _ X DF P r1 hr1 s hs hs0 i Nc M hNc hM c z a hc ha hz`. Establish `hf : 1 ≤ PT.f E`. Break down `Nat.eq_zero_or_pos (PT.f E) with h | h` into its components or cases. Use `P.hfr` as an intermediate fact. Rewrite `this` using `[h]`.
+
+Use linear arithmetic over natural numbers and integers. Conclude with `h`. Establish `hr : 1 ≤ X.r`. Break down `Nat.eq_zero_or_pos X.r with h | h` into its components or cases. Use `P.hfr` as an intermediate fact.
+
+Rewrite `this` using `[h]`. Use linear arithmetic over natural numbers and integers. Conclude with `h`. Establish `hdN : 2 ≤ dstar (E` using `E) P.m := by`. Use `P.hm1` as an intermediate fact.
+
+Unfold `dstar`. Use polynomial arithmetic with `[Nat.mul_le_mul hf this]`. Establish `hd : (2 : ℝ) ≤ dstar (E` using `E) P.m := by exact_mod_cast hdN`. Establish `hrR : (1 : ℝ) ≤ X.r` using `by exact_mod_cast hr`. Establish `hr1R : (2 : ℝ) ≤ r1` using `by exact_mod_cast hr1`.
+
+Establish `hNcR : (1 : ℝ) ≤ Nc` using `by exact_mod_cast hNc`. Establish `hR : (1 : ℝ) ≤ (r1 : ℝ) ^ 4` using `one_le_pow₀ (by linarith)`. Establish `hka : 1 ≤ P.ka0`. Establish `h1 : (1 : ℝ) ≤ RR (E` using `E) := one_le_pow₀ (by linarith [P.hrd])`. Establish `h2 : (1 : ℝ) ≤ (dstar (E` using `E) P.m : ℝ) ^ 2 := one_le_pow₀ (by linarith)`.
+
+Unfold `Par.ka0`. Use the polynomial consequences of the given equalities and inequalities. Establish `hph : 0 ≤ P.ph`. Unfold `Par.ph PT.ph`. Use `split_ifs`.
+
+Check the signs of the components of the expression. Conclude with `le_rfl`. Establish `hp : X.r * P.p1 ≤ P.p3`. Establish `h2 : 0 ≤ P.p2`. Unfold `Par.p2`.
+
+Use `Real.log_nonneg ?_` and prove the remaining obligations. Establish `: (1 : ℝ) ≤ (3 * (dstar (E` using `E) P.m : ℝ)) ^ dstar (E := E) P.m := one_le_pow₀ (by linarith)`. Combine the linear equalities and inequalities to obtain the conclusion. Unfold `Par.p3`. Conclude with `mul_le_mul_of_nonneg_left (by linarith) (by linarith)`.
+
+Use `set d : ℝ := (dstar (E := E) P.m : ℝ) with hdd`. Use `set R : ℝ := (r1 : ℝ) ^ 4 with hRd`. Use `set A : ℝ := R * X.r * d / 2 with hAd`. Establish `hA : 1 ≤ A`. Establish `: 1 ≤ R * X.r` using `one_le_mul_of_one_le_of_one_le hR hrR`.
+
+Rewrite using `[hAd]`. Use the polynomial consequences of the given equalities and inequalities. Use `set e : ℝ := P.p3 + (A * Real.log (A * P.ka0) - P.ph) / (2 * R) with he`. Establish `hzB : ∀ k t, ‖z k t‖ ≤ Real.exp e`. Introduce `k t`.
+
+Use `(hz k t).trans ?_` and prove the remaining obligations. Take `⟨h1, h2⟩` from `hT E X DF P r1 hr1 (a k t) (ha k t).1 (ha k t).2 s hs hs0`. Break down `hph.eq_or_lt with h | h` into its components or cases. Use `(h2 h.symm).trans (Real.exp_le_exp.2 ?_)` and prove the remaining obligations. Establish `h3 : 0 ≤ Real.log (A * P.ka0)` using `Real.log_nonneg (one_le_mul_of_one_le_of_one_le hA hka)`.
+
+Establish `h4 : 0 ≤ (A * Real.log (A * P.ka0) - P.ph) / (2 * R)`. Rewrite using `[← h, sub_zero]`. Check the signs of the components of the expression. Combine the linear equalities and inequalities to obtain the conclusion. Use `(h1 h).trans ?_` and prove the remaining obligations.
+
+Rewrite using `[Real.rpow_def_of_pos (by positivity), ← Real.exp_add, ← Real.exp_add]`. Use `Real.exp_le_exp.2 ?_` and prove the remaining obligations. Establish `h3` using `mul_log_mul_le_add_mul_log (A := A) (κ := P.ka0) (φ := P.ph) (by linarith) (by linarith) h`. Establish `h4 : Real.log (P.ka0 * P.ph) * (X.r * d / 4) + -(Real.pi * P.ph / R) = (A * Real.log (P.ka0 * P.ph) - 2 * Real.pi * P.ph) / (2 * R)`. Rewrite using `[hAd]`.
+
+Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Establish `h5 : (A * Real.log (P.ka0 * P.ph) - 2 * Real.pi * P.ph) / (2 * R) ≤ (A * Real.log (A * P.ka0) - P.ph) / (2 * R)`. Use `div_le_div_of_nonneg_right ?_ (by linarith)` and prove the remaining obligations. Use polynomial arithmetic with `[Real.pi_gt_three]`.
+
+Rewrite using `[he, add_assoc, h4]`. Combine the linear equalities and inequalities to obtain the conclusion. Use `(norm_prod_sum_mul_le_pow c z (by linarith) hc hzB).trans ?_` and prove the remaining obligations. Establish `hMR : (M : ℝ) ≤ Real.exp (2 * PT.f E * (X.r : ℝ) ^ 2 * Real.log r1)`. Establish `h1 : (M : ℝ) ≤ (r1 : ℝ) ^ (2 * PT.f E * X.r ^ 2)` using `by exact_mod_cast hM`.
+
+Use `h1.trans (le_of_eq ?_)` and prove the remaining obligations. Establish `h2 : 2 * (PT.f E : ℝ) * (X.r : ℝ) ^ 2 = ((2 * PT.f E * X.r ^ 2 : ℕ) : ℝ)` using `by push_cast; ring`. Rewrite using `[h2, Real.exp_nat_mul, Real.exp_log (by linarith)]`. Establish `hF : (M : ℝ) * (Nc * Real.exp e) ≤ Real.exp ((Real.log Nc + 2 * PT.f E * (X.r : ℝ) ^ 2 * Real.log r1) + e)`. Rewrite using `[Real.exp_add _ e, Real.exp_add (Real.log Nc), Real.exp_log (by linarith)]`.
+
+Combine the equalities or inequalities in the displayed calculation. Use `(pow_le_pow_left₀ (by positivity) hF _).trans (le_of_eq ?_)` and prove the remaining obligations. Rewrite using `[← Real.exp_nat_mul]`. Use `congr 1`. Establish `hR0 : R ≠ 0` using `by linarith`.
+
+Use `push_cast`. Rewrite using `[← hRd, he]`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem norm_prod_sum_theta_le_exp :
     TStatement → ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (X : PT E) (DF : ℕ) (P : Par X DF) (r1 : ℕ), 2 ≤ r1 → ∀ s ∈ X.Sec 1 1, s ≠ 0 → ∀ (i Nc M : ℕ), 1 ≤ Nc → M ≤ r1 ^ (2 * PT.f E * X.r ^ 2) → ∀ (c z : Fin (2 * r1 ^ 4 * i) → Fin M → ℂ) (a : Fin (2 * r1 ^ 4 * i) → Fin M → Fin X.r → Vsp X.dim), (∀ k t, ‖c k t‖ ≤ Nc) → (∀ k t, (∀ j, ((r1 : ℂ) ^ 2) • a k t j ∈ X.L) ∧ ∀ x ∈ X.L, ∃ c : Fin X.r → 𝓞 E, ∃ y ∈ X.L, x = ∑ j, act (c j) (((r1 : ℂ) ^ 2) • a k t j) + (r1 : ℂ) • y) → (∀ k t, ‖z k t‖ ≤ ∏ j, Real.sqrt (X.ptN2 1 s fun _ => a k t j) / Real.sqrt (X.l2 1 s)) → ‖∏ k, ∑ t, c k t * z k t‖ ≤ Real.exp (-(i * (P.ph - (2 * (r1 : ℝ) ^ 4 * (P.p3 + (Real.log Nc + 2 * PT.f E * (X.r : ℝ) ^ 2 * Real.log r1)) + ((r1 : ℝ) ^ 4 * X.r * dstar (E := E) P.m / 2) * Real.log (((r1 : ℝ) ^ 4 * X.r * dstar (E := E) P.m / 2) * P.ka0))))) := by
   intro hT E _ _ _ X DF P r1 hr1 s hs hs0 i Nc M hNc hM c z a hc ha hz

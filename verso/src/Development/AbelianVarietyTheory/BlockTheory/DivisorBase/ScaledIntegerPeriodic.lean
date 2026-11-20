@@ -14,6 +14,9 @@ variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchim
 def scaledInt (ϖ : kˣ) (a : ℕ) (m : ℤ) : Set (Matrix (Fin a) (Fin a) k) :=
   {Z | ∀ i j, valuation k (Z i j) ≤ valuation k ((ϖ ^ m : kˣ) : k)}
 
+/- English proof (translation)
+Rewrite using `[stdLat, smul_diagLat, mem_matLat]`. Simplify using `only [mem_diagLat, Pi.one_apply, mul_one]`. Both sides reduce to the same expression.
+-/
 theorem mem_scaledInt_iff (ϖ : kˣ) (a : ℕ) (m : ℤ) (Z : Matrix (Fin a) (Fin a) k) :
     Z ∈ scaledInt ϖ a m ↔ Z ∈ matLat (Fin a) (ϖ ^ m • stdLat k (Fin a)) := by
   rw [stdLat, smul_diagLat, mem_matLat]
@@ -23,6 +26,9 @@ theorem mem_scaledInt_iff (ϖ : kˣ) (a : ℕ) (m : ℤ) (Z : Matrix (Fin a) (Fi
 def IsPeriodic (ϖ : kˣ) {a : ℕ} (M : ℤ) (φ : Matrix (Fin a) (Fin a) k → ℂ) : Prop :=
   ∀ X, ∀ Z ∈ scaledInt ϖ a M, φ (X + Z) = φ X
 
+/- English proof (translation)
+Introduce `X Z hZ`. Use `(hasDepth_indicator hϖ 0 (stdLat k (Fin a))).2 X Z ?_` and prove the remaining obligations. Simplify using `using (mem_scaledInt_iff ϖ a 0 Z).1 hZ`.
+-/
 example (ϖ : kˣ) (hϖ : IsUnif ϖ) (a : ℕ) :
     IsPeriodic ϖ 0 ((matLat (Fin a) (stdLat k (Fin a)) : Set (Matrix (Fin a) (Fin a) k)).indicator 1) := by
   intro X Z hZ
@@ -44,6 +50,9 @@ def ShellLemma : Prop :=
         ∀ n : Fin a → ℤ, ¬ (∀ i, -(M' : ℤ) ≤ n i) → ∀ z : ℂ, shell μ ϖ ν z φ n = 0) ∧
       {n : {n : Fin a → ℤ // Antitone n} | ∃ z : ℂ, shell μ ϖ ν z φ n.1 ≠ 0}.Finite
 
+/- English proof (translation)
+Take `⟨ϖ, hϖ⟩` from `exists_isUnif (k := k)`. Take `⟨ν, h1, h2, -⟩` from `exists_ramified hϖ`. Conclude with `⟨ϖ, ν, 2, hϖ, h1, h2⟩`.
+-/
 example (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] :
     ∃ (ϖ : kˣ) (ν : kˣ →* ℂˣ) (e : ℕ), IsUnif ϖ ∧ ¬ IsUnram ν ∧ CondLE ϖ e ν := by
   obtain ⟨ϖ, hϖ⟩ := exists_isUnif (k := k)

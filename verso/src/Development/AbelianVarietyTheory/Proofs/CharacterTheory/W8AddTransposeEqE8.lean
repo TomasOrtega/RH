@@ -47,18 +47,45 @@ def E8roots : Matrix (Fin 8) (Fin 8) ℤ :=
       -1,  0,  0,  0,  0,  0,  0,  2;
        1,  0,  0,  0,  0,  0,  0,  0]
 
+/- English proof (translation)
+Evaluate the decidable proposition.
+-/
 theorem w8_add_transpose_eq_e8 : W8 + W8ᵀ = E8 := by decide
 
+/- English proof (translation)
+The claim follows from `CartanMatrix.E₈_transpose`.
+-/
 theorem e8_transpose : E8ᵀ = E8 := CartanMatrix.E₈_transpose
 
+/- English proof (translation)
+The claim follows from `CartanMatrix.E₈_det`.
+-/
 theorem e8_det_eq_one : E8.det = 1 := CartanMatrix.E₈_det
 
+/- English proof (translation)
+Evaluate the decidable proposition.
+-/
 theorem e8inv_mul_e8 : E8inv * E8 = 1 := by decide
 
+/- English proof (translation)
+Evaluate the decidable proposition.
+-/
 theorem e8_mul_e8inv : E8 * E8inv = 1 := by decide
 
+/- English proof (translation)
+Evaluate the decidable proposition.
+-/
 theorem E8roots_transpose_mul_self : E8rootsᵀ * E8roots = (4 : ℤ) • E8 := by decide
 
+/- English proof (translation)
+Use `set f : ℤ →+* ℝ := Int.castRingHom ℝ with hf`. Express the relevant statement in the definitionally equal form `(E8.map f).PosDef`. Establish `h : E8.map f = ((1 / 2 : ℝ) • E8roots.map f)ᴴ * ((1 / 2 : ℝ) • E8roots.map f)`. Establish `h4 : (E8roots.map f)ᵀ * E8roots.map f = (4 : ℝ) • E8.map f`. Rewrite using `[← Matrix.transpose_map, ← Matrix.map_mul, E8roots_transpose_mul_self]`.
+
+Use extensionality with `i j`. Rewrite using `[Matrix.map_apply, Matrix.smul_apply, Matrix.smul_apply, Matrix.map_apply, smul_eq_mul, smul_eq_mul, map_mul]`. Simplify using `[hf]`. Rewrite using `[Matrix.conjTranspose_eq_transpose_of_trivial, Matrix.transpose_smul, Matrix.smul_mul, Matrix.mul_smul, h4, smul_smul, smul_smul]`. Evaluate the numerical expressions.
+
+Establish `hs : (E8.map f).PosSemidef`. Rewrite using `[h]`. Conclude with `Matrix.posSemidef_conjTranspose_mul_self _`. Rewrite using `[hs.posDef_iff_det_ne_zero]`. Establish `: (E8.map f).det = f E8.det` using `(RingHom.map_det f E8).symm`.
+
+Rewrite using `[this, e8_det_eq_one, map_one]`. Conclude with `one_ne_zero`.
+-/
 theorem e8_posDef : (E8.map (fun x : ℤ => (x : ℝ))).PosDef := by
   set f : ℤ →+* ℝ := Int.castRingHom ℝ with hf
   change (E8.map f).PosDef

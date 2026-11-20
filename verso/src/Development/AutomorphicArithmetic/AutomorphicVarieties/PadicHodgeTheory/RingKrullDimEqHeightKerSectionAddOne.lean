@@ -4,6 +4,11 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.PadicHodgeTheory.E
 import Development.AbelianVarietyTheory.Proofs.UnitaryExistence.IsIntegrallyClosedPowerSeries
 open IsLocalRing UpperTheory.V.Alg
 
+/- English proof (translation)
+Proceed by induction on `n with`. Consider the case `zero => exact IsIntegrallyClosed.of_equiv (MvPowerSeries.isEmptyEquiv (Fin 0) R).toRingEquiv.symm`. Consider the case `succ n ih`. Establish `: IsDomain (MvPowerSeries (Fin n) R)` using `NoZeroDivisors.to_isDomain _`. Use `GlobalTheory.PowerSeriesNormal.isIntegrallyClosed_powerSeries (MvPowerSeries (Fin n) R)` as an intermediate fact.
+
+Conclude with `IsIntegrallyClosed.of_equiv (MvPowerSeries.finSuccEquiv R n).toRingEquiv.symm`.
+-/
 private theorem normal_mv (R : Type) [CommRing R] [IsDomain R] [IsNoetherianRing R]
     [IsIntegrallyClosed R] (n : ℕ) : IsIntegrallyClosed (MvPowerSeries (Fin n) R) := by
   induction n with
@@ -13,6 +18,11 @@ private theorem normal_mv (R : Type) [CommRing R] [IsDomain R] [IsNoetherianRing
     have := GlobalTheory.PowerSeriesNormal.isIntegrallyClosed_powerSeries (MvPowerSeries (Fin n) R)
     exact IsIntegrallyClosed.of_equiv (MvPowerSeries.finSuccEquiv R n).toRingEquiv.symm
 
+/- English proof (translation)
+Set `x : MvPowerSeries (Fin n) O →ₐ[O] O` to `{ (MvPowerSeries.constantCoeff : MvPowerSeries (Fin n) O →+* O) with commutes' := fun a => by simp [MvPowerSeries.algebraMap_apply] }`. Set `φ : MvPowerSeries (Fin n) O →ₐ[O] MvPowerSeries (Fin n) (FractionRing O)` to `{ (MvPowerSeries.map (algebraMap O (FractionRing O))) with commutes' := fun a => by simp [MvPowerSeries.algebraMap_apply] }`. Establish `hφ : ∀ a, φ a = MvPowerSeries.map (algebraMap O (FractionRing O)) a` using `fun _ => rfl`. Use `UpperTheory.ringKrullDim_mvPowerSeries_fin_field O (FractionRing O) (MvPowerSeries (Fin n) O) x n φ MvPowerSeries.X 1 one_ne_zero (fun a => ?_) (fun i => ?_)` and prove the remaining obligations. Rewrite using `[hφ, MvPowerSeries.constantCoeff_map]`.
+
+Both sides reduce to the same expression. Rewrite using `[hφ]`. Simplify using the standard rewrite rules.
+-/
 private theorem ht_const (O : Type) [CommRing O] [IsDomain O] [IsNoetherianRing O] (n : ℕ) :
     (n : ℕ∞) ≤ (RingHom.ker (MvPowerSeries.constantCoeff : MvPowerSeries (Fin n) O →+* O)).height := by
   let x : MvPowerSeries (Fin n) O →ₐ[O] O :=
@@ -27,6 +37,21 @@ private theorem ht_const (O : Type) [CommRing O] [IsDomain O] [IsNoetherianRing 
   · rw [hφ, MvPowerSeries.constantCoeff_map]; rfl
   · rw [hφ]; simp
 
+/- English proof (translation)
+Introduce `O S _ _ _ _ _ _ _ hS x`. Establish `hn : IsNoetherianRing S` using `hS.toIsNoetherian`. Establish `hl : IsLocalHom (algebraMap O S)` using `IsCO.isLocalHom`. Take `⟨d, F, hinj, hfin, hd, hF⟩` from `UpperTheory.exists_finite_injective_mvPowerSeries_compatible_section O S x`. Use `haveI : (RingHom.ker x).IsPrime := RingHom.ker_isPrime _`.
+
+Use `le_antisymm ?_ ?_` and prove the remaining obligations. Set `A` to `MvPowerSeries (Fin d) O`. Use `letI : Algebra A S := F.toRingHom.toAlgebra`. Use `haveI : Module.Finite A S := hfin`. Use `haveI : FaithfulSMul A S := (faithfulSMul_iff_algebraMap_injective A S).2 hinj`.
+
+Use `haveI : IsIntegrallyClosed A := normal_mv O d`. Set `p : Ideal A` to `RingHom.ker (MvPowerSeries.constantCoeff : MvPowerSeries (Fin d) O →+* O)`. Use `haveI : p.IsPrime := RingHom.ker_isPrime _`. Use `haveI : (RingHom.ker x).LiesOver p := ⟨by`. Use extensionality with `a`.
+
+Rewrite using `[Ideal.under_def, Ideal.mem_comap, RingHom.mem_ker, RingHom.mem_ker, ← hF]`. Use the proof step `rfl⟩`. Establish `h1` using `Ideal.height_eq_height_add_of_liesOver_of_hasGoingDown p (RingHom.ker x)`. Establish `h2 : (d : ℕ∞) ≤ (RingHom.ker x).height`. Rewrite using `[h1]`.
+
+Conclude with `(ht_const O d).trans le_self_add`. Rewrite using `[hd]`. Establish `h3 : ((d + 1 : ℕ) : ℕ∞) ≤ (RingHom.ker x).height + 1` using `by push_cast; gcongr`. Conclude with `h3` after adjusting the coercions. Take `⟨π, hπ⟩` from `IsDiscreteValuationRing.exists_irreducible O`.
+
+Establish `hlt : RingHom.ker x < maximalIdeal S`. Use `lt_of_le_of_ne (le_maximalIdeal Ideal.IsPrime.ne_top') fun h => ?_` and prove the remaining obligations. Establish `h1 : algebraMap O S π ∈ maximalIdeal S` using `fun h => hπ.not_isUnit (IsLocalHom.map_nonunit π h)`. Rewrite `h1` using `[← h, RingHom.mem_ker, AlgHom.commutes]`. Conclude with `hπ.ne_zero h1`.
+
+Rewrite using `[← IsLocalRing.maximalIdeal_height_eq_ringKrullDim]`. Conclude with `Ideal.height_add_one_le_of_lt_of_isPrime hlt` after adjusting the coercions.
+-/
 theorem UpperTheory.ringKrullDim_eq_height_ker_section_add_one :
     ∀ (O S : Type) [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] [IsAdicComplete (maximalIdeal O) O] [CommRing S] [IsDomain S] [Algebra O S] [IsCO O S] (x : S →ₐ[O] O), ringKrullDim S = ((RingHom.ker x).height : WithBot ℕ∞) + 1 := by
   intro O S _ _ _ _ _ _ _ hS x

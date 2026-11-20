@@ -20,6 +20,13 @@ namespace GlobalTheory.RecDict
 
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
+/- English proof (translation)
+Introduce `h`. Take `⟨v, hv, h0⟩` from `Matrix.exists_mulVec_eq_zero_iff.2 h`. Apply `hv` to reduce the goal to its premises. Establish `hy : S.frame.equivFun.symm v = 0`. Apply `S.nondeg.2` to reduce the goal to its premises.
+
+Introduce `x`. Establish `hi : ∀ i, S.hT (S.frame i) (S.frame.equivFun.symm v) = 0`. Introduce `i`. Use `congrFun h0 i` as an intermediate fact. Rewrite using `[Module.Basis.equivFun_symm_apply, map_sum]`.
+
+Simplify `this` using `[Matrix.mulVec, dotProduct, Formalism.BasicNotions.HSpace.gram, mul_comm]`. Rewrite using `[← S.frame.sum_repr x, map_sum, LinearMap.sum_apply]`. Use `Finset.sum_eq_zero fun i _ => ?_` and prove the remaining obligations. Rewrite using `[LinearMap.map_smulₛₗ, LinearMap.smul_apply, hi, smul_zero]`. Conclude with `S.frame.equivFun.symm.map_eq_zero_iff.1 hy`.
+-/
 theorem det_gram_ne_zero {E : Type} [Field E] [NumberField E] [StarRing E] (S : Formalism.BasicNotions.HSpace E) :
     S.gram.det ≠ 0 := by
   intro h
@@ -38,6 +45,13 @@ theorem det_gram_ne_zero {E : Type} [Field E] [NumberField E] [StarRing E] (S : 
     rw [LinearMap.map_smulₛₗ, LinearMap.smul_apply, hi, smul_zero]
   exact S.frame.equivFun.symm.map_eq_zero_iff.1 hy
 
+/- English proof (translation)
+Establish `h : Formalism.UG.cT (sigR R σ) g.1 * JR R J * g.1 = JR R J` using `hg`. Establish `h2` using `congrArg Matrix.det h`. Establish `hu : IsUnit (JR (F` using `F) R J).det := by`. Establish `: (JR (F` using `F) R J).det = inclR (F := F) R J.det := ((inclR (F := F) R).map_det J).symm`. Rewrite using `[this]`.
+
+Conclude with `(IsUnit.mk0 _ hJ).map _`. Establish `h3 : (Formalism.UG.cT (sigR R σ) g.1).det = sigR R σ g.1.det`. Rewrite using `[Formalism.UG.cT, Matrix.det_transpose]`. Conclude with `((sigR R σ).map_det g.1).symm`. Rewrite `h2` using `[Matrix.det_mul, Matrix.det_mul, h3]`.
+
+Apply `hu.mul_left_cancel` to reduce the goal to its premises. Take the linear combination `h2`.
+-/
 theorem det_mul_sigR_det {F E : Type} [Field F] [Field E] [Algebra F E] (R : Type) [CommRing R] [Algebra F R]
     (σ : E →ₐ[F] E) {M : ℕ} (J : Matrix (Fin M) (Fin M) E) (hJ : J.det ≠ 0) (g : GL (Fin M) (R ⊗[F] E))
     (hg : g ∈ HR R σ J) : g.1.det * sigR R σ g.1.det = 1 := by
@@ -54,6 +68,11 @@ theorem det_mul_sigR_det {F E : Type} [Field F] [Field E] [Algebra F E] (R : Typ
   apply hu.mul_left_cancel
   linear_combination h2
 
+/- English proof (translation)
+Establish `h` using `det_mul_sigR_det (AF D.host.F) D.sp.cm.sig V.gram (det_gram_ne_zero V) (matHom V k) k.2`. Set `φ` to `(Algebra.TensorProduct.map (sndA D.host.F) (AlgHom.id D.host.F D.host.E)).toRingHom`. Establish `e : (finHom V k).1.det = φ (matHom V k).1.det` using `(φ.map_det _).symm`. Establish `c : ∀ x, sigR (Af D.host.F) D.sp.cm.sig (φ x) = φ (sigR (AF D.host.F) D.sp.cm.sig x)`. Introduce `x`.
+
+Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul a b => simp [φ, sigR]`. Consider the case `add x y hx hy => simp only [map_add, hx, hy]`. Rewrite using `[e, c, ← map_mul, h, map_one]`.
+-/
 theorem det_finHom_norm {D : D7} (V : HSp D) (k : GA D V) :
     (finHom V k).1.det * sigR (Af D.host.F) D.sp.cm.sig (finHom V k).1.det = 1 := by
   have h := det_mul_sigR_det (AF D.host.F) D.sp.cm.sig V.gram (det_gram_ne_zero V) (matHom V k) k.2
@@ -67,6 +86,15 @@ theorem det_finHom_norm {D : D7} (V : HSp D) (k : GA D V) :
     | add x y hx hy => simp only [map_add, hx, hy]
   rw [e, c, ← map_mul, h, map_one]
 
+/- English proof (translation)
+Set `L : Submodule (𝓞 D.host.E) (Fin V.rank → D.host.E)` to `V.L0.map (V.frame.equivFun.toLinearMap.restrictScalars (𝓞 D.host.E))`. Establish `hL : latHat V = GlobalTheory.AdLat.hat D.host.F (L : Set (Fin V.rank → D.host.E))`. Unfold `Formalism.L2.Pj.latHat GlobalTheory.AdLat.hat`. Use `congr 1`. Use extensionality with `z`.
+
+Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨a, ha, x, hx, rfl⟩`. Conclude with `⟨a, ha, _, ⟨x, hx, rfl⟩, rfl⟩`. Introduce and unpack `⟨a, ha, _, ⟨x, hx, rfl⟩, rfl⟩`. Conclude with `⟨a, ha, x, hx, rfl⟩`.
+
+Establish `hfg : L.FG` using `V.standardTuple_isLattice.fg.map _`. Establish `hsp : Submodule.span D.host.E (L : Set (Fin V.rank → D.host.E)) = ⊤`. Establish `: (L : Set (Fin V.rank → D.host.E)) = V.frame.equivFun.toLinearMap '' (V.L0 : Set V.V)` using `rfl`. Rewrite using `[this, Submodule.span_image, V.standardTuple_isLattice.span_eq_top, Submodule.map_top, LinearEquiv.range]`. Set `c : D.host.E ≃ₐ[D.host.F] D.host.E` to `AlgEquiv.ofBijective D.sp.cm.sig (D.sp.cm.sig.bijective)`.
+
+Rewrite `hk`, the goal using `[hL]`. Rewrite using `[map_inv]`. Conclude with `GlobalTheory.AdLat.inv_mulVec_mem_hat _ _ _ L (finHom V k) c hfg hsp hk (det_finHom_norm V k)`.
+-/
 theorem finHom_inv_mulVec_mem {D : D7} (V : HSp D) (k : GA D V)
     (hk : ∀ z ∈ latHat V, (finHom V k).1.mulVec z ∈ latHat V) :
     ∀ z ∈ latHat V, (finHom V k⁻¹).1.mulVec z ∈ latHat V := by
@@ -91,6 +119,21 @@ theorem finHom_inv_mulVec_mem {D : D7} (V : HSp D) (k : GA D V)
   rw [map_inv]
   exact GlobalTheory.AdLat.inv_mulVec_mem_hat _ _ _ L (finHom V k) c hfg hsp hk (det_finHom_norm V k)
 
+/- English proof (translation)
+Establish `hin : ∀ k : G, (∀ z ∈ Λ, ∃ y ∈ Λ, (f k).1.mulVec z - z = N • y) → ∀ z ∈ Λ, (f k).1.mulVec z ∈ Λ`. Introduce `k hk z hz`. Take `⟨y, hy, e⟩` from `hk z hz`. Rewrite using `[sub_eq_iff_eq_add.1 e]`. Conclude with `add_mem (nsmul_mem hy N) hz`.
+
+Establish `hmul : ∀ (a b : G) z, (f (a * b)).1.mulVec z = (f a).1.mulVec ((f b).1.mulVec z)`. Introduce `a b z`. Rewrite using `[map_mul, Units.val_mul, Matrix.mulVec_mulVec]`. Establish `hone : ∀ z, (f 1).1.mulVec z = z`. Introduce `z`.
+
+Rewrite using `[map_one, Units.val_one, Matrix.one_mulVec]`. Use `⟨{ carrier := {k | k ∈ H ∧ ∀ z ∈ Λ, ∃ y ∈ Λ, (f k).1.mulVec z - z = N • y} mul_mem' := ?_ one_mem' := ?_ inv_mem' := ?_ }, fun k => Iff.rfl, ?_⟩` and prove the remaining obligations. Introduce and unpack `a b ⟨ha, ha'⟩ ⟨hb, hb'⟩`. Use `⟨mul_mem ha hb, fun z hz => ?_⟩` and prove the remaining obligations. Take `⟨y, hy, e⟩` from `hb' z hz`.
+
+Take `⟨y', hy', e'⟩` from `ha' _ (hin b hb' z hz)`. Use `⟨y' + y, add_mem hy' hy, ?_⟩` and prove the remaining obligations. Rewrite using `[hmul, nsmul_add, ← e, ← e']`. Normalize the expressions using the abelian group laws. Conclude with `⟨one_mem _, fun z _ => ⟨0, zero_mem _, by rw [hone, sub_self, nsmul_zero]⟩⟩`.
+
+Introduce and unpack `a ⟨ha, ha'⟩`. Use `⟨inv_mem ha, fun z hz => ?_⟩` and prove the remaining obligations. Take `⟨y, hy, e⟩` from `ha' _ (hinv a (hin a ha') z hz)`. Use `⟨-y, neg_mem hy, ?_⟩` and prove the remaining obligations. Rewrite `e` using `[← hmul, mul_inv_cancel, hone]`.
+
+Rewrite using `[neg_nsmul, ← e, neg_sub]`. Introduce and unpack `k ⟨-, hk⟩`. Apply `Set.Subset.antisymm` to reduce the goal to its premises. Introduce and unpack `_ ⟨z, hz, rfl⟩`. Conclude with `hin k hk z hz`.
+
+Introduce `z hz`. Conclude with `⟨_, hinv k (hin k hk) z hz, (hmul k k⁻¹ z).symm.trans (by rw [mul_inv_cancel, hone])⟩`.
+-/
 theorem exists_level_subgroup {G A : Type} [Group G] [CommRing A] {n : ℕ} (f : G →* GL (Fin n) A) (H : Subgroup G)
     (Λ : AddSubgroup (Fin n → A)) (N : ℕ)
     (hinv : ∀ k : G, (∀ z ∈ Λ, (f k).1.mulVec z ∈ Λ) → ∀ z ∈ Λ, (f k⁻¹).1.mulVec z ∈ Λ) :
@@ -133,6 +176,9 @@ theorem exists_level_subgroup {G A : Type} [Group G] [CommRing A] {n : ℕ} (f :
     · intro z hz
       exact ⟨_, hinv k (hin k hk) z hz, (hmul k k⁻¹ z).symm.trans (by rw [mul_inv_cancel, hone])⟩
 
+/- English proof (translation)
+Introduce `_ V N` and use `exists_level_subgroup (finHom V) (GfC V) (latHat V) N (finHom_inv_mulVec_mem V)`.
+-/
 theorem exists_isLevelK : ∀ (D : D7) (V : HSp D) (N : ℕ), ∃ Kf : Subgroup (GA D V), IsLevelK V N Kf ∧ ∀ k ∈ Kf, (finHom V k).1.mulVec '' (latHat V : Set _) = latHat V :=
   fun _ V N => exists_level_subgroup (finHom V) (GfC V) (latHat V) N (finHom_inv_mulVec_mem V)
 

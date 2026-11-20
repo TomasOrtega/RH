@@ -18,5 +18,8 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 open GlobalTheory.Core.Rk.IP
 
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.Proof.Corev.convergent_both_orientations | exact GlobalTheory.Proof.Corev.convergent_both_orientations | (intros; apply GlobalTheory.Proof.Corev.convergent_both_orientations <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.rallisInnerProduct_convergent_of_weilSiegelFormula : GlobalTheory.Published.CuspRapidDecay → GlobalTheory.Published.WeilSiegelFormulaUnitary → GlobalTheory.Published.SiegelEisensteinContinuation → ∀ D : D7, GlobalTheory.IndefiniteRowSideFullHecke.SphericalVolumeLift.Convergent D := by
   first | exact @GlobalTheory.Proof.Corev.convergent_both_orientations | exact GlobalTheory.Proof.Corev.convergent_both_orientations | (intros; apply GlobalTheory.Proof.Corev.convergent_both_orientations <;> assumption)

@@ -16,37 +16,88 @@ import Development.EtaleCohomology.DivisorCycles.SemisPf
 import Development.EtaleCohomology.DivisorCycles.StructPf
 
 namespace LateralTheory.Fin.Struct
+/- English proof (translation)
+Apply `LateralTheory.DivDb.Chain_of` to reduce the goal to its premises.
+-/
 theorem etale_divisibility_chain_of_key : LateralTheory.DivDb.Chain := by
   apply LateralTheory.DivDb.Chain_of
+/- English proof (translation)
+Apply the tactic sequence `apply LateralTheory.DivDb.TangentFieldExtension.TanField_of <;> first | exact etale_divisibility_chain_of_key`.
+-/
 theorem etale_tangent_field_extension_of_key : LateralTheory.DivDb.TanField := by
   apply LateralTheory.DivDb.TangentFieldExtension.TanField_of <;> first | exact etale_divisibility_chain_of_key
+/- English proof (translation)
+Apply the tactic sequence `apply LateralTheory.DivDb.ExpVan_of <;> first | exact etale_tangent_field_extension_of_key`.
+-/
 theorem etale_exponent_vanishing_of_key : LateralTheory.DivDb.ExpVan := by
   apply LateralTheory.DivDb.ExpVan_of <;> first | exact etale_tangent_field_extension_of_key
+/- English proof (translation)
+Apply `LateralTheory.DivDb.DegPoly₂.DegPoly_of` to reduce the goal to its premises.
+-/
 theorem etale_degree_polynomial_bound : LateralTheory.DivDb.DegPoly := by
   apply LateralTheory.DivDb.DegPoly₂.DegPoly_of
+/- English proof (translation)
+Apply the tactic sequence `apply LateralTheory.DivDb.TangentDegree.TanDeg_of <;> first | exact etale_exponent_vanishing_of_key | exact etale_degree_polynomial_bound`.
+-/
 theorem etale_tangent_degree_bound_of_key : LateralTheory.DivDb.TanDeg := by
   apply LateralTheory.DivDb.TangentDegree.TanDeg_of <;> first | exact etale_exponent_vanishing_of_key | exact etale_degree_polynomial_bound
+/- English proof (translation)
+Apply `LateralTheory.DivDb.Proj_of` to reduce the goal to its premises.
+-/
 theorem etale_projection_system_of_structure : LateralTheory.DivDb.Proj := by
   apply LateralTheory.DivDb.Proj_of
+/- English proof (translation)
+Apply the tactic sequence `apply LateralTheory.DivDb.TanLie_of <;> first | exact etale_tangent_field_extension_of_key`.
+-/
 theorem etale_tangent_lie_algebra_of_structure : LateralTheory.DivDb.TanLie := by
   apply LateralTheory.DivDb.TanLie_of <;> first | exact etale_tangent_field_extension_of_key
+/- English proof (translation)
+Apply `LateralTheory.DivDb.Grade_of` to reduce the goal to its premises.
+-/
 theorem etale_cyclic_grading_of_structure : LateralTheory.DivDb.Grade := by
   apply LateralTheory.DivDb.Grade_of
+/- English proof (translation)
+Apply `LateralTheory.DivDb.CycSpec_qzkPf.CycSpec_of` to reduce the goal to its premises.
+-/
 theorem etale_cycle_spectrum_of_structure : LateralTheory.DivDb.CycleCountPf.CycSpec := by
   apply LateralTheory.DivDb.CycSpec_qzkPf.CycSpec_of
+/- English proof (translation)
+Apply `LateralTheory.DivDb.ScalarFixedPointsUnderAeval.FixScal_of` to reduce the goal to its premises.
+-/
 theorem etale_fixed_cycle_scalar_of_structure : LateralTheory.DivDb.CycleCountPf.FixScal := by
   apply LateralTheory.DivDb.ScalarFixedPointsUnderAeval.FixScal_of
+/- English proof (translation)
+Apply the tactic sequence `apply LateralTheory.DivDb.CycleCountPf.CycleCount_of <;> first | exact etale_cycle_spectrum_of_structure | exact etale_fixed_cycle_scalar_of_structure`.
+-/
 theorem etale_cycle_count_eigenvalues_of_key : LateralTheory.DivDb.CycleCount := by
   apply LateralTheory.DivDb.CycleCountPf.CycleCount_of <;> first | exact etale_cycle_spectrum_of_structure | exact etale_fixed_cycle_scalar_of_structure
+/- English proof (translation)
+Apply the tactic sequence `apply LateralTheory.DivDb.DiagScalar_of <;> first | exact etale_cycle_count_eigenvalues_of_key`.
+-/
 theorem etale_diagonal_scalar_of_structure : LateralTheory.DivDb.DiagScalar := by
   apply LateralTheory.DivDb.DiagScalar_of <;> first | exact etale_cycle_count_eigenvalues_of_key
+/- English proof (translation)
+Apply `LateralTheory.DivDb.AlgStruct₂.AlgStruct_of` to reduce the goal to its premises.
+-/
 theorem etale_algebra_decomposition_of_structure : LateralTheory.DivDb.AlgStruct := by
   apply LateralTheory.DivDb.AlgStruct₂.AlgStruct_of
+/- English proof (translation)
+Apply the tactic sequence `apply LateralTheory.DivDb.EnvStab_of <;> first | exact etale_divisibility_chain_of_key`.
+-/
 theorem etale_envelope_stabilizer_of_structure : LateralTheory.DivDb.EnvStab := by
   apply LateralTheory.DivDb.EnvStab_of <;> first | exact etale_divisibility_chain_of_key
+/- English proof (translation)
+Apply `LateralTheory.DivDb.SemisPf.Semis_of` to reduce the goal to its premises.
+-/
 theorem etale_semisimplicity_instance : LateralTheory.DivDb.Semis := by
   apply LateralTheory.DivDb.SemisPf.Semis_of
+/- English proof (translation)
+Apply the tactic sequence `apply LateralTheory.DivDb.StructPf.Struct_of <;> first | exact etale_tangent_degree_bound_of_key | exact etale_projection_system_of_structure | exact etale_tangent_lie_algebra_of_structure | exact etale_cyclic_grading_of_structure | exact etale_diagonal_scalar_of_structure | exac …`.
+-/
 theorem etale_algebra_structure_theorem_of_components : LateralTheory.DivDb.Struct := by
   apply LateralTheory.DivDb.StructPf.Struct_of <;> first | exact etale_tangent_degree_bound_of_key | exact etale_projection_system_of_structure | exact etale_tangent_lie_algebra_of_structure | exact etale_cyclic_grading_of_structure | exact etale_diagonal_scalar_of_structure | exact etale_algebra_decomposition_of_structure | exact etale_envelope_stabilizer_of_structure | exact etale_semisimplicity_instance
+/- English proof (translation)
+The claim follows from `etale_algebra_structure_theorem_of_components`.
+-/
 theorem intersectionNumber_baseChange : LateralTheory.DivDb.Struct := etale_algebra_structure_theorem_of_components
 end LateralTheory.Fin.Struct

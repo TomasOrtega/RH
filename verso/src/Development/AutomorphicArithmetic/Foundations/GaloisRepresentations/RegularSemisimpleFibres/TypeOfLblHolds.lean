@@ -78,14 +78,31 @@ import Mathlib
 
 namespace UpperTheory.Gal.InertialTypesAlt
 
+/- English proof (translation)
+The claim follows from `GlobalTheory.T.shintani_lift_kills_product_of_cusp_forms`.
+-/
 theorem killsAll_holds : KillsAll := GlobalTheory.T.shintani_lift_kills_product_of_cusp_forms
 
+/- English proof (translation)
+The claim follows from `GlobalTheory.T.shintaniLift_harishChandraInduction_eq_twisted`.
+-/
 theorem liftHc_holds : LiftHc := GlobalTheory.T.shintaniLift_harishChandraInduction_eq_twisted
 
+/- English proof (translation)
+The claim follows from `GlobalTheory.T.twistedHarishChandra_isotypic_part`.
+-/
 theorem killsHc_holds : KillsHc := GlobalTheory.T.twistedHarishChandra_isotypic_part
 
+/- English proof (translation)
+Introduce `F _ _ θ` and use `(GlobalTheory.T.harishChandraProductCuspidalGL_list_properties F θ).2.1`.
+-/
 theorem jAppend_holds : JAppend := fun F _ _ θ => (GlobalTheory.T.harishChandraProductCuspidalGL_list_properties F θ).2.1
 
+/- English proof (translation)
+Introduce `F F' _ _ _ _ s hs t δ`. Use `haveI : Finite F := Finite.of_injective _ (algebraMap F F').injective`. Use `haveI : Fintype F := Fintype.ofFinite F`. Use `GlobalTheory.T.every_element_is_norm F F' s (fun τ => ?_) t δ` and prove the remaining obligations. Establish `e : s = FiniteField.frobeniusAlgEquivOfAlgebraic F F'`.
+
+Use extensionality with `z`. Rewrite using `[hs z, Nat.card_eq_fintype_card]`. Both sides reduce to the same expression. Take `⟨⟨i, _⟩, hi⟩` from `(FiniteField.bijective_frobeniusAlgEquivOfAlgebraic_pow F F').2 τ`. Conclude with `⟨(i : ℤ), by rw [e]; simpa using hi⟩`.
+-/
 theorem normEx_holds : NormEx := by
   intro F F' _ _ _ _ s hs t δ
   haveI : Finite F := Finite.of_injective _ (algebraMap F F').injective
@@ -96,48 +113,96 @@ theorem normEx_holds : NormEx := by
   obtain ⟨⟨i, _⟩, hi⟩ := (FiniteField.bijective_frobeniusAlgEquivOfAlgebraic_pow F F').2 τ
   exact ⟨(i : ℤ), by rw [e]; simpa using hi⟩
 
+/- English proof (translation)
+The claim follows from `frobL frobTwo resCl parCons`.
+-/
 theorem frobL_holds : FrobL := frobL frobTwo resCl parCons
 
+/- English proof (translation)
+The claim follows from `lblIso (jdIso cuspIso)`.
+-/
 theorem lblIso_holds : LblIso := lblIso (jdIso cuspIso)
 
+/- English proof (translation)
+The claim follows from `leTop liftOk liftBlocks (leRank liftOk)`.
+-/
 theorem leTop_holds : LeTop := leTop liftOk liftBlocks (leRank liftOk)
 
+/- English proof (translation)
+The claim follows from `baseQ cardRes`.
+-/
 theorem baseQ_holds : BaseQ := baseQ cardRes
 
+/- English proof (translation)
+The claim follows from `jdChar hcChar`.
+-/
 theorem jdChar_holds : JDChar := jdChar hcChar
 
+/- English proof (translation)
+The claim follows from `typeOfLbl meetsIff frobL_holds jdEq`.
+-/
 theorem typeOfLbl_holds : TypeOfLbl := typeOfLbl meetsIff frobL_holds jdEq
 
+/- English proof (translation)
+The claim follows from `lblOf meetsIff frobL_holds jdEq cuspChar tensTr cuspIrr tensFix (subqMap finSec UpperTheory.Gal.TypesAndIwahori.paraFactor) suppStd`.
+-/
 theorem lblOf_holds : LblOf :=
   lblOf meetsIff frobL_holds jdEq cuspChar tensTr cuspIrr tensFix (subqMap finSec UpperTheory.Gal.TypesAndIwahori.paraFactor) suppStd
 
+/- English proof (translation)
+The claim follows from `killsTrue (killsNil killsAll_holds) liftHc_holds killsHc_holds normEx_holds liftOk jdEq jdChar_holds liftDet`.
+-/
 theorem killsTrue_holds : KillsOn fun _ => True :=
   killsTrue (killsNil killsAll_holds) liftHc_holds killsHc_holds normEx_holds liftOk jdEq jdChar_holds liftDet
 
+/- English proof (translation)
+The claim follows from `lblOn (baseCase resEmbCompat lblIso_holds) liftsFix placeEx resEmbEx unrOfIne P₀ h₁ (stepSplit stableOf resEmbCompat lblIso_holds P₀) (stepInert hT stableOf resEmbCompat (resDeg cardRes) liftOk jdEq P₀ h₂)`.
+-/
 theorem lblOn_of (hT : FinTrace) (P₀ : Lbl → Prop) (h₁ : ∀ a l, P₀ a → P₀ (a.lift l)) (h₂ : KillsOn P₀) : LblOn P₀ :=
   lblOn (baseCase resEmbCompat lblIso_holds) liftsFix placeEx resEmbEx unrOfIne P₀ h₁
     (stepSplit stableOf resEmbCompat lblIso_holds P₀)
     (stepInert hT stableOf resEmbCompat (resDeg cardRes) liftOk jdEq P₀ h₂)
 
+/- English proof (translation)
+The claim follows from `lblOn_of hT _ (fun _ _ _ => trivial) killsTrue_holds`.
+-/
 theorem lblTrue_of (hT : FinTrace) : LblOn fun _ => True := lblOn_of hT _ (fun _ _ _ => trivial) killsTrue_holds
 
+/- English proof (translation)
+The claim follows from `suppAny (lblOn_of hT _ (fun a l h => by simp only [Lbl.lift, h, List.map_nil]) (killsNil killsAll_holds)) lblOf_holds typeOfLbl_holds UpperTheory.Gal.TypesAndIwahori.suppOfType_holds UpperTheory.Gal.TypesAndIwahori.blockCount tameChars leTop_holds polTop polBot resEmbEx (unifTowe …`.
+-/
 theorem suppAny_of (hT : FinTrace) : SuppAny :=
   suppAny (lblOn_of hT _ (fun a l h => by simp only [Lbl.lift, h, List.map_nil]) (killsNil killsAll_holds)) lblOf_holds
     typeOfLbl_holds UpperTheory.Gal.TypesAndIwahori.suppOfType_holds UpperTheory.Gal.TypesAndIwahori.blockCount tameChars leTop_holds polTop polBot resEmbEx
     (unifTower liftsFix placeEx unrOfIne) baseQ_holds cardRes artRead (cuspIne tameRead typeChar nameOf baseQ_holds) suppIne
 
+/- English proof (translation)
+The claim follows from `lblMixed lblOf_holds group1 cuspFrob (inertOf typeChar baseQ_holds) unlFull (jdPair jAppend_holds hcOne (hcPair hcChar hcOne) (detPair frobL_holds jdEq) jdChar_holds) jdChar_holds (lblFull meetsIff frobL_holds jdEq tensTr avgMap (indMap UpperTheory.Gal.TypesAndIwahori.indSupp Upp …`.
+-/
 theorem lblMixed_holds : LblMixed :=
   lblMixed lblOf_holds group1 cuspFrob (inertOf typeChar baseQ_holds) unlFull
     (jdPair jAppend_holds hcOne (hcPair hcChar hcOne) (detPair frobL_holds jdEq) jdChar_holds) jdChar_holds
     (lblFull meetsIff frobL_holds jdEq tensTr avgMap (indMap UpperTheory.Gal.TypesAndIwahori.indSupp UpperTheory.Gal.TypesAndIwahori.paraFactor) tensInc)
 
+/- English proof (translation)
+The claim follows from `mixType (lblTrue_of hT) lblMixed_holds sepOf leTop_holds polTop typeOfLbl_holds resEmbEx baseQ_holds cardRes`.
+-/
 theorem mixType_of (hT : FinTrace) : MixType :=
   mixType (lblTrue_of hT) lblMixed_holds sepOf leTop_holds polTop typeOfLbl_holds resEmbEx baseQ_holds cardRes
 
+/- English proof (translation)
+The claim follows from `suppAny_of (L.finTrace_of_matching h)`.
+-/
 theorem suppAny_holds (h : GlobalTheory.DZA.InflMatching) : SuppAny := suppAny_of (L.finTrace_of_matching h)
 
+/- English proof (translation)
+The claim follows from `mixType_of (L.finTrace_of_matching h)`.
+-/
 theorem mixType_holds (h : GlobalTheory.DZA.InflMatching) : MixType := mixType_of (L.finTrace_of_matching h)
 
+/- English proof (translation)
+The claim follows from `suppBC_of_mix (suppAny_holds h) (mixUnlinked (mixType_holds h))`.
+-/
 theorem suppBC_holds (h : GlobalTheory.DZA.InflMatching) : SuppBC := suppBC_of_mix (suppAny_holds h) (mixUnlinked (mixType_holds h))
 
 end UpperTheory.Gal.InertialTypesAlt

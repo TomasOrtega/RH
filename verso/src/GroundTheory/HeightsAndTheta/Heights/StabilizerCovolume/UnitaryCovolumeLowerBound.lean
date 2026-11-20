@@ -19,6 +19,25 @@ def UnitaryCovolumeLowerBound.Statement : Prop :=
     [∀ τ, Module Ω (E τ)] {Em : Type} [Field Em] [NumberField Em] [IsCMField Em] (D : FullerData II Ψ K ι Ω E Em),
     ULamOne.Statement D
 
+/- English proof (translation)
+Break down `Nat.eq_zero_or_pos f with rfl | hf` into its components or cases. Simplify using `only [mul_zero, zero_mul, pow_zero, mul_one, Nat.cast_zero] at hmin hc ⊢`. Substitute `hc` using the available equality. Combine the linear relations using `[Real.log_nonneg hmin]`. Establish `hF : (0 : ℝ) < f` using `by exact_mod_cast hf`.
+
+Establish `hR : (0 : ℝ) < ρ` using `by exact_mod_cast hρ`. Establish `hJ : (ρ : ℝ) ≤ j'` using `by exact_mod_cast hρj`. Establish `hrd0 : 0 < rd` using `by linarith`. Establish `hm : (0 : ℝ) < 2 * f * ρ` using `by positivity`. Establish `hA : 0 < (lam / Real.sqrt (2 * f * ρ)) ^ (2 * f * ρ)` using `by positivity`.
+
+Establish `hpow : 0 < rd ^ (f * ρ)` using `by positivity`. Establish `hnz : 0 < nz`. Assume the negation of the conclusion as `hn`. Use `push Not at hn`. Use `mul_le_mul_of_nonneg_right hn hpow.le` as an intermediate fact.
+
+Rewrite `this` using `[zero_mul, ← hc]`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hlog` using `Real.log_le_log hA (hmin.trans_eq hc)`. Rewrite `hlog` using `[Real.log_pow, Real.log_div hlam.ne' (Real.sqrt_pos.2 hm).ne', Real.log_sqrt hm.le, Real.log_mul hnz.ne' hpow.ne', Real.log_pow]`. Move the coercions through the operations in `at hlog`.
+
+Establish `h1 : -Real.log lam ≤ Real.posLog (1 / lam)`. Establish `: Real.posLog (1 / lam) = max 0 (Real.log (1 / lam))` using `rfl`. Rewrite using `[this, one_div, Real.log_inv]`. Conclude with `le_max_right _ _`. Establish `h2 : Real.log (2 * f * ρ) + Real.log rd ≤ Real.log (2 * f * j' * rd)`.
+
+Rewrite using `[← Real.log_mul hm.ne' hrd0.ne']`. Use `Real.log_le_log (by positivity) ?_` and prove the remaining obligations. Use `gcongr`. Establish `h3 : 0 ≤ 2 * Real.posLog (1 / lam) + Real.log (2 * f * j' * rd)`. Establish `hJ1 : (1 : ℝ) ≤ j'` using `by linarith [(by exact_mod_cast hρ : (1 : ℝ) ≤ ρ)]`.
+
+Establish `hF1 : (1 : ℝ) ≤ f` using `by exact_mod_cast hf`. Establish `h4 : (1 : ℝ) ≤ 2 * f * j'`. Use `one_le_mul_of_one_le_of_one_le hF1 hJ1` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish `: (1 : ℝ) ≤ 2 * f * j' * rd` using `one_le_mul_of_one_le_of_one_le h4 hrd`.
+
+Combine the linear relations using `[Real.posLog_nonneg (x := 1 / lam), Real.log_nonneg this]`. Establish `e1 : -Real.log nz ≤ f * ρ * (2 * -Real.log lam + (Real.log (2 * f * ρ) + Real.log rd))`. Take the linear combination `hlog`. Establish `e2 : (f : ℝ) * ρ * (2 * -Real.log lam + (Real.log (2 * f * ρ) + Real.log rd)) ≤ f * ρ * (2 * Real.posLog (1 / lam) + Real.log (2 * f * j' * rd))` using `mul_le_mul_of_nonneg_left (by linarith) (by positivity)`. Establish `e3 : (f : ℝ) * ρ * (2 * Real.posLog (1 / lam) + Real.log (2 * f * j' * rd)) ≤ f * j' * (2 * Real.posLog (1 / lam) + Real.log (2 * f * j' * rd))` using `mul_le_mul_of_nonneg_right (mul_le_mul_of_nonneg_left hJ hF.le) h3`.
+
+Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem UnitaryCovolumeLowerBound.neg_log_le {f ρ j' : ℕ} {lam rd nz c : ℝ} (hlam : 0 < lam) (hrd : 1 ≤ rd) (hρ : 1 ≤ ρ)
     (hρj : ρ ≤ j') (hc : c = nz * rd ^ (f * ρ)) (hmin : (lam / Real.sqrt (2 * f * ρ)) ^ (2 * f * ρ) ≤ c) :
     -Real.log nz ≤ (f * j' : ℝ) * (2 * Real.posLog (1 / lam) + Real.log (2 * f * j' * rd)) := by
@@ -69,6 +88,19 @@ theorem UnitaryCovolumeLowerBound.neg_log_le {f ρ j' : ℕ} {lam rd nz c : ℝ}
     mul_le_mul_of_nonneg_right (mul_le_mul_of_nonneg_left hJ hF.le) h3
   linarith
 
+/- English proof (translation)
+Introduce `II Ψ _ K _ ι _ Ω _ _ E _ _ Em _ _ _ D z hz`. Establish `hlam` using `hP D z hz`. Establish `hrd` using `UnitaryCovolumeLowerBound.one_le_rootDiscr Em`. Establish `hcast : ((Fintype.card Ψ * (D.N - D.j) : ℕ) : ℝ) = (D.f * D.j' : ℝ)`. Use `push_cast`.
+
+Both sides reduce to the same expression. Rewrite using `[hcast, ← one_div]`. Establish `hrhs : 0 ≤ (D.f * D.j' : ℝ) * (2 * Real.posLog (1 / D.lam1 z) + Real.log (2 * (D.f * D.j' : ℝ) * rootDiscr Em))`. Break down `Nat.eq_zero_or_pos (D.f * D.j') with h0 | h0` into its components or cases. Establish `: (D.f * D.j' : ℝ) = 0` using `by exact_mod_cast h0`.
+
+Rewrite using `[this, zero_mul]`. Establish `h1 : (1 : ℝ) ≤ D.f * D.j'` using `by exact_mod_cast h0`. Establish `: (1 : ℝ) ≤ 2 * (D.f * D.j' : ℝ) * rootDiscr Em`. Establish `h2 : (1 : ℝ) ≤ 2 * (D.f * D.j' : ℝ)` using `by linarith`. Conclude with `one_le_mul_of_one_le_of_one_le h2 hrd`.
+
+Use `Real.log_nonneg this` as an intermediate fact. Use `Real.posLog_nonneg (x := 1 / D.lam1 z)` as an intermediate fact. Check the signs of the components of the expression. Unfold `FullerData.cuspU`. Use `max_le hrhs (Real.iSup_le (fun s => ?_) hrhs)` and prove the remaining obligations.
+
+Distinguish the cases in `h : ∃ ρ v, IsNzFamily (D.torLat s) ρ v`. Take `⟨ρ, v, hv⟩` from `h`. Rewrite using `[← mul_assoc 2]`. Conclude with `UnitaryCovolumeLowerBound.neg_log_le hlam hrd hv.1 (hR D.herm (D.torLat s) (D.torLat_iso s) ρ v hv) (hE D z hz (D.torLat s) (D.torLat_le s) (D.torLat_iso s) (D.torLat_sat s) ρ v hv) (hM D z hz (D.torLat s) (D.torLat_le s) ρ v hv)`. Establish `: D.nz z (D.torLat s) = 1`.
+
+Unfold `FullerData.nz HermDatum.nz`. Rewrite using `[dif_neg h]`. Rewrite using `[this, Real.log_one, neg_zero]`. Conclude with `hrhs`.
+-/
 theorem UnitaryCovolumeLowerBound.proof (hE : UnitaryCovolume.Statement) (hM : UnitaryMinkowskiBound.Statement) (hR : UnitaryIsotropicRank.Statement)
     (hP : UnitaryFirstMinimumPositive.Statement) : UnitaryCovolumeLowerBound.Statement := by
   intro II Ψ _ K _ ι _ Ω _ _ E _ _ Em _ _ _ D z hz

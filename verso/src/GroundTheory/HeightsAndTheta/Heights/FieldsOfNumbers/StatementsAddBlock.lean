@@ -18,6 +18,9 @@ def HilbAddBlock.Statement : Prop :=
     [∀ k, Fintype (ι k)] (I : Ideal (MRing ι F)) (N : ℕ) (m : Option K → ℤ),
     hilbFn (addBlockPrime N I) m = hilbFn I (fun k => m (some k)) * projSpaceHilb N (m none)
 
+/- English proof (translation)
+Apply the tactic sequence `refine ⟨?_, ?_, ?_⟩ <;> decide`.
+-/
 example : projSpaceHilb 1 2 = 3 ∧ projSpaceHilb 2 2 = 6 ∧ projSpaceHilb 2 (-1) = 0 := by
   refine ⟨?_, ?_, ?_⟩ <;> decide
 

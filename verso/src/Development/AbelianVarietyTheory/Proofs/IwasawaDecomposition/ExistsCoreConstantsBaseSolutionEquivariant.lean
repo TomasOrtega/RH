@@ -19,6 +19,9 @@ namespace GlobalTheory.RealGeoConst
 
 variable {D : D7} {G : Type} [Group G] [Fintype G] {Pl0 T0 : Type} {A : FamIn D.what₂.LL G Pl0 T0 D.R.m}
 
+/- English proof (translation)
+Establish `key : ∀ (W : HSp D) (hV : T.V ((i : ℕ) + 1) σ = W), castDict hV (adel (T.V ((i : ℕ) + 1) σ) (T.dict ((i : ℕ) + 1) σ) (muPin (T.V ((i : ℕ) + 1) σ) (T.dict ((i : ℕ) + 1) σ) (T.mu ((i : ℕ) + 1) σ) c) (rdU (T.U ((i : ℕ) + 1) σ) f)) = adel W (castDict hV (T.dict ((i : ℕ) + 1) σ)) (muP …`. Introduce `W hV`. Substitute `hV` using the available equality. Both sides reduce to the same expression. Conclude with `key _ hV`.
+-/
 theorem phiAt_eq (T : CoreJ D) (i : Fin D.R.m) (σ : T.Q.c.F →+* ℂ) (hV : T.V ((i : ℕ) + 1) σ = Wc D i)
     (c : (T.U ((i : ℕ) + 1) σ).Comp → ℂ) (f : T.R ((i : ℕ) + 1)) :
     phiAt T i σ hV c f = adel (Wc D i) (castDict hV (T.dict ((i : ℕ) + 1) σ))
@@ -35,6 +38,11 @@ theorem phiAt_eq (T : CoreJ D) (i : Fin D.R.m) (σ : T.Q.c.F →+* ℂ) (hV : T.
     rfl
   exact key _ hV
 
+/- English proof (translation)
+Introduce `g k hk f hf`. Take `⟨h1, h2⟩` from `h g k hk f hf`. Take `⟨y, hy⟩` from `GlobalTheory.ChiDetValues.chiC_mem_coeff T R κ v₀ hL hT i g`. Establish `hy' : D.what₂.embLL (algebraMap T.Q.c.F D.what₂.LL y) = ∏ PP : R.Pg, ((R.chi ((i : ℕ) + 1) PP.1 (Matrix.GeneralLinearGroup.det (R.eG g PP)) : ℂˣ) : ℂ)`. Rewrite using `[hy, chiC, Units.coe_prod]`.
+
+Use `⟨h1, y, hy', fun x => ?_⟩` and prove the remaining obligations. Establish `e : T.σ₀ y = D.what₂.embLL (algebraMap T.Q.c.F D.what₂.LL y)` using `(RingHom.congr_fun (res_embLL T hT.alg hT.laws.pins.2.2.1) y).symm`. Rewrite using `[phiAt_eq, phiAt_eq, e, hy']`. Conclude with `h2 x`.
+-/
 theorem eqAt_base (T : CoreJ D) [Algebra T.Q.c.F D.what₂.LL] (R : RealDat D A T.Q.c.F)
     (κ : ∀ i : Fin D.R.m, WeightFamilies.Wt D ((i : ℕ) + 1)) (v₀ : ∀ (i : Fin D.R.m) (σ : D.what₂.LL →+* ℂ), (R.MW i σ).Vec)
     (hL : R.toLevCh.Is A.μ0) (hT : TieIn T R κ v₀) (i : Fin D.R.m) (O : OMDat T.toCore R i Unit (fun _ => A.μ0))
@@ -54,6 +62,17 @@ theorem eqAt_base (T : CoreJ D) [Algebra T.Q.c.F D.what₂.LL] (R : RealDat D A 
 
 set_option maxHeartbeats 1000000 in
 
+/- English proof (translation)
+Introduce `D G _ _ Pl0 T0 A T _ R κ v₀ O cc hL hT hpb hP hO`. Establish `H : ∀ (n : ℕ) (σ : T.Q.c.F →+* ℂ), ∃ c : (T.U (n + 1) σ).Comp → ℂ, CUnit c ∧ ∀ hn : n < D.R.m, (σ = T.σ₀ → HEq c (cc ⟨n, hn⟩)) ∧ (GoodEmb T.Q.c σ → ∀ hV : T.V (n + 1) σ = Wc D ⟨n, hn⟩, EqAt T R κ (O ⟨n, hn⟩) σ hV c)`. Introduce `n σ`. Distinguish the cases in `hn : n < D.R.m`. Distinguish the cases in `hσ : σ = T.σ₀`.
+
+Substitute `hσ` using the available equality. Conclude with `⟨cc ⟨n, hn⟩, (hO ⟨n, hn⟩).2.1.2.2.2.1, fun _ => ⟨fun _ => HEq.rfl, fun _ hV => eqAt_base T R κ v₀ hL hT ⟨n, hn⟩ (O ⟨n, hn⟩) (cc ⟨n, hn⟩) (hO ⟨n, hn⟩).1 hV⟩⟩`. Distinguish the cases in `hg : GoodEmb T.Q.c σ ∧ T.V (n + 1) σ = Wc D ⟨n, hn⟩`. Take `⟨c, hc, hE⟩` from `GlobalTheory.T.exists_equivariant_unit_constants_goodEmbedding T R κ v₀ O hL hT hpb hP ⟨n, hn⟩ σ hg.1 hg.2`. Conclude with `⟨c, hc, fun _ => ⟨fun h => absurd h hσ, fun _ _ => hE⟩⟩`.
+
+Conclude with `⟨fun _ => 1, fun _ => norm_one, fun _ => ⟨fun h => absurd h hσ, fun h1 h2 => absurd ⟨h1, h2⟩ hg⟩⟩`. Conclude with `⟨fun _ => 1, fun _ => norm_one, fun h => absurd h hn⟩`. Use `choose c hc hc' using H`. Establish `h0 : ∀ i : Fin D.R.m, c i T.σ₀ = cc i` using `fun i => eq_of_heq ((hc' i T.σ₀ i.2).1 rfl)`. Use `⟨fun j => Nat.casesOn (motive := fun j => ∀ σ : T.Q.c.F →+* ℂ, (T.U j σ).Comp → ℂ) j (fun _ _ => 1) c, h0, ?_, hP, fun i => ?_, fun i σ hσ hV => (hc' i σ i.2).2 hσ hV⟩` and prove the remaining obligations.
+
+Use `⟨{ toLawsM := hT.laws.toLawsM, cUnit := ?_, muVal := hT.laws.muVal, muConj := hT.laws.muConj, intAll := hT.laws.intAll, modelW := hT.laws.modelW, familyUniformisationBasePointOrthogonal := hT.laws.familyUniformisationBasePointOrthogonal, kfHalf := hT.laws.kfHalf, adPin := hT.laws …` and prove the remaining obligations. Introduce `j _ σ _`. Consider the cases of `j with`. Consider the case `zero => exact fun _ => norm_one`. Consider the case `succ n => exact hc n σ`.
+
+Establish `h` using `hO i`. Rewrite `h` using `[← h0 i]`. Conclude with `h`.
+-/
 theorem exists_constants : ∀ (D : D7) (G : Type) [Group G] [Fintype G] (Pl0 T0 : Type) (A : FamIn D.what₂.LL G Pl0 T0 D.R.m) (T : CoreJ D) [Algebra T.Q.c.F D.what₂.LL] (R : RealDat D A T.Q.c.F) (κ : ∀ i : Fin D.R.m, WeightFamilies.Wt D ((i : ℕ) + 1)) (v₀ : ∀ (i : Fin D.R.m) (σ : D.what₂.LL →+* ℂ), (R.MW i σ).Vec) (O : ∀ i, OMDat T.toCore R i Unit (fun _ => A.μ0)) (cc : ∀ i : Fin D.R.m, (T.U ((i : ℕ) + 1) T.σ₀).Comp → ℂ), R.toLevCh.Is A.μ0 → TieIn T R κ v₀ → T.pb = R.C.P.pb → (∀ i, OMPins T R κ v₀ O i) → (∀ i, (O i).OneMapOf (κ i) (v₀ i (sg0 D A)) (cc i) 1) → ∃ cE, (∀ i : Fin D.R.m, cE ((i : ℕ) + 1) T.σ₀ = cc i) ∧ TieIn (setCE T cE) R κ v₀ ∧ (∀ i, OMPins (setCE T cE) R κ v₀ O i) ∧ Fired (setCE T cE) R κ v₀ O (fun _ => 1) := by
   intro D G _ _ Pl0 T0 A T _ R κ v₀ O cc hL hT hpb hP hO
   have H : ∀ (n : ℕ) (σ : T.Q.c.F →+* ℂ), ∃ c : (T.U (n + 1) σ).Comp → ℂ, CUnit c ∧ ∀ hn : n < D.R.m,

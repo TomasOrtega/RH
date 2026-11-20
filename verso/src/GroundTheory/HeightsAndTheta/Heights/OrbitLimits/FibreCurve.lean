@@ -21,6 +21,9 @@ variable {Ω : Type} [Field Ω]
 def pt (u : Ω) : (Σ k, B2 k) → Ω :=
   fun p => if p.1 = 0 then ![1, u] p.2 else ![1, u ^ 2] p.2
 
+/- English proof (translation)
+Take `⟨k, i⟩` from `p`. Apply the tactic sequence `fin_cases k <;> fin_cases i <;> simp [pt, hu]`.
+-/
 theorem pt_ne {u : Ω} (hu : u ≠ 0) (p : Σ k, B2 k) : pt u p ≠ 0 := by
   obtain ⟨k, i⟩ := p
   fin_cases k <;> fin_cases i <;> simp [pt, hu]
@@ -28,6 +31,9 @@ theorem pt_ne {u : Ω} (hu : u ≠ 0) (p : Σ k, B2 k) : pt u p ≠ 0 := by
 def eqn : MRing B2 :=
   X ⟨0, 0⟩ ^ 2 * X ⟨1, 1⟩ - X ⟨0, 1⟩ ^ 2 * X ⟨1, 0⟩
 
+/- English proof (translation)
+Introduce `hm`. Rewrite `hm` using `[mCoordIdeal, RingHom.mem_ker, mConeMap, aeval_X]`. Conclude with `(mul_ne_zero (by simpa using pt_ne hu p) (X_ne_zero _)) hm`.
+-/
 theorem X_not_mem {u : Ω} (hu : u ≠ 0) (p : Σ k, B2 k) : (X p : MRing B2) ∉ mCoordIdeal (pt u) := by
   intro hm
   rw [mCoordIdeal, RingHom.mem_ker, mConeMap, aeval_X] at hm
@@ -36,12 +42,20 @@ theorem X_not_mem {u : Ω} (hu : u ≠ 0) (p : Σ k, B2 k) : (X p : MRing B2) �
 instance mCoordIdeal_isPrime (u : Ω) : (mCoordIdeal (pt u)).IsPrime :=
   RingHom.ker_isPrime _
 
+/- English proof (translation)
+The claim follows from `CoordinateConeArithVar.isMultiHomogIdeal _`.
+-/
 theorem isMultiHomogIdeal (u : Ω) : IsMultiHomogIdeal (mCoordIdeal (pt u)) :=
   CoordinateConeArithVar.isMultiHomogIdeal _
 
 def gen (u : Ω) : GenFibre (ι := B1) (ι' := B2) (blkV (Fin 2) 1) (mCoordIdeal (pt u)) :=
   Inter.genFibreOf _ _
 
+/- English proof (translation)
+Use `charZero_of_inj_zero fun n hn => ?_` and prove the remaining obligations. Establish `hmem : (C (n : ℤ) : MRing B2) ∈ mCoordIdeal (pt u)`. Rewrite using `[← (gen u).genericFibre_ker_target, RingHom.mem_ker]`. Simplify using `using hn`. Simplify using `only [mCoordIdeal, RingHom.mem_ker, mConeMap] at hmem`.
+
+Simplify using `using hmem`.
+-/
 theorem charZero [CharZero Ω] (u : Ω) : CharZero (gen u).Φ' := by
   refine charZero_of_inj_zero fun n hn => ?_
   have hmem : (C (n : ℤ) : MRing B2) ∈ mCoordIdeal (pt u) := by
@@ -50,9 +64,15 @@ theorem charZero [CharZero Ω] (u : Ω) : CharZero (gen u).Φ' := by
   simp only [mCoordIdeal, RingHom.mem_ker, mConeMap] at hmem
   simpa using hmem
 
+/- English proof (translation)
+Introduce `h` and use `X_not_mem hu p (by rw [← (gen u).genericFibre_ker_target, RingHom.mem_ker, aeval_X]; exact h)`.
+-/
 theorem x'_ne {u : Ω} (hu : u ≠ 0) (p : Σ k, B2 k) : (gen u).x' p ≠ 0 := fun h =>
   X_not_mem hu p (by rw [← (gen u).genericFibre_ker_target, RingHom.mem_ker, aeval_X]; exact h)
 
+/- English proof (translation)
+Introduce `h`. Apply `x'_ne hu (blkV (Fin 2) 1 p)` to reduce the goal to its premises. Rewrite using `[(gen u).compat, h, map_zero]`.
+-/
 theorem x_ne {u : Ω} (hu : u ≠ 0) (p : Σ k, B1 k) : (gen u).x p ≠ 0 := by
   intro h
   apply x'_ne hu (blkV (Fin 2) 1 p)

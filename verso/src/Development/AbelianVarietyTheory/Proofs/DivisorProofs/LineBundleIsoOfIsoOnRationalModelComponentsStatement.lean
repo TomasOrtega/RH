@@ -9,5 +9,8 @@ open GlobalTheory GlobalTheory.ZM GlobalTheory.ZH GlobalTheory.UMin GlobalTheory
 open scoped CategoryTheory.Obj
 attribute [local instance] Over.cartesianMonoidalCategory
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.UMin.lbIso_of_ratModels | exact GlobalTheory.UMin.lbIso_of_ratModels | (intros; apply GlobalTheory.UMin.lbIso_of_ratModels <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.lineBundleIso_of_iso_on_rational_model_components : ∀ (k : Type) [Field k] [CharZero k] (X : Scheme.{0}) (s : X ⟶ Sp k) (A B : LB X), Geo.Tor.IsNormalScheme X → IsSeparated s → LocallyOfFiniteType s → QuasiCompact s → A.IsLB → B.IsLB → (∀ (Ω : Type) [Field Ω] [Algebra k Ω] (M : RatModel k Ω) (io : M.Z ⟶ X), IsOpenImmersion io → io ≫ s = M.s → LBIso (A.pull io) (B.pull io)) → LBIso A B := by
   first | exact @GlobalTheory.UMin.lbIso_of_ratModels | exact GlobalTheory.UMin.lbIso_of_ratModels | (intros; apply GlobalTheory.UMin.lbIso_of_ratModels <;> assumption)

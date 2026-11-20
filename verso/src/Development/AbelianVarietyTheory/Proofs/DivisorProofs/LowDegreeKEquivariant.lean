@@ -19,6 +19,13 @@ open GlobalTheory.Doubling (absE)
 noncomputable section
 namespace GlobalTheory.LowKStep
 
+/- English proof (translation)
+Introduce `hKP F E _ _ _ _ _ σ B a a' G X om om' R Rf hM k hk S hS hS1`. Take `⟨i, rfl⟩` from `Nat.exists_eq_add_of_le hk`. Take `⟨j, rfl | rfl⟩` from `Nat.even_or_odd' i`. Introduce `x hx`. Conclude with `GlobalTheory.T.fock_degree_odd_map_le hKP F E σ B a a' G X om om' R Rf hM j (hS1 x hx)`.
+
+Introduce `x hx`. Establish `h2` using `GlobalTheory.T.low_part_K_equivariant_extension hKP F E σ B a a' G X om om' R Rf hM j S hS (fun y hy => by`. Use `hS1 y hy` as an intermediate fact. Rewrite `this` using `[show lowDegInf B G.M R.p + (2 * j + 1) + 1 = lowDegInf B G.M R.p + 2 * j + 2 by ring]`. Conclude with `GlobalTheory.T.fock_degree_even_map_le hKP F E σ B a a' G X om om' R Rf hM j this) x hx`.
+
+Conclude with `Submodule.map_mono (fockDeg_mono _ _ _ (by omega)) h2`.
+-/
 theorem map_mem_fockDeg_of_succ : GlobalTheory.ThK.KP → ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E)
     (B : Base F E) (a a' : ℕ) (G : Geo σ a a') (X : Chars F E) (om : Rep σ G.V G.W) (om' : Rep σ G.V' G.W)
     (R : RealMaps F a a') (Rf : FinMaps F a a'), IsMatched B G X om om' R Rf →

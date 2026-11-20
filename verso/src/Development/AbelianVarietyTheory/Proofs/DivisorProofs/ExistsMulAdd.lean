@@ -13,6 +13,11 @@ namespace GlobalTheory.RingChain.MatFrob
 
 variable {A : Type} [CommRing A] {p : ℕ} {m r m₂ r₂ : ℕ}
 
+/- English proof (translation)
+Establish `: (Submodule.Quotient.mk x : (Fin m → A) ⧸ S) = ∑ i, x i • Submodule.Quotient.mk (Pi.single i 1)` using `by conv_lhs => rw [pi_eq_sum_univ' x]`. Express the relevant statement in the definitionally equal form `S.mkQ _ = _`. Rewrite using `[map_sum]`. Conclude with `Finset.sum_congr rfl fun i _ => map_smul _ _ _`. Rewrite using `[this, map_sum]`.
+
+Conclude with `Finset.sum_congr rfl fun i _ => hτ _ _`.
+-/
 theorem semi_mk {q : ℕ} {P : Type} [AddCommGroup P] [Module A P] (S : Submodule A (Fin m → A))
     (τ : ((Fin m → A) ⧸ S) →+ P) (hτ : ∀ (a : A) x, τ (a • x) = a ^ q • τ x) (x : Fin m → A) :
     τ (Submodule.Quotient.mk x) = ∑ i, x i ^ q • τ (Submodule.Quotient.mk (Pi.single i 1)) := by
@@ -24,6 +29,15 @@ theorem semi_mk {q : ℕ} {P : Type} [AddCommGroup P] [Module A P] (S : Submodul
   rw [this, map_sum]
   exact Finset.sum_congr rfl fun i _ => hτ _ _
 
+/- English proof (translation)
+Set `φ : (Fin m → A) →+ P` to `AddMonoidHom.mk' (fun x => ∑ i, x i ^ p ^ k • v i) fun x y => by`. Rewrite using `[← Finset.sum_add_distrib]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Take `⟨c, hc⟩` from `exists_add_pow_prime_pow_eq (Fact.out : p.Prime) (x i) (y i) k`. Rewrite using `[Pi.add_apply, hc, add_smul, add_smul]`.
+
+Simplify using `only [mul_assoc, mul_smul (p : A), hp, add_zero]`. Establish `hφ : ∀ x, φ x = ∑ i, x i ^ p ^ k • v i` using `fun _ => rfl`. Use `⟨QuotientAddGroup.lift (LinearMap.range (Matrix.mulVecLin R)).toAddSubgroup φ ?_, fun x => rfl⟩` and prove the remaining obligations. Introduce and unpack `_ ⟨c, rfl⟩`. Establish `: Matrix.mulVecLin R c = ∑ j, fun i => c j * R i j`.
+
+Use function extensionality and compare the values at `i`. Simplify using `[Matrix.mulVec, dotProduct, mul_comm]`. Rewrite using `[AddMonoidHom.mem_ker, this, map_sum]`. Use `Finset.sum_eq_zero fun j _ => ?_` and prove the remaining obligations. Rewrite using `[hφ]`.
+
+Simplify using `only [mul_pow, mul_smul]`. Rewrite using `[← Finset.smul_sum, hv, smul_zero]`.
+-/
 theorem exists_semi [Fact p.Prime] (k : ℕ) {P : Type} [AddCommGroup P] [Module A P] (R : Matrix (Fin m) (Fin r) A)
     (hp : ∀ y : P, (p : A) • y = 0) (v : Fin m → P) (hv : ∀ j, ∑ i, R i j ^ p ^ k • v i = 0) :
     ∃ τ : ((Fin m → A) ⧸ LinearMap.range (Matrix.mulVecLin R)) →+ P,
@@ -46,12 +60,20 @@ theorem exists_semi [Fact p.Prime] (k : ℕ) {P : Type} [AddCommGroup P] [Module
   simp only [mul_pow, mul_smul]
   rw [← Finset.smul_sum, hv, smul_zero]
 
+/- English proof (translation)
+Establish `: (fun i => R i j) ∈ LinearMap.range (Matrix.mulVecLin R)` using `⟨Pi.single j 1, funext fun i => by simp⟩`. Rewrite using `[← semi_mk _ τ hτ (fun i => R i j), (Submodule.Quotient.mk_eq_zero _).2 this, map_zero]`.
+-/
 theorem rel_semi {q : ℕ} {P : Type} [AddCommGroup P] [Module A P] (R : Matrix (Fin m) (Fin r) A)
     (τ : ((Fin m → A) ⧸ LinearMap.range (Matrix.mulVecLin R)) →+ P) (hτ : ∀ (a : A) x, τ (a • x) = a ^ q • τ x) (j : Fin r) :
     ∑ i, R i j ^ q • τ (Submodule.Quotient.mk (Pi.single i 1)) = 0 := by
   have : (fun i => R i j) ∈ LinearMap.range (Matrix.mulVecLin R) := ⟨Pi.single j 1, funext fun i => by simp⟩
   rw [← semi_mk _ τ hτ (fun i => R i j), (Submodule.Quotient.mk_eq_zero _).2 this, map_zero]
 
+/- English proof (translation)
+Establish `: U *ᵥ x = ∑ i, x i • fun l => U l i`. Use function extensionality and compare the values at `l`. Simplify using `[Matrix.mulVec, dotProduct, mul_comm]`. Rewrite using `[this]`. Express the relevant statement in the definitionally equal form `S.mkQ _ = _`.
+
+Rewrite using `[map_sum]`. Conclude with `Finset.sum_congr rfl fun i _ => map_smul _ _ _`.
+-/
 theorem mk_mulVec (S : Submodule A (Fin m₂ → A)) (U : Matrix (Fin m₂) (Fin m) A) (x : Fin m → A) :
     (Submodule.Quotient.mk (U *ᵥ x) : (Fin m₂ → A) ⧸ S) = ∑ i, x i • Submodule.Quotient.mk (fun l => U l i) := by
   have : U *ᵥ x = ∑ i, x i • fun l => U l i := by
@@ -62,6 +84,27 @@ theorem mk_mulVec (S : Submodule A (Fin m₂ → A)) (U : Matrix (Fin m₂) (Fin
   rw [map_sum]
   exact Finset.sum_congr rfl fun i _ => map_smul _ _ _
 
+/- English proof (translation)
+Establish `hp : ∀ y : (Fin m₂ → A) ⧸ LinearMap.range (Matrix.mulVecLin R₂), (p : A) • y = 0` using `fun y => by`. Take `⟨y, rfl⟩` from `Submodule.Quotient.mk_surjective _ y`. Rewrite using `[← Submodule.Quotient.mk_smul, Submodule.Quotient.mk_eq_zero]`. Conclude with `⟨C₁ *ᵥ y, by rw [mulVecLin_apply, mulVec_mulVec, h₁, smul_mulVec, one_mulVec]⟩`. Take `⟨ψ, hψ⟩` from `exists_semi k R₁ hp (fun i => Submodule.Quotient.mk fun l => U l i) fun j => by`.
+
+Rewrite using `[← mk_mulVec _ U (fun i => R₁ i j ^ p ^ k), Submodule.Quotient.mk_eq_zero]`. Use `⟨C₂ *ᵥ Pi.single j 1, ?_⟩` and prove the remaining obligations. Rewrite using `[mulVecLin_apply, mulVec_mulVec, h₂, ← mulVec_mulVec]`. Use `congr 1`. Use function extensionality and compare the values at `i`.
+
+Simplify using the standard rewrite rules. Establish `hψ' : ∀ x, ψ (Submodule.Quotient.mk x) = Submodule.Quotient.mk (U *ᵥ fun i => x i ^ p ^ k)` using `fun x => by`. Rewrite using `[hψ, mk_mulVec]`. Establish `hq : p ^ k ≠ 0` using `pow_ne_zero _ (Fact.out : p.Prime).ne_zero`. Establish `he : ∀ i, ψ (Submodule.Quotient.mk (Pi.single i 1)) = Submodule.Quotient.mk fun l => U l i` using `fun i => by`.
+
+Rewrite using `[hψ, Finset.sum_eq_single i (fun j _ h => by simp [h, zero_pow hq]) (by simp)]`. Simplify using the standard rewrite rules. Establish `hUV : ∀ y, (Submodule.Quotient.mk (U *ᵥ (V *ᵥ y)) : (Fin m₂ → A) ⧸ LinearMap.range (Matrix.mulVecLin R₂)) = Submodule.Quotient.mk y` using `fun y => by`. Rewrite using `[Submodule.Quotient.eq]`. Conclude with `⟨C₃ *ᵥ y, by rw [mulVecLin_apply, mulVec_mulVec, h₃, sub_mulVec, one_mulVec, mulVec_mulVec]⟩`.
+
+Use `⟨ψ, ⟨hp, fun a x => ?_, eq_top_iff.2 fun y _ => ?_, fun P _ _ τ hP hτ => ?_⟩, hψ'⟩` and prove the remaining obligations. Take `⟨x, rfl⟩` from `Submodule.Quotient.mk_surjective _ x`. Rewrite using `[← Submodule.Quotient.mk_smul, hψ, hψ, Finset.smul_sum]`. Simplify using `only [Pi.smul_apply, smul_eq_mul, mul_pow, mul_smul]`. Take `⟨y, rfl⟩` from `Submodule.Quotient.mk_surjective _ y`.
+
+Rewrite using `[← hUV, mk_mulVec]`. Conclude with `Submodule.sum_mem _ fun i _ => Submodule.smul_mem _ _ (Submodule.subset_span ⟨_, he i⟩)`. Set `L : (Fin m → A) →ₗ[A] P` to `Fintype.linearCombination A fun i => τ (Submodule.Quotient.mk (Pi.single i 1))`. Establish `hL : ∀ x, L x = ∑ i, x i • τ (Submodule.Quotient.mk (Pi.single i 1))` using `fun x => Fintype.linearCombination_apply _ _ _`. Establish `hK : ∀ {n : ℕ} (C : Matrix (Fin r) (Fin n) A) (D : Matrix (Fin m) (Fin n) A) (c : Fin n → A), L ((R₁.map (· ^ p ^ k) * C + (p : A) • D) *ᵥ c) = 0` using `fun C D c => by`.
+
+Rewrite using `[add_mulVec, smul_mulVec, map_add, map_smul, hP, add_zero, ← mulVec_mulVec]`. Generalize the expression as in `C *ᵥ c = d`. Establish `: R₁.map (· ^ p ^ k) *ᵥ d = ∑ j, d j • fun i => R₁ i j ^ p ^ k`. Use function extensionality and compare the values at `l`. Simplify using `[Matrix.mulVec, dotProduct, mul_comm]`.
+
+Rewrite using `[this, map_sum]`. Conclude with `Finset.sum_eq_zero fun j _ => by rw [map_smul, hL, rel_semi R₁ τ hτ, smul_zero]`. Use `⟨Submodule.liftQ _ (L ∘ₗ V.mulVecLin) ?_, fun x => ?_⟩` and prove the remaining obligations. Introduce and unpack `_ ⟨c, rfl⟩`. Use `hK C₄ C₅ c` as an intermediate fact.
+
+Rewrite `this` using `[h₄, ← mulVec_mulVec]`. Then use the resulting hypothesis. Take `⟨x, rfl⟩` from `Submodule.Quotient.mk_surjective _ x`. Use `hK C₆ C₇ fun i => x i ^ p ^ k` as an intermediate fact. Rewrite `this` using `[h₅, sub_mulVec, one_mulVec, map_sub, sub_eq_zero, ← mulVec_mulVec]`. Rewrite using `[hψ', Submodule.liftQ_apply, semi_mk _ τ hτ, ← hL]`.
+
+Conclude with `this`.
+-/
 theorem univ_of_mat [Fact p.Prime] (k : ℕ) (R₁ : Matrix (Fin m) (Fin r) A) (R₂ : Matrix (Fin m₂) (Fin r₂) A)
     (U : Matrix (Fin m₂) (Fin m) A) (V : Matrix (Fin m) (Fin m₂) A) (C₁ : Matrix (Fin r₂) (Fin m₂) A)
     (C₂ : Matrix (Fin r₂) (Fin r) A) (C₃ : Matrix (Fin r₂) (Fin m₂) A) (C₄ : Matrix (Fin r) (Fin r₂) A)
@@ -121,6 +164,9 @@ theorem univ_of_mat [Fact p.Prime] (k : ℕ) (R₁ : Matrix (Fin m) (Fin r) A) (
       rw [hψ', Submodule.liftQ_apply, semi_mk _ τ hτ, ← hL]
       exact this
 
+/- English proof (translation)
+Use `choose c hc using fun j => h (Pi.single j 1)`. Use `⟨Matrix.of fun i j => c j i, ?_⟩` and prove the remaining obligations. Use extensionality with `i j`. Conclude with `(congrFun (hc j) i).trans (by simp)`.
+-/
 theorem exists_mul {n : ℕ} (R : Matrix (Fin m) (Fin r) A) (X : Matrix (Fin m) (Fin n) A)
     (h : ∀ c, X *ᵥ c ∈ LinearMap.range (Matrix.mulVecLin R)) : ∃ C, R * C = X := by
   choose c hc using fun j => h (Pi.single j 1)
@@ -128,6 +174,11 @@ theorem exists_mul {n : ℕ} (R : Matrix (Fin m) (Fin r) A) (X : Matrix (Fin m) 
   ext i j
   exact (congrFun (hc j) i).trans (by simp)
 
+/- English proof (translation)
+Establish `: ∀ j, ∃ c d, R *ᵥ c + a • d = X *ᵥ Pi.single j 1` using `fun j => by`. Take `⟨_, ⟨c, rfl⟩, y, hy, e⟩` from `Submodule.mem_sup.1 (h (Pi.single j 1))`. Take `⟨d, -, rfl⟩` from `(Submodule.mem_smul_pointwise_iff_exists _ _ _).1 hy`. Conclude with `⟨c, d, e⟩`. Use `choose c d hc using this`.
+
+Use `⟨Matrix.of fun i j => c j i, Matrix.of fun i j => d j i, ?_⟩` and prove the remaining obligations. Use extensionality with `i j`. Conclude with `(congrFun (hc j) i).trans (by simp)`.
+-/
 theorem exists_mul_add {n : ℕ} (a : A) (R : Matrix (Fin m) (Fin r) A) (X : Matrix (Fin m) (Fin n) A)
     (h : ∀ c, X *ᵥ c ∈ LinearMap.range (Matrix.mulVecLin R) ⊔ a • ⊤) : ∃ C D, R * C + a • D = X := by
   have : ∀ j, ∃ c d, R *ᵥ c + a • d = X *ᵥ Pi.single j 1 := fun j => by
@@ -139,6 +190,33 @@ theorem exists_mul_add {n : ℕ} (a : A) (R : Matrix (Fin m) (Fin r) A) (X : Mat
   ext i j
   exact (congrFun (hc j) i).trans (by simp)
 
+/- English proof (translation)
+Take `⟨hp, hs, hsp, hU⟩` from `h`. Use `choose u hu using fun i : Fin m => Submodule.Quotient.mk_surjective _ (ψ (Submodule.Quotient.mk (Pi.single i 1)))`. Set `U : Matrix (Fin m₂) (Fin m) A` to `Matrix.of fun l i => u i l`. Establish `hUx : ∀ x, (Submodule.Quotient.mk (U *ᵥ x) : (Fin m₂ → A) ⧸ LinearMap.range (Matrix.mulVecLin R₂)) = ∑ i, x i • ψ (Submodule.Quotient.mk (Pi.single i 1))` using `fun x => by`. Rewrite using `[mk_mulVec]`.
+
+Conclude with `Finset.sum_congr rfl fun i _ => congrArg _ (hu i)`. Establish `hψ : ∀ x, ψ (Submodule.Quotient.mk x) = Submodule.Quotient.mk (U *ᵥ fun i => x i ^ p ^ k)` using `fun x => by`. Rewrite using `[hUx, semi_mk _ ψ hs]`. Establish `hsurj : ∀ y : (Fin m₂ → A) ⧸ LinearMap.range (Matrix.mulVecLin R₂), ∃ x, Submodule.Quotient.mk (U *ᵥ x) = y` using `fun y => by`. Establish `: Submodule.span A (Set.range ψ) ≤ LinearMap.range (Submodule.mkQ _ ∘ₗ U.mulVecLin)`.
+
+Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨x, rfl⟩`. Take `⟨x, rfl⟩` from `Submodule.Quotient.mk_surjective _ x`. Conclude with `⟨_, (hψ x).symm⟩`. Conclude with `this (hsp ▸ Submodule.mem_top)`.
+
+Use `choose v hv using fun l : Fin m₂ => hsurj (Submodule.Quotient.mk (Pi.single l 1))`. Set `V : Matrix (Fin m) (Fin m₂) A` to `Matrix.of fun i l => v l i`. Establish `hUV : ∀ y, (Submodule.Quotient.mk (U *ᵥ (V *ᵥ y)) : (Fin m₂ → A) ⧸ LinearMap.range (Matrix.mulVecLin R₂)) = Submodule.Quotient.mk y` using `fun y => by`. Rewrite using `[mulVec_mulVec, mk_mulVec]`. Use `conv_rhs => rw [← one_mulVec y, mk_mulVec]`.
+
+Use `Finset.sum_congr rfl fun l _ => congrArg _ ?_` and prove the remaining obligations. Use `Eq.trans ?_ ((hv l).trans ?_)` and prove the remaining obligations. Both sides reduce to the same expression. Use `congr 1`. Use function extensionality and compare the values at `i`.
+
+Simplify using `[Matrix.one_apply, Pi.single_apply]`. Set `K : Submodule A (Fin m → A)` to `LinearMap.range (Matrix.mulVecLin (R₁.map (· ^ p ^ k))) ⊔ (p : A) • ⊤`. Establish `hK : ∀ y : (Fin m → A) ⧸ K, (p : A) • y = 0` using `fun y => by`. Take `⟨y, rfl⟩` from `Submodule.Quotient.mk_surjective _ y`. Rewrite using `[← Submodule.Quotient.mk_smul, Submodule.Quotient.mk_eq_zero]`.
+
+Conclude with `Submodule.mem_sup_right (Submodule.smul_mem_pointwise_smul _ _ _ Submodule.mem_top)`. Establish `h1 : ∀ x : Fin m → A, ∑ i, x i • (Submodule.Quotient.mk (Pi.single i 1) : (Fin m → A) ⧸ K) = Submodule.Quotient.mk x` using `fun x => by`. Simplify using `using (semi_mk (q := 1) K (AddMonoidHom.id _) (by simp) x).symm`. Take `⟨τ, hτ⟩` from `exists_semi k R₁ hK (fun i => Submodule.Quotient.mk (Pi.single i 1)) fun j => by`. Rewrite using `[h1 fun i => R₁ i j ^ p ^ k, Submodule.Quotient.mk_eq_zero]`.
+
+Use `Submodule.mem_sup_left ⟨Pi.single j 1, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `i`. Simplify using the standard rewrite rules. Establish `hq : p ^ k ≠ 0` using `pow_ne_zero _ (Fact.out : p.Prime).ne_zero`. Take `⟨g, hg⟩` from `hU _ τ hK fun a x => by`.
+
+Take `⟨x, rfl⟩` from `Submodule.Quotient.mk_surjective _ x`. Rewrite using `[← Submodule.Quotient.mk_smul, hτ, hτ, Finset.smul_sum]`. Simplify using `only [Pi.smul_apply, smul_eq_mul, mul_pow, mul_smul]`. Establish `hker : ∀ x, (Submodule.Quotient.mk (U *ᵥ x) : (Fin m₂ → A) ⧸ LinearMap.range (Matrix.mulVecLin R₂)) = 0 → x ∈ K` using `fun x hx => by`. Rewrite using `[← Submodule.Quotient.mk_eq_zero, ← h1, ← map_zero g, ← hx, hUx, map_sum]`.
+
+Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[map_smul, hg, hτ, Finset.sum_eq_single i (fun j _ h => by simp [h, zero_pow hq]) (by simp)]`. Simplify using the standard rewrite rules. Take `⟨C₁, h₁⟩` from `exists_mul R₂ ((p : A) • (1 : Matrix (Fin m₂) (Fin m₂) A)) fun c => by`. Rewrite using `[← Submodule.Quotient.mk_eq_zero, smul_mulVec, Submodule.Quotient.mk_smul, hp]`.
+
+Take `⟨C₂, h₂⟩` from `exists_mul R₂ (U * R₁.map (· ^ p ^ k)) fun c => by`. Rewrite using `[← Submodule.Quotient.mk_eq_zero, mk_mulVec]`. Use `Finset.sum_eq_zero fun j _ => ?_` and prove the remaining obligations. Establish `: (fun l => (U * R₁.map (· ^ p ^ k)) l j) = U *ᵥ fun i => R₁ i j ^ p ^ k` using `rfl`. Rewrite using `[this, hUx, rel_semi R₁ ψ hs, smul_zero]`.
+
+Take `⟨C₃, h₃⟩` from `exists_mul R₂ (U * V - 1) fun c => by`. Rewrite using `[sub_mulVec, one_mulVec, ← Submodule.Quotient.eq, ← mulVec_mulVec, hUV]`. Take `⟨C₄, C₅, h₄⟩` from `exists_mul_add (p : A) (R₁.map (· ^ p ^ k)) (V * R₂) fun c => hker _ (by`. Rewrite using `[← mulVec_mulVec, hUV, Submodule.Quotient.mk_eq_zero]`. Conclude with `⟨c, rfl⟩)`.
+
+Take `⟨C₆, C₇, h₅⟩` from `exists_mul_add (p : A) (R₁.map (· ^ p ^ k)) (V * U - 1) fun c => hker _ (by`. Rewrite using `[sub_mulVec, one_mulVec, mulVec_sub, Submodule.Quotient.mk_sub, ← mulVec_mulVec, hUV, sub_self])`. Conclude with `⟨U, V, C₁, C₂, C₃, C₄, C₅, C₆, C₇, h₁, h₂, h₃, h₄, h₅, hψ⟩`.
+-/
 theorem mat_of_univ [Fact p.Prime] (k : ℕ) (R₁ : Matrix (Fin m) (Fin r) A) (R₂ : Matrix (Fin m₂) (Fin r₂) A)
     (ψ : ((Fin m → A) ⧸ LinearMap.range (Matrix.mulVecLin R₁)) →+ ((Fin m₂ → A) ⧸ LinearMap.range (Matrix.mulVecLin R₂)))
     (h : Univ A p (p ^ k) ψ) :
@@ -220,11 +298,27 @@ theorem mat_of_univ [Fact p.Prime] (k : ℕ) (R₁ : Matrix (Fin m) (Fin r) A) (
 
 def ent {B : Type} {a b : ℕ} (X : Matrix (Fin a) (Fin b) B) : Set B := Set.range fun z : Fin a × Fin b => X z.1 z.2
 
+/- English proof (translation)
+Use `choose x hx using fun i j => h ⟨(i, j), rfl⟩`. Conclude with `⟨Matrix.of x, Matrix.ext hx⟩`.
+-/
 theorem exists_map {A' B : Type} {a b : ℕ} (g : A' → B) (X : Matrix (Fin a) (Fin b) B) (h : ent X ⊆ Set.range g) :
     ∃ X' : Matrix (Fin a) (Fin b) A', X'.map g = X := by
   choose x hx using fun i j => h ⟨(i, j), rfl⟩
   exact ⟨Matrix.of x, Matrix.ext hx⟩
 
+/- English proof (translation)
+Introduce `p _ k B _ m₁ r₁ m₂ r₂ R₁ R₂ ψ h`. Take `⟨U, V, C₁, C₂, C₃, C₄, C₅, C₆, C₇, h₁, h₂, h₃, h₄, h₅, hψ⟩` from `mat_of_univ k R₁ R₂ ψ ((iff_univ' k ψ).1 h)`. Use `⟨ent U ∪ ent V ∪ ent C₁ ∪ ent C₂ ∪ ent C₃ ∪ ent C₄ ∪ ent C₅ ∪ ent C₆ ∪ ent C₇, by` and prove the remaining obligations. Simplify using `only [Set.finite_union, ent, Set.finite_range, and_self], fun A' _ g hg hT R₁' R₂' e₁ e₂ => ?_⟩`. Simplify using `only [Set.union_subset_iff] at hT`.
+
+Take `⟨⟨⟨⟨⟨⟨⟨⟨tU, tV⟩, t₁⟩, t₂⟩, t₃⟩, t₄⟩, t₅⟩, t₆⟩, t₇⟩` from `hT`. Take `⟨U, rfl⟩` from `exists_map g U tU`. Take `⟨V, rfl⟩` from `exists_map g V tV`. Take `⟨C₁, rfl⟩` from `exists_map g C₁ t₁`. Take `⟨C₂, rfl⟩` from `exists_map g C₂ t₂`.
+
+Take `⟨C₃, rfl⟩` from `exists_map g C₃ t₃`. Take `⟨C₄, rfl⟩` from `exists_map g C₄ t₄`. Take `⟨C₅, rfl⟩` from `exists_map g C₅ t₅`. Take `⟨C₆, rfl⟩` from `exists_map g C₆ t₆`. Take `⟨C₇, rfl⟩` from `exists_map g C₇ t₇`.
+
+Substitute `e₁ e₂` using the available equality. Establish `inj : ∀ {a b : ℕ} (X Y : Matrix (Fin a) (Fin b) A'), (∀ i j, g (X i j) = g (Y i j)) → X = Y` using `fun X Y e => Matrix.ext fun i j => hg (e i j)`. Take `⟨ψ', hu, hψ'⟩` from `univ_of_mat (p := p) k R₁' R₂' U V C₁ C₂ C₃ C₄ C₅ C₆ C₇ (inj _ _ fun i j => by simpa [Matrix.mul_apply, Matrix.one_apply, apply_ite g] using congrFun₂ h₁ i j) (inj _ _ fun i j => by simpa [Matrix.mul_apply, Matrix.one_apply, apply_ite g] using congrFun₂ h₂ i j) (inj _ _ fun i j = …`. Use `⟨ψ', (iff_univ' k ψ').2 hu, fun x y e => ?_⟩` and prove the remaining obligations. Rewrite `e` using `[hψ', Submodule.Quotient.eq]`.
+
+Take `⟨c, hc⟩` from `e`. Rewrite using `[hψ, Submodule.Quotient.eq]`. Use `⟨fun j => g (c j), funext fun i => ?_⟩` and prove the remaining obligations. Use `congrArg g (congrFun hc i)` as an intermediate fact. Establish `hx : ∀ {n : ℕ} (z : Fin n → A') (l : Fin n), piMap g _ z l = g (z l)` using `fun _ _ => rfl`.
+
+Simplify `this` using `[Matrix.mulVec, dotProduct, hx]`.
+-/
 theorem main : ∀ (p : ℕ) [Fact p.Prime] (k : ℕ) (B : Type) [CommRing B] (m₁ r₁ m₂ r₂ : ℕ) (R₁ : Matrix (Fin m₁) (Fin r₁) B) (R₂ : Matrix (Fin m₂) (Fin r₂) B) (ψ : ((Fin m₁ → B) ⧸ LinearMap.range (Matrix.mulVecLin R₁)) →+ ((Fin m₂ → B) ⧸ LinearMap.range (Matrix.mulVecLin R₂))), IsFrobLin B p (p ^ k) ψ → ∃ T : Set B, T.Finite ∧ ∀ (A' : Type) [CommRing A'] (g : A' →+* B), Function.Injective g → T ⊆ Set.range g → ∀ (R₁' : Matrix (Fin m₁) (Fin r₁) A') (R₂' : Matrix (Fin m₂) (Fin r₂) A'), R₁'.map g = R₁ → R₂'.map g = R₂ → ∃ ψ' : ((Fin m₁ → A') ⧸ LinearMap.range (Matrix.mulVecLin R₁')) →+ ((Fin m₂ → A') ⧸ LinearMap.range (Matrix.mulVecLin R₂')), IsFrobLin A' p (p ^ k) ψ' ∧ ∀ x y, ψ' (Submodule.Quotient.mk x) = Submodule.Quotient.mk y → ψ (Submodule.Quotient.mk (piMap g _ x)) = Submodule.Quotient.mk (piMap g _ y) := by
   intro p _ k B _ m₁ r₁ m₂ r₂ R₁ R₂ ψ h
   obtain ⟨U, V, C₁, C₂, C₃, C₄, C₅, C₆, C₇, h₁, h₂, h₃, h₄, h₅, hψ⟩ := mat_of_univ k R₁ R₂ ψ ((iff_univ' k ψ).1 h)

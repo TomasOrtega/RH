@@ -10,6 +10,19 @@ set_option autoImplicit false
 
 namespace GlobalTheory.LatChain.BlowDom
 
+/- English proof (translation)
+Introduce `F _ _ Y V p hp0 J hJp`. Use `V.ar.isNoetherianRing` as an intermediate fact. Take `⟨Z, b, hb, hproj, hiso⟩` from `ProjBlowup.exists_blowup V.p V.ar.isProjOver J`. Set `U : V.X.Opens` to `J.support.compl`. Establish `hbV : IsIso (b ∣_ U)` using `hiso U fun _ hx => hx`.
+
+Establish `huF : IsUnit ((p : ℕ) : Γ(Sp F, ⊤))`. Use `(IsUnit.mk0 (p : F) (Nat.cast_ne_zero.2 hp0)).map (Scheme.ΓSpecIso (CommRingCat.of F)).inv.hom` as an intermediate fact. Simplify using `using this`. Establish `huW : IsUnit ((p : ℕ) : Γ(V.G, ⊤))`. Set `φ : Γ(Sp F, ⊤) →+* Γ(V.G, ⊤)` to `((V.π ≫ Y.str).app ⊤).hom`.
+
+Use `huF.map φ` as an intermediate fact. Rewrite `this` using `[map_natCast φ]`. Then use the resulting hypothesis. Establish `hrange : Set.range V.j ⊆ Set.range U.ι`. Introduce and unpack `_ ⟨w, rfl⟩`. Rewrite using `[Scheme.Opens.range_ι]`.
+
+Establish `hw : w ∈ V.j ⁻¹ᵁ V.X.basicOpen (p : Γ(V.X, ⊤))`. Simplify using `only [Scheme.preimage_basicOpen, map_natCast]`. Conclude with `(Scheme.basicOpen_of_isUnit V.G huW).ge (show w ∈ (⊤ : V.G.Opens) from trivial)`. Conclude with `fun hx => hJp _ hx hw`. Set `jV : V.G ⟶ U.toScheme` to `IsOpenImmersion.lift U.ι V.j hrange`.
+
+Establish `hjV : jV ≫ U.ι = V.j` using `IsOpenImmersion.lift_fac _ _ _`. Set `h : V.G ⟶ Z` to `jV ≫ inv (b ∣_ U) ≫ (b ⁻¹ᵁ U).ι`. Establish `hh : h ≫ b = V.j`. Simplify using `only [h, Category.assoc, ← morphismRestrict_ι, IsIso.inv_hom_id_assoc, hjV]`. Take `⟨V', ν, g, h₁, h₂, h₃⟩` from `GlobalTheory.T.exists_cover_factoring_projective F Y V Z (b ≫ V.p) h hproj (by rw [← Category.assoc, hh])`.
+
+Use `⟨V', Z, b, ν, hb.1, by rw [Category.assoc, h₁], g, ?_, h₃⟩` and prove the remaining obligations. Rewrite using `[← Category.assoc, h₂, Category.assoc, hh]`.
+-/
 theorem exists_cover_over_blowup : ∀ (F : Type) [Field F] [NumberField F] (Y : Var F) (V : Cover Y) (p : ℕ), p ≠ 0 → ∀ J : V.X.IdealSheafData, (∀ x ∈ J.support, x ∉ V.X.basicOpen (p : Γ(V.X, ⊤))) → ∃ (V' : Cover Y) (Z : Scheme.{0}) (b : Z ⟶ V.X) (ν : V'.X ⟶ Z), ReciprocityTheory.AnForm.R.FinalTheorems.EffCartier (J.comap b) ∧ (ν ≫ b) ≫ V.p = V'.p ∧ Lies V' V (ν ≫ b) := by
   intro F _ _ Y V p hp0 J hJp
   have := V.ar.isNoetherianRing

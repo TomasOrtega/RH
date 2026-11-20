@@ -6,6 +6,31 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.S
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Introduce `p hp k _ _ _`. Establish `hp' : p.Prime` using `hp.out`. Establish `hroot : ∀ u : kˣ, ∃ v : kˣ, v ^ p = u`. Introduce `u`. Take `⟨z, hz⟩` from `IsAlgClosed.exists_pow_nat_eq (u : k) hp'.pos`.
+
+Establish `hz0 : z ≠ 0`. Introduce and unpack `rfl`. Rewrite `hz` using `[zero_pow hp'.ne_zero]`. Conclude with `u.ne_zero hz.symm`. Conclude with `⟨Units.mk0 z hz0, Units.ext (by simpa using hz)⟩`.
+
+Use `choose f hf using hroot`. Use `haveI : NeZero (p : k) := ⟨by exact_mod_cast hp'.ne_zero⟩`. Take `⟨z₁, hz₁⟩` from `HasEnoughRootsOfUnity.exists_primitiveRoot k p`. Establish `hz₁0 : z₁ ≠ 0` using `hz₁.ne_zero hp'.ne_zero`. Establish `hu₁ : IsPrimitiveRoot (Units.mk0 z₁ hz₁0) p`.
+
+Rewrite using `[← IsPrimitiveRoot.coe_units_iff]`. Simplify using `using hz₁`. Establish `step : ∀ (n : ℕ) (x : kˣ), IsPrimitiveRoot (x ^ p) (p ^ (n + 1)) → IsPrimitiveRoot x (p ^ (n + 2))`. Introduce `n x hx`. Rewrite `hx`, the goal using `[IsPrimitiveRoot.iff_orderOf]`.
+
+Establish `hdvd : orderOf x ∣ p ^ (n + 2)`. Apply `orderOf_dvd_of_pow_eq_one` to reduce the goal to its premises. Rewrite using `[pow_succ', pow_mul, ← hx, pow_orderOf_eq_one]`. Take `⟨i, hi, hio⟩` from `(Nat.dvd_prime_pow hp').1 hdvd`. Break down `Nat.lt_or_ge i (n + 2) with h | h` into its components or cases.
+
+It suffices to derive a contradiction. Establish `h1 : (x ^ p) ^ (p ^ n) = 1`. Rewrite using `[← pow_mul, ← pow_succ', ← orderOf_dvd_iff_pow_eq_one, hio]`. Conclude with `Nat.pow_dvd_pow p (by omega)`. Establish `h2` using `orderOf_dvd_of_pow_eq_one h1`.
+
+Rewrite `h2` using `[hx]`. Use `Nat.le_of_dvd (pow_pos hp'.pos n) h2` as an intermediate fact. Establish `h3 : p ^ n < p ^ (n + 1)` using `Nat.pow_lt_pow_right hp'.one_lt (by omega)`. Use linear arithmetic over natural numbers and integers. Rewrite using `[hio, le_antisymm hi h]`.
+
+Set `g : ℕ → kˣ` to `fun n => Nat.rec (Units.mk0 z₁ hz₁0) (fun _ u => f u) n`. Establish `g0 : g 0 = Units.mk0 z₁ hz₁0` using `rfl`. Establish `gs : ∀ n, g (n + 1) = f (g n)` using `fun n => rfl`. Establish `gprim : ∀ n, IsPrimitiveRoot (g n) (p ^ (n + 1))`. Introduce `n`.
+
+Proceed by induction on `n with`. Consider the case `zero => simpa [g0] using hu₁`. Consider the case `succ n ih`. Apply `step` to reduce the goal to its premises. Rewrite using `[gs, hf]`.
+
+Conclude with `ih`. Use `⟨fun r => match r with | 0 => 1 | r + 1 => g r, ?_, ?_⟩` and prove the remaining obligations. Introduce `r`. Consider the cases of `r with`. Consider the case `zero => simpa using IsPrimitiveRoot.one`.
+
+Consider the case `succ r => exact gprim r`. Introduce `r`. Consider the cases of `r with`. Consider the case `zero => show g 0 ^ p = 1`. Simplify using `using (gprim 0).pow_eq_one`.
+
+Consider the case `succ r => show g (r + 1) ^ p = g r`. Rewrite using `[gs, hf]`.
+-/
 theorem exists_compatible_primitive_prime_pow_roots :
     ∀ (p : ℕ) [Fact p.Prime] (k : Type) [Field k] [IsAlgClosed k] [CharZero k],
       ∃ ζ : ℕ → kˣ, (∀ r, IsPrimitiveRoot (ζ r) (p ^ r)) ∧ ∀ r, ζ (r + 1) ^ p = ζ r := by

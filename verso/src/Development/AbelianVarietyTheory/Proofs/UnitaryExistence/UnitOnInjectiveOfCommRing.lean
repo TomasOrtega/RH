@@ -14,6 +14,9 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.S
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Introduce `a b h`. Establish `hi : IsIso (⊤ : T.left.Opens).ι` using `inferInstanceAs (IsIso T.left.topIso.hom)`. Establish `hi' : IsIso (⊤ : T.left.Opens).ι.appTop` using `inferInstanceAs (IsIso ((⊤ : T.left.Opens).ι.app ⊤))`. Establish `hb : Function.Injective (⊤ : T.left.Opens).ι.appTop.hom` using `(ConcreteCategory.bijective_of_isIso (⊤ : T.left.Opens).ι.appTop).1`. Conclude with `Units.ext (hb (congrArg Units.val h))`.
+-/
 theorem unitRes_top_injective {S : Scheme.{0}} {T : Over S} :
     Function.Injective (Out.unitRes (T := T) ⊤) := by
   intro a b h
@@ -23,12 +26,20 @@ theorem unitRes_top_injective {S : Scheme.{0}} {T : Over S} :
     (ConcreteCategory.bijective_of_isIso (⊤ : T.left.Opens).ι.appTop).1
   exact Units.ext (hb (congrArg Units.val h))
 
+/- English proof (translation)
+Introduce `a b h`. Establish `hb : Function.Injective (Scheme.ΓSpecIso (CommRingCat.of R)).inv.hom` using `(ConcreteCategory.bijective_of_isIso (Scheme.ΓSpecIso (CommRingCat.of R)).inv).1`. Conclude with `Units.ext (hb (congrArg Units.val h))`.
+-/
 theorem unitOn_injective_of_commRing {R : Type} [CommRing R] : Function.Injective (unitOn (R := R)) := by
   intro a b h
   have hb : Function.Injective (Scheme.ΓSpecIso (CommRingCat.of R)).inv.hom :=
     (ConcreteCategory.bijective_of_isIso (Scheme.ΓSpecIso (CommRingCat.of R)).inv).1
   exact Units.ext (hb (congrArg Units.val h))
 
+/- English proof (translation)
+Introduce `S G _ L hL k _ t n x y c c' h h'`. Set `p : (Over.mk t).left` to `(⊥ : PrimeSpectrum k)`. Establish `top : ∀ V : (Over.mk t).left.Opens, p ∈ V → V = ⊤` using `fun V hV => eq_top_iff.2 fun q _ => by`. Establish `: q = p` using `Subsingleton.elim (α := PrimeSpectrum k) q p`. Conclude with `this ▸ hV`.
+
+Take `⟨V, hV, ⟨θx, θy, hx, hy⟩, H⟩` from `h p`. Take `⟨V', hV', -, H'⟩` from `h' p`. Take `rfl` from `top V hV`. Take `rfl` from `top V' hV'`. Conclude with `unitOn_injective_of_commRing (unitRes_top_injective (H1.commIsOf_unique hL θx θy _ _ (H θx θy hx hy) (H' θx θy hx hy)))`.
+-/
 theorem weilIs_unique_fieldPoint : ∀ (S : Scheme.{0}) (G : Over S) [GrpObj G] (L : LB G.left), L.IsLB → ∀ (k : Type) [Field k] (t : Sp k ⟶ S) (n : ℤ) (x y : Over.mk t ⟶ G) (c c' : kˣ), Out.WeilIs G L n x y (unitOn c) → Out.WeilIs G L n x y (unitOn c') → c = c' := by
   intro S G _ L hL k _ t n x y c c' h h'
   let p : (Over.mk t).left := (⊥ : PrimeSpectrum k)

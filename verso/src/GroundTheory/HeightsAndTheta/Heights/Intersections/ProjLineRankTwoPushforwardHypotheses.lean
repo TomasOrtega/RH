@@ -40,6 +40,9 @@ def pullHerm {κ : K → K'} {v : (Σ k, ι k) → (Σ k', ι' k')} (hv : IsBloc
     · rw [pullDeg, hv.1.extend_apply]
 
 omit [∀ k, Fintype (ι k)] [∀ k, Fintype (ι' k)] in
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨rfl, fun _ => rfl⟩`.
+-/
 theorem isPullHerm_pullHerm {κ : K → K'} {v : (Σ k, ι k) → (Σ k', ι' k')} (hv : IsBlockMap κ v)
     (A : HermLine ι) : IsPullHerm κ v A (pullHerm hv A) :=
   ⟨rfl, fun _ => rfl⟩
@@ -196,6 +199,11 @@ section Inhabitants
 
 abbrev ProjLineSquareBlocks : Fin 2 → Type := fun _ => Fin 2
 
+/- English proof (translation)
+Use `⟨⟨0⟩, ⟨Ideal.isPrime_bot, ⟨∅, by simp, by simp⟩, fun _ => ⟨0, ?_⟩⟩, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[Ideal.mem_bot]`. Conclude with `X_ne_zero _`. Conclude with `Ideal.comap_bot_of_injective _ (C_injective _ _)`. Rewrite using `[ringKrullDim_eq_of_ringEquiv (RingEquiv.quotientBot _), MvPolynomial.ringKrullDim_of_isNoetherianRing, IsPrincipalIdealRing.ringKrullDim_eq_one ℤ Int.not_isField]`.
+
+Simplify using `[Nat.card_eq_fintype_card]`. Both sides reduce to the same expression.
+-/
 theorem isArithVar_bot_sq : IsArithVar (⊥ : Ideal (MRing ProjLineSquareBlocks)) 3 := by
   refine ⟨⟨0⟩, ⟨Ideal.isPrime_bot, ⟨∅, by simp, by simp⟩, fun _ => ⟨0, ?_⟩⟩, ?_, ?_⟩
   · rw [Ideal.mem_bot]
@@ -207,9 +215,15 @@ theorem isArithVar_bot_sq : IsArithVar (⊥ : Ideal (MRing ProjLineSquareBlocks)
     simp [Nat.card_eq_fintype_card]
     rfl
 
+/- English proof (translation)
+The claim follows from `Ideal.comap_bot_of_injective _ (rename_injective _ (isBlockMap_blkV (Fin 2) 0).2.1)`.
+-/
 theorem imageZ_blkV_bot : imageZ (blkV (Fin 2) 0) (⊥ : Ideal (MRing ProjLineSquareBlocks)) = ⊥ :=
   Ideal.comap_bot_of_injective _ (rename_injective _ (isBlockMap_blkV (Fin 2) 0).2.1)
 
+/- English proof (translation)
+Use `⟨isBlockMap_blkV (Fin 2) 0, isArithVar_bot_sq, isArithVar_bot 1, bot_le, ?_, fun _ => isSmoothHerm_fubiniStudyO1 2, fun _ => isPullHerm_pullHerm _ _⟩` and prove the remaining obligations. Rewrite using `[imageZ_blkV_bot, ringKrullDim_eq_of_ringEquiv (RingEquiv.quotientBot _), MvPolynomial.ringKrullDim_of_isNoetherianRing, IsPrincipalIdealRing.ringKrullDim_eq_one ℤ Int.not_isField]`. Simplify using `[Nat.card_eq_fintype_card]`. Evaluate the decidable proposition.
+-/
 theorem projPoint_pushforward_hypotheses :
     IsBlockMap (blkOf 0) (blkV (Fin 2) 0) ∧ IsArithVar (⊥ : Ideal (MRing ProjLineSquareBlocks)) 3 ∧
     IsArithVar (⊥ : Ideal (MRing (GlobalTheory 2))) 2 ∧
@@ -227,6 +241,11 @@ theorem projPoint_pushforward_hypotheses :
   simp [Nat.card_eq_fintype_card]
   decide
 
+/- English proof (translation)
+Proceed by induction on `f using MvPolynomial.induction_on with`. Consider the case `C a`. Rewrite using `[aeval_C, eq_intCast (algebraMap ℤ Φ) a]`. Conclude with `(eq_intCast ((algebraMap (MRing (GlobalTheory 2)) Φ).comp C) a).symm`. Consider the case `add p q hp hq => rw [map_add, map_add, hp, hq]`.
+
+Consider the case `mul_X p n hp => rw [map_mul, map_mul, hp, aeval_X]`.
+-/
 theorem aeval_algebraMap_X {Φ : Type} [Field Φ] [Algebra (MRing (GlobalTheory 2)) Φ] (f : MRing (GlobalTheory 2)) :
     aeval (R := ℤ) (fun p => algebraMap (MRing (GlobalTheory 2)) Φ (X p)) f = algebraMap (MRing (GlobalTheory 2)) Φ f := by
   induction f using MvPolynomial.induction_on with
@@ -236,6 +255,9 @@ theorem aeval_algebraMap_X {Φ : Type} [Field Φ] [Algebra (MRing (GlobalTheory 
   | add p q hp hq => rw [map_add, map_add, hp, hq]
   | mul_X p n hp => rw [map_mul, map_mul, hp, aeval_X]
 
+/- English proof (translation)
+The claim follows from `Ideal.comap_bot_of_injective _ (rename_injective _ Function.injective_id)`.
+-/
 theorem imageZ_id_bot : imageZ (ι := GlobalTheory 2) (ι' := GlobalTheory 2) id ⊥ = ⊥ :=
   Ideal.comap_bot_of_injective _ (rename_injective _ Function.injective_id)
 
@@ -268,6 +290,9 @@ def genFibreId : GenFibre (ι := GlobalTheory 2) (ι' := GlobalTheory 2) id ⊥ 
 
 def chartId : ∀ k : FibreBlock (id : Unit → Unit), fibreIdx (GlobalTheory 2) id k := fun k => (k.2 ⟨k.1, rfl⟩).elim
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨isBlockMap_id, isArithVar_bot 1, imageZ_id_bot, fun k => (k.2 ⟨k.1, rfl⟩).elim, fun j => by fin_cases j <;> exact isSmoothHerm_fubiniStudyO1 2, fun _ => isPullHerm_pullHerm _ _⟩`.
+-/
 theorem pfAI3_hyps :
     IsBlockMap (ι := GlobalTheory 2) (ι' := GlobalTheory 2) id id ∧ IsArithVar (⊥ : Ideal (MRing (GlobalTheory 2))) 2 ∧
     imageZ (ι := GlobalTheory 2) (ι' := GlobalTheory 2) id ⊥ = ⊥ ∧ IsChart (fibreIdeal id genFibreId) chartId ∧
@@ -281,10 +306,16 @@ def noRows (n : ℕ) : Fin 0 → Fin n → MRing (GlobalTheory 2) := fun a => a.
 def idRows (n : ℕ) : Matrix (Fin n) (Fin n) (FnField (⊥ : Ideal (MRing (GlobalTheory 2)))) :=
   ⇑(Pi.basisFun (FnField (⊥ : Ideal (MRing (GlobalTheory 2)))) (Fin n))
 
+/- English proof (translation)
+Use `⟨fun a => a.elim0, fun F _ x _ => ?_⟩` and prove the remaining obligations. Rewrite using `[Subsingleton.elim (Matrix.of fun a j => evalAt x (noRows n a j)) 0, Matrix.rank_zero, zero_add]`.
+-/
 theorem isQuotRows_noRows (n : ℕ) : IsQuotRows (⊥ : Ideal (MRing (GlobalTheory 2))) (noRows n) 0 n := by
   refine ⟨fun a => a.elim0, fun F _ x _ => ?_⟩
   rw [Subsingleton.elim (Matrix.of fun a j => evalAt x (noRows n a j)) 0, Matrix.rank_zero, zero_add]
 
+/- English proof (translation)
+Use `⟨(Pi.basisFun _ _).linearIndependent, ?_⟩` and prove the remaining obligations. Rewrite using `[idRows, (Pi.basisFun _ _).span_eq]`. Use `symm`. Rewrite using `[LinearMap.ker_eq_top]`. Conclude with `LinearMap.ext fun _ => Subsingleton.elim _ _`.
+-/
 theorem isKerBasis_idRows (n : ℕ) : IsKerBasis (⊥ : Ideal (MRing (GlobalTheory 2))) (noRows n) (idRows n) := by
   refine ⟨(Pi.basisFun _ _).linearIndependent, ?_⟩
   rw [idRows, (Pi.basisFun _ _).span_eq]
@@ -294,6 +325,9 @@ theorem isKerBasis_idRows (n : ℕ) : IsKerBasis (⊥ : Ideal (MRing (GlobalTheo
 
 def fibreFubiniStudyO1 : HermLine (PBlk (GlobalTheory 2) 2) := HermLine.sqMetric (Sum.elim (fun _ => 0) fun _ => 1)
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨isArithVar_bot 1, isQuotRows_noRows 2, isKerBasis_idRows 2, fun j => by fin_cases j <;> exact isSmoothHerm_fubiniStudyO1 2, fun _ => isPullHerm_pullHerm _ _, isSmoothHerm_sqMetric _, rfl⟩`.
+-/
 theorem projLineRankTwo_pushforward_hypotheses :
     IsArithVar (⊥ : Ideal (MRing (GlobalTheory 2))) 2 ∧ IsQuotRows (⊥ : Ideal (MRing (GlobalTheory 2))) (noRows 2) 0 2 ∧
     IsKerBasis (⊥ : Ideal (MRing (GlobalTheory 2))) (noRows 2) (idRows 2) ∧ AllSmooth ![fsO1 2, fsO1 2] ∧
@@ -306,6 +340,9 @@ theorem projLineRankTwo_pushforward_hypotheses :
 
 def pluckerFubiniStudyO1 : HermLine (FlagBundleBlocks (GlobalTheory 2) 3 3) := HermLine.sqMetric (Sum.elim (fun _ => 0) fun _ => 1)
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨rfl, isArithVar_bot 1, isQuotRows_noRows 3, isKerBasis_idRows 3, fun j => by fin_cases j <;> exact isSmoothHerm_fubiniStudyO1 2, fun _ => isPullHerm_pullHerm _ _, fun _ => isSmoothHerm_sqMetric _⟩`.
+-/
 theorem projLineFlag_pushforward_hypotheses :
     flagDim 3 = 3 ∧
     IsArithVar (⊥ : Ideal (MRing (GlobalTheory 2))) 2 ∧ IsQuotRows (⊥ : Ideal (MRing (GlobalTheory 2))) (noRows 3) 0 3 ∧
@@ -317,10 +354,16 @@ theorem projLineFlag_pushforward_hypotheses :
     fun j => by fin_cases j <;> exact isSmoothHerm_fubiniStudyO1 2, fun _ => isPullHerm_pullHerm _ _,
     fun _ => isSmoothHerm_sqMetric _⟩
 
+/- English proof (translation)
+The claim follows from `specInt_hypotheses_hold`.
+-/
 theorem specIntHeightFormula_hypotheses : IsArithVar (⊥ : Ideal (MRing (GlobalTheory 1))) 1 ∧ IsSmoothHerm (fsO1 1) ∧
     IsSec (⊥ : Ideal (MRing (GlobalTheory 1))) (fsO1 1) (Xb 1 0) :=
   specInt_hypotheses_hold
 
+/- English proof (translation)
+Introduce `_ _` and use `⟨0, Xb 1 0, fun _ => 1, isMultiHomog_Xb 1 0, fun _ => by simp, by simp [genPt]⟩`.
+-/
 theorem isSecOf_X : IsSecOf (⊥ : Ideal (MRing (GlobalTheory 1))) (fun _ => 1) (genPt ⊥ ⟨(), 0⟩) := fun _ _ =>
   ⟨0, Xb 1 0, fun _ => 1, isMultiHomog_Xb 1 0, fun _ => by simp, by simp [genPt]⟩
 

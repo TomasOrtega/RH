@@ -5,6 +5,9 @@ import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.CmLocalDensit
 
 namespace GlobalTheory.DensityProductClosed
 
+/- English proof (translation)
+The claim follows from `GlobalTheory.DensityProductCompare.densityProduct_iff.1 GlobalTheory.T.cm_localDensities_productFormula`.
+-/
 theorem eulerProductOfDensities : GlobalTheory.IndefiniteRowSideFullHecke.LocalAdditiveCharacterDual.EulerProductOfDensities :=
   GlobalTheory.DensityProductCompare.densityProduct_iff.1 GlobalTheory.T.cm_localDensities_productFormula
 

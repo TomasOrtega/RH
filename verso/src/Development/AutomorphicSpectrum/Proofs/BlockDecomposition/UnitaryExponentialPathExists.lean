@@ -13,6 +13,13 @@ namespace GlobalTheory.CompanionTheory.SmoothRep.KCurve
 section
 open scoped Matrix.Norms.L2Operator
 
+/- English proof (translation)
+Use `haveI : IsStarNormal k := ⟨(Unitary.star_mul_self_of_mem hu).trans (Unitary.mul_star_self_of_mem hu).symm⟩`. Establish `hfin` using `Matrix.finite_spectrum k`. Establish `hunit : IsUnit k` using `(Unitary.toUnits ⟨k, hu⟩).isUnit`. Establish `hne : ∀ x ∈ spectrum ℂ k, x ≠ 0` using `fun x hx h0 => (spectrum.zero_notMem_iff ℂ).mpr hunit (h0 ▸ hx)`. Use `⟨cfc Complex.log k, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[← CFC.exp_eq_normedSpace_exp (𝕜 := ℂ) (p := IsStarNormal) (a := cfc Complex.log k), ← cfc_comp (R := ℂ) (p := IsStarNormal) NormedSpace.exp Complex.log k (hg := (hfin.image _).continuousOn _) (hf := hfin.continuousOn _)]`. Establish `hc : cfc (NormedSpace.exp ∘ Complex.log) k = cfc (id : ℂ → ℂ) k`. Use `cfc_congr fun x hx => ?_` and prove the remaining obligations. Simplify using `only [Function.comp, id]`. Rewrite using `[← Complex.exp_eq_exp_ℂ, Complex.exp_log (hne x hx)]`.
+
+Rewrite using `[hc, cfc_id ℂ k]`.
+-/
 theorem exists_exp_eq_of_unitary {n : ℕ} (k : Matrix (Fin n) (Fin n) ℂ)
     (hu : k ∈ unitary (Matrix (Fin n) (Fin n) ℂ)) :
     ∃ Y : Matrix (Fin n) (Fin n) ℂ, NormedSpace.exp Y = k := by
@@ -42,18 +49,32 @@ def atPlace (w : InfinitePlace E) :
     Matrix (Fin a) (Fin a) (Cinf E) →+* Matrix (Fin a) (Fin a) ℂ :=
   (Pi.evalRingHom (fun _ : InfinitePlace E => ℂ) w).mapMatrix
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem atPlace_apply (w : InfinitePlace E) (x : Matrix (Fin a) (Fin a) (Cinf E)) (i j : Fin a) :
     atPlace w x i j = x i j w := rfl
 
+/- English proof (translation)
+The claim follows from `continuous_id.matrix_map (continuous_apply w)`.
+-/
 theorem continuous_atPlace (w : InfinitePlace E) :
     Continuous (atPlace (a := a) w) :=
   continuous_id.matrix_map (continuous_apply w)
 
+/- English proof (translation)
+Use extensionality with `i j`. Both sides reduce to the same expression.
+-/
 theorem atPlace_star (w : InfinitePlace E) (x : Matrix (Fin a) (Fin a) (Cinf E)) :
     atPlace w (star x) = star (atPlace w x) := by
   ext i j
   rfl
 
+/- English proof (translation)
+Establish `hk : ∀ w, atPlace w k.1 ∈ unitary (Matrix (Fin a) (Fin a) ℂ)` using `fun w => Unitary.mem_iff.mpr ⟨by rw [← atPlace_star, ← map_mul, Unitary.star_mul_self_of_mem k.2, map_one], by rw [← atPlace_star, ← map_mul, Unitary.mul_star_self_of_mem k.2, map_one]⟩`. Use `choose Y hY using fun w => exists_exp_eq_of_unitary (atPlace w k.1) (hk w)`. Use `⟨Matrix.of fun i j w => Y w i j, Matrix.ext fun i j => ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `w`. Establish `h1` using `congrArg (fun m => m i j) (NormedSpace.map_exp (atPlace w) (continuous_atPlace w) (Matrix.of fun i j w => Y w i j))`.
+
+Establish `hM : atPlace w (Matrix.of fun i j w => Y w i j) = Y w`. Use extensionality with `i' j'`. Both sides reduce to the same expression. Simplify using `only [atPlace_apply, hM] at h1`. Conclude with `h1.trans ((congrArg (fun m => m i j) (hY w)).trans (atPlace_apply w k.1 i j))`.
+-/
 theorem exists_exp_eq (k : Kinf E a) :
     ∃ M : Matrix (Fin a) (Fin a) (Cinf E), NormedSpace.exp M = k.1 := by
   have hk : ∀ w, atPlace w k.1 ∈ unitary (Matrix (Fin a) (Fin a) ℂ) := fun w =>
@@ -71,6 +92,17 @@ theorem exists_exp_eq (k : Kinf E a) :
   simp only [atPlace_apply, hM] at h1
   exact h1.trans ((congrArg (fun m => m i j) (hY w)).trans (atPlace_apply w k.1 i j))
 
+/- English proof (translation)
+Introduce `E _ _ _ a k`. Take `⟨M, hM⟩` from `exists_exp_eq k`. Establish `htoL : ∀ N : Matrix (Fin a) (Fin a) (Cinf E), toL N = GlobalTheory.CompanionTheory.LieCurve.toLieL E a N` using `fun N => by`. Rewrite using `[GlobalTheory.CompanionTheory.LieCurve.toLieL_apply]`. Establish `hof : Matrix.of (GlobalTheory.CompanionTheory.LieCurve.toLieL E a M) = M`.
+
+Rewrite using `[GlobalTheory.CompanionTheory.LieCurve.toLieL_apply]`. Both sides reduce to the same expression. Use `⟨GlobalTheory.CompanionTheory.LieCurve.expUnit E a M, GlobalTheory.CompanionTheory.LieCurve.toLieL E a M, GlobalTheory.CompanionTheory.LieCurve.expUnit_zero E a M, ?_, fun s => ?_, fun s => ?_⟩` and prove the remaining obligations. Apply `Units.ext` to reduce the goal to its premises. Rewrite using `[GlobalTheory.CompanionTheory.LieCurve.expUnit_val, one_smul, hM]`.
+
+Both sides reduce to the same expression. Simplify using `only [GlobalTheory.CompanionTheory.LieCurve.expUnit_val, hof, htoL]`. Conclude with `(GlobalTheory.CompanionTheory.LieCurve.toLieL E a).hasFDerivAt.comp_hasDerivAt s (GlobalTheory.CompanionTheory.LieCurve.hasDerivAt_exp E a M s)`. Simplify using `only [GlobalTheory.CompanionTheory.LieCurve.expUnit_inv_val, hof, htoL]`. Establish `h1` using `GlobalTheory.CompanionTheory.LieCurve.hasDerivAt_exp E a (-M) s`.
+
+Establish `e1 : (fun t : ℝ => NormedSpace.exp (t • -M)) = fun t : ℝ => NormedSpace.exp (-t • M)`. Use function extensionality and compare the values at `t`. Rewrite using `[neg_smul, smul_neg]`. Establish `e2 : NormedSpace.exp (s • -M) * -M = -(M * NormedSpace.exp (-s • M))`. Rewrite using `[smul_neg, ← neg_smul, mul_neg, ((Commute.refl M).smul_right (-s)).exp_right.eq]`.
+
+Rewrite `h1` using `[e1, e2]`. Conclude with `(GlobalTheory.CompanionTheory.LieCurve.toLieL E a).hasFDerivAt.comp_hasDerivAt s h1`.
+-/
 theorem exists_curve : ∀ (E : Type) [Field E] [NumberField E] [IsTotallyComplex E] (a : ℕ) (k : Kinf E a), ∃ (c : ℝ → GL (Fin a) (Cinf E)) (Y : Lie E a), c 0 = 1 ∧ c 1 = Unitary.toUnits k ∧ (∀ s, HasDerivAt (fun t => toL (c t).val) (toL ((c s).val * Matrix.of Y)) s) ∧ (∀ s, HasDerivAt (fun t => toL ((c t)⁻¹).val) (toL (-(Matrix.of Y * ((c s)⁻¹).val))) s) := by
   intro E _ _ _ a k
   obtain ⟨M, hM⟩ := exists_exp_eq k

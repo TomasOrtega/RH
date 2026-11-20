@@ -13,6 +13,9 @@ open ValuativeRel GlobalTheory.LocMod.Inhab
 
 variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
 
+/- English proof (translation)
+Set `H : AddSubgroup k` to `{ carrier := {x | valuation k x < valuation k (b : k)} zero_mem' := by simp [zero_lt_iff] add_mem' := fun {x y} hx hy => show valuation k (x + y) < _ from lt_of_le_of_lt (Valuation.map_add _ x y) (max_lt hx hy) neg_mem' := fun {x} hx => by simpa using hx }`. Establish `hH : (H : Set k) ∈ nhds (0 : k)` using `(IsValuativeTopology.mem_nhds_zero_iff _).2 ⟨Units.mk0 (valuation k (b : k)) (by simp), fun x hx => hx⟩`. Conclude with `H.isOpen_of_mem_nhds hH`.
+-/
 theorem isOpen_valuation_lt (b : kˣ) : IsOpen {x : k | valuation k x < valuation k (b : k)} := by
   let H : AddSubgroup k :=
     { carrier := {x | valuation k x < valuation k (b : k)}
@@ -25,6 +28,11 @@ theorem isOpen_valuation_lt (b : kˣ) : IsOpen {x : k | valuation k x < valuatio
 
 variable {R T D : Type} [Fintype R] [DecidableEq R] [Fintype T] [DecidableEq T] [Fintype D] [DecidableEq D]
 
+/- English proof (translation)
+Use `(isCompact_box b).inter_right (IsOpen.isClosed_compl ?_)` and prove the remaining obligations. Establish `: {C : Matrix T R k | ∀ t i, valuation k (C t i) < valuation k (b : k)} = Set.pi Set.univ fun _ : T => Set.pi Set.univ fun _ : R => {x : k | valuation k x < valuation k (b : k)}`. Use extensionality with `C`. Conclude with `⟨fun h r _ q _ => h r q, fun h r q => h r trivial q trivial⟩`. Rewrite using `[this]`.
+
+Conclude with `isOpen_set_pi Set.finite_univ fun _ _ => isOpen_set_pi Set.finite_univ fun _ _ => isOpen_valuation_lt b`.
+-/
 theorem isCompact_sphere (b : kˣ) :
     IsCompact ((box T R b : Set (Matrix T R k)) ∩ {C | ∀ t i, valuation k (C t i) < valuation k (b : k)}ᶜ) := by
   refine (isCompact_box b).inter_right (IsOpen.isClosed_compl ?_)
@@ -35,6 +43,23 @@ theorem isCompact_sphere (b : kˣ) :
   rw [this]
   exact isOpen_set_pi Set.finite_univ fun _ _ => isOpen_set_pi Set.finite_univ fun _ _ => isOpen_valuation_lt b
 
+/- English proof (translation)
+Use `haveI := GlobalTheory.SplitWeil.t2Space k`. Use `set Sph : Set (Matrix T R k) := (box T R b : Set (Matrix T R k)) ∩ {C | ∀ t i, valuation k (C t i) < valuation k (b : k)}ᶜ with hSph`. Use `set E : Set (Matrix T D k) := (fun p : Matrix R D k × Matrix T R k => p.2 * p.1) '' (K ×ˢ Sph) with hE`. Establish `hEc : IsCompact E` using `(hK.prod (isCompact_sphere b)).image (by fun_prop)`. Establish `h0 : (0 : Matrix T D k) ∉ E`.
+
+Introduce and unpack `⟨⟨Y₁, C⟩, ⟨hY, hC⟩, h⟩`. Use `hinj Y₁ hY C h` as an intermediate fact. Substitute `this` using the available equality. Conclude with `hC.2 fun t i => by simp [zero_lt_iff]`. Take `⟨N, hN⟩` from `exists_box_subset (hEc.isClosed.isOpen_compl.mem_nhds h0)`.
+
+Use `⟨N, fun Y₁ hY C hC => ?_⟩` and prove the remaining obligations. Assume the negation of the conclusion as `hCb`. Choose the witnesses or unpack the hypotheses as in `⟨r, q, hrq⟩ : ∃ r q, valuation k (b : k) < valuation k (C r q) := by`. Assume the negation of the conclusion as `hh`. Use `push Not at hh`.
+
+Conclude with `hCb hh`. Take `⟨⟨t, i⟩, -, hmax⟩` from `Finset.exists_max_image (Finset.univ : Finset (T × R)) (fun p => valuation k (C p.1 p.2)) ⟨(r, q), Finset.mem_univ _⟩`. Establish `hbc : valuation k (b : k) < valuation k (C t i)` using `hrq.trans_le (hmax (r, q) (Finset.mem_univ _))`. Establish `hb0 : valuation k (b : k) ≠ 0` using `by simp`. Establish `hc0 : valuation k (C t i) ≠ 0` using `ne_of_gt (lt_of_le_of_lt zero_le hbc)`.
+
+Establish `hc : C t i ≠ 0` using `by simpa using hc0`. Establish `hle : valuation k ((b : k) / C t i) ≤ 1`. Rewrite using `[map_div₀, div_le_one₀ (zero_lt_iff.2 hc0)]`. Conclude with `hbc.le`. Establish `hmem : ((b : k) / C t i) • C ∈ Sph`.
+
+Use `⟨fun t' i' => ?_, fun h => ?_⟩` and prove the remaining obligations. Rewrite using `[Matrix.smul_apply, smul_eq_mul, map_mul, map_div₀]`. Combine the equalities or inequalities in the displayed calculation. Use `h t i` as an intermediate fact. Rewrite `this` using `[Matrix.smul_apply, smul_eq_mul, div_mul_cancel₀ _ hc]`.
+
+Conclude with `lt_irrefl _ this`. Establish `hin : ((b : k) / C t i) • C * Y₁ ∈ E` using `⟨(Y₁, _), ⟨hY, hmem⟩, rfl⟩`. Apply `hN (((b : k) / C t i) • C * Y₁) _ hin` to reduce the goal to its premises. Introduce `r' q'`. Rewrite using `[Matrix.smul_mul, Matrix.smul_apply, smul_eq_mul, map_mul]`.
+
+Conclude with `(mul_le_of_le_one_left' hle).trans (hC r' q')`.
+-/
 theorem exists_box_of_mul_mem {K : Set (Matrix R D k)} (hK : IsCompact K)
     (hinj : ∀ Y₁ ∈ K, ∀ C : Matrix T R k, C * Y₁ = 0 → C = 0) (b : kˣ) :
     ∃ N : kˣ, ∀ Y₁ ∈ K, ∀ C : Matrix T R k, C * Y₁ ∈ box T D N → C ∈ box T R b := by
@@ -84,6 +109,11 @@ end GlobalTheory.RankChart.Extend
 namespace GlobalTheory.RankChart.Extend
 open ValuativeRel GlobalTheory.LocMod.Inhab
 
+/- English proof (translation)
+Establish `hli : LinearIndependent k Y₁.row`. Rewrite using `[linearIndependent_iff_card_eq_finrank_span, Set.finrank, ← Matrix.rank_eq_finrank_span_row, hY]`. Use extensionality with `t i`. Use `Fintype.linearIndependent_iff.1 hli (fun i => C t i) (by` as an intermediate fact. Use function extensionality and compare the values at `j`.
+
+Use `congrFun (congrFun h t) j` as an intermediate fact. Simplify `this) i` using `[Matrix.mul_apply, Finset.sum_apply, Matrix.row]`. Simplify using `using this`.
+-/
 theorem eq_zero_of_mul_eq_zero {k R T D : Type} [Field k] [Fintype R] [Fintype T] [Fintype D]
     {Y₁ : Matrix R D k} (hY : Y₁.rank = Fintype.card R) {C : Matrix T R k} (h : C * Y₁ = 0) : C = 0 := by
   have hli : LinearIndependent k Y₁.row := by
@@ -95,6 +125,9 @@ theorem eq_zero_of_mul_eq_zero {k R T D : Type} [Field k] [Fintype R] [Fintype T
     simpa [Matrix.mul_apply, Finset.sum_apply, Matrix.row] using this) i
   simpa using this
 
+/- English proof (translation)
+Use `continuous_pi fun i => ?_` and prove the remaining obligations. Break down `i with i | i` into its components or cases. Conclude with `(continuous_apply i).comp continuous_fst`. Conclude with `(continuous_apply i).comp continuous_snd`.
+-/
 theorem continuous_fromRows {k R T D : Type} [TopologicalSpace k] :
     Continuous fun p : Matrix R D k × Matrix T D k => Matrix.fromRows p.1 p.2 := by
   refine continuous_pi fun i => ?_
@@ -102,6 +135,41 @@ theorem continuous_fromRows {k R T D : Type} [TopologicalSpace k] :
   · exact (continuous_apply i).comp continuous_fst
   · exact (continuous_apply i).comp continuous_snd
 
+/- English proof (translation)
+Introduce `k _ _ _ _ ρ d T _ _ b θ hθ`. Use `haveI := GlobalTheory.SplitWeil.t2Space k`. Take `⟨⟨hlc, hcs⟩, hrk⟩` from `hθ`. Use `set K := tsupport θ with hKdef`. Establish `hsupp : IsClosed (Function.support θ)` using `(hlc.isOpen_fiber 0).isClosed_compl`.
+
+Establish `hK : ∀ Y₁ ∈ K, θ Y₁ ≠ 0` using `fun Y₁ h => by`. Rewrite `h` using `[hKdef, tsupport, hsupp.closure_eq]`. Conclude with `h`. Establish `hKrk : ∀ Y₁ ∈ K, Y₁.rank = ρ` using `fun Y₁ h => by`. Assume the negation of the conclusion as `hne`.
+
+Conclude with `hK Y₁ h (hrk Y₁ hne)`. Take `⟨N, hN⟩` from `exists_box_of_mul_mem (T := T) (D := Fin d) (hcs : IsCompact K) (fun Y₁ h C hC => eq_zero_of_mul_eq_zero (by rw [hKrk Y₁ h, Fintype.card_fin]) hC) b`. Choose the witnesses or unpack the hypotheses as in `⟨a, ha1, ha2⟩ : ∃ a : kˣ, valuation k (a : k) ≤ valuation k (N : k) ∧ valuation k (b : k) * valuation k (a : k) ≤ valuation k (N : k) := by`. Distinguish the cases in `hb : valuation k (b : k) ≤ 1`. Conclude with `⟨N, le_rfl, mul_le_of_le_one_left' hb⟩`.
+
+Establish `hb0 : valuation k (b : k) ≠ 0` using `by simp`. Use `⟨N * b⁻¹, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[Units.val_mul, map_mul, Units.val_inv_eq_inv_val, map_inv₀]`. Use `mul_le_of_le_one_right' ?_` and prove the remaining obligations. Conclude with `inv_le_one_of_one_le₀ (le_of_lt (not_le.1 hb))`.
+
+Rewrite using `[Units.val_mul, map_mul, Units.val_inv_eq_inv_val, map_inv₀, mul_comm, mul_assoc, inv_mul_cancel₀ hb0, mul_one]`. Use `set S : Set (Matrix (Fin ρ ⊕ T) (Fin d) k) := {Y | ∃ C ∈ box T (Fin ρ) b, Y.toRows₂ - C * Y.toRows₁ ∈ box T (Fin d) N} with hS`. Establish `hshift : ∀ Y E : Matrix (Fin ρ ⊕ T) (Fin d) k, E ∈ box (Fin ρ ⊕ T) (Fin d) a → Y ∈ S → Y + E ∈ S`. Introduce and unpack `Y E hE ⟨C, hC, hY⟩`. Use `⟨C, hC, ?_⟩` and prove the remaining obligations.
+
+Establish `e : (Y + E).toRows₂ - C * (Y + E).toRows₁ = (Y.toRows₂ - C * Y.toRows₁) + (E.toRows₂ - C * E.toRows₁)`. Rewrite using `[show (Y + E).toRows₂ = Y.toRows₂ + E.toRows₂ from rfl, show (Y + E).toRows₁ = Y.toRows₁ + E.toRows₁ from rfl, Matrix.mul_add]`. Normalize the expressions using the abelian group laws. Rewrite using `[e]`. Use `(box T (Fin d) N).add_mem hY ((box T (Fin d) N).sub_mem (fun t j => (hE (Sum.inr t) j).trans ha1) ?_)` and prove the remaining obligations.
+
+Introduce `t j`. Rewrite using `[Matrix.mul_apply]`. Use `Valuation.map_sum_le _ fun i _ => ?_` and prove the remaining obligations. Rewrite using `[map_mul]`. Conclude with `(mul_le_mul' (hC t i) (hE (Sum.inl i) j)).trans ha2`.
+
+Establish `hiff : ∀ Y E : Matrix (Fin ρ ⊕ T) (Fin d) k, E ∈ box (Fin ρ ⊕ T) (Fin d) a → (Y + E ∈ S ↔ Y ∈ S)` using `fun Y E hE => ⟨fun h => by simpa using hshift (Y + E) (-E) ((box _ _ a).neg_mem hE) h, hshift Y E hE⟩`. Establish `hc1 : Continuous fun Y : Matrix (Fin ρ ⊕ T) (Fin d) k => Y.toRows₁`. Unfold `Matrix.toRows₁`. Use `fun_prop`. Use `⟨S.indicator fun Z => θ Z.toRows₁, ⟨?_, ?_⟩, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[IsLocallyConstant.iff_exists_open]`. Introduce `Y`. Use `⟨{Z | θ Z.toRows₁ = θ Y.toRows₁} ∩ {Z | Z - Y ∈ box (Fin ρ ⊕ T) (Fin d) a}, ((hlc.comp_continuous hc1).isOpen_fiber _).inter ((isOpen_box a).preimage (by fun_prop)), ⟨rfl, by simp⟩, fun Z ⟨h1, h2⟩ => ?_⟩` and prove the remaining obligations. Establish `hZ : Z ∈ S ↔ Y ∈ S`. Use `hiff Y (Z - Y) h2` as an intermediate fact.
+
+Rewrite `this` using `[add_sub_cancel]`. Then use the resulting hypothesis. Distinguish the cases in `hY : Y ∈ S`. Rewrite using `[Set.indicator_of_mem hY, Set.indicator_of_mem (hZ.2 hY)]`. Conclude with `h1`. Rewrite using `[Set.indicator_of_notMem hY, Set.indicator_of_notMem (mt hZ.1 hY)]`.
+
+Establish `hcont : Continuous (fun p : (Matrix (Fin ρ) (Fin d) k × Matrix T (Fin ρ) k) × Matrix T (Fin d) k => Matrix.fromRows p.1.1 (p.1.2 * p.1.1 + p.2))` using `continuous_fromRows.comp (by fun_prop : Continuous fun p : (Matrix (Fin ρ) (Fin d) k × Matrix T (Fin ρ) k) × Matrix T (Fin d) k => (p.1.1, p.1.2 * p.1.1 + p.2))`. Use `HasCompactSupport.intro (((hcs.prod (isCompact_box b)).prod (isCompact_box N)).image hcont) ?_` and prove the remaining obligations. Introduce `Y hY`. Assume the negation of the conclusion as `h0`. Establish `hYS : Y ∈ S` using `by by_contra hn; exact h0 (Set.indicator_of_notMem hn _)`.
+
+Establish `hθY : θ Y.toRows₁ ≠ 0` using `by rwa [Set.indicator_of_mem hYS] at h0`. Take `⟨C, hC, hE⟩` from `hYS`. Use `hY ⟨((Y.toRows₁, C), Y.toRows₂ - C * Y.toRows₁), ⟨⟨subset_tsupport _ hθY, hC⟩, hE⟩, ?_⟩` and prove the remaining obligations. Use `show Matrix.fromRows _ _ = Y`. Rewrite using `[add_sub_cancel, Matrix.fromRows_toRows]`.
+
+Introduce `Y hYr`. Distinguish the cases in `hz : θ Y.toRows₁ = 0`. Simplify using `only [Set.indicator, hz, ite_self]`. Establish `hY1 : Y.toRows₁ ∈ K` using `subset_tsupport _ hz`. Establish `hrk1 : Y.toRows₁.rank = ρ` using `hKrk _ hY1`.
+
+Establish `hmem : Y ∈ S ↔ ∃ C ∈ box T (Fin ρ) b, Y.toRows₂ = C * Y.toRows₁`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨C, hC, hE⟩`. Establish `hT : ρ ≤ (Y.toRows₁)ᵀ.rank` using `by rw [Matrix.rank_transpose, hrk1]`. Take `⟨τ, hτ⟩` from `GlobalTheory.exists_rows_linearIndependent_of_le_rank ρ (Y.toRows₁)ᵀ hT`.
+
+Establish `hu` using `(Matrix.isUnit_iff_isUnit_det _).1 (Matrix.linearIndependent_rows_iff_isUnit.1 hτ)`. Establish `e : (Y.toRows₁)ᵀ.submatrix τ id = (Y.submatrix Sum.inl τ)ᵀ` using `by ext i j; rfl`. Rewrite `hu` using `[e, Matrix.det_transpose]`. Take `⟨C', hC'⟩` from `GlobalTheory.RankChart.exists_eq_stack k (Fin ρ) T (Fin d) τ Y (by rw [Fintype.card_fin]; exact hYr) hu.ne_zero`. Establish `h2 : Y.toRows₂ = C' * Y.toRows₁` using `by conv_lhs => rw [hC']`.
+
+Simplify using `[GlobalTheory.RankChart.stack]`. Establish `hd : C' - C ∈ box T (Fin ρ) b` using `hN _ hY1 _ (by rw [Matrix.sub_mul, ← h2]; exact hE)`. Use `⟨C', ?_, h2⟩` and prove the remaining obligations. Use `(box T (Fin ρ) b).add_mem hd hC` as an intermediate fact. Rewrite `this` using `[sub_add_cancel]`. Then use the resulting hypothesis.
+
+Introduce and unpack `⟨C, hC, h⟩`. Conclude with `⟨C, hC, by rw [h, sub_self]; exact (box T (Fin d) N).zero_mem⟩`. Distinguish the cases in `hY : Y ∈ S`. Rewrite using `[Set.indicator_of_mem hY, Set.indicator_of_mem (show Y ∈ {Z : Matrix (Fin ρ ⊕ T) (Fin d) k | ∃ C ∈ box T (Fin ρ) b, Z.toRows₂ = C * Z.toRows₁} from hmem.1 hY)]`. Rewrite using `[Set.indicator_of_notMem hY, Set.indicator_of_notMem (show Y ∉ {Z : Matrix (Fin ρ ⊕ T) (Fin d) k | ∃ C ∈ box T (Fin ρ) b, Z.toRows₂ = C * Z.toRows₁} from mt hmem.2 hY)]`.
+-/
 theorem exists_sb_extension : ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
     (ρ d : ℕ) (T : Type) [Fintype T] [DecidableEq T] (b : kˣ), ∀ θ ∈ fullRk k ρ d,
     ∃ Θ ∈ SB (Matrix (Fin ρ ⊕ T) (Fin d) k), ∀ Y : Matrix (Fin ρ ⊕ T) (Fin d) k, Y.rank ≤ ρ →

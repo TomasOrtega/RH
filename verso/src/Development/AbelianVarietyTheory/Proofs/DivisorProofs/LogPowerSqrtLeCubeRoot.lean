@@ -4,6 +4,23 @@ open Filter Topology Real
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Introduce `A B μ K hA hB hμ hK`. Establish `h1 : Tendsto (fun t : ℝ => A * exp (B / 6) * ((-Real.log t + B) ^ μ * exp (-(1 / 6) * (-Real.log t + B)))) (𝓝[>] 0) (𝓝 0)`. Establish `hu : Tendsto (fun t : ℝ => -Real.log t + B) (𝓝[>] 0) atTop` using `tendsto_atTop_add_const_right _ B (tendsto_neg_atBot_atTop.comp tendsto_log_nhdsGT_zero)`. Use `(tendsto_rpow_mul_exp_neg_mul_atTop_nhds_zero μ (1 / 6) (by norm_num)).comp hu` as an intermediate fact. Simplify using `using this.const_mul (A * exp (B / 6))`.
+
+Establish `h2 : Tendsto (fun t : ℝ => K * t ^ ((5 : ℝ) / 3)) (𝓝[>] 0) (𝓝 0)`. Establish `hc : Tendsto (fun t : ℝ => t ^ ((5 : ℝ) / 3)) (𝓝 0) (𝓝 ((0 : ℝ) ^ ((5 : ℝ) / 3)))` using `Real.continuousAt_rpow_const 0 ((5 : ℝ) / 3) (Or.inr (by norm_num))`. Rewrite `hc` using `[Real.zero_rpow (by norm_num)]`. Simplify using `using (hc.mono_left nhdsWithin_le_nhds).const_mul K`. Establish `e1` using `h1.eventually (ge_mem_nhds (by norm_num : (0 : ℝ) < 1 / 2))`.
+
+Establish `e2` using `h2.eventually (ge_mem_nhds (by norm_num : (0 : ℝ) < 1 / 2))`. Establish `e` using `e1.and e2`. Rewrite `e` using `[Filter.Eventually, mem_nhdsGT_iff_exists_Ioo_subset]`. Take `⟨u, hu, hsub⟩` from `e`. Establish `hu0 : (0 : ℝ) < u` using `hu`.
+
+Use `⟨u / 2, by positivity, fun t ht htu => ?_⟩` and prove the remaining obligations. Establish `htmem : t ∈ Set.Ioo (0 : ℝ) u` using `⟨ht, by linarith⟩`. Take `⟨b1, b2⟩` from `hsub htmem`. Establish `hlog : Real.log (1 / t) = -Real.log t` using `by rw [one_div, Real.log_inv]`. Establish `key : A * (Real.log (1 / t) + B) ^ μ * t ^ ((1 : ℝ) / 6) = A * exp (B / 6) * ((-Real.log t + B) ^ μ * exp (-(1 / 6) * (-Real.log t + B)))`.
+
+Rewrite using `[hlog, Real.rpow_def_of_pos ht]`. Establish `: exp (Real.log t * (1 / 6)) = exp (B / 6) * exp (-(1 / 6) * (-Real.log t + B))`. Rewrite using `[← Real.exp_add]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree.
+
+Rewrite using `[this]`. Expand and normalize the polynomial expressions, which then agree. Establish `s1 : t ^ ((1 : ℝ) / 2) = t ^ ((1 : ℝ) / 6) * t ^ ((1 : ℝ) / 3)`. Rewrite using `[← Real.rpow_add ht]`. Evaluate the numerical expressions.
+
+Establish `s2 : t ^ 2 = t ^ ((5 : ℝ) / 3) * t ^ ((1 : ℝ) / 3)`. Rewrite using `[← Real.rpow_add ht, ← Real.rpow_natCast]`. Evaluate the numerical expressions. Establish `hp : 0 ≤ t ^ ((1 : ℝ) / 3)` using `Real.rpow_nonneg ht.le _`. Combine the equalities or inequalities in the displayed calculation.
+
+Rewrite using `[key]`. Conclude with `add_le_add (mul_le_mul_of_nonneg_right b1 hp) (mul_le_mul_of_nonneg_right b2 hp)`. Use `_ = t ^ ((1 : ℝ) / 3) := by ring`.
+-/
 theorem small_t_log_power_bound : ∀ (A B μ K : ℝ), 0 ≤ A → 0 ≤ B → 0 ≤ μ → 0 ≤ K → ∃ t₀ : ℝ, 0 < t₀ ∧ ∀ t : ℝ, 0 < t → t ≤ t₀ →
     A * (Real.log (1 / t) + B) ^ μ * t ^ ((1 : ℝ) / 2) + K * t ^ 2 ≤ t ^ ((1 : ℝ) / 3) := by
   intro A B μ K hA hB hμ hK

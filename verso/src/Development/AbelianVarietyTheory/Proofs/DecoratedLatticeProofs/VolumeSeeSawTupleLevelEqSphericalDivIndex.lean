@@ -16,6 +16,31 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 noncomputable section
 namespace GlobalTheory.LevIdx
 
+/- English proof (translation)
+Use `set φ : GA D S →* ((i : Fin r) → GL (Y i) (k i)) := MonoidHom.pi fun i => locHom (q i) S (F i) with hφ`. Establish `hφi : ∀ g i, φ g i = locHom (q i) S (F i) g` using `fun _ _ => rfl`. Establish `hU'' : ∀ g, g ∈ U' ↔ g ∈ U ∧ ∀ i, φ g i ∈ J i`. Introduce `g`. Rewrite using `[hU' g]`.
+
+Use `and_congr_right fun _ => forall_congr' fun i => ?_` and prove the remaining obligations. Use `⟨fun h => h _ ((eq_locHom_iff _ _ _ _ _).2 rfl), fun h x hx => ?_⟩` and prove the remaining obligations. Rewrite using `[(eq_locHom_iff _ _ _ _ _).1 hx]`. Conclude with `h`. Establish `hle : U' ≤ U` using `fun g hg => ((hU'' g).1 hg).1`.
+
+Establish `hidx : U'.relIndex U = ∏ i, (J i).relIndex (GlobalTheory.SplitWeil.KO (k i) (Y i))`. Use `GlobalTheory.T.relIndex_eq_prod_relIndex_of_surjective_pi φ U U' (fun i => GlobalTheory.SplitWeil.KO (k i) (Y i)) J hJ ?_ ?_ hU''` and prove the remaining obligations. Introduce `g hg i`. Conclude with `GlobalTheory.T.mem_integralGL_split_place_of_carries_latticeCompletion (q i) S (F i) N _ ⟨i, rfl⟩ (hlat i) g (hM g hg) _ ((eq_locHom_iff _ _ _ _ _).2 rfl)`. Introduce `x hx`.
+
+Take `⟨g, hg, hgx⟩` from `GlobalTheory.T.exists_selfDual_stabilizer_with_prescribed_splitPlace_matrices S N hN k q Y F hinj hlat x hx`. Use `⟨g, hK g hg, funext fun i => ?_⟩` and prove the remaining obligations. Rewrite using `[hφi]`. Conclude with `((eq_locHom_iff _ _ _ _ _).1 (hgx i)).symm`. Set `cj : GfC S →* GfC S` to `{ toFun := fun g => ⟨b * g.1 * b⁻¹, (GfC S).mul_mem ((GfC S).mul_mem hb g.2) ((GfC S).inv_mem hb)⟩ map_one' := by ext1; simp map_mul' := fun g h => by ext1; simp [mul_assoc] }`.
+
+Establish `hcj : Continuous cj` using `Continuous.subtype_mk ((continuous_const.mul continuous_subtype_val).mul continuous_const) _`. Establish `hcjb : Function.Bijective cj`. Use `⟨fun g h e => ?_, fun g => ⟨⟨b⁻¹ * g.1 * b, (GfC S).mul_mem ((GfC S).mul_mem ((GfC S).inv_mem hb) g.2) hb⟩, ?_⟩⟩` and prove the remaining obligations. Use `congrArg Subtype.val e ext1` as an intermediate fact. Simplify `this` using `[cj]`.
+
+Use `ext1`. Simplify using `[cj, mul_assoc]`. Use `set H := (U.subgroupOf (GfC S)).comap cj`. Use `set H' := (U'.subgroupOf (GfC S)).comap cj`. Establish `eH : {g : GfC S | b * g.1 * b⁻¹ ∈ U} = (H : Set (GfC S))` using `rfl`.
+
+Establish `eH' : {g : GfC S | b * g.1 * b⁻¹ ∈ U'} = (H' : Set (GfC S))` using `rfl`. Establish `hHH' : H'.relIndex H = U'.relIndex U`. Rewrite using `[Subgroup.relIndex_comap, Subgroup.map_comap_eq_self_of_surjective hcjb.2, Subgroup.relIndex_subgroupOf hU]`. Establish `hHc : IsCompact (H : Set (GfC S))`. Rewrite using `[Topology.IsInducing.subtypeVal.isCompact_iff]`.
+
+Establish `e : Subtype.val '' (H : Set (GfC S)) = (fun g => b⁻¹ * g * b) '' (U : Set (GA D S))`. Use extensionality with `y`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨g, hg, rfl⟩`. Conclude with `⟨b * g.1 * b⁻¹, hg, by simp [mul_assoc]⟩`.
+
+Introduce and unpack `⟨u, hu, rfl⟩`. Use `⟨⟨b⁻¹ * u * b, (GfC S).mul_mem ((GfC S).mul_mem ((GfC S).inv_mem hb) (hU hu)) hb⟩, ?_, rfl⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `b * (b⁻¹ * u * b) * b⁻¹ ∈ U`. Simplify `hu` using `[mul_assoc]`. Use `hUc.image ((continuous_const.mul continuous_id).mul continuous_const) using 1` and compare the differences between its conclusion and the goal.
+
+Conclude with `e`. Establish `hU'o : IsOpen ((U'.subgroupOf (GfC S) : Subgroup (GfC S)) : Set (GfC S))`. Establish `e : ((U'.subgroupOf (GfC S) : Subgroup (GfC S)) : Set (GfC S)) = ((U.subgroupOf (GfC S) : Subgroup (GfC S)) : Set (GfC S)) ∩ ⋂ i, (fun g : GfC S => locHom (q i) S (F i) g.1) ⁻¹' (J i : Set (GL (Y i) (k i)))`. Use extensionality with `g`. Simplify using `only [SetLike.mem_coe, Subgroup.mem_subgroupOf, Set.mem_inter_iff, Set.mem_iInter, Set.mem_preimage]`.
+
+Rewrite using `[hU'']`. Both sides reduce to the same expression. Rewrite using `[e]`. Conclude with `hUo.inter (isOpen_iInter_of_finite fun i => (hJo i).preimage ((continuous_locHom (q i) S (F i)).comp continuous_subtype_val))`. Establish `hH'o : IsOpen (H' : Set (GfC S))` using `hU'o.preimage hcj`.
+
+Establish `hH'H : H' ≤ H` using `fun g hg => hle hg`. Rewrite using `[eH, eH', ← Nat.cast_prod, ← hidx, ← hHH']`. Conclude with `vol_mul_relIndex μ H H' hH'H hHc hH'o`.
+-/
 theorem core {D : D7} (S : HSp D) (N : Lat S) (hN : IsSelfDualC S N) {r : ℕ} (k : Fin r → Type) [∀ i, Field (k i)]
     [∀ i, ValuativeRel (k i)] [∀ i, TopologicalSpace (k i)] [∀ i, IsNonarchimedeanLocalField (k i)]
     (q : (i : Fin r) → SplitPt D (k i)) (Y : Fin r → Type) [∀ i, Fintype (Y i)] [∀ i, DecidableEq (Y i)]
@@ -98,6 +123,17 @@ theorem core {D : D7} (S : HSp D) (N : Lat S) (hN : IsSelfDualC S N) {r : ℕ} (
 
 end GlobalTheory.LevIdx
 
+/- English proof (translation)
+Introduce `D c v t w F hP`. Establish `hQ : (· ∈ w.Q) = fun p => ∃ i, (F.Q i).q.v = p` using `funext fun p => propext (hP.places p)`. Establish `hs : ∀ i, (F.Q i).s + 1 + 1 = D.R.m` using `fun i => (F.Q i).hs`. Use `⟨fun j hj hN μ hμ U U' b hb hU hUc hUo hK hM hU' => ?_, fun hN hTo μ hμ U U' b hb hU hUc hUo hK hM hU' => ?_⟩` and prove the remaining obligations. Set `d : Fin F.r → ℕ` to `fun i => (F.Q i).s + 1 - j`.
+
+Establish `hd : ∀ i, j + d i = (F.Q i).s + 1` using `fun i => by have := hs i; simp only [d]; omega`. Rewrite `hK`, `hM` using `[hQ]`. Establish `key` using `GlobalTheory.LevIdx.core (c.V j) (v.N j) hN (fun i => (F.Q i).k) (fun i => (F.Q i).q) (fun i => (F.Q i).X j ⊕ Fin (d i)) (fun i => (F.Q i).FY j (d i) (hd i)) hP.inj (fun i => (F.Q i).latY j (d i) (hd i)) (fun i => ((F.Q i).T.lev j (d i) (hd i)).J) (fun i => (F.Q i).le j (d i) (hd …`. Establish `e : ∀ i, (F.Q i).idx j = (((F.Q i).T.lev j (d i) (hd i)).J).relIndex (GlobalTheory.SplitWeil.KO (F.Q i).k _)` using `fun i => (F.Q i).idx_mid j (d i) (hd i)`. Simplify using `only [e]`.
+
+Conclude with `key`. Introduce `g`. Rewrite using `[hU' g]`. Use `and_congr_right fun _ => forall_congr' fun i => ⟨fun h x hx => h (d i) (hd i) x hx, fun h d' hd' x hx => ?_⟩` and prove the remaining obligations. Take `rfl : d' = d i` from `by have := hd i; omega`.
+
+Conclude with `h x hx`. Rewrite `hK`, `hM` using `[hQ]`. Establish `key` using `GlobalTheory.LevIdx.core c.T v.NT hN (fun i => (F.Q i).k) (fun i => (F.Q i).q) (fun i => (F.Q i).Z) (fun i => (F.Q i).FT) hP.inj (fun i => (F.Q i).latT) (fun i => (F.Q i).T.levTop.J) (fun i => (F.Q i).leT) hTo μ U U' b hb hU hUc hUo hK hM hU'`. Establish `e : ∀ i, (F.Q i).idx D.R.m = ((F.Q i).T.levTop.J).relIndex (GlobalTheory.SplitWeil.KO (F.Q i).k _)` using `fun i => by rw [← hs i]; exact (F.Q i).idx_top`. Simplify using `only [e]`.
+
+Conclude with `key`.
+-/
 theorem GlobalTheory.LevIdx.vol_level_eq : ∀ (D : D7) (c : Comm D) (v : VCom c) (t : Tup c) (w : VTup t) (F : GlobalTheory.QPl.QFam v t), F.Pins w → (∀ j, j < D.R.m → IsSelfDualC (c.V j) (v.N j) → ∀ (μ : Measure (GfC (c.V j))), μ.IsHaarMeasure → ∀ (U U' : Subgroup (GA D (c.V j))) (b : GA D (c.V j)), b ∈ GfC _ → U ≤ GfC _ → IsCompact (U : Set (GA D (c.V j))) → IsOpen ((U.subgroupOf (GfC _) : Subgroup (GfC (c.V j))) : Set (GfC (c.V j))) → (∀ κ, InK _ (v.N j) (· ∈ w.Q) κ → κ ∈ U) → (∀ g ∈ U, Moves _ g (v.N j) (v.N j) (· ∈ w.Q)) → (∀ g, g ∈ U' ↔ g ∈ U ∧ ∀ i d hd x, (mt _ g).map (F.Q i).q.pr = ((F.Q i).FY j d hd).β * x.val * ((F.Q i).FY j d hd).γ → x ∈ ((F.Q i).T.lev j d hd).J) → μ.real {g | b * g.1 * b⁻¹ ∈ U'} * ∏ i, ((F.Q i).idx j : ℝ) = μ.real {g | b * g.1 * b⁻¹ ∈ U}) ∧ (IsSelfDualC c.T v.NT → (∀ i, IsOpen ((F.Q i).T.levTop.J : Set (GL (F.Q i).Z (F.Q i).k))) → ∀ (μ : Measure (GfC c.T)), μ.IsHaarMeasure → ∀ (U U' : Subgroup (GA D c.T)) (b : GA D c.T), b ∈ GfC _ → U ≤ GfC _ → IsCompact (U : Set (GA D c.T)) → IsOpen ((U.subgroupOf (GfC _) : Subgroup (GfC c.T)) : Set (GfC c.T)) → (∀ κ, InK _ v.NT (· ∈ w.Q) κ → κ ∈ U) → (∀ g ∈ U, Moves _ g v.NT v.NT (· ∈ w.Q)) → (∀ g, g ∈ U' ↔ g ∈ U ∧ ∀ i (x : GL (F.Q i).Z (F.Q i).k), (mt _ g).map (F.Q i).q.pr = (F.Q i).FT.β * x.val * (F.Q i).FT.γ → x ∈ (F.Q i).T.levTop.J) → μ.real {g | b * g.1 * b⁻¹ ∈ U'} * ∏ i, ((F.Q i).idx D.R.m : ℝ) = μ.real {g | b * g.1 * b⁻¹ ∈ U}) := by
   intro D c v t w F hP
   have hQ : (· ∈ w.Q) = fun p => ∃ i, (F.Q i).q.v = p := funext fun p => propext (hP.places p)

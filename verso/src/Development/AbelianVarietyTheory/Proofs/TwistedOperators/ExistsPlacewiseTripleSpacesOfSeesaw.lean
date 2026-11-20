@@ -22,6 +22,11 @@ namespace GlobalTheory.PlaceSpaces
 
 open scoped ComplexOrder
 
+/- English proof (translation)
+Take `⟨h1, A, hA⟩` from `h`. Use `⟨h1, A.map star, ?_⟩` and prove the remaining obligations. Use `congrArg (fun X : Matrix (Fin r ⊕ Fin s) (Fin r ⊕ Fin s) ℂ => X.map (starRingEnd ℂ)) hA` as an intermediate fact. Simplify using `only [Matrix.map_mul] at this`. Establish `e1 : (A.map star)ᵀ * M.map (starRingEnd ℂ) * (A.map star).map star = (Aᵀ).map (starRingEnd ℂ) * M.map (starRingEnd ℂ) * (A.map star).map (starRingEnd ℂ)`.
+
+Apply the tactic sequence `congr 2 <;> ext i j <;> simp`. Establish `e2 : (Matrix.fromBlocks 1 0 0 (-1) : Matrix (Fin r ⊕ Fin s) (Fin r ⊕ Fin s) ℂ).map (starRingEnd ℂ) = Matrix.fromBlocks 1 0 0 (-1)`. Apply the tactic sequence `ext (i | i) (j | j) <;> simp [Matrix.fromBlocks, Matrix.one_apply] <;> split_ifs <;> simp`. Rewrite using `[e1, this, e2]`.
+-/
 theorem hasSig_map_conj {n r s : ℕ} {M : Matrix (Fin n) (Fin n) ℂ} (h : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.HasSig M r s) :
     GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.HasSig (M.map (starRingEnd ℂ)) r s := by
   obtain ⟨h1, A, hA⟩ := h
@@ -36,6 +41,11 @@ theorem hasSig_map_conj {n r s : ℕ} {M : Matrix (Fin n) (Fin n) ℂ} (h : Glob
     ext (i | i) (j | j) <;> simp [Matrix.fromBlocks, Matrix.one_apply] <;> split_ifs <;> simp
   rw [e1, this, e2]
 
+/- English proof (translation)
+Take `⟨h1, A, hA⟩` from `h`. Use `⟨by omega, A.submatrix id Sum.swap, ?_⟩` and prove the remaining obligations. Establish `e : (A.submatrix id Sum.swap)ᵀ * -M * (A.submatrix id Sum.swap).map star = -((Aᵀ * M * A.map star).submatrix Sum.swap Sum.swap)`. Use extensionality with `i j`. Simplify using `[Matrix.mul_apply, Matrix.transpose_apply, Matrix.submatrix_apply, Matrix.neg_apply, Finset.sum_neg_distrib]`.
+
+Rewrite using `[e, hA]`. Apply the tactic sequence `ext (i | i) (j | j) <;> simp [Matrix.fromBlocks, Matrix.one_apply]`.
+-/
 theorem hasSig_neg {n r s : ℕ} {M : Matrix (Fin n) (Fin n) ℂ} (h : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.HasSig M r s) :
     GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.HasSig (-M) s r := by
   obtain ⟨h1, A, hA⟩ := h
@@ -47,6 +57,15 @@ theorem hasSig_neg {n r s : ℕ} {M : Matrix (Fin n) (Fin n) ℂ} (h : GlobalThe
   rw [e, hA]
   ext (i | i) (j | j) <;> simp [Matrix.fromBlocks, Matrix.one_apply]
 
+/- English proof (translation)
+Take `⟨h1, A, hA⟩` from `h`. Establish `hnd : n = d` using `by simpa using Fintype.card_congr e`. Use `⟨by omega, (((Real.sqrt κ)⁻¹ : ℝ) : ℂ) • A.submatrix e.symm id, ?_⟩` and prove the remaining obligations. Establish `hs : ((Real.sqrt κ)⁻¹ : ℝ) * ((Real.sqrt κ)⁻¹ : ℝ) * κ = 1`. Rewrite using `[← mul_inv, Real.mul_self_sqrt hκ.le, inv_mul_cancel₀ hκ.ne']`.
+
+Establish `hs' : (((Real.sqrt κ)⁻¹ : ℝ) : ℂ) * (((Real.sqrt κ)⁻¹ : ℝ) : ℂ) * (κ : ℂ) = 1` using `by exact_mod_cast hs`. Establish `e0 : (A.submatrix e.symm id)ᵀ * Matrix.reindex e e M * (A.submatrix e.symm id).map star = Aᵀ * M * A.map star`. Establish `t1 : (A.submatrix e.symm id)ᵀ = Aᵀ.submatrix id e.symm` using `rfl`. Establish `t2 : (A.submatrix e.symm id).map star = (A.map star).submatrix e.symm id` using `rfl`. Rewrite using `[t1, t2, Matrix.reindex_apply, Matrix.submatrix_mul_equiv, Matrix.submatrix_mul_equiv]`.
+
+Both sides reduce to the same expression. Establish `e1 : ((((Real.sqrt κ)⁻¹ : ℝ) : ℂ) • A.submatrix e.symm id)ᵀ * ((κ : ℂ) • Matrix.reindex e e M) * ((((Real.sqrt κ)⁻¹ : ℝ) : ℂ) • A.submatrix e.symm id).map star = ((((Real.sqrt κ)⁻¹ : ℝ) : ℂ) * (((Real.sqrt κ)⁻¹ : ℝ) : ℂ) * (κ : ℂ)) • ((A.submatrix e.symm id)ᵀ * Matrix.reindex e e …`. Establish `t3 : ((((Real.sqrt κ)⁻¹ : ℝ) : ℂ) • A.submatrix e.symm id).map star = (((Real.sqrt κ)⁻¹ : ℝ) : ℂ) • (A.submatrix e.symm id).map star`. Use extensionality with `i j`. Simplify using the standard rewrite rules.
+
+Rewrite using `[t3, Matrix.transpose_smul, Matrix.smul_mul, Matrix.smul_mul, Matrix.mul_smul, Matrix.mul_smul, Matrix.smul_mul, smul_smul, smul_smul]`. Rewrite using `[e1, hs', one_smul, e0, hA]`.
+-/
 theorem hasSig_smul_reindex {n d r s : ℕ} {M : Matrix (Fin n) (Fin n) ℂ} (h : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.HasSig M r s)
     (e : Fin n ≃ Fin d) {κ : ℝ} (hκ : 0 < κ) :
     GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.HasSig ((κ : ℂ) • Matrix.reindex e e M) r s := by
@@ -72,6 +91,11 @@ theorem hasSig_smul_reindex {n d r s : ℕ} {M : Matrix (Fin n) (Fin n) ℂ} (h 
       smul_smul, smul_smul]
   rw [e1, hs', one_smul, e0, hA]
 
+/- English proof (translation)
+Take `⟨h1, h2, h3⟩` from `h`. Use `⟨by rw [neg_mul_neg, h1], ?_, fun x hx => ?_⟩` and prove the remaining obligations. Establish `e : (-θ).map star = -(θ.map star)` using `by ext i j; simp`. Rewrite using `[e, Matrix.transpose_neg, neg_mul_neg, Matrix.mul_neg, h2]`. Establish `e : ((-θ) *ᵥ x) ⬝ᵥ (-M) *ᵥ star x = (θ *ᵥ x) ⬝ᵥ M *ᵥ star x`.
+
+Rewrite using `[Matrix.neg_mulVec, Matrix.neg_mulVec, neg_dotProduct, dotProduct_neg, neg_neg]`. Rewrite using `[e]`. Conclude with `h3 x hx`.
+-/
 theorem isCartan_neg {n : ℕ} {M θ : Matrix (Fin n) (Fin n) ℂ} (h : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.IsCartan M θ) :
     GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.IsCartan (-M) (-θ) := by
   obtain ⟨h1, h2, h3⟩ := h
@@ -82,6 +106,19 @@ theorem isCartan_neg {n : ℕ} {M θ : Matrix (Fin n) (Fin n) ℂ} (h : GlobalTh
       rw [Matrix.neg_mulVec, Matrix.neg_mulVec, neg_dotProduct, dotProduct_neg, neg_neg]
     rw [e]; exact h3 x hx
 
+/- English proof (translation)
+Take `⟨hSS, hSGS, hGS⟩` from `h`. Establish `hGH : Gᴴ = G`. Establish `h4 : sᴴ * Gᴴ = G * s` using `by rw [← Matrix.conjTranspose_mul]; exact hGS.1.eq`. Establish `h5 : sᴴ * sᴴ = 1` using `by rw [← Matrix.conjTranspose_mul, hSS, Matrix.conjTranspose_one]`. Combine the equalities or inequalities in the displayed calculation.
+
+Establish `hSG : sᴴ * G = G * s`. Use `hGS.1.eq` as an intermediate fact. Rewrite `this` using `[Matrix.conjTranspose_mul, hGH]`. Conclude with `this`. Establish `hT : (s.map (starRingEnd ℂ))ᵀ = sᴴ`.
+
+Use extensionality with `i j`. Simplify using `[Matrix.conjTranspose_apply]`. Establish `hMM : (s.map (starRingEnd ℂ)).map star = s`. Use extensionality with `i j`. Simplify using the standard rewrite rules.
+
+Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[← Matrix.map_mul, hSS, Matrix.map_one _ (map_zero _) (map_one _)]`. Rewrite using `[hT, hMM, Matrix.mul_smul, Matrix.smul_mul, hSGS]`. Introduce `x hx`. Establish `hy : star x ≠ 0` using `by simpa using hx`.
+
+Establish `hv : s.map (starRingEnd ℂ) *ᵥ x = star (s *ᵥ star x)`. Use extensionality with `i`. Simplify using `[Matrix.mulVec, dotProduct, star_sum, Pi.star_apply, mul_comm]`. Establish `hpos : ((κ : ℂ) • (G * s)).PosDef` using `hGS.smul (by exact_mod_cast hκ)`. Establish `key : (s.map (starRingEnd ℂ) *ᵥ x) ⬝ᵥ ((κ : ℂ) • G) *ᵥ star x = star (star x) ⬝ᵥ (((κ : ℂ) • (G * s)) *ᵥ star x)`.
+
+Rewrite using `[hv, Matrix.star_mulVec, ← Matrix.dotProduct_mulVec, Matrix.mulVec_mulVec, Matrix.mul_smul, hSG]`. Rewrite using `[key]`. Use `hpos.dotProduct_mulVec_pos hy` as an intermediate fact. Conclude with `(Complex.lt_def.1 this).1`.
+-/
 theorem isCartan_smul_conj {k : ℕ} {G s : Matrix (Fin k) (Fin k) ℂ} (h : IsCartanInv G s) {κ : ℝ} (hκ : 0 < κ) :
     GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.IsCartan ((κ : ℂ) • G) (s.map (starRingEnd ℂ)) := by
   obtain ⟨hSS, hSGS, hGS⟩ := h
@@ -113,6 +150,11 @@ theorem isCartan_smul_conj {k : ℕ} {G s : Matrix (Fin k) (Fin k) ℂ} (h : IsC
     have := hpos.dotProduct_mulVec_pos hy
     exact (Complex.lt_def.1 this).1
 
+/- English proof (translation)
+Take `⟨h1, h2, h3⟩` from `h`. Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Simplify using `only [Matrix.reindex_apply]`. Rewrite using `[Matrix.submatrix_mul_equiv, h1, Matrix.submatrix_one_equiv]`. Simplify using `only [Matrix.reindex_apply, Matrix.conjTranspose_submatrix]`.
+
+Rewrite using `[Matrix.submatrix_mul_equiv, Matrix.submatrix_mul_equiv, h2]`. Simplify using `only [Matrix.reindex_apply]`. Rewrite using `[Matrix.submatrix_mul_equiv]`. Conclude with `h3.submatrix e.symm.injective`.
+-/
 theorem isCartanInv_reindex {n d : ℕ} {G s : Matrix (Fin n) (Fin n) ℂ} (h : IsCartanInv G s) (e : Fin n ≃ Fin d) :
     IsCartanInv (Matrix.reindex e e G) (Matrix.reindex e e s) := by
   obtain ⟨h1, h2, h3⟩ := h
@@ -133,6 +175,19 @@ variable {D : D7}
 
 open scoped ComplexOrder in
 
+/- English proof (translation)
+Establish `h1 : A.fr τ * (A.fr τ)⁻¹ = 1` using `Matrix.mul_nonsing_inv _ ((Matrix.isUnit_iff_isUnit_det _).1 (A.fr_unit τ))`. Establish `h2 : (A.fr τ)⁻¹ * A.fr τ = 1` using `mul_eq_one_comm.1 h1`. Establish `hJ` using `Formalism.REAL.Jm_mul_self (A.ε τ)`. Establish `hJ'` using `Formalism.REAL.Jm_conjTranspose (A.ε τ)`. Establish `hG : gramAt D V τ * A.cart τ = (A.fr τ)ᴴ * A.fr τ`.
+
+Rewrite using `[← A.fr_gram τ]`. Unfold `Fr.cart`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [Matrix.mul_assoc]`. Use `_ = _ := by rw [h1, Matrix.mul_one, hJ, Matrix.mul_one]`.
+
+Establish `hs : A.cart τ * A.cart τ = 1`. Unfold `Fr.cart`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [Matrix.mul_assoc]`. Use `_ = _ := by rw [h1, Matrix.mul_one, hJ, Matrix.mul_one, h2]`.
+
+Use `⟨hs, ?_, ?_⟩` and prove the remaining obligations. Establish `hGh : (gramAt D V τ)ᴴ = gramAt D V τ`. Rewrite using `[← A.fr_gram τ]`. Simplify using `[Matrix.conjTranspose_mul, hJ', Matrix.mul_assoc]`. Establish `h3 : (A.cart τ)ᴴ * gramAt D V τ = gramAt D V τ * A.cart τ`.
+
+Use `congrArg Matrix.conjTranspose hG` as an intermediate fact. Rewrite `this` using `[Matrix.conjTranspose_mul, hGh, Matrix.conjTranspose_mul, Matrix.conjTranspose_conjTranspose]`. Rewrite using `[this, hG]`. Rewrite using `[h3, Matrix.mul_assoc, hs, Matrix.mul_one]`. Rewrite using `[hG]`.
+
+Conclude with `Matrix.PosDef.conjTranspose_mul_self _ (Matrix.mulVec_injective_of_isUnit (A.fr_unit τ))`.
+-/
 theorem fr_cart_isCartanInv {V : HSp D} (A : Fr V) (τ : D.what₂.Tau) : IsCartanInv (gramAt D V τ) (A.cart τ) := by
   have h1 : A.fr τ * (A.fr τ)⁻¹ = 1 := Matrix.mul_nonsing_inv _ ((Matrix.isUnit_iff_isUnit_det _).1 (A.fr_unit τ))
   have h2 : (A.fr τ)⁻¹ * A.fr τ = 1 := mul_eq_one_comm.1 h1
@@ -159,6 +214,15 @@ theorem fr_cart_isCartanInv {V : HSp D} (A : Fr V) (τ : D.what₂.Tau) : IsCart
   · rw [hG]
     exact Matrix.PosDef.conjTranspose_mul_self _ (Matrix.mulVec_injective_of_isUnit (A.fr_unit τ))
 
+/- English proof (translation)
+Establish `hV` using `GlobalTheory.PlaceModel.isSelfDualC_latFrame S`. Establish `hσ : ∀ z : D.host.E, D.sp.cm.sig z = star z` using `fun _ => rfl`. Establish `hherm : ∀ a b, star (S.gram b a) = S.gram a b` using `fun a b => S.herm.eq (S.frame b) (S.frame a)`. Establish `hh' : ∀ a b, star (S.gram a b) = S.gram b a` using `fun a b => hherm b a`. Establish `key : ∀ x, GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.form D.sp.cm.sig S.gram y x = star (∑ a, ∑ b, star ((star x) a) * S.gram a b * (star y) b)` using `fun x => by`.
+
+Simplify using `only [GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.form, dotProduct, Matrix.mulVec, star_sum, star_mul', star_star, Pi.star_apply, hσ, hh', Finset.mul_sum]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun a _ => Finset.sum_congr rfl fun b _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree. Use `show star y ∈ GlobalTheory.PlaceModel.latFrame S ↔ _`.
+
+Rewrite using `[hV.2 (star y)]`. Prove the components needed by the constructor for the conclusion. Introduce `h x hx`. Rewrite using `[key, ← GlobalTheory.TripleSpaceW.exists_coe_iff]`. Conclude with `h _ hx`.
+
+Introduce `h x' hx'`. Use `h (star x') (by rw [GlobalTheory.TripleSpaceW.mem_conjSub, star_star]; exact hx')` as an intermediate fact. Rewrite `this` using `[key, ← GlobalTheory.TripleSpaceW.exists_coe_iff, star_star]`. Conclude with `this`.
+-/
 theorem herm_dual (S : HSp D) (y : Fin S.rank → D.host.E) :
     y ∈ GlobalTheory.TripleSpaceW.conjSub (GlobalTheory.PlaceModel.latFrame S) ↔
       ∀ x ∈ GlobalTheory.TripleSpaceW.conjSub (GlobalTheory.PlaceModel.latFrame S),
@@ -185,6 +249,11 @@ theorem herm_dual (S : HSp D) (y : Fin S.rank → D.host.E) :
     rw [key, ← GlobalTheory.TripleSpaceW.exists_coe_iff, star_star] at this
     exact this
 
+/- English proof (translation)
+Establish `hσ : ∀ z : D.host.E, D.sp.cm.sig z = star z` using `fun _ => rfl`. Simplify using `only [GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.form, GlobalTheory.SkewLat.DualPair.hS, dotProduct, Matrix.mulVec, Matrix.smul_apply, Matrix.reindex_apply, Matrix.submatrix_apply, Matrix.transpose_apply, hσ, smul_eq_mul, Finset.mul_sum]`. Rewrite using `[← e.sum_comp]`. Simplify using `only [← e.sum_comp, Equiv.symm_apply_apply]`. Rewrite using `[Finset.sum_comm]`.
+
+Use `Finset.sum_congr rfl fun a _ => Finset.sum_congr rfl fun b _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem form_skew (S : HSp D) {d : ℕ} (e : Fin S.rank ≃ Fin d) (x y : Fin d → D.host.E) :
     GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.form D.sp.cm.sig (D.host.xi0 • Matrix.reindex e e S.gramᵀ) y x =
       D.host.xi0 * GlobalTheory.SkewLat.DualPair.hS S (fun k => x (e k)) (fun k => y (e k)) := by
@@ -197,6 +266,13 @@ theorem form_skew (S : HSp D) {d : ℕ} (e : Fin S.rank ≃ Fin d) (x y : Fin d 
   refine Finset.sum_congr rfl fun a _ => Finset.sum_congr rfl fun b _ => ?_
   ring
 
+/- English proof (translation)
+Establish `hre : (tauE D τ D.host.xi0).re = 0`. Establish `h` using `congrArg Complex.re (GlobalTheory.FockCompare.tauE_star τ D.host.xi0)`. Rewrite `h` using `[GlobalTheory.DualPairCheck.star_purely_imaginary_eq_neg D, map_neg, Complex.neg_re, Complex.conj_re]`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hx : φ D.host.xi0 = -((((tauE D τ D.host.xi0).im : ℝ) : ℂ) * Complex.I)`.
+
+Apply the tactic sequence `rw [hφ]; apply Complex.ext <;> simp [hre]`. Establish `hg : ∀ (k l : Fin S.rank), φ (S.gram l k) = tauE D τ (S.gram k l)` using `fun k l => by`. Rewrite using `[hφ, ← GlobalTheory.FockCompare.tauE_star]`. Establish `h1 : S.gramᴴ = S.gram` using `Matrix.ext fun a b => S.herm.eq _ _`. Establish `h2` using `congrFun (congrFun h1 k) l`.
+
+Rewrite `h2` using `[Matrix.conjTranspose_apply]`. Rewrite using `[h2]`. Use extensionality with `k l`. Simplify using `only [Matrix.smul_apply, Matrix.map_apply, smul_eq_mul, Matrix.reindex_apply, Matrix.submatrix_apply, Matrix.transpose_apply, map_mul, hx, hg, gramAt]`. Take the linear combination `(-(((tauE D τ D.host.xi0).im : ℝ) : ℂ) * tauE D τ (S.gram (e.symm k) (e.symm l))) * Complex.I_mul_I`.
+-/
 theorem I_smul_skew_map (S : HSp D) {d : ℕ} (e : Fin S.rank ≃ Fin d) (τ : D.what₂.Tau) (φ : D.host.E →+* ℂ)
     (hφ : ∀ x, φ x = starRingEnd ℂ (tauE D τ x)) :
     Complex.I • (D.host.xi0 • Matrix.reindex e e S.gramᵀ).map φ =
@@ -222,17 +298,28 @@ def skLat (S : HSp D) {d : ℕ} (e : Fin S.rank ≃ Fin d) : Submodule (𝓞 D.h
   (GlobalTheory.SkewLat.scLat D.host.AA (GlobalTheory.PlaceModel.latFrame S)).map
     ((LinearEquiv.funCongrLeft D.host.E D.host.E e.symm).restrictScalars (𝓞 D.host.E)).toLinearMap
 
+/- English proof (translation)
+Unfold `skLat`. Rewrite using `[Submodule.mem_map_equiv]`. Both sides reduce to the same expression.
+-/
 theorem mem_skLat (S : HSp D) {d : ℕ} (e : Fin S.rank ≃ Fin d) (y : Fin d → D.host.E) :
     y ∈ skLat S e ↔ (fun k => y (e k)) ∈ GlobalTheory.SkewLat.scLat D.host.AA (GlobalTheory.PlaceModel.latFrame S) := by
   unfold skLat
   rw [Submodule.mem_map_equiv]
   rfl
 
+/- English proof (translation)
+Introduce `h` and use `by have := Formalism.IndefR.Fin.factPrincipalDatum D.R D.host rw [h, mul_zero, zero_mul, zero_mul] at this exact zero_ne_one this`.
+-/
 theorem AA_ne : D.host.AA ≠ 0 := fun h => by
   have := Formalism.IndefR.Fin.factPrincipalDatum D.R D.host
   rw [h, mul_zero, zero_mul, zero_mul] at this
   exact zero_ne_one this
 
+/- English proof (translation)
+Establish `hL` using `GlobalTheory.SkewLat.PairLatLattice.scLat_isLattice (AA_ne (D := D)) (GlobalTheory.PlaceModel.isSelfDualC_latFrame S).1`. Use `⟨Submodule.FG.map _ hL.fg, ?_⟩` and prove the remaining obligations. Unfold `skLat`. Rewrite using `[Submodule.map_coe]`. Establish `: ⇑((LinearEquiv.funCongrLeft D.host.E D.host.E e.symm).restrictScalars (𝓞 D.host.E)).toLinearMap = ⇑(LinearEquiv.funCongrLeft D.host.E D.host.E e.symm).toLinearMap` using `rfl`.
+
+Rewrite using `[this, Submodule.span_image, hL.span_eq_top, Submodule.map_top]`. Conclude with `LinearMap.range_eq_top.mpr (LinearEquiv.funCongrLeft D.host.E D.host.E e.symm).surjective`.
+-/
 theorem skLat_isLattice (S : HSp D) {d : ℕ} (e : Fin S.rank ≃ Fin d) : Submodule.IsLattice D.host.E (skLat S e) := by
   have hL := GlobalTheory.SkewLat.PairLatLattice.scLat_isLattice (AA_ne (D := D)) (GlobalTheory.PlaceModel.isSelfDualC_latFrame S).1
   refine ⟨Submodule.FG.map _ hL.fg, ?_⟩
@@ -243,6 +330,15 @@ theorem skLat_isLattice (S : HSp D) {d : ℕ} (e : Fin S.rank ≃ Fin d) : Submo
   rw [this, Submodule.span_image, hL.span_eq_top, Submodule.map_top]
   exact LinearMap.range_eq_top.mpr (LinearEquiv.funCongrLeft D.host.E D.host.E e.symm).surjective
 
+/- English proof (translation)
+Establish `hV` using `GlobalTheory.PlaceModel.isSelfDualC_latFrame S`. Establish `hs : ∀ c ∈ D.host.AA, star c ∈ D.host.AAbar` using `fun c h => by`. Rewrite using `[Formalism.BasicNotions.Examples₂.star_eq_conj]`. Conclude with `Formalism.L2.Pj.conj_mem_AAbar D h`. Establish `hc : ∀ c ∈ D.host.AAbar, star c ∈ D.host.AA` using `fun c h => GlobalTheory.star_mem_AA_of_mem_AAbar h`.
+
+Prove the components needed by the constructor for the conclusion. Introduce `hy x hx o`. Rewrite using `[form_skew]`. Conclude with `GlobalTheory.SkewLat.DualPair.fwd hs S hV ((mem_skLat S e x).1 hx) ((mem_skLat S e y).1 hy) o`. Introduce `h`.
+
+Use `(mem_skLat S e y).2 (GlobalTheory.SkewLat.DualPair.bwd hc S hV fun a ha s hs' => ?_)` and prove the remaining obligations. Establish `hx : (fun i => (a • s) (e.symm i)) ∈ skLat S e`. Rewrite using `[mem_skLat]`. Simplify using `only [Equiv.symm_apply_apply]`. Conclude with `GlobalTheory.SkewLat.DualPair.smul_mem_scLat ha hs'`.
+
+Introduce `o`. Use `h _ hx o` as an intermediate fact. Rewrite `this` using `[form_skew]`. Simplify `this` using `only [Equiv.symm_apply_apply]`.
+-/
 theorem skew_dual (S : HSp D) {d : ℕ} (e : Fin S.rank ≃ Fin d) (y : Fin d → D.host.E) :
     y ∈ skLat S e ↔ ∀ x ∈ skLat S e, ∀ o : 𝓞 D.host.E,
       IsIntegral ℤ (Algebra.trace ℚ D.host.E (o * GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.form D.sp.cm.sig
@@ -270,6 +366,47 @@ end GlobalTheory.PlaceSpaces
 
 open GlobalTheory.PlaceSpaces in
 
+/- English proof (translation)
+Introduce `D W W₁ X A A₁ B α β _hT p q hsig e Bs hBs hemb`. Use `choose τf hτf using hemb`. Establish `hcm` using `hBs.cm`. Establish `hσ : ∀ z : D.host.E, D.sp.cm.sig z = star z` using `fun _ => rfl`. Establish `hherm : ∀ (S : HSp D) (a b : Fin S.rank), star (S.gram b a) = S.gram a b` using `fun S a b => S.herm.eq (S.frame b) (S.frame a)`.
+
+Use `haveI hlW : (GlobalTheory.TripleSpaceW.conjSub (GlobalTheory.PlaceModel.latFrame W)).IsLattice D.host.E := GlobalTheory.TripleSpaceW.conjSub_isLattice (GlobalTheory.PlaceModel.isSelfDualC_latFrame W).1`. Use `haveI hlW₁ : (GlobalTheory.TripleSpaceW.conjSub (GlobalTheory.PlaceModel.latFrame W₁)).IsLattice D.host.E := GlobalTheory.TripleSpaceW.conjSub_isLattice (GlobalTheory.PlaceModel.isSelfDualC_latFrame W₁).1`. Use `haveI hlX : (skLat X e).IsLattice D.host.E := skLat_isLattice X e`. Establish `exW` using `fun v : Bs.P => GlobalTheory.AdelicU.exists_isSplitBasis (Bs.τ v) (GlobalTheory.TripleSpaceW.conjSub (GlobalTheory.PlaceModel.latFrame W)) hcm`. Establish `exW₁` using `fun v : Bs.P => GlobalTheory.AdelicU.exists_isSplitBasis (Bs.τ v) (GlobalTheory.TripleSpaceW.conjSub (GlobalTheory.PlaceModel.latFrame W₁)) hcm`.
+
+Establish `exX` using `fun v : Bs.P => GlobalTheory.AdelicU.exists_isSplitBasis (Bs.τ v) (skLat X e) hcm`. Establish `emap : ∀ (S : HSp D) (w : InfinitePlace D.host.F), ((1 : D.host.E) • S.gram).map (Bs.emb w).1 = (gramAt D S (τf w)).map (starRingEnd ℂ)`. Introduce `S w`. Use extensionality with `a b`. Simplify using `[hτf, gramAt]`.
+
+Use `⟨GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Spc.mk ((1 : D.host.E) • W.gram) (GlobalTheory.TripleSpaceW.conjSub (GlobalTheory.PlaceModel.latFrame W)) (fun w => A.cart (τf w)) (fun v => if h : v ∈ Bs.P then (exW ⟨v, h⟩).choose else 1), GlobalTheory.IndefiniteRowSideF …` and prove the remaining obligations. Use `case h1 =>`. Introduce `a b`. Use `show D.sp.cm.sig (((1 : D.host.E) • W.gram) b a) = ((1 : D.host.E) • W.gram) a b`. Rewrite using `[one_smul, hσ]`.
+
+Conclude with `hherm W a b`. Use `case h2 =>`. Introduce `w`. Use `show GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.HasSig (((1 : D.host.E) • W.gram).map (Bs.emb w).1) _ _`. Rewrite using `[emap W w]`.
+
+Conclude with `hasSig_map_conj (GlobalTheory.TripleSpaceW.hasSig_of_hasSignature (hsig (τf w)).1)`. Use `case h3 =>`. Introduce `y`. Use `show y ∈ GlobalTheory.TripleSpaceW.conjSub (GlobalTheory.PlaceModel.latFrame W) ↔ ∀ x ∈ GlobalTheory.TripleSpaceW.conjSub (GlobalTheory.PlaceModel.latFrame W), IsIntegral ℤ (GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.form D.sp.cm.sig ((1 : D.host.E) • W.gram) y x)`. Rewrite using `[one_smul]`.
+
+Conclude with `herm_dual W y`. Use `case h4 =>`. Introduce `w`. Use `show GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.IsCartan (((1 : D.host.E) • W.gram).map (Bs.emb w).1) (A.cart (τf w))`. Rewrite using `[emap W w]`.
+
+Conclude with `GlobalTheory.TripleSpaceW.isCartan_map_conj (fr_cart_isCartanInv A (τf w))`. Use `case h5 =>`. Introduce `v`. Use `show GlobalTheory.AdelicU.IsSplitBasis (Bs.τ v) _ (if h : v.1 ∈ Bs.P then (exW ⟨v.1, h⟩).choose else 1)`. Rewrite using `[dif_pos v.2]`.
+
+Conclude with `(exW v).choose_spec`. Use `case g1 =>`. Introduce `a b`. Use `show D.sp.cm.sig (((-1 : D.host.E) • W₁.gram) b a) = ((-1 : D.host.E) • W₁.gram) a b`. Simplify using `only [Matrix.smul_apply, smul_eq_mul, hσ, star_mul', star_neg, star_one, hherm W₁ a b]`.
+
+Use `case g2 =>`. Introduce `w`. Use `show GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.HasSig (((-1 : D.host.E) • W₁.gram).map (Bs.emb w).1) _ _`. Establish `e2 : ((-1 : D.host.E) • W₁.gram).map (Bs.emb w).1 = -((gramAt D W₁ (τf w)).map (starRingEnd ℂ))`. Use extensionality with `a b`.
+
+Simplify using `[hτf, gramAt]`. Rewrite using `[e2]`. Conclude with `hasSig_neg (hasSig_map_conj (GlobalTheory.TripleSpaceW.hasSig_of_hasSignature (hsig (τf w)).2.1))`. Use `case g3 =>`. Introduce `y`.
+
+Use `show y ∈ GlobalTheory.TripleSpaceW.conjSub (GlobalTheory.PlaceModel.latFrame W₁) ↔ ∀ x ∈ GlobalTheory.TripleSpaceW.conjSub (GlobalTheory.PlaceModel.latFrame W₁), IsIntegral ℤ (GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.form D.sp.cm.sig ((-1 : D.host.E) • W₁.gram) y …`. Establish `hf : ∀ x, GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.form D.sp.cm.sig ((-1 : D.host.E) • W₁.gram) y x = -GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.form D.sp.cm.sig W₁.gram y x` using `fun x => by`. Simplify using `[GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.form, Matrix.neg_mulVec]`. Rewrite using `[herm_dual W₁ y]`. Use `forall₂_congr fun x _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[hf]`. Conclude with `⟨fun h => h.neg, fun h => by simpa using h.neg⟩`. Use `case g4 =>`. Introduce `w`. Use `show GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.IsCartan (((-1 : D.host.E) • W₁.gram).map (Bs.emb w).1) (-A₁.cart (τf w))`.
+
+Establish `e2 : ((-1 : D.host.E) • W₁.gram).map (Bs.emb w).1 = -((gramAt D W₁ (τf w)).map (starRingEnd ℂ))`. Use extensionality with `a b`. Simplify using `[hτf, gramAt]`. Rewrite using `[e2]`. Conclude with `isCartan_neg (GlobalTheory.TripleSpaceW.isCartan_map_conj (fr_cart_isCartanInv A₁ (τf w)))`.
+
+Use `case g5 =>`. Introduce `v`. Use `show GlobalTheory.AdelicU.IsSplitBasis (Bs.τ v) _ (if h : v.1 ∈ Bs.P then (exW₁ ⟨v.1, h⟩).choose else 1)`. Rewrite using `[dif_pos v.2]`. Conclude with `(exW₁ v).choose_spec`.
+
+Use `case k1 =>`. Introduce `a b`. Use `show D.sp.cm.sig ((D.host.xi0 • Matrix.reindex e e X.gramᵀ) b a) = -(D.host.xi0 • Matrix.reindex e e X.gramᵀ) a b`. Simplify using `only [Matrix.smul_apply, Matrix.reindex_apply, Matrix.submatrix_apply, Matrix.transpose_apply, smul_eq_mul, hσ, star_mul', GlobalTheory.DualPairCheck.star_purely_imaginary_eq_neg D, hherm X]`. Expand and normalize the polynomial expressions, which then agree.
+
+Use `case k2 =>`. Introduce `w`. Use `show GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.HasSig (Complex.I • (D.host.xi0 • Matrix.reindex e e X.gramᵀ).map (Bs.emb w).1) _ _`. Rewrite using `[I_smul_skew_map X e (τf w) _ (hτf w)]`. Establish `hr : X.rank = W.rank + W₁.rank` using `by simpa using Fintype.card_congr e`.
+
+Establish `h` using `hasSig_smul_reindex (GlobalTheory.TripleSpaceW.hasSig_of_hasSignature (hsig (τf w)).2.2) e (xi_zero_im_pos D (τf w))`. Use `h using 2` and compare the differences between its conclusion and the goal. Use linear arithmetic over natural numbers and integers. Use `case k3 => exact fun y => skew_dual X e y`. Use `case k4 =>`.
+
+Introduce `w`. Use `show GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.IsCartan (Complex.I • (D.host.xi0 • Matrix.reindex e e X.gramᵀ).map (Bs.emb w).1) _`. Rewrite using `[I_smul_skew_map X e (τf w) _ (hτf w)]`. Conclude with `isCartan_smul_conj (isCartanInv_reindex (fr_cart_isCartanInv B (τf w)) e) (xi_zero_im_pos D (τf w))`. Use `case k5 =>`.
+
+Introduce `v`. Use `show GlobalTheory.AdelicU.IsSplitBasis (Bs.τ v) _ (if h : v.1 ∈ Bs.P then (exX ⟨v.1, h⟩).choose else 1)`. Rewrite using `[dif_pos v.2]`. Conclude with `(exX v).choose_spec`.
+-/
 theorem GlobalTheory.PlaceSpaces.spaces_of_triple : ∀ (D : D7) (W W₁ X : HSp D) (A : Fr W) (A₁ : Fr W₁) (B : Fr X) (α β : (AE D)ˣ →* Circle), IsTriple W W₁ X α β →
     ∀ p q : ℕ, (∀ τ, Formalism.UG.HasSignature (gramAt D W τ) (W.rank - p) p ∧ Formalism.UG.HasSignature (gramAt D W₁ τ) (W₁.rank - q) q ∧
       Formalism.UG.HasSignature (gramAt D X τ) (X.rank - (p + q)) (p + q)) →

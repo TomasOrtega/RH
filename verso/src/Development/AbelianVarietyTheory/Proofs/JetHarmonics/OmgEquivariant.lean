@@ -14,6 +14,9 @@ namespace GlobalTheory.WigSh.OmgEquiv
 
 variable {k r : ℕ} {z z' : Fin (2 * r + k + 1) → ℂ}
 
+/- English proof (translation)
+Establish `e : hᴴ * Hpk k r * h = Hpk k r` using `hh`. Unfold `Formalism.QuantumDeterminants.herm`. Rewrite using `[Matrix.star_mulVec, ← Matrix.dotProduct_mulVec, Matrix.mulVec_mulVec, Matrix.mulVec_mulVec]`. Simplify using `only [e]`.
+-/
 lemma herm_UH {h : Mx k r} (hh : h ∈ UH (Hpk k r)) (v w : Fin (2 * r + k + 1) → ℂ) :
     herm (Hpk k r) (h *ᵥ v) (h *ᵥ w) = herm (Hpk k r) v w := by
   have e : hᴴ * Hpk k r * h = Hpk k r := hh
@@ -21,6 +24,9 @@ lemma herm_UH {h : Mx k r} (hh : h ∈ UH (Hpk k r)) (v w : Fin (2 * r + k + 1) 
   rw [Matrix.star_mulVec, ← Matrix.dotProduct_mulVec, Matrix.mulVec_mulVec, Matrix.mulVec_mulVec]
   simp only [e]
 
+/- English proof (translation)
+Simplify using `only [Formalism.QuantumDeterminants.UWset, Set.mem_ofPred_eq] at hh`. Unfold `Formalism.QuantumDeterminants.fvec`. Use `split_ifs with ha`. Conclude with `(hh.2.1 ⟨a.val, ha⟩).1`. Conclude with `hh.2.2`.
+-/
 lemma fix_fvec {h : Mx k r} (hh : h ∈ UWset k r z) (a : Fin (r + 1)) :
     h *ᵥ fvec k r z a = fvec k r z a := by
   simp only [Formalism.QuantumDeterminants.UWset, Set.mem_ofPred_eq] at hh
@@ -29,6 +35,9 @@ lemma fix_fvec {h : Mx k r} (hh : h ∈ UWset k r z) (a : Fin (r + 1)) :
   · exact (hh.2.1 ⟨a.val, ha⟩).1
   · exact hh.2.2
 
+/- English proof (translation)
+Use `i.isLt` as an intermediate fact. Use `l.isLt` as an intermediate fact. Simplify using `only [Formalism.QuantumDeterminants.Hpk, Fin.ext_iff]`. Apply the tactic sequence `split_ifs <;> first | rfl | (exfalso; omega)`.
+-/
 private lemma hpk_apply_of_outer {i : Fin (2 * r + k + 1)} (hi : i.val < r ∨ r + k < i.val) (l : Fin (2 * r + k + 1)) :
     Hpk k r i l = if i.val + l.val = 2 * r + k then 1 else 0 := by
   have := i.isLt
@@ -36,6 +45,9 @@ private lemma hpk_apply_of_outer {i : Fin (2 * r + k + 1)} (hi : i.val < r ∨ r
   simp only [Formalism.QuantumDeterminants.Hpk, Fin.ext_iff]
   split_ifs <;> first | rfl | (exfalso; omega)
 
+/- English proof (translation)
+Use `i.isLt` as an intermediate fact. Use `l.isLt` as an intermediate fact. Simplify using `only [Formalism.QuantumDeterminants.Hpk, Fin.ext_iff]`. Apply the tactic sequence `split_ifs <;> first | rfl | (exfalso; omega)`.
+-/
 private lemma hpk_apply_of_middle {i : Fin (2 * r + k + 1)} (hi : r ≤ i.val ∧ i.val ≤ r + k) (l : Fin (2 * r + k + 1)) :
     Hpk k r i l = if i = l then (if i.val = r + k then -1 else 1) else 0 := by
   have := i.isLt
@@ -43,6 +55,19 @@ private lemma hpk_apply_of_middle {i : Fin (2 * r + k + 1)} (hi : r ≤ i.val �
   simp only [Formalism.QuantumDeterminants.Hpk, Fin.ext_iff]
   split_ifs <;> first | rfl | (exfalso; omega)
 
+/- English proof (translation)
+Use extensionality with `i j`. Rewrite using `[Matrix.mul_apply, Matrix.one_apply]`. Use `i.isLt` as an intermediate fact. Use `j.isLt` as an intermediate fact. Distinguish the cases in `hout : i.val < r ∨ r + k < i.val`.
+
+Establish `hp : 2 * r + k - i.val < 2 * r + k + 1` using `by omega`. Establish `hp' : 2 * r + k - i.val < r ∨ r + k < 2 * r + k - i.val` using `by omega`. Rewrite using `[Finset.sum_eq_single ⟨2 * r + k - i.val, hp⟩]`. Rewrite using `[hpk_apply_of_outer hout, hpk_apply_of_outer (i := ⟨2 * r + k - i.val, hp⟩) hp']`. Simplify using `only [Fin.ext_iff]`.
+
+Apply the tactic sequence `split_ifs <;> first | rfl | (exfalso; omega) | norm_num`. Introduce `l _ hl`. Rewrite using `[hpk_apply_of_outer hout, if_neg, zero_mul]`. Introduce `e`. Conclude with `hl (Fin.ext (show l.val = 2 * r + k - i.val by omega))`.
+
+Introduce `h`. Conclude with `absurd (Finset.mem_univ _) h`. Establish `hmid : r ≤ i.val ∧ i.val ≤ r + k` using `by omega`. Rewrite using `[Finset.sum_eq_single i]`. Rewrite using `[hpk_apply_of_middle hmid, hpk_apply_of_middle hmid]`.
+
+Distinguish the cases in `hij : i = j`. Substitute `hij` using the available equality. Apply the tactic sequence `by_cases hv : i.val = r + k <;> simp [hv]`. Simplify using `[hij]`. Introduce `l _ hl`.
+
+Rewrite using `[hpk_apply_of_middle hmid, if_neg (Ne.symm hl), zero_mul]`. Introduce `h`. Conclude with `absurd (Finset.mem_univ _) h`.
+-/
 private lemma hpk_mul_hpk : Hpk k r * Hpk k r = 1 := by
   ext i j
   rw [Matrix.mul_apply, Matrix.one_apply]
@@ -73,22 +98,39 @@ private lemma hpk_mul_hpk : Hpk k r * Hpk k r = 1 := by
     · intro h
       exact absurd (Finset.mem_univ _) h
 
+/- English proof (translation)
+Establish `e : gᴴ * Hpk k r * g = Hpk k r` using `hg`. Combine the equalities or inequalities in the displayed calculation.
+-/
 private lemma hpk_conjTranspose_hpk_mul_eq_one_of_mem_UH {g : Mx k r} (hg : g ∈ UH (Hpk k r)) :
     Hpk k r * gᴴ * Hpk k r * g = 1 := by
   have e : gᴴ * Hpk k r * g = Hpk k r := hg
   calc Hpk k r * gᴴ * Hpk k r * g = Hpk k r * (gᴴ * Hpk k r * g) := by simp only [Matrix.mul_assoc]
     _ = 1 := by rw [e, hpk_mul_hpk]
 
+/- English proof (translation)
+The claim follows from `Matrix.inv_eq_left_inv (hpk_conjTranspose_hpk_mul_eq_one_of_mem_UH hg)`.
+-/
 private lemma inv_eq_hpk_mul_conjTranspose_mul_hpk {g : Mx k r} (hg : g ∈ UH (Hpk k r)) : g⁻¹ = Hpk k r * gᴴ * Hpk k r :=
   Matrix.inv_eq_left_inv (hpk_conjTranspose_hpk_mul_eq_one_of_mem_UH hg)
 
+/- English proof (translation)
+Rewrite using `[inv_eq_hpk_mul_conjTranspose_mul_hpk hg]`. Conclude with `hpk_conjTranspose_hpk_mul_eq_one_of_mem_UH hg`.
+-/
 private lemma inv_mul_cancel_of_mem_UH {g : Mx k r} (hg : g ∈ UH (Hpk k r)) : g⁻¹ * g = 1 := by
   rw [inv_eq_hpk_mul_conjTranspose_mul_hpk hg]
   exact hpk_conjTranspose_hpk_mul_eq_one_of_mem_UH hg
 
+/- English proof (translation)
+The claim follows from `Matrix.mul_nonsing_inv (h := Matrix.isUnit_det_of_left_inverse (hpk_conjTranspose_hpk_mul_eq_one_of_mem_UH hg))`.
+-/
 private lemma mul_inv_cancel_of_mem_UH {g : Mx k r} (hg : g ∈ UH (Hpk k r)) : g * g⁻¹ = 1 :=
   Matrix.mul_nonsing_inv (h := Matrix.isUnit_det_of_left_inverse (hpk_conjTranspose_hpk_mul_eq_one_of_mem_UH hg))
 
+/- English proof (translation)
+Establish `e : gᴴ * Hpk k r * g = Hpk k r` using `hg`. Use `show (g⁻¹)ᴴ * Hpk k r * g⁻¹ = Hpk k r`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Matrix.conjTranspose_mul]`. Simplify using `only [Matrix.mul_assoc]`.
+
+Use `_ = Hpk k r := by rw [mul_inv_cancel_of_mem_UH hg, Matrix.conjTranspose_one, Matrix.one_mul, Matrix.mul_one]`.
+-/
 private lemma inv_mem_UH_jet_harmonics {g : Mx k r} (hg : g ∈ UH (Hpk k r)) : g⁻¹ ∈ UH (Hpk k r) := by
   have e : gᴴ * Hpk k r * g = Hpk k r := hg
   show (g⁻¹)ᴴ * Hpk k r * g⁻¹ = Hpk k r
@@ -98,16 +140,31 @@ private lemma inv_mem_UH_jet_harmonics {g : Mx k r} (hg : g ∈ UH (Hpk k r)) : 
         simp only [Matrix.mul_assoc]
     _ = Hpk k r := by rw [mul_inv_cancel_of_mem_UH hg, Matrix.conjTranspose_one, Matrix.one_mul, Matrix.mul_one]
 
+/- English proof (translation)
+Combine the equalities or inequalities in the displayed calculation.
+-/
 private lemma inv_mulVec_eq_of_mulVec_eq_of_mem_UH {g : Mx k r} (hg : g ∈ UH (Hpk k r)) {v : Fin (2 * r + k + 1) → ℂ}
     (hv : g *ᵥ v = v) : g⁻¹ *ᵥ v = v := by
   calc g⁻¹ *ᵥ v = g⁻¹ *ᵥ (g *ᵥ v) := by rw [hv]
     _ = v := by rw [Matrix.mulVec_mulVec, inv_mul_cancel_of_mem_UH hg, Matrix.one_mulVec]
 
+/- English proof (translation)
+Simplify using `only [Formalism.QuantumDeterminants.UWset, Set.mem_ofPred_eq] at hh ⊢`. Take `⟨hU, hb, hz⟩` from `hh`. Conclude with `⟨inv_mem_UH_jet_harmonics hU, fun a => ⟨inv_mulVec_eq_of_mulVec_eq_of_mem_UH hU (hb a).1, inv_mulVec_eq_of_mulVec_eq_of_mem_UH hU (hb a).2⟩, inv_mulVec_eq_of_mulVec_eq_of_mem_UH hU hz⟩`.
+-/
 lemma inv_mem {h : Mx k r} (hh : h ∈ UWset k r z) : h⁻¹ ∈ UWset k r z := by
   simp only [Formalism.QuantumDeterminants.UWset, Set.mem_ofPred_eq] at hh ⊢
   obtain ⟨hU, hb, hz⟩ := hh
   exact ⟨inv_mem_UH_jet_harmonics hU, fun a => ⟨inv_mulVec_eq_of_mulVec_eq_of_mem_UH hU (hb a).1, inv_mulVec_eq_of_mulVec_eq_of_mem_UH hU (hb a).2⟩, inv_mulVec_eq_of_mulVec_eq_of_mem_UH hU hz⟩
 
+/- English proof (translation)
+Establish `hs : star (bvec p : Fin (2 * r + k + 1) → ℂ) = bvec p`. Use extensionality with `j`. Distinguish the cases in `hj : j = p`. Substitute `hj` using the available equality. Simplify using `[Formalism.QuantumDeterminants.bvec]`.
+
+Simplify using `[Formalism.QuantumDeterminants.bvec, hj]`. Unfold `Formalism.QuantumDeterminants.herm`. Rewrite using `[hs]`. Unfold `Formalism.QuantumDeterminants.bvec`. Rewrite using `[single_dotProduct, one_mul]`.
+
+Simplify using `only [Matrix.mulVec, dotProduct]`. Rewrite using `[Finset.sum_eq_single q]`. Rewrite using `[hpk_apply_of_outer hp, if_pos hpq, one_mul]`. Introduce `l _ hl`. Rewrite using `[hpk_apply_of_outer hp, if_neg, zero_mul]`.
+
+Introduce `e`. Conclude with `hl (Fin.ext (by omega))`. Introduce `h`. Conclude with `absurd (Finset.mem_univ _) h`.
+-/
 private lemma herm_hpk_bvec_eq_of_outer (v : Fin (2 * r + k + 1) → ℂ) (p q : Fin (2 * r + k + 1))
     (hp : p.val < r ∨ r + k < p.val) (hpq : p.val + q.val = 2 * r + k) :
     herm (Hpk k r) v (bvec p) = v q := by
@@ -131,6 +188,21 @@ private lemma herm_hpk_bvec_eq_of_outer (v : Fin (2 * r + k + 1) → ℂ) (p q :
   · intro h
     exact absurd (Finset.mem_univ _) h
 
+/- English proof (translation)
+Establish `hh'` using `hh`. Simplify using `only [Formalism.QuantumDeterminants.UWset, Set.mem_ofPred_eq] at hh'`. Take `⟨hU, hb, -⟩` from `hh'`. Establish `hcol : ∀ i j : Fin (2 * r + k + 1), (h *ᵥ bvec j) i = h i j`. Introduce `i j`.
+
+Simplify using `[Formalism.QuantumDeterminants.bvec, Matrix.mulVec, dotProduct, Pi.single_apply]`. Establish `hbv : ∀ i j : Fin (2 * r + k + 1), bvec j i = if i = j then (1 : ℂ) else 0`. Introduce `i j`. Simplify using `[Formalism.QuantumDeterminants.bvec, Pi.single_apply]`. Establish `hfix : ∀ p : Fin (2 * r + k + 1), (p.val < r ∨ r + k < p.val) → h *ᵥ bvec p = bvec p`.
+
+Introduce `p hp`. Use `p.isLt` as an intermediate fact. Break down `hp with hp | hp` into its components or cases. Establish `hq` using `(hb ⟨p.val, hp⟩).1`. Rewrite `hq` using `[show eI k r ⟨p.val, hp⟩ = p from Fin.ext rfl]`. Then use the resulting hypothesis.
+
+Establish `hp' : 2 * r + k - p.val < r` using `by omega`. Establish `hq` using `(hb ⟨2 * r + k - p.val, hp'⟩).2`. Rewrite `hq` using `[show esI k r ⟨2 * r + k - p.val, hp'⟩ = p from Fin.ext (show 2 * r + k - (2 * r + k - p.val) = p.val by omega)]`. Then use the resulting hypothesis. Use `i.isLt` as an intermediate fact. Use `j.isLt` as an intermediate fact.
+
+Distinguish the cases in `hj : j.val < r ∨ r + k < j.val`. Rewrite using `[← hcol, hfix j hj, hbv]`. Establish `hi : i.val < r ∨ r + k < i.val`. Assume the negation of the conclusion as `hc`. Conclude with `hij ⟨⟨by omega, by omega⟩, ⟨by omega, by omega⟩⟩`.
+
+Establish `hlt : 2 * r + k - i.val < 2 * r + k + 1` using `by omega`. Establish `hp : 2 * r + k - i.val < r ∨ r + k < 2 * r + k - i.val` using `by omega`. Establish `hpi : 2 * r + k - i.val + i.val = 2 * r + k` using `by omega`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[hfix ⟨2 * r + k - i.val, hlt⟩ hp]`.
+
+Use `_ = herm (Hpk k r) (bvec j) (bvec ⟨2 * r + k - i.val, hlt⟩) := GlobalTheory.WigSh.OmgEquiv.herm_UH hU _ _`. Use `_ = bvec j i := herm_hpk_bvec_eq_of_outer _ ⟨2 * r + k - i.val, hlt⟩ i hp hpi`. Use `_ = if i = j then 1 else 0 := hbv i j`.
+-/
 lemma block {h : Mx k r} (hh : h ∈ UWset k r z) (i j : Fin (2 * r + k + 1))
     (hij : ¬ ((r ≤ i.val ∧ i.val ≤ r + k) ∧ (r ≤ j.val ∧ j.val ≤ r + k))) :
     h i j = if i = j then 1 else 0 := by
@@ -173,10 +245,19 @@ lemma block {h : Mx k r} (hh : h ∈ UWset k r z) (i j : Fin (2 * r + k + 1))
       _ = bvec j i := herm_hpk_bvec_eq_of_outer _ ⟨2 * r + k - i.val, hlt⟩ i hp hpi
       _ = if i = j then 1 else 0 := hbv i j
 
+/- English proof (translation)
+The claim follows from `mul_inv_cancel_of_mem_UH hg`.
+-/
 lemma mul_inv {g : Mx k r} (hg : g ∈ UH (Hpk k r)) : g * g⁻¹ = 1 := mul_inv_cancel_of_mem_UH hg
 
+/- English proof (translation)
+The claim follows from `inv_eq_hpk_mul_conjTranspose_mul_hpk hg`.
+-/
 lemma inv_eq {g : Mx k r} (hg : g ∈ UH (Hpk k r)) : g⁻¹ = Hpk k r * gᴴ * Hpk k r := inv_eq_hpk_mul_conjTranspose_mul_hpk hg
 
+/- English proof (translation)
+Establish `ea : aᴴ * Hpk k r * a = Hpk k r` using `ha`. Establish `eb : bᴴ * Hpk k r * b = Hpk k r` using `hb`. Use `show (a * b)ᴴ * Hpk k r * (a * b) = Hpk k r`. Rewrite using `[Matrix.conjTranspose_mul]`. Combine the equalities or inequalities in the displayed calculation.
+-/
 lemma mul_mem {a b : Mx k r} (ha : a ∈ UH (Hpk k r)) (hb : b ∈ UH (Hpk k r)) : a * b ∈ UH (Hpk k r) := by
   have ea : aᴴ * Hpk k r * a = Hpk k r := ha
   have eb : bᴴ * Hpk k r * b = Hpk k r := hb
@@ -185,6 +266,13 @@ lemma mul_mem {a b : Mx k r} (ha : a ∈ UH (Hpk k r)) (hb : b ∈ UH (Hpk k r))
   calc bᴴ * aᴴ * Hpk k r * (a * b) = bᴴ * (aᴴ * Hpk k r * a) * b := by simp only [Matrix.mul_assoc]
     _ = Hpk k r := by rw [ea, eb]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `i`. Simplify using `only [Matrix.mulVec, dotProduct]`. Use `split_ifs with hi`. Use `Finset.sum_congr rfl fun j _ => ?_ split_ifs with hj` and prove the remaining obligations. Both sides reduce to the same expression.
+
+Establish `hne : i ≠ j` using `fun e => hj (by subst e; exact hi)`. Simplify using `[GlobalTheory.WigSh.OmgEquiv.block hh i j (fun hc => hj hc.2), hne]`. Use `(Finset.sum_eq_zero fun j _ => ?_).symm split_ifs with hj` and prove the remaining obligations. Establish `hne : i ≠ j` using `fun e => hi (by subst e; exact hj)`. Simplify using `[GlobalTheory.WigSh.OmgEquiv.block hh i j (fun hc => hi hc.1), hne]`.
+
+Rewrite using `[mul_zero]`.
+-/
 lemma wb_comm {h : Mx k r} (hh : h ∈ UWset k r z) (v : Fin (2 * r + k + 1) → ℂ) :
     (fun i : Fin (2 * r + k + 1) => if r ≤ i.val ∧ i.val ≤ r + k then (h *ᵥ v) i else 0) =
       h *ᵥ (fun i : Fin (2 * r + k + 1) => if r ≤ i.val ∧ i.val ≤ r + k then v i else 0) := by
@@ -202,6 +290,11 @@ lemma wb_comm {h : Mx k r} (hh : h ∈ UWset k r z) (v : Fin (2 * r + k + 1) →
       simp [GlobalTheory.WigSh.OmgEquiv.block hh i j (fun hc => hi hc.1), hne]
     · rw [mul_zero]
 
+/- English proof (translation)
+Establish `hh'` using `hh`. Simplify using `only [Formalism.QuantumDeterminants.UWset, Set.mem_ofPred_eq] at hh'`. Take `⟨hU, -, hz⟩` from `hh'`. Establish `key : ∀ w : Fin (2 * r + k + 1) → ℂ, herm (Hpk k r) (h *ᵥ w) z = herm (Hpk k r) w z`. Introduce `w`.
+
+Combine the equalities or inequalities in the displayed calculation. Simplify using `only [Formalism.FourierDecayAlt.D.prW]`. Rewrite using `[GlobalTheory.WigSh.OmgEquiv.wb_comm hh v, Matrix.mulVec_sub, Matrix.mulVec_smul, hz, key]`.
+-/
 lemma prW_comm {h : Mx k r} (hh : h ∈ UWset k r z) (v : Fin (2 * r + k + 1) → ℂ) :
     Formalism.FourierDecayAlt.D.prW k r z (h *ᵥ v) = h *ᵥ Formalism.FourierDecayAlt.D.prW k r z v := by
   have hh' := hh
@@ -214,6 +307,13 @@ lemma prW_comm {h : Mx k r} (hh : h ∈ UWset k r z) (v : Fin (2 * r + k + 1) �
   simp only [Formalism.FourierDecayAlt.D.prW]
   rw [GlobalTheory.WigSh.OmgEquiv.wb_comm hh v, Matrix.mulVec_sub, Matrix.mulVec_smul, hz, key]
 
+/- English proof (translation)
+Establish `hi` using `GlobalTheory.WigSh.OmgEquiv.inv_mem hh`. Establish `hiU : h⁻¹ ∈ UH (Hpk k r)`. Establish `hi'` using `hi`. Simplify using `only [Formalism.QuantumDeterminants.UWset, Set.mem_ofPred_eq] at hi'`. Conclude with `hi'.1`.
+
+Use extensionality with `a b`. Simplify using `only [Formalism.QuantumDeterminants.Zhat]`. Rewrite using `[← Matrix.mulVec_mulVec, ← Matrix.mulVec_mulVec, GlobalTheory.WigSh.OmgEquiv.fix_fvec hh' b]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[GlobalTheory.WigSh.OmgEquiv.fix_fvec hi a]`.
+
+Use `_ = herm (Hpk k r) (g *ᵥ fvec k r z' b) (fvec k r z a) := GlobalTheory.WigSh.OmgEquiv.herm_UH hiU _ _`.
+-/
 lemma Zhat_eq {g h h' : Mx k r} (hh : h ∈ UWset k r z) (hh' : h' ∈ UWset k r z') :
     Zhat k r z z' (h⁻¹ * g * h') = Zhat k r z z' g := by
   have hi := GlobalTheory.WigSh.OmgEquiv.inv_mem hh
@@ -235,6 +335,13 @@ namespace GlobalTheory.WigSh
 
 open OmgEquiv
 
+/- English proof (translation)
+Introduce `k r z z' g h h' _ _ _ _ hg hh hh'`. Establish `hUW : ∀ {w : Fin (2 * r + k + 1) → ℂ} {m : Mx k r}, m ∈ UWset k r w → m ∈ UH (Hpk k r)`. Introduce `w m hm`. Simplify using `only [Formalism.QuantumDeterminants.UWset, Set.mem_ofPred_eq] at hm`. Conclude with `hm.1`.
+
+Establish `hG : h⁻¹ * g * h' ∈ UH (Hpk k r)` using `GlobalTheory.WigSh.OmgEquiv.mul_mem (GlobalTheory.WigSh.OmgEquiv.mul_mem (hUW (GlobalTheory.WigSh.OmgEquiv.inv_mem hh)) hg) (hUW hh')`. Unfold `GlobalTheory.WigSh.omg`. Rewrite using `[GlobalTheory.WigSh.OmgEquiv.Zhat_eq hh hh', ← GlobalTheory.WigSh.OmgEquiv.inv_eq hG, ← GlobalTheory.WigSh.OmgEquiv.inv_eq hg, Matrix.mul_inv_rev, Matrix.mul_inv_rev]`. Use `set S := ∑ a, star ((Zhat k r z z' g).adjugate (Fin.last r) a) • fvec k r z a with hSdef`. Establish `hfixS : ∀ m : Mx k r, m ∈ UWset k r z → m *ᵥ S = S`.
+
+Introduce `m hm`. Rewrite using `[hSdef, Matrix.mulVec_sum]`. Conclude with `Finset.sum_congr rfl fun a _ => by rw [Matrix.mulVec_smul, GlobalTheory.WigSh.OmgEquiv.fix_fvec hm a]`. Rewrite using `[← Matrix.mulVec_mulVec, ← Matrix.mulVec_mulVec, hfixS _ (GlobalTheory.WigSh.OmgEquiv.inv_mem (GlobalTheory.WigSh.OmgEquiv.inv_mem hh))]`. Conclude with `GlobalTheory.WigSh.OmgEquiv.prW_comm (GlobalTheory.WigSh.OmgEquiv.inv_mem hh') _`.
+-/
 theorem omg_equivariant : ∀ (k r : ℕ) (z z' : (Fin (2 * r + k + 1) → ℂ)) (g h h' : Mx k r), inWb k r z → 0 < Tz k r z → inWb k r z' → 0 < Tz k r z' → g ∈ UH (Hpk k r) → h ∈ UWset k r z → h' ∈ UWset k r z' → GlobalTheory.WigSh.omg k r z z' (h⁻¹ * g * h') = h'⁻¹ *ᵥ GlobalTheory.WigSh.omg k r z z' g := by
   intro k r z z' g h h' _ _ _ _ hg hh hh'
   have hUW : ∀ {w : Fin (2 * r + k + 1) → ℂ} {m : Mx k r}, m ∈ UWset k r w → m ∈ UH (Hpk k r) := by

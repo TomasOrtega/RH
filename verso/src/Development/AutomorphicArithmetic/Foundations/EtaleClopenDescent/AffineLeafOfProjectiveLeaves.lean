@@ -18,6 +18,11 @@ namespace UpperTheory.Aff
 
 variable (D : Type) [CommRing D]
 
+/- English proof (translation)
+Introduce `n`. Establish `h : (pull R (f ≫ g) F n : H R E'' F n → H R E F n) = pull R f F n ∘ pull R g F n`. Use function extensionality and compare the values at `x`. Conclude with `pull_comp R f g F n x`. Rewrite using `[h]`.
+
+Conclude with `(hf n).comp (hg n)`.
+-/
 private theorem eqv_comp' {R : Type} [CommRing R] (F : Shv R) {E E' E'' : Spc} (f : E ⟶ E') (g : E' ⟶ E'')
     (hf : Eqv R f F) (hg : Eqv R g F) : Eqv R (f ≫ g) F := by
   intro n
@@ -27,6 +32,11 @@ private theorem eqv_comp' {R : Type} [CommRing R] (F : Shv R) {E E' E'' : Spc} (
   rw [h]
   exact (hf n).comp (hg n)
 
+/- English proof (translation)
+Introduce `n`. Establish `h : (pull R (𝟙 E) F n : H R E F n → H R E F n) = id`. Use function extensionality and compare the values at `x`. Conclude with `pull_id R E F n x`. Rewrite using `[h]`.
+
+Conclude with `Function.bijective_id`.
+-/
 private theorem eqv_id' {R : Type} [CommRing R] (F : Shv R) (E : Spc) : Eqv R (𝟙 E) F := by
   intro n
   have h : (pull R (𝟙 E) F n : H R E F n → H R E F n) = id := by
@@ -35,11 +45,24 @@ private theorem eqv_id' {R : Type} [CommRing R] (F : Shv R) (E : Spc) : Eqv R (�
   rw [h]
   exact Function.bijective_id
 
+/- English proof (translation)
+The claim follows from `Subtype.ext (funext h)`.
+-/
 private theorem sx_ext {X : RF} {n : SimplexCategoryᵒᵖ} {U : Schemeᵒᵖ} {x y : ((CN X).obj n).obj U}
     (h : ∀ i, x.1 i = y.1 i) : x = y := Subtype.ext (funext h)
 
+/- English proof (translation)
+The claim follows from `Subtype.ext h`.
+-/
 private theorem vec_ext {N : ℕ} {A : Type} [CommRing A] {x y : (Vec D N).obj A} (h : x.1 = y.1) : x = y := Subtype.ext h
 
+/- English proof (translation)
+Take `⟨ux, hx⟩ : IsUnit (x.1.1.2 (Fin.last d))` from `x.2`. Take `⟨uy, hy⟩ : IsUnit (y.1.1.2 (Fin.last d))` from `y.2`. Use `⟨congrArg (fun z : (D →+* A) × (Fin d → A) => z.1) h, ux * uy⁻¹, funext fun j => ?_⟩` and prove the remaining obligations. Use `Fin.lastCases ?_ (fun j => ?_) j` and prove the remaining obligations. Rewrite using `[← hx, ← hy]`.
+
+Simplify using the standard rewrite rules. Establish `hj : x.1.1.2 j.castSucc * Ring.inverse (x.1.1.2 (Fin.last d)) = y.1.1.2 j.castSucc * Ring.inverse (y.1.1.2 (Fin.last d))` using `congrFun (congrArg (fun z : (D →+* A) × (Fin d → A) => z.2) h) j`. Rewrite `hj` using `[← hx, ← hy, Ring.inverse_unit, Ring.inverse_unit]`. Establish `h1 : (ux : A) * ((ux⁻¹ : Aˣ) : A) = 1` using `Units.mul_inv ux`. Simplify using `only [Units.val_mul]`.
+
+Take the linear combination `(-(x.1.1.2 j.castSucc)) * h1 + (ux : A) * hj`.
+-/
 private theorem ratio1_rel (d : ℕ) {A : Type} [CommRing A] {x y : (L1 D d).obj A}
     (h : (ratio1 D d).app A x = (ratio1 D d).app A y) : (L1 D d).rel x y := by
   obtain ⟨ux, hx⟩ : IsUnit (x.1.1.2 (Fin.last d)) := x.2
@@ -56,6 +79,9 @@ private theorem ratio1_rel (d : ℕ) {A : Type} [CommRing A] {x y : (L1 D d).obj
     simp only [Units.val_mul]
     linear_combination (-(x.1.1.2 j.castSucc)) * h1 + (ux : A) * hj
 
+/- English proof (translation)
+Use `Prod.ext rfl (funext fun j => ?_)` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `Fin.snoc (α := fun _ => A) m.2 1 j.castSucc * Ring.inverse (Fin.snoc (α := fun _ => A) m.2 1 (Fin.last d)) = m.2 j`. Simplify using the standard rewrite rules.
+-/
 private theorem ratio_comp_section_eq (d : ℕ) {A : Type} [CommRing A] (m : (Aff D d).obj A) :
     (ratio1 D d).app A ((sec1 D d).app A m) = m := by
   refine Prod.ext rfl (funext fun j => ?_)
@@ -72,6 +98,9 @@ private def sectionAppendOne (d : ℕ) : (Vec D d).Hom (lift_levelP_alt₂ D d) 
     have h := (sec1 D d).nat f x.1
     exact Subtype.ext (congrArg (fun z : (L1 D d).obj B => z.1) h)
 
+/- English proof (translation)
+Use `a3 _ _ _ fun n => ?_` and prove the remaining obligations. Take `⟨Y, a, φ, hφ⟩` from `UpperTheory.nerve_affine_representable D d n`. Establish `hY : IsUnit (q : Γ(Y, ⊤))` using `by simpa using hq.map a`. Conclude with `UpperTheory.representable_of_affine hH b3 c4 q i ((CN.map (fstV D d) (fstV_rel D d)).app n) (fun T x => (x.1 0).1.1.2 (Fin.last d)) (fun f x => rfl) (fun T => UpperTheory.nerve_first_projection D d n T) Y hY φ hφ`.
+-/
 private theorem eqv_fstV (hH : LeafHI) (a3 : A3) (b3 : B3) (c4 : C4) (q : ℕ) [NeZero q] (i : ℤ) (d : ℕ)
     (hq : IsUnit (q : D)) : Eqv _ (CN.map (fstV D d) (fstV_rel D d)) (tw q i) := by
   refine a3 _ _ _ fun n => ?_
@@ -80,6 +109,11 @@ private theorem eqv_fstV (hH : LeafHI) (a3 : A3) (b3 : B3) (c4 : C4) (q : ℕ) [
   exact UpperTheory.representable_of_affine hH b3 c4 q i ((CN.map (fstV D d) (fstV_rel D d)).app n)
     (fun T x => (x.1 0).1.1.2 (Fin.last d)) (fun f x => rfl) (fun T => UpperTheory.nerve_first_projection D d n T) Y hY φ hφ
 
+/- English proof (translation)
+Use `NatTrans.ext (funext fun n => NatTrans.ext (funext fun U => ?_))` and prove the remaining obligations. Establish `key : ∀ {A : Type} [CommRing A] (y : (Vec D d).obj A), (fstV D d).app A ((incl2 D d).app A y) = y`. Introduce `A _ y`. Use `vec_ext D (Prod.ext rfl (funext fun j => ?_))` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `Fin.snoc (α := fun _ => A) y.1.2 0 j.castSucc = y.1.2 j`.
+
+Simplify using the standard rewrite rules. Conclude with `ConcreteCategory.hom_ext _ _ fun x => sx_ext (X := Vec D d) (n := n) (U := U) fun i => key (x.1 i)`.
+-/
 private theorem inclusion_two_first_vector (d : ℕ) : CN.map (incl2 D d) (inclusion_two_relation D d) ≫ CN.map (fstV D d) (fstV_rel D d) = 𝟙 _ := by
   refine NatTrans.ext (funext fun n => NatTrans.ext (funext fun U => ?_))
   have key : ∀ {A : Type} [CommRing A] (y : (Vec D d).obj A), (fstV D d).app A ((incl2 D d).app A y) = y := by
@@ -89,11 +123,21 @@ private theorem inclusion_two_first_vector (d : ℕ) : CN.map (incl2 D d) (inclu
     simp
   exact ConcreteCategory.hom_ext _ _ fun x => sx_ext (X := Vec D d) (n := n) (U := U) fun i => key (x.1 i)
 
+/- English proof (translation)
+Rewrite using `[Category.comp_id]`. Both sides reduce to the same expression.
+-/
 private theorem inclusion_two_comp_identity (d : ℕ) : CN.map (incl D d) (incl_rel D d) ≫ 𝟙 _ =
     CN.map (incl2 D d) (inclusion_two_relation D d) ≫ CN.map ((Vec D (d + 1)).subι P2 second_property_map) ((Vec D (d + 1)).subι_rel P2 second_property_map) := by
   rw [Category.comp_id]
   rfl
 
+/- English proof (translation)
+Take `⟨φ, hφ1, hφ2⟩` from `UpperTheory.vector_bundle_affine_rep D d U hU`. Use `⟨CN.proj (ratio1 D d) (ratio1_const D d) ≫ disc.map (repA D d), CN.proj (ratioBoth D d) (ratio_both_constant D d) ≫ disc.map φ, ?_, ?_, ?_⟩` and prove the remaining obligations. Use `eqv_comp' F _ _ ?_ (UpperTheory.equiv_of_affine_bijective R F _ fun T _ => UpperTheory.represented_affine_bijective D d T)` and prove the remaining obligations. Conclude with `UpperTheory.equiv_of_constant_section a1 R F _ _ (fun h => ratio1_rel D d h) (sec1 D d) (fun m => ratio_comp_section_eq D d m)`. Use `eqv_comp' F _ _ ?_ (UpperTheory.equiv_of_affine_bijective R F _ hφ2)` and prove the remaining obligations.
+
+Use `UpperTheory.equiv_of_constant_section a1 R F _ _ (fun {A} _ {x y} h => ?_) (sectionAppendOne D d) (fun {A} _ m => ?_)` and prove the remaining obligations. Conclude with `ratio1_rel D d (x := (bothToFirst D d).app A x) (y := (bothToFirst D d).app A y) (congrArg Subtype.val h)`. Conclude with `Subtype.ext (ratio_comp_section_eq D d m.1)`. Use `NatTrans.ext (funext fun n => NatTrans.ext (funext fun T => ?_))` and prove the remaining obligations. Use `ConcreteCategory.hom_ext _ _ fun x => ?_` and prove the remaining obligations.
+
+Establish `h` using `hφ1 T.unop ((ratioBoth D d).app _ (x.1 0))`. Conclude with `h.symm`.
+-/
 private theorem final_square (a1 : A1) {R : Type} [CommRing R] (F : Shv R) (d : ℕ)
     (U : (Spec (CommRingCat.of (MvPolynomial (Fin d) D))).Opens)
     (hU : IsCompl' (varIdeal (RingHom.id (MvPolynomial (Fin d) D))) U) :
@@ -116,6 +160,11 @@ private theorem final_square (a1 : A1) {R : Type} [CommRing R] (F : Shv R) (d : 
 
 end UpperTheory.Aff
 
+/- English proof (translation)
+Introduce `hP hE hH a1 a3 a5 a7 a9 a10 b3 c4 d1 q _ i d D _ hq U hU`. Establish `h1` using `UpperTheory.inclusion_connected_twist hP a1 a5 a7 a9 a10 d1 q i d D hq`. Establish `ht` using `eqv_section (tw q i) _ _ (inclusion_two_first_vector D d) (eqv_fstV D hH a3 b3 c4 q i d hq)`. Establish `hf` using `(conn_sq (tw q i) (2 * (d : ℤ)) _ _ _ _ (inclusion_two_comp_identity D d) ht (eqv_id' _ _)).1 h1`. Establish `hg` using `UpperTheory.connected_of_unimodular_sub hE a1 _ (tw q i) _ d D hf`.
+
+Take `⟨r1, r2, e1, e2, hc⟩` from `final_square D a1 (tw q i) d U hU`. Conclude with `(conn_sq (tw q i) _ _ _ _ _ hc e2 e1).1 hg`.
+-/
 theorem UpperTheory.Cb.affine_leaf_of_projective_leaves :
     LateralTheory.E.t_E6Cut.LeafProj → LateralTheory.E.t_E6Cut.LeafExc → LateralTheory.E.t_E6Cut.LeafHI → LateralTheory.E.t_E6Cut.LeafAff := by
   intro hP hE hH a1 a3 a5 a7 a9 a10 b3 c4 d1 q _ i d D _ hq U hU

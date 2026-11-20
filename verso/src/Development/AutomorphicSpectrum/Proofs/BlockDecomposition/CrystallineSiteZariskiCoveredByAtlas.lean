@@ -12,6 +12,9 @@ namespace GlobalTheory.CompanionTheory.ThickZar
 
 variable {O : Type} [CommRing O] {F : Fn O} {b : Base} {ht : b.t = 1} {κ : O →+* b.R ⧸ b.I}
 
+/- English proof (translation)
+Take `⟨N, hN⟩` from `T.adm.1 hp`. Take `⟨c, hc⟩ : b.p ∣ b.p.factorial` from `Nat.dvd_factorial (Nat.pos_of_ne_zero hp) le_rfl`. Use `⟨b.p * N, ?_⟩` and prove the remaining obligations. Rewrite using `[pow_mul, ← T.δ.factorial_mul_dpow_eq_pow hx, hc, Nat.cast_mul, mul_assoc, mul_pow, hN, zero_mul]`.
+-/
 theorem isNilpotent_of_mem_J (hp : b.p ≠ 0) {L : b.Fun} (T : Thick L) {x : T.B} (hx : x ∈ T.J) : IsNilpotent x := by
   obtain ⟨N, hN⟩ := T.adm.1 hp
   obtain ⟨c, hc⟩ : b.p ∣ b.p.factorial := Nat.dvd_factorial (Nat.pos_of_ne_zero hp) le_rfl
@@ -101,6 +104,9 @@ def pushDesc (T : Thick (F.cr b ht κ)) {B' : Type} [CommRing B'] (g : T.B →+*
       rw [← RingHom.comp_apply χ g, h]
     hv := fun j => j.elim }
 
+/- English proof (translation)
+The claim follows from `Thick.Hom.ext h (funext fun j => j.elim)`.
+-/
 theorem hom_ext_cr {T T' : Thick (F.cr b ht κ)} {f g : T ⟶ T'} (h : f.φ = g.φ) : f = g :=
   Thick.Hom.ext h (funext fun j => j.elim)
 
@@ -114,11 +120,22 @@ def locHom (T : Thick (F.cr b ht κ)) (a : T.B) : T ⟶ locT T a :=
     (Classical.choose (GlobalTheory.CompanionTheory.JLiftDP.dpFlat T.B (Localization.Away a) T.J T.δ))
     (Classical.choose_spec (GlobalTheory.CompanionTheory.JLiftDP.dpFlat T.B (Localization.Away a) T.J T.δ))
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem locHom_φ (T : Thick (F.cr b ht κ)) (a : T.B) :
     (locHom T a).φ = algebraMap T.B (Localization.Away a) := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem comp_φ {L : b.Fun} {T T' T'' : Thick L} (f : T ⟶ T') (g : T' ⟶ T'') : (f ≫ g).φ = g.φ.comp f.φ := rfl
 
+/- English proof (translation)
+Set `l : Localization.Away a →+* T''.B` to `IsLocalization.Away.lift a hu`. Establish `hl : l.comp (algebraMap T.B (Localization.Away a)) = ψ.φ` using `IsLocalization.Away.lift_comp a hu`. Use `⟨pushDesc T _ _ _ ψ l hl, hom_ext_cr hl, fun χ hχ => hom_ext_cr ?_⟩` and prove the remaining obligations. Set `χ' : Localization.Away a →+* T''.B` to `χ.φ`. Establish `h1 : χ'.comp (algebraMap T.B (Localization.Away a)) = ψ.φ` using `congrArg Thick.Hom.φ hχ`.
+
+Establish `h2 : χ' = l` using `IsLocalization.ringHom_ext (Submonoid.powers a) (h1.trans hl.symm)`. Conclude with `h2`.
+-/
 theorem locT_univ (T : Thick (F.cr b ht κ)) (a : T.B) {T'' : Thick (F.cr b ht κ)} (ψ : T ⟶ T'')
     (hu : IsUnit (ψ.φ a)) : ∃! χ : locT T a ⟶ T'', locHom T a ≫ χ = ψ := by
   let l : Localization.Away a →+* T''.B := IsLocalization.Away.lift a hu
@@ -129,17 +146,28 @@ theorem locT_univ (T : Thick (F.cr b ht κ)) (a : T.B) {T'' : Thick (F.cr b ht �
   have h2 : χ' = l := IsLocalization.ringHom_ext (Submonoid.powers a) (h1.trans hl.symm)
   exact h2
 
+/- English proof (translation)
+Establish `h : IsUnit (algebraMap T.B (Localization.Away (∏ k ∈ S, f k)) (∏ k ∈ S, f k))` using `IsLocalization.Away.algebraMap_isUnit _`. Conclude with `isUnit_of_dvd_unit (map_dvd _ (Finset.dvd_prod_of_mem f hk)) h`.
+-/
 theorem unit_of_mem (T : Thick (F.cr b ht κ)) {m : ℕ} (f : Fin m → T.B) (S : Finset (Fin m)) {k : Fin m} (hk : k ∈ S) :
     IsUnit ((locHom T (∏ k ∈ S, f k)).φ (f k)) := by
   have h : IsUnit (algebraMap T.B (Localization.Away (∏ k ∈ S, f k)) (∏ k ∈ S, f k)) :=
     IsLocalization.Away.algebraMap_isUnit _
   exact isUnit_of_dvd_unit (map_dvd _ (Finset.dvd_prod_of_mem f hk)) h
 
+/- English proof (translation)
+The claim follows from `(GlobalTheory.CompanionTheory.PDMap.extended_dividedPowers T.δ (algebraMap T.B (Localization.Away a)) _ (Classical.choose_spec (GlobalTheory.CompanionTheory.JLiftDP.dpFlat T.B (Localization.Away a) T.J T.δ))).1 r`.
+-/
 theorem pdPow_locT (T : Thick (F.cr b ht κ)) (a : T.B) (r : ℕ) :
     (locT T a).pdPow r = (T.pdPow r).map (algebraMap T.B (Localization.Away a)) :=
   (GlobalTheory.CompanionTheory.PDMap.extended_dividedPowers T.δ (algebraMap T.B (Localization.Away a)) _
     (Classical.choose_spec (GlobalTheory.CompanionTheory.JLiftDP.dpFlat T.B (Localization.Away a) T.J T.δ))).1 r
 
+/- English proof (translation)
+Take `⟨⟨x, s⟩, hx⟩` from `(IsLocalization.mem_map_algebraMap_iff (Submonoid.powers a) _).1 hy`. Take `⟨n, hn⟩` from `s.2`. Use `⟨n, x.1, x.2, ?_⟩` and prove the remaining obligations. Establish `hn' : a ^ n = s` using `hn`. Rewrite using `[mul_comm, hn']`.
+
+Conclude with `hx`.
+-/
 theorem loc_surj (T : Thick (F.cr b ht κ)) (a : T.B) (r : ℕ) (y : Localization.Away a)
     (hy : y ∈ (T.pdPow r).map (algebraMap T.B (Localization.Away a))) :
     ∃ (n : ℕ) (x : T.B), x ∈ T.pdPow r ∧
@@ -151,6 +179,13 @@ theorem loc_surj (T : Thick (F.cr b ht κ)) (a : T.B) (r : ℕ) (y : Localizatio
   rw [mul_comm, hn']
   exact hx
 
+/- English proof (translation)
+Establish `h1 : Ideal.map (Ideal.Quotient.mk T.J) (Ideal.span (Set.range f)) = ⊤`. Rewrite using `[Ideal.map_span, ← Set.range_comp, ← hs]`. Use `congr 2`. Conclude with `funext hf`. Establish `h2 : (1 : T.B ⧸ T.J) ∈ Ideal.map (Ideal.Quotient.mk T.J) (Ideal.span (Set.range f))`.
+
+Rewrite using `[h1]`. Discharge the goal by the elementary cases of `trivial`. Take `⟨a, ha, ha1⟩` from `(Ideal.mem_map_iff_of_surjective _ Ideal.Quotient.mk_surjective).1 h2`. Establish `hj : a - 1 ∈ T.J` using `Ideal.Quotient.eq.1 (by rw [ha1, map_one])`. Establish `hu : IsUnit a`.
+
+Use `(isNilpotent_of_mem_J hp T hj).isUnit_add_one` as an intermediate fact. Simplify using `using this`. Conclude with `Ideal.eq_top_of_isUnit_mem _ ha hu`.
+-/
 theorem span_lift (hp : b.p ≠ 0) (T : Thick (F.cr b ht κ)) {m : ℕ} (f : Fin m → T.B) (s : Fin m → T.B ⧸ T.J)
     (hf : ∀ k, Ideal.Quotient.mk T.J (f k) = s k) (hs : Ideal.span (Set.range s) = ⊤) :
     Ideal.span (Set.range f) = ⊤ := by
@@ -217,6 +252,17 @@ def locMod (T : Thick (F.cr b ht κ)) {m : ℕ} (f : Fin m → T.B) (hf : Ideal.
 
 end Mod
 
+/- English proof (translation)
+Introduce `O _ F b ht κ Λ _ c d 𝒜 hp r`. Use `⟨fun T T' φ ⟨α, hα⟩ => ⟨α, ?_⟩, fun T => ?_⟩` and prove the remaining obligations. Establish `h` using `(𝒜.V α).in_map (CommRingCat.ofHom (Ideal.quotientMap T'.J φ.φ φ.hle)) hα`. Rewrite using `[← φ.pt]`. Conclude with `h`.
+
+Take `⟨m, s, hs, hcov⟩` from `𝒜.cov (CommRingCat.of (T.B ⧸ T.J)) T.y.1.2`. Use `choose f hf using fun k => Ideal.Quotient.mk_surjective (s k)`. Establish `hspan : Ideal.span (Set.range f) = ⊤` using `span_lift hp T f s hf hs`. Use `⟨m, fun k _ ψ => IsUnit (ψ.φ (f k)), fun k T₁ T₂ ψ χ h => h.map χ.φ, fun k T₁ ψ h => ?_, fun T' φ => ?_⟩` and prove the remaining obligations. Establish `hu : IsUnit ((CommRingCat.ofHom (Ideal.quotientMap T₁.J ψ.φ ψ.hle)).hom (s k))`.
+
+Rewrite using `[← hf k]`. Conclude with `h.map (Ideal.Quotient.mk T₁.J)`. Take `⟨α, hα⟩` from `hcov k _ _ hu`. Use `⟨α, ?_⟩` and prove the remaining obligations. Rewrite using `[← ψ.pt]`.
+
+Conclude with `hα`. Use `⟨fun S => locT T' (∏ k ∈ S, φ.φ (f k)), fun S => locHom T' _, fun S k hk => unit_of_mem T' _ S hk, fun S T'' ψ h => locT_univ T' _ ψ ?_, ⟨locMod c r T' (fun k => φ.φ (f k)) ?_⟩⟩` and prove the remaining obligations. Rewrite using `[map_prod]`. Conclude with `Finset.prod_induction _ IsUnit (fun _ _ => IsUnit.mul) isUnit_one h`. Establish `h` using `congrArg (Ideal.map φ.φ) hspan`.
+
+Rewrite `h` using `[Ideal.map_span, Ideal.map_top, ← Set.range_comp]`. Conclude with `h`.
+-/
 theorem zarCov_pdS : ∀ {O : Type} [CommRing O] (F : Fn O) (b : Base) (ht : b.t = 1) (κ : O →+* b.R ⧸ b.I) {Λ : Type}
     [CommRing Λ] (c : Λ →+* b.R) {d : ℕ} (𝒜 : F.Atlas d), b.p ≠ 0 → ∀ r : ℕ,
     ZarCov (pdS (F.cr b ht κ) c r).fn fun T => ∃ α, (𝒜.V α).In T.y.1.2 := by

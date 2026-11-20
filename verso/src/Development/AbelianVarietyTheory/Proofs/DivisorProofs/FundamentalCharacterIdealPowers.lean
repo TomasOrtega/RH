@@ -9,17 +9,28 @@ namespace GlobalTheory.LKCx
 
 variable {p : ℕ} [Fact p.Prime]
 
+/- English proof (translation)
+Use `letI : TopologicalSpace (AfP p ⊗[ℚ] G.C) := moduleTopology (AfP p) (AfP p ⊗[ℚ] G.C)`. Conclude with `Units.continuous_val.comp (continuous_fst.comp continuous_subtype_val)`.
+-/
 theorem continuous_gAf_fst (G : HTGroup p) :
     @Continuous G.GAf (AfP p ⊗[ℚ] G.C) _ (moduleTopology (AfP p) (AfP p ⊗[ℚ] G.C))
       (fun g => (((g : (AfP p ⊗[ℚ] G.C)ˣ × (AfP p)ˣ).1 : (AfP p ⊗[ℚ] G.C)ˣ) : AfP p ⊗[ℚ] G.C)) := by
   letI : TopologicalSpace (AfP p ⊗[ℚ] G.C) := moduleTopology (AfP p) (AfP p ⊗[ℚ] G.C)
   exact Units.continuous_val.comp (continuous_fst.comp continuous_subtype_val)
 
+/- English proof (translation)
+Use `letI : TopologicalSpace (AfP p ⊗[ℚ] G.C) := moduleTopology (AfP p) (AfP p ⊗[ℚ] G.C)`. Conclude with `Units.continuous_val.comp (continuous_inv.comp (continuous_snd.comp continuous_subtype_val))`.
+-/
 theorem continuous_gAf_snd_inv (G : HTGroup p) :
     Continuous (fun g : G.GAf => ((((g : (AfP p ⊗[ℚ] G.C)ˣ × (AfP p)ˣ).2)⁻¹ : (AfP p)ˣ) : AfP p)) := by
   letI : TopologicalSpace (AfP p ⊗[ℚ] G.C) := moduleTopology (AfP p) (AfP p ⊗[ℚ] G.C)
   exact Units.continuous_val.comp (continuous_inv.comp (continuous_snd.comp continuous_subtype_val))
 
+/- English proof (translation)
+Take `⟨S, hS⟩` from `hf.2.2.2`. Establish `hK : IsCompact (L.K : Set G.GAf)` using `L.compact`. Use `⟨⋃ s ∈ S, (fun q : G.GAf × G.GAf => h₁ * (q.1 * s * q.2) * h₁⁻¹) '' ((L.K : Set G.GAf) ×ˢ (L.K : Set G.GAf)), S.isCompact_biUnion fun s _ => (hK.prod hK).image (by fun_prop), fun g hg => ?_⟩` and prove the remaining obligations. Take `⟨s, hs, k₁, hk₁, k₂, hk₂, he⟩` from `hS _ hg`. Use `Set.mem_biUnion hs ⟨(k₁, k₂), ⟨hk₁, hk₂⟩, ?_⟩` and prove the remaining obligations.
+
+Use `show h₁ * (k₁ * s * k₂) * h₁⁻¹ = g`. Rewrite using `[← he]`. Use `group`.
+-/
 theorem exists_compact_of_isTest (G : HTGroup p) (L : G.Level) (f : G.GAf → ℂ)
     (hf : IsTest (MonoidHom.id _) L.K.toSubgroup L.K.toSubgroup f) (h₁ : G.GAf) :
     ∃ Q : Set G.GAf, IsCompact Q ∧ ∀ g, f (h₁⁻¹ * g * h₁) ≠ 0 → g ∈ Q := by
@@ -32,6 +43,13 @@ theorem exists_compact_of_isTest (G : HTGroup p) (L : G.Level) (f : G.GAf → �
   show h₁ * (k₁ * s * k₂) * h₁⁻¹ = g
   rw [← he]; group
 
+/- English proof (translation)
+Introduce `p _ G L f hf β x t hx h₁`. Use `letI : TopologicalSpace (AfP p ⊗[ℚ] G.C) := moduleTopology (AfP p) (AfP p ⊗[ℚ] G.C)`. Use `haveI : IsModuleTopology (AfP p) (AfP p ⊗[ℚ] G.C) := ⟨rfl⟩`. Use `haveI : IsTopologicalRing (AfP p ⊗[ℚ] G.C) := IsModuleTopology.isTopologicalRing (AfP p) (AfP p ⊗[ℚ] G.C)`. Take `⟨Q, hQ, hmem⟩` from `exists_compact_of_isTest G L f hf h₁`.
+
+Use `⟨(fun g : G.GAf => ((x⁻¹ : (AfP p ⊗[ℚ] G.C)ˣ) : AfP p ⊗[ℚ] G.C) * (((g : (AfP p ⊗[ℚ] G.C)ˣ × (AfP p)ˣ).1 : (AfP p ⊗[ℚ] G.C)ˣ) : AfP p ⊗[ℚ] G.C) * x) '' Q, (fun g : G.GAf => ((((g : (AfP p ⊗[ℚ] G.C)ˣ × (AfP p)ˣ).2)⁻¹ : (AfP p)ˣ) : AfP p)) '' Q, hQ.image ((continuous_const.mul (con …` and prove the remaining obligations. Use `show ((x⁻¹ : (AfP p ⊗[ℚ] G.C)ˣ) : AfP p ⊗[ℚ] G.C) * ((x * Units.map (inC G (AfP p)).toMonoidHom ((y : G.Cˣ × ℚˣ).1) * x⁻¹ : (AfP p ⊗[ℚ] G.C)ˣ) : AfP p ⊗[ℚ] G.C) * x = _`. Simplify using `only [Units.val_mul, Units.coe_map, RingHom.toMonoidHom_eq_coe, MonoidHom.coe_coe]`. Rewrite using `[← mul_assoc, ← mul_assoc, Units.inv_mul, one_mul, mul_assoc, Units.inv_mul, mul_one]`. Use `show (((Units.map (algebraMap ℚ (AfP p)).toMonoidHom ((y : G.Cˣ × ℚˣ).2))⁻¹ : (AfP p)ˣ) : AfP p) = _`.
+
+Rewrite using `[← map_inv, Units.coe_map, Units.val_inv_eq_inv_val]`. Both sides reduce to the same expression.
+-/
 theorem exists_compact_toAfF : ∀ (p : ℕ) [Fact p.Prime] (G : HTGroup p) (L : G.Level) (f : G.GAf → ℂ),
     IsTest (MonoidHom.id _) L.K.toSubgroup L.K.toSubgroup f → ∀ (β : G.Cˣ) (x : (AfP p ⊗[ℚ] G.C)ˣ) (t : (AfP p)ˣ)
     (hx : Triv G (AfP p) β x t) (h₁ : G.GAf), ∃ (Ω : Set (AfP p ⊗[ℚ] G.C)) (Ω' : Set (AfP p)),

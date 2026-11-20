@@ -5,6 +5,11 @@ open MeasureTheory NumberField Matrix Finset Formalism.MainNotions.S GlobalTheor
 
 namespace GlobalTheory.FlagMeas
 
+/- English proof (translation)
+Establish `h : (m + 1) * (m + 1 - 1) / 2 = m * (m - 1) / 2 + m`. Use `Nat.triangle_succ m` as an intermediate fact. Simplify using `using this`. Unfold `volU sphV`. Rewrite using `[Finset.prod_Icc_succ_top (Nat.succ_le_succ (Nat.zero_le m)), h, pow_add]`.
+
+Simplify using `only [Nat.add_sub_cancel]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem volU_succ_eq_mul (m : ℕ) :
     volU (m + 1) = volU m * (2 * Real.pi ^ (m + 1) / (m.factorial : ℝ) * 2 ^ m) := by
   have h : (m + 1) * (m + 1 - 1) / 2 = m * (m - 1) / 2 + m := by
@@ -15,11 +20,25 @@ theorem volU_succ_eq_mul (m : ℕ) :
   simp only [Nat.add_sub_cancel]
   ring
 
+/- English proof (translation)
+Unfold `Formalism.HermitianLatticesTheory.vInv`. Establish `: (0 : ℝ) < |(discr E : ℝ)|` using `abs_pos.mpr (by exact_mod_cast discr_ne_zero E)`. Check the signs of the components of the expression.
+-/
 theorem vInv_pos_of_numberField (E : Type) [Field E] [NumberField E] : 0 < Formalism.HermitianLatticesTheory.vInv E := by
   unfold Formalism.HermitianLatticesTheory.vInv
   have : (0 : ℝ) < |(discr E : ℝ)| := abs_pos.mpr (by exact_mod_cast discr_ne_zero E)
   positivity
 
+/- English proof (translation)
+Introduce `E _ _ _ M hM`. Take `⟨m, rfl⟩ : ∃ m, M = m + 1` from `⟨M - 1, by omega⟩`. Establish `hv` using `vInv_pos_of_numberField E`. Unfold `Formalism.HermitianLatticesTheory.massRatioRightSide rankFac`. Simplify using `only [Nat.add_sub_cancel]`.
+
+Rewrite using `[volU_succ_eq_mul]`. Use `set v := Formalism.HermitianLatticesTheory.vInv E`. Use `set f := Formalism.HermitianLatticesTheory.fDeg E`. Establish `h2 : 0 < 2 * v` using `by positivity`. Establish `hfac : (m.factorial : ℝ) ≠ 0` using `by exact_mod_cast m.factorial_ne_zero`.
+
+Establish `hpi` using `Real.pi_pos.ne'`. Establish `key : ((m.factorial : ℝ) * (v / Real.pi) ^ (m + 1)) * (2 * Real.pi ^ (m + 1) / (m.factorial : ℝ) * 2 ^ m) = (2 * v) ^ (m + 1)`. Rewrite using `[div_pow, mul_pow]`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
+
+Establish `hr : (2 * v) ^ ((f : ℝ) * (((m + 1 : ℕ) : ℝ) - 1 / 2)) = ((2 * v) ^ (m + 1)) ^ f / Real.sqrt ((2 * v) ^ f)`. Rewrite using `[Real.sqrt_eq_rpow, ← pow_mul, ← Real.rpow_natCast, ← Real.rpow_natCast, ← Real.rpow_mul h2.le, ← Real.rpow_sub h2]`. Use `congr 1`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+
+Rewrite using `[hr, ← key, mul_pow (volU m), mul_pow ((m.factorial : ℝ) * (v / Real.pi) ^ (m + 1))]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem mass_ratio_mul_unitary_volume :
     ∀ (E : Type) [Field E] [NumberField E] [StarRing E] (M : ℕ), 1 ≤ M →
       Formalism.HermitianLatticesTheory.massRatioRightSide E M * volU M ^ Formalism.HermitianLatticesTheory.fDeg E =

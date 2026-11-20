@@ -6,6 +6,9 @@ namespace PositivityTheory.Rg.Cz
 
 namespace TF
 
+/- English proof (translation)
+Proceed by induction on `L with`. Consider the case `nil => simp`. Consider the case `cons c L ih`. Rewrite using `[List.map_cons, List.prod_cons]`. Conclude with `(Polynomial.monic_X_sub_C c).mul ih`.
+-/
 theorem monic_lprod (L : List ℂ) : (L.map fun c => Polynomial.X - Polynomial.C c).prod.Monic := by
   induction L with
   | nil => simp
@@ -13,6 +16,21 @@ theorem monic_lprod (L : List ℂ) : (L.map fun c => Polynomial.X - Polynomial.C
     rw [List.map_cons, List.prod_cons]
     exact (Polynomial.monic_X_sub_C c).mul ih
 
+/- English proof (translation)
+Establish `hcomm : ∀ a ∈ Set.range x, ∀ b ∈ Set.range x, a * b = b * a`. Introduce and unpack `_ ⟨i, rfl⟩ _ ⟨j, rfl⟩`. Conclude with `hc i j`. Use `letI : CommRing (Algebra.adjoin ℂ (Set.range x)) := Algebra.adjoinCommRingOfComm ℂ hcomm`. Establish `hint : ∀ i, IsIntegral ℂ (x i)`.
+
+Introduce `i`. Take `⟨L, hL⟩` from `hL i`. Use `⟨(L.map fun c => Polynomial.X - Polynomial.C c).prod, monic_lprod L, ?_⟩` and prove the remaining obligations. Rewrite using `[← Polynomial.aeval_def, map_list_prod, List.map_map]`. Establish `hf : (⇑(Polynomial.aeval (x i)) ∘ fun c => Polynomial.X - Polynomial.C c) = fun c => x i - algebraMap ℂ A c`.
+
+Use function extensionality and compare the values at `c`. Simplify using `[Polynomial.aeval_X, Polynomial.aeval_C]`. Rewrite using `[hf]`. Conclude with `hL`. Set `y : ι → Algebra.adjoin ℂ (Set.range x)` to `fun i => ⟨x i, Algebra.subset_adjoin ⟨i, rfl⟩⟩`.
+
+Establish `hyint : ∀ z ∈ Set.range y, IsIntegral ℂ z`. Introduce and unpack `_ ⟨i, rfl⟩`. Conclude with `(isIntegral_algHom_iff (Algebra.adjoin ℂ (Set.range x)).val Subtype.val_injective).1 (hint i)`. Establish `hfin` using `Algebra.finite_adjoin_of_finite_of_isIntegral (Set.finite_range y) hyint`. Establish `hset : Set.range y = Subtype.val ⁻¹' (Set.range x)`.
+
+Use extensionality with `z`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨i, rfl⟩`. Conclude with `⟨i, rfl⟩`. Introduce and unpack `⟨i, hi⟩`.
+
+Conclude with `⟨i, Subtype.ext hi⟩`. Establish `htop : Algebra.adjoin ℂ (Set.range y) = ⊤`. Rewrite using `[hset]`. Conclude with `Algebra.adjoin_adjoin_coe_preimage`. Rewrite `hfin` using `[htop]`.
+
+Establish `hS : Module.Finite ℂ (Algebra.adjoin ℂ (Set.range x))` using `Module.Finite.equiv Subalgebra.topEquiv.toLinearEquiv`. Conclude with `Subalgebra.finiteDimensional_toSubmodule.2 hS`.
+-/
 theorem fin_adjoin {A : Type*} [Ring A] [Algebra ℂ A] {ι : Type*} [Finite ι] (x : ι → A)
     (hc : ∀ i j, Commute (x i) (x j)) (hL : ∀ i, ∃ L : List ℂ, (L.map fun c => x i - algebraMap ℂ A c).prod = 0) :
     FiniteDimensional ℂ (Subalgebra.toSubmodule (Algebra.adjoin ℂ (Set.range x))) := by

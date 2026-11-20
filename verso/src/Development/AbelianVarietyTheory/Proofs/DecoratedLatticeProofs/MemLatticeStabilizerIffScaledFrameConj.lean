@@ -17,6 +17,11 @@ section General
 
 variable {A R n : Type} [CommRing A] [CommRing R] [Algebra R A] [Fintype n] [DecidableEq n]
 
+/- English proof (translation)
+Establish `key : ∀ y, (b⁻¹ * x * b).1 *ᵥ y ∈ S ↔ x.1 *ᵥ (b.1 *ᵥ y) ∈ L` using `fun y => by`. Rewrite using `[h, Matrix.mulVec_mulVec, Matrix.mulVec_mulVec, ← Units.val_mul, ← Units.val_mul, ← mul_assoc, ← mul_assoc, mul_inv_cancel, one_mul]`. Prove the components needed by the constructor for the conclusion. Introduce `hx y`. Rewrite using `[key, h]`.
+
+Conclude with `hx _`. Introduce `hx y`. Establish `h1` using `hx ((b⁻¹).1 *ᵥ y)`. Rewrite `h1` using `[key, h, Matrix.mulVec_mulVec, Units.mul_inv, Matrix.one_mulVec]`. Conclude with `h1`.
+-/
 theorem mem_stab_conj {L S : Submodule R (n → A)} {b : GL n A} (h : ∀ y, y ∈ S ↔ b.1 *ᵥ y ∈ L) (x : GL n A) :
     x ∈ Formalism.UG.stabGL L ↔ b⁻¹ * x * b ∈ Formalism.UG.stabGL S := by
   have key : ∀ y, (b⁻¹ * x * b).1 *ᵥ y ∈ S ↔ x.1 *ᵥ (b.1 *ᵥ y) ∈ L := fun y => by
@@ -33,6 +38,11 @@ theorem mem_stab_conj {L S : Submodule R (n → A)} {b : GL n A} (h : ∀ y, y �
 
 omit [CommRing R] [Algebra R A] in
 
+/- English proof (translation)
+Establish `hc : m * m'⁻¹ * z = z * (m * m'⁻¹)`. Apply `Units.ext` to reduce the goal to its premises. Establish `e : (m * m'⁻¹).1 = w • (1 : Matrix n n A)`. Rewrite using `[Units.val_mul, h, Matrix.smul_mul, Units.mul_inv]`. Rewrite using `[Units.val_mul _ z, Units.val_mul z, e, Matrix.smul_mul, Matrix.mul_smul, Matrix.one_mul, Matrix.mul_one]`.
+
+Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem conj_eq_of_smul {m m' : GL n A} {w : A} (h : m.1 = w • m'.1) (z : GL n A) :
     m⁻¹ * z * m = m'⁻¹ * z * m' := by
   have hc : m * m'⁻¹ * z = z * (m * m'⁻¹) := by
@@ -46,6 +56,9 @@ theorem conj_eq_of_smul {m m' : GL n A} {w : A} (h : m.1 = w • m'.1) (z : GL n
 
 end General
 
+/- English proof (translation)
+Establish `key : ∀ (M : Matrix (Fin N) (Fin N) (Fv F v ⊗[F] E)), (∀ i j, M i j ∈ intLoc F E v) → ∀ y, y ∈ latLoc F (stdLattice E N) v → M *ᵥ y ∈ latLoc F (stdLattice E N) v` using `fun M hM y hy => mem_latLoc_stdLattice.2 fun i => show ∑ j, M i j * y j ∈ _ from sum_mem fun j _ => mul_mem (hM i j) (mem_latLoc_stdLattice.1 hy j)`. Introduce `y`. Use `⟨key _ h y, fun hy => ?_⟩` and prove the remaining obligations. Establish `h1` using `key _ h' _ hy`. Rewrite `h1` using `[Matrix.mulVec_mulVec, Units.inv_mul, Matrix.one_mulVec]`. Then use the resulting hypothesis.
+-/
 theorem mem_stab_std {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {N : ℕ}
     {v : HeightOneSpectrum (𝓞 F)} {m : GL (Fin N) (Fv F v ⊗[F] E)} (h : ∀ i j, m.1 i j ∈ intLoc F E v)
     (h' : ∀ i j, (m⁻¹).1 i j ∈ intLoc F E v) : m ∈ Formalism.UG.stabGL (latLoc F (stdLattice E N) v) := by
@@ -58,6 +71,13 @@ theorem mem_stab_std {F E : Type} [Field F] [NumberField F] [Field E] [NumberFie
   have h1 := key _ h' _ hy
   rwa [Matrix.mulVec_mulVec, Units.inv_mul, Matrix.one_mulVec] at h1
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ N Λ b M M' u hb hM' hM v x`. Establish `hs : Formalism.UG.bc (compFin F E v) M' ∈ Formalism.UG.stabGL (latLoc F (stdLattice E N) v)`. Use `mem_stab_std (fun i j => (hM' v i j).1) (fun i j => ?_)` and prove the remaining obligations. Rewrite using `[← map_inv]`. Conclude with `(hM' v i j).2`.
+
+Establish `he : (Formalism.UG.bc (compFin F E v) M).1 = compFin F E v (u : AF F ⊗[F] E) • (Formalism.UG.bc (compFin F E v) M').1`. Use extensionality with `i j`. Express the relevant statement in the definitionally equal form `compFin F E v (M.1 i j) = compFin F E v (u : AF F ⊗[F] E) * compFin F E v (M'.1 i j)`. Rewrite using `[hM, ← map_mul]`. Both sides reduce to the same expression.
+
+Rewrite using `[mem_stab_conj (S := latLoc F (stdLattice E N) v) (b := Formalism.UG.bc (compFin F E v) b) (fun y => mem_latLoc_stdLattice.trans (hb v y)) x, map_mul, mul_inv_rev]`. Use `set β := Formalism.UG.bc (compFin F E v) b`. Establish `e : (Formalism.UG.bc (compFin F E v) M)⁻¹ * β⁻¹ * x * (β * Formalism.UG.bc (compFin F E v) M) = (Formalism.UG.bc (compFin F E v) M)⁻¹ * (β⁻¹ * x * β) * Formalism.UG.bc (compFin F E v) M` using `by group`. Rewrite using `[e, conj_eq_of_smul he, Subgroup.mul_mem_cancel_right _ hs, Subgroup.mul_mem_cancel_left _ (inv_mem hs)]`.
+-/
 theorem mem_stab_iff : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (N : ℕ) (Λ : Submodule (𝓞 E) (Fin N → E)) (b M M' : GL (Fin N) (AF F ⊗[F] E)) (u : (AF F ⊗[F] E)ˣ), IsLatticeFrame Λ b → (∀ v i j, compFin F E v (M'.1 i j) ∈ intLoc F E v ∧ compFin F E v ((M'⁻¹).1 i j) ∈ intLoc F E v) → M.1 = (u : AF F ⊗[F] E) • M'.1 → ∀ (v : HeightOneSpectrum (𝓞 F)) (x : GL (Fin N) (Fv F v ⊗[F] E)), x ∈ Formalism.UG.stabGL (latLoc F Λ v) ↔ (Formalism.UG.bc (compFin F E v) (b * M))⁻¹ * x * Formalism.UG.bc (compFin F E v) (b * M) ∈ Formalism.UG.stabGL (latLoc F (stdLattice E N) v) := by
   intro F E _ _ _ _ _ N Λ b M M' u hb hM' hM v x
   have hs : Formalism.UG.bc (compFin F E v) M' ∈ Formalism.UG.stabGL (latLoc F (stdLattice E N) v) := by

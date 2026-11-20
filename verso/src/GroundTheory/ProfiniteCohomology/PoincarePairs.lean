@@ -19,6 +19,11 @@ variable {k G : Type u} [CommRing k] [Group G] [TopologicalSpace G] [IsTopologic
   {ι : Type u} {Hv : ι → Type u} [∀ v, Group (Hv v)] [∀ v, TopologicalSpace (Hv v)]
   [∀ v, IsTopologicalGroup (Hv v)] (φ : ∀ v, Hv v →ₜ* G)
 
+/- English proof (translation)
+Take `⟨x, rfl⟩` from `homologyπ_hom_surjective M r x`. Take `⟨y, rfl⟩` from `homologyπ_hom_surjective N s y`. Rewrite using `[LeibnizPairing.homology_homologyπ, homologyMap_homologyπ_apply, LeibnizPairing.homology_homologyπ]`. Use `congr 1`. Apply `iCycles_hom_injective` to reduce the goal to its premises.
+
+Rewrite using `[iCycles_cyclesMap_apply, LeibnizPairing.iCycles_cycles, LeibnizPairing.iCycles_cycles]`. Conclude with `hψ h _ _`.
+-/
 theorem LeibnizPairing.homologyMap_homology {M N P P' : CochainComplex (ModuleCat.{u} k) ℕ}
     (μ₁ : LeibnizPairing M N P) (μ₂ : LeibnizPairing M N P') (ψ : P ⟶ P')
     (hψ : ∀ {r s n : ℕ} (h : r + s = n) (x : M.X r) (y : N.X s),
@@ -37,6 +42,13 @@ theorem LeibnizPairing.homologyMap_homology {M N P P' : CochainComplex (ModuleCa
 variable {A B C C' : Rep.{u} k G} [IsDiscreteRep A] [IsDiscreteRep B] [IsDiscreteRep C]
   [IsDiscreteRep C']
 
+/- English proof (translation)
+Rewrite using `[compactCupRes_eq_homology, compactCupRes_eq_homology]`. Use `LeibnizPairing.homologyMap_homology _ _ _ (fun {r s n} h p z => ?_) h y x` and prove the remaining obligations. Use `revert p`. Introduce `(p : (cochainsComplex A).X r × shiftNegOneX (piComplex fun v => cochainsComplex (Rep.res (φ v).toMonoidHom A)) r)`. Use `Prod.ext rfl ?_` and prove the remaining obligations.
+
+Consider the cases of `r with`. Consider the case `zero`. Conclude with `map_zero (shiftNegOneMapF (piMap fun v => cochainsMap ((Rep.resFunctor (φ v).toMonoidHom).map ψ)) n).hom`. Consider the case `succ r`. Consider the cases of `n with`.
+
+Consider the case `zero => rfl`. Consider the case `succ n => rfl`.
+-/
 theorem compactCohomologyResMap_compactCupRes (μ : A ⊗ B ⟶ C) (ψ : C ⟶ C') {r s n : ℕ}
     (h : r + s = n) (y : compactCohomologyRes φ A r) (x : cohomology B s) :
     (compactCohomologyResMap φ ψ n).hom (compactCupRes φ μ h y x) =
@@ -56,6 +68,9 @@ theorem compactCohomologyResMap_compactCupRes (μ : A ⊗ B ⟶ C) (ψ : C ⟶ C
     | zero => rfl
     | succ n => rfl
 
+/- English proof (translation)
+Use `Function.bijective_iff_has_inverse.2 ⟨compactCohomologyResMap φ g m, fun x => ?_, fun y => ?_⟩` and prove the remaining obligations. Rewrite using `[← ConcreteCategory.comp_apply, ← compactCohomologyResMap_comp, hfg, compactCohomologyResMap_id]`. Both sides reduce to the same expression. Rewrite using `[← ConcreteCategory.comp_apply, ← compactCohomologyResMap_comp, hgf, compactCohomologyResMap_id]`. Both sides reduce to the same expression.
+-/
 theorem bijective_compactCohomologyResMap_of_comp_eq_id (f : A ⟶ B) (g : B ⟶ A)
     (hfg : f ≫ g = 𝟙 A) (hgf : g ≫ f = 𝟙 B) (m : ℕ) :
     Function.Bijective (compactCohomologyResMap φ f m) := by
@@ -76,6 +91,9 @@ variable {G : Type u} [Group G] [TopologicalSpace G] [IsTopologicalGroup G] [Com
   {ι : Type u} {Hv : ι → Type u} [∀ v, Group (Hv v)] [∀ v, TopologicalSpace (Hv v)]
   [∀ v, IsTopologicalGroup (Hv v)] [∀ v, CompactSpace (Hv v)] (φ : ∀ v, Hv v →ₜ* G)
 
+/- English proof (translation)
+Express the relevant statement in the definitionally equal form `(compactCohomologyResMap φ (coindTrace (V : Subgroup G) A) m).hom ((mackeyCompactCohomologyIso V φ (Rep.res (V : Subgroup G).subtype A) m).inv.hom ((mackeyCompactCohomologyIso V φ (Rep.res (V : Subgroup G).subtype A) m).hom.hom w)) = _`. Rewrite using `[hom_apply_hom_apply_of_comp_eq (mackeyCompactCohomologyIso V φ (Rep.res (V : Subgroup G).subtype A) m).hom_inv_id w]`. Both sides reduce to the same expression.
+-/
 theorem compactCores_mackeyCompactCohomologyIso {k : Type u} [CommRing k] (V : OpenSubgroup G)
     (A : Rep.{u} k G) [IsDiscreteRep A] (m : ℕ)
     (w : compactCohomologyRes φ (Rep.coind (V : Subgroup G).subtype (Rep.res (V : Subgroup G).subtype A)) m) :
@@ -93,6 +111,9 @@ variable {n : ℕ} [NeZero n] (D : Rep.{u} (ULift.{u} ℤ) G) [IsDiscreteRep D]
 
 omit [NeZero n] [IsDiscreteRep D] in
 
+/- English proof (translation)
+Use `Rep.Hom.ext (Representation.IntertwiningMap.ext (LinearMap.ext fun z => ?_))` and prove the remaining obligations. Proceed by induction on `z using TensorProduct.induction_on with`. Consider the case `zero => simp only [map_zero]`. Consider the case `tmul μ f => rfl`. Consider the case `add z z' hz hz' => simp only [map_add, hz, hz']`.
+-/
 theorem tensorHom_coindDualHom_dualEvalPairing (U : OpenSubgroup G) :
     (coindDualHom (U : Subgroup G) (ULift.{u} (ZMod n)) D ⊗ₘ
         𝟙 (Rep.coind (U : Subgroup G).subtype (zmodRep.{u} (U : Subgroup G) n))) ≫
@@ -108,6 +129,11 @@ theorem tensorHom_coindDualHom_dualEvalPairing (U : OpenSubgroup G) :
 
 omit [NeZero n] in
 
+/- English proof (translation)
+Use `Rep.Hom.ext (Representation.IntertwiningMap.ext (LinearMap.ext fun z => ?_))` and prove the remaining obligations. Proceed by induction on `z using TensorProduct.induction_on with`. Consider the case `zero => simp only [map_zero]`. Consider the case `tmul ν a`. Take `⟨a⟩` from `a`.
+
+Express the relevant statement in the definitionally equal form `zmodMulAddHom n hE a (ν (ULift.up 1)) = ν (ULift.up a)`. Rewrite using `[zmodMulAddHom_apply]`. Conclude with `(dualRep_zmodRep_apply n E ν a).symm`. Consider the case `add z z' hz hz' => simp only [map_add, hz, hz']`.
+-/
 theorem tensorHom_zmodDualIso_zmodMulPairingRight {K : Type u} [Group K]
     (E : Rep.{u} (ULift.{u} ℤ) K) (hE : ∀ d : E, n • d = 0) :
     ((zmodDualIso n E hE).hom ⊗ₘ 𝟙 (zmodRep.{u} K n)) ≫ zmodMulPairingRight n E hE =
@@ -134,6 +160,9 @@ def coindDualCompactMap (hD : ∀ d : D, n • d = 0) (U : OpenSubgroup G) (s : 
       (dualRep (Rep.res (U : Subgroup G).subtype D) (zmodRep.{u} (U : Subgroup G) n)) s).hom.hom).comp
       (compactCohomologyResMap φ (coindDualInv (U : Subgroup G) (ULift.{u} (ZMod n)) D) s).hom)).toAddMonoidHom
 
+/- English proof (translation)
+Establish `h1` using `bijective_compactCohomologyResMap_of_comp_eq_id (mackeyFamily U φ) (zmodDualIso n (Rep.res (U : Subgroup G).subtype D) hD).hom (zmodDualIso n (Rep.res (U : Subgroup G).subtype D) hD).inv (Iso.hom_inv_id _) (Iso.inv_hom_id _) s`. Establish `h2 : Function.Bijective (mackeyCompactCohomologyIso U φ (dualRep (Rep.res (U : Subgroup G).subtype D) (zmodRep.{u} (U : Subgroup G) n)) s).hom.hom` using `Function.bijective_iff_has_inverse.2 ⟨(mackeyCompactCohomologyIso U φ _ s).inv.hom, fun w => hom_apply_hom_apply_of_comp_eq (mackeyCompactCohomologyIso U φ _ s).hom_inv_id w, fun w => hom_apply_hom_apply_of_comp_eq (mackeyCompactCohomologyIso U φ _ s).inv_hom_id w⟩`. Establish `h3` using `bijective_compactCohomologyResMap_of_comp_eq_id φ (coindDualInv (U : Subgroup G) (ULift.{u} (ZMod n)) D) (coindDualHom (U : Subgroup G) (ULift.{u} (ZMod n)) D) (coindDualInv_comp_coindDualHom _ _ _) (coindDualHom_comp_coindDualInv _ _ _) s`. Conclude with `h1.comp (h2.comp h3)`.
+-/
 theorem bijective_coindDualCompactMap (hD : ∀ d : D, n • d = 0) (U : OpenSubgroup G) (s : ℕ) :
     Function.Bijective (coindDualCompactMap φ hD U s) := by
   have h1 := bijective_compactCohomologyResMap_of_comp_eq_id (mackeyFamily U φ)
@@ -151,6 +180,13 @@ theorem bijective_coindDualCompactMap (hD : ∀ d : D, n • d = 0) (U : OpenSub
     (coindDualInv_comp_coindDualHom _ _ _) (coindDualHom_comp_coindDualInv _ _ _) s
   exact h1.comp (h2.comp h3)
 
+/- English proof (translation)
+Establish `hy : (compactCohomologyResMap φ (coindDualHom (U : Subgroup G) (ULift.{u} (ZMod n)) D) s).hom ((compactCohomologyResMap φ (coindDualInv (U : Subgroup G) (ULift.{u} (ZMod n)) D) s).hom y) = y`. Rewrite using `[← ConcreteCategory.comp_apply, ← compactCohomologyResMap_comp, coindDualInv_comp_coindDualHom, compactCohomologyResMap_id]`. Both sides reduce to the same expression. Rewrite using `[compactDualityMap_apply, zmodCompactDualityMap_apply]`. Use `conv_lhs => rw [← hy]`.
+
+Rewrite using `[compactCupRes_compactCohomologyResMap φ _ ((coindDualHom (U : Subgroup G) (ULift.{u} (ZMod n)) D ⊗ₘ 𝟙 (Rep.coind (U : Subgroup G).subtype (zmodRep.{u} (U : Subgroup G) n))) ≫ dualEvalPairing D (Rep.coind (U : Subgroup G).subtype (zmodRep.{u} (U : Subgroup G) n))) _ (𝟙 _) (by rw …`. Use `congr 2`. Rewrite using `[ModuleCat.hom_id, LinearMap.id_apply]`. Establish `e` using `compactCupRes_compactCohomologyResMap (mackeyFamily U φ) (zmodMulPairingRight n (Rep.res (U : Subgroup G).subtype D) hD) (dualEvalPairing (Rep.res (U : Subgroup G).subtype D) (zmodRep.{u} (U : Subgroup G) n)) (zmodDualIso n (Rep.res (U : Subgroup G).subtype D) hD).hom (𝟙 _) (by r …`. Rewrite `e` using `[cohomologyMap_id, ModuleCat.hom_id, LinearMap.id_apply]`.
+
+Conclude with `e.symm`.
+-/
 theorem compactDualityMap_coind (hD : ∀ d : D, n • d = 0) (U : OpenSubgroup G)
     (t : compactCohomologyRes φ D 3 →+ ZMod n) {r s : ℕ} (h : r + s = 3)
     (x : cohomology (Rep.coind (U : Subgroup G).subtype (zmodRep.{u} (U : Subgroup G) n)) r)
@@ -206,6 +242,9 @@ variable (H : CompactDualityHypotheses φ n D t U₀)
 
 include H in
 
+/- English proof (translation)
+Establish `hD` using `nsmul_eq_zero_of_nonempty_addEquiv H.nonempty_addEquiv`. Establish `hsh : Function.Bijective (shapiroMap U (zmodRep.{u} (U : Subgroup G) n) r)` using `Function.bijective_iff_has_inverse.2 ⟨inv (shapiroMap U _ r), inv_shapiroMap_apply U r, shapiroMap_inv_apply U r⟩`. Conclude with `bijective_of_bijective_comp (H.bijective_base U hU h) hsh (bijective_coindDualCompactMap φ hD U s) (compactDualityMap_coind φ hD U t h)`.
+-/
 theorem bijective_compactDualityMap_coind (U : OpenSubgroup G) (hU : U ≤ U₀) {r s : ℕ}
     (h : r + s = 3) :
     Function.Bijective (compactDualityMap φ D h t
@@ -219,6 +258,9 @@ theorem bijective_compactDualityMap_coind (U : OpenSubgroup G) (hU : U ≤ U₀)
 
 include H in
 
+/- English proof (translation)
+The claim follows from `H.nonempty_addEquiv subsingleton_four := H.subsingleton_four bijective_coind U hU _ _ h := H.bijective_compactDualityMap_coind U hU h`.
+-/
 theorem compactGroupDualityHypotheses : CompactGroupDualityHypotheses φ n D t U₀ where
   nonempty_addEquiv := H.nonempty_addEquiv
   subsingleton_four := H.subsingleton_four
@@ -226,6 +268,9 @@ theorem compactGroupDualityHypotheses : CompactGroupDualityHypotheses φ n D t U
 
 include H in
 
+/- English proof (translation)
+The claim follows from `H.compactGroupDualityHypotheses.bijective_compactDualityMap M hM h`.
+-/
 theorem bijective_compactDualityMap (M : Rep.{u} (ULift.{u} ℤ) G) [IsDiscreteRep M] [Finite M]
     (hM : ∀ m : M, n • m = 0) {r s : ℕ} (h : r + s = 3) :
     Function.Bijective (compactDualityMap φ D h t M) :=

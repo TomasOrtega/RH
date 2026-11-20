@@ -17,12 +17,18 @@ section Formal
 
 variable {K : Type} [Field K] {n : Type} [Fintype n]
 
+/- English proof (translation)
+Rewrite using `[map_sum]`. Conclude with `Finset.sum_eq_zero fun j _ => by rw [map_mul, hu j, mul_zero]`.
+-/
 theorem cc_lin {σ m : Type} [Fintype m] (c : m → K) {u : m → MvPowerSeries σ K}
     (hu : ∀ j, MvPowerSeries.constantCoeff (u j) = 0) :
     MvPowerSeries.constantCoeff (∑ j, MvPowerSeries.C (c j) * u j) = 0 := by
   rw [map_sum]
   exact Finset.sum_eq_zero fun j _ => by rw [map_mul, hu j, mul_zero]
 
+/- English proof (translation)
+Establish `h` using `MvPowerSeries.hasSubst_of_constantCoeff_zero hφ`. Rewrite using `[← MvPowerSeries.coe_substAlgHom h, map_sum]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[map_mul, MvPowerSeries.coe_substAlgHom h, MvPowerSeries.subst_C]`.
+-/
 theorem subst_lin {σ ρ m : Type} [Finite σ] [Fintype m] (c : m → K) (u : m → MvPowerSeries σ K)
     {φ : σ → MvPowerSeries ρ K} (hφ : ∀ s, MvPowerSeries.constantCoeff (φ s) = 0) :
     MvPowerSeries.subst φ (∑ j, MvPowerSeries.C (c j) * u j) =
@@ -32,6 +38,11 @@ theorem subst_lin {σ ρ m : Type} [Finite σ] [Fintype m] (c : m → K) (u : m 
   refine Finset.sum_congr rfl fun j _ => ?_
   rw [map_mul, MvPowerSeries.coe_substAlgHom h, MvPowerSeries.subst_C]
 
+/- English proof (translation)
+Establish `h` using `MvPowerSeries.hasSubst_of_constantCoeff_zero hφ`. Unfold `tensor4`. Rewrite using `[← MvPowerSeries.coe_substAlgHom h, map_prod]`. Use `Finset.prod_congr rfl fun a _ => ?_` and prove the remaining obligations. Rewrite using `[MvPowerSeries.coe_substAlgHom h, MvPowerSeries.subst_comp_subst_apply (MvPowerSeries.hasSubst_of_constantCoeff_zero fun i => MvPowerSeries.constantCoeff_X _) h]`.
+
+Use `congr 1`. Use function extensionality and compare the values at `i`. Conclude with `MvPowerSeries.subst_X h _`.
+-/
 theorem subst_tensor4 {ρ : Type} (T : MvPowerSeries n K) {φ : Fin 4 × n → MvPowerSeries ρ K}
     (hφ : ∀ s, MvPowerSeries.constantCoeff (φ s) = 0) :
     MvPowerSeries.subst φ (tensor4 T) = ∏ a : Fin 4, MvPowerSeries.subst (fun i => φ (a, i)) T := by
@@ -45,6 +56,9 @@ theorem subst_tensor4 {ρ : Type} (T : MvPowerSeries n K) {φ : Fin 4 × n → M
   funext i
   exact MvPowerSeries.subst_X h _
 
+/- English proof (translation)
+Unfold `at1`. Rewrite using `[Formalism.L2.Th1.C.Pts.substMv_subst (MvPowerSeries.constantCoeff_X s) hφ, MvPowerSeries.subst_X (MvPowerSeries.hasSubst_of_constantCoeff_zero hφ)]`.
+-/
 theorem subst_single_var {σ ρ : Type} [Finite σ] (s : σ) (f : PowerSeries K) {φ : σ → MvPowerSeries ρ K}
     (hφ : ∀ s, MvPowerSeries.constantCoeff (φ s) = 0) :
     MvPowerSeries.subst φ (at1 s f) = PowerSeries.subst (φ s) f := by
@@ -52,6 +66,15 @@ theorem subst_single_var {σ ρ : Type} [Finite σ] (s : σ) (f : PowerSeries K)
   rw [Formalism.L2.Th1.C.Pts.substMv_subst (MvPowerSeries.constantCoeff_X s) hφ,
     MvPowerSeries.subst_X (MvPowerSeries.hasSubst_of_constantCoeff_zero hφ)]
 
+/- English proof (translation)
+Establish `hat : ∀ {σ : Type} (s : σ), MvPowerSeries.constantCoeff (at1 s lg : MvPowerSeries σ K) = 0` using `fun s => Formalism.L2.Th1.E.CompatibleChartOperations.constantCoeff_inVar_eq_zero s h.1`. Establish `hmc : ∀ w, MvPowerSeries.constantCoeff (matCoord lg linv τ γ w) = 0` using `fun w => Formalism.L2.Th1.C.Pts.constantCoeff_flin h _ fun _ => MvPowerSeries.constantCoeff_X _`. Establish `hB : ∀ i, MvPowerSeries.constantCoeff (∑ j, MvPowerSeries.C (B' i j) * (at1 j lg : MvPowerSeries n K)) = 0` using `fun i => cc_lin _ fun j => hat j`. Establish `hL : ∀ w, MvPowerSeries.constantCoeff (∑ w', MvPowerSeries.C (M w w') * (MvPowerSeries.X w' : MvPowerSeries (Fin 4 × n) K)) = 0` using `fun w => cc_lin _ fun j => MvPowerSeries.constantCoeff_X _`. Rewrite using `[subst_tensor4 _ hmc, linSubst, subst_tensor4 _ hL, ← MvPowerSeries.coe_substAlgHom (MvPowerSeries.hasSubst_of_constantCoeff_zero fun w => hat w), map_prod]`.
+
+Use `Finset.prod_congr rfl fun a _ => ?_` and prove the remaining obligations. Rewrite using `[MvPowerSeries.coe_substAlgHom, MvPowerSeries.subst_comp_subst_apply (MvPowerSeries.hasSubst_of_constantCoeff_zero hB) (MvPowerSeries.hasSubst_of_constantCoeff_zero fun i => hmc (a, i)), MvPowerSeries.subst_comp_subst_apply (MvPowerSeries.hasSubst_of_constantCoeff_zero fun i => h …`. Use `congr 1`. Use function extensionality and compare the values at `i`. Rewrite using `[subst_lin _ _ fun j => hmc (a, j), subst_lin _ _ fun w => hat w]`.
+
+Establish `h1 : ∀ j, MvPowerSeries.subst (fun i => matCoord lg linv τ γ (a, i)) (at1 j lg) = ∑ w, MvPowerSeries.C (τ (γ (a, j) w)) * at1 w lg`. Introduce `j`. Rewrite using `[subst_single_var _ _ fun j => hmc (a, j)]`. Conclude with `Formalism.L2.Th1.C.Pts.l_flin h _ fun _ => MvPowerSeries.constantCoeff_X _`. Repeatedly rewrite using `[h1, Finset.mul_sum]`.
+
+Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun w _ => ?_` and prove the remaining obligations. Rewrite using `[MvPowerSeries.subst_X (MvPowerSeries.hasSubst_of_constantCoeff_zero fun w => hat w), ← hM, map_sum, Finset.sum_mul]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[map_mul, mul_assoc]`.
+-/
 theorem left_side {lg linv : PowerSeries K} (h : IsLogPair lg linv) {O : Type} [Semiring O] (τ : O →+* K)
     (γ : Matrix (Fin 4 × n) (Fin 4 × n) O) (B' : Matrix n n K) (M : Matrix (Fin 4 × n) (Fin 4 × n) K)
     (hM : ∀ (a : Fin 4) (i : n) (w : Fin 4 × n), ∑ j, B' i j * τ (γ (a, j) w) = M (a, i) w)
@@ -93,6 +116,11 @@ theorem left_side {lg linv : PowerSeries K} (h : IsLogPair lg linv) {O : Type} [
   refine Finset.sum_congr rfl fun j _ => ?_
   rw [map_mul, mul_assoc]
 
+/- English proof (translation)
+Establish `hat : ∀ s : m, MvPowerSeries.constantCoeff (at1 s lg : MvPowerSeries m K) = 0` using `fun s => Formalism.L2.Th1.E.CompatibleChartOperations.constantCoeff_inVar_eq_zero s hlg`. Establish `h` using `MvPowerSeries.hasSubst_of_constantCoeff_zero hat`. Rewrite using `[← MvPowerSeries.coe_substAlgHom h, map_sum]`. Use `Finset.sum_congr rfl fun x _ => ?_` and prove the remaining obligations. Rewrite using `[map_mul, map_prod, MvPowerSeries.coe_substAlgHom h, MvPowerSeries.subst_C]`.
+
+Use `congr 1`. Use `Finset.prod_congr rfl fun w _ => ?_` and prove the remaining obligations. Rewrite using `[subst_single_var _ _ hat]`. Unfold `at1`. Rewrite using `[Formalism.L2.Th1.C.Pts.subst_subst hlg (MvPowerSeries.constantCoeff_X w)]`.
+-/
 theorem right_side {lg : PowerSeries K} (hlg : PowerSeries.constantCoeff lg = 0) {m κ : Type} [Fintype m]
     (S : Finset κ) (r : κ → K) (f : κ → m → PowerSeries K) :
     MvPowerSeries.subst (fun w => at1 w lg) (∑ x ∈ S, MvPowerSeries.C (r x) * ∏ w, at1 w (f x w)) =
@@ -115,6 +143,11 @@ section Map
 
 variable {K₀ K : Type} [Field K₀] [Field K] (ι : K₀ →+* K) {n : Type} [Fintype n]
 
+/- English proof (translation)
+Unfold `tensor4`. Rewrite using `[map_prod]`. Use `Finset.prod_congr rfl fun a _ => ?_` and prove the remaining obligations. Rewrite using `[MvPowerSeries.map_subst (MvPowerSeries.hasSubst_of_constantCoeff_zero fun i => MvPowerSeries.constantCoeff_X _)]`. Use `congr 1`.
+
+Use function extensionality and compare the values at `i`. Conclude with `MvPowerSeries.map_X _ _`.
+-/
 theorem map_tensor4 (T : MvPowerSeries n K₀) :
     MvPowerSeries.map ι (tensor4 T) = tensor4 (MvPowerSeries.map ι T) := by
   unfold tensor4
@@ -126,6 +159,11 @@ theorem map_tensor4 (T : MvPowerSeries n K₀) :
   funext i
   exact MvPowerSeries.map_X _ _
 
+/- English proof (translation)
+Establish `hs : MvPowerSeries.HasSubst (fun i => ∑ j, MvPowerSeries.C (M i j) * (MvPowerSeries.X j : MvPowerSeries n K₀))` using `MvPowerSeries.hasSubst_of_constantCoeff_zero fun i => cc_lin _ fun j => MvPowerSeries.constantCoeff_X _`. Unfold `linSubst`. Rewrite using `[MvPowerSeries.map_subst hs]`. Use `congr 1`. Use function extensionality and compare the values at `i`.
+
+Rewrite using `[map_sum]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[map_mul, MvPowerSeries.map_C, MvPowerSeries.map_X, Matrix.map_apply]`.
+-/
 theorem map_linSubst {m : Type} [Finite m] (M : Matrix m n K₀) (T : MvPowerSeries m K₀) :
     MvPowerSeries.map ι (linSubst M T) = linSubst (M.map ι) (MvPowerSeries.map ι T) := by
   have hs : MvPowerSeries.HasSubst
@@ -139,6 +177,11 @@ theorem map_linSubst {m : Type} [Finite m] (M : Matrix m n K₀) (T : MvPowerSer
   refine Finset.sum_congr rfl fun j _ => ?_
   rw [map_mul, MvPowerSeries.map_C, MvPowerSeries.map_X, Matrix.map_apply]
 
+/- English proof (translation)
+Rewrite using `[map_sum]`. Use `Finset.sum_congr rfl fun x _ => ?_` and prove the remaining obligations. Rewrite using `[map_mul, map_prod, MvPowerSeries.map_C]`. Use `congr 1`. Use `Finset.prod_congr rfl fun w _ => ?_` and prove the remaining obligations.
+
+Conclude with `Formalism.InvariantFactorPaths.G7.FormalGroupLaws.map_inVar ι w _`.
+-/
 theorem map_sumProd {κ : Type} (S : Finset κ) (r : κ → K₀) (f : κ → n → PowerSeries K₀) :
     MvPowerSeries.map ι (∑ x ∈ S, MvPowerSeries.C (r x) * ∏ w, at1 w (f x w)) =
       ∑ x ∈ S, MvPowerSeries.C (ι (r x)) * ∏ w, at1 w (PowerSeries.map ι (f x w)) := by

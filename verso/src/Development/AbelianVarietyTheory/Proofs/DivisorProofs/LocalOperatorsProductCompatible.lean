@@ -16,6 +16,37 @@ namespace GlobalTheory.EvOnto
 
 open scoped Classical in
 
+/- English proof (translation)
+Introduce `F _ _ κ _ e ei ev hSBev hfix he hsurj hne v χ hχ`. Take `⟨f₀, hf₀⟩` from `GlobalTheory.TensUniq.exists_sInf_ne_zero F κ`. Set `Φ₁ : ∀ w : Pl F, (κ → Fv F w) → ℂ` to `fun w => ev w (stdInd F κ w)`. Establish `hstdSB : ∀ w : Pl F, stdInd F κ w ∈ SB (κ → Fv F w)` using `fun w => GlobalTheory.StdVacuum.indicator_mem_SB w`. Establish `hΦstd : ∀ᶠ w in cofinite, Φ₁ w = Set.indicator {x | ∀ i, x i ∈ w.adicCompletionIntegers F} 1` using `hfix`.
+
+Establish `hmem : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.pure f₀ (Function.update Φ₁ v χ) ∈ schA F κ`. Use `GlobalTheory.TensUniq.pure_mem_schA f₀ _ (fun w => ?_) (GlobalTheory.PureFactor.update_eventually Φ₁ v χ hΦstd)` and prove the remaining obligations. Distinguish the cases in `hw : w = v`. Substitute `hw` using the available equality. Rewrite using `[Function.update_self]`.
+
+Conclude with `hχ`. Rewrite using `[Function.update_of_ne hw]`. Conclude with `hSBev w _ (hstdSB w)`. Take `⟨Ψ, hΨ, heΨ⟩` from `hsurj hmem`. Take `⟨T, m, f, φ, hSB, hstd, hsum⟩` from `GlobalTheory.SchADecomp.exists_sum_pure F _ Ψ hΨ`.
+
+Establish `hvac : ∀ i, ∀ᶠ w in cofinite, φ i w = stdInd F κ w`. Introduce `i`. Use `filter_upwards [T.eventually_cofinite_notMem] with w hT`. Conclude with `hstd i w hT`. Establish `hvac' : ∀ i, ∀ᶠ w in cofinite, (fun w => ev w (φ i w)) w = Set.indicator {x | ∀ j, x j ∈ w.adicCompletionIntegers F} 1`.
+
+Introduce `i`. Use `filter_upwards [hvac i, hfix] with w h1 h2`. Rewrite using `[h1]`. Conclude with `h2`. Establish `hid : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.pure f₀ (Function.update Φ₁ v χ) = ∑ i, GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.pure (ei (f i)) fun w => ev w (φ i w)`.
+
+Rewrite using `[← heΨ, hsum, map_sum]`. Conclude with `Finset.sum_congr rfl fun i _ => he (f i) (φ i) (hSB i) (hvac i)`. Take `⟨r₀, hr₀, hr₀t⟩` from `GlobalTheory.PureFactor.exists_rest_factor v f₀ Φ₁ hΦstd`. Use `choose r hr hrt using fun i => GlobalTheory.PureFactor.exists_rest_factor v (ei (f i)) (fun w => ev w (φ i w)) (hvac' i)`. Establish `hrt' : ∀ i, tens (evFin F v) (ev v (φ i v)) (r i) = GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.pure (ei (f i)) fun w => ev w (φ i w)`.
+
+Introduce `i`. Rewrite using `[hrt i]`. Use `congr 1`. Conclude with `Function.update_eq_self v (fun w => ev w (φ i w))`. Establish `hex : ∃ x₀, r₀ x₀ ≠ 0`.
+
+Assume the negation of the conclusion as `hc`. Use `push_neg at hc`. Establish `h0 : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.pure f₀ (Function.update Φ₁ v fun _ => 1) = 0`. Rewrite using `[← hr₀t]`. Use function extensionality and compare the values at `x`.
+
+Simplify using `[tens, hc]`. Establish `hf : f₀ = 0`. Use `GlobalTheory.EvInj.eq_zero_of_pure_eq_zero f₀ _ (fun w => ?_) (GlobalTheory.PureFactor.update_eventually Φ₁ v _ hΦstd) h0` and prove the remaining obligations. Distinguish the cases in `hw : w = v`. Substitute `hw` using the available equality.
+
+Rewrite using `[Function.update_self]`. Introduce `h`. Conclude with `one_ne_zero (congrFun h 0)`. Rewrite using `[Function.update_of_ne hw]`. Conclude with `hne w`.
+
+Conclude with `hf₀ (by rw [hf]; rfl)`. Take `⟨x₀, hx₀⟩` from `hex`. Use `⟨∑ i, (r i x₀ / r₀ x₀) • φ i v, Submodule.sum_mem _ fun i _ => Submodule.smul_mem _ _ (hSB i v), ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `y`. Set `z : κ → AF F` to `fun j => GlobalTheory.LatVac.liftV v (y j - evFin F v (x₀ j))`.
+
+Establish `hz : At (evFin F v) z`. Introduce `u hu`. Use function extensionality and compare the values at `j`. Conclude with `GlobalTheory.LatVac.at_liftV v _ u hu`. Establish `hev : (fun j => evFin F v ((x₀ + z) j)) = y`.
+
+Use function extensionality and compare the values at `j`. Rewrite using `[Pi.add_apply, map_add, GlobalTheory.LatVac.evFin_liftV]`. Expand and normalize the polynomial expressions, which then agree. Establish `key : χ y * r₀ x₀ = ∑ i, ev v (φ i v) y * r i x₀`. Establish `h` using `congrFun hid (x₀ + z)`.
+
+Rewrite `h` using `[← hr₀t, Finset.sum_apply]`. Simplify using `only [← hrt', tens, hev, hr₀ x₀ z hz] at h`. Rewrite using `[h]`. Conclude with `Finset.sum_congr rfl fun i _ => by rw [hr i x₀ z hz]`. Rewrite using `[map_sum, Finset.sum_apply]`.
+
+Apply `mul_right_cancel₀ hx₀` to reduce the goal to its premises. Rewrite using `[key, Finset.sum_mul]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[map_smul, Pi.smul_apply, smul_eq_mul]`. Clear the denominators using the available nonvanishing facts.
+-/
 theorem ev_surjOn_SB : ∀ {F : Type} [Field F] [NumberField F] {κ : Type} [Fintype κ] (e : ((κ → AF F) → ℂ) →ₗ[ℂ] ((κ → AF F) → ℂ)) (ei : SInf F κ →L[ℂ] SInf F κ)
     (ev : ∀ v : Pl F, ((κ → Fv F v) → ℂ) →ₗ[ℂ] (κ → Fv F v) → ℂ),
     (∀ v, ∀ φ ∈ SB (κ → Fv F v), ev v φ ∈ SB (κ → Fv F v)) →

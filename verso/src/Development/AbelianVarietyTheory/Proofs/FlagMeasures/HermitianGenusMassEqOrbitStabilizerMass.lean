@@ -16,6 +16,11 @@ open NumberField Matrix in
 open scoped ENNReal Classical in
 variable {K V : Type} [Field K] [NumberField K] [StarRing K] [AddCommGroup V] [Module K V] in
 
+/- English proof (translation)
+Establish `hp' : ∀ (τ : K →+* ℂ) (x : V), x ≠ 0 → 0 < (τ ((h x) x)).re` using `hp`. Establish `hsum` using `trace_eq_sum_embeddings ℂ (K := ℚ) (L := K) (x := h x x)`. Establish `hre : (algebraMap ℚ ℂ (Algebra.trace ℚ K (h x x))).re = (Algebra.trace ℚ K (h x x) : ℝ)` using `by simp`. Establish `hpos : (0 : ℝ) < (Algebra.trace ℚ K (h x x) : ℝ)`. Rewrite using `[← hre, hsum, Complex.re_sum]`.
+
+Take `⟨φ⟩` from `(inferInstance : Nonempty (K →+* ℂ))`. Use `haveI : Nonempty (K →ₐ[ℚ] ℂ) := ⟨φ.toRatAlgHom⟩`. Conclude with `Finset.sum_pos (fun σ _ => hp' σ.toRingHom x hx) Finset.univ_nonempty`. Conclude with `hpos` after adjusting the coercions.
+-/
 theorem _root_.GlobalTheory.Mass.GenusOrb.trace_pos_of_PD (h : V →ₗ⋆[K] V →ₗ[K] K)
     (hp : _root_.GlobalTheory.Mass.PD h) (x : V) (hx : x ≠ 0) :
     0 < Algebra.trace ℚ K (h x x) := by
@@ -44,6 +49,25 @@ end
 open NumberField Matrix in
 open scoped ENNReal Classical in
 
+/- English proof (translation)
+Introduce `K V _ _ _ _ _ _ _ _ h _ hsymm hp L hL`. Establish `htr : ∀ x : V, x ≠ 0 → 0 < Algebra.trace ℚ K (h x x)` using `_root_.GlobalTheory.Mass.GenusOrb.trace_pos_of_PD h hp`. Take `⟨hmass_ex, hmass_eq, hmass_pos⟩` from `_root_.Formalism.HermitianLatticesTheory.final_massBasic K V h hsymm htr L hL`. Establish `hgen : ∀ g ∈ _root_.Formalism.HermitianLatticesTheory.isom h, ∀ M ∈ _root_.Formalism.HermitianLatticesTheory.genus h L, _root_.Formalism.HermitianLatticesTheory.gmap g M ∈ _root_.Formalism.HermitianLatticesTheory.genus h L`. Introduce `g hg M hM`.
+
+Take `⟨hML, hLM⟩` from `hM`. Take `⟨heq, hinv, -⟩` from `_root_.Formalism.HermitianLatticesTheory.final_genusBasic (𝓞 K) K V h hsymm _root_.Formalism.HermitianLatticesTheory.star_algebraMap_ringOfIntegers_mem_range`. Conclude with `show Submodule.IsLattice K (_root_.Formalism.HermitianLatticesTheory.gmap g M) ∧ _root_.Formalism.HermitianLatticesTheory.SameGenus h L (_root_.Formalism.HermitianLatticesTheory.gmap g M) from ⟨(_root_.Formalism.HermitianLatticesTheory.final_isomAct (𝓞 K) K V h g hg M).2.2.2.2.mp …`. Establish `hstab : _root_.GlobalTheory.Mass.Stable (_root_.Formalism.HermitianLatticesTheory.isom h) (_root_.Formalism.HermitianLatticesTheory.genus h L)` using `fun g M hM => hgen g.1 g.2 M hM`. Establish `hfin : ∀ M : Submodule (𝓞 K) V, Submodule.IsLattice K M → Finite (MulAction.stabilizer (_root_.Formalism.HermitianLatticesTheory.isom h) M)`.
+
+Introduce `M hM`. Establish `hS` using `_root_.Formalism.HermitianLatticesTheory.final_autFinite K V h hsymm htr M hM`. Use `haveI := hS.to_subtype`. Use `Finite.of_injective (fun g : MulAction.stabilizer (_root_.Formalism.HermitianLatticesTheory.isom h) M => (⟨g.1.1, g.1.2, g.2⟩ : {g | g ∈ _root_.Formalism.HermitianLatticesTheory.isom h ∧ _root_.Formalism.HermitianLatticesTheory.gmap g M = M})) ?_` and prove the remaining obligations. Introduce `a b hab`.
+
+Use `congrArg Subtype.val hab` as an intermediate fact. Conclude with `Subtype.ext (Subtype.ext this)`. Establish `hsum : ∀ (s : Finset (Submodule (𝓞 K) V)) (N : Submodule (𝓞 K) V → ℝ≥0∞), _root_.Formalism.ThetaLiftIndependence.IsClassReps h L s → (∀ (g : _root_.Formalism.HermitianLatticesTheory.isom h) M, N (g • M) = N M) → ∑ M ∈ s, ENNReal.ofReal ((Nat.card (_root_.Formalism.ThetaLiftIndepe …`. Introduce `s N hs hN`. Take `⟨hsub, huniq⟩` from `hs`.
+
+Rewrite using `[_root_.GlobalTheory.Mass.orbSum_eq_sum_reps (_root_.Formalism.HermitianLatticesTheory.isom h) _ _ N hstab hN s hsub ?_]`. Use `Finset.sum_congr rfl fun M hM => ?_` and prove the remaining obligations. Use `congr 1`. Take `⟨hMlat, -⟩` from `hsub M hM`. Use `haveI := hfin M hMlat`.
+
+Use `haveI : Finite (_root_.Formalism.ThetaLiftIndependence.autL h M) := Finite.of_equiv _ (_root_.GlobalTheory.Mass.GenusOrb.autEquiv h M).symm`. Use `haveI : Nonempty (_root_.Formalism.ThetaLiftIndependence.autL h M) := ⟨(_root_.GlobalTheory.Mass.GenusOrb.autEquiv h M).symm 1⟩`. Establish `hpos : (0 : ℝ) < (Nat.card (_root_.Formalism.ThetaLiftIndependence.autL h M) : ℝ)` using `by exact_mod_cast Nat.card_pos`. Rewrite using `[← ENat.card_congr (_root_.GlobalTheory.Mass.GenusOrb.autEquiv h M), ENat.card_eq_coe_natCard, ENNReal.ofReal_inv_of_pos hpos, ENNReal.ofReal_natCast]`. Use `norm_cast`.
+
+Introduce `M hM`. Take `⟨y, ⟨hy, g, hg, hgy⟩, huy⟩` from `huniq M hM`. Conclude with `⟨y, ⟨hy, ⟨g, hg⟩, hgy⟩, fun z ⟨hz, g', hg'⟩ => huy z ⟨hz, g'.1, g'.2, hg'⟩⟩`. Take `⟨s, hs⟩` from `hmass_ex`. Establish `h1 : ENNReal.ofReal (_root_.Formalism.HermitianLatticesTheory.mass h L) = _root_.GlobalTheory.Mass.orbMass (_root_.Formalism.HermitianLatticesTheory.isom h) (_root_.Formalism.HermitianLatticesTheory.genus h L)`.
+
+Rewrite using `[hmass_eq s hs, ENNReal.ofReal_sum_of_nonneg (fun M _ => by positivity)]`. Use `hsum s (fun _ => 1) hs (fun _ _ => rfl)` as an intermediate fact. Simplify using `only [mul_one] at this`. Rewrite using `[this]`. Both sides reduce to the same expression.
+
+Conclude with `⟨h1, hmass_pos, hstab, hfin, hsum⟩`.
+-/
 theorem _root_.GlobalTheory.Mass.GenusOrb.main : ∀ (K V : Type) [Field K] [NumberField K]
     [StarRing K] [AddCommGroup V] [Module K V] [FiniteDimensional K V] [Module (𝓞 K) V]
     [IsScalarTower (𝓞 K) K V] (h : V →ₗ⋆[K] V →ₗ[K] K), _root_.Formalism.HermitianLatticesTheory.IsCMUnram K → h.IsSymm →

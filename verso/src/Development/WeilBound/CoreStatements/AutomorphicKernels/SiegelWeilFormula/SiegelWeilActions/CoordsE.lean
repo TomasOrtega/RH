@@ -17,6 +17,9 @@ variable {R L}
 variable {nb : nA σ d.Y d.b → d.G} {uM : (Fin L.n → AE F E) → d.G} {nb' : nA σ L.Y L.b → G2 σ L.Y} {w₁ : d.G}
   {cM : (Fin L.n → AE F E) × AF F → d.G} {δ : E}
 
+/- English proof (translation)
+Conclude with `CoordK.coordsC_ck h hc hU hc' hT h𝓐 hP hPc Ψ hΨ x`.
+-/
 theorem coordsC (h : Hyp L nb uM nb' w₁ cM δ) {lam : Measure (nA σ d.Y d.b)} {𝓖 : Set (nA σ d.Y d.b)}
     (hc : CoefData (σ := σ) (Y := d.Y) d.b nb lam 𝓖) {ν : Measure (Fin L.n → AE F E)} {𝓤 : Set (Fin L.n → AE F E)}
     (hU : L.UData uM ν 𝓤) {lam' : Measure (nA σ L.Y L.b)} {𝓖' : Set (nA σ L.Y L.b)}
@@ -31,6 +34,9 @@ theorem coordsC (h : Hyp L nb uM nb' w₁ cM δ) {lam : Measure (nA σ d.Y d.b)}
         ∂((lam'.restrict 𝓖').prod ((ν.restrict 𝓤).prod ((ν.restrict 𝓤).prod ((lamA F).restrict 𝓐)))) := by
   exact CoordK.coordsC_ck h hc hU hc' hT h𝓐 hP hPc Ψ hΨ x
 
+/- English proof (translation)
+Conclude with `CoordK.coordsE_ck h hc hU hc' hT h𝓐 hP hPc Ψ hΨm hΨ x`.
+-/
 theorem coordsE (h : Hyp L nb uM nb' w₁ cM δ) {lam : Measure (nA σ d.Y d.b)} {𝓖 : Set (nA σ d.Y d.b)}
     (hc : CoefData (σ := σ) (Y := d.Y) d.b nb lam 𝓖) {ν : Measure (Fin L.n → AE F E)} {𝓤 : Set (Fin L.n → AE F E)}
     (hU : L.UData uM ν 𝓤) {lam' : Measure (nA σ L.Y L.b)} {𝓖' : Set (nA σ L.Y L.b)}

@@ -19,6 +19,13 @@ noncomputable section
 
 namespace GlobalTheory.RawLift.Eig
 
+/- English proof (translation)
+Establish `h1` using `hg.tsum_fiberwise π`. Use `hL.mem_of_tendsto h1 (Filter.Eventually.of_forall fun s => L.sum_mem fun c _ => ?_)` and prove the remaining obligations. Distinguish the cases in `hc : ∃ x₀, π x₀ = c`. Take `⟨x₀, rfl⟩` from `hc`. Take `⟨s, hs, hm⟩` from `h x₀`.
+
+Establish `e : π ⁻¹' {π x₀} = (s : Set X)` using `Set.ext fun x => hs x`. Rewrite using `[e, Finset.tsum_subtype' s g]`. Conclude with `hm`. Establish `e : π ⁻¹' {c} = ((∅ : Finset X) : Set X)` using `Set.ext fun x => by`. Simplify using `only [Set.mem_preimage, Set.mem_singleton_iff, Finset.coe_empty, Set.mem_empty_iff_false, iff_false]`.
+
+Conclude with `fun hx => hc ⟨x, hx⟩`. Rewrite using `[e, Finset.tsum_subtype' ∅ g, Finset.sum_empty]`. Conclude with `L.zero_mem`.
+-/
 theorem mem_of_fibres {X Q H : Type} [NormedAddCommGroup H] [NormedSpace ℂ H] [CompleteSpace H] {g : X → H} {a : H}
     (hg : HasSum g a) (π : X → Q) (L : Submodule ℂ H) (hL : IsClosed (L : Set H))
     (h : ∀ x₀, ∃ s : Finset X, (∀ x, π x = π x₀ ↔ x ∈ s) ∧ ∑ x ∈ s, g x ∈ L) : a ∈ L := by
@@ -39,6 +46,11 @@ theorem mem_of_fibres {X Q H : Type} [NormedAddCommGroup H] [NormedSpace ℂ H] 
 variable {D : D7} {G : Type} [Group G] [Fintype G] {Pl0 T : Type} {A : FamIn D.what₂.LL G Pl0 T D.R.m}
   {Ks : Type} [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL]
 
+/- English proof (translation)
+Establish `h : ∃ f, IsFinIdem D v f`. Take `⟨ε, hε⟩` from `GlobalTheory.IdemSupport.exists_placeIdem (D := D) v`. Conclude with `⟨_, ε, hε, rfl⟩`. Unfold `Eu.fid`. Rewrite using `[dif_pos h]`.
+
+Conclude with `h.choose_spec`.
+-/
 theorem isFinIdem_fid (D : D7) (v : HeightOneSpectrum (𝓞 D.host.F)) : IsFinIdem D v (Eu.fid D v) := by
   have h : ∃ f, IsFinIdem D v f := by
     obtain ⟨ε, hε⟩ := GlobalTheory.IdemSupport.exists_placeIdem (D := D) v
@@ -47,6 +59,13 @@ theorem isFinIdem_fid (D : D7) (v : HeightOneSpectrum (𝓞 D.host.F)) : IsFinId
   rw [dif_pos h]
   exact h.choose_spec
 
+/- English proof (translation)
+Take `⟨Φ, hΦ⟩` from `GlobalTheory.IdemSupport.exists_comp D`. Use `haveI := v.isMaximal`. Take `⟨Q, hQ, hQv⟩` from `Ideal.exists_maximal_ideal_liesOver_of_isIntegral (S := 𝓞 D.host.E) v.asIdeal`. Establish `hne : Q ≠ ⊥` using `Ideal.ne_bot_of_liesOver_of_ne_bot v.ne_bot Q`. Set `P : HeightOneSpectrum (𝓞 D.host.E)` to `⟨Q, hQ.isPrime, hne⟩`.
+
+Establish `hP : P.under (𝓞 D.host.F) = v` using `HeightOneSpectrum.ext hQv.over.symm`. Take `⟨e, f', h⟩` from `GlobalTheory.IdemSupport.exists_isPrimeIdem hΦ P`. Take `⟨-, ε, hε, rfl⟩` from `GlobalTheory.IdemSupport.of_isPrimeIdem hΦ h`. Take `⟨ε', hε', rfl⟩` from `hf`. Rewrite `hε` using `[hP]`.
+
+Rewrite using `[GlobalTheory.IdemSupport.placeIdem_unique hε' hε]`. Conclude with `⟨P, e, hP, h⟩`.
+-/
 theorem exists_primeIdem {v : HeightOneSpectrum (𝓞 D.host.F)} {f : AE D} (hf : IsFinIdem D v f) :
     ∃ P e, P.under (𝓞 D.host.F) = v ∧ IsPrimeIdem P e f := by
   obtain ⟨Φ, hΦ⟩ := GlobalTheory.IdemSupport.exists_comp D
@@ -62,6 +81,11 @@ theorem exists_primeIdem {v : HeightOneSpectrum (𝓞 D.host.F)} {f : AE D} (hf 
   rw [GlobalTheory.IdemSupport.placeIdem_unique hε' hε]
   exact ⟨P, e, hP, h⟩
 
+/- English proof (translation)
+Take `⟨Φ, hΦ⟩` from `GlobalTheory.IdemSupport.exists_comp D`. Take `⟨e, f', h⟩` from `GlobalTheory.IdemSupport.exists_isPrimeIdem hΦ P`. Take `⟨-, ε, hε, rfl⟩` from `GlobalTheory.IdemSupport.of_isPrimeIdem hΦ h`. Take `⟨ε', hε', rfl⟩` from `hf`. Rewrite `hε` using `[hP]`.
+
+Rewrite using `[GlobalTheory.IdemSupport.placeIdem_unique hε' hε]`. Conclude with `⟨e, h⟩`.
+-/
 theorem primeIdem_of_under {v : HeightOneSpectrum (𝓞 D.host.F)} {f : AE D} (hf : IsFinIdem D v f)
     {P : HeightOneSpectrum (𝓞 D.host.E)} (hP : P.under (𝓞 D.host.F) = v) : ∃ e, IsPrimeIdem P e f := by
   obtain ⟨Φ, hΦ⟩ := GlobalTheory.IdemSupport.exists_comp D
@@ -74,6 +98,9 @@ theorem primeIdem_of_under {v : HeightOneSpectrum (𝓞 D.host.F)} {f : AE D} (h
 
 variable {R : RealDat D A Ks} {i : Fin D.R.m}
 
+/- English proof (translation)
+Establish `hex` using `hTL.2.2.1 γ hγ`. Unfold `Eu.Bop`. Rewrite using `[dif_pos hex]`. Conclude with `hex.choose_spec.2 x y`.
+-/
 theorem bop_spec (hTL : TransLaws R i) {γ : GA D (Wc D i)} (hγ : γ ∈ GfC (Wc D i)) (x y) :
     trPair R i γ x y = ⟪x, Eu.Bop R i γ y⟫_ℂ := by
   have hex := hTL.2.2.1 γ hγ
@@ -81,6 +108,11 @@ theorem bop_spec (hTL : TransLaws R i) {γ : GA D (Wc D i)} (hγ : γ ∈ GfC (W
   rw [dif_pos hex]
   exact hex.choose_spec.2 x y
 
+/- English proof (translation)
+Apply `ContinuousLinearMap.ext` to reduce the goal to its premises. Introduce `y`. Apply `ext_inner_left ℂ` to reduce the goal to its premises. Introduce `x`. Rewrite using `[← bop_spec hTL hγ, ← bop_spec hTL (mul_mem hγ (hLP.1 hk))]`.
+
+Use `hTL.2.2.2.1 γ hγ 1 (one_mem _) k hk x y` as an intermediate fact. Rewrite `this` using `[one_mul]`. Then use the resulting hypothesis.
+-/
 theorem bop_mul_lev (hLP : LevProd R i) (hTL : TransLaws R i) {γ k : GA D (Wc D i)} (hγ : γ ∈ GfC (Wc D i))
     (hk : k ∈ levW R i) : Eu.Bop R i (γ * k) = Eu.Bop R i γ := by
   apply ContinuousLinearMap.ext
@@ -91,6 +123,19 @@ theorem bop_mul_lev (hLP : LevProd R i) (hTL : TransLaws R i) {γ k : GA D (Wc D
   have := hTL.2.2.2.1 γ hγ 1 (one_mem _) k hk x y
   rwa [one_mul] at this
 
+/- English proof (translation)
+Take `⟨y', hy', hs⟩` from `hTL.2.1 v f hf α hα C hC hCR y`. Establish `e1 : ∑ δ ∈ C, Eu.Bop R i δ y = y'`. Apply `ext_inner_left ℂ` to reduce the goal to its premises. Introduce `x`. Rewrite using `[← hTL.2.2.2.2.2 x y', hs 1 (one_mem _) x, inner_sum]`.
+
+Use `Finset.sum_congr rfl fun δ hδ => ?_` and prove the remaining obligations. Rewrite using `[one_mul, bop_spec hTL (hCR.1 δ hδ).1]`. Take `⟨P, e, hPv, hP⟩` from `exists_primeIdem hf`. Take `⟨n, hβ⟩` from `hL.lev.βW i`. Take `⟨hJ, hχ, -⟩` from `(GlobalTheory.LevSplit.lev_split (Wc D i) (R.βW i) (R.ΛW i) (1 ^ n) (R.datWp i R.triv) hβ).2 P e f hP (by rw [one_pow, Nat.cast_one]; exact (Ideal.ne_top_iff_one _).1 P.isPrime.ne_top) (by`.
+
+Introduce `PP hPP`. Establish `h1 : PP ∈ R.Pg` using `hPP.resolve_right (Finset.notMem_empty _)`. Use `⟨fun h => hv PP h1 (h ▸ hPv), fun h => hv PP h1 ?_⟩` and prove the remaining obligations. Rewrite `hPv` using `[(GlobalTheory.IdemSupport.isConjPl_iff _ _).1 h, GlobalTheory.IdemSupport.under_cP]`. Conclude with `hPv)`.
+
+Take `⟨-, ϖ, -, h1, h2⟩` from `GlobalTheory.SphLabelOps.exists_real_unif D P`. Take `⟨Φ, hΦ⟩` from `GlobalTheory.IdemSupport.exists_comp D`. Establish `he : e * e = e` using `GlobalTheory.IdemSupport.delta_idem hΦ (GlobalTheory.IdemSupport.of_isPrimeIdem hΦ hP).1`. Take `⟨d, hd, hD⟩` from `GlobalTheory.SphLabelOps.exists_divAt (Wc D i) he (GlobalTheory.SphLabelOps.tie_of_isPrimeIdem hP) h1 h2 α`. Establish `hop : Hecke₂ (Wc D i) (levS _ (R.βW i) (R.datWp i R.triv)) (levChi _ (R.βW i) (R.datWp i R.triv)) ∅ P d C` using `⟨e, f, ϖ, α, fun w hw => absurd hw (Finset.notMem_empty w), hP, h1, h2, hd, hJ, hχ, hα, hD, hC, hCR⟩`.
+
+Establish `hm` using `(Submodule.mem_comap.1 hy).2`. Simplify using `only [SetLike.mem_coe, Submodule.mem_iInf] at hm`. Establish `hk` using `hm P d C hop`. Rewrite `hk` using `[LinearMap.mem_ker, LinearMap.sub_apply, sub_eq_zero]`. Use `⟨c P d, e1.trans ((hL.models.HW i (sg0 D A)).1 ?_)⟩` and prove the remaining obligations.
+
+Rewrite using `[hy', hk, map_smul]`. Both sides reduce to the same expression.
+-/
 theorem hecke_sum_good {F : Face D A} (hL : Laws R F) (hTL : TransLaws R i) {c} {y} (hy : y ∈ part R i ∅ c)
     {v : HeightOneSpectrum (𝓞 D.host.F)} {f : AE D} (hf : IsFinIdem D v f)
     (hv : ∀ P ∈ R.Pg, P.under (𝓞 D.host.F) ≠ v) {α : GA D (Wc D i)} (hα : SuppF (Wc D i) f α)
@@ -128,6 +173,15 @@ theorem hecke_sum_good {F : Face D A} (hL : Laws R F) (hTL : TransLaws R i) {c} 
   rw [hy', hk, map_smul]
   rfl
 
+/- English proof (translation)
+Distinguish the cases in `hv : ∀ P ∈ R.Pg, P.under (𝓞 D.host.F) ≠ v`. Take `⟨z, hz⟩` from `hecke_sum_good hL hTL hy hf hv hα hC hCR`. Rewrite using `[hz]`. Conclude with `Submodule.smul_mem _ _ (Submodule.smul_mem _ _ (Submodule.mem_span_singleton_self y))`. Use `push_neg at hv`.
+
+Take `⟨P, hP, hPv⟩` from `hv`. Take `⟨e, he⟩` from `primeIdem_of_under hf hPv`. Distinguish the cases in `hk : α ∈ levW R i`. Use `Submodule.smul_mem _ _ (Submodule.sum_mem _ fun δ hδ => ?_)` and prove the remaining obligations. Take `⟨-, k₁, hk₁, k₂, hk₂, rfl⟩` from `hCR.1 δ hδ`.
+
+Use `bop_mul_lev hLP hTL (one_mem _) (mul_mem (mul_mem hk₁.1 hk) hk₂.1)` as an intermediate fact. Rewrite `this` using `[one_mul]`. Rewrite using `[this, Eu.bop_one hTL]`. Conclude with `Submodule.mem_span_singleton_self y`. Rewrite using `[hB μ 𝓕 hμ P (Or.inl hP) e f he α hα hk, zero_smul]`.
+
+Conclude with `Submodule.zero_mem _`.
+-/
 theorem hecke_sum_mem {F : Face D A} (hL : Laws R F) {t : T} (hB : BadSupp R i t) (hLP : LevProd R i)
     (hTL : TransLaws R i) {μ 𝓕} (hμ : IsCovolOne (ratL (Wc D i) (Vc D i)) μ 𝓕) {c} {y} (hy : y ∈ part R i ∅ c)
     {v : HeightOneSpectrum (𝓞 D.host.F)} {f : AE D} (hf : IsFinIdem D v f)
@@ -152,6 +206,9 @@ theorem hecke_sum_mem {F : Face D A} (hL : Laws R F) {t : T} (hB : BadSupp R i t
     · rw [hB μ 𝓕 hμ P (Or.inl hP) e f he α hα hk, zero_smul]
       exact Submodule.zero_mem _
 
+/- English proof (translation)
+Rewrite using `[← QuotientGroup.leftRel_apply]`. Conclude with `Quotient.mk_eq_iff_out`.
+-/
 theorem mk_eq_iff {v : HeightOneSpectrum (𝓞 D.host.F)} (g : Eu.locSet R i v) (x : Eu.LX R i v) :
     (Quotient.mk _ g : Eu.LX R i v) = x ↔ g.1⁻¹ * Eu.rep x ∈ levW R i := by
   rw [← QuotientGroup.leftRel_apply]
@@ -159,6 +216,31 @@ theorem mk_eq_iff {v : HeightOneSpectrum (𝓞 D.host.F)} (g : Eu.locSet R i v) 
 
 set_option maxHeartbeats 800000 in
 
+/- English proof (translation)
+Introduce `D G _ _ Pl0 T A Ks _ _ _ R F hL i t hB hLF _ hLP hTL μ 𝓕 hμ hleft c y hy v`. It suffices to establish `h : Eu.Zop R i t μ 𝓕 v y ∈ Submodule.span ℂ {y} by`. Take `⟨z, hz⟩` from `Submodule.mem_span_singleton.1 h`. Conclude with `⟨z, hz.symm⟩`. Unfold `Eu.Zop`.
+
+Distinguish the cases in `hs : Summable fun x : Eu.LX R i v => Eu.acoef R i t μ 𝓕 v x • Eu.Bop R i (Eu.rep x)`. Use `swap`. Rewrite using `[tsum_eq_zero_of_not_summable hs]`. Conclude with `Submodule.zero_mem _`. Establish `hf` using `isFinIdem_fid D v`.
+
+Take `⟨P, e, -, hP⟩` from `exists_primeIdem hf`. Establish `h0` using `(GlobalTheory.IdemSupport.supported_group_and_prime_idempotents (Wc D i)).2.2.1 P e _ hP`. Take `⟨S, hS⟩` from `((GlobalTheory.IdemSupport.supported_group_and_prime_idempotents (Wc D i)).1 _ h0.1 h0.2.1).1`. Establish `hloc : ∀ g, g ∈ S → g ∈ Eu.locSet R i v` using `fun g hg => ⟨h0.2.2.1 g ((hS g).1 hg), (hS g).1 hg⟩`. Establish `hrep : ∀ x : Eu.LX R i v, Eu.rep x ∈ S` using `fun x => (hS _).2 (Quotient.out x).2.2`.
+
+Establish `hsum` using `(ContinuousLinearMap.apply ℂ _ y).hasSum hs.hasSum`. Use `mem_of_fibres hsum (fun x => DoubleCoset.mk (levW R i ⊓ S) (levW R i ⊓ S) (Eu.rep x)) _ (Submodule.closed_of_finiteDimensional _) fun x₀ => ?_` and prove the remaining obligations. Establish `hα : SuppF (Wc D i) (Eu.fid D v) (Eu.rep x₀)` using `(hS _).1 (hrep x₀)`. Take `⟨C, hC, hCR⟩` from `hTL.1 v _ hf _ hα`. Establish `hK : ∀ k, k ∈ {k | k ∈ levW R i ∧ SuppF (Wc D i) (Eu.fid D v) k} ↔ k ∈ levW R i ⊓ S` using `fun k => and_congr_right fun _ => (hS k).symm`.
+
+Choose the witnesses or unpack the hypotheses as in `⟨φ, hφ⟩ : ∃ φ : GA D (Wc D i) → Eu.LX R i v, ∀ δ ∈ C, ∀ x, φ δ = x ↔ δ⁻¹ * Eu.rep x ∈ levW R i ⊓ S := by`. Establish `key : ∀ δ : GA D (Wc D i), ∃ x' : Eu.LX R i v, δ ∈ C → ∀ x, x' = x ↔ δ⁻¹ * Eu.rep x ∈ levW R i ⊓ S`. Introduce `δ`. Distinguish the cases in `hδ : δ ∈ C`. Establish `h1` using `(hS δ).2 (hC δ hδ)`.
+
+Conclude with `⟨Quotient.mk _ ⟨δ, hloc δ h1⟩, fun _ x => (mk_eq_iff ⟨δ, hloc δ h1⟩ x).trans ⟨fun h => ⟨h, S.mul_mem (S.inv_mem h1) (hrep x)⟩, fun h => h.1⟩⟩`. Conclude with `⟨Eu.lx0 R i v, fun h => absurd h hδ⟩`. Use `choose φ hφ using key`. Conclude with `⟨φ, hφ⟩`. Establish `hdc : ∀ δ ∈ C, ∃ k₁ ∈ levW R i ⊓ S, ∃ k₂ ∈ levW R i ⊓ S, Eu.rep (φ δ) = k₁ * Eu.rep x₀ * k₂` using `fun δ hδ => by`.
+
+Take `⟨-, k₁, hk₁, k₂, hk₂, e1⟩` from `hCR.1 δ hδ`. Use `⟨k₁, (hK _).1 hk₁, k₂ * (δ⁻¹ * Eu.rep (φ δ)), mul_mem ((hK _).1 hk₂) ((hφ δ hδ _).1 rfl), ?_⟩` and prove the remaining obligations. Rewrite using `[← mul_assoc, ← e1, mul_inv_cancel_left]`. Use `⟨C.image φ, fun x => ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[eq_comm, DoubleCoset.eq, Finset.mem_image]`.
+
+Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨k₁, hk₁, k₂, hk₂, e1⟩`. Take `⟨δ, ⟨hδ, h1⟩, -⟩` from `hCR.2 _ ⟨k₁, (hK _).2 hk₁, k₂, (hK _).2 hk₂, e1⟩`. Conclude with `⟨δ, hδ, (hφ δ hδ x).2 ((hK _).1 h1)⟩`. Introduce and unpack `⟨δ, hδ, rfl⟩`.
+
+Conclude with `hdc δ hδ`. Rewrite using `[Finset.sum_image]`. Use `hecke_sum_mem hL hB hLP hTL hμ hy hf hα hC hCR` as an intermediate fact. Rewrite `this` using `[Finset.smul_sum]`. Use `(congrArg (· ∈ Submodule.span ℂ {y}) (Finset.sum_congr rfl fun δ hδ => ?_)).mpr this` and prove the remaining obligations.
+
+Take `⟨k₁, hk₁, k₂, hk₂, e1⟩` from `hdc δ hδ`. Establish `e2 : Eu.acoef R i t μ 𝓕 v (φ δ) = coef R i t μ 𝓕 (Eu.rep x₀)`. Unfold `Eu.acoef`. Rewrite using `[e1, Model.coef_mul_lev R i t hLF μ 𝓕 _ _ hk₂.1, hleft _ hk₁.1]`. Establish `e3 : Eu.Bop R i (Eu.rep (φ δ)) = Eu.Bop R i δ`.
+
+Rewrite using `[← bop_mul_lev hLP hTL (hCR.1 δ hδ).1 ((hφ δ hδ _).1 rfl).1, mul_inv_cancel_left]`. Rewrite using `[ContinuousLinearMap.apply_apply, e2, e3, ContinuousLinearMap.smul_apply]`. Introduce `δ hδ δ' hδ' h`. Take `⟨k₁, hk₁, k₂, hk₂, e1⟩` from `hdc δ hδ`. Take `⟨δ₀, -, hu⟩` from `hCR.2 _ ⟨k₁, (hK _).2 hk₁, k₂, (hK _).2 hk₂, e1⟩`.
+
+Conclude with `(hu δ ⟨hδ, (hK _).2 ((hφ δ hδ _).1 rfl)⟩).trans (hu δ' ⟨hδ', (hK _).2 ((hφ δ' hδ' _).1 h.symm)⟩).symm`.
+-/
 theorem zop_eigen : ∀ (D : D7) (G : Type) [Group G] [Fintype G] (Pl0 T : Type) (A : FamIn D.what₂.LL G Pl0 T D.R.m) (Ks : Type) [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] (R : RealDat D A Ks) (F : Face D A), Laws R F → ∀ i t, BadSupp R i t → LevFix R i t → LocSmall R i t → LevProd R i → TransLaws R i → ∀ (μ : Measure (WO (Vc D i) (Wc D i))) (𝓕 : Set (WO (Vc D i) (Wc D i))), IsCovolOne (ratL (Wc D i) (Vc D i)) μ 𝓕 → (∀ k ∈ levW R i, ∀ g, coef R i t μ 𝓕 (k * g) = coef R i t μ 𝓕 g) → ∀ c, ∀ y ∈ part R i ∅ c, ∀ v, ∃ z : ℂ, Eu.Zop R i t μ 𝓕 v y = z • y := by
   intro D G _ _ Pl0 T A Ks _ _ _ R F hL i t hB hLF _ hLP hTL μ 𝓕 hμ hleft c y hy v
   suffices h : Eu.Zop R i t μ 𝓕 v y ∈ Submodule.span ℂ {y} by

@@ -8,6 +8,21 @@ open Classical
 
 namespace GlobalTheory.ZH
 
+/- English proof (translation)
+Introduce `o Ω _ _ _ M J _ t e n z he hcl hk hint hsum`. Use `choose κ hκ using hk`. Establish `hle : ∀ k p, M.Div z k p → Algebra.adjoin o (Set.range fun l => z l / z k) ≤ M.O p` using `fun k p h => Algebra.adjoin_le (by rintro _ ⟨l, rfl⟩; exact h.2 l)`. Establish `hA : ∀ i p, M.Div z (κ i) p → M.Div t i p`. Introduce `i p h`.
+
+Establish `h0 : t i ≠ 0` using `fun h0 => h.1 (by rw [hκ, h0, zero_pow (by omega)])`. Use `⟨h0, fun j => hle _ _ h ?_⟩` and prove the remaining obligations. Rewrite using `[hκ, hint i h0]`. Conclude with `isIntegral_algebraMap (R := Algebra.adjoin o (Set.range fun j => t j / t i)) (x := ⟨t j / t i, Algebra.subset_adjoin ⟨j, rfl⟩⟩)`. Establish `hB : ∀ p, ∃ i, M.Div z (κ i) p`.
+
+Introduce `p`. Take `⟨k, hk⟩` from `hcl.1 p`. Take `⟨c, hc⟩` from `hsum k hk.1`. Establish `h1 : IsUnit (∑ i, (⟨c i, hle _ _ hk (c i).2⟩ : M.O p) * ⟨z (κ i) / z k, hk.2 _⟩)`. Use `isUnit_one` and compare the differences between its conclusion and the goal.
+
+Apply `Subtype.ext` to reduce the goal to its premises. Simplify `hc` using `[hκ]`. Take `⟨i, -, hi⟩` from `IsLocalRing.exists_of_isUnit_sum h1`. Conclude with `⟨i, (hk.div_iff_isUnit _).2 (isUnit_of_mul_isUnit_right hi)⟩`. Establish `hC : ∀ i p, M.Div t i p → M.Div z (κ i) p`.
+
+Introduce `i p h`. Take `⟨i', hi'⟩` from `hB p`. Establish `h0 : z (κ i) ≠ 0` using `by rw [hκ]; exact pow_ne_zero _ h.1`. Use `⟨h0, fun l => ?_⟩` and prove the remaining obligations. Establish `h1` using `mul_mem (hi'.2 l) (pow_mem (h.2 i') e)`.
+
+Rewrite `h1` using `[div_pow, ← hκ, ← hκ, div_mul_div_cancel₀ hi'.1]`. Then use the resulting hypothesis. Use `⟨fun p => (hB p).imp fun i hi => hA i p hi, fun i hi => ?_⟩` and prove the remaining obligations. Take `⟨U, hU, hD, hR⟩` from `hcl.2 (κ i) (by rw [hκ]; exact pow_ne_zero _ hi)`. Use `⟨U, hU, hD.trans (Set.ext fun p => ⟨hA i p, hC i p⟩), fun x => ?_⟩` and prove the remaining obligations. Rewrite using `[hR, hκ]`.
+
+Conclude with `hint i hi x`.
+-/
 theorem isNm_of_isCl_veronese : ∀ (o Ω : Type) [CommRing o] [Field Ω] [Algebra o Ω] (M : RatModel o Ω) (J : Type) [Fintype J] (t : J → Ω) (e n : ℕ) (z : Fin (n + 1) → Ω), 1 ≤ e → M.IsCl z → (∀ i, ∃ k, z k = t i ^ e) → (∀ i, t i ≠ 0 → ∀ x, x ∈ Algebra.adjoin o (Set.range fun k => z k / t i ^ e) ↔ IsIntegral (Algebra.adjoin o (Set.range fun j => t j / t i)) x) → (∀ k, z k ≠ 0 → ∃ c : J → Algebra.adjoin o (Set.range fun l => z l / z k), ∑ i, (c i : Ω) * (t i ^ e / z k) = 1) → M.IsNm t := by
   intro o Ω _ _ _ M J _ t e n z he hcl hk hint hsum
   choose κ hκ using hk

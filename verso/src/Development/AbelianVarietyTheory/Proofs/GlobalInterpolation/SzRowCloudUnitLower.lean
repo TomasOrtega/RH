@@ -6,6 +6,19 @@ open Formalism.BasicNotions Formalism.BasicNotions.LevelStarExponents Formalism.
 
 namespace GlobalTheory.EX
 
+/- English proof (translation)
+Establish `hx0 : 0 < x` using `by linarith`. Establish `hc0 : 0 ≤ c` using `by linarith`. Establish `hFc : 0 ≤ F * c` using `by positivity`. Establish `mono : ∀ a : ℝ, a ≤ 5 * c + F * c + 406 * K + 412 → x ^ a ≤ x ^ cD` using `fun a ha => Real.rpow_le_rpow_of_exponent_le hx (ha.trans hcD)`. Establish `hkc : k ^ c ≤ x ^ (5 * c)`.
+
+Rewrite using `[Real.rpow_mul hx0.le]`. Conclude with `Real.rpow_le_rpow hk0 hk hc0`. Establish `hnat : ∀ n : ℕ, x ^ n = x ^ (n : ℝ)` using `fun n => (Real.rpow_natCast x n).symm`. Use `⟨⟨?_, ?_, ?_, ?_⟩, ?_⟩` and prove the remaining obligations. Establish `h1 : (c * m) ^ 3 ≤ x ^ (6 : ℝ)`.
+
+Combine the equalities or inequalities in the displayed calculation. Establish `hp : 0 < x ^ (-F)` using `Real.rpow_pos_of_pos hx0 _`. Establish `h2 : x ^ (-(F * c)) ≤ (6 * x ^ (-F)) ^ c`. Rewrite using `[← neg_mul, Real.rpow_mul hx0.le]`. Conclude with `Real.rpow_le_rpow hp.le (by linarith) hc0`.
+
+Establish `hq : 0 < x ^ (-(F * c))` using `Real.rpow_pos_of_pos hx0 _`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[← Real.rpow_add hx0, ← Real.rpow_sub hx0]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree.
+
+Use `_ ≤ x ^ cD := mono _ (by linarith)`. Combine the equalities or inequalities in the displayed calculation. Combine the equalities or inequalities in the displayed calculation. Combine the equalities or inequalities in the displayed calculation. Establish `h1 : N * f * L ≤ x ^ (406 : ℝ)`.
+
+Combine the equalities or inequalities in the displayed calculation. Rewrite using `[← Real.rpow_add hx0, ← Real.rpow_add_one hx0.ne']`. Evaluate the numerical expressions. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem cloudUnit_poly_bounds (x c F K cD k m N f L : ℝ) (hx : 1 ≤ x) (hc : 1 ≤ c) (hcx : c ≤ x) (hF : 1 ≤ F)
     (hK : 1 ≤ K) (hcD : 5 * c + F * c + 406 * K + 412 ≤ cD)
     (hk0 : 0 ≤ k) (hk : k ≤ x ^ (5 : ℝ)) (hm0 : 0 ≤ m) (hm : m ≤ x) (hN0 : 0 ≤ N) (hN : N ≤ x ^ (402 : ℝ))
@@ -54,6 +67,15 @@ theorem cloudUnit_poly_bounds (x c F K cD k m N f L : ℝ) (hx : 1 ≤ x) (hc : 
       _ = x ^ (406 * K) := by rw [← Real.rpow_mul hx0.le]
       _ ≤ x ^ cD := mono _ (by linarith)
 
+/- English proof (translation)
+Introduce `eps h0 h1 C hC`. Take `⟨x0, hx0⟩` from `GlobalTheory.T.explicitRanks_basic_bounds_large_scale eps h0 h1`. Take `⟨-, -, -, -, -, -, -, -, -, -, -, -, -, -, hmid, hlast⟩` from `hC`. Establish `hF : 1 ≤ C.P.CF` using `hmid _ (by simp [FC.cMid])`. Establish `hc : 1 ≤ C.P.CDel` using `hlast _ (by simp [FC.cLast])`.
+
+Establish `hK : 1 ≤ C.P.CCount` using `hlast _ (by simp [FC.cLast])`. Use `⟨5 * C.P.CDel + C.P.CF * C.P.CDel + 406 * C.P.CCount + 412, fun cD hcD => ⟨0, fun ch _ => ⟨max x0 C.P.CDel, fun D L he hx V => ?_⟩⟩⟩` and prove the remaining obligations. Establish `hxc : C.P.CDel ≤ L.sc.x` using `(le_max_right _ _).trans hx`. Take `⟨hf, hm, hr, hkr, -, hL, hL1, -, -, -, -, -, -, -, hN, -, -⟩` from `hx0 L.sc D.R he ((le_max_left _ _).trans hx) V.ranks`. Establish `hk : (D.R.k : ℝ) ≤ L.sc.x ^ (5 : ℝ)` using `le_trans (by exact_mod_cast hkr) hr`.
+
+Establish `hDel : L.sc.x ^ cD ≤ (D.s.Del : ℝ)`. Rewrite using `[V.Del_eq, Rat.cast_natCast]`. Conclude with `Nat.le_ceil _`. Take `⟨⟨a1, a2, a3, a4⟩, a5⟩` from `cloudUnit_poly_bounds L.sc.x C.P.CDel C.P.CF C.P.CCount cD D.R.k D.R.m (D.R.N D.R.m) D.R.f L.sc.L (hc.trans hxc) hc hxc hF hK hcD (Nat.cast_nonneg _) hk (Nat.cast_nonneg _) hm (Nat.cast_nonneg _) hN (Nat.cast_nonneg _) hf (by linarith) hL`. Rewrite `a1` using `[← V.etaF_eq]`.
+
+Conclude with `⟨⟨a1.trans hDel, a2.trans hDel, a3.trans hDel, a4.trans hDel⟩, a5.trans hDel⟩`.
+-/
 theorem szRow_cloudUnit_lower : SzRow (fun C D L => ((D.R.k : ℝ) ^ C.P.CDel * (C.P.CDel * D.R.m) ^ 3 / D.div.etaF ^ C.P.CDel ≤ (D.s.Del : ℝ) ∧ C.P.CDel * D.R.m * D.R.N D.R.m ≤ (D.s.Del : ℝ) ∧ (D.R.k : ℝ) ^ C.P.CDel * (C.P.CDel * (D.R.m : ℝ) ^ 4 * L.sc.L) ^ 4 ≤ (D.s.Del : ℝ) ∧ (D.R.N D.R.m : ℝ) * (D.R.m : ℝ) ^ 10 ≤ (D.s.Del : ℝ)) ∧ (((D.R.N D.R.m : ℝ) * D.R.f * L.sc.L) ^ C.P.CCount ≤ (D.s.Del : ℝ))) := by
   intro eps h0 h1 C hC
   obtain ⟨x0, hx0⟩ := GlobalTheory.T.explicitRanks_basic_bounds_large_scale eps h0 h1

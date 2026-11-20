@@ -12,6 +12,11 @@ noncomputable section
 
 namespace GlobalTheory.TorsionFormCompare
 
+/- English proof (translation)
+Substitute `hF` using the available equality. Introduce `Z r z p q hp hq`. Establish `hp' : ∀ k, φ k (r z) ∈ L.U (p k)` using `hp`. Rewrite using `[Category.comp_id, gen_trans ht r z (j := p) (j' := q) (Set.mem_iInter.2 hp') (Set.mem_iInter.2 hq), trF]`. Use `congr 1`.
+
+Conclude with `Finset.prod_congr rfl fun k _ => by rw [hw Z (r ≫ φ k) z (p k) (q k) (hp' k) (hq k)]`.
+-/
 theorem pmaps_self_of_tautological {X Y : Scheme.{0}} {L : LB X} {F : X ⟶ X} (hF : F = 𝟙 X)
     (w : LB.Iso L (L.pull F))
     (hw : ∀ (Z : Scheme.{0}) (f : Z ⟶ X) (z : Z) (j k : L.ι), f z ∈ L.U j → f z ∈ L.U k →
@@ -25,6 +30,11 @@ theorem pmaps_self_of_tautological {X Y : Scheme.{0}} {L : LB X} {F : X ⟶ X} (
   congr 1
   exact Finset.prod_congr rfl fun k _ => by rw [hw Z (r ≫ φ k) z (p k) (q k) (hp' k) (hq k)]
 
+/- English proof (translation)
+Introduce `R _ _ D hD ⟨hx, he, hw⟩ F _ _ g`. Use `⟨by rw [he, Category.comp_id], fun χ => ?_⟩` and prove the remaining obligations. Establish `key : ∀ χ' : D.X, χ = χ' → ∃ hψ : ∀ k : Fin 4, DegPre.gtφ D F g.b χ k ≫ hD.e.hom.left ≫ pullback.fst D.P.A.hom (specOf (RingHom.id R)) = 𝟙 _ ≫ DegPre.gtφ D F g.b χ' k, LB.Gen.Maps (LB.linCombIso hD.w _ DegPre.gtε) (g.s χ) (GeneratorPullback.pullAlong D.P.L (hD.e.hom.left ≫ pullba …`. Introduce and unpack `_ rfl`. Establish `hψ : ∀ k : Fin 4, DegPre.gtφ D F g.b χ k ≫ hD.e.hom.left ≫ pullback.fst D.P.A.hom (specOf (RingHom.id R)) = 𝟙 _ ≫ DegPre.gtφ D F g.b χ k` using `fun k => by rw [he, Category.comp_id, Category.id_comp]`.
+
+Conclude with `⟨hψ, (maps_iff hD.w _ _ _ _ _ (𝟙 _) _ (GeneratorPullback.pullAlong_le _ _ _ _ _ hψ) (fun _ => rfl)).2 (pmaps_self_of_tautological he hD.w hw _ _ _ (g.isGen _))⟩`. Conclude with `key _ (hx χ).symm`.
+-/
 theorem isPullGtF_self_of_isIdPull : ∀ (R : Type) [CommRing R] [IsDomain R] (D : DegPre R) (hD : IsPullDeg (RingHom.id R) D D), IsIdPull hD → ∀ (F : Type) [Field F] [Algebra (FractionRing R) F] (g : GtPtF D F), IsPullGtF (RingHom.id R) hD F g g := by
   intro R _ _ D hD ⟨hx, he, hw⟩ F _ _ g
   refine ⟨by rw [he, Category.comp_id], fun χ => ?_⟩

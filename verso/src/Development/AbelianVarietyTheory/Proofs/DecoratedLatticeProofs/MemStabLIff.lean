@@ -9,10 +9,16 @@ namespace GlobalTheory.StabRef
 
 variable {E : Type} [Field E] [NumberField E] {P : HeightOneSpectrum (𝓞 E)} {q : ℕ}
 
+/- English proof (translation)
+Use `IntAt.coe P 0` as an intermediate fact. Rewrite `this` using `[map_zero]`. Then use the resulting hypothesis.
+-/
 theorem intAt_zero : IntAt P (0 : E) := by
   have := IntAt.coe P 0
   rwa [map_zero] at this
 
+/- English proof (translation)
+Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simpa using (intAt_zero (P := P))`. Consider the case `insert a s ha ih`. Rewrite using `[Finset.sum_insert ha]`. Conclude with `(h a (Finset.mem_insert_self a s)).add (ih fun i hi => h i (Finset.mem_insert_of_mem hi))`.
+-/
 theorem intAt_sum {ι : Type} (s : Finset ι) (f : ι → E) (h : ∀ i ∈ s, IntAt P (f i)) : IntAt P (∑ i ∈ s, f i) := by
   classical
   induction s using Finset.induction_on with
@@ -21,12 +27,27 @@ theorem intAt_sum {ι : Type} (s : Finset ι) (f : ι → E) (h : ∀ i ∈ s, I
     rw [Finset.sum_insert ha]
     exact (h a (Finset.mem_insert_self a s)).add (ih fun i hi => h i (Finset.mem_insert_of_mem hi))
 
+/- English proof (translation)
+Unfold both sides. The equivalence is reflexive.
+-/
 theorem mem_locP' {n : ℕ} (L : Submodule (𝓞 E) (Sp E n)) (x : Sp E n) :
     x ∈ localization₂ P.asIdeal L ↔ ∃ s : 𝓞 E, s ∉ P.asIdeal ∧ s • x ∈ L := Iff.rfl
 
+/- English proof (translation)
+Simplify using `only [stdLat, Submodule.mem_pi, Set.mem_univ, true_imp_iff, Submodule.mem_one]`.
+-/
 theorem mem_stdLat' {n : ℕ} (x : Sp E n) : x ∈ stdLat E n ↔ ∀ i, ∃ r : 𝓞 E, algebraMap (𝓞 E) E r = x i := by
   simp only [stdLat, Submodule.mem_pi, Set.mem_univ, true_imp_iff, Submodule.mem_one]
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce `hx i`. Take `⟨s, hs, h⟩` from `(mem_locP' _ x).1 hx`. Take `⟨r, hr⟩` from `(mem_stdLat' _).1 h i`. Conclude with `⟨r, s, hs, by rw [hr, Pi.smul_apply, Algebra.smul_def]⟩`.
+
+Introduce `H`. Establish `: x = ∑ i, (Pi.single i (x i) : Sp E n)` using `(Finset.univ_sum_single x).symm`. Rewrite using `[this]`. Use `Submodule.sum_mem _ fun i _ => ?_` and prove the remaining obligations. Take `⟨r, s, hs, h⟩` from `H i`.
+
+Use `(mem_locP' _ _).2 ⟨s, hs, ?_⟩` and prove the remaining obligations. Establish `e : s • (Pi.single i (x i) : Sp E n) = Pi.single i (algebraMap (𝓞 E) E r)`. Rewrite using `[← Pi.single_smul, Algebra.smul_def, ← h]`. Rewrite using `[e]`. Rewrite using `[mem_stdLat']`.
+
+Introduce `j`. Distinguish the cases in `hj : j = i`. Substitute `hj` using the available equality. Conclude with `⟨r, by simp⟩`. Conclude with `⟨0, by simp [hj]⟩`.
+-/
 theorem mem_locStd {n : ℕ} (x : Sp E n) : x ∈ localization₂ P.asIdeal (stdLat E n) ↔ ∀ i, IntAt P (x i) := by
   constructor
   · intro hx i
@@ -49,24 +70,41 @@ theorem mem_locStd {n : ℕ} (x : Sp E n) : x ∈ localization₂ P.asIdeal (std
       exact ⟨r, by simp⟩
     · exact ⟨0, by simp [hj]⟩
 
+/- English proof (translation)
+Unfold `LocE.sclLat stdAt`. Rewrite using `[Submodule.mem_comap, mem_locStd]`. Simplify using `[LinearMap.pi_apply, smul_eq_mul]`.
+-/
 theorem mem_sclLat {N : ℕ} (e : ℕ → ℤ) (v : Sp E N) :
     v ∈ LocE.sclLat P q N e ↔ ∀ l : Fin N, IntAt P (((q : E) ^ e l.1)⁻¹ * v l) := by
   unfold LocE.sclLat stdAt
   rw [Submodule.mem_comap, mem_locStd]
   simp [LinearMap.pi_apply, smul_eq_mul]
 
+/- English proof (translation)
+Unfold `LocE.fIdx`. Apply the tactic sequence `split_ifs <;> omega`.
+-/
 theorem fIdx_lt {k₀ c n p : ℕ} (hk : k₀ ≤ n) (hp : p < n + c) : LocE.fIdx k₀ c n p < n + c := by
   unfold LocE.fIdx
   split_ifs <;> omega
 
+/- English proof (translation)
+Unfold `LocE.fPos LocE.fIdx`. Apply the tactic sequence `split_ifs <;> omega`.
+-/
 theorem fIdx_fPos {k₀ c n l : ℕ} (hk : k₀ ≤ n) (hl : l < n + c) : LocE.fIdx k₀ c n (LocE.fPos k₀ c n l) = l := by
   unfold LocE.fPos LocE.fIdx
   split_ifs <;> omega
 
+/- English proof (translation)
+Unfold `LocE.fPos`. Apply the tactic sequence `split_ifs <;> omega`.
+-/
 theorem fPos_lt {k₀ c n l : ℕ} (hk : k₀ ≤ n) (hl : l < n + c) : LocE.fPos k₀ c n l < n + c := by
   unfold LocE.fPos
   split_ifs <;> omega
 
+/- English proof (translation)
+Use function extensionality and compare the values at `l`. Unfold `Loc.eN`. Distinguish the cases in `h : l = ⟨i, hi⟩`. Substitute `h` using the available equality. Simplify using the standard rewrite rules.
+
+Rewrite using `[Pi.single_eq_of_ne h, if_neg (fun h' => h (Fin.ext h'))]`.
+-/
 theorem eN_eq {N i : ℕ} (hi : i < N) : Loc.eN E N i = Pi.single (⟨i, hi⟩ : Fin N) (1 : E) := by
   funext l
   unfold Loc.eN
@@ -75,6 +113,11 @@ theorem eN_eq {N i : ℕ} (hi : i < N) : Loc.eN E N i = Pi.single (⟨i, hi⟩ :
     simp
   · rw [Pi.single_eq_of_ne h, if_neg (fun h' => h (Fin.ext h'))]
 
+/- English proof (translation)
+Establish `hv : v = ∑ l' : Fin N, v l' • (Pi.single l' (1 : E) : Sp E N)`. Use function extensionality and compare the values at `i`. Simplify using `[Finset.sum_apply, Pi.single_apply]`. Use `conv_lhs => rw [hv]`. Rewrite using `[map_sum, Finset.sum_apply]`.
+
+Use `Finset.sum_congr rfl fun l' _ => ?_` and prove the remaining obligations. Rewrite using `[map_smul, Pi.smul_apply, smul_eq_mul, mul_comm]`.
+-/
 theorem apply_sum {N : ℕ} (φ : Sp E N ≃ₗ[E] Sp E N) (v : Sp E N) (l : Fin N) :
     φ v l = ∑ l' : Fin N, φ (Pi.single l' 1) l * v l' := by
   have hv : v = ∑ l' : Fin N, v l' • (Pi.single l' (1 : E) : Sp E N) := by
@@ -85,6 +128,9 @@ theorem apply_sum {N : ℕ} (φ : Sp E N ≃ₗ[E] Sp E N) (v : Sp E N) (l : Fin
   refine Finset.sum_congr rfl fun l' _ => ?_
   rw [map_smul, Pi.smul_apply, smul_eq_mul, mul_comm]
 
+/- English proof (translation)
+Unfold `LocE.entB`. Rewrite using `[eN_eq (fIdx_lt hk hp')]`. Unfold `Loc.atN`. Rewrite using `[dif_pos (fIdx_lt hk hp)]`. Both sides reduce to the same expression.
+-/
 theorem entB_eq {k₀ n c p p' : ℕ} (hk : k₀ ≤ n) (hp : p < n + c) (hp' : p' < n + c) (κ : Sp E (n + c) ≃ₗ[E] Sp E (n + c)) :
     LocE.entB q k₀ c n c n (fun i => i + 1) (fun i => i + 1) κ.toLinearMap p p' =
       κ (Pi.single (⟨LocE.fIdx k₀ c n p', fIdx_lt hk hp'⟩ : Fin (n + c)) 1) ⟨LocE.fIdx k₀ c n p, fIdx_lt hk hp⟩ *
@@ -95,6 +141,13 @@ theorem entB_eq {k₀ n c p p' : ℕ} (hk : k₀ ≤ n) (hp : p < n + c) (hp' : 
   rw [dif_pos (fIdx_lt hk hp)]
   rfl
 
+/- English proof (translation)
+Unfold `LocE.lamY`. Rewrite using `[mem_sclLat]`. Introduce `l`. Rewrite using `[Pi.smul_apply, smul_eq_mul]`. Distinguish the cases in `h : l = l'`.
+
+Substitute `h` using the available equality. Rewrite using `[Pi.single_eq_same, mul_one, inv_mul_cancel₀ (zpow_ne_zero _ hq0)]`. Use `IntAt.coe P 1` as an intermediate fact. Rewrite `this` using `[map_one]`. Then use the resulting hypothesis. Rewrite using `[Pi.single_eq_of_ne h, mul_zero, mul_zero]`.
+
+Conclude with `intAt_zero`.
+-/
 theorem bas_mem (hq0 : (q : E) ≠ 0) {n c : ℕ} (l' : Fin (n + c)) :
     ((q : E) ^ LocE.scE n (fun i => i + 1) l'.1) • (Pi.single l' (1 : E) : Sp E (n + c)) ∈
       LocE.lamY P q n c (fun i => i + 1) := by
@@ -110,6 +163,11 @@ theorem bas_mem (hq0 : (q : E) ≠ 0) {n c : ℕ} (l' : Fin (n + c)) :
   · rw [Pi.single_eq_of_ne h, mul_zero, mul_zero]
     exact intAt_zero
 
+/- English proof (translation)
+Establish `h1` using `(hκ _).2 (bas_mem (P := P) hq0 l')`. Unfold `LocE.lamY at h1`. Rewrite `h1` using `[mem_sclLat]`. Establish `h2` using `h1 l`. Rewrite `h2` using `[map_smul, Pi.smul_apply, smul_eq_mul]`.
+
+Establish `e : ((q : E) ^ LocE.scE n (fun i => i + 1) l.1)⁻¹ * ((q : E) ^ LocE.scE n (fun i => i + 1) l'.1 * κ (Pi.single l' 1) l) = κ (Pi.single l' 1) l * (q : E) ^ (LocE.scE n (fun i => i + 1) l'.1 - LocE.scE n (fun i => i + 1) l.1)`. Rewrite using `[zpow_sub₀ hq0]`. Expand and normalize the polynomial expressions, which then agree. Rewrite `h2` using `[e]`. Then use the resulting hypothesis.
+-/
 theorem coord_int (hq0 : (q : E) ≠ 0) {n c : ℕ} {κ : Sp E (n + c) ≃ₗ[E] Sp E (n + c)}
     (hκ : κ ∈ stabL E (n + c) (LocE.lamY P q n c fun i => i + 1)) (l l' : Fin (n + c)) :
     IntAt P (κ (Pi.single l' 1) l * (q : E) ^ (LocE.scE n (fun i => i + 1) l'.1 - LocE.scE n (fun i => i + 1) l.1)) := by
@@ -124,6 +182,13 @@ theorem coord_int (hq0 : (q : E) ≠ 0) {n c : ℕ} {κ : Sp E (n + c) ≃ₗ[E]
     ring
   rwa [e] at h2
 
+/- English proof (translation)
+Unfold `LocE.lamY at hv ⊢`. Rewrite `hv`, the goal using `[mem_sclLat]`. Introduce `l`. Rewrite using `[apply_sum κ v l, Finset.mul_sum]`. Use `intAt_sum _ _ fun l' _ => ?_` and prove the remaining obligations.
+
+Establish `e : ((q : E) ^ LocE.scE n (fun i => i + 1) l.1)⁻¹ * (κ (Pi.single l' 1) l * v l') = (κ (Pi.single l' 1) l * (q : E) ^ (LocE.scE n (fun i => i + 1) l'.1 - LocE.scE n (fun i => i + 1) l.1)) * (((q : E) ^ LocE.scE n (fun i => i + 1) l'.1)⁻¹ * v l')`. Rewrite using `[zpow_sub₀ hq0]`. Establish `h1 : (q : E) ^ LocE.scE n (fun i => i + 1) l'.1 ≠ 0` using `zpow_ne_zero _ hq0`. Clear the denominators using the available nonvanishing facts. Rewrite using `[e]`.
+
+Conclude with `(hκ l l').mul (hv l')`.
+-/
 theorem map_mem (hq0 : (q : E) ≠ 0) {n c : ℕ} (κ : Sp E (n + c) ≃ₗ[E] Sp E (n + c))
     (hκ : ∀ l l' : Fin (n + c),
       IntAt P (κ (Pi.single l' 1) l * (q : E) ^ (LocE.scE n (fun i => i + 1) l'.1 - LocE.scE n (fun i => i + 1) l.1)))
@@ -142,6 +207,11 @@ theorem map_mem (hq0 : (q : E) ≠ 0) {n c : ℕ} (κ : Sp E (n + c) ≃ₗ[E] S
   rw [e]
   exact (hκ l l').mul (hv l')
 
+/- English proof (translation)
+Establish `h1` using `h _ _ (fPos_lt hk l.2) (fPos_lt hk l'.2)`. Rewrite `h1` using `[entB_eq hk (fPos_lt hk l.2) (fPos_lt hk l'.2)]`. Establish `e1 : (⟨LocE.fIdx k₀ c n (LocE.fPos k₀ c n l.1), fIdx_lt hk (fPos_lt hk l.2)⟩ : Fin (n + c)) = l` using `Fin.ext (fIdx_fPos hk l.2)`. Establish `e2 : (⟨LocE.fIdx k₀ c n (LocE.fPos k₀ c n l'.1), fIdx_lt hk (fPos_lt hk l'.2)⟩ : Fin (n + c)) = l'` using `Fin.ext (fIdx_fPos hk l'.2)`. Rewrite `h1` using `[e1, e2, fIdx_fPos hk l.2, fIdx_fPos hk l'.2]`.
+
+Conclude with `h1`.
+-/
 theorem coord_of_entB {k₀ n c : ℕ} (hk : k₀ ≤ n) (κ : Sp E (n + c) ≃ₗ[E] Sp E (n + c))
     (h : ∀ p p', p < n + c → p' < n + c →
       IntAt P (LocE.entB q k₀ c n c n (fun i => i + 1) (fun i => i + 1) κ.toLinearMap p p')) (l l' : Fin (n + c)) :
@@ -155,6 +225,15 @@ theorem coord_of_entB {k₀ n c : ℕ} (hk : k₀ ≤ n) (κ : Sp E (n + c) ≃�
   rw [e1, e2, fIdx_fPos hk l.2, fIdx_fPos hk l'.2] at h1
   exact h1
 
+/- English proof (translation)
+Introduce `E _ _ P q hq0 κ n c hk γ`. Prove the components needed by the constructor for the conclusion. Introduce `hγ`. Establish `hγi : γ⁻¹ ∈ stabL E (n + c) (LocE.lamY P q n c fun i => i + 1)` using `Subgroup.inv_mem _ hγ`. Use `⟨fun p p' hp hp' => ?_, fun p p' hp hp' => ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[entB_eq hk hp hp']`. Conclude with `coord_int hq0 hγ _ _`. Rewrite using `[entB_eq hk hp hp']`. Conclude with `coord_int hq0 hγi _ _`. Introduce and unpack `⟨h1, h2⟩`.
+
+Introduce `x`. Prove the components needed by the constructor for the conclusion. Introduce `hx`. Establish `e : (γ⁻¹ : Sp E (n + c) ≃ₗ[E] Sp E (n + c)) (γ x) = x` using `LinearEquiv.symm_apply_apply γ x`. Rewrite using `[← e]`.
+
+Conclude with `map_mem hq0 _ (coord_of_entB hk _ h2) hx`. Introduce `hx`. Conclude with `map_mem hq0 γ (coord_of_entB hk γ h1) hx`.
+-/
 theorem mem_stabL_iff : ∀ {E : Type} [Field E] [NumberField E] (P : HeightOneSpectrum (𝓞 E)) (q : ℕ), (q : E) ≠ 0 →
     ∀ (κ n c : ℕ), κ ≤ n → ∀ (γ : Sp E (n + c) ≃ₗ[E] Sp E (n + c)),
     γ ∈ stabL E (n + c) (LocE.lamY P q n c fun i => i + 1) ↔

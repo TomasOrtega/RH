@@ -20,6 +20,13 @@ variable {D : Formalism.BasicNotions.D7} {u u' : D.what₂.Word} {F0 : FlagG (VS
 
 namespace GramNePf
 
+/- English proof (translation)
+Establish `hsub : (ZhatOM (1 : Matrix (Fin (D.R.rS + 1)) (Fin (D.R.rS + 1)) D.host.E)).submatrix (Fin.castLE hl) (Fin.castLE hl) = Matrix.diagonal (fun i : Fin l => (-1 : D.host.E) ^ (D.R.rS - (Fin.castLE hl i).val))`. Use extensionality with `i j`. Break down `eq_or_ne i j with rfl | h` into its components or cases. Simplify using `[ZhatOM]`. Establish `h' : Fin.castLE hl i ≠ Fin.castLE hl j` using `fun e => h (Fin.castLE_injective hl e)`.
+
+Simplify using `[ZhatOM, Matrix.one_apply_ne h', Matrix.diagonal_apply_ne _ h]`. Establish `hdet : Formalism.MainNotions.S.leadMinorE (ZhatOM (1 : Matrix (Fin (D.R.rS + 1)) (Fin (D.R.rS + 1)) D.host.E)) l = (-1 : D.host.E) ^ (∑ i : Fin l, (D.R.rS - (Fin.castLE hl i).val))`. Unfold `Formalism.MainNotions.S.leadMinorE`. Rewrite using `[dif_pos hl, hsub, Matrix.det_diagonal, Finset.prod_pow_eq_pow_sum]`. Rewrite using `[hdet, star_pow, star_neg, star_one, ← pow_add]`.
+
+Conclude with `Even.neg_one_pow ⟨_, rfl⟩`.
+-/
 theorem sign_norm {l : ℕ} (hl : l ≤ D.R.rS + 1) :
     leadMinorE (ZhatOM (1 : Matrix (Fin (D.R.rS + 1)) (Fin (D.R.rS + 1)) D.host.E)) l *
       star (leadMinorE (ZhatOM (1 : Matrix (Fin (D.R.rS + 1)) (Fin (D.R.rS + 1)) D.host.E)) l) = 1 := by
@@ -38,10 +45,18 @@ theorem sign_norm {l : ℕ} (hl : l ≤ D.R.rS + 1) :
   rw [hdet, star_pow, star_neg, star_one, ← pow_add]
   exact Even.neg_one_pow ⟨_, rfl⟩
 
+/- English proof (translation)
+Rewrite using `[D.conjF_eq]`. Conclude with `(Formalism.BasicNotions.Examples₂.star_eq_conj D.host x).symm`.
+-/
 theorem conjF_star (x : D.host.E) : D.conjF x = star x := by
   rw [D.conjF_eq]
   exact (Formalism.BasicNotions.Examples₂.star_eq_conj D.host x).symm
 
+/- English proof (translation)
+Use extensionality with `i j`. Simplify using `only [Matrix.submatrix_apply, Matrix.mul_apply]`. Use `symm`. Use `Fintype.sum_of_injective (Fin.castLE hl) (Fin.castLE_injective hl) _ _ ?_ (fun k => rfl)` and prove the remaining obligations. Introduce `k hk`.
+
+Establish `hkl : l ≤ k.val`. Assume the negation of the conclusion as `h`. Conclude with `hk ⟨⟨k.val, by omega⟩, Fin.ext rfl⟩`. Rewrite using `[hB k (Fin.castLE hl j) (by rw [Fin.lt_def, Fin.val_castLE]; exact lt_of_lt_of_le j.isLt hkl), mul_zero]`.
+-/
 private lemma submatrix_castLE_mul_of_upper {K : Type*} [Field K] {n l : ℕ} (hl : l ≤ n) (A B : Matrix (Fin n) (Fin n) K)
     (hB : ∀ i j, j < i → B i j = 0) :
     (A * B).submatrix (Fin.castLE hl) (Fin.castLE hl) =
@@ -56,6 +71,11 @@ private lemma submatrix_castLE_mul_of_upper {K : Type*} [Field K] {n l : ℕ} (h
     exact hk ⟨⟨k.val, by omega⟩, Fin.ext rfl⟩
   rw [hB k (Fin.castLE hl j) (by rw [Fin.lt_def, Fin.val_castLE]; exact lt_of_lt_of_le j.isLt hkl), mul_zero]
 
+/- English proof (translation)
+Use extensionality with `i j`. Simplify using `only [Matrix.submatrix_apply, Matrix.mul_apply]`. Use `symm`. Use `Fintype.sum_of_injective (Fin.castLE hl) (Fin.castLE_injective hl) _ _ ?_ (fun k => rfl)` and prove the remaining obligations. Introduce `k hk`.
+
+Establish `hkl : l ≤ k.val`. Assume the negation of the conclusion as `h`. Conclude with `hk ⟨⟨k.val, by omega⟩, Fin.ext rfl⟩`. Rewrite using `[hA (Fin.castLE hl i) k (by rw [Fin.lt_def, Fin.val_castLE]; exact lt_of_lt_of_le i.isLt hkl), zero_mul]`.
+-/
 private lemma submatrix_castLE_mul_of_lower {K : Type*} [Field K] {n l : ℕ} (hl : l ≤ n) (A B : Matrix (Fin n) (Fin n) K)
     (hA : ∀ i j, i < j → A i j = 0) :
     (A * B).submatrix (Fin.castLE hl) (Fin.castLE hl) =
@@ -70,6 +90,11 @@ private lemma submatrix_castLE_mul_of_lower {K : Type*} [Field K] {n l : ℕ} (h
     exact hk ⟨⟨k.val, by omega⟩, Fin.ext rfl⟩
   rw [hA (Fin.castLE hl i) k (by rw [Fin.lt_def, Fin.val_castLE]; exact lt_of_lt_of_le i.isLt hkl), zero_mul]
 
+/- English proof (translation)
+Establish `hb : (L.submatrix (Fin.castLE hl) (Fin.castLE hl)).BlockTriangular OrderDual.toDual`. Introduce `i j hij`. Establish `hij' : i < j` using `by simpa using hij`. Use `show L (Fin.castLE hl i) (Fin.castLE hl j) = 0`. Conclude with `(hL _ _).1 (by rw [Fin.lt_def, Fin.val_castLE, Fin.val_castLE]; exact hij')`.
+
+Rewrite using `[Matrix.det_of_lowerTriangular _ hb]`. Conclude with `Finset.prod_eq_one (fun i _ => (hL _ _).2 rfl)`.
+-/
 private lemma det_submatrix_castLE_of_isLoUni {K : Type*} [Field K] {n l : ℕ} (hl : l ≤ n) (L : Matrix (Fin n) (Fin n) K)
     (hL : IsLoUni L) : (L.submatrix (Fin.castLE hl) (Fin.castLE hl)).det = 1 := by
   have hb : (L.submatrix (Fin.castLE hl) (Fin.castLE hl)).BlockTriangular OrderDual.toDual := by
@@ -80,6 +105,11 @@ private lemma det_submatrix_castLE_of_isLoUni {K : Type*} [Field K] {n l : ℕ} 
   rw [Matrix.det_of_lowerTriangular _ hb]
   exact Finset.prod_eq_one (fun i _ => (hL _ _).2 rfl)
 
+/- English proof (translation)
+Establish `hb : (U.submatrix (Fin.castLE hl) (Fin.castLE hl)).BlockTriangular id`. Introduce `i j hij`. Establish `hij' : j < i` using `by simpa using hij`. Use `show U (Fin.castLE hl i) (Fin.castLE hl j) = 0`. Conclude with `(hU _ _).1 (by rw [Fin.lt_def, Fin.val_castLE, Fin.val_castLE]; exact hij')`.
+
+Rewrite using `[Matrix.det_of_upperTriangular hb]`. Conclude with `Finset.prod_eq_one (fun i _ => (hU _ _).2 rfl)`.
+-/
 private lemma det_submatrix_castLE_of_isUpUni {K : Type*} [Field K] {n l : ℕ} (hl : l ≤ n) (U : Matrix (Fin n) (Fin n) K)
     (hU : IsUpUni U) : (U.submatrix (Fin.castLE hl) (Fin.castLE hl)).det = 1 := by
   have hb : (U.submatrix (Fin.castLE hl) (Fin.castLE hl)).BlockTriangular id := by
@@ -90,6 +120,9 @@ private lemma det_submatrix_castLE_of_isUpUni {K : Type*} [Field K] {n l : ℕ} 
   rw [Matrix.det_of_upperTriangular hb]
   exact Finset.prod_eq_one (fun i _ => (hU _ _).2 rfl)
 
+/- English proof (translation)
+Rewrite using `[submatrix_castLE_mul_of_upper hl _ _ (fun i j h => (hU i j).1 h), submatrix_castLE_mul_of_lower hl _ _ (fun i j h => (hL i j).1 h), Matrix.det_mul, Matrix.det_mul, det_submatrix_castLE_of_isLoUni hl L hL, det_submatrix_castLE_of_isUpUni hl U hU, one_mul, mul_one]`.
+-/
 private lemma det_submatrix_castLE_LPU_eq {K : Type*} [Field K] {n l : ℕ} (hl : l ≤ n) (L P U : Matrix (Fin n) (Fin n) K)
     (hL : IsLoUni L) (hU : IsUpUni U) :
     ((L * P * U).submatrix (Fin.castLE hl) (Fin.castLE hl)).det =
@@ -97,12 +130,26 @@ private lemma det_submatrix_castLE_LPU_eq {K : Type*} [Field K] {n l : ℕ} (hl 
   rw [submatrix_castLE_mul_of_upper hl _ _ (fun i j h => (hU i j).1 h), submatrix_castLE_mul_of_lower hl _ _ (fun i j h => (hL i j).1 h),
     Matrix.det_mul, Matrix.det_mul, det_submatrix_castLE_of_isLoUni hl L hL, det_submatrix_castLE_of_isUpUni hl U hU, one_mul, mul_one]
 
+/- English proof (translation)
+Use extensionality with `a b`. Simplify using `[ZhatOM, Matrix.mul_apply, Matrix.one_apply]`. Apply the tactic sequence `try ring`.
+-/
 private lemma zhatOM_eq_mul_zhatOM_one {K : Type*} [CommRing K] {r : ℕ} (Z : Matrix (Fin (r + 1)) (Fin (r + 1)) K) :
     ZhatOM Z = Z * ZhatOM (1 : Matrix (Fin (r + 1)) (Fin (r + 1)) K) := by
   ext a b
   simp [ZhatOM, Matrix.mul_apply, Matrix.one_apply]
   try ring
 
+/- English proof (translation)
+Take `⟨w, -, w', hG, -, hA⟩` from `hC`. Take `⟨L, U, hL, hU, hM⟩` from `hA`. Establish `hS : ∀ i j : Fin (D.R.rS + 1), j < i → ZhatOM (1 : Matrix (Fin (D.R.rS + 1)) (Fin (D.R.rS + 1)) D.host.E) i j = 0`. Introduce `i j h`. Simplify using `[ZhatOM, Matrix.one_apply_ne (ne_of_gt h)]`.
+
+Establish `hsq : ∀ l, l ≤ D.R.rS + 1 → Formalism.MainNotions.S.leadMinorE Z l * star (Formalism.MainNotions.S.leadMinorE Z l) = Dmin w' l * D.conjF (Dmin w' l)`. Introduce `l hl`. Establish `h1 : Dmin w' l = Formalism.MainNotions.S.leadMinorE Z l * Formalism.MainNotions.S.leadMinorE (ZhatOM (1 : Matrix (Fin (D.R.rS + 1)) (Fin (D.R.rS + 1)) D.host.E)) l`. Unfold `Dmin Formalism.MainNotions.S.leadMinorE`. Simplify using `only [dif_pos hl]`.
+
+Rewrite using `[← Matrix.det_mul, ← submatrix_castLE_mul_of_upper hl _ _ hS, ← zhatOM_eq_mul_zhatOM_one, hM, det_submatrix_castLE_LPU_eq hl _ _ _ hL hU]`. Rewrite using `[h1, conjF_star, star_mul']`. Take the linear combination `(-(Formalism.MainNotions.S.leadMinorE Z l * star (Formalism.MainNotions.S.leadMinorE Z l))) * sign_norm hl`. Introduce `h0`. Apply `hG` to reduce the goal to its premises.
+
+Unfold `Formalism.MainNotions.S.LocalSplitGroups.Gpt`. Rewrite using `[← hsq _ le_rfl, ← hsq _ (Nat.le_succ _)]`. Use `Eq.trans ?_ h0` and prove the remaining obligations. Unfold `Formalism.MainNotions.S.Gflag Formalism.MainNotions.S.Dl`. Rewrite using `[show Formalism.MainNotions.S.Zhat (lf D F0).fl F'₂.fl = Z from hZ]`.
+
+Both sides reduce to the same expression.
+-/
 theorem gflag_ne (γ : TermDef.Term D u u' F0 what₂) (Z : PairVal.MatR D)
     (F'₂ : LFlag (VS D) D.R.rS ((Tu D u' : ℕ) : D.host.E)) (hC : Ctx γ Z) (hZ : ZhatL (lf D F0) F'₂ = Z) :
     Gflag (lf D F0).fl F'₂.fl ≠ 0 := by
@@ -135,6 +182,15 @@ end GramNePf
 
 open GramNePf
 
+/- English proof (translation)
+Introduce `_ γ Z F'₂ hC hZ hdet`. Establish `hG` using `gflag_ne γ Z F'₂ hC hZ`. Take `⟨v, hv0, hv⟩` from `Matrix.exists_mulVec_eq_zero_iff.mpr hdet`. Establish `hw : ∀ k, (VS D).hT (wG F0 F'₂ k) (∑ j, v j • wG F0 F'₂ j) = 0`. Introduce `k`.
+
+Establish `hk` using `congr_fun hv k`. Simplify using `only [Matrix.mulVec, dotProduct, gramG, Matrix.of_apply, brS, Pi.zero_apply] at hk`. Rewrite using `[map_sum]`. Simplify using `only [map_smul, smul_eq_mul]`. Conclude with `(Finset.sum_congr rfl (fun j _ => mul_comm _ _)).trans hk`.
+
+Take `⟨h1, h2⟩` from `PI.UnitaryGroupMassFormula.BetaLUniq.GN.coeffs_zero F0 F'₂.fl (v ∘ Sum.inl) (v ∘ Sum.inr) (∑ j, v j • wG F0 F'₂ j) (by rw [Fintype.sum_sum_type]; rfl) (fun a => hw (Sum.inl a)) (fun b => hw (Sum.inr b)) hG`. Apply `hv0` to reduce the goal to its premises. Use function extensionality and compare the values at `k`. Break down `k with a | b` into its components or cases. Conclude with `congr_fun h1 a`.
+
+Conclude with `congr_fun h2 b`.
+-/
 theorem globGramNe_holds : GlobGramNe u u' F0 what₂ := by
   intro _ γ Z F'₂ hC hZ hdet
   have hG := gflag_ne γ Z F'₂ hC hZ

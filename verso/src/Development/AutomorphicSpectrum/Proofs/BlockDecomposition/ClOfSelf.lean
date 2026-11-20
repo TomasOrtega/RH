@@ -17,6 +17,9 @@ open Classical in
 def clOf (a : IrrGL k) (d : ℕ) : IrrCl (GL (Fin d) k) :=
   if h : a.1 = d then h ▸ a.2 else (IrrRep.det (Fin d) 1 isSmoothChar_one).cl
 
+/- English proof (translation)
+Simplify using `[clOf]`.
+-/
 theorem clOf_self (a : IrrGL k) : clOf a a.1 = a.2 := by
   simp [clOf]
 

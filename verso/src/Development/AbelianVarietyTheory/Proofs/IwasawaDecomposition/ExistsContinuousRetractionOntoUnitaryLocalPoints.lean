@@ -8,6 +8,11 @@ namespace GlobalTheory.DefU.LocRet
 
 variable {E : Type} [Field E] [NumberField E] [IsCMField E]
 
+/- English proof (translation)
+Establish `h` using `conjPl_conjSrc (IsCMField.complexConj E).toRingEquiv v`. Use extensionality with `y`. Express the relevant statement in the definitionally equal form `algebraMap _ (𝓞 E) y ∈ (conjSrc (IsCMField.complexConj E).toRingEquiv v).asIdeal ↔ algebraMap _ (𝓞 E) y ∈ v.asIdeal`. Rewrite using `[← HeightOneSpectrum.valuation_lt_one_iff_mem (K := E), ← HeightOneSpectrum.valuation_lt_one_iff_mem (K := E), ← h]`. Establish `: (IsCMField.complexConj E).toRingEquiv ((algebraMap _ (𝓞 E) y : 𝓞 E) : E) = ((algebraMap _ (𝓞 E) y : 𝓞 E) : E)`.
+
+Express the relevant statement in the definitionally equal form `(IsCMField.complexConj E) (algebraMap (maximalRealSubfield E) E (y : maximalRealSubfield E)) = _`. Rewrite using `[AlgEquiv.commutes]`. Both sides reduce to the same expression. Rewrite using `[this]`.
+-/
 theorem under_conjSrc (v : HeightOneSpectrum (𝓞 E)) :
     (conjSrc (IsCMField.complexConj E).toRingEquiv v).under (𝓞 (maximalRealSubfield E)) =
       v.under (𝓞 (maximalRealSubfield E)) := by
@@ -35,6 +40,9 @@ def idemF : Af E :=
 
 def idem : Ad E := sFin E (idemF w)
 
+/- English proof (translation)
+Use `Prod.ext (mul_zero _) (FiniteAdeleRing.ext E fun v => ?_)` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `(idemF w).1 v * (idemF w).1 v = (idemF w).1 v`. Simplify using `only [idemF]`. Apply the tactic sequence `split_ifs <;> simp`.
+-/
 theorem idem_mul_idem : idem w * idem w = idem w := by
   refine Prod.ext (mul_zero _) (FiniteAdeleRing.ext E fun v => ?_)
   change (idemF w).1 v * (idemF w).1 v = (idemF w).1 v
@@ -49,12 +57,20 @@ def sIdem : Ad E →ₙ+* Ad E where
   map_zero' := mul_zero _
   map_add' x y := mul_add _ _ _
 
+/- English proof (translation)
+Express the relevant statement in the definitionally equal form `pInf E (sFin E (idemF w) * x) = 0`. Rewrite using `[map_mul]`. Establish `: pInf E (sFin E (idemF w)) = 0` using `map_zero (infEq E).symm`. Rewrite using `[this, zero_mul]`.
+-/
 theorem pInf_sIdem (x : Ad E) : pInf E (sIdem w x) = 0 := by
   change pInf E (sFin E (idemF w) * x) = 0
   rw [map_mul]
   have : pInf E (sFin E (idemF w)) = 0 := map_zero (infEq E).symm
   rw [this, zero_mul]
 
+/- English proof (translation)
+Express the relevant statement in the definitionally equal form `((pLoc E v).comp (pFin E)) (idem w) * _ = _`. Establish `: ((pLoc E v).comp (pFin E)) (idem w) = 1`. Express the relevant statement in the definitionally equal form `(idemF w).1 v = 1`. Simplify using `only [idemF, if_pos hv]`. Rewrite using `[this, one_mul]`.
+
+Both sides reduce to the same expression.
+-/
 theorem pLoc_sIdem_of_eq {v : HeightOneSpectrum (𝓞 E)}
     (hv : v.under (𝓞 (maximalRealSubfield E)) = w.under (𝓞 (maximalRealSubfield E))) (x : Ad E) :
     ((pLoc E v).comp (pFin E)) (sIdem w x) = ((pLoc E v).comp (pFin E)) x := by
@@ -65,6 +81,9 @@ theorem pLoc_sIdem_of_eq {v : HeightOneSpectrum (𝓞 E)}
   rw [this, one_mul]
   rfl
 
+/- English proof (translation)
+Express the relevant statement in the definitionally equal form `((pLoc E v).comp (pFin E)) (idem w) * _ = _`. Establish `: ((pLoc E v).comp (pFin E)) (idem w) = 0`. Express the relevant statement in the definitionally equal form `(idemF w).1 v = 0`. Simplify using `only [idemF, if_neg hv]`. Rewrite using `[this, zero_mul]`.
+-/
 theorem pLoc_sIdem_of_ne {v : HeightOneSpectrum (𝓞 E)}
     (hv : v.under (𝓞 (maximalRealSubfield E)) ≠ w.under (𝓞 (maximalRealSubfield E))) (x : Ad E) :
     ((pLoc E v).comp (pFin E)) (sIdem w x) = 0 := by
@@ -74,6 +93,13 @@ theorem pLoc_sIdem_of_ne {v : HeightOneSpectrum (𝓞 E)}
     simp only [idemF, if_neg hv]
   rw [this, zero_mul]
 
+/- English proof (translation)
+Use `Prod.ext ?_ (FiniteAdeleRing.ext E fun v => ?_)` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `(infEq E) ((starRingEnd (Cinf E)) ((infEq E).symm 0)) = 0`. Simplify using the standard rewrite rules. Express the relevant statement in the definitionally equal form `pLoc E v (conjFin (IsCMField.complexConj E).toRingEquiv (idemF w)) = (idemF w).1 v`. Rewrite using `[pLoc_conjFin]`.
+
+Express the relevant statement in the definitionally equal form `conjLoc _ v ((idemF w).1 _) = (idemF w).1 v`. Establish `hc` using `under_conjSrc (E := E) v`. Simplify using `only [idemF]`. Use `split_ifs with h1 h2 h2`. Simplify using the standard rewrite rules.
+
+Conclude with `absurd (hc.symm.trans h1) h2`. Conclude with `absurd (hc.trans h2) h1`. Simplify using the standard rewrite rules.
+-/
 theorem conjAd_idem : conjAd E (idem w) = idem w := by
   refine Prod.ext ?_ (FiniteAdeleRing.ext E fun v => ?_)
   · change (infEq E) ((starRingEnd (Cinf E)) ((infEq E).symm 0)) = 0
@@ -91,12 +117,20 @@ theorem conjAd_idem : conjAd E (idem w) = idem w := by
 
 variable {w} {n : ℕ}
 
+/- English proof (translation)
+Use `ga_ext h1 (Units.ext (Matrix.ext fun i j => FiniteAdeleRing.ext E fun v => ?_))` and prove the remaining obligations. Conclude with `congrArg (fun x : GL (Fin n) (v.adicCompletion E) => x.val i j) (h2 v)`.
+-/
 theorem ga_ext' {g h : GA E n} (h1 : GeneralLinearGroup.map (pInf E) g = GeneralLinearGroup.map (pInf E) h)
     (h2 : ∀ v : HeightOneSpectrum (𝓞 E), GeneralLinearGroup.map ((pLoc E v).comp (pFin E)) g =
       GeneralLinearGroup.map ((pLoc E v).comp (pFin E)) h) : g = h := by
   refine ga_ext h1 (Units.ext (Matrix.ext fun i j => FiniteAdeleRing.ext E fun v => ?_))
   exact congrArg (fun x : GL (Fin n) (v.adicCompletion E) => x.val i j) (h2 v)
 
+/- English proof (translation)
+Use extensionality with `i j`. Express the relevant statement in the definitionally equal form `conjAd E ((1 : Matrix (Fin n) (Fin n) (Ad E)) j i - idem w * (1 : Matrix (Fin n) (Fin n) (Ad E)) j i + idem w * M j i) = (1 : Matrix (Fin n) (Fin n) (Ad E)) i j - idem w * (1 : Matrix (Fin n) (Fin n) (Ad E)) i j + idem w * conjAd E (M j i)`. Rewrite using `[map_add, map_sub, map_mul, map_mul, conjAd_idem, Matrix.one_apply, Matrix.one_apply]`. Distinguish the cases in `h : j = i`. Substitute `h` using the available equality.
+
+Simplify using the standard rewrite rules. Simplify using `[h, Ne.symm h]`.
+-/
 theorem cT_corner (M : Matrix (Fin n) (Fin n) (Ad E)) :
     cT (conjAd E) (corner (matN n (sIdem w)) M) = corner (matN n (sIdem w)) (cT (conjAd E) M) := by
   ext i j
@@ -108,6 +142,9 @@ theorem cT_corner (M : Matrix (Fin n) (Fin n) (Ad E)) :
   · subst h; simp
   · simp [h, Ne.symm h]
 
+/- English proof (translation)
+Establish `hg : cT (conjAd E) (g.1 : Matrix (Fin n) (Fin n) (Ad E)) * 1 * g.1 = 1` using `g.2`. Express the relevant statement in the definitionally equal form `cT (conjAd E) (corner (matN n (sIdem w)) g.1.1) * 1 * corner (matN n (sIdem w)) g.1.1 = 1`. Rewrite using `[cT_corner, Matrix.mul_one, ← map_mul, ← Matrix.mul_one (cT (conjAd E) _), hg, map_one]`.
+-/
 theorem corner_mem (g : UA E n) : cornerGL n (sIdem w) g.1 ∈ UA E n := by
   have hg : cT (conjAd E) (g.1 : Matrix (Fin n) (Fin n) (Ad E)) * 1 * g.1 = 1 := g.2
   change cT (conjAd E) (corner (matN n (sIdem w)) g.1.1) * 1 * corner (matN n (sIdem w)) g.1.1 = 1
@@ -117,26 +154,44 @@ variable (n w) in
 
 def ret0 : UA E n →* UA E n := ((cornerGL n (sIdem w)).comp (UA E n).subtype).codRestrict (UA E n) corner_mem
 
+/- English proof (translation)
+The claim follows from `map_cornerGL_of_zero _ _ (pInf_sIdem w) _`.
+-/
 theorem infiniteProj_unitaryAdelicLocalRetractionEnd_eq_one (g : UA E n) : GeneralLinearGroup.map (pInf E) (ret0 w n g).1 = 1 :=
   map_cornerGL_of_zero _ _ (pInf_sIdem w) _
 
+/- English proof (translation)
+The claim follows from `map_cornerGL_of_hom _ _ _ (pLoc_sIdem_of_eq w hv) _`.
+-/
 theorem localProj_unitaryAdelicLocalRetractionEnd_of_under_eq {v : HeightOneSpectrum (𝓞 E)}
     (hv : v.under (𝓞 (maximalRealSubfield E)) = w.under (𝓞 (maximalRealSubfield E))) (g : UA E n) :
     GeneralLinearGroup.map ((pLoc E v).comp (pFin E)) (ret0 w n g).1 = GeneralLinearGroup.map ((pLoc E v).comp (pFin E)) g.1 :=
   map_cornerGL_of_hom _ _ _ (pLoc_sIdem_of_eq w hv) _
 
+/- English proof (translation)
+The claim follows from `map_cornerGL_of_zero _ _ (pLoc_sIdem_of_ne w hv) _`.
+-/
 theorem localProj_unitaryAdelicLocalRetractionEnd_of_under_ne {v : HeightOneSpectrum (𝓞 E)}
     (hv : v.under (𝓞 (maximalRealSubfield E)) ≠ w.under (𝓞 (maximalRealSubfield E))) (g : UA E n) :
     GeneralLinearGroup.map ((pLoc E v).comp (pFin E)) (ret0 w n g).1 = 1 :=
   map_cornerGL_of_zero _ _ (pLoc_sIdem_of_ne w hv) _
 
+/- English proof (translation)
+Use `Subgroup.mem_inf.2 ⟨MonoidHom.mem_ker.2 (infiniteProj_unitaryAdelicLocalRetractionEnd_eq_one g), Subgroup.mem_iInf.2 fun u => Subgroup.mem_iInf.2 fun hu => ?_⟩` and prove the remaining obligations. Conclude with `MonoidHom.mem_ker.2 (localProj_unitaryAdelicLocalRetractionEnd_of_under_ne hu g)`.
+-/
 theorem unitaryAdelicLocalRetractionEnd_mem_localPoints (g : UA E n) : ret0 w n g ∈ locU n w := by
   refine Subgroup.mem_inf.2 ⟨MonoidHom.mem_ker.2 (infiniteProj_unitaryAdelicLocalRetractionEnd_eq_one g), Subgroup.mem_iInf.2 fun u => Subgroup.mem_iInf.2 fun hu => ?_⟩
   exact MonoidHom.mem_ker.2 (localProj_unitaryAdelicLocalRetractionEnd_of_under_ne hu g)
 
+/- English proof (translation)
+The claim follows from `MonoidHom.mem_ker.1 (Subgroup.mem_inf.1 hx).1`.
+-/
 theorem mem_locU_inf {x : UA E n} (hx : x ∈ locU n w) : GeneralLinearGroup.map (pInf E) x.1 = 1 :=
   MonoidHom.mem_ker.1 (Subgroup.mem_inf.1 hx).1
 
+/- English proof (translation)
+The claim follows from `MonoidHom.mem_ker.1 (Subgroup.mem_iInf.1 (Subgroup.mem_iInf.1 (Subgroup.mem_inf.1 hx).2 v) hv)`.
+-/
 theorem mem_locU_ne {x : UA E n} (hx : x ∈ locU n w) {v : HeightOneSpectrum (𝓞 E)}
     (hv : v.under (𝓞 (maximalRealSubfield E)) ≠ w.under (𝓞 (maximalRealSubfield E))) :
     GeneralLinearGroup.map ((pLoc E v).comp (pFin E)) x.1 = 1 :=
@@ -146,6 +201,9 @@ variable (n w) in
 
 def ret : UA E n →* locU n w := (ret0 w n).codRestrict (locU n w) unitaryAdelicLocalRetractionEnd_mem_localPoints
 
+/- English proof (translation)
+Establish `hc : Continuous (corner (matN n (sIdem w)))`. Express the relevant statement in the definitionally equal form `Continuous fun M : Matrix (Fin n) (Fin n) (Ad E) => 1 - (1 : Matrix (Fin n) (Fin n) (Ad E)).map (idem w * ·) + M.map (idem w * ·)`. Conclude with `continuous_const.add (continuous_id.matrix_map (continuous_const.mul continuous_id))`. Conclude with `Continuous.subtype_mk (Continuous.subtype_mk ((Continuous.units_map _ hc).comp continuous_subtype_val) _) _`.
+-/
 theorem continuous_ret : Continuous (ret w n) := by
   have hc : Continuous (corner (matN n (sIdem w))) := by
     change Continuous fun M : Matrix (Fin n) (Fin n) (Ad E) => 1 - (1 : Matrix (Fin n) (Fin n) (Ad E)).map (idem w * ·) +
@@ -153,6 +211,9 @@ theorem continuous_ret : Continuous (ret w n) := by
     exact continuous_const.add (continuous_id.matrix_map (continuous_const.mul continuous_id))
   exact Continuous.subtype_mk (Continuous.subtype_mk ((Continuous.units_map _ hc).comp continuous_subtype_val) _) _
 
+/- English proof (translation)
+Use `Subtype.ext (Subtype.ext (ga_ext' ?_ fun v => ?_))` and prove the remaining obligations. Conclude with `(infiniteProj_unitaryAdelicLocalRetractionEnd_eq_one x.1).trans (mem_locU_inf x.2).symm`. Distinguish the cases in `hv : v.under (𝓞 (maximalRealSubfield E)) = w.under (𝓞 (maximalRealSubfield E))`. Conclude with `localProj_unitaryAdelicLocalRetractionEnd_of_under_eq hv x.1`. Conclude with `(localProj_unitaryAdelicLocalRetractionEnd_of_under_ne hv x.1).trans (mem_locU_ne x.2 hv).symm`.
+-/
 theorem ret_of_mem (x : locU n w) : ret w n x = x := by
   refine Subtype.ext (Subtype.ext (ga_ext' ?_ fun v => ?_))
   · exact (infiniteProj_unitaryAdelicLocalRetractionEnd_eq_one x.1).trans (mem_locU_inf x.2).symm
@@ -160,6 +221,11 @@ theorem ret_of_mem (x : locU n w) : ret w n x = x := by
     · exact localProj_unitaryAdelicLocalRetractionEnd_of_under_eq hv x.1
     · exact (localProj_unitaryAdelicLocalRetractionEnd_of_under_ne hv x.1).trans (mem_locU_ne x.2 hv).symm
 
+/- English proof (translation)
+Use `Subtype.ext (ga_ext' ?_ fun v => ?_)` and prove the remaining obligations. Simplify using `only [Subgroup.coe_mul, map_mul, mem_locU_inf y.2, one_mul, mul_one]`. Distinguish the cases in `hv : v.under (𝓞 (maximalRealSubfield E)) = w.under (𝓞 (maximalRealSubfield E))`. Establish `h : GeneralLinearGroup.map ((pLoc E v).comp (pFin E)) (((ret w n g : UA E n)⁻¹ * g : UA E n) : GA E n) = 1`. Simplify using `only [Subgroup.coe_mul, Subgroup.coe_inv, map_mul, map_inv]`.
+
+Express the relevant statement in the definitionally equal form `(GeneralLinearGroup.map ((pLoc E v).comp (pFin E)) (ret0 w n g).1)⁻¹ * _ = 1`. Rewrite using `[localProj_unitaryAdelicLocalRetractionEnd_of_under_eq hv g, inv_mul_cancel]`. Simplify using `only [Subgroup.coe_mul, map_mul] at h ⊢`. Rewrite using `[h, one_mul, mul_one]`. Simplify using `only [Subgroup.coe_mul, map_mul, mem_locU_ne y.2 hv, one_mul, mul_one]`.
+-/
 theorem commute_ret (g : UA E n) (y : locU n w) : Commute ((ret w n g : UA E n)⁻¹ * g) (y : UA E n) := by
   refine Subtype.ext (ga_ext' ?_ fun v => ?_)
   · simp only [Subgroup.coe_mul, map_mul, mem_locU_inf y.2, one_mul, mul_one]
@@ -172,6 +238,9 @@ theorem commute_ret (g : UA E n) (y : locU n w) : Commute ((ret w n g : UA E n)�
       rw [h, one_mul, mul_one]
     · simp only [Subgroup.coe_mul, map_mul, mem_locU_ne y.2 hv, one_mul, mul_one]
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨ret w n, continuous_ret, ret_of_mem, commute_ret⟩`.
+-/
 theorem exists_ret (E : Type) [Field E] [NumberField E] [IsCMField E] (n : ℕ) (w : HeightOneSpectrum (𝓞 E)) :
     ∃ r : UA E n →* locU n w, Continuous r ∧ (∀ x : locU n w, r x = x) ∧
       ∀ (g : UA E n) (y : locU n w), Commute ((r g : UA E n)⁻¹ * g) (y : UA E n) :=

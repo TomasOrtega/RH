@@ -7,6 +7,11 @@ open Module
 
 variable {F F' V : Type} [Field F] [Field F'] [Algebra F F'] [AddCommGroup V] [Module F V]
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce `hv`. Conclude with `Module.Flat.linearIndependent_one_tmul hv`. Introduce `h`. Establish `h' : LinearIndependent F (fun i => (1 : F') ⊗ₜ[F] v i)` using `h.restrict_scalars' F`.
+
+Conclude with `LinearIndependent.of_comp (TensorProduct.mk F F' V 1) h'`.
+-/
 theorem indep_iff {ι : Type} (v : ι → V) :
     LinearIndependent F v ↔ LinearIndependent F' (fun i => (1 : F') ⊗ₜ[F] v i) := by
   constructor

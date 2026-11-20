@@ -13,6 +13,11 @@ section comm
 
 variable {A : Type} [Ring A] [Algebra ℂ A] {n : ℕ}
 
+/- English proof (translation)
+Unfold `Tm`. Use `Commute.add_right ?_ ?_` and prove the remaining obligations. Use `split_ifs`. Conclude with `(Algebra.commutes v (Eu p p)).symm`. Conclude with `Commute.zero_right _`.
+
+Establish `h` using `hG p p a b`. Rewrite `h` using `[if_neg (Ne.symm ha), if_neg hb, sub_zero]`. Conclude with `sub_eq_zero.mp h`.
+-/
 theorem comm_Tm (Eu : Fin n → Fin n → A) (hG : GlRel Eu) (p a b : Fin n) (ha : a ≠ p) (hb : b ≠ p) (v : ℂ) :
     Commute (Eu p p) (Tm Eu v a b) := by
   unfold Tm
@@ -24,6 +29,11 @@ theorem comm_Tm (Eu : Fin n → Fin n → A) (hG : GlRel Eu) (p a b : Fin n) (ha
     rw [if_neg (Ne.symm ha), if_neg hb, sub_zero] at h
     exact sub_eq_zero.mp h
 
+/- English proof (translation)
+Unfold `qminor`. Use `Commute.sum_right _ _ _ (fun σ _ => ?_)` and prove the remaining obligations. Use `Commute.mul_right (Int.cast_commute _ _).symm ?_` and prove the remaining obligations. Use `Commute.list_prod_right _ _ (fun x hx => ?_)` and prove the remaining obligations. Take `⟨i, rfl⟩` from `List.mem_ofFn.mp hx`.
+
+Conclude with `comm_Tm Eu hG p _ _ (ha _) (hb i) _`.
+-/
 theorem comm_qminor (Eu : Fin n → Fin n → A) (hG : GlRel Eu) {t : ℕ} (a b : Fin t → Fin n) (u : ℂ) (p : Fin n)
     (ha : ∀ i, a i ≠ p) (hb : ∀ i, b i ≠ p) : Commute (Eu p p) (qminor Eu a b u) := by
   unfold qminor
@@ -39,18 +49,33 @@ section aa
 
 variable {A : Type} [Ring A] [Algebra ℂ A] {k r : ℕ}
 
+/- English proof (translation)
+Unfold `C3.AAx`. Simplify using `only [show ∀ a : Fin m, xi (Fin.castLE hm a) = xi' (Fin.castLE hm a) from fun a => h _ a.isLt]`.
+-/
 theorem AAx_congr_rows (Eu : Fin (2 * r + k + 1) → Fin (2 * r + k + 1) → A)
     (xi xi' : Fin r → Fin (2 * r + k + 1) → ℂ) (m : ℕ) (hm : m ≤ r) (u : ℂ)
     (h : ∀ a : Fin r, a.val < m → xi a = xi' a) : C3.AAx k r Eu xi m hm u = C3.AAx k r Eu xi' m hm u := by
   unfold C3.AAx
   simp only [show ∀ a : Fin m, xi (Fin.castLE hm a) = xi' (Fin.castLE hm a) from fun a => h _ a.isLt]
 
+/- English proof (translation)
+Unfold `C3.AAv`. Simplify using `only [show ∀ a : Fin m, y (Fin.castLE hm a) = y' (Fin.castLE hm a) from fun a => h _ a.isLt]`.
+-/
 theorem AAv_congr_rows (Eu : Fin (2 * r + k + 1) → Fin (2 * r + k + 1) → A)
     (y y' : Fin r → Fin (2 * r + k + 1) → ℂ) (m : ℕ) (hm : m ≤ r) (ℓ : ℂ)
     (h : ∀ a : Fin r, a.val < m → y a = y' a) : C3.AAv k r Eu y m hm ℓ = C3.AAv k r Eu y' m hm ℓ := by
   unfold C3.AAv
   simp only [show ∀ a : Fin m, y (Fin.castLE hm a) = y' (Fin.castLE hm a) from fun a => h _ a.isLt]
 
+/- English proof (translation)
+Unfold `C3.AAx`. Use `Commute.sum_right _ _ _ (fun c _ => ?_)` and prove the remaining obligations. Use `split_ifs with hc`. Distinguish the cases in `hp : ∃ l, c l = eI k r ⟨j, by omega⟩`. Take `⟨l, hl⟩` from `hp`.
+
+Establish `hdet : (of fun (a l : Fin j) => xi (Fin.castLE (by omega) a) (c l)).det = 0`. Apply `Matrix.det_eq_zero_of_column_eq_zero l` to reduce the goal to its premises. Introduce `a`. Simplify using `only [of_apply, hl]`. Conclude with `h0 _ a.isLt`.
+
+Simplify using `only [hdet, zero_smul]`. Conclude with `Commute.zero_right _`. Use `push_neg at hp`. Use `Commute.smul_right ?_ _` and prove the remaining obligations. Use `comm_qminor Eu hG _ _ u _ (fun i => ?_) hp` and prove the remaining obligations.
+
+Use `i.isLt` as an intermediate fact. Simplify using `only [C3.xR, eI, ne_eq, Fin.ext_iff, Fin.coe_castLE]`. Use linear arithmetic over natural numbers and integers. Conclude with `Commute.zero_right _`.
+-/
 theorem comm_AAx (Eu : Fin (2 * r + k + 1) → Fin (2 * r + k + 1) → A) (hG : GlRel Eu)
     (xi : Fin r → Fin (2 * r + k + 1) → ℂ) (j : ℕ) (hj : j + 1 ≤ r) (u : ℂ)
     (h0 : ∀ a : Fin r, a.val < j → xi a (eI k r ⟨j, by omega⟩) = 0) :
@@ -75,6 +100,15 @@ theorem comm_AAx (Eu : Fin (2 * r + k + 1) → Fin (2 * r + k + 1) → A) (hG : 
       omega
   · exact Commute.zero_right _
 
+/- English proof (translation)
+Unfold `C3.AAv`. Use `Commute.sum_right _ _ _ (fun c _ => ?_)` and prove the remaining obligations. Use `split_ifs with hc`. Distinguish the cases in `hp : ∃ l, c l = esI k r ⟨j, by omega⟩`. Take `⟨l, hl⟩` from `hp`.
+
+Establish `hdet : (of fun (a l : Fin j) => y (Fin.castLE (by omega) a) (c l)).det = 0`. Apply `Matrix.det_eq_zero_of_column_eq_zero l` to reduce the goal to its premises. Introduce `a`. Simplify using `only [of_apply, hl]`. Conclude with `h0 _ a.isLt`.
+
+Simplify using `only [hdet, zero_smul]`. Conclude with `Commute.zero_right _`. Use `push_neg at hp`. Use `Commute.smul_right ?_ _` and prove the remaining obligations. Use `comm_qminor Eu hG _ _ _ _ hp (fun i => ?_)` and prove the remaining obligations.
+
+Use `i.isLt` as an intermediate fact. Simplify using `only [C3.sR, esI, ne_eq, Fin.ext_iff, Fin.coe_castLE]`. Use linear arithmetic over natural numbers and integers. Conclude with `Commute.zero_right _`.
+-/
 theorem comm_AAv (Eu : Fin (2 * r + k + 1) → Fin (2 * r + k + 1) → A) (hG : GlRel Eu)
     (y : Fin r → Fin (2 * r + k + 1) → ℂ) (j : ℕ) (hj : j + 1 ≤ r) (ℓ : ℂ)
     (h0 : ∀ a : Fin r, a.val < j → y a (esI k r ⟨j, by omega⟩) = 0) :
@@ -105,6 +139,21 @@ section what₂
 
 variable {k r j : ℕ}
 
+/- English proof (translation)
+Simplify using `only [x0, Dx2.Split.castM_apply, U.mMap, U.blk3, reindex_apply, submatrix_apply]`. Establish `he : (U.eB k (j + 1) (r - (j + 1))).symm (Fin.cast (by omega) (esI k r a)) = Sum.inr ⟨j - a.val, by omega⟩`. Rewrite using `[Equiv.symm_apply_eq]`. Simplify using `[U.eB, esI, Fin.ext_iff]`. Use linear arithmetic over natural numbers and integers.
+
+Rewrite using `[he]`. Break down `hq : (U.eB k (j + 1) (r - (j + 1))).symm (Fin.cast (by omega) q) with (l | l) | l` into its components or cases. Apply the tactic sequence `all_goals rw [Equiv.symm_apply_eq] at hq`. Apply the tactic sequence `all_goals have hv := congrArg Fin.val hq`. Apply the tactic sequence `all_goals simp [U.eB] at hv`.
+
+Rewrite using `[fromBlocks_apply₂₁, fromCols_apply_inl, StandardCharacterExists.wMat_mul_apply]`. Establish `hr : (⟨j - a.val, by omega⟩ : Fin (j + 1)).rev = Fin.castAdd 1 ⟨a.val, ha⟩`. Use `ext`. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers.
+
+Rewrite using `[hr]`. Simplify using `only [zfull, U.blk2, reindex_apply, submatrix_apply, finSumFinEquiv_symm_apply_castAdd]`. Distinguish the cases in `hl : l.val < j`. Establish `hl' : l = Fin.castAdd 1 ⟨l.val, hl⟩`. Use `ext`.
+
+Simplify using the standard rewrite rules. Rewrite using `[hl', finSumFinEquiv_symm_apply_castAdd, fromBlocks_apply₁₁, dif_pos (by omega)]`. Use `congr 1`. Use `ext`. Simplify using `[hv]`.
+
+Establish `hl' : l = Fin.natAdd j 0`. Use `ext`. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Rewrite using `[hl', finSumFinEquiv_symm_apply_natAdd, fromBlocks_apply₁₂, dif_neg (by omega)]`.
+
+Both sides reduce to the same expression. Rewrite using `[fromBlocks_apply₂₁, fromCols_apply_inr, dif_neg (by omega)]`. Both sides reduce to the same expression. Rewrite using `[fromBlocks_apply₂₂, dif_neg (by omega)]`. Both sides reduce to the same expression.
+-/
 private theorem x0_esI_apply_eq_dite_Z {k r j : ℕ} (hj : j + 1 ≤ r) (Z : Matrix (Fin j) (Fin j) ℂ) (τ : ℂ)
     (γ : B.Mat k (r - (j + 1))) (a : Fin r) (ha : a.val < j) (q : Fin (2 * r + k + 1)) :
     x0 k r j hj Z τ γ (esI k r a) q = if h : q.val < j then Z ⟨a.val, ha⟩ ⟨q.val, h⟩ else 0 := by
@@ -145,6 +194,11 @@ private theorem x0_esI_apply_eq_dite_Z {k r j : ℕ} (hj : j + 1 ≤ r) (Z : Mat
   · rw [fromBlocks_apply₂₂, dif_neg (by omega)]
     rfl
 
+/- English proof (translation)
+Establish `hH : ∀ s, Hpk k r (eI k r a) s = if s = esI k r a then 1 else 0`. Introduce `s`. Use `a.isLt` as an intermediate fact. Use `s.isLt` as an intermediate fact. Simplify using `only [Hpk, eI, esI, Fin.ext_iff, Fin.val_mk]`.
+
+Establish `hd : 2 * r + k - (a : ℕ) + a = 2 * r + k` using `Nat.sub_add_cancel (by omega)`. Generalize the expression as in `2 * r + k - (a : ℕ) = d at *`. Apply the tactic sequence `split_ifs <;> first | rfl | omega`. Simplify using `[PBG.xi0, herm, bvec, mulVec, dotProduct, Pi.single_apply, hH]`.
+-/
 private theorem xi0_apply_eq_esI_apply {k r : ℕ} (g : B.Mat k r) (a : Fin r) (p : Fin (2 * r + k + 1)) :
     PBG.xi0 g a p = g (esI k r a) p := by
   have hH : ∀ s, Hpk k r (eI k r a) s = if s = esI k r a then 1 else 0 := by
@@ -157,6 +211,17 @@ private theorem xi0_apply_eq_esI_apply {k r : ℕ} (g : B.Mat k r) (a : Fin r) (
     split_ifs <;> first | rfl | omega
   simp [PBG.xi0, herm, bvec, mulVec, dotProduct, Pi.single_apply, hH]
 
+/- English proof (translation)
+Establish `hs : GBasic.sig k r (GBasic.sig k r p) = p`. Use `p.isLt` as an intermediate fact. Use `ext`. Simplify using `only [GBasic.sig]`. Apply the tactic sequence `split_ifs with h1 h2 h2 <;> simp only [Fin.val_mk] at * <;> omega`.
+
+Establish `hn : GBasic.sgn k r (eI k r a) = 1`. Use `a.isLt` as an intermediate fact. Rewrite using `[GBasic.sgn, if_neg]`. Simplify using `only [eI, Fin.val_mk]`. Use linear arithmetic over natural numbers and integers.
+
+Establish `he : GBasic.sig k r (eI k r a) = esI k r a`. Use `a.isLt` as an intermediate fact. Use `ext`. Simplify using `[GBasic.sig, eI, esI]`. Establish `hu` using `B2x5.isUnit_det_GV hg`.
+
+Establish `h1 : Hpk k r * g⁻¹ = gᴴ * Hpk k r`. Establish `hg' : gᴴ * Hpk k r * g = Hpk k r` using `hg`. Combine the equalities or inequalities in the displayed calculation. Establish `h2` using `congrFun (congrFun h1 (GBasic.sig k r p)) (eI k r a)`. Rewrite `h2` using `[C2x6.Hpk_mul_apply, C2x6.mul_Hpk_apply]`.
+
+Rewrite `h2` using `[hs, he, hn, mul_one, conjTranspose_apply]`. Establish `hy : PBG.y0 g a p = g⁻¹ p (eI k r a)`. Simplify using `[PBG.y0, bvec, mulVec, dotProduct, Pi.single_apply]`. Rewrite using `[hy, h2]`.
+-/
 private theorem sgn_sig_mul_y0_eq_star_esI_apply_of_mem_GV {k r : ℕ} (g : B.Mat k r) (hg : g ∈ B.GV k r) (a : Fin r)
     (p : Fin (2 * r + k + 1)) :
     GBasic.sgn k r (GBasic.sig k r p) * PBG.y0 g a p = star (g (esI k r a) (GBasic.sig k r p)) := by
@@ -186,16 +251,27 @@ private theorem sgn_sig_mul_y0_eq_star_esI_apply_of_mem_GV {k r : ℕ} (g : B.Ma
     simp [PBG.y0, bvec, mulVec, dotProduct, Pi.single_apply]
   rw [hy, h2]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `p`. Rewrite using `[xi0_apply_eq_esI_apply, xi0_apply_eq_esI_apply, x0_esI_apply_eq_dite_Z hj Z τ' γ a ha, x0_esI_apply_eq_dite_Z hj Z τ γ a ha]`.
+-/
 theorem xi0_row_independent_of_tau (hj : j + 1 ≤ r) (Z : Matrix (Fin j) (Fin j) ℂ) (τ τ' : ℂ) (γ : B.Mat k (r - (j + 1)))
     (a : Fin r) (ha : a.val < j) : PBG.xi0 (x0 k r j hj Z τ' γ) a = PBG.xi0 (x0 k r j hj Z τ γ) a := by
   funext p
   rw [xi0_apply_eq_esI_apply, xi0_apply_eq_esI_apply, x0_esI_apply_eq_dite_Z hj Z τ' γ a ha, x0_esI_apply_eq_dite_Z hj Z τ γ a ha]
 
+/- English proof (translation)
+Rewrite using `[xi0_apply_eq_esI_apply, x0_esI_apply_eq_dite_Z hj Z τ γ a ha, dif_neg]`. Simplify using `[eI]`.
+-/
 theorem xi0_x0_eI_j_eq_zero (hj : j + 1 ≤ r) (Z : Matrix (Fin j) (Fin j) ℂ) (τ : ℂ) (γ : B.Mat k (r - (j + 1)))
     (a : Fin r) (ha : a.val < j) : PBG.xi0 (x0 k r j hj Z τ γ) a (eI k r ⟨j, by omega⟩) = 0 := by
   rw [xi0_apply_eq_esI_apply, x0_esI_apply_eq_dite_Z hj Z τ γ a ha, dif_neg]
   simp [eI]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `p`. Establish `hs : GBasic.sgn k r (GBasic.sig k r p) ≠ 0`. Unfold `GBasic.sgn`. Apply the tactic sequence `split_ifs <;> norm_num`. Apply `mul_left_cancel₀ hs` to reduce the goal to its premises.
+
+Rewrite using `[sgn_sig_mul_y0_eq_star_esI_apply_of_mem_GV _ (LevelPointCoordinates.x0_GV hj hZ hτ' hγ), sgn_sig_mul_y0_eq_star_esI_apply_of_mem_GV _ (LevelPointCoordinates.x0_GV hj hZ hτ hγ), x0_esI_apply_eq_dite_Z hj Z τ' γ a ha, x0_esI_apply_eq_dite_Z hj Z τ γ a ha]`.
+-/
 theorem y0_row_independent_of_tau (hj : j + 1 ≤ r) {Z : Matrix (Fin j) (Fin j) ℂ} {τ τ' : ℂ} (hZ : Z.det ≠ 0) (hτ : τ ≠ 0)
     (hτ' : τ' ≠ 0) {γ : B.Mat k (r - (j + 1))} (hγ : γ ∈ B.GV k (r - (j + 1))) (a : Fin r) (ha : a.val < j) :
     PBG.y0 (x0 k r j hj Z τ' γ) a = PBG.y0 (x0 k r j hj Z τ γ) a := by
@@ -207,6 +283,13 @@ theorem y0_row_independent_of_tau (hj : j + 1 ≤ r) {Z : Matrix (Fin j) (Fin j)
   rw [sgn_sig_mul_y0_eq_star_esI_apply_of_mem_GV _ (LevelPointCoordinates.x0_GV hj hZ hτ' hγ), sgn_sig_mul_y0_eq_star_esI_apply_of_mem_GV _ (LevelPointCoordinates.x0_GV hj hZ hτ hγ),
     x0_esI_apply_eq_dite_Z hj Z τ' γ a ha, x0_esI_apply_eq_dite_Z hj Z τ γ a ha]
 
+/- English proof (translation)
+Establish `hs : GBasic.sgn k r (GBasic.sig k r (esI k r ⟨j, by omega⟩)) ≠ 0`. Unfold `GBasic.sgn`. Apply the tactic sequence `split_ifs <;> norm_num`. Apply `mul_left_cancel₀ hs` to reduce the goal to its premises. Rewrite using `[sgn_sig_mul_y0_eq_star_esI_apply_of_mem_GV _ (LevelPointCoordinates.x0_GV hj hZ hτ hγ), x0_esI_apply_eq_dite_Z hj Z τ γ a ha, dif_neg, mul_zero, star_zero]`.
+
+Establish `: j + 1 ≤ r` using `hj`. Establish `hse : (GBasic.sig k r (esI k r ⟨j, by omega⟩)).val = j`. Unfold `GBasic.sig`. Rewrite using `[if_pos (Or.inr (by simp only [esI]; omega))]`. Simplify using `only [esI]`.
+
+Use linear arithmetic over natural numbers and integers. Rewrite using `[hse]`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem y0_x0_esI_j_eq_zero_of_det_ne_zero (hj : j + 1 ≤ r) {Z : Matrix (Fin j) (Fin j) ℂ} {τ : ℂ} (hZ : Z.det ≠ 0) (hτ : τ ≠ 0)
     {γ : B.Mat k (r - (j + 1))} (hγ : γ ∈ B.GV k (r - (j + 1))) (a : Fin r) (ha : a.val < j) :
     PBG.y0 (x0 k r j hj Z τ γ) a (esI k r ⟨j, by omega⟩) = 0 := by
@@ -226,11 +309,17 @@ theorem y0_x0_esI_j_eq_zero_of_det_ne_zero (hj : j + 1 ≤ r) {Z : Matrix (Fin j
 
 end what₂
 
+/- English proof (translation)
+Introduce `A _ _ k r j hj Eu Z τ τ' u γ hG hZ hτ hτ' hγ`. Conclude with `⟨AAx_congr_rows Eu _ _ j _ u (fun a ha => xi0_row_independent_of_tau hj Z τ τ' γ a ha), comm_AAx Eu hG _ j hj u (fun a ha => xi0_x0_eI_j_eq_zero hj Z τ γ a ha)⟩`.
+-/
 theorem frozen_X_identity : FrozenX := by
   intro A _ _ k r j hj Eu Z τ τ' u γ hG hZ hτ hτ' hγ
   exact ⟨AAx_congr_rows Eu _ _ j _ u (fun a ha => xi0_row_independent_of_tau hj Z τ τ' γ a ha),
     comm_AAx Eu hG _ j hj u (fun a ha => xi0_x0_eI_j_eq_zero hj Z τ γ a ha)⟩
 
+/- English proof (translation)
+Introduce `A _ _ k r j hj Eu Z τ τ' ℓ γ hG hZ hτ hτ' hγ`. Conclude with `⟨AAv_congr_rows Eu _ _ j _ ℓ (fun a ha => y0_row_independent_of_tau hj hZ hτ hτ' hγ a ha), comm_AAv Eu hG _ j hj ℓ (fun a ha => y0_x0_esI_j_eq_zero_of_det_ne_zero hj hZ hτ hγ a ha)⟩`.
+-/
 theorem frozen_V_identity : FrozenV := by
   intro A _ _ k r j hj Eu Z τ τ' ℓ γ hG hZ hτ hτ' hγ
   exact ⟨AAv_congr_rows Eu _ _ j _ ℓ (fun a ha => y0_row_independent_of_tau hj hZ hτ hτ' hγ a ha),

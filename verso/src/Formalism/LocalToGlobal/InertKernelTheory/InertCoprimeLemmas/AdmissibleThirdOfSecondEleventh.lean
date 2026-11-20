@@ -11,6 +11,13 @@ namespace Formalism.L2.KerInert.Ent
 
 variable {p : ℕ} [Fact p.Prime]
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce `h`. Use `h 0 1 one_pos (by simp)` as an intermediate fact. Simplify using `using this`. Introduce `hx a b _ hab`.
+
+Establish `ha : 0 ≤ -a`. Establish `: (a : ℝ) ≤ 0` using `by simpa using hab`. Establish `: a ≤ 0` using `by exact_mod_cast this`. Use linear arithmetic over natural numbers and integers. Take `⟨k, hk⟩` from `Int.eq_ofNat_of_zero_le ha`.
+
+Rewrite using `[hk, zpow_natCast]`. Conclude with `Subring.mul_mem _ (Subring.pow_mem _ hx b) (Subring.pow_mem _ (natCast_mem _ p) k)`.
+-/
 theorem geZ_iff (x : ℂ_[p]) : GeZ x ↔ x ∈ Formalism.L2.G.Pend.OcC p := by
   constructor
   · intro h
@@ -27,6 +34,9 @@ theorem geZ_iff (x : ℂ_[p]) : GeZ x ↔ x ∈ Formalism.L2.G.Pend.OcC p := by
 
 def GeP {τ : Type} (a : MvPolynomial τ ℂ_[p]) : Prop := ∀ n, MvPolynomial.coeff n a ∈ Formalism.L2.G.Pend.OcC p
 
+/- English proof (translation)
+Introduce `n`. Rewrite using `[MvPolynomial.coeff_one]`. Use `split_ifs`. Conclude with `Subring.one_mem _`. Conclude with `Subring.zero_mem _`.
+-/
 theorem geP_one {τ : Type} : GeP (1 : MvPolynomial τ ℂ_[p]) := by
   classical
   intro n
@@ -35,12 +45,18 @@ theorem geP_one {τ : Type} : GeP (1 : MvPolynomial τ ℂ_[p]) := by
   · exact Subring.one_mem _
   · exact Subring.zero_mem _
 
+/- English proof (translation)
+Introduce `n`. Rewrite using `[MvPolynomial.coeff_mul]`. Conclude with `Subring.sum_mem _ fun xy _ => Subring.mul_mem _ (ha _) (hb _)`.
+-/
 theorem geP_mul {τ : Type} {a b : MvPolynomial τ ℂ_[p]} (ha : GeP a) (hb : GeP b) : GeP (a * b) := by
   classical
   intro n
   rw [MvPolynomial.coeff_mul]
   exact Subring.sum_mem _ fun xy _ => Subring.mul_mem _ (ha _) (hb _)
 
+/- English proof (translation)
+Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simpa using (geP_one : GeP (1 : MvPolynomial τ ℂ_[p]))`. Consider the case `insert x s hx ih`. Rewrite using `[Finset.prod_insert hx]`. Conclude with `geP_mul (h x (Finset.mem_insert_self _ _)) (ih fun i hi => h i (Finset.mem_insert_of_mem hi))`.
+-/
 theorem geP_prod {τ α : Type} (s : Finset α) (a : α → MvPolynomial τ ℂ_[p]) (h : ∀ i ∈ s, GeP (a i)) :
     GeP (∏ i ∈ s, a i) := by
   classical
@@ -50,12 +66,18 @@ theorem geP_prod {τ α : Type} (s : Finset α) (a : α → MvPolynomial τ ℂ_
     rw [Finset.prod_insert hx]
     exact geP_mul (h x (Finset.mem_insert_self _ _)) (ih fun i hi => h i (Finset.mem_insert_of_mem hi))
 
+/- English proof (translation)
+Introduce `n`. Rewrite using `[MvPolynomial.coeff_sum]`. Conclude with `Subring.sum_mem _ fun i hi => h i hi n`.
+-/
 theorem geP_sum {τ α : Type} (s : Finset α) (a : α → MvPolynomial τ ℂ_[p]) (h : ∀ i ∈ s, GeP (a i)) :
     GeP (∑ i ∈ s, a i) := by
   intro n
   rw [MvPolynomial.coeff_sum]
   exact Subring.sum_mem _ fun i hi => h i hi n
 
+/- English proof (translation)
+Introduce `n`. Rewrite using `[MvPolynomial.coeff_smul, smul_eq_mul]`. Conclude with `Subring.mul_mem _ hc (h n)`.
+-/
 theorem geP_smul {τ : Type} {a : MvPolynomial τ ℂ_[p]} {c : ℂ_[p]} (hc : c ∈ Formalism.L2.G.Pend.OcC p) (h : GeP a) :
     GeP (c • a) := by
   intro n
@@ -71,6 +93,11 @@ def PhB (j : ℕ) (v : X.Pl) : MvPowerSeries (X.EA j ⊕ X.EA j) (K0 p) :=
 def FC (j : ℕ) (v : X.Pl) : MvPowerSeries (X.EA j ⊕ X.EA j) ℂ_[p] :=
   MvPowerSeries.map (algebraMap (K0 p) ℂ_[p]) (expS p (-PhB X be j v))
 
+/- English proof (translation)
+Unfold `PhB`. Use `Subring.sum_mem _ fun e _ => ?_` and prove the remaining obligations. Unfold `sub2`. Use `Gen.subst_mem (π := fun _ : Fin 2 => v) MvPowerSeries.HasSubst.X_X (fun _ _ _ _ => rfl) fun s _ => ?_` and prove the remaining obligations. Use `fin_cases s`.
+
+Conclude with `Gen.X_mem rfl`. Conclude with `Gen.X_mem rfl`.
+-/
 theorem PhB_supp (j : ℕ) (v : X.Pl) : PhB X be j v ∈ Gen.SuppOn (en_pi X j) v := by
   unfold PhB
   refine Subring.sum_mem _ fun e _ => ?_
@@ -80,9 +107,15 @@ theorem PhB_supp (j : ℕ) (v : X.Pl) : PhB X be j v ∈ Gen.SuppOn (en_pi X j) 
   · exact Gen.X_mem rfl
   · exact Gen.X_mem rfl
 
+/- English proof (translation)
+The claim follows from `Gen.map_mem _ (en_expS_supp _ v (Subring.neg_mem _ (PhB_supp X be j v)))`.
+-/
 theorem FC_supp (j : ℕ) (v : X.Pl) : FC X be j v ∈ Gen.SuppOn (en_pi X j) v :=
   Gen.map_mem _ (en_expS_supp _ v (Subring.neg_mem _ (PhB_supp X be j v)))
 
+/- English proof (translation)
+Unfold `PhB`. Rewrite using `[map_sum]`. Conclude with `Finset.sum_eq_zero fun e _ => by rw [substitution_of_variables]; exact th_ren_const _ (th_be_const hbe)`.
+-/
 theorem PhB_const (hbe : BeProp p be) (j : ℕ) (v : X.Pl) : MvPowerSeries.constantCoeff (PhB X be j v) = 0 := by
   unfold PhB
   rw [map_sum]
@@ -99,6 +132,11 @@ def ploc (j : ℕ) (I : X.ColCh j) (i0 : X.Pl → ℕ) (v : X.Pl) :
           MvPolynomial.X ((s, a, I v s c i'.val) :
             Zidx (X.G.P.n' v) (NN X.G.P.m X.t j) (NN X.G.P.m X.t (j + 1))))
 
+/- English proof (translation)
+Unfold `PIvS ploc Sys.colFac`. Simplify using `only [map_prod, map_mul, map_pow, map_natCast]`. Use `Finset.prod_congr rfl fun s _ => Finset.prod_congr rfl fun c _ => ?_` and prove the remaining obligations. Use `congr 1`. Rewrite using `[RingHom.map_det, AlgHom.map_det]`.
+
+Use `congr 1`. Use extensionality with `i i'`. Simplify using `[en_mapP, RingHom.mapMatrix_apply, AlgHom.mapMatrix_apply, Matrix.map_apply, map_sum]`.
+-/
 theorem mapP_PIvS (j : ℕ) (I : X.ColCh j) (i0 : X.Pl → ℕ) (v : X.Pl) :
     en_mapP ℂ_[p] (X.ZA j) (X.FrI j) (PIvS X j I i0 v) =
       MvPolynomial.rename (Sigma.mk v) (ploc X j I i0 v) := by
@@ -111,6 +149,25 @@ theorem mapP_PIvS (j : ℕ) (I : X.ColCh j) (i0 : X.Pl → ℕ) (v : X.Pl) :
   ext i i'
   simp [en_mapP, RingHom.mapMatrix_apply, AlgHom.mapMatrix_apply, Matrix.map_apply, map_sum]
 
+/- English proof (translation)
+Establish `e1 : X.ThZA ℂ_[p] j ((∏ v, FC X be j v) * U1) = (∏ v, X.ThZA ℂ_[p] j (FC X be j v)) * MvPowerSeries.subst (fun i => X.ThZA ℂ_[p] j (en_Ec p ℂ_[p] i)) (inParamK p ℂ_[p] U1)`. Rewrite using `[en_ThZA_mul, en_ThZA_prod]`. Use `congr 1`. Use `conv_lhs => rw [← en_Ec_inParamK p ℂ_[p] U1]`. Unfold `Sys.ThZA`.
+
+Rewrite using `[MvPowerSeries.subst_comp_subst_apply (en_Ec_hs p ℂ_[p]) (en_coordZA_hs X ℂ_[p] j)]`. Establish `ha : MvPowerSeries.HasSubst (fun i => X.ThZA ℂ_[p] j (en_Ec p ℂ_[p] i))` using `MvPowerSeries.hasSubst_of_constantCoeff_zero fun i => MvPowerSeries.constantCoeff_subst_eq_zero (en_coordZA_hs X ℂ_[p] j) (en_coordZA_zero X ℂ_[p] j) (en_Ec_zero p ℂ_[p] i)`. Rewrite using `[en_applyD_eq, e1]`. Take `⟨B, hB⟩` from `Gen.jp_subst_expand (en_mapP ℂ_[p] (X.ZA j) (X.FrI j) (X.PI j I fun _ => 0)) (∏ v, X.ThZA ℂ_[p] j (FC X be j v)) (fun i => X.ThZA ℂ_[p] j (en_Ec p ℂ_[p] i)) ha (inParamK p ℂ_[p] U1)`. Rewrite using `[hB]`.
+
+Use `geP_sum _ _ fun β _ => geP_smul (hU1 β) ?_` and prove the remaining obligations. Use `set Ub : X.Pl → MvPowerSeries (X.EA j ⊕ X.EA j) ℂ_[p] := fun v => ∏ i ∈ β.support.filter (fun i => en_pi X j i = v), (en_Ec p ℂ_[p] i) ^ (β i) with hUb`. Establish `e2 : (β.prod fun i e => X.ThZA ℂ_[p] j (en_Ec p ℂ_[p] i) ^ e) = ∏ v, X.ThZA ℂ_[p] j (Ub v)`. Unfold `Finsupp.prod`. Rewrite using `[← Finset.prod_fiberwise β.support (en_pi X j)]`.
+
+Use `Finset.prod_congr rfl fun v _ => ?_` and prove the remaining obligations. Rewrite using `[hUb, en_ThZA_prod]`. Conclude with `Finset.prod_congr rfl fun i _ => (en_ThZA_pow X ℂ_[p] j _ _).symm`. Establish `e3 : (∏ v, X.ThZA ℂ_[p] j (FC X be j v)) * ∏ v, X.ThZA ℂ_[p] j (Ub v) = ∏ v, X.ThZA ℂ_[p] j (FC X be j v * Ub v)`. Rewrite using `[← Finset.prod_mul_distrib]`.
+
+Conclude with `Finset.prod_congr rfl fun v _ => (en_ThZA_mul X ℂ_[p] j _ _).symm`. Establish `hG : ∀ v, X.ThZA ℂ_[p] j (FC X be j v * Ub v) ∈ Gen.SuppOn (Sigma.fst : X.ZA j → X.Pl) v` using `fun v => en_ThZA_supp X ℂ_[p] j v (Subring.mul_mem _ (FC_supp X be j v) (Subring.prod_mem _ fun i hi => Subring.pow_mem _ (by`. Use `en_Ec_supp p ℂ_[p] (en_pi X j) i` as an intermediate fact. Rewrite `this` using `[(Finset.mem_filter.1 hi).2]`. Conclude with `this) _))`.
+
+Establish `e4 : ∏ v, X.ThZA ℂ_[p] j (FC X be j v * Ub v) = ∏ v, Gen.atP v (Gen.resP v (X.ThZA ℂ_[p] j (FC X be j v * Ub v)))` using `Finset.prod_congr rfl fun v _ => Gen.eq_atP v _ (hG v)`. Establish `e5 : en_mapP ℂ_[p] (X.ZA j) (X.FrI j) (X.PI j I fun _ => 0) = ∏ v, MvPolynomial.rename (Sigma.mk v) (ploc X j I (fun _ => 0) v)`. Rewrite using `[PI_eq_prod, map_prod]`. Conclude with `Finset.prod_congr rfl fun v _ => mapP_PIvS X j I _ v`. Rewrite using `[e2, e3, e4, e5, Gen.jp_prod]`.
+
+Use `geP_prod _ _ fun v _ => ?_` and prove the remaining obligations. Establish `e6 : Gen.jp (ploc X j I (fun _ => 0) v) (Gen.resP v (X.ThZA ℂ_[p] j (FC X be j v * Ub v))) = applyD (X.PIv j I v) (X.ThZA ℂ_[p] j (FC X be j v * Ub v))`. Rewrite using `[← PIvS_zero X j I v, en_applyD_eq, mapP_PIvS]`. Use `conv_rhs => rw [Gen.eq_atP v _ (hG v)]`. Rewrite using `[Gen.jp_rename]`.
+
+Rewrite using `[e6]`. Establish `hint : IntR (Formalism.L2.G.Pend.OcC p) (inParamK p ℂ_[p] (Ub v))`. Rewrite using `[hUb, en_inParamK_prod]`. Use `en_IntR_prod _ _ fun i _ => ?_` and prove the remaining obligations. Rewrite using `[en_inParamK_pow, en_inParamK_Ec]`.
+
+Conclude with `en_IntR_pow (en_IntR_X i) _`. Conclude with `fun n => (geZ_iff _).1 (hLow v (Ub v) hint I n)`.
+-/
 theorem geP_applyD_prod_FC_mul (j : ℕ) (hLow : ∀ v, LowZC X be j v)
     (U1 : MvPowerSeries (X.EA j ⊕ X.EA j) ℂ_[p]) (hU1 : IntR (Formalism.L2.G.Pend.OcC p) (inParamK p ℂ_[p] U1))
     (I : X.ColCh j) :
@@ -172,6 +229,23 @@ theorem geP_applyD_prod_FC_mul (j : ℕ) (hLow : ∀ v, LowZC X be j v)
     exact en_IntR_pow (en_IntR_X i) _
   exact fun n => (geZ_iff _).1 (hLow v (Ub v) hint I n)
 
+/- English proof (translation)
+Take `⟨Ph, U0, hTh, hU0, _, hbe, hPh⟩` from `hK`. Establish `hcz` using `charZero_K' p (K0 p)`. Establish `hΨ : (∑ e : X.EA j, sub2 p be (MvPowerSeries.X (Sum.inl e)) (MvPowerSeries.X (Sum.inr e)) : MvPowerSeries (X.EA j ⊕ X.EA j) (K0 p)) = ∑ v, PhB X be j v`. Unfold `PhB`. Conclude with `Fintype.sum_sigma _`.
+
+Rewrite `hPh` using `[hΨ]`. Take `⟨hc0, h, hh0, hE⟩` from `hPh`. Establish `hE0 : E0 p (inParam p (Ph - ∑ v, PhB X be j v))` using `⟨th_inParam_const p hc0, h, hh0, hE⟩`. Take `⟨w, hw⟩` from `exp_neg_integral p hE0`. Use `⟨MvPowerSeries.map (algebraMap (K0 p) ℂ_[p]) (expS p (-(Ph - ∑ v, PhB X be j v))) * U0, ?_, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[en_inParamK_mul]`. Use `en_IntR_mul ?_ hU0` and prove the remaining obligations. Establish `e1 : inParam p (expS p (-(Ph - ∑ v, PhB X be j v))) = expK (inParam p (-(Ph - ∑ v, PhB X be j v)))`. Unfold `inParam`. Conclude with `th_subst_expK _ (fun i => by`.
+
+Use `th_lX_const p (K0 p) i` as an intermediate fact. Rewrite using `[Algebra.algebraMap_self, PowerSeries.map_id] at this) (by rw [map_neg, hc0, neg_zero])` and apply the resulting hypothesis. Rewrite using `[th_inParamK_map p (K0 p) ℂ_[p], ← th_inParam_eq, e1, th_inParam_neg, hw]`. Introduce `n`. Rewrite using `[MvPowerSeries.coeff_map, MvPowerSeries.coeff_map]`.
+
+Use `show ‖Formalism.L2.G.Pend.k0ToC p (algebraMap (WW p) (K0 p) _)‖ ≤ 1`. Rewrite using `[Formalism.L2.G.Pend.witt_fraction_to_Cp_algebraMap]`. Conclude with `Formalism.L2.G.Pend.norm_wToC_le p _`. Establish `e2 : -Ph = ∑ v, (-PhB X be j v) + -(Ph - ∑ v, PhB X be j v)`. Rewrite using `[Finset.sum_neg_distrib]`.
+
+Expand and normalize the polynomial expressions, which then agree. Establish `e3 : expS p (-Ph) = (∏ v, expS p (-PhB X be j v)) * expS p (-(Ph - ∑ v, PhB X be j v))`. Establish `a1 : expK (∑ v, (-PhB X be j v) + -(Ph - ∑ v, PhB X be j v)) = expK (∑ v, (-PhB X be j v)) * expK (-(Ph - ∑ v, PhB X be j v))` using `expK_add (by`. Rewrite using `[map_sum]`. Conclude with `Finset.sum_eq_zero fun v _ => by rw [map_neg, PhB_const X be hbe, neg_zero])`.
+
+Use the proof step `(by rw [map_neg, hc0, neg_zero])`. Establish `a2 : expK (∑ v, (-PhB X be j v)) = ∏ v, expK (-PhB X be j v)` using `th_expK_sum _ _ fun v _ => by rw [map_neg, PhB_const X be hbe, neg_zero]`. Rewrite using `[e2]`. Conclude with `a1.trans (by rw [a2]; rfl)`. Rewrite using `[hTh, e3, map_mul, map_prod, mul_assoc]`.
+
+Both sides reduce to the same expression.
+-/
 theorem first_kernel_product_factor (j : ℕ) {Th : MvPowerSeries (X.EA j ⊕ X.EA j) ℂ_[p]}
     (hK : ExtensionGeneratorCondition p ℂ_[p] (Formalism.L2.G.Pend.OcC p) be Th) :
     ∃ U1 : MvPowerSeries (X.EA j ⊕ X.EA j) ℂ_[p], IntR (Formalism.L2.G.Pend.OcC p) (inParamK p ℂ_[p] U1) ∧
@@ -216,6 +290,9 @@ theorem first_kernel_product_factor (j : ℕ) {Th : MvPowerSeries (X.EA j ⊕ X.
     rw [hTh, e3, map_mul, map_prod, mul_assoc]
     rfl
 
+/- English proof (translation)
+Take `⟨U1, hU1, rfl⟩` from `first_kernel_product_factor X be j hK`. Conclude with `(geZ_iff _).2 (geP_applyD_prod_FC_mul X be j hLow U1 hU1 I n)`.
+-/
 theorem ent_of_K1gen (j : ℕ) (hLow : ∀ v, LowZC X be j v) {Th : MvPowerSeries (X.EA j ⊕ X.EA j) ℂ_[p]}
     (hK : ExtensionGeneratorCondition p ℂ_[p] (Formalism.L2.G.Pend.OcC p) be Th) (I : X.ColCh j) (n : X.FrI j →₀ ℕ) :
     GeZ (MvPolynomial.coeff n (applyD (X.PI j I fun _ => 0) (X.ThZA ℂ_[p] j Th))) := by
@@ -226,12 +303,18 @@ end Formalism.L2.KerInert.Ent
 
 namespace Formalism.L2.KerInert
 
+/- English proof (translation)
+Introduce `p _ X _ E hfin be T pos F hLow H j hj L0 hL0 La' hL' φ I n`. Conclude with `Ent.ent_of_K1gen X be j (hLow j hj) (H j hj L0 hL0 La' hL' φ) I n`.
+-/
 theorem admissible_third_of_low_kernel_law : Adm3OfK1LowerBound := by
   intro p _ X _ E hfin be T pos F hLow H j hj L0 hL0 La' hL' φ I n
   exact Ent.ent_of_K1gen X be j (hLow j hj) (H j hj L0 hL0 La' hL' φ) I n
 
 open Formalism.L2.G.Pend in
 
+/- English proof (translation)
+Introduce `h j hj v` and use `h v j hj`.
+-/
 theorem low_order_vanishing_of_admissible (D : Formalism.BasicNotions.D7) {p : ℕ} [Fact p.Prime] (X : Sys p) [IsFractionRing X.G.O X.G.Kf]
     (E : CEmbC X.G) (hfin : ∀ j c, (X.Lv.lev j c).FinClasses) (hst : FinStab X.Lv) {g : Formalism.MainNotions.GL3Theta.G1 p}
     (hLT : LTIso g) {T : Type} (pos : (Σ v : X.Pl, Fin (X.G.P.n' v)) ≃ T)
@@ -241,6 +324,9 @@ theorem low_order_vanishing_of_admissible (D : Formalism.BasicNotions.D7) {p : �
 
 open Formalism.L2.G.Pend in
 
+/- English proof (translation)
+Introduce `h2b h11` and use `(adm_three_iff_representative D X E hfin hst hLT pos F).2 (admissible_third_of_low_kernel_law X E hfin _ pos F (low_order_vanishing_of_admissible D X E hfin hst hLT pos F h11) ((adm_two_pendant_iff_representative D X E hfin hst hLT pos F).1 h2b))`.
+-/
 theorem admissible_third_of_second_eleventh (D : Formalism.BasicNotions.D7) {p : ℕ} [Fact p.Prime] (X : Sys p) [IsFractionRing X.G.O X.G.Kf]
     (E : CEmbC X.G) (hfin : ∀ j c, (X.Lv.lev j c).FinClasses) (hst : FinStab X.Lv) {g : Formalism.MainNotions.GL3Theta.G1 p}
     (hLT : LTIso g) {T : Type} (pos : (Σ v : X.Pl, Fin (X.G.P.n' v)) ≃ T)

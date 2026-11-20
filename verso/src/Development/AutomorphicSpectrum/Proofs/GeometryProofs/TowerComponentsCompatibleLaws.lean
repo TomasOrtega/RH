@@ -52,11 +52,17 @@ section LieGen
 variable {B : Scheme.{0}} {G : CategoryTheory.Over B} [GrpObj G] {R : Type} [CommRing R] {x : Spec (CommRingCat.of R) ⟶ B}
   {L : Type} [AddCommGroup L] [Module R L]
 
+/- English proof (translation)
+Establish `h` using `N.add 0 0`. Rewrite `h` using `[add_zero]`. Conclude with `(mul_eq_left.1 h.symm)`.
+-/
 theorem pt_zero (N : LieModel G x L) : N.pt 0 = 1 := by
   have h := N.add 0 0
   rw [add_zero] at h
   exact (mul_eq_left.1 h.symm)
 
+/- English proof (translation)
+Proceed by induction on `m with`. Consider the case `zero => simp [pt_zero]`. Consider the case `succ n ih`. Rewrite using `[List.ofFn_succ, List.prod_cons, ih, Fin.sum_univ_succ, N.add]`.
+-/
 theorem pt_sum (N : LieModel G x L) {m : ℕ} (f : Fin m → L) :
     (List.ofFn fun i => N.pt (f i)).prod = N.pt (∑ i, f i) := by
   induction m with
@@ -70,6 +76,11 @@ section Comb
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E} {Dw : Datum H} {l : Level H}
   {Xo : Moduli Dw l} {c : Coeff l}
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨u, hu, hw⟩`. Establish `e1 : u = fun i => N.pt (cf i • e i)`. Use function extensionality and compare the values at `i`. Conclude with `CategoryTheory.Over.OverMorphism.ext ((hu i).trans (N.smul _ _).symm)`.
+
+Rewrite using `[← hw, e1]`. Conclude with `congrArg (fun V => V.left) (pt_sum N _)`. Introduce and unpack `rfl`. Conclude with `⟨fun i => N.pt (cf i • e i), fun i => N.smul _ _, congrArg (fun V => V.left) (pt_sum N _)⟩`.
+-/
 theorem comb_iff {S : Type} [CommRing S] {x : Sp S ⟶ Xo.X} {L : Type} [AddCommGroup L] [Module S L]
     (N : LieModel Xo.univ.t.G x L) {m : ℕ} (e : Fin m → L) (cf : Fin m → S)
     (w : Sp (DualNumber S) ⟶ Xo.univ.t.G.left) :
@@ -95,6 +106,15 @@ section Model
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E} {Dw : Datum H} {l : Level H}
   {Xo : Moduli Dw l} {c : Coeff l} {O : Type} [CommRing O] {β : O →+* c.F}
 
+/- English proof (translation)
+Substitute `hz hx` using the available equality. Take `⟨M₂, e₂⟩` from `(GlobalTheory.CompanionTheory.Ar.LiePull.lieModel_pullback _ _ _ _ _ _ Y.m.cart R p L).1 M₁`. Take `⟨M₃, e₃⟩` from `(GlobalTheory.CompanionTheory.Ar.LiePull.lieModel_pullback _ _ _ _ _ _ Y.m0.toSABMap.cart R p L).2 M₂`. Establish `hw : ∀ e, (M₂.pt e).left ≫ Y.oF.t.G.hom = spMap (algebraMap R (DualNumber R)) ≫ p` using `fun e => CategoryTheory.Over.w (M₂.pt e)`. Use `⟨M₃, fun e v hv => ⟨fun h => ?_, fun h => ?_⟩, fun ρ hρ a e => ?_⟩` and prove the remaining obligations.
+
+Establish `: v = (M₂.pt e).left` using `Y.m0.toSABMap.cart.1.hom_ext (h.symm.trans (e₃ e).symm) (hv.trans (hw e).symm)`. Rewrite using `[this]`. Conclude with `e₂ e`. Establish `: v = (M₂.pt e).left` using `Y.m.cart.1.hom_ext (h.trans (e₂ e).symm) (hv.trans (hw e).symm)`. Rewrite using `[this]`.
+
+Conclude with `(e₃ e).symm`. Establish `h2 : (M₂.pt (ρ a e)).left = (M₂.pt e).left ≫ (Y.oF.t.act.act a).left`. Use `Y.m.cart.1.hom_ext ?_ ?_` and prove the remaining obligations. Rewrite using `[e₂, hρ, Category.assoc, Y.m.act, ← Category.assoc, e₂]`. Rewrite using `[hw, Category.assoc, CategoryTheory.Over.w (Y.oF.t.act.act a), hw]`.
+
+Rewrite using `[← e₃, h2, Category.assoc, Y.m0.toSABMap.act, ← Category.assoc, e₃]`.
+-/
 theorem exists_univ_model (Y : Model Xo c β) {R : Type} [CommRing R] (p : Sp R ⟶ Xo.XF c) {L : Type} [AddCommGroup L]
     [Module R L] {z : Sp R ⟶ Y.X} (hz : p ≫ Y.j = z) (M₁ : LieModel Y.t.G z L) {x : Sp R ⟶ Xo.X}
     (hx : p ≫ pullback.fst _ _ = x) :
@@ -122,6 +142,9 @@ theorem exists_univ_model (Y : Model Xo c β) {R : Type} [CommRing R] (p : Sp R 
       · rw [hw, Category.assoc, CategoryTheory.Over.w (Y.oF.t.act.act a), hw]
     rw [← e₃, h2, Category.assoc, Y.m0.toSABMap.act, ← Category.assoc, e₃]
 
+/- English proof (translation)
+Substitute `hp` using the available equality. Use `hN e (Small.tanF Y y τ i) (Small.tanF_hom Y y τ i)` as an intermediate fact. Rewrite `this` using `[Small.tanF_φ]`. Conclude with `this`.
+-/
 theorem pt_eq_u_iff (Y : Model Xo c β) {R : Type} [CommRing R] [Algebra c.F R] (y : FrPt Xo c R) {p : Sp R ⟶ Xo.XF c}
     (hp : Small.ptF y = p) {L : Type} [AddCommGroup L] [Module R L] {z : Sp R ⟶ Y.X} {M₁ : LieModel Y.t.G z L}
     {x : Sp R ⟶ Xo.X} {N : LieModel Xo.univ.t.G x L}
@@ -141,6 +164,19 @@ namespace GlobalTheory.CompanionTheory.Ar.Rec.ReadEx
 
 section Pure
 
+/- English proof (translation)
+Establish `hs : Submodule.span K (Set.range e) = W` using `GlobalTheory.CompanionTheory.Ar.FlagRead.span_eq_of_indep he heW hc hcW`. Establish `h1 : ∀ k, ∃ a : Fin r → K, ∑ j, a j • e j = c k` using `fun k => by`. Establish `h : c k ∈ Submodule.span K (Set.range e)`. Rewrite using `[hs, ← hcW]`. Conclude with `Submodule.subset_span ⟨k, rfl⟩`.
+
+Conclude with `(Submodule.mem_span_range_iff_exists_fun K).1 h`. Establish `h2 : ∀ j, ∃ a : Fin r → K, ∑ k, a k • c k = e j` using `fun j => by`. Establish `h : e j ∈ Submodule.span K (Set.range c)`. Rewrite using `[hcW]`. Conclude with `heW j`.
+
+Conclude with `(Submodule.mem_span_range_iff_exists_fun K).1 h`. Use `choose P hP using h1`. Use `choose Q hQ using h2`. Establish `hPQ : Matrix.of P * Matrix.of Q = 1`. Use extensionality with `k m`.
+
+Establish `e1 : ∑ m, (∑ j, P k j * Q j m) • c m = c k`. Rewrite using `[← hP k]`. Simplify using `only [← hQ, Finset.smul_sum, Finset.sum_smul, smul_smul]`. Conclude with `Finset.sum_comm`. Establish `e2 : ∑ m, ((∑ j, P k j * Q j m) - (1 : Matrix (Fin r) (Fin r) K) k m) • c m = 0`.
+
+Simplify using `only [sub_smul, Finset.sum_sub_distrib, e1, Matrix.one_apply, ite_smul, one_smul, zero_smul, Finset.sum_ite_eq, Finset.mem_univ, if_true, sub_self]`. Establish `e3` using `Fintype.linearIndependent_iff.1 hc _ e2 m`. Simplify `e3` using `[Matrix.mul_apply, sub_eq_zero]`. Use `⟨Matrix.of P, ?_, fun k => (hP k).symm⟩` and prove the remaining obligations. Introduce `h0`.
+
+Use `congrArg Matrix.det hPQ` as an intermediate fact. Rewrite `this` using `[Matrix.det_mul, h0, zero_mul, Matrix.det_one]`. Conclude with `zero_ne_one this`.
+-/
 theorem exists_change {K V : Type} [Field K] [AddCommGroup V] [Module K V] {r : ℕ} {c e : Fin r → V}
     {W : Submodule K V} (hc : LinearIndependent K c) (hcW : Submodule.span K (Set.range c) = W)
     (he : LinearIndependent K e) (heW : ∀ k, e k ∈ W) :
@@ -175,6 +211,13 @@ theorem exists_change {K V : Type} [Field K] [AddCommGroup V] [Module K V] {r : 
   rw [Matrix.det_mul, h0, zero_mul, Matrix.det_one] at this
   exact zero_ne_one this
 
+/- English proof (translation)
+Apply `le_antisymm` to reduce the goal to its premises. Use `IntermediateField.adjoin_le_iff.2 ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨⟨s, l, k⟩, rfl⟩`. Break down `lt_trichotomy l k with h | h | h` into its components or cases. Use `show u s l k ∈ _`.
+
+Rewrite using `[h0 s l k h]`. Conclude with `zero_mem _`. Substitute `h show u s l l ∈ _` using the available equality. Rewrite using `[h1]`. Conclude with `one_mem _`.
+
+Conclude with `IntermediateField.subset_adjoin _ _ ⟨⟨s, ⟨(l, k), h⟩⟩, rfl⟩`. Use `IntermediateField.adjoin_le_iff.2 ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨⟨s, ⟨⟨l, k⟩, h⟩⟩, rfl⟩`. Conclude with `IntermediateField.subset_adjoin _ _ ⟨⟨s, (l, k)⟩, rfl⟩`.
+-/
 theorem adjoin_all_eq_strict {K L S : Type} [Field K] [Field L] [Algebra K L] {r : S → ℕ}
     (u : ∀ s, Matrix (Fin (r s)) (Fin (r s)) L) (h1 : ∀ s k, u s k k = 1) (h0 : ∀ s l k, l < k → u s l k = 0) :
     IntermediateField.adjoin K (Set.range fun q : Σ s, Fin (r s) × Fin (r s) => u q.1 q.2.1 q.2.2) =
@@ -196,6 +239,11 @@ theorem adjoin_all_eq_strict {K L S : Type} [Field K] [Field L] [Algebra K L] {r
     rintro _ ⟨⟨s, ⟨⟨l, k⟩, h⟩⟩, rfl⟩
     exact IntermediateField.subset_adjoin _ _ ⟨⟨s, (l, k)⟩, rfl⟩
 
+/- English proof (translation)
+Use `IntermediateField.adjoin_le_iff.2 ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨⟨s, l, k⟩, rfl⟩`. Establish `hm : u s l k ∈ IntermediateField.adjoin K (Set.range fun p : Fin (r s) × Fin (r s) => v s p.1 p.2)`. Rewrite using `[← h s]`. Conclude with `IntermediateField.subset_adjoin _ _ ⟨(l, k), rfl⟩`.
+
+Use `(IntermediateField.adjoin_le_iff.2 ?_ : _ ≤ _) hm` and prove the remaining obligations. Introduce and unpack `_ ⟨⟨l', k'⟩, rfl⟩`. Conclude with `IntermediateField.subset_adjoin _ _ ⟨⟨s, (l', k')⟩, rfl⟩`.
+-/
 theorem adjoin_all_le {K L S : Type} [Field K] [Field L] [Algebra K L] {r : S → ℕ}
     (u v : ∀ s, Matrix (Fin (r s)) (Fin (r s)) L)
     (h : ∀ s, IntermediateField.adjoin K (Set.range fun p : Fin (r s) × Fin (r s) => u s p.1 p.2) =
@@ -211,6 +259,17 @@ theorem adjoin_all_le {K L S : Type} [Field K] [Field L] [Algebra K L] {r : S �
   rintro _ ⟨⟨l', k'⟩, rfl⟩
   exact IntermediateField.subset_adjoin _ _ ⟨⟨s, (l', k')⟩, rfl⟩
 
+/- English proof (translation)
+Take `⟨cc, u, hcV, hjs, hjc, hb, hu1, hu0, hfl, hind, hd, hdeg⟩` from `hg`. Establish `hP` using `fun s => exists_change (hcV s).1 (hcV s).2 (hec s) (hmem s)`. Use `choose P hPdet hP using hP`. Establish `hAdet : ∀ s, ((P s)ᵀ).det ≠ 0` using `fun s => by rw [Matrix.det_transpose]; exact hPdet s`. Establish `hinds : ∀ s, AlgebraicIndependent Ω₀ (fun q : {lk : Fin (r s) × Fin (r s) // lk.2 < lk.1} => u s q.1.1 q.1.2)` using `fun s => hind.comp (fun q => (⟨s, q⟩ : Σ s, {lk : Fin (r s) × Fin (r s) // lk.2 < lk.1})) (fun a b h => by simpa using h)`.
+
+Establish `hLU` using `fun s => GlobalTheory.T.exists_lu_decomposition_mul_generic_unipotent Ω₀ Ω (r s) ((P s)ᵀ) (u s) (hAdet s) (hu1 s) (hu0 s) (hinds s)`. Use `choose v w hvw hv1 hv0 hw0 hw using hLU`. Establish `hfld` using `fun s => GlobalTheory.T.lu_factors_generate_same_field Ω₀ Ω (r s) ((P s)ᵀ) (u s) (v s) (w s) (hAdet s) (hu1 s) (hu0 s) (hv1 s) (hv0 s) (hw0 s) (hw s) (hvw s)`. Establish `hall : IntermediateField.adjoin Ω₀ (Set.range fun q : Σ s, Fin (r s) × Fin (r s) => u q.1 q.2.1 q.2.2) = IntermediateField.adjoin Ω₀ (Set.range fun q : Σ s, Fin (r s) × Fin (r s) => v q.1 q.2.1 q.2.2)` using `le_antisymm (adjoin_all_le u v hfld) (adjoin_all_le v u fun s => (hfld s).symm)`. Establish `hindv : AlgebraicIndependent Ω₀ (fun q : Σ s, {lk : Fin (r s) × Fin (r s) // lk.2 < lk.1} => v q.1 q.2.1.1 q.2.1.2)`.
+
+Use `GlobalTheory.T.alg_indep_of_same_adjoin Ω₀ Ω _ _ _ hind ?_` and prove the remaining obligations. Rewrite using `[← adjoin_all_eq_strict u hu1 hu0, ← adjoin_all_eq_strict v hv1 hv0, hall]`. Establish `hTm` using `fun s => GlobalTheory.T.generic_flag_triangular_change Ω Li (r s) (fun k => j (ec s k)) (b s) (fun k => ∑ l, u s l k • j (cc s l)) (v s) (w s) (hf s) (hb s) (hv1 s) (hv0 s) (hw0 s) (hw s) (fun k => by`. Rewrite using `[← hvw s]`. Simplify using `only [Matrix.mul_apply, Matrix.map_apply, Matrix.transpose_apply, Finset.sum_smul, smul_smul]`.
+
+Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun l _ => ?_` and prove the remaining obligations. Establish `e1 : j (cc s l) = ∑ m, algebraMap Ω₀ Ω (P s l m) • j (ec s m)`. Rewrite using `[hP s l, map_sum]`. Conclude with `Finset.sum_congr rfl fun m _ => hjs _ _`.
+
+Rewrite using `[e1, Finset.smul_sum]`. Use `Finset.sum_congr rfl fun m _ => ?_` and prove the remaining obligations. Rewrite using `[smul_smul, mul_comm]) (hfl s)`. Use `choose Tm hT hT0 hTd using hTm`. Conclude with `⟨v, Tm, hv1, hv0, hindv, by rw [← hall]; exact hdeg, hT, hT0, hTd⟩`.
+-/
 theorem lin_core {Ω₀ Ω Li₀ Li : Type} [Field Ω₀] [Field Ω] [Algebra Ω₀ Ω] [AddCommGroup Li₀] [Module Ω₀ Li₀]
     [AddCommGroup Li] [Module Ω Li] (j : Li₀ →+ Li) {S : Type} [Finite S] {r : S → ℕ}
     (V₀ : S → Submodule Ω₀ Li₀) (b : ∀ s, Fin (r s) → Li) (d : ℕ) (hg : IsGenericFlag (Ω' := Ω) j V₀ b d)
@@ -266,12 +325,22 @@ section Frames
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E} {Dw : Datum H} {l : Level H}
   {Xo : Moduli Dw l} {c : Coeff l}
 
+/- English proof (translation)
+Take `⟨e, he⟩` from `N.onto (CategoryTheory.Over.homMk v hv.1) hv.2`. Conclude with `⟨e, congrArg (fun V => V.left) he⟩`.
+-/
 theorem exists_pt {S : Type} [CommRing S] {x : Sp S ⟶ Xo.X} {L : Type} [AddCommGroup L] [Module S L]
     (N : LieModel Xo.univ.t.G x L) {v : Sp (DualNumber S) ⟶ Xo.univ.t.G.left} (hv : Formalism.L2.Pj.IsTanAt x v) :
     ∃ e, (N.pt e).left = v := by
   obtain ⟨e, he⟩ := N.onto (CategoryTheory.Over.homMk v hv.1) hv.2
   exact ⟨e, congrArg (fun V => V.left) he⟩
 
+/- English proof (translation)
+Substitute `hx` using the available equality. Establish `hu : (fun i => (N.pt (f i)).left) = y.u τ` using `funext hf`. Use `Fintype.linearIndependent_iff.2 fun g hg k => ?_` and prove the remaining obligations. Establish `h1 : IsCombAt y.x (y.u τ) (fun i => if i = k then 1 else 0) (y.u τ k)`. Rewrite using `[← hu, comb_iff N]`.
+
+Simplify using the standard rewrite rules. Establish `h2 : IsCombAt y.x (y.u τ) (fun i => g i + if i = k then 1 else 0) (y.u τ k)`. Rewrite using `[← hu, comb_iff N]`. Simplify using `[add_smul, Finset.sum_add_distrib, hg]`. Establish `h3` using `(y.basis τ _ (y.tan τ k) (y.eig τ k)).unique h2 h1`.
+
+Establish `h4` using `congrFun h3 k`. Simplify using `using h4`.
+-/
 theorem indep_of_basis {S : Type} [CommRing S] [Algebra c.F S] (y : FrPt Xo c S) {x : Sp S ⟶ Xo.X} (hx : y.x = x) {L : Type}
     [AddCommGroup L] [Module S L] (N : LieModel Xo.univ.t.G x L) (τ : E →+* ℂ) (f : Fin (Dw.mult τ) → L)
     (hf : ∀ k, (N.pt (f k)).left = y.u τ k) : LinearIndependent S f := by
@@ -289,6 +358,15 @@ theorem indep_of_basis {S : Type} [CommRing S] [Algebra c.F S] (y : FrPt Xo c S)
   have h4 := congrFun h3 k
   simpa using h4
 
+/- English proof (translation)
+Use `choose cf hcu hc0 hcc using h`. Take `⟨zx, zxo, zu, ztan, zeig, zbasis, zs, zgen⟩` from `z`. Simplify using `only at hx hcc`. Substitute `hx` using the available equality. Take `⟨a, ha, -⟩` from `y.gen zs`.
+
+Take `⟨a', ha', -⟩` from `zgen y.s`. Establish `haa : a' * a = 1`. Use `(y.gen y.s).unique (fun i => ?_) (fun i => ?_)` and prove the remaining obligations. Rewrite using `[GlobalTheory.Reg.scal_mul_tie, _root_.mul_assoc, ← ha i, ← ha' i]`. Rewrite using `[GlobalTheory.Reg.scal_one_tie, _root_.one_mul]`.
+
+Establish `hau : IsUnit a` using `IsUnit.of_mul_eq_one _ (by rw [mul_comm]; exact haa)`. Use `⟨fun k => match k with` and prove the remaining obligations. Consider the case `none => hau.unit`. Consider the case `some ⟨τ, i⟩ => (hcu τ i).unit, rfl, fun τ i => ⟨cf τ i, rfl, hc0 τ i, hcc τ i⟩, 𝟙 _, Category.id_comp _, Category.id_comp _, fun i h => ?_⟩`. Establish `e : (Scheme.Hom.appLE (𝟙 (Gx y.x)) ((PPx y.x).U i) ((PPx y.x).U i) h) = 𝟙 _` using `by show 𝟙 _ ≫ (Gx y.x).presheaf.map (𝟙 _) = _`.
+
+Rewrite using `[Category.id_comp, CategoryTheory.Functor.map_id]`. Use `show (Scheme.Hom.appLE (𝟙 (Gx y.x)) ((PPx y.x).U i) ((PPx y.x).U i) h).hom (scal y.x a i * y.s.f i) = zs.f i`. Rewrite using `[e, ha i]`. Both sides reduce to the same expression.
+-/
 theorem frBor_of_comb {S : Type} [CommRing S] [Algebra c.F S] (y z : FrPt Xo c S) (hx : z.x = y.x)
     (h : ∀ τ i, ∃ cf : Fin (Dw.mult τ) → S, IsUnit (cf i) ∧ (∀ j, i < j → cf j = 0) ∧ IsCombAt y.x (y.u τ) cf (z.u τ i)) :
     ∃ t : Ix Dw → Sˣ, FrBor t y z := by
@@ -320,10 +398,16 @@ end GlobalTheory.CompanionTheory.Ar.Rec.ReadEx
 
 namespace GlobalTheory.CompanionTheory.Ar.Rec.ReadEx
 
+/- English proof (translation)
+Apply the tactic sequence `ext a <;> simp [Formalism.L2.Pj.dualMap]`.
+-/
 theorem dualMap_comp₂ {R R' R'' : Type} [CommRing R] [CommRing R'] [CommRing R''] (f : R →+* R') (g : R' →+* R'') :
     Formalism.L2.Pj.dualMap (g.comp f) = (Formalism.L2.Pj.dualMap g).comp (Formalism.L2.Pj.dualMap f) := by
   ext a <;> simp [Formalism.L2.Pj.dualMap]
 
+/- English proof (translation)
+Rewrite using `[← Spec.map_comp]`. Both sides reduce to the same expression.
+-/
 theorem spc {A B C : Type} [CommRing A] [CommRing B] [CommRing C] (f : B →+* C) (g : A →+* B) :
     spMap f ≫ spMap g = spMap (f.comp g) := by
   rw [← Spec.map_comp]; rfl
@@ -334,6 +418,29 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheo
   {RM : Top.RootModel (CMType H) (Dw.p + Dw.q)}
   {Sys : PB.AnSys (Top.dimFl (CMType H) (Dw.p + Dw.q)) (Option (RootIx Dw))} {Fx : FixedData Y Sys}
 
+/- English proof (translation)
+Use `letI algΩ := Small.cstAlg Or`. Use `letI alg₀ : Algebra c.F Or.𝔐.Ω₀ := ((ψ.toRingHom).comp (algebraMap c.F (kap Z))).toAlgebra`. Set `ψA : kap Z →ₐ[c.F] Or.𝔐.Ω₀` to `{ ψ.toRingHom with commutes' := fun _ => rfl }`. Set `fnA : Or.𝔐.Ω₀ →ₐ[c.F] RM.Ω` to `{ Or.𝔐.fn with commutes' := fun a => hc a }`. Establish `hS` using `GlobalTheory.abelianSchemeLaws_all.1.secBaseChange`.
+
+Take `⟨y₁, h₁⟩` from `GlobalTheory.Frames.FramedBaseChange.exists_frMap hS E H Dw l Xo c _ _ ψA y₀`. Take `⟨y₂, h₂⟩` from `GlobalTheory.Frames.FramedBaseChange.exists_frMap hS E H Dw l Xo c _ _ fnA y₁`. Establish `hp0 : Small.ptF y₀ = genSp Z`. Apply `pullback.hom_ext` to reduce the goal to its premises. Rewrite using `[Small.ptF_fst, hy₀]`.
+
+Both sides reduce to the same expression. Rewrite using `[Small.ptF_snd]`. Conclude with `Spec.map_preimage _`. Establish `hp1 : Small.ptF y₁ = spMap ψ.toRingHom ≫ genSp Z`. Rewrite using `[Small.ptF_map h₁, hp0]`.
+
+Establish `hz₀ : Small.ptF y₁ ≫ Y.j = Or.𝔐.ξ₀`. Rewrite using `[hp1, Category.assoc]`. Conclude with `hψ`. Establish `hptY : Small.ptY Y y₂ = Small.ptY Y Fr.y₀`. Use `Eq.trans ?_ Fr.pt_eq.symm` and prove the remaining obligations.
+
+Use `show Small.ptF y₂ ≫ Y.j = _`. Rewrite using `[Small.ptF_map h₂, Category.assoc, hz₀]`. Conclude with `Or.𝔐.fn_over.symm`. Establish `hpF : Small.ptF y₂ = Small.ptF Fr.y₀` using `Small.ptF_eq_of_ptY_eq Y hptY`. Establish `hx₂ : y₂.x = Fr.y₀.x`.
+
+Rewrite using `[← Small.ptF_fst y₂, hpF, Small.ptF_fst]`. Take `⟨M₁, e₁⟩` from `(GlobalTheory.CompanionTheory.Ar.LiePull.lieModel_pullback _ _ _ _ _ _ Or.𝔐.m.cart RM.Ω Or.𝔐.ξ Or.𝔐.Li).2 Or.𝔐.M`. Take `⟨N, hN, hNa⟩` from `exists_univ_model Y (Small.ptF Fr.y₀) Fr.pt_eq M₁ (Small.ptF_fst Fr.y₀)`. Take `⟨N₀, hN₀, -⟩` from `exists_univ_model Y (Small.ptF y₁) hz₀ Or.Fl.M₀ (Small.ptF_fst y₁)`. Establish `hex : ∀ τ k, ∃ e, (N₀.pt e).left = y₁.u τ k` using `fun τ k => exists_pt N₀ (y₁.tan τ k)`.
+
+Use `choose ec hec using hex`. Establish `hM₀ : ∀ τ k, Small.tanY Y y₁ τ k = (Or.Fl.M₀.pt (ec τ k)).left` using `fun τ k => (pt_eq_u_iff Y y₁ rfl hN₀ τ k _).1 (hec τ k)`. Establish `hy₂ : ∀ τ k, (N.pt (Or.Fl.j (ec τ k))).left = y₂.u τ k` using `fun τ k => (pt_eq_u_iff Y y₂ hpF hN τ k _).2 (by`. Rewrite using `[Small.tanY_map Y h₂, hM₀, ← e₁, Or.Fl.j_pt])`. Establish `hu₂ : ∀ τ k, y₂.u τ k = spMap (Formalism.L2.Pj.dualMap (Or.𝔐.fn.comp ψ.toRingHom)) ≫ y₀.u τ k` using `fun τ k => by`.
+
+Rewrite using `[h₂.2.1, h₁.2.1, ← Category.assoc, dualMap_comp₂, spc]`. Use `⟨N, ec, ?_, fun s k => ?_, fun τ k => (hy₂ τ k).trans (hu₂ τ k), fun τ => indep_of_basis y₁ rfl N₀ τ _ (hec τ), fun τ => indep_of_basis y₂ hx₂ N τ _ (hy₂ τ), fun s k => ?_⟩` and prove the remaining obligations. Rewrite using `[← hx₂, h₂.1, h₁.1, ← Category.assoc, spc]`. Use `(pt_eq_u_iff Y Fr.y₀ rfl hN _ k _).2 ?_` and prove the remaining obligations. Conclude with `(Fr.tan_eq s (Fin.cast (Small.mult_labelC Dw s) k)).trans (e₁ _)`.
+
+Use `(Or.Fl.V₀_mem s _).2 ?_` and prove the remaining obligations. Establish `hρ : ∀ (a : 𝓞 E) (e : Or.𝔐.Li), (M₁.pt (Or.𝔐.ρ a e)).left = (M₁.pt e).left ≫ (Y.t.act.act a).left` using `fun a e => by`. Rewrite using `[← e₁, ← e₁, Or.𝔐.act a e, CategoryTheory.Over.comp_left, Category.assoc, Or.𝔐.m.act, Category.assoc]`. Establish `hact` using `hNa (fun a e => Or.𝔐.ρ a e) hρ`. Use `show _ ∈ eigSp Or.𝔐.ρ (Or.𝔐.emb s)`.
+
+Simplify using `only [eigSp, Submodule.mem_iInf, LinearMap.mem_ker, LinearMap.sub_apply, sub_eq_zero]`. Introduce `a`. Apply `N.inj` to reduce the goal to its premises. Apply `CategoryTheory.Over.OverMorphism.ext` to reduce the goal to its premises. Establish `h3` using `y₂.eig (Small.labelC s) k a`.
+
+Rewrite using `[hact a, hy₂, h3, LinearMap.smul_apply, LinearMap.id_apply, N.smul, hy₂, Small.embK_labelC]`. Both sides reduce to the same expression.
+-/
 theorem flags_setup (Or : RootOrigin Y SS RM Fx) (Fr : Small.GenFrame Or) (Z : Comp Xo c) (ψ : kap Z ≃+* Or.𝔐.Ω₀)
     (hψ : spMap ψ.toRingHom ≫ genSp Z ≫ Y.j = Or.𝔐.ξ₀)
     (hc : ∀ a : c.F, Or.𝔐.fn (ψ (algebraMap c.F (kap Z) a)) = Or.𝔐.cst a)
@@ -409,6 +516,9 @@ namespace GlobalTheory.CompanionTheory.Ar.Rec.ReadEx
 
 section Lift
 
+/- English proof (translation)
+Take `rfl : r' = r` from `funext hr`. Conclude with `h`.
+-/
 theorem generic_cast {Ω₀ Ω Li₀ Li S : Type} [Field Ω₀] [Field Ω] [Algebra Ω₀ Ω] [AddCommGroup Li₀] [Module Ω₀ Li₀]
     [AddCommGroup Li] [Module Ω Li] (j : Li₀ →+ Li) (r r' : S → ℕ) (hr : ∀ s, r' s = r s)
     (V : S → Submodule Ω₀ Li₀) (b : ∀ s, Fin (r s) → Li) (d : ℕ) (h : IsGenericFlag (Ω' := Ω) j V b d) :
@@ -416,6 +526,23 @@ theorem generic_cast {Ω₀ Ω Li₀ Li S : Type} [Field Ω₀] [Field Ω] [Alge
   obtain rfl : r' = r := funext hr
   exact h
 
+/- English proof (translation)
+Set `φ₀ : MvPolynomial V K₀ →+* Ω` to `(MvPolynomial.aeval T : MvPolynomial V Ω₀ →ₐ[Ω₀] Ω).toRingHom.comp (MvPolynomial.map ψ.toRingHom)`. Establish `hinj : Function.Injective φ₀` using `(algebraicIndependent_iff_injective_aeval.1 hT).comp (MvPolynomial.map_injective _ ψ.injective)`. Set `φ : FractionRing (MvPolynomial V K₀) →+* Ω` to `IsFractionRing.lift hinj`. Establish `hφ : ∀ p, φ (algebraMap (MvPolynomial V K₀) _ p) = φ₀ p` using `fun p => IsFractionRing.lift_algebraMap hinj p`. Use `⟨φ, fun x => ?_, fun i => ?_, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[hφ]`. Simplify using `[φ₀]`. Rewrite using `[hφ]`. Simplify using `[φ₀]`. Use `set F := IntermediateField.adjoin Ω₀ (Set.range T) with hF`.
+
+Establish `hmem₀ : ∀ p, φ₀ p ∈ F` using `fun p => by`. Establish `h1 : φ₀ p ∈ Algebra.adjoin Ω₀ (Set.range T)`. Rewrite using `[Algebra.adjoin_range_eq_range_aeval]`. Conclude with `⟨_, rfl⟩`. Conclude with `IntermediateField.algebra_adjoin_le_adjoin Ω₀ _ h1`.
+
+Establish `hmem : ∀ x, φ x ∈ F` using `fun x => by`. Take `⟨a, b, -, rfl⟩` from `IsFractionRing.div_surjective (A := MvPolynomial V K₀) x`. Rewrite using `[map_div₀, hφ, hφ]`. Conclude with `div_mem (hmem₀ a) (hmem₀ b)`. Set `F' : IntermediateField Ω₀ Ω` to `φ.fieldRange.toIntermediateField fun a => ⟨algebraMap (MvPolynomial V K₀) _ (MvPolynomial.C (ψ.symm a)), by`.
+
+Rewrite using `[hφ]`. Simplify using `[φ₀]⟩`. Establish `hle : F ≤ F'` using `IntermediateField.adjoin_le_iff.2 (by`. Introduce and unpack `_ ⟨i, rfl⟩`. Conclude with `⟨algebraMap (MvPolynomial V K₀) _ (MvPolynomial.X i), by`.
+
+Rewrite using `[hφ]`. Simplify using `[φ₀]⟩)`. Set `g : FractionRing (MvPolynomial V K₀) →+* F` to `φ.codRestrict F hmem`. Establish `hgb : Function.Bijective g`. Use `⟨g.injective, fun y => ?_⟩` and prove the remaining obligations.
+
+Take `⟨x, hx⟩` from `hle y.2`. Conclude with `⟨x, Subtype.ext hx⟩`. Use `letI := φ.toAlgebra`. Set `e` to `RingEquiv.ofBijective g hgb`. Use `Algebra.finrank_eq_of_equiv_equiv e (RingEquiv.refl Ω) ?_` and prove the remaining obligations.
+
+Use extensionality with `x`. Both sides reduce to the same expression.
+-/
 theorem exists_lift {K₀ Ω₀ Ω V : Type} [Field K₀] [Field Ω₀] [Field Ω] [Algebra Ω₀ Ω] (ψ : K₀ ≃+* Ω₀) (T : V → Ω)
     (hT : AlgebraicIndependent Ω₀ T) :
     ∃ φ : FractionRing (MvPolynomial V K₀) →+* Ω,
@@ -474,6 +601,11 @@ section Read
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E} {Dw : Datum H} {l : Level H}
   {Xo : Moduli Dw l} {c : Coeff l}
 
+/- English proof (translation)
+Establish `hz : FromTest (K` using `c.F) (fun S _ _ => FrPt Xo c S) (fun φ y z => FrMap φ y z) z := by`. Take `⟨p, χ, y', h'⟩` from `hy`. Conclude with `⟨p, φ.comp χ, y', ReciprocityTheory.ChartRestriction.G.PullbackSections.frMap_trans χ φ h' h⟩`. Unfold `evR evalAt`. Rewrite using `[dif_pos hy, dif_pos hz]`.
+
+Conclude with `hWD f hf T _ _ _ (φ.comp hy.choose_spec.choose) _ _ z hz.choose_spec.choose_spec.choose_spec (ReciprocityTheory.ChartRestriction.G.PullbackSections.frMap_trans _ _ hy.choose_spec.choose_spec.choose_spec h)`.
+-/
 theorem ev_map (hWD : EvalWD (K := c.F) (fun S _ _ => FrPt Xo c S) (fun φ y z => FrMap φ y z)) {f : Rul Xo c}
     (hf : IsNatural (K := c.F) (fun S _ _ => FrPt Xo c S) (fun φ y z => FrMap φ y z) f) {S T : Type} [CommRing S]
     [Algebra c.F S] [CommRing T] [Algebra c.F T] (φ : S →ₐ[c.F] T) (y : FrPt Xo c S) (z : FrPt Xo c T)
@@ -487,6 +619,9 @@ theorem ev_map (hWD : EvalWD (K := c.F) (fun S _ _ => FrPt Xo c S) (fun φ y z =
   exact hWD f hf T _ _ _ (φ.comp hy.choose_spec.choose) _ _ z hz.choose_spec.choose_spec.choose_spec
     (ReciprocityTheory.ChartRestriction.G.PullbackSections.frMap_trans _ _ hy.choose_spec.choose_spec.choose_spec h)
 
+/- English proof (translation)
+Set `e : (Σ s : CMType H ⊕ CMType H, {lk : Fin (Dw.mult (Small.labelC s)) × Fin (Dw.mult (Small.labelC s)) // lk.2 < lk.1}) ≃ FlagVar Dw` to `Equiv.sigmaCongr (Small.labelEquiv H) fun s => { toFun := fun q => ⟨(q.1.2, q.1.1), q.2⟩ invFun := fun q => ⟨(q.1.2, q.1.1), q.2⟩ left_inv := fun q => rfl right_inv := fun q => rfl }`. Use `⟨_ ∘ e.symm, hvi.comp e.symm e.symm.injective, e.symm.surjective.range_comp _, fun s k l h => ?_⟩` and prove the remaining obligations. Establish `: (⟨Small.labelC s, ⟨(k, l), h⟩⟩ : FlagVar Dw) = e ⟨s, ⟨(l, k), h⟩⟩` using `rfl`. Rewrite using `[this]`. Conclude with `congrArg (fun q : (Σ s : CMType H ⊕ CMType H, {lk : Fin (Dw.mult (Small.labelC s)) × Fin (Dw.mult (Small.labelC s)) // lk.2 < lk.1}) => v q.1 q.2.1.1 q.2.1.2) (e.symm_apply_apply ⟨s, ⟨(l, k), h⟩⟩)`.
+-/
 theorem exists_strictHenselian_absolutely_closed_local_ring {K Ω : Type} [Field K] [Field Ω] [Algebra K Ω]
     (v : ∀ s : CMType H ⊕ CMType H, Matrix (Fin (Dw.mult (Small.labelC s))) (Fin (Dw.mult (Small.labelC s))) Ω)
     (hvi : AlgebraicIndependent K (fun q : Σ s : CMType H ⊕ CMType H,
@@ -513,6 +648,31 @@ variable {Y : Model Xo c (algebraMap (𝓞 c.F) c.F)} {SS : Finset ℕ}
   {RM : Top.RootModel (CMType H) (Dw.p + Dw.q)}
   {Sys : PB.AnSys (Top.dimFl (CMType H) (Dw.p + Dw.q)) (Option (RootIx Dw))} {Fx : FixedData Y Sys}
 
+/- English proof (translation)
+Use `letI algΩ := Small.cstAlg Or`. Take `⟨ψ, hψ, hc⟩` from `GlobalTheory.T.root_origin_component_generic_point E H Dw l Xo c Y SS RM Sys Fx Or Z hZ`. Take `⟨hgx, y₀, hy₀, hy₀c⟩` from `isGenFr_genFr h Z`. Take `⟨N, ec, hx, hb, hj, hli₀, hli, hmem⟩` from `flags_setup Or Fr Z ψ hψ hc y₀ hy₀`. Use `letI algfn : Algebra Or.𝔐.Ω₀ RM.Ω := Or.𝔐.fn.toAlgebra`.
+
+Establish `hg'` using `generic_cast Or.Fl.j (labelRk Dw) (fun s => Dw.mult (Small.labelC s)) (Small.mult_labelC Dw) Or.Fl.V₀ Or.Fl.b Or.Fl.deg Or.Fl.generic`. Take `⟨v, Tm, hv1, hv0, hvi, hvd, hbT, hT0, hTd⟩` from `lin_core Or.Fl.j Or.Fl.V₀ _ Or.Fl.deg hg' (fun s => ec (Small.labelC s)) (fun s => hli₀ _) hmem (fun s => hli _)`. Take `⟨T, hTi, hTr, hTv⟩` from `exists_strictHenselian_absolutely_closed_local_ring v hvi`. Take `⟨φ, hφC, hφX, hφd⟩` from `exists_lift ψ T hTi`. Establish `hφk : ∀ x, φ (algebraMap (kap Z) (Om Z) x) = Or.𝔐.fn (ψ x)` using `fun x => by`.
+
+Rewrite using `[IsScalarTower.algebraMap_apply (kap Z) (MvPolynomial (FlagVar Dw) (kap Z)) (Om Z) x]`. Conclude with `hφC x`. Establish `hφc : ∀ a : c.F, φ (algebraMap c.F (Om Z) a) = Or.𝔐.cst a` using `fun a => by`. Rewrite using `[gfp_tower Z a, hφk, hc]`. Set `φA : Om Z →ₐ[c.F] RM.Ω` to `{ φ with commutes' := hφc }`.
+
+Establish `hS` using `GlobalTheory.abelianSchemeLaws_all.1.secBaseChange`. Take `⟨y₃, h₃⟩` from `GlobalTheory.Frames.FramedBaseChange.exists_frMap hS E H Dw l Xo c _ _ φA (genFr h Z)`. Establish `hk : φ.comp (algebraMap (kap Z) (Om Z)) = Or.𝔐.fn.comp ψ.toRingHom` using `RingHom.ext hφk`. Establish `hbase : spMap φ ≫ (genFr h Z).x = Fr.y₀.x`. Rewrite using `[hgx, ← Category.assoc, spc, hk, ← hy₀]`.
+
+Conclude with `hx`. Establish `hx₃ : y₃.x = Fr.y₀.x` using `h₃.1.trans hbase`. Establish `hcoef : ∀ s (i j : Fin (Dw.mult (Small.labelC s))), φ (genCoef Z (Small.labelC s) i j) = v s j i`. Introduce `s i j`. Unfold `genCoef`.
+
+Use `split_ifs with h1 h2`. Rewrite using `[hφX]`. Conclude with `hTv s i j h1`. Substitute `h2` using the available equality. Rewrite using `[map_one, hv1]`.
+
+Rewrite using `[map_zero, hv0 s j i (lt_of_le_of_ne (not_lt.1 h1) (Ne.symm h2))]`. Establish `hy3 : ∀ s, y₃.u (Small.labelC s) = fun m => (N.pt (∑ l, v s l m • Or.Fl.j (ec (Small.labelC s) l))).left`. Introduce `s`. Use function extensionality and compare the values at `i`. Establish `h1` using `GlobalTheory.T.is_comb_base_change E H Dw l Xo _ _ φ (genFr h Z).x _ _ _ _ (hy₀c (Small.labelC s) i)`.
+
+Establish `hv : (fun j => spMap (Formalism.L2.Pj.dualMap φ) ≫ spMap (Formalism.L2.Pj.dualMap (algebraMap (kap Z) (Om Z))) ≫ y₀.u (Small.labelC s) j) = fun j => (N.pt (Or.Fl.j (ec (Small.labelC s) j))).left`. Use function extensionality and compare the values at `j`. Rewrite using `[hj, ← Category.assoc, spc, ← dualMap_comp₂, hk]`. Rewrite `h1` using `[hbase, hv, comb_iff N]`. Rewrite using `[h₃.2.1]`.
+
+Use `h1.trans ?_` and prove the remaining obligations. Simplify using `only [hcoef]`. Take `⟨t, ht⟩ : ∃ t, FrBor t y₃ Fr.y₀` from `frBor_of_comb y₃ Fr.y₀ hx₃.symm (fun τ i => by`. Take `⟨s, rfl⟩` from `(Small.labelC_bijective H).2 τ`. Use `⟨Tm s i, isUnit_iff_ne_zero.2 (hTd s i), fun j hij => hT0 s i j hij, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[hx₃, hy3 s, comb_iff N]`. Conclude with `(hb s i).symm.trans (congrArg (fun e => (N.pt e).left) (hbT s i)))`. Use `⟨{ φ := φ, φ_cst := hφc, t := t, rd_eq := fun a f hf => ?_, deg := ?_ }⟩` and prove the remaining obligations. Establish `h1` using `GlobalTheory.T.frame_point_borel_section_scaling E H Dw l Xo c a f RM.Ω t y₃ Fr.y₀ hf ht`. Establish `h2` using `ev_map hWD hf.1 φA (genFr h Z) y₃ (hgT Z) h₃`.
+
+Use `show evR Xo c f Fr.y₀ = _ * φ (evC h Z f)`. Rewrite using `[h1, h2]`. Both sides reduce to the same expression. Use `hφd.trans ?_` and prove the remaining obligations. Rewrite using `[hTr, ← adjoin_all_eq_strict v hv1 hv0]`.
+
+Conclude with `hvd`.
+-/
 theorem read_core (Or : RootOrigin Y SS RM Fx) (Fr : Small.GenFrame Or) (h : GenFrEx Xo c) (Z : Comp Xo c)
     (hgT : GenFromTest Xo c h)
     (hWD : EvalWD (K := c.F) (fun S _ _ => FrPt Xo c S) (fun φ y z => FrMap φ y z))
@@ -584,6 +744,9 @@ end GlobalTheory.CompanionTheory.Ar.Rec.ReadEx
 
 namespace GlobalTheory.CompanionTheory.Ar.Rec
 
+/- English proof (translation)
+Introduce `E _ _ _ H Dw l Xo c r U h e hL Y T o κ hκ B Z`. Take `⟨Fr⟩` from `GlobalTheory.T.root_origin_generic_frame E H Dw l Xo c Y (o.S B) (T.M B (κ Z)) (o.Sys (κ Z)) (o.Fx (κ Z)) (o.Or B (κ Z))`. Conclude with `⟨Fr, ReadEx.read_core (o.Or B (κ Z)) Fr h Z hL.genT hL.evalWD (hκ Z)⟩`.
+-/
 theorem read_exists : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l) (r : ℕ) (U : ∀ σ : c.F →+* ℂ, Unf Xo c σ r) (h : GenFrEx Xo c) (e : Comp Xo c → Rul Xo c), CompLaws U h e → ∀ (Y : Model Xo c (algebraMap (𝓞 c.F) c.F)) (T : Top.RootTower (CMType H) (Dw.p + Dw.q)) (o : TowerOrigin Y T) (κ : Comp Xo c ≃ T.Comp), CompOf o κ → ∀ (B : ℕ) (Z : Comp Xo c), ∃ Fr : Small.GenFrame (o.Or B (κ Z)), Nonempty (Reading Fr h Z) := by
   intro E _ _ _ H Dw l Xo c r U h e hL Y T o κ hκ B Z
   obtain ⟨Fr⟩ := GlobalTheory.T.root_origin_generic_frame E H Dw l Xo c Y (o.S B) (T.M B (κ Z)) (o.Sys (κ Z)) (o.Fx (κ Z)) (o.Or B (κ Z))

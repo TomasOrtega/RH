@@ -26,6 +26,19 @@ attribute [local instance] Over.cartesianMonoidalCategory
 
 namespace GlobalTheory.LieDual
 
+/- English proof (translation)
+Take `⟨n, f, g, -, -, hfg⟩` from `Module.Finite.exists_comp_eq_id_of_projective R G`. Establish `hm : ∀ (m : Ideal R) (χ : Module.Dual R G), (∀ x, χ x ∈ m) → χ ∈ m • (⊤ : Submodule R (Module.Dual R G))` using `fun m χ hχ ↦ by`. Establish `e : χ = ∑ i, χ (f (Pi.single i 1)) • (LinearMap.proj i ∘ₗ g)`. Use extensionality with `x`. Establish `e1 : x = f (g x)` using `(LinearMap.congr_fun hfg x).symm`.
+
+Use `conv_lhs => rw [e1, pi_eq_sum_univ' (g x)]`. Simplify using `[mul_comm]`. Rewrite using `[e]`. Conclude with `Submodule.sum_mem _ fun i _ ↦ Submodule.smul_mem_smul (hχ _) Submodule.mem_top`. Rewrite using `[eq_top_iff]`.
+
+Introduce `ψ _`. Assume the negation of the conclusion as `hψ`. Establish `hI : N.comap (LinearMap.toSpanSingleton R _ ψ) ≠ ⊤` using `fun e ↦ hψ (by`. Establish `: (1 : R) ∈ N.comap (LinearMap.toSpanSingleton R _ ψ)` using `e ▸ Submodule.mem_top`. Simplify using `using this)`.
+
+Take `⟨m, hmax, hle⟩` from `Ideal.exists_le_maximal _ hI`. Take `⟨r, hr, hr0⟩` from `Submodule.exists_sub_one_mem_and_smul_eq_zero_of_fg_of_le_smul m (⊤ : Submodule R (Module.Dual R G ⧸ N)) Module.Finite.fg_top (by`. Introduce `q _`. Take `⟨φ, rfl⟩` from `N.mkQ_surjective q`. Take `⟨χ, hχ, hx⟩` from `h m hmax φ`.
+
+Establish `e : N.mkQ φ = N.mkQ (φ - χ)`. Rewrite using `[map_sub, show N.mkQ χ = 0 from (Submodule.Quotient.mk_eq_zero N).2 hχ, sub_zero]`. Rewrite using `[e, ← Submodule.range_mkQ N, ← Submodule.map_top, ← Submodule.map_smul'']`. Conclude with `Submodule.mem_map_of_mem (hm m _ hx))`. Establish `h1 : r ∈ m` using `hle (by`.
+
+Use `hr0 (N.mkQ ψ) Submodule.mem_top` as an intermediate fact. Rewrite `this` using `[← map_smul]`. Simplify using `using (Submodule.Quotient.mk_eq_zero N).1 this)`. Conclude with `hmax.ne_top ((Ideal.eq_top_iff_one _).2 (by simpa using m.sub_mem h1 hr))`.
+-/
 theorem eq_top_of_residue {R G : Type} [CommRing R] [AddCommGroup G] [Module R G]
     [Module.Finite R G] [Module.Projective R G] (N : Submodule R (Module.Dual R G))
     (h : ∀ m : Ideal R, m.IsMaximal → ∀ ψ : Module.Dual R G, ∃ χ ∈ N, ∀ x, ψ x - χ x ∈ m) :
@@ -64,6 +77,19 @@ theorem eq_top_of_residue {R G : Type} [CommRing R] [AddCommGroup G] [Module R G
 
 variable {R R' : Type} [CommRing R] [CommRing R']
 
+/- English proof (translation)
+Set `E` to `SqExt.dual R`. Set `E'` to `SqExt.dual R'`. Establish `hy` using `pt_w v`. Establish `hy'` using `pt_w v'`. Establish `hc : ∀ r : R, Chart.dualMapR σ (algebraMap R (DualNumber R) r) = algebraMap R' (DualNumber R') (σ r)` using `fun r => by`.
+
+Apply the tactic sequence `ext <;> simp [Chart.dualMapR, TrivSqZeroExt.algebraMap_eq_inl]`. Establish `e₀ : spMap σ ≫ spMap (E.π : E.C →+* E.B) ≫ v.left = (spMap (E'.π : E'.C →+* E'.B) ≫ v'.left) ≫ φ`. Rewrite using `[Category.assoc, e, ← Category.assoc, ← Category.assoc, ← Cris.spMap_comp, ← Cris.spMap_comp]`. Use `congr 2`. Apply the tactic sequence `ext a <;> simp [Chart.dualMapR, E, E', TrivSqZeroExt.algebraMap_eq_inl]`.
+
+Set `Φ : E.thick _ (E.red_w hy) ⟶ m.obj (E'.thick _ (E'.red_w hy'))` to `{ φ := { Chart.dualMapR σ with commutes' := hc } φ₀ := σ comm := fun b => by`. Express the relevant statement in the definitionally equal form `σ b.fst = (Chart.dualMapR σ b).fst`. Simplify using `[Chart.dualMapR]`. Use `dp := isDPMorphism_sqDP E.sq E'.sq _ fun a ha => by`. Establish `ha' : a.fst = 0` using `ha`.
+
+Express the relevant statement in the definitionally equal form `(Chart.dualMapR σ a).fst = 0`. Simplify using `[Chart.dualMapR, ha']`. Use `pt := e₀ }`. Set `a : Thick.triv E.C _ hy ⟶ m.obj (Thick.triv E'.C _ hy')` to `Thick.trivHom { Chart.dualMapR σ with commutes' := hc } e.symm`. Set `b : Thick.triv E.B _ (E.red_w hy) ⟶ m.obj (Thick.triv E'.B _ (E'.red_w hy'))` to `Thick.trivHom { σ with commutes' := fun _ => rfl } e₀`.
+
+Establish `k1` using `Form.ev_sq f a (m.functor.map (E'.idHom hy')) (E.idHom hy) Φ rfl rfl fun _ => rfl`. Establish `k2` using `Form.ev_sq f b (m.functor.map (E'.secHom (E'.red_w hy') E'.i E'.π_i)) (E.secHom (E.red_w hy) E.i E.π_i) Φ rfl rfl fun c => (hc c).symm`. Establish `k : E'.val v'.left hy' (m.pullForm f).1 = Chart.dualMapR σ (E.val v.left hy f.1)` using `(congrArg₂ (fun u v : E'.C => u - v) k2 k1).trans ((add_sub_add_right_eq_sub (G := E'.C) _ _ _).trans (map_sub (Chart.dualMapR σ) _ _).symm)`. Rewrite using `[tanVal_apply, tanVal_apply]`. Use `(congrArg (TrivSqZeroExt.snd (R := R')) k).trans ?_` and prove the remaining obligations.
+
+Conclude with `zero_add _`.
+-/
 theorem tanVal_pullForm {σ : R →+* R'} {A : Over (Sp R)} {B : Over (Sp R')} {φ : B.left ⟶ A.left}
     (m : IsMor (dp0 R) (A.hom ≫ 𝟙 _) (dp0 R') (B.hom ≫ 𝟙 _) σ φ) {v : epsR R ⟶ A} {v' : epsR R' ⟶ B}
     (e : v'.left ≫ φ = spMap (Chart.dualMapR σ) ≫ v.left) (f : Form (A.hom ≫ 𝟙 _)) :
@@ -108,6 +134,9 @@ theorem tanVal_pullForm {σ : R →+* R'} {A : Over (Sp R)} {B : Over (Sp R')} {
 def glob {X : Scheme.{0}} (s : X ⟶ Sp R) : Form s →ₗ[R] GlobForm s :=
   (ClosedForm s).subtype ∘ₗ cmpForm s
 
+/- English proof (translation)
+Use `isPullForm_iff.2 fun p ↦ ?_` and prove the remaining obligations. Establish `k` using `connForm_pull m (semiHom_secPull m.w p) (affPt_w s p.1.2) (affPt_w s' p.1.1) (secPull_affPt s s' p) f.1`. Establish `z : ev f.1 (semiTriv m (semiHom_secPull m.w p) (affPt_w s p.1.2) (affPt_w s' p.1.1) (secPull_affPt s s' p)) = 0` using `f.2 _ rfl rfl`. Rewrite `k` using `[z]`. Conclude with `((add_zero _).symm.trans (congrArg _ (map_zero _).symm)).trans k.symm`.
+-/
 theorem isPullForm_glob {X X' : Scheme.{0}} {s : X ⟶ Sp R} {s' : X' ⟶ Sp R'} {σ : R →+* R'}
     {φ : X' ⟶ X} (m : IsMor (dp0 R) s (dp0 R') s' σ φ) (f : Form s) :
     IsPullForm m.w (glob s f) (glob s' (m.pullForm f)) := by
@@ -119,6 +148,15 @@ theorem isPullForm_glob {X X' : Scheme.{0}} {s : X ⟶ Sp R} {s' : X' ⟶ Sp R'}
   rw [z] at k
   exact ((add_zero _).symm.trans (congrArg _ (map_zero _).symm)).trans k.symm
 
+/- English proof (translation)
+Establish `hsm : Smooth (A.hom ≫ 𝟙 (Sp R))` using `by haveI := hab.smooth; infer_instance`. Establish `hsep : IsSeparated (A.hom ≫ 𝟙 (Sp R))` using `by haveI := hab.proper; infer_instance`. Establish `hqc : QuasiCompact (A.hom ≫ 𝟙 (Sp R))` using `by haveI := hab.proper; infer_instance`. Establish `hcmp` using `(GlobalTheory.CechDR.cechDeRham_comparison_bijective_cup_smooth hC R A.left _ hsm hsep hqc).1`. Establish `hcl : Function.Injective (clForm (A.hom ≫ 𝟙 (Sp R)))` using `(hH R A g hab hdim).2.2.2.2.1.2.1`.
+
+Establish `htop : ClosedForm (A.hom ≫ 𝟙 (Sp R)) = ⊤` using `(hH R A g hab hdim).2.2.2.2.1.1`. Introduce `ω`. Set `ωc : ClosedForm (A.hom ≫ 𝟙 (Sp R))` to `⟨ω, htop ▸ Submodule.mem_top⟩`. Take `⟨c, hc⟩` from `hcmp.2 (clForm _ ωc)`. Establish `hF : clForm _ ωc ∈ CechHodgeFiltration (A.hom ≫ 𝟙 (Sp R))` using `by rw [cechHodgeFiltration_eq_range]; exact ⟨ωc, rfl⟩`.
+
+Establish `h1 : c ∈ F1 (A.hom ≫ 𝟙 (Sp R))`. Express the relevant statement in the definitionally equal form `toH1O _ c = 0`. Apply `GlobalTheory.T.structure_sheaf_comparison_injective R A.left _` to reduce the goal to its premises. Rewrite using `[← structureSheaf_comparison_comm, map_zero, hc]`. Conclude with `hF`.
+
+Rewrite `h1` using `[hodgeFiltration_eq_range]`. Take `⟨f, rfl⟩` from `h1`. Rewrite `hc` using `[comparison_formClass]`. Conclude with `⟨f, congrArg Subtype.val (hcl hc)⟩`.
+-/
 theorem glob_surjective (hC : GlobalTheory.Published.CrystallineSmoothLift) (hH : GlobalTheory.Published.AbelianHodgeDeRham)
     (A : Over (Sp R)) [GrpObj A] (g : ℕ) (hab : IsAbelianScheme A)
     (hdim : SmoothOfRelativeDimension g A.hom) : Function.Surjective (glob (A.hom ≫ 𝟙 (Sp R))) := by
@@ -142,6 +180,11 @@ theorem glob_surjective (hC : GlobalTheory.Published.CrystallineSmoothLift) (hH 
   rw [comparison_formClass] at hc
   exact ⟨f, congrArg Subtype.val (hcl hc)⟩
 
+/- English proof (translation)
+Establish `hker : LinearMap.ker (glob s) ≤ LinearMap.ker φ` using `fun f hf ↦ hφ f (Subtype.ext hf)`. Set `e` to `(glob s).quotKerEquivOfSurjective hs`. Use `⟨(LinearMap.ker (glob s)).liftQ φ hker ∘ₗ e.symm.toLinearMap, fun f ↦ ?_⟩` and prove the remaining obligations. Establish `: e.symm (glob s f) = Submodule.Quotient.mk f` using `e.symm_apply_eq.2 rfl`. Express the relevant statement in the definitionally equal form `(LinearMap.ker (glob s)).liftQ φ hker (e.symm (glob s f)) = _`.
+
+Rewrite using `[this]`. Both sides reduce to the same expression.
+-/
 theorem exists_factor {X : Scheme.{0}} {s : X ⟶ Sp R} (hs : Function.Surjective (glob s))
     (φ : Form s →ₗ[R] R) (hφ : ∀ f, cmpForm s f = 0 → φ f = 0) :
     ∃ ψ : Module.Dual R (GlobForm s), ∀ f, ψ (glob s f) = φ f := by
@@ -158,9 +201,19 @@ def lieVal (A : Over (Sp R)) [GrpObj A] [IsCommMonObj A] :
   map_add' v w := LinearMap.ext fun f ↦ tanVal_mul v.isTangent w.isTangent f
   map_smul' r v := LinearMap.ext fun f ↦ tanVal_epsScale r v.hom f
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem lieVal_apply (A : Over (Sp R)) [GrpObj A] [IsCommMonObj A] (v : Serre.Lie (Serre.intAct A)) :
     lieVal A v = tanVal v.hom := rfl
 
+/- English proof (translation)
+Use `choose t ht using hf`. Establish `ext : ∀ {α β : Module.Dual K G}, (∀ f, α (c f) = β (c f)) → α = β` using `fun h ↦ LinearMap.ext fun x ↦ by`. Take `⟨f, rfl⟩` from `hs x`. Conclude with `h f`. Set `T : L →ₗ[K] Module.Dual K G` to `{ toFun := t map_add' := fun v w ↦ ext fun f ↦ by`.
+
+Rewrite using `[LinearMap.add_apply, ht, ht, ht, map_add, LinearMap.add_apply]`. Use the proof step `map_smul' := fun r v ↦ ext fun f ↦ by`. Rewrite using `[LinearMap.smul_apply, ht, ht, map_smul, LinearMap.smul_apply, RingHom.id_apply] }`. Establish `hinj : Function.Injective T` using `fun v w h ↦ hl (LinearMap.ext fun f ↦ (ht v f).symm.trans ((LinearMap.congr_fun h _).trans (ht w f)))`. Establish `hsurj : Function.Surjective T` using `(LinearMap.injective_iff_surjective_of_finrank_eq_finrank (by`.
+
+Rewrite using `[Subspace.dual_finrank_eq, hd])).1 hinj`. Take `⟨v, rfl⟩` from `hsurj ψ`. Conclude with `⟨v, fun f ↦ (ht v f).symm⟩`.
+-/
 theorem exists_eq_comp {K : Type} [Field K] {L G : Type} {F : Type 1} [AddCommGroup L] [Module K L]
     [AddCommGroup G] [Module K G] [AddCommGroup F] [Module K F] [Module.Finite K L] [Module.Finite K G]
     (hd : Module.finrank K L = Module.finrank K G) (c : F →ₗ[K] G) (hs : Function.Surjective c)
@@ -185,6 +238,11 @@ theorem exists_eq_comp {K : Type} [Field K] {L G : Type} {F : Type 1} [AddCommGr
   obtain ⟨v, rfl⟩ := hsurj ψ
   exact ⟨v, fun f ↦ (ht v f).symm⟩
 
+/- English proof (translation)
+Establish `hs` using `glob_surjective hC hH B g hab hdim`. Take `⟨hfin, -, hrk⟩ : Module.Finite K (GlobForm (B.hom ≫ 𝟙 (Sp K))) ∧ Module.Projective K (GlobForm (B.hom ≫ 𝟙 (Sp K))) ∧ ∀ p : PrimeSpectrum K, Module.rankAtStalk (GlobForm (B.hom ≫ 𝟙 (Sp K))) p = g` from `(hH K B g hab hdim).2.2.1`. Establish `hG : Module.finrank K (GlobForm (B.hom ≫ 𝟙 (Sp K))) = g`. Establish `h` using `hrk (IsLocalRing.closedPoint K)`. Rewrite `h` using `[Module.rankAtStalk_eq_finrank_of_free]`. Then use the resulting hypothesis.
+
+Set `b` to `Serre.Lie.basis (Serre.intAct B) hy`. Use `haveI := Module.Finite.of_basis b`. Conclude with `exists_eq_comp (by rw [hG, Module.finrank_eq_card_basis b, Fintype.card_fin]) (glob _) hs (lieVal B) (fun v w h ↦ Serre.Lie.ext (GlobalTheory.LieInjField.eq_of_tanVal_eq hC hH K B g hab hdim _ _ v.isTangent w.isTangent (LinearMap.congr_fun h))) (fun v ↦ exists_factor hs (lieVal B …`.
+-/
 theorem exists_tangent_field (hC : GlobalTheory.Published.CrystallineSmoothLift) (hH : GlobalTheory.Published.AbelianHodgeDeRham)
     {K : Type} [Field K] (B : Over (Sp K)) [GrpObj B] [IsCommMonObj B] (g : ℕ) (hab : IsAbelianScheme B)
     (hdim : SmoothOfRelativeDimension g B.hom) {y : Fin g → (epsR K ⟶ B)} (hy : IsLieBasis y)
@@ -205,6 +263,11 @@ theorem exists_tangent_field (hC : GlobalTheory.Published.CrystallineSmoothLift)
       (GlobalTheory.LieInjField.eq_of_tanVal_eq hC hH K B g hab hdim _ _ v.isTangent w.isTangent (LinearMap.congr_fun h)))
     (fun v ↦ exists_factor hs (lieVal B v) (GlobalTheory.T.formValueOnTangentVector_eq_zero_of_globalForm_zero K B v.hom)) ψ
 
+/- English proof (translation)
+Establish `f : ∀ x, (Chart.dualMapR σ x).fst = σ x.fst` using `fun _ ↦ add_zero _`. Establish `s : ∀ x, (Chart.dualMapR σ x).snd = σ x.snd` using `fun _ ↦ zero_add _`. Use `RingHom.ext fun x ↦ ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `_ = TrivSqZeroExt.inl (τ (Chart.dualMapR σ x).fst) + TrivSqZeroExt.inr (τ (Chart.dualMapR σ x).snd)`. Rewrite using `[f, s]`.
+
+Both sides reduce to the same expression.
+-/
 theorem dualMapR_comp {R'' : Type} [CommRing R''] (σ : R →+* R') (τ : R' →+* R'') :
     Chart.dualMapR (τ.comp σ) = (Chart.dualMapR τ).comp (Chart.dualMapR σ) := by
   have f : ∀ x, (Chart.dualMapR σ x).fst = σ x.fst := fun _ ↦ add_zero _
@@ -214,12 +277,26 @@ theorem dualMapR_comp {R'' : Type} [CommRing R''] (σ : R →+* R') (τ : R' →
     TrivSqZeroExt.inr (τ (Chart.dualMapR σ x).snd)
   rw [f, s]; rfl
 
+/- English proof (translation)
+Establish `f : ∀ x, (Chart.dualMapR τ x).fst = τ x.fst` using `fun _ ↦ add_zero _`. Establish `s : ∀ x, (Chart.dualMapR τ x).snd = τ x.snd` using `fun _ ↦ zero_add _`. Apply the tactic sequence `refine RingHom.ext fun x ↦ TrivSqZeroExt.ext ?_ ?_ <;> simp [epsScaleR, f, s]`.
+-/
 theorem epsScaleR_comp_dualMapR (τ : R →+* R') (c : R) :
     (epsScaleR (τ c)).comp (Chart.dualMapR τ) = (Chart.dualMapR τ).comp (epsScaleR c) := by
   have f : ∀ x, (Chart.dualMapR τ x).fst = τ x.fst := fun _ ↦ add_zero _
   have s : ∀ x, (Chart.dualMapR τ x).snd = τ x.snd := fun _ ↦ zero_add _
   refine RingHom.ext fun x ↦ TrivSqZeroExt.ext ?_ ?_ <;> simp [epsScaleR, f, s]
 
+/- English proof (translation)
+Use `haveI : Smooth A.hom := hdim.smooth`. Take `⟨r, hr, hCh, v, hv⟩` from `LieProj.exists_chart_lieBasis A g hdim ⟨RingHom.ker σ, RingHom.ker_isPrime σ⟩`. Establish `hr' : σ r ≠ 0` using `hr`. Set `τ : Localization.Away r →+* K` to `IsLocalization.Away.lift r (IsUnit.mk0 _ hr')`. Establish `hτ : τ.comp (algebraMap R _) = σ` using `IsLocalization.Away.lift_comp r _`.
+
+Establish `hτ' : ∀ x, τ (algebraMap R _ x) = σ x` using `RingHom.congr_fun hτ`. Use `haveI : ∀ s : R, Smooth (Chart.Gs A s).hom := fun s => show Smooth (pullback.snd A.hom _) from inferInstance`. Establish `h₁` using `isGrpPullback_pullback A (Chart.fB R (Localization.Away r))`. Establish `h₂` using `isGrpPullback_pullback (Chart.Gs A r) (spMap τ)`. Take `⟨y, hy, hyv⟩` from `GlobalTheory.exists_isLieBasis_baseChange _ K τ (Chart.Gs A r) _ _ h₂ inferInstance g v hv`.
+
+Use `⟨_, inferInstance, inferInstance, _, (h₂.comp h₁).congr ?_ rfl, y, hy, fun i ↦ ?_⟩` and prove the remaining obligations. Conclude with `(Cris.spMap_comp _ _).symm.trans (congrArg spMap hτ)`. Take `⟨N, w, hw, he⟩` from `LieAway.tan_away_lift r hCh ((LieAway.isTangent_iff_tanS r (v i)).1 (hv.1 i))`. Use `⟨σ r ^ N, w, pow_ne_zero _ hr', LieAway.isTangent_of_tanS hw, ?_⟩` and prove the remaining obligations. Establish `he' : spMap (Chart.dualMapR (algebraMap R (Localization.Away r))) ≫ w.left = spMap (epsScaleR (algebraMap R (Localization.Away r) r ^ N)) ≫ (v i).left ≫ pullback.fst A.hom (Chart.fB R (Localization.Away r))`.
+
+Use `congrArg (fun q ↦ q.left) he` as an intermediate fact. Simplify using `only [Over.comp_left, Chart.pushR_left, Chart.spMap_left] at this`. Rewrite using `[← LieAway.scaleS_toRingHom]`. Conclude with `this`. Establish `e1 : Chart.dualMapR σ = (Chart.dualMapR τ).comp (Chart.dualMapR (algebraMap R (Localization.Away r)))`.
+
+Rewrite using `[← dualMapR_comp, hτ]`. Establish `e2 : (epsScaleR (σ r ^ N)).comp (Chart.dualMapR τ) = (Chart.dualMapR τ).comp (epsScaleR (algebraMap R (Localization.Away r) r ^ N))`. Rewrite using `[← epsScaleR_comp_dualMapR, map_pow, hτ']`. Rewrite using `[e1, Cris.spMap_comp, Category.assoc, Category.assoc, he', ← Category.assoc (y i).left, hyv, ← Category.assoc, ← Category.assoc, ← Cris.spMap_comp, e2, Cris.spMap_comp]`. Simplify using `only [Category.assoc]`.
+-/
 theorem exists_lieBasis_lift {K : Type} [Field K] (σ : R →+* K) (A : Over (Sp R)) [GrpObj A]
     [IsCommMonObj A] (g : ℕ) (hdim : SmoothOfRelativeDimension g A.hom) :
     ∃ (B : Over (Sp K)) (_ : GrpObj B) (_ : IsCommMonObj B) (φ : B.left ⟶ A.left),
@@ -260,6 +337,13 @@ theorem exists_lieBasis_lift {K : Type} [Field K] (σ : R →+* K) (A : Over (Sp
       ← Category.assoc, ← Category.assoc, ← Cris.spMap_comp, e2, Cris.spMap_comp]
     simp only [Category.assoc]
 
+/- English proof (translation)
+Set `S : Submodule K L'` to `{ carrier := {z | ∃ v, ∀ f, l' z (p f) = algebraMap R K (l v f)} zero_mem' := ⟨0, fun f ↦ by simp⟩ add_mem' := by`. Introduce and unpack `a b ⟨v, hv⟩ ⟨w, hw⟩`. Conclude with `⟨v + w, fun f ↦ by simp [hv, hw]⟩`. Use the proof step `smul_mem' := by`. Introduce and unpack `c a ⟨v, hv⟩`.
+
+Take `⟨r, rfl⟩` from `hσ c`. Conclude with `⟨r • v, fun f ↦ by`. Rewrite using `[map_smul, map_smul, LinearMap.smul_apply, LinearMap.smul_apply, hv, smul_eq_mul, smul_eq_mul, map_mul]⟩ }`. Use `(Submodule.span_le.2 ?_ : Submodule.span K (Set.range b) ≤ S) (b.span_eq ▸ Submodule.mem_top)` and prove the remaining obligations. Introduce and unpack `_ ⟨i, rfl⟩`.
+
+Take `⟨u, hu, hv⟩` from `h i`. Conclude with `(S.smul_mem_iff hu).1 hv`.
+-/
 theorem exists_lift_of_basis {K : Type} [Field K] [Algebra R K]
     (hσ : Function.Surjective (algebraMap R K)) {L L' : Type} {F F' : Type 1} [AddCommGroup L]
     [Module R L] [AddCommGroup L'] [Module K L'] [AddCommGroup F] [Module R F] [AddCommGroup F']
@@ -287,6 +371,15 @@ theorem exists_lift_of_basis {K : Type} [Field K] [Algebra R K]
 
 set_option maxHeartbeats 1600000 in
 
+/- English proof (translation)
+Take `⟨B, _, _, φ, hφ, y, hy, hl⟩` from `exists_lieBasis_lift (algebraMap R K) A g hdim`. Establish `hab' : IsAbelianScheme B` using `GlobalTheory.PolPull.isAbelianScheme_of_isGrpPullback hab hφ`. Establish `hdim' : SmoothOfRelativeDimension g B.hom` using `(smoothOfRelativeDimension_isStableUnderBaseChange (n := g)).of_isPullback hφ.1 hdim`. Establish `m : IsMor (dp0 R) (A.hom ≫ 𝟙 (Sp R)) (dp0 K) (B.hom ≫ 𝟙 (Sp K)) (algebraMap R K) φ` using `IsMor.of_dividedPowersZeroIdeal _ hφ.1.w`. Take `⟨e, he⟩ : ∃ e : K ⊗[R] GlobForm (A.hom ≫ 𝟙 (Sp R)) ≃ₗ[K] GlobForm (B.hom ≫ 𝟙 (Sp K)), ∀ c, IsPullForm m.w c (e (1 ⊗ₜ c))` from `((hH R A g hab hdim).2.2.2.2.2 K B.left B.hom φ hφ.1).2.1`.
+
+Establish `hp : ∀ f, glob _ (m.pullForm f) = e (1 ⊗ₜ glob _ f)` using `fun f ↦ (GlobalTheory.T.affinePairRestriction_injective_firstCohomology φ (B.hom ≫ 𝟙 (Sp K))).2.1 ((isPullForm_glob m f).symm.trans (he _))`. Take `⟨v', hv'⟩` from `exists_tangent_field hC hH B g hab' hdim' hy (Module.Dual.baseChange K ψ ∘ₗ e.symm.toLinearMap)`. Establish `hb : ∀ i, ∃ u : K, u ≠ 0 ∧ ∃ v, ∀ f, lieVal B (u • Serre.Lie.basis (Serre.intAct B) hy i) (m.pullForm f) = algebraMap R K (lieVal A v f)` using `fun i ↦ (hl i).elim fun u h ↦ h.elim fun w h ↦ ⟨u, h.1, Serre.Lie.mk _ w h.2.1, fun f ↦ by`. Establish `k : (u • Serre.Lie.basis (Serre.intAct B) hy i).hom.left ≫ φ = spMap (Chart.dualMapR (algebraMap R K)) ≫ w.left`. Rewrite using `[Serre.Lie.hom_smul_left, Serre.Lie.hom_basis]`.
+
+Conclude with `h.2.2`. Rewrite using `[lieVal_apply, lieVal_apply, Serre.Lie.hom_mk]`. Conclude with `tanVal_pullForm m k f⟩`. Take `⟨v, hv⟩` from `exists_lift_of_basis hσ (lieVal A) (lieVal B) m.pullForm (Serre.Lie.basis (Serre.intAct B) hy) hb v'`. Use `⟨v, fun f ↦ (hv f).symm.trans ((hv' _).trans ?_)⟩` and prove the remaining obligations.
+
+Rewrite using `[hp, LinearMap.comp_apply, LinearEquiv.coe_coe, LinearEquiv.symm_apply_apply, Module.Dual.baseChange_apply_tmul, Algebra.smul_def, mul_one]`.
+-/
 theorem exists_tangent_residue (hC : GlobalTheory.Published.CrystallineSmoothLift)
     (hH : GlobalTheory.Published.AbelianHodgeDeRham) (K : Type) [Field K] [Algebra R K]
     (hσ : Function.Surjective (algebraMap R K)) (A : Over (Sp R)) [GrpObj A] [IsCommMonObj A] (g : ℕ)
@@ -323,6 +416,13 @@ theorem exists_tangent_residue (hC : GlobalTheory.Published.CrystallineSmoothLif
   rw [hp, LinearMap.comp_apply, LinearEquiv.coe_coe, LinearEquiv.symm_apply_apply,
     Module.Dual.baseChange_apply_tmul, Algebra.smul_def, mul_one]
 
+/- English proof (translation)
+Introduce `hC hH R _ A _ g hab hdim φ hφ`. Use `haveI := hab.comm`. Establish `hs` using `glob_surjective hC hH A g hab hdim`. Take `⟨hfin, hproj, -⟩ : Module.Finite R (GlobForm (A.hom ≫ 𝟙 (Sp R))) ∧ Module.Projective R (GlobForm (A.hom ≫ 𝟙 (Sp R))) ∧ ∀ p : PrimeSpectrum R, Module.rankAtStalk (GlobForm (A.hom ≫ 𝟙 (Sp R))) p = g` from `(hH R A g hab hdim).2.2.1`. Take `⟨ψ, hψ⟩` from `exists_factor hs φ hφ`.
+
+Establish `hN` using `eq_top_of_residue ((LinearMap.range (lieVal A)).comap (glob (A.hom ≫ 𝟙 (Sp R))).dualMap) fun m hm α ↦ by`. Use `letI := Ideal.Quotient.field m`. Take `⟨v, hv⟩` from `exists_tangent_residue hC hH (R ⧸ m) Ideal.Quotient.mk_surjective A g hab hdim α`. Take `⟨χ, hχ⟩` from `exists_factor hs (lieVal A v) (GlobalTheory.T.formValueOnTangentVector_eq_zero_of_globalForm_zero R A v.hom)`. Use `⟨χ, ⟨v, LinearMap.ext fun f ↦ (hχ f).symm⟩, fun x ↦ ?_⟩` and prove the remaining obligations.
+
+Take `⟨f, rfl⟩` from `hs x`. Rewrite using `[hχ]`. Conclude with `Ideal.Quotient.eq.1 (hv f).symm`. Take `⟨v, hv⟩ : ψ ∈ (LinearMap.range (lieVal A)).comap (glob (A.hom ≫ 𝟙 (Sp R))).dualMap` from `hN ▸ Submodule.mem_top`. Conclude with `⟨v.hom, v.isTangent, fun f ↦ (LinearMap.congr_fun hv f).trans (hψ f)⟩`.
+-/
 theorem exists_tangent_of_functional : GlobalTheory.Published.CrystallineSmoothLift → GlobalTheory.Published.AbelianHodgeDeRham → ∀ (R : Type) [CommRing R] (A : Over (Sp R)) [GrpObj A] (g : ℕ), IsAbelianScheme A → SmoothOfRelativeDimension g A.hom → ∀ φ : Form (A.hom ≫ 𝟙 (Sp R)) →ₗ[R] R, (∀ f, GlobalTheory.CechDR.cmpForm (A.hom ≫ 𝟙 (Sp R)) f = 0 → φ f = 0) → ∃ v : epsR R ⟶ A, IsTangent v ∧ ∀ f, tanVal v f = φ f := by
   intro hC hH R _ A _ g hab hdim φ hφ
   haveI := hab.comm

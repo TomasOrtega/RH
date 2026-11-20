@@ -5,6 +5,15 @@ noncomputable def UpperTheory.Reformulated.B.Qk18.PolyIn :
     fun {R : Type} [Ring R] [Algebra ℂ R] (f : ℂ → R) (d : ℕ) ↦
       ∃ (a : ℕ → R), ∀ (s : ℂ), f s = ∑ k ∈ Finset.range (d + (1 : ℕ)), s ^ k • a k
 
+/- English proof (translation)
+Introduce `R _ _ f g d₁ d₂ hf hg`. Take `⟨a, ha⟩` from `hf`. Take `⟨b, hb⟩` from `hg`. Use `⟨fun n => ∑ i ∈ Finset.range (d₁ + 1), ∑ j ∈ Finset.range (d₂ + 1), if i + j = n then a i * b j else 0, fun s => ?_⟩` and prove the remaining obligations. Use `show f s * g s = _`.
+
+Rewrite using `[ha s, hb s, Finset.sum_mul_sum]`. Simplify using `only [Finset.smul_sum]`. Use `symm`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun i hi => ?_` and prove the remaining obligations.
+
+Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun j hj => ?_` and prove the remaining obligations. Establish `hmem : i + j ∈ Finset.range (d₁ + d₂ + 1)`. Rewrite `hi`, `hj`, the goal using `[Finset.mem_range]`. Use linear arithmetic over natural numbers and integers.
+
+Rewrite using `[Finset.sum_eq_single_of_mem (i + j) hmem]`. Rewrite using `[if_pos rfl, smul_mul_smul_comm, pow_add]`. Introduce `k _ hk`. Rewrite using `[if_neg (Ne.symm hk), smul_zero]`.
+-/
 theorem UpperTheory.Reformulated.B.Qk18.polyIn_mul :
     ∀ {R : Type} [inst : Ring R] [inst_1 : Algebra ℂ R] {f g : ℂ → R} {d₁ d₂ : ℕ},
       UpperTheory.Reformulated.B.Qk18.PolyIn f d₁ →

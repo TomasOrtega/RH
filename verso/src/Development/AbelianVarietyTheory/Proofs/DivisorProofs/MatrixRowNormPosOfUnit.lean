@@ -8,6 +8,17 @@ open Formalism.MainNotions.DIV.Cons (intO SCF)
 
 namespace GlobalTheory.TriFrame
 
+/- English proof (translation)
+Take `⟨N, hN⟩` from `hM.exists_left_inv`. Establish `hS : 0 ≤ ∑ l, ‖N i l‖` using `Finset.sum_nonneg fun _ _ => norm_nonneg _`. Establish `hT : 0 ≤ ∑ l, ‖M l i‖` using `Finset.sum_nonneg fun _ _ => norm_nonneg _`. Establish `hb : 0 < (∑ l, ‖N i l‖ + 1)⁻¹` using `by positivity`. Use `hb.trans_le (le_csInf ?_ ?_)` and prove the remaining obligations.
+
+Take `⟨c, hc0, hc⟩` from `NormedField.exists_norm_lt C (r := (∑ l, ‖M l i‖ + 1)⁻¹) (by positivity)`. Use `⟨_, Pi.single i c, by simpa using hc0, fun k hk => by simp [hk.ne'], fun l => ?_, rfl⟩` and prove the remaining obligations. Rewrite using `[Finset.sum_eq_single i (fun j _ hj => by simp [hj]) (by simp), Pi.single_eq_same, norm_mul]`. Establish `h1 : ‖M l i‖ ≤ ∑ l, ‖M l i‖` using `Finset.single_le_sum (f := fun l => ‖M l i‖) (fun _ _ => norm_nonneg _) (Finset.mem_univ l)`. Combine the equalities or inequalities in the displayed calculation.
+
+Combine the linear equalities and inequalities to obtain the conclusion. Use `_ = 1 := inv_mul_cancel₀ (by positivity)`. Introduce and unpack `_ ⟨cf, h₁, -, h₂, rfl⟩`. Establish `hcf : cf i = ∑ l, N i l * ∑ j, cf j * M l j`. Establish `: cf = N.mulVec (M.mulVec cf)` using `by rw [Matrix.mulVec_mulVec, hN, Matrix.one_mulVec]`.
+
+Use `conv_lhs => rw [this]`. Simplify using `only [Matrix.mulVec, dotProduct, mul_comm]`. Use `inv_anti₀ (norm_pos_iff.2 h₁) ?_` and prove the remaining obligations. Rewrite using `[hcf]`. Use `(norm_sum_le _ _).trans (le_trans (Finset.sum_le_sum fun l _ => ?_) (le_add_of_nonneg_right zero_le_one))` and prove the remaining obligations.
+
+Rewrite using `[norm_mul]`. Conclude with `mul_le_of_le_one_right (norm_nonneg _) (h₂ l)`.
+-/
 theorem matNorm_pos_of_isUnit (C : Type) [NontriviallyNormedField C] (r : ℕ) (M : Matrix (Fin r) (Fin r) C)
     (hM : IsUnit M) (i : Fin r) : 0 < matNorm M i := by
   obtain ⟨N, hN⟩ := hM.exists_left_inv

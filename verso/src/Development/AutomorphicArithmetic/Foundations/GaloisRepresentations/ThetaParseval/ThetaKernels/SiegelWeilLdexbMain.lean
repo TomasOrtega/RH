@@ -18,6 +18,17 @@ open NumberField IsDedekindDomain MeasureTheory Filter Topology Formalism.MainNo
 open GlobalTheory.WeilM GlobalTheory.AdelicU GlobalTheory.LFun GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels GlobalTheory.ThK.Dbl GlobalTheory.Cont PositivityTheory.Rg.Sw
 namespace PositivityTheory.SiegelWeilFormula.Ldexb
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E}
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ d n h Y b j hn hs hb hJ`. Establish `hB` using `d.ok.good`. Establish `hσ : ∀ z, σ (σ z) = z` using `UnitA.sig_sig hB.cm`. Use `⟨fun x => ?_, _root_.PositivityTheory.SiegelWeilFormula.Ldexb.val_pull_k h hJ hb⟩` and prove the remaining obligations. Take `⟨Y₀, b₀, K₀, a₀, hb₀, he₀, hK₀, ha₀⟩` from `_root_.PositivityTheory.SiegelWeilFormula.Ldexb.exists_standard_hermitian_space hB hn`.
+
+Take `⟨ε, he⟩` from `hb.1`. Establish `hK : IsStdK (σ` using `σ) (Y := Y) d.B b (d.K.comap j) := _root_.PositivityTheory.SiegelWeilFormula.Ald.kStd_k F E σ d n h Y b j hb hJ`. Break down `hs with ⟨-, hY⟩ | ⟨-, hY⟩` into its components or cases. Establish `hε : ε = -1` using `eps_neg_unit (eps_neg hn hσ hY he)`. Substitute `hε` using the available equality.
+
+Take `⟨r, hr, hrf, hri⟩` from `_root_.PositivityTheory.SiegelWeilFormula.Ldexb.exists_skewUnit_k hB`. Use `iwa_transport (B := d.B) hσ hb hb₀ he he₀ r ?_ hrf hri hK₀ ha₀.iwa hK x` and prove the remaining obligations. Rewrite using `[hr]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+
+Establish `hε : ε = 1` using `eps_unit (eps_one hn hσ hY he)`. Substitute `hε` using the available equality. Use `iwa_transport (B := d.B) hσ hb hb₀ he he₀ 1 ?_ (fun v => ?_) (fun w => ?_) hK₀ ha₀.iwa hK x` and prove the remaining obligations. Simplify using the standard rewrite rules. Simplify using `only [Units.val_one, inv_one, map_one]`.
+
+Conclude with `⟨one_mem _, one_mem _⟩`. Simplify using the standard rewrite rules.
+-/
 theorem hgtPull_k : _root_.PositivityTheory.SiegelWeilFormula.Ald.HgtPull_k := by
   intro F E _ _ _ _ _ σ d n h Y b j hn hs hb hJ
   have hB := d.ok.good

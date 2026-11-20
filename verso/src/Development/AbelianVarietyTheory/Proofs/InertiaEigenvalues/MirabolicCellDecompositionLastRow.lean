@@ -21,6 +21,23 @@ namespace GlobalTheory.ZEul
 
 open Matrix
 
+/- English proof (translation)
+Introduce `E _ _ _ m S J hJ N hN Φ hs g hg hΦ hind`. Establish `hrow : ∀ h : GA E (m + 1), Pi.single (Fin.last m) 1 ᵥ* h.val = fun j => GlobalTheory.ZEul.lastRow h j` using `fun h => by`. Rewrite using `[Matrix.single_one_vecMul]`. Both sides reduce to the same expression. Establish `hℓ : ∀ i : Fin (m + 1), i ≤ Fin.last m` using `Fin.le_last`.
+
+Establish `hi : (fun i => pInf E ((Pi.single (Fin.last m) 1 ᵥ* g.val) i)) ∈ GlobalTheory.RSTheta.rowSet E (Fin.last m)`. Rewrite using `[hrow]`. Conclude with `hs (subset_tsupport _ hΦ)`. Establish `hind' : ∀ i : Fin (m + 1), GlobalTheory.RSJ.pFin E (GlobalTheory.ZEul.lastRow g i) - (if (i : ℕ) + 1 = m + 1 then 1 else 0) ∈ GlobalTheory.RSJ.natLat E N`. Assume the negation of the conclusion as `hc`.
+
+Conclude with `hind (by rw [GlobalTheory.RSJ.indN, if_neg hc])`. Establish `hf : ∀ v ∈ S, ∀ j, Valued.v ((pFin E ((Pi.single (Fin.last m) 1 ᵥ* g.val) j) - (Pi.single (Fin.last m) 1 : Fin (m + 1) → Af E) j) v) ≤ WithZero.exp (-FractionalIdeal.count E v (J : FractionalIdeal (𝓞 E)⁰ E))`. Introduce `v hv j`. Rewrite using `[hrow]`. Establish `e : (Pi.single (Fin.last m) 1 : Fin (m + 1) → Af E) j = if (j : ℕ) + 1 = m + 1 then 1 else 0`.
+
+Rewrite using `[Pi.single_apply]`. Use `congr 1`. Simplify using `[Fin.ext_iff]`. Rewrite using `[e]`. Conclude with `hN _ (hind' j) v hv`.
+
+Take `⟨u, hu, p, hp, κ, hκ, e⟩` from `GlobalTheory.RSLocalPart.exists_decomp hℓ hJ hg hi hf`. Use `⟨u, (GlobalTheory.SmGL.mem_unipB _).1 hu, p, ⟨hp.2, hp.1⟩, κ, hκ, ?_⟩` and prove the remaining obligations. Rewrite using `[← e, hrow]`. Use `congr 1`. Rewrite `hi` using `[hrow]`.
+
+Establish `hu'` using `GlobalTheory.RSTheta.isUnit_of_mem_rowSet hi`. Rewrite using `[← map_inv]`. Use `congr 1`. Establish `hm : GlobalTheory.RSJ.secRow (fun i => pInf E (GlobalTheory.ZEul.lastRow g i)) = GlobalTheory.RSTheta.rowMat (Fin.last m) (fun i => pInf E (GlobalTheory.ZEul.lastRow g i))`. Use extensionality with `i j`.
+
+Simplify using `only [GlobalTheory.RSJ.secRow, GlobalTheory.RSTheta.rowMat, Matrix.of_apply, Matrix.updateRow_apply]`. Use `congr 1`. Simplify using `[Fin.ext_iff]`. Establish `hd : IsUnit (GlobalTheory.RSJ.secRow (fun i => pInf E (GlobalTheory.ZEul.lastRow g i))).det`. Rewrite using `[hm, GlobalTheory.RSTheta.det_rowMat]`.
+
+Conclude with `hu'`. Rewrite using `[GlobalTheory.RSJ.secInv, dif_pos hd]`. Use `congr 1`. Conclude with `Units.ext (hm.trans (GlobalTheory.RSTheta.val_rowGL hu').symm)`.
+-/
 theorem decomp_lastRow : ∀ (E : Type) [Field E] [NumberField E] [IsTotallyComplex E] (m : ℕ)
     (S : Finset (HeightOneSpectrum (𝓞 E))) (J : (FractionalIdeal (𝓞 E)⁰ E)ˣ),
     (∀ v ∈ S, 0 < FractionalIdeal.count E v (J : FractionalIdeal (𝓞 E)⁰ E)) → ∀ N : ℕ,

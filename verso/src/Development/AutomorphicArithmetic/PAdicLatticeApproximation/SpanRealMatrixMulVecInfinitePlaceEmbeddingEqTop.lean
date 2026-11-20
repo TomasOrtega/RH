@@ -5,6 +5,15 @@ open GlobalTheory.LKTrip GlobalTheory.LKRes GlobalTheory.LKMid GlobalTheory.LKGe
 open scoped Matrix TensorProduct Classical
 open UpperTheory.Gal.W2
 
+/- English proof (translation)
+Introduce `F _ _ _ n hA S hS`. Set `Ph : (InfinitePlace F → Fin n → ℂ) →ₗ[ℝ] (InfinitePlace F → Fin n → ℂ)` to `{ toFun := fun x v => S v *ᵥ x v map_add' := fun x y => by`. Use function extensionality and compare the values at `v`. Simplify using `[Matrix.mulVec_add]`. Use the proof step `map_smul' := fun c x => by`.
+
+Use function extensionality and compare the values at `v`. Simplify using `[Matrix.mulVec_smul] }`. Establish `hsurj : Function.Surjective Ph`. Introduce `y`. Use `⟨fun v => (S v)⁻¹ *ᵥ y v, ?_⟩` and prove the remaining obligations.
+
+Use function extensionality and compare the values at `v`. Establish `hu : IsUnit (S v).det` using `isUnit_iff_ne_zero.2 (hS v)`. Express the relevant statement in the definitionally equal form `S v *ᵥ ((S v)⁻¹ *ᵥ y v) = y v`. Rewrite using `[Matrix.mulVec_mulVec, Matrix.mul_nonsing_inv _ hu, Matrix.one_mulVec]`. Establish `h` using `congrArg (Submodule.map Ph) (hA F n).1`.
+
+Rewrite `h` using `[Submodule.map_span, Submodule.map_top, LinearMap.range_eq_top.2 hsurj, ← Set.range_comp]`. Conclude with `h`.
+-/
 theorem UpperTheory.span_real_matrix_mulVec_infinitePlace_embedding_eq_top :
     ∀ (F : Type) [Field F] [NumberField F] [IsCMField F] (n : ℕ), UpperTheory.Gal.W2.ArchSpan → ∀ S : InfinitePlace F → Matrix (Fin n) (Fin n) ℂ, (∀ v, (S v).det ≠ 0) → Submodule.span ℝ (Set.range fun (x : Fin n → F) (v : InfinitePlace F) => S v *ᵥ fun i => v.embedding (x i)) = ⊤ := by
   intro F _ _ _ n hA S hS

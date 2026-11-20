@@ -16,17 +16,29 @@ def adrU [IsTotallyReal F] (w : InfinitePlace F) (τ : ℝ) : (AF F)ˣ :=
     by rw [adr_mul, ← Real.exp_add, add_neg_cancel, Real.exp_zero, adr_one],
     by rw [adr_mul, ← Real.exp_add, neg_add_cancel, Real.exp_zero, adr_one]⟩
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem evInf_adr [IsTotallyReal F] (w u : InfinitePlace F) (r : ℝ) : evInf F u (adr w r) = (adr w r).1 u := rfl
 
+/- English proof (translation)
+Use `show Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.evalV F v (adr w r).2 = 1`. Rewrite using `[adr_snd, map_one]`.
+-/
 theorem evFin_adr [IsTotallyReal F] (w : InfinitePlace F) (v : HeightOneSpectrum (𝓞 F)) (r : ℝ) :
     evFin F v (adr w r) = 1 := by
   show Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.evalV F v (adr w r).2 = 1
   rw [adr_snd, map_one]
 
+/- English proof (translation)
+Rewrite using `[← (NumberField.InfinitePlace.Completion.isometry_extensionEmbedding u).norm_map_of_map_zero (map_zero _), ext_adr, Complex.norm_real, Real.norm_eq_abs]`.
+-/
 theorem norm_adr [IsTotallyReal F] (w u : InfinitePlace F) (r : ℝ) : ‖(adr w r).1 u‖ = |if u = w then r else 1| := by
   rw [← (NumberField.InfinitePlace.Completion.isometry_extensionEmbedding u).norm_map_of_map_zero (map_zero _),
     ext_adr, Complex.norm_real, Real.norm_eq_abs]
 
+/- English proof (translation)
+The claim follows from `h.1 piInf (τ' u) (algebraMap (AF F) (AE F E) (adr w r)) = ((if u = w then r else 1 : ℝ) : ℂ) := by haveI := h.1 show GlobalTheory.AdelicU.infEmb (τ' u) (GlobalTheory.AdelicU.compInf F E u (algebraMap (AF F) (AE F E) (adr w r))) = _ rw [Algebra.TensorProduct.algebraMap_apply] show …`.
+-/
 theorem piInf_adr (h : IsCMExt F E σ) (τ' : ∀ w : InfinitePlace F, EmbOver E w) (w u : InfinitePlace F) (r : ℝ) :
     haveI := h.1
     piInf (τ' u) (algebraMap (AF F) (AE F E) (adr w r)) = ((if u = w then r else 1 : ℝ) : ℂ) := by
@@ -40,12 +52,18 @@ theorem piInf_adr (h : IsCMExt F E σ) (τ' : ∀ w : InfinitePlace F, EmbOver E
     Algebra.TensorProduct.productMap_apply_tmul, map_one, mul_one]
   exact ext_adr w u r
 
+/- English proof (translation)
+The claim follows from `h.1 finOne F • algebraMap (AF F) (AE F E) (adr w r) = finOne F • (1 : AE F E) := by haveI := h.1 rw [Algebra.smul_def, Algebra.smul_def, ← map_mul, finOne_adr, mul_one]`.
+-/
 theorem finOne_smul_adr (h : IsCMExt F E σ) (w : InfinitePlace F) (r : ℝ) :
     haveI := h.1
     finOne F • algebraMap (AF F) (AE F E) (adr w r) = finOne F • (1 : AE F E) := by
   haveI := h.1
   rw [Algebra.smul_def, Algebra.smul_def, ← map_mul, finOne_adr, mul_one]
 
+/- English proof (translation)
+The claim follows from `h.1 ((absE F E (Units.map (algebraMap (AF F) (AE F E)).toMonoidHom (adrU w τ)) : ℝ≥0) : ℝ) = Real.exp (2 * τ) := by haveI := h.1 have hfin : ∀ v, GlobalTheory.Doubling.absEv F E v (GlobalTheory.Doubling.unitFin F E v (Units.map (algebraMap (AF F) (AE F E)).toMonoidHom (adrU w τ)) …`.
+-/
 theorem absE_adrU (h : IsCMExt F E σ) (w : InfinitePlace F) (τ : ℝ) :
     haveI := h.1
     ((absE F E (Units.map (algebraMap (AF F) (AE F E)).toMonoidHom (adrU w τ)) : ℝ≥0) : ℝ) = Real.exp (2 * τ) := by
@@ -94,6 +112,9 @@ theorem absE_adrU (h : IsCMExt F E σ) (w : InfinitePlace F) (τ : ℝ) :
   · intro hw
     exact absurd (Finset.mem_univ w) hw
 
+/- English proof (translation)
+The claim follows from `d.cm.1 (d.χ (Units.map (algebraMap (AF F) (AE F E)).toMonoidHom (adrU w τ)) : ℂ) = 1 := by haveI := d.cm.1 have hmem : adrU w τ ∈ (Units.map (Algebra.norm (AF F) (S := AE F E))).range := by refine ⟨Units.map (algebraMap (AF F) (AE F E)).toMonoidHom (adrU w (τ / 2)), ?_⟩ apply Uni …`.
+-/
 theorem chi_adrU (d : SD σ) (w : InfinitePlace F) (τ : ℝ) :
     haveI := d.cm.1
     (d.χ (Units.map (algebraMap (AF F) (AE F E)).toMonoidHom (adrU w τ)) : ℂ) = 1 := by

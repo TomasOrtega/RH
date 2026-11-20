@@ -20,6 +20,9 @@ section Linfty
 attribute [local instance] Matrix.linftyOpNormedRing Matrix.linftyOpNormedAlgebra
   Matrix.linftyOpNormedSpace
 
+/- English proof (translation)
+Set `L : Mt →ₗ[ℂ] ℂ` to `(LinearMap.proj j).comp (LinearMap.proj (R := ℂ) (φ := fun _ : Fin n => Fin n → ℂ) i)`. Establish `h` using `(LinearMap.toContinuousLinearMap L).hasFDerivAt.comp_hasDerivAt s (hasDerivAt_exp_smul_const (𝕂 := ℂ) X s)`. Conclude with `h`.
+-/
 theorem hasDerivAt_exp_entry (X : Mt) (s : ℂ) (i j : Fin n) :
     HasDerivAt (fun t : ℂ => (NormedSpace.exp (t • X)) i j) ((NormedSpace.exp (s • X) * X) i j) s := by
   let L : Mt →ₗ[ℂ] ℂ := (LinearMap.proj j).comp (LinearMap.proj (R := ℂ) (φ := fun _ : Fin n => Fin n → ℂ) i)
@@ -30,6 +33,9 @@ end Linfty
 
 attribute [local instance] Matrix.normedAddCommGroup Matrix.normedSpace
 
+/- English proof (translation)
+Rewrite using `[Matrix.mul_assoc]`. Use `hasDerivAt_pi.2 fun i => hasDerivAt_pi.2 fun j => ?_` and prove the remaining obligations. Use `show HasDerivAt (fun t : ℂ => ∑ k, g i k * NormedSpace.exp (t • X) k j) (∑ k, g i k * (NormedSpace.exp (s • X) * X) k j) s`. Apply the tactic sequence `have := HasDerivAt.sum (u := Finset.univ) fun k _ => (hasDerivAt_exp_entry X s k j).const_mul (g i k)`. Simplify `this` using `only [Finset.sum_fn]`.
+-/
 theorem hasDerivAt_curve (g X : Mt) (s : ℂ) :
     HasDerivAt (fun t : ℂ => g * NormedSpace.exp (t • X)) (g * NormedSpace.exp (s • X) * X) s := by
   rw [Matrix.mul_assoc]
@@ -38,6 +44,9 @@ theorem hasDerivAt_curve (g X : Mt) (s : ℂ) :
   have := HasDerivAt.sum (u := Finset.univ) fun k _ => (hasDerivAt_exp_entry X s k j).const_mul (g i k)
   simpa only [Finset.sum_fn] using this
 
+/- English proof (translation)
+Establish `h` using `(hasDerivAt_curve g X (s : ℂ)).scomp s (Complex.ofRealCLM.hasDerivAt (x := s))`. Simplify using `only [Complex.ofRealCLM_apply, Complex.ofReal_one, one_smul] at h`. Conclude with `h`.
+-/
 theorem hasDerivAt_curveR (g X : Mt) (s : ℝ) :
     HasDerivAt (fun t : ℝ => g * NormedSpace.exp ((t : ℂ) • X))
       (g * NormedSpace.exp ((s : ℂ) • X) * X) s := by
@@ -45,6 +54,11 @@ theorem hasDerivAt_curveR (g X : Mt) (s : ℝ) :
   simp only [Complex.ofRealCLM_apply, Complex.ofReal_one, one_smul] at h
   exact h
 
+/- English proof (translation)
+Use `analyticAt_pi_iff.2 fun i => analyticAt_pi_iff.2 fun j => ?_` and prove the remaining obligations. Use `show AnalyticAt ℝ (fun t : ℝ => ∑ k, g i k * NormedSpace.exp ((t : ℂ) • X) k j) s`. Establish `hk : ∀ k, AnalyticAt ℝ (fun t : ℝ => g i k * NormedSpace.exp ((t : ℂ) • X) k j) s`. Introduce `k`. Apply the tactic sequence `have hd : Differentiable ℂ (fun t : ℂ => NormedSpace.exp (t • X) k j) := fun t => (hasDerivAt_exp_entry X t k j).differentiableAt`.
+
+Establish `h0 : AnalyticAt ℝ (fun t : ℝ => (t : ℂ)) s` using `Complex.ofRealCLM.analyticAt s`. Establish `h1 : AnalyticAt ℝ (fun t : ℝ => NormedSpace.exp ((t : ℂ) • X) k j) s` using `((hd.analyticAt (s : ℂ)).restrictScalars (𝕜 := ℝ)).comp h0`. Conclude with `analyticAt_const.mul h1`. Use `Finset.analyticAt_sum Finset.univ fun k _ => hk k` as an intermediate fact. Simplify `this` using `only [Finset.sum_fn]`.
+-/
 theorem analyticAt_curveR (g X : Mt) (s : ℝ) :
     AnalyticAt ℝ (fun t : ℝ => g * NormedSpace.exp ((t : ℂ) • X)) s := by
   refine analyticAt_pi_iff.2 fun i => analyticAt_pi_iff.2 fun j => ?_
@@ -60,6 +74,11 @@ theorem analyticAt_curveR (g X : Mt) (s : ℝ) :
   have := Finset.analyticAt_sum Finset.univ fun k _ => hk k
   simpa only [Finset.sum_fn] using this
 
+/- English proof (translation)
+Establish `he : ∀ (F : E → Mt), AnalyticAt 𝕜 F x → ∀ a b, AnalyticAt 𝕜 (fun y => F y a b) x`. Introduce `F hF a b`. Establish `ha : AnalyticAt 𝕜 (fun y => F y a) x` using `(analyticAt_pi_iff (f := fun a y => F y a)).1 hF a`. Conclude with `(analyticAt_pi_iff (f := fun b y => F y a b)).1 ha b`. Use `analyticAt_pi_iff.2 fun i => analyticAt_pi_iff.2 fun j => ?_` and prove the remaining obligations.
+
+Use `show AnalyticAt 𝕜 (fun y => ∑ k, f y i k * g y k j) x`. Establish `hk : ∀ k, AnalyticAt 𝕜 (fun y => f y i k * g y k j) x` using `fun k => (he f hf i k).mul (he g hg k j)`. Use `Finset.analyticAt_sum Finset.univ fun k _ => hk k` as an intermediate fact. Simplify `this` using `only [Finset.sum_fn]`.
+-/
 theorem analyticAt_mul {𝕜 E : Type} [NontriviallyNormedField 𝕜] [NormedAlgebra 𝕜 ℂ]
     [NormedAddCommGroup E] [NormedSpace 𝕜 E] {f g : E → Mt} {x : E}
     (hf : AnalyticAt 𝕜 f x) (hg : AnalyticAt 𝕜 g x) : AnalyticAt 𝕜 (fun y => f y * g y) x := by
@@ -76,12 +95,18 @@ theorem analyticAt_mul {𝕜 E : Type} [NontriviallyNormedField 𝕜] [NormedAlg
 def LocAn (ε : Fin n → Bool) (f : Mt → ℂ) : Prop :=
   ∀ g, inUJ ε g → ∃ F : Mt → ℂ, AnalyticAt ℝ F g ∧ ∀ᶠ z in 𝓝 g, inUJ ε z → f z = F z
 
+/- English proof (translation)
+Introduce `g hg`. Take `⟨F, hF, hev⟩` from `h g hg`. Take `⟨U, hU, hUo, hgU⟩` from `mem_nhds_iff.1 (hF.eventually_analyticAt.and hev)`. Conclude with `⟨U, F, hUo, hgU, fun z hz => (hU hz).1.contDiffAt.contDiffWithinAt, fun z hz hzJ => (hU hz).2 hzJ⟩`.
+-/
 theorem LocAn.smooth {ε : Fin n → Bool} {f : Mt → ℂ} (h : LocAn ε f) : SmoothOnG ε f := by
   intro g hg
   obtain ⟨F, hF, hev⟩ := h g hg
   obtain ⟨U, hU, hUo, hgU⟩ := mem_nhds_iff.1 (hF.eventually_analyticAt.and hev)
   exact ⟨U, F, hUo, hgU, fun z hz => (hU hz).1.contDiffAt.contDiffWithinAt, fun z hz hzJ => (hU hz).2 hzJ⟩
 
+/- English proof (translation)
+Establish `h` using `(ContinuousLinearMap.apply 𝕜 G : F →L[𝕜] (F →L[𝕜] G) →L[𝕜] G).analyticAt_bilinear (B x, A x)`. Establish `h2 : AnalyticAt 𝕜 (fun y => (B y, A y)) x` using `hB.prod hA`. Conclude with `AnalyticAt.comp (g := fun p : F × (F →L[𝕜] G) => (ContinuousLinearMap.apply 𝕜 G) p.1 p.2) (f := fun y => (B y, A y)) h h2`.
+-/
 private theorem analyticAt_clm_apply {𝕜 E F G : Type*} [NontriviallyNormedField 𝕜] [NormedAddCommGroup E]
     [NormedSpace 𝕜 E] [NormedAddCommGroup F] [NormedSpace 𝕜 F] [NormedAddCommGroup G] [NormedSpace 𝕜 G]
     {A : E → F →L[𝕜] G} {B : E → F} {x : E} (hA : AnalyticAt 𝕜 A x) (hB : AnalyticAt 𝕜 B x) :
@@ -91,6 +116,11 @@ private theorem analyticAt_clm_apply {𝕜 E F G : Type*} [NontriviallyNormedFie
   exact AnalyticAt.comp (g := fun p : F × (F →L[𝕜] G) => (ContinuousLinearMap.apply 𝕜 G) p.1 p.2)
     (f := fun y => (B y, A y)) h h2
 
+/- English proof (translation)
+Introduce `g hg`. Take `⟨F, hF, hev⟩` from `h g hg`. Take `⟨U, hU, hUo, hgU⟩` from `mem_nhds_iff.1 (hF.eventually_analyticAt.and hev)`. Establish `hCD : ContDiffOn ℝ ∞ F U` using `fun z hz => (hU hz).1.contDiffAt.contDiffWithinAt`. Set `L : Mt →ₗ[ℝ] Mt` to `LinearMap.mulRight ℝ X`.
+
+Use `⟨fun z => fderiv ℝ F z (z * X), ?_, ?_⟩` and prove the remaining obligations. Establish `h2 : AnalyticAt ℝ (fun z : Mt => z * X) g` using `(LinearMap.toContinuousLinearMap L).analyticAt g`. Conclude with `analyticAt_clm_apply (AnalyticAt.fderiv hF) h2`. Use `filter_upwards [hUo.mem_nhds hgU] with z hz hzJ`. Conclude with `Formalism.REAL.right_derivative_extends n ε f F U z X hUo hz hzJ hCD (fun w hw hwJ => (hU hw).2 hwJ) hX`.
+-/
 theorem LocAn.rd {ε : Fin n → Bool} {f : Mt → ℂ} (h : LocAn ε f) {X : Mt} (hX : inG ε X) :
     LocAn ε (Rd X f) := by
   intro g hg
@@ -104,6 +134,11 @@ theorem LocAn.rd {ε : Fin n → Bool} {f : Mt → ℂ} (h : LocAn ε f) {X : Mt
   · filter_upwards [hUo.mem_nhds hgU] with z hz hzJ
     exact Formalism.REAL.right_derivative_extends n ε f F U z X hUo hz hzJ hCD (fun w hw hwJ => (hU hw).2 hwJ) hX
 
+/- English proof (translation)
+Introduce `g hg`. Take `⟨F, hF, e⟩` from `h g hg`. Take `⟨F', hF', e'⟩` from `h' g hg`. Use `⟨fun z => F z + F' z, hF.add hF', ?_⟩` and prove the remaining obligations. Use `filter_upwards [e, e'] with z h1 h2 hz`.
+
+Rewrite using `[h1 hz, h2 hz]`.
+-/
 theorem LocAn.add {ε : Fin n → Bool} {f f' : Mt → ℂ} (h : LocAn ε f) (h' : LocAn ε f') :
     LocAn ε (fun g => f g + f' g) := by
   intro g hg
@@ -113,6 +148,9 @@ theorem LocAn.add {ε : Fin n → Bool} {f f' : Mt → ℂ} (h : LocAn ε f) (h'
   filter_upwards [e, e'] with z h1 h2 hz
   rw [h1 hz, h2 hz]
 
+/- English proof (translation)
+Introduce `g hg`. Take `⟨F, hF, e⟩` from `h g hg`. Use `⟨fun z => c * F z, analyticAt_const.mul hF, ?_⟩` and prove the remaining obligations. Use `filter_upwards [e] with z h1 hz`. Rewrite using `[h1 hz]`.
+-/
 theorem LocAn.const_mul {ε : Fin n → Bool} {f : Mt → ℂ} (h : LocAn ε f) (c : ℂ) :
     LocAn ε (fun g => c * f g) := by
   intro g hg
@@ -121,6 +159,11 @@ theorem LocAn.const_mul {ε : Fin n → Bool} {f : Mt → ℂ} (h : LocAn ε f) 
   filter_upwards [e] with z h1 hz
   rw [h1 hz]
 
+/- English proof (translation)
+Introduce `g hg`. Use `choose F hF e using fun i => h i g hg`. Establish `hA : AnalyticAt ℝ (fun z => ∑ i ∈ s, F i z) g`. Use `Finset.analyticAt_sum s fun i _ => hF i` as an intermediate fact. Simplify `this` using `only [Finset.sum_fn]`.
+
+Use `⟨fun z => ∑ i ∈ s, F i z, hA, ?_⟩` and prove the remaining obligations. Establish `hs : ∀ᶠ z in 𝓝 g, ∀ i ∈ s, inUJ ε z → f i z = F i z` using `(Filter.eventually_all_finset s).2 fun i _ => e i`. Use `filter_upwards [hs] with z hz hzJ`. Conclude with `Finset.sum_congr rfl fun i hi => hz i hi hzJ`.
+-/
 theorem LocAn.sum {ε : Fin n → Bool} {ι : Type} (s : Finset ι) {f : ι → Mt → ℂ}
     (h : ∀ i, LocAn ε (f i)) : LocAn ε (fun g => ∑ i ∈ s, f i g) := by
   intro g hg
@@ -134,6 +177,9 @@ theorem LocAn.sum {ε : Fin n → Bool} {ι : Type} (s : Finset ι) {f : ι → 
   filter_upwards [hs] with z hz hzJ
   exact Finset.sum_congr rfl fun i hi => hz i hi hzJ
 
+/- English proof (translation)
+Proceed by induction on `w with`. Consider the case `nil => exact h`. Consider the case `cons p w ih`. Establish `c` using `Formalism.REAL.complex_parts_mem_lie_algebra_holds n ε (Matrix.single p.1 p.2 1)`. Conclude with `(ih.rd c.1).add ((ih.rd c.2.1).const_mul Complex.I)`.
+-/
 theorem LocAn.eword {ε : Fin n → Bool} {f : Mt → ℂ} (h : LocAn ε f) (w : List (Fin n × Fin n)) :
     LocAn ε (Eword ε w f) := by
   induction w with
@@ -142,9 +188,47 @@ theorem LocAn.eword {ε : Fin n → Bool} {f : Mt → ℂ} (h : LocAn ε f) (w :
     have c := Formalism.REAL.complex_parts_mem_lie_algebra_holds n ε (Matrix.single p.1 p.2 1)
     exact (ih.rd c.1).add ((ih.rd c.2.1).const_mul Complex.I)
 
+/- English proof (translation)
+The claim follows from `LocAn.sum Finset.univ fun _ => h.eword _`.
+-/
 theorem LocAn.gelf {ε : Fin n → Bool} {f : Mt → ℂ} (h : LocAn ε f) (m : ℕ) :
     LocAn ε (gelf ε m f) := LocAn.sum Finset.univ fun _ => h.eword _
 
+/- English proof (translation)
+Distinguish the cases in `hg : inUJ ε g`. Take `⟨V, hV, hVo, hgV⟩` from `mem_nhds_iff.1 h0`. Establish `hexp : ∀ t : ℝ, inUJ ε (NormedSpace.exp ((t : ℂ) • X))` using `Formalism.REAL.exp_indefinite_unitary_holds n ε X hX`. Establish `hmul : ∀ a b : Mt, inUJ ε a → inUJ ε b → inUJ ε (a * b)`. Introduce `a b ha hb`.
+
+Establish `ha' : aᴴ * Formalism.REAL.Jm ε * a = Formalism.REAL.Jm ε` using `ha`. Establish `hb' : bᴴ * Formalism.REAL.Jm ε * b = Formalism.REAL.Jm ε` using `hb`. Use `show (a * b)ᴴ * Formalism.REAL.Jm ε * (a * b) = Formalism.REAL.Jm ε`. Rewrite using `[Matrix.conjTranspose_mul]`. Combine the equalities or inequalities in the displayed calculation.
+
+Simplify using `only [Matrix.mul_assoc]`. Use `_ = Formalism.REAL.Jm ε := by rw [ha', hb']`. Establish `hcurve : ∀ w : Mt, Continuous (fun t : ℝ => g * NormedSpace.exp ((t : ℂ) • X) * w)` using `fun w => (continuous_iff_continuousAt.2 fun t => (hasDerivAt_curveR g X t).continuousAt).matrix_mul continuous_const`. Establish `core : ∀ w, inUJ ε w → g * w ∈ V → f (g * NormedSpace.exp X * w) = 0`. Introduce `w hw hgw`.
+
+Establish `hp : ∀ t : ℝ, inUJ ε (g * NormedSpace.exp ((t : ℂ) • X) * w)` using `fun t => hmul _ _ (hmul _ _ hg (hexp t)) hw`. Establish `han : AnalyticOnNhd ℝ (fun t : ℝ => f (g * NormedSpace.exp ((t : ℂ) • X) * w)) Set.univ`. Introduce `t _`. Take `⟨F, hF, hev⟩` from `h _ (hp t)`. Establish `hpa : AnalyticAt ℝ (fun s : ℝ => g * NormedSpace.exp ((s : ℂ) • X) * w) t` using `analyticAt_mul (analyticAt_curveR g X t) analyticAt_const`.
+
+Establish `hcomp : AnalyticAt ℝ (fun s : ℝ => F (g * NormedSpace.exp ((s : ℂ) • X) * w)) t` using `AnalyticAt.comp (f := fun s : ℝ => g * NormedSpace.exp ((s : ℂ) • X) * w) hF hpa`. Use `hcomp.congr ?_` and prove the remaining obligations. Use `(hcurve w).continuousAt.eventually hev` as an intermediate fact. Use `filter_upwards [this] with s hs`. Conclude with `(hs (hp s)).symm`.
+
+Establish `hz : (fun t : ℝ => f (g * NormedSpace.exp ((t : ℂ) • X) * w)) =ᶠ[𝓝 0] 0`. Establish `hVn : V ∈ 𝓝 ((fun t : ℝ => g * NormedSpace.exp ((t : ℂ) • X) * w) 0)`. Simplify using `using hVo.mem_nhds hgw`. Establish `hV0 : ∀ᶠ s : ℝ in 𝓝 0, g * NormedSpace.exp ((s : ℂ) • X) * w ∈ V` using `(hcurve w).continuousAt.preimage_mem_nhds hVn`. Use `filter_upwards [hV0] with s hs`.
+
+Conclude with `hV hs (hp s)`. Use `han.eqOn_zero_of_preconnected_of_eventuallyEq_zero isPreconnected_univ (Set.mem_univ 0) hz (Set.mem_univ 1)` as an intermediate fact. Simplify using `using this`. Use `set a := g * NormedSpace.exp X with ha_def`. Establish `ha : inUJ ε a` using `hmul _ _ hg (by simpa using hexp 1)`.
+
+Establish `ha' : aᴴ * Formalism.REAL.Jm ε * a = Formalism.REAL.Jm ε` using `ha`. Establish `hJJ : ∀ M : Mt, Formalism.REAL.Jm ε * (Formalism.REAL.Jm ε * M) = M` using `fun M => by`. Rewrite using `[← Matrix.mul_assoc, Formalism.REAL.Jm_mul_self, Matrix.one_mul]`. Use `set B := Formalism.REAL.Jm ε * aᴴ * Formalism.REAL.Jm ε with hB_def`. Establish `hleft : B * a = 1`.
+
+Rewrite using `[hB_def]`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [Matrix.mul_assoc]`. Use `_ = 1 := by rw [ha', Formalism.REAL.Jm_mul_self]`. Establish `hright : a * B = 1` using `mul_eq_one_comm.1 hleft`.
+
+Establish `hBJB : Bᴴ * Formalism.REAL.Jm ε * B = Formalism.REAL.Jm ε`. Establish `e1 : Bᴴ = Formalism.REAL.Jm ε * a * Formalism.REAL.Jm ε`. Rewrite using `[hB_def]`. Simplify using `only [Matrix.conjTranspose_mul, Formalism.REAL.Jm_conjTranspose, Matrix.conjTranspose_conjTranspose, Matrix.mul_assoc]`. Rewrite using `[e1]`.
+
+Establish `hr' : a * (Formalism.REAL.Jm ε * (aᴴ * Formalism.REAL.Jm ε)) = 1`. Rewrite using `[← hright, hB_def]`. Simplify using `only [Matrix.mul_assoc]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[hB_def]`.
+
+Simplify using `only [Matrix.mul_assoc, hJJ]`. Use `_ = Formalism.REAL.Jm ε := by rw [hr', Matrix.mul_one]`. Establish `hc : Continuous (fun q : Mt => g * (B * q))` using `continuous_const.matrix_mul (continuous_const.matrix_mul continuous_id)`. Establish `hnb : ∀ᶠ q in 𝓝 a, g * (B * q) ∈ V` using `hc.continuousAt.preimage_mem_nhds (by rw [hleft, Matrix.mul_one]; exact hVo.mem_nhds hgV)`. Use `filter_upwards [hnb] with q hq hqJ`.
+
+Establish `hqJ' : qᴴ * Formalism.REAL.Jm ε * q = Formalism.REAL.Jm ε` using `hqJ`. Establish `hw : inUJ ε (B * q)` using `by show (B * q)ᴴ * Formalism.REAL.Jm ε * (B * q) = Formalism.REAL.Jm ε`. Rewrite using `[Matrix.conjTranspose_mul]`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [Matrix.mul_assoc]`.
+
+Use `_ = Formalism.REAL.Jm ε := by rw [hBJB, hqJ']`. Use `core _ hw hq` as an intermediate fact. Rewrite `this` using `[← Matrix.mul_assoc, hright, Matrix.one_mul]`. Then use the resulting hypothesis. Establish `hcl : IsClosed {z : Mt | inUJ ε z}` using `Formalism.REAL.indefinite_unitary_closed n ε`. Establish `hne : ¬ inUJ ε (g * NormedSpace.exp X)`.
+
+Introduce `hgx`. Apply `hg` to reduce the goal to its premises. Establish `hexp : inUJ ε (NormedSpace.exp (((-1 : ℝ) : ℂ) • X))` using `Formalism.REAL.exp_indefinite_unitary_holds n ε X hX (-1)`. Establish `e : g = g * NormedSpace.exp X * NormedSpace.exp (((-1 : ℝ) : ℂ) • X)`. Rewrite using `[Matrix.mul_assoc, ← Matrix.exp_add_of_commute X _ ((Commute.refl X).smul_right _)]`.
+
+Simplify using the standard rewrite rules. Rewrite using `[e]`. Establish `ha' : (g * NormedSpace.exp X)ᴴ * Formalism.REAL.Jm ε * (g * NormedSpace.exp X) = Formalism.REAL.Jm ε` using `hgx`. Establish `hb' : (NormedSpace.exp (((-1 : ℝ) : ℂ) • X))ᴴ * Formalism.REAL.Jm ε * NormedSpace.exp (((-1 : ℝ) : ℂ) • X) = Formalism.REAL.Jm ε` using `hexp`. Use `show (g * NormedSpace.exp X * NormedSpace.exp (((-1 : ℝ) : ℂ) • X))ᴴ * Formalism.REAL.Jm ε * (g * NormedSpace.exp X * NormedSpace.exp (((-1 : ℝ) : ℂ) • X)) = Formalism.REAL.Jm ε`.
+
+Rewrite using `[Matrix.conjTranspose_mul]`. Combine the equalities or inequalities in the displayed calculation. Use `filter_upwards [hcl.isOpen_compl.mem_nhds hne] with z hz hzJ`. Conclude with `absurd hzJ hz`.
+-/
 theorem LocAn.propagate {ε : Fin n → Bool} {f : Mt → ℂ} (h : LocAn ε f) {g X : Mt} (hX : inG ε X)
     (h0 : ∀ᶠ z in 𝓝 g, inUJ ε z → f z = 0) :
     ∀ᶠ z in 𝓝 (g * NormedSpace.exp X), inUJ ε z → f z = 0 := by
@@ -246,6 +330,9 @@ theorem LocAn.propagate {ε : Fin n → Bool} {f : Mt → ℂ} (h : LocAn ε f) 
     filter_upwards [hcl.isOpen_compl.mem_nhds hne] with z hz hzJ
     exact absurd hzJ hz
 
+/- English proof (translation)
+Take `⟨Z, X, hZ, hX, rfl⟩` from `Formalism.REAL.genExp _ _ _ hg`. Establish `h1 : ∀ᶠ z in 𝓝 ((1 : Mt) * NormedSpace.exp Z), inUJ ε z → f z = 0` using `h.propagate hZ.1 h0`. Rewrite `h1` using `[one_mul]`. Conclude with `(h.propagate hX.1 h1).self_of_nhds hg`.
+-/
 theorem LocAn.eq_zero {ε : Fin n → Bool} {f : Mt → ℂ} (h : LocAn ε f)
     (h0 : ∀ᶠ z in 𝓝 (1 : Mt), inUJ ε z → f z = 0) {g : Mt} (hg : inUJ ε g) : f g = 0 := by
   obtain ⟨Z, X, hZ, hX, rfl⟩ := Formalism.REAL.genExp _ _ _ hg
@@ -253,6 +340,11 @@ theorem LocAn.eq_zero {ε : Fin n → Bool} {f : Mt → ℂ} (h : LocAn ε f)
   rw [one_mul] at h1
   exact (h.propagate hX.1 h1).self_of_nhds hg
 
+/- English proof (translation)
+Take `⟨r, hr, hrs⟩` from `Metric.mem_nhds_iff.1 hs`. Establish `hδ : (0 : ℝ) < r / 2` using `by positivity`. Establish `hcb : Metric.closedBall (0 : ℝ) (r / 2) ⊆ s` using `fun t ht => hrs (Metric.closedBall_subset_ball (by linarith) ht)`. Establish `hcomp : IsCompact (Metric.closedBall (0 : ℝ) (r / 2) ×ˢ (Set.univ : Set K))` using `(isCompact_closedBall 0 (r / 2)).prod isCompact_univ`. Take `⟨C, hC⟩` from `hcomp.exists_bound_of_continuousOn (hF'.mono (Set.prod_mono hcb subset_rfl))`.
+
+Establish `h0 : (0 : ℝ) ∈ s` using `mem_of_mem_nhds hs`. Take `⟨C0, hC0⟩` from `isCompact_univ.exists_bound_of_continuousOn (hF 0 h0).continuousOn`. Establish `hF'0 : Continuous (F' 0)` using `hF'.comp_continuous (continuous_const.prodMk continuous_id) fun k => ⟨h0, trivial⟩`. Establish `key` using `hasDerivAt_integral_of_dominated_loc_of_deriv_le (μ := μ) (x₀ := (0 : ℝ)) (F := F) (F' := F') (bound := fun _ => C) (Metric.ball_mem_nhds 0 hδ) (by filter_upwards [hs] with t ht; exact (hF t ht).aestronglyMeasurable) (Integrable.of_bound (hF 0 h0).aestronglyMeasurable C0 (ae_of_a …`. Conclude with `key.2`.
+-/
 theorem hasDerivAt_integral_compact {K : Type} [TopologicalSpace K] [CompactSpace K] [MeasurableSpace K]
     [BorelSpace K] (μ : Measure K) [IsFiniteMeasure μ] {F F' : ℝ → K → ℂ} {s : Set ℝ} (hs : s ∈ 𝓝 (0 : ℝ))
     (hF : ∀ t ∈ s, Continuous (F t)) (hF' : ContinuousOn (fun x : ℝ × K => F' x.1 x.2) (s ×ˢ Set.univ))
@@ -282,6 +374,13 @@ theorem hasDerivAt_integral_compact {K : Type} [TopologicalSpace K] [CompactSpac
 def Om3 (n : ℕ) : Set ((Matrix (Fin n) (Fin n) ℂ × Matrix (Fin n) (Fin n) ℂ) × Matrix (Fin n) (Fin n) ℂ) :=
   {x | x.1.1 * x.2 * x.1.2 ∈ Omega n}
 
+/- English proof (translation)
+Establish `he : ∀ a b, AnalyticAt ℂ (fun y : Mt => y a b) z` using `fun a b => by`. Establish `ha : AnalyticAt ℂ (fun y : Mt => y a) z` using `(analyticAt_pi_iff (f := fun a (y : Mt) => y a)).1 (analyticAt_id (𝕜 := ℂ) (z := z)) a`. Conclude with `(analyticAt_pi_iff (f := fun b (y : Mt) => y a b)).1 ha b`. Use `show AnalyticAt ℂ (fun y : Mt => (y.submatrix (Fin.castLE hl) (Fin.castLE hl)).det) z`. Simplify using `only [Matrix.det_apply, Matrix.submatrix_apply, Units.smul_def, zsmul_eq_mul]`.
+
+Establish `hp : ∀ σ : Equiv.Perm (Fin l), AnalyticAt ℂ (fun y : Mt => ((Equiv.Perm.sign σ : ℤ) : ℂ) * ∏ i, y (Fin.castLE hl (σ i)) (Fin.castLE hl i)) z`. Introduce `σ`. Use `Finset.analyticAt_prod (Finset.univ : Finset (Fin l)) (f := fun i (y : Mt) => y (Fin.castLE hl (σ i)) (Fin.castLE hl i)) fun i _ => he _ _` as an intermediate fact. Conclude with `analyticAt_const.mul (by simpa only [Finset.prod_fn] using this)`. Use `Finset.analyticAt_sum Finset.univ fun σ _ => hp σ` as an intermediate fact.
+
+Simplify `this` using `only [Finset.sum_fn]`.
+-/
 theorem analyticAt_leadMinor (l : ℕ) (hl : l ≤ n) (z : Mt) :
     AnalyticAt ℂ (fun y : Mt => leadMinor y l hl) z := by
   have he : ∀ a b, AnalyticAt ℂ (fun y : Mt => y a b) z := fun a b => by
@@ -299,6 +398,11 @@ theorem analyticAt_leadMinor (l : ℕ) (hl : l ≤ n) (z : Mt) :
   have := Finset.analyticAt_sum Finset.univ fun σ _ => hp σ
   simpa only [Finset.sum_fn] using this
 
+/- English proof (translation)
+Establish `hc : ∀ i : Fin n, Continuous (fun y : Mt => leadMinor y (i.val + 1) i.isLt)` using `fun i => continuous_iff_continuousAt.2 fun y => (analyticAt_leadMinor _ _ y).continuousAt`. Establish `: Omega n = ⋂ i : Fin n, (fun y : Mt => leadMinor y (i.val + 1) i.isLt) ⁻¹' {0}ᶜ`. Use extensionality with `y`. Simplify using `[Omega]`. Rewrite using `[this]`.
+
+Conclude with `isOpen_iInter_of_finite fun i => isOpen_compl_singleton.preimage (hc i)`.
+-/
 theorem isOpen_Omega : IsOpen (Omega n) := by
   have hc : ∀ i : Fin n, Continuous (fun y : Mt => leadMinor y (i.val + 1) i.isLt) := fun i =>
     continuous_iff_continuousAt.2 fun y => (analyticAt_leadMinor _ _ y).continuousAt
@@ -307,8 +411,16 @@ theorem isOpen_Omega : IsOpen (Omega n) := by
   rw [this]
   exact isOpen_iInter_of_finite fun i => isOpen_compl_singleton.preimage (hc i)
 
+/- English proof (translation)
+The claim follows from `isOpen_Omega.preimage ((continuous_fst.fst.matrix_mul continuous_snd).matrix_mul continuous_fst.snd)`.
+-/
 theorem isOpen_leadingMinorsNonzeroTripleSet : IsOpen (Om3 n) := isOpen_Omega.preimage ((continuous_fst.fst.matrix_mul continuous_snd).matrix_mul continuous_fst.snd)
 
+/- English proof (translation)
+Introduce `x hx`. Establish `h11 : AnalyticAt ℂ (fun x : (Mt × Mt) × Mt => x.1.1) x` using `AnalyticAt.comp analyticAt_fst analyticAt_fst`. Establish `h12 : AnalyticAt ℂ (fun x : (Mt × Mt) × Mt => x.1.2) x` using `AnalyticAt.comp analyticAt_snd analyticAt_fst`. Establish `h2 : AnalyticAt ℂ (fun x : (Mt × Mt) × Mt => x.2) x` using `analyticAt_snd`. Establish `hm : AnalyticAt ℂ (fun x : (Mt × Mt) × Mt => x.1.1 * x.2 * x.1.2) x` using `analyticAt_mul (analyticAt_mul h11 h2) h12`.
+
+Use `show AnalyticAt ℂ (fun x : (Mt × Mt) × Mt => ∏ i : Fin n, leadMinor (x.1.1 * x.2 * x.1.2) (i.val + 1) i.isLt ^ (-(sInt lam i))) x`. Establish `hi : ∀ i : Fin n, AnalyticAt ℂ (fun x : (Mt × Mt) × Mt => leadMinor (x.1.1 * x.2 * x.1.2) (i.val + 1) i.isLt ^ (-(sInt lam i))) x` using `fun i => by exact ((analyticAt_leadMinor _ _ _).comp hm).zpow (hx i)`. Use `Finset.analyticAt_prod Finset.univ fun i _ => hi i` as an intermediate fact. Simplify `this` using `only [Finset.prod_fn]`.
+-/
 theorem analyticOn_leadingMinorPowerProduct_triple (lam : Fin n → ℝ) :
     AnalyticOnNhd ℂ (fun x : (Mt × Mt) × Mt => Phi lam (x.1.1 * x.2 * x.1.2)) (Om3 n) := by
   intro x hx
@@ -325,6 +437,9 @@ theorem analyticOn_leadingMinorPowerProduct_triple (lam : Fin n → ℝ) :
   have := Finset.analyticAt_prod Finset.univ fun i _ => hi i
   simpa only [Finset.prod_fn] using this
 
+/- English proof (translation)
+Establish `h` using `(ContinuousLinearMap.apply 𝕜 G : F →L[𝕜] (F →L[𝕜] G) →L[𝕜] G).analyticAt_bilinear (B x, A x)`. Establish `h2 : AnalyticAt 𝕜 (fun y => (B y, A y)) x` using `hB.prod hA`. Conclude with `AnalyticAt.comp (g := fun p : F × (F →L[𝕜] G) => (ContinuousLinearMap.apply 𝕜 G) p.1 p.2) (f := fun y => (B y, A y)) h h2`.
+-/
 private theorem analyticAt_clm_apply' {𝕜 E F G : Type*} [NontriviallyNormedField 𝕜] [NormedAddCommGroup E]
     [NormedSpace 𝕜 E] [NormedAddCommGroup F] [NormedSpace 𝕜 F] [NormedAddCommGroup G] [NormedSpace 𝕜 G]
     {A : E → F →L[𝕜] G} {B : E → F} {x : E} (hA : AnalyticAt 𝕜 A x) (hB : AnalyticAt 𝕜 B x) :
@@ -340,6 +455,9 @@ def Dz (Z : Mt) (G : (Mt × Mt) × Mt → ℂ) : (Mt × Mt) × Mt → ℂ :=
 def Dw (w : List (Fin n × Fin n)) (G : (Mt × Mt) × Mt → ℂ) : (Mt × Mt) × Mt → ℂ :=
   w.foldr (fun p G => Dz (Matrix.single p.1 p.2 1) G) G
 
+/- English proof (translation)
+Introduce `x hx`. Establish `h2 : AnalyticAt ℂ (fun x : (Mt × Mt) × Mt => ((0 : Mt × Mt), x.2 * Z)) x` using `analyticAt_const.prod (analyticAt_mul analyticAt_snd analyticAt_const)`. Conclude with `analyticAt_clm_apply' (AnalyticAt.fderiv (hG x hx)) h2`.
+-/
 theorem analytic_Dz {G : (Mt × Mt) × Mt → ℂ} (hG : AnalyticOnNhd ℂ G (Om3 n)) (Z : Mt) :
     AnalyticOnNhd ℂ (Dz Z G) (Om3 n) := by
   intro x hx
@@ -347,12 +465,18 @@ theorem analytic_Dz {G : (Mt × Mt) × Mt → ℂ} (hG : AnalyticOnNhd ℂ G (Om
     analyticAt_const.prod (analyticAt_mul analyticAt_snd analyticAt_const)
   exact analyticAt_clm_apply' (AnalyticAt.fderiv (hG x hx)) h2
 
+/- English proof (translation)
+Proceed by induction on `w with`. Consider the case `nil => exact hG`. Consider the case `cons p w ih => exact analytic_Dz ih _`.
+-/
 theorem analytic_Dw {G : (Mt × Mt) × Mt → ℂ} (hG : AnalyticOnNhd ℂ G (Om3 n))
     (w : List (Fin n × Fin n)) : AnalyticOnNhd ℂ (Dw w G) (Om3 n) := by
   induction w with
   | nil => exact hG
   | cons p w ih => exact analytic_Dz ih _
 
+/- English proof (translation)
+Establish `h` using `(hG _ hs).differentiableAt.hasFDerivAt.comp_hasDerivAt s ((hasDerivAt_const s p).prodMk (hasDerivAt_curve z X s))`. Conclude with `h`.
+-/
 theorem hasDerivAt_slice {G : (Mt × Mt) × Mt → ℂ} (hG : AnalyticOnNhd ℂ G (Om3 n)) (p : Mt × Mt)
     (z X : Mt) (s : ℂ) (hs : (p, z * NormedSpace.exp (s • X)) ∈ Om3 n) :
     HasDerivAt (fun t : ℂ => G (p, z * NormedSpace.exp (t • X)))
@@ -361,6 +485,13 @@ theorem hasDerivAt_slice {G : (Mt × Mt) × Mt → ℂ} (hG : AnalyticOnNhd ℂ 
     ((hasDerivAt_const s p).prodMk (hasDerivAt_curve z X s))
   exact h
 
+/- English proof (translation)
+Proceed by induction on `w generalizing z with`. Consider the case `nil => rfl`. Consider the case `cons q w ih => show deriv (fun t : ℂ => RholW w (fun y => G (p, y)) (z * NormedSpace.exp (t • Matrix.single q.1 q.2 (1 : ℂ)))) 0 = Dz (Matrix.single q.1 q.2 1) (Dw w G) (p, z)`. Establish `hcu : Continuous (fun t : ℂ => z * NormedSpace.exp (t • Matrix.single q.1 q.2 (1 : ℂ)))` using `continuous_iff_continuousAt.2 fun t => (hasDerivAt_curve z _ t).continuousAt`. Establish `hc : Continuous (fun t : ℂ => (p, z * NormedSpace.exp (t • Matrix.single q.1 q.2 (1 : ℂ))))` using `continuous_const.prodMk hcu`.
+
+Establish `hev : ∀ᶠ t in 𝓝 (0 : ℂ), (p, z * NormedSpace.exp (t • Matrix.single q.1 q.2 (1 : ℂ))) ∈ Om3 n`. Apply `hc.continuousAt.preimage_mem_nhds` to reduce the goal to its premises. Simplify using `using isOpen_leadingMinorsNonzeroTripleSet.mem_nhds hz`. Establish `heq : (fun t : ℂ => RholW w (fun y => G (p, y)) (z * NormedSpace.exp (t • Matrix.single q.1 q.2 (1 : ℂ)))) =ᶠ[𝓝 0] fun t => Dw w G (p, z * NormedSpace.exp (t • Matrix.single q.1 q.2 (1 : ℂ)))` using `hev.mono fun t ht => ih _ ht`. Rewrite using `[heq.deriv_eq]`.
+
+Establish `hd` using `hasDerivAt_slice (analytic_Dw hG w) p z (Matrix.single q.1 q.2 1) 0 (by simpa using hz)`. Simplify using `using hd.deriv`.
+-/
 theorem rholW_eq {G : (Mt × Mt) × Mt → ℂ} (hG : AnalyticOnNhd ℂ G (Om3 n)) (p : Mt × Mt)
     (w : List (Fin n × Fin n)) (z : Mt) (hz : (p, z) ∈ Om3 n) :
     RholW w (fun y => G (p, y)) z = Dw w G (p, z) := by
@@ -385,8 +516,14 @@ theorem rholW_eq {G : (Mt × Mt) × Mt → ℂ} (hG : AnalyticOnNhd ℂ G (Om3 n
 
 def pk {ε : Fin n → Bool} (k : KG ε) : Mt × Mt := ((toMK k)⁻¹, toMK k)
 
+/- English proof (translation)
+The claim follows from `(Units.continuous_val.comp continuous_subtype_val).comp continuous_subtype_val`.
+-/
 theorem continuous_toMK (ε : Fin n → Bool) : Continuous (fun k : KG ε => toMK k) := (Units.continuous_val.comp continuous_subtype_val).comp continuous_subtype_val
 
+/- English proof (translation)
+Establish `e : (pk (ε` using `ε)) = fun k : KG ε => (((((k : UJ ε) : (Matrix (Fin n) (Fin n) ℂ)ˣ)⁻¹ : (Matrix (Fin n) (Fin n) ℂ)ˣ) : Mt), toMK k) := by`. Use function extensionality and compare the values at `k`. Simplify using `[pk, Matrix.coe_units_inv]`. Rewrite using `[e]`. Conclude with `(Units.continuous_coe_inv.comp (continuous_subtype_val.comp continuous_subtype_val)).prodMk (continuous_toMK ε)`.
+-/
 theorem continuous_pk (ε : Fin n → Bool) : Continuous (pk (ε := ε)) := by
   have e : (pk (ε := ε)) = fun k : KG ε =>
       (((((k : UJ ε) : (Matrix (Fin n) (Fin n) ℂ)ˣ)⁻¹ : (Matrix (Fin n) (Fin n) ℂ)ˣ) : Mt), toMK k) := by
@@ -394,11 +531,17 @@ theorem continuous_pk (ε : Fin n → Bool) : Continuous (pk (ε := ε)) := by
   rw [e]
   exact (Units.continuous_coe_inv.comp (continuous_subtype_val.comp continuous_subtype_val)).prodMk (continuous_toMK ε)
 
+/- English proof (translation)
+The claim follows from `hz _ ((Formalism.REAL.mem_KG ε _).1 k.2)`.
+-/
 theorem pk_mem {ε : Fin n → Bool} {z : Mt} (hz : z ∈ U1 ε) (k : KG ε) : (pk k, z) ∈ Om3 n := hz _ ((Formalism.REAL.mem_KG ε _).1 k.2)
 
 def intK {ε : Fin n → Bool} (c : KG ε → ℂ) (G : (Mt × Mt) × Mt → ℂ) (z : Mt) : ℂ :=
   ∫ k, G (pk k, z) * c k ∂(muK ε)
 
+/- English proof (translation)
+Establish `h1 : Continuous (fun k : KG ε => G (pk k, z))` using `continuous_iff_continuousAt.2 fun k => ContinuousAt.comp (f := fun k : KG ε => (pk k, z)) (hG _ (pk_mem hz k)).continuousAt ((continuous_pk ε).prodMk (continuous_const (y := z))).continuousAt`. Conclude with `h1.mul hc`.
+-/
 theorem continuous_slice {ε : Fin n → Bool} {c : KG ε → ℂ} (hc : Continuous c)
     {G : (Mt × Mt) × Mt → ℂ} (hG : AnalyticOnNhd ℂ G (Om3 n)) {z : Mt} (hz : z ∈ U1 ε) :
     Continuous (fun k : KG ε => G (pk k, z) * c k) := by
@@ -407,6 +550,17 @@ theorem continuous_slice {ε : Fin n → Bool} {c : KG ε → ℂ} (hc : Continu
       ((continuous_pk ε).prodMk (continuous_const (y := z))).continuousAt
   exact h1.mul hc
 
+/- English proof (translation)
+Establish `hKc : IsCompact (Kset ε)` using `(Formalism.REAL.maximal_compact_facts n ε).2.1`. Establish `hrange : Set.range (fun k : KG ε => toMK k) = Kset ε`. Use extensionality with `M`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨k, rfl⟩`.
+
+Conclude with `(Formalism.REAL.mem_KG ε _).1 k.2`. Introduce `hM`. Conclude with `⟨⟨⟨⟨M, star M, Matrix.mem_unitaryGroup_iff.1 hM.1, Matrix.mem_unitaryGroup_iff'.1 hM.1⟩, (Formalism.REAL.maximal_compact_facts n ε).1 M hM⟩, (Formalism.REAL.mem_KG ε _).2 hM⟩, rfl⟩`. Establish `h1 : Topology.IsInducing (fun k : KG ε => Units.embedProduct Mt ((k : UJ ε) : Mtˣ))` using `Units.isEmbedding_embedProduct.isInducing.comp (Topology.IsInducing.subtypeVal.comp Topology.IsInducing.subtypeVal)`. Establish `hg : Continuous (fun M : Mt => (M, MulOpposite.op Mᴴ))` using `continuous_id.prodMk (MulOpposite.continuous_op.comp continuous_id.matrix_conjTranspose)`.
+
+Establish `hind : Topology.IsInducing (fun k : KG ε => toMK k)`. Use `Topology.IsInducing.of_comp (continuous_toMK ε) hg ?_` and prove the remaining obligations. Use `h1 using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `k`. Establish `hu : toMK k ∈ Matrix.unitaryGroup (Fin n) ℂ` using `((Formalism.REAL.mem_KG ε _).1 k.2).1`.
+
+Establish `hs : toMK k * (toMK k)ᴴ = 1`. Rewrite using `[← Matrix.star_eq_conjTranspose]`. Conclude with `Matrix.mem_unitaryGroup_iff.1 hu`. Simplify using `only [Function.comp_apply, Units.embedProduct_apply]`. Conclude with `Prod.ext rfl (congrArg MulOpposite.op (Units.eq_inv_of_mul_eq_one_left hs))`.
+
+Establish `hc : IsCompact (Set.univ : Set (KG ε))`. Rewrite using `[hind.isCompact_iff, Set.image_univ, hrange]`. Conclude with `hKc`. Conclude with `isCompact_univ_iff.1 hc`.
+-/
 private theorem compactSpace_KG' (ε : Fin n → Bool) : CompactSpace (KG ε) := by
   have hKc : IsCompact (Kset ε) := (Formalism.REAL.maximal_compact_facts n ε).2.1
   have hrange : Set.range (fun k : KG ε => toMK k) = Kset ε := by
@@ -435,6 +589,9 @@ private theorem compactSpace_KG' (ε : Fin n → Bool) : CompactSpace (KG ε) :=
     rw [hind.isCompact_iff, Set.image_univ, hrange]; exact hKc
   exact isCompact_univ_iff.1 hc
 
+/- English proof (translation)
+Use `compactSpace_KG' ε` as an intermediate fact. Establish `: IsProbabilityMeasure (muK ε)` using `(Formalism.REAL.kHaar n ε).1`. Take `⟨C, hC⟩` from `isCompact_univ.exists_bound_of_continuousOn (continuous_slice hc hG hz).continuousOn`. Conclude with `Integrable.of_bound (continuous_slice hc hG hz).aestronglyMeasurable C (ae_of_all _ fun k => hC k trivial)`.
+-/
 theorem integrable_slice {ε : Fin n → Bool} {c : KG ε → ℂ} (hc : Continuous c)
     {G : (Mt × Mt) × Mt → ℂ} (hG : AnalyticOnNhd ℂ G (Om3 n)) {z : Mt} (hz : z ∈ U1 ε) :
     Integrable (fun k : KG ε => G (pk k, z) * c k) (muK ε) := by
@@ -443,6 +600,17 @@ theorem integrable_slice {ε : Fin n → Bool} {c : KG ε → ℂ} (hc : Continu
   obtain ⟨C, hC⟩ := isCompact_univ.exists_bound_of_continuousOn (continuous_slice hc hG hz).continuousOn
   exact Integrable.of_bound (continuous_slice hc hG hz).aestronglyMeasurable C (ae_of_all _ fun k => hC k trivial)
 
+/- English proof (translation)
+Establish `hKc : IsCompact (Kset ε)` using `(Formalism.REAL.maximal_compact_facts n ε).2.1`. Establish `hrange : Set.range (fun k : KG ε => toMK k) = Kset ε`. Use extensionality with `M`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨k, rfl⟩`.
+
+Conclude with `(Formalism.REAL.mem_KG ε _).1 k.2`. Introduce `hM`. Conclude with `⟨⟨⟨⟨M, star M, Matrix.mem_unitaryGroup_iff.1 hM.1, Matrix.mem_unitaryGroup_iff'.1 hM.1⟩, (Formalism.REAL.maximal_compact_facts n ε).1 M hM⟩, (Formalism.REAL.mem_KG ε _).2 hM⟩, rfl⟩`. Establish `h1 : Topology.IsInducing (fun k : KG ε => Units.embedProduct Mt ((k : UJ ε) : Mtˣ))` using `Units.isEmbedding_embedProduct.isInducing.comp (Topology.IsInducing.subtypeVal.comp Topology.IsInducing.subtypeVal)`. Establish `hg : Continuous (fun M : Mt => (M, MulOpposite.op Mᴴ))` using `continuous_id.prodMk (MulOpposite.continuous_op.comp continuous_id.matrix_conjTranspose)`.
+
+Establish `hind : Topology.IsInducing (fun k : KG ε => toMK k)`. Use `Topology.IsInducing.of_comp (continuous_toMK ε) hg ?_` and prove the remaining obligations. Use `h1 using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `k`. Establish `hu : toMK k ∈ Matrix.unitaryGroup (Fin n) ℂ` using `((Formalism.REAL.mem_KG ε _).1 k.2).1`.
+
+Establish `hs : toMK k * (toMK k)ᴴ = 1`. Rewrite using `[← Matrix.star_eq_conjTranspose]`. Conclude with `Matrix.mem_unitaryGroup_iff.1 hu`. Simplify using `only [Function.comp_apply, Units.embedProduct_apply]`. Conclude with `Prod.ext rfl (congrArg MulOpposite.op (Units.eq_inv_of_mul_eq_one_left hs))`.
+
+Establish `hc : IsCompact (Set.univ : Set (KG ε))`. Rewrite using `[hind.isCompact_iff, Set.image_univ, hrange]`. Conclude with `hKc`. Conclude with `isCompact_univ_iff.1 hc`.
+-/
 private theorem compactSpace_KG'' (ε : Fin n → Bool) : CompactSpace (KG ε) := by
   have hKc : IsCompact (Kset ε) := (Formalism.REAL.maximal_compact_facts n ε).2.1
   have hrange : Set.range (fun k : KG ε => toMK k) = Kset ε := by
@@ -471,6 +639,11 @@ private theorem compactSpace_KG'' (ε : Fin n → Bool) : CompactSpace (KG ε) :
     rw [hind.isCompact_iff, Set.image_univ, hrange]; exact hKc
   exact isCompact_univ_iff.1 hc
 
+/- English proof (translation)
+Establish `ha' : aᴴ * Formalism.REAL.Jm ε * a = Formalism.REAL.Jm ε` using `ha`. Establish `hb' : bᴴ * Formalism.REAL.Jm ε * b = Formalism.REAL.Jm ε` using `hb`. Use `show (a * b)ᴴ * Formalism.REAL.Jm ε * (a * b) = Formalism.REAL.Jm ε`. Rewrite using `[Matrix.conjTranspose_mul]`. Combine the equalities or inequalities in the displayed calculation.
+
+Simplify using `only [Matrix.mul_assoc]`. Use `_ = Formalism.REAL.Jm ε := by rw [ha', hb']`.
+-/
 private theorem inUJ_mul_flag_measures {ε : Fin n → Bool} {a b : Mt} (ha : inUJ ε a) (hb : inUJ ε b) :
     inUJ ε (a * b) := by
   have ha' : aᴴ * Formalism.REAL.Jm ε * a = Formalism.REAL.Jm ε := ha
@@ -481,6 +654,19 @@ private theorem inUJ_mul_flag_measures {ε : Fin n → Bool} {a b : Mt} (ha : in
         simp only [Matrix.mul_assoc]
     _ = Formalism.REAL.Jm ε := by rw [ha', hb']
 
+/- English proof (translation)
+Establish `hcK` using `compactSpace_KG'' ε`. Establish `hP : IsProbabilityMeasure (muK ε)` using `(Formalism.REAL.kHaar n ε).1`. Establish `hexp : ∀ t : ℝ, inUJ ε (NormedSpace.exp ((t : ℂ) • X))` using `Formalism.REAL.exp_indefinite_unitary_holds n ε X hX`. Establish `hpJ : ∀ t : ℝ, inUJ ε (z * NormedSpace.exp ((t : ℂ) • X))` using `fun t => inUJ_mul_flag_measures hz (hexp t)`. Establish `hcurve : Continuous (fun t : ℝ => z * NormedSpace.exp ((t : ℂ) • X))` using `continuous_iff_continuousAt.2 fun t => (hasDerivAt_curveR z X t).continuousAt`.
+
+Use `set S := (fun t : ℝ => z * NormedSpace.exp ((t : ℂ) • X)) ⁻¹' {y | inUJ ε y → y ∈ U1 ε ∧ f y = intK c G y} with hS_def`. Establish `hn : {y | inUJ ε y → y ∈ U1 ε ∧ f y = intK c G y} ∈ 𝓝 ((fun t : ℝ => z * NormedSpace.exp ((t : ℂ) • X)) 0)`. Establish `e : (fun t : ℝ => z * NormedSpace.exp ((t : ℂ) • X)) 0 = z` using `by simp`. Rewrite using `[e]`. Conclude with `h`.
+
+Establish `hs : S ∈ 𝓝 (0 : ℝ)` using `hcurve.continuousAt.preimage_mem_nhds hn`. Establish `hU1 : ∀ t ∈ S, z * NormedSpace.exp ((t : ℂ) • X) ∈ U1 ε` using `fun t ht => (ht (hpJ t)).1`. Establish `hF : ∀ t ∈ S, Continuous (fun k : KG ε => G (pk k, z * NormedSpace.exp ((t : ℂ) • X)) * c k)` using `fun t ht => continuous_slice hc hG (hU1 t ht)`. Establish `hDz` using `analytic_Dz hG X`. Establish `hq : Continuous (fun x : ℝ × KG ε => (pk x.2, z * NormedSpace.exp ((x.1 : ℂ) • X)))` using `((continuous_pk ε).comp continuous_snd).prodMk (hcurve.comp continuous_fst)`.
+
+Establish `hF' : ContinuousOn (fun x : ℝ × KG ε => Dz X G (pk x.2, z * NormedSpace.exp ((x.1 : ℂ) • X)) * c x.2) (S ×ˢ Set.univ)`. Introduce `x hx`. Apply `ContinuousAt.continuousWithinAt` to reduce the goal to its premises. Establish `hm : (pk x.2, z * NormedSpace.exp ((x.1 : ℂ) • X)) ∈ Om3 n` using `pk_mem (hU1 x.1 hx.1) x.2`. Conclude with `(ContinuousAt.comp (f := fun x : ℝ × KG ε => (pk x.2, z * NormedSpace.exp ((x.1 : ℂ) • X))) (hDz _ hm).continuousAt hq.continuousAt).mul (hc.comp continuous_snd).continuousAt`.
+
+Establish `hd : ∀ k, ∀ t ∈ S, HasDerivAt (fun t : ℝ => G (pk k, z * NormedSpace.exp ((t : ℂ) • X)) * c k) (Dz X G (pk k, z * NormedSpace.exp ((t : ℂ) • X)) * c k) t`. Introduce `k t ht`. Establish `h1` using `hasDerivAt_slice hG (pk k) z X (t : ℂ) (pk_mem (hU1 t ht) k)`. Conclude with `h1.comp_ofReal.mul_const (c k)`. Establish `key` using `hasDerivAt_integral_compact (muK ε) (F := fun t k => G (pk k, z * NormedSpace.exp ((t : ℂ) • X)) * c k) (F' := fun t k => Dz X G (pk k, z * NormedSpace.exp ((t : ℂ) • X)) * c k) hs hF hF' hd`.
+
+Use `show deriv (fun t : ℝ => f (z * NormedSpace.exp ((t : ℂ) • X))) 0 = intK c (Dz X G) z`. Establish `heq : (fun t : ℝ => f (z * NormedSpace.exp ((t : ℂ) • X))) =ᶠ[𝓝 0] fun t => ∫ k, G (pk k, z * NormedSpace.exp ((t : ℂ) • X)) * c k ∂(muK ε)` using `by filter_upwards [hs] with t ht`. Conclude with `(ht (hpJ t)).2`. Rewrite using `[heq.deriv_eq, key.deriv]`. Simplify using `[intK]`.
+-/
 theorem rd_intK {ε : Fin n → Bool} {c : KG ε → ℂ} (hc : Continuous c)
     {G : (Mt × Mt) × Mt → ℂ} (hG : AnalyticOnNhd ℂ G (Om3 n)) {f : Mt → ℂ} {z X : Mt} (hz : inUJ ε z)
     (hX : inG ε X) (h : ∀ᶠ y in 𝓝 z, inUJ ε y → y ∈ U1 ε ∧ f y = intK c G y) :
@@ -527,6 +713,17 @@ theorem rd_intK {ε : Fin n → Bool} {c : KG ε → ℂ} (hc : Continuous c)
   rw [heq.deriv_eq, key.deriv]
   simp [intK]
 
+/- English proof (translation)
+Proceed by induction on `w with`. Consider the case `nil => exact h`. Consider the case `cons p w ih`. Establish `cm` using `Formalism.REAL.complex_parts_mem_lie_algebra_holds n ε (Matrix.single p.1 p.2 1)`. Use `filter_upwards [ih.eventually_nhds] with y hy hyJ`.
+
+Establish `hU : y ∈ U1 ε` using `(hy.self_of_nhds hyJ).1`. Use `⟨hU, ?_⟩` and prove the remaining obligations. Use `show Formalism.REAL.Rd (Formalism.REAL.cpart1 ε (Matrix.single p.1 p.2 1)) (Eword ε w f) y + Complex.I * Formalism.REAL.Rd (Formalism.REAL.cpart2 ε (Matrix.single p.1 p.2 1)) (Eword ε w f) y = intK c (Dz (Matrix.single p.1 p.2 1) (Dw w G)) y`. Rewrite using `[rd_intK hc (analytic_Dw hG w) hyJ cm.1 hy, rd_intK hc (analytic_Dw hG w) hyJ cm.2.1 hy]`. Establish `hDz : ∀ x : (Mt × Mt) × Mt, Dz (Matrix.single p.1 p.2 1) (Dw w G) x = Dz (Formalism.REAL.cpart1 ε (Matrix.single p.1 p.2 1)) (Dw w G) x + Complex.I * Dz (Formalism.REAL.cpart2 ε (Matrix.single p.1 p.2 1)) (Dw w G) x`.
+
+Introduce `x`. Establish `e : ((0 : Mt × Mt), x.2 * Matrix.single p.1 p.2 1) = ((0 : Mt × Mt), x.2 * Formalism.REAL.cpart1 ε (Matrix.single p.1 p.2 1)) + Complex.I • ((0 : Mt × Mt), x.2 * Formalism.REAL.cpart2 ε (Matrix.single p.1 p.2 1))` using `by conv_lhs => rw [cm.2.2.1]`. Simplify using `[Matrix.mul_add]`. Simplify using `only [Dz]`. Rewrite using `[e, map_add, map_smul, smul_eq_mul]`.
+
+Establish `hA` using `integrable_slice hc (analytic_Dz (analytic_Dw hG w) (Formalism.REAL.cpart1 ε (Matrix.single p.1 p.2 1))) hU`. Establish `hB` using `integrable_slice hc (analytic_Dz (analytic_Dw hG w) (Formalism.REAL.cpart2 ε (Matrix.single p.1 p.2 1))) hU`. Simplify using `only [intK]`. Rewrite using `[← integral_const_mul, ← integral_add hA (hB.const_mul _)]`. Use `congr 1`.
+
+Use function extensionality and compare the values at `k`. Rewrite using `[hDz]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem eword_intK {ε : Fin n → Bool} {c : KG ε → ℂ} (hc : Continuous c)
     {G : (Mt × Mt) × Mt → ℂ} (hG : AnalyticOnNhd ℂ G (Om3 n)) {f : Mt → ℂ} {z : Mt}
     (h : ∀ᶠ y in 𝓝 z, inUJ ε y → y ∈ U1 ε ∧ f y = intK c G y) (w : List (Fin n × Fin n)) :
@@ -562,6 +759,11 @@ theorem eword_intK {ε : Fin n → Bool} {c : KG ε → ℂ} (hc : Continuous c)
     rw [hDz]
     ring
 
+/- English proof (translation)
+Take `⟨hfd, -, hdiff, -⟩` from `h`. Use `hfd` as an intermediate fact. Set `b` to `stdOrthonormalBasis ℂ W`. Establish `hK : ∀ k : KG ε, toMK k ∈ KC ε` using `fun k => ⟨Units.isUnit _, ((Formalism.REAL.mem_KG ε _).1 k.2).2⟩`. Establish `hc : ∀ i, Continuous (fun k : KG ε => ⟪b i, τ (toMK k) v⟫_ℂ)` using `fun i => (hdiff (b i) v).continuousOn.comp_continuous (continuous_toMK ε) fun k => hK k`.
+
+Establish `e : (fun k : KG ε => τ (toMK k) v) = fun k => ∑ i, ⟪b i, τ (toMK k) v⟫_ℂ • b i`. Use function extensionality and compare the values at `k`. Conclude with `(b.sum_repr' _).symm`. Rewrite using `[e]`. Conclude with `continuous_finsetSum _ fun i _ => (hc i).smul continuous_const`.
+-/
 theorem continuous_tau {ε : Fin n → Bool} {abelian₂ : Fin n → ℝ} {W : Type} [NormedAddCommGroup W]
     [InnerProductSpace ℂ W] {τ : Mt → (W →L[ℂ] W)} {w : W} (h : IsTau ε abelian₂ τ w) (v : W) :
     Continuous (fun k : KG ε => τ (toMK k) v) := by
@@ -577,6 +779,17 @@ theorem continuous_tau {ε : Fin n → Bool} {abelian₂ : Fin n → ℝ} {W : T
   rw [e]
   exact continuous_finsetSum _ fun i _ => (hc i).smul continuous_const
 
+/- English proof (translation)
+Establish `hKc : IsCompact (Kset ε)` using `(Formalism.REAL.maximal_compact_facts n ε).2.1`. Establish `hrange : Set.range (fun k : KG ε => toMK k) = Kset ε`. Use extensionality with `M`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨k, rfl⟩`.
+
+Conclude with `(Formalism.REAL.mem_KG ε _).1 k.2`. Introduce `hM`. Conclude with `⟨⟨⟨⟨M, star M, Matrix.mem_unitaryGroup_iff.1 hM.1, Matrix.mem_unitaryGroup_iff'.1 hM.1⟩, (Formalism.REAL.maximal_compact_facts n ε).1 M hM⟩, (Formalism.REAL.mem_KG ε _).2 hM⟩, rfl⟩`. Establish `h1 : Topology.IsInducing (fun k : KG ε => Units.embedProduct Mt ((k : UJ ε) : Mtˣ))` using `Units.isEmbedding_embedProduct.isInducing.comp (Topology.IsInducing.subtypeVal.comp Topology.IsInducing.subtypeVal)`. Establish `hg : Continuous (fun M : Mt => (M, MulOpposite.op Mᴴ))` using `continuous_id.prodMk (MulOpposite.continuous_op.comp continuous_id.matrix_conjTranspose)`.
+
+Establish `hind : Topology.IsInducing (fun k : KG ε => toMK k)`. Use `Topology.IsInducing.of_comp (continuous_toMK ε) hg ?_` and prove the remaining obligations. Use `h1 using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `k`. Establish `hu : toMK k ∈ Matrix.unitaryGroup (Fin n) ℂ` using `((Formalism.REAL.mem_KG ε _).1 k.2).1`.
+
+Establish `hs : toMK k * (toMK k)ᴴ = 1`. Rewrite using `[← Matrix.star_eq_conjTranspose]`. Conclude with `Matrix.mem_unitaryGroup_iff.1 hu`. Simplify using `only [Function.comp_apply, Units.embedProduct_apply]`. Conclude with `Prod.ext rfl (congrArg MulOpposite.op (Units.eq_inv_of_mul_eq_one_left hs))`.
+
+Establish `hc : IsCompact (Set.univ : Set (KG ε))`. Rewrite using `[hind.isCompact_iff, Set.image_univ, hrange]`. Conclude with `hKc`. Conclude with `isCompact_univ_iff.1 hc`.
+-/
 private theorem compactSpace_KG''' (ε : Fin n → Bool) : CompactSpace (KG ε) := by
   have hKc : IsCompact (Kset ε) := (Formalism.REAL.maximal_compact_facts n ε).2.1
   have hrange : Set.range (fun k : KG ε => toMK k) = Kset ε := by
@@ -605,6 +818,17 @@ private theorem compactSpace_KG''' (ε : Fin n → Bool) : CompactSpace (KG ε) 
     rw [hind.isCompact_iff, Set.image_univ, hrange]; exact hKc
   exact isCompact_univ_iff.1 hc
 
+/- English proof (translation)
+Establish `hcK` using `compactSpace_KG''' ε`. Establish `hP : IsProbabilityMeasure (muK ε)` using `(Formalism.REAL.kHaar n ε).1`. Establish `hfd : FiniteDimensional ℂ W` using `h.1`. Establish `hPhi : Continuous (fun k : KG ε => Phi lam ((toMK k)⁻¹ * z * toMK k))` using `continuous_iff_continuousAt.2 fun k => by`. Conclude with `ContinuousAt.comp (f := fun k : KG ε => (pk k, z)) ((analyticOn_leadingMinorPowerProduct_triple lam) _ (pk_mem hz k)).continuousAt ((continuous_pk ε).prodMk (continuous_const (y := z))).continuousAt`.
+
+Establish `hT : Continuous (fun k : KG ε => τ (toMK k) w)` using `continuous_tau h w`. Establish `hL : Continuous (fun k : KG ε => innerSL ℂ (τ (toMK k) w))` using `(innerSL ℂ).continuous.comp hT`. Establish `hS : Continuous (fun k : KG ε => (innerSL ℂ (τ (toMK k) w)).smulRight (τ (toMK k) w))`. Use `((ContinuousLinearMap.smulRightL ℂ W W).continuous.comp hL).clm_apply hT` as an intermediate fact. Conclude with `this`.
+
+Establish `hA : Continuous (fun k : KG ε => Phi lam ((toMK k)⁻¹ * z * toMK k) • (innerSL ℂ (τ (toMK k) w)).smulRight (τ (toMK k) w))` using `hPhi.smul hS`. Take `⟨C, hC⟩` from `isCompact_univ.exists_bound_of_continuousOn hA.continuousOn`. Establish `hInt` using `Integrable.of_bound (μ := muK ε) hA.aestronglyMeasurable C (ae_of_all _ fun k => hC k trivial)`. Establish `hInt'` using `hInt.apply_continuousLinearMap v`. Use `show ⟪u, ((Module.finrank ℂ W : ℂ) • ∫ k : KG ε, Phi lam ((toMK k)⁻¹ * z * toMK k) • (innerSL ℂ (τ (toMK k) w)).smulRight (τ (toMK k) w) ∂(muK ε)) v⟫_ℂ = _`.
+
+Rewrite using `[ContinuousLinearMap.smul_apply, ContinuousLinearMap.integral_apply hInt, inner_smul_right, ← integral_inner hInt']`. Simplify using `only [intK]`. Rewrite using `[← integral_const_mul]`. Use `congr 1`. Use function extensionality and compare the values at `k`.
+
+Simplify using `only [ContinuousLinearMap.smul_apply, ContinuousLinearMap.smulRight_apply, innerSL_apply_apply, inner_smul_right, pk]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem inner_ps {ε : Fin n → Bool} (lam : Fin n → ℝ) {abelian₂ : Fin n → ℝ} {W : Type} [NormedAddCommGroup W]
     [InnerProductSpace ℂ W] {τ : Mt → (W →L[ℂ] W)} {w : W} (h : IsTau ε abelian₂ τ w) (u v : W) {z : Mt}
     (hz : z ∈ U1 ε) :
@@ -640,6 +864,15 @@ theorem inner_ps {ε : Fin n → Bool} (lam : Fin n → ℝ) {abelian₂ : Fin n
     inner_smul_right, pk]
   ring
 
+/- English proof (translation)
+Establish `hind : Topology.IsInducing (fun g : Formalism.REAL.UJ ε => Units.embedProduct (Matrix (Fin n) (Fin n) ℂ) (g : (Matrix (Fin n) (Fin n) ℂ)ˣ))` using `Units.isEmbedding_embedProduct.isInducing.comp Topology.IsInducing.subtypeVal`. Rewrite `h` using `[hind.nhds_eq_comap]`. Take `⟨O, hO, hOS⟩` from `Filter.mem_comap.1 h`. Establish `hφ : Continuous (fun z : Matrix (Fin n) (Fin n) ℂ => (z, MulOpposite.op (Formalism.REAL.Jm ε * zᴴ * Formalism.REAL.Jm ε)))` using `continuous_id.prodMk (MulOpposite.continuous_op.comp ((continuous_const.matrix_mul continuous_id.matrix_conjTranspose).matrix_mul continuous_const))`. Establish `h1 : (fun z : Matrix (Fin n) (Fin n) ℂ => (z, MulOpposite.op (Formalism.REAL.Jm ε * zᴴ * Formalism.REAL.Jm ε))) 1 = Units.embedProduct (Matrix (Fin n) (Fin n) ℂ) ((1 : Formalism.REAL.UJ ε) : (Matrix (Fin n) (Fin n) ℂ)ˣ)`.
+
+Simplify using `[Formalism.REAL.Jm_mul_self]`. Establish `hO' : O ∈ 𝓝 ((fun z : Matrix (Fin n) (Fin n) ℂ => (z, MulOpposite.op (Formalism.REAL.Jm ε * zᴴ * Formalism.REAL.Jm ε))) 1)`. Rewrite using `[h1]`. Conclude with `hO`. Use `filter_upwards [hφ.continuousAt.preimage_mem_nhds hO'] with z hz hzJ`.
+
+Establish `hz' : zᴴ * Formalism.REAL.Jm ε * z = Formalism.REAL.Jm ε` using `hzJ`. Establish `hl : Formalism.REAL.Jm ε * zᴴ * Formalism.REAL.Jm ε * z = 1`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [Matrix.mul_assoc]`. Use `_ = 1 := by rw [hz', Formalism.REAL.Jm_mul_self]`.
+
+Establish `hr : z * (Formalism.REAL.Jm ε * zᴴ * Formalism.REAL.Jm ε) = 1` using `mul_eq_one_comm.1 hl`. Set `u : (Matrix (Fin n) (Fin n) ℂ)ˣ` to `⟨z, Formalism.REAL.Jm ε * zᴴ * Formalism.REAL.Jm ε, hr, hl⟩`. Set `g : Formalism.REAL.UJ ε` to `⟨u, hzJ⟩`. Conclude with `hOS (show Units.embedProduct (Matrix (Fin n) (Fin n) ℂ) (g : (Matrix (Fin n) (Fin n) ℂ)ˣ) ∈ O from hz)`.
+-/
 private theorem eventually_nhds_one_inUJ_of_eventually_umat {ε : Fin n → Bool} {P : Matrix (Fin n) (Fin n) ℂ → Prop}
     (h : ∀ᶠ g : Formalism.REAL.UJ ε in 𝓝 1, P (umat g)) : ∀ᶠ z in 𝓝 (1 : Matrix (Fin n) (Fin n) ℂ), inUJ ε z → P z := by
   have hind : Topology.IsInducing (fun g : Formalism.REAL.UJ ε => Units.embedProduct (Matrix (Fin n) (Fin n) ℂ) (g : (Matrix (Fin n) (Fin n) ℂ)ˣ)) :=
@@ -665,6 +898,27 @@ private theorem eventually_nhds_one_inUJ_of_eventually_umat {ε : Fin n → Bool
   let g : Formalism.REAL.UJ ε := ⟨u, hzJ⟩
   exact hOS (show Units.embedProduct (Matrix (Fin n) (Fin n) ℂ) (g : (Matrix (Fin n) (Fin n) ℂ)ˣ) ∈ O from hz)
 
+/- English proof (translation)
+Introduce `n ε lam W _ _ τ w hlam htau u v`. Use `set f : Matrix (Fin n) (Fin n) ℂ → ℂ := fun g => ⟪u, Psi ε lam τ w g v⟫_ℂ with hf`. Establish `hLoc : LocAn ε f`. Introduce `g hg`. Take `⟨F, hF, hev⟩` from `h3 n ε lam W τ w hlam htau u v g hg`.
+
+Conclude with `⟨F, hF, hev⟩`. Establish `hsm : SmoothOnG ε f` using `hLoc.smooth`. Use `⟨hsm, ?_⟩` and prove the remaining obligations. Unfold `IsZEigen`. Use `⟨hsm, fun m g hg => ?_⟩` and prove the remaining obligations.
+
+Use `set c0 : ℂ := gelfVal (fun a => -(lam a : ℂ)) (m + 1) with hc0`. Establish `hD : LocAn ε (fun g => gelf ε m f g + (-c0) * f g)` using `(hLoc.gelf m).add (hLoc.const_mul (-c0))`. It suffices to establish `hz : ∀ᶠ z in 𝓝 (1 : Matrix (Fin n) (Fin n) ℂ), inUJ ε z → gelf ε m f z + (-c0) * f z = 0 by`. Use `hD.eq_zero hz hg` as an intermediate fact. Take the linear combination `this`.
+
+Establish `hloc` using `eventually_nhds_one_inUJ_of_eventually_umat (P := fun z => z ∈ U1 ε ∧ Psi ε lam τ w z = ps ε lam τ w z) (h2 n ε lam W τ w hlam htau)`. Use `set cK : KG ε → ℂ := fun k => (Module.finrank ℂ W : ℂ) * (⟪τ (toMK k) w, v⟫_ℂ * ⟪u, τ (toMK k) w⟫_ℂ) with hcK_def`. Use `set G0 : (Matrix (Fin n) (Fin n) ℂ × Matrix (Fin n) (Fin n) ℂ) × Matrix (Fin n) (Fin n) ℂ → ℂ := fun x => Phi lam (x.1.1 * x.2 * x.1.2) with hG0_def`. Establish `hT` using `continuous_tau htau w`. Establish `hcK : Continuous cK` using `continuous_const.mul ((hT.inner continuous_const).mul (continuous_const.inner hT))`.
+
+Establish `hG0 : AnalyticOnNhd ℂ G0 (Om3 n)` using `analyticOn_leadingMinorPowerProduct_triple lam`. Establish `hbase : ∀ᶠ y in 𝓝 (1 : Matrix (Fin n) (Fin n) ℂ), inUJ ε y → y ∈ U1 ε ∧ f y = intK cK G0 y` using `by filter_upwards [hloc] with y hy hyJ`. Take `⟨hU, hPs⟩` from `hy hyJ`. Use `⟨hU, ?_⟩` and prove the remaining obligations. Use `show ⟪u, Psi ε lam τ w y v⟫_ℂ = _`.
+
+Rewrite using `[hPs]`. Conclude with `inner_ps lam htau u v hU`. Establish `hw : ∀ a : Fin (m + 1) → Fin n, ∀ᶠ y in 𝓝 (1 : Matrix (Fin n) (Fin n) ℂ), inUJ ε y → y ∈ U1 ε ∧ Eword ε (cycWord a) f y = intK cK (Dw (cycWord a) G0) y` using `fun a => eword_intK hcK hG0 hbase _`. Use `filter_upwards [Filter.eventually_all.2 hw, hbase] with y hy hyb hyJ`. Take `⟨hU, hfy⟩` from `hyb hyJ`.
+
+Use `show ∑ a, Eword ε (cycWord a) f y + (-c0) * f y = 0`. Rewrite using `[Finset.sum_congr rfl fun a _ => (hy a hyJ).2, hfy]`. Simplify using `only [intK]`. Rewrite using `[← integral_finsetSum _ (fun a _ => integrable_slice hcK (analytic_Dw hG0 _) hU)]`. Establish `key : ∀ k : KG ε, ∑ a : Fin (m + 1) → Fin n, Dw (cycWord a) G0 (pk k, y) * cK k = c0 * (G0 (pk k, y) * cK k)`.
+
+Introduce `k`. Rewrite using `[← Finset.sum_mul]`. Establish `e1 : ∀ a : Fin (m + 1) → Fin n, Dw (cycWord a) G0 (pk k, y) = RholW (cycWord a) (fun y' => G0 (pk k, y')) y` using `fun a => (rholW_eq hG0 (pk k) (cycWord a) y (pk_mem hU k)).symm`. Simplify using `only [e1]`. Establish `e2` using `h1 n lam hlam (toMK k) y (Units.isUnit _) (pk_mem hU k) m`.
+
+Establish `e3 : ∑ a : Fin (m + 1) → Fin n, RholW (cycWord a) (fun y' => G0 (pk k, y')) y = gelfH m (fun y' => Phi lam ((toMK k)⁻¹ * y' * toMK k)) y` using `rfl`. Rewrite using `[e3, e2]`. Simplify using `only [hG0_def, pk]`. Expand and normalize the polynomial expressions, which then agree. Simplify using `only [key]`.
+
+Rewrite using `[integral_const_mul]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem psiEigen_of (h1 : PhiEigen) (h2 : PsLocal) (h3 : PsiAnalytic) : PsiEigen := by
   intro n ε lam W _ _ τ w hlam htau u v
   set f : Matrix (Fin n) (Fin n) ℂ → ℂ := fun g => ⟪u, Psi ε lam τ w g v⟫_ℂ with hf
@@ -723,6 +977,9 @@ theorem psiEigen_of (h1 : PhiEigen) (h2 : PsLocal) (h3 : PsiAnalytic) : PsiEigen
   rw [integral_const_mul]
   ring
 
+/- English proof (translation)
+The claim follows from `psiEigen_of GlobalTheory.T.phi_centre_eigenfunction_discrete_series GlobalTheory.T.psi_restriction_holomorphic_near_one GlobalTheory.T.psi_entries_real_analytic`.
+-/
 theorem psiEigen : PsiEigen := psiEigen_of GlobalTheory.T.phi_centre_eigenfunction_discrete_series GlobalTheory.T.psi_restriction_holomorphic_near_one GlobalTheory.T.psi_entries_real_analytic
 
 end GlobalTheory.Dec.PsiEig

@@ -23,6 +23,11 @@ def oneS (F : Type) [Field F] [NumberField F] : SInf F Empty where
       ‖iteratedFDeriv ℝ n (fun _ : Empty → mixedEmbedding.mixedSpace F => (1 : ℂ)) 0‖, fun x => by
     rw [Subsingleton.elim x 0]⟩
 
+/- English proof (translation)
+Introduce `Φ hΦ`. Take `⟨C, hC⟩` from `GlobalTheory.ConeTateDecay.value_decay (κ₁ := Empty) ψ hψ S U hSU (LinearMap.pi fun _ => l) (fun g hg => by`. Take `⟨T, hT⟩` from `hl g hg`. Use `⟨T.smulRight (oneS F), fun f => funext fun y => ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `T f * 1 = l _`.
+
+Rewrite using `[hT, mul_one])`. Use the proof step `(fun i a Ψ hΨ => funext fun _ => hinv i a Ψ hΨ) (isCompact_singleton (x := 0)) 0 N Φ hΦ`. Conclude with `⟨C, fun x hx => hC x (funext hx)⟩`.
+-/
 theorem form_decay {κ ι : Type} [Fintype κ] [Fintype ι] (ψ : AddChar (AF F) ℂ) (hψ : IsStd ψ)
     (S U : ι → (κ → AF F) × (κ → AF F)) (hSU : ∀ i j, (S j).1 ⬝ᵥ (U i).2 - (U i).1 ⬝ᵥ (S j).2 = if i = j then 1 else 0)
     (l : ((κ → AF F) → ℂ) →ₗ[ℂ] ℂ) (hl : l ∈ (adeleClass F).adm κ)
@@ -39,6 +44,9 @@ theorem form_decay {κ ι : Type} [Fintype κ] [Fintype ι] (ψ : AddChar (AF F)
     (fun i a Ψ hΨ => funext fun _ => hinv i a Ψ hΨ) (isCompact_singleton (x := 0)) 0 N Φ hΦ
   exact ⟨C, fun x hx => hC x (funext hx)⟩
 
+/- English proof (translation)
+Establish `hc : ∀ x : E, cA σ (inclR (F` using `F) (AF F) x) = inclR (F := F) (AF F) (σ x) := fun x => rfl`. Rewrite using `[symp, GlobalTheory.XTermSupp.hTens_vv, GlobalTheory.XTermSupp.form_inc, GlobalTheory.XTermSupp.form_inc, GlobalTheory.XTermSupp.form_skew hcm hJ, hxy, hc, GlobalTheory.XTermSupp.invol hcm]`. Use `congr 1`. Simplify using the standard rewrite rules.
+-/
 theorem symp_pair (hcm : IsCMExt F E σ) {n d : ℕ} {JX : Matrix (Fin n) (Fin n) E} {JW : Matrix (Fin d) (Fin d) E}
     (hJ : ∀ i j, σ (JW j i) = -JW i j) (x y : Fin d → E) (hxy : form σ JW x y = 1) (a a' : Fin n → E) (l : AE F E) (c : E) :
     symp (cA σ) (-1) (incM F JX) (incM F JW) (l • Matrix.vecMulVec (incV F a) (incV F y))
@@ -50,6 +58,13 @@ theorem symp_pair (hcm : IsCMExt F E σ) {n d : ℕ} {JX : Matrix (Fin n) (Fin n
   congr 1
   simp
 
+/- English proof (translation)
+Take `⟨w⟩ : Nonempty (InfinitePlace F)` from `inferInstance`. Establish `hdet : X.J.det ≠ 0`. Introduce `h0`. Establish `h1 : (X.J.map (B.emb w).1).det = 0`. Rewrite using `[← RingHom.mapMatrix_apply, ← RingHom.map_det, h0, map_zero]`.
+
+Take `⟨v, hv, hM⟩` from `Matrix.exists_mulVec_eq_zero_iff.2 h1`. Use `(hX.cartan w).2.2 (star v) (by simpa using hv)` as an intermediate fact. Rewrite `this` using `[star_star, hM]`. Simplify using `at this`. Use `⟨fun i k => σ ((X.J⁻¹ *ᵥ Pi.single i 1) k), fun i j => ?_⟩` and prove the remaining obligations.
+
+Simplify using `only [form, GlobalTheory.XTermSupp.invol hcm]`. Express the relevant statement in the definitionally equal form `Pi.single j 1 ⬝ᵥ X.J *ᵥ (X.J⁻¹ *ᵥ Pi.single i 1) = _`. Rewrite using `[Matrix.mulVec_mulVec, Matrix.mul_nonsing_inv _ (isUnit_iff_ne_zero.2 hdet), Matrix.one_mulVec, single_dotProduct, one_mul, Pi.single_apply]`. Simplify using `only [eq_comm]`.
+-/
 theorem exists_dual (hcm : IsCMExt F E σ) {B : Base F E} {n r s : ℕ} {X : Spc F E n} (hX : X.IsHerm σ B r s) :
     ∃ a : Fin n → Fin n → E, ∀ i j, form σ X.J (Pi.single j 1) (a i) = if i = j then 1 else 0 := by
   obtain ⟨w⟩ : Nonempty (InfinitePlace F) := inferInstance
@@ -68,6 +83,11 @@ theorem exists_dual (hcm : IsCMExt F E σ) {B : Base F E} {n r s : ℕ} {X : Spc
     single_dotProduct, one_mul, Pi.single_apply]
   simp only [eq_comm]
 
+/- English proof (translation)
+Express the relevant statement in the definitionally equal form `GlobalTheory.XTermDecay.qA (realAd F 1 * algebraMap F (AF F) r) = _`. Rewrite using `[map_mul]`. Establish `h1 : GlobalTheory.XTermDecay.qA (realAd F 1) = 1`. Express the relevant statement in the definitionally equal form `InfiniteAdeleRing.ringEquiv_mixedSpace F ((InfiniteAdeleRing.ringEquiv_mixedSpace F).symm (algebraMap ℝ (mixedEmbedding.mixedSpace F) 1)) = _`. Rewrite using `[RingEquiv.apply_symm_apply, map_one]`.
+
+Rewrite using `[h1, one_mul, InfiniteAdeleRing.mixedEmbedding_eq_algebraMap_comp]`. Both sides reduce to the same expression.
+-/
 theorem evI_realAd_mul (r : F) : evI F (realAd F 1 * algebraMap F (AF F) r) = mixedEmbedding F r := by
   change GlobalTheory.XTermDecay.qA (realAd F 1 * algebraMap F (AF F) r) = _
   rw [map_mul]
@@ -78,10 +98,22 @@ theorem evI_realAd_mul (r : F) : evI F (realAd F 1 * algebraMap F (AF F) r) = mi
   rw [h1, one_mul, InfiniteAdeleRing.mixedEmbedding_eq_algebraMap_comp]
   rfl
 
+/- English proof (translation)
+Rewrite using `[← mixedEmbedding.normAtPlace_apply, mixedEmbedding.norm_eq_sup'_normAtPlace]`. Conclude with `Finset.le_sup' (fun w => mixedEmbedding.normAtPlace w (mixedEmbedding F r)) (Finset.mem_univ w)`.
+-/
 theorem place_le_norm (w : InfinitePlace F) (r : F) : w r ≤ ‖mixedEmbedding F r‖ := by
   rw [← mixedEmbedding.normAtPlace_apply, mixedEmbedding.norm_eq_sup'_normAtPlace]
   exact Finset.le_sup' (fun w => mixedEmbedding.normAtPlace w (mixedEmbedding F r)) (Finset.mem_univ w)
 
+/- English proof (translation)
+Use `set A : ℝ := ∑ _i : Fin n, ∑ w : InfinitePlace E, ∑ k, w (b k) with hA`. Establish `hA0 : 0 ≤ A` using `by positivity`. Use `⟨1 + A, by linarith, fun ξ => ?_⟩` and prove the remaining obligations. Use `set R := ‖fun p : Fin n × Fin m => mixedEmbedding F (b.repr (ξ p.1) p.2)‖ with hR`. Establish `hR0 : 0 ≤ R` using `norm_nonneg _`.
+
+Establish `h : ∑ i, ∑ w : InfinitePlace E, w (ξ i) ≤ A * R`. Rewrite using `[hA, Finset.sum_mul]`. Use `Finset.sum_le_sum fun i _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_mul]`. Use `Finset.sum_le_sum fun w _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[Finset.sum_mul]`. Use `conv_lhs => rw [← b.sum_repr (ξ i)]`. Use `(w.1.sum_le _ _).trans (Finset.sum_le_sum fun k _ => ?_)` and prove the remaining obligations. Rewrite using `[Algebra.smul_def, map_mul, mul_comm]`. Use `mul_le_mul_of_nonneg_left ?_ (apply_nonneg _ _)` and prove the remaining obligations.
+
+Conclude with `(place_le_norm (w.comap (algebraMap F E)) _).trans (norm_le_pi_norm (fun p : Fin n × Fin m => mixedEmbedding F (b.repr (ξ p.1) p.2)) (i, k))`. Use the polynomial consequences of the given equalities and inequalities.
+-/
 theorem size_le {n m : ℕ} (b : Module.Basis (Fin m) F E) : ∃ c : ℝ, 1 ≤ c ∧ ∀ ξ : Fin n → E,
     1 + ∑ i, ∑ w : InfinitePlace E, w (ξ i) ≤
       c * (1 + ‖fun p : Fin n × Fin m => mixedEmbedding F (b.repr (ξ p.1) p.2)‖) := by
@@ -104,6 +136,27 @@ theorem size_le {n m : ℕ} (b : Module.Basis (Fin m) F E) : ∃ c : ℝ, 1 ≤ 
       (norm_le_pi_norm (fun p : Fin n × Fin m => mixedEmbedding F (b.repr (ξ p.1) p.2)) (i, k))
   nlinarith
 
+/- English proof (translation)
+Introduce `_ F E _ _ _ _ _ σ B n d d₁ X W W₁ M M₁ H' i₀ i₁ hAd hM₁ e₀ he hB hM hXW Φ hΦ K`. Take `⟨r, s, r', s', hX, hW⟩` from `hXW`. Use `haveI : Module.Finite F E := Module.Finite.of_restrictScalars_finite ℚ F E`. Set `b` to `Module.finBasis F E`. Use `choose c hc using GlobalTheory.ConeTateSupp.trace_mul_dual (F := F) (E := E) b`.
+
+Take `⟨a, ha⟩` from `exists_dual hB.cm hX`. Take `⟨l, hl, hlθ⟩` from `GlobalTheory.ThetaAdmitted.exists_admitted_form_eq_adelicThetaDistribution_alt F (Fin n × Fin d₁)`. Set `S` to `fun p : Fin n × Fin (Module.finrank F E) => M.co.e (inclR (F := F) (AF F) (b p.2) • Matrix.vecMulVec (incV F (Pi.single p.1 (1 : E))) (incV F H'.y))`. Set `U` to `fun p : Fin n × Fin (Module.finrank F E) => M.co.e (inclR (F := F) (AF F) (σ (c p.2)) • Matrix.vecMulVec (incV F (a p.1)) (incV F H'.x))`. Take `⟨C, hC⟩` from `form_decay B.ψ hB.std S U (fun p q => by`.
+
+Rewrite using `[← M.co.form, symp_pair hB.cm hW.skew _ _ hAd.xy, ha]`. Distinguish the cases in `h1 : p.1 = q.1`. Rewrite using `[if_pos h1, map_one, mul_one, hc, show inclR (F := F) (AF F) (b q.2) = Algebra.TensorProduct.basis (AF F) b q.2 from (Algebra.TensorProduct.basis_apply _ _).symm, Module.Basis.equivFun_self]`. Distinguish the cases in `h2 : p.2 = q.2`. Rewrite using `[if_pos h2.symm, if_pos (Prod.ext h1 h2)]`.
+
+Rewrite using `[if_neg (Ne.symm h2), if_neg fun h => h2 (congrArg Prod.snd h)]`. Rewrite using `[if_neg h1, map_zero, mul_zero, map_zero, if_neg fun h => h1 (congrArg Prod.fst h)])`. Use the proof step `(l ∘ₗ e₀) (GlobalTheory.EvAdm.comp_mem_adm F E σ B n d n d₁ X W X W₁ M M₁ _ _ _ e₀ hM hM₁ he l hl)`. Use the proof step `(fun p t Ψ hΨ => by`. Use `he.inv (Matrix.vecMulVec (t • inclR (F := F) (AF F) (σ (c p.2)) • incV F (a p.1)) (incV F H'.x)) ⟨_, rfl⟩ Ψ hΨ` as an intermediate fact.
+
+Rewrite `this` using `[Matrix.smul_vecMulVec, Matrix.smul_vecMulVec, Darboux.rho, map_smul]`. Conclude with `congrArg l this) K Φ hΦ`. Take `⟨c₀, hc₀, hsz⟩` from `size_le (n := n) b`. Use `⟨c₀ ^ K * C, fun ξ => ?_⟩` and prove the remaining obligations. Establish `key` using `hC (fun p => realAd F 1 * algebraMap F (AF F) (b.repr (ξ p.1) p.2)) fun p => zero_mul _`.
+
+Establish `hS : ∑ p : Fin n × Fin (Module.finrank F E), (realAd F 1 * algebraMap F (AF F) (b.repr (ξ p.1) p.2)) • S p = M.co.e (realAd F 1 • Matrix.vecMulVec (incV F ξ) (incV F H'.y))`. Simplify using `only [S, mul_smul, ← map_smul, ← map_sum, ← Finset.smul_sum]`. Use `congr 2`. Use extensionality with `i j`. Rewrite using `[Matrix.sum_apply, Fintype.sum_prod_type, Finset.sum_eq_single i]`.
+
+Simplify using `only [Matrix.smul_apply, Matrix.vecMulVec_apply, incV, Pi.single_eq_same, map_one, one_mul, smul_eq_mul, ← smul_mul_assoc, ← Finset.sum_mul]`. Use `congr 1`. Use `conv_rhs => rw [← b.sum_repr (ξ i)]`. Rewrite using `[map_sum]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations.
+
+Express the relevant statement in the definitionally equal form `algebraMap F (AF F) (b.repr (ξ i) k) • ((1 : AF F) ⊗ₜ[F] b k) = (1 : AF F) ⊗ₜ[F] (b.repr (ξ i) k • b k)`. Rewrite using `[algebraMap_smul, TensorProduct.tmul_smul]`. Introduce `i' _ hi`. Simplify using `[Matrix.vecMulVec_apply, incV, Pi.single_eq_of_ne hi.symm]`. Introduce `h`.
+
+Conclude with `absurd (Finset.mem_univ i) h`. Simplify using `only [evI_realAd_mul] at key`. Rewrite `key` using `[hS, LinearMap.comp_apply]`. Rewrite using `[← hlθ _ (he.maps _ (GlobalTheory.HeisSchA.rho_mem_schA M B.ψ hB.std _ _ hΦ))]`. Combine the equalities or inequalities in the displayed calculation.
+
+Conclude with `hsz ξ`. Use `_ ≤ c₀ ^ K * C := by`. Rewrite using `[mul_pow, mul_left_comm]`. Conclude with `mul_le_mul_of_nonneg_left key (by positivity)`.
+-/
 theorem decay : GlobalTheory.ThK.KP → ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E)
     (n d d₁ : ℕ) (X : Spc F E n) (W : Spc F E d) (W₁ : Spc F E d₁) (M : Model σ X W) (M₁ : Model σ X W₁) (H' : Plane E d d₁) (i₀ i₁ : ℕ),
     H'.IsAdapted σ B W W₁ i₀ i₁ → M₁.IsGood B.ψ → ∀ (e₀ : Fn F n d →ₗ[ℂ] Fn F n d₁), IsEv B M M₁ 1 H'.ι (iso0 n H') e₀ → B.IsGood σ → M.IsGood B.ψ → (∃ r s r' s' : ℕ, X.IsHerm σ B r s ∧ W.IsSkew σ B r' s') →

@@ -9,6 +9,17 @@ namespace ReciprocityTheory.ChartRestriction.DS.Lap.Capelli
 
 open ReciprocityTheory.ChartRestriction.DS
 
+/- English proof (translation)
+Establish `hsa : ∀ (j : Fin (p + 1)) (u : Fin p), j.succAbove u = j.cycleRange.symm u.succ` using `fun j u => ((Equiv.symm_apply_eq _).mpr (Fin.cycleRange_succAbove j u).symm).symm`. Set `ρ : Equiv.Perm (Fin (p + 1))` to `s.cycleRange * Equiv.swap i s * i.cycleRange.symm`. Establish `hρapp : ∀ x, ρ x = s.cycleRange (Equiv.swap i s (i.cycleRange.symm x))` using `fun x => rfl`. Establish `hρ0 : ρ 0 = 0`. Rewrite using `[hρapp, Fin.cycleRange_symm_zero, Equiv.swap_apply_left, Fin.cycleRange_self]`.
+
+Set `π : Equiv.Perm (Fin p)` to `(Equiv.Perm.decomposeFin ρ).2`. Establish `hdec : Equiv.Perm.decomposeFin.symm ((Equiv.Perm.decomposeFin ρ).1, π) = ρ` using `Equiv.Perm.decomposeFin.symm_apply_apply ρ`. Establish `h1 : (Equiv.Perm.decomposeFin ρ).1 = 0`. Use `congrArg (fun g : Equiv.Perm (Fin (p + 1)) => g 0) hdec` as an intermediate fact. Simplify using `only [Equiv.Perm.decomposeFin_symm_apply_zero] at this`.
+
+Rewrite using `[this, hρ0]`. Rewrite `hdec` using `[h1]`. Use `⟨π, ?_, ?_⟩` and prove the remaining obligations. Establish `hs : Equiv.Perm.sign ρ = Equiv.Perm.sign π`. Rewrite using `[← hdec, Equiv.Perm.decomposeFin.symm_sign]`.
+
+Simplify using the standard rewrite rules. Establish `hs2 : Equiv.Perm.sign ρ = (-1) ^ (s : ℕ) * (-1) * (-1) ^ (i : ℕ)`. Simplify using `only [ρ, Equiv.Perm.sign_mul, Equiv.Perm.sign_symm, Fin.sign_cycleRange, Equiv.Perm.sign_swap h]`. Rewrite using `[← hs, hs2]`. Use `push_cast`.
+
+Expand and normalize the polynomial expressions, which then agree. Introduce `t`. Establish `h2 : (π t).succ = ρ t.succ`. Rewrite using `[← hdec, Equiv.Perm.decomposeFin_symm_apply_succ, Equiv.swap_self, Equiv.refl_apply]`. Rewrite using `[hsa s, h2, hρapp, ← hsa i, Equiv.symm_apply_apply]`.
+-/
 theorem exists_perm_swap_succAbove {p : ℕ} (i s : Fin (p + 1)) (h : i ≠ s) :
     ∃ π : Equiv.Perm (Fin p), ((Equiv.Perm.sign π : ℤˣ) : ℤ) = (-1) ^ ((i : ℕ) + (s : ℕ) + 1) ∧
       ∀ t, Equiv.swap i s (i.succAbove t) = s.succAbove (π t) := by
@@ -42,6 +53,11 @@ theorem exists_perm_swap_succAbove {p : ℕ} (i s : Fin (p + 1)) (h : i ≠ s) :
       rw [← hdec, Equiv.Perm.decomposeFin_symm_apply_succ, Equiv.swap_self, Equiv.refl_apply]
     rw [hsa s, h2, hρapp, ← hsa i, Equiv.symm_apply_apply]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `u`. Distinguish the cases in `hu : u = t`. Substitute `hu` using the available equality. Simplify using the standard rewrite rules. Simplify using `only [Function.update_apply, if_neg hu, Function.comp_apply]`.
+
+Rewrite using `[Equiv.swap_apply_of_ne_of_ne (Fin.succAbove_ne i u) (fun h => hu (Fin.succAbove_right_injective h))]`.
+-/
 theorem update_comp_succAbove {α : Type*} {p : ℕ} (f : Fin (p + 1) → α) (i : Fin (p + 1)) (t : Fin p) :
     Function.update (f ∘ i.succAbove) t (f i) = f ∘ Equiv.swap i (i.succAbove t) ∘ i.succAbove := by
   funext u
@@ -52,6 +68,11 @@ theorem update_comp_succAbove {α : Type*} {p : ℕ} (f : Fin (p + 1) → α) (i
     rw [Equiv.swap_apply_of_ne_of_ne (Fin.succAbove_ne i u)
       (fun h => hu (Fin.succAbove_right_injective h))]
 
+/- English proof (translation)
+Establish `h : ∀ i : Fin (p + 1), ∑ t : Fin p, f (i.succAbove t) = ∑ s, f s - f i`. Introduce `i`. Rewrite using `[Fin.sum_univ_succAbove f i]`. Normalize the expressions using the abelian group laws. Simplify using `only [h, Finset.sum_sub_distrib, Finset.sum_const, Finset.card_univ, Fintype.card_fin]`.
+
+Rewrite using `[succ_nsmul]`. Normalize the expressions using the abelian group laws.
+-/
 theorem sum_sum_succAbove {M : Type*} [AddCommGroup M] {p : ℕ} (f : Fin (p + 1) → M) :
     ∑ i : Fin (p + 1), ∑ t : Fin p, f (i.succAbove t) = p • ∑ s, f s := by
   have h : ∀ i : Fin (p + 1), ∑ t : Fin p, f (i.succAbove t) = ∑ s, f s - f i := by
@@ -62,11 +83,17 @@ theorem sum_sum_succAbove {M : Type*} [AddCommGroup M] {p : ℕ} (f : Fin (p + 1
   rw [succ_nsmul]
   abel
 
+/- English proof (translation)
+Rewrite using `[← pow_add, show a + b + (a + c + 1) = (c + b + 1) + 2 * a by ring, pow_add, pow_mul]`. Simplify using the standard rewrite rules.
+-/
 theorem neg_one_pow_row (a b c : ℕ) :
     (-1 : ℂ) ^ (a + b) * (-1 : ℂ) ^ (a + c + 1) = (-1 : ℂ) ^ (c + b + 1) := by
   rw [← pow_add, show a + b + (a + c + 1) = (c + b + 1) + 2 * a by ring, pow_add, pow_mul]
   simp
 
+/- English proof (translation)
+Rewrite using `[← pow_add, show a + b + (b + c + 1) = (a + c + 1) + 2 * b by ring, pow_add, pow_mul]`. Simplify using the standard rewrite rules.
+-/
 theorem neg_one_pow_col (a b c : ℕ) :
     (-1 : ℂ) ^ (a + b) * (-1 : ℂ) ^ (b + c + 1) = (-1 : ℂ) ^ (a + c + 1) := by
   rw [← pow_add, show a + b + (b + c + 1) = (a + c + 1) + 2 * b by ring, pow_add, pow_mul]
@@ -76,6 +103,11 @@ section Ring
 
 variable {𝒰 : Type*} [Ring 𝒰] [Algebra ℂ 𝒰] {n : ℕ} (E : Fin n → Fin n → 𝒰)
 
+/- English proof (translation)
+Take `⟨π, hπ, hmap⟩` from `exists_perm_swap_succAbove i (i.succAbove t) (Fin.succAbove_ne i t).symm`. Establish `hrows : Function.update (R ∘ i.succAbove) t (R i) = (R ∘ (i.succAbove t).succAbove) ∘ π`. Rewrite using `[update_comp_succAbove]`. Use function extensionality and compare the values at `u`. Simplify using `[hmap]`.
+
+Rewrite using `[hrows, cminor_perm_rows, hπ, ← Int.cast_smul_eq_zsmul ℂ]`. Simplify using the standard rewrite rules.
+-/
 theorem cminor_update_row {p : ℕ} (R : Fin (p + 1) → Fin n) (C : Fin p → Fin n) (i : Fin (p + 1))
     (t : Fin p) (y : ℂ) :
     cminor E (Function.update (R ∘ i.succAbove) t (R i)) C y =
@@ -88,6 +120,11 @@ theorem cminor_update_row {p : ℕ} (R : Fin (p + 1) → Fin n) (C : Fin p → F
   rw [hrows, cminor_perm_rows, hπ, ← Int.cast_smul_eq_zsmul ℂ]
   simp
 
+/- English proof (translation)
+Take `⟨π, hπ, hmap⟩` from `exists_perm_swap_succAbove j (j.succAbove t) (Fin.succAbove_ne j t).symm`. Establish `hcols : Function.update (C ∘ j.succAbove) t (C j) = (C ∘ (j.succAbove t).succAbove) ∘ π`. Rewrite using `[update_comp_succAbove]`. Use function extensionality and compare the values at `u`. Simplify using `[hmap]`.
+
+Rewrite using `[hcols, cminor_perm_cols E hE, hπ, ← Int.cast_smul_eq_zsmul ℂ]`. Simplify using the standard rewrite rules.
+-/
 theorem cminor_update_col (hE : GlRelR E) {p : ℕ} (R : Fin p → Fin n) (C : Fin (p + 1) → Fin n)
     (j : Fin (p + 1)) (t : Fin p) (y : ℂ) :
     cminor E R (Function.update (C ∘ j.succAbove) t (C j)) y =
@@ -100,6 +137,9 @@ theorem cminor_update_col (hE : GlRelR E) {p : ℕ} (R : Fin p → Fin n) (C : F
   rw [hcols, cminor_perm_cols E hE, hπ, ← Int.cast_smul_eq_zsmul ℂ]
   simp
 
+/- English proof (translation)
+Unfold `capEntry`. Use `split_ifs`. Rewrite using `[add_mul, mul_add, Algebra.commutes]`. Normalize the expressions using the abelian group laws. Simplify using the standard rewrite rules.
+-/
 theorem capEntry_comm_sub (a b : Fin n) (x : ℂ) (X : 𝒰) :
     capEntry E x a b * X - X * capEntry E x a b = E a b * X - X * E a b := by
   unfold capEntry
@@ -112,6 +152,13 @@ def capT {p : ℕ} (R C : Fin (p + 1) → Fin n) (y : ℂ) (s j : Fin (p + 1)) :
   if R s = C j then ((-1 : ℂ) ^ ((s : ℕ) + (j : ℕ) + 1)) • cminor E (R ∘ s.succAbove) (C ∘ j.succAbove) y
   else 0
 
+/- English proof (translation)
+Rewrite using `[cminor_comm (hE := hE) (a := R i) (b := C j) (R := R ∘ i.succAbove) (C := C ∘ j.succAbove) (x := y), smul_sub, Finset.smul_sum, Finset.smul_sum]`. Use `congr 1`. Use `Finset.sum_congr rfl fun t _ => ?_` and prove the remaining obligations. Simplify using `only [capT, Function.comp_apply]`. Use `split_ifs with h`.
+
+Rewrite using `[cminor_update_row, smul_smul, neg_one_pow_row]`. Conclude with `smul_zero _`. Use `Finset.sum_congr rfl fun t _ => ?_` and prove the remaining obligations. Simplify using `only [capT, Function.comp_apply]`. Distinguish the cases in `h : C (j.succAbove t) = R i`.
+
+Rewrite using `[if_pos h, if_pos h.symm, cminor_update_col E hE, smul_smul, neg_one_pow_col]`. Rewrite using `[if_neg h, if_neg (Ne.symm h), smul_zero]`.
+-/
 theorem comm_term (hE : GlRelR E) {p : ℕ} (R C : Fin (p + 1) → Fin n) (i j : Fin (p + 1)) (y : ℂ) :
     ((-1 : ℂ) ^ ((i : ℕ) + (j : ℕ))) •
         (E (R i) (C j) * cminor E (R ∘ i.succAbove) (C ∘ j.succAbove) y -

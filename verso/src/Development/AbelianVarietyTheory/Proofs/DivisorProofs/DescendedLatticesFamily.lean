@@ -13,6 +13,11 @@ open ReciprocityTheory.ChartRestriction.G.Geo.Tor (resG)
 
 namespace GlobalTheory.LatGlue
 
+/- English proof (translation)
+Take `⟨m, π, hπ⟩` from `Module.Finite.exists_fin' R P`. Take `⟨s, hs⟩` from `Module.projective_lifting_property π LinearMap.id hπ`. Set `μ : (Fin h → R) →ₗ[R] P` to `LinearMap.codRestrict P (c • LinearMap.id) hc`. Use `⟨m, LinearMap.toMatrix' (s ∘ₗ μ), LinearMap.toMatrix' (P.subtype ∘ₗ π), fun j => ?_, fun u hu => ?_, fun x => ?_⟩` and prove the remaining obligations. Conclude with `(π (Pi.single j 1)).2`.
+
+Use `⟨s ⟨u, hu⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[LinearMap.toMatrix'_mulVec, ← map_smul]`. Both sides reduce to the same expression. Rewrite using `[LinearMap.toMatrix'_mulVec, LinearMap.toMatrix'_mulVec]`. Conclude with `congrArg Subtype.val (LinearMap.congr_fun hs (μ x))`.
+-/
 theorem exists_matrices_of_projective {R : Type} [CommRing R] {h : ℕ} (P : Submodule R (Fin h → R))
     [Module.Finite R P] [Module.Projective R P] (c : R) (hc : ∀ x : Fin h → R, c • x ∈ P) :
     ∃ (m : ℕ) (S : Matrix (Fin m) (Fin h) R) (Q : Matrix (Fin h) (Fin m) R),
@@ -29,6 +34,17 @@ theorem exists_matrices_of_projective {R : Type} [CommRing R] {h : ℕ} (P : Sub
   · rw [LinearMap.toMatrix'_mulVec, LinearMap.toMatrix'_mulVec]
     exact congrArg Subtype.val (LinearMap.congr_fun hs (μ x))
 
+/- English proof (translation)
+Proceed by induction on `hw using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨u, hu, rfl⟩` from `hx`. Take `⟨r, hr⟩` from `hS u hu`. Use `⟨fun j => ψ (r j), funext fun j => ?_, funext fun i => ?_⟩` and prove the remaining obligations.
+
+Use `(RingHom.map_mulVec ψ S u j).symm` as an intermediate fact. Rewrite `this` using `[hr]`. Simplify `this` using `[Function.comp_def]`. Establish `h1` using `hQ u`. Rewrite `h1` using `[hr, Matrix.mulVec_smul]`.
+
+Establish `h2` using `congrArg ψ (congrFun h1 i)`. Simplify using `only [Pi.smul_apply, smul_eq_mul, map_mul] at h2`. Rewrite using `[← mul_left_cancel₀ hc h2, RingHom.map_mulVec]`. Both sides reduce to the same expression. Consider the case `zero => exact ⟨0, by simp, by simp⟩`.
+
+Consider the case `add x y _ _ hx hy`. Take `⟨t, h1, h2⟩` from `hx`. Take `⟨t', h1', h2'⟩` from `hy`. Conclude with `⟨t + t', by rw [Matrix.mulVec_add, h1, h1', smul_add], by rw [Matrix.mulVec_add, ← h2, ← h2']⟩`. Consider the case `smul a x _ hx`.
+
+Take `⟨t, h1, h2⟩` from `hx`. Conclude with `⟨a • t, by rw [Matrix.mulVec_smul, h1, smul_comm], by rw [Matrix.mulVec_smul, ← h2]⟩`.
+-/
 theorem exists_coeff_of_mem_span {R B : Type} [CommRing R] [CommRing B] [IsDomain B] (ψ : R →+* B) {h m : ℕ}
     (P : Submodule R (Fin h → R)) (c : R) (hc : ψ c ≠ 0) (S : Matrix (Fin m) (Fin h) R) (Q : Matrix (Fin h) (Fin m) R)
     (hS : ∀ u ∈ P, ∃ r : Fin m → R, S.mulVec u = c • r) (hQ : ∀ x : Fin h → R, Q.mulVec (S.mulVec x) = c • x)
@@ -57,6 +73,37 @@ theorem exists_coeff_of_mem_span {R B : Type} [CommRing R] [CommRing B] [IsDomai
     obtain ⟨t, h1, h2⟩ := hx
     exact ⟨a • t, by rw [Matrix.mulVec_smul, h1, smul_comm], by rw [Matrix.mulVec_smul, ← h2]⟩
 
+/- English proof (translation)
+Introduce `X X' _ f K' γ hinj hcomp hrange h c hc L hL hres U U' hle`. Establish `hcomp' : ∀ u : Fin h → Γ(X', f ⁻¹ᵁ U.1), piMap (γ U') (Fin h) (piMap (resG X' (f.preimage_mono hle)) (Fin h) u) = piMap (AffOp.res hle) (Fin h) (piMap (γ U) (Fin h) u)` using `fun u => funext fun i => hcomp U U' hle (u i)`. Use `le_antisymm (fun v hv => ?_) (Submodule.span_le.2 ?_)` and prove the remaining obligations. Take `⟨⟨hfin, hproj, hspan⟩, hcx⟩` from `hL U`. Take `⟨m, S, Q, hQP, hS, hQ⟩` from `exists_matrices_of_projective (descMod K' U (L U)) (c : ringOver K' U) fun x => by`.
+
+Use `hcx fun i => (x i : U.Bp)` as an intermediate fact. Rewrite using `[mem_descMod]`. Use `this using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `i`. Simplify using the standard rewrite rules.
+
+Set `ψ : ringOver K' U →+* U'.Bp` to `(AffOp.res hle).comp (ringOver K' U).subtype`. Establish `hψ : ∀ x, ψ x ∈ ringOver K' U'` using `fun x => x.2`. Establish `hc' : ψ c ≠ 0`. Rewrite using `[map_natCast]`. Introduce `h0`.
+
+Apply `hc` to reduce the goal to its premises. Simplify using `using congrArg (algebraMap U'.Bp (Kbar X)) h0`. Establish `hw : piMap (γ U') (Fin h) v ∈ Submodule.span U'.Bp {y | ∃ u ∈ descMod K' U (L U), y = fun i => ψ (u i)}`. Establish `hv' : piMap (γ U') (Fin h) v ∈ L U'` using `hv`. Rewrite `hv'` using `[hres U U' hle]`.
+
+Use `Submodule.span_le.2 ?_ hv'` and prove the remaining obligations. Introduce and unpack `_ ⟨x, hx, rfl⟩`. Establish `hx' : x ∈ L U` using `hx`. Rewrite `hx'` using `[hspan]`. Use `clear hx`.
+
+Proceed by induction on `hx' using Submodule.span_induction with`. Consider the case `mem y hy`. Take `⟨a, ha, rfl⟩` from `hy`. Conclude with `Submodule.subset_span ⟨a, ha, rfl⟩`. Consider the case `zero => simp`.
+
+Consider the case `add x y _ _ hx hy => simpa using add_mem hx hy`. Consider the case `smul a x _ hx`. Rewrite using `[LinearMap.map_smulₛₗ]`. Conclude with `Submodule.smul_mem _ _ hx`. Take `⟨t, ht, hwt⟩` from `exists_coeff_of_mem_span ψ _ _ hc' S Q hS hQ _ hw`.
+
+Establish `htK : ∀ j, t j ∈ (γ U').range` using `fun j => by`. Rewrite using `[hrange, mem_ringOver]`. Establish `h1 : ψ c * t j ∈ ringOver K' U'`. Use `congrFun ht j` as an intermediate fact. Rewrite `this` using `[Pi.smul_apply, smul_eq_mul]`.
+
+Rewrite using `[← this]`. Use `Subring.sum_mem _ fun i _ => Subring.mul_mem _ (hψ _) ?_` and prove the remaining obligations. Rewrite using `[← hrange]`. Conclude with `⟨v i, rfl⟩`. Rewrite `h1` using `[mem_ringOver, map_natCast]`.
+
+Establish `h2 : (c : Kbar X) * (t j : Kbar X) ∈ K'` using `by simpa using h1`. Establish `h3` using `K'.mul_mem (K'.inv_mem (natCast_mem K' c)) h2`. Rewrite `h3` using `[inv_mul_cancel_left₀ hc]`. Then use the resulting hypothesis. Use `choose r hr using htK`. Establish `hq : ∀ j i, (Q i j : U.Bp) ∈ (γ U).range` using `fun j i => by`.
+
+Rewrite using `[hrange]`. Conclude with `(Q i j).2`. Use `choose q hq using hq`. Establish `hv : v = ∑ j, r j • piMap (resG X' (f.preimage_mono hle)) (Fin h) (q j)`. Use function extensionality and compare the values at `i`.
+
+Apply `hinj U'` to reduce the goal to its premises. Establish `h1` using `congrFun hwt i`. Rewrite `h1` using `[piMap_apply]`. Rewrite using `[h1, Finset.sum_apply, map_sum]`. Express the relevant statement in the definitionally equal form `∑ j, ψ (Q i j) * t j = _`.
+
+Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Establish `h2` using `congrFun (hcomp' (q j)) i`. Rewrite `h2` using `[piMap_apply]`. Rewrite using `[Pi.smul_apply, smul_eq_mul, map_mul, hr, h2, piMap_apply, piMap_apply, hq, mul_comm]`. Both sides reduce to the same expression.
+
+Rewrite using `[hv]`. Use `Submodule.sum_mem _ fun j _ => Submodule.smul_mem _ _ (Submodule.subset_span ⟨q j, ?_, rfl⟩)` and prove the remaining obligations. Establish `h1 : piMap (γ U) (Fin h) (q j) = fun i => (Q i j : U.Bp)` using `funext fun i => hq j i`. Express the relevant statement in the definitionally equal form `piMap (γ U) (Fin h) (q j) ∈ L U`. Rewrite using `[h1]`.
+
+Conclude with `hQP j`. Introduce and unpack `_ ⟨u, hu, rfl⟩`. Express the relevant statement in the definitionally equal form `piMap (γ U') (Fin h) _ ∈ L U'`. Rewrite using `[hcomp', hres U U' hle]`. Conclude with `Submodule.subset_span ⟨_, hu, rfl⟩`.
+-/
 theorem comap_eq_span_res : ∀ (X X' : Scheme.{0}) [IsIntegral X] (f : X' ⟶ X) (K' : IntermediateField X.functionField (Kbar X)) (γ : ∀ U : AffOp X, Γ(X', f ⁻¹ᵁ U.1) →+* U.Bp), (∀ U, Function.Injective (γ U)) → (∀ (U U' : AffOp X) (hle : U'.1 ≤ U.1) (a : Γ(X', f ⁻¹ᵁ U.1)), γ U' ((X'.presheaf.map (homOfLE (f.preimage_mono hle)).op).hom a) = AffOp.res hle (γ U a)) → (∀ U, (γ U).range = ringOver K' U) → ∀ (h c : ℕ), (c : Kbar X) ≠ 0 → ∀ (L : ∀ U : AffOp X, Submodule U.Bp (Fin h → U.Bp)), (∀ U, IsDescended K' U (L U) ∧ ∀ x : Fin h → U.Bp, (c : U.Bp) • x ∈ L U) → (∀ (U U' : AffOp X) (hle : U'.1 ≤ U.1), L U' = Submodule.span U'.Bp (piMap (AffOp.res hle) (Fin h) '' (L U : Set (Fin h → U.Bp)))) → ∀ (U U' : AffOp X) (hle : U'.1 ≤ U.1), (L U').comap (piMap (γ U') (Fin h)) = Submodule.span Γ(X', f ⁻¹ᵁ U'.1) (piMap (resG X' (f.preimage_mono hle)) (Fin h) '' ((L U).comap (piMap (γ U) (Fin h)) : Set (Fin h → Γ(X', f ⁻¹ᵁ U.1)))) := by
   intro X X' _ f K' γ hinj hcomp hrange h c hc L hL hres U U' hle
   have hcomp' : ∀ u : Fin h → Γ(X', f ⁻¹ᵁ U.1), piMap (γ U') (Fin h) (piMap (resG X' (f.preimage_mono hle)) (Fin h) u) =

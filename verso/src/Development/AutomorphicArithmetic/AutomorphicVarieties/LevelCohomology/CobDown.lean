@@ -8,6 +8,11 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.GaloisLibrary.Selm
 
 open NumberField IsDedekindDomain Formalism.ConjugateSelfDual ReciprocityTheory.Gal Formalism.GaloisCohomology IsLocalRing UpperTheory.V UpperTheory.V.Base UpperTheory.V.X
 
+/- English proof (translation)
+Take `⟨a, ha, m, hm⟩` from `h`. Establish `ha' : (a : PadicAlgCl l) ≠ 0` using `fun h => ha (Subtype.ext h)`. Use `⟨(m : PadicAlgCl l) / a, fun g hg => ?_⟩` and prove the remaining obligations. Establish `h1 : (a : PadicAlgCl l) * z g = ((θ g : O) : PadicAlgCl l) * m - m`. Conclude with `congrArg Subtype.val (hm g hg)` after adjusting the coercions.
+
+Clear the denominators using the available nonvanishing facts. Take the linear combination `h1`.
+-/
 private theorem cob_up {l : ℕ} [Fact l.Prime] (O : Subalgebra ℤ_[l] (PadicAlgCl l)) {Γ : Type} [Group Γ]
     (θ : Γ →* Oˣ) (z : Γ → O) (D : Subgroup Γ) (h : CobOn θ z D) :
     ∃ m : PadicAlgCl l, ∀ g ∈ D, (z g : PadicAlgCl l) = ((θ g : O) : PadicAlgCl l) * m - m := by
@@ -19,6 +24,11 @@ private theorem cob_up {l : ℕ} [Fact l.Prime] (O : Subalgebra ℤ_[l] (PadicAl
   field_simp
   linear_combination h1
 
+/- English proof (translation)
+Distinguish the cases in `h : ∃ g₀, (θ g₀ : O) ≠ 1`. Take `⟨g₀, hg₀⟩` from `h`. Use `⟨θ g₀ - 1, sub_ne_zero.2 hg₀, z g₀, fun g _ => Subtype.ext ?_⟩` and prove the remaining obligations. Use `push_cast`. Rewrite using `[hm g, hm g₀]`.
+
+Expand and normalize the polynomial expressions, which then agree. Use `push Not at h`. Use `cobOn_of_eq_zero θ fun g _ => Subtype.ext ?_` and prove the remaining obligations. Rewrite using `[hm g, h g]`. Simplify using the standard rewrite rules.
+-/
 private theorem cob_down {l : ℕ} [Fact l.Prime] (O : Subalgebra ℤ_[l] (PadicAlgCl l)) {Γ : Type} [Group Γ]
     (θ : Γ →* Oˣ) (z : Γ → O) (m : PadicAlgCl l)
     (hm : ∀ g, (z g : PadicAlgCl l) = ((θ g : O) : PadicAlgCl l) * m - m) : CobOn θ z ⊤ := by
@@ -33,6 +43,17 @@ private theorem cob_down {l : ℕ} [Fact l.Prime] (O : Subalgebra ℤ_[l] (Padic
     rw [hm g, h g]
     simp
 
+/- English proof (translation)
+Introduce `CK hK hPT hLF hLT k Ω _ _ _ _ _ l _ c ψ hψ e he z hz hc h1 h2`. Set `ψ' : G k Ω →* (PadicAlgCl l)ˣ` to `(Units.map c.O.val.toMonoidHom).comp ψ`. Establish `hψ' : IsOpen (ψ'.ker : Set (G k Ω))`. Use `Subgroup.isOpen_mono (H₁ := ψ.ker) (fun g hg => ?_) hψ` and prove the remaining obligations. Establish `: ψ g = 1` using `hg`.
+
+Use `show Units.map c.O.val.toMonoidHom (ψ g) = 1`. Rewrite using `[this, map_one]`. Establish `hcz : Continuous z` using `((UpperTheory.V.X.So.adicCont l c).2 _ z).1 hc`. Take `⟨m, hm⟩` from `UpperTheory.V.X.soBar CK hK hPT hLF hLT k Ω l ψ' hψ' e he (fun g => (((Chr.Psi l e ψ)⁻¹ g : c.O) : PadicAlgCl l)) (fun g => by`. Establish `h0 : (((Chr.Psi l e ψ)⁻¹ g : c.Oˣ) : c.O) * (ψ g : c.O) * algebraMap ℤ_[l] c.O (cycZ k Ω l g : ℤ_[l]) ^ e = 1`.
+
+Establish `e1 : algebraMap ℤ_[l] c.O (cycZ k Ω l g : ℤ_[l]) = (chiO k Ω l c.O g : c.O)` using `rfl`. Rewrite using `[e1, ← Units.val_pow_eq_pow_val, ← Units.val_mul, ← Units.val_mul, Units.val_eq_one]`. Use `show (chiO k Ω l c.O g ^ (e : ℤ) * ψ g)⁻¹ * ψ g * chiO k Ω l c.O g ^ e = 1`. Rewrite using `[zpow_natCast, mul_assoc, mul_comm (ψ g), inv_mul_cancel]`. Establish `h3` using `congrArg c.O.val h0`.
+
+Rewrite `h3` using `[map_mul, map_mul, map_pow, map_one, AlgHom.commutes]`. Conclude with `h3)`. Use the proof step `(fun g => (z g : PadicAlgCl l)) (continuous_subtype_val.comp hcz)`. Use the proof step `(fun g h => by exact_mod_cast congrArg Subtype.val (hz g h))`. Use the proof step `(fun A => cob_up c.O _ z _ (h1 A)) (fun A hA => cob_up c.O _ z _ (h2 A hA))`.
+
+Conclude with `cob_down c.O _ z m hm`.
+-/
 theorem UpperTheory.V.X.So.soCoc :
     ∀ CK : ℝ, LemmaK CK → GlobalTheory.Published.PoitouTateDuality → LocalFinitenessK → LocalTateDualityK → ∀ (k Ω : Type) [Field k] [NumberField k] [Field Ω] [Algebra k Ω] [IsAlgClosure k Ω] (l : ℕ) [Fact l.Prime] (c : HV.Coef l) (ψ : G k Ω →* c.Oˣ), IsOpen (ψ.ker : Set (G k Ω)) → ∀ e : ℕ, 1 ≤ e → ∀ z : G k Ω → c.O, Coc (Chr.Psi l e ψ)⁻¹ z → Alg.AdicCont (maximalIdeal c.O) z → (∀ A : ValuationSubring Ω, CobOn (Chr.Psi l e ψ)⁻¹ z (Ine (F := k) A)) → (∀ A : ValuationSubring Ω, A.valuation (l : Ω) < 1 → CobOn (Chr.Psi l e ψ)⁻¹ z (Dec (F := k) A)) → CobOn (Chr.Psi l e ψ)⁻¹ z ⊤ := by
   intro CK hK hPT hLF hLT k Ω _ _ _ _ _ l _ c ψ hψ e he z hz hc h1 h2

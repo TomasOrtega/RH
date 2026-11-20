@@ -13,6 +13,9 @@ open GlobalTheory.CompanionTheory.WeilSiegel.Frame GlobalTheory.CompanionTheory.
 
 namespace GlobalTheory.CompanionTheory.WeilSiegel.HypStep.PrimFormula
 
+/- English proof (translation)
+Rewrite using `[ENNReal.iSup_mul]`. Repeatedly rewrite using `[ENNReal.mul_iSup]`. Use `le_antisymm (iSup_le fun i => iSup_le fun j => ?_) (iSup_le fun k => le_iSup_of_le k (le_iSup_of_le k le_rfl))` and prove the remaining obligations. Conclude with `le_iSup_of_le (max i j) (mul_le_mul' (ha (le_max_left i j)) (hc (le_max_right i j)))`.
+-/
 theorem iSup_mul_iSup_mono {a c : ℕ → ℝ≥0∞} (ha : Monotone a) (hc : Monotone c) :
     (⨆ k, a k) * (⨆ k, c k) = ⨆ k, a k * c k := by
   rw [ENNReal.iSup_mul]
@@ -21,6 +24,9 @@ theorem iSup_mul_iSup_mono {a c : ℕ → ℝ≥0∞} (ha : Monotone a) (hc : Mo
     (iSup_le fun k => le_iSup_of_le k (le_iSup_of_le k le_rfl))
   exact le_iSup_of_le (max i j) (mul_le_mul' (ha (le_max_left i j)) (hc (le_max_right i j)))
 
+/- English proof (translation)
+Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simp`. Consider the case `insert a s ha ih`. Simplify using `only [Finset.prod_insert ha]`. Rewrite using `[ih, iSup_mul_iSup_mono (hf a) (fun k l hkl => Finset.prod_le_prod' fun i _ => hf i hkl)]`.
+-/
 theorem prod_iSup_mono {ι : Type} (s : Finset ι) (f : ι → ℕ → ℝ≥0∞) (hf : ∀ a, Monotone (f a)) :
     ∏ a ∈ s, ⨆ k, f a k = ⨆ k, ∏ a ∈ s, f a k := by
   classical
@@ -31,6 +37,19 @@ theorem prod_iSup_mono {ι : Type} (s : Finset ι) (f : ι → ℕ → ℝ≥0�
     rw [ih, iSup_mul_iSup_mono (hf a)
       (fun k l hkl => Finset.prod_le_prod' fun i _ => hf i hkl)]
 
+/- English proof (translation)
+Use `⟨fun k => (spanningSets μ k).indicator fun x => min (f x) (k : ℝ≥0∞), fun k => ?_, fun x k l hkl => ?_, fun x => ?_, fun k => ?_⟩` and prove the remaining obligations. Conclude with `(hf.min measurable_const).indicator (measurableSet_spanningSets μ k)`. Distinguish the cases in `hx : x ∈ spanningSets μ k`. Establish `hx' : x ∈ spanningSets μ l` using `monotone_spanningSets μ hkl hx`. Simplify using `only [Set.indicator_of_mem hx, Set.indicator_of_mem hx']`.
+
+Conclude with `min_le_min_left _ (by exact_mod_cast hkl)`. Simplify using `only [Set.indicator_of_notMem hx]`. Conclude with `zero_le`. Use `le_antisymm (iSup_le fun k => ?_) ?_` and prove the remaining obligations. Distinguish the cases in `hx : x ∈ spanningSets μ k`.
+
+Simplify using `only [Set.indicator_of_mem hx]`. Conclude with `min_le_left _ _`. Simplify using `only [Set.indicator_of_notMem hx]`. Conclude with `zero_le`. Establish `hx : x ∈ ⋃ k, spanningSets μ k`.
+
+Rewrite using `[iUnion_spanningSets]`. Discharge the goal by the elementary cases of `trivial`. Take `⟨k₀, hk₀⟩` from `Set.mem_iUnion.1 hx`. Establish `hlim : Tendsto (fun n : ℕ => min (f x) (n : ℝ≥0∞)) atTop (𝓝 (min (f x) ⊤))` using `tendsto_const_nhds.min ENNReal.tendsto_nat_nhds_top`. Rewrite `hlim` using `[min_eq_left le_top]`.
+
+Use `le_of_tendsto hlim (eventually_atTop.2 ⟨k₀, fun n hn => ?_⟩)` and prove the remaining obligations. Use `le_iSup_of_le n ?_` and prove the remaining obligations. Simplify using `only [Set.indicator_of_mem (monotone_spanningSets μ hn hk₀)]`. Conclude with `le_rfl`. Establish `hle : ∫⁻ x, (spanningSets μ k).indicator (fun x => min (f x) (k : ℝ≥0∞)) x ∂μ ≤ ∫⁻ x, (spanningSets μ k).indicator (fun _ => (k : ℝ≥0∞)) x ∂μ` using `lintegral_mono fun x => Set.indicator_le_indicator (min_le_right _ _)`.
+
+Rewrite `hle` using `[lintegral_indicator_const (measurableSet_spanningSets μ k)]`. Conclude with `ne_top_of_le_ne_top (ENNReal.mul_ne_top (ENNReal.natCast_ne_top k) (measure_spanningSets_lt_top μ k).ne) hle`.
+-/
 theorem exists_approx {α : Type*} [MeasurableSpace α] (μ : Measure α) [SigmaFinite μ] (f : α → ℝ≥0∞)
     (hf : Measurable f) :
     ∃ g : ℕ → α → ℝ≥0∞, (∀ k, Measurable (g k)) ∧ (∀ x, Monotone fun k => g k x) ∧
@@ -68,6 +87,11 @@ theorem exists_approx {α : Type*} [MeasurableSpace α] (μ : Measure α) [Sigma
     exact ne_top_of_le_ne_top
       (ENNReal.mul_ne_top (ENNReal.natCast_ne_top k) (measure_spanningSets_lt_top μ k).ne) hle
 
+/- English proof (translation)
+Establish `hU : Tendsto (fun S' : Finset ι => S ∪ S') atTop atTop` using `tendsto_atTop_mono (fun S' => Finset.subset_union_right) tendsto_id`. Establish `tails : Tendsto (fun S' : Finset ι => ∏' v : {v // v ∉ S ∪ S'}, x v.1) atTop (𝓝 1)` using `(GlobalTheory.CompanionTheory.Hypotheses₂.OneV.TailProduct.tendsto_tprod_compl_one x hx).comp hU`. Establish `hdiv` using `(tendsto_const_nhds (x := ∏' v : {v // v ∉ S}, x v.1)).div tails one_ne_zero`. Rewrite `hdiv` using `[div_one]`. Use `hdiv.congr' ?_` and prove the remaining obligations.
+
+Use `filter_upwards [tails.eventually_ne one_ne_zero] with S' hne`. Use `show (∏' v : {v // v ∉ S}, x v.1) / (∏' v : {v // v ∉ S ∪ S'}, x v.1) = _`. Rewrite using `[GlobalTheory.CompanionTheory.SW.TailCut.tprod_tail_cut ι x S (S ∪ S') hx Finset.subset_union_left, mul_div_assoc, div_self hne, mul_one]`.
+-/
 theorem partial_tendsto {ι : Type} [DecidableEq ι] (x : ι → ℝ) (S : Finset ι)
     (hx : Summable (fun v => |x v - 1|)) :
     Tendsto (fun S' : Finset ι => ∏ v ∈ (S ∪ S') \ S, x v) atTop
@@ -103,6 +127,17 @@ def cut (σ : E →ₐ[F] E) {M d : ℕ} (J : Matrix (Fin M) (Fin M) E) (b : Mod
 
 open Classical in
 
+/- English proof (translation)
+Establish `hprod : ∏ v ∈ T, phi σ J b S Ψ v (projV v (projFin y)) = (∏ v ∈ T \ S, (primV σ J b v).indicator (fun _ => (1 : ℝ≥0∞)) (projV v (projFin y))) * ∏ v ∈ S, Ψ v (projV v (projFin y))`. Rewrite using `[← Finset.prod_sdiff hST]`. Use `congr 1`. Conclude with `Finset.prod_congr rfl fun v hv => by simp [phi, (Finset.mem_sdiff.1 hv).2]`. Conclude with `Finset.prod_congr rfl fun v hv => by simp [phi, hv]`.
+
+Unfold `pureL`. Distinguish the cases in `h1 : y ∈ intOff (n := 1) (M := M + 2) b T`. Rewrite using `[Set.indicator_of_mem h1] show Ψinf (projInf y) * ∏ v ∈ T, phi σ J b S Ψ v (projV v (projFin y)) = _`. Rewrite using `[hprod]`. Distinguish the cases in `h2 : ∀ v, v ∈ T → v ∉ S → projV v (projFin y) ∈ primV σ J b v`.
+
+Establish `hy : y ∈ cut σ J b S T` using `⟨h1, h2⟩`. Rewrite using `[Set.indicator_of_mem hy, Finset.prod_eq_one, one_mul]`. Introduce `v hv`. Conclude with `Set.indicator_of_mem (h2 v (Finset.mem_sdiff.1 hv).1 (Finset.mem_sdiff.1 hv).2) _`. Establish `hy : y ∉ cut σ J b S T` using `fun h => h2 h.2`.
+
+Rewrite using `[Set.indicator_of_notMem hy]`. Use `push_neg at h2`. Take `⟨v, hvT, hvS, hv⟩` from `h2`. Rewrite using `[Finset.prod_eq_zero (Finset.mem_sdiff.2 ⟨hvT, hvS⟩) (Set.indicator_of_notMem hv _)]`. Simplify using the standard rewrite rules.
+
+Establish `hy : y ∉ cut σ J b S T` using `fun h => h1 h.1`. Rewrite using `[Set.indicator_of_notMem h1, Set.indicator_of_notMem hy]`.
+-/
 theorem pureL_phi (σ : E →ₐ[F] E) {M d : ℕ} (J : Matrix (Fin M) (Fin M) E)
     (b : Module.Basis (Fin d) F E) {S T : Finset (HeightOneSpectrum (𝓞 F))} (hST : S ⊆ T)
     (Ψinf : (Fin 1 → Fin (M + 2) → Ainf F ⊗[F] E) → ℝ≥0∞)
@@ -144,6 +179,41 @@ section Finite
 
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
 
+/- English proof (translation)
+Use `haveI := GlobalTheory.CompanionTheory.SW.EulerZero.countable_places F`. Take `⟨u, hu, hut⟩` from `exists_seq_monotone_tendsto_atTop_atTop (Finset (HeightOneSpectrum (𝓞 F)))`. Set `T : ℕ → Finset (HeightOneSpectrum (𝓞 F))` to `fun k => S ∪ u k`. Establish `hTm : Monotone T` using `fun k l h => Finset.union_subset_union_right (hu h)`. Establish `hST : ∀ k, S ⊆ T k` using `fun k => Finset.subset_union_left`.
+
+Establish `hTt : Tendsto T atTop atTop` using `tendsto_atTop_mono (fun k => (Finset.subset_union_right : u k ⊆ S ∪ u k)) hut`. Establish `hφ : ∀ v, Measurable (phi σ J b S Ψ v)`. Introduce `v`. Distinguish the cases in `hv : v ∈ S`. Simplify `hΨ v` using `[phi, hv]`.
+
+Establish `hv1 : v ∉ S₁` using `fun h => hv (hS₁ h)`. Simplify `(measurable_const (a := (1 : ℝ≥0∞))).indicator (hprim v hv1).2` using `[phi, hv]`. Set `A : (Fin 1 → Fin (M + 2) → AF F ⊗[F] E) → ℝ≥0∞` to `fun Y => Ψinf (projInf Y) * ∏ v ∈ S, Ψ v (projV v (projFin Y))`. Set `f : ℕ → (Fin 1 → Fin (M + 2) → AF F ⊗[F] E) → ℝ≥0∞` to `fun k => pureL b (T k) Ψinf (phi σ J b S Ψ)`. Establish `hfm : ∀ k, Measurable (f k)` using `fun k => GlobalTheory.T.pure_adelic_function_measurable F E σ hσ d b 1 (M + 2) (T k) Ψinf _ hΨinf hφ`.
+
+Establish `hfeq : ∀ k y, f k y = (cut σ J b S (T k)).indicator A y` using `fun k y => pureL_phi σ J b (hST k) Ψinf Ψ y`. Establish `hcut : ∀ k l, k ≤ l → cut σ J b S (T l) ⊆ cut σ J b S (T k)`. Introduce `k l hkl y hy`. Use `⟨fun v hv => ?_, fun v hv hvS => hy.2 v (hTm hkl hv) hvS⟩` and prove the remaining obligations. Establish `hvS : v ∉ S` using `fun h => hv (hST k h)`.
+
+Distinguish the cases in `hvl : v ∈ T l`. Conclude with `(hprim v fun h => hvS (hS₁ h)).1 (hy.2 v hvl hvS)`. Conclude with `hy.1 v hvl`. Establish `hanti : Antitone f`. Introduce `k l hkl y`.
+
+Rewrite using `[hfeq, hfeq]`. Conclude with `Set.indicator_le_indicator_of_subset (hcut k l hkl) (fun _ => zero_le) y`. Establish `hinf : ∀ y, ⨅ k, f k y = purePr σ J b S Ψinf Ψ y`. Introduce `y`. Unfold `purePr`.
+
+Distinguish the cases in `hy : ∀ v, v ∉ S → projV v (projFin y) ∈ primV σ J b v`. Establish `hmem : ∀ k, y ∈ cut σ J b S (T k)` using `fun k => ⟨fun v hv => (hprim v fun h => hv (hST k (hS₁ h))).1 (hy v fun h => hv (hST k h)), fun v _ hvS => hy v hvS⟩`. Rewrite using `[Set.indicator_of_mem (show y ∈ {y : Fin 1 → Fin (M + 2) → AF F ⊗[F] E | ∀ v, v ∉ S → projV v (projFin y) ∈ primV σ J b v} from hy)]`. Simplify using `only [hfeq, Set.indicator_of_mem (hmem _)]`. Conclude with `iInf_const`.
+
+Rewrite `hy` using `[Set.indicator_of_notMem (show y ∉ {y : Fin 1 → Fin (M + 2) → AF F ⊗[F] E | ∀ v, v ∉ S → projV v (projFin y) ∈ primV σ J b v} from hy)] push_neg`. Take `⟨v, hvS, hv⟩` from `hy`. Take `⟨k, hk⟩` from `(hut.eventually_ge_atTop ({v} : Finset _)).exists`. Establish `hvk : v ∈ T k` using `Finset.mem_union_right _ (hk (Finset.mem_singleton_self v))`. Establish `hyk : y ∉ cut σ J b S (T k)` using `fun h => hv (h.2 v hvk hvS)`.
+
+Use `le_antisymm (iInf_le_of_le k ?_) zero_le` and prove the remaining obligations. Rewrite using `[hfeq, Set.indicator_of_notMem hyk]`. Set `B : ℝ≥0∞` to `(∫⁻ y, Ψinf y ∂minf) * ∏ v ∈ S, ∫⁻ y, Ψ v y ∂(m v)`. Establish `hB : B ≠ ⊤` using `ENNReal.mul_ne_top hfi (ENNReal.prod_ne_top hfv)`. Set `x : HeightOneSpectrum (𝓞 F) → ℝ` to `fun v => (m v (primV σ J b v)).toReal`.
+
+Set `l : HeightOneSpectrum (𝓞 F) → ℝ` to `fun v => (m v (latV b v)).toReal`. Establish `hx0 : ∀ k, 0 ≤ ∏ v ∈ T k \ S, x v` using `fun k => Finset.prod_nonneg fun v _ => ENNReal.toReal_nonneg`. Establish `hint : ∀ k, ∫⁻ y, f k y ∂I = B * ENNReal.ofReal ((∏ v ∈ T k \ S, x v) * ∏' v : {v // v ∉ T k}, l v.1)`. Introduce `k`. Establish `hphiS : ∏ v ∈ T k, ∫⁻ y, phi σ J b S Ψ v y ∂(m v) = (∏ v ∈ S, ∫⁻ y, Ψ v y ∂(m v)) * ENNReal.ofReal (∏ v ∈ T k \ S, x v)`.
+
+Rewrite using `[← Finset.prod_sdiff (hST k), mul_comm]`. Use `congr 1`. Conclude with `Finset.prod_congr rfl fun v hv => by simp [phi, hv]`. Rewrite using `[ENNReal.ofReal_prod_of_nonneg fun _ _ => ENNReal.toReal_nonneg]`. Use `Finset.prod_congr rfl fun v hv => ?_` and prove the remaining obligations.
+
+Establish `hvS : v ∉ S` using `(Finset.mem_sdiff.1 hv).2`. Establish `hv1 : v ∉ S₁` using `fun h => hvS (hS₁ h)`. Establish `hfin : m v (primV σ J b v) ≠ ⊤` using `ne_top_of_le_ne_top (hlat v).ne (measure_mono (hprim v hv1).1)`. Establish `hphi : phi σ J b S Ψ v = (primV σ J b v).indicator fun _ => 1`. Simplify using `[phi, hvS]`.
+
+Rewrite using `[hphi, lintegral_indicator_const (hprim v hv1).2, one_mul]`. Conclude with `(ENNReal.ofReal_toReal hfin).symm`. Use `show ∫⁻ y, pureL b (T k) Ψinf (phi σ J b S Ψ) y ∂I = _`. Rewrite using `[hE (T k) (hS₀.trans (hST k)) Ψinf _ hΨinf hφ, hphiS, ENNReal.ofReal_mul (hx0 k)]`. Simplify using `only [ENNReal.coe_one, one_mul, B, mul_assoc]`.
+
+Both sides reduce to the same expression. Establish `hp : Tendsto (fun k => ∏ v ∈ T k \ S, x v) atTop (𝓝 (∏' v : {v // v ∉ S}, x v.1))` using `(partial_tendsto x S hsumP).comp hut`. Establish `hq : Tendsto (fun k => ∏' v : {v // v ∉ T k}, l v.1) atTop (𝓝 1)` using `(GlobalTheory.CompanionTheory.Hypotheses₂.OneV.TailProduct.tendsto_tprod_compl_one l hsum).comp hTt`. Establish `hpq` using `hp.mul hq`. Rewrite `hpq` using `[mul_one]`.
+
+Establish `hlim : Tendsto (fun k => ∫⁻ y, f k y ∂I) atTop (𝓝 (B * ENNReal.ofReal (∏' v : {v // v ∉ S}, x v.1)))`. Simplify using `only [hint]`. Conclude with `ENNReal.Tendsto.const_mul ((ENNReal.continuous_ofReal.tendsto _).comp hpq) (Or.inr hB)`. Establish `hf0 : ∫⁻ y, f 0 y ∂I ≠ ⊤`. Rewrite using `[hint 0]`.
+
+Conclude with `ENNReal.mul_ne_top hB ENNReal.ofReal_ne_top`. Establish `hI : ∫⁻ y, purePr σ J b S Ψinf Ψ y ∂I = ⨅ k, ∫⁻ y, f k y ∂I`. Rewrite using `[← lintegral_iInf hfm hanti hf0]`. Conclude with `lintegral_congr fun y => (hinf y).symm`. Rewrite using `[hI]`.
+
+Conclude with `tendsto_nhds_unique (tendsto_atTop_iInf fun k l hkl => lintegral_mono fun y => hanti hkl y) hlim`.
+-/
 theorem finite_case (σ : E →ₐ[F] E) (hσ : IsCMExt F E σ) {M d : ℕ} (J : Matrix (Fin M) (Fin M) E)
     (b : Module.Basis (Fin d) F E) (I : Measure (Fin 1 → Fin (M + 2) → AF F ⊗[F] E))
     (minf : Measure (Fin 1 → Fin (M + 2) → Ainf F ⊗[F] E))
@@ -272,6 +342,21 @@ theorem finite_case (σ : E →ₐ[F] E) (hσ : IsCMExt F E σ) {M d : ℕ} (J :
 
 end Finite
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ hσ M J hJ d b I minf m hEu hsi hsv S₁ hprim hsumP`. Take `⟨hlat, hsum, S₀, hE⟩` from `hEu`. Use `⟨S₀ ∪ S₁, fun S hS Ψinf Ψ hΨinf hΨ => ?_⟩` and prove the remaining obligations. Establish `hS₀ : S₀ ⊆ S` using `Finset.subset_union_left.trans hS`. Establish `hS₁ : S₁ ⊆ S` using `Finset.subset_union_right.trans hS`.
+
+Take `⟨gi, gim, gimono, gisup, gifin⟩` from `exists_approx minf Ψinf hΨinf`. Use `choose g gm gmono gsup gfin using fun v => @exists_approx _ _ (m v) (hsv v) (Ψ v) (hΨ v)`. Set `G : ℕ → (Fin 1 → Fin (M + 2) → AF F ⊗[F] E) → ℝ≥0∞` to `fun k => purePr σ J b S (gi k) (fun v => g v k)`. Establish `hGm : ∀ k, Measurable (G k)` using `fun k => GlobalTheory.T.euler_product_lintegral_limit F E σ hσ M J hJ d b S _ _ (gim k) (fun v => gm v k)`. Establish `hpm : ∀ (a : Fin 1 → Fin (M + 2) → AF F ⊗[F] E), Monotone fun k => ∏ v ∈ S, g v k (projV v (projFin a))` using `fun a k l hkl => Finset.prod_le_prod' fun v _ => gmono v _ hkl`.
+
+Establish `hGmono : Monotone G`. Introduce `k l hkl y`. Conclude with `Set.indicator_le_indicator (mul_le_mul' (gimono _ hkl) (hpm y hkl))`. Establish `hGsup : ∀ y, ⨆ k, G k y = purePr σ J b S Ψinf Ψ y`. Introduce `y`.
+
+Distinguish the cases in `hy : ∀ v, v ∉ S → projV v (projFin y) ∈ primV σ J b v`. Establish `hmem : y ∈ {y : Fin 1 → Fin (M + 2) → AF F ⊗[F] E | ∀ v, v ∉ S → projV v (projFin y) ∈ primV σ J b v}` using `hy`. Simplify using `only [G, purePr, Set.indicator_of_mem hmem]`. Rewrite using `[← iSup_mul_iSup_mono (gimono _) (hpm y), ← prod_iSup_mono S _ (fun v => gmono v _)]`. Simplify using `only [gisup, gsup]`.
+
+Establish `hmem : y ∉ {y : Fin 1 → Fin (M + 2) → AF F ⊗[F] E | ∀ v, v ∉ S → projV v (projFin y) ∈ primV σ J b v}` using `hy`. Simplify using `only [G, purePr, Set.indicator_of_notMem hmem]`. Conclude with `iSup_const`. Establish `hIinf : ⨆ k, ∫⁻ y, gi k y ∂minf = ∫⁻ y, Ψinf y ∂minf`. Rewrite using `[← lintegral_iSup gim (fun k l hkl y => gimono y hkl)]`.
+
+Conclude with `lintegral_congr gisup`. Establish `hIv : ∀ v, ⨆ k, ∫⁻ y, g v k y ∂(m v) = ∫⁻ y, Ψ v y ∂(m v)`. Introduce `v`. Rewrite using `[← lintegral_iSup (gm v) (fun k l hkl y => gmono v y hkl)]`. Conclude with `lintegral_congr (gsup v)`.
+
+Establish `hmi : Monotone fun k => ∫⁻ y, gi k y ∂minf` using `fun k l hkl => lintegral_mono fun y => gimono y hkl`. Establish `hmv : ∀ v, Monotone fun k => ∫⁻ y, g v k y ∂(m v)` using `fun v k l hkl => lintegral_mono fun y => gmono v y hkl`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[← iSup_mul_iSup_mono hmi (fun k l hkl => Finset.prod_le_prod' fun v _ => hmv v hkl), ← prod_iSup_mono S _ hmv, hIinf]`. Simplify using `only [hIv]`.
+-/
 theorem prim_formula : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E), IsCMExt F E σ → ∀ (M : ℕ) (J : Matrix (Fin M) (Fin M) E), IsHermND σ J → ∀ (d : ℕ) (b : Module.Basis (Fin d) F E) (I : Measure (Fin 1 → Fin (M + 2) → AF F ⊗[F] E)) (minf : Measure (Fin 1 → Fin (M + 2) → Ainf F ⊗[F] E)) (m : ∀ v : HeightOneSpectrum (𝓞 F), Measure (Fin 1 → Fin (M + 2) → Fv F v ⊗[F] E)), IsEulerProd b I 1 minf m → SigmaFinite minf → (∀ v, SigmaFinite (m v)) → ∀ S₁ : Finset (HeightOneSpectrum (𝓞 F)), (∀ v, v ∉ S₁ → primV σ J b v ⊆ latV b v ∧ MeasurableSet (primV σ J b v)) → Summable (fun v => |(m v (primV σ J b v)).toReal - 1|) → ∃ S₃ : Finset (HeightOneSpectrum (𝓞 F)), ∀ S, S₃ ⊆ S → ∀ (Ψinf : (Fin 1 → Fin (M + 2) → Ainf F ⊗[F] E) → ℝ≥0∞) (Ψ : ∀ v : HeightOneSpectrum (𝓞 F), (Fin 1 → Fin (M + 2) → Fv F v ⊗[F] E) → ℝ≥0∞), Measurable Ψinf → (∀ v, Measurable (Ψ v)) → ∫⁻ y, purePr σ J b S Ψinf Ψ y ∂I = ((∫⁻ y, Ψinf y ∂minf) * ∏ v ∈ S, ∫⁻ y, Ψ v y ∂(m v)) * ENNReal.ofReal (∏' v : {v // v ∉ S}, (m v.1 (primV σ J b v.1)).toReal) := by
   intro F E _ _ _ _ _ σ hσ M J hJ d b I minf m hEu hsi hsv S₁ hprim hsumP
   classical

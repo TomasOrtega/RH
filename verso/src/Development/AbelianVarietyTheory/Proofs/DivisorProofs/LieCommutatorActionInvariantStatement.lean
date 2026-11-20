@@ -3,6 +3,9 @@ import Development.AbelianVarietyTheory.Proofs.DivisorProofs.LieCommutatorAction
 import Mathlib
 import Formalism.LocalRingCardinality.DataTheta
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.BranchTop.top_irreducible | exact GlobalTheory.BranchTop.top_irreducible | (intros; apply GlobalTheory.BranchTop.top_irreducible <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.lie_commutator_action_invariant : ∀ {ι V : Type} [Fintype ι] [AddCommGroup V] [Module ℂ V] {R S : ℕ} (r₀ : Fin R) (s₀ : Fin S)
     (act : ι → Formalism.BasicNotions.TH.Mat R S →ₗ[ℂ] Module.End ℂ V),
     (∀ w X Y, Formalism.BasicNotions.TH.IsKC X → Formalism.BasicNotions.TH.IsKC Y → act w (X * Y - Y * X) = act w X * act w Y - act w Y * act w X) →

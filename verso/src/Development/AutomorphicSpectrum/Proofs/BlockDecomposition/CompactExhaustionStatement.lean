@@ -12,6 +12,9 @@ open ReciprocityTheory.ChartRestriction.DS ReciprocityTheory.ChartRestriction.DS
 variable {n : ℕ} {ε : Fin n → Bool} {lam : Fin n → ℝ} {T : KType ε (lowK ε lam)}
   {Ψ : Matrix (Fin n) (Fin n) ℂ → (T.V →L[ℂ] T.V)}
 
+/- English proof (translation)
+The claim follows from `| [] => datumFunction_isSmoothL2 hP T.w v | p :: w => (eword_smooth hP v w).Eab p.1 p.2`.
+-/
 theorem eword_smooth (hP : IsPsiFor ε lam T Ψ) (v : T.V) :
     ∀ w : List (Fin n × Fin n), IsSmoothL2 ε (Formalism.REAL.Eword ε w (jfun Ψ T.w v))
   | [] => datumFunction_isSmoothL2 hP T.w v
@@ -20,23 +23,40 @@ theorem eword_smooth (hP : IsPsiFor ε lam T Ψ) (v : T.V) :
 def cD (hP : IsPsiFor ε lam T Ψ) (w : List (Fin n × Fin n)) (v : T.V) : smD ε (rreg ε) :=
   ⟨toL2 ε (Formalism.REAL.Eword ε w (jfun Ψ T.w v)), toL2_mem_smD_of_isSmoothL2 (eword_smooth hP v w)⟩
 
+/- English proof (translation)
+The claim follows from `Subtype.ext (rightDerivative_toL2 (eword_smooth hP v w) p.1 p.2).symm`.
+-/
 theorem cD_cons (hP : IsPsiFor ε lam T Ψ) (p : Fin n × Fin n) (w : List (Fin n × Fin n)) (v : T.V) :
     cD hP (p :: w) v = smE ε (rreg ε) p.1 p.2 (cD hP w v) :=
   Subtype.ext (rightDerivative_toL2 (eword_smooth hP v w) p.1 p.2).symm
 
+/- English proof (translation)
+The claim follows from `| [] => Subtype.ext (datumEmbedding_add hP T.w u v) | p :: w => by rw [cD_cons, cD_cons, cD_cons, cD_add hP u v w, map_add]`.
+-/
 theorem cD_add (hP : IsPsiFor ε lam T Ψ) (u v : T.V) :
     ∀ w : List (Fin n × Fin n), cD hP w (u + v) = cD hP w u + cD hP w v
   | [] => Subtype.ext (datumEmbedding_add hP T.w u v)
   | p :: w => by rw [cD_cons, cD_cons, cD_cons, cD_add hP u v w, map_add]
 
+/- English proof (translation)
+The claim follows from `| [] => Subtype.ext (datumEmbedding_smul hP T.w c v) | p :: w => by rw [cD_cons, cD_cons, cD_smul hP c v w, map_smul]`.
+-/
 theorem cD_smul (hP : IsPsiFor ε lam T Ψ) (c : ℂ) (v : T.V) :
     ∀ w : List (Fin n × Fin n), cD hP w (c • v) = c • cD hP w v
   | [] => Subtype.ext (datumEmbedding_smul hP T.w c v)
   | p :: w => by rw [cD_cons, cD_cons, cD_smul hP c v w, map_smul]
 
+/- English proof (translation)
+Simplify using `using cD_smul hP (0 : ℂ) (0 : T.V) w`.
+-/
 theorem cD_zero (hP : IsPsiFor ε lam T Ψ) (w : List (Fin n × Fin n)) : cD hP w (0 : T.V) = 0 := by
   simpa using cD_smul hP (0 : ℂ) (0 : T.V) w
 
+/- English proof (translation)
+Establish `h` using `toL2_finset_sum_of_memLp (ε := ε) univ (fun x : Wd n m => Formalism.REAL.Eword ε (ofW x) (jfun Ψ T.w (a x))) (fun x => (eword_smooth hP (a x) (ofW x)).2 [])`. Establish `e : actF T Ψ a = fun g => ∑ x : Wd n m, Formalism.REAL.Eword ε (ofW x) (jfun Ψ T.w (a x)) g`. Use function extensionality and compare the values at `g`. Conclude with `Finset.sum_apply _ _ _`. Unfold `actL`.
+
+Rewrite using `[e]`. Conclude with `h`.
+-/
 theorem actL_eq (hP : IsPsiFor ε lam T Ψ) {m : ℕ} (a : AS T m) :
     actL T Ψ a = ∑ x, (cD hP (ofW x) (a x) : L2 ε) := by
   have h := toL2_finset_sum_of_memLp (ε := ε) univ
@@ -49,6 +69,11 @@ theorem actL_eq (hP : IsPsiFor ε lam T Ψ) {m : ℕ} (a : AS T m) :
   rw [e]
   exact h
 
+/- English proof (translation)
+Take `⟨⟨l, hl⟩, w⟩` from `x`. Take `⟨⟨l', hl'⟩, w'⟩` from `y`. Establish `hlen : l = l'` using `by simpa [ofW] using congrArg List.length h`. Substitute `hlen` using the available equality. Establish `: w = w'` using `List.ofFn_injective h`.
+
+Substitute `this` using the available equality. Both sides reduce to the same expression.
+-/
 theorem ofW_inj {m : ℕ} {x y : Wd n m} (h : ofW x = ofW y) : x = y := by
   obtain ⟨⟨l, hl⟩, w⟩ := x
   obtain ⟨⟨l', hl'⟩, w'⟩ := y
@@ -62,6 +87,11 @@ open Classical in
 
 def sgl (m : ℕ) (w : List (Fin n × Fin n)) (v : T.V) : AS T m := fun y => if ofW y = w then v else 0
 
+/- English proof (translation)
+Establish `hx0 : ofW (⟨⟨w.length, Nat.lt_succ_of_le h⟩, w.get⟩ : Wd n m) = w` using `List.ofFn_get w`. Rewrite using `[actL_eq hP, Finset.sum_eq_single (⟨⟨w.length, Nat.lt_succ_of_le h⟩, w.get⟩ : Wd n m)]`. Simplify using `only [sgl, hx0, if_true]`. Introduce `y _ hy`. Establish `hne : ofW y ≠ w` using `fun e => hy (ofW_inj (e.trans hx0.symm))`.
+
+Simplify using `only [sgl, if_neg hne, cD_zero]`. Both sides reduce to the same expression. Introduce `hn`. Conclude with `absurd (Finset.mem_univ _) hn`.
+-/
 theorem actL_sgl (hP : IsPsiFor ε lam T Ψ) {m : ℕ} {w : List (Fin n × Fin n)} (h : w.length ≤ m) (v : T.V) :
     actL T Ψ (sgl m w v) = (cD hP w v : L2 ε) := by
   have hx0 : ofW (⟨⟨w.length, Nat.lt_succ_of_le h⟩, w.get⟩ : Wd n m) = w := List.ofFn_get w
@@ -81,8 +111,16 @@ def actLin (hP : IsPsiFor ε lam T Ψ) (m : ℕ) : AS T m →ₗ[ℂ] L2 ε wher
   map_smul' c a := by
     simp only [actL_eq hP, Pi.smul_apply, cD_smul, Submodule.coe_smul, Finset.smul_sum, RingHom.id_apply]
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem actLin_apply (hP : IsPsiFor ε lam T Ψ) {m : ℕ} (a : AS T m) : actLin hP m a = actL T Ψ a := rfl
 
+/- English proof (translation)
+Use `⟨∑ x : Wd n m, sgl m' (ofW x) (a x), ?_⟩` and prove the remaining obligations. Rewrite using `[← actLin_apply hP, map_sum, actL_eq hP a]`. Use `Finset.sum_congr rfl fun x _ => ?_` and prove the remaining obligations. Rewrite using `[actLin_apply, actL_sgl hP]`. Establish `: (ofW x).length = x.1` using `by simp [ofW]`.
+
+Establish `h2` using `x.1.2`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem pad (hP : IsPsiFor ε lam T Ψ) {m m' : ℕ} (h : m ≤ m') (a : AS T m) :
     ∃ a' : AS T m', actL T Ψ a' = actL T Ψ a := by
   refine ⟨∑ x : Wd n m, sgl m' (ofW x) (a x), ?_⟩
@@ -109,13 +147,26 @@ def exS (hP : IsPsiFor ε lam T Ψ) : Submodule ℂ (smD ε (rreg ε)) where
     rw [Submodule.coe_smul, ha]
     exact ((actLin hP m).map_smul c a).symm
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨w.length, sgl _ w v, (actL_sgl hP le_rfl v).symm⟩`.
+-/
 theorem cD_mem_exS (hP : IsPsiFor ε lam T Ψ) (w : List (Fin n × Fin n)) (v : T.V) : cD hP w v ∈ exS hP :=
   ⟨w.length, sgl _ w v, (actL_sgl hP le_rfl v).symm⟩
 
+/- English proof (translation)
+The claim follows from `Subtype.ext (by rw [h, actL_eq hP, Submodule.coe_sum])`.
+-/
 theorem eq_sum (hP : IsPsiFor ε lam T Ψ) {x : smD ε (rreg ε)} {m : ℕ} {a : AS T m}
     (h : (x : L2 ε) = actL T Ψ a) : x = ∑ y, cD hP (ofW y) (a y) :=
   Subtype.ext (by rw [h, actL_eq hP, Submodule.coe_sum])
 
+/- English proof (translation)
+Use `sInf_le ⟨fun x hx => ?_, fun a b x hx => ?_⟩` and prove the remaining obligations. Take `⟨v, hv⟩` from `(mem_datumV_iff hP T.w x).1 hx`. Establish `: x = cD hP [] v` using `Subtype.ext hv`. Rewrite using `[this]`. Conclude with `cD_mem_exS hP [] v`.
+
+Take `⟨m, f, hf⟩` from `hx`. Rewrite using `[eq_sum hP hf, map_sum]`. Use `Submodule.sum_mem _ fun y _ => ?_` and prove the remaining obligations. Use `cD_cons hP (a, b) (ofW y) (f y)` as an intermediate fact. Simplify using `only at this`.
+
+Rewrite using `[← this]`. Conclude with `cD_mem_exS hP _ _`.
+-/
 theorem genSub_le_exS (hP : IsPsiFor ε lam T Ψ) :
     genSub (smE ε (rreg ε)) (datumV ε Ψ T.w) ≤ exS hP := by
   refine sInf_le ⟨fun x hx => ?_, fun a b x hx => ?_⟩
@@ -131,6 +182,11 @@ theorem genSub_le_exS (hP : IsPsiFor ε lam T Ψ) :
     rw [← this]
     exact cD_mem_exS hP _ _
 
+/- English proof (translation)
+Use `(Submodule.mem_sInf).2 fun N hN => ?_` and prove the remaining obligations. Proceed by induction on `w with`. Consider the case `nil => exact hN.1 ((mem_datumV_iff hP T.w _).2 ⟨v, rfl⟩)`. Consider the case `cons p w ih`. Rewrite using `[cD_cons]`.
+
+Conclude with `hN.2 _ _ _ ih`.
+-/
 theorem cD_mem_genSub (hP : IsPsiFor ε lam T Ψ) (v : T.V) (w : List (Fin n × Fin n)) :
     cD hP w v ∈ genSub (smE ε (rreg ε)) (datumV ε Ψ T.w) := by
   refine (Submodule.mem_sInf).2 fun N hN => ?_
@@ -140,6 +196,9 @@ theorem cD_mem_genSub (hP : IsPsiFor ε lam T Ψ) (v : T.V) (w : List (Fin n × 
     rw [cD_cons]
     exact hN.2 _ _ _ ih
 
+/- English proof (translation)
+Introduce `n ε lam T Ψ hP`. Use `⟨fun x hx => genSub_le_exS hP hx, fun m m' h a => pad hP h a, fun m a => ?_⟩` and prove the remaining obligations. Use `⟨∑ x, cD hP (ofW x) (a x), Submodule.sum_mem _ fun x _ => cD_mem_genSub hP _ _, ?_⟩` and prove the remaining obligations. Rewrite using `[actL_eq hP]`. Simplify using `only [Submodule.subtype_apply, Submodule.coe_sum]`.
+-/
 theorem exhaust : Exhaust := by
   intro n ε lam T Ψ hP
   refine ⟨fun x hx => genSub_le_exS hP hx, fun m m' h a => pad hP h a, fun m a => ?_⟩

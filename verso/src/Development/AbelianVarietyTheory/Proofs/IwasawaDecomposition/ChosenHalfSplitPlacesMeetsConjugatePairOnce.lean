@@ -11,6 +11,11 @@ noncomputable section
 
 namespace GlobalTheory.ChosenHalf
 
+/- English proof (translation)
+Apply `HeightOneSpectrum.ext` to reduce the goal to its premises. Use extensionality with `y`. Take `⟨x, hx⟩` from `(RingOfIntegers.mapRingEquiv D.host.conj.toRingEquiv).surjective y`. Establish `hy : (y : D.host.E) = D.host.conj (x : D.host.E)`. Rewrite using `[← hx]`.
+
+Both sides reduce to the same expression. Rewrite using `[← h x y hy, ← h' x y hy]`.
+-/
 theorem isConjPl_unique (D : D7) {P w w' : PlE D.host} (h : IsConjPl D.host P w) (h' : IsConjPl D.host P w') :
     w = w' := by
   apply HeightOneSpectrum.ext
@@ -20,6 +25,9 @@ theorem isConjPl_unique (D : D7) {P w w' : PlE D.host} (h : IsConjPl D.host P w)
     rw [← hx]; rfl
   rw [← h x y hy, ← h' x y hy]
 
+/- English proof (translation)
+Introduce `hc`. Take `⟨x, hx, hy⟩` from `hs`. Establish `hyx : ((RingOfIntegers.mapRingEquiv D.host.conj.toRingEquiv x : 𝓞 D.host.E) : D.host.E) = D.host.conj (x : D.host.E)` using `rfl`. Conclude with `hy _ hyx ((hc x _ hyx).1 hx)`.
+-/
 theorem not_isConjPl_self (D : D7) {P : PlE D.host} (hs : IsSplitPl D.host P) : ¬ IsConjPl D.host P P := by
   intro hc
   obtain ⟨x, hx, hy⟩ := hs
@@ -27,10 +35,28 @@ theorem not_isConjPl_self (D : D7) {P : PlE D.host} (hs : IsSplitPl D.host P) : 
       D.host.conj (x : D.host.E) := rfl
   exact hy _ hyx ((hc x _ hyx).1 hx)
 
+/- English proof (translation)
+The claim follows from `HeightOneSpectrum.ext (h.symm.trans h')`.
+-/
 theorem overPl_unique (D : D7) {P : PlE D.host} {v v' : HeightOneSpectrum (𝓞 (maximalRealSubfield D.host.E))}
     (h : NG.OverPl P v) (h' : NG.OverPl P v') : v = v' :=
   HeightOneSpectrum.ext (h.symm.trans h')
 
+/- English proof (translation)
+Introduce `D Pq hPq S hS`. Establish `pair` using `GlobalTheory.T.comap_realSubfield_eq_iff_eq_or_isConjPlace D`. Establish `memq : ∀ P, P ∈ qpOf D Pq S ↔ P ∈ S ∧ ∀ v, NG.OverPl P v → P = Pq v ∨ Pq v ∉ S`. Introduce `P`. Unfold `qpOf`.
+
+Rewrite using `[Finset.mem_filter]`. Use `⟨fun P hP => ?_, fun P hP P' hP' hc => ?_⟩` and prove the remaining obligations. Distinguish the cases in `hq : P ∈ qpOf D Pq S`. Conclude with `⟨P, hq, Or.inl rfl⟩`. Establish `hn : ¬ ∀ v, NG.OverPl P v → P = Pq v ∨ Pq v ∉ S` using `fun h => hq ((memq P).2 ⟨hP, h⟩) push_neg at hn`.
+
+Take `⟨v, hv, -, hin⟩` from `hn`. Use `⟨Pq v, (memq _).2 ⟨hin, fun v' hv' => Or.inl ?_⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[overPl_unique D (hPq v) hv']`. Break down `(pair P (Pq v)).1 (hv.trans (hPq v).symm) with h | h` into its components or cases. Conclude with `Or.inl h.symm`.
+
+Conclude with `Or.inr h`. Establish `hPS` using `((memq P).1 hP).1`. Establish `hP'S` using `((memq P').1 hP').1`. Set `v` to `HeightOneSpectrum.under (𝓞 (maximalRealSubfield D.host.E)) P`. Establish `hv : NG.OverPl P v` using `rfl`.
+
+Establish `hv' : NG.OverPl P' v` using `((pair P P').2 (Or.inr hc)).symm.trans hv`. Establish `hqS : Pq v ∈ S`. Break down `(pair P (Pq v)).1 (hv.trans (hPq v).symm) with h | h` into its components or cases. Rewrite using `[← h]`. Conclude with `hPS`.
+
+Rewrite using `[← isConjPl_unique D hc h]`. Conclude with `hP'S`. Establish `e1` using `qpOf_eq D Pq S hP hv hqS`. Establish `e2` using `qpOf_eq D Pq S hP' hv' hqS`. Establish `e : P' = P` using `e2.trans e1.symm`.
+
+Rewrite `hc` using `[e]`. Conclude with `not_isConjPl_self D (hS P hPS) hc`.
+-/
 theorem qpOf_half : ∀ (D : D7) (Pq : HeightOneSpectrum (𝓞 (maximalRealSubfield D.host.E)) → PlE D.host), (∀ v, NG.OverPl (Pq v) v) →
     ∀ S : Finset (PlE D.host), (∀ P ∈ S, IsSplitPl D.host P) →
     (∀ P ∈ S, ∃ P' ∈ qpOf D Pq S, P' = P ∨ IsConjPl D.host P P') ∧ ∀ P ∈ qpOf D Pq S, ∀ P' ∈ qpOf D Pq S, ¬ IsConjPl D.host P P' := by

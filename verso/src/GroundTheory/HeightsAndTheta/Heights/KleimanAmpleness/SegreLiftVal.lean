@@ -48,6 +48,9 @@ end Objects
 
 section Examples
 
+/- English proof (translation)
+Simplify using `only [segreLift, RingHom.mem_ker, segreY, segreMon, map_sub, map_mul, map_prod, segreLiftMap, aeval_X, segreLiftVal]`. Simplify using `only [Finset.univ_unique, Finset.prod_singleton]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 example (W : Ideal (MRing (fun _ : Unit => Fin 2) ℚ)) :
     segreY (R := ℚ) (fun _ => (0 : Fin 2)) * segreMon (fun _ => 1) -
         segreY (fun _ => 1) * segreMon (fun _ => 0) ∈ segreLift _ ℚ W := by
@@ -56,6 +59,9 @@ example (W : Ideal (MRing (fun _ : Unit => Fin 2) ℚ)) :
   simp only [Finset.univ_unique, Finset.prod_singleton]
   ring
 
+/- English proof (translation)
+Simplify using `only [segreLift, RingHom.mem_ker, segreLiftMap, aeval_X, segreLiftVal]`. Rewrite using `[Polynomial.C_eq_zero, Ideal.Quotient.eq_zero_iff_mem, Ideal.mem_bot]`. Conclude with `X_ne_zero _`.
+-/
 example : (X ⟨Sum.inr (), (0 : Fin 2)⟩ : MRing (segreIdx (fun _ : Unit => Fin 2)) ℚ) ∉
     segreLift _ ℚ ⊥ := by
   simp only [segreLift, RingHom.mem_ker, segreLiftMap, aeval_X, segreLiftVal]

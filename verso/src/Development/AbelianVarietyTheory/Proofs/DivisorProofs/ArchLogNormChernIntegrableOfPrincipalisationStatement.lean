@@ -13,5 +13,8 @@ open ReciprocityTheory.ChartRestriction.G.Out (nonzeroLocus)
 open ReciprocityTheory.AnForm.M ReciprocityTheory.AnForm.R
 open GlobalTheory GlobalTheory.Cartier GlobalTheory.CxPts GlobalTheory.Points GlobalTheory.CechPic GlobalTheory.ChartGlue GlobalTheory.Mix
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.ArchIntegClosing.archInteg | exact GlobalTheory.ArchIntegClosing.archInteg | (intros; apply GlobalTheory.ArchIntegClosing.archInteg <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.archLogNormChernIntegrable_of_principalisation : GlobalTheory.Published.Principalisation → GlobalTheory.MixHt.ArchInteg := by
   first | exact @GlobalTheory.ArchIntegClosing.archInteg | exact GlobalTheory.ArchIntegClosing.archInteg | (intros; apply GlobalTheory.ArchIntegClosing.archInteg <;> assumption)

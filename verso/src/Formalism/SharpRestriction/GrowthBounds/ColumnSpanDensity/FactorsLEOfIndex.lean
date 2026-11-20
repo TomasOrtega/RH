@@ -43,8 +43,14 @@ variable {O Kf V₁ V₂ V : Type*} [CommRing O] [Field Kf] [Algebra O Kf] [AddC
   [IsScalarTower O Kf V₁] [AddCommGroup V₂] [Module Kf V₂] [Module O V₂] [IsScalarTower O Kf V₂] [AddCommGroup V]
   [Module Kf V] [Module O V] [IsScalarTower O Kf V]
 
+/- English proof (translation)
+The claim follows from `Submodule.map_mono h`.
+-/
 theorem scale_mono (c : Kf) {M M' : Submodule O V} (h : M ≤ M') : scale c M ≤ scale c M' := Submodule.map_mono h
 
+/- English proof (translation)
+Take `⟨y, hy, rfl⟩` from `Submodule.mem_map.mp h`. Take `⟨z, hz, rfl⟩` from `Submodule.mem_map.mp hy`. Use `Submodule.mem_map.mpr ⟨z, hz, ?_⟩` and prove the remaining obligations. Simplify using `[mul_smul]`. Conclude with `smul_comm _ _ _`.
+-/
 theorem scale_scale_mem {a b : Kf} {M : Submodule O V} {x : V} (h : x ∈ scale a (scale b M)) :
     x ∈ scale (a * b) M := by
   obtain ⟨y, hy, rfl⟩ := Submodule.mem_map.mp h
@@ -53,6 +59,9 @@ theorem scale_scale_mem {a b : Kf} {M : Submodule O V} {x : V} (h : x ∈ scale 
   simp [mul_smul]
   exact smul_comm _ _ _
 
+/- English proof (translation)
+Take `⟨z, hz, rfl⟩` from `Submodule.mem_map.mp h`. Use `Submodule.mem_map.mpr ⟨b • z, Submodule.mem_map.mpr ⟨z, hz, by simp⟩, ?_⟩` and prove the remaining obligations. Simplify using `[mul_smul]`. Conclude with `smul_comm _ _ _`.
+-/
 theorem mem_scale_scale {a b : Kf} {M : Submodule O V} {x : V} (h : x ∈ scale (a * b) M) :
     x ∈ scale a (scale b M) := by
   obtain ⟨z, hz, rfl⟩ := Submodule.mem_map.mp h
@@ -60,6 +69,9 @@ theorem mem_scale_scale {a b : Kf} {M : Submodule O V} {x : V} (h : x ∈ scale 
   simp [mul_smul]
   exact smul_comm _ _ _
 
+/- English proof (translation)
+Take `⟨F0, hF0, rfl⟩` from `Submodule.mem_map.mp hF`. Take `⟨r0, hr0, rfl⟩` from `Submodule.mem_map.mp hr`. Use `Submodule.mem_map.mpr ⟨μ F0 r0, Submodule.subset_span ⟨F0, hF0, r0, hr0, rfl⟩, ?_⟩` and prove the remaining obligations. Simplify using `[mul_smul]`. Conclude with `smul_comm _ _ _`.
+-/
 theorem mu_scale (μ : V₁ →ₗ[Kf] V₂ →ₗ[Kf] V) {a b : Kf} {M : Submodule O V₁} {N : Submodule O V₂} {F : V₁} {r : V₂}
     (hF : F ∈ scale a M) (hr : r ∈ scale b N) : μ F r ∈ scale (a * b) (Pr μ M N) := by
   obtain ⟨F0, hF0, rfl⟩ := Submodule.mem_map.mp hF
@@ -68,6 +80,13 @@ theorem mu_scale (μ : V₁ →ₗ[Kf] V₂ →ₗ[Kf] V) {a b : Kf} {M : Submod
   simp [mul_smul]
   exact smul_comm _ _ _
 
+/- English proof (translation)
+Introduce `v hv`. Proceed by induction on `hv using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨F, hF, r, hr, rfl⟩` from `hx`. Take `⟨a, ha⟩` from `hG F hF`.
+
+Take `⟨b, hb⟩` from `hρ r hr`. Conclude with `⟨a * b, by rw [hν, map_mul, ha, hb]⟩`. Consider the case `zero => exact ⟨0, by simp⟩`. Consider the case `add x y _ _ hx hy`. Take `⟨a, ha⟩` from `hx`.
+
+Take `⟨b, hb⟩` from `hy`. Conclude with `⟨a + b, by rw [map_add, map_add, ha, hb]⟩`. Consider the case `smul c x _ hx`. Take `⟨a, ha⟩` from `hx`. Conclude with `⟨c * a, by rw [map_mul, ha, ← algebraMap_smul Kf c x, map_smul, smul_eq_mul]⟩`.
+-/
 theorem nu_dual (μ : V₁ →ₗ[Kf] V₂ →ₗ[Kf] V)
     (ν : Module.Dual Kf V₁ →ₗ[Kf] Module.Dual Kf V₂ →ₗ[Kf] Module.Dual Kf V)
     (hν : ∀ G ρ F r, ν G ρ (μ F r) = G F * ρ r) {M : Submodule O V₁} {N : Submodule O V₂}
@@ -89,6 +108,9 @@ theorem nu_dual (μ : V₁ →ₗ[Kf] V₂ →ₗ[Kf] V)
     obtain ⟨a, ha⟩ := hx
     exact ⟨c * a, by rw [map_mul, ha, ← algebraMap_smul Kf c x, map_smul, smul_eq_mul]⟩
 
+/- English proof (translation)
+Take `⟨G0, hG0, rfl⟩` from `Submodule.mem_map.mp hG`. Take `⟨ρ0, hρ0, rfl⟩` from `Submodule.mem_map.mp hρ`. Use `Submodule.mem_map.mpr ⟨ν G0 ρ0, nu_dual μ ν hν hG0 hρ0, ?_⟩` and prove the remaining obligations. Simplify using `[mul_smul]`. Conclude with `smul_comm _ _ _`.
+-/
 theorem nu_scale (μ : V₁ →ₗ[Kf] V₂ →ₗ[Kf] V)
     (ν : Module.Dual Kf V₁ →ₗ[Kf] Module.Dual Kf V₂ →ₗ[Kf] Module.Dual Kf V)
     (hν : ∀ G ρ F r, ν G ρ (μ F r) = G F * ρ r) {a b : Kf} {M : Submodule O V₁} {N : Submodule O V₂}
@@ -103,6 +125,11 @@ theorem nu_scale (μ : V₁ →ₗ[Kf] V₂ →ₗ[Kf] V)
 
 end Formal
 
+/- English proof (translation)
+Unfold `FactorsLE`. Use `right`. Set `e : Fin n ≃ I` to `(Fintype.equivFinOfCardEq hcard).symm`. Use `⟨fun i => x (e i), fun i => y (e i), fun i => hx _, fun i => hy _, z, M.submatrix e e, hz, hv, fun i j => ?_⟩` and prove the remaining obligations. Simplify using `only [Matrix.submatrix_apply]`.
+
+Rewrite using `[Equiv.sum_comp e (fun l => be (x (e i)) (y l) * algebraMap O Kf (M l (e j))), hM]`. Simplify using `[e.injective.eq_iff]`.
+-/
 theorem FactorsLE_of_index {O Kf V V' : Type*} [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] [Field Kf]
     [Algebra O Kf] [AddCommGroup V] [Module O V] [AddCommGroup V'] [Module O V'] {p : ℕ} {be : V → V' → Kf}
     {A : Submodule O V} {A' : Submodule O V'} {D : ℝ} {I : Type*} [Fintype I] [DecidableEq I] (n : ℕ)
@@ -118,6 +145,11 @@ theorem FactorsLE_of_index {O Kf V V' : Type*} [CommRing O] [IsDomain O] [IsDisc
   rw [Equiv.sum_comp e (fun l => be (x (e i)) (y l) * algebraMap O Kf (M l (e j))), hM]
   simp [e.injective.eq_iff]
 
+/- English proof (translation)
+Use `show ∀ s, Antitone (othW TT lam0 s)`. Introduce `s`. Simplify using `only [othW]`. Use `split_ifs`. Conclude with `antitone_const`.
+
+Conclude with `h s`.
+-/
 theorem othW_dom {n' m : ℕ} {TT : Finset (Fin n')} {lam0 : Fin n' → Fin (m + 1) → ℤ} (h : IsDominant lam0) :
     IsDominant (othW TT lam0) := by
   show ∀ s, Antitone (othW TT lam0 s)
@@ -127,6 +159,11 @@ theorem othW_dom {n' m : ℕ} {TT : Finset (Fin n')} {lam0 : Fin n' → Fin (m +
   · exact antitone_const
   · exact h s
 
+/- English proof (translation)
+Unfold `Ar`. Rewrite using `[← Finset.sum_add_distrib]`. Use `Finset.sum_congr rfl fun s _ => ?_` and prove the remaining obligations. Rewrite using `[← Finset.sum_add_distrib]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations.
+
+Unfold `lamAt topW othW`. Apply the tactic sequence `by_cases hs : s ∈ TT <;> by_cases he : Even (s : ℕ) <;> simp [hs, he]`.
+-/
 theorem Ar_add {n' m : ℕ} (TT : Finset (Fin n')) (lam0 : Fin n' → Fin (m + 1) → ℤ) :
     Ar 1 lam0 = Ar 1 (topW TT lam0) + Ar 1 (othW TT lam0) := by
   unfold Ar

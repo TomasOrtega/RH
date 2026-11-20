@@ -17,8 +17,14 @@ section Idx
 
 variable {n : ℕ} {ε : Fin n → Bool}
 
+/- English proof (translation)
+Simplify using `[negS]`.
+-/
 theorem mem_negS {a : Fin n} : a ∈ negS ε ↔ ε a = false := by simp [negS]
 
+/- English proof (translation)
+Establish `ha' : a ∈ negS ε` using `mem_negS.2 ha`. Establish `hb' : b ∈ negS ε` using `mem_negS.2 hb`. Rewrite using `[show revNeg ε a = (revOn ε ⟨a, ha'⟩ : Fin n) from Equiv.Perm.ofSubtype_apply_of_mem _ ha', show revNeg ε b = (revOn ε ⟨b, hb'⟩ : Fin n) from Equiv.Perm.ofSubtype_apply_of_mem _ hb']`. Establish `h1 : ((negS ε).orderIsoOfFin rfl).symm ⟨a, ha'⟩ < ((negS ε).orderIsoOfFin rfl).symm ⟨b, hb'⟩` using `(OrderIso.lt_iff_lt _).2 (Subtype.mk_lt_mk.2 hab)`. Conclude with `((negS ε).orderIsoOfFin rfl).strictMono (Fin.rev_lt_rev.2 h1)`.
+-/
 theorem revNeg_anti {a b : Fin n} (hab : a < b) (ha : ε a = false) (hb : ε b = false) :
     revNeg ε b < revNeg ε a := by
   have ha' : a ∈ negS ε := mem_negS.2 ha

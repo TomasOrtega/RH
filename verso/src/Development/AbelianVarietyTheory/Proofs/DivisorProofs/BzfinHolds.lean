@@ -4,6 +4,9 @@ import CompanionTheory.SpectralGeometry.LocalGlobalProofs.GlobalTheory.Bernstein
 
 namespace GlobalTheory.Laid
 
+/- English proof (translation)
+Introduce `k _ _ _ _`. Conclude with `⟨CompanionTheory.SmGLBridge.irreducibleAdmissible k, CompanionTheory.JacquetBridge.jacquetFiniteLength k, CompanionTheory.BZInd.inductionFiniteLength k, SmGL.IndDual.inductionContragredient k⟩`.
+-/
 theorem bzfin_holds : GlobalTheory.Published.BernsteinZelevinskyFiniteness := by
   intro k _ _ _ _
 

@@ -26,6 +26,9 @@ def barL (ι : ((κ → k) → ℂ) →ₗ[ℂ] (Y → ℂ)) : ((κ → k) → �
     rw [e, map_smul, Pi.smul_apply, smul_eq_mul, map_mul, Complex.conj_conj]
     rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem barL_apply (ι : ((κ → k) → ℂ) →ₗ[ℂ] (Y → ℂ)) (Φ : (κ → k) → ℂ) (y : Y) :
     barL ι Φ y = starRingEnd ℂ (ι (fun x => starRingEnd ℂ (Φ x)) y) := rfl
 
@@ -54,13 +57,24 @@ def sliceT (ι : ((κ → k) → ℂ) →ₗ[ℂ] (Y → ℂ)) : ((κ ⊕ κ →
     rw [e, map_smul]
     rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem sliceT_apply (ι : ((κ → k) → ℂ) →ₗ[ℂ] (Y → ℂ)) (Φ : (κ ⊕ κ → k) → ℂ) (Z : Y × Y) :
     sliceT ι Φ Z = barL ι (fun x₂ => ι (fun x₁ => Φ (Sum.elim x₁ x₂)) Z.1) Z.2 := rfl
 
 def swapNeg [Neg Y] (Z : Y × Y) : Y × Y := (-Z.2, -Z.1)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem swapNeg_apply [Neg Y] (Z : Y × Y) : swapNeg Z = (-Z.2, -Z.1) := rfl
 
+/- English proof (translation)
+Establish `e : (fun x₂ => ι (fun x₁ => boxFun φ₁ φ₂ (Sum.elim x₁ x₂)) Z.1) = ι φ₁ Z.1 • φ₂`. Use function extensionality and compare the values at `x₂`. Establish `e' : (fun x₁ => boxFun φ₁ φ₂ (Sum.elim x₁ x₂)) = φ₂ x₂ • φ₁`. Use function extensionality and compare the values at `x₁`. Simplify using `[boxFun, Function.comp_def, mul_comm]`.
+
+Rewrite using `[e', map_smul]`. Simplify using `[mul_comm]`. Rewrite using `[sliceT_apply, e, map_smul]`. Simplify using the standard rewrite rules.
+-/
 theorem sliceT_boxFun [CommRing k] (ι : ((κ → k) → ℂ) →ₗ[ℂ] (Y → ℂ)) (φ₁ φ₂ : (κ → k) → ℂ) (Z : Y × Y) :
     sliceT ι (boxFun φ₁ φ₂) Z = ι φ₁ Z.1 * barL ι φ₂ Z.2 := by
   have e : (fun x₂ => ι (fun x₁ => boxFun φ₁ φ₂ (Sum.elim x₁ x₂)) Z.1) = ι φ₁ Z.1 • φ₂ := by

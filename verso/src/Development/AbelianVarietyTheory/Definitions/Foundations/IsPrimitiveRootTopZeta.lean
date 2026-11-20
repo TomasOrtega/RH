@@ -22,6 +22,11 @@ def sgK (X : Tower Ω ε) (c : ℕ) (x : Fin 2 → ℚ) : X.K :=
 def fixMu (Ω : Type) [Field Ω] [Algebra ℚ Ω] (M : ℕ) : Subgroup (Ω ≃ₐ[ℚ] Ω) :=
   (IntermediateField.adjoin ℚ {z : Ω | z ^ M = 1}).fixingSubgroup
 
+/- English proof (translation)
+Unfold `fixMu`. Rewrite using `[IntermediateField.mem_fixingSubgroup_iff]`. Use `⟨fun h z hz => h z (IntermediateField.subset_adjoin ℚ _ hz), fun h z hz => ?_⟩` and prove the remaining obligations. Proceed by induction on `hz using IntermediateField.adjoin_induction with`. Consider the case `mem z hz => exact h z hz`.
+
+Consider the case `algebraMap q => exact s.commutes q`. Consider the case `add a b _ _ ha hb => rw [map_add, ha, hb]`. Consider the case `inv a _ ha => rw [map_inv₀, ha]`. Consider the case `mul a b _ _ ha hb => rw [map_mul, ha, hb]`.
+-/
 theorem mem_fixMu_iff {M : ℕ} (s : Ω ≃ₐ[ℚ] Ω) : s ∈ fixMu Ω M ↔ ∀ z : Ω, z ^ M = 1 → s z = z := by
   unfold fixMu
   rw [IntermediateField.mem_fixingSubgroup_iff]
@@ -64,6 +69,13 @@ def wk4 (X : Tower Ω ε) (l n r N : ℕ) (x : ZMod N) (c d : ℕ) (σ : Ω ≃�
     ∀ f : L, ∃ f' : L, (f' : X.K) = X.gal σ f ∧ φ (algebraMap L Kb f) = algebraMap L Kb f'
   ((topW (K := L) ζ xh yh η lift⁻¹ : L) : X.K)
 
+/- English proof (translation)
+Establish `hk : ∀ g : Ω' ≃ₐ[F] Ω', g θ = ζ ^ (kum (K` using `F) (N := N) ζ θ g).val * θ := fun g => TopW.apply_eq_kum (K := F) hζ hw0 hw ((TopW.mem_geo g).2 fun z => g.commutes z)`. Establish `hθ : θ ≠ 0`. Introduce and unpack `rfl`. Rewrite `hw` using `[zero_pow (NeZero.ne N)]`. Conclude with `hw0 ((algebraMap F Ω').injective (by rw [← hw, map_zero]))`.
+
+Establish `h : ∀ a b : Ω' ≃ₐ[F] Ω', kum (K` using `F) (N := N) ζ θ (a * b) = kum ζ θ a + kum ζ θ b := fun a b => by`. Apply `kum_eq_of hζ hθ` to reduce the goal to its premises. Rewrite using `[AlgEquiv.mul_apply, TopW.pow_val_add hζ]`. Use `conv_lhs => rw [hk b, map_mul, map_pow, hfix a, hk a]`. Expand and normalize the polynomial expressions, which then agree.
+
+Unfold `kumH`. Rewrite using `[dif_pos h]`. Both sides reduce to the same expression.
+-/
 theorem kumH_apply {F Ω' : Type*} [Field F] [Field Ω'] [Algebra F Ω'] {N : ℕ} [NeZero N] {ζ θ : Ω'}
     (hζ : IsPrimitiveRoot ζ N) (hfix : ∀ g : Ω' ≃ₐ[F] Ω', g ζ = ζ) {w : F} (hw0 : w ≠ 0) (hw : θ ^ N = algebraMap F Ω' w)
     (g : Ω' ≃ₐ[F] Ω') : (kumH (F := F) N ζ θ g).toAdd = kum (K := F) (N := N) ζ θ g := by
@@ -82,6 +94,13 @@ theorem kumH_apply {F Ω' : Type*} [Field F] [Field Ω'] [Algebra F Ω'] {N : �
   rw [dif_pos h]
   rfl
 
+/- English proof (translation)
+Use `haveI : CharZero Ω := charZero_of_injective_algebraMap (algebraMap ℚ Ω).injective`. Use `haveI : NeZero (q.den : Ω) := ⟨Nat.cast_ne_zero.2 q.den_ne_zero⟩`. Use `haveI : NeZero q.den := ⟨q.den_ne_zero⟩`. Establish `hw : Complex.exp (2 * Real.pi * Complex.I * (q : ℂ)) ^ q.den = 1`. Rewrite using `[← Complex.exp_nat_mul]`.
+
+Establish `: (q.den : ℂ) * (2 * Real.pi * Complex.I * (q : ℂ)) = q.num * (2 * Real.pi * Complex.I)`. Establish `hd : (q.den : ℂ) ≠ 0` using `by exact_mod_cast q.den_ne_zero`. Establish `: (q : ℂ) = (q.num : ℂ) / q.den` using `by exact_mod_cast (Rat.num_div_den q).symm`. Rewrite using `[this]`. Clear the denominators using the available nonvanishing facts.
+
+Rewrite using `[this, Complex.exp_int_mul_two_pi_mul_I]`. Take `⟨z, hz⟩` from `IsAlgClosed.exists_root (Polynomial.cyclotomic q.den Ω) (ne_of_gt (Polynomial.degree_cyclotomic_pos q.den Ω q.den_pos))`. Establish `hz' : IsPrimitiveRoot z q.den` using `Polynomial.isRoot_cyclotomic_iff.1 hz`. Take `⟨i, -, hi⟩` from `(hz'.map_of_injective ε.injective).eq_pow_of_pow_eq_one hw`. Conclude with `Function.invFun_eq ⟨z ^ i, by rw [map_pow, hi]⟩`.
+-/
 theorem eps_eOm [IsAlgClosed Ω] (q : ℚ) : ε (eOm ε q) = Complex.exp (2 * Real.pi * Complex.I * (q : ℂ)) := by
   haveI : CharZero Ω := charZero_of_injective_algebraMap (algebraMap ℚ Ω).injective
   haveI : NeZero (q.den : Ω) := ⟨Nat.cast_ne_zero.2 q.den_ne_zero⟩
@@ -99,6 +118,9 @@ theorem eps_eOm [IsAlgClosed Ω] (q : ℚ) : ε (eOm ε q) = Complex.exp (2 * Re
   obtain ⟨i, -, hi⟩ := (hz'.map_of_injective ε.injective).eq_pow_of_pow_eq_one hw
   exact Function.invFun_eq ⟨z ^ i, by rw [map_pow, hi]⟩
 
+/- English proof (translation)
+Apply `IsPrimitiveRoot.of_map_of_injective (f := ε) _ ε.injective` to reduce the goal to its premises. Rewrite using `[eps_eOm]`. Use `Complex.isPrimitiveRoot_exp m hm using 2` and compare the differences between its conclusion and the goal. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem isPrimitiveRoot_eOm [IsAlgClosed Ω] (ε : Ω →+* ℂ) {m : ℕ} (hm : m ≠ 0) : IsPrimitiveRoot (eOm ε (1 / (m : ℚ))) m := by
   apply IsPrimitiveRoot.of_map_of_injective (f := ε) _ ε.injective
   rw [eps_eOm]
@@ -119,12 +141,18 @@ abbrev topGal (X : Tower Ω ε) (M : ℕ) : Type := topBar X M ≃ₐ[topF X M] 
 def topZeta (X : Tower Ω ε) (M l n : ℕ) : topBar X M :=
   algebraMap (topL X M) (topBar X M) (levConst X (CongruenceSubgroup.Gamma M) (eOm ε (1 / (l : ℚ) ^ n)))
 
+/- English proof (translation)
+Establish `h` using `isPrimitiveRoot_eOm ε (pow_ne_zero n hl)`. Rewrite `h` using `[Nat.cast_pow]`. Conclude with `(h.map_of_injective (levConst X _).injective).map_of_injective (algebraMap (topL X M) (topBar X M)).injective`.
+-/
 theorem isPrimitiveRoot_topZeta [IsAlgClosed Ω] (X : Tower Ω ε) (M : ℕ) {l : ℕ} (hl : l ≠ 0) (n : ℕ) :
     IsPrimitiveRoot (topZeta X M l n) (l ^ n) := by
   have h := isPrimitiveRoot_eOm ε (pow_ne_zero n hl)
   rw [Nat.cast_pow] at h
   exact (h.map_of_injective (levConst X _).injective).map_of_injective (algebraMap (topL X M) (topBar X M)).injective
 
+/- English proof (translation)
+Establish `h` using `isPrimitiveRoot_eOm ε (pow_ne_zero n hl)`. Rewrite `h` using `[Nat.cast_pow]`. Establish `hm : algebraMap Ω X.K (eOm ε (1 / (l : ℚ) ^ n)) ∈ topF X M` using `algebraMap_mem_mdl X _ _ _ fun s hs => (mem_fixMu_iff s).1 hs _ ((h.pow_eq_one_iff_dvd M).2 hM)`. Establish `e : topZeta X M l n = algebraMap (topF X M) (topBar X M) ⟨_, hm⟩` using `(IsScalarTower.algebraMap_apply (topF X M) (topL X M) (topBar X M) ⟨_, hm⟩).symm`. Rewrite using `[e, g.commutes]`.
+-/
 theorem topGal_topZeta [IsAlgClosed Ω] (X : Tower Ω ε) {M l n : ℕ} (hl : l ≠ 0) (hM : l ^ n ∣ M) (g : topGal X M) :
     g (topZeta X M l n) = topZeta X M l n := by
   have h := isPrimitiveRoot_eOm ε (pow_ne_zero n hl)
@@ -138,6 +166,9 @@ theorem topGal_topZeta [IsAlgClosed Ω] (X : Tower Ω ε) {M l n : ℕ} (hl : l 
 def topRoot (X : Tower Ω ε) (M m : ℕ) (w : X.K) : topBar X M :=
   Classical.epsilon fun a : topBar X M => ∃ f : topL X M, (f : X.K) = w ∧ a ^ m = algebraMap (topL X M) (topBar X M) f
 
+/- English proof (translation)
+Take `⟨a, ha⟩` from `IsAlgClosed.exists_pow_nat_eq (algebraMap (topL X M) (topBar X M) ⟨w, hw⟩) (Nat.pos_of_ne_zero hm)`. Take `⟨f, hf, h⟩` from `Classical.epsilon_spec (p := fun a : topBar X M => ∃ f : topL X M, (f : X.K) = w ∧ a ^ m = algebraMap (topL X M) (topBar X M) f) ⟨a, ⟨w, hw⟩, rfl, ha⟩`. Substitute `hf` using the available equality. Conclude with `h`.
+-/
 theorem topRoot_pow (X : Tower Ω ε) (M : ℕ) {m : ℕ} (hm : m ≠ 0) {w : X.K} (hw : w ∈ topL X M) :
     topRoot X M m w ^ m = algebraMap (topL X M) (topBar X M) ⟨w, hw⟩ := by
   obtain ⟨a, ha⟩ := IsAlgClosed.exists_pow_nat_eq (algebraMap (topL X M) (topBar X M) ⟨w, hw⟩) (Nat.pos_of_ne_zero hm)
@@ -149,6 +180,9 @@ theorem topRoot_pow (X : Tower Ω ε) (M : ℕ) {m : ℕ} (hm : m ≠ 0) {w : X.
 def topChar (X : Tower Ω ε) (M l n : ℕ) (w : X.K) : topGal X M →* Multiplicative (ZMod (l ^ n)) :=
   kumH (F := topF X M) (l ^ n) (topZeta X M l n) (topRoot X M (l ^ n) w)
 
+/- English proof (translation)
+Use `haveI : NeZero (l ^ n) := ⟨pow_ne_zero n hl⟩`. Use `kumH_apply (isPrimitiveRoot_topZeta X M hl n) (topGal_topZeta X hl hM) (w := (⟨w, hw⟩ : topF X M)) (fun h => hw0 (congrArg Subtype.val h)) ?_ g` and prove the remaining obligations. Rewrite using `[topRoot_pow X M (pow_ne_zero n hl) (mdl_le_lev X _ _ hw), IsScalarTower.algebraMap_apply (topF X M) (topL X M) (topBar X M)]`. Both sides reduce to the same expression.
+-/
 theorem topChar_apply [IsAlgClosed Ω] (X : Tower Ω ε) {M l n : ℕ} (hl : l ≠ 0) (hM : l ^ n ∣ M) {w : X.K}
     (hw : w ∈ topF X M) (hw0 : w ≠ 0) (g : topGal X M) :
     (topChar X M l n w g).toAdd = kum (K := topF X M) (N := l ^ n) (topZeta X M l n) (topRoot X M (l ^ n) w) g := by
@@ -170,6 +204,9 @@ def IsTopEta (X : Tower Ω ε) (M : ℕ) {m : ℕ} (x y : topGal X M →* Multip
 def topEta (X : Tower Ω ε) (M : ℕ) {m : ℕ} (x y : topGal X M →* Multiplicative (ZMod m)) : topGal X M → ZMod m :=
   Classical.epsilon (IsTopEta X M x y)
 
+/- English proof (translation)
+The claim follows from `Classical.epsilon_spec h`.
+-/
 theorem isTopEta_topEta (X : Tower Ω ε) (M : ℕ) {m : ℕ} {x y : topGal X M →* Multiplicative (ZMod m)}
     (h : ∃ η, IsTopEta X M x y η) : IsTopEta X M x y (topEta X M x y) :=
   Classical.epsilon_spec h
@@ -181,16 +218,25 @@ def IsTopLift (X : Tower Ω ε) (M : ℕ) (σ : Ω ≃ₐ[ℚ] Ω) (φ : topGal 
 def topLift (X : Tower Ω ε) (M : ℕ) (σ : Ω ≃ₐ[ℚ] Ω) : topGal X M :=
   Classical.epsilon (IsTopLift X M σ)
 
+/- English proof (translation)
+Apply `exp_injective X` to reduce the goal to its premises. Use extensionality with `r`. Rewrite using `[X.gal_exp, X.gal_exp, X.gal_exp, AlgEquiv.mul_apply]`.
+-/
 theorem gal_mul_apply (X : Tower Ω ε) (s t : Ω ≃ₐ[ℚ] Ω) (f : X.K) : X.gal (s * t) f = X.gal s (X.gal t f) := by
   apply exp_injective X
   ext r
   rw [X.gal_exp, X.gal_exp, X.gal_exp, AlgEquiv.mul_apply]
 
+/- English proof (translation)
+Apply `exp_injective X` to reduce the goal to its premises. Use extensionality with `r`. Rewrite using `[X.gal_exp, AlgEquiv.one_apply]`.
+-/
 theorem gal_one_apply (X : Tower Ω ε) (f : X.K) : X.gal 1 f = f := by
   apply exp_injective X
   ext r
   rw [X.gal_exp, AlgEquiv.one_apply]
 
+/- English proof (translation)
+Rewrite `hf`, the goal using `[mem_lev_iff]`. Introduce `γ hγ`. Establish `hζ` using `isPrimitiveRoot_eOm ε hM`. Establish `h` using `X.recip M f (Nat.pos_of_ne_zero hM) hf _ hζ σ 1 (by rw [zpow_one]; exact (mem_fixMu_iff σ).1 hσ _ hζ.pow_eq_one) γ γ (by simp)`. Rewrite using `[← h, hf γ hγ]`.
+-/
 theorem gal_mem_topL [IsAlgClosed Ω] (X : Tower Ω ε) {M : ℕ} (hM : M ≠ 0) {σ : Ω ≃ₐ[ℚ] Ω} (hσ : σ ∈ fixMu Ω M) {f : X.K}
     (hf : f ∈ topL X M) : X.gal σ f ∈ topL X M := by
   rw [mem_lev_iff] at hf ⊢
@@ -200,6 +246,13 @@ theorem gal_mem_topL [IsAlgClosed Ω] (X : Tower Ω ε) {M : ℕ} (hM : M ≠ 0)
     (by rw [zpow_one]; exact (mem_fixMu_iff σ).1 hσ _ hζ.pow_eq_one) γ γ (by simp)
   rw [← h, hf γ hγ]
 
+/- English proof (translation)
+Set `e : topL X M ≃+* topL X M` to `{ toFun := fun f => ⟨X.gal σ f, gal_mem_topL X hM hσ f.2⟩ invFun := fun f => ⟨X.gal σ⁻¹ f, gal_mem_topL X hM (inv_mem hσ) f.2⟩ left_inv := fun f => Subtype.ext (by show X.gal σ⁻¹ (X.gal σ f) = f`. Rewrite using `[← gal_mul_apply, inv_mul_cancel, gal_one_apply])`. Use `right_inv := fun f => Subtype.ext (by show X.gal σ (X.gal σ⁻¹ f) = f`. Rewrite using `[← gal_mul_apply, mul_inv_cancel, gal_one_apply])`. Use the proof step `map_mul' := fun a b => Subtype.ext (map_mul (X.gal σ) (a : X.K) b)`.
+
+Use the proof step `map_add' := fun a b => Subtype.ext (map_add (X.gal σ) (a : X.K) b) }`. Set `E : topBar X M ≃+* topBar X M` to `IsAlgClosure.equivOfEquiv (topBar X M) (topBar X M) e`. Establish `hE : ∀ f : topL X M, E (algebraMap (topL X M) (topBar X M) f) = algebraMap (topL X M) (topBar X M) (e f)` using `fun f => IsAlgClosure.equivOfEquiv_algebraMap _ _ e f`. Use `⟨AlgEquiv.ofRingEquiv (f := E) fun a => ?_, fun f => ⟨e f, rfl, hE f⟩⟩` and prove the remaining obligations. Rewrite using `[IsScalarTower.algebraMap_apply (topF X M) (topL X M) (topBar X M), hE]`.
+
+Use `congr 1`. Conclude with `Subtype.ext (((mem_mdl_iff X _ _ _).1 a.2).2 σ hσ)`.
+-/
 theorem exists_isTopLift [IsAlgClosed Ω] (X : Tower Ω ε) {M : ℕ} (hM : M ≠ 0) {σ : Ω ≃ₐ[ℚ] Ω} (hσ : σ ∈ fixMu Ω M) :
     ∃ φ, IsTopLift X M σ φ := by
   let e : topL X M ≃+* topL X M :=
@@ -221,10 +274,18 @@ theorem exists_isTopLift [IsAlgClosed Ω] (X : Tower Ω ε) {M : ℕ} (hM : M �
   congr 1
   exact Subtype.ext (((mem_mdl_iff X _ _ _).1 a.2).2 σ hσ)
 
+/- English proof (translation)
+The claim follows from `Classical.epsilon_spec (exists_isTopLift X hM hσ)`.
+-/
 theorem isTopLift_topLift [IsAlgClosed Ω] (X : Tower Ω ε) {M : ℕ} (hM : M ≠ 0) {σ : Ω ≃ₐ[ℚ] Ω} (hσ : σ ∈ fixMu Ω M) :
     IsTopLift X M σ (topLift X M σ) :=
   Classical.epsilon_spec (exists_isTopLift X hM hσ)
 
+/- English proof (translation)
+Rewrite using `[TopW.mem_geo]`. Introduce `f`. Take `⟨a, ha, h1⟩` from `hφ f`. Take `⟨b, hb, h2⟩` from `hψ f`. Establish `: a = b` using `Subtype.ext (ha.trans hb.symm)`.
+
+Rewrite using `[AlgEquiv.mul_apply, h2, ← this, ← h1, ← AlgEquiv.mul_apply, inv_mul_cancel, AlgEquiv.one_apply]`.
+-/
 theorem IsTopLift.inv_mul_mem_geo {X : Tower Ω ε} {M : ℕ} {σ : Ω ≃ₐ[ℚ] Ω} {φ ψ : topGal X M} (hφ : IsTopLift X M σ φ)
     (hψ : IsTopLift X M σ ψ) : φ⁻¹ * ψ ∈ geo (topF X M) (topL X M) (topBar X M) := by
   rw [TopW.mem_geo]
@@ -236,6 +297,9 @@ theorem IsTopLift.inv_mul_mem_geo {X : Tower Ω ε} {M : ℕ} {σ : Ω ≃ₐ[�
 
 def topT (l s N : ℕ) : ℕ := (((l : ZMod N) ^ s)⁻¹).val
 
+/- English proof (translation)
+Unfold `topT`. Rewrite using `[ZMod.natCast_zmod_val]`. Conclude with `ZMod.mul_inv_of_unit _ (((ZMod.isUnit_iff_coprime l N).2 h).pow s)`.
+-/
 theorem topT_spec {l N : ℕ} [NeZero N] (h : Nat.Coprime l N) (s : ℕ) : (l : ZMod N) ^ s * (topT l s N : ZMod N) = 1 := by
   unfold topT
   rw [ZMod.natCast_zmod_val]
@@ -255,12 +319,23 @@ def wkTop (X : Tower Ω ε) (l n r N : ℕ) (x : ZMod N) (c d : ℕ) (σ : Ω �
       (topChar X (l ^ (r + n) * N) l n (topV X l (r + n) N d)))
     (topLift X (l ^ (r + n) * N) σ)⁻¹ : topL X (l ^ (r + n) * N)) : X.K)
 
+/- English proof (translation)
+The claim follows from `Subtype.property _`.
+-/
 theorem wkTop_mem (X : Tower Ω ε) (l n r N : ℕ) (x : ZMod N) (c d : ℕ) (σ : Ω ≃ₐ[ℚ] Ω) :
     wkTop X l n r N x c d σ ∈ topL X (l ^ (r + n) * N) := Subtype.property _
 
+/- English proof (translation)
+The claim follows from `(pow_dvd_pow l (Nat.le_add_left n r)).mul_right N`.
+-/
 theorem pow_dvd_topLevel (l n r N : ℕ) : l ^ n ∣ l ^ (r + n) * N :=
   (pow_dvd_pow l (Nat.le_add_left n r)).mul_right N
 
+/- English proof (translation)
+Establish `h : ∀ s k : ℕ, k < 5 → (3 : ZMod 5) ^ s * (k : ZMod 5) = 1 → topT 3 s 5 = k` using `fun s k hk e => by`. Establish `e1` using `topT_spec (l := 3) (N := 5) (by norm_num) s`. Establish `hu : IsUnit ((3 : ZMod 5) ^ s)` using `IsUnit.of_mul_eq_one _ e`. Establish `e2 : ((topT 3 s 5 : ℕ) : ZMod 5) = k` using `hu.mul_left_cancel (by rw [e]; exact_mod_cast e1)`. Establish `e3 : topT 3 s 5 < 5` using `ZMod.val_lt _`.
+
+Establish `e4` using `congrArg ZMod.val e2`. Rewrite `e4` using `[ZMod.val_natCast, ZMod.val_natCast, Nat.mod_eq_of_lt e3, Nat.mod_eq_of_lt hk]`. Then use the resulting hypothesis. Conclude with `⟨h 1 2 (by norm_num) (by decide), h 2 4 (by norm_num) (by decide)⟩`.
+-/
 example : topT 3 1 5 = 2 ∧ topT 3 2 5 = 4 := by
   have h : ∀ s k : ℕ, k < 5 → (3 : ZMod 5) ^ s * (k : ZMod 5) = 1 → topT 3 s 5 = k := fun s k hk e => by
     have e1 := topT_spec (l := 3) (N := 5) (by norm_num) s
@@ -271,6 +346,9 @@ example : topT 3 1 5 = 2 ∧ topT 3 2 5 = 4 := by
     rwa [ZMod.val_natCast, ZMod.val_natCast, Nat.mod_eq_of_lt e3, Nat.mod_eq_of_lt hk] at e4
   exact ⟨h 1 2 (by norm_num) (by decide), h 2 4 (by norm_num) (by decide)⟩
 
+/- English proof (translation)
+Rewrite using `[eps_eOm]`. Use `Eq.trans ?_ Complex.exp_pi_div_two_mul_I` and prove the remaining obligations. Use `congr 1`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+-/
 example [IsAlgClosed Ω] : ε (eOm ε (1 / ((2 : ℕ) : ℚ) ^ 2)) = Complex.I := by
   rw [eps_eOm]
   refine Eq.trans ?_ Complex.exp_pi_div_two_mul_I
@@ -278,6 +356,9 @@ example [IsAlgClosed Ω] : ε (eOm ε (1 / ((2 : ℕ) : ℚ) ^ 2)) = Complex.I :
   push_cast
   ring
 
+/- English proof (translation)
+Rewrite using `[mem_fixMu_iff, mem_fixMu_iff]`. Use `⟨fun z hz => ?_, fun h => ?_⟩` and prove the remaining obligations. Apply the tactic sequence `rcases mul_self_eq_one_iff.1 (by rw [← sq]; exact hz : z * z = 1) with rfl | rfl <;> simp`. Use `congrArg Complex.im (h Complex.I Complex.I_pow_four)` as an intermediate fact. Evaluate the numerical expressions using `at this`.
+-/
 example : (Complex.conjAe.restrictScalars ℚ) ∈ fixMu ℂ 2 ∧ (Complex.conjAe.restrictScalars ℚ) ∉ fixMu ℂ 4 := by
   rw [mem_fixMu_iff, mem_fixMu_iff]
   refine ⟨fun z hz => ?_, fun h => ?_⟩
@@ -285,6 +366,9 @@ example : (Complex.conjAe.restrictScalars ℚ) ∈ fixMu ℂ 2 ∧ (Complex.conj
   · have := congrArg Complex.im (h Complex.I Complex.I_pow_four)
     norm_num at this
 
+/- English proof (translation)
+Establish `hζ : IsPrimitiveRoot (-1 : ℂ) 2` using `IsPrimitiveRoot.neg_one 0 (by norm_num)`. Rewrite using `[kumH_apply hζ (fun g => by simp) (w := (-1 : ℝ)) (by norm_num) (by simp)]`. Conclude with `kum_eq_of hζ Complex.I_ne_zero 1 (by simp [ZMod.val_one])`.
+-/
 example : (kumH (F := ℝ) 2 (-1 : ℂ) Complex.I Complex.conjAe).toAdd = 1 := by
   have hζ : IsPrimitiveRoot (-1 : ℂ) 2 := IsPrimitiveRoot.neg_one 0 (by norm_num)
   rw [kumH_apply hζ (fun g => by simp) (w := (-1 : ℝ)) (by norm_num) (by simp)]

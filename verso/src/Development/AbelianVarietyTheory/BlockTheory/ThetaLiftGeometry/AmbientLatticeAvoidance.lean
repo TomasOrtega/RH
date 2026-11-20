@@ -146,6 +146,9 @@ def ambE (cc : Ideal (𝓞 D.host.K)) (δ : ℂ) (χ : TaylorLogMetric.IdE D →
   e a b N N' z := e a b (s.lat N) (s.lat N') fun τ => z (s.iT.symm τ)
   chiF a b N N' := Base.chiFac χ a b (s.lat N) (s.lat N')
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 example {cc : Ideal (𝓞 D.host.K)} {δ : ℂ} (B : Base D cc δ) (χ : TaylorLogMetric.IdE D → ℂ) (dgen : D.what₂.Tau → ℂ) :
     ambE s cc δ χ (B.eNat χ) dgen = ambOf s B χ dgen := rfl
 
@@ -259,6 +262,9 @@ def KForms_at (D : D7) (Dx : DivX D) (Tw : TwForms D) (_E : KerEnt D Dx Tw)
     UnfTie s Ch sel (tup μ) (cst μ) (L μ) (D.chTw u μ) (wd u) (rep u μ) (frm u μ) (ambE s cc δ χ e dgen) dgen →
     ∀ i < D.R.m, ∀ φ ∈ (Tw.fm u μ).Fi i, (D.chTw u μ).K i φ ∈ (Tw.fm u μ).Fi (i + 1)
 
+/- English proof (translation)
+Use function extensionality and compare the values at `l`. Simplify using `[reix, atNL]`.
+-/
 example (E : Type) [Field E] (n : ℕ) (x : Sp E n) : reix E n n x = x := by
   funext l
   simp [reix, atNL]

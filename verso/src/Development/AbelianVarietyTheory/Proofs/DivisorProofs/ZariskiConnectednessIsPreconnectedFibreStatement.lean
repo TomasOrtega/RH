@@ -7,5 +7,8 @@ open scoped CategoryTheory.Obj
 attribute [local instance] Over.cartesianMonoidalCategory
 open GlobalTheory.Mum
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.ZConn.isPreconnected_fibre | exact GlobalTheory.ZConn.isPreconnected_fibre | (intros; apply GlobalTheory.ZConn.isPreconnected_fibre <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.zariski_connectedness_isPreconnected_fibre : ∀ (X Y : Scheme.{0}) (a : X ⟶ Y), IsLocallyNoetherian Y → IsProper a → (∀ V : Y.Opens, Function.Bijective (a.app V).hom) → ∀ y : Y, _root_.IsPreconnected {x : X | a x = y} := by
   first | exact @GlobalTheory.ZConn.isPreconnected_fibre | exact GlobalTheory.ZConn.isPreconnected_fibre | (intros; apply GlobalTheory.ZConn.isPreconnected_fibre <;> assumption)

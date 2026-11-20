@@ -5,6 +5,29 @@ namespace GlobalTheory.CompanionTheory.EisRk1
 
 open MeasureTheory Set Filter Topology
 
+/- English proof (translation)
+Use `set σ := s.re with hσ`. Establish `hM : 0 ≤ M` using `le_trans (norm_nonneg _) (by simpa using hf 1 le_rfl)`. Use `set h : ℝ → ℝ := (Ioi 1).indicator (fun t => M * t ^ (σ - 1 - r)) + (Ioo 0 1).indicator (fun t => ‖P.ε‖ * M * t ^ (σ - 1 + r - P.k)) with hh`. Establish `hA : IntegrableOn (fun t : ℝ => M * t ^ (σ - 1 - r)) (Ioi 1)` using `(integrableOn_Ioi_rpow_of_lt (by linarith) one_pos).const_mul M`. Establish `hB : IntegrableOn (fun t : ℝ => ‖P.ε‖ * M * t ^ (σ - 1 + r - P.k)) (Ioo 0 1)` using `(((intervalIntegral.intervalIntegrable_rpow' (a := 0) (b := 1) (r := σ - 1 + r - P.k) (by linarith)).1).mono_set Ioo_subset_Ioc_self).const_mul _`.
+
+Establish `hA'` using `hA.integrable_indicator measurableSet_Ioi`. Establish `hB'` using `hB.integrable_indicator measurableSet_Ioo`. Establish `hint : Integrable h (volume.restrict (Ioi 0))` using `(hA'.add hB').restrict`. Establish `hpt : ∀ t ∈ Ioi (0 : ℝ), ‖(t : ℂ) ^ (s - 1) • P.f_modif t‖ ≤ h t`. Introduce `t ht`.
+
+Rewrite `ht` using `[mem_Ioi]`. Rewrite using `[norm_smul, Complex.norm_cpow_eq_rpow_re_of_pos ht, Complex.sub_re, Complex.one_re]`. Break down `lt_trichotomy t 1 with h1 | rfl | h1` into its components or cases. Establish `hinv : 1 < t⁻¹` using `(one_lt_inv₀ ht).2 h1`. Establish `e` using `P.hf_modif_FE t⁻¹ (inv_pos.2 ht)`.
+
+Rewrite `e` using `[one_div, inv_inv]`. Establish `hg' : P.g_modif t⁻¹ = P.g t⁻¹ - P.g₀`. Simplify using `[WeakFEPair.g_modif, indicator_of_mem (mem_Ioi.2 hinv), indicator_of_notMem (notMem_Ioo_of_ge hinv.le)]`. Establish `hval : h t = ‖P.ε‖ * M * t ^ (σ - 1 + r - P.k)`. Simplify using `[hh, indicator_of_notMem (notMem_Ioi.2 h1.le), indicator_of_mem (mem_Ioo.2 ⟨ht, h1⟩)]`.
+
+Rewrite using `[hval, e, hg', norm_smul, norm_mul, Complex.norm_real, Real.norm_eq_abs, abs_of_pos (Real.rpow_pos_of_pos (inv_pos.2 ht) _), Real.inv_rpow ht.le]`. Establish `hb` using `hg t⁻¹ hinv.le`. Rewrite `hb` using `[Real.inv_rpow ht.le, Real.rpow_neg ht.le, inv_inv]`. Establish `key : t ^ (σ - 1 + r - P.k) = t ^ (σ - 1) * (t ^ P.k)⁻¹ * t ^ r`. Rewrite using `[sub_eq_add_neg (σ - 1 + r), Real.rpow_add ht, Real.rpow_add ht, Real.rpow_neg ht.le]`.
+
+Expand and normalize the polynomial expressions, which then agree. Rewrite using `[key]`. Establish `hpos : 0 ≤ t ^ (σ - 1) * ‖P.ε‖ * (t ^ P.k)⁻¹` using `by positivity`. Combine the equalities or inequalities in the displayed calculation. Establish `h0 : P.f_modif 1 = 0` using `by simp [WeakFEPair.f_modif]`.
+
+Establish `hval : h 1 = 0` using `by simp [hh]`. Rewrite using `[h0, hval, norm_zero, mul_zero]`. Establish `hfm : P.f_modif t = P.f t - P.f₀`. Simplify using `[WeakFEPair.f_modif, indicator_of_mem (mem_Ioi.2 h1), indicator_of_notMem (notMem_Ioo_of_ge h1.le)]`. Establish `hval : h t = M * t ^ (σ - 1 - r)`.
+
+Simplify using `[hh, indicator_of_mem (mem_Ioi.2 h1), indicator_of_notMem (notMem_Ioo_of_ge h1.le)]`. Rewrite using `[hfm, hval]`. Establish `hb` using `hf t h1.le`. Establish `key : t ^ (σ - 1 - r) = t ^ (σ - 1) * t ^ (-r)`. Rewrite using `[sub_eq_add_neg (σ - 1), Real.rpow_add ht]`.
+
+Rewrite using `[key]`. Combine the equalities or inequalities in the displayed calculation. Establish `hI : ∫ t in Ioi (0 : ℝ), h t = M / (r - σ) + ‖P.ε‖ * M / (r - (P.k - σ))`. Rewrite using `[hh, integral_add' hA'.restrict hB'.restrict, setIntegral_indicator measurableSet_Ioi, setIntegral_indicator measurableSet_Ioo, Set.inter_eq_right.2 (Ioi_subset_Ioi zero_le_one), Set.inter_eq_right.2 Ioo_subset_Ioi_self, integral_const_mul, integral_const_mul, integral_Ioi_rpow_o …`. Establish `hne : σ - 1 + r - P.k + 1 ≠ 0` using `by linarith`.
+
+Rewrite using `[Real.one_rpow, Real.one_rpow, Real.zero_rpow hne]`. Establish `h1 : r - σ ≠ 0` using `by linarith`. Establish `h2 : r - (P.k - σ) ≠ 0` using `by linarith`. Establish `h3 : σ - 1 - r + 1 ≠ 0` using `by linarith`. Clear the denominators using the available nonvanishing facts.
+
+Expand and normalize the polynomial expressions, which then agree. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem weakFEPair_norm_Λ₀_le (P : WeakFEPair ℂ) {r M : ℝ}
     (hf : ∀ x : ℝ, 1 ≤ x → ‖P.f x - P.f₀‖ ≤ M * x ^ (-r))
     (hg : ∀ x : ℝ, 1 ≤ x → ‖P.g x - P.g₀‖ ≤ M * x ^ (-r))

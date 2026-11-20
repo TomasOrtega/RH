@@ -31,6 +31,23 @@ def RegularizedMaxConvergenceC2.Statement : Prop :=
     Tendsto (fun t => δ t ^ 2 / ε t) (𝓝[>] 0) (𝓝 0) →
     TendstoC2On (fun t x => regMax (ε t) (fun j => u t j x) + ε t / 2) f K
 
+/- English proof (translation)
+Use `ContinuousLinearMap.opNorm_le_bound₂ _ (by positivity) fun x y => ?_` and prove the remaining obligations. Break down `eq_or_ne x 0 with rfl | hx` into its components or cases. Simplify using the standard rewrite rules. Break down `eq_or_ne y 0 with rfl | hy` into its components or cases. Simplify using the standard rewrite rules.
+
+Establish `ha : 0 < ‖x‖` using `norm_pos_iff.2 hx`. Establish `hb : 0 < ‖y‖` using `norm_pos_iff.2 hy`. Use `set x' := ‖x‖⁻¹ • x`. Use `set y' := ‖y‖⁻¹ • y`. Establish `hx' : ‖x'‖ = 1` using `by simp [x', norm_smul, ha.ne']`.
+
+Establish `hy' : ‖y'‖ = 1` using `by simp [y', norm_smul, hb.ne']`. Establish `hxy : H x y = ‖x‖ * ‖y‖ * H x' y'`. Simplify using `only [x', y', map_smul, ContinuousLinearMap.smul_apply, smul_eq_mul]`. Clear the denominators using the available nonvanishing facts. Establish `key : 4 * H x' y' = H (x' + y') (x' + y') - H (x' - y') (x' - y')`.
+
+Simplify using `only [map_add, map_sub, ContinuousLinearMap.add_apply, ContinuousLinearMap.sub_apply]`. Rewrite using `[hs y' x']`. Expand and normalize the polynomial expressions, which then agree. Establish `h1 : ‖x' + y'‖ ^ 2 ≤ 4`. Use `norm_add_le x' y'` as an intermediate fact.
+
+Rewrite `this` using `[hx', hy']`. Use polynomial arithmetic with `[norm_nonneg (x' + y')]`. Establish `h2 : ‖x' - y'‖ ^ 2 ≤ 4`. Use `norm_sub_le x' y'` as an intermediate fact. Rewrite `this` using `[hx', hy']`.
+
+Use polynomial arithmetic with `[norm_nonneg (x' - y')]`. Establish `k1` using `hc (x' + y')`. Establish `k2` using `hc (x' - y')`. Establish `s1 : c * ‖x' + y'‖ ^ 2 ≤ c * 4` using `mul_le_mul_of_nonneg_left h1 hc0`. Establish `s2 : c * ‖x' - y'‖ ^ 2 ≤ c * 4` using `mul_le_mul_of_nonneg_left h2 hc0`.
+
+Establish `hH : |H x' y'| ≤ 2 * c`. Rewrite `k1`, `k2`, the goal using `[abs_le]`. Apply the tactic sequence `constructor <;> linarith`. Rewrite using `[Real.norm_eq_abs, hxy, abs_mul, abs_mul, abs_norm, abs_norm]`. Establish `hab : 0 ≤ ‖x‖ * ‖y‖` using `by positivity`.
+
+Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem norm_le_of_symm_diag {H : E →L[ℝ] E →L[ℝ] ℝ} (hs : ∀ v w, H v w = H w v) {c : ℝ}
     (hc0 : 0 ≤ c) (hc : ∀ v, |H v v| ≤ c * ‖v‖ ^ 2) : ‖H‖ ≤ 2 * c := by
   refine ContinuousLinearMap.opNorm_le_bound₂ _ (by positivity) fun x y => ?_
@@ -71,6 +88,9 @@ theorem norm_le_of_symm_diag {H : E →L[ℝ] E →L[ℝ] ℝ} (hs : ∀ v w, H 
   calc ‖x‖ * ‖y‖ * |H x' y'| ≤ ‖x‖ * ‖y‖ * (2 * c) := mul_le_mul_of_nonneg_left hH hab
     _ = 2 * c * ‖x‖ * ‖y‖ := by ring
 
+/- English proof (translation)
+Establish `h : fderiv ℝ (fun y => φ y - ψ y) =ᶠ[𝓝 x] fun y => fderiv ℝ φ y - fderiv ℝ ψ y` using `by filter_upwards [hU.mem_nhds hx] with y hy`. Conclude with `fderiv_sub ((hφ.contDiffAt (hU.mem_nhds hy)).differentiableAt (by norm_num)) ((hψ.contDiffAt (hU.mem_nhds hy)).differentiableAt (by norm_num))`. Rewrite using `[h.fderiv_eq]`. Conclude with `fderiv_sub (((hφ.contDiffAt (hU.mem_nhds hx)).fderiv_right (m := 1) (by norm_num)).differentiableAt (by norm_num)) (((hψ.contDiffAt (hU.mem_nhds hx)).fderiv_right (m := 1) (by norm_num)).differentiableAt (by norm_num))`.
+-/
 theorem fderiv2_sub_of_contDiffOn {U : Set E} (hU : IsOpen U) {φ ψ : E → ℝ}
     (hφ : ContDiffOn ℝ 2 φ U) (hψ : ContDiffOn ℝ 2 ψ U) {x : E} (hx : x ∈ U) :
     fderiv ℝ (fderiv ℝ fun y => φ y - ψ y) x =
@@ -86,6 +106,9 @@ theorem fderiv2_sub_of_contDiffOn {U : Set E} (hU : IsOpen U) {φ ψ : E → ℝ
     (((hψ.contDiffAt (hU.mem_nhds hx)).fderiv_right (m := 1) (by norm_num)).differentiableAt
       (by norm_num))
 
+/- English proof (translation)
+Rewrite using `[dist_eq_norm, norm_sub_rev]`.
+-/
 theorem dist_lt_iff_norm_sub {F : Type*} [SeminormedAddCommGroup F] {a b : F} {e : ℝ} :
     dist a b < e ↔ ‖b - a‖ < e := by
   rw [dist_eq_norm, norm_sub_rev]
@@ -96,6 +119,9 @@ section RegMax
 
 variable {ι : Type*} [Fintype ι] [Nonempty ι]
 
+/- English proof (translation)
+The claim follows from `|fderiv ℝ (regMax (ι := ι) η) p z| ≤ ‖z‖ := by classical set L := fderiv ℝ (regMax (ι := ι) η) p have hz : z = ∑ j, z j • Pi.single j (1 : ℝ) := by ext i simp [Finset.sum_apply, Pi.single_apply] have hLz : L z = ∑ j, z j * L (Pi.single j 1) := by conv_lhs => rw [hz] simp [map_sum …`.
+-/
 theorem abs_fderiv_regMax_apply_le {η : ℝ} (hη : 0 < η) (p z : ι → ℝ) :
     |fderiv ℝ (regMax (ι := ι) η) p z| ≤ ‖z‖ := by
   classical
@@ -120,6 +146,11 @@ theorem abs_fderiv_regMax_apply_le {η : ℝ} (hη : 0 < η) (p z : ι → ℝ) 
         simpa [Real.norm_eq_abs] using norm_le_pi_norm z j
     _ = ‖z‖ := by rw [← Finset.mul_sum, hs, mul_one]
 
+/- English proof (translation)
+Take `⟨C, hC⟩` from `regMax_one_fderiv2_bound (ι := ι)`. Use `⟨C, fun η hη p => ?_⟩` and prove the remaining obligations. Rewrite using `[fderiv2_regMax hη]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Real.norm_eq_abs, abs_of_pos (inv_pos.2 hη)]`.
+
+Use `_ ≤ η⁻¹ * C := mul_le_mul_of_nonneg_left (hC _) (inv_pos.2 hη).le`. Use `_ = C / η := by ring`.
+-/
 theorem norm_fderiv2_regMax_le : ∃ C : ℝ, ∀ η : ℝ, 0 < η → ∀ p : ι → ℝ,
     ‖fderiv ℝ (fderiv ℝ (regMax (ι := ι) η)) p‖ ≤ C / η := by
   obtain ⟨C, hC⟩ := regMax_one_fderiv2_bound (ι := ι)
@@ -140,14 +171,23 @@ section Main
 variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E] {ι : Type*} [Fintype ι] [Nonempty ι]
 
 omit [Nonempty ι] in
+/- English proof (translation)
+The claim follows from `Finset.single_le_sum (f := fun i => ‖a i‖) (fun _ _ => norm_nonneg _) (Finset.mem_univ j)`.
+-/
 theorem norm_le_sum_norm {F : Type*} [NormedAddCommGroup F] (a : ι → F) (j : ι) :
     ‖a j‖ ≤ ∑ i, ‖a i‖ :=
   Finset.single_le_sum (f := fun i => ‖a i‖) (fun _ _ => norm_nonneg _) (Finset.mem_univ j)
 
 omit [Nonempty ι] in
+/- English proof (translation)
+The claim follows from `Finset.single_le_sum (f := fun i => |a i|) (fun _ _ => abs_nonneg _) (Finset.mem_univ j)`.
+-/
 theorem abs_le_sum_abs (a : ι → ℝ) (j : ι) : |a j| ≤ ∑ i, |a i| :=
   Finset.single_le_sum (f := fun i => |a i|) (fun _ _ => abs_nonneg _) (Finset.mem_univ j)
 
+/- English proof (translation)
+The claim follows from `|(regMax η (fun j => u j z) + η / 2) - f z| ≤ s0 + η ∧ ‖fderiv ℝ (fun x => regMax η (fun j => u j x) + η / 2) z - fderiv ℝ f z‖ ≤ s1 ∧ ‖fderiv ℝ (fderiv ℝ (fun x => regMax η (fun j => u j x) + η / 2)) z - fderiv ℝ (fderiv ℝ f) z‖ ≤ 2 * (C / η * s1 ^ 2 + s2) := by classical obtain …`.
+-/
 theorem regMax_c2_pointwise_bound {U : Set E} (hU : IsOpen U) {f : E → ℝ} (hf : ContDiffOn ℝ 2 f U)
     {u : ι → E → ℝ} (hu : ∀ j, ContDiffOn ℝ 2 (u j) U) {η : ℝ} (hη : 0 < η) {C : ℝ}
     (hC : ∀ p : ι → ℝ, ‖fderiv ℝ (fderiv ℝ (regMax (ι := ι) η)) p‖ ≤ C / η) {z : E} (hz : z ∈ U)
@@ -267,6 +307,21 @@ theorem regMax_c2_pointwise_bound {U : Set E} (hU : IsOpen U) {f : E → ℝ} (h
 
 end Main
 
+/- English proof (translation)
+Introduce `E _ _ ι _ _ U K f u ε δ hU hK hf hev hε hc hδ hδε`. Take `⟨C, hC⟩` from `norm_fderiv2_regMax_le (ι := ι)`. Establish `hC0 : 0 ≤ C`. Simplify using `using (hC 1 one_pos 0).trans' (norm_nonneg (fderiv ℝ (fderiv ℝ (regMax (ι := ι) 1)) 0))`. Establish `hc0 : ∀ j, ∀ e > 0, ∀ᶠ t in 𝓝[>] (0 : ℝ), ∀ x ∈ K, |u t j x - f x| < e` using `fun j e he => (Metric.tendstoUniformlyOn_iff.1 (hc j).1 e he).mono fun t ht x hx => by`.
+
+Simplify `ht x hx` using `[Real.dist_eq, abs_sub_comm]`. Establish `hc1 : ∀ j, ∀ e > 0, ∀ᶠ t in 𝓝[>] (0 : ℝ), ∀ x ∈ K, ‖fderiv ℝ (u t j) x - fderiv ℝ f x‖ < e` using `fun j e he => (Metric.tendstoUniformlyOn_iff.1 (hc j).2.1 e he).mono fun t ht x hx => by`. Simplify `ht x hx` using `[dist_eq_norm, norm_sub_rev]`. Establish `hc2 : ∀ j, ∀ e > 0, ∀ᶠ t in 𝓝[>] (0 : ℝ), ∀ x ∈ K, ‖fderiv ℝ (fderiv ℝ (u t j)) x - fderiv ℝ (fderiv ℝ f) x‖ < e` using `fun j e he => ((Metric.tendstoUniformlyOn_iff (α := E →L[ℝ] E →L[ℝ] ℝ)).1 (hc j).2.2 e he).mono fun t ht x hx => (dist_lt_iff_norm_sub (F := E →L[ℝ] E →L[ℝ] ℝ)).1 (ht x hx)`. Use `⟨Metric.tendstoUniformlyOn_iff.2 fun e he => ?_, Metric.tendstoUniformlyOn_iff.2 fun e he => ?_, (Metric.tendstoUniformlyOn_iff (α := E →L[ℝ] E →L[ℝ] ℝ)).2 fun e he => ?_⟩` and prove the remaining obligations.
+
+Use `filter_upwards [hev, eventually_all.2 fun j => hc0 j (e / 3) (by positivity), hε.eventually (eventually_lt_nhds (by positivity : (0 : ℝ) < e / 3))] with t ht h0 hεe`. Introduce `x hx`. Establish `P` using `regMax_c2_pointwise_bound hU hf ht.2 ht.1 (hC _ ht.1) (hK hx) (fun j => (h0 j x hx).le) (fun j => norm_le_sum_norm (fun i => fderiv ℝ (u t i) x - fderiv ℝ f x) j) (fun j => norm_le_sum_norm (fun i => fderiv ℝ (fderiv ℝ (u t i)) x - fderiv ℝ (fderiv ℝ f) x) j)`. Rewrite using `[Real.dist_eq, abs_sub_comm]`. Combine the linear relations using `[P.1]`.
+
+Use `filter_upwards [hev, eventually_all.2 fun j => hc1 j (e / 2) (by positivity)] with t ht h1`. Introduce `x hx`. Establish `P` using `regMax_c2_pointwise_bound hU hf ht.2 ht.1 (hC _ ht.1) (hK hx) (fun j => abs_le_sum_abs (fun i => u t i x - f x) j) (fun j => (h1 j x hx).le) (fun j => norm_le_sum_norm (fun i => fderiv ℝ (fderiv ℝ (u t i)) x - fderiv ℝ (fderiv ℝ f) x) j)`. Rewrite using `[dist_eq_norm, norm_sub_rev]`. Combine the linear relations using `[P.2.1]`.
+
+Use `filter_upwards [hev, hδ, eventually_all.2 fun j => hc2 j (e / 8) (by positivity), hδε.eventually (eventually_lt_nhds (by positivity : (0 : ℝ) < e / (8 * (C + 1))))] with t ht hδt h2 hr`. Introduce `x hx`. Establish `P` using `regMax_c2_pointwise_bound hU hf ht.2 ht.1 (hC _ ht.1) (hK hx) (fun j => abs_le_sum_abs (fun i => u t i x - f x) j) (fun j => hδt j x hx) (fun j => (h2 j x hx).le)`. Use `(dist_lt_iff_norm_sub (F := E →L[ℝ] E →L[ℝ] ℝ)).2 ?_` and prove the remaining obligations. Establish `hq0 : 0 ≤ δ t ^ 2 / ε t` using `div_nonneg (sq_nonneg _) ht.1.le`.
+
+Establish `hq : C * (δ t ^ 2 / ε t) < e / 8`. Combine the equalities or inequalities in the displayed calculation. Establish `e1 : C / ε t * δ t ^ 2 = C * (δ t ^ 2 / ε t)` using `by ring`. Use `P.2.2` as an intermediate fact. Rewrite `this` using `[e1]`.
+
+Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem RegularizedMaxConvergenceC2.proof : RegularizedMaxConvergenceC2.Statement := by
   intro E _ _ ι _ _ U K f u ε δ hU hK hf hev hε hc hδ hδε
   obtain ⟨C, hC⟩ := norm_fderiv2_regMax_le (ι := ι)
@@ -328,6 +383,9 @@ open GroundTheory.Heights₂.Heights.IndefiniteRowSideFullHecke.Regular (RegChar
 
 variable {D : ℕ} {X : Type*} [TopologicalSpace X] {A : FinHolAtlas D X} {R : RegChartData A}
 
+/- English proof (translation)
+The claim follows from `S.c2 k K hK hKs`.
+-/
 theorem System.tendstoC2On_chart_symm_compact (S : System R) (k : Fin A.n) {K : Set (Fin D → ℂ)} (hK : IsCompact K)
     (hKs : K ⊆ (A.chart k).target ∩ (A.chart k).symm ⁻¹' R.Yo) :
     TendstoC2On (fun t y => S.ph t ((A.chart k).symm y)) (fun y => R.φ ((A.chart k).symm y)) K :=
@@ -335,6 +393,15 @@ theorem System.tendstoC2On_chart_symm_compact (S : System R) (k : Fin A.n) {K : 
 
 end System
 
+/- English proof (translation)
+Establish `hd1 : ∀ c : ℝ, fderiv ℝ (fun x : ℝ => x ^ 2 + c) = fderiv ℝ (fun x : ℝ => x ^ 2)` using `fun c => funext fun y => fderiv_add_const c`. Use `RegularizedMaxConvergenceC2.proof (Fin 2) Set.univ (Set.Icc (-1) 1) (fun x : ℝ => x ^ 2) (fun t j x => x ^ 2 + ((j : ℕ) : ℝ) * t) (fun t => t) (fun _ => 0) isOpen_univ (Set.subset_univ _) (by fun_prop) ?_ ?_ ?_ ?_ ?_` and prove the remaining obligations. Use `filter_upwards [self_mem_nhdsWithin] with t (ht : 0 < t)`. Conclude with `⟨ht, fun j => by fun_prop⟩`. Conclude with `tendsto_id.mono_left nhdsWithin_le_nhds`.
+
+Introduce `j`. Use `⟨Metric.tendstoUniformlyOn_iff.2 fun e he => ?_, ?_, ?_⟩` and prove the remaining obligations. Use `filter_upwards [self_mem_nhdsWithin, nhdsWithin_le_nhds (eventually_lt_nhds he)] with t (ht : 0 < t) hte`. Introduce `x _`. Establish `hj : ((j : ℕ) : ℝ) ≤ 1` using `by exact_mod_cast Nat.lt_succ_iff.1 j.isLt`.
+
+Establish `hj0 : (0 : ℝ) ≤ ((j : ℕ) : ℝ)` using `Nat.cast_nonneg _`. Rewrite using `[Real.dist_eq, abs_sub_comm, add_sub_cancel_left, abs_of_nonneg (by positivity)]`. Use the polynomial consequences of the given equalities and inequalities. Simplify using `only [hd1]`. Conclude with `tendstoUniformlyOn_self _ _ _`.
+
+Simplify using `only [hd1]`. Conclude with `tendstoUniformlyOn_self _ _ _`. Conclude with `Eventually.of_forall fun t j x _ => by simp`. Simplify using the standard rewrite rules.
+-/
 theorem regularizedMax_c2_example_real_line :
     TendstoC2On (fun t x => regMax t (fun j : Fin 2 => x ^ 2 + ((j : ℕ) : ℝ) * t) + t / 2)
       (fun x : ℝ => x ^ 2) (Set.Icc (-1) 1) := by

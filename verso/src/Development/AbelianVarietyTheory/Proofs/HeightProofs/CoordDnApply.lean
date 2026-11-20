@@ -18,6 +18,9 @@ def thenTr (φ : Matrix (Fin a) (Fin b) R ≃ₗ[R] Matrix (Fin a) (Fin b) R) :
     Matrix (Fin a) (Fin b) R ≃ₗ[R] Matrix (Fin b) (Fin a) R :=
   φ.trans (Matrix.transposeLinearEquiv _ _ R R)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem leftMul_apply (J Ji : Matrix (Fin a) (Fin a) R) (h1 : Ji * J = 1) (x : Matrix (Fin a) (Fin b) R) :
     leftMul J Ji h1 x = Jiᵀ * x := rfl
 
@@ -27,6 +30,9 @@ open GlobalTheory.IndefiniteRowSideFullHecke
 
 instance topRing (D : D7) : IsTopologicalRing (AE D) := IsModuleTopology.isTopologicalRing (AF D.host.F) _
 
+/- English proof (translation)
+Unfold `HeisenbergWeilMatrices.gramInvA HeisenbergWeilMatrices.gramA`. Rewrite using `[← Matrix.map_mul, Matrix.nonsing_inv_mul _ (isUnit_iff_ne_zero.2 (gram_det_ne A))]`. Conclude with `Matrix.map_one _ (incA D).map_zero (incA D).map_one`.
+-/
 theorem gramInv_mul (A : HSp D) : HeisenbergWeilMatrices.gramInvA A * HeisenbergWeilMatrices.gramA A = 1 := by
   unfold HeisenbergWeilMatrices.gramInvA HeisenbergWeilMatrices.gramA
   rw [← Matrix.map_mul, Matrix.nonsing_inv_mul _ (isUnit_iff_ne_zero.2 (gram_det_ne A))]
@@ -38,9 +44,15 @@ def coordUp (A B : HSp D) : HeisenbergWeilMatrices.WA A B ≃ₗ[AE D] WA A B :=
 def coordDn (V W : HSp D) : HeisenbergWeilMatrices.WA W V ≃ₗ[AE D] WA V W :=
   thenTr (coordUp W V)
 
+/- English proof (translation)
+The claim follows from `leftMul_apply _ _ (gramInv_mul A) x`.
+-/
 theorem coordUp_eq (A B : HSp D) (x : HeisenbergWeilMatrices.WA A B) : coordUp A B x = HMul.hMul (HeisenbergWeilMatrices.gramInvA A)ᵀ x :=
   leftMul_apply _ _ (gramInv_mul A) x
 
+/- English proof (translation)
+The claim follows from `gen_cont _ _ (gramInv_mul A)`.
+-/
 theorem cont_up (A B : HSp D) : Continuous (coordUp A B) ∧ Continuous (coordUp A B).symm :=
   gen_cont _ _ (gramInv_mul A)
 

@@ -14,15 +14,34 @@ set_option autoImplicit false
 noncomputable section
 namespace GlobalTheory.PtExt
 
+/- English proof (translation)
+The claim follows from `fun p hp ↦ Set.mem_iInter.2 fun _ ↦ h hp`.
+-/
 theorem le_pull_chart {X Y : Scheme.{0}} (L : LB X) (q : Y ⟶ X) {D : Type} [CommRing D] (x : Sp D ⟶ Y)
     (i : L.ι) (h : ⊤ ≤ (x ≫ q) ⁻¹ᵁ L.U i) : ⊤ ≤ x ⁻¹ᵁ (L.pull q).U (fun _ ↦ i) :=
   fun p hp ↦ Set.mem_iInter.2 fun _ ↦ h hp
 
+/- English proof (translation)
+Unfold `evU`. Rewrite using `[dif_pos h, dif_pos h, dif_pos h, map_mul]`.
+-/
 theorem evU_mul {Y : Scheme.{0}} {D : Type} [CommRing D] (x : Sp D ⟶ Y) (U : Y.Opens) (h : ⊤ ≤ x ⁻¹ᵁ U)
     (a b : Γ(Y, U)) : evU x U (a * b) = evU x U a * evU x U b := by
   unfold evU
   rw [dif_pos h, dif_pos h, dif_pos h, map_mul]
 
+/- English proof (translation)
+Introduce `R _ X Y L _ q hT`. Take `⟨s, hs⟩` from `hT`. Use `⟨fun E _ _ z i ↦ evU z.left ((L.pull q.left).U (fun _ ↦ i)) (s.s (fun _ ↦ i)).val, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `E _ _ z i hi`. Establish `hz` using `le_pull_chart L q.left z.left i hi`.
+
+Use `show IsUnit (evU _ _ _)`. Unfold `evU`. Rewrite using `[dif_pos hz]`. Conclude with `(s.s _).isUnit.map _`. Introduce `E _ _ E' _ _ ψ z i hi`.
+
+Establish `hz` using `le_pull_chart L q.left z.left i hi`. Conclude with `evalSectionAtPointOrZero_specMap_comp _ E E' (ψ : E →+* E') z.left _ _ hz`. Introduce `E _ _ z i j hi hj`. Establish `hzi` using `le_pull_chart L q.left z.left i hi`. Establish `hzj` using `le_pull_chart L q.left z.left j hj`.
+
+Establish `hV : ⊤ ≤ z.left ⁻¹ᵁ ((L.pull q.left).U (fun _ ↦ i) ⊓ (L.pull q.left).U (fun _ ↦ j))` using `fun p hp ↦ ⟨hzi hp, hzj hp⟩`. Establish `hij : ⊤ ≤ (z.left ≫ q.left) ⁻¹ᵁ (L.U i ⊓ L.U j)` using `fun p hp ↦ ⟨hi hp, hj hp⟩`. Establish `e` using `congrArg (fun u ↦ evU z.left _ (Units.val u)) (hs (fun _ ↦ i) (fun _ ↦ j))`. Simplify using `only [Units.val_mul] at e`. Rewrite `e` using `[evU_mul _ _ hV]`.
+
+Establish `e1 : evU z.left _ (ReciprocityTheory.ChartRestriction.G.Semi.res (inf_le_left : (L.pull q.left).U (fun _ ↦ i) ⊓ (L.pull q.left).U (fun _ ↦ j) ≤ (L.pull q.left).U (fun _ ↦ i)) (s.s (fun _ ↦ i))).val = evU z.left _ (s.s (fun _ ↦ i)).val` using `evalSectionAtPointOrZero_restriction _ _ _ _ _ _ _ hV`. Establish `e2 : evU z.left _ (ReciprocityTheory.ChartRestriction.G.Semi.res (inf_le_right : (L.pull q.left).U (fun _ ↦ i) ⊓ (L.pull q.left).U (fun _ ↦ j) ≤ (L.pull q.left).U (fun _ ↦ j)) (s.s (fun _ ↦ j))).val = evU z.left _ (s.s (fun _ ↦ j)).val` using `evalSectionAtPointOrZero_restriction _ _ _ _ _ _ _ hV`. Establish `e3 : evU z.left _ ((L.pull q.left).g (fun _ ↦ i) (fun _ ↦ j)).val = evU (z ≫ q).left (L.U i ⊓ L.U j) (L.g i j).val`. Unfold `evU`. Rewrite using `[dif_pos hV]`.
+
+Establish `hij' : ⊤ ≤ (z ≫ q).left ⁻¹ᵁ (L.U i ⊓ L.U j)` using `hij`. Rewrite using `[dif_pos hij']`. Conclude with `(evalAt_pull_g L q.left z.left (fun _ ↦ i) (fun _ ↦ j) hij hV).symm`. Rewrite `e` using `[e1, e2, e3]`. Conclude with `e`.
+-/
 theorem exists_isPtGen : ∀ (R : Type) [CommRing R] (X Y : Over (Sp R)) (L : LB X.left), L.IsLB →
     ∀ q : Y ⟶ X, GlobalTheory.AbLaw.Triv (L.pull q.left) → ∃ t, IsPtGen L q t := by
   intro R _ X Y L _ q hT

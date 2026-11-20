@@ -16,6 +16,9 @@ section Algebra
 variable {A B M N : Type} [CommRing A] [CommRing B] [AddCommGroup M] [Module A M] [AddCommGroup N] [Module B N]
   {f : A →+* B} {u : M →ₛₗ[f] N}
 
+/- English proof (translation)
+Take `⟨w, -, hw⟩` from `h (N ⧸ Submodule.span B (Set.range u)) 0`. Establish `h1` using `hw (Submodule.mkQ _) fun x => (Submodule.Quotient.mk_eq_zero _).2 (Submodule.subset_span ⟨x, rfl⟩)`. Establish `h2` using `hw 0 fun _ => rfl`. Rewrite using `[← Submodule.ker_mkQ (Submodule.span B (Set.range u)), h1, ← h2, LinearMap.ker_zero]`.
+-/
 theorem span_range_eq_top (h : SemiBC u) : Submodule.span B (Set.range u) = ⊤ := by
   obtain ⟨w, -, hw⟩ := h (N ⧸ Submodule.span B (Set.range u)) 0
   have h1 := hw (Submodule.mkQ _) fun x =>
@@ -23,6 +26,11 @@ theorem span_range_eq_top (h : SemiBC u) : Submodule.span B (Set.range u) = ⊤ 
   have h2 := hw 0 fun _ => rfl
   rw [← Submodule.ker_mkQ (Submodule.span B (Set.range u)), h1, ← h2, LinearMap.ker_zero]
 
+/- English proof (translation)
+Establish `hy : y ∈ Submodule.span B (Set.range u)` using `by rw [span_range_eq_top h]; trivial`. Proceed by induction on `hy using Submodule.span_induction with`. Consider the case `mem _ hx => obtain ⟨x, rfl⟩ := hx`. Conclude with `h0 x`. Consider the case `zero => rw [← map_zero u]`.
+
+Conclude with `h0 0`. Consider the case `add y z _ _ hy hz => exact h1 y z hy hz`. Consider the case `smul b y _ hy => exact h2 b y hy`.
+-/
 theorem induction_bc (h : SemiBC u) (p : N → Prop) (h0 : ∀ x, p (u x)) (h1 : ∀ y z, p y → p z → p (y + z))
     (h2 : ∀ (b : B) y, p y → p (b • y)) (y : N) : p y := by
   have hy : y ∈ Submodule.span B (Set.range u) := by rw [span_range_eq_top h]; trivial
@@ -34,6 +42,9 @@ theorem induction_bc (h : SemiBC u) (p : N → Prop) (h0 : ∀ x, p (u x)) (h1 :
 
 variable {R S ι : Type} [CommRing R] [CommRing S]
 
+/- English proof (translation)
+Establish `key : ∀ y, ∃ c : ι → R, (fun k => π (c k)) = J y` using `induction_bc h _ h0 (fun y z ⟨c, hc⟩ ⟨d, hd⟩ => ⟨c + d, by rw [map_add, ← hc, ← hd]; exact funext fun k => map_add π _ _⟩) (fun b y ⟨c, hc⟩ => ⟨i b • c, by rw [hJ, ← hc]; exact funext fun k => map_mul π _ _⟩)`. Use `choose κ hκ using key`. Use `⟨AddMonoidHom.mk' κ fun y z => funext fun k => hπ ?_, hκ⟩` and prove the remaining obligations. Rewrite using `[Pi.add_apply, map_add, congrFun (hκ _) k, congrFun (hκ _) k, congrFun (hκ _) k, map_add, Pi.add_apply]`.
+-/
 theorem exists_coord (h : SemiBC u) (π : R →+* S) (hπ : Function.Injective π) (i : B → R) (J : N →+ (ι → S))
     (hJ : ∀ (b : B) y, J (b • y) = π (i b) • J y) (h0 : ∀ x, ∃ c : ι → R, (fun k => π (c k)) = J (u x)) :
     ∃ κ : N →+ (ι → R), ∀ y, (fun k => π (κ y k)) = J y := by
@@ -44,6 +55,13 @@ theorem exists_coord (h : SemiBC u) (π : R →+* S) (hπ : Function.Injective �
   refine ⟨AddMonoidHom.mk' κ fun y z => funext fun k => hπ ?_, hκ⟩
   rw [Pi.add_apply, map_add, congrFun (hκ _) k, congrFun (hκ _) k, congrFun (hκ _) k, map_add, Pi.add_apply]
 
+/- English proof (translation)
+Use `letI : Module B (ι → S) := Module.compHom _ ψ`. Take `⟨w, hw, -⟩` from `h (ι → S) { toFun := fun x k => π (κ x k) map_add' := fun x y => funext fun k => by rw [map_add, Pi.add_apply, map_add]; rfl map_smul' := fun a x => funext fun k => by`. Rewrite using `[hκ, Pi.smul_apply, smul_eq_mul, map_mul, hi]`. Use `rfl }`. Establish `hs : ∀ (b : B) y, w (b • y) = ψ b • w y` using `fun b y => w.map_smul b y`.
+
+Use `⟨w.toAddMonoidHom, hs, fun x k => congrFun (hw x) k, fun U U' r h1 h2 => ?_⟩` and prove the remaining obligations. Use `induction_bc h (fun y => w (U' y) = π r • w y) (fun x => ?_) (fun y z hy hz => ?_) fun b y hy => ?_` and prove the remaining obligations. Rewrite using `[h1, hw, hw]`. Use function extensionality and compare the values at `k`. Express the relevant statement in the definitionally equal form `π (κ (U x) k) = π r * π (κ x k)`.
+
+Rewrite using `[h2, Pi.smul_apply, smul_eq_mul, map_mul]`. Simplify using `only [map_add, smul_add, hy, hz]`. Rewrite using `[U'.map_smul, hs, hs, hy, smul_comm]`.
+-/
 theorem exists_ext (h : SemiBC u) (π : R →+* S) (i : A → R) (ψ : B →+* S) (hi : ∀ a, π (i a) = ψ (f a))
     (κ : M →+ (ι → R)) (hκ : ∀ (a : A) x, κ (a • x) = i a • κ x) :
     ∃ w : N →+ (ι → S), (∀ (b : B) y, w (b • y) = ψ b • w y) ∧ (∀ x k, w (u x) k = π (κ x k)) ∧
@@ -73,6 +91,11 @@ variable {l : ℕ} [hl : Fact l.Prime] {a : ℕ} [NeZero a] {e : ℕ} [NeZero e]
   {t : Wq l a →ₐ[ℤ_[l]] O} {ϖ : PiSys l e} {ι : Type} [Fintype ι] [DecidableEq ι]
   {G : Type} [Group G] [TopologicalSpace G] {P : PhiMod O K l e a ι} {T : LocLat G ℚ_[l] K O}
 
+/- English proof (translation)
+Use function extensionality and compare the values at `i`. Rewrite using `[toW_apply]`. Distinguish the cases in `h : i = j`. Substitute `h` using the available equality. Rewrite using `[Pi.single_eq_same, ← map_one (ϖ.iW t K)]`.
+
+Conclude with `congrArg _ (funext fun τ => Subtype.ext (Pi.single_eq_same (M := fun _ : ι => K⟦X⟧) i 1))`. Rewrite using `[Pi.single_eq_of_ne h, ← map_zero (ϖ.iW t K)]`. Conclude with `congrArg _ (funext fun τ => Subtype.ext (Pi.single_eq_of_ne (M := fun _ : ι => K⟦X⟧) h 1))`.
+-/
 theorem toW_bas (j : ι) (hm : (bas j : Vec K a ι) ∈ ME P) : toW t ϖ P ⟨bas j, hm⟩ = Pi.single j 1 := by
   funext i
   rw [toW_apply]
@@ -83,6 +106,9 @@ theorem toW_bas (j : ι) (hm : (bas j : Vec K a ι) ∈ ME P) : toW t ϖ P ⟨ba
   · rw [Pi.single_eq_of_ne h, ← map_zero (ϖ.iW t K)]
     exact congrArg _ (funext fun τ => Subtype.ext (Pi.single_eq_of_ne (M := fun _ : ι => K⟦X⟧) h 1))
 
+/- English proof (translation)
+Introduce `c` and use `by have h1 : inclL t ϖ P c = ∑ j, inclO l O (c j) • phiW t ϖ P (Pi.single j 1) := by funext i simp [inclL_apply, phiW_apply, Matrix.mulVec, dotProduct, Pi.single_apply, apply_ite (frobOW l O), mul_comm] rw [h1, map_sum] simp only [I.act_smul, I.act_phiW, h, galOW_inclO] simp only …`.
+-/
 theorem isLMat_of_single (I : Ident t ϖ P T) (s : GQ l) (g : G) (γ : ι → ι → OA l O)
     (h : ∀ j, I.act s g (Pi.single j 1) = fun i => inclO l O (γ j i)) :
     I.IsLMat s g (Matrix.of fun i j => frobOA l O (γ j i)) := fun c => by
@@ -100,6 +126,11 @@ theorem isLMat_of_single (I : Ident t ϖ P T) (s : GQ l) (g : G) (γ : ι → ι
 
 omit [Module.Free ℤ_[l] O] [Module.Finite ℤ_[l] O] [IsUltrametricDist K] [IsUnitBall O K] in
 
+/- English proof (translation)
+Use `letI := zlLat T`. Introduce `y`. Proceed by induction on `y using TensorProduct.induction_on with`. Consider the case `zero => simp only [map_zero]`. Consider the case `tmul v x => rfl`.
+
+Consider the case `add x y hx hy => simp only [map_add, hx, hy]`.
+-/
 theorem kappa_act (T : LocLat G ℚ_[l] K O) (s : GQ l) (g : G) :
     letI := zlLat T
     ∀ y : WCb l ⊗[ℤ_[l]] ↥T.L.T, kappa T (TensorProduct.map (galW l s).toLinearMap (actZ T g) y) =
@@ -111,6 +142,13 @@ theorem kappa_act (T : LocLat G ℚ_[l] K O) (s : GQ l) (g : G) :
   | tmul v x => rfl
   | add x y hx hy => simp only [map_add, hx, hy]
 
+/- English proof (translation)
+Take `⟨w, hws, hwu, hwo⟩` from `exists_ext (E.tr_bc h) π.toRingHom ν ψ hν κ hκs`. Establish `hwo' : ∀ (o : O) z, w ((oE o).u Cr z) = o • w z` using `fun o z => (hwo _ ((oE o).u Cr) (algebraMap O R o) ((oE o).u_tr h) (fun x => (hκo o x).trans (algebraMap_smul _ _ _).symm) z).trans ((congrArg (· • w z) (π.commutes o)).trans (algebraMap_smul _ _ _))`. Establish `hwb : ∀ i k, w (E.tr ev (E.tr p₀ (b i))) k = if k = i then 1 else 0` using `fun i k => by`. Rewrite using `[← E.tr_comp, h₀, E.tr_comp, hwu, hκb, Pi.single_apply, apply_ite π.toRingHom, map_one, map_zero]`. Use `(hwu _ i).symm.trans ?_` and prove the remaining obligations.
+
+Establish `h2` using `congrArg (E.tr ev) (hy j)`. Rewrite `h2` using `[← E.tr_comp, h₁, E.tr_comp, E.tr_comp]`. Rewrite using `[h2]`. Simplify using `only [map_sum, LinearMap.map_smulₛₗ, ← FHom.u_tr, hws, hwo', Finset.sum_apply, Pi.smul_apply, hwb]`. Rewrite using `[Finset.sum_eq_single i (fun k _ hk => by simp [Ne.symm hk]) (by simp)]`.
+
+Use `Finset.sum_congr rfl fun q _ => ?_` and prove the remaining obligations. Rewrite using `[if_pos rfl, smul_comm, smul_eq_mul, mul_one]`.
+-/
 theorem value_eq {l : ℕ} {R₀ O R S ι Q : Type} [CommRing R₀] [CommRing O] [CommRing R] [CommRing S] [Algebra O R]
     [Algebra O S] [Fintype ι] [DecidableEq ι] [Fintype Q] (E : FCrys l R₀) {P₀ P₁ PP Cr : Obj l R₀}
     (oE : O → FHom E E) (b : ι → E.M P₀) (α : GlobalTheory.Prism.Hom P₀ P₁) (σ : GlobalTheory.Prism.Hom P₁ P₁)
@@ -138,6 +176,11 @@ theorem value_eq {l : ℕ} {R₀ O R S ι Q : Type} [CommRing R₀] [CommRing O]
   refine Finset.sum_congr rfl fun q _ => ?_
   rw [if_pos rfl, smul_comm, smul_eq_mul, mul_one]
 
+/- English proof (translation)
+Take `⟨κ, hκ⟩` from `exists_coord h π.toRingHom hπ ν J hJ h0`. Establish `hκ' : ∀ x k, π (κ x k) = J x k` using `fun x k => congrFun (hκ x) k`. Use `⟨κ, hκ, fun b y => funext fun k => hπ ?_, fun o y z h1 => funext fun k => hπ ?_, fun j y h1 => funext fun k => hπ ?_⟩` and prove the remaining obligations. Rewrite using `[hκ', hJ, Pi.smul_apply, Pi.smul_apply, smul_eq_mul, smul_eq_mul, map_mul, hκ']`. Rewrite using `[hκ', h1, Pi.smul_apply, Pi.smul_apply, map_smul, hκ']`.
+
+Rewrite using `[hκ', h1, Pi.single_apply, Pi.single_apply, apply_ite π, map_one, map_zero]`.
+-/
 theorem exists_coord' {A B M N O R S ι : Type} [CommRing A] [CommRing B] [AddCommGroup M] [Module A M]
     [AddCommGroup N] [Module B N] {f : A →+* B} {u : M →ₛₗ[f] N} [CommRing O] [CommRing R] [CommRing S]
     [Algebra O R] [Algebra O S] [DecidableEq ι] (h : SemiBC u) (π : R →ₐ[O] S) (hπ : Function.Injective π)
@@ -153,6 +196,17 @@ theorem exists_coord' {A B M N O R S ι : Type} [CommRing A] [CommRing B] [AddCo
   · rw [hκ', h1, Pi.smul_apply, Pi.smul_apply, map_smul, hκ']
   · rw [hκ', h1, Pi.single_apply, Pi.single_apply, apply_ite π, map_one, map_zero]
 
+/- English proof (translation)
+Introduce `l _ a e _ _ O K _ _ _ _ _ _ _ _ _ t ϖ ι _ _ P T I`. Use `letI := zlLat T`. Introduce `E jA H him oE hoE b hb PP p₀ p₁ Q _ c y hy Cr eC h hh g ev h₀ h₁`. Establish `hJ0 : ∃ J : E.M (ainfObj (ϖ.field a)) →+ (ι → OW l O), ∀ x, I.j (J x) = kappa T (jA x)` using `⟨I.j.symm.toAddMonoidHom.comp ((kappa T).comp jA.toAddMonoidHom), fun x => I.j.apply_symm_apply _⟩`. Take `⟨J, hJ⟩` from `hJ0`.
+
+Establish `hJs : ∀ (w : (ainfObj (ϖ.field a)).A) x, J (w • x) = inclO l O ((1 : O) ⊗ₜ[ℤ_[l]] ainfId (ϖ.field a) w) • J x` using `fun w x => I.j.injective (by`. Rewrite using `[map_smul I.j, hJ, hJ]`. Conclude with `(congrArg (kappa T) (jA.map_smulₛₗ w x)).trans (OfCrystal.kappa_smul T _ _))`. Establish `hJo : ∀ (o : O) x, J ((oE o).u _ x) = o • J x` using `fun o x => I.j.injective (by`. Rewrite using `[LinearMapClass.map_smul_of_tower, hJ, hJ, hoE, OfCrystal.kappa_mulZ])`.
+
+Establish `hJb : ∀ j, J (E.tr (ϖ.toAinf a) (b j)) = Pi.single j 1` using `fun j => I.j.injective (by`. Take `⟨hm, h1⟩` from `hb j`. Rewrite using `[hJ, h1, toW_bas])`. Establish `hJg : ∀ x, J (E.tr (ainfHom (ϖ.field a) g) x) = I.act (g : GQ l) g (J x)` using `fun x => I.j.injective (by`. Rewrite using `[I.j_act, hJ, hJ]`.
+
+Conclude with `(congrArg (kappa T) (H.j_act g x)).trans (kappa_act T _ _ _))`. Establish `hκ0` using `exists_coord' (E.tr_bc (ϖ.toAinf a)) (inclO l O) inclO_injective (fun w => (1 : O) ⊗ₜ[ℤ_[l]] ainfId (ϖ.field a) w) J hJs fun x => by`. Take `⟨m, hm, h1⟩` from `(him _).1 ⟨x, rfl⟩`. Rewrite using `[I.j.injective ((hJ _).trans h1)]`. Conclude with `toW_mem_MA t ϖ P hm`.
+
+Take `⟨κ, hκ, hκs, hκo, hκb⟩` from `hκ0`. Use `⟨_, isLMat_of_single I _ g (fun j => κ (E.tr (ainfHom (ϖ.field a) g) (E.tr (ϖ.toAinf a) (b j)))) fun j => ?_, fun i j => ?_⟩` and prove the remaining obligations. Conclude with `(congrArg (I.act (g : GQ l) g) (hJb j).symm).trans ((hJg _).symm.trans (hκ _).symm)`. Use `(value_eq E oE b _ _ p₀ p₁ h ev h₀ h₁ c y hy ((toOCr l O).comp (frobOA l O)) _ ((Algebra.TensorProduct.includeRight : Per.Acris l →ₐ[ℤ_[l]] OCr l O).toRingHom.comp eC.toRingHom) (fun w => (congrArg (toOCr l O) (frobOA_tmul 1 w)).trans (congrArg (fun z : Per.Acris l => (1 : O) ⊗ₜ[ …` and prove the remaining obligations. Conclude with `congrArg (fun o : O => o ⊗ₜ[ℤ_[l]] eC (ev.f (y i j q))) (mul_one (c i j q))`.
+-/
 theorem main : ∀ (l : ℕ) [Fact l.Prime] (a e : ℕ) [NeZero a] [NeZero e] (O K : Type) [CommRing O] [Algebra ℤ_[l] O] [Module.Free ℤ_[l] O] [Module.Finite ℤ_[l] O] [NormedField K] [IsUltrametricDist K] [Algebra O K] [IsUnitBall O K] [NormedAlgebra ℚ_[l] K] (t : Wq l a →ₐ[ℤ_[l]] O) (ϖ : PiSys l e) (ι : Type) [Fintype ι] [DecidableEq ι] (P : PhiMod O K l e a ι) (T : Lat a O K ϖ) (I : Ident t ϖ P T), letI := zlLat T; ∀ (E : FCrys l ↥(OL (ϖ.field a))) (jA : E.M (ainfObj (ϖ.field a)) →ₛₗ[(inclW l).comp (ainfId (ϖ.field a)).toRingHom] (WCb l ⊗[ℤ_[l]] ↥T.L.T)), Realises (ϖ.field a) E (ainfObj _) (ainfId _) ↥T.L.T (actZ T) jA → (∀ y : TW (OW l O) T, (∃ x : E.M (ϖ.prism a), y = kappa T (jA (E.tr (ϖ.toAinf a) x))) ↔ ∃ (m : Vec K a ι) (hm : m ∈ P.M), y = I.j (toW t ϖ P ⟨m, mem_ME_of_mem_M hm⟩)) → ∀ (oE : O → FHom E E), (∀ (c : O) (x : E.M (ainfObj (ϖ.field a))), jA ((oE c).u (ainfObj (ϖ.field a)) x) = (OfCrystal.mulZ T c).lTensor (WCb l) (jA x)) → ∀ (b : ι → E.M (ϖ.prism a)), (∀ j, ∃ hm : (bas j : Vec K a ι) ∈ P.M, kappa T (jA (E.tr (ϖ.toAinf a) (b j))) = I.j (toW t ϖ P ⟨bas j, mem_ME_of_mem_M hm⟩)) → ∀ (PP : Obj l ↥(OL (ϖ.field a))) (p₀ p₁ : GlobalTheory.Prism.Hom (ϖ.prism a) PP), ∀ (Q : Type) [Fintype Q] (c : ι → ι → Q → O) (y : ι → ι → Q → PP.A), (∀ j, E.tr p₁ (b j) = ∑ i, ∑ q, y i j q • (oE (c i j q)).u PP (E.tr p₀ (b i))) → ∀ (Cr : Obj l ↥(OL (ϖ.field a))) (eC : Cr.A ≃+* Per.Acris l) (h : GlobalTheory.Prism.Hom (ainfObj (ϖ.field a)) Cr), (∀ x : Ainf l, eC (h.f x) = ainfToAcris l (WittVector.frobenius x)) → ∀ (g : ↥(GK (ϖ.field a))) (ev : GlobalTheory.Prism.Hom PP Cr), ev.comp p₀ = h.comp (ϖ.toAinf a) → ev.comp p₁ = (h.comp (ainfHom (ϖ.field a) g)).comp (ϖ.toAinf a) → ∃ Γ, I.IsLMat (g : GQ l) g Γ ∧ ∀ i j, toOCr l O (Γ i j) = ∑ q, c i j q ⊗ₜ[ℤ_[l]] eC (ev.f (y i j q)) := by
   intro l _ a e _ _ O K _ _ _ _ _ _ _ _ _ t ϖ ι _ _ P T I
   letI := zlLat T

@@ -15,23 +15,37 @@ variable {k r : ℕ}
 def Tg (γ : Matrix (Fin (k + 1)) (Fin (k + 1)) ℂ) (p : SS k r) : SS k r :=
   ((gb γ p.2.1, gb γ p.2.2), (gb γ p.1.1, gb γ p.1.2))
 
+/- English proof (translation)
+Establish `e : ∀ x : Mt k r, gb γ (gb γ x) = x` using `fun x => gbar_gbar γ hE (Matrix.of x)`. Simplify using `only [Tg, e]`.
+-/
 lemma Tg_Tg (γ : Matrix (Fin (k + 1)) (Fin (k + 1)) ℂ) (hE : IsUnit (embWb k r γ).det) (p : SS k r) :
     Tg γ (Tg γ p) = p := by
   have e : ∀ x : Mt k r, gb γ (gb γ x) = x := fun x => gbar_gbar γ hE (Matrix.of x)
   simp only [Tg, e]
 
+/- English proof (translation)
+The claim follows from `(((cont_gb γ).measurable.comp (measurable_fst.comp measurable_snd)).prodMk ((cont_gb γ).measurable.comp (measurable_snd.comp measurable_snd))).prodMk (((cont_gb γ).measurable.comp (measurable_fst.comp measurable_fst)).prodMk ((cont_gb γ).measurable.comp (measurable_snd.comp measu …`.
+-/
 lemma meas_Tg (γ : Matrix (Fin (k + 1)) (Fin (k + 1)) ℂ) : Measurable (Tg (k := k) (r := r) γ) :=
   (((cont_gb γ).measurable.comp (measurable_fst.comp measurable_snd)).prodMk
     ((cont_gb γ).measurable.comp (measurable_snd.comp measurable_snd))).prodMk
     (((cont_gb γ).measurable.comp (measurable_fst.comp measurable_fst)).prodMk
     ((cont_gb γ).measurable.comp (measurable_snd.comp measurable_fst)))
 
+/- English proof (translation)
+The claim follows from `(mEquiv (Tg γ) (Tg γ) (meas_Tg γ) (meas_Tg γ) (Tg_Tg γ hE) (Tg_Tg γ hE)).measurableEmbedding`.
+-/
 lemma emb_Tg (γ : Matrix (Fin (k + 1)) (Fin (k + 1)) ℂ) (hE : IsUnit (embWb k r γ).det) :
     MeasurableEmbedding (Tg (k := k) (r := r) γ) :=
   (mEquiv (Tg γ) (Tg γ) (meas_Tg γ) (meas_Tg γ) (Tg_Tg γ hE) (Tg_Tg γ hE)).measurableEmbedding
 
 variable {Wp : Type} [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp]
 
+/- English proof (translation)
+Use `sfin D.haarW` as an intermediate fact. Use `sfin D.haarN` as an intermediate fact. Establish `m1 : MeasurePreserving (gb γ) D.μW D.μW` using `⟨(cont_gb γ).measurable, hgW⟩`. Establish `m2 : MeasurePreserving (gb γ) D.μN D.μN` using `⟨(cont_gb γ).measurable, hgN⟩`. Establish `m12` using `m1.prod m2`.
+
+Establish `m` using `(Measure.measurePreserving_swap (μ := D.μW.prod D.μN) (ν := D.μW.prod D.μN)).comp (m12.prod m12)`. Unfold `RealPlaceData.μSS`. Rewrite using `[hW']`. Conclude with `m`.
+-/
 lemma mp_Tg (D : RealPlaceData k r Wp Wp) (hW' : D.μW' = D.μW) (γ : Matrix (Fin (k + 1)) (Fin (k + 1)) ℂ)
     (hgW : D.μW.map (gb γ) = D.μW) (hgN : D.μN.map (gb γ) = D.μN) : MeasurePreserving (Tg γ) D.μSS D.μSS := by
   have := sfin D.haarW
@@ -44,6 +58,9 @@ lemma mp_Tg (D : RealPlaceData k r Wp Wp) (hW' : D.μW' = D.μW) (γ : Matrix (F
   rw [hW']
   exact m
 
+/- English proof (translation)
+Use `show Complex.exp (Complex.I * ((lam k r z (gbar k r γ m) : ℝ) : ℂ)) = (starRingEnd ℂ) (Complex.exp (Complex.I * ((lam k r z m : ℝ) : ℂ)))`. Rewrite using `[hl, ← Complex.exp_conj, map_mul, Complex.conj_I, Complex.conj_ofReal, Complex.ofReal_neg]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree.
+-/
 lemma psi_gbar (γ : Matrix (Fin (k + 1)) (Fin (k + 1)) ℂ) {z : Fin (2 * r + k + 1) → ℂ} {m : Mat k r}
     (hl : lam k r z (gbar k r γ m) = -lam k r z m) :
     psi k r z cStd (gbar k r γ m) = star (psi k r z cStd m) := by
@@ -53,6 +70,9 @@ lemma psi_gbar (γ : Matrix (Fin (k + 1)) (Fin (k + 1)) ℂ) {z : Fin (2 * r + k
   congr 1
   ring
 
+/- English proof (translation)
+Use extensionality with `v`. Simplify using `[rho, scalF]`.
+-/
 lemma rho_scalF (D : RealPlaceData k r Wp Wp) (p : SS k r) (f : Mat k r → ℂ) (g : Mat k r) :
     rho D p (scalF Wp f) g = f (sgs p g) • (D.π (Matrix.of p.1.1)).comp (D.π' (Matrix.of p.2.1)⁻¹) := by
   ext v
@@ -65,6 +85,9 @@ def Psi (D : RealPlaceData k r Wp Wp) (γ : Matrix (Fin (k + 1)) (Fin (k + 1)) �
     (p : SS k r) : Wp →L[ℂ] Wp :=
   ph D p • (f (sgs p g) • (D.π (gbar k r γ (Matrix.of p.2.1))).comp (D.π (gbar k r γ (Matrix.of p.1.1))⁻¹))
 
+/- English proof (translation)
+Rewrite using `[JF_eq]`. Use `congr 1`. Use function extensionality and compare the values at `p`. Rewrite using `[rho_scalF, hD.π_eq]`. Both sides reduce to the same expression.
+-/
 lemma J_phi (D : RealPlaceData k r Wp Wp) (hD : IsDiag D) (f : Mat k r → ℂ) (g : Mat k r) :
     JF D (scalF Wp f) g = ∫ p, Phi D f g p ∂D.μSS := by
   rw [JF_eq]
@@ -73,6 +96,13 @@ lemma J_phi (D : RealPlaceData k r Wp Wp) (hD : IsDiag D) (f : Mat k r → ℂ) 
   rw [rho_scalF, hD.π_eq]
   rfl
 
+/- English proof (translation)
+Rewrite using `[JF_eq, ← (mp_Tg D hD.μW_eq γ hgW hgN).integral_comp (emb_Tg γ hE)]`. Use `integral_congr_ae ?_` and prove the remaining obligations. Use `filter_upwards [ae_in D] with p hp`. Establish `e3 : th k r γ (sgs (Tg γ p) g0) = sgs p g0`. Rewrite using `[show sgs (Tg γ p) g0 = (gbar k r γ (Matrix.of p.2.1))⁻¹ * (gbar k r γ (Matrix.of p.2.2))⁻¹ * g0 * gbar k r γ (Matrix.of p.1.2) * gbar k r γ (Matrix.of p.1.1) from rfl, th_five γ hE (gbar_unit γ hE (isUnit_of_uh hp.2.2.1.1)) (gbar_unit γ hE (isUnit_of_uh hp.2.2.2.1)) hg0, gbar_gb …`.
+
+Both sides reduce to the same expression. Establish `e4 : ph D (Tg γ p) = ph D p`. Unfold `ph`. Rewrite using `[hD.z_eq]`. Use `show psi k r D.z cStd (gbar k r γ (Matrix.of p.2.2)) * star (psi k r D.z cStd (gbar k r γ (Matrix.of p.1.2))) = _`.
+
+Rewrite using `[psi_gbar γ (hlam _ hp.2.2.2), psi_gbar γ (hlam _ hp.2.1), star_star, mul_comm]`. Establish `e5 : D.π' = D.π` using `hD.π_eq`. Rewrite using `[rho_scalF, Function.comp_apply, e3, e4, e5]`. Both sides reduce to the same expression.
+-/
 lemma J_th (D : RealPlaceData k r Wp Wp) (hD : IsDiag D) (γ : Matrix (Fin (k + 1)) (Fin (k + 1)) ℂ)
     (hE : IsUnit (embWb k r γ).det) (hgW : D.μW.map (gb γ) = D.μW) (hgN : D.μN.map (gb γ) = D.μN)
     (hlam : ∀ m ∈ Nset k r, lam k r D.z (gbar k r γ m) = -lam k r D.z m)
@@ -107,10 +137,20 @@ def trL (Y : Wp →L[ℂ] Wp) : (Wp →L[ℂ] Wp) →ₗ[ℂ] ℂ where
 
 def trY (Y : Wp →L[ℂ] Wp) : (Wp →L[ℂ] Wp) →L[ℂ] ℂ := LinearMap.toContinuousLinearMap (trL Y)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 lemma trY_apply (Y X : Wp →L[ℂ] Wp) :
     trY Y X = LinearMap.trace ℂ Wp (((ContinuousLinearMap.adjoint Y).comp X : Wp →L[ℂ] Wp) : Wp →ₗ[ℂ] Wp) :=
   rfl
 
+/- English proof (translation)
+Use `set b := stdOrthonormalBasis ℂ Wp`. Rewrite `h` using `[trY_apply, LinearMap.trace_eq_sum_inner _ b]`. Establish `h' : ∀ i, ⟪b i, (((ContinuousLinearMap.adjoint Y).comp Y : Wp →L[ℂ] Wp) : Wp →ₗ[ℂ] Wp) (b i)⟫_ℂ = ((‖Y (b i)‖ ^ 2 : ℝ) : ℂ)` using `fun i => by`. Rewrite using `[ContinuousLinearMap.coe_coe, ContinuousLinearMap.comp_apply, ContinuousLinearMap.adjoint_inner_right, inner_self_eq_norm_sq_to_K]`. Use `push_cast`.
+
+Both sides reduce to the same expression. Simplify using `only [h'] at h`. Rewrite `h` using `[← Complex.ofReal_sum, Complex.ofReal_eq_zero, Finset.sum_eq_zero_iff_of_nonneg (fun i _ => by positivity)]`. Establish `hb : ∀ i, Y (b i) = 0` using `fun i => by`. Use `h i (Finset.mem_univ _)` as an intermediate fact.
+
+Simplify using `using this`. Apply `ContinuousLinearMap.coe_injective` to reduce the goal to its premises. Use `b.toBasis.ext (fun i => ?_)` and prove the remaining obligations. Simplify using `[hb i]`.
+-/
 lemma trY_self {Y : Wp →L[ℂ] Wp} (h : trY Y Y = 0) : Y = 0 := by
   set b := stdOrthonormalBasis ℂ Wp
   rw [trY_apply, LinearMap.trace_eq_sum_inner _ b] at h
@@ -130,6 +170,13 @@ lemma trY_self {Y : Wp →L[ℂ] Wp} (h : trY Y Y = 0) : Y = 0 := by
   refine b.toBasis.ext (fun i => ?_)
   simp [hb i]
 
+/- English proof (translation)
+Establish `c : (e : Wp →L[ℂ] Wp).comp (ContinuousLinearMap.adjoint Y) = (ContinuousLinearMap.adjoint Y).comp (e : Wp →L[ℂ] Wp)`. Use `congrArg ContinuousLinearMap.adjoint h2` as an intermediate fact. Rewrite `this` using `[ContinuousLinearMap.adjoint_comp, ContinuousLinearMap.adjoint_comp, e.symm.adjoint_eq_symm, LinearIsometryEquiv.symm_symm]`. Then use the resulting hypothesis. Establish `e1 : (ContinuousLinearMap.adjoint Y).comp ((e : Wp →L[ℂ] Wp).comp (X.comp (e.symm : Wp →L[ℂ] Wp))) = (e : Wp →L[ℂ] Wp).comp (((ContinuousLinearMap.adjoint Y).comp X).comp (e.symm : Wp →L[ℂ] Wp))`. Rewrite using `[← ContinuousLinearMap.comp_assoc, ← c]`.
+
+Simplify using `only [ContinuousLinearMap.comp_assoc]`. Establish `e2 : ((((ContinuousLinearMap.adjoint Y).comp X).comp (e.symm : Wp →L[ℂ] Wp)).comp (e : Wp →L[ℂ] Wp)) = (ContinuousLinearMap.adjoint Y).comp X`. Use extensionality with `v`. Simplify using the standard rewrite rules. Establish `tc : ∀ A B : Wp →L[ℂ] Wp, LinearMap.trace ℂ Wp ((A.comp B : Wp →L[ℂ] Wp) : Wp →ₗ[ℂ] Wp) = LinearMap.trace ℂ Wp ((B.comp A : Wp →L[ℂ] Wp) : Wp →ₗ[ℂ] Wp)` using `fun A B => LinearMap.trace_mul_comm (R := ℂ) (M := Wp) (A : Wp →ₗ[ℂ] Wp) (B : Wp →ₗ[ℂ] Wp)`.
+
+Rewrite using `[trY_apply, trY_apply, e1, tc, e2]`.
+-/
 lemma trY_conj (Y X : Wp →L[ℂ] Wp) (e : Wp ≃ₗᵢ[ℂ] Wp)
     (h2 : Y.comp (e.symm : Wp →L[ℂ] Wp) = (e.symm : Wp →L[ℂ] Wp).comp Y) :
     trY Y ((e : Wp →L[ℂ] Wp).comp (X.comp (e.symm : Wp →L[ℂ] Wp))) = trY Y X := by
@@ -162,29 +209,52 @@ open Formalism.QuantumDeterminants Formalism.FourierDecayAlt.B Formalism.Fourier
 
 variable {k r : ℕ} {Wp : Type} [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp] [FiniteDimensional ℂ Wp]
 
+/- English proof (translation)
+The claim follows from `ContinuousLinearMap.ext fun _ => rfl`.
+-/
 lemma pi_eq (D : RealPlaceData k r Wp Wp) {h : Mat k r} (hh : h ∈ UWset k r D.z) :
     D.π h = ((piLIE D.z D.π D.π_rep D.π_unitary h hh : Wp ≃ₗᵢ[ℂ] Wp) : Wp →L[ℂ] Wp) :=
   ContinuousLinearMap.ext fun _ => rfl
 
+/- English proof (translation)
+The claim follows from `ContinuousLinearMap.ext fun _ => rfl`.
+-/
 lemma pi_inv_eq (D : RealPlaceData k r Wp Wp) {h : Mat k r} (hh : h ∈ UWset k r D.z) :
     D.π h⁻¹ = (((piLIE D.z D.π D.π_rep D.π_unitary h hh).symm : Wp ≃ₗᵢ[ℂ] Wp) : Wp →L[ℂ] Wp) :=
   ContinuousLinearMap.ext fun _ => rfl
 
+/- English proof (translation)
+Rewrite using `[pi_eq D hh, LinearIsometryEquiv.adjoint_eq_symm, ← pi_inv_eq D hh]`.
+-/
 lemma adj_pi (D : RealPlaceData k r Wp Wp) {h : Mat k r} (hh : h ∈ UWset k r D.z) :
     ContinuousLinearMap.adjoint (D.π h) = D.π h⁻¹ := by
   rw [pi_eq D hh, LinearIsometryEquiv.adjoint_eq_symm, ← pi_inv_eq D hh]
 
+/- English proof (translation)
+The claim follows from `ContinuousLinearMap.opNorm_le_bound _ zero_le_one fun v => by rw [D.π_unitary h hh v, one_mul]`.
+-/
 lemma norm_pi_le (D : RealPlaceData k r Wp Wp) {h : Mat k r} (hh : h ∈ UWset k r D.z) : ‖D.π h‖ ≤ 1 :=
   ContinuousLinearMap.opNorm_le_bound _ zero_le_one fun v => by rw [D.π_unitary h hh v, one_mul]
 
+/- English proof (translation)
+The claim follows from `(piLIE D.z D.π D.π_rep D.π_unitary h hh).symm_apply_apply v`.
+-/
 lemma pi_inv_apply (D : RealPlaceData k r Wp Wp) {h : Mat k r} (hh : h ∈ UWset k r D.z) (v : Wp) :
     D.π h⁻¹ (D.π h v) = v :=
   (piLIE D.z D.π D.π_rep D.π_unitary h hh).symm_apply_apply v
 
+/- English proof (translation)
+The claim follows from `(piLIE D.z D.π D.π_rep D.π_unitary h hh).apply_symm_apply v`.
+-/
 lemma pi_apply_inv (D : RealPlaceData k r Wp Wp) {h : Mat k r} (hh : h ∈ UWset k r D.z) (v : Wp) :
     D.π h (D.π h⁻¹ v) = v :=
   (piLIE D.z D.π D.π_rep D.π_unitary h hh).apply_symm_apply v
 
+/- English proof (translation)
+Establish `e : ∀ (z : Fin (2 * r + k + 1) → ℂ) (m : Mat k r), ‖psi k r z cStd m‖ = 1` using `fun z m => by`. Unfold `psi`. Rewrite using `[Complex.norm_exp]`. Simplify using the standard rewrite rules. Unfold `ph`.
+
+Rewrite using `[norm_mul, norm_star, e, e, one_mul]`.
+-/
 lemma norm_ph (D : RealPlaceData k r Wp Wp) (p : SS k r) : ‖ph D p‖ = 1 := by
   have e : ∀ (z : Fin (2 * r + k + 1) → ℂ) (m : Mat k r), ‖psi k r z cStd m‖ = 1 := fun z m => by
     unfold psi
@@ -193,12 +263,18 @@ lemma norm_ph (D : RealPlaceData k r Wp Wp) (p : SS k r) : ‖ph D p‖ = 1 := b
   unfold ph
   rw [norm_mul, norm_star, e, e, one_mul]
 
+/- English proof (translation)
+The claim follows from `(isBoundedBilinearMap_comp (𝕜 := ℂ) (E := Wp) (F := Wp) (G := Wp)).continuous.comp_aestronglyMeasurable (hf.prodMk hg)`.
+-/
 lemma aesm_comp {α : Type*} [MeasurableSpace α] {μ : Measure α} {f g : α → (Wp →L[ℂ] Wp)}
     (hf : AEStronglyMeasurable f μ) (hg : AEStronglyMeasurable g μ) :
     AEStronglyMeasurable (fun a => (f a).comp (g a)) μ :=
   (isBoundedBilinearMap_comp (𝕜 := ℂ) (E := Wp) (F := Wp) (G := Wp)).continuous.comp_aestronglyMeasurable
     (hf.prodMk hg)
 
+/- English proof (translation)
+The claim follows from `(ContinuousLinearMap.adjoint (𝕜 := ℂ) (E := Wp) (F := Wp)).continuous.comp_aestronglyMeasurable hf`.
+-/
 lemma aesm_adj {α : Type*} [MeasurableSpace α] {μ : Measure α} {f : α → (Wp →L[ℂ] Wp)}
     (hf : AEStronglyMeasurable f μ) : AEStronglyMeasurable (fun a => ContinuousLinearMap.adjoint (f a)) μ :=
   (ContinuousLinearMap.adjoint (𝕜 := ℂ) (E := Wp) (F := Wp)).continuous.comp_aestronglyMeasurable hf
@@ -211,6 +287,11 @@ def Cb (D : RealPlaceData k r Wp Wp) (γ : Matrix (Fin (k + 1)) (Fin (k + 1)) �
   (D.π (gbar k r γ (Matrix.of p.1.1))).comp ((ContinuousLinearMap.adjoint (D.π (gbar k r γ (Matrix.of p.2.1)))).comp
     ((D.π (Matrix.of p.1.1)).comp (ContinuousLinearMap.adjoint (D.π (Matrix.of p.2.1)))))
 
+/- English proof (translation)
+Use `(ContinuousLinearMap.opNorm_comp_le _ _).trans ?_` and prove the remaining obligations. Use `mul_le_one₀ (norm_pi_le D ha) (norm_nonneg _) ((ContinuousLinearMap.opNorm_comp_le _ _).trans ?_)` and prove the remaining obligations. Rewrite using `[LinearIsometryEquiv.norm_map]`. Use `mul_le_one₀ (norm_pi_le D hb) (norm_nonneg _) ((ContinuousLinearMap.opNorm_comp_le _ _).trans ?_)` and prove the remaining obligations. Rewrite using `[LinearIsometryEquiv.norm_map]`.
+
+Conclude with `mul_le_one₀ (norm_pi_le D hc) (norm_nonneg _) (norm_pi_le D hd)`.
+-/
 lemma norm_C_le (D : RealPlaceData k r Wp Wp) {a b c d : Mat k r} (ha : a ∈ UWset k r D.z) (hb : b ∈ UWset k r D.z)
     (hc : c ∈ UWset k r D.z) (hd : d ∈ UWset k r D.z) :
     ‖(D.π a).comp ((ContinuousLinearMap.adjoint (D.π b)).comp ((D.π c).comp (ContinuousLinearMap.adjoint (D.π d))))‖
@@ -222,6 +303,9 @@ lemma norm_C_le (D : RealPlaceData k r Wp Wp) {a b c d : Mat k r} (ha : a ∈ UW
   rw [LinearIsometryEquiv.norm_map]
   exact mul_le_one₀ (norm_pi_le D hc) (norm_nonneg _) (norm_pi_le D hd)
 
+/- English proof (translation)
+Establish `hof : Continuous (⇑(Matrix.of : Mt k r ≃ Mat k r))` using `by exact continuous_id`. Establish `h : ContinuousOn (fun x : Mt k r => D.π (Matrix.of x)) (Matrix.of ⁻¹' UWset k r D.z)` using `D.π_cont.comp hof.continuousOn (Set.mapsTo_preimage _ _)`. Establish `h2` using `h.aestronglyMeasurable (μ := D.μW) (hclW.preimage hof).measurableSet`. Establish `hae : ∀ᵐ x ∂D.μW, x ∈ (Matrix.of ⁻¹' UWset k r D.z : Set (Mt k r))` using `ae_iff.2 (measure_mono_null (fun x hx => hx) D.haarW.conc)`. Rewrite `h2` using `[Measure.restrict_eq_self_of_ae_mem hae]`. Then use the resulting hypothesis.
+-/
 lemma aesm_pi (D : RealPlaceData k r Wp Wp) (hclW : IsClosed (UWset k r D.z)) :
     AEStronglyMeasurable (fun x : Mt k r => D.π (Matrix.of x)) D.μW := by
   have hof : Continuous (⇑(Matrix.of : Mt k r ≃ Mat k r)) := by exact continuous_id
@@ -236,6 +320,11 @@ variable (D : RealPlaceData k r Wp Wp) (hD : IsDiag D) (γ : Matrix (Fin (k + 1)
   (hWbar : ∀ h ∈ UWset k r D.z, gbar k r γ h ∈ UWset k r D.z)
 include hD hWbar
 
+/- English proof (translation)
+Establish `hh` using `hp.1`. Establish `hh' : Matrix.of p.2.1 ∈ UWset k r D.z` using `hD.z_eq ▸ hp.2.2.1`. Establish `g1` using `hWbar _ hh`. Establish `g2` using `hWbar _ hh'`. Use `⟨?_, ?_, norm_C_le D hh' hh g2 g1, norm_C_le D g1 g2 hh hh'⟩` and prove the remaining obligations.
+
+Use extensionality with `v`. Simplify using `only [Phi, Psi, Cf, adj_pi D hh, adj_pi D g1, ContinuousLinearMap.comp_apply, ContinuousLinearMap.smul_comp, _root_.smul_apply, pi_inv_apply D hh', pi_apply_inv D hh]`. Use extensionality with `v`. Simplify using `only [Phi, Psi, Cb, adj_pi D hh', adj_pi D g2, ContinuousLinearMap.comp_apply, ContinuousLinearMap.smul_comp, _root_.smul_apply, pi_inv_apply D g1, pi_apply_inv D g2]`.
+-/
 lemma psi_eq_C {p : SS k r} (hp : D.inSS p) (f : Mat k r → ℂ) (g : Mat k r) :
     Psi D γ f g p = (Phi D f g p).comp (Cf D γ p) ∧ Phi D f g p = (Psi D γ f g p).comp (Cb D γ p) ∧
       ‖Cf D γ p‖ ≤ 1 ∧ ‖Cb D γ p‖ ≤ 1 := by
@@ -252,6 +341,15 @@ lemma psi_eq_C {p : SS k r} (hp : D.inSS p) (f : Mat k r → ℂ) (g : Mat k r) 
       ContinuousLinearMap.smul_comp, _root_.smul_apply, pi_inv_apply D g1, pi_apply_inv D g2]
 
 omit hWbar in
+/- English proof (translation)
+Use `sfin D.haarW` as an intermediate fact. Use `sfin D.haarN` as an intermediate fact. Establish `hb` using `aesm_pi D hclW`. Establish `hbg : AEStronglyMeasurable (fun x : Mt k r => D.π (gbar k r γ (Matrix.of x))) D.μW` using `hb.comp_quasiMeasurePreserving (μ := D.μW) (f := gb γ) (MeasurePreserving.quasiMeasurePreserving ⟨(cont_gb γ).measurable, hgW⟩)`. Establish `hSS : D.μSS = (D.μW.prod D.μN).prod (D.μW.prod D.μN)` using `by rw [RealPlaceData.μSS, hD.μW_eq]`.
+
+Establish `q1 : Measure.QuasiMeasurePreserving (fun p : SS k r => p.1.1) D.μSS D.μW`. Rewrite using `[hSS]`. Conclude with `Measure.quasiMeasurePreserving_fst.comp Measure.quasiMeasurePreserving_fst`. Establish `q2 : Measure.QuasiMeasurePreserving (fun p : SS k r => p.2.1) D.μSS D.μW`. Rewrite using `[hSS]`.
+
+Conclude with `Measure.quasiMeasurePreserving_fst.comp Measure.quasiMeasurePreserving_snd`. Establish `a1` using `hb.comp_quasiMeasurePreserving q1`. Establish `a2` using `hb.comp_quasiMeasurePreserving q2`. Establish `a3` using `hbg.comp_quasiMeasurePreserving q1`. Establish `a4` using `hbg.comp_quasiMeasurePreserving q2`.
+
+Conclude with `⟨aesm_comp a2 (aesm_comp (aesm_adj a1) (aesm_comp a4 (aesm_adj a3))), aesm_comp a3 (aesm_comp (aesm_adj a4) (aesm_comp a1 (aesm_adj a2)))⟩`.
+-/
 lemma aesm_C (hclW : IsClosed (UWset k r D.z)) (hgW : D.μW.map (gb γ) = D.μW) :
     AEStronglyMeasurable (Cf D γ) D.μSS ∧ AEStronglyMeasurable (Cb D γ) D.μSS := by
   have := sfin D.haarW

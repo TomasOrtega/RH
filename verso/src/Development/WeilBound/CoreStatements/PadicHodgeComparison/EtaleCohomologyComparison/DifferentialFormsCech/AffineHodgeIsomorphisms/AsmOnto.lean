@@ -11,6 +11,11 @@ open CategoryTheory AlgebraicGeometry GlobalTheory.LogCris DividedPowers GlobalT
 
 namespace CrystallineSemistableComparison.Om.L2
 
+/- English proof (translation)
+Introduce `K _ _`. Use `⟨fun q _ _ a => Classical.choose (hEx K q a), fun _ _ => 1, fun _ _ => Or.inl rfl, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `X Y q p _ _ _ _ u hu a x`. Conclude with `hNat q p u hu a _ _ (Classical.choose_spec (hEx K q a)) (Classical.choose_spec (hEx K p a)) x`. Introduce `X q _ _ a b c h x y`.
+
+Simplify using `only [one_smul]`. Conclude with `hCup q a b c h _ _ _ (Classical.choose_spec (hEx K q a)) (Classical.choose_spec (hEx K q b)) (Classical.choose_spec (hEx K q c)) x y`. Introduce `X q _ _`. Conclude with `hOne q _ (Classical.choose_spec (hEx K q 0))`.
+-/
 theorem asm_of
     (hEx : ∀ (K : Type) [Field K] [CharZero K] {X : Scheme.{0}} (q : X ⟶ Spec (CommRingCat.of K)) [IsAffine X] [Smooth q] (a : ℕ),
     ∃ e : CrystallineSemistableComparison.HT.Hdg q a a ≃ₗ[K] OmU q ⊤ a, CrystallineSemistableComparison.Om.L2.IsOmT q a e)
@@ -45,6 +50,9 @@ theorem asm_of
   · intro X q _ _
     exact hOne q _ (Classical.choose_spec (hEx K q 0))
 
+/- English proof (translation)
+Conclude with `asm_of (fun K _ _ _ q _ _ a => hTop q a (hGlue hA hN K q a)) hNat hCup hOne`.
+-/
 theorem asm_onto (hA : CrystallineSemistableComparison.Onto.AffOm) (hN : CrystallineSemistableComparison.Onto.OmNat)
     (hTop : ∀ {K : Type} [Field K] {X : Scheme.{0}} (q : X ⟶ Spec (CommRingCat.of K)) (a : ℕ),
     (∃ e : CrystallineSemistableComparison.Onto.Om K (CrystallineSemistableComparison.Onto.Sec q ⊤) a →ₗ[K] CrystallineSemistableComparison.Onto.HV q ⊤ a a, CrystallineSemistableComparison.Onto.IsOm q ⊤ a e ∧ Function.Bijective e) →

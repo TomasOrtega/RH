@@ -13,6 +13,9 @@ namespace LeftInvarianceEisenstein
 
 variable {F : Type} [Field F] [NumberField F] [IsTotallyReal F]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `i`. Conclude with `(RingHom.map_vecMul (algebraMap F (Ad F)) (γ : Matrix (Fin 2) (Fin 2) F) ξ i).symm`.
+-/
 theorem rowA_vecMul (ξ : Fin 2 → F) (γ : GL (Fin 2) F) :
     rowA ξ ᵥ* ((ratGL F 2 γ : GA F 2) : Matrix (Fin 2) (Fin 2) (Ad F)) =
       rowA (ξ ᵥ* (γ : Matrix (Fin 2) (Fin 2) F)) := by
@@ -29,6 +32,9 @@ def permE (γ : GL (Fin 2) F) : {ξ : Fin 2 → F // ξ ≠ 0} ≃ {ξ : Fin 2 �
   left_inv ξ := Subtype.ext (by simp [Matrix.vecMul_vecMul])
   right_inv ξ := Subtype.ext (by simp [Matrix.vecMul_vecMul])
 
+/- English proof (translation)
+Unfold `thetaS`. Use `Eq.trans ?_ ((permE γ).tsum_eq (fun ξ : {ξ : Fin 2 → F // ξ ≠ 0} => Ψ (rowA ξ.1 ᵥ* ((Matrix.GeneralLinearGroup.scalar (Fin 2) a * g : GA F 2) : Matrix (Fin 2) (Fin 2) (Ad F)))))` and prove the remaining obligations. Use `tsum_congr fun ξ => ?_` and prove the remaining obligations. Rewrite using `[← mul_assoc, Matrix.GeneralLinearGroup.scalar_commute, mul_assoc, Units.val_mul, ← Matrix.vecMul_vecMul, rowA_vecMul]`. Both sides reduce to the same expression.
+-/
 theorem thetaS_ratGL (Ψ : (Fin 2 → Ad F) → ℂ) (a : (Ad F)ˣ) (γ : GL (Fin 2) F) (g : GA F 2) :
     thetaS Ψ (Matrix.GeneralLinearGroup.scalar (Fin 2) a * (ratGL F 2 γ * g)) =
       thetaS Ψ (Matrix.GeneralLinearGroup.scalar (Fin 2) a * g) := by
@@ -41,6 +47,11 @@ theorem thetaS_ratGL (Ψ : (Fin 2 → Ad F) → ℂ) (a : (Ad F)ˣ) (γ : GL (Fi
     ← Matrix.vecMul_vecMul, rowA_vecMul]
   rfl
 
+/- English proof (translation)
+Establish `h : Matrix.GeneralLinearGroup.det (ratGL F 2 γ) = IdeleGroup.diagonal F (Matrix.GeneralLinearGroup.det γ)`. Express the relevant statement in the definitionally equal form `Matrix.GeneralLinearGroup.det (Matrix.GeneralLinearGroup.map (algebraMap F (Ad F)) γ) = _`. Rewrite using `[Matrix.GeneralLinearGroup.map_det]`. Both sides reduce to the same expression. Unfold `absD`.
+
+Rewrite using `[map_mul, map_mul, h, IdeleGroup.ideleModule_diagonal, one_mul]`.
+-/
 theorem absD_ratGL (γ : GL (Fin 2) F) (g : GA F 2) : absD (ratGL F 2 γ * g) = absD g := by
   have h : Matrix.GeneralLinearGroup.det (ratGL F 2 γ) =
       IdeleGroup.diagonal F (Matrix.GeneralLinearGroup.det γ) := by
@@ -52,6 +63,9 @@ theorem absD_ratGL (γ : GL (Fin 2) F) (g : GA F 2) : absD (ratGL F 2 γ * g) = 
 
 end LeftInvarianceEisenstein
 
+/- English proof (translation)
+Introduce `_ _ _ F _ _ _ ω c γ g`. Unfold `Eis eisInt`. Repeatedly rewrite using `[LeftInvarianceEisenstein.thetaS_ratGL, LeftInvarianceEisenstein.absD_ratGL]`.
+-/
 theorem left_invariance_holds : SPois → SInt → SSmooth → SLeft := by
   intro _ _ _ F _ _ _ ω c γ g
   unfold Eis eisInt

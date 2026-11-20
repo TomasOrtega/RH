@@ -14,6 +14,9 @@ open NumberField MeasureTheory Topology Matrix GlobalTheory.AutomorphicL2Unitary
 open GroundTheory.Automorphic
 open scoped ENNReal
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.CompanionTheory.GrowthHaar.isHaarMeasure_map_restrict | exact GlobalTheory.CompanionTheory.GrowthHaar.isHaarMeasure_map_restrict | (intros; apply GlobalTheory.CompanionTheory.GrowthHaar.isHaarMeasure_map_restrict <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.finite_adelic_restriction_measure : ∀ (E : Type) [Field E] [NumberField E] [IsTotallyComplex E] (a : ℕ) (μ : Measure (GA E a))
     [μ.IsHaarMeasure] [MeasurableSpace (AutomorphicForm.archGroup E a)]
     [BorelSpace (AutomorphicForm.archGroup E a)] (U : Set (AdelicGLn.FiniteAdelicGL E a)),

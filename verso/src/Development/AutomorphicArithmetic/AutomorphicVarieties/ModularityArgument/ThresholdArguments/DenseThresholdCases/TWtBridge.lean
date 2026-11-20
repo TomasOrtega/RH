@@ -13,6 +13,11 @@ open UpperTheory.V.HV (Coef)
 open scoped TensorProduct
 attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField
 set_option synthInstance.maxHeartbeats 200000
+/- English proof (translation)
+Use extensionality with `y`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨u, hu, rfl⟩`. Conclude with `⟨u, Ideal.Quotient.eq.1 (congrArg Units.val hu), rfl⟩`. Introduce and unpack `⟨u, hu, rfl⟩`.
+
+Conclude with `⟨u, Units.ext (Ideal.Quotient.eq.2 hu), rfl⟩`.
+-/
 private theorem uc_eq (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] (e : ℕ) :
     Uc k e = GroundTheory.LocalField.unitFiltrationUnits k e := by
   ext y
@@ -24,15 +29,26 @@ private theorem uc_eq (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k]
 section Loc
 variable {F Ω : Type} [Field F] [NumberField F] [Field Ω] [Algebra F Ω] [IsAlgClosure F Ω] {l : ℕ} [Fact l.Prime]
   {A : ValuationSubring Ω} {w : Plc F} {h : IsPlaceOver A w} {a : Weil h →* (w.adicCompletion F)ˣ}
+/- English proof (translation)
+Take `⟨art, hart⟩` from `H F Ω`. Establish `hinj` using `GlobalTheory.ArtinLocalInj.artin_localIdele_injective GlobalTheory.Published.chevalleyUnits' F Ω art hart w`. Conclude with `MonoidHom.ext fun σ => hinj ((ha'.glob art hart _).trans (ha.glob art hart _).symm)`.
+-/
 private theorem artin_unique (H : GlobalTheory.Published.GlobalArtinReciprocity) {a' : Weil h →* (w.adicCompletion F)ˣ}
     (ha : IsLocalArtin h a) (ha' : IsLocalArtin h a') : a' = a := by
   obtain ⟨art, hart⟩ := H F Ω
   have hinj := GlobalTheory.ArtinLocalInj.artin_localIdele_injective GlobalTheory.Published.chevalleyUnits' F Ω art hart w
   exact MonoidHom.ext fun σ => hinj ((ha'.glob art hart _).trans (ha.glob art hart _).symm)
+/- English proof (translation)
+Establish `h2` using `ha.ord_eq (ineIncl h σ)`. Rewrite `h2` using `[deg_ineIncl, neg_zero]`. Conclude with `GlobalTheory.SmGL.ord_eq_zero_iff.1 h2`.
+-/
 private theorem art_unit (ha : IsLocalArtin h a) (σ : Ine (F := F) A) : a (ineIncl h σ) ∈ Uo (w.adicCompletion F) := by
   have h2 := ha.ord_eq (ineIncl h σ)
   rw [deg_ineIncl, neg_zero] at h2
   exact GlobalTheory.SmGL.ord_eq_zero_iff.1 h2
+/- English proof (translation)
+Take `⟨s, hs⟩` from `ha.surj y`. Establish `hd : deg s = 0`. Establish `h2` using `ha.ord_eq s`. Rewrite `h2` using `[hs, GlobalTheory.SmGL.ord_eq_zero_iff.2 y.2]`. Use linear arithmetic over natural numbers and integers.
+
+Conclude with `⟨⟨s, actsAs_zero_iff.1 (actsAs_of_deg (a := 0) (b := 0) (by simpa using hd))⟩, hs⟩`.
+-/
 private theorem art_onto (ha : IsLocalArtin h a) (y : Uo (w.adicCompletion F)) :
     ∃ σ : Ine (F := F) A, a (ineIncl h σ) = y := by
   obtain ⟨s, hs⟩ := ha.surj y
@@ -41,6 +57,9 @@ private theorem art_onto (ha : IsLocalArtin h a) (y : Uo (w.adicCompletion F)) :
     rw [hs, GlobalTheory.SmGL.ord_eq_zero_iff.2 y.2] at h2
     omega
   exact ⟨⟨s, actsAs_zero_iff.1 (actsAs_of_deg (a := 0) (b := 0) (by simpa using hd))⟩, hs⟩
+/- English proof (translation)
+Use `haveI := GlobalTheory.HeckeGal.finite_contEmb (l := l) w`. Use `haveI := Fintype.ofFinite (W.Emb l w)`. Rewrite using `[finprod_eq_prod_of_fintype]`. Conclude with `Finset.prod_ne_zero_iff.2 fun j _ => zpow_ne_zero _ ((map_ne_zero j.1).2 x.ne_zero)`.
+-/
 private theorem pw_ne (wt : W.Emb l w → ℤ) (x : (w.adicCompletion F)ˣ) :
     ∏ᶠ τ : W.Emb l w, τ.1 (x : w.adicCompletion F) ^ wt τ ≠ 0 := by
   haveI := GlobalTheory.HeckeGal.finite_contEmb (l := l) w
@@ -59,12 +78,26 @@ private def IsFin (a : Weil h →* (w.adicCompletion F)ˣ) (κ : Dec (F := F) A 
   ∀ (σ : Ine (F := F) A) (y : Uo (w.adicCompletion F)), a (ineIncl h σ) = y →
     (κ (Subgroup.inclusion (Weil_le_Dec h) (ineIncl h σ)) : Qbar l) * f y =
       ∏ᶠ τ : W.Emb l w, τ.1 ((y : (w.adicCompletion F)ˣ) : w.adicCompletion F) ^ (-wt τ)
+/- English proof (translation)
+Establish `h1` using `hp.2 a ha σ`. Rewrite `h1` using `[e, ← hf σ y e, Units.val_mul]`. Conclude with `mul_left_cancel₀ (Units.ne_zero _) h1`.
+-/
 private theorem part_val (ha : IsLocalArtin h a) (hf : IsFin a κ wt f) {ph : Ine (F := F) A →* (Qbar l)ˣ}
     (hp : W.IsWtPart h κ wt ph) (σ : Ine (F := F) A) (y : Uo (w.adicCompletion F)) (e : a (ineIncl h σ) = y) :
     (ph σ : Qbar l) = f y := by
   have h1 := hp.2 a ha σ
   rw [e, ← hf σ y e, Units.val_mul] at h1
   exact mul_left_cancel₀ (Units.ne_zero _) h1
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨ph, hp⟩ haveI := compactSpace_Ine (E := F) A`. Establish `hC : IsClosed ((fun σ : Ine (F` using `F) A => a (ineIncl h σ)) '' (ph.ker : Set (Ine (F := F) A))ᶜ) := (hp.1.isClosed_compl.isCompact.image ha.cont).isClosed`. Establish `h1 : (1 : (w.adicCompletion F)ˣ) ∉ (fun σ : Ine (F` using `F) A => a (ineIncl h σ)) '' (ph.ker : Set (Ine (F := F) A))ᶜ := by`. Introduce and unpack `⟨σ, hσ, e⟩`.
+
+Use `hσ (Units.ext ?_)` and prove the remaining obligations. Rewrite using `[part_val ha hf hp σ 1 e, ← part_val ha hf hp 1 1 (by simp), map_one]`. Take `⟨e, -, he⟩` from `GroundTheory.LocalField.hasBasis_nhds_one_unitFiltrationUnits.mem_iff.1 (hC.isOpen_compl.mem_nhds h1)`. Use `⟨e, fun y hy => ?_⟩` and prove the remaining obligations. Take `⟨σ, hσ⟩` from `art_onto ha y`.
+
+Rewrite `hy` using `[uc_eq]`. Establish `h2 : ph σ = 1`. Assume the negation of the conclusion as `h3`. Conclude with `he hy ⟨σ, h3, hσ⟩`. Rewrite using `[← part_val ha hf hp σ y hσ, h2, Units.val_one]`.
+
+Introduce and unpack `⟨e, he⟩`. Set `ph : Ine (F` to `F) A →* (Qbar l)ˣ := ((κ.comp (Subgroup.inclusion (Weil_le_Dec h)))⁻¹ * (pwHom fun τ => -wt τ).comp a).comp (ineIncl h)`. Establish `hv : ∀ σ, ((κ (Subgroup.inclusion (Weil_le_Dec h) (ineIncl h σ)) * ph σ : (Qbar l)ˣ) : Qbar l) = ∏ᶠ τ : W.Emb l w, τ.1 (a (ineIncl h σ) : w.adicCompletion F) ^ (-wt τ)` using `fun σ => congrArg Units.val (mul_inv_cancel_left _ (pwHom (fun τ => -wt τ) (a (ineIncl h σ))))`. Use `⟨ph, Subgroup.isOpen_mono (H₁ := (Uc _ e).comap (a.comp (ineIncl h))) (fun σ hσ => ?_) ?_, fun a' ha' σ => ?_⟩` and prove the remaining obligations. Establish `h1` using `hf σ ⟨_, art_unit ha σ⟩ rfl`.
+
+Rewrite `h1` using `[he ⟨_, art_unit ha σ⟩ hσ, mul_one, ← hv, Units.val_inj, left_eq_mul]`. Conclude with `h1`. Rewrite using `[uc_eq]`. Conclude with `(GroundTheory.LocalField.isOpen_unitFiltrationUnits e).preimage ha.cont`. Rewrite using `[artin_unique H ha ha', hv]`.
+-/
 private theorem locAlg_iff (H : GlobalTheory.Published.GlobalArtinReciprocity) (ha : IsLocalArtin h a) (hf : IsFin a κ wt f) :
     W.IsLocAlg h κ wt ↔ ∃ e, ∀ y : Uo (w.adicCompletion F), (y : (w.adicCompletion F)ˣ) ∈ Uc _ e → f y = 1 := by
   constructor
@@ -97,6 +130,11 @@ private theorem locAlg_iff (H : GlobalTheory.Published.GlobalArtinReciprocity) (
     · rw [uc_eq]
       exact (GroundTheory.LocalField.isOpen_unitFiltrationUnits e).preimage ha.cont
     · rw [artin_unique H ha ha', hv]
+/- English proof (translation)
+Establish `h1 : Valued.v (algebraMap F (w.adicCompletion F) (x : F)) < 1`. Rewrite using `[show algebraMap F (w.adicCompletion F) (x : F) = ((x : F) : w.adicCompletion F) from rfl, HeightOneSpectrum.valuedAdicCompletion_eq_valuation']`. Conclude with `(w.valuation_lt_one_iff_mem x).2 hx`. Establish `h2` using `(j.2.tendsto 0).comp (Valued.tendsto_zero_pow_of_v_lt_one h1)`. Rewrite `h2` using `[map_zero]`.
+
+Conclude with `tendsto_pow_atTop_nhds_zero_iff_norm_lt_one.1 (h2.congr fun m => map_pow _ _ _)`.
+-/
 private theorem emb_lt (j : W.Emb l w) (x : 𝓞 F) (hx : x ∈ w.asIdeal) : ‖j.1 (algebraMap F _ (x : F))‖ < 1 := by
   have h1 : Valued.v (algebraMap F (w.adicCompletion F) (x : F)) < 1 := by
     rw [show algebraMap F (w.adicCompletion F) (x : F) = ((x : F) : w.adicCompletion F) from rfl,
@@ -105,6 +143,11 @@ private theorem emb_lt (j : W.Emb l w) (x : 𝓞 F) (hx : x ∈ w.asIdeal) : ‖
   have h2 := (j.2.tendsto 0).comp (Valued.tendsto_zero_pow_of_v_lt_one h1)
   rw [map_zero] at h2
   exact tendsto_pow_atTop_nhds_zero_iff_norm_lt_one.1 (h2.congr fun m => map_pow _ _ _)
+/- English proof (translation)
+Assume the negation of the conclusion as `hne`. Establish `h1 : w.asIdeal ⊔ w'.asIdeal = ⊤` using `Ideal.IsMaximal.coprime_of_ne w.isMaximal w'.isMaximal fun h => hne (HeightOneSpectrum.ext h)`. Take `⟨x, hx, y, hy, hxy⟩` from `Submodule.mem_sup.1 (h1 ▸ Submodule.mem_top : (1 : 𝓞 F) ∈ w.asIdeal ⊔ w'.asIdeal)`. Establish `h2` using `emb_lt j x hx`. Establish `h3` using `emb_lt j' y hy`.
+
+Rewrite `h3` using `[← show j.1 (algebraMap F _ (y : F)) = j'.1 (algebraMap F _ (y : F)) from DFunLike.congr_fun e _]`. Establish `h4` using `(IsUltrametricDist.norm_add_le_max _ _).trans_lt (max_lt h2 h3)`. Rewrite `h4` using `[← map_add, ← map_add, show (x : F) + (y : F) = ((x + y : 𝓞 F) : F) from (map_add (algebraMap (𝓞 F) F) x y).symm, hxy]`. Simplify using `at h4`.
+-/
 private theorem emb_place {w' : Plc F} (j : W.Emb l w) (j' : W.Emb l w')
     (e : j.1.comp (algebraMap F _) = j'.1.comp (algebraMap F _)) : w = w' := by
   by_contra hne
@@ -118,6 +161,9 @@ private theorem emb_place {w' : Plc F} (j : W.Emb l w) (j' : W.Emb l w')
   rw [← map_add, ← map_add, show (x : F) + (y : F) = ((x + y : 𝓞 F) : F) from (map_add (algebraMap (𝓞 F) F) x y).symm,
     hxy] at h4
   simp at h4
+/- English proof (translation)
+Use `Subtype.ext (DFunLike.coe_injective ?_)` and prove the remaining obligations. Use `(HeightOneSpectrum.denseRange_algebraMap (K := F) (v := w)).equalizer j.2 j'.2 ?_` and prove the remaining obligations. Use function extensionality and compare the values at `x`. Conclude with `DFunLike.congr_fun e x`.
+-/
 private theorem emb_inj (j j' : W.Emb l w) (e : j.1.comp (algebraMap F _) = j'.1.comp (algebraMap F _)) : j = j' := by
   refine Subtype.ext (DFunLike.coe_injective ?_)
   refine (HeightOneSpectrum.denseRange_algebraMap (K := F) (v := w)).equalizer j.2 j'.2 ?_
@@ -127,13 +173,35 @@ end Loc
 section Glob
 variable {l : ℕ} [Fact l.Prime] {L Ω : Type} [Field L] [NumberField L] [IsCMField L] [Field Ω] [Algebra L Ω] [IsAlgClosure L Ω]
   (s : HidaSetting l L Ω)
+/- English proof (translation)
+The claim follows from `(s.hA v x).symm.trans (s.hw v (algebraMap (𝓞 (Lp L)) (𝓞 L) x))`.
+-/
 private theorem mem_w (v : Plc (Lp L)) (x : 𝓞 (Lp L)) :
     x ∈ v.asIdeal ↔ algebraMap (𝓞 (Lp L)) (𝓞 L) x ∈ (s.w v).asIdeal :=
   (s.hA v x).symm.trans (s.hw v (algebraMap (𝓞 (Lp L)) (𝓞 L) x))
+/- English proof (translation)
+Introduce `v v' e` and use `HeightOneSpectrum.ext (Ideal.ext fun x => by rw [mem_w s, mem_w s, e])`.
+-/
 private theorem w_inj : Function.Injective s.w := fun v v' e =>
   HeightOneSpectrum.ext (Ideal.ext fun x => by rw [mem_w s, mem_w s, e])
+/- English proof (translation)
+Simplify using `using (mem_w s v.1 _).1 v.2`.
+-/
 private theorem w_over (v : Vl l L) : ((l : ℕ) : 𝓞 L) ∈ (s.w v.1).asIdeal := by
   simpa using (mem_w s v.1 _).1 v.2
+/- English proof (translation)
+Set `μ : ∀ v : Vl l L, W.Emb l (s.w v.1) → DomWeight n` to `fun v τ => ⟨fun i => h v i.rev τ - (i.rev : ℕ), fun i j hij => by`. Establish `key : ∀ (d : ℕ) (a b : Fin n), (b : ℕ) = a + d → h v a τ + d ≤ h v b τ` using `fun d => by`. Proceed by induction on `d with`. Consider the case `zero => intro a b e`. Rewrite using `[show b = a from Fin.ext e]`.
+
+Simplify using the standard rewrite rules. Consider the case `succ d ih`. Introduce `a b e`. Establish `h1` using `ih a ⟨a + d, by omega⟩ rfl`. Establish `h2` using `hh v τ (show (⟨a + d, by omega⟩ : Fin n) < b from by rw [Fin.lt_def]; simp only; omega)`.
+
+Simplify using `only at h2`. Use `push_cast`. Use linear arithmetic over natural numbers and integers. Take `⟨d, hd⟩` from `Nat.exists_eq_add_of_le (show ((j.rev : Fin n) : ℕ) ≤ i.rev from Fin.rev_le_rev.2 hij)`. Use `key d _ _ hd` as an intermediate fact.
+
+Simplify using `only`. Use the proof step `omega⟩`. Use `⟨fun σ => if H : ∃ p : Σ v : Vl l L, W.Emb l (s.w v.1), p.2.1.comp (algebraMap L _) = σ then μ H.choose.1 H.choose.2 else ⟨0, fun _ _ _ => le_rfl⟩, fun v j τ => ?_⟩` and prove the remaining obligations. Establish `H : ∃ p : Σ v : Vl l L, W.Emb l (s.w v.1), p.2.1.comp (algebraMap L _) = τ.1.comp (algebraMap L _)` using `⟨⟨v, τ⟩, rfl⟩`. Establish `e : H.choose = ⟨v, τ⟩`.
+
+Establish `h1` using `H.choose_spec`. Generalize the expression as in `H.choose = p at h1`. Take `⟨v', τ'⟩` from `p`. Take `rfl : v' = v` from `Subtype.ext (w_inj s (emb_place τ' τ h1))`. Rewrite using `[emb_inj τ' τ h1]`.
+
+Simplify using `only [htW, lowW, dif_pos H]`. Rewrite using `[e]`. Simplify using `[μ]`.
+-/
 private theorem wt_ex {n : ℕ} (h : s.Wt n) (hh : h.Incr) : ∃ lam, WtOf h lam := by
   classical
   let μ : ∀ v : Vl l L, W.Emb l (s.w v.1) → DomWeight n := fun v τ =>
@@ -165,6 +233,31 @@ private theorem wt_ex {n : ℕ} (h : s.Wt n) (hh : h.Incr) : ∃ lam, WtOf h lam
   rw [e]
   simp [μ]
 end Glob
+/- English proof (translation)
+Introduce `N l _ L Ω _ _ _ _ _ _ s n _ V Q c m τ₀ r B Λ θ hθ h hh`. Use `⟨wt_ex s h hh, fun lam hl x => ?_⟩` and prove the remaining obligations. Establish `H` using `N.aut.art`. Establish `ha : ∀ v : Vl l L, IsLocalArtin (s.hw v.1) (artOf (s.hw v.1))` using `fun v => Classical.epsilon_spec (_root_.UpperTheory.V.Z.Win.T2.laArtinLit' N (s.hw v.1))`. Establish `hf : ∀ (v : Vl l L) (i : Fin n), IsFin (artOf (s.hw v.1)) (x.psi v i) (h v i) ((hset Q τ₀).finPart θ (x.comp (Λ.toPair B.u)).toRingHom lam v i)`.
+
+Introduce `v i σ y e`. Set `g : Dec (F` to `L) (s.A v.1) := Subgroup.inclusion (Weil_le_Dec (s.hw v.1)) (ineIncl (s.hw v.1) σ)`. Establish `hg : g ∈ V.frame.Iv v` using `σ.2`. Establish `h1` using `congrArg (fun u : Λ.Λˣ => (x.comp (Λ.toPair B.u)) (u : Λ.Λ)) (hθ v i (ineIncl (s.hw v.1) σ) g hg y rfl e)`. Establish `h2 : (x.comp (Λ.toPair B.u)) (Λ.κ v i ⟨g, hg⟩ : Λ.Λ) = x.psi v i g`.
+
+Establish `h6` using `DFunLike.congr_fun (W.LamObj.toPair_spec r Λ B.u v i) (⟨g, hg⟩ : V.frame.Iv v)`. Conclude with `congrArg (fun u : B.Bˣ => x (u : B.B)) h6`. Establish `h3 : (x.comp (Λ.toPair B.u)) ((hset Q τ₀).epsV Λ.Λ v g : Λ.Λ) = ∏ᶠ τ : W.Emb l (s.w v.1), τ.1 ((y : ((s.w v.1).adicCompletion L)ˣ) : (s.w v.1).adicCompletion L) ^ (1 : ℤ)`. Establish `h4` using `(UpperTheory.V.Loc.laCyc H (s.hw v.1) (w_over s v)).2 _ (ha v) σ`. Rewrite `h4` using `[e]`.
+
+Simplify using `only [MonoidHom.one_apply, mul_one, neg_neg] at h4`. Rewrite using `[← h4]`. Use `((x.comp (Λ.toPair B.u)).commutes (algebraMap ℤ_[l] c.O (cycZ L Ω l g : ℤ_[l]))).trans ?_` and prove the remaining obligations. Conclude with `(IsScalarTower.algebraMap_apply ℤ_[l] c.O (Qbar l) _).symm`. Simplify using `only [Units.val_mul, Units.val_pow_eq_pow_val, map_mul, map_pow, Units.val_one, map_one] at h1`.
+
+Rewrite `h1` using `[h2, h3]`. Use `haveI := GlobalTheory.HeckeGal.finite_contEmb (l := l) (s.w v.1)`. Use `haveI := Fintype.ofFinite (W.Emb l (s.w v.1))`. Establish `h0 : ∀ τ : W.Emb l (s.w v.1), τ.1 ((y : ((s.w v.1).adicCompletion L)ˣ) : (s.w v.1).adicCompletion L) ≠ 0` using `fun τ => (_root_.map_ne_zero _).2 (Units.ne_zero _)`. Establish `h5 : ∏ᶠ τ : W.Emb l (s.w v.1), τ.1 ((y : ((s.w v.1).adicCompletion L)ˣ) : (s.w v.1).adicCompletion L) ^ (-h v i τ) = ((∏ᶠ τ : W.Emb l (s.w v.1), τ.1 ((y : ((s.w v.1).adicCompletion L)ˣ) : (s.w v.1).adicCompletion L) ^ (1 : ℤ)) ^ (i : ℕ))⁻¹ / algPow (s.w v.1) (lowW lam i) ((y : (( …`.
+
+Unfold `algPow`. Simplify using `only [finprod_eq_prod_of_fintype]`. Rewrite using `[← Finset.prod_pow, ← Finset.prod_inv_distrib, ← Finset.prod_div_distrib]`. Use `Finset.prod_congr rfl fun τ _ => ?_` and prove the remaining obligations. Rewrite using `[← hl v i τ, htW, zpow_one, ← zpow_natCast, ← zpow_neg, ← zpow_sub₀ (h0 τ)]`.
+
+Use `congr 1`. Expand and normalize the polynomial expressions, which then agree. Rewrite `h1` using `[mul_right_comm]`. Rewrite using `[h5, ← eq_inv_of_mul_eq_one_left h1, mul_div_assoc]`. Both sides reduce to the same expression.
+
+Establish `hA : (∀ (v : Vl l L) (j : Fin n), W.IsLocAlg (s.hw v.1) (x.psi v j) (h v j)) ↔ (hset Q τ₀).Arith θ (x.comp (Λ.toPair B.u)).toRingHom lam`. Simplify using `only [fun v j => locAlg_iff H (ha v) (hf v j)]`. Use `⟨fun h1 => ?_, fun ⟨e, he⟩ v j => ⟨e, he v j⟩⟩` and prove the remaining obligations. Use `choose e he using h1`. Use `haveI : Finite (Vl l L) := inferInstanceAs (Finite V.frame.Vl)`.
+
+Take `⟨E, hE⟩` from `(Set.finite_range fun p : Vl l L × Fin n => e p.1 p.2).bddAbove`. Use `⟨E, fun v i y hy => he v i y ?_⟩` and prove the remaining obligations. Rewrite `hy`, the goal using `[uc_eq]`. Conclude with `GroundTheory.LocalField.unitFiltrationUnits_antitone (hE ⟨(v, i), rfl⟩) hy`. Use `⟨(and_iff_right hh).trans hA, (and_iff_right hh).trans ⟨fun h1 => ?_, fun ⟨_, h1, h2⟩ v => ?_⟩⟩` and prove the remaining obligations.
+
+Use `⟨trivial, hA.1 fun v j => ?_, fun v i j hij => ?_⟩` and prove the remaining obligations. Take `⟨ph, hp, -⟩` from `h1 v`. Conclude with `⟨_, hp j⟩`. Take `⟨ph, hp, hi⟩` from `h1 v`. Assume the negation of the conclusion as `hne`.
+
+Use `push Not at hne`. Use `hij (hi (MonoidHom.ext fun σ => Units.ext ?_))` and prove the remaining obligations. Rewrite using `[part_val (ha v) (hf v i) (hp i) σ ⟨_, art_unit (ha v) σ⟩ rfl, part_val (ha v) (hf v j) (hp j) σ ⟨_, art_unit (ha v) σ⟩ rfl]`. Conclude with `hne _`. Use `choose ph hp using hA.2 h1 v`.
+
+Use `⟨ph, hp, fun i j hij => ?_⟩` and prove the remaining obligations. Assume the negation of the conclusion as `hne`. Take `⟨y, hy⟩` from `h2 v i j hne`. Take `⟨σ, hσ⟩` from `art_onto (ha v) y`. Conclude with `hy (by rw [← part_val (ha v) (hf v i) (hp i) σ y hσ, ← part_val (ha v) (hf v j) (hp j) σ y hσ, hij])`.
+-/
 theorem UpperTheory.V.Hi.arith_good_iff_hset_of_theta_incr_weight :
     _root_.GlobalTheory.Mem.LiteralAutomorphy.LiteratureRankNHypothesis → ∀ (l : ℕ) [Fact l.Prime] (L Ω : Type) [Field L] [NumberField L] [IsCMField L] [Field Ω] [Algebra L Ω] [IsAlgClosure L Ω] (s : HidaSetting l L Ω) (n : ℕ), 1 ≤ n →
     ∀ (V : s.Lev) (Q : QData V) (c : Coef l), ∀ (m : ℕ) (τ₀ : KT n (wt s) →* GL (Fin m) c.O), ∀ (r : Resid V.frame c.O n) (B : UniversalOrdinaryDeterminantRing r) (Λ : LamObj r) (θ : (hset Q τ₀).X.I.T →* Λ.Λˣ), IsTheta Q τ₀ Λ θ → ∀ h : s.Wt n, h.Incr → (∃ lam, WtOf h lam) ∧ ∀ lam, WtOf h lam → ∀ x : B.Pt, (x.Arith h ↔ (hset Q τ₀).Arith θ (x.comp (Λ.toPair B.u)).toRingHom lam) ∧ (x.Good h ↔ (hset Q τ₀).Good θ (x.comp (Λ.toPair B.u)).toRingHom lam) := by

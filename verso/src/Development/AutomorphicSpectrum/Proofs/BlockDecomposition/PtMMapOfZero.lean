@@ -18,10 +18,16 @@ section Gen
 
 variable {R m : Type} [CommRing R] [Fintype m] [DecidableEq m]
 
+/- English proof (translation)
+Establish `: (1 - e) * (1 - e) = 1 - e - e + e * e` using `by ring`. Rewrite using `[this, he]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem idem_compl {e : R} (he : e * e = e) : (1 - e) * (1 - e) = 1 - e := by
   have : (1 - e) * (1 - e) = 1 - e - e + e * e := by ring
   rw [this, he]; ring
 
+/- English proof (translation)
+Rewrite using `[mul_sub, he]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem idem_mul_compl {e : R} (he : e * e = e) : e * (1 - e) = 0 := by rw [mul_sub, he]; ring
 
 def ptM (e : R) (he : e * e = e) : Matrix m m R →* Matrix m m R where
@@ -34,8 +40,14 @@ def ptM (e : R) (he : e * e = e) : Matrix m m R →* Matrix m m R where
     simp only [add_mul, mul_add, smul_add, smul_mul_assoc, mul_smul_comm, smul_smul, one_mul, mul_one, h1, h2, h3, he,
       zero_smul, add_zero, zero_add]
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem ptM_apply (e : R) (he : e * e = e) (M : Matrix m m R) : ptM e he M = (1 - e) • 1 + e • M := rfl
 
+/- English proof (translation)
+Use extensionality with `i j`. Distinguish the cases in `h : i = j`. Substitute `h` using the available equality. Simplify using `[Formalism.UG.cT, ptM_apply, hσ]`. Simplify using `[Formalism.UG.cT, ptM_apply, hσ, Matrix.one_apply, h, Ne.symm h]`.
+-/
 theorem cT_ptM (σ : R →+* R) {e : R} (he : e * e = e) (hσ : σ e = e) (M : Matrix m m R) :
     Formalism.UG.cT σ (ptM e he M) = ptM e he (Formalism.UG.cT σ M) := by
   ext i j
@@ -44,6 +56,11 @@ theorem cT_ptM (σ : R →+* R) {e : R} (he : e * e = e) (hσ : σ e = e) (M : M
     simp [Formalism.UG.cT, ptM_apply, hσ]
   · simp [Formalism.UG.cT, ptM_apply, hσ, Matrix.one_apply, h, Ne.symm h]
 
+/- English proof (translation)
+Establish `h1` using `idem_compl he`. Establish `h2` using `idem_mul_compl he`. Establish `h3 : (1 - e) * e = 0` using `by rw [mul_comm, h2]`. Rewrite using `[cT_ptM σ he hσ, ptM_apply, ptM_apply]`. Simplify using `only [add_mul, mul_add, smul_add, smul_mul_assoc, mul_smul_comm, smul_smul, one_mul, mul_one, h1, h2, h3, he, zero_smul, add_zero, zero_add, hM]`.
+
+Rewrite using `[← add_smul]`. Simplify using the standard rewrite rules.
+-/
 theorem ptM_unitary (σ : R →+* R) {e : R} (he : e * e = e) (hσ : σ e = e) {J M : Matrix m m R}
     (hM : Formalism.UG.cT σ M * J * M = J) : Formalism.UG.cT σ (ptM e he M) * J * ptM e he M = J := by
   have h1 := idem_compl he
@@ -54,6 +71,11 @@ theorem ptM_unitary (σ : R →+* R) {e : R} (he : e * e = e) (hσ : σ e = e) {
       zero_smul, add_zero, zero_add, hM]
   rw [← add_smul]; simp
 
+/- English proof (translation)
+Establish `h2` using `idem_mul_compl he`. Establish `h3 : (1 - e) * e = 0` using `by rw [mul_comm, h2]`. Establish `h4 : (1 : R) - (1 - e) = e` using `by ring`. Rewrite using `[ptM_apply, ptM_apply, h4]`. Prove the components needed by the constructor for the conclusion.
+
+Simplify using `only [add_mul, mul_add, smul_add, smul_mul_assoc, mul_smul_comm, smul_smul, one_mul, mul_one, he', h2, h3, he, zero_smul, add_zero, zero_add]`. Simplify using `only [add_mul, mul_add, smul_add, smul_mul_assoc, mul_smul_comm, smul_smul, one_mul, mul_one, he', h2, h3, he, zero_smul, add_zero, zero_add]`. Conclude with `add_comm _ _`.
+-/
 theorem ptM_mul_compl {e : R} (he : e * e = e) (he' : (1 - e) * (1 - e) = 1 - e) (M N : Matrix m m R) :
     ptM e he M * ptM (1 - e) he' N = e • M + (1 - e) • N ∧ ptM (1 - e) he' N * ptM e he M = e • M + (1 - e) • N := by
   have h2 := idem_mul_compl he
@@ -73,22 +95,37 @@ section Blocks
 
 variable {R : Type} [CommRing R] {n : ℕ}
 
+/- English proof (translation)
+Rewrite using `[blk4, blk4, Matrix.submatrix_mul_equiv, Matrix.fromBlocks_multiply, blk4]`.
+-/
 theorem blk_mul (a b c d a' b' c' d' : Matrix (Fin n) (Fin n) R) :
     blk4 a b c d * blk4 a' b' c' d' =
       blk4 (a * a' + b * c') (a * b' + b * d') (c * a' + d * c') (c * b' + d * d') := by
   rw [blk4, blk4, Matrix.submatrix_mul_equiv, Matrix.fromBlocks_multiply, blk4]
 
+/- English proof (translation)
+Rewrite using `[blk4, Matrix.fromBlocks_one, Matrix.submatrix_one_equiv]`.
+-/
 theorem blk_one : blk4 (1 : Matrix (Fin n) (Fin n) R) 0 0 1 = 1 := by
   rw [blk4, Matrix.fromBlocks_one, Matrix.submatrix_one_equiv]
 
+/- English proof (translation)
+Rewrite using `[blk4, blk4, blk4, ← Matrix.fromBlocks_add]`. Both sides reduce to the same expression.
+-/
 theorem blk_add (a b c d a' b' c' d' : Matrix (Fin n) (Fin n) R) :
     blk4 a b c d + blk4 a' b' c' d' = blk4 (a + a') (b + b') (c + c') (d + d') := by
   rw [blk4, blk4, blk4, ← Matrix.fromBlocks_add]; rfl
 
+/- English proof (translation)
+Rewrite using `[blk4, blk4, ← Matrix.fromBlocks_smul]`. Both sides reduce to the same expression.
+-/
 theorem blk_smul (r : R) (a b c d : Matrix (Fin n) (Fin n) R) :
     r • blk4 a b c d = blk4 (r • a) (r • b) (r • c) (r • d) := by
   rw [blk4, blk4, ← Matrix.fromBlocks_smul]; rfl
 
+/- English proof (translation)
+Establish `h1 : (1 - e) • (1 : Matrix (Fin n) (Fin n) R) + e • 1 = 1` using `by rw [← add_smul]; simp`. Rewrite using `[ptM_apply]`. Use `nth_rw 1 [← blk_one]`. Rewrite using `[blk_smul, blk_smul, blk_add]`. Simplify using `[h1, hy]`.
+-/
 theorem ptM_unip {e : R} (he : e * e = e) {y : Matrix (Fin n) (Fin n) R} (hy : e • y = y) :
     ptM e he (blk4 1 y 0 1) = blk4 1 y 0 1 := by
   have h1 : (1 - e) • (1 : Matrix (Fin n) (Fin n) R) + e • 1 = 1 := by rw [← add_smul]; simp
@@ -97,10 +134,16 @@ theorem ptM_unip {e : R} (he : e * e = e) {y : Matrix (Fin n) (Fin n) R} (hy : e
   rw [blk_smul, blk_smul, blk_add]
   simp [h1, hy]
 
+/- English proof (translation)
+Simplify using `only [blk4, Matrix.submatrix_apply, Equiv.symm_apply_apply]`.
+-/
 theorem blk_apply (a b c d : Matrix (Fin n) (Fin n) R) (x y : Fin n ⊕ Fin n) :
     blk4 a b c d (finSumFinEquiv x) (finSumFinEquiv y) = Matrix.fromBlocks a b c d x y := by
   simp only [blk4, Matrix.submatrix_apply, Equiv.symm_apply_apply]
 
+/- English proof (translation)
+Simplify using `only [Matrix.mulVec, dotProduct]`. Rewrite using `[← finSumFinEquiv.sum_comp, ← finSumFinEquiv.sum_comp]`. Simplify using `only [blk_apply, Fintype.sum_sum_type]`. Simplify using `[Matrix.one_apply]`.
+-/
 theorem weyl_mulVec (y : Fin (n + n) → R) (i : Fin n) :
     ((blk4 (0 : Matrix (Fin n) (Fin n) R) 1 (-1) 0).mulVec y) (finSumFinEquiv (Sum.inl i)) =
       y (finSumFinEquiv (Sum.inr i)) ∧
@@ -121,6 +164,9 @@ section Gen2
 
 variable {R R' : Type} [CommRing R] [CommRing R'] {n : ℕ}
 
+/- English proof (translation)
+Use extensionality with `i j`. Take `⟨i, rfl⟩` from `finSumFinEquiv.surjective i`. Take `⟨j, rfl⟩` from `finSumFinEquiv.surjective j`. Rewrite using `[Matrix.map_apply, blk_apply, blk_apply]`. Apply the tactic sequence `rcases i with i | i <;> rcases j with j | j <;> by_cases h : i = j <;> simp [Matrix.one_apply, h]`.
+-/
 theorem weyl_map (φ : R →+* R') :
     (blk4 (0 : Matrix (Fin n) (Fin n) R) 1 (-1) 0).map φ = blk4 (0 : Matrix (Fin n) (Fin n) R') 1 (-1) 0 := by
   ext i j
@@ -129,19 +175,34 @@ theorem weyl_map (φ : R →+* R') :
   rw [Matrix.map_apply, blk_apply, blk_apply]
   rcases i with i | i <;> rcases j with j | j <;> by_cases h : i = j <;> simp [Matrix.one_apply, h]
 
+/- English proof (translation)
+Rewrite using `[map_sub, map_one, h, sub_self]`.
+-/
 theorem map_compl_zero (φ : R →+* R') {e : R} (h : φ e = 1) : φ (1 - e) = 0 := by
   rw [map_sub, map_one, h, sub_self]
 
+/- English proof (translation)
+Rewrite using `[map_sub, map_one, h, sub_zero]`.
+-/
 theorem map_compl_one (φ : R →+* R') {e : R} (h : φ e = 0) : φ (1 - e) = 1 := by
   rw [map_sub, map_one, h, sub_zero]
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem bc_val {m : Type} [Fintype m] [DecidableEq m] (φ : R →+* R') (g : GL m R) :
     (Formalism.UG.bc φ g).1 = g.1.map φ := rfl
 
+/- English proof (translation)
+Rewrite using `[smul_add, mul_neg, smul_neg, mul_one, ← smul_mul_assoc, h, neg_add_cancel]`.
+-/
 theorem cell_alg {e : R} {c d y : Matrix (Fin n) (Fin n) R} (h : (e • c) * y = e • d) :
     e • (c * -y + d * 1) = 0 := by
   rw [smul_add, mul_neg, smul_neg, mul_one, ← smul_mul_assoc, h, neg_add_cancel]
 
+/- English proof (translation)
+Rewrite using `[blk_mul, blk_mul, ← blk_one]`. Simplify using the standard rewrite rules.
+-/
 theorem weyl_inv (y : Matrix (Fin n) (Fin n) R) :
     blk4 (0 : Matrix (Fin n) (Fin n) R) 1 (-1) 0 * blk4 1 y 0 1 * blk4 (-y) (-1) 1 0 = 1 := by
   rw [blk_mul, blk_mul, ← blk_one]
@@ -153,6 +214,11 @@ section Abs
 
 variable {Γ : Type} [Group Γ]
 
+/- English proof (translation)
+Establish `hh : w * n = A (w * n) * B w`. Rewrite using `[map_mul, hn]`. Combine the equalities or inequalities in the displayed calculation. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[← map_mul A, inv_mul_cancel_right, ← map_mul B, ← hg]`.
+
+Use `_ = A (g * (w * n)⁻¹) * (B q₀ * A (w * n)) * B k₀ := by rw [← comm]; group`. Use `_ = A (g * (w * n)⁻¹) * B q₀ * (A (w * n) * B w) * ((B w)⁻¹ * B k₀) := by group`. Use `_ = A (g * (w * n)⁻¹) * B q₀ * (w * n) * B (w⁻¹ * k₀) := by rw [← hh, map_mul B, map_inv]`.
+-/
 theorem assemble (A B : Γ →* Γ) (comm : ∀ x y, A x * B y = B y * A x) (hAB : ∀ x, A x * B x = x)
     {g q₀ k₀ w n : Γ} (hn : A n = n) (hg : g = q₀ * k₀) :
     g = A (g * (w * n)⁻¹) * B q₀ * (w * n) * B (w⁻¹ * k₀) := by
@@ -178,6 +244,9 @@ section Map
 
 variable {R R' m : Type} [CommRing R] [CommRing R'] [Fintype m] [DecidableEq m]
 
+/- English proof (translation)
+Use extensionality with `i j`. Distinguish the cases in `e : i = j`. Substitute `e` using the available equality. Simplify using `[ptM_apply, h]`. Simplify using `[ptM_apply, h, Matrix.one_apply, e]`.
+-/
 theorem ptM_map_of_zero (φ : R →+* R') {f : R} (hf : f * f = f) (h : φ f = 0) (M : Matrix m m R) :
     (ptM f hf M).map φ = 1 := by
   ext i j
@@ -185,6 +254,9 @@ theorem ptM_map_of_zero (φ : R →+* R') {f : R} (hf : f * f = f) (h : φ f = 0
   · subst e; simp [ptM_apply, h]
   · simp [ptM_apply, h, Matrix.one_apply, e]
 
+/- English proof (translation)
+Use extensionality with `i j`. Distinguish the cases in `e : i = j`. Substitute `e` using the available equality. Simplify using `[ptM_apply, h]`. Simplify using `[ptM_apply, h, Matrix.one_apply, e]`.
+-/
 theorem ptM_map_of_one (φ : R →+* R') {f : R} (hf : f * f = f) (h : φ f = 1) (M : Matrix m m R) :
     (ptM f hf M).map φ = M.map φ := by
   ext i j
@@ -198,11 +270,20 @@ section Grp
 
 variable {D : D7} {n : ℕ}
 
+/- English proof (translation)
+The claim follows from `matHom_injective _ _ _ (Units.ext h)`.
+-/
 theorem mat_inj {x y : G D n} (h : mat x = mat y) : x = y :=
   matHom_injective _ _ _ (Units.ext h)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem mat_mul' (x y : G D n) : mat (x * y) = mat x * mat y := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem mat_one' : mat (1 : G D n) = 1 := rfl
 
 def pt (e : AE D) (he : e * e = e) (hc : cA D e = e) : G D n →* G D n :=
@@ -210,34 +291,55 @@ def pt (e : AE D) (he : e * e = e) (hc : cA D e = e) : G D n →* G D n :=
     (matHom _ D.sp.cm.sig (Jst D n))).codRestrict (HR _ D.sp.cm.sig (Jst D n))
     (fun x => ptM_unitary (cA D) he hc x.2)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem mat_pt (e : AE D) (he : e * e = e) (hc : cA D e = e) (x : G D n) : mat (pt e he hc x) = ptM e he (mat x) := rfl
 
 def bB (g : G D n) : Mx D n n := ((mat g).submatrix finSumFinEquiv finSumFinEquiv).toBlocks₁₂
 
+/- English proof (translation)
+Use extensionality with `i j`. Simplify using `only [cB, dB, blkA, Matrix.toBlocks₂₁, Matrix.toBlocks₂₂, Matrix.toBlocks₁₁, Matrix.of_apply, Matrix.submatrix_apply, Matrix.add_apply, Matrix.mul_apply, mat_mul']`. Rewrite using `[← finSumFinEquiv.sum_comp, Fintype.sum_sum_type]`.
+-/
 theorem cB_mul (x y : G D n) : cB (x * y) = cB x * blkA (mat y) + dB x * cB y := by
   ext i j
   simp only [cB, dB, blkA, Matrix.toBlocks₂₁, Matrix.toBlocks₂₂, Matrix.toBlocks₁₁, Matrix.of_apply, Matrix.submatrix_apply,
     Matrix.add_apply, Matrix.mul_apply, mat_mul']
   rw [← finSumFinEquiv.sum_comp, Fintype.sum_sum_type]
 
+/- English proof (translation)
+Use extensionality with `i j`. Simplify using `only [cB, dB, bB, Matrix.toBlocks₂₁, Matrix.toBlocks₂₂, Matrix.toBlocks₁₂, Matrix.of_apply, Matrix.submatrix_apply, Matrix.add_apply, Matrix.mul_apply, mat_mul']`. Rewrite using `[← finSumFinEquiv.sum_comp, Fintype.sum_sum_type]`.
+-/
 theorem dB_mul (x y : G D n) : dB (x * y) = cB x * bB y + dB x * dB y := by
   ext i j
   simp only [cB, dB, bB, Matrix.toBlocks₂₁, Matrix.toBlocks₂₂, Matrix.toBlocks₁₂, Matrix.of_apply, Matrix.submatrix_apply,
     Matrix.add_apply, Matrix.mul_apply, mat_mul']
   rw [← finSumFinEquiv.sum_comp, Fintype.sum_sum_type]
 
+/- English proof (translation)
+Use extensionality with `i j`. Simplify using `only [cB, Matrix.toBlocks₂₁, Matrix.of_apply, Matrix.submatrix_apply, h, blk_apply, Matrix.fromBlocks_apply₂₁]`.
+-/
 theorem cB_of {x : G D n} {a b c d : Mx D n n} (h : mat x = blk4 a b c d) : cB x = c := by
   ext i j
   simp only [cB, Matrix.toBlocks₂₁, Matrix.of_apply, Matrix.submatrix_apply, h, blk_apply, Matrix.fromBlocks_apply₂₁]
 
+/- English proof (translation)
+Use extensionality with `i j`. Simplify using `only [dB, Matrix.toBlocks₂₂, Matrix.of_apply, Matrix.submatrix_apply, h, blk_apply, Matrix.fromBlocks_apply₂₂]`.
+-/
 theorem dB_of {x : G D n} {a b c d : Mx D n n} (h : mat x = blk4 a b c d) : dB x = d := by
   ext i j
   simp only [dB, Matrix.toBlocks₂₂, Matrix.of_apply, Matrix.submatrix_apply, h, blk_apply, Matrix.fromBlocks_apply₂₂]
 
+/- English proof (translation)
+Use extensionality with `i j`. Simplify using `only [blkA, Matrix.toBlocks₁₁, Matrix.of_apply, Matrix.submatrix_apply, h, blk_apply, Matrix.fromBlocks_apply₁₁]`.
+-/
 theorem blkA_of {x : G D n} {a b c d : Mx D n n} (h : mat x = blk4 a b c d) : blkA (mat x) = a := by
   ext i j
   simp only [blkA, Matrix.toBlocks₁₁, Matrix.of_apply, Matrix.submatrix_apply, h, blk_apply, Matrix.fromBlocks_apply₁₁]
 
+/- English proof (translation)
+Use extensionality with `i j`. Establish `hne : (finSumFinEquiv (Sum.inr i) : Fin (n + n)) ≠ finSumFinEquiv (Sum.inl j)`. Rewrite using `[Ne, finSumFinEquiv.apply_eq_iff_eq]`. Simplify using the standard rewrite rules. Simplify using `only [cB, Matrix.toBlocks₂₁, Matrix.of_apply, Matrix.submatrix_apply, mat_pt, ptM_apply, Matrix.add_apply, Matrix.smul_apply, Matrix.one_apply_ne hne, smul_zero, zero_add]`.
+-/
 theorem cB_pt (e : AE D) (he : e * e = e) (hc : cA D e = e) (x : G D n) : cB (pt e he hc x) = e • cB x := by
   ext i j
   have hne : (finSumFinEquiv (Sum.inr i) : Fin (n + n)) ≠ finSumFinEquiv (Sum.inl j) := by
@@ -245,6 +347,11 @@ theorem cB_pt (e : AE D) (he : e * e = e) (hc : cA D e = e) (x : G D n) : cB (pt
   simp only [cB, Matrix.toBlocks₂₁, Matrix.of_apply, Matrix.submatrix_apply, mat_pt, ptM_apply, Matrix.add_apply,
     Matrix.smul_apply, Matrix.one_apply_ne hne, smul_zero, zero_add]
 
+/- English proof (translation)
+Establish `h1 : mat (1 : G D n) = blk4 1 0 0 1` using `by rw [mat_one', blk_one]`. Establish `c1` using `cB_mul q q⁻¹`. Establish `d1` using `dB_mul q q⁻¹`. Rewrite `c1` using `[mul_inv_cancel, cB_of h1, h, zero_mul, zero_add]`. Rewrite `d1` using `[mul_inv_cancel, dB_of h1, h, zero_mul, zero_add]`.
+
+Establish `d2 : dB q⁻¹ * dB q = 1` using `mul_eq_one_comm.1 d1.symm`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem cB_inv {q : G D n} (h : cB q = 0) : cB q⁻¹ = 0 := by
   have h1 : mat (1 : G D n) = blk4 1 0 0 1 := by rw [mat_one', blk_one]
   have c1 := cB_mul q q⁻¹
@@ -255,6 +362,13 @@ theorem cB_inv {q : G D n} (h : cB q = 0) : cB q⁻¹ = 0 := by
   calc cB q⁻¹ = (dB q⁻¹ * dB q) * cB q⁻¹ := by rw [d2, one_mul]
     _ = 0 := by rw [Matrix.mul_assoc, ← c1, mul_zero]
 
+/- English proof (translation)
+Establish `key : ∀ g : G D n, cB g = 0 → ∀ x ∈ upperHalf D n, (mat g).mulVec x ∈ upperHalf D n`. Introduce `g h x hx`. Establish `h' : ∀ i j, mat g (finSumFinEquiv (.inr i)) (finSumFinEquiv (.inl j)) = 0` using `fun i j => congrFun (congrFun h i) j`. Use extensionality with `i`. Establish `hx' : ∀ j, x (finSumFinEquiv (Sum.inr j : Fin n ⊕ Fin n)) = 0` using `fun j => congrFun hx j`.
+
+Simplify using `only [LinearMap.funLeft_apply, Matrix.mulVec, dotProduct, Pi.zero_apply]`. Rewrite using `[← finSumFinEquiv.sum_comp, Fintype.sum_sum_type]`. Simplify using `only [h', hx', zero_mul, mul_zero, Finset.sum_const_zero, add_zero]`. Use `fun x => ⟨key g h x, fun hx => ?_⟩` and prove the remaining obligations. Use `key _ (cB_inv h) _ hx` as an intermediate fact.
+
+Express the relevant statement in the definitionally equal form `(mat g⁻¹).mulVec ((mat g).mulVec x) ∈ _ at this`. Rewrite `this` using `[Matrix.mulVec_mulVec, ← mat_mul', inv_mul_cancel, mat_one', Matrix.one_mulVec]`. Then use the resulting hypothesis.
+-/
 theorem mem_siegelParabolic_of_lowerLeft_eq_zero {g : G D n} (h : cB g = 0) : g ∈ P D n := by
   have key : ∀ g : G D n, cB g = 0 → ∀ x ∈ upperHalf D n, (mat g).mulVec x ∈ upperHalf D n := by
     intro g h x hx
@@ -269,6 +383,9 @@ theorem mem_siegelParabolic_of_lowerLeft_eq_zero {g : G D n} (h : cB g = 0) : g 
   change (mat g⁻¹).mulVec ((mat g).mulVec x) ∈ _ at this
   rwa [Matrix.mulVec_mulVec, ← mat_mul', inv_mul_cancel, mat_one', Matrix.one_mulVec] at this
 
+/- English proof (translation)
+Use extensionality with `i j`. Conclude with `GlobalTheory.StdUnn.HeightExists.lower_eq_zero h i j`.
+-/
 theorem cB_of_mem_P {q : G D n} (h : q ∈ P D n) : cB q = 0 := by
   ext i j
   exact GlobalTheory.StdUnn.HeightExists.lower_eq_zero h i j

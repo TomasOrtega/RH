@@ -29,6 +29,9 @@ attribute [local instance] Over.cartesianMonoidalCategory
 
 namespace GlobalTheory.UU.NondegGen
 
+/- English proof (translation)
+Establish `e1 : (Multiplicative X →* U) ≃ (X →ₗ[ℤ] Additive U)` using `(MonoidHom.toAdditiveRight).trans (addMonoidHomLequivInt ℤ).toEquiv`. Establish `e2` using `((Module.finBasis ℤ X).constr ℤ (M' := Additive U)).toEquiv`. Rewrite using `[Nat.card_congr (e1.trans e2.symm), Nat.card_fun, Nat.card_congr (Additive.toMul : Additive U ≃ U)]`. Simplify using the standard rewrite rules.
+-/
 theorem card_hom_lattice (X U : Type) [AddCommGroup X] [Module.Free ℤ X] [Module.Finite ℤ X] [CommGroup U] :
     Nat.card (Multiplicative X →* U) = Nat.card U ^ Module.finrank ℤ X := by
   have e1 : (Multiplicative X →* U) ≃ (X →ₗ[ℤ] Additive U) :=
@@ -37,6 +40,13 @@ theorem card_hom_lattice (X U : Type) [AddCommGroup X] [Module.Free ℤ X] [Modu
   rw [Nat.card_congr (e1.trans e2.symm), Nat.card_fun, Nat.card_congr (Additive.toMul : Additive U ≃ U)]
   simp
 
+/- English proof (translation)
+Use `haveI : NeZero (N : F) := ⟨hN⟩`. Use `haveI : NeZero N := ⟨fun e => hN (by simp [e])⟩`. Use `Eq.trans (Nat.card_congr ?_) (HasEnoughRootsOfUnity.natCard_rootsOfUnity F N)` and prove the remaining obligations. Use `(Equiv.ofBijective (restrictRootsOfUnity φ N) ⟨fun a b e => ?_, fun z => ?_⟩)` and prove the remaining obligations. Use `congrArg (fun u : rootsOfUnity N F => ((u : Fˣ) : F)) e` as an intermediate fact.
+
+Simplify using `only [restrictRootsOfUnity_coe_apply] at this`. Conclude with `Subtype.ext (Units.ext (hφ this))`. Establish `hz : ((z : Fˣ) : F) ^ N = 1` using `(mem_rootsOfUnity' N _).1 z.2`. Take `⟨w, hw⟩` from `h _ hz`. Establish `hw1 : w ^ N = 1` using `hφ (by rw [map_pow, hw, hz, map_one])`.
+
+Use `⟨rootsOfUnity.mkOfPowEq w hw1, Subtype.ext (Units.ext ?_)⟩` and prove the remaining obligations. Rewrite using `[restrictRootsOfUnity_coe_apply]`. Conclude with `hw`.
+-/
 theorem card_roots (W F : Type) [CommRing W] [Field F] [IsAlgClosed F] (φ : W →+* F) (hφ : Function.Injective φ)
     (N : ℕ) (hN : (N : F) ≠ 0) (h : ∀ z : F, z ^ N = 1 → z ∈ φ.range) : Nat.card (rootsOfUnity N W) = N := by
   haveI : NeZero (N : F) := ⟨hN⟩
@@ -53,6 +63,9 @@ theorem card_roots (W F : Type) [CommRing W] [Field F] [IsAlgClosed F] (φ : W �
     rw [restrictRootsOfUnity_coe_apply]
     exact hw
 
+/- English proof (translation)
+Rewrite using `[← card_hom_lattice]`. Use `Nat.card_congr ⟨fun c => c.1.codRestrict _ fun x => ?_, fun c => ⟨(rootsOfUnity N W).subtype.comp c, ?_⟩, fun c => rfl, fun c => rfl⟩` and prove the remaining obligations. Conclude with `DFunLike.congr_fun (MonoidHom.mem_ker.1 c.2) x`. Conclude with `MonoidHom.mem_ker.2 (MonoidHom.ext fun x => (c x).2)`.
+-/
 theorem card_hom_torsion (X W : Type) [AddCommGroup X] [Module.Free ℤ X] [Module.Finite ℤ X] [CommRing W] (N : ℕ) :
     Nat.card (powMonoidHom N : (Multiplicative X →* Wˣ) →* _).ker =
       Nat.card (rootsOfUnity N W) ^ Module.finrank ℤ X := by
@@ -62,6 +75,17 @@ theorem card_hom_torsion (X W : Type) [AddCommGroup X] [Module.Free ℤ X] [Modu
   · exact DFunLike.congr_fun (MonoidHom.mem_ker.1 c.2) x
   · exact MonoidHom.mem_ker.2 (MonoidHom.ext fun x => (c x).2)
 
+/- English proof (translation)
+Set `f` to `τ.comp (powMonoidHom N : GW →* GW).ker.subtype`. Establish `h1 : Nat.card f.ker * Nat.card f.range = Nat.card (powMonoidHom N : GW →* GW).ker`. Rewrite using `[← Subgroup.index_ker, Subgroup.card_mul_index]`. Rewrite using `[← h1]`. Use `congr 1`.
+
+Use `symm`. Use `Nat.card_congr (Equiv.ofBijective (fun c => ⟨⟨j c.1, ?_⟩, (hker _).2 ⟨c.1, rfl⟩⟩) ⟨fun a b e => ?_, fun y => ?_⟩)` and prove the remaining obligations. Use `show j c.1 ^ N = 1`. Rewrite using `[← map_pow]`. Conclude with `(congrArg j c.2).trans (map_one j)`.
+
+Conclude with `Subtype.ext (hj (congrArg (fun u => u.1.1) e))`. Take `⟨c, hc⟩` from `(hker y.1.1).1 y.2`. Use `⟨⟨c, hj ?_⟩, Subtype.ext (Subtype.ext hc.symm)⟩` and prove the remaining obligations. Use `show j (c ^ N) = _`. Rewrite using `[map_pow, ← hc, map_one]`.
+
+Conclude with `y.1.2`. Use `Nat.card_congr (Equiv.subtypeEquivRight fun x => ⟨?_, fun hx => ?_⟩)` and prove the remaining obligations. Introduce and unpack `⟨y, rfl⟩ show τ y.1 ^ N = 1`. Rewrite using `[← map_pow]`. Conclude with `(congrArg τ y.2).trans (map_one τ)`.
+
+Take `⟨y, hy, e⟩` from `hs x hx`. Conclude with `⟨⟨y, hy⟩, e⟩`.
+-/
 theorem card_torsion_ext {GW BF C : Type} [CommGroup GW] [Group BF] [CommGroup C] (N : ℕ) (τ : GW →* BF)
     (j : C →* GW) (hj : Function.Injective j) (hker : ∀ y, τ y = 1 ↔ ∃ c, y = j c)
     (hs : ∀ x, x ^ N = 1 → ∃ y, y ^ N = 1 ∧ τ y = x) :
@@ -91,6 +115,9 @@ theorem card_torsion_ext {GW BF C : Type} [CommGroup GW] [Group BF] [CommGroup C
     · obtain ⟨y, hy, e⟩ := hs x hx
       exact ⟨⟨y, hy⟩, e⟩
 
+/- English proof (translation)
+Establish `h2` using `(GlobalTheory.UU.cubWeil_basic S G L c N T).2.1 1 1 y ζ ζ h h`. Rewrite `h2` using `[_root_.mul_one]`. Conclude with `mul_eq_left.1 (h2.unique h)`.
+-/
 theorem eq_one_of_cubWeil_one {S : Scheme.{0}} {G : Over S} [GrpObj G] [IsCommMonObj G] {L : RigLB G}
     {c : CubicalStr G L} {N : ℕ} {T : Over S} {y : T ⟶ G} {ζ} (h : CubWeil c N 1 y ζ) : ζ = 1 := by
   have h2 := (GlobalTheory.UU.cubWeil_basic S G L c N T).2.1 1 1 y ζ ζ h h
@@ -101,6 +128,37 @@ end GlobalTheory.UU.NondegGen
 
 open GlobalTheory.UU.NondegGen in
 
+/- English proof (translation)
+Introduce `hcard hL V _ _ _ A G _ _ s t a F _ _ _ _ N hN x hx horth`. Take `⟨W, _, _, _, φ, hφ, hcomp, hW, hloc, hroots, hlift⟩` from `GlobalTheory.T.torsion_lift_abelianPart_finite_extension hcard V A G s t a F N hN`. Use `haveI : CharZero V := s.cdvr.2.2`. Use `haveI : CharZero F := charZero_of_injective_ringHom (f := (algebraMap (FractionRing V) F).comp (algebraMap V (FractionRing V))) ((algebraMap (FractionRing V) F).injective.comp (IsFractionRing.injective V _))`. Establish `hNF : (N : F) ≠ 0` using `Nat.cast_ne_zero.2 (by omega)`.
+
+Use `haveI := s.semi.separated`. Use `haveI := a.isAb.proper`. Set `SW : Over (Spec (CommRingCat.of V))` to `Over.mk (Spec.map (CommRingCat.ofHom (algebraMap V W)))`. Set `σ : TF (R` to `V) F ⟶ SW := Over.homMk (Spec.map (CommRingCat.ofHom φ)) (by show Spec.map (CommRingCat.ofHom φ) ≫ Spec.map (CommRingCat.ofHom (algebraMap V W)) = Spec.map (CommRingCat.ofHom (algebraMap (FractionRing V) F)) ≫ Spec.map (CommRingCat.ofHom (algebraMap V (FractionRing V)))`. Rewrite using `[← Spec.map_comp, ← Spec.map_comp, ← CommRingCat.ofHom_comp, ← CommRingCat.ofHom_comp, hcomp])`.
+
+Use `choose ρf hρ hρu using fun y : SW ⟶ G => GlobalTheory.T.existsUnique_abelianPart_image_adicComplete_point V A G s t a W hW hloc y`. Set `ρ : (SW ⟶ G) →* (SW ⟶ a.B)` to `MonoidHom.mk' ρf fun y y' => (hρu _ _ ((GlobalTheory.T.abelianPart_image_one_mul_inv V A G s t a W y y' (ρf y) (ρf y')).2 (hρ y) (hρ y')).1).symm`. Take `⟨ι', hι, hιs⟩` from `GlobalTheory.T.exists_formalTorus_points_semiAbelian_model V A G s t W hW hloc`. Set `pG : (SW ⟶ G) →* (TF (R` to `V) F ⟶ G) := preHom σ`. Set `pB : (SW ⟶ a.B) →* (TF (R` to `V) F ⟶ a.B) := preHom σ`.
+
+Establish `hpG : Function.Injective pG` using `fun y y' e => GlobalTheory.over_points_ext_of_injective _ G W F φ hφ _ y y' (congrArg (fun q => q.left) e)`. Establish `hpB : Function.Injective pB` using `fun y y' e => GlobalTheory.over_points_ext_of_injective _ a.B W F φ hφ _ y y' (congrArg (fun q => q.left) e)`. Set `τ` to `pB.comp ρ`. Establish `hker : ∀ y, τ y = 1 ↔ ∃ c, y = ι' c` using `fun y => by`. Establish `e1 : τ y = 1 ↔ ρ y = 1` using `map_eq_one_iff pB hpB`.
+
+Establish `e2` using `GlobalTheory.T.abelianPart_image_eq_one_iff_torus_point V A G s t a W hW hloc y`. Rewrite using `[e1]`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Take `⟨c, hc⟩` from `e2.1 (by have := hρ y; rw [show ρf y = 1 from h] at this; exact this)`.
+
+Conclude with `⟨c, (hιs y c).2 hc⟩`. Introduce and unpack `⟨c, hc⟩`. Conclude with `(hρu y 1 (e2.2 ⟨c, (hιs y c).1 hc⟩)).symm`. Establish `hs : ∀ x : TF (R` using `V) F ⟶ a.B, x ^ N = 1 → ∃ y, y ^ N = 1 ∧ τ y = x := fun x hx => by`. Take `⟨y, b, hy, hb, e⟩` from `hlift x hx`.
+
+Use `⟨y, hy, ?_⟩` and prove the remaining obligations. Establish `: ρ y = b` using `(hρu y b hb).symm`. Use `show pB (ρ y) = x`. Rewrite using `[this]`. Conclude with `Over.OverMorphism.ext e`.
+
+Take `⟨g', hg'⟩` from `GlobalTheory.AbelianDim.exists_relDim V a.B a.isAb`. Establish `hdim` using `(GlobalTheory.T.dim_eq_abelianPart_dim_add_torus_rank V A G s t g').2 a hg'`. Establish `hB : Nat.card {x : TF (R` using `V) F ⟶ a.B // x ^ N = 1} = N ^ (2 * g') := GlobalTheory.card_torsion_geometricPoint_of_field hcard _ a.B a.isAb g' hg' F _ N hNF`. Establish `hC` using `card_hom_torsion s.X W N`. Rewrite `hC` using `[card_roots W F φ hφ N hNF hroots]`.
+
+Establish `hH` using `card_torsion_ext N τ ι' hι hker hs`. Rewrite `hH` using `[hC, hB]`. Establish `hρN : ∀ y : SW ⟶ G, y ^ N = 1 → ρ y ^ N = 1` using `fun y hy => by rw [← map_pow, hy, map_one]`. Establish `hpair : ∀ y y' : SW ⟶ G, y ^ N = 1 → y' ^ N = 1 → CubWeil a.M.c N (τ y) (τ y') 1 → CubWeil s.P.c N (pG y) (pG y') 1` using `fun y y' hy hy' h => by`. Take `⟨ζ, hζ, -⟩` from `existsUnique_cubWeil s.P.c hy hy'`.
+
+Establish `h1` using `(GlobalTheory.T.cubicalWeilPairing_eq_abelianPart_image V A G s t a W hW hloc N y y' (ρ y) (ρ y') ζ (hρ y) (hρ y') (hρN y hy) (hρN y' hy') hζ).comp σ`. Establish `h2` using `hζ.comp σ`. Rewrite `h2` using `[h1.unique h]`. Conclude with `h2`. Establish `hτN : ∀ y : SW ⟶ G, y ^ N = 1 → τ y ^ N = 1` using `fun y hy => by rw [← map_pow, hy, map_one]`.
+
+Take `⟨y, hy, rfl⟩` from `hs x hx`. Establish `hmem` using `GlobalTheory.UU.mem_of_cubWeil_orthogonal hL V A G s F N hN ((powMonoidHom N : (Multiplicative s.X →* Wˣ) →* _).ker.map (pG.comp ι')) ((powMonoidHom N : (SW ⟶ G) →* _).ker.map pG) ?_ ?_ ?_ ?_ (pG y) (by rw [← map_pow, hy, map_one]) ?_`. Take `⟨c, -, hc⟩` from `hmem`. Conclude with `(hker y).2 ⟨c, (hpG hc).symm⟩`. Introduce and unpack `_ ⟨c, hc, rfl⟩`.
+
+Rewrite using `[← map_pow]`. Conclude with `(congrArg _ hc).trans (map_one _)`. Introduce and unpack `_ ⟨c, hc, rfl⟩`. Rewrite using `[← map_pow]`. Conclude with `(congrArg _ hc).trans (map_one _)`.
+
+Rewrite using `[Subgroup.card_map_of_injective (f := pG.comp ι') (hpG.comp hι), Subgroup.card_map_of_injective hpG, hH, hC, hdim]`. Expand and normalize the polynomial expressions, which then agree. Introduce and unpack `_ ⟨c, hc, rfl⟩ _ ⟨y', hy', rfl⟩`. Establish `hcN : ι' c ^ N = 1`. Rewrite using `[← map_pow]`.
+
+Conclude with `(congrArg _ hc).trans (map_one _)`. Use `hpair (ι' c) y' hcN hy' ?_` and prove the remaining obligations. Rewrite using `[(hker _).2 ⟨c, rfl⟩]`. Take `⟨ζ, hζ, -⟩` from `existsUnique_cubWeil a.M.c (one_pow N) (hτN y' hy')`. Rewrite `hζ` using `[eq_one_of_cubWeil_one hζ]`. Then use the resulting hypothesis.
+
+Introduce and unpack `_ ⟨y', hy', rfl⟩`. Conclude with `hpair y y' hy hy' (horth _ (hτN y' hy'))`.
+-/
 theorem GlobalTheory.UU.cubWeil_nondegenerate_generic :
     (∀ (k : Type) [Field k] [IsAlgClosed k] (B : Over (Sp k)) [GrpObj B] (g n : ℕ), IsAbelianScheme B → SmoothOfRelativeDimension g B.hom → (n : k) ≠ 0 → Nat.card {x : (𝟙_ (Over (Sp k)) ⟶ B) // x ^ n = 1} = n ^ (2 * g)) → Laws → AllSet fun {V} _ _ _ {_} {_} _ _ s => ∀ (t : Tower s) (a : t.Alg) (F : Type) [Field F] [IsAlgClosed F] [Algebra (FractionRing V) F] [Algebra.IsAlgebraic (FractionRing V) F] (N : ℕ), 1 ≤ N → ∀ x : TF (R := V) F ⟶ a.B, x ^ N = 1 → (∀ y : TF (R := V) F ⟶ a.B, y ^ N = 1 → CubWeil a.M.c N x y 1) → x = 1 := by
   intro hcard hL V _ _ _ A G _ _ s t a F _ _ _ _ N hN x hx horth

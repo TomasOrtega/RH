@@ -23,6 +23,9 @@ def Sys (G : GDatum) (ℓ : ℕ) (f : ℕ → G.La →+ G.La) (u : ℕ → ℤ) 
   (∀ n, 0 < n → n.Coprime ℓ → IsCoprime (u n) (n : ℤ) ∧ ∀ x y, (n : ℤ) ∣ G.EF (f n x) (f n y) - c * u n * G.EF x y) ∧
   (∀ n, 0 < n → n.Coprime ℓ → ∀ x, ∃ y z, f n y = κ • x + n • z)
 
+/- English proof (translation)
+Take `⟨h1, h2, h3, h4⟩` from `h`. Conclude with `⟨fun n hn _ => h1 n hn (Nat.coprime_one_right n), fun n m hn hm _ => h2 n m hn hm (Nat.coprime_one_right _), fun n hn _ => h3 n hn (Nat.coprime_one_right n), fun n hn _ => h4 n hn (Nat.coprime_one_right n)⟩`.
+-/
 theorem Sys.mono {G : GDatum} {f : ℕ → G.La →+ G.La} {u : ℕ → ℤ} {c κ : ℕ} (h : Sys G 1 f u c κ) (ℓ : ℕ) : Sys G ℓ f u c κ := by
   obtain ⟨h1, h2, h3, h4⟩ := h
   exact ⟨fun n hn _ => h1 n hn (Nat.coprime_one_right n),

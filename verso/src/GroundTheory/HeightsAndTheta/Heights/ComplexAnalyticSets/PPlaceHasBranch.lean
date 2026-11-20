@@ -9,6 +9,15 @@ namespace GroundTheory.Heights₂.Heights
 
 open MvPolynomial ComplexSets Filter Topology
 
+/- English proof (translation)
+Introduce `n I q m c hrad hdim hcov hdisj P`. Take `⟨N, hN, hNc⟩` from `hcov`. Take `⟨ν, hν⟩` from `h₁ n I q hrad hdim P`. Establish `hnorm : ∀ τ : ℂ, ‖(fun _ ↦ τ : Fin 1 → ℂ)‖ = ‖τ‖` using `fun τ ↦ by simp [pi_norm_const]`. Establish `hcont : ContinuousAt (fun τ : ℂ ↦ ν.toFun (fun _ ↦ τ)) 0`.
+
+Establish `h0 : ContinuousAt ν.toFun (fun _ ↦ (0 : ℂ))` using `ν.differentiableOn.continuousOn.continuousAt (Metric.isOpen_ball.mem_nhds (by simpa [Metric.mem_ball, dist_zero_right, hnorm] using ν.radius_pos))`. Conclude with `h0.comp (continuous_pi fun _ ↦ continuous_id).continuousAt`. Establish `hq : ν.toFun (fun _ ↦ (0 : ℂ)) = q` using `ν.map_zero`. Establish `hev : ∀ᶠ τ in 𝓝 (0 : ℂ), ν.toFun (fun _ ↦ τ) ∈ N` using `hcont.preimage_mem_nhds (by rw [hq]; exact hN)`. Take `⟨ε, hε, hεN⟩` from `Metric.eventually_nhds_iff.1 hev`.
+
+Establish `hin : ∀ τ : ℂ, 0 < ‖τ‖ → ‖τ‖ < min ε ν.radius → ν.toFun (fun _ ↦ τ) ∈ ⋃ b, (c b).image`. Introduce `τ _ hτ`. Use `hNc ⟨ν.mapsTo ?_, hεN ?_⟩` and prove the remaining obligations. Rewrite using `[Metric.mem_ball, dist_zero_right, hnorm]`. Conclude with `hτ.trans_le (min_le_right _ _)`.
+
+Rewrite using `[dist_zero_right]`. Conclude with `hτ.trans_le (min_le_left _ _)`. Take `⟨b, ρ', hρ', hb⟩` from `h₂ n I q m c ν (min ε ν.radius) hrad hdim (lt_min hε ν.radius_pos) hin hdisj`. Conclude with `⟨b, fun f ↦ (hν f).trans (h₃ n I q (c b) ν ρ' hrad hdim hρ' hb f).symm⟩`.
+-/
 theorem PlaceHasBranch.proof (h₁ : PlaceBranchExists.Statement) (h₂ : PuncturedBranchInOneBranch.Statement)
     (h₃ : PuncturedBranchSameOrder.Statement) : PlaceHasBranch.Statement := by
   intro n I q m c hrad hdim hcov hdisj P

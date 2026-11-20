@@ -23,18 +23,27 @@ instance locallyCompactSpace_finiteAdeleRing :
     (B := fun v ↦ v.adicCompletionIntegers K)
     (.of_forall fun v ↦ isCompact_adicCompletionIntegers v)
 
+/- English proof (translation)
+The claim follows from `inferInstance`.
+-/
 theorem t2Space_finiteAdeleRing : T2Space (FiniteAdeleRing (𝓞 K) K) :=
   inferInstance
 
 instance locallyCompactSpace_adeleRing : LocallyCompactSpace 𝔸[K] :=
   inferInstanceAs (LocallyCompactSpace (InfiniteAdeleRing K × FiniteAdeleRing (𝓞 K) K))
 
+/- English proof (translation)
+The claim follows from `inferInstance`.
+-/
 theorem t2Space_adeleRing : T2Space 𝔸[K] :=
   inferInstance
 
 instance IdeleGroup.locallyCompactSpace : LocallyCompactSpace (IdeleGroup K) :=
   inferInstance
 
+/- English proof (translation)
+The claim follows from `inferInstance`.
+-/
 theorem IdeleGroup.t2Space : T2Space (IdeleGroup K) :=
   inferInstance
 
@@ -46,6 +55,9 @@ instance locallyCompactSpace_units_infiniteAdeleRing :
     LocallyCompactSpace (InfiniteAdeleRing K)ˣ :=
   inferInstance
 
+/- English proof (translation)
+Establish `h : IsCompact ((v.adicCompletionIntegers K : Set (v.adicCompletion K)) ×ˢ (MulOpposite.unop ⁻¹' (v.adicCompletionIntegers K : Set (v.adicCompletion K))))` using `(isCompact_adicCompletionIntegers v).prod (MulOpposite.opHomeomorph.symm.isCompact_preimage.2 (isCompact_adicCompletionIntegers v))`. Use `Units.isClosedEmbedding_embedProduct.isCompact_preimage h using 1` and compare the differences between its conclusion and the goal. Use extensionality with `u`. Simplify using `only [SetLike.mem_coe, Submonoid.mem_units_iff, Set.mem_preimage, Set.mem_prod, Units.embedProduct_apply, MulOpposite.unop_op]`. Conclude with `Iff.rfl`.
+-/
 theorem isCompact_units_adicCompletionIntegers (v : HeightOneSpectrum (𝓞 K)) :
     IsCompact ((Submonoid.ofClass (v.adicCompletionIntegers K)).units :
       Set (v.adicCompletion K)ˣ) := by

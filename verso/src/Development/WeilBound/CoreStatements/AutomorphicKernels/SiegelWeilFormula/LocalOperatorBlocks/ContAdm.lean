@@ -13,6 +13,15 @@ namespace PositivityTheory.SiegelWeilFormula.KLI
 
 open Complex in
 
+/- English proof (translation)
+Establish `hd : ∀ n : ℕ, iteratedDeriv n (fun t : ℝ => cexp (I * t)) = fun t : ℝ => I ^ n * cexp (I * t)`. Introduce `n`. Proceed by induction on `n with`. Consider the case `zero`. Use function extensionality and compare the values at `t`.
+
+Simplify using the standard rewrite rules. Consider the case `succ n ih`. Rewrite using `[iteratedDeriv_succ, ih]`. Use function extensionality and compare the values at `t`. Establish `h1 : HasDerivAt (fun s : ℝ => I * (s : ℂ)) I t`.
+
+Simplify using `using (Complex.ofRealCLM.hasDerivAt (x := t)).const_mul I`. Establish `h2 : HasDerivAt (fun s : ℝ => I ^ n * cexp (I * s)) (I ^ n * (cexp (I * t) * I)) t` using `h1.cexp.const_mul _`. Rewrite using `[h2.deriv]`. Expand and normalize the polynomial expressions, which then agree. Use `⟨?_, fun n => ⟨0, 1, fun t => ?_⟩⟩` and prove the remaining obligations.
+
+Conclude with `Complex.contDiff_exp.comp (contDiff_const.mul Complex.ofRealCLM.contDiff)`. Rewrite using `[norm_iteratedFDeriv_eq_norm_iteratedDeriv, hd n, norm_mul, norm_pow, Complex.norm_I, one_pow, mul_comm I, Complex.norm_exp_ofReal_mul_I]`. Simplify using the standard rewrite rules.
+-/
 theorem tg_exp : Function.HasTemperateGrowth (fun t : ℝ => cexp (I * t)) := by
   have hd : ∀ n : ℕ, iteratedDeriv n (fun t : ℝ => cexp (I * t)) = fun t : ℝ => I ^ n * cexp (I * t) := by
     intro n
@@ -50,6 +59,13 @@ def phz (p : (κ → AF F) × (κ → AF F)) (y : κ → mixedEmbedding.mixedSpa
   Complex.exp (-(2 * Real.pi * Complex.I) * ((Algebra.trace ℝ (mixedEmbedding.mixedSpace F)
     (∑ i, y i * arc F p.2 i + InfiniteAdeleRing.ringEquiv_mixedSpace F (⅟(2 : AF F) * (p.1 ⬝ᵥ p.2)).1) : ℝ) : ℂ))
 
+/- English proof (translation)
+Establish `hlin : Function.HasTemperateGrowth (fun y : κ → mixedEmbedding.mixedSpace F => ∑ i, y i * arc F p.2 i + InfiniteAdeleRing.ringEquiv_mixedSpace F (⅟(2 : AF F) * (p.1 ⬝ᵥ p.2)).1)`. Establish `hi : ∀ i, Function.HasTemperateGrowth (fun y : κ → mixedEmbedding.mixedSpace F => y i * arc F p.2 i)` using `fun i => ((ContinuousLinearMap.mul ℝ (mixedEmbedding.mixedSpace F)).flip (arc F p.2 i) ∘L ContinuousLinearMap.proj (R := ℝ) (φ := fun _ : κ => mixedEmbedding.mixedSpace F) i).hasTemperateGrowth`. Use `fun_prop`. Establish `hT : Function.HasTemperateGrowth (fun z : mixedEmbedding.mixedSpace F => Algebra.trace ℝ (mixedEmbedding.mixedSpace F) z)` using `(LinearMap.toContinuousLinearMap (Algebra.trace ℝ (mixedEmbedding.mixedSpace F))).hasTemperateGrowth`. Establish `hg : Function.HasTemperateGrowth (fun s : ℝ => Complex.exp (-(2 * Real.pi * Complex.I) * (s : ℂ)))`.
+
+Establish `h` using `tg_exp.comp (((-(2 * Real.pi)) • ContinuousLinearMap.id ℝ ℝ).hasTemperateGrowth)`. Use `h using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `s`. Simplify using `only [Function.comp, ContinuousLinearMap.smul_apply, ContinuousLinearMap.id_apply, smul_eq_mul]`. Use `push_cast`.
+
+Put the polynomial expressions in normal form. Conclude with `hg.comp (hT.comp hlin)`.
+-/
 theorem phz_tg (p : (κ → AF F) × (κ → AF F)) : (phz F p).HasTemperateGrowth := by
   have hlin : Function.HasTemperateGrowth (fun y : κ → mixedEmbedding.mixedSpace F =>
       ∑ i, y i * arc F p.2 i + InfiniteAdeleRing.ringEquiv_mixedSpace F (⅟(2 : AF F) * (p.1 ⬝ᵥ p.2)).1) := by
@@ -69,6 +85,19 @@ theorem phz_tg (p : (κ → AF F) × (κ → AF F)) : (phz F p).HasTemperateGrow
     ring_nf
   exact hg.comp (hT.comp hlin)
 
+/- English proof (translation)
+Use function extensionality and compare the values at `x`. Take `⟨-, -, hinf⟩` from `hψ`. Establish `hs1 : ∀ y z : κ → AF F, (y ⬝ᵥ z).1 = ∑ i, (y i).1 * (z i).1` using `fun y z => map_sum (RingHom.fst (InfiniteAdeleRing F) (FiniteAdeleRing (𝓞 F) F)) (fun i => y i * z i) Finset.univ`. Establish `hs2 : ∀ y z : κ → AF F, (y ⬝ᵥ z).2 = ∑ i, (y i).2 * (z i).2` using `fun y z => map_sum (RingHom.snd (InfiniteAdeleRing F) (FiniteAdeleRing (𝓞 F) F)) (fun i => y i * z i) Finset.univ`. Establish `hsnd : (fun i => ((x + p.1) i).2) = fun i => (x i).2`.
+
+Use function extensionality and compare the values at `i`. Use `show (x i).2 + (p.1 i).2 = (x i).2`. Rewrite using `[(hp i).1, add_zero]`. Establish `hfst : (fun i => InfiniteAdeleRing.ringEquiv_mixedSpace F ((x + p.1) i).1) = (fun i => InfiniteAdeleRing.ringEquiv_mixedSpace F (x i).1) + arc F p.1`. Use function extensionality and compare the values at `i`.
+
+Conclude with `map_add (InfiniteAdeleRing.ringEquiv_mixedSpace F) (x i).1 (p.1 i).1`. Establish `ha2 : (x ⬝ᵥ p.2 + ⅟(2 : AF F) * (p.1 ⬝ᵥ p.2)).2 = 0` using `by show (x ⬝ᵥ p.2).2 + (⅟(2 : AF F)).2 * (p.1 ⬝ᵥ p.2).2 = 0`. Rewrite using `[hs2, hs2]`. Simplify using `[(hp _).2]`. Establish `hat : At (evI F) (x ⬝ᵥ p.2 + ⅟(2 : AF F) * (p.1 ⬝ᵥ p.2))`.
+
+Introduce `u hu`. Establish `hu1 : u.1 = 0` using `(map_eq_zero_iff (InfiniteAdeleRing.ringEquiv_mixedSpace F) (RingEquiv.injective _)).mp hu`. Rewrite using `[smul_eq_mul]`. Use `Prod.ext ?_ ?_` and prove the remaining obligations. Use `show u.1 * (x ⬝ᵥ p.2 + ⅟(2 : AF F) * (p.1 ⬝ᵥ p.2)).1 = 0`.
+
+Rewrite using `[hu1, zero_mul]`. Use `show u.2 * (x ⬝ᵥ p.2 + ⅟(2 : AF F) * (p.1 ⬝ᵥ p.2)).2 = 0`. Rewrite using `[ha2, mul_zero]`. Establish `htr : evI F (x ⬝ᵥ p.2 + ⅟(2 : AF F) * (p.1 ⬝ᵥ p.2)) = ∑ i, InfiniteAdeleRing.ringEquiv_mixedSpace F (x i).1 * arc F p.2 i + InfiniteAdeleRing.ringEquiv_mixedSpace F (⅟(2 : AF F) * (p.1 ⬝ᵥ p.2)).1` using `by show InfiniteAdeleRing.ringEquiv_mixedSpace F ((x ⬝ᵥ p.2).1 + (⅟(2 : AF F) * (p.1 ⬝ᵥ p.2)).1) = _`. Rewrite using `[map_add, hs1, map_sum]`.
+
+Simplify using `only [map_mul, arc]`. Simplify using `only [schr, pureA]`. Rewrite using `[hinf _ hat, hsnd, hfst, htr]`. Simplify using `only [phz]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem schr_pureA (ψ : AddChar (AF F) ℂ) (hψ : IsStd ψ) (p : (κ → AF F) × (κ → AF F))
     (hp : ∀ i, (p.1 i).2 = 0 ∧ (p.2 i).2 = 0) (f : (κ → mixedEmbedding.mixedSpace F) → ℂ)
     (g : (κ → FiniteAdeleRing (𝓞 F) F) → ℂ) :
@@ -112,6 +141,13 @@ theorem schr_pureA (ψ : AddChar (AF F) ℂ) (hψ : IsStd ψ) (p : (κ → AF F)
   simp only [phz]
   ring
 
+/- English proof (translation)
+Introduce `g hg`. Take `⟨T0, hT0⟩` from `hl g hg`. Establish `htr : Function.HasTemperateGrowth (fun y : κ → mixedEmbedding.mixedSpace F => y + arc F p.1)` using `by fun_prop`. Establish `hanti : AntilipschitzWith 1 (fun y : κ → mixedEmbedding.mixedSpace F => y + arc F p.1)` using `(IsometryEquiv.addRight (arc F p.1)).isometry.antilipschitz`. Set `S : 𝓢(κ → mixedEmbedding.mixedSpace F, ℂ) →L[ℂ] 𝓢(κ → mixedEmbedding.mixedSpace F, ℂ)` to `(SchwartzMap.smulLeftCLM ℂ (phz F p)).comp (SchwartzMap.compCLMOfAntilipschitz ℂ htr hanti)`.
+
+Use `⟨T0.comp S, fun f => ?_⟩` and prove the remaining obligations. Establish `hf : (⇑(S f)) = fun y => phz F p y * f (y + arc F p.1)`. Use function extensionality and compare the values at `y`. Simplify using `[S, SchwartzMap.smulLeftCLM_apply_apply (phz_tg F p), smul_eq_mul]`. Rewrite using `[LinearMap.comp_apply]`.
+
+Use `show l (schr ψ p (pureA F f g)) = _`. Rewrite using `[schr_pureA F ψ hψ p hp, ← hf, hT0]`. Both sides reduce to the same expression.
+-/
 theorem rho_adm (ψ : AddChar (AF F) ℂ) (hψ : IsStd ψ) {l : ((κ → AF F) → ℂ) →ₗ[ℂ] ℂ} (hl : l ∈ (adeleClass F).adm κ)
     (p : (κ → AF F) × (κ → AF F)) (hp : ∀ i, (p.1 i).2 = 0 ∧ (p.2 i).2 = 0) :
     l ∘ₗ rhoL F ψ p ∈ (adeleClass F).adm κ := by

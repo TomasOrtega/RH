@@ -14,6 +14,11 @@ namespace GlobalTheory.GenExtendNormal
 
 open GlobalTheory.DvrModel
 
+/- English proof (translation)
+Establish `hx'` using `(Order.coheight_le_coe_iff (n := 1)).1 hx`. Use `(Order.coheight_le_coe_iff (n := 1)).2 fun y hy ↦ ?_` and prove the remaining obligations. Take `⟨x', h₁, rfl⟩` from `hp (show y ⤳ p x from hy.le)`. Establish `hlt : x < x'` using `⟨h₁, fun h ↦ hy.not_ge (Specializes.map h p.continuous)⟩`. Establish `hm : IsMax x'` using `by simpa using hx' x' hlt`.
+
+Establish `: IsMax (p x')` using `fun w hw ↦ by`. Take `⟨x'', h₂, rfl⟩` from `hp (show w ⤳ p x' from hw)`. Conclude with `Specializes.map (hm (show x' ≤ x'' from h₂)) p.continuous`. Simplify using `using this`.
+-/
 theorem coheight_apply_le_one {H S : Scheme.{0}} (p : H ⟶ S) (hp : GeneralizingMap p) (x : H)
     (hx : Order.coheight x ≤ 1) : Order.coheight (p x) ≤ 1 := by
   have hx' := (Order.coheight_le_coe_iff (n := 1)).1 hx
@@ -26,6 +31,17 @@ theorem coheight_apply_le_one {H S : Scheme.{0}} (p : H ⟶ S) (hp : Generalizin
     exact Specializes.map (hm (show x' ≤ x'' from h₂)) p.continuous
   simpa using this
 
+/- English proof (translation)
+Take `⟨u, hu⟩` from `g.stalkMap_surjective y (Y.presheaf.germ O y hy c)`. Take `⟨B, hB, σ, rfl⟩` from `H.presheaf.germ_exist u`. Rewrite `hu` using `[Scheme.Hom.germ_stalkMap_apply]`. Take `⟨O', hO', i₁, i₂, hO⟩` from `Y.presheaf.germ_eq y _ _ _ _ hu`. Establish `hsp : k z ⤳ y`.
+
+Rewrite using `[← g.isEmbedding.isInducing.specializes_iff, hz]`. Conclude with `(genericPoint_spec H).specializes trivial`. Establish `hkz : k z ∈ O'` using `hsp.mem_open O'.isOpen hO'`. Establish `: Nonempty B` using `⟨⟨_, hB⟩⟩`. Establish `hA : (k ≫ g) z ∈ A`.
+
+Rewrite using `[Scheme.Hom.comp_apply, hz]`. Conclude with `genericPoint_mem_opens A`. Establish `hB' : (k ≫ g) z ∈ B`. Rewrite using `[Scheme.Hom.comp_apply, hz]`. Conclude with `genericPoint_mem_opens B`.
+
+Establish `h₁ : gs (k ≫ g) z B σ = gs (k ≫ g) z A τ`. Rewrite using `[← h, ← gs_pull k g z B hB', ← gs_res k z i₁.le hkz, ← gs_res k z i₂.le hkz]`. Conclude with `congrArg _ hO`. Rewrite `h₁` using `[gs_eq _ _ _ hA, gs_eq _ _ _ hB', ← Scheme.Hom.germ_stalkMap_apply, ← Scheme.Hom.germ_stalkMap_apply]`. Establish `key : ∀ (w : H) (hw : w = genericPoint H) {R : Type} [CommRing R] [Nontrivial R] (f : H.presheaf.stalk w →+* R) (hwA : w ∈ A) (hwB : w ∈ B), f (H.presheaf.germ B w hwB σ) = f (H.presheaf.germ A w hwA τ) → H.germToFunctionField B σ = H.germToFunctionField A τ`.
+
+Introduce and unpack `_ rfl R _ _ f _ _ hf`. Conclude with `RingHom.injective (R := H.functionField) f hf`. Rewrite using `[← key _ hz ((k ≫ g).stalkMap z).hom hA hB' h₁]`. Conclude with `germToFunctionField_mem_range_stalk B σ hB`.
+-/
 theorem mem_range_of_preimmersion {H Y Z : Scheme.{0}} [IsIntegral H] (g : Y ⟶ H)
     [IsPreimmersion g] (k : Z ⟶ Y) (z : Z) (hz : g (k z) = genericPoint H) (y : Y)
     (A : H.Opens) [Nonempty A] (τ : Γ(H, A)) (O : Y.Opens) (hy : y ∈ O) (c : Γ(Y, O))
@@ -58,6 +74,9 @@ theorem mem_range_of_preimmersion {H Y Z : Scheme.{0}} [IsIntegral H] (g : Y ⟶
   rw [← key _ hz ((k ≫ g).stalkMap z).hom hA hB' h₁]
   exact germToFunctionField_mem_range_stalk B σ hB
 
+/- English proof (translation)
+Substitute `hψ hχ` using the available equality. Take `⟨c, ⟨-, rfl⟩, -⟩` from `GlobalTheory.GenExtend.existsUnique_gen_extend V K H X p e hs hg he eK heK L hL I φ ε t ρ ht hρ hc`. Use `⟨c, fun z a hz ↦ ?_⟩` and prove the remaining obligations. Establish `hm : (𝟙 _ : pullback p (etaK V K) ⟶ _) z ∈ LB.wchart L (fun i ↦ pullback.fst p (etaK V K) ≫ φ i) a` using `(wchart_comp L _ φ a).ge hz`. Conclude with `((gm_res _ z _ hm _).trans ((gm_pull _ _ z _ hz _).trans (by rw [Category.id_comp]; rfl))).symm`.
+-/
 theorem exists_gen_germ (V : Type) [CommRing V] [IsDomain V] [IsDiscreteValuationRing V]
     (K : Type) [Field K] [Algebra V K] [IsFractionRing V K] {H X : Scheme.{0}}
     (p : H ⟶ Spec (CommRingCat.of V)) (e : Spec (CommRingCat.of V) ⟶ H) (hs : Smooth p)
@@ -80,6 +99,35 @@ theorem exists_gen_germ (V : Type) [CommRing V] [IsDomain V] [IsDiscreteValuatio
       LB.wchart L (fun i ↦ pullback.fst p (etaK V K) ≫ φ i) a := (wchart_comp L _ φ a).ge hz
   exact ((gm_res _ z _ hm _).trans ((gm_pull _ _ z _ hz _).trans (by rw [Category.id_comp]; rfl))).symm
 
+/- English proof (translation)
+Establish `hη : genericPoint S ∈ Set.range j`. Establish `: Nonempty j.opensRange` using `⟨⟨j (Nonempty.some inferInstance), _, rfl⟩⟩`. Conclude with `genericPoint_mem_opens j.opensRange`. Establish `h1 : Order.coheight (p x) = 1`. Use `le_antisymm (coheight_apply_le_one p (Flat.generalizingMap p) x hx.le) ?_` and prove the remaining obligations.
+
+Rewrite using `[Order.one_le_iff_ne_zero, Order.coheight_ne_zero]`. Introduce `hm`. Establish `h₁ : genericPoint S ⤳ p x` using `(genericPoint_spec S).specializes trivial`. Conclude with `hxU (Specializes.mem_open (hm (show p x ≤ genericPoint S from h₁)) j.isOpenEmbedding.isOpen_range hη)`. Use `GlobalTheory.IsNormalScheme.isDiscreteValuationRing_stalk h1` as an intermediate fact.
+
+Set `V : Type` to `S.presheaf.stalk (p x)`. Set `K : Type` to `S.functionField`. Set `v : Spec (CommRingCat.of V) ⟶ S` to `S.fromSpecStalk (p x)`. Establish `hv : IsPreimmersion v` using `inferInstanceAs (IsPreimmersion (S.fromSpecStalk (p x)))`. Establish `hev : etaK V K ≫ v = S.fromSpecStalk (genericPoint S)` using `Scheme.SpecMap_stalkSpecializes_fromSpecStalk ((genericPoint_spec S).specializes trivial)`.
+
+Establish `hpt : ∀ z, (etaK V K ≫ v) z = genericPoint S` using `fun z ↦ by`. Rewrite using `[hev, Subsingleton.elim z (IsLocalRing.closedPoint K)]`. Conclude with `Scheme.fromSpecStalk_closedPoint`. Set `w : Spec (CommRingCat.of K) ⟶ U` to `IsOpenImmersion.lift j (etaK V K ≫ v) (by`. Introduce and unpack `_ ⟨z, rfl⟩`.
+
+Rewrite using `[hpt]`. Conclude with `hη)`. Establish `hw : w ≫ j = etaK V K ≫ v` using `IsOpenImmersion.lift_fac _ _ _`. Set `g` to `pullback.fst p v`. Set `pV` to `pullback.snd p v`.
+
+Establish `hg : IsPreimmersion g` using `MorphismProperty.pullback_fst _ _ hv`. Set `eV : Spec (CommRingCat.of V) ⟶ pullback p v` to `pullback.lift (v ≫ e) (𝟙 _) (by simp [he])`. Establish `heV : eV ≫ pV = 𝟙 _` using `pullback.lift_snd _ _ _`. Establish `heV' : eV ≫ g = v ≫ e` using `pullback.lift_fst _ _ _`. Set `k` to `pullback.fst pV (etaK V K)`.
+
+Set `pK` to `pullback.snd pV (etaK V K)`. Establish `hP' : IsPullback (k ≫ g) pK p (etaK V K ≫ v)` using `(IsPullback.of_hasPullback pV (etaK V K)).paste_horiz (IsPullback.of_hasPullback p v)`. Set `eK : Spec (CommRingCat.of K) ⟶ pullback pV (etaK V K)` to `pullback.lift (etaK V K ≫ eV) (𝟙 _) (by simp [heV])`. Establish `heK : eK ≫ k = etaK V K ≫ eV` using `pullback.lift_fst _ _ _`. Establish `heK' : eK ≫ pK = 𝟙 _` using `pullback.lift_snd _ _ _`.
+
+Set `q : pullback pV (etaK V K) ⟶ HU` to `hP.lift (k ≫ g) (pK ≫ w) (by rw [hP'.w, Category.assoc, hw])`. Establish `hq : q ≫ jH = k ≫ g` using `hP.lift_fst _ _ _`. Establish `hjH : Mono jH` using `MorphismProperty.of_isPullback (P := .monomorphisms _) hP.flip (inferInstanceAs (Mono j))`. Establish `heq : eK ≫ q = w ≫ eU`. Rewrite using `[← cancel_mono jH, Category.assoc, hq, ← Category.assoc, heK, Category.assoc, heV', Category.assoc, heU, ← Category.assoc w, hw, Category.assoc]`.
+
+Take `⟨c, hc'⟩` from `exists_gen_germ V K pV eV inferInstance inferInstance heV eK heK hL (fun i ↦ g ≫ φ i) ε (fun i ↦ q ≫ jH ≫ φ i) (funext fun i ↦ by rw [← Category.assoc, hq, Category.assoc]) (fun i ↦ v ≫ e ≫ φ i) (funext fun i ↦ by rw [← Category.assoc, ← heV', Category.assoc]) (LB.pullGen L _ _ t …`. Use `val_corr hJ hc w` as an intermediate fact. Rewrite `this` using `[val_pull hJ, val_pull hJ]`. Rewrite using `[val_pull hJ, val_pull hJ, val_pull hJ, val_pull hJ, Category.id_comp, Category.id_comp, heq, ← hw, this])`. Establish `hpη : p (genericPoint H) = genericPoint S`.
+
+Establish `: Surjective p` using `⟨fun s ↦ ⟨e s, by rw [← Scheme.Hom.comp_apply, he]; rfl⟩⟩`. Establish `h` using `(genericPoint_spec H).image p.continuous`. Rewrite `h` using `[Set.image_univ, p.surjective.range_eq, closure_univ]`. Conclude with `h.eq (genericPoint_spec S)`. Take `⟨z, hz, -⟩` from `Scheme.exists_preimage_of_isPullback hP' (genericPoint H) (IsLocalRing.closedPoint K) (hpη.trans (hpt _).symm)`.
+
+Take `⟨y, hyx, -⟩` from `Scheme.exists_preimage_of_isPullback (IsPullback.of_hasPullback p v) x (IsLocalRing.closedPoint V) (Scheme.fromSpecStalk_closedPoint).symm`. Establish `: Nonempty (LB.wchart L φ a)` using `⟨⟨_, hxa⟩⟩`. Establish `hzA : (k ≫ g) z ∈ A` using `hz ▸ genericPoint_mem_opens A`. Establish `hza : (k ≫ g) z ∈ LB.wchart L φ a` using `hz ▸ genericPoint_mem_opens _`. Establish `hkz : k z ∈ LB.wchart L (fun i ↦ g ≫ φ i) a` using `(wchart_comp L g φ a).ge hza`.
+
+Establish `hqz : q z ∈ LB.wchart L (fun i ↦ jH ≫ φ i) a` using `(wchart_comp L jH φ a).ge (show (q ≫ jH) z ∈ LB.wchart L φ a from hq ▸ hza)`. Establish `hy : y ∈ LB.wchart L (fun i ↦ g ≫ φ i) a` using `(wchart_comp L g φ a).ge (show g y ∈ LB.wchart L φ a from (congrArg (· ∈ LB.wchart L φ a) hyx).mpr hxa)`. Establish `hm : (𝟙 _ : pullback pV (etaK V K) ⟶ _) z ∈ LB.wchart L (fun i ↦ q ≫ jH ≫ φ i) a` using `(wchart_comp L q (fun i ↦ jH ≫ φ i) a).ge hqz`. Establish `hgm : gm k z (LB.wchart L (fun i ↦ g ≫ φ i) a) (c.s a) = gm (k ≫ g) z A τ`. Rewrite using `[← hq, hτ _ q z (show (q ≫ jH) z ∈ A from hq ▸ hzA)]`.
+
+Conclude with `(hc' z a hkz).trans ((gm_res _ z _ hm _).trans ((gm_pull _ _ z _ hqz _).trans (by rw [Category.id_comp]; rfl)))`. Rewrite using `[← hyx]`. Prove the components needed by the constructor for the conclusion. Use `mem_range_of_preimmersion g k z hz y A _ _ hy (LB.ts c a).val ?_` and prove the remaining obligations. Rewrite using `[gs_unit _ _ _ hkz, gs_unit _ _ _ hzA]`.
+
+Conclude with `congrArg Units.val hgm`. Use `mem_range_of_preimmersion g k z hz y A _ _ hy (LB.ts c a)⁻¹.val ?_` and prove the remaining obligations. Rewrite using `[gs_unit _ _ _ hkz, gs_unit _ _ _ hzA, map_inv, map_inv]`. Conclude with `congrArg (fun u ↦ Units.val u⁻¹) hgm`.
+-/
 theorem mem_range_of_notMem {S U H HU X : Scheme.{0}} [IsIntegral S] [IsLocallyNoetherian S]
     [GlobalTheory.IsNormalScheme S] [Nonempty U] [IsIntegral H] {j : U ⟶ S} [IsOpenImmersion j] {p : H ⟶ S}
     {e : S ⟶ H} {jH : HU ⟶ H} {pU : HU ⟶ U} {eU : U ⟶ HU} [Smooth p] [GeometricallyIntegral p]
@@ -184,6 +232,9 @@ theorem mem_range_of_notMem {S U H HU X : Scheme.{0}} [IsIntegral S] [IsLocallyN
     rw [gs_unit _ _ _ hkz, gs_unit _ _ _ hzA, map_inv, map_inv]
     exact congrArg (fun u ↦ Units.val u⁻¹) hgm
 
+/- English proof (translation)
+Establish `: pullU j O u = pullU j O v` using `unit_ext fun y hy ↦ by`. Rewrite using `[gm_pull (𝟙 Y) j y O hy, gm_pull (𝟙 Y) j y O hy, Category.id_comp, h y hy]`. Use `Units.ext (GlobalTheory.PrimeSection.appLE_injective j (U := O) rfl ?_)` and prove the remaining obligations. Rewrite using `[← Scheme.Hom.app_eq_appLE]`. Conclude with `congrArg Units.val this`.
+-/
 theorem unit_ext_of_isOpenImmersion {H Y : Scheme.{0}} [IsIntegral H] (j : Y ⟶ H)
     [IsOpenImmersion j] [Nonempty Y] {O : H.Opens} {u v : Γ(H, O)ˣ}
     (h : ∀ y, j y ∈ O → gm j y O u = gm j y O v) : u = v := by
@@ -193,6 +244,29 @@ theorem unit_ext_of_isOpenImmersion {H Y : Scheme.{0}} [IsIntegral H] (j : Y ⟶
   rw [← Scheme.Hom.app_eq_appLE]
   exact congrArg Units.val this
 
+/- English proof (translation)
+Introduce `S _ _ hS U H HU X _ j _ p e jH pU eU hsm hgi he hP heU L hL I _ φ ε t ρ ht hρ hc`. Use `GlobalTheory.IsNormalScheme.of_pred hS` as an intermediate fact. Establish `: IsIntegral H` using `GeometricallyIntegral.isIntegral_of_isLocallyNoetherian p`. Establish `: IsLocallyNoetherian H` using `LocallyOfFiniteType.isLocallyNoetherian p`. Establish `: GlobalTheory.IsNormalScheme H` using `GlobalTheory.IsNormalScheme.of_pred (GlobalTheory.forall_isDomain_and_isIntegrallyClosed_stalk_of_smooth p hS)`.
+
+Establish `: IsOpenImmersion jH` using `MorphismProperty.of_isPullback (P := @IsOpenImmersion) hP.flip inferInstance`. Establish `: Nonempty HU` using `⟨eU (Nonempty.some inferInstance)⟩`. Establish `hW (a) (y : HU) : y ∈ LB.wchart L (fun i ↦ jH ≫ φ i) a ↔ jH y ∈ LB.wchart L φ a`. Rewrite using `[wchart_comp]`. Both sides reduce to the same expression.
+
+Establish `hex (a : I → L.ι) : ∃ s : Γ(H, LB.wchart L φ a)ˣ, ∀ y, jH y ∈ LB.wchart L φ a → gm jH y _ s = gm (𝟙 HU) y (LB.wchart L (fun i ↦ jH ≫ φ i) a) (t.s a)`. Distinguish the cases in `hne : ∃ y, jH y ∈ LB.wchart L φ a`. Use `swap`. Conclude with `⟨1, fun y hy ↦ (hne ⟨y, hy⟩).elim⟩`. Take `⟨y₀, hy₀⟩` from `hne`.
+
+Set `A : H.Opens` to `jH ''ᵁ LB.wchart L (fun i ↦ jH ≫ φ i) a`. Establish `hA : A ≤ LB.wchart L φ a`. Introduce and unpack `_ ⟨y, hy, rfl⟩`. Conclude with `(hW a y).1 hy`. Establish `: Nonempty A` using `⟨⟨_, y₀, (hW a y₀).2 hy₀, rfl⟩⟩`.
+
+Establish `: Nonempty (LB.wchart L φ a)` using `⟨⟨_, hy₀⟩⟩`. Set `τ : Γ(H, A)ˣ` to `Units.map (jH.appIso _).inv.hom.toMonoidHom (LB.ts t a)`. Establish `hτ : ∀ (Z : Scheme.{0}) (r : Z ⟶ HU) (z : Z), jH (r z) ∈ A → gm (r ≫ jH) z A τ = gm r z (LB.wchart L (fun i ↦ jH ≫ φ i) a) (t.s a)`. Introduce `Z r z hz`. Rewrite using `[← gm_pull r jH z A hz, ← gm_res r z (jH.preimage_image_eq _).le hz]`.
+
+Conclude with `congrArg _ (Units.ext (congrArg (fun f ↦ f.hom (LB.ts t a).val) (jH.appIso_inv_app (LB.wchart L (fun i ↦ jH ≫ φ i) a))))`. Establish `hmem : ∀ x ∈ LB.wchart L φ a, Order.coheight x = 1 → H.germToFunctionField A τ.val ∈ (algebraMap (H.presheaf.stalk x) H.functionField).range ∧ H.germToFunctionField A (τ⁻¹).val ∈ (algebraMap (H.presheaf.stalk x) H.functionField).range` using `fun x hx h1 ↦ by`. Distinguish the cases in `hxU : p x ∈ Set.range j`. Take `⟨u, hu⟩` from `hxU`. Take `⟨y, rfl, -⟩` from `Scheme.exists_preimage_of_isPullback hP x u hu.symm`.
+
+Establish `: jH y ∈ A` using `⟨y, (hW a y).2 hx, rfl⟩`. Conclude with `⟨germToFunctionField_mem_range_stalk A _ this, germToFunctionField_mem_range_stalk A _ this⟩`. Conclude with `mem_range_of_notMem he hP heU hL ht hρ hc x h1 hxU a hx A τ hτ`. Take `⟨s₁, h₁⟩` from `exists_germToFunctionField_eq_of_coheight_eq_one _ _ fun x hx h1 ↦ (hmem x hx h1).1`. Take `⟨s₂, h₂⟩` from `exists_germToFunctionField_eq_of_coheight_eq_one _ _ fun x hx h1 ↦ (hmem x hx h1).2`.
+
+Establish `h₁₂ : s₁ * s₂ = 1` using `H.germToFunctionField_injective _ (by`. Rewrite using `[map_mul, h₁, h₂, ← map_mul, Units.mul_inv, map_one, map_one])`. Set `s : Γ(H, LB.wchart L φ a)ˣ` to `⟨s₁, s₂, h₁₂, (mul_comm _ _).trans h₁₂⟩`. Establish `hs : res hA s = τ` using `Units.ext (H.germToFunctionField_injective A ((germToFunctionField_res hA s₁).trans h₁))`. Use `⟨s, fun y hy ↦ ?_⟩` and prove the remaining obligations.
+
+Establish `hyA : jH y ∈ A` using `⟨y, (hW a y).2 hy, rfl⟩`. Rewrite using `[← gm_res jH y hA hyA, hs, ← hτ _ (𝟙 HU) y hyA, Category.id_comp]`. Use `choose s hs using hex`. Establish `hpull (c : LB.Gen (LB.LinComb L φ ε)) (a) (y) (hy : jH y ∈ LB.wchart L φ a) : gm (𝟙 HU) y (LB.wchart L (fun i ↦ jH ≫ φ i) a) ((LB.pullGen L _ _ c jH).s a) = gm jH y (LB.wchart L φ a) (c.s a)` using `(gm_res _ y _ ((hW a y).2 hy) _).trans ((gm_pull _ _ y _ hy _).trans (by rw [Category.id_comp]; rfl))`. Use `⟨⟨s⟩, ⟨fun a b ↦ unit_ext_of_isOpenImmersion jH fun y hy ↦ ?_, ?_⟩, ?_⟩` and prove the remaining obligations.
+
+Use `gen_trans ht (𝟙 HU) y ((hW a y).2 hy.1) ((hW b y).2 hy.2)` as an intermediate fact. Rewrite `this` using `[← hs a y hy.1, ← hs b y hy.2]`. Use `(gm_res jH y _ hy _).trans (this.trans (Eq.symm ((map_mul _ _ _).trans ?_)))` and prove the remaining obligations. Use `congrArg₂ (· * ·) ((gm_linComb L φ ε jH y a b hy.1 hy.2).trans ?_) (gm_res jH y _ hy _)` and prove the remaining obligations. Simplify using `only [trF, Category.id_comp]`.
+
+Use `congrArg LB.Gen.mk (funext fun a ↦ unit_ext fun y hy ↦ ?_)` and prove the remaining obligations. Conclude with `(hpull ⟨s⟩ a y ((hW a y).1 hy)).trans (hs a y ((hW a y).1 hy))`. Introduce and unpack `⟨c⟩ ⟨-, rfl⟩`. Use `congrArg LB.Gen.mk (funext fun a ↦ unit_ext_of_isOpenImmersion jH fun y hy ↦ ?_)` and prove the remaining obligations. Conclude with `(hpull ⟨c⟩ a y hy).symm.trans (hs a y hy).symm`.
+-/
 theorem existsUnique_gen_extend :
     ∀ (S : Scheme.{0}) [IsIntegral S] [IsLocallyNoetherian S], Geo.Tor.IsNormalScheme S → ∀ (U H HU X : Scheme.{0}) [Nonempty U] (j : U ⟶ S) [IsOpenImmersion j] (p : H ⟶ S) (e : S ⟶ H) (jH : HU ⟶ H) (pU : HU ⟶ U) (eU : U ⟶ HU), Smooth p → GeometricallyIntegral p → e ≫ p = 𝟙 _ → IsPullback jH pU p j → eU ≫ jH = j ≫ e → ∀ (L : LB X), L.IsLB → ∀ (I : Type) [Fintype I] (φ : I → (H ⟶ X)) (ε : I → ℤ) (t : LB.Gen (LB.LinComb L (fun i => jH ≫ φ i) ε)) (ρ : LB.Gen (LB.LinComb L (fun i => e ≫ φ i) ε)), t.IsGen → ρ.IsGen → LB.Gen.Corr L _ _ _ _ (LB.pullGen L _ _ t eU) (LB.pullGen L _ _ ρ j) → ∃! c : LB.Gen (LB.LinComb L φ ε), c.IsGen ∧ LB.pullGen L _ _ c jH = t := by
   intro S _ _ hS U H HU X _ j _ p e jH pU eU hsm hgi he hP heU L hL I _ φ ε t ρ ht hρ hc

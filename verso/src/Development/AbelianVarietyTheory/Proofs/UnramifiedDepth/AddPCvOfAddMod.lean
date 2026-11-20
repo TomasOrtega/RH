@@ -14,11 +14,23 @@ open scoped CategoryTheory.Obj
 
 namespace GlobalTheory.AlphaPair
 
+/- English proof (translation)
+The claim follows from `ChartCompare.nEval_subst (σ := Unit) (fun _ => s) (fun _ => hs) f v hv`.
+-/
 theorem nEval_cvAt {Ω A : Type} [Field Ω] [CommRing A] [Algebra Ω A] (s : MvPowerSeries (Fin 2) Ω)
     (hs : MvPowerSeries.constantCoeff s = 0) (f : PowerSeries Ω) (v : Fin 2 → A) (hv : ∀ i, IsNilpotent (v i)) :
     nEval (cvAt s f) v = nEval (σ := Unit) f (fun _ => nEval s v) :=
   ChartCompare.nEval_subst (σ := Unit) (fun _ => s) (fun _ => hs) f v hv
 
+/- English proof (translation)
+Introduce `Ω _ p d F ga h0 hadd A _ _ a a' ha ha'`. Use function extensionality and compare the values at `i`. Establish `hp : ∀ k : Fin 2, (![a, a'] : Fin 2 → A) k ^ p = 0` using `fun k => by fin_cases k`. Conclude with `ha`. Conclude with `ha'`.
+
+Establish `hv : ∀ k : Fin 2, IsNilpotent ((![a, a'] : Fin 2 → A) k)` using `fun k => ⟨p, hp k⟩`. Establish `hz : nEval (MvPowerSeries.subst (fun q : Fin 2 × Fin d => cvAt (MvPowerSeries.X q.1) (ga q.2)) (F i) - cvAt (MvPowerSeries.X 0 + MvPowerSeries.X 1) (ga i)) (![a, a'] : Fin 2 → A) = 0`. Rewrite using `[evBasic_nEval_eq_tEval _ _ p hp, evBasic_tEval_eq_sum]`. Use `Finset.sum_eq_zero fun e he => ?_` and prove the remaining obligations. Rewrite `he` using `[Fintype.mem_piFinset]`.
+
+Rewrite using `[hadd i _ (Finset.mem_range.1 (he 0)) (Finset.mem_range.1 (he 1)), map_zero, zero_mul]`. Establish `hc : ∀ q : Fin 2 × Fin d, MvPowerSeries.constantCoeff (cvAt (MvPowerSeries.X q.1 : MvPowerSeries (Fin 2) Ω) (ga q.2)) = 0` using `fun q => MvPowerSeries.constantCoeff_subst_eq_zero (a := fun _ : Unit => (MvPowerSeries.X q.1 : MvPowerSeries (Fin 2) Ω)) (MvPowerSeries.hasSubst_of_constantCoeff_zero fun _ => MvPowerSeries.constantCoeff_X _) (fun _ => MvPowerSeries.constantCoeff_X _) (h0 q.2)`. Rewrite `hz` using `[nEval_sub hv, sub_eq_zero, ChartCompare.nEval_subst _ hc _ _ hv, nEval_cvAt _ (by simp) _ _ hv, nEval_add hv, ChartCompare.nEval_X _ hv, ChartCompare.nEval_X _ hv]`. Use `Eq.trans ?_ hz` and prove the remaining obligations. Unfold `addP evP`.
+
+Use `congr 1`. Use function extensionality and compare the values at `q`. Rewrite using `[nEval_cvAt _ (MvPowerSeries.constantCoeff_X _) _ _ hv, ChartCompare.nEval_X _ hv]`. Take `⟨k, j⟩` from `q`. Apply the tactic sequence `fin_cases k <;> rfl`.
+-/
 theorem formalAdd_cv_of_addMod :
     ∀ (Ω : Type) [Field Ω] (p d : ℕ) (F : Fin d → PS Ω 2 d) (ga : Fin d → PowerSeries Ω), (∀ j, PowerSeries.constantCoeff (ga j) = 0) → AddMod p F ga → ∀ (A : Type) [CommRing A] [Algebra Ω A] (a a' : A), a ^ p = 0 → a' ^ p = 0 → addP F (cv ga a) (cv ga a') = cv ga (a + a') := by
   intro Ω _ p d F ga h0 hadd A _ _ a a' ha ha'

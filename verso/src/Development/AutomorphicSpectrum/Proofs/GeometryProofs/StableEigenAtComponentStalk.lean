@@ -16,18 +16,47 @@ noncomputable section
 
 namespace GlobalTheory.CompanionTheory.Ar.LocFn
 
+/- English proof (translation)
+Simplify using `only [eigSp, Submodule.mem_iInf, LinearMap.mem_ker, LinearMap.sub_apply, LinearMap.smul_apply, LinearMap.id_apply, sub_eq_zero]`.
+-/
 theorem mem_eigSp_iff_forall {R V O : Type} [CommRing R] [AddCommGroup V] [Module R V] [CommRing O]
     (ρ : O →+* Module.End R V) (τ : O →+* R) (u : V) :
     u ∈ eigSp ρ τ ↔ ∀ a, ρ a u = τ a • u := by
   simp only [eigSp, Submodule.mem_iInf, LinearMap.mem_ker, LinearMap.sub_apply, LinearMap.smul_apply,
     LinearMap.id_apply, sub_eq_zero]
 
+/- English proof (translation)
+Establish `h : dualMap (RingHom.id A) = RingHom.id _` using `RingHom.ext fun a => by show TrivSqZeroExt.inl (TrivSqZeroExt.fst a) + TrivSqZeroExt.inr (TrivSqZeroExt.snd a) = a`. Conclude with `TrivSqZeroExt.inl_fst_add_inr_snd_eq a`. Rewrite using `[h, spMap, CommRingCat.ofHom_id, Spec.map_id]`.
+-/
 theorem spMap_dualMap_id {A : Type} [CommRing A] : spMap (dualMap (RingHom.id A)) = 𝟙 _ := by
   have h : dualMap (RingHom.id A) = RingHom.id _ := RingHom.ext fun a => by
     show TrivSqZeroExt.inl (TrivSqZeroExt.fst a) + TrivSqZeroExt.inr (TrivSqZeroExt.snd a) = a
     exact TrivSqZeroExt.inl_fst_add_inr_snd_eq a
   rw [h, spMap, CommRingCat.ofHom_id, Spec.map_id]
 
+/- English proof (translation)
+Introduce `E _ _ _ H D l Xo c U O _ β Y Z p κ σ r e hκ hs`. Take `⟨F, _, _, ⟨MA⟩⟩` from `lieModel_exists Y.X Y.t.G (Y.X.presheaf.stalk p.1) (Y.X.fromSpecStalk p.1)`. Take `⟨ρA, hρA, -⟩` from `lieModel_exists_unique_act Y.X Y.t.G (Y.X.presheaf.stalk p.1) (Y.X.fromSpecStalk p.1) F MA (𝓞 E) Y.t.act.act Y.t.act.hom Y.t.act.one Y.t.act.mul Y.t.act.add`. Establish `hg : spMap (genMap (Z.ξ₀ ≫ Y.j) p) ≫ Y.X.fromSpecStalk p.1 = Z.ξ₀ ≫ Y.j` using `LieTangent.spec_genMap _ p`. Take `⟨j, hj⟩` from `LieVB.exists_tr (A := Y.X.presheaf.stalk p.1) (Y.X.fromSpecStalk p.1) (Z.ξ₀ ≫ Y.j) (genMap (Z.ξ₀ ≫ Y.j) p) hg MA Z.M`.
+
+Establish `h0 : IsEigFrame Y.t.act (Y.X.fromSpecStalk p.1) (((RingHom.id _).comp κ).comp (tauIn c σ)) e` using `hs _ (RingHom.id _) _ (by simp only [spMap, CommRingCat.ofHom_id, Spec.map_id]; exact Category.id_comp _) e (fun i => by rw [spMap_dualMap_id, Category.id_comp])`. Use `choose f hf using fun i => MA.onto (e i) (h0.1 i).1`. Establish `hfe : (fun k => MA.pt (f k)) = e` using `funext hf`. Establish `hfr` using `((GlobalTheory.T.lie_model_eigenvectors_action Y.X (Y.X.presheaf.stalk p.1) Y.t.G (Y.X.fromSpecStalk p.1) F MA).2 (𝓞 E) Y.t.act ρA (((RingHom.id _).comp κ).comp (tauIn c σ)) hρA).2 r f`. Rewrite `hfr` using `[hfe]`.
+
+Take `⟨-, hfs⟩` from `hfr.1 h0`. Establish `hb : ∀ i, (Z.M.pt (j (f i))).left = spMap (dualMap (genMap (Z.ξ₀ ≫ Y.j) p)) ≫ (e i).left` using `fun i => by rw [hj, hf]`. Establish `hext : ∀ i, Z.M.Extends p (j (f i)) (e i)` using `fun i => ⟨(h0.1 i).1, hb i⟩`. Establish `h1 : IsEigFrame Y.t.act (Z.ξ₀ ≫ Y.j) (((genMap (Z.ξ₀ ≫ Y.j) p).comp κ).comp (tauIn c σ)) (fun i => Z.M.pt (j (f i)))` using `hs _ _ _ hg _ hb`. Rewrite `h1` using `[hκ]`.
+
+Take `⟨hbi, hbs⟩` from `(((GlobalTheory.T.lie_model_eigenvectors_action Y.X Z.Ω Y.t.G (Z.ξ₀ ≫ Y.j) Z.V Z.M).2 (𝓞 E) Y.t.act Z.ρ (Z.inc.comp (tauIn c σ)) Z.act).2 r fun i => j (f i)).1 h1`. Use `⟨fun i => j (f i), hext, hbi, le_antisymm ?_ (Submodule.span_le.2 ?_)⟩` and prove the remaining obligations. Introduce `e' he'`. Take `⟨hl, hE⟩ : e' ∈ Z.M.lat p ∧ e' ∈ eigSp Z.ρ (Z.inc.comp (tauIn c σ))` from `he'`. Take `⟨v, hv⟩` from `(Z.M.mem_lat_iff p e').1 hl`.
+
+Take `⟨w, rfl⟩` from `MA.onto v hv.1`. Establish `hw : e' = j w` using `LieVB.pt_left_inj Z.M (hv.2.trans (hj w).symm)`. Use `letI : Algebra c.F (Y.X.presheaf.stalk p.1) := κ.toAlgebra`. Use `letI : Algebra c.F Z.Ω := Z.inc.toAlgebra`. Take `⟨ft, ⟨hft1, hft2⟩, -⟩` from `GlobalTheory.Frames.existsUnique_eigen_sum E H l c (Y.X.presheaf.stalk p.1) F ρA w`.
+
+Establish `hint : ∀ a y, Z.ρ a (j y) = j (ρA a y)` using `fun a y => LieVB.pt_left_inj Z.M (by`. Establish `h2` using `congrArg (fun q => q.left) (Z.act a (j y))`. Establish `h3` using `congrArg (fun q => q.left) (hρA a y)`. Simplify using `only [Over.comp_left] at h2 h3`. Rewrite using `[h2, hj, hj, h3, Category.assoc])`.
+
+Take `⟨_, -, huq⟩` from `GlobalTheory.Frames.existsUnique_eigen_sum E H l c Z.Ω Z.V Z.ρ e'`. Establish `e1` using `huq (fun τ => j (ft τ)) ⟨fun τ a => by show Z.ρ a (j (ft τ)) = _`. Rewrite using `[hint, hft1, j.map_smulₛₗ]`. Use `show (genMap (Z.ξ₀ ≫ Y.j) p) (κ _) • _ = Z.inc _ • _`. Rewrite using `[← hκ]; rfl, by rw [← map_sum, hft2, hw]⟩`.
+
+Establish `e2` using `huq (fun τ => if τ = σ then e' else 0) ⟨fun τ a => by`. Distinguish the cases in `h : τ = σ`. Substitute `h` using the available equality. Simplify using `only [if_true]`. Conclude with `(mem_eigSp_iff_forall _ _ _).1 hE a`.
+
+Simplify using `[h], by simp⟩`. Establish `e3 : j (ft σ) = e'` using `by simpa using congrFun (e1.trans e2.symm) σ`. Establish `hmem : ft σ ∈ eigSp ρA (((RingHom.id _).comp κ).comp (tauIn c σ))` using `(mem_eigSp_iff_forall _ _ _).2 fun a => hft1 σ a`. Rewrite `hmem` using `[← hfs]`. Take `⟨a, ha⟩` from `(Submodule.mem_span_range_iff_exists_fun _).1 hmem`.
+
+Rewrite using `[← e3, ← ha, map_sum]`. Use `Submodule.sum_mem _ fun i _ => ?_` and prove the remaining obligations. Rewrite using `[j.map_smulₛₗ]`. Conclude with `Submodule.smul_mem _ (⟨genMap (Z.ξ₀ ≫ Y.j) p (a i), _, rfl⟩ : regAt (Z.ξ₀ ≫ Y.j) p) (Submodule.subset_span ⟨i, rfl⟩)`. Introduce and unpack `_ ⟨i, rfl⟩`.
+
+Conclude with `⟨(Z.M.mem_lat_iff p _).2 ⟨_, hext i⟩, hbs ▸ Submodule.subset_span ⟨i, rfl⟩⟩`.
+-/
 theorem frame_of_stableEig : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (D : Datum H) (l : Level H) (Xo : Moduli D l) (c : Coeff l) (U : Set (Xo.XF c)) (O : Type) [CommRing O] (β : O →+* c.F) (Y : Model Xo c β) (Z : CptOver Y U) (p : Cpt (Z.ξ₀ ≫ Y.j)) (κ : c.F →+* Y.X.presheaf.stalk p.1) (σ : E →+* ℂ) (r : ℕ) (e : Fin r → (epsAt (Y.X.fromSpecStalk p.1) ⟶ Y.t.G)), (genMap (Z.ξ₀ ≫ Y.j) p).comp κ = Z.inc → StableEig Y.t (Y.X.fromSpecStalk p.1) κ σ e → ∃ b : Fin r → Z.V, (∀ i, Z.M.Extends p (b i) (e i)) ∧ (Z.eig σ).IsFrameAt b p := by
   classical
   intro E _ _ _ H D l Xo c U O _ β Y Z p κ σ r e hκ hs

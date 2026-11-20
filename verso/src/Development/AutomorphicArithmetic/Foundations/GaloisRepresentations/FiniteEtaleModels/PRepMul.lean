@@ -5,6 +5,29 @@ open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalC
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Geo.Tor GlobalTheory.UPel.HT GlobalTheory.UPel.HT.Hecke GlobalTheory.UPel.HT.EtLev GlobalTheory.UPel.HT.ES
 open UpperTheory.Gal.FiniteEtaleModels
 
+/- English proof (translation)
+Introduce `hM hP p _ D R _ b N S s o 𝔞 𝔟 hab h₁ h₂`. Take `⟨Y₁, π₁, lu₁, hf₁, he₁, hl₁, hu₁⟩` from `h₁`. Take `⟨Y₂, π₂, lu₂, hf₂, he₂, hl₂, hu₂⟩` from `h₂`. Use `haveI := hf₁`. Use `haveI := hf₂`.
+
+Use `haveI := he₁`. Use `haveI := he₂`. Take `⟨ea, hea, eb, heb, hsum⟩` from `Submodule.mem_sup.1 (show (1 : 𝓞 D.F) ∈ 𝔞 ⊔ 𝔟 by rw [hab]; exact Submodule.mem_top)`. Establish `kill : ∀ {𝔠 : Ideal (𝓞 D.F)} {T : Over S} {l : D.La → (T ⟶ o.A)}, IsEtLevOver o 𝔠 1 l → ∀ e ∈ 𝔠, ∀ y, l (algebraMap (𝓞 D.F) D.O e • y) = 1` using `fun h e he y => h.2.2.1 _ (Submodule.subset_span ⟨e, by simpa using he, y, rfl⟩)`. Establish `dec : ∀ y : D.La, algebraMap (𝓞 D.F) D.O ea • y + algebraMap (𝓞 D.F) D.O eb • y = y`.
+
+Introduce `y`. Rewrite using `[← add_smul, ← map_add, hsum, map_one, one_smul]`. Establish `r₁ : ∀ y, lu₁ (algebraMap (𝓞 D.F) D.O eb • y) = lu₁ y`. Introduce `y`. Use `conv_rhs => rw [← dec y, hl₁.1, kill hl₁ ea hea, _root_.one_mul]`.
+
+Establish `r₂ : ∀ y, lu₂ (algebraMap (𝓞 D.F) D.O ea • y) = lu₂ y`. Introduce `y`. Use `conv_rhs => rw [← dec y, hl₂.1, kill hl₂ eb heb, _root_.mul_one]`. Set `π : pullback π₁ π₂ ⟶ S` to `pullback.fst π₁ π₂ ≫ π₁`. Set `f₁ : Over.mk π ⟶ Over.mk π₁` to `Over.homMk (pullback.fst π₁ π₂) rfl`.
+
+Set `f₂ : Over.mk π ⟶ Over.mk π₂` to `Over.homMk (pullback.snd π₁ π₂) pullback.condition.symm`. Use `⟨pullback π₁ π₂, π, fun y => (f₁ ≫ lu₁ y) * (f₂ ≫ lu₂ y), inferInstance, inferInstance, ?_, ?_⟩` and prove the remaining obligations. Conclude with `hM p D R b N S s o 𝔞 𝔟 hab _ _ _ (GlobalTheory.T.etale_level_base_change p D R b N S s o 𝔞 1 _ _ lu₁ f₁ hl₁) (GlobalTheory.T.etale_level_base_change p D R b N S s o 𝔟 1 _ _ lu₂ f₂ hl₂)`. Introduce `T l hl`. Establish `hA` using `hP p D R b N S s o 𝔞 𝔟 eb heb (by rw [← hsum, add_sub_cancel_right]; exact hea) T l hl`.
+
+Establish `hB` using `hP p D R b N S s o 𝔟 𝔞 ea hea (by rw [← hsum, add_sub_cancel_left]; exact heb) T l (by rwa [_root_.mul_comm])`. Take `⟨g₁, hg₁, hv₁⟩` from `hu₁ T _ hA`. Take `⟨g₂, hg₂, hv₂⟩` from `hu₂ T _ hB`. Establish `hg₁' : ∀ y, g₁ ≫ lu₁ y = l (algebraMap (𝓞 D.F) D.O eb • y)` using `hg₁`. Establish `hg₂' : ∀ y, g₂ ≫ lu₂ y = l (algebraMap (𝓞 D.F) D.O ea • y)` using `hg₂`.
+
+Establish `hw : g₁.left ≫ π₁ = g₂.left ≫ π₂` using `(Over.w g₁).trans (Over.w g₂).symm`. Set `f : T ⟶ Over.mk π` to `Over.homMk (pullback.lift g₁.left g₂.left hw) (by show pullback.lift g₁.left g₂.left hw ≫ pullback.fst π₁ π₂ ≫ π₁ = T.hom`. Rewrite using `[← Category.assoc, pullback.lift_fst]`. Conclude with `Over.w g₁)`. Establish `c₁ : f ≫ f₁ = g₁` using `Over.OverMorphism.ext (pullback.lift_fst _ _ hw)`.
+
+Establish `c₂ : f ≫ f₂ = g₂` using `Over.OverMorphism.ext (pullback.lift_snd _ _ hw)`. Use `⟨f, ?_, ?_⟩` and prove the remaining obligations. Introduce `y show f ≫ ((f₁ ≫ lu₁ y) * (f₂ ≫ lu₂ y)) = l y`. Rewrite using `[MonObj.comp_mul, ← Category.assoc, ← Category.assoc, c₁, c₂, hg₁', hg₂', ← hl.1, add_comm, dec]`. Introduce `f' hf'`.
+
+Establish `hf'' : ∀ y, f' ≫ ((f₁ ≫ lu₁ y) * (f₂ ≫ lu₂ y)) = l y` using `hf'`. Establish `a₁ : f' ≫ f₁ = g₁` using `hv₁ _ (fun y => by`. Use `hf'' (algebraMap (𝓞 D.F) D.O eb • y)` as an intermediate fact. Rewrite `this` using `[kill hl₂ eb heb, r₁, MonObj.comp_mul, MonObj.comp_one, MonObj.comp_one, _root_.mul_one, ← Category.assoc]`. Conclude with `this)`.
+
+Establish `a₂ : f' ≫ f₂ = g₂` using `hv₂ _ (fun y => by`. Use `hf'' (algebraMap (𝓞 D.F) D.O ea • y)` as an intermediate fact. Rewrite `this` using `[kill hl₁ ea hea, r₂, MonObj.comp_mul, MonObj.comp_one, MonObj.comp_one, _root_.one_mul, ← Category.assoc]`. Conclude with `this)`. Use `Over.OverMorphism.ext (pullback.hom_ext ?_ ?_)` and prove the remaining obligations.
+
+Use `congrArg (fun u => u.left) (a₁.trans c₁.symm)` as an intermediate fact. Simplify `this` using `[f₁]`. Use `congrArg (fun u => u.left) (a₂.trans c₂.symm)` as an intermediate fact. Simplify `this` using `[f₂]`.
+-/
 theorem UpperTheory.Gal.FiniteEtaleModels.repMul_holds :
     CrtMul → CrtProj → RepMul := by
   intro hM hP p _ D R _ b N S s o 𝔞 𝔟 hab h₁ h₂

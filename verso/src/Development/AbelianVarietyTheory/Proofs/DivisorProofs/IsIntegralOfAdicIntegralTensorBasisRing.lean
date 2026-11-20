@@ -8,6 +8,19 @@ open scoped TensorProduct Classical
 
 namespace GlobalTheory.AdicSpan
 
+/- English proof (translation)
+Introduce `v C _ _ _ κ b h1 hmul y hy`. Use `haveI : Fintype κ := FiniteDimensional.fintypeBasisIndex b`. Use `set e := Algebra.TensorProduct.basis (v.adicCompletion ℚ) b with he`. Establish `hsmul : ∀ (a : v.adicCompletionIntegers ℚ) (x : v.adicCompletion ℚ ⊗[ℚ] C), a • x = (a : v.adicCompletion ℚ) • x` using `fun a x => (algebraMap_smul (v.adicCompletion ℚ) a x).symm`. Establish `hadd : ∀ x z, IsIntB v b x → IsIntB v b z → IsIntB v b (x + z)` using `fun x z hx hz i => by`.
+
+Rewrite using `[map_add, Finsupp.add_apply]`. Conclude with `add_mem (hx i) (hz i)`. Set `S : Subalgebra (v.adicCompletionIntegers ℚ) (v.adicCompletion ℚ ⊗[ℚ] C)` to `{ carrier := {x | IsIntB v b x} mul_mem' := fun {x z} hx hz => hmul x z hx hz one_mem' := h1 add_mem' := fun {x z} hx hz => hadd x z hx hz zero_mem' := isIntB_zero v b algebraMap_mem' := fun a => by show IsIntB v b (algebraMap _ _ a)`. Rewrite using `[Algebra.algebraMap_eq_smul_one, hsmul]`. Introduce `i`.
+
+Rewrite using `[map_smul, Finsupp.smul_apply, smul_eq_mul]`. Conclude with `mul_mem a.2 (h1 i) }`. Establish `hS : Subalgebra.toSubmodule S = Submodule.span (v.adicCompletionIntegers ℚ) (Set.range fun i => (1 : v.adicCompletion ℚ) ⊗ₜ[ℚ] b i)`. Apply `le_antisymm` to reduce the goal to its premises. Introduce `x hx`.
+
+Rewrite using `[← e.sum_repr x]`. Use `Submodule.sum_mem _ fun i _ => ?_` and prove the remaining obligations. Take `⟨c, hc⟩ : ∃ c : v.adicCompletionIntegers ℚ, (c : v.adicCompletion ℚ) = e.repr x i` from `⟨⟨_, hx i⟩, rfl⟩`. Rewrite using `[← hc, ← hsmul, he, Algebra.TensorProduct.basis_apply]`. Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span ⟨i, rfl⟩)`.
+
+Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨j, rfl⟩`. Conclude with `isIntB_tmul_basis v b j`. Use `IsIntegral.of_mem_of_fg S ?_ y hy` and prove the remaining obligations. Rewrite using `[hS]`.
+
+Conclude with `Submodule.fg_span (Set.finite_range _)`.
+-/
 theorem isIntegral_of_isIntB : ∀ (v : HeightOneSpectrum ℤ) (C : Type) [Ring C] [Algebra ℚ C] [FiniteDimensional ℚ C] (κ : Type)
     (b : Module.Basis κ ℚ C), IsIntB v b 1 → (∀ y z, IsIntB v b y → IsIntB v b z → IsIntB v b (y * z)) →
       ∀ y, IsIntB v b y → IsIntegral (v.adicCompletionIntegers ℚ) y := by

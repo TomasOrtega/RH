@@ -14,6 +14,9 @@ open GlobalTheory.NormSum (Pair Tup)
 open Classical
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.BotClassMeas.integral_eq_vol_mul_classSum | exact GlobalTheory.BotClassMeas.integral_eq_vol_mul_classSum | (intros; apply GlobalTheory.BotClassMeas.integral_eq_vol_mul_classSum <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.integral_fundamentalDomain_eq_vol_mul_classSum : ∀ {D : D7} (A : HSp D), A.gram = 1 → ∀ (m : Measure (Formalism.L2.Theta.GA D A)) (fd : Set (Formalism.L2.Theta.GA D A)),
     m.IsHaarMeasure → IsFundamentalDomain (GQ A) fd m →
     ∃ v : ℂ, v ≠ 0 ∧ ∀ (n : ℕ), n = A.rank → ∀ (pt : Formalism.MainNotions.StandardLatticesGL3.GA D n → Formalism.L2.Theta.GA D A),

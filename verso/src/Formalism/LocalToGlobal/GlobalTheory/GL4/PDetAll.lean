@@ -14,12 +14,26 @@ section Char
 
 variable (K : Type) [Field K] [CharZero K] {n : ℕ} (χ : GL (Fin n) K →* K)
 
+/- English proof (translation)
+Introduce `h`. Establish `h1 : χ g * χ g⁻¹ = 1` using `by rw [← map_mul, mul_inv_cancel, map_one]`. Rewrite `h1` using `[h, zero_mul]`. Conclude with `zero_ne_one h1`.
+-/
 theorem glChar_ne_zero (g : GL (Fin n) K) : χ g ≠ 0 := by
   intro h
   have h1 : χ g * χ g⁻¹ = 1 := by rw [← map_mul, mul_inv_cancel, map_one]
   rw [h, zero_mul] at h1
   exact zero_ne_one h1
 
+/- English proof (translation)
+Use `set T : K → GL (Fin n) K := fun c => brpGL K (Matrix.transvection i j c) (brp_isUnit_transvection K i j hij c) with hT`. Establish `hdet2 : IsUnit (Matrix.diagonal (Function.update (1 : Fin n → K) i 2)).det`. Rewrite using `[Matrix.det_diagonal, Finset.prod_update_of_mem (Finset.mem_univ i)]`. Simplify using the standard rewrite rules. Use `set D := brpGL K _ hdet2`.
+
+Establish `h2 : T c * T c = T (2 * c)`. Apply `Units.ext` to reduce the goal to its premises. Simplify using `only [hT, Units.val_mul, brpGL_coe]`. Rewrite using `[Matrix.transvection_mul_transvection_same i j hij, two_mul]`. Establish `hDT : D * T c = T (2 * c) * D`.
+
+Apply `Units.ext` to reduce the goal to its premises. Simplify using `only [hT, D, Units.val_mul, brpGL_coe]`. Conclude with `brp_diag_transvection K i j hij c`. Establish `e1` using `congrArg χ hDT`. Rewrite `e1` using `[map_mul, map_mul, mul_comm (χ (T (2 * c)))]`.
+
+Establish `e2 : χ (T c) = χ (T (2 * c))` using `mul_left_cancel₀ (glChar_ne_zero K χ D) e1`. Rewrite `e2` using `[← h2, map_mul]`. Establish `hx` using `glChar_ne_zero K χ (T c)`. Establish `: χ (T c) * (χ (T c) - 1) = 0` using `by rw [mul_sub, mul_one, ← e2, sub_self]`. Break down `mul_eq_zero.1 this with h | h` into its components or cases.
+
+Conclude with `absurd h hx`. Conclude with `(sub_eq_zero.1 h)`.
+-/
 theorem glChar_transvection (i j : Fin n) (hij : i ≠ j) (c : K) :
     χ (brpGL K (Matrix.transvection i j c) (brp_isUnit_transvection K i j hij c)) = 1 := by
   set T : K → GL (Fin n) K := fun c => brpGL K (Matrix.transvection i j c) (brp_isUnit_transvection K i j hij c) with hT
@@ -45,6 +59,15 @@ theorem glChar_transvection (i j : Fin n) (hij : i ≠ j) (c : K) :
   · exact absurd h hx
   · exact (sub_eq_zero.1 h)
 
+/- English proof (translation)
+Use `set P := brpGL K _ (brp_isUnit_perm K (Equiv.swap a b))`. Establish `hP : P * brpDiag K (Pi.mulSingle a t) = brpDiag K (Pi.mulSingle b t) * P`. Apply `Units.ext` to reduce the goal to its premises. Simplify using `only [P, Units.val_mul, brpGL_coe, brpDiag_coe]`. Rewrite using `[brp_perm_diag]`.
+
+Use `congr 2`. Use function extensionality and compare the values at `x`. Simplify using `only [Function.comp_apply, Pi.mulSingle_apply]`. Distinguish the cases in `hx : x = b`. Substitute `hx` using the available equality.
+
+Simplify using the standard rewrite rules. Distinguish the cases in `hxa : x = a`. Substitute `hxa` using the available equality. Rewrite using `[Equiv.swap_apply_left]`. Simplify using `[hx, Ne.symm hx]`.
+
+Rewrite using `[Equiv.swap_apply_of_ne_of_ne hxa hx]`. Simplify using `[hx, hxa]`. Establish `e` using `congrArg χ hP`. Rewrite `e` using `[map_mul, map_mul, mul_comm (χ (brpDiag K (Pi.mulSingle b t)))]`. Conclude with `mul_left_cancel₀ (glChar_ne_zero K χ P) e`.
+-/
 theorem glChar_single_eq (a b : Fin n) (t : Kˣ) :
     χ (brpDiag K (Pi.mulSingle a t)) = χ (brpDiag K (Pi.mulSingle b t)) := by
   set P := brpGL K _ (brp_isUnit_perm K (Equiv.swap a b))
@@ -67,6 +90,15 @@ theorem glChar_single_eq (a b : Fin n) (t : Kˣ) :
   rw [map_mul, map_mul, mul_comm (χ (brpDiag K (Pi.mulSingle b t)))] at e
   exact mul_left_cancel₀ (glChar_ne_zero K χ P) e
 
+/- English proof (translation)
+Break down `Nat.eq_zero_or_pos n with hn | hn` into its components or cases. Substitute `hn` using the available equality. Simplify using the standard rewrite rules. Use `set a0 : Fin n := ⟨0, hn⟩`. Use `set φ : Kˣ → K := fun t => χ (brpDiag K (Pi.mulSingle a0 t))`.
+
+Establish `h1 : χ (brpDiag K d) = ∏ a, φ (d a)` using `by conv_lhs => rw [← Finset.univ_prod_mulSingle d]`. Express the relevant statement in the definitionally equal form `(χ.comp (brpDiag K)) _ = _`. Rewrite using `[map_prod]`. Conclude with `Finset.prod_congr rfl fun a _ => glChar_single_eq K χ a a0 (d a)`. Establish `h2 : ∀ t : Kˣ, φ t ^ n = (t : K) ^ N`.
+
+Introduce `t`. Establish `: φ t ^ n = ∏ a : Fin n, χ (brpDiag K (Pi.mulSingle a t))`. Rewrite using `[Finset.prod_congr rfl fun a _ => glChar_single_eq K χ a a0 t, Finset.prod_const, Finset.card_univ, Fintype.card_fin]`. Rewrite using `[this]`. Establish `hc : (∏ a : Fin n, Pi.mulSingle a t) = fun _ => t` using `Finset.univ_prod_mulSingle (fun _ : Fin n => t)`.
+
+Establish `e : (∏ a : Fin n, χ (brpDiag K (Pi.mulSingle a t))) = (χ.comp (brpDiag K)) (∏ a : Fin n, Pi.mulSingle a t)`. Rewrite using `[map_prod]`. Both sides reduce to the same expression. Rewrite using `[e, hc, MonoidHom.comp_apply, brpDiag_const, hs]`. Rewrite using `[h1, ← Finset.prod_pow, Finset.prod_congr rfl fun a _ => h2 (d a), Finset.prod_zpow]`.
+-/
 theorem glChar_diag_pow (N : ℤ) (hs : ∀ t : Kˣ, χ (brpSc K t) = (t : K) ^ N) (d : Fin n → Kˣ) :
     χ (brpDiag K d) ^ n = (∏ a, (d a : K)) ^ N := by
   classical
@@ -92,6 +124,9 @@ theorem glChar_diag_pow (N : ℤ) (hs : ∀ t : Kˣ, χ (brpSc K t) = (t : K) ^ 
     rw [e, hc, MonoidHom.comp_apply, brpDiag_const, hs]
   rw [h1, ← Finset.prod_pow, Finset.prod_congr rfl fun a _ => h2 (d a), Finset.prod_zpow]
 
+/- English proof (translation)
+Rewrite using `[map_list_prod, List.map_map]`. Apply `List.prod_eq_one` to reduce the goal to its premises. Introduce `x hx`. Take `⟨t, _, rfl⟩` from `List.mem_map.1 hx`. Conclude with `glChar_transvection K χ t.i t.j t.hij t.c`.
+-/
 theorem glChar_list_transvec (L : List (Matrix.TransvectionStruct (Fin n) K)) :
     χ (L.map fun t => brpGL K t.toMatrix (by rw [t.det]; exact isUnit_one)).prod = 1 := by
   rw [map_list_prod, List.map_map]
@@ -100,6 +135,13 @@ theorem glChar_list_transvec (L : List (Matrix.TransvectionStruct (Fin n) K)) :
   obtain ⟨t, _, rfl⟩ := List.mem_map.1 hx
   exact glChar_transvection K χ t.i t.j t.hij t.c
 
+/- English proof (translation)
+Take `⟨L, L', D, hM⟩` from `Matrix.Pivot.exists_list_transvec_mul_diagonal_mul_list_transvec (g : Matrix (Fin n) (Fin n) K)`. Establish `hdet : (g : Matrix (Fin n) (Fin n) K).det = ∏ a, D a`. Rewrite using `[hM, Matrix.det_mul, Matrix.det_mul, brp_det_list_transvec, brp_det_list_transvec, Matrix.det_diagonal, one_mul, mul_one]`. Establish `hD : ∀ a, D a ≠ 0`. Establish `h0 : (g : Matrix (Fin n) (Fin n) K).det ≠ 0` using `(Matrix.isUnits_det_units g).ne_zero`.
+
+Rewrite `h0` using `[hdet]`. Conclude with `fun a => (Finset.prod_ne_zero_iff.1 h0) a (Finset.mem_univ a)`. Use `set Du : Fin n → Kˣ := fun a => Units.mk0 (D a) (hD a)`. Establish `hg : g = (L.map fun t => brpGL K t.toMatrix (by rw [t.det]; exact isUnit_one)).prod * brpDiag K Du * (L'.map fun t => brpGL K t.toMatrix (by rw [t.det]; exact isUnit_one)).prod`. Apply `Units.ext` to reduce the goal to its premises.
+
+Rewrite using `[Units.val_mul, Units.val_mul, brp_coe_list_transvec, brp_coe_list_transvec, brpDiag_coe, hM]`. Simplify using `[Du]`. Use `conv_lhs => rw [hg]`. Rewrite using `[map_mul, map_mul, glChar_list_transvec, glChar_list_transvec, one_mul, mul_one, glChar_diag_pow K χ N hs, hdet]`. Simplify using `[Du]`.
+-/
 theorem glChar_pow (N : ℤ) (hs : ∀ t : Kˣ, χ (brpSc K t) = (t : K) ^ N) (g : GL (Fin n) K) :
     χ g ^ n = ((g : Matrix (Fin n) (Fin n) K).det) ^ N := by
   classical
@@ -126,6 +168,13 @@ section Single
 
 variable (K : Type) [Field K] {ι : Type} [Fintype ι] [DecidableEq ι] {n : ℕ}
 
+/- English proof (translation)
+Unfold `Formalism.GradedWeylDivisibility.rowAct`. Use `congr 1`. Use function extensionality and compare the values at `v`. Rewrite using `[Finset.sum_eq_single v.1]`. Simplify using the standard rewrite rules.
+
+Introduce `b _ hb`. Simplify using `[Matrix.one_apply]`. Introduce `h`. Conclude with `absurd h hb`. Introduce `h`.
+
+Conclude with `absurd (Finset.mem_univ _) h`.
+-/
 theorem rowAct_scalar (t : K) :
     Formalism.GradedWeylDivisibility.rowAct K (r := n) (n := n) ((t • 1 : Matrix (Fin n) (Fin n) K))ᵀ = aeval fun v => C t * X v := by
   unfold Formalism.GradedWeylDivisibility.rowAct
@@ -138,6 +187,9 @@ theorem rowAct_scalar (t : K) :
     intro h; exact absurd h hb
   · intro h; exact absurd (Finset.mem_univ _) h
 
+/- English proof (translation)
+Establish `h` using `rowAct_scalar (n := n) K 1`. Rewrite `h` using `[one_smul]`. Rewrite using `[h]`. Simplify using the standard rewrite rules.
+-/
 theorem rowAct_one_tr (F : MvPolynomial (Fin n × Fin n) K) :
     Formalism.GradedWeylDivisibility.rowAct K (r := n) (n := n) ((1 : Matrix (Fin n) (Fin n) K))ᵀ F = F := by
   have h := rowAct_scalar (n := n) K 1
@@ -145,6 +197,15 @@ theorem rowAct_one_tr (F : MvPolynomial (Fin n × Fin n) K) :
   rw [h]
   simp
 
+/- English proof (translation)
+Unfold `trAct`. Proceed by induction on `hF using Submodule.span_induction with`. Consider the case `mem P hP`. Take `⟨G, hG, rfl⟩` from `hP`. Rewrite using `[map_prod]`.
+
+Establish `hfac : ∀ s, Formalism.GradedWeylDivisibility.blockAct K (fun σ => (((Pi.mulSingle τ (brpSc K t) : ι → GL (Fin n) K) σ : GL (Fin n) K) : Matrix (Fin n) (Fin n) K)ᵀ) (Formalism.GradedWeylDivisibility.blockEmb K s (G s)) = (if s = τ then (t : K) ^ (∑ i, (lam τ).natW i) else 1) • For …`. Introduce `s`. Rewrite using `[(Formalism.GradedWeylDivisibility.blockActTensor K K ι n n _).1 s (G s)]`. Distinguish the cases in `hs : s = τ`. Substitute `hs` using the available equality.
+
+Rewrite using `[if_pos rfl, Pi.mulSingle_eq_same, brpSc_coe, rowAct_scalar]`. Establish `hW : G s ∈ weightedHomogeneousSubmodule K (Formalism.GradedWeylDivisibility.colW n n) (lam s).natW` using `(Submodule.mem_inf.1 (hG s)).1`. Rewrite using `[brp_aeval_scale_whom _ _ hW, map_smul]`. Rewrite using `[if_neg hs, Pi.mulSingle_eq_of_ne hs, Units.val_one, rowAct_one_tr, one_smul]`. Rewrite using `[Finset.prod_congr rfl fun s _ => hfac s, Finset.prod_smul, Finset.prod_ite_eq' Finset.univ τ, if_pos (Finset.mem_univ τ)]`.
+
+Consider the case `zero => simp`. Consider the case `add x y _ _ hx hy => rw [map_add, hx, hy, smul_add]`. Consider the case `smul a x _ hx => rw [map_smul, hx, smul_comm]`.
+-/
 theorem trAct_single_scalar (lam : ι → DomWeight n) (τ : ι) (t : Kˣ) (F : Pol K ι n) (hF : F ∈ VV K lam) :
     trAct (Pi.mulSingle τ (brpSc K t)) F = (t : K) ^ (∑ i, (lam τ).natW i) • F := by
   unfold trAct
@@ -169,6 +230,13 @@ theorem trAct_single_scalar (lam : ι → DomWeight n) (τ : ι) (t : Kˣ) (F : 
   | add x y _ _ hx hy => rw [map_add, hx, hy, smul_add]
   | smul a x _ hx => rw [map_smul, hx, smul_comm]
 
+/- English proof (translation)
+Unfold `detTwK`. Rewrite using `[Finset.prod_eq_single τ]`. Rewrite using `[Pi.mulSingle_eq_same]`. Unfold `detPow`. Establish `hdet : (Matrix.GeneralLinearGroup.det (brpSc K t : GL (Fin n) K) : K) = (t : K) ^ n`.
+
+Rewrite using `[Matrix.GeneralLinearGroup.val_det_apply, brpSc_coe]`. Simplify using the standard rewrite rules. Rewrite using `[Units.val_zpow_eq_zpow_val, hdet, ← zpow_natCast, ← zpow_mul]`. Introduce `s _ hs`. Rewrite using `[Pi.mulSingle_eq_of_ne hs]`.
+
+Simplify using `[detPow]`. Introduce `h`. Conclude with `absurd (Finset.mem_univ _) h`.
+-/
 theorem detTwK_single_scalar (lam : ι → DomWeight n) (τ : ι) (t : Kˣ) :
     detTwK lam (Pi.mulSingle τ (brpSc K t)) = (t : K) ^ ((n : ℤ) * (lam τ).detShift) := by
   unfold detTwK
@@ -184,6 +252,13 @@ theorem detTwK_single_scalar (lam : ι → DomWeight n) (τ : ι) (t : Kˣ) :
     simp [detPow]
   · intro h; exact absurd (Finset.mem_univ _) h
 
+/- English proof (translation)
+Apply `LinearMap.ext` to reduce the goal to its premises. Introduce `F`. Apply `Subtype.ext` to reduce the goal to its premises. Use `show actP lam (Pi.mulSingle τ (brpSc K t)) F.1 = ((t : K) ^ wsum (lam τ)) • F.1`. Unfold `actP`.
+
+Rewrite using `[LinearMap.smul_apply, AlgHom.toLinearMap_apply, trAct_single_scalar K lam τ t F.1 F.2, detTwK_single_scalar, smul_smul]`. Use `congr 1`. Establish `ht : (t : K) ≠ 0` using `t.ne_zero`. Rewrite using `[wsum, brp_wsum, ← zpow_natCast, ← zpow_add₀ ht]`. Use `congr 1`.
+
+Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem rhoK_single_scalar (lam : ι → DomWeight n) (τ : ι) (t : Kˣ) :
     rhoK lam (Pi.mulSingle τ (brpSc K t)) = ((t : K) ^ wsum (lam τ)) • (1 : Module.End K (VV K lam)) := by
   apply LinearMap.ext
@@ -203,11 +278,19 @@ def chiAt (lam : ι → DomWeight n) (τ : ι) : GL (Fin n) K →* K :=
   (LinearMap.det : Module.End K (VV K lam) →* K).comp
     ((rhoK lam).comp (MonoidHom.mulSingle (fun _ : ι => GL (Fin n) K) τ))
 
+/- English proof (translation)
+Use `show LinearMap.det (rhoK lam (Pi.mulSingle τ (brpSc K t))) = _`. Rewrite using `[rhoK_single_scalar, LinearMap.det_smul, map_one, mul_one, ← zpow_natCast, ← zpow_mul]`.
+-/
 theorem chiAt_scalar (lam : ι → DomWeight n) (τ : ι) (t : Kˣ) :
     chiAt K lam τ (brpSc K t) = (t : K) ^ (wsum (lam τ) * (Module.finrank K (VV K lam) : ℤ)) := by
   show LinearMap.det (rhoK lam (Pi.mulSingle τ (brpSc K t))) = _
   rw [rhoK_single_scalar, LinearMap.det_smul, map_one, mul_one, ← zpow_natCast, ← zpow_mul]
 
+/- English proof (translation)
+Establish `h1 : LinearMap.det (rhoK lam g) = ∏ τ, chiAt K lam τ (g τ)`. Establish `h0` using `Finset.map_noncommProd Finset.univ (fun i => Pi.mulSingle i (g i)) (fun i _ j _ _ => Pi.mulSingle_apply_commute g i j) ((LinearMap.det : Module.End K (VV K lam) →* K).comp (rhoK lam))`. Rewrite `h0` using `[Finset.noncommProd_mulSingle g, Finset.noncommProd_eq_prod]`. Conclude with `h0`. Rewrite using `[h1, ← Finset.prod_pow]`.
+
+Conclude with `Finset.prod_congr rfl fun τ _ => glChar_pow K (chiAt K lam τ) _ (chiAt_scalar K lam τ) (g τ)`.
+-/
 theorem detAll_pow [CharZero K] (lam : ι → DomWeight n) (g : ι → GL (Fin n) K) :
     LinearMap.det (rhoK lam g) ^ n =
       ∏ τ, ((g τ : Matrix (Fin n) (Fin n) K).det) ^ (wsum (lam τ) * (Module.finrank K (VV K lam) : ℤ)) := by

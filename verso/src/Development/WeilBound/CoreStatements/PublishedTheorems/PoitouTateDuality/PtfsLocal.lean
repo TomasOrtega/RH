@@ -10,6 +10,13 @@ open NumberField IsDedekindDomain Representation Formalism.ConjugateSelfDual Rec
 
 namespace PositivityTheory.Lit1.PTN
 
+/- English proof (translation)
+Establish `key : ∀ v : S, ∃ (ι : AlgebraicClosure ℚ →ₐ[K] AlgebraicClosure ((v : HeightOneSpectrum (𝓞 K)).adicCompletion K)) (ev : (AlgebraicClosure ((v : HeightOneSpectrum (𝓞 K)).adicCompletion K) ≃ₐ[ (v : HeightOneSpectrum (𝓞 K)).adicCompletion K] AlgebraicClosure ((v : HeightOneSpectrum …` using `K) (Av v)), Continuous ev ∧ Continuous ev.symm ∧ ∀ σ x, ι (((ev σ : Dec (F := K) (Av v)) : G K (AlgebraicClosure ℚ)) x) = σ (ι x) := fun v => GlobalTheory.CompanionTheory.DecGal.exists_algHom_mulEquiv_dec K (AlgebraicClosure ℚ) (Av v) v.1 (hAv v)`. Use `choose ι ev hc hc' hι using key`. Use `⟨fun w => ι ⟨w.1, Finset.mem_coe.1 w.2⟩, ev, fun v => ⟨hc v, hc' v⟩, fun v σ => ?_⟩` and prove the remaining obligations. Apply `AlgEquiv.ext` to reduce the goal to its premises. Introduce `y`.
+
+Apply `Subtype.ext` to reduce the goal to its premises. Apply `(ι v).injective` to reduce the goal to its premises. Establish `h1` using `GroundTheory.ProfCoh.gsFinFamily_apply (S : Set (HeightOneSpectrum (𝓞 K))) (fun w => ι ⟨w.1, Finset.mem_coe.1 w.2⟩) ⟨v.1, Finset.mem_coe.2 v.2⟩ σ y`. Establish `h2` using `he ((ev v σ : Dec (F := K) (Av v)) : G K (AlgebraicClosure ℚ)) y`. Use `Eq.trans ?_ h1.symm` and prove the remaining obligations.
+
+Express the relevant statement in the definitionally equal form `ι v ((e (toGS (AlgebraicClosure ℚ) _ ((ev v σ : Dec (F := K) (Av v)) : G K (AlgebraicClosure ℚ))) y : GroundTheory.ProfCoh.maxUnramifiedOutside K (AlgebraicClosure ℚ) (S : Set (HeightOneSpectrum (𝓞 K)))) : AlgebraicClosure ℚ) = _`. Rewrite using `[h2, hι]`.
+-/
 theorem localCmp' (K : IntermediateField ℚ (AlgebraicClosure ℚ)) [NumberField K]
     [IsAlgClosure K (AlgebraicClosure ℚ)] (S : Finset (HeightOneSpectrum (𝓞 K)))
     (Av : S → ValuationSubring (AlgebraicClosure ℚ)) (hAv : ∀ v, IsPlaceOver (Av v) v.1)

@@ -28,17 +28,26 @@ def fiOfEq (X : RealSide D) {a b : Fin D.R.m} (hab : a = b) : NX.FormsIso (X.R.F
       chi := fun _ => rfl
       j := fun _ _ => rfl }
 
+/- English proof (translation)
+Substitute `hab` using the available equality. Both sides reduce to the same expression.
+-/
 theorem fiOfEq_eG (X : RealSide D) {a b : Fin D.R.m} (hab : a = b) (g : X.Γ) : (fiOfEq X hab).eG g = g := by
   subst hab; rfl
 
 variable (h : CopyTw D D' ι e) {X : RealSide D} {X' : RealSide D'} (m : RealMove X X' ι) {S : NX.RatDat D.ntw}
   (YS : NX.NExpRealS X.R X.cG S)
 
+/- English proof (translation)
+Substitute `hab` using the available equality. Both sides reduce to the same expression.
+-/
 theorem fiOfEq_forms (j : Fin D.R.m) {a b : Fin D'.R.m} (ha : (j : ℕ) = a) (hb : (j : ℕ) = b) (hab : a = b) (x : (X.R.FW j).WK) :
     (fiOfEq X' hab).e ((m.forms j a ha).φ x) = (m.forms j b hb).φ x := by
   subst hab; rfl
 
 include h in
+/- English proof (translation)
+Establish `h3 : D.R.m = D'.R.m` using `by rw [h.gal.R]`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem lt_m {n : ℕ} (h2 : n + 1 ≤ D'.R.m) : n < D.R.m := by
   have h3 : D.R.m = D'.R.m := by rw [h.gal.R]
   omega
@@ -48,6 +57,9 @@ abbrev dat : NX.RatDat D'.ntw :=
 
 abbrev back (i' : D'.ntw.Tw) : D.ntw.Tw := cast h.Tw_eq.symm i'
 
+/- English proof (translation)
+The claim follows from `cast_heq _ _`.
+-/
 theorem back_heq (i' : D'.ntw.Tw) : HEq (back h i') i' := cast_heq _ _
 
 def eFm (i' : D'.ntw.Tw) (j : ℕ) (b : Bool) : 1 ≤ j → j ≤ D'.R.m →
@@ -59,6 +71,9 @@ def eFm (i' : D'.ntw.Tw) (j : ℕ) (b : Bool) : 1 ≤ j → j ≤ D'.R.m →
 def ks (j : Fin D.R.m) : KsIso ι (show S.Ks ≃+* (dat h m YS).Ks from (YS.fi j).eK.trans m.eK)
     (show S.G ≃* (dat h m YS).G from (YS.fi j).eG.trans m.γ) (S.A ((j : ℕ) + 1)) ((dat h m YS).A ((j : ℕ) + 1)) := m.ksOf h YS j
 
+/- English proof (translation)
+Take `rfl : i = back h i'` from `eq_of_heq (hi.trans (back_heq h i').symm)`. Conclude with `h.eFMove_fmCast hi (S' := dat h m YS) (ks h m YS j) _ x`.
+-/
 theorem eFm_cast {i : D.ntw.Tw} {i' : D'.ntw.Tw} (hi : HEq i i') (j : Fin D.R.m) (b : Bool) (h1 h2)
     (x : D.nexp.Fm i ((j : ℕ) + 1) b) :
     eFm h m YS i' ((j : ℕ) + 1) b h1 h2 (h.fmCast hi _ b x) =
@@ -66,6 +81,9 @@ theorem eFm_cast {i : D.ntw.Tw} {i' : D'.ntw.Tw} (hi : HEq i i') (j : Fin D.R.m)
   obtain rfl : i = back h i' := eq_of_heq (hi.trans (back_heq h i').symm)
   exact h.eFMove_fmCast hi (S' := dat h m YS) (ks h m YS j) _ x
 
+/- English proof (translation)
+Take `⟨n, rfl⟩` from `Nat.exists_eq_add_of_le' h1`. Establish `hi` using `back_heq h i'`. Take `⟨x, rfl⟩` from `(h.fmCast hi _ b).surjective x`. Rewrite using `[eFm_cast h m YS hi ⟨n, lt_m h h2⟩ b h1 h2 x, fmOf_mem_Bsup, ← hsup]`. Conclude with `((record_heq h.gal h.set h.frm h.Bsup h.delta hi).1 _ b _ _ (h.fmCast_heq hi _ b x).symm).1.symm`.
+-/
 theorem sup_move (hsup : ∀ i j b (h1 : 1 ≤ j) (h2 : j ≤ D.R.m) (x : D.nexp.Fm i j b),
       x ∈ D.nexp.Bsup i j b ↔ YS.eF i j b h1 h2 x ∈ NX.Bsup S i j b)
     (i' : D'.ntw.Tw) (j : ℕ) (b : Bool) (h1 : 1 ≤ j) (h2 : j ≤ D'.R.m) (x : D'.nexp.Fm i' j b) :
@@ -76,14 +94,25 @@ theorem sup_move (hsup : ∀ i j b (h1 : 1 ≤ j) (h2 : j ≤ D.R.m) (x : D.nexp
   rw [eFm_cast h m YS hi ⟨n, lt_m h h2⟩ b h1 h2 x, fmOf_mem_Bsup, ← hsup]
   exact ((record_heq h.gal h.set h.frm h.Bsup h.delta hi).1 _ b _ _ (h.fmCast_heq hi _ b x).symm).1.symm
 
+/- English proof (translation)
+Take `⟨n, rfl⟩` from `Nat.exists_eq_add_of_le' h1`. Conclude with `(KsIso.rhoStab_iff (S' := dat h m YS) (ks h m YS ⟨n, lt_m h h2⟩)).1 (YS.rho _ h1 (lt_m h h2))`.
+-/
 theorem rho_move (j : ℕ) (h1 : 1 ≤ j) (h2 : j ≤ D'.R.m) : NX.RhoStab (dat h m YS) j := by
   obtain ⟨n, rfl⟩ := Nat.exists_eq_add_of_le' h1
   exact (KsIso.rhoStab_iff (S' := dat h m YS) (ks h m YS ⟨n, lt_m h h2⟩)).1 (YS.rho _ h1 (lt_m h h2))
 
+/- English proof (translation)
+Take `⟨n, rfl⟩` from `Nat.exists_eq_add_of_le' h1`. Conclude with `KsIso.chiInLL0 (S' := dat h m YS) (ks h m YS ⟨n, lt_m h h2⟩) h.LL0 (YS.chi _ h1 (lt_m h h2))`.
+-/
 theorem chi_move (j : ℕ) (h1 : 1 ≤ j) (h2 : j ≤ D'.R.m) : NX.ChiInLL0 (dat h m YS) j := by
   obtain ⟨n, rfl⟩ := Nat.exists_eq_add_of_le' h1
   exact KsIso.chiInLL0 (S' := dat h m YS) (ks h m YS ⟨n, lt_m h h2⟩) h.LL0 (YS.chi _ h1 (lt_m h h2))
 
+/- English proof (translation)
+Take `⟨n, rfl⟩` from `Nat.exists_eq_add_of_le' h1`. Establish `hi` using `back_heq h i'`. Take `⟨x, rfl⟩` from `(h.fmCast hi _ b).surjective x`. Take `⟨g, rfl⟩` from `h.grpEquiv.surjective g`. Establish `e1 : D'.nexp.actG i' (n + 1) b (h.grpEquiv g) (h.fmCast hi _ b x) = h.fmCast hi _ b (D.nexp.actG _ (n + 1) b g x)` using `eq_of_heq ((((record_heq h.gal h.set h.frm h.Bsup h.delta hi).1 _ b _ _ (h.fmCast_heq hi _ b x).symm).2.1 _ _ (h.grpEquiv_heq g).symm).symm.trans (h.fmCast_heq hi _ b _).symm)`.
+
+Rewrite using `[e1, eFm_cast h m YS hi ⟨n, lt_m h h2⟩ b h1 h2, eFm_cast h m YS hi ⟨n, lt_m h h2⟩ b h1 h2, YS.act]`. Use `fmOf_actG (S' := dat h m YS) _ _ _ _ _ _ _ _ ?_ _` and prove the remaining obligations. Use `(dat h m YS).eG.symm_apply_eq.2 ?_` and prove the remaining obligations. Use `Eq.symm ((m.cG_eG h _).trans (congrArg h.grpEquiv ?_))` and prove the remaining obligations. Conclude with `(YS.geq _ _).trans (S.eG.apply_symm_apply g)`.
+-/
 theorem act_move (i' : D'.ntw.Tw) (j : ℕ) (b : Bool) (h1 : 1 ≤ j) (h2 : j ≤ D'.R.m) (g : G0g D'.nd) (x : D'.nexp.Fm i' j b) :
     eFm h m YS i' j b h1 h2 (D'.nexp.actG i' j b g x) =
       NX.actG (dat h m YS) i' j b (rho_move h m YS j h1 h2) (chi_move h m YS j h1 h2) g (eFm h m YS i' j b h1 h2 x) := by
@@ -111,6 +140,9 @@ def tie (hsup : ∀ i j b (h1 : 1 ≤ j) (h2 : j ≤ D.R.m) (x : D.nexp.Fm i j b
     fun x hx => by rw [one_smul]; exact (sup_move h m YS hsup i j b h1 h2 x).2 hx⟩
   act := act_move h m YS
 
+/- English proof (translation)
+Establish `e1` using `fiOfEq_forms m j (a := NX.idxOf D' ((j : ℕ) + 1)) (b := h.cm j) (congrArg Fin.val (NX.idxOf_succ D' (h.cm j))).symm rfl (NX.idxOf_succ D' (h.cm j)) ((KsIso.ofFormsIso (YS.fi j)).φ y)`. Conclude with `(congrArg (fun z => SameMap (evidence X j ((YS.fi j).e y)) (evidence X' (h.cm j) z)) e1).mpr (m.read j (h.cm j) rfl ((KsIso.ofFormsIso (YS.fi j)).φ y))`.
+-/
 theorem read_move (j : Fin D.R.m) (y : (S.A ((j : ℕ) + 1)).WK) :
     SameMap (evidence X j ((YS.fi j).e y))
       (evidence X' (h.cm j) ((fiOfEq X' (NX.idxOf_succ D' (h.cm j))).e ((ks h m YS j).φ y).1)) := by
@@ -119,6 +151,13 @@ theorem read_move (j : Fin D.R.m) (y : (S.A ((j : ℕ) + 1)).WK) :
   exact (congrArg (fun z => SameMap (evidence X j ((YS.fi j).e y)) (evidence X' (h.cm j) z)) e1).mpr
     (m.read j (h.cm j) rfl ((KsIso.ofFormsIso (YS.fi j)).φ y))
 
+/- English proof (translation)
+Introduce `i i' hi j b f`. Establish `hG` using `(hecke_geo h.gal.R h.gal.host h.sp j (h.cm j) rfl).1`. Use `Function.hfunext hG.symm fun g' g hg => heq_of_eq ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `c⁻¹ * evK (tie h m YS hsup) X'.geo.v₀ hρ' i' (h.cm j) b (eFm h m YS i' ((j : ℕ) + 1) b (Nat.le_add_left _ _) (h.cm j).2 (h.fmCast hi _ b f)) g' = c⁻¹ * evK YS X.geo.v₀ hρ i j b (YS.eF i _ b (Nat.le_add_left _ _) j.2 f) g`. Establish `key : ∀ z : NX.KB S i b ⊗[S.Ks] NX.FmK S ((j : ℕ) + 1), evK (tie h m YS hsup) X'.geo.v₀ hρ' i' (h.cm j) b (fmOf (S'` using `dat h m YS) (h.scal hi b) (ks h m YS j) z) g' = evK YS X.geo.v₀ hρ i j b z g := fun z => by`.
+
+Proceed by induction on `z using TensorProduct.induction_on with`. Consider the case `zero`. Conclude with `(congrArg (fun z => evK (tie h m YS hsup) X'.geo.v₀ hρ' i' (h.cm j) b z g') (fmOf (S' := dat h m YS) (h.scal hi b) (ks h m YS j)).map_zero).trans ((congrFun (map_zero _) _).trans (congrFun (evK YS X.geo.v₀ hρ i j b).map_zero g).symm)`. Consider the case `add x y hx hy`. Use `(congrArg (fun z => evK (tie h m YS hsup) X'.geo.v₀ hρ' i' (h.cm j) b z g') ((fmOf (S' := dat h m YS) (h.scal hi b) (ks h m YS j)).map_add x y)).trans ?_` and prove the remaining obligations.
+
+Use `(congrFun ((evK (tie h m YS hsup) X'.geo.v₀ hρ' i' (h.cm j) b).map_add _ _) g').trans ?_` and prove the remaining obligations. Rewrite using `[map_add, Pi.add_apply, Pi.add_apply, hx, hy]`. Consider the case `tmul a y`. Conclude with `congrArg₂ (· * ·) ((record_heq h.gal h.set h.frm h.Bsup h.delta hi).2.1 _ _ hs.e b _ _ (h.frac_heq hi a).symm).symm (read_move h m YS j y _ _ (m.v₀ j (h.cm j) rfl) _ _ hg.symm).symm`. Conclude with `congrArg (c⁻¹ * ·) ((congrArg (fun z => evK (tie h m YS hsup) X'.geo.v₀ hρ' i' (h.cm j) b z g') (eFm_cast h m YS hi j b _ _ f)).trans (key _))`.
+-/
 theorem rdRel_move (hsup) (ρ : Setup D.ntw) (ρ' : Setup D'.ntw) (hs : SameSetup ρ ρ') (hρ : ρ.Good) (hρ' : ρ'.Good) (c : ℂ) :
     RdRel h (fun i j b => realRd YS X.geo.v₀ hρ i j b c) (fun i j b => realRd (tie h m YS hsup) X'.geo.v₀ hρ' i j b c) := by
   intro i i' hi j b f
@@ -152,6 +191,13 @@ variable {YS} (H : NX.NExpRealH X.R X.cG S YS)
 omit H in
 include h m in
 
+/- English proof (translation)
+Take `⟨hG, hW, -⟩` from `hecke_geo h.gal.R h.gal.host h.sp j (h.cm j) rfl`. Use `MultilinearMap.ext fun v' => funext fun g' => ?_` and prove the remaining obligations. Take `⟨v, hv⟩` from `exists_sameVec h.gal.R h.gal.host h.Tau h.eTau hW (m.MW j (h.cm j) rfl) v'`. Take `⟨g, hg⟩ : ∃ g : GA D (Wc D j), HEq g g'` from `⟨cast hG.symm g', cast_heq _ _⟩`. Establish `e1` using `hF (T₂ v) (T₂' v') (Function.hfunext hG fun a a' haa => heq_of_eq (h2 v v' hv a a' haa))`.
+
+Establish `e2 : ∀ {A B : Type} {f : A → ℂ} {f' : B → ℂ} {a : A} {b : B}, A = B → HEq f f' → HEq a b → f a = f' b`. Introduce `A B f f' a b h1 h2 h3`. Substitute `h1` using the available equality. Substitute `h2` using the available equality. Substitute `h3` using the available equality.
+
+Both sides reduce to the same expression. Rewrite using `[← h1 v v' hv g g' hg, h3]`. Conclude with `congrArg (c * ·) (e2 hG e1 hg)`.
+-/
 theorem hecke_sameMap (j : Fin D.R.m) {R : Finset (GA D (Wc D j))} {R' : Finset (GA D' (Wc D' (h.cm j)))}
     (hF : ∀ F F', HEq F F' → HEq (Mult.heckeLin (Wc D j) R F) (Mult.heckeLin (Wc D' (h.cm j)) R' F'))
     {T₁ T₂ : Mult.MMap (model X j)} {T₁' T₂' : Mult.MMap (model X' (h.cm j))} (h1 : SameMap T₁ T₁') (h2 : SameMap T₂ T₂') {c : ℂ}

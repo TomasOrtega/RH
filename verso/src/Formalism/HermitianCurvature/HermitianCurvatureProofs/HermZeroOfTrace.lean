@@ -8,6 +8,11 @@ noncomputable section
 
 variable {k r : ℕ}
 
+/- English proof (translation)
+Rewrite `h1`, `h2` using `[trace_xuv]`. Establish `hs : ∀ w, herm (Hpk k r) (ζ *ᵥ w) u = -star (herm (Hpk k r) (ζ *ᵥ u) w)`. Introduce `w`. Rewrite using `[herm_skew hζ, herm_swap w]`. Rewrite `h1`, `h2` using `[hs]`.
+
+Rewrite `h2` using `[herm_smul_right]`. Use `set A := herm (Hpk k r) (ζ *ᵥ u) v`. Simplify using `[Complex.ext_iff, Complex.mul_re, Complex.mul_im] at h1 h2 ⊢`. Apply the tactic sequence `constructor <;> linarith`.
+-/
 theorem herm_zero_of_trace {ζ : B.Mat k r} (hζ : B.inLie k r ζ) (u v : Fin (2 * r + k + 1) → ℂ)
     (h1 : (Matrix.trace (ζ * Xuv k r u v)).re = 0)
     (h2 : (Matrix.trace (ζ * Xuv k r u (Complex.I • v))).re = 0) :
@@ -22,6 +27,11 @@ theorem herm_zero_of_trace {ζ : B.Mat k r} (hζ : B.inLie k r ζ) (u v : Fin (2
   simp [Complex.ext_iff, Complex.mul_re, Complex.mul_im] at h1 h2 ⊢
   constructor <;> linarith
 
+/- English proof (translation)
+Rewrite using `[herm_eq, Finset.sum_eq_single i]`. Simplify using `[bvec]`. Introduce `j _ hj`. Simplify using `[bvec, hj]`. Introduce `h`.
+
+Conclude with `absurd (Finset.mem_univ _) h`.
+-/
 theorem herm_bvec (x : Fin (2 * r + k + 1) → ℂ) (i : Fin (2 * r + k + 1)) :
     herm (Hpk k r) x (bvec i) = (Hpk k r *ᵥ x) i := by
   rw [herm_eq, Finset.sum_eq_single i]
@@ -29,11 +39,17 @@ theorem herm_bvec (x : Fin (2 * r + k + 1) → ℂ) (i : Fin (2 * r + k + 1)) :
   · intro j _ hj; simp [bvec, hj]
   · intro h; exact absurd (Finset.mem_univ _) h
 
+/- English proof (translation)
+Rewrite using `[herm_bvec, hpk_mulVec, if_pos (Or.inl (by simp [eI]))]`. Both sides reduce to the same expression.
+-/
 theorem herm_e (x : Fin (2 * r + k + 1) → ℂ) (b : Fin r) :
     herm (Hpk k r) x (bvec (eI k r b)) = x (esI k r b) := by
   rw [herm_bvec, hpk_mulVec, if_pos (Or.inl (by simp [eI]))]
   rfl
 
+/- English proof (translation)
+Rewrite using `[herm_bvec, hpk_mulVec, if_pos (Or.inr (by simp [esI]; omega))]`. Use `congr 1`. Apply `Fin.ext` to reduce the goal to its premises. Simplify using `[eI, esI]`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem herm_es (x : Fin (2 * r + k + 1) → ℂ) (b : Fin r) :
     herm (Hpk k r) x (bvec (esI k r b)) = x (eI k r b) := by
   rw [herm_bvec, hpk_mulVec, if_pos (Or.inr (by simp [esI]; omega))]
@@ -42,18 +58,30 @@ theorem herm_es (x : Fin (2 * r + k + 1) → ℂ) (b : Fin r) :
   simp [eI, esI]
   omega
 
+/- English proof (translation)
+Rewrite using `[herm_bvec, hpk_mulVec, if_neg (by omega)]`.
+-/
 theorem herm_w (x : Fin (2 * r + k + 1) → ℂ) (i : Fin (2 * r + k + 1)) (h1 : r ≤ i.val) (h2 : i.val ≤ r + k) :
     herm (Hpk k r) x (bvec i) = if i.val = r + k then -x i else x i := by
   rw [herm_bvec, hpk_mulVec, if_neg (by omega)]
 
+/- English proof (translation)
+Introduce `i hi`. Simplify using `[hu i hi, hv i hi]`.
+-/
 theorem inWb_sub {u v : Fin (2 * r + k + 1) → ℂ} (hu : inWb k r u) (hv : inWb k r v) : inWb k r (u - v) := by
   intro i hi; simp [hu i hi, hv i hi]
 
+/- English proof (translation)
+Introduce `i hi`. Simplify using `[hu i hi]`.
+-/
 theorem inWb_smul (c : ℂ) {u : Fin (2 * r + k + 1) → ℂ} (hu : inWb k r u) : inWb k r (c • u) := by
   intro i hi; simp [hu i hi]
 
 def sg (i : Fin (2 * r + k + 1)) : ℂ := if i.val = r + k then -1 else 1
 
+/- English proof (translation)
+Rewrite using `[hpk_mulVec, sg]`. Distinguish the cases in `h : i.val < r ∨ r + k < i.val`. Rewrite using `[if_pos h, hu i h, hu ⟨2 * r + k - i.val, by omega⟩ (by simp; omega), mul_zero]`. Apply the tactic sequence `rw [if_neg h] split_ifs <;> ring`.
+-/
 theorem hpk_mulVec_wb {u : Fin (2 * r + k + 1) → ℂ} (hu : inWb k r u) (i : Fin (2 * r + k + 1)) :
     (Hpk k r *ᵥ u) i = sg (k := k) (r := r) i * u i := by
   rw [hpk_mulVec, sg]
@@ -64,6 +92,11 @@ theorem hpk_mulVec_wb {u : Fin (2 * r + k + 1) → ℂ} (hu : inWb k r u) (i : F
 
 def KI (k r : ℕ) : Fin (2 * r + k + 1) := ⟨r + k, by omega⟩
 
+/- English proof (translation)
+Rewrite using `[herm_eq, ← Finset.add_sum_erase _ _ (Finset.mem_univ (KI k r))]`. Establish `hK : sg (k` using `k) (r := r) (KI k r) = -1 := by simp [sg, KI]`. Rewrite using `[hpk_mulVec_wb hu, hK]`. Establish `: ∀ i ∈ Finset.univ.erase (KI k r), star (y i) * (Hpk k r *ᵥ u) i = star (y i) * u i`. Introduce `i hi`.
+
+Rewrite using `[hpk_mulVec_wb hu]`. Establish `: i.val ≠ r + k` using `fun e => (Finset.mem_erase.1 hi).1 (Fin.ext (by simp [KI, e]))`. Simplify using `[sg, this]`. Rewrite using `[Finset.sum_congr rfl this]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem herm_wb {u : Fin (2 * r + k + 1) → ℂ} (hu : inWb k r u) (y : Fin (2 * r + k + 1) → ℂ) :
     herm (Hpk k r) u y = ∑ i ∈ Finset.univ.erase (KI k r), star (y i) * u i - star (y (KI k r)) * u (KI k r) := by
   rw [herm_eq, ← Finset.add_sum_erase _ _ (Finset.mem_univ (KI k r))]
@@ -77,10 +110,34 @@ theorem herm_wb {u : Fin (2 * r + k + 1) → ℂ} (hu : inWb k r u) (y : Fin (2 
   rw [Finset.sum_congr rfl this]
   ring
 
+/- English proof (translation)
+Rewrite using `[Complex.sq_norm, Complex.normSq_apply]`. Simplify using `[Complex.mul_re]`.
+-/
 theorem re_star_mul_self (a : ℂ) : (star a * a).re = ‖a‖ ^ 2 := by
   rw [Complex.sq_norm, Complex.normSq_apply]
   simp [Complex.mul_re]
 
+/- English proof (translation)
+Use `set S := Finset.univ.erase (KI k r)`. Use `set K := KI k r`. Establish `e2 : (herm (Hpk k r) w w).re = ∑ i ∈ S, ‖w i‖ ^ 2 - ‖w K‖ ^ 2`. Rewrite using `[herm_wb hw, Complex.sub_re, Complex.re_sum, re_star_mul_self]`. Simplify using `only [re_star_mul_self]`.
+
+Both sides reduce to the same expression. Establish `eT : Tz k r z = ‖z K‖ ^ 2 - ∑ i ∈ S, ‖z i‖ ^ 2`. Rewrite using `[Tz, herm_wb hz, Complex.sub_re, Complex.re_sum, re_star_mul_self]`. Simplify using `only [re_star_mul_self]`. Expand and normalize the polynomial expressions, which then agree.
+
+Rewrite `hwz` using `[herm_wb hw, sub_eq_zero]`. Establish `hn : ‖z K‖ * ‖w K‖ ≤ ∑ i ∈ S, ‖z i‖ * ‖w i‖`. Combine the equalities or inequalities in the displayed calculation. Establish `hcs` using `Finset.sum_mul_sq_le_sq_mul_sq S (fun i => ‖z i‖) (fun i => ‖w i‖)`. Use `set P := ∑ i ∈ S, ‖w i‖ ^ 2`.
+
+Use `set Q := ∑ i ∈ S, ‖z i‖ ^ 2`. Use `set m := ∑ i ∈ S, ‖z i‖ * ‖w i‖`. Establish `hP : 0 ≤ P` using `Finset.sum_nonneg (fun i _ => by positivity)`. Establish `hQ : 0 ≤ Q` using `Finset.sum_nonneg (fun i _ => by positivity)`. Establish `ha : 0 ≤ ‖w K‖` using `norm_nonneg _`.
+
+Establish `hc : 0 ≤ ‖z K‖` using `norm_nonneg _`. Establish `h1 : P ≤ ‖w K‖ ^ 2` using `by linarith`. Establish `h2 : Q < ‖z K‖ ^ 2` using `by linarith`. Establish `h3 : (‖z K‖ * ‖w K‖) ^ 2 ≤ m ^ 2`. Establish `: 0 ≤ ‖z K‖ * ‖w K‖` using `by positivity`.
+
+Conclude with `pow_le_pow_left₀ this hn 2`. Establish `h4 : (‖z K‖ * ‖w K‖) ^ 2 ≤ Q * ‖w K‖ ^ 2`. Combine the equalities or inequalities in the displayed calculation. Establish `h5 : ‖w K‖ ^ 2 * (‖z K‖ ^ 2 - Q) ≤ 0` using `by nlinarith`. Establish `h6 : ‖w K‖ ^ 2 ≤ 0`.
+
+Assume the negation of the conclusion as `hcon`. Use `push Not at hcon`. Establish `: 0 < ‖w K‖ ^ 2 * (‖z K‖ ^ 2 - Q)` using `mul_pos hcon (by linarith)`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hwK : w K = 0`.
+
+Establish `: ‖w K‖ = 0` using `by nlinarith`. Conclude with `norm_eq_zero.1 this`. Establish `hP0 : P = 0` using `le_antisymm (by nlinarith) hP`. Establish `hall` using `(Finset.sum_eq_zero_iff_of_nonneg (fun i _ => by positivity)).1 hP0`. Use function extensionality and compare the values at `i`.
+
+Distinguish the cases in `hi : i = K`. Rewrite using `[hi, hwK]`. Both sides reduce to the same expression. Use `hall i (Finset.mem_erase.2 ⟨hi, Finset.mem_univ _⟩)` as an intermediate fact. Simplify using `only [ne_eq, OfNat.ofNat_ne_zero, not_false_eq_true, pow_eq_zero_iff, norm_eq_zero] at this`.
+
+Rewrite using `[this]`. Both sides reduce to the same expression.
+-/
 theorem wb_definite {z w : Fin (2 * r + k + 1) → ℂ} (hz : inWb k r z) (hT : 0 < Tz k r z)
     (hw : inWb k r w) (hwz : herm (Hpk k r) w z = 0) (hww : (herm (Hpk k r) w w).re ≤ 0) : w = 0 := by
   set S := Finset.univ.erase (KI k r)

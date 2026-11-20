@@ -20,6 +20,9 @@ variable {P : M.Par} {z z' : Fin (2 * P.r + P.k + 1) → ℂ} {π : Mx P.k P.r �
   {π' : Mx P.k P.r → (Wq →L[ℂ] Wq)} {L : R.LevelData (Pr (RadSp P.k P.r z z' π π')) P.r}
   {st : Fr.Start (Pr (RadSp P.k P.r z z' π π'))} {l0 : ℕ} {D : B.RealPlaceData P.k P.r Wp Wq}
 
+/- English proof (translation)
+Proceed by induction on `h with`. Consider the case `jf F Φ hF hΦ => exact HerGen.jf F Φ hF.1 hΦ`. Consider the case `slice l w a b Φ hw _ ih => exact HerGen.slice l w a b Φ hw ih`. Consider the case `waveC l w s Wv Wv' a b Φ hw h1 h2 _ ih => exact HerGen.waveC l w s Wv Wv' a b Φ hw h1 h2 ih`. Consider the case `waveZ w s Wv Wv' a b Φ hw h1 h2 _ ih => exact HerGen.waveZ w s Wv Wv' a b Φ hw h1 h2 ih`.
+-/
 theorem herGenC_herGen {i : Fin (P.r + 1)} {Φ : RadSp P.k P.r z z' π π'}
     (h : HerGenC S P z z' π π' L st l0 D i Φ) : HerGen S P z z' π π' L st l0 D i Φ := by
   induction h with
@@ -28,18 +31,30 @@ theorem herGenC_herGen {i : Fin (P.r + 1)} {Φ : RadSp P.k P.r z z' π π'}
   | waveC l w s Wv Wv' a b Φ hw h1 h2 _ ih => exact HerGen.waveC l w s Wv Wv' a b Φ hw h1 h2 ih
   | waveZ w s Wv Wv' a b Φ hw h1 h2 _ ih => exact HerGen.waveZ w s Wv Wv' a b Φ hw h1 h2 ih
 
+/- English proof (translation)
+The claim follows from `Submodule.span_le.mpr fun _ hΦ => Submodule.subset_span (herGenC_herGen hΦ)`.
+-/
 theorem herKc_le_herK (i : Fin (P.r + 1)) : herKc S P z z' π π' L st l0 D i ≤ herK S P z z' π π' L st l0 D i :=
   Submodule.span_le.mpr fun _ hΦ => Submodule.subset_span (herGenC_herGen hΦ)
 
+/- English proof (translation)
+Introduce `w hw l x hx`. Conclude with `inK_act_span (bTl L l w) (fun a b Φ hΦ => Submodule.subset_span (HerGenC.slice l w a b Φ hw hΦ)) x hx`.
+-/
 theorem herKc_sliceIn : SliceIn (S := S) P z z' π π' L st (herKc S P z z' π π' L st l0 D) l0 := by
   intro w hw l x hx
   exact inK_act_span (bTl L l w) (fun a b Φ hΦ => Submodule.subset_span (HerGenC.slice l w a b Φ hw hΦ)) x hx
 
+/- English proof (translation)
+Introduce `w hw l s Wv Wv' hW hW' x hx`. Conclude with `inK_act_span (Vw (mkP Wv Wv') s w) (fun a b Φ hΦ => Submodule.subset_span (HerGenC.waveC l w s Wv Wv' a b Φ hw hW hW' hΦ)) x hx`.
+-/
 theorem herKc_waveK : WaveK (S := S) P z z' π π' st (herKc S P z z' π π' L st l0 D) l0 := by
   intro w hw l s Wv Wv' hW hW' x hx
   exact inK_act_span (Vw (mkP Wv Wv') s w)
     (fun a b Φ hΦ => Submodule.subset_span (HerGenC.waveC l w s Wv Wv' a b Φ hw hW hW' hΦ)) x hx
 
+/- English proof (translation)
+The claim follows from `inK_act_span (Vw (mkP Wv Wv') s w) (fun a b Φ hΦ => Submodule.subset_span (HerGenC.waveZ w s Wv Wv' a b Φ hw hW hW' hΦ)) x hx`.
+-/
 theorem herKc_waveZ (w : List (Letter ℂ S)) (hw : WordOK P z z' π π' st l0 w) (s : ℂ)
     (Wv Wv' : Module.End ℂ (RadSp P.k P.r z z' π π')) (hW : multiplicationOperator Wv (fun _ g => fsv s (zeta P.k P.r z z' g)))
     (hW' : multiplicationOperator Wv' (fun _ g => fsv (-s) (zeta P.k P.r z z' g))) (x : Ix S → RadSp P.k P.r z z' π π')
@@ -48,6 +63,9 @@ theorem herKc_waveZ (w : List (Letter ℂ S)) (hw : WordOK P z z' π π' st l0 w
   inK_act_span (Vw (mkP Wv Wv') s w)
     (fun a b Φ hΦ => Submodule.subset_span (HerGenC.waveZ w s Wv Wv' a b Φ hw hW hW' hΦ)) x hx
 
+/- English proof (translation)
+The claim follows from `Submodule.subset_span (HerGenC.jf F Φ hF hΦ)`.
+-/
 theorem herKc_jf (F : Mx P.k P.r → (Wq →L[ℂ] Wp)) (hF : JFOKCpt P z z' F) (Φ : RadSp P.k P.r z z' π π')
     (hΦ : IsRadJF P z z' π π' D F Φ) : Φ ∈ herKc S P z z' π π' L st l0 D 0 :=
   Submodule.subset_span (HerGenC.jf F Φ hF hΦ)
@@ -75,6 +93,9 @@ def StepFormCptAll : Prop :=
     StepDens (S := S) P z z' π π' μ L st (herKc S P z z' π π' L st l0 D) l0 ∧
       FormInt S P z z' π π' μ L st l0 (herKc S P z z' π π' L st l0 D)
 
+/- English proof (translation)
+Introduce `Wp Wq _ _ _ _ _ _ S _ _ P z z' π π' X μ L st l0 D hD h1 h2 hz hz' hπ hπ'`. Take `⟨hSD, hFI⟩` from `h Wp Wq S P z z' π π' X μ L st l0 D hD h1 h2 hz hz' hπ hπ'`. Establish `hle : ∀ i (x : Ix S → RadSp P.k P.r z z' π π'), InK (herKc S P z z' π π' L st l0 D i) x → InK (herK S P z z' π π' L st l0 D i) x` using `fun i x hx a => herKc_le_herK i (hx a)`. Conclude with `⟨fun w hw l x y hx hy c hc => hSD w hw l x y (hle _ x hx) (hle _ y hy) c hc, fun w hw i c hc x y hx hy => hFI w hw i c hc x y (hle _ x hx) (hle _ y hy)⟩`.
+-/
 theorem stepFormCptAll_of_stepFormAll (h : StepFormAll) : StepFormCptAll := by
   intro Wp Wq _ _ _ _ _ _ S _ _ P z z' π π' X μ L st l0 D hD h1 h2 hz hz' hπ hπ'
   obtain ⟨hSD, hFI⟩ := h Wp Wq S P z z' π π' X μ L st l0 D hD h1 h2 hz hz' hπ hπ'
@@ -83,6 +104,11 @@ theorem stepFormCptAll_of_stepFormAll (h : StepFormAll) : StepFormCptAll := by
   exact ⟨fun w hw l x y hx hy c hc => hSD w hw l x y (hle _ x hx) (hle _ y hy) c hc,
     fun w hw i c hc x y hx hy => hFI w hw i c hc x y (hle _ x hx) (hle _ y hy)⟩
 
+/- English proof (translation)
+Introduce `Wp Wq _ _ _ _ _ _ S _ _ P z z' π π' X μ L st l0 D A mm hD hl1 hl2 hz hz' hπ hπ' hA hmm`. Take `⟨K, hAdj, hTD, hTT, hSl, hSD, hWK, hFS, hCor, hJ⟩` from `hHer Wp Wq S P z z' π π' X μ L st l0 D A mm hD hl1 hl2 hz hz' hπ hπ' hA hmm`. Use `⟨K, ?_, hSl, hCor, hJ⟩` and prove the remaining obligations. Establish `hTI` using `topIdentFromParts (S := S) P z z' π π' X μ L st K l0 hD Formalism.FourierDecayAlt.P.frame_of_admissible_word ofWordRR hAdj`. Establish `hST` using `stepTwistFromParts (S := S) P z z' π π' X μ L st K l0 hD Formalism.FourierDecayAlt.P.plane_wave_vector_identity (waveSiteAll Wp Wq P z z' π π' X L) (hWC Wp Wq P z z' π π' X μ L st l0 hD) hWK`.
+
+Conclude with `thmPFromStepsAll Wp Wq S P z z' π π' μ L st K l0 hTI hTD hTT hSl hSD hST hFS`.
+-/
 theorem thmPActualCpt_of_herClassesCpt (hHer : HerClassesCpt) (hWC : WaveCommQQAll) : ThmPActualCpt := by
   intro Wp Wq _ _ _ _ _ _ S _ _ P z z' π π' X μ L st l0 D A mm hD hl1 hl2 hz hz' hπ hπ' hA hmm
   obtain ⟨K, hAdj, hTD, hTT, hSl, hSD, hWK, hFS, hCor, hJ⟩ :=
@@ -93,6 +119,15 @@ theorem thmPActualCpt_of_herClassesCpt (hHer : HerClassesCpt) (hWC : WaveCommQQA
     (waveSiteAll Wp Wq P z z' π π' X L) (hWC Wp Wq P z z' π π' X μ L st l0 hD) hWK
   exact thmPFromStepsAll Wp Wq S P z z' π π' μ L st K l0 hTI hTD hTT hSl hSD hST hFS
 
+/- English proof (translation)
+Introduce `Wp Wq _ _ _ _ _ _ S _ _ P z z' π π' X μ L st l0 D A mm hD hl1 hl2 hz hz' hπ hπ' _ _`. Take `⟨hSD, hFI⟩` from `hSF Wp Wq S P z z' π π' X μ L st l0 D hD hl1 hl2 hz hz' hπ hπ'`. Use `set K := herKc S P z z' π π' L st l0 D with hKdef`. Use `haveI : SFinite μ := sfinite_of_isHaarOn _ μ hD.2.1`. Establish `hAdj : AdjTop (S` using `S) P z z' π π' μ L st K l0 := adjTop_cpt P z z' π π' X μ L st K l0 hD (hT Wp Wq S P z z' π π' X μ L st l0 D hD hl1 hl2 hz hz' hπ hπ')`.
+
+Establish `hTI` using `topIdentFromParts (S := S) P z z' π π' X μ L st K l0 hD Formalism.FourierDecayAlt.P.frame_of_admissible_word ofWordRR hAdj`. Establish `hXK` using `xKappaOfNF Formalism.FourierDecayAlt.P.normal_form_actual kappaFibrePos Wp Wq P z z' π π' X μ L st l0 hD`. Establish `hTD` using `topDensNonnegOfKappa Wp Wq S P z z' π π' X μ L st l0 K hD hl1 hl2 hXK`. Establish `hCor` using `integral_formula_of_steps Wp Wq S P z z' π π' μ L st l0 K hTI hTD herKc_sliceIn hSD (topDensMeasAll Wp Wq S P z z' π π' μ L st K)`. Establish `hTT` using `topTwistDensOfZeta Formalism.FourierDecayAlt.P.actual_zeta_smooth_alt Wp Wq S P z z' π π' X μ L st l0 K hD`.
+
+Establish `hFS` using `formSesqOfInt Wp Wq S P z z' π π' μ L st l0 _ hFI`. Use `⟨K, hAdj, hTD, ?_, herKc_sliceIn, hSD, herKc_waveK, hFS, hCor, ?_⟩` and prove the remaining obligations. Introduce `w hw s Wv Wv' hW hW' x y hx hy c hc`. Conclude with `⟨herKc_waveZ w hw s Wv Wv' hW hW' x hx, hTT w hw s Wv Wv' hW hW' x y hx hy c hc⟩`. Introduce `F ε hε hF hC hG`.
+
+Take `⟨Φ, hΦ⟩` from `radJFExists Wp Wq P z z' π π' D F hD.1 hz hz' hπ hπ' ⟨hF, ε, hε, hG⟩`. Conclude with `⟨Φ, herKc_jf F ⟨⟨hF, ε, hε, hG⟩, hC⟩ Φ hΦ, hΦ⟩`.
+-/
 theorem herClassesCpt_of_parts (hT : HerCptTopAll) (hSF : StepFormCptAll) : HerClassesCpt := by
   intro Wp Wq _ _ _ _ _ _ S _ _ P z z' π π' X μ L st l0 D A mm hD hl1 hl2 hz hz' hπ hπ' _ _
   obtain ⟨hSD, hFI⟩ := hSF Wp Wq S P z z' π π' X μ L st l0 D hD hl1 hl2 hz hz' hπ hπ'
@@ -115,12 +150,21 @@ theorem herClassesCpt_of_parts (hT : HerCptTopAll) (hSF : StepFormCptAll) : HerC
     obtain ⟨Φ, hΦ⟩ := radJFExists Wp Wq P z z' π π' D F hD.1 hz hz' hπ hπ' ⟨hF, ε, hε, hG⟩
     exact ⟨Φ, herKc_jf F ⟨⟨hF, ε, hε, hG⟩, hC⟩ Φ hΦ, hΦ⟩
 
+/- English proof (translation)
+The claim follows from `thmPActualCpt_of_herClassesCpt (herClassesCpt_of_parts hT hSF) waveCommQQAll`.
+-/
 theorem thmPActualCpt_of_parts (hT : HerCptTopAll) (hSF : StepFormCptAll) : ThmPActualCpt :=
   thmPActualCpt_of_herClassesCpt (herClassesCpt_of_parts hT hSF) waveCommQQAll
 
+/- English proof (translation)
+The claim follows from `thmPActualCpt_of_parts hT (stepFormCptAll_of_stepFormAll hSF)`.
+-/
 theorem thmPActualCpt_of_top (hT : HerCptTopAll) (hSF : StepFormAll) : ThmPActualCpt :=
   thmPActualCpt_of_parts hT (stepFormCptAll_of_stepFormAll hSF)
 
+/- English proof (translation)
+Introduce `Wp Wq _ _ _ _ _ _ S _ _ P z z' π π' X μ L st l0 D A mm hD hl1 hl2 hz hz' hπ hπ' hA hmm`. Take `⟨K, h1, h2, h3, h4⟩` from `h Wp Wq S P z z' π π' X μ L st l0 D A mm hD hl1 hl2 hz hz' hπ hπ' hA hmm`. Conclude with `⟨K, h1, h2, h3, fun F ε hε hF _ hG => h4 F ε hε hF hG⟩`.
+-/
 theorem thmPActualCpt_of_thmPActual (h : ThmPActual) : ThmPActualCpt := by
   intro Wp Wq _ _ _ _ _ _ S _ _ P z z' π π' X μ L st l0 D A mm hD hl1 hl2 hz hz' hπ hπ' hA hmm
   obtain ⟨K, h1, h2, h3, h4⟩ := h Wp Wq S P z z' π π' X μ L st l0 D A mm hD hl1 hl2 hz hz' hπ hπ' hA hmm

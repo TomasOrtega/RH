@@ -25,6 +25,9 @@ variable {G : Type} [Group G] {Qp K₀ K : Type} [Field Qp] [Field K₀] [Field 
     [Algebra Qp BdR] [Algebra K₀ BdR] [Algebra K BdR] [IsScalarTower Qp K BdR]
     [IsScalarTower K₀ K BdR] [IsScalarTower Qp K₀ BdR]
     (PD : _root_.Formalism.WeaklyAdmissibleFiltrations.PeriodData G Qp K₀ K B BdR) {LL : Type} [Field LL] [Algebra Qp LL] in
+/- English proof (translation)
+Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul m n => simp [AlgebraTensorModule.map_tmul]`. Consider the case `add x y hx hy => simp only [map_add, hx, hy]`.
+-/
 private theorem lid_rTensor_map_id_eq {V : Type} [AddCommGroup V] [Module Qp V] [Module LL V]
     [IsScalarTower Qp LL V] (f : V →ₗ[Qp] Qp) (σ : B →ₗ[Qp] B) (x : V ⊗[Qp] B) :
     TensorProduct.lid Qp B (LinearMap.rTensor B f
@@ -43,6 +46,11 @@ variable {G : Type} [Group G] {Qp K₀ K : Type} [Field Qp] [Field K₀] [Field 
     [Algebra Qp BdR] [Algebra K₀ BdR] [Algebra K BdR] [IsScalarTower Qp K BdR]
     [IsScalarTower K₀ K BdR] [IsScalarTower Qp K₀ BdR]
     (PD : _root_.Formalism.WeaklyAdmissibleFiltrations.PeriodData G Qp K₀ K B BdR) {LL : Type} [Field LL] [Algebra Qp LL] in
+/- English proof (translation)
+Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul m n`. Simplify using `only [LinearMap.rTensor_tmul, TensorProduct.lid_tmul, Basis.coord_apply]`. Repeatedly rewrite using `[← TensorProduct.smul_tmul, ← TensorProduct.sum_tmul, b.sum_repr]`.
+
+Consider the case `add x y hx hy => conv_lhs => rw [hx, hy]`. Simplify using `only [map_add, TensorProduct.tmul_add, Finset.sum_add_distrib]`.
+-/
 private theorem eq_sum_basis_tmul_coord {V : Type} [AddCommGroup V] [Module Qp V] {ι : Type}
     [Fintype ι] (b : Basis ι Qp V) (x : V ⊗[Qp] B) :
     x = ∑ i, b i ⊗ₜ[Qp] TensorProduct.lid Qp B (LinearMap.rTensor B (b.coord i) x) := by
@@ -64,6 +72,19 @@ variable {G : Type} [Group G] {Qp K₀ K : Type} [Field Qp] [Field K₀] [Field 
     [IsScalarTower K₀ K BdR] [IsScalarTower Qp K₀ BdR]
     (PD : _root_.Formalism.WeaklyAdmissibleFiltrations.PeriodData G Qp K₀ K B BdR) {LL : Type} [Field LL] [Algebra Qp LL] in
 
+/- English proof (translation)
+Establish `hid : ∀ g, ρ g = LinearMap.id` using `fun g => LinearMap.ext (hρ g)`. Use extensionality with `x`. Rewrite using `[_root_.GlobalTheory.IndefiniteRowSideFullHecke.CrystallineSubrepresentation.mem_Dcris, LinearMap.mem_range]`. Prove the components needed by the constructor for the conclusion. Introduce `hx`.
+
+Set `b` to `Module.finBasis Qp V`. Establish `hc : ∀ i, ∃ k : K₀, algebraMap K₀ B k = TensorProduct.lid Qp B (LinearMap.rTensor B (b.coord i) x)`. Introduce `i`. Use `(_root_.GlobalTheory.IndefiniteRowSideFullHecke.CrystallineSubrepresentation.invariantsEq PD _).mp fun g => ?_` and prove the remaining obligations. Establish `h` using `hx g`.
+
+Unfold `_root_.Formalism.WeaklyAdmissibleFiltrations.actVB at h`. Rewrite `h` using `[hid g]`. Use `conv_rhs => rw [← h]`. Rewrite using `[lid_rTensor_map_id_eq]`. Both sides reduce to the same expression.
+
+Use `choose k hk using hc`. Use `⟨∑ i, b i ⊗ₜ[Qp] k i, ?_⟩` and prove the remaining obligations. Rewrite using `[map_sum, eq_sum_basis_tmul_coord b x]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[AlgebraTensorModule.map_tmul, ← hk i]`.
+
+Both sides reduce to the same expression. Introduce and unpack `⟨y, rfl⟩ g`. Unfold `_root_.Formalism.WeaklyAdmissibleFiltrations.actVB`. Rewrite using `[hid g]`. Proceed by induction on `y using TensorProduct.induction_on with`.
+
+Consider the case `zero => simp`. Consider the case `tmul m k => simp [AlgebraTensorModule.map_tmul]`. Consider the case `add y z hy hz => simp only [map_add, hy, hz]`.
+-/
 theorem _root_.GlobalTheory.TrivCrys.dcris_of_trivial {V : Type} [AddCommGroup V] [Module Qp V]
     [Module LL V] [IsScalarTower Qp LL V] [FiniteDimensional Qp V] (ρ : Representation LL G V)
     (hρ : ∀ g x, ρ g x = x) :
@@ -109,6 +130,13 @@ variable {G : Type} [Group G] {Qp K₀ K : Type} [Field Qp] [Field K₀] [Field 
     [IsScalarTower K₀ K BdR] [IsScalarTower Qp K₀ BdR]
     (PD : _root_.Formalism.WeaklyAdmissibleFiltrations.PeriodData G Qp K₀ K B BdR) {LL : Type} [Field LL] [Algebra Qp LL] in
 
+/- English proof (translation)
+Use `haveI := _root_.GlobalTheory.Survey.CrystallineCyclotomic.nontrivial_B PD`. Establish `key : ⇑(AlgebraTensorModule.map (LinearMap.id : V →ₗ[LL] V) (IsScalarTower.toAlgHom Qp K₀ B).toLinearMap) = ⇑(LinearMap.lTensor V (IsScalarTower.toAlgHom Qp K₀ B).toLinearMap)`. Use function extensionality and compare the values at `w`. Proceed by induction on `w using TensorProduct.induction_on with`. Consider the case `zero => simp`.
+
+Consider the case `tmul m k => simp [AlgebraTensorModule.map_tmul]`. Consider the case `add u w hu hw => simp only [map_add, hu, hw]`. Establish `hinj : Function.Injective (AlgebraTensorModule.map (LinearMap.id : V →ₗ[LL] V) (IsScalarTower.toAlgHom Qp K₀ B).toLinearMap)`. Rewrite using `[key]`. Conclude with `Module.Flat.lTensor_preserves_injective_linearMap _ (fun a c h => (algebraMap K₀ B).injective h)`.
+
+Unfold `_root_.Formalism.WeaklyAdmissibleFiltrations.IsCrys`. Rewrite using `[_root_.GlobalTheory.TrivCrys.dcris_of_trivial PD ρ hρ, LinearMap.finrank_range_of_inj hinj, Module.finrank_tensorProduct, mul_comm]`.
+-/
 theorem _root_.GlobalTheory.TrivCrys.isCrys_of_trivial {V : Type} [AddCommGroup V] [Module Qp V] [Module LL V]
     [IsScalarTower Qp LL V] [FiniteDimensional Qp V] (ρ : Representation LL G V)
     (hρ : ∀ g x, ρ g x = x) : _root_.Formalism.WeaklyAdmissibleFiltrations.IsCrys PD ρ := by
@@ -139,6 +167,9 @@ variable {G : Type} [Group G] {Qp K₀ K : Type} [Field Qp] [Field K₀] [Field 
     [IsScalarTower K₀ K BdR] [IsScalarTower Qp K₀ BdR]
     (PD : _root_.Formalism.WeaklyAdmissibleFiltrations.PeriodData G Qp K₀ K B BdR) {LL : Type} [Field LL] [Algebra Qp LL] in
 
+/- English proof (translation)
+Introduce `G _ _ Qp K₀ K _ _ _ _ _ _ _ B BdR _ _ _ _ _ _ _ _ _ _ _ PD LL O _ _ _ _ _ _ U hU`. Use `haveI := U.fdim`. Use `haveI : FiniteDimensional Qp U.V := Module.Finite.trans LL U.V`. Conclude with `_root_.GlobalTheory.TrivCrys.isCrys_of_trivial PD U.ρ hU`.
+-/
 theorem _root_.GlobalTheory.TrivCrys.isCrys_lat_of_trivial : ∀ {G : Type} [Group G] [TopologicalSpace G] {Qp K₀ K : Type} [Field Qp] [Field K₀] [Field K] [Algebra Qp K₀] [Algebra Qp K] [Algebra K₀ K] [IsScalarTower Qp K₀ K] {B BdR : Type} [CommRing B] [CommRing BdR] [Algebra Qp B] [Algebra K₀ B] [IsScalarTower Qp K₀ B] [Algebra Qp BdR] [Algebra K₀ BdR] [Algebra K BdR] [IsScalarTower Qp K BdR] [IsScalarTower K₀ K BdR] [IsScalarTower Qp K₀ BdR] {PD : _root_.Formalism.WeaklyAdmissibleFiltrations.PeriodData G Qp K₀ K B BdR} {LL O : Type} [Field LL] [Algebra Qp LL] [CommRing O] [Algebra O LL] [TopologicalSpace LL] [FiniteDimensional Qp LL] (U : _root_.Formalism.BasicNotions.LocLat G Qp LL O), (∀ g x, U.ρ g x = x) → _root_.Formalism.WeaklyAdmissibleFiltrations.IsCrys PD U.ρ := by
   intro G _ _ Qp K₀ K _ _ _ _ _ _ _ B BdR _ _ _ _ _ _ _ _ _ _ _ PD LL O _ _ _ _ _ _ U hU
   haveI := U.fdim

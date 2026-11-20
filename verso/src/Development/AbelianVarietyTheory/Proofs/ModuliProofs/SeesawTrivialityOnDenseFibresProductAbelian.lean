@@ -12,6 +12,11 @@ open scoped CategoryTheory.Obj TensorProduct
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Establish `h1 : (lift (toUnit B ≫ x) (𝟙 B)).left ≫ (fst A B).left = B.hom ≫ (x.left : S ⟶ A.left)`. Rewrite using `[← Over.comp_left, lift_fst, Over.comp_left]`. Both sides reduce to the same expression. Establish `h2 : (lift (toUnit B ≫ x) (𝟙 B)).left ≫ (snd A B).left = 𝟙 B.left`. Rewrite using `[← Over.comp_left, lift_snd, Over.id_left]`.
+
+Establish `h3 : (x.left : S ⟶ A.left) ≫ A.hom = 𝟙 S` using `Over.w x`. Establish `hp : IsPullback (snd A B).left (fst A B).left B.hom A.hom` using `(IsPullback.of_hasPullback A.hom B.hom).flip`. Use `IsPullback.of_right ?_ h1 hp` and prove the remaining obligations. Rewrite using `[h2, h3]`. Conclude with `IsPullback.of_horiz_isIso ⟨by simp⟩`.
+-/
 theorem isPullback_lift_toUnit_fst_left {S : Scheme.{0}} (A B : Over S) (x : 𝟙_ (Over S) ⟶ A) :
     IsPullback (lift (toUnit B ≫ x) (𝟙 B)).left B.hom (fst A B).left (x.left : S ⟶ A.left) := by
   have h1 : (lift (toUnit B ≫ x) (𝟙 B)).left ≫ (fst A B).left = B.hom ≫ (x.left : S ⟶ A.left) := by
@@ -26,6 +31,11 @@ theorem isPullback_lift_toUnit_fst_left {S : Scheme.{0}} (A B : Over S) (x : �
   rw [h2, h3]
   exact IsPullback.of_horiz_isIso ⟨by simp⟩
 
+/- English proof (translation)
+Introduce `hG k _ _ A B _ _ N M hA hB hM hamp hN _ hd h0`. Establish `: IsReduced A.left` using `(isReduced_isNormalScheme_isLocallyNoetherian_of_smooth_over_field k A.left A.hom hA.smooth).1`. Establish `hp : IsPullback (snd A B).left (fst A B).left B.hom A.hom` using `(IsPullback.of_hasPullback A.hom B.hom).flip`. Use `GlobalTheory.T.seesaw_reduced_base_abelianScheme_of_dense_fibres hG (Sp k) B M hB hM hamp A.left (A ⊗ B).left A.hom (snd A B).left (fst A B).left N hp hN (hd.mono ?_) (lift (𝟙 A) (1 : A ⟶ B)).left ?_ h0` and prove the remaining obligations. Introduce `p hp`.
+
+Simplify using `only [Set.mem_iUnion, Set.mem_setOf_eq, exists_prop] at hp`. Take `⟨x, hx, hpx⟩` from `hp`. Conclude with `⟨k, inferInstance, x.left, B.left, _, B.hom, hpx, isPullback_lift_toUnit_fst_left A B x, hx⟩`. Rewrite using `[← Over.comp_left, lift_fst, Over.id_left]`.
+-/
 theorem triv_of_triv_on_dense_fibres_prod_abelian : Out.GlobalFnsSt → ∀ (k : Type) [Field k] [IsAlgClosed k] (A B : Over (Sp k)) [GrpObj A] [GrpObj B] (N : LB (A ⊗ B).left) (M : LB B.left), IsAbelianScheme A → IsAbelianScheme B → M.IsLB → Out.RelAmple B M → N.IsLB → (∃ t : (N.pull (lift (1 : B ⟶ A) (𝟙 B)).left).Gen, t.IsGen) → Dense (⋃ x ∈ {x : 𝟙_ (Over (Sp k)) ⟶ A | ∃ t : (N.pull (lift (toUnit B ≫ x) (𝟙 B)).left).Gen, t.IsGen}, Set.range x.left) → (∃ t : (N.pull (lift (𝟙 A) (1 : A ⟶ B)).left).Gen, t.IsGen) → ∃ t : N.Gen, t.IsGen := by
   intro hG k _ _ A B _ _ N M hA hB hM hamp hN _ hd h0
   have : IsReduced A.left :=

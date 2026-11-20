@@ -13,6 +13,13 @@ namespace ReciprocityTheory.ChartRestriction.G.PullbackSections.PfLam1Row
 
 open NumberField IsDedekindDomain Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotions.WeightAlgebra Formalism.L2.Pj ReciprocityTheory.ChartRestriction.G.FD ReciprocityTheory.ChartRestriction.G.Geo.Tor
 
+/- English proof (translation)
+Unfold `epStar`. Establish `hl2 : 0 < Real.log 2` using `Real.log_pos (by norm_num)`. Establish `hden : 0 < M * (f * w + 2) * k0 * Real.log 2` using `by positivity`. Break down `le_total 1 (Real.pi / (M * (f * w + 2) * k0 * Real.log 2)) with hq | hq` into its components or cases. Rewrite using `[min_eq_left hq, Real.log_one]`.
+
+Simplify using the standard rewrite rules. Rewrite using `[min_eq_right hq, Real.log_div Real.pi_pos.ne' hden.ne', Real.log_mul (by positivity) hl2.ne', Real.log_mul (by positivity) hk0.ne', Real.log_mul hM.ne' hfw.ne']`. Establish `h1 : Real.log k0 ≤ Real.log 2` using `Real.log_le_log hk0 hk0'`. Establish `h2 : Real.log (Real.log 2) ≤ 0` using `Real.log_nonpos hl2.le (by`. Use `Real.log_le_sub_one_of_pos (show (0 : ℝ) < 2 by norm_num); linarith)` as an intermediate fact.
+
+Establish `h3 : 0 ≤ Real.log Real.pi` using `Real.log_nonneg (by linarith [Real.pi_gt_three])`. Establish `h4` using `le_max_right 0 (Real.log M + Real.log (f * w + 2) + Real.log 2)`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 lemma neg_log_epStar (M f w k0 : ℝ) (hM : 0 < M) (hfw : 0 < f * w + 2) (hk0 : 0 < k0) (hk0' : k0 ≤ 2) :
     -Real.log (epStar M f w k0) ≤ max 0 (Real.log M + Real.log (f * w + 2) + Real.log 2) := by
   unfold epStar
@@ -29,6 +36,39 @@ lemma neg_log_epStar (M f w k0 : ℝ) (hM : 0 < M) (hfw : 0 < f * w + 2) (hk0 : 
     have h4 := le_max_right 0 (Real.log M + Real.log (f * w + 2) + Real.log 2)
     linarith
 
+/- English proof (translation)
+Introduce `D T h hGam large₂ j hj w hrows hL hrn hlast σ hσ f hf k z0 hz0 hhalf hpos`. Take `⟨e, M, wg, hM, hlM, hwg, hsp, htr, hfw, ⟨B, hlB, hB⟩, hk0⟩` from `hMD D T h hGam large₂ j hj w hrows hL hrn σ hσ k`. Establish `hcusp` using `((mem_cusp (T.Q.Xo j) T.Q.c (T.U j) (wtA w) w.n f).1 hf).2 σ hσ`. Set `S : Submodule ℂ (FDSec (T.U j σ).X)` to `{ carrier := {Q | ∀ k, Q k ∈ ((T.U j σ).X k).SS (laU (T.U j σ) (wtA w) w.n k)} add_mem' := by`. Introduce `Q R hQ hR k`.
+
+Use `⟨BoundedSectionAlgebra.bdd_add _ (hQ k).1 (hR k).1, fun ξ hξ x hx => ?_⟩` and prove the remaining obligations. Establish `e1` using `BoundedSectionAlgebra.fj_add _ (hQ k).1 (hR k).1 hξ hx 0`. Rewrite `e1` using `[(hQ k).2 ξ hξ x hx, (hR k).2 ξ hξ x hx, add_zero]`. Conclude with `e1`. Use the proof step `zero_mem' := fun k => ⟨BoundedSectionAlgebra.bdd_zero _ _, fun ξ _ x _ => BoundedSectionAlgebra.fj_zero _ _ _ _ _⟩`.
+
+Use the proof step `smul_mem' := by`. Introduce `c Q hQ k`. Use `⟨BoundedSectionAlgebra.bdd_smul _ c (hQ k).1, fun ξ hξ x hx => ?_⟩` and prove the remaining obligations. Establish `e1` using `BoundedSectionAlgebra.fj_smul _ (laU (T.U j σ) (wtA w) w.n k) (Q k) ξ x 0 c`. Rewrite `e1` using `[(hQ k).2 ξ hξ x hx, mul_zero]`.
+
+Conclude with `e1 }`. Establish `hSS : rdU (T.U j σ) f k ∈ ((T.U j σ).X k).SS (laU (T.U j σ) (wtA w) w.n k)` using `(Submodule.span_le.2 (fun Q hQ k => hQ k) : holSub _ _ ≤ S) hcusp k`. Establish `hmax` using `maxBound_holds D.R.r e.toX (laU (T.U j σ) (wtA w) w.n k) (rdU (T.U j σ) f k) M wg hSS hM hsp hwg htr z0 hz0 hhalf hpos`. Establish `hfw0 : 0 < (fdeg D.host.E : ℝ) * wg + 2` using `by positivity`. Use `set ep := epStar M (fdeg D.host.E) wg e.k0 with hepdef`.
+
+Establish `hep : 0 < ep`. Rewrite using `[hepdef]`. Unfold `epStar`. Conclude with `lt_min one_pos (div_pos Real.pi_pos (mul_pos (mul_pos (mul_pos hM hfw0) e.minWeight_pos) (Real.log_pos (by norm_num))))`. Establish `hmax' : ∀ v ∈ e.L', v ≠ 0 → ∃ τ : ((T.U j σ).X k).Ψ, ep ≤ ((T.U j σ).X k).maj z0 τ (Data.emb τ.1 v)` using `hmax`.
+
+Establish `hc : ∀ τ : ((T.U j σ).X k).Ψ, ((T.U j σ).X k).c τ = e.k0` using `fun τ => by`. Unfold `Data.c`. Rewrite using `[e.ξ0_abs τ]`. Expand and normalize the polynomial expressions, which then agree. Establish `hr : 0 < D.R.r` using `(PfTies1.dimPos_fr D).2`.
+
+Establish `hne : ∃ v ∈ ((T.U j σ).X k).Λ, v ≠ 0`. Establish `hL' : ∃ y ∈ e.L', y ≠ 0`. Assume the negation of the conclusion as `hcon`. Use `push_neg at hcon`. Establish `hx0 : (Pi.single (⟨0, hr⟩ : Fin D.R.r) (1 : D.host.E)) ∈ e.L'`.
+
+Use `e.L'_dual _ (fun y hy => ?_)` and prove the remaining obligations. Rewrite using `[hcon y hy]`. Simplify using `[herm]`. Conclude with `isIntegral_zero`. Conclude with `Pi.single_ne_zero_iff.2 one_ne_zero (hcon _ hx0)`.
+
+Take `⟨y, hy, hy0⟩` from `hL'`. Conclude with `⟨_, e.NC_sub y hy, smul_ne_zero (Nat.cast_ne_zero.2 e.NC_pos.ne') hy0⟩`. Take `⟨v0, hv0, hv00⟩` from `hne`. Establish `hBpos : 0 < B`. Take `⟨a, ha0, -, hab⟩` from `hB v0 hv0 hv00`.
+
+Take `⟨τ⟩ : Nonempty (D.host.E →+* ℂ)` from `inferInstance`. Conclude with `lt_of_lt_of_le (norm_pos_iff.2 ((map_ne_zero τ).2 ha0)) (hab τ)`. Use `set m := e.k0 * ep / B ^ 2 with hmdef`. Establish `hm : 0 < m` using `div_pos (mul_pos e.minWeight_pos hep) (pow_pos hBpos 2)`. Establish `hlow : ∀ v ∈ ((T.U j σ).X k).Λ, v ≠ 0 → m ≤ ∑ τ, ((T.U j σ).X k).c τ * ((T.U j σ).X k).maj z0 τ (Data.emb τ.1 v)`.
+
+Introduce `v hv hv0`. Take `⟨a, ha0, hav, hab⟩` from `hB v hv hv0`. Take `⟨τ0, hτ0'⟩` from `hmax' _ hav (smul_ne_zero ha0 hv0)`. Establish `hemb : Data.emb τ0.1 (a • v) = (τ0.1 a) • Data.emb τ0.1 v`. Use function extensionality and compare the values at `i`.
+
+Simplify using `[Data.emb]`. Rewrite `hτ0'` using `[hemb, Data.maj_smul ((T.U j σ).X k) (Data.Hf_self ((T.U j σ).X k) hz0 τ0)]`. Establish `hmaj0` using `FlagSpanBounds.maj_nonneg ((T.U j σ).X k) hz0 τ0 (Data.emb τ0.1 v)`. Establish `hns : Complex.normSq (τ0.1 a) ≤ B ^ 2`. Rewrite using `[Complex.normSq_eq_norm_sq]`.
+
+Conclude with `pow_le_pow_left₀ (norm_nonneg _) (hab τ0.1) 2`. Establish `hterm : ∀ τ, 0 ≤ ((T.U j σ).X k).c τ * ((T.U j σ).X k).maj z0 τ (Data.emb τ.1 v)` using `fun τ => mul_nonneg (by rw [hc]; exact e.minWeight_pos.le) (FlagSpanBounds.maj_nonneg ((T.U j σ).X k) hz0 τ _)`. Establish `h1 : ep / B ^ 2 ≤ ((T.U j σ).X k).maj z0 τ0 (Data.emb τ0.1 v)`. Rewrite using `[div_le_iff₀ (pow_pos hBpos 2)]`. Use the polynomial consequences of the given equalities and inequalities.
+
+Combine the equalities or inequalities in the displayed calculation. Establish `hle : m ≤ ((T.U j σ).X k).firstMinimumSq z0` using `le_csInf ⟨_, v0, hv0, hv00, rfl⟩ (fun t ⟨v, hv, hv0', ht⟩ => ht ▸ hlow v hv hv0')`. Use `⟨lt_of_lt_of_le hm hle, ?_⟩` and prove the remaining obligations. Establish `h1 : Real.log (1 / ((T.U j σ).X k).firstMinimumSq z0) ≤ Real.log (1 / m)` using `Real.log_le_log (one_div_pos.2 (lt_of_lt_of_le hm hle)) (one_div_le_one_div_of_le hm hle)`. Establish `h2 : Real.log (1 / m) = -Real.log e.k0 - Real.log ep + 2 * Real.log B`.
+
+Rewrite using `[hmdef, one_div, Real.log_inv, Real.log_div (mul_pos e.minWeight_pos hep).ne' (pow_pos hBpos 2).ne', Real.log_mul e.minWeight_pos.ne' hep.ne', Real.log_pow]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Establish `h3` using `neg_log_epStar M (fdeg D.host.E) wg e.k0 hM hfw0 e.minWeight_pos e.k0_le`. Establish `h4 : -Real.log e.k0 ≤ 3 * large₂.sc.L` using `by rw [one_div, Real.log_inv] at hk0; linarith`.
+
+Establish `h5 : Real.log 2 ≤ 1`. Use `Real.log_le_sub_one_of_pos (show (0 : ℝ) < 2 by norm_num); linarith` as an intermediate fact. Establish `h6 : max 0 (Real.log M + Real.log ((fdeg D.host.E : ℝ) * wg + 2) + Real.log 2) ≤ 32 * large₂.sc.L + 1` using `max_le (by linarith) (by linarith)`. Rewrite `h3` using `[← hepdef]`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem lam1Row (hMD : ModelDataXSt) : Lam1RowSt := by
   intro D T h hGam large₂ j hj w hrows hL hrn hlast σ hσ f hf k z0 hz0 hhalf hpos
   obtain ⟨e, M, wg, hM, hlM, hwg, hsp, htr, hfw, ⟨B, hlB, hB⟩, hk0⟩ := hMD D T h hGam large₂ j hj w hrows hL hrn σ hσ k

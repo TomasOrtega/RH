@@ -92,6 +92,13 @@ def RightLimit : Prop :=
     Integrable (Formalism.FourierDecayAlt.ThreeDimData.beInt D.z' cStd D.π' σ v' v') (D.μW'.prod D.μN) →
     ∫ x, I2 D σ v' ξ' x ∂(D.μW'.prod D.μN) = ⟪ξ', Formalism.FourierDecayAlt.ThreeDimData.be D.z' cStd D.π' σ D.μW' D.μN v' v' ξ'⟫_ℂ
 
+/- English proof (translation)
+Assume the negation of the conclusion as `hI`. Establish `h0 : Formalism.FourierDecayAlt.ThreeDimData.be z cStd π σ μW μN v v = 0`. Unfold `Formalism.FourierDecayAlt.ThreeDimData.be`. Conclude with `integral_undef hI`. Rewrite `h0` using `[hbe]`.
+
+Establish `h1` using `congrArg (fun T : Wp →L[ℂ] Wp => T ξ) h0`. Simplify using `only [ContinuousLinearMap.smulRight_apply, innerSL_apply_apply, ContinuousLinearMap.zero_apply] at h1`. Establish `hw0 : w = 0`. Break down `smul_eq_zero.mp h1 with h | h` into its components or cases. Conclude with `absurd h hw`.
+
+Conclude with `h`. Conclude with `hw (by rw [hw0, inner_zero_left])`.
+-/
 theorem integrable_of_be_eq {k r : ℕ} {Wp H : Type} [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp]
     [CompleteSpace Wp] [NormedAddCommGroup H] [InnerProductSpace ℂ H]
     (z : Fin (2 * r + k + 1) → ℂ) (π : Mat k r → (Wp →L[ℂ] Wp)) (σ : Mat k r → (H →L[ℂ] H))
@@ -111,6 +118,13 @@ theorem integrable_of_be_eq {k r : ℕ} {Wp H : Type} [NormedAddCommGroup Wp] [I
     · exact h
   exact hw (by rw [hw0, inner_zero_left])
 
+/- English proof (translation)
+Introduce `k r Wp Wq _ _ _ _ _ _ D ε lm H _ _ _ σ h hHC hDS hGap hOK v v' l l' ξ ξ' hv hv' hbe hbe' h1 h2`. Take `⟨d, hd, hfac⟩` from `hF k r Wp Wq D ε lm H σ hHC hDS`. Establish `hI : Integrable (Formalism.FourierDecayAlt.ThreeDimData.beInt D.z cStd D.π σ v v) (D.μW.prod D.μN)` using `integrable_of_be_eq D.z D.π σ D.μW D.μN v (l v) ξ hbe h1`. Establish `h2' : ⟪l' v', ξ'⟫_ℂ ≠ 0`. Rewrite using `[← inner_conj_symm]`.
+
+Conclude with `(map_ne_zero _).mpr h2`. Establish `hI' : Integrable (Formalism.FourierDecayAlt.ThreeDimData.beInt D.z' cStd D.π' σ v' v') (D.μW'.prod D.μN)` using `integrable_of_be_eq D.z' D.π' σ D.μW' D.μN v' (l' v') ξ' hbe' h2'`. Rewrite using `[hfac v v' ξ ξ' hv hv', hL k r Wp Wq D ε lm H σ hHC hDS v ξ hv hI, hR k r Wp Wq D ε lm H σ hHC hDS v' ξ' hv' hI', hbe, hbe']`. Simplify using `only [ContinuousLinearMap.smulRight_apply, innerSL_apply_apply, inner_smul_right]`. Establish `hd0 : ((d : ℂ))⁻¹ ≠ 0` using `inv_ne_zero (by exact_mod_cast hd.ne')`.
+
+Establish `h1' : ⟪ξ, l v⟫_ℂ ≠ 0`. Rewrite using `[← inner_conj_symm]`. Conclude with `(map_ne_zero _).mpr h1`. Use `mul_ne_zero (mul_ne_zero hd0 ?_) (mul_ne_zero h2' h2)` and prove the remaining obligations. Conclude with `(star_ne_zero).mpr (mul_ne_zero h1 h1')`.
+-/
 theorem betaInfCoefNZ_of (hF : BetaFactor) (hL : LeftLimit) (hR : RightLimit) :
     Formalism.MainNotions.S.Pv.BetaCut.BetaInfCoefNZ := by
   intro k r Wp Wq _ _ _ _ _ _ D ε lm H _ _ _ σ h hHC hDS hGap hOK v v' l l' ξ ξ' hv hv' hbe hbe' h1 h2

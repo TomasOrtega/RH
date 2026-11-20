@@ -4,6 +4,13 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.CommutativeAlgebra
 
 open IsLocalRing Matrix UpperTheory.V.Alg UpperTheory.V.U3 UpperTheory.V.Fr
 
+/- English proof (translation)
+Set `e : ∀ i, A' i ≃+ A i` to `fun i => { toFun := fun x => ⟨x.1, (h i _).1 x.2⟩ invFun := fun x => ⟨x.1, (h i _).2 x.2⟩ left_inv := fun _ => rfl right_inv := fun _ => rfl map_add' := fun _ _ => rfl }`. Set `E : DirectSum ι (fun i => A' i) ≃+ DirectSum ι (fun i => A i)` to `DFinsupp.mapRange.addEquiv e`. Establish `hE : DirectSum.coeAddMonoidHom A' = (DirectSum.coeAddMonoidHom A).comp E.toAddMonoidHom`. Use `DirectSum.addHom_ext fun i x => ?_` and prove the remaining obligations. Establish `h1 : E (DirectSum.of (fun i => A' i) i x) = DirectSum.of (fun i => A i) i (e i x)` using `DFinsupp.mapRange_single (hf := fun i => (e i).map_zero)`.
+
+Use `show _ = DirectSum.coeAddMonoidHom A (E (DirectSum.of (fun i => A' i) i x))`. Rewrite using `[h1, DirectSum.coeAddMonoidHom_of, DirectSum.coeAddMonoidHom_of]`. Both sides reduce to the same expression. Unfold `DirectSum.IsInternal`. Rewrite using `[hE]`.
+
+Conclude with `hA.comp E.bijective`.
+-/
 private theorem isInternal_congr {ι M σ σ' : Type} [DecidableEq ι] [AddCommMonoid M] [SetLike σ M]
     [AddSubmonoidClass σ M] [SetLike σ' M] [AddSubmonoidClass σ' M] (A : ι → σ) (A' : ι → σ')
     (h : ∀ i x, x ∈ A' i ↔ x ∈ A i) (hA : DirectSum.IsInternal A) : DirectSum.IsInternal A' := by
@@ -25,6 +32,25 @@ private theorem isInternal_congr {ι M σ σ' : Type} [DecidableEq ι] [AddCommM
   rw [hE]
   exact hA.comp E.bijective
 
+/- English proof (translation)
+Substitute `hA` using the available equality. Take `⟨h1, h2, h3⟩` from `gr_noeth O ℤ R W hz`. Establish `h0 : ∀ a : W.A, a ∈ W.gr 0 → ∃ b : B, algebraMap B W.A b = a` using `fun a ha => ⟨⟨a, (hB _).2 ha⟩, Subtype.ext (halg _)⟩`. Use `⟨isInternal_congr W.gr gr hgr (gr_internal O ℤ R W), ?_, ?_, fun j => ?_, ?_, h1⟩` and prove the remaining obligations. Conclude with `{ one_mem := (hgr _ _).2 (SetLike.GradedOne.one_mem : (1 : R) ∈ W.part 0) mul_mem := fun _ _ _ _ ha hb => (hgr _ _).2 (SetLike.mul_mem_graded ((hgr _ _).1 ha) ((hgr _ _).1 hb)) }`.
+
+Use extensionality with `a`. Rewrite using `[Submodule.mem_one, hgr]`. Use `⟨h0 a, ?_⟩` and prove the remaining obligations. Introduce and unpack `⟨b, rfl⟩`. Rewrite using `[halg]`.
+
+Conclude with `(hB _).1 b.2`. Take `⟨s, hs, hs'⟩` from `h3 j`. Use `⟨s, le_antisymm (Submodule.span_le.2 fun a ha => (hgr _ _).2 (hs a ha)) fun a ha => ?_⟩` and prove the remaining obligations. Establish `ha' : a ∈ W.gr j` using `(hgr _ _).1 ha`. Rewrite `ha'` using `[hs']`.
+
+Use `Submodule.mul_induction_on ha' (fun x hx y hy => ?_) fun x y hx hy => add_mem hx hy` and prove the remaining obligations. Take `⟨b, rfl⟩` from `h0 x hx`. Rewrite using `[← Algebra.smul_def]`. Use `Submodule.smul_mem _ _ ?_` and prove the remaining obligations. Proceed by induction on `hy using Submodule.span_induction with`.
+
+Consider the case `mem y hy => exact Submodule.subset_span hy`. Consider the case `zero => exact zero_mem _`. Consider the case `add y z _ _ hy hz => exact add_mem hy hz`. Consider the case `smul c y _ hy`. Take `⟨b, hb⟩` from `h0 _ (SetLike.algebraMap_mem_graded W.gr c)`.
+
+Rewrite using `[Algebra.smul_def, ← hb, ← Algebra.smul_def]`. Conclude with `Submodule.smul_mem _ _ hy`. Take `⟨s, hs⟩` from `h2.out`. Use `⟨⟨s, ?_⟩⟩` and prove the remaining obligations. Rewrite using `[eq_top_iff]`.
+
+Introduce `a ht`. Use `clear ht`. Establish `ha : a ∈ Algebra.adjoin (W.gr 0) (s : Set W.A)` using `by rw [hs]; trivial`. Proceed by induction on `ha using Algebra.adjoin_induction with`. Consider the case `mem y hy => exact Algebra.subset_adjoin hy`.
+
+Consider the case `algebraMap r`. Take `⟨b, hb⟩` from `h0 r.1 r.2`. Establish `: algebraMap (W.gr 0) W.A r = algebraMap B W.A b` using `hb.symm`. Rewrite using `[this]`. Conclude with `Subalgebra.algebraMap_mem _ b`.
+
+Consider the case `add a b _ _ ha hb => exact add_mem ha hb`. Consider the case `mul a b _ _ ha hb => exact mul_mem ha hb`.
+-/
 private theorem gr_transfer (O : Type) [CommRing O] [IsLocalRing O] [IsNoetherianRing O]
     [IsAdicComplete (maximalIdeal O) O] (R : Type) [CommRing R] [Algebra O R] [IsCO O R] (W : WPres O ℤ R)
     (hz : ∀ s, W.z s ∈ maximalIdeal R) (B A : Subalgebra O R) [Algebra B A]
@@ -78,6 +104,9 @@ private theorem gr_transfer (O : Type) [CommRing O] [IsLocalRing O] [IsNoetheria
     | add a b _ _ ha hb => exact add_mem ha hb
     | mul a b _ _ ha hb => exact mul_mem ha hb
 
+/- English proof (translation)
+Introduce `l _ O _ _ _ _ F C₀ n hF hn S`. Take `⟨W, hz, hr, hB, hA, hgr⟩` from `UpperTheory.V.Fr.wpres hF hn S`. Take `⟨h1, h2, h3, h4, h5, h6⟩` from `gr_transfer O S.R W hz S.B S.A (fun _ => rfl) S.gr hB hA hgr`. Conclude with `⟨h1, h2, h3, h4, h5, h6, fun g i j => (hgr _ _).2 (hr g i j)⟩`.
+-/
 theorem UpperTheory.V.Fr.gr_A :
     ∀ {l : ℕ} [Fact l.Prime] {O : Type} [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] [IsCoef l O] {F : Frame l (ResidueField O)} {C₀ : ℕ} {n : ℕ}, F.Ok C₀ → (n = 2 ∨ n = 3) → ∀ S : Space O F n, DirectSum.IsInternal S.gr ∧ SetLike.GradedMonoid S.gr ∧ S.gr 0 = 1 ∧ (∀ j, (S.gr j).FG) ∧ Algebra.FiniteType S.B S.A ∧ IsNoetherianRing S.A ∧ ∀ g i j, S.u.r g i j ∈ S.gr (w n i - w n j) := by
   intro l _ O _ _ _ _ F C₀ n hF hn S

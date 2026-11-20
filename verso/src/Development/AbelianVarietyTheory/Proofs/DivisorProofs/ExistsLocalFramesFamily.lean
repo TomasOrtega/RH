@@ -14,6 +14,17 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.S
 open GlobalTheory.Cartier GlobalTheory.VB GlobalTheory.CechPic
 open GlobalTheory.TrueGeo.SmallSec (fnMap)
 
+/- English proof (translation)
+Use `choose g hg hgJ using hdiv`. Take `⟨W, hyW, hW⟩` from `InvertIdeal.exists_common_open (x := y) hg`. Use `choose s hs using hW`. Establish `hle : W ⊓ φ ⁻¹ᵁ V ≤ φ ⁻¹ᵁ V` using `inf_le_right`. Establish `hyV' : y ∈ W ⊓ φ ⁻¹ᵁ V` using `⟨hyW, hy⟩`.
+
+Establish `hgV' : genericPoint Y ∈ W ⊓ φ ⁻¹ᵁ V` using `gen_mem hyV'`. Establish `hres (G : X.Modules) (t : Γ(G, V)) : Twist.resM _ hle (pullbackSections φ G le_rfl t) = pullbackSections φ G hle t` using `res_pullbackSections φ G le_rfl hle t`. Establish `hF' : IsFrame fun j => pullbackSections φ F hle (eF j)`. Simplify `(hF.pullback φ).res hle` using `only [hres]`. Establish `hE' : IsFrame fun k => pullbackSections φ E hle (eE k)`.
+
+Simplify `(hE.pullback φ).res hle` using `only [hres]`. Establish `hfn (K : Fin r → Fin m) : fnOf _ hgV' ((a.map (φ.appLE V _ hle).hom).submatrix id K).det = fnMap φ hη (fnOf V hV (a.submatrix id K).det)`. Rewrite using `[CorankOne.fnMap_fnOf_appLE φ hη hle hV hgV', RingHom.map_det (φ.appLE V _ hle).hom]`. Both sides reduce to the same expression. Use `⟨_, _, _, a.map (φ.appLE V _ hle).hom, hyV', hF', hE', fun j => ?_, fun h0 => ?_, fun K => ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[pullback_map_app_pullbackSections, hu, map_sum]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[pullbackSections_smul]`. Both sides reduce to the same expression. Establish `e` using `hfn J`.
+
+Rewrite `e` using `[h0, map_zero]`. Conclude with `hJ ((map_eq_zero_iff _ (fnMap φ hη).injective).1 e.symm)`. Use `⟨resG Y inf_le_left (s K), fnOf_injective _ hgV' ?_⟩` and prove the remaining obligations. Rewrite using `[map_mul, hfn, hfn, fnOf_resG, hs, mul_comm, hgJ]`.
+-/
 theorem chart_pullback {X Y : Scheme.{0}} [IsIntegral X] [IsIntegral Y] (φ : Y ⟶ X)
     (hη : φ (genericPoint Y) ⤳ genericPoint X) {r m : ℕ} {E F : X.Modules}
     [SheafOfModules.IsQuasicoherent E] [SheafOfModules.IsQuasicoherent F] (u : F ⟶ E) {V : X.Opens}
@@ -59,6 +70,19 @@ theorem chart_pullback {X Y : Scheme.{0}} [IsIntegral X] [IsIntegral Y] (φ : Y 
   · refine ⟨resG Y inf_le_left (s K), fnOf_injective _ hgV' ?_⟩
     rw [map_mul, hfn, hfn, fnOf_resG, hs, mul_comm, hgJ]
 
+/- English proof (translation)
+Introduce `O _ _ _ _ B hn n r m E F u H`. Use `choose V eF eE a hxV _ hF hE hu J hJ using H`. Establish `hqF (i : Fin n) : SheafOfModules.IsQuasicoherent (F i)` using `IsVB.isQuasicoherent (r := m i) fun x => ⟨V i x, eF i x, hxV i x, hF i x⟩`. Establish `hqE (i : Fin n) : SheafOfModules.IsQuasicoherent (E i)` using `IsVB.isQuasicoherent (r := r i) fun x => ⟨V i x, eE i x, hxV i x, hE i x⟩`. Use `choose t ht using fun i => CompactSpace.elim_nhds_subcover (fun x => (V i x : Set B.X)) fun x => (V i x).isOpen.mem_nhds (hxV i x)`.
+
+Set `D : ∀ α : (Σ i, (t i : Set B.X)), (Fin (r α.1) → Fin (m α.1)) → B.X.functionField` to `fun α K => fnOf (V α.1 α.2) (gen_mem (hxV α.1 α.2)) ((a α.1 α.2).submatrix id K).det`. Set `w : (Σ i, (t i : Set B.X)) → (Σ i, (Fin (r i) → Fin (m i))) → B.X.functionField` to `fun α j => if h : j.1 = α.1 then D α (h ▸ j.2) else 0`. Establish `hw (i : Fin n) (x : B.X) (hx : x ∈ (t i : Set B.X)) (K : Fin (r i) → Fin (m i)) : w ⟨i, ⟨x, hx⟩⟩ ⟨i, K⟩ = D ⟨i, ⟨x, hx⟩⟩ K`. Simplify using `only [w, dif_pos rfl]`. Establish `hw0 : ∀ α, ∃ j, w α j ≠ 0`.
+
+Introduce and unpack `⟨i, x, hx⟩`. Use `⟨⟨i, J i x⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[hw]`. Conclude with `(map_ne_zero_iff _ (fnOf_injective _ _)).2 (hJ i x)`. Take `⟨B', f, hη, hN', hrel, hmod⟩` from `CorankOneNormal.exists_modification O B hn _ _ w hw0`.
+
+Use `⟨B', f, hN', hrel, fun i y => ?_⟩` and prove the remaining obligations. Establish `hm : f.f y ∈ ⋃ x ∈ t i, (V i x : Set B.X)` using `by rw [ht i]; trivial`. Take `⟨x, hxt, hfy⟩` from `Set.mem_iUnion₂.1 hm`. Take `⟨⟨i', K₀⟩, hK₀, hdiv⟩` from `hmod y ⟨i, ⟨x, hxt⟩⟩`. Distinguish the cases in `h : i' = i`.
+
+Substitute `h` using the available equality. Rewrite `hK₀` using `[hw]`. Take `⟨V', eF', eE', a', h1, h2, h3, h4, h5, h6⟩` from `chart_pullback f.f (specializes_of_eq hη) (u i') (gen_mem (hxV i' x)) (eF i' x) (eE i' x) (a i' x) (hF i' x) (hE i' x) (hu i' x) K₀ y hfy hK₀ fun K => by`. Take `⟨g, hg, e⟩` from `hdiv ⟨i', K⟩`. Rewrite `e` using `[hw, hw]`.
+
+Conclude with `⟨g, hg, e⟩`. Conclude with `⟨V', eF', eE', a', K₀, h1, h2, h3, h4, h5, h6⟩`. Conclude with `absurd (dif_neg h) hK₀`.
+-/
 theorem exists_modification_minor_dvd : ∀ (O : Type) [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] [CharZero O] (B : GlobalTheory.Vert.Model O), GlobalTheory.IsNormalScheme B.X → ∀ (n : ℕ) (r m : Fin n → ℕ) (E F : Fin n → B.X.Modules) (u : ∀ i, F i ⟶ E i), (∀ (i : Fin n) (x : B.X), ∃ (V : B.X.Opens) (eF : Fin (m i) → Γ(F i, V)) (eE : Fin (r i) → Γ(E i, V)) (a : Matrix (Fin (r i)) (Fin (m i)) Γ(B.X, V)), x ∈ V ∧ IsAffineOpen V ∧ GlobalTheory.VB.IsFrame eF ∧ GlobalTheory.VB.IsFrame eE ∧ (∀ j, (u i).app V (eF j) = ∑ k, a k j • eE k) ∧ ∃ J : Fin (r i) → Fin (m i), (a.submatrix id J).det ≠ 0) → ∃ (B' : GlobalTheory.Vert.Model O) (f : GlobalTheory.Vert.Model.Hom B' B), GlobalTheory.IsNormalScheme B'.X ∧ f.relDim = 0 ∧ ∀ (i : Fin n) (y : B'.X), ∃ (V : B'.X.Opens) (eF : Fin (m i) → Γ((Scheme.Modules.pullback f.f).obj (F i), V)) (eE : Fin (r i) → Γ((Scheme.Modules.pullback f.f).obj (E i), V)) (a : Matrix (Fin (r i)) (Fin (m i)) Γ(B'.X, V)) (J : Fin (r i) → Fin (m i)), y ∈ V ∧ GlobalTheory.VB.IsFrame eF ∧ GlobalTheory.VB.IsFrame eE ∧ (∀ j, ((Scheme.Modules.pullback f.f).map (u i)).app V (eF j) = ∑ k, a k j • eE k) ∧ (a.submatrix id J).det ≠ 0 ∧ ∀ K : Fin (r i) → Fin (m i), (a.submatrix id J).det ∣ (a.submatrix id K).det := by
   intro O _ _ _ _ B hn n r m E F u H
   classical

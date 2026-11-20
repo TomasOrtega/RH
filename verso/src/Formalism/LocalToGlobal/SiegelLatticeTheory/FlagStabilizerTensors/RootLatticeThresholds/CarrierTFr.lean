@@ -25,6 +25,9 @@ def m0E (u u' : D.what₂.Word) (e : InfinitePlace D.host.E ≃ D.what₂.Tau) (
     Formalism.FourierDecayAlt.B.Mat D.R.k D.R.rS :=
   Formalism.L2.SG.Pf.CarrierBase.m0Of X u u' (tauE X e j) (Qcs C (X.pl (tauE X e j))) (Qics C (X.pl (tauE X e j)))
 
+/- English proof (translation)
+Establish `h` using `isTransp_cs (Formalism.L2.SG.Pf.torTie X) C (X.pl v)`. Establish `hv : vOf X (X.pl v) = v` using `X.pl.symm_apply_apply v`. Rewrite `h` using `[hv]`. Conclude with `h`.
+-/
 theorem isTransp_Qcs (v : InfinitePlace X.B.I.F) :
     Formalism.L2.SG.RealObj.IsTransp X v (((D.host.g 0 * D.host.g 1 : ℕ) : ℝ)) D.R.k D.R.rS (Qcs C (X.pl v)) (Qics C (X.pl v)) := by
   have h := isTransp_cs (Formalism.L2.SG.Pf.torTie X) C (X.pl v)
@@ -32,6 +35,9 @@ theorem isTransp_Qcs (v : InfinitePlace X.B.I.F) :
   rw [hv] at h
   exact h
 
+/- English proof (translation)
+Introduce `j`. Establish `hb` using `Formalism.L2.SG.Pf.CarrierBase.isBaseFrame_of (X := X) (u := u) (u' := u') (v := tauE X e j) (hr := rfl) (hQ := isTransp_Qcs X C (tauE X e j)) (Bs := baseOf X C u u' (tauE X e j)) (hz := rfl) (hz' := rfl) (i := i0' (tauE X e j))`. Rewrite `hb` using `[← towerOf_base (baseOf X C u u' (tauE X e j)) (baseOf_μW1 X C u u' _) (baseOf_μW'1 X C u u' _) rfl]`. Conclude with `hb`.
+-/
 theorem frames_carrierInT (u u' : D.what₂.Word) (e : InfinitePlace D.host.E ≃ D.what₂.Tau) (he : PlaceTie X e)
     (hv : D.host.v = Formalism.FourierDecayAlt.S6.rd D.host.E / 2) (CA : ℝ) (de de' : ℕ → ℝ) (l : ℕ)
     (grid : Fin (nfE D) → ℕ → Finset ℝ) (grid1 : Fin (nfE D) → Finset ℝ)
@@ -48,6 +54,11 @@ theorem frames_carrierInT (u u' : D.what₂.Word) (e : InfinitePlace D.host.E �
   rw [← towerOf_base (baseOf X C u u' (tauE X e j)) (baseOf_μW1 X C u u' _) (baseOf_μW'1 X C u u' _) rfl] at hb
   exact hb
 
+/- English proof (translation)
+Establish `hsg` using `sg_of (carrierInT X C u u' e he hv CA de de' l grid grid1 fc c ν' m₀ Θ TP A₀) rfl`. Use `⟨⟨c.smooth, ⟨1 / 2, by norm_num, fun x hx => c.zero x hx.le⟩, c.one⟩, fun v => ⟨?_, ?_, hF v, isPlace_of _ hN hty v, hcc v, hcap v⟩⟩` and prove the remaining obligations. Use `show Formalism.FourierDecayAlt.D.componentFamilySetting_ofSetting _ _ _ ((carrierInT X C u u' e he hv CA de de' l grid grid1 fc c ν' m₀ Θ TP A₀).sg v) _ _ _ _ _ 1 = _`. Rewrite using `[hsg v]`. Both sides reduce to the same expression.
+
+Conclude with `towerOf_norm (baseOf X C u u' (tauE X e v)) (baseOf_μW1 X C u u' _) (baseOf_μW'1 X C u u' _) rfl`.
+-/
 theorem isBuilt_carrierInT (u u' : D.what₂.Word) (e : InfinitePlace D.host.E ≃ D.what₂.Tau) (he : PlaceTie X e)
     (hv : D.host.v = Formalism.FourierDecayAlt.S6.rd D.host.E / 2) (CA : ℝ) (de de' : ℕ → ℝ) (l : ℕ)
     (grid : Fin (nfE D) → ℕ → Finset ℝ) (grid1 : Fin (nfE D) → Finset ℝ)
@@ -79,6 +90,9 @@ theorem isBuilt_carrierInT (u u' : D.what₂.Word) (e : InfinitePlace D.host.E �
     rfl
   · exact towerOf_norm (baseOf X C u u' (tauE X e v)) (baseOf_μW1 X C u u' _) (baseOf_μW'1 X C u u' _) rfl
 
+/- English proof (translation)
+Take `⟨Xo, μ, L, st, hD, -⟩` from `hLA j ⟨0, Nat.succ_pos _⟩`. Conclude with `⟨Xo, μ, L, st, hD⟩`.
+-/
 theorem data_carrierInT (u u' : D.what₂.Word) (e : InfinitePlace D.host.E ≃ D.what₂.Tau) (he : PlaceTie X e)
     (hv : D.host.v = Formalism.FourierDecayAlt.S6.rd D.host.E / 2) (CA : ℝ) (de de' : ℕ → ℝ) (l : ℕ)
     (grid : Fin (nfE D) → ℕ → Finset ℝ) (grid1 : Fin (nfE D) → Finset ℝ)
@@ -108,6 +122,17 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {Wp Wq : InfinitePla
   [∀ x, NormedAddCommGroup (Wp x)] [∀ x, InnerProductSpace ℂ (Wp x)]
   [∀ x, NormedAddCommGroup (Wq x)] [∀ x, InnerProductSpace ℂ (Wq x)]
 
+/- English proof (translation)
+Introduce `v Y hY`. Take `⟨hlo, hhi⟩` from `hY`. Establish `hG1` using `(hG v).1`. Simplify using `only [Formalism.FourierDecayAlt.C.HidaSetting.cutLo, Formalism.FourierDecayAlt.C.HidaSetting.cutHi] at hlo hhi hG1`. Establish `hl1 : S.l + 1 ≠ 1` using `by omega`.
+
+Establish `hlk : S.l + 1 ≠ (S.G.place (S.pl v)).k` using `by show S.l + 1 ≠ S.G.k`. Use linear arithmetic over natural numbers and integers. Establish `hu : ∀ de : ℕ → ℝ, (S.G.place (S.pl v)).u de (S.l + 1) = (S.G.place (S.pl v)).v S.l - 1 / 2 - de S.l * (S.G.place (S.pl v)).Del`. Introduce `de`. Simplify using `only [Formalism.FourierDecayAlt.Sz.Cfg.u, if_neg hl1, if_neg hlk, Nat.add_sub_cancel]`.
+
+Simplify using `only [Formalism.FourierDecayAlt.I.OnCut, Formalism.FourierDecayAlt.D.parOf, hu]`. Establish `hN : (0 : ℝ) ≤ (S.Ntop : ℝ)` using `Nat.cast_nonneg _`. Establish `hD : 5 ≤ (S.G.place (S.pl v)).Del`. Use polynomial arithmetic with `[pow_nonneg hN 3]`. Apply the tactic sequence `rcases hw.1 S.l with h0 | h0 <;> rcases hw'.1 S.l with h0' | h0'`.
+
+Conclude with `absurd (h0.trans h0'.symm) hne`. Use `right`. Rewrite using `[h0, h0']`. Apply the tactic sequence `constructor <;> linarith`. Use `left`.
+
+Rewrite using `[h0, h0']`. Apply the tactic sequence `constructor <;> linarith`. Conclude with `absurd (h0.trans h0'.symm) hne`.
+-/
 theorem onCut_setting (S : Formalism.FourierDecayAlt.C.HidaSetting E Wp Wq) (hw : Formalism.FourierDecayAlt.Sz.IsWord S.G.k S.de)
     (hw' : Formalism.FourierDecayAlt.Sz.IsWord S.G.k S.de') (h1 : 1 ≤ S.l) (h2 : S.l + 2 ≤ S.G.k) (hne : S.de S.l ≠ S.de' S.l)
     (hG : Formalism.FourierDecayAlt.C.GridsOK S) :
@@ -141,6 +166,9 @@ theorem onCut_setting (S : Formalism.FourierDecayAlt.C.HidaSetting E Wp Wq) (hw 
 
 end onCut
 
+/- English proof (translation)
+Use `⟨(Formalism.L2.SG.Pf.CarrierSz.g_pos D).1, (Formalism.L2.SG.Pf.CarrierSz.g_pos D).2, ?_, isBuilt_carrierInT X C u u' e he hv CA de de' l grid grid1 fc c ν' m₀ Θ TP A₀ hN hty hF hcc hcap, hl1, hl2, hG, hL, hCA, hsm, (by show 2 ≤ D.R.k; omega), hA, ?_⟩` and prove the remaining obligations. Use `first`. Consider the case `exact Formalism.L2.SG.DataInst.unram_host D`. Consider the case `exact Formalism.L2.SG.Pf.CarrierSz.unram_host D`. Conclude with `onCut_setting _ hw hw' hl1 hl2 hne hG`.
+-/
 theorem isBuiltPlace_carrierInT (Cc : ℝ) (u u' : D.what₂.Word) (e : InfinitePlace D.host.E ≃ D.what₂.Tau) (he : PlaceTie X e)
     (hv : D.host.v = Formalism.FourierDecayAlt.S6.rd D.host.E / 2) (CA : ℝ) (de de' : ℕ → ℝ) (l : ℕ)
     (grid : Fin (nfE D) → ℕ → Finset ℝ) (grid1 : Fin (nfE D) → Finset ℝ)
@@ -179,6 +207,11 @@ theorem isBuiltPlace_carrierInT (Cc : ℝ) (u u' : D.what₂.Word) (e : Infinite
       | exact Formalism.L2.SG.Pf.CarrierSz.unram_host D
   · exact onCut_setting _ hw hw' hl1 hl2 hne hG
 
+/- English proof (translation)
+Establish `hLAB : Formalism.FourierDecayAlt.JCT.LevelsActualBuilt` using `by first`. Consider the case `exact Formalism.FourierDecayAlt.P.levels_of_built_setting`. Consider the case `exact Formalism.FourierDecayAlt.P.JCT.levelsActualBuilt_proof`. Consider the case `exact Formalism.FourierDecayAlt.JCT.levelsActualBuilt`. Consider the case `exact Formalism.FourierDecayAlt.P.levelsActualBuilt_proof`.
+
+Consider the case `exact Formalism.FourierDecayAlt.P.levelsActualBuilt`. Take `⟨Cc, hC⟩` from `hLAB`. Use `⟨Cc, ?_⟩` and prove the remaining obligations. Introduce `D X θ C u u' e he hv CA de de' l grid grid1 fc c ν' m₀ Θ TP A₀ hB j`. Conclude with `data_carrierInT X C u u' e he hv CA de de' l grid grid1 fc c ν' m₀ Θ TP A₀ (hC _ _ _ _ _ _ _ _ _ _ _ hB) j`.
+-/
 theorem exists_Cc_data : ∃ Cc : ℝ, ∀ {D : D7} (X : Formalism.L2.SG.HidaSetting.HidaSetting D) {θ : ℝ} (C : Choice X θ)
     (u u' : D.what₂.Word) (e : InfinitePlace D.host.E ≃ D.what₂.Tau) (he : PlaceTie X e)
     (hv : D.host.v = Formalism.FourierDecayAlt.S6.rd D.host.E / 2) (CA : ℝ) (de de' : ℕ → ℝ) (l : ℕ)

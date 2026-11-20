@@ -16,6 +16,25 @@ noncomputable section
 
 namespace GlobalTheory.CompanionTheory.FinDiscAvg
 
+/- English proof (translation)
+Set `K : Subgroup G` to `{ carrier := {k | ρ k x = x} one_mem' := by simp mul_mem' := fun {a b} ha hb => by`. Simplify using `only [Set.mem_setOf_eq] at ha hb ⊢`. Rewrite using `[map_mul, Module.End.mul_apply, hb, ha]`. Use the proof step `inv_mem' := fun {a} ha => by`. Simplify using `only [Set.mem_setOf_eq] at ha ⊢`.
+
+Establish `h : ρ a⁻¹ (ρ a x) = x`. Rewrite using `[← Module.End.mul_apply, ← map_mul, inv_mul_cancel, map_one, Module.End.one_apply]`. Rewrite using `[ha] at h }` and apply the resulting hypothesis. Establish `hK : ∀ k, k ∈ K ↔ ρ k x = x` using `fun _ => Iff.rfl`. Take `⟨R, hR, hc⟩` from `GlobalTheory.compact_finite_leftCoset_reps G K ho Set.univ isCompact_univ`.
+
+Establish `hc' : ∀ g : G, ∃ r ∈ R, r⁻¹ * g ∈ K` using `fun g => hc g (Set.mem_univ g)`. Establish `hne : R.Nonempty`. Take `⟨r, hr, -⟩` from `hc' 1`. Conclude with `⟨r, hr⟩`. Use `⟨R, hne, fun u => ?_⟩` and prove the remaining obligations.
+
+Use `choose! σ hσR hσ using fun r : G => hc' (u * r)`. Establish `hval : ∀ r, ρ (u * r) x = ρ (σ r) x`. Introduce `r`. Establish `h` using `(hK _).1 (hσ r)`. Establish `e : u * r = σ r * ((σ r)⁻¹ * (u * r))` using `by group`.
+
+Rewrite using `[e, map_mul, Module.End.mul_apply, h]`. Establish `hinj : Set.InjOn σ R`. Introduce `r hr r' hr' e`. Use `hR r hr r' hr' ?_` and prove the remaining obligations. Establish `h1` using `hσ r`.
+
+Establish `h2` using `hσ r'`. Rewrite `h1` using `[show σ r = σ r' from e]`. Use `K.mul_mem (K.inv_mem h1) h2` as an intermediate fact. Establish `e2 : ((σ r')⁻¹ * (u * r))⁻¹ * ((σ r')⁻¹ * (u * r')) = r⁻¹ * r'` using `by group`. Rewrite `this` using `[e2]`. Then use the resulting hypothesis.
+
+Establish `himg : R.image σ = R`. Use `Finset.eq_of_subset_of_card_le ?_ ?_` and prove the remaining obligations. Introduce `s hs`. Take `⟨r, hr, rfl⟩` from `Finset.mem_image.1 hs`. Conclude with `hσR r`.
+
+Rewrite using `[Finset.card_image_of_injOn hinj]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[map_sum]`. Use `Finset.sum_congr rfl fun r _ => ?_` and prove the remaining obligations. Rewrite using `[← hval, map_mul, Module.End.mul_apply]`.
+
+Use `_ = ∑ s ∈ R.image σ, ρ s x := (Finset.sum_image (f := fun s => ρ s x) hinj).symm`. Use `_ = ∑ r ∈ R, ρ r x := by rw [himg]`.
+-/
 theorem exists_sum_fixed {G W : Type} [Group G] [TopologicalSpace G] [IsTopologicalGroup G] [CompactSpace G]
     [AddCommGroup W] [Module ℂ W] (ρ : G →* Module.End ℂ W) (x : W) (ho : IsOpen {k | ρ k x = x}) :
     ∃ R : Finset G, R.Nonempty ∧ ∀ u, ρ u (∑ r ∈ R, ρ r x) = ∑ r ∈ R, ρ r x := by
@@ -68,17 +87,34 @@ theorem exists_sum_fixed {G W : Type} [Group G] [TopologicalSpace G] [IsTopologi
 variable {E : Type} [Field E] [NumberField E] [IsTotallyComplex E] {N : ℕ}
   (μ : Measure (GA E N)) [μ.IsHaarMeasure] [μ.IsMulRightInvariant]
 
+/- English proof (translation)
+Rewrite using `[l2Map_apply μ ha, l2Map_apply μ hb, right_translate_toL2]`. Both sides reduce to the same expression.
+-/
 theorem l2Map_right_translate (k : GL (Fin N) (Af E)) {a : Sm E N} (ha : a ∈ squareIntegrableSmoothSubmoduleGL μ) (hb : finRep E N k a ∈ squareIntegrableSmoothSubmoduleGL μ) :
     l2Map μ (finRep E N k a) = R (latticeGL E N) μ (finGL E N k) (l2Map μ a) := by
   rw [l2Map_apply μ ha, l2Map_apply μ hb, right_translate_toL2]
   rfl
 
+/- English proof (translation)
+Set `T : L2 (latticeGL E N) μ →ₗᵢ[ℂ] L2 (latticeGL E N) μ` to `⟨(R (latticeGL E N) μ g : L2 (latticeGL E N) μ →L[ℂ] L2 (latticeGL E N) μ).toLinearMap, norm_R g⟩`. Conclude with `T.inner_map_map u v`.
+-/
 theorem inner_R (g : GA E N) (u v : L2 (latticeGL E N) μ) :
     ⟪R (latticeGL E N) μ g u, R (latticeGL E N) μ g v⟫_ℂ = ⟪u, v⟫_ℂ := by
   let T : L2 (latticeGL E N) μ →ₗᵢ[ℂ] L2 (latticeGL E N) μ :=
     ⟨(R (latticeGL E N) μ g : L2 (latticeGL E N) μ →L[ℂ] L2 (latticeGL E N) μ).toLinearMap, norm_R g⟩
   exact T.inner_map_map u v
 
+/- English proof (translation)
+Introduce `E _ _ _ N μ _ _ V hV L hL x hx`. Use `haveI : CompactSpace L := isCompact_iff_compactSpace.1 hL`. Set `ρ : L →* Module.End ℂ (Sm E N)` to `(finRep E N).comp L.subtype`. Establish `hρ : ∀ l : L, ρ l = finRep E N (l : GL (Fin N) (Af E))` using `fun _ => rfl`. Establish `ho : IsOpen {k : L | ρ k x = x}` using `(hV.aut x hx).level.preimage continuous_subtype_val`.
+
+Take `⟨S, hS, hfix⟩` from `exists_sum_fixed ρ x ho`. Establish `hn : ((S.card : ℂ)) ≠ 0` using `Nat.cast_ne_zero.2 hS.card_pos.ne'`. Establish `hmem : ∀ l : L, ρ l x ∈ V` using `fun l => hV.stable (.fin _) x hx`. Use `⟨(S.card : ℂ)⁻¹ • ∑ r ∈ S, ρ r x, V.smul_mem _ (V.sum_mem fun r _ => hmem r), ?_, ?_⟩` and prove the remaining obligations. Introduce `u hu`.
+
+Rewrite using `[map_smul, ← hρ ⟨u, hu⟩ , hfix]`. Introduce `y hy hyL`. Establish `hl2 : ∀ z ∈ V, z ∈ squareIntegrableSmoothSubmoduleGL μ` using `fun z hz => mem_l2Sub_of_isAutForm μ (hV.aut z hz) (hV.sqInt z hz)`. Establish `hxl` using `hl2 x hx`. Establish `key : ∀ r : L, ⟪l2Map μ (ρ r x), l2Map μ y⟫_ℂ = ⟪l2Map μ x, l2Map μ y⟫_ℂ`.
+
+Introduce `r`. Establish `e1` using `l2Map_right_translate μ (r : GL (Fin N) (Af E)) hxl (hl2 _ (hmem r))`. Establish `e2` using `l2Map_right_translate μ (r : GL (Fin N) (Af E)) hy (by rw [hyL _ r.2]; exact hy)`. Rewrite `e2` using `[hyL _ r.2]`. Rewrite using `[hρ, e1]`.
+
+Use `conv_lhs => rw [e2]`. Conclude with `inner_R μ _ _ _`. Rewrite using `[map_smul, map_sum, inner_smul_left, sum_inner, Finset.sum_congr rfl fun r _ => key r, Finset.sum_const, nsmul_eq_mul, map_inv₀, Complex.conj_natCast, inv_mul_cancel_left₀ hn]`.
+-/
 theorem exists_avg : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (N : ℕ) (μ : Measure (GA E N)) [μ.IsHaarMeasure] [μ.IsMulRightInvariant] (V : Submodule ℂ (Sm E N)), IsDiscrete V → ∀ L : Subgroup (GL (Fin N) (Af E)), IsCompact (L : Set (GL (Fin N) (Af E))) → ∀ x ∈ V, ∃ x' ∈ V, (∀ u ∈ L, finRep E N u x' = x') ∧ ∀ y : Sm E N, y ∈ squareIntegrableSmoothSubmoduleGL μ → (∀ u ∈ L, finRep E N u y = y) → ⟪l2Map μ x, l2Map μ y⟫_ℂ = ⟪l2Map μ x', l2Map μ y⟫_ℂ := by
   intro E _ _ _ N μ _ _ V hV L hL x hx
   haveI : CompactSpace L := isCompact_iff_compactSpace.1 hL

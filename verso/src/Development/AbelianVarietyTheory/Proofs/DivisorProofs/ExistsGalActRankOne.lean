@@ -31,6 +31,15 @@ end
 
 open GlobalTheory.TorsionFormCompare in
 
+/- English proof (translation)
+Take `⟨hx, he, hw⟩` from `hid`. Establish `hs` using `specOf_id R`. Establish `heG : eSec G ≫ bc.hom.left ≫ pullback.fst G.hom (specOf (RingHom.id R)) = specOf (RingHom.id R) ≫ eSec G`. Rewrite using `[hbc, hs, Category.comp_id]`. Conclude with `(Category.id_comp _).symm`.
+
+Use `(GlobalTheory.isPullUnif_iff_stalks R R I I _ D D hD A A G G bc U U).2 ⟨isoPullId (Geo.Tor.idIso U.LG.L) hbc, (isGen_iff _).2 (isoPullId_pgen (idIso_isGen U.LG.isLB) hbc), heG, isoPullId_maps (idIso_maps U.LG) hbc hs heG, fun e => ⟨𝟙 _, by rw [hbc, Category.id_comp, Category.comp …` and prove the remaining obligations. Rewrite using `[hx x]`. Conclude with `⟨fun κ => by rw [he, Category.id_comp, Category.comp_id], pmaps_self_of_tautological he hD.w hw _ _ _ ((U.gt e).t_gen x)⟩`. Introduce `Z r z jM jM' jL jL' h₁ h₂ h₃ h₄`. Establish `h₁' : (U.gt e).pG.left (r z) ∈ D.toPre.P.L.U jM` using `by rw [he] at h₁; exact h₁`.
+
+Establish `h₃' : (fstG I e G).left (r z) ∈ U.LG.L.U jL` using `by rw [hbc] at h₃; exact h₃`. Rewrite using `[Category.comp_id, gw_isoPullId _ hbc _ z jL jL' h₃' h₄, hw Z (r ≫ (U.gt e).pG.left) z jM jM' h₁' h₂]`. Establish `H` using `(isGen_iff (U.w e)).1 (U.w_gen e) Z r z jM jM' (fun _ => jL) (fun _ => jL') h₁' h₂ (mem_pull.2 h₃') (mem_pull.2 h₄)`. Establish `hp : r z ∈ (U.LG.L.pull (fstG I e G).left).U (fun _ => jL) ⊓ (U.LG.L.pull (fstG I e G).left).U (fun _ => jL')` using `⟨mem_pull.2 h₃', mem_pull.2 h₄⟩`. Establish `e₂ : gm r z _ ((U.LG.L.pull (fstG I e G).left).g (fun _ => jL) (fun _ => jL')) = gm (r ≫ (fstG I e G).left) z _ (U.LG.L.g jL jL')` using `by show gm r z _ (∏ _k : PUnit, (res _ (pullU _ _ (U.LG.L.g jL jL'))) ^ (1 : ℤ)) = _`.
+
+Rewrite using `[Fintype.prod_unique, zpow_one]`. Conclude with `(gm_res r z _ hp _).trans (gm_pull r _ z (U.LG.L.U jL ⊓ U.LG.L.U jL') ⟨h₃', h₄⟩ _)`. Rewrite using `[H, e₂]`. Use `show _ = _ * gm (r ≫ (fstG I e G).left) z _ (U.LG.L.g jL jL')`. Rewrite using `[mul_right_comm _ _⁻¹, inv_mul_cancel_right]`.
+-/
 theorem isPullUnif_refl {R : Type} [CommRing R] [IsDomain R] {I : Ideal R} {D : DegData R I}
     {A : PolAV (Sp (FractionRing R))} {G : Over (Sp R)} [GrpObj G] [IsCommMonObj G] (U : Unif I D A G)
     (hD : IsPullDeg (RingHom.id R) D.toPre D.toPre) (hid : IsIdPull hD)

@@ -23,6 +23,11 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 noncomputable section
 namespace GlobalTheory.PhaseMove
 
+/- English proof (translation)
+Introduce `D w hw`. Establish `htr` using `Formalism.MainNotions.Ext.trace_sum_over_letters_holds D w`. Establish `ht : IsIntegral ℤ (Algebra.trace D.host.K D.host.E w)` using `Algebra.isIntegral_trace hw`. Take `⟨u, v, huv⟩` from `((GlobalTheory.MomDict.main D).2.2.1 _).2 ⟨⟨_, ht⟩, rfl⟩`. Use `⟨2 * u + v, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[htr]`. Use `erw [huv]`. Simplify using `[GlobalTheory.MomOne.wK]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem trace_sum_int : ∀ (D : D7) (w : D.host.E), IsIntegral ℤ w → ∃ m : ℤ, 2 * (∑ τ, Formalism.MainNotions.TaylorLogMetric.embT D τ w).re = m := by
   intro D w hw
   have htr := Formalism.MainNotions.Ext.trace_sum_over_letters_holds D w
@@ -37,6 +42,23 @@ theorem trace_sum_int : ∀ (D : D7) (w : D.host.E), IsIntegral ℤ w → ∃ m 
 def cTA (D : D7) {m p : ℕ} (B : Matrix (Fin m) (Fin p) (Formalism.MainNotions.StandardLatticesGL3.AE D)) : Matrix (Fin p) (Fin m) (Formalism.MainNotions.StandardLatticesGL3.AE D) :=
   (B.map (Formalism.MainNotions.StandardLatticesGL3.sgA D)).transpose
 
+/- English proof (translation)
+Introduce `D a d x y A`. Establish `hinv : ∀ e : D.host.E, D.host.conj (D.host.conj e) = e` using `fun e => by`. Apply `D.host.φ₀.injective` to reduce the goal to its premises. Establish `h1` using `D.host.conjE_apply D.host.φ₀`. Express the relevant statement in the definitionally equal form `D.host.φ₀ (D.host.conj (D.host.conj e)) = _`.
+
+Rewrite using `[h1, h1, Complex.conj_conj]`. Establish `hsg : ∀ u : Formalism.MainNotions.StandardLatticesGL3.AE D, Formalism.MainNotions.StandardLatticesGL3.sgA D (Formalism.MainNotions.StandardLatticesGL3.sgA D u) = u` using `fun u => by`. Proceed by induction on `u using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul e r`.
+
+Express the relevant statement in the definitionally equal form `(Algebra.TensorProduct.map _ _) ((Algebra.TensorProduct.map _ _) (e ⊗ₜ r)) = e ⊗ₜ r`. Simplify using `only [Algebra.TensorProduct.map_tmul, AlgHom.id_apply]`. Use `congr 1`. Conclude with `hinv e`. Consider the case `add u v hu hv => rw [map_add, map_add, hu, hv]`.
+
+Establish `hΦ : ∀ B : Matrix (Fin d) (Fin a) (Formalism.MainNotions.StandardLatticesGL3.AE D), (∑ i, ∑ j, B i j * Formalism.MainNotions.StandardLatticesGL3.sgA D (B i j)) = (B * cTA D B).trace` using `fun B => by`. Simplify using `[cTA, Matrix.trace, Matrix.mul_apply]`. Establish `hmul : ∀ {m p q : ℕ} (B : Matrix (Fin m) (Fin p) (Formalism.MainNotions.StandardLatticesGL3.AE D)) (C : Matrix (Fin p) (Fin q) (Formalism.MainNotions.StandardLatticesGL3.AE D)), cTA D (B * C) = cTA D C * cTA D B` using `fun B C => by`. Simplify using `only [cTA, Matrix.map_mul, Matrix.transpose_mul]`. Establish `hcc : ∀ {m p : ℕ} (B : Matrix (Fin m) (Fin p) (Formalism.MainNotions.StandardLatticesGL3.AE D)), cTA D (cTA D B) = B` using `fun B => by`.
+
+Use extensionality with `i j`. Simplify using `[cTA, hsg]`. Establish `hU : ∀ {m : ℕ} (g : Formalism.MainNotions.StandardLatticesGL3.GA D m), cTA D ((g : GL (Fin m) (Formalism.MainNotions.StandardLatticesGL3.AE D)) : Matrix (Fin m) (Fin m) (Formalism.MainNotions.StandardLatticesGL3.AE D)) * ((g : GL (Fin m) (Formalism.MainNotions.StandardLatticesGL3 …` using `fun g => by`. Establish `h` using `g.2`. Express the relevant statement in the definitionally equal form `Formalism.UG.cT _ _ * ((1 : Matrix _ _ D.host.E).map _) * _ = (1 : Matrix _ _ D.host.E).map _ at h`.
+
+Rewrite `h` using `[Matrix.map_one _ (map_zero _) (map_one _), Matrix.mul_one]`. Conclude with `h`. Use `set X : Matrix (Fin a) (Fin a) (Formalism.MainNotions.StandardLatticesGL3.AE D) := ((x : GL (Fin a) (Formalism.MainNotions.StandardLatticesGL3.AE D)) : Matrix (Fin a) (Fin a) (Formalism.MainNotions.StandardLatticesGL3.AE D)) with hX`. Use `set V : Matrix (Fin a) (Fin a) (Formalism.MainNotions.StandardLatticesGL3.AE D) := ((((x : GL (Fin a) (Formalism.MainNotions.StandardLatticesGL3.AE D))⁻¹ : GL (Fin a) (Formalism.MainNotions.StandardLatticesGL3.AE D))) : Matrix (Fin a) (Fin a) (Formalism.MainNotions.StandardLattic …`. Use `set Y : Matrix (Fin d) (Fin d) (Formalism.MainNotions.StandardLatticesGL3.AE D) := ((y : GL (Fin d) (Formalism.MainNotions.StandardLatticesGL3.AE D)) : Matrix (Fin d) (Fin d) (Formalism.MainNotions.StandardLatticesGL3.AE D)) with hY`.
+
+Establish `hVX : V * X = 1` using `by rw [hV, hX, ← Units.val_mul, inv_mul_cancel, Units.val_one]`. Establish `hXc : X * cTA D X = 1` using `mul_eq_one_comm.1 (hU x)`. Establish `hVe : V = cTA D X`. Combine the equalities or inequalities in the displayed calculation. Establish `hVV : V * cTA D V = 1` using `by rw [hVe, hcc, hU x]`.
+
+Rewrite using `[hΦ, hΦ, hmul, hmul, Matrix.mul_assoc, Matrix.mul_assoc, ← Matrix.mul_assoc V, hVV, Matrix.one_mul, ← Matrix.mul_assoc, Matrix.trace_mul_comm, ← Matrix.mul_assoc]`. Establish `hY1 : cTA D Y * Y = 1` using `hU y`. Rewrite using `[Matrix.mul_assoc (cTA D A), hY1, Matrix.mul_one, Matrix.trace_mul_comm]`.
+-/
 theorem sq_unitary : ∀ {D : D7} {a d : ℕ} (x : Formalism.MainNotions.StandardLatticesGL3.GA D a) (y : Formalism.MainNotions.StandardLatticesGL3.GA D d) (A : Matrix (Fin d) (Fin a) (Formalism.MainNotions.StandardLatticesGL3.AE D)), (∑ i, ∑ j, (((y : GL (Fin d) (Formalism.MainNotions.StandardLatticesGL3.AE D)) : Matrix (Fin d) (Fin d) (Formalism.MainNotions.StandardLatticesGL3.AE D)) * A * ((((x : GL (Fin a) (Formalism.MainNotions.StandardLatticesGL3.AE D))⁻¹ : GL (Fin a) (Formalism.MainNotions.StandardLatticesGL3.AE D))) : Matrix (Fin a) (Fin a) (Formalism.MainNotions.StandardLatticesGL3.AE D))) i j * Formalism.MainNotions.StandardLatticesGL3.sgA D ((((y : GL (Fin d) (Formalism.MainNotions.StandardLatticesGL3.AE D)) : Matrix (Fin d) (Fin d) (Formalism.MainNotions.StandardLatticesGL3.AE D)) * A * ((((x : GL (Fin a) (Formalism.MainNotions.StandardLatticesGL3.AE D))⁻¹ : GL (Fin a) (Formalism.MainNotions.StandardLatticesGL3.AE D))) : Matrix (Fin a) (Fin a) (Formalism.MainNotions.StandardLatticesGL3.AE D))) i j)) = ∑ i, ∑ j, A i j * Formalism.MainNotions.StandardLatticesGL3.sgA D (A i j) := by
   intro D a d x y A
   have hinv : ∀ e : D.host.E, D.host.conj (D.host.conj e) = e := fun e => by
@@ -78,6 +100,15 @@ theorem sq_unitary : ∀ {D : D7} {a d : ℕ} (x : Formalism.MainNotions.Standar
   have hY1 : cTA D Y * Y = 1 := hU y
   rw [Matrix.mul_assoc (cTA D A), hY1, Matrix.mul_one, Matrix.trace_mul_comm]
 
+/- English proof (translation)
+Introduce `D cc a d A M hM`. Take `⟨B, hB, hBA⟩` from `GlobalTheory.NormSum.Expand.denom_fin (fun k : Fin d × Fin a => A k.1 k.2)`. Take `⟨m, hm, hmI⟩` from `GlobalTheory.CompletedLattice.exists_mul_IhE_mem D cc`. Use `⟨M * B * m, by positivity, fun A' hA' => ?_⟩` and prove the remaining obligations. Use `choose t ht et using hA'`.
+
+Establish `hsg : ∀ u ∈ Formalism.MainNotions.StandardLatticesGL3.OhE D, Formalism.MainNotions.StandardLatticesGL3.sgA D u ∈ Formalism.MainNotions.StandardLatticesGL3.OhE D` using `fun u hu => GlobalTheory.NormSum.UnramHecke.sgA_mem D hu`. Establish `hA1 : ∀ i j, (B : Formalism.MainNotions.StandardLatticesGL3.AE D) * A i j ∈ Formalism.MainNotions.StandardLatticesGL3.OhE D` using `fun i j => hBA (i, j)`. Establish `ht1 : ∀ i j, (m : Formalism.MainNotions.StandardLatticesGL3.AE D) * t i j ∈ Formalism.MainNotions.StandardLatticesGL3.OhE D` using `fun i j => hmI _ (ht i j)`. Use `⟨∑ i, ∑ j, (((B : Formalism.MainNotions.StandardLatticesGL3.AE D) * A i j) * Formalism.MainNotions.StandardLatticesGL3.sgA D ((m : Formalism.MainNotions.StandardLatticesGL3.AE D) * t i j) + ((m : Formalism.MainNotions.StandardLatticesGL3.AE D) * t i j) * Formalism.MainNotions.Sta …` and prove the remaining obligations. Establish `hA' : ∀ i j, A' i j = A i j + ((M * B * m : ℕ) : Formalism.MainNotions.StandardLatticesGL3.AE D) * t i j` using `fun i j => by`.
+
+Rewrite using `[← et i j]`. Expand and normalize the polynomial expressions, which then agree. Simplify using `only [hA', Finset.mul_sum, ← Finset.sum_sub_distrib]`. Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Simplify using `only [map_add, map_mul, map_natCast]`.
+
+Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem sq_move_int : ∀ {D : D7} (cc : Ideal (𝓞 D.host.K)) {a d : ℕ} (A : Matrix (Fin d) (Fin a) (Formalism.MainNotions.StandardLatticesGL3.AE D)) (M : ℕ), 0 < M → ∃ n : ℕ, 0 < n ∧ ∀ A' : Matrix (Fin d) (Fin a) (Formalism.MainNotions.StandardLatticesGL3.AE D), (∀ i j, ∃ t ∈ Formalism.MainNotions.StandardLatticesGL3.IhE D cc, A' i j - A i j = (n : Formalism.MainNotions.StandardLatticesGL3.AE D) * t) → ∃ s ∈ Formalism.MainNotions.StandardLatticesGL3.OhE D, (∑ i, ∑ j, A' i j * Formalism.MainNotions.StandardLatticesGL3.sgA D (A' i j)) - (∑ i, ∑ j, A i j * Formalism.MainNotions.StandardLatticesGL3.sgA D (A i j)) = (M : Formalism.MainNotions.StandardLatticesGL3.AE D) * s := by
   intro D cc a d A M hM
   obtain ⟨B, hB, hBA⟩ := GlobalTheory.NormSum.Expand.denom_fin (fun k : Fin d × Fin a => A k.1 k.2)
@@ -101,6 +132,15 @@ theorem sq_move_int : ∀ {D : D7} (cc : Ideal (𝓞 D.host.K)) {a d : ℕ} (A :
   push_cast
   ring
 
+/- English proof (translation)
+Introduce `D cc a d x y z M hM`. Take `⟨n, hn, h⟩` from `sq_move_int cc ((((y : GL (Fin d) (Formalism.MainNotions.StandardLatticesGL3.AE D)) : Matrix (Fin d) (Fin d) (Formalism.MainNotions.StandardLatticesGL3.AE D)) * z.map (Formalism.MainNotions.StandardLatticesGL3.inc D) * ((((x : GL (Fin a) (Formalism.MainNotions.StandardLatticesGL3 …`. Use `⟨n, hn, fun z' hz' => ?_⟩` and prove the remaining obligations. Take `⟨s, hs, e⟩` from `h (z'.map (Formalism.MainNotions.StandardLatticesGL3.inc D)) fun i j => by`. Take `⟨t, ht, et⟩` from `hz' i j`.
+
+Conclude with `⟨t, ht, by rw [← et, Matrix.sub_apply]⟩`. Rewrite `e` using `[sq_unitary]`. Establish `hinc : ∀ w : Matrix (Fin d) (Fin a) D.host.E, (∑ i, ∑ j, w.map (Formalism.MainNotions.StandardLatticesGL3.inc D) i j * Formalism.MainNotions.StandardLatticesGL3.sgA D (w.map (Formalism.MainNotions.StandardLatticesGL3.inc D) i j)) = Formalism.MainNotions.StandardLatticesGL3.inc D …` using `fun w => by`. Simplify using `only [Matrix.map_apply, map_sum, map_mul]`. Both sides reduce to the same expression.
+
+Rewrite `e` using `[hinc, hinc, ← map_sub]`. Establish `hM0 : (M : D.host.E) ≠ 0` using `Nat.cast_ne_zero.2 hM.ne'`. Rewrite using `[← GlobalTheory.HeckeVal.inc_mem_iff]`. Establish `e2 : Formalism.MainNotions.StandardLatticesGL3.inc D (((∑ i, ∑ j, z' i j * D.host.conj (z' i j)) - ∑ i, ∑ j, z i j * D.host.conj (z i j)) / (M : D.host.E)) = Formalism.MainNotions.StandardLatticesGL3.inc D (M : D.host.E)⁻¹ * (M : Formalism.MainNotions.StandardLatticesGL3.AE D) * …`. Rewrite using `[div_eq_inv_mul, map_mul, e, mul_assoc]`.
+
+Establish `e3 : Formalism.MainNotions.StandardLatticesGL3.inc D (M : D.host.E)⁻¹ * (M : Formalism.MainNotions.StandardLatticesGL3.AE D) = 1`. Rewrite using `[← map_natCast (Formalism.MainNotions.StandardLatticesGL3.inc D), ← map_mul, inv_mul_cancel₀ hM0, map_one]`. Rewrite using `[e2, e3, one_mul]`. Conclude with `hs`.
+-/
 theorem sq_diff_int : ∀ {D : D7} (cc : Ideal (𝓞 D.host.K)) {a d : ℕ} (x : Formalism.MainNotions.StandardLatticesGL3.GA D a) (y : Formalism.MainNotions.StandardLatticesGL3.GA D d) (z : Matrix (Fin d) (Fin a) D.host.E) (M : ℕ), 0 < M → ∃ n : ℕ, 0 < n ∧ ∀ z' : Matrix (Fin d) (Fin a) D.host.E, Formalism.MainNotions.StandardLatticesGL3.CloseTo D cc n (x : GL (Fin a) (Formalism.MainNotions.StandardLatticesGL3.AE D)) (y : GL (Fin d) (Formalism.MainNotions.StandardLatticesGL3.AE D)) z z' → IsIntegral ℤ (((∑ i, ∑ j, z' i j * D.host.conj (z' i j)) - ∑ i, ∑ j, z i j * D.host.conj (z i j)) / (M : D.host.E)) := by
   intro D cc a d x y z M hM
   obtain ⟨n, hn, h⟩ := sq_move_int cc ((((y : GL (Fin d) (Formalism.MainNotions.StandardLatticesGL3.AE D)) : Matrix (Fin d) (Fin d) (Formalism.MainNotions.StandardLatticesGL3.AE D)) * z.map (Formalism.MainNotions.StandardLatticesGL3.inc D) * ((((x : GL (Fin a) (Formalism.MainNotions.StandardLatticesGL3.AE D))⁻¹ : GL (Fin a) (Formalism.MainNotions.StandardLatticesGL3.AE D))) : Matrix (Fin a) (Fin a) (Formalism.MainNotions.StandardLatticesGL3.AE D)))) M hM
@@ -122,6 +162,15 @@ theorem sq_diff_int : ∀ {D : D7} (cc : Ideal (𝓞 D.host.K)) {a d : ℕ} (x :
   rw [e2, e3, one_mul]
   exact hs
 
+/- English proof (translation)
+Establish `hδ : δ ≠ 0` using `GlobalTheory.NormExact.delta_ne_zero hC`. Establish `hN : (0 : ℝ) < Ideal.absNorm cc`. Conclude with `Nat.pos_of_ne_zero (Ideal.absNorm_eq_zero_iff.not.2 hC.1.1)` after adjusting the coercions. Establish `hd : (0 : ℝ) < √(D.host.d : ℝ)` using `Real.sqrt_pos.2 (by exact_mod_cast D.host.hyp.2.1.pos)`. Establish `hc : ∀ τ x, embT D τ (D.host.conj x) = starRingEnd ℂ (embT D τ x)` using `fun τ x => D.host.conjE_apply (embT D τ) x`.
+
+Establish `hpt : ∀ τ i j, pt D (tor0 D cc δ) δ z τ i j = δ * embT D τ (z i j)` using `fun τ i j => rfl`. Establish `hS : ∑ τ, embT D τ (∑ i, ∑ j, z i j * D.host.conj (z i j)) = ∑ τ, ∑ i, ∑ j, embT D τ (z i j) * starRingEnd ℂ (embT D τ (z i j))`. Simplify using `only [map_sum, map_mul, hc]`. Establish `hH : Hf D (tor0 D cc δ) (pt D (tor0 D cc δ) δ z) (pt D (tor0 D cc δ) δ z) = ((Complex.normSq δ : ℝ) : ℂ) * (∑ τ, embT D τ (∑ i, ∑ j, z i j * D.host.conj (z i j))) / ((area (lamOf D cc δ) : ℝ) : ℂ)`. Rewrite using `[hS, Hf]`.
+
+Simplify using `only [hpt, map_mul, Finset.mul_sum]`. Use `congr 1`. Use `Finset.sum_congr rfl fun τ _ => Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[Complex.normSq_eq_conj_mul_self]`. Expand and normalize the polynomial expressions, which then agree.
+
+Rewrite using `[Formalism.MainNotions.TaylorLogMetric.qH, hH, GlobalTheory.MomDict.area_lamOf D cc δ hC.1.1]`. Establish `hδ2 : 0 < Complex.normSq δ` using `Complex.normSq_pos.2 hδ`. Rewrite using `[show ((Complex.normSq δ * (Ideal.absNorm cc : ℝ) * √(D.host.d : ℝ) / 2 : ℝ) : ℂ) = ((Complex.normSq δ * (Ideal.absNorm cc : ℝ) * √(D.host.d : ℝ) / 2 : ℝ) : ℂ) from rfl, mul_div_assoc, Complex.re_ofReal_mul, Complex.div_ofReal_re]`. Clear the denominators using the available nonvanishing facts.
+-/
 theorem qH_pt {D : D7} {cc : Ideal (𝓞 D.host.K)} {δ : ℂ} (hC : Formalism.MainNotions.StandardLatticesGL3.Crv D cc δ) {a d : ℕ}
     (z : Matrix (Fin d) (Fin a) D.host.E) :
     Formalism.MainNotions.TaylorLogMetric.qH D (tor0 D cc δ) (pt D (tor0 D cc δ) δ z) =
@@ -152,6 +201,19 @@ theorem qH_pt {D : D7} {cc : Ideal (𝓞 D.host.K)} {δ : ℂ} (hC : Formalism.M
     mul_div_assoc, Complex.re_ofReal_mul, Complex.div_ofReal_re]
   field_simp
 
+/- English proof (translation)
+Introduce `D cc δ hC a d x y z`. Establish `hN : 0 < Ideal.absNorm cc` using `Nat.pos_of_ne_zero (Ideal.absNorm_eq_zero_iff.not.2 hC.1.1)`. Take `⟨n, hn, h⟩` from `sq_diff_int cc x y z (8 * Ideal.absNorm cc) (by positivity)`. Use `⟨n, hn, fun z' hz' => ?_⟩` and prove the remaining obligations. Take `⟨m, hm⟩` from `trace_sum_int D _ (h z' hz')`.
+
+Use `set S' := ∑ i, ∑ j, z' i j * D.host.conj (z' i j)`. Use `set S := ∑ i, ∑ j, z i j * D.host.conj (z i j)`. Establish `h8 : ((8 * Ideal.absNorm cc : ℕ) : D.host.E) ≠ 0` using `Nat.cast_ne_zero.2 (by positivity)`. Establish `hsplit : S' = S + ((8 * Ideal.absNorm cc : ℕ) : D.host.E) * ((S' - S) / ((8 * Ideal.absNorm cc : ℕ) : D.host.E))` using `by field_simp; ring`. Establish `key : (∑ τ, embT D τ S').re = (∑ τ, embT D τ S).re + 4 * (Ideal.absNorm cc : ℝ) * m`.
+
+Rewrite using `[hsplit]`. Simplify using `only [map_add, map_mul, map_natCast, Finset.sum_add_distrib, ← Finset.mul_sum, Complex.add_re]`. Establish `e : ((8 * Ideal.absNorm cc : ℕ) : ℂ) = (((8 * Ideal.absNorm cc : ℕ) : ℝ) : ℂ)` using `rfl`. Rewrite using `[e, Complex.re_ofReal_mul]`. Move the coercions through the operations in `at hm ⊢`.
+
+Rewrite using `[← hm]`. Expand and normalize the polynomial expressions, which then agree. Establish `hN' : (0 : ℝ) < Ideal.absNorm cc` using `by exact_mod_cast hN`. Establish `harg : (∑ τ, embT D τ S').re / (Ideal.absNorm cc : ℝ) / 2 = (∑ τ, embT D τ S).re / (Ideal.absNorm cc : ℝ) / 2 + 2 * m`. Rewrite using `[key]`.
+
+Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[Formalism.MainNotions.StandardLatticesGL3.wdPh, Formalism.MainNotions.StandardLatticesGL3.wdPh, qH_pt hC z', qH_pt hC z, harg]`. Unfold `Formalism.MainNotions.StandardLatticesGL3.ee`. Rewrite using `[Complex.exp_eq_exp_iff_exists_int]`.
+
+Use `⟨2 * m, ?_⟩` and prove the remaining obligations. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem phase_eq : ∀ {D : D7} (cc : Ideal (𝓞 D.host.K)) (δ : ℂ), Formalism.MainNotions.StandardLatticesGL3.Crv D cc δ →
   ∀ {a d : ℕ} (x : Formalism.MainNotions.StandardLatticesGL3.GA D a) (y : Formalism.MainNotions.StandardLatticesGL3.GA D d) (z : Matrix (Fin d) (Fin a) D.host.E),
   ∃ n : ℕ, 0 < n ∧ ∀ z', Formalism.MainNotions.StandardLatticesGL3.CloseTo D cc n (x : GL (Fin a) (Formalism.MainNotions.StandardLatticesGL3.AE D)) (y : GL (Fin d) (Formalism.MainNotions.StandardLatticesGL3.AE D)) z z' →

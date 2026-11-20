@@ -22,6 +22,11 @@ section Descent
 
 variable {K L : Type*} [Field K] [Field L] [Algebra K L] {Y : Type*}
 
+/- English proof (translation)
+Set `b` to `Module.Basis.ofVectorSpace K L`. Take `⟨c, hc⟩ : ∃ c, b.coord c 1 ≠ 0` from `by by_contra! h`. Establish `h0 : b.repr 1 = 0` using `Finsupp.ext fun c => by rw [← Module.Basis.coord_apply]; exact h c`. Conclude with `one_ne_zero (b.repr.map_eq_zero_iff.mp h0)`. Establish `hmem` using `coordPoly_mem_of_mem_map b T hx c`.
+
+Establish `e` using `coordPoly_C_mul_map (b.coord c) (1 : L) x`. Rewrite `e` using `[C_1, one_mul]`. Rewrite `hmem` using `[e]`. Use `T.mul_mem_left (C (b.coord c 1)⁻¹) hmem` as an intermediate fact. Rewrite `this` using `[← mul_assoc, ← C_mul, inv_mul_cancel₀ hc, C_1, one_mul]`. Then use the resulting hypothesis.
+-/
 theorem mem_of_map_mem (T : Ideal (MvPolynomial Y K)) {x : MvPolynomial Y K}
     (hx : map (algebraMap K L) x ∈ T.map (map (algebraMap K L))) : x ∈ T := by
   classical
@@ -37,6 +42,9 @@ theorem mem_of_map_mem (T : Ideal (MvPolynomial Y K)) {x : MvPolynomial Y K}
   have := T.mul_mem_left (C (b.coord c 1)⁻¹) hmem
   rwa [← mul_assoc, ← C_mul, inv_mul_cancel₀ hc, C_1, one_mul] at this
 
+/- English proof (translation)
+Rewrite `hd`, the goal using `[← Ideal.mem_span_singleton]`. Apply `mem_of_map_mem (L := L)` to reduce the goal to its premises. Rewrite using `[Ideal.map_span, Set.image_singleton]` and apply the resulting hypothesis.
+-/
 theorem dvd_of_map_dvd {f h : MvPolynomial Y K}
     (hd : map (algebraMap K L) f ∣ map (algebraMap K L) h) : f ∣ h := by
   rw [← Ideal.mem_span_singleton] at hd ⊢
@@ -47,6 +55,13 @@ end Descent
 
 variable {n : ℕ}
 
+/- English proof (translation)
+Establish `hc : (map (algebraMap ℚ ℂ)).comp (map (Int.castRingHom ℚ)) = (map (Int.castRingHom ℂ) : MvPolynomial (Fin n) ℤ →+* MvPolynomial (Fin n) ℂ)` using `RingHom.ext fun p => by rw [RingHom.comp_apply, map_map]; congr 1`. Rewrite using `[genericIdeal, Ideal.map_map, hc]`. Prove the components needed by the constructor for the conclusion. Introduce `H h hh`. Conclude with `H _ (Ideal.mem_map_of_mem _ hh)`.
+
+Introduce `H q hq`. Establish `hle : (IndefiniteRowSideFullHecke.ArithBezout.finIdeal P).map (map (Int.castRingHom ℂ)) ≤ RingHom.ker (eval x)`. Rewrite using `[Ideal.map_le_iff_le_comap]`. Introduce `h hh`. Rewrite using `[Ideal.mem_comap, RingHom.mem_ker]`.
+
+Conclude with `H h hh`. Conclude with `RingHom.mem_ker.mp (hle hq)`.
+-/
 theorem aeval_genericIdeal_iff (P : Ideal (MRing (PBlk n))) (x : Fin n → ℂ) :
     (∀ q ∈ (genericIdeal P).map (map (algebraMap ℚ ℂ)), aeval x q = 0) ↔
       ∀ h ∈ IndefiniteRowSideFullHecke.ArithBezout.finIdeal P, eval x (map (Int.castRingHom ℂ) h) = 0 := by
@@ -66,6 +81,13 @@ theorem aeval_genericIdeal_iff (P : Ideal (MRing (PBlk n))) (x : Fin n → ℂ) 
       exact H h hh
     exact RingHom.mem_ker.mp (hle hq)
 
+/- English proof (translation)
+Rewrite using `[← vanishingIdeal_zeroLocus_eq_radical (K := ℂ)]`. Simplify using `only [mem_vanishingIdeal_iff, mem_zeroLocus_incidenceIdeal, aeval_genericIdeal_iff]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `h j z ⟨hI, hlin⟩`. Rewrite using `[map_mul, aeval_X, aeval_rename]`.
+
+Distinguish the cases in `hx : z ∘ Sum.inr = 0`. Rewrite using `[show z (Sum.inr j) = 0 from congrFun hx j, zero_mul]`. Rewrite using `[aeval_eq_eval, h (z ∘ Sum.inl) ⟨z ∘ Sum.inr, ⟨hx, hI⟩, hlin⟩, mul_zero]`. Introduce and unpack `h v ⟨x, ⟨hx, hI⟩, hlin⟩`. Take `⟨j, hj⟩ : ∃ j, x j ≠ 0` from `Function.ne_iff.1 hx`.
+
+Use `h j (Sum.elim v x) ⟨by simpa using hI, by simpa using hlin⟩` as an intermediate fact. Rewrite `this` using `[map_mul, aeval_X, aeval_rename, aeval_eq_eval]`. Simplify `this` using `[hj]`.
+-/
 theorem vanishes_cone_iff {k : ℕ} (P : Ideal (MRing (PBlk n))) (p : MvPolynomial (Fin k × Fin n) ℂ) :
     (∀ v : Fin k × Fin n → ℂ, (∃ z ∈ conePts (Int.castRingHom ℂ) (IndefiniteRowSideFullHecke.ArithBezout.finIdeal P),
         ∀ i, ∑ j, v (i, j) * z j = 0) → eval v p = 0) ↔
@@ -85,6 +107,11 @@ theorem vanishes_cone_iff {k : ℕ} (P : Ideal (MRing (PBlk n))) (p : MvPolynomi
     rw [map_mul, aeval_X, aeval_rename, aeval_eq_eval] at this
     simpa [hj] using this
 
+/- English proof (translation)
+Establish `hrad : (Ideal.span {g}).radical = Ideal.span {g}` using `(isRadical_iff_span_singleton.mp hg.isRadical).radical`. Rewrite using `[← Ideal.mem_span_singleton, ← hrad, ← vanishingIdeal_zeroLocus_eq_radical (K := ℂ)]`. Simplify using `only [mem_vanishingIdeal_iff, mem_zeroLocus_iff, aeval_eq_eval]`. Prove the components needed by the constructor for the conclusion. Introduce `h v hv`.
+
+Conclude with `h v (hv g (Ideal.mem_span_singleton_self g))`. Introduce `h v hv`. Use `h v fun q hq => ?_` and prove the remaining obligations. Take `⟨r, rfl⟩` from `Ideal.mem_span_singleton.mp hq`. Rewrite using `[map_mul, hv, zero_mul]`.
+-/
 theorem vanishes_zero_iff_dvd {σ : Type*} [Finite σ] {g p : MvPolynomial σ ℂ} (hg : Squarefree g) :
     (∀ v, eval v g = 0 → eval v p = 0) ↔ g ∣ p := by
   have hrad : (Ideal.span {g}).radical = Ideal.span {g} :=
@@ -99,6 +126,35 @@ theorem vanishes_zero_iff_dvd {σ : Type*} [Finite σ] {g p : MvPolynomial σ �
     obtain ⟨r, rfl⟩ := Ideal.mem_span_singleton.mp hq
     rw [map_mul, hv, zero_mul]
 
+/- English proof (translation)
+Introduce `n e δ P g _ hg`. Take `⟨-, hsq, hzero⟩` from `hg`. Use `set R := (incidenceIdeal (genericIdeal P) (e + 1)).radical with hR`. Establish `hradC : (incidenceIdeal ((genericIdeal P).map (map (algebraMap ℚ ℂ))) (e + 1)).radical = R.map (map (algebraMap ℚ ℂ))`. Rewrite using `[incidenceIdeal_map, radical_map_eq RadicalBaseChange.proof]`.
+
+Establish `hZ : ∀ v : Fin (e + 1) × Fin n → ℂ, eval v g = 0 ↔ ∃ z ∈ conePts (Int.castRingHom ℂ) (IndefiniteRowSideFullHecke.ArithBezout.finIdeal P), ∀ i, ∑ j, v (i, j) * z j = 0` using `fun v => hzero (fun i j => v (i, j))`. Establish `hC : ∀ p : MvPolynomial (Fin (e + 1) × Fin n) ℂ, g ∣ p ↔ ∀ j, X (Sum.inr j) * rename Sum.inl p ∈ R.map (map (algebraMap ℚ ℂ))`. Introduce `p`. Rewrite using `[← vanishes_zero_iff_dvd hsq, ← hradC, ← vanishes_cone_iff]`. Conclude with `forall_congr' fun v => by rw [hZ v]`.
+
+Establish `hQ : ∀ h : MvPolynomial (Fin (e + 1) × Fin n) ℚ, (∀ u ∈ incidence (genericIdeal P) (e + 1), aeval u h = 0) ↔ g ∣ map (algebraMap ℚ ℂ) h`. Introduce `h`. Use `(vanishes_incidence_iff _ _ h).trans ?_` and prove the remaining obligations. Rewrite using `[hC]`. Use `forall_congr' fun j => ?_` and prove the remaining obligations.
+
+Rewrite using `[show X (Sum.inr j) * rename Sum.inl (map (algebraMap ℚ ℂ) h) = map (algebraMap ℚ ℂ) (X (Sum.inr j) * rename Sum.inl h) by rw [map_mul, map_X, map_rename]]`. Conclude with `⟨fun hm => Ideal.mem_map_of_mem _ hm, mem_of_map_mem R⟩`. Establish `hg0 : g ≠ 0` using `hsq.ne_zero`. Take `⟨m, hm⟩` from `ne_zero_iff.mp hg0`. Set `b` to `Module.Basis.ofVectorSpace ℚ ℂ`.
+
+Take `⟨c, hc⟩ : ∃ c, b.coord c (coeff m g) ≠ 0` from `by by_contra! h`. Establish `h0 : b.repr (coeff m g) = 0` using `Finsupp.ext fun c => by rw [← Module.Basis.coord_apply]; exact h c`. Conclude with `hm (b.repr.map_eq_zero_iff.mp h0)`. Establish `hcS : c ∈ coordSupport b g` using `Finset.mem_biUnion.2 ⟨m, mem_support_iff.2 hm, Finsupp.mem_support_iff.2 (by rwa [← Module.Basis.coord_apply])⟩`. Use `set h := coordPoly (b.coord c) g with hh_def`.
+
+Establish `hh : g ∣ map (algebraMap ℚ ℂ) h`. Use `(hQ h).mp ((vanishes_incidence_iff _ _ h).mpr fun j => ?_)` and prove the remaining obligations. Establish `e' : X (Sum.inr j) * rename Sum.inl g = ∑ c' ∈ coordSupport b g, C (b c') * map (algebraMap ℚ ℂ) (X (Sum.inr j) * rename Sum.inl (coordPoly (b.coord c') g))` using `by conv_lhs => rw [← sum_coordPoly b g]`. Rewrite using `[map_sum, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun c' _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[map_mul, rename_C, map_mul, map_X, map_rename]`. Expand and normalize the polynomial expressions, which then agree. Establish `hmem` using `coordPoly_mem_of_mem_map b R (e' ▸ (hC g).mp dvd_rfl j) c`. Rewrite `hmem` using `[coordPoly_sum, if_pos hcS]`. Then use the resulting hypothesis. Take `⟨q, hq⟩` from `hh`.
+
+Establish `hmh : coeff m (map (algebraMap ℚ ℂ) h) ≠ 0`. Rewrite using `[coeff_map, hh_def, coeff_coordPoly]`. Conclude with `(map_ne_zero _).mpr hc`. Establish `hmh0 : map (algebraMap ℚ ℂ) h ≠ 0` using `fun h0 => hmh (by rw [h0, coeff_zero])`. Establish `hq0 : q ≠ 0`.
+
+Introduce and unpack `rfl`. Rewrite `hq` using `[mul_zero]`. Conclude with `hmh0 hq`. Establish `hsupp : (map (algebraMap ℚ ℂ) h).support ⊆ g.support`. Introduce `m' hm'`.
+
+Rewrite `hm'`, the goal using `[mem_support_iff]`. Introduce `h0`. Rewrite `hm'` using `[coeff_map, hh_def, coeff_coordPoly, h0, map_zero, map_zero]`. Conclude with `hm' rfl`. Establish `hdeg : q.totalDegree = 0`.
+
+Establish `h1` using `totalDegree_mul_of_isDomain hg0 hq0`. Establish `h2` using `totalDegree_le_of_support_subset hsupp`. Rewrite `h1` using `[← hq]`. Use linear arithmetic over natural numbers and integers. Rewrite `hdeg` using `[totalDegree_eq_zero_iff_eq_C]`.
+
+Use `set a := q.coeff 0`. Establish `ha : a ≠ 0` using `fun h0 => hq0 (by rw [hdeg, h0, C_0])`. Establish `hgm : g = C a⁻¹ * map (algebraMap ℚ ℂ) h`. Rewrite using `[hq, hdeg, mul_comm g, ← mul_assoc, ← C_mul, inv_mul_cancel₀ ha, C_1, one_mul]`. Establish `hu : IsUnit (C a⁻¹ : MvPolynomial (Fin (e + 1) × Fin n) ℂ)` using `(isUnit_iff_ne_zero.mpr (inv_ne_zero ha)).map C`.
+
+Use `⟨a⁻¹, inv_ne_zero ha, h, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[show Rat.castHom ℂ = algebraMap ℚ ℂ from Subsingleton.elim _ _]`. Conclude with `hgm`. Use `⟨fun h0 => hmh0 (by rw [h0, map_zero]), fun h' => ?_⟩` and prove the remaining obligations. Use `(hQ h').trans ?_` and prove the remaining obligations.
+
+Rewrite using `[hgm, hu.mul_left_dvd]`. Conclude with `⟨dvd_of_map_dvd, map_dvd _⟩`.
+-/
 theorem proof : ComplexChowFormToChowForm.Statement := by
   intro n e δ P g _ hg
   obtain ⟨-, hsq, hzero⟩ := hg

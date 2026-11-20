@@ -14,6 +14,15 @@ variable {ι : Type} [Fintype ι] [DecidableEq ι] {G : ι → Type} [∀ i, Gro
 end Tensor
 local instance  (D : D7) (k : Fin 2) : Fact (D.host.g k).Prime := ⟨D.host.g_prime k⟩
 local instance  (D : D7) (k : Fin 2) : NeZero (D.host.g k) := ⟨(D.host.g_prime k).ne_zero⟩
+/- English proof (translation)
+Take `⟨P0, hP0, Pa0, hB0, hm⟩` from `(D.Z_tie i x).1 hx`. Take `⟨Pa, hB⟩` from `h1 i PI`. Establish `hperm : Pa0.Perm Pa` using `((h41 i).2.1 P0 PI (by rw [hP0]; exact Option.some_ne_none x) (hP0.trans hPI.symm)).1 Pa0 Pa hB0 hB`. Establish `hm'` using `hperm.subset hm`. Take `⟨l₁, l₂, rfl⟩` from `List.append_of_mem hm'`.
+
+Use `set m : Part D.naut.CG := ⟨1, D.naut.tw (D.naut.muC i) D.naut.etaTinv, D.R.t⟩ with hmdef`. Establish `hperm2 : (l₁ ++ m :: l₂).Perm ((l₁ ++ l₂) ++ [m])` using `List.perm_middle.trans (List.perm_append_singleton _ _).symm`. Establish `hB'` using `GlobalTheory.RowThetaParam.isBCV_of_perm D.nd D.naut hperm2 hB`. Establish `hL : ∀ p ∈ l₁ ++ l₂, 1 ≤ p.a` using `fun p hp => (hB.1 p (by`. Break down `List.mem_append.1 hp with h | h` into its components or cases.
+
+Conclude with `List.mem_append_left _ h`. Conclude with `List.mem_append_right _ (List.mem_cons_of_mem _ h))).1`. Use `⟨twistIso D.nd D.naut (l₁ ++ l₂) D.naut.etaT, ?_⟩` and prove the remaining obligations. Establish `e : twistIso D.nd D.naut (twistIso D.nd D.naut (l₁ ++ l₂) D.naut.etaT ++ [muPart D.nd D.naut i]) D.naut.etaTinv = (l₁ ++ l₂) ++ [m]`. Rewrite using `[show twistIso D.nd D.naut (twistIso D.nd D.naut (l₁ ++ l₂) D.naut.etaT ++ [muPart D.nd D.naut i]) D.naut.etaTinv = twistIso D.nd D.naut (twistIso D.nd D.naut (l₁ ++ l₂) D.naut.etaT) D.naut.etaTinv ++ twistIso D.nd D.naut [muPart D.nd D.naut i] D.naut.etaTinv from List.map_append …`.
+
+Both sides reduce to the same expression. Rewrite using `[e]`. Conclude with `hB'`.
+-/
 theorem exists_isBCV_twistIso_append_mu_of_mem_Z (D : D7) (h0 : SumRepresentations.tie0 D) (h1 : SumRepresentations.adm1 D) (h5 : SumRepresentations.adm5 D) (h41 : _root_.Formalism.MainNotions.SumRepresentations.provisionFortyOne D)
     (i : D.nd.Loc) (x : D.nd.X i) (hx : x ∈ D.nd.Z i) (PI : D.naut.AV i) (hPI : D.naut.ptV i PI = some x) :
     ∃ Sig, IsBCV D.nd D.naut i PI
@@ -42,6 +51,17 @@ theorem exists_isBCV_twistIso_append_mu_of_mem_Z (D : D7) (h0 : SumRepresentatio
     rfl
   rw [e]
   exact hB'
+/- English proof (translation)
+Establish `hon : ∀ σ' : D.ntypes.Par, F ∈ D.ntypes.MtPar (D.nd.mu i) (D.nd.j i) σ' → (D.ntypes.goodPar σ' → D.ntypes.onMt (D.nd.mu i) (D.nd.j i) D.ntypes.e0 F = F) ∧ (¬ D.ntypes.goodPar σ' → D.ntypes.onMt (D.nd.mu i) (D.nd.j i) D.ntypes.e0 F = 0)` using `fun σ' hF' => idempotent_action_on_forms D (D.ntypes.cenMt (D.nd.mu i) (D.nd.j i)) σ' F fun k v f hf => hSer i σ' k v f F hF' hf`. Establish `hmem : ∀ Sig (σ' : D.ntypes.Par), (∀ w, D.ntypes.locPar σ' w = isoLoc D.nd D.naut Sig w) → IsBCV D.nd D.naut i PI (twistIso D.nd D.naut (Sig ++ [muPart D.nd D.naut i]) D.naut.etaTinv) → F ∈ D.ntypes.MtPar (D.nd.mu i) (D.nd.j i) σ'`. Introduce `Sig σ' hσ hB`. Establish `hle : D.naut.typeV i PI ≤ D.ntypes.MtPar (D.nd.mu i) (D.nd.j i) σ'`. Rewrite using `[D.mtpar_tie i σ']`.
+
+Conclude with `le_iSup₂_of_le PI ⟨Sig, fun w => (hσ w).symm, hB⟩ le_rfl`. Conclude with `hle hF`. Prove the components needed by the constructor for the conclusion. Introduce `hg`. Take `⟨-, Sig, ⟨P2, hP2, hB2⟩, hgs⟩` from `(D.Zgood_tie i x).1 hg`.
+
+Take `⟨Pa, hB⟩` from `h1 i PI`. Establish `hperm` using `((h41 i).2.1 P2 PI (by rw [hP2]; exact Option.some_ne_none x) (hP2.trans hPI.symm)).1 _ Pa hB2 hB`. Establish `hBPI` using `GlobalTheory.RowThetaParam.isBCV_of_perm D.nd D.naut hperm.symm hB`. Take `⟨σ', hσ⟩` from `Q.Par_surj i x Sig ⟨P2, hP2, hB2⟩`. Conclude with `(hon σ' (hmem Sig σ' hσ hBPI)).1 ((goodPar_iff_goodSig D Sig σ' fun w => (hσ w).symm).2 hgs)`.
+
+Introduce `hg`. Take `⟨Sig, hB⟩` from `_root_.GlobalTheory.PassOp.exists_isBCV_twistIso_append_mu_of_mem_Z D h0 h1 h5 h41 i x hx PI hPI`. Take `⟨σ', hσ⟩` from `Q.Par_surj i x Sig ⟨PI, hPI, hB⟩`. Use `(hon σ' (hmem Sig σ' hσ hB)).2 fun hgp => hg ?_` and prove the remaining obligations. Rewrite using `[D.Zgood_tie i x]`.
+
+Conclude with `⟨(D.Z_tie i x).1 hx, Sig, ⟨PI, hPI, hB⟩, (goodPar_iff_goodSig D Sig σ' fun w => (hσ w).symm).1 hgp⟩`.
+-/
 theorem onMt_e0_eq_self_of_mem_zgood_and_eq_zero_of_notMem (D : D7) (Q : PairedCharacterCondition.Pend D) (hSer : GlobalTheory.TypeLeaf.SerLoc D) (h41 : _root_.Formalism.MainNotions.SumRepresentations.provisionFortyOne D)
     (h0 : SumRepresentations.tie0 D) (h1 : SumRepresentations.adm1 D) (h5 : SumRepresentations.adm5 D) (i : D.nd.Loc) (x : D.nd.X i) (hx : x ∈ D.nd.Z i)
     (PI : D.naut.AV i) (hPI : D.naut.ptV i PI = some x) (F : D.what₂.Mt (D.nd.mu i) (D.nd.j i))
@@ -75,6 +95,23 @@ theorem onMt_e0_eq_self_of_mem_zgood_and_eq_zero_of_notMem (D : D7) (Q : PairedC
     refine (hon σ' (hmem Sig σ' hσ hB)).2 fun hgp => hg ?_
     rw [D.Zgood_tie i x]
     exact ⟨(D.Z_tie i x).1 hx, Sig, ⟨PI, hPI, hB⟩, (goodPar_iff_goodSig D Sig σ' fun w => (hσ w).symm).1 hgp⟩
+/- English proof (translation)
+Introduce `D Q hEig hCen hSer h41 _ h0 h1 h5 i _ _`. Set `zc : (∀ kv : (Σ k : Fin 2, D.nd.PlG k), Fin D.R.r → ZMod (D.host.g kv.1)) → ↥(Subalgebra.center (D.nd.O i) (MonoidAlgebra (D.nd.O i) (G0g D.nd)))` to `fun p => (hCen i fun kv => Formalism.CyclotomicNorms.monicOf (p kv)).choose`. Set `z : ↥(Subalgebra.center (D.nd.O i) (MonoidAlgebra (D.nd.O i) (G0g D.nd)))` to `∑ p, if goodVec D p then zc p else 0`. Establish `hp : ∀ p, PairedCharacterCondition.mapCoef (iotaO D.nd D.naut i) (zc p : MonoidAlgebra (D.nd.O i) (G0g D.nd)) = (D.what₂.restRowsFiniteGroupCard : ℂ) • tens (fun kv => ESer D kv (p kv))`. Introduce `p`.
+
+Take `⟨L, hnd, hall, he⟩` from `(hCen i fun kv => Formalism.CyclotomicNorms.monicOf (p kv)).choose_spec`. Rewrite using `[he]`. Use `congr 1`. Establish `e1 : (L.map fun kv => ArithmeticCylinders.atPlace D kv.1 kv.2 (D.ntypes.eSer kv.1 (Formalism.CyclotomicNorms.monicOf (p kv)))) = L.map fun kv => plc kv (ESer D kv (p kv))` using `List.map_congr_left fun kv _ => atPlace_eq D kv.1 kv.2 _`. Rewrite using `[e1, prod_plc _ L hnd]`.
+
+Use `congr 1`. Use function extensionality and compare the values at `j`. Rewrite using `[if_pos (hall j)]`. Establish `hz : PairedCharacterCondition.mapCoef (iotaO D.nd D.naut i) (z : MonoidAlgebra (D.nd.O i) (G0g D.nd)) = (D.what₂.restRowsFiniteGroupCard : ℂ) • D.ntypes.e0`. Rewrite using `[e0_eq, eGood, Finset.smul_sum, AddSubmonoidClass.coe_finsetSum]`.
+
+Use `show MonoidAlgebra.mapRingHom _ (iotaO D.nd D.naut i) _ = _`. Rewrite using `[map_sum]`. Use `Finset.sum_congr rfl fun p _ => ?_` and prove the remaining obligations. Use `split_ifs with hg`. Conclude with `hp p`.
+
+Simplify using the standard rewrite rules. Establish `hcen : D.ntypes.e0 ∈ Subalgebra.center ℂ (MonoidAlgebra ℂ (G0g D.nd))` using `Subalgebra.mem_center_iff.2 fun b => (goodElement_mem_center_groupAlgebra D b).symm`. Establish `hact : ∀ F, D.ntypes.onMt (D.nd.mu i) (D.nd.j i) (PairedCharacterCondition.mapCoef (iotaO D.nd D.naut i) (z : MonoidAlgebra (D.nd.O i) (G0g D.nd))) F = (D.what₂.restRowsFiniteGroupCard : ℂ) • D.ntypes.onMt (D.nd.mu i) (D.nd.j i) D.ntypes.e0 F`. Introduce `F`. Rewrite using `[hz]`.
+
+Unfold `NTypes.onMt`. Rewrite using `[dif_pos (Subalgebra.smul_mem _ hcen _), dif_pos hcen, ← LinearMap.smul_apply, ← map_smul]`. Both sides reduce to the same expression. Use `⟨Q.zO i z, Q.zO_comm i z, ?_, ?_⟩` and prove the remaining obligations. Introduce `x hx u hu`.
+
+Establish `hZ : x ∈ D.nd.Z i` using `(D.Z_tie i x).2 ((D.Zgood_tie i x).1 hx).1`. Use `hEig i z x (D.what₂.restRowsFiniteGroupCard : D.nd.O i) (fun PI hPI F hF => by` as an intermediate fact. Rewrite using `[hact, (_root_.GlobalTheory.PassOp.onMt_e0_eq_self_of_mem_zgood_and_eq_zero_of_notMem D Q hSer h41 h0 h1 h5 i x hZ PI hPI F hF).1 hx, map_natCast]) u hu`. Rewrite using `[this, ← algebraMap_smul (KK D.nd i) (D.what₂.restRowsFiniteGroupCard : D.nd.O i) u, map_natCast, Int.cast_natCast]`. Introduce `x hx hxg u hu`.
+
+Use `hEig i z x 0 (fun PI hPI F hF => by` as an intermediate fact. Rewrite using `[hact, (_root_.GlobalTheory.PassOp.onMt_e0_eq_self_of_mem_zgood_and_eq_zero_of_notMem D Q hSer h41 h0 h1 h5 i x hx PI hPI F hF).2 hxg, smul_zero, map_zero, zero_smul]) u hu`. Rewrite using `[this, zero_smul]`.
+-/
 theorem main_alt_alt : ∀ (D : D7) (Q : PairedCharacterCondition.Pend D), GlobalTheory.Pass.EigSpan Q → GlobalTheory.Pass.CentralElt D → GlobalTheory.TypeLeaf.SerLoc D →
     _root_.Formalism.MainNotions.SumRepresentations.provisionFortyOne D → SumRepresentations.tieLab D → SumRepresentations.tie0 D → SumRepresentations.adm1 D → SumRepresentations.adm5 D → KillingConditions.CommutingEndomorphismCondition D := by
   intro D Q hEig hCen hSer h41 _ h0 h1 h5 i _ _

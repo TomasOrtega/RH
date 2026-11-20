@@ -10,6 +10,13 @@ open scoped CategoryTheory.Obj
 attribute [local instance] Over.cartesianMonoidalCategory
 open GlobalTheory.TInj
 
+/- English proof (translation)
+Introduce `o _ ζ g n φ hn C hCN`. Take `⟨hmono, -, hcone, hdef, ht0⟩` from `GlobalTheory.TChart.Taut.monomial_chart g n φ hn C`. Establish `hsymm : ∀ i y z, ((n : ℤ) • C.δ i) y z = ((n : ℤ) • C.δ i) z y` using `fun i y z => by`. Simplify using `only [LinearMap.smul_apply, mem_balForms_int.1 (hcone.mem i) y z]`. Establish `hnn : ∀ i y, 0 ≤ ((n : ℤ) • C.δ i) y y` using `fun i y => by`.
+
+Simplify using `only [LinearMap.smul_apply, smul_eq_mul]`. Conclude with `mul_nonneg (by positivity) (hcone.nonneg i y)`. Establish `hdef' : ∀ y, y ≠ 0 → ∃ i, 0 < ((n : ℤ) • C.δ i) y y` using `fun y hy => by`. Take `⟨i, hi⟩` from `hdef y hy`. Use `⟨i, ?_⟩` and prove the remaining obligations.
+
+Simplify using `only [LinearMap.smul_apply, smul_eq_mul]`. Conclude with `mul_pos (by exact_mod_cast hn) hi`. Take `⟨R', _, _, _, ρ, -, D, e, hCN', hinj, hfin, hloc, -, href, -⟩` from `GlobalTheory.PolDeg.refine_monomial_of_polarised C.R C.Q C.m C.t (fun i => (n : ℤ) • C.δ i) hCN hmono C.bd ht0 hsymm hnn hdef'`. Conclude with `⟨R', inferInstance, inferInstance, inferInstance, ρ, D, e, hCN', hinj, hfin, hloc, href⟩`.
+-/
 theorem GlobalTheory.TInj.taut_refine : ∀ {o : Type} [CommRing o] {ζ : o} {g n : ℕ} {φ : InvFun ℤ}, 1 ≤ n → ∀ C : Taut ζ g n φ, IsCN C.R → ∃ (R₁ : Type) (_ : CommRing R₁) (_ : IsDomain R₁) (_ : IsLocalRing R₁) (ρ : C.R →+* R₁) (D : DegData R₁ (maximalIdeal R₁)) (e' : D.toPre.X ≃+ C.Q.X), IsCN R₁ ∧ Function.Injective ρ ∧ ρ.Finite ∧ IsLocalHom ρ ∧ Refines C.Q ρ D.toPre e' := by
   intro o _ ζ g n φ hn C hCN
   obtain ⟨hmono, -, hcone, hdef, ht0⟩ := GlobalTheory.TChart.Taut.monomial_chart g n φ hn C

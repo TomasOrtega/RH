@@ -6,6 +6,9 @@ open MvPolynomial ReciprocityTheory.ChartRestriction.G.Geo GlobalTheory.Companio
 
 namespace GlobalTheory.CompanionTheory.Ar.Small
 
+/- English proof (translation)
+The claim follows from `MultiProjectiveCoordinates.packing_statement`.
+-/
 theorem packing : PackingStatement := MultiProjectiveCoordinates.packing_statement
 
 end GlobalTheory.CompanionTheory.Ar.Small

@@ -24,6 +24,9 @@ section Gen
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E} {Dw : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Datum H}
   {l : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Level H} {Xo : Moduli Dw l} {c : Coeff l} {n : ℕ}
 
+/- English proof (translation)
+Substitute `hd` using the available equality. Conclude with `⟨φ', w', hP, fun _ => HEq.rfl, hw⟩`.
+-/
 theorem transfer {d d' : DeltaDat Xo c n} {cx : Rul d.Xo₂ d.c₂} (hd : d' = { d with cδ := cx })
     (P : ∀ N : Submodule (𝓞 E) Dw.La, ((Fin n → Dw.La ⧸ N) → c.F) → Prop) (φ' : (Fin n → LevQc Dw d'.l₂) → c.F)
     (hP : P (Mfr d'.l₂ • ⊤) φ') {Cl : Type} (w' : Cl → (Fin n → LevQ Dw d'.l₂) → c.F)
@@ -33,6 +36,19 @@ theorem transfer {d d' : DeltaDat Xo c n} {cx : Rul d.Xo₂ d.c₂} (hd : d' = {
   subst hd
   exact ⟨φ', w', hP, fun _ => HEq.rfl, hw⟩
 
+/- English proof (translation)
+Set `t₂ : d.c₂.F ≃+* d.c₂.F` to `(d.eF.symm.toRingEquiv.trans ta).trans d.eF.toRingEquiv`. Establish `ht₂ : ∀ x : c.F, t₂ (d.eF x) = d.eF (ta x)` using `fun x => congrArg (fun y => d.eF (ta y)) (d.eF.symm_apply_apply x)`. Establish `hco : ∀ x : d.c₂.F, ((t₂ x : d.c₂.F) : ℂ) = τ (x : ℂ)` using `fun x => hta (d.eF.symm x)`. Take `⟨a, a', ha, haa⟩` from `exists_zetaM_pow d.c₂ t₂`. Establish `h3` using `l.three_le`.
+
+Establish `h3'` using `d.l₂.three_le`. Establish `h1 : a ≡ 1 [MOD l.M]`. Take `⟨p, hp⟩` from `hM`. Use `haveI : NeZero l.M := ⟨by omega⟩`. Establish `hζ : IsPrimitiveRoot (zeta d.l₂.M) d.l₂.M` using `Complex.isPrimitiveRoot_exp _ (by omega)`.
+
+Establish `hζ0 : IsPrimitiveRoot (zeta l.M) l.M` using `Complex.isPrimitiveRoot_exp _ (by omega)`. Establish `hζp : IsPrimitiveRoot (zeta d.l₂.M ^ p) l.M` using `hζ.pow (by omega) (hp.trans (mul_comm _ _))`. Take `⟨m, -, hm⟩` from `hζ0.eq_pow_of_pow_eq_one hζp.pow_eq_one`. Establish `e1 : τ (zeta d.l₂.M) = zeta d.l₂.M ^ a`. Use `congrArg (fun x : d.c₂.F => (x : ℂ)) ha` as an intermediate fact.
+
+Simplify `this` using `only [hco, SubmonoidClass.coe_pow, GlobalTheory.LevelPairing.zetaM_coe]`. Establish `e2 : (zeta d.l₂.M ^ p) ^ a = (zeta d.l₂.M ^ p) ^ 1`. Rewrite using `[← pow_mul, mul_comm, pow_mul, ← e1, ← map_pow, ← hm, map_pow, hz, pow_one]`. Establish `h0 : zeta d.l₂.M ^ p ≠ 0` using `hζp.ne_zero (by omega)`. Establish `e3 : (zeta d.l₂.M ^ p) ^ ((1 : ℤ) - a) = 1`.
+
+Rewrite using `[zpow_sub₀ h0, zpow_natCast, e2, zpow_one, pow_one, div_self h0]`. Conclude with `(Nat.modEq_iff_dvd).2 (by simpa using (hζp.zpow_eq_one_iff_dvd _).1 e3)`. Use `⟨a, a', haa, ?_, fun φ φ' w w' u q hw hw' h => d.eF.injective ?_⟩` and prove the remaining obligations. Establish `h2 : a * a' ≡ 1 * a' [MOD l.M]` using `h1.mul_right a'`. Rewrite `h2` using `[one_mul]`.
+
+Conclude with `h2.symm.trans (haa.of_dvd hM)`. Rewrite using `[← ht₂, hw, map_phiHat d.c₂ t₂ ha haa, map_mul, hw', ← phiHat_mul]`. Use `congr 1`. Use function extensionality and compare the values at `x`. Rewrite using `[ht₂, h, map_mul]`.
+-/
 theorem exists_dilation (d : DeltaDat Xo c n) (hM : l.M ∣ d.l₂.M) (τ : ℂ ≃+* ℂ) (ta : c.F ≃+* c.F)
     (hta : ∀ a : c.F, ((ta a : c.F) : ℂ) = τ (a : ℂ)) (hz : τ (zeta l.M) = zeta l.M) :
     ∃ a a' : ℕ, a * a' ≡ 1 [MOD d.l₂.M] ∧ a' ≡ 1 [MOD l.M] ∧
@@ -70,11 +86,19 @@ theorem exists_dilation (d : DeltaDat Xo c n) (hM : l.M ∣ d.l₂.M) (τ : ℂ 
     funext x
     rw [ht₂, h, map_mul]
 
+/- English proof (translation)
+Establish `h1 : (l.M : 𝓞 E) ∈ l.Mb * Mfr l`. Rewrite using `[Mfr, l.prod]`. Conclude with `Ideal.mem_span_singleton_self _`. Conclude with `h (Submodule.mem_inf.1 (Ideal.mul_le_inf h1)).1`.
+-/
 theorem level_mem {P : Ideal (𝓞 E)} (h : l.Mb ≤ P) : (l.M : 𝓞 E) ∈ P := by
   have h1 : (l.M : 𝓞 E) ∈ l.Mb * Mfr l := by
     rw [Mfr, l.prod]; exact Ideal.mem_span_singleton_self _
   exact h (Submodule.mem_inf.1 (Ideal.mul_le_inf h1)).1
 
+/- English proof (translation)
+Take `⟨k, hk⟩` from `h.dvd`. Establish `h0 : ((m : ℕ) : 𝓞 E ⧸ P) = 0`. Rewrite using `[← map_natCast (Ideal.Quotient.mk P), Ideal.Quotient.eq_zero_iff_mem]`. Conclude with `hm`. Use `congrArg (Int.cast : ℤ → 𝓞 E ⧸ P) hk` as an intermediate fact.
+
+Move the coercions through the operations in `at this`. Rewrite `this` using `[h0, zero_mul, sub_eq_zero]`. Conclude with `this.symm`.
+-/
 theorem cast_eq_of_modEq {P : Ideal (𝓞 E)} {m a b : ℕ} (hm : (m : 𝓞 E) ∈ P) (h : a ≡ b [MOD m]) :
     (a : 𝓞 E ⧸ P) = (b : 𝓞 E ⧸ P) := by
   obtain ⟨k, hk⟩ := h.dvd
@@ -91,6 +115,9 @@ section Mat
 
 variable {D : D7}
 
+/- English proof (translation)
+Take `⟨⟨es, hes, rfl⟩, -⟩` from `h`. Take `⟨⟨es', hes', rfl⟩, -⟩` from `h'`. Use `Finset.sum_congr rfl fun PP hPP => ?_` and prove the remaining obligations. Conclude with `(((GlobalTheory.IdemSupport.supported_group_and_prime_idempotents V).2.2.1 PP _ _ (Or.inl ⟨hes PP hPP, rfl⟩)).2.2.2.1 _ _ (Or.inl ⟨hes' PP hPP, rfl⟩)).1`.
+-/
 theorem idemSum_unique (V : HSp D) {e e' : AE D} {P : Finset (Pl D.host.E)} (h : IsIdemSum e P) (h' : IsIdemSum e' P) : e' = e := by
   obtain ⟨⟨es, hes, rfl⟩, -⟩ := h
   obtain ⟨⟨es', hes', rfl⟩, -⟩ := h'
@@ -98,6 +125,13 @@ theorem idemSum_unique (V : HSp D) {e e' : AE D} {P : Finset (Pl D.host.E)} (h :
   exact (((GlobalTheory.IdemSupport.supported_group_and_prime_idempotents V).2.2.1 PP _ _ (Or.inl ⟨hes PP hPP, rfl⟩)).2.2.2.1 _ _
     (Or.inl ⟨hes' PP hPP, rfl⟩)).1
 
+/- English proof (translation)
+Establish `h1 : (Matrix.of fun b a => D.sp.cm.sig ((m • X b) a)) = m • Matrix.of fun b a => D.sp.cm.sig (X b a)`. Use extensionality with `b a`. Simplify using the standard rewrite rules. Use function extensionality and compare the values at `b a`. Unfold `uMat`.
+
+Rewrite using `[h1, Matrix.mul_smul, Matrix.smul_mul]`. Establish `h2 : ∀ N : Matrix (Fin S.rank) (Fin T.rank) D.host.E, (m • N).map (eToEAf D) = m • N.map (eToEAf D)` using `fun N => by`. Use extensionality with `b a`. Simplify using the standard rewrite rules. Rewrite using `[h2, Matrix.mul_smul, Matrix.smul_mul]`.
+
+Rewrite using `[Matrix.smul_apply, mul_smul_comm]`. Both sides reduce to the same expression.
+-/
 theorem uMat_nsmul (S T : HSp D) (βS : GL (Fin S.rank) (EAf D)) (βT : GL (Fin T.rank) (EAf D)) (e : AE D)
     (X : Fin S.rank → Fin T.rank → D.host.E) (m : ℕ) :
     uMat S T βS βT e (fun b => m • X b) = m • uMat S T βS βT e X := by
@@ -114,6 +148,11 @@ theorem uMat_nsmul (S T : HSp D) (βS : GL (Fin S.rank) (EAf D)) (βT : GL (Fin 
   rw [Matrix.smul_apply, mul_smul_comm]
   rfl
 
+/- English proof (translation)
+Use function extensionality and compare the values at `i j`. Establish `h : (m • N) i j ∈ Formalism.L2.Herm.intAf D.host.F D.host.E` using `nsmul_mem (hN i j) m`. Use `show redM PP (m • N) i j = (m : kP PP) * redM PP N i j`. Unfold `redM`. Rewrite using `[dif_pos h, dif_pos (hN i j), ← nsmul_eq_mul]`.
+
+Conclude with `(resS D.host.F PP).toAddMonoidHom.map_nsmul m ⟨N i j, hN i j⟩`.
+-/
 theorem redM_nsmul (PP : Pl D.host.E) {b a : ℕ} {N : Matrix (Fin b) (Fin a) (EAf D)} (hN : IsIntM N) (m : ℕ) :
     redM PP (m • N) = (m : kP PP) • redM PP N := by
   funext i j
@@ -123,12 +162,18 @@ theorem redM_nsmul (PP : Pl D.host.E) {b a : ℕ} {N : Matrix (Fin b) (Fin a) (E
   rw [dif_pos h, dif_pos (hN i j), ← nsmul_eq_mul]
   exact (resS D.host.F PP).toAddMonoidHom.map_nsmul m ⟨N i j, hN i j⟩
 
+/- English proof (translation)
+Use function extensionality and compare the values at `i j`. Simplify using `only [topL, Matrix.smul_apply]`. Apply the tactic sequence `split_ifs <;> simp`.
+-/
 theorem topL_smul {κ : Type} [CommRing κ] {b a : ℕ} (k : ℕ) (c : κ) (y : Matrix (Fin b) (Fin a) κ) :
     topL k (c • y) = c • topL k y := by
   funext i j
   simp only [topL, Matrix.smul_apply]
   split_ifs <;> simp
 
+/- English proof (translation)
+Unfold `omegaK`. Use `if_congr (forall₂_congr fun PP h => ?_) rfl rfl` and prove the remaining obligations. Simplify using `only`. Rewrite using `[hc PP h, one_smul]`.
+-/
 theorem omegaK_smul {a b : ℕ} (Pg : Finset (Pl D.host.E)) (c : ∀ PP : Pl D.host.E, kP PP) (hc : ∀ PP ∈ Pg, c PP = 1)
     (y : ∀ PP : Pl D.host.E, Matrix (Fin b) (Fin a) (kP PP)) : omegaK Pg (fun PP => c PP • y PP) = omegaK Pg y := by
   unfold omegaK
@@ -136,11 +181,21 @@ theorem omegaK_smul {a b : ℕ} (Pg : Finset (Pl D.host.E)) (c : ∀ PP : Pl D.h
   dsimp only
   rw [hc PP h, one_smul]
 
+/- English proof (translation)
+Unfold `omegaK`. Apply the tactic sequence `split_ifs <;> simp`.
+-/
 theorem map_omegaK (τ : ℂ ≃+* ℂ) {a b : ℕ} (Pg : Finset (Pl D.host.E))
     (y : ∀ PP : Pl D.host.E, Matrix (Fin b) (Fin a) (kP PP)) : τ (omegaK Pg y) = omegaK Pg y := by
   unfold omegaK
   split_ifs <;> simp
 
+/- English proof (translation)
+Establish `hc : ∀ PP h, c PP = ((v PP h)⁻¹ : (kP PP)ˣ)` using `fun PP h => (Units.inv_eq_of_mul_eq_one_right (hv PP h)).symm`. Establish `hdet : ∀ PP h, (topL r (c PP • y PP)).det = (((v PP h ^ r)⁻¹ : (kP PP)ˣ) : kP PP) * (topL r (y PP)).det` using `fun PP h => by`. Rewrite using `[topL_smul, Matrix.det_smul, Fintype.card_fin, hc PP h, ← inv_pow, Units.val_pow_eq_pow_val]`. Establish `hiff : (∀ PP ∈ Q, LowZero r (c PP • y PP) ∧ IsUnit (topL r (c PP • y PP)).det) ↔ ∀ PP ∈ Q, LowZero r (y PP) ∧ IsUnit (topL r (y PP)).det`. Use `forall₂_congr fun PP h => and_congr ?_ ?_` and prove the remaining obligations.
+
+Use `forall₄_congr fun i j _ _ => ?_` and prove the remaining obligations. Rewrite using `[Matrix.smul_apply, smul_eq_mul, hc PP h, Units.mul_right_eq_zero]`. Rewrite using `[hdet PP h, Units.isUnit_units_mul]`. Unfold `omegaQ`. Distinguish the cases in `h : ∀ PP ∈ Q, LowZero r (y PP) ∧ IsUnit (topL r (y PP)).det`.
+
+Rewrite using `[dif_pos h, dif_pos (hiff.2 h), map_prod, ← Finset.prod_mul_distrib]`. Use `Finset.prod_congr rfl fun PP _ => ?_` and prove the remaining obligations. Establish `e : (hiff.2 h PP.1 PP.2).2.unit = (v PP.1 PP.2 ^ r)⁻¹ * (h PP.1 PP.2).2.unit` using `Units.ext (by rw [IsUnit.unit_spec, Units.val_mul, IsUnit.unit_spec]; exact hdet PP.1 PP.2)`. Rewrite using `[map_zpow₀, ← hξ PP.1 PP.2, e, MonoidHom.map_mul, MonoidHom.map_inv, Units.val_mul, Units.val_inv_eq_inv_val, _root_.zpow_neg_one, _root_.zpow_neg_one, mul_inv, inv_inv]`. Rewrite using `[dif_neg h, dif_neg (mt hiff.1 h), map_zero, mul_zero]`.
+-/
 theorem map_omegaQ_smul (τ : ℂ ≃+* ℂ) {a b : ℕ} (Q : Finset (Pl D.host.E)) (r : ℕ) (ξ ξ' : ∀ PP : Pl D.host.E, (kP PP)ˣ →* ℂˣ)
     (hξ : ∀ PP ∈ Q, ∀ x, ((ξ' PP x : ℂˣ) : ℂ) = τ ((ξ PP x : ℂˣ) : ℂ)) (c : ∀ PP : Pl D.host.E, kP PP)
     (v : ∀ PP ∈ Q, (kP PP)ˣ) (hv : ∀ PP h, (v PP h : kP PP) * c PP = 1)
@@ -166,6 +221,11 @@ theorem map_omegaQ_smul (τ : ℂ ≃+* ℂ) {a b : ℕ} (Q : Finset (Pl D.host.
       _root_.zpow_neg_one, _root_.zpow_neg_one, mul_inv, inv_inv]
   · rw [dif_neg h, dif_neg (mt hiff.1 h), map_zero, mul_zero]
 
+/- English proof (translation)
+Take `⟨⟨h1, h2, w, ε, hw, hs⟩, h3⟩` from `he`. Take `⟨x, hx⟩` from `Ideal.Quotient.mk_surjective (v : kP PP)`. Use `haveI : Nontrivial (kP PP) := Ideal.Quotient.nontrivial_iff.2 PP.isPrime.ne_top`. Establish `hx0 : (x : D.host.E) ≠ 0`. Introduce `h0`.
+
+Establish `: x = 0` using `by exact_mod_cast h0`. Rewrite `hx` using `[this, map_zero]`. Conclude with `v.ne_zero hx.symm`. Use `⟨(Formalism.L2.JoinChr.isUnit_locE h1 (Units.mk0 _ hx0)).unit, fun χ χH ξ hχ hξ => ?_⟩` and prove the remaining obligations. Rewrite using `[hχ.2 PP e ⟨h1, ⟨w, ε, hw, Or.inl ⟨h2, hs⟩⟩, h3⟩ (Units.mk0 _ hx0) _ (IsUnit.unit_spec _), hξ x (Units.mk0 _ hx0) v rfl hx.symm]`.
+-/
 theorem exists_idele_at {PP : Pl D.host.E} {e : AE D} (he : Formalism.L2.NTheta.IsIdemAt e PP) (v : (kP PP)ˣ) :
     ∃ s : (AE D)ˣ, ∀ (χ : (AE D)ˣ →* Circle) (χH : Formalism.L2.Host.HChar D.host.E) (ξ : (kP PP)ˣ →* ℂˣ),
       ChrEq χ χH → IsRes χH PP ξ → ((χ s : Circle) : ℂ) = ((ξ v : ℂˣ) : ℂ) := by
@@ -181,6 +241,9 @@ theorem exists_idele_at {PP : Pl D.host.E} {e : AE D} (he : Formalism.L2.NTheta.
   rw [hχ.2 PP e ⟨h1, ⟨w, ε, hw, Or.inl ⟨h2, hs⟩⟩, h3⟩ (Units.mk0 _ hx0) _ (IsUnit.unit_spec _),
     hξ x (Units.mk0 _ hx0) v rfl hx.symm]
 
+/- English proof (translation)
+Establish `key : ∀ PP : {x // x ∈ Q}, ∃ s : (AE D)ˣ, ((χ s : Circle) : ℂ) = ((ξ PP.1 (v PP.1 PP.2) : ℂˣ) : ℂ)` using `fun PP => (he PP.1 PP.2).elim fun _ h => (exists_idele_at h (v PP.1 PP.2)).imp fun _ hs => hs χ χH _ hχ (hξ PP.1 PP.2)`. Use `choose s hs using key`. Use `⟨∏ PP ∈ Q.attach, s PP, ?_⟩` and prove the remaining obligations. Rewrite using `[map_prod]`. Use `(map_prod Circle.coeHom _ _).trans (Finset.prod_congr rfl fun PP _ => hs PP)` and prove the remaining obligations.
+-/
 theorem exists_idele (χ : (AE D)ˣ →* Circle) (χH : Formalism.L2.Host.HChar D.host.E) (hχ : ChrEq χ χH) (Q : Finset (Pl D.host.E))
     (ξ : ∀ PP : Pl D.host.E, (kP PP)ˣ →* ℂˣ) (hξ : ∀ PP ∈ Q, IsRes χH PP (ξ PP))
     (he : ∀ PP ∈ Q, ∃ e : AE D, Formalism.L2.NTheta.IsIdemAt e PP) (v : ∀ PP ∈ Q, (kP PP)ˣ) :
@@ -201,6 +264,17 @@ variable {D : D7} {G : Type} [Group G] [Fintype G] {Pl0 T0 : Type} {A : FamIn D.
 
 set_option maxHeartbeats 1600000 in
 
+/- English proof (translation)
+Take `⟨e, he, h⟩` from `h`. Take `⟨e', he', h'⟩` from `h'`. Establish `hQ : R.Q t' = R.Q t` using `ht.1`. Rewrite `he'`, `h'` using `[hQ]`. Take `rfl : e' = e` from `idemSum_unique (Vc D i) he he'`.
+
+Establish `hid : ∀ PP ∈ R.Q t, ∃ e : AE D, Formalism.L2.NTheta.IsIdemAt e PP` using `fun PP hPP => he.1.elim fun es hes => ⟨es PP, hes.1 PP (Finset.mem_union_right _ hPP)⟩`. Establish `hres : ∀ PP ∈ R.Q t, IsRes (R.xiH t') PP (R.xiR t' PP)` using `fun PP hPP => hL.xiR t' PP (hQ ▸ hPP)`. Establish `hξ : ∀ PP ∈ R.Q t, ∀ x, ((R.xiR t' PP x : ℂˣ) : ℂ) = τ ((R.xiR t PP x : ℂˣ) : ℂ)` using `fun PP hPP x => by`. Take `⟨e₀, he₀⟩` from `hid PP hPP`. Take `⟨s, hs⟩` from `exists_idele_at he₀ x`.
+
+Rewrite using `[← hs _ _ _ (hL.xi t') (hres PP hPP), ← hs _ _ _ (hL.xi t) (hL.xiR t PP hPP)]`. Conclude with `ht.2 s`. Set `v : ∀ PP ∈ R.Q t, (kP PP)ˣ` to `fun PP hPP => Units.mkOfMulEqOne _ _ (hq PP hPP)`. Take `⟨s, hs⟩` from `exists_idele (R.xi t') (R.xiH t') (hL.xi t') (R.Q t) (R.xiR t') hres hid (fun PP hPP => v PP hPP ^ (Wc D i).rank)`. Use `⟨s, fun x => ?_⟩` and prove the remaining obligations.
+
+Use `choose y hy using fun b => Submodule.Quotient.mk_surjective N (x b)`. Take `rfl : x = fun b => Submodule.Quotient.mk (y b)` from `funext fun b => (hy b).symm`. Establish `e1 : (a' • fun b => (Submodule.Quotient.mk (y b) : La ⧸ N)) = fun b => Submodule.Quotient.mk (a' • y b)`. Use function extensionality and compare the values at `fun b => (map_nsmul N.mkQ a' (y b)).symm`. Establish `e2 : (fun PP => redM PP (uMat (Vc D i) (Wc D i) (R.βV i) (R.βW i) e' fun b => ι (a' • y b))) = fun PP => (a' : kP PP) • redM PP (uMat (Vc D i) (Wc D i) (R.βV i) (R.βW i) e' fun b => ι (y b))`.
+
+Use function extensionality and compare the values at `PP`. Rewrite using `[← redM_nsmul PP (h y).1, ← uMat_nsmul]`. Simplify using `only [map_nsmul]`. Rewrite using `[e1, (h fun b => a' • y b).2, (h' y).2, e2, map_mul, map_omegaK, omegaK_smul _ _ hg, map_omegaQ_smul τ _ _ _ _ hξ _ v hq, hs, mul_left_comm]`.
+-/
 theorem datum_conj (R : RealDat D A Ks) (hL : R.toLevCh.Is A.μ0) (i : Fin D.R.m) {K' : Type} [Field K'] (σ' : K' →+* ℂ)
     (τ : ℂ ≃+* ℂ) {t t' : T0} (ht : ConjTup R τ t t') {La : Type} [AddCommGroup La] [Module (𝓞 D.host.E) La]
     (ι : La →ₗ[𝓞 D.host.E] (Fin (Wc D i).rank → D.host.E)) (N : Submodule (𝓞 D.host.E) La)
@@ -241,6 +315,21 @@ end Dat
 set_option maxHeartbeats 4000000 in
 set_option synthInstance.maxHeartbeats 400000 in
 
+/- English proof (translation)
+Introduce `D G _ _ Pl0 T0 A T _ R F κ v₀ hcore _ i Tp tup M hP τ ta hta hfix a b e hsame hconj`. Take `⟨⟨cx, hcx⟩, -⟩` from `hsame`. Take `⟨φ', w', hφ', hw1, hw2⟩` from `transfer hcx (fun N φ => PhiIs R i (inC M.c') (tup b) (iotaW T i) N φ) (M.φ b) (hP.tuple b).phi (M.w b) (hP.w b)`. Establish `hLev` using `(hP.cov a).1`. Establish `hz : τ (zeta T.Q.l.M) = zeta T.Q.l.M`.
+
+Use `hfix.core (zetaM T.Q.c)` as an intermediate fact. Rewrite `this` using `[GlobalTheory.LevelPairing.zetaM_coe]`. Then use the resulting hypothesis. Take `⟨m, m', hmm, hm', hdil⟩` from `exists_dilation (M.dδ a) hLev.1.1 τ ta hta hz`. Establish `hhalf` using `(hP.tuple a).half`. Establish `hg : ∀ PP ∈ R.Pg, (m' : kP PP) = 1` using `fun PP hPP => by`.
+
+Establish `h1 : T.Q.l.Mb ≤ PP.asIdeal` using `hhalf.1.le.trans (Ideal.le_of_dvd (Finset.dvd_prod_of_mem _ hPP))`. Conclude with `(cast_eq_of_modEq (level_mem h1) hm').trans Nat.cast_one`. Establish `hq : ∀ PP ∈ R.Q (tup a), (m : kP PP) * m' = 1` using `fun PP hPP => by`. Establish `h1 : (M.dδ a).l₂.Mb ≤ PP.asIdeal` using `hLev.2.2.2.1.le.trans (Ideal.mul_le_right.trans (hhalf.2.1 PP hPP))`. Conclude with `(Nat.cast_mul m m').symm.trans ((cast_eq_of_modEq (level_mem h1) hmm).trans Nat.cast_one)`.
+
+Take `⟨s, hs⟩` from `datum_conj R hcore.lev i (inC M.c') τ hconj (iotaW T i) _ (M.φ a) φ' (hP.tuple a).phi hφ' m m' hg hq`. Establish `hs' : ∀ x, ((ta (M.φ a (m' • x)) : M.c'.F) : ℂ) = ((R.xi (tup b) s : Circle) : ℂ) * ((φ' x : M.c'.F) : ℂ)` using `fun x => (hta _).trans (hs x)`. Establish `key : ∃ (u : M.c'.F) (s : (AE D)ˣ), (u : ℂ) = ((R.xi (tup b) s : Circle) : ℂ) ∧ ∀ x, ta (M.φ a (m' • x)) = u * φ' x`. Distinguish the cases in `h0 : ∀ x, φ' x = 0`. Use `⟨1, 1, by simp, fun x => Subtype.ext ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[hs' x, h0 x]`. Simplify using the standard rewrite rules. Take `⟨x₀, hx₀⟩` from `not_forall.1 h0`. Establish `hx₁ : ((φ' x₀ : M.c'.F) : ℂ) ≠ 0` using `fun h => hx₀ (Subtype.ext h)`. Establish `hu : ((ta (M.φ a (m' • x₀)) / φ' x₀ : M.c'.F) : ℂ) = ((R.xi (tup b) s : Circle) : ℂ)`.
+
+Use `push_cast`. Rewrite using `[hs' x₀, mul_div_cancel_right₀ _ hx₁]`. Use `⟨_, s, hu, fun x => Subtype.ext ?_⟩` and prove the remaining obligations. Rewrite using `[hs' x, ← hu]`. Both sides reduce to the same expression.
+
+Take `⟨u, s', hu, hus⟩` from `key`. Conclude with `⟨u, s', fun k => w' (e k), hu, fun k => hw1 (e k), fun k q => hdil (M.φ a) φ' _ _ u q (hP.w a k q) (hw2 (e k) q) hus⟩`.
+-/
 theorem conj_coeff : ∀ (D : D7) (G : Type) [Group G] [Fintype G] (Pl0 T0 : Type) (A : FamIn D.what₂.LL G Pl0 T0 D.R.m) (T : CoreJ D) [Algebra T.Q.c.F D.what₂.LL] (R : RealDat D A T.Q.c.F) (F : Face D A) (κ : ∀ i : Fin D.R.m, WeightFamilies.Wt D ((i : ℕ) + 1)) (v₀ : ∀ (i : Fin D.R.m) (σ : D.what₂.LL →+* ℂ), (R.MW i σ).Vec), GlobalTheory.Hk3.Core R F → Nonempty (FWTie T R κ v₀) → ∀ (i : Fin D.R.m) (Tp : Type) (tup : Tp → T0) (M : OMDat T.toCore R i Tp tup), M.Pins (κ i) (v₀ i (sg0 D A)) (iotaW T i) (T.x₀ ((i : ℕ) + 1) M.s0) → ∀ (τ : ℂ ≃+* ℂ) (ta : M.c'.F ≃+* M.c'.F), (∀ a : M.c'.F, ((ta a : M.c'.F) : ℂ) = τ (a : ℂ)) → FixBase T R i τ → ∀ (a b : Tp) (e : M.Cl' a ≃ M.Cl' b), SameCover M a b e → ConjTup R τ (tup a) (tup b) → ∃ (u : M.c'.F) (s : (AE D)ˣ) (w' : M.Cl' a → (Fin (Vc D i).rank → LevQ (T.Q.Dw ((i : ℕ) + 1)) (M.dδ a).l₂) → M.c'.F), (u : ℂ) = ((R.xi (tup b) s : Circle) : ℂ) ∧ (∀ k, HEq (w' k) (M.w b (e k))) ∧ ∀ k q, ta (M.w a k q) = u * w' k q := by
   intro D G _ _ Pl0 T0 A T _ R F κ v₀ hcore _ i Tp tup M hP τ ta hta hfix a b e hsame hconj
   obtain ⟨⟨cx, hcx⟩, -⟩ := hsame

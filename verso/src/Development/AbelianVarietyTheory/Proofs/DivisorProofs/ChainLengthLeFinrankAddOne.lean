@@ -4,6 +4,17 @@ open Formalism.BasicNotions.TH GlobalTheory.FockAlg GlobalTheory.RealLift Global
 
 namespace GlobalTheory.HoweR
 
+/- English proof (translation)
+Introduce `V _ _ G U C hU hGUC m N hN hC hsep`. Set `g : Fin m → Submodule ℂ U` to `fun k => (N k).comap U.subtype`. Establish `hg : StrictMono g`. Introduce `k l hkl`. Use `lt_of_le_of_ne (fun x hx => hN.monotone hkl.le hx) ?_` and prove the remaining obligations.
+
+Introduce `heq`. Take `⟨v, hvl, hvG, hvk⟩` from `hsep k l hkl`. Take `⟨u, hu, c, hc, rfl⟩` from `Submodule.mem_sup.mp (hGUC hvG)`. Establish `hcl : c ∈ N l` using `hC l hc`. Establish `hul : u ∈ N l` using `by simpa using (N l).sub_mem hvl hcl`.
+
+Establish `hmem : (⟨u, hu⟩ : U) ∈ g l` using `hul`. Rewrite `hmem` using `[← heq]`. Conclude with `hvk ((N k).add_mem hmem (hC k hc))`. Set `f : Fin m → Fin (Module.finrank ℂ U + 1)` to `fun k => ⟨Module.finrank ℂ (g k), Nat.lt_succ_of_le (Submodule.finrank_le _)⟩`. Establish `hf : Function.Injective f`.
+
+Introduce `k l h`. Establish `h' : Module.finrank ℂ (g k) = Module.finrank ℂ (g l)` using `congrArg Fin.val h`. Assume the negation of the conclusion as `hne`. Break down `lt_or_gt_of_ne hne with hlt | hlt` into its components or cases. Conclude with `(ne_of_lt (Submodule.finrank_lt_finrank_of_lt (hg hlt))) h'`.
+
+Conclude with `(ne_of_lt (Submodule.finrank_lt_finrank_of_lt (hg hlt))) h'.symm`. Simplify using `using Fintype.card_le_of_injective f hf`.
+-/
 theorem chain_length_le_finrank_add_one : ∀ (V : Type) [AddCommGroup V] [Module ℂ V] (G U C : Submodule ℂ V), FiniteDimensional ℂ U → G ≤ U ⊔ C → ∀ (m : ℕ) (N : Fin m → Submodule ℂ V), StrictMono N → (∀ k, C ≤ N k) → (∀ k l, k < l → ∃ v ∈ N l, v ∈ G ∧ v ∉ N k) → m ≤ Module.finrank ℂ U + 1 := by
   intro V _ _ G U C hU hGUC m N hN hC hsep
   let g : Fin m → Submodule ℂ U := fun k => (N k).comap U.subtype

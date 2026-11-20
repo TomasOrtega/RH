@@ -19,6 +19,13 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar GlobalTheory.TypeR
 
 namespace GlobalTheory.HeightCounting.Up
 
+/- English proof (translation)
+Introduce `hN hM hL`. Establish `hlift` using `GlobalTheory.T.lift_all_of_inputs hN hL`. Establish `hloc` using `GlobalTheory.T.row_local_all hN hL`. Establish `hsz` using `GlobalTheory.T.eventually_sizes_congruences_hostFacts_columnChoices`. Use `Step.trans (Step.and (Step.and (Step.and (Step.of_evLgG (KP := KPx) (p := fun _ _ _ _ => True) hlift) (Step.of_evLgG hloc)) (Step.of_evLgG hsz)) hM) (Step.of_all ?_)` and prove the remaining obligations.
+
+Introduce and unpack `K B f T - hKP - ⟨⟨⟨h1, h2⟩, h3⟩, h4⟩ w hS P x l`. Take `⟨cp⟩` from `hS.1`. Take `⟨⟨M, ad, mt⟩⟩` from `h4 w hS P x`. Establish `hpar : ParIn hL (Dof x) (cfOf x) (repOf x.r.Y) l.a.A.row` using `ParIn.ofSt l.a`. Establish `hLift` using `h1 hKP w cp x.o.Z _ _ x.m.z x.s.p0 x.r.Y x.m.intersectionNumber_baseChange x.m.exAt x.m.inGeo x.fits.grp x.fits.grpAt l.a.A.row hpar M _ _ ad mt`.
+
+Establish `hLoc` using `h2 hKP w cp x.o.Z _ _ x.m.z x.s.p0 x.r.Y x.m.intersectionNumber_baseChange x.m.exAt x.m.inGeo x.fits.grp x.fits.grpAt l.a.A.row hpar`. Take `⟨-, -, -, hEFK, hCM, hDef, -⟩` from `h3 hKP T w x.o.Z`. Establish `hLaws` using `GlobalTheory.T.parameter_laws_empty hN hL (Dof x) (cfOf x) (repOf x.r.Y) l.a.A.row l.a.A.bare hpar`. Establish `hconds` using `GlobalTheory.T.base_change_of_hypotheses hN.bc hN.what₂.bern hN.ds hN.gen hN.std hL (Dof x) l.a.A.wdT l.a.A.au l.a.cg l.a.au`. Conclude with `GlobalTheory.T.good_row_cusp_param (Dof x) l.a.A.row hLaws hconds hEFK hCM hDef hLift hLoc`.
+-/
 theorem parSt_of_prN_sMt : PrN → SMt → ∀ hL : GlobalTheory.Published.LocalLanglandsGL, ParSt hL := by
   intro hN hM hL
   have hlift := GlobalTheory.T.lift_all_of_inputs hN hL

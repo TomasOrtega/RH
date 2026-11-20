@@ -5,10 +5,22 @@ open GlobalTheory.EtC
 
 namespace LateralTheory.E.CoverIntegralClosure
 
+/- English proof (translation)
+The claim follows from `Subtype.val_injective`.
+-/
 theorem inj_sub (P : Type) [CommRing P] [IsDomain P] :
     Function.Injective (algebraMap (integralClosure P (AlgebraicClosure (FractionRing P))) (AlgebraicClosure (FractionRing P))) :=
   Subtype.val_injective
 
+/- English proof (translation)
+Introduce `p hp hdeg`. Establish `hdeg' : (p.map (algebraMap (integralClosure P (AlgebraicClosure (FractionRing P))) (AlgebraicClosure (FractionRing P)))).degree ≠ 0`. Rewrite using `[Polynomial.degree_map_eq_of_injective (inj_sub P)]`. Introduce `h`. Rewrite `h` using `[Polynomial.degree_eq_natDegree hp.ne_zero]`.
+
+Normalize the coercions in `at h`. Use linear arithmetic over natural numbers and integers. Take `⟨a, ha⟩` from `IsAlgClosed.exists_root _ hdeg'`. Establish `hTa : IsIntegral (integralClosure P (AlgebraicClosure (FractionRing P))) a` using `⟨p, hp, by simpa [Polynomial.IsRoot, Polynomial.eval_map_algebraMap, Polynomial.aeval_def] using ha⟩`. Establish `hPa : IsIntegral P a` using `isIntegral_trans a hTa`.
+
+Establish `ha' : Polynomial.eval₂ (algebraMap (integralClosure P (AlgebraicClosure (FractionRing P))) (AlgebraicClosure (FractionRing P))) a p = 0`. Simplify `ha` using `[Polynomial.IsRoot, Polynomial.eval_map_algebraMap, Polynomial.aeval_def]`. Use `⟨⟨a, hPa⟩, ?_⟩` and prove the remaining obligations. Apply `inj_sub P` to reduce the goal to its premises. Rewrite using `[map_zero, ← Polynomial.eval₂_at_apply]`.
+
+Conclude with `ha'`.
+-/
 theorem aic_integralClosure (P : Type) [CommRing P] [IsDomain P] :
     AIC (integralClosure P (AlgebraicClosure (FractionRing P))) := by
   intro p hp hdeg
@@ -29,6 +41,9 @@ theorem aic_integralClosure (P : Type) [CommRing P] [IsDomain P] :
   rw [map_zero, ← Polynomial.eval₂_at_apply]
   exact ha'
 
+/- English proof (translation)
+Establish `h : Function.Injective (algebraMap P (AlgebraicClosure (FractionRing P)))`. Rewrite using `[IsScalarTower.algebraMap_eq P (FractionRing P) (AlgebraicClosure (FractionRing P))]`. Conclude with `(algebraMap (FractionRing P) _).injective.comp (IsFractionRing.injective P _)`. Rewrite `h` using `[IsScalarTower.algebraMap_eq P (integralClosure P (AlgebraicClosure (FractionRing P))) (AlgebraicClosure (FractionRing P))]`. Conclude with `fun x y hxy => h (by simp only [RingHom.comp_apply, hxy])`.
+-/
 theorem inj_P (P : Type) [CommRing P] [IsDomain P] :
     Function.Injective (algebraMap P (integralClosure P (AlgebraicClosure (FractionRing P)))) := by
   have h : Function.Injective (algebraMap P (AlgebraicClosure (FractionRing P))) := by
@@ -38,6 +53,21 @@ theorem inj_P (P : Type) [CommRing P] [IsDomain P] :
     (AlgebraicClosure (FractionRing P))] at h
   exact fun x y hxy => h (by simp only [RingHom.comp_apply, hxy])
 
+/- English proof (translation)
+Introduce `A _`. Set `π : MvPolynomial A ℤ →+* A` to `MvPolynomial.eval₂Hom (Int.castRingHom A) id`. Establish `hπ : Function.Surjective π` using `fun a => ⟨MvPolynomial.X a, by simp [π]⟩`. Set `T` to `integralClosure (MvPolynomial A ℤ) (AlgebraicClosure (FractionRing (MvPolynomial A ℤ)))`. Set `I : Ideal T` to `(RingHom.ker π).map (algebraMap (MvPolynomial A ℤ) T)`.
+
+Set `ψ : MvPolynomial A ℤ ⧸ RingHom.ker π →+* T ⧸ I` to `Ideal.quotientMap I (algebraMap (MvPolynomial A ℤ) T) Ideal.le_comap_map`. Set `φ : A →+* T ⧸ I` to `ψ.comp (RingHom.quotientKerEquivOfSurjective hπ).symm.toRingHom`. Establish `hcomp : φ.comp π = (Ideal.Quotient.mk I).comp (algebraMap (MvPolynomial A ℤ) T)`. Apply `RingHom.ext` to reduce the goal to its premises. Introduce `x`.
+
+Simplify using `[φ, ψ, Ideal.quotientMap_mk]`. Use `⟨T ⧸ I, inferInstance, φ, ?_, ?_, ?_⟩` and prove the remaining obligations. Apply `RingHom.IsIntegral.tower_top π φ` to reduce the goal to its premises. Rewrite using `[hcomp]`. Conclude with `RingHom.IsIntegral.trans _ _ (fun x => Algebra.IsIntegral.isIntegral x) (RingHom.isIntegral_of_surjective _ Ideal.Quotient.mk_surjective)`.
+
+Introduce `p`. Establish `: (Ideal.comap π p.asIdeal).IsPrime` using `Ideal.comap_isPrime π p.asIdeal`. Take `⟨Q, -, hQ, hQc⟩` from `Ideal.exists_ideal_over_prime_of_isIntegral (S := T) (Ideal.comap π p.asIdeal) (⊥ : Ideal T) (by`. Rewrite using `[← RingHom.ker_eq_comap_bot, (RingHom.injective_iff_ker_eq_bot _).1 (inj_P _)]`. Conclude with `bot_le)`.
+
+Establish `hIQ : I ≤ Q`. Apply `Ideal.map_le_iff_le_comap.2` to reduce the goal to its premises. Rewrite using `[hQc]`. Introduce `x hx`. Simplify using `[RingHom.mem_ker.1 hx]`.
+
+Establish `hQ' : (Q.map (Ideal.Quotient.mk I)).IsPrime` using `Ideal.map_isPrime_of_surjective Ideal.Quotient.mk_surjective (by rwa [Ideal.mk_ker])`. Use `⟨⟨Q.map (Ideal.Quotient.mk I), hQ'⟩, ?_⟩` and prove the remaining obligations. Use `ext1`. Apply `Ideal.comap_injective_of_surjective π hπ` to reduce the goal to its premises. Simplify using `only [PrimeSpectrum.comap_asIdeal]`.
+
+Rewrite using `[Ideal.comap_comap, hcomp, ← Ideal.comap_comap, Ideal.comap_map_of_surjective _ Ideal.Quotient.mk_surjective, ← RingHom.ker_eq_comap_bot, Ideal.mk_ker, sup_eq_left.2 hIQ, hQc]`. Conclude with `⟨T, inferInstance, inferInstance, Ideal.Quotient.mk I, aic_integralClosure _, Ideal.Quotient.mk_surjective⟩`.
+-/
 theorem Cover_of : LateralTheory.E.t_E1Cut.Cover := by
   intro A _
   let π : MvPolynomial A ℤ →+* A := MvPolynomial.eval₂Hom (Int.castRingHom A) id

@@ -9,15 +9,29 @@ def below (l : List ℚ) (v : ℚ) : ℚ := (l.map fun e => if e < v then (1 : �
 
 def above (l : List ℚ) (v : ℚ) : ℚ := (l.map fun e => if v < e then (1 : ℚ) else 0).sum
 
+/- English proof (translation)
+Simplify using `[below]`.
+-/
 theorem below_cons (e : ℚ) (l : List ℚ) (v : ℚ) :
     below (e :: l) v = (if e < v then 1 else 0) + below l v := by simp [below]
 
+/- English proof (translation)
+Simplify using `[above]`.
+-/
 theorem above_cons (e : ℚ) (l : List ℚ) (v : ℚ) :
     above (e :: l) v = (if v < e then 1 else 0) + above l v := by simp [above]
 
+/- English proof (translation)
+Simplify using `[below]`.
+-/
 theorem below_append (l m : List ℚ) (v : ℚ) : below (l ++ m) v = below l v + below m v := by
   simp [below]
 
+/- English proof (translation)
+Proceed by induction on `l with`. Consider the case `nil => exact ⟨0, by simp [below], le_rfl⟩`. Consider the case `cons e l ih`. Take `⟨k, hk, hl⟩` from `ih`. Rewrite using `[below_cons, hk]`.
+
+Use `split_ifs`. Conclude with `⟨k + 1, by push_cast; ring, by simpa using hl⟩`. Conclude with `⟨k, by ring, by simp; omega⟩`.
+-/
 theorem below_nat (l : List ℚ) (v : ℚ) : ∃ k : ℕ, below l v = k ∧ k ≤ l.length := by
   induction l with
   | nil => exact ⟨0, by simp [below], le_rfl⟩
@@ -28,14 +42,25 @@ theorem below_nat (l : List ℚ) (v : ℚ) : ∃ k : ℕ, below l v = k ∧ k �
     · exact ⟨k + 1, by push_cast; ring, by simpa using hl⟩
     · exact ⟨k, by ring, by simp; omega⟩
 
+/- English proof (translation)
+Take `⟨k, hk, -⟩` from `below_nat l v`. Rewrite using `[hk]`. Check the signs of the components of the expression.
+-/
 theorem below_nonneg (l : List ℚ) (v : ℚ) : 0 ≤ below l v := by
   obtain ⟨k, hk, -⟩ := below_nat l v
   rw [hk]; positivity
 
+/- English proof (translation)
+Take `⟨k, hk, h⟩` from `below_nat l v`. Rewrite using `[hk]`. Conclude with `h` after adjusting the coercions.
+-/
 theorem below_le (l : List ℚ) (v : ℚ) : below l v ≤ l.length := by
   obtain ⟨k, hk, h⟩ := below_nat l v
   rw [hk]; exact_mod_cast h
 
+/- English proof (translation)
+Proceed by induction on `l with`. Consider the case `nil => simp [below]`. Consider the case `cons e l ih`. Rewrite using `[below_cons, ih fun x hx => h x (List.mem_cons_of_mem _ hx), if_pos (h e List.mem_cons_self)]`. Simplify using the standard rewrite rules.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem below_all {l : List ℚ} {v : ℚ} (h : ∀ e ∈ l, e < v) : below l v = l.length := by
   induction l with
   | nil => simp [below]
@@ -43,6 +68,9 @@ theorem below_all {l : List ℚ} {v : ℚ} (h : ∀ e ∈ l, e < v) : below l v 
     rw [below_cons, ih fun x hx => h x (List.mem_cons_of_mem _ hx), if_pos (h e List.mem_cons_self)]
     simp; ring
 
+/- English proof (translation)
+Proceed by induction on `l with`. Consider the case `nil => simp [below]`. Consider the case `cons e l ih`. Rewrite using `[below_cons, ih fun x hx => h x (List.mem_cons_of_mem _ hx), if_neg (not_lt.2 (h e List.mem_cons_self))]`. Simplify using the standard rewrite rules.
+-/
 theorem below_none {l : List ℚ} {v : ℚ} (h : ∀ e ∈ l, v ≤ e) : below l v = 0 := by
   induction l with
   | nil => simp [below]
@@ -51,6 +79,9 @@ theorem below_none {l : List ℚ} {v : ℚ} (h : ∀ e ∈ l, v ≤ e) : below l
       if_neg (not_lt.2 (h e List.mem_cons_self))]
     simp
 
+/- English proof (translation)
+Proceed by induction on `l with`. Consider the case `nil => simp [below]`. Consider the case `cons e l ih`. Rewrite using `[below_cons, below_cons]`. Apply the tactic sequence `split_ifs with h1 h2 <;> linarith`.
+-/
 theorem below_mono (l : List ℚ) {u v : ℚ} (h : u ≤ v) : below l u ≤ below l v := by
   induction l with
   | nil => simp [below]
@@ -58,6 +89,13 @@ theorem below_mono (l : List ℚ) {u v : ℚ} (h : u ≤ v) : below l u ≤ belo
     rw [below_cons, below_cons]
     split_ifs with h1 h2 <;> linarith
 
+/- English proof (translation)
+Proceed by induction on `l with`. Consider the case `nil => simp [below, above]`. Consider the case `cons e l ih`. Rewrite using `[below_cons, above_cons, List.count_cons, List.length_cons]`. Use `push_cast`.
+
+Break down `lt_trichotomy e v with h | h | h` into its components or cases. Simplify using `[h, h.not_gt, h.ne]`. Combine the linear equalities and inequalities to obtain the conclusion. Simplify using `[h]`. Combine the linear equalities and inequalities to obtain the conclusion.
+
+Simplify using `[h, h.not_gt, h.ne']`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem below_add_above (l : List ℚ) (v : ℚ) :
     below l v + above l v + l.count v = l.length := by
   induction l with
@@ -70,6 +108,13 @@ theorem below_add_above (l : List ℚ) (v : ℚ) :
     · simp [h]; linarith
     · simp [h, h.not_gt, h.ne']; linarith
 
+/- English proof (translation)
+Proceed by induction on `l with`. Consider the case `nil => simp [below]`. Consider the case `cons e l ih`. Rewrite using `[below_cons, below_cons, ih fun x hx => h x (List.mem_cons_of_mem _ hx), List.count_cons]`. Take `⟨k, rfl⟩` from `h e List.mem_cons_self`.
+
+Establish `h1 : u + k < u + 1 ↔ k < 1`. Rewrite using `[add_lt_add_iff_left]`. Conclude with `Iff.rfl` after adjusting the coercions. Establish `h2 : u + k < u ↔ k < 0`. Rewrite using `[add_lt_iff_neg_left]`.
+
+Conclude with `Iff.rfl` after adjusting the coercions. Establish `h3 : (u + k == u) = true ↔ k = 0` using `by simp`. Simplify using `only [h1, h2, h3]`. Use `push_cast`. Apply the tactic sequence `split_ifs <;> first | omega | linarith`.
+-/
 theorem below_step {l : List ℚ} {u : ℚ} (h : ∀ e ∈ l, ∃ k : ℤ, e = u + k) :
     below l (u + 1) = below l u + l.count u := by
   induction l with
@@ -86,6 +131,17 @@ theorem below_step {l : List ℚ} {u : ℚ} (h : ∀ e ∈ l, ∃ k : ℤ, e = u
     push_cast
     split_ifs <;> first | omega | linarith
 
+/- English proof (translation)
+Take `⟨a, ha⟩` from `hu`. Take `⟨b, hb⟩` from `hv`. Establish `key : ∀ n : ℕ, below l (u + n) ≤ below l u + n`. Introduce `n`. Proceed by induction on `n with`.
+
+Consider the case `zero => simp`. Consider the case `succ n ih`. Establish `h1 : below l (u + n + 1) = below l (u + n) + l.count (u + n)` using `below_step fun e he => by`. Take `⟨k, hk⟩` from `h e he`. Conclude with `⟨k - a - n, by rw [hk, ha]; push_cast; ring⟩`.
+
+Establish `h2 : (l.count (u + n) : ℚ) ≤ 1`. Conclude with `List.nodup_iff_count_le_one.1 nd (u + n)` after adjusting the coercions. Use `push_cast`. Rewrite using `[← add_assoc]`. Combine the linear equalities and inequalities to obtain the conclusion.
+
+Establish `hab : a ≤ b`. Establish `: (a : ℚ) ≤ b` using `by linarith`. Conclude with `this` after adjusting the coercions. Take `⟨n, hn⟩` from `Int.le.dest hab`. Establish `: v = u + n` using `by rw [ha, hb, ← hn]; push_cast; ring`.
+
+Establish `h3` using `key n`. Rewrite using `[this]`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem below_le_add {l : List ℚ} {θ u v : ℚ} (nd : l.Nodup) (h : ∀ e ∈ l, ∃ k : ℤ, e = θ + k)
     (hu : ∃ k : ℤ, u = θ + k) (hv : ∃ k : ℤ, v = θ + k) (huv : u ≤ v) :
     below l v ≤ below l u + (v - u) := by
@@ -113,6 +169,9 @@ theorem below_le_add {l : List ℚ} {θ u v : ℚ} (nd : l.Nodup) (h : ∀ e ∈
   have h3 := key n
   rw [this]; linarith
 
+/- English proof (translation)
+Substitute `h` using the available equality. Rewrite using `[← Fin.sum_univ_fun_getElem]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[List.getD_eq_getElem _ _ i.2]`.
+-/
 theorem sum_getD {p : ℕ} {l : List ℚ} (h : l.length = p) (f : ℚ → ℚ) :
     ∑ i : Fin p, f (l.getD i 0) = (l.map f).sum := by
   subst h
@@ -120,16 +179,37 @@ theorem sum_getD {p : ℕ} {l : List ℚ} (h : l.length = p) (f : ℚ → ℚ) :
   refine Finset.sum_congr rfl fun i _ => ?_
   rw [List.getD_eq_getElem _ _ i.2]
 
+/- English proof (translation)
+Substitute `h` using the available equality. Rewrite using `[List.getD_eq_getElem _ _ i.2]`. Conclude with `List.getElem_mem _`.
+-/
 theorem getD_mem {p : ℕ} {l : List ℚ} (h : l.length = p) (i : Fin p) : l.getD i 0 ∈ l := by
   subst h
   rw [List.getD_eq_getElem _ _ i.2]
   exact List.getElem_mem _
 
+/- English proof (translation)
+Substitute `h` using the available equality. Rewrite using `[List.getD_eq_getElem _ _ i.2, List.getD_eq_getElem _ _ (by simp), List.getElem_map]`.
+-/
 theorem getD_map' {p : ℕ} {l : List ℚ} (h : l.length = p) (f : ℚ → ℚ) (i : Fin p) :
     (l.map f).getD i 0 = f (l.getD i 0) := by
   subst h
   rw [List.getD_eq_getElem _ _ i.2, List.getD_eq_getElem _ _ (by simp), List.getElem_map]
 
+/- English proof (translation)
+Take `⟨n1, n2, n3⟩` from `List.nodup_append.1 nd`. Establish `e1` using `fun v => sum_getD h₁ fun e => if e < v then (1 : ℚ) else 0`. Establish `e2` using `fun v => sum_getD h₂ fun e => if e < v then (1 : ℚ) else 0`. Establish `e3` using `fun v => sum_getD h₁ fun e => if v < e then (1 : ℚ) else 0`. Establish `e4` using `fun v => sum_getD h₂ fun e => if v < e then (1 : ℚ) else 0`.
+
+Use function extensionality and compare the values at `a`. Break down `a with i | i` into its components or cases. Establish `hm` using `getD_mem h₁ i`. Establish `a1` using `below_add_above l₁ (l₁.getD i 0)`. Establish `a2` using `below_add_above l₂ (l₁.getD i 0)`.
+
+Rewrite `a1` using `[List.count_eq_one_of_mem n1 hm, h₁]`. Rewrite `a2` using `[List.count_eq_zero_of_not_mem (fun h => n3 _ hm _ h rfl), h₂]`. Simplify using `only [shiftNu, blattner, rhoNC, Finset.card_filter, Fintype.sum_sum_type]`. Simplify using `only [sameBlock, ofBlocks, getD_map' h₁, not_true, not_false_iff, true_and, false_and, if_false]`. Use `push_cast`.
+
+Rewrite using `[e1, e2, e3, e4]`. Simplify using `only [below, above] at a1 a2 ⊢`. Simplify using `only [Finset.sum_const_zero]`. Move the coercions through the operations in `at a1 a2`. Combine the linear equalities and inequalities to obtain the conclusion.
+
+Establish `hm` using `getD_mem h₂ i`. Establish `a1` using `below_add_above l₁ (l₂.getD i 0)`. Establish `a2` using `below_add_above l₂ (l₂.getD i 0)`. Rewrite `a2` using `[List.count_eq_one_of_mem n2 hm, h₂]`. Rewrite `a1` using `[List.count_eq_zero_of_not_mem (fun h => n3 _ h _ hm rfl), h₁]`.
+
+Simplify using `only [shiftNu, blattner, rhoNC, Finset.card_filter, Fintype.sum_sum_type]`. Simplify using `only [sameBlock, ofBlocks, getD_map' h₂, not_true, not_false_iff, true_and, false_and, if_false]`. Use `push_cast`. Rewrite using `[e1, e2, e3, e4]`. Simplify using `only [below, above] at a1 a2 ⊢`.
+
+Simplify using `only [Finset.sum_const_zero]`. Move the coercions through the operations in `at a1 a2`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem shiftNu_blattner {p q : ℕ} {l₁ l₂ : List ℚ} (h₁ : l₁.length = p) (h₂ : l₂.length = q)
     (nd : (l₁ ++ l₂).Nodup) (c : ℚ) :
     shiftNu c (blattner (ofBlocks l₁ l₂ : Ix p q → ℚ)) =
@@ -169,6 +249,9 @@ theorem shiftNu_blattner {p q : ℕ} {l₁ l₂ : List ℚ} (h₁ : l₁.length 
     push_cast at a1 a2
     linarith
 
+/- English proof (translation)
+Break down `a with i | i` into its components or cases. Simplify using `only [ofBlocks, getD_map' h₁]`. Conclude with `hf _ (getD_mem h₁ i)`. Simplify using `only [ofBlocks, getD_map' h₂]`. Conclude with `hg _ (getD_mem h₂ i)`.
+-/
 theorem forall_ofBlocks {p q : ℕ} {l₁ l₂ : List ℚ} (h₁ : l₁.length = p) (h₂ : l₂.length = q)
     (f g : ℚ → ℚ) (R : ℚ → ℚ → Prop) (hf : ∀ v ∈ l₁, R v (f v)) (hg : ∀ v ∈ l₂, R v (g v))
     (a : Ix p q) : R (ofBlocks l₁ l₂ a) (ofBlocks (l₁.map f) (l₂.map g) a) := by
@@ -176,12 +259,28 @@ theorem forall_ofBlocks {p q : ℕ} {l₁ l₂ : List ℚ} (h₁ : l₁.length =
   · simp only [ofBlocks, getD_map' h₁]; exact hf _ (getD_mem h₁ i)
   · simp only [ofBlocks, getD_map' h₂]; exact hg _ (getD_mem h₂ i)
 
+/- English proof (translation)
+Substitute `h` using the available equality. Rewrite using `[List.getD_eq_getElem _ _ i.2, List.getD_eq_getElem _ _ j.2]`. Conclude with `List.pairwise_iff_getElem.1 hl i j i.2 j.2 hij`.
+-/
 theorem getD_lt {p : ℕ} {l : List ℚ} (h : l.length = p) (hl : l.Pairwise (· > ·)) {i j : Fin p}
     (hij : i < j) : l.getD j 0 < l.getD i 0 := by
   subst h
   rw [List.getD_eq_getElem _ _ i.2, List.getD_eq_getElem _ _ j.2]
   exact List.pairwise_iff_getElem.1 hl i j i.2 j.2 hij
 
+/- English proof (translation)
+Take `⟨-, -, n3⟩` from `List.nodup_append.1 nd`. Establish `hm : ∀ a : Ix p q, ∃ k : ℤ, ofBlocks l₁ l₂ a = ((t : ℚ) + 1) / 2 + k`. Introduce and unpack `(i | i)`. Conclude with `hc _ (List.mem_append_left _ (getD_mem h₁ i))`. Conclude with `hc _ (List.mem_append_right _ (getD_mem h₂ i))`.
+
+Use `⟨?_, ?_, fun a => ?_, fun a b => ?_⟩` and prove the remaining obligations. Introduce and unpack `(i | i) (j | j) hij`. Break down `lt_trichotomy i j with h | h | h` into its components or cases. Conclude with `absurd hij (getD_lt h₁ s₁ h).ne'`. Rewrite using `[h]`.
+
+Conclude with `absurd hij (getD_lt h₁ s₁ h).ne`. Conclude with `absurd hij (n3 _ (getD_mem h₁ i) _ (getD_mem h₂ j))`. Conclude with `absurd hij.symm (n3 _ (getD_mem h₁ j) _ (getD_mem h₂ i))`. Break down `lt_trichotomy i j with h | h | h` into its components or cases. Conclude with `absurd hij (getD_lt h₂ s₂ h).ne'`.
+
+Rewrite using `[h]`. Conclude with `absurd hij (getD_lt h₂ s₂ h).ne`. Introduce and unpack `(i | i) (j | j) hij`. Conclude with `getD_lt h₁ s₁ hij`. Conclude with `hij.elim`.
+
+Conclude with `hij.elim`. Conclude with `getD_lt h₂ s₂ hij`. Take `⟨k, hk⟩` from `hm a`. Conclude with `⟨t + 1 + 2 * k, by rw [hk]; push_cast; ring⟩`. Take `⟨k, hk⟩` from `hm a`.
+
+Take `⟨m, hm⟩` from `hm b`. Conclude with `⟨k - m, by rw [hk, hm]; push_cast; ring⟩`.
+-/
 theorem isParam_ofBlocks {p q : ℕ} {l₁ l₂ : List ℚ} (h₁ : l₁.length = p) (h₂ : l₂.length = q)
     (s₁ : l₁.Pairwise (· > ·)) (s₂ : l₂.Pairwise (· > ·)) (nd : (l₁ ++ l₂).Nodup) (t : ℕ)
     (hc : ∀ e ∈ l₁ ++ l₂, ∃ k : ℤ, e = ((t : ℚ) + 1) / 2 + k) :
@@ -214,6 +313,17 @@ theorem isParam_ofBlocks {p q : ℕ} {l₁ l₂ : List ℚ} (h₁ : l₁.length 
     obtain ⟨m, hm⟩ := hm b
     exact ⟨k - m, by rw [hk, hm]; push_cast; ring⟩
 
+/- English proof (translation)
+Proceed by induction on `l with`. Consider the case `nil => exact ⟨[], 0, by simp, by simp, by simp⟩`. Consider the case `cons e l ih`. Take `⟨h1, h2⟩` from `List.pairwise_cons.1 hs`. Take `⟨h0, k, rfl⟩` from `h e List.mem_cons_self`.
+
+Break down `h0.lt_or_eq with h0 | h0` into its components or cases. Take `⟨a, m, a1, a2, a3⟩` from `ih h2 fun v hv => h v (List.mem_cons_of_mem _ hv)`. Use `⟨k :: a, m, ?_, List.pairwise_cons.2 ⟨fun v hv => ?_, a2⟩, by rw [a3]; simp⟩` and prove the remaining obligations. Introduce `v hv`. Break down `List.mem_cons.1 hv with rfl | hv` into its components or cases.
+
+Conclude with `h0` after adjusting the coercions. Conclude with `a1 v hv`. Use `h1 (v : ℚ) (by rw [a3]; exact List.mem_append_left _ (List.mem_map_of_mem hv))` as an intermediate fact. Conclude with `this` after adjusting the coercions. Use `⟨[], l.length + 1, by simp, by simp, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[← h0, List.map_nil, List.nil_append, List.replicate_succ]`. Use `congr 1`. Use `List.eq_replicate_iff.2 ⟨rfl, fun v hv => le_antisymm ?_ ?_⟩` and prove the remaining obligations. Rewrite using `[h0]`. Conclude with `h1 v hv`.
+
+Conclude with `(h v (List.mem_cons_of_mem _ hv)).1`.
+-/
 theorem exists_pos_part {l : List ℚ} (hs : l.Pairwise (· ≥ ·))
     (h : ∀ v ∈ l, 0 ≤ v ∧ ∃ k : ℤ, v = k) :
     ∃ (a : List ℤ) (m : ℕ), (∀ v ∈ a, 0 < v) ∧ a.Pairwise (· ≥ ·) ∧
@@ -239,6 +349,15 @@ theorem exists_pos_part {l : List ℚ} (hs : l.Pairwise (· ≥ ·))
       · rw [h0]; exact h1 v hv
       · exact (h v (List.mem_cons_of_mem _ hv)).1
 
+/- English proof (translation)
+Take `⟨a, m, a1, a2, a3⟩` from `exists_pos_part (l := (l.map fun v => -v).reverse) (by`. Rewrite using `[List.pairwise_reverse, List.pairwise_map]`. Conclude with `hs.imp fun h => neg_le_neg h)`. Use the proof step `(by`. Introduce `v hv`.
+
+Simplify using `only [List.mem_reverse, List.mem_map] at hv`. Take `⟨u, hu, rfl⟩` from `hv`. Take `⟨h1, k, rfl⟩` from `h u hu`. Conclude with `⟨by linarith, -k, by simp⟩)`. Use `⟨(a.map fun v => -v).reverse, m, ?_, ?_, ?_⟩` and prove the remaining obligations.
+
+Introduce `v hv`. Simplify using `only [List.mem_reverse, List.mem_map] at hv`. Take `⟨u, hu, rfl⟩` from `hv`. Use `a1 u hu` as an intermediate fact. Use linear arithmetic over natural numbers and integers.
+
+Rewrite using `[List.pairwise_reverse, List.pairwise_map]`. Conclude with `a2.imp fun h => neg_le_neg h`. Use `congrArg (fun x : List ℚ => (x.map fun v => -v).reverse) a3` as an intermediate fact. Simplify `this` using `[Function.comp_def]`.
+-/
 theorem exists_neg_part {l : List ℚ} (hs : l.Pairwise (· ≥ ·))
     (h : ∀ v ∈ l, v ≤ 0 ∧ ∃ k : ℤ, v = k) :
     ∃ (a : List ℤ) (m : ℕ), (∀ v ∈ a, v < 0) ∧ a.Pairwise (· ≥ ·) ∧
@@ -264,6 +383,11 @@ theorem exists_neg_part {l : List ℚ} (hs : l.Pairwise (· ≥ ·))
   · have := congrArg (fun x : List ℚ => (x.map fun v => -v).reverse) a3
     simpa [Function.comp_def] using this
 
+/- English proof (translation)
+Take `⟨a, ma, a1, a2, rfl⟩` from `exists_pos_part sa ha`. Take `⟨b, mb, b1, b2, rfl⟩` from `exists_neg_part sb hb`. Take `⟨c, mc, c1, c2, rfl⟩` from `exists_pos_part sc hc`. Take `⟨d, md, d1, d2, rfl⟩` from `exists_neg_part sd hd`. Simplify using `only [List.length_append, List.length_map, List.length_replicate] at hp hq hr hs`.
+
+Use `⟨a, b, c, d, a1, c1, b1, d1, a2, b2, c2, d2, by omega, by omega, by omega, by omega, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[e, show p - a.length - b.length = ma + mb by omega, show q - c.length - d.length = mc + md by omega]`. Simplify using `only [pad, List.replicate_add, List.map_append, List.map_replicate, List.append_assoc, Int.cast_zero]`. Rewrite using `[e', show r - a.length - d.length = ma + t + md by omega, show s - c.length - b.length = mc + mb by omega]`. Simplify using `only [pad, List.replicate_add, List.map_append, List.map_replicate, List.append_assoc, Int.cast_zero]`.
+-/
 theorem jointShape_of_lists {p q r s t : ℕ} {μ : Ix p q → ℚ} {μ' : Ix r s → ℚ}
     {la lb lc ld : List ℚ}
     (sa : la.Pairwise (· ≥ ·)) (sb : lb.Pairwise (· ≥ ·)) (sc : lc.Pairwise (· ≥ ·))
@@ -291,6 +415,11 @@ theorem jointShape_of_lists {p q r s t : ℕ} {μ : Ix p q → ℚ} {μ' : Ix r 
     simp only [pad, List.replicate_add, List.map_append, List.map_replicate, List.append_assoc,
       Int.cast_zero]
 
+/- English proof (translation)
+Rewrite using `[List.pairwise_map]`. Use `hs.imp_of_mem fun {u v} hu hv huv => ?_` and prove the remaining obligations. Establish `h1` using `below_le_add (hs.imp fun h => h.ne') h (h v hv) (h u hu) huv.le`. Establish `h2` using `below_mono m huv.le`. Use `show v + below m v - below l v + c ≤ u + below m u - below l u + c`.
+
+Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem pairwise_map_count {l m : List ℚ} {θ : ℚ} (hs : l.Pairwise (· > ·))
     (h : ∀ e ∈ l, ∃ k : ℤ, e = θ + k) (c : ℚ) :
     (l.map fun v => v + below m v - below l v + c).Pairwise (· ≥ ·) := by
@@ -301,6 +430,9 @@ theorem pairwise_map_count {l m : List ℚ} {θ : ℚ} (hs : l.Pairwise (· > ·
   show v + below m v - below l v + c ≤ u + below m u - below l u + c
   linarith
 
+/- English proof (translation)
+Take `⟨k, hk⟩` from `h`. Take `⟨j, hj⟩` from `hc`. Take `⟨a, ha, -⟩` from `below_nat l v`. Take `⟨b, hb, -⟩` from `below_nat m v`. Conclude with `⟨k + j + b - a, by rw [ha, hb]; push_cast; linarith⟩`.
+-/
 theorem int_count (l m : List ℚ) {θ v c : ℚ} (h : ∃ k : ℤ, v = θ + k) (hc : ∃ k : ℤ, θ + c = k) :
     ∃ k : ℤ, v + below m v - below l v + c = k := by
   obtain ⟨k, hk⟩ := h
@@ -309,12 +441,21 @@ theorem int_count (l m : List ℚ) {θ v c : ℚ} (h : ∃ k : ℤ, v = θ + k) 
   obtain ⟨b, hb, -⟩ := below_nat m v
   exact ⟨k + j + b - a, by rw [ha, hb]; push_cast; linarith⟩
 
+/- English proof (translation)
+Simplify using `[block]`.
+-/
 theorem length_block (t : ℕ) : (block t).length = t := by simp [block]
 
+/- English proof (translation)
+Simplify using `[block, List.flatMap_singleton', ← List.map_eq_flatMap, Function.comp_def]`.
+-/
 theorem block_eq (t : ℕ) :
     block t = (List.range t).map fun m : ℕ => ((t : ℚ) - 1) / 2 - (m : ℚ) := by
   simp [block, List.flatMap_singleton', ← List.map_eq_flatMap, Function.comp_def]
 
+/- English proof (translation)
+Simplify using `only [block_eq, List.mem_map, List.mem_range] at h`. Take `⟨m, hm, rfl⟩` from `h`. Establish `h1 : (m : ℚ) + 1 ≤ t` using `by exact_mod_cast hm`. Establish `h2 : (0 : ℚ) ≤ m` using `Nat.cast_nonneg m`. Conclude with `⟨by linarith, by linarith, -1 - m, by push_cast; ring⟩`.
+-/
 theorem mem_block {t : ℕ} {v : ℚ} (h : v ∈ block t) :
     -(((t : ℚ) - 1) / 2) ≤ v ∧ v ≤ ((t : ℚ) - 1) / 2 ∧ ∃ k : ℤ, v = ((t : ℚ) + 1) / 2 + k := by
   simp only [block_eq, List.mem_map, List.mem_range] at h
@@ -323,6 +464,9 @@ theorem mem_block {t : ℕ} {v : ℚ} (h : v ∈ block t) :
   have h2 : (0 : ℚ) ≤ m := Nat.cast_nonneg m
   exact ⟨by linarith, by linarith, -1 - m, by push_cast; ring⟩
 
+/- English proof (translation)
+Rewrite using `[block_eq, List.pairwise_map]`. Use `List.pairwise_lt_range.imp fun {a b} h => ?_` and prove the remaining obligations. Establish `: (a : ℚ) < b` using `by exact_mod_cast h`. Use `show _ - (b : ℚ) < _ - (a : ℚ)`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem block_pairwise (t : ℕ) : (block t).Pairwise (· > ·) := by
   rw [block_eq, List.pairwise_map]
   refine List.pairwise_lt_range.imp fun {a b} h => ?_
@@ -330,6 +474,11 @@ theorem block_pairwise (t : ℕ) : (block t).Pairwise (· > ·) := by
   show _ - (b : ℚ) < _ - (a : ℚ)
   linarith
 
+/- English proof (translation)
+Take `⟨h1, h2, h3⟩` from `mem_block h`. Establish `nd : (block t).Nodup` using `(block_pairwise t).imp fun h => h.ne'`. Establish `a1` using `below_le_add nd (fun e he => (mem_block he).2.2) (u := -(((t : ℚ) - 1) / 2)) ⟨-t, by push_cast; ring⟩ h3 h1`. Establish `a2` using `below_le_add nd (fun e he => (mem_block he).2.2) (v := ((t : ℚ) + 1) / 2) h3 ⟨0, by simp⟩ (by linarith)`. Rewrite `a1` using `[below_none fun e he => (mem_block he).1]`.
+
+Rewrite `a2` using `[below_all fun e he => by linarith [(mem_block he).2.1], length_block]`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem below_block {t : ℕ} {v : ℚ} (h : v ∈ block t) :
     below (block t) v = v + ((t : ℚ) - 1) / 2 := by
   obtain ⟨h1, h2, h3⟩ := mem_block h
@@ -342,6 +491,9 @@ theorem below_block {t : ℕ} {v : ℚ} (h : v ∈ block t) :
   rw [below_all fun e he => by linarith [(mem_block he).2.1], length_block] at a2
   linarith
 
+/- English proof (translation)
+Use `below_le_add (hs.imp fun h => h.ne') (fun e he => (h e he).2) (u := θ) ⟨0, by simp⟩ (h v hv).2 (h v hv).1` as an intermediate fact. Rewrite `this` using `[below_none fun e he => (h e he).1]`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem below_le_top {l : List ℚ} {θ v : ℚ} (hs : l.Pairwise (· > ·))
     (h : ∀ e ∈ l, θ ≤ e ∧ ∃ k : ℤ, e = θ + k) (hv : v ∈ l) : below l v ≤ v - θ := by
   have := below_le_add (hs.imp fun h => h.ne') (fun e he => (h e he).2) (u := θ) ⟨0, by simp⟩
@@ -349,6 +501,9 @@ theorem below_le_top {l : List ℚ} {θ v : ℚ} (hs : l.Pairwise (· > ·))
   rw [below_none fun e he => (h e he).1] at this
   linarith
 
+/- English proof (translation)
+Use `below_le_add (hs.imp fun h => h.ne') (fun e he => (h e he).2) (v := 1 - ((t : ℚ) + 1) / 2) (h v hv).2 ⟨-t, by push_cast; ring⟩ (by linarith [(h v hv).1])` as an intermediate fact. Rewrite `this` using `[below_all fun e he => by linarith [(h e he).1]]`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem le_below_bot {l : List ℚ} {t : ℕ} {v : ℚ} (hs : l.Pairwise (· > ·))
     (h : ∀ e ∈ l, e ≤ -(((t : ℚ) + 1) / 2) ∧ ∃ k : ℤ, e = ((t : ℚ) + 1) / 2 + k) (hv : v ∈ l) :
     (l.length : ℚ) - below l v ≤ 1 - ((t : ℚ) + 1) / 2 - v := by
@@ -357,6 +512,67 @@ theorem le_below_bot {l : List ℚ} {t : ℕ} {v : ℚ} (hs : l.Pairwise (· > �
   rw [below_all fun e he => by linarith [(h e he).1]] at this
   linarith
 
+/- English proof (translation)
+Introduce `t al be ga de h`. Take `⟨-, -, sa, sb, sc, sd, nd, hpos, hneg, hco, habs⟩` from `h`. Establish `t0 : (0 : ℚ) ≤ t` using `Nat.cast_nonneg t`. Establish `ha : ∀ e ∈ al, ((t : ℚ) + 1) / 2 ≤ e ∧ ∃ k : ℤ, e = ((t : ℚ) + 1) / 2 + k` using `fun e he => by`. Use `habs e (by simp [he])` as an intermediate fact.
+
+Rewrite `this` using `[abs_of_pos (hpos e (by simp [he]))]`. Conclude with `⟨this, hco e (by simp [he])⟩`. Establish `hc : ∀ e ∈ ga, ((t : ℚ) + 1) / 2 ≤ e ∧ ∃ k : ℤ, e = ((t : ℚ) + 1) / 2 + k` using `fun e he => by`. Use `habs e (by simp [he])` as an intermediate fact. Rewrite `this` using `[abs_of_pos (hpos e (by simp [he]))]`.
+
+Conclude with `⟨this, hco e (by simp [he])⟩`. Establish `hb : ∀ e ∈ be, e ≤ -(((t : ℚ) + 1) / 2) ∧ ∃ k : ℤ, e = ((t : ℚ) + 1) / 2 + k` using `fun e he => by`. Use `habs e (by simp [he])` as an intermediate fact. Rewrite `this` using `[abs_of_neg (hneg e (by simp [he]))]`. Conclude with `⟨by linarith, hco e (by simp [he])⟩`.
+
+Establish `hd : ∀ e ∈ de, e ≤ -(((t : ℚ) + 1) / 2) ∧ ∃ k : ℤ, e = ((t : ℚ) + 1) / 2 + k` using `fun e he => by`. Use `habs e (by simp [he])` as an intermediate fact. Rewrite `this` using `[abs_of_neg (hneg e (by simp [he]))]`. Conclude with `⟨by linarith, hco e (by simp [he])⟩`. Establish `hk` using `@mem_block t`.
+
+Establish `nac : ∀ u ∈ al, ∀ v ∈ ga, u ≠ v` using `fun u hu v hv => (List.nodup_append.1 (List.nodup_append.1 nd).1).2.2 u (by simp [hu]) v hv`. Establish `nbd : ∀ u ∈ be, ∀ v ∈ de, u ≠ v` using `fun u hu v hv => (List.nodup_append.1 nd).2.2 u (by simp [hu]) v hv`. Establish `s1 : (al ++ be).Pairwise (· > ·)` using `List.pairwise_append.2 ⟨sa, sb, fun u hu v hv => by show v < u; linarith [(ha u hu).1, (hb v hv).1]⟩`. Establish `s2 : (ga ++ de).Pairwise (· > ·)` using `List.pairwise_append.2 ⟨sc, sd, fun u hu v hv => by show v < u; linarith [(hc u hu).1, (hd v hv).1]⟩`. Establish `s3 : (al ++ block t ++ de).Pairwise (· > ·)` using `List.pairwise_append.2 ⟨List.pairwise_append.2 ⟨sa, block_pairwise t, fun u hu v hv => by show v < u; linarith [(ha u hu).1, (hk hv).2.1]⟩, sd, fun u hu v hv => by show v < u`.
+
+Break down `List.mem_append.1 hu with hu | hu` into its components or cases. Combine the linear relations using `[(ha u hu).1, (hd v hv).1]`. Combine the linear relations using `[(hk hu).1, (hd v hv).1]⟩`. Establish `s4 : (ga ++ be).Pairwise (· > ·)` using `List.pairwise_append.2 ⟨sc, sb, fun u hu v hv => by show v < u; linarith [(hc u hu).1, (hb v hv).1]⟩`. Establish `nd1 : ((al ++ be) ++ (ga ++ de)).Nodup` using `by rwa [← List.append_assoc]`.
+
+Establish `nd2 : ((al ++ block t ++ de) ++ (ga ++ be)).Nodup`. Use `List.nodup_append.2 ⟨s3.imp fun h => h.ne', s4.imp fun h => h.ne', ?_⟩` and prove the remaining obligations. Introduce `u hu v hv e`. Substitute `e` using the available equality. Simplify using `only [List.mem_append] at hu hv`.
+
+Apply the tactic sequence `rcases hu with (hu | hu) | hu <;> rcases hv with hv | hv`. Conclude with `nac u hu u hv rfl`. Combine the linear relations using `[(ha u hu).1, (hb u hv).1]`. Combine the linear relations using `[(hk hu).2.1, (hc u hv).1]`. Combine the linear relations using `[(hk hu).1, (hb u hv).1]`.
+
+Combine the linear relations using `[(hd u hu).1, (hc u hv).1]`. Conclude with `nbd u hv u hu rfl`. Establish `l1 : (al ++ be).length = al.length + be.length` using `by simp`. Establish `l2 : (ga ++ de).length = ga.length + de.length` using `by simp`. Establish `l3 : (al ++ block t ++ de).length = al.length + de.length + t`.
+
+Simplify using `[length_block]`. Use linear arithmetic over natural numbers and integers. Establish `l4 : (ga ++ be).length = ga.length + be.length` using `by simp`. Establish `top : ∀ {v : ℚ}, ((t : ℚ) + 1) / 2 ≤ v → below be v = be.length ∧ below de v = de.length ∧ below (block t) v = t` using `fun hv => ⟨below_all fun e he => by linarith [(hb e he).1], below_all fun e he => by linarith [(hd e he).1], by rw [below_all fun e he => by linarith [(hk he).2.1], length_block]⟩`. Establish `bot : ∀ {v : ℚ}, v ≤ -(((t : ℚ) + 1) / 2) → below al v = 0 ∧ below ga v = 0 ∧ below (block t) v = 0` using `fun hv => ⟨below_none fun e he => by linarith [(ha e he).1], below_none fun e he => by linarith [(hc e he).1], below_none fun e he => by linarith [(hk he).1]⟩`.
+
+Establish `mid : ∀ {v : ℚ}, v ∈ block t → below al v = 0 ∧ below ga v = 0 ∧ below be v = be.length ∧ below de v = de.length` using `fun hv => ⟨below_none fun e he => by linarith [(ha e he).1, (hk hv).2.1], below_none fun e he => by linarith [(hc e he).1, (hk hv).2.1], below_all fun e he => by linarith [(hb e he).1, (hk hv).1], below_all fun e he => by linarith [(hd e he).1, (hk hv).1]⟩`. Use `set fa : ℚ → ℚ := fun v => v + below ga v - below al v + -(((t : ℚ) + 1) / 2) with hfa`. Use `set fc : ℚ → ℚ := fun v => v + below al v - below ga v + (((t : ℚ) - 1) / 2) with hfc`. Use `set fb : ℚ → ℚ := fun v => v + below de v - below be v + ((be.length : ℚ) - de.length - ((t : ℚ) + 1) / 2) with hfb`. Use `set fd : ℚ → ℚ := fun v => v + below be v - below de v + ((de.length : ℚ) - be.length + ((t : ℚ) - 1) / 2) with hfd`.
+
+Establish `pa : ∀ v ∈ al, 0 ≤ fa v` using `fun v hv => by`. Use `below_le_top sa ha hv` as an intermediate fact. Use `below_nonneg ga v` as an intermediate fact. Simplify using `only [hfa]`. Combine the linear equalities and inequalities to obtain the conclusion.
+
+Establish `pc : ∀ v ∈ ga, 0 ≤ fc v` using `fun v hv => by`. Use `below_le_top sc hc hv` as an intermediate fact. Use `below_nonneg al v` as an intermediate fact. Simplify using `only [hfc]`. Combine the linear equalities and inequalities to obtain the conclusion.
+
+Establish `pb : ∀ v ∈ be, fb v ≤ 0` using `fun v hv => by`. Use `le_below_bot sb hb hv` as an intermediate fact. Use `below_le de v` as an intermediate fact. Simplify using `only [hfb]`. Combine the linear equalities and inequalities to obtain the conclusion.
+
+Establish `pd : ∀ v ∈ de, fd v ≤ 0` using `fun v hv => by`. Use `le_below_bot sd hd hv` as an intermediate fact. Use `below_le be v` as an intermediate fact. Simplify using `only [hfd]`. Combine the linear equalities and inequalities to obtain the conclusion.
+
+Establish `E1` using `shiftNu_blattner l1 l2 nd1 (cPair (al.length + de.length + t) (ga.length + be.length))`. Establish `E2` using `shiftNu_blattner l3 l4 nd2 (cPair (al.length + be.length) (ga.length + de.length))`. Use `set F1 : ℚ → ℚ := fun v => v + below (ga ++ de) v - below (al ++ be) v - 1 / 2 + (((al.length + be.length : ℕ) : ℚ) - (ga.length + de.length : ℕ)) / 2 - cPair (al.length + de.length + t) (ga.length + be.length) with hF1`. Use `set F2 : ℚ → ℚ := fun v => v + below (al ++ be) v - below (ga ++ de) v - 1 / 2 + (((ga.length + de.length : ℕ) : ℚ) - (al.length + be.length : ℕ)) / 2 + cPair (al.length + de.length + t) (ga.length + be.length) with hF2`. Use `set F3 : ℚ → ℚ := fun v => v + below (ga ++ be) v - below (al ++ block t ++ de) v - 1 / 2 + (((al.length + de.length + t : ℕ) : ℚ) - (ga.length + be.length : ℕ)) / 2 - cPair (al.length + be.length) (ga.length + de.length) with hF3`.
+
+Use `set F4 : ℚ → ℚ := fun v => v + below (al ++ block t ++ de) v - below (ga ++ be) v - 1 / 2 + (((ga.length + be.length : ℕ) : ℚ) - (al.length + de.length + t : ℕ)) / 2 + cPair (al.length + be.length) (ga.length + de.length) with hF4`. Establish `c1a : ∀ v ∈ al, F1 v = fa v` using `fun v hv => by`. Take `⟨x1, x2, x3⟩` from `top (ha v hv).1`. Simplify using `only [hF1, hfa, below_append, cPair, x1, x2]`. Use `push_cast`.
+
+Expand and normalize the polynomial expressions, which then agree. Establish `c1b : ∀ v ∈ be, F1 v = fb v` using `fun v hv => by`. Take `⟨x1, x2, x3⟩` from `bot (hb v hv).1`. Simplify using `only [hF1, hfb, below_append, cPair, x1, x2]`. Use `push_cast`.
+
+Expand and normalize the polynomial expressions, which then agree. Establish `c2c : ∀ v ∈ ga, F2 v = fc v` using `fun v hv => by`. Take `⟨x1, x2, x3⟩` from `top (hc v hv).1`. Simplify using `only [hF2, hfc, below_append, cPair, x1, x2]`. Use `push_cast`.
+
+Expand and normalize the polynomial expressions, which then agree. Establish `c2d : ∀ v ∈ de, F2 v = fd v` using `fun v hv => by`. Take `⟨x1, x2, x3⟩` from `bot (hd v hv).1`. Simplify using `only [hF2, hfd, below_append, cPair, x1, x2]`. Use `push_cast`.
+
+Expand and normalize the polynomial expressions, which then agree. Establish `c3a : ∀ v ∈ al, F3 v = fa v` using `fun v hv => by`. Take `⟨x1, x2, x3⟩` from `top (ha v hv).1`. Simplify using `only [hF3, hfa, below_append, cPair, x1, x2, x3]`. Use `push_cast`.
+
+Expand and normalize the polynomial expressions, which then agree. Establish `c3k : ∀ v ∈ block t, F3 v = 0` using `fun v hv => by`. Take `⟨x1, x2, x3, x4⟩` from `mid hv`. Simplify using `only [hF3, below_append, cPair, x1, x2, x3, x4, below_block hv]`. Use `push_cast`.
+
+Expand and normalize the polynomial expressions, which then agree. Establish `c3d : ∀ v ∈ de, F3 v = fd v` using `fun v hv => by`. Take `⟨x1, x2, x3⟩` from `bot (hd v hv).1`. Simplify using `only [hF3, hfd, below_append, cPair, x1, x2, x3]`. Use `push_cast`.
+
+Expand and normalize the polynomial expressions, which then agree. Establish `c4c : ∀ v ∈ ga, F4 v = fc v` using `fun v hv => by`. Take `⟨x1, x2, x3⟩` from `top (hc v hv).1`. Simplify using `only [hF4, hfc, below_append, cPair, x1, x2, x3]`. Use `push_cast`.
+
+Expand and normalize the polynomial expressions, which then agree. Establish `c4b : ∀ v ∈ be, F4 v = fb v` using `fun v hv => by`. Take `⟨x1, x2, x3⟩` from `bot (hb v hv).1`. Simplify using `only [hF4, hfb, below_append, cPair, x1, x2, x3]`. Use `push_cast`.
+
+Expand and normalize the polynomial expressions, which then agree. Use `⟨?_, isParam_ofBlocks l1 l2 s1 s2 nd1 t fun e he => hco e (by rwa [List.append_assoc]), isParam_ofBlocks l3 l4 s3 s4 nd2 t fun e he => ?_, fun a => ?_, fun a => ?_⟩` and prove the remaining obligations. Use `jointShape_of_lists (t := t) (la := al.map fa) (lb := be.map fb) (lc := ga.map fc) (ld := de.map fd) (pairwise_map_count sa (fun e he => (ha e he).2) _) (pairwise_map_count sb (fun e he => (hb e he).2) _) (pairwise_map_count sc (fun e he => (hc e he).2) _) (pairwise_map_count sd …` and prove the remaining obligations. Rewrite using `[lamA, E1, List.map_append, List.map_append, List.map_congr_left c1a, List.map_congr_left c1b, List.map_congr_left c2c, List.map_congr_left c2d]`. Rewrite using `[lamA', E2, List.map_append, List.map_append, List.map_append, List.map_congr_left c3a, List.map_congr_left c3k, List.map_congr_left c3d, List.map_congr_left c4c, List.map_congr_left c4b, List.map_const', length_block]`.
+
+Simplify using `only [List.mem_append] at he`. Break down `he with ((he | he) | he) | he | he` into its components or cases. Use `exacts [(ha e he).2, (hk he).2.2, (hd e he).2, (hc e he).2, (hb e he).2]`. Rewrite using `[lamA, E1]`. Apply the tactic sequence `refine forall_ofBlocks l1 l2 F1 F2 (fun v w => (0 < v → 0 ≤ w) ∧ (v < 0 → w ≤ 0)) (fun v hv => ?_) (fun v hv => ?_) a <;> rcases List.mem_append.1 hv with hv | hv`.
+
+Conclude with `⟨fun _ => c1a v hv ▸ pa v hv, fun h => by linarith [(ha v hv).1]⟩`. Conclude with `⟨fun h => by linarith [(hb v hv).1], fun _ => c1b v hv ▸ pb v hv⟩`. Conclude with `⟨fun _ => c2c v hv ▸ pc v hv, fun h => by linarith [(hc v hv).1]⟩`. Conclude with `⟨fun h => by linarith [(hd v hv).1], fun _ => c2d v hv ▸ pd v hv⟩`. Rewrite using `[lamA', E2]`.
+
+Apply the tactic sequence `refine forall_ofBlocks l3 l4 F3 F4 (fun v w => ((t : ℚ) / 2 < v → 0 ≤ w) ∧ (v ≤ (t : ℚ) / 2 → w ≤ 0)) (fun v hv => ?_) (fun v hv => ?_) a <;> rcases List.mem_append.1 hv with hv | hv`. Break down `List.mem_append.1 hv with hv | hv` into its components or cases. Conclude with `⟨fun _ => c3a v hv ▸ pa v hv, fun h => by linarith [(ha v hv).1]⟩`. Conclude with `⟨fun _ => (c3k v hv).ge, fun _ => (c3k v hv).le⟩`. Conclude with `⟨fun h => by linarith [(hd v hv).1], fun _ => c3d v hv ▸ pd v hv⟩`.
+
+Conclude with `⟨fun _ => c4c v hv ▸ pc v hv, fun h => by linarith [(hc v hv).1]⟩`. Conclude with `⟨fun h => by linarith [(hb v hv).1], fun _ => c4b v hv ▸ pb v hv⟩`.
+-/
 theorem lowest_types : ∀ (t : ℕ) (al be ga de : List ℚ), HypA t al be ga de → JointShape _ _ _ _ (blattner (lamA al be ga de)) (blattner (lamA' t al be ga de)) ∧ IsParam (lamA al be ga de) ∧ IsParam (lamA' t al be ga de) ∧ (∀ a, (0 < lamA al be ga de a → 0 ≤ shiftNu (cPair (al.length + de.length + t) (ga.length + be.length)) (blattner (lamA al be ga de)) a) ∧ (lamA al be ga de a < 0 → shiftNu (cPair (al.length + de.length + t) (ga.length + be.length)) (blattner (lamA al be ga de)) a ≤ 0)) ∧ (∀ c, ((t : ℚ) / 2 < lamA' t al be ga de c → 0 ≤ shiftNu (cPair (al.length + be.length) (ga.length + de.length)) (blattner (lamA' t al be ga de)) c) ∧ (lamA' t al be ga de c ≤ (t : ℚ) / 2 → shiftNu (cPair (al.length + be.length) (ga.length + de.length)) (blattner (lamA' t al be ga de)) c ≤ 0)) := by
   intro t al be ga de h
   obtain ⟨-, -, sa, sb, sc, sd, nd, hpos, hneg, hco, habs⟩ := h

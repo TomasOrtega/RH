@@ -16,6 +16,9 @@ def jetL (J : (δ →₀ ℕ) → K) : MvPolynomial (σ ⊕ δ) K →ₗ[K] MvPo
   (basisMonomials (σ ⊕ δ) K).constr K fun m =>
     monomial (m.comapDomain Sum.inl Sum.inl_injective.injOn) (J (m.comapDomain Sum.inr Sum.inr_injective.injOn))
 
+/- English proof (translation)
+Establish `h1 : (monomial m c : MvPolynomial (σ ⊕ δ) K) = c • basisMonomials (σ ⊕ δ) K m`. Simplify using `[smul_monomial]`. Rewrite using `[h1, map_smul, jetL, Module.Basis.constr_basis, smul_monomial, smul_eq_mul]`.
+-/
 theorem jetL_monomial (J : (δ →₀ ℕ) → K) (m : σ ⊕ δ →₀ ℕ) (c : K) :
     jetL J (monomial m c) = monomial (m.comapDomain Sum.inl Sum.inl_injective.injOn)
       (c * J (m.comapDomain Sum.inr Sum.inr_injective.injOn)) := by
@@ -33,6 +36,9 @@ section Main
 
 variable {ι : Type} [Fintype ι] [DecidableEq ι]
 
+/- English proof (translation)
+Use `conv_rhs => rw [Q.as_sum, map_sum, map_sum]`. Unfold `KM.applyAt0`. Use `Finset.sum_congr rfl fun μ _ => ?_` and prove the remaining obligations. Rewrite using `[map_monomial, jetL_monomial, mul_assoc]`. Both sides reduce to the same expression.
+-/
 theorem applyAt0_eq (l : ℕ) [Fact l.Prime] (a b : ℕ) (Th : MvPowerSeries (ι × Fin a × Fin b) ℂ_[l])
     (Q : MvPolynomial (KM.XZ ι a b) ℤ) :
     KM.applyAt0 a b l Th Q = jetL (fun m => (m.prod fun _ k => (k.factorial : ℂ_[l])) * MvPowerSeries.coeff m Th)

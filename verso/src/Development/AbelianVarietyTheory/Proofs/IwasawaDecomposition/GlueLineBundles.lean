@@ -15,6 +15,11 @@ variable {X W : Scheme.{0}}
 def imU (j : W ⟶ X) [IsOpenImmersion j] (V : W.Opens) : Γ(W, V)ˣ →* Γ(X, j ''ᵁ V)ˣ :=
   Units.map (j.appIso V).inv.hom
 
+/- English proof (translation)
+Apply `Units.ext` to reduce the goal to its premises. Establish `h` using `congrArg (fun q => q.hom v.val) (j.appIso_inv_appLE (U := V) (V := V) (j.preimage_image_eq V).ge)`. Establish `e : (homOfLE (le_refl V)) = 𝟙 V` using `rfl`. Simplify using `only [CommRingCat.hom_comp, RingHom.comp_apply] at h`. Use `h.trans ?_` and prove the remaining obligations.
+
+Use `show (W.presheaf.map (𝟙 (Opposite.op V))).hom v.val = v.val`. Rewrite using `[W.presheaf.map_id]`. Both sides reduce to the same expression.
+-/
 theorem res_pull_imU (j : W ⟶ X) [IsOpenImmersion j] (V : W.Opens) (v : Γ(W, V)ˣ) :
     res (j.preimage_image_eq V).ge (pullU j _ (imU j V v)) = v := by
   apply Units.ext
@@ -25,6 +30,9 @@ theorem res_pull_imU (j : W ⟶ X) [IsOpenImmersion j] (V : W.Opens) (v : Γ(W, 
   show (W.presheaf.map (𝟙 (Opposite.op V))).hom v.val = v.val
   rw [W.presheaf.map_id]; rfl
 
+/- English proof (translation)
+Establish `h1 : j (f y) ∈ j ''ᵁ V` using `j.apply_mem_image_iff.2 hy`. Rewrite using `[← gm_pull f j y _ h1, ← gm_res f y (j.preimage_image_eq V).ge hy, res_pull_imU]`.
+-/
 theorem gm_imU (j : W ⟶ X) [IsOpenImmersion j] {Y : Scheme.{0}} (f : Y ⟶ W) (y : Y) (V : W.Opens)
     (hy : f y ∈ V) (v : Γ(W, V)ˣ) : gm (f ≫ j) y (j ''ᵁ V) (imU j V v) = gm f y V v := by
   have h1 : j (f y) ∈ j ''ᵁ V := j.apply_mem_image_iff.2 hy
@@ -35,10 +43,18 @@ end GlobalTheory.GlueLineBundle
 namespace GlobalTheory.GlueLineBundle
 variable {X : Scheme.{0}}
 
+/- English proof (translation)
+Rewrite using `[gm_val _ x O hx]`. Both sides reduce to the same expression.
+-/
 theorem gm_id_val {O : X.Opens} {x : X} (hx : x ∈ O) (a : Γ(X, O)ˣ) :
     (gm (𝟙 X) x O a).val = X.presheaf.germ O x hx a.val := by
   rw [gm_val _ x O hx]; rfl
 
+/- English proof (translation)
+Apply `unit_ext` to reduce the goal to its premises. Introduce `x hx`. Take `⟨W, j, hj, w, rfl, e⟩` from `h x hx`. Apply `Units.ext` to reduce the goal to its premises. Rewrite using `[gm_id_val hx, gm_id_val hx]`.
+
+Establish `e'` using `congrArg Units.val e`. Rewrite `e'` using `[gm_val j w O hx, gm_val j w O hx, ← Scheme.Hom.germ_stalkMap_apply, ← Scheme.Hom.germ_stalkMap_apply]`. Conclude with `(asIso (j.stalkMap w)).commRingCatIsoToRingEquiv.injective e'`.
+-/
 theorem unit_ext_imm {O : X.Opens} {a b : Γ(X, O)ˣ}
     (h : ∀ x ∈ O, ∃ (W : Scheme.{0}) (j : W ⟶ X) (_ : IsOpenImmersion j) (w : W), j w = x ∧
       gm j w O a = gm j w O b) : a = b := by
@@ -63,9 +79,21 @@ def GSpec (p q : Σ a, (M a).ι) (u : Γ(X, NU V M p ⊓ NU V M q)ˣ) : Prop :=
     (⟨c, j⟩ : Σ a, (M a).ι) = p → (⟨c, l⟩ : Σ a, (M a).ι) = q → f y ∈ (M c).U j → f y ∈ (M c).U l →
     gm (f ≫ (V c).ι) y (NU V M p ⊓ NU V M q) u = gm f y ((M c).U j ⊓ (M c).U l) ((M c).g j l)
 
+/- English proof (translation)
+The claim follows from `Scheme.Opens.ι_image_le _ _ hx`.
+-/
 theorem mem_of_mem_NU {p : Σ a, (M a).ι} {x : X} (hx : x ∈ NU V M p) : x ∈ V p.1 :=
   Scheme.Opens.ι_image_le _ _ hx
 
+/- English proof (translation)
+Take `⟨a, i⟩` from `p`. Take `⟨b, k⟩` from `q`. Distinguish the cases in `hab : a = b`. Substitute `hab` using the available equality. Establish `hle : (V a).ι ''ᵁ (M a).U i ⊓ (V a).ι ''ᵁ (M a).U k ≤ (V a).ι ''ᵁ ((M a).U i ⊓ (M a).U k)` using `fun x hx => by`.
+
+Take `⟨w, hw, rfl⟩` from `hx.1`. Conclude with `(V a).ι.apply_mem_image_iff.2 ⟨hw, (V a).ι.apply_mem_image_iff.1 hx.2⟩`. Use `⟨res hle (imU (V a).ι _ ((M a).g i k)), ?_⟩` and prove the remaining obligations. Introduce `c Y f y j l h1 h2 hj hl`. Take `⟨rfl, h1'⟩` from `Sigma.mk.inj_iff.1 h1`.
+
+Take `rfl` from `eq_of_heq h1'`. Take `rfl` from `eq_of_heq (Sigma.mk.inj_iff.1 h2).2`. Establish `hm : (f ≫ (V c).ι) y ∈ (V c).ι ''ᵁ (M c).U j ⊓ (V c).ι ''ᵁ (M c).U l` using `⟨(V c).ι.apply_mem_image_iff.2 hj, (V c).ι.apply_mem_image_iff.2 hl⟩`. Conclude with `(gm_res (f ≫ (V c).ι) y hle hm _).trans (gm_imU (V c).ι f y ((M c).U j ⊓ (M c).U l) ⟨hj, hl⟩ _)`. Use `⟨1, ?_⟩` and prove the remaining obligations.
+
+Introduce `c Y f y j l h1 h2`. Conclude with `absurd ((Sigma.mk.inj_iff.1 h1).1.symm.trans (Sigma.mk.inj_iff.1 h2).1) hab`.
+-/
 theorem exists_gSpec (p q : Σ a, (M a).ι) : ∃ u, GSpec V M p q u := by
   obtain ⟨a, i⟩ := p
   obtain ⟨b, k⟩ := q
@@ -92,11 +120,17 @@ def glue : LB X where
   U := NU V M
   g p q := Classical.choose (exists_gSpec V M p q)
 
+/- English proof (translation)
+The claim follows from `Classical.choose_spec (exists_gSpec V M ⟨a, i⟩ ⟨a, k⟩) a Y f y i k rfl rfl hi hk`.
+-/
 theorem gm_glue_g (a : A) {Y : Scheme.{0}} (f : Y ⟶ (V a).toScheme) (y : Y) (i k : (M a).ι)
     (hi : f y ∈ (M a).U i) (hk : f y ∈ (M a).U k) :
     gm (f ≫ (V a).ι) y _ ((glue V M).g ⟨a, i⟩ ⟨a, k⟩) = gm f y ((M a).U i ⊓ (M a).U k) ((M a).g i k) :=
   Classical.choose_spec (exists_gSpec V M ⟨a, i⟩ ⟨a, k⟩) a Y f y i k rfl rfl hi hk
 
+/- English proof (translation)
+Use `gm_glue_g V M a (𝟙 _) w i k hi hk` as an intermediate fact. Rewrite `this` using `[Category.id_comp]`. Then use the resulting hypothesis.
+-/
 theorem gm_glue_g' (a : A) (w : (V a).toScheme) (i k : (M a).ι)
     (hi : w ∈ (M a).U i) (hk : w ∈ (M a).U k) :
     gm (V a).ι w _ ((glue V M).g ⟨a, i⟩ ⟨a, k⟩) = gm (𝟙 _) w ((M a).U i ⊓ (M a).U k) ((M a).g i k) := by
@@ -105,10 +139,16 @@ theorem gm_glue_g' (a : A) (w : (V a).toScheme) (i k : (M a).ι)
 
 variable {V M}
 
+/- English proof (translation)
+The claim follows from `hdisj a b _ w.2 (mem_of_mem_NU V M h)`.
+-/
 theorem eq_of_mem (hdisj : ∀ a b x, x ∈ V a → x ∈ V b → a = b) {a b : A} (w : (V a).toScheme) {k : (M b).ι}
     (h : (V a).ι w ∈ NU V M ⟨b, k⟩) : a = b :=
   hdisj a b _ w.2 (mem_of_mem_NU V M h)
 
+/- English proof (translation)
+The claim follows from `top_le_iff.1 fun x _ => by obtain ⟨a, ha⟩ := hcov x obtain ⟨w, rfl⟩ : ∃ w : (V a).toScheme, (V a).ι w = x := ⟨⟨x, ha⟩, rfl⟩ obtain ⟨i, hi⟩ := exists_chart (hM a) w exact TopologicalSpace.Opens.mem_iSup.2 ⟨⟨a, i⟩, (V a).ι.apply_mem_image_iff.2 hi⟩ g_self p := by obtain ⟨a, i⟩ := p …`.
+-/
 theorem glue_isLB (hdisj : ∀ a b x, x ∈ V a → x ∈ V b → a = b) (hcov : ∀ x, ∃ a, x ∈ V a)
     (hM : ∀ a, (M a).IsLB) : (glue V M).IsLB where
   cover := top_le_iff.1 fun x _ => by
@@ -152,6 +192,13 @@ end GlobalTheory.GlueLineBundle
 namespace GlobalTheory.GlueLineBundle
 variable {X : Scheme.{0}} {A : Type} {V : A → X.Opens} {M : ∀ a, LB (V a).toScheme}
 
+/- English proof (translation)
+Distinguish the cases in `h : ∃ i' : (M a).ι, J PUnit.unit = (⟨a, i'⟩ : Σ a, (M a).ι)`. Take `⟨i', hi'⟩` from `h`. Establish `hle : ((glue V M).pull (V a).ι).U J ⊓ (M a).U k ≤ (M a).U i' ⊓ (M a).U k` using `fun w hw => by`. Establish `h1 : (V a).ι w ∈ (glue V M).U (J PUnit.unit)` using `mem_pull.1 hw.1`. Rewrite `h1` using `[hi']`.
+
+Conclude with `⟨(V a).ι.apply_mem_image_iff.1 h1, hw.2⟩`. Use `⟨res hle ((M a).g i' k), fun Y f y i hJ hi hk => ?_⟩` and prove the remaining obligations. Take `rfl` from `sigma_mk_injective (hi'.symm.trans hJ)`. Establish `hm : f y ∈ ((glue V M).pull (V a).ι).U J ⊓ (M a).U k`. Use `⟨mem_pull.2 ?_, hk⟩` and prove the remaining obligations.
+
+Use `show (V a).ι (f y) ∈ (glue V M).U (J PUnit.unit)`. Rewrite using `[hi']`. Conclude with `(V a).ι.apply_mem_image_iff.2 hi`. Conclude with `gm_res f y hle hm _`. Conclude with `⟨1, fun Y f y i hJ => absurd ⟨i, hJ⟩ h⟩`.
+-/
 theorem exists_isoUnit (a : A) (J : PUnit → (glue V M).ι) (k : (M a).ι) :
     ∃ u : Γ((V a).toScheme, ((glue V M).pull (V a).ι).U J ⊓ (M a).U k)ˣ,
       ∀ (Y : Scheme.{0}) (f : Y ⟶ (V a).toScheme) (y : Y) (i : (M a).ι),
@@ -176,6 +223,13 @@ theorem exists_isoUnit (a : A) (J : PUnit → (glue V M).ι) (k : (M a).ι) :
 def isoGen (a : A) : LB.Iso (M a) ((glue V M).pull (V a).ι) :=
   ⟨fun p => Classical.choose (exists_isoUnit a p.1 p.2)⟩
 
+/- English proof (translation)
+Introduce `Y f y j j' k k' hj hj' hk hk'`. Take `⟨b, i⟩` from `j`. Take `⟨b', i'⟩` from `j'`. Establish `hb : a = b` using `eq_of_mem hdisj (f y) hj`. Establish `hb' : a = b'` using `eq_of_mem hdisj (f y) hj'`.
+
+Substitute `hb hb'` using the available equality. Establish `hi : f y ∈ (M a).U i` using `(V a).ι.apply_mem_image_iff.1 hj`. Establish `hi' : f y ∈ (M a).U i'` using `(V a).ι.apply_mem_image_iff.1 hj'`. Establish `e1 : gw (isoGen a) f y ⟨a, i⟩ k = gm f y _ ((M a).g i k)` using `Classical.choose_spec (exists_isoUnit (V := V) (M := M) a (fun _ => ⟨a, i⟩) k) Y f y i rfl hi hk`. Establish `e2 : gw (isoGen a) f y ⟨a, i'⟩ k' = gm f y _ ((M a).g i' k')` using `Classical.choose_spec (exists_isoUnit (V := V) (M := M) a (fun _ => ⟨a, i'⟩) k') Y f y i' rfl hi' hk'`.
+
+Rewrite using `[e1, e2, gm_glue_g V M a f y i i' hi hi', mul_right_comm, gm_cocycle (hM a) f y hi hi' hk', ← gm_cocycle (hM a) f y hi hk hk', mul_inv_cancel_right]`.
+-/
 theorem pgen_isoGen (hdisj : ∀ a b x, x ∈ V a → x ∈ V b → a = b) (hM : ∀ a, (M a).IsLB) (a : A) :
     PGen (isoGen (V := V) (M := M) a) := by
   intro Y f y j j' k k' hj hj' hk hk'
@@ -197,6 +251,9 @@ end GlobalTheory.GlueLineBundle
 
 open GlobalTheory.GlueLineBundle in
 
+/- English proof (translation)
+Introduce `X A V hdisj hcov M hM`. Conclude with `⟨glue V M, glue_isLB hdisj hcov hM, fun a => LBIso.symm ⟨isoGen a, (isGen_iff _).2 (pgen_isoGen hdisj hM a)⟩⟩`.
+-/
 theorem GlobalTheory.glue_lineBundles : ∀ (X : Scheme.{0}) (A : Type) (V : A → X.Opens), (∀ a b x, x ∈ V a → x ∈ V b → a = b) → (∀ x, ∃ a, x ∈ V a) → ∀ (M : ∀ a, LB (V a).toScheme), (∀ a, (M a).IsLB) → ∃ N : LB X, N.IsLB ∧ ∀ a, LBIso (N.pull (V a).ι) (M a) := by
   intro X A V hdisj hcov M hM
   exact ⟨glue V M, glue_isLB hdisj hcov hM, fun a =>

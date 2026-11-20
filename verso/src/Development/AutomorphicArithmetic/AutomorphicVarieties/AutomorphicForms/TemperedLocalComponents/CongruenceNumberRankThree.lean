@@ -11,6 +11,27 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.BuildingsResidueCh
 
 open NumberField IsDedekindDomain Formalism.ConjugateSelfDual ReciprocityTheory.Gal Formalism.BasicNotions Formalism.BasicNotions.Loc Formalism.MainNotions.N Polynomial GlobalTheory.GalOfCusp UpperTheory.V.Af
 
+/- English proof (translation)
+Introduce `hP K _ _ _ hK`. Take `⟨c₁, A₁, h₁⟩` from `UpperTheory.frobenius_trace_count_bound_of_cm_eigensystem_count (countK hP) K`. Take `⟨c₂, A₂, h₂⟩` from `UpperTheory.frobenius_trace_count_bound_of_rat_eigensystem_count (countQ hP) (newformAut hP)`. Use `set d := (discr K).natAbs with hd`. Establish `hd1 : 1 ≤ d` using `Int.natAbs_pos.2 (discr_ne_zero K)`.
+
+Use `⟨5 * (c₁ + c₂ * d ^ A₂), A₁ + A₂ + 1, ?_⟩` and prove the remaining obligations. Introduce `e he N hN p w hp hw h7 hpN hpd Orb _ z hz hc`. Take `⟨h, hh1, hh2, hq⟩` from `UpperTheory.exists_normV_eq_prime_pow_le_finrank K p w hp hw`. Take `⟨D₁, hD₁, H₁⟩` from `h₁ e he N hN p w hp hw hpN hpd`. Establish `hpM : ¬ p ∣ N * d` using `fun H => (hp.dvd_mul.1 H).elim hpN fun H' => hpd (Int.natCast_dvd.2 H')`.
+
+Establish `H₂'` using `h₂ K e he (N * d) (Nat.mul_pos hN hd1) p h w hp hw hpM`. Rewrite `H₂'` using `[← hq]`. Take `⟨D₂, hD₂, H₂⟩` from `H₂'`. Establish `hq7 : 7 ≤ normV w`. Rewrite using `[hq]; exact h7.trans (Nat.le_self_pow (by omega) p)`.
+
+Take `⟨NN, h0, hb, H⟩` from `UpperTheory.frobenius_trace_norm_nonzero_log_bound (normV w) e hq7 he (D₁.sum D₂) Orb z hz hc`. Use `⟨NN, h0, hb.trans ?_, fun l _ hl2 hlp Ω _ _ _ _ _ ι B hB σ hσ X hX hX' => ?_⟩` and prove the remaining obligations. Use `set Y : ℕ := N * (e + 1) with hY`. Establish `hY1 : 1 ≤ Y` using `Nat.mul_pos hN (Nat.succ_pos e)`. Establish `hcard : Nat.card (D₁.sum D₂).S ≤ (c₁ + c₂ * d ^ A₂) * Y ^ (A₁ + A₂)`.
+
+Rewrite using `[TrData.card_sum, add_mul]`. Use `add_le_add (hD₁.trans (Nat.mul_le_mul_left _ (Nat.pow_le_pow_right hY1 (by omega)))) (hD₂.trans ?_)` and prove the remaining obligations. Rewrite using `[show N * d * (e + 1) = d * Y by rw [hY]; ring, mul_pow, ← mul_assoc]`. Conclude with `Nat.mul_le_mul_left _ (Nat.pow_le_pow_right hY1 (by omega))`. Establish `hp1 : (1 : ℝ) ≤ Real.log p`.
+
+Rewrite using `[Real.le_log_iff_exp_le (by exact_mod_cast hp.pos)]`. Establish `h7' : (7 : ℝ) ≤ p` using `by exact_mod_cast h7`. Combine the linear relations using `[Real.exp_one_lt_d9]`. Establish `hlq : Real.log (normV w) ≤ 2 * Real.log p`. Rewrite using `[hq, Nat.cast_pow, Real.log_pow]`.
+
+Establish `: (h : ℝ) ≤ 2` using `by exact_mod_cast hK ▸ hh2`. Use the polynomial consequences of the given equalities and inequalities. Establish `heY : (e : ℝ) + 1 ≤ Y`. Establish `: e + 1 ≤ Y` using `Nat.le_mul_of_pos_left _ hN`. Conclude with `this` after adjusting the coercions.
+
+Establish `he0 : (0 : ℝ) ≤ e` using `Nat.cast_nonneg e`. Establish `hf : 2 * e * Real.log (normV w) + 1 ≤ 5 * Y * Real.log p` using `by nlinarith`. Establish `hf0 : 0 ≤ 2 * e * Real.log (normV w) + 1` using `by positivity`. Establish `hcard' : (Nat.card (D₁.sum D₂).S : ℝ) ≤ ((c₁ + c₂ * d ^ A₂) * Y ^ (A₁ + A₂) : ℕ)` using `by exact_mod_cast hcard`. Establish `hYc : (N : ℝ) * (e + 1) = Y` using `by rw [hY]; push_cast; ring`.
+
+Rewrite using `[hYc]`. Combine the equalities or inequalities in the displayed calculation. Establish `hlq : ¬ l ∣ normV w` using `fun H' => by`. Rewrite `H'` using `[hq]`. Conclude with `hlp ((Nat.prime_dvd_prime_iff_eq Fact.out hp).1 ((Fact.out : l.Prime).dvd_of_dvd_pow H'))`.
+
+Conclude with `H l hlq ι _ σ⁻¹ _ ((H₁ l hl2 hlp Ω ι B hB σ hσ).sum (H₂ l hl2 hlp Ω ι B hB σ hσ)) X hX hX'`.
+-/
 theorem UpperTheory.V.Af.numberU3_of_admissible :
     UpperTheory.V.Af.Hypotheses₂ → UpperTheory.V.Af.CongruenceNumberRankThree := by
   intro hP K _ _ _ hK

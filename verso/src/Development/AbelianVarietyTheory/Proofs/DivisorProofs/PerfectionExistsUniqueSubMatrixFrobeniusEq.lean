@@ -4,6 +4,17 @@ namespace GlobalTheory
 
 open Matrix
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce `a b hab`. Establish `hab' : a - L a = b - L b` using `hab`. Establish `hfix : L (a - b) = a - b`. Rewrite using `[map_sub]`.
+
+Rewrite `hab'` using `[sub_eq_sub_iff_sub_eq_sub]`. Conclude with `hab'.symm`. Establish `h1 : ∀ m, (⇑L)^[m] (a - b) = a - b`. Introduce `m`. Proceed by induction on `m with`.
+
+Consider the case `zero => rfl`. Consider the case `succ m ih => rw [Function.iterate_succ_apply', ih, hfix]`. Conclude with `sub_eq_zero.mp ((h1 K).symm.trans (hK _))`. Introduce `c`. Use `⟨∑ k ∈ Finset.range K, (⇑L)^[k] c, ?_⟩` and prove the remaining obligations.
+
+Use `show (∑ k ∈ Finset.range K, (⇑L)^[k] c) - L (∑ k ∈ Finset.range K, (⇑L)^[k] c) = c`. Rewrite using `[map_sum]`. Establish `hs : ∀ k, L ((⇑L)^[k] c) = (⇑L)^[k + 1] c` using `fun k => (Function.iterate_succ_apply' (⇑L) k c).symm`. Simplify using `only [hs]`. Rewrite using `[← Finset.sum_sub_distrib, Finset.sum_range_sub', hK, sub_zero]`.
+
+Both sides reduce to the same expression.
+-/
 theorem sub_apply_bijective_of_iterate_eq_zero {M : Type} [AddCommGroup M] (L : M →+ M) (K : ℕ)
     (hK : ∀ z, (⇑L)^[K] z = 0) : Function.Bijective (fun z => z - L z) := by
   constructor
@@ -35,11 +46,19 @@ noncomputable def perfLevelOp (p : ℕ) [Fact p.Prime] (S : Type) [CommRing S] [
   map_zero' := by ext i; simp [Matrix.mulVec, dotProduct]
   map_add' a b := by ext i; simp [Matrix.mulVec, dotProduct, mul_add, Finset.sum_add_distrib]
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem perfLevelOp_apply (p : ℕ) [Fact p.Prime] (S : Type) [CommRing S] [CharP S p]
     {ι : Type} [Fintype ι] (Q : Matrix ι ι (Perfection S p)) (n : ℕ) (w : ι → S) :
     perfLevelOp p S Q n w = (Q.map (Perfection.coeff S p n)).mulVec fun k => frobenius S p (w k) :=
   rfl
 
+/- English proof (translation)
+Use extensionality with `i`. Simplify using `only [Pi.sub_apply, map_sub, perfLevelOp_apply]`. Use `congr 1`. Rewrite using `[RingHom.map_mulVec]`. Establish `hc : (Perfection.coeff S p n) ∘ (fun k => frobenius (Perfection S p) p (x k)) = fun k => frobenius S p (Perfection.coeff S p n (x k))`.
+
+Use function extensionality and compare the values at `k`. Simplify using `[frobenius_def, map_pow]`. Rewrite using `[hc]`.
+-/
 theorem perfLevelOp_coeff (p : ℕ) [Fact p.Prime] (S : Type) [CommRing S] [CharP S p]
     {ι : Type} [Fintype ι] (Q : Matrix ι ι (Perfection S p)) (n : ℕ) (x : ι → Perfection S p) :
     (fun i => Perfection.coeff S p n ((x - Q.mulVec (fun k => frobenius (Perfection S p) p (x k))) i))
@@ -55,6 +74,11 @@ theorem perfLevelOp_coeff (p : ℕ) [Fact p.Prime] (S : Type) [CommRing S] [Char
     simp [frobenius_def, map_pow]
   rw [hc]
 
+/- English proof (translation)
+Use extensionality with `i`. Simplify using `only [perfLevelOp_apply, Pi.sub_apply, map_sub]`. Use `congr 1`. Simplify using `only [Matrix.mulVec, dotProduct, Matrix.map_apply, map_sum, map_mul]`. Use `congr 1`.
+
+Use extensionality with `j`. Use `congr 1`. Rewrite using `[frobenius_def, Perfection.coeff_pow_p']`.
+-/
 theorem perfLevelOp_frobenius (p : ℕ) [Fact p.Prime] (S : Type) [CommRing S] [CharP S p]
     {ι : Type} [Fintype ι] (Q : Matrix ι ι (Perfection S p)) (n : ℕ) (w : ι → S) :
     (fun i => frobenius S p ((w - perfLevelOp p S Q (n + 1) w) i))
@@ -68,6 +92,23 @@ theorem perfLevelOp_frobenius (p : ℕ) [Fact p.Prime] (S : Type) [CommRing S] [
   congr 1
   rw [frobenius_def, Perfection.coeff_pow_p']
 
+/- English proof (translation)
+Introduce `p _ S _ _ ι _ Q hnil c`. Establish `bij : ∀ n, Function.Bijective (fun z => z - perfLevelOp p S Q n z)`. Introduce `n`. Take `⟨K, hK⟩` from `hnil n`. Conclude with `sub_apply_bijective_of_iterate_eq_zero _ K hK`.
+
+Set `z : ℕ → ι → S` to `fun n => Function.surjInv (bij n).2 (fun i => Perfection.coeff S p n (c i))`. Establish `hz : ∀ n, z n - perfLevelOp p S Q n (z n) = fun i => Perfection.coeff S p n (c i)` using `fun n => Function.surjInv_eq (bij n).2 _`. Establish `compat : ∀ n k, z (n + 1) k ^ p = z n k`. Introduce `n`. Establish `h : (fun k => frobenius S p (z (n + 1) k)) = z n`.
+
+Apply `(bij n).1` to reduce the goal to its premises. Use `show (fun k => frobenius S p (z (n + 1) k)) - perfLevelOp p S Q n (fun k => frobenius S p (z (n + 1) k)) = z n - perfLevelOp p S Q n (z n)`. Rewrite using `[← perfLevelOp_frobenius, hz (n + 1), hz n]`. Use extensionality with `i`. Simplify using `[frobenius_def, Perfection.coeff_pow_p']`.
+
+Introduce `k`. Use `congrFun h k` as an intermediate fact. Simplify `this` using `[frobenius_def]`. Set `x : ι → Perfection S p` to `fun k => ⟨fun n => z n k, fun n => compat n k⟩`. Use `⟨x, ?_, ?_⟩` and prove the remaining obligations.
+
+Use function extensionality and compare the values at `i`. Apply `Perfection.ext` to reduce the goal to its premises. Introduce `n`. Establish `h1` using `congrFun (perfLevelOp_coeff p S Q n x) i`. Establish `hx : (fun i => Perfection.coeff S p n (x i)) = z n` using `rfl`.
+
+Rewrite `h1` using `[hx, hz n]`. Conclude with `h1`. Introduce `y hy`. Use function extensionality and compare the values at `k`. Apply `Perfection.ext` to reduce the goal to its premises.
+
+Introduce `n`. Establish `h2 : (fun i => Perfection.coeff S p n (y i)) = z n`. Apply `(bij n).1` to reduce the goal to its premises. Use `show (fun i => Perfection.coeff S p n (y i)) - perfLevelOp p S Q n (fun i => Perfection.coeff S p n (y i)) = z n - perfLevelOp p S Q n (z n)`. Rewrite using `[← perfLevelOp_coeff, hy, hz n]`.
+
+Conclude with `congrFun h2 k`.
+-/
 theorem perfection_frobenius_solve : ∀ (p : ℕ) [Fact p.Prime] (S : Type) [CommRing S] [CharP S p] (ι : Type) [Fintype ι] (Q : Matrix ι ι (Perfection S p)), (∀ n : ℕ, ∃ K : ℕ, ∀ z : ι → S, (fun w : ι → S => (Q.map (Perfection.coeff S p n)).mulVec fun k => frobenius S p (w k))^[K] z = 0) → ∀ c : ι → Perfection S p, ∃! x : ι → Perfection S p, x - Q.mulVec (fun k => frobenius (Perfection S p) p (x k)) = c := by
   intro p _ S _ _ ι _ Q hnil c
   have bij : ∀ n, Function.Bijective (fun z => z - perfLevelOp p S Q n z) := by

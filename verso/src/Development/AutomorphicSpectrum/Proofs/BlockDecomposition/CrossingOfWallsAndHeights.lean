@@ -9,6 +9,11 @@ open Filter Topology PositivityTheory.RgEis
 
 namespace GlobalTheory.CompanionTheory.RgEisCross
 
+/- English proof (translation)
+Introduce `γ hγ hγP x`. Take `⟨p, hp, k, hk, rfl⟩` from `hP.iwa x`. Establish `h1` using `law (γ * p) (P.mul_mem hγP hp) ⟨k, hk⟩`. Establish `h2` using `law p hp ⟨k, hk⟩`. Simplify using `only at h1 h2`.
+
+Rewrite using `[← mul_assoc, h1, h2, hP.ch.mul γ hγP p hp, hP.ch.rat γ hγ hγP, one_mul]`.
+-/
 theorem sec_inv {G : Type} [Group G] [TopologicalSpace G] {W : Type} [NormedAddCommGroup W] [NormedSpace ℂ W]
     {Γ K P : Subgroup G} {c : G → ℂ} {ρ : K →* (W →L[ℂ] W)} {w : W} (hP : IsPar Γ K P c)
     (law : ∀ p ∈ P, ∀ k : K, sec K P c ρ (p * k) w = c p • ρ k⁻¹ w) :
@@ -20,6 +25,47 @@ theorem sec_inv {G : Type} [Group G] [TopologicalSpace G] {W : Type} [NormedAddC
   simp only at h1 h2
   rw [← mul_assoc, h1, h2, hP.ch.mul γ hγP p hp, hP.ch.rat γ hγ hγP, one_mul]
 
+/- English proof (translation)
+Introduce `G _ _ _ _ _ W _ _ _ K ρ hK hρ Γ Q P P' c η η' β ξ L R D Op H Ω hPQ hP'Q hP hP' hη hη' hβ hξ hW hΩ hx`. Use `haveI : CompleteSpace W := FiniteDimensional.complete ℂ W`. Establish `parRes : ∀ (P : Subgroup G), IsPar Γ K P c → IsPar (Γ ⊓ Q) K P c` using `fun _ h => ⟨h.closed, h.iwa, ⟨h.ch.mul, h.ch.norm, fun γ hγ hp => h.ch.rat γ hγ.1 hp, h.ch.cont⟩⟩`. Establish `htRes : ∀ (P : Subgroup G) (f : G → ℝ), IsHt Γ K P f → IsHt (Γ ⊓ Q) K P f` using `fun _ _ h => ⟨h.left, h.right, fun γ hγ hp => h.rat γ hγ.1 hp, h.cont⟩`. Take `⟨-, -, hbound⟩` from `hWL G W K ρ hK hρ (Γ ⊓ Q) P P' c η η' β L R D Op H (parRes P hP) (parRes P' hP') (htRes P η hη) (htRes P' η' hη') (htRes P' β hβ) hW`.
+
+Establish `hξinv : ∀ γ ∈ Γ, γ ∈ Q → ∀ x, ξ (γ * x) = ξ x`. Introduce `γ h1 h2 x`. Rewrite using `[hξ.left γ h2, hξ.rat γ h1 h2, zero_add]`. Establish `htinv : ∀ (P : Subgroup G) (f : G → ℝ), IsHt Γ K P f → ∀ γ ∈ Γ, γ ∈ P → ∀ x, f (γ * x) = f x`. Introduce `P f hf γ h1 h2 x`.
+
+Rewrite using `[hf.left γ h2, hf.rat γ h1 h2, zero_add]`. Establish `iwaQ : Iwa Q K` using `fun g => by`. Take `⟨p, hp, k, hk, e⟩` from `hP.iwa g`. Conclude with `⟨p, hPQ hp, k, hk, e⟩`. Establish `mξ` using `hHt G Γ K Q ξ hK iwaQ hξ`.
+
+Establish `mη` using `hHt G Γ K P η hK hP.iwa hη`. Establish `mη'` using `hHt G Γ K P' η' hK hP'.iwa hη'`. Establish `mβ` using `hHt G Γ K P' β hK hP'.iwa hβ`. Set `t : Cos (Γ ⊓ Q) Γ → ℂ × ℂ → G → (L →L[ℂ] W)` to `fun r l g => Complex.exp (l.2 * ξ (rep r * g)) • H l.1 (rep r * g)`. Establish `hhol : ∀ r g (p v : ℂ × ℂ), Differentiable ℂ fun τ : ℂ => t r (p + τ • v) g`.
+
+Introduce `r g p v`. Establish `h1 : Differentiable ℂ fun τ : ℂ => H (p + τ • v).1 (rep r * g)` using `(hW.hol (rep r * g)).comp (by fun_prop)`. Establish `h2 : Differentiable ℂ fun τ : ℂ => Complex.exp ((p + τ • v).2 * ξ (rep r * g))` using `by fun_prop`. Conclude with `h2.smul h1`. Establish `hcont : ∀ r, Continuous fun y : (ℂ × ℂ) × G => t r y.1 y.2`.
+
+Introduce `r`. Establish `h0 : Continuous fun y : (ℂ × ℂ) × G => rep r * y.2` using `by fun_prop`. Establish `h1 : Continuous fun y : (ℂ × ℂ) × G => H y.1.1 (rep r * y.2)` using `hW.cont.comp (continuous_fst.fst.prodMk h0)`. Establish `h2 : Continuous fun y : (ℂ × ℂ) × G => ξ (rep r * y.2)` using `hξ.cont.comp h0`. Establish `h3 : Continuous fun y : (ℂ × ℂ) × G => Complex.exp (y.1.2 * ξ (rep r * y.2))` using `Complex.continuous_exp.comp ((continuous_fst.snd).mul (Complex.continuous_ofReal.comp h2))`.
+
+Conclude with `h3.smul h1`. Establish `hdom : ∀ x ∈ Ω, ∀ g, ∃ V ∈ 𝓝 x, ∃ U ∈ 𝓝 g, ∃ u : Cos (Γ ⊓ Q) Γ → ℝ, Summable u ∧ ∀ l ∈ tube V, ∀ g' ∈ U, ∀ r, ‖t r l g'‖ ≤ u r`. Introduce `x hxΩ g`. Take `⟨a, b, ε, hε, hRa, hbR, hbx, hxa, hconv⟩` from `hx x hxΩ`. Take `⟨M, hM⟩` from `hbound a b hRa hbR`.
+
+Establish `inv₁ : ∀ γ ∈ Γ, γ ∈ P → ∀ x, (fun x => a * η x) (γ * x) = (fun x => a * η x) x`. Introduce `γ h1 h2 x`. Simplify using `only [htinv P η hη γ h1 h2 x]`. Establish `inv₂ : ∀ γ ∈ Γ, γ ∈ P' → ∀ x, (fun x => β x - b * η' x) (γ * x) = (fun x => β x - b * η' x) x`. Introduce `γ h1 h2 x`.
+
+Simplify using `only [htinv P' η' hη' γ h1 h2 x, htinv P' β hβ γ h1 h2 x]`. Establish `m₁ : ∀ C : Set G, IsCompact C → ∃ A : ℝ, ∀ g, ∀ u ∈ C, |a * η (g * u) - a * η g| ≤ A`. Introduce `C hC`. Take `⟨A, hA⟩` from `mη C hC`. Use `⟨|a| * A, fun g u hu => ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[← mul_sub, abs_mul]`. Conclude with `mul_le_mul_of_nonneg_left (hA g u hu) (abs_nonneg a)`. Establish `m₂ : ∀ C : Set G, IsCompact C → ∃ A : ℝ, ∀ g, ∀ u ∈ C, |(β (g * u) - b * η' (g * u)) - (β g - b * η' g)| ≤ A`. Introduce `C hC`. Take `⟨A, hA⟩` from `mη' C hC`.
+
+Take `⟨B, hB⟩` from `mβ C hC`. Use `⟨B + |b| * A, fun g u hu => ?_⟩` and prove the remaining obligations. Establish `e : (β (g * u) - b * η' (g * u)) - (β g - b * η' g) = (β (g * u) - β g) - b * (η' (g * u) - η' g)` using `by ring`. Rewrite using `[e]`. Use `(abs_sub _ _).trans (add_le_add (hB g u hu) ?_)` and prove the remaining obligations.
+
+Rewrite using `[abs_mul]`. Conclude with `mul_le_mul_of_nonneg_left (hA g u hu) (abs_nonneg b)`. Establish `hl : |x.2 - ε - x.2| ≤ ε` using `by rw [sub_sub_cancel_left, abs_neg, abs_of_pos hε]`. Establish `hr : |x.2 + ε - x.2| ≤ ε` using `by rw [add_sub_cancel_left, abs_of_pos hε]`. Take `⟨U, hU, u, hu, hb⟩` from `GlobalTheory.T.coarse_lipschitz_exponential_estimate G (L →L[ℂ] W) Γ (Γ ⊓ Q) P P' ξ (fun x => a * η x) (fun x => β x - b * η' x) H a b (x.2 - ε) (x.2 + ε) M mξ m₁ m₂ (hW.convR a hRa) (hW.convL b hbR) hM (GlobalTheory.T.coset_series_summable_shifted hSt G Γ Q P ξ _ _ hPQ hξinv inv …`.
+
+Use `⟨Set.Icc b a ×ˢ Set.Icc (x.2 - ε) (x.2 + ε), prod_mem_nhds (Icc_mem_nhds hbx hxa) (Icc_mem_nhds (by linarith) (by linarith)), U, hU, u, hu, ?_⟩` and prove the remaining obligations. Introduce `l hl g' hg' r`. Take `⟨h1, h2⟩` from `hl`. Conclude with `hb l h1.1 h1.2 h2.1 h2.2 g' hg' r`. Take `⟨hTG, hsum⟩` from `GlobalTheory.T.holomorphic_series_uniform_tube _ _ _ t Ω hhol hcont hdom`.
+
+Establish `key : ∀ l ∈ tube Ω, ∀ g (w : L), outer Γ (Γ ⊓ Q) ξ H l g w = ∑' r : Cos (Γ ⊓ Q) Γ, Complex.exp (l.2 * ξ (rep r * g)) • H l.1 (rep r * g) w`. Introduce `l hl g w`. Establish `hs : Summable fun r => t r l g` using `(hsum l hl g).of_norm`. Conclude with `(ContinuousLinearMap.apply ℂ W w).map_tsum hs`. Take `⟨law, -, Ms, hMs⟩` from `hSec G W K ρ hK hρ Γ P c hP`.
+
+Take `⟨law', -, Ms', hMs'⟩` from `hSec G W K ρ hK hρ Γ P' c hP'`. Use `⟨hTG, hsum, ?_, ?_⟩` and prove the remaining obligations. Introduce `l hl hRl hconv g w`. Establish `hw : (w : W) ∈ secSp K P c ρ` using `hW.le w.2`. Rewrite using `[key l hl g w]`.
+
+Establish `e : ∀ r : Cos (Γ ⊓ Q) Γ, Complex.exp (l.2 * ξ (rep r * g)) • H l.1 (rep r * g) w = D l.1 • (Complex.exp (l.2 * ξ (rep r * g)) • eis (Γ ⊓ Q) K P c ρ (fun x => l.1 * η x) (rep r * g) w)`. Introduce `r`. Rewrite using `[hW.eqR l.1 hRl, smul_comm]`. Repeatedly rewrite using `[e]`. Rewrite using `[tsum_const_smul'']`.
+
+Use `congr 1`. Use `GlobalTheory.T.section_invariance_coset_sum hSt G W Γ K Q P c ρ ξ (fun x => l.1.re * η x + l.2.re * ξ x) (fun x => l.1 * η x) l.2 w (Ms * ‖(w : W)‖) hPQ hξinv ?_ (sec_inv hP (law w hw)) (fun x => hMs x w) hconv ?_ g` and prove the remaining obligations. Introduce `γ h1 h2 x`. Simplify using `only [htinv P η hη γ h1 h2 x]`. Introduce `x`.
+
+Simplify using the standard rewrite rules. Introduce `l hl hRl hconv g w`. Establish `hw : ((Op l.1 w : secSp K P' c ρ) : W) ∈ secSp K P' c ρ` using `(Op l.1 w).2`. Rewrite using `[key l hl g w]`. Establish `e : ∀ r : Cos (Γ ⊓ Q) Γ, Complex.exp (l.2 * ξ (rep r * g)) • H l.1 (rep r * g) w = Complex.exp (l.2 * ξ (rep r * g)) • eis (Γ ⊓ Q) K P' c ρ (fun x => β x - l.1 * η' x) (rep r * g) (Op l.1 w)`.
+
+Introduce `r`. Rewrite using `[hW.eqL l.1 hRl]`. Repeatedly rewrite using `[e]`. Use `GlobalTheory.T.section_invariance_coset_sum hSt G W Γ K Q P' c ρ ξ (fun x => β x - l.1.re * η' x + l.2.re * ξ x) (fun x => (β x : ℂ) - l.1 * η' x) l.2 _ (Ms' * ‖((Op l.1 w : secSp K P' c ρ) : W)‖) hP'Q hξinv ?_ (sec_inv hP' (law' _ hw)) (fun x => hMs' x _) hconv ?_ g` and prove the remaining obligations. Introduce `γ h1 h2 x`.
+
+Simplify using `only [htinv P' η' hη' γ h1 h2 x, htinv P' β hβ γ h1 h2 x]`. Introduce `x`. Simplify using the standard rewrite rules.
+-/
 theorem cross (hSec : SecLaw) (hHt : HtLip) (hSt : PiLocalization₂) (hWL : WallLaw) : Cross := by
   intro G _ _ _ _ _ W _ _ _ K ρ hK hρ Γ Q P P' c η η' β ξ L R D Op H Ω hPQ hP'Q hP hP' hη hη' hβ hξ hW hΩ hx
   haveI : CompleteSpace W := FiniteDimensional.complete ℂ W

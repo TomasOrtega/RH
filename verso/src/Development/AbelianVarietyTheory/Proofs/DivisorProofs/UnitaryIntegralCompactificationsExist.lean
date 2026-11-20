@@ -13,6 +13,9 @@ open Classical
 
 namespace GlobalTheory.UPoinc
 
+/- English proof (translation)
+The claim follows from `GlobalTheory.T.unitary_integral_compactification_exists_via_theta`.
+-/
 theorem uMinSt_holds : UMinSt := GlobalTheory.T.unitary_integral_compactification_exists_via_theta
 
 end GlobalTheory.UPoinc

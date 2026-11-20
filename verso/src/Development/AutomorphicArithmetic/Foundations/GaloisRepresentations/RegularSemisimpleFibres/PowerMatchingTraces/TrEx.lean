@@ -15,6 +15,15 @@ open Formalism.L2.Host UpperTheory.V.Published UpperTheory.CBC
 open scoped Classical
 open UpperTheory.Gal.InertialTypesAlt.G
 
+/- English proof (translation)
+Introduce `K _ _ _ n hn π v _ _ m hm τ hτ f hf`. Use `haveI := hm`. Set `μ : Measure (normOneGL K n)` to `Measure.haar`. Take `⟨χ, -, V, hV⟩` from `Dp.exTwist K n μ π hn`. Take `⟨⟨τ₁, h₁⟩, htw⟩` from `locTw K n hn π χ v τ hτ`.
+
+Take `⟨e, he⟩` from `htw τ₁ h₁`. Establish `hocc : Occurs μ V v τ₁` using `(occursIff K n μ V hV.summand v τ₁).2 ((Dp.locIff K n μ (π.twist χ) V hV v τ₁).1 h₁)`. Take `⟨-, -, h₃⟩` from `occursBasics K n μ V v m hV.summand`. Take `⟨z, hz⟩` from `h₃ τ₁ hocc (fun g => f g * chiAt n χ⁻¹ v g) ((chiBasic K n χ⁻¹ v).2.2 f hf)`. Establish `ht` using `(trTw _ m (chiAt n χ v) τ τ₁ e he (fun g => f g * chiAt n χ⁻¹ v g) z).1.2 hz`.
+
+Establish `hfun : (fun g => f g * chiAt n χ⁻¹ v g * chiAt n χ v g) = f`. Use function extensionality and compare the values at `g`. Establish `h` using `(chiBasic K n χ v).2.1 g`. Rewrite using `[mul_assoc, mul_comm (chiAt n χ⁻¹ v g), h, mul_one]`. Rewrite `ht` using `[hfun]`.
+
+Conclude with `⟨z, ht⟩`.
+-/
 theorem UpperTheory.Gal.InertialTypesAlt.G.trEx :
     UpperTheory.Gal.InertialTypesAlt.G.TrEx := by
   intro K _ _ _ n hn π v _ _ m hm τ hτ f hf

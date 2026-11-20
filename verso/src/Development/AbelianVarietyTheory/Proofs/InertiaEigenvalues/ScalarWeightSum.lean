@@ -2,6 +2,15 @@ import Mathlib
 
 namespace GlobalTheory.WeightSum
 
+/- English proof (translation)
+Establish `hG : HasDerivAt (fun u : ℂ => ∑ s ∈ S, Complex.exp ((w s : ℂ) * (u * Complex.I)) * a s) (∑ s ∈ S, ((w s : ℂ) * Complex.I) * a s) ((0 : ℝ) : ℂ)`. Apply `HasDerivAt.fun_sum` to reduce the goal to its premises. Introduce `s _`. Establish `h1 : HasDerivAt (fun u : ℂ => (w s : ℂ) * (u * Complex.I)) ((w s : ℂ) * Complex.I) ((0 : ℝ) : ℂ)`. Simplify using `using ((hasDerivAt_id ((0 : ℝ) : ℂ)).mul_const Complex.I).const_mul (w s : ℂ)`.
+
+Establish `h2` using `h1.cexp.mul_const (a s)`. Simplify using `using h2`. Establish `hg` using `hG.comp_ofReal`. Establish `hz : (fun t : ℝ => ∑ s ∈ S, Complex.exp ((w s : ℂ) * ((t : ℂ) * Complex.I)) * a s) = fun _ => (0 : ℂ)`. Use function extensionality and compare the values at `t`.
+
+Use `h (Complex.exp (t * Complex.I)) (Complex.norm_exp_ofReal_mul_I t)` as an intermediate fact. Simplify `this` using `only [← Complex.exp_int_mul]`. Rewrite `hg` using `[hz]`. Establish `h0` using `hg.unique (hasDerivAt_const (0 : ℝ) (0 : ℂ))`. Establish `h3 : (∑ s ∈ S, (w s : ℂ) * a s) * Complex.I = 0`.
+
+Rewrite using `[← h0, Finset.sum_mul]`. Conclude with `Finset.sum_congr rfl fun s _ => by ring`. Conclude with `(mul_eq_zero.mp h3).resolve_right Complex.I_ne_zero`.
+-/
 theorem scalar_weight_sum {ι : Type} (S : Finset ι) (w : ι → ℤ) (a : ι → ℂ)
     (h : ∀ z : ℂ, ‖z‖ = 1 → ∑ s ∈ S, z ^ w s * a s = 0) :
     ∑ s ∈ S, (w s : ℂ) * a s = 0 := by
@@ -27,6 +36,11 @@ theorem scalar_weight_sum {ι : Type} (S : Finset ι) (w : ι → ℤ) (a : ι �
     exact Finset.sum_congr rfl fun s _ => by ring
   exact (mul_eq_zero.mp h3).resolve_right Complex.I_ne_zero
 
+/- English proof (translation)
+Rewrite using `[← Subspace.forall_mem_dualAnnihilator_apply_eq_zero_iff]`. Introduce `φ hφ`. Rewrite `hφ` using `[Submodule.mem_dualAnnihilator]`. Use `scalar_weight_sum S w (fun s => φ (f s)) fun z hz => by` as an intermediate fact. Simplify `hφ _ (h z hz)` using `[map_sum]`.
+
+Simplify `this` using `[map_sum]`.
+-/
 theorem weight_sum_mem {E : Type} [AddCommGroup E] [Module ℂ E] (V : Submodule ℂ E) {ι : Type}
     (S : Finset ι) (w : ι → ℤ) (f : ι → E)
     (h : ∀ z : ℂ, ‖z‖ = (1 : ℝ) → ∑ s ∈ S, z ^ w s • f s ∈ V) :

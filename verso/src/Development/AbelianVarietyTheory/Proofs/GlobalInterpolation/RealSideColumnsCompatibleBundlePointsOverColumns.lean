@@ -11,6 +11,11 @@ namespace GlobalTheory.Fc.PeriodEntriesOverColumns
 def TiePt (D : D7) (_ : Obj D) : Prop :=
   Formalism.L2.Theta.RealTied D ∧ ∃ C : Formalism.L2.Forms.ColsTiedSym D, ∀ u, Formalism.MainNotions.RT.ChiFin0 (C.forms u)
 
+/- English proof (translation)
+Introduce `Q hQ Bd Lk`. Establish `hpt : ∀ (K : Ctx) (β : BPt K), β.Is HasCols → TiePt β.D β.O` using `GlobalTheory.T.property_at_constructedPoints_of_trueColumnsView TiePt fun B f T w Z O nch _ _ hR => ⟨hR, GlobalTheory.T.exists_symmetricColumnForms_stepZeroFiniteCharacter w.I w.ok w.pins w.l Z⟩`. Establish `h0 : Row0 Q (EvC TiePt)` using `validForConstructedPointClasses_eventuallyWorkingClass (Q := Q) (EvP.of_all fun _ K _ β hq => hpt K β (hQ K β.X β.f β.T β.c hq))`. Use `Row0.row (Row.imp h0 fun 𝒜 _ _ h => ?_) Lk` and prove the remaining obligations. Use `Closed.imp h fun Fm _ _ H => ?_` and prove the remaining obligations.
+
+Take `⟨x0, hx0⟩` from `H`. Use `⟨max x0 (Fm.x1 + 1), fun x hx i => ?_⟩` and prove the remaining obligations. Establish `e0 : x0 ≤ x` using `le_trans (le_max_left _ _) hx`. Establish `e1 : Fm.x1 < x` using `by have := le_trans (le_max_right x0 (Fm.x1 + 1)) hx; linarith`. Conclude with `hx0 x e0 e1 i`.
+-/
 theorem row_tie_of_overCols : ∀ (Q : V4.Slot), OverCols Q → ∀ (Bd : BdT) (Lk : LkT Bd), PeriodEntriesOverColumns.Row_tie Q Lk := by
   intro Q hQ Bd Lk
   have hpt : ∀ (K : Ctx) (β : BPt K), β.Is HasCols → TiePt β.D β.O :=

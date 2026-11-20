@@ -14,6 +14,15 @@ open scoped Pointwise ENNReal Classical
 
 namespace GlobalTheory.HL.StrongSt
 
+/- English proof (translation)
+Establish `hw : ∀ i, n.symm (v i) = ∑ k, s⁻¹ k i • v k`. Introduce `i`. Apply `n.injective` to reduce the goal to its premises. Rewrite using `[LinearEquiv.apply_symm_apply, map_sum]`. Repeatedly rewrite using `[map_smul, hn, Finset.smul_sum, smul_smul]`.
+
+Rewrite using `[Finset.sum_comm]`. Establish `h1 : s * s⁻¹ = 1` using `Matrix.mul_nonsing_inv s hs`. Establish `: ∀ l, ∑ k, s⁻¹ k i * s l k = (s * s⁻¹) l i`. Introduce `l`. Rewrite using `[Matrix.mul_apply]`.
+
+Conclude with `Finset.sum_congr rfl fun _ _ => mul_comm _ _`. Repeatedly rewrite using `[← Finset.sum_smul, this, h1, Matrix.one_apply, ite_smul, one_smul, zero_smul]`. Simplify using the standard rewrite rules. Introduce `j`. Express the relevant statement in the definitionally equal form `n.symm (g' (v j)) = _`.
+
+Rewrite using `[hg, map_sum]`. Repeatedly rewrite using `[map_smul, hw, Finset.smul_sum, smul_smul]`. Rewrite using `[Finset.sum_comm]`. Repeatedly rewrite using `[← Finset.sum_smul, Matrix.mul_apply]`. Conclude with `Finset.sum_congr rfl fun k _ => by congr 1; exact Finset.sum_congr rfl fun i _ => mul_comm _ _`.
+-/
 theorem mat_step {K V : Type} [CommRing K] [AddCommGroup V] [Module K V] {m : ℕ} (v : Fin m → V)
     (n g' : V ≃ₗ[K] V) (s t : Matrix (Fin m) (Fin m) K) (hs : IsUnit s.det)
     (hn : ∀ j, n (v j) = ∑ i, s i j • v i) (hg : ∀ j, g' (v j) = ∑ i, t i j • v i) :
@@ -41,6 +50,9 @@ end GlobalTheory.HL.StrongSt
 
 namespace GlobalTheory.HL.StrongSt
 
+/- English proof (translation)
+Use function extensionality and compare the values at `l`. Simplify using `[Places.bc, Finset.sum_apply, map_sum, map_mul]`.
+-/
 theorem bc_sum {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
     {sig : E →ₐ[F] E} (A : Places F E sig) (p : HeightOneSpectrum (𝓞 F)) {n m : ℕ}
     (a : Fin m → E) (x : Fin m → Fin n → E) :
@@ -48,6 +60,11 @@ theorem bc_sum {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] 
   funext l
   simp [Places.bc, Finset.sum_apply, map_sum, map_mul]
 
+/- English proof (translation)
+Establish `hup : s.BlockTriangular id`. Introduce `i j hij`. Use `hs i j (fun h => absurd (hP i j h) (not_lt.mpr (le_of_lt hij)))` as an intermediate fact. Rewrite using `[this, if_neg (ne_of_gt (show j < i from hij))]`. Rewrite using `[Matrix.det_of_upperTriangular hup]`.
+
+Establish `: ∀ i, s i i = 1` using `fun i => by rw [hs i i (fun h => absurd (hP i i h) (lt_irrefl _)), if_pos rfl]`. Simplify using `[this]`.
+-/
 theorem unit_of_pat {K : Type} [CommRing K] {m : ℕ} (P : Fin m → Fin m → Prop)
     (hP : ∀ i j, P i j → i < j) (s : Matrix (Fin m) (Fin m) K)
     (hs : ∀ i j, ¬ P i j → s i j = if i = j then 1 else 0) : IsUnit s.det := by
@@ -63,6 +80,33 @@ end GlobalTheory.HL.StrongSt
 
 namespace GlobalTheory.HL.StrongSt
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ sig A r k G Λ hΛ c₁ hc₁ n hnSt hnK`. Set `c : ∀ p, ((A.loc p).Fp)ˣ` to `fun p => if ((c₁ p : (A.loc p).Fp) ∈ 𝒪[(A.loc p).Fp]) then c₁ p else 1`. Establish `hcO : ∀ p, ((c p : (A.loc p).Fp) ∈ 𝒪[(A.loc p).Fp])`. Introduce `p`. Distinguish the cases in `h : ((c₁ p : (A.loc p).Fp) ∈ 𝒪[(A.loc p).Fp])`.
+
+Simplify using `only [c, if_pos h]`. Conclude with `h`. Simplify using `only [c, if_neg h]`. Conclude with `one_mem _`. Establish `hc : {p | ¬ ∃ u : (𝒪[(A.loc p).Fp])ˣ, ((u : 𝒪[(A.loc p).Fp]) : (A.loc p).Fp) = c p}.Finite`.
+
+Use `hc₁.subset fun p hp => ?_` and prove the remaining obligations. Introduce and unpack `⟨u, hu⟩`. Establish `h : ((c₁ p : (A.loc p).Fp) ∈ 𝒪[(A.loc p).Fp])` using `hu ▸ (u : 𝒪[(A.loc p).Fp]).2`. Conclude with `hp ⟨u, by simp only [c, if_pos h]; exact hu⟩`. Establish `hq : ∀ p, ∃ a ∈ 𝒪[(A.loc p).Fp], (c p : (A.loc p).Fp) = c₁ p * a`.
+
+Introduce `p`. Distinguish the cases in `h : ((c₁ p : (A.loc p).Fp) ∈ 𝒪[(A.loc p).Fp])`. Conclude with `⟨1, one_mem _, by simp only [c, if_pos h, mul_one]⟩`. Use `⟨(c₁ p : (A.loc p).Fp)⁻¹, ?_, by simp only [c, if_neg h]; simp⟩` and prove the remaining obligations. Establish `h' : ¬ valuation (A.loc p).Fp (c₁ p : (A.loc p).Fp) ≤ 1` using `h`.
+
+Use `show valuation (A.loc p).Fp (c₁ p : (A.loc p).Fp)⁻¹ ≤ 1`. Rewrite using `[map_inv₀]`. Conclude with `inv_le_one_of_one_le₀ (le_of_lt (not_le.1 h'))`. Take `⟨d, hd0, hdfin, hd⟩` from `GlobalTheory.T.frameMatrix_close_gives_lattice_close_integral A r k G Λ hΛ`. Use `choose s hsP hsf hsI using fun p => GlobalTheory.T.localCommonStabiliser_blockUnitriangular_on_frame A r k G p (n p) (hnSt p)`.
+
+Set `c' : ∀ p, ((A.loc p).Fp)ˣ` to `fun p => c p * Units.mk0 (d p) (hd0 p)`. Establish `hc' : {p | ¬ ∃ u : (𝒪[(A.loc p).Fp])ˣ, ((u : 𝒪[(A.loc p).Fp]) : (A.loc p).Fp) = c' p}.Finite`. Use `(hc.union hdfin).subset fun p hp => ?_` and prove the remaining obligations. Assume the negation of the conclusion as `hq`. Simplify using `only [Set.mem_union, Set.mem_setOf_eq, not_or, not_not] at hq`.
+
+Take `⟨⟨u, hu⟩, ⟨v, hv⟩⟩` from `hq`. Conclude with `hp ⟨u * v, by simp [c', hu, hv]⟩`. Establish `hsI' : {p | ¬ IsIntM (A.L p) (s p)}.Finite`. Use `(hnK.union G.c_unit).subset fun p hp => ?_` and prove the remaining obligations. Assume the negation of the conclusion as `hq`.
+
+Simplify using `only [Set.mem_union, Set.mem_setOf_eq, not_or, not_not] at hq`. Conclude with `hp (hsI p hq.2 hq.1)`. Take `⟨t, htP, htc⟩` from `GlobalTheory.T.pattern_unitriangular_strong_approximation A (r + 1) _ (fun i j h => h.1) (fun i j l hij hjl => ⟨hij.1.trans hjl.1, fun m h1 h2 => by`. Distinguish the cases in `hm : (m : ℕ) ≤ (j : ℕ)`. Conclude with `hij.2 m h1 hm`.
+
+Conclude with `hjl.2 m (by omega) h2⟩) c' hc' s hsP hsI'`. Take `⟨g, hgSt, hgf⟩` from `GlobalTheory.T.blockUnitriangular_rational_from_commonStabiliser A r k G t htP`. Use `⟨g, hgSt, fun p g' hg' => ?_⟩` and prove the remaining obligations. Take `⟨g'', hg''St, hg''⟩` from `hgSt p`. Establish `hgg : g' = g''` using `((GlobalTheory.HL.RatExt.rational_extend A _ p).2.2.1 g).unique hg' hg''`.
+
+Substitute `hgg` using the available equality. Establish `hh : (n p)⁻¹ * g' ∈ (G.S p).St` using `(G.S p).St.mul_mem ((G.S p).St.inv_mem (hnSt p)) hg''St`. Establish `hgv : ∀ j, g' (A.bc p (G.f j)) = ∑ i, (t.map (A.loc p).ιE) i j • A.bc p (G.f i)`. Introduce `j`. Rewrite using `[hg' (G.f j), hgf j, bc_sum]`.
+
+Both sides reduce to the same expression. Establish `hM` using `mat_step (fun j => A.bc p (G.f j)) (n p) g' (s p) (t.map (A.loc p).ιE) (unit_of_pat _ (fun i j h => h.1) (s p) (hsP p)) (hsf p) hgv`. Take `⟨hK, hL⟩` from `hd p (c p) _ _ (Units.ne_zero _) (hcO p) hh hM fun i j => by`. Take `⟨o, ho, he⟩` from `htc p i j`. Conclude with `⟨o, ho, by rw [he]; simp [c']⟩`.
+
+Use `⟨hK, fun x hx => ?_⟩` and prove the remaining obligations. Take `⟨y, hy, he⟩` from `hL x hx`. Take `⟨a, ha, hae⟩` from `hq p`. Establish `haO : algebraMap (A.loc p).Fp (A.loc p).Ep a ∈ (A.L p).O`. Rewrite using `[(A.L p).O_def]`.
+
+Conclude with `isIntegral_algebraMap (R := 𝒪[(A.loc p).Fp]) (x := (⟨a, ha⟩ : 𝒪[(A.loc p).Fp]))`. Use `⟨(⟨_, haO⟩ : (A.L p).O) • y, Submodule.smul_mem _ _ hy, ?_⟩` and prove the remaining obligations. Use `he.trans ?_` and prove the remaining obligations. Rewrite using `[hae, map_mul, mul_smul]`. Both sides reduce to the same expression.
+-/
 theorem strong_approx_stab : ∀ {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {sig : E →ₐ[F] E} (A : Places F E sig), ∀ (r k : ℕ) (G : GFrames A r k), ∀ Λ : G.Lt, Submodule.IsLattice E Λ → ∀ c : ∀ p, ((A.loc p).Fp)ˣ, {p | ¬ ∃ u : (𝒪[(A.loc p).Fp])ˣ, ((u : 𝒪[(A.loc p).Fp]) : (A.loc p).Fp) = c p}.Finite → ∀ n : ∀ p, (G.S p).GLV, (∀ p, n p ∈ (G.S p).St) → {p | n p ∉ (G.S p).K0}.Finite → ∃ g ∈ G.St, ∀ p g', A.Ext p g g' → (n p)⁻¹ * g' ∈ (G.S p).K0 ∧ ∀ x ∈ A.lat p Λ, ∃ y ∈ A.lat p Λ, (n p).symm (g' x) - x = algebraMap (A.loc p).Fp (A.loc p).Ep (c p) • y := by
   intro F E _ _ _ _ _ sig A r k G Λ hΛ c₁ hc₁ n hnSt hnK
   let c : ∀ p, ((A.loc p).Fp)ˣ := fun p => if ((c₁ p : (A.loc p).Fp) ∈ 𝒪[(A.loc p).Fp]) then c₁ p else 1

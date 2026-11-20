@@ -4,6 +4,31 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.GaloisLibrary.Weyl
 
 open Matrix UpperTheory.V.Weyl
 
+/- English proof (translation)
+Introduce `n ν hν H hH`. Establish `hmem : ∀ (h : ℕ) (hs : (Finset.univ.filter (fun i : Fin n => h < ν i)).Nonempty) (i : Fin n), i ∈ Finset.univ.filter (fun i : Fin n => h < ν i) ↔ i ≤ (Finset.univ.filter (fun i : Fin n => h < ν i)).max' hs`. Introduce `h hs i`. Prove the components needed by the constructor for the conclusion. Introduce `hi`.
+
+Conclude with `Finset.le_max' _ _ hi`. Introduce `hi`. Establish `hm` using `Finset.max'_mem _ hs`. Rewrite `hm`, the goal using `[Finset.mem_filter]`. Conclude with `⟨Finset.mem_univ _, lt_of_lt_of_le hm.2 (hν hi)⟩`.
+
+Choose the witnesses or unpack the hypotheses as in `⟨g, hg1, hg2, hg3⟩ : ∃ g : ℕ → Pol n, (∀ h, g h ≠ 0) ∧ (∀ h, (g h).totalDegree ≤ n) ∧ ∀ b : Matrix (Fin n) (Fin n) ℂ, (∀ i j, j < i → b i j = 0) → ∀ h, rtr b (g h) = (∏ i ∈ Finset.univ.filter (fun i : Fin n => h < ν i), b i i) • g h := by`. Use `⟨fun h => if hs : (Finset.univ.filter (fun i : Fin n => h < ν i)).Nonempty then minor ((Finset.univ.filter (fun i : Fin n => h < ν i)).max' hs) else 1, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `h`. Distinguish the cases in `hs : (Finset.univ.filter (fun i : Fin n => h < ν i)).Nonempty`. Simplify using `only [dif_pos hs]`.
+
+Conclude with `(minorDeg n _).1`. Simplify using `only [dif_neg hs]`. Conclude with `one_ne_zero`. Introduce `h`. Distinguish the cases in `hs : (Finset.univ.filter (fun i : Fin n => h < ν i)).Nonempty`.
+
+Simplify using `only [dif_pos hs]`. Establish `h1` using `(minorDeg n ((Finset.univ.filter (fun i : Fin n => h < ν i)).max' hs)).2`. Establish `h2` using `((Finset.univ.filter (fun i : Fin n => h < ν i)).max' hs).isLt`. Use linear arithmetic over natural numbers and integers. Simplify using `only [dif_neg hs, MvPolynomial.totalDegree_one]`.
+
+Conclude with `Nat.zero_le _`. Introduce `b hb h`. Distinguish the cases in `hs : (Finset.univ.filter (fun i : Fin n => h < ν i)).Nonempty`. Simplify using `only [dif_pos hs]`. Rewrite using `[minorRtr n _ b hb]`.
+
+Use `congr 1`. Apply `Finset.prod_congr _ (fun _ _ => rfl)` to reduce the goal to its premises. Use extensionality with `i`. Rewrite using `[hmem h hs i, Finset.mem_filter]`. Simplify using the standard rewrite rules.
+
+Simplify using `only [dif_neg hs]`. Rewrite using `[Finset.not_nonempty_iff_eq_empty.mp hs]`. Simplify using the standard rewrite rules. Use `⟨∏ h ∈ Finset.range H, g h, ?_, ?_, ?_⟩` and prove the remaining obligations. Conclude with `Finset.prod_ne_zero_iff.mpr (fun h _ => hg1 h)`.
+
+Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Finset.sum_const, Finset.card_range, smul_eq_mul, mul_comm]`. Introduce `b hb`. Establish `key : ∏ h ∈ Finset.range H, ∏ i ∈ Finset.univ.filter (fun i : Fin n => h < ν i), b i i = ∏ k, b k k ^ ν k`. Combine the equalities or inequalities in the displayed calculation.
+
+Use `Finset.prod_congr rfl (fun h _ => ?_)` and prove the remaining obligations. Rewrite using `[Finset.prod_filter]`. Use `_ = ∏ i, ∏ h ∈ Finset.range H, (if h < ν i then b i i else 1) := Finset.prod_comm`. Use `_ = ∏ k, b k k ^ ν k := by`. Use `Finset.prod_congr rfl (fun i _ => ?_)` and prove the remaining obligations.
+
+Rewrite using `[Finset.prod_ite, Finset.prod_const_one, mul_one, Finset.prod_const]`. Use `congr 1`. Establish `hf : (Finset.range H).filter (fun h => h < ν i) = Finset.range (ν i)`. Use extensionality with `h`. Simplify using `only [Finset.mem_filter, Finset.mem_range]`.
+
+Use `hH i` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Rewrite using `[hf, Finset.card_range]`. Rewrite using `[map_prod, Finset.prod_congr rfl (fun h _ => hg3 b hb h), ← key]`. Simplify using `only [Algebra.smul_def, map_prod, Finset.prod_mul_distrib]`.
+-/
 theorem UpperTheory.V.Weyl.topPol :
     ∀ (n : ℕ) (ν : Fin n → ℕ), Antitone ν → ∀ H : ℕ, (∀ k, ν k ≤ H) → ∃ f : Pol n, f ≠ 0 ∧ f.totalDegree ≤ n * H ∧
       ∀ b : Matrix (Fin n) (Fin n) ℂ, (∀ i j, j < i → b i j = 0) → rtr b f = (∏ k, b k k ^ ν k) • f := by

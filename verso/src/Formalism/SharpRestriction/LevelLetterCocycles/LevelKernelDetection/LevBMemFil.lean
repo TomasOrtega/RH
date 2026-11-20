@@ -17,6 +17,9 @@ variable {G : Type} [Group G] [TopologicalSpace G] {Qp K₀ K : Type} [Field Qp]
     {Lb : LevB W} {hR : Ring9 W} {uZ : ℤ_[PD.p]ˣ} {ιZ : ℤ_[PD.p] →+* O}
     {T : LocLat G Qp LL O} {C : Coord W (baseIdOf hR) T} {c : ZMod n}
 
+/- English proof (translation)
+Establish `hprim : IsPrimitiveRoot (ζ : LL) (PD.p ^ (s + 1))` using `(mem_primitiveRoots (pow_pos PD.hp.pos _)).1 ζ.2`. Use `show ιV PD (LL := LL) (V := T.V) (Lb.levB T c ζ x k) ∈ FilLev W T c s (-k)`. Rewrite using `[← hLb]`. Conclude with `(hP4 T hcrys c s ζ hprim).1 x k`.
+-/
 theorem levB_mem_fil (hP4 : LevelMapHodgeFiltration W) (hcrys : IsCrys PD T.ρ)
     (hLb : ∀ (i : ZMod n) (ζ : LL) (x : ↥(W.N T)) (k : ℤ),
       W.levN T i ζ x k = ιV PD (LL := LL) (V := T.V) (Lb.levB T i ζ x k))
@@ -30,6 +33,9 @@ theorem levB_mem_fil (hP4 : LevelMapHodgeFiltration W) (hcrys : IsCrys PD T.ρ)
 
 open Classical in
 
+/- English proof (translation)
+Rewrite using `[xi_iff]`. Introduce `ζ k`. Establish `e1 : cf (expN Lb s T c x) k = coefN Lb s T c x k` using `rfl`. Rewrite using `[e1, coefN, evaluation_expansion_at_root]`. Conclude with `levB_mem_fil hP4 hcrys hLb s ζ x k`.
+-/
 theorem expN_mem_xi (hP4 : LevelMapHodgeFiltration W) (hcrys : IsCrys PD T.ρ)
     (hLb : ∀ (i : ZMod n) (ζ : LL) (x : ↥(W.N T)) (k : ℤ),
       W.levN T i ζ x k = ιV PD (LL := LL) (V := T.V) (Lb.levB T i ζ x k))

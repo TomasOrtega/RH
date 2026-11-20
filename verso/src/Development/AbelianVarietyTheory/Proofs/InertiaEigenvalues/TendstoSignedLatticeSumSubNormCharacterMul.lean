@@ -16,6 +16,9 @@ namespace GlobalTheory.UnitLemma.Desc
 
 variable {K : UQ} (B : InvAlg K) {ι : Type}
 
+/- English proof (translation)
+Unfold `eS`. Rewrite using `[Finset.sum_mul_sum]`. Use `Finset.sum_eq_zero fun i hi => Finset.sum_eq_zero fun j hj => ?_` and prove the remaining obligations. Conclude with `he.ortho (fun hij => Finset.disjoint_left.1 h hi (hij ▸ hj))`.
+-/
 theorem eS_mul_eS_of_disjoint_inv [Fintype ι] {e : ι → B.A} (he : CompleteOrthogonalIdempotents e)
     {I J : Finset ι} (h : Disjoint I J) : eS B e I * eS B e J = 0 := by
   unfold eS
@@ -23,6 +26,11 @@ theorem eS_mul_eS_of_disjoint_inv [Fintype ι] {e : ι → B.A} (he : CompleteOr
   refine Finset.sum_eq_zero fun i hi => Finset.sum_eq_zero fun j hj => ?_
   exact he.ortho (fun hij => Finset.disjoint_left.1 h hi (hij ▸ hj))
 
+/- English proof (translation)
+Unfold `eS`. Rewrite using `[Finset.sum_mul_sum]`. Use `Finset.sum_congr rfl fun i hi => ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_eq_single i]`. Conclude with `(he.idem i).eq`.
+
+Introduce `j _ hji`. Conclude with `he.ortho (Ne.symm hji)`. Introduce `h`. Conclude with `absurd hi h`.
+-/
 theorem eS_mul_self_inv [Fintype ι] {e : ι → B.A} (he : CompleteOrthogonalIdempotents e) (I : Finset ι) :
     eS B e I * eS B e I = eS B e I := by
   unfold eS
@@ -33,6 +41,11 @@ theorem eS_mul_self_inv [Fintype ι] {e : ι → B.A} (he : CompleteOrthogonalId
   · intro j _ hji; exact he.ortho (Ne.symm hji)
   · intro h; exact absurd hi h
 
+/- English proof (translation)
+Unfold `eS`. Rewrite using `[map_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Take `⟨f, -, -, -, h1, h2⟩` from `hP.2 i`. Distinguish the cases in `hi : i ∈ S`.
+
+Take `⟨h, hf⟩` from `h1 hi`. Rewrite using `[h, hf]`. Take `⟨-, h⟩` from `h2 hi`. Rewrite using `[h, map_add, B.σ_σ, add_comm]`.
+-/
 theorem σ_eS_inv [Fintype ι] {e : ι → B.A} {S : Finset ι} (hP : IsPre B e S) (I : Finset ι) :
     B.σ (eS B e I) = eS B e I := by
   unfold eS
@@ -43,6 +56,37 @@ theorem σ_eS_inv [Fintype ι] {e : ι → B.A} {S : Finset ι} (hP : IsPre B e 
   · obtain ⟨h, hf⟩ := h1 hi; rw [h, hf]
   · obtain ⟨-, h⟩ := h2 hi; rw [h, map_add, B.σ_σ, add_comm]
 
+/- English proof (translation)
+Introduce `K B ι _ _ e π S a hL ha hF I hI x hx`. Establish `hEE` using `eS_mul_self_inv B hF.1.1 I`. Establish `hE'E` using `eS_mul_eS_of_disjoint_inv B hF.1.1 (Finset.sdiff_disjoint (s := I) (t := S))`. Establish `hσE` using `σ_eS_inv B hF.1 I`. Establish `hcov : ∀ i ∈ S, i ∈ I ∨ i ∈ S \ I` using `fun i hi => by`.
+
+Distinguish the cases in `h : i ∈ I`. Conclude with `Or.inl h`. Conclude with `Or.inr (Finset.mem_sdiff.2 ⟨hi, h⟩)`. Use `set E := eS B e I with hEdef`. Use `set E' := eS B e (S \ I) with hE'def`.
+
+Take `⟨xi, hxi⟩ : ∃ xi : B.A, x * xi = 1` from `⟨_, hx.1.mul_val_inv⟩`. Establish `hyu : IsUnit (x * E + (1 - E))` using `IsUnit.of_mul_eq_one (xi * E + (1 - E)) (by linear_combination (E * E) * hxi + (2 - x - xi) * hEE)`. Establish `hx'u : IsUnit (x * (1 - E) + E)` using `IsUnit.of_mul_eq_one (xi * (1 - E) + E) (by linear_combination (1 - E) ^ 2 * hxi + (2 - x - xi) * hEE)`. Establish `hyP : B.Plus (x * E + (1 - E))` using `⟨hyu, by simp only [map_add, map_mul, map_sub, map_one, hx.2, hσE]⟩`. Establish `hxy : (x * E + (1 - E)) * (x * (1 - E) + E) = x` using `by linear_combination (-(x - 1) ^ 2) * hEE`.
+
+Establish `hchi : chi B e I x = K.eta (Algebra.norm K.E (x * E + (1 - E)))` using `rfl`. Establish `haU : IsUnit (algebraMap K.O B.A a)`. Rewrite using `[IsScalarTower.algebraMap_apply K.O K.E B.A a]`. Use `(IsUnit.mk0 _ fun h => ha.1 ?_).map _` and prove the remaining obligations. Conclude with `IsFractionRing.injective K.O K.E (h.trans (map_zero _).symm)`.
+
+Take `⟨N, hN⟩` from `GlobalTheory.T.exists_lattice_idempotent_position_involution_stable K B ι e π S a hL.2 ha hF`. Take `⟨L₀, hL₀⟩` from `GlobalTheory.T.alternatingDifference_term_window K B ι e π S a hL.2 ha hF I (S \ I) hI Finset.sdiff_subset hcov N (x * (1 - E) + E) (x * E + (1 - E)) hx'u hyu`. Take `⟨L₁, hL₁⟩` from `GlobalTheory.T.alternatingDifference_term_window K B ι e π S a hL.2 ha hF I (S \ I) hI Finset.sdiff_subset hcov N 1 1 isUnit_one isUnit_one`. Take `⟨F, hFdef⟩ : ∃ F : ℕ → Submodule K.O B.A → ℚ, ∀ k M, F k M = B.sgnLat M * term B π I (S \ I) ((x * (1 - E) + E) * algebraMap K.O B.A a ^ (2 * k)) (x * E + (1 - E)) M` from `⟨_, fun _ _ => rfl⟩`. Take `⟨G, hGdef⟩ : ∃ G : ℕ → Submodule K.O B.A → ℚ, ∀ k M, G k M = B.sgnLat M * term B π I (S \ I) (algebraMap K.O B.A a ^ (2 * k)) 1 M` from `⟨_, fun _ _ => rfl⟩`.
+
+Establish `hsg : ∀ M, |B.sgnLat M| = 1` using `fun M => by unfold InvAlg.sgnLat; exact abs_eta _`. Establish `hFfin : ∀ k, (B.Lin ∩ Function.support (F k)).Finite` using `fun k => (GlobalTheory.T.finite_stableLattices_differenceTerm_ne_zero K B ι e π S hL.2 hF I (S \ I) hI Finset.sdiff_subset _ _ ((hx'u.mul (haU.pow _))) hyu).subset fun M ⟨hM, h⟩ => ⟨hM, fun h0 => h (by rw [hFdef, h0, mul_zero])⟩`. Establish `hGfin : ∀ k, (B.Lin ∩ Function.support (G k)).Finite` using `fun k => (GlobalTheory.T.finite_stableLattices_differenceTerm_ne_zero K B ι e π S hL.2 hF I (S \ I) hI Finset.sdiff_subset _ _ (haU.pow _) isUnit_one).subset fun M ⟨hM, h⟩ => ⟨hM, fun h0 => h (by rw [hGdef, h0, mul_zero])⟩`. Establish `hsub : ∀ k, ∑ᶠ M ∈ B.Lin, (F k M - G k M) = ∑ᶠ M ∈ B.Lin, F k M - ∑ᶠ M ∈ B.Lin, G k M`. Introduce `k`.
+
+Establish `hFG : (B.Lin ∩ Function.support (fun M => F k M - G k M)).Finite` using `((hFfin k).union (hGfin k)).subset fun M ⟨hM, h⟩ => by`. Distinguish the cases in `h1 : F k M = 0`. Conclude with `Or.inr ⟨hM, fun h2 => h (show F k M - G k M = 0 by rw [h1, h2, sub_zero])⟩`. Conclude with `Or.inl ⟨hM, h1⟩`. Rewrite using `[eq_sub_iff_add_eq, ← finsum_mem_add_distrib' hFG (hGfin k)]`.
+
+Simplify using `only [sub_add_cancel]`. Establish `key : ∀ k : ℕ, HH B π I (S \ I) (x * algebraMap K.O B.A a ^ (2 * k)) 1 - chi B e I x * HH B π I (S \ I) (algebraMap K.O B.A a ^ (2 * k)) 1 = K.eta (Algebra.norm K.E (x * E + (1 - E))) * ∑ᶠ M ∈ B.Lin, (F k M - G k M)`. Introduce `k`. Establish `hx_eq : x * algebraMap K.O B.A a ^ (2 * k) = (x * E + (1 - E)) * ((x * (1 - E) + E) * algebraMap K.O B.A a ^ (2 * k))`. Rewrite using `[← mul_assoc, hxy]`.
+
+Rewrite using `[hx_eq, GlobalTheory.T.signedInvolutionStableLatticeSum_mul_fixed_unit K B ι π I (S \ I) _ 1 _ hL hyP, hchi, mul_one, hsub, ← mul_sub]`. Use `congr 1`. Unfold `HH`. Use `congr 1`. Conclude with `finsum_congr fun M => finsum_congr fun _ => (hFdef k M).symm`.
+
+Conclude with `finsum_congr fun M => finsum_congr fun _ => (hGdef k M).symm`. Establish `hcmp` using `GlobalTheory.T.tendsto_finsum_div_rho_pow_zero K B ι e π S a hL.2 ha hF I (S \ I) hcov N (max L₀ L₁) (2 * 2 ^ I.card * 2 ^ (S \ I).card) (fun k M => F k M - G k M) hN (by`. Introduce `k M`. Rewrite using `[hFdef, hGdef, ← mul_sub, abs_mul, hsg, one_mul]`. Combine the equalities or inequalities in the displayed calculation.
+
+Use the proof step `(by`. Introduce `k hk M _ p hp hf`. Rewrite `hf` using `[hFdef, hGdef, ← mul_sub]`. Establish `hne` using `right_ne_zero_of_mul hf`. Take `⟨h1a, h1b⟩` from `hL₀ (max L₀ L₁) (le_max_left _ _) k hk M p hp`.
+
+Take `⟨h2a, h2b⟩` from `hL₁ (max L₀ L₁) (le_max_right _ _) k hk M p hp`. Rewrite `h2a`, `h2b` using `[one_mul]`. Rewrite `h1b`, `h2b` using `[← hEdef, ← hE'def]`. Establish `hW : Win I (S \ I) (max L₀ L₁) k p`. Distinguish the cases in `h : term B π I (S \ I) ((x * (1 - E) + E) * algebraMap K.O B.A a ^ (2 * k)) (x * E + (1 - E)) M = 0`.
+
+Conclude with `h2a fun h2 => hne (by rw [h, h2, sub_zero])`. Conclude with `h1a h`. Use `⟨hW, fun hmid => hne ?_⟩` and prove the remaining obligations. Establish `hEx : E * ((x * (1 - E) + E) * algebraMap K.O B.A a ^ (2 * k)) = E * algebraMap K.O B.A a ^ (2 * k)`. Take the linear combination `algebraMap K.O B.A a ^ (2 * k) * (1 - x) * hEE`.
+
+Establish `hE'y : E' * (x * E + (1 - E)) = E' * 1` using `by linear_combination (x - 1) * hE'E`. Rewrite using `[h1b hW hmid, h2b hW hmid, hEx, hE'y, sub_self])`. Establish `hfun : (fun k : ℕ => (((HH B π I (S \ I) (x * algebraMap K.O B.A a ^ (2 * k)) 1 - chi B e I x * HH B π I (S \ I) (algebraMap K.O B.A a ^ (2 * k)) 1 : ℚ) : ℝ) / (B.rho (algebraMap K.O B.A a ^ k) : ℝ))) = fun k : ℕ => (K.eta (Algebra.norm K.E (x * E + (1 - E))) : ℝ) * (((∑ᶠ M ∈ B.L …`. Use function extensionality and compare the values at `k`. Rewrite using `[key k, Rat.cast_mul, mul_div_assoc]`.
+
+Rewrite using `[hfun]`. Simplify using `using hcmp.const_mul (K.eta (Algebra.norm K.E (x * E + (1 - E))) : ℝ)`.
+-/
 theorem HH_sub_chi_mul_HH_negligible : ∀ (K : UQ) (B : InvAlg K) (ι : Type) [Fintype ι] [DecidableEq ι]
     (e π : ι → B.A) (S : Finset ι) (a : K.O), B.LieReg → K.Small a → IsFrame B e π S → ∀ I ⊆ S, ∀ x : B.A,
     B.Plus x → Tendsto (fun k : ℕ => (((HH B π I (S \ I) (x * algebraMap K.O B.A a ^ (2 * k)) 1 -

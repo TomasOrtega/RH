@@ -7,6 +7,9 @@ namespace Formalism.MainNotions
 
 open Formalism.BasicNotions Formalism.MainNotions.Lnk Formalism.MainNotions.GlobalTheoryTheory
 
+/- English proof (translation)
+The claim follows from `linkGLOBAL7_pk Fm Cabs CH C0 C3 crystallineComparison C22 hCabs hCH hC0 s59 s22 s23 s24 s10 (Formalism.L2.GlobalTheoryTheory.Loss7.stLoss7 eps Fm) hF3 tVol tOm tFree tTh t7 tCV t10`.
+-/
 theorem global_link_of_part_statements_with_delta {eps : ℝ} (Fm : FamP eps) (Cabs CH C0 C3 crystallineComparison C22 : ℝ)
     (hCabs : 0 ≤ Cabs) (hCH : 0 < CH) (hC0 : 1 ≤ C0)
     (s59 : ∀ x : ℝ, Fm.x1 < x → ∀ i : Fm.Ix x, UnusedSlot33.division_rows_rational_lattice (Fm.D x i))

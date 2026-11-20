@@ -6,6 +6,9 @@ open CategoryTheory Limits AlgebraicGeometry Opposite GlobalTheory.EtC
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Establish `h` using `ΓSpec.adjunction.homEquiv_naturality_right_symm (X := T) (Y := op S) (Y' := op R) f φ.op`. Conclude with `congrArg Quiver.Hom.unop h`.
+-/
 theorem specAdj_symm_comp_specMap (T : Scheme.{0}) {R S : CommRingCat.{0}}
     (f : T ⟶ Spec S) (φ : R ⟶ S) :
     ((ΓSpec.adjunction.homEquiv T (op R)).symm (f ≫ Spec.map φ)).unop =
@@ -14,6 +17,31 @@ theorem specAdj_symm_comp_specMap (T : Scheme.{0}) {R S : CommRingCat.{0}}
     f φ.op
   exact congrArg Quiver.Hom.unop h
 
+/- English proof (translation)
+Introduce `n C D A _ _ _ a b l hl H`. Set `adj` to `ΓSpec.adjunction`. Set `e : ∀ (T : Scheme.{0}) (R : CommRingCat.{0}), (op Γ(T, ⊤) ⟶ op R) ≃ (T ⟶ Spec R)` to `fun T R => adj.homEquiv T (op R)`. Establish `hcomp : ∀ (T : Scheme.{0}) {R S : CommRingCat.{0}} (f : T ⟶ Spec S) (φ : R ⟶ S), ((e T R).symm (f ≫ Spec.map φ)).unop = φ ≫ ((e T S).symm f).unop` using `fun T R S f φ => specAdj_symm_comp_specMap T f φ`. Establish `hse : ∀ (T : Scheme.{0}) (R : CommRingCat.{0}) (ψ : R ⟶ Γ(T, ⊤)), ((e T R).symm (e T R ψ.op)).unop = ψ` using `fun T R ψ => by`.
+
+Rewrite using `[Equiv.symm_apply_apply]`. Both sides reduce to the same expression. Establish `hinj : ∀ (T : Scheme.{0}) (R : CommRingCat.{0}) (f g : T ⟶ Spec R), ((e T R).symm f).unop = ((e T R).symm g).unop → f = g` using `fun T R f g h => (e T R).symm.injective (Quiver.Hom.unop_inj h)`. Set `gOf : ∀ (t : WidePullbackCone (fun _ : Fin n => Spec.map (CommRingCat.ofHom a))), Fin n → (D →+* Γ(t.pt, ⊤))` to `fun t i => ((e t.pt (CommRingCat.of D)).symm (t.π i)).unop.hom`. Set `cOf : ∀ (t : WidePullbackCone (fun _ : Fin n => Spec.map (CommRingCat.ofHom a))), C →+* Γ(t.pt, ⊤)` to `fun t => ((e t.pt (CommRingCat.of C)).symm t.base).unop.hom`.
+
+Establish `hgc : ∀ t i, (gOf t i).comp a = cOf t`. Introduce `t i`. Establish `h1` using `hcomp t.pt (t.π i) (CommRingCat.ofHom a)`. Rewrite `h1` using `[t.condition i]`. Establish `h2` using `congrArg CommRingCat.Hom.hom h1`.
+
+Simplify `h2.symm` using `[gOf, cOf]`. Set `uOf : ∀ t : WidePullbackCone (fun _ : Fin n => Spec.map (CommRingCat.ofHom a)), A →+* Γ(t.pt, ⊤)` to `fun t => (H Γ(t.pt, ⊤) (gOf t) (cOf t) (hgc t)).choose`. Establish `huOf : ∀ t : WidePullbackCone (fun _ : Fin n => Spec.map (CommRingCat.ofHom a)), (uOf t).comp b = cOf t ∧ ∀ i, (uOf t).comp (l i) = gOf t i` using `fun t => (H Γ(t.pt, ⊤) (gOf t) (cOf t) (hgc t)).choose_spec.1`. Establish `huniq : ∀ (t : WidePullbackCone (fun _ : Fin n => Spec.map (CommRingCat.ofHom a))) (u : A →+* Γ(t.pt, ⊤)), u.comp b = cOf t → (∀ i, u.comp (l i) = gOf t i) → u = uOf t` using `fun t u h1 h2 => (H Γ(t.pt, ⊤) (gOf t) (cOf t) (hgc t)).choose_spec.2 u ⟨h1, h2⟩`. Use `⟨WidePullbackCone.IsLimit.mk _ (fun t => e t.pt (CommRingCat.of A) (CommRingCat.ofHom (uOf t)).op) ?_ ?_ ?_⟩` and prove the remaining obligations.
+
+Introduce `t`. Rewrite using `[WidePullbackCone.mk_base]`. Apply `hinj` to reduce the goal to its premises. Use `erw [hcomp, hse]`. Apply `CommRingCat.hom_ext` to reduce the goal to its premises.
+
+Rewrite using `[CommRingCat.hom_comp, CommRingCat.hom_ofHom, CommRingCat.hom_ofHom]`. Conclude with `(huOf t).1`. Introduce `t i`. Rewrite using `[WidePullbackCone.mk_π]`. Apply `hinj` to reduce the goal to its premises.
+
+Use `erw [hcomp, hse]`. Apply `CommRingCat.hom_ext` to reduce the goal to its premises. Rewrite using `[CommRingCat.hom_comp, CommRingCat.hom_ofHom, CommRingCat.hom_ofHom]`. Conclude with `(huOf t).2 i`. Introduce `t m hb hπ`.
+
+Rewrite `hb` using `[WidePullbackCone.mk_base]`. Simplify using `only [WidePullbackCone.mk_π] at hπ`. Establish `hu : ((e t.pt (CommRingCat.of A)).symm m).unop.hom = uOf t`. Apply `huniq` to reduce the goal to its premises. Establish `hb' : m ≫ Spec.map (CommRingCat.ofHom b) = t.base` using `hb`.
+
+Establish `h1 : ((e t.pt (CommRingCat.of C)).symm t.base).unop = CommRingCat.ofHom b ≫ ((e t.pt (CommRingCat.of A)).symm m).unop`. Rewrite using `[← hb']`. Conclude with `hcomp t.pt m (CommRingCat.ofHom b)`. Establish `h2` using `congrArg CommRingCat.Hom.hom h1`. Rewrite `h2` using `[CommRingCat.hom_comp, CommRingCat.hom_ofHom]`.
+
+Conclude with `h2.symm`. Introduce `i`. Establish `hπ' : m ≫ Spec.map (CommRingCat.ofHom (l i)) = t.π i` using `hπ i`. Establish `h1 : ((e t.pt (CommRingCat.of D)).symm (t.π i)).unop = CommRingCat.ofHom (l i) ≫ ((e t.pt (CommRingCat.of A)).symm m).unop`. Rewrite using `[← hπ']`.
+
+Conclude with `hcomp t.pt m (CommRingCat.ofHom (l i))`. Establish `h2` using `congrArg CommRingCat.Hom.hom h1`. Rewrite `h2` using `[CommRingCat.hom_comp, CommRingCat.hom_ofHom]`. Conclude with `h2.symm`. Apply `hinj` to reduce the goal to its premises.
+
+Rewrite using `[hse, ← hu]`. Both sides reduce to the same expression.
+-/
 theorem spec_widePushout_isLimit : ∀ (n : ℕ) (C D A : Type) [CommRing C] [CommRing D] [CommRing A] (a : C →+* D) (b : C →+* A) (l : Fin n → (D →+* A)) (hl : ∀ i, (l i).comp a = b), (∀ (B : Type) [CommRing B] (g : Fin n → (D →+* B)) (c : C →+* B), (∀ i, (g i).comp a = c) → ∃! u : A →+* B, u.comp b = c ∧ ∀ i, u.comp (l i) = g i) → Nonempty (IsLimit (WidePullbackCone.mk (f := fun _ : Fin n => Spec.map (CommRingCat.ofHom a)) (Spec.map (CommRingCat.ofHom b)) (fun i => Spec.map (CommRingCat.ofHom (l i))) (fun i => by rw [← Spec.map_comp, ← CommRingCat.ofHom_comp, hl i]))) := by
   intro n C D A _ _ _ a b l hl H
   classical

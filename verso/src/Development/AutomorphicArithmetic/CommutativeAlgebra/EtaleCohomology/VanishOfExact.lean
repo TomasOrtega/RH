@@ -11,6 +11,11 @@ namespace UpperTheory.Ru.crystallineComparison.Th
 
 variable {C : Type 1} [Category.{0} C]
 
+/- English proof (translation)
+Use `AddCommGrpCat.hom_ext (AddMonoidHom.ext fun x => ?_)` and prove the remaining obligations. Proceed by induction on `x using FreeAbelianGroup.induction_on with`. Consider the case `zero => simp`. Consider the case `of x => exact h x`. Consider the case `neg x ih => simpa using congrArg Neg.neg (h x)`.
+
+Consider the case `add x y hx hy => simp only [map_add, hx, hy]`.
+-/
 theorem fa_ext {X : Type 1} {A : AddCommGrpCat.{1}} {f g : AddCommGrpCat.of (FreeAbelianGroup X) ⟶ A}
     (h : ∀ x, f.hom (FreeAbelianGroup.of x) = g.hom (FreeAbelianGroup.of x)) : f = g := by
   refine AddCommGrpCat.hom_ext (AddMonoidHom.ext fun x => ?_)
@@ -48,25 +53,42 @@ def tOf {K : Coef C} {k : ℕ} (f : Cn (elF P (zm K)) k) : L P k ⟶ K where
 def cOf {K : Coef C} {k : ℕ} (u : L P k ⟶ K) : Cn (elF P (zm K)) k :=
   fun s => (u.app (s.obj (Fin.last k)).1).hom (FreeAbelianGroup.of ⟨s, 𝟙 _⟩)
 
+/- English proof (translation)
+The claim follows from `FreeAbelianGroup.map_of_apply _`.
+-/
 theorem L_map_of {B B' : C} (φ : B ⟶ B') {k : ℕ} (g : Gen P k B) :
     ((L P k).map φ).hom (FreeAbelianGroup.of g) = FreeAbelianGroup.of (⟨g.1, g.2 ≫ φ⟩ : Gen P k B') :=
   FreeAbelianGroup.map_of_apply _
 
+/- English proof (translation)
+The claim follows from `FreeAbelianGroup.lift_apply_of _ _`.
+-/
 theorem dL_of {k : ℕ} {B : C} (g : Gen P (k + 1) B) :
     ((dL P k).app B).hom (FreeAbelianGroup.of g) =
       ∑ i : Fin (k + 2), (-1 : ℤ) ^ (i : ℕ) • (FreeAbelianGroup.of (gFace P i g) : (L P k).obj B) :=
   FreeAbelianGroup.lift_apply_of _ _
 
+/- English proof (translation)
+The claim follows from `FreeAbelianGroup.lift_apply_of _ _`.
+-/
 theorem tOf_of {K : Coef C} {k : ℕ} (f : Cn (elF P (zm K)) k) {B : C} (g : Gen P k B) :
     ((tOf f).app B).hom (FreeAbelianGroup.of g) = (K.map g.2).hom (f g.1) :=
   FreeAbelianGroup.lift_apply_of _ _
 
+/- English proof (translation)
+Use function extensionality and compare the values at `s`. Use `(tOf_of f _).trans ?_` and prove the remaining obligations. Simplify using `only [K.map_id]`. Both sides reduce to the same expression.
+-/
 theorem cOf_tOf {K : Coef C} {k : ℕ} (f : Cn (elF P (zm K)) k) : cOf (tOf f) = f := by
   funext s
   refine (tOf_of f _).trans ?_
   simp only [K.map_id]
   rfl
 
+/- English proof (translation)
+Take `⟨s, a⟩` from `g`. Establish `h2 : ((L P k).map a).hom (FreeAbelianGroup.of (⟨s, 𝟙 _⟩ : Gen P k _)) = FreeAbelianGroup.of (⟨s, a⟩ : Gen P k B)`. Rewrite using `[L_map_of]`. Simplify using the standard rewrite rules. Establish `h3` using `congrArg (fun f => f.hom (FreeAbelianGroup.of (⟨s, 𝟙 _⟩ : Gen P k _))) (u.naturality a)`.
+
+Use `Eq.trans ?_ h3` and prove the remaining obligations. Conclude with `(congrArg (u.app B).hom h2).symm`.
+-/
 theorem u_of {K : Coef C} {k : ℕ} (u : L P k ⟶ K) {B : C} (g : Gen P k B) :
     (u.app B).hom (FreeAbelianGroup.of g) = (K.map g.2).hom (cOf u g.1) := by
   obtain ⟨s, a⟩ := g
@@ -76,13 +98,24 @@ theorem u_of {K : Coef C} {k : ℕ} (u : L P k ⟶ K) {B : C} (g : Gen P k B) :
   refine Eq.trans ?_ h3
   exact (congrArg (u.app B).hom h2).symm
 
+/- English proof (translation)
+Use extensionality with `B : 2`. Conclude with `fa_ext fun g => (tOf_of _ g).trans (u_of u g).symm`.
+-/
 theorem tOf_cOf {K : Coef C} {k : ℕ} (u : L P k ⟶ K) : tOf (cOf u) = u := by
   ext B : 2
   exact fa_ext fun g => (tOf_of _ g).trans (u_of u g).symm
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem d_apply' {K : Coef C} {k : ℕ} (f : Cn (elF P (zm K)) k) (s : ComposableArrows P.Elements (k + 1)) :
     d (elF P (zm K)) k f s = ∑ i : Fin (k + 2), (-1 : ℤ) ^ (i : ℕ) • (K.map (toLast i s).1).hom (f (face i s)) := rfl
 
+/- English proof (translation)
+Use function extensionality and compare the values at `s`. Rewrite using `[d_apply']`. Express the relevant statement in the definitionally equal form `_ = (u.app _).hom (((dL P k).app _).hom (FreeAbelianGroup.of (⟨s, 𝟙 _⟩ : Gen P (k + 1) _)))`. Rewrite using `[dL_of, map_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[map_zsmul, u_of]`. Simplify using `[gFace]`.
+-/
 theorem d_cOf {K : Coef C} {k : ℕ} (u : L P k ⟶ K) : d (elF P (zm K)) k (cOf u) = cOf (dL P k ≫ u) := by
   funext s
   rw [d_apply']
@@ -92,6 +125,11 @@ theorem d_cOf {K : Coef C} {k : ℕ} (u : L P k ⟶ K) : d (elF P (zm K)) k (cOf
   rw [map_zsmul, u_of]
   simp [gFace]
 
+/- English proof (translation)
+Use extensionality with `B : 2`. Use `fa_ext fun g => (tOf_of _ g).trans ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `_ = ((tOf f).app B).hom (((dL P k).app B).hom (FreeAbelianGroup.of g))`. Rewrite using `[d_apply', dL_of, map_sum, map_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[map_zsmul, map_zsmul, tOf_of]`. Simplify using `[gFace]`.
+-/
 theorem tOf_d {K : Coef C} {k : ℕ} (f : Cn (elF P (zm K)) k) : tOf (d (elF P (zm K)) k f) = dL P k ≫ tOf f := by
   ext B : 2
   refine fa_ext fun g => (tOf_of _ g).trans ?_
@@ -101,16 +139,29 @@ theorem tOf_d {K : Coef C} {k : ℕ} (f : Cn (elF P (zm K)) k) : tOf (d (elF P (
   rw [map_zsmul, map_zsmul, tOf_of]
   simp [gFace]
 
+/- English proof (translation)
+Use extensionality with `B : 2`. Use `fa_ext fun g => (tOf_of _ g).trans ?_` and prove the remaining obligations. Conclude with `map_zero _`.
+-/
 theorem tOf_zero {K : Coef C} {k : ℕ} : tOf (0 : Cn (elF P (zm K)) k) = 0 := by
   ext B : 2
   refine fa_ext fun g => (tOf_of _ g).trans ?_
   exact map_zero _
 
+/- English proof (translation)
+Establish `h` using `tOf_d (d (elF P (zm (L P k))) k (cOf (𝟙 _)))`. Rewrite `h` using `[CrystallineSemistableComparison.CH.d_d, tOf_zero, tOf_d, tOf_cOf, Category.comp_id]`. Conclude with `h.symm`.
+-/
 theorem dL_dL (k : ℕ) : dL P (k + 1) ≫ dL P k = 0 := by
   have h := tOf_d (d (elF P (zm (L P k))) k (cOf (𝟙 _)))
   rw [CrystallineSemistableComparison.CH.d_d, tOf_zero, tOf_d, tOf_cOf, Category.comp_id] at h
   exact h.symm
 
+/- English proof (translation)
+Use `⟨fun x y => ?_⟩` and prove the remaining obligations. It suffices to establish `h : ∀ x : TH P K (j + 1), x = 0 by rw [h x, h y]`. Introduce `x`. Take `⟨f, hf, rfl⟩` from `(CrystallineSemistableComparison.P.cls_surj (cx (elF P (zm K))) (j + 1)).1 x`. Rewrite using `[(CrystallineSemistableComparison.P.cls_surj (cx (elF P (zm K))) (j + 1)).2.1]`.
+
+Establish `h0 : dL P (j + 1) ≫ tOf f = 0`. Rewrite using `[← tOf_d]`. Conclude with `(congrArg tOf hf).trans tOf_zero`. Use `⟨cOf ((hex j).descToInjective (tOf f) h0), ?_⟩` and prove the remaining obligations. Use `(d_cOf _).trans ?_` and prove the remaining obligations.
+
+Use `(hex j).comp_descToInjective (tOf f) h0` as an intermediate fact. Simplify using `only at this`. Rewrite using `[this, cOf_tOf]`.
+-/
 theorem vanish_of_exact (hex : ∀ k, (ShortComplex.mk (dL P (k + 1)) (dL P k) (dL_dL k)).Exact)
     (K : Coef C) (hK : Injective K) (j : ℕ) : Subsingleton (TH P K (j + 1)) := by
   refine ⟨fun x y => ?_⟩

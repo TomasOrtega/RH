@@ -26,6 +26,13 @@ variable {S : GSD K}
 def Nbr.U (n : Nbr S) : Module.End K S.EqFun :=
   (LocOp.ofNbr (S := S) (S' := S) (MonoidHom.id _) n.up LinearMap.id (fun g d' d => n.equiv g d' d) (fun _ _ => rfl)).op
 
+/- English proof (translation)
+Use `Finset.sum_nbij' (fun x => g⁻¹ • x) (fun x => g • x) ?_ ?_ ?_ ?_ ?_` and prove the remaining obligations. Introduce `x hx`. Rewrite using `[← n.equiv g, smul_inv_smul]`. Conclude with `hx`. Introduce `x hx`.
+
+Conclude with `(n.equiv g d x).2 hx`. Introduce `x _`. Conclude with `smul_inv_smul g x`. Introduce `x _`. Conclude with `inv_smul_smul g x`.
+
+Introduce `x _`. Rewrite using `[smul_inv_smul]`.
+-/
 theorem Nbr.sum_up_smul (n : Nbr S) {M : Type} [AddCommMonoid M] (g : S.G) (d : S.D) (F : S.D → M) :
     ∑ d' ∈ n.up (g • d), F d' = ∑ d' ∈ n.up d, F (g • d') := by
   refine Finset.sum_nbij' (fun x => g⁻¹ • x) (fun x => g • x) ?_ ?_ ?_ ?_ ?_
@@ -61,6 +68,9 @@ def Nbr.UYfun (n : Nbr S) (Yb : Type) : Module.End K (S.D → Yb → S.V) where
     show ∑ d' ∈ n.up d, a • G d' y = a • ∑ d' ∈ n.up d, G d' y
     rw [Finset.smul_sum]
 
+/- English proof (translation)
+Introduce `g d y`. Use `show ∑ d' ∈ n.up (g • d), G d' (g • y) = S.ρ g (∑ d' ∈ n.up d, G d' y)`. Rewrite using `[n.sum_up_smul, map_sum]`. Conclude with `Finset.sum_congr rfl fun d' _ => hG g d' y`.
+-/
 theorem Nbr.UYfun_mem (n : Nbr S) (Y : Cpl S) {G : S.D → Y.Yb → S.V} (hG : G ∈ CplFun Y) : n.UYfun Y.Yb G ∈ CplFun Y := by
   intro g d y
   show ∑ d' ∈ n.up (g • d), G d' (g • y) = S.ρ g (∑ d' ∈ n.up d, G d' y)
@@ -187,9 +197,15 @@ variable {E : Type} [Field E] [NumberField E] [StarRing E] {n : ℕ} {ST SG Q : 
 
 omit [NumberField E] in
 
+/- English proof (translation)
+The claim follows from `Subtype.ext (Prod.ext h1 (funext h2))`.
+-/
 theorem decoF_ext {p p' : DecoF E n ST SG Q} (h1 : p.deco = p'.deco) (h2 : ∀ R : Q, p.fr R = p'.fr R) : p = p' :=
   Subtype.ext (Prod.ext h1 (funext h2))
 
+/- English proof (translation)
+Use `Set.Finite.of_finite_image (f := DecoF.deco) ((DecoSet.upSet_finite p.deco P q).subset ?_) ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨p', hp', rfl⟩`. Conclude with `hp'.1`. Introduce `p1 h1 p2 h2 h`. Conclude with `decoF_ext h fun R => (h1.2 R).trans (h2.2 R).symm`.
+-/
 theorem upF_finite (P : ST) (q : 𝓞 E) (p : DecoF E n ST SG Q) : (upF P q p).Finite := by
   refine Set.Finite.of_finite_image (f := DecoF.deco) ((DecoSet.upSet_finite p.deco P q).subset ?_) ?_
   · rintro _ ⟨p', hp', rfl⟩
@@ -197,6 +213,9 @@ theorem upF_finite (P : ST) (q : 𝓞 E) (p : DecoF E n ST SG Q) : (upF P q p).F
   · intro p1 h1 p2 h2 h
     exact decoF_ext h fun R => (h1.2 R).trans (h2.2 R).symm
 
+/- English proof (translation)
+Use `Set.Finite.of_finite_image (f := DecoF.deco) ((DecoSet.dnSet_finite p.deco P hne q).subset ?_) ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨p', hp', rfl⟩`. Conclude with `hp'.1`. Introduce `p1 h1 p2 h2 h`. Conclude with `decoF_ext h fun R => (h1.2 R).trans (h2.2 R).symm`.
+-/
 theorem dnF_finite (P : ST) (hne : conjPrime₂ P.1 ≠ P.1) (q : 𝓞 E) (p : DecoF E n ST SG Q) : (dnF P q p).Finite := by
   refine Set.Finite.of_finite_image (f := DecoF.deco) ((DecoSet.dnSet_finite p.deco P hne q).subset ?_) ?_
   · rintro _ ⟨p', hp', rfl⟩
@@ -204,11 +223,19 @@ theorem dnF_finite (P : ST) (hne : conjPrime₂ P.1 ≠ P.1) (q : 𝓞 E) (p : D
   · intro p1 h1 p2 h2 h
     exact decoF_ext h fun R => (h1.2 R).trans (h2.2 R).symm
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fun h => ⟨(DecoSet.mem_upSet_iff_mem_dnSet hP hq hq2 p.deco p'.deco).1 h.1, fun R => (h.2 R).symm⟩, fun h => ⟨(DecoSet.mem_upSet_iff_mem_dnSet hP hq hq2 p.deco p'.deco).2 h.1, fun R => (h.2 R).symm⟩⟩`.
+-/
 theorem mem_upF_iff_mem_dnF {P : ST} (hP : MoveHyp ST SG P) {q : 𝓞 E} (hq : q ∈ P.1.asIdeal) (hq2 : q ∉ P.1.asIdeal ^ 2)
     (p p' : DecoF E n ST SG Q) : p' ∈ upF P q p ↔ p ∈ dnF P q p' :=
   ⟨fun h => ⟨(DecoSet.mem_upSet_iff_mem_dnSet hP hq hq2 p.deco p'.deco).1 h.1, fun R => (h.2 R).symm⟩,
     fun h => ⟨(DecoSet.mem_upSet_iff_mem_dnSet hP hq hq2 p.deco p'.deco).2 h.1, fun R => (h.2 R).symm⟩⟩
 
+/- English proof (translation)
+Establish `hd : ∀ r : DecoF E n ST SG Q, (a • r).deco = (a.1, a.2.1) • r.deco` using `fun _ => rfl`. Establish `hf : ∀ (r : DecoF E n ST SG Q) (R : Q), (a • r).fr R = a.1.1 * r.fr R * ((a.2.2 R)⁻¹).1` using `fun _ _ => rfl`. Use `show ((a • p').deco ∈ (a • p).deco.upSet P q ∧ ∀ R : Q, (a • p').fr R = (a • p).fr R) ↔ (p'.deco ∈ p.deco.upSet P q ∧ ∀ R : Q, p'.fr R = p.fr R)`. Simplify using `only [hd, hf]`. Rewrite using `[DecoSet.smul_mem_upSet]`.
+
+Simplify using `only [mul_left_inj, mul_right_inj]`.
+-/
 theorem smul_mem_upF (a : UF E n × GLG E n SG × GLQ E n Q) (P : ST) (q : 𝓞 E) (p p' : DecoF E n ST SG Q) :
     a • p' ∈ upF P q (a • p) ↔ p' ∈ upF P q p := by
   have hd : ∀ r : DecoF E n ST SG Q, (a • r).deco = (a.1, a.2.1) • r.deco := fun _ => rfl

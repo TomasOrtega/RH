@@ -7,6 +7,11 @@ set_option maxSynthPendingDepth 1
 
 namespace GroundTheory.Heights₂.Heights.IndefiniteRowSideFullHecke.Close
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce `hA ι _ _ n P D G Γ`. Take `⟨hpos, hsmooth⟩` from `hA ι n P (AddBlockData.toObjects D) G.d G.g G.isFormSystem Γ.r Γ.f Γ.δ Γ.isHomogGenerators`. Rewrite using `[den_eq G Γ]`. Conclude with `⟨hsmooth, hpos⟩`.
+
+Introduce `hB ι _ _ n P D d g h r f δ hf`. Take `⟨hsmooth, hpos⟩` from `hB ι n P (AddBlockData.ofObjects D) (ChartForms.ofFormSystem h) (GenSystem.ofIsHomogGenerators hf)`. Rewrite using `[den_ofFormSystem h hf]`. Conclude with `⟨hpos, hsmooth⟩`.
+-/
 theorem ChartDenominatorAlt.equiv :
     GroundTheory.Heights₂.Heights.ChartDenominatorAlt.Statement ↔ GroundTheory.Heights₂.Heights.IndefiniteRowSideFullHecke.Close.ChartDenominatorAlt.Statement := by
   constructor

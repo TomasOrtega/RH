@@ -93,6 +93,11 @@ def RatioK : Prop := Big fun {D} _ _ _ _ _ _ _ _ _ _ _ ch => ch.FieldOK → ∀ 
 
 set_option maxHeartbeats 1600000 in
 
+/- English proof (translation)
+Introduce `hκ`. Take `⟨n, hn, hpow⟩` from `h.1 t`. Establish `hz : D.what₂.embLL (ze t) ≠ 0`. Introduce `hz0`. Establish `e1` using `congrArg D.what₂.embLL hpow`.
+
+Rewrite `e1` using `[map_pow, map_one, hz0, zero_pow hn.ne']`. Conclude with `zero_ne_one e1`. Establish `e` using `h.2 t x hx a`. Rewrite `e` using `[hκ, zero_mul]`. Conclude with `mul_ne_zero (mul_ne_zero hz hc) h0 e`.
+-/
 theorem FormulaAt.ne_zero {D : D7} {Γ : Type} [Group Γ] [Fintype Γ] {Pl0 T : Type} {A : FamIn D.what₂.LL Γ Pl0 T D.R.m}
     {Ks : Type} [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] {R : RealDat D A Ks} {ch : Choice R} {κ : ℂ} {ze : T → D.what₂.LL}
     (h : FormulaAt ch κ ze) {t : T} (hc : cTot ch t ≠ 0) {x : A.fam.amb.FR t}
@@ -110,6 +115,11 @@ theorem FormulaAt.ne_zero {D : D7} {Γ : Type} [Group Γ] [Fintype Γ] {Pl0 T : 
   rw [hκ, zero_mul] at e
   exact mul_ne_zero (mul_ne_zero hz hc) h0 e
 
+/- English proof (translation)
+Unfold `Big at h h' ⊢`. Take `⟨C₁, h₁⟩` from `h`. Take `⟨C₂, h₂⟩` from `h'`. Use `⟨max C₁ C₂, fun ε CF hCF => ?_⟩` and prove the remaining obligations. Take `⟨y₁, k₁⟩` from `h₁ ε CF (le_trans (le_max_left _ _) hCF)`.
+
+Take `⟨y₂, k₂⟩` from `h₂ ε CF (le_trans (le_max_right _ _) hCF)`. Use `⟨max y₁ y₂, ?_⟩` and prove the remaining obligations. Introduce `D large₂ hε hx Γ _ _ Pl0 T A Ks _ _ _ R F hS ch hch hsc`. Conclude with `⟨k₁ D large₂ hε (le_trans (le_max_left _ _) hx) Γ Pl0 T A Ks R F hS ch hch hsc, k₂ D large₂ hε (le_trans (le_max_right _ _) hx) Γ Pl0 T A Ks R F hS ch hch hsc⟩`.
+-/
 theorem Big.and {Q Q' : ChP} (h : Big Q) (h' : Big Q') : Big fun ch => Q ch ∧ Q' ch := by
   unfold Big at h h' ⊢
   obtain ⟨C₁, h₁⟩ := h

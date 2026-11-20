@@ -16,6 +16,9 @@ attribute [local instance] algPadicInt algPadicField towerPadic factPadic Global
 open GlobalTheory.FlatModel
 
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.HartogsUnit.exists_unit_of_local_units | exact GlobalTheory.HartogsUnit.exists_unit_of_local_units | (intros; apply GlobalTheory.HartogsUnit.exists_unit_of_local_units <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.property_of_codim_one_local_units : ∀ (A : Type) [CommRing A] [IsDomain A] [IsIntegrallyClosed A] [IsNoetherianRing A]
     (P : ∀ (k : Type) [Field k], (A →+* k) → k → Prop) (good : Set (PrimeSpectrum A)),
     (⟨⊥, Ideal.isPrime_bot⟩ : PrimeSpectrum A) ∈ good →

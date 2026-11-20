@@ -9,6 +9,11 @@ open scoped ComplexConjugate Classical InnerProductSpace
 
 namespace UpperTheory.V.Z.InvariantSubmoduleMonicPolynomial.EA
 
+/- English proof (translation)
+Apply `Units.ext` to reduce the goal to its premises. Use `show ((tC t t : U2) : Matrix (Fin 2) (Fin 2) ℂ) * (a : Matrix (Fin 2) (Fin 2) ℂ) = (a : Matrix (Fin 2) (Fin 2) ℂ) * ((tC t t : U2) : Matrix (Fin 2) (Fin 2) ℂ)`. Establish `h : ((tC t t : U2) : Matrix (Fin 2) (Fin 2) ℂ) = Complex.exp (t * Complex.I) • (1 : Matrix (Fin 2) (Fin 2) ℂ)`. Apply the tactic sequence `rw [coe_tC]; ext r s; fin_cases r <;> fin_cases s <;> simp`. Rewrite using `[h]`.
+
+Simplify using the standard rewrite rules.
+-/
 private theorem scal_comm (t : ℝ) (a : GL (Fin 2) ℂ) :
     Commute ((kC (tC t t) : GL2C) : GL (Fin 2) ℂ) a := by
   apply Units.ext
@@ -19,9 +24,19 @@ private theorem scal_comm (t : ℝ) (a : GL (Fin 2) ℂ) :
     rw [coe_tC]; ext r s; fin_cases r <;> fin_cases s <;> simp
   rw [h]; simp
 
+/- English proof (translation)
+The claim follows from `continuous_const.mul (KT.continuous_conj_psi n q n)`.
+-/
 private theorem T_cont (n : ℕ) (q : ℤ) : Continuous (T n q) :=
   continuous_const.mul (KT.continuous_conj_psi n q n)
 
+/- English proof (translation)
+Establish `hinv : (tC t t)⁻¹ = tC (-t) (-t)`. Rewrite using `[inv_eq_iff_mul_eq_one]`. Apply `Subtype.ext` to reduce the goal to its premises. Rewrite using `[Matrix.UnitaryGroup.mul_val, coe_tC, coe_tC]`. Apply the tactic sequence `ext r s; fin_cases r <;> fin_cases s <;> simp [← Complex.exp_add]`.
+
+Rewrite using `[hinv]`. Simplify using `only [T]`. Rewrite using `[KT.psi_tC_mul n q le_rfl, map_mul, ← Complex.exp_conj]`. Establish `h : conj (Complex.I * ((((n : ℝ) + q) * (-t) + ((n : ℝ) - n + q) * (-t) : ℝ) : ℂ)) = Complex.I * ((((n : ℤ) + 2 * q : ℤ) : ℂ) * t)`. Simplify using `only [map_mul, Complex.conj_I, Complex.conj_ofReal]`.
+
+Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[h]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 private theorem T_shift (n : ℕ) (q : ℤ) (t : ℝ) (m : U2) :
     T n q ((tC t t)⁻¹ * m) = Complex.exp (Complex.I * ((((n : ℤ) + 2 * q : ℤ) : ℂ) * t)) * T n q m := by
   have hinv : (tC t t)⁻¹ = tC (-t) (-t) := by
@@ -39,6 +54,13 @@ private theorem T_shift (n : ℕ) (q : ℤ) (t : ℝ) (m : U2) :
     ring
   rw [h]; ring
 
+/- English proof (translation)
+Assume the negation of the conclusion as `hab`. Establish `hne : ((a : ℂ) - b) ≠ 0`. Rewrite using `[sub_ne_zero]`. Conclude with `hab` after adjusting the coercions. Establish `hne' : ((a : ℝ) - b) ≠ 0`.
+
+Rewrite using `[sub_ne_zero]`. Conclude with `hab` after adjusting the coercions. Establish `h1` using `h (Real.pi / ((a : ℝ) - b))`. Establish `h2 : Complex.exp (Complex.I * ((a : ℂ) * ((Real.pi / ((a : ℝ) - b) : ℝ) : ℂ)) - Complex.I * ((b : ℂ) * ((Real.pi / ((a : ℝ) - b) : ℝ) : ℂ))) = 1`. Rewrite using `[Complex.exp_sub, h1, div_self (Complex.exp_ne_zero _)]`.
+
+Establish `h3 : Complex.I * ((a : ℂ) * ((Real.pi / ((a : ℝ) - b) : ℝ) : ℂ)) - Complex.I * ((b : ℂ) * ((Real.pi / ((a : ℝ) - b) : ℝ) : ℂ)) = (Real.pi : ℂ) * Complex.I`. Use `push_cast`. Clear the denominators using the available nonvanishing facts. Rewrite `h2` using `[h3, Complex.exp_pi_mul_I]`. Evaluate the numerical expressions using `at h2`.
+-/
 private theorem exp_inj_int {a b : ℤ} (h : ∀ t : ℝ, Complex.exp (Complex.I * ((a : ℂ) * t)) =
     Complex.exp (Complex.I * ((b : ℂ) * t))) : a = b := by
   by_contra hab
@@ -62,6 +84,11 @@ section Abstract
 variable {G : Type*} [Group G] [TopologicalSpace G] {H : Type*} [NormedAddCommGroup H] [InnerProductSpace ℂ H]
   [CompleteSpace H] (R : UnitaryRep G H) (u : U2 → G)
 
+/- English proof (translation)
+Establish `hint : Integrable (fun m => T n q m • R (u m) v) μK` using `KT.integrable_of_continuous ((T_cont n q).smul ((R.continuous_orbit v).comp hc))`. Rewrite using `[← ContinuousLinearMap.integral_comp_comm _ hint, ← integral_smul, ← integral_mul_left_K (fun m => Complex.exp (Complex.I * ((((n : ℤ) + 2 * q : ℤ) : ℂ) * t)) • T n q m • R (u m) v) (tC t t)]`. Use `congr 1`. Use function extensionality and compare the values at `m`. Establish `h` using `T_shift n q t (tC t t * m)`.
+
+Rewrite `h` using `[inv_mul_cancel_left]`. Rewrite using `[map_smul, ← UnitaryRep.map_mul_apply, ← hu, smul_smul, ← h]`.
+-/
 private theorem eig_abs (hu : ∀ a b, u (a * b) = u a * u b) (hc : Continuous u) (n : ℕ) (q : ℤ) (t : ℝ) (v : H) :
     R (u (tC t t)) (∫ m, T n q m • R (u m) v ∂μK) =
       Complex.exp (Complex.I * ((((n : ℤ) + 2 * q : ℤ) : ℂ) * t)) • ∫ m, T n q m • R (u m) v ∂μK := by
@@ -76,6 +103,17 @@ private theorem eig_abs (hu : ∀ a b, u (a * b) = u a * u b) (hc : Continuous u
   rw [inv_mul_cancel_left] at h
   rw [map_smul, ← UnitaryRep.map_mul_apply, ← hu, smul_smul, ← h]
 
+/- English proof (translation)
+Set `c : ℝ → ℂ` to `fun t => Complex.exp (Complex.I * ((((n : ℤ) + 2 * q : ℤ) : ℂ) * t))`. Set `ρ : Submodule ℂ H` to `{ carrier := {x | x ∈ τ ∧ ∀ t : ℝ, R (u (tC t t)) x = c t • x} add_mem' := fun {x y} hx hy => ⟨τ.add_mem hx.1 hy.1, fun t => by rw [map_add, hx.2, hy.2, smul_add]⟩ zero_mem' := ⟨τ.zero_mem, fun t => by simp⟩ smul_mem' := fun a x hx => ⟨τ.smul_mem a hx.1, fun t => by rw [map_smul, …`. Establish `hρτ : ρ ≤ τ` using `fun x hx => hx.1`. Establish `hρcl : IsClosed (ρ : Set H)`. Establish `e₀ : (ρ : Set H) = (τ : Set H) ∩ ⋂ t : ℝ, {x | R (u (tC t t)) x = c t • x}`.
+
+Use extensionality with `x`. Simplify using `only [Set.mem_inter_iff, Set.mem_iInter, Set.mem_setOf_eq]`. Both sides reduce to the same expression. Rewrite using `[e₀]`. Conclude with `hcl.inter (isClosed_iInter fun t => isClosed_eq (ContinuousLinearMap.continuous _) (continuous_const_smul _))`.
+
+Establish `hρinv : ∀ g, ∀ x ∈ ρ, R g x ∈ ρ`. Introduce `g x hx`. Use `⟨hinv g x hx.1, fun t => ?_⟩` and prove the remaining obligations. Rewrite using `[← UnitaryRep.map_mul_apply, (hz t g).eq, UnitaryRep.map_mul_apply, hx.2, map_smul]`. Establish `hwρ : w ∈ ρ` using `⟨hw, e⟩`.
+
+Break down `hirr ρ hρτ hρcl hρinv with h0 | h1` into its components or cases. Rewrite `hwρ` using `[h0]`. Conclude with `absurd ((Submodule.mem_bot ℂ).1 hwρ) hw0`. Establish `hwρ' : w' ∈ ρ` using `h1 ▸ hw'`. Use `exp_inj_int fun t => ?_` and prove the remaining obligations.
+
+Establish `e1` using `hwρ'.2 t`. Rewrite `e1` using `[e' t]`. Conclude with `smul_left_injective ℂ hw0' e1`.
+-/
 private theorem occ_abs (hu : ∀ a b, u (a * b) = u a * u b) (hc : Continuous u)
     (hz : ∀ t g, Commute (u (tC t t)) g) (τ : Submodule ℂ H) (hcl : IsClosed (τ : Set H))
     (hinv : ∀ g, ∀ v ∈ τ, R g v ∈ τ)
@@ -119,6 +157,11 @@ section
 
 variable {K : Type} [Field K] [NumberField K] [IsTotallyComplex K] {ι : Type} [Fintype ι] (C : Co K ι)
 
+/- English proof (translation)
+Take `⟨-, -, hun, -, hmul, -, -, hdec, -⟩` from `UpperTheory.V.Z.InvariantSubmoduleMonicPolynomial.EA.coLaws K ι C`. Take `⟨a, h, rfl, hh⟩` from `hdec i g`. Rewrite using `[hun]`. Use `Commute.mul_right ?_ (hh _).symm` and prove the remaining obligations. Use `show _ * _ = _ * _`.
+
+Rewrite using `[← hmul, ← hmul, (scal_comm t a).eq]`.
+-/
 private theorem un_central (i : ι) (t : ℝ) (g : G1 K 2) : Commute (C.un i (tC t t)) g := by
   obtain ⟨-, -, hun, -, hmul, -, -, hdec, -⟩ := UpperTheory.V.Z.InvariantSubmoduleMonicPolynomial.EA.coLaws K ι C
   obtain ⟨a, h, rfl, hh⟩ := hdec i g
@@ -127,11 +170,17 @@ private theorem un_central (i : ι) (t : ℝ) (g : G1 K 2) : Commute (C.un i (tC
   show _ * _ = _ * _
   rw [← hmul, ← hmul, (scal_comm t a).eq]
 
+/- English proof (translation)
+Take `⟨-, -, hun, -, hmul, -⟩` from `UpperTheory.V.Z.InvariantSubmoduleMonicPolynomial.EA.coLaws K ι C`. Rewrite using `[hun, hun, hun, map_mul]`. Conclude with `hmul i _ _`.
+-/
 private theorem un_mul (i : ι) (a b : U2) : C.un i (a * b) = C.un i a * C.un i b := by
   obtain ⟨-, -, hun, -, hmul, -⟩ := UpperTheory.V.Z.InvariantSubmoduleMonicPolynomial.EA.coLaws K ι C
   rw [hun, hun, hun, map_mul]
   exact hmul i _ _
 
+/- English proof (translation)
+Take `⟨-, -, hun, hc, -⟩` from `UpperTheory.V.Z.InvariantSubmoduleMonicPolynomial.EA.coLaws K ι C`. Establish `h : C.un i = fun m => C.gl i (kC m : GL2C)` using `funext (hun i)`. Rewrite using `[h]`. Conclude with `(hc i).comp (continuous_subtype_val.comp continuous_kC)`.
+-/
 private theorem un_cont (i : ι) : Continuous (C.un i) := by
   obtain ⟨-, -, hun, hc, -⟩ := UpperTheory.V.Z.InvariantSubmoduleMonicPolynomial.EA.coLaws K ι C
   have h : C.un i = fun m => C.gl i (kC m : GL2C) := funext (hun i)
@@ -142,6 +191,15 @@ end
 
 end UpperTheory.V.Z.InvariantSubmoduleMonicPolynomial.EA
 
+/- English proof (translation)
+Introduce `K _ _ _ ι _ C μ _ τ hτ i`. Take `⟨hP, -, -, hall⟩` from `UpperTheory.V.Z.InvariantSubmoduleMonicPolynomial.EA.piLaws K ι C μ`. Establish `hmem : ∀ (n : ℕ) (q : ℤ) (v : LL μ), v ∈ τ → C.Pi μ i n q v ∈ τ`. Introduce `n q v hv`. Take `⟨P, h1, -, -, -, -, h2⟩` from `hP i n q`.
+
+Rewrite using `[← h1]`. Conclude with `h2 τ hτ v hv`. Establish `heig : ∀ (n : ℕ) (q : ℤ) (v : LL μ) (t : ℝ), rightRegularRep (Gam K 2) μ (C.un i (tC t t)) (C.Pi μ i n q v) = Complex.exp (Complex.I * ((((n : ℤ) + 2 * q : ℤ) : ℂ) * t)) • C.Pi μ i n q v` using `fun n q v t => eig_abs (rightRegularRep (Gam K 2) μ) (C.un i) (un_mul C i) (un_cont C i) n q t v`. Establish `hex : ∃ n : ℕ, ∃ (q : ℤ) (v : LL μ), v ∈ τ ∧ C.Pi μ i n q v ≠ 0`. Take `⟨v, hv, hv0⟩` from `Submodule.exists_mem_ne_zero_of_ne_bot hτ.ne`.
+
+Assume the negation of the conclusion as `hno`. Use `push_neg at hno`. Conclude with `hv0 (hall i v fun n q g => hno n q _ (hτ.inv g v hv))`. Take `⟨q, v, hv, hne⟩` from `Nat.find_spec hex`. Use `⟨Nat.find hex, q, ⟨v, hv, hne⟩, fun n' q' hab w hw => ?_⟩` and prove the remaining obligations.
+
+Assume the negation of the conclusion as `hw0`. Conclude with `hab ⟨Nat.find_min' hex ⟨q', w, hw, hw0⟩, occ_abs (rightRegularRep (Gam K 2) μ) (C.un i) (un_mul C i) (un_cont C i) (un_central C i) τ hτ.closed hτ.inv hτ.irr (hmem _ _ _ hv) (hmem _ _ _ hw) hne hw0 (heig _ _ _) (heig _ _ _)⟩`.
+-/
 theorem UpperTheory.V.Z.InvariantSubmoduleMonicPolynomial.EA.minEx :
     ∀ (K : Type) [Field K] [NumberField K] [IsTotallyComplex K] (ι : Type) [Fintype ι] (C : Co K ι) (μ : Measure (G1 K 2)) [μ.IsHaarMeasure] (τ : Submodule ℂ (LL μ)), CuspIrr μ τ → ∀ i, ∃ n q, C.MinAt μ τ i n q := by
   intro K _ _ _ ι _ C μ _ τ hτ i

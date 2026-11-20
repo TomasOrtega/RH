@@ -23,6 +23,9 @@ open CategoryTheory CategoryTheory.Limits MonoidalCategory CartesianMonoidalCate
 open scoped CategoryTheory.Obj in
 attribute [local instance] Over.cartesianMonoidalCategory in
 
+/- English proof (translation)
+Introduce `_ _`. Unfold `_root_.GlobalTheory.LN.HomExtSt`. Conclude with `_root_.GlobalTheory.existsUnique_hom_extension_semiAbelian_dvr (_root_.GlobalTheory.AbelianSubgroupFinite.finite_of_no_torsion (_root_.GlobalTheory.UU.TorsionCount.card_torsion_points _root_.GlobalTheory.globalFns_holds _root_.GlobalTheory.rigidity_holds))`.
+-/
 theorem _root_.GlobalTheory.LN.homExt_of_laws : _root_.ReciprocityTheory.ChartRestriction.G.Out.Laws → _root_.ReciprocityTheory.ChartRestriction.G.Out.Laws2 → _root_.GlobalTheory.LN.HomExtSt := by
   intro _ _
   unfold _root_.GlobalTheory.LN.HomExtSt

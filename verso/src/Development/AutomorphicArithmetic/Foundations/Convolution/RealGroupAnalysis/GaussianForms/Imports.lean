@@ -11,6 +11,27 @@ open UpperTheory.ConvolutionTheory.R2
 open scoped Classical
 open UpperTheory.ConvolutionTheory.R2.C
 
+/- English proof (translation)
+Introduce `F _ _ δ η Om hη hOm φ`. Rewrite using `[continuous_iff_continuousAt]`. Introduce and unpack `⟨g₀, v₀⟩`. Take `⟨b, c, a, k, hb, hc, ha, hk, hev⟩` from `near F`. Use `set φ' : S4 F := Om g₀ φ with hφ'`.
+
+Use `set φ'' : S4 F := Om (wW F)⁻¹ φ' with hφ''`. Set `H : G1 F × V4 F → G1 F` to `fun p => p.1 * g₀⁻¹`. Establish `hH1 : H (g₀, v₀) = 1` using `by simp [H]`. Establish `hH : Tendsto H (𝓝 (g₀, v₀)) (𝓝 1)`. Establish `: ContinuousAt H (g₀, v₀)`.
+
+Establish `: Continuous H` using `continuous_fst.mul continuous_const`. Conclude with `this.continuousAt`. Simplify `this` using `[ContinuousAt, hH1]`. Set `f : G1 F × V4 F → ℂ` to `fun p => ψ (b (H p) * q4 δ p.2) * (((η (a (H p)) : ℂˣ) : ℂ) * ((ab (a (H p)) ^ 2 : ℝ) : ℂ) * ft4 δ (fun y => ψ (c (H p) * q4 δ y) * φ''.1 y) (fun i => (a (H p) : A F) * p.2 i))`. Establish `hbH : ContinuousAt (fun p => b (H p)) (g₀, v₀)` using `by show Tendsto (fun p => b (H p)) _ (𝓝 (b (H (g₀, v₀))))`.
+
+Rewrite using `[hH1]`. Conclude with `hb.tendsto.comp hH`. Establish `hcH : ContinuousAt (fun p => c (H p)) (g₀, v₀)` using `by show Tendsto (fun p => c (H p)) _ (𝓝 (c (H (g₀, v₀))))`. Rewrite using `[hH1]`. Conclude with `hc.tendsto.comp hH`.
+
+Establish `haH : ContinuousAt (fun p => a (H p)) (g₀, v₀)` using `by show Tendsto (fun p => a (H p)) _ (𝓝 (a (H (g₀, v₀))))`. Rewrite using `[hH1]`. Conclude with `ha.tendsto.comp hH`. Establish `hf : ContinuousAt f (g₀, v₀)`. Establish `hs : ContinuousAt (fun p : G1 F × V4 F => p.2) (g₀, v₀)` using `continuous_snd.continuousAt`.
+
+Establish `hav : ContinuousAt (fun p => ((a (H p) : (A F)ˣ) : A F)) (g₀, v₀)` using `Units.continuous_val.continuousAt.comp haH`. Establish `h1 : ContinuousAt (fun p : G1 F × V4 F => ψ (b (H p) * q4 δ p.2)) (g₀, v₀)` using `continuous_ψ.continuousAt.comp (hbH.mul ((continuous_quaternaryQuadraticForm δ).continuousAt.comp hs))`. Establish `h2 : ContinuousAt (fun p : G1 F × V4 F => ((η (a (H p)) : ℂˣ) : ℂ)) (g₀, v₀)` using `(Units.continuous_val.comp hη).continuousAt.comp haH`. Establish `h3 : ContinuousAt (fun p : G1 F × V4 F => ((ab (a (H p)) ^ 2 : ℝ) : ℂ)) (g₀, v₀)` using `Complex.continuous_ofReal.continuousAt.comp ((continuous_ab.continuousAt.comp haH).pow 2)`. Establish `hvec : ContinuousAt (fun p : G1 F × V4 F => (fun i => (a (H p) : A F) * p.2 i : V4 F)) (g₀, v₀)`.
+
+Use `continuousAt_pi.2 fun i => hav.mul ?_` and prove the remaining obligations. Conclude with `(continuous_apply i).continuousAt.comp hs`. Establish `h4 : ContinuousAt (fun p : G1 F × V4 F => ft4 δ (fun y => ψ (c (H p) * q4 δ y) * φ''.1 y) (fun i => (a (H p) : A F) * p.2 i)) (g₀, v₀)` using `ContinuousAt.comp (f := fun p : G1 F × V4 F => (c (H p), (fun i => (a (H p) : A F) * p.2 i : V4 F))) (g := fun p : A F × V4 F => ft4 δ (fun y => ψ (p.1 * q4 δ y) * φ''.1 y) p.2) (contKer F δ φ'').continuousAt (hcH.prodMk hvec)`. Conclude with `h1.mul ((h2.mul h3).mul h4)`. Use `hf.congr ?_` and prove the remaining obligations.
+
+Establish `hlev : ∀ᶠ h in 𝓝 (1 : G1 F), InfOne (k h) → Om (k h) φ' = φ'`. Conclude with `hk.eventually (level F δ η Om hOm φ')`. Use `filter_upwards [hH.eventually (hev.and hlev)] with p hp`. Take `⟨⟨hinf, hdec⟩, hl⟩` from `hp`. Establish `hg : p.1 = H p * g₀` using `by simp [H]`.
+
+Establish `hkey : Om p.1 φ = Om (nU (b (H p))) (Om (mD (a (H p))) (Om (wW F) (Om (nU (c (H p))) φ'')))`. Rewrite using `[hg, map_mul, Module.End.mul_apply, ← hφ']`. Use `conv_lhs => rw [hdec]`. Simplify using `only [map_mul, Module.End.mul_apply]`. Rewrite using `[hl hinf]`.
+
+Use `show f p = (Om p.1 φ).1 p.2`. Rewrite using `[hkey, hOm.n, hOm.m, hOm.w]`. Use `show _ = ψ _ * (_ * _ * ft4 δ (Om (nU (c (H p))) φ'').1 _)`. Establish `: (Om (nU (c (H p))) φ'').1 = fun y => ψ (c (H p) * q4 δ y) * φ''.1 y` using `funext (hOm.n _ _)`. Rewrite using `[this]`.
+-/
 theorem UpperTheory.ConvolutionTheory.R2.C.cont :
     ∀ (F : Type) [Field F] [NumberField F] (δ : F) (η : (A F)ˣ →* ℂˣ) (Om : G1 F →* Module.End ℂ (S4 F)), Continuous η → IsOm δ η Om →
     ∀ φ, Continuous fun p : G1 F × V4 F => (Om p.1 φ).1 p.2 := by

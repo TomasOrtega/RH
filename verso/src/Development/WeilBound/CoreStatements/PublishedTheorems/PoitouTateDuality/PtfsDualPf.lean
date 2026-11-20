@@ -14,6 +14,9 @@ section Roots
 
 variable {L : Type} [Field L] {N : ℕ} [NeZero N] (w : rootsOfUnity N L)
 
+/- English proof (translation)
+Apply `Subtype.ext` to reduce the goal to its premises. Rewrite using `[SubgroupClass.coe_pow, OneMemClass.coe_one]`. Conclude with `(mem_rootsOfUnity N (w : Lˣ)).1 w.2`.
+-/
 theorem rootsOfUnity_pow_N : w ^ N = 1 := by
   apply Subtype.ext
   rw [SubgroupClass.coe_pow, OneMemClass.coe_one]
@@ -29,8 +32,18 @@ def rootOf : ZMod N →+ Additive (rootsOfUnity N L) where
     conv_rhs => rw [← Nat.mod_add_div (a.val + b.val) N, pow_add, pow_mul, rootsOfUnity_pow_N w,
       one_pow, mul_one]
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem rootOf_apply (c : ZMod N) : rootOf w c = Additive.ofMul (w ^ c.val) := rfl
 
+/- English proof (translation)
+Establish `hwu : IsPrimitiveRoot w N`. Rewrite using `[← IsPrimitiveRoot.coe_submonoidClass_iff, ← IsPrimitiveRoot.coe_units_iff]`. Conclude with `hw`. Use `⟨fun a b h => ?_, fun x => ?_⟩` and prove the remaining obligations. Establish `h' : w ^ a.val = w ^ b.val` using `Additive.ofMul.injective h`.
+
+Conclude with `ZMod.val_injective N (hwu.pow_inj (ZMod.val_lt a) (ZMod.val_lt b) h')`. Take `⟨i, hi, hx⟩` from `hw.eq_pow_of_pow_eq_one (ξ := (((Additive.toMul x : rootsOfUnity N L) : Lˣ) : L)) (by`. Use `(mem_rootsOfUnity N _).1 (Additive.toMul x).2` as an intermediate fact. Rewrite using `[← Units.val_pow_eq_pow_val, this, Units.val_one])`. Use `⟨(i : ZMod N), ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[rootOf_apply, ZMod.val_natCast, Nat.mod_eq_of_lt hi]`. Establish `: w ^ i = Additive.toMul x` using `Subtype.ext (Units.ext (by rw [SubgroupClass.coe_pow, Units.val_pow_eq_pow_val]; exact hx))`. Rewrite using `[this]`. Both sides reduce to the same expression.
+-/
 theorem rootOf_bijective (hw : IsPrimitiveRoot (((w : Lˣ) : L)) N) : Function.Bijective (rootOf w) := by
   have hwu : IsPrimitiveRoot w N := by
     rw [← IsPrimitiveRoot.coe_submonoidClass_iff, ← IsPrimitiveRoot.coe_units_iff]
@@ -62,6 +75,15 @@ variable {Γ H : Type} [Group Γ] [Group H] [TopologicalSpace Γ] [TopologicalSp
 
 include hM hr in
 
+/- English proof (translation)
+Set `fwd : TDual (ZMod N) M → (A.V →ₗ[ULift.{0} ℤ] D.V)` to `fun f => (uliftIntLinearEquivAddHom A.V D.V).symm (rr.toAddMonoidHom.comp (((f : M →ₗ[ZMod N] ZMod N)).toAddMonoidHom.comp eM.symm.toAddMonoidHom))`. Set `bwd : (A.V →ₗ[ULift.{0} ℤ] D.V) → TDual (ZMod N) M` to `fun φ => (rr.symm.toAddMonoidHom.comp ((uliftIntLinearEquivAddHom A.V D.V φ).comp eM.toAddMonoidHom)).toZModLinearMap N`. Set `eD : TDual (ZMod N) M ≃+ (dualRep D A).V` to `{ toFun := fwd invFun := bwd left_inv := fun f => LinearMap.ext fun m => by show rr.symm (rr (f (eM.symm (eM m)))) = f m`. Rewrite using `[AddEquiv.symm_apply_apply, AddEquiv.symm_apply_apply]`. Use `right_inv := fun φ => LinearMap.ext fun a => by show rr (rr.symm (φ (eM (eM.symm a)))) = φ a`.
+
+Rewrite using `[AddEquiv.apply_symm_apply, AddEquiv.apply_symm_apply]`. Use the proof step `map_add' := fun f f' => LinearMap.ext fun a => by show rr ((f + f') (eM.symm a)) = rr (f (eM.symm a)) + rr (f' (eM.symm a))`. Rewrite using `[← map_add]`. Use `rfl }`. Use `⟨eD, fun g f => ?_, fun f m => ?_⟩` and prove the remaining obligations.
+
+Use `LinearMap.ext fun a => ?_` and prove the remaining obligations. Establish `h1 : eM.symm (A.ρ (θ g⁻¹) a) = ρ g⁻¹ (eM.symm a)`. Apply `eM.injective` to reduce the goal to its premises. Rewrite using `[AddEquiv.apply_symm_apply, hM, AddEquiv.apply_symm_apply]`. Use `show rr ((twDual χ ρ g f) (eM.symm a)) = D.ρ (θ g) (rr (f (eM.symm (A.ρ (θ g)⁻¹ a))))`.
+
+Rewrite using `[hr, ← map_inv, h1]`. Both sides reduce to the same expression. Use `show rr (f (eM.symm (eM m))) = rr (f m)`. Rewrite using `[AddEquiv.symm_apply_apply]`.
+-/
 theorem dualGen : ∃ eD : TDual (ZMod N) M ≃+ (dualRep D A).V,
     (∀ g f, eD (twDual χ ρ g f) = (dualRep D A).ρ (θ g) (eD f)) ∧
       ∀ f m, (eD f : A.V →ₗ[ULift.{0} ℤ] D.V) (eM m) = rr (f m) := by
@@ -96,6 +118,9 @@ theorem dualGen : ∃ eD : TDual (ZMod N) M ≃+ (dualRep D A).V,
 
 end DualGen
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨⟨(hz.isUnit hN0).unit, (mem_rootsOfUnity _ _).2 (Units.ext (by rw [Units.val_pow_eq_pow_val, IsUnit.unit_spec, hz.pow_eq_one, Units.val_one]))⟩, IsUnit.unit_spec _⟩`.
+-/
 theorem exists_root_of_primitive {L : Type} [Field L] {N : ℕ} (hN0 : N ≠ 0) {z : L}
     (hz : IsPrimitiveRoot z N) : ∃ w : rootsOfUnity N L, ((w : Lˣ) : L) = z :=
   ⟨⟨(hz.isUnit hN0).unit, (mem_rootsOfUnity _ _).2 (Units.ext (by
@@ -104,6 +129,13 @@ theorem exists_root_of_primitive {L : Type} [Field L] {N : ℕ} (hN0 : N ≠ 0) 
 
 set_option maxHeartbeats 1000000 in
 
+/- English proof (translation)
+Proceed by induction on `g using QuotientGroup.induction_on with`. Consider the case `H τ`. Establish `hm : μ (toGS (AlgebraicClosure ℚ) (S : Set (HeightOneSpectrum (𝓞 Kf.1))) τ) = cycMod Kf.1 (AlgebraicClosure ℚ) l r τ` using `DFunLike.congr_fun hμ τ`. Establish `hτ : τ ζ = ζ ^ ((cycMod Kf.1 (AlgebraicClosure ℚ) l r τ : (ZMod (l ^ r))ˣ) : ZMod (l ^ r)).val` using `cyclotomicCharacter.spec (L := AlgebraicClosure ℚ) l (MulSemiringAction.toRingAut (G Kf.1 (AlgebraicClosure ℚ)) (AlgebraicClosure ℚ) τ) ζ hζ.pow_eq_one`. Establish `hζN : ζ ^ (l ^ r) = 1` using `hζ.pow_eq_one`.
+
+Establish `hmod : ∀ k : ℕ, ζ ^ (k % (l ^ r)) = ζ ^ k` using `fun k => by conv_rhs => rw [← Nat.mod_add_div k (l ^ r), pow_add, pow_mul, hζN, one_pow, mul_one]`. Use `show (gsRoots (S : Set (HeightOneSpectrum (𝓞 Kf.1))) (l ^ r)).ρ (e (toGS (AlgebraicClosure ℚ) (S : Set (HeightOneSpectrum (𝓞 Kf.1))) τ)) (rootOf w c) = rootOf w (((μ (toGS (AlgebraicClosure ℚ) (S : Set (HeightOneSpectrum (𝓞 Kf.1))) τ) : (ZMod (l ^ r))ˣ) : ZMod (l ^ r)) * c)`. Rewrite using `[hm]`. Apply `Additive.toMul.injective` to reduce the goal to its premises. Apply `Subtype.ext` to reduce the goal to its premises.
+
+Apply `Units.ext` to reduce the goal to its premises. Apply `Subtype.ext` to reduce the goal to its premises. Use `show ((e (toGS (AlgebraicClosure ℚ) (S : Set (HeightOneSpectrum (𝓞 Kf.1))) τ) ((((w ^ c.val : rootsOfUnity (l ^ r) (maxUnramifiedOutside Kf.1 (AlgebraicClosure ℚ) (S : Set (HeightOneSpectrum (𝓞 Kf.1))))) : (maxUnramifiedOutside Kf.1 (AlgebraicClosure ℚ) (S : Set (HeightOneSpectru …`. Rewrite using `[he τ, SubgroupClass.coe_pow, Units.val_pow_eq_pow_val, IntermediateField.coe_pow, hwv, SubgroupClass.coe_pow, Units.val_pow_eq_pow_val, IntermediateField.coe_pow, hwv, map_pow, hτ, ← pow_mul, ZMod.val_mul, hmod]`.
+-/
 theorem gsRoots_act_rootOf (Kf : FiniteSubfield) [NumberField Kf.1] [IsAlgClosure Kf.1 (AlgebraicClosure ℚ)]
     (S : Finset (HeightOneSpectrum (𝓞 Kf.1))) {l r : ℕ} [Fact l.Prime] [NeZero (l ^ r)]
     (ζ : AlgebraicClosure ℚ) (hζ : IsPrimitiveRoot ζ (l ^ r))
@@ -151,6 +183,9 @@ theorem gsRoots_act_rootOf (Kf : FiniteSubfield) [NumberField Kf.1] [IsAlgClosur
     SubgroupClass.coe_pow, Units.val_pow_eq_pow_val, IntermediateField.coe_pow, hwv, map_pow, hτ,
     ← pow_mul, ZMod.val_mul, hmod]
 
+/- English proof (translation)
+Introduce `v hv h`. Apply `hv` to reduce the goal to its premises. Establish `: ((l : ℕ) : 𝓞 Kf.1) ^ r ∈ v.asIdeal` using `by simpa using h`. Conclude with `Finset.mem_coe.2 (hS v (v.isPrime.mem_of_pow_mem r this))`.
+-/
 theorem natCast_pow_not_mem (Kf : FiniteSubfield) (S : Finset (HeightOneSpectrum (𝓞 Kf.1))) {l r : ℕ}
     [Fact l.Prime] (hS : ContainsAbove S l) :
     ∀ v ∉ (S : Set (HeightOneSpectrum (𝓞 Kf.1))), (((l ^ r : ℕ) : ℕ) : 𝓞 Kf.1) ∉ v.asIdeal := by
@@ -160,6 +195,17 @@ theorem natCast_pow_not_mem (Kf : FiniteSubfield) (S : Finset (HeightOneSpectrum
   exact Finset.mem_coe.2 (hS v (v.isPrime.mem_of_pow_mem r this))
 
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Establish `hN0 : l ^ r ≠ 0` using `pow_ne_zero _ (Fact.out : l.Prime).ne_zero`. Establish `hmem : ζ ∈ maxUnramifiedOutside Kf.1 (AlgebraicClosure ℚ) (S : Set (HeightOneSpectrum (𝓞 Kf.1)))` using `mem_maxUnramifiedOutside_of_pow_eq_one _ hN0 (natCast_pow_not_mem Kf S hS) hζ.pow_eq_one`. Use `haveI : NeZero (l ^ r) := ⟨hN0⟩`. Establish `hζL : IsPrimitiveRoot (⟨ζ, hmem⟩ : maxUnramifiedOutside Kf.1 (AlgebraicClosure ℚ) (S : Set (HeightOneSpectrum (𝓞 Kf.1)))) (l ^ r)`. Rewrite using `[← IsPrimitiveRoot.coe_submonoidClass_iff]`.
+
+Conclude with `hζ`. Establish `hex` using `exists_root_of_primitive (L := maxUnramifiedOutside Kf.1 (AlgebraicClosure ℚ) (S : Set (HeightOneSpectrum (𝓞 Kf.1)))) hN0 hζL`. Use `Exists.elim hex (fun w hwv => ?_)` and prove the remaining obligations. Establish `hwv' : (((w : (maxUnramifiedOutside Kf.1 (AlgebraicClosure ℚ) (S : Set (HeightOneSpectrum (𝓞 Kf.1))))ˣ) : maxUnramifiedOutside Kf.1 (AlgebraicClosure ℚ) (S : Set (HeightOneSpectrum (𝓞 Kf.1)))) : AlgebraicClosure ℚ) = ζ` using `congrArg Subtype.val hwv`. Establish `hw : IsPrimitiveRoot (((w : (maxUnramifiedOutside Kf.1 (AlgebraicClosure ℚ) (S : Set (HeightOneSpectrum (𝓞 Kf.1))))ˣ) : maxUnramifiedOutside Kf.1 (AlgebraicClosure ℚ) (S : Set (HeightOneSpectrum (𝓞 Kf.1))))) (l ^ r)`.
+
+Rewrite using `[hwv]`. Conclude with `hζL`. Set `rr : ZMod (l ^ r) ≃+ (gsRoots (S : Set (HeightOneSpectrum (𝓞 Kf.1))) (l ^ r)).V` to `AddEquiv.ofBijective (rootOf w) (rootOf_bijective w hw)`. Establish `hrr : ∀ c, rr c = rootOf w c` using `fun _ => rfl`. Establish `hr : ∀ g c, (gsRoots (S : Set (HeightOneSpectrum (𝓞 Kf.1))) (l ^ r)).ρ (e g) (rr c) = rr (((μ g : (ZMod (l ^ r))ˣ) : ZMod (l ^ r)) * c)` using `fun g c => by`.
+
+Rewrite using `[hrr, hrr]`. Conclude with `gsRoots_act_rootOf Kf S ζ hζ e he μ hμ w hwv' g c`. Use `Exists.elim (dualGen e ρ μ A (gsRoots (S : Set (HeightOneSpectrum (𝓞 Kf.1))) (l ^ r)) eM hM rr hr) (fun eD h => ?_)` and prove the remaining obligations. Use `⟨eD, h.1, fun f m => ?_⟩` and prove the remaining obligations. Rewrite using `[h.2, hrr, rootOf_apply]`.
+
+Use `show ((((w ^ (f m).val : rootsOfUnity (l ^ r) (maxUnramifiedOutside Kf.1 (AlgebraicClosure ℚ) (S : Set (HeightOneSpectrum (𝓞 Kf.1))))) : (maxUnramifiedOutside Kf.1 (AlgebraicClosure ℚ) (S : Set (HeightOneSpectrum (𝓞 Kf.1))))ˣ) : maxUnramifiedOutside Kf.1 (AlgebraicClosure ℚ) (S : …`. Rewrite using `[SubgroupClass.coe_pow, Units.val_pow_eq_pow_val, IntermediateField.coe_pow, hwv']`.
+-/
 theorem dualCmp' (Kf : FiniteSubfield) [NumberField Kf.1] [IsAlgClosure Kf.1 (AlgebraicClosure ℚ)]
     (S : Finset (HeightOneSpectrum (𝓞 Kf.1))) {l r : ℕ} [Fact l.Prime] (hr : 0 < r)
     (ζ : AlgebraicClosure ℚ) (hζ : IsPrimitiveRoot ζ (l ^ r)) (hS : ContainsAbove S l)

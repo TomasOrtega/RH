@@ -3,6 +3,9 @@ import Development.AbelianVarietyTheory.Proofs.DivisorProofs.PeriodicTemperedDis
 import Mathlib
 open scoped Classical
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.IntComb.dirac_comb_unique | exact GlobalTheory.IntComb.dirac_comb_unique | (intros; apply GlobalTheory.IntComb.dirac_comb_unique <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.periodic_tempered_dist_poisson : ∀ (n : ℕ) (T : SchwartzMap (Fin n → ℝ) ℂ →L[ℂ] ℂ),
     (∀ k : Fin n → ℤ, ∀ f f' : SchwartzMap (Fin n → ℝ) ℂ, (∀ x, f' x = f (x + fun i => (k i : ℝ))) → T f' = T f) →
     (∀ m : Fin n → ℤ, ∀ f f' : SchwartzMap (Fin n → ℝ) ℂ,

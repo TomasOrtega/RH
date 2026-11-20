@@ -10,6 +10,9 @@ open NumberField IsDedekindDomain MeasureTheory Filter Topology Formalism.MainNo
 open GlobalTheory.WeilM GlobalTheory.AdelicU GlobalTheory.LFun GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels GlobalTheory.ThK
 
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.CuspCont.isCT_integral_of_regFam | exact GlobalTheory.CuspCont.isCT_integral_of_regFam | (intros; apply GlobalTheory.CuspCont.isCT_integral_of_regFam <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.eisenstein_unfolding_rapid_decay : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) {d d₁ : ℕ}
     (W : Spc F E d) (H' : Plane E d d₁) (μ : Measure (UA σ W.J)), μ.IsHaarMeasure →
     ∀ (𝓕 : Set (UA σ W.J)) (f : UA σ W.J → ℂ) (Ez : ℂ → UA σ W.J → UA σ W.J → ℂ) (s₀ : ℂ) (R₀ : ℝ), Continuous f →

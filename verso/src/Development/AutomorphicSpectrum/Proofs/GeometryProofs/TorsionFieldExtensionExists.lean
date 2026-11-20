@@ -25,6 +25,9 @@ noncomputable section
 namespace GlobalTheory.CompanionTheory.Ar.Sl.Transl
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {L : Type} [Field L] [NumberField L]
 
+/- English proof (translation)
+Take `⟨T, hT, -⟩` from `(GlobalTheory.T.torsion_value_unique_base_change E H L D 1 th L (spMap (algebraMap (𝓞 L) L)) 1 N hN (one_pow N)).1`. Take `⟨-, -, w, _, _, hw, -⟩` from `hT`. Conclude with `⟨w, hw⟩`.
+-/
 theorem exists_mulGen (D : PPData H L) (th : Out.H0 D.t.PP.L 1) (N : ℕ) (hN : 1 ≤ N) :
     ∃ w : LB.Gen (LB.LinComb D.t.PP.L (K := Fin 2) ![((𝟙 D.t.G : D.t.G ⟶ D.t.G) ^ N).left, 𝟙 D.t.G.left] ![1, -((N : ℤ) ^ 2)]),
       w.IsGen := by
@@ -38,6 +41,91 @@ namespace GlobalTheory.CompanionTheory.Ar.Sl.Transl
 
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {L : Type} [Field L] [NumberField L]
 
+/- English proof (translation)
+Take `⟨wI, hwI, hrig, -⟩` from `e.lin`. Establish `hPw` using `(isGen_iff wI).1 hwI`. Establish `hL` using `D.t.PP.isLB`. Establish `hL'` using `D'.t.PP.isLB`. Establish `hY` using `D'.m.cart.1`.
+
+Establish `habel : IsAbelianScheme D'.tK.G` using `⟨inferInstance, D'.tK.semi.smooth, D'.princ.1, D'.tK.semi.geomConnected⟩`. Establish `hp` using `(GlobalTheory.globalFns_holds _ D'.tK.G habel).2`. Set `Tb : Over (Sp (𝓞 L'))` to `Over.mk (D'.m.φ ≫ D'.t.G.hom)`. Set `a' : Tb ⟶ D'.t.G` to `Over.homMk D'.m.φ rfl`. Set `T₀ : Over (Sp (𝓞 L))` to `Over.mk (Tb.hom ≫ spMap (algebraMap (𝓞 L) (𝓞 L')))`.
+
+Set `a : T₀ ⟶ D.t.G` to `pushPt e.cart.1.w a'`. Set `ρx : T₀ ⟶ Over.mk (spMap (algebraMap (𝓞 L') L') ≫ spMap (algebraMap (𝓞 L) (𝓞 L')))` to `Over.homMk D'.tK.G.hom (by show D'.tK.G.hom ≫ _ ≫ _ = (D'.m.φ ≫ D'.t.G.hom) ≫ _`. Rewrite using `[hY.w, Category.assoc])`. Set `xY : T₀ ⟶ D.t.G` to `ρx ≫ x`. Establish `hxY : xY ^ m = 1`.
+
+Rewrite using `[← MonObj.comp_pow, hx, MonObj.comp_one]`. Take `⟨v, hvs, hv1⟩` from `exists_lin D.t.cub xY a m hxY`. Set `ψ : T₀ ⟶ D.t.G` to `xY * a ^ m`. Set `u : FG D.t.PP.L D'.tK.G.left` to `(((v.mul (W.pull a.left)).mul (e₀.pull D'.tK.G.hom)).mul (W.pull (1 : T₀ ⟶ D.t.G).left).inv).mul (((rigFG D.t.PP).pull T₀.hom).pow (m ^ 2)).inv`. Establish `hu : ∀ (U : Type) [CommGroup U] (h : (D'.tK.G.left ⟶ D.t.G.left) → U), u.sum U h = h ψ.left * (h (D'.m.φ ≫ e.φ) ^ (m ^ 2))⁻¹`.
+
+Introduce `U _ h`. Simplify using `only [u, FG.sum_mul, FG.sum_inv, FG.sum_pow, FG.sum_pull, hvs, hW, he₀, sum_rigFG, left_pow, Category.comp_id]`. Rewrite using `[one_pow, ← one_left]`. Establish `e₁ : h (D'.tK.G.hom ≫ x.left) = h xY.left` using `rfl`. Establish `e₂ : h a.left = h (D'.m.φ ≫ e.φ)` using `rfl`.
+
+Rewrite using `[e₁, ← e₂]`. Apply `Additive.ofMul.injective` to reduce the goal to its premises. Simplify using `only [ofMul_mul, ofMul_inv, ofMul_pow]`. Normalize the expressions using the abelian group laws. Establish `: CompactSpace D'.t.G.left`.
+
+Use `D'.t.semi.quasiCompact` as an intermediate fact. Conclude with `QuasiCompact.compactSpace_of_compactSpace D'.t.G.hom`. Establish `: QuasiSeparatedSpace D'.t.G.left`. Use `D'.t.semi.separated` as an intermediate fact. Conclude with `quasiSeparatedSpace_of_quasiSeparated D'.t.G.hom`.
+
+Take `⟨s, t, ht, hs⟩` from `exists_sec_of_gen (nonZeroDivisors (𝓞 L')) hY hPw hL hL' th ψ.left (m ^ 2) u hu`. Use `⟨s, t, nonZeroDivisors.ne_zero ht, ?_⟩` and prove the remaining obligations. Introduce `F _ f y b xF yF N T T' hxF hyF hT hT'`. Establish `hbc` using `spMap_comp' f (algebraMap (𝓞 L') L')`. Choose the witnesses or unpack the hypotheses as in `rfl : b = spMap (f.comp (algebraMap (𝓞 L') L')) ≫ spMap (algebraMap (𝓞 L) (𝓞 L')) := by`.
+
+Establish `h1 : xF.left ≫ D.t.G.hom = b` using `Over.w xF`. Establish `h2 : x.left ≫ D.t.G.hom = _` using `Over.w x`. Rewrite using `[← h1, hxF, Category.assoc, h2, hbc, Category.assoc]`. Both sides reduce to the same expression. Establish `lift₁ : ∀ q : Sp F ⟶ D'.t.G.left, q ≫ D'.t.G.hom = spMap (f.comp (algebraMap (𝓞 L') L')) → ∃ p : Sp F ⟶ D'.tK.G.left, p ≫ D'.m.φ = q ∧ p ≫ D'.tK.G.hom = spMap f` using `fun q hq => ⟨hY.lift q (spMap f) (hq.trans hbc), hY.lift_fst _ _ _, hY.lift_snd _ _ _⟩`.
+
+Set `one' : Over.mk (spMap (f.comp (algebraMap (𝓞 L') L'))) ⟶ D'.t.G` to `1`. Take `⟨p, hp1, hp2⟩` from `lift₁ y.left (Over.w y)`. Take `⟨p₀, hp₀1, hp₀2⟩` from `lift₁ one'.left (Over.w one')`. Take `⟨px, hpx1, hpx2⟩` from `lift₁ (e.cart.1.lift xF.left (spMap (f.comp (algebraMap (𝓞 L') L'))) (Over.w xF)) (e.cart.1.lift_snd _ _ _)`. Establish `hpx3 : px ≫ D'.m.φ ≫ e.φ = xF.left`.
+
+Rewrite using `[← Category.assoc, hpx1]`. Conclude with `e.cart.1.lift_fst _ _ _`. Set `ρ : ∀ q : Sp F ⟶ D'.tK.G.left, q ≫ D'.tK.G.hom = spMap f → (Over.mk (spMap (f.comp (algebraMap (𝓞 L') L')) ≫ spMap (algebraMap (𝓞 L) (𝓞 L'))) ⟶ T₀)` to `fun q hq => Over.homMk q (by show q ≫ (D'.m.φ ≫ D'.t.G.hom) ≫ _ = _`. Rewrite using `[hY.w, Category.assoc, ← Category.assoc q, hq, hbc, Category.assoc]`. Use the proof step `rfl)`.
+
+Establish `hρx : ∀ q hq, ρ q hq ≫ xY = xF` using `fun q hq => Over.OverMorphism.ext (by show q ≫ D'.tK.G.hom ≫ x.left = xF.left`. Rewrite using `[← Category.assoc, hq, hxF])`. Establish `hone : one'.left ≫ e.φ = (1 : Over.mk (spMap (f.comp (algebraMap (𝓞 L') L')) ≫ spMap (algebraMap (𝓞 L) (𝓞 L'))) ⟶ D.t.G).left` using `congrArg (fun q => q.left) (map_one (pushHom e.cart (Over.mk (spMap (f.comp (algebraMap (𝓞 L') L'))))))`. Establish `hρa : ρ p hp2 ≫ a = yF` using `Over.OverMorphism.ext (by show p ≫ D'.m.φ ≫ e.φ = yF.left`. Rewrite using `[← Category.assoc, hp1, hyF])`.
+
+Establish `hρa₀ : ρ p₀ hp₀2 ≫ a = 1` using `Over.OverMorphism.ext (by show p₀ ≫ D'.m.φ ≫ e.φ = _`. Rewrite using `[← Category.assoc, hp₀1, hone])`. Establish `hρax : ρ px hpx2 ≫ a = xF` using `Over.OverMorphism.ext hpx3`. Establish `hxFm : xF ^ m = 1`. Rewrite using `[← hρx p hp2, ← MonObj.comp_pow, hxY, MonObj.comp_one]`.
+
+Establish `hyN : y ^ N = 1` using `hT.2.1`. Establish `hN1 : 1 ≤ N` using `hT.1`. Establish `hyFN : yF ^ N = 1`. Establish `h1 : pushPt e.cart.1.w y = yF` using `Over.OverMorphism.ext hyF.symm`. Establish `h2` using `map_pow (pushHom e.cart (Over.mk (spMap (f.comp (algebraMap (𝓞 L') L'))))) y N`.
+
+Establish `h3` using `map_one (pushHom e.cart (Over.mk (spMap (f.comp (algebraMap (𝓞 L') L')))))`. Rewrite `h2` using `[hyN, h3]`. Rewrite using `[← h1]`. Conclude with `h2.symm`. Set `z : Sp F` to `(⊥ : PrimeSpectrum F)`.
+
+Use `choose J hJ using fun χ : Sp F ⟶ D.t.G.left => exists_chart hL (χ z)`. Use `choose J' hJ' using fun χ : Sp F ⟶ D'.t.G.left => exists_chart hL' (χ z)`. Establish `hJg : Good D.t.PP.L z J` using `hJ`. Establish `hJg' : Good D'.t.PP.L z J'` using `hJ'`. Take `⟨wk, hwk, E1⟩` from `torsVal_val D.t.PP th (xF * yF ^ m) (N * m) T' hT' z J hJg`.
+
+Take `⟨wn', hwn', E2⟩` from `torsVal_val D'.t.PP s y N T hT z J' hJg'`. Take `⟨t₁, ht₁, hv₁⟩` from `exists_up hPw hL hL' wn' hwn'`. Take `⟨wm2, hwm2⟩` from `exists_mulGen D th (m ^ 2) (Nat.one_le_pow _ _ hm)`. Take `⟨wn, hwn⟩` from `exists_mulGen D th N hN1`. Set `tF : FG D.t.PP.L D'.t.G.left` to `⟨Fin 2, _, _, t₁, ht₁⟩`.
+
+Establish `tFs : ∀ (U : Type) [CommGroup U] (h : (D'.t.G.left ⟶ D.t.G.left) → U), tF.sum U h = h (((𝟙 D'.t.G : D'.t.G ⟶ D'.t.G) ^ N).left ≫ e.φ) * (h (𝟙 D'.t.G.left ≫ e.φ) ^ (N ^ 2))⁻¹` using `fun U _ h => by show ∏ k : Fin 2, h ((![((𝟙 D'.t.G : D'.t.G ⟶ D'.t.G) ^ N).left, 𝟙 D'.t.G.left] : Fin 2 → _) k ≫ e.φ) ^ (![1, -((N : ℤ) ^ 2)] : Fin 2 → ℤ) k = _`. Rewrite using `[Fin.prod_univ_two]`. Simplify using `only [Matrix.cons_val_zero, Matrix.cons_val_one, zpow_one, zpow_neg]`. Use `norm_cast`. Establish `haN : D'.m.φ ≫ ((𝟙 D'.t.G : D'.t.G ⟶ D'.t.G) ^ N).left ≫ e.φ = (a ^ N).left`.
+
+Rewrite using `[← Category.assoc]`. Establish `h1 : D'.m.φ ≫ ((𝟙 D'.t.G : D'.t.G ⟶ D'.t.G) ^ N).left = (a' ^ N).left` using `left_pow a' N`. Rewrite using `[h1]`. Conclude with `congrArg (fun q => q.left) (map_pow (pushHom e.cart Tb) a' N)`. Establish `haa : D'.m.φ ≫ 𝟙 D'.t.G.left ≫ e.φ = a.left`.
+
+Rewrite using `[Category.id_comp]`. Both sides reduce to the same expression. Establish `haa' : D'.m.φ ≫ e.φ = a.left` using `rfl`. Establish `hψ : ψ ^ (N * m) = (a ^ N) ^ (m ^ 2)` using `by show (xY * a ^ m) ^ (N * m) = _`. Rewrite using `[mul_pow, mul_comm N m, pow_mul xY, hxY, one_pow, _root_.one_mul, ← pow_mul, ← pow_mul]`.
+
+Use `congr 1`. Expand and normalize the polynomial expressions, which then agree. Set `g₁ : FG D.t.PP.L D'.tK.G.left` to `((((mulFG wk hwk).pull ψ.left).mul (u.pow ((N * m) ^ 2))).mul ((tF.pull D'.m.φ).pow ((m ^ 2) ^ 2)).inv).mul ((mulFG wm2 hwm2).pull (a ^ N).left).inv`. Establish `g₁s : ∀ (U : Type) [CommGroup U] (h : (D'.tK.G.left ⟶ D.t.G.left) → U), g₁.sum U h = 1`. Introduce `U _ h`.
+
+Simplify using `only [g₁, FG.sum_mul, FG.sum_inv, FG.sum_pow, FG.sum_pull, sum_mulFG, tFs, hu, left_pow, Category.comp_id, haN, haa, haa', hψ]`. Apply `Additive.ofMul.injective` to reduce the goal to its premises. Simplify using `only [ofMul_mul, ofMul_inv, ofMul_pow, ofMul_one]`. Use `module`. Set `g₂ : FG D.t.PP.L D'.tK.G.left` to `(((mulFG wk hwk).pull a.left).mul ((W.pull a.left).pow (N ^ 2)).inv).mul ((mulFG wn hwn).pull (a ^ m).left).inv`.
+
+Establish `g₂s : ∀ (U : Type) [CommGroup U] (h : (D'.tK.G.left ⟶ D.t.G.left) → U), g₂.sum U h = 1`. Introduce `U _ h`. Establish `e₃ : (a ^ m) ^ N = a ^ (N * m)` using `by rw [← pow_mul, mul_comm]`. Simplify using `only [g₂, FG.sum_mul, FG.sum_inv, FG.sum_pow, FG.sum_pull, sum_mulFG, hW, left_pow, Category.comp_id, e₃]`. Apply `Additive.ofMul.injective` to reduce the goal to its premises.
+
+Simplify using `only [ofMul_mul, ofMul_inv, ofMul_pow, ofMul_one]`. Use `module`. Establish `R1'` using `g₁.v_const hL g₁s D'.tK.G.hom hp (hp2.trans hp₀2.symm) hJg`. Establish `R2'` using `g₂.v_const hL g₂s D'.tK.G.hom hp (hpx2.trans hp₀2.symm) hJg`. Simplify using `only [g₁, FG.v_mul hJg, FG.v_inv, FG.v_pow hJg, FG.v_pull hJg] at R1'`.
+
+Simplify using `only [g₂, FG.v_mul hJg, FG.v_inv, FG.v_pow hJg, FG.v_pull hJg] at R2'`. Set `o` to `(1 : Over.mk (spMap (f.comp (algebraMap (𝓞 L') L')) ≫ spMap (algebraMap (𝓞 L) (𝓞 L'))) ⟶ D.t.G).left`. Establish `pz : p ≫ ψ.left = (xF * yF ^ m).left`. Establish `h1 : ρ p hp2 ≫ ψ = xF * yF ^ m` using `by show ρ p hp2 ≫ (xY * a ^ m) = _`. Rewrite using `[MonObj.comp_mul, MonObj.comp_pow, hρx p hp2, hρa]`.
+
+Conclude with `congrArg (fun q => q.left) h1`. Establish `p0z : p₀ ≫ ψ.left = xF.left`. Establish `h1 : ρ p₀ hp₀2 ≫ ψ = xF` using `by show ρ p₀ hp₀2 ≫ (xY * a ^ m) = _`. Rewrite using `[MonObj.comp_mul, MonObj.comp_pow, hρx p₀ hp₀2, hρa₀, one_pow, _root_.mul_one]`. Conclude with `congrArg (fun q => q.left) h1`.
+
+Establish `paN : p ≫ (a ^ N).left = o`. Establish `h1 : ρ p hp2 ≫ a ^ N = 1` using `by rw [MonObj.comp_pow, hρa, hyFN]`. Conclude with `congrArg (fun q => q.left) h1`. Establish `p0aN : p₀ ≫ (a ^ N).left = o`. Establish `h1 : ρ p₀ hp₀2 ≫ a ^ N = 1` using `by rw [MonObj.comp_pow, hρa₀, one_pow]`.
+
+Conclude with `congrArg (fun q => q.left) h1`. Establish `pxam : px ≫ (a ^ m).left = o`. Establish `h1 : ρ px hpx2 ≫ a ^ m = 1` using `by rw [MonObj.comp_pow, hρax, hxFm]`. Conclude with `congrArg (fun q => q.left) h1`. Establish `p0am : p₀ ≫ (a ^ m).left = o`.
+
+Establish `h1 : ρ p₀ hp₀2 ≫ a ^ m = 1` using `by rw [MonObj.comp_pow, hρa₀, one_pow]`. Conclude with `congrArg (fun q => q.left) h1`. Establish `pxa : px ≫ a.left = xF.left` using `hpx3`. Establish `p0a : p₀ ≫ a.left = o` using `congrArg (fun q => q.left) hρa₀`. Establish `p01 : p₀ ≫ (1 : T₀ ⟶ D.t.G).left = o`.
+
+Establish `h1 : ρ p₀ hp₀2 ≫ (1 : T₀ ⟶ D.t.G) = 1` using `MonObj.comp_one _`. Conclude with `congrArg (fun q => q.left) h1`. Establish `p0T : p₀ ≫ T₀.hom = spMap (f.comp (algebraMap (𝓞 L') L')) ≫ spMap (algebraMap (𝓞 L) (𝓞 L'))` using `Over.w (ρ p₀ hp₀2)`. Rewrite `R1'` using `[pz, p0z, paN, p0aN, hp1, hp₀1]`. Rewrite `R2'` using `[pxa, p0a, pxam, p0am]`.
+
+Establish `R1` using `mul_right_cancel R1'`. Establish `hv0 : v.v p₀ z J = 1` using `hv1 _ (ρ p₀ hp₀2) z J hJg hρa₀`. Establish `hu0 : u.v p₀ z J = e₀.v (spMap f) z J * ((rigFG D.t.PP).v (spMap (f.comp (algebraMap (𝓞 L') L')) ≫ spMap (algebraMap (𝓞 L) (𝓞 L'))) z J ^ (m ^ 2))⁻¹`. Simplify using `only [u, FG.v_mul hJg, FG.v_inv, FG.v_pow hJg, FG.v_pull hJg]`. Rewrite using `[hv0, p0a, p01, p0T, hp₀2, _root_.one_mul, mul_right_comm (W.v o z J), _root_.mul_inv_cancel, _root_.one_mul]`.
+
+Establish `HN` using `hN (Sp F) (spMap f) z J hJg`. Establish `o1 : spMap f ≫ (1 : Over.mk (spMap (algebraMap (𝓞 L') L') ≫ spMap (algebraMap (𝓞 L) (𝓞 L'))) ⟶ D.t.G).left = o` using `by show _ = (1 : Over.mk (spMap (f.comp (algebraMap (𝓞 L') L')) ≫ spMap (algebraMap (𝓞 L) (𝓞 L'))) ⟶ D.t.G).left`. Rewrite using `[one_left, one_left]`. Simplify using `only [Over.mk_hom, hbc, Category.assoc]`. Rewrite `HN` using `[← hxF, o1, ← Category.assoc, ← hbc]`.
+
+Establish `R2 : (mulFG wk hwk).v xF.left z J * W.v o z J ^ (N ^ 2) = (mulFG wk hwk).v o z J * W.v xF.left z J ^ (N ^ 2)`. Establish `h1` using `mul_right_cancel R2'`. Apply `Additive.ofMul.injective` to reduce the goal to its premises. Establish `h2` using `congrArg Additive.ofMul h1`. Simplify using `only [ofMul_mul, ofMul_inv, ofMul_pow] at h2 ⊢`.
+
+Take the linear combination `(norm := abel) h2`. Establish `upv : ∀ r : Sp F ⟶ D'.t.G.left, val t₁ r z J = gw wI (r ≫ ((𝟙 D'.t.G : D'.t.G ⟶ D'.t.G) ^ N).left) z (J ((r ≫ ((𝟙 D'.t.G : D'.t.G ⟶ D'.t.G) ^ N).left) ≫ e.φ)) (J' (r ≫ ((𝟙 D'.t.G : D'.t.G ⟶ D'.t.G) ^ N).left)) * (gw wI r z (J (r ≫ e.φ)) (J' r) ^ (N ^ 2))⁻¹ * val wn' r z J'`. Introduce `r`. Establish `h1` using `hv₁ (Sp F) r z _ _ (hJg.mem _ r) (hJg'.mem _ r)`. Use `h1.trans (congrArg₂ (· * ·) ?_ rfl)` and prove the remaining obligations.
+
+Rewrite using `[pw, Fin.prod_univ_two]`. Simplify using `only [Matrix.cons_val_zero, Matrix.cons_val_one, zpow_one, zpow_neg, Category.comp_id, Category.assoc]`. Use `norm_cast`. Establish `hyl : y.left ≫ ((𝟙 D'.t.G : D'.t.G ⟶ D'.t.G) ^ N).left = one'.left` using `by rw [left_pow, hyN]`. Establish `h1l : one'.left ≫ ((𝟙 D'.t.G : D'.t.G ⟶ D'.t.G) ^ N).left = one'.left`.
+
+Rewrite using `[left_pow, show one' ^ N = one' from one_pow N]`. Establish `hA` using `upv y.left`. Establish `hB` using `upv one'.left`. Rewrite `hA` using `[hyl]`. Rewrite `hB` using `[h1l]`.
+
+Establish `hP` using `(maps_iff wI _ (fun _ => eSec D.t.G) _ D'.t.PP.rig D.t.PP.rig e.cm.e _ (rigPull_le e.cm.F e.cm.e e.cm.e_comm D.t.PP.L) (fun _ => rfl)).1 hrig`. Establish `q₁ : spMap (f.comp (algebraMap (𝓞 L') L')) ≫ eSec D'.t.G = one'.left` using `(one_left (G := D'.t.G) (Over.mk (spMap (f.comp (algebraMap (𝓞 L') L'))))).symm`. Establish `q₂ : (spMap (f.comp (algebraMap (𝓞 L') L')) ≫ spMap (algebraMap (𝓞 L) (𝓞 L'))) ≫ eSec D.t.G = one'.left ≫ e.φ` using `(hone.trans (one_left (G := D.t.G) (Over.mk (spMap (f.comp (algebraMap (𝓞 L') L')) ≫ spMap (algebraMap (𝓞 L) (𝓞 L')))))).symm`. Establish `hR` using `hP (Sp F) (spMap (f.comp (algebraMap (𝓞 L') L'))) z (fun _ => J ((spMap (f.comp (algebraMap (𝓞 L') L')) ≫ spMap (algebraMap (𝓞 L) (𝓞 L'))) ≫ eSec D.t.G)) (fun _ => J' (spMap (f.comp (algebraMap (𝓞 L') L')) ≫ eSec D'.t.G)) (fun _ => by`. Establish `h1` using `hJg ((spMap (f.comp (algebraMap (𝓞 L') L')) ≫ spMap (algebraMap (𝓞 L) (𝓞 L'))) ≫ eSec D.t.G)`.
+
+Rewrite `h1` using `[q₂, ← q₁]`. Rewrite using `[q₂, ← q₁]`. Conclude with `h1)`. Use the proof step `(fun _ => hJg' _)`. Establish `hS` using `hs (Sp F) p z J J' hJg hJg'`.
+
+Establish `hc : p ≫ D'.m.φ ≫ D'.t.G.hom = spMap (f.comp (algebraMap (𝓞 L') L'))`. Rewrite using `[← Category.assoc, hp1]`. Conclude with `Over.w y`. Rewrite `hS` using `[hc, gc_spMap, hp1, pz]`. Rewrite `hR` using `[e.base]`.
+
+Set `bo : ((Sp F).presheaf.stalk z)ˣ` to `gw wI (Y := Sp F) one'.left z (J (one'.left ≫ e.φ)) (J' one'.left)`. Set `bz : ((Sp F).presheaf.stalk z)ˣ` to `gw wI (Y := Sp F) y.left z (J (y.left ≫ e.φ)) (J' y.left)`. Establish `hRv : (rigFG D.t.PP).v (spMap (f.comp (algebraMap (𝓞 L') L')) ≫ spMap (algebraMap (𝓞 L) (𝓞 L'))) z J = bo * val (Z` using `Sp F) D'.t.PP.rig (spMap (f.comp (algebraMap (𝓞 L') L'))) z J' := by`. Use `hR.trans (congrArg₂ (· * ·) ?_ rfl)` and prove the remaining obligations. Rewrite using `[Fintype.prod_unique, zpow_one]`.
+
+Use `show gw wI _ z (J _) (J' _) = _`. Rewrite using `[q₁, q₂]`. Establish `key` using `transl_algebra m N (toStk z T) (toStk z T') (sval (Z := Sp F) th (xF * yF ^ m).left z J) (sval (Z := Sp F) s y.left z J') (toStk z (f (t : L'))) ((mulFG wk hwk).v o z J) ((mulFG wk hwk).v (xF * yF ^ m).left z J) ((mulFG wk hwk).v xF.left z J) (W.v o z J) (W.v xF.left z J) (val t₁ …`. Apply `(toStk z).injective` to reduce the goal to its premises. Rewrite using `[map_pow, map_mul, map_pow]`.
+
+Conclude with `key`.
+-/
 theorem core (D : PPData H L) (th : Out.H0 D.t.PP.L 1) (m : ℕ) (hm : 1 ≤ m)
     {L' : Type} [Field L'] [NumberField L'] [Algebra L L'] (D' : PPData H L') (e : D.Ext D')
     (x : Over.mk (spMap (algebraMap (𝓞 L') L') ≫ spMap (algebraMap (𝓞 L) (𝓞 L'))) ⟶ D.t.G) (hx : x ^ m = 1)
@@ -309,6 +397,29 @@ end GlobalTheory.CompanionTheory.Ar.Sl.Transl
 noncomputable section
 namespace GlobalTheory.CompanionTheory.Ar.Sl.Transl
 
+/- English proof (translation)
+Introduce `E _ _ _ H L _ _ D th m K _ _ _ x hm hx`. Establish `hL` using `D.t.PP.isLB`. Take `⟨w, hw⟩` from `exists_mulGen D th m hm`. Establish `hW : ∀ (U : Type) [CommGroup U] (h : (D.t.G.left ⟶ D.t.G.left) → U), (mulFG w hw).sum U h = h ((𝟙 D.t.G : D.t.G ⟶ D.t.G) ^ m).left * (h (𝟙 D.t.G.left) ^ (m ^ 2))⁻¹` using `sum_mulFG w hw`. Set `A : FG D.t.PP.L (Sp K)` to `(((mulFG w hw).pull x.left).mul ((mulFG w hw).pull (1 : Over.mk (spMap ((algebraMap L K).comp (algebraMap (𝓞 L) L))) ⟶ D.t.G).left).inv).mul (((rigFG D.t.PP).pull (spMap ((algebraMap L K).comp (algebraMap (𝓞 L) L)))).pow (m ^ 2)).inv`.
+
+Establish `hA : ∀ (U : Type) [CommGroup U] (h : (Sp K ⟶ D.t.G.left) → U), A.sum U h = (h x.left ^ (m ^ 2))⁻¹`. Introduce `U _ h`. Simplify using `only [A, FG.sum_mul, FG.sum_inv, FG.sum_pow, FG.sum_pull, hW, sum_rigFG, left_pow, Category.comp_id, hx, one_pow]`. Rewrite using `[show spMap ((algebraMap L K).comp (algebraMap (𝓞 L) L)) ≫ eSec D.t.G = (1 : Over.mk (spMap ((algebraMap L K).comp (algebraMap (𝓞 L) L))) ⟶ D.t.G).left from (one_left (G := D.t.G) (Over.mk _)).symm]`. Apply `Additive.ofMul.injective` to reduce the goal to its premises.
+
+Simplify using `only [ofMul_mul, ofMul_inv, ofMul_pow]`. Normalize the expressions using the abelian group laws. Take `⟨K', _, _, _, e₁, he₁, hr⟩` from `exists_root_gen hL (m ^ 2) (Nat.one_le_pow _ _ hm) x.left A hA`. Use `letI : Algebra L K' := ((algebraMap K K').comp (algebraMap L K)).toAlgebra`. Use `haveI : IsScalarTower L K K' := .of_algebraMap_eq' rfl`.
+
+Use `⟨K', inferInstance, inferInstance, inferInstance, inferInstance, inferInstance, ?_⟩` and prove the remaining obligations. Introduce `L' _ _ _ _ _ D' eD`. Establish `hring : (algebraMap (𝓞 L') L').comp (algebraMap (𝓞 L) (𝓞 L')) = (algebraMap K' L').comp ((algebraMap K K').comp ((algebraMap L K).comp (algebraMap (𝓞 L) L)))`. Use extensionality with `a`. Use `show algebraMap (𝓞 L') L' (algebraMap (𝓞 L) (𝓞 L') a) = algebraMap K' L' (algebraMap L K' (algebraMap (𝓞 L) L a))`.
+
+Rewrite using `[← IsScalarTower.algebraMap_apply L K' L']`. Both sides reduce to the same expression. Establish `hbase : spMap (algebraMap (𝓞 L') L') ≫ spMap (algebraMap (𝓞 L) (𝓞 L')) = (spMap (algebraMap K' L') ≫ spMap (algebraMap K K')) ≫ spMap ((algebraMap L K).comp (algebraMap (𝓞 L) L))`. Rewrite using `[← spMap_comp', hring, spMap_comp', spMap_comp', Category.assoc]`. Set `ρ : Over.mk (spMap (algebraMap (𝓞 L') L') ≫ spMap (algebraMap (𝓞 L) (𝓞 L'))) ⟶ Over.mk (spMap ((algebraMap L K).comp (algebraMap (𝓞 L) L)))` to `Over.homMk (spMap (algebraMap K' L') ≫ spMap (algebraMap K K')) hbase.symm`.
+
+Establish `hxL : (ρ ≫ x) ^ m = 1` using `by rw [← MonObj.comp_pow, hx, MonObj.comp_one]`. Establish `he₀ : ∀ (U : Type) [CommGroup U] (h : (Sp L' ⟶ D.t.G.left) → U), (e₁.pull (spMap (algebraMap K' L'))).sum U h = h (ρ ≫ x).left`. Introduce `U _ h`. Rewrite using `[FG.sum_pull, he₁, ← Category.assoc]`. Both sides reduce to the same expression.
+
+Establish `hN : ∀ (Z : Scheme.{0}) (r : Z ⟶ Sp L') (z : Z) (J), Good D.t.PP.L z J → (e₁.pull (spMap (algebraMap K' L'))).v r z J ^ (m ^ 2) * (mulFG w hw).v (r ≫ (ρ ≫ x).left) z J * ((mulFG w hw).v (r ≫ (1 : Over.mk (spMap (algebraMap (𝓞 L') L') ≫ spMap (algebraMap (𝓞 L) (𝓞 L'))) ⟶ D.t.G).le …`. Introduce `Z r z J hJ`. Establish `h1` using `hr Z (r ≫ spMap (algebraMap K' L')) z J hJ`. Simplify using `only [A, FG.v_mul hJ, FG.v_inv, FG.v_pow hJ, FG.v_pull hJ] at h1`. Rewrite using `[FG.v_pull hJ]`.
+
+Establish `a₁ : (r ≫ spMap (algebraMap K' L') ≫ spMap (algebraMap K K')) ≫ x.left = r ≫ (ρ ≫ x).left`. Rewrite using `[Category.assoc]`. Both sides reduce to the same expression. Establish `a₂ : (r ≫ spMap (algebraMap K' L')) ≫ spMap (algebraMap K K') = r ≫ spMap (algebraMap K' L') ≫ spMap (algebraMap K K')` using `Category.assoc _ _ _`. Establish `a₃ : (r ≫ spMap (algebraMap K' L') ≫ spMap (algebraMap K K')) ≫ (1 : Over.mk (spMap ((algebraMap L K).comp (algebraMap (𝓞 L) L))) ⟶ D.t.G).left = r ≫ (1 : Over.mk (spMap (algebraMap (𝓞 L') L') ≫ spMap (algebraMap (𝓞 L) (𝓞 L'))) ⟶ D.t.G).left`.
+
+Establish `h2 : ρ ≫ (1 : Over.mk (spMap ((algebraMap L K).comp (algebraMap (𝓞 L) L))) ⟶ D.t.G) = 1` using `MonObj.comp_one _`. Rewrite using `[Category.assoc]`. Conclude with `congrArg (fun q => r ≫ Over.Hom.left q) h2`. Establish `a₄ : (r ≫ spMap (algebraMap K' L') ≫ spMap (algebraMap K K')) ≫ spMap ((algebraMap L K).comp (algebraMap (𝓞 L) L)) = r ≫ spMap (algebraMap (𝓞 L') L') ≫ spMap (algebraMap (𝓞 L) (𝓞 L'))`. Rewrite using `[hbase, Category.assoc]`.
+
+Rewrite `h1` using `[a₂, a₁, a₃, a₄]`. Rewrite `*` using `[_root_.mul_assoc (_ ^ _ ), _root_.mul_assoc (_ ^ _)]`. Conclude with `h1`. Take `⟨s, d, hd, Hs⟩` from `core D th m hm D' eD (ρ ≫ x) hxL (mulFG w hw) hW (e₁.pull (spMap (algebraMap K' L'))) he₀ hN`. Use `⟨s, d, hd, fun F _ f y b xF yF N T T' hxF hyF hT hT' => ⟨1, le_rfl, ?_⟩⟩` and prove the remaining obligations.
+
+Rewrite using `[pow_one, pow_one]`. Use `Hs F f y b xF yF N T T' ?_ hyF hT hT'` and prove the remaining obligations. Rewrite using `[hxF, spMap_comp', spMap_comp', Category.assoc]`. Both sides reduce to the same expression.
+-/
 theorem transl_main : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (L : Type) [Field L] [NumberField L] (D : PPData H L) (th : Out.H0 D.t.PP.L 1) (m : ℕ) (K : Type) [Field K] [NumberField K] [Algebra L K] (x : Over.mk (spMap ((algebraMap L K).comp (algebraMap (𝓞 L) L))) ⟶ D.t.G), 1 ≤ m → x ^ m = 1 → ∃ (K' : Type) (_ : Field K') (_ : NumberField K') (_ : Algebra K K') (_ : Algebra L K') (_ : IsScalarTower L K K'), ∀ (L' : Type) [Field L'] [NumberField L'] [Algebra K' L'] [Algebra L L'] [IsScalarTower L K' L'] (D' : PPData H L') (e : D.Ext D'), ∃ (s : Out.H0 D'.t.PP.L (m ^ 2)) (d : 𝓞 L'), d ≠ 0 ∧ ∀ (F : Type) [Field F] (f : L' →+* F) (y : Over.mk (spMap (f.comp (algebraMap (𝓞 L') L'))) ⟶ D'.t.G) (b : Sp F ⟶ Sp (𝓞 L)) (xF yF : Over.mk b ⟶ D.t.G) (N : ℕ) (T T' : F), xF.left = spMap ((f.comp (algebraMap K' L')).comp (algebraMap K K')) ≫ x.left → yF.left = y.left ≫ e.φ → TorsVal D'.t.PP s y N T → TorsVal D.t.PP th (xF * yF ^ m) (N * m) T' → ∃ r : ℕ, 1 ≤ r ∧ (T ^ (m ^ 2)) ^ r = (f (d : L') ^ ((N * m) ^ 2) * T') ^ r := by
   intro E _ _ _ H L _ _ D th m K _ _ _ x hm hx
   have hL := D.t.PP.isLB

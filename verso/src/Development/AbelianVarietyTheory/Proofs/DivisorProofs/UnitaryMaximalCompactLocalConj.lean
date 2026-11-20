@@ -12,6 +12,13 @@ noncomputable section
 open NumberField IsDedekindDomain Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes GlobalTheory.AdelicU GlobalTheory.SmGL GlobalTheory.PRep GlobalTheory.SplitWeil GlobalTheory.LeviBlockExponent GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels GlobalTheory.UAut GlobalTheory.SiegelSet GlobalTheory.ThK.SquareIntegrability
 open scoped TensorProduct
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ hcm n J hJ r Xf Yf hW hLL v t`. Take `⟨B, hB1, hB2⟩` from `GlobalTheory.T.exists_local_witt_basis F E σ hcm n J hJ r Xf Yf hW v t`. Use `⟨B, fun K hK φ hφ V _ _ π hπ m T x hT hφx S s hs hS i hiS => ⟨?_, fun hi ϖ L hL => ?_⟩⟩` and prove the remaining obligations. Establish `h1 : (1 : Matrix (Fin r) (Fin r) E).rank ≤ n`. Rewrite using `[← hW.xy]`.
+
+Conclude with `(Matrix.rank_mul_le_right _ _).trans (Matrix.rank_le_height _)`. Rewrite `h1` using `[Matrix.rank_one, Fintype.card_fin]`. Use linear arithmetic over natural numbers and integers. Take `⟨x₀, e, hx₀, hcen, habs⟩` from `hB2 i hi ϖ`. Take `⟨φc, hφc, hexp⟩` from `hs`.
+
+Establish `hrel` using `GlobalTheory.T.langlands_lemma_unitary_local F E σ hcm n J hJ r Xf Yf hW hLL v t B S hS i hiS hi (hB1 S hS i hiS hi) ϖ x₀ e hx₀ hcen K hK φ hφ V π hπ m T x hT hφx φc hφc L hL`. Rewrite `hrel` using `[GlobalTheory.T.modulus_character_at_position_element (Fv F v) n i hi ϖ, ← habs]`. Take `⟨c, hc, hn⟩` from `GlobalTheory.T.cusp_form_constant_term_vanishes F E σ hcm n J hJ r Xf Yf hW K S hS i hiS φc hφc.1 s hexp e (emb σ J v x₀) hcen L hrel`. Conclude with `⟨c, hc, by rw [hn, habs]⟩`.
+-/
 theorem GlobalTheory.LeviBlockRealization.exists_norm_eq_rpow : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E),
     IsCMExt F E σ → ∀ (n : ℕ) (J : Matrix (Fin n) (Fin n) E), IsHermND σ J →
     ∀ (r : ℕ) (Xf Yf : Matrix (Fin n) (Fin r) E), IsWittFrame σ J Xf Yf → GlobalTheory.Published.LanglandsLemmaUnitary →

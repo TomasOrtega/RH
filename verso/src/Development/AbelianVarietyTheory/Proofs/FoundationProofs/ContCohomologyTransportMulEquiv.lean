@@ -6,6 +6,11 @@ open NumberField IsDedekindDomain Formalism.ConjugateSelfDual ReciprocityTheory.
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Use `show ρ' (g 0) (f fun i => φ (g i.succ)) + (Finset.univ.sum fun j : Fin (n + 1) => (-1 : R) ^ ((j : ℕ) + 1) • f (fun i => φ (Fin.contractNth j (· * ·) g i))) = ρ (φ (g 0)) (f fun i => φ (g i.succ)) + Finset.univ.sum fun j : Fin (n + 1) => (-1 : R) ^ ((j : ℕ) + 1) • f (Fin.contract …`. Rewrite using `[h]`. Use `congr 1`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Use `congr 2`.
+
+Use function extensionality and compare the values at `i`. Simplify using `only [Fin.contractNth]`. Apply the tactic sequence `split_ifs <;> simp`.
+-/
 theorem dn_comp_monoidHom {R Γ Γ' M : Type*} [CommRing R] [Group Γ] [Group Γ'] [AddCommGroup M]
     [Module R M] (φ : Γ' →* Γ) (ρ : Representation R Γ M) (ρ' : Representation R Γ' M)
     (h : ∀ g m, ρ' g m = ρ (φ g) m) (n : ℕ) (f : (Fin n → Γ) → M) (g : Fin (n + 1) → Γ') :
@@ -22,6 +27,23 @@ theorem dn_comp_monoidHom {R Γ Γ' M : Type*} [CommRing R] [Group Γ] [Group Γ
   simp only [Fin.contractNth]
   split_ifs <;> simp
 
+/- English proof (translation)
+Introduce `R _ Γ Γ' _ _ _ _ M _ _ _ _ e he he' ρ ρ' h`. Establish `h' : ∀ g m, ρ g m = ρ' (e.symm g) m` using `fun g m => by rw [h, e.apply_symm_apply]`. Use `⟨⟨⟨pairH1DecompositionMap ρ ρ' e.toMonoidHom he LinearMap.id continuous_id (fun g m => (h g m).symm), pairH1DecompositionMap ρ' ρ e.symm.toMonoidHom he' LinearMap.id continuous_id (fun g m => (h' g m).symm), ?_, ?_⟩⟩, ⟨⟨compatiblePairH2 ρ ρ' e.toMonoidHom he LinearMap.id continuo …` and prove the remaining obligations. Introduce `x`. Proceed by induction on `x using Submodule.Quotient.induction_on with`.
+
+Consider the case `H f`. Use `congrArg Submodule.Quotient.mk (Subtype.ext (funext fun g => ?_))` and prove the remaining obligations. Conclude with `congrArg f.1 (e.apply_symm_apply g)`. Introduce `x`. Proceed by induction on `x using Submodule.Quotient.induction_on with`.
+
+Consider the case `H f`. Use `congrArg Submodule.Quotient.mk (Subtype.ext (funext fun g => ?_))` and prove the remaining obligations. Conclude with `congrArg f.1 (e.symm_apply_apply g)`. Introduce `x`. Proceed by induction on `x using Submodule.Quotient.induction_on with`.
+
+Consider the case `H f`. Use `congrArg Submodule.Quotient.mk (Subtype.ext (funext fun g => ?_))` and prove the remaining obligations. Conclude with `congrArg f.1 (Prod.ext (e.apply_symm_apply g.1) (e.apply_symm_apply g.2))`. Introduce `x`. Proceed by induction on `x using Submodule.Quotient.induction_on with`.
+
+Consider the case `H f`. Use `congrArg Submodule.Quotient.mk (Subtype.ext (funext fun g => ?_))` and prove the remaining obligations. Conclude with `congrArg f.1 (Prod.ext (e.symm_apply_apply g.1) (e.symm_apply_apply g.2))`. Introduce `hs`. Rewrite `hs`, the goal using `[GlobalTheory.Published.subsingleton_Hn_succ_iff]`.
+
+Introduce `f hf hd`. Take `⟨c, hc, hcf⟩` from `hs (fun x => f (fun i => e.symm (x i))) (hf.comp (continuous_pi fun i => he'.comp (continuous_apply i))) (by`. Use function extensionality and compare the values at `g`. Use `dn_comp_monoidHom e.symm.toMonoidHom ρ' ρ h' 3 f g` as an intermediate fact. Rewrite `this` using `[hd]`.
+
+Conclude with `this)`. Use `⟨fun x => c (fun i => e (x i)), hc.comp (continuous_pi fun i => he.comp (continuous_apply i)), ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `g`. Use `dn_comp_monoidHom e.toMonoidHom ρ ρ' h 2 c g` as an intermediate fact. Rewrite `this` using `[hcf]`.
+
+Use `this.trans ?_` and prove the remaining obligations. Conclude with `congrArg f (funext fun i => e.symm_apply_apply _)`.
+-/
 theorem contCohomology_transport_mulEquiv :
     ∀ (R : Type) [CommRing R] (Γ Γ' : Type) [Group Γ] [TopologicalSpace Γ] [Group Γ'] [TopologicalSpace Γ'] (M : Type) [AddCommGroup M] [Module R M] [TopologicalSpace M] [DiscreteTopology M] (e : Γ' ≃* Γ), Continuous e → Continuous e.symm → ∀ (ρ : Representation R Γ M) (ρ' : Representation R Γ' M), (∀ g m, ρ' g m = ρ (e g) m) → Nonempty (H1 ρ ≃ H1 ρ') ∧ Nonempty (H2 ρ ≃ H2 ρ') ∧ (Subsingleton (Hn ρ 3) → Subsingleton (Hn ρ' 3)) := by
   intro R _ Γ Γ' _ _ _ _ M _ _ _ _ e he he' ρ ρ' h

@@ -5,6 +5,15 @@ open MeasureTheory NumberField Matrix Finset Formalism.MainNotions.S GlobalTheor
 
 namespace GlobalTheory.HtProd
 
+/- English proof (translation)
+Rewrite using `[Finset.prod_comm]`. Use `Finset.prod_congr rfl fun b _ => ?_` and prove the remaining obligations. Rewrite using `[← Finset.prod_filter]`. Establish `h1 : ∏ c ∈ Finset.range N, F b (b + c + 1) = ∏ x ∈ Finset.Ico (b + 1) (b + 1 + N), F b x`. Rewrite using `[Finset.prod_Ico_eq_prod_range]`.
+
+Simplify using `only [Nat.add_sub_cancel_left]`. Use `Finset.prod_congr rfl fun c _ => ?_` and prove the remaining obligations. Use `congr 1`. Use linear arithmetic over natural numbers and integers. Rewrite using `[h1]`.
+
+Use `symm`. Apply `Finset.prod_subset` to reduce the goal to its premises. Introduce `x hx`. Simplify using `only [Finset.mem_filter, Finset.mem_range, Finset.mem_Ico] at hx ⊢`. Use linear arithmetic over natural numbers and integers.
+
+Introduce `x hx hx'`. Simplify using `only [Finset.mem_filter, Finset.mem_range, Finset.mem_Ico] at hx hx'`. Conclude with `hF _ _ (by omega)`.
+-/
 theorem prod_shift_eq (N : ℕ) (F : ℕ → ℕ → ℝ) (hF : ∀ b b', N ≤ b' → F b b' = 1) :
     ∏ c ∈ Finset.range N, ∏ b ∈ Finset.range N, F b (b + c + 1) =
       ∏ b ∈ Finset.range N, ∏ b' ∈ Finset.range N, if b < b' then F b b' else 1 := by
@@ -27,6 +36,11 @@ theorem prod_shift_eq (N : ℕ) (F : ℕ → ℕ → ℝ) (hF : ∀ b b', N ≤ 
     simp only [Finset.mem_filter, Finset.mem_range, Finset.mem_Ico] at hx hx'
     exact hF _ _ (by omega)
 
+/- English proof (translation)
+Establish `e : 2 * a + 1 = (a + 1) + a` using `by omega`. Rewrite using `[e, Finset.prod_range_add, Finset.prod_range_succ, Fin.prod_univ_eq_prod_range g a, Fin.prod_univ_eq_prod_range (fun i => g (2 * a - i)) a, ← Finset.prod_range_reflect (fun i => g (2 * a - i)) a]`. Use `congr 1`. Use `Finset.prod_congr rfl fun x hx => ?_` and prove the remaining obligations. Rewrite `hx` using `[Finset.mem_range]`.
+
+Use `congr 1`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem prod_range_split (a : ℕ) (g : ℕ → ℝ) :
     ∏ b ∈ Finset.range (2 * a + 1), g b = (∏ i : Fin a, g i) * g a * ∏ i : Fin a, g (2 * a - i) := by
   have e : 2 * a + 1 = (a + 1) + a := by omega
@@ -38,6 +52,11 @@ theorem prod_range_split (a : ℕ) (g : ℕ → ℝ) :
   congr 1
   omega
 
+/- English proof (translation)
+Establish `h1 : ∀ i k, P i k = (if i < k then P i k else 1) * (if k < i then P k i else 1) * (if i = k then P i k else 1)`. Introduce `i k`. Break down `lt_trichotomy i k with h | h | h` into its components or cases. Simplify using `[h, h.ne, not_lt.mpr h.le]`. Simplify using `[h]`.
+
+Simplify using `[h, h.ne', not_lt.mpr h.le, hP i k]`. Rewrite using `[Finset.prod_congr rfl fun i _ => Finset.prod_congr rfl fun k _ => h1 i k]`. Simplify using `only [Finset.prod_mul_distrib]`. Rewrite using `[Finset.prod_comm (f := fun i k => if k < i then P k i else 1), sq]`. Simplify using the standard rewrite rules.
+-/
 theorem prod_symm_split {a : ℕ} (P : Fin a → Fin a → ℝ) (hP : ∀ i k, P i k = P k i) :
     ∏ i, ∏ k, P i k = (∏ i, ∏ k, if i < k then P i k else 1) ^ 2 * ∏ i, P i i := by
   have h1 : ∀ i k, P i k = (if i < k then P i k else 1) * (if k < i then P k i else 1) *
@@ -52,6 +71,23 @@ theorem prod_symm_split {a : ℕ} (P : Fin a → Fin a → ℝ) (hP : ∀ i k, P
   rw [Finset.prod_comm (f := fun i k => if k < i then P k i else 1), sq]
   simp
 
+/- English proof (translation)
+Introduce `n f a j r τ h hr hra hr0 hτ ha h1`. Rewrite using `[prod_shift_eq (2 * a + 1) (fun b b' => h b ^ r b' / h b' ^ r b) (fun b b' hb => by simp [hr0 b' hb, h1 b' hb])]`. Unfold `layerProd`. Rewrite using `[← hra]`. Simplify using `only [prod_range_split, id]`.
+
+Establish `c1 : ∀ i : Fin a, (i : ℕ) < a` using `fun i => i.2`. Establish `c2 : ∀ i k : Fin a, (i : ℕ) < 2 * a - k` using `fun i k => by omega`. Establish `c3 : ∀ k : Fin a, ¬ a < (k : ℕ)` using `fun k => by omega`. Establish `c4 : ∀ k : Fin a, a < 2 * a - k` using `fun k => by omega`. Establish `c5 : ∀ i k : Fin a, ¬ 2 * a - i < (k : ℕ)` using `fun i k => by omega`.
+
+Establish `c6 : ∀ i : Fin a, ¬ 2 * a - i < a` using `fun i => by omega`. Establish `c7 : ∀ i k : Fin a, (2 * a - i < 2 * a - k) ↔ k < i` using `fun i k => by`. Rewrite using `[Fin.lt_def]`. Use linear arithmetic over natural numbers and integers. Establish `c8 : ∀ i k : Fin a, ((i : ℕ) < k) ↔ i < k` using `fun i k => Iff.rfl`.
+
+Simplify using `only [c1, c2, c3, c4, c5, c6, c7, c8, lt_irrefl, if_true, if_false, ha, fun i => (hr i).1, fun i => (hr i).2, fun i => (hτ i).2.1, fun i => (hτ i).2.2, Finset.prod_const_one, one_mul, mul_one, one_pow, div_one, Finset.prod_mul_distrib, Finset.prod_filter]`. Establish `d1 : ∀ i k : Fin a, (τ i ^ (2 * f * j i)) ^ j k / (τ k ^ (2 * f * j k)) ^ j i = (τ i / τ k) ^ (2 * j i * j k * f)` using `fun i k => by`. Rewrite using `[div_pow, ← pow_mul, ← pow_mul]`. Apply the tactic sequence `congr 2 <;> ring`. Establish `d2 : ∀ i k : Fin a, (τ i ^ (2 * f * j i)) ^ j k / (τ k ^ (2 * f * j k))⁻¹ ^ j i = (τ i * τ k) ^ (2 * j i * j k * f)` using `fun i k => by`.
+
+Rewrite using `[inv_pow, div_inv_eq_mul, mul_pow, ← pow_mul, ← pow_mul]`. Apply the tactic sequence `congr 2 <;> ring`. Establish `d3 : ∀ i k : Fin a, (τ i ^ (2 * f * j i))⁻¹ ^ j k / (τ k ^ (2 * f * j k))⁻¹ ^ j i = (τ k / τ i) ^ (2 * j k * j i * f)` using `fun i k => by`. Rewrite using `[← d1, inv_pow, inv_pow, div_inv_eq_mul, mul_comm, div_eq_mul_inv]`. Establish `d4 : ∀ i : Fin a, (τ i ^ (2 * f * j i)) ^ r a = τ i ^ (2 * j i * r a * f)` using `fun i => by`.
+
+Rewrite using `[← pow_mul]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree. Establish `d5 : ∀ i : Fin a, 1 / (τ i ^ (2 * f * j i))⁻¹ ^ r a = τ i ^ (2 * j i * r a * f)` using `fun i => by`. Rewrite using `[← d4, inv_pow, one_div, inv_inv]`.
+
+Establish `d6 : ∀ i : Fin a, (τ i * τ i) ^ (2 * j i * j i * f) = ((τ i ^ 2) ^ (j i ^ 2 * f)) ^ 2` using `fun i => by`. Rewrite using `[← sq, ← pow_mul (τ i ^ 2)]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree. Simplify using `only [d1, d2, d3, d4, d5]`.
+
+Rewrite using `[Finset.prod_comm (f := fun i k => if k < i then (τ k / τ i) ^ (2 * j k * j i * f) else 1), prod_symm_split (fun i k => (τ i * τ k) ^ (2 * j i * j k * f)) (fun i k => by rw [mul_comm (τ i)]; congr 1; ring)]`. Simplify using `only [d6, Finset.prod_pow]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem htProd : ∀ (n f a : ℕ) (j : Fin a → ℕ) (r : ℕ → ℕ) (τ : Fin a → ℝ) (h : ℕ → ℝ),
     (∀ i : Fin a, r i = j i ∧ r (2 * a - i) = j i) → r a = n - 2 * ∑ i, j i →
     (∀ b, 2 * a + 1 ≤ b → r b = 0) →

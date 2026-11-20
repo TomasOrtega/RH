@@ -12,6 +12,11 @@ section Val
 
 variable {L : Type} [Field L] [Valued L (WithZero (Multiplicative ℤ))]
 
+/- English proof (translation)
+Establish `h0 : Valued.v x ≠ 0` using `by rw [h]; exact WithZero.coe_ne_zero`. Unfold `ordL`. Rewrite using `[dif_neg h0]`. Use `congr 2`. Apply `WithZero.coe_injective` to reduce the goal to its premises.
+
+Rewrite using `[WithZero.coe_unzero, h]`.
+-/
 theorem ordL_of_eq {x : L} {u : Multiplicative ℤ}
     (h : Valued.v x = (u : WithZero (Multiplicative ℤ))) :
     ordL x = -Multiplicative.toAdd u := by
@@ -22,6 +27,11 @@ theorem ordL_of_eq {x : L} {u : Multiplicative ℤ}
   apply WithZero.coe_injective
   rw [WithZero.coe_unzero, h]
 
+/- English proof (translation)
+Establish `ha' : Valued.v a ≠ 0` using `(Valuation.ne_zero_iff _).2 ha`. Establish `hb' : Valued.v b ≠ 0` using `(Valuation.ne_zero_iff _).2 hb`. Take `⟨u, hu⟩` from `WithZero.ne_zero_iff_exists.1 ha'`. Take `⟨w, hw⟩` from `WithZero.ne_zero_iff_exists.1 hb'`. Establish `hab : Valued.v (a * b) = ((u * w : Multiplicative ℤ) : WithZero (Multiplicative ℤ))`.
+
+Rewrite using `[map_mul, ← hu, ← hw, WithZero.coe_mul]`. Rewrite using `[ordL_of_eq hab, ordL_of_eq hu.symm, ordL_of_eq hw.symm, toAdd_mul]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem ordL_mul_of_ne {a b : L} (ha : a ≠ 0) (hb : b ≠ 0) :
     ordL (a * b) = ordL a + ordL b := by
   have ha' : Valued.v a ≠ 0 := (Valuation.ne_zero_iff _).2 ha
@@ -33,16 +43,25 @@ theorem ordL_mul_of_ne {a b : L} (ha : a ≠ 0) (hb : b ≠ 0) :
   rw [ordL_of_eq hab, ordL_of_eq hu.symm, ordL_of_eq hw.symm, toAdd_mul]
   ring
 
+/- English proof (translation)
+Unfold `ordL`. Simplify using `only [h]`.
+-/
 theorem ordL_congr {a b : L} (h : Valued.v a = Valued.v b) : ordL a = ordL b := by
   unfold ordL
   simp only [h]
 
+/- English proof (translation)
+Establish `h : Valued.v (1 : L) = ((1 : Multiplicative ℤ) : WithZero (Multiplicative ℤ))`. Rewrite using `[map_one, WithZero.coe_one]`. Rewrite using `[ordL_of_eq h]`. Simplify using the standard rewrite rules.
+-/
 theorem ordL_one : ordL (1 : L) = 0 := by
   have h : Valued.v (1 : L) = ((1 : Multiplicative ℤ) : WithZero (Multiplicative ℤ)) := by
     rw [map_one, WithZero.coe_one]
   rw [ordL_of_eq h]
   simp
 
+/- English proof (translation)
+Rewrite using `[Matrix.mul_apply]`. Use `Valuation.map_sum_le _ fun k _ => ?_` and prove the remaining obligations. Rewrite using `[map_mul]`. Conclude with `mul_le_one' (hA i k) (hB k j)`.
+-/
 theorem val_mul_entry_le {ι : Type} [Fintype ι] {A B : Matrix ι ι L}
     (hA : ∀ i j, Valued.v (A i j) ≤ 1) (hB : ∀ i j, Valued.v (B i j) ≤ 1) (i j : ι) :
     Valued.v ((A * B) i j) ≤ 1 := by
@@ -57,6 +76,11 @@ section Anti
 
 variable {L : Type} [Field L]
 
+/- English proof (translation)
+Establish `: (i.val + j.val + 1 = n) ↔ j = Fin.rev i`. Rewrite using `[Fin.ext_iff, Fin.val_rev]`. Use `i.isLt` as an intermediate fact. Use `j.isLt` as an intermediate fact. Use linear arithmetic over natural numbers and integers.
+
+Simplify using `only [antiJ, this]`.
+-/
 theorem antiJ_apply {n : ℕ} (i j : Fin n) :
     antiJ L n i j = if j = Fin.rev i then 1 else 0 := by
   have : (i.val + j.val + 1 = n) ↔ j = Fin.rev i := by
@@ -66,6 +90,11 @@ theorem antiJ_apply {n : ℕ} (i j : Fin n) :
     omega
   simp only [antiJ, this]
 
+/- English proof (translation)
+Use extensionality with `i j`. Rewrite using `[Matrix.mul_apply, Finset.sum_eq_single (Fin.rev i)]`. Rewrite using `[antiJ_apply, antiJ_apply, if_pos rfl, one_mul, Matrix.one_apply, Fin.rev_rev]`. Distinguish the cases in `h : i = j`. Simplify using `[h]`.
+
+Simplify using `[h, Ne.symm h]`. Introduce `k _ hk`. Rewrite using `[antiJ_apply, if_neg hk, zero_mul]`. Simplify using the standard rewrite rules.
+-/
 theorem antiJ_mul_self (n : ℕ) : antiJ L n * antiJ L n = 1 := by
   ext i j
   rw [Matrix.mul_apply, Finset.sum_eq_single (Fin.rev i)]
@@ -77,6 +106,11 @@ theorem antiJ_mul_self (n : ℕ) : antiJ L n * antiJ L n = 1 := by
     rw [antiJ_apply, if_neg hk, zero_mul]
   · simp
 
+/- English proof (translation)
+Use extensionality with `i j`. Simplify using `only [cT, Matrix.transpose_apply, Matrix.map_apply, antiJ_apply]`. Distinguish the cases in `h : j = Fin.rev i`. Substitute `h` using the available equality. Simplify using the standard rewrite rules.
+
+Establish `h' : ¬ i = Fin.rev j` using `fun e => h (by rw [e, Fin.rev_rev])`. Simplify using `[h, h']`.
+-/
 theorem cT_antiJ (σ : L →+* L) (n : ℕ) : cT σ (antiJ L n) = antiJ L n := by
   ext i j
   simp only [cT, Matrix.transpose_apply, Matrix.map_apply, antiJ_apply]
@@ -86,6 +120,11 @@ theorem cT_antiJ (σ : L →+* L) (n : ℕ) : cT σ (antiJ L n) = antiJ L n := b
   · have h' : ¬ i = Fin.rev j := fun e => h (by rw [e, Fin.rev_rev])
     simp [h, h']
 
+/- English proof (translation)
+Establish `: cT σ (diagonal s) = diagonal fun i => σ (s i)`. Use extensionality with `a b`. Distinguish the cases in `h : a = b`. Substitute `h` using the available equality. Simplify using `[cT]`.
+
+Simplify using `[cT, Matrix.diagonal_apply_ne _ h, Matrix.diagonal_apply_ne _ (Ne.symm h)]`. Rewrite using `[this, Matrix.mul_diagonal, Matrix.diagonal_mul]`.
+-/
 theorem cT_diag_conj {ι : Type} [Fintype ι] [DecidableEq ι] (σ : L →+* L) (s : ι → L)
     (H : Matrix ι ι L) (i j : ι) :
     (cT σ (diagonal s) * H * diagonal s) i j = σ (s i) * H i j * s j := by
@@ -103,6 +142,33 @@ section Core
 
 variable {L : Type} [Field L] [Valued L (WithZero (Multiplicative ℤ))]
 
+/- English proof (translation)
+Establish `hprod : ∀ i, H i (Fin.rev i) * H' (Fin.rev i) i = 1`. Introduce `i`. Establish `h1 : (H * H') i i = 1` using `by rw [hHH, Matrix.one_apply_eq]`. Rewrite `h1` using `[Matrix.mul_apply, Finset.sum_eq_single (Fin.rev i)]`. Conclude with `h1`.
+
+Introduce `k _ hk`. Establish `: H i k = 0`. Assume the negation of the conclusion as `h`. Conclude with `hk (hsupp i k h)`. Rewrite using `[this, zero_mul]`.
+
+Simplify using the standard rewrite rules. Establish `hv : ∀ i, Valued.v (H i (Fin.rev i)) = 1`. Introduce `i`. Use `le_antisymm (hI _ _) ?_` and prove the remaining obligations. Establish `h2 : Valued.v (H i (Fin.rev i)) * Valued.v (H' (Fin.rev i) i) = 1`.
+
+Rewrite using `[← map_mul, hprod, map_one]`. Combine the equalities or inequalities in the displayed calculation. Establish `hne : ∀ i, H i (Fin.rev i) ≠ 0`. Introduce `i h`. Use `hv i` as an intermediate fact.
+
+Rewrite `this` using `[h, map_zero]`. Conclude with `zero_ne_one this`. Establish `hs : ∀ i, σ (H i (Fin.rev i)) = H (Fin.rev i) i` using `fun i => hherm (Fin.rev i) i`. Establish `hmid : ∀ i, i = Fin.rev i → ∃ s : L, Valued.v s = 1 ∧ σ s * s = (H i (Fin.rev i))⁻¹`. Introduce `i hi`.
+
+Use `hyp _ ?_ ?_` and prove the remaining obligations. Rewrite using `[map_inv₀, hs i]`. Establish `e : H (Fin.rev i) i = H i (Fin.rev i)`. Rewrite using `[← hi]`. Rewrite using `[e]`.
+
+Rewrite using `[map_inv₀, hv i, inv_one]`. Use `choose! r hr1 hr2 using hmid`. Use `⟨fun i => if i < Fin.rev i then 1 else if Fin.rev i < i then (H (Fin.rev i) i)⁻¹ else r i, ?_, ?_⟩` and prove the remaining obligations. Introduce `i dsimp only split_ifs with h1 h2`. Conclude with `map_one _`.
+
+Use `hv (Fin.rev i)` as an intermediate fact. Rewrite `this` using `[Fin.rev_rev]`. Rewrite using `[map_inv₀, this, inv_one]`. Conclude with `hr1 i (le_antisymm (not_lt.1 h2) (not_lt.1 h1))`. Introduce `i`.
+
+Break down `lt_trichotomy i (Fin.rev i) with h | h | h` into its components or cases. Establish `h1 : ¬ Fin.rev i < Fin.rev (Fin.rev i)`. Rewrite using `[Fin.rev_rev]`. Conclude with `not_lt.2 h.le`. Establish `h2 : Fin.rev (Fin.rev i) < Fin.rev i` using `by rw [Fin.rev_rev]; exact h`.
+
+Simplify using `only`. Rewrite using `[if_pos h, if_neg h1, if_pos h2, Fin.rev_rev, map_one, one_mul]`. Conclude with `mul_inv_cancel₀ (hne i)`. Establish `h1 : ¬ i < Fin.rev i` using `not_lt.2 h.ge`. Establish `h2 : ¬ Fin.rev i < i` using `not_lt.2 h.le`.
+
+Establish `a1 : ¬ Fin.rev i < Fin.rev (Fin.rev i)` using `by rw [Fin.rev_rev]; exact h2`. Establish `a2 : ¬ Fin.rev (Fin.rev i) < Fin.rev i` using `by rw [Fin.rev_rev]; exact h1`. Establish `a3 : r (Fin.rev i) = r i` using `congrArg r h.symm`. Simplify using `only`. Rewrite using `[if_neg h1, if_neg h2, if_neg a1, if_neg a2, a3]`.
+
+Use `hr2 i h` as an intermediate fact. Combine the equalities or inequalities in the displayed calculation. Establish `h1 : ¬ i < Fin.rev i` using `not_lt.2 h.le`. Establish `h2 : Fin.rev i < Fin.rev (Fin.rev i)` using `by rw [Fin.rev_rev]; exact h`. Simplify using `only`.
+
+Rewrite using `[if_neg h1, if_pos h, if_pos h2, mul_one, map_inv₀, hherm i (Fin.rev i)]`. Conclude with `inv_mul_cancel₀ (hne i)`.
+-/
 theorem exists_diag_unit (σ : L →+* L) (hσσ : ∀ x, σ (σ x) = x)
     (hσv : ∀ x, Valued.v (σ x) = Valued.v x)
     (hyp : ∀ c : L, σ c = c → Valued.v c = 1 → ∃ s : L, Valued.v s = 1 ∧ σ s * s = c)
@@ -184,6 +250,49 @@ theorem exists_diag_unit (σ : L →+* L) (hσσ : ∀ x, σ (σ x) = x)
 
 end Core
 
+/- English proof (translation)
+Introduce `L _ _ σ hσσ hσv hyp n y hy hrev d hd m hm hm' hU`. Use `set M : Matrix (Fin n) (Fin n) L := m.val with hMdef`. Use `set M' : Matrix (Fin n) (Fin n) L := (m⁻¹).val with hM'def`. Use `set J := antiJ L n with hJdef`. Establish `hMM' : M * M' = 1` using `by rw [hMdef, hM'def, ← Units.val_mul, mul_inv_cancel, Units.val_one]`.
+
+Establish `hM'M : M' * M = 1` using `by rw [hMdef, hM'def, ← Units.val_mul, inv_mul_cancel, Units.val_one]`. Establish `hcc : cT σ M * cT σ M' = 1` using `by rw [← cT_mul, hM'M, cT_one]`. Establish `hcc' : cT σ M' * cT σ M = 1` using `by rw [← cT_mul, hMM', cT_one]`. Establish `hJJ : J * J = 1` using `antiJ_mul_self n`. Establish `hJc : cT σ J = J` using `cT_antiJ σ n`.
+
+Establish `hJI : ∀ i j, Valued.v (J i j) ≤ 1`. Introduce `i j`. Rewrite using `[hJdef, antiJ_apply]`. Use `split_ifs`. Rewrite using `[map_one]`.
+
+Rewrite using `[map_zero]`. Conclude with `zero_le_one`. Establish `hcI : ∀ (A : Matrix (Fin n) (Fin n) L), (∀ i j, Valued.v (A i j) ≤ 1) → ∀ i j, Valued.v (cT σ A i j) ≤ 1`. Introduce `A hA i j`. Simplify using `only [cT, Matrix.transpose_apply, Matrix.map_apply]`.
+
+Rewrite using `[hσv]`. Conclude with `hA j i`. Use `set D : Matrix (Fin n) (Fin n) L := diagonal fun i => (d i : L) with hDdef`. Establish `hUm : cT σ (M * D * M') * J * (M * D * M') = J`. Establish `h` using `hU`.
+
+Express the relevant statement in the definitionally equal form `cT σ ((m * GlobalTheory.SmGL.diagT L (Fin n) d * m⁻¹ : GL (Fin n) L) : Matrix (Fin n) (Fin n) L) * J * ((m * GlobalTheory.SmGL.diagT L (Fin n) d * m⁻¹ : GL (Fin n) L) : Matrix (Fin n) (Fin n) L) = J at h`. Rewrite `h` using `[Units.val_mul, Units.val_mul, GlobalTheory.SmGL.val_diagT]`. Then use the resulting hypothesis. Use `set H : Matrix (Fin n) (Fin n) L := cT σ M * J * M with hHdef`. Establish `hDH : cT σ D * H * D = H`. Combine the equalities or inequalities in the displayed calculation.
+
+Rewrite using `[hcc, hM'M, hHdef]`. Simplify using `only [Matrix.one_mul, Matrix.mul_one, Matrix.mul_assoc]`. Use `_ = cT σ M * (cT σ (M * D * M') * J * (M * D * M')) * M := by`. Simplify using `only [cT_mul, Matrix.mul_assoc]`. Use `_ = H := by rw [hUm]`.
+
+Apply the tactic sequence `have hentry : ∀ i j, σ (d i : L) * H i j * (d j : L) = H i j := by`. Introduce `i j`. Rewrite using `[← cT_diag_conj σ (fun i => (d i : L)) H i j, ← hDdef, hDH]`. Establish `hsupp : ∀ i j, H i j ≠ 0 → j = Fin.rev i`. Introduce `i j hij`.
+
+Establish `h1 : σ (d i : L) * (d j : L) = 1`. Apply the tactic sequence `have h2 := hentry i j`. Establish `h3 : H i j * (σ (d i : L) * (d j : L)) = H i j * 1`. Rewrite using `[mul_one]`. Combine the equalities or inequalities in the displayed calculation.
+
+Conclude with `mul_left_cancel₀ hij h3`. Establish `hσd : σ (d i : L) ≠ 0`. Introduce `h`. Use `hσv (d i : L)` as an intermediate fact. Rewrite `this` using `[h, map_zero]`.
+
+Conclude with `(d i).ne_zero ((Valuation.zero_iff _).1 this.symm)`. Establish `h4` using `ordL_mul_of_ne hσd (d j).ne_zero`. Rewrite `h4` using `[h1, ordL_one, ordL_congr (hσv _), hd, hd]`. Apply `hy` to reduce the goal to its premises. Rewrite using `[hrev]`.
+
+Use linear arithmetic over natural numbers and integers. Establish `hherm : ∀ i j, σ (H j i) = H i j`. Establish `hcH : cT σ H = H`. Establish `hcc2 : cT σ (cT σ M) = M`. Use extensionality with `a b`.
+
+Simplify using `[cT, hσσ]`. Rewrite using `[hHdef, cT_mul, cT_mul, hcc2, hJc, Matrix.mul_assoc]`. Introduce `i j`. Use `congrFun (congrFun hcH i) j` as an intermediate fact. Simplify `this` using `[cT]`.
+
+Establish `hHH : H * (M' * J * cT σ M') = 1`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[hHdef]`. Simplify using `only [Matrix.mul_assoc]`. Use `_ = cT σ M * (J * J) * cT σ M' := by`.
+
+Rewrite using `[hMM']`. Simplify using `only [Matrix.mul_one, Matrix.mul_assoc]`. Use `_ = 1 := by rw [hJJ, Matrix.mul_one, hcc]`. Establish `hI : ∀ i j, Valued.v (H i j) ≤ 1` using `val_mul_entry_le (val_mul_entry_le (hcI M hm) hJI) hm`. Establish `hI' : ∀ i j, Valued.v ((M' * J * cT σ M') i j) ≤ 1` using `val_mul_entry_le (val_mul_entry_le hm' hJI) (hcI M' hm')`.
+
+Take `⟨s, hs1, hs2⟩` from `exists_diag_unit σ hσσ hσv hyp H _ hHH hI hI' hsupp hherm`. Establish `hs0 : ∀ i, s i ≠ 0`. Introduce `i h`. Use `hs1 i` as an intermediate fact. Rewrite `this` using `[h, map_zero]`.
+
+Conclude with `zero_ne_one this`. Use `⟨fun i => Units.mk0 (s i) (hs0 i), fun i => hs1 i, ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `cT σ ((m * GlobalTheory.SmGL.diagT L (Fin n) _ : GL (Fin n) L) : Matrix (Fin n) (Fin n) L) * J * ((m * GlobalTheory.SmGL.diagT L (Fin n) _ : GL (Fin n) L) : Matrix (Fin n) (Fin n) L) = J`. Rewrite using `[Units.val_mul, GlobalTheory.SmGL.val_diagT]`. Establish `hval : (fun i => ((Units.mk0 (s i) (hs0 i) : Lˣ) : L)) = s`.
+
+Use extensionality with `i`. Both sides reduce to the same expression. Rewrite using `[hval, cT_mul]`. Establish `hre : cT σ (diagonal s) * cT σ M * J * (M * diagonal s) = cT σ (diagonal s) * H * diagonal s`. Rewrite using `[hHdef]`.
+
+Simplify using `only [Matrix.mul_assoc]`. Rewrite using `[hre]`. Use extensionality with `i j`. Rewrite using `[cT_diag_conj, hJdef, antiJ_apply]`. Distinguish the cases in `hj : j = Fin.rev i`.
+
+Substitute `hj` using the available equality. Rewrite using `[if_pos rfl]`. Conclude with `hs2 i`. Rewrite using `[if_neg hj]`. Establish `: H i j = 0`.
+
+Assume the negation of the conclusion as `h`. Conclude with `hj (hsupp i j h)`. Rewrite using `[this, mul_zero, zero_mul]`.
+-/
 theorem main : ∀ (L : Type) [Field L] [Valued L (WithZero (Multiplicative ℤ))] (σ : L →+* L), (∀ x, σ (σ x) = x) → (∀ x, Valued.v (σ x) = Valued.v x) → (∀ c : L, σ c = c → Valued.v c = 1 → ∃ s : L, Valued.v s = 1 ∧ σ s * s = c) → ∀ (n : ℕ) (y : Fin n → ℤ), Function.Injective y → (∀ i, y (Fin.rev i) = -y i) → ∀ (d : Fin n → Lˣ), (∀ i, ordL (d i : L) = y i) → ∀ m : GL (Fin n) L, (∀ i j, Valued.v (m.val i j) ≤ 1) → (∀ i j, Valued.v ((m⁻¹).val i j) ≤ 1) → m * GlobalTheory.SmGL.diagT L (Fin n) d * m⁻¹ ∈ UJ σ (antiJ L n) → ∃ s : Fin n → Lˣ, (∀ i, Valued.v (s i : L) = 1) ∧ m * GlobalTheory.SmGL.diagT L (Fin n) s ∈ UJ σ (antiJ L n) := by
   intro L _ _ σ hσσ hσv hyp n y hy hrev d hd m hm hm' hU
   set M : Matrix (Fin n) (Fin n) L := m.val with hMdef

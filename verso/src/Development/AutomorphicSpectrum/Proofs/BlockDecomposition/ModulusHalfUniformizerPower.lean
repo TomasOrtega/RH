@@ -10,6 +10,15 @@ open scoped NumberField.AdeleRing ValuativeRel
 
 namespace GlobalTheory.CompanionTheory.WS
 
+/- English proof (translation)
+Use `set r : NNReal := NNReal.sqrt (Spherical.qF F : NNReal) with hr`. Establish `hr2 : r ^ 2 = (Spherical.qF F : NNReal)` using `NNReal.sq_sqrt _`. Establish `hmod : Measures.modulus (((Iwasawa.uniformizerUnit F ^ m : Fˣ)) : F) = (r ^ (-m)) ^ 2`. Rewrite using `[Units.val_zpow_eq_zpow_val, map_zpow₀, Iwasawa.coe_uniformizerUnit, Spherical.modulus_uniformizer, ← hr2, ← zpow_natCast r 2, ← zpow_natCast (r ^ (-m)) 2, ← _root_.zpow_neg, ← _root_.zpow_mul, ← _root_.zpow_mul]`. Use `congr 1`.
+
+Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Establish `hS : Spherical.sqrtQ F = ((r : ℝ) : ℂ)` using `rfl`. Establish `ht : (0 : ℝ) ≤ ((r ^ (-m) : NNReal) : ℝ)` using `NNReal.coe_nonneg _`. Establish `hbr : GroundTheory.LocalField.modulus (((Iwasawa.uniformizerUnit F ^ m : Fˣ)) : F) = (r ^ (-m)) ^ 2`.
+
+Rewrite using `[← GroundTheory.LocalField.distribHaarChar_eq_modulus, ← Measures.modulus_units, hmod]`. Unfold `mp`. Rewrite using `[hbr, hS, NNReal.coe_pow, Complex.ofReal_pow]`. Establish `h1 : (((r ^ (-m) : NNReal) : ℝ) : ℂ) ^ 2 = (((((r ^ (-m) : NNReal) : ℝ) ^ 2 : ℝ)) : ℂ)` using `by push_cast; rfl`. Rewrite using `[h1]`.
+
+Establish `h2 : ((1 : ℂ) / 2) = (((1 / 2 : ℝ)) : ℂ)` using `by push_cast; rfl`. Rewrite using `[h2, ← Complex.ofReal_cpow (by positivity), ← Real.sqrt_eq_rpow, Real.sqrt_sq ht, NNReal.coe_zpow, Complex.ofReal_zpow]`.
+-/
 theorem mp_uniformizer_zpow_half (F : Type) [Field F] [ValuativeRel F] [TopologicalSpace F]
     [IsNonarchimedeanLocalField F] [MeasurableSpace F] [BorelSpace F] (m : ℤ) :
     mp (Iwasawa.uniformizerUnit F ^ m) (1 / 2) = Spherical.sqrtQ F ^ (-m) := by

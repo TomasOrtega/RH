@@ -11,6 +11,15 @@ open Formalism.L2.SG.AdBridge
 
 namespace GlobalTheory.Core.Mi.FinFrame
 
+/- English proof (translation)
+Take `⟨-, hden, hzero, hdenom, -⟩` from `GlobalTheory.St.G.IntAd.integral_adeles_properties F E`. Establish `key : ∀ b ∈ IntAf F E, ι b = b`. Introduce `b hb`. Rewrite using `[← sub_eq_zero]`. Use `hzero _ fun m hm => ?_` and prove the remaining obligations.
+
+Take `⟨x, t, ht, rfl⟩` from `hden b hb m hm`. Use `⟨ι t - t, (IntAf F E).sub_mem (hO _ ht) ht, ?_⟩` and prove the remaining obligations. Simplify using `only [map_add, map_mul, map_natCast, hι]`. Expand and normalize the polynomial expressions, which then agree. Take `⟨m, hm, hma⟩` from `hdenom a`.
+
+Establish `h` using `key _ hma`. Simplify using `only [map_mul, map_natCast] at h`. Establish `hu : IsUnit (m : E ⊗[F] Formalism.MainNotions.S.Af F)`. Establish `: IsUnit (m : F)` using `(Nat.cast_ne_zero.2 hm.ne').isUnit`. Simplify using `using this.map (algebraMap F (E ⊗[F] Formalism.MainNotions.S.Af F))`.
+
+Conclude with `hu.mul_left_cancel h`.
+-/
 theorem eq_self_of_rat_of_int (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
     (ι : E ⊗[F] Formalism.MainNotions.S.Af F →+* E ⊗[F] Formalism.MainNotions.S.Af F)
     (hι : ∀ x, ι (Formalism.UG.inclE (F := F) (Formalism.MainNotions.S.Af F) x) = Formalism.UG.inclE (F := F) (Formalism.MainNotions.S.Af F) x)
@@ -32,12 +41,18 @@ theorem eq_self_of_rat_of_int (F E : Type) [Field F] [NumberField F] [Field E] [
     simpa using this.map (algebraMap F (E ⊗[F] Formalism.MainNotions.S.Af F))
   exact hu.mul_left_cancel h
 
+/- English proof (translation)
+Proceed by induction on `z using TensorProduct.induction_on with`. Consider the case `zero => exact (map_zero _).trans (map_zero (toEAf D)).symm`. Consider the case `tmul a x => exact tauF_tmul (Formalism.L2.SG.InstExistsPf.instOf D) a x`. Consider the case `add x y hx hy => exact (map_add _ x y).trans ((congrArg₂ (· + ·) hx hy).trans (map_add (toEAf D) x y).symm)`.
+-/
 theorem tauF_eq (D : D7) (z : AE D) : tauF (Formalism.L2.SG.InstExistsPf.instOf D) z = toEAf D z := by
   induction z using TensorProduct.induction_on with
   | zero => exact (map_zero _).trans (map_zero (toEAf D)).symm
   | tmul a x => exact tauF_tmul (Formalism.L2.SG.InstExistsPf.instOf D) a x
   | add x y hx hy => exact (map_add _ x y).trans ((congrArg₂ (· + ·) hx hy).trans (map_add (toEAf D) x y).symm)
 
+/- English proof (translation)
+Establish `hb` using `Formalism.IndefR.RationalEmbedding.iota_symm_isBridge D (Formalism.IndefR.RationalEmbedding.iota D g)`. Establish `key : (Formalism.IndefR.RationalEmbedding.iota D).symm (Formalism.IndefR.RationalEmbedding.iota D g) = g` using `(Formalism.IndefR.RationalEmbedding.iota D).symm_apply_apply g`. Use `(hb.2.trans (congrArg (fun q => ofHAFin (Formalism.IndefR.RationalEmbedding.inst D) q) key)).trans ?_` and prove the remaining obligations. Use extensionality with `i j`. Conclude with `tauF_eq D _`.
+-/
 theorem fmat_iota (D : D7) (g : GA D (D.sp.Y 0)) :
     (Formalism.L2.SG.InstExistsPf.instOf D).fmat (Formalism.IndefR.RationalEmbedding.iota D g).2 = (mt (D.sp.Y 0) g).map (toEAf D) := by
   have hb := Formalism.IndefR.RationalEmbedding.iota_symm_isBridge D (Formalism.IndefR.RationalEmbedding.iota D g)
@@ -47,10 +62,18 @@ theorem fmat_iota (D : D7) (g : GA D (D.sp.Y 0)) :
   ext i j
   exact tauF_eq D _
 
+/- English proof (translation)
+The claim follows from `(tauF_eq D _).symm.trans (tauF_tmul (Formalism.L2.SG.InstExistsPf.instOf D) 1 y)`.
+-/
 theorem toEAf_incA (D : D7) (y : D.host.E) :
     toEAf D (incA D y) = Formalism.UG.inclE (F := D.host.F) (Formalism.MainNotions.S.Af D.host.F) y :=
   (tauF_eq D _).symm.trans (tauF_tmul (Formalism.L2.SG.InstExistsPf.instOf D) 1 y)
 
+/- English proof (translation)
+Use function extensionality and compare the values at `k`. Establish `h3` using `congrArg f (congrFun (congrFun h k) j)`. Simplify using `only [Matrix.mul_apply, map_sum, map_mul] at h3`. Simplify using `only [Matrix.mulVec, dotProduct, Matrix.map_apply, Finset.sum_apply, Pi.smul_apply, smul_eq_mul]`. Rewrite using `[h3]`.
+
+Conclude with `Finset.sum_congr rfl fun i _ => mul_comm _ _`.
+-/
 theorem map_cols {A R : Type} [CommRing A] [CommRing R] (f : A →+* R) {m n : ℕ} (M : Matrix (Fin m) (Fin m) A)
     (N : Matrix (Fin m) (Fin n) A) (P : Matrix (Fin n) (Fin n) A) (h : M * N = N * P) (j : Fin n) :
     M.map f *ᵥ (fun k => f (N k j)) = ∑ i, f (P i j) • fun k => f (N k i) := by
@@ -61,6 +84,11 @@ theorem map_cols {A R : Type} [CommRing A] [CommRing R] (f : A →+* R) {m n : �
   rw [h3]
   exact Finset.sum_congr rfl fun i _ => mul_comm _ _
 
+/- English proof (translation)
+Establish `h1 : mt S (embA d o a) ⬝ (d.j0 ⬝ o.jA) = (d.j0 ⬝ o.jA) ⬝ mt A a`. Express the relevant statement in the definitionally equal form `mt S (d.emb0 (o.emb (a, 1))) ⬝ (d.j0 ⬝ o.jA) = _`. Rewrite using `[← Matrix.mul_assoc, d.wittDecomp_anisotropicEmbedding_inclAnisotropic, Matrix.mul_assoc, o.emb_jA, Matrix.mul_assoc]`. Establish `h2 : d.j0 ⬝ o.jA = (d.i₀ * o.iA).map (incA D)` using `(Matrix.map_mul (f := incA D)).symm`. Rewrite `h1` using `[h2]`.
+
+Establish `h3` using `map_cols (toEAf D) _ _ _ h1 j`. Simplify using `only [Matrix.map_apply, toEAf_incA] at h3`. Conclude with `h3`.
+-/
 theorem embA_cols {D : D7} {S S₀ A L : HSp D} {ρ : ℕ} (d : HypDec S S₀ ρ) (o : OrthDec S₀ A L) (a : GA D A)
     (j : Fin A.rank) :
     (mt S (embA d o a)).map (toEAf D) *ᵥ
@@ -75,6 +103,11 @@ theorem embA_cols {D : D7} {S S₀ A L : HSp D} {ρ : ℕ} (d : HypDec S S₀ ρ
   simp only [Matrix.map_apply, toEAf_incA] at h3
   exact h3
 
+/- English proof (translation)
+Generalize the expression as in `hI.symm = e`. Substitute `hI` using the available equality. Establish `hid : ∀ y, ιE y = y` using `fun y => eq_of_heq (hId y)`. Establish `hA : ∀ a, ιA a = a` using `eq_self_of_rat_of_int (Formalism.L2.SG.InstExistsPf.instOf D).F (Formalism.L2.SG.InstExistsPf.instOf D).E ιA.toRingHom (fun x => (hrat x).trans (congrArg _ (hid x))) (fun a ha => (hint a).1 ha)`. Establish `hA' : ∀ a, ιA.symm a = a` using `fun a => (hA _).symm.trans (ιA.apply_symm_apply a)`.
+
+Simplify using `only [hid] at H`. Simplify using `only [hA']`. Express the relevant statement in the definitionally equal form `(Formalism.L2.SG.InstExistsPf.instOf D).fmat (Formalism.IndefR.RationalEmbedding.iota D g).2 *ᵥ _ = _`. Rewrite using `[fmat_iota]`. Conclude with `H`.
+-/
 theorem transport (D : D7) (I : AutInst) (ιE : I.E ≃+* D.host.E) (hId : ∀ y, HEq (ιE y) y)
     (hI : I = Formalism.L2.SG.InstExistsPf.instOf D) (hr : (D.sp.Y 0).rank = I.n)
     (ιA : I.E ⊗[I.F] Formalism.MainNotions.S.Af I.F ≃+* D.host.E ⊗[D.host.F] FiniteAdeleRing (𝓞 D.host.F) D.host.F)
@@ -98,6 +131,11 @@ theorem transport (D : D7) (I : AutInst) (ιE : I.E ≃+* D.host.E) (hId : ∀ y
   rw [fmat_iota]
   exact H
 
+/- English proof (translation)
+Introduce `D X h u ψ B F tr hId hAd a j`. Establish `hn` using `Formalism.L2.Forms.rankN D 0 (Nat.zero_le _)`. Use `transport D X.B.I X.ιE hId h (rank_eq X h) tr.ιA tr.ιA_rat tr.ιA_int (fun i => X.crd (Formalism.L2.SG.ColDict.qFr tr.wt i)) (embA B.d B.o a) (fun i => GlobalTheory.AdForm.finM (D.sp.X 0) hn a i j) j ?_` and prove the remaining obligations. Establish `H` using `embA_cols B.d B.o a (Fin.cast hn.symm j)`. Simplify using `only [hAd _ _] at H`.
+
+Use `H.trans ?_` and prove the remaining obligations. Conclude with `Fintype.sum_equiv (finCongr hn) _ _ fun i => rfl`.
+-/
 theorem repM_toH : ∀ (D : D7) (X : Formalism.L2.SG.HidaSetting.HidaSetting D) (h : X.B.I = Formalism.L2.SG.InstExistsPf.instOf D) (u : D.what₂.Word) (ψ : AddChar (AF D.host.F) ℂ) (B : SBes X h u ψ (D.sp.X 0)) (F : Formalism.L2.Forms.Forms0 D u) (tr : Formalism.L2.SG.ColDict.Transport X u F), IdE X → B.Adapted tr.wt → ∀ a : GA D (D.sp.X 0), RepM X tr.wt tr.ιA ((B.toH a).2 : X.B.I.Gf) (GlobalTheory.AdForm.finM (D.sp.X 0) (Formalism.L2.Forms.rankN D 0 (Nat.zero_le _)) a) := by
   intro D X h u ψ B F tr hId hAd a j
   have hn := Formalism.L2.Forms.rankN D 0 (Nat.zero_le _)

@@ -17,6 +17,9 @@ section Any
 
 variable {D : ColRec} {u : D.what₂.Word} {A : CF.AtTTied u} {P : ∀ i hi, CF.LvTied u A i hi} (H : CH.HermCols D) (M : AtTMovesC A P)
 
+/- English proof (translation)
+Rewrite using `[hxPr_eq A P i hm]`. Use `show Formalism.L2.Herm.AdStep _ _ _ _ _ (Formalism.L2.Herm.toGLb (D.sp.X i).frame (M.upS i v c y).1) _`. Rewrite using `[M.upS_eq i hm, hxG_toGLb]`. Conclude with `h`.
+-/
 theorem hxm_adI_up (i : ℕ) (h1 : 1 ≤ i) (hm : i ≤ D.R.m) (v : (D.mem u).A.vT) (c : (D.mem u).C.cls i) (y : ↥(CH.Ld D u i c))
     (h : Formalism.L2.Herm.AdStep D.sp.cm.sig (D.sp.X i).gram (H.lev u i h1 hm).U ((H.cls u i h1 hm).y c)
       ((H.cls u i h1 hm).y ((D.fm u).up i v c ((P i hm).pr v c (hxLd i hm c y))))
@@ -27,6 +30,9 @@ theorem hxm_adI_up (i : ℕ) (h1 : 1 ≤ i) (hm : i ≤ D.R.m) (v : (D.mem u).A.
   rw [M.upS_eq i hm, hxG_toGLb]
   exact h
 
+/- English proof (translation)
+Use `show Formalism.L2.Herm.AdStep _ _ _ _ _ (Formalism.L2.Herm.toGLb (D.sp.X i).frame (M.dnS i v c g).1) _`. Rewrite using `[M.dnS_eq i hm, hxG_toGLb]`. Conclude with `h`.
+-/
 theorem hxm_adI_dn (i : ℕ) (h1 : 1 ≤ i) (hm : i ≤ D.R.m) (v : (D.mem u).A.vT) (c : (D.mem u).C.cls i)
     (g : Module.Dual ((D.mem u).A.Fv v) ((D.fm u).lk i v c))
     (h : Formalism.L2.Herm.AdStep D.sp.cm.sig (D.sp.X i).gram (H.lev u i h1 hm).U ((H.cls u i h1 hm).y c)
@@ -37,6 +43,9 @@ theorem hxm_adI_dn (i : ℕ) (h1 : 1 ≤ i) (hm : i ≤ D.R.m) (v : (D.mem u).A.
   rw [M.dnS_eq i hm, hxG_toGLb]
   exact h
 
+/- English proof (translation)
+Use `show Formalism.L2.Herm.AdStep _ _ _ _ _ (Formalism.L2.Herm.toGLb (D.sp.X i).frame (M.dilS i v a c).1) _`. Rewrite using `[M.dilS_eq i hm, hxG_toGLb]`. Conclude with `h`.
+-/
 theorem hxm_adI_dil (i : ℕ) (h1 : 1 ≤ i) (hm : i ≤ D.R.m) (v : (D.mem u).A.vT) (a : ((D.mem u).A.Fv v)ˣ) (c : (D.mem u).C.cls i)
     (h : Formalism.L2.Herm.AdStep D.sp.cm.sig (D.sp.X i).gram (H.lev u i h1 hm).U ((H.cls u i h1 hm).y c)
       ((H.cls u i h1 hm).y ((D.fm u).dil i v a c))
@@ -46,6 +55,9 @@ theorem hxm_adI_dil (i : ℕ) (h1 : 1 ≤ i) (hm : i ≤ D.R.m) (v : (D.mem u).A
   rw [M.dilS_eq i hm, hxG_toGLb]
   exact h
 
+/- English proof (translation)
+Rewrite using `[hxPr_eq A P 0 (Nat.zero_le _)]`. Use `show Formalism.L2.Herm.AdStep _ _ _ _ _ (Formalism.L2.Herm.toGLb ((D.sp.X 0).frame.reindex (finCongr D.sp.rank0)) (M.upS 0 v c y).1) _`. Rewrite using `[M.upS_eq 0 (Nat.zero_le _), hxG_toGLb0]`. Conclude with `h`.
+-/
 theorem adjacency_level_zero_up (v : (D.mem u).A.vT) (c : (D.mem u).C.cls 0) (y : ↥(CH.Ld D u 0 c))
     (h : Formalism.L2.Herm.AdStep D.sp.cm.sig D.sp.gram0 (H.lev0 u).U ((H.lev0 u).y c)
       ((H.lev0 u).y ((D.fm u).up 0 v c ((P 0 (Nat.zero_le _)).pr v c (hxLd 0 (Nat.zero_le _) c y))))
@@ -56,6 +68,9 @@ theorem adjacency_level_zero_up (v : (D.mem u).A.vT) (c : (D.mem u).C.cls 0) (y 
   rw [M.upS_eq 0 (Nat.zero_le _), hxG_toGLb0]
   exact h
 
+/- English proof (translation)
+Use `show Formalism.L2.Herm.AdStep _ _ _ _ _ (Formalism.L2.Herm.toGLb ((D.sp.X 0).frame.reindex (finCongr D.sp.rank0)) (M.dnS 0 v c g).1) _`. Rewrite using `[M.dnS_eq 0 (Nat.zero_le _), hxG_toGLb0]`. Conclude with `h`.
+-/
 theorem adjacency_level_zero_down (v : (D.mem u).A.vT) (c : (D.mem u).C.cls 0) (g : Module.Dual ((D.mem u).A.Fv v) ((D.fm u).lk 0 v c))
     (h : Formalism.L2.Herm.AdStep D.sp.cm.sig D.sp.gram0 (H.lev0 u).U ((H.lev0 u).y c) ((H.lev0 u).y ((D.fm u).dn 0 v c g))
       (Formalism.L2.Forms.reGL (Formalism.L2.Forms.rank_eq_first_level D.R).symm _ (M.dnG 0 (Nat.zero_le _) v c g).1) (H.vT u v).1) :
@@ -64,6 +79,9 @@ theorem adjacency_level_zero_down (v : (D.mem u).A.vT) (c : (D.mem u).C.cls 0) (
   rw [M.dnS_eq 0 (Nat.zero_le _), hxG_toGLb0]
   exact h
 
+/- English proof (translation)
+Use `show Formalism.L2.Herm.AdStep _ _ _ _ _ (Formalism.L2.Herm.toGLb ((D.sp.X 0).frame.reindex (finCongr D.sp.rank0)) (M.dilS 0 v a c).1) _`. Rewrite using `[M.dilS_eq 0 (Nat.zero_le _), hxG_toGLb0]`. Conclude with `h`.
+-/
 theorem adjacency_level_zero_dilation (v : (D.mem u).A.vT) (a : ((D.mem u).A.Fv v)ˣ) (c : (D.mem u).C.cls 0)
     (h : Formalism.L2.Herm.AdStep D.sp.cm.sig D.sp.gram0 (H.lev0 u).U ((H.lev0 u).y c) ((H.lev0 u).y ((D.fm u).dil 0 v a c))
       (Formalism.L2.Forms.reGL (Formalism.L2.Forms.rank_eq_first_level D.R).symm _ (M.dilG 0 (Nat.zero_le _) v a c).1) (H.vT u v).1) :
@@ -99,6 +117,9 @@ section AdRec
 variable {d : ColDat} (a : ColArgs d) (hS : SpStd d.toColBase) (hH : HostHyp d) (hP : PtSurj d) (hK : LocalLevelIsKOneEverywhere d)
   (S : GSplit (Pr := d.Pr) d.sp.cm) (hI : IwAll d S)
 
+/- English proof (translation)
+The claim follows from `tam_ad d.sp.cm d.hX d.hPr d.σ₀ u (d.lev i) (colDia (X := d.X) (Pr := d.Pr) d.R u i) (d.repr u i) (hP u i) (fun c => (stepGSD (Pr := d.Pr) d.W d.lev u i).outSec.spec c) (hK u i) (hCrd hS u i hm) _ c _ d₁ h ((stepGSD (Pr := d.Pr) d.W d.lev u i).outSec.mv d₁) ((stepGSD (Pr := d.Pr) …`.
+-/
 theorem th_adI (u : d.what₂.Word) (i : ℕ) (hm : i ≤ d.R.m) (v : d.Pr.vT u) (c : StCl (Pr := d.Pr) d.W d.lev u i)
     (d₁ : DecoSet d.X.E (d.R.N i) (d.Pr.vT u) d.Pr.vGs)
     (h : Deco.SameOff (d.Pr.vT u) d.Pr.vGs (tieEV d.sp.cm d.hX d.hPr u v).1 (d.repr u i c).1 d₁.1) :
@@ -110,6 +131,9 @@ theorem th_adI (u : d.what₂.Word) (i : ℕ) (hm : i ≤ d.R.m) (v : d.Pr.vT u)
     (fun c => (stepGSD (Pr := d.Pr) d.W d.lev u i).outSec.spec c) (hK u i) (hCrd hS u i hm) _ c _ d₁ h
     ((stepGSD (Pr := d.Pr) d.W d.lev u i).outSec.mv d₁) ((stepGSD (Pr := d.Pr) d.W d.lev u i).outSec.mv_smul d₁)
 
+/- English proof (translation)
+The claim follows from `tam_ad d.sp.cm d.hX d.hPr d.σ₀ u (d.lev 0) (colDia (X := d.X) (Pr := d.Pr) d.R u 0) (d.repr u 0) (hP u 0) (fun c => (stepGSD (Pr := d.Pr) d.W d.lev u 0).outSec.spec c) (hK u 0) (hCrd0 hS u) _ c _ d₁ h ((stepGSD (Pr := d.Pr) d.W d.lev u 0).outSec.mv d₁) ((stepGSD (Pr := d.Pr) d.W …`.
+-/
 theorem adjacency_level_zero_tied (u : d.what₂.Word) (v : d.Pr.vT u) (c : StCl (Pr := d.Pr) d.W d.lev u 0)
     (d₁ : DecoSet d.X.E (d.R.N 0) (d.Pr.vT u) d.Pr.vGs)
     (h : Deco.SameOff (d.Pr.vT u) d.Pr.vGs (tieEV d.sp.cm d.hX d.hPr u v).1 (d.repr u 0 c).1 d₁.1) :
@@ -123,6 +147,15 @@ theorem adjacency_level_zero_tied (u : d.what₂.Word) (v : d.Pr.vT u) (c : StCl
 
 set_option maxHeartbeats 4000000 in
 
+/- English proof (translation)
+Take `⟨disc, moves, xp⟩` from `O`. Take `rfl : moves = atTMoves a hS hH` from `hO`. Use `⟨?_, ?_, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `u v c y hy`. Establish `hy'` using `hy`.
+
+Rewrite `hy'` using `[show (hermAtT a hS hH ⟨disc, atTMoves a hS hH, xp⟩ u).pr 0 v c y = _ from hxPr_eq (atTTied a hH u) (fun i hi => levelAgreement a hS hH u i hi) 0 (Nat.zero_le _) v c y]`. Conclude with `adjacency_level_zero_up (hermCols a hS hP hK S hI) (atTMovesC a hS hH u) v c y (adjacency_level_zero_tied hS hP hK u v c _ (tam_so_up (Pr := d.Pr) d.W d.lev d.sp.cm d.hX d.hPr d.σ₀ u 0 (stepCrd a hS hH u 0 (Nat.zero_le _)) v c _ hy'))`. Introduce `u i h1 hm v c y hy`. Establish `hy'` using `hy`. Rewrite `hy'` using `[show (hermAtT a hS hH ⟨disc, atTMoves a hS hH, xp⟩ u).pr i v c y = _ from hxPr_eq (atTTied a hH u) (fun i hi => levelAgreement a hS hH u i hi) i hm v c y]`.
+
+Conclude with `hxm_adI_up (hermCols a hS hP hK S hI) (atTMovesC a hS hH u) i h1 hm v c y (th_adI hS hP hK u i hm v c _ (tam_so_up (Pr := d.Pr) d.W d.lev d.sp.cm d.hX d.hPr d.σ₀ u i (stepCrd a hS hH u i hm) v c _ hy'))`. Introduce `u v c g hg`. Conclude with `adjacency_level_zero_down (hermCols a hS hP hK S hI) (atTMovesC a hS hH u) v c g (adjacency_level_zero_tied hS hP hK u v c _ (tam_so_dn (Pr := d.Pr) d.W d.lev d.sp.cm d.hX d.hPr u 0 v c g hg))`. Introduce `u i h1 hm v c g hg`. Conclude with `hxm_adI_dn (hermCols a hS hP hK S hI) (atTMovesC a hS hH u) i h1 hm v c g (th_adI hS hP hK u i hm v c _ (tam_so_dn (Pr := d.Pr) d.W d.lev d.sp.cm d.hX d.hPr u i v c g hg))`.
+
+Introduce `u v x c`. Conclude with `adjacency_level_zero_dilation (hermCols a hS hP hK S hI) (atTMovesC a hS hH u) v x c (adjacency_level_zero_tied hS hP hK u v c _ (tam_sameOff_dia (d.R.N 0) (d.Pr.vT u) d.Pr.vGs (d.repr u 0 c) v x (tieEV_over d.sp.cm d.hX d.hPr u v)))`. Introduce `u i h1 hm v x c`. Conclude with `hxm_adI_dil (hermCols a hS hP hK S hI) (atTMovesC a hS hH u) i h1 hm v x c (th_adI hS hP hK u i hm v c _ (tam_sameOff_dia (d.R.N i) (d.Pr.vT u) d.Pr.vGs (d.repr u i c) v x (tieEV_over d.sp.cm d.hX d.hPr u v)))`.
+-/
 theorem adTied (O : AtTOwed a hS hH) (hO : O.moves = atTMoves a hS hH) :
     CH.AdTied (d.colRec a) (hermCols a hS hP hK S hI) (hermAtT a hS hH O) := by
   obtain ⟨disc, moves, xp⟩ := O

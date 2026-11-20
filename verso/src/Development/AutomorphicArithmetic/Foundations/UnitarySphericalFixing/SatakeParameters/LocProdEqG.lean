@@ -15,6 +15,17 @@ variable {E Ω : Type} [Field E] [NumberField E] [Field Ω] [Algebra E Ω] [IsAl
   {A : ValuationSubring Ω} {w : HeightOneSpectrum (𝓞 E)} {h : IsPlaceOver A w}
   {rc : IrrGL (w.adicCompletion E) → WD h}
 
+/- English proof (translation)
+Take `⟨a, ha, ε, -, L⟩` from `H`. Introduce `c`. Proceed by induction on `c with`. Consider the case `zero`. Introduce `n d hd σ σ' e`.
+
+Take `rfl : n = 0` from `by simpa using hd.symm`. Take `⟨e⟩` from `e`. Take `⟨φ⟩` from `GlobalTheory.LocGL.SupportRing.nonempty_equiv_unit (k := w.adicCompletion E) (stdBlocks d hd) fun i => (σ i).ρ`. Establish `h1` using `L.det 0 1 isSmoothChar_one`. Simplify using `only [List.range_zero, List.map_nil] at h1`.
+
+Rewrite using `[List.ofFn_zero]`. Use `(congrArg rc (congrArg (Sigma.mk 0) (IrrRep.cl_eq_iff.2 ⟨e.trans φ⟩))).trans ?_` and prove the remaining obligations. Conclude with `h1`. Consider the case `succ s ih`. Introduce `n d hd σ σ' e`.
+
+Take `rfl : n = d 0 + ∑ i : Fin s, d i.succ` from `hd.symm.trans (Fin.sum_univ_succ d)`. Take `⟨e⟩` from `e`. Take `⟨E₁⟩` from `MultiIrr.nonempty_prod₂_equiv_multiProd_succ (k := w.adicCompletion E) d hd fun i => (σ i).ρ`. Establish `hs : IsSmooth (multiProd (stdBlocks (fun i : Fin s => d i.succ) rfl) fun i : Fin s => (σ i.succ).ρ)` using `isSmooth_parInd _ _`. Establish `hi` using `GlobalTheory.T.isIrreducible_second_factor_of_irreducible_product _ _ _ _ _ _ (σ 0).ρ _ σ'.ρ (σ 0).smooth (σ 0).irred hs σ'.irred ⟨e.trans E₁.symm⟩`.
+
+Set `σ'' : SmIrr (GL (Fin (∑ i : Fin s, d i.succ)) (w.adicCompletion E))` to `⟨_, _, hs, hi⟩`. Establish `h1` using `L.prod (d 0) _ (ParLaws.toRep (σ 0)) (ParLaws.toRep σ'') (ParLaws.toRep σ') ⟨e.trans E₁.symm⟩`. Establish `h2` using `ih (d := fun i : Fin s => d i.succ) rfl (fun i => σ i.succ) σ'' ⟨.refl _⟩`. Rewrite using `[List.ofFn_succ]`. Conclude with `h1.trans (congrArg _ h2)`.
+-/
 theorem locProd_eqG (H : IsRec h rc) : ∀ {c n : ℕ} {d : Fin c → ℕ} (hd : ∑ i, d i = n)
     (σ : ∀ i, SmIrr (GL (Fin (d i)) (w.adicCompletion E))) (σ' : SmIrr (GL (Fin n) (w.adicCompletion E))),
     Nonempty (σ'.ρ.Equiv (GlobalTheory.UnitaryBC.locProd hd w σ)) →

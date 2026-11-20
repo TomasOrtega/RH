@@ -21,6 +21,19 @@ noncomputable section
 
 namespace GlobalTheory.CompanionTheory.Ar.HtPull
 
+/- English proof (translation)
+Take `⟨M₀, hM₀⟩ : ∃ M₀ : LieModel G x (LiePull.ExtE hx M), ∀ l, M₀.pt l = LiePull.vec l` from `⟨LiePull.extModel hg hx M, fun _ => rfl⟩`. Establish `hin₀ : ∀ l, ⊤ ≤ (M₀.pt l).left ⁻¹ᵁ W` using `fun l => hin _ (M₀.tan l)`. Take `⟨D, hD⟩` from `GlobalTheory.T.dual_number_section_derivation X G A x (LiePull.ExtE hx M) M₀ W hin₀ s`. Take `⟨c, hc⟩` from `(Submodule.mem_span_range_iff_exists_fun _).1 (hl e u hu)`. Use `choose a ha using fun k => (c k).2`.
+
+Set `b : Fin r → LiePull.ExtE hx M` to `fun k => ⟨B k, v k, hv k⟩`. Set `y : LiePull.ExtE hx M` to `⟨e, u, hu⟩`. Establish `hce : e = ∑ k, g (a k) • B k`. Rewrite using `[← hc]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[ha k]`. Both sides reduce to the same expression. Establish `hy : y = ∑ k, a k • b k`. Apply `LiePull.val_inj` to reduce the goal to its premises. Rewrite using `[map_sum]`.
+
+Use `hce.trans (Finset.sum_congr rfl fun k _ => ?_)` and prove the remaining obligations. Rewrite using `[LiePull.val_smul]`. Both sides reduce to the same expression. Establish `hyu : M₀.pt y = u` using `(hM₀ y).trans ((LiePull.vec_spec y).unique hg hu)`. Establish `hbv : ∀ k, M₀.pt (b k) = v k` using `fun k => (hM₀ (b k)).trans ((LiePull.vec_spec (b k)).unique hg (hv k))`.
+
+Use `⟨a, hce, ?_⟩` and prove the remaining obligations. Establish `key : ∀ (p p' : epsAt x ⟶ G), p = p' → ∀ (h₁ : ⊤ ≤ p.left ⁻¹ᵁ W) (h₂ : ⊤ ≤ p'.left ⁻¹ᵁ W), (secVal (B` using `DualNumber A) p.left W h₁ s).snd = (secVal (B := DualNumber A) p'.left W h₂ s).snd := by`. Introduce and unpack `p _ rfl h₁ h₂`. Both sides reduce to the same expression. Establish `e₁ : (secVal (B` using `DualNumber A) u.left W h s).snd = D y := (key _ _ hyu.symm h (hin₀ y)).trans (hD y).symm`.
+
+Establish `e₂ : ∀ k, D (b k) = (secVal (B` using `DualNumber A) (v k).left W (hk k) s).snd := fun k => (hD (b k)).trans (key _ _ (hbv k) (hin₀ (b k)) (hk k))`. Use `e₁.trans ?_` and prove the remaining obligations. Rewrite using `[hy, map_sum]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[map_smul, smul_eq_mul, e₂ k]`.
+-/
 theorem deriv_gen {X : Scheme.{0}} {Ω : Type} [Field Ω] {ξ : Spec (CommRingCat.of Ω) ⟶ X} {G : Over X} [GrpObj G]
     {E : Type} [AddCommGroup E] [Module Ω E] {M : LieModel G ξ E} {A : Type} [CommRing A] {g : A →+* Ω}
     (hg : Function.Injective g) {x : Spec (CommRingCat.of A) ⟶ X} (hx : Spec.map (CommRingCat.ofHom g) ≫ x = ξ)
@@ -66,6 +79,9 @@ theorem deriv_gen {X : Scheme.{0}} {Ω : Type} [Field Ω] {ξ : Spec (CommRingCa
   refine Finset.sum_congr rfl fun k _ => ?_
   rw [map_smul, smul_eq_mul, e₂ k]
 
+/- English proof (translation)
+Introduce `X Ω _ ξ hξ G _ _ E _ _ M q r B v hl hv W hW s hk e u h hu`. Conclude with `deriv_gen (g := genMap ξ q) (hξ.inj q) (LieCarrier.genMap_fromSpecStalk (ξ := ξ) q) s (fun t ht => tanin X G q.1 t ht W hW) (fun e' u' hu' => by`. Establish `: e' ∈ M.lat q` using `Submodule.subset_span ⟨u', hu'⟩`. Rewrite `this` using `[hl]`. Conclude with `this) hv hk h hu`.
+-/
 theorem deriv : ∀ (X : Scheme.{0}) (Ω : Type) [Field Ω] (ξ : Spec (CommRingCat.of Ω) ⟶ X), IsCptGen ξ → ∀ (G : Over X) [GrpObj G] [IsCommMonObj G] (E : Type) [AddCommGroup E] [Module Ω E] (M : LieModel G ξ E) (q : Cpt ξ) (r : ℕ) (B : Fin r → E) (v : Fin r → (epsAt (X.fromSpecStalk q.1) ⟶ G)), M.lat q = Submodule.span (regAt ξ q) (Set.range B) → (∀ k, M.Extends q (B k) (v k)) → ∀ (W : G.left.Opens), (η[G]).left q.1 ∈ W → ∀ (s : Γ(G.left, W)) (hk : ∀ k, ⊤ ≤ (v k).left ⁻¹ᵁ W) (e : E) (u : epsAt (X.fromSpecStalk q.1) ⟶ G) (h : ⊤ ≤ u.left ⁻¹ᵁ W), M.Extends q e u → ∃ a : Fin r → X.presheaf.stalk q.1, e = ∑ k, genMap ξ q (a k) • B k ∧ (secVal (B := DualNumber (X.presheaf.stalk q.1)) u.left W h s).snd = ∑ k, a k * (secVal (B := DualNumber (X.presheaf.stalk q.1)) (v k).left W (hk k) s).snd := by
   intro X Ω _ ξ hξ G _ _ E _ _ M q r B v hl hv W hW s hk e u h hu
   exact deriv_gen (g := genMap ξ q) (hξ.inj q) (LieCarrier.genMap_fromSpecStalk (ξ := ξ) q) s
@@ -74,6 +90,29 @@ theorem deriv : ∀ (X : Scheme.{0}) (Ω : Type) [Field Ω] (ξ : Spec (CommRing
       rw [hl] at this
       exact this) hv hk h hu
 
+/- English proof (translation)
+Use function extensionality and compare the values at `q'`. Take `⟨r, B, B', v, v', hBB, hl, hl', hv, hv', hvv⟩` from `GlobalTheory.T.lie_model_pullback_smooth X X' Ω Ω' ξ ξ' hξ hξ' f i hd G G' φ hp hs E M E' M' j hj q'`. Take `⟨h', hreg, -⟩` from `RegAtDom.regAt_dominates X Ω ξ X' Ω' ξ' f i hd q'`. Rewrite using `[Lat.pull_apply _ hd]`. Establish `hcoord : ∀ k, B.coord k ∈ M.omLat ⟨f q'.1, hd.specializes q'⟩`.
+
+Introduce `k e he`. Rewrite `he` using `[hl]`. Proceed by induction on `he using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨l, rfl⟩` from `hx`.
+
+Rewrite using `[Module.Basis.coord_apply, Module.Basis.repr_self, Finsupp.single_apply]`. Use `split_ifs`. Conclude with `one_mem _`. Conclude with `zero_mem _`. Consider the case `zero => simpa using zero_mem _`.
+
+Consider the case `add x y _ _ hx hy => simpa using add_mem hx hy`. Consider the case `smul a x _ hx`. Establish `: (B.coord k) (a • x) = (a : Ω) * (B.coord k) x`. Rewrite using `[show a • x = (a : Ω) • x from rfl, map_smul, smul_eq_mul]`. Rewrite using `[this]`.
+
+Conclude with `mul_mem a.2 hx`. Establish `hdual : ∀ k, jd (B.coord k) = B'.coord k`. Introduce `k`. Apply `B'.ext` to reduce the goal to its premises. Introduce `l`.
+
+Rewrite using `[hBB l, hjd, ← hBB l]`. Simplify using `only [Module.Basis.coord_apply, Module.Basis.repr_self, Finsupp.single_apply]`. Apply the tactic sequence `split_ifs <;> simp`. Apply `le_antisymm` to reduce the goal to its premises. Introduce `w' hw'`.
+
+Establish `hmem : ∀ k, w' (B' k) ∈ regAt ξ' q'` using `fun k => hw' (B' k) (by rw [hl']; exact Submodule.subset_span ⟨k, rfl⟩)`. Establish `hsum : w' = ∑ k, w' (B' k) • jd (B.coord k)`. Apply `B'.ext` to reduce the goal to its premises. Introduce `l`. Simplify using `only [hdual, LinearMap.coe_sum, Finset.sum_apply, LinearMap.smul_apply, Module.Basis.coord_apply, Module.Basis.repr_self, Finsupp.single_apply, smul_eq_mul]`.
+
+Simplify using the standard rewrite rules. Rewrite using `[hsum]`. Use `Submodule.sum_mem _ fun k _ => ?_` and prove the remaining obligations. Conclude with `Submodule.smul_mem _ (⟨w' (B' k), hmem k⟩ : regAt ξ' q') (Submodule.subset_span ⟨B.coord k, hcoord k, rfl⟩)`. Use `Submodule.span_le.2 ?_` and prove the remaining obligations.
+
+Introduce and unpack `_ ⟨w, hw, rfl⟩`. Introduce `e' he'`. Rewrite `he'` using `[hl']`. Proceed by induction on `he' using Submodule.span_induction with`. Consider the case `mem x hx`.
+
+Take `⟨l, rfl⟩` from `hx`. Rewrite using `[hBB l, hjd]`. Conclude with `hreg _ (hw (B l) (by rw [hl]; exact Submodule.subset_span ⟨l, rfl⟩))`. Consider the case `zero => simpa using zero_mem _`. Consider the case `add x y _ _ hx hy => simpa using add_mem hx hy`.
+
+Consider the case `smul a x _ hx`. Establish `: (jd w) (a • x) = (a : Ω') * (jd w) x`. Rewrite using `[show a • x = (a : Ω') • x from rfl, map_smul, smul_eq_mul]`. Rewrite using `[this]`. Conclude with `mul_mem a.2 hx`.
+-/
 theorem om_pull {X X' : Scheme.{0}} {Ω Ω' : Type} [Field Ω] [Field Ω'] {ξ : Spec (CommRingCat.of Ω) ⟶ X}
     {ξ' : Spec (CommRingCat.of Ω') ⟶ X'} (hξ : IsCptGen ξ) (hξ' : IsCptGen ξ') {f : X' ⟶ X} {i : Ω →+* Ω'}
     (hd : GlobalTheory.CompanionTheory.Ar.Dominates ξ' ξ f i) {G : Over X} [GrpObj G] [IsCommMonObj G] {G' : Over X'} [GrpObj G']
@@ -142,6 +181,21 @@ theorem om_pull {X X' : Scheme.{0}} {Ω Ω' : Type} [Field Ω] [Field Ω'] {ξ :
       rw [this]
       exact mul_mem a.2 hx
 
+/- English proof (translation)
+Take `⟨hwω, W, s, hη, hT, hD⟩` from `hw`. Take `⟨r, B, B', v, v', hBB, hl, hl', hv, hv', hvv⟩` from `GlobalTheory.T.lie_model_pullback_smooth X X' Ω Ω' ξ ξ' hξ hξ' f i hd G G' φ hp hs E M E' M' j hj q'`. Take `⟨h', hreg, -⟩` from `RegAtDom.regAt_dominates X Ω ξ X' Ω' ξ' f i hd q'`. Establish `hom` using `om_pull hξ hξ' hd hp hs M M' j jd hj hjd`. Establish `hη' : (η[G']).left q'.1 ∈ φ ⁻¹ᵁ W`.
+
+Establish `e₁ : (η[G']).left ≫ φ = f ≫ (η[G]).left` using `eta X X' G G' f φ hp`. Establish `e₂ : φ ((η[G']).left q'.1) = (η[G]).left (f q'.1)`. Use `congrArg (fun g : X' ⟶ G.left => g q'.1) e₁` as an intermediate fact. Simplify using `using this`. Use `show φ ((η[G']).left q'.1) ∈ W`.
+
+Rewrite using `[e₂]`. Conclude with `hη`. Use `⟨?_, φ ⁻¹ᵁ W, φ.app W s, hη', ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[hom, Lat.pull_apply _ hd]`. Conclude with `Submodule.subset_span ⟨w, hwω, rfl⟩`.
+
+Conclude with `GlobalTheory.T.weil_pairing_pullback X X' Ω Ω' ξ ξ' f i hd G L n e he hF G' φ hp hF' L' e' he' y y' hy hy' hc t1 t2 W s hT`. Introduce `e₀ u hu h`. Establish `hk : ∀ k, ⊤ ≤ (v' k).left ⁻¹ᵁ (φ ⁻¹ᵁ W)` using `fun k => tanin X' G' q'.1 (v' k) (hv' k).1 _ hη'`. Establish `hk₀ : ∀ k, ⊤ ≤ (v k).left ⁻¹ᵁ W` using `fun k => tanin X G (f q'.1) (v k) (hv k).1 _ hη`. Take `⟨a, rfl, hsum⟩` from `deriv X' Ω' ξ' hξ' G' E' M' q' r B' v' hl' hv' (φ ⁻¹ᵁ W) hη' (φ.app W s) hk e₀ u h hu`.
+
+Establish `hcomp : ∀ k, (secVal (B` using `DualNumber (X'.presheaf.stalk q'.1)) (v' k).left (φ ⁻¹ᵁ W) (hk k) (φ.app W s)).snd = (f.stalkMap q'.1).hom (secVal (B := DualNumber (X.presheaf.stalk (f q'.1))) (v k).left W (hk₀ k) s).snd := by`. Introduce `k`. Conclude with `(congrArg TrivSqZeroExt.snd (comp_ring (dualMap (f.stalkMap q'.1).hom) (v' k).left (v k).left φ (hvv k) W (hk k) (hk₀ k) s)).trans (dualMap_snd _ _)`. Use `choose ρ hρ hρe using fun k => hD (B k) (v k) (hv k) (hk₀ k)`. Establish `hρ'` using `fun k => hreg _ (hρ k)`.
+
+Establish `hρe' : ∀ k, w (B k) = genMap ξ ⟨f q'.1, hd.specializes q'⟩ (secVal (B` using `DualNumber (X.presheaf.stalk (f q'.1))) (v k).left W (hk₀ k) s).snd + n * ρ k := hρe`. Use `⟨∑ k, genMap ξ' q' (a k) * i (ρ k), sum_mem fun k _ => mul_mem ⟨a k, rfl⟩ (hρ' k), ?_⟩` and prove the remaining obligations. Establish `hg : ∀ t, genMap ξ' q' ((f.stalkMap q'.1).hom t) = i (genMap ξ ⟨f q'.1, hd.specializes q'⟩ t)` using `fun t => RegAtDom.genMap_stalkMap hd q'.1 q'.2 (hd.specializes q') t`. Use `Eq.trans ?_ (congrArg (fun t => genMap ξ' q' t + (n : Ω') * ∑ k, genMap ξ' q' (a k) * i (ρ k)) hsum).symm` and prove the remaining obligations. Use `show jd w (∑ k, genMap ξ' q' (a k) • B' k) = genMap ξ' q' (∑ k, a k * _) + (n : Ω') * ∑ k, genMap ξ' q' (a k) * i (ρ k)`.
+
+Rewrite using `[map_sum, map_sum, Finset.mul_sum, ← Finset.sum_add_distrib]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[map_smul, smul_eq_mul, hBB k, hjd, hρe' k, map_add, map_mul, map_mul, hcomp k, hg, map_natCast]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem ht_pull {X X' : Scheme.{0}} {Ω Ω' : Type} [Field Ω] [Field Ω'] {ξ : Spec (CommRingCat.of Ω) ⟶ X}
     {ξ' : Spec (CommRingCat.of Ω') ⟶ X'} (hξ : IsCptGen ξ) (hξ' : IsCptGen ξ') {f : X' ⟶ X} {i : Ω →+* Ω'}
     (hd : GlobalTheory.CompanionTheory.Ar.Dominates ξ' ξ f i) {G : Over X} [GrpObj G] [IsCommMonObj G] {G' : Over X'} [GrpObj G']
@@ -198,6 +252,33 @@ theorem ht_pull {X X' : Scheme.{0}} {Ω Ω' : Type} [Field Ω] [Field Ω'] {ξ :
     rw [map_smul, smul_eq_mul, hBB k, hjd, hρe' k, map_add, map_mul, map_mul, hcomp k, hg, map_natCast]
     ring
 
+/- English proof (translation)
+Introduce `X _ Ω _ _ ξ hξ hN G _ hG L n hn hF e he E _ _ M X' _ Ω' _ ξ' hξ' hN' f i hd G' _ _ φ hp L' e' he' E' _ _ M' j jd hj hjd`. Use `haveI : IsCommMonObj G := hG.comm`. Use `haveI : CharZero Ω' := charZero_of_injective_ringHom i.injective`. Establish `hs : Smooth G.hom` using `hG.smooth`. Establish `hG' : IsSemiAbelian G'` using `GlobalTheory.T.semi_abelian_of_pullback X X' G G' f φ hp hG`.
+
+Take `⟨hF', t1, t2, tm, tu1, tu2⟩` from `GlobalTheory.T.full_torsion_pullback_points X X' Ω Ω' ξ ξ' f i hd G G' φ hp n hF`. Take `⟨c1, c2⟩` from `GlobalTheory.T.weil_pairing_transport_relation Ω Ω' i (Over.mk ξ ⟶ G) (Over.mk ξ' ⟶ G') (fun a c => a.left ≫ φ = spMap i ≫ c.left) n hn t1 t2 tm tu1 tu2 e e' (fun x g g' _ hg hg' => he.mul_right x g g' ‹_› hg hg') he.perfect he.nondeg (fun x g g' _ hg hg' => he'.mul_right x g g' …`. Establish `om` using `om_pull hξ hξ' hd hp hs M M' j jd hj hjd`. Establish `hpull` using `fun q' {y y'} hy hy' hc {w} hw => ht_pull (e := e) (e' := e') hξ hξ' hd hp hs he hF hF' he' t1 t2 M M' j jd hj hjd q' (y := y) (y' := y') hy hy' hc (w := w) hw`. Take `⟨hext, hspan, -⟩` from `LiePull.main X X' Ω Ω' ξ ξ' f i G G' φ E E' M M' j hξ hξ' hd hp hs hj`.
+
+Establish `hjs : ∀ (a : Ω) (w : Module.Dual Ω E), jd (a • w) = i a • jd w`. Introduce `a w`. Use `LinearMap.ext_on hspan ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨v, rfl⟩`. Simplify using `[hjd]`.
+
+Use `⟨?_, om⟩` and prove the remaining obligations. Use function extensionality and compare the values at `q'`. Establish `hsp` using `hd.specializes q'`. Take `⟨h', hreg, -⟩` from `RegAtDom.regAt_dominates X Ω ξ X' Ω' ξ' f i hd q'`. Rewrite using `[Lat.pull_apply _ hd]`.
+
+Apply `le_antisymm` to reduce the goal to its premises. Use `Submodule.span_le.2 ?_` and prove the remaining obligations. Introduce and unpack `w' ⟨y', hy', hw'⟩`. Take `⟨y, hy, hc⟩` from `c1 y' hy'`. Take `⟨⟨U, hU, wf, hwf⟩, -⟩` from `GlobalTheory.T.hodge_tate_weil_local X Ω ξ hξ hN G hG L n hn hF e he E M ⟨f q'.1, hsp⟩`.
+
+Establish `h0` using `hwf y hy ⟨f q'.1, hsp⟩ hU`. Establish `h1` using `hpull q' hy hy' hc h0`. Take `⟨u, hu, rfl⟩` from `(GlobalTheory.T.hodge_tate_weil_unique X' Ω' ξ' hξ' hN' G' hG' L' n hn hF' e' he' E' M' y' q' _ w' hy' h1).1 hw'`. Use `add_mem (Submodule.subset_span ⟨wf y, Submodule.subset_span ⟨y, hy, h0⟩, rfl⟩) ?_` and prove the remaining obligations. Use `clear hw'`.
+
+Rewrite `hu` using `[om, Lat.pull_apply _ hd]`. Establish `hnz : ∀ z ∈ M.omLat ⟨f q'.1, hsp⟩, n • z ∈ M.htOm L n ⟨f q'.1, hsp⟩`. Introduce `z hz`. Establish `h2` using `(GlobalTheory.T.hodge_tate_weil_unique X Ω ξ hξ hN G hG L n hn hF e he E M y ⟨f q'.1, hsp⟩ _ (wf y + n • z) hy h0).2 ⟨z, hz, rfl⟩`. Establish `h3 : wf y + n • z ∈ M.htOm L n ⟨f q'.1, hsp⟩` using `Submodule.subset_span ⟨y, hy, h2⟩`.
+
+Establish `h4 : wf y ∈ M.htOm L n ⟨f q'.1, hsp⟩` using `Submodule.subset_span ⟨y, hy, h0⟩`. Simplify using `using sub_mem h3 h4`. Proceed by induction on `hu using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨z, hz, rfl⟩` from `hx`.
+
+Rewrite using `[← map_nsmul]`. Conclude with `Submodule.subset_span ⟨_, hnz z hz, rfl⟩`. Consider the case `zero => simp`. Consider the case `add x z _ _ hx hz => rw [smul_add]`. Conclude with `add_mem hx hz`.
+
+Consider the case `smul a x _ hx`. Rewrite using `[smul_comm]`. Conclude with `Submodule.smul_mem _ a hx`. Use `Submodule.span_le.2 ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨w, hw, rfl⟩`.
+
+Proceed by induction on `hw using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨y, hy, hxw⟩` from `hx`. Take `⟨y', hy', hc⟩` from `c2 y hy`. Conclude with `Submodule.subset_span ⟨y', hy', hpull q' hy hy' hc hxw⟩`.
+
+Consider the case `zero => simp`. Consider the case `add x z _ _ hx hz => rw [map_add]`. Conclude with `add_mem hx hz`. Consider the case `smul a x _ hx`. Take `⟨a, ha⟩` from `a`.
+
+Establish `: jd ((⟨a, ha⟩ : regAt ξ ⟨f q'.1, hsp⟩) • x) = i a • jd x` using `hjs a x`. Rewrite using `[SetLike.mem_coe, this]`. Conclude with `Submodule.smul_mem _ (⟨i a, hreg a ha⟩ : regAt ξ' q') hx`.
+-/
 theorem main : ∀ (X : Scheme.{0}) [IsLocallyNoetherian X] (Ω : Type) [Field Ω] [CharZero Ω] (ξ : Spec (CommRingCat.of Ω) ⟶ X), IsCptGen ξ → Flat.NormalCpt ξ → ∀ (G : Over X) [GrpObj G], IsSemiAbelian G → ∀ (L : LB G.left) (n : ℕ), 1 ≤ n → FullTorsion G ξ n → ∀ e, GenWeil G L ξ n e → ∀ (E : Type) [AddCommGroup E] [Module Ω E] (M : LieModel G ξ E) (X' : Scheme.{0}) [IsLocallyNoetherian X'] (Ω' : Type) [Field Ω'] (ξ' : Spec (CommRingCat.of Ω') ⟶ X'), IsCptGen ξ' → Flat.NormalCpt ξ' → ∀ (f : X' ⟶ X) (i : Ω →+* Ω'), GlobalTheory.CompanionTheory.Ar.Dominates ξ' ξ f i → ∀ (G' : Over X') [GrpObj G'] [IsCommMonObj G'] (φ : G'.left ⟶ G.left), IsGrpPullback G' G f φ → ∀ (L' : LB G'.left) (e' : (Over.mk ξ' ⟶ G') → (Over.mk ξ' ⟶ G') → Ω'ˣ), GenWeil G' L' ξ' n e' → ∀ (E' : Type) [AddCommGroup E'] [Module Ω' E'] (M' : LieModel G' ξ' E') (j : E →+ E') (jd : Module.Dual Ω E →+ Module.Dual Ω' E'), (∀ v, (M'.pt (j v)).left ≫ φ = spMap (dualMap i) ≫ (M.pt v).left) → (∀ w v, jd w (j v) = i (w v)) → M'.htOm L' n = (M.htOm L n).pull ξ' f jd ∧ M'.omLat = M.omLat.pull ξ' f jd := by
   intro X _ Ω _ _ ξ hξ hN G _ hG L n hn hF e he E _ _ M X' _ Ω' _ ξ' hξ' hN' f i hd G' _ _ φ hp L' e' he' E' _ _ M' j jd hj hjd
   haveI : IsCommMonObj G := hG.comm

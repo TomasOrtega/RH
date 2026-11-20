@@ -23,6 +23,21 @@ variable {D : D7} {Γ : Type} [Group Γ] [Fintype Γ] {Pl0 T : Type} {A : FamIn 
 
 open ValuativeRel in
 
+/- English proof (translation)
+Introduce and unpack `⟨hsupp, hc⟩`. Use `⟨hsupp, fun Tm hTm Φ₀ Φ hΦ₀ hΦ => ?_⟩` and prove the remaining obligations. Use `haveI : T2Space (Matrix Y Y' k) := GlobalTheory.FinPl.Comm.t2Space_matrix_of_isNonarchimedeanLocalField`. Establish `hc1 : Continuous fun y : Matrix Y Y' k => y.submatrix e id` using `continuous_pi fun a => continuous_pi fun b => (continuous_apply b).comp (continuous_apply (e a))`. Establish `hc2 : Continuous fun x : Matrix Z Y' k => x.submatrix e.symm id` using `continuous_pi fun a => continuous_pi fun b => (continuous_apply b).comp (continuous_apply (e.symm a))`.
+
+Set `re : SB (Matrix Z Y' k) → SB (Matrix Y Y' k)` to `fun Ψ => ⟨fun y => Ψ.1 (y.submatrix e id), GlobalTheory.FinPl.Comm.comp_mem_SB Ψ.2 hc1 hc2 (fun y => by ext a b; simp)⟩`. Take `⟨Tm', hTm', hchg⟩` from `GlobalTheory.LocMod.Place.exists_isModel_chg D k p Z Y' S T' FS FX Y Y' FS F ψ Tm hTm`. Establish `hP : F.γ * FX.β = (F.γ * F.β).submatrix id e`. Use extensionality with `y z`. Simplify using `only [Matrix.mul_apply, Matrix.submatrix_apply, id, he]`.
+
+Establish `hre : ∀ (Ψ : SB (Matrix Z Y' k)), Tm' (re Ψ) = Tm Ψ` using `fun Ψ => hchg Ψ (re Ψ) fun x => by`. Express the relevant statement in the definitionally equal form `Ψ.1 x = Ψ.1 ((F.γ * FX.β * x * (FS.γ * FS.β)).submatrix e id)`. Establish `hx : (F.γ * FX.β * x * (FS.γ * FS.β)).submatrix e id = x`. Rewrite using `[hP, F.γβ, FS.γβ, Matrix.mul_one]`. Use function extensionality and compare the values at `a b`.
+
+Simplify using `[Matrix.mul_apply, Matrix.one_apply]`. Rewrite using `[hx]`. Establish `h1 : IsOne (re Φ₀)`. Unfold `IsOne`. Use function extensionality and compare the values at `y`.
+
+Express the relevant statement in the definitionally equal form `Φ₀.1 (y.submatrix e id) = _`. Rewrite using `[hΦ₀]`. Distinguish the cases in `hy : ∀ r q, y r q ∈ 𝒪[k]`. Rewrite using `[Set.indicator_of_mem (show y ∈ {x : Matrix Y Y' k | ∀ r q, x r q ∈ 𝒪[k]} from hy), Set.indicator_of_mem (show y.submatrix e id ∈ {x : Matrix Z Y' k | ∀ r q, x r q ∈ 𝒪[k]} from fun r q => hy (e r) q)]`. Rewrite using `[Set.indicator_of_notMem (show y ∉ {x : Matrix Y Y' k | ∀ r q, x r q ∈ 𝒪[k]} from hy), Set.indicator_of_notMem (show y.submatrix e id ∉ {x : Matrix Z Y' k | ∀ r q, x r q ∈ 𝒪[k]} from fun h => hy fun r q => by simpa using h (e.symm r) q)]`.
+
+Establish `h2 : (re Φ).1 = Ξ`. Use function extensionality and compare the values at `y`. Express the relevant statement in the definitionally equal form `Φ.1 (y.submatrix e id) = Ξ y`. Rewrite using `[hΦ]`. Simplify using the standard rewrite rules.
+
+Rewrite using `[← hre Φ, ← hre Φ₀]`. Conclude with `hc Tm' hTm' (re Φ₀) (re Φ) h1 h2`.
+-/
 theorem combAt_renumber {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
     (p : Place D k) (ψ : AddChar (AF D.host.F) ℂ) {S T' : HSp D} {Y Y' Z : Type} [Fintype Y] [DecidableEq Y] [Fintype Y']
     [DecidableEq Y'] [Fintype Z] [DecidableEq Z] (FS : Frame k S.rank Y') (F : Frame k T'.rank Y) (FX : Frame k T'.rank Z)
@@ -71,6 +86,37 @@ end GlobalTheory.LastPlace
 open GlobalTheory.LastPlace in
 set_option maxHeartbeats 4000000 in
 
+/- English proof (translation)
+Use `⟨0, fun ε CF _ => ⟨0, fun D large₂ _ _ Γ _ _ Pl0 T A Ks _ _ _ R F s ch hch _ => ?_⟩⟩` and prove the remaining obligations. Introduce `hChr hArr hLoc hBes hJac t w hw p hp β r r₀ h hpts M hM φ v f hvf j hj`. Establish `hj0 : j + 2 * 0 + 2 = D.R.m` using `by omega`. Establish `hm : (locGrid ch.G t w).m = D.R.m` using `rfl`. Establish `hA1` using `topRank_add (G := locGrid ch.G t w) one_le_sLen (j + 1)`.
+
+Establish `hA0` using `topRank_add (G := locGrid ch.G t w) one_le_sLen j`. Establish `hA2` using `topRank_add (G := locGrid ch.G t w) one_le_sLen (j + 1 + 1)`. Establish `hAm` using `topRank_add (G := locGrid ch.G t w) one_le_sLen D.R.m`. Rewrite `hA1`, `hA0`, `hA2`, `hAm` using `[hm]`. Establish `h₁ : topRank (locGrid ch.G t w) (j + 1) + 0 = (locGrid ch.G t w).rank (D.R.m, j + 1)` using `by omega`.
+
+Establish `h₂ : topRank (locGrid ch.G t w) j + (0 + 1) = (locGrid ch.G t w).rank (D.R.m, j)` using `by omega`. Establish `h₃ : (locGrid ch.G t w).rank (D.R.m, j + 1 + 1) = (locGrid ch.G t w).rank (D.R.m, D.R.m)`. Rewrite using `[show j + 1 + 1 = D.R.m by omega]`. Establish `h₄ : (locGrid ch.G t w).rank (D.R.m, j + 1) = topRank (locGrid ch.G t w) (j + 1)` using `by omega`. Take `⟨hchar, hcond, -⟩` from `hChr t w hw p hp`.
+
+Take `⟨F₀, T₁, hcore, hT₁, hT₁O, Φ₁, hΦ₁, hT₁Φ⟩` from `GlobalTheory.T.lastTwoSteps_localModel_flatMap_fourierJacobiStep ch hChr hArr hLoc hBes hJac t w hw p hp β r r₀ h hpts M hM φ v f hvf j hj0 (GlobalTheory.Unf.Inhab.nonempty_volN _).some h₁ h₂`. Take `⟨T₂, hT₂, hT₂O, Φ₂, hΦ₂, hT₂Φ⟩` from `GlobalTheory.T.lastTwoSteps_localModel_extendByZero_topStep ch hChr hArr hJac t w hw p hp β M hM φ v f hvf j hj0 h₃ h₄`. Take `⟨e, he1, he2, FX, hFX, hFXe⟩` from `GlobalTheory.T.lastTwoSteps_topVertex_frame_at_place ch t w hw p hp j hj`. Introduce `I S x Ξ₁ Ξ₂ c₁ c₂ hc`. Use `haveI : T2Space (Matrix (Fin ((locGrid ch.G t w).rank (D.R.m, D.R.m)) ⊕ Unit) (Fin (topRank (locGrid ch.G t w) (j + 1))) (Kw w)) := GlobalTheory.FinPl.Comm.t2Space_matrix_of_isNonarchimedeanLocalField`.
+
+Set `Ξ₂' : I → SB (Matrix (Fin ((locGrid ch.G t w).rank (D.R.m, D.R.m)) ⊕ Unit) (Fin (topRank (locGrid ch.G t w) (j + 1))) (Kw w))` to `fun i => ⟨fun y => (Ξ₂ i).1 (y.submatrix e.symm id), GlobalTheory.FinPl.Comm.comp_mem_SB (Ξ₂ i).2 (p := fun y => y.submatrix e.symm id) (s := fun y => y.submatrix e id) (continuous_pi fun a => continuous_pi fun b => (continuous_apply b).comp (continuous_apply (e.symm a))) (contin …`. Establish `hΞ₂' : ∀ i y, (Ξ₂' i).1 y = (Ξ₂ i).1 (y.submatrix e.symm id)` using `fun _ _ => rfl`. Set `O₁ : SB (Matrix (Fin (topRank (locGrid ch.G t w) (j + 1))) (Fin (topRank (locGrid ch.G t w) j) ⊕ Unit) (Kw w))` to `⟨_, GlobalTheory.LastTwoSteps.intInd_mem_SB _ _⟩`. Set `O₂ : SB (Matrix (Fin ((locGrid ch.G t w).rank (D.R.m, D.R.m))) (Fin (topRank (locGrid ch.G t w) (j + 1))) (Kw w))` to `⟨_, GlobalTheory.LastTwoSteps.intInd_mem_SB _ _⟩`. Establish `hO₁ : IsOne O₁` using `rfl`.
+
+Establish `hO₂ : IsOne O₂` using `rfl`. Establish `hL : (pLine D).rank = 1` using `rfl`. Establish `ha : ((p.xi ^ 0)⁻¹ : Kw w) ≠ 0` using `by simp`. Establish `hz : (lastTau (D` using `D)).map p.pr *ᵥ (fun _ => (1 : Kw w)) = (-(p.xi * (p.xi ^ 0)⁻¹)) • fun i => p.pr ((besAt ch.G hM j 0 hj0 (GlobalTheory.Unf.Inhab.nonempty_volN _).some).ζ i) := by`. Use function extensionality and compare the values at `i`.
+
+Simplify using `[lastTau, mulVec, dotProduct, besAt, Place.xi, Place.pr, hL]`. Conclude with `(mul_one _).symm`. Establish `key` using `fun (S' : Finset I) (Ψ₂ : SB (Matrix (Fin ((locGrid ch.G t w).rank (D.R.m, D.R.m))) (Fin (topRank (locGrid ch.G t w) (j + 1))) (Kw w))) => GlobalTheory.LastSeeSawGen.lastBi_expand D (Kw w) (unitVol w) (isUnitVol_unitVol w) p ch.W.ψ ch.W.ψ_std (psiAt ch.W w) hchar hcond 0 (besAt c …`. Establish `hc' : ∀ i ∈ S, p.IsCombAt ch.W.ψ (frTop ch.S.toGridChoice t w j (by omega)) (frTop ch.S.toGridChoice t w (j + 1) (by omega)) (c₁ i) (Ξ₁ i).1 ∧ p.IsCombAt ch.W.ψ (frTop ch.S.toGridChoice t w (j + 1) (by omega)) FX (c₂ i) (Ξ₂' i).1` using `fun i hi => ⟨(hc i hi).1, combAt_renumber p ch.W.ψ _ _ FX e hFXe _ _ (hc i hi).2⟩`. Establish `hsymm : ∀ a : Fin ((locGrid ch.G t w).rank (D.R.m, j + 1 + 1)), e.symm (Fin.castLE (by omega) a) = Sum.inl (Fin.cast h₃ a)` using `fun a => by`.
+
+Rewrite using `[Equiv.symm_apply_eq]`. Use `ext`. Rewrite using `[he1]`. Both sides reduce to the same expression. Establish `hsymm' : e.symm (topLast (locGrid ch.G t w) (j + 1 + 1)) = Sum.inr ()`.
+
+Rewrite using `[Equiv.symm_apply_eq]`. Use `ext`. Rewrite using `[he2]`. Both sides reduce to the same expression. Unfold `facAt locA conAt`.
+
+Rewrite using `[dif_pos hj0, dif_pos hj0]`. Unfold `lastDat`. Rewrite using `[← hT₁O O₁ hO₁, ← hT₂O O₂ hO₂]`. Use `⟨fun hrel => ?_, fun hexp => ?_⟩` and prove the remaining obligations. Establish `e1` using `key S 0 hc' (fun y y' => by`.
+
+Rewrite using `[Submodule.coe_zero, Pi.zero_apply, zero_mul]`. Conclude with `(hrel y (y'.submatrix e.symm id)).symm)`. Establish `e2` using `key ∅ 0 (fun i hi => absurd hi (Finset.notMem_empty i)) (fun y y' => by`. Rewrite using `[Submodule.coe_zero, Pi.zero_apply, zero_mul, Finset.sum_empty])`. Rewrite `e2` using `[Finset.sum_empty]`.
+
+Conclude with `e1.symm.trans e2`. Rewrite using `[← hT₁Φ, ← hT₂Φ]`. Use `key S Φ₂ hc' fun y y' => ?_` and prove the remaining obligations. Rewrite using `[hΦ₂, hΦ₁]`. Use `Eq.trans ?_ (hexp (y, y'.submatrix e.symm id))` and prove the remaining obligations.
+
+Rewrite using `[dif_pos (show j + 2 * 0 + 2 = (locGrid ch.G t w).m from hj0)]`. Establish `hy : y'.toRows₁.submatrix (Fin.cast h₃) (Fin.cast h₄) = (y'.submatrix e.symm id).submatrix (Fin.castLE (show (locGrid ch.G t w).rank ((locGrid ch.G t w).m, j + 1 + 1) ≤ _ by simp only [hm]; omega)) (Fin.cast (show (locGrid ch.G t w).rank ((locGrid ch.G t w).m, j + 1) = _ by simp …`. Use function extensionality and compare the values at `a b`. Simplify using `only [Matrix.submatrix_apply, Matrix.toRows₁_apply, id]`. Conclude with `congrArg (fun z => y' z (Fin.cast h₄ b)) (hsymm a).symm`.
+
+Establish `hy' : (y'.submatrix e.symm id) (topLast (locGrid ch.G t w) (j + 1 + 1)) = y' (Sum.inr ())`. Use function extensionality and compare the values at `b`. Simplify using `only [Matrix.submatrix_apply, id]`. Rewrite using `[hsymm']`. Simplify using `only`.
+
+Rewrite using `[hy, hy']`. Both sides reduce to the same expression.
+-/
 theorem GlobalTheory.FlatPlace.lastStep_eventually : Big fun ch => ChrP ch → ArrP ch → LocP ch → BesP ch → JacP ch → LastP ch := by
   refine ⟨0, fun ε CF _ => ⟨0, fun D large₂ _ _ Γ _ _ Pl0 T A Ks _ _ _ R F s ch hch _ => ?_⟩⟩
   classical

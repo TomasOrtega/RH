@@ -22,21 +22,51 @@ namespace Formalism.L2.GlobalTheoryTheory.MergeGL2
 
 open Formalism.LFunctionChainParameters Formalism.HermitianLattices
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem tw_eq : @LBr2.tw = @ZeroFreeRegionGL2.tw := rfl
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem prop_2_5_eq : @LBr2.ExistsSplitGoodPrimePair = @ZeroFreeRegionGL2.ExistsSplitGoodPrimePair := rfl
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem LogNE_eq : LBr2.LogNE = ZeroFreeRegionGL2.LogNE := rfl
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem NoRealZeroSmall_eq : LBr2.NoRealZeroSmall = GL2b2.NoRealZeroSmall := rfl
 
+/- English proof (translation)
+The claim follows from `NoRealZeroSmall_eq ▸ GL2b2.no_real_zero_small_modulus`.
+-/
 theorem noRealZeroSmall : LBr2.NoRealZeroSmall := NoRealZeroSmall_eq ▸ GL2b2.no_real_zero_small_modulus
 
+/- English proof (translation)
+The claim follows from `noRealZeroSmall.2`.
+-/
 theorem chi8NoRealZero : LChain6.Chi8NoRealZero := noRealZeroSmall.2
 
+/- English proof (translation)
+The claim follows from `LogNE_eq ▸ ZeroFreeRegionGL2.log_nonexceptional_bound`.
+-/
 theorem logNE : LBr2.LogNE := LogNE_eq ▸ ZeroFreeRegionGL2.log_nonexceptional_bound
 
+/- English proof (translation)
+The claim follows from `LBr2.analytic_input_conditional noRealZeroSmall logNE`.
+-/
 theorem hostAnalyticConcl : LBr2.HostAnalyticConcl := LBr2.analytic_input_conditional noRealZeroSmall logNE
 
+/- English proof (translation)
+The claim follows from `hostAnalyticConcl`.
+-/
 theorem hostAn : ∃ c' : ℝ, 0 < c' ∧ LChain6.HostAn c' := hostAnalyticConcl
 
+/- English proof (translation)
+The claim follows from `LChain6.chain_analytic_at_point chi8NoRealZero`.
+-/
 theorem chain6At :
     ∃ Cord : ℝ, 0 ≤ Cord ∧ ∀ eD eL A K cHH eK CL eW KW ε : ℝ, 0 < ε → ε < 1 / 4 → 0 < A →
       ∃ x₁ : ℝ, ∀ x : ℝ, x₁ ≤ x → LChain6.Chain6Core A Cord eD eL K cHH eK CL eW KW ε x →
@@ -124,12 +154,20 @@ def Chain6AtClosed : Prop :=
 
 end LatticeGramTransferCondition
 
+/- English proof (translation)
+Take `⟨x₀, hx₀⟩` from `h ε A hε hA`. Conclude with `⟨x₀, fun x hx C q d _ _ hP => ⟨hP, (hx₀ x hx C q d hP).1, (hx₀ x hx C q d hP).2⟩⟩`.
+-/
 theorem analytic_conclusion_of_prop_2_5 {c' : ℝ} (h : LChain6.HostAn c') (ε A : ℝ) (hε : 0 < ε) (hA : 0 < A) :
     ∃ x₀ : ℝ, ∀ x : ℝ, x₀ ≤ x → ∀ (C : ℝ) (q d : ℕ) [Fact q.Prime] [Fact d.Prime],
       LBr2.PrimePairBounds ε C x q d → EndFor c' ε A C x q d := by
   obtain ⟨x₀, hx₀⟩ := h ε A hε hA
   exact ⟨x₀, fun x hx C q d _ _ hP => ⟨hP, (hx₀ x hx C q d hP).1, (hx₀ x hx C q d hP).2⟩⟩
 
+/- English proof (translation)
+Establish `h' : ∃ q : ℕ, ∃ d : ℕ, FiltrationCocycleLiftCriterion.QDGood ε C x q d` using `h`. Establish `hq : ∃ d : ℕ, FiltrationCocycleLiftCriterion.QDGood ε C x (FiltrationCocycleLiftCriterion.qSel ε C x) d`. Unfold `FiltrationCocycleLiftCriterion.qSel`. Rewrite using `[dif_pos h']`. Conclude with `Nat.find_spec h'`.
+
+Unfold `FiltrationCocycleLiftCriterion.dSel`. Rewrite using `[dif_pos hq]`. Conclude with `Nat.find_spec hq`.
+-/
 theorem sel_spec {ε C x : ℝ} (h : FiltrationCocycleLiftCriterion.QDExists ε C x) : FiltrationCocycleLiftCriterion.QDGood ε C x (FiltrationCocycleLiftCriterion.qSel ε C x) (FiltrationCocycleLiftCriterion.dSel ε C x) := by
   classical
   have h' : ∃ q : ℕ, ∃ d : ℕ, FiltrationCocycleLiftCriterion.QDGood ε C x q d := h
@@ -141,6 +179,11 @@ theorem sel_spec {ε C x : ℝ} (h : FiltrationCocycleLiftCriterion.QDExists ε 
   rw [dif_pos hq]
   exact Nat.find_spec hq
 
+/- English proof (translation)
+Take `⟨c', hc', hH⟩` from `hostAn`. Use `⟨c', hc', fun ε A C₂ C₂' x₂ C₄ x₄ hε hε1 hA hC₂ hC₄ h1 h2 h3 => ?_⟩` and prove the remaining obligations. Take `⟨xa, hxa⟩` from `WeakMeanSquareEstimates.prime_pair_of_box_and_weak_mean_square_hypotheses ε C₂ C₂' x₂ C₄ x₄ hε hε1 hC₂ hC₄ h1 h2 h3`. Take `⟨xb, hxb⟩` from `analytic_conclusion_of_prop_2_5 hH ε A hε hA`. Use `⟨max xa xb, fun x hx => ?_⟩` and prove the remaining obligations.
+
+Establish `hP : LBr2.ExistsSplitGoodPrimePair ε C₂' x` using `prop_2_5_eq ▸ hxa x (le_trans (le_max_left _ _) hx)`. Take `⟨q, d, iq, id, hqd⟩` from `(LBr2.proposition_at_iff ε C₂' x).1 hP`. Establish `hE : FiltrationCocycleLiftCriterion.QDExists ε C₂' x` using `⟨q, d, iq, id, hqd⟩`. Take `⟨jq, jd, hsel⟩` from `sel_spec hE`. Conclude with `⟨hE, jq, jd, hxb x (le_trans (le_max_right _ _) hx) C₂' _ _ hsel⟩`.
+-/
 theorem analyticEndSel : AnalyticEndSel := by
   obtain ⟨c', hc', hH⟩ := hostAn
   refine ⟨c', hc', fun ε A C₂ C₂' x₂ C₄ x₄ hε hε1 hA hC₂ hC₄ h1 h2 h3 => ?_⟩
@@ -153,6 +196,11 @@ theorem analyticEndSel : AnalyticEndSel := by
   obtain ⟨jq, jd, hsel⟩ := sel_spec hE
   exact ⟨hE, jq, jd, hxb x (le_trans (le_max_right _ _) hx) C₂' _ _ hsel⟩
 
+/- English proof (translation)
+Take `⟨c', hc', h⟩` from `analyticEndSel`. Use `⟨c', hc', fun ε A C₂ C₂' x₂ C₄ x₄ hε hε1 hA hC₂ hC₄ h1 h2 h3 => ?_⟩` and prove the remaining obligations. Take `⟨x₀, hx₀⟩` from `h ε A C₂ C₂' x₂ C₄ x₄ hε hε1 hA hC₂ hC₄ h1 h2 h3`. Use `⟨x₀, fun x hx D hD => ?_⟩` and prove the remaining obligations. Establish `key : ∀ q d : ℕ, q = FiltrationCocycleLiftCriterion.qSel ε C₂' x → d = FiltrationCocycleLiftCriterion.dSel ε C₂' x → ∃ (_ : Fact q.Prime) (_ : Fact d.Prime), EndFor c' ε A C₂' x q d`.
+
+Introduce `q d hq hd`. Substitute `hq hd` using the available equality. Conclude with `(hx₀ x hx).2`. Conclude with `key _ _ hD.1 hD.2`.
+-/
 theorem analyticEndTied : AnalyticEndTied := by
   obtain ⟨c', hc', h⟩ := analyticEndSel
   refine ⟨c', hc', fun ε A C₂ C₂' x₂ C₄ x₄ hε hε1 hA hC₂ hC₄ h1 h2 h3 => ?_⟩
@@ -165,6 +213,9 @@ theorem analyticEndTied : AnalyticEndTied := by
     exact (hx₀ x hx).2
   exact key _ _ hD.1 hD.2
 
+/- English proof (translation)
+Break down `le_or_gt 0 Q with hQ | hQ` into its components or cases. Conclude with `Real.rpow_nonneg hQ _`. Rewrite using `[Real.rpow_def_of_neg hQ]`. Apply `mul_nonneg (Real.exp_pos _).le` to reduce the goal to its premises. Apply the tactic sequence `apply Real.cos_nonneg_of_neg_pi_div_two_le_of_le <;> nlinarith [Real.pi_pos]`.
+-/
 theorem rpow_quarter_nonneg (Q : ℝ) : 0 ≤ Q ^ (1 / 4 : ℝ) := by
   rcases le_or_gt 0 Q with hQ | hQ
   · exact Real.rpow_nonneg hQ _
@@ -172,16 +223,33 @@ theorem rpow_quarter_nonneg (Q : ℝ) : 0 ≤ Q ^ (1 / 4 : ℝ) := by
     apply mul_nonneg (Real.exp_pos _).le
     apply Real.cos_nonneg_of_neg_pi_div_two_le_of_le <;> nlinarith [Real.pi_pos]
 
+/- English proof (translation)
+Introduce `t _ θ Q S hθ hθ2 hS`. Conclude with `le_trans (h t θ Q S hθ hθ2 hS) (mul_le_mul_of_nonneg_right hC (rpow_quarter_nonneg Q))`.
+-/
 theorem boxCount_mono {C C' : ℝ} (hC : C ≤ C') (h : ZeroFreeRegionGL2.BoxCountHyp C) : ZeroFreeRegionGL2.BoxCountHyp C' := by
   intro t _ θ Q S hθ hθ2 hS
   exact le_trans (h t θ Q S hθ hθ2 hS) (mul_le_mul_of_nonneg_right hC (rpow_quarter_nonneg Q))
 
+/- English proof (translation)
+Take `⟨C, hC⟩` from `ZeroDensityInBoxes.box_count_of_zero_density h`. Conclude with `⟨max C 1, lt_of_lt_of_le one_pos (le_max_right _ _), boxCount_mono (le_max_left _ _) hC⟩`.
+-/
 theorem boxCount_of_density (h : ZeroDensityInBoxes.ZeroDensityBox) : ∃ C : ℝ, 0 < C ∧ ZeroFreeRegionGL2.BoxCountHyp C := by
   obtain ⟨C, hC⟩ := ZeroDensityInBoxes.box_count_of_zero_density h
   exact ⟨max C 1, lt_of_lt_of_le one_pos (le_max_right _ _), boxCount_mono (le_max_left _ _) hC⟩
 
 open ArithmeticFunction Finset in
 
+/- English proof (translation)
+Establish `hC : (0 : ℝ) ≤ Real.log 4 + 4`. Use `Real.log_nonneg (show (1 : ℝ) ≤ 4 by norm_num)` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hfl : 2 ≤ ⌊y⌋₊` using `Nat.le_floor (by exact_mod_cast hy)`. Take `⟨N, hN⟩ : ∃ N, ⌊y⌋₊ = N + 1` from `⟨⌊y⌋₊ - 1, by omega⟩`.
+
+Establish `hNy : (N : ℝ) + 1 ≤ y`. Use `Nat.floor_le (show (0 : ℝ) ≤ y by linarith)` as an intermediate fact. Rewrite `this` using `[hN]`. Conclude with `this` after adjusting the coercions. Establish `hN0 : (0 : ℝ) < (N : ℝ) + 1` using `by positivity`.
+
+Rewrite using `[hN]`. Establish `h1` using `Ext.BoxTail.tail_mertens_nat N`. Establish `h2` using `Ext.BoxTail.tail_mertens_psi (N + 1)`. Move the coercions through the operations in `at h2`. Establish `h3 : (∑ n ∈ Icc 1 (N + 1), (Λ n : ℝ)) / ((N : ℝ) + 1) ≤ Real.log 4 + 4`.
+
+Rewrite using `[div_le_iff₀ hN0]`. Conclude with `h2`. Establish `h4 : Real.log ((N : ℝ) + 1) ≤ Real.log y` using `Real.log_le_log hN0 hNy`. Establish `h5 : (1 : ℝ) / 2 ≤ Real.log y`. Use `Real.log_two_gt_d9` as an intermediate fact.
+
+Establish `h6 : Real.log 2 ≤ Real.log y` using `Real.log_le_log (by norm_num) hy`. Combine the linear equalities and inequalities to obtain the conclusion. Use polynomial arithmetic with `[mul_le_mul_of_nonneg_left h4 hC, mul_le_mul_of_nonneg_left h5 hC]`.
+-/
 theorem mertens3 (y : ℝ) (hy : 2 ≤ y) :
     ∑ n ∈ Icc 1 ⌊y⌋₊, (Λ n : ℝ) / (n : ℝ) ≤ 3 * (Real.log 4 + 4) * Real.log y := by
   have hC : (0 : ℝ) ≤ Real.log 4 + 4 := by
@@ -210,6 +278,23 @@ theorem mertens3 (y : ℝ) (hy : 2 ≤ y) :
 
 open ArithmeticFunction Finset in
 
+/- English proof (translation)
+Introduce `x Q N _ χ hx hQlo hQhi hχ hgood`. Take `⟨hfirst, _⟩` from `h x Q N χ (le_trans (le_max_left _ _) hx) hQlo hQhi hχ hgood`. Use `⟨hfirst, ?_⟩` and prove the remaining obligations. Establish `hx3 : 3 ≤ x` using `le_trans (le_max_right _ _) hx`. Establish `hx0 : 0 < x` using `by linarith`.
+
+Use `set z : ℝ := x ^ 400 with hz`. Use `set P : ℂ := ∑ n ∈ Icc 1 ⌊z⌋₊, ((Λ n : ℝ) : ℂ) * χ (n : ZMod N) / (n : ℂ) with hP`. Establish `htail : ZeroFreeRegionGL2.tailL χ z = -ZeroFreeRegionGL2.logDerivLAtOne χ - P` using `rfl`. Establish `hz2 : 2 ≤ z`. Establish `: (3 : ℝ) ≤ z`.
+
+Rewrite using `[hz]`. Combine the equalities or inequalities in the displayed calculation. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hPle : ‖P‖ ≤ 3 * (Real.log 4 + 4) * Real.log z`. Use `le_trans (norm_sum_le _ _) (le_trans ?_ (mertens3 z hz2))` and prove the remaining obligations.
+
+Use `Finset.sum_le_sum (fun n hn => ?_)` and prove the remaining obligations. Rewrite using `[norm_div, norm_mul, Complex.norm_real, Complex.norm_natCast, Real.norm_of_nonneg ArithmeticFunction.vonMangoldt_nonneg]`. Establish `hχn : ‖χ (n : ZMod N)‖ ≤ 1` using `DirichletCharacter.norm_le_one χ _`. Establish `hΛ : 0 ≤ (Λ n : ℝ)` using `ArithmeticFunction.vonMangoldt_nonneg`. Use `gcongr`.
+
+Combine the equalities or inequalities in the displayed calculation. Establish `hlogz : Real.log z = 400 * Real.log x`. Rewrite using `[hz, Real.log_pow]`. Evaluate the numerical expressions. Establish `htail1 : ‖-ZeroFreeRegionGL2.logDerivLAtOne χ - P‖ ≤ 1`.
+
+Establish `h2 : x * ‖-ZeroFreeRegionGL2.logDerivLAtOne χ - P‖ ≤ x ^ ε`. Use `hfirst` as an intermediate fact. Rewrite `this` using `[htail, norm_mul, Complex.norm_real, Real.norm_of_nonneg hx0.le]`. Conclude with `this`. Establish `h3 : x ^ ε ≤ x`.
+
+Combine the equalities or inequalities in the displayed calculation. Establish `h4 : x * ‖-ZeroFreeRegionGL2.logDerivLAtOne χ - P‖ ≤ x * 1` using `by linarith`. Conclude with `le_of_mul_le_mul_left h4 hx0`. Establish `hlogx : 1 ≤ Real.log x`. Rewrite using `[Real.le_log_iff_exp_le hx0]`.
+
+Combine the linear relations using `[Real.exp_one_lt_d9]`. Rewrite using `[← norm_neg]`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem boxTail_CVal0_of {ε C x₀ : ℝ} (hε1 : ε ≤ 1) (h : ZeroFreeRegionGL2.BoxTailHyp ε C x₀) :
     ZeroFreeRegionGL2.BoxTailHyp ε CVal0 (max x₀ 3) := by
   intro x Q N _ χ hx hQlo hQhi hχ hgood
@@ -257,10 +342,16 @@ theorem boxTail_CVal0_of {ε C x₀ : ℝ} (hε1 : ε ≤ 1) (h : ZeroFreeRegion
     _ ≤ 3 * (Real.log 4 + 4) * (400 * Real.log x) + 1 := by rw [← hlogz]; linarith
     _ ≤ CVal0 * Real.log x := by unfold CVal0; nlinarith
 
+/- English proof (translation)
+Take `⟨C, x₀, h⟩` from `ZeroDensityInBoxes.box_tail_bound_all ε h0 h1`. Conclude with `⟨max x₀ 3, boxTail_CVal0_of h1 h⟩`.
+-/
 theorem boxTail_CVal0 (ε : ℝ) (h0 : 0 < ε) (h1 : ε ≤ 1) : ∃ x₂ : ℝ, ZeroFreeRegionGL2.BoxTailHyp ε CVal0 x₂ := by
   obtain ⟨C, x₀, h⟩ := ZeroDensityInBoxes.box_tail_bound_all ε h0 h1
   exact ⟨max x₀ 3, boxTail_CVal0_of h1 h⟩
 
+/- English proof (translation)
+Take `⟨c', hc', h⟩` from `analyticEndSel`. Use `⟨c', hc', fun ε A C₄ x₄ hε hε1 hA hC₄ hZ hM => ?_⟩` and prove the remaining obligations. Take `⟨C₂, hC₂, h1⟩` from `boxCount_of_density hZ`. Take `⟨x₂, h2⟩` from `boxTail_CVal0 ε hε hε1`. Conclude with `h ε A C₂ CVal0 x₂ C₄ x₄ hε hε1 hA hC₂ hC₄ h1 h2 hM`.
+-/
 theorem analyticEndClosed : AnalyticEndClosed := by
   obtain ⟨c', hc', h⟩ := analyticEndSel
   refine ⟨c', hc', fun ε A C₄ x₄ hε hε1 hA hC₄ hZ hM => ?_⟩
@@ -268,6 +359,9 @@ theorem analyticEndClosed : AnalyticEndClosed := by
   obtain ⟨x₂, h2⟩ := boxTail_CVal0 ε hε hε1
   exact h ε A C₂ CVal0 x₂ C₄ x₄ hε hε1 hA hC₂ hC₄ h1 h2 hM
 
+/- English proof (translation)
+Take `⟨c', hc', h⟩` from `analyticEndTied`. Use `⟨c', hc', fun ε A C₄ x₄ hε hε1 hA hC₄ hZ hM => ?_⟩` and prove the remaining obligations. Take `⟨C₂, hC₂, h1⟩` from `boxCount_of_density hZ`. Take `⟨x₂, h2⟩` from `boxTail_CVal0 ε hε hε1`. Conclude with `h ε A C₂ CVal0 x₂ C₄ x₄ hε hε1 hA hC₂ hC₄ h1 h2 hM`.
+-/
 theorem analyticEndClosedTied : AnalyticEndClosedTied := by
   obtain ⟨c', hc', h⟩ := analyticEndTied
   refine ⟨c', hc', fun ε A C₄ x₄ hε hε1 hA hC₄ hZ hM => ?_⟩
@@ -275,6 +369,9 @@ theorem analyticEndClosedTied : AnalyticEndClosedTied := by
   obtain ⟨x₂, h2⟩ := boxTail_CVal0 ε hε hε1
   exact h ε A C₂ CVal0 x₂ C₄ x₄ hε hε1 hA hC₂ hC₄ h1 h2 hM
 
+/- English proof (translation)
+Take `⟨e, Ω, i1, W, i2, i3, m, k, C, N, TT, T2, a, btH, w, Fc, Rw, O, Lp, P, π, s, sB, BAD, Sig, η, κ, off, g₁, g₂, logOm, C0, cZ, cL, cE5, c5, C0S, h1, h2, h3, h4, h5, h6, h7, h8, h9, h10, h11, h12, h13, h14, h15⟩` from `h`. Conclude with `⟨e, q, d, inferInstance, inferInstance, Ω, i1, W, i2, i3, m, k, C, N, TT, T2, a, btH, w, Fc, Rw, O, Lp, P, π, s, sB, BAD, Sig, η, κ, off, g₁, g₂, logOm, C0, cZ, cL, cE5, c5, C0S, h1, h2, h3, h4, h5, h6, h7, h8, h9, h10, hP, h11, h12, h13, h14, h15⟩`.
+-/
 theorem core_of_coreAt (q d : ℕ) [Fact q.Prime] [Fact d.Prime] (A Cord eD eL K cHH eK CL eW KW ε x : ℝ)
     (hP : LBr2.PrimePairBounds ε CL x q d) (h : CoreAt q d A Cord eD eL K cHH eK eW KW ε x) :
     LChain6.Chain6Core A Cord eD eL K cHH eK CL eW KW ε x := by
@@ -283,6 +380,11 @@ theorem core_of_coreAt (q d : ℕ) [Fact q.Prime] [Fact d.Prime] (A Cord eD eL K
   exact ⟨e, q, d, inferInstance, inferInstance, Ω, i1, W, i2, i3, m, k, C, N, TT, T2, a, btH, w, Fc, Rw, O, Lp, P, π, s, sB, BAD,
     Sig, η, κ, off, g₁, g₂, logOm, C0, cZ, cL, cE5, c5, C0S, h1, h2, h3, h4, h5, h6, h7, h8, h9, h10, hP, h11, h12, h13, h14, h15⟩
 
+/- English proof (translation)
+Take `⟨Cord, hC, h⟩` from `chain6At`. Take `⟨c', _, hE⟩` from `analyticEndClosed`. Use `⟨Cord, hC, fun eD eL A K cHH eK eW KW ε C₄ x₄ hε hε4 hA hC₄ hZ hM => ?_⟩` and prove the remaining obligations. Take `⟨xa, hxa⟩` from `h eD eL A K cHH eK CVal0 eW KW ε hε hε4 hA`. Take `⟨xb, hxb⟩` from `hE ε A C₄ x₄ hε (by linarith) hA hC₄ hZ hM`.
+
+Use `⟨max xa xb, fun x hx => ?_⟩` and prove the remaining obligations. Take `⟨_, iq, id, hEnd⟩` from `hxb x (le_trans (le_max_right _ _) hx)`. Conclude with `⟨iq, id, fun hc => hxa x (le_trans (le_max_left _ _) hx) (core_of_coreAt _ _ A Cord eD eL K cHH eK CVal0 eW KW ε x hEnd.1 hc)⟩`.
+-/
 theorem chain6AtClosed : Chain6AtClosed := by
   obtain ⟨Cord, hC, h⟩ := chain6At
   obtain ⟨c', _, hE⟩ := analyticEndClosed

@@ -26,6 +26,13 @@ open PsiInPull
 
 variable {R : Type} [CommRing R] [IsDomain R]
 
+/- English proof (translation)
+Introduce `j' V hV hle h'`. Take `⟨q, rfl⟩ : ∃ q, j' = fun _ => q` from `⟨j' PUnit.unit, rfl⟩`. Establish `hss : Subsingleton (Spec (CommRingCat.of (FractionRing R)))` using `inferInstanceAs (Subsingleton (PrimeSpectrum (FractionRing R)))`. Distinguish the cases in `hne : ∃ z, jK R z ∈ V`. Use `swap`.
+
+Conclude with `⟨0, Ideal.zero_mem _, fn_ext fun z hz => (hne ⟨z, hz⟩).elim⟩`. Take `⟨z, hz⟩` from `hne`. Take `⟨r', hr', e'⟩` from `H q V hV hle z hz`. Use `⟨r', hr', fn_ext fun y hy => ?_⟩` and prove the remaining obligations. Take `rfl : y = z` from `Subsingleton.elim (α := Spec (CommRingCat.of (FractionRing R))) y z`.
+
+Conclude with `(gs_pull (𝟙 _) (jK R) y V hz r').trans (e'.trans ((gs_res (𝟙 _) y h' hy _).trans (gs_unit _ _ _ (h' hy) _)).symm)`.
+-/
 theorem psiIn_of_gs (D : DegPre R) (χ : D.X) (J : Ideal R)
     (H : ∀ (q : D.P.L.ι) (V : (Spec (CommRingCat.of R)).Opens), IsAffineOpen V →
       V ≤ (D.c χ).left ⁻¹ᵁ D.P.L.U q → ∀ z : Spec (CommRingCat.of (FractionRing R)), jK R z ∈ V →
@@ -46,6 +53,9 @@ theorem psiIn_of_gs (D : DegPre R) (χ : D.X) (J : Ideal R)
   exact (gs_pull (𝟙 _) (jK R) y V hz r').trans (e'.trans
     ((gs_res (𝟙 _) y h' hy _).trans (gs_unit _ _ _ (h' hy) _)).symm)
 
+/- English proof (translation)
+Establish `h : jK R ⁻¹ᵁ V ≤ (LB.LinComb D.P.L (K` using `PUnit) (fun _ => D.xK χ) (fun _ => -1)).U (fun _ => q) := fun y hy => mem_wchart _ _ _ _ (hle hy)`. Take `⟨r, hrJ, hr⟩` from `H (fun _ => q) V hV hle h`. Use `⟨r, hrJ, ?_⟩` and prove the remaining obligations. Conclude with `(gs_pull (𝟙 _) (jK R) z V hz r).symm.trans ((congrArg (gs (𝟙 _) z _) hr).trans ((gs_res (𝟙 _) z h hz _).trans (gs_unit _ _ _ (h hz) _)))`.
+-/
 theorem gs_of_psiIn (D : DegPre R) (χ : D.X) (J : Ideal R) (H : D.PsiIn χ J)
     (q : D.P.L.ι) (V : (Spec (CommRingCat.of R)).Opens) (hV : IsAffineOpen V)
     (hle : V ≤ (D.c χ).left ⁻¹ᵁ D.P.L.U q) (z : Spec (CommRingCat.of (FractionRing R))) (hz : jK R z ∈ V) :
@@ -58,6 +68,11 @@ theorem gs_of_psiIn (D : DegPre R) (χ : D.X) (J : Ideal R) (H : D.PsiIn χ J)
   exact (gs_pull (𝟙 _) (jK R) z V hz r).symm.trans ((congrArg (gs (𝟙 _) z _) hr).trans
     ((gs_res (𝟙 _) z h hz _).trans (gs_unit _ _ _ (h hz) _)))
 
+/- English proof (translation)
+Establish `C : IsCub (cubV D.cub (T` using `TK R) y J) := isCub_cubV D.cub hJ`. Establish `t` using `tauK_mul hJ hB 0 0 0`. Establish `z0 : val (D.tau (0 + 0) 0) (𝟙 _) y J = val (D.tau 0 0) (𝟙 _) y J` using `congrArg (fun a => val (D.tau a 0) (𝟙 _) y J) (add_zero 0)`. Rewrite `t` using `[z0, cPoint_zero, C.face, _root_.mul_one]`. Establish `t0 : val (D.tau 0 0) (𝟙 _) y J = 1` using `mul_eq_left.1 t.symm`.
+
+Establish `e : val (D.tau 0 0) (𝟙 _) y J = val (D.psi (0 + 0)) (𝟙 _) y J * (val (D.psi 0) (𝟙 _) y J)⁻¹ * (val (D.psi 0) (𝟙 _) y J)⁻¹ * (val D.rigK (𝟙 _) y J)⁻¹` using `(val_mul hJ _ _ _).trans (congrArg₂ (· * ·) ((val_mul hJ _ _ _).trans (congrArg₂ (· * ·) ((val_mul hJ _ _ _).trans (congrArg₂ (· * ·) rfl (val_inv _ _))) (val_inv _ _))) (val_inv _ _))`. Rewrite `e` using `[t0, add_zero, mul_inv_cancel, _root_.one_mul]`. Conclude with `(inv_mul_eq_one.1 e.symm)`.
+-/
 theorem val_psi_zero (D : DegPre R) (hB : D.TauBimult) {y : (TK R).left} {J} (hJ : Good D.P.L y J) :
     val (D.psi 0) (𝟙 _) y J = (val D.rigK (𝟙 _) y J)⁻¹ := by
   have C : IsCub (cubV D.cub (T := TK R) y J) := isCub_cubV D.cub hJ

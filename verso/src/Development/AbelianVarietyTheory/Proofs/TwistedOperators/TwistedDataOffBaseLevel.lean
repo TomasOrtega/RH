@@ -13,6 +13,11 @@ namespace GlobalTheory.RowEx.DatTw
 
 open Formalism.L2.Host
 
+/- English proof (translation)
+Take `⟨u, v, huv⟩ : IsCoprime (p : ℤ) (q : ℤ)` from `Nat.isCoprime_iff_coprime.2 ((Nat.coprime_primes hp hq).2 hne)`. Apply `hP.ne_top` to reduce the goal to its premises. Rewrite using `[Ideal.eq_top_iff_one]`. Establish `e` using `congrArg (Int.cast : ℤ → R) huv`. Move the coercions through the operations in `at e`.
+
+Rewrite using `[← e]`. Conclude with `P.add_mem (P.mul_mem_left _ h1) (P.mul_mem_left _ h2)`.
+-/
 theorem not_two_primes {R : Type*} [CommRing R] (P : Ideal R) [hP : P.IsPrime] {p q : ℕ} (hp : p.Prime) (hq : q.Prime)
     (hne : p ≠ q) (h1 : (p : R) ∈ P) (h2 : (q : R) ∈ P) : False := by
   obtain ⟨u, v, huv⟩ : IsCoprime (p : ℤ) (q : ℤ) := Nat.isCoprime_iff_coprime.2 ((Nat.coprime_primes hp hq).2 hne)
@@ -23,14 +28,23 @@ theorem not_two_primes {R : Type*} [CommRing R] (P : Ideal R) [hP : P.IsPrime] {
   rw [← e]
   exact P.add_mem (P.mul_mem_left _ h1) (P.mul_mem_left _ h2)
 
+/- English proof (translation)
+Introduce `x hx` and use `by rw [HChar.loc_mul, h x hx, h' x hx, one_mul]`.
+-/
 theorem unrAt_mul {L : Type} [Field L] [NumberField L] {χ χ' : HChar L} {v : HeightOneSpectrum (𝓞 L)} (h : χ.UnrAt v)
     (h' : χ'.UnrAt v) : (χ * χ').UnrAt v := fun x hx => by
   rw [HChar.loc_mul, h x hx, h' x hx, one_mul]
 
+/- English proof (translation)
+Introduce `_ _` and use `rfl`.
+-/
 theorem unrAt_one {L : Type} [Field L] [NumberField L] (v : HeightOneSpectrum (𝓞 L)) : (1 : HChar L).UnrAt v := fun _ _ => rfl
 
 variable {R : Ranks} (H : Host R)
 
+/- English proof (translation)
+Assume the negation of the conclusion as `h`. Take `⟨-, hpr, -, hnot⟩` from `hψ.2.2.2 v h`. Distinguish the cases in `e : Ideal.absNorm v.asIdeal = GlobalTheory.EX.DC.q0H H`. Conclude with `hnot (e ▸ hS)`. Conclude with `not_two_primes v.asIdeal hpr (GlobalTheory.EX.DC.globalTwisting_spec_fact H).1 e (Ideal.absNorm_mem _) hv`.
+-/
 theorem unrAt_of_isTwist {S : Set ℕ} (hS : GlobalTheory.EX.DC.q0H H ∈ S) {ψ : HChar H.E} (hψ : Chr.IsTwist H S ψ)
     {v : HeightOneSpectrum (𝓞 H.E)} (hv : ((GlobalTheory.EX.DC.q0H H : ℕ) : 𝓞 H.E) ∈ v.asIdeal) : ψ.UnrAt v := by
   by_contra h
@@ -39,11 +53,21 @@ theorem unrAt_of_isTwist {S : Set ℕ} (hS : GlobalTheory.EX.DC.q0H H ∈ S) {ψ
   · exact hnot (e ▸ hS)
   · exact not_two_primes v.asIdeal hpr (GlobalTheory.EX.DC.globalTwisting_spec_fact H).1 e (Ideal.absNorm_mem _) hv
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fun h => not_two_primes v.asIdeal H.pde_prime (GlobalTheory.EX.DC.globalTwisting_spec_fact H).1 (GlobalTheory.EX.DC.q0H_ne_pde_and_ne_pde' H).1.symm h hv, fun h => not_two_primes v.asIdeal H.pde'_prime (GlobalTheory.EX.DC.globalTwisting_spec_fact H).1 (GlobalTheory.EX.DC.q0H_ne_ …`.
+-/
 theorem not_overP_pde {v : HeightOneSpectrum (𝓞 H.E)} (hv : ((GlobalTheory.EX.DC.q0H H : ℕ) : 𝓞 H.E) ∈ v.asIdeal) :
     ¬ OverP H H.pde v ∧ ¬ OverP H H.pde' v :=
   ⟨fun h => not_two_primes v.asIdeal H.pde_prime (GlobalTheory.EX.DC.globalTwisting_spec_fact H).1 (GlobalTheory.EX.DC.q0H_ne_pde_and_ne_pde' H).1.symm h hv,
     fun h => not_two_primes v.asIdeal H.pde'_prime (GlobalTheory.EX.DC.globalTwisting_spec_fact H).1 (GlobalTheory.EX.DC.q0H_ne_pde_and_ne_pde' H).2.symm h hv⟩
 
+/- English proof (translation)
+Establish `hd` using `not_overP_pde B.host hv`. Establish `hdel : f.del.UnrAt v` using `f.isDel.unr v hd.1`. Establish `hdel' : f.del'.UnrAt v` using `f.isDel'.unr v hd.2`. Simplify using `only [TwDat.set, Set.mem_union, Set.mem_insert_iff, Set.mem_singleton_iff, Set.mem_range] at h`. Break down `h with (rfl | rfl | rfl) | ⟨w, rfl⟩` into its components or cases.
+
+Conclude with `unrAt_one v`. Conclude with `hdel`. Conclude with `hdel'`. Unfold `TwDat.xiTw`. Use `unrAt_mul ?_ (unrAt_of_isTwist B.host ?_ (T.psi_tw w) hv)` and prove the remaining obligations.
+
+Use `split_ifs`. Conclude with `hdel'`. Conclude with `hdel`. Conclude with `Or.inr (Or.inr (Or.inr (Or.inr (Or.inr (Or.inl rfl)))))`.
+-/
 theorem unrAt_of_mem_set {B : Base} {f : Fr B.toPre} {T : TwDat B} {ξ : HChar B.host.E} (h : ξ ∈ T.set f)
     {v : HeightOneSpectrum (𝓞 B.host.E)} (hv : ((GlobalTheory.EX.DC.q0H B.host : ℕ) : 𝓞 B.host.E) ∈ v.asIdeal) : ξ.UnrAt v := by
   have hd := not_overP_pde B.host hv
@@ -63,6 +87,11 @@ theorem unrAt_of_mem_set {B : Base} {f : Fr B.toPre} {T : TwDat B} {ξ : HChar B
 
 end GlobalTheory.RowEx.DatTw
 
+/- English proof (translation)
+Introduce `B f T w Z hX Wt z`. Establish `hmem : ∀ t, z.R.xiH t ∈ T.set f` using `fun t => by`. Rewrite using `[z.lev.xiH t, ← w.xi_range]`. Conclude with `⟨_, rfl⟩`. Use `⟨fun t PP hPP hq => ?_, ?_, ?_, hmem⟩` and prove the remaining obligations.
+
+Conclude with `(z.lev.is.Q_ram t PP).2 (Or.inl hPP) (GlobalTheory.RowEx.DatTw.unrAt_of_mem_set (hmem t) hq)`. Rewrite using `[z.lev.C, w.C_eq]`. Rewrite using `[← w.xi_range]`. Conclude with `Set.finite_range _`.
+-/
 theorem GlobalTheory.RowEx.twisted_data_off_base_level : ∀ (B : Base) (f : Fr B.toPre) (T : TwDat B) (w : ColW B f T) (Z : w.Lt) (hX : B.fields.Ok)
     (Wt : Set B.places.Pl) (z : Dat (w.st Z) w.I hX T Wt), GlobalTheory.RowEx.TwistPlacesOffPrimeQZero z.R.toLevCh ∧ z.R.C = Fr.at (w.st Z) f ∧
       (T.set f).Finite ∧ ∀ t, z.R.xiH t ∈ T.set f := by

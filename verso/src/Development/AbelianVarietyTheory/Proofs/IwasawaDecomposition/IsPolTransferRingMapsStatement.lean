@@ -11,6 +11,9 @@ open AlgebraicGeometry CategoryTheory Limits NumberField
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Geo.Tor GlobalTheory GlobalTheory.ShFam GlobalTheory.LocM GlobalTheory.TorRef
 
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.PolModelIso.exists_iso_of_isPol | exact GlobalTheory.PolModelIso.exists_iso_of_isPol | (intros; apply GlobalTheory.PolModelIso.exists_iso_of_isPol <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.isPol_transfer_ring_maps : PolMapSt → ∀ {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {D : Datum H} {l : Level H}
     {Xo : Moduli D l} {c : Coeff l} {O O' : Type} [CommRing O] [CommRing O'] {β : O →+* c.F} {β' : O' →+* c.F}
     (Z : Model Xo c β) (Z' : Model Xo c β') (BD : EffCartierData Z.X) (BD' : EffCartierData Z'.X) (φ : InvFun (𝓞 E))

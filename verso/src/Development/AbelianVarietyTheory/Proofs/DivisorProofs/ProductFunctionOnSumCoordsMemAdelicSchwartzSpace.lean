@@ -5,6 +5,9 @@ open scoped Matrix TensorProduct
 noncomputable section
 namespace GlobalTheory.SchwartzBox
 
+/- English proof (translation)
+Use `(pi_norm_le_iff_of_nonneg (le_max_of_le_left (norm_nonneg _))).2 fun j => ?_` and prove the remaining obligations. Consider the cases of `j with`. Consider the case `inl i => exact le_max_of_le_left (norm_le_pi_norm (x ∘ Sum.inl) i)`. Consider the case `inr i => exact le_max_of_le_right (norm_le_pi_norm (x ∘ Sum.inr) i)`.
+-/
 theorem norm_le_max_comp {V : Type} [NormedAddCommGroup V] {κ κ' : Type} [Fintype κ] [Fintype κ'] (x : κ ⊕ κ' → V) :
     ‖x‖ ≤ max ‖x ∘ Sum.inl‖ ‖x ∘ Sum.inr‖ := by
   refine (pi_norm_le_iff_of_nonneg (le_max_of_le_left (norm_nonneg _))).2 fun j => ?_
@@ -16,15 +19,26 @@ def restr (V : Type) [NormedAddCommGroup V] [NormedSpace ℝ V] {ι κ : Type} [
     (ι → V) →L[ℝ] (κ → V) :=
   ContinuousLinearMap.pi fun i => ContinuousLinearMap.proj (R := ℝ) (φ := fun _ : ι => V) (e i)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem restr_apply (V : Type) [NormedAddCommGroup V] [NormedSpace ℝ V] {ι κ : Type} [Fintype ι] [Fintype κ]
     (e : κ → ι) (x : ι → V) : restr V e x = x ∘ e := rfl
 
+/- English proof (translation)
+Use `ContinuousLinearMap.opNorm_le_bound _ zero_le_one fun x => ?_` and prove the remaining obligations. Rewrite using `[one_mul]`. Conclude with `(pi_norm_le_iff_of_nonneg (norm_nonneg x)).2 fun i => norm_le_pi_norm x (e i)`.
+-/
 theorem norm_restr_le (V : Type) [NormedAddCommGroup V] [NormedSpace ℝ V] {ι κ : Type} [Fintype ι] [Fintype κ]
     (e : κ → ι) : ‖restr V e‖ ≤ 1 := by
   refine ContinuousLinearMap.opNorm_le_bound _ zero_le_one fun x => ?_
   rw [one_mul]
   exact (pi_norm_le_iff_of_nonneg (norm_nonneg x)).2 fun i => norm_le_pi_norm x (e i)
 
+/- English proof (translation)
+Establish `h` using `ContinuousLinearMap.iteratedFDeriv_comp_right (restr V e) (f.smooth ⊤) x (i := i) (by exact_mod_cast le_top)`. Establish `h' : (fun y => f (y ∘ e)) = (f ∘ restr V e)` using `rfl`. Rewrite using `[h', h]`. Use `(ContinuousMultilinearMap.norm_compContinuousLinearMap_le _ _).trans ?_` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation.
+
+Conclude with `Finset.prod_le_one (fun _ _ => norm_nonneg _) fun _ _ => norm_restr_le V e`. Use `_ = _ := mul_one _`.
+-/
 theorem norm_iteratedFDeriv_restr_le {V : Type} [NormedAddCommGroup V] [NormedSpace ℝ V] {ι κ : Type} [Fintype ι]
     [Fintype κ] (e : κ → ι) (f : SchwartzMap (κ → V) ℂ) (i : ℕ) (x : ι → V) :
     ‖iteratedFDeriv ℝ i (fun y => f (y ∘ e)) x‖ ≤ ‖iteratedFDeriv ℝ i f (x ∘ e)‖ := by
@@ -38,6 +52,19 @@ theorem norm_iteratedFDeriv_restr_le {V : Type} [NormedAddCommGroup V] [NormedSp
         exact Finset.prod_le_one (fun _ _ => norm_nonneg _) fun _ _ => norm_restr_le V e
     _ = _ := mul_one _
 
+/- English proof (translation)
+Establish `hs₁ : ContDiff ℝ ((⊤ : ℕ∞) : WithTop ℕ∞) (fun y : κ ⊕ κ' → V => f₁ (y ∘ Sum.inl))` using `(f₁.smooth ⊤).comp (restr V (Sum.inl : κ → κ ⊕ κ')).contDiff`. Establish `hs₂ : ContDiff ℝ ((⊤ : ℕ∞) : WithTop ℕ∞) (fun y : κ ⊕ κ' → V => f₂ (y ∘ Sum.inr))` using `(f₂.smooth ⊤).comp (restr V (Sum.inr : κ' → κ ⊕ κ')).contDiff`. Use `⟨⟨fun x => f₁ (x ∘ Sum.inl) * f₂ (x ∘ Sum.inr), hs₁.mul hs₂, fun k n => ?_⟩, fun _ => rfl⟩` and prove the remaining obligations. Use `⟨∑ i ∈ Finset.range (n + 1), (n.choose i : ℝ) * (SchwartzMap.seminorm ℝ k i f₁ * SchwartzMap.seminorm ℝ 0 (n - i) f₂ + SchwartzMap.seminorm ℝ 0 i f₁ * SchwartzMap.seminorm ℝ k (n - i) f₂), fun x => ?_⟩` and prove the remaining obligations. Establish `hx : ‖x‖ ^ k ≤ ‖x ∘ Sum.inl‖ ^ k + ‖x ∘ Sum.inr‖ ^ k`.
+
+Establish `h0 : ‖x‖ ^ k ≤ (max ‖x ∘ Sum.inl‖ ‖x ∘ Sum.inr‖) ^ k` using `pow_le_pow_left₀ (norm_nonneg _) (norm_le_max_comp x) k`. Use `h0.trans ?_` and prove the remaining obligations. Establish `p1` using `pow_nonneg (norm_nonneg (x ∘ Sum.inl)) k`. Establish `p2` using `pow_nonneg (norm_nonneg (x ∘ Sum.inr)) k`. Break down `le_total ‖x ∘ Sum.inl‖ ‖x ∘ Sum.inr‖ with h | h` into its components or cases.
+
+Rewrite using `[max_eq_right h]`. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite using `[max_eq_left h]`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hL` using `norm_iteratedFDeriv_mul_le hs₁ hs₂ x (n := n) (by exact_mod_cast le_top)`.
+
+Combine the equalities or inequalities in the displayed calculation. Use `mul_le_mul hx (hL.trans ?_) (norm_nonneg _) (by positivity)` and prove the remaining obligations. Use `Finset.sum_le_sum fun i _ => ?_` and prove the remaining obligations. Use `gcongr`. Conclude with `norm_iteratedFDeriv_restr_le Sum.inl f₁ i x`.
+
+Conclude with `norm_iteratedFDeriv_restr_le Sum.inr f₂ (n - i) x`. Use `_ = ∑ i ∈ Finset.range (n + 1), (n.choose i : ℝ) * ((‖x ∘ Sum.inl‖ ^ k * ‖iteratedFDeriv ℝ i f₁ (x ∘ Sum.inl)‖) * ‖iteratedFDeriv ℝ (n - i) f₂ (x ∘ Sum.inr)‖ + ‖iteratedFDeriv ℝ i f₁ (x ∘ Sum.inl)‖ * (‖x ∘ Sum.inr‖ ^ k * ‖iteratedFDeriv ℝ (n - i) f₂ (x ∘ Sum.inr)‖)) := by`. Rewrite using `[Finset.mul_sum]; exact Finset.sum_congr rfl fun i _ => by ring`. Use `_ ≤ _ := by`. Use `Finset.sum_le_sum fun i _ => ?_` and prove the remaining obligations.
+
+Use `gcongr`. Conclude with `SchwartzMap.le_seminorm ℝ k i f₁ _`. Conclude with `SchwartzMap.norm_iteratedFDeriv_le_seminorm ℝ f₂ _ _`. Conclude with `SchwartzMap.norm_iteratedFDeriv_le_seminorm ℝ f₁ _ _`. Conclude with `SchwartzMap.le_seminorm ℝ k (n - i) f₂ _`.
+-/
 theorem exists_schwartz_box {V : Type} [NormedAddCommGroup V] [NormedSpace ℝ V] {κ κ' : Type} [Fintype κ]
     [Fintype κ'] (f₁ : SchwartzMap (κ → V) ℂ) (f₂ : SchwartzMap (κ' → V) ℂ) :
     ∃ f : SchwartzMap (κ ⊕ κ' → V) ℂ, ∀ x, f x = f₁ (x ∘ Sum.inl) * f₂ (x ∘ Sum.inr) := by
@@ -81,6 +108,13 @@ theorem exists_schwartz_box {V : Type} [NormedAddCommGroup V] [NormedSpace ℝ V
         · exact SchwartzMap.norm_iteratedFDeriv_le_seminorm ℝ f₁ _ _
         · exact SchwartzMap.le_seminorm ℝ k (n - i) f₂ _
 
+/- English proof (translation)
+Take `⟨hl₁, hc₁⟩` from `hg₁`. Take `⟨hl₂, hc₂⟩` from `hg₂`. Set `e : (κ ⊕ κ' → X) ≃ₜ (κ → X) × (κ' → X)` to `Homeomorph.sumArrowHomeomorphProdArrow`. Establish `he : ∀ z, e z = (z ∘ Sum.inl, z ∘ Sum.inr)` using `fun _ => rfl`. Use `⟨?_, ?_⟩` and prove the remaining obligations.
+
+Establish `c₁ : Continuous fun z : κ ⊕ κ' → X => z ∘ Sum.inl` using `continuous_pi fun i => continuous_apply _`. Establish `c₂ : Continuous fun z : κ ⊕ κ' → X => z ∘ Sum.inr` using `continuous_pi fun i => continuous_apply _`. Conclude with `(hl₁.comp_continuous c₁).mul (hl₂.comp_continuous c₂)`. Use `HasCompactSupport.intro' (K := e ⁻¹' (tsupport g₁ ×ˢ tsupport g₂)) (e.isCompact_preimage.2 (hc₁.prod hc₂)) (((isClosed_tsupport _).prod (isClosed_tsupport _)).preimage e.continuous) fun z hz => ?_` and prove the remaining obligations. Rewrite `hz` using `[Set.mem_preimage, he, Set.mem_prod, not_and_or]`.
+
+Break down `hz with h | h` into its components or cases. Simplify using `[image_eq_zero_of_notMem_tsupport h]`. Simplify using `[image_eq_zero_of_notMem_tsupport h]`.
+-/
 theorem sb_box {X : Type} [TopologicalSpace X] {κ κ' : Type} {g₁ : (κ → X) → ℂ} {g₂ : (κ' → X) → ℂ}
     (hg₁ : g₁ ∈ SB (κ → X)) (hg₂ : g₂ ∈ SB (κ' → X)) :
     (fun z : κ ⊕ κ' → X => g₁ (z ∘ Sum.inl) * g₂ (z ∘ Sum.inr)) ∈ SB (κ ⊕ κ' → X) := by
@@ -100,30 +134,61 @@ theorem sb_box {X : Type} [TopologicalSpace X] {κ κ' : Type} {g₁ : (κ → X
     · simp [image_eq_zero_of_notMem_tsupport h]
     · simp [image_eq_zero_of_notMem_tsupport h]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `x`. Simplify using `[boxFun]`.
+-/
 theorem boxFun_zero_left {R κ κ' : Type} (φ : (κ' → R) → ℂ) : boxFun (0 : (κ → R) → ℂ) φ = 0 := by
   funext x; simp [boxFun]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `x`. Simplify using `[boxFun, add_mul]`.
+-/
 theorem boxFun_add_left {R κ κ' : Type} (a b : (κ → R) → ℂ) (φ : (κ' → R) → ℂ) :
     boxFun (a + b) φ = boxFun a φ + boxFun b φ := by
   funext x; simp [boxFun, add_mul]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `x`. Simplify using `[boxFun, mul_assoc]`.
+-/
 theorem boxFun_smul_left {R κ κ' : Type} (c : ℂ) (a : (κ → R) → ℂ) (φ : (κ' → R) → ℂ) :
     boxFun (c • a) φ = c • boxFun a φ := by
   funext x; simp [boxFun, mul_assoc]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `x`. Simplify using `[boxFun]`.
+-/
 theorem boxFun_zero_right {R κ κ' : Type} (φ : (κ → R) → ℂ) : boxFun φ (0 : (κ' → R) → ℂ) = 0 := by
   funext x; simp [boxFun]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `x`. Simplify using `[boxFun, mul_add]`.
+-/
 theorem boxFun_add_right {R κ κ' : Type} (φ : (κ → R) → ℂ) (a b : (κ' → R) → ℂ) :
     boxFun φ (a + b) = boxFun φ a + boxFun φ b := by
   funext x; simp [boxFun, mul_add]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `x`. Simplify using `[boxFun]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem boxFun_smul_right {R κ κ' : Type} (c : ℂ) (φ : (κ → R) → ℂ) (a : (κ' → R) → ℂ) :
     boxFun φ (c • a) = c • boxFun φ a := by
   funext x; simp [boxFun]; ring
 
 open scoped Classical in
 
+/- English proof (translation)
+Introduce `φ₁ h₁ φ₂ h₂`. Establish `gen : ∀ Φ₁ ∈ {Φ | ∃ (f : SchwartzMap (κ → mixedEmbedding.mixedSpace F) ℂ) (g : (κ → FiniteAdeleRing (𝓞 F) F) → ℂ), g ∈ SB (κ → FiniteAdeleRing (𝓞 F) F) ∧ Φ = pureA F f g}, ∀ Φ₂ ∈ {Φ | ∃ (f : SchwartzMap (κ' → mixedEmbedding.mixedSpace F) ℂ) (g : (κ' → FiniteAdeleRing (𝓞 F) F) → ℂ …`. Introduce and unpack `_ ⟨f₁, g₁, hg₁, rfl⟩ _ ⟨f₂, g₂, hg₂, rfl⟩`. Take `⟨f, hf⟩` from `exists_schwartz_box f₁ f₂`. Use `Submodule.subset_span ⟨f, fun z => g₁ (z ∘ Sum.inl) * g₂ (z ∘ Sum.inr), sb_box hg₁ hg₂, ?_⟩` and prove the remaining obligations.
+
+Use function extensionality and compare the values at `x`. Simplify using `only [boxFun, pureA, hf]`. Simplify using `only [Function.comp_def]`. Expand and normalize the polynomial expressions, which then agree. Establish `gen₂ : ∀ Φ₁ ∈ {Φ | ∃ (f : SchwartzMap (κ → mixedEmbedding.mixedSpace F) ℂ) (g : (κ → FiniteAdeleRing (𝓞 F) F) → ℂ), g ∈ SB (κ → FiniteAdeleRing (𝓞 F) F) ∧ Φ = pureA F f g}, boxFun Φ₁ φ₂ ∈ schA F (κ ⊕ κ')`.
+
+Introduce `Φ₁ hΦ₁`. Proceed by induction on `h₂ using Submodule.span_induction with`. Consider the case `mem x hx => exact gen Φ₁ hΦ₁ x hx`. Consider the case `zero => rw [boxFun_zero_right]`. Conclude with `Submodule.zero_mem _`.
+
+Consider the case `add x y _ _ hx hy => rw [boxFun_add_right]`. Conclude with `Submodule.add_mem _ hx hy`. Consider the case `smul c x _ hx => rw [boxFun_smul_right]`. Conclude with `Submodule.smul_mem _ c hx`. Proceed by induction on `h₁ using Submodule.span_induction with`.
+
+Consider the case `mem x hx => exact gen₂ x hx`. Consider the case `zero => rw [boxFun_zero_left]`. Conclude with `Submodule.zero_mem _`. Consider the case `add x y _ _ hx hy => rw [boxFun_add_left]`. Conclude with `Submodule.add_mem _ hx hy`.
+
+Consider the case `smul c x _ hx => rw [boxFun_smul_left]`. Conclude with `Submodule.smul_mem _ c hx`.
+-/
 theorem boxFun_mem_schA (F : Type) [Field F] [NumberField F] (κ κ' : Type) [Fintype κ] [Fintype κ'] :
     ∀ φ₁ ∈ schA F κ, ∀ φ₂ ∈ schA F κ', boxFun φ₁ φ₂ ∈ schA F (κ ⊕ κ') := by
   intro φ₁ h₁ φ₂ h₂

@@ -11,6 +11,13 @@ open GlobalTheory.Mem.KeepRef GlobalTheory.Mem.R3.Rw.WeilExt
 
 namespace GlobalTheory.Mem.R3.Rw.JSpanPf
 
+/- English proof (translation)
+Substitute `hα hU` using the available equality. Consider the cases of `hn`. Consider the cases of `hip`. Take `⟨F⟩` from `Formalism.L2.Col.CoefFrame.nonempty ι`. Take `⟨φ', rfl⟩` from `r'.surjective x'`.
+
+Take `⟨m, a, g, hg⟩` from `Submodule.mem_span_set'.1 (b.mem_span_lift F φ')`. Use `choose ψ hψ using fun k => (g k).2`. Use `⟨m, a, fun k => r (ψ k), heq_of_eq ?_⟩` and prove the remaining obligations. Rewrite using `[← hg, map_sum, map_sum]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[map_smul, LinearMap.map_smulₛₗ, ← hψ k, eq_of_heq (h (ψ k))]`.
+-/
 private theorem span_of_bc {K L : Type} [Field K] [NumberField K] [StarRing K] [Field L] [NumberField L] [StarRing L] {ι : K →+* L}
     {S : Formalism.L2.Col.GSD K} {S' : Formalism.L2.Col.GSD L} (b : Formalism.L2.Col.GSDBC ι S S') {M M' : Type} [AddCommGroup M'] [Module L M']
     (r : S.EqFun → M) (r' : S'.EqFun ≃ₗ[L] M') (c : L →+* ℂ) {α α' U U' : Type} (n : NormedAddCommGroup U)
@@ -32,6 +39,23 @@ private theorem span_of_bc {K L : Type} [Field K] [NumberField K] [StarRing K] [
 
 set_option maxHeartbeats 4000000 in
 
+/- English proof (translation)
+Substitute `hk` using the available equality. Take `⟨hpre, -, -, -⟩` from `hE`. Consider the cases of `B with | mk P₁ =>`. Consider the cases of `B' with | mk P₂ =>`. Simplify using `only at hpre`.
+
+Substitute `hpre` using the available equality. Establish `hpx' : w'.px = w.px` using `eq_of_heq hpx`. Establish `hv : (Base.primes (baseOfColW w') w'.px).vGs = (Base.primes (baseOfColW w) w.px).vGs`. Rewrite using `[hpx']`. Both sides reduce to the same expression.
+
+Establish `hφ' : ∀ x, (baseOfColW w').embLL (φ x) = (baseOfColW w).embLL x` using `hφ`. Establish `hC : w'.I.C = w.I.C` using `w'.C_eq.trans ((eq_of_heq hf).trans w.C_eq.symm)`. Use `GlobalTheory.Mem.R3.DefLatBC.gsdbc_round_reidx (baseOfColW w).fields φ (baseOfColW w').tauLL ?_ _ ?_ _ _ ?_ (baseOfColW w).embLL (baseOfColW w').embLL hφ` and prove the remaining obligations. Introduce `τ`. Use extensionality with `x`.
+
+Apply `(baseOfColW w').embLL.injective` to reduce the goal to its premises. Establish `h1` using `congrArg (fun g => g x) (Base.fields_embC (baseOfColW w) τ)`. Establish `h2` using `congrArg (fun g => g x) (Base.fields_embC (baseOfColW w') τ)`. Simplify using `only [Formalism.L2.Col.Fields.embC, RingHom.comp_apply] at h1 h2`. Conclude with `(hφ' _).trans (h1.trans h2.symm)`.
+
+Conclude with `(rowLevelPrimes_colTuples_eq_vGs w' _).trans (hv.trans (rowLevelPrimes_colTuples_eq_vGs w Wt).symm)`. Use `glue_inv_coefMap_of_empty φ (twistRamifiedPrimes_empty_colTuples w Wt) (twistRamifiedPrimes_empty_colTuples w' _) _ _ _ _ ?_` and prove the remaining obligations. Introduce `p hp`. Use `levKV_coefMap_of φ p.1 (fun s => w.I.Ch.chi s p) (fun s => w'.I.Ch.chi s ⟨p.1, hp⟩) ?_ _ _ _ _` and prove the remaining obligations. Introduce `s c`.
+
+Apply `(baseOfColW w').embLL.injective` to reduce the goal to its premises. Rewrite using `[hφ']`. Take `⟨y, hy⟩` from `Ideal.Quotient.mk_surjective (c : 𝓞 (baseOfColW w).fields.E ⧸ p.1.asIdeal)`. Establish `hy0 : ((y : 𝓞 (baseOfColW w).fields.E) : (baseOfColW w).fields.E) ≠ 0`. Introduce `h0`.
+
+Establish `h0' : y = 0` using `RingOfIntegers.coe_injective (h0.trans (by simp))`. Rewrite `hy` using `[h0', map_zero]`. Conclude with `c.ne_zero hy.symm`. Establish `e1` using `GlobalTheory.Mem.R3.Rw.ChiTr.embLL_chi w' s ⟨p.1, hp⟩ c y (Units.mk0 _ hy0) rfl hy.symm`. Establish `e2` using `GlobalTheory.Mem.R3.Rw.ChiTr.embLL_chi w s p c y (Units.mk0 _ hy0) rfl hy.symm`.
+
+Rewrite `e1` using `[hC]`. Conclude with `e1.trans e2.symm`.
+-/
 private theorem exists_bc {B B' : Base} {f : Fr B.toPre} {f' : Fr B'.toPre} {T : TwDat B} {T' : TwDat B'} (w : ColW B f T)
     (w' : ColW B' f' T') (Wt : Set B.places.Pl) (Wt' : Set B'.places.Pl) (hE : Enl0 B B') (hf : HEq f' f) (hpx : HEq w'.px w.px)
     (k k' : ℕ) (hk : k' = k) (φ : B.LL →+* B'.LL) (hφ : ∀ x, B'.embLL (φ x) = B.embLL x) :
@@ -81,6 +105,11 @@ private theorem exists_bc {B B' : Base} {f : Fr B.toPre} {f' : Fr B'.toPre} {T :
 
 set_option maxHeartbeats 2000000 in
 
+/- English proof (translation)
+Take `⟨P', _⟩` from `B'`. Take `⟨P, _⟩` from `B`. Simplify using `only at h`. Substitute `h` using the available equality. Establish `e0 : i = i'` using `Fin.ext hi`.
+
+Substitute `e0` using the available equality. Both sides reduce to the same expression.
+-/
 private theorem gf_eq {B B' : Base} {f : Fr B.toPre} {f' : Fr B'.toPre} {T : TwDat B} {T' : TwDat B'} {w : ColW B f T}
     {w' : ColW B' f' T'} (Z : w.Lt) (Z' : w'.Lt) (h : B'.toPre = B.toPre) (i : Fin (w.st Z).toD7.R.m)
     (i' : Fin (w'.st Z').toD7.R.m) (hi : (i : ℕ) = i') :
@@ -96,6 +125,11 @@ private theorem gf_eq {B B' : Base} {f : Fr B.toPre} {f' : Fr B'.toPre} {T : TwD
 end GlobalTheory.Mem.R3.Rw.JSpanPf
 
 set_option maxHeartbeats 4000000 in
+/- English proof (translation)
+Introduce `B B' f f' T T' w w' Z Z' hX hX' Wt Ks _ _ _ Xg tr z Wt' R' hE hf hpx hRS i i' hii x'`. Use `obt ⟨ι, hι⟩ := exists_iota_comp B.embLL B'.embLL hE.2.2.2`. Use `obt ⟨b, hb⟩ := GlobalTheory.Mem.R3.Rw.JSpanPf.exists_bc w w' Wt Wt' hE hf hpx ((i : ℕ) + 1) ((i' : ℕ) + 1) (by rw [hii]) ι hι`. Establish `hj` using `fun φ => hRS.2.2.2.2.2.2.2.2.2.2.2.2.2 i i' hii (Formalism.L2.Col.mtKOk _ _ _ _ hX _) (Formalism.L2.Col.mtKOk _ _ _ _ hX' _) φ (b.lift φ) (hb φ)`. Establish `hc` using `hRS.2.2.2.2.2.2.2.2.2.2.2.2.1 i i' hii`.
+
+Establish `key` using `GlobalTheory.Mem.R3.Rw.JSpanPf.span_of_bc b (fun φ => (Formalism.L2.Col.mtKGSD (Pr := B.primes w.px) B.wts w.I.Ch w.I.sel (mu0F (X := B.fields) (tuOf w.I (usedOf w.I T Wt))).1 ((i : ℕ) + 1)).res (Formalism.L2.Col.mtKOk _ _ _ _ hX _) φ) ((Formalism.L2.Col.mtKGSD (Pr := B'.primes w …`. Conclude with `(by with_unfolding_all exact (key :))`.
+-/
 theorem _root_.GlobalTheory.T.rationalDefiniteForms_largerField_combination_smallerField : ∀ {B B' : Base} {f : Fr B.toPre} {f' : Fr B'.toPre} {T : TwDat B} {T' : TwDat B'} {w : ColW B f T} {w' : ColW B' f' T'}
   {Z : w.Lt} {Z' : w'.Lt} {hX : B.fields.Ok} {hX' : B'.fields.Ok} {Wt : Set B.places.Pl}
   {Ks : Type} [Field Ks] [NumberField Ks] [Algebra Ks (w'.st Z').toD7.what₂.LL] {Xg : Finset (Gc B' w'.px → B'.LL)} {tr : TrI B' w'.px}

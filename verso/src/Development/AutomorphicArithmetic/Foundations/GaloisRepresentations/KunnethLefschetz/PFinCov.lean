@@ -5,6 +5,9 @@ noncomputable section
 open CategoryTheory Limits AlgebraicGeometry GlobalTheory.EtC LateralTheory.EtaleTrace UpperTheory.Gal.KunnethLefschetz
 open scoped TensorProduct DirectSum
 
+/- English proof (translation)
+Unfold `UpperTheory.Gal.KunnethLefschetz.FinCov`. Introduce `k _ _ d X p h1 h2 h3`. Take `⟨π, t, e1, e2, e3, -⟩` from `LateralTheory.Fin.LCover.intersectionNumber_baseChange k d p h1 h2 h3`. Conclude with `⟨π, e1, e2, e3⟩`.
+-/
 theorem UpperTheory.Gal.KunnethLefschetz.finCov_holds :
     UpperTheory.Gal.KunnethLefschetz.FinCov := by
   unfold UpperTheory.Gal.KunnethLefschetz.FinCov

@@ -18,6 +18,9 @@ def lowU (ν : Matrix D A k) : GL (A ⊕ D) k where
   val_inv := by rw [fromBlocks_multiply]; simp
   inv_val := by rw [fromBlocks_multiply]; simp
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem val_lowU (ν : Matrix D A k) : (lowU ν).1 = fromBlocks 1 0 ν 1 := rfl
 
 open Classical in
@@ -25,10 +28,18 @@ open Classical in
 def blockDet (j : GL (A ⊕ D) k) : kˣ :=
   if h : j.1.toBlocks₂₂.det ≠ 0 then Units.mk0 _ h else 1
 
+/- English proof (translation)
+Rewrite using `[val_emb₂]`. Simplify using the standard rewrite rules.
+-/
 theorem val_emb_one (m : GL D k) :
     (emb₂ k (Equiv.refl (A ⊕ D)) (1, m)).1 = fromBlocks 1 0 0 m.1 := by
   rw [val_emb₂]; simp
 
+/- English proof (translation)
+Establish `h : (lowU ν * emb₂ k (Equiv.refl (A ⊕ D)) (1, m)).1.toBlocks₂₂ = m.1`. Rewrite using `[Units.val_mul, val_emb_one, val_lowU, fromBlocks_multiply]`. Simplify using the standard rewrite rules. Establish `h0 : (lowU ν * emb₂ k (Equiv.refl (A ⊕ D)) (1, m)).1.toBlocks₂₂.det ≠ 0`. Rewrite using `[h]`.
+
+Conclude with `(GeneralLinearGroup.det m).ne_zero`. Rewrite using `[blockDet, dif_pos h0]`. Use `ext`. Rewrite using `[Units.val_mk0, h, GeneralLinearGroup.val_det_apply]`.
+-/
 theorem blockDet_lowU_emb (ν : Matrix D A k) (m : GL D k) :
     blockDet (lowU ν * emb₂ k (Equiv.refl (A ⊕ D)) (1, m)) = GeneralLinearGroup.det m := by
   have h : (lowU ν * emb₂ k (Equiv.refl (A ⊕ D)) (1, m)).1.toBlocks₂₂ = m.1 := by
@@ -37,25 +48,44 @@ theorem blockDet_lowU_emb (ν : Matrix D A k) (m : GL D k) :
     rw [h]; exact (GeneralLinearGroup.det m).ne_zero
   rw [blockDet, dif_pos h0]; ext; rw [Units.val_mk0, h, GeneralLinearGroup.val_det_apply]
 
+/- English proof (translation)
+Use `ext1`. Rewrite using `[Units.val_mul, Units.val_mul, val_emb_one, val_lowU, val_lowU, fromBlocks_multiply, fromBlocks_multiply]`. Simplify using the standard rewrite rules.
+-/
 theorem emb_mul_lowU (m : GL D k) (ν : Matrix D A k) :
     emb₂ k (Equiv.refl (A ⊕ D)) (1, m) * lowU ν = lowU (m.1 * ν) * emb₂ k (Equiv.refl (A ⊕ D)) (1, m) := by
   ext1
   rw [Units.val_mul, Units.val_mul, val_emb_one, val_lowU, val_lowU, fromBlocks_multiply, fromBlocks_multiply]
   simp
 
+/- English proof (translation)
+Rewrite using `[← map_mul]`. Simplify using the standard rewrite rules.
+-/
 theorem emb_mul_emb (m m' : GL D k) :
     emb₂ k (Equiv.refl (A ⊕ D)) (1, m) * emb₂ k (Equiv.refl (A ⊕ D)) (1, m') =
       emb₂ k (Equiv.refl (A ⊕ D)) (1, m * m') := by
   rw [← map_mul]; simp
 
+/- English proof (translation)
+Use `ext1`. Rewrite using `[val_emb_one, mtor, val_torusElt, val_torusElt]`. Apply the tactic sequence `ext (i | i) (j | j) <;> simp [diagonal_apply, Matrix.one_apply]`.
+-/
 theorem mtor_eq (ϖ : kˣ) (e : D → ℤ) :
     (mtor ϖ e : GL (A ⊕ D) k) = emb₂ k (Equiv.refl (A ⊕ D)) (1, torusElt k D ϖ e) := by
   ext1
   rw [val_emb_one, mtor, val_torusElt, val_torusElt]
   ext (i | i) (j | j) <;> simp [diagonal_apply, Matrix.one_apply]
 
+/- English proof (translation)
+The claim follows from `Units.ext rfl`.
+-/
 theorem inv_lowU (ν : Matrix D A k) : (lowU ν)⁻¹ = lowU (-ν) := Units.ext rfl
 
+/- English proof (translation)
+Rewrite using `[mem_parahoric, GlobalTheory.StepData.mem_KO]`. Use `⟨⟨?_, ?_⟩, fun i j => by simpa [val_lowU] using h i j⟩` and prove the remaining obligations. Apply the tactic sequence `rintro (i | i) (j | j) <;> simp only [val_lowU, fromBlocks_apply₁₁, fromBlocks_apply₁₂, fromBlocks_apply₂₁, fromBlocks_apply₂₂, Matrix.one_apply, Matrix.zero_apply]`. Apply the tactic sequence `split_ifs <;> simp`. Conclude with `zero_mem _`.
+
+Conclude with `(h i j).le`. Apply the tactic sequence `split_ifs <;> simp`. Rewrite using `[inv_lowU]`. Apply the tactic sequence `rintro (i | i) (j | j) <;> simp only [val_lowU, fromBlocks_apply₁₁, fromBlocks_apply₁₂, fromBlocks_apply₂₁, fromBlocks_apply₂₂, Matrix.one_apply, Matrix.zero_apply, Matrix.neg_apply]`. Apply the tactic sequence `split_ifs <;> simp`.
+
+Conclude with `zero_mem _`. Conclude with `neg_mem (h i j).le`. Apply the tactic sequence `split_ifs <;> simp`.
+-/
 theorem lowU_mem {ν : Matrix D A k} (h : ∀ i a, valuation k (ν i a) < 1) : lowU ν ∈ parahoric k A D := by
   rw [mem_parahoric, GlobalTheory.StepData.mem_KO]
   refine ⟨⟨?_, ?_⟩, fun i j => by simpa [val_lowU] using h i j⟩
@@ -73,6 +103,15 @@ theorem lowU_mem {ν : Matrix D A k} (h : ∀ i a, valuation k (ν i a) < 1) : l
     · exact neg_mem (h i j).le
     · split_ifs <;> simp
 
+/- English proof (translation)
+Rewrite using `[mem_parahoric, GlobalTheory.StepData.mem_KO]`. Take `⟨h1, h2⟩` from `GlobalTheory.StepData.mem_KO.1 h`. Establish `hinv : (emb₂ k (Equiv.refl (A ⊕ D)) (1, κ))⁻¹ = emb₂ k (Equiv.refl (A ⊕ D)) (1, κ⁻¹)`. Rewrite using `[← map_inv]`. Simplify using the standard rewrite rules.
+
+Use `⟨⟨?_, ?_⟩, fun i j => by simp [val_emb_one]⟩` and prove the remaining obligations. Apply the tactic sequence `rintro (i | i) (j | j) <;> simp only [val_emb_one, fromBlocks_apply₁₁, fromBlocks_apply₁₂, fromBlocks_apply₂₁, fromBlocks_apply₂₂, Matrix.one_apply, Matrix.zero_apply]`. Apply the tactic sequence `split_ifs <;> simp`. Conclude with `zero_mem _`. Conclude with `zero_mem _`.
+
+Conclude with `h1 i j`. Rewrite using `[hinv]`. Apply the tactic sequence `rintro (i | i) (j | j) <;> simp only [val_emb_one, fromBlocks_apply₁₁, fromBlocks_apply₁₂, fromBlocks_apply₂₁, fromBlocks_apply₂₂, Matrix.one_apply, Matrix.zero_apply]`. Apply the tactic sequence `split_ifs <;> simp`. Conclude with `zero_mem _`.
+
+Conclude with `zero_mem _`. Conclude with `h2 i j`.
+-/
 theorem emb_mem {κ : GL D k} (h : κ ∈ KO k D) : emb₂ k (Equiv.refl (A ⊕ D)) (1, κ) ∈ parahoric k A D := by
   rw [mem_parahoric, GlobalTheory.StepData.mem_KO]
   obtain ⟨h1, h2⟩ := GlobalTheory.StepData.mem_KO.1 h
@@ -103,8 +142,14 @@ def mLat : AddSubgroup (D → k) where
 
 def preLat (m : Matrix D D k) : AddSubgroup (D → k) := (mLat k D).comap (Matrix.mulVecLin m).toAddMonoidHom
 
+/- English proof (translation)
+Unfold both sides. The equivalence is reflexive.
+-/
 theorem mem_mLat {v : D → k} : v ∈ mLat k D ↔ ∀ i, valuation k (v i) < 1 := Iff.rfl
 
+/- English proof (translation)
+Unfold both sides. The equivalence is reflexive.
+-/
 theorem mem_preLat {m : Matrix D D k} {v : D → k} : v ∈ preLat m ↔ m.mulVec v ∈ mLat k D := Iff.rfl
 
 end GlobalTheory.LowerHecke

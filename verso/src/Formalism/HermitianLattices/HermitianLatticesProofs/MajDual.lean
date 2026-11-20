@@ -9,6 +9,15 @@ noncomputable section
 
 namespace Formalism.HermitianLatticesTheory
 
+/- English proof (translation)
+Establish `h1 : ((Algebra.trace ℚ K a : ℚ) : ℂ) = ∑ φ : K →+* ℂ, φ a`. Rewrite using `[← eq_ratCast (algebraMap ℚ ℂ), trace_eq_sum_embeddings (E := ℂ)]`. Conclude with `(Fintype.sum_equiv (RingHom.equivRatAlgHom K ℂ) (fun φ : K →+* ℂ => φ a) (fun σ => σ a) fun _ => rfl).symm`. Establish `hre : ((Algebra.trace ℚ K a : ℚ) : ℝ) = ∑ φ : K →+* ℂ, (φ a).re`. Rewrite using `[← Complex.re_sum, ← h1, Complex.ratCast_re]`.
+
+Rewrite using `[hre, ← Finset.sum_fiberwise Finset.univ InfinitePlace.mk (fun φ : K →+* ℂ => (φ a).re), Finset.mul_sum]`. Use `Finset.sum_congr rfl fun w _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_congr rfl (g := fun _ => (w.embedding a).re) ?_, Finset.sum_const, nsmul_eq_mul]`. Use `congr 1`. Use `norm_cast`.
+
+Use `InfinitePlace.card_filter_mk_eq w` and compare the differences between its conclusion and the goal. Rewrite using `[InfinitePlace.mult, if_neg (InfinitePlace.not_isReal_iff_isComplex.2 (IsTotallyComplex.isComplex w))]`. Introduce `φ hφ`. Establish `hw : InfinitePlace.mk φ = InfinitePlace.mk w.embedding`. Rewrite using `[(Finset.mem_filter.1 hφ).2, InfinitePlace.mk_embedding]`.
+
+Break down `InfinitePlace.mk_eq_iff.1 hw with h | h` into its components or cases. Rewrite using `[h]`. Rewrite using `[← h, NumberField.ComplexEmbedding.conjugate_coe_eq, Complex.conj_re]`.
+-/
 lemma majDual_trace {K : Type} [Field K] [NumberField K] [IsTotallyComplex K] (a : K) :
     ((Algebra.trace ℚ K a : ℚ) : ℝ) = 2 * ∑ v : InfinitePlace K, (v.embedding a).re := by
   have h1 : ((Algebra.trace ℚ K a : ℚ) : ℂ) = ∑ φ : K →+* ℂ, φ a := by
@@ -38,6 +47,11 @@ section
 variable {K V ι : Type} [Field K] [NumberField K] [StarRing K] [AddCommGroup V] [Module K V]
   [Fintype ι] [DecidableEq ι]
 
+/- English proof (translation)
+Use `conv_lhs => rw [← b.sum_repr x, ← b.sum_repr y]`. Simplify using `only [map_sum, map_smulₛₗ, LinearMap.sum_apply, LinearMap.smul_apply, map_smul, smul_eq_mul, map_mul, starRingEnd_apply, hst, RingHom.id_apply]`. Simplify using `only [dotProduct, Matrix.mulVec, vecAt, gramAt, Matrix.of_apply, Pi.star_apply]`. Simplify using `only [Finset.mul_sum]`. Use `first`.
+
+Consider the case `exact Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => by ring1`. Consider the case `(rw [Finset.sum_comm]`. Conclude with `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => by ring1)`.
+-/
 lemma majDual_herm (h : V →ₗ⋆[K] V →ₗ[K] K) (b : Module.Basis ι K V) (v : InfinitePlace K)
     (hst : ∀ (φ : K →+* ℂ) (a : K), φ (star a) = starRingEnd ℂ (φ a)) (x y : V) :
     v.embedding (h x y) = dotProduct (star (vecAt b v x)) ((gramAt h b v).mulVec (vecAt b v y)) := by
@@ -51,6 +65,9 @@ lemma majDual_herm (h : V →ₗ⋆[K] V →ₗ[K] K) (b : Module.Basis ι K V) 
   | (rw [Finset.sum_comm]
      exact Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => by ring1)
 
+/- English proof (translation)
+Establish `h1 : X * X⁻¹ = 1` using `Matrix.mul_nonsing_inv X hX`. Establish `e1 : (X.conjTranspose * G * X).mulVec (X⁻¹.mulVec c) = X.conjTranspose.mulVec (G.mulVec c)`. Rewrite using `[Matrix.mulVec_mulVec, Matrix.mul_assoc, h1, Matrix.mul_one, Matrix.mulVec_mulVec]`. Rewrite using `[e1, Matrix.dotProduct_mulVec, ← Matrix.star_mulVec, Matrix.mulVec_mulVec, h1, Matrix.one_mulVec]`.
+-/
 lemma majDual_mat (G X : Matrix ι ι ℂ) (hX : IsUnit X.det) (a c : ι → ℂ) :
     dotProduct (star (X⁻¹.mulVec a)) (((X.conjTranspose * G * X)).mulVec (X⁻¹.mulVec c)) =
       dotProduct (star a) (G.mulVec c) := by
@@ -59,15 +76,28 @@ lemma majDual_mat (G X : Matrix ι ι ℂ) (hX : IsUnit X.det) (a c : ι → ℂ
     rw [Matrix.mulVec_mulVec, Matrix.mul_assoc, h1, Matrix.mul_one, Matrix.mulVec_mulVec]
   rw [e1, Matrix.dotProduct_mulVec, ← Matrix.star_mulVec, Matrix.mulVec_mulVec, h1, Matrix.one_mulVec]
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 lemma majDual_realize_apply (b : Module.Basis ι K V) (X : InfinitePlace K → Matrix ι ι ℂ) (x : V)
     (p : InfinitePlace K × ι × Fin 2) :
     realize b X x p = if p.2.2 = 0 then (fcoord b X p.1 x p.2.1).re
       else (fcoord b X p.1 x p.2.1).im := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 lemma majDual_jW_apply (h : V →ₗ⋆[K] V →ₗ[K] K) (b : Module.Basis ι K V)
     (X : InfinitePlace K → Matrix ι ι ℂ) (w : EuclideanSpace ℝ (InfinitePlace K × ι × Fin 2)) p :
     jW h b X w p = sgnAt h b X p.1 p.2.1 * w p := rfl
 
+/- English proof (translation)
+Take `⟨-, ε, hε, hXe⟩` from `hX v`. Establish `hs : ∀ i, sgnAt h b X v i = (ε i).re` using `fun i => by`. Simplify using `only [sgnAt, hXe, Matrix.diagonal_apply_eq]`. Use `⟨?_, fun i => ?_⟩` and prove the remaining obligations. Rewrite using `[hXe]`.
+
+Use `congr 1`. Use function extensionality and compare the values at `i`. Rewrite using `[hs]`. Apply the tactic sequence `rcases hε i with h1 | h1 <;> simp [h1]`. Rewrite using `[hs]`.
+
+Apply the tactic sequence `rcases hε i with h1 | h1 <;> simp [h1]`.
+-/
 lemma majDual_sgn (h : V →ₗ⋆[K] V →ₗ[K] K) (b : Module.Basis ι K V)
     (X : InfinitePlace K → Matrix ι ι ℂ) (hX : ∀ v, IsFrame h b v (X v)) (v : InfinitePlace K) :
     (X v).conjTranspose * gramAt h b v * X v =
@@ -91,6 +121,11 @@ section
 variable {K V ι : Type} [Field K] [NumberField K] [StarRing K] [AddCommGroup V] [Module K V]
   [Fintype ι] [DecidableEq ι]
 
+/- English proof (translation)
+Take `⟨hu, -⟩` from `hX v`. Rewrite using `[majDual_herm h b v hst x y, ← majDual_mat (gramAt h b v) (X v) hu, (majDual_sgn h b X hX v).1]`. Simplify using `only [fcoord, dotProduct, Matrix.mulVec_diagonal, Complex.re_sum, Pi.star_apply]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Simplify using `only [Complex.star_def, Complex.mul_re, Complex.mul_im, Complex.conj_re, Complex.conj_im, Complex.ofReal_re, Complex.ofReal_im]`.
+
+Use `ring1`.
+-/
 lemma majDual_re (h : V →ₗ⋆[K] V →ₗ[K] K) (b : Module.Basis ι K V)
     (X : InfinitePlace K → Matrix ι ι ℂ)
     (hst : ∀ (φ : K →+* ℂ) (a : K), φ (star a) = starRingEnd ℂ (φ a))
@@ -106,6 +141,9 @@ lemma majDual_re (h : V →ₗ⋆[K] V →ₗ[K] K) (b : Module.Basis ι K V)
     Complex.ofReal_re, Complex.ofReal_im]
   ring1
 
+/- English proof (translation)
+Rewrite using `[majDual_trace, mul_div_cancel_left₀ _ (two_ne_zero : (2 : ℝ) ≠ 0)]`. Simplify using `only [majDual_re h b X hst hX]`. Simplify using `only [PiLp.inner_apply, RCLike.inner_apply, conj_trivial, Fintype.sum_prod_type, Fin.sum_univ_two, majDual_jW_apply, majDual_realize_apply, Fin.isValue, eq_self_iff_true, if_true, one_ne_zero, if_false, ↓reduceIte]`. Use `Finset.sum_congr rfl fun v _ => Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Use `ring1`.
+-/
 lemma majDual_inner [IsTotallyComplex K] (h : V →ₗ⋆[K] V →ₗ[K] K) (b : Module.Basis ι K V)
     (X : InfinitePlace K → Matrix ι ι ℂ)
     (hst : ∀ (φ : K →+* ℂ) (a : K), φ (star a) = starRingEnd ℂ (φ a))
@@ -126,9 +164,21 @@ section
 variable {K V : Type} [Field K] [NumberField K] [StarRing K] [AddCommGroup V] [Module K V]
   [Module (RingOfIntegers K) V] [IsScalarTower (RingOfIntegers K) K V]
 
+/- English proof (translation)
+Conclude with `(NumberField.RingOfIntegers.isIntegral_coe r).map (starRingEnd K).toIntAlgHom`.
+-/
 lemma majDual_star_int (r : RingOfIntegers K) : IsIntegral ℤ (star (r : K)) := by
   exact (NumberField.RingOfIntegers.isIntegral_coe r).map (starRingEnd K).toIntAlgHom
 
+/- English proof (translation)
+Simplify using `only [tdual, dualI, invDiff, Set.mem_setOf_eq]`. Prove the components needed by the constructor for the conclusion. Introduce `hy x hx r`. Establish `hr : IsIntegral ℤ (star (r : K))` using `majDual_star_int r`. Set `r' : RingOfIntegers K` to `⟨star (r : K), hr⟩`.
+
+Establish `e : r' • x = (star (r : K)) • x` using `(IsScalarTower.algebraMap_smul K r' x).symm`. Take `⟨z, hz⟩` from `hy (r' • x) (L.smul_mem r' hx)`. Use `⟨z, ?_⟩` and prove the remaining obligations. Rewrite `hz` using `[e, map_smulₛₗ h, LinearMap.smul_apply, smul_eq_mul, starRingEnd_apply, star_star]`. Rewrite using `[mul_comm]`.
+
+Conclude with `hz`. Introduce `hy x hx`. Take `⟨z, hz⟩` from `hy x hx 1`. Use `⟨z, ?_⟩` and prove the remaining obligations. Establish `e1 : ((1 : RingOfIntegers K) : K) = 1` using `rfl`.
+
+Rewrite `hz` using `[e1, mul_one]`. Conclude with `hz`.
+-/
 lemma majDual_tdual (h : V →ₗ⋆[K] V →ₗ[K] K) (L : Submodule (RingOfIntegers K) V) (y : V) :
     y ∈ tdual h L ↔ y ∈ dualI h L (invDiff K) := by
   simp only [tdual, dualI, invDiff, Set.mem_setOf_eq]
@@ -153,6 +203,15 @@ abbrev majDualI (K : Type) [Field K] [NumberField K] :
     FractionalIdeal (RingOfIntegers K)⁰ K :=
   FractionalIdeal.dual ℤ ℚ (1 : FractionalIdeal (RingOfIntegers K)⁰ K)
 
+/- English proof (translation)
+Establish `h10 : (1 : FractionalIdeal (RingOfIntegers K)⁰ K) ≠ 0`. Introduce `h0`. Establish `h1 : (1 : K) ∈ (1 : FractionalIdeal (RingOfIntegers K)⁰ K)` using `(FractionalIdeal.mem_one_iff _).2 ⟨1, map_one _⟩`. Rewrite `h1` using `[h0, FractionalIdeal.mem_zero_iff]`. Conclude with `one_ne_zero h1`.
+
+Rewrite using `[majDualI, FractionalIdeal.mem_dual h10]`. Prove the components needed by the constructor for the conclusion. Introduce `h r`. Take `⟨z, hz⟩` from `RingHom.mem_range.1 (h (algebraMap (RingOfIntegers K) K r) ((FractionalIdeal.mem_one_iff _).2 ⟨r, rfl⟩))`. Rewrite `hz` using `[Algebra.traceForm_apply]`.
+
+Conclude with `⟨z, hz.symm.trans (eq_intCast (algebraMap ℤ ℚ) z)⟩`. Introduce `h x hx`. Take `⟨r, rfl⟩` from `(FractionalIdeal.mem_one_iff _).1 hx`. Take `⟨z, hz⟩` from `h r`. Rewrite using `[RingHom.mem_range]`.
+
+Use `⟨z, ?_⟩` and prove the remaining obligations. Rewrite using `[Algebra.traceForm_apply]`. Conclude with `(eq_intCast (algebraMap ℤ ℚ) z).trans hz.symm`.
+-/
 lemma majDual_memI (a : K) : a ∈ majDualI K ↔ a ∈ invDiff K := by
   have h10 : (1 : FractionalIdeal (RingOfIntegers K)⁰ K) ≠ 0 := by
     intro h0
@@ -181,12 +240,42 @@ section
 variable {K V : Type} [Field K] [NumberField K] [StarRing K] [AddCommGroup V] [Module K V]
   [Module (RingOfIntegers K) V] [IsScalarTower (RingOfIntegers K) K V]
 
+/- English proof (translation)
+Establish `e : invDiff K = ((majDualI K : Submodule (RingOfIntegers K) K) : Set K)`. Use extensionality with `a`. Conclude with `(majDual_memI a).symm`. Rewrite using `[invDiffSub, e, Submodule.span_eq]`.
+-/
 lemma majDual_invDiffSub : invDiffSub K = (majDualI K : Submodule (RingOfIntegers K) K) := by
   have e : invDiff K = ((majDualI K : Submodule (RingOfIntegers K) K) : Set K) := by
     ext a
     exact (majDual_memI a).symm
   rw [invDiffSub, e, Submodule.span_eq]
 
+/- English proof (translation)
+Establish `h10 : (1 : FractionalIdeal (RingOfIntegers K)⁰ K) ≠ 0`. Introduce `h0`. Establish `h1 : (1 : K) ∈ (1 : FractionalIdeal (RingOfIntegers K)⁰ K)` using `(FractionalIdeal.mem_one_iff _).2 ⟨1, map_one _⟩`. Rewrite `h1` using `[h0, FractionalIdeal.mem_zero_iff]`. Conclude with `one_ne_zero h1`.
+
+Establish `hne : majDualI K ≠ 0` using `by first`. Consider the case `exact FractionalIdeal.dual_ne_zero ℤ ℚ h10`. Consider the case `exact FractionalIdeal.dual_ne_zero h10`. Establish `hU' : dual h L = L` using `hU`. Establish `hdual : ∀ x : V, x ∈ L ↔ ∀ z ∈ L, h z x ∈ (1 : Submodule (RingOfIntegers K) K)`.
+
+Introduce `x`. Use `conv_lhs => rw [← hU']`. Simplify using `only [dual, Formalism.E.hdual, Submodule.mem_iInf, Submodule.mem_comap, LinearMap.restrictScalars_apply]`. Establish `hD : ∀ x : V, x ∈ dualI h L (invDiff K) ↔ ∀ z ∈ L, h z x ∈ (majDualI K : Submodule (RingOfIntegers K) K)`. Introduce `x`.
+
+Simplify using `only [dualI, Set.mem_setOf_eq]`. Conclude with `forall₂_congr fun z _ => (majDual_memI (h z x)).symm`. Rewrite using `[hD, majDual_invDiffSub]`. Prove the components needed by the constructor for the conclusion. Introduce `hy`.
+
+Establish `hJ : ∀ d ∈ ((majDualI K)⁻¹ : FractionalIdeal (RingOfIntegers K)⁰ K), d • y ∈ L`. Introduce `d hd`. Rewrite using `[hdual]`. Introduce `z hz`. Rewrite using `[map_smul, smul_eq_mul, Submodule.mem_one]`.
+
+Establish `hm : h z y * d ∈ majDualI K * (majDualI K)⁻¹` using `FractionalIdeal.mul_mem_mul (hy z hz) hd`. Rewrite `hm` using `[mul_inv_cancel₀ hne, FractionalIdeal.mem_one_iff]`. Take `⟨r, hr⟩` from `hm`. Conclude with `⟨r, by rw [hr, mul_comm]⟩`. Establish `h1 : (1 : K) ∈ ((majDualI K : Submodule (RingOfIntegers K) K) * (((majDualI K)⁻¹ : FractionalIdeal (RingOfIntegers K)⁰ K) : Submodule (RingOfIntegers K) K))`.
+
+Rewrite using `[← FractionalIdeal.coe_mul, mul_inv_cancel₀ hne]`. Conclude with `(FractionalIdeal.mem_one_iff _).2 ⟨1, map_one _⟩`. Establish `key : ∀ t ∈ ((majDualI K : Submodule (RingOfIntegers K) K) * (((majDualI K)⁻¹ : FractionalIdeal (RingOfIntegers K)⁰ K) : Submodule (RingOfIntegers K) K)), t • y ∈ idealSmul (majDualI K : Submodule (RingOfIntegers K) K) L`. Introduce `t ht`. Use `Submodule.mul_induction_on ht ?_ ?_` and prove the remaining obligations.
+
+Introduce `m hm n hn`. Rewrite using `[mul_smul]`. Conclude with `Submodule.subset_span ⟨m, hm, n • y, hJ n hn, rfl⟩`. Introduce `a c ha hc`. Rewrite using `[add_smul]`.
+
+Conclude with `Submodule.add_mem _ ha hc`. Simplify using `using key 1 h1`. Introduce `hy`. Unfold `idealSmul at hy`. Proceed by induction on `hy using Submodule.span_induction with`.
+
+Consider the case `mem z hz`. Take `⟨a, ha, x, hx, rfl⟩` from `hz`. Introduce `w hw`. Take `⟨r, hr⟩` from `Submodule.mem_one.1 ((hdual x).1 hx w hw)`. Rewrite using `[map_smul, smul_eq_mul, ← hr, mul_comm, ← Algebra.smul_def]`.
+
+Conclude with `Submodule.smul_mem _ r ha`. Consider the case `zero`. Introduce `w _`. Rewrite using `[map_zero]`. Conclude with `Submodule.zero_mem _`.
+
+Consider the case `add a c _ _ ha hc`. Introduce `w hw`. Rewrite using `[map_add]`. Conclude with `Submodule.add_mem _ (ha w hw) (hc w hw)`. Consider the case `smul r a _ ha`.
+
+Introduce `w hw`. Rewrite using `[← IsScalarTower.algebraMap_smul K r a, map_smul, smul_eq_mul, ← Algebra.smul_def]`. Conclude with `Submodule.smul_mem _ r (ha w hw)`.
+-/
 lemma majDual_unimod (h : V →ₗ⋆[K] V →ₗ[K] K) (L : Submodule (RingOfIntegers K) V)
     (hU : IsUnimodular h L) (y : V) :
     y ∈ dualI h L (invDiff K) ↔ y ∈ idealSmul (invDiffSub K) L := by
@@ -270,10 +359,20 @@ section
 variable {K V ι : Type} [Field K] [NumberField K] [StarRing K] [AddCommGroup V] [Module K V]
   [Fintype ι] [DecidableEq ι]
 
+/- English proof (translation)
+Conclude with `Iff.rfl`.
+-/
 lemma majDual_mem_zmap {R W : Type*} [Ring R] [Module R V] [AddCommGroup W] (f : V →+ W)
     (M : Submodule R V) (w : W) : w ∈ zmap f M ↔ ∃ y ∈ M, f y = w := by
   exact Iff.rfl
 
+/- English proof (translation)
+Establish `hf : ∀ v : InfinitePlace K, fcoord b X v (algebraMap ℚ K q • x) = (q : ℂ) • fcoord b X v x`. Introduce `v`. Establish `hv : vecAt b v (algebraMap ℚ K q • x) = (q : ℂ) • vecAt b v x`. Use function extensionality and compare the values at `i`. Rewrite using `[Pi.smul_apply, smul_eq_mul]`.
+
+Simplify using `only [vecAt]`. Rewrite using `[map_smul, Finsupp.smul_apply, smul_eq_mul, map_mul, eq_ratCast (algebraMap ℚ K) q, map_ratCast]`. Rewrite using `[fcoord, fcoord, hv, Matrix.mulVec_smul]`. Use extensionality with `p`. Rewrite using `[PiLp.smul_apply, majDual_realize_apply, majDual_realize_apply, hf]`.
+
+Apply the tactic sequence `split_ifs <;> simp`.
+-/
 lemma majDual_realize_qsmul (b : Module.Basis ι K V) (X : InfinitePlace K → Matrix ι ι ℂ)
     (q : ℚ) (x : V) : realize b X (algebraMap ℚ K q • x) = (q : ℝ) • realize b X x := by
   have hf : ∀ v : InfinitePlace K,
@@ -301,10 +400,16 @@ def majDualJ (h : V →ₗ⋆[K] V →ₗ[K] K) (b : Module.Basis ι K V)
     intro c u; ext p; simp only [majDual_jW_apply, PiLp.smul_apply, smul_eq_mul,
       RingHom.id_apply]; ring
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 lemma majDualJ_apply (h : V →ₗ⋆[K] V →ₗ[K] K) (b : Module.Basis ι K V)
     (X : InfinitePlace K → Matrix ι ι ℂ) (u : EuclideanSpace ℝ (InfinitePlace K × ι × Fin 2)) :
     majDualJ h b X u = jW h b X u := rfl
 
+/- English proof (translation)
+Use extensionality with `p`. Rewrite using `[majDual_jW_apply, majDual_jW_apply, ← mul_assoc]`. Apply the tactic sequence `rcases (majDual_sgn h b X hX p.1).2 p.2.1 with hs | hs <;> simp [hs]`.
+-/
 lemma majDual_jW_jW (h : V →ₗ⋆[K] V →ₗ[K] K) (b : Module.Basis ι K V)
     (X : InfinitePlace K → Matrix ι ι ℂ) (hX : ∀ v, IsFrame h b v (X v))
     (u : EuclideanSpace ℝ (InfinitePlace K × ι × Fin 2)) : jW h b X (jW h b X u) = u := by
@@ -314,6 +419,45 @@ lemma majDual_jW_jW (h : V →ₗ⋆[K] V →ₗ[K] K) (b : Module.Basis ι K V)
 
 variable [Module (RingOfIntegers K) V] [IsScalarTower (RingOfIntegers K) K V]
 
+/- English proof (translation)
+Establish `hinner` using `majDual_inner h b X hst hX`. Establish `hmemZ : ∀ u, u ∈ Formalism.HadamardInequality.zdual (zmap (realize b X) L) ↔ ∀ x ∈ zmap (realize b X) L, ∃ z : ℤ, inner ℝ x u = z` using `fun u => Iff.rfl`. Prove the components needed by the constructor for the conclusion. Use `swap`. Introduce and unpack `⟨y, hy, rfl⟩`.
+
+Rewrite using `[hmemZ]`. Introduce `x hx`. Take `⟨x', hx', rfl⟩` from `(majDual_mem_zmap (realize b X) L x).1 hx`. Take `⟨z, hz⟩` from `hy x' hx'`. Use `⟨z, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[hinner, hz]`. Apply the tactic sequence `(try push_cast) <;> ring`. Introduce `hw`. Rewrite `hw` using `[hmemZ]`. Use `set bZ := Module.Free.chooseBasis ℤ (zmap (realize b X) L) with hbZ`.
+
+Use `set bb := bZ.ofZLatticeBasis ℝ (zmap (realize b X) L) with hbb`. Establish `hbbΛ : ∀ i, bb i ∈ zmap (realize b X) L` using `fun i => by`. Rewrite using `[hbb, Module.Basis.ofZLatticeBasis_apply]`. Conclude with `(bZ i).2`. Establish `hm : ∀ i, ∃ m ∈ L, realize b X m = bb i` using `fun i => (majDual_mem_zmap (realize b X) L (bb i)).1 (hbbΛ i)`.
+
+Use `choose m hmL hmR using hm`. Establish `hext : ∀ p q : EuclideanSpace ℝ (InfinitePlace K × ι × Fin 2), (∀ i, inner ℝ (bb i) p = inner ℝ (bb i) q) → p = q`. Introduce `p q hpq`. Apply `ext_inner_left ℝ` to reduce the goal to its premises. Introduce `u`.
+
+Rewrite using `[← bb.sum_repr u, sum_inner, sum_inner]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[real_inner_smul_left, real_inner_smul_left, hpq i]`. Use `set Gq : Matrix (Module.Free.ChooseBasisIndex ℤ (zmap (realize b X) L)) (Module.Free.ChooseBasisIndex ℤ (zmap (realize b X) L)) ℚ := Matrix.of fun i k => Algebra.trace ℚ K (h (m i) (m k)) / 2 with hGq`. Establish `hGr : ∀ i k, inner ℝ (bb i) (jW h b X (bb k)) = (Gq i k : ℝ)`.
+
+Introduce `i k`. Rewrite using `[← hmR i, ← hmR k, hinner, hGq, Matrix.of_apply]`. Apply the tactic sequence `(try push_cast) <;> ring`. Establish `hdet : Gq.det ≠ 0`. Introduce `h0`.
+
+Take `⟨v, hv0, hv⟩` from `Matrix.exists_mulVec_eq_zero_iff.mpr h0`. Use `set u := ∑ k, (v k : ℝ) • bb k with hu`. Establish `hJu : jW h b X u = 0`. Apply `hext` to reduce the goal to its premises. Introduce `i`.
+
+Rewrite using `[inner_zero_right, ← majDualJ_apply, hu, map_sum, inner_sum]`. Simplify using `only [map_smul, real_inner_smul_right, majDualJ_apply, hGr]`. Establish `h1` using `congrFun hv i`. Simplify using `only [Matrix.mulVec, dotProduct, Pi.zero_apply] at h1`. Establish `h2 : ((∑ k, Gq i k * v k : ℚ) : ℝ) = 0`.
+
+Rewrite using `[h1]`. Simplify using the standard rewrite rules. Move the coercions through the operations in `at h2`. Rewrite using `[← h2]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations.
+
+Expand and normalize the polynomial expressions, which then agree. Establish `hu0 : u = 0`. Rewrite using `[← majDual_jW_jW h b X hX u, hJu, ← majDualJ_apply, map_zero]`. Apply `hv0` to reduce the goal to its premises. Establish `hli` using `bb.linearIndependent`.
+
+Rewrite `hli` using `[Fintype.linearIndependent_iff]`. Use function extensionality and compare the values at `k`. Establish `h3` using `hli (fun k => (v k : ℝ)) (hu.symm.trans hu0) k`. Simplify using `only [Pi.zero_apply]`. Conclude with `h3` after adjusting the coercions.
+
+Establish `hn : ∀ i, ∃ z : ℤ, inner ℝ (bb i) w = z` using `fun i => hw (bb i) (hbbΛ i)`. Use `choose nz hnz using hn`. Use `set qv := Matrix.mulVec Gq⁻¹ (fun i => (nz i : ℚ)) with hqv`. Use `set y : V := ∑ k, (algebraMap ℚ K (qv k)) • m k with hy`. Establish `htr : ∀ x : V, Algebra.trace ℚ K (h x y) = ∑ k, qv k * Algebra.trace ℚ K (h x (m k))`.
+
+Introduce `x`. Rewrite using `[hy, map_sum, map_sum]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[map_smul, smul_eq_mul, ← Algebra.smul_def, map_smul, smul_eq_mul]`. Establish `hq : ∀ i, Algebra.trace ℚ K (h (m i) y) / 2 = nz i`.
+
+Introduce `i`. Establish `e1 : Matrix.mulVec Gq qv = fun i => (nz i : ℚ)`. Rewrite using `[hqv, Matrix.mulVec_mulVec, Matrix.mul_nonsing_inv Gq (isUnit_iff_ne_zero.mpr hdet), Matrix.one_mulVec]`. Establish `e2` using `congrFun e1 i`. Simplify using `only [Matrix.mulVec, dotProduct] at e2`.
+
+Rewrite using `[← e2, htr, Finset.sum_div]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[hGq, Matrix.of_apply]`. Expand and normalize the polynomial expressions, which then agree. Establish `hwy : w = jW h b X (realize b X y)`.
+
+Apply `hext` to reduce the goal to its premises. Introduce `i`. Rewrite using `[hnz i, ← hmR i, hinner]`. Establish `e3` using `congrArg (fun q : ℚ => (q : ℝ)) (hq i)`. Move the coercions through the operations in `at e3`.
+
+Conclude with `e3.symm`. Use `⟨y, ?_, hwy⟩` and prove the remaining obligations. Introduce `x hx`. Take `⟨z, hz⟩` from `hw (realize b X x) ((majDual_mem_zmap (realize b X) L _).2 ⟨x, hx, rfl⟩)`. Use `⟨z, ?_⟩` and prove the remaining obligations.
+
+Rewrite `hz` using `[hwy, hinner]`. Establish `e4 : ((Algebra.trace ℚ K (h x y) : ℚ) : ℝ) = ((2 * z : ℚ) : ℝ)`. Use `push_cast`. Combine the linear equalities and inequalities to obtain the conclusion. Conclude with `e4` after adjusting the coercions.
+-/
 lemma majDual_zdual [IsTotallyComplex K] (h : V →ₗ⋆[K] V →ₗ[K] K) (b : Module.Basis ι K V)
     (X : InfinitePlace K → Matrix ι ι ℂ)
     (hst : ∀ (φ : K →+* ℂ) (a : K), φ (star a) = starRingEnd ℂ (φ a))
@@ -429,6 +573,11 @@ lemma majDual_zdual [IsTotallyComplex K] (h : V →ₗ⋆[K] V →ₗ[K] K) (b :
 
 end
 
+/- English proof (translation)
+Introduce `K V ι _ _ _ _ _ _ _ _ _ _ h b X _ hst hX`. Use `⟨majDual_inner h b X hst hX, fun L hL => ?_⟩` and prove the remaining obligations. Take `⟨hD, hS⟩` from `majLattice K V ι b X (fun v => (hX v).1) L hL`. Establish `hZ : IsZLattice ℝ (zmap (realize b X) L)` using `⟨hS⟩`. Use `⟨⟨hD, hZ⟩, fun w => ?_, fun y => majDual_tdual h L y, fun hU y => majDual_unimod h L hU y⟩` and prove the remaining obligations.
+
+Conclude with `majDual_zdual h b X hst hX L w`.
+-/
 theorem majDual : MajDual := by
   intro K V ι _ _ _ _ _ _ _ _ _ _ h b X _ hst hX
   refine ⟨majDual_inner h b X hst hX, fun L hL => ?_⟩

@@ -8,6 +8,9 @@ open CategoryTheory CategoryTheory.Limits AlgebraicGeometry MonoidalCategory Car
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Geo.Tor ReciprocityTheory.ChartRestriction.G.Semi GlobalTheory.Cris GlobalTheory.DeRham GlobalTheory.RealMult DividedPowers GlobalTheory.LatJet
 attribute [local instance] Over.cartesianMonoidalCategory
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.RealMult.Obj.lieCorr_of_isLieImage | exact GlobalTheory.RealMult.Obj.lieCorr_of_isLieImage | (intros; apply GlobalTheory.RealMult.Obj.lieCorr_of_isLieImage <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.lie_image_correspondence : GlobalTheory.Published.AbelianDeRham → ∀ {F : Type} [Field F] [NumberField F] {𝔠 : FracId F}
     {R R' : Type} [CommRing R] [CommRing R'] (σ : R →+* R') {X : Obj F 𝔠 (Sp R)} {X' : Obj F 𝔠 (Sp R')}
     {φ : X'.A.left ⟶ X.A.left}, X'.IsPullBy X (spMap σ) φ →

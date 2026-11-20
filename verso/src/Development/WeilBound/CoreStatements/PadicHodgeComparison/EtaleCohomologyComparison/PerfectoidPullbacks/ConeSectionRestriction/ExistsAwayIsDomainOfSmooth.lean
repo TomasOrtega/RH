@@ -7,6 +7,15 @@ noncomputable section
 
 namespace CrystallineSemistableComparison.Pb.EtaleIntegralityFacts
 
+/- English proof (translation)
+Take `⟨g, hg, hstd⟩` from `Algebra.IsSmoothAt.exists_notMem_isStandardSmooth K p`. Take `⟨ι, σ, _, _, ⟨Pr⟩⟩` from `hstd.out`. Use `haveI : Algebra.IsStandardSmoothOfRelativeDimension Pr.dimension K (Localization.Away g) := ⟨⟨ι, σ, ‹_›, ‹_›, Pr, rfl⟩⟩`. Take `⟨φ, hφ⟩` from `Algebra.IsStandardSmoothOfRelativeDimension.exists_etale_mvPolynomial (n := Pr.dimension) (R := K) (S := Localization.Away g)`. Use `letI : Algebra (MvPolynomial (Fin Pr.dimension) K) (Localization.Away g) := φ.toRingHom.toAlgebra`.
+
+Use `haveI : Algebra.Etale (MvPolynomial (Fin Pr.dimension) K) (Localization.Away g) := hφ`. Use `haveI hq : (p.map (algebraMap A (Localization.Away g))).IsPrime := by`. Apply `IsLocalization.isPrime_of_isPrime_disjoint (.powers g) _ _ ‹_›` to reduce the goal to its premises. Rewrite using `[Ideal.disjoint_powers_iff_notMem_of_isPrime]` and apply the resulting hypothesis. Take `⟨g', hg', hdom⟩` from `exists_away_isDomain_of_etale (P := MvPolynomial (Fin Pr.dimension) K) (A := Localization.Away g) (p.map (algebraMap A (Localization.Away g)))`.
+
+Use `⟨g * (IsLocalization.Away.sec g g').1, ?_, ?_⟩` and prove the remaining obligations. Use `Ideal.IsPrime.mul_notMem ‹_› hg fun hmem => hg' ?_` and prove the remaining obligations. Rewrite using `[Ideal.mem_iff_of_associated (IsLocalization.Away.associated_sec_fst g g').symm]`. Conclude with `Ideal.mem_map_of_mem (algebraMap A (Localization.Away g)) hmem`. Introduce `S _ _ _ haveI : IsLocalization.Away (g * (IsLocalization.Away.sec g g').1) (Localization.Away g') := .mul_of_associated _ _ g' <| IsLocalization.Away.associated_sec_fst g g'`.
+
+Set `e : S ≃ₐ[A] Localization.Away g'` to `IsLocalization.algEquiv (Submonoid.powers (g * (IsLocalization.Away.sec g g').1)) S (Localization.Away g')`. Conclude with `e.toRingEquiv.toMulEquiv.isDomain`.
+-/
 theorem exists_away_isDomain_of_smooth {K A : Type} [Field K] [CommRing A] [Algebra K A]
     [Algebra.Smooth K A] (p : Ideal A) [p.IsPrime] :
     ∃ r ∉ p, ∀ (S : Type) [CommRing S] [Algebra A S] [IsLocalization.Away r S], IsDomain S := by

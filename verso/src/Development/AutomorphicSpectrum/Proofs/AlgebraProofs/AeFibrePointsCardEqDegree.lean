@@ -7,6 +7,19 @@ set_option maxSynthPendingDepth 1
 open GroundTheory.Heights₂.Heights MeasureTheory MvPolynomial Matrix GlobalTheory.CompanionTheory.Ar.Short.Crofton
 open scoped ENNReal
 
+/- English proof (translation)
+Set `T : ℝ≥0∞ → ℝ≥0∞` to `fun x => if x = (δ : ℝ≥0∞) then 0 else 1`. Establish `hT : Measurable T` using `Measurable.ite (measurableSet_singleton _) measurable_const measurable_const`. Establish `hcross` using `GlobalTheory.T.ball_average_fibre_count n e S hss hsc T hT`. Establish `hlhs : ∫⁻ (π : Fin (e + 1) → Fin n → ℂ), matGauss π * ∫⁻ (w : EuclideanSpace ℂ (Fin (e + 1))) in Metric.ball 0 1, T (cntOver S π w) = 0`. Establish `hae : (fun π : Fin (e + 1) → Fin n → ℂ => matGauss π * ∫⁻ (w : EuclideanSpace ℂ (Fin (e + 1))) in Metric.ball 0 1, T (cntOver S π w)) =ᵐ[volume] fun _ => 0` using `by filter_upwards [hgen] with π hπ`.
+
+Establish `hz : (fun w => T (cntOver S π w)) =ᵐ[volume.restrict (Metric.ball (0 : EuclideanSpace ℂ (Fin (e + 1))) 1)] fun _ => 0` using `by filter_upwards [ae_restrict_of_ae hπ] with w hw`. Simplify using `only [T, hw, if_true]`. Rewrite using `[lintegral_congr_ae hz, lintegral_zero, mul_zero]`. Rewrite using `[lintegral_congr_ae hae, lintegral_zero]`. Rewrite `hcross` using `[hlhs]`.
+
+Establish `hball : volume (Metric.ball (0 : EuclideanSpace ℂ (Fin (e + 1))) 1) ≠ 0` using `(Metric.measure_ball_pos volume _ one_pos).ne'`. Establish `hrhs : ∫⁻ (π : Fin (e + 1) → Fin n → ℂ), matGauss π * T (cntOver S π (firstCoordVec (e + 1))) = 0` using `(mul_eq_zero.mp hcross.symm).resolve_left hball`. Establish `hp : Measurable (fun π : Fin (e + 1) → Fin n → ℂ => (π, firstCoordVec (e + 1)))` using `measurable_id.prodMk measurable_const`. Establish `hmeasc` using `Measurable.comp (g := fun p : (Fin (e + 1) → Fin n → ℂ) × EuclideanSpace ℂ (Fin (e + 1)) => cntOver S p.1 p.2) (f := fun π : Fin (e + 1) → Fin n → ℂ => (π, firstCoordVec (e + 1))) (GlobalTheory.T.measurable_fibre_count_over n (e + 1) S hsc) hp`. Establish `hmg : Measurable (matGauss : (Fin (e + 1) → Fin n → ℂ) → ℝ≥0∞)`.
+
+Unfold `matGauss`. Use `fun_prop`. Establish `hz` using `(lintegral_eq_zero_iff (hmg.mul (hT.comp hmeasc))).mp hrhs`. Use `filter_upwards [hz] with π hπ`. Establish `hg : matGauss π ≠ 0`.
+
+Unfold `matGauss`. Conclude with `(ENNReal.ofReal_pos.mpr (Real.exp_pos _)).ne'`. Establish `hT0 : T (cntOver S π (firstCoordVec (e + 1))) = 0` using `(mul_eq_zero.mp hπ).resolve_left hg`. Establish `hc : cntOver S π (firstCoordVec (e + 1)) = (δ : ℝ≥0∞)`. Assume the negation of the conclusion as `hne`.
+
+Simplify using `only [T, hne, if_false, one_ne_zero] at hT0`. Establish `hc' : (((fibrePts S π).encard : ℕ∞) : ℝ≥0∞) = ((δ : ℕ∞) : ℝ≥0∞)`. Rewrite using `[ENat.toENNReal_coe]`. Conclude with `hc`. Conclude with `ENat.toENNReal_inj.mp hc'`.
+-/
 private theorem ae_fibre_encard_eq {n e : ℕ} (S : Set (EuclideanSpace ℂ (Fin n)))
     (hss : IsScaleStable S) (hsc : IsSigmaCompact S) (δ : ℕ)
     (hgen : ∀ᵐ (π : Fin (e + 1) → Fin n → ℂ), ∀ᵐ (w : EuclideanSpace ℂ (Fin (e + 1))),
@@ -56,6 +69,11 @@ private theorem ae_fibre_encard_eq {n e : ℕ} (S : Set (EuclideanSpace ℂ (Fin
   exact ENat.toENNReal_inj.mp hc'
 
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Introduce `n e δ h W f hW hf hd`. Apply `ae_fibre_encard_eq (coneSet h W) (isScaleStable_coneSet h hW) (by simpa using isSigmaCompact_cone_inter h W (A := Set.univ) isOpen_univ) δ` to reduce the goal to its premises. Use `filter_upwards [GroundTheory.Heights₂.Heights.ConeFibreDegree.full n e δ h W f hW hf hd] with π hπ`. Use `filter_upwards [hπ] with w hw`. Use `show ((fibreCount h W π w : ℕ∞) : ℝ≥0∞) = _`.
+
+Rewrite using `[hw]`. Both sides reduce to the same expression.
+-/
 theorem _root_.GlobalTheory.CompanionTheory.Relay.ae_fibre_points_card_eq_degree : ∀ (n e δ : ℕ) (h : HermNorm n) (W : Ideal (MvPolynomial (Fin n) ℂ))
   (f : MvPolynomial (Fin (e + 1) × Fin n) ℂ), IsProjPrime W → IsChowForm W (e + 1) f → IsMultiHomog δ f →
     ∀ᵐ π : Fin (e + 1) → Fin n → ℂ, (fibrePts (coneSet h W) π).encard = δ := by

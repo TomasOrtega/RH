@@ -45,6 +45,9 @@ def DensProdBound : Prop :=
 def ResCard : Prop :=
   ∀ (D : Formalism.BasicNotions.D7) (p : PlF D), Nat.card 𝓀[(D.s.atP p).Fp] = p.asIdeal.absNorm
 
+/- English proof (translation)
+Establish `h1` using `D.R.two_le_m`. Establish `h2` using `D.R.m_add_three_le_k`. Take `⟨a, ha⟩` from `D.R.m_even`. Unfold `Formalism.BasicNotions.Ranks.rS Formalism.BasicNotions.Ranks.r`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem tuple_short (D : Formalism.BasicNotions.D7) : 2 * (D.R.rS + 1) + 1 ≤ D.R.r := by
   have h1 := D.R.two_le_m
   have h2 := D.R.m_add_three_le_k
@@ -67,6 +70,17 @@ def GoodRest : Prop :=
             (∀ a b, GaPlus M δ p (Tn u) (Tn u') Z a b ∈ (M p).L.O) ∧
             ∃ y ∈ (M p).L.O, (GaPlus M δ p (Tn u) (Tn u') Z).det * y = 1
 
+/- English proof (translation)
+Establish `hsub : {p : PlF D | Loc.resChar p = ℓ} ⊆ {v | v.asIdeal ∣ Ideal.span {(ℓ : 𝓞 D.host.F)}}`. Introduce `p hp`. Simplify using `only [Set.mem_setOf_eq] at hp ⊢`. Rewrite using `[Ideal.dvd_span_singleton, ← hp, ← Ideal.Quotient.eq_zero_iff_mem, map_natCast]`. Conclude with `ringChar.Nat.cast_ringChar`.
+
+Distinguish the cases in `hℓ : ℓ = 0`. Substitute `hℓ` using the available equality. Use `Set.finite_empty` and compare the differences between its conclusion and the goal. Use extensionality with `p`. Simplify using `only [Set.mem_setOf_eq, Set.mem_empty_iff_false, iff_false]`.
+
+Introduce `hp`. Establish `h1 : ((Ideal.absNorm p.asIdeal : ℕ) : 𝓞 D.host.F ⧸ p.asIdeal) = 0`. Rewrite using `[← map_natCast (Ideal.Quotient.mk p.asIdeal), Ideal.Quotient.eq_zero_iff_mem]`. Conclude with `Ideal.absNorm_mem p.asIdeal`. Establish `hc : CharP (𝓞 D.host.F ⧸ p.asIdeal) 0`.
+
+Establish `h2` using `ringChar.charP (𝓞 D.host.F ⧸ p.asIdeal)`. Unfold `Loc.resChar at hp`. Rewrite `h2` using `[hp]`. Then use the resulting hypothesis. Rewrite `h1` using `[CharP.cast_eq_zero_iff _ 0, zero_dvd_iff, Ideal.absNorm_eq_zero_iff]`. Conclude with `p.ne_bot h1`.
+
+Use `(Ideal.finite_factors ?_).subset hsub` and prove the remaining obligations. Rewrite using `[Ne, Ideal.zero_eq_bot, Ideal.span_singleton_eq_bot]`. Conclude with `hℓ` after adjusting the coercions.
+-/
 theorem resChar_finite (D : Formalism.BasicNotions.D7) (ℓ : ℕ) : {p : PlF D | Loc.resChar p = ℓ}.Finite := by
   have hsub : {p : PlF D | Loc.resChar p = ℓ} ⊆
       {v | v.asIdeal ∣ Ideal.span {(ℓ : 𝓞 D.host.F)}} := by
@@ -93,6 +107,15 @@ theorem resChar_finite (D : Formalism.BasicNotions.D7) (ℓ : ℕ) : {p : PlF D 
     rw [Ne, Ideal.zero_eq_bot, Ideal.span_singleton_eq_bot]
     exact_mod_cast hℓ
 
+/- English proof (translation)
+Introduce `D δ M hA`. Establish `hfin : {p : PlF D | Loc.resChar p ∈ ({D.host.g 0, D.host.g 1} : Finset ℕ)}.Finite`. Establish `he : {p : PlF D | Loc.resChar p ∈ ({D.host.g 0, D.host.g 1} : Finset ℕ)} = {p | Loc.resChar p = D.host.g 0} ∪ {p | Loc.resChar p = D.host.g 1}`. Use extensionality with `p`. Simplify using the standard rewrite rules.
+
+Rewrite using `[he]`. Conclude with `(resChar_finite D _).union (resChar_finite D _)`. Rewrite using `[Filter.eventually_cofinite]`. Use `hfin.subset fun p hp => ?_` and prove the remaining obligations. Simplify using `only [Set.mem_ofPred_eq] at hp ⊢`.
+
+Rewrite using `[← D.s_split p]`. Establish `hAp` using `(hA p).2.2.2.2.2`. Consider the cases of `hM : (M p).split with`. Consider the case `none => exact absurd hM hp`. Consider the case `some g`.
+
+Consider the cases of `hS : (D.s.atP p).split with`. Consider the case `none`. Rewrite `hAp` using `[hM, hS]`. Conclude with `hAp.elim`. Consider the case `some sg => rfl`.
+-/
 theorem local_models_split_cofinite : ModeLCofinite := by
   intro D δ M hA
   have hfin : {p : PlF D | Loc.resChar p ∈ ({D.host.g 0, D.host.g 1} : Finset ℕ)}.Finite := by

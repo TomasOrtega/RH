@@ -13,6 +13,11 @@ namespace UpperTheory.N
 
 variable {D : D7}
 
+/- English proof (translation)
+Introduce `w hw C _`. Establish `hcard : Nat.card (↥(D.nbr i w hw).Kw.1 →ₐ[ℚ_[D.nd.l i]] ↥C.LL.1) ≤ 4 * D.R.n`. Rewrite using `[GlobalTheory.HubLoc.card_emb _ _ fun τ x => C.le ((D.nbr i w hw).LL_split τ x)]`. Conclude with `GlobalTheory.bridge_finrank_le D i w hw`. Use `haveI : Finite (↥(D.nbr i w hw).Kw.1 →ₐ[ℚ_[D.nd.l i]] ↥C.LL.1) := by haveI := (D.nbr i w hw).Kw.2 infer_instance`.
+
+Take `⟨U, h1, h2, h3⟩` from `exists_union (4 * D.R.n) D.R.nV h hcard (fun τ a => IsJumpV (Br.PD D.loc D.nbr i w hw) (matRep (TruncatedSeriesCountingIdentities.locC C (rTwO D.nd i r π))) τ a) (fun τ => by`. Take `⟨U, a, b, c⟩` from `hJ w hw C.LL C.le τ`. Conclude with `⟨U, a, fun u hu => ⟨(b u hu).1, by have := (b u hu).2; omega⟩, c⟩)`. Rewrite using `[GlobalTheory.BridgeInertia.inertEq D i w hw]`. Conclude with `hK N h _ D.R.t (D.nbr i w hw).Kw C.LL (hC w hw C) ht _ U h1 h2 (fun τ a ha => h3 τ a ha)`.
+-/
 theorem block_condition_at_places_of_jump_window (i : D.nd.Loc) (N : ℕ) (hK : TBK (D.loc (D.nd.l i))) (hC : CycAt N i)
     (r : D.nd.X i → (GE D.nd →* GL (Fin D.R.nV) (D.nd.O i))) (π : D.nd.X i) (h : ℕ) (ht : D.R.t ≤ h)
     (hJ : GlobalTheory.BlockWindow.JumpWindow D i r π h) :

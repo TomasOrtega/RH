@@ -10,6 +10,9 @@ namespace GlobalTheory.HarmonicParam
 
 variable {p q : ℕ}
 
+/- English proof (translation)
+Rewrite using `[← Finset.card_disjSum]`. Use `congr 1`. Use extensionality with `x`. Apply the tactic sequence `cases x <;> simp [hA, hB]`.
+-/
 theorem card_filter_sum (P : Ix p q → Prop) [DecidablePred P] (A : Finset (Fin p)) (B : Finset (Fin q))
     (hA : ∀ i, P (Sum.inl i) ↔ i ∈ A) (hB : ∀ j, P (Sum.inr j) ↔ j ∈ B) :
     (Finset.univ.filter P).card = A.card + B.card := by
@@ -18,6 +21,15 @@ theorem card_filter_sum (P : Ix p q → Prop) [DecidablePred P] (A : Finset (Fin
   ext x
   cases x <;> simp [hA, hB]
 
+/- English proof (translation)
+Establish `h1' : ∀ i i', lam (Sum.inl i) < lam (Sum.inl i') ↔ i' < i` using `fun i i' => h1.lt_iff_gt`. Establish `h2' : ∀ i i', lam (Sum.inr i) < lam (Sum.inr i') ↔ i' < i` using `fun i i' => h2.lt_iff_gt`. Establish `h4 : ∀ i j, ¬ lam (Sum.inl i) < lam (Sum.inr j)` using `fun i j => (h3 i j).not_gt`. Prove the components needed by the constructor for the conclusion. Introduce `i`.
+
+Unfold `rhoNC`. Rewrite using `[card_filter_sum _ ∅ Finset.univ (by simp [sameBlock]) (by simp [sameBlock, h3]), card_filter_sum _ ∅ ∅ (by simp [sameBlock]) (by simp [sameBlock, h4]), card_filter_sum _ (Finset.Ioi i) ∅ (by simp [sameBlock, h1']) (by simp [sameBlock]), card_filter_sum _ (Finset.Iio i) ∅ (by sim …`. Establish `hi : i.1 + 1 ≤ p` using `i.2`. Simplify using `only [Finset.card_empty, Finset.card_univ, Fintype.card_fin, Fin.card_Ioi, Fin.card_Iio, Nat.sub_sub, zero_add, add_zero]`. Rewrite using `[Nat.cast_sub (by omega)]`.
+
+Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Introduce `i`. Unfold `rhoNC`. Rewrite using `[card_filter_sum _ ∅ ∅ (by simp [sameBlock, h4]) (by simp [sameBlock]), card_filter_sum _ Finset.univ ∅ (by simp [sameBlock, h3]) (by simp [sameBlock]), card_filter_sum _ ∅ (Finset.Ioi i) (by simp [sameBlock]) (by simp [sameBlock, h2']), card_filter_sum _ ∅ (Finset.Iio i) (by sim …`.
+
+Establish `hi : i.1 + 1 ≤ q` using `i.2`. Simplify using `only [Finset.card_empty, Finset.card_univ, Fintype.card_fin, Fin.card_Ioi, Fin.card_Iio, Nat.sub_sub, zero_add, add_zero]`. Rewrite using `[Nat.cast_sub (by omega)]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem rhoNC_of_strictAnti (lam : Ix p q → ℚ) (h1 : StrictAnti fun i => lam (Sum.inl i))
     (h2 : StrictAnti fun j => lam (Sum.inr j)) (h3 : ∀ i j, lam (Sum.inr j) < lam (Sum.inl i)) :
     (∀ i : Fin p, rhoNC lam (Sum.inl i) = (q : ℚ) / 2 - ((p : ℚ) - 1 - 2 * (i.1 : ℚ)) / 2) ∧
@@ -51,6 +63,27 @@ theorem rhoNC_of_strictAnti (lam : Ix p q → ℚ) (h1 : StrictAnti fun i => lam
     push_cast
     ring
 
+/- English proof (translation)
+Introduce `p q n hn ap am hap ham _ _`. Establish `hn' : (p : ℚ) + q + 1 ≤ n` using `by exact_mod_cast hn`. Establish `h1 : StrictAnti fun i => hcParam n ap am (Sum.inl i)`. Introduce `i j hij`. Establish `a : (ap j : ℚ) ≤ ap i` using `by exact_mod_cast hap hij.le`.
+
+Establish `b : (i.1 : ℚ) < j.1` using `by exact_mod_cast hij`. Simplify using `only [hcParam]`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `h2 : StrictAnti fun i => hcParam n ap am (Sum.inr i)`. Introduce `i j hij`.
+
+Establish `a : (am i.rev : ℚ) ≤ am j.rev` using `by exact_mod_cast ham (Fin.rev_le_rev.2 hij.le)`. Establish `b : (i.1 : ℚ) < j.1` using `by exact_mod_cast hij`. Simplify using `only [hcParam]`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `h3 : ∀ (i : Fin p) (j : Fin q), hcParam n ap am (Sum.inr j) < hcParam n ap am (Sum.inl i)`.
+
+Introduce `i j`. Establish `a : (0 : ℚ) ≤ ap i` using `Nat.cast_nonneg _`. Establish `b : (0 : ℚ) ≤ am j.rev` using `Nat.cast_nonneg _`. Establish `c : (0 : ℚ) ≤ j.1` using `Nat.cast_nonneg _`. Establish `d : (i.1 : ℚ) + 1 ≤ p` using `by exact_mod_cast i.2`.
+
+Simplify using `only [hcParam]`. Combine the linear equalities and inequalities to obtain the conclusion. Use `⟨⟨?_, ?_, ?_, ?_⟩, ?_, h3⟩` and prove the remaining obligations. Introduce and unpack `(a | a) (b | b) h`. Rewrite using `[h1.injective h]`.
+
+Conclude with `absurd h (h3 a b).ne'`. Conclude with `absurd h (h3 b a).ne`. Rewrite using `[h2.injective h]`. Introduce and unpack `(a | a) (b | b) h`. Conclude with `h1 h`.
+
+Conclude with `h.elim`. Conclude with `h.elim`. Conclude with `h2 h`. Introduce and unpack `(a | a)`. Conclude with `⟨2 * (ap a) + 2 * (p - (a.1 + 1)) + (n - p - q + 1), by simp only [hcParam]; push_cast; ring⟩`.
+
+Conclude with `⟨-2 * (am a.rev) - 2 * (a.1 + 1) - (n - p - q - 1), by simp only [hcParam]; push_cast; ring⟩`. Introduce and unpack `(a | a) (b | b)`. Conclude with `⟨ap a - ap b - a.1 + b.1, by simp only [hcParam]; push_cast; ring⟩`. Conclude with `⟨ap a + (p - (a.1 + 1)) + am b.rev + (b.1 + 1) + (n - p - q), by simp only [hcParam]; push_cast; ring⟩`. Conclude with `⟨-(ap b + (p - (b.1 + 1)) + am a.rev + (a.1 + 1) + (n - p - q)), by simp only [hcParam]; push_cast; ring⟩`.
+
+Conclude with `⟨am b.rev - am a.rev - a.1 + b.1, by simp only [hcParam]; push_cast; ring⟩`. Take `⟨r1, r2⟩` from `rhoNC_of_strictAnti _ h1 h2 h3`. Use function extensionality and compare the values at `a`. Break down `a with a | a` into its components or cases. Simplify using `only [blattner, r1, hcParam, wtK]`.
+
+Expand and normalize the polynomial expressions, which then agree. Simplify using `only [blattner, r2, hcParam, wtK]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem hcParam_isParam_blattner : ∀ (p q n : ℕ) (hn : p + q < n) (ap : Fin p → ℕ) (am : Fin q → ℕ),
     Antitone ap → Antitone am → (∀ i, 1 ≤ ap i) → (∀ i, 1 ≤ am i) →
     IsParam (hcParam n ap am) ∧ blattner (hcParam n ap am) = wtK n ap am ∧

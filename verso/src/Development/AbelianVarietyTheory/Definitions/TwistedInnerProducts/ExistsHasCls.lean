@@ -20,11 +20,17 @@ def MapsCls {k k' : Type} [CommRing k] [Algebra F k] [CommRing k'] [Algebra F k'
   ∃ (x : plusUnits P k) (x' : plusUnits P k'), QuotientGroup.mk x = q ∧ QuotientGroup.mk x' = q' ∧
     x'.1.1 = Algebra.TensorProduct.map ψ (AlgHom.id F (Fld P)) x.1.1
 
+/- English proof (translation)
+Take `⟨x, φ, hφ, hq, -⟩` from `h`. Conclude with `⟨x, φ, hq, hφ⟩`.
+-/
 theorem HasCls.mem {k : Type} [CommRing k] [Algebra F k] {J : Matrix (Fin n) (Fin n) E} {γ : HA k σ J} {q : Cls P k}
     (h : HasCls P k J γ q) : q ∈ XSet P k J := by
   obtain ⟨x, φ, hφ, hq, -⟩ := h
   exact ⟨x, φ, hq, hφ⟩
 
+/- English proof (translation)
+Take `⟨x, φ, hq, hφ⟩` from `h`. Conclude with `⟨gam hφ, x, φ, hφ, hq, rfl⟩`.
+-/
 theorem exists_hasCls {k : Type} [CommRing k] [Algebra F k] {J : Matrix (Fin n) (Fin n) E} {q : Cls P k}
     (h : q ∈ XSet P k J) : ∃ γ, HasCls P k J γ q := by
   obtain ⟨x, φ, hq, hφ⟩ := h

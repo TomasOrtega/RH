@@ -18,12 +18,20 @@ namespace GlobalTheory.Mem.SRe
 variable {D : D7} {G' : Type} [Group G'] [Fintype G'] {Pl0 T : Type} {A : FamIn D.what₂.LL G' Pl0 T D.R.m}
   {Ks : Type} [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL]
 
+/- English proof (translation)
+Establish `e : ∀ x : G', RealDat.eC (A` using `A) D.what₂.embLL x = star (D.ntypes.e0.coeff (σ.symm x)) := fun x => by`. Rewrite using `[hC, MulEquiv.apply_symm_apply]`. Rewrite using `[e, e, show σ.symm (g * k * g⁻¹) = σ.symm g * σ.symm k * (σ.symm g)⁻¹ by simp, GlobalTheory.ProjComm.goodProjector_coeff_classFunction]`.
+-/
 theorem eC_conj_of_match {R : RealDat D A Ks} {σ : G0g D.nd ≃* G'} (hC : LevelMatchC R σ) (g k : G') :
     RealDat.eC (A := A) D.what₂.embLL (g * k * g⁻¹) = RealDat.eC (A := A) D.what₂.embLL k := by
   have e : ∀ x : G', RealDat.eC (A := A) D.what₂.embLL x = star (D.ntypes.e0.coeff (σ.symm x)) := fun x => by
     rw [hC, MulEquiv.apply_symm_apply]
   rw [e, e, show σ.symm (g * k * g⁻¹) = σ.symm g * σ.symm k * (σ.symm g)⁻¹ by simp, GlobalTheory.ProjComm.goodProjector_coeff_classFunction]
 
+/- English proof (translation)
+Establish `e : ∀ x : G', RealDat.eC (A` using `A) D.what₂.embLL x = star (D.ntypes.e0.coeff (σ.symm x)) := fun x => by`. Rewrite using `[hC, MulEquiv.apply_symm_apply]`. Simplify using `only [e]`. Rewrite using `[← GlobalTheory.ProjectedLift.conv_of_idem _ (GlobalTheory.GoodLatCompare.goodSeriesIdempotent_central_idempotent D).2 (σ.symm g), star_sum]`. Use `Fintype.sum_equiv σ.symm.toEquiv _ _ fun a => ?_` and prove the remaining obligations.
+
+Use `show _ = star (D.ntypes.e0.coeff (σ.symm a) * D.ntypes.e0.coeff ((σ.symm a)⁻¹ * σ.symm g))`. Rewrite using `[star_mul', map_mul, map_inv]`.
+-/
 theorem eC_conv_of_match {R : RealDat D A Ks} {σ : G0g D.nd ≃* G'} (hC : LevelMatchC R σ) (g : G') :
     ∑ a, RealDat.eC (A := A) D.what₂.embLL a * RealDat.eC (A := A) D.what₂.embLL (a⁻¹ * g) =
       RealDat.eC (A := A) D.what₂.embLL g := by
@@ -35,6 +43,13 @@ theorem eC_conv_of_match {R : RealDat D A Ks} {σ : G0g D.nd ≃* G'} (hC : Leve
   show _ = star (D.ntypes.e0.coeff (σ.symm a) * D.ntypes.e0.coeff ((σ.symm a)⁻¹ * σ.symm g))
   rw [star_mul', map_mul, map_inv]
 
+/- English proof (translation)
+Establish `hX : S ∈ GlobalTheory.Mem.Th.multAt R (R.levR F true) A.μ0 0`. Rewrite using `[GlobalTheory.Mem.Th.multAt_zero]`. Conclude with `hS`. Establish `h0` using `GlobalTheory.Mem.Th.multAt_le R _ A.μ0 0 hX`. Rewrite `h0`, `hX` using `[GlobalTheory.Mem.Th.multAt_zero]`.
+
+Establish `hL` using `GlobalTheory.ProjectedLift.liftsExist_rows R hl`. Establish `h1 : postOn (R.MY 0) R.e0 S ∈ R.EEat R.triv` using `GlobalTheory.ProjectedLift.postOn_gaL_mem_goodPart (L := R.dat0 R.triv) hi hL R.eG _ (eC_conv_of_match hC) h0`. Use `⟨GlobalTheory.KeepLevel.mem_mult_of_level h1.1 fun v => ?_, h1.2⟩` and prove the remaining obligations. Establish `a0 : HasType _ (R.βY 0) (R.dat0 R.triv) (S v)` using `((GlobalTheory.MultMem.mem_mult_iff D _ _ _ _ _ _ S).1 h0).lev v`. Use `GlobalTheory.KeepLevel.hasType_of_comm (L := R.dat0 R.triv) (P := R.levR F true) hL R.e0 a0 (((GlobalTheory.MultMem.mem_mult_iff D _ _ _ _ _ _ _).1 h1.1).lev v) (((GlobalTheory.MultMem.mem_mult_iff D _ _ _ _ _ _ S).1 hX).lev v) fun g => ?_` and prove the remaining obligations.
+
+Take `⟨g, rfl⟩` from `R.eG.surjective g`. Conclude with `GlobalTheory.ProjComm.gaL_comm (L := R.dat0 R.triv) R.eG _ (eC_conj_of_match hC) g a0`.
+-/
 theorem goodProjector_maps_rows_into_goodRows {R : RealDat D A Ks} {F : Face D A} (hl : R.toLevCh.Is A.μ0) (hi : R.models_inf)
     {σ : G0g D.nd ≃* G'} (hC : LevelMatchC R σ) {S : MMap (MP R)} (hS : S ∈ MultR R F) :
     postOn (MP R) R.e0 S ∈ EP R F := by
@@ -55,6 +70,61 @@ theorem goodProjector_maps_rows_into_goodRows {R : RealDat D A Ks} {F : Face D A
 
 set_option maxHeartbeats 1000000 in
 
+/- English proof (translation)
+Introduce `D G' _ _ Pl0 T A Ks _ _ _ R F X h G t v₀ c hl hi hv hsee hJe`. Take `⟨σ, red, hA, hB, hC⟩` from `hsee.mat`. Take `⟨J, hJ⟩` from `hJe`. Establish `hle : EP R F ≤ MultR R F` using `inf_le_left`. Establish `hmult : ∀ S ∈ MultR R F, IsMultMap R.θ (MP R) (JR R F) (chiR R F) S` using `fun S hS => (GlobalTheory.MultMem.mem_mult_iff D _ _ _ _ _ _ S).1 hS`.
+
+Establish `hGQ : ∀ S ∈ MultR R F, ∀ γ ∈ GQ (D.sp.Y 0), ∀ g, S v₀ (γ * g) = S v₀ g` using `fun S hS => ((hmult S hS).aut v₀).left`. Use `choose s0 hs0 using hB.1.2.2.1`. Establish `hs0' : ∀ γ, s0 γ ∈ X.B.I.Kset ∧ red (s0 γ) = γ` using `hs0`. Establish `hinv : ∀ S : MultR R F, ∀ k ∈ X.B.I.Kg X.B.g, X.B.R (1, k) (star ((J S : conjRows X) : L2X X)) = star ((J S : conjRows X) : L2X X)`. Introduce `S k hk`.
+
+Establish `hkK : k ∈ X.B.I.Kset` using `hk.1`. Establish `hrk : red k = 1` using `(hB.1.2.2.2 k hkK).2 hk`. Set `a : G0g D.nd → ℂ` to `fun γ => if γ = 1 then 1 else 0`. Set `s : G0g D.nd → X.B.I.Gf` to `fun γ => if γ = 1 then k else s0 γ`. Establish `hs : ∀ γ, s γ ∈ X.B.I.Kset ∧ red (s γ) = γ`.
+
+Introduce `γ`. Distinguish the cases in `hγ : γ = 1`. Substitute `hγ` using the available equality. Simplify using `only [s, if_pos rfl]`. Conclude with `⟨hkK, hrk⟩`.
+
+Simplify using `only [s, if_neg hγ]`. Conclude with `hs0' γ`. Establish `hI` using `GlobalTheory.Mem.SRe.evalAct_intertwines D G' Pl0 T A Ks R F X h t v₀ σ red hB (S : MMap (MP R)) S.2 ((J S : conjRows X) : L2X X) (hJ S).1 (hGQ _ S.2) a s hs`. Establish `e1 : (∑ γ, star (a γ) • star (X.B.R (1, s γ) (star ((J S : conjRows X) : L2X X))) : L2X X) = star (X.B.R (1, k) (star ((J S : conjRows X) : L2X X)))`. Rewrite using `[Finset.sum_eq_single (1 : G0g D.nd)]`.
+
+Simplify using `[a, s]`. Introduce `b _ hb`. Simplify using `[a, hb]`. Introduce `h1`. Conclude with `absurd (Finset.mem_univ _) h1`.
+
+Establish `hsum : (gaL (Yc D 0) (R.βY 0) (R.dat0 R.triv) R.eG fun g => star (a (σ.symm g))) = actL (Yc D 0) (R.βY 0) (R.dat0 R.triv) (R.eG 1)`. Unfold `gaL`. Rewrite using `[Finset.sum_eq_single (1 : G')]`. Establish `ha1 : a (σ.symm 1) = 1` using `by simp [a]`. Simplify using `only [ha1, star_one, one_smul]`.
+
+Both sides reduce to the same expression. Introduce `b _ hb`. Establish `hb' : σ.symm b ≠ 1`. Introduce `h1`. Apply `hb` to reduce the goal to its premises.
+
+Simplify using `using congrArg σ h1`. Establish `ha0 : a (σ.symm b) = 0` using `by simp [a, hb']`. Simplify using `only [ha0, star_zero, zero_smul]`. Introduce `h1`. Conclude with `absurd (Finset.mem_univ _) h1`.
+
+Establish `e2 : ∀ y : GA D (D.sp.Y 0), (gaL (Yc D 0) (R.βY 0) (R.dat0 R.triv) R.eG fun g => star (a (σ.symm g))) ((S : MMap (MP R)) v₀) y = (S : MMap (MP R)) v₀ y`. Introduce `y`. Rewrite using `[hsum]`. Establish `hB2` using `hB.2 k hkK (S : MMap (MP R)) S.2 v₀ y`. Rewrite `hB2` using `[hrk, map_one σ]`.
+
+Use `hB2.symm.trans ?_` and prove the remaining obligations. Establish `hK2` using `(Formalism.L2.SG.Closed.level_subgroup_properties X).1 k hk`. Take `⟨hkJ, hkχ⟩` from `hA k hK2.1`. Establish `hχ1 : chiR R F (kap X h t k) = 1` using `hkχ.trans (by rw [hK2.2, star_one])`. Use `((hmult _ S.2).lev v₀ _ hkJ y).trans ?_` and prove the remaining obligations.
+
+Rewrite using `[hχ1, one_mul]`. Establish `e3 : ((star (X.B.R (1, k) (star ((J S : conjRows X) : L2X X))) : L2X X) : X.B.I.GA → ℂ) =ᵐ[muX X] (((J S : conjRows X) : L2X X) : X.B.I.GA → ℂ)`. Rewrite using `[← e1]`. Conclude with `hI.trans (Filter.EventuallyEq.trans (Filter.Eventually.of_forall fun x => e2 _) (hJ S).1.symm)`. Establish `e4` using `congrArg star (Lp.ext e3)`.
+
+Rewrite `e4` using `[star_star]`. Then use the resulting hypothesis. Establish `key : ∀ S : MultR R F, ((J ⟨postOn (MP R) R.e0 S, hle (goodProjector_maps_rows_into_goodRows hl hi hC S.2)⟩ : conjRows X) : L2X X) = star (G.Rg (star ((J S : conjRows X) : L2X X)))`. Introduce `S`. Establish `hexp` using `GlobalTheory.Mem.GoodExpand.rg_expand D X G red s0 hB.1 hs0' _ (hinv S)`. Establish `hI` using `GlobalTheory.Mem.SRe.evalAct_intertwines D G' Pl0 T A Ks R F X h t v₀ σ red hB (S : MMap (MP R)) S.2 ((J S : conjRows X) : L2X X) (hJ S).1 (hGQ _ S.2) (fun γ => D.ntypes.e0.coeff γ) s0 hs0'`.
+
+Establish `e1 : star (G.Rg (star ((J S : conjRows X) : L2X X))) = ∑ γ, star (D.ntypes.e0.coeff γ) • star (X.B.R (1, s0 γ) (star ((J S : conjRows X) : L2X X)))`. Rewrite using `[hexp]`. Express the relevant statement in the definitionally equal form `conjL (muX X) _ = _`. Rewrite using `[map_sum]`. Use `Finset.sum_congr rfl fun γ _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[LinearIsometryEquiv.map_smulₛₗ, conjL_apply, starRingEnd_apply]`. Establish `e2 : (gaL (Yc D 0) (R.βY 0) (R.dat0 R.triv) R.eG fun g => star (D.ntypes.e0.coeff (σ.symm g))) = R.e0`. Unfold `RealDat.e0`. Use `congr 1`. Use function extensionality and compare the values at `g`.
+
+Rewrite using `[hC, MulEquiv.apply_symm_apply]`. Rewrite using `[e1]`. Apply `Lp.ext` to reduce the goal to its premises. Use `(hJ _).1.trans (Filter.EventuallyEq.trans (Filter.Eventually.of_forall fun x => ?_) hI.symm)` and prove the remaining obligations. Rewrite using `[e2]`.
+
+Both sides reduce to the same expression. Establish `hEPS : ∀ S : MultR R F, (S : MMap (MP R)) ∈ EP R F ↔ postOn (MP R) R.e0 S = S`. Introduce `S`. Prove the components needed by the constructor for the conclusion. Introduce `hS`.
+
+Conclude with `sub_eq_zero.1 (LinearMap.mem_ker.1 hS.2)`. Introduce `e`. Conclude with `⟨S.2, LinearMap.mem_ker.2 (sub_eq_zero.2 e)⟩`. Establish `hconj : ∀ Fx : L2X X, Fx ∈ EEC X G → Fx ∈ conjRows X` using `fun Fx hF => (Submodule.mem_inf.1 hF).1`. Set `L0 : EP R F →ₗ[ℂ] L2X X` to `(conjRows X).subtype ∘ₗ (J : MultR R F →ₗ[ℂ] conjRows X) ∘ₗ Submodule.inclusion hle`.
+
+Establish `hL0 : ∀ S : EP R F, L0 S ∈ EEC X G`. Introduce `S`. Establish `hS1 : postOn (MP R) R.e0 (Submodule.inclusion hle S : MultR R F) = (Submodule.inclusion hle S : MultR R F)` using `(hEPS _).1 S.2`. Establish `k1` using `key (Submodule.inclusion hle S)`. Establish `e : (⟨postOn (MP R) R.e0 (Submodule.inclusion hle S : MultR R F), hle (goodProjector_maps_rows_into_goodRows hl hi hC (Submodule.inclusion hle S).2)⟩ : MultR R F) = Submodule.inclusion hle S` using `Subtype.ext hS1`.
+
+Rewrite `k1` using `[e]`. Establish `k2 : G.Rg (star ((J (Submodule.inclusion hle S) : conjRows X) : L2X X)) = star ((J (Submodule.inclusion hle S) : conjRows X) : L2X X)`. Establish `k3` using `congrArg star k1`. Rewrite `k3` using `[star_star]`. Conclude with `k3.symm`.
+
+Use `Submodule.mem_inf.2 ⟨(J (Submodule.inclusion hle S)).2, LinearMap.mem_ker.2 ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `G.Rg (star ((J (Submodule.inclusion hle S) : conjRows X) : L2X X)) - star ((J (Submodule.inclusion hle S) : conjRows X) : L2X X) = 0`. Rewrite using `[k2, sub_self]`. Set `L : EP R F →ₗ[ℂ] EEC X G` to `L0.codRestrict (EEC X G) hL0`. Establish `hLv : ∀ S : EP R F, ((L S : EEC X G) : L2X X) = ((J (Submodule.inclusion hle S) : conjRows X) : L2X X)` using `fun S => rfl`.
+
+Establish `hinj : Function.Injective L`. Introduce `x y hxy`. Establish `e1 : ((L x : EEC X G) : L2X X) = ((L y : EEC X G) : L2X X)` using `by rw [hxy]`. Rewrite `e1` using `[hLv, hLv]`. Conclude with `Submodule.inclusion_injective hle (J.injective (Subtype.ext e1))`.
+
+Establish `hsurj : Function.Surjective L`. Introduce `Fx`. Set `F' : conjRows X` to `⟨(Fx : L2X X), hconj _ Fx.2⟩`. Set `S : MultR R F` to `J.symm F'`. Establish `hJS : ((J S : conjRows X) : L2X X) = (Fx : L2X X)` using `by show ((J (J.symm F') : conjRows X) : L2X X) = _`.
+
+Rewrite using `[LinearEquiv.apply_symm_apply]`. Establish `hRg : G.Rg (star (Fx : L2X X)) = star (Fx : L2X X)`. Use `LinearMap.mem_ker.1 (Submodule.mem_inf.1 Fx.2).2` as an intermediate fact. Conclude with `sub_eq_zero.1 this`. Establish `k1` using `key S`.
+
+Rewrite `k1` using `[hJS, hRg, star_star, ← hJS]`. Establish `hfix : postOn (MP R) R.e0 S = S` using `congrArg Subtype.val (J.injective (Subtype.ext k1))`. Use `⟨⟨(S : MMap (MP R)), (hEPS S).2 hfix⟩, Subtype.ext ?_⟩` and prove the remaining obligations. Rewrite using `[hLv]`. Conclude with `hJS`.
+
+Set `j : EP R F ≃ₗ[ℂ] EEC X G` to `LinearEquiv.ofBijective L ⟨hinj, hsurj⟩`. Establish `hj : ∀ S : EP R F, ((j S : EEC X G) : L2X X) = ((J (Submodule.inclusion hle S) : conjRows X) : L2X X)` using `fun S => rfl`. Use `⟨⟨j, fun S => ?_⟩, ⟨v₀, hv, j, fun S => ?_⟩⟩` and prove the remaining obligations. Rewrite using `[hj]`. Conclude with `hJ _`.
+
+Rewrite using `[hj]`. Conclude with `hJ _`.
+-/
 theorem evalOn_good : ∀ (D : D7) (G' : Type) [Group G'] [Fintype G'] (Pl0 T : Type) (A : FamIn D.what₂.LL G' Pl0 T D.R.m) (Ks : Type) [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] (R : RealDat D A Ks) (F : Face D A) (X : HidaSetting D) (h : X.B.I = Formalism.L2.SG.InstExistsPf.instOf D) (G : GoodOp X) (t : GA D (D.sp.Y 0)) (v₀ : (MP R).Vec) (c : ℝ), R.toLevCh.Is A.μ0 → R.models_inf → (∀ τ, ‖(v₀ τ : (MP R).H τ)‖ = 1) → SeeAt R F X h t → EvalOn R X h t v₀ c (MultR R F) (conjRows X) → EvalOn R X h t v₀ c (EP R F) (EEC X G) ∧ EvalTieT (MP R) R.ν0 R.fd0 (EP R F) X G (iotaX X h).toMulEquiv t c := by
   intro D G' _ _ Pl0 T A Ks _ _ _ R F X h G t v₀ c hl hi hv hsee hJe
   obtain ⟨σ, red, hA, hB, hC⟩ := hsee.mat

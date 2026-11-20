@@ -4,6 +4,9 @@ import ReciprocityTheory.ReductiveGroups.DiscreteSeries.FormalDegree.CoefLoc
 
 namespace GlobalTheory.Sloc.CoefWeighted
 
+/- English proof (translation)
+The claim follows from `ReciprocityTheory.ChartRestriction.DS.coefWeightedLoc`.
+-/
 theorem coefWeightedLoc_uncond : Formalism.L2.SG.SplitPrimeNormLemmas.CoefWeightedLoc :=
   ReciprocityTheory.ChartRestriction.DS.coefWeightedLoc
 

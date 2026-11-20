@@ -5,9 +5,15 @@ import Development.WeilBound.RepresentationTheoryGL.GenericUnitaryGL.Complementa
 
 namespace PositivityTheory.Groth
 
+/- English proof (translation)
+The claim follows from `grothendieckRingPolynomial_of_seg PositivityTheory.RgGu.segmentRepresentation`.
+-/
 theorem grothendieckRingPolynomial_holds : GlobalTheory.Published.GrothendieckRingPolynomial :=
   grothendieckRingPolynomial_of_seg PositivityTheory.RgGu.segmentRepresentation
 
+/- English proof (translation)
+The claim follows from `PositivityTheory.Exh.lUnlinkedIrr_of_seg PositivityTheory.RgGu.segmentRepresentation k`.
+-/
 theorem lUnlinkedIrr_holds (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] :
     GlobalTheory.BZSeg.LUnlinkedIrr k := PositivityTheory.Exh.lUnlinkedIrr_of_seg PositivityTheory.RgGu.segmentRepresentation k
 

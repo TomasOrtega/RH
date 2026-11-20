@@ -72,6 +72,43 @@ namespace GlobalTheory.Obs
 
 open Opposite Limits GlobalTheory.LiftSys.Glue GlobalTheory.Obs.GluePair
 
+/- English proof (translation)
+Introduce `R R₀ _ _ I hI π hπ hk X₀ Z₀ X Z s₀ t₀ s t i k hi hkk S S' P P' f₀ h l hL hN`. Establish `hsurU : ∀ W, Function.Surjective (spMap (S'.p W))` using `fun W ↦ spMap_surjective _ (S'.surj W) fun b hb ↦ by`. Establish `hb'` using `(S'.ker W b).1 hb`. Establish `: b * b ∈ (I.map (algebraMap R (S'.F.obj W))) ^ 2`. Rewrite using `[pow_two]`.
+
+Conclude with `Ideal.mul_mem_mul hb' hb'`. Rewrite `this` using `[map_sq hI, Ideal.zero_eq_bot, Ideal.mem_bot]`. Then use the resulting hypothesis. Establish `hπs : Function.Surjective (spMap π)` using `spMap_surjective π hπ fun a ha ↦ by`. Establish `ha' : a ∈ I` using `hk ▸ RingHom.mem_ker.2 ha`. Establish `: a * a ∈ I ^ 2` using `by rw [pow_two]; exact Ideal.mul_mem_mul ha' ha'`.
+
+Rewrite `this` using `[hI, Ideal.zero_eq_bot, Ideal.mem_bot]`. Then use the resulting hypothesis. Use `haveI : IsClosedImmersion (spMap π) := IsClosedImmersion.spec_of_surjective (CommRingCat.ofHom π) hπ`. Use `haveI hkc : IsClosedImmersion k := MorphismProperty.of_isPullback (P := @IsClosedImmersion) hkk.flip inferInstance`. Establish `hinj : Function.Injective k` using `k.isClosedEmbedding.injective`. Establish `hksurj : Function.Surjective k` using `(MorphismProperty.of_isPullback (P := @AlgebraicGeometry.Surjective) hkk.flip ⟨hπs⟩).surj`.
+
+Establish `hrng : ∀ (W : Z₀.affineOpens) (w : Sp (S'.F.obj (op W))), ∃ z₀ ∈ W.1, P'.y (op W) w = k z₀`. Introduce `W w`. Take `⟨v, rfl⟩` from `hsurU (op W) w`. Use `⟨affPt t₀ W v, W.2.range_fromSpec.le ⟨v, rfl⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[← Scheme.Hom.comp_apply, P'.red (op W), Scheme.Hom.comp_apply]`.
+
+Establish `hcov : ∀ (W : Z₀.affineOpens) (z₀ : Z₀), z₀ ∈ W.1 → ∃ w : Sp (S'.F.obj (op W)), P'.y (op W) w = k z₀`. Introduce `W z₀ hz`. Take `⟨v, hv⟩ : z₀ ∈ Set.range (affPt t₀ W)` from `W.2.range_fromSpec.ge hz`. Use `⟨spMap (S'.p (op W)) v, ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `(spMap (S'.p (op W)) ≫ P'.y (op W)) v = k z₀`.
+
+Rewrite using `[P'.red (op W), Scheme.Hom.comp_apply]`. Conclude with `congrArg k hv`. Establish `hpair : ∀ (z₀ : Z₀) (U : X₀.affineOpens), f₀ z₀ ∈ U.1 → ∀ V : Z₀.Opens, z₀ ∈ V → ∃ T : Pair f₀, z₀ ∈ T.1.1.1 ∧ T.1.2 = U ∧ T.1.1.1 ≤ V`. Introduce `z₀ U hU V hV`. Take `⟨W, hW, hWle⟩` from `exists_affine (show z₀ ∈ V ⊓ f₀ ⁻¹ᵁ U.1 from ⟨hV, hU⟩)`.
+
+Conclude with `⟨⟨(W, U), hWle.trans inf_le_right⟩, hW, rfl, hWle.trans inf_le_left⟩`. Establish `hpt : ∀ z₀ : Z₀, ∃ T : Pair f₀, z₀ ∈ T.1.1.1`. Introduce `z₀`. Take `⟨U, hU, -⟩` from `exists_affine (show f₀ z₀ ∈ (⊤ : X₀.Opens) from trivial)`. Take `⟨T, hT, -, -⟩` from `hpair z₀ U hU ⊤ trivial`.
+
+Conclude with `⟨T, hT⟩`. Establish `hc : ∀ z : Z, ∃ (T : Pair f₀) (w : Sp (S'.F.obj (op T.1.1))), P'.y (op T.1.1) w = z`. Introduce `z`. Take `⟨z₀, rfl⟩` from `hksurj z`. Take `⟨T, hT⟩` from `hpt z₀`.
+
+Take `⟨w, hw⟩` from `hcov T.1.1 z₀ hT`. Conclude with `⟨T, w, hw⟩`. Establish `hd : ∀ (T₁ T₂ : Pair f₀) (a : Sp (S'.F.obj (op T₁.1.1))) (b : Sp (S'.F.obj (op T₂.1.1))), P'.y (op T₁.1.1) a = P'.y (op T₂.1.1) b → ∃ (T₃ : Pair f₀) (_ : T₃ ≤ T₁) (_ : T₃ ≤ T₂) (c : Sp (S'.F.obj (op T₃.1.1))), P'.y (op T₃.1.1) c = P'.y (op T₁.1.1) a`. Introduce `T₁ T₂ a b hab`. Take `⟨z₀, h₁, ha⟩` from `hrng T₁.1.1 a`.
+
+Take `⟨z₁, h₂, hb⟩` from `hrng T₂.1.1 b`. Establish `e : z₀ = z₁` using `hinj (ha.symm.trans (hab.trans hb))`. Substitute `e` using the available equality. Establish `hU₁ : f₀ z₀ ∈ T₁.1.2.1` using `T₁.2 h₁`. Establish `hU₂ : f₀ z₀ ∈ T₂.1.2.1` using `T₂.2 h₂`.
+
+Take `⟨U₃, hU₃, hU₃le⟩` from `exists_affine (show f₀ z₀ ∈ T₁.1.2.1 ⊓ T₂.1.2.1 from ⟨hU₁, hU₂⟩)`. Take `⟨T₃, hT₃, e₃, hT₃le⟩` from `hpair z₀ U₃ hU₃ (T₁.1.1.1 ⊓ T₂.1.1.1) ⟨h₁, h₂⟩`. Substitute `e₃` using the available equality. Take `⟨c, hc'⟩` from `hcov T₃.1.1 z₀ hT₃`. Use `⟨T₃, ?_, ?_, c, hc'.trans ha.symm⟩` and prove the remaining obligations.
+
+Conclude with `Subtype.coe_le_coe.1 (Prod.le_def.2 ⟨(le_inf_iff.1 hT₃le).1, (le_inf_iff.1 hU₃le).1⟩)`. Conclude with `Subtype.coe_le_coe.1 (Prod.le_def.2 ⟨(le_inf_iff.1 hT₃le).2, (le_inf_iff.1 hU₃le).2⟩)`. Use `letI := dir P' f₀ hc hd`. Set `𝒰` to `cov P' f₀ hc`. Set `lr : ∀ T : Pair f₀, S.F.obj (op T.1.2) →+* S'.F.obj (op T.1.1)` to `fun T ↦ (l (op T)).toRingHom`.
+
+Set `g : ∀ T : 𝒰.I₀, 𝒰.X T ⟶ X` to `fun T ↦ spMap (lr T) ≫ P.y (op T.1.2)`. Establish `hg : ∀ {T₁ T₂ : 𝒰.I₀} (a : T₁ ⟶ T₂), 𝒰.trans a ≫ g T₂ = g T₁`. Introduce `T₁ T₂ a`. Express the relevant statement in the definitionally equal form `spMap (mp S'.F (fh a) : S'.F.obj (op T₂.1.1) →+* S'.F.obj (op T₁.1.1)) ≫ spMap (lr T₂) ≫ P.y (op T₂.1.2) = _`. Rewrite using `[← Category.assoc, ← spMap_comp₂]`.
+
+Establish `e : (mp S'.F (fh a) : S'.F.obj (op T₂.1.1) →+* S'.F.obj (op T₁.1.1)).comp (lr T₂) = (lr T₁).comp (mp S.F (homOfLE (Pair.le_snd (leOfHom a))).op : S.F.obj (op T₂.1.2) →+* S.F.obj (op T₁.1.2))` using `RingHom.ext fun b ↦ hN a.op b`. Rewrite using `[e, spMap_comp₂, Category.assoc, P.nat]`. Use `⟨𝒰.glueMorphismsOfLocallyDirected g hg, 𝒰.hom_ext _ _ fun T ↦ ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[𝒰.map_glueMorphismsOfLocallyDirected_assoc g hg T]`. Express the relevant statement in the definitionally equal form `(spMap (lr T) ≫ P.y (op T.1.2)) ≫ s = P'.y (op T.1.1) ≫ t`.
+
+Rewrite using `[Category.assoc, P.base, P'.base, ← spMap_comp₂]`. Conclude with `congrArg spMap (RingHom.ext fun r ↦ (l (op T)).commutes r)`. Set `𝒱 : Z₀.OpenCover` to `Scheme.Cover.mkOfCovers (Pair f₀) (fun T ↦ Sp (GlobalTheory.CechDR.Sec t₀ T.1.1.1)) (fun T ↦ affPt t₀ T.1.1) (fun z ↦ by`. Take `⟨T, hT⟩` from `hpt z`. Take `⟨w, hw⟩ : z ∈ Set.range (affPt t₀ T.1.1)` from `T.1.1.2.range_fromSpec.ge hT`.
+
+Conclude with `⟨T, w, hw⟩)`. Use the proof step `(fun T ↦ IsAffineOpen.isOpenImmersion_fromSpec T.1.1.2)`. Use `𝒱.hom_ext _ _ fun T ↦ ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `affPt t₀ T.1.1 ≫ k ≫ _ = affPt t₀ T.1.1 ≫ f₀ ≫ i`. Rewrite using `[← Category.assoc, show affPt t₀ T.1.1 ≫ k = _ from (P'.red (op T.1.1)).symm, Category.assoc]`.
+
+Express the relevant statement in the definitionally equal form `spMap (S'.p (op T.1.1)) ≫ 𝒰.f T ≫ _ = _`. Rewrite using `[𝒰.map_glueMorphismsOfLocallyDirected g hg T]`. Express the relevant statement in the definitionally equal form `spMap (S'.p (op T.1.1)) ≫ spMap (lr T) ≫ P.y (op T.1.2) = _`. Rewrite using `[← Category.assoc, ← spMap_comp₂]`. Establish `e : (S'.p (op T.1.1)).comp (lr T) = (GlobalTheory.CechDR.secPull s₀ t₀ T).comp (S.p (op T.1.2))` using `RingHom.ext fun b ↦ hL (op T) b`.
+
+Rewrite using `[e, spMap_comp₂, Category.assoc, show spMap (S.p (op T.1.2)) ≫ P.y (op T.1.2) = affPt s₀ T.1.2 ≫ i from P.red _, ← Category.assoc, GlobalTheory.CechDR.secPull_affPt (φ := f₀) s₀ t₀ T, Category.assoc]`.
+-/
 theorem pairs_glue : ∀ (R R₀ : Type) [CommRing R] [CommRing R₀] (I : Ideal R) (hI : I ^ 2 = 0) (π : R →+* R₀) (hπ : Function.Surjective π) (hk : RingHom.ker π = I) (X₀ Z₀ X Z : Scheme.{0}) (s₀ : X₀ ⟶ Sp R₀) (t₀ : Z₀ ⟶ Sp R₀) (s : X ⟶ Sp R) (t : Z ⟶ Sp R) (i : X₀ ⟶ X) (k : Z₀ ⟶ Z) (hi : IsPullback i s₀ s (spMap π)) (hkk : IsPullback k t₀ t (spMap π)) (S : Sys I π s₀) (S' : Sys I π t₀) (P : S.Presents s i) (P' : S'.Presents t k) (f₀ : Z₀ ⟶ X₀) (h : f₀ ≫ s₀ = t₀ ≫ spMap (RingHom.id R₀)) (l : ∀ T : (Pair f₀)ᵒᵖ, (ofSys S).B ((pairPull h).G.obj T) →ₐ[R] (pairPre S' f₀).B T), (ofSys S).IsLift (pairPre S' f₀) (pairPull h) l → (ofSys S).IsNat (pairPre S' f₀) (pairPull h) l → ∃ f : Z ⟶ X, f ≫ s = t ∧ k ≫ f = f₀ ≫ i := by
   intro R R₀ _ _ I hI π hπ hk X₀ Z₀ X Z s₀ t₀ s t i k hi hkk S S' P P' f₀ h l hL hN
   have hsurU : ∀ W, Function.Surjective (spMap (S'.p W)) := fun W ↦

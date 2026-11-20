@@ -16,6 +16,17 @@ noncomputable section
 
 namespace GlobalTheory.CompanionTheory.ValZeroNs
 
+/- English proof (translation)
+Introduce `K _ _ h2 c v L hok hsp g κ`. Establish `hstd : IsStd (GP.psiF v)` using `GlobalTheory.CompanionTheory.StdCharQ.stdChar v`. Establish `hχc : Continuous ((GP.psiF v)⁻¹ : AddChar (Qv v) Circle)`. Establish `: (((GP.psiF v)⁻¹ : AddChar (Qv v) Circle) : Qv v → Circle) = fun x => (GP.psiF v x)⁻¹`. Use function extensionality and compare the values at `x`.
+
+Conclude with `AddChar.inv_apply' _ _`. Rewrite using `[this]`. Conclude with `hstd.1.inv`. Establish `hχ1 : (GP.psiF v)⁻¹ ≠ 1` using `inv_ne_one.mpr hstd.2.1`. Consider the cases of `L with`.
+
+Consider the case `@sp w₁ w₂ i₁ i₂ Φ => exact absurd trivial hsp`. Consider the case `@ns w i σ η Φ => haveI := i`. Take `⟨hU, hσ, hη, hΦ⟩` from `hok`. Establish `hN : ((nv v κ : (Qv v)ˣ) : Qv v) = Algebra.norm (Qv v) ((atW w κ : (Kv K w)ˣ) : Kv K w)`. Establish `e1 : ((nv v κ : (Qv v)ˣ) : Qv v) = (((Units.map (Algebra.norm ℚ : K →* ℚ) κ : ℚˣ) : ℚ) : Qv v)` using `GlobalTheory.T.local_component_rational_idele v _`.
+
+Establish `e2` using `GlobalTheory.T.local_norm_at_inert_place K h2 v w hU (κ : K)`. Rewrite using `[e1]`. Conclude with `e2.symm`. Establish `h` using `GlobalTheory.T.field_weil_action_diagonal (Qv v) _ hχc hχ1 (Kv K w) (GlobalTheory.CompanionTheory.QuadPlace.finrank_eq_two_of_ne_refl K h2 v w i σ hσ) (continuous_adicCompletionMap v w) σ hσ η hη _ Φ hΦ (atW w κ) (nv v κ) hN g (algebraMap K (Kv K w) 0)`. Establish `e0 : algebraMap K (Kv K w) 0 * ((atW w κ : (Kv K w)ˣ) : Kv K w) = algebraMap K (Kv K w) 0`.
+
+Rewrite using `[map_zero, zero_mul]`. Rewrite `h` using `[e0]`. Conclude with `h`.
+-/
 theorem val_zero_dg : ∀ (K : Type) [Field K] [NumberField K], Module.finrank ℚ K = 2 →
     ∀ (c : HeckeCharacter K) (v : Pl) (L : LM c v),
     L.ok → ¬ L.IsSp → ∀ (g : GL (Fin 2) (Qv v)) (κ : Kˣ),

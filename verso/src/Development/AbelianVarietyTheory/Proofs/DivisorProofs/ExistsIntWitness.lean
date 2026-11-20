@@ -9,6 +9,29 @@ open Formalism.L2.Host (atFin IsUnitAt)
 
 namespace GlobalTheory.GaussModulus
 
+/- English proof (translation)
+Establish `hnot : ¬ χ.LevelLe w (a - 1)` using `fun h => by`. Use `(hE (a - 1)).mp h` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish `hlev : χ.LevelLe w a` using `(hE a).mpr le_rfl`. Simplify using `only [Formalism.L2.Host.HChar.LevelLe, not_forall] at hnot`.
+
+Take `⟨x, hxu, hx1, hxχ⟩` from `hnot`. Establish `hxv : Valued.v (x : w.adicCompletion E) = 1` using `hxu`. Take `⟨y, hy⟩` from `exists_int_approx w hxv.le a`. Establish `hlt : WithZero.exp (-(a : ℤ)) < 1`. Rewrite using `[← WithZero.exp_zero, WithZero.exp_lt_exp]`.
+
+Use linear arithmetic over natural numbers and integers. Establish `hyv' : Valued.v (algebraMap E (w.adicCompletion E) (y : E)) = 1`. Rewrite using `[← hxv]`. Use `Valuation.map_eq_of_sub_lt _ ?_` and prove the remaining obligations. Rewrite using `[Valuation.map_sub_swap, hxv]`.
+
+Conclude with `lt_of_le_of_lt hy hlt`. Establish `hyv : w.valuation E (y : E) = 1` using `by rwa [← valued_algebraMap]`. Establish `hy0 : (y : E) ≠ 0`. Introduce `h`. Rewrite `hyv` using `[h, map_zero]`.
+
+Conclude with `zero_ne_one hyv`. Use `⟨y, Units.mk0 (y : E) hy0, rfl, ?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[← HeightOneSpectrum.valuation_eq_one_iff_notMem (K := E)]`. Conclude with `hyv`. Rewrite using `[← HeightOneSpectrum.intValuation_le_pow_iff_mem, ← HeightOneSpectrum.valuation_of_algebraMap (K := E), ← valued_algebraMap]`.
+
+Establish `e : algebraMap E (w.adicCompletion E) ((algebraMap (𝓞 E) E) (y - 1)) = (algebraMap E (w.adicCompletion E) (y : E) - (x : w.adicCompletion E)) + ((x : w.adicCompletion E) - 1)`. Simplify using the standard rewrite rules. Rewrite using `[e]`. Use `Valuation.map_add_le _ ?_ hx1` and prove the remaining obligations. Rewrite using `[Valuation.map_sub_swap]`.
+
+Use `hy.trans ?_` and prove the remaining obligations. Rewrite using `[WithZero.exp_le_exp]`. Use linear arithmetic over natural numbers and integers. Introduce `hχ`. Apply `hxχ` to reduce the goal to its premises.
+
+Use `set u : Eˣ := Units.mk0 (y : E) hy0 with hu`. Establish `hau : ((atFin w u : (w.adicCompletion E)ˣ) : w.adicCompletion E) = algebraMap E (w.adicCompletion E) (y : E)` using `rfl`. Establish `h1 : χ.loc w (x * (atFin w u)⁻¹) = 1`. Use `hlev _ ?_ ?_` and prove the remaining obligations. Use `show Valued.v (((x * (atFin w u)⁻¹ : (w.adicCompletion E)ˣ)) : w.adicCompletion E) = 1`.
+
+Rewrite using `[Units.val_mul, Units.val_inv_eq_inv_val, hau, map_mul, map_inv₀, hxv, hyv', inv_one, one_mul]`. Rewrite using `[Units.val_mul, Units.val_inv_eq_inv_val, hau]`. Establish `hne : algebraMap E (w.adicCompletion E) (y : E) ≠ 0`. Introduce `h`. Rewrite `hyv'` using `[h, map_zero]`.
+
+Conclude with `zero_ne_one hyv'`. Rewrite using `[show (x : w.adicCompletion E) * (algebraMap E (w.adicCompletion E) (y : E))⁻¹ - 1 = ((x : w.adicCompletion E) - algebraMap E (w.adicCompletion E) (y : E)) * (algebraMap E (w.adicCompletion E) (y : E))⁻¹ by field_simp]`. Rewrite using `[map_mul, map_inv₀, hyv', inv_one, mul_one]`. Conclude with `hy`. Rewrite `h1` using `[map_mul, map_inv, mul_inv_eq_one]`.
+
+Rewrite using `[h1]`. Conclude with `hχ`.
+-/
 theorem exists_int_witness {E : Type} [Field E] [NumberField E] (χ : HChar E) (w : HeightOneSpectrum (𝓞 E)) (a : ℕ)
     (ha : a ≠ 0) (hE : ExpAt χ w a) :
     ∃ (y : 𝓞 E) (u : Eˣ), (u : E) = y ∧ y ∉ w.asIdeal ∧ y - 1 ∈ w.asIdeal ^ (a - 1) ∧ χ.locK w u ≠ 1 := by

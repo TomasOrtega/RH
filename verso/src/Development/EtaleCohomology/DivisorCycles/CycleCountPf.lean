@@ -15,6 +15,9 @@ def FixScal : Prop := ∀ (C : Type) [Field C] [IsAlgClosed C] [CharZero C] (N n
   (∀ j, ∃ v : Fin N → C, v ≠ 0 ∧ y *ᵥ v = l j • v ∧ ∀ k, ¬ π.SameCycle j k → p k *ᵥ v = 0) →
   ∀ i, π i = i → ∃ c : C, y * p i = c • p i
 
+/- English proof (translation)
+Introduce `C _ _ _ N n p y π hp hy hyp hdeg hd`. Take `⟨l, hl, hr⟩` from `h1 C N n p y π hp hy hyp hd`. Conclude with `⟨⟨l, hl, fun j => (hr j).1⟩, h2 C N n p y π l hp hyp hdeg hd hl (fun j => (hr j).2)⟩`.
+-/
 theorem CycleCount_of (h1 : CycSpec) (h2 : FixScal) : CycleCount := by
   intro C _ _ _ N n p y π hp hy hyp hdeg hd
   obtain ⟨l, hl, hr⟩ := h1 C N n p y π hp hy hyp hd

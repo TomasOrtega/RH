@@ -34,10 +34,16 @@ def partialTerm (c : HeckeCharacter ℚ) (S : Finset Pl) (s : ℂ) : Ideal (𝓞
       rw [if_neg hIJ, if_neg hI, zero_mul]
 
 open Classical in
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem partialTerm_apply (c : HeckeCharacter ℚ) (S : Finset Pl) (s : ℂ) (I : Ideal (𝓞 ℚ)) :
     partialTerm c S s I = if ∀ v ∈ S, ¬ v.asIdeal ∣ I then c.coeffTerm s I else 0 :=
   rfl
 
+/- English proof (translation)
+Rewrite using `[partialTerm_apply]`. Use `split_ifs`. Conclude with `le_rfl`. Simplify using the standard rewrite rules.
+-/
 theorem norm_partialTerm_le (c : HeckeCharacter ℚ) (S : Finset Pl) (s : ℂ) (I : Ideal (𝓞 ℚ)) :
     ‖partialTerm c S s I‖ ≤ ‖c.coeffTerm s I‖ := by
   rw [partialTerm_apply]
@@ -45,12 +51,20 @@ theorem norm_partialTerm_le (c : HeckeCharacter ℚ) (S : Finset Pl) (s : ℂ) (
   · exact le_rfl
   · simp
 
+/- English proof (translation)
+Establish `h` using `norm_partialTerm_le c S s ⊥`. Rewrite `h` using `[c.coeffTerm_bot, norm_zero]`. Conclude with `norm_le_zero_iff.1 h`.
+-/
 theorem partialTerm_bot (c : HeckeCharacter ℚ) (S : Finset Pl) (s : ℂ) :
     partialTerm c S s ⊥ = 0 := by
   have h := norm_partialTerm_le c S s ⊥
   rw [c.coeffTerm_bot, norm_zero] at h
   exact norm_le_zero_iff.1 h
 
+/- English proof (translation)
+Rewrite using `[partialLFunction]`. Use `tsum_congr fun I => ?_` and prove the remaining obligations. Rewrite using `[partialTerm_apply, HeckeCharacter.coeffTerm_apply, Complex.cpow_neg, div_eq_mul_inv]`. Use `split_ifs`. Both sides reduce to the same expression.
+
+Simplify using the standard rewrite rules.
+-/
 theorem tsum_partialTerm (c : HeckeCharacter ℚ) (S : Finset Pl) (s : ℂ) :
     ∑' I, partialTerm c S s I = partialLFunction c S s := by
   rw [partialLFunction]
@@ -60,10 +74,16 @@ theorem tsum_partialTerm (c : HeckeCharacter ℚ) (S : Finset Pl) (s : ℂ) :
   · rfl
   · simp
 
+/- English proof (translation)
+Rewrite using `[valued_eq_exp_neg_ord (unifUnit (Qv v)).ne_zero, ord_unifUnit]`.
+-/
 theorem valued_unifUnit (v : Pl) :
     Valued.v ((unifUnit (Qv v) : (Qv v)ˣ) : Qv v) = WithZero.exp (-1 : ℤ) := by
   rw [valued_eq_exp_neg_ord (unifUnit (Qv v)).ne_zero, ord_unifUnit]
 
+/- English proof (translation)
+Establish `hnd : ¬ v.asIdeal ∣ c.conductor` using `(c.isUnramifiedChar_localChar_iff v).1 hu`. Establish `hS : ∀ w ∈ S, ¬ w.asIdeal ∣ v.asIdeal` using `fun w hw h => hv (heightOneSpectrum_eq_of_dvd h ▸ hw)`. Rewrite using `[localLFactor_of_isUnramified hu, partialTerm_apply, if_pos hS, HeckeCharacter.coeffTerm_apply, c.coeff_asIdeal_eq_toIdele hnd (valued_unifUnit v), residueCard_adicCompletion, Complex.cpow_neg, div_eq_mul_inv]`. Both sides reduce to the same expression.
+-/
 theorem localLFactor_eq (c : HeckeCharacter ℚ) (S : Finset Pl) (s : ℂ) {v : Pl} (hv : v ∉ S)
     (hu : IsUnramifiedChar (localChar c v)) :
     localLFactor (localChar c v) s = (1 - partialTerm c S s v.asIdeal)⁻¹ := by
@@ -75,6 +95,13 @@ theorem localLFactor_eq (c : HeckeCharacter ℚ) (S : Finset Pl) (s : ℂ) {v : 
     residueCard_adicCompletion, Complex.cpow_neg, div_eq_mul_inv]
   rfl
 
+/- English proof (translation)
+Establish `hsum : Summable fun I => ‖partialTerm c S s I‖` using `(c.summable_norm_coeffTerm hs).of_nonneg_of_le (fun _ => norm_nonneg _) (norm_partialTerm_le c S s)`. Establish `h` using `hasProd_euler (partialTerm c S s) hsum (partialTerm_bot c S s)`. Rewrite `h` using `[tsum_partialTerm]`. Rewrite `h` using `[← hasProd_subtype_iff_of_mulSupport_subset (s := {v : Pl | v ∉ S})]`. Establish `hfun : (fun v : {v : Pl // v ∉ S} => localLFactor (localChar c v.1) s) = fun v : {v : Pl // v ∉ S} => (1 - partialTerm c S s v.1.asIdeal)⁻¹`.
+
+Use function extensionality and compare the values at `fun v => localLFactor_eq c S s v.2 (hun v.1 v.2)`. Rewrite using `[hfun]`. Conclude with `h`. Introduce `v hv`. Assume the negation of the conclusion as `hvS`.
+
+Establish `hvS' : v ∈ S` using `by simpa using hvS`. Apply `hv` to reduce the goal to its premises. Establish `h0 : partialTerm c S s v.asIdeal = 0`. Rewrite using `[partialTerm_apply, if_neg fun h => h v hvS' dvd_rfl]`. Simplify using `[h0]`.
+-/
 theorem hasProd_partial (c : HeckeCharacter ℚ) (S : Finset Pl) {s : ℂ} (hs : 1 < s.re)
     (hun : ∀ v ∉ S, IsUnramifiedChar (localChar c v)) :
     HasProd (fun v : {v : Pl // v ∉ S} => localLFactor (localChar c v.1) s)
@@ -98,6 +125,21 @@ theorem hasProd_partial (c : HeckeCharacter ℚ) (S : Finset Pl) {s : ℂ} (hs :
       rw [partialTerm_apply, if_neg fun h => h v hvS' dvd_rfl]
     simp [h0]
 
+/- English proof (translation)
+Establish `hq2 : (2 : ℝ) ≤ (Ideal.absNorm v.asIdeal : ℝ)`. Rewrite using `[← residueCard_adicCompletion]`. Conclude with `one_lt_residueCard (K := Qv v)` after adjusting the coercions. Establish `hqpos : 0 < Ideal.absNorm v.asIdeal`. Establish `: (0 : ℝ) < (Ideal.absNorm v.asIdeal : ℝ)` using `by linarith`.
+
+Conclude with `this` after adjusting the coercions. Use `set t : ℝ := ((Ideal.absNorm v.asIdeal : ℝ) ^ s.re)⁻¹ with ht`. Establish `htpos : 0 < t` using `inv_pos.2 (Real.rpow_pos_of_pos (by linarith) _)`. Distinguish the cases in `hu : IsUnramifiedChar ν`. Rewrite using `[localLFactor_of_isUnramified hu, residueCard_adicCompletion] set x : ℂ := ((ν (unifUnit (Qv v)) : ℂˣ) : ℂ) * (Ideal.absNorm v.asIdeal : ℂ) ^ (-s) with hx`.
+
+Establish `hxn : ‖x‖ = t`. Rewrite using `[hx, norm_mul, hν.2, one_mul, Complex.norm_natCast_cpow_of_pos hqpos, Complex.neg_re, Real.rpow_neg (by linarith)]`. Establish `hthalf : t ≤ 1 / 2`. Rewrite using `[ht, one_div]`. Use `inv_anti₀ (by norm_num) ?_` and prove the remaining obligations.
+
+Combine the equalities or inequalities in the displayed calculation. Establish `h1 : (1 : ℝ) / 2 ≤ ‖1 - x‖`. Use `norm_sub_norm_le (1 : ℂ) x` as an intermediate fact. Rewrite `this` using `[norm_one, hxn]`. Combine the linear equalities and inequalities to obtain the conclusion.
+
+Establish `hne : 1 - x ≠ 0`. Introduce `h`. Rewrite `h1` using `[h, norm_zero]`. Evaluate the numerical expressions using `at h1`. Establish `he : (1 - x)⁻¹ - 1 = x * (1 - x)⁻¹`.
+
+Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[he, norm_mul, norm_inv, hxn, mul_comm]`. Use `mul_le_mul_of_nonneg_right ?_ htpos.le` and prove the remaining obligations. Rewrite using `[inv_le_comm₀ (by linarith) (by norm_num)]`.
+
+Combine the linear equalities and inequalities to obtain the conclusion. Rewrite using `[localLFactor_of_not_isUnramified hu, sub_self, norm_zero]`. Check the signs of the components of the expression.
+-/
 theorem norm_localLFactor_sub_one_le {s : ℂ} (hs : 1 < s.re) {v : Pl} {ν : (Qv v)ˣ →* ℂˣ}
     (hν : IsUnit1 ν) :
     ‖localLFactor ν s - 1‖ ≤ 2 * ((Ideal.absNorm v.asIdeal : ℝ) ^ s.re)⁻¹ := by
@@ -139,6 +181,9 @@ theorem norm_localLFactor_sub_one_le {s : ℂ} (hs : 1 < s.re) {v : Pl} {ν : (Q
   · rw [localLFactor_of_not_isUnramified hu, sub_self, norm_zero]
     positivity
 
+/- English proof (translation)
+Establish `hinj : Function.Injective fun v : {v : Pl // v ∉ S} => v.1.asIdeal` using `fun v w h => Subtype.ext (HeightOneSpectrum.ext h)`. Establish `hb : Summable fun v : {v : Pl // v ∉ S} => 2 * ((Ideal.absNorm v.1.asIdeal : ℝ) ^ s.re)⁻¹` using `((summable_absNorm_rpow_inv (K := ℚ) hs).comp_injective hinj).mul_left 2`. Establish `hf : Summable fun v : {v : Pl // v ∉ S} => localLFactor (ν v.1) s - 1` using `Summable.of_norm_bounded hb fun v => norm_localLFactor_sub_one_le hs (hν v.1)`. Simplify using `using Complex.multipliable_one_add_of_summable hf`.
+-/
 theorem multipliable_local (S : Finset Pl) {s : ℂ} (hs : 1 < s.re) (ν : ∀ v : Pl, (Qv v)ˣ →* ℂˣ)
     (hν : ∀ v, IsUnit1 (ν v)) :
     Multipliable fun v : {v : Pl // v ∉ S} => localLFactor (ν v.1) s := by
@@ -151,6 +196,9 @@ theorem multipliable_local (S : Finset Pl) {s : ℂ} (hs : 1 < s.re) (ν : ∀ v
     Summable.of_norm_bounded hb fun v => norm_localLFactor_sub_one_le hs (hν v.1)
   simpa using Complex.multipliable_one_add_of_summable hf
 
+/- English proof (translation)
+Introduce `S s hs`. Use `⟨fun c hc => ⟨fun v hv => ?_, hasProd_partial c S hs hc⟩, fun ν hν => multipliable_local S hs ν hν⟩` and prove the remaining obligations. Assume the negation of the conclusion as `hvS`. Conclude with `(c.isUnramifiedChar_localChar_iff v).1 (hc v hvS) hv`.
+-/
 theorem e2 (_ : Ad3.R.B0) : Ad3.R.E2 := by
   intro S s hs
   refine ⟨fun c hc => ⟨fun v hv => ?_, hasProd_partial c S hs hc⟩,

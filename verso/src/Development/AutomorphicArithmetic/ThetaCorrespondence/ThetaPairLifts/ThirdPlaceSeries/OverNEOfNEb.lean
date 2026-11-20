@@ -18,10 +18,18 @@ noncomputable section
 open Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotions.N Formalism.L2 Formalism.L2.Host GlobalTheory.EX GlobalTheory.EX.OB GlobalTheory.Mem GlobalTheory.Mem.Top GlobalTheory.Mem.Top.Bl GlobalTheory.Fc GlobalTheory.HeightCounting GlobalTheory.HeightCounting.Up
 namespace GlobalTheory.Mem.AtPtTransport
 variable {hL : _root_.UpperTheory.Zero.LLC.RecTExists}
+/- English proof (translation)
+Introduce `K B f T w Z Wt p0 t nch n xd c h` and use `(hN K B f T w Z Wt p0 t nch n xd c h).elim fun x => ⟨x.1⟩`.
+-/
 theorem overNE_of_NEb_alt {N : _root_.GlobalTheory.Mem.Top.Bl.NormChoiceExtension hL}
     (hN : ∀ K B f T w Z Wt p0 t nch n xd c, N K B f T w Z Wt p0 t nch n xd c → Nonempty (_root_.GlobalTheory.HeightCounting.Up.extensionWithLaw hL K B f T w Z Wt p0 t nch n xd c)) :
     _root_.GlobalTheory.NRows.AtPt.OverNEAlt N :=
   fun K B f T w Z Wt p0 t nch n xd c h => (hN K B f T w Z Wt p0 t nch n xd c h).elim fun x => ⟨x.1⟩
+/- English proof (translation)
+Introduce `hL N S Γ H hN`. Establish `hN'` using `_root_.GlobalTheory.Mem.AtPtTransport.overNE_of_NEb_alt hN`. Use `⟨fun p hp => ?_, fun P hP => ?_⟩` and prove the remaining obligations. Use `GlobalTheory.NRows.AtPt.linkedBundleProperty_after_largeBaseCoreProperty (_root_.GlobalTheory.NRows.AtPt.lgSlotG_memSlot' hp _) ?_` and prove the remaining obligations. Use `RowE.of_all fun κ K β c b hk hβ _ => ?_` and prove the remaining obligations.
+
+Take `⟨q, hq, _, hw⟩` from `_root_.GlobalTheory.NRows.AtPt.exists_wPt_entC_atWit hN' H β hβ`. Conclude with `⟨K, hk, β.sc, β.p.pt_val β.val, q, hq, hw⟩`. Conclude with `_root_.GlobalTheory.NRows.AtPt.lg1_entry_of_atWit hP hN' H (r := fun D O => P D O.ex.nch) (fun K q _ t => t) _`.
+-/
 theorem atMem_at_wit_alt : ∀ (hL : _root_.UpperTheory.Zero.LLC.RecTExists) (N : _root_.GlobalTheory.Mem.Top.Bl.NormChoiceExtension hL) (S : SExt) (Γ : GeoP), WitMv (_root_.GlobalTheory.Mem.Top.Bl.parametersOfExtension N S Γ).s →
     (∀ K B f T w Z Wt p0 t nch n xd c, N K B f T w Z Wt p0 t nch n xd c → Nonempty (_root_.GlobalTheory.HeightCounting.Up.extensionWithLaw hL K B f T w Z Wt p0 t nch n xd c)) →
     (∀ p : _root_.GlobalTheory.HeightCounting.Up.LayPAlt hL, _root_.GlobalTheory.HeightCounting.Up.MemberAtLayerPoint hL p → _root_.GlobalTheory.Fc.RL.LinkedAt (_root_.GlobalTheory.Mem.Top.Bl.parametersOfExtension N S Γ) fun Q L => RowE Q L fun κ D O _ _ => ∃ K : Ctx, κ.Of K ∧ O.L.sc = K.s ∧

@@ -20,6 +20,15 @@ noncomputable section
 
 namespace GlobalTheory.UPoinc.UDeepEx
 
+/- English proof (translation)
+Establish `lt : ∀ m : ℕ, m < n ^ m` using `fun m => Nat.lt_pow_self hn`. Take `⟨k₀, hk₀⟩` from `exists_nat_gt (1 + 2 * (g : ℝ) * (2 : ℝ) ^ ((g : ℝ) / 2))`. Use `set K := max k₀ B with hK`. Use `set N := (n ^ (K + 2)) ^ 2 with hN`. Establish `hN₁ : K + 2 < N` using `(lt _).trans_le (Nat.le_self_pow two_ne_zero _)`.
+
+Take `⟨j₀, hj₀⟩` from `exists_nat_gt (2 * ((N ^ g * g.factorial : ℕ) : ℝ) * ((g : ℝ) * (3 / 2 : ℝ) ^ g * (2 : ℝ) ^ ((g : ℝ) / 2 - 1)))`. Use `⟨K + 2, j₀ + 6 * (N ^ g * g.factorial) + 1, by omega, ?_, by omega, fun j hj o Ω _ _ _ S hg hS hr => ?_⟩` and prove the remaining obligations. Establish `: B ≤ K` using `le_max_right _ _`. Use linear arithmetic over natural numbers and integers. Establish `hj'` using `lt j`.
+
+Unfold `ThetaSys.Big`. Rewrite using `[hg, hS, hr, ← hN]`. Establish `hk₀K : k₀ ≤ K` using `le_max_left _ _`. Use `⟨hk₀.trans (by exact_mod_cast (by omega : k₀ < N)), ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[Nat.cast_mul (n ^ j)]`.
+
+Conclude with `mul_lt_mul_of_pos_right (hj₀.trans (by exact_mod_cast (by omega : j₀ < n ^ j))) (by exact_mod_cast (by omega : 0 < N))`. Conclude with `lt_of_lt_of_le (by omega) (Nat.le_mul_of_pos_right _ (by omega))`.
+-/
 theorem big_ge (g n : ℕ) (hn : 2 ≤ n) (B : ℕ) : ∃ k j₁ : ℕ, 2 ≤ k ∧ B ≤ (n ^ k) ^ 2 ∧ 1 ≤ j₁ ∧ ∀ j ≥ j₁,
     ∀ (o Ω : Type) [CommRing o] [Field Ω] [Algebra o Ω] (S : ThetaSys o Ω),
       S.g = g → S.N = (n ^ k) ^ 2 → S.r = n ^ j → S.Big := by
@@ -43,11 +52,17 @@ theorem big_ge (g n : ℕ) (hn : 2 ≤ n) (B : ℕ) : ∃ k j₁ : ℕ, 2 ≤ k 
       (by exact_mod_cast (by omega : 0 < N))
   · exact lt_of_lt_of_le (by omega) (Nat.le_mul_of_pos_right _ (by omega))
 
+/- English proof (translation)
+The claim follows from `LBIso.chartPull (ReciprocityTheory.ChartRestriction.G.Geo.Tor.chartPullPull M j j rfl) (ReciprocityTheory.ChartRestriction.G.Geo.Tor.chartPullSame L _ (fun _ => a) _ j fun _ => e) h`.
+-/
 theorem lbIso_pull_comp {X Y Z : Scheme.{0}} {L : LB X} {M : LB Y} {a : Y ⟶ X} (h : LBIso M (L.pull a)) (j : Z ⟶ Y)
     {a' : Z ⟶ X} (e : a' = j ≫ a) : LBIso (M.pull j) (L.pull a') :=
   LBIso.chartPull (ReciprocityTheory.ChartRestriction.G.Geo.Tor.chartPullPull M j j rfl)
     (ReciprocityTheory.ChartRestriction.G.Geo.Tor.chartPullSame L _ (fun _ => a) _ j fun _ => e) h
 
+/- English proof (translation)
+The claim follows from `(Spec.map_comp (CommRingCat.ofHom f) (CommRingCat.ofHom g)).symm`.
+-/
 theorem spMap_comp {A B C : Type} [CommRing A] [CommRing B] [CommRing C] (f : A →+* B) (g : B →+* C) :
     spMap g ≫ spMap f = spMap (g.comp f) :=
   (Spec.map_comp (CommRingCat.ofHom f) (CommRingCat.ofHom g)).symm
@@ -55,6 +70,11 @@ theorem spMap_comp {A B C : Type} [CommRing A] [CommRing B] [CommRing C] (f : A 
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {Dw : Datum H} {l : Geo.Tor.Level H}
   {Xo : Moduli Dw l} {cf : Coeff l} {C : UCompact Xo cf}
 
+/- English proof (translation)
+Use `haveI : CharZero X₁.Ω₁ := ArithBase.char X₁.o₁`. Take `⟨Ω₂, _, _, Q, φ, ζ, hfd, hgal, hζ, hg, hpb, hlb, hlev⟩` from `GlobalTheory.T.exists_symplecticLevel_genericFibre_galoisExtension X₁.S.R.val.toRingHom X₁.ρ.P K hK`. Take `⟨o₂, _, _, _, κ, ze, hfin, hcomp, hze⟩` from `GlobalTheory.T.exists_arithBase_finite_containing_rootOfUnity (o₁ := X₁.o₁) (Ω₁ := X₁.Ω₁) Ω₂ K ζ hK hζ`. Establish `hKu₂ : IsUnit (K : o₂)` using `by simpa using hKu.map κ`. Establish `hlev' : Nonempty (Out.Level Q K (unitOn (Units.map (algebraMap o₂ Ω₂ : o₂ →* Ω₂) ze)))` using `by rw [hze]; exact hlev`.
+
+Take `⟨R, h, P, ψ, hR, hfr, hh, hPg, hPpb, hPlb, hPlev⟩` from `GlobalTheory.T.levelStructure_genericFibre_spreads_fg_subalgebra X₁.S.R X₁.ρ.P κ Q φ K ze X₁.S.fg X₁.S.frac hfd hcomp hKu₂ hg hpb hlb hlev'`. Conclude with `⟨o₂, Ω₂, inferInstance, inferInstance, inferInstance, inferInstance, inferInstance, κ, hfd, hgal, hfin, hcomp, R, h, P, ψ, ze, hR, hfr, hh, hPg, hPpb, hPlb, hPlev⟩`.
+-/
 theorem exists_level (X₁ : USetup C) (K : ℕ) (hK : 0 < K) (hKu : IsUnit (K : X₁.o₁)) :
     ∃ (o₂ Ω₂ : Type) (_ : CommRing o₂) (_ : Field Ω₂) (_ : Algebra o₂ Ω₂) (_ : ArithBase o₂ Ω₂) (_ : Algebra X₁.Ω₁ Ω₂)
       (κ : X₁.o₁ →+* o₂), FiniteDimensional X₁.Ω₁ Ω₂ ∧ IsGalois X₁.Ω₁ Ω₂ ∧ κ.Finite ∧
@@ -73,6 +93,11 @@ theorem exists_level (X₁ : USetup C) (K : ℕ) (hK : 0 < K) (hKu : IsUnit (K :
   exact ⟨o₂, Ω₂, inferInstance, inferInstance, inferInstance, inferInstance, inferInstance, κ, hfd, hgal, hfin, hcomp,
     R, h, P, ψ, ze, hR, hfr, hh, hPg, hPpb, hPlb, hPlev⟩
 
+/- English proof (translation)
+Use `haveI : IsDedekindDomain X₁.o₁ := ArithBase.ded (o := X₁.o₁) (Ω := X₁.Ω₁)`. Establish `hp : (spMap (algebraMap X₁.Ω₁ Ω₂) ≫ X₁.M.pt) ≫ X₁.M.s = spMap ((algebraMap o₂ Ω₂).comp κ)`. Rewrite using `[Category.assoc, X₁.M.pt_s, hc]`. Conclude with `(Spec.map_comp (CommRingCat.ofHom (algebraMap X₁.o₁ X₁.Ω₁)) (CommRingCat.ofHom (algebraMap X₁.Ω₁ Ω₂))).symm`. Establish `hst : ((spMap (algebraMap X₁.Ω₁ Ω₂) ≫ X₁.M.pt).stalkMap (genericPoint (Sp Ω₂))).hom.Finite`.
+
+Rewrite using `[Scheme.Hom.stalkMap_comp]`. Conclude with `RingHom.Finite.comp (stalkMap_spMap_finite _ (RingHom.finite_algebraMap.2 inferInstance) _) (RingHom.Finite.of_surjective _ (RatModel.stalkMap_pt_surjective X₁.M _))`. Take `⟨M, q, hn, hq, hpt⟩` from `exists_ratModel_normalization X₁.o₁ o₂ Ω₂ κ hκ X₁.M.Z X₁.M.s X₁.M.lft X₁.M.qc X₁.M.sep _ hp hst`. Conclude with `⟨M, q, GlobalTheory.IsNormalScheme.of_pred hn, hq, hpt⟩`.
+-/
 theorem exists_model (X₁ : USetup C) (o₂ Ω₂ : Type) [CommRing o₂] [Field Ω₂] [Algebra o₂ Ω₂] [ArithBase o₂ Ω₂]
     [Algebra X₁.Ω₁ Ω₂] [FiniteDimensional X₁.Ω₁ Ω₂] (κ : X₁.o₁ →+* o₂) (hκ : κ.Finite)
     (hc : (algebraMap o₂ Ω₂).comp κ = (algebraMap X₁.Ω₁ Ω₂).comp (algebraMap X₁.o₁ X₁.Ω₁)) :

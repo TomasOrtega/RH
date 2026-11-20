@@ -58,6 +58,15 @@ open scoped LaurentSeries
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {Dw : Datum H} {l : Level H}
 variable {Xo : Moduli Dw l} {c : Coeff l}
 
+/- English proof (translation)
+Distinguish the cases in `h0 : x = 0`. Substitute `h0` using the available equality. Simplify using `[InV, vV]`. Establish `hne` using `valV_ne_zero (V := T.V) h0`. Prove the components needed by the constructor for the conclusion.
+
+Introduce and unpack `⟨a, rfl⟩`. Establish `h1 : valV T.V (algebraMap T.V T.Fr a) ≤ 1` using `IsDedekindDomain.HeightOneSpectrum.valuation_le_one _ a`. Establish `h2` using `(WithZero.log_le_log hne one_ne_zero).2 h1`. Rewrite `h2` using `[WithZero.log_one]`. Unfold `vV`.
+
+Use linear arithmetic over natural numbers and integers. Introduce `h`. Establish `h4 : valV T.V x ≤ 1`. Use `(WithZero.log_le_log hne one_ne_zero).1 ?_` and prove the remaining obligations. Rewrite using `[WithZero.log_one]`.
+
+Unfold `vV at h`. Use linear arithmetic over natural numbers and integers. Conclude with `IsDiscreteValuationRing.exists_lift_of_le_one (A := T.V) (K := T.Fr) h4`.
+-/
 theorem inV_iff (T : CDVR) (x : T.Fr) : InV T x ↔ 0 ≤ vV T.V x := by
   by_cases h0 : x = 0
   · subst h0; simp [InV, vV]
@@ -76,6 +85,11 @@ theorem inV_iff (T : CDVR) (x : T.Fr) : InV T x ↔ 0 ≤ vV T.V x := by
       omega
     exact IsDiscreteValuationRing.exists_lift_of_le_one (A := T.V) (K := T.Fr) h4
 
+/- English proof (translation)
+Rewrite using `[inV_iff, ho.2]`. Use `mul_nonneg (Nat.cast_nonneg e) ?_` and prove the remaining obligations. Distinguish the cases in `h0 : (a : K) = 0`. Simplify using `[h0, vLa]`. Establish `hne : la.valuation K (a : K) ≠ 0` using `(Valuation.ne_zero_iff _).2 h0`.
+
+Establish `h2` using `(WithZero.log_le_log hne one_ne_zero).2 a.2`. Rewrite `h2` using `[WithZero.log_one]`. Unfold `vLa`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem inV_of_overLa {K : Type} [Field K] [NumberField K] {la : HeightOneSpectrum (𝓞 K)} {T : CDVR} {io : K →+* T.Fr}
     {e : ℕ} (ho : OverLa la T.V io e) (a : (la.valuation K).valuationSubring) : InV T (io a) := by
   rw [inV_iff, ho.2]
@@ -87,6 +101,9 @@ theorem inV_of_overLa {K : Type} [Field K] [NumberField K] {la : HeightOneSpectr
   rw [WithZero.log_one] at h2
   unfold vLa; omega
 
+/- English proof (translation)
+Set `j` to `RingEquiv.ofBijective (algebraMap T.V T.Fr).rangeRestrict ⟨fun a b hab => IsFractionRing.injective T.V T.Fr (congrArg Subtype.val hab), RingHom.rangeRestrict_surjective _⟩`. Conclude with `⟨j.symm.toRingHom.comp (f.codRestrict _ h), RingHom.ext fun a => congrArg Subtype.val (j.apply_symm_apply ⟨_, h a⟩)⟩`.
+-/
 theorem exists_factor {A : Type} [CommRing A] (T : CDVR) (f : A →+* T.Fr) (h : ∀ a, InV T (f a)) :
     ∃ b : A →+* T.V, (algebraMap T.V T.Fr).comp b = f := by
   let j := RingEquiv.ofBijective (algebraMap T.V T.Fr).rangeRestrict
@@ -95,6 +112,11 @@ theorem exists_factor {A : Type} [CommRing A] (T : CDVR) (f : A →+* T.Fr) (h :
   exact ⟨j.symm.toRingHom.comp (f.codRestrict _ h),
     RingHom.ext fun a => congrArg Subtype.val (j.apply_symm_apply ⟨_, h a⟩)⟩
 
+/- English proof (translation)
+Set `_` to `io.toAlgebra`. Take `⟨y', z, h1, -, h3, h4⟩` from `h`. Take `⟨t, ⟨m⟩⟩` from `(GlobalTheory.ModelPoints.model_points_charts E H Dw l Xo c O β Y).2.1 _ y'`. Take `⟨t', m₁, -, m₂, -⟩` from `GlobalTheory.TraitDataIntrinsic.exists_generic Y m h3`. Establish `hab : abLocus t.G = Set.univ` using `Set.eq_univ_of_forall fun p => (abLocus_pullback abLocusOne Y.t.semi m.cart.1 p).1 (h4 ⟨_, rfl⟩)`.
+
+Establish `hp` using `GlobalTheory.T.isProper_semiAbelian_triple_of_abelianLocus_eq_univ E H Dw l Xo T _ t t' m₂ m₁ hab`. Conclude with `⟨t, t', h1 ▸ m₂, m₁, hp⟩`.
+-/
 theorem good_of_extIn {O : Type} [CommRing O] {β : O →+* c.F} (Y : Model Xo c β) {T : CDVR} {io : c.F →+* T.Fr}
     (y : IntFr Xo c T io) (h : letI := io.toAlgebra; ExtIn Y (abLocus Y.t.G) T io y.1.x) : Good y := by
   let _ := io.toAlgebra
@@ -106,6 +128,11 @@ theorem good_of_extIn {O : Type} [CommRing O] {β : O →+* c.F} (Y : Model Xo c
   have hp := GlobalTheory.T.isProper_semiAbelian_triple_of_abelianLocus_eq_univ E H Dw l Xo T _ t t' m₂ m₁ hab
   exact ⟨t, t', h1 ▸ m₂, m₁, hp⟩
 
+/- English proof (translation)
+Take `⟨hE, hU, -⟩` from `GlobalTheory.Reg.evLaws_genFr_atlas E H Dw l Xo c`. Establish `h1` using `unitIndep_of hE.wt hU a n f hf T io y y' t h 1`. Establish `key : ∀ x : T.Fr, InV T x ↔ 0 ≤ nval T.V 1 x` using `fun x => by`. Distinguish the cases in `h0 : x = 0`. Substitute `h0` using the available equality.
+
+Simplify using `[nval_zero, InV]`. Rewrite using `[nval_of_ne h0, inV_iff, EReal.coe_nonneg]`. Simplify using the standard rewrite rules. Rewrite using `[key, key, h1]`.
+-/
 theorem inV_of_frBor {a : (E →+* ℂ) × ℕ → ℕ} {n : ℕ} {f : Rul Xo c} (hf : f ∈ sec Xo c a n) {T : CDVR}
     {io : c.F →+* T.Fr} (y y' : IntFr Xo c T io) (t : Ix Dw → T.Frˣ)
     (h : letI := io.toAlgebra; FrBor t y.1 y'.1) : InV T (evI y f) ↔ InV T (evI y' f) := by
@@ -117,6 +144,17 @@ theorem inV_of_frBor {a : (E →+* ℂ) × ℕ → ℕ} {n : ℕ} {f : Rul Xo c}
     · rw [nval_of_ne h0, inV_iff, EReal.coe_nonneg]; simp
   rw [key, key, h1]
 
+/- English proof (translation)
+Set `_` to `io.toAlgebra`. Take `⟨hE, hU, -⟩` from `GlobalTheory.Reg.evLaws_genFr_atlas E H Dw l Xo c`. Establish `hev` using `GlobalTheory.ArcQ.evR_natural_weight_scaling E H Dw l Xo c hE a n f hf`. Take `⟨J, _, P, hC⟩` from `GlobalTheory.Reg.exists_finite_pchart_cover GlobalTheory.abelianSchemeLaws_all.2.secTwist E H Dw l Xo c hE.bc (la.valuation c.F).valuationSubring Y hP`. Set `W : ValuationSubring T.Fr` to `(valV T.V).valuationSubring`.
+
+Establish `hW : ∀ x, x ∈ W ↔ InV T x` using `fun x => ⟨fun h => IsDiscreteValuationRing.exists_lift_of_le_one (A := T.V) (K := T.Fr) h, by rintro ⟨a, rfl⟩; exact IsDedekindDomain.HeightOneSpectrum.valuation_le_one _ a⟩`. Take `⟨j, e₀, he₀, ψ, z, t, hg, hz, ht⟩` from `hC T.Fr W (fun a => (hW _).2 (inV_of_overLa ho a)) y.1`. Take `⟨P', e', he', ψ', hg', hz', hall⟩` from `GlobalTheory.T.exists_refined_flagChart_integral_points_in_open E H Dw l Xo c (la.valuation c.F).valuationSubring Y (abLocus Y.t.G) (P j) T io hop e₀ he₀ ψ z (fun g hgg => (hW _).1 (hg g hgg)) hz (ht.1 ▸ h)`. Establish `hzI : Integral T io z` using `P'.int e' he' T io ψ' (inV_of_overLa ho) hg' z hz'`. Rewrite using `[inV_of_frBor hf y ⟨z, hE.test _ z, hzI⟩ t ht]`.
+
+Use `show InV T (evR Xo c f z)`. Rewrite using `[(hev _).1 _ ψ' _ _ hz']`. Use `GlobalTheory.T.integral_of_integral_at_algebraic_points_smooth c.F P'.Ω la P'.gens e' P'.frac (P'.es_mem e' he').1 (P'.es_mem e' he').2 (P'.sm e' he') (evR Xo c f (P'.y e' he')) (fun T₁ io₁ n₁ ho₁ hfin ψ₁ hk hg₁ => ?_) T io e ho ψ'.toRingHom ψ'.commutes hg'` and prove the remaining obligations. Set `_` to `io₁.toAlgebra`. Set `φ : P'.R e' →ₐ[c.F] T₁.Fr` to `⟨ψ₁, hk⟩`.
+
+Take `⟨z₁, hz₁⟩` from `hE.bc _ _ φ (P'.y e' he')`. Set `y₁ : IntFr Xo c T₁ io₁` to `⟨z₁, hE.test _ z₁, P'.int e' he' T₁ io₁ φ (inV_of_overLa ho₁) hg₁ z₁ hz₁⟩`. Establish `h1` using `hb T₁ io₁ n₁ ho₁ y₁ hfin (good_of_extIn Y y₁ (hall T₁ io₁ (inV_of_overLa ho₁) φ z₁ hg₁ hz₁))`. Rewrite `h1` using `[map_one, one_mul]`. Establish `h2 : evI y₁ f = φ (evR Xo c f (P'.y e' he'))` using `(hev _).1 _ φ _ _ hz₁`.
+
+Rewrite `h1` using `[h2]`. Conclude with `h1`.
+-/
 theorem inV_of_extIn (la : HeightOneSpectrum (𝓞 c.F)) (Y : Model Xo c (la.valuation c.F).valuationSubring.subtype)
     (hP : PushInvertible Y.t.G Y.t.PP.L) (hop : IsOpen (abLocus Y.t.G)) {a : (E →+* ℂ) × ℕ → ℕ} {n : ℕ} {f : Rul Xo c}
     (hf : f ∈ sec Xo c a n) (hb : BddGood Xo c la 1 f) {T : CDVR} {io : c.F →+* T.Fr} {e : ℕ} (ho : OverLa la T.V io e)
@@ -149,6 +187,15 @@ theorem inV_of_extIn (la : HeightOneSpectrum (𝓞 c.F)) (Y : Model Xo c (la.val
   rw [h2] at h1
   exact h1
 
+/- English proof (translation)
+Take `⟨hP, hN⟩` from `GlobalTheory.Moduli.jointExistence_and_moduliScheme`. Set `Xf : ∀ l' : Level H, Moduli Dw l'` to `fun l' => if h : l' = l then h ▸ Xo else Classical.choice (hN E H Dw l' hr)`. Establish `hX : Xf l = Xo` using `by simp [Xf]`. Take `⟨Y, hY, -⟩` from `hP.2 E H Dw hr Xf`. Take `⟨W, hWe, hWn⟩` from `exists_valuationSubring_comap_eq_nonunits c.F.val.toRingHom (la.valuation c.F).valuationSubring`.
+
+Establish `hpU : (p : c.F) ∈ (la.valuation c.F).valuationSubring.nonunits`. Rewrite using `[ValuationSubring.mem_nonunits_iff, ← (Valuation.isEquiv_valuation_valuationSubring (la.valuation c.F)).lt_one_iff_lt_one]`. Use `(la.valuation_lt_one_iff_mem (K := c.F) (p : 𝓞 c.F)).2 hpl` as an intermediate fact. Simplify using `using this`. Establish `hW : (p : ℂ) ∈ W.nonunits` using `by simpa using hWn _ hpU`.
+
+Establish `h` using `(hY p W hp hW).1.1 ⟨l, c, hg⟩`. Take `⟨U, hU, -⟩` from `h.2.2.2.1`. Establish `h' : ∃ Y : Model (Xf l) c (c.V W).subtype, PushInvertible Y.t.G Y.t.PP.L ∧ IsOpen (abLocus Y.t.G) ∧ Y.SplitFibres ∧ Y.N3 ∧ Y.N4` using `⟨_, h.2.2.1, hU ▸ U.isOpen, (hY p W hp hW).2 ⟨l, c, hg⟩⟩`. Establish `he : c.V W = (la.valuation c.F).valuationSubring` using `hWe`. Rewrite `h'` using `[he, hX]`.
+
+Conclude with `h'`.
+-/
 theorem exists_model (hr : 1 ≤ Dw.p + Dw.q) (Xo : Moduli Dw l) (c : Coeff l) (la : HeightOneSpectrum (𝓞 c.F)) (p : ℕ)
     (hp : p.Prime) (hpl : (p : 𝓞 c.F) ∈ la.asIdeal) (hg : l.GoodAt p) :
     ∃ Y : Model Xo c (la.valuation c.F).valuationSubring.subtype, PushInvertible Y.t.G Y.t.PP.L ∧
@@ -176,15 +223,26 @@ theorem exists_model (hr : 1 ≤ Dw.p + Dw.q) (Xo : Moduli Dw l) (c : Coeff l) (
   rw [he, hX] at h'
   exact h'
 
+/- English proof (translation)
+The claim follows from `(Spec.map_comp _ _).symm`.
+-/
 theorem sp_comp {A B C : Type} [CommRing A] [CommRing B] [CommRing C] (f : B →+* C) (g : A →+* B) :
     spMap f ≫ spMap g = spMap (f.comp g) := (Spec.map_comp _ _).symm
 
+/- English proof (translation)
+Rewrite `h`, the goal using `[← ValuationSubring.valuation_le_one_iff]`. Rewrite `h` using `[map_pow]`. Conclude with `(pow_le_one_iff hn).1 h`.
+-/
 theorem mem_of_pow_mem {F : Type} [Field F] (V : ValuationSubring F) {x : F} {n : ℕ} (hn : n ≠ 0) (h : x ^ n ∈ V) :
     x ∈ V := by
   rw [← ValuationSubring.valuation_le_one_iff] at h ⊢
   rw [map_pow] at h
   exact (pow_le_one_iff hn).1 h
 
+/- English proof (translation)
+Set `inc` to `(IntermediateField.inclusion c.le).toRingHom`. Use `⟨⟨inc (baseKA l).ρ, mem_of_pow_mem V two_ne_zero ?_⟩, ⟨inc (baseKA l).ζ, mem_of_pow_mem V l.A_pos.ne' ?_⟩, rfl, rfl⟩` and prove the remaining obligations. Rewrite using `[← map_pow, (baseKA l).ρ_sq, map_neg, map_natCast]`. Conclude with `neg_mem (natCast_mem V _)`. Rewrite using `[← map_pow, (baseKA l).ζ_prim.pow_eq_one, map_one]`.
+
+Conclude with `one_mem V`.
+-/
 theorem exists_values (c : Coeff l) (V : ValuationSubring c.F) :
     ∃ r z : V, ((V.subtype r : c.F) : ℂ) = H.rt0 ∧ ((V.subtype z : c.F) : ℂ) = zeta l.A := by
   let inc := (IntermediateField.inclusion c.le).toRingHom
@@ -195,6 +253,15 @@ theorem exists_values (c : Coeff l) (V : ValuationSubring c.F) :
   · rw [← map_pow, (baseKA l).ζ_prim.pow_eq_one, map_one]
     exact one_mem V
 
+/- English proof (translation)
+Set `_ : Algebra (FractionRing ℂ) ℂ` to `FractionRing.liftAlgebra ℂ ℂ`. Establish `: IsScalarTower ℂ (FractionRing ℂ) ℂ` using `FractionRing.isScalarTower_liftAlgebra ℂ ℂ`. Take `⟨h1, h2⟩` from `GlobalTheory.abelianSchemeLaws_all`. Take `⟨hE, -⟩` from `GlobalTheory.Reg.evLaws_genFr_atlas E H Dw l Xo c`. Establish `hY : Mono Y.j` using `GlobalTheory.ThetaShiftProofs.mono_j Y (mono_spMap_subtype _)`.
+
+Take `⟨Uw⟩` from `nonempty_unfWit_of_isUnf E H Dw l Xo c σ r (U σ) (hU σ hσ)`. Establish `hty` using `(GlobalTheory.Relab.relab_good E H l c _ hσ).2.2.2 Dw Uw.g Uw.e`. Take `⟨Ha⟩` from `GlobalTheory.arcClause_closed E H Dw l Xo c _ _ Y σ a χ W Uw.g _ Uw.F hσ hty (exists_values c V) hover hgen`. Take `⟨Θ⟩` from `GlobalTheory.ArcTheta.nonempty_thetaDat h1 h2 E H Dw l Xo c σ _ _ Y a χ W _ _ Uw.F Ha hty th hth`. Take `⟨v₁, -⟩` from `GlobalTheory.ExpTan.anVec_bijective h1.globalFns E H Dw l Xo c σ _ _ Y a χ W _ _ Uw.F Ha`.
+
+Use `choose z hz using fun τ i => (v₁ (e τ i) (htan τ i)).exists`. Establish `hzt` using `GlobalTheory.ArcType.main h1 h2 E H Dw l Xo c σ r (U σ) Uw _ _ Y a χ W Ha y e th z hσ halg hY hy hz`. Take `⟨T₁, hT₁⟩` from `GlobalTheory.ArcQ.hasSum_evR_arc h1 h2 E H Dw l Xo c σ _ _ Y a χ W _ _ Uw.F Ha y e th Θ z hE halg hover (mono_spMap_subtype _) hP hth hy hz`. Take `⟨T₂, C, hT₂⟩` from `GlobalTheory.T.cuspForm_values_bounded_on_holomorphicArc E H Dw l Xo c r U σ Uw _ _ Y a χ W Ha th Θ z hU hσ hzt a' n f hd hf`. Use `GlobalTheory.T.laurent_coeff_neg_eq_zero_of_bounded' _ (max Ha.T (max T₁ T₂)) C fun w hw => ?_` and prove the remaining obligations.
+
+Take `⟨yw, hyw, -⟩` from `GlobalTheory.ArcQ.AnFrEx.existsUnique_anFr h1 h2 E H Dw l Xo c σ r (U σ) Uw _ _ Y a χ W Ha th Θ z hσ hzt w ((le_max_left _ _).trans_lt hw)`. Conclude with `⟨_, hT₁ w (((le_max_left _ _).trans (le_max_right _ _)).trans_lt hw) yw hyw a' n f hf.1, hT₂ w (((le_max_right _ _).trans (le_max_right _ _)).trans_lt hw) yw hyw⟩`.
+-/
 theorem coeff_neg_eq_zero {r : ℕ} (U : ∀ σ : c.F →+* ℂ, Formalism.L2.PjFree.Unf Xo c σ r)
     (hU : ∀ σ', Formalism.L2.PjFree.GoodEmb c σ' → Formalism.L2.PjFree.IsUnf (U σ')) (σ : c.F →+* ℂ)
     (hσ : Formalism.L2.PjFree.GoodEmb c σ) {V : ValuationSubring c.F} (Y : Model Xo c V.subtype)
@@ -229,6 +296,11 @@ theorem coeff_neg_eq_zero {r : ℕ} (U : ∀ σ : c.F →+* ℂ, Formalism.L2.Pj
   exact ⟨_, hT₁ w (((le_max_left _ _).trans (le_max_right _ _)).trans_lt hw) yw hyw a' n f hf.1,
     hT₂ w (((le_max_right _ _).trans (le_max_right _ _)).trans_lt hw) yw hyw⟩
 
+/- English proof (translation)
+Set `u : Sp S ⟶ pullback Y.s (spMap β)` to `pullback.lift w (spMap k) (hw.trans (sp_comp _ _).symm)`. Use `Y.jQ_open` as an intermediate fact. Establish `hu : Set.range u ⊆ Set.range Y.jQ`. Rewrite using `[← Y.ab_gen]`. Introduce and unpack `_ ⟨x, rfl⟩`.
+
+Use `hr ⟨x, ?_⟩` and prove the remaining obligations. Rewrite using `[← Scheme.Hom.comp_apply, pullback.lift_fst]`. Use `⟨IsOpenImmersion.lift Y.jQ u hu, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[Model.j, ← Category.assoc, IsOpenImmersion.lift_fac, pullback.lift_fst]`. Rewrite using `[← Y.jQ_over, ← Category.assoc, IsOpenImmersion.lift_fac, pullback.lift_snd]`.
+-/
 theorem exists_lift {O : Type} [CommRing O] {β : O →+* c.F} (Y : Model Xo c β) {S : Type} [CommRing S]
     (w : Sp S ⟶ Y.X) (k : c.F →+* S) (hw : w ≫ Y.s = spMap (k.comp β)) (hr : Set.range w ⊆ abLocus Y.t.G) :
     ∃ z : Sp S ⟶ Xo.XF c, z ≫ Y.j = w ∧ z ≫ pullback.snd _ _ = spMap k := by
@@ -243,11 +315,17 @@ theorem exists_lift {O : Type} [CommRing O] {β : O →+* c.F} (Y : Model Xo c �
   · rw [Model.j, ← Category.assoc, IsOpenImmersion.lift_fac, pullback.lift_fst]
   · rw [← Y.jQ_over, ← Category.assoc, IsOpenImmersion.lift_fac, pullback.lift_snd]
 
+/- English proof (translation)
+Use `mono_spMap_subtype V` as an intermediate fact. Rewrite using `[← cancel_mono (spMap V.subtype), Category.assoc, ← GlobalTheory.TraitDataIntrinsic.j_s Y, h, sp_comp]`.
+-/
 theorem snd_eq {V : ValuationSubring c.F} (Y : Model Xo c V.subtype) {S : Type} [CommRing S] (z : Sp S ⟶ Xo.XF c)
     (k : c.F →+* S) (h : z ≫ Y.j ≫ Y.s = spMap (k.comp V.subtype)) : z ≫ pullback.snd _ _ = spMap k := by
   have := mono_spMap_subtype V
   rw [← cancel_mono (spMap V.subtype), Category.assoc, ← GlobalTheory.TraitDataIntrinsic.j_s Y, h, sp_comp]
 
+/- English proof (translation)
+Set `_` to `g.toAlgebra`. Establish `: FaithfulSMul T.V S` using `(faithfulSMul_iff_algebraMap_injective T.V S).2 hg`. Use `show Module.Flat T.V S`. Use `infer_instance`.
+-/
 theorem flat_of_injective (T : CDVR) {S : Type} [CommRing S] [IsDomain S] (g : T.V →+* S) (hg : Function.Injective g) :
     g.Flat := by
   let _ := g.toAlgebra
@@ -255,6 +333,25 @@ theorem flat_of_injective (T : CDVR) {S : Type} [CommRing S] [IsDomain S] (g : T
   show Module.Flat T.V S
   infer_instance
 
+/- English proof (translation)
+Take `⟨h1, h2⟩` from `GlobalTheory.abelianSchemeLaws_all`. Take `⟨hE, -⟩` from `GlobalTheory.Reg.evLaws_genFr_atlas E H Dw l Xo c`. Establish `hY : Mono Y.j` using `GlobalTheory.ThetaShiftProofs.mono_j Y (mono_spMap_subtype _)`. Set `d : PowerSeries T.V` to `PowerSeries.C ϖ * PowerSeries.X`. Establish `hd : d ≠ 0` using `mul_ne_zero (fun h => hϖ.ne_zero (PowerSeries.C_injective (h.trans (map_zero _).symm))) PowerSeries.X_ne_zero`.
+
+Establish `hle : Submonoid.powers d ≤ nonZeroDivisors _` using `powers_le_nonZeroDivisors_of_noZeroDivisors hd`. Set `S` to `Localization.Away d`. Establish `: IsDomain S` using `IsLocalization.isDomain_localization hle`. Set `ι : PowerSeries T.V →+* S` to `algebraMap _ _`. Establish `hι : Function.Injective ι` using `IsLocalization.injective S hle`.
+
+Establish `hud : IsUnit (ι d)` using `IsLocalization.Away.algebraMap_isUnit d`. Establish `huϖ : IsUnit (ι (PowerSeries.C ϖ))`. Rewrite `hud` using `[map_mul]`. Conclude with `isUnit_of_mul_isUnit_left hud`. Establish `huX : IsUnit (ι PowerSeries.X)`.
+
+Rewrite `hud` using `[map_mul]`. Conclude with `isUnit_of_mul_isUnit_right hud`. Establish `hun : ∀ x : nonZeroDivisors T.V, IsUnit ((ι.comp (PowerSeries.C (R` using `T.V))) x) := fun x => by`. Take `⟨m, u, hu⟩` from `IsDiscreteValuationRing.eq_unit_mul_pow_irreducible (nonZeroDivisors.ne_zero x.2) hϖ`. Rewrite using `[hu, map_mul, map_pow]`.
+
+Conclude with `(u.isUnit.map _).mul (huϖ.pow m)`. Set `k : T.Fr →+* S` to `IsLocalization.lift hun`. Establish `hk : ∀ x, k (algebraMap T.V T.Fr x) = ι (PowerSeries.C x)` using `IsLocalization.lift_eq hun`. Set `_ : Algebra c.F S` to `(k.comp io).toAlgebra`. Take `⟨z, hz, hz'⟩` from `exists_lift Y (spMap ι ≫ χ) (k.comp io) (by`.
+
+Rewrite using `[Category.assoc, hover, sp_comp, sp_comp, RingHom.comp_assoc, ← hb]`. Conclude with `congrArg spMap (RingHom.ext fun x => (hk _).symm)) (by`. Introduce and unpack `_ ⟨x, rfl⟩`. Rewrite using `[Scheme.Hom.comp_apply, hab]`. Conclude with `fun hx => x.isPrime.ne_top (Ideal.eq_top_of_isUnit_mem _ (show ι PowerSeries.X ∈ x.asIdeal from hx) huX))`.
+
+Establish `hflat : (ι.comp (PowerSeries.C (R` using `T.V))).Flat := flat_of_injective T _ (hι.comp PowerSeries.C_injective)`. Take `⟨yS, -, hyS⟩` from `GlobalTheory.ArcQ.exists_isArcFr h1 h2 E H Dw l Xo c _ _ Y T.V b a χ W ρ e th he hth (Or.inr hP) S ι z hflat hz (by rw [pullback.condition, ← Category.assoc, hz', sp_comp]; rfl) (fun τ x => (congrArg k (hρ τ x)).trans (hk _))`. Take `⟨⟨h, s, N, rfl⟩, hs⟩` from `IsLocalization.surj (Submonoid.powers d) (evR Xo c f yS)`. Use `⟨h, N, fun L _ _ ω j hω hj hc => ?_⟩` and prove the remaining obligations. Set `φ₀ : S →+* L` to `IsLocalization.Away.lift d hω`.
+
+Establish `hφ₀ : ∀ s, φ₀ (ι s) = ω s` using `IsLocalization.Away.lift_eq d hω`. Establish `hkj : φ₀.comp k = j` using `IsLocalization.ringHom_ext (nonZeroDivisors T.V) (RingHom.ext fun x => ((congrArg φ₀ (hk x)).trans (hφ₀ _)).trans (hj x).symm)`. Set `φ : S →ₐ[c.F] L` to `⟨φ₀, fun x => (RingHom.congr_fun hkj (io x)).trans (hc x).symm⟩`. Take `⟨y, hy⟩` from `hE.bc _ _ φ yS`. Establish `h₀` using `(GlobalTheory.ArcQ.isArcFr_unique_baseChange h1 h2 E H Dw l Xo c _ _ Y T.V b a χ W e th hth S ι yS hyS).2 hY L φ y hy`.
+
+Establish `e₀ : φ.toRingHom.comp ι = ω` using `RingHom.ext hφ₀`. Rewrite `h₀` using `[e₀]`. Use `⟨y, h₀, ?_⟩` and prove the remaining obligations. Rewrite using `[(GlobalTheory.ArcQ.evR_natural_weight_scaling E H Dw l Xo c hE a' n f hf S).1 L φ yS y hy, ← hφ₀, ← hφ₀]`. Conclude with `(map_mul φ₀ _ _).symm.trans (congrArg φ₀ hs)`.
+-/
 theorem exists_value {V : ValuationSubring c.F} (Y : Model Xo c V.subtype) (T : CDVR) (io : c.F →+* T.Fr)
     (b : V →+* T.V) (a : ArcIn Dw l V.subtype T.V b) (χ : Sp (PowerSeries T.V) ⟶ Y.X) (W : Wit Y a χ) (ϖ : T.V)
     (hϖ : Irreducible ϖ) (hP : PushInvertible Y.t.G Y.t.PP.L) (hb : (algebraMap T.V T.Fr).comp b = io.comp V.subtype)
@@ -317,6 +414,11 @@ theorem exists_value {V : ValuationSubring c.F} (Y : Model Xo c V.subtype) (T : 
   rw [(GlobalTheory.ArcQ.evR_natural_weight_scaling E H Dw l Xo c hE a' n f hf S).1 L φ yS y hy, ← hφ₀, ← hφ₀]
   exact (map_mul φ₀ _ _).symm.trans (congrArg φ₀ hs)
 
+/- English proof (translation)
+Introduce `N`. Proceed by induction on `N with`. Consider the case `zero => intro s _`. Simplify using the standard rewrite rules. Consider the case `succ N ih`.
+
+Introduce `s hs`. Take `⟨s', rfl⟩` from `h s ((dvd_pow_self _ N.succ_ne_zero).trans hs)`. Rewrite `hs` using `[map_mul, pow_succ', mul_dvd_mul_iff_left hp]`. Rewrite using `[pow_succ']`. Conclude with `mul_dvd_mul_left _ (ih s' hs)`.
+-/
 theorem pow_dvd_of_map {R S : Type} [CommRing R] [CommRing S] [IsDomain S] (ev : R →+* S) {p : R} (hp : ev p ≠ 0)
     (h : ∀ s, ev p ∣ ev s → p ∣ s) : ∀ (N : ℕ) (s : R), ev p ^ N ∣ ev s → p ^ N ∣ s := by
   intro N
@@ -329,6 +431,11 @@ theorem pow_dvd_of_map {R S : Type} [CommRing R] [CommRing S] [IsDomain S] (ev :
     rw [pow_succ']
     exact mul_dvd_mul_left _ (ih s' hs)
 
+/- English proof (translation)
+Rewrite using `[PowerSeries.X_pow_dvd_iff]`. Introduce `m hm`. Apply `hκ` to reduce the goal to its premises. Establish `e1 : HahnSeries.ofPowerSeries ℤ ℂ (PowerSeries.map κ ((PowerSeries.C a * PowerSeries.X) ^ N)) = HahnSeries.single (N : ℤ) (κ a ^ N)`. Rewrite using `[map_pow, map_mul, PowerSeries.map_C, PowerSeries.map_X, map_pow, map_mul, HahnSeries.ofPowerSeries_C, HahnSeries.ofPowerSeries_X, HahnSeries.C_apply, HahnSeries.single_mul_single, HahnSeries.single_pow]`.
+
+Simplify using the standard rewrite rules. Establish `e2` using `congrArg (fun G : ℂ⸨X⸩ => G.coeff (((m : ℤ) - N) + N)) e`. Simplify using `only [e1, HahnSeries.coeff_mul_single_add] at e2`. Rewrite `e2` using `[hF _ (by omega), zero_mul, sub_add_cancel, HahnSeries.ofPowerSeries_apply_coeff, PowerSeries.coeff_map]`. Rewrite using `[← e2, map_zero]`.
+-/
 theorem X_pow_dvd {A : Type} [CommRing A] (κ : A →+* ℂ) (hκ : Function.Injective κ) (F : ℂ⸨X⸩)
     (hF : ∀ m : ℤ, m < 0 → F.coeff m = 0) (a : A) (h : PowerSeries A) (N : ℕ)
     (e : F * HahnSeries.ofPowerSeries ℤ ℂ (PowerSeries.map κ ((PowerSeries.C a * PowerSeries.X) ^ N)) =
@@ -346,6 +453,41 @@ theorem X_pow_dvd {A : Type} [CommRing A] (κ : A →+* ℂ) (hκ : Function.Inj
   rw [hF _ (by omega), zero_mul, sub_add_cancel, HahnSeries.ofPowerSeries_apply_coeff, PowerSeries.coeff_map] at e2
   rw [← e2, map_zero]
 
+/- English proof (translation)
+Set `_` to `io.toAlgebra`. Take `⟨h1, h2, -, hL4, hL5⟩` from `GlobalTheory.firstFiveLaws`. Take `⟨hE, -⟩` from `GlobalTheory.Reg.evLaws_genFr_atlas E H Dw l Xo c`. Establish `hY : Mono Y.j` using `GlobalTheory.ThetaShiftProofs.mono_j Y (mono_spMap_subtype _)`. Establish `hcpl : IsAdicComplete (Ideal.span {ϖ}) T.V` using `hϖ.maximalIdeal_eq ▸ T.cpl`.
+
+Take `⟨χ, hχ, hsp⟩` from `h4 T.V b ϖ a (Or.inr ⟨inferInstance, hϖ, hcpl⟩)`. Take `⟨hover, hab, hopen, hW⟩` from `(hχ χ).1 rfl`. Take `⟨W⟩` from `(Y.hasArcData_iff a _ _ _ χ).1 hW`. Take `⟨-, -, ev, hevC, hevX, -⟩` from `GlobalTheory.UniformiserEval.dvr_admissibleBase_and_powerSeries_evalUniformiser T.V ϖ hϖ T.cpl`. Establish `hχy : spMap ev ≫ χ = y'` using `hsp hϖ y' ev hy' (by`.
+
+Introduce and unpack `_ ⟨x, rfl⟩`. Conclude with `⟨z x, by rw [← Scheme.Hom.comp_apply, hz₃]⟩) hA hevC hevX`. Take `⟨ρ, e, th, y₀, t, he, hth, htan, hρ, hy₀, ht⟩` from `GlobalTheory.T.exists_constant_integral_arc_frames E H Dw l Xo c _ Y T io b a χ W ev z hP hb hover hevC hz₂ (by rw [hz₃, ← hχy, ← Category.assoc, sp_comp]) y.1 hz₁`. Take `⟨h, N, hval⟩` from `exists_value Y T io b a χ W ϖ hϖ hP hb hover hab ρ e th he hth hρ hf.1`. Establish `hX : PowerSeries.X ^ N ∣ h`.
+
+Take `⟨κ, hκ⟩` from `GlobalTheory.T.exists_complex_embedding_fractionField_cdvr c.F c.F.val.toRingHom T hfin io`. Set `κ₀ : T.V →+* ℂ` to `κ.comp (algebraMap T.V T.Fr)`. Establish `hκ₀ : Function.Injective κ₀` using `κ.injective.comp (IsFractionRing.injective T.V T.Fr)`. Establish `hb' : c.F.val.toRingHom.comp (la.valuation c.F).valuationSubring.subtype = κ₀.comp b`. Rewrite using `[RingHom.comp_assoc, hb, ← RingHom.comp_assoc, hκ]`.
+
+Take `⟨⟨a₁, p, hp⟩, hbc⟩` from `GlobalTheory.ArcQBC.baseChanges h1 h2 hL4.unifBaseChange hL5 E H Dw l Xo c _ _ Y T.V ℂ b a κ₀ hκ₀ _ hb'`. Take `⟨hW₁, hlet, htn, hthx, hnz⟩` from `hbc a₁ p hp`. Take `⟨W₁, hW₁⟩` from `hW₁ χ W`. Use `choose e₁ he₁ using fun τ k => (hlet (e τ k)).exists`. Take `⟨th₁, hth₁⟩` from `(hthx th).exists`.
+
+Set `cL : ℂ →+* ℂ⸨X⸩` to `(HahnSeries.ofPowerSeries ℤ ℂ).comp (PowerSeries.C (R := ℂ))`. Set `_ : Algebra c.F ℂ⸨X⸩` to `(cL.comp c.F.val.toRingHom).toAlgebra`. Establish `hϖ0 : κ₀ ϖ ≠ 0` using `fun h0 => hϖ.ne_zero (hκ₀ (h0.trans (map_zero _).symm))`. Take `⟨yC, hyC, hv⟩` from `hval ℂ⸨X⸩ ((HahnSeries.ofPowerSeries ℤ ℂ).comp (PowerSeries.map κ₀)) (cL.comp κ) (by`. Rewrite using `[isUnit_iff_ne_zero, RingHom.comp_apply, map_ne_zero_iff _ HahnSeries.ofPowerSeries_injective, map_mul, PowerSeries.map_C, PowerSeries.map_X]`.
+
+Conclude with `mul_ne_zero (fun h => hϖ0 (PowerSeries.C_injective (h.trans (map_zero _).symm))) PowerSeries.X_ne_zero)`. Use the proof step `(fun x => by simp [cL, κ₀]) (fun x => congrArg cL (RingHom.congr_fun hκ x).symm)`. Establish `hyC₁` using `GlobalTheory.ArcQ.isArcFr_witBC h1 h2 E H Dw l Xo c _ _ Y T.V b a χ W ℂ _ a₁ κ₀ p W₁ hY hp hW₁ e e₁ th th₁ he₁ hth₁ _ _ yC hyC`. Use `X_pow_dvd κ₀ hκ₀ _ (coeff_neg_eq_zero (fun σ => Formalism.L2.PjFree.Unf.ofPj (U σ)) hU c.F.val.toRingHom rfl Y a₁ _ W₁ hP ?_ (fun x hx => ?_) e₁ th₁ (hnz _ _ hth₁ hth) (fun τ k => htn _ _ (he₁ τ k) (htan τ k)) (fun _ => rfl) yC hyC₁ hd hf) ϖ h N hv` and prove the remaining obligations. Rewrite using `[Category.assoc, hover, sp_comp, sp_comp, sp_comp, hb']`.
+
+Conclude with `congrArg spMap (RingHom.ext fun x => PowerSeries.map_C κ₀ (b x))`. Rewrite using `[Scheme.Hom.comp_apply]`. Use `hopen _ fun hm => ?_` and prove the remaining obligations. Establish `hm' : PowerSeries.map κ₀ (PowerSeries.C ϖ * PowerSeries.X) ∈ x.asIdeal` using `hm`. Rewrite `hm'` using `[map_mul, PowerSeries.map_C, PowerSeries.map_X]`.
+
+Conclude with `hx ((Ideal.unit_mul_mem_iff_mem _ ((IsUnit.mk0 _ hϖ0).map _)).1 hm')`. Take `⟨h₁, rfl⟩` from `hX`. Establish `hG : PowerSeries.C ϖ ^ N ∣ h₁`. Take `⟨T', ω, i, hω, hωX, hωd, hi, hv'⟩` from `GlobalTheory.T.exists_gaussPoint' T ϖ hϖ`. Establish `hinj` using `IsFractionRing.injective T'.V T'.Fr`.
+
+Establish `hω0 : ω (PowerSeries.C ϖ) ≠ 0` using `fun h0 => hϖ.ne_zero (PowerSeries.C_injective ((hω (h0.trans (map_zero _).symm)).trans (map_zero _).symm))`. Set `_` to `(i.comp io).toAlgebra`. Take `⟨yG, hyG, hv⟩` from `hval T'.Fr ((algebraMap T'.V T'.Fr).comp ω) i (by`. Rewrite using `[isUnit_iff_ne_zero, RingHom.comp_apply, map_ne_zero_iff _ hinj, map_mul]`. Conclude with `mul_ne_zero hω0 hωX.ne_zero) hi (fun _ => rfl)`.
+
+Establish `hint` using `GlobalTheory.ArcQ.integral_of_isArcFr h1 h2 E H Dw l Xo c _ _ Y T.V b a χ W ρ e th he hth hP T' (i.comp io) ω (hω.comp PowerSeries.C_injective) (fun τ x => (congrArg i (hρ τ x)).trans (hi _)) yG hyG`. Take `⟨zG, -, -, -, -, k₁, k₂, -⟩` from `id hyG`. Establish `ho' : OverLa la T'.V (i.comp io) (1 * m)` using `ho.bc i one_pos fun x => by rw [hv', Nat.cast_one, one_mul]`. Take `⟨x, hx⟩` from `inV_of_extIn la Y hP hop hf.1 hbd ho' ⟨yG, hE.test _ yG, hint⟩ ⟨spMap ω ≫ χ, zG, k₂, snd_eq Y zG _ (by`. Rewrite using `[← Category.assoc, k₁, Category.assoc, hover, sp_comp, sp_comp, RingHom.comp_assoc _ io, ← hb]`.
+
+Conclude with `congrArg spMap (RingHom.ext fun x => (hi _).symm)),`. Use `by rw [k₁, ← Category.assoc, sp_comp], by`. Introduce and unpack `_ ⟨x, rfl⟩`. Rewrite using `[Scheme.Hom.comp_apply, hab]`. Conclude with `fun hx => x.isPrime.ne_top (Ideal.eq_top_of_isUnit_mem _ (show ω PowerSeries.X ∈ x.asIdeal from hx) hωX)⟩`.
+
+Establish `hx' : algebraMap T'.V T'.Fr x = evR Xo c f yG` using `hx`. Rewrite `hv` using `[← hx', RingHom.comp_apply, RingHom.comp_apply, ← map_mul]`. Establish `hv₁` using `hinj hv`. Use `pow_dvd_of_map ω hω0 hωd N h₁ ⟨x, mul_left_cancel₀ (pow_ne_zero N hωX.ne_zero) ?_⟩` and prove the remaining obligations. Simplify using `only [map_mul, map_pow, mul_pow] at hv₁`.
+
+Rewrite using `[← hv₁]`. Expand and normalize the polynomial expressions, which then agree. Take `⟨h₂, rfl⟩` from `hG`. Establish `hinj` using `IsFractionRing.injective T.V T.Fr`. Establish `hne : (algebraMap T.V T.Fr).comp ev (PowerSeries.C ϖ * PowerSeries.X) ≠ 0`.
+
+Rewrite using `[RingHom.comp_apply, map_ne_zero_iff _ hinj, map_mul, hevC, hevX]`. Conclude with `mul_ne_zero hϖ.ne_zero hϖ.ne_zero`. Take `⟨y₁, hy₁, hv⟩` from `hval T.Fr ((algebraMap T.V T.Fr).comp ev) (RingHom.id _) (isUnit_iff_ne_zero.2 hne) (fun x => by rw [RingHom.comp_apply, hevC]; rfl) (fun _ => rfl)`. Take `rfl : y₁ = y₀` from `(GlobalTheory.ArcQ.isArcFr_unique_baseChange h1 h2 E H Dw l Xo c _ _ Y T.V b a χ W e th hth _ _ y₀ hy₀).1 hY y₁ hy₁`. Establish `hint` using `GlobalTheory.ArcQ.integral_of_isArcFr h1 h2 E H Dw l Xo c _ _ Y T.V b a χ W ρ e th he hth hP T io ev (fun x x' hx => (hevC x).symm.trans (hx.trans (hevC x'))) (fun τ x => by rw [hevC]; exact hρ τ x) y₁ hy₁`.
+
+Rewrite using `[← inV_of_frBor hf.1 ⟨y₁, hE.test _ y₁, hint⟩ y t ht]`. Use `⟨ev h₂, mul_right_cancel₀ (pow_ne_zero N hne) ?_⟩` and prove the remaining obligations. Rewrite using `[← map_pow]`. Use `Eq.trans ?_ hv.symm` and prove the remaining obligations. Simplify using `only [RingHom.comp_apply, map_mul, map_pow, mul_pow]`.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem inV_of_arc {r : ℕ} (U : ∀ σ : c.F →+* ℂ, Unf Xo c σ r) (hU : ∀ σ, GoodEmb c σ → IsUnf (U σ))
     (la : HeightOneSpectrum (𝓞 c.F)) (Y : Model Xo c (la.valuation c.F).valuationSubring.subtype)
     (hP : PushInvertible Y.t.G Y.t.PP.L) (hop : IsOpen (abLocus Y.t.G)) (h4 : Y.N4)
@@ -455,6 +597,19 @@ theorem inV_of_arc {r : ℕ} (U : ∀ σ : c.F →+* ℂ, Unf Xo c σ r) (hU : �
   simp only [RingHom.comp_apply, map_mul, map_pow, mul_pow]
   ring
 
+/- English proof (translation)
+Introduce `T io m ho y hy`. Distinguish the cases in `hq : Dw.q = 0`. Conclude with `hbd T io m ho y hy (GlobalTheory.T.integral_framed_point_good_reduction_definite_signature E H Dw l Xo c hq T io y)`. Take `⟨Y, hP, hop, hS, h3, h4⟩` from `exists_model (by omega) Xo c la p hp hpl hg`. Set `_` to `io.toAlgebra`.
+
+Take `⟨b, hb⟩` from `exists_factor T (io.comp (la.valuation c.F).valuationSubring.subtype) (inV_of_overLa ho)`. Set `z : Sp T.Fr ⟶ Xo.XF c` to `pullback.lift y.1.x (spMap io) (y.1.x_over.trans (sp_comp _ _).symm)`. Establish `hz₁ : z ≫ pullback.fst _ _ = y.1.x` using `pullback.lift_fst _ _ _`. Establish `hz₂ : z ≫ pullback.snd _ _ = spMap io` using `pullback.lift_snd _ _ _`. Take `⟨⟨y', ⟨hy', hz₃⟩, -⟩, -⟩` from `GlobalTheory.ValuativeExtension.valuation_extension E H Dw l Xo c _ _ Y T.V T.Fr b io z hb hz₂`.
+
+Distinguish the cases in `hr : Set.range y' ⊆ abLocus Y.t.G`. Conclude with `hbd T io m ho y hy (good_of_extIn Y y ⟨y', z, hz₁, hz₂, hz₃.symm, hr⟩)`. Take `⟨T', g, ϖ, a, hg₁, hg₂, hϖ, hA⟩` from `GlobalTheory.T.exists_arcData_of_badReduction_finiteExtension E H Dw l Xo c _ Y h3 hS T io b y' z hb hy' hz₂ hz₃.symm hr`. Take `⟨i, ρ, hρ, hi, hv, -⟩` from `GlobalTheory.EtaVal.finite_extension_ramification_embedding T T' g hg₁ hg₂`. Establish `hfin : T'.FinRes`.
+
+Set `_` to `g.toAlgebra`. Establish `: Module.Finite T.V T'.V` using `hg₂`. Conclude with `(GlobalTheory.dvr_finite_over_complete_dvr T.V T'.V).2.2.2.2 hy`. Take `⟨y₁, φ, hφ, hy₁⟩` from `GlobalTheory.IntFrBaseChange.exists_intFr_baseChange E H Dw l Xo c T T' io y i ρ hρ (fun x _ => hv x)`. Set `_` to `(i.comp io).toAlgebra`.
+
+Establish `e₁ : (algebraMap T'.V T'.Fr).comp g = i.comp (algebraMap T.V T.Fr)` using `RingHom.ext fun x => (hi x).symm`. Establish `key` using `inV_of_arc U hU la Y hP hop h4 hd hf hbd (ho.bc i hρ hv) hfin (g.comp b) (by rw [← RingHom.comp_assoc, e₁, RingHom.comp_assoc, hb]; rfl) ϖ hϖ a (spMap g ≫ y') (by rw [Category.assoc, hy', sp_comp]) hA y₁ (spMap i ≫ z) (by rw [Category.assoc, hz₁, hy₁.1, hφ]) (by rw [Category.asso …`. Take `⟨hE, -⟩` from `GlobalTheory.Reg.evLaws_genFr_atlas E H Dw l Xo c`. Establish `e₂ : evI y₁ f = φ (evI y f)` using `(GlobalTheory.ArcQ.evR_natural_weight_scaling E H Dw l Xo c hE a' n f hf.1 T.Fr).1 _ φ _ _ hy₁`. Establish `e₃ : φ (evI y f) = i (evI y f)` using `RingHom.congr_fun hφ _`.
+
+Rewrite `key` using `[e₂, e₃, inV_iff, hv]`. Rewrite using `[map_one, one_mul, inV_iff]`. Conclude with `nonneg_of_mul_nonneg_right key (by exact_mod_cast hρ)`.
+-/
 theorem bddAll_one {r : ℕ} (U : ∀ σ : c.F →+* ℂ, Unf Xo c σ r) (hU : ∀ σ, GoodEmb c σ → IsUnf (U σ))
     (la : HeightOneSpectrum (𝓞 c.F)) (p : ℕ) (hp : p.Prime) (hpl : (p : 𝓞 c.F) ∈ la.asIdeal) (hg : l.GoodAt p)
     {a' : (E →+* ℂ) × ℕ → ℕ} {n : ℕ} {f : Rul Xo c} (hd : Dom a' n) (hf : f ∈ cusp Xo c U a' n)
@@ -494,6 +649,9 @@ theorem bddAll_one {r : ℕ} (U : ∀ σ : c.F →+* ℂ, Unf Xo c σ r) (hU : �
   rw [map_one, one_mul, inV_iff]
   exact nonneg_of_mul_nonneg_right key (by exact_mod_cast hρ)
 
+/- English proof (translation)
+Introduce `E _ _ _ H Dw l Xo c r U hU la p hp hpl hg a n f κ hd hf hb T io m ho y hy`. Establish `h` using `bddAll_one U hU la p hp hpl hg hd (Submodule.smul_mem _ κ hf) (fun T io m ho y hy hgood => by rw [map_one, one_mul, evI_smul]; exact hb T io m ho y hy hgood) T io m ho y hy`. Rewrite `h` using `[map_one, one_mul, evI_smul]`. Then use the resulting hypothesis.
+-/
 theorem bddAll_of_bddGood : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l) (r : ℕ) (U : ∀ σ : c.F →+* ℂ, Unf Xo c σ r), (∀ σ, GoodEmb c σ → IsUnf (U σ)) → ∀ (la : HeightOneSpectrum (𝓞 c.F)) (p : ℕ), p.Prime → (p : 𝓞 c.F) ∈ la.asIdeal → l.GoodAt p → ∀ (a : (E →+* ℂ) × ℕ → ℕ) (n : ℕ) (f : Rul Xo c) (κ : c.F), Dom a n → f ∈ cusp Xo c U a n → BddGood Xo c la κ f → BddAll Xo c la κ f := by
   intro E _ _ _ H Dw l Xo c r U hU la p hp hpl hg a n f κ hd hf hb T io m ho y hy
   have h := bddAll_one U hU la p hp hpl hg hd (Submodule.smul_mem _ κ hf)

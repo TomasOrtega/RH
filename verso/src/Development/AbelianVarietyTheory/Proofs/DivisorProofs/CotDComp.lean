@@ -51,6 +51,11 @@ def cotD (q N : ℕ) (I : Cx R) (n : ℤ) : cotPre R q N I n ⟶ cotPre R q N I 
       (Cochain.ofHom ((chains R).map (prod.map (sch.map f.unop) (𝟙 (fibQ q N))))).comp (δ n (n + 1) α) (zero_add (n + 1))
     rw [δ_zero_cochain_comp _ _ _ rfl, δ_ofHom, Cochain.zero_comp, smul_zero, add_zero]
 
+/- English proof (translation)
+Use extensionality with `U : 2`. Apply `ModuleCat.hom_ext` to reduce the goal to its premises. Apply `LinearMap.ext` to reduce the goal to its premises. Introduce `α`. Express the relevant statement in the definitionally equal form `δ (n + 1) (n + 1 + 1) (δ n (n + 1) α) = 0`.
+
+Conclude with `δ_δ _ _ _ _`.
+-/
 theorem cotD_comp (q N : ℕ) (I : Cx R) (n : ℤ) : cotD R q N I n ≫ cotD R q N I (n + 1) = 0 := by
   ext U : 2
   apply ModuleCat.hom_ext

@@ -14,6 +14,17 @@ def Integ (g : GL (Fin n) L) : Prop :=
   (∀ i j, Valued.v ((g : Matrix (Fin n) (Fin n) L) i j) ≤ 1) ∧
     ∀ i j, j < i → Valued.v ((g : Matrix (Fin n) (Fin n) L) i j) < 1
 
+/- English proof (translation)
+Establish `hx1 : ∀ j, Valued.v (x j) ≤ 1` using `fun j => by`. Use `hx j` as an intermediate fact. Use `split_ifs at this`. Conclude with `this`. Conclude with `this.le`.
+
+Introduce `i`. Establish `e : ((g : Matrix (Fin n) (Fin n) L).mulVec x) i = ∑ j, (g : Matrix (Fin n) (Fin n) L) i j * x j` using `rfl`. Rewrite using `[e]`. Use `split_ifs with hi`. Use `Valuation.map_sum_le (Valued.v : Valuation L (WithZero (Multiplicative ℤ))) fun j _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[map_mul]`. Conclude with `mul_le_one' (hg.1 i j) (hx1 j)`. Use `Valuation.map_sum_lt (Valued.v : Valuation L (WithZero (Multiplicative ℤ))) one_ne_zero fun j _ => ?_` and prove the remaining obligations. Rewrite using `[map_mul]`. Distinguish the cases in `hj : j.val < k`.
+
+Establish `hji : j < i`. Rewrite using `[Fin.lt_def]`. Use linear arithmetic over natural numbers and integers. Conclude with `lt_of_le_of_lt (mul_le_of_le_one_right' (hx1 j)) (hg.2 i j hji)`. Use `hx j` as an intermediate fact.
+
+Rewrite `this` using `[if_neg hj]`. Conclude with `lt_of_le_of_lt (mul_le_of_le_one_left' (hg.1 i j)) this`.
+-/
 theorem mulVec_mem_latK {g : GL (Fin n) L} (hg : Integ g) {k : ℕ} {x : Fin n → L} (hx : x ∈ latK L n k) :
     (g : Matrix (Fin n) (Fin n) L).mulVec x ∈ latK L n k := by
   have hx1 : ∀ j, Valued.v (x j) ≤ 1 := fun j => by
@@ -38,6 +49,13 @@ theorem mulVec_mem_latK {g : GL (Fin n) L} (hg : Integ g) {k : ℕ} {x : Fin n �
       rw [if_neg hj] at this
       exact lt_of_le_of_lt (mul_le_of_le_one_left' (hg.1 i j)) this
 
+/- English proof (translation)
+Establish `hs : ∀ (k : ℕ) (j : Fin n), j.val < k → (Pi.single j 1 : Fin n → L) ∈ latK L n k`. Introduce `k j hj a`. Distinguish the cases in `haj : a = j`. Substitute `haj` using the available equality. Simplify using `[hj]`.
+
+Apply the tactic sequence `simp only [Pi.single_eq_of_ne haj, map_zero] split_ifs <;> simp`. Prove the components needed by the constructor for the conclusion. Introduce `i j`. Use `h n le_rfl _ (hs n j j.2) i` as an intermediate fact. Rewrite `this` using `[if_pos i.2]`.
+
+Simplify using `using this`. Introduce `i j hji`. Use `h i.val i.2.le _ (hs i.val j hji) i` as an intermediate fact. Rewrite `this` using `[if_neg (lt_irrefl _)]`. Simplify using `using this`.
+-/
 theorem integ_of_stable {g : GL (Fin n) L}
     (h : ∀ k : ℕ, k ≤ n → ∀ x ∈ latK L n k, (g : Matrix (Fin n) (Fin n) L).mulVec x ∈ latK L n k) : Integ g := by
   have hs : ∀ (k : ℕ) (j : Fin n), j.val < k → (Pi.single j 1 : Fin n → L) ∈ latK L n k := by
@@ -57,6 +75,21 @@ theorem integ_of_stable {g : GL (Fin n) L}
     rw [if_neg (lt_irrefl _)] at this
     simpa using this
 
+/- English proof (translation)
+Establish `key : ∀ (h : GL (Fin n) L) (y : Fin n → L), (Matrix.GeneralLinearGroup.toLin h) • y = (h : Matrix (Fin n) (Fin n) L).mulVec y`. Introduce `h y`. Both sides reduce to the same expression. Establish `key2 : ∀ (h : GL (Fin n) L) (S : Set (Fin n → L)), (Matrix.GeneralLinearGroup.toLin h) • S = S ↔ ((∀ x ∈ S, (h : Matrix (Fin n) (Fin n) L).mulVec x ∈ S) ∧ ∀ x ∈ S, ((h⁻¹ : GL (Fin n) L) : Matrix (Fin n) (Fin n) L).mulVec x ∈ S)`. Introduce `h S`.
+
+Establish `inv1 : ∀ y : Fin n → L, (h : Matrix (Fin n) (Fin n) L).mulVec (((h⁻¹ : GL (Fin n) L) : Matrix (Fin n) (Fin n) L).mulVec y) = y` using `fun y => by`. Rewrite using `[Matrix.mulVec_mulVec, ← Units.val_mul, mul_inv_cancel, Units.val_one, Matrix.one_mulVec]`. Establish `inv2 : ∀ y : Fin n → L, ((h⁻¹ : GL (Fin n) L) : Matrix (Fin n) (Fin n) L).mulVec ((h : Matrix (Fin n) (Fin n) L).mulVec y) = y` using `fun y => by`. Rewrite using `[Matrix.mulVec_mulVec, ← Units.val_mul, inv_mul_cancel, Units.val_one, Matrix.one_mulVec]`. Prove the components needed by the constructor for the conclusion.
+
+Introduce `hS`. Use `⟨fun x hx => ?_, fun x hx => ?_⟩` and prove the remaining obligations. Rewrite using `[← hS]`. Conclude with `Set.mem_smul_set.2 ⟨x, hx, key h x⟩`. Rewrite `hx` using `[← hS]`.
+
+Take `⟨y, hy, rfl⟩` from `Set.mem_smul_set.1 hx`. Rewrite using `[key, inv2]`. Conclude with `hy`. Introduce and unpack `⟨h1, h2⟩`. Use extensionality with `y`.
+
+Prove the components needed by the constructor for the conclusion. Introduce `hy`. Take `⟨x, hx, rfl⟩` from `Set.mem_smul_set.1 hy`. Rewrite using `[key]`. Conclude with `h1 x hx`.
+
+Introduce `hy`. Conclude with `Set.mem_smul_set.2 ⟨_, h2 y hy, by rw [key, inv1]⟩`. Simplify using `only [IwGL, Subgroup.mem_iInf, Subgroup.mem_comap, MulAction.mem_stabilizer_iff]`. Prove the components needed by the constructor for the conclusion. Introduce `h`.
+
+Establish `h' : ∀ k : Fin (n + 1), _` using `fun k => (key2 g _).1 (h k)`. Conclude with `⟨integ_of_stable fun k hk => (h' ⟨k, Nat.lt_succ_of_le hk⟩).1, integ_of_stable fun k hk => (h' ⟨k, Nat.lt_succ_of_le hk⟩).2⟩`. Introduce and unpack `⟨h1, h2⟩ k`. Conclude with `(key2 g _).2 ⟨fun x hx => mulVec_mem_latK h1 hx, fun x hx => mulVec_mem_latK h2 hx⟩`.
+-/
 theorem mem_IwGL_iff (g : GL (Fin n) L) : g ∈ IwGL L n ↔ Integ g ∧ Integ g⁻¹ := by
   have key : ∀ (h : GL (Fin n) L) (y : Fin n → L),
       (Matrix.GeneralLinearGroup.toLin h) • y = (h : Matrix (Fin n) (Fin n) L).mulVec y := by
@@ -99,6 +132,11 @@ theorem mem_IwGL_iff (g : GL (Fin n) L) : g ∈ IwGL L n ↔ Integ g ∧ Integ g
   · rintro ⟨h1, h2⟩ k
     exact (key2 g _).2 ⟨fun x hx => mulVec_mem_latK h1 hx, fun x hx => mulVec_mem_latK h2 hx⟩
 
+/- English proof (translation)
+Establish `h1 : (s : Matrix (Fin n) (Fin n) L) * Matrix.diagonal (fun i => (e i)⁻¹) = 1`. Rewrite using `[hs, Matrix.diagonal_mul_diagonal, ← Matrix.diagonal_one]`. Use `congr 1`. Use function extensionality and compare the values at `i`. Conclude with `mul_inv_cancel₀ (he i)`.
+
+Combine the equalities or inequalities in the displayed calculation. Rewrite using `[← mul_assoc, ← Units.val_mul, inv_mul_cancel, Units.val_one, one_mul]`.
+-/
 theorem val_inv_diag {s : GL (Fin n) L} {e : Fin n → L} (he : ∀ i, e i ≠ 0)
     (hs : (s : Matrix (Fin n) (Fin n) L) = Matrix.diagonal e) :
     ((s⁻¹ : GL (Fin n) L) : Matrix (Fin n) (Fin n) L) = Matrix.diagonal (fun i => (e i)⁻¹) := by
@@ -113,12 +151,22 @@ theorem val_inv_diag {s : GL (Fin n) L} {e : Fin n → L} (he : ∀ i, e i ≠ 0
     _ = _ := by
       rw [← mul_assoc, ← Units.val_mul, inv_mul_cancel, Units.val_one, one_mul]
 
+/- English proof (translation)
+Rewrite using `[Units.val_mul, Units.val_mul, val_inv_diag he hs, hs, Matrix.mul_diagonal, Matrix.diagonal_mul]`.
+-/
 theorem conj_apply {s : GL (Fin n) L} {e : Fin n → L} (he : ∀ i, e i ≠ 0)
     (hs : (s : Matrix (Fin n) (Fin n) L) = Matrix.diagonal e) (g : GL (Fin n) L) (i j : Fin n) :
     ((s * g * s⁻¹ : GL (Fin n) L) : Matrix (Fin n) (Fin n) L) i j =
       e i * (g : Matrix (Fin n) (Fin n) L) i j * (e j)⁻¹ := by
   rw [Units.val_mul, Units.val_mul, val_inv_diag he hs, hs, Matrix.mul_diagonal, Matrix.diagonal_mul]
 
+/- English proof (translation)
+Establish `h1 : (t : Matrix (Fin n) (Fin n) L) = Matrix.diagonal (fun i => (t : Matrix (Fin n) (Fin n) L) i i)`. Use extensionality with `i j`. Distinguish the cases in `hij : i = j`. Substitute `hij` using the available equality. Simplify using the standard rewrite rules.
+
+Rewrite using `[Matrix.diagonal_apply_ne _ hij]`. Conclude with `ht i j hij`. Use `⟨h1, fun i hi => ?_⟩` and prove the remaining obligations. Establish `hd : (t : Matrix (Fin n) (Fin n) L).det ≠ 0`. Use `(Matrix.isUnit_iff_isUnit_det _).1 t.isUnit` as an intermediate fact.
+
+Conclude with `this.ne_zero`. Rewrite `hd` using `[h1, Matrix.det_diagonal]`. Conclude with `hd (Finset.prod_eq_zero (Finset.mem_univ i) hi)`.
+-/
 theorem diag_data {t : GL (Fin n) L} (ht : IsDiagM t) :
     (t : Matrix (Fin n) (Fin n) L) = Matrix.diagonal (fun i => (t : Matrix (Fin n) (Fin n) L) i i) ∧
       ∀ i, (t : Matrix (Fin n) (Fin n) L) i i ≠ 0 := by
@@ -136,10 +184,16 @@ theorem diag_data {t : GL (Fin n) L} (ht : IsDiagM t) :
 
 def cc : WithZero (Multiplicative ℤ) := ((Multiplicative.ofAdd (-1 : ℤ) : Multiplicative ℤ) : WithZero (Multiplicative ℤ))
 
+/- English proof (translation)
+Rewrite using `[cc, ← WithZero.coe_one, WithZero.coe_lt_coe]`. Conclude with `Multiplicative.ofAdd_lt.2 (by norm_num)`.
+-/
 theorem cc_lt_one : cc < 1 := by
   rw [cc, ← WithZero.coe_one, WithZero.coe_lt_coe]
   exact Multiplicative.ofAdd_lt.2 (by norm_num)
 
+/- English proof (translation)
+Establish `h0 : Valued.v a ≠ 0` using `by rw [h]; exact WithZero.coe_ne_zero`. Rewrite using `[ordL, dif_neg h0]`. Use `congr 2`. Apply `WithZero.coe_injective` to reduce the goal to its premises. Rewrite using `[WithZero.coe_unzero, h]`.
+-/
 theorem ordL_eq {a : L} {A : Multiplicative ℤ} (h : Valued.v a = (A : WithZero (Multiplicative ℤ))) :
     ordL a = -Multiplicative.toAdd A := by
   have h0 : Valued.v a ≠ 0 := by rw [h]; exact WithZero.coe_ne_zero
@@ -148,6 +202,11 @@ theorem ordL_eq {a : L} {A : Multiplicative ℤ} (h : Valued.v a = (A : WithZero
   apply WithZero.coe_injective
   rw [WithZero.coe_unzero, h]
 
+/- English proof (translation)
+Establish `ha' : Valued.v a ≠ 0` using `(Valuation.ne_zero_iff _).2 ha`. Establish `hb' : Valued.v b ≠ 0` using `(Valuation.ne_zero_iff _).2 hb`. Take `⟨A, hA⟩` from `WithZero.ne_zero_iff_exists.1 ha'`. Take `⟨B, hB⟩` from `WithZero.ne_zero_iff_exists.1 hb'`. Rewrite `h` using `[ordL_eq hA.symm, ordL_eq hB.symm]`.
+
+Rewrite using `[← hA, ← hB, WithZero.coe_le_coe]`. Conclude with `Multiplicative.toAdd_le.1 (by omega)`.
+-/
 theorem v_le_of_ordL_le {a b : L} (ha : a ≠ 0) (hb : b ≠ 0) (h : ordL a ≤ ordL b) :
     Valued.v b ≤ Valued.v a := by
   have ha' : Valued.v a ≠ 0 := (Valuation.ne_zero_iff _).2 ha
@@ -158,6 +217,11 @@ theorem v_le_of_ordL_le {a b : L} (ha : a ≠ 0) (hb : b ≠ 0) (h : ordL a ≤ 
   rw [← hA, ← hB, WithZero.coe_le_coe]
   exact Multiplicative.toAdd_le.1 (by omega)
 
+/- English proof (translation)
+Establish `ha' : Valued.v a ≠ 0` using `(Valuation.ne_zero_iff _).2 ha`. Establish `hb' : Valued.v b ≠ 0` using `(Valuation.ne_zero_iff _).2 hb`. Take `⟨A, hA⟩` from `WithZero.ne_zero_iff_exists.1 ha'`. Take `⟨B, hB⟩` from `WithZero.ne_zero_iff_exists.1 hb'`. Rewrite `h` using `[ordL_eq hA.symm, ordL_eq hB.symm]`.
+
+Rewrite using `[← hA, ← hB, cc, ← WithZero.coe_mul, WithZero.coe_le_coe]`. Use `Multiplicative.toAdd_le.1 ?_` and prove the remaining obligations. Rewrite using `[toAdd_mul, toAdd_ofAdd]`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem v_le_of_ordL_lt {a b : L} (ha : a ≠ 0) (hb : b ≠ 0) (h : ordL a < ordL b) :
     Valued.v b ≤ cc * Valued.v a := by
   have ha' : Valued.v a ≠ 0 := (Valuation.ne_zero_iff _).2 ha
@@ -170,6 +234,11 @@ theorem v_le_of_ordL_lt {a b : L} (ha : a ≠ 0) (hb : b ≠ 0) (h : ordL a < or
   rw [toAdd_mul, toAdd_ofAdd]
   omega
 
+/- English proof (translation)
+Distinguish the cases in `hy : y = 0`. Conclude with `⟨0, fun m _ => by simp [hy]⟩`. Take `⟨m₀, hm⟩` from `exists_pow_lt₀ cc_lt_one (Units.mk0 y⁻¹ (inv_ne_zero hy))`. Use `⟨m₀, fun m hm' => ?_⟩` and prove the remaining obligations. Establish `h1 : cc ^ m ≤ cc ^ m₀` using `pow_le_pow_right_of_le_one' cc_lt_one.le hm'`.
+
+Establish `h2 : cc ^ m ≤ y⁻¹` using `h1.trans (le_of_lt (by simpa using hm))`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem exists_pow_mul_le (y : WithZero (Multiplicative ℤ)) : ∃ m₀ : ℕ, ∀ m ≥ m₀, cc ^ m * y ≤ 1 := by
   by_cases hy : y = 0
   · exact ⟨0, fun m _ => by simp [hy]⟩
@@ -180,8 +249,18 @@ theorem exists_pow_mul_le (y : WithZero (Multiplicative ℤ)) : ∃ m₀ : ℕ, 
   calc cc ^ m * y ≤ y⁻¹ * y := by gcongr
     _ = 1 := inv_mul_cancel₀ hy
 
+/- English proof (translation)
+Use `group`.
+-/
 theorem conj_inv (s g : GL (Fin n) L) : (s * g * s⁻¹)⁻¹ = s * g⁻¹ * s⁻¹ := by group
 
+/- English proof (translation)
+Establish `hlow : ∀ i j, j < i → ((s * g * s⁻¹ : GL (Fin n) L) : Matrix (Fin n) (Fin n) L) i j = 0` using `fun i j hji => by rw [conj_apply he hs, hg.1 i j hji]; simp`. Establish `hdiag : ∀ i, ((s * g * s⁻¹ : GL (Fin n) L) : Matrix (Fin n) (Fin n) L) i i = 1` using `fun i => by rw [conj_apply he hs, hg.2 i, mul_one, mul_inv_cancel₀ (he i)]`. Use `⟨⟨fun i j => ?_, fun i j hji => ?_⟩, hlow, hdiag⟩` and prove the remaining obligations. Break down `lt_trichotomy i j with hij | rfl | hij` into its components or cases. Rewrite using `[conj_apply he hs]`.
+
+Conclude with `h i j hij`. Rewrite using `[hdiag]`. Simplify using the standard rewrite rules. Rewrite using `[hlow i j hij]`. Simplify using the standard rewrite rules.
+
+Rewrite using `[hlow i j hji]`. Simplify using the standard rewrite rules.
+-/
 theorem integ_up {s : GL (Fin n) L} {e : Fin n → L} (he : ∀ i, e i ≠ 0)
     (hs : (s : Matrix (Fin n) (Fin n) L) = Matrix.diagonal e) {g : GL (Fin n) L} (hg : IsUniM g)
     (h : ∀ i j, i < j → Valued.v (e i * (g : Matrix (Fin n) (Fin n) L) i j * (e j)⁻¹) ≤ 1) :
@@ -197,6 +276,13 @@ theorem integ_up {s : GL (Fin n) L} {e : Fin n → L} (he : ∀ i, e i ≠ 0)
     · rw [hlow i j hij]; simp
   · rw [hlow i j hji]; simp
 
+/- English proof (translation)
+Establish `hup : ∀ i j, i < j → ((s * g * s⁻¹ : GL (Fin n) L) : Matrix (Fin n) (Fin n) L) i j = 0` using `fun i j hij => by rw [conj_apply he hs, hg.1 i j hij]; simp`. Establish `hdiag : ∀ i, ((s * g * s⁻¹ : GL (Fin n) L) : Matrix (Fin n) (Fin n) L) i i = 1` using `fun i => by rw [conj_apply he hs, hg.2 i, mul_one, mul_inv_cancel₀ (he i)]`. Use `⟨⟨fun i j => ?_, fun i j hji => ?_⟩, hup, hdiag⟩` and prove the remaining obligations. Break down `lt_trichotomy i j with hij | rfl | hij` into its components or cases. Rewrite using `[hup i j hij]`.
+
+Simplify using the standard rewrite rules. Rewrite using `[hdiag]`. Simplify using the standard rewrite rules. Rewrite using `[conj_apply he hs]`. Conclude with `(h i j hij).le`.
+
+Rewrite using `[conj_apply he hs]`. Conclude with `h i j hji`.
+-/
 theorem integ_low {s : GL (Fin n) L} {e : Fin n → L} (he : ∀ i, e i ≠ 0)
     (hs : (s : Matrix (Fin n) (Fin n) L) = Matrix.diagonal e) {g : GL (Fin n) L} (hg : IsLowUniM g)
     (h : ∀ i j, j < i → Valued.v (e i * (g : Matrix (Fin n) (Fin n) L) i j * (e j)⁻¹) < 1) :
@@ -212,6 +298,9 @@ theorem integ_low {s : GL (Fin n) L} {e : Fin n → L} (he : ∀ i, e i ≠ 0)
     · rw [conj_apply he hs]; exact (h i j hij).le
   · rw [conj_apply he hs]; exact h i j hji
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨(mem_IwGL_iff _).2 ⟨(integ_up he hs hg h).1, by rw [conj_inv]; exact (integ_up he hs hg' h').1⟩, (integ_up he hs hg h).2⟩`.
+-/
 theorem up_mem {s : GL (Fin n) L} {e : Fin n → L} (he : ∀ i, e i ≠ 0)
     (hs : (s : Matrix (Fin n) (Fin n) L) = Matrix.diagonal e) {g : GL (Fin n) L} (hg : IsUniM g)
     (hg' : IsUniM g⁻¹)
@@ -221,6 +310,9 @@ theorem up_mem {s : GL (Fin n) L} {e : Fin n → L} (he : ∀ i, e i ≠ 0)
   ⟨(mem_IwGL_iff _).2 ⟨(integ_up he hs hg h).1, by rw [conj_inv]; exact (integ_up he hs hg' h').1⟩,
     (integ_up he hs hg h).2⟩
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨(mem_IwGL_iff _).2 ⟨(integ_low he hs hg h).1, by rw [conj_inv]; exact (integ_low he hs hg' h').1⟩, (integ_low he hs hg h).2⟩`.
+-/
 theorem low_mem {s : GL (Fin n) L} {e : Fin n → L} (he : ∀ i, e i ≠ 0)
     (hs : (s : Matrix (Fin n) (Fin n) L) = Matrix.diagonal e) {g : GL (Fin n) L} (hg : IsLowUniM g)
     (hg' : IsLowUniM g⁻¹)
@@ -230,6 +322,11 @@ theorem low_mem {s : GL (Fin n) L} {e : Fin n → L} (he : ∀ i, e i ≠ 0)
   ⟨(mem_IwGL_iff _).2 ⟨(integ_low he hs hg h).1, by rw [conj_inv]; exact (integ_low he hs hg' h').1⟩,
     (integ_low he hs hg h).2⟩
 
+/- English proof (translation)
+Rewrite using `[conj_apply he hs]`. Break down `lt_trichotomy a b with hab | rfl | hab` into its components or cases. Rewrite using `[hg.1 a b hab, Matrix.one_apply_ne hab.ne]`. Simplify using the standard rewrite rules. Rewrite using `[hg.2 a, mul_one, mul_inv_cancel₀ (he a), Matrix.one_apply_eq]`.
+
+Simplify using the standard rewrite rules. Rewrite using `[Matrix.one_apply_ne hab.ne', sub_zero]`. Conclude with `h a b hab`.
+-/
 theorem low_close {s : GL (Fin n) L} {e : Fin n → L} (he : ∀ i, e i ≠ 0)
     (hs : (s : Matrix (Fin n) (Fin n) L) = Matrix.diagonal e) {g : GL (Fin n) L} (hg : IsLowUniM g)
     {B : WithZero (Multiplicative ℤ)}
@@ -245,16 +342,25 @@ theorem low_close {s : GL (Fin n) L} {e : Fin n → L} (he : ∀ i, e i ≠ 0)
   · rw [Matrix.one_apply_ne hab.ne', sub_zero]
     exact h a b hab
 
+/- English proof (translation)
+Rewrite using `[map_mul, map_mul, mul_right_comm]`. Conclude with `(mul_le_of_le_one_right' h2).trans h1`.
+-/
 theorem valuation_triple_mul_le {x y z : L} {B : WithZero (Multiplicative ℤ)} (h1 : Valued.v x * Valued.v z ≤ B)
     (h2 : Valued.v y ≤ 1) : Valued.v (x * y * z) ≤ B := by
   rw [map_mul, map_mul, mul_right_comm]
   exact (mul_le_of_le_one_right' h2).trans h1
 
+/- English proof (translation)
+Rewrite using `[map_mul, map_mul, mul_right_comm]`. Conclude with `(mul_le_of_le_one_left' h1).trans_lt h2`.
+-/
 theorem valuation_triple_mul_lt_one {x y z : L} (h1 : Valued.v x * Valued.v z ≤ 1) (h2 : Valued.v y < 1) :
     Valued.v (x * y * z) < 1 := by
   rw [map_mul, map_mul, mul_right_comm]
   exact (mul_le_of_le_one_left' h1).trans_lt h2
 
+/- English proof (translation)
+Establish `ha' : Valued.v a ≠ 0` using `(Valuation.ne_zero_iff _).2 ha`. Rewrite using `[map_inv₀]`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem ratio_le {a b : L} (ha : a ≠ 0) (h : Valued.v b ≤ Valued.v a) :
     Valued.v b * Valued.v a⁻¹ ≤ 1 := by
   have ha' : Valued.v a ≠ 0 := (Valuation.ne_zero_iff _).2 ha
@@ -262,6 +368,9 @@ theorem ratio_le {a b : L} (ha : a ≠ 0) (h : Valued.v b ≤ Valued.v a) :
   calc Valued.v b * (Valued.v a)⁻¹ ≤ Valued.v a * (Valued.v a)⁻¹ := by gcongr
     _ = 1 := mul_inv_cancel₀ ha'
 
+/- English proof (translation)
+Establish `ha' : Valued.v a ≠ 0` using `(Valuation.ne_zero_iff _).2 ha`. Rewrite using `[map_inv₀, map_pow, map_pow]`. Establish `h1 : Valued.v b ^ m ≤ (cc * Valued.v a) ^ m` using `by gcongr`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem ratio_pow_le {a b : L} (ha : a ≠ 0) (h : Valued.v b ≤ cc * Valued.v a) (m : ℕ) :
     Valued.v (b ^ m) * Valued.v (a ^ m)⁻¹ ≤ cc ^ m := by
   have ha' : Valued.v a ≠ 0 := (Valuation.ne_zero_iff _).2 ha
@@ -274,6 +383,11 @@ section Top
 
 open Filter Topology
 
+/- English proof (translation)
+Take `⟨γ, hγ⟩` from `Valued.mem_nhds.1 hA`. Take `⟨m₀, hm⟩` from `exists_pow_lt₀ cc_lt_one (Units.map (MonoidWithZeroHom.ValueGroup₀.embedding (f := .ofClass (Valued.v : Valuation L (WithZero (Multiplicative ℤ))))) γ)`. Use `filter_upwards [eventually_ge_atTop m₀] with m hm' y hy`. Use `hγ ?_` and prove the remaining obligations. Establish `h2 : Valued.v (y - x) < _` using `lt_of_le_of_lt (le_trans hy (pow_le_pow_right_of_le_one' cc_lt_one.le hm')) hm`.
+
+Conclude with `(Valuation.restrict_lt_iff_lt_embedding _).2 h2`.
+-/
 theorem ev_ball (x : L) (A : Set L) (hA : A ∈ 𝓝 x) :
     ∀ᶠ m : ℕ in atTop, {y : L | Valued.v (y - x) ≤ cc ^ m} ⊆ A := by
   obtain ⟨γ, hγ⟩ := Valued.mem_nhds.1 hA
@@ -285,6 +399,9 @@ theorem ev_ball (x : L) (A : Set L) (hA : A ∈ 𝓝 x) :
   have h2 : Valued.v (y - x) < _ := lt_of_le_of_lt (le_trans hy (pow_le_pow_right_of_le_one' cc_lt_one.le hm')) hm
   exact (Valuation.restrict_lt_iff_lt_embedding _).2 h2
 
+/- English proof (translation)
+Rewrite `hA` using `[nhds_pi, Filter.mem_pi]`. Take `⟨I, hI, t, ht, hsub⟩` from `hA`. Establish `: ∀ᶠ m in atTop, ∀ i, S m (a i) ⊆ t i` using `eventually_all.2 fun i => h _ _ (ht i)`. Use `filter_upwards [this] with m hm b hb`. Conclude with `hsub fun i _ => hm i (hb i)`.
+-/
 theorem ev_pi {ι X : Type} [Finite ι] [TopologicalSpace X] (a : ι → X) (S : ℕ → X → Set X)
     (h : ∀ x, ∀ A ∈ 𝓝 x, ∀ᶠ m in atTop, S m x ⊆ A) (A : Set (ι → X)) (hA : A ∈ 𝓝 a) :
     ∀ᶠ m in atTop, {b : ι → X | ∀ i, b i ∈ S m (a i)} ⊆ A := by
@@ -295,6 +412,9 @@ theorem ev_pi {ι X : Type} [Finite ι] [TopologicalSpace X] (a : ι → X) (S :
   filter_upwards [this] with m hm b hb
   exact hsub fun i _ => hm i (hb i)
 
+/- English proof (translation)
+Use `ev_pi (ι := Fin n) (X := Fin n → L) (1 : Matrix (Fin n) (Fin n) L) (fun m r => {b : Fin n → L | ∀ j, b j ∈ {y : L | Valued.v (y - r j) ≤ cc ^ m}}) (fun r => ev_pi r (fun m x => {y : L | Valued.v (y - x) ≤ cc ^ m}) ev_ball) A hA` as an intermediate fact. Use `filter_upwards [this] with m hm M hM`. Conclude with `hm fun a b => hM a b`.
+-/
 theorem ev_mat (A : Set (Matrix (Fin n) (Fin n) L)) (hA : A ∈ 𝓝 (1 : Matrix (Fin n) (Fin n) L)) :
     ∀ᶠ m : ℕ in atTop, ∀ M : Matrix (Fin n) (Fin n) L,
       (∀ a b, Valued.v (M a b - (1 : Matrix (Fin n) (Fin n) L) a b) ≤ cc ^ m) → M ∈ A := by
@@ -304,6 +424,11 @@ theorem ev_mat (A : Set (Matrix (Fin n) (Fin n) L)) (hA : A ∈ 𝓝 (1 : Matrix
   filter_upwards [this] with m hm M hM
   exact hm fun a b => hM a b
 
+/- English proof (translation)
+Take `⟨W, hW, rfl⟩` from `isOpen_induced_iff.1 hU`. Establish `hΦ : Continuous (fun p : Matrix (Fin n) (Fin n) L × Matrix (Fin n) (Fin n) L => (p.1, MulOpposite.op p.2))` using `continuous_fst.prodMk (MulOpposite.continuous_op.comp continuous_snd)`. Establish `hmem : ((1 : Matrix (Fin n) (Fin n) L), (1 : Matrix (Fin n) (Fin n) L)) ∈ (fun p : Matrix (Fin n) (Fin n) L × Matrix (Fin n) (Fin n) L => (p.1, MulOpposite.op p.2)) ⁻¹' W`. Establish `h2 : Units.embedProduct (Matrix (Fin n) (Fin n) L) (1 : GL (Fin n) L) ∈ W` using `h1`. Rewrite `h2` using `[map_one]`.
+
+Conclude with `h2`. Take `⟨A, hA, B, hB, hAB⟩` from `mem_nhds_prod_iff.1 ((hW.preimage hΦ).mem_nhds hmem)`. Take `⟨m, hmA, hmB⟩` from `((ev_mat A hA).and (ev_mat B hB)).exists`. Use `⟨m, fun g c1 c2 => ?_⟩` and prove the remaining obligations. Conclude with `hAB (Set.mk_mem_prod (hmA _ c1) (hmB _ c2))`.
+-/
 theorem open_shrink (U : Set (GL (Fin n) L)) (hU : IsOpen U) (h1 : (1 : GL (Fin n) L) ∈ U) :
     ∃ m : ℕ, ∀ g : GL (Fin n) L,
       (∀ a b, Valued.v ((g : Matrix (Fin n) (Fin n) L) a b - (1 : Matrix (Fin n) (Fin n) L) a b) ≤ cc ^ m) →
@@ -328,16 +453,35 @@ section Main
 
 variable (D : CassData (GL (Fin n) L))
 
+/- English proof (translation)
+Establish `h` using `(mem_IwGL_iff x).1 (hJ ▸ hx.1)`. Conclude with `⟨(hN _).1 hx.2, (hN _).1 (inv_mem hx.2), h.1, h.2⟩`.
+-/
 theorem upper_facts (hJ : D.J = IwGL L n) (hN : ∀ g, g ∈ D.N ↔ IsUniM g) {x : GL (Fin n) L}
     (hx : x ∈ D.J ⊓ D.N) : IsUniM x ∧ IsUniM x⁻¹ ∧ Integ x ∧ Integ x⁻¹ := by
   have h := (mem_IwGL_iff x).1 (hJ ▸ hx.1)
   exact ⟨(hN _).1 hx.2, (hN _).1 (inv_mem hx.2), h.1, h.2⟩
 
+/- English proof (translation)
+Establish `h` using `(mem_IwGL_iff x).1 (hJ ▸ hx.1)`. Conclude with `⟨(hNm _).1 hx.2, (hNm _).1 (inv_mem hx.2), h.1, h.2⟩`.
+-/
 theorem lower_facts (hJ : D.J = IwGL L n) (hNm : ∀ g, g ∈ D.Nm ↔ IsLowUniM g) {x : GL (Fin n) L}
     (hx : x ∈ D.J ⊓ D.Nm) : IsLowUniM x ∧ IsLowUniM x⁻¹ ∧ Integ x ∧ Integ x⁻¹ := by
   have h := (mem_IwGL_iff x).1 (hJ ▸ hx.1)
   exact ⟨(hNm _).1 hx.2, (hNm _).1 (inv_mem hx.2), h.1, h.2⟩
 
+/- English proof (translation)
+Take `⟨d, hd, hne, hdd⟩ : ∃ d : Fin n → L, (τ : Matrix (Fin n) (Fin n) L) = Matrix.diagonal d ∧ (∀ i, d i ≠ 0) ∧ ∀ i, (τ : Matrix (Fin n) (Fin n) L) i i = d i` from `⟨_, (diag_data ((hT _).1 hτ)).1, (diag_data ((hT _).1 hτ)).2, fun _ => rfl⟩`. Establish `hmono' : ∀ i j, i ≤ j → ordL (d j) ≤ ordL (d i)` using `by simpa only [hdd] using hmono`. Establish `hle : ∀ i j, i ≤ j → Valued.v (d i) * Valued.v (d j)⁻¹ ≤ 1` using `fun i j hij => ratio_le (hne j) (v_le_of_ordL_le (hne j) (hne i) (hmono' i j hij))`. Establish `hle' : ∀ i j, j ≤ i → Valued.v (d i)⁻¹ * Valued.v ((d j)⁻¹)⁻¹ ≤ 1` using `fun i j hij => by`. Rewrite using `[inv_inv, mul_comm]`.
+
+Conclude with `hle j i hij`. Establish `hs'` using `val_inv_diag hne hd`. Use `⟨fun x hx => ?_, fun x hx => ?_, fun x hx => ?_⟩` and prove the remaining obligations. Take `⟨u1, u2, i1, i2⟩` from `upper_facts D hJ hN hx`. Use `up_mem hne hd u1 u2 (fun i j hij => valuation_triple_mul_le (hle i j hij.le) (i1.1 i j)) (fun i j hij => valuation_triple_mul_le (hle i j hij.le) (i2.1 i j))` as an intermediate fact.
+
+Conclude with `⟨hJ ▸ this.1, (hN _).2 this.2⟩`. Take `⟨l1, l2, i1, i2⟩` from `lower_facts D hJ hNm hx`. Use `low_mem (fun i => inv_ne_zero (hne i)) hs' l1 l2 (fun i j hij => valuation_triple_mul_lt_one (hle' i j hij.le) (i1.2 i j hij)) (fun i j hij => valuation_triple_mul_lt_one (hle' i j hij.le) (i2.2 i j hij))` as an intermediate fact. Rewrite `this` using `[inv_inv]`. Conclude with `⟨hJ ▸ this.1, (hNm _).2 this.2⟩`.
+
+Take `⟨hdx, -⟩` from `diag_data ((hT _).1 hx.2)`. Establish `hc : τ * x = x * τ`. Apply `Units.ext` to reduce the goal to its premises. Rewrite using `[Units.val_mul, Units.val_mul, hd, hdx, Matrix.diagonal_mul_diagonal, Matrix.diagonal_mul_diagonal]`. Use `congr 1`.
+
+Use function extensionality and compare the values at `i`. Conclude with `mul_comm _ _`. Establish `e1 : τ * x * τ⁻¹ = x` using `by rw [hc, mul_inv_cancel_right]`. Establish `e2 : τ⁻¹ * x * τ = x` using `by rw [mul_assoc, ← hc, inv_mul_cancel_left]`. Rewrite using `[e1, e2]`.
+
+Conclude with `⟨hx, hx⟩`.
+-/
 theorem dom_core (hJ : D.J = IwGL L n) (hN : ∀ g, g ∈ D.N ↔ IsUniM g) (hNm : ∀ g, g ∈ D.Nm ↔ IsLowUniM g)
     (hT : ∀ g, g ∈ D.T ↔ IsDiagM g) (τ : GL (Fin n) L) (hτ : τ ∈ D.T)
     (hmono : ∀ i j : Fin n, i ≤ j → ordL ((τ : Matrix (Fin n) (Fin n) L) j j) ≤
@@ -377,6 +521,23 @@ theorem dom_core (hJ : D.J = IwGL L n) (hN : ∀ g, g ∈ D.N ↔ IsUniM g) (hNm
     rw [e1, e2]
     exact ⟨hx, hx⟩
 
+/- English proof (translation)
+Take `⟨d, hd, hne, hdd⟩ : ∃ d : Fin n → L, (τ : Matrix (Fin n) (Fin n) L) = Matrix.diagonal d ∧ (∀ i, d i ≠ 0) ∧ ∀ i, (τ : Matrix (Fin n) (Fin n) L) i i = d i` from `⟨_, (diag_data ((hT _).1 hτ)).1, (diag_data ((hT _).1 hτ)).2, fun _ => rfl⟩`. Establish `hst' : ∀ i j, i < j → ordL (d j) < ordL (d i)`. Introduce `i j hij`. Use `hst i j hij` as an intermediate fact. Rewrite `this` using `[hdd, hdd]`. Then use the resulting hypothesis.
+
+Establish `hr : ∀ i j, i < j → ∀ m : ℕ, Valued.v (d i ^ m) * Valued.v (d j ^ m)⁻¹ ≤ cc ^ m` using `fun i j hij m => ratio_pow_le (hne j) (v_le_of_ordL_lt (hne j) (hne i) (hst' i j hij)) m`. Establish `hpow : ∀ m : ℕ, ((τ ^ m : GL (Fin n) L) : Matrix (Fin n) (Fin n) L) = Matrix.diagonal (fun i => d i ^ m)` using `fun m => by`. Rewrite using `[Units.val_pow_eq_pow_val, hd, Matrix.diagonal_pow]`. Both sides reduce to the same expression. Establish `hnep : ∀ m : ℕ, ∀ i, d i ^ m ≠ 0` using `fun m i => pow_ne_zero _ (hne i)`.
+
+Use `⟨fun x hx => ?_, fun U hU h1 => ?_⟩` and prove the remaining obligations. Establish `u1 : IsUniM x` using `(hN _).1 hx`. Establish `u2 : IsUniM x⁻¹` using `(hN _).1 (inv_mem hx)`. Use `choose f hf using fun p : Fin n × Fin n => exists_pow_mul_le (Valued.v ((x : Matrix (Fin n) (Fin n) L) p.1 p.2))`. Use `choose f' hf' using fun p : Fin n × Fin n => exists_pow_mul_le (Valued.v (((x⁻¹ : GL (Fin n) L) : Matrix (Fin n) (Fin n) L) p.1 p.2))`.
+
+Establish `hM : ∀ p, f p ≤ Finset.univ.sup f ⊔ Finset.univ.sup f'` using `fun p => le_sup_of_le_left (Finset.le_sup (Finset.mem_univ p))`. Establish `hM' : ∀ p, f' p ≤ Finset.univ.sup f ⊔ Finset.univ.sup f'` using `fun p => le_sup_of_le_right (Finset.le_sup (Finset.mem_univ p))`. Generalize the expression as in `Finset.univ.sup f ⊔ Finset.univ.sup f' = M at hM hM'`. Establish `key : ∀ (y : L) (i j : Fin n), i < j → cc ^ M * Valued.v y ≤ 1 → Valued.v (d i ^ M * y * (d j ^ M)⁻¹) ≤ 1`. Introduce `y i j hij hy`.
+
+Rewrite using `[map_mul, map_mul, mul_right_comm]`. Establish `h2` using `hr i j hij M`. Combine the equalities or inequalities in the displayed calculation. Use `up_mem (hnep M) (hpow M) u1 u2 (fun i j hij => key _ i j hij (hf (i, j) M (hM _))) (fun i j hij => key _ i j hij (hf' (i, j) M (hM' _)))` as an intermediate fact. Conclude with `⟨M, hJ ▸ this.1, (hN _).2 this.2⟩`.
+
+Take `⟨m, hm⟩` from `open_shrink U hU h1`. Use `⟨m, fun x hx => ?_⟩` and prove the remaining obligations. Take `⟨l1, l2, i1, i2⟩` from `lower_facts D hJ hNm hx`. Establish `hs` using `val_inv_diag (hnep m) (hpow m)`. Establish `hes : ∀ i, (d i ^ m)⁻¹ ≠ 0` using `fun i => inv_ne_zero (hnep m i)`.
+
+Establish `hb : ∀ a b, b < a → Valued.v (d a ^ m)⁻¹ * Valued.v ((d b ^ m)⁻¹)⁻¹ ≤ cc ^ m` using `fun a b hab => by`. Rewrite using `[inv_inv, mul_comm]`. Conclude with `hr b a hab m`. Establish `c1` using `low_close hes hs l1 (B := cc ^ m) (fun a b hab => valuation_triple_mul_le (hb a b hab) (i1.1 a b))`. Establish `c2` using `low_close hes hs l2 (B := cc ^ m) (fun a b hab => valuation_triple_mul_le (hb a b hab) (i2.1 a b))`.
+
+Use `hm _ c1 (by rw [conj_inv]; exact c2)` as an intermediate fact. Rewrite `this` using `[inv_inv]`. Then use the resulting hypothesis.
+-/
 theorem strict_core (hJ : D.J = IwGL L n) (hN : ∀ g, g ∈ D.N ↔ IsUniM g) (hNm : ∀ g, g ∈ D.Nm ↔ IsLowUniM g)
     (hT : ∀ g, g ∈ D.T ↔ IsDiagM g) (τ : GL (Fin n) L) (hτ : τ ∈ D.T) (hst : IsStrictDom τ) :
     (∀ x ∈ D.N, ∃ j : ℕ, τ ^ j * x * (τ ^ j)⁻¹ ∈ D.J ⊓ D.N) ∧

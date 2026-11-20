@@ -10,6 +10,37 @@ section
 open Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotions.N Formalism.ConjugateSelfDual ReciprocityTheory.Gal NumberField IsDedekindDomain Polynomial
 noncomputable section
 namespace GlobalTheory.MuBlock
+/- English proof (translation)
+Establish `hLP` using `hT.1`. Establish `hAut` using `hT.2.1`. Establish `heu` using `D.naut.etaT_unr w`. Establish `hed : D.naut.lpDim (D.naut.locG D.naut.etaT w) = 1` using `D.naut.locG_dim _ _`. Take `⟨e, he⟩` from `frobEig_eq_single D.nd D.naut _ heu hed`.
+
+Establish `hen : ‖e‖ = 1` using `(D.naut.tempered_unr _ heu).1 (hAut.2.2.1 w) e (by rw [he]; exact Multiset.mem_singleton_self e)`. Establish `he0 : e ≠ 0` using `by intro h; rw [h] at hen; simp at hen`. Take `⟨hbu, hbe⟩` from `D.naut.etaTinv_def w`. Establish `hbd : D.naut.lpDim (D.naut.locG D.naut.etaTinv w) = 1` using `D.naut.locG_dim _ _`. Establish `hb : D.naut.frobEig (D.naut.locG D.naut.etaTinv w) = {e⁻¹}` using `by rw [hbe, he]; simp`.
+
+Establish `hbn : ‖e⁻¹‖ = 1` using `by rw [norm_inv, hen, inv_one]`. Take `⟨m, hm⟩` from `frobEig_eq_single D.nd D.naut _ hμ (D.naut.locG_dim _ _)`. Establish `hmn : ‖m‖ = 1` using `(D.naut.tempered_unr _ hμ).1 (hAut.2.2.2 i w) m (by rw [hm]; exact Multiset.mem_singleton_self m)`. Establish `htw : D.naut.frobEig (D.naut.locG (D.naut.tw (D.naut.muC i) D.naut.etaTinv) w) = {m * e⁻¹}`. Rewrite using `[D.naut.locG_tw, D.naut.frobEig_char _ _ (e⁻¹) hμ hbu hbd hb, hm]`.
+
+Simplify using the standard rewrite rules. Establish `hV` using `h3 i σ P hth w hs`. Establish `hiso` using `frobEig_isoLoc D.nd D.naut Pa w hPa`. Establish `hVu : D.naut.unr (D.naut.locV i P w)` using `by rw [← hB.2.2.2.1 w hs]; exact hiso.1`. Establish `hinv : D.naut.lpChar (D.naut.locG D.naut.etaTinv w) (D.naut.locG D.naut.etaT w) = D.naut.lpUnr w {1}`.
+
+Establish `hu` using `D.naut.unr_char _ _ hed hbu heu`. Rewrite using `[D.naut.unr_eq_lpUnr _ hu, D.naut.frobEig_char _ _ e hbu heu hed he, hb]`. Simplify using `[he0]`. Establish `hX : D.naut.lpChar (D.naut.locV i P w) (D.naut.locG D.naut.etaT w) = D.naut.lpSum (D.naut.locW i σ w) (spehLoc D.nd D.naut (muPart D.nd D.naut i) w)`. Rewrite using `[hV, (hLP w (D.naut.lpSum (D.naut.locW i σ w) (spehLoc D.nd D.naut (muPart D.nd D.naut i) w)) (D.naut.locW i σ w) (D.naut.locG D.naut.etaTinv w) (D.naut.locG D.naut.etaT w) 0 hbd hed).2.2.2.1, hinv]`.
+
+Conclude with `(hLP w _ (D.naut.locW i σ w) (D.naut.locG D.naut.etaT w) (D.naut.locG D.naut.etaT w) 0 hed hed).2.2.2.2.1`. Establish `hXu : D.naut.unr (D.naut.lpSum (D.naut.locW i σ w) (spehLoc D.nd D.naut (muPart D.nd D.naut i) w))`. Rewrite using `[← hX]`. Conclude with `D.naut.unr_char _ _ hed hVu heu`. Take `⟨hWu, hSu⟩` from `(D.naut.unr_sum _ _).1 hXu`.
+
+Establish `hmu` using `frobEig_spehLoc D.nd D.naut (muPart D.nd D.naut i) w hμ`. Simplify using `only [muPart] at hmu`. Establish `hVe : D.naut.frobEig (D.naut.locV i P w) = (D.naut.frobEig (D.naut.locW i σ w)).map (· * e⁻¹) + ((List.range D.R.t).map fun k => ({(m * e⁻¹) * ((normV w : ℕ) : ℂ) ^ (((((D.R.t : ℝ) - 1) / 2 - (k : ℝ) : ℝ)) : ℂ)} : Multiset ℂ)).sum`. Rewrite using `[hV, D.naut.frobEig_char _ _ _ hXu hbu hbd hb, D.naut.frobEig_sum _ _ hWu hSu, Multiset.map_add]`. Simplify using `only [muPart]`.
+
+Rewrite using `[hmu.2, hm]`. Use `congr 1`. Rewrite using `[← Multiset.coe_mapAddMonoidHom, map_list_sum, List.map_map]`. Use `congr 1`. Apply `List.map_congr_left` to reduce the goal to its premises.
+
+Introduce `k _`. Simplify using `only [Function.comp_apply, Multiset.coe_mapAddMonoidHom, Multiset.map_singleton]`. Put the polynomial expressions in normal form. Establish `key` using `UpperTheory.GalN.string_count (normV w) D.R.t (Pa.map fun p => (p.d, D.naut.frobEig (D.naut.locG p.π w))) ((D.naut.frobEig (D.naut.locW i σ w)).map (· * e⁻¹)) (m * e⁻¹) (by exact_mod_cast GlobalTheory.LocalInv.one_lt_normV w) D.R.t_odd.pos (by rw [norm_mul, hmn, hbn, one_mul]) (b …`. Introduce `x hx`.
+
+Take `⟨α, hα, rfl⟩` from `Multiset.mem_map.1 hx`. Rewrite using `[norm_mul, hbn, mul_one]`. Use `hRS i σ hσ w hs hWu α hα` as an intermediate fact. Rewrite using `[absNorm_eq_normV] at this)` and apply the resulting hypothesis. Use the proof step `(by`.
+
+Introduce `x hx`. Take `⟨p, hp, rfl⟩` from `List.mem_map.1 hx`. Establish `k` using `_root_.GlobalTheory.PartUnitary.frobEig_openB_and_norm_one_of_isBCV D hT h7 i P Pa hB p hp w (hPa p hp)`. Use `⟨(hB.1 p hp).2.1, ?_, fun α hα => (k α hα).1, fun ht α hα => (k α hα).2 (UpperTheory.GalN.rank_one_of_long hB.2.2.1 hp (hB.1 p hp).1 ht)⟩` and prove the remaining obligations. Introduce `h0`.
+
+Express the relevant statement in the definitionally equal form `D.naut.frobEig (D.naut.locG p.π w) = 0 at h0`. Establish `h1` using `D.naut.frobEig_card _ (hPa p hp)`. Rewrite `h1` using `[h0, D.naut.locG_dim]`. Use `(hB.1 p hp).1` as an intermediate fact. Simplify using `at h1`.
+
+Use the proof step `omega)`. Use the proof step `(by`. Establish `hiso2` using `hiso.2`. Simplify using `only [GlobalTheory.LocalInv.list_coe, List.map_map] at hiso2`. Rewrite using `[List.map_map]`.
+
+Conclude with `hiso2.symm.trans ((congrArg D.naut.frobEig (hB.2.2.2.1 w hs)).trans hVe))`. Use `⟨?_, fun p hp hpt => ?_⟩` and prove the remaining obligations. Take `⟨x, hx, hxt⟩` from `key.1`. Take `⟨p, hp, rfl⟩` from `List.mem_map.1 hx`. Conclude with `⟨p, hp, hxt⟩`.
+
+Take `⟨h1, h2⟩` from `key.2 _ (List.mem_map_of_mem (f := fun p : Part D.naut.CG => (p.d, D.naut.frobEig (D.naut.locG p.π w))) hp) hpt`. Conclude with `⟨h1, h2.trans htw.symm⟩`.
+-/
 theorem split_step_o_alt (D : D7) (hT : SumRepresentations.tie0 D) (h3 : SumRepresentations.adm3 D) (h7 : _root_.Formalism.MainNotions.SumRepresentations.adm7_alt D)
     (hRS : GlobalTheory.RowCopy.RowSize D) (i : D.nd.Loc) (σ : D.what₂.FT) (P : D.naut.AV i)
     (Pa : List (Part D.naut.CG)) (hσ : D.what₂.isot (D.nd.j i) σ ≠ ⊥) (hth : thetaOf D.nd D.naut i σ P)

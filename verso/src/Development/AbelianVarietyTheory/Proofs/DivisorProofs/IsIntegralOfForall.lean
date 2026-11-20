@@ -14,6 +14,9 @@ variable {L Ω : Type} [Field L] [Field Ω] [Algebra L Ω] (V : ValuationSubring
 abbrev below (L : Type) {Ω : Type} [Field L] [Field Ω] [Algebra L Ω] (V : ValuationSubring Ω) :
     ValuationSubring L := V.comap (algebraMap L Ω)
 
+/- English proof (translation)
+Assume the negation of the conclusion as `hx`. Take `⟨U, hU, hxU⟩` from `Subring.exists_le_valuationSubring_of_isIntegrallyClosedIn (R := (integralClosure (below L V) Ω).toSubring) (x := x) hx`. Conclude with `hxU (h U fun a ha => hU ((integralClosure (below L V) Ω).algebraMap_mem ⟨a, ha⟩))`.
+-/
 theorem isIntegral_of_forall {x : Ω}
     (h : ∀ U : ValuationSubring Ω, (∀ a ∈ below L V, algebraMap L Ω a ∈ U) → x ∈ U) :
     IsIntegral (below L V) x := by
@@ -22,12 +25,46 @@ theorem isIntegral_of_forall {x : Ω}
     (R := (integralClosure (below L V) Ω).toSubring) (x := x) hx
   exact hxU (h U fun a ha => hU ((integralClosure (below L V) Ω).algebraMap_mem ⟨a, ha⟩))
 
+/- English proof (translation)
+Set `f : below L V →+* V` to `((algebraMap L Ω).comp (below L V).subtype).codRestrict V fun a => a.2`. Establish `h : IsIntegral V x` using `IsIntegral.map_of_comp_eq f (RingHom.id Ω) (by ext; rfl) hx`. Take `⟨y, rfl⟩` from `IsIntegrallyClosed.isIntegral_iff.1 h`. Conclude with `y.2`.
+-/
 theorem mem_of_isIntegral {x : Ω} (hx : IsIntegral (below L V) x) : x ∈ V := by
   let f : below L V →+* V := ((algebraMap L Ω).comp (below L V).subtype).codRestrict V fun a => a.2
   have h : IsIntegral V x := IsIntegral.map_of_comp_eq f (RingHom.id Ω) (by ext; rfl) hx
   obtain ⟨y, rfl⟩ := IsIntegrallyClosed.isIntegral_iff.1 h
   exact y.2
 
+/- English proof (translation)
+Break down `eq_or_ne x 0 with rfl | hx0` into its components or cases. Conclude with `⟨1, isIntegral_one, by simpa using isIntegral_zero, map_one _⟩`. Take `⟨p, hp0, hp⟩` from `Algebra.IsAlgebraic.isAlgebraic (R := L) x`. Use `set n := p.natDegree + 1 with hn`. Set `w : ℕ → _` to `fun i => V.valuation (algebraMap L Ω (p.coeff i))`.
+
+Take `⟨m, hm, hmax⟩` from `(Finset.range n).exists_max_image w ⟨0, by simp [hn]⟩`. Establish `hwm : w m ≠ 0`. Introduce `h`. Use `hmax p.natDegree (by simp [hn])` as an intermediate fact. Rewrite `this` using `[h, le_zero_iff]`.
+
+Simplify using `[w, hp0] at this`. Establish `hcm : p.coeff m ≠ 0` using `by intro h; simp [w, h] at hwm`. Set `a : ℕ → L` to `fun i => p.coeff i / p.coeff m`. Establish `hva : ∀ i, V.valuation (algebraMap L Ω (a i)) = w i / w m` using `fun i => by`. Simplify using `[a, w]`.
+
+Establish `hle : ∀ i < n, V.valuation (algebraMap L Ω (a i)) ≤ 1` using `fun i hi => by`. Rewrite using `[hva]`. Conclude with `div_le_one_of_le₀ (hmax i (Finset.mem_range.2 hi)) zero_le'`. Establish `haW : ∀ i < n, a i ∈ below L V` using `fun i hi => (V.valuation_le_one_iff _).1 (hle i hi)`. Take `⟨j, hj, hjmax⟩` from `((Finset.range n).filter fun i => V.valuation (algebraMap L Ω (a i)) = 1).exists_max_image id ⟨m, Finset.mem_filter.2 ⟨hm, by rw [hva, div_self hwm]⟩⟩`.
+
+Take `⟨hjn, hj1⟩` from `Finset.mem_filter.1 hj`. Rewrite `hjn` using `[Finset.mem_range]`. Establish `hsum : ∑ i ∈ Finset.range n, algebraMap L Ω (a i) * x ^ i = 0`. Rewrite `hp` using `[Polynomial.aeval_eq_sum_range]`. Establish `: ∑ i ∈ Finset.range n, algebraMap L Ω (a i) * x ^ i = (∑ i ∈ Finset.range n, p.coeff i • x ^ i) / algebraMap L Ω (p.coeff m)`.
+
+Rewrite using `[Finset.sum_div]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Simplify using `only [a, map_div₀, Algebra.smul_def]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[this, hp, zero_div]`.
+
+Take `⟨k, hk⟩ : ∃ k, n = j + (k + 1)` from `⟨n - j - 1, by omega⟩`. Set `y : Ω` to `∑ i ∈ Finset.range (k + 1), algebraMap L Ω (a (j + i)) * x ^ i`. Establish `hxy : x * y = - ∑ i ∈ Finset.range j, algebraMap L Ω (a i) * x⁻¹ ^ (j - 1 - i)`. Rewrite `hsum` using `[hk, Finset.sum_range_add]`. Establish `h1 : ∑ i ∈ Finset.range (k + 1), algebraMap L Ω (a (j + i)) * x ^ (j + i) = x ^ j * y`.
+
+Rewrite using `[Finset.mul_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree. Establish `h2 : x * ∑ i ∈ Finset.range j, algebraMap L Ω (a i) * x ^ i = x ^ j * ∑ i ∈ Finset.range j, algebraMap L Ω (a i) * x⁻¹ ^ (j - 1 - i)`. Rewrite using `[Finset.mul_sum, Finset.mul_sum]`.
+
+Use `Finset.sum_congr rfl fun i hi => ?_` and prove the remaining obligations. Rewrite `hi` using `[Finset.mem_range]`. Take `⟨l, rfl⟩ : ∃ l, j = i + 1 + l` from `⟨j - i - 1, by omega⟩`. Rewrite using `[show i + 1 + l - 1 - i = l by omega, inv_pow]`. Clear the denominators using the available nonvanishing facts.
+
+Expand and normalize the polynomial expressions, which then agree. Apply `mul_left_cancel₀ (pow_ne_zero j hx0)` to reduce the goal to its premises. Rewrite using `[mul_neg, ← h2, mul_left_comm, ← h1]`. Take the linear combination `x * hsum`. Establish `key : ∀ U : ValuationSubring Ω, (∀ a ∈ below L V, algebraMap L Ω a ∈ U) → y ∈ U ∧ x * y ∈ U`.
+
+Introduce `U hU`. Break down `U.mem_or_inv_mem x with h | h` into its components or cases. Establish `: y ∈ U` using `sum_mem fun i hi => mul_mem (hU _ (haW _ (by have := Finset.mem_range.1 hi; omega))) (pow_mem h _)`. Conclude with `⟨this, mul_mem h this⟩`. Establish `: x * y ∈ U`.
+
+Rewrite using `[hxy]`. Conclude with `neg_mem (sum_mem fun i hi => mul_mem (hU _ (haW _ (by have := Finset.mem_range.1 hi; omega))) (pow_mem h _))`. Use `⟨?_, this⟩` and prove the remaining obligations. Establish `h3` using `mul_mem h this`. Rewrite `h3` using `[inv_mul_cancel_left₀ hx0]`. Then use the resulting hypothesis.
+
+Use `⟨y, isIntegral_of_forall V fun U hU => (key U hU).1, isIntegral_of_forall V fun U hU => (key U hU).2, ?_⟩` and prove the remaining obligations. Simplify using `only [y]`. Rewrite using `[Finset.sum_range_succ', Valuation.map_add_eq_of_lt_right]`. Simplify using `using hj1`. Rewrite using `[show V.valuation (algebraMap L Ω (a (j + 0)) * x ^ 0) = 1 by simpa using hj1]`.
+
+Use `Valuation.map_sum_lt _ one_ne_zero fun i hi => ?_` and prove the remaining obligations. Rewrite `hi` using `[Finset.mem_range]`. Establish `h1 : V.valuation (algebraMap L Ω (a (j + (i + 1)))) < 1`. Use `lt_of_le_of_ne (hle _ (by omega)) fun h => ?_` and prove the remaining obligations. Use `hjmax (j + (i + 1)) (Finset.mem_filter.2 ⟨Finset.mem_range.2 (by omega), h⟩)` as an intermediate fact.
+
+Simplify using `at this`. Establish `h2 : V.valuation (x ^ (i + 1)) ≤ 1` using `(V.valuation_le_one_iff _).2 (pow_mem hx _)`. Rewrite using `[map_mul]`. Conclude with `lt_of_le_of_lt (mul_le_of_le_one_right' h2) h1`.
+-/
 theorem exists_frac [Algebra.IsAlgebraic L Ω] {x : Ω} (hx : x ∈ V) :
     ∃ y : Ω, IsIntegral (below L V) y ∧ IsIntegral (below L V) (x * y) ∧ V.valuation y = 1 := by
   classical
@@ -113,6 +150,13 @@ theorem exists_frac [Algebra.IsAlgebraic L Ω] {x : Ω} (hx : x ∈ V) :
     rw [map_mul]
     exact lt_of_le_of_lt (mul_le_of_le_one_right' h2) h1
 
+/- English proof (translation)
+Take `⟨y, hy, hxy, hv⟩` from `exists_frac (L := L) V hx`. Establish `h1` using `h y hy`. Establish `h2` using `h _ hxy`. Establish `h3 : V.valuation (s y) = 1`. Establish `: s y = (s y - y) + y` using `by ring`.
+
+Rewrite using `[this, Valuation.map_add_eq_of_lt_right _ (by rwa [hv]), hv]`. Establish `h4 : (s x - x) * s y = (s (x * y) - x * y) - x * (s y - y)`. Rewrite using `[map_mul]`. Expand and normalize the polynomial expressions, which then agree. Establish `h5 : V.valuation (x * (s y - y)) < 1`.
+
+Rewrite using `[map_mul]`. Conclude with `lt_of_le_of_lt (mul_le_of_le_one_left' ((V.valuation_le_one_iff _).2 hx)) h1`. Establish `h6` using `Valuation.map_sub_lt _ h2 h5`. Rewrite `h6` using `[← h4, map_mul, h3, mul_one]`. Then use the resulting hypothesis.
+-/
 theorem congr_of_integral [Algebra.IsAlgebraic L Ω] (s : Ω →+* Ω)
     (h : ∀ b : Ω, IsIntegral (below L V) b → V.valuation (s b - b) < 1) {x : Ω} (hx : x ∈ V) :
     V.valuation (s x - x) < 1 := by
@@ -135,6 +179,9 @@ end
 section
 variable {L Ω : Type} [Field L] [Field Ω] [Algebra L Ω] (V : ValuationSubring Ω)
 
+/- English proof (translation)
+Set `f : below L V →+* below L V` to `(t.comp (below L V).subtype).codRestrict _ fun a => ht a a.2`. Conclude with `IsIntegral.map_of_comp_eq f s (RingHom.ext fun a => (hst a).symm) hx`.
+-/
 theorem isIntegral_map (s : Ω →+* Ω) (t : L →+* L) (hst : ∀ y, s (algebraMap L Ω y) = algebraMap L Ω (t y))
     (ht : ∀ y ∈ below L V, t y ∈ below L V) {x : Ω} (hx : IsIntegral (below L V) x) :
     IsIntegral (below L V) (s x) := by
@@ -146,12 +193,49 @@ def centre (L : Type) {Ω : Type} [Field L] [Field Ω] [Algebra L Ω] (V : Valua
   (IsLocalRing.maximalIdeal V).comap
     ((integralClosure (below L V) Ω).val.toRingHom.codRestrict V fun b => mem_of_isIntegral V b.2)
 
+/- English proof (translation)
+Rewrite using `[centre, Ideal.mem_comap, ValuationSubring.valuation_lt_one_iff]`. Both sides reduce to the same expression.
+-/
 theorem mem_centre (b : integralClosure (below L V) Ω) : b ∈ centre L V ↔ V.valuation (b : Ω) < 1 := by
   rw [centre, Ideal.mem_comap, ValuationSubring.valuation_lt_one_iff]
   rfl
 
+/- English proof (translation)
+The claim follows from `Ideal.comap_isPrime _ _`.
+-/
 theorem centre_isPrime : (centre L V).IsPrime := Ideal.comap_isPrime _ _
 
+/- English proof (translation)
+Set `W` to `below L V`. Set `B` to `integralClosure W Ω`. Set `G` to `Ω ≃ₐ[L] Ω`. Use `letI : TopologicalSpace B := ⊥`. Use `haveI : DiscreteTopology B := ⟨rfl⟩`.
+
+Use `haveI : ContinuousSMul G B := by`. Rewrite using `[continuousSMul_iff_stabilizer_isOpen]`. Introduce `b`. Establish `h` using `stabilizer_isOpen_of_isIntegral (K := L) (L := Ω) (b : Ω)`. Use `h using 1` and compare the differences between its conclusion and the goal.
+
+Use extensionality with `g`. Simplify using `only [SetLike.mem_coe, MulAction.mem_stabilizer_iff, Subtype.ext_iff]`. Both sides reduce to the same expression. Use `haveI : Algebra.IsInvariant W B G := ⟨fun b hb => by`. Establish `h1 : (b : Ω) ∈ (⊥ : IntermediateField L Ω)`.
+
+Rewrite using `[InfiniteGalois.mem_bot_iff_fixed]`. Conclude with `fun g => congrArg Subtype.val (hb g)`. Take `⟨y, hy⟩` from `IntermediateField.mem_bot.1 h1`. Conclude with `⟨⟨y, by`. Express the relevant statement in the definitionally equal form `algebraMap L Ω y ∈ V`.
+
+Rewrite using `[hy]`. Conclude with `mem_of_isIntegral V b.2⟩, Subtype.ext hy⟩⟩`. Establish `hst' : ∀ y, s.symm (algebraMap L Ω y) = algebraMap L Ω (t.symm y)` using `fun y => by`. Rewrite using `[RingEquiv.symm_apply_eq, hst, RingEquiv.apply_symm_apply]`. Set `φ : B ≃+* B` to `{ toFun := fun b => ⟨s b, isIntegral_map V (s : Ω →+* Ω) (t : L →+* L) hst (fun y hy => (ht y).2 hy) b.2⟩ invFun := fun b => ⟨s.symm b, isIntegral_map V (s.symm : Ω →+* Ω) (t.symm : L →+* L) hst' (fun y hy => (ht _).1 (by simpa using hy)) b.2⟩ left_inv := fun b => Subtype.ext (s. …`.
+
+Set `P : Ideal B` to `centre L V`. Use `haveI : P.IsPrime := centre_isPrime V`. Establish `hφ : ∀ a : W, φ (algebraMap W B a) - algebraMap W B a ∈ P` using `fun a => by`. Rewrite using `[mem_centre]`. Use `ht1 a a.2` as an intermediate fact.
+
+Rewrite `this` using `[map_sub, ← hst]`. Conclude with `this`. Establish `hφW : ∀ a : W, ∃ a' : W, φ (algebraMap W B a') = algebraMap W B a` using `fun a => ⟨⟨t.symm a, (ht _).1 (by simp)⟩, Subtype.ext (by`. Express the relevant statement in the definitionally equal form `s (algebraMap L Ω (t.symm a)) = algebraMap L Ω a`. Rewrite using `[hst, RingEquiv.apply_symm_apply])⟩`.
+
+Set `Q : Ideal B` to `P.map φ`. Use `haveI : Q.IsPrime := Ideal.map_isPrime_of_equiv φ`. Establish `hQ : ∀ b, φ b ∈ Q ↔ b ∈ P` using `fun b => Ideal.apply_mem_of_equiv_iff`. Establish `hQP : Q.under W = P.under W`. Use extensionality with `a`.
+
+Take `⟨a', ha'⟩` from `hφW a`. Rewrite using `[Ideal.under_def, Ideal.under_def, Ideal.mem_comap, Ideal.mem_comap, ← ha', hQ]`. Use `hφ a'` as an intermediate fact. Conclude with `⟨fun h => by simpa using P.add_mem this h, fun h => by simpa using P.sub_mem h this⟩`. Take `⟨g, hg⟩` from `Algebra.IsInvariant.exists_smul_of_under_eq_of_profinite (A := W) (G := G) Q P hQP`.
+
+Set `ψ : B ≃+* B` to `φ.trans (MulSemiringAction.toRingEquiv G B g)`. Establish `hψ : P = P.map (ψ : B →+* B)`. Use extensionality with `b`. Take `⟨b, rfl⟩` from `ψ.surjective b`. Rewrite using `[Ideal.map_coe, Ideal.apply_mem_of_equiv_iff, ← hQ b]`.
+
+Use `conv_lhs => rw [hg]`. Conclude with `Ideal.smul_mem_pointwise_smul_iff`. Set `e : (B ⧸ P) ≃ₐ[W ⧸ P.under W] (B ⧸ P)` to `{ Ideal.quotientEquiv P P ψ hψ with commutes' := by`. Introduce `a`. Take `⟨a, rfl⟩` from `Ideal.Quotient.mk_surjective a`.
+
+Express the relevant statement in the definitionally equal form `Ideal.Quotient.mk P (g • φ (algebraMap W B a)) = Ideal.Quotient.mk P (algebraMap W B a)`. Rewrite using `[Ideal.Quotient.eq]`. Take `⟨a', ha'⟩ : ∃ a' : W, φ (algebraMap W B a) = algebraMap W B a'` from `⟨⟨t a, (ht _).2 a.2⟩, Subtype.ext (hst a)⟩`. Use `hφ a` as an intermediate fact. Rewrite `this`, the goal using `[ha']`.
+
+Rewrite using `[smul_algebraMap] }` and apply the resulting hypothesis. Take `⟨k, hk⟩` from `Ideal.Quotient.stabilizerHom_surjective_of_profinite (G := G) (P.under W) P e`. Use `⟨(k : G)⁻¹ * g, fun b hb => ?_⟩` and prove the remaining obligations. Establish `h1 : (k : G) • (⟨b, hb⟩ : B) - ψ ⟨b, hb⟩ ∈ P`. Rewrite using `[← Ideal.Quotient.eq]`.
+
+Conclude with `DFunLike.congr_fun hk (Ideal.Quotient.mk P ⟨b, hb⟩)`. Establish `h2 : (k : G)⁻¹ • ((k : G) • (⟨b, hb⟩ : B) - ψ ⟨b, hb⟩) ∈ P`. Establish `h3 : (k : G)⁻¹ • P = P` using `(k⁻¹).2`. Conclude with `h3.le (Ideal.smul_mem_pointwise_smul_iff.2 h1)`. Rewrite `h2` using `[smul_sub, inv_smul_smul, mem_centre]`.
+
+Rewrite using `[← Valuation.map_sub_swap]`. Conclude with `h2`.
+-/
 theorem exists_correction [IsGalois L Ω] (s : Ω ≃+* Ω) (t : L ≃+* L)
     (hst : ∀ y, s (algebraMap L Ω y) = algebraMap L Ω (t y))
     (ht : ∀ y, t y ∈ below L V ↔ y ∈ below L V)
@@ -245,6 +329,21 @@ end
 
 open GlobalTheory.Published.AbVarRed in
 
+/- English proof (translation)
+Take `⟨h1, h2⟩` from `(mem_inertia_iff _ _).1 hτ`. Establish `hst : ∀ y : L, τ.liftNormal Ω (algebraMap L Ω y) = algebraMap L Ω (τ y)` using `fun y => τ.liftNormal_commutes Ω y`. Establish `ht : ∀ y : L, τ y ∈ below L V ↔ y ∈ below L V` using `fun y => by conv_lhs => rw [below, ← h1]`. Conclude with `ValuationSubring.smul_mem_pointwise_smul_iff`. Establish `ht1 : ∀ y ∈ below L V, V.valuation (algebraMap L Ω (τ y - y)) < 1` using `fun y hy => by`.
+
+Establish `h` using `h2 y hy`. Establish `he` using `(Valuation.isEquiv_valuation_valuationSubring (V.valuation.comap (algebraMap L Ω)))`. Establish `hv : (V.valuation.comap (algebraMap L Ω)).valuationSubring = V.comap (algebraMap L Ω)`. Use extensionality with `z`. Conclude with `V.valuation_le_one_iff _`.
+
+Rewrite `he` using `[hv]`. Conclude with `he.lt_one_iff_lt_one.2 h`. Take `⟨g, hg⟩` from `exists_correction V (τ.liftNormal Ω).toRingEquiv τ.toRingEquiv hst ht ht1`. Set `σ : Ω ≃ₐ[K] Ω` to `g.restrictScalars K * τ.liftNormal Ω`. Establish `hσ : ∀ y : L, σ (algebraMap L Ω y) = algebraMap L Ω (τ y)` using `fun y => by`.
+
+Express the relevant statement in the definitionally equal form `g (τ.liftNormal Ω (algebraMap L Ω y)) = _`. Rewrite using `[hst, AlgEquiv.commutes]`. Establish `hσ' : ∀ y : L, σ.symm (algebraMap L Ω y) = algebraMap L Ω (τ.symm y)` using `fun y => by`. Rewrite using `[AlgEquiv.symm_apply_eq, hσ, AlgEquiv.apply_symm_apply]`. Establish `h3 : ∀ x ∈ V, V.valuation (σ x - x) < 1` using `fun x hx => congr_of_integral (L := L) V (σ : Ω →+* Ω) hg hx`.
+
+Establish `h4 : ∀ x ∈ V, V.valuation (σ.symm x - x) < 1` using `fun x hx => congr_of_integral (L := L) V (σ.symm : Ω →+* Ω) (fun b hb => by`. Establish `h5 : V.valuation (σ (σ.symm b) - σ.symm b) < 1` using `hg _ (isIntegral_map V (σ.symm : Ω →+* Ω) (τ.symm : L →+* L) hσ' (fun y hy => (ht _).1 (by simpa using hy)) hb)`. Rewrite `h5` using `[AlgEquiv.apply_symm_apply, Valuation.map_sub_swap]`. Conclude with `h5) hx`. Establish `h6 : ∀ z x : Ω, x ∈ V → V.valuation (z - x) < 1 → z ∈ V` using `fun z x hx h => by`.
+
+Simplify using `using add_mem ((V.valuation_le_one_iff _).1 h.le) hx`. Use `⟨σ, (mem_inertia_iff _ _).2 ⟨?_, h3⟩, hσ⟩` and prove the remaining obligations. Use extensionality with `x`. Rewrite using `[ValuationSubring.mem_pointwise_smul_iff_inv_smul_mem]`. Use `⟨fun h => ?_, fun h => h6 _ _ h (h4 x h)⟩` and prove the remaining obligations.
+
+Use `h6 _ _ h (h3 _ h)` as an intermediate fact. Rewrite `this` using `[show σ (σ⁻¹ • x) = x from σ.apply_symm_apply x]`. Then use the resulting hypothesis.
+-/
 theorem exists_lift {K Ω : Type} [Field K] [Field Ω] [Algebra K Ω] [IsGalois K Ω] (V : ValuationSubring Ω)
     (L : IntermediateField K Ω) [Normal K L] (τ : L ≃ₐ[K] L)
     (hτ : τ ∈ inertia K (V.comap (algebraMap L Ω))) :
@@ -288,6 +387,9 @@ theorem exists_lift {K Ω : Type} [Field K] [Field Ω] [Algebra K Ω] [IsGalois 
   have := h6 _ _ h (h3 _ h)
   rwa [show σ (σ⁻¹ • x) = x from σ.apply_symm_apply x] at this
 
+/- English proof (translation)
+Introduce `R K Ω _ _ _ _ _ _ _ _ _ V _ L _ _ τ hτ`. Conclude with `exists_lift V L τ hτ`.
+-/
 theorem inertia_surjective : ∀ (R K Ω : Type) [CommRing R] [IsDomain R] [IsDiscreteValuationRing R]
     [Field K] [Algebra R K] [IsFractionRing R K] [Field Ω] [Algebra K Ω] [IsSepClosure K Ω]
     (V : ValuationSubring Ω), GlobalTheory.Published.AbVarRed.IsAbove R K (ValuationSubring.toSubring V) →

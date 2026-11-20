@@ -16,6 +16,11 @@ namespace GlobalTheory.UnipConjSiegel
 
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
 
+/- English proof (translation)
+Establish `hg : (mat g)ᵀ * incM F J * (mat g).map (cA σ) = incM F J` using `g.2`. Establish `h1 : (fun i => cA σ ((mat g *ᵥ y) i)) = (mat g).map (cA σ) *ᵥ fun i => cA σ (y i)`. Use function extensionality and compare the values at `i`. Conclude with `RingHom.map_mulVec (cA σ).toRingHom (mat g) y i`. Unfold `GlobalTheory.ThKLiftCusp.formA`.
+
+Rewrite using `[h1, Matrix.mulVec_mulVec, ← Matrix.vecMul_transpose, ← Matrix.dotProduct_mulVec, Matrix.mulVec_mulVec, ← Matrix.mul_assoc, hg]`.
+-/
 theorem formA_mat (σ : E →ₐ[F] E) {n : ℕ} {J : Matrix (Fin n) (Fin n) E} (g : UA σ J) (x y : Fin n → AE F E) :
     GlobalTheory.ThKLiftCusp.formA σ J (mat g *ᵥ x) (mat g *ᵥ y) = GlobalTheory.ThKLiftCusp.formA σ J x y := by
   have hg : (mat g)ᵀ * incM F J * (mat g).map (cA σ) = incM F J := g.2
@@ -25,18 +30,29 @@ theorem formA_mat (σ : E →ₐ[F] E) {n : ℕ} {J : Matrix (Fin n) (Fin n) E} 
   rw [h1, Matrix.mulVec_mulVec, ← Matrix.vecMul_transpose, ← Matrix.dotProduct_mulVec, Matrix.mulVec_mulVec,
     ← Matrix.mul_assoc, hg]
 
+/- English proof (translation)
+Simplify using `[GlobalTheory.ThKLiftCusp.formA, incM, dblGram, blkMat, dotProduct, Matrix.mulVec, ← finSumFinEquiv.sum_comp, Fintype.sum_sum_type, pairVec, sub_eq_add_neg]`.
+-/
 theorem formA_pairVec (σ : E →ₐ[F] E) {d : ℕ} (J : Matrix (Fin d) (Fin d) E) (x y x' y' : Fin d → AE F E) :
     GlobalTheory.ThKLiftCusp.formA σ (dblGram finSumFinEquiv J) (pairVec finSumFinEquiv x y) (pairVec finSumFinEquiv x' y') =
       GlobalTheory.ThKLiftCusp.formA σ J x x' - GlobalTheory.ThKLiftCusp.formA σ J y y' := by
   simp [GlobalTheory.ThKLiftCusp.formA, incM, dblGram, blkMat, dotProduct, Matrix.mulVec, ← finSumFinEquiv.sum_comp,
     Fintype.sum_sum_type, pairVec, sub_eq_add_neg]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `r`. Simplify using `only [pairVec, Function.comp_apply, Pi.add_apply]`. Apply the tactic sequence `cases finSumFinEquiv.symm r <;> rfl`.
+-/
 theorem pairVec_add {d : ℕ} {X : Type} [AddCommGroup X] (x y x' y' : Fin d → X) :
     pairVec finSumFinEquiv (x + x') (y + y') = pairVec finSumFinEquiv x y + pairVec finSumFinEquiv x' y' := by
   funext r
   simp only [pairVec, Function.comp_apply, Pi.add_apply]
   cases finSumFinEquiv.symm r <;> rfl
 
+/- English proof (translation)
+Take `⟨g, hg⟩` from `LinearMap.exists_leftInverse_of_injective (Matrix.mulVecLin Y) (LinearMap.ker_eq_bot.2 hY)`. Use `⟨LinearMap.toMatrix' g, ?_⟩` and prove the remaining obligations. Use `congrArg LinearMap.toMatrix' hg` as an intermediate fact. Rewrite `this` using `[LinearMap.toMatrix'_comp, LinearMap.toMatrix'_id]`. Use `first`.
+
+Consider the case `simpa [LinearMap.toMatrix'_mulVecLin] using this`. Consider the case `simpa [← Matrix.toLin'_apply', LinearMap.toMatrix'_toLin'] using this`. Consider the case `simpa using this`.
+-/
 theorem exists_left_inv {d j : ℕ} (Y : Matrix (Fin d) (Fin j) E) (hY : Function.Injective Y.mulVec) :
     ∃ L : Matrix (Fin j) (Fin d) E, L * Y = 1 := by
   obtain ⟨g, hg⟩ := LinearMap.exists_leftInverse_of_injective (Matrix.mulVecLin Y)
@@ -55,6 +71,65 @@ namespace GlobalTheory.UnipConjSiegel
 
 open GlobalTheory.ThKLiftCusp
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ _ B d r s W _ W₂ hW₂ i hi γ hγ j Y hY hYiso hZY n hn`. Set `Zs : Submodule (AE F E) (Fin (d + d) → AE F E)` to `(diagSub (AE F E) finSumFinEquiv).comap (Matrix.mulVecLin (mat γ))`. Establish `hZs : ∀ z, z ∈ Zs ↔ mat γ *ᵥ z ∈ diagSub (AE F E) finSumFinEquiv` using `fun z => Iff.rfl`. Establish `hZ0 : ∀ k, pairVec finSumFinEquiv (0 : Fin d → AE F E) (incV F fun a => Y a k) ∈ Zs` using `fun k => (hZY _).2 ⟨Pi.single k 1, by rw [Matrix.mulVec_single_one]; rfl⟩`. Establish `hpv : ∀ b : Fin j → AE F E, pairVec finSumFinEquiv (0 : Fin d → AE F E) (incM F Y *ᵥ b) = ∑ k, b k • pairVec finSumFinEquiv (0 : Fin d → AE F E) (incV F fun a => Y a k)`.
+
+Introduce `b`. Use function extensionality and compare the values at `r`. Take `⟨t | t, rfl⟩` from `finSumFinEquiv.surjective r`. Simplify using `only [Finset.sum_apply, Pi.smul_apply, pairVec_inl, Pi.zero_apply, smul_zero, Finset.sum_const_zero]`. Simplify using `only [Finset.sum_apply, Pi.smul_apply, pairVec_inr, smul_eq_mul]`.
+
+Simplify using `[Matrix.mulVec, dotProduct, incM, incV, mul_comm]`. Establish `hYb : ∀ b, pairVec finSumFinEquiv (0 : Fin d → AE F E) (incM F Y *ᵥ b) ∈ Zs` using `fun b => by`. Rewrite using `[hpv]`. Conclude with `Zs.sum_mem fun k _ => Zs.smul_mem _ (hZ0 k)`. Establish `hperp : ∀ x y, pairVec finSumFinEquiv x y ∈ Zs → ∀ k, formA σ W.J y (incV F fun a => Y a k) = 0`.
+
+Introduce `x y hz k`. Take `⟨c, hc⟩` from `(mem_diagSub finSumFinEquiv).1 ((hZs _).1 hz)`. Take `⟨c', hc'⟩` from `(mem_diagSub finSumFinEquiv).1 ((hZs _).1 (hZ0 k))`. Establish `h1` using `formA_mat σ γ (pairVec finSumFinEquiv x y) (pairVec finSumFinEquiv (0 : Fin d → AE F E) (incV F fun a => Y a k))`. Rewrite `h1` using `[hc, hc', hW₂, formA_pairVec, formA_pairVec, sub_self]`.
+
+Establish `h0 : formA σ W.J x 0 = 0`. Establish `: (fun i => cA σ ((0 : Fin d → AE F E) i)) = 0` using `funext fun _ => map_zero _`. Rewrite using `[formA, this, Matrix.mulVec_zero, dotProduct_zero]`. Rewrite `h1` using `[h0, zero_sub]`. Conclude with `neg_eq_zero.1 h1.symm`.
+
+Establish `hmul : ∀ a b : UA σ W₂.J, mat (a * b) = mat a * mat b` using `fun _ _ => rfl`. Establish `hone : mat (1 : UA σ W.J) = 1` using `rfl`. Establish `hMMi : mat γ * mat γ⁻¹ = 1` using `by rw [← hmul, mul_inv_cancel]; rfl`. Establish `hMiM : mat γ⁻¹ * mat γ = 1` using `by rw [← hmul, inv_mul_cancel]; rfl`. Take `⟨L, hL⟩` from `exists_left_inv Y hY`.
+
+Establish `hLA : incM F L * incM F Y = 1`. Rewrite using `[incM, incM, ← Matrix.map_mul, hL]`. Conclude with `Matrix.map_one _ (map_zero _) (map_one _)`. Set `C : Matrix (Fin d) (Fin j) (AE F E)` to `Matrix.of fun a k => (mat γ *ᵥ pairVec finSumFinEquiv (0 : Fin d → AE F E) (incV F fun a => Y a k)) (finSumFinEquiv (.inl a))`. Establish `hC : ∀ b, mat γ *ᵥ pairVec finSumFinEquiv (0 : Fin d → AE F E) (incM F Y *ᵥ b) = pairVec finSumFinEquiv (C *ᵥ b) (C *ᵥ b)`.
+
+Introduce `b`. Take `⟨c, hc⟩` from `(mem_diagSub finSumFinEquiv).1 ((hZs _).1 (hYb b))`. Establish `hcC : c = C *ᵥ b`. Use function extensionality and compare the values at `a`. Establish `h1` using `congrFun hc (finSumFinEquiv (.inl a))`.
+
+Rewrite `h1` using `[pairVec_inl]`. Rewrite using `[← h1, hpv, Matrix.mulVec_sum]`. Simplify using `only [Matrix.mulVec_smul, Finset.sum_apply, Pi.smul_apply, smul_eq_mul]`. Simplify using `[C, Matrix.mulVec, dotProduct, mul_comm]`. Rewrite using `[hc, hcC]`.
+
+Establish `hCinj : ∀ b, C *ᵥ b = 0 → b = 0`. Introduce `b hb`. Establish `h1` using `hC b`. Rewrite `h1` using `[hb]`. Establish `h2 : pairVec finSumFinEquiv (0 : Fin d → AE F E) (incM F Y *ᵥ b) = 0`.
+
+Use `congrArg (fun v => mat γ⁻¹ *ᵥ v) h1` as an intermediate fact. Simplify using `only [Matrix.mulVec_mulVec, hMiM, Matrix.one_mulVec] at this`. Rewrite using `[this]`. Use function extensionality and compare the values at `r`. Simplify using `[pairVec]`.
+
+Establish `h3 : incM F Y *ᵥ b = 0` using `funext fun a => by`. Use `congrFun h2 (finSumFinEquiv (.inr a))` as an intermediate fact. Rewrite `this` using `[pairVec_inr]`. Then use the resulting hypothesis. Use `congrArg (fun v => incM F L *ᵥ v) h3` as an intermediate fact. Simplify `this` using `[Matrix.mulVec_mulVec, hLA]`.
+
+Set `φ : UA σ W.J →* UA σ W₂.J` to `(MulAut.conj γ).toMonoidHom.comp (i.comp (MonoidHom.inr _ _))`. Set `P` to `siegelOf finSumFinEquiv (UG (cA σ) (incM F W₂.J)).subtype`. Set `H : Subgroup (UA σ W₂.J)` to `(aOf finSumFinEquiv (UG (cA σ) (incM F W₂.J)).subtype).ker.map P.subtype`. Establish `hgen : ∀ u : UA σ W.J, mat u * incM F Y = incM F Y → (∀ z, (∀ k, formA σ W.J z (incV F fun i => Y i k) = 0) → ∃ a, mat u *ᵥ z = z + incM F Y *ᵥ a) → φ u ∈ H`. Introduce `u hu1 hu2`.
+
+Establish `hmat : ((UG (cA σ) (incM F W₂.J)).subtype (φ u)).1 = mat γ * blkMat finSumFinEquiv 1 (mat u) * mat γ⁻¹` using `by show mat (γ * i (1, u) * γ⁻¹) = _`. Rewrite using `[hmul, hmul, hi, hone]`. Establish `hA : ∀ z ∈ Zs, ∃ b, blkMat finSumFinEquiv 1 (mat u) *ᵥ z = z + pairVec finSumFinEquiv (0 : Fin d → AE F E) (incM F Y *ᵥ b)`. Introduce `z hz`. Take `⟨x, y, rfl⟩ : ∃ x y, z = pairVec finSumFinEquiv x y` from `⟨_, _, (pairVec_eta finSumFinEquiv z).symm⟩`.
+
+Take `⟨a, ha⟩` from `hu2 y (hperp x y hz)`. Use `⟨a, ?_⟩` and prove the remaining obligations. Rewrite using `[blkMat_mulVec, Matrix.one_mulVec, ha, ← pairVec_add, add_zero]`. Establish `hB : ∀ b, blkMat finSumFinEquiv 1 (mat u) *ᵥ pairVec finSumFinEquiv (0 : Fin d → AE F E) (incM F Y *ᵥ b) = pairVec finSumFinEquiv (0 : Fin d → AE F E) (incM F Y *ᵥ b)`. Introduce `b`.
+
+Rewrite using `[blkMat_mulVec, Matrix.mulVec_zero, Matrix.mulVec_mulVec, hu1]`. Establish `hstep : ∀ w ∈ diagSub (AE F E) finSumFinEquiv, ∃ b, (mat γ * blkMat finSumFinEquiv 1 (mat u) * mat γ⁻¹) *ᵥ w = w + pairVec finSumFinEquiv (C *ᵥ b) (C *ᵥ b)`. Introduce `w hw`. Establish `hz : mat γ⁻¹ *ᵥ w ∈ Zs`. Rewrite using `[hZs, Matrix.mulVec_mulVec, hMMi, Matrix.one_mulVec]`.
+
+Conclude with `hw`. Take `⟨b, hb⟩` from `hA _ hz`. Use `⟨b, ?_⟩` and prove the remaining obligations. Rewrite using `[← Matrix.mulVec_mulVec, ← Matrix.mulVec_mulVec, hb, Matrix.mulVec_add, Matrix.mulVec_mulVec, hMMi, Matrix.one_mulVec, hC]`. Establish `hkeep : KeepsDiag finSumFinEquiv (mat γ * blkMat finSumFinEquiv 1 (mat u) * mat γ⁻¹)`.
+
+Use `keepsDiag_of_mulVec fun w hw => ?_` and prove the remaining obligations. Take `⟨b, hb⟩` from `hstep w hw`. Rewrite using `[hb]`. Conclude with `Submodule.add_mem _ hw ((pairVec_mem_diagSub finSumFinEquiv).2 rfl)`. Establish `hP : φ u ∈ P` using `mem_siegelOf.2 (by rw [hmat]; exact hkeep)`.
+
+Use `set Lm := leviMat finSumFinEquiv (mat γ * blkMat finSumFinEquiv 1 (mat u) * mat γ⁻¹) with hLm`. Establish `hL1 : ∀ x, ∃ b, Lm *ᵥ x = x + C *ᵥ b`. Introduce `x`. Take `⟨b, hb⟩` from `hstep _ ((pairVec_mem_diagSub finSumFinEquiv).2 rfl : pairVec finSumFinEquiv x x ∈ _)`. Use `⟨b, funext fun a => ?_⟩` and prove the remaining obligations.
+
+Use `congrFun (hkeep.mulVec_diag x) (finSumFinEquiv (.inl a))` as an intermediate fact. Rewrite `this` using `[hb]`. Simplify using `only [Pi.add_apply, pairVec_inl] at this`. Rewrite using `[Pi.add_apply]`. Conclude with `this.symm`.
+
+Establish `hL2 : ∀ b, Lm *ᵥ (C *ᵥ b) = C *ᵥ b`. Introduce `b`. Use function extensionality and compare the values at `a`. Use `congrFun (hkeep.mulVec_diag (C *ᵥ b)) (finSumFinEquiv (.inl a))` as an intermediate fact. Rewrite `this` using `[← hC, Matrix.mulVec_mulVec, Matrix.mul_assoc, Matrix.mul_assoc, hMiM, Matrix.mul_one, ← Matrix.mulVec_mulVec, hB, hC]`.
+
+Simplify using `only [pairVec_inl] at this`. Rewrite using `[← this]`. Establish `hcol : ∀ k : Fin d, ∃ b, (Lm - 1) *ᵥ Pi.single k 1 = C *ᵥ b`. Introduce `k`. Take `⟨b, hb⟩` from `hL1 (Pi.single k 1)`.
+
+Conclude with `⟨b, by rw [Matrix.sub_mulVec, hb, Matrix.one_mulVec, add_sub_cancel_left]⟩`. Use `choose R0 hR0 using hcol`. Set `R : Matrix (Fin j) (Fin d) (AE F E)` to `Matrix.of fun a k => R0 k a`. Establish `hCR : C * R = Lm - 1`. Use `Matrix.ext_of_mulVec_single fun k => ?_` and prove the remaining obligations.
+
+Rewrite using `[← Matrix.mulVec_mulVec, hR0, Matrix.mulVec_single_one]`. Both sides reduce to the same expression. Establish `hNC : (Lm - 1) * C = 0`. Use `Matrix.ext_of_mulVec_single fun k => ?_` and prove the remaining obligations. Rewrite using `[← Matrix.mulVec_mulVec, Matrix.sub_mulVec, hL2, Matrix.one_mulVec, sub_self, Matrix.zero_mulVec]`.
+
+Establish `hRC : R * C = 0`. Use `Matrix.ext_of_mulVec_single fun k => ?_` and prove the remaining obligations. Rewrite using `[Matrix.zero_mulVec]`. Use `hCinj _ ?_` and prove the remaining obligations. Rewrite using `[Matrix.mulVec_mulVec, ← Matrix.mul_assoc, hCR, hNC, Matrix.zero_mulVec]`.
+
+Establish `hdet : Lm.det = 1`. Establish `: Lm = 1 + C * R` using `by rw [hCR]; abel`. Rewrite using `[this, Matrix.det_one_add_mul_comm, hRC, add_zero, Matrix.det_one]`. Use `Subgroup.mem_map.2 ⟨⟨φ u, hP⟩, ?_, rfl⟩` and prove the remaining obligations. Rewrite using `[MonoidHom.mem_ker]`.
+
+Use `Units.ext ?_` and prove the remaining obligations. Rewrite using `[val_aOf, Units.val_one]`. Express the relevant statement in the definitionally equal form `(leviMat finSumFinEquiv ((UG (cA σ) (incM F W₂.J)).subtype (φ u)).1).det = 1`. Rewrite using `[hmat]`. Conclude with `hdet`.
+
+Establish `hle : unipSp σ W Y ≤ H.comap φ`. Use `(Subgroup.closure_le _).2 fun u hu => ?_` and prove the remaining obligations. Conclude with `hgen u hu.1 hu.2.1`. Take `⟨q, hq, hqe⟩` from `Subgroup.mem_map.1 (hle hn)`. Establish `hq' : (q : UA σ W₂.J) = γ * i (1, n) * γ⁻¹` using `hqe`.
+
+Use `⟨hq' ▸ q.2, ?_⟩` and prove the remaining obligations. Establish `: (⟨γ * i (1, n) * γ⁻¹, hq' ▸ q.2⟩ : P) = q` using `Subtype.ext hq'.symm`. Rewrite using `[this]`. Conclude with `hq`.
+-/
 theorem conj_mem_siegel : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E), IsCMExt F E σ →
     ∀ (B : Base F E) (d r s : ℕ) (W : Spc F E d), W.IsSkew σ B r s →
     ∀ W₂ : Spc F E (d + d), W₂.J = dblGram finSumFinEquiv W.J →

@@ -27,6 +27,11 @@ variable {ι κ : Type} (σ : ι ≃ κ) (s : ι → ℂ)
 
 def ren : MvPolynomial ι ℂ →ₐ[ℂ] MvPolynomial κ ℂ := aeval fun v => s v • (X (σ v) : MvPolynomial κ ℂ)
 
+/- English proof (translation)
+Establish `h1 : ∀ (v : ι) (n : ℕ), (s v • (X (σ v) : MvPolynomial κ ℂ)) ^ n = C (s v ^ n) * monomial (Finsupp.single (σ v) n) 1`. Introduce `v n`. Rewrite using `[smul_pow, X_pow_eq_monomial, smul_eq_C_mul]`. Rewrite using `[ren, aeval_monomial, Finsupp.mapDomain, monomial_finsupp_sum_index]`. Simplify using `only [Finsupp.prod, h1, Finset.prod_mul_distrib, algebraMap_eq]`.
+
+Rewrite using `[← map_prod, C_mul]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem ren_monomial (k : ι →₀ ℕ) (c : ℂ) :
     ren σ s (monomial k c) = monomial (k.mapDomain σ) ((k.prod fun v n => s v ^ n) * c) := by
   classical
@@ -39,6 +44,11 @@ theorem ren_monomial (k : ι →₀ ℕ) (c : ℂ) :
   rw [← map_prod, C_mul]
   ring
 
+/- English proof (translation)
+Proceed by induction on `P using MvPolynomial.induction_on' with`. Consider the case `monomial m c`. Rewrite using `[ren_monomial, coeff_monomial, coeff_monomial]`. Distinguish the cases in `hm : m = k`. Substitute `hm` using the available equality.
+
+Simplify using the standard rewrite rules. Rewrite using `[if_neg hm, if_neg (fun h => hm (Finsupp.mapDomain_injective σ.injective h)), mul_zero]`. Consider the case `add P Q hP hQ => rw [map_add, coeff_add, coeff_add, hP, hQ, mul_add]`.
+-/
 theorem coeff_ren (k : ι →₀ ℕ) (P : MvPolynomial ι ℂ) :
     coeff (k.mapDomain σ) (ren σ s P) = (k.prod fun v n => s v ^ n) * coeff k P := by
   classical
@@ -51,6 +61,11 @@ theorem coeff_ren (k : ι →₀ ℕ) (P : MvPolynomial ι ℂ) :
     · rw [if_neg hm, if_neg (fun h => hm (Finsupp.mapDomain_injective σ.injective h)), mul_zero]
   | add P Q hP hQ => rw [map_add, coeff_add, coeff_add, hP, hQ, mul_add]
 
+/- English proof (translation)
+Establish `hg : ∀ v, (s v • (X (f v) : MvPolynomial κ ℂ)).IsHomogeneous 1`. Introduce `v`. Rewrite using `[smul_eq_C_mul]`. Conclude with `isHomogeneous_C_mul_X _ _`. Establish `h0 : ∀ r : ℂ, (algebraMap ℂ (MvPolynomial κ ℂ) r).IsHomogeneous 0` using `fun r => isHomogeneous_C κ r`.
+
+Rewrite using `[aeval_def]`. Simplify `h.eval₂ (algebraMap ℂ (MvPolynomial κ ℂ)) _ h0 hg` using `only [one_mul]`.
+-/
 theorem isHomogeneous_ren {ι κ : Type} (f : ι → κ) (s : ι → ℂ) (d : ℕ) (P : MvPolynomial ι ℂ) (h : P.IsHomogeneous d) :
     (aeval (fun v => s v • (X (f v) : MvPolynomial κ ℂ)) P).IsHomogeneous d := by
   have hg : ∀ v, (s v • (X (f v) : MvPolynomial κ ℂ)).IsHomogeneous 1 := by
@@ -61,6 +76,25 @@ theorem isHomogeneous_ren {ι κ : Type} (f : ι → κ) (s : ι → ℂ) (d : �
   rw [aeval_def]
   simpa only [one_mul] using h.eval₂ (algebraMap ℂ (MvPolynomial κ ℂ)) _ h0 hg
 
+/- English proof (translation)
+Establish `hs0 : ∀ v, s v ≠ 0` using `fun v h0 => by simpa [h0] using hs v`. Establish `hp : ∀ k : ι →₀ ℕ, (k.prod fun v n => s v ^ n) ≠ 0`. Introduce `k`. Rewrite using `[Finsupp.prod]`. Conclude with `Finset.prod_ne_zero_iff.mpr fun v _ => pow_ne_zero _ (hs0 v)`.
+
+Establish `hpc : ∀ k : ι →₀ ℕ, (k.prod fun v n => s v ^ n) * conj (k.prod fun v n => s v ^ n) = 1`. Introduce `k`. Rewrite using `[Finsupp.prod, map_prod, ← Finset.prod_mul_distrib]`. Use `Finset.prod_eq_one fun v _ => ?_` and prove the remaining obligations. Rewrite using `[map_pow, ← mul_pow, hs v, one_pow]`.
+
+Establish `hback : ∀ k' : κ →₀ ℕ, (k'.mapDomain σ.symm).mapDomain σ = k'`. Introduce `k'`. Rewrite using `[← Finsupp.mapDomain_comp, Equiv.self_comp_symm, Finsupp.mapDomain_id]`. Establish `hfwd : ∀ k : ι →₀ ℕ, (k.mapDomain σ).mapDomain σ.symm = k`. Introduce `k`.
+
+Rewrite using `[← Finsupp.mapDomain_comp, Equiv.symm_comp_self, Finsupp.mapDomain_id]`. Establish `hc : ∀ (R : MvPolynomial ι ℂ) (k' : κ →₀ ℕ), coeff k' (ren σ s R) = ((k'.mapDomain σ.symm).prod fun v n => s v ^ n) * coeff (k'.mapDomain σ.symm) R`. Introduce `R k'`. Use `conv_lhs => rw [← hback k']`. Conclude with `coeff_ren σ s _ R`.
+
+Unfold `fockIp`. Use `Finset.sum_nbij' (fun k' => k'.mapDomain σ.symm) (fun k => k.mapDomain σ) ?_ ?_ ?_ ?_ ?_` and prove the remaining obligations. Introduce `k' hk'`. Rewrite `hk'`, the goal using `[mem_support_iff]`. Rewrite `hk'` using `[hc]`.
+
+Conclude with `right_ne_zero_of_mul hk'`. Introduce `k hk`. Rewrite `hk`, the goal using `[mem_support_iff]`. Rewrite using `[coeff_ren]`. Conclude with `mul_ne_zero (hp k) hk`.
+
+Introduce `k' _`. Conclude with `hback k'`. Introduce `k _`. Conclude with `hfwd k`. Introduce `k' _`.
+
+Establish `hF : ((k'.prod fun _ e => e.factorial : ℕ) : ℂ) = (((k'.mapDomain σ.symm).prod fun _ e => e.factorial : ℕ) : ℂ)`. Use `Finsupp.prod_mapDomain_index_inj (h := fun (_ : κ) (e : ℕ) => e.factorial) σ.injective (s := k'.mapDomain σ.symm)` as an intermediate fact. Rewrite `this` using `[hback]`. Rewrite using `[this]`. Rewrite using `[hc P, hc Q, hF, map_mul]`.
+
+Use `hpc (k'.mapDomain σ.symm)` as an intermediate fact. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem fockIp_ren (hs : ∀ v, s v * conj (s v) = 1) (P Q : MvPolynomial ι ℂ) :
     fockIp (ren σ s P) (ren σ s Q) = fockIp P Q := by
   classical
@@ -118,6 +152,15 @@ end General
 
 open GlobalTheory.Chain.RealIt.PolyIso in
 
+/- English proof (translation)
+Introduce `p q r s a b ε ε' e e' h h'`. Use `⟨(kap ε e e').toLinearEquiv, ⟨fun Z P => fwd_locS h h' Z P, fun Z P => fwd_locT h h' Z P⟩, ?_, ?_⟩` and prove the remaining obligations. Introduce `d P`. Prove the components needed by the constructor for the conclusion. Introduce `hP`.
+
+Establish `hb : bwd ε e e' ((kap ε e e').toLinearEquiv P) = P` using `(kap ε e e').symm_apply_apply P`. Rewrite using `[← hb]`. Conclude with `isHomogeneous_ren (fun l : Ix p q × Ix r s => (e' l.2, e l.1)) (fun l => GlobalTheory.IndefiniteRowSideFullHecke.RaisingLoweringOperators.sgn (ε (e l.1))) d _ hP`. Introduce `hP`. Conclude with `isHomogeneous_ren (fun v : Fin b × Fin a => (e.symm v.2, e'.symm v.1)) (fun v => GlobalTheory.IndefiniteRowSideFullHecke.RaisingLoweringOperators.sgn (ε v.2)) d P hP`.
+
+Introduce `P Q`. Set `τ : Fin b × Fin a ≃ Ix p q × Ix r s` to `(Equiv.prodComm _ _).trans (Equiv.prodCongr e.symm e'.symm)`. Establish `hs : ∀ v : Fin b × Fin a, GlobalTheory.IndefiniteRowSideFullHecke.RaisingLoweringOperators.sgn (ε v.2) * conj (GlobalTheory.IndefiniteRowSideFullHecke.RaisingLoweringOperators.sgn (ε v.2)) = 1`. Introduce `v`. Unfold `GlobalTheory.IndefiniteRowSideFullHecke.RaisingLoweringOperators.sgn`.
+
+Apply the tactic sequence `split <;> simp`. Conclude with `fockIp_ren τ (fun v => GlobalTheory.IndefiniteRowSideFullHecke.RaisingLoweringOperators.sgn (ε v.2)) hs P Q`.
+-/
 theorem exists_isPolyIso_graded_isometry : ∀ (p q r s a b : ℕ) (ε : Fin a → Bool) (ε' : Fin b → Bool) (e : Ix p q ≃ Fin a) (e' : Ix r s ≃ Fin b), SignCompat ε e → SignCompat ε' e' → ∃ κ : LPol b a ≃ₗ[ℂ] Pol p q r s, IsPolyIso ε ε' e e' κ ∧ Graded κ ∧ ∀ P Q, fockIp (κ P) (κ Q) = fockIp P Q := by
   intro p q r s a b ε ε' e e' h h'
   refine ⟨(kap ε e e').toLinearEquiv, ⟨fun Z P => fwd_locS h h' Z P, fun Z P => fwd_locT h h' Z P⟩, ?_, ?_⟩

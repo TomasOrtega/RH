@@ -3,6 +3,13 @@ open Formalism.BasicNotions Formalism.BasicNotions.Loc ValuativeRel GroundTheory
 
 namespace GlobalTheory.PMon.Ram
 
+/- English proof (translation)
+Establish `h1 : (N.map f).relIndex I * Nat.card ↥(N.map f ⊓ I) = Nat.card I`. Rewrite using `[Subgroup.relIndex, mul_comm, ← Subgroup.card_mul_index ((N.map f).subgroupOf I)]`. Use `congr 1`. Rewrite using `[← Subgroup.inf_subgroupOf_right]`. Conclude with `(Nat.card_congr (Subgroup.subgroupOfEquivOfLe inf_le_right).toEquiv).symm`.
+
+Establish `h2 : (N.map f).relIndex I ≤ (N.map f).index`. Rewrite using `[← Subgroup.relIndex_top_right]`. Apply `Subgroup.relIndex_le_of_le_right le_top` to reduce the goal to its premises. Rewrite using `[Subgroup.relIndex_top_right]`. Conclude with `Subgroup.index_ne_zero_of_finite`.
+
+Establish `h3 : (N.map f).index ≤ N.index` using `Nat.le_of_dvd (Nat.pos_of_ne_zero hN) (Subgroup.index_map_dvd N hf)`. Rewrite using `[← h1]`. Conclude with `Nat.mul_le_mul_right _ (h2.trans h3)`.
+-/
 theorem card_le_index_mul_card_map_inf (G H : Type) [Group G] [Group H] [Finite H]
     (f : G →* H) (N : Subgroup G) (I : Subgroup H) (hf : Function.Surjective f)
     (hN : N.index ≠ 0) : Nat.card ↥I ≤ N.index * Nat.card ↥(N.map f ⊓ I) := by

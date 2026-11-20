@@ -16,6 +16,11 @@ variable {C : Type} [Field C] [CharZero C] {V : VF C} {O : Type} [CommRing O] [S
 def mapAt (ε : Pt C 1 dd) (a : Fin dd → MvPowerSeries τ C) : Fin dd → MvPowerSeries τ C :=
   fun i => MvPowerSeries.subst (fun q : Fin 1 × Fin dd => a q.2) (ε i)
 
+/- English proof (translation)
+Unfold `comp1 mapAt ev`. Use function extensionality and compare the values at `i`. Use `congr 1`. Use function extensionality and compare the values at `p`. Use `first`.
+
+Consider the case `(rw [Fin.fin_one_eq_zero p.1]; rfl)`. Consider the case `(simp [Fin.fin_one_eq_zero p.1])`.
+-/
 theorem comp_eq_map_at {n : ℕ} (ε : Pt C 1 dd) (a : Pt C n dd) : comp1 ε a = mapAt ε a := by
   unfold comp1 mapAt ev
   funext i
@@ -25,6 +30,13 @@ theorem comp_eq_map_at {n : ℕ} (ε : Pt C 1 dd) (a : Pt C n dd) : comp1 ε a =
     | (rw [Fin.fin_one_eq_zero p.1]; rfl)
     | (simp [Fin.fin_one_eq_zero p.1])
 
+/- English proof (translation)
+Unfold `mapAt`. Establish `hb : MvPowerSeries.HasSubst (fun q : Fin 1 × Fin dd => a q.2)` using `MvPowerSeries.hasSubst_of_constantCoeff_zero (fun q => ha q.2)`. Rewrite using `[← MvPowerSeries.coeff_zero_eq_constantCoeff_apply, MvPowerSeries.coeff_subst hb]`. Apply `finsum_eq_zero_of_forall_eq_zero` to reduce the goal to its premises. Introduce `e`.
+
+Distinguish the cases in `he : e = 0`. Rewrite using `[he, MvPowerSeries.coeff_zero_eq_constantCoeff_apply, hε i, zero_smul]`. Rewrite using `[MvPowerSeries.coeff_zero_eq_constantCoeff_apply]`. Take `⟨s, hs⟩` from `Finsupp.ne_iff.1 he`. Establish `hmem : s ∈ e.support` using `Finsupp.mem_support_iff.2 (by simpa using hs)`.
+
+Establish `h0 : MvPowerSeries.constantCoeff (e.prod fun s k => a s.2 ^ k) = 0`. Rewrite using `[Finsupp.prod, map_prod]`. Apply `Finset.prod_eq_zero hmem` to reduce the goal to its premises. Rewrite using `[map_pow, ha s.2, zero_pow (Finsupp.mem_support_iff.1 hmem)]`. Rewrite using `[h0, smul_zero]`.
+-/
 theorem cc_mapAt {ε : Pt C 1 dd} (hε : ∀ i, MvPowerSeries.constantCoeff (ε i) = 0) {a : Fin dd → MvPowerSeries τ C}
     (ha : ∀ i, MvPowerSeries.constantCoeff (a i) = 0) (i : Fin dd) :
     MvPowerSeries.constantCoeff (mapAt ε a i) = 0 := by
@@ -45,6 +57,9 @@ theorem cc_mapAt {ε : Pt C 1 dd} (hε : ∀ i, MvPowerSeries.constantCoeff (ε 
       rw [map_pow, ha s.2, zero_pow (Finsupp.mem_support_iff.1 hmem)]
     rw [h0, smul_zero]
 
+/- English proof (translation)
+Unfold `mapAt`. Establish `hb : MvPowerSeries.HasSubst (fun q : Fin 1 × Fin dd => u q.2)` using `MvPowerSeries.hasSubst_of_constantCoeff_zero (fun q => hu q.2)`. Establish `hA' : MvPowerSeries.HasSubst A` using `MvPowerSeries.hasSubst_of_constantCoeff_zero hA`. Rewrite using `[MvPowerSeries.subst_comp_subst_apply hb hA']`.
+-/
 theorem mapAt_subst [Finite τ] {A : τ → MvPowerSeries τ' C} (hA : ∀ s, MvPowerSeries.constantCoeff (A s) = 0)
     (ε : Pt C 1 dd) {u : Fin dd → MvPowerSeries τ C} (hu : ∀ i, MvPowerSeries.constantCoeff (u i) = 0) (i : Fin dd) :
     MvPowerSeries.subst A (mapAt ε u i) = mapAt ε (fun i => MvPowerSeries.subst A (u i)) i := by
@@ -54,6 +69,9 @@ theorem mapAt_subst [Finite τ] {A : τ → MvPowerSeries τ' C} (hA : ∀ s, Mv
   have hA' : MvPowerSeries.HasSubst A := MvPowerSeries.hasSubst_of_constantCoeff_zero hA
   rw [MvPowerSeries.subst_comp_subst_apply hb hA']
 
+/- English proof (translation)
+Establish `hb : MvPowerSeries.HasSubst a` using `MvPowerSeries.hasSubst_of_constantCoeff_zero ha`. Use `first`. Consider the case `exact MvPowerSeries.subst_pow hb f k`. Consider the case `(rw [← MvPowerSeries.coe_substAlgHom hb, map_pow])`.
+-/
 theorem subst_pow' {σ : Type} [Finite σ] {a : σ → MvPowerSeries τ C}
     (ha : ∀ s, MvPowerSeries.constantCoeff (a s) = 0) (f : MvPowerSeries σ C) (k : ℕ) :
     MvPowerSeries.subst a (f ^ k) = MvPowerSeries.subst a f ^ k := by
@@ -64,6 +82,11 @@ theorem subst_pow' {σ : Type} [Finite σ] {a : σ → MvPowerSeries τ C}
 
 variable (Y : FBChart C V O dd)
 
+/- English proof (translation)
+Unfold `actAt`. Establish `hA : ∀ i, MvPowerSeries.constantCoeff (Y.B.A.act x i) = 0` using `fun i => Y.B.A.2 x i`. Rewrite `hc` using `[comp_eq_map_at, comp_eq_map_at]`. Use function extensionality and compare the values at `i`. Establish `hb : MvPowerSeries.HasSubst (fun q : Fin 1 × Fin dd => a q.2)` using `MvPowerSeries.hasSubst_of_constantCoeff_zero (fun q => ha q.2)`.
+
+Establish `hAs : MvPowerSeries.HasSubst (fun q : Fin 1 × Fin dd => Y.B.A.act x q.2)` using `MvPowerSeries.hasSubst_of_constantCoeff_zero (fun q => hA q.2)`. Establish `hεs : MvPowerSeries.HasSubst (fun q : Fin 1 × Fin dd => ε q.2)` using `MvPowerSeries.hasSubst_of_constantCoeff_zero (fun q => hε q.2)`. Establish `hci : MvPowerSeries.subst (fun q : Fin 1 × Fin dd => Y.B.A.act x q.2) (ε i) = MvPowerSeries.subst (fun q : Fin 1 × Fin dd => ε q.2) (Y.B.A.act x i)` using `congrFun hc i`. Use `show MvPowerSeries.subst (fun q : Fin 1 × Fin dd => MvPowerSeries.subst (fun q' : Fin 1 × Fin dd => a q'.2) (Y.B.A.act x q.2)) (ε i) = MvPowerSeries.subst (fun q : Fin 1 × Fin dd => MvPowerSeries.subst (fun q' : Fin 1 × Fin dd => a q'.2) (ε q.2)) (Y.B.A.act x i)`. Rewrite using `[← MvPowerSeries.subst_comp_subst_apply hAs hb (ε i), ← MvPowerSeries.subst_comp_subst_apply hεs hb (Y.B.A.act x i), hci]`.
+-/
 theorem mapAt_act {ε : Pt C 1 dd} (hε : ∀ i, MvPowerSeries.constantCoeff (ε i) = 0) (x : O)
     (hc : comp1 ε (Y.B.A.act x) = comp1 (Y.B.A.act x) ε) {a : Fin dd → MvPowerSeries τ C}
     (ha : ∀ i, MvPowerSeries.constantCoeff (a i) = 0) :
@@ -87,6 +110,13 @@ theorem mapAt_act {ε : Pt C 1 dd} (hε : ∀ i, MvPowerSeries.constantCoeff (ε
   rw [← MvPowerSeries.subst_comp_subst_apply hAs hb (ε i),
     ← MvPowerSeries.subst_comp_subst_apply hεs hb (Y.B.A.act x i), hci]
 
+/- English proof (translation)
+Rewrite using `[eval_two_points_eq_subst _ _ _ rfl, eval_two_points_eq_subst _ _ _ rfl, comp_eq_map_at, comp_eq_map_at]`. Establish `k0` using `cc_pt (C := C) (dd := dd) (0 : Fin 2)`. Establish `k1` using `cc_pt (C := C) (dd := dd) (1 : Fin 2)`. Establish `hP` using `constantCoeff_pair_substitution ha hb`. Establish `e0 : (fun i => MvPowerSeries.subst (P2 a b) (pt C dd (0 : Fin 2) i)) = a` using `funext fun i => pair_subst_coordinate ha hb 0 i`.
+
+Establish `e1 : (fun i => MvPowerSeries.subst (P2 a b) (pt C dd (1 : Fin 2) i)) = b` using `funext fun i => pair_subst_coordinate ha hb 1 i`. Establish `hcc : MvPowerSeries.constantCoeff (hAt Y (mapAt ε (pt C dd (0 : Fin 2))) (pt C dd (1 : Fin 2)) - hAt Y (pt C dd (0 : Fin 2)) (mapAt ε' (pt C dd (1 : Fin 2)))) = 0`. Rewrite using `[map_sub, cc_hAt Y (cc_mapAt hε k0) k1, cc_hAt Y k0 (cc_mapAt hε' k1), sub_zero]`. Use `show MvPowerSeries.subst (P2 a b) (FB.expS C (hAt Y (mapAt ε (pt C dd (0 : Fin 2))) (pt C dd (1 : Fin 2)) - hAt Y (pt C dd (0 : Fin 2)) (mapAt ε' (pt C dd (1 : Fin 2))))) = _`. Rewrite using `[expS_eq _ hcc, subst_exp hP hcc, subst_sub' hP, hAt_subst Y hP (cc_mapAt hε k0) k1, hAt_subst Y hP k0 (cc_mapAt hε' k1), e0, e1]`.
+
+Use `congr 3`. Use function extensionality and compare the values at `i`. Rewrite using `[mapAt_subst hP ε k0, e0]`. Use function extensionality and compare the values at `i`. Rewrite using `[mapAt_subst hP ε' k1, e1]`.
+-/
 theorem cmp_at {ε ε' : Pt C 1 dd} (hε : ∀ i, MvPowerSeries.constantCoeff (ε i) = 0)
     (hε' : ∀ i, MvPowerSeries.constantCoeff (ε' i) = 0) {a b : Fin dd → MvPowerSeries τ C}
     (ha : ∀ i, MvPowerSeries.constantCoeff (a i) = 0) (hb : ∀ i, MvPowerSeries.constantCoeff (b i) = 0) :
@@ -115,6 +145,11 @@ end VP
 variable {C : Type} [Field C] [CharZero C] {V : VF C} {O : Type} [CommRing O] [StarRing O] {dd : ℕ} {d : ℕ} [NeZero d]
   {Orb : Type} [Fintype Orb] {I : Orb → Fin 2 → Type} [∀ o g, Fintype (I o g)]
 
+/- English proof (translation)
+Unfold `zePart`. Simplify using `only [Finset.smul_sum, smul_smul]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl (fun c _ => ?_)` and prove the remaining obligations. Rewrite using `[← Finset.sum_smul]`.
+
+Use `congr 1`.
+-/
 theorem dmap_zePart (Y : FBChart C V O dd) (p : ∀ o, PairData Y d (I o)) (ε : Pt C 1 dd) (s : Orb × Fin 2) (m : Fin dd) :
     ∑ j, MvPowerSeries.coeff (Finsupp.single ((0 : Fin 1), j) 1) (ε m) • zePart Y p s j =
       ∑ c : I s.1 s.2, linAct ε ((p s.1).u s.2 c) m •
@@ -126,6 +161,27 @@ theorem dmap_zePart (Y : FBChart C V O dd) (p : ∀ o, PairData Y d (I o)) (ε :
   rw [← Finset.sum_smul]
   congr 1
 
+/- English proof (translation)
+Introduce `hs π hπ s s' hss`. Take `⟨o, g⟩` from `s`. Take `⟨e, hei, he0, hadd, -, hcomm, hfix, himg, hcmp⟩` from `hP o`. Establish `hX` using `hπ.cc o g`. Establish `hZ` using `hπ.cc s'.1 s'.2`.
+
+Establish `hwZ` using `VP.cc_actAt Y Y.w0 hZ`. Use `set Ad : PS C 2 dd := FB.expS C (ev (n := 2) ![comp1 (e g) (pt C dd 0), pt C dd 1] Y.h - ev (n := 2) ![pt C dd 0, comp1 (e (1 - g)) (pt C dd 1)] Y.h) with hAd`. Use `set W : PS C 1 dd := MvPowerSeries.subst (VP.P2 (π o g) (VP.actAt Y Y.w0 (π s'.1 s'.2))) Ad with hW`. Establish `hWe` using `VP.cmp_at Y (he0 g) (he0 (1 - g)) hX hwZ`. Establish `hWi : IntS V W` using `IntS.subst (VP.constantCoeff_pair_substitution hX hwZ) (VP.integral_pair_substitution (hπ.int o g) (VP.int_actAt Y _ hZ (hπ.int s'.1 s'.2))) (hcmp g)`.
+
+Use `⟨W ^ Y.k, ⟨hWi.pow _, by rw [map_pow, hW, hAd, hWe, VP.cc_mvExp', one_pow, V.v.map_one]⟩, ?_⟩` and prove the remaining obligations. Establish `hA` using `VP.cc_pull1Pt Y p`. Establish `pX : (fun i => MvPowerSeries.subst (fun q : Fin 1 × Fin dd => expAll Y p q.2) (π o g i)) = VP.exAt Y (zePart Y p (o, g))` using `funext fun i => (hπ.pull o g i).trans (toAllS_expPt Y p o g i)`. Establish `pZ : (fun i => MvPowerSeries.subst (fun q : Fin 1 × Fin dd => expAll Y p q.2) (π s'.1 s'.2 i)) = VP.exAt Y (zePart Y p s')` using `funext fun i => (hπ.pull s'.1 s'.2 i).trans (toAllS_expPt Y p s'.1 s'.2 i)`. Establish `cA` using `VP.cc_exAt Y (cc_zePart Y p (o, g))`.
+
+Establish `cB` using `VP.cc_exAt Y (cc_zePart Y p s')`. Establish `m1 : VP.mapAt (e g) (VP.exAt Y (zePart Y p (o, g))) = VP.exAt Y (zePart Y p (o, g))`. Use function extensionality and compare the values at `i`. Rewrite using `[show VP.mapAt (e g) (VP.exAt Y (zePart Y p (o, g))) i = _ from hE (e g) (he0 g) (hadd g) (WVO I) (zePart Y p (o, g)) (cc_zePart Y p (o, g)) i]`. Use `congr 1`.
+
+Use function extensionality and compare the values at `m`. Rewrite using `[dmap_zePart]`. Unfold `zePart`. Conclude with `Finset.sum_congr rfl fun c _ => by rw [hfix g c]`. Establish `m2 : VP.mapAt (e (1 - g)) (VP.exAt Y (zePart Y p s')) = fun _ => 0`.
+
+Use function extensionality and compare the values at `i`. Rewrite using `[show VP.mapAt (e (1 - g)) (VP.exAt Y (zePart Y p s')) i = _ from hE (e (1 - g)) (he0 _) (hadd _) (WVO I) (zePart Y p s') (cc_zePart Y p s') i]`. Establish `hz : (fun m => ∑ j, MvPowerSeries.coeff (Finsupp.single ((0 : Fin 1), j) 1) (e (1 - g) m) • zePart Y p s' j) = fun _ => 0`. Use function extensionality and compare the values at `m`. Rewrite using `[dmap_zePart]`.
+
+Use `Finset.sum_eq_zero fun c _ => ?_` and prove the remaining obligations. Rewrite using `[hK hs o (1 - g) (e (1 - g)) (he0 _) (hcomm _) (himg _) ⟨s'.1, ⟨s'.2, c⟩⟩ hss]`. Conclude with `zero_smul _ _`. Rewrite using `[hz, VP.exAt_zero]`. Rewrite using `[VP.Aterm_eq Y π hπ.cc, VP.exp_nsmul (VP.cc_hAt Y hX hwZ)]`.
+
+Unfold `pull1`. Rewrite using `[VP.subst_pow' hA, VP.subst_pow' hA]`. Use `congr 1`. Rewrite using `[hW, hAd, hWe, VP.subst_exp hA (VP.cc_hAt Y hX hwZ), VP.subst_exp hA (by rw [map_sub, VP.cc_hAt Y (VP.cc_mapAt (he0 g) hX) hwZ, VP.cc_hAt Y hX (VP.cc_mapAt (he0 _) hwZ), sub_zero]), VP.subst_sub' hA, VP.hAt_subst Y hA hX hwZ, VP.hAt_subst Y hA (VP.cc_mapAt (he0 g) hX) hwZ, VP.hAt …`. Establish `a1 : (fun i => MvPowerSeries.subst (fun q : Fin 1 × Fin dd => expAll Y p q.2) (VP.actAt Y Y.w0 (π s'.1 s'.2) i)) = VP.actAt Y Y.w0 (VP.exAt Y (zePart Y p s'))`.
+
+Use function extensionality and compare the values at `i`. Rewrite using `[VP.actAt_subst Y hA hZ, pZ]`. Establish `a2 : (fun i => MvPowerSeries.subst (fun q : Fin 1 × Fin dd => expAll Y p q.2) (VP.mapAt (e g) (π o g) i)) = VP.exAt Y (zePart Y p (o, g))`. Use function extensionality and compare the values at `i`. Rewrite using `[VP.mapAt_subst hA (e g) hX, pX, m1]`.
+
+Establish `a3 : (fun i => MvPowerSeries.subst (fun q : Fin 1 × Fin dd => expAll Y p q.2) (VP.mapAt (e (1 - g)) (VP.actAt Y Y.w0 (π s'.1 s'.2)) i)) = fun _ => 0`. Use function extensionality and compare the values at `i`. Rewrite using `[VP.mapAt_subst hA (e (1 - g)) hwZ, a1, VP.mapAt_act Y (he0 _) Y.w0 (hcomm _ _) cB, m2, VP.actAt_zero]`. Rewrite using `[a1, a2, a3, pX, VP.hAt_zero_right Y cA, sub_zero]`.
+-/
 theorem cross_of (Y : FBChart C V O dd) (p : ∀ o, PairData Y d (I o)) (hE : EndoLogSt Y) (hK : KillSt Y p)
     (hP : ∀ o, ProjSt Y (p o)) : CrossSt Y p := by
   intro hs π hπ s s' hss
@@ -191,6 +247,9 @@ theorem cross_of (Y : FBChart C V O dd) (p : ∀ o, PairData Y d (I o)) (hE : En
     rw [VP.mapAt_subst hA (e (1 - g)) hwZ, a1, VP.mapAt_act Y (he0 _) Y.w0 (hcomm _ _) cB, m2, VP.actAt_zero]
   rw [a1, a2, a3, pX, VP.hAt_zero_right Y cA, sub_zero]
 
+/- English proof (translation)
+The claim follows from `value_equation_of_projectors Y p H Ls n (projPull_of Y p hE hK hP) hT (cross_of Y p hE hK hP)`.
+-/
 theorem valuation_eq_pair_of_projections (Y : FBChart C V O dd) (p : ∀ o, PairData Y d (I o)) (H : ∀ o, (Y.raw (p o)).Hyps V)
     (Ls : LetSys C dd) (n : ℕ) (hE : EndoLogSt Y) (hK : KillSt Y p) (hP : ∀ o, ProjSt Y (p o))
     (hT : ∀ o, RawChart.TCoordSt (H o).cartH) : ValEqPSt Y p H Ls n :=

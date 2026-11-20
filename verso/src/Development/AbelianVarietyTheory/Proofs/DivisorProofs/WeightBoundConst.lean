@@ -18,6 +18,11 @@ def WeightBound {ι : Type} [Fintype ι] (K Cμ : ℝ) (U : Set (ι → ℂ)) (r
       |(leviForm s z ξ ξ).re| ≤ K * gnorm (G z) ξ ^ 2 * (s z + r z ^ (-Cμ) * (1 - s z)) ∧
       |(leviForm s z ξ ξ).re| ≤ K * gnorm (G z) ξ ^ 2 * (1 - s z))
 
+/- English proof (translation)
+Introduce `z _`. Use `⟨hc.1, hc.2, fun ξ => Or.inl ⟨?_, ?_⟩⟩` and prove the remaining obligations. Simplify using `[del, linPart_apply]`. Establish `h : (dbar fun _ : ι → ℂ => ((c : ℝ) : ℂ)) = fun _ => 0`. Use function extensionality and compare the values at `x`.
+
+Use extensionality with `v`. Simplify using `[dbar, antilinPart_apply]`. Simplify using `only [leviForm, ddbar, h]`. Simplify using `[del, linPart_apply]`.
+-/
 theorem weightBound_const {ι : Type} [Fintype ι] (K Cμ : ℝ) (U : Set (ι → ℂ))
     (r : (ι → ℂ) → ℝ) (G : (ι → ℂ) → Matrix ι ι ℂ) {c : ℝ} (hc : c ∈ Set.Icc (0 : ℝ) 1) :
     WeightBound K Cμ U r (fun _ => c) G := by

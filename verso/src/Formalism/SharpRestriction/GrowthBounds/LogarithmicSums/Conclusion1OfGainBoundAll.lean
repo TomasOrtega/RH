@@ -9,28 +9,51 @@ namespace Formalism.MainNotions.AuxBlock8.Pf
 
 variable {D : D7} {L : SizeData₂ D}
 
+/- English proof (translation)
+The claim follows from `lt_trans zero_lt_one s.one_lt_alt`.
+-/
 theorem sc_x_pos (s : Scale) : 0 < s.x := lt_trans zero_lt_one s.one_lt_alt
 
+/- English proof (translation)
+Unfold `Scale.b`. Conclude with `Real.one_le_exp (Real.rpow_nonneg (sc_x_pos s).le _)`.
+-/
 theorem sc_one_le_b (s : Scale) : 1 ≤ s.b := by
   unfold Scale.b
   exact Real.one_le_exp (Real.rpow_nonneg (sc_x_pos s).le _)
 
+/- English proof (translation)
+Unfold `Scale.a`. Conclude with `one_lt_mul_of_lt_of_le s.one_lt_alt (sc_one_le_b s)`.
+-/
 theorem sc_one_lt_a (s : Scale) : 1 < s.a := by
   unfold Scale.a
   exact one_lt_mul_of_lt_of_le s.one_lt_alt (sc_one_le_b s)
 
+/- English proof (translation)
+Unfold `Scale.b'`. Conclude with `div_nonneg (by linarith [sc_one_lt_a s]) (Real.exp_pos _).le`.
+-/
 theorem sc_b'_nonneg (s : Scale) : 0 ≤ s.b' := by
   unfold Scale.b'
   exact div_nonneg (by linarith [sc_one_lt_a s]) (Real.exp_pos _).le
 
+/- English proof (translation)
+Unfold `Scale.w''`. Conclude with `div_nonneg (sc_b'_nonneg s) (mul_nonneg (sc_x_pos s).le (Nat.cast_nonneg n))`.
+-/
 theorem sc_w''_nonneg (s : Scale) (n : ℕ) : 0 ≤ s.w'' n := by
   unfold Scale.w''
   exact div_nonneg (sc_b'_nonneg s) (mul_nonneg (sc_x_pos s).le (Nat.cast_nonneg n))
 
+/- English proof (translation)
+Unfold `Scale.delta1`. Conclude with `Real.rpow_pos_of_pos (sc_x_pos s) _`.
+-/
 theorem sc_delta1_pos (s : Scale) : 0 < s.delta1 := by
   unfold Scale.delta1
   exact Real.rpow_pos_of_pos (sc_x_pos s) _
 
+/- English proof (translation)
+Establish `hX' : 0 < s.X'` using `Real.exp_pos _`. Establish `ha : 0 < s.a` using `by linarith [sc_one_lt_a s]`. Establish `hx` using `sc_x_pos s`. Establish `hn' : (1 : ℝ) ≤ n` using `by exact_mod_cast hn`. Establish `h : s.X'' n = s.x * n * s.X'`.
+
+Unfold `Scale.X'' Scale.w'' Scale.b'`. Clear the denominators using the available nonvanishing facts. Rewrite using `[h]`. Conclude with `le_mul_of_one_le_left hX'.le (one_le_mul_of_one_le_of_one_le s.one_lt_alt.le hn')`.
+-/
 theorem X'_le_X'' (s : Scale) (n : ℕ) (hn : 1 ≤ n) : s.X' ≤ s.X'' n := by
   have hX' : 0 < s.X' := Real.exp_pos _
   have ha : 0 < s.a := by linarith [sc_one_lt_a s]
@@ -42,6 +65,9 @@ theorem X'_le_X'' (s : Scale) (n : ℕ) (hn : 1 ≤ n) : s.X' ≤ s.X'' n := by
   rw [h]
   exact le_mul_of_one_le_left hX'.le (one_le_mul_of_one_le_of_one_le s.one_lt_alt.le hn')
 
+/- English proof (translation)
+Unfold `VV at h`. Use `split_ifs at h with hc`. Conclude with `hc.1`. Conclude with `absurd rfl h`.
+-/
 theorem cand_of_VV_ne (X : Inst D L) (K : Consts) (a b : HH D → ℤ) (p : ℕ) (h : VV X K a b p ≠ ∅) :
     Cand D L K p := by
   unfold VV at h
@@ -49,6 +75,15 @@ theorem cand_of_VV_ne (X : Inst D L) (K : Consts) (a b : HH D → ℤ) (p : ℕ)
   · exact hc.1
   · exact absurd rfl h
 
+/- English proof (translation)
+Establish `hm : (2 : ℝ) ≤ (D.R.m : ℝ)` using `by exact_mod_cast D.R.two_le_m`. Establish `hk : (5 : ℝ) ≤ (D.R.k : ℝ)`. Use `D.R.m_add_three_le_k` as an intermediate fact. Establish `h2` using `D.R.two_le_m`. Conclude with `(by omega : 5 ≤ D.R.k)` after adjusting the coercions.
+
+Establish `hNk : (D.R.k : ℝ) ≤ (D.R.N D.R.m : ℝ)`. Establish `: D.R.k ≤ D.R.N D.R.m` using `by unfold Ranks.N; omega`. Conclude with `this` after adjusting the coercions. Establish `h` using `P.Del_ge.2.2.2`. Establish `hm10 : (1 : ℝ) ≤ (D.R.m : ℝ) ^ 10` using `one_le_pow₀ (by linarith)`.
+
+Establish `hN0 : (0 : ℝ) ≤ (D.R.N D.R.m : ℝ)` using `Nat.cast_nonneg _`. Establish `hND : (D.R.N D.R.m : ℝ) ≤ (D.s.Del : ℝ)`. Use `mul_le_mul_of_nonneg_left hm10 hN0` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hD : (5 : ℝ) ≤ (D.s.Del : ℝ)` using `by linarith`.
+
+Establish `hkD : 5 * (D.s.Del : ℝ) ≤ (D.R.k : ℝ) * (D.s.Del : ℝ)` using `mul_le_mul_of_nonneg_right hk (by linarith)`. Apply the tactic sequence `refine ⟨hk, ?_, ?_⟩ <;> rw [L.Sc_eq] <;> nlinarith`.
+-/
 theorem Nm_le_Sc (P : ParameterChoice' D L) : (5 : ℝ) ≤ (D.R.k : ℝ) ∧ (D.R.N D.R.m : ℝ) ≤ L.Sc ∧ 100 ≤ L.Sc := by
   have hm : (2 : ℝ) ≤ (D.R.m : ℝ) := by exact_mod_cast D.R.two_le_m
   have hk : (5 : ℝ) ≤ (D.R.k : ℝ) := by
@@ -68,6 +103,11 @@ theorem Nm_le_Sc (P : ParameterChoice' D L) : (5 : ℝ) ≤ (D.R.k : ℝ) ∧ (D
   have hkD : 5 * (D.s.Del : ℝ) ≤ (D.R.k : ℝ) * (D.s.Del : ℝ) := mul_le_mul_of_nonneg_right hk (by linarith)
   refine ⟨hk, ?_, ?_⟩ <;> rw [L.Sc_eq] <;> nlinarith
 
+/- English proof (translation)
+Take `⟨hk, hN, _⟩` from `Nm_le_Sc P`. Establish `hj2 : (j : ℝ) ≤ (D.R.m : ℝ)` using `by exact_mod_cast (Finset.mem_Icc.1 hj).2`. Establish `hNe : (D.R.N D.R.m : ℝ) = (D.R.k : ℝ) + (D.R.m : ℝ) * ((D.R.t : ℝ) + 1)`. Unfold `Ranks.N`. Use `push_cast`.
+
+Expand and normalize the polynomial expressions, which then agree. Establish `ht : (0 : ℝ) ≤ (D.R.t : ℝ) + 1` using `by positivity`. Establish `h1` using `mul_le_mul_of_nonneg_right hj2 ht`. Unfold `kaJ`. Use the polynomial consequences of the given equalities and inequalities.
+-/
 theorem kaJ_le (P : ParameterChoice' D L) (j : ℕ) (hj : j ∈ SizeData₂.lifts D) : kaJ D j ≤ L.Sc := by
   obtain ⟨hk, hN, _⟩ := Nm_le_Sc P
   have hj2 : (j : ℝ) ≤ (D.R.m : ℝ) := by exact_mod_cast (Finset.mem_Icc.1 hj).2
@@ -78,6 +118,11 @@ theorem kaJ_le (P : ParameterChoice' D L) (j : ℕ) (hj : j ∈ SizeData₂.lift
   unfold kaJ
   nlinarith
 
+/- English proof (translation)
+Establish `hx` using `sc_x_pos s`. Establish `hn' : (1 : ℝ) ≤ n` using `by exact_mod_cast hn`. Establish `hb` using `sc_b'_nonneg s`. Use `⟨?_, div_le_self hb s.one_lt_alt.le⟩` and prove the remaining obligations. Unfold `Scale.w''`.
+
+Conclude with `div_le_div_of_nonneg_left hb hx (le_mul_of_one_le_right hx.le hn')`.
+-/
 theorem w''_le (s : Scale) (n : ℕ) (hn : 1 ≤ n) : s.w'' n ≤ s.b' / s.x ∧ s.b' / s.x ≤ s.b' := by
   have hx := sc_x_pos s
   have hn' : (1 : ℝ) ≤ n := by exact_mod_cast hn
@@ -86,6 +131,11 @@ theorem w''_le (s : Scale) (n : ℕ) (hn : 1 ≤ n) : s.w'' n ≤ s.b' / s.x ∧
   unfold Scale.w''
   exact div_le_div_of_nonneg_left hb hx (le_mul_of_one_le_right hx.le hn')
 
+/- English proof (translation)
+Establish `hy : 1 < s.x ^ (s.eps / 3)` using `Real.one_lt_rpow s.one_lt_alt (by linarith [s.eps_pos])`. Establish `hX : 2 ≤ s.X'`. Unfold `Scale.X'`. Combine the linear relations using `[Real.add_one_le_exp (s.x ^ (s.eps / 3))]`. Establish `ha : 0 < s.a` using `by linarith [sc_one_lt_a s]`.
+
+Unfold `Scale.b'`. Rewrite using `[mul_div_assoc', div_le_iff₀ (by linarith)]`. Use the polynomial consequences of the given equalities and inequalities.
+-/
 theorem two_b'_le_a (s : Scale) : 2 * s.b' ≤ s.a := by
   have hy : 1 < s.x ^ (s.eps / 3) := Real.one_lt_rpow s.one_lt_alt (by linarith [s.eps_pos])
   have hX : 2 ≤ s.X' := by
@@ -148,6 +198,9 @@ def MeanEx (X : Inst D L) (K : Consts) : Prop :=
   (∀ a b p, Cand D L K p → 0 ≤ Sig X K a b p) ∧
   ∃ a ∈ box D (winA D L.sc), ∃ b ∈ box D (winB D K L.sc), ZZ X K a b ≤ L.sc.x ^ (-9 : ℝ) / 4
 
+/- English proof (translation)
+Introduce `t ht`. Simplify using `only [aL, bL, dif_pos ht]`. Conclude with `⟨(L.aT_win _).1, (L.aT_win _).2, L.bT_ge _⟩`.
+-/
 theorem inWin_sizeData (L : SizeData₂ D) : InWin L (aL L) (bL L) := by
   intro t ht
   simp only [aL, bL, dif_pos ht]

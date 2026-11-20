@@ -16,6 +16,11 @@ section Points
 
 variable {K : Type} [Fintype K] {ι : K → Type} [∀ k, Fintype (ι k)]
 
+/- English proof (translation)
+Take `⟨h1, h2⟩` from `hz`. Use `⟨fun k => ?_, fun p hp => ?_⟩` and prove the remaining obligations. Take `⟨i, hi⟩` from `h1 k`. Conclude with `⟨i, (map_ne_zero f).mpr hi⟩`. Establish `e` using `congrArg f (h2 p hp)`.
+
+Rewrite `e` using `[map_zero, MvPolynomial.aeval_def, MvPolynomial.eval₂_comp_left]`. Rewrite using `[MvPolynomial.aeval_def]`. Rewrite `e` using `[show f.comp (algebraMap _ F) = algebraMap _ E from Subsingleton.elim _ _]`. Then use the resulting hypothesis.
+-/
 theorem ptsOver_map {F E : Type} [Field F] [Field E] (f : F →+* E) {P : Ideal (MRing ι)}
     {z : (Σ k, ι k) → F} (hz : z ∈ ptsOver F P) : (fun p => f (z p)) ∈ ptsOver E P := by
   obtain ⟨h1, h2⟩ := hz
@@ -27,6 +32,13 @@ theorem ptsOver_map {F E : Type} [Field F] [Field E] (f : F →+* E) {P : Ideal 
     rw [MvPolynomial.aeval_def]
     rwa [show f.comp (algebraMap _ F) = algebraMap _ E from Subsingleton.elim _ _] at e
 
+/- English proof (translation)
+Take `⟨h1, h2⟩` from `hz`. Use `⟨fun k => ?_, fun p hp => ?_⟩` and prove the remaining obligations. Take `⟨i, hi⟩` from `h1 k`. Conclude with `⟨i, (map_ne_zero f).mp hi⟩`. Establish `e` using `h2 p hp`.
+
+Rewrite `e` using `[MvPolynomial.aeval_def, ← show f.comp (algebraMap _ F) = algebraMap _ E from Subsingleton.elim _ _]`. Establish `e2 : f (MvPolynomial.eval₂ (algebraMap _ F) z p) = 0`. Rewrite using `[MvPolynomial.eval₂_comp_left]`. Conclude with `e`. Rewrite using `[MvPolynomial.aeval_def]`.
+
+Conclude with `f.injective (e2.trans (map_zero f).symm)`.
+-/
 theorem ptsOver_of_map {F E : Type} [Field F] [Field E] (f : F →+* E) {P : Ideal (MRing ι)}
     {z : (Σ k, ι k) → F} (hz : (fun p => f (z p)) ∈ ptsOver E P) : z ∈ ptsOver F P := by
   obtain ⟨h1, h2⟩ := hz
@@ -45,10 +57,16 @@ end Points
 
 variable {Ψ : Type} [Fintype Ψ] {N : ℕ}
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨hz.1, fun g hg => hz.2 g (h hg)⟩`.
+-/
 theorem ptsOver_mono {K : Type} [Fintype K] {ι : K → Type} [∀ k, Fintype (ι k)] {F : Type} [Field F]
     {P W : Ideal (MRing ι)} (h : P ≤ W) {z : (Σ k, ι k) → F} (hz : z ∈ ptsOver F W) : z ∈ ptsOver F P :=
   ⟨hz.1, fun g hg => hz.2 g (h hg)⟩
 
+/- English proof (translation)
+Unfold `rootHt`. Rewrite using `[Finset.mul_sum, ← Finset.sum_add_distrib]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Apply the tactic sequence `rcases j with _ | r <;> simp [RootModel.coef] <;> ring`.
+-/
 theorem rootHt_affine (R : RootModel Ψ N) (mu : Wt Ψ N) (s : ℝ) (L : Type) [Field L] [NumberField L]
     (w : (Σ k, R.ι k) → L) : rootHt R 1 mu s L w = rootHt R 1 mu 0 L w + s * rootHt R 1 0 1 L w := by
   unfold rootHt
@@ -56,11 +74,19 @@ theorem rootHt_affine (R : RootModel Ψ N) (mu : Wt Ψ N) (s : ℝ) (L : Type) [
   refine Finset.sum_congr rfl fun j _ => ?_
   rcases j with _ | r <;> simp [RootModel.coef] <;> ring
 
+/- English proof (translation)
+Consider the cases of `j with`. Consider the case `none => exact M.A_smooth`. Consider the case `some r => exact M.x_smooth t r`.
+-/
 theorem line_smooth (M : RootModel Ψ N) (t : ℝ) (j : Option (Ψ × Fin N)) : IsSmoothHerm (M.line t j) := by
   cases j with
   | none => exact M.A_smooth
   | some r => exact M.x_smooth t r
 
+/- English proof (translation)
+Unfold `l1`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[← Real.norm_eq_abs]`. Conclude with `(norm_le_pi_norm (mu τ) i).trans (norm_le_pi_norm mu τ)`. Use `_ = (Fintype.card Ψ * N : ℝ) * ‖mu‖ := by`.
+
+Simplify using `only [Finset.sum_const, Finset.card_univ, Fintype.card_fin, nsmul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem l1_le_card_mul_norm (mu : Wt Ψ N) : l1 mu ≤ (Fintype.card Ψ * N : ℝ) * ‖mu‖ := by
   unfold l1
   calc ∑ τ, ∑ i, |mu τ i| ≤ ∑ τ : Ψ, ∑ i : Fin N, ‖mu‖ :=
@@ -71,6 +97,17 @@ theorem l1_le_card_mul_norm (mu : Wt Ψ N) : l1 mu ≤ (Fintype.card Ψ * N : �
         simp only [Finset.sum_const, Finset.card_univ, Fintype.card_fin, nsmul_eq_mul]
         ring
 
+/- English proof (translation)
+Establish `hsabs : |s| = s` using `abs_of_pos hs`. Establish `hCabs : C ≤ |C|` using `le_abs_self C`. Establish `hCnn : 0 ≤ |C|` using `abs_nonneg C`. Take `⟨D, hD⟩ : ∃ D, D = C₁ + |C| * (G + 2) + 1` from `⟨_, rfl⟩`. Rewrite using `[← hD]`.
+
+Establish `hG2 : |C| ≤ |C| * (G + 2)`. Use polynomial arithmetic with `[mul_le_mul_of_nonneg_left (by linarith : (1 : ℝ) ≤ G + 2) hCnn]`. Establish `hCD : C₁ ≤ D` using `by rw [hD]; nlinarith`. Establish `hCD' : |C| ≤ D` using `by rw [hD]; nlinarith`. Establish `hC1C : C₁ + C ≤ D` using `by rw [hD]; nlinarith`.
+
+Establish `hx2 : 0 < 2 + C₁ + x` using `by linarith`. Establish `hlog1 : 0 ≤ Real.log (2 + C₁ + x)` using `Real.log_nonneg (by linarith)`. Establish `hlog2 : Real.log (2 + C₁ + x) ≤ Real.log (2 + D + x)` using `Real.log_le_log hx2 (by linarith)`. Establish `hlogterm : C₁ * Real.log (2 + C₁ + x) ≤ D * Real.log (2 + D + x)` using `mul_le_mul hCD hlog2 hlog1 (by linarith)`. Establish `h1 : C * l ≤ D * l` using `mul_le_mul_of_nonneg_right (by linarith) hl`.
+
+Establish `haC : (a + s) * C ≤ D`. Establish `e1 : (a + s) * C ≤ (a + s) * |C|` using `mul_le_mul_of_nonneg_left hCabs (by linarith)`. Establish `e2 : (a + s) * |C| ≤ (G + 1) * |C|` using `mul_le_mul_of_nonneg_right (by linarith) hCnn`. Establish `e3 : (G + 1) * |C| ≤ D` using `by rw [hD]; nlinarith`. Combine the linear equalities and inequalities to obtain the conclusion.
+
+Establish `h2 : (a + |s|) * (C * b) ≤ D * b`. Rewrite using `[hsabs, ← mul_assoc]`. Conclude with `mul_le_mul_of_nonneg_right haC hb`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem collect {C C₁ G s b l x y H a : ℝ} (hC₁ : 1 ≤ C₁) (hG : 0 ≤ G) (hs : 0 < s) (hs1 : s ≤ 1) (hb : 0 ≤ b)
     (hl : 0 ≤ l) (hx : -C₁ ≤ x) (ha : 0 ≤ a) (hal : a ≤ G)
     (hy : -(C₁ * Real.log (2 + C₁ + x)) - C₁ ≤ y)
@@ -103,6 +140,17 @@ theorem collect {C C₁ G s b l x y H a : ℝ} (hC₁ : 1 ≤ C₁) (hG : 0 ≤ 
     exact mul_le_mul_of_nonneg_right haC hb
   linarith
 
+/- English proof (translation)
+Establish `hw' : (fun p => algebraMap L (AlgebraicClosure L) (w p)) ∈ ptsOver (AlgebraicClosure L) M.P` using `ptsOver_map (algebraMap L (AlgebraicClosure L)) hw`. Take `⟨-, -, hpts, hlift⟩` from `GlobalTheory.T.join_model_points_project Ψ N M R i`. Take `⟨z, hz, hzw⟩` from `hlift (AlgebraicClosure L) _ hw'`. Set `F` to `IntermediateField.adjoin L (Set.range z)`. Use `haveI : FiniteDimensional L F := IntermediateField.finiteDimensional_adjoin fun x _ => Algebra.IsIntegral.isIntegral x`.
+
+Use `haveI : NumberField F := { to_charZero := inferInstance, to_finiteDimensional := Module.Finite.trans L F }`. Set `z' : _ → F` to `fun p => ⟨z p, IntermediateField.subset_adjoin L _ ⟨p, rfl⟩⟩`. Establish `hz' : z' ∈ ptsOver F (mCoordIdeal (joinOf M R i))` using `ptsOver_of_map (algebraMap F (AlgebraicClosure L)) hz`. Use `⟨F, inferInstance, inferInstance, fun p => z' (GlobalTheory.CompanionTheory.Ar.Cmp.joinInr M.ι R.ι p), (hpts F z' hz').2, ?_⟩` and prove the remaining obligations. Establish `key` using `GlobalTheory.T.root_height_difference_bound Ψ N M R i u c t s lo hi lam hC hA F z' hz'`.
+
+Establish `heq : rootHt M t lam s F (fun p => z' (GlobalTheory.CompanionTheory.Ar.Cmp.joinInl M.ι R.ι p)) = rootHt M t lam s L w`. Unfold `rootHt`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Use `congr 1`. Rewrite using `[← GlobalTheory.T.line_height_invariant_scaling M.K M.ι (M.line t j) L F (algebraMap L F) w (fun _ => 1) hw.1 (fun _ => one_ne_zero)]`.
+
+Use `congr 1`. Use function extensionality and compare the values at `p`. Rewrite using `[one_mul]`. Apply `Subtype.ext` to reduce the goal to its premises. Use `show z (GlobalTheory.CompanionTheory.Ar.Cmp.joinInl M.ι R.ι p) = _`.
+
+Rewrite using `[congrFun hzw p]`. Both sides reduce to the same expression. Rewrite `key` using `[heq]`. Conclude with `key`.
+-/
 theorem transfer [DecidableEq Ψ] (M R : RootModel Ψ N) (i : R.Ω →+* M.Ω) (u : Option (Ψ × Fin N) → M.Ω)
     (c t s lo hi : ℝ) (lam : Wt Ψ N) (hC : Close M R i u c) (hA : ArchBetween M R i u t lam s lo hi)
     (L : Type) [Field L] [NumberField L] (w : (Σ k, M.ι k) → L) (hw : w ∈ ptsOver L M.P) :
@@ -138,6 +186,13 @@ theorem transfer [DecidableEq Ψ] (M R : RootModel Ψ N) (i : R.Ω →+* M.Ω) (
   rw [heq] at key
   exact key
 
+/- English proof (translation)
+Take `⟨L, _, _, w, hWw, hwW, hII'⟩` from `GlobalTheory.T.height_of_zero_dim_variety M.K M.ι II hII W hW.1`. Establish `hwP : w ∈ ptsOver L M.P` using `ptsOver_mono hW.2 hwW`. Establish `hht : M.ht II t mu s W = rootHt M t mu s L w`. Unfold `RootModel.ht rootHt`. Rewrite using `[Finset.sum_div]`.
+
+Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[mul_div_assoc, hII' _ (line_smooth M t j)]`. Take `⟨F, _, _, v, hv, hIcc⟩` from `transfer M R i u (C * b) t s (-(C * l) - C) C mu hClose hA L w hwP`. Take `⟨hx, hy⟩` from `hRef F v hv`. Use `⟨rootHt R 1 0 1 F v, hx, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[hht]`. Establish `hl1 : 0 ≤ l1 mu` using `Finset.sum_nonneg fun τ _ => Finset.sum_nonneg fun i _ => abs_nonneg _`. Use `collect (a := l1 mu) (y := rootHt R 1 mu 0 F v) hC₁ hG hs hs1 hb hl hx hl1 hmu hy ?_` and prove the remaining obligations. Rewrite using `[← rootHt_affine]`. Combine the linear relations using `[hIcc.1]`.
+-/
 theorem point_bound [DecidableEq Ψ] {II : IntersectionSystem} (hII : IsIntersectionSystem II) (M R : RootModel Ψ N)
     (i : R.Ω →+* M.Ω) (u : Option (Ψ × Fin N) → M.Ω) {C C₁ G t s b l : ℝ} (mu : Wt Ψ N)
     (hC₁ : 1 ≤ C₁) (hG : 0 ≤ G) (hs : 0 < s) (hs1 : s ≤ 1) (hb : 0 ≤ b) (hl : 0 ≤ l) (hmu : l1 mu ≤ G)
@@ -164,6 +219,43 @@ theorem point_bound [DecidableEq Ψ] {II : IntersectionSystem} (hII : IsIntersec
   rw [← rootHt_affine]
   linarith [hIcc.1]
 
+/- English proof (translation)
+Introduce `Ψ _ _ N T II R hII hRef hLow`. Take `⟨C, s₀, hs₀, hR⟩` from `hRef`. Use `choose Cf hCf1 hCf using hLow`. Take `⟨C₁, hC₁def⟩ : ∃ C₁ : ℝ, C₁ = ∑ c, Cf c` from `⟨_, rfl⟩`. Establish `hCfle : ∀ c, Cf c ≤ C₁` using `fun c => by`.
+
+Rewrite using `[hC₁def]`. Conclude with `Finset.single_le_sum (f := Cf) (fun c _ => by linarith [hCf1 c]) (Finset.mem_univ c)`. Establish `hC₁1 : 1 ≤ C₁` using `le_trans (hCf1 (Classical.arbitrary T.Comp)) (hCfle _)`. Introduce `c₀ hc₀`. Take `⟨θ₁, hθ₁, -, hθ⟩` from `GlobalTheory.T.dominant_weight_gap_shift Ψ N T.j T.nu c₀ T.j_pos T.j_lt hc₀`.
+
+Take `⟨G, hGdef⟩ : ∃ G : ℝ, G = (Fintype.card Ψ * N : ℝ) * 2` from `⟨_, rfl⟩`. Establish `hG0 : 0 ≤ G` using `by rw [hGdef]; positivity`. Take `⟨D, hDdef⟩ : ∃ D : ℝ, D = C₁ + |C| * (G + 2) + 1` from `⟨_, rfl⟩`. Establish `hCG : 0 ≤ |C| * (G + 2)` using `mul_nonneg (abs_nonneg C) (by linarith)`. Establish `hD1 : 1 ≤ D` using `by rw [hDdef]; linarith`.
+
+Establish `hlog2 : 0 < Real.log 2` using `Real.log_pos one_lt_two`. Establish `hK : 0 ≤ D * Real.log D + 2 + D`. Establish `h1` using `mul_nonneg (by linarith : (0 : ℝ) ≤ D) (Real.log_nonneg hD1)`. Combine the linear equalities and inequalities to obtain the conclusion. Use `⟨min θ₁ (min 1 s₀), lt_min hθ₁ (lt_min one_pos hs₀), 2 * D + (D * Real.log D + 2 + D) / Real.log 2, ?_⟩` and prove the remaining obligations.
+
+Introduce `B hB c lam θ s hrat hlam hθpos hθle hsθ hgap hcg W hW`. Establish `hθ1 : θ ≤ θ₁` using `hθle.trans (min_le_left _ _)`. Establish `hθone : θ ≤ 1` using `hθle.trans ((min_le_right _ _).trans (min_le_left _ _))`. Establish `hθs₀ : θ ≤ s₀` using `hθle.trans ((min_le_right _ _).trans (min_le_right _ _))`. Take `⟨hdom, hnorm, -⟩` from `hθ lam θ hlam hθpos hθ1 hgap hcg`.
+
+Establish `hspos : (0 : ℝ) < s` using `by rw [hsθ]; exact pow_pos hθpos 2`. Establish `hs1 : (s : ℝ) ≤ 1` using `by rw [hsθ]; exact pow_le_one₀ hθpos.le hθone`. Establish `hss₀ : (s : ℝ) ≤ s₀`. Establish `h1` using `mul_le_mul_of_nonneg_right hθone hθpos.le`. Rewrite using `[hsθ, sq]`.
+
+Combine the linear equalities and inequalities to obtain the conclusion. Establish `hmu_eq : T.lamS lam s = lam - θ ^ 2 • T.nu` using `by unfold RootTower.lamS; rw [hsθ]`. Establish `hdom' : Dominant (T.lamS lam s)` using `hmu_eq ▸ hdom`. Establish `hnorm' : ‖T.lamS lam s‖ ≤ 2` using `hmu_eq ▸ hnorm`. Take `⟨i, u, hClose, hArch⟩` from `hR B hB c`.
+
+Establish `hA` using `hArch (T.lamS lam s) s hdom' hnorm' hspos hss₀`. Establish `hl1 : l1 (T.lamS lam s) ≤ G`. Use `(l1_le_card_mul_norm _).trans ?_` and prove the remaining obligations. Rewrite using `[hGdef]`. Conclude with `mul_le_mul_of_nonneg_left hnorm' (by positivity)`.
+
+Establish `hB2 : (2 : ℝ) ≤ B` using `by exact_mod_cast hB`. Establish `hlogB : 0 < Real.log B` using `Real.log_pos (by linarith)`. Establish `hBl : Real.log 2 ≤ Real.log B` using `Real.log_le_log two_pos hB2`. Establish `hl : Real.log (1 / (s : ℝ)) = -Real.log s` using `by rw [one_div, Real.log_inv]`. Establish `hlog1s : 0 ≤ Real.log (1 / (s : ℝ))`.
+
+Rewrite using `[hl]`. Combine the linear relations using `[Real.log_nonpos hspos.le hs1]`. Establish `hRef' : ∀ (L : Type) [Field L] [NumberField L], ∀ w ∈ ptsOver L (R c).P, -C₁ ≤ rootHt (R c) 1 0 1 L w ∧ -(C₁ * Real.log (2 + C₁ + rootHt (R c) 1 0 1 L w)) - C₁ ≤ rootHt (R c) 1 (T.lamS lam s) 0 L w`. Introduce `L _ _ w hw`. Take `⟨h1, h2⟩` from `hCf c L w hw`.
+
+Establish `h3` using `h2 (T.lamS lam s) hdom' hnorm'`. Use `⟨by linarith [hCfle c], ?_⟩` and prove the remaining obligations. Establish `hx2 : 0 < 2 + Cf c + rootHt (R c) 1 0 1 L w` using `by linarith [hCf1 c]`. Establish `hlg1 : 0 ≤ Real.log (2 + Cf c + rootHt (R c) 1 0 1 L w)` using `Real.log_nonneg (by linarith [hCf1 c])`. Establish `hlg2 : Real.log (2 + Cf c + rootHt (R c) 1 0 1 L w) ≤ Real.log (2 + C₁ + rootHt (R c) 1 0 1 L w)` using `Real.log_le_log hx2 (by linarith [hCfle c])`.
+
+Establish `hm : Cf c * Real.log (2 + Cf c + rootHt (R c) 1 0 1 L w) ≤ C₁ * Real.log (2 + C₁ + rootHt (R c) 1 0 1 L w)` using `mul_le_mul (hCfle c) hlg2 hlg1 (by linarith)`. Combine the linear relations using `[hCfle c]`. Take `⟨x, hx, hbound⟩` from `point_bound (C := C) (C₁ := C₁) (G := G) (t := scale s) (s := s) (b := Real.log B) (l := Real.log (1 / (s : ℝ))) hII (T.M B c) (R c) i u (T.lamS lam s) hC₁1 hG0 hspos hs1 hlogB.le hlog1s hl1 hRef' hClose hA hW`. Rewrite `hbound` using `[← hDdef]`. Unfold `RootTower.mbarHt`.
+
+Use `le_trans ?_ hbound` and prove the remaining obligations. Establish `hDC : C₁ + 1 ≤ D` using `by rw [hDdef]; linarith`. Establish `hy0 : 0 < 2 + D + x` using `by linarith`. Establish `hDpos : 0 < D` using `by linarith`. Establish `hz` using `Real.log_le_sub_one_of_pos (div_pos (mul_pos hspos hy0) hDpos)`.
+
+Rewrite `hz` using `[Real.log_div (mul_pos hspos hy0).ne' hDpos.ne', Real.log_mul hspos.ne' hy0.ne']`. Establish `hyb : D * Real.log (2 + D + x) ≤ (s : ℝ) * x + (s : ℝ) * (2 + D) - D + D * Real.log D + D * Real.log (1 / (s : ℝ))`. Establish `e : D * ((s : ℝ) * (2 + D + x) / D - 1) = (s : ℝ) * x + (s : ℝ) * (2 + D) - D`. Rewrite using `[mul_sub, mul_div_assoc', mul_div_cancel_left₀ _ hDpos.ne']`. Expand and normalize the polynomial expressions, which then agree.
+
+Establish `hm` using `mul_le_mul_of_nonneg_left hz hDpos.le`. Rewrite `hm` using `[e]`. Establish `e2 : D * (Real.log (s : ℝ) + Real.log (2 + D + x) - Real.log D) = D * Real.log (s : ℝ) + D * Real.log (2 + D + x) - D * Real.log D` using `by ring`. Establish `e3 : D * Real.log (1 / (s : ℝ)) = -(D * Real.log (s : ℝ))` using `by rw [hl]; ring`. Combine the linear equalities and inequalities to obtain the conclusion.
+
+Establish `hs2D : (s : ℝ) * (2 + D) ≤ 2 + D` using `mul_le_of_le_one_left (by linarith) hs1`. Establish `hlogBs : Real.log (B / (s : ℝ)) = Real.log B + Real.log (1 / (s : ℝ))`. Rewrite using `[Real.log_div (show (0:ℝ) < B by linarith).ne' hspos.ne', hl]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hlogBs]`.
+
+Establish `hdivge : D * Real.log D + 2 + D ≤ (D * Real.log D + 2 + D) / Real.log 2 * (Real.log B + Real.log (1 / (s : ℝ)))`. Rewrite using `[div_mul_eq_mul_div, le_div_iff₀ hlog2]`. Conclude with `mul_le_mul_of_nonneg_left (by linarith) hK`. Establish `e4 : (2 * D + (D * Real.log D + 2 + D) / Real.log 2) * (Real.log B + Real.log (1 / (s : ℝ))) = 2 * (D * Real.log B) + 2 * (D * Real.log (1 / (s : ℝ))) + (D * Real.log D + 2 + D) / Real.log 2 * (Real.log B + Real.log (1 / (s : ℝ)))` using `by ring`. Rewrite using `[e4]`.
+
+Establish `h5` using `mul_nonneg hDpos.le hlogB.le`. Establish `h6` using `mul_nonneg hDpos.le hlog1s`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem i5_of_hasRef_of_refLower : ∀ (Ψ : Type) [Fintype Ψ] [DecidableEq Ψ] (N : ℕ) (T : RootTower Ψ N) (II : IntersectionSystem)
     (R : T.Comp → RootModel Ψ N), IsIntersectionSystem II → HasRef T R → (∀ c, RefLower (R c)) → T.I5 II := by
   intro Ψ _ _ N T II R hII hRef hLow

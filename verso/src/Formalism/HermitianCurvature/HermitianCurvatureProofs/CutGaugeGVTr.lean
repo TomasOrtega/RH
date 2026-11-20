@@ -11,35 +11,59 @@ noncomputable section
 def Vp (P : M.Par) (Y : ℂ) (i : ℕ) : Wd.M2 (MA.A P (MA.DQ P)) :=
   (((List.finRange P.r).take i).reverse.map fun l => Wd.Ts (MA.siteA P (MA.DQ P) l) Y).prod
 
+/- English proof (translation)
+Simplify using `[Vp]`.
+-/
 theorem Vp_zero (P : M.Par) (Y : ℂ) : Vp P Y 0 = 1 := by
   simp [Vp]
 
+/- English proof (translation)
+Simplify using `[Vp, List.take_add_one, h]`.
+-/
 theorem Vp_succ (P : M.Par) (Y : ℂ) (i : ℕ) (h : i < P.r) :
     Vp P Y (i + 1) = Wd.Ts (MA.siteA P (MA.DQ P) ⟨i, h⟩) Y * Vp P Y i := by
   simp [Vp, List.take_add_one, h]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `b`. Simplify using `[Wd.v0, MA.sites, Vp, List.ofFn_eq_map, List.map_reverse, List.take_of_length_le, Function.comp_def]`.
+-/
 theorem sitesCommonSpace_v0_eq_Vp (P : M.Par) (Y : ℂ) : Wd.v0 (MA.sites P (MA.DQ P)) Y = fun b => Vp P Y P.r b 0 := by
   funext b
   simp [Wd.v0, MA.sites, Vp, List.ofFn_eq_map, List.map_reverse, List.take_of_length_le, Function.comp_def]
 
+/- English proof (translation)
+Simplify using `[Wd.Ts, Formalism.YangianSpanCharacter.T.Tm, Matrix.mul_apply, Fin.sum_univ_two]`.
+-/
 theorem Ts_mul_0 (P : M.Par) (σ : Wd.Site (MA.A P (MA.DQ P))) (Y : ℂ) (V : Wd.M2 (MA.A P (MA.DQ P))) :
     (Wd.Ts σ Y * V) 0 0 = (algebraMap ℂ (MA.A P (MA.DQ P)) Y + σ.p) * V 0 0 + -σ.c * V 1 0 := by
   simp [Wd.Ts, Formalism.YangianSpanCharacter.T.Tm, Matrix.mul_apply, Fin.sum_univ_two]
 
+/- English proof (translation)
+Simplify using `[Wd.Ts, Formalism.YangianSpanCharacter.T.Tm, Matrix.mul_apply, Fin.sum_univ_two]`.
+-/
 theorem Ts_mul_1 (P : M.Par) (σ : Wd.Site (MA.A P (MA.DQ P))) (Y : ℂ) (V : Wd.M2 (MA.A P (MA.DQ P))) :
     (Wd.Ts σ Y * V) 1 0 = σ.ci * V 0 0 := by
   simp [Wd.Ts, Formalism.YangianSpanCharacter.T.Tm, Matrix.mul_apply, Fin.sum_univ_two]
 
 section ind
 
+/- English proof (translation)
+The claim follows from `actA_sc P _ f`.
+-/
 theorem actA_p (P : M.Par) (l : Fin P.r) (f : M.Ty P → MA.SmQ P.r P.TT) :
     MA.actA P (MA.siteA P (MA.DQ P) l).p f = fun ρ => MA.eulerQ (TT := P.TT) (M.vc l) (f ρ) :=
   actA_sc P _ f
 
+/- English proof (translation)
+The claim follows from `actA_sc P _ f`.
+-/
 theorem actA_c (P : M.Par) (l : Fin P.r) (f : M.Ty P → MA.SmQ P.r P.TT) :
     MA.actA P (MA.siteA P (MA.DQ P) l).c f = fun ρ => MA.coordQ (TT := P.TT) (M.vc l) * f ρ :=
   actA_sc P _ f
 
+/- English proof (translation)
+The claim follows from `actA_sc P _ f`.
+-/
 theorem actA_ci (P : M.Par) (l : Fin P.r) (f : M.Ty P → MA.SmQ P.r P.TT) :
     MA.actA P (MA.siteA P (MA.DQ P) l).ci f = fun ρ => Ring.inverse (MA.coordQ (TT := P.TT) (M.vc l)) * f ρ :=
   actA_sc P _ f
@@ -48,6 +72,23 @@ variable {Wp Wq : Type} [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp]
   [NormedAddCommGroup Wq] [InnerProductSpace ℂ Wq] [FiniteDimensional ℂ Wp] [FiniteDimensional ℂ Wq]
   {P : M.Par} {Bs : B.RealPlaceData P.k P.r Wp Wq} {e : M.Ty P → ℂ → (Wq →L[ℂ] Wp)}
 
+/- English proof (translation)
+Introduce `i`. Proceed by induction on `i with`. Consider the case `zero`. Introduce `_ Dc Φ hΦ`. Establish `h0 : Q.crd (Q.cmp (Q.vAB P.r (Y : ℂ) 0) 0) Φ = Φ` using `rfl`.
+
+Establish `h1 : Q.crd (Q.cmp (Q.vAB P.r (Y : ℂ) 0) 1) Φ = 0` using `rfl`. Establish `v0 : Vp P Y 0 0 0 = 1` using `by simp [Vp_zero]`. Establish `v1 : Vp P Y 0 1 0 = 0` using `by simp [Vp_zero]`. Rewrite using `[h0, h1, v0, v1, actA_one, actA_zero, trR_zero]`. Use `⟨⟨hΦ, rfl⟩, ⟨?_, rfl⟩⟩` and prove the remaining obligations.
+
+Use `famR_smul hΦ 0` as an intermediate fact. Rewrite `this` using `[zero_smul]`. Then use the resulting hypothesis. Consider the case `succ i ih`. Introduce `hi Dc Φ hΦ`. Establish `h : i < P.r` using `hi`.
+
+Take `⟨⟨hA, tA⟩, ⟨hB, tB⟩⟩` from `ih (Nat.le_of_lt h) Dc Φ hΦ`. Use `set ΦA := Q.crd (Q.cmp (Q.vAB P.r (Y : ℂ) i) 0) Φ with hΦA`. Use `set ΦB := Q.crd (Q.cmp (Q.vAB P.r (Y : ℂ) i) 1) Φ with hΦB`. Establish `hv : Q.vAB (E` using `Wq →L[ℂ] Wp) P.r (Y : ℂ) (i + 1) = (fun f => (Y : ℂ) • (Q.vAB P.r (Y : ℂ) i).1 f + pOp ⟨i, h⟩ ((Q.vAB P.r (Y : ℂ) i).1 f) - cOp ⟨i, h⟩ ((Q.vAB P.r (Y : ℂ) i).2 f), fun f => ciOp ⟨i, h⟩ ((Q.vAB P.r (Y : ℂ) i).1 f)) := by`. Simplify using `only [Q.vAB, dif_pos h]`.
+
+Establish `e0 : Q.crd (Q.cmp (Q.vAB P.r (Y : ℂ) (i + 1)) 0) Φ = (Y : ℂ) • ΦA + Q.crd (pOp ⟨i, h⟩) ΦA - Q.crd (cOp ⟨i, h⟩) ΦB`. Rewrite using `[hv]`. Both sides reduce to the same expression. Establish `e1 : Q.crd (Q.cmp (Q.vAB P.r (Y : ℂ) (i + 1)) 1) Φ = Q.crd (ciOp ⟨i, h⟩) ΦA`. Rewrite using `[hv]`.
+
+Both sides reduce to the same expression. Establish `hpA : FamR P Bs Dc (Q.crd (pOp ⟨i, h⟩) ΦA)` using `famR_opL hA ⟨i, h⟩ 0`. Establish `hcB : FamR P Bs Dc (Q.crd (cOp ⟨i, h⟩) ΦB)` using `famR_opL hB ⟨i, h⟩ 1`. Establish `hciA : FamR P Bs Dc (Q.crd (ciOp ⟨i, h⟩) ΦA)` using `famR_opL hA ⟨i, h⟩ 2`. Establish `hsum : FamR P Bs Dc ((Y : ℂ) • ΦA + Q.crd (pOp ⟨i, h⟩) ΦA)` using `famR_add (famR_smul hA _) hpA`.
+
+Establish `tc : trR P Bs.μsec e (Q.crd (cOp ⟨i, h⟩) ΦB) = fun ρ => MA.coordQ (TT` using `P.TT) (M.vc ⟨i, h⟩) * trR P Bs.μsec e ΦB ρ := trR_mul hpl hk he hB _ hcB (fun c => c ⟨i, h⟩) (fun _ _ => rfl) _ (fun q => coordE_vc _ _)`. Establish `tci : trR P Bs.μsec e (Q.crd (ciOp ⟨i, h⟩) ΦA) = fun ρ => Ring.inverse (MA.coordQ (TT` using `P.TT) (M.vc ⟨i, h⟩)) * trR P Bs.μsec e ΦA ρ := trR_mul hpl hk he hA _ hciA (fun c => (c ⟨i, h⟩)⁻¹) (fun _ _ => rfl) _ (fun q => by`. Rewrite using `[inv_coordQ_apply _ (fun x hx => by rw [coordE_vc]; exact hx.1 _), coordE_vc])`. Use `⟨⟨?_, ?_⟩, ⟨?_, ?_⟩⟩` and prove the remaining obligations. Rewrite using `[e0]`.
+
+Conclude with `famR_sub hsum hcB`. Rewrite using `[e0, trR_sub _ _ _ _ (fun ρ => smR hpl hk he hsum ρ) (fun ρ => smR hpl hk he hcB ρ), trR_add _ _ _ _ (fun ρ => smR hpl hk he (famR_smul hA _) ρ) (fun ρ => smR hpl hk he hpA ρ), trR_smul, trR_p hpl hk he hA, tc, tA, tB, Vp_succ P Y i h, Ts_mul_0, actA_add, actA_mul, actA_mul, actA …`. Rewrite using `[e1]`. Conclude with `hciA`. Rewrite using `[e1, tci, tA, Vp_succ P Y i h, Ts_mul_1, actA_mul, actA_ci]`.
+-/
 theorem vab_ind (hpl : Q.IsPlace P Bs.z Bs.z' Bs.π Bs.π') (hk : 2 ≤ P.k) (he : IsFrameB P Bs e) (Y : ℝ) :
     ∀ i : ℕ, i ≤ P.r → ∀ (Dc : (Fin P.r → ℂ) → Set (Q.Mx P.k P.r)) (Φ : Q.Fn P.k P.r (Wq →L[ℂ] Wp)),
       FamR P Bs Dc Φ →
@@ -114,6 +155,11 @@ namespace Formalism.FourierDecayAlt.P.CutMP.Gauge
 
 open VLem
 
+/- English proof (translation)
+Introduce `Wp Wq _ _ _ _ _ _ P Bs hpl hk e he Dc Φ hΦ Y b`. Establish `h` using `vab_ind hpl hk he Y P.r le_rfl Dc Φ hΦ`. Rewrite using `[sitesCommonSpace_v0_eq_Vp]`. Use `fin_cases b`. Conclude with `⟨h.1.1, fun ρ => congrFun h.1.2 ρ⟩`.
+
+Conclude with `⟨h.2.1, fun ρ => congrFun h.2.2 ρ⟩`.
+-/
 theorem gauge_vector_transition_holds : GVTr := by
   intro Wp Wq _ _ _ _ _ _ P Bs hpl hk e he Dc Φ hΦ Y b
   have h := vab_ind hpl hk he Y P.r le_rfl Dc Φ hΦ

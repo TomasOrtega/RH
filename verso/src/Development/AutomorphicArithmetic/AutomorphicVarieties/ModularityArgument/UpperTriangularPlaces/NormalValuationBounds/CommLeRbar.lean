@@ -4,6 +4,11 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.SymplecticGSp4.LMe
 
 open NumberField IsDedekindDomain Formalism.ConjugateSelfDual Formalism.HC ReciprocityTheory.Gal IsLocalRing Polynomial UpperTheory.V UpperTheory.V.Base UpperTheory.V.Alg UpperTheory.V.HV UpperTheory.V.GradeZeroInterpolatingElement UpperTheory.V.Ws GlobalTheory.GalOfCusp UpperTheory.V.Z.Win
 
+/- English proof (translation)
+Use `haveI : Normal k F := IsGalois.to_normal`. Rewrite using `[← IntermediateField.restrictNormalHom_ker]`. Rewrite using `[commutator_def, Subgroup.commutator_le]`. Introduce `a _ b _`. Rewrite using `[MonoidHom.mem_ker, map_commutatorElement, commutatorElement_eq_one_iff_mul_comm]`.
+
+Conclude with `hF.toIsMulCommutative.is_comm.comm _ _`.
+-/
 private theorem comm_le_fix {k Ω : Type} [Field k] [Field Ω] [Algebra k Ω] (F : IntermediateField k Ω)
     (hF : IsAbelianGalois k F) : commutator (Ω ≃ₐ[k] Ω) ≤ F.fixingSubgroup := by
   haveI : Normal k F := IsGalois.to_normal
@@ -13,6 +18,11 @@ private theorem comm_le_fix {k Ω : Type} [Field k] [Field Ω] [Algebra k Ω] (F
   rw [MonoidHom.mem_ker, map_commutatorElement, commutatorElement_eq_one_iff_mul_comm]
   exact hF.toIsMulCommutative.is_comm.comm _ _
 
+/- English proof (translation)
+Establish `hb` using `(UpperTheory.V.Ws.barFacts D hD).2.2.2.2.2.1`. Introduce `g hg`. Establish `h1 : g ∈ D.ξ.ker` using `Abelianization.commutator_subset_ker D.ξ hg`. Establish `h2 : g ∈ D.Psi.ker` using `Abelianization.commutator_subset_ker D.Psi hg`. Rewrite `h1`, `h2`, the goal using `[MonoidHom.mem_ker]`.
+
+Rewrite using `[hb]`. Simplify using `[Raw.bar, h1, h2]`.
+-/
 private theorem comm_le_rbar {Ω : Type} [Field Ω] [CharZero Ω] [IsAlgClosure ℚ Ω] {l : ℕ} [Fact l.Prime] {c : Coef l}
     (D : Raw Ω c) (hD : D.Good) : commutator (G ℚ Ω) ≤ D.rbar.ker := by
   have hb := (UpperTheory.V.Ws.barFacts D hD).2.2.2.2.2.1
@@ -23,6 +33,15 @@ private theorem comm_le_rbar {Ω : Type} [Field Ω] [CharZero Ω] [IsAlgClosure 
   rw [hb]
   simp [Raw.bar, h1, h2]
 
+/- English proof (translation)
+Unfold `UpperTheory.V.Keep.IneQ`. Introduce `hI Ω _ _ _ l _ c D T hD c' h X y _ r hr`. Use `haveI := T.nF`. Use `haveI := T.abF`. Apply `hI Ω l 4 r.toHomUnits (T.F.fixingSubgroup ⊓ D.rbar.ker)` to reduce the goal to its premises.
+
+Rewrite using `[Subgroup.coe_inf]`. Conclude with `(IntermediateField.fixingSubgroup_isOpen T.F).inter (UpperTheory.V.GradeZeroInterpolatingElement.facts D hD).2.2.2.2.2.2.2.2.2.2.2.1`. Conclude with `le_inf (comm_le_fix T.F T.abF) (comm_le_rbar D hD)`. Introduce `A hA g hgA hgH`. Take `⟨hF, hK⟩` from `Subgroup.mem_inf.mp hgH`.
+
+Take `⟨s, rfl⟩` from `UpperTheory.V.Ws.exists_resQ hF`. Establish `hs : s ∈ (T.fr ∅).N` using `⟨A, by simpa [Raw.Away] using hA, (resQ_Ine T.F A s).mpr hgA, hK⟩`. Establish `h1 : X.P.r s = 1` using `X.pair.kill s hs`. Establish `h2 : r (resQ T.F s) = (X.P.map ↑y).r s` using `by rw [← hr]; rfl`. Apply `Units.ext` to reduce the goal to its premises.
+
+Rewrite using `[MonoidHom.coe_toHomUnits, h2]`. Simplify using `[PD.map, mapRep, h1]`.
+-/
 theorem UpperTheory.V.Keep.ineQ : UpperTheory.V.Keep.IneQ := by
   unfold UpperTheory.V.Keep.IneQ
   intro hI Ω _ _ _ l _ c D T hD c' h X y _ r hr

@@ -114,6 +114,9 @@ def JDRGrpM : Prop :=
             Q.resG S.G.k S.G.r (Fin.last S.G.r) (B.opApply Θv J) c g =
                 rhvGrp S.G.k S.G.r (T v).base.z (T v).base.z' (y : ℂ) (Q.resG S.G.k S.G.r (Fin.last S.G.r) J) c g
 
+/- English proof (translation)
+Introduce `Cc E _ _ _ Wp Wq _ _ _ _ _ _ S T f χ ν' m₀ top A₀ hB v y`. Take `⟨Θ, h1, h3, hR⟩` from `hP Cc E Wp Wq S T f χ ν' m₀ top A₀ hB v y`. Take `⟨Θv, h2, h4, hRv⟩` from `hM Cc E Wp Wq S T f χ ν' m₀ top A₀ hB v y`. Conclude with `⟨Θ, Θv, h1, h2, h3, h4, fun J hJ c hc g hg hcg => ⟨hR J hJ c hc g hg hcg, hRv J hJ c hc g hg hcg⟩⟩`.
+-/
 theorem jDRGrp_of_halves (hP : JDRGrpP) (hM : JDRGrpM) : JDRGrp := by
   intro Cc E _ _ _ Wp Wq _ _ _ _ _ _ S T f χ ν' m₀ top A₀ hB v y
   obtain ⟨Θ, h1, h3, hR⟩ := hP Cc E Wp Wq S T f χ ν' m₀ top A₀ hB v y
@@ -125,6 +128,29 @@ section assembly
 variable {Wp Wq : Type} [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp] [NormedAddCommGroup Wq]
   [InnerProductSpace ℂ Wq] [FiniteDimensional ℂ Wp] [FiniteDimensional ℂ Wq]
 
+/- English proof (translation)
+Establish `hV` using `fun b => Gauge.gauge_vector_transition_holds Wp Wq P Bs hpl hk e he Dc Φ hΦ y b`. Establish `hVs` using `fun a => Gauge.gauge_conj_vector_transition Wp Wq P Bs hpl hk e he Dc Φ hΦ y a`. Establish `hsm` using `fun (Dc' : (Fin P.r → ℂ) → Set (Q.Mx P.k P.r)) (Ψ : Q.Fn P.k P.r (Wq →L[ℂ] Wp)) (hΨ : Gauge.FamR P Bs Dc' Ψ) => Gauge.raw_gauge_smoothness_holds Wp Wq P Bs hpl hk e he Dc' Ψ hΨ`. Establish `hql` using `fun (Ψ : Q.Fn P.k P.r (Wq →L[ℂ] Wp)) (hΨ : Gauge.FamR P Bs Dc Ψ) (a b : Fin 2) => Gauge.quadratic_local_family_holds Wp Wq P Bs hpl hk Dc Ψ hΨ y a b`. Take `⟨hMv, hMs⟩` from `hM P L hL y`.
+
+Establish `hsum : ∀ (Ψ₀ Ψ₁ : Q.Fn P.k P.r (Wq →L[ℂ] Wp)), Gauge.FamR P Bs Dc Ψ₀ → Gauge.FamR P Bs Dc Ψ₁ → Gauge.FamR P Bs Dc (Ψ₀ + Ψ₁)` using `fun _ _ h₀ h₁ => Gauge.VLem.famR_add h₀ h₁`. Prove the components needed by the constructor for the conclusion. Establish `hF0` using `hql _ (hV 0).1 1 0`. Establish `hF1` using `hql _ (hV 1).1 1 1`. Use function extensionality and compare the values at `ρ`.
+
+Use `show MA.toSm P (Gauge.rawR P Bs.μsec e (dMul (drbF P.r) _) ρ) = _`. Rewrite using `[(hD Wp Wq P Bs hpl hk e he L hL Dc _ (hsum _ _ hF0 hF1)).1 ρ]`. Establish `e1 : (fun ρ' => MA.toSm P (Gauge.rawR P Bs.μsec e (Q.QL P.k P.r Bs.z Bs.z' (Fin.last P.r) (y : ℂ) 1 0 (Q.crd (Q.cmp (Q.vAB P.r (y : ℂ) P.r) 0) Φ) + Q.QL P.k P.r Bs.z Bs.z' (Fin.last P.r) (y : ℂ) 1 1 (Q.crd (Q.cmp (Q.vAB P.r (y : ℂ) P.r) 1) Φ)) ρ')) = MA.actA P (MA.QQr P (MA.DQ P) …`. Use `Gauge.VLem.trR_add Bs.μsec e _ _ (hsm _ _ hF0) (hsm _ _ hF1)` as an intermediate fact. Unfold `Gauge.VLem.trR at this`.
+
+Rewrite using `[this, Gauge.actA_add, Gauge.actA_mul, Gauge.actA_mul, R.LevelData.Ar, R.LevelData.Br, ← hMv 0, ← hMv 1]`. Use `congr 1`. Use function extensionality and compare the values at `ρ'`. Rewrite using `[hQQ _ _ (hV 0).1 y 1 0 ρ']`. Use `congr 1`.
+
+Use function extensionality and compare the values at `ρ''`. Conclude with `(hV 0).2 ρ''`. Use function extensionality and compare the values at `ρ'`. Rewrite using `[hQQ _ _ (hV 1).1 y 1 1 ρ']`. Use `congr 1`.
+
+Use function extensionality and compare the values at `ρ''`. Conclude with `(hV 1).2 ρ''`. Rewrite using `[e1, ← Gauge.actA_mul]`. Both sides reduce to the same expression. Establish `hF0` using `hql _ (hVs 0).1 0 1`.
+
+Establish `hF1` using `hql _ (hVs 1).1 1 1`. Use function extensionality and compare the values at `ρ`. Use `show MA.toSm P (Gauge.rawR P Bs.μsec e (dMul (drF P.r) _) ρ) = _`. Rewrite using `[(hD Wp Wq P Bs hpl hk e he L hL Dc _ (hsum _ _ hF0 hF1)).2 ρ]`. Establish `e1 : (fun ρ' => MA.toSm P (Gauge.rawR P Bs.μsec e (Q.QL P.k P.r Bs.z Bs.z' (Fin.last P.r) (y : ℂ) 0 1 (Q.crd (Q.cmp (Q.vABs P.r (y : ℂ) P.r) 0) Φ) + Q.QL P.k P.r Bs.z Bs.z' (Fin.last P.r) (y : ℂ) 1 1 (Q.crd (Q.cmp (Q.vABs P.r (y : ℂ) P.r) 1) Φ)) ρ')) = MA.actA P (MA.QQr P (MA.DQ …`.
+
+Use `Gauge.VLem.trR_add Bs.μsec e _ _ (hsm _ _ hF0) (hsm _ _ hF1)` as an intermediate fact. Unfold `Gauge.VLem.trR at this`. Rewrite using `[this, Gauge.actA_add, Gauge.actA_mul, Gauge.actA_mul, R.LevelData.Avr, R.LevelData.Bvr, ← hMs 0, ← hMs 1]`. Use `congr 1`. Use function extensionality and compare the values at `ρ'`.
+
+Rewrite using `[hQQ _ _ (hVs 0).1 y 0 1 ρ']`. Use `congr 1`. Use function extensionality and compare the values at `ρ''`. Conclude with `(hVs 0).2 ρ''`. Use function extensionality and compare the values at `ρ'`.
+
+Rewrite using `[hQQ _ _ (hVs 1).1 y 1 1 ρ']`. Use `congr 1`. Use function extensionality and compare the values at `ρ''`. Conclude with `(hVs 1).2 ρ''`. Rewrite using `[e1, ← Gauge.actA_mul]`.
+
+Both sides reduce to the same expression.
+-/
 theorem jdr_tr_at (hD : JDRDrTr) (hM : JDRModelV) (P : M.Par) (Bs : B.RealPlaceData P.k P.r Wp Wq)
     (hpl : Q.IsPlace P Bs.z Bs.z' Bs.π Bs.π') (hk : 2 ≤ P.k) (e : M.Ty P → ℂ → (Wq →L[ℂ] Wp))
     (he : Gauge.IsFrameB P Bs e)
@@ -188,6 +214,19 @@ theorem jdr_tr_at (hD : JDRDrTr) (hM : JDRModelV) (P : M.Par) (Bs : B.RealPlaceD
 
 end assembly
 
+/- English proof (translation)
+Introduce `Cc E _ _ _ Wp Wq _ _ _ _ _ _ S T f χ ν' m₀ top A₀ hB v e L hFr hQQ hL y`. Take `⟨Θ, Θv, h1, h2, h3, h4, hR⟩` from `hG Cc E Wp Wq S T f χ ν' m₀ top A₀ hB v y`. Use `⟨Θ, Θv, h1, h2, h3, h4, fun J hJ => ?_⟩` and prove the remaining obligations. Take `⟨hIB, -, -, -⟩` from `hB`. Take `⟨-, -, -, hIsB, -, -, -, -, -, -, hk, -⟩` from `hIB`.
+
+Establish `hpl : Q.IsPlace (D.parOf S v) (T v).base.z (T v).base.z' (T v).base.π (T v).base.π'` using `(hIsB.2 v).2.2.2.1`. Establish `hF` using `Gauge.tc_famR (D.parOf S v) (T v).base hpl J hJ`. Take `⟨tR, tRv⟩` from `jdr_tr_at hD hM (D.parOf S v) (T v).base hpl hk e hFr (fun Dc Φ hΦ Y a b ρ => hQQ Dc Φ hΦ Y a b ρ) L hL _ _ hF y`. Establish `hJR : trJ S T v e J = Gauge.VLem.trR (D.parOf S v) (T v).base.μsec e (Q.resG S.G.k S.G.r (Fin.last S.G.r) J)`. Use function extensionality and compare the values at `ρ`.
+
+Use `show MA.toSm _ (Gauge.rawJ (D.parOf S v) (T v).base e J ρ) = _`. Rewrite using `[Gauge.tc_rawJ]`. Both sides reduce to the same expression. Establish `hpt : ∀ (Θ' : B.DiffOp S.G.k S.G.r (Wp (S.pl v)) (Wq (S.pl v))) (F : Q.Fn S.G.k S.G.r (Wq (S.pl v) →L[ℂ] Wp (S.pl v))), (∀ c ∈ OmX S.G.r, ∀ g ∈ Q.Glev S.G.k S.G.r (Fin.last S.G.r), Q.wCell S.G.k S.G.r (Fin.last S.G.r) c * g ∈ OmP S T v → Q.resG S.G.k S.G.r (Fin.last S.G.r) (B.opA …`. Introduce `Θ' F hF'`.
+
+Use function extensionality and compare the values at `ρ`. Use `show MA.toSm _ (Gauge.rawJ (D.parOf S v) (T v).base e (B.opApply Θ' J) ρ) = _`. Rewrite using `[Gauge.tc_rawJ]`. Use `show MA.toSm _ _ = MA.toSm _ _`. Use `congr 1`.
+
+Use function extensionality and compare the values at `q`. Establish `hmu` using `Gauge.tc_mu (D.parOf S v) (T v).base hpl q`. Simplify using `only [Gauge.rawR]`. Rewrite using `[hF' q.1.1 q.2.1 _ hmu.1 hmu.2]`. Prove the components needed by the constructor for the conclusion.
+
+Rewrite using `[hpt Θ _ (fun c hc g hg hcg => (hR J hJ c hc g hg hcg).1), hJR]`. Conclude with `tR`. Rewrite using `[hpt Θv _ (fun c hc g hg hcg => (hR J hJ c hc g hg hcg).2), hJR]`. Conclude with `tRv`.
+-/
 theorem jDCapR_of_parts (hG : JDRGrp) (hD : JDRDrTr) (hM : JDRModelV) : JDCapR := by
   intro Cc E _ _ _ Wp Wq _ _ _ _ _ _ S T f χ ν' m₀ top A₀ hB v e L hFr hQQ hL y
   obtain ⟨Θ, Θv, h1, h2, h3, h4, hR⟩ := hG Cc E Wp Wq S T f χ ν' m₀ top A₀ hB v y

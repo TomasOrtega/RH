@@ -118,6 +118,11 @@ section Final
 variable {D : D7} (i : D.nd.Loc) (r : D.nd.X i → (GE D.nd →* GL (Fin D.R.nV) (D.nd.O i)))
   (ρ : D.nd.X i → (GE D.nd →* GL (Fin D.R.r) (D.nd.O i))) (π : D.nd.X i) (dc : TruncatedSeriesCountingIdentities.Decl D i)
 
+/- English proof (translation)
+Introduce `w hw hrow C hC`. Establish `ht : Norm.IsConjM ⇑(TruncatedSeriesCountingIdentities.locC C (rTwO D.nd i r π)) ⇑(TruncatedSeriesCountingIdentities.locC C (rTwO D.nd i (Norm.rN i r ρ π) π))` using `Norm.conj_locC i C (Norm.conj_twistM _ (Norm.conjK i r ρ π hd π) _)`. Establish `hset : (fun τ => {a | Formalism.WeaklyAdmissibleFiltrations.IsJumpV (Br.PD D.loc D.nbr i w hw) (matRep (TruncatedSeriesCountingIdentities.locC C (rTwO D.nd i (Norm.rN i r ρ π) π))) τ a}) = (fun τ => {a | Formalism.WeaklyAdmissibleFiltrations.IsJumpV (Br.PD D.loc D.nbr i w hw) (ma …`. Use function extensionality and compare the values at `fun τ => Set.ext fun a => ((Norm.jd _ ht).2.2 τ a).symm`. Use `h w hw hrow C hC` as an intermediate fact.
+
+Rewrite `this` using `[← hset]`. Conclude with `this`.
+-/
 theorem row_bound_normalized_lattice (hd : TruncatedSeriesCountingIdentities.SemisimpleDecomposition i r ρ π) (cB : ℕ) (h : EmbeddingTypes.admTB i r π dc cB) :
     EmbeddingTypes.admTB i (Norm.rN i r ρ π) π dc cB := by
   intro w hw hrow C hC
@@ -184,6 +189,9 @@ variable {D : D7} (i : D.nd.Loc) (r : D.nd.X i → (GE D.nd →* GL (Fin D.R.nV)
 
 abbrev UnrIn : Prop := StD.UnrIn i dc
 
+/- English proof (translation)
+Introduce `w hw hc`. Establish `h1` using `h w hw hc (TruncatedSeriesCountingIdentities.CoefExt.self i w hw)`. Unfold `WeaklyAdmissibleFiltrations.UnrTriv at h1`. Conclude with `h1.ge`.
+-/
 theorem unramified_input_of_admitted (h : EmbeddingTypes.UnramifiedTrivialH1f i dc) : UnrIn i dc := by
   intro w hw hc
   have h1 := h w hw hc (TruncatedSeriesCountingIdentities.CoefExt.self i w hw)
@@ -268,6 +276,15 @@ def RemainingInputsAfterColumns : Prop :=
 set_option maxHeartbeats 4000000 in
 set_option synthInstance.maxHeartbeats 400000 in
 
+/- English proof (translation)
+Introduce `hR hL hTB`. Establish `hR'` using `Norm.row_normalized i r ρ π dcm dc lenRow hR`. Establish `hL'` using `Norm.lift_normalized i r ρ π dcm dc e' hL`. Establish `hT'` using `row_bound_normalized_lattice i r ρ π dc dcm cB hTB`. Use `H0.theorem_of_display_and_g2 i r ρ π dc lenRow e' cB (fun _ _ hπ _ _ => ?_) g2 g5x` and prove the remaining obligations.
+
+Establish `hN` using `Norm.normAt_rN i r ρ π`. Establish `hG1` using `Norm.admG1_rN i r ρ π dcm g1`. Take `⟨g0, -, ⟨u0, hcyc⟩, eB, e₁, s, hI, hX⟩` from `Norm.design_normalized_of_admitted i r ρ π a51 hπ`. Take `⟨Dd, hD, -, i1, i2, i3, i4, i5, hTop, hK⟩` from `normalized_ring_data i (Norm.rN i r ρ π) ρ π hN hG1 g3.2.2 g0 eB e₁ s hI hX`. Use `haveI := i1`.
+
+Use `haveI := i2`. Use `haveI := i3`. Use `haveI := i4`. Use `haveI := i5`. Establish `hc : TruncatedSeriesCountingIdentities.FamilyContinuous (D` using `D) i (Norm.rN i r ρ π) := Norm.continuity_normalized i r ρ π (Norm.rhoCont_of i r ρ π dcm ct) ct`.
+
+Conclude with `selmer_inequality_three i (Norm.rN i r ρ π) ρ π dc g0 eB e₁ s Dd hD hc hTop (rank_reduction_idempotent_one Dd hI hD) lenRow e' cB hN (RepresentationBoundsCohomology.primHyp_of D.nd (Norm.rN i r ρ π) ρ π hN hG1) u0 hcyc hK (Norm.admG6_rN i r ρ π dcm g6) hL' hG (hP hR' hL' hT' hπ g …`.
+-/
 theorem theorem_n5_of_ring_inputs (g1 : TruncatedSeriesCountingIdentities.admG1 i r) (g2 : TruncatedSeriesCountingIdentities.admG2 i r ρ π) (g3 : TruncatedSeriesCountingIdentities.admG3 i r ρ π) (g5x : TruncatedSeriesCountingIdentities.TameGeneratorConditions i)
     (g6 : TruncatedSeriesCountingIdentities.admG6 i r) (ct : TruncatedSeriesCountingIdentities.FamilyContinuous i r) (dcm : TruncatedSeriesCountingIdentities.SemisimpleDecomposition i r ρ π)
     (a51 : LargeLevelLemmas.adm51 i r ρ π) (hG : K.SelfGood i)
@@ -313,6 +330,9 @@ variable {D : D7} (i : D.nd.Loc) (r : D.nd.X i → (GE D.nd →* GL (Fin D.R.nV)
 set_option maxHeartbeats 4000000 in
 set_option synthInstance.maxHeartbeats 400000 in
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨KFin.κ i dc Dd ρ π, KFin.κz i dc Dd ρ π, KFin.u i dc, KFin.uz i dc Dd.δO, StA.colUz i dc Dd, StD.unrFin_of i dc Dd.δO hUn, StA.colLx i r ρ π dc g0 eB e₁ s Dd hD hc hBK hG2 hFont hDec hFin, hRho, StD.bKa_clause i r π dc g0 eB e₁ s Dd hD hc bka hG (StD.rowDR_of_fontaine i r ρ π dc …`.
+-/
 theorem plugOpen3_B (hBK : TruncatedSeriesCountingIdentities.admBK i) (hG2 : TruncatedSeriesCountingIdentities.admG2 i r ρ π) (hFont : TruncatedSeriesCountingIdentities.FontaineAtPlacesOverL i)
     (hDec : TruncatedSeriesCountingIdentities.SemisimpleDecomposition i r ρ π) (hFin : LargeLevelLemmas.tateH1FinitenessAtPlacesOver i) (hUn : StD.UnrIn i dc) (hN : RepresentationBoundsCohomology.NormAt D.nd r ρ π)
     (bka : LargeLevelLemmas.BlochKatoAnnihilators i) (hG : K.SelfGood i) (hR : TruncatedSeriesCountingIdentities.LengthBoundAtPlaces i r ρ π dc lenRow)
@@ -348,6 +368,9 @@ def RemainingInputsLastLayer : Prop :=
 set_option maxHeartbeats 4000000 in
 set_option synthInstance.maxHeartbeats 400000 in
 
+/- English proof (translation)
+Introduce `hR hL hTB`. Use `theorem_n5_of_ring_inputs i r ρ π dc lenRow e' cB g1 g2 g3 g5x g6 ct dcm a51 hG ?_ hR hL hTB` and prove the remaining obligations. Introduce `hR' hL' hTB' hZ g0 eB e₁ s Dd _ hD hc hT hrk`. Take `⟨hRho, hTBo, hChi, hLoc1, hRT⟩` from `hO hR' hL' hTB' hZ g0 eB e₁ s Dd hD hc hT hrk`. Conclude with `plugOpen3_B i (Norm.rN i r ρ π) ρ π dc g0 eB e₁ s Dd hD hc hT hrk lenRow cB bk (Norm.admG2_rN (hd := dcm) (h := g2)) font (Norm.decomposes_normalized (i := i) (r := r) (ρ := ρ) (π := π)) fin unr (Norm.normAt_rN (i := i) (r := r) (ρ := ρ) (π := π)) bka hG hR' hRho hTBo hChi hLoc1 …`.
+-/
 theorem theorem_n5_of_open_b (g1 : TruncatedSeriesCountingIdentities.admG1 i r) (g2 : TruncatedSeriesCountingIdentities.admG2 i r ρ π) (g3 : TruncatedSeriesCountingIdentities.admG3 i r ρ π) (g5x : TruncatedSeriesCountingIdentities.TameGeneratorConditions i)
     (g6 : TruncatedSeriesCountingIdentities.admG6 i r) (bk : TruncatedSeriesCountingIdentities.admBK i) (bka : LargeLevelLemmas.BlochKatoAnnihilators i) (ct : TruncatedSeriesCountingIdentities.FamilyContinuous i r)
     (dcm : TruncatedSeriesCountingIdentities.SemisimpleDecomposition i r ρ π) (font : TruncatedSeriesCountingIdentities.FontaineAtPlacesOverL i) (fin : LargeLevelLemmas.tateH1FinitenessAtPlacesOver i) (a51 : LargeLevelLemmas.adm51 i r ρ π)

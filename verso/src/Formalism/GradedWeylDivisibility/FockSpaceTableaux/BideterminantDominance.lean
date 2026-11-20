@@ -7,6 +7,11 @@ noncomputable section
 
 namespace Formalism.GradedWeylDivisibility
 
+/- English proof (translation)
+Introduce `R _ r n K sz hsz I m hm`. Establish `hm' : m ∈ (∏ k : Fin K, initMinor R (I k) (hsz k)).support` using `hm`. Use `⟨fun k => ?_, ?_⟩` and prove the remaining obligations. Establish `h` using `support_prod_le_of_additive (rowPart k) (rowPart_zero k) (rowPart_add k) Finset.univ (fun k' => initMinor R (I k') (hsz k')) (fun k' => min k (sz k')) (fun k' _ m' hm'' => (initMinor_support (I k') (hsz k') m' hm'').1 k) m hm'`. Conclude with `h.trans_eq (sum_min_eq_shapeDeg sz hsz k)`.
+
+Establish `h` using `support_prod_eq_of_additive rowTot rowTot_zero rowTot_add Finset.univ (fun k' => initMinor R (I k') (hsz k')) sz (fun k' _ m' hm'' => (initMinor_support (I k') (hsz k') m' hm'').2) m hm'`. Establish `h2` using `sum_min_eq_shapeDeg sz hsz n`. Establish `h3 : ∑ t : Fin n with t.val < n, shapeDeg sz t = ∑ t : Fin n, shapeDeg sz t` using `Finset.sum_congr (Finset.filter_true_of_mem fun t _ => t.isLt) fun _ _ => rfl`. Establish `h4 : ∑ k' : Fin K, min n (sz k') = ∑ k' : Fin K, sz k'` using `Finset.sum_congr rfl fun k' _ => min_eq_right (hsz k')`. Conclude with `h.trans (h4.symm.trans (h2.trans h3))`.
+-/
 theorem bideterminantDominance : BideterminantDominance := by
   classical
   intro R _ r n K sz hsz I m hm

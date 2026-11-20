@@ -20,6 +20,9 @@ variable {K G : Type} [Field K] [NumberField K] [Group G] [Finite G]
 
 omit [NumberField K] in
 
+/- English proof (translation)
+Use `IsIntegral.of_pow (n := orderOf g) (orderOf_pos g) ?_` and prove the remaining obligations. Rewrite using `[← Units.val_pow_eq_pow_val, ← map_pow, pow_orderOf_eq_one, map_one, Units.val_one]`. Conclude with `isIntegral_one`.
+-/
 theorem isIntegral_char (χ : G →* Kˣ) (g : G) : IsIntegral ℤ ((χ g : Kˣ) : K) := by
   refine IsIntegral.of_pow (n := orderOf g) (orderOf_pos g) ?_
   rw [← Units.val_pow_eq_pow_val, ← map_pow, pow_orderOf_eq_one, map_one, Units.val_one]
@@ -40,14 +43,25 @@ def twRep : Representation LL G (Fin n → LL) where
     rw [map_mul, map_mul, mul_inv, Units.val_mul, smul_mul_smul_comm]
 
 omit [Fintype G] in
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem twRep_apply (g : G) (x : Fin n → LL) : twRep A g x = (((A.chi g)⁻¹ : LLˣ) : LL) • A.ρ g x := rfl
 
 omit [Fintype G] in
 
+/- English proof (translation)
+Use `show (((A.chi g)⁻¹ : LLˣ) : LL) • A.ρ g = _`. Rewrite using `[h, inv_one, Units.val_one, one_smul]`.
+-/
 theorem twRep_of_chi_eq_one {g : G} (h : A.chi g = 1) : twRep A g = A.ρ g := by
   show (((A.chi g)⁻¹ : LLˣ) : LL) • A.ρ g = _
   rw [h, inv_one, Units.val_one, one_smul]
 
+/- English proof (translation)
+Establish `ha : a = ∑ g : G, MonoidAlgebra.single g (a.coeff g)`. Use extensionality with `g`. Simplify using `[MonoidAlgebra.coeff_sum, Finsupp.finset_sum_apply, Finsupp.single_apply]`. Use `conv_rhs => rw [ha]`. Rewrite using `[map_sum]`.
+
+Unfold `Arith.FormsL.eOp`. Use `Finset.sum_congr rfl fun g _ => ?_` and prove the remaining obligations. Rewrite using `[Representation.asAlgebraHom_single, mul_smul]`. Both sides reduce to the same expression.
+-/
 theorem eOp_eq (a : MonoidAlgebra LL G) : A.eOp (fun g => a.coeff g) = (twRep A).asAlgebraHom a := by
   classical
   have ha : a = ∑ g : G, MonoidAlgebra.single g (a.coeff g) := by
@@ -62,6 +76,11 @@ theorem eOp_eq (a : MonoidAlgebra LL G) : A.eOp (fun g => a.coeff g) = (twRep A)
 
 omit [Fintype G] in
 
+/- English proof (translation)
+Use `show (∀ p : J, A.ρ p x = ((A.chi p * lam p : LLˣ) : LL) • x) ↔ _`. Use `forall_congr' fun p => ?_` and prove the remaining obligations. Rewrite using `[twRep_apply, Units.val_mul, mul_smul]`. Prove the components needed by the constructor for the conclusion. Introduce `h`.
+
+Rewrite using `[h, smul_smul, Units.inv_mul, one_smul]`. Introduce `h`. Rewrite using `[← h, smul_smul, Units.mul_inv, one_smul]`.
+-/
 theorem mem_eigenspace_iff₂ (J : Subgroup G) (lam : J →* LLˣ) (x : Fin n → LL) :
     x ∈ A.typeP J lam ↔ ∀ p : J, twRep A p x = ((lam p : LLˣ) : LL) • x := by
   show (∀ p : J, A.ρ p x = ((A.chi p * lam p : LLˣ) : LL) • x) ↔ _
@@ -77,6 +96,19 @@ def supLat : Submodule (𝓞 LL) (Fin n → LL) := Submodule.span (𝓞 LL) (A.M
 
 omit [Fintype G] in
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Take `⟨s, hs⟩` from `h2.1`. Use `⟨s, le_antisymm (Submodule.span_mono ?_) (Submodule.span_le.2 fun x hx => ?_)⟩` and prove the remaining obligations. Rewrite using `[← hs]`. Conclude with `Submodule.subset_span`.
+
+Rewrite `hx` using `[← hs]`. Proceed by induction on `hx using Submodule.span_induction with`. Consider the case `mem x hx => exact Submodule.subset_span hx`. Consider the case `zero => exact Submodule.zero_mem _`. Consider the case `add x y _ _ hx hy => exact Submodule.add_mem _ hx hy`.
+
+Consider the case `smul a x _ hx`. Establish `: a • x = (algebraMap (𝓞 Ks) (𝓞 LL) a) • x`. Use function extensionality and compare the values at `i`. Simplify using `only [Pi.smul_apply, Algebra.smul_def]`. Both sides reduce to the same expression.
+
+Rewrite using `[this]`. Conclude with `Submodule.smul_mem _ _ hx`. Take `⟨m, b, hb, -, -, -, htop⟩` from `h1`. Rewrite using `[eq_top_iff, ← htop]`. Use `Submodule.span_le.2 ?_` and prove the remaining obligations.
+
+Introduce and unpack `_ ⟨i, rfl⟩`. Establish `hi` using `hb i`. Rewrite `hi` using `[← h2.2]`. Use `Submodule.span_induction (p := fun x _ => x ∈ Submodule.span LL (supLat A : Set (Fin n → LL))) (fun x hx => Submodule.subset_span (Submodule.subset_span hx)) (Submodule.zero_mem _) (fun x y _ _ hx hy => Submodule.add_mem _ hx hy) (fun a x _ hx => ?_) hi` and prove the remaining obligations. Rewrite using `[← algebraMap_smul LL a x]`.
+
+Conclude with `Submodule.smul_mem _ _ hx`.
+-/
 theorem supLat_isLatIn (h1 : A.IsKsForm) (h2 : A.MKFull) : IsLatIn ⊤ (supLat A) := by
   constructor
   · obtain ⟨s, hs⟩ := h2.1
@@ -105,6 +137,11 @@ theorem supLat_isLatIn (h1 : A.IsKsForm) (h2 : A.MKFull) : IsLatIn ⊤ (supLat A
     rw [← algebraMap_smul LL a x]
     exact Submodule.smul_mem _ _ hx
 
+/- English proof (translation)
+Unfold `supLat`. Rewrite using `[Submodule.map_span, Submodule.span_le]`. Introduce and unpack `_ ⟨x, hx, rfl⟩`. Establish `e : ((twRep A g).restrictScalars (𝓞 LL)) x = (⟨_, isIntegral_char A.chi⁻¹ g⟩ : 𝓞 LL) • A.ρ g x` using `rfl`. Rewrite using `[e]`.
+
+Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span ((h g x).2 hx))`.
+-/
 theorem supLat_stable (h : A.MKStable) (g : G) :
     (supLat A).map ((twRep A g).restrictScalars (𝓞 LL)) ≤ supLat A := by
   unfold supLat
@@ -122,6 +159,11 @@ section Block
 variable {K : Type} [Field K] [NumberField K] [StarRing K] {G : Type} [Group G] [Fintype G] {Pl0 : Type}
   {B : BlockDat K G Pl0} {ℓ : Lvl K G} {Z : Submodule K B.S.Forms} {v0 : InfinitePlace K} {s : ℕ}
 
+/- English proof (translation)
+Establish `hc` using `idempotent_central K G ℓ.X h.irr`. Establish `h1` using `(level_operator_spec K v0 h.conj B.S (h.ok.hpos v0) G B.r h.ok.act ℓ.P ℓ.ψ (idemOf ℓ.X) (hc.2 _).symm).1`. Take `⟨⟨h2, -⟩, h3⟩` from `BlockDat.lf_v_proj h`. Establish `h4 : goodAt ℓ.X ℓ.P ℓ.ψ * idemOf ℓ.X = goodAt ℓ.X ℓ.P ℓ.ψ`. Unfold `goodAt`.
+
+Rewrite using `[mul_assoc, hc.2, ← mul_assoc, hc.1]`. Establish `h5 : B.vPr ℓ * B.S.gaMat B.r (idemOf ℓ.X) = B.vPr ℓ`. Combine the equalities or inequalities in the displayed calculation. Unfold `BlockDat.lPr`. Rewrite using `[Matrix.mul_assoc, h1, ← Matrix.mul_assoc, Matrix.mul_assoc (B.Pq ℓ Z), h5]`.
+-/
 theorem lPr_mul_lvlOp (h : BlockHyp B ℓ v0 s) :
     B.lPr ℓ Z * B.S.lvlOp B.r ℓ.P ℓ.ψ (idemOf ℓ.X) = B.lPr ℓ Z := by
   have hc := idempotent_central K G ℓ.X h.irr
@@ -148,15 +190,28 @@ variable {k : Type} [Field k] {r n : ℕ}
 def glCast (hr : r = n + 1) : GL (Fin (n + 1)) k ≃* GL (Fin r) k :=
   Units.mapEquiv (Matrix.reindexAlgEquiv k k (finCongr hr.symm)).toMulEquiv
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem glCast_apply (hr : r = n + 1) (h : GL (Fin (n + 1)) k) (i j : Fin r) :
     (glCast hr h : Matrix (Fin r) (Fin r) k) i j =
       (h : Matrix (Fin (n + 1)) (Fin (n + 1)) k) (Fin.cast hr i) (Fin.cast hr j) := rfl
 
+/- English proof (translation)
+Substitute `hr` using the available equality. Conclude with `⟨fun hh => ⟨hh.2, fun _ _ hij => hh.1 hij⟩, fun hh => ⟨fun i j hij => hh.2 i j hij, hh.1⟩⟩`.
+-/
 theorem glCast_mem_unip (hr : r = n + 1) (h : GL (Fin (n + 1)) k) :
     glCast hr h ∈ unip k r ↔ IsUniU (h : Matrix (Fin (n + 1)) (Fin (n + 1)) k) := by
   subst hr
   exact ⟨fun hh => ⟨hh.2, fun _ _ hij => hh.1 hij⟩, fun hh => ⟨fun i j hij => hh.2 i j hij, hh.1⟩⟩
 
+/- English proof (translation)
+Substitute `hr` using the available equality. Use `show (∑ i : Fin (n + 1), ∑ j : Fin (n + 1), if j.val = i.val + 1 then (h : Matrix (Fin (n + 1)) (Fin (n + 1)) k) i j else 0) = _`. Unfold `supd`. Rewrite using `[Fin.sum_univ_castSucc]`. Establish `h0 : (∑ j : Fin (n + 1), if j.val = (Fin.last n).val + 1 then (h : Matrix (Fin (n + 1)) (Fin (n + 1)) k) (Fin.last n) j else 0) = 0` using `Finset.sum_eq_zero fun j _ => if_neg (by have := j.2; simp; omega)`.
+
+Rewrite using `[h0, add_zero]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_eq_single i.succ]`. Simplify using the standard rewrite rules. Introduce `j _ hj`.
+
+Conclude with `if_neg fun h => hj (Fin.ext (by simpa using h))`. Introduce `h`. Conclude with `absurd (Finset.mem_univ _) h`.
+-/
 theorem edgeSum_glCast (hr : r = n + 1) (h : GL (Fin (n + 1)) k) :
     edgeSum supEdge (glCast hr h) = supd (h : Matrix (Fin (n + 1)) (Fin (n + 1)) k) := by
   subst hr
@@ -176,6 +231,17 @@ theorem edgeSum_glCast (hr : r = n + 1) (h : GL (Fin (n + 1)) k) :
   · intro h
     exact absurd (Finset.mem_univ _) h
 
+/- English proof (translation)
+Set `i0 : Fin n` to `⟨0, hn⟩`. Establish `hne : i0.castSucc ≠ i0.succ` using `(Fin.castSucc_lt_succ (i := i0)).ne`. Establish `hdet : (Matrix.transvection i0.castSucc i0.succ a).det ≠ 0`. Rewrite using `[Matrix.det_transvection_of_ne _ _ hne]`. Conclude with `one_ne_zero`.
+
+Use `⟨Matrix.GeneralLinearGroup.mkOfDetNeZero _ hdet, ⟨fun i => ?_, fun i j hij => ?_⟩, ?_⟩` and prove the remaining obligations. Use `show Matrix.transvection i0.castSucc i0.succ a i i = 1`. Rewrite using `[Matrix.transvection, Matrix.add_apply, Matrix.one_apply_eq, Matrix.single_apply_of_ne, add_zero]`. Introduce and unpack `⟨h1, h2⟩`. Conclude with `hne (h1.trans h2.symm)`.
+
+Use `show Matrix.transvection i0.castSucc i0.succ a i j = 0`. Rewrite using `[Matrix.transvection, Matrix.add_apply, Matrix.one_apply_ne hij.ne', Matrix.single_apply_of_ne, add_zero]`. Introduce and unpack `⟨rfl, rfl⟩`. Conclude with `absurd hij (Fin.castSucc_lt_succ (i := i0)).not_gt`. Use `show ∑ i : Fin n, Matrix.transvection i0.castSucc i0.succ a i.castSucc i.succ = a`.
+
+Rewrite using `[Finset.sum_eq_single i0]`. Rewrite using `[Matrix.transvection, Matrix.add_apply, Matrix.one_apply_ne hne, Matrix.single_apply_same, zero_add]`. Introduce `i _ hi`. Rewrite using `[Matrix.transvection, Matrix.add_apply, Matrix.one_apply_ne (Fin.castSucc_lt_succ (i := i)).ne, Matrix.single_apply_of_ne, add_zero]`. Introduce and unpack `⟨h1, -⟩`.
+
+Conclude with `hi (Fin.castSucc_injective _ h1).symm`. Introduce `h`. Conclude with `absurd (Finset.mem_univ _) h`.
+-/
 theorem exists_uni_supd (hn : 0 < n) (a : k) :
     ∃ u : GL (Fin (n + 1)) k, IsUniU (u : Matrix (Fin (n + 1)) (Fin (n + 1)) k) ∧
       supd (u : Matrix (Fin (n + 1)) (Fin (n + 1)) k) = a := by
@@ -212,6 +278,11 @@ variable {K : Type} [Field K] [NumberField K] {ι : Type} [Fintype ι] [Decidabl
 
 omit [NumberField K] in
 
+/- English proof (translation)
+Use `choose u hu hs using fun w => exists_uni_supd hn (Pi.single (M := kf) v a w)`. Use `⟨fun w => ⟨u w, isMirab_of_isUniU _ (hu w)⟩, fun w _ => hu w, hs, fun χ => ?_⟩` and prove the remaining obligations. Unfold `psiU`. Simplify using `only [hs]`. Rewrite using `[Finset.prod_eq_single v]`.
+
+Rewrite using `[Pi.single_eq_same]`. Introduce `w _ hw`. Rewrite using `[Pi.single_eq_of_ne hw, AddChar.map_zero_eq_one]`. Introduce `h`. Conclude with `absurd (Finset.mem_univ _) h`.
+-/
 theorem exists_psiU_eq (hn : 0 < n) (v : ι) (a : kf v) :
     ∃ u ∈ Subgroup.pi Set.univ (fun v => uniSub (kf v) n),
       (∀ w, supd (((u w : mirabSub (kf w) n) : GL (Fin (n + 1)) (kf w)) : Matrix (Fin (n + 1)) (Fin (n + 1)) (kf w)) =
@@ -240,11 +311,17 @@ scoped instance resFintype {E : Type} [Field E] [NumberField E] (PP : Pl E) : Fi
 
 def rankPred (R : Ranks) : ℕ := R.k + R.m - 2
 
+/- English proof (translation)
+Use `R.two_le_m` as an intermediate fact. Unfold `Ranks.r rankPred`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem rank_eq (R : Ranks) : R.r = rankPred R + 1 := by
   have := R.two_le_m
   unfold Ranks.r rankPred
   omega
 
+/- English proof (translation)
+Use `R.two_le_m` as an intermediate fact. Use `R.m_add_three_le_k` as an intermediate fact. Unfold `rankPred`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem rankPred_pos (R : Ranks) : 0 < rankPred R := by
   have := R.two_le_m
   have := R.m_add_three_le_k
@@ -273,14 +350,25 @@ def mirToGL : Mir R →* G0 R.Pg D.R.r where
 
 def mirIncl : Mir R →* G := R.eG.symm.toMonoidHom.comp (mirToGL R)
 
+/- English proof (translation)
+The claim follows from `R.eG.apply_symm_apply _`.
+-/
 theorem eG_mirIncl (x : Mir R) : R.eG (mirIncl R x) = mirToGL R x := R.eG.apply_symm_apply _
 
+/- English proof (translation)
+Introduce `x y h`. Establish `h' : mirToGL R x = mirToGL R y` using `R.eG.symm.injective h`. Use function extensionality and compare the values at `v`. Conclude with `Subtype.ext ((glCast (rank_eq D.R)).injective (congrFun h' v))`.
+-/
 theorem mirIncl_injective : Function.Injective (mirIncl R) := by
   intro x y h
   have h' : mirToGL R x = mirToGL R y := R.eG.symm.injective h
   funext v
   exact Subtype.ext ((glCast (rank_eq D.R)).injective (congrFun h' v))
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce `h`. Establish `hu : ∀ v : R.Pg, IsUniU (((glCast (rank_eq D.R)).symm (g v) : GL (Fin (rankPred D.R + 1)) (Res R v)) : Matrix (Fin (rankPred D.R + 1)) (Fin (rankPred D.R + 1)) (Res R v))` using `fun v => (glCast_mem_unip (rank_eq D.R) _).1 (by rw [MulEquiv.apply_symm_apply]; exact h v (Set.mem_univ v))`. Conclude with `⟨fun v => ⟨_, isMirab_of_isUniU _ (hu v)⟩, fun v _ => hu v,`. Use function extensionality and compare the values at `fun v => (glCast (rank_eq D.R)).apply_symm_apply _⟩`.
+
+Introduce and unpack `⟨u, hu, rfl⟩ v _`. Conclude with `(glCast_mem_unip (rank_eq D.R) _).2 (hu v (Set.mem_univ v))`.
+-/
 theorem mem_pi_unip_iff (g : G0 R.Pg D.R.r) :
     g ∈ Subgroup.pi Set.univ (fun v : R.Pg => unip (kP v.1) D.R.r) ↔ ∃ u ∈ uni R, mirToGL R u = g := by
   constructor
@@ -300,6 +388,11 @@ structure IsLevelChar (χ : ∀ v : R.Pg, AddChar (Res R v) (𝓞 D.what₂.LL))
 
 variable {R F}
 
+/- English proof (translation)
+Take `⟨ψ, -, h0, -⟩` from `h`. Establish `h1 : F.P0.comap R.eG.symm.toMonoidHom = Subgroup.pi Set.univ (fun v : R.Pg => unip (kP v.1) D.R.r)` using `congrArg LevelP.H h0`. Establish `h2 : g ∈ F.P0 ↔ R.eG g ∈ F.P0.comap R.eG.symm.toMonoidHom`. Rewrite using `[Subgroup.mem_comap]`. Simplify using the standard rewrite rules.
+
+Rewrite using `[h2, h1, mem_pi_unip_iff]`. Use `exists_congr fun u => and_congr_right fun _ => ?_` and prove the remaining obligations. Rewrite using `[← eG_mirIncl, R.eG.injective.eq_iff]`.
+-/
 theorem mem_base_iff (h : R.grp_levels F) (g : G) : g ∈ F.P0 ↔ ∃ u ∈ uni R, mirIncl R u = g := by
   obtain ⟨ψ, -, h0, -⟩ := h
   have h1 : F.P0.comap R.eG.symm.toMonoidHom = Subgroup.pi Set.univ (fun v : R.Pg => unip (kP v.1) D.R.r) :=
@@ -310,6 +403,11 @@ theorem mem_base_iff (h : R.grp_levels F) (g : G) : g ∈ F.P0 ↔ ∃ u ∈ uni
   refine exists_congr fun u => and_congr_right fun _ => ?_
   rw [← eG_mirIncl, R.eG.injective.eq_iff]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `v`. Use extensionality with `a`. Take `⟨u, hu, -, hv⟩` from `exists_psiU_eq (K := D.what₂.LL) (rankPred_pos D.R) v a`. Establish `hm` using `(mem_base_iff h _).2 ⟨u, hu, rfl⟩`. Rewrite using `[← hv χ, ← hv χ']`.
+
+Conclude with `(h1.val u hu hm).trans (h2.val u hu hm).symm`.
+-/
 theorem IsLevelChar.unique (h : R.grp_levels F) {χ χ' : ∀ v : R.Pg, AddChar (Res R v) (𝓞 D.what₂.LL)}
     (h1 : IsLevelChar R F χ) (h2 : IsLevelChar R F χ') : χ = χ' := by
   classical
@@ -320,6 +418,25 @@ theorem IsLevelChar.unique (h : R.grp_levels F) {χ χ' : ∀ v : R.Pg, AddChar 
   rw [← hv χ, ← hv χ']
   exact (h1.val u hu hm).trans (h2.val u hu hm).symm
 
+/- English proof (translation)
+Establish `hmem` using `mem_base_iff h`. Take `⟨ψ, hgen, h0, -⟩` from `h`. Establish `key : ∀ (L L' : LevelP R.Pg D.R.r ℂ), L = L' → ∀ g (hg : g ∈ L.H) (hg' : g ∈ L'.H), L.chi ⟨g, hg⟩ = L'.chi ⟨g, hg'⟩`. Introduce and unpack `L _ rfl g hg hg'`. Both sides reduce to the same expression.
+
+Establish `hval : ∀ u ∈ uni R, ∀ hu : mirIncl R u ∈ F.P0, D.what₂.embLL ((F.ψ0 ⟨mirIncl R u, hu⟩ : D.what₂.LLˣ) : D.what₂.LL) = ∏ v : R.Pg, ψ v.1 (supd (((u v : mirabSub (Res R v) (rankPred D.R)) : GL (Fin (rankPred D.R + 1)) (Res R v)) : Matrix (Fin (rankPred D.R + 1)) (Fin (rankPred D.R + …`. Introduce `u hu hu'`. Establish `e` using `congrArg Units.val (key _ _ h0 (mirToGL R u) hu' ((mem_pi_unip_iff R _).2 ⟨u, hu, rfl⟩))`. Use `Eq.trans e ?_` and prove the remaining obligations. Use `(congrArg Units.val (MonoidHom.finset_prod_apply (fun v : R.Pg => (addCharHom (ψ v.1) (supHom (kP v.1) D.R.r)).comp (LevelP.prj (fun v : R.Pg => unip (kP v.1) D.R.r) v)) Finset.univ _)).trans ?_` and prove the remaining obligations.
+
+Rewrite using `[Units.coe_prod]`. Use `Finset.prod_congr rfl fun v _ => ?_` and prove the remaining obligations. Rewrite using `[← edgeSum_glCast (rank_eq D.R)]`. Both sides reduce to the same expression. Establish `hex : ∀ (v : R.Pg) (a : Res R v), ∃ z : 𝓞 D.what₂.LL, D.what₂.embLL (z : D.what₂.LL) = ψ v.1 (-a)`.
+
+Introduce `v a`. Take `⟨u, hu, hs, -⟩` from `exists_psiU_eq (K := D.what₂.LL) (rankPred_pos D.R) v (-a)`. Establish `hm` using `(hmem _).2 ⟨u, hu, rfl⟩`. Use `⟨⟨_, isIntegral_char F.ψ0 ⟨mirIncl R u, hm⟩⟩, (hval u hu hm).trans ?_⟩` and prove the remaining obligations. Simplify using `only [hs]`.
+
+Rewrite using `[Finset.prod_eq_single v]`. Rewrite using `[Pi.single_eq_same]`. Introduce `w _ hw`. Rewrite using `[Pi.single_eq_of_ne hw, AddChar.map_zero_eq_one]`. Introduce `h`.
+
+Conclude with `absurd (Finset.mem_univ _) h`. Use `choose z hz using hex`. Establish `hinj : ∀ x y : 𝓞 D.what₂.LL, D.what₂.embLL (x : D.what₂.LL) = D.what₂.embLL (y : D.what₂.LL) → x = y` using `fun x y hxy => Subtype.ext (D.what₂.embLL.injective hxy)`. Set `χ : ∀ v : R.Pg, AddChar (Res R v) (𝓞 D.what₂.LL)` to `fun v => { toFun := z v map_zero_eq_one' := hinj _ _ (by rw [hz, neg_zero, AddChar.map_zero_eq_one]; simp) map_add_eq_mul' := fun a b => hinj _ _ (by`. Rewrite using `[hz, neg_add, AddChar.map_add_eq_mul, ← hz, ← hz, ← map_mul]`.
+
+Use the proof step `rfl) }`. Use `⟨χ, fun v hv => hgen v.1 v.2 ?_, fun u hu hm => D.what₂.embLL.injective ?_⟩` and prove the remaining obligations. Use extensionality with `a`. Establish `h1 : z v (-a) = 1` using `congrArg (fun c : AddChar (Res R v) (𝓞 D.what₂.LL) => c (-a)) hv`. Establish `h2` using `hz v (-a)`.
+
+Rewrite `h2` using `[h1, neg_neg]`. Rewrite using `[← h2]`. Simplify using the standard rewrite rules. Rewrite using `[MonoidHom.inv_apply, Units.val_inv_eq_inv_val, map_inv₀, hval u hu hm, ← Finset.prod_inv_distrib]`. Unfold `psiU`.
+
+Rewrite using `[show ∀ y : 𝓞 D.what₂.LL, D.what₂.embLL (y : D.what₂.LL) = (D.what₂.embLL.comp (algebraMap (𝓞 D.what₂.LL) D.what₂.LL)) y from fun _ => rfl, map_prod]`. Use `Finset.prod_congr rfl fun v _ => ?_` and prove the remaining obligations. Rewrite using `[← AddChar.map_neg_eq_inv]`. Conclude with `hz v _`.
+-/
 theorem exists_isLevelChar (h : R.grp_levels F) : ∃ χ, IsLevelChar R F χ := by
   classical
   have hmem := mem_base_iff h
@@ -384,6 +501,9 @@ def levelChar : ∀ v : R.Pg, AddChar (Res R v) (𝓞 D.what₂.LL) :=
 
 variable {R F}
 
+/- English proof (translation)
+Establish `h'` using `exists_isLevelChar h`. Unfold `levelChar`. Rewrite using `[dif_pos h']`. Conclude with `h'.choose_spec`.
+-/
 theorem levelChar_spec (h : R.grp_levels F) : IsLevelChar R F (levelChar R F) := by
   have h' := exists_isLevelChar h
   unfold levelChar
@@ -546,34 +666,61 @@ def onOf (c : OnConst) (a : ChainArgs D.what₂.LL (Fin D.R.m) R.nW) : OnObj ((R
 
 variable (c : OnConst) (a : ChainArgs D.what₂.LL (Fin D.R.m) R.nW)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem ofObj_onOf : ChainArgs.ofObj (onOf R F c a) = a := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem tieU : TieU (onOf R F c a) fun v => uniSub (Res R v) (rankPred D.R) := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem tiePsi : TiePsi (onOf R F c a) (levelChar R F) := rfl
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨rfl, by show ((D.R.r : ℕ) : ℝ) = _; rw [rank_eq]; push_cast; rfl⟩`.
+-/
 theorem tieLevelNum : TieLevelNum (onOf R F c a) (rankPred D.R) D.R.f :=
   ⟨rfl, by show ((D.R.r : ℕ) : ℝ) = _; rw [rank_eq]; push_cast; rfl⟩
 
+/- English proof (translation)
+Introduce `j` and use `⟨eOp_eq (R.FW j) (idemOf A.X), rfl⟩`.
+-/
 theorem tieProj : TieProj (onOf R F c a) (fun j => twRep (R.FW j)) fun _ => idemOf A.X :=
   fun j => ⟨eOp_eq (R.FW j) (idemOf A.X), rfl⟩
 
 variable {R F}
 
+/- English proof (translation)
+Unfold `goodOp`. Rewrite using `[eOp_eq, ← Module.End.mul_eq_comp, ← map_mul, (idempotent_central _ G A.X hX).1]`.
+-/
 theorem goodOp_idem (hX : ∀ χ ∈ A.X, IsAbsIrrChar χ) (j : Fin D.R.m) : goodOp R j ∘ₗ goodOp R j = goodOp R j := by
   unfold goodOp
   rw [eOp_eq, ← Module.End.mul_eq_comp, ← map_mul, (idempotent_central _ G A.X hX).1]
 
+/- English proof (translation)
+Unfold `goodOp`. Rewrite using `[eOp_eq, ← Representation.asAlgebraHom_of, ← Module.End.mul_eq_comp, ← Module.End.mul_eq_comp, ← map_mul, ← map_mul, (idempotent_central _ G A.X hX).2]`.
+-/
 theorem goodOp_comm (hX : ∀ χ ∈ A.X, IsAbsIrrChar χ) (j : Fin D.R.m) (g : G) :
     goodOp R j ∘ₗ twRep (R.FW j) g = twRep (R.FW j) g ∘ₗ goodOp R j := by
   unfold goodOp
   rw [eOp_eq, ← Representation.asAlgebraHom_of, ← Module.End.mul_eq_comp, ← Module.End.mul_eq_comp, ← map_mul, ← map_mul,
     (idempotent_central _ G A.X hX).2]
 
+/- English proof (translation)
+The claim follows from `linearIndependent_iff_injective_fintypeLinearCombination.1 ((finBasis D.what₂.LL (R.WL F false j)).linearIndependent.map' (R.WL F false j).subtype (Submodule.ker_subtype _))`.
+-/
 theorem coordMap_injective (j : Fin D.R.m) : Function.Injective (coordMap R F j) :=
   linearIndependent_iff_injective_fintypeLinearCombination.1
     ((finBasis D.what₂.LL (R.WL F false j)).linearIndependent.map' (R.WL F false j).subtype (Submodule.ker_subtype _))
 
+/- English proof (translation)
+Unfold `coordMap`. Rewrite using `[Fintype.range_linearCombination]`. Establish `h` using `congrArg (Submodule.map (R.WL F false j).subtype) (finBasis D.what₂.LL (R.WL F false j)).span_eq`. Rewrite `h` using `[Submodule.map_span, Submodule.map_top, Submodule.range_subtype, ← Set.range_comp]`. Conclude with `h`.
+-/
 theorem range_coordMap (j : Fin D.R.m) : LinearMap.range (coordMap R F j) = R.WL F false j := by
   unfold coordMap
   rw [Fintype.range_linearCombination]
@@ -581,6 +728,13 @@ theorem range_coordMap (j : Fin D.R.m) : LinearMap.range (coordMap R F j) = R.WL
   rw [Submodule.map_span, Submodule.map_top, Submodule.range_subtype, ← Set.range_comp] at h
   exact h
 
+/- English proof (translation)
+Use extensionality with `x`. Establish `e1 : x ∈ eig ((onOf R F c a).ρ j) (onOf R F c a).U (onOf R F c a).ψ ↔ ∀ u : uni R, twRep (R.FW j) (mirIncl R u) x = ((psiU (Res R) (rankPred D.R) (levelChar R F) _ (u : Mir R) : 𝓞 D.what₂.LL) : D.what₂.LL) • x`. Unfold `eig`. Rewrite using `[Submodule.mem_iInf]`. Conclude with `forall_congr' fun u => sub_eq_zero`.
+
+Use `e1.trans (Iff.trans ?_ (mem_eigenspace_iff₂ (R.FW j) F.P0 F.ψ0⁻¹ x).symm)` and prove the remaining obligations. Prove the components needed by the constructor for the conclusion. Introduce and unpack `hx ⟨g, hg⟩`. Take `⟨u, hu, rfl⟩` from `(mem_base_iff h g).1 hg`. Rewrite using `[← (levelChar_spec h).val u hu hg]`.
+
+Conclude with `hx ⟨u, hu⟩`. Introduce `hx u`. Establish `hg` using `(mem_base_iff h _).2 ⟨u.1, u.2, rfl⟩`. Rewrite using `[(levelChar_spec h).val u.1 u.2 hg]`. Conclude with `hx ⟨_, hg⟩`.
+-/
 theorem eig_eq (h : R.grp_levels F) (j : Fin D.R.m) :
     eig ((onOf R F c a).ρ j) (onOf R F c a).U (onOf R F c a).ψ = (R.FW j).typeP F.P0 F.ψ0⁻¹ := by
   ext x
@@ -601,11 +755,17 @@ theorem eig_eq (h : R.grp_levels F) (j : Fin D.R.m) :
     rw [(levelChar_spec h).val u.1 u.2 hg]
     exact hx ⟨_, hg⟩
 
+/- English proof (translation)
+Unfold `OnObj.Zg`. Rewrite using `[eig_eq c a h]`. Both sides reduce to the same expression.
+-/
 theorem zg_eq (h : R.grp_levels F) (j : Fin D.R.m) : (onOf R F c a).Zg j = R.WL F false j := by
   unfold OnObj.Zg
   rw [eig_eq c a h]
   rfl
 
+/- English proof (translation)
+Rewrite using `[zg_eq c a h]`. Use extensionality with `x`. Conclude with `and_assoc.symm`.
+-/
 theorem cut_eq (h : R.grp_levels F) (j : Fin D.R.m) :
     cut ((onOf R F c a).Zg j) ((onOf R F c a).Ms j) = (R.FW j).Mj F.P0 F.ψ0⁻¹ fun g => (idemOf A.X).coeff g := by
   rw [zg_eq c a h]
@@ -614,9 +774,15 @@ theorem cut_eq (h : R.grp_levels F) (j : Fin D.R.m) :
 
 variable {s : ℕ}
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨hOk.conj, hOk.irr, hOk.lifts j t⟩`.
+-/
 theorem blockHyp (hOk : A.fam.Ok s) (j : Fin D.R.m) (t : T) : BlockHyp (A.fam.L j t) (liftLvl F) A.v0 s :=
   ⟨hOk.conj, hOk.irr, hOk.lifts j t⟩
 
+/- English proof (translation)
+Establish `h` using `lPr_mul_lvlOp (Z := liftSub R F j t) (blockHyp (F := F) hOk j t)`. Unfold `thetaOp srcGood`. Rewrite using `[LinearMap.comp_assoc, ← Matrix.mulVecLin_mul, Matrix.mul_assoc]`. Conclude with `congrArg (fun M => coordMap R F j ∘ₗ (thetaMat R F j t * M).mulVecLin) h`.
+-/
 theorem thetaOp_srcGood (hOk : A.fam.Ok s) (j : Fin D.R.m) (t : T) :
     thetaOp R F j t ∘ₗ srcGood F j t = thetaOp R F j t := by
   have h := lPr_mul_lvlOp (Z := liftSub R F j t) (blockHyp (F := F) hOk j t)
@@ -624,6 +790,9 @@ theorem thetaOp_srcGood (hOk : A.fam.Ok s) (j : Fin D.R.m) (t : T) :
   rw [LinearMap.comp_assoc, ← Matrix.mulVecLin_mul, Matrix.mul_assoc]
   exact congrArg (fun M => coordMap R F j ∘ₗ (thetaMat R F j t * M).mulVecLin) h
 
+/- English proof (translation)
+Establish `h` using `BlockDat.lf_lPr_lE (Z := liftSub R F j t) (blockHyp (F := F) hOk j t)`. Unfold `thetaOp srcProj`. Rewrite using `[LinearMap.comp_assoc, ← Matrix.mulVecLin_mul, Matrix.mul_assoc, ← Matrix.mul_assoc _ ((A.fam.L j t).lE _ _), h, Matrix.one_mul]`.
+-/
 theorem thetaOp_srcProj (hOk : A.fam.Ok s) (j : Fin D.R.m) (t : T) :
     thetaOp R F j t ∘ₗ srcProj R F j t = thetaOp R F j t := by
   have h := BlockDat.lf_lPr_lE (Z := liftSub R F j t) (blockHyp (F := F) hOk j t)
@@ -631,6 +800,11 @@ theorem thetaOp_srcProj (hOk : A.fam.Ok s) (j : Fin D.R.m) (t : T) :
   rw [LinearMap.comp_assoc, ← Matrix.mulVecLin_mul, Matrix.mul_assoc, ← Matrix.mul_assoc _ ((A.fam.L j t).lE _ _), h,
     Matrix.one_mul]
 
+/- English proof (translation)
+Use `LinearMap.ext fun x => ?_` and prove the remaining obligations. Establish `hx : thetaOp R F j t x ∈ R.WL F false j`. Rewrite using `[← range_coordMap]`. Conclude with `⟨_, rfl⟩`. Take `⟨y, hy⟩ : thetaOp R F j t x ∈ LinearMap.range (goodOp R j)` from `hx.2`.
+
+Rewrite using `[LinearMap.comp_apply, ← hy]`. Conclude with `LinearMap.congr_fun (goodOp_idem hX j) y`.
+-/
 theorem goodOp_thetaOp (hX : ∀ χ ∈ A.X, IsAbsIrrChar χ) (j : Fin D.R.m) (t : T) :
     goodOp R j ∘ₗ thetaOp R F j t = thetaOp R F j t := by
   refine LinearMap.ext fun x => ?_
@@ -640,12 +814,22 @@ theorem goodOp_thetaOp (hX : ∀ χ ∈ A.X, IsAbsIrrChar χ) (j : Fin D.R.m) (t
   rw [LinearMap.comp_apply, ← hy]
   exact LinearMap.congr_fun (goodOp_idem hX j) y
 
+/- English proof (translation)
+Establish `h` using `BlockDat.lf_lPr_lE (Z := liftSub R F j t) (blockHyp (F := F) hOk j t)`. Unfold `srcProj`. Rewrite using `[← Matrix.mulVecLin_mul, Matrix.mul_assoc, ← Matrix.mul_assoc _ ((A.fam.L j t).lE _ _), h, Matrix.one_mul]`.
+-/
 theorem srcProj_idem (hOk : A.fam.Ok s) (j : Fin D.R.m) (t : T) :
     srcProj R F j t ∘ₗ srcProj R F j t = srcProj R F j t := by
   have h := BlockDat.lf_lPr_lE (Z := liftSub R F j t) (blockHyp (F := F) hOk j t)
   unfold srcProj
   rw [← Matrix.mulVecLin_mul, Matrix.mul_assoc, ← Matrix.mul_assoc _ ((A.fam.L j t).lE _ _), h, Matrix.one_mul]
 
+/- English proof (translation)
+Establish `h1` using `thetaOp_srcGood (R := R) (F := F) hOk j (R.mu v)`. Establish `h2` using `thetaOp_srcProj (R := R) (F := F) hOk j (R.mu v)`. Establish `h3 : ∀ x, thetaOp R F j (R.mu v) (srcProj R F j (R.mu v) (srcGood F j (R.mu v) x)) = thetaOp R F j (R.mu v) x` using `fun x => (LinearMap.congr_fun h2 _).trans (LinearMap.congr_fun h1 x)`. Establish `h4 : ∀ x, thetaOp R F j (R.mu v) x = coordMap R F j ((thetaMat R F j (R.mu v)).mulVec (((A.fam.L j (R.mu v)).lPr (liftLvl F) (liftSub R F j (R.mu v))).mulVec x))` using `fun x => by`. Rewrite using `[Matrix.mulVec_mulVec]`.
+
+Both sides reduce to the same expression. Apply `le_antisymm` to reduce the goal to its premises. Introduce and unpack `_ ⟨_, ⟨_, ⟨x, hx, rfl⟩, rfl⟩, rfl⟩`. Conclude with `⟨_, ⟨_, ⟨x, hx, rfl⟩, rfl⟩, (h3 x).trans (h4 x)⟩`. Introduce and unpack `_ ⟨_, ⟨_, ⟨x, hx, rfl⟩, rfl⟩, rfl⟩`.
+
+Conclude with `⟨_, ⟨_, ⟨x, hx, rfl⟩, rfl⟩, ((h3 x).trans (h4 x)).symm⟩`.
+-/
 theorem tjId (hOk : A.fam.Ok s) (j : Fin D.R.m) (v : HeightOneSpectrum (𝓞 D.what₂.LL)) :
     (onOf R F c a).TjId j v (R.mu v) := by
   have h1 := thetaOp_srcGood (R := R) (F := F) hOk j (R.mu v)
@@ -661,6 +845,11 @@ theorem tjId (hOk : A.fam.Ok s) (j : Fin D.R.m) (v : HeightOneSpectrum (𝓞 D.w
   · rintro _ ⟨_, ⟨_, ⟨x, hx, rfl⟩, rfl⟩, rfl⟩
     exact ⟨_, ⟨_, ⟨x, hx, rfl⟩, rfl⟩, ((h3 x).trans (h4 x)).symm⟩
 
+/- English proof (translation)
+Use `⟨fun j => ⟨coordMap_injective j, (range_coordMap j).trans (zg_eq c a h j).symm, ?_⟩, fun w _ j => ⟨tjId c a hOk j w, ?_⟩⟩` and prove the remaining obligations. Rewrite using `[cut_eq c a h]`. Use `Submodule.map_comap_eq_self (f := (coordMap R F j).restrictScalars (𝓞 D.what₂.LL)) fun x hx => ?_` and prove the remaining obligations. Establish `hx' : x ∈ LinearMap.range (coordMap R F j)`. Rewrite using `[range_coordMap]`.
+
+Conclude with `(R.FW j).Mj_sub_Wgood _ _ _ hx`. Conclude with `hx'`. Establish `h'` using `tjId (R := R) (F := F) c a hOk j (conjPl w)`. Rewrite `h'` using `[hμ w]`. Then use the resulting hypothesis.
+-/
 theorem tieCoord (hOk : A.fam.Ok s) (h : R.grp_levels F) (hμ : R.tup_mu_conj) : TieCoord (onOf R F c a) := by
   refine ⟨fun j => ⟨coordMap_injective j, (range_coordMap j).trans (zg_eq c a h j).symm, ?_⟩,
     fun w _ j => ⟨tjId c a hOk j w, ?_⟩⟩
@@ -672,8 +861,14 @@ theorem tieCoord (hOk : A.fam.Ok s) (h : R.grp_levels F) (hμ : R.tup_mu_conj) :
   · have h' := tjId (R := R) (F := F) c a hOk j (conjPl w)
     rwa [hμ w] at h'
 
+/- English proof (translation)
+Introduce `j` and use `⟨goodOp_idem hX j, rfl⟩`.
+-/
 theorem leafProj (hX : ∀ χ ∈ A.X, IsAbsIrrChar χ) : LeafProj (onOf R F c a) := fun j => ⟨goodOp_idem hX j, rfl⟩
 
+/- English proof (translation)
+Establish `H : ∀ v j, (onOf R F c a).θ' v j ∘ₗ (onOf R F c a).eX v j = (onOf R F c a).e j ∘ₗ (onOf R F c a).θ' v j ∧ ∀ x ∈ LinearMap.range ((onOf R F c a).eX v j), x - (onOf R F c a).pr v j x ∈ LinearMap.ker ((onOf R F c a).θ' v j)` using `fun v j => ⟨(thetaOp_srcGood hOk j _).trans (goodOp_thetaOp hOk.irr j _).symm, fun x _ => by`. Rewrite using `[LinearMap.mem_ker, map_sub, sub_eq_zero]`. Conclude with `(LinearMap.congr_fun (thetaOp_srcProj hOk j (R.mu v)) x).symm⟩`. Conclude with `fun w _ => ⟨H w, H (conjPl w)⟩`.
+-/
 theorem leafIdentity (hOk : A.fam.Ok s) : LeafIdentity (onOf R F c a) := by
   have H : ∀ v j, (onOf R F c a).θ' v j ∘ₗ (onOf R F c a).eX v j = (onOf R F c a).e j ∘ₗ (onOf R F c a).θ' v j ∧
       ∀ x ∈ LinearMap.range ((onOf R F c a).eX v j),
@@ -683,13 +878,30 @@ theorem leafIdentity (hOk : A.fam.Ok s) : LeafIdentity (onOf R F c a) := by
       exact (LinearMap.congr_fun (thetaOp_srcProj hOk j (R.mu v)) x).symm⟩
   exact fun w _ => ⟨H w, H (conjPl w)⟩
 
+/- English proof (translation)
+Introduce `j` and use `⟨supLat_isLatIn _ (h j).1 (h j).2.1, fun g => supLat_stable _ (h j).2.2 (mirIncl R g)⟩`.
+-/
 theorem leafSup (h : R.LIntegral) : LeafSup (onOf R F c a) :=
   fun j => ⟨supLat_isLatIn _ (h j).1 (h j).2.1, fun g => supLat_stable _ (h j).2.2 (mirIncl R g)⟩
 
+/- English proof (translation)
+Conclude with `leafMackey_of _ _ (mirab_levelGroups _ _) (levelChar_spec h).generic (tieU R F c a) (tiePsi R F c a)`.
+-/
 theorem leafMackey (h : R.grp_levels F) : LeafMackey (onOf R F c a) := by
   classical
   exact leafMackey_of _ _ (mirab_levelGroups _ _) (levelChar_spec h).generic (tieU R F c a) (tiePsi R F c a)
 
+/- English proof (translation)
+Take `⟨-, plg, iso, -⟩` from `h`. Establish `hc : ∀ kv, Fintype.card (Res R (plg kv)) = D.host.g kv.1` using `fun kv => by`. Rewrite using `[← Nat.card_eq_fintype_card, ← Nat.card_congr (iso kv).toEquiv, Nat.card_zmod]`. Establish `hinj : Function.Injective D.host.g`. Introduce `i j hij`.
+
+Apply the tactic sequence `fin_cases i <;> fin_cases j`. Both sides reduce to the same expression. Conclude with `absurd hij D.host.g_ne`. Conclude with `absurd hij.symm D.host.g_ne`. Both sides reduce to the same expression.
+
+Establish `hn : ∀ i, (Finset.univ.filter fun v => Fintype.card (Res R v) = D.host.g i).card = D.R.f`. Introduce `i`. Rewrite using `[← D.nd.card_PlG i, ← Fintype.card_subtype]`. Use `(Fintype.card_congr (Equiv.ofBijective (fun w : D.nd.PlG i => (⟨plg ⟨i, w⟩, hc ⟨i, w⟩⟩ : {v // Fintype.card (Res R v) = D.host.g i})) ⟨fun x y hxy => ?_, fun v => ?_⟩)).symm` and prove the remaining obligations. Conclude with `eq_of_heq (Sigma.mk.inj (plg.injective (congrArg Subtype.val hxy))).2`.
+
+Take `⟨v, hv⟩` from `v`. Take `⟨⟨i', w⟩, rfl⟩` from `plg.surjective v`. Take `rfl : i' = i` from `hinj ((hc ⟨i', w⟩).symm.trans hv)`. Conclude with `⟨w, rfl⟩`. Use `⟨D.host.g_prime 0, D.host.g_prime 1, D.host.g_ne, fun v => ?_, hn 0, hn 1⟩` and prove the remaining obligations.
+
+Take `⟨⟨i, w⟩, rfl⟩` from `plg.surjective v`. Rewrite using `[hc]`. Use `fin_cases i`. Conclude with `Or.inl rfl`. Conclude with `Or.inr rfl`.
+-/
 theorem leafLevelSq (h : R.grp_record) : LeafLevelSq (onOf R F c a) (Res R) D.R.f := by
   classical
   obtain ⟨-, plg, iso, -⟩ := h
@@ -719,6 +931,17 @@ theorem leafLevelSq (h : R.grp_record) : LeafLevelSq (onOf R F c a) (Res R) D.R.
   · exact Or.inl rfl
   · exact Or.inr rfl
 
+/- English proof (translation)
+Use `show 2 * (D.R.f : ℝ) / (((min (D.host.g 0) (D.host.g 1) : ℕ) : ℝ) - 1) ≤ 1 / (4 * ((D.R.f : ℝ) * D.R.k) ^ 3)`. Take `⟨Y, hY, -, -, hg⟩` from `Q.g_Y`. Establish `hb : (2 : ℝ) ≤ L.sc.b`. Establish `h1 : (1 : ℝ) ≤ L.sc.L` using `Real.one_le_rpow L.sc.one_lt_alt.le L.sc.eps_pos.le`. Establish `h2` using `Real.add_one_le_exp L.sc.L`.
+
+Unfold `Scale.b`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hfk : (D.R.f : ℝ) ≤ D.R.k` using `by exact_mod_cast D.R.f_le_k`. Establish `hf : (1 : ℝ) ≤ D.R.f`. Establish `: 0 < D.R.f` using `by unfold Ranks.f Ranks.n; positivity`.
+
+Conclude with `this` after adjusting the coercions. Establish `hk : (1 : ℝ) ≤ D.R.k` using `hf.trans hfk`. Establish `hmin : Y ≤ ((min (D.host.g 0) (D.host.g 1) : ℕ) : ℝ)`. Rewrite using `[Nat.cast_min]`. Conclude with `le_min (hg 0).1 (hg 1).1`.
+
+Establish `h1 : ((D.R.k : ℝ) * 2) ^ 8 ≤ ((D.R.k : ℝ) * L.sc.b) ^ 8` using `by gcongr`. Establish `h2 : (D.R.f : ℝ) ^ 4 * (D.R.k : ℝ) ^ 3 ≤ (D.R.k : ℝ) ^ 8`. Combine the equalities or inequalities in the displayed calculation. Establish `h3 : (1 : ℝ) ≤ (D.R.k : ℝ) ^ 8` using `one_le_pow₀ hk`. Rewrite using `[div_le_div_iff₀ (by nlinarith) (by positivity)]`.
+
+Use the polynomial consequences of the given equalities and inequalities.
+-/
 theorem leafYBound {L : SizeData₂ D} (Q : ParameterChoice' D L) : LeafYBound (onOf R F c a) := by
   show 2 * (D.R.f : ℝ) / (((min (D.host.g 0) (D.host.g 1) : ℕ) : ℝ) - 1) ≤ 1 / (4 * ((D.R.f : ℝ) * D.R.k) ^ 3)
   obtain ⟨Y, hY, -, -, hg⟩ := Q.g_Y
@@ -743,14 +966,23 @@ theorem leafYBound {L : SizeData₂ D} (Q : ParameterChoice' D L) : LeafYBound (
   rw [div_le_div_iff₀ (by nlinarith) (by positivity)]
   nlinarith
 
+/- English proof (translation)
+Conclude with `leafIndexU_of _ D.R.f (mirab_levelGroups _ _) (leafLevelSq c a h) hY (tieU R F c a) (tieLevelNum R F c a)`.
+-/
 theorem leafIndexU (h : R.grp_record) (hY : LeafYBound (onOf R F c a)) : LeafIndexU (onOf R F c a) := by
   classical
   exact leafIndexU_of _ D.R.f (mirab_levelGroups _ _) (leafLevelSq c a h) hY (tieU R F c a) (tieLevelNum R F c a)
 
+/- English proof (translation)
+Conclude with `leafUnip_of _ D.R.f (mirab_levelGroups _ _) (leafLevelSq c a h) (tieU R F c a) (tieLevelNum R F c a)`.
+-/
 theorem leafUnip (h : R.grp_record) : LeafUnip (onOf R F c a) := by
   classical
   exact leafUnip_of _ D.R.f (mirab_levelGroups _ _) (leafLevelSq c a h) (tieU R F c a) (tieLevelNum R F c a)
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨tieCoord c a hOk hC.grp.levels hC.tup.mu_conj, leafProj c a hOk.irr, leafIdentity c a hOk, leafSup c a hI, leafMackey c a hC.grp.levels, leafIndexU c a hC.grp.record (leafYBound c a Q), leafUnip c a hC.grp.record⟩`.
+-/
 theorem onOf_leaves (hOk : A.fam.Ok s) (hC : R.Char F) (hI : R.LIntegral) {L : SizeData₂ D} (Q : ParameterChoice' D L) :
     TieCoord (onOf R F c a) ∧ LeafProj (onOf R F c a) ∧ LeafIdentity (onOf R F c a) ∧ LeafSup (onOf R F c a) ∧
       LeafMackey (onOf R F c a) ∧ LeafIndexU (onOf R F c a) ∧ LeafUnip (onOf R F c a) :=
@@ -766,6 +998,9 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 variable {D : D7} {G : Type} [Group G] [Fintype G] {Pl0 T : Type} {A : FamIn D.what₂.LL G Pl0 T D.R.m}
   {Ks : Type} [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] {R : RealDat D A Ks} {F : Face D A}
 
+/- English proof (translation)
+Use `conv_rhs => rw [← Finset.univ_sum_single y, map_sum, map_sum, map_sum]`. Use `show ∑ k, Bs.v0.embedding (y k) • X.θ' j t (X.jL j t (cr.toL X.zs b j t (Pi.single k 1))) = _`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[← map_smul, ← map_smulₛₗ, ← map_smul, ← Pi.single_smul', smul_eq_mul, mul_one]`.
+-/
 theorem tC_cpt {K : Type} [Field K] [NumberField K] [StarRing K] {Bs : DefBase K} {A : DefAmb Bs} (X : CxData A)
     {fc : DefSub A → DefFace Bs} (cr : Crd A fc) (b : Bool) (j : Bs.J) (t : Bs.Tup) (y : Fin ((lv (fc X.zs) b).dZ j t) → K) :
     X.tC cr b j t (cpt Bs.v0.embedding y) = X.θ' j t (X.jL j t (cr.toL X.zs b j t y)) := by
@@ -774,6 +1009,9 @@ theorem tC_cpt {K : Type} [Field K] [NumberField K] [StarRing K] {Bs : DefBase K
   refine Finset.sum_congr rfl fun k _ => ?_
   rw [← map_smul, ← map_smulₛₗ, ← map_smul, ← Pi.single_smul', smul_eq_mul, mul_one]
 
+/- English proof (translation)
+Use `show X.eW b j (∑ k, Bs.v0.embedding (z k) • X.bW b j Bs.v0 k) = _`. Rewrite using `[map_sum]`. Conclude with `Finset.sum_congr rfl fun k _ => map_smul _ _ _`.
+-/
 theorem liftWeight_complexPoint_eq_twist {K : Type} [Field K] [NumberField K] [StarRing K] {Bs : DefBase K} {A : DefAmb Bs} (X : CxData A)
     (b : Bool) (j : Bs.J) (z : Fin (X.dW b j) → K) :
     X.w0C b j (cpt Bs.v0.embedding z) = ∑ k, Bs.v0.embedding (z k) • X.eW b j (X.bW b j Bs.v0 k) := by
@@ -781,9 +1019,17 @@ theorem liftWeight_complexPoint_eq_twist {K : Type} [Field K] [NumberField K] [S
   rw [map_sum]
   exact Finset.sum_congr rfl fun k _ => map_smul _ _ _
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem out_sum {s : Bool} {E ι : Type} [NormedAddCommGroup E] [InnerProductSpace ℂ E] [Fintype ι] (f : ι → Tw s E) :
     Tw.out (∑ k, f k) = ∑ k, Tw.out (f k) := rfl
 
+/- English proof (translation)
+Establish `hsq : ((Real.sqrt (RealDat.nP F false) : ℝ) : ℂ) * (((Real.sqrt (RealDat.nP F false))⁻¹ : ℝ) : ℂ) = 1`. Rewrite using `[← Complex.ofReal_mul, mul_inv_cancel₀ (Real.sqrt_pos.2 (RealDat.nP_pos false)).ne', Complex.ofReal_one]`. Use `Eq.trans ?_ (congrArg (Tw.out (s := twAt D.what₂.embLL A.v0)) (liftWeight_complexPoint_eq_twist (R.toCx F) false j z)).symm` and prove the remaining obligations. Use `Eq.trans ?_ (out_sum _).symm` and prove the remaining obligations. Unfold `coordMap`.
+
+Rewrite using `[Fintype.linearCombination_apply, map_sum]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Use `show _ = cj (twAt D.what₂.embLL A.v0) (A.v0.embedding (z k)) • (((Real.sqrt (RealDat.nP F false) : ℝ) : ℂ) • ((((Real.sqrt (RealDat.nP F false))⁻¹ : ℝ) : ℂ) • (R.FW j).j (sg0 D A) (R.bL F false j k)))`. Rewrite using `[smul_smul _ _ ((R.FW j).j _ _), hsq, one_smul, map_smulₛₗ, emb_eq D.what₂.embLL A.v0, cj_cj]`.
+-/
 theorem j_coordMap (j : Fin D.R.m) (z : Fin (finrank D.what₂.LL (R.WL F false j)) → D.what₂.LL) :
     (R.FW j).j (sg0 D A) (coordMap R F j z) =
       Tw.out (s := twAt D.what₂.embLL A.v0) ((R.toCx F).w0C false j (cpt A.v0.embedding z)) := by
@@ -798,6 +1044,9 @@ theorem j_coordMap (j : Fin D.R.m) (z : Fin (finrank D.what₂.LL (R.WL F false 
     ((((Real.sqrt (RealDat.nP F false))⁻¹ : ℝ) : ℂ) • (R.FW j).j (sg0 D A) (R.bL F false j k)))
   rw [smul_smul _ _ ((R.FW j).j _ _), hsq, one_smul, map_smulₛₗ, emb_eq D.what₂.embLL A.v0, cj_cj]
 
+/- English proof (translation)
+Establish `k0` using `j_coordMap (R := R) (F := F) j ((thetaMat R F j t).mulVec y)`. Establish `k1` using `(R.toCx F).key_lift F.cr false (h5 false) (hr false) j t y`. Establish `k2` using `tC_cpt (R.toCx F) F.cr false j t y`. Establish `k3 : (R.toCx F).θ' j t ((R.toCx F).jL j t (F.cr.toL (R.toCx F).zs false j t y)) = Tw.mk (twAt D.what₂.embLL A.v0) (R.thG j t (R.jV j t ((A.fam.L j t).toF (liftLvl F) (liftSub R F j t) y)))` using `rfl`. Conclude with `k0.trans ((k1.trans k2).trans k3)`.
+-/
 theorem j_thetaMat (h5 : R.LTheta F) (hr : R.LRatTh F) (j : Fin D.R.m) (t : T)
     (y : Fin ((A.fam.L j t).dZ (liftLvl F) (liftSub R F j t)) → D.what₂.LL) :
     (R.FW j).j (sg0 D A) (coordMap R F j ((thetaMat R F j t).mulVec y)) =
@@ -809,6 +1058,9 @@ theorem j_thetaMat (h5 : R.LTheta F) (hr : R.LRatTh F) (j : Fin D.R.m) (t : T)
       Tw.mk (twAt D.what₂.embLL A.v0) (R.thG j t (R.jV j t ((A.fam.L j t).toF (liftLvl F) (liftSub R F j t) y))) := rfl
   exact k0.trans ((k1.trans k2).trans k3)
 
+/- English proof (translation)
+Establish `h0 : thetaOp R F j t x = coordMap R F j ((thetaMat R F j t).mulVec (((A.fam.L j t).lPr (liftLvl F) (liftSub R F j t)).mulVec x))`. Rewrite using `[Matrix.mulVec_mulVec]`. Both sides reduce to the same expression. Conclude with `(congrArg ((R.FW j).j (sg0 D A)) h0).trans (j_thetaMat h5 hr j t _)`.
+-/
 theorem j_thetaOp (h5 : R.LTheta F) (hr : R.LRatTh F) (j : Fin D.R.m) (t : T) (x : Fin (srcDim F j t) → D.what₂.LL) :
     (R.FW j).j (sg0 D A) (thetaOp R F j t x) = R.thG j t (R.jV j t ((A.fam.L j t).toF (liftLvl F) (liftSub R F j t)
       (((A.fam.L j t).lPr (liftLvl F) (liftSub R F j t)).mulVec x))) := by
@@ -817,6 +1069,11 @@ theorem j_thetaOp (h5 : R.LTheta F) (hr : R.LRatTh F) (j : Fin D.R.m) (t : T) (x
     rw [Matrix.mulVec_mulVec]; rfl
   exact (congrArg ((R.FW j).j (sg0 D A)) h0).trans (j_thetaMat h5 hr j t _)
 
+/- English proof (translation)
+Rewrite using `[← range_coordMap]`. Unfold `thetaOp`. Use `LinearMap.range_comp_of_range_eq_top _ (LinearMap.range_eq_top.2 fun z => ?_)` and prove the remaining obligations. Take `⟨y, rfl⟩` from `hb z`. Take `⟨x, rfl⟩` from `BlockDat.lf_lPr_surj (Z := liftSub R F j t) (blockHyp (F := F) hOk j t) y`.
+
+Conclude with `⟨x, by rw [Matrix.mulVecLin_apply, Matrix.mulVecLin_apply, Matrix.mulVec_mulVec]⟩`.
+-/
 theorem range_thetaOp {s : ℕ} (hOk : A.fam.Ok s) (j : Fin D.R.m) (t : T)
     (hb : Function.Surjective (thetaMat R F j t).mulVec) : LinearMap.range (thetaOp R F j t) = R.WL F false j := by
   rw [← range_coordMap]
@@ -828,11 +1085,17 @@ theorem range_thetaOp {s : ℕ} (hOk : A.fam.Ok s) (j : Fin D.R.m) (t : T)
 
 variable (c : OnConst) (a : ChainArgs D.what₂.LL (Fin D.R.m) R.nW)
 
+/- English proof (translation)
+Use `(levelChar_spec h).val u hu hm` as an intermediate fact. Conclude with `(congrArg (· * _) this).trans (Units.inv_mul _)`.
+-/
 theorem psi_mul_base (h : R.grp_levels F) (u : Mir R) (hu : u ∈ (onOf R F c a).U) (hm : mirIncl R u ∈ F.P0) :
     (((onOf R F c a).ψ u : 𝓞 D.what₂.LL) : D.what₂.LL) * ((F.ψ0 ⟨mirIncl R u, hm⟩ : D.what₂.LLˣ) : D.what₂.LL) = 1 := by
   have := (levelChar_spec h).val u hu hm
   exact (congrArg (· * _) this).trans (Units.inv_mul _)
 
+/- English proof (translation)
+Take `⟨-, -, h3, h4, h5, h6⟩` from `leafLevelSq (F := F) c a h`. Rewrite using `[rank_eq, Nat.add_sub_cancel]`. Conclude with `card_piU_level (mirab_levelGroups _ _) _ _ _ h3 h4 h5 h6`.
+-/
 theorem card_U (h : R.grp_record) : Nat.card (onOf R F c a).U =
     D.host.g 0 ^ (D.R.r * (D.R.r - 1) / 2 * D.R.f) * D.host.g 1 ^ (D.R.r * (D.R.r - 1) / 2 * D.R.f) := by
   classical
@@ -872,6 +1135,9 @@ def supArgs : ChainArgs D.what₂.LL (Fin D.R.m) R.nW where
   th _ := 0
   ad _ := 0
 
+/- English proof (translation)
+The claim follows from `have hs := leafSup (F := F) c (supArgs R) h ⟨fun _ _ => ⟨fun j => ⟨(hs j).1, (hs j).1⟩, fun j => ⟨(hs j).1, (hs j).1⟩⟩, fun _ _ => ⟨fun j => ⟨le_rfl, (hs j).2, one_ne_zero, (sc_one' _ _).ge⟩, fun j => ⟨le_rfl, (hs j).2, one_ne_zero, (sc_one' _ _).ge⟩⟩⟩`.
+-/
 example (h : R.LIntegral) : LeafSpan (onOf R F c (supArgs R)) ∧ LeafLemmaS (onOf R F c (supArgs R)) :=
   have hs := leafSup (F := F) c (supArgs R) h
   ⟨fun _ _ => ⟨fun j => ⟨(hs j).1, (hs j).1⟩, fun j => ⟨(hs j).1, (hs j).1⟩⟩,
@@ -880,10 +1146,16 @@ example (h : R.LIntegral) : LeafSpan (onOf R F c (supArgs R)) ∧ LeafLemmaS (on
 
 end Checks
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨ChainArgs.ofObj (exampleObject K v0 ∅), fun _ => ⟨stdLat_isLatIn K 1, rfl⟩⟩`.
+-/
 example (K : Type) [Field K] [NumberField K] [StarRing K] (v0 : InfinitePlace K) :
     ∃ a : ChainArgs K Unit fun _ => 1, ∀ v, IsLatIn ⊤ (a.Th v ()) ∧ a.σ v () = 1 :=
   ⟨ChainArgs.ofObj (exampleObject K v0 ∅), fun _ => ⟨stdLat_isLatIn K 1, rfl⟩⟩
 
+/- English proof (translation)
+Rewrite using `[edgeSum_glCast]`. Simplify using `[supd]`.
+-/
 example (a : ℚ) (h : (!![1, a; 0, 1] : Matrix (Fin 2) (Fin 2) ℚ).det ≠ 0) :
     edgeSum supEdge (glCast (n := 1) rfl (Matrix.GeneralLinearGroup.mkOfDetNeZero _ h)) = a := by
   rw [edgeSum_glCast]

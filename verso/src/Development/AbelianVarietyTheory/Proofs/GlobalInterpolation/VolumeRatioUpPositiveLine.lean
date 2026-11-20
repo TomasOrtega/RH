@@ -7,6 +7,17 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 namespace GlobalTheory.VolRatioUp
 
+/- English proof (translation)
+Introduce `D hT h2 W P Q hW hWs hPQ U hU hUs`. Establish `hUr : U.rank = P + Q + 1`. Use `Formalism.BasicNotions.sig_sum U hU D.host.φ₀` as an intermediate fact. Rewrite `this` using `[hUs]`. Simplify using `only at this`.
+
+Use linear arithmetic over natural numbers and integers. Establish `hWr : W.rank = P + Q`. Use `Formalism.BasicNotions.sig_sum W hW D.host.φ₀` as an intermediate fact. Rewrite `this` using `[hWs]`. Conclude with `this.symm`.
+
+Take `⟨x, -, W', ι, -, -, hW'ok, hW's, hratio⟩` from `h2 U (P + 1) Q hU hUs (by omega) true (by simp)`. Establish `hW's' : ∀ τ, W'.sig τ = (P, Q)` using `fun τ => by`. Use `hW's τ` as an intermediate fact. Simplify using `using this`. Establish `hW'r : W'.rank = P + Q`.
+
+Use `Formalism.BasicNotions.sig_sum W' hW'ok D.host.φ₀` as an intermediate fact. Rewrite `this` using `[hW's']`. Conclude with `this.symm`. Take `⟨φ, hφ⟩` from `GlobalTheory.LandherrSignature.exists_isometry_host D W W' hW hW'ok (by rw [hWr, hW'r]) (fun τ => by rw [hWs, hW's'])`. Establish `hvol : D.vol W = D.vol W'` using `(GlobalTheory.VolIndepClosed.volIndep D).2.2 hT W W' P Q ⟨hW, hWs⟩ ⟨hW'ok, hW's'⟩ φ hφ`.
+
+Rewrite using `[hvol, hratio, hUr]`.
+-/
 theorem volRatio_up : ∀ D : D7, VolTie D → Conclusion2 D → ∀ (W : HSpace D.host.E) (P Q : ℕ), W.SigOK →
     (∀ τ, W.sig τ = (P, Q)) → 2 ≤ P + Q → ∀ U : HSpace D.host.E, U.SigOK → (∀ τ, U.sig τ = (P + 1, Q)) →
     D.vol U / D.vol W = Formalism.HermitianLatticesTheory.massRatioRightSide D.host.E (P + Q + 1) := by

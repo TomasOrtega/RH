@@ -15,6 +15,19 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 namespace GlobalTheory.IntertwMult
 
+/- English proof (translation)
+Establish `hH : I.IsHilbTensor (H` using `fun _ => ℂ) (fun _ _ => ContinuousLinearMap.id ℂ ℂ) (fun _ => ContinuousLinearMap.id ℂ ℂ) (fun x => ∏ v, x v) := by`. Use `⟨fun x y => ?_, fun _ _ => rfl, ?_⟩` and prove the remaining obligations. Simplify using `only [RCLike.inner_apply, map_prod, ← Finset.prod_mul_distrib]`. Establish `hspan : Submodule.span ℂ (Set.range fun x : (∀ _ : InfinitePlace I.F, ℂ) => ∏ v, x v) = ⊤`. Use `eq_top_iff.2 fun z _ => ?_` and prove the remaining obligations.
+
+Establish `h1 : (1 : ℂ) ∈ Set.range fun x : (∀ _ : InfinitePlace I.F, ℂ) => ∏ v, x v` using `⟨fun _ => 1, by simp⟩`. Simplify using `using Submodule.smul_mem _ z (Submodule.subset_span h1)`. Rewrite using `[hspan, Submodule.top_coe]`. Conclude with `dense_univ`. Set `B : RowsAut` to `GlobalTheory.RepSmooth.bundle I μf fund R (fun _ => ℂ) (fun _ => inferInstance) (fun _ _ => ContinuousLinearMap.id ℂ ℂ) ℂ (fun _ => ContinuousLinearMap.id ℂ ℂ) (fun x => ∏ v, x v) hF hR hH 1`.
+
+Establish `hy : GlobalTheory.Dec.IsContRep B y f` using `GlobalTheory.RepSmooth.isContRep_of_ae B hc hi he`. Take `⟨-, -, htr, hfin⟩` from `GlobalTheory.ExtContRep.ext_ae_eq_contRep B y f hy`. Take `⟨huniq, hlin, -, -⟩` from `GlobalTheory.ContRepUniq.contRep_unique_linear B`. Use `⟨fun f' hc' he' => ?_, fun hcu W hW ν hν => ?_, fun k c hk x => ?_⟩` and prove the remaining obligations. Establish `hae : ∀ᵐ x ∂(I.muA μf), f' x = f x` using `by filter_upwards [he', he] with x h1 h2`.
+
+Rewrite using `[h1, h2]`. Conclude with `GlobalTheory.RepSmooth.eq_of_ae B hc' hc hae`. Use `haveI : IsFiniteMeasure ν := hν.1 filter_upwards [hcu W hW ν hν, hfin ν inferInstance] with x h1 h2`. Establish `h2' : ∀ᵐ m ∂ν, I.ext y (m * x) = f (m * x)` using `h2`. Rewrite using `[← h1]`.
+
+Conclude with `integral_congr_ae (h2'.mono fun m hm => hm.symm)`. Establish `h3 : GlobalTheory.Dec.IsContRep B (R k y) (fun x => f (x * k))` using `htr k`. Rewrite `h3` using `[hk]`. Establish `h4` using `hlin y y f f (c - 1) hy hy`. Establish `e1 : y + (c - 1) • y = c • y`.
+
+Rewrite using `[sub_smul, one_smul, add_sub_cancel]`. Rewrite `h4` using `[e1]`. Establish `h5 : f (x * k) = f x + (c - 1) * f x` using `congrFun (huniq _ _ _ h3 h4) x`. Rewrite using `[h5]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem contRep_facts (I : AutInst) (μf : Measure I.Gf) [μf.IsHaarMeasure] [SigmaFinite μf] (fund : Set I.GA)
     (R : I.GA → (I.L2 μf fund →L[ℂ] I.L2 μf fund)) (hF : I.IsFundDom (I.muA μf) fund)
     (hR : I.IsRightReg μf fund R) (y : I.L2 μf fund) (f : I.GA → ℂ) (hc : Continuous f)

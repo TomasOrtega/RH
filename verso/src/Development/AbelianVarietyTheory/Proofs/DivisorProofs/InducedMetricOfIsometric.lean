@@ -18,6 +18,13 @@ section
 open CategoryTheory AlgebraicGeometry NumberField IsDedekindDomain ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Geo.Tor
 open GlobalTheory GlobalTheory.Points GlobalTheory.ChartGlue GlobalTheory.CechPic GlobalTheory.Cartier GlobalTheory.CxPts GlobalTheory.ProjVar GlobalTheory.TrueGeo GlobalTheory.Mean4O
 
+/- English proof (translation)
+Take `⟨b₀, h₀⟩` from `exists_chart hL (j (genericPoint G))`. Set `F (U : X.Opens) (u : Γ(X, U)ˣ) : G.functionFieldˣ` to `gm j (genericPoint G) U u`. Establish `hF (U : X.Opens) (u : Γ(X, U)ˣ) (hU : genericPoint G ∈ j ⁻¹ᵁ U) : (F U u : G.functionField) = fnOf _ hU (pullU j U u).val` using `gm_val j _ U hU u`. Establish `hg (N : LB X) (a a' : (N.pull j).ι) (h : genericPoint G ∈ (N.pull j).U a ⊓ (N.pull j).U a') : fnOf _ h ((N.pull j).g a a').val = (F _ (N.g (a PUnit.unit) (a' PUnit.unit)) : G.functionField)` using `(gm_val (𝟙 G) _ _ h _).symm.trans (congrArg Units.val ((gm_pull_g N j (𝟙 G) (genericPoint G) a a' h.1 h.2).trans (by rw [Category.id_comp])))`. Establish `hw' (a a' b b') (h₁ : j (genericPoint G) ∈ M.U a) (h₂ : j (genericPoint G) ∈ M.U a') (h₃ : j (genericPoint G) ∈ L.U b) (h₄ : j (genericPoint G) ∈ L.U b') : F _ (w a b) = F _ (M.g a a') * (F _ (L.g b b'))⁻¹ * F _ (w a' b')` using `hw _ a a' b b' h₁ h₂ h₃ h₄`.
+
+Establish `hM' (a) (h₁ : j (genericPoint G) ∈ M.U a) : F _ (M.g a a) = 1` using `gm_self hM j _ h₁`. Establish `hL' : F _ (L.g b₀ b₀) = 1` using `gm_self hL j _ h₀`. Use `⟨fun a => F _ (w (a PUnit.unit) b₀) * r (fun _ => b₀), fun a a' h' => ?_, fun a b h' => ?_⟩` and prove the remaining obligations. Use `beta_reduce`. Rewrite using `[hg M a a' h', ← Units.val_mul, hw' _ (a' PUnit.unit) b₀ b₀ (mem_pull.1 h'.1) (mem_pull.1 h'.2) h₀ h₀, hL', inv_one, mul_one, mul_assoc]`.
+
+Establish `e` using `hr (fun _ => b) (fun _ => b₀) (memInf (mem_pull.2 h'.2) (mem_pull.2 h₀)) replace e : ((r fun _ => b : G.functionFieldˣ) : G.functionField) = (F _ (L.g b b₀) : G.functionField) * (r fun _ => b₀ : G.functionFieldˣ) := e.trans (congrArg (· * _) (hg L (fun _ => b) (fun _ => b₀) _)) b …`. Rewrite using `[← hF, e, ← Units.val_mul, ← Units.val_mul, hw' _ _ b b₀ h'.1 h'.1 h'.2 h₀, hM' _ h'.1, one_mul, mul_comm (F _ (L.g b b₀))⁻¹, mul_assoc, inv_mul_cancel_left]`.
+-/
 theorem exists_isRatSec_pull {X G : Scheme.{0}} [IsIntegral G] (j : G ⟶ X) {L M : LB X} (hL : L.IsLB) (hM : M.IsLB)
     (w : ∀ a b, Γ(X, M.U a ⊓ L.U b)ˣ)
     (hw : ∀ (z : G) a a' b b', j z ∈ M.U a → j z ∈ M.U a' → j z ∈ L.U b → j z ∈ L.U b' → gm j z _ (w a b) =
@@ -52,6 +59,13 @@ theorem exists_isRatSec_pull {X G : Scheme.{0}} [IsIntegral G] (j : G ⟶ X) {L 
     rw [← hF, e, ← Units.val_mul, ← Units.val_mul, hw' _ _ b b₀ h'.1 h'.1 h'.2 h₀,
       hM' _ h'.1, one_mul, mul_comm (F _ (L.g b b₀))⁻¹, mul_assoc, inv_mul_cancel_left]
 
+/- English proof (translation)
+Establish `ht : ⊤ ≤ z ⁻¹ᵁ (j ⁻¹ᵁ U)` using `fun p _ => by`. Express the relevant statement in the definitionally equal form `(z ≫ j) p ∈ U`. Rewrite using `[← h]`. Conclude with `hU (x := spMap e.O.subtype p) trivial`. Establish `hb : below z ∈ j ⁻¹ᵁ U` using `ht trivial`.
+
+Establish `hev` using `OfModel.eval_pull e.O.subtype j z yt h (U := U) (W := j ⁻¹ᵁ U) le_rfl ht hU u.val`. Establish `e₁ : (pullU j U u).val = (j.appLE U (j ⁻¹ᵁ U) le_rfl).hom u.val`. Rewrite using `[← Scheme.Hom.app_eq_appLE]`. Both sides reduce to the same expression. Rewrite using `[OfModel.valAt_fnOf _ hb ht, e₁, hev]`.
+
+Conclude with `OfModel.w_unit e (u.isUnit.map _)`.
+-/
 theorem w_valAt_pullU {F : Type} [Field F] [NumberField F] {X G : Scheme.{0}} [IsIntegral G] (j : G ⟶ X)
     {v : HeightOneSpectrum (𝓞 F)} (e : Ext v) (z : Sp (AlgebraicClosure F) ⟶ G) (yt : Sp e.O ⟶ X)
     (h : spMap e.O.subtype ≫ yt = z ≫ j) {U : X.Opens} (hU : ⊤ ≤ yt ⁻¹ᵁ U) (u : Γ(X, U)ˣ)
@@ -68,6 +82,27 @@ theorem w_valAt_pullU {F : Type} [Field F] [NumberField F] {X G : Scheme.{0}} [I
   rw [OfModel.valAt_fnOf _ hb ht, e₁, hev]
   exact OfModel.w_unit e (u.isUnit.map _)
 
+/- English proof (translation)
+Take `⟨r, hr, hu, hc, hf⟩` from `h`. Take `⟨w, hw, hφ⟩` from `hi.exists_units`. Take `⟨r', hr', key⟩` from `exists_isRatSec_pull V.j L.isLB M.isLB w (hw _ V.j) hr`. Establish `key' (c : V.G.functionField) (a : (M.B.pull V.j).ι) (b : L.B.ι) (h : genericPoint V.G ∈ V.j ⁻¹ᵁ (M.B.U (a PUnit.unit) ⊓ L.B.U b)) : c * (r' a : V.G.functionField) = fnOf _ h (pullU V.j _ (w (a PUnit.unit) b)).val * (c * r (fun _ => b))`. Rewrite using `[key a b h, mul_left_comm]`.
+
+Use `⟨r', hr', fun a x hx => ?_, fun σ z y y' a e₁ e₂ ha => ?_, fun v e y z yt a e₁ e₂ ha => ?_⟩` and prove the remaining obligations. Take `⟨b, hb⟩` from `exists_chart L.isLB (V.j x)`. Establish `hm : x ∈ V.j ⁻¹ᵁ (M.B.U (a PUnit.unit) ⊓ L.B.U b)` using `⟨mem_pull.1 hx, hb⟩`. Rewrite using `[key' _ a b (gen_mem hm)]`. Conclude with `(unitAt_fnOf hm _ _).mul (hu (fun _ => b) x (mem_pull.2 hb))`.
+
+Take `⟨b, hb⟩` from `exists_chart L.isLB (V.j (under z))`. Establish `hm : under z ∈ V.j ⁻¹ᵁ (M.B.U (a PUnit.unit) ⊓ L.B.U b)` using `⟨mem_pull.1 ha, hb⟩`. Establish `hπ : V.π (under z) = under y` using `by show _ = y.1 _`. Rewrite using `[e₁]`. Both sides reduce to the same expression.
+
+Establish `hun : under y' = V.j (under z)`. Express the relevant statement in the definitionally equal form `y'.1 _ = _`. Rewrite using `[e₂]`. Both sides reduce to the same expression. Establish `hy' : y' ∈ ptsIn V.p _ (M.B.U (a PUnit.unit) ⊓ L.B.U b)` using `mem_ptsIn.2 (by`.
+
+Express the relevant statement in the definitionally equal form `under y' ∈ _`. Rewrite using `[hun]`. Conclude with `hm)`. Establish `hU` using `hu (fun _ => b) _ (mem_pull.2 hb)`. Rewrite `hU` using `[hπ]`.
+
+Establish `hev : ev (V.π ≫ Y.str) σ _ (pullU V.j _ (w (a PUnit.unit) b)).val z = ev V.p _ _ (w (a PUnit.unit) b).val y'`. Rewrite using `[ev, ev, e₂]`. Conclude with `(valR_comp z.1 V.j _ _).symm`. Establish `h0 : 0 < ‖ev V.p _ _ (w (a PUnit.unit) b).val y'‖ ^ 2` using `pow_pos (norm_pos_iff.2 (ev_ne_zero hy' (Units.isUnit _))) 2`. Rewrite using `[hc σ z y y' (fun _ => b) e₁ e₂ (mem_pull.2 hb), key' _ a b (gen_mem hm), ratVal_mul (regAt_fnOf hm _ _) hU.regAt, ratVal_fnOf (mem_ptsIn.2 hm), hev, hφ _ _ b y' (mem_ptsIn_inf.1 hy').1 (mem_ptsIn_inf.1 hy').2, logSq, neg_add, Real.exp_add, Real.exp_neg (Real.log _), Real.exp_log …`.
+
+Establish `h1` using `h0.ne'`. Generalize the expression as in `‖ev V.p _ _ (w (a PUnit.unit) b).val y'‖ ^ 2 = t at h1 ⊢`. Clear the denominators using the available nonvanishing facts. Take `⟨b, hb⟩` from `exists_chart L.isLB (yt (IsLocalRing.closedPoint e.O))`. Establish `hb' : ⊤ ≤ yt ⁻¹ᵁ L.B.U b` using `(Scheme.preimage_eq_top_of_closedPoint_mem (R := .of e.O) yt hb).ge`.
+
+Establish `hab : ⊤ ≤ yt ⁻¹ᵁ (M.B.U (a PUnit.unit) ⊓ L.B.U b)` using `fun p hp => ⟨ha hp, hb' hp⟩`. Establish `hm : below z ∈ V.j ⁻¹ᵁ (M.B.U (a PUnit.unit) ⊓ L.B.U b)`. Express the relevant statement in the definitionally equal form `(z ≫ V.j) _ ∈ M.B.U (a PUnit.unit) ⊓ L.B.U b`. Rewrite using `[← e₂]`. Conclude with `hab (x := spMap e.O.subtype _) trivial`.
+
+Establish `hπ : V.π (below z) = below y.1`. Rewrite using `[← e₁]`. Both sides reduce to the same expression. Establish `hU` using `hu (fun _ => b) _ (mem_pull.2 hm.2)`. Rewrite `hU` using `[hπ]`.
+
+Rewrite using `[hf v e y z yt (fun _ => b) e₁ e₂ hb', key' _ a b (gen_mem hm), OfModel.valAt_mul z (regAt_fnOf hm _ _) hU.regAt, map_mul, w_valAt_pullU V.j e z yt e₂ hab, one_mul]`.
+-/
 theorem induces_of_isometric {F : Type} [Field F] [NumberField F] {C : CxSt F} {Y : Var F}
     (V : Cover Y) (A : Adl C Y) (L M : HermLB V.p) (k : ℕ) (h : V.Induces A L k) (hi : L.Isometric M) :
     V.Induces A M k := by
@@ -135,6 +170,9 @@ open CategoryTheory AlgebraicGeometry ReciprocityTheory.ChartRestriction.G Recip
 open scoped Classical
 open Formalism.BasicNotions.DV Formalism.MainNotions.WeightThresholdDefs GlobalTheory.FlagAr GlobalTheory.ShFam.Pad GlobalTheory.VB
 
+/- English proof (translation)
+Introduce `V A L M k h hi` and use `induces_of_isometric V A L M k h hi`.
+-/
 theorem main : ∀ {F : Type} [Field F] [NumberField F] {C : TrueGeo.CxSt F} {Yv : ProjVar.Var F}
     (V : Cover Yv) (A : TrueGeo.Adl C Yv) (L M : HermLB V.p) (k : ℕ),
     V.Induces A L k → L.Isometric M → V.Induces A M k :=

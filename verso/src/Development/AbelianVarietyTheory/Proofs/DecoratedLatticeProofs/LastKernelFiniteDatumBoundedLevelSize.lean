@@ -12,6 +12,17 @@ open NumberField IsDedekindDomain Formalism.BasicNotions Formalism.MainNotions F
 open scoped ComplexOrder
 open GlobalTheory.TopStep GlobalTheory.ColNorms.LastDatum
 
+/- English proof (translation)
+Introduce `CY D N X s Pr W Ch G sel Sg mu cst I dl χ cD pl u δ H p d Y hY`. Take `⟨h1, h2, h3, -⟩` from `GlobalTheory.Core.Ht2.BadPrimesS.bad_primes_sharp CY D N X s Pr W Ch G sel Sg mu cst I dl χ cD pl u δ H`. Establish `hPr : Pr.Ok` using `H.1.2.2.2.2.2.2.2.2.2.1`. Establish `hI` using `H.2.2.2.2.2.2.1`. Establish `hT : TilOk Pr sel mu u`.
+
+Use `tilOk_of hPr u fun P hP => ?_` and prove the remaining obligations. Establish `hmu : mu = mu0 X.F X.E X.K Sg` using `H.2.2.2.2.1`. Rewrite `hP` using `[hmu, twistPrimes_trivialTuple_empty sel Sg]`. Simplify using `at hP`. Establish `key` using `EntryDatum.smallDatum_prod (K := X.K) (S := Sall sel mu u) p.deco.1 (tilQ sel mu u d).1 (tilQ sel mu u d).2 (frsF sel mu p) (tilFr hT d) (frsF_mem p) (fun P => (tilFr_isLiftFr hT d P).1) (fun P => by classical exact Finset.mem_union) (Pr.T u * (Pr.g 0 * Pr.g 1)) (fun P hP => by r …`.
+
+Take `⟨j, -, hj, -⟩` from `h2 P.1 (h1 P.1 P.2)`. Rewrite using `[hj]`. Use `Dvd.dvd.mul_left ?_ _` and prove the remaining obligations. Use `fin_cases j`. Conclude with `Dvd.intro _ rfl`.
+
+Conclude with `Dvd.intro_left _ rfl)`. Use the proof step `(fun P y => locTop Ch sel mu cst (N.R.m - 2) P y ((frsF sel mu p P).symm (repY Y))) (fun _ => 1)`. Use the proof step `(fun P => locSmall_locTop hI.hm hI.cst_ok H.2.2.2.2.2.1 (h1 P.1 P.2) (repY_int p hY (h1 P.1 P.2)))`. Rewrite `key` using `[Finset.prod_const_one]`. Use `key using 1` and compare the differences between its conclusion and the goal.
+
+Use function extensionality and compare the values at `x`. Unfold `XiCpl2`. Simplify using `only [locTop_tilFr]`.
+-/
 theorem smallDatum_xiCpl2_sharp : ∀ (CY : ℝ) (D : D7) (N : NumDatum) (X : Fields) (s : Seam D X) (Pr : Primes X) (W : Wts X Pr.Word N.R) (Ch : Chars X Pr N.R.m) (G : ChGlob X N.R.m) (sel : HeightOneSpectrum (𝓞 X.F) → HeightOneSpectrum (𝓞 X.E)) (Sg : Set ℕ) (mu : Tup X.F X.E X.K Sg) (cst : LocCst X (rowSG Pr sel mu)) (I : ChIdx X Pr N.R (QE sel (mu : Chr X.F X.E X.K))) (dl : ℂ) (χ : TaylorLogMetric.IdE D → ℂ) (cD : D.what₂.Tau → ℂ) (pl : RPl N.R ≃ X.Tau) (u : Pr.Word) (δ : Code N), HypS CY N s W Ch G sel mu cst I dl χ cD pl u δ → ∀ (p : ChPt (R := N.R) sel mu u (N.R.m - 2 + 1)) (d : RowPt Pr N.R sel mu), ∀ Y ∈ ybSet sel mu cst p.deco.1.N, SmallDatum (Sall sel mu u) p.deco.1.N (tilQ sel mu u d).1.N (Pr.T u * (Pr.g 0 * Pr.g 1)) (XiCpl2 Ch sel mu cst (N.R.m - 2) p Y d) 1 := by
   intro CY D N X s Pr W Ch G sel Sg mu cst I dl χ cD pl u δ H p d Y hY
   obtain ⟨h1, h2, h3, -⟩ := GlobalTheory.Core.Ht2.BadPrimesS.bad_primes_sharp CY D N X s Pr W Ch G sel Sg mu cst I dl χ cD pl u δ H

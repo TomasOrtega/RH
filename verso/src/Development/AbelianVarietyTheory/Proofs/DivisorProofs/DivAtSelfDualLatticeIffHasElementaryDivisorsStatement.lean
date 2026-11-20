@@ -10,6 +10,9 @@ open scoped TensorProduct
 
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.DivTransfer.divAt_cj_iff | exact GlobalTheory.DivTransfer.divAt_cj_iff | (intros; apply GlobalTheory.DivTransfer.divAt_cj_iff <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.divAt_selfDual_lattice_iff_hasElementaryDivisors : ∀ (D : D7) [IsCMField D.host.E] (V : HSp D) (j : UA D.host.E V.rank ≃ₜ* GA D V) (h₀ : GA D V)
     (M : Matrix (Fin V.rank) (Fin V.rank) D.host.E),
     cT (D.sp.cm.sig : D.host.E →+* D.host.E) M * V.gram * M = 1 → h₀ ∈ GfC V → (∀ x, x ∈ finU D.host.E V.rank ↔ j x ∈ GfC V) →

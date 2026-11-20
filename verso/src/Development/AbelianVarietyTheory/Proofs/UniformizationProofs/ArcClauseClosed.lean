@@ -7,6 +7,9 @@ import Development.AbelianVarietyTheory.Proofs.UniformizationProofs.ThetaUniform
 
 namespace GlobalTheory
 
+/- English proof (translation)
+The claim follows from `GlobalTheory.T.holomorphic_degenerationArc_of_uniformisation GlobalTheory.T.abelianScheme_laws_unconditional.1 GlobalTheory.T.abelianScheme_laws_unconditional.2 GlobalTheory.T.thetaUniformisation_complexAbelianVariety`.
+-/
 theorem arcClause_closed : ReciprocityTheory.ChartRestriction.G.Geo.Tor.ToroidalArchimedeanCondition :=
   GlobalTheory.T.holomorphic_degenerationArc_of_uniformisation GlobalTheory.T.abelianScheme_laws_unconditional.1 GlobalTheory.T.abelianScheme_laws_unconditional.2 GlobalTheory.T.thetaUniformisation_complexAbelianVariety
 

@@ -7,6 +7,11 @@ namespace LateralTheory.EtaleFoundations.TensUnivDeg
 
 variable {R : Type} [CommRing R]
 
+/- English proof (translation)
+Proceed by induction on `x using DirectSum.induction_on with`. Consider the case `zero => exact h0`. Consider the case `of p t`. Rewrite using `[← DirectSum.lof_eq_of (ULift.{1} R)]`. Proceed by induction on `t using TensorProduct.induction_on with`.
+
+Consider the case `zero => simpa using h0`. Consider the case `tmul a b => exact hm p a b`. Consider the case `add a b ha hb => rw [map_add]`. Conclude with `hadd _ _ ha hb`. Consider the case `add a b ha hb => exact hadd _ _ ha hb`.
+-/
 theorem tens_ind {I J : Cx R} (V : Scheme.{0}) (w : ℤ) (P : Tens I J V w → Prop) (h0 : P 0)
     (hadd : ∀ a b, P a → P b → P (a + b))
     (hm : ∀ (p : {p : ℤ × ℤ // p.1 + p.2 = w}) (a : Sec (I.X p.1.1) V) (b : Sec (J.X p.1.2) V),
@@ -24,6 +29,9 @@ theorem tens_ind {I J : Cx R} (V : Scheme.{0}) (w : ℤ) (P : Tens I J V w → P
     | add a b ha hb => rw [map_add]; exact hadd _ _ ha hb
   | add a b ha hb => exact hadd _ _ ha hb
 
+/- English proof (translation)
+Simplify using `[Tens.res, Sec.res]`.
+-/
 theorem res_lof {I J : Cx R} {V U : Scheme.{0}} (g : V ⟶ U) (w : ℤ) (p : {p : ℤ × ℤ // p.1 + p.2 = w})
     (a : Sec (I.X p.1.1) U) (b : Sec (J.X p.1.2) U) :
     Tens.res g w (DirectSum.lof (ULift.{1} R) _ (fun p : {p : ℤ × ℤ // p.1 + p.2 = w} =>
@@ -33,6 +41,9 @@ theorem res_lof {I J : Cx R} {V U : Scheme.{0}} (g : V ⟶ U) (w : ℤ) (p : {p 
   classical
   simp [Tens.res, Sec.res]
 
+/- English proof (translation)
+Simplify using `[Pair.lift]`.
+-/
 theorem lift_lof {I J K : Cx R} (μ : Pair I J K) (U : Scheme.{0}) (w : ℤ) (p : {p : ℤ × ℤ // p.1 + p.2 = w})
     (a : Sec (I.X p.1.1) U) (b : Sec (J.X p.1.2) U) :
     μ.lift U w (DirectSum.lof (ULift.{1} R) _ (fun p : {p : ℤ × ℤ // p.1 + p.2 = w} =>
@@ -44,6 +55,9 @@ def Tmap {I J I' J' : Cx R} (f : I ⟶ I') (g : J ⟶ J') (U : Scheme.{0}) (w : 
     Tens I J U w →ₗ[ULift.{1} R] Tens I' J' U w :=
   DirectSum.lmap fun p => TensorProduct.map ((f.f p.1.1).hom.app (op U)).hom ((g.f p.1.2).hom.app (op U)).hom
 
+/- English proof (translation)
+Simplify using `[Tmap, Sec.map]`.
+-/
 theorem tmap_lof {I J I' J' : Cx R} (f : I ⟶ I') (g : J ⟶ J') (U : Scheme.{0}) (w : ℤ)
     (p : {p : ℤ × ℤ // p.1 + p.2 = w}) (a : Sec (I.X p.1.1) U) (b : Sec (J.X p.1.2) U) :
     Tmap f g U w (DirectSum.lof (ULift.{1} R) _ (fun p : {p : ℤ × ℤ // p.1 + p.2 = w} =>
@@ -87,6 +101,9 @@ def beta {I J I' J' K' : Cx R} (ν : Pair I' J' K') (f : I ⟶ I') (g : J ⟶ J'
     · simp only [map_add, ha, hb]
     · rw [res_lof, tmap_lof, tmap_lof, lift_lof, lift_lof, ν.nat, TensUnivPf.nat_sec, TensUnivPf.nat_sec]
 
+/- English proof (translation)
+Take `⟨S, hS, hh⟩` from `hτ.1 U w y`. Use `Scheme.etaleTopology.superset_covering (fun V g hg => ?_) hS` and prove the remaining obligations. Take `⟨x, hx⟩` from `hh V g hg`. Conclude with `⟨x, hx⟩`.
+-/
 theorem alpha_locSurj {I J K : Cx R} (τ : Pair I J K) (hτ : τ.IsTensor) (w : ℤ) :
     Presheaf.IsLocallySurjective Scheme.etaleTopology (alpha τ w) where
   imageSieve_mem {U} y := by
@@ -95,12 +112,18 @@ theorem alpha_locSurj {I J K : Cx R} (τ : Pair I J K) (hτ : τ.IsTensor) (w : 
     obtain ⟨x, hx⟩ := hh V g hg
     exact ⟨x, hx⟩
 
+/- English proof (translation)
+Take `⟨S, hS, hh⟩` from `hτ.2 U w (x - y) (by rw [map_sub, h, sub_self])`. Conclude with `⟨S, hS, fun V g hg => sub_eq_zero.1 (by rw [← map_sub]; exact hh V g hg)⟩`.
+-/
 theorem etale_tensor_pairing_lift_eq_locally_res_eq {I J K : Cx R} (τ : Pair I J K) (hτ : τ.IsTensor) (w : ℤ) {U : Scheme.{0}}
     (x y : Tens I J U w) (h : τ.lift U w x = τ.lift U w y) :
     Loc U fun _ g => Tens.res g w x = Tens.res g w y := by
   obtain ⟨S, hS, hh⟩ := hτ.2 U w (x - y) (by rw [map_sub, h, sub_self])
   exact ⟨S, hS, fun V g hg => sub_eq_zero.1 (by rw [← map_sub]; exact hh V g hg)⟩
 
+/- English proof (translation)
+Take `⟨S, hS, hh⟩` from `etale_tensor_pairing_lift_eq_locally_res_eq τ hτ w x y h`. Conclude with `Scheme.etaleTopology.superset_covering (fun V g hg => hh V g hg) hS`.
+-/
 theorem alpha_locInj {I J K : Cx R} (τ : Pair I J K) (hτ : τ.IsTensor) (w : ℤ) :
     Presheaf.IsLocallyInjective Scheme.etaleTopology (alpha τ w) where
   equalizerSieve_mem {U} x y h := by
@@ -110,6 +133,13 @@ theorem alpha_locInj {I J K : Cx R} (τ : Pair I J K) (hτ : τ.IsTensor) (w : �
 end LateralTheory.EtaleFoundations.TensUnivDeg
 
 open LateralTheory.EtaleFoundations.TensUnivDeg in
+/- English proof (translation)
+Introduce `R _ I J K τ hτ I' J' K' ν f g w`. Use `alpha_locSurj τ hτ w` as an intermediate fact. Use `alpha_locInj τ hτ w` as an intermediate fact. Establish `hW : Scheme.etaleTopology.W (alpha τ w)` using `GrothendieckTopology.W_of_isLocallyBijective _ _`. Take `⟨m, hm⟩` from `(hW (K'.X w).obj (K'.X w).property).2 (beta ν f g w)`.
+
+Use `⟨⟨m⟩, fun U s t h a b => ?_⟩` and prove the remaining obligations. Establish `e` using `congrArg (fun φ : TP I J w ⟶ (K'.X w).obj => (φ.app (op U)).hom (DirectSum.lof (ULift.{1} R) _ (fun p : {p : ℤ × ℤ // p.1 + p.2 = w} => (Sec (I.X p.1.1) U ⊗[ULift.{1} R] Sec (J.X p.1.2) U)) ⟨(s, t), h⟩ (a ⊗ₜ b))) hm`. Simplify using `only [NatTrans.comp_app, ModuleCat.hom_comp] at e`. Express the relevant statement in the definitionally equal form `Sec.map ⟨m⟩ (τ.lift U w _) = (ν.lift U w ∘ₗ Tmap f g U w) _ at e`. Rewrite `e` using `[lift_lof, LinearMap.comp_apply, tmap_lof, lift_lof]`.
+
+Conclude with `e`.
+-/
 theorem LateralTheory.EtaleFoundations.etale_tensor_pairing_degreewise_universal_of_sheafification : LateralTheory.EtaleFoundations.EtaleTensorDegreewiseMapExists := by
   intro R _ I J K τ hτ I' J' K' ν f g w
   have := alpha_locSurj τ hτ w

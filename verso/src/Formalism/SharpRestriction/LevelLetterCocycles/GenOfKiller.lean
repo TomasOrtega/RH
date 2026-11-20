@@ -2,6 +2,15 @@ import Mathlib
 
 namespace Formalism.MainNotions.UnusedSlot80.UGen
 
+/- English proof (translation)
+Take `⟨n, b⟩` from `Submodule.basisOfPid (Finsupp.basisSingleOne : Module.Basis (Fin g) R (Fin g →₀ R)) (N.comap (Finsupp.linearCombination R v))`. Use `⟨n, fun i => Finsupp.linearCombination R v (b i : Fin g →₀ R), ?_, ?_, ?_⟩` and prove the remaining obligations. Establish `h1` using `Module.finrank_eq_card_basis b`. Establish `h2` using `Submodule.finrank_le (N.comap (Finsupp.linearCombination R v))`. Establish `h3` using `Module.finrank_eq_card_basis (Finsupp.basisSingleOne : Module.Basis (Fin g) R (Fin g →₀ R))`.
+
+Simplify using `only [Fintype.card_fin] at h1 h3`. Use linear arithmetic over natural numbers and integers. Introduce `i`. Conclude with `(b i).2`. Establish `hb : Submodule.span R (Set.range fun i => ((b i : _) : Fin g →₀ R)) = N.comap (Finsupp.linearCombination R v)`.
+
+Establish `e : (Set.range fun i => ((b i : _) : Fin g →₀ R)) = (N.comap (Finsupp.linearCombination R v)).subtype '' Set.range b`. Use extensionality with `x`. Simplify using the standard rewrite rules. Rewrite using `[e, ← Submodule.map_span, b.span_eq, Submodule.map_subtype_top]`. Establish `e2 : (Set.range fun i => Finsupp.linearCombination R v (b i : Fin g →₀ R)) = (Finsupp.linearCombination R v) '' Set.range fun i => ((b i : _) : Fin g →₀ R)`.
+
+Use extensionality with `x`. Simplify using the standard rewrite rules. Rewrite using `[e2, ← Submodule.map_span, hb, Submodule.map_comap_eq, Finsupp.range_linearCombination, inf_eq_right.mpr hN]`.
+-/
 theorem span_le_card {R M : Type*} [CommRing R] [IsDomain R] [IsPrincipalIdealRing R]
     [AddCommGroup M] [Module R M] {g : ℕ} (v : Fin g → M) (N : Submodule R M)
     (hN : N ≤ Submodule.span R (Set.range v)) :
@@ -31,6 +40,11 @@ theorem span_le_card {R M : Type*} [CommRing R] [IsDomain R] [IsPrincipalIdealRi
     rw [e2, ← Submodule.map_span, hb, Submodule.map_comap_eq,
       Finsupp.range_linearCombination, inf_eq_right.mpr hN]
 
+/- English proof (translation)
+Take `⟨a, ha, p, hp, rfl⟩` from `Submodule.mem_sup.mp hx`. Establish `hp0 : P.mkQ p = 0`. Rewrite using `[Submodule.mkQ_apply, Submodule.Quotient.mk_eq_zero]`. Conclude with `hp`. Rewrite using `[map_add, hp0, add_zero]`.
+
+Establish `hle : (Submodule.span R (Set.range u)).map P.mkQ ≤ Submodule.span R (Set.range fun i => P.mkQ (u i))`. Rewrite using `[Submodule.map_span_le]`. Introduce and unpack `_ ⟨i, rfl⟩`. Conclude with `Submodule.subset_span ⟨i, rfl⟩`. Conclude with `hle (Submodule.mem_map_of_mem ha)`.
+-/
 private theorem mkQ_mem_span_of_mem_sup_lemma {R V ι : Type*} [CommRing R] [AddCommGroup V] [Module R V]
     (P : Submodule R V) (u : ι → V) {x : V} (hx : x ∈ Submodule.span R (Set.range u) ⊔ P) :
     P.mkQ x ∈ Submodule.span R (Set.range fun i => P.mkQ (u i)) := by
@@ -45,6 +59,33 @@ private theorem mkQ_mem_span_of_mem_sup_lemma {R V ι : Type*} [CommRing R] [Add
     exact Submodule.subset_span ⟨i, rfl⟩
   exact hle (Submodule.mem_map_of_mem ha)
 
+/- English proof (translation)
+Set `W : Submodule R (V ⧸ Psub)` to `Submodule.span R (Set.range fun i => Psub.mkQ (v i))`. Set `B : ℕ → Submodule R (V ⧸ Psub)` to `fun K => W.comap ((lR ^ K * t) • (LinearMap.id : (V ⧸ Psub) →ₗ[R] V ⧸ Psub))`. Establish `hBmono : Monotone B`. Introduce `K K' hKK' q hq`. Express the relevant statement in the definitionally equal form `(lR ^ K * t) • q ∈ W at hq`.
+
+Express the relevant statement in the definitionally equal form `(lR ^ K' * t) • q ∈ W`. Establish `e : lR ^ K' * t = lR ^ (K' - K) * (lR ^ K * t)`. Rewrite using `[← mul_assoc, ← pow_add, Nat.sub_add_cancel hKK']`. Rewrite using `[e, mul_smul]`. Conclude with `W.smul_mem _ hq`.
+
+Establish `hmemB : ∀ f ∈ Isub, ∃ K, Psub.mkQ f ∈ B K`. Introduce `f hf`. Take `⟨K, hKf⟩` from `hK f hf`. Use `⟨K, ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `(lR ^ K * t) • Psub.mkQ f ∈ W`.
+
+Rewrite using `[← map_smul]`. Conclude with `mkQ_mem_span_of_mem_sup_lemma Psub v hKf`. Establish `hIle : Isub.map Psub.mkQ ≤ Submodule.span R (Set.range fun i => Psub.mkQ (F i))`. Introduce `q hq`. Take `⟨f, hf, rfl⟩` from `Submodule.mem_map.mp hq`.
+
+Conclude with `mkQ_mem_span_of_mem_sup_lemma Psub F (hfg (hIM hf))`. Use `haveI hT : IsNoetherian R (Submodule.span R (Set.range fun i => Psub.mkQ (F i))) := isNoetherian_of_fg_of_noetherian _ (Submodule.fg_span (Set.finite_range _))`. Use `haveI hIN : IsNoetherian R (Isub.map Psub.mkQ) := isNoetherian_of_le hIle`. Establish `hfgI : (Isub.map Psub.mkQ).FG` using `(Submodule.fg_top _).mp (IsNoetherian.noetherian _)`. Take `⟨S, hS⟩` from `hfgI`.
+
+Establish `hSB : ∀ x ∈ S, ∃ K, x ∈ B K`. Introduce `x hx`. Establish `hxI : x ∈ Isub.map Psub.mkQ`. Rewrite using `[← hS]`. Conclude with `Submodule.subset_span (Finset.mem_coe.mpr hx)`.
+
+Take `⟨f, hf, rfl⟩` from `Submodule.mem_map.mp hxI`. Conclude with `hmemB f hf`. Use `choose! Kf hKf using hSB`. Choose the witnesses or unpack the hypotheses as in `⟨K, hIB⟩ : ∃ K, Isub.map Psub.mkQ ≤ B K := by`. Use `⟨S.sup Kf, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[← hS, Submodule.span_le]`. Introduce `x hx`. Conclude with `hBmono (Finset.le_sup (Finset.mem_coe.mp hx)) (hKf x (Finset.mem_coe.mp hx))`. Establish `hN : Isub.map ((lR ^ K * t) • Psub.mkQ) ≤ Submodule.span R (Set.range fun i => Psub.mkQ (v i))`. Introduce `y hy`.
+
+Take `⟨f, hf, rfl⟩` from `Submodule.mem_map.mp hy`. Establish `h1` using `hIB (Submodule.mem_map_of_mem hf)`. Express the relevant statement in the definitionally equal form `(lR ^ K * t) • Psub.mkQ f ∈ W at h1`. Rewrite using `[LinearMap.smul_apply]`. Conclude with `h1`.
+
+Take `⟨g₀, w, hg₀, hwN, hNw⟩` from `span_le_card (fun i => Psub.mkQ (v i)) _ hN`. Establish `hJ : ∀ i, ∃ f ∈ Isub, ((lR ^ K * t) • Psub.mkQ) f = w i` using `fun i => Submodule.mem_map.mp (hwN i)`. Use `choose J hJI hJw using hJ`. Use `⟨g₀, J, hg₀, hJI, ?_⟩` and prove the remaining obligations. Introduce `f hf`.
+
+Establish `hφf : ((lR ^ K * t) • Psub.mkQ) f ∈ Submodule.span R (Set.range w)`. Rewrite using `[← hNw]`. Conclude with `Submodule.mem_map_of_mem hf`. Take `⟨o, ho⟩` from `(Submodule.mem_span_range_iff_exists_fun (R := R)).mp hφf`. Use `⟨o, hsat K _ ?_ ?_⟩` and prove the remaining obligations.
+
+Apply `hIM` to reduce the goal to its premises. Conclude with `Isub.sub_mem hf (Isub.sum_mem fun i _ => Isub.smul_mem _ (hJI i))`. Establish `h0 : ((lR ^ K * t) • Psub.mkQ) (f - ∑ i, o i • J i) = 0`. Rewrite using `[map_sub, map_sum]`. Simplify using `only [map_smul, hJw]`.
+
+Rewrite using `[ho, sub_self]`. Rewrite `h0` using `[LinearMap.smul_apply, ← map_smul]`. Rewrite using `[← Submodule.Quotient.mk_eq_zero]`. Conclude with `h0`.
+-/
 theorem gen_of_killer {R V : Type*} [CommRing R] [IsDomain R] [IsPrincipalIdealRing R]
     [AddCommGroup V] [Module R V] (Msub Psub Isub : Submodule R V) (hIM : Isub ≤ Msub)
     {ι : Type*} [Finite ι] (F : ι → V) (hfg : Msub ≤ Submodule.span R (Set.range F) ⊔ Psub)

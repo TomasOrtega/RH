@@ -10,6 +10,11 @@ section SlopeTestRemainingChoices
 
 variable {Ω : Type} [Field Ω] [CharZero Ω] [IsAlgClosure ℚ Ω]
 
+/- English proof (translation)
+Establish `hM : NeZero (ordCompl[p] N)` using `⟨(Nat.ordCompl_pos p (NeZero.ne N)).ne'⟩`. Establish `h1` using `(ZMod.unitsMap (Nat.ordCompl_dvd N p)).ker.card_mul_index`. Rewrite `h1` using `[Subgroup.index_ker, MonoidHom.range_eq_top.2 (ZMod.unitsMap_surjective _), Subgroup.card_top, Nat.card_eq_fintype_card (α := (ZMod N)ˣ), Nat.card_eq_fintype_card (α := (ZMod _)ˣ), ZMod.card_units_eq_totient, ZMod.card_units_eq_totient]`. Establish `h2` using `Nat.totient_mul (coprime_ordProj_ordCompl p N)`. Rewrite `h2` using `[Nat.ordProj_mul_ordCompl_eq_self]`.
+
+Conclude with `Nat.eq_of_mul_eq_mul_right (Nat.totient_pos.2 (NeZero.pos _)) (h1.trans h2)`.
+-/
 private theorem card_ker {N : ℕ} [NeZero N] (p : ℕ) :
     Nat.card (ZMod.unitsMap (Nat.ordCompl_dvd N p)).ker = Nat.totient (ordProj[p] N) := by
   have hM : NeZero (ordCompl[p] N) := ⟨(Nat.ordCompl_pos p (NeZero.ne N)).ne'⟩
@@ -21,6 +26,9 @@ private theorem card_ker {N : ℕ} [NeZero N] (p : ℕ) :
   rw [Nat.ordProj_mul_ordCompl_eq_self] at h2
   exact Nat.eq_of_mul_eq_mul_right (Nat.totient_pos.2 (NeZero.pos _)) (h1.trans h2)
 
+/- English proof (translation)
+Introduce `hq'` and use `by obtain ⟨a, b, hab⟩ : IsCoprime (q : ℤ) (p : ℤ) := Nat.isCoprime_iff_coprime.2 ((Nat.coprime_primes hq hp).2 e) have h1 : A.valuation ((a : Ω) * (q : Ω) + (b : Ω) * (p : Ω)) < 1 := by refine Valuation.map_add_lt _ ?_ ?_ · rw [map_mul] exact lt_of_le_of_lt (mul_le_of_le_one_left …`.
+-/
 private theorem not_over {p q : ℕ} (hp : p.Prime) (hq : q.Prime) (e : q ≠ p) {A : ValuationSubring Ω}
     (hA : A.valuation (p : Ω) < 1) : ¬ A.valuation (q : Ω) < 1 := fun hq' => by
   obtain ⟨a, b, hab⟩ : IsCoprime (q : ℤ) (p : ℤ) := Nat.isCoprime_iff_coprime.2 ((Nat.coprime_primes hq hp).2 e)
@@ -34,6 +42,21 @@ private theorem not_over {p q : ℕ} (hp : p.Prime) (hq : q.Prime) (e : q ≠ p)
   rw [h2, map_one] at h1
   exact lt_irrefl _ h1
 
+/- English proof (translation)
+Take `⟨N, hN, hfix⟩` from `CF.kwAbs Ω ψ.ker hψ (Abelianization.commutator_subset_ker ψ)`. Use `haveI : NeZero N := ⟨hN.ne'⟩`. Use `haveI : NeZero (ordCompl[p] N) := ⟨(Nat.ordCompl_pos p hN.ne').ne'⟩`. Establish `hle : (Chr.cls ℚ Ω N).ker ≤ ψ.ker` using `fun g hg => hfix g fun ζ hζ => by`. Rewrite using `[Chr.cls_spec N g ζ hζ, MonoidHom.mem_ker.1 hg, Units.val_one, ZMod.val_one_eq_one_mod, ← pow_eq_pow_mod 1 hζ, pow_one]`.
+
+Use `haveI : ψ.ker.FiniteIndex := Subgroup.finiteIndex_of_le hle`. Use `haveI : Finite ψ.range := Finite.of_equiv _ (QuotientGroup.quotientKerEquivRange ψ).toEquiv`. Use `haveI : Finite ((Ine (F := ℚ) A).map ψ) := Finite.of_injective _ (Subgroup.inclusion_injective (Subgroup.map_le_range ψ _))`. Use `haveI := Fact.mk hl`. Take `⟨⟨_, g, hg, rfl⟩, hx⟩` from `exists_prime_orderOf_dvd_card' l h`.
+
+Establish `hM : ¬ A.valuation ((ordCompl[p] N : ℕ) : Ω) < 1` using `fun h' => by`. Take `⟨q, hq, hq'⟩` from `((Chr.placesQ Ω).2.1 A _ (NeZero.ne _)).1 h'`. Establish `hq1` using `Nat.prime_of_mem_primeFactors hq`. Distinguish the cases in `e : q = p`. Substitute `e` using the available equality.
+
+Conclude with `Nat.not_dvd_ordCompl hp hN.ne' (Nat.dvd_of_mem_primeFactors hq)`. Conclude with `not_over hp hq1 e hA hq'`. Establish `h1 : Chr.cls ℚ Ω N g ∈ (ZMod.unitsMap (Nat.ordCompl_dvd N p)).ker` using `(DFunLike.congr_fun ((Chr.clsFacts ℚ Ω N).2.1 _ (Nat.ordCompl_dvd N p)) g).trans ((Chr.clsFacts ℚ Ω _).2.2.2.2 A hM hg)`. Establish `h2 : Chr.cls ℚ Ω N g ^ Nat.totient (ordProj[p] N) = 1`. Rewrite using `[← card_ker p]`.
+
+Conclude with `congrArg Subtype.val (pow_card_eq_one' (x := (⟨_, h1⟩ : (ZMod.unitsMap (Nat.ordCompl_dvd N p)).ker)))`. Establish `h3 : ψ g ^ Nat.totient (ordProj[p] N) = 1`. Rewrite `h2`, the goal using `[← map_pow]`. Conclude with `hle h2`. Establish `h4 : l ∣ Nat.totient (ordProj[p] N)`.
+
+Rewrite using `[← hx]`. Conclude with `orderOf_dvd_of_pow_eq_one (Subtype.ext h3)`. Break down `Nat.eq_zero_or_pos (N.factorization p) with e | e` into its components or cases. Rewrite `h4` using `[e, pow_zero, Nat.totient_one]`. Conclude with `absurd (Nat.dvd_one.1 h4) hl.ne_one`.
+
+Rewrite `h4` using `[Nat.totient_prime_pow hp e]`. Conclude with `(hl.dvd_mul.1 h4).resolve_left fun h5 => hne ((Nat.prime_dvd_prime_iff_eq hl hp).1 (hl.dvd_of_dvd_pow h5)).symm`.
+-/
 private theorem dvd_pred {M : Type} [CommGroup M] (ψ : G ℚ Ω →* M) (hψ : IsOpen (ψ.ker : Set (G ℚ Ω))) {p l : ℕ}
     (hp : p.Prime) (hl : l.Prime) (hne : p ≠ l) {A : ValuationSubring Ω} (hA : A.valuation (p : Ω) < 1)
     (h : l ∣ Nat.card ((Ine (F := ℚ) A).map ψ)) : l ∣ p - 1 := by
@@ -79,9 +102,15 @@ private def OK {O : Type} [CommRing O] (I : Ideal O) (γ : G ℚ Ω →* Oˣ) : 
 section
 variable {O : Type} [CommRing O] {I : Ideal O} {γ δ : G ℚ Ω →* Oˣ}
 
+/- English proof (translation)
+The claim follows from `Subgroup.isOpen_mono (fun g hg => by rw [MonoidHom.mem_ker, MonoidHom.comp_apply, MonoidHom.mem_ker.1 hg, map_one]) h`.
+-/
 private theorem OK.of_ker (h : IsOpen (γ.ker : Set (G ℚ Ω))) : OK I γ :=
   Subgroup.isOpen_mono (fun g hg => by rw [MonoidHom.mem_ker, MonoidHom.comp_apply, MonoidHom.mem_ker.1 hg, map_one]) h
 
+/- English proof (translation)
+The claim follows from `Subgroup.isOpen_mono (H₁ := _ ⊓ _) (fun g hg => by have h1 := MonoidHom.mem_ker.1 hg.1 have h2 := MonoidHom.mem_ker.1 hg.2 rw [MonoidHom.comp_apply] at h1 h2 rw [MonoidHom.mem_ker, MonoidHom.comp_apply, MonoidHom.mul_apply, map_mul, h1, h2, one_mul]) (IsOpen.inter h h')`.
+-/
 private theorem OK.mul (h : OK I γ) (h' : OK I δ) : OK I (γ * δ) :=
   Subgroup.isOpen_mono (H₁ := _ ⊓ _) (fun g hg => by
     have h1 := MonoidHom.mem_ker.1 hg.1
@@ -89,25 +118,40 @@ private theorem OK.mul (h : OK I γ) (h' : OK I δ) : OK I (γ * δ) :=
     rw [MonoidHom.comp_apply] at h1 h2
     rw [MonoidHom.mem_ker, MonoidHom.comp_apply, MonoidHom.mul_apply, map_mul, h1, h2, one_mul]) (IsOpen.inter h h')
 
+/- English proof (translation)
+The claim follows from `Subgroup.isOpen_mono (fun g hg => by have h1 := MonoidHom.mem_ker.1 hg rw [MonoidHom.comp_apply] at h1 rw [MonoidHom.mem_ker, MonoidHom.comp_apply, MonoidHom.zpow_apply, map_zpow, h1, one_zpow]) h`.
+-/
 private theorem OK.zpow (h : OK I γ) (n : ℤ) : OK I (γ ^ n) :=
   Subgroup.isOpen_mono (fun g hg => by
     have h1 := MonoidHom.mem_ker.1 hg
     rw [MonoidHom.comp_apply] at h1
     rw [MonoidHom.mem_ker, MonoidHom.comp_apply, MonoidHom.zpow_apply, map_zpow, h1, one_zpow]) h
 
+/- English proof (translation)
+The claim follows from `zpow_neg_one γ ▸ h.zpow (-1)`.
+-/
 private theorem OK.inv (h : OK I γ) : OK I γ⁻¹ := zpow_neg_one γ ▸ h.zpow (-1)
 
+/- English proof (translation)
+Rewrite using `[IsLocallyConstant.iff_exists_open]`. Use `fun x => ⟨(fun y => x⁻¹ * y) ⁻¹' f.ker, h.preimage (continuous_const_mul _), by simp, fun y hy => ?_⟩` and prove the remaining obligations. Establish `h1 : f (x⁻¹ * y) = 1` using `hy`. Rewrite using `[← mul_inv_cancel_left x y, map_mul, h1, mul_one]`.
+-/
 private theorem lc_of_ker {M : Type} [Monoid M] (f : G ℚ Ω →* M) (h : IsOpen (f.ker : Set (G ℚ Ω))) : IsLocallyConstant f := by
   rw [IsLocallyConstant.iff_exists_open]
   refine fun x => ⟨(fun y => x⁻¹ * y) ⁻¹' f.ker, h.preimage (continuous_const_mul _), by simp, fun y hy => ?_⟩
   have h1 : f (x⁻¹ * y) = 1 := hy
   rw [← mul_inv_cancel_left x y, map_mul, h1, mul_one]
 
+/- English proof (translation)
+The claim follows from `(lc_of_ker _ h).comp Units.val`.
+-/
 private theorem OK.lc (h : OK I γ) : IsLocallyConstant fun g => Ideal.Quotient.mk I (γ g : O) :=
   (lc_of_ker _ h).comp Units.val
 
 end
 
+/- English proof (translation)
+Use `Subgroup.isOpen_mono (H₁ := (KStar.TotallyRealRoots.princ l n).comap (cycZ ℚ Ω l)) (fun g hg => ?_) ((KStar.TotallyRealRoots.isOpen_princ n).preimage (continuous_cycZ ℚ Ω l))` and prove the remaining obligations. Take `⟨y, hy⟩` from `KStar.TotallyRealRoots.mem_princ.1 (Subgroup.mem_comap.1 hg)`. Use `Units.ext (Ideal.Quotient.eq.2 ?_ : Ideal.Quotient.mk (I ^ n) (algebraMap ℤ_[l] O (cycZ ℚ Ω l g : ℤ_[l]ˣ)) = Ideal.Quotient.mk (I ^ n) 1)` and prove the remaining obligations. Rewrite using `[← map_one (algebraMap ℤ_[l] O), ← map_sub, hy, map_mul, map_pow, map_natCast]`. Conclude with `Ideal.mul_mem_right _ _ (Ideal.pow_mem_pow h n)`.
+-/
 private theorem OK.chi {l : ℕ} [Fact l.Prime] {O : Type} [CommRing O] [Algebra ℤ_[l] O] {I : Ideal O} (h : (l : O) ∈ I) (n : ℕ) :
     OK (I ^ n) (chiO ℚ Ω l O) := by
   refine Subgroup.isOpen_mono (H₁ := (KStar.TotallyRealRoots.princ l n).comap (cycZ ℚ Ω l)) (fun g hg => ?_)
@@ -123,19 +167,40 @@ variable {l : ℕ} [Fact l.Prime] {c : Coef l}
 private noncomputable def rd (c : Coef l) : c.Oˣ →* (ResidueField c.O)ˣ := Units.map (residue c.O).toMonoidHom
 
 omit [IsAlgClosure ℚ Ω] in
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 private theorem bar_eq (γ : G ℚ Ω →* c.Oˣ) (g : G ℚ Ω) : residue c.O (γ g : c.O) = rd c (γ g) := rfl
 
+/- English proof (translation)
+The claim follows from `(congrFacts (AlgebraicClosure ℚ) l c).2.2.2.1 x y m hm hx hy (Ideal.Quotient.eq.1 (congrArg Units.val h))`.
+-/
 private theorem eq_of_rd {x y : c.Oˣ} {m : ℕ} (hm : ¬ l ∣ m) (hx : x ^ m = 1) (hy : y ^ m = 1) (h : rd c x = rd c y) : x = y :=
   (congrFacts (AlgebraicClosure ℚ) l c).2.2.2.1 x y m hm hx hy (Ideal.Quotient.eq.1 (congrArg Units.val h))
 
 variable {D : Raw Ω c}
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 private theorem ap_al (g : G ℚ Ω) : D.al g = chiO ℚ Ω l c.O g * (D.om g)⁻¹ * D.ξ g := rfl
+/- English proof (translation)
+Rewrite using `[← zpow_natCast]`. Both sides reduce to the same expression.
+-/
 private theorem ap_Psi (g : G ℚ Ω) : D.Psi g = chiO ℚ Ω l c.O g ^ D.e * D.ψ g := by
   rw [← zpow_natCast]; rfl
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 private theorem ap_th (g : G ℚ Ω) : D.th g = D.al g * D.Psi g := rfl
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 private theorem ap_be (g : G ℚ Ω) : D.be g = D.Psi g * (D.al g)⁻¹ := rfl
 
+/- English proof (translation)
+Use `fin_cases i`. Conclude with `(ap_th g).trans (by rw [h1, h2, mul_one])`. Conclude with `h2`. Conclude with `h1`. Both sides reduce to the same expression.
+-/
 private theorem ps_one {g : G ℚ Ω} (h1 : D.al g = 1) (h2 : D.Psi g = 1) (i : Fin 4) : D.ps i g = 1 := by
   fin_cases i
   · exact (ap_th g).trans (by rw [h1, h2, mul_one])
@@ -143,6 +208,11 @@ private theorem ps_one {g : G ℚ Ω} (h1 : D.al g = 1) (h2 : D.Psi g = 1) (i : 
   · exact h1
   · rfl
 
+/- English proof (translation)
+Use `⟨fun h i => Units.ext ?_, fun h => ?_⟩` and prove the remaining obligations. Simplify `congrFun (congrFun h i) i` using `[Raw.rbar, Raw.r0, diagRep, bar_eq]`. Use extensionality with `i j`. Distinguish the cases in `e : i = j`. Substitute `e` using the available equality.
+
+Simplify `congrArg Units.val (h i)` using `[Raw.rbar, Raw.r0, diagRep, bar_eq]`. Simplify using `[Raw.rbar, Raw.r0, diagRep, e]`.
+-/
 private theorem rbar_iff {g g' : G ℚ Ω} : D.rbar g = D.rbar g' ↔ ∀ i, rd c (D.ps i g) = rd c (D.ps i g') := by
   refine ⟨fun h i => Units.ext ?_, fun h => ?_⟩
   · simpa [Raw.rbar, Raw.r0, diagRep, bar_eq] using congrFun (congrFun h i) i
@@ -152,30 +222,60 @@ private theorem rbar_iff {g g' : G ℚ Ω} : D.rbar g = D.rbar g' ↔ ∀ i, rd 
       simpa [Raw.rbar, Raw.r0, diagRep, bar_eq] using congrArg Units.val (h i)
     · simp [Raw.rbar, Raw.r0, diagRep, e]
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨h.om_pow, fun g => Ideal.Quotient.eq.1 (h.om_bar g)⟩`.
+-/
 private theorem isOm (h : D.Good) : IsOmT c D.om := ⟨h.om_pow, fun g => Ideal.Quotient.eq.1 (h.om_bar g)⟩
 
+/- English proof (translation)
+The claim follows from `Units.ext (h.om_bar g)`.
+-/
 private theorem rd_om (h : D.Good) (g : G ℚ Ω) : rd c (D.om g) = rd c (chiO ℚ Ω l c.O g) := Units.ext (h.om_bar g)
 
+/- English proof (translation)
+Rewrite using `[ap_al, map_mul, map_mul, map_inv, rd_om h, mul_inv_cancel, one_mul]`.
+-/
 private theorem rd_al (h : D.Good) (g : G ℚ Ω) : rd c (D.al g) = rd c (D.ξ g) := by
   rw [ap_al, map_mul, map_mul, map_inv, rd_om h, mul_inv_cancel, one_mul]
 
+/- English proof (translation)
+Establish `h1 : cycZ ℚ Ω l g = 1` using `(places ℚ Ω l A).2.2.2 hA hg`. Rewrite using `[chiO, MonoidHom.comp_apply, h1, map_one]`.
+-/
 private theorem chi_one {A : ValuationSubring Ω} (hA : ¬ A.valuation (l : Ω) < 1) {g : G ℚ Ω} (hg : g ∈ Ine (F := ℚ) A) :
     chiO ℚ Ω l c.O g = 1 := by
   have h1 : cycZ ℚ Ω l g = 1 := (places ℚ Ω l A).2.2.2 hA hg
   rw [chiO, MonoidHom.comp_apply, h1, map_one]
 
+/- English proof (translation)
+The claim follows from `((omT Ω l c).2 _ (isOm h)).2.2.2.2.2.1 A hA hg`.
+-/
 private theorem om_one (h : D.Good) {A : ValuationSubring Ω} (hA : ¬ A.valuation (l : Ω) < 1) {g : G ℚ Ω}
     (hg : g ∈ Ine (F := ℚ) A) : D.om g = 1 := ((omT Ω l c).2 _ (isOm h)).2.2.2.2.2.1 A hA hg
 
+/- English proof (translation)
+Rewrite using `[ap_al, ap_Psi, chi_one hA hg, om_one h hA hg]`. Simplify using the standard rewrite rules.
+-/
 private theorem al_ine (h : D.Good) {A : ValuationSubring Ω} (hA : ¬ A.valuation (l : Ω) < 1) {g : G ℚ Ω}
     (hg : g ∈ Ine (F := ℚ) A) : D.al g = D.ξ g ∧ D.Psi g = D.ψ g := by
   rw [ap_al, ap_Psi, chi_one hA hg, om_one h hA hg]
   simp
 
+/- English proof (translation)
+Take `⟨-, -, -, -, -, h0, -, hval, -⟩` from `dvrFacts l c.O`. Rewrite `h0` using `[hval, Ne, IsDiscreteValuationRing.addVal_eq_zero_iff]`. Then use the resulting hypothesis.
+-/
 private theorem l_mem_max (c : Coef l) : (l : c.O) ∈ maximalIdeal c.O := by
   obtain ⟨-, -, -, -, -, h0, -, hval, -⟩ := dvrFacts l c.O
   rwa [hval, Ne, IsDiscreteValuationRing.addVal_eq_zero_iff] at h0
 
+/- English proof (translation)
+Establish `hl : l.Prime` using `Fact.out`. Take `⟨h1, h2, h3⟩ : p ∈ D.S ∧ p ≠ l ∧ l ∣ Nat.card ((D.Ip p).map D.ψ)` from `by classical`. Simplify `hp` using `only [Raw.Sb, Finset.mem_filter]`. Establish `hpp` using `h.S_prime p h1`. Establish `hA` using `h.pl_over p hpp`.
+
+Establish `h4` using `dvd_pred D.ψ h.psi_open hpp hl h2 hA h3`. Use `⟨hpp, h2, h4, ?_⟩` and prove the remaining obligations. Take `⟨-, -, γ, -, hγ, hc⟩` from `Chr.decCyc Ω p _ hpp hA`. Use `hγ.trans (Subgroup.topologicalClosure_minimal _ (sup_le (Subgroup.zpowers_le.2 ?_) fun g hg => ?_) (Subgroup.isClosed_of_isOpen _ ((omT Ω l c).2 _ (isOm h)).2.2.2.1))` and prove the remaining obligations. Establish `hnd : ¬ l ∣ l - 1` using `fun h => by have := hl.two_le; have := Nat.le_of_dvd (by omega) h; omega`.
+
+Use `eq_of_rd hnd (DFunLike.congr_fun h.om_pow γ) (one_pow _) ((rd_om h γ).trans (Units.ext ?_))` and prove the remaining obligations. Use `(Ideal.Quotient.eq.2 ?_ : residue c.O (algebraMap ℤ_[l] c.O (cycZ ℚ Ω l γ : ℤ_[l]ˣ)) = residue c.O 1)` and prove the remaining obligations. Take `⟨k, hk⟩` from `h4`. Establish `h5 : p = l * k + 1` using `by have := hpp.pos; omega`. Rewrite using `[hc l h2.symm, map_natCast, h5]`.
+
+Use `push_cast`. Rewrite using `[add_sub_cancel_right]`. Conclude with `Ideal.mul_mem_right _ _ (l_mem_max c)`. Conclude with `om_one h (not_over hpp hl h2.symm hA) hg`.
+-/
 private theorem sb_facts (h : D.Good) {p : ℕ} (hp : p ∈ D.Sb) :
     p.Prime ∧ p ≠ l ∧ l ∣ p - 1 ∧ D.Gp p ≤ D.om.ker := by
   have hl : l.Prime := Fact.out
@@ -200,6 +300,17 @@ private theorem sb_facts (h : D.Good) {p : ℕ} (hp : p ∈ D.Sb) :
     exact Ideal.mul_mem_right _ _ (l_mem_max c)
   · exact om_one h (not_over hpp hl h2.symm hA) hg
 
+/- English proof (translation)
+Introduce `A hA g hg hr`. Establish `hl : ¬ A.valuation (l : Ω) < 1` using `hA l (Finset.mem_insert_self _ _)`. Take `⟨e1, e2⟩` from `al_ine h hl hg`. Establish `hr'` using `rbar_iff.1 (hr.trans (map_one _).symm)`. Establish `r1 : rd c (D.ψ g) = rd c 1` using `by rw [← e2, ← map_one D.Psi]; exact hr' 1`.
+
+Establish `r2 : rd c (D.ξ g) = rd c 1` using `by rw [← e1, ← map_one D.al]; exact hr' 2`. Use `ps_one (e1.trans ?_) (e2.trans ?_) i` and prove the remaining obligations. Take `⟨m, hm, hx⟩` from `h.xi_ord`. Conclude with `eq_of_rd ((Nat.Prime.coprime_iff_not_dvd Fact.out).1 hm) (DFunLike.congr_fun hx g) (one_pow _) r2`. Distinguish the cases in `hS : Raw.Away D.S A`.
+
+Conclude with `h.psi_unr A hS hg`. Choose the witnesses or unpack the hypotheses as in `⟨q, hq, hqA⟩ : ∃ q ∈ D.S, A.valuation (q : Ω) < 1 := by`. Assume the negation of the conclusion as `hn`. Conclude with `hS fun q hq hqA => hn ⟨q, hq, hqA⟩`. Establish `hqp` using `h.S_prime q hq`.
+
+Establish `hnd : ¬ l ∣ Nat.card ((D.Ip q).map D.ψ)` using `fun hd => by classical`. Use `hA q (Finset.mem_insert_of_mem ?_) hqA` and prove the remaining obligations. Simplify using `only [Raw.Sb, Finset.mem_filter]`. Conclude with `⟨hq, fun e => hl (e ▸ hqA), hd⟩`. Take `⟨u, -, hu⟩` from `(Chr.placesQ Ω).2.2 q A _ hqp hqA (h.pl_over q hqp)`.
+
+Establish `h1 : D.ψ g ∈ (D.Ip q).map D.ψ` using `⟨_, hu g hg, by rw [map_mul, map_mul, map_inv, mul_right_comm, inv_mul_cancel, one_mul]⟩`. Conclude with `eq_of_rd hnd (congrArg Subtype.val (pow_card_eq_one' (x := (⟨_, h1⟩ : (D.Ip q).map D.ψ)))) (one_pow _) r1`.
+-/
 private theorem unrT (h : D.Good) (i : Fin 4) : D.UnrT (D.ps i) 1 := by
   intro A hA g hg hr
   have hl : ¬ A.valuation (l : Ω) < 1 := hA l (Finset.mem_insert_self _ _)
@@ -225,6 +336,11 @@ private theorem unrT (h : D.Good) (i : Fin 4) : D.UnrT (D.ps i) 1 := by
       have h1 : D.ψ g ∈ (D.Ip q).map D.ψ := ⟨_, hu g hg, by rw [map_mul, map_mul, map_inv, mul_right_comm, inv_mul_cancel, one_mul]⟩
       exact eq_of_rd hnd (congrArg Subtype.val (pow_card_eq_one' (x := (⟨_, h1⟩ : (D.Ip q).map D.ψ)))) (one_pow _) r1
 
+/- English proof (translation)
+Establish `h1 : D.ψ s = 1` using `hs.1.2`. Establish `h2 : D.om s = 1` using `hs.2`. Establish `h3 : D.ξ s = 1` using `h.xi_unrT l (Finset.mem_insert_self _ _) hs.1.1`. Establish `e1 : D.al s = chiO ℚ Ω l c.O s` using `by rw [ap_al, h2, h3, inv_one, mul_one, mul_one]`. Establish `e2 : D.Psi s = chiO ℚ Ω l c.O s ^ D.e` using `by rw [ap_Psi, h1, mul_one]`.
+
+Use `fin_cases i`. Conclude with `(ap_th s).trans (by rw [e1, e2]; exact (pow_succ' _ _).symm)`. Conclude with `e2`. Conclude with `e1.trans (pow_one _).symm`. Conclude with `(pow_zero _).symm`.
+-/
 private theorem ps_wt (h : D.Good) (i : Fin 4) {s : G ℚ Ω} (hs : s ∈ D.Ip l ⊓ D.ψ.ker ⊓ D.om.ker) :
     D.ps i s = chiO ℚ Ω l c.O s ^ D.wts4 i := by
   have h1 : D.ψ s = 1 := hs.1.2
@@ -238,6 +354,11 @@ private theorem ps_wt (h : D.Good) (i : Fin 4) {s : G ℚ Ω} (hs : s ∈ D.Ip l
   · exact e1.trans (pow_one _).symm
   · exact (pow_zero _).symm
 
+/- English proof (translation)
+Establish `h1 : OK (maximalIdeal c.O ^ n) (chiO ℚ Ω l c.O)` using `OK.chi (l_mem_max c) n`. Establish `h2 : OK (maximalIdeal c.O ^ n) D.al` using `(h1.mul (OK.of_ker ((omT Ω l c).2 _ (isOm h)).2.2.2.1).inv).mul (OK.of_ker h.xi_open)`. Establish `h3 : OK (maximalIdeal c.O ^ n) D.Psi` using `(h1.zpow _).mul (OK.of_ker h.psi_open)`. Use `fin_cases i`. Conclude with `h2.mul h3`.
+
+Conclude with `h3`. Conclude with `h2`. Conclude with `OK.of_ker (by show IsOpen (((1 : G ℚ Ω →* c.Oˣ).ker : Subgroup _) : Set (G ℚ Ω))`. Rewrite using `[MonoidHom.ker_one]`. Conclude with `isOpen_univ)`.
+-/
 private theorem ps_ok (h : D.Good) (n : ℕ) (i : Fin 4) : OK (maximalIdeal c.O ^ n) (D.ps i) := by
   have h1 : OK (maximalIdeal c.O ^ n) (chiO ℚ Ω l c.O) := OK.chi (l_mem_max c) n
   have h2 : OK (maximalIdeal c.O ^ n) D.al :=
@@ -251,6 +372,11 @@ private theorem ps_ok (h : D.Good) (n : ℕ) (i : Fin 4) : OK (maximalIdeal c.O 
       show IsOpen (((1 : G ℚ Ω →* c.Oˣ).ker : Subgroup _) : Set (G ℚ Ω))
       rw [MonoidHom.ker_one]; exact isOpen_univ)
 
+/- English proof (translation)
+Establish `h1 : ∀ i, OK (maximalIdeal c.O) (D.ps i)` using `fun i => pow_one (maximalIdeal c.O) ▸ ps_ok h 1 i`. Establish `e : (D.rbar.ker : Set (G ℚ Ω)) = ⋂ i, (((rd c).comp (D.ps i)).ker : Set (G ℚ Ω))`. Use extensionality with `g`. Simplify using `only [SetLike.mem_coe, MonoidHom.mem_ker, Set.mem_iInter, MonoidHom.comp_apply]`. Rewrite using `[← map_one D.rbar, rbar_iff]`.
+
+Simplify using `only [map_one]`. Rewrite using `[e]`. Conclude with `isOpen_iInter_of_finite h1`.
+-/
 private theorem rbar_open (h : D.Good) : IsOpen (D.rbar.ker : Set (G ℚ Ω)) := by
   have h1 : ∀ i, OK (maximalIdeal c.O) (D.ps i) := fun i => pow_one (maximalIdeal c.O) ▸ ps_ok h 1 i
   have e : (D.rbar.ker : Set (G ℚ Ω)) = ⋂ i, (((rd c).comp (D.ps i)).ker : Set (G ℚ Ω)) := by
@@ -261,6 +387,13 @@ private theorem rbar_open (h : D.Good) : IsOpen (D.rbar.ker : Set (G ℚ Ω)) :=
   rw [e]
   exact isOpen_iInter_of_finite h1
 
+/- English proof (translation)
+Establish `hl : l.Prime` using `Fact.out`. Use `haveI : CharZero c.O := charZero_of_injective_algebraMap (dvrFacts l c.O).1`. Use `haveI : Finite (ResidueField c.O) := (abelian₂.dvr_finite l c.O).2.1`. Use `letI := Fintype.ofFinite (ResidueField c.O)`. Use `haveI : CharP (ResidueField c.O) l := (CharP.charP_iff_prime_eq_zero hl).2 (by`.
+
+Rewrite using `[← map_natCast (residue c.O), residue_eq_zero_iff]`. Conclude with `l_mem_max c)`. Take `⟨f, -, hf⟩` from `FiniteField.card (ResidueField c.O) l`. Establish `h1` using `h.ph_lim.eventually (((lc_of_ker _ (rbar_open h)).isOpen_fiber (D.rbar D.ph)).mem_nhds rfl)`. Take `⟨n, hn, hn'⟩` from `(h1.and (Filter.eventually_ge_atTop (f : ℕ))).exists`.
+
+Use `hn.symm.trans (rbar_iff.2 fun i => Units.ext ?_)` and prove the remaining obligations. Take `⟨k, hk⟩` from `Nat.dvd_factorial f.pos hn'`. Rewrite using `[map_pow, map_pow, Units.val_pow_eq_pow_val, hk, pow_mul, ← hf, FiniteField.pow_card_pow]`.
+-/
 private theorem rbar_ph (h : D.Good) : D.rbar D.ph = D.rbar (D.sg l) := by
   have hl : l.Prime := Fact.out
   haveI : CharZero c.O := charZero_of_injective_algebraMap (dvrFacts l c.O).1
@@ -277,6 +410,33 @@ private theorem rbar_ph (h : D.Good) : D.rbar D.ph = D.rbar (D.sg l) := by
 
 end SlopeTestRemainingChoices
 
+/- English proof (translation)
+Introduce `Ω _ _ _ l hl c D h`. Establish `hT : l ∈ D.T` using `Finset.mem_insert_self _ _`. Take `⟨-, -, -, o4, o5, -⟩` from `(omT Ω l c).2 _ (isOm h)`. Establish `hsb : ∀ p ∈ D.Sb, ∀ g ∈ D.Gp p, Raw.bar D.om g = 1` using `fun p hp g hg => by`. Establish `h1 : D.om g = 1` using `(sb_facts h hp).2.2.2 hg`.
+
+Rewrite using `[Raw.bar, h1, Units.val_one, map_one]`. Use `⟨fun p hp => ⟨(sb_facts h hp).1, (sb_facts h hp).2.1, (sb_facts h hp).2.2.1, hsb p hp⟩, fun v hv => ⟨(h.sg_frob v hv).1, ?_, fun i j hij e => ?_⟩, unrT h, fun i s hs => ps_wt h i hs, fun p hp s hs => ?_, fun i => ?_, fun i j e => ?_, ?_, ?_, rbar_ph h, fun i n => (ps_ok h n i).lc …` and prove the remaining obligations. Break down `Finset.mem_insert.1 hv with rfl | hv'` into its components or cases. Rewrite using `[h.om_bar, Raw.bar, chiO, MonoidHom.comp_apply, h.sg_cyc, map_one, Units.val_one, map_one]`. Conclude with `hsb v hv' _ (h.sg_frob v hv).1`.
+
+Establish `e' : rd c (D.ps i (D.sg v)) = rd c (D.ps j (D.sg v))` using `Units.ext e`. Establish `hD : ∀ k : ℤ, rd c (D.ξ (D.sg v)) * rd c (D.Psi (D.sg v)) ^ k ≠ 1` using `fun k hk => h.condD v hv k (by`. Rewrite `hk` using `[← map_zpow, ← map_mul]`. Conclude with `congrArg Units.val hk)`. Establish `p0 : rd c (D.ps 0 (D.sg v)) = rd c (D.ξ (D.sg v)) * rd c (D.Psi (D.sg v))`.
+
+Rewrite using `[← rd_al h, ← map_mul]`. Both sides reduce to the same expression. Establish `p1 : rd c (D.ps 1 (D.sg v)) = rd c (D.Psi (D.sg v))` using `rfl`. Establish `p2 : rd c (D.ps 2 (D.sg v)) = rd c (D.ξ (D.sg v))` using `rd_al h _`. Establish `p3 : rd c (D.ps 3 (D.sg v)) = 1` using `map_one _`.
+
+Establish `n01 : rd c (D.ps 0 (D.sg v)) ≠ rd c (D.ps 1 (D.sg v))` using `fun x => hD 0 (by`. Rewrite `x` using `[p0, p1, mul_eq_right]`. Rewrite using `[x, zpow_zero, mul_one])`. Establish `n03 : rd c (D.ps 0 (D.sg v)) ≠ rd c (D.ps 3 (D.sg v))` using `fun x => hD 1 (by`. Rewrite `x` using `[p0, p3]`.
+
+Rewrite using `[zpow_one, x])`. Establish `n21 : rd c (D.ps 2 (D.sg v)) ≠ rd c (D.ps 1 (D.sg v))` using `fun x => hD (-1) (by`. Rewrite `x` using `[p2, p1]`. Rewrite using `[x, zpow_neg_one, mul_inv_cancel])`. Establish `n23 : rd c (D.ps 2 (D.sg v)) ≠ rd c (D.ps 3 (D.sg v))` using `fun x => hD 0 (by`.
+
+Rewrite `x` using `[p2, p3]`. Rewrite using `[x, zpow_zero, mul_one])`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;> first`. Consider the case `exact hij rfl | exact n01 e' | exact n01 e'.symm | exact n03 e' | exact n03 e'.symm`. Consider the case `exact n21 e' | exact n21 e'.symm | exact n23 e' | exact n23 e'.symm`.
+
+Take `⟨hpp, hne, -⟩` from `sb_facts h hp`. Take `⟨e1, e2⟩` from `al_ine h (not_over hpp hl.out hne.symm (h.pl_over p hpp)) hs`. Establish `e3 : D.al s = 1` using `e1.trans (h.xi_unrT p (Finset.mem_insert_of_mem hp) hs)`. Conclude with `⟨e3, e2, by rw [ap_th, e3, e2, one_mul]⟩`. Use `fin_cases i`.
+
+Conclude with `mul_one _`. Conclude with `mul_comm _ _`. Both sides reduce to the same expression. Conclude with `one_mul _`. Establish `e' : D.ps i D.s0 = D.ps j D.s0` using `Units.ext e`.
+
+Rewrite `e'` using `[ps_wt h i h.decompSigma_mem, ps_wt h j h.decompSigma_mem]`. Establish `hinj : Function.Injective (Units.map (algebraMap ℤ_[l] c.O).toMonoidHom)` using `Units.map_injective (dvrFacts l c.O).1`. Establish `h1 : ¬ IsOfFinOrder (chiO ℚ Ω l c.O D.s0)` using `fun x => h.decompSigma_ord (by`. Rewrite using `[← orderOf_pos_iff, ← orderOf_injective _ hinj, orderOf_pos_iff]`. Conclude with `x)`.
+
+Establish `h2` using `injective_pow_iff_not_isOfFinOrder.2 h1 e'`. Establish `h3` using `h.two_le`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;> simp [Raw.wts4] at h2 ⊢ <;> omega`. Establish `h1 : cycZ ℚ Ω l D.cc = -1` using `IsConjOm.cyc (E := ℚ) (show IsConjOm D.cc.toRingEquiv from h.isCC)`. Establish `h2 : chiO ℚ Ω l c.O D.cc = -1`.
+
+Use `ext`. Simplify using `[chiO, h1]`. Establish `h3 : D.al D.cc = -1` using `by rw [ap_al, h2, o5 _ h.isCC h.l_odd, h.xi_odd, mul_inv_cancel, one_mul]`. Conclude with `⟨h3, by rw [ap_be, h3, h.Psi_even, one_mul, inv_neg_one], by rw [ap_th, h3, h.Psi_even, mul_one]⟩`. Conclude with `(isClosed_Dec (F := ℚ) (D.pl l)).mem_of_tendsto h.ph_lim (Filter.Eventually.of_forall fun n => pow_mem (h.sg_frob l hT).1 _)`.
+
+Take `⟨e1, e2⟩` from `al_ine h (hA l h.l_mem) hg`. Conclude with `ps_one (e1.trans (h.xi_unr A hA hg)) (e2.trans (h.psi_unr A hA hg)) i`.
+-/
 theorem UpperTheory.V.GradeZeroInterpolatingElement.facts :
     ∀ {Ω : Type} [Field Ω] [CharZero Ω] [IsAlgClosure ℚ Ω] {l : ℕ} [Fact l.Prime] {c : Coef l} (D : Raw Ω c), D.Good → (∀ p ∈ D.Sb, p.Prime ∧ p ≠ l ∧ l ∣ p - 1 ∧ ∀ g ∈ D.Gp p, Raw.bar D.om g = 1) ∧ (∀ v ∈ D.T, D.sg v ∈ D.Gp v ∧ Raw.bar D.om (D.sg v) = 1 ∧ ∀ i j, lamW i ≠ lamW j → Raw.bar (D.ps i) (D.sg v) ≠ Raw.bar (D.ps j) (D.sg v)) ∧ (∀ i, D.UnrT (D.ps i) 1) ∧ (∀ i, ∀ s ∈ D.Ip l ⊓ D.ψ.ker ⊓ D.om.ker, D.ps i s = chiO ℚ Ω l c.O s ^ D.wts4 i) ∧ (∀ p ∈ D.Sb, ∀ s ∈ D.Ip p, D.al s = 1 ∧ D.Psi s = D.ψ s ∧ D.th s = D.ψ s) ∧ (∀ i, D.ps i * D.ps i.rev = D.th) ∧ Function.Injective (fun i => (D.ps i D.s0 : c.O)) ∧ (D.al D.cc = -1 ∧ D.be D.cc = -1 ∧ D.th D.cc = -1) ∧ D.ph ∈ D.Gp l ∧ D.rbar D.ph = D.rbar (D.sg l) ∧ (∀ i, AdicCont (maximalIdeal c.O) fun g => (D.ps i g : c.O)) ∧ IsOpen (D.rbar.ker : Set (G ℚ Ω)) ∧ IsOpen (D.om.ker : Set (G ℚ Ω)) ∧ (∀ i A, Raw.Away D.S A → Ine (F := ℚ) A ≤ (D.ps i).ker) := by
   intro Ω _ _ _ l hl c D h

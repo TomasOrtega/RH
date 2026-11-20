@@ -28,10 +28,16 @@ def SuppU (ξ : (Sp k n → ℂ) →ₗ[ℂ] ℂ) (C : Set (Sp k n)) : Prop :=
 
 def orb (Z : Subalgebra k (Matrix (Fin n) (Fin n) k)) (p : Sp k n) : Set (Sp k n) := {q | ∃ g ∈ Gz Z, act g p = q}
 
+/- English proof (translation)
+Simplify using `only [act, Units.val_mul, _root_.mul_inv_rev, Prod.mk.injEq, Matrix.mulVec_mulVec]`. Conclude with `⟨by simp [mul_assoc], trivial⟩`.
+-/
 theorem act_mul (g h : GL (Fin n) k) (p : Sp k n) : act (g * h) p = act g (act h p) := by
   simp only [act, Units.val_mul, _root_.mul_inv_rev, Prod.mk.injEq, Matrix.mulVec_mulVec]
   exact ⟨by simp [mul_assoc], trivial⟩
 
+/- English proof (translation)
+Simplify using `[act]`.
+-/
 theorem act_one (p : Sp k n) : act (1 : GL (Fin n) k) p = p := by
   simp [act]
 

@@ -23,6 +23,9 @@ def bdRpToBdR : Per.BdRp l →ₐ[ℤ_[l]] Per.BdR l where
   toRingHom := algebraMap (Per.BdRp l) (Per.BdR l)
   commutes' _ := rfl
 
+/- English proof (translation)
+Rewrite using `[GlobalTheory.RingIface.aB_eq_alg l w, C.ι_j, GlobalTheory.RingIface.tower l w, C.j_cris.on0, Subalgebra.coe_algebraMap]`. Conclude with `congrArg _ (RingHom.comp_apply _ _ _).symm`.
+-/
 theorem core_ι_aB (C : GlobalTheory.MemLoc.Core l) (w : Per.Ainf l) :
     C.ι (Per.aB l w) = algebraMap (Per.BdRp l) (Per.BdR l) (GlobalTheory.MemLoc.aDp l w) := by
   rw [GlobalTheory.RingIface.aB_eq_alg l w, C.ι_j, GlobalTheory.RingIface.tower l w, C.j_cris.on0, Subalgebra.coe_algebraMap]
@@ -46,6 +49,9 @@ variable (O) in
 
 def iotaO (C : GlobalTheory.MemLoc.Core l) : OB l O →ₐ[O] OdR l O := Algebra.TensorProduct.map (AlgHom.id _ _) (iotaZ C)
 
+/- English proof (translation)
+Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => simp only [map_zero]`. Consider the case `tmul o w`. Conclude with `congrArg (fun y : Per.BdR l => o ⊗ₜ[ℤ_[l]] y) ((congrArg C.ι (GlobalTheory.RingIface.aB_eq_alg l w).symm).trans (core_ι_aB C w))`. Consider the case `add x y hx hy => simp only [map_add, hx, hy]`.
+-/
 theorem iotaO_toB (C : GlobalTheory.MemLoc.Core l) (x : OA l O) : iotaO O C (toB l O x) = dRO l O (toOD l O x) := by
   induction x using TensorProduct.induction_on with
   | zero => simp only [map_zero]

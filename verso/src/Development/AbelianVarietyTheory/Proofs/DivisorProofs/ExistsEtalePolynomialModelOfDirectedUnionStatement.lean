@@ -3,6 +3,9 @@ import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsEtalePolynomi
 import Mathlib
 open IsLocalRing Polynomial
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | (exact @GlobalTheory.EtaleDescent.exists_etale_polynomial_model_of_directed_union) | (exact GlobalTheory.EtaleDescent.exists_etale_polynomial_model_of_directed_union) | (intros; apply GlobalTheory.EtaleDescent.exists_etale_polynomial_model_of_directed_union <;> assumption …`.
+-/
 theorem _root_.GlobalTheory.T.exists_etale_polynomial_descent_of_directed_union : ∀ (T : Type) [CommRing T] (ι : Type) [Preorder ι] [IsDirected ι (· ≤ ·)] [Nonempty ι]
     (𝒜 : ι → Subring T), Monotone 𝒜 → (∀ x : T, ∃ i, x ∈ 𝒜 i) →
     ∀ (E : Type) [CommRing E] [Algebra (Polynomial T) E] [Algebra.Etale (Polynomial T) E],

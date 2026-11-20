@@ -26,11 +26,17 @@ noncomputable section
 
 namespace GlobalTheory.PackLoc
 
+/- English proof (translation)
+Substitute `h` using the available equality. Simplify using `using hE`.
+-/
 theorem isEnum_cast' {S : SPar} {n k : ℕ} (h : k = n) {lam : Fin n → ℝ} {ε : Fin n → Bool} (hE : IsEnum S lam ε) :
     IsEnum S (fun i : Fin k => lam (Fin.cast h i)) (fun i => ε (Fin.cast h i)) := by
   subst h
   simpa using hE
 
+/- English proof (translation)
+Establish `ha' : aᴴ * H * a = H` using `ha`. Establish `hb' : bᴴ * H * b = H` using `hb`. Use `show (a * b)ᴴ * H * (a * b) = H`. Rewrite using `[Matrix.conjTranspose_mul]`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem UH_mul' {n : ℕ} {H a b : Matrix (Fin n) (Fin n) ℂ} (ha : a ∈ Formalism.QuantumDeterminants.UH H) (hb : b ∈ Formalism.QuantumDeterminants.UH H) :
     a * b ∈ Formalism.QuantumDeterminants.UH H := by
   have ha' : aᴴ * H * a = H := ha
@@ -40,6 +46,9 @@ theorem UH_mul' {n : ℕ} {H a b : Matrix (Fin n) (Fin n) ℂ} (ha : a ∈ Forma
   calc bᴴ * aᴴ * H * (a * b) = bᴴ * (aᴴ * H * a) * b := by simp only [Matrix.mul_assoc]
     _ = H := by rw [ha', hb']
 
+/- English proof (translation)
+Establish `hBi : B⁻¹ * B = 1` using `Matrix.nonsing_inv_mul B ((Matrix.isUnit_iff_isUnit_det B).1 hB)`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem conj_mul' {n : ℕ} {B : Matrix (Fin n) (Fin n) ℂ} (hB : IsUnit B) (x y : Matrix (Fin n) (Fin n) ℂ) :
     B * (x * y) * B⁻¹ = B * x * B⁻¹ * (B * y * B⁻¹) := by
   have hBi : B⁻¹ * B = 1 := Matrix.nonsing_inv_mul B ((Matrix.isUnit_iff_isUnit_det B).1 hB)

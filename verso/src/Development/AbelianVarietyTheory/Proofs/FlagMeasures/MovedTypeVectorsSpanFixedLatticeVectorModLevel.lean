@@ -11,6 +11,9 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 namespace GlobalTheory.St.G.SpanMoved
 
+/- English proof (translation)
+Rewrite using `[Nat.cast_smul_eq_nsmul]`. Conclude with `nsmul_mem ht n`.
+-/
 theorem natSmul_mem (I : AutInst) (T : Submodule (IntAf I.F I.E) (VA I)) (n : ℕ) {t : VA I} (ht : t ∈ T) :
     (n : I.E ⊗[I.F] Af I.F) • t ∈ T := by
   rw [Nat.cast_smul_eq_nsmul]
@@ -37,6 +40,13 @@ def satG (I : AutInst) (g : ℕ) (T : Submodule (IntAf I.F I.E) (VA I)) :
     rw [e]
     exact T.smul_mem r hx
 
+/- English proof (translation)
+Establish `hg : (g : ℤ) • v ∈ T`. Establish `h : (g : I.E ⊗[I.F] Af I.F) • v ∈ mL I g` using `Submodule.subset_span ⟨v, hv, rfl⟩`. Rewrite `h` using `[Nat.cast_smul_eq_nsmul]`. Rewrite using `[natCast_zsmul]`. Conclude with `hT h`.
+
+Establish `hn' : (n : ℤ) • v ∈ T`. Rewrite `hnv` using `[Nat.cast_smul_eq_nsmul]`. Rewrite using `[natCast_zsmul]`. Conclude with `hnv`. Establish `key : v = Nat.gcdA n g • ((n : ℤ) • v) + Nat.gcdB n g • ((g : ℤ) • v)`.
+
+Rewrite using `[smul_smul, smul_smul, ← add_smul, mul_comm (Nat.gcdA n g), mul_comm (Nat.gcdB n g), ← Nat.gcd_eq_gcd_ab, Nat.Coprime.gcd_eq_one hn, Nat.cast_one, one_smul]`. Rewrite using `[key]`. Conclude with `add_mem (zsmul_mem hn' _) (zsmul_mem hg _)`.
+-/
 theorem mem_of_coprime_smul (I : AutInst) (g n : ℕ) (hn : Nat.Coprime n g)
     (T : Submodule (IntAf I.F I.E) (VA I)) (hT : mL I g ≤ T) {v : VA I} (hv : v ∈ I.Lf)
     (hnv : (n : I.E ⊗[I.F] Af I.F) • v ∈ T) : v ∈ T := by
@@ -56,13 +66,24 @@ theorem mem_of_coprime_smul (I : AutInst) (g n : ℕ) (hn : Nat.Coprime n g)
   rw [key]
   exact add_mem (zsmul_mem hn' _) (zsmul_mem hg _)
 
+/- English proof (translation)
+Unfold both sides. The equivalence is reflexive.
+-/
 private theorem mem_satG_iff_exists_coprime_smul_mem (I : AutInst) (g : ℕ) (T : Submodule (IntAf I.F I.E) (VA I)) (x : VA I) :
     x ∈ satG I g T ↔ ∃ N : ℕ, Nat.Coprime N g ∧ (N : I.E ⊗[I.F] Af I.F) • x ∈ T := Iff.rfl
 
+/- English proof (translation)
+The claim follows from `(mem_satG_iff_exists_coprime_smul_mem I g T x).2 ⟨1, Nat.coprime_one_left g, by rw [Nat.cast_one, one_smul]; exact hx⟩`.
+-/
 private theorem mem_satG_of_mem (I : AutInst) (g : ℕ) (T : Submodule (IntAf I.F I.E) (VA I)) {x : VA I}
     (hx : x ∈ T) : x ∈ satG I g T :=
   (mem_satG_iff_exists_coprime_smul_mem I g T x).2 ⟨1, Nat.coprime_one_left g, by rw [Nat.cast_one, one_smul]; exact hx⟩
 
+/- English proof (translation)
+Establish `h : mL I g ≤ (mL I g).comap (φ.restrictScalars (IntAf I.F I.E))` using `by conv_lhs => unfold mL`. Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨y, hy, rfl⟩`. Use `show φ ((g : I.E ⊗[I.F] Af I.F) • y) ∈ mL I g`. Rewrite using `[φ.map_smul]`.
+
+Conclude with `Submodule.subset_span ⟨φ y, hφ y hy, rfl⟩`. Conclude with `h hx`.
+-/
 private theorem map_mem_mL_of_preserves_Lf (I : AutInst) (g : ℕ) (φ : VA I →ₗ[I.E ⊗[I.F] Af I.F] VA I)
     (hφ : ∀ y ∈ I.Lf, φ y ∈ I.Lf) {x : VA I} (hx : x ∈ mL I g) : φ x ∈ mL I g := by
   have h : mL I g ≤ (mL I g).comap (φ.restrictScalars (IntAf I.F I.E)) := by
@@ -74,6 +95,11 @@ private theorem map_mem_mL_of_preserves_Lf (I : AutInst) (g : ℕ) (φ : VA I �
     exact Submodule.subset_span ⟨φ y, hφ y hy, rfl⟩
   exact h hx
 
+/- English proof (translation)
+Establish `hle : Submodule.span (IntAf I.F I.E) S ⊔ mL I g ≤ (satG I g (Submodule.span (IntAf I.F I.E) S' ⊔ mL I g)).comap (φ.restrictScalars (IntAf I.F I.E))`. Use `sup_le ?_ ?_` and prove the remaining obligations. Rewrite using `[Submodule.span_le]`. Introduce `s hs`. Conclude with `hS s hs`.
+
+Introduce `x hx`. Conclude with `mem_satG_of_mem I g _ (Submodule.mem_sup_right (map_mem_mL_of_preserves_Lf I g φ hφ hx))`. Conclude with `hle hw`.
+-/
 theorem map_mem_satG (I : AutInst) (g : ℕ)
     (φ : VA I →ₗ[I.E ⊗[I.F] Af I.F] VA I) (hφ : ∀ y ∈ I.Lf, φ y ∈ I.Lf) (S S' : Set (VA I))
     (hS : ∀ s ∈ S, φ s ∈ satG I g (Submodule.span (IntAf I.F I.E) S' ⊔ mL I g))
@@ -89,6 +115,9 @@ theorem map_mem_satG (I : AutInst) (g : ℕ)
       exact mem_satG_of_mem I g _ (Submodule.mem_sup_right (map_mem_mL_of_preserves_Lf I g φ hφ hx))
   exact hle hw
 
+/- English proof (translation)
+Take `⟨N, hN, hNd⟩` from `hd`. Use `(mem_satG_iff_exists_coprime_smul_mem I g T _).2 ⟨N, hN, ?_⟩` and prove the remaining obligations. Rewrite using `[← φ.map_smul]`. Conclude with `hT (map_mem_mL_of_preserves_Lf I g φ hφ hNd)`.
+-/
 theorem map_inAt (I : AutInst) (g : ℕ)
     (φ : VA I →ₗ[I.E ⊗[I.F] Af I.F] VA I) (hφ : ∀ y ∈ I.Lf, φ y ∈ I.Lf)
     (T : Submodule (IntAf I.F I.E) (VA I)) (hT : mL I g ≤ T) {d : VA I} (hd : InAt I g g d) :
@@ -98,6 +127,25 @@ theorem map_inAt (I : AutInst) (g : ℕ)
   rw [← φ.map_smul]
   exact hT (map_mem_mL_of_preserves_Lf I g φ hφ hNd)
 
+/- English proof (translation)
+Introduce `D X u c p hc hpL hef hzR v hv hpv`. Establish `hcg : Nat.Coprime c X.B.g`. Unfold `Nat.Coprime`. Rewrite using `[Nat.ModEq.gcd_eq hc, Nat.gcd_one_left]`. Set `V` to `X.B.I.fmat (X.xu u)`.
+
+Set `ψ : VA X.B.I →ₗ[X.B.I.E ⊗[X.B.I.F] Af X.B.I.F] VA X.B.I` to `(c : X.B.I.E ⊗[X.B.I.F] Af X.B.I.F) • (p ∘ₗ Matrix.mulVecLin V)`. Establish `hψ : ∀ y, ψ y = (c : X.B.I.E ⊗[X.B.I.F] Af X.B.I.F) • p (V *ᵥ y)` using `fun y => rfl`. Establish `hVVi : ∀ y, V *ᵥ (X.B.I.fmat (X.xu u)⁻¹ *ᵥ y) = y`. Introduce `y`. Rewrite using `[Matrix.mulVec_mulVec]`.
+
+Simplify using `[V, Formalism.MainNotions.S.AutInst.fmat, InvMemClass.coe_inv]`. Establish `hK : ∀ y, y ∈ X.B.I.Lf ↔ V *ᵥ y ∈ X.B.I.Lf` using `X.xu_K u`. Establish `hViL : ∀ y ∈ X.B.I.Lf, X.B.I.fmat (X.xu u)⁻¹ *ᵥ y ∈ X.B.I.Lf` using `fun y hy => (hK _).2 (by rw [hVVi]; exact hy)`. Establish `hψL : ∀ y ∈ X.B.I.Lf, ψ y ∈ X.B.I.Lf` using `fun y hy => by`. Rewrite using `[hψ]`.
+
+Conclude with `hpL _ ((hK y).1 hy)`. Set `S' : Set (VA X.B.I)` to `Set.range (fun i => (c : X.B.I.E ⊗[X.B.I.F] Af X.B.I.F) • p (X.B.I.fmat (X.xu u) *ᵥ X.bw i)) ∪ Set.range (fun i => (c : X.B.I.E ⊗[X.B.I.F] Af X.B.I.F) • p (X.B.I.fmat (X.xu u) *ᵥ X.bwd i))`. Set `T` to `Submodule.span (IntAf X.B.I.F X.B.I.E) S' ⊔ mL X.B.I X.B.g`. Establish `hT : mL X.B.I X.B.g ≤ T` using `le_sup_right`. Establish `hS : ∀ s ∈ Set.range X.e0 ∪ Set.range X.f0 ∪ {X.z0} ∪ Set.range X.bw ∪ Set.range X.bwd, ψ s ∈ satG X.B.I X.B.g T`.
+
+Introduce and unpack `s ((((⟨a, rfl⟩ | ⟨a, rfl⟩) | hs) | ⟨i, rfl⟩) | ⟨i, rfl⟩)`. Establish `hfix : V *ᵥ incl X.B.I (X.eR a) = incl X.B.I (X.eR a)` using `(X.xu_fix u a).1`. Establish `h0 : ψ (incl X.B.I (X.eR a)) = 0` using `by rw [hψ, hfix, (hef a).1, smul_zero]`. Establish `hd : InAt X.B.I X.B.g X.B.g (X.e0 a - incl X.B.I (X.eR a))` using `(X.basisApprox a).1`. Establish `h` using `map_inAt X.B.I X.B.g ψ hψL T hT hd`.
+
+Rewrite `h` using `[map_sub, h0, sub_zero]`. Then use the resulting hypothesis. Establish `hfix : V *ᵥ incl X.B.I (X.fR a) = incl X.B.I (X.fR a)` using `(X.xu_fix u a).2`. Establish `h0 : ψ (incl X.B.I (X.fR a)) = 0` using `by rw [hψ, hfix, (hef a).2, smul_zero]`. Establish `hd : InAt X.B.I X.B.g X.B.g (X.f0 a - incl X.B.I (X.fR a))` using `(X.basisApprox a).2`. Establish `h` using `map_inAt X.B.I X.B.g ψ hψL T hT hd`.
+
+Rewrite `h` using `[map_sub, h0, sub_zero]`. Then use the resulting hypothesis. Rewrite `hs` using `[Set.mem_singleton_iff]`. Substitute `hs` using the available equality. Establish `h0 : ψ (X.B.I.fmat (X.xu u)⁻¹ *ᵥ incl X.B.I (X.zR u)) = 0`. Rewrite using `[hψ, hVVi, hzR, smul_zero]`.
+
+Establish `hd : InAt X.B.I X.B.g X.B.g (X.B.I.fmat (X.xu u)⁻¹ *ᵥ incl X.B.I (X.zR u) - X.z0)` using `X.xu_z u`. Establish `h` using `map_inAt X.B.I X.B.g ψ hψL T hT hd`. Rewrite `h` using `[map_sub, h0, zero_sub]`. Simplify using `using neg_mem h`. Conclude with `mem_satG_of_mem X.B.I X.B.g T (Submodule.mem_sup_left (Submodule.subset_span (Or.inl ⟨i, rfl⟩)))`.
+
+Conclude with `mem_satG_of_mem X.B.I X.B.g T (Submodule.mem_sup_left (Submodule.subset_span (Or.inr ⟨i, rfl⟩)))`. Establish `hmap` using `map_mem_satG X.B.I X.B.g ψ hψL _ S' hS (X.latticeSpan _ (hViL v hv))`. Take `⟨N, hN, hNv⟩` from `(mem_satG_iff_exists_coprime_smul_mem _ _ _ _).1 hmap`. Rewrite `hNv` using `[hψ, hVVi, hpv, smul_smul, ← Nat.cast_mul]`. Conclude with `mem_of_coprime_smul X.B.I X.B.g (N * c) (Nat.Coprime.mul_left hN hcg) T hT hv hNv`.
+-/
 theorem span_moved : ∀ (D : D7) (X : HidaSetting D) (u : D.what₂.Word) (c : ℕ) (p : VA X.B.I →ₗ[X.B.I.E ⊗[X.B.I.F] Af X.B.I.F] VA X.B.I), c ≡ 1 [MOD X.B.g] → (∀ y ∈ X.B.I.Lf, (c : X.B.I.E ⊗[X.B.I.F] Af X.B.I.F) • p y ∈ X.B.I.Lf) → (∀ a, p (incl X.B.I (X.eR a)) = 0 ∧ p (incl X.B.I (X.fR a)) = 0) → p (incl X.B.I (X.zR u)) = 0 → ∀ v ∈ X.B.I.Lf, p v = v → InMod X.B.I X.B.g (Set.range (fun i => (c : X.B.I.E ⊗[X.B.I.F] Af X.B.I.F) • p (X.B.I.fmat (X.xu u) *ᵥ X.bw i)) ∪ Set.range (fun i => (c : X.B.I.E ⊗[X.B.I.F] Af X.B.I.F) • p (X.B.I.fmat (X.xu u) *ᵥ X.bwd i))) v := by
   intro D X u c p hc hpL hef hzR v hv hpv
   have hcg : Nat.Coprime c X.B.g := by

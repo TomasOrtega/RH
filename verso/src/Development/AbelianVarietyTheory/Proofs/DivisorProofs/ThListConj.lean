@@ -15,15 +15,37 @@ noncomputable section
 namespace GlobalTheory.UMin.GalConj
 open GlobalTheory.UMin.GalTh
 
+/- English proof (translation)
+The claim follows from `RingHom.ext fun _ => rfl`.
+-/
 theorem coe_mul {Ω K : Type} [Field Ω] [Field K] [Algebra Ω K] (τ₁ τ₂ : K ≃ₐ[Ω] K) :
     ((τ₁ * τ₂ : K ≃ₐ[Ω] K) : K →+* K) = (τ₁ : K →+* K).comp (τ₂ : K →+* K) := RingHom.ext fun _ => rfl
 
+/- English proof (translation)
+The claim follows from `RingHom.ext fun _ => rfl`.
+-/
 theorem coe_one {Ω K : Type} [Field Ω] [Field K] [Algebra Ω K] :
     ((1 : K ≃ₐ[Ω] K) : K →+* K) = RingHom.id K := RingHom.ext fun _ => rfl
 
+/- English proof (translation)
+The claim follows from `RingHom.ext fun r => τ.commutes r`.
+-/
 theorem comp_alg {Ω K : Type} [Field Ω] [Field K] [Algebra Ω K] (τ : K ≃ₐ[Ω] K) :
     (τ : K →+* K).comp (algebraMap Ω K) = algebraMap Ω K := RingHom.ext fun r => τ.commutes r
 
+/- English proof (translation)
+Introduce `S G _ _ L ρ hL hρ g m N Ω K _ _ _ _ x θ pt c hm hmK hpol hK`. Establish `hfix : ∀ τ : K ≃ₐ[Ω] K, spMap (τ : K →+* K) ≫ (Over.mk (spMap (algebraMap Ω K) ≫ x)).hom = (Over.mk (spMap (algebraMap Ω K) ≫ x)).hom` using `fun τ => by show spMap (τ : K →+* K) ≫ spMap (algebraMap Ω K) ≫ x = spMap (algebraMap Ω K) ≫ x`. Rewrite using `[← Category.assoc, ← GalTh.sp_comp, comp_alg]`. Set `u : (K ≃ₐ[Ω] K) → (Over.mk (spMap (algebraMap Ω K) ≫ x) ⟶ Over.mk (spMap (algebraMap Ω K) ≫ x))` to `fun τ => Over.homMk (spMap (τ : K →+* K)) (hfix τ)`. Establish `hul : ∀ τ, (u τ).left = spMap (τ : K →+* K)` using `fun τ => Over.homMk_left _ _`.
+
+Establish `hu1 : u 1 = 𝟙 _` using `Over.OverMorphism.ext (by rw [hul, coe_one, GalTh.sp_id]; rfl)`. Establish `humul : ∀ τ₁ τ₂, u (τ₁ * τ₂) = u τ₁ ≫ u τ₂` using `fun τ₁ τ₂ => Over.OverMorphism.ext (by rw [Over.comp_left, hul, hul, hul, coe_mul, GalTh.sp_comp])`. Establish `htor : ∀ τ a, (u τ ≫ pt a) ^ (m ^ 2) = 1` using `fun τ a => by`. Rewrite using `[← MonObj.comp_pow, (hK.2.1 a).1, MonObj.comp_one]`. Use `choose f hf using fun τ a => thList_exh hK (u τ ≫ pt a) (htor τ a)`.
+
+Establish `hf1 : ∀ a, f 1 a = a` using `fun a => hK.1 (by rw [← hf, hu1, Category.id_comp])`. Establish `hfmul : ∀ τ₁ τ₂ a, f (τ₁ * τ₂) a = f τ₁ (f τ₂ a)` using `fun τ₁ τ₂ a => hK.1 (by`. Rewrite using `[← hf, ← hf, ← hf, humul, Category.assoc])`. Set `P : (K ≃ₐ[Ω] K) → Equiv.Perm (Fin N)` to `fun τ => { toFun := f τ, invFun := f τ⁻¹ left_inv := fun a => by rw [← hfmul, inv_mul_cancel, hf1] right_inv := fun a => by rw [← hfmul, mul_inv_cancel, hf1] }`. Set `φ : (K ≃ₐ[Ω] K) →* Equiv.Perm (Fin N)` to `{ toFun := P map_one' := Equiv.ext fun a => hf1 a map_mul' := fun τ₁ τ₂ => Equiv.ext fun a => hfmul τ₁ τ₂ a }`.
+
+Establish `hφ : ∀ τ a, φ τ a = f τ a` using `fun _ _ => rfl`. Establish `hleft : ∀ (τ : K ≃ₐ[Ω] K) a, spMap (τ : K →+* K) ≫ (pt a).left = (pt (f τ a)).left` using `fun τ a => by`. Rewrite using `[← hf, Over.comp_left, hul]`. Use `⟨φ, fun τ a => ⟨by rw [hφ]; exact hleft τ a, ?_⟩⟩` and prove the remaining obligations. Rewrite using `[hφ]`.
+
+Take `⟨pt', hpt', h'⟩` from `GlobalTheory.UMin.ThPull.thList_pull S G L ρ hL hρ m N K K (τ : K →+* K) (spMap (algebraMap Ω K) ≫ x) (SecAt.pull G L θ (algebraMap Ω K)) pt c hK`. Take `⟨pt₃, hpt₃, h₃⟩` from `thList_comp m (algebraMap Ω K) (τ : K →+* K) (algebraMap Ω K) (comp_alg τ) x θ pt' _ h'`. Establish `e3 : pt₃ a = pt (f τ a)` using `Over.OverMorphism.ext (by rw [hpt₃, hpt', hleft])`. Establish `q` using `h₃.2.1 a`. Rewrite `q` using `[e3]`.
+
+Establish `hθ : SecM.ofSec G (SecAt.pull G L θ (algebraMap Ω K)) = @id Γ((Over.mk (spMap (algebraMap Ω K) ≫ x)).left, ⊤) (GlobalTheory.ZH.fn (1 : K)) • SecM.ofSec G (SecAt.pull G L θ (algebraMap Ω K))`. Rewrite using `[id, show GlobalTheory.ZH.fn (1 : K) = 1 from map_one _, one_smul]`. Establish `r` using `(GlobalTheory.UMin.thG_smul_iff S G L ρ hL hρ g m K (spMap (algebraMap Ω K) ≫ x) _ _ (pt (f τ a)) 1 (c (f τ a)) (τ (c a)) hm hmK hpol hθ (hK.2.1 (f τ a))).1 q`. Rewrite using `[r, _root_.one_mul]`.
+-/
 theorem thList_conj : ∀ (S : Scheme.{0}) (G : Over S) [GrpObj G] [IsCommMonObj G] (L : LB G.left) (ρ : LB.Gen (L.pull (eSec G))), L.IsLB → ρ.IsGen → ∀ (g m N : ℕ) (Ω K : Type) [Field Ω] [Field K] [IsAlgClosed K] [Algebra Ω K] (x : Sp Ω ⟶ S) (θ : SecAt G L x) (pt : Fin N → (Over.mk (spMap (algebraMap Ω K) ≫ x) ⟶ G)) (c : Fin N → K), Odd m → (m : K) ≠ 0 → PolFib G L g (spMap (algebraMap Ω K) ≫ x) → ThList G L ρ m (spMap (algebraMap Ω K) ≫ x) (SecAt.pull G L θ (algebraMap Ω K)) pt c → ∃ φ : (K ≃ₐ[Ω] K) →* Equiv.Perm (Fin N), ∀ (τ : K ≃ₐ[Ω] K) (a : Fin N), spMap (τ : K →+* K) ≫ (pt a).left = (pt (φ τ a)).left ∧ τ (c a) = c (φ τ a) := by
   intro S G _ _ L ρ hL hρ g m N Ω K _ _ _ _ x θ pt c hm hmK hpol hK
   classical

@@ -18,6 +18,11 @@ open GlobalTheory.MiTop GlobalTheory.SeeSaw GlobalTheory.Fam ValuativeRel IsLoca
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Introduce `D X h hr hzero`. Establish `hrepr : X.bas.repr (X.eX ⟨0, hr⟩) = 0`. Use extensionality with `j`. Use `congrFun hzero (Fin.cast (GlobalTheory.Core.Mi.rank_eq X h).symm j)` as an intermediate fact. Simplify `this` using `[Formalism.L2.SG.HidaSetting.HidaSetting.eR, Formalism.L2.SG.HidaSetting.HidaSetting.crd, Formalism.L2.SG.HidaSetting.crdOf]`.
+
+Establish `hx : X.eX ⟨0, hr⟩ = 0`. Simplify using `using hrepr`. Establish `hef` using `X.ef ⟨0, hr⟩ ⟨0, hr⟩`. Rewrite `hef` using `[hx]`. Simplify using `at hef`.
+-/
 theorem coord_first_isotropic_ne_zero : ∀ {D : D7} (X : Formalism.L2.SG.HidaSetting.HidaSetting D) (h : X.B.I = Formalism.L2.SG.InstExistsPf.instOf D) (hr : 1 ≤ D.R.rS), (fun i : Fin (D.sp.Y 0).rank => X.ιE (X.eR ⟨0, hr⟩ (Fin.cast (GlobalTheory.Core.Mi.rank_eq X h) i))) ≠ 0 := by
   intro D X h hr hzero
   have hrepr : X.bas.repr (X.eX ⟨0, hr⟩) = 0 := by

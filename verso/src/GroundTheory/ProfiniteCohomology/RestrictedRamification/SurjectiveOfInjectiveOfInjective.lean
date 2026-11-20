@@ -14,6 +14,9 @@ local notation "ℚ̄" => AlgebraicClosure ℚ
 
 noncomputable section
 
+/- English proof (translation)
+Establish `: Finite β` using `Finite.of_injective g hg`. Establish `hfg : Function.Injective (f ∘ g)` using `hf.comp hg`. Conclude with `fun b => by`. Take `⟨a, ha⟩` from `Finite.injective_iff_surjective.1 hfg b`. Conclude with `⟨g a, ha⟩`.
+-/
 theorem surjective_of_injective_of_injective {α β : Type*} [Finite α] {f : α → β} {g : β → α}
     (hf : Function.Injective f) (hg : Function.Injective g) : Function.Surjective f := by
   have : Finite β := Finite.of_injective g hg
@@ -39,6 +42,9 @@ def gsLoc (v : HeightOneSpectrum (𝓞 K.1)) :
   (gsLocalRes S (ιs.fin v) 2).hom.toAddMonoidHom.comp
     (cohomologyULiftIntAddEquiv (galUnits K.1 (maxUnramifiedOutside K.1 ℚ̄ S)) 2).toAddMonoidHom
 
+/- English proof (translation)
+The claim follows from `gsLocalRes_eq_zero_iff S (ιs.fin v) hv x`.
+-/
 theorem gsLoc_eq_zero_iff (v : HeightOneSpectrum (𝓞 K.1)) (hv : v ∉ S)
     (x : cohomology (galUnits K.1 (maxUnramifiedOutside K.1 ℚ̄ S)) 2) :
     gsLoc K S ιs v x = 0 ↔ gsVal K S ιs v hv x = 0 :=
@@ -51,6 +57,19 @@ variable (v : HeightOneSpectrum (𝓞 K.1)) (hv : v ∉ S)
 
 end Val
 
+/- English proof (translation)
+Set `P : C → Prop` to `fun c => ∀ j, evs j c = 0`. Establish `hPsub : ∀ c₁ c₂, P c₁ → P c₂ → P (c₁ - c₂)` using `fun c₁ c₂ h₁ h₂ j => by`. Rewrite using `[map_sub, h₁ j, h₂ j, sub_zero]`. Set `T` to `{t : L // m • t = 0}`. Use `choose X hX hX' using fun t : T => hsurj t.1 t.2`.
+
+Set `U` to `{c : C // m • c = 0 ∧ P c}`. Establish `hΦ : ∀ t : T, m • val (X t) = 0 ∧ P (val (X t))` using `fun t => ⟨by rw [← map_nsmul]; exact (hker _).1 (by rw [map_nsmul, hX t, t.2]), hP _⟩`. Set `Φ : T → U` to `fun t => ⟨val (X t), hΦ t⟩`. Establish `hΦi : Function.Injective Φ`. Introduce `t₁ t₂ h`.
+
+Establish `h1 : val (X t₁ - X t₂) = 0` using `by rw [map_sub, sub_eq_zero]; exact congrArg Subtype.val h`. Establish `h2` using `(hker _).2 h1`. Rewrite `h2` using `[map_sub, hX, hX, sub_eq_zero]`. Conclude with `Subtype.ext h2`. Establish `hΨ : ∀ c : U, m • inv.symm (ev c.1) = 0` using `fun c => by`.
+
+Apply `inv.injective` to reduce the goal to its premises. Rewrite using `[map_nsmul, inv.apply_symm_apply, ← map_nsmul, c.2.1, map_zero, map_zero]`. Set `Ψ : U → T` to `fun c => ⟨inv.symm (ev c.1), hΨ c⟩`. Establish `hΨi : Function.Injective Ψ`. Introduce `c₁ c₂ h`.
+
+Establish `h1 : ev c₁.1 = ev c₂.1` using `inv.symm.injective (congrArg Subtype.val h)`. Conclude with `Subtype.ext (sub_eq_zero.1 (hev _ (hPsub _ _ c₁.2.2 c₂.2.2) (by rw [map_sub, h1, sub_self])))`. Establish `hTfin : Finite T`. Use `hQ.to_subtype` as an intermediate fact. Conclude with `Finite.of_injective (fun t : T => (⟨inv t.1, by`.
+
+Express the relevant statement in the definitionally equal form `m • _ = 0`. Rewrite using `[← map_nsmul, t.2, map_zero]⟩ : {q : Q | m • q = 0}))`. Use `fun t₁ t₂ h => Subtype.ext (inv.injective (congrArg Subtype.val h))`. Take `⟨t, ht⟩` from `surjective_of_injective_of_injective hΦi hΨi ⟨c, hcm, hc⟩`. Conclude with `⟨X t, congrArg Subtype.val ht, hX' t⟩`.
+-/
 theorem exists_val_eq_of_counting {A L C Q : Type*} [AddCommGroup A] [AddCommGroup L] [AddCommGroup C]
     [AddCommGroup Q] (loc : A →+ L) (val : A →+ C) (hker : ∀ a, loc a = 0 ↔ val a = 0)
     {J : Type*} (evs : J → C →+ Q) (hP : ∀ a j, evs j (val a) = 0)
@@ -117,6 +136,9 @@ def evalChar {G : Type} [Group G] [TopologicalSpace G] (g : G) : (Additive G →
 set_option maxHeartbeats 2000000 in
 include hℓ hS in
 
+/- English proof (translation)
+Use `hF.elim fun gvChar hF => hF.elim fun σ hF => ?_` and prove the remaining obligations. Establish `hU1` using `hF.1`. Establish `hU2` using `hF.2`. Conclude with `exists_val_eq_of_counting (gsLoc K S ιs v) (gsVal K S ιs v hv) (gsLoc_eq_zero_iff K S ιs v hv) (J := {g // decompHomS (v.adicCompletion K.1) S (ιs.fin v) g = 1}) (fun g => (evalChar g.1).comp gvChar.toAddMonoidHom) (fun x g => hU1 _ x (ordEmbMor S (ιs.fin v) hv) g.1 g.2) ((evalCh …`.
+-/
 theorem exists_gsVal_eq (v : HeightOneSpectrum (𝓞 K.1)) (hv : v ∉ S) (hF : FrobData K S ιs v) (n : ℕ)
     {A : Rep.{0} (ULift.{0} ℤ) (galUnramifiedOutside K.1 ℚ̄ S)} [IsDiscreteRep A] (y : cohomology A 2)
     (f : Rep.res (decompHomS (v.adicCompletion K.1) S (ιs.fin v)) A ⟶
@@ -155,6 +177,13 @@ variable (K : FiniteSubfield) (S : Set (HeightOneSpectrum (𝓞 K.1))) (ℓ : �
 set_option maxHeartbeats 4000000 in
 include hℓ hS in
 
+/- English proof (translation)
+Establish `hfin` using `finite_divFunEval_ne_zero (gsDecomp K S ιs) (continuous_gsDecomp K S ιs) ℤ 2 d`. Establish `hx : ∀ u : {v : HeightOneSpectrum (𝓞 K.1) // v ∉ S}, ∃ x : cohomology (galUnits K.1 (maxUnramifiedOutside K.1 ℚ̄ S)) 2, gsVal K S ιs u.1 u.2 x = (cohomologyMapAlong (gsDecomp K S ιs u) (continuous_gsDecomp K S ιs u) (divFunEval (gsDecomp K S ιs) ℤ u) 2).hom d ∧ ∀ v' : HeightOneSp …` using `fun u => exists_gsVal_eq K S ℓ hℓ hS ιs u.1 u.2 (hF u.1 u.2) n d (divFunEval (gsDecomp K S ιs) ℤ u) ((map_nsmul _ _ _).symm.trans ((congrArg _ hd).trans (map_zero _)))`. Use `choose x hx hx' using hx`. Use `⟨∑ u ∈ hfin.toFinset, x u, sub_eq_zero.1 ?_⟩` and prove the remaining obligations. Use `eq_zero_of_divFunEval_eq_zero (gsDecomp K S ιs) (continuous_gsDecomp K S ιs) _ fun u => ?_` and prove the remaining obligations.
+
+Establish `e1 : (cohomologyMapAlong (gsDecomp K S ιs u) (continuous_gsDecomp K S ιs u) (divFunEval (gsDecomp K S ιs) ℤ u) 2).hom ((cohomologyMap (sUnitsQuotDiv K S ιs) 2).hom ((cohomologyMap (gsQuotMor K S) 2).hom (∑ u ∈ hfin.toFinset, x u))) = gsVal K S ιs u.1 u.2 (∑ u ∈ hfin.toFinset, x u …` using `divFunEval_sUnitsQuotDiv_apply K S ιs u _`. Establish `e2 : gsVal K S ιs u.1 u.2 (∑ u ∈ hfin.toFinset, x u) = (cohomologyMapAlong (gsDecomp K S ιs u) (continuous_gsDecomp K S ιs u) (divFunEval (gsDecomp K S ιs) ℤ u) 2).hom d`. Rewrite using `[map_sum]`. Establish `hne : ∀ w ∈ hfin.toFinset, w ≠ u → gsVal K S ιs u.1 u.2 (x w) = 0` using `fun w _ hw => (gsLoc_eq_zero_iff K S ιs u.1 u.2 _).1 (hx' w u.1 u.2 fun h => hw (Subtype.ext h).symm)`. Distinguish the cases in `hu : u ∈ hfin.toFinset`.
+
+Rewrite using `[Finset.sum_eq_single_of_mem u hu hne, hx u]`. Rewrite using `[Finset.sum_eq_zero fun w hw => hne w hw fun h => hu (h ▸ hw)]`. Rewrite `hu` using `[Set.Finite.mem_toFinset, Set.mem_ofPred_eq, not_not]`. Conclude with `hu.symm`. Conclude with `(map_sub _ _ _).trans (sub_eq_zero.2 (e1.trans e2))`.
+-/
 theorem exists_sUnitsQuotDiv_gsQuotMor_eq (hF : ∀ v : HeightOneSpectrum (𝓞 K.1), v ∉ S → FrobData K S ιs v)
     (d : cohomology (gsDiv K S ιs ℤ) 2) (n : ℕ) (hd : ℓ ^ n • d = 0) :
     ∃ x : cohomology (galUnits K.1 (maxUnramifiedOutside K.1 ℚ̄ S)) 2,
@@ -198,11 +227,17 @@ variable (K : FiniteSubfield) (S : Set (HeightOneSpectrum (𝓞 K.1))) (ℓ : �
 def sUnitsδ : cohomology (galUnitsModSUnits K.1 ℚ̄ S) 2 →+ cohomology (galSUnitsMax K.1 ℚ̄ S) 3 :=
   (δ (sUnitsQuotSequence_shortExact K.1 ℚ̄ S) 2 3 rfl).hom.toAddMonoidHom
 
+/- English proof (translation)
+The claim follows from `exists_δ_eq_of_cohomologyMap_f_eq_zero (sUnitsQuotSequence_shortExact K.1 ℚ̄ S) 2 3 rfl z hz`.
+-/
 theorem exists_sUnitsδ_eq (z : cohomology (galSUnitsMax K.1 ℚ̄ S) 3)
     (hz : (cohomologyMap (sUnitsToUnits S (maxUnramifiedOutside K.1 ℚ̄ S)) 3).hom z = 0) :
     ∃ p, sUnitsδ K S p = z :=
   exists_δ_eq_of_cohomologyMap_f_eq_zero (sUnitsQuotSequence_shortExact K.1 ℚ̄ S) 2 3 rfl z hz
 
+/- English proof (translation)
+The claim follows from `congrArg (fun m => ModuleCat.Hom.hom m x) (comp_δ (sUnitsQuotSequence_shortExact K.1 ℚ̄ S) 2 3 rfl)`.
+-/
 theorem sUnitsδ_gsQuotMor (x : cohomology (galUnits K.1 (maxUnramifiedOutside K.1 ℚ̄ S)) 2) :
     sUnitsδ K S ((cohomologyMap (gsQuotMor K S) 2).hom x) = 0 :=
   congrArg (fun m => ModuleCat.Hom.hom m x) (comp_δ (sUnitsQuotSequence_shortExact K.1 ℚ̄ S) 2 3 rfl)
@@ -215,6 +250,17 @@ def gsDivH2 (ιs : LocalEmbeddings K) :
 set_option maxHeartbeats 4000000 in
 include hℓ hS in
 
+/- English proof (translation)
+Establish `hf : (cohomologyMap (sUnitsToUnits S (maxUnramifiedOutside K.1 ℚ̄ S)) 3).hom z = 0` using `eq_zero_of_h3_gsUnits K S ℓ hℓ hS _ k ((map_nsmul _ _ _).symm.trans ((congrArg _ hz).trans (map_zero _)))`. Use `(exists_sUnitsδ_eq K S z hf).elim fun p hp => ?_` and prove the remaining obligations. Establish `hpk : ℓ ^ k • sUnitsδ K S p = 0` using `hp.symm ▸ hz`. Use `(exists_primary_map_eq (sUnitsδ K S) hℓ (isTorsion_cohomology _ (by norm_num) p) hpk).elim fun p' hp' => ?_` and prove the remaining obligations. Use `hp'.1.elim fun j hj => ?_` and prove the remaining obligations.
+
+Establish `hd : ℓ ^ j • (cohomologyMap (sUnitsQuotDiv K S ιs) 2).hom p' = 0` using `(map_nsmul _ _ _).symm.trans ((congrArg _ hj).trans (map_zero _))`. Use `(exists_sUnitsQuotDiv_gsQuotMor_eq K S ℓ hℓ hS ιs hF _ j hd).elim fun x hx => ?_` and prove the remaining obligations. Establish `hx2 : ℓ ^ j • gsDivH2 K S ιs x = 0`. Express the relevant statement in the definitionally equal form `ℓ ^ j • (cohomologyMap (sUnitsQuotDiv K S ιs) 2).hom ((cohomologyMap (gsQuotMor K S) 2).hom x) = 0`. Rewrite using `[hx]`.
+
+Conclude with `hd`. Use `(exists_primary_map_eq (gsDivH2 K S ιs) hℓ (isTorsion_cohomology _ (by norm_num) x) hx2).elim fun x' hx' => ?_` and prove the remaining obligations. Use `hx'.1.elim fun i hi => ?_` and prove the remaining obligations. Establish `hq : (cohomologyMap (sUnitsQuotDiv K S ιs) 2).hom (p' - (cohomologyMap (gsQuotMor K S) 2).hom x') = 0`. Rewrite using `[map_sub, sub_eq_zero]`.
+
+Conclude with `hx.symm.trans hx'.2.symm`. Establish `hqk : ℓ ^ (i + j) • (p' - (cohomologyMap (gsQuotMor K S) 2).hom x') = 0`. Establish `h1 : ℓ ^ (i + j) • p' = 0` using `by rw [pow_add, mul_smul, hj, smul_zero]`. Establish `h2 : ℓ ^ (i + j) • (cohomologyMap (gsQuotMor K S) 2).hom x' = 0`. Rewrite using `[← map_nsmul, pow_add, mul_comm, mul_smul, hi, smul_zero, map_zero]`.
+
+Rewrite using `[smul_sub, h1, h2, sub_zero]`. Establish `hq0 : p' - (cohomologyMap (gsQuotMor K S) 2).hom x' = 0` using `eq_zero_of_mem_range_δ_of_coprime (picSequence_shortExact K S ιs) 1 2 rfl (exists_δ_pic_eq K S ιs _ hq) ℓ (fun r => exists_coprime_smul_cohomology_eq_zero (picInfRep K S ιs) ℓ (exists_coprime_smul_picInfRep K S ιs ℓ hℓ hS) 1 r) (i + j) hqk`. Rewrite using `[← hp, ← hp'.2, sub_eq_zero.1 hq0]`. Conclude with `sUnitsδ_gsQuotMor K S x'`.
+-/
 theorem eq_zero_of_h3_sUnits_of_frob (ιs : LocalEmbeddings K)
     (hF : ∀ v : HeightOneSpectrum (𝓞 K.1), v ∉ S → FrobData K S ιs v)
     (z : cohomology (galSUnitsMax K.1 ℚ̄ S) 3) (k : ℕ) (hz : ℓ ^ k • z = 0) : z = 0 := by
@@ -258,12 +304,18 @@ section H3Main
 
 variable (K : FiniteSubfield) (S : Set (HeightOneSpectrum (𝓞 K.1)))
 
+/- English proof (translation)
+The claim follows from `(exists_unramifiedDegree_eq_one (K := K) (v := v)).elim fun σ hσ => ⟨gvChar _, σ, fun _ _ y f g hg => gvChar_decompHomS_eq_zero S (ιs.fin v) y f g hg, fun χ hχ h0 => eq_zero_of_decompHomS_of_unramifiedDegree S (ιs.fin v) hv χ hχ σ hσ h0⟩`.
+-/
 theorem frobData (ιs : LocalEmbeddings K) (v : HeightOneSpectrum (𝓞 K.1)) (hv : v ∉ S) :
     FrobData K S ιs v :=
   (exists_unramifiedDegree_eq_one (K := K) (v := v)).elim fun σ hσ =>
     ⟨gvChar _, σ, fun _ _ y f g hg => gvChar_decompHomS_eq_zero S (ιs.fin v) y f g hg,
       fun χ hχ h0 => eq_zero_of_decompHomS_of_unramifiedDegree S (ιs.fin v) hv χ hχ σ hσ h0⟩
 
+/- English proof (translation)
+The claim follows from `eq_zero_of_h3_sUnits_of_frob K S ℓ hℓ hS (nonempty_localEmbeddings K).some (fun v hv => frobData K S _ v hv) z k hz`.
+-/
 theorem eq_zero_of_h3_sUnits (ℓ : ℕ) (hℓ : ℓ.Prime)
     (hS : ∀ v : HeightOneSpectrum (𝓞 K.1), ((ℓ : ℕ) : 𝓞 K.1) ∈ v.asIdeal → v ∈ S)
     (z : cohomology (galSUnitsMax K.1 ℚ̄ S) 3) (k : ℕ) (hz : ℓ ^ k • z = 0) : z = 0 :=

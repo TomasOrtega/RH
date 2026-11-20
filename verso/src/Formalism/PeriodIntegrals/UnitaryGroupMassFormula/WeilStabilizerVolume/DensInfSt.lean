@@ -33,6 +33,21 @@ variable {V X Y V' X' : Type} [TopologicalSpace V] [MeasurableSpace V] [BorelSpa
   [TopologicalSpace X] [MeasurableSpace X] [BorelSpace X] [TopologicalSpace V'] [MeasurableSpace V']
   [BorelSpace V'] [TopologicalSpace X'] [MeasurableSpace X'] [BorelSpace X']
 
+/- English proof (translation)
+Introduce `φ hc hs hU`. Establish `hc' : Continuous (φ ∘ eV.symm)` using `hc.comp eV.symm.continuous`. Establish `hs' : HasCompactSupport (φ ∘ eV.symm)` using `hs.comp_homeomorph eV.symm`. Establish `hU' : tsupport (φ ∘ eV.symm) ⊆ eV '' U`. Introduce `y hy`.
+
+Establish `: eV.symm y ∈ tsupport φ`. Establish `e : tsupport (φ ∘ eV.symm) = eV.symm ⁻¹' tsupport φ`. Simplify using `using (tsupport_comp_eq_preimage φ eV.symm)`. Rewrite `hy` using `[e]`. Conclude with `hy`.
+
+Conclude with `⟨eV.symm y, hU this, by simp⟩`. Take `⟨g', hg'c, hg'⟩` from `h _ hc' hs' hU'`. Use `⟨g' ∘ eX, hg'c.comp eX.continuous, fun S hS => ?_⟩` and prove the remaining obligations. Establish `e1` using `hg' (eX '' S) (hS.image eX.continuous)`. Rewrite `e1` using `[show ((μ.map eV)) = μ.map eV.toMeasurableEquiv from rfl, show ((ν.map eX)) = ν.map eX.toMeasurableEquiv from rfl, setIntegral_map_equiv, setIntegral_map_equiv]`.
+
+Establish `p1 : (eV.toMeasurableEquiv : V → V') ⁻¹' (f' ⁻¹' (id '' (eX '' S))) = f ⁻¹' (ι '' S)`. Use extensionality with `v`. Simplify using `only [Set.mem_preimage, Set.image_id, Set.mem_image, Homeomorph.toMeasurableEquiv_coe]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨x, hx, hxe⟩`.
+
+Use `⟨x, hx, ?_⟩` and prove the remaining obligations. Rewrite using `[← hf v, ← hxe]`. Simplify using the standard rewrite rules. Introduce and unpack `⟨x, hx, hxe⟩`. Use `⟨x, hx, ?_⟩` and prove the remaining obligations.
+
+Rewrite `hxe` using `[← hf v]`. Use `hι hxe` as an intermediate fact. Rewrite using `[this]`. Simplify using the standard rewrite rules. Establish `p2 : (eX.toMeasurableEquiv : X → X') ⁻¹' (eX '' S) = S`.
+
+Use extensionality with `x`. Simplify using the standard rewrite rules. Rewrite `e1` using `[p1, p2]`. Simplify `e1` using `[Homeomorph.toMeasurableEquiv_coe]`.
+-/
 theorem densAll_transport (μ : Measure V) (ν : Measure X) (f : V → Y) (ι : X → Y) (U : Set V)
     (eV : V ≃ₜ V') (eX : X ≃ₜ X') (f' : V' → X') (hι : Function.Injective ι)
     (hf : ∀ v, ι (eX.symm (f' (eV v))) = f v)
@@ -77,11 +92,31 @@ section Local
 variable {V X Y : Type} [TopologicalSpace V] [MeasurableSpace V] [TopologicalSpace X]
   [MeasurableSpace X]
 
+/- English proof (translation)
+Introduce `φ hc hs hφ`. Conclude with `h φ hc hs (hφ.trans hU)`.
+-/
 theorem densAll_mono {μ : Measure V} {f : V → Y} {ι : X → Y} {ν : Measure X} {U U' : Set V}
     (h : DensAll μ f ι ν U') (hU : U ⊆ U') : DensAll μ f ι ν U := by
   intro φ hc hs hφ
   exact h φ hc hs (hφ.trans hU)
 
+/- English proof (translation)
+Introduce `φ hc hs hU`. Use `choose N hNo hNx hND using h`. Set `K` to `tsupport φ`. Establish `hK : IsCompact K` using `hs`. Take `⟨t, ht⟩` from `hK.elim_finite_subcover (fun x : K => N x.1 (hU x.2)) (fun x => hNo _ _) (fun x hx => Set.mem_iUnion.2 ⟨⟨x, hx⟩, hNx _ _⟩)`.
+
+Set `n` to `t.card`. Set `N' : K → Set V` to `fun x => N x.1 (hU x.2)`. Set `s : Fin n → Set V` to `fun i => N' (t.equivFin.symm i).1`. Establish `hso : ∀ i, IsOpen (s i)` using `fun i => hNo _ _`. Establish `hcov : K ⊆ ⋃ i, s i`.
+
+Introduce `x hx`. Take `⟨j, hj, hxj⟩` from `Set.mem_iUnion₂.1 (ht hx)`. Use `Set.mem_iUnion.2 ⟨t.equivFin ⟨j, hj⟩, ?_⟩` and prove the remaining obligations. Establish `e : s (t.equivFin ⟨j, hj⟩) = N' j` using `by simp only [s, Equiv.symm_apply_apply]`. Rewrite using `[e]`.
+
+Conclude with `hxj`. Take `⟨ρ, hρs, hρ1, -, hρc⟩` from `exists_continuous_sum_one_of_isOpen_isCompact hso hK hcov`. Establish `hsum : ∀ x, φ x = ∑ i, φ x * ρ i x`. Introduce `x`. Distinguish the cases in `hx : x ∈ K`.
+
+Use `hρ1 hx` as an intermediate fact. Simplify using `only [Finset.sum_apply, Pi.one_apply] at this`. Rewrite using `[← Finset.mul_sum, this, mul_one]`. Establish `: φ x = 0` using `image_eq_zero_of_notMem_tsupport hx`. Simplify using `[this]`.
+
+Establish `hi : ∀ i, ∃ g : X → ℝ, Continuous g ∧ ∀ S : Set X, IsCompact S → ∫ v in f ⁻¹' (ι '' S), φ v * ρ i v ∂μ = ∫ b in S, g b ∂ν`. Introduce `i`. Conclude with `hND _ _ (fun v => φ v * ρ i v) (hc.mul (ρ i).continuous) (hs.mul_right) ((tsupport_mul_subset_right).trans (hρs i))`. Use `choose g hgc hg using hi`. Use `⟨fun b => ∑ i, g i b, continuous_finsetSum _ fun i _ => hgc i, fun S hS => ?_⟩` and prove the remaining obligations.
+
+Establish `e1 : ∫ v in f ⁻¹' (ι '' S), φ v ∂μ = ∑ i, ∫ v in f ⁻¹' (ι '' S), φ v * ρ i v ∂μ`. Rewrite using `[← integral_finsetSum]`. Conclude with `integral_congr_ae (Filter.Eventually.of_forall fun x => hsum x)`. Introduce `i _`. Conclude with `((hc.mul (ρ i).continuous).integrable_of_hasCompactSupport hs.mul_right).integrableOn`.
+
+Rewrite using `[e1, integral_finsetSum]`. Conclude with `Finset.sum_congr rfl fun i _ => hg i S hS`. Introduce `i _`. Conclude with `(hgc i).continuousOn.integrableOn_compact hS`.
+-/
 theorem densAll_of_local [T2Space V] [LocallyCompactSpace V] [OpensMeasurableSpace V]
     [OpensMeasurableSpace X] [T2Space X] {μ : Measure V} [IsFiniteMeasureOnCompacts μ] {ν : Measure X}
     [IsFiniteMeasureOnCompacts ν] {f : V → Y} {ι : X → Y} {U : Set V}
@@ -130,6 +165,17 @@ theorem densAll_of_local [T2Space V] [LocallyCompactSpace V] [OpensMeasurableSpa
 
 end Local
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ hCM M J hJ ha hc a h1 h2 X0 hT0 hdet ψ hψ μinf hμ νinf hν`. Take `⟨n, m, eV, eH, f', hV, hH, hC, hG, hS⟩` from `hCo F E σ hCM M J hJ ha hc a h1 h2 X0 hT0 hdet`. Use `hμ.1` as an intermediate fact. Use `hν.1` as an intermediate fact. Establish `: ContinuousAdd (Fin a → Fin M → Ainf F ⊗[F] E)` using `⟨by`.
+
+Establish `e : (fun p : (Fin a → Fin M → Ainf F ⊗[F] E) × (Fin a → Fin M → Ainf F ⊗[F] E) => p.1 + p.2) = fun p => eV.symm (eV p.1 + eV p.2)`. Use function extensionality and compare the values at `p`. Rewrite using `[← hV, Homeomorph.symm_apply_apply]`. Rewrite using `[e]`. Use the proof step `fun_prop⟩`.
+
+Establish `: ContinuousAdd (HermR (Ainf F) σ a)` using `⟨by`. Establish `e : (fun p : HermR (Ainf F) σ a × HermR (Ainf F) σ a => p.1 + p.2) = fun p => eH.symm (eH p.1 + eH p.2)`. Use function extensionality and compare the values at `p`. Rewrite using `[← hH, Homeomorph.symm_apply_apply]`. Rewrite using `[e]`.
+
+Use the proof step `fun_prop⟩`. Establish `hμ' : (μinf.map eV).IsAddHaarMeasure` using `Measure.isAddHaarMeasure_map μinf (AddMonoidHom.mk' eV hV) eV.continuous eV.surjective (eV.map_cocompact).le`. Establish `hν' : (νinf.map eH).IsAddHaarMeasure` using `Measure.isAddHaarMeasure_map νinf (AddMonoidHom.mk' eH hH) eH.continuous eH.surjective (eH.map_cocompact).le`. Establish `hD` using `hSub n m _ _ hμ' hν' f' hC`. Use `densAll_transport μinf νinf (gramR (Ainf F) σ J) Subtype.val _ eV eH f' Subtype.val_injective (fun X => hG X) (densAll_mono hD ?_)` and prove the remaining obligations.
+
+Introduce and unpack `y ⟨X, hX, rfl⟩`. Conclude with `hS X hX`.
+-/
 theorem densInf_of (hSub : SubmDens) (hCo : CoordInf) : DensInf := by
   intro F E _ _ _ _ _ σ hCM M J hJ ha hc a h1 h2 X0 hT0 hdet ψ hψ μinf hμ νinf hν
   obtain ⟨n, m, eV, eH, f', hV, hH, hC, hG, hS⟩ :=

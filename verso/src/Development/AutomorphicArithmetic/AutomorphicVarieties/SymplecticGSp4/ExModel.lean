@@ -14,6 +14,11 @@ open NumberField IsDedekindDomain Formalism.ConjugateSelfDual ReciprocityTheory.
 
 namespace UpperTheory.V.GradeZeroInterpolatingElement.ExM
 
+/- English proof (translation)
+Use `⟨((LinearMap.ker p).liftQ δ fun y hy => h y hy).comp (p.quotKerEquivOfSurjective hp).symm.toLinearMap, fun y => ?_⟩` and prove the remaining obligations. Establish `: (p.quotKerEquivOfSurjective hp).symm (p y) = Submodule.Quotient.mk y`. Rewrite using `[LinearEquiv.symm_apply_eq]`. Both sides reduce to the same expression. Simplify using `only [LinearMap.comp_apply, LinearEquiv.coe_coe, this]`.
+
+Both sides reduce to the same expression.
+-/
 private theorem lin_desc {O A B M : Type} [CommRing O] [AddCommGroup A] [Module O A] [AddCommGroup B] [Module O B]
     [AddCommGroup M] [Module O M] (p : A →ₗ[O] B) (hp : Function.Surjective p) (δ : A →ₗ[O] M)
     (h : ∀ y, p y = 0 → δ y = 0) : ∃ δ' : B →ₗ[O] M, ∀ y, δ' (p y) = δ y := by
@@ -23,6 +28,11 @@ private theorem lin_desc {O A B M : Type} [CommRing O] [AddCommGroup A] [Module 
   simp only [LinearMap.comp_apply, LinearEquiv.coe_coe, this]
   rfl
 
+/- English proof (translation)
+Use `⟨(Ideal.Quotient.liftₐ (RingHom.ker p) δ fun y hy => h y hy).comp (Ideal.quotientKerAlgEquivOfSurjective hp).symm.toAlgHom, fun y => ?_⟩` and prove the remaining obligations. Establish `: (Ideal.quotientKerAlgEquivOfSurjective hp).symm (p y) = Ideal.Quotient.mk _ y`. Rewrite using `[AlgEquiv.symm_apply_eq]`. Both sides reduce to the same expression. Simplify using `only [AlgHom.comp_apply, AlgEquiv.coe_algHom]`.
+
+Use `erw [this]`. Both sides reduce to the same expression.
+-/
 private theorem alg_desc {O A B M : Type} [CommRing O] [CommRing A] [Algebra O A] [CommRing B] [Algebra O B]
     [CommRing M] [Algebra O M] (p : A →ₐ[O] B) (hp : Function.Surjective p) (δ : A →ₐ[O] M)
     (h : ∀ y, p y = 0 → δ y = 0) : ∃ δ' : B →ₐ[O] M, ∀ y, δ' (p y) = δ y := by
@@ -34,6 +44,45 @@ private theorem alg_desc {O A B M : Type} [CommRing O] [CommRing A] [Algebra O A
   erw [this]
   rfl
 
+/- English proof (translation)
+Establish `lift : ∀ j, ∀ x ∈ W.part j, ∃ y ∈ C.WP.part j, C.p y = x` using `fun j x hx => by`. Rewrite `hx` using `[C.part]`. Conclude with `hx`. Establish `op : ∀ y, W.origin h (C.p y) = C.WP.origin C.org y` using `fun y => DFunLike.congr_fun C.org_p y`. Use `choose gt hgt1 hgt2 using fun k => lift _ _ (ht k).1`.
+
+Use `choose gs hgs1 hgs2 using fun k => lift _ _ (hs k).1`. Take `⟨R, i1, i2, i3, i4, q, W', h', n', hq, hwt, hpart, ho, hq0, hqd, hsm, hn⟩` from `UpperTheory.exists_smooth_quotient_by_weighted_equations O X C.P C.WP C.org _ C.smooth κ₀ gt w₀ (fun k => ⟨hgt1 k, by rw [← op, hgt2, (ht k).2]⟩) (fun k => by`. Take `⟨δ, h1, h2, h3⟩` from `hind k`. Use `⟨δ ∘ₗ C.p.toLinearMap, fun f g => ?_, by simpa [hgt2] using h2, fun k' hk => by simpa [hgt2] using h3 k' hk⟩` and prove the remaining obligations. Use `h1 (C.p f) (C.p g)` as an intermediate fact.
+
+Simplify `this)` using `[op]`. Establish `oq : ∀ y, W'.origin h' (q y) = C.WP.origin C.org y` using `fun y => DFunLike.congr_fun ho y`. Establish `pg : ∀ u, C.p (C.g u) = 0` using `fun u => by`. Establish `: C.g u ∈ RingHom.ker C.p` using `by rw [C.ker]; exact Ideal.subset_span ⟨u, rfl⟩`. Conclude with `this`.
+
+Set `eq : κ ⊕ ι → R` to `fun k => q (Sum.elim C.g gs k)`. Establish `heq : ∀ k, eq k ∈ W'.part (Sum.elim wf w₁ k) ∧ W'.origin h' (eq k) = 0`. Introduce and unpack `(u | k)`. Conclude with `⟨by rw [hpart]; exact ⟨_, C.hg u, rfl⟩, by simp only [eq, Sum.elim_inl]; rw [oq, ← op, pg, map_zero]⟩`. Conclude with `⟨by rw [hpart]; exact ⟨_, hgs1 k, rfl⟩, by simp only [eq, Sum.elim_inr]; rw [oq, ← op, hgs2, (hs k).2]⟩`.
+
+Set `I : Ideal R` to `Ideal.span (Set.range eq)`. Establish `hI : ∀ x ∈ I, W'.origin h' x = 0` using `fun x hx => by`. Establish `: I ≤ RingHom.ker (W'.origin h')` using `Ideal.span_le.2 (by rintro _ ⟨k, rfl⟩; exact (heq k).2)`. Conclude with `this hx`. Establish `hne : I ≠ ⊤` using `fun e => by`.
+
+Use `hI 1 (e ▸ Submodule.mem_top)` as an intermediate fact. Simplify using `at this`. Use `haveI : Nontrivial (R ⧸ I) := Ideal.Quotient.nontrivial_iff.2 hne`. Set `π : R →ₐ[O] R ⧸ I` to `Ideal.Quotient.mkₐ O I`. Establish `hπ : Function.Surjective π` using `Ideal.Quotient.mkₐ_surjective O I`.
+
+Establish `hπ0 : ∀ k, π (eq k) = 0` using `fun k => Ideal.Quotient.eq_zero_iff_mem.2 (Ideal.subset_span ⟨k, rfl⟩)`. Take `⟨σ, hσ⟩` from `alg_desc C.p C.surj (π.comp q) (fun y hy => by`. Establish `h1 : y ∈ RingHom.ker C.p` using `hy`. Rewrite `h1` using `[C.ker]`. Establish `: Ideal.span (Set.range C.g) ≤ RingHom.ker (π.comp q)` using `Ideal.span_le.2 (by rintro _ ⟨k, rfl⟩; exact hπ0 (.inl k))`.
+
+Conclude with `this h1)`. Simplify using `only [AlgHom.comp_apply] at hσ`. Establish `key : ∀ y y', π (q y) = σ (C.p y') → q y - q y' ∈ I` using `fun y y' e => by`. Rewrite `e` using `[hσ]`. Conclude with `Ideal.Quotient.eq.1 e`.
+
+Use `⟨R, i1, i2, i3, i4, W', h', n', eq, R ⧸ I, inferInstance, inferInstance, co_quot O R _ π hπ, π, σ, q.comp C.iP, fun s => ?_, hsm, hn, heq, hπ, Ideal.Quotient.mkₐ_ker O I, fun x => ?_, ?_, ?_, fun k => ?_, fun k => ?_, fun j x hx => ?_, fun f x e => ?_, fun a j hj Db hDb DB hDB k1 …` and prove the remaining obligations. Take `⟨s', e⟩` from `hwt s`. Take `⟨s'', e'⟩` from `C.wts s'`. Conclude with `⟨s'', e.trans e'⟩`. Take `⟨x, rfl⟩` from `hπ x`.
+
+Take `⟨x, rfl⟩` from `hq x`. Conclude with `⟨_, hσ x⟩`. Use extensionality with `x`. Establish `: C.p (C.iP x) = i x` using `DFunLike.congr_fun C.comp x`. Simplify using `only [AlgHom.comp_apply]`.
+
+Rewrite using `[← this, hσ]`. Use extensionality with `x`. Establish `: C.p (C.iP x) = i x` using `DFunLike.congr_fun C.comp x`. Simplify using `only [AlgHom.comp_apply]`. Rewrite using `[oq, ← op, this]`.
+
+Conclude with `DFunLike.congr_fun hi x`. Rewrite using `[← hgt2, hσ, hq0, map_zero]`. Rewrite using `[← hgs2, hσ]`. Conclude with `hπ0 (.inr k)`. Take `⟨y, hy, rfl⟩` from `lift j x hx`.
+
+Conclude with `⟨q y, by rw [hpart]; exact ⟨_, hy, rfl⟩, (hσ y).symm⟩`. Take `⟨y, rfl⟩` from `hq f`. Take `⟨y', rfl⟩` from `C.surj x`. Use `hI _ (key y y' e)` as an intermediate fact. Rewrite `this` using `[map_sub, sub_eq_zero]`.
+
+Rewrite using `[this, oq, op]`. Take `⟨δ, d1, d2, d3⟩` from `C.der a j Db hDb DB hDB k1 k2 k3`. Take `⟨δ', hδ⟩` from `lin_desc q.toLinearMap hq δ (hqd δ d1 fun k => d2 _ (hj k) _ (hgt1 k))`. Simplify using `only [AlgHom.toLinearMap_apply] at hδ`. Establish `d4 : δ' ∈ PtDer (W'.origin h') O` using `fun f g => by`.
+
+Take `⟨y, rfl⟩` from `hq f`. Take `⟨y', rfl⟩` from `hq g`. Rewrite using `[← map_mul, hδ, hδ, hδ, oq, oq]`. Conclude with `d1 y y'`. Use `⟨δ', d4, fun j' hj' f hf => ?_, fun f x e => ?_⟩` and prove the remaining obligations.
+
+Rewrite `hf` using `[hpart]`. Take `⟨y, hy, rfl⟩` from `hf`. Conclude with `(hδ y).trans (d2 j' hj' y hy)`. Establish `hI' : ∀ x ∈ I, Ideal.Quotient.mk (Ideal.span {a}) (δ' x) = 0` using `fun x hx => by`. Proceed by induction on `hx using Submodule.span_induction with`.
+
+Consider the case `mem x hx`. Take `⟨u | k, rfl⟩` from `hx`. Simplify using `only [eq, Sum.elim_inl]`. Rewrite using `[hδ, d3, pg, map_zero]`. Simplify using `only [eq, Sum.elim_inr]`.
+
+Rewrite using `[hδ, d3, hgs2, k4]`. Consider the case `zero => simp`. Consider the case `add x y _ _ hx hy => rw [map_add, map_add, hx, hy, add_zero]`. Consider the case `smul b x hx' hx`. Rewrite using `[smul_eq_mul, d4 b x, hI x hx', zero_smul, add_zero, smul_eq_mul, map_mul, hx, mul_zero]`.
+
+Take `⟨y, rfl⟩` from `hq f`. Take `⟨y', rfl⟩` from `C.surj x`. Use `hI' _ (key y y' e)` as an intermediate fact. Rewrite `this` using `[map_sub, map_sub, sub_eq_zero]`. Rewrite using `[this, hδ, d3]`.
+-/
 private theorem tower {O X B U : Type} [CommRing O] [IsDomain O] [IsLocalRing O] [IsNoetherianRing O]
     [IsAdicComplete (maximalIdeal O) O] [AddCommGroup X] [DecidableEq X] [Module.Free ℤ X] [Module.Finite ℤ X]
     [CommRing B] [Algebra O B] [CommRing U] [Algebra O U] {WB : WPres O X B} {hB : WB.HasOrigin} {i : B →ₐ[O] U}
@@ -157,11 +206,30 @@ private def p4 : Fin 4 → Fin 4 × Fin 4 := ![(0, 2), (2, 0), (0, 0), (1, 1)]
 private def p2 : Fin 2 → Fin 4 × Fin 4 := ![(0, 2), (2, 0)]
 private def wp (x : Fin 4 × Fin 4) : ℤ × ℤ := wt x.1 x.2
 
+/- English proof (translation)
+Use `revert k`. Evaluate the decidable proposition.
+-/
 private theorem weight_pairs_six_distinct_weights (k : Fin 6) : lamW (p6 k).1 ≠ lamW (p6 k).2 := by revert k; decide
+/- English proof (translation)
+Use `revert k`. Evaluate the decidable proposition.
+-/
 private theorem weight_pairs_six_distinct (k : Fin 6) : (p6 k).1 ≠ (p6 k).2 := by revert k; decide
+/- English proof (translation)
+Use `revert k`. Evaluate the decidable proposition.
+-/
 private theorem weight_pairs_two_distinct (k : Fin 2) : (p2 k).1 ≠ (p2 k).2 := by revert k; decide
+/- English proof (translation)
+Use `revert k`. Evaluate the decidable proposition.
+-/
 private theorem weight_pairs_six_ne_neg_similitude (k : Fin 6) : wp (p6 k) ≠ -wPs := by revert k; decide
 
+/- English proof (translation)
+Establish `: ∀ X : M4 O, adj X = -X → X ∈ sp4 O` using `fun X h => h`. Use `fin_cases k`. Apply the tactic sequence `refine ⟨!![0,1,0,0;0,0,0,0;0,0,0,-1;0,0,0,0], this _ ?_, fun k' => by fin_cases k' <;> simp [p6]⟩`. Apply the tactic sequence `ext i j; fin_cases i <;> fin_cases j <;> simp [adj_apply, sgn, Fin.rev]`. Apply the tactic sequence `refine ⟨!![0,0,0,1;0,0,0,0;0,0,0,0;0,0,0,0], this _ ?_, fun k' => by fin_cases k' <;> simp [p6]⟩`.
+
+Apply the tactic sequence `ext i j; fin_cases i <;> fin_cases j <;> simp [adj_apply, sgn, Fin.rev]`. Apply the tactic sequence `refine ⟨!![0,0,0,0;0,0,0,0;0,1,0,0;0,0,0,0], this _ ?_, fun k' => by fin_cases k' <;> simp [p6]⟩`. Apply the tactic sequence `ext i j; fin_cases i <;> fin_cases j <;> simp [adj_apply, sgn, Fin.rev]`. Apply the tactic sequence `refine ⟨!![0,0,0,0;1,0,0,0;0,0,0,0;0,0,-1,0], this _ ?_, fun k' => by fin_cases k' <;> simp [p6]⟩`. Apply the tactic sequence `ext i j; fin_cases i <;> fin_cases j <;> simp [adj_apply, sgn, Fin.rev]`.
+
+Apply the tactic sequence `refine ⟨!![0,0,0,0;0,0,0,0;0,0,0,0;1,0,0,0], this _ ?_, fun k' => by fin_cases k' <;> simp [p6]⟩`. Apply the tactic sequence `ext i j; fin_cases i <;> fin_cases j <;> simp [adj_apply, sgn, Fin.rev]`. Apply the tactic sequence `refine ⟨!![0,0,0,0;0,0,1,0;0,0,0,0;0,0,0,0], this _ ?_, fun k' => by fin_cases k' <;> simp [p6]⟩`. Apply the tactic sequence `ext i j; fin_cases i <;> fin_cases j <;> simp [adj_apply, sgn, Fin.rev]`.
+-/
 private theorem rootVec (O : Type) [CommRing O] (k : Fin 6) :
     ∃ X ∈ sp4 O, ∀ k', X (p6 k').1 (p6 k').2 = if k' = k then 1 else 0 := by
   have : ∀ X : M4 O, adj X = -X → X ∈ sp4 O := fun X h => h
@@ -179,18 +247,42 @@ private theorem rootVec (O : Type) [CommRing O] (k : Fin 6) :
   · refine ⟨!![0,0,0,0;0,0,1,0;0,0,0,0;0,0,0,0], this _ ?_, fun k' => by fin_cases k' <;> simp [p6]⟩
     ext i j; fin_cases i <;> fin_cases j <;> simp [adj_apply, sgn, Fin.rev]
 
+/- English proof (translation)
+Apply the tactic sequence `fin_cases a <;> fin_cases b <;> first | (exfalso; revert h; decide) | simp [Xm, Matrix.single_apply]`.
+-/
 private theorem Xm_wt (O : Type) [CommRing O] (a b : Fin 4) (h : wt a b ≠ -wPs) : Xm O a b = 0 := by
   fin_cases a <;> fin_cases b <;> first | (exfalso; revert h; decide) | simp [Xm, Matrix.single_apply]
 
+/- English proof (translation)
+Rewrite using `[← Nat.card_prod]`. Conclude with `Nat.card_congr ⟨fun x => (x.1.1, ⟨x.1.2, x.2⟩), fun x => ⟨(x.1, x.2.1), x.2.2⟩, fun _ => rfl, fun _ => rfl⟩`.
+-/
 private theorem card_prod {A B : Type} (p : B → Prop) : Nat.card {k : A × B // p k.2} = Nat.card A * Nat.card {b // p b} := by
   rw [← Nat.card_prod]
   exact Nat.card_congr ⟨fun x => (x.1.1, ⟨x.1.2, x.2⟩), fun x => ⟨(x.1, x.2.1), x.2.2⟩, fun _ => rfl, fun _ => rfl⟩
 
+/- English proof (translation)
+Rewrite using `[← Nat.card_sum]`. Conclude with `Nat.card_congr Equiv.subtypeSum`.
+-/
 private theorem card_sum {A B : Type} [Finite A] [Finite B] (p : A ⊕ B → Prop) :
     Nat.card {k // p k} = Nat.card {a // p (.inl a)} + Nat.card {b // p (.inr b)} := by
   rw [← Nat.card_sum]
   exact Nat.card_congr Equiv.subtypeSum
 
+/- English proof (translation)
+Use function extensionality and compare the values at `j`. Establish `h1` using `h j`. Establish `h2` using `ha j`. Rewrite `h1` using `[Nat.card_eq_fintype_card]`. Distinguish the cases in `hj : j ∈ wts`.
+
+Establish `: ∀ j ∈ wts, (Fintype.card {k // wp (p6 k) = j} = 1 ∧ dimP j = 1 ∧ j ≠ 0 ∧ j ≠ wPs ∧ j ≠ -wPs ∧ (((j = wAl ∨ j = wBe ∨ j = wTh) ∧ dimL j = 2) ∨ (¬ (j = wAl ∨ j = wBe ∨ j = wTh) ∧ dimL j = 1))) ∨ (Fintype.card {k // wp (p6 k) = j} = 0 ∧ ¬ (j = wAl ∨ j = wBe ∨ j = wTh) ∧ ((j = wPs …` using `by decide`. Unfold `tDims`. Break down `this j hj with ⟨e1, e2, e3, e4, e5, ⟨e6, e7⟩ | ⟨e6, e7⟩⟩ | ⟨e1, e2, ⟨e3, e4, e5⟩ | ⟨e3, e4, e5, e6⟩ | ⟨e3, e4, e5, e6, e7⟩⟩` into its components or cases. Rewrite using `[if_pos e6]`. Rewrite `h1` using `[e1, e2, e7, h2 e3 e4 e5]`.
+
+Use linear arithmetic over natural numbers and integers. Rewrite using `[if_neg e6, if_neg e4, if_neg e5, if_neg e3]`. Rewrite `h1` using `[e1, e2, e7, h2 e3 e4 e5]`. Use linear arithmetic over natural numbers and integers. Rewrite using `[if_neg e2, if_pos e3, ← e3]`.
+
+Rewrite `h1` using `[e1, e4, e5]`. Use linear arithmetic over natural numbers and integers. Rewrite using `[if_neg e2, if_neg e3, if_pos e4, ← e4]`. Rewrite `h1` using `[e1, e5, e6]`. Use linear arithmetic over natural numbers and integers.
+
+Rewrite using `[if_neg e2, if_neg e3, if_neg e4, if_pos e5, ← e5]`. Rewrite `h1` using `[e1, e6, e7]`. Use linear arithmetic over natural numbers and integers. Establish `n : ∀ x ∈ wts, j ≠ x` using `fun x hx e => hj (e ▸ hx)`. Establish `e1` using `n wAl (by decide)`.
+
+Establish `e2` using `n wBe (by decide)`. Establish `e3` using `n wTh (by decide)`. Establish `e4` using `n wPs (by decide)`. Establish `e5` using `n (-wPs) (by decide)`. Establish `e6` using `n 0 (by decide)`.
+
+Simplify using `only [dimL, dimP, e1, e2, e3, e4, e6, hj, or_self, if_false, h2 e6 e4 e5] at h1`. Simplify using `only [tDims, e1, e2, e3, e4, e5, e6, or_self, if_false]`. Use linear arithmetic over natural numbers and integers.
+-/
 private theorem dims (b : ℕ) (a n' : ℤ × ℤ → ℕ) (ha : ∀ j, j ≠ 0 → j ≠ wPs → j ≠ -wPs → a j = 0)
     (h : ∀ j, n' j + (b + 1) * Nat.card {k // wp (p6 k) = j} = dimL j + b * dimP j + a j) :
     n' = tDims (1 + b + a (-wPs)) (2 + b + a wPs) (2 + 2 * b + a 0) := by
@@ -222,17 +314,28 @@ private theorem dims (b : ℕ) (a n' : ℤ × ℤ → ℕ) (ha : ∀ j, j ≠ 0 
     simp only [tDims, e1, e2, e3, e4, e5, e6, or_self, if_false]
     omega
 
+/- English proof (translation)
+Set `e` to `Finite.equivFinOfCardEq h`. Conclude with `⟨fun i => q (e.symm i).1, fun i => ⟨_, (e.symm i).2, rfl⟩, fun k hk => ⟨e ⟨k, hk⟩, by simp⟩⟩`.
+-/
 private theorem enum {ι R X : Type} [Finite ι] (q : ι → R) (w : ι → X) (j : X) (n : ℕ) (h : Nat.card {k // w k = j} = n) :
     ∃ F : Fin n → R, (∀ i, ∃ k, w k = j ∧ F i = q k) ∧ ∀ k, w k = j → q k ∈ Set.range F := by
   let e := Finite.equivFinOfCardEq h
   exact ⟨fun i => q (e.symm i).1, fun i => ⟨_, (e.symm i).2, rfl⟩, fun k hk => ⟨e ⟨k, hk⟩, by simp⟩⟩
 
+/- English proof (translation)
+Establish `h1` using `h 1 1`. Rewrite `h1` using `[one_mul, map_one x, one_smul, left_eq_add]`. Rewrite using `[Algebra.algebraMap_eq_smul_one, map_smul, h1, smul_zero]`.
+-/
 private theorem der_const {O A Q : Type} [CommRing O] [CommRing A] [Algebra O A] [AddCommGroup Q] [Module O Q]
     {x : A →ₐ[O] O} {δ : A →ₗ[O] Q} (h : δ ∈ PtDer x Q) (a : O) : δ (algebraMap O A a) = 0 := by
   have h1 := h 1 1
   rw [one_mul, map_one x, one_smul, left_eq_add] at h1
   rw [Algebra.algebraMap_eq_smul_one, map_smul, h1, smul_zero]
 
+/- English proof (translation)
+Distinguish the cases in `h : a = b`. Substitute `h` using the available equality. Rewrite using `[Matrix.one_apply_eq, (wt_eq_zero a a).2 rfl]`. Conclude with `SetLike.GradedOne.one_mem`. Rewrite using `[Matrix.one_apply_ne h]`.
+
+Conclude with `zero_mem _`.
+-/
 private theorem one_mem_part {O A : Type} [CommRing O] [CommRing A] [Algebra O A] (W : WPres O (ℤ × ℤ) A) (a b : Fin 4) :
     (1 : M4 A) a b ∈ W.part (wt a b) := by
   by_cases h : a = b
@@ -242,10 +345,16 @@ private theorem one_mem_part {O A : Type} [CommRing O] [CommRing A] [Algebra O A
   · rw [Matrix.one_apply_ne h]
     exact zero_mem _
 
+/- English proof (translation)
+Apply the tactic sequence `by_cases h : a = b <;> simp [Matrix.one_apply, h]`.
+-/
 private theorem one_entry (O A : Type) [CommRing O] [CommRing A] [Algebra O A] (a b : Fin 4) :
     (1 : M4 A) a b = algebraMap O A ((1 : M4 O) a b) := by
   by_cases h : a = b <;> simp [Matrix.one_apply, h]
 
+/- English proof (translation)
+Simplify using `only [Nat.card_eq_fintype_card]`. Evaluate the decidable proposition.
+-/
 private theorem cnt : Nat.card {k // wp (p4 k) = -wPs} = 1 ∧ Nat.card {k // wp (p4 k) = wPs} = 1 ∧
     Nat.card {k // wp (p4 k) = 0} = 2 ∧ Nat.card {k // wp (p2 k) = -wPs} = 1 ∧ Nat.card {k // wp (p2 k) = wPs} = 1 ∧
     Nat.card {k // wp (p2 k) = 0} = 0 ∧ (∀ k, wp (p4 k) = -wPs ∨ wp (p4 k) = wPs ∨ wp (p4 k) = 0) ∧
@@ -258,6 +367,9 @@ section
 variable {Ω : Type} [Field Ω] [CharZero Ω] [IsAlgClosure ℚ Ω] {l : ℕ} [Fact l.Prime] {c : Coef l} {D : Raw Ω c}
   {L : LocBase D} (F : Fr D L)
 
+/- English proof (translation)
+The claim follows from `Matrix.diagonal_apply_ne _ h`.
+-/
 private theorem diagonal_rep_off_diagonal_zero (g : G ℚ Ω) {a b : Fin 4} (h : a ≠ b) : D.r0 g a b = 0 := Matrix.diagonal_apply_ne _ h
 
 private noncomputable def tOdd (k : D.T × Fin 6) : F.U :=
@@ -269,19 +381,33 @@ private noncomputable def sEq : (D.Sb × Fin 4) ⊕ Fin 2 → F.U
 
 private def wEq (D : Raw Ω c) : (D.Sb × Fin 4) ⊕ Fin 2 → ℤ × ℤ := Sum.elim (fun k => wp (p4 k.2)) fun k => wp (p2 k)
 
+/- English proof (translation)
+The claim follows from `congrFun (congrFun (F.at0α v) a) b`.
+-/
 private theorem at0a (v : D.T) (a b : Fin 4) : F.W.origin F.org (F.α v a b) = (1 : M4 c.O) a b :=
   congrFun (congrFun (F.at0α v) a) b
 
+/- English proof (translation)
+Unfold `tOdd`. Use `split_ifs`. Conclude with `⟨F.homr _ _ _, (F.at0r _ _ _).trans (diagonal_rep_off_diagonal_zero _ (weight_pairs_six_distinct _))⟩`. Conclude with `⟨F.homα _ _ _, (at0a F _ _ _).trans (Matrix.one_apply_ne (weight_pairs_six_distinct _))⟩`.
+-/
 private theorem tOdd_mem (k : D.T × Fin 6) : tOdd F k ∈ F.W.part (wp (p6 k.2)) ∧ F.W.origin F.org (tOdd F k) = 0 := by
   unfold tOdd
   split_ifs
   · exact ⟨F.homr _ _ _, (F.at0r _ _ _).trans (diagonal_rep_off_diagonal_zero _ (weight_pairs_six_distinct _))⟩
   · exact ⟨F.homα _ _ _, (at0a F _ _ _).trans (Matrix.one_apply_ne (weight_pairs_six_distinct _))⟩
 
+/- English proof (translation)
+Rewrite using `[Algebra.smul_def]`. Both sides reduce to the same expression.
+-/
 private theorem hEl_apply {R : Type} [CommRing R] [Algebra c.O R] (r : G ℚ Ω →* M4 R) (a b : Fin 4) :
     D.hEl r a b = r D.g0 a b + (D.th D.g0 : c.O) • r D.g0⁻¹ a b := by
   rw [Algebra.smul_def]; rfl
 
+/- English proof (translation)
+Break down `k with k | k` into its components or cases. Use `⟨sub_mem (F.homα _ _ _) (one_mem_part F.W _ _), ?_⟩` and prove the remaining obligations. Simplify using `only [sEq, Matrix.sub_apply]`. Apply the tactic sequence `rw [map_sub, at0a, one_entry c.O F.U, AlgHom.commutes]`. Conclude with `sub_self _`.
+
+Simplify using `only [sEq, hEl_apply]`. Use `⟨add_mem (F.homr _ _ _) (Submodule.smul_mem _ _ (F.homr _ _ _)), ?_⟩` and prove the remaining obligations. Rewrite using `[map_add, map_smul, F.at0r, F.at0r, diagonal_rep_off_diagonal_zero _ (weight_pairs_two_distinct _), diagonal_rep_off_diagonal_zero _ (weight_pairs_two_distinct _), smul_zero, add_zero]`.
+-/
 private theorem sEq_mem (k) : sEq F k ∈ F.W.part (wEq D k) ∧ F.W.origin F.org (sEq F k) = 0 := by
   rcases k with k | k
   · refine ⟨sub_mem (F.homα _ _ _) (one_mem_part F.W _ _), ?_⟩
@@ -292,6 +418,11 @@ private theorem sEq_mem (k) : sEq F k ∈ F.W.part (wEq D k) ∧ F.W.origin F.or
     refine ⟨add_mem (F.homr _ _ _) (Submodule.smul_mem _ _ (F.homr _ _ _)), ?_⟩
     rw [map_add, map_smul, F.at0r, F.at0r, diagonal_rep_off_diagonal_zero _ (weight_pairs_two_distinct _), diagonal_rep_off_diagonal_zero _ (weight_pairs_two_distinct _), smul_zero, add_zero]
 
+/- English proof (translation)
+Take `⟨-, h2, -, -, -, -, -, -, -, h3, -⟩` from `facts D hD`. Establish `e : ∀ i, Raw.bar (D.ps i) D.ph = Raw.bar (D.ps i) (D.sg l)` using `fun i => by`. Use `congrFun (congrFun h3 i) i` as an intermediate fact. Simplify `this` using `[Raw.rbar, Raw.r0, diagRep]`. Introduce `h`.
+
+Apply `(h2 l D.residueChar_mem_levelPrimes).2.2 _ _ (weight_pairs_six_distinct_weights k)` to reduce the goal to its premises. Rewrite using `[← e, ← e, Raw.bar, Raw.bar, sub_eq_zero.1 h]`.
+-/
 private theorem ph_ne (hD : D.Good) (k : Fin 6) : (D.ps (p6 k).2 D.ph : c.O) - (D.ps (p6 k).1 D.ph : c.O) ≠ 0 := by
   obtain ⟨-, h2, -, -, -, -, -, -, -, h3, -⟩ := facts D hD
   have e : ∀ i, Raw.bar (D.ps i) D.ph = Raw.bar (D.ps i) (D.sg l) := fun i => by
@@ -301,6 +432,23 @@ private theorem ph_ne (hD : D.Good) (k : Fin 6) : (D.ps (p6 k).2 D.ph : c.O) - (
   apply (h2 l D.residueChar_mem_levelPrimes).2.2 _ _ (weight_pairs_six_distinct_weights k)
   rw [← e, ← e, Raw.bar, Raw.bar, sub_eq_zero.1 h]
 
+/- English proof (translation)
+Take `⟨v, k⟩` from `k`. Take `⟨X, hX, hk⟩` from `rootVec c.O k`. Distinguish the cases in `hv : v = ⟨l, D.residueChar_mem_levelPrimes⟩`. Take `⟨δ, d1, d2, d3⟩` from `UpperTheory.exists_pointDerivation_framed_commutator_tangent D hD L F X hX 0 (fun _ => zero_mem _) rfl`. Establish `e : ∀ k', δ (F.r.hom D.ph (p6 k').1 (p6 k').2) = (if k' = k then 1 else 0) * ((D.ps (p6 k').2 D.ph : c.O) - (D.ps (p6 k').1 D.ph : c.O))` using `fun k' => by`.
+
+Rewrite using `[d2, ← hk]`. Simplify using `only [Raw.r0, diagRep, MonoidHom.coe_mk, OneHom.coe_mk, Matrix.sub_apply, Matrix.mul_diagonal, Matrix.diagonal_mul]`. Expand and normalize the polynomial expressions, which then agree. Use `⟨δ, d1, ?_, ?_⟩` and prove the remaining obligations. Simplify using `only [tOdd, if_pos hv]`.
+
+Rewrite using `[e, if_pos rfl, one_mul]`. Conclude with `ph_ne hD k`. Introduce and unpack `⟨v', k'⟩ hne`. Unfold `tOdd`. Use `split_ifs with h`.
+
+Rewrite using `[e, if_neg, zero_mul]`. Introduce and unpack `rfl`. Conclude with `hne (Prod.ext (h.trans hv.symm) rfl)`. Rewrite using `[d3]`. Both sides reduce to the same expression.
+
+Take `⟨δ, d1, d2, d3⟩` from `UpperTheory.exists_pointDerivation_framed_commutator_tangent D hD L F 0 (zero_mem _) (fun v' => if v' = v then X else 0) (fun v' => by split_ifs; exacts [hX, zero_mem _]) (if_neg (Ne.symm hv))`. Use `⟨δ, d1, ?_, ?_⟩` and prove the remaining obligations. Simplify using `only [tOdd, if_neg hv]`. Rewrite using `[d3, if_pos rfl, hk, if_pos rfl]`. Conclude with `one_ne_zero`.
+
+Introduce and unpack `⟨v', k'⟩ hne`. Unfold `tOdd`. Use `split_ifs with h`. Rewrite using `[d2, zero_mul, mul_zero, sub_zero]`. Both sides reduce to the same expression.
+
+Rewrite using `[d3]`. Distinguish the cases in `h' : v' = v`. Rewrite using `[if_pos h', hk, if_neg]`. Introduce and unpack `rfl`. Conclude with `hne (Prod.ext h' rfl)`.
+
+Rewrite using `[if_neg h']`. Both sides reduce to the same expression.
+-/
 private theorem tOdd_ind (hD : D.Good) (k : D.T × Fin 6) :
     ∃ δ ∈ PtDer (F.W.origin F.org) c.O, δ (tOdd F k) ≠ 0 ∧ ∀ k', k' ≠ k → δ (tOdd F k') = 0 := by
   classical
@@ -343,10 +491,22 @@ private theorem tOdd_ind (hD : D.Good) (k : D.T × Fin 6) :
 
 variable {S : Type} [CommRing S] [Algebra c.O S] [IsCO c.O S] (σ : F.U →ₐ[c.O] S)
 
+/- English proof (translation)
+The claim follows from `(res_eq_zero_iff c.O S _).1 ((h a b).trans (hm a b hab))`.
+-/
 private theorem off_mem {n : M4 S} {m : M4 (ResidueField c.O)} (h : ∀ a b, res c.O S (n a b) = m a b)
     (hm : ∀ a b, a ≠ b → m a b = 0) (a b : Fin 4) (hab : a ≠ b) : n a b ∈ maximalIdeal S :=
   (res_eq_zero_iff c.O S _).1 ((h a b).trans (hm a b hab))
 
+/- English proof (translation)
+Distinguish the cases in `hv : v = ⟨l, D.residueChar_mem_levelPrimes⟩`. Rewrite using `[hv, F.fr.atL]`. Conclude with `Matrix.map_one _ (map_zero _) (map_one _)`. Take `⟨p, hp⟩` from `v`. Establish `hp' : p ∈ D.Sb` using `(Finset.mem_insert.1 hp).resolve_left fun e => hv (Subtype.ext e)`.
+
+Establish `h1` using `Ex.isGSp_map (σ : F.U →+* S) (F.fr.sp ⟨p, hp⟩).1`. Rewrite `h1` using `[map_one]`. Establish `t : ∀ k, σ (F.α ⟨p, hp⟩ (p6 k).1 (p6 k).2) = 0` using `fun k => by`. Use `ht (⟨p, hp⟩, k)` as an intermediate fact. Simplify `this` using `only [tOdd, if_neg hv]`.
+
+Establish `s : ∀ k, σ (F.α ⟨p, hp⟩ (p4 k).1 (p4 k).2) = (1 : M4 S) (p4 k).1 (p4 k).2` using `fun k => by`. Use `hs (.inl (⟨p, hp'⟩, k))` as an intermediate fact. Simplify using `only [sEq, Matrix.sub_apply] at this`. Apply the tactic sequence `rw [map_sub, sub_eq_zero, one_entry c.O F.U, AlgHom.commutes, ← one_entry] at this`. Conclude with `this`.
+
+Use `(sixBlock S 1 _ isUnit_one h1 (off_mem (c := c) (m := 1) (fun a b => ?_) fun a b => Matrix.one_apply_ne) (t 0) (t 1) (t 2) (t 3) (t 4) (t 5)).2 rfl (s 0) (s 1) (s 2) (s 3)` and prove the remaining obligations. Conclude with `(res_map σ _).trans (congrFun (congrFun (F.fr.sp ⟨p, hp⟩).2 a) b)`.
+-/
 private theorem al_one (ht : ∀ k, σ (tOdd F k) = 0) (hs : ∀ k, σ (sEq F k) = 0) (v : D.T) : (F.α v).map σ = 1 := by
   by_cases hv : v = ⟨l, D.residueChar_mem_levelPrimes⟩
   · rw [hv, F.fr.atL]
@@ -367,6 +527,13 @@ private theorem al_one (ht : ∀ k, σ (tOdd F k) = 0) (hs : ∀ k, σ (sEq F k)
       (t 0) (t 1) (t 2) (t 3) (t 4) (t 5)).2 rfl (s 0) (s 1) (s 2) (s 3)
     exact (res_map σ _).trans (congrFun (congrFun (F.fr.sp ⟨p, hp⟩).2 a) b)
 
+/- English proof (translation)
+Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Establish `t : ∀ k, σ (F.r.hom D.ph (p6 k).1 (p6 k).2) = 0` using `fun k => by`. Use `ht (⟨l, D.residueChar_mem_levelPrimes⟩, k)` as an intermediate fact. Simplify `this` using `only [tOdd, if_pos]`. Use `(sixBlock S _ _ ((D.th D.ph).isUnit.map _) (Ex.mult_map D σ F.r F.fr.mult D.ph) (off_mem (c := c) ((F.r.map σ).red D.ph) fun a b h => ?_) (t 0) (t 1) (t 2) (t 3) (t 4) (t 5)).1` and prove the remaining obligations.
+
+Use `show residue c.O (D.r0 D.ph a b) = 0`. Rewrite using `[diagonal_rep_off_diagonal_zero _ h, map_zero]`. Rewrite using `[Ex.hEl_map]`. Conclude with `hs (.inr 0)`. Rewrite using `[Ex.hEl_map]`.
+
+Conclude with `hs (.inr 1)`.
+-/
 private theorem nrm (ht : ∀ k, σ (tOdd F k) = 0) (hs : ∀ k, σ (sEq F k) = 0) : D.Nrm (F.r.map σ).hom := by
   refine ⟨?_, ?_, ?_⟩
   · have t : ∀ k, σ (F.r.hom D.ph (p6 k).1 (p6 k).2) = 0 := fun k => by
@@ -379,6 +546,9 @@ private theorem nrm (ht : ∀ k, σ (tOdd F k) = 0) (hs : ∀ k, σ (sEq F k) = 
   · rw [Ex.hEl_map]; exact hs (.inr 0)
   · rw [Ex.hEl_map]; exact hs (.inr 1)
 
+/- English proof (translation)
+Use `Lift.ext (MonoidHom.ext fun g => ?_)` and prove the remaining obligations. Establish `h` using `congrArg (σ : F.U →+* S).mapMatrix (F.fr.loc v g)`. Establish `h1 : (σ : F.U →+* S).mapMatrix (F.α v) = 1` using `hα v`. Rewrite `h` using `[map_mul, map_mul, h1, mul_one, one_mul]`. Conclude with `h.symm`.
+-/
 private theorem loc_eq (hα : ∀ v, (F.α v).map σ = 1) (v : D.T) : (L.ρ v).map (σ.comp F.i) = D.loc (F.r.map σ) v := by
   refine Lift.ext (MonoidHom.ext fun g => ?_)
   have h := congrArg (σ : F.U →+* S).mapMatrix (F.fr.loc v g)
@@ -386,6 +556,13 @@ private theorem loc_eq (hα : ∀ v, (F.α v).map σ = 1) (v : D.T) : (L.ρ v).m
   rw [map_mul, map_mul, h1, mul_one, one_mul] at h
   exact h.symm
 
+/- English proof (translation)
+Use `⟨Ex.mult_map D y _ F.fr.mult, Ex.unr_map D y _ F.fr.unr, fun v => ⟨?_, ?_⟩, ?_, fun v g => ?_⟩` and prove the remaining obligations. Establish `h1` using `Ex.isGSp_map (y : F.U →+* R) (F.fr.sp v).1`. Rewrite `h1` using `[map_one]`. Then use the resulting hypothesis. Use extensionality with `a b`. Conclude with `(res_map y _).trans (congrFun (congrFun (F.fr.sp v).2 a) b)`.
+
+Use `show (F.α _).map y = 1`. Rewrite using `[F.fr.atL]`. Conclude with `Matrix.map_one _ (map_zero _) (map_one _)`. Establish `h` using `congrArg (y : F.U →+* R).mapMatrix (F.fr.loc v g)`. Rewrite `h` using `[map_mul, map_mul]`.
+
+Conclude with `h`.
+-/
 private theorem isFr_map {R : Type} [CommRing R] [Algebra c.O R] [IsCO c.O R] (y : F.U →ₐ[c.O] R) :
     IsFr L (y.comp F.i) (F.r.map y) fun v => (F.α v).map y := by
   refine ⟨Ex.mult_map D y _ F.fr.mult, Ex.unr_map D y _ F.fr.unr, fun v => ⟨?_, ?_⟩, ?_, fun v g => ?_⟩
@@ -400,6 +577,13 @@ private theorem isFr_map {R : Type} [CommRing R] [Algebra c.O R] [IsCO c.O R] (y
     rw [map_mul, map_mul] at h
     exact h
 
+/- English proof (translation)
+Introduce `R _ _ _ f f' h`. Establish `a : ∀ (f : S →ₐ[c.O] R) v, (F.α v).map (f.comp σ) = 1` using `fun f v => by`. Establish `: (F.α v).map (f.comp σ) = ((F.α v).map σ).map f` using `rfl`. Rewrite using `[this, hα]`. Conclude with `Matrix.map_one _ (map_zero _) (map_one _)`.
+
+Establish `h' : F.r.map (f.comp σ) = F.r.map (f'.comp σ)` using `h`. Establish `hi : (f.comp σ).comp F.i = (f'.comp σ).comp F.i`. Use `(L.univ R _ (L.eqs.map ((f.comp σ).comp F.i))).unique (fun _ => rfl) fun v => ?_` and prove the remaining obligations. Use `show (L.ρ v).map _ = (L.ρ v).map _`. Rewrite using `[loc_eq F _ (a f), loc_eq F _ (a f'), h']`.
+
+Use `(F.univ R _ _ _ (isFr_map F (f.comp σ))).unique (y₁ := f.comp σ) (y₂ := f'.comp σ) ⟨rfl, rfl, fun _ => rfl⟩ ⟨hi.symm, h'.symm, fun v => (a f' v).trans (a f v).symm⟩` as an intermediate fact. Use extensionality with `x`. Take `⟨x, rfl⟩` from `hσ x`. Conclude with `DFunLike.congr_fun this x`.
+-/
 private theorem gen (hσ : Function.Surjective σ) (hα : ∀ v, (F.α v).map σ = 1) : (F.r.map σ).Generates := by
   intro R _ _ _ f f' h
   have a : ∀ (f : S →ₐ[c.O] R) v, (F.α v).map (f.comp σ) = 1 := fun f v => by
@@ -422,6 +606,45 @@ end
 end UpperTheory.V.GradeZeroInterpolatingElement.ExM
 
 open UpperTheory.V.GradeZeroInterpolatingElement.ExM in
+/- English proof (translation)
+Introduce `Ω _ _ _ l _ c D hD hP hΦ hN ⟨L⟩`. Take `⟨F⟩` from `UpperTheory.nonempty_local_frames_of_good_data D hD hP hΦ hN L`. Take `⟨C⟩` from `UpperTheory.nonempty_cover_of_relative_presentation_smoothPt c.O (ℤ × ℤ) L.B F.U L.W L.org F.i F.W F.org F.τ F.κ F.e F.f F.wf _ F.rel (UpperTheory.smoothPt_part_of_smoothPt_associatedGraded c.O (ℤ × ℤ) L.B L.W L.org _ L.smooth)`. Take `⟨R, i1, i2, i3, i4, W, h, n', q, S, j1, j2, j3, π, σ, iR, hwt, hsm, hn, hq, hπ, hker, hσ, hcomp, horg, ht, hs, hhom, hat, hder⟩` from `tower C F.at0i (tOdd F) (fun k => wp (p6 k.2)) (tOdd_mem F) (tOdd_ind F hD) (sEq F) (wEq D) (sEq_mem F)`. Establish `hT : Nat.card D.T = D.Sb.card + 1`.
+
+Rewrite using `[Nat.card_eq_fintype_card, Fintype.card_coe, Raw.T, Finset.card_insert_of_notMem]`. Introduce `hl`. Take `⟨h1, -⟩` from `facts D hD`. Conclude with `(h1 l hl).2.1 rfl`. Establish `hb : Nat.card D.Sb = D.Sb.card` using `by rw [Nat.card_eq_fintype_card, Fintype.card_coe]`.
+
+Establish `hn'` using `dims D.Sb.card (fun j => Nat.card {t // F.W.wt (F.e (.inr t)) = j}) n' F.numz fun j => by`. Rewrite using `[← hT, ← card_prod (fun k => wp (p6 k) = j)]`. Conclude with `hn j`. Take `⟨c1, c2, c3, c4, c5, c6, c7, c8⟩` from `cnt`. Establish `hc : ∀ j, Nat.card {k // Sum.elim F.wf (wEq D) k = j} = Nat.card {u // F.wf u = j} + (D.Sb.card * Nat.card {k // wp (p4 k) = j} + Nat.card {k // wp (p2 k) = j})` using `fun j => by`.
+
+Rewrite using `[card_sum, card_sum (fun k => Sum.elim F.wf (wEq D) (.inr k) = j), ← hb, ← card_prod (fun k => wp (p4 k) = j)]`. Both sides reduce to the same expression. Take `⟨Fq, f1, f2⟩` from `enum q _ (-wPs) (1 + D.Sb.card + Nat.card {t // F.W.wt (F.e (.inr t)) = -wPs} + 1) (by`. Rewrite using `[hc, F.numf, c1, c4, if_neg (by decide), if_pos (Or.inr rfl)]; omega)`. Take `⟨Eq, e1, e2⟩` from `enum q _ wPs (2 + D.Sb.card + Nat.card {t // F.W.wt (F.e (.inr t)) = wPs}) (by`.
+
+Rewrite using `[hc, F.numf, c2, c5, if_neg (by decide), if_pos (Or.inl rfl)]; omega)`. Take `⟨Zq, z1, z2⟩` from `enum q (Sum.elim F.wf (wEq D)) 0 (2 + 2 * D.Sb.card + Nat.card {t // F.W.wt (F.e (.inr t)) = 0}) (by`. Rewrite using `[hc, F.numf, c3, c6, if_pos rfl]`. Use the proof step `omega)`. Establish `hw : ∀ k, Sum.elim F.wf (wEq D) k = -wPs ∨ Sum.elim F.wf (wEq D) k = wPs ∨ Sum.elim F.wf (wEq D) k = 0`.
+
+Introduce and unpack `(u | k | k)`. Assume the negation of the conclusion as `hne`. Simplify using `only [not_or, Sum.elim_inl] at hne`. Establish `h1` using `F.numf (F.wf u)`. Rewrite `h1` using `[F.numz _ hne.2.2 hne.2.1 hne.1, if_neg hne.2.2, if_neg (not_or.2 ⟨hne.2.1, hne.1⟩)]`.
+
+Use `haveI : Nonempty {u' // F.wf u' = F.wf u} := ⟨⟨u, rfl⟩⟩`. Conclude with `Nat.card_pos.ne' h1`. Conclude with `c7 _`. Conclude with `c8 _`. Establish `hα` using `al_one F σ ht hs`.
+
+Establish `hloc : ∀ v : D.T, ((L.ρ v).map iR).map π = D.loc (F.r.map σ) v` using `fun v => by`. Rewrite using `[← loc_eq F σ hα v, ← hcomp]`. Both sides reduce to the same expression. Establish `hx : ∀ (v : D.T) g a b, W.origin h (((L.ρ v).map iR).hom g a b) = D.r0At v g a b` using `fun v g a b => (DFunLike.congr_fun horg _).trans (L.at0 v g a b)`. Use `⟨{ R := R, W := W, wt_mem := fun s => ?_, org := h, r := _, r' := _, m := _, one_le := by omega smooth := hn' ▸ hsm, F := Fq, E := Eq, Z := Zq, hF := fun i => ?_, hE := fun i => ?_, hZ := fun i => ?_ S := S, π := π, surj := hπ, ker := hker.trans (congrArg Ideal.span ?_), ru := F. …` and prove the remaining obligations.
+
+Take `⟨s', e⟩` from `hwt s`. Take `⟨s' | t, rfl⟩` from `F.e.surjective s'`. Rewrite using `[e, F.rel.1]`. Conclude with `L.wt_mem _`. Take `⟨a, b, e', -⟩` from `F.vars t`.
+
+Rewrite using `[e, e']`. Conclude with `wt_mem a b`. Take `⟨k, h1, h2⟩` from `f1 i`. Rewrite using `[h2, ← h1]`. Conclude with `(hq k).1`.
+
+Take `⟨k, h1, h2⟩` from `e1 i`. Rewrite using `[h2, ← h1]`. Conclude with `(hq k).1`. Take `⟨k, h1, h2⟩` from `z1 i`. Rewrite using `[h2, ← h1]`.
+
+Conclude with `hq k`. Use extensionality with `x`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨k, rfl⟩`. Break down `hw k with h1 | h1 | h1` into its components or cases.
+
+Use `exacts [.inl (.inl (f2 k h1)), .inl (.inr (e2 k h1)), .inr (z2 k h1)]`. Introduce and unpack `((⟨i, rfl⟩ | ⟨i, rfl⟩) | ⟨i, rfl⟩)`. Take `⟨k, -, h2⟩` from `f1 i`. Conclude with `⟨k, h2.symm⟩`. Take `⟨k, -, h2⟩` from `e1 i`.
+
+Conclude with `⟨k, h2.symm⟩`. Take `⟨k, -, h2⟩` from `z1 i`. Conclude with `⟨k, h2.symm⟩`. Conclude with `⟨Ex.mult_map D σ _ F.fr.mult, Ex.unr_map D σ _ F.fr.unr, nrm F σ ht hs, ⟨R, i1, i2, i3, i4, _, (L.eqs.map iR).1, ⟨_, hx ⟨l, D.residueChar_mem_levelPrimes⟩⟩, π, hloc _⟩, fun p hp => ⟨R, i1, i2, i3, i4, _, (L.eqs.map iR).2 p hp, ⟨_, hx ⟨p, D.mem_T hp⟩⟩, π, hloc _⟩⟩`. Take `⟨Db, b1, DB, b2, b3, b4, b5, b6⟩` from `UpperTheory.exists_quotientDerivation_of_shaCocycle D hD L F a z hz`.
+
+Establish `b7 : ∀ g i j, Db (F.r.hom g i j) = Ideal.Quotient.mk _ (Xm c.O i j * D.ps j g) * z g` using `fun g i j => by`. Rewrite using `[b5, Raw.r0, diagRep, MonoidHom.coe_mk, OneHom.coe_mk, Matrix.mul_diagonal]`. Establish `b8 : ∀ v i j, Db ((F.α v - 1) i j) = 0` using `fun v i j => by`. Apply the tactic sequence `rw [Matrix.sub_apply, map_sub, b6, one_entry c.O, der_const b1, sub_self]`. Establish `z1 : z 1 = 0`.
+
+Use `hz.coc 1 1` as an intermediate fact. Rewrite `this` using `[mul_one, map_one, Units.val_one, map_one, one_mul, left_eq_add]`. Conclude with `this`. Establish `z2 : z D.g0⁻¹ = 0`. Use `hz.coc D.g0⁻¹ D.g0` as an intermediate fact.
+
+Rewrite `this` using `[inv_mul_cancel, z1, hz.g0, mul_zero, add_zero]`. Conclude with `this.symm`. Take `⟨δ, d1, d2, d3⟩` from `hder a (-wPs) (fun k => weight_pairs_six_ne_neg_similitude k.2) Db b1 DB b2 b3 b4 (fun t ht => by`. Take `⟨i, j, e, ⟨g, e'⟩ | ⟨v, e'⟩⟩` from `F.vars t`. Rewrite using `[e', map_sub, der_const b1, b7, Xm_wt _ _ _ (e ▸ ht), zero_mul, map_zero, zero_mul, sub_self]`.
+
+Rewrite using `[e', b8]) (by`. Introduce and unpack `(k | k)`. Conclude with `b8 _ _ _`. Simplify using `only [sEq, hEl_apply]`. Rewrite using `[map_add, map_smul, b7, b7, hz.g0, z2, mul_zero, mul_zero, smul_zero, add_zero])`.
+
+Use `⟨δ, d1, d2, fun f hf => Ideal.Quotient.eq_zero_iff_mem.1 ?_, fun g f => ⟨fun e => ?_, fun e => ?_⟩⟩` and prove the remaining obligations. Rewrite using `[d3 f 0 (hf.trans (map_zero σ).symm), map_zero]`. Rewrite using `[d3 f _ e, b7, show Xm c.O 2 0 = 1 by simp [Xm], one_mul]; rfl`. Rewrite using `[d3 f _ e, b7, show Xm c.O 3 1 = 1 by simp [Xm], one_mul]; rfl`.
+-/
 theorem UpperTheory.V.GradeZeroInterpolatingElement.exModel :
     ∀ {Ω : Type} [Field Ω] [CharZero Ω] [IsAlgClosure ℚ Ω] {l : ℕ} [Fact l.Prime] {c : Coef l} (D : Raw Ω c), D.Good → LemmaP → PhiCond D.Gam l → D.Nums → Nonempty (LocBase D) → Nonempty (Model D) := by
   intro Ω _ _ _ l _ c D hD hP hΦ hN ⟨L⟩

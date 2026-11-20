@@ -20,6 +20,9 @@ section Operators
 
 variable {σ W : Type*} [NormedAddCommGroup W] [NormedSpace ℂ W] [FiniteDimensional ℂ W]
 
+/- English proof (translation)
+Unfold `I2.polyDeriv`. Use `hasSum_sum fun m _ => HasSum.mul_left _ ?_` and prove the remaining obligations. Conclude with `(SCV.hasSum_iteratedFDeriv_of_locally_normal hU hF hle _ hx).mapL (ContinuousMultilinearMap.apply ℂ (fun _ => W) ℂ _)`.
+-/
 theorem hasSum_polyDeriv_of_locally_normal {ι : Type*} {F : ι → W → ℂ} {U : Set W} (hU : IsOpen U)
     (hF : ∀ i, DifferentiableOn ℂ (F i) U)
     (hle : ∀ x ∈ U, ∃ t ∈ 𝓝 x, ∃ v : ι → ℝ, Summable v ∧ ∀ i, ∀ z ∈ t, ‖F i z‖ ≤ v i)
@@ -32,12 +35,20 @@ theorem hasSum_polyDeriv_of_locally_normal {ι : Type*} {F : ι → W → ℂ} {
 
 omit [FiniteDimensional ℂ W] in
 
+/- English proof (translation)
+Unfold `I2.polyDeriv`. Use `Finset.sum_congr rfl fun m _ => ?_` and prove the remaining obligations. Rewrite using `[(h.iteratedFDeriv ℂ _).eq_of_nhds]`.
+-/
 theorem polyDeriv_congr_of_eventuallyEq (P : MvPolynomial σ ℂ) (u : σ → W) {F G : W → ℂ} {x : W}
     (h : F =ᶠ[𝓝 x] G) : I2.polyDeriv P u F x = I2.polyDeriv P u G x := by
   unfold I2.polyDeriv
   refine Finset.sum_congr rfl fun m _ => ?_
   rw [(h.iteratedFDeriv ℂ _).eq_of_nhds]
 
+/- English proof (translation)
+Unfold `I2.polyDeriv`. Rewrite using `[Finset.mul_sum]`. Use `Finset.sum_congr rfl fun m _ => ?_` and prove the remaining obligations. Establish `e : (fun w => c * F w) = c • F` using `rfl`. Rewrite using `[e, iteratedFDeriv_const_smul_apply (SCV.contDiffAt_of_differentiableOn hF (hU.mem_nhds hx) _)]`.
+
+Simplify using `only [ContinuousMultilinearMap.smul_apply, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem polyDeriv_const_mul (P : MvPolynomial σ ℂ) (u : σ → W) {F : W → ℂ} {U : Set W}
     (hU : IsOpen U) (hF : DifferentiableOn ℂ F U) (c : ℂ) {x : W} (hx : x ∈ U) :
     I2.polyDeriv P u (fun w => c * F w) x = c * I2.polyDeriv P u F x := by
@@ -52,6 +63,13 @@ theorem polyDeriv_const_mul (P : MvPolynomial σ ℂ) (u : σ → W) {F : W → 
 
 variable {B : Type*} [NormedAddCommGroup B] [NormedSpace ℂ B] [FiniteDimensional ℂ B]
 
+/- English proof (translation)
+Use `set L : W →L[ℂ] B × W := ContinuousLinearMap.inr ℂ B W with hL`. Use `set c : B × W := (s, 0) with hc`. Use `set t : Set (B × W) := (fun w => c + w) ⁻¹' U with ht`. Establish `hto : IsOpen t` using `hU.preimage (by fun_prop)`. Establish `hto' : IsOpen (L ⁻¹' t)` using `hto.preimage L.continuous`.
+
+Establish `hg : DifferentiableOn ℂ (fun w => F (c + w)) t` using `hF.comp (by fun_prop) fun w hw => hw`. Establish `h0 : L x ∈ t` using `by simpa [ht, hc, hL] using hx`. Establish `key` using `L.iteratedFDerivWithin_comp_right (SCV.contDiffOn_nat hto k hg) hto.uniqueDiffOn hto'.uniqueDiffOn h0 le_rfl`. Rewrite `key` using `[iteratedFDerivWithin_of_isOpen k hto' (show x ∈ L ⁻¹' t from h0), iteratedFDerivWithin_of_isOpen k hto h0, iteratedFDeriv_comp_add_left]`. Establish `e : (fun w => F (s, w)) = (fun w => F (c + w)) ∘ L`.
+
+Use extensionality with `w`. Simplify using `[hL, hc]`. Rewrite using `[e, key]`. Simplify using `[hL, hc]`.
+-/
 theorem iteratedFDeriv_snd {F : B × W → ℂ} {U : Set (B × W)} (hU : IsOpen U)
     (hF : DifferentiableOn ℂ F U) {s : B} {x : W} (hx : (s, x) ∈ U) (k : ℕ) (v : Fin k → W) :
     iteratedFDeriv ℂ k (fun w => F (s, w)) x v =
@@ -74,6 +92,9 @@ theorem iteratedFDeriv_snd {F : B × W → ℂ} {U : Set (B × W)} (hU : IsOpen 
   rw [e, key]
   simp [hL, hc]
 
+/- English proof (translation)
+Unfold `I2.polyDeriv`. Use `DifferentiableOn.fun_sum fun m _ => DifferentiableOn.const_mul ?_ _` and prove the remaining obligations. Use `DifferentiableOn.congr ?_ fun p hp => iteratedFDeriv_snd hU hF (s := p.1) (x := p.2) hp _ _` and prove the remaining obligations. Conclude with `(ContinuousMultilinearMap.apply ℂ (fun _ => B × W) ℂ _).differentiable.comp_differentiableOn (SCV.differentiableOn_iteratedFDeriv hU hF _)`.
+-/
 theorem differentiableOn_polyDeriv_snd {F : B × W → ℂ} {U : Set (B × W)} (hU : IsOpen U)
     (hF : DifferentiableOn ℂ F U) (P : MvPolynomial σ ℂ) (u : σ → W) :
     DifferentiableOn ℂ (fun p : B × W => I2.polyDeriv P u (fun w => F (p.1, w)) p.2) U := by
@@ -83,6 +104,9 @@ theorem differentiableOn_polyDeriv_snd {F : B × W → ℂ} {U : Set (B × W)} (
   exact (ContinuousMultilinearMap.apply ℂ (fun _ => B × W) ℂ _).differentiable.comp_differentiableOn
     (SCV.differentiableOn_iteratedFDeriv hU hF _)
 
+/- English proof (translation)
+The claim follows from `(differentiableOn_polyDeriv_snd (hV.prod isOpen_univ) hF P u).comp (f := fun s => (s, x)) (by fun_prop) fun _ hs => ⟨hs, trivial⟩`.
+-/
 theorem differentiableOn_polyDeriv_param {F : B × W → ℂ} {V : Set B} (hV : IsOpen V)
     (hF : DifferentiableOn ℂ F (V ×ˢ Set.univ)) (P : MvPolynomial σ ℂ) (u : σ → W) (x : W) :
     DifferentiableOn ℂ (fun s : B => I2.polyDeriv P u (fun w => F (s, w)) x) V :=
@@ -98,9 +122,17 @@ def thTerm (τ : Matrix (Fin g) (Fin g) ℂ) (a b : Fin g → ℝ) (ζ : Fin g �
       τ *ᵥ ((fun i => (m i : ℂ)) + fun i => (a i : ℂ))) +
     2 * π * I * (((fun i => (m i : ℂ)) + fun i => (a i : ℂ)) ⬝ᵥ (ζ + fun i => (b i : ℂ))))
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem thetaChar_eq_tsum (τ : Matrix (Fin g) (Fin g) ℂ) (a b : Fin g → ℝ) (ζ : Fin g → ℂ) :
     thetaChar τ (fun i => (a i : ℂ)) (fun i => (b i : ℂ)) ζ = ∑' m, thTerm τ a b ζ m := rfl
 
+/- English proof (translation)
+Unfold `thTerm thetaTerm eC`. Use `congr 1`. Establish `e1 : ((fun i => (m i : ℂ)) + fun i => (a i : ℂ)) = shiftVec a m` using `rfl`. Establish `e2 : (fun i => (b i : ℂ)) = ofRealVec b` using `rfl`. Rewrite using `[e1, e2]`.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem thTerm_eq_thetaTerm (τ : Matrix (Fin g) (Fin g) ℂ) (a b : Fin g → ℝ) (ζ : Fin g → ℂ)
     (m : Fin g → ℤ) : thTerm τ a b ζ m = thetaTerm a b ζ τ m := by
   unfold thTerm thetaTerm eC
@@ -110,11 +142,17 @@ theorem thTerm_eq_thetaTerm (τ : Matrix (Fin g) (Fin g) ℂ) (a b : Fin g → �
   rw [e1, e2]
   ring
 
+/- English proof (translation)
+Rewrite using `[thetaChar_eq_tsum]`. Conclude with `tsum_congr fun m => thTerm_eq_thetaTerm τ a b ζ m`.
+-/
 theorem thetaChar_eq_theta (τ : Matrix (Fin g) (Fin g) ℂ) (a b : Fin g → ℝ) (ζ : Fin g → ℂ) :
     thetaChar τ (fun i => (a i : ℂ)) (fun i => (b i : ℂ)) ζ = theta a b ζ τ := by
   rw [thetaChar_eq_tsum]
   exact tsum_congr fun m => thTerm_eq_thetaTerm τ a b ζ m
 
+/- English proof (translation)
+Unfold `thTerm`. Rewrite using `[← Complex.exp_add, add_mulVec, dotProduct_add]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem thTerm_add_matrix (τ S : Matrix (Fin g) (Fin g) ℂ) (a b : Fin g → ℝ) (ζ : Fin g → ℂ)
     (m : Fin g → ℤ) :
     thTerm (τ + S) a b ζ m = cexp (π * I * (((fun i => (m i : ℂ)) + fun i => (a i : ℂ)) ⬝ᵥ
@@ -124,6 +162,9 @@ theorem thTerm_add_matrix (τ S : Matrix (Fin g) (Fin g) ℂ) (a b : Fin g → �
   congr 1
   ring
 
+/- English proof (translation)
+Unfold `thTerm`. Rewrite using `[← Complex.exp_add]`. Use `congr 1`. Simplify using `only [dotProduct_add]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem thTerm_add_var (τ : Matrix (Fin g) (Fin g) ℂ) (a b : Fin g → ℝ) (ζ w : Fin g → ℂ)
     (m : Fin g → ℤ) :
     thTerm τ a b (ζ + w) m =
@@ -134,19 +175,31 @@ theorem thTerm_add_var (τ : Matrix (Fin g) (Fin g) ℂ) (a b : Fin g → ℝ) (
   simp only [dotProduct_add]
   ring
 
+/- English proof (translation)
+The claim follows from `hp.add hp.transpose`.
+-/
 theorem mem_thetaDomain {τ : Matrix (Fin g) (Fin g) ℂ} (hp : (τ.map Complex.im).PosDef) :
     τ ∈ ThetaDomain (Fin g) := hp.add hp.transpose
 
+/- English proof (translation)
+Simplify using `only [thTerm_eq_thetaTerm]`. Conclude with `thetaSummable_holds (Fin g) a b ζ τ hτ`.
+-/
 theorem summable_norm_thTerm {τ : Matrix (Fin g) (Fin g) ℂ} (hτ : τ ∈ ThetaDomain (Fin g))
     (a b : Fin g → ℝ) (ζ : Fin g → ℂ) : Summable fun m => ‖thTerm τ a b ζ m‖ := by
   simp only [thTerm_eq_thetaTerm]
   exact thetaSummable_holds (Fin g) a b ζ τ hτ
 
+/- English proof (translation)
+The claim follows from `(summable_norm_thTerm hτ a b ζ).of_norm.hasSum`.
+-/
 theorem hasSum_thTerm {τ : Matrix (Fin g) (Fin g) ℂ} (hτ : τ ∈ ThetaDomain (Fin g))
     (a b : Fin g → ℝ) (ζ : Fin g → ℂ) :
     HasSum (thTerm τ a b ζ) (thetaChar τ (fun i => (a i : ℂ)) (fun i => (b i : ℂ)) ζ) :=
   (summable_norm_thTerm hτ a b ζ).of_norm.hasSum
 
+/- English proof (translation)
+Simplify using `using hasSum_multilinear_tuples (J := fun _ : κ => Fin g → ℤ) (ContinuousMultilinearMap.mkPiAlgebra ℂ κ ℂ) (x := fun k => thTerm (τ k) (a k) (b k) (ζ k)) (fun k => summable_norm_thTerm (hτ k) _ _ _) fun k => hasSum_thTerm (hτ k) _ _ _`.
+-/
 theorem hasSum_prod_thTerm {κ : Type*} [Fintype κ] {τ : κ → Matrix (Fin g) (Fin g) ℂ}
     (hτ : ∀ k, τ k ∈ ThetaDomain (Fin g)) (a b : κ → Fin g → ℝ) (ζ : κ → Fin g → ℂ) :
     HasSum (fun m : κ → Fin g → ℤ => ∏ k, thTerm (τ k) (a k) (b k) (ζ k) (m k))
@@ -159,6 +212,11 @@ section Continuous
 
 variable {W : Type*} [TopologicalSpace W] [LocallyCompactSpace W]
 
+/- English proof (translation)
+Take `⟨K, ⟨hKx, hK⟩, hKU⟩` from `(compact_basis_nhds x).mem_iff.mp (hU.mem_nhds hx)`. Establish `hc : ContinuousOn (fun w => ((Z w, fun i j => T w i j) : (Fin g → ℂ) × (Fin g → Fin g → ℂ))) K` using `(hZ.prodMk (continuousOn_pi.2 fun i => continuousOn_pi.2 fun j => hT i j)).mono hKU`. Take `⟨v, hv, h⟩` from `thetaMTest_holds (Fin g) a _ (hK.image_of_continuousOn hc) (by`. Introduce and unpack `_ ⟨w, hw, rfl⟩`. Conclude with `hdom w (hKU hw))`.
+
+Use `⟨K, hKx, v, hv, fun m w hw => ?_⟩` and prove the remaining obligations. Rewrite using `[thTerm_eq_thetaTerm]`. Conclude with `h b _ ⟨w, hw, rfl⟩ m`.
+-/
 theorem thTerm_locally_normal {U : Set W} (hU : IsOpen U) {T : W → Matrix (Fin g) (Fin g) ℂ}
     {Z : W → Fin g → ℂ} (hT : ∀ i j, ContinuousOn (fun w => T w i j) U) (hZ : ContinuousOn Z U)
     (hdom : ∀ w ∈ U, T w ∈ ThetaDomain (Fin g)) (a b : Fin g → ℝ) {x : W} (hx : x ∈ U) :
@@ -175,6 +233,11 @@ theorem thTerm_locally_normal {U : Set W} (hU : IsOpen U) {T : W → Matrix (Fin
   rw [thTerm_eq_thetaTerm]
   exact h b _ ⟨w, hw, rfl⟩ m
 
+/- English proof (translation)
+Use `choose t ht v hv h using fun k => thTerm_locally_normal hU (hT k) (hZ k) (hdom k) (a k) (b k) hx`. Establish `h0 : ∀ k m, 0 ≤ v k m` using `fun k m => (norm_nonneg _).trans (h k m x (mem_of_mem_nhds (ht k)))`. Establish `hG' : ∀ᶠ w in 𝓝 x, ‖G w‖ < ‖G x‖ + 1` using `(hG.continuousAt (hU.mem_nhds hx)).norm.eventually (gt_mem_nhds (lt_add_one _))`. Use `⟨{w | ‖G w‖ < ‖G x‖ + 1} ∩ ⋂ k, t k, inter_mem hG' (iInter_mem.2 ht), fun m => (‖G x‖ + 1) * ∏ k, v k (m k), (summable_prod_tuples (J := fun _ : κ => Fin g → ℤ) h0 hv).mul_left _, fun m w hw => ?_⟩` and prove the remaining obligations. Rewrite using `[norm_mul, norm_prod]`.
+
+Conclude with `mul_le_mul (le_of_lt hw.1) (Finset.prod_le_prod (fun k _ => norm_nonneg _) fun k _ => h k _ w (Set.mem_iInter.1 hw.2 k)) (Finset.prod_nonneg fun k _ => norm_nonneg _) (by positivity)`.
+-/
 theorem mul_prod_thTerm_locally_normal {κ : Type*} [Fintype κ] {U : Set W} (hU : IsOpen U)
     {G : W → ℂ} {T : κ → W → Matrix (Fin g) (Fin g) ℂ} {Z : κ → W → Fin g → ℂ}
     (hG : ContinuousOn G U) (hT : ∀ k i j, ContinuousOn (fun w => T k w i j) U)
@@ -202,6 +265,9 @@ section Holomorphic
 
 variable {σ W : Type*} [NormedAddCommGroup W] [NormedSpace ℂ W]
 
+/- English proof (translation)
+Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simpa using differentiableOn_const (1 : ℂ)`. Consider the case `insert k s hk ih`. Simplify using `only [Finset.prod_insert hk]`. Conclude with `(hF k (Finset.mem_insert_self _ _)).mul (ih fun j hj => hF j (Finset.mem_insert_of_mem hj))`.
+-/
 theorem differentiableOn_prod_fun {κ : Type*} (s : Finset κ) {F : κ → W → ℂ} {U : Set W}
     (hF : ∀ k ∈ s, DifferentiableOn ℂ (F k) U) :
     DifferentiableOn ℂ (fun w => ∏ k ∈ s, F k w) U := by
@@ -213,6 +279,9 @@ theorem differentiableOn_prod_fun {κ : Type*} (s : Finset κ) {F : κ → W →
     exact (hF k (Finset.mem_insert_self _ _)).mul
       (ih fun j hj => hF j (Finset.mem_insert_of_mem hj))
 
+/- English proof (translation)
+Simplify using `only [thTerm_eq_thetaTerm]`. Conclude with `(differentiable_thetaTerm_prod a b m).comp_differentiableOn (f := fun w => (Z w, fun i j => T w i j)) (hZ.prodMk (differentiableOn_pi.2 fun i => differentiableOn_pi.2 fun j => hT i j))`.
+-/
 theorem differentiableOn_thTerm {U : Set W} {T : W → Matrix (Fin g) (Fin g) ℂ}
     {Z : W → Fin g → ℂ} (hT : ∀ i j, DifferentiableOn ℂ (fun w => T w i j) U)
     (hZ : DifferentiableOn ℂ Z U) (a b : Fin g → ℝ) (m : Fin g → ℤ) :
@@ -222,6 +291,9 @@ theorem differentiableOn_thTerm {U : Set W} {T : W → Matrix (Fin g) (Fin g) �
     (f := fun w => (Z w, fun i j => T w i j))
     (hZ.prodMk (differentiableOn_pi.2 fun i => differentiableOn_pi.2 fun j => hT i j))
 
+/- English proof (translation)
+Simplify using `only [thetaChar_eq_theta]`. Conclude with `(thetaHolo_of_domainOpen_of_mTest siegelSubDomain_and_domainOpen.2 thetaMTest_holds (Fin g) a b).comp (f := fun w => (Z w, fun i j => T w i j)) (hZ.prodMk (differentiableOn_pi.2 fun i => differentiableOn_pi.2 fun j => hT i j)) hdom`.
+-/
 theorem differentiableOn_thetaChar {U : Set W} {T : W → Matrix (Fin g) (Fin g) ℂ}
     {Z : W → Fin g → ℂ} (hT : ∀ i j, DifferentiableOn ℂ (fun w => T w i j) U)
     (hZ : DifferentiableOn ℂ Z U) (hdom : ∀ w ∈ U, T w ∈ ThetaDomain (Fin g))
@@ -233,6 +305,9 @@ theorem differentiableOn_thetaChar {U : Set W} {T : W → Matrix (Fin g) (Fin g)
     (Fin g) a b).comp (f := fun w => (Z w, fun i j => T w i j))
     (hZ.prodMk (differentiableOn_pi.2 fun i => differentiableOn_pi.2 fun j => hT i j)) hdom
 
+/- English proof (translation)
+The claim follows from `differentiableOn_univ.1 (differentiableOn_thetaChar (T := fun _ => τ) (Z := id) (fun _ _ => differentiableOn_const _) differentiableOn_id (fun _ _ => hτ) a b)`.
+-/
 theorem differentiable_thetaChar {τ : Matrix (Fin g) (Fin g) ℂ} (hτ : τ ∈ ThetaDomain (Fin g))
     (a b : Fin g → ℝ) :
     Differentiable ℂ (thetaChar τ (fun i => (a i : ℂ)) (fun i => (b i : ℂ))) :=
@@ -241,6 +316,9 @@ theorem differentiable_thetaChar {τ : Matrix (Fin g) (Fin g) ℂ} (hτ : τ ∈
 
 variable [FiniteDimensional ℂ W] {κ : Type*} [Fintype κ]
 
+/- English proof (translation)
+Establish `: ProperSpace W` using `FiniteDimensional.proper ℂ W`. Establish `h` using `hasSum_polyDeriv_of_locally_normal hU (F := fun (m : κ → Fin g → ℤ) w => G w * ∏ k, thTerm (T k w) (a k) (b k) (Z k w) (m k)) (fun m => hG.mul (differentiableOn_prod_fun _ fun k _ => differentiableOn_thTerm (hT k) (hZ k) _ _ _)) (fun y hy => mul_prod_thTerm_locally_normal hU hG.c …`. Rewrite `h` using `[polyDeriv_congr_of_eventuallyEq P u (G := fun w => G w * ∏ k, thetaChar (T k w) (fun i => (a k i : ℂ)) (fun i => (b k i : ℂ)) (Z k w))]`. Then use the resulting hypothesis. Use `filter_upwards [hU.mem_nhds hx] with w hw`. Conclude with `((hasSum_prod_thTerm (fun k => hdom k w hw) a b fun k => Z k w).mul_left _).tsum_eq`.
+-/
 theorem hasSum_polyDeriv_mul_prod {U : Set W} (hU : IsOpen U)
     {G : W → ℂ} {T : κ → W → Matrix (Fin g) (Fin g) ℂ} {Z : κ → W → Fin g → ℂ}
     (hG : DifferentiableOn ℂ G U) (hT : ∀ k i j, DifferentiableOn ℂ (fun w => T k w i j) U)
@@ -262,6 +340,9 @@ theorem hasSum_polyDeriv_mul_prod {U : Set W} (hU : IsOpen U)
   filter_upwards [hU.mem_nhds hx] with w hw
   exact ((hasSum_prod_thTerm (fun k => hdom k w hw) a b fun k => Z k w).mul_left _).tsum_eq
 
+/- English proof (translation)
+The claim follows from `have h := hasSum_polyDeriv_mul_prod (T := fun k _ => τ k) isOpen_univ hG.differentiableOn (fun _ _ _ => differentiableOn_const _) (fun k => (hZ k).differentiableOn) (fun k _ _ => hτ k) a b P u (Set.mem_univ x) ⟨h, summable_norm_iff.2 h.summable⟩`.
+-/
 theorem hasSum_polyDeriv_mul_prod_const {G : W → ℂ} {τ : κ → Matrix (Fin g) (Fin g) ℂ}
     {Z : κ → W → Fin g → ℂ} (hG : Differentiable ℂ G) (hZ : ∀ k, Differentiable ℂ (Z k))
     (hτ : ∀ k, τ k ∈ ThetaDomain (Fin g)) (a b : κ → Fin g → ℝ) (P : MvPolynomial σ ℂ)
@@ -277,6 +358,11 @@ theorem hasSum_polyDeriv_mul_prod_const {G : W → ℂ} {τ : κ → Matrix (Fin
     (fun k _ _ => hτ k) a b P u (Set.mem_univ x)
   ⟨h, summable_norm_iff.2 h.summable⟩
 
+/- English proof (translation)
+Use `(hasSum_polyDeriv_mul_prod_const hG hZ hτ a b P u x).1 using 2 with m` and compare the differences between its conclusion and the goal. Rewrite using `[mul_comm, ← polyDeriv_const_mul P u isOpen_univ _ _ (Set.mem_univ x)]`. Use `congr 1`. Use function extensionality and compare the values at `w`. Simplify using `only [thTerm_add_matrix, Finset.prod_mul_distrib, Finset.mul_sum, Complex.exp_sum]`.
+
+Expand and normalize the polynomial expressions, which then agree. Conclude with `hG.differentiableOn.mul (differentiableOn_prod_fun _ fun k _ => differentiableOn_thTerm (T := fun _ => τ k) (fun _ _ => differentiableOn_const _) (hZ k).differentiableOn _ _ _)`.
+-/
 theorem hasSum_polyDeriv_mul_prod_add_matrix {G : W → ℂ} {τ S : κ → Matrix (Fin g) (Fin g) ℂ}
     {Z : κ → W → Fin g → ℂ} (hG : Differentiable ℂ G) (hZ : ∀ k, Differentiable ℂ (Z k))
     (hτ : ∀ k, τ k + S k ∈ ThetaDomain (Fin g)) (a b : κ → Fin g → ℝ) (P : MvPolynomial σ ℂ)
@@ -312,25 +398,42 @@ def canMult (a b : Fin g → ℝ) (m n : Fin g → ℤ) : ℂ :=
 def translConst (b a' b' : Fin g → ℝ) : ℂ :=
   cexp (-(π * I * ((a' ⬝ᵥ b' : ℝ) : ℂ)) - 2 * π * I * ((a' ⬝ᵥ b : ℝ) : ℂ))
 
+/- English proof (translation)
+Rewrite using `[translConst, Complex.norm_exp]`. Simplify using the standard rewrite rules.
+-/
 theorem norm_translConst (b a' b' : Fin g → ℝ) : ‖translConst b a' b'‖ = 1 := by
   rw [translConst, Complex.norm_exp]
   simp
 
 variable {τ : Matrix (Fin g) (Fin g) ℂ}
 
+/- English proof (translation)
+Express the relevant statement in the definitionally equal form `(τ.map Complex.im)⁻¹.map ofRealHom * (τ.map Complex.im).map ofRealHom = 1`. Rewrite using `[← Matrix.map_mul, nonsing_inv_mul _ hp.det_pos.ne'.isUnit, Matrix.map_one _ (map_zero _) (map_one _)]`.
+-/
 theorem imInv_mul (hp : (τ.map Complex.im).PosDef) :
     imInv τ * (τ.map Complex.im).map (fun x : ℝ => (x : ℂ)) = 1 := by
   change (τ.map Complex.im)⁻¹.map ofRealHom * (τ.map Complex.im).map ofRealHom = 1
   rw [← Matrix.map_mul, nonsing_inv_mul _ hp.det_pos.ne'.isUnit,
     Matrix.map_one _ (map_zero _) (map_one _)]
 
+/- English proof (translation)
+The claim follows from `(inv_eq_left_inv (imInv_mul hp)).symm`.
+-/
 theorem imInv_eq_inv_map (hp : (τ.map Complex.im).PosDef) :
     imInv τ = ((τ.map Complex.im).map fun x : ℝ => (x : ℂ))⁻¹ :=
   (inv_eq_left_inv (imInv_mul hp)).symm
 
+/- English proof (translation)
+The claim follows from `(hs.map Complex.im).inv.map _`.
+-/
 theorem isSymm_imInv (hs : τ.IsSymm) : (imInv τ).IsSymm :=
   (hs.map Complex.im).inv.map _
 
+/- English proof (translation)
+Establish `e : ((fun i => (v i : ℂ)) + τ *ᵥ fun i => (u i : ℂ)) = star ((fun i => (v i : ℂ)) + τ *ᵥ fun i => (u i : ℂ)) + (2 * I) • ((τ.map Complex.im).map fun x : ℝ => (x : ℂ)) *ᵥ fun i => (u i : ℂ)`. Use function extensionality and compare the values at `i`. Apply `Complex.ext` to reduce the goal to its premises. Simplify using `[mulVec, dotProduct]`. Simplify using `[mulVec, dotProduct]`.
+
+Expand and normalize the polynomial expressions, which then agree. Use `conv_lhs => rw [e]`. Rewrite using `[mulVec_add, dotProduct_add, mulVec_smul, mulVec_mulVec, imInv_mul hp, one_mulVec, dotProduct_smul, smul_eq_mul, hermForm]`.
+-/
 theorem dot_imInv_eq_hermForm_add (hp : (τ.map Complex.im).PosDef) (u v : Fin g → ℝ)
     (ζ : Fin g → ℂ) :
     ζ ⬝ᵥ imInv τ *ᵥ ((fun i => (v i : ℂ)) + τ *ᵥ fun i => (u i : ℂ)) =
@@ -348,23 +451,41 @@ theorem dot_imInv_eq_hermForm_add (hp : (τ.map Complex.im).PosDef) (u v : Fin g
   rw [mulVec_add, dotProduct_add, mulVec_smul, mulVec_mulVec, imInv_mul hp, one_mulVec,
     dotProduct_smul, smul_eq_mul, hermForm]
 
+/- English proof (translation)
+Use `Differentiable.mul ?_ (differentiable_thetaChar (mem_thetaDomain hp) a b)` and prove the remaining obligations. Simplify using `only [dotProduct, mulVec]`. Use `fun_prop`.
+-/
 theorem differentiable_canTh (hp : (τ.map Complex.im).PosDef) (a b : Fin g → ℝ) :
     Differentiable ℂ (canTh τ a b) := by
   refine Differentiable.mul ?_ (differentiable_thetaChar (mem_thetaDomain hp) a b)
   simp only [dotProduct, mulVec]
   fun_prop
 
+/- English proof (translation)
+Establish `h` using `theta_ne_zero (τ := τ) ⟨hs, hp⟩ a b`. Simplify using `only [← thetaChar_eq_theta] at h`. Conclude with `h`.
+-/
 theorem thetaChar_ne_zero (hs : τ.IsSymm) (hp : (τ.map Complex.im).PosDef) (a b : Fin g → ℝ) :
     thetaChar τ (fun i => (a i : ℂ)) (fun i => (b i : ℂ)) ≠ 0 := by
   have h := theta_ne_zero (τ := τ) ⟨hs, hp⟩ a b
   simp only [← thetaChar_eq_theta] at h
   exact h
 
+/- English proof (translation)
+Take `⟨z, hz⟩` from `Function.ne_iff.1 (thetaChar_ne_zero hs hp a b)`. Conclude with `Function.ne_iff.2 ⟨z, mul_ne_zero (Complex.exp_ne_zero _) hz⟩`.
+-/
 theorem canTh_ne_zero (hs : τ.IsSymm) (hp : (τ.map Complex.im).PosDef) (a b : Fin g → ℝ) :
     canTh τ a b ≠ 0 := by
   obtain ⟨z, hz⟩ := Function.ne_iff.1 (thetaChar_ne_zero hs hp a b)
   exact Function.ne_iff.2 ⟨z, mul_ne_zero (Complex.exp_ne_zero _) hz⟩
 
+/- English proof (translation)
+Establish `h1` using `dot_imInv_eq_hermForm_add hp a' b' ζ`. Establish `h2` using `dot_imInv_eq_hermForm_add hp a' b' y`. Rewrite `h1`, `h2` using `[← hy]`. Establish `h3` using `dot_mulVec_symm (isSymm_imInv hs) ζ y`. Establish `h4` using `thetaRealTransl_holds (Fin g) a b a' b' ζ τ hs`.
+
+Establish `e : ζ + τ *ᵥ ofRealVec a' + ofRealVec b' = ζ + y`. Rewrite using `[hy, add_assoc, add_comm (τ *ᵥ _)]`. Both sides reduce to the same expression. Establish `h5 : (y ⬝ᵥ fun i => (a' i : ℂ)) = ((a' ⬝ᵥ b' : ℝ) : ℂ) + ofRealVec a' ⬝ᵥ τ *ᵥ ofRealVec a'`. Rewrite using `[hy, add_dotProduct, dotProduct_comm (τ *ᵥ _)]`.
+
+Use `congr 1`. Simplify using `[dotProduct, mul_comm]`. Establish `h6 : ofRealVec a' ⬝ᵥ (ζ + ofRealVec b + ofRealVec b') = (ζ ⬝ᵥ fun i => (a' i : ℂ)) + ((a' ⬝ᵥ b : ℝ) : ℂ) + ((a' ⬝ᵥ b' : ℝ) : ℂ)`. Simplify using `[dotProduct, ofRealVec, mul_add, Finset.sum_add_distrib, mul_comm]`. Rewrite `h4` using `[e, h6]`.
+
+Rewrite using `[canTh, canTh, thetaChar_eq_theta, thetaChar_eq_theta, h4, translConst, eC]`. Simplify using `only [← mul_assoc, ← Complex.exp_add]`. Use `congr 2`. Rewrite using `[mulVec_add, add_dotProduct, dotProduct_add, dotProduct_add, h3, h1, h2, h5]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem canTh_translate (hs : τ.IsSymm) (hp : (τ.map Complex.im).PosDef) (a b a' b' : Fin g → ℝ)
     {y : Fin g → ℂ} (hy : y = (fun i => (b' i : ℂ)) + τ *ᵥ fun i => (a' i : ℂ)) (ζ : Fin g → ℂ) :
     cexp (-(π * hermForm (imInv τ) ζ y) - π / 2 * hermForm (imInv τ) y y) * canTh τ a b (ζ + y) =
@@ -392,6 +513,9 @@ theorem canTh_translate (hs : τ.IsSymm) (hp : (τ.map Complex.im).PosDef) (a b 
   rw [mulVec_add, add_dotProduct, dotProduct_add, dotProduct_add, h3, h1, h2, h5]
   ring
 
+/- English proof (translation)
+Establish `e : ofRealVec a ⬝ᵥ ofIntVec m = ((a ⬝ᵥ fun i => (m i : ℝ) : ℝ) : ℂ)`. Simplify using `[dotProduct, ofRealVec, ofIntVec]`. Rewrite using `[canTh, canTh, thetaChar_eq_theta, thetaChar_eq_theta, thetaIntChar_holds, e, eC]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem canTh_add_int (τ : Matrix (Fin g) (Fin g) ℂ) (a b : Fin g → ℝ) (n m : Fin g → ℤ)
     (ζ : Fin g → ℂ) :
     canTh τ (a + fun i => (n i : ℝ)) (b + fun i => (m i : ℝ)) ζ =
@@ -401,6 +525,13 @@ theorem canTh_add_int (τ : Matrix (Fin g) (Fin g) ℂ) (a b : Fin g → ℝ) (n
   rw [canTh, canTh, thetaChar_eq_theta, thetaChar_eq_theta, thetaIntChar_holds, e, eC]
   ring
 
+/- English proof (translation)
+Establish `h` using `canTh_translate hs hp a b (fun i => (n i : ℝ)) (fun i => (m i : ℝ)) (y := l) (by simpa using hl) ζ`. Rewrite `h` using `[canTh_add_int]`. Establish `e : translConst b (fun i => (n i : ℝ)) (fun i => (m i : ℝ)) * cexp (2 * π * I * ((a ⬝ᵥ fun i => (m i : ℝ) : ℝ) : ℂ)) = canMult a b m n`. Rewrite using `[translConst, canMult, ← Complex.exp_add, Complex.exp_eq_exp_iff_exists_int]`. Use `⟨-(m ⬝ᵥ n), ?_⟩` and prove the remaining obligations.
+
+Establish `e1 : (((fun i => (n i : ℝ)) ⬝ᵥ fun i => (m i : ℝ) : ℝ) : ℂ) = ((m ⬝ᵥ n : ℤ) : ℂ)`. Simplify using `[dotProduct, mul_comm]`. Rewrite using `[e1, dotProduct_comm _ b, Int.cast_neg]`. Expand and normalize the polynomial expressions, which then agree. Rewrite `h` using `[← mul_assoc, e]`.
+
+Rewrite using `[mul_right_comm, ← h, mul_right_comm, ← Complex.exp_add]`. Simplify using the standard rewrite rules.
+-/
 theorem canTh_add_period (hs : τ.IsSymm) (hp : (τ.map Complex.im).PosDef) (a b : Fin g → ℝ)
     (m n : Fin g → ℤ) {l : Fin g → ℂ} (hl : l = (fun i => (m i : ℂ)) + τ *ᵥ fun i => (n i : ℂ))
     (ζ : Fin g → ℂ) :
@@ -421,6 +552,15 @@ theorem canTh_add_period (hs : τ.IsSymm) (hp : (τ.map Complex.im).PosDef) (a b
   rw [mul_right_comm, ← h, mul_right_comm, ← Complex.exp_add]
   simp
 
+/- English proof (translation)
+Use `set y := (fun i => (v i : ℂ)) + τ *ᵥ fun i => (u i : ℂ) with hy`. Use `set y' := (fun i => (v' i : ℂ)) + τ *ᵥ fun i => (u' i : ℂ) with hy'`. Establish `h1` using `dot_imInv_eq_hermForm_add hp u' v' y`. Establish `h2` using `dot_imInv_eq_hermForm_add hp u v y'`. Rewrite `h1` using `[← hy']`.
+
+Rewrite `h2` using `[← hy]`. Establish `h3` using `dot_mulVec_symm (isSymm_imInv hs) y y'`. Establish `h4 : hermForm (imInv τ) y' y = starRingEnd ℂ (hermForm (imInv τ) y y')`. Rewrite using `[hermForm, dot_mulVec_symm (isSymm_imInv hs)]`. Simplify using `[hermForm, dotProduct, mulVec, imInv]`.
+
+Establish `h5 : (y ⬝ᵥ fun i => (u' i : ℂ)) - (y' ⬝ᵥ fun i => (u i : ℂ)) = ((v ⬝ᵥ u' - u ⬝ᵥ v' : ℝ) : ℂ)`. Rewrite using `[hy, hy', add_dotProduct, add_dotProduct, dotProduct_comm (τ *ᵥ _), dotProduct_comm (τ *ᵥ _), dot_mulVec_symm hs]`. Simplify using `[dotProduct, mul_comm]`. Establish `h6 : hermForm (imInv τ) y y' - starRingEnd ℂ (hermForm (imInv τ) y y') = 2 * I * ((u ⬝ᵥ v' - v ⬝ᵥ u' : ℝ) : ℂ)`. Rewrite using `[← h4]`.
+
+Move the coercions through the operations in `at h5 ⊢`. Take the linear combination `h2 - h1 - h3 - 2 * I * h5`. Establish `h7` using `congrArg Complex.im h6`. Simplify using `only [sub_im, conj_im, mul_im, mul_re, ofReal_re, ofReal_im, I_re, I_im, re_ofNat, im_ofNat] at h7`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem im_hermForm_imInv (hs : τ.IsSymm) (hp : (τ.map Complex.im).PosDef)
     (u v u' v' : Fin g → ℝ) :
     (hermForm (imInv τ) ((fun i => (v i : ℂ)) + τ *ᵥ fun i => (u i : ℂ))

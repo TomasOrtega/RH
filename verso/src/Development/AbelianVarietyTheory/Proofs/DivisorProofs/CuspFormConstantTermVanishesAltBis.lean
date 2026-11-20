@@ -7,6 +7,9 @@ open scoped TensorProduct NNReal Matrix ComplexConjugate
 open NumberField IsDedekindDomain MeasureTheory Filter Topology Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes GlobalTheory.AdelicU
 
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.StdPar.isCuspOn_transl_compact | exact GlobalTheory.StdPar.isCuspOn_transl_compact | (intros; apply GlobalTheory.StdPar.isCuspOn_transl_compact <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.cusp_form_constant_term_vanishes_alt : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E), IsCMExt F E σ →
     ∀ (n : ℕ) (J : Matrix (Fin n) (Fin n) E), IsHermND σ J →
       ∀ (r : ℕ) (X Y : Matrix (Fin n) (Fin r) E), GlobalTheory.SiegelSet.IsWittFrame σ J X Y → ∀ (S : Finset (Fin r)) (K : Subgroup (GAd σ J)), K ≤ infPts σ J →

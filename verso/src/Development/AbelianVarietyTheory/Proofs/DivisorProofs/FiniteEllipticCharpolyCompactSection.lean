@@ -11,6 +11,9 @@ attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalDat
 
 namespace GlobalTheory.FinChar
 
+/- English proof (translation)
+Take `⟨hm, hd, -, hr⟩` from `hP`. Establish `h` using `Polynomial.coeff_le_of_roots_le (f := τ) (B := 1) k hm (IsAlgClosed.splits _) (fun z hz => (hr τ z hz).le)`. Rewrite `h` using `[Polynomial.coeff_map, one_pow, one_mul, hd]`. Conclude with `h.trans (by exact_mod_cast Nat.choose_le_two_pow n k)`.
+-/
 theorem norm_coeff_le_of_mem_ell (E : Type) [Field E] (n : ℕ) (P : E[X]) (hP : P ∈ Ell E n) (τ : E →+* ℂ) (k : ℕ) :
     ‖τ (P.coeff k)‖ ≤ (2 : ℝ) ^ n := by
   obtain ⟨hm, hd, -, hr⟩ := hP
@@ -18,6 +21,31 @@ theorem norm_coeff_le_of_mem_ell (E : Type) [Field E] (n : ℕ) (P : E[X]) (hP :
   rw [Polynomial.coeff_map, one_pow, one_mul, hd] at h
   exact h.trans (by exact_mod_cast Nat.choose_le_two_pow n k)
 
+/- English proof (translation)
+Introduce `E _ _ _ n S hS C hC hK`. Use `set T := {P : E[X] | P ∈ Ell E n ∧ ∀ w ∈ S, ∃ g ∈ C w, g.val.charpoly = atPl w P} with hT`. Use `choose σ hσ using fun w => (hS w).exists`. Use `choose B hB using fun w => GlobalTheory.T.charpoly_coeffs_valued_bounded_on_compact_GL E n w (C w) (hC w)`. Establish `loc : ∀ P ∈ T, ∀ u ∈ S, (∀ k, u.valuation E (P.coeff k) ≤ B u) ∧ u.valuation E (P.coeff 0)⁻¹ ≤ B u ∧ (C u ⊆ GlobalTheory.LFun.KGL u n → (∀ k, u.valuation E (P.coeff k) ≤ 1) ∧ u.valuation E (P.coeff 0) = 1)`.
+
+Introduce `P hP u hu`. Take `⟨g, hg, hgP⟩` from `hP.2 u hu`. Establish `e : ∀ k, u.valuation E (P.coeff k) = Valued.v (g.val.charpoly.coeff k)` using `fun k => by`. Rewrite using `[hgP, Polynomial.coeff_map]`. Conclude with `(HeightOneSpectrum.valuedAdicCompletion_eq_valuation' u _).symm`.
+
+Use `⟨fun k => (e k).trans_le ((hB u g hg).1 k), ?_, fun hsub => ?_⟩` and prove the remaining obligations. Rewrite using `[map_inv₀, e, ← map_inv₀]`. Conclude with `(hB u g hg).2`. Use `GlobalTheory.T.charpoly_integral_unit_constCoeff_of_mem_maxCompact E n u g (hsub hg)` as an intermediate fact. Conclude with `⟨fun k => (e k).trans_le (this.1 k), (e 0).trans this.2⟩`.
+
+Establish `glob : ∀ P ∈ T, ∀ w : Pl E, ∀ k, w.valuation E (P.coeff k) ≤ max (B (σ w)) (B (σ w) * B (σ w)) ∧ (C (σ w) ⊆ GlobalTheory.LFun.KGL (σ w) n → w.valuation E (P.coeff k) ≤ 1)`. Introduce `P hP w k`. Establish `hu` using `loc P hP (σ w) (hσ w).1`. Take `⟨h0, hc⟩` from `GlobalTheory.T.elliptic_poly_conj_selfReciprocal_coeff E n P hP.1`. Break down `GlobalTheory.T.valuation_eq_or_conj_of_under_maximalRealSubfield_eq E w (σ w) (hσ w).2 with h | h` into its components or cases.
+
+Rewrite using `[h]`. Conclude with `⟨(hu.1 k).trans (le_max_left _ _), fun hs => (hu.2.2 hs).1 k⟩`. Rewrite using `[h]`. Distinguish the cases in `hk : k ≤ n`. Establish `e : IsCMField.complexConj E (P.coeff k) = P.coeff (n - k) * (P.coeff 0)⁻¹`.
+
+Rewrite using `[← hc k hk]`. Clear the denominators using the available nonvanishing facts. Rewrite using `[e, map_mul]`. Use `⟨(mul_le_mul' (hu.1 _) hu.2.1).trans (le_max_right _ _), fun hs => ?_⟩` and prove the remaining obligations. Rewrite using `[map_inv₀, (hu.2.2 hs).2, inv_one, mul_one]`.
+
+Conclude with `(hu.2.2 hs).1 _`. Rewrite using `[Polynomial.coeff_eq_zero_of_natDegree_lt (by rw [hP.1.2.1]; omega), map_zero, map_zero]`. Conclude with `⟨zero_le', fun _ => zero_le'⟩`. Use `set A := {x : E | ∃ P ∈ T, ∃ k, P.coeff k = x} with hA`. Establish `hAfin : A.Finite`.
+
+Use `GlobalTheory.T.finite_of_bounded_embeddings_and_valuations E A ((2 : ℝ) ^ n) ?_ ?_ ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨P, hP, k, rfl⟩ τ`. Conclude with `norm_coeff_le_of_mem_ell E n P hP.1 τ k`. Introduce `w; exact ⟨_, by rintro _ ⟨P, hP, k, rfl⟩; exact (glob P hP w k).1⟩`. Establish `hbad : {u : Pl E | ¬ C u ⊆ GlobalTheory.LFun.KGL u n}.Finite` using `Filter.eventually_cofinite.1 hK`.
+
+Establish `: {w : Pl E | ¬ ∀ x ∈ A, w.valuation E x ≤ 1} ⊆ ⋃ u ∈ {u : Pl E | ¬ C u ⊆ GlobalTheory.LFun.KGL u n}, {w : Pl E | w.under (𝓞 (maximalRealSubfield E)) = u.under (𝓞 (maximalRealSubfield E))}`. Introduce `w hw`. Simplify using `only [Set.mem_setOf_eq, Set.mem_iUnion] at hw ⊢`. Use `⟨σ w, fun hs => hw ?_, (hσ w).2.symm⟩` and prove the remaining obligations. Introduce and unpack `_ ⟨P, hP, k, rfl⟩`.
+
+Conclude with `(glob P hP w k).2 hs`. Use `Filter.eventually_cofinite.2 (Set.Finite.subset (hbad.biUnion fun u _ => ?_) this)` and prove the remaining obligations. Conclude with `((IsDedekindDomain.primesOver_finite (u.under (𝓞 (maximalRealSubfield E))).asIdeal (𝓞 E)).preimage (fun a _ b _ h => HeightOneSpectrum.ext h)).subset fun w hw => ⟨w.isPrime, ⟨(congrArg HeightOneSpectrum.asIdeal hw).symm⟩⟩`. Use `Set.Finite.of_finite_image (f := fun P : E[X] => fun k : Fin (n + 1) => P.coeff k) ?_ ?_` and prove the remaining obligations. Use `(Set.Finite.pi (t := fun _ : Fin (n + 1) => A) fun _ => hAfin).subset ?_` and prove the remaining obligations.
+
+Introduce and unpack `_ ⟨P, hP, rfl⟩ k _`. Conclude with `⟨P, hP, k, rfl⟩`. Introduce `P hP Q hQ h`. Use extensionality with `k`. Distinguish the cases in `hk : k ≤ n`.
+
+Conclude with `congrFun h ⟨k, Nat.lt_succ_of_le hk⟩`. Rewrite using `[Polynomial.coeff_eq_zero_of_natDegree_lt (by rw [hP.1.2.1]; omega), Polynomial.coeff_eq_zero_of_natDegree_lt (by rw [hQ.1.2.1]; omega)]`.
+-/
 theorem finite_ell_charpoly : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (n : ℕ) (S : Set (Pl E)), IsSection S → ∀ C : ∀ w : Pl E, Set (GLw n w), (∀ w, IsCompact (C w)) → (∀ᶠ w in cofinite, C w ⊆ GlobalTheory.LFun.KGL w n) → {P : E[X] | P ∈ Ell E n ∧ ∀ w ∈ S, ∃ g ∈ C w, g.val.charpoly = atPl w P}.Finite := by
   intro E _ _ _ n S hS C hC hK
   set T := {P : E[X] | P ∈ Ell E n ∧ ∀ w ∈ S, ∃ g ∈ C w, g.val.charpoly = atPl w P} with hT

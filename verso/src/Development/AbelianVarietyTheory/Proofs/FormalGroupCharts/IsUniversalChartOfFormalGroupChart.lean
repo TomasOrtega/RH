@@ -15,15 +15,29 @@ open ReciprocityTheory.ChartRestriction.G.Chart
 
 variable {R : Type} [CommRing R]
 
+/- English proof (translation)
+The claim follows from `jet_ext fun j => by rw [AlgHom.comp_apply, jetAug_zR]; exact (jetAug_zR (R := R) 0 j).symm`.
+-/
 theorem jetAug_eq (κ : Type) (m : ℕ) : jetAug R κ m = (jetAug R κ 0).comp (jetZeroR R κ m) :=
   jet_ext fun j => by rw [AlgHom.comp_apply, jetAug_zR]; exact (jetAug_zR (R := R) 0 j).symm
 
+/- English proof (translation)
+The claim follows from `Ideal.Quotient.eq_zero_iff_mem.2 (by rw [zero_add, pow_one]; exact Ideal.subset_span ⟨j, rfl⟩)`.
+-/
 theorem jetZero_zR (κ : Type) (m : ℕ) (j : κ) : jetZeroR R κ m (zR m j) = 0 :=
   Ideal.Quotient.eq_zero_iff_mem.2 (by rw [zero_add, pow_one]; exact Ideal.subset_span ⟨j, rfl⟩)
 
+/- English proof (translation)
+The claim follows from `jet_ext fun j => by rw [AlgHom.comp_apply, jetAug_zR, map_zero, jetZero_zR]`.
+-/
 theorem jetZero_eq (κ : Type) (m : ℕ) : jetZeroR R κ m = (Algebra.ofId R (JetR R κ 0)).comp (jetAug R κ m) :=
   jet_ext fun j => by rw [AlgHom.comp_apply, jetAug_zR, map_zero, jetZero_zR]
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce `h j`. Use `AlgHom.congr_fun h (zR m j)` as an intermediate fact. Rewrite `this` using `[AlgHom.comp_apply, jetAug_zR]`. Rewrite using `[jetZero_eq, AlgHom.comp_apply, this, map_zero]`.
+
+Introduce `h`. Use `jet_ext fun j => ?_` and prove the remaining obligations. Rewrite using `[AlgHom.comp_apply, jetAug_zR, jetAug_eq, AlgHom.comp_apply, h, map_zero]`.
+-/
 theorem aug_comp_iff {κ κ' : Type} {m : ℕ} (ψ : JetR R κ m →ₐ[R] JetR R κ' m) :
     (jetAug R κ' m).comp ψ = jetAug R κ m ↔ ∀ j, jetZeroR R κ' m (ψ (zR m j)) = 0 := by
   constructor
@@ -35,6 +49,9 @@ theorem aug_comp_iff {κ κ' : Type} {m : ℕ} (ψ : JetR R κ m →ₐ[R] JetR 
     refine jet_ext fun j => ?_
     rw [AlgHom.comp_apply, jetAug_zR, jetAug_eq, AlgHom.comp_apply, h, map_zero]
 
+/- English proof (translation)
+Apply `Over.OverMorphism.ext` to reduce the goal to its premises. Rewrite using `[spMap_left]`. Conclude with `Spec.map_id _`.
+-/
 theorem spMap_id' (A : Type) [CommRing A] [Algebra R A] : spMap (R₀ := R) (AlgHom.id R A) = 𝟙 _ := by
   apply Over.OverMorphism.ext
   rw [spMap_left]
@@ -43,11 +60,23 @@ theorem spMap_id' (A : Type) [CommRing A] [Algebra R A] : spMap (R₀ := R) (Alg
 def jetRen {κ κ' : Type} (f : κ → κ') (m : ℕ) : JetR R κ m →ₐ[R] JetR R κ' m :=
   jetLift R (RingHom.ker (jetAug R κ' m)) (ker_jetAug_pow κ' m) (fun j => zR m (f j)) (fun j => zR_mem_ker m (f j))
 
+/- English proof (translation)
+The claim follows from `jetLift_zR _ _ _ _ j`.
+-/
 theorem jetRen_zR {κ κ' : Type} (f : κ → κ') (m : ℕ) (j : κ) : jetRen (R := R) f m (zR m j) = zR m (f j) :=
   jetLift_zR _ _ _ _ j
 
 variable {G : Over (Spec (CommRingCat.of R))} [GrpObj G]
 
+/- English proof (translation)
+Take `⟨n, z, -, hz0, hzu⟩` from `univChartLoc G`. Establish `hxa : spMap (jetAug R κ m) ≫ x = 1`. Rewrite using `[jetAug_eq, ← spMap_comp, Category.assoc, h0, comp_one']`. Take `⟨α, ⟨ha1, ha2⟩, -⟩` from `hzu (JetR R κ m) (jetAug R κ m) m (ker_jetAug_pow κ m) x hxa`. Take `⟨β, ⟨hb1, hb2⟩, -⟩` from `hu (Fin n) (z m) (hz0 m)`.
+
+Establish `hb1'` using `(aug_comp_iff β).2 hb1`. Establish `hab : α.comp β = AlgHom.id R _`. Use `(hu κ x h0).unique ⟨(aug_comp_iff _).1 ?_, ?_⟩ ⟨fun j => jetZero_zR κ m j, ?_⟩` and prove the remaining obligations. Rewrite using `[← AlgHom.comp_assoc, ha1, hb1']`. Rewrite using `[← spMap_comp, Category.assoc, ← hb2, ← ha2]`.
+
+Rewrite using `[spMap_id', Category.id_comp]`. Take `⟨ψ, ⟨h1, h2⟩, hψ⟩` from `hzu A aug m hA y hy`. Use `⟨ψ.comp β, ⟨?_, ?_⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[← AlgHom.comp_assoc, h1, hb1']`. Rewrite using `[← spMap_comp, Category.assoc, ← hb2, ← h2]`.
+
+Introduce and unpack `φ ⟨g1, g2⟩`. Establish `: φ.comp α = ψ` using `hψ _ ⟨by rw [← AlgHom.comp_assoc, g1, ha1], by`. Rewrite using `[← spMap_comp, Category.assoc, ← ha2, ← g2]⟩`. Rewrite using `[← this, AlgHom.comp_assoc, hab, AlgHom.comp_id]`.
+-/
 theorem univ_all [IsLocalRing R] [Smooth G.hom] {κ : Type} {m : ℕ} (x : sp (R₀ := R) (JetR R κ m) ⟶ G)
     (h0 : spMap (jetZeroR R κ m) ≫ x = 1)
     (hu : ∀ (κ' : Type) (y : sp (R₀ := R) (JetR R κ' m) ⟶ G), spMap (jetZeroR R κ' m) ≫ y = 1 →
@@ -75,6 +104,17 @@ theorem univ_all [IsLocalRing R] [Smooth G.hom] {κ : Type} {m : ℕ} (x : sp (R
       rw [← spMap_comp, Category.assoc, ← ha2, ← g2]⟩
     rw [← this, AlgHom.comp_assoc, hab, AlgHom.comp_id]
 
+/- English proof (translation)
+Use `⟨fun m => ?_, fun m => ?_, fun A _ _ aug m hA y hy => ?_⟩` and prove the remaining obligations. Establish `: (jetTruncR R (Fin d) m).comp (jetRen e (m + 1)) = (jetRen e m).comp (jetTruncR R κ m)` using `jet_ext fun j => by`. Rewrite using `[AlgHom.comp_apply, AlgHom.comp_apply, jetRen_zR]`. Conclude with `(jetRen_zR (R := R) e m j).symm`. Use `show _ ≫ _ ≫ _ = _ ≫ _`.
+
+Rewrite using `[← Category.assoc, spMap_comp, this, ← spMap_comp, Category.assoc, ht]`. Establish `: (jetZeroR R (Fin d) m).comp (jetRen e m) = (jetRen e 0).comp (jetZeroR R κ m)` using `jet_ext fun j => by`. Rewrite using `[AlgHom.comp_apply, AlgHom.comp_apply, jetRen_zR, jetZero_zR, jetZero_zR, map_zero]`. Use `show _ ≫ _ ≫ _ = _`. Rewrite using `[← Category.assoc, spMap_comp, this, ← spMap_comp, Category.assoc, h0, comp_one']`.
+
+Take `⟨ψ, ⟨h1, h2⟩, hψ⟩` from `univ_all (x m) (h0 m) (fun κ' => hu κ' m) A aug hA y hy`. Establish `e1 : (jetRen (R` using `R) e m).comp (jetRen e.symm m) = AlgHom.id R _ := jet_ext fun j => by rw [AlgHom.comp_apply, jetRen_zR, jetRen_zR, e.apply_symm_apply]; rfl`. Establish `e2 : (jetRen (R` using `R) e.symm m).comp (jetRen e m) = AlgHom.id R _ := jet_ext fun j => by rw [AlgHom.comp_apply, jetRen_zR, jetRen_zR, e.symm_apply_apply]; rfl`. Establish `a1 : (jetAug R κ m).comp (jetRen e.symm m) = jetAug R (Fin d) m` using `jet_ext fun j => by rw [AlgHom.comp_apply, jetRen_zR, jetAug_zR, jetAug_zR]`. Establish `a2 : (jetAug R (Fin d) m).comp (jetRen e m) = jetAug R κ m` using `jet_ext fun j => by rw [AlgHom.comp_apply, jetRen_zR, jetAug_zR, jetAug_zR]`.
+
+Use `⟨ψ.comp (jetRen e.symm m), ⟨?_, ?_⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[← AlgHom.comp_assoc, h1, a1]`. Use `show y = _ ≫ _ ≫ _`. Rewrite using `[← Category.assoc, spMap_comp, AlgHom.comp_assoc, e2, AlgHom.comp_id]`. Conclude with `h2`.
+
+Introduce and unpack `φ ⟨g1, g2⟩`. Establish `: φ.comp (jetRen e m) = ψ` using `hψ _ ⟨by rw [← AlgHom.comp_assoc, g1, a2], by`. Rewrite using `[← spMap_comp, Category.assoc]`. Conclude with `g2⟩`. Rewrite using `[← this, AlgHom.comp_assoc, e1, AlgHom.comp_id]`.
+-/
 theorem isUnivChart_ren [IsLocalRing R] [Smooth G.hom] {κ : Type} {d : ℕ} (e : κ ≃ Fin d)
     (x : ∀ m, sp (R₀ := R) (JetR R κ m) ⟶ G)
     (ht : ∀ m, spMap (jetTruncR R κ m) ≫ x (m + 1) = x m)
@@ -118,6 +158,9 @@ end Jets
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Geo.Tor ReciprocityTheory.ChartRestriction.G.Geo.Tor.Germ ReciprocityTheory.ChartRestriction.G.Pdiv.ChartF
 open scoped CategoryTheory.Obj
 
+/- English proof (translation)
+Introduce `T _ _ G _ _ hG d F x hx`. Use `haveI := hG`. Set `e : Fin 1 × Fin d ≃ Fin d` to `Equiv.uniqueProd (Fin d) (Fin 1)`. Use `⟨fun m => Chart.spMap (jetRen e m) ≫ x m, isUnivChart_ren e x hx.trunc hx.zero hx.univ, fun m => jetRen e m, fun m j => jetRen_zR e m _, fun m => rfl⟩` and prove the remaining obligations.
+-/
 theorem isUnivChart_of_isChartJ : ∀ (T : Type) [CommRing T] [IsLocalRing T] (G : Over (Sp T)) [GrpObj G] [IsCommMonObj G], Smooth G.hom → ∀ (d : ℕ) (F : FGLaw T d) (x : ∀ m : ℕ, algOver T (JetR T (Fin 1 × Fin d) m) ⟶ G), IsChartJ G F x → ∃ x0 : GlobalTheory.JetSer.Fam G (Fin d), Chart.IsUnivChart G d x0 ∧ ∃ ρ : ∀ m, JetR T (Fin 1 × Fin d) m →ₐ[T] Chart.JetR T (Fin d) m, (∀ m j, ρ m (zR m ((0 : Fin 1), j)) = Chart.zR m j) ∧ ∀ m, (x0 m).left = spMap (ρ m : JetR T (Fin 1 × Fin d) m →+* Chart.JetR T (Fin d) m) ≫ (x m).left := by
   intro T _ _ G _ _ hG d F x hx
   haveI := hG

@@ -27,11 +27,27 @@ noncomputable def rowLat (E : Type) [Field E] [NumberField E] (k : ℕ) (Λ₀ :
       convert this using 1
       funext _; simp }
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem mem_rowLat {E : Type} [Field E] [NumberField E] {k : ℕ} {Λ₀ : Submodule (𝓞 E) (Fin 1 → E)}
     {Λ' : Submodule (𝓞 E) (Fin k → E)} {z : VecInf E k} : z ∈ rowLat E k Λ₀ Λ' ↔
     ∃ τ : Fin k → E, (∀ y ∈ Λ', (fun _ => τ ⬝ᵥ y) ∈ Λ₀) ∧ z = fun w b => w.embedding (τ b) := by
   rfl
 
+/- English proof (translation)
+Set `e : VecInf E k ≃L[ℝ] (InfinitePlace E → Fin 1 → Fin k → ℂ)` to `(LinearEquiv.piCongrRight fun _ : InfinitePlace E => (LinearEquiv.funUnique (Fin 1) ℝ (Fin k → ℂ)).symm).toContinuousLinearEquiv`. Establish `hes : ∀ x w b, e.symm x w b = x w 0 b` using `fun _ _ _ => rfl`. Establish `hmp : MeasurePreserving e volume volume` using `volume_preserving_pi fun _ : InfinitePlace E => MeasurePreserving.symm _ (volume_preserving_funUnique (Fin 1) (Fin k → ℂ))`. Set `L' : Submodule ℤ (InfinitePlace E → Fin 1 → Fin k → ℂ)` to `(rowLat E k Λ₀ Λ').comap ((e.symm : _ →L[ℝ] VecInf E k).toLinearMap.restrictScalars ℤ)`. Establish `hL' : ∀ z, z ∈ L' ↔ e.symm z ∈ rowLat E k Λ₀ Λ'` using `fun _ => Iff.rfl`.
+
+Use `GlobalTheory.HomCovolume.HasCov.of_measurePreserving e hmp (L' := L') (fun x => by rw [hL', ContinuousLinearEquiv.symm_apply_apply]) ?_` and prove the remaining obligations. Establish `hpos : ∀ j, 0 < detNorm E j (oneInf E j)` using `fun j => by rw [detNorm_oneInf]; exact one_pos`. Take `⟨hd, hz, hc⟩` from `GlobalTheory.HomCovolume.homCovolume E hE 1 k Λ₀ Λ' h₀ h' (oneInf E 1) (oneInf E k) (hpos 1) (hpos k) L' (by`. Introduce `z`. Rewrite using `[hL', mem_rowLat]`.
+
+Simplify using `only [of_oneInf, inv_one]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨τ, hτ, hzτ⟩`. Use `⟨Matrix.of fun _ b => τ b, fun y hy => ?_, fun w => ?_⟩` and prove the remaining obligations. Conclude with `hτ y hy`.
+
+Use extensionality with `i b fin_cases i`. Use `congrFun (congrFun hzτ w) b` as an intermediate fact. Simplify `this` using `[hes]`. Introduce and unpack `⟨T, hT, hTz⟩`. Use `⟨fun b => T 0 b, fun y hy => ?_, ?_⟩` and prove the remaining obligations.
+
+Use `hT y hy using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `i`. Use `fin_cases i`. Both sides reduce to the same expression. Use function extensionality and compare the values at `w b`.
+
+Use `congrFun (congrFun (hTz w) 0) b` as an intermediate fact. Simplify `this)` using `[hes]`. Conclude with `⟨hd, hz, by rw [hc, pow_one]⟩`.
+-/
 theorem hasCov_rowLat (E : Type) [Field E] [NumberField E] (hE : IsTotallyComplex E) (k : ℕ)
     (Λ₀ : Submodule (𝓞 E) (Fin 1 → E)) (Λ' : Submodule (𝓞 E) (Fin k → E)) (h₀ : Submodule.IsLattice E Λ₀)
     (h' : Submodule.IsLattice E Λ') : GlobalTheory.HomCovolume.HasCov volume (rowLat E k Λ₀ Λ')
@@ -76,6 +92,19 @@ theorem hasCov_rowLat (E : Type) [Field E] [NumberField E] (hE : IsTotallyComple
           simpa [hes] using this)
   exact ⟨hd, hz, by rw [hc, pow_one]⟩
 
+/- English proof (translation)
+Introduce `E _ _ hE k Λ₀ Λ' h₀ h'`. Take `⟨hd, hz, hc⟩` from `hasCov_rowLat E hE k Λ₀ Λ' h₀ h'`. Set `b` to `Module.Free.chooseBasis ℤ (rowLat E k Λ₀ Λ')`. Establish `hspan` using `b.ofZLatticeBasis_span ℝ`. Establish `hF` using `ZLattice.isAddFundamentalDomain b (volume : Measure (VecInf E k))`.
+
+Use `⟨ZSpan.fundamentalDomain (b.ofZLatticeBasis ℝ), ZSpan.fundamentalDomain_measurableSet _, ?_, fun T => ?_, fun T τ hτ hT hT' => ?_⟩` and prove the remaining obligations. Rewrite using `[← hc, ZLattice.covolume_eq_measure_fundamentalDomain _ _ hF]`. Establish `hfin : (volume : Measure (VecInf E k)) (ZSpan.fundamentalDomain (b.ofZLatticeBasis ℝ)) ≠ ⊤` using `(ZSpan.fundamentalDomain_isBounded (b.ofZLatticeBasis ℝ)).measure_lt_top.ne`. Conclude with `(ofReal_measureReal hfin).symm`. Take `⟨v, hv, -⟩` from `ZSpan.exist_unique_vadd_mem_fundamentalDomain (b.ofZLatticeBasis ℝ) T`.
+
+Establish `hvL : (v : VecInf E k) ∈ rowLat E k Λ₀ Λ'` using `hspan.le v.2`. Take `⟨τ, hτ, hvτ⟩` from `mem_rowLat.1 hvL`. Use `⟨τ, hτ, ?_⟩` and prove the remaining obligations. Use `hv using 1` and compare the differences between its conclusion and the goal. Rewrite using `[Submodule.vadd_def, vadd_eq_add, hvτ]`.
+
+Use function extensionality and compare the values at `w b`. Simplify using `[add_comm]`. Establish `hzL : (fun (w : InfinitePlace E) (b : Fin k) => w.embedding (τ b)) ∈ Submodule.span ℤ (Set.range (b.ofZLatticeBasis ℝ))` using `hspan.ge (mem_rowLat.2 ⟨τ, hτ, rfl⟩)`. Establish `hu` using `(ZSpan.exist_unique_vadd_mem_fundamentalDomain (b.ofZLatticeBasis ℝ) T).unique (y₁ := ⟨_, hzL⟩) (y₂ := 0) (by`. Rewrite using `[Submodule.vadd_def, vadd_eq_add]`.
+
+Use `hT' using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `w b`. Simplify `hT)` using `[add_comm]) (by simpa`. Establish `h0 : (fun (w : InfinitePlace E) (b : Fin k) => w.embedding (τ b)) = 0` using `congrArg Subtype.val hu`. Take `⟨w⟩` from `(inferInstance : Nonempty (InfinitePlace E))`.
+
+Use function extensionality and compare the values at `b`. Use `congrFun (congrFun h0 w) b` as an intermediate fact. Simplify using `using this`.
+-/
 theorem rowDomain : ∀ (E : Type) [Field E] [NumberField E], IsTotallyComplex E → ∀ (k : ℕ) (Λ₀ : Submodule (𝓞 E) (Fin 1 → E)) (Λ' : Submodule (𝓞 E) (Fin k → E)), Submodule.IsLattice E Λ₀ → Submodule.IsLattice E Λ' → ∃ P : Set (VecInf E k), MeasurableSet P ∧ volume P = ENNReal.ofReal (covAt E 1 (latAt E 1 Λ₀ (oneInf E 1)) ^ k * (Formalism.HermitianLatticesTheory.vInv E ^ (Formalism.HermitianLatticesTheory.fDeg E * k) / covAt E k (latAt E k Λ' (oneInf E k)))) ∧ (∀ T : VecInf E k, ∃ τ : Fin k → E, (∀ y ∈ Λ', (fun _ => τ ⬝ᵥ y) ∈ Λ₀) ∧ (fun w b => T w b + w.embedding (τ b)) ∈ P) ∧ ∀ (T : VecInf E k) (τ : Fin k → E), (∀ y ∈ Λ', (fun _ => τ ⬝ᵥ y) ∈ Λ₀) → T ∈ P → (fun w b => T w b + w.embedding (τ b)) ∈ P → τ = 0 := by
   intro E _ _ hE k Λ₀ Λ' h₀ h'
   obtain ⟨hd, hz, hc⟩ := hasCov_rowLat E hE k Λ₀ Λ' h₀ h'

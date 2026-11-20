@@ -23,27 +23,48 @@ variable {K ι : Type} [NormedField K] [IsUltrametricDist K]
 def Cg (p : ℕ) (f g : MvPowerSeries ι K) : Prop :=
   ∀ n, ‖MvPowerSeries.coeff n (f - g)‖ ≤ (p : ℝ)⁻¹
 
+/- English proof (translation)
+Check the signs of the components of the expression.
+-/
 theorem pinv_nonneg (p : ℕ) : (0 : ℝ) ≤ (p : ℝ)⁻¹ := by positivity
 
+/- English proof (translation)
+The claim follows from `Nat.cast_inv_le_one p`.
+-/
 theorem pinv_le_one (p : ℕ) : (p : ℝ)⁻¹ ≤ 1 := Nat.cast_inv_le_one p
 
+/- English proof (translation)
+Introduce `n` and use `by rw [map_add] exact (IsUltrametricDist.norm_add_le_max _ _).trans (max_le (hf n) (hg n))`.
+-/
 theorem integral_add {f g : MvPowerSeries ι K} (hf : Integral f) (hg : Integral g) :
     Integral (f + g) := fun n => by
   rw [map_add]
   exact (IsUltrametricDist.norm_add_le_max _ _).trans (max_le (hf n) (hg n))
 
+/- English proof (translation)
+Introduce `n` and use `by rw [map_neg, norm_neg]; exact hf n`.
+-/
 theorem integral_neg {f : MvPowerSeries ι K} (hf : Integral f) : Integral (-f) := fun n => by
   rw [map_neg, norm_neg]; exact hf n
 
+/- English proof (translation)
+Rewrite using `[sub_eq_add_neg]`. Conclude with `integral_add hf (integral_neg hg)`.
+-/
 theorem integral_sub {f g : MvPowerSeries ι K} (hf : Integral f) (hg : Integral g) :
     Integral (f - g) := by
   rw [sub_eq_add_neg]; exact integral_add hf (integral_neg hg)
 
+/- English proof (translation)
+Introduce `n` and use `by rw [map_sum] exact IsUltrametricDist.norm_sum_le_of_forall_le_of_nonneg zero_le_one fun a ha => h a ha n`.
+-/
 theorem integral_sum {α : Type} (s : Finset α) (F : α → MvPowerSeries ι K)
     (h : ∀ a ∈ s, Integral (F a)) : Integral (∑ a ∈ s, F a) := fun n => by
   rw [map_sum]
   exact IsUltrametricDist.norm_sum_le_of_forall_le_of_nonneg zero_le_one fun a ha => h a ha n
 
+/- English proof (translation)
+Introduce `n`. Rewrite using `[MvPowerSeries.coeff_C]`. Use `split_ifs`. Conclude with `ha`. Simplify using the standard rewrite rules.
+-/
 theorem integral_C {a : K} (ha : ‖a‖ ≤ 1) : Integral (MvPowerSeries.C a : MvPowerSeries ι K) := by
   classical
   intro n
@@ -52,18 +73,30 @@ theorem integral_C {a : K} (ha : ‖a‖ ≤ 1) : Integral (MvPowerSeries.C a : 
   · exact ha
   · simp
 
+/- English proof (translation)
+Introduce `n`. Rewrite using `[MvPowerSeries.coeff_X]`. Apply the tactic sequence `split_ifs <;> simp`.
+-/
 theorem integral_X (x : ι) : Integral (MvPowerSeries.X x : MvPowerSeries ι K) := by
   classical
   intro n
   rw [MvPowerSeries.coeff_X]
   split_ifs <;> simp
 
+/- English proof (translation)
+Introduce `n` and use `by simp`.
+-/
 theorem integral_zero : Integral (0 : MvPowerSeries ι K) := fun n => by simp
 
+/- English proof (translation)
+Rewrite using `[← map_natCast (MvPowerSeries.C : K →+* MvPowerSeries ι K)]`. Conclude with `integral_C (IsUltrametricDist.norm_natCast_le_one K k)`.
+-/
 theorem integral_natCast (k : ℕ) : Integral ((k : ℕ) : MvPowerSeries ι K) := by
   rw [← map_natCast (MvPowerSeries.C : K →+* MvPowerSeries ι K)]
   exact integral_C (IsUltrametricDist.norm_natCast_le_one K k)
 
+/- English proof (translation)
+Rewrite using `[MvPowerSeries.coeff_mul]`. Use `IsUltrametricDist.norm_sum_le_of_forall_le_of_nonneg hc fun x _ => ?_` and prove the remaining obligations. Rewrite using `[norm_mul]`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem small_mul {c : ℝ} (hc : 0 ≤ c) {a h : MvPowerSeries ι K} (ha : Integral a)
     (hh : ∀ n, ‖MvPowerSeries.coeff n h‖ ≤ c) (n : ι →₀ ℕ) :
     ‖MvPowerSeries.coeff n (a * h)‖ ≤ c := by
@@ -75,35 +108,59 @@ theorem small_mul {c : ℝ} (hc : 0 ≤ c) {a h : MvPowerSeries ι K} (ha : Inte
         mul_le_mul (ha _) (hh _) (norm_nonneg _) zero_le_one
     _ = c := one_mul c
 
+/- English proof (translation)
+Introduce `n` and use `by rw [sub_self, map_zero, norm_zero]; exact pinv_nonneg p`.
+-/
 theorem cg_refl (p : ℕ) (f : MvPowerSeries ι K) : Cg p f f := fun n => by
   rw [sub_self, map_zero, norm_zero]; exact pinv_nonneg p
 
+/- English proof (translation)
+The claim follows from `h ▸ cg_refl p f`.
+-/
 theorem cg_of_eq {p : ℕ} {f g : MvPowerSeries ι K} (h : f = g) : Cg p f g := h ▸ cg_refl p f
 
+/- English proof (translation)
+Introduce `n` and use `by rw [← neg_sub, map_neg, norm_neg]; exact h n`.
+-/
 theorem cg_symm {p : ℕ} {f g : MvPowerSeries ι K} (h : Cg p f g) : Cg p g f := fun n => by
   rw [← neg_sub, map_neg, norm_neg]; exact h n
 
+/- English proof (translation)
+Introduce `n` and use `by rw [← sub_add_sub_cancel f g k, map_add] exact (IsUltrametricDist.norm_add_le_max _ _).trans (max_le (h1 n) (h2 n))`.
+-/
 theorem cg_trans {p : ℕ} {f g k : MvPowerSeries ι K} (h1 : Cg p f g) (h2 : Cg p g k) :
     Cg p f k := fun n => by
   rw [← sub_add_sub_cancel f g k, map_add]
   exact (IsUltrametricDist.norm_add_le_max _ _).trans (max_le (h1 n) (h2 n))
 
+/- English proof (translation)
+Introduce `n` and use `by rw [add_sub_add_comm, map_add] exact (IsUltrametricDist.norm_add_le_max _ _).trans (max_le (h1 n) (h2 n))`.
+-/
 theorem cg_add {p : ℕ} {f g f' g' : MvPowerSeries ι K} (h1 : Cg p f g) (h2 : Cg p f' g') :
     Cg p (f + f') (g + g') := fun n => by
   rw [add_sub_add_comm, map_add]
   exact (IsUltrametricDist.norm_add_le_max _ _).trans (max_le (h1 n) (h2 n))
 
+/- English proof (translation)
+Introduce `n` and use `by rw [sub_sub_sub_comm, map_sub, sub_eq_add_neg] refine (IsUltrametricDist.norm_add_le_max _ _).trans (max_le (h1 n) ?_) rw [norm_neg]; exact h2 n`.
+-/
 theorem cg_sub {p : ℕ} {f g f' g' : MvPowerSeries ι K} (h1 : Cg p f g) (h2 : Cg p f' g') :
     Cg p (f - f') (g - g') := fun n => by
   rw [sub_sub_sub_comm, map_sub, sub_eq_add_neg]
   refine (IsUltrametricDist.norm_add_le_max _ _).trans (max_le (h1 n) ?_)
   rw [norm_neg]; exact h2 n
 
+/- English proof (translation)
+Introduce `n` and use `by rw [← Finset.sum_sub_distrib, map_sum] exact IsUltrametricDist.norm_sum_le_of_forall_le_of_nonneg (pinv_nonneg p) fun a ha => h a ha n`.
+-/
 theorem cg_sum {p : ℕ} {α : Type} (s : Finset α) (F G : α → MvPowerSeries ι K)
     (h : ∀ a ∈ s, Cg p (F a) (G a)) : Cg p (∑ a ∈ s, F a) (∑ a ∈ s, G a) := fun n => by
   rw [← Finset.sum_sub_distrib, map_sum]
   exact IsUltrametricDist.norm_sum_le_of_forall_le_of_nonneg (pinv_nonneg p) fun a ha => h a ha n
 
+/- English proof (translation)
+Introduce `n` and use `by have e : f = (f - g) + g := by ring rw [e, map_add] exact (IsUltrametricDist.norm_add_le_max _ _).trans (max_le ((h n).trans (pinv_le_one p)) (hg n))`.
+-/
 theorem integral_of_cg {p : ℕ} {f g : MvPowerSeries ι K} (h : Cg p f g) (hg : Integral g) :
     Integral f := fun n => by
   have e : f = (f - g) + g := by ring
@@ -111,6 +168,9 @@ theorem integral_of_cg {p : ℕ} {f g : MvPowerSeries ι K} (h : Cg p f g) (hg :
   exact (IsUltrametricDist.norm_add_le_max _ _).trans
     (max_le ((h n).trans (pinv_le_one p)) (hg n))
 
+/- English proof (translation)
+Introduce `n` and use `by have e : f * f' - g * g' = f * (f' - g') + g' * (f - g) := by ring rw [e, map_add] exact (IsUltrametricDist.norm_add_le_max _ _).trans (max_le (small_mul (pinv_nonneg p) hf h2 n) (small_mul (pinv_nonneg p) hg' h1 n))`.
+-/
 theorem cg_mul {p : ℕ} {f g f' g' : MvPowerSeries ι K} (hf : Integral f) (hg' : Integral g')
     (h1 : Cg p f g) (h2 : Cg p f' g') : Cg p (f * f') (g * g') := fun n => by
   have e : f * f' - g * g' = f * (f' - g') + g' * (f - g) := by ring
@@ -118,12 +178,20 @@ theorem cg_mul {p : ℕ} {f g f' g' : MvPowerSeries ι K} (hf : Integral f) (hg'
   exact (IsUltrametricDist.norm_add_le_max _ _).trans
     (max_le (small_mul (pinv_nonneg p) hf h2 n) (small_mul (pinv_nonneg p) hg' h1 n))
 
+/- English proof (translation)
+Proceed by induction on `k with`. Consider the case `zero => simpa using cg_refl p (1 : MvPowerSeries ι K)`. Consider the case `succ k ih => rw [pow_succ, pow_succ]`. Conclude with `cg_mul (integral_pow hf k) hg ih h`.
+-/
 theorem cg_pow {p : ℕ} {f g : MvPowerSeries ι K} (hf : Integral f) (hg : Integral g)
     (h : Cg p f g) (k : ℕ) : Cg p (f ^ k) (g ^ k) := by
   induction k with
   | zero => simpa using cg_refl p (1 : MvPowerSeries ι K)
   | succ k ih => rw [pow_succ, pow_succ]; exact cg_mul (integral_pow hf k) hg ih h
 
+/- English proof (translation)
+Introduce `n`. Rewrite using `[← map_sub, MvPowerSeries.coeff_C]`. Use `split_ifs`. Conclude with `h`. Rewrite using `[norm_zero]`.
+
+Conclude with `pinv_nonneg p`.
+-/
 theorem cg_C {p : ℕ} {a b : K} (h : ‖a - b‖ ≤ (p : ℝ)⁻¹) :
     Cg p (MvPowerSeries.C a : MvPowerSeries ι K) (MvPowerSeries.C b) := by
   classical
@@ -133,6 +201,9 @@ theorem cg_C {p : ℕ} {a b : K} (h : ‖a - b‖ ≤ (p : ℝ)⁻¹) :
   · exact h
   · rw [norm_zero]; exact pinv_nonneg p
 
+/- English proof (translation)
+Introduce `n`. Rewrite using `[add_pow_prime_eq hp, add_sub_cancel_left, mul_assoc, mul_assoc, ← map_natCast (MvPowerSeries.C : K →+* MvPowerSeries ι K) p, MvPowerSeries.coeff_C_mul, norm_mul, hn]`. Use `mul_le_of_le_one_right (pinv_nonneg p) ?_` and prove the remaining obligations. Use `integral_mul hf (integral_mul hg (integral_sum _ _ fun k _ => ?_)) n` and prove the remaining obligations. Conclude with `integral_mul (integral_mul (integral_pow hf _) (integral_pow hg _)) (integral_natCast _)`.
+-/
 theorem cg_frob_add {p : ℕ} (hp : p.Prime) (hn : ‖(p : K)‖ = (p : ℝ)⁻¹) {f g : MvPowerSeries ι K}
     (hf : Integral f) (hg : Integral g) : Cg p ((f + g) ^ p) (f ^ p + g ^ p) := by
   intro n
@@ -143,6 +214,11 @@ theorem cg_frob_add {p : ℕ} (hp : p.Prime) (hn : ‖(p : K)‖ = (p : ℝ)⁻�
   refine integral_mul hf (integral_mul hg (integral_sum _ _ fun k _ => ?_)) n
   exact integral_mul (integral_mul (integral_pow hf _) (integral_pow hg _)) (integral_natCast _)
 
+/- English proof (translation)
+Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simpa [zero_pow hp.ne_zero] using cg_refl p (0 : MvPowerSeries ι K)`. Consider the case `insert a s ha ih`. Rewrite using `[Finset.sum_insert ha, Finset.sum_insert ha]`. Establish `hs : ∀ b ∈ s, Integral (F b)` using `fun b hb => h b (Finset.mem_insert_of_mem hb)`.
+
+Conclude with `cg_trans (cg_frob_add hp hn (h a (Finset.mem_insert_self a s)) (integral_sum _ _ hs)) (cg_add (cg_refl p _) (ih hs))`.
+-/
 theorem cg_frob_sum {p : ℕ} (hp : p.Prime) (hn : ‖(p : K)‖ = (p : ℝ)⁻¹) {α : Type} (s : Finset α)
     (F : α → MvPowerSeries ι K) (h : ∀ a ∈ s, Integral (F a)) :
     Cg p ((∑ a ∈ s, F a) ^ p) (∑ a ∈ s, F a ^ p) := by
@@ -155,6 +231,9 @@ theorem cg_frob_sum {p : ℕ} (hp : p.Prime) (hn : ‖(p : K)‖ = (p : ℝ)⁻�
     exact cg_trans (cg_frob_add hp hn (h a (Finset.mem_insert_self a s)) (integral_sum _ _ hs))
       (cg_add (cg_refl p _) (ih hs))
 
+/- English proof (translation)
+Establish `h1` using `cg_frob_sum hp hn s F h`. Establish `h2` using `cg_frob_sum hp hn s (fun a => F a ^ p) fun a ha => integral_pow (h a ha) p`. Establish `h3` using `cg_pow (integral_pow (integral_sum _ _ h) p) (integral_sum _ _ fun a ha => integral_pow (h a ha) p) h1 p`. Simplify using `only [← pow_mul, ← sq] at h2 h3`. Conclude with `cg_trans h3 h2`.
+-/
 theorem cg_frob2_sum {p : ℕ} (hp : p.Prime) (hn : ‖(p : K)‖ = (p : ℝ)⁻¹) {α : Type} (s : Finset α)
     (F : α → MvPowerSeries ι K) (h : ∀ a ∈ s, Integral (F a)) :
     Cg p ((∑ a ∈ s, F a) ^ (p ^ 2)) (∑ a ∈ s, F a ^ (p ^ 2)) := by
@@ -165,6 +244,9 @@ theorem cg_frob2_sum {p : ℕ} (hp : p.Prime) (hn : ‖(p : K)‖ = (p : ℝ)⁻
   simp only [← pow_mul, ← sq] at h2 h3
   exact cg_trans h3 h2
 
+/- English proof (translation)
+Apply the tactic sequence `first | exact Bl.general_b_fact_right'''.goal1 .. | (apply Bl.general_b_fact_right'''.goal1 <;> assumption) | (intros; apply Bl.general_b_fact_right'''.goal1 <;> assumption) | (apply @Bl.general_b_fact_right'''.goal1 <;> assumption) | (intros; apply @Bl.general_b_fact_right'''.go …`.
+-/
 theorem norm_pow_sub_pow {p : ℕ} {a b : K} (ha : ‖a‖ ≤ 1) (hb : ‖b‖ ≤ 1)
     (h : ‖a - b‖ ≤ (p : ℝ)⁻¹) (k : ℕ) : ‖a ^ k - b ^ k‖ ≤ (p : ℝ)⁻¹ := by
   first | exact Bl.general_b_fact_right'''.goal1 .. | (apply Bl.general_b_fact_right'''.goal1 <;> assumption) | (intros; apply Bl.general_b_fact_right'''.goal1 <;> assumption) | (apply @Bl.general_b_fact_right'''.goal1 <;> assumption) | (intros; apply @Bl.general_b_fact_right'''.goal1 <;> assumption) | (apply @Bl.general_b_fact_right'''.goal1 <;> first | assumption | infer_instance) | exact @Bl.general_b_fact_right'''.goal1 K ‹_› ‹_› p a b ha hb h k | exact @Bl.general_b_fact_right'''.goal1 K ‹_› ‹_› p a b ha hb h | exact @Bl.general_b_fact_right'''.goal1 K ‹_› ‹_› p a b ha hb | exact @Bl.general_b_fact_right'''.goal1 K ‹_› ‹_› p a b ha | exact @Bl.general_b_fact_right'''.goal1 K ‹_› ‹_› p a b | exact @Bl.general_b_fact_right'''.goal1 K ‹_› ‹_› p a | exact @Bl.general_b_fact_right'''.goal1 K ‹_› ‹_› p | exact @Bl.general_b_fact_right'''.goal1 K ‹_› ‹_› | exact @Bl.general_b_fact_right'''.goal1 K ‹_› | exact @Bl.general_b_fact_right'''.goal1 K
@@ -175,6 +257,11 @@ section Alt
 
 variable {K : Type} [Field K]
 
+/- English proof (translation)
+Rewrite using `[altF, PowerSeries.coeff_mk, Finset.sum_eq_single l]`. Simplify using the standard rewrite rules. Introduce `j _ hj`. Rewrite using `[if_neg]`. Introduce `h`.
+
+Conclude with `hj (powq_inj hp h).symm`. Introduce `h`. Conclude with `absurd (mem_range.2 (lt_powq hp l)) h`.
+-/
 theorem coeff_altF_pow {p : ℕ} (hp : 2 ≤ p) (l : ℕ) :
     PowerSeries.coeff ((p ^ 2) ^ l) (altF K p) = (-1) ^ l := by
   rw [altF, PowerSeries.coeff_mk, Finset.sum_eq_single l]
@@ -186,6 +273,11 @@ theorem coeff_altF_pow {p : ℕ} (hp : 2 ≤ p) (l : ℕ) :
   · intro h
     exact absurd (mem_range.2 (lt_powq hp l)) h
 
+/- English proof (translation)
+Rewrite `h` using `[altF, PowerSeries.coeff_mk]`. Take `⟨l, _, hl⟩` from `Finset.exists_ne_zero_of_sum_ne_zero h`. Distinguish the cases in `e : d = (p ^ 2) ^ l`. Conclude with `⟨l, e⟩`. Rewrite `hl` using `[if_neg e]`.
+
+Conclude with `absurd rfl hl`.
+-/
 theorem coeff_altF_ne_zero {p d : ℕ} (h : PowerSeries.coeff d (altF K p) ≠ 0) :
     ∃ l, d = (p ^ 2) ^ l := by
   rw [altF, PowerSeries.coeff_mk] at h
@@ -194,6 +286,13 @@ theorem coeff_altF_ne_zero {p d : ℕ} (h : PowerSeries.coeff d (altF K p) ≠ 0
   · exact ⟨l, e⟩
   · rw [if_neg e] at hl; exact absurd rfl hl
 
+/- English proof (translation)
+Establish `hs : PowerSeries.HasSubst L` using `PowerSeries.HasSubst.of_constantCoeff_zero hL`. Rewrite using `[PowerSeries.coeff_subst hs, finsum_eq_sum_of_support_subset (s := (range (n.degree + 1)).image fun l => (p ^ 2) ^ l)]`. Rewrite using `[Finset.sum_image fun a _ b _ h => powq_inj hp h]`. Conclude with `Finset.sum_congr rfl fun l _ => by rw [coeff_altF_pow hp, smul_eq_mul]`. Introduce `d hd`.
+
+Simplify using `only [Function.mem_support] at hd`. Establish `h1 : PowerSeries.coeff d (altF K p) ≠ 0` using `fun h => hd (by rw [h, zero_smul])`. Establish `h2 : MvPowerSeries.coeff n (L ^ d) ≠ 0` using `fun h => hd (by rw [h, smul_zero])`. Take `⟨l, rfl⟩` from `coeff_altF_ne_zero h1`. Establish `h3 : (p ^ 2) ^ l ≤ n.degree`.
+
+Assume the negation of the conclusion as `hlt`. Conclude with `h2 (low_pow ((low_one_iff _).2 hL) _ n (by omega))`. Simplify using `only [Finset.coe_image, Set.mem_image, Finset.coe_range, Set.mem_Iio]`. Conclude with `⟨l, by have := lt_powq hp l; omega, rfl⟩`.
+-/
 theorem coeff_subst_altF {ι : Type} {p : ℕ} (hp : 2 ≤ p) {L : MvPowerSeries ι K}
     (hL : MvPowerSeries.constantCoeff L = 0) (n : ι →₀ ℕ) :
     MvPowerSeries.coeff n (PowerSeries.subst L (altF K p)) =
@@ -217,11 +316,17 @@ theorem coeff_subst_altF {ι : Type} {p : ℕ} (hp : 2 ≤ p) {L : MvPowerSeries
 
 variable {ν r0 r1 : ℕ}
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem coeff_sPos (p : ℕ) (s : ZMod (2 * ν)) (ab : Fin r0 × Fin r1) (n : ZV ν r0 r1 →₀ ℕ) :
     MvPowerSeries.coeff n (sPos (K := K) p s ab) = ∑ l ∈ range (n.degree + 1),
       if n = Finsupp.single (s - 2 * (l : ZMod (2 * ν)), ab) ((p ^ 2) ^ l) then (-1 : K) ^ l
       else 0 := rfl
 
+/- English proof (translation)
+Rewrite using `[← MvPowerSeries.coeff_zero_eq_constantCoeff_apply, coeff_sPos]`. Use `Finset.sum_eq_zero fun l _ => if_neg fun h => ?_` and prove the remaining obligations. Use `Finsupp.single_eq_zero.1 h.symm` as an intermediate fact. Conclude with `(pow_ne_zero l (pow_ne_zero 2 hp)) this`.
+-/
 theorem constantCoeff_sPos {p : ℕ} (hp : p ≠ 0) (s : ZMod (2 * ν)) (ab : Fin r0 × Fin r1) :
     MvPowerSeries.constantCoeff (sPos (K := K) p s ab) = 0 := by
   rw [← MvPowerSeries.coeff_zero_eq_constantCoeff_apply, coeff_sPos]
@@ -236,10 +341,18 @@ def posW [NeZero ν] (p : ℕ) (w : ZMod (2 * ν) → K) (ab : Fin r0 × Fin r1)
     MvPowerSeries (ZV ν r0 r1) K :=
   ∑ s : ZMod (2 * ν), MvPowerSeries.C (w s) * sPos p s ab
 
+/- English proof (translation)
+Simplify using `[linW, map_sum]`.
+-/
 theorem constantCoeff_linW [NeZero ν] (w : ZMod (2 * ν) → K) (ab : Fin r0 × Fin r1) :
     MvPowerSeries.constantCoeff (linW w ab) = 0 := by
   simp [linW, map_sum]
 
+/- English proof (translation)
+Simplify using `only [posW, map_sum, MvPowerSeries.coeff_C_mul, coeff_sPos, Finset.mul_sum]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun l _ => ?_` and prove the remaining obligations. Rewrite using `[← Equiv.sum_comp (Equiv.addRight (2 * (l : ZMod (2 * ν))))]`. Use `Finset.sum_congr rfl fun s _ => ?_` and prove the remaining obligations.
+
+Simplify using `only [Equiv.coe_addRight, add_sub_cancel_right, MvPowerSeries.coeff_X_pow]`. Apply the tactic sequence `split_ifs <;> ring`.
+-/
 theorem coeff_posW [NeZero ν] (p : ℕ) (w : ZMod (2 * ν) → K) (ab : Fin r0 × Fin r1)
     (n : ZV ν r0 r1 →₀ ℕ) :
     MvPowerSeries.coeff n (posW p w ab) = ∑ l ∈ range (n.degree + 1), (-1) ^ l *
@@ -259,20 +372,38 @@ section AltN
 
 variable {K : Type} [NormedField K] [IsUltrametricDist K] {ν r0 r1 : ℕ}
 
+/- English proof (translation)
+Introduce `n` and use `by rw [coeff_sPos] refine IsUltrametricDist.norm_sum_le_of_forall_le_of_nonneg zero_le_one fun l _ => ?_ split_ifs <;> simp`.
+-/
 theorem integral_sPos (p : ℕ) (s : ZMod (2 * ν)) (ab : Fin r0 × Fin r1) :
     Integral (sPos (K := K) p s ab) := fun n => by
   rw [coeff_sPos]
   refine IsUltrametricDist.norm_sum_le_of_forall_le_of_nonneg zero_le_one fun l _ => ?_
   split_ifs <;> simp
 
+/- English proof (translation)
+The claim follows from `integral_sum _ _ fun s _ => integral_mul (integral_C (hw s)) (integral_X _)`.
+-/
 theorem integral_linW [NeZero ν] {w : ZMod (2 * ν) → K} (hw : ∀ s, ‖w s‖ ≤ 1)
     (ab : Fin r0 × Fin r1) : Integral (linW w ab) :=
   integral_sum _ _ fun s _ => integral_mul (integral_C (hw s)) (integral_X _)
 
+/- English proof (translation)
+The claim follows from `integral_sum _ _ fun s _ => integral_mul (integral_C (hw s)) (integral_sPos p s ab)`.
+-/
 theorem integral_posW [NeZero ν] (p : ℕ) {w : ZMod (2 * ν) → K} (hw : ∀ s, ‖w s‖ ≤ 1)
     (ab : Fin r0 × Fin r1) : Integral (posW p w ab) :=
   integral_sum _ _ fun s _ => integral_mul (integral_C (hw s)) (integral_sPos p s ab)
 
+/- English proof (translation)
+Proceed by induction on `l with`. Consider the case `zero => simpa [linW] using cg_refl p _`. Consider the case `succ l ih`. Establish `hI : ∀ s ∈ (Finset.univ : Finset (ZMod (2 * ν))), Integral (MvPowerSeries.C (w (s + 2 * (l : ZMod (2 * ν)))) * (MvPowerSeries.X (s, ab) : MvPowerSeries (ZV ν r0 r1) K) ^ ((p ^ 2) ^ l))` using `fun s _ => integral_mul (integral_C (hw1 _)) (integral_pow (integral_X _) _)`. Rewrite using `[pow_succ, pow_mul]`.
+
+Use `cg_trans (cg_pow (integral_pow (integral_linW hw1 ab) _) (integral_sum _ _ hI) ih (p ^ 2)) ?_` and prove the remaining obligations. Use `cg_trans (cg_frob2_sum hp hn _ _ hI) ?_` and prove the remaining obligations. Use `cg_sum _ _ _ fun s _ => ?_` and prove the remaining obligations. Rewrite using `[mul_pow, ← pow_mul, ← map_pow]`. Use `cg_mul (integral_C ?_) (integral_pow (integral_X _) _) (cg_C ?_) (cg_refl _ _)` and prove the remaining obligations.
+
+Rewrite using `[norm_pow]`. Conclude with `pow_le_one₀ (norm_nonneg _) (hw1 _)`. Use `hw2 (s + 2 * (l : ZMod (2 * ν)))` as an intermediate fact. Establish `e : s + 2 * ((l + 1 : ℕ) : ZMod (2 * ν)) = s + 2 * (l : ZMod (2 * ν)) + 2` using `by push_cast; ring`. Rewrite using `[norm_sub_rev, e]`.
+
+Conclude with `this`.
+-/
 theorem cg_lin_pow [NeZero ν] {p : ℕ} (hp : p.Prime) (hn : ‖(p : K)‖ = (p : ℝ)⁻¹)
     {w : ZMod (2 * ν) → K} (hw1 : ∀ s, ‖w s‖ ≤ 1)
     (hw2 : ∀ s, ‖w (s + 2) - w s ^ (p ^ 2)‖ ≤ (p : ℝ)⁻¹) (ab : Fin r0 × Fin r1) (l : ℕ) :
@@ -300,6 +431,9 @@ theorem cg_lin_pow [NeZero ν] {p : ℕ} (hp : p.Prime) (hn : ‖(p : K)‖ = (p
       rw [norm_sub_rev, e]
       exact this
 
+/- English proof (translation)
+Introduce `n`. Rewrite using `[map_sub, coeff_subst_altF hp.two_le (constantCoeff_linW w ab), coeff_posW, ← Finset.sum_sub_distrib]`. Use `IsUltrametricDist.norm_sum_le_of_forall_le_of_nonneg (pinv_nonneg p) fun l _ => ?_` and prove the remaining obligations. Rewrite using `[← mul_sub, ← map_sub, norm_mul, norm_pow, norm_neg, norm_one, one_pow, one_mul]`. Conclude with `cg_lin_pow hp hn hw1 hw2 ab l n`.
+-/
 theorem cg_altF_lin [NeZero ν] {p : ℕ} (hp : p.Prime) (hn : ‖(p : K)‖ = (p : ℝ)⁻¹)
     {w : ZMod (2 * ν) → K} (hw1 : ∀ s, ‖w s‖ ≤ 1)
     (hw2 : ∀ s, ‖w (s + 2) - w s ^ (p ^ 2)‖ ≤ (p : ℝ)⁻¹) (ab : Fin r0 × Fin r1) :
@@ -311,6 +445,11 @@ theorem cg_altF_lin [NeZero ν] {p : ℕ} (hp : p.Prime) (hn : ‖(p : K)‖ = (
   rw [← mul_sub, ← map_sub, norm_mul, norm_pow, norm_neg, norm_one, one_pow, one_mul]
   exact cg_lin_pow hp hn hw1 hw2 ab l n
 
+/- English proof (translation)
+Introduce `n`. Establish `hs : PowerSeries.HasSubst L` using `PowerSeries.HasSubst.of_constantCoeff_zero hL0`. Rewrite using `[← PowerSeries.subst_sub hs, PowerSeries.coeff_subst hs]`. Use `norm_finsum_le_of (pinv_nonneg p) fun d => ?_` and prove the remaining obligations. Rewrite using `[smul_eq_mul, norm_mul]`.
+
+Conclude with `(mul_le_of_le_one_right (norm_nonneg _) (integral_pow hL d n)).trans (h d)`.
+-/
 theorem cg_subst_of_small {ι : Type} {p : ℕ} {L : MvPowerSeries ι K}
     (hL0 : MvPowerSeries.constantCoeff L = 0) (hL : Integral L) {μ μ' : PowerSeries K}
     (h : ∀ n, ‖PowerSeries.coeff n (μ - μ')‖ ≤ (p : ℝ)⁻¹) :
@@ -328,11 +467,17 @@ section Par
 
 variable {ν : ℕ}
 
+/- English proof (translation)
+Establish `hν : 0 < ν` using `Nat.pos_of_ne_zero (NeZero.ne ν)`. Rewrite using `[ZMod.val_add, ZMod.val_one_eq_one_mod, Nat.mod_mod_of_dvd _ (Dvd.intro _ rfl), Nat.mod_eq_of_lt (show 1 < 2 * ν by omega)]`.
+-/
 theorem val_add_one_mod_two [NeZero ν] (s : ZMod (2 * ν)) : (s + 1).val % 2 = (s.val + 1) % 2 := by
   have hν : 0 < ν := Nat.pos_of_ne_zero (NeZero.ne ν)
   rw [ZMod.val_add, ZMod.val_one_eq_one_mod, Nat.mod_mod_of_dvd _ (Dvd.intro _ rfl),
     Nat.mod_eq_of_lt (show 1 < 2 * ν by omega)]
 
+/- English proof (translation)
+Establish `e : s + 2 = s + 1 + 1` using `by ring`. Establish `h1` using `val_add_one_mod_two s`. Rewrite using `[e, val_add_one_mod_two]`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem val_add_two_mod_two [NeZero ν] (s : ZMod (2 * ν)) : (s + 2).val % 2 = s.val % 2 := by
   have e : s + 2 = s + 1 + 1 := by ring
   have h1 := val_add_one_mod_two s
@@ -349,6 +494,9 @@ def wE' [Zero K] (u : ZMod (2 * ν) → K) (k : ℕ) (s : ZMod (2 * ν)) : K :=
 
 variable [NormedField K] [IsUltrametricDist K]
 
+/- English proof (translation)
+Unfold `wE`. Use `split_ifs`. Conclude with `hu s`. Simplify using the standard rewrite rules.
+-/
 theorem norm_wE {u : ZMod (2 * ν) → K} (hu : ∀ s, ‖u s‖ ≤ 1) (k : ℕ) (s : ZMod (2 * ν)) :
     ‖wE u k s‖ ≤ 1 := by
   unfold wE
@@ -356,6 +504,9 @@ theorem norm_wE {u : ZMod (2 * ν) → K} (hu : ∀ s, ‖u s‖ ≤ 1) (k : ℕ
   · exact hu s
   · simp
 
+/- English proof (translation)
+Unfold `wE'`. Use `split_ifs`. Conclude with `hu _`. Simplify using the standard rewrite rules.
+-/
 theorem norm_wE' {u : ZMod (2 * ν) → K} (hu : ∀ s, ‖u s‖ ≤ 1) (k : ℕ) (s : ZMod (2 * ν)) :
     ‖wE' u k s‖ ≤ 1 := by
   unfold wE'
@@ -363,6 +514,13 @@ theorem norm_wE' {u : ZMod (2 * ν) → K} (hu : ∀ s, ‖u s‖ ≤ 1) (k : �
   · exact hu _
   · simp
 
+/- English proof (translation)
+Unfold `wE`. Rewrite using `[val_add_two_mod_two]`. Use `split_ifs`. Establish `e : s + 2 = s + 1 + 1` using `by ring`. Establish `e2 : u (s + 2) - u s ^ (p ^ 2) = (u (s + 1 + 1) - u (s + 1) ^ p) + (u (s + 1) ^ p - (u s ^ p) ^ p)`.
+
+Rewrite using `[e, ← pow_mul, ← sq]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e2]`. Conclude with `(IsUltrametricDist.norm_add_le_max _ _).trans (max_le (hu2 _) (norm_pow_sub_pow (hu _) (by rw [norm_pow]; exact pow_le_one₀ (norm_nonneg _) (hu _)) (hu2 s) p))`. Rewrite using `[zero_pow (pow_ne_zero 2 hp), sub_zero, norm_zero]`.
+
+Conclude with `pinv_nonneg p`.
+-/
 theorem wE_step2 [NeZero ν] {p : ℕ} (hp : p ≠ 0) {u : ZMod (2 * ν) → K} (hu : ∀ s, ‖u s‖ ≤ 1)
     (hu2 : ∀ s, ‖u (s + 1) - u s ^ p‖ ≤ (p : ℝ)⁻¹) (k : ℕ) (s : ZMod (2 * ν)) :
     ‖wE u k (s + 2) - wE u k s ^ (p ^ 2)‖ ≤ (p : ℝ)⁻¹ := by
@@ -379,6 +537,11 @@ theorem wE_step2 [NeZero ν] {p : ℕ} (hp : p ≠ 0) {u : ZMod (2 * ν) → K} 
         (hu2 s) p))
   · rw [zero_pow (pow_ne_zero 2 hp), sub_zero, norm_zero]; exact pinv_nonneg p
 
+/- English proof (translation)
+Unfold `wE wE'`. Use `split_ifs`. Rewrite using `[norm_sub_rev]`. Conclude with `hu2 s`. Rewrite using `[zero_pow hp, sub_zero, norm_zero]`.
+
+Conclude with `pinv_nonneg p`.
+-/
 theorem wE'_step {p : ℕ} (hp : p ≠ 0) {u : ZMod (2 * ν) → K}
     (hu2 : ∀ s, ‖u (s + 1) - u s ^ p‖ ≤ (p : ℝ)⁻¹) (k : ℕ) (s : ZMod (2 * ν)) :
     ‖wE u k s ^ p - wE' u k s‖ ≤ (p : ℝ)⁻¹ := by
@@ -393,11 +556,17 @@ def posW' [NeZero ν] (p : ℕ) (w : ZMod (2 * ν) → K) (ab : Fin r0 × Fin r1
     MvPowerSeries (ZV ν r0 r1) K :=
   ∑ s : ZMod (2 * ν), MvPowerSeries.C (w s) * sPos p s ab ^ p
 
+/- English proof (translation)
+The claim follows from `integral_sum _ _ fun s _ => integral_mul (integral_C (hw s)) (integral_pow (integral_sPos p s ab) p)`.
+-/
 theorem integral_posW' [NeZero ν] (p : ℕ) {w : ZMod (2 * ν) → K} (hw : ∀ s, ‖w s‖ ≤ 1)
     (ab : Fin r0 × Fin r1) : Integral (posW' p w ab) :=
   integral_sum _ _ fun s _ =>
     integral_mul (integral_C (hw s)) (integral_pow (integral_sPos p s ab) p)
 
+/- English proof (translation)
+The claim follows from `cg_trans (cg_subst_of_small (constantCoeff_linW _ _) (integral_linW (norm_wE hu k) ab) hμ) (cg_altF_lin hp hn (norm_wE hu k) (wE_step2 hp.ne_zero hu hu2 k) ab)`.
+-/
 theorem cg_mu_lin [NeZero ν] {p : ℕ} (hp : p.Prime) (hn : ‖(p : K)‖ = (p : ℝ)⁻¹)
     {u : ZMod (2 * ν) → K} (hu : ∀ s, ‖u s‖ ≤ 1)
     (hu2 : ∀ s, ‖u (s + 1) - u s ^ p‖ ≤ (p : ℝ)⁻¹) (k : ℕ) (ab : Fin r0 × Fin r1)
@@ -406,6 +575,11 @@ theorem cg_mu_lin [NeZero ν] {p : ℕ} (hp : p.Prime) (hn : ‖(p : K)‖ = (p 
   cg_trans (cg_subst_of_small (constantCoeff_linW _ _) (integral_linW (norm_wE hu k) ab) hμ)
     (cg_altF_lin hp hn (norm_wE hu k) (wE_step2 hp.ne_zero hu hu2 k) ab)
 
+/- English proof (translation)
+Establish `hA` using `cg_mu_lin hp hn hu hu2 k ab hμ`. Establish `hI` using `integral_posW (r0 := r0) (r1 := r1) p (norm_wE hu k) ab`. Use `cg_trans (cg_pow (integral_of_cg hA hI) hI hA p) ?_` and prove the remaining obligations. Use `cg_trans (cg_frob_sum hp hn Finset.univ _ fun s _ => integral_mul (integral_C (norm_wE hu k s)) (integral_sPos p s ab)) ?_` and prove the remaining obligations. Use `cg_sum _ _ _ fun s _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[mul_pow, ← map_pow]`. Use `cg_mul (integral_C ?_) (integral_pow (integral_sPos p s ab) p) (cg_C (wE'_step hp.ne_zero hu2 k s)) (cg_refl _ _)` and prove the remaining obligations. Rewrite using `[norm_pow]`. Conclude with `pow_le_one₀ (norm_nonneg _) (norm_wE hu k s)`.
+-/
 theorem cg_mu_lin_pow [NeZero ν] {p : ℕ} (hp : p.Prime) (hn : ‖(p : K)‖ = (p : ℝ)⁻¹)
     {u : ZMod (2 * ν) → K} (hu : ∀ s, ‖u s‖ ≤ 1)
     (hu2 : ∀ s, ‖u (s + 1) - u s ^ p‖ ≤ (p : ℝ)⁻¹) (k : ℕ) (ab : Fin r0 × Fin r1)
@@ -424,6 +598,15 @@ theorem cg_mu_lin_pow [NeZero ν] {p : ℕ} (hp : p.Prime) (hn : ‖(p : K)‖ =
 
 end Par
 
+/- English proof (translation)
+Establish `key : ∀ ab : Fin r0 × Fin r1, ∑ r, (∑ s, MvPowerSeries.C (a r s) * P s ab) * (∑ s', MvPowerSeries.C (b r s') * Q s' ab) = ∑ s', if par s' then Q s' ab * P (s' + 1) ab else 0`. Introduce `ab`. Simplify using `only [Finset.sum_mul_sum]`. Rewrite using `[Finset.sum_comm, Finset.sum_congr rfl fun s _ => Finset.sum_comm, Finset.sum_comm]`. Use `Finset.sum_congr rfl fun s' _ => ?_` and prove the remaining obligations.
+
+Establish `e : ∀ s, ∑ r, MvPowerSeries.C (a r s) * P s ab * (MvPowerSeries.C (b r s') * Q s' ab) = if par s' ∧ s = s' + 1 then Q s' ab * P s ab else 0`. Introduce `s`. Establish `: ∑ r, MvPowerSeries.C (a r s) * P s ab * (MvPowerSeries.C (b r s') * Q s' ab) = MvPowerSeries.C (∑ r, a r s * b r s') * (Q s' ab * P s ab)`. Rewrite using `[map_sum, Finset.sum_mul]`. Conclude with `Finset.sum_congr rfl fun r _ => by rw [map_mul]; ring`.
+
+Rewrite using `[this, h]`. Apply the tactic sequence `split_ifs <;> simp`. Rewrite using `[Finset.sum_congr rfl fun s _ => e s]`. Distinguish the cases in `hp : par s'`. Simplify using `[hp]`.
+
+Simplify using `[hp]`. Rewrite using `[Fintype.sum_prod_type, Finset.sum_comm, Finset.sum_congr rfl fun ab _ => key ab, Finset.sum_comm]`. Use `Finset.sum_congr rfl fun s' _ => ?_` and prove the remaining obligations. Apply the tactic sequence `split_ifs <;> simp`.
+-/
 theorem sum_dual {K ι : Type} [Field K] {ν r0 r1 : ℕ} [NeZero ν] (a b : Fin ν → ZMod (2 * ν) → K)
     (par : ZMod (2 * ν) → Prop) [DecidablePred par]
     (h : ∀ s s', ∑ r, a r s * b r s' = if par s' ∧ s = s' + 1 then 1 else 0)
@@ -461,18 +644,29 @@ section Sub
 
 variable {K : Type} [NormedField K] [IsUltrametricDist K] {ν r0 r1 : ℕ} [NeZero ν]
 
+/- English proof (translation)
+Unfold `zLin linW wE`. Use `Finset.sum_congr rfl fun s _ => ?_` and prove the remaining obligations. Apply the tactic sequence `by_cases h : s.val % 2 = 0 <;> simp [h]`.
+-/
 theorem zLin_false (om oms : Fin ν → ZMod (2 * ν) → K) (e : EV ν r0 r1) :
     zLin om oms (false, e) = linW (wE (oms e.1) 0) e.2 := by
   unfold zLin linW wE
   refine Finset.sum_congr rfl fun s _ => ?_
   by_cases h : s.val % 2 = 0 <;> simp [h]
 
+/- English proof (translation)
+Unfold `zLin linW wE`. Use `Finset.sum_congr rfl fun s _ => ?_` and prove the remaining obligations. Apply the tactic sequence `by_cases h : s.val % 2 = 1 <;> simp [h]`.
+-/
 theorem zLin_true (om oms : Fin ν → ZMod (2 * ν) → K) (e : EV ν r0 r1) :
     zLin om oms (true, e) = linW (wE (om e.1) 1) e.2 := by
   unfold zLin linW wE
   refine Finset.sum_congr rfl fun s _ => ?_
   by_cases h : s.val % 2 = 1 <;> simp [h]
 
+/- English proof (translation)
+Take `⟨b, e⟩` from `x`. Consider the cases of `b`. Rewrite using `[zLin_false]`. Conclude with `constantCoeff_linW _ _`. Rewrite using `[zLin_true]`.
+
+Conclude with `constantCoeff_linW _ _`.
+-/
 theorem constantCoeff_zLin (om oms : Fin ν → ZMod (2 * ν) → K) (x : Bool × EV ν r0 r1) :
     MvPowerSeries.constantCoeff (zLin om oms x) = 0 := by
   obtain ⟨b, e⟩ := x
@@ -480,11 +674,19 @@ theorem constantCoeff_zLin (om oms : Fin ν → ZMod (2 * ν) → K) (x : Bool �
   · rw [zLin_false]; exact constantCoeff_linW _ _
   · rw [zLin_true]; exact constantCoeff_linW _ _
 
+/- English proof (translation)
+The claim follows from `PowerSeries.constantCoeff_subst_eq_zero (constantCoeff_zLin om oms x) μ hμ0`.
+-/
 theorem constantCoeff_sSub (om oms : Fin ν → ZMod (2 * ν) → K) {μ : PowerSeries K}
     (hμ0 : PowerSeries.constantCoeff μ = 0) (x : Bool × EV ν r0 r1) :
     MvPowerSeries.constantCoeff (sSub om oms μ x) = 0 :=
   PowerSeries.constantCoeff_subst_eq_zero (constantCoeff_zLin om oms x) μ hμ0
 
+/- English proof (translation)
+Take `⟨hO1, hO2, -⟩` from `hO`. Take `⟨b, e⟩` from `x`. Unfold `sSub`. Consider the cases of `b`. Rewrite using `[zLin_false]`.
+
+Conclude with `integral_of_cg (cg_mu_lin hp hn (fun s => (hO1 e.1 s).2) (fun s => (hO2 e.1 s).2) 0 e.2 hμ) (integral_posW p (norm_wE (fun s => (hO1 e.1 s).2) 0) e.2)`. Rewrite using `[zLin_true]`. Conclude with `integral_of_cg (cg_mu_lin hp hn (fun s => (hO1 e.1 s).1) (fun s => (hO2 e.1 s).1) 1 e.2 hμ) (integral_posW p (norm_wE (fun s => (hO1 e.1 s).1) 1) e.2)`.
+-/
 theorem integral_sSub {p : ℕ} (hp : p.Prime) (hn : ‖(p : K)‖ = (p : ℝ)⁻¹)
     {om oms : Fin ν → ZMod (2 * ν) → K} (hO : OmOK p ν om oms) {μ : PowerSeries K}
     (hμ : ∀ n, ‖PowerSeries.coeff n (μ - altF K p)‖ ≤ (p : ℝ)⁻¹) (x : Bool × EV ν r0 r1) :
@@ -500,10 +702,16 @@ theorem integral_sSub {p : ℕ} (hp : p.Prime) (hn : ‖(p : K)‖ = (p : ℝ)�
     exact integral_of_cg (cg_mu_lin hp hn (fun s => (hO1 e.1 s).1) (fun s => (hO2 e.1 s).1) 1 e.2 hμ)
       (integral_posW p (norm_wE (fun s => (hO1 e.1 s).1) 1) e.2)
 
+/- English proof (translation)
+Simplify using `[hhS, map_sum, constantCoeff_sPos hp]`.
+-/
 theorem constantCoeff_hhS {p : ℕ} (hp : p ≠ 0) (u : ZMod (2 * ν) → K) :
     MvPowerSeries.constantCoeff (hhS (r0 := r0) (r1 := r1) p u) = 0 := by
   simp [hhS, map_sum, constantCoeff_sPos hp]
 
+/- English proof (translation)
+Establish `hC : ∀ r : K, MvPowerSeries.substAlgHom hs (MvPowerSeries.C r) = MvPowerSeries.C r` using `fun r => (MvPowerSeries.substAlgHom hs).commutes r`. Rewrite using `[hh1, ← MvPowerSeries.coe_substAlgHom hs]`. Simplify using `only [map_sum, map_sub, map_mul, map_pow, hC, MvPowerSeries.substAlgHom_X]`.
+-/
 theorem subst_hh_eq_sum {τ E : Type} [Fintype E] (p : ℕ) (c c' : K)
     {φ : Bool × E → MvPowerSeries τ K} (hs : MvPowerSeries.HasSubst φ) :
     MvPowerSeries.subst φ (hh1 (E := E) p c c') =
@@ -514,6 +722,23 @@ theorem subst_hh_eq_sum {τ E : Type} [Fintype E] (p : ℕ) (c c' : K)
   rw [hh1, ← MvPowerSeries.coe_substAlgHom hs]
   simp only [map_sum, map_sub, map_mul, map_pow, hC, MvPowerSeries.substAlgHom_X]
 
+/- English proof (translation)
+Establish `h1 : ∀ s s' : ZMod (2 * ν), ∑ r, wE (oms r) 0 s * wE' (om r) 1 s' = if s'.val % 2 = 1 ∧ s = s' + 1 then 1 else 0`. Introduce `s s'`. Establish `hs'` using `val_add_one_mod_two s'`. Unfold `wE wE'`. Distinguish the cases in `a1 : s'.val % 2 = 1`.
+
+Distinguish the cases in `a2 : s.val % 2 = 0`. Simplify using `only [a1, a2, if_true, true_and]`. Conclude with `hO3 s (s' + 1) (by omega)`. Establish `: s ≠ s' + 1` using `fun h => a2 (by rw [h]; omega)`. Simplify using `[a2, this]`.
+
+Simplify using `[a1]`. Establish `h2 : ∀ s s' : ZMod (2 * ν), ∑ r, wE (om r) 1 s * wE' (oms r) 0 s' = if s'.val % 2 = 0 ∧ s = s' + 1 then 1 else 0`. Introduce `s s'`. Establish `hs'` using `val_add_one_mod_two s'`. Unfold `wE wE'`.
+
+Distinguish the cases in `a1 : s'.val % 2 = 0`. Distinguish the cases in `a2 : s.val % 2 = 1`. Simplify using `only [a1, a2, if_true, true_and]`. Rewrite using `[Finset.sum_congr rfl fun r _ => mul_comm _ _, hO3 (s' + 1) s (by omega)]`. Simplify using `only [eq_comm]`.
+
+Establish `: s ≠ s' + 1` using `fun h => a2 (by rw [h]; omega)`. Simplify using `[a2, this]`. Simplify using `[a1]`. Establish `d1` using `sum_dual (r0 := r0) (r1 := r1) (fun r => wE (oms r) 0) (fun r => wE' (om r) 1) (fun s' => s'.val % 2 = 1) h1 (fun s ab => sPos (K := K) p s ab) (fun s ab => sPos p s ab ^ p)`. Establish `d2` using `sum_dual (r0 := r0) (r1 := r1) (fun r => wE (om r) 1) (fun r => wE' (oms r) 0) (fun s' => s'.val % 2 = 0) h2 (fun s ab => sPos (K := K) p s ab) (fun s ab => sPos p s ab ^ p)`.
+
+Establish `e1 : ∑ e : EV ν r0 r1, (MvPowerSeries.C c * posW p (wE (oms e.1) 0) e.2 * posW' p (wE' (om e.1) 1) e.2 - MvPowerSeries.C c' * posW' p (wE' (oms e.1) 0) e.2 * posW p (wE (om e.1) 1) e.2) = MvPowerSeries.C c * (∑ e : EV ν r0 r1, posW p (wE (oms e.1) 0) e.2 * posW' p (wE' (om e.1) 1 …`. Rewrite using `[Finset.mul_sum, Finset.mul_sum, ← Finset.sum_sub_distrib]`. Conclude with `Finset.sum_congr rfl fun e _ => by ring`. Rewrite using `[e1]`. Unfold `posW posW'`.
+
+Rewrite using `[d1, d2, Finset.mul_sum, Finset.mul_sum, ← Finset.sum_sub_distrib]`. Unfold `hhS uS`. Use `Finset.sum_congr rfl fun s _ => ?_` and prove the remaining obligations. Break down `Nat.mod_two_eq_zero_or_one s.val with h | h` into its components or cases. Simplify using `[h]`.
+
+Simplify using `[h]`.
+-/
 theorem hhS_eq {p : ℕ} {om oms : Fin ν → ZMod (2 * ν) → K}
     (hO3 : ∀ a b : ZMod (2 * ν), a.val % 2 = b.val % 2 →
       ∑ r, oms r a * om r b = if a = b then 1 else 0) (c c' : K) :
@@ -568,6 +793,13 @@ theorem hhS_eq {p : ℕ} {om oms : Fin ν → ZMod (2 * ν) → K}
   · simp [h]
   · simp [h]
 
+/- English proof (translation)
+Establish `hs : MvPowerSeries.HasSubst (sSub (r0` using `r0) (r1 := r1) om oms μ) := MvPowerSeries.hasSubst_of_constantCoeff_zero (constantCoeff_sSub om oms hμ0)`. Establish `hI` using `integral_sSub (r0 := r0) (r1 := r1) hp hn hO hμ`. Take `⟨hO1, hO2, hO3⟩` from `hO`. Rewrite using `[subst_hh_eq_sum p c c' hs, hhS_eq hO3]`. Use `cg_sum _ _ _ fun e _ => ?_` and prove the remaining obligations.
+
+Establish `aF` using `cg_mu_lin hp hn (fun s => (hO1 e.1 s).2) (fun s => (hO2 e.1 s).2) 0 e.2 hμ`. Establish `aT` using `cg_mu_lin hp hn (fun s => (hO1 e.1 s).1) (fun s => (hO2 e.1 s).1) 1 e.2 hμ`. Establish `bF` using `cg_mu_lin_pow hp hn (fun s => (hO1 e.1 s).2) (fun s => (hO2 e.1 s).2) 0 e.2 hμ`. Establish `bT` using `cg_mu_lin_pow hp hn (fun s => (hO1 e.1 s).1) (fun s => (hO2 e.1 s).1) 1 e.2 hμ`. Rewrite `aF`, `bF` using `[← zLin_false om oms e]`.
+
+Rewrite `aT`, `bT` using `[← zLin_true om oms e]`. Establish `iF` using `hI (false, e)`. Establish `iT` using `hI (true, e)`. Use `cg_sub (cg_mul (integral_mul (integral_C hc) iF) (integral_posW' p (norm_wE' (fun s => (hO1 e.1 s).1) 1) e.2) (cg_mul (integral_C hc) (integral_posW p (norm_wE (fun s => (hO1 e.1 s).2) 0) e.2) (cg_refl p _) aF) bT) (cg_mul (integral_mul (integral_C hc') (integral_pow iF p)) (inte …` and prove the remaining obligations.
+-/
 theorem cg_two_sums {p : ℕ} (hp : p.Prime) (hn : ‖(p : K)‖ = (p : ℝ)⁻¹)
     {om oms : Fin ν → ZMod (2 * ν) → K} (hO : OmOK p ν om oms) {c c' : K} (hc : ‖c‖ ≤ 1)
     (hc' : ‖c'‖ ≤ 1) {μ : PowerSeries K} (hμ0 : PowerSeries.constantCoeff μ = 0)
@@ -603,6 +835,13 @@ end TwoS
 
 open TwoS
 
+/- English proof (translation)
+Introduce `K _ _ p ν r0 r1 _ om oms c c' μ hp hn hO hc hc' hμ0 hμ`. Establish `hs : MvPowerSeries.HasSubst (sSub (r0` using `r0) (r1 := r1) om oms μ) := MvPowerSeries.hasSubst_of_constantCoeff_zero (constantCoeff_sSub om oms hμ0)`. Establish `hcg` using `cg_two_sums (r0 := r0) (r1 := r1) hp hn hO hc hc' hμ0 hμ`. Establish `hpR : (p : ℝ) ≠ 0` using `Nat.cast_ne_zero.2 hp.ne_zero`. Establish `hpK : (p : K) ≠ 0`.
+
+Introduce `h`. Rewrite `hn` using `[h, norm_zero]`. Conclude with `inv_ne_zero hpR hn.symm`. Use `⟨MvPowerSeries.C ((p : K)⁻¹) * (MvPowerSeries.subst (sSub om oms μ) (hh1 (E := EV ν r0 r1) p c c') - hhS p (uS c c')), fun n => ?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[MvPowerSeries.coeff_C_mul, norm_mul, norm_inv, hn, inv_inv]`.
+
+Combine the equalities or inequalities in the displayed calculation. Rewrite using `[map_mul, map_sub, constantCoeff_hhS hp.ne_zero, MvPowerSeries.constantCoeff_subst_eq_zero hs (constantCoeff_sSub om oms hμ0) (constant_coeff_hh_zero hp.ne_zero c c'), sub_zero, mul_zero]`. Rewrite using `[← mul_assoc, ← map_mul, mul_inv_cancel₀ hpK, map_one, one_mul, add_sub_cancel]`.
+-/
 theorem two_sums : TwoSums := by
   intro K _ _ p ν r0 r1 _ om oms c c' μ hp hn hO hc hc' hμ0 hμ
   have hs : MvPowerSeries.HasSubst (sSub (r0 := r0) (r1 := r1) om oms μ) :=
@@ -627,6 +866,9 @@ theorem two_sums : TwoSums := by
 
 namespace TwoS
 
+/- English proof (translation)
+Unfold `mvExp`. Rewrite using `[PowerSeries.subst_def, PowerSeries.subst_def, MvPowerSeries.subst_comp_subst_apply (PowerSeries.HasSubst.of_constantCoeff_zero hg).const hψ]`.
+-/
 theorem subst_mvExp {K ι κ : Type} [NormedField K] [CharZero K] {ψ : ι → MvPowerSeries κ K}
     (hψ : MvPowerSeries.HasSubst ψ) {g : MvPowerSeries ι K}
     (hg : MvPowerSeries.constantCoeff g = 0) :
@@ -635,10 +877,16 @@ theorem subst_mvExp {K ι κ : Type} [NormedField K] [CharZero K] {ψ : ι → M
   rw [PowerSeries.subst_def, PowerSeries.subst_def, MvPowerSeries.subst_comp_subst_apply
     (PowerSeries.HasSubst.of_constantCoeff_zero hg).const hψ]
 
+/- English proof (translation)
+Simplify using `[Gser, Aser_eq, Aser'_eq, constantCoeff_AA K hp]`.
+-/
 theorem constantCoeff_Gser {K : Type} [Field K] {p : ℕ} (hp : p ≠ 0) (c c' : K) :
     MvPowerSeries.constantCoeff (Gser p c c') = 0 := by
   simp [Gser, Aser_eq, Aser'_eq, constantCoeff_AA K hp]
 
+/- English proof (translation)
+Unfold `Gtot`. Rewrite using `[map_sum]`. Use `Finset.sum_eq_zero fun e _ => ?_` and prove the remaining obligations. Establish `h0 : ∀ a : Fin 2, MvPowerSeries.constantCoeff (MvPowerSeries.C ϖ * (MvPowerSeries.X (if a = 0 then (false, e) else (true, e)) : MvPowerSeries (Bool × E) K)) = 0` using `fun a => by simp`. Conclude with `MvPowerSeries.constantCoeff_subst_eq_zero (MvPowerSeries.hasSubst_of_constantCoeff_zero h0) h0 (constantCoeff_Gser hp c c')`.
+-/
 theorem constantCoeff_Gtot {K E : Type} [Field K] [Fintype E] {p : ℕ} (hp : p ≠ 0)
     (c c' ϖ : K) : MvPowerSeries.constantCoeff (Gtot (E := E) p c c' ϖ) = 0 := by
   unfold Gtot
@@ -650,6 +898,11 @@ theorem constantCoeff_Gtot {K E : Type} [Field K] [Fintype E] {p : ℕ} (hp : p 
   exact MvPowerSeries.constantCoeff_subst_eq_zero
     (MvPowerSeries.hasSubst_of_constantCoeff_zero h0) h0 (constantCoeff_Gser hp c c')
 
+/- English proof (translation)
+Establish `hψ : MvPowerSeries.HasSubst (fun x : Bool × E => MvPowerSeries.C ϖ * (MvPowerSeries.X x : MvPowerSeries (Bool × E) K))` using `MvPowerSeries.hasSubst_of_constantCoeff_zero fun x => by simp`. Unfold `Gtot`. Rewrite using `[← MvPowerSeries.coe_substAlgHom hψ, map_sum]`. Use `Finset.sum_congr rfl fun e _ => ?_` and prove the remaining obligations. Rewrite using `[MvPowerSeries.coe_substAlgHom hψ, MvPowerSeries.subst_comp_subst_apply (MvPowerSeries.hasSubst_of_constantCoeff_zero fun a => by simp) hψ]`.
+
+Use `congr 1`. Use function extensionality and compare the values at `a`. Rewrite using `[map_one, one_mul, MvPowerSeries.subst_X hψ]`.
+-/
 theorem subst_Gtot {K E : Type} [Field K] [Fintype E] (p : ℕ) (c c' ϖ : K) :
     MvPowerSeries.subst (fun x : Bool × E => MvPowerSeries.C ϖ *
         (MvPowerSeries.X x : MvPowerSeries (Bool × E) K)) (Gtot (E := E) p c c' 1) =
@@ -666,6 +919,9 @@ theorem subst_Gtot {K E : Type} [Field K] [Fintype E] (p : ℕ) (c c' ϖ : K) :
   funext a
   rw [map_one, one_mul, MvPowerSeries.subst_X hψ]
 
+/- English proof (translation)
+Establish `hψ : MvPowerSeries.HasSubst (fun x : Bool × E => MvPowerSeries.C ϖ * (MvPowerSeries.X x : MvPowerSeries (Bool × E) K))` using `MvPowerSeries.hasSubst_of_constantCoeff_zero fun x => by simp`. Rewrite using `[subst_mvExp hψ (by rw [map_neg, constantCoeff_Gtot hp, neg_zero]), ← MvPowerSeries.coe_substAlgHom hψ, map_neg, MvPowerSeries.coe_substAlgHom hψ, subst_Gtot]`.
+-/
 theorem subst_exp_Gtot {K E : Type} [NormedField K] [CharZero K] [Fintype E] {p : ℕ} (hp : p ≠ 0)
     (c c' ϖ : K) :
     MvPowerSeries.subst (fun x : Bool × E => MvPowerSeries.C ϖ *
@@ -679,6 +935,21 @@ theorem subst_exp_Gtot {K E : Type} [NormedField K] [CharZero K] [Fintype E] {p 
 
 end TwoS
 
+/- English proof (translation)
+Introduce `K _ _ _ p ν r0 r1 _ om oms c c' ϖ μ U hp hn hϖ hO hc hc' hμ0 hμ hU`. Establish `hpK : (p : K) ≠ 0` using `Nat.cast_ne_zero.2 hp.ne_zero`. Take `⟨-, -, μ0, hμ00, -, hμ0s, -, hμa⟩` from `h6 K p ϖ hp hn hϖ`. Take `rfl : μ = μ0` from `h7 K p ϖ μ μ0 hp.two_le hpK hμ0 hμ00 hμ hμ0s`. Establish `hϖ1 : ‖ϖ‖ ≤ 1`.
+
+Assume the negation of the conclusion as `hlt`. Use `replace hlt := not_le.1 hlt`. Establish `hN : p ^ 2 - 1 ≠ 0`. Establish `: 4 ≤ p ^ 2` using `by nlinarith [hp.two_le]`. Use linear arithmetic over natural numbers and integers.
+
+Establish `h` using `one_lt_pow₀ hlt hN`. Rewrite `h` using `[← norm_pow, hϖ, hn]`. Conclude with `absurd h (not_lt.2 (pinv_le_one p))`. Establish `hφ0` using `constantCoeff_sSub (r0 := r0) (r1 := r1) om oms hμ0`. Establish `hφI` using `integral_sSub (r0 := r0) (r1 := r1) hp hn hO hμa`.
+
+Establish `hsφ : MvPowerSeries.HasSubst (sSub (r0` using `r0) (r1 := r1) om oms μ) := MvPowerSeries.hasSubst_of_constantCoeff_zero hφ0`. Establish `hψ0 : ∀ x : Bool × EV ν r0 r1, MvPowerSeries.constantCoeff (MvPowerSeries.C ϖ * (MvPowerSeries.X x : MvPowerSeries (Bool × EV ν r0 r1) K)) = 0` using `fun x => by simp`. Establish `hψI : ∀ x : Bool × EV ν r0 r1, Integral (MvPowerSeries.C ϖ * (MvPowerSeries.X x : MvPowerSeries (Bool × EV ν r0 r1) K))` using `fun x => integral_mul (integral_C hϖ1) (integral_X x)`. Establish `hsψ` using `MvPowerSeries.hasSubst_of_constantCoeff_zero hψ0`. Establish `e0 : (fun x => MvPowerSeries.C ϖ * sSub (r0` using `r0) (r1 := r1) om oms μ x) = fun x => MvPowerSeries.subst (sSub om oms μ) (MvPowerSeries.C ϖ * (MvPowerSeries.X x : MvPowerSeries (Bool × EV ν r0 r1) K)) := by`.
+
+Use function extensionality and compare the values at `x`. Rewrite using `[MvPowerSeries.subst_mul hsφ, MvPowerSeries.subst_C, MvPowerSeries.subst_X hsφ]`. Rewrite using `[e0, ← MvPowerSeries.subst_comp_subst_apply hsψ hsφ, MvPowerSeries.subst_mul hsψ, subst_exp_Gtot hp.ne_zero]`. Establish `hh0` using `constant_coeff_hh_zero (E := EV ν r0 r1) hp.ne_zero c c'`. Establish `a1` using `h1 K (EV ν r0 r1) p c c' ϖ hp hn hϖ hc hc'`.
+
+Establish `a2` using `h4 K _ (p : K) _ _ _ hh0 (integralSubstV U _ hU hψ0 hψI) a1`. Establish `a3` using `h2 K _ _ (p : K) _ _ _ hh0 hφ0 hφI a2`. Take `⟨Y, hY, hY0, hYe⟩` from `h5 K p ν r0 r1 om oms c c' μ hp hn hO hc hc' hμ0 hμa`. Establish `a4` using `h3 K _ (p : K) hpK (by rw [hn]; exact pinv_le_one p) _ (-Y) _ (MvPowerSeries.constantCoeff_subst_eq_zero hsφ hφ0 hh0) (by rw [map_neg, hY0, neg_zero]) (integral_neg hY) a3`. Establish `e1 : MvPowerSeries.subst (sSub om oms μ) (hh1 (E` using `EV ν r0 r1) p c c') + MvPowerSeries.C (p : K) * -Y = hhS p (uS c c') := by`.
+
+Rewrite using `[hYe]`. Expand and normalize the polynomial expressions, which then agree. Rewrite `a4` using `[e1]`. Then use the resulting hypothesis.
+-/
 theorem ThmSCore_of (h1 : RescaleCore) (h2 : ClassSubst) (h3 : ClassChange) (h4 : ClassMul)
     (h5 : TwoSums) (h6 : LogRescale) (h7 : LogRescaleUnique) : ThmSCore := by
   intro K _ _ _ p ν r0 r1 _ om oms c c' ϖ μ U hp hn hϖ hO hc hc' hμ0 hμ hU
@@ -724,6 +995,17 @@ theorem ThmSCore_of (h1 : RescaleCore) (h2 : ClassSubst) (h3 : ClassChange) (h4 
     rw [hYe]; ring
   rwa [e1] at a4
 
+/- English proof (translation)
+Introduce `K _ _ _ p ν r0 r1 _ om oms c c' ϖ μ U0 Φ be hp hn hϖ hO hc hc' hμ0 hμ hU0 hΦ0 hΦ hbe`. Take `⟨r1', r2, r3, r4, -⟩` from `hs K (Bool × EV ν r0 r1)`. Take `⟨-, -, -, -, r5⟩` from `hs K (Fin 2)`. Establish `hsum : ∀ s : Finset (EV ν r0 r1), Simeq (∑ e ∈ s, MvPowerSeries.subst (fun a : Fin 2 => (MvPowerSeries.X (if a = 0 then (false, e) else (true, e)) : MvPowerSeries (Bool × EV ν r0 r1) K)) be) (∑ e ∈ s, MvPowerSeries.subst (fun a : Fin 2 => (MvPowerSeries.X (if a = 0 then (false, e …` using `by classical`. Introduce `s`.
+
+Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simpa using r1' 0`. Consider the case `insert e s he ih`. Rewrite using `[Finset.sum_insert he, Finset.sum_insert he]`. Conclude with `r4 _ _ _ _ (r5 _ _ _ _ (fun a => by simp) (fun a => integral_X _) hbe) ih`.
+
+Establish `eG : (∑ e : EV ν r0 r1, MvPowerSeries.subst (fun a : Fin 2 => (MvPowerSeries.X (if a = 0 then (false, e) else (true, e)) : MvPowerSeries (Bool × EV ν r0 r1) K)) (Gser p c c')) = Gtot p c c' 1`. Unfold `Gtot`. Simplify using `only [map_one, one_mul]`. Establish `h1 : Simeq (Gtot p c c' 1) Φ`. Rewrite using `[← eG]`.
+
+Conclude with `r2 _ _ (r3 _ _ _ hΦ (hsum Finset.univ))`. Take `⟨h10, h1I⟩` from `h1`. Establish `e : mvExp (-Φ) * U0 = mvExp (-(Gtot (E` using `EV ν r0 r1) p c c' 1)) * (mvExp (Gtot p c c' 1 - Φ) * U0) := by`. Rewrite using `[← mul_assoc, ← mvExp_add (by rw [map_neg, constantCoeff_Gtot hp.ne_zero, neg_zero]) h10]`. Use `congr 2`.
+
+Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e]`. Conclude with `h K p ν r0 r1 om oms c c' ϖ μ _ hp hn hϖ hO hc hc' hμ0 hμ (integral_mul h1I hU0)`.
+-/
 theorem theorem_s_from_k_one_of (h : ThmSCore) (hs : SimeqRules) : CyclicPowerClassOfExpEquiv := by
   intro K _ _ _ p ν r0 r1 _ om oms c c' ϖ μ U0 Φ be hp hn hϖ hO hc hc' hμ0 hμ hU0 hΦ0 hΦ hbe
   obtain ⟨r1', r2, r3, r4, -⟩ := hs K (Bool × EV ν r0 r1)

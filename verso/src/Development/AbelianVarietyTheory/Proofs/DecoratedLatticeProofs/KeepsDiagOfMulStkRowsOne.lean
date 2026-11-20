@@ -17,6 +17,13 @@ noncomputable section
 
 namespace GlobalTheory.Core.Rk.SW
 
+/- English proof (translation)
+Rewrite using `[keepsDiag_iff]`. Establish `key : ∀ s : Fin n ⊕ Fin n, ∀ j, M (finSumFinEquiv s) (finSumFinEquiv (Sum.inl j)) + M (finSumFinEquiv s) (finSumFinEquiv (Sum.inr j)) = β (s.elim id id) j`. Introduce `s j`. Establish `h1 : ∑ k, M (finSumFinEquiv s) k * stkRows (1 : Matrix (Fin n) (Fin n) R) 1 k j = stkRows β β (finSumFinEquiv s) j` using `congrFun (congrFun h _) j`. Rewrite `h1` using `[← finSumFinEquiv.sum_comp, Fintype.sum_sum_type]`.
+
+Simplify using `only [stkRows, Matrix.submatrix_apply, id, Equiv.symm_apply_apply, Matrix.fromRows_apply_inl, Matrix.fromRows_apply_inr, Matrix.one_apply, mul_ite, mul_one, mul_zero, Finset.sum_ite_eq', Finset.mem_univ, if_true] at h1`. Rewrite using `[h1]`. Apply the tactic sequence `rcases s with s | s <;> rfl`. Introduce `i j`. Rewrite using `[key (Sum.inr i), key (Sum.inl i)]`.
+
+Both sides reduce to the same expression.
+-/
 theorem keepsDiag_of_mul_stkRows_one {R : Type} [CommRing R] {n : ℕ} {M : Matrix (Fin (n + n)) (Fin (n + n)) R}
     {β : Matrix (Fin n) (Fin n) R} (h : M * stkRows 1 1 = stkRows β β) : KeepsDiag finSumFinEquiv M := by
   rw [keepsDiag_iff]

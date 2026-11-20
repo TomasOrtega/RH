@@ -21,40 +21,73 @@ def wE : GL (Fin (1 + 1)) k := GeneralLinearGroup.mkOfDetNeZero !![0, 1; 1, 0] (
 
 def tD (a d : kˣ) : GL (Fin (1 + 1)) k := bor a d 0
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem val_bor (a d : kˣ) (x : k) :
     ((bor a d x : GL (Fin (1 + 1)) k) : Matrix (Fin (1 + 1)) (Fin (1 + 1)) k) = !![(a : k), x; 0, (d : k)] := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem val_nL (x : k) :
     ((nL x : GL (Fin (1 + 1)) k) : Matrix (Fin (1 + 1)) (Fin (1 + 1)) k) = !![1, 0; x, 1] := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem val_wE :
     ((wE : GL (Fin (1 + 1)) k) : Matrix (Fin (1 + 1)) (Fin (1 + 1)) k) = !![0, 1; 1, 0] := rfl
 
+/- English proof (translation)
+Simplify using `[nU]`.
+-/
 @[simp] theorem val_nU (x : k) :
     ((nU x : GL (Fin (1 + 1)) k) : Matrix (Fin (1 + 1)) (Fin (1 + 1)) k) = !![1, x; 0, 1] := by
   simp [nU]
 
+/- English proof (translation)
+Simplify using `[tD]`.
+-/
 @[simp] theorem val_tD (a d : kˣ) :
     ((tD a d : GL (Fin (1 + 1)) k) : Matrix (Fin (1 + 1)) (Fin (1 + 1)) k) = !![(a : k), 0; 0, (d : k)] := by
   simp [tD]
 
+/- English proof (translation)
+Apply the tactic sequence `ext i j; fin_cases i <;> fin_cases j <;> simp [Matrix.mul_apply, Fin.sum_univ_two] <;> ring`.
+-/
 theorem nU_mul_nU (x y : k) : (nU x : GL (Fin (1 + 1)) k) * nU y = nU (x + y) := by
   ext i j; fin_cases i <;> fin_cases j <;> simp [Matrix.mul_apply, Fin.sum_univ_two] <;> ring
 
+/- English proof (translation)
+Apply the tactic sequence `ext i j; fin_cases i <;> fin_cases j <;> simp [Matrix.mul_apply, Fin.sum_univ_two]`.
+-/
 theorem wE_mul_wE : (wE : GL (Fin (1 + 1)) k) * wE = 1 := by
   ext i j; fin_cases i <;> fin_cases j <;> simp [Matrix.mul_apply, Fin.sum_univ_two]
 
+/- English proof (translation)
+Apply the tactic sequence `ext i j; fin_cases i <;> fin_cases j <;> simp [Matrix.mul_apply, Fin.sum_univ_two]`.
+-/
 theorem nL_eq (x : k) : (nL x : GL (Fin (1 + 1)) k) = wE * nU x * wE := by
   ext i j; fin_cases i <;> fin_cases j <;> simp [Matrix.mul_apply, Fin.sum_univ_two]
 
+/- English proof (translation)
+Apply the tactic sequence `ext i j; fin_cases i <;> fin_cases j <;> simp [Matrix.mul_apply, Fin.sum_univ_two]`.
+-/
 theorem wE_mul_nU_eq (x : kˣ) :
     (wE : GL (Fin (1 + 1)) k) * nU (x : k) = bor (-x⁻¹) x 1 * nL ((x⁻¹ : kˣ) : k) := by
   ext i j; fin_cases i <;> fin_cases j <;> simp [Matrix.mul_apply, Fin.sum_univ_two]
 
+/- English proof (translation)
+Apply the tactic sequence `ext i j; fin_cases i <;> fin_cases j <;> simp [Matrix.mul_apply, Fin.sum_univ_two] <;> field_simp`.
+-/
 theorem wE_mul_nU_mul_tD (x : k) (a d : kˣ) :
     (wE : GL (Fin (1 + 1)) k) * nU x * tD a d = tD d a * wE * nU (x * d * ((a⁻¹ : kˣ) : k)) := by
   ext i j; fin_cases i <;> fin_cases j <;> simp [Matrix.mul_apply, Fin.sum_univ_two] <;> field_simp
 
+/- English proof (translation)
+Apply the tactic sequence `ext i j; fin_cases i <;> fin_cases j <;> simp [Matrix.mul_apply, Fin.sum_univ_two] <;> field_simp <;> ring`.
+-/
 theorem tD_inv_eq (a : kˣ) : (tD a a⁻¹ : GL (Fin (1 + 1)) k) =
     nU (a : k) * nL (-((a⁻¹ : kˣ) : k)) * nU (a : k) * (nU (-1) * nL 1 * nU (-1)) := by
   ext i j; fin_cases i <;> fin_cases j <;> simp [Matrix.mul_apply, Fin.sum_univ_two] <;> field_simp <;> ring
@@ -73,28 +106,50 @@ def coord {μ₁ μ₂ : kˣ →* ℂˣ} (f : PSp μ₁ μ₂) (x : k) : ℂ := 
 def bchar (μ₁ μ₂ : kˣ →* ℂˣ) (a d : kˣ) : ℂ :=
   ((μ₁ a * μ₂ d * absPow k (1 / 2) a * absPow k (-1 / 2) d : ℂˣ) : ℂ)
 
+/- English proof (translation)
+Use `show TensorProduct.lid ℂ ℂ (f.1.1 g + f'.1.1 g) = _`. Rewrite using `[map_add]`. Both sides reduce to the same expression.
+-/
 theorem ev_add {μ₁ μ₂ : kˣ →* ℂˣ} (f f' : PSp μ₁ μ₂) (g : GL (Fin (1 + 1)) k) :
     ev (f + f') g = ev f g + ev f' g := by
   show TensorProduct.lid ℂ ℂ (f.1.1 g + f'.1.1 g) = _
   rw [map_add]; rfl
 
+/- English proof (translation)
+Use `show TensorProduct.lid ℂ ℂ (c • f.1.1 g) = _`. Rewrite using `[map_smul]`. Both sides reduce to the same expression.
+-/
 theorem ev_smul {μ₁ μ₂ : kˣ →* ℂˣ} (c : ℂ) (f : PSp μ₁ μ₂) (g : GL (Fin (1 + 1)) k) :
     ev (c • f) g = c * ev f g := by
   show TensorProduct.lid ℂ ℂ (c • f.1.1 g) = _
   rw [map_smul]; rfl
 
+/- English proof (translation)
+Use `show TensorProduct.lid ℂ ℂ (f.1.1 g - f'.1.1 g) = _`. Rewrite using `[map_sub]`. Both sides reduce to the same expression.
+-/
 theorem ev_sub {μ₁ μ₂ : kˣ →* ℂˣ} (f f' : PSp μ₁ μ₂) (g : GL (Fin (1 + 1)) k) :
     ev (f - f') g = ev f g - ev f' g := by
   show TensorProduct.lid ℂ ℂ (f.1.1 g - f'.1.1 g) = _
   rw [map_sub]; rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem ev_act {μ₁ μ₂ : kˣ →* ℂˣ} (h : GL (Fin (1 + 1)) k) (f : PSp μ₁ μ₂) (g : GL (Fin (1 + 1)) k) :
     ev (psRep μ₁ μ₂ h f) g = ev f (g * h) := rfl
 
+/- English proof (translation)
+Apply `Subtype.ext` to reduce the goal to its premises. Apply `Subtype.ext` to reduce the goal to its premises. Use function extensionality and compare the values at `g`. Conclude with `(TensorProduct.lid ℂ ℂ).injective (h g)`.
+-/
 theorem ext_ev {μ₁ μ₂ : kˣ →* ℂˣ} {f f' : PSp μ₁ μ₂} (h : ∀ g, ev f g = ev f' g) : f = f' := by
   apply Subtype.ext; apply Subtype.ext; funext g
   exact (TensorProduct.lid ℂ ℂ).injective (h g)
 
+/- English proof (translation)
+Use `mem_parab_iff.2 fun b c i j hbc => ?_` and prove the remaining obligations. Apply the tactic sequence `cases b <;> cases c`. Conclude with `absurd hbc (by decide)`. Conclude with `absurd hbc (by decide)`. Use `swap`.
+
+Conclude with `absurd hbc (by decide)`. Use `show (bor a d x : Matrix (Fin (1 + 1)) (Fin (1 + 1)) k) ((two (stdSum (rfl : 1 + 1 = 1 + 1))) ⟨true, i⟩) ((two (stdSum (rfl : 1 + 1 = 1 + 1))) ⟨false, j⟩) = 0`. Rewrite using `[two_true, two_false, Subsingleton.elim i 0, Subsingleton.elim j 0]`. Establish `h1 : stdSum (rfl : 1 + 1 = 1 + 1) (Sum.inr (0 : Fin 1)) = 1` using `by decide`. Establish `h0 : stdSum (rfl : 1 + 1 = 1 + 1) (Sum.inl (0 : Fin 1)) = 0` using `by decide`.
+
+Rewrite using `[h1, h0, val_bor]`. Both sides reduce to the same expression.
+-/
 theorem bor_mem_parab (a d : kˣ) (x : k) :
     bor a d x ∈ parab k (two (stdSum (rfl : 1 + 1 = 1 + 1))) := by
   refine mem_parab_iff.2 fun b c i j hbc => ?_
@@ -111,6 +166,21 @@ theorem bor_mem_parab (a d : kˣ) (x : k) :
   rw [h1, h0, val_bor]
   rfl
 
+/- English proof (translation)
+Establish `h` using `f.1.2 ⟨_, bor_mem_parab a d x⟩ g`. Simplify using `only [ev]`. Rewrite using `[show (bor a d x * g) = ((⟨_, bor_mem_parab a d x⟩ : parab k _) : GL (Fin (1 + 1)) k) * g from rfl, h]`. Generalize the expression as in `f.1.1 g = v`. Use `set p : parab k (two (stdSum (rfl : 1 + 1 = 1 + 1))) := ⟨_, bor_mem_parab a d x⟩`.
+
+Establish `h1 : stdSum (rfl : 1 + 1 = 1 + 1) (Sum.inr (0 : Fin 1)) = 1` using `by decide`. Establish `h0 : stdSum (rfl : 1 + 1 = 1 + 1) (Sum.inl (0 : Fin 1)) = 0` using `by decide`. Establish `e1 : GeneralLinearGroup.det (leviProj k (two (stdSum (rfl : 1 + 1 = 1 + 1))) p false) = a`. Use `ext`. Rewrite using `[GeneralLinearGroup.val_det_apply, Matrix.det_unique]`.
+
+Use `show (bor a d x : Matrix (Fin (1 + 1)) (Fin (1 + 1)) k) ((two (stdSum (rfl : 1 + 1 = 1 + 1))) ⟨false, default⟩) ((two (stdSum (rfl : 1 + 1 = 1 + 1))) ⟨false, default⟩) = a`. Rewrite using `[two_false, Subsingleton.elim (default : Fin 1) 0, h0, val_bor]`. Both sides reduce to the same expression. Establish `e2 : GeneralLinearGroup.det (leviProj k (two (stdSum (rfl : 1 + 1 = 1 + 1))) p true) = d`. Use `ext`.
+
+Rewrite using `[GeneralLinearGroup.val_det_apply, Matrix.det_unique]`. Use `show (bor a d x : Matrix (Fin (1 + 1)) (Fin (1 + 1)) k) ((two (stdSum (rfl : 1 + 1 = 1 + 1))) ⟨true, default⟩) ((two (stdSum (rfl : 1 + 1 = 1 + 1))) ⟨true, default⟩) = d`. Rewrite using `[two_true, Subsingleton.elim (default : Fin 1) 0, h1, val_bor]`. Both sides reduce to the same expression. Establish `hd : (deltaHalf k (Two (Fin 1) (Fin 1)) (leviProj k (two (stdSum (rfl : 1 + 1 = 1 + 1))) p) : ℂ) = ((absPow k (1 / 2) a * absPow k (-1 / 2) d : ℂˣ) : ℂ)`.
+
+Rewrite using `[← MulEquiv.apply_symm_apply (leviTwo k (Fin 1) (Fin 1)) (leviProj k _ p), deltaHalf_two]`. Simplify using `only [Fintype.card_fin, Nat.cast_one]`. Rewrite using `[show ((leviTwo k (Fin 1) (Fin 1)).symm (leviProj k _ p)).1 = leviProj k _ p false from rfl, show ((leviTwo k (Fin 1) (Fin 1)).symm (leviProj k _ p)).2 = leviProj k _ p true from rfl, e1, e2]`. Proceed by induction on `v using TensorProduct.induction_on with`. Consider the case `zero => simp`.
+
+Consider the case `tmul y z => show TensorProduct.lid ℂ ℂ ((deltaHalf k _ (leviProj k _ p) : ℂ) • extTensor (detRep (Fin 1) μ₁) (detRep (Fin 1) μ₂) ((leviTwo k (Fin 1) (Fin 1)).symm (leviProj k _ p)) (y ⊗ₜ z)) = _`. Rewrite using `[extTensor_tmul, hd]`. Rewrite using `[show ((leviTwo k (Fin 1) (Fin 1)).symm (leviProj k _ p)).1 = leviProj k _ p false from rfl, show ((leviTwo k (Fin 1) (Fin 1)).symm (leviProj k _ p)).2 = leviProj k _ p true from rfl]`. Simplify using `only [detRep, ofChar_apply, detChar_apply, e1, e2, map_smul, TensorProduct.lid_tmul, bchar, Units.val_mul, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree.
+
+Consider the case `add y z hy hz`. Rewrite using `[map_add, map_add, map_add, hy, hz, mul_add]`.
+-/
 theorem ev_bor {μ₁ μ₂ : kˣ →* ℂˣ} (f : PSp μ₁ μ₂) (a d : kˣ) (x : k) (g : GL (Fin (1 + 1)) k) :
     ev f (bor a d x * g) = bchar μ₁ μ₂ a d * ev f g := by
   have h := f.1.2 ⟨_, bor_mem_parab a d x⟩ g
@@ -164,24 +234,45 @@ def coordL (μ₁ μ₂ : kˣ →* ℂˣ) : PSp μ₁ μ₂ →ₗ[ℂ] (k → �
   map_add' f f' := funext fun x => ev_add f f' _
   map_smul' c f := funext fun x => ev_smul c f _
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem evL_apply (μ₁ μ₂ : kˣ →* ℂˣ) (g : GL (Fin (1 + 1)) k) (f : PSp μ₁ μ₂) :
     evL μ₁ μ₂ g f = ev f g := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem coordL_apply (μ₁ μ₂ : kˣ →* ℂˣ) (f : PSp μ₁ μ₂) : coordL μ₁ μ₂ f = coord f := rfl
 
+/- English proof (translation)
+Simplify using `only [coord, ev_act, mul_assoc, nU_mul_nU]`.
+-/
 theorem coord_nU {μ₁ μ₂ : kˣ →* ℂˣ} (f : PSp μ₁ μ₂) (y x : k) :
     coord (psRep μ₁ μ₂ (nU y) f) x = coord f (x + y) := by
   simp only [coord, ev_act, mul_assoc, nU_mul_nU]
 
+/- English proof (translation)
+Simplify using `only [coord, ev_act]`. Rewrite using `[wE_mul_nU_mul_tD, tD, mul_assoc, mul_assoc, ev_bor, ← mul_assoc]`.
+-/
 theorem coord_tD {μ₁ μ₂ : kˣ →* ℂˣ} (f : PSp μ₁ μ₂) (a d : kˣ) (x : k) :
     coord (psRep μ₁ μ₂ (tD a d) f) x = bchar μ₁ μ₂ d a * coord f (x * d * ((a⁻¹ : kˣ) : k)) := by
   simp only [coord, ev_act]
   rw [wE_mul_nU_mul_tD, tD, mul_assoc, mul_assoc, ev_bor, ← mul_assoc]
 
+/- English proof (translation)
+The claim follows from `Units.ne_zero _`.
+-/
 theorem bchar_ne_zero (μ₁ μ₂ : kˣ →* ℂˣ) (a d : kˣ) : bchar μ₁ μ₂ a d ≠ 0 := Units.ne_zero _
 
+/- English proof (translation)
+Simplify using `[bchar]`.
+-/
 @[simp] theorem bchar_one (μ₁ μ₂ : kˣ →* ℂˣ) : bchar μ₁ μ₂ 1 1 = 1 := by simp [bchar]
 
+/- English proof (translation)
+Rewrite using `[ev_act, one_mul, ← mul_one (bor a d x), ev_bor]`.
+-/
 theorem ev_act_bor_one {μ₁ μ₂ : kˣ →* ℂˣ} (f : PSp μ₁ μ₂) (a d : kˣ) (x : k) :
     ev (psRep μ₁ μ₂ (bor a d x) f) 1 = bchar μ₁ μ₂ a d * ev f 1 := by
   rw [ev_act, one_mul, ← mul_one (bor a d x), ev_bor]

@@ -14,16 +14,25 @@ attribute [local instance] Over.cartesianMonoidalCategory
 
 namespace GlobalTheory.BiextSignTwist
 
+/- English proof (translation)
+Use `ext`. Simplify using `[res]`.
+-/
 theorem res_neg {X : Scheme.{u}} {U V : X.Opens} (h : V ≤ U) (a : Γ(X, U)ˣ) :
     res h (-a) = -res h a := by
   ext; simp [res]
 
+/- English proof (translation)
+Use `ext`. Simplify using `[pullU]`.
+-/
 theorem pullU_neg {X Y : Scheme.{u}} (f : Y ⟶ X) (U : X.Opens) (a : Γ(X, U)ˣ) :
     pullU f U (-a) = -pullU f U a := by
   ext; simp [pullU]
 
 def negGen {X : Scheme.{u}} {L : LB X} (t : LB.Gen L) : LB.Gen L := ⟨fun i => -t.s i⟩
 
+/- English proof (translation)
+Introduce `i j` and use `by simp only [negGen, res_neg, mul_neg] rw [h i j]`.
+-/
 theorem negGen_isGen {X : Scheme.{u}} {L : LB X} {t : LB.Gen L} (h : t.IsGen) :
     (negGen t).IsGen := fun i j => by
   simp only [negGen, res_neg, mul_neg]
@@ -32,23 +41,38 @@ theorem negGen_isGen {X : Scheme.{u}} {L : LB X} {t : LB.Gen L} (h : t.IsGen) :
 section
 variable {X Y Z : Scheme.{u}} (L : LB X) {K K' : Type u} [Fintype K] [Fintype K']
 
+/- English proof (translation)
+Consider the cases of `t`. Simplify using `[negGen]`.
+-/
 theorem negGen_negGen (t : LB.Gen L) : negGen (negGen t) = t := by
   cases t; simp [negGen]
 
+/- English proof (translation)
+The claim follows from `congrArg LB.Gen.mk (funext fun _ => (congrArg (res _) (pullU_neg _ _ _)).trans (res_neg _ _))`.
+-/
 theorem pullGen_neg (φ : K → (Y ⟶ X)) (ε : K → ℤ) (t : LB.Gen (LB.LinComb L φ ε)) (h : Z ⟶ Y) :
     LB.pullGen L φ ε (negGen t) h = negGen (LB.pullGen L φ ε t h) :=
   congrArg LB.Gen.mk (funext fun _ => (congrArg (res _) (pullU_neg _ _ _)).trans (res_neg _ _))
 
+/- English proof (translation)
+The claim follows from `congrArg LB.Gen.mk (funext fun _ => (congrArg (· * _) (res_neg _ _)).trans (neg_mul _ _))`.
+-/
 theorem mulGen_neg_left (φ : K → (Y ⟶ X)) (ε : K → ℤ) (φ' : K' → (Y ⟶ X)) (ε' : K' → ℤ)
     (t : LB.Gen (LB.LinComb L φ ε)) (t' : LB.Gen (LB.LinComb L φ' ε')) :
     LB.mulGen L φ ε φ' ε' (negGen t) t' = negGen (LB.mulGen L φ ε φ' ε' t t') :=
   congrArg LB.Gen.mk (funext fun _ => (congrArg (· * _) (res_neg _ _)).trans (neg_mul _ _))
 
+/- English proof (translation)
+The claim follows from `congrArg LB.Gen.mk (funext fun _ => (congrArg (_ * ·) (res_neg _ _)).trans (mul_neg _ _))`.
+-/
 theorem mulGen_neg_right (φ : K → (Y ⟶ X)) (ε : K → ℤ) (φ' : K' → (Y ⟶ X)) (ε' : K' → ℤ)
     (t : LB.Gen (LB.LinComb L φ ε)) (t' : LB.Gen (LB.LinComb L φ' ε')) :
     LB.mulGen L φ ε φ' ε' t (negGen t') = negGen (LB.mulGen L φ ε φ' ε' t t') :=
   congrArg LB.Gen.mk (funext fun _ => (congrArg (_ * ·) (res_neg _ _)).trans (mul_neg _ _))
 
+/- English proof (translation)
+Introduce `j j' a b c` and use `(res_neg _ _).trans ((congrArg Neg.neg (h j j' a b c)).trans (res_neg _ _).symm)`.
+-/
 theorem corr_neg {φ : K → (Y ⟶ X)} {ε : K → ℤ} {φ' : K' → (Y ⟶ X)} {ε' : K' → ℤ}
     {t : LB.Gen (LB.LinComb L φ ε)} {t' : LB.Gen (LB.LinComb L φ' ε')}
     (h : LB.Gen.Corr L φ ε φ' ε' t t') : LB.Gen.Corr L φ ε φ' ε' (negGen t) (negGen t') :=
@@ -91,6 +115,21 @@ def AbelianLawCounterexample : Prop :=
   ∀ (S : Scheme.{u}) (G : Over S) [GrpObj G] [IsCommMonObj G] (L : RigLB G) (c : CubicalStr G L),
     ∃ β : IsBiext G (abelian₂ G L.L), LawIsCube G L c _ β.law1 ∧ LawIsCube G L c _ β.law2
 
+/- English proof (translation)
+Introduce `h'`. Take `⟨s⟩ : Nonempty S` from `inferInstance`. Set `e : 𝟙_ (Over S) ⟶ G3 G` to `lift η[G] (lift η[G] η[G])`. Set `z : (G3 G).left` to `e.left s`. Establish `hc : ∀ x : G.left, ∃ i, x ∈ L.L.U i` using `fun x => by`.
+
+Establish `: x ∈ (⨆ i, L.L.U i)` using `by rw [L.isLB.cover]; trivial`. Conclude with `Opens.mem_iSup.1 this`. Use `choose idx hidx using hc`. Set `J : ULift.{u} (Fin 3) → ULift.{u} (Finset (Fin 2)) → L.L.ι` to `fun k I => idx ((ψ k ≫ lamφ G I) z)`. Set `j : thK → L.L.ι` to `fun I => idx ((thφ G (x3 G) I) z)`.
+
+Establish `a1 : ∀ k I k' I', ψ k ≫ lamφ G I = ψ k' ≫ lamφ G I' → J k I = J k' I'` using `fun k I k' I' e => by simp only [J, e]`. Establish `a2 : LB.Coh L.L (thφ G (x3 G)) j` using `fun I I' e => by simp only [j, e]`. Establish `a3 : ∀ k I I', ψ k ≫ lamφ G I = thφ G (x3 G) I' → J k I = j I'` using `fun k I I' e => by simp only [J, j, e]`. Establish `e1` using `h J j a1 a2 a3`. Establish `e2` using `h' J j a1 a2 a3`.
+
+Rewrite `e2` using `[← e1]`. Use `replace e2 := (res_neg _ _).symm.trans e2`. Use `set W := LB.wchart (abelian₂ G L.L) ψ J ⊓ LB.wchart L.L (thφ G (x3 G)) j with hW`. Establish `hz : z ∈ W`. Use `⟨Set.mem_iInter.2 fun k => Set.mem_iInter.2 fun I => ?_, Set.mem_iInter.2 fun I => hidx _⟩` and prove the remaining obligations.
+
+Use `hidx ((ψ k ≫ lamφ G I) z)` as an intermediate fact. Rewrite `this` using `[Scheme.Hom.comp_apply]`. Conclude with `this`. Use `haveI : Nonempty W := ⟨⟨z, hz⟩⟩`. Establish `h2' : IsUnit (2 : Γ((G3 G).left, W))`.
+
+Use `(h2.map ((G3 G).hom.appTop).hom).map ((G3 G).left.presheaf.map (homOfLE (le_top : W ≤ ⊤)).op).hom` as an intermediate fact. Simplify `this` using `only [map_ofNat]`. Establish `key : ∀ a : Γ((G3 G).left, W)ˣ, -a = a → False` using `fun a e2 => by`. Establish `e3 : (2 : Γ((G3 G).left, W)) * (a : Γ((G3 G).left, W)) = 0`. Use `congrArg Units.val e2` as an intermediate fact.
+
+Rewrite `this` using `[Units.val_neg]`. Take the linear combination `-this`. Conclude with `(h2'.mul a.isUnit).ne_zero e3`. Conclude with `key _ e2`.
+-/
 theorem not_both (h2 : IsUnit (2 : Γ(S, ⊤))) [Nonempty S] (L : RigLB G) (c : CubicalStr G L)
     (ψ : ULift.{u} (Fin 3) → ((G3 G).left ⟶ (G2 G).left))
     (law : LB.Gen (LB.LinComb (abelian₂ G L.L) ψ lawε)) (h : LawIsCube G L c ψ law) :
@@ -137,17 +176,26 @@ theorem not_both (h2 : IsUnit (2 : Γ(S, ⊤))) [Nonempty S] (L : RigLB G) (c : 
 section Trivial
 open GlobalTheory.IndefiniteRowSideFullHecke.TrivialBiextension (trivLB pull_one mul_one' corr_one isGen_one)
 
+/- English proof (translation)
+The claim follows from `Finset.prod_eq_one fun k _ => (congrArg (· ^ ε k) ((congrArg _ ((congrArg _ (hL _ _)).trans (map_one _))).trans (map_one _))).trans (one_zpow _)`.
+-/
 theorem linComb_g_one {X Y : Scheme.{u}} (L : LB X) (hL : ∀ i j, L.g i j = 1) {K : Type u}
     [Fintype K] (φ : K → (Y ⟶ X)) (ε : K → ℤ) (i j) : (LB.LinComb L φ ε).g i j = 1 :=
   Finset.prod_eq_one fun k _ =>
     (congrArg (· ^ ε k) ((congrArg _ ((congrArg _ (hL _ _)).trans (map_one _))).trans
       (map_one _))).trans (one_zpow _)
 
+/- English proof (translation)
+Introduce `i j` and use `by rw [hL] exact (map_one _).trans ((_root_.one_mul _).trans (map_one _)).symm`.
+-/
 theorem isGen_one' {X : Scheme.{u}} (L : LB X) (hL : ∀ i j, L.g i j = 1) :
     LB.Gen.IsGen (L := L) ⟨fun _ => 1⟩ := fun i j => by
   rw [hL]
   exact (map_one _).trans ((_root_.one_mul _).trans (map_one _)).symm
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨hc, fun _ => by rw [hL, map_one], fun _ _ _ => by rw [hL, hL, hL, map_one, map_one, map_one, _root_.mul_one]⟩`.
+-/
 theorem isLB_of_g_one {X : Scheme.{u}} (L : LB X) (hL : ∀ i j, L.g i j = 1)
     (hc : ⨆ i, L.U i = ⊤) : L.IsLB :=
   ⟨hc, fun _ => by rw [hL, map_one], fun _ _ _ => by
@@ -166,6 +214,9 @@ def oneCub : CubicalStr G (oneRig G) where
     (mul_one' _ _ _ _ _ _ _ (pull_one _ _ _ _ _ fun _ => rfl) (pull_one _ _ _ _ _ fun _ => rfl))
     (mul_one' _ _ _ _ _ _ _ (pull_one _ _ _ _ _ fun _ => rfl) (pull_one _ _ _ _ _ fun _ => rfl))
 
+/- English proof (translation)
+The claim follows from `linComb_g_one (trivLB _) (fun _ _ => rfl) _ _ i j`.
+-/
 theorem lam_g_one (i j) : (abelian₂ G (oneRig G).L).g i j = 1 :=
   linComb_g_one (trivLB _) (fun _ _ => rfl) _ _ i j
 
@@ -192,6 +243,9 @@ def oneBiext : IsBiext G (abelian₂ G (oneRig G).L) where
       (mul_one' _ _ _ _ _ _ _ (pull_one _ _ _ _ _ fun _ => rfl) (pull_one _ _ _ _ _ fun _ => rfl))
       (pull_one _ _ _ _ _ fun _ => rfl))
 
+/- English proof (translation)
+The claim follows from `have h1 : LawIsCube G _ (oneCub G) _ (oneBiext G).law1 := fun _ _ _ _ _ => (map_one _).trans (map_one _).symm ⟨⟨h1, fun _ _ _ _ _ => (map_one _).trans (map_one _).symm⟩, not_both G h2 _ _ _ _ h1⟩`.
+-/
 theorem main (h2 : IsUnit (2 : Γ(S, ⊤))) [Nonempty S] :
     (LawIsCube G _ (oneCub G) _ (oneBiext G).law1 ∧ LawIsCube G _ (oneCub G) _ (oneBiext G).law2) ∧
     ¬ LawIsCube G _ (oneCub G) _ (negBiext G (oneBiext G)).law1 :=

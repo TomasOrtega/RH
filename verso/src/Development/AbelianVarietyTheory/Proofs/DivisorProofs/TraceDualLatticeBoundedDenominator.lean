@@ -9,6 +9,15 @@ open scoped TensorProduct NNReal Matrix
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Introduce `F _ _`. Use `⟨(NumberField.discr F).natAbs, Int.natAbs_pos.mpr (NumberField.discr_ne_zero F), ?_⟩` and prove the remaining obligations. Introduce `ξ hξ`. Establish `hint` using `GlobalTheory.discr_mul_isIntegral_of_traceDual F ξ hξ`. Establish `hint' : IsIntegral ℤ (((NumberField.discr F).natAbs : F) * ξ)`.
+
+Break down `Int.natAbs_eq (NumberField.discr F) with h | h` into its components or cases. Establish `: ((NumberField.discr F).natAbs : F) = (NumberField.discr F : F)`. Establish `h' : ((NumberField.discr F).natAbs : ℤ) = NumberField.discr F` using `by omega`. Rewrite using `[← Int.cast_natCast, h']`. Rewrite using `[this]`.
+
+Conclude with `hint`. Establish `: ((NumberField.discr F).natAbs : F) = -(NumberField.discr F : F)`. Establish `h' : ((NumberField.discr F).natAbs : ℤ) = -(NumberField.discr F)` using `by omega`. Rewrite using `[← Int.cast_natCast, h', Int.cast_neg]`. Rewrite using `[this, neg_mul]`.
+
+Conclude with `hint.neg`. Conclude with `⟨⟨_, hint'⟩, rfl⟩`.
+-/
 theorem exists_den_traceDual_ringOfIntegers :
     ∀ {F : Type} [Field F] [NumberField F], ∃ D : ℕ, 0 < D ∧ ∀ ξ : F,
       (∀ o : 𝓞 F, ∃ z : ℤ, Algebra.trace ℚ F (ξ * o) = z) → ∃ o : 𝓞 F, (D : F) * ξ = o := by

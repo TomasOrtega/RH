@@ -18,16 +18,32 @@ variable {R : Type} [CommRing R] {C : Type} [Category.{0} C] (F : C ⥤ CommAlgC
 
 abbrev inrJ {T : C} (x : Om R (F.obj T) j) : (omjExt F j).obj T := TrivSqZeroExt.inr x
 
+/- English proof (translation)
+The claim follows from `TrivSqZeroExt.inr_add _ x y`.
+-/
 theorem inrJ_add {T : C} (x y : Om R (F.obj T) j) : inrJ F j (x + y) = inrJ F j x + inrJ F j y :=
   TrivSqZeroExt.inr_add _ x y
 
+/- English proof (translation)
+The claim follows from `TrivSqZeroExt.inr_sub _ x y`.
+-/
 theorem inrJ_sub {T : C} (x y : Om R (F.obj T) j) : inrJ F j (x - y) = inrJ F j x - inrJ F j y :=
   TrivSqZeroExt.inr_sub _ x y
 
+/- English proof (translation)
+The claim follows from `TrivSqZeroExt.snd_sub a b`.
+-/
 theorem snd_subJ {T : C} (a b : (omjExt F j).obj T) :
     TrivSqZeroExt.snd (a - b) = TrivSqZeroExt.snd a - TrivSqZeroExt.snd b :=
   TrivSqZeroExt.snd_sub a b
 
+/- English proof (translation)
+Set `E` to `omjExt F j`. Set `f : Z1 E` to `⟨fun T T' φ ↦ inrJ F j (κ T T' φ), fun T T' T'' φ ψ ↦ by`. Express the relevant statement in the definitionally equal form `inrJ F j (κ T T'' (φ ≫ ψ)) = mp E ψ (inrJ F j (κ T T' φ)) + inrJ F j (κ T' T'' ψ)`. Rewrite using `[mp_omjExt_inr, hκ φ ψ, inrJ_add]⟩`. Establish `hpull : (CoefMap.restrict E G).pull1 (H1.mk E f) = (CoefMap.restrict E G).pull1 0`.
+
+Rewrite using `[map_zero, CoefMap.pullCohomologyOne_class, H1.mk_eq_zero]`. Use `⟨fun t ↦ inrJ F j (θ' t), ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `t t' a`. Express the relevant statement in the definitionally equal form `inrJ F j (θ' t') - mp E (G.map a) (inrJ F j (θ' t)) = inrJ F j (κ _ _ (G.map a))`. Rewrite using `[mp_omjExt_inr, hθ' a, inrJ_sub]`.
+
+Take `⟨g, hg⟩` from `H1.mk_eq_zero.1 (hinj hpull)`. Use `⟨fun T ↦ (g T).snd, fun T T' φ ↦ ?_⟩` and prove the remaining obligations. Establish `e` using `congrArg TrivSqZeroExt.snd (congrFun (congrFun (congrFun hg T) T') φ)`. Rewrite `e` using `[amitsur_d0_apply, snd_subJ, snd_mp_omjExt]`. Conclude with `e.symm`.
+-/
 theorem oneCocycle_coboundary_of_restrict_coboundary {R : Type} [CommRing R] {C : Type} [Category.{0} C] {C' : Type}
     [Category.{0} C'] (F : C ⥤ CommAlgCat.{0} R) (G : C' ⥤ C) (j : ℕ)
     (hinj : Function.Injective (CoefMap.restrict (FormExtJ.omjExt F j) G).pull1)

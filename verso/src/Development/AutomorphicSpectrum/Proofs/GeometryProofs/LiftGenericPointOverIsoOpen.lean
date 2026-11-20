@@ -9,6 +9,21 @@ open GlobalTheory.ProjSpace GlobalTheory.Points GlobalTheory.TuplePoint GlobalTh
 
 namespace GlobalTheory.CompanionTheory.Ar.Coords
 
+/- English proof (translation)
+Establish `hr : Set.range ξ ⊆ Set.range U.ι`. Rewrite using `[Scheme.Opens.range_ι]`. Introduce and unpack `_ ⟨x, rfl⟩`. Conclude with `hU (show x ∈ (⊤ : (Sp Ω).Opens) from trivial)`. Set `ζ₀ : Sp Ω ⟶ (f ⁻¹ᵁ U).toScheme` to `IsOpenImmersion.lift U.ι ξ hr ≫ inv (f ∣_ U)`.
+
+Establish `hζ₀ : ζ₀ ≫ (f ∣_ U ≫ U.ι) = ξ`. Simplify using `only [ζ₀, Category.assoc, IsIso.inv_hom_id_assoc, IsOpenImmersion.lift_fac]`. Establish `hT : f ∣_ U ≫ U.ι = (f ⁻¹ᵁ U).ι ≫ f` using `morphismRestrict_ι f U`. Establish `hfac : (ζ₀ ≫ (f ⁻¹ᵁ U).ι) ≫ f = ξ`. Rewrite using `[Category.assoc, ← hT, hζ₀]`.
+
+Use `⟨ζ₀ ≫ (f ⁻¹ᵁ U).ι, hfac, ⟨?_⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[DenseRange, dense_iff_inter_open]`. Introduce `W hW hne`. Take `⟨v, hvW, hvU⟩` from `hd.inter_open_nonempty W hW hne`. Set `T : (f ⁻¹ᵁ U).toScheme ⟶ X` to `f ∣_ U ≫ U.ι`.
+
+Establish `hTo : IsOpenImmersion T` using `inferInstance`. Set `W' : Set (f ⁻¹ᵁ U).toScheme` to `(f ⁻¹ᵁ U).ι ⁻¹' W`. Establish `hW' : IsOpen W'` using `hW.preimage (f ⁻¹ᵁ U).ι.continuous`. Establish `himg : IsOpen (T '' W')` using `T.isOpenEmbedding.isOpenMap _ hW'`. Establish `hne' : (T '' W').Nonempty` using `⟨T ⟨v, hvU⟩, ⟨v, hvU⟩, by`.
+
+Express the relevant statement in the definitionally equal form `(f ⁻¹ᵁ U).ι ⟨v, hvU⟩ ∈ W`. Conclude with `hvW, rfl⟩`. Take `⟨y, hyT, p, rfl⟩` from `(ξ.denseRange).inter_open_nonempty _ himg hne'`. Take `⟨w, hwW, hw⟩` from `hyT`. Establish `hp : T (ζ₀ p) = ξ p`.
+
+Rewrite using `[← hζ₀]`. Simplify using `[T]`. Establish `hwp : w = ζ₀ p` using `T.isOpenEmbedding.injective (hw.trans hp.symm)`. Use `⟨(ζ₀ ≫ (f ⁻¹ᵁ U).ι) p, ?_, p, rfl⟩` and prove the remaining obligations. Substitute `hwp` using the available equality.
+
+Simplify `hwW` using `[W']`. Introduce `x _`. Establish `hx : ξ x ∈ U` using `hU (show x ∈ (⊤ : (Sp Ω).Opens) from trivial)`. Rewrite `hx` using `[← hfac]`. Conclude with `hx`.
+-/
 theorem dense_point_lift (Ω : Type) [Field Ω] [CharZero Ω] (X X' : Scheme.{0}) (ξ : Sp Ω ⟶ X)
     [IsDominant ξ] (f : X' ⟶ X) (U : X.Opens) [IsIso (f ∣_ U)]
     (hd : Dense ((f ⁻¹ᵁ U : X'.Opens) : Set X')) (hU : ⊤ ≤ ξ ⁻¹ᵁ U) :

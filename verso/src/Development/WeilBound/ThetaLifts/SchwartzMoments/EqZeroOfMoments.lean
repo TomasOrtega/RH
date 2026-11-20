@@ -11,6 +11,13 @@ namespace PositivityTheory.ThKOwn
 open Filter Topology Complex PositivityTheory.ThKG.Loc.Bump
 open scoped SchwartzMap ContDiff
 
+/- English proof (translation)
+Establish `hk` using `kill_mul weakInt T g fun L => kill_exp L hQ hw hre hg T (hT L) I fun x => by`. Rewrite using `[SchwartzMap.smulLeftCLM_apply_apply (ex_temp L), smul_eq_mul, ex]`. Use `ContinuousLinearMap.coeFn_injective (T.continuous.ext_on dense_compactSupport continuous_const fun φ hφ => ?_)` and prove the remaining obligations. Establish `hs : HasCompactSupport fun x => φ x * cexp (-Q x)` using `HasCompactSupport.mul_right hφ`. Establish `hm : ContDiff ℝ ∞ fun x => φ x * cexp (-Q x)` using `(φ.smooth ⊤).mul (Complex.contDiff_exp.comp hQ.1.neg)`.
+
+Establish `e : φ = SchwartzMap.smulLeftCLM ℂ (hs.toSchwartzMap hm) g`. Use extensionality with `x`. Simplify using `only [SchwartzMap.smulLeftCLM_apply_apply (SchwartzMap.hasTemperateGrowth _), smul_eq_mul, HasCompactSupport.toSchwartzMap_toFun, hg]`. Rewrite using `[mul_assoc, ← Complex.exp_add]`. Simplify using the standard rewrite rules.
+
+Express the relevant statement in the definitionally equal form `T φ = 0`. Rewrite using `[e]`. Conclude with `hk _`.
+-/
 theorem eq_zero_of_moments {X : Type} [NormedAddCommGroup X] [InnerProductSpace ℝ X] [FiniteDimensional ℝ X]
     {Q : X → ℂ} {w : ℝ} (hQ : Q.HasTemperateGrowth) (hw : 0 < w) (hre : ∀ x, (Q x).re ≤ -w * ‖x‖ ^ 2)
     {g : 𝓢(X, ℂ)} (hg : ∀ x, g x = cexp (Q x)) (T : 𝓢(X, ℂ) →L[ℂ] ℂ)
@@ -33,6 +40,13 @@ theorem eq_zero_of_moments {X : Type} [NormedAddCommGroup X] [InnerProductSpace 
 def polE {n : ℕ} (P : MvPolynomial (Fin n) ℂ) (y : EuclideanSpace ℝ (Fin n)) : ℂ :=
   MvPolynomial.eval (fun i => ((y i : ℝ) : ℂ)) P
 
+/- English proof (translation)
+Establish `hQ : (fun y => -(q y : ℂ)).HasTemperateGrowth` using `(Complex.ofRealCLM.hasTemperateGrowth.comp hq).neg`. Establish `hre : ∀ y, (-(q y : ℂ)).re ≤ -w * ‖y‖ ^ 2` using `fun y => by`. Rewrite using `[Complex.neg_re, Complex.ofReal_re]`. Combine the linear relations using `[hlow y]`. Use `eq_zero_of_moments hQ hw hre (g := GlobalTheory.CompanionTheory.OM.GaussSch.cexpSchwartz hQ hw hre) (fun _ => rfl) T fun L m => hT _ ⟨(∑ i, MvPolynomial.C ((L (EuclideanSpace.single i 1) : ℝ) : ℂ) * MvPolynomial.X i) ^ m, fun y => ?_⟩` and prove the remaining obligations.
+
+Establish `hL : L y = ∑ i, L (EuclideanSpace.single i 1) * y i` using `by conv_lhs => rw [← (EuclideanSpace.basisFun (Fin n) ℝ).sum_repr y]`. Simplify using `[map_sum, mul_comm]`. Rewrite using `[mulL_pow_apply, hL]`. Simplify using `only [polE, map_pow, map_sum, map_mul, MvPolynomial.eval_C, MvPolynomial.eval_X]`. Use `push_cast`.
+
+Both sides reduce to the same expression.
+-/
 theorem eq_zero_PG {n : ℕ} (q : EuclideanSpace ℝ (Fin n) → ℝ) (hq : q.HasTemperateGrowth) (w : ℝ) (hw : 0 < w)
     (hlow : ∀ x, w * ‖x‖ ^ 2 ≤ q x) (T : 𝓢(EuclideanSpace ℝ (Fin n), ℂ) →L[ℂ] ℂ)
     (hT : ∀ f : 𝓢(EuclideanSpace ℝ (Fin n), ℂ), (∃ P, ∀ y, f y = polE P y * cexp (-(q y : ℂ))) → T f = 0) : T = 0 := by

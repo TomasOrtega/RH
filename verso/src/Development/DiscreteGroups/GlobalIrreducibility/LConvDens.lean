@@ -9,6 +9,19 @@ namespace DiscreteGroups.sglob.LConv
 
 open CompanionTheory.D.gk.admitted
 
+/- English proof (translation)
+Establish `: CompleteSpace S` using `hcl.completeSpace_coe`. Establish `hcomm : ∀ g, S.starProjection * π g = π g * S.starProjection`. Introduce `g`. Use extensionality with `z`. Use `show S.starProjection (π g z) = π g (S.starProjection z)`.
+
+Apply `Submodule.eq_starProjection_of_mem_of_inner_eq_zero` to reduce the goal to its premises. Conclude with `hS g _ (S.starProjection_apply_mem z)`. Introduce `w hw`. Rewrite using `[← map_sub, FinOfPIAux.inner_left π hπ]`. Conclude with `S.starProjection_inner_eq_zero z _ (hS _ _ hw)`.
+
+Take `⟨c, hc⟩` from `hsc _ hcomm`. Establish `hP : ∀ z, S.starProjection z = c • z` using `fun z => by rw [hc]; rfl`. Distinguish the cases in `h0 : S = ⊥`. Conclude with `Or.inl h0`. Use `right`.
+
+Take `⟨x, hx, hx0⟩` from `Submodule.exists_mem_ne_zero_of_ne_bot h0`. Establish `h1 : c • x = x` using `by rw [← hP, Submodule.starProjection_eq_self_iff.mpr hx]`. Establish `hc1 : c = 1`. Establish `h2 : (c - 1) • x = 0` using `by rw [sub_smul, h1, one_smul, sub_self]`. Break down `smul_eq_zero.mp h2 with h | h` into its components or cases.
+
+Conclude with `sub_eq_zero.mp h`. Conclude with `absurd h hx0`. Rewrite using `[eq_top_iff]`. Introduce `z _`. Establish `h3` using `S.starProjection_apply_mem z`.
+
+Rewrite `h3` using `[hP, hc1, one_smul]`. Then use the resulting hypothesis.
+-/
 theorem irred_of_scalar {G : Type} [Group G] {H : Type} [NormedAddCommGroup H] [InnerProductSpace ℂ H]
     [CompleteSpace H] (π : G →* (H →L[ℂ] H)) (hπ : ∀ g x, ‖π g x‖ = ‖x‖)
     (hsc : ∀ T : H →L[ℂ] H, (∀ g, T * π g = π g * T) → ∃ c : ℂ, T = c • (1 : H →L[ℂ] H))
@@ -40,6 +53,9 @@ theorem irred_of_scalar {G : Type} [Group G] {H : Type} [NormedAddCommGroup H] [
     have h3 := S.starProjection_apply_mem z
     rwa [hP, hc1, one_smul] at h3
 
+/- English proof (translation)
+Proceed by induction on `l with`. Consider the case `nil => simp`. Consider the case `cons a l ih`. Simplify using `only [word_cons, ih, List.map_cons, List.prod_cons, ← mul_assoc, he]`.
+-/
 theorem word_eq_mul_prod {R : Type*} [Ring R] (e : R) (he : e * e = e) (l : List R) :
     word e l = e * (l.map fun a => e * a * e).prod := by
   induction l with
@@ -47,6 +63,13 @@ theorem word_eq_mul_prod {R : Type*} [Ring R] (e : R) (he : e * e = e) (l : List
   | cons a l ih =>
     simp only [word_cons, ih, List.map_cons, List.prod_cons, ← mul_assoc, he]
 
+/- English proof (translation)
+Introduce `G _ H _ _ _ π hπ hsc e he d hd`. Establish `h : ∀ g : Fin d → G, stdPoly e (fun i => π (g i)) = 0`. Introduce `g`. Establish `h0` using `congrArg (fun X => e * X) (hd g)`. Simplify using `only [mul_zero] at h0`.
+
+Rewrite using `[← h0, stdPoly, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun σ _ => ?_` and prove the remaining obligations. Rewrite using `[word_eq_mul_prod e he, List.map_ofFn, mul_smul_comm, Int.cast_smul_eq_zsmul, zsmul_eq_mul]`. Both sides reduce to the same expression. Take `⟨hfd, -⟩` from `finite_rank_of_irreducible_unitary G H π hπ (irred_of_scalar π hπ hsc) e d h`.
+
+Take `⟨s, hs⟩` from `(Submodule.fg_iff_finiteDimensional _).mpr hfd`. Use `⟨s, fun x => ?_⟩` and prove the remaining obligations. Rewrite using `[hs]`. Conclude with `LinearMap.mem_range_self (e : H →ₗ[ℂ] H) x`.
+-/
 theorem finiteOfAlt : FiniteOfAlt := by
   intro G _ H _ _ _ π hπ hsc e he d hd
   have h : ∀ g : Fin d → G, stdPoly e (fun i => π (g i)) = 0 := by

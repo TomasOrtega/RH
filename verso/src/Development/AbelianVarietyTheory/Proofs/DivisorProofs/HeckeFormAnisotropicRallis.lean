@@ -20,6 +20,11 @@ open GlobalTheory.Mem.Th (CptF)
 open GlobalTheory.Core.Rk.IP (Pair Unram SphFun openOff integrand wcoef rcoef up)
 open GlobalTheory.Core.Rk.IP in
 
+/- English proof (translation)
+Introduce `hP D`. Establish `hU19` using `GlobalTheory.T.unramifiedDoublingIntegral_inert_place`. Establish `hPB` using `paramBoundOn_all_of_split_inert D (GlobalTheory.T.sphericalParameterBound_split_place D) (GlobalTheory.T.sphericalParameterBound_nonsplit_places hU19 D)`. Establish `hLZ` using `localZetaOn_all_of_split_inert D (GlobalTheory.T.unramifiedDoublingIntegral_splitPlace_adelic hP.unramifiedDoublingGL D) (GlobalTheory.T.unramified_doubling_integral_inert_adelic hU19 D (GlobalTheory.T.sphericalParameterBound_nonsplit_places hU19 D))`. Establish `hE : EulerRight D` using `GlobalTheory.T.doubling_eulerProduct_farRight hP.cuspRapidDecay D (GlobalTheory.T.doublingSphericalFactorization_of_weilDualPair hP.weilRepresentationUnitaryPair D) hLZ hPB`.
+
+Establish `hG : GlobalTheory.BottomRallis.GlobalFormAniso D` using `GlobalTheory.T.siegelWeil_anisotropic_global_form_of_doubling hP.weilRepresentationUnitaryPair hP.cuspRapidDecay hP.doublingMethod D (GlobalTheory.BottomRallis.siegelWeilFockAniso_of_siegelWeilAnisotropic hP.siegelWeilAnisotropicUnitary D)`. Conclude with `GlobalTheory.BottomRallis.heckeFormAniso_of_global_euler D hG hE`.
+-/
 theorem GlobalTheory.RallisBottom.heckeFormAniso_all_of_hypotheses : GlobalTheory.FunPr.Hypotheses₂ → ∀ D : D7, GlobalTheory.RallisBottom.HeckeFormAniso D := by
   intro hP D
   have hU19 := GlobalTheory.T.unramifiedDoublingIntegral_inert_place

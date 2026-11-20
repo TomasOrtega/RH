@@ -15,6 +15,23 @@ noncomputable section
 
 namespace GlobalTheory.ThK.PureNonzero
 
+/- English proof (translation)
+Introduce `hKP F E _ _ _ _ _ σ B a a' G X om om' hT hex`. Take `⟨Φ, hΦ, hI⟩` from `hex`. Establish `hV` using `GlobalTheory.T.weil_convergence_of_kernel hKP F E σ B a (a + a') G.V G.W G.M X.β (X.β / X.α) om _ _ _ _ (GlobalTheory.ThK.Inhab.pairV hT) (Or.inl (by have := hT.geo.eBig; have := hT.geo.lt; omega))`. Establish `hconv : ∀ Ψ ∈ schA F (Fin a × Fin (a + a')), G.M.Conv om Ψ` using `fun Ψ hΨ => (hV.1 Ψ hΨ).1`. Establish `hsch : PolData B G.M ≤ schA F _` using `GlobalTheory.ConeMeasV.polData_le_schA hT.geo.hM`.
+
+Establish `hpres` using `(GlobalTheory.WeilM.IsUWeilPair.isUSplitting hT.weil).pres`. Assume the negation of the conclusion as `hne`. Use `push_neg at hne`. Apply `hI` to reduce the goal to its premises. Establish `key : ∀ Ψ ∈ PolData B G.M, ∀ h, G.M.I om Ψ h = 0`.
+
+Introduce `Ψ hΨ`. Proceed by induction on `hΨ using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨f, hf, φ, h1, h2, rfl⟩` from `hx`. Conclude with `hne f hf φ h1 h2`.
+
+Consider the case `zero`. Introduce `h`. Simplify using `[Model.I, theta, thetaSum]`. Consider the case `add x y hx hy ihx ihy`. Introduce `h`.
+
+Establish `e : ∀ g, theta om (x + y) g h = theta om x g h + theta om y g h` using `fun g => by`. Simplify using `only [theta, map_add]`. Conclude with `GlobalTheory.WeilM.thetaSum_add F (hpres _ _ (hsch hx)) (hpres _ _ (hsch hy))`. Simplify using `only [Model.I, e]`. Rewrite using `[integral_add (hconv x (hsch hx) h) (hconv y (hsch hy) h)]`.
+
+Conclude with `(congrArg₂ (· + ·) (ihx h) (ihy h)).trans (add_zero 0)`. Consider the case `smul c x hx ih`. Introduce `h`. Establish `e : ∀ g, theta om (c • x) g h = c * theta om x g h` using `fun g => by`. Simplify using `only [theta, map_smul]`.
+
+Conclude with `GlobalTheory.WeilM.thetaSum_smul F c _`. Simplify using `only [Model.I, e]`. Rewrite using `[integral_const_mul]`. Use `ih h` as an intermediate fact. Simplify using `only [Model.I] at this`.
+
+Rewrite using `[this, mul_zero]`. Use function extensionality and compare the values at `h`. Conclude with `key Φ hΦ h`.
+-/
 theorem exists_pure_ne : GlobalTheory.ThK.KP → ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E) (a a' : ℕ) (G : Geo σ a a') (X : Chars F E) (om : Rep σ G.V G.W) (om' : Rep σ G.V' G.W),
     IsTriple B G X om om' → (∃ Φ ∈ PolData B G.M, G.M.I om Φ ≠ 0) →
     ∃ f ∈ G.M.Pol B.ψ B.emb, ∃ φ : ∀ v : Pl F, (Fin a × Fin (a + a') → Fv F v) → ℂ,

@@ -6,6 +6,11 @@ open MeasureTheory ReciprocityTheory.AnForm Matrix Filter Topology
 
 noncomputable section
 
+/- English proof (translation)
+Rewrite using `[contDiff_iff_contDiffAt]`. Introduce `y`. Distinguish the cases in `hy : y ∈ U`. Conclude with `hf.contDiffAt (hU.mem_nhds hy)`. Establish `hyK : y ∈ Kᶜ` using `(Set.mem_compl_iff _ _).2 fun h => hy (hKU h)`.
+
+Establish `hev : f =ᶠ[𝓝 y] fun _ => 0` using `by filter_upwards [hK.isOpen_compl.mem_nhds hyK] with z hz`. Conclude with `h0 z ((Set.mem_compl_iff _ _).1 hz)`. Conclude with `contDiffAt_const.congr_of_eventuallyEq hev`.
+-/
 theorem contDiff_of_zero_outside {D : ℕ} {f : (Fin D → ℂ) → ℂ} {U K : Set (Fin D → ℂ)}
     {m : WithTop ℕ∞} (hU : IsOpen U) (hK : IsClosed K) (hKU : K ⊆ U) (hf : ContDiffOn ℝ m f U)
     (h0 : ∀ y ∉ K, f y = 0) : ContDiff ℝ m f := by
@@ -19,6 +24,9 @@ theorem contDiff_of_zero_outside {D : ℕ} {f : (Fin D → ℂ) → ℂ} {U K : 
       exact h0 z ((Set.mem_compl_iff _ _).1 hz)
     exact contDiffAt_const.congr_of_eventuallyEq hev
 
+/- English proof (translation)
+Establish `hd : ContDiffOn ℝ m (fun y => fderiv ℝ f y) U` using `hf.fderiv_of_isOpen hU hmn`. Establish `h1 : ContDiffOn ℝ m (fun y => fderiv ℝ f y (Pi.single j 1)) U` using `hd.clm_apply contDiffOn_const`. Establish `h2 : ContDiffOn ℝ m (fun y => fderiv ℝ f y (Complex.I • Pi.single j 1)) U` using `hd.clm_apply contDiffOn_const`. Conclude with `(h1.sub ((contDiffOn_const (c := Complex.I)).mul h2)).div_const 2`.
+-/
 theorem contDiffOn_dz {D : ℕ} {f : (Fin D → ℂ) → ℂ} {U : Set (Fin D → ℂ)} {n m : WithTop ℕ∞}
     (hU : IsOpen U) (hf : ContDiffOn ℝ n f U) (hmn : m + 1 ≤ n) (j : Fin D) :
     ContDiffOn ℝ m (dz j f) U := by
@@ -29,6 +37,9 @@ theorem contDiffOn_dz {D : ℕ} {f : (Fin D → ℂ) → ℂ} {U : Set (Fin D �
     hd.clm_apply contDiffOn_const
   exact (h1.sub ((contDiffOn_const (c := Complex.I)).mul h2)).div_const 2
 
+/- English proof (translation)
+Establish `hd : ContDiffOn ℝ m (fun y => fderiv ℝ f y) U` using `hf.fderiv_of_isOpen hU hmn`. Establish `h1 : ContDiffOn ℝ m (fun y => fderiv ℝ f y (Pi.single j 1)) U` using `hd.clm_apply contDiffOn_const`. Establish `h2 : ContDiffOn ℝ m (fun y => fderiv ℝ f y (Complex.I • Pi.single j 1)) U` using `hd.clm_apply contDiffOn_const`. Conclude with `(h1.add ((contDiffOn_const (c := Complex.I)).mul h2)).div_const 2`.
+-/
 theorem contDiffOn_dzb {D : ℕ} {f : (Fin D → ℂ) → ℂ} {U : Set (Fin D → ℂ)} {n m : WithTop ℕ∞}
     (hU : IsOpen U) (hf : ContDiffOn ℝ n f U) (hmn : m + 1 ≤ n) (j : Fin D) :
     ContDiffOn ℝ m (dzb j f) U := by
@@ -39,12 +50,48 @@ theorem contDiffOn_dzb {D : ℕ} {f : (Fin D → ℂ) → ℂ} {U : Set (Fin D �
     hd.clm_apply contDiffOn_const
   exact (h1.add ((contDiffOn_const (c := Complex.I)).mul h2)).div_const 2
 
+/- English proof (translation)
+Establish `h` using `Complex.ofRealCLM.contDiff.comp_contDiffOn ha`. Use `h.congr fun z _ => ?_` and prove the remaining obligations. Simplify using `[cplx]`.
+-/
 theorem contDiffOn_cplx {D : ℕ} {a : (Fin D → ℂ) → ℝ} {U : Set (Fin D → ℂ)} {n : WithTop ℕ∞}
     (ha : ContDiffOn ℝ n a U) : ContDiffOn ℝ n (cplx a) U := by
     have h := Complex.ofRealCLM.contDiff.comp_contDiffOn ha
     refine h.congr fun z _ => ?_
     simp [cplx]
 
+/- English proof (translation)
+Use `set X := fun y => ∑ j, ∑ k, dz j (cplx a) y * dzb k (cplx b) y * hessCof φ y j k with hX`. Use `set Y := fun y => cplx a y * ∑ j, ∑ k, hessCof φ y j k * dz j (dzb k (cplx b)) y with hY`. Use `set g : Fin (n + 1) → Fin (n + 1) → (Fin (n + 1) → ℂ) → ℂ := fun j k y => cplx a y * dzb k (cplx b) y * hessCof φ y j k with hg`. Establish `hA : ContDiffOn ℝ 3 (cplx a) U` using `contDiffOn_cplx ha`. Establish `hB : ContDiffOn ℝ 3 (cplx b) U` using `contDiffOn_cplx hb`.
+
+Establish `hdA : ∀ j, ContDiffOn ℝ 2 (dz j (cplx a)) U` using `fun j => contDiffOn_dz hU hA (by norm_num) j`. Establish `hdB : ∀ k, ContDiffOn ℝ 2 (dzb k (cplx b)) U` using `fun k => contDiffOn_dzb hU hB (by norm_num) k`. Establish `hddB : ∀ j k, ContDiffOn ℝ 1 (dz j (dzb k (cplx b))) U` using `fun j k => contDiffOn_dz hU (hdB k) (by norm_num) j`. Establish `hC : ∀ j k, ContDiffOn ℝ 1 (fun y => hessCof φ y j k) U` using `fun j k => hessCof_contDiffOn φ U hU 1 (fun i => (hφ i).of_le (by norm_num)) j k`. Establish `hg0 : ∀ j k, ∀ y ∉ K, g j k y = 0`.
+
+Introduce `j k y hy`. Establish `h1` using `(h0 y hy j k).1.self_of_nhds`. Simplify using `only at h1`. Simplify using `only [hg, h1, zero_mul]`. Establish `hgC : ∀ j k, ContDiff ℝ 1 (g j k)` using `fun j k => contDiff_of_zero_outside hU hK.isClosed hKU (((hA.of_le (by norm_num)).mul ((hdB k).of_le (by norm_num))).mul (hC j k)) (hg0 j k)`.
+
+Establish `hgs : ∀ j k, HasCompactSupport (g j k)` using `fun j k => HasCompactSupport.intro hK (hg0 j k)`. Establish `hint : ∀ j k, ∫ y, dz j (g j k) y = 0` using `fun j k => (integral_dz_formula _ j _ (hgC j k) (hgs j k)).1`. Establish `hdzint : ∀ j k, Integrable (dz j (g j k))`. Introduce `j k`. Establish `hi` using `integrable_fderiv_apply_of_cs (hgC j k) (hgs j k)`.
+
+Unfold `dz`. Conclude with `((hi _).sub ((hi _).const_mul Complex.I)).div_const 2`. Establish `hXz : ∀ y ∉ K, X y = 0`. Introduce `y hy`. Simplify using `only [hX]`.
+
+Conclude with `Finset.sum_eq_zero fun j _ => Finset.sum_eq_zero fun k _ => by`. Rewrite using `[(h0 y hy j k).2.1, zero_mul]`. Establish `hYz : ∀ y ∉ K, Y y = 0`. Introduce `y hy`. Simplify using `only [hY]`.
+
+Rewrite using `[Finset.mul_sum]`. Use `Finset.sum_eq_zero fun j _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.mul_sum]`. Use `Finset.sum_eq_zero fun k _ => ?_` and prove the remaining obligations. Rewrite using `[mul_left_comm, (h0 y hy j k).2.2, mul_zero]`.
+
+Establish `hpt : ∀ y, X y + Y y = ∑ j, ∑ k, dz j (g j k) y`. Introduce `y`. Distinguish the cases in `hy : y ∈ K`. Establish `hyU` using `hKU hy`. Establish `hnh` using `hU.mem_nhds hyU`.
+
+Establish `hAd : DifferentiableAt ℝ (cplx a) y` using `(hA.contDiffAt hnh).differentiableAt (by norm_num)`. Establish `hBd : ∀ k, DifferentiableAt ℝ (dzb k (cplx b)) y` using `fun k => ((hdB k).contDiffAt hnh).differentiableAt (by norm_num)`. Establish `hCd : ∀ j k, DifferentiableAt ℝ (fun y => hessCof φ y j k) y` using `fun j k => ((hC j k).contDiffAt hnh).differentiableAt (by norm_num)`. Establish `hexp : ∀ j k, dz j (g j k) y = dz j (cplx a) y * dzb k (cplx b) y * hessCof φ y j k + cplx a y * dz j (dzb k (cplx b)) y * hessCof φ y j k + cplx a y * dzb k (cplx b) y * dz j (fun y => hessCof φ y j k) y`. Introduce `j k`.
+
+Use `show dz j (fun y => (cplx a y * dzb k (cplx b) y) * hessCof φ y j k) y = _`. Rewrite using `[dz_mul (hAd.fun_mul (hBd k)) (hCd j k), dz_mul hAd (hBd k)]`. Expand and normalize the polynomial expressions, which then agree. Establish `hpiola` using `(piolaStatement_statement n φ U hU hφ y hyU).1`. Simplify using `only [hexp, Finset.sum_add_distrib]`.
+
+Establish `h3 : ∑ j, ∑ k, cplx a y * dzb k (cplx b) y * dz j (fun y => hessCof φ y j k) y = 0`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_eq_zero fun k _ => ?_` and prove the remaining obligations. Rewrite using `[← Finset.mul_sum, hpiola k, mul_zero]`. Rewrite using `[h3, add_zero]`.
+
+Simplify using `only [hX, hY, Finset.mul_sum]`. Use `congr 1`. Conclude with `Finset.sum_congr rfl fun j _ => Finset.sum_congr rfl fun k _ => by ring`. Establish `hev : ∀ j k, g j k =ᶠ[𝓝 y] fun _ => 0` using `fun j k => (h0 y hy j k).1.mono fun x hx => by`. Simplify using `only at hx`.
+
+Simplify using `only [hg, hx, zero_mul]`. Rewrite using `[hXz y hy, hYz y hy, add_zero]`. Conclude with `(Finset.sum_eq_zero fun j _ => Finset.sum_eq_zero fun k _ => dz_of_eventually_zero (hev j k)).symm`. Establish `hXi : Integrable X`. Establish `hc : ContDiff ℝ 0 X` using `contDiff_of_zero_outside hU hK.isClosed hKU (ContDiffOn.sum fun j _ => ContDiffOn.sum fun k _ => (((hdA j).of_le (by norm_num)).mul ((hdB k).of_le (by norm_num))).mul ((hC j k).of_le (by norm_num))) hXz`.
+
+Conclude with `(contDiff_zero.1 hc).integrable_of_hasCompactSupport (HasCompactSupport.intro hK hXz)`. Establish `hYi : Integrable Y`. Establish `hc : ContDiff ℝ 0 Y` using `contDiff_of_zero_outside hU hK.isClosed hKU ((hA.of_le (by norm_num)).mul (ContDiffOn.sum fun j _ => ContDiffOn.sum fun k _ => ((hC j k).of_le (by norm_num)).mul ((hddB j k).of_le (by norm_num)))) hYz`. Conclude with `(contDiff_zero.1 hc).integrable_of_hasCompactSupport (HasCompactSupport.intro hK hYz)`. Use `⟨hXi, hYi, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[← integral_add hXi hYi]`. Establish `hfun : (fun y => X y + Y y) = fun y => ∑ j, ∑ k, dz j (g j k) y` using `funext hpt`. Rewrite using `[hfun, integral_finset_sum _ (fun j _ => integrable_finset_sum _ fun k _ => hdzint j k)]`. Use `Finset.sum_eq_zero fun j _ => ?_` and prove the remaining obligations. Rewrite using `[integral_finset_sum _ fun k _ => hdzint j k]`.
+
+Conclude with `Finset.sum_eq_zero fun k _ => hint j k`.
+-/
 theorem integration_by_parts_complex {n : ℕ} (φ : Fin n → (Fin (n + 1) → ℂ) → ℝ) (a b : (Fin (n + 1) → ℂ) → ℝ)
     (U K : Set (Fin (n + 1) → ℂ)) (hU : IsOpen U) (hK : IsCompact K) (hKU : K ⊆ U)
     (ha : ContDiffOn ℝ 3 a U) (hb : ContDiffOn ℝ 3 b U) (hφ : ∀ i, ContDiffOn ℝ 3 (φ i) U)
@@ -150,6 +197,15 @@ theorem integration_by_parts_complex {n : ℕ} (φ : Fin n → (Fin (n + 1) → 
   rw [integral_finset_sum _ fun k _ => hdzint j k]
   exact Finset.sum_eq_zero fun k _ => hint j k
 
+/- English proof (translation)
+Establish `hWo : IsOpen (tsupport v)ᶜ` using `(isClosed_tsupport v).isOpen_compl`. Establish `hy' : y ∈ (tsupport v)ᶜ` using `(Set.mem_compl_iff _ _).2 hy`. Establish `hv0 : ∀ z ∈ (tsupport v)ᶜ, v z = 0` using `fun z hz => by`. Assume the negation of the conclusion as `h`. Conclude with `(Set.mem_compl_iff _ _).1 hz (subset_tsupport v (Function.mem_support.2 h))`.
+
+Establish `hc : ∀ z ∈ (tsupport v)ᶜ, cplx v =ᶠ[𝓝 z] fun _ => (0 : ℂ)` using `fun z hz => by filter_upwards [hWo.mem_nhds hz] with x hx`. Simplify using `[cplx, hv0 x hx]`. Establish `hr : ∀ z ∈ (tsupport v)ᶜ, v =ᶠ[𝓝 z] fun _ => (0 : ℝ)` using `fun z hz => by filter_upwards [hWo.mem_nhds hz] with x hx using hv0 x hx`. Use `⟨hc y hy', fun k => ?_, ?_⟩` and prove the remaining obligations. Use `filter_upwards [hWo.mem_nhds hy'] with z hz`.
+
+Establish `hfz` using `(hc z hz).fderiv_eq (𝕜 := ℝ)`. Simplify using `[dzb, hfz]`. Establish `h1 : fderiv ℝ v =ᶠ[𝓝 y] fun _ => (0 : (Fin D → ℂ) →L[ℝ] ℝ)` using `by filter_upwards [hWo.mem_nhds hy'] with z hz`. Rewrite using `[(hr z hz).fderiv_eq (𝕜 := ℝ)]`. Simplify using the standard rewrite rules.
+
+Rewrite using `[h1.fderiv_eq (𝕜 := ℝ)]`. Simplify using the standard rewrite rules.
+-/
 theorem vanish_outside_tsupport {D : ℕ} {v : (Fin D → ℂ) → ℝ} {y : Fin D → ℂ}
     (hy : y ∉ tsupport v) :
     cplx v =ᶠ[𝓝 y] (fun _ => 0) ∧ (∀ k, dzb k (cplx v) =ᶠ[𝓝 y] fun _ => 0) ∧
@@ -175,6 +231,47 @@ theorem vanish_outside_tsupport {D : ℕ} {v : (Fin D → ℂ) → ℝ} {y : Fin
     rw [h1.fderiv_eq (𝕜 := ℝ)]
     simp
 
+/- English proof (translation)
+Introduce `n φ v w U ⟨hU, hv, hvc, hKU, hw, hφ⟩`. Establish `hK : IsCompact (tsupport v)` using `hvc`. Establish `hout : ∀ y ∉ tsupport v, _` using `fun y hy => vanish_outside_tsupport (v := v) (y := y) hy`. Take `⟨hX1, hY1, hI1⟩` from `integration_by_parts_complex φ v w U (tsupport v) hU hK hKU hv hw hφ (fun y hy j k => ⟨ (hout y hy).1.mono fun x hx => by simp only at hx ⊢; rw [hx, zero_mul], by rw [dz_of_eventually_zero (hout y hy).1, zero_mul], by simp only [(hout y hy).1.self_of_nhds, zero_mul]⟩)`. Take `⟨hX2, hY2, hI2⟩` from `integration_by_parts_complex φ w v U (tsupport v) hU hK hKU hw hv hφ (fun y hy j k => ⟨ ((hout y hy).2.1 k).mono fun x hx => by simp only at hx ⊢; rw [hx, mul_zero], by simp only [((hout y hy).2.1 k).self_of_nhds, mul_zero], by rw [dz_of_eventually_zero ((hout y hy).2.1 k), mul_z …`.
+
+Use `set c : ℝ := ((n + 1).factorial : ℝ) * (2 / Real.pi) ^ (n + 1) with hc`. Establish `hvz : ∀ y ∉ U, v y = 0` using `fun y hy => image_eq_zero_of_notMem_tsupport fun h => hy (hKU h)`. Establish `e1 : ∀ y, v y * maDens (Fin.cons w φ) y = c * (cplx v y * ∑ j, ∑ k, hessCof φ y j k * dz j (dzb k (cplx w)) y).re`. Introduce `y`. Distinguish the cases in `hy : y ∈ U`.
+
+Rewrite using `[monge_ampere_density_cofactor n φ w U hU (hw.of_le (by norm_num)) y hy]`. Simplify using `only [cplx, Complex.re_ofReal_mul]`. Expand and normalize the polynomial expressions, which then agree. Simplify using `[cplx, hvz y hy]`. Establish `e2 : ∀ y, w y * maDens (Fin.cons v φ) y = c * (cplx w y * ∑ j, ∑ k, hessCof φ y j k * dz j (dzb k (cplx v)) y).re`.
+
+Introduce `y`. Distinguish the cases in `hy : y ∈ U`. Rewrite using `[monge_ampere_density_cofactor n φ v U hU (hv.of_le (by norm_num)) y hy]`. Simplify using `only [cplx, Complex.re_ofReal_mul]`. Expand and normalize the polynomial expressions, which then agree.
+
+Establish `hyK : y ∉ tsupport v` using `fun h => hy (hKU h)`. Establish `h1 : maDens (Fin.cons v φ) y = 0`. Rewrite using `[maDens_cons_eq, mixedDisc_cons_eq_sum, hessC_eq_hessMat, (hout y hyK).2.2]`. Simplify using the standard rewrite rules. Establish `h2 : ∀ j k, dz j (dzb k (cplx v)) y = 0` using `fun j k => dz_of_eventually_zero ((hout y hyK).2.1 k)`.
+
+Simplify using `[h1, h2]`. Establish `e3 : ∀ y, gradDens φ v w y = c * (∑ j, ∑ k, dz j (cplx v) y * dzb k (cplx w) y * hessCof φ y j k).re`. Introduce `y`. Simplify using `only [gradDens, mixedDisc_cons_eq_sum]`. Both sides reduce to the same expression.
+
+Establish `e4 : ∀ y, gradDens φ w v y = c * (∑ j, ∑ k, dz j (cplx w) y * dzb k (cplx v) y * hessCof φ y j k).re`. Introduce `y`. Simplify using `only [gradDens, mixedDisc_cons_eq_sum]`. Both sides reduce to the same expression. Establish `hgz : ∀ y ∉ U, gradDens φ v w y = 0`.
+
+Introduce `y hy`. Rewrite using `[e3]`. Simplify using `[dz_of_eventually_zero ((hout y fun h => hy (hKU h)).1)]`. Establish `hsym : ∀ y, gradDens φ v w y = gradDens φ w v y`. Introduce `y`.
+
+Distinguish the cases in `hy : y ∈ U`. Conclude with `gradDensSymm_thm n φ v w U hU (fun i => (hφ i).of_le (by norm_num)) y hy`. Rewrite using `[hgz y hy, e4]`. Simplify using `[dzb_of_eventually_zero ((hout y fun h => hy (hKU h)).1)]`. Establish `i1 : Integrable (fun y => v y * maDens (Fin.cons w φ) y)`.
+
+Simplify using `only [e1]`. Conclude with `hY1.re.const_mul c`. Establish `i2 : Integrable (fun y => w y * maDens (Fin.cons v φ) y)`. Simplify using `only [e2]`. Conclude with `hY2.re.const_mul c`.
+
+Establish `i3 : Integrable (gradDens φ v w)`. Establish `: gradDens φ v w = fun y => c * (∑ j, ∑ k, dz j (cplx v) y * dzb k (cplx w) y * hessCof φ y j k).re` using `funext e3`. Rewrite using `[this]`. Conclude with `hX1.re.const_mul c`. Establish `g1 : ∫ y, gradDens φ v w y = c * (∫ y, ∑ j, ∑ k, dz j (cplx v) y * dzb k (cplx w) y * hessCof φ y j k).re`.
+
+Simplify using `only [e3]`. Rewrite using `[integral_const_mul]`. Use `congr 1`. Conclude with `integral_re hX1`. Establish `g2 : ∫ y, gradDens φ w v y = c * (∫ y, ∑ j, ∑ k, dz j (cplx w) y * dzb k (cplx v) y * hessCof φ y j k).re`.
+
+Simplify using `only [e4]`. Rewrite using `[integral_const_mul]`. Use `congr 1`. Conclude with `integral_re hX2`. Establish `s1 : maInt (Fin.cons w φ) v U = c * (∫ y, cplx v y * ∑ j, ∑ k, hessCof φ y j k * dz j (dzb k (cplx w)) y).re`.
+
+Unfold `maInt`. Rewrite using `[setIntegral_eq_integral_of_forall_compl_eq_zero fun y hy => by simp [hvz y hy]]`. Simplify using `only [e1]`. Rewrite using `[integral_const_mul]`. Use `congr 1`.
+
+Conclude with `integral_re hY1`. Establish `s3 : maInt (Fin.cons v φ) w U = c * (∫ y, cplx w y * ∑ j, ∑ k, hessCof φ y j k * dz j (dzb k (cplx v)) y).re`. Unfold `maInt`. Rewrite using `[setIntegral_eq_integral_of_forall_compl_eq_zero fun y hy => by`. Rewrite using `[e2]`.
+
+Establish `hyK : y ∉ tsupport v` using `fun h => hy (hKU h)`. Simplify using `[dz_of_eventually_zero ((hout y hyK).2.1 _)]]`. Simplify using `only [e2]`. Rewrite using `[integral_const_mul]`. Use `congr 1`.
+
+Conclude with `integral_re hY2`. Establish `s2 : gradInt φ v w U = ∫ y, gradDens φ v w y`. Unfold `gradInt`. Conclude with `setIntegral_eq_integral_of_forall_compl_eq_zero hgz`. Establish `r1` using `congrArg Complex.re hI1`.
+
+Establish `r2` using `congrArg Complex.re hI2`. Simplify using `only [Complex.add_re, Complex.zero_re] at r1 r2`. Establish `hs : ∫ y, gradDens φ v w y = ∫ y, gradDens φ w v y`. Use `congr 1`. Conclude with `funext hsym`.
+
+Use `⟨i1.integrableOn, i2.integrableOn, i3.integrableOn, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[s1, s2, g1]`. Take the linear combination `c * r1`. Rewrite using `[s3, s1]`. Rewrite `hs` using `[g1, g2]`.
+
+Take the linear combination `c * r2 - c * r1 + hs`.
+-/
 theorem mulVec_one_sub_idempotent_of_split_sum_identity : PartsStatement := by
   intro n φ v w U ⟨hU, hv, hvc, hKU, hw, hφ⟩
   have hK : IsCompact (tsupport v) := hvc
@@ -265,6 +362,15 @@ theorem mulVec_one_sub_idempotent_of_split_sum_identity : PartsStatement := by
     rw [g1, g2] at hs
     linear_combination c * r2 - c * r1 + hs
 
+/- English proof (translation)
+Unfold `mdisc`. Use `mul_eq_zero_of_right _ ?_` and prove the remaining obligations. Establish `hu : (Finset.univ : Finset (Finset (Fin D))) = (insert i (Finset.univ.erase i)).powerset`. Rewrite using `[Finset.insert_erase (Finset.mem_univ i), Finset.powerset_univ]`. Rewrite using `[hu, Finset.sum_powerset_insert (by simp : i ∉ Finset.univ.erase i), ← Finset.sum_add_distrib]`.
+
+Use `Finset.sum_eq_zero fun t ht => ?_` and prove the remaining obligations. Establish `hit : i ∉ t` using `fun h => by`. Establish `h'` using `Finset.mem_powerset.1 ht h`. Simplify using `at h'`. Establish `hs : ∑ k ∈ insert i t, A k = ∑ k ∈ t, A k`.
+
+Rewrite using `[Finset.sum_insert hit, hA, zero_add]`. Establish `hc : (insert i t).card = t.card + 1` using `by simp [hit]`. Establish `hle : (insert i t).card ≤ D` using `by simpa using Finset.card_le_univ (insert i t)`. Establish `hd : D - t.card = (D - (t.card + 1)) + 1` using `by omega`. Apply the tactic sequence `try dsimp only`.
+
+Rewrite using `[hs, hc, hd, pow_succ]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 private theorem mdisc_eq_zero_of_eq_zero' {D : ℕ} (A : Fin D → Matrix (Fin D) (Fin D) ℂ) (i : Fin D)
     (hA : A i = 0) : mdisc A = 0 := by
   unfold mdisc

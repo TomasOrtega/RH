@@ -11,10 +11,16 @@ variable {M : Type} [AddCommGroup M] [Module ℂ M]
 def orb (A : Subalgebra ℂ (Module.End ℂ M)) (x : M) : Submodule ℂ M :=
   Submodule.span ℂ {y : M | ∃ a ∈ A, y = a x}
 
+/- English proof (translation)
+The claim follows from `Submodule.subset_span ⟨a, ha, rfl⟩`.
+-/
 theorem apply_mem_orb (A : Subalgebra ℂ (Module.End ℂ M)) (x : M) {a : Module.End ℂ M}
     (ha : a ∈ A) : a x ∈ orb A x :=
   Submodule.subset_span ⟨a, ha, rfl⟩
 
+/- English proof (translation)
+Use `Submodule.span_le.2 ?_` and prove the remaining obligations. Introduce and unpack `y ⟨a, ha, rfl⟩`. Conclude with `h a ha`.
+-/
 theorem orb_le {A : Subalgebra ℂ (Module.End ℂ M)} {x : M} {N : Submodule ℂ M}
     (h : ∀ a ∈ A, a x ∈ N) : orb A x ≤ N := by
   refine Submodule.span_le.2 ?_
@@ -45,6 +51,11 @@ def finVec (A : Subalgebra ℂ (Module.End ℂ M)) : Submodule ℂ M where
 def orbSub (A : Subalgebra ℂ (Module.End ℂ M)) (W : Submodule ℂ M) : Submodule ℂ M :=
   Submodule.span ℂ {y : M | ∃ a ∈ A, ∃ x ∈ W, y = a x}
 
+/- English proof (translation)
+Use `first`. Consider the case `exact @_root_.GlobalTheory.OrbitGrowth.main`. Consider the case `exact _root_.GlobalTheory.OrbitGrowth.main`. Consider the case `(apply _root_.GlobalTheory.OrbitGrowth.main <;> assumption)`. Consider the case `(intros; apply _root_.GlobalTheory.OrbitGrowth.main <;> assumption)`.
+
+Consider the case `(intros; apply @_root_.GlobalTheory.OrbitGrowth.main <;> first | assumption | infer_instance)`. Consider the case `(intros; exact _root_.GlobalTheory.OrbitGrowth.main ..)`.
+-/
 theorem exists_finiteDimensional_stable (M : Type) [AddCommGroup M] [Module ℂ M] (ι : Type)
     [Finite ι] (A : ι → Subalgebra ℂ (Module.End ℂ M))
     (hc : ∀ i j, i ≠ j → ∀ a ∈ A i, ∀ b ∈ A j, a * b = b * a) (m : M)

@@ -13,6 +13,13 @@ namespace GlobalTheory.StdUnn.ChartRat
 
 variable {D : D7}
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨γ, -, h⟩`. Conclude with `⟨γ.1, congrArg Units.val h⟩`. Introduce and unpack `⟨γ, hγ⟩ replace hγ : rat γ = mat g := hγ`. Establish `h : γᴴ * Jst D n * γ = Jst D n`.
+
+Apply `rat_injective` to reduce the goal to its premises. Rewrite using `[rat_mul, rat_mul, rat_conjTranspose, hγ]`. Conclude with `g.2`. Establish `hdet : γ.det ≠ 0`. Introduce `h0`.
+
+Establish `hu : IsUnit (mat g).det` using `Matrix.isUnits_det_units _`. Rewrite `hu` using `[← hγ, rat, ← RingHom.mapMatrix_apply, ← RingHom.map_det, h0, map_zero]`. Establish `h01 : (0 : AE D) = 1` using `isUnit_zero_iff.1 hu`. Conclude with `zero_ne_one (incA_injective (D := D) (by rw [map_zero, map_one]; exact h01))`. Conclude with `⟨Matrix.GeneralLinearGroup.mkOfDetNeZero γ hdet, h, Units.ext hγ⟩`.
+-/
 theorem mem_GF_iff {n : ℕ} (g : G D n) : g ∈ GF D n ↔ mat g ∈ ratMx D (n + n) (n + n) := by
   constructor
   · rintro ⟨γ, -, h⟩
@@ -35,6 +42,15 @@ end GlobalTheory.StdUnn.ChartRat
 
 namespace GlobalTheory.StdUnn
 
+/- English proof (translation)
+Introduce `D A μ hμ κ hκ g`. Take `⟨-, hdet, -⟩` from `GlobalTheory.T.doubledBasisSkewColumnMatrix_gram_inverse D A μ hμ`. Establish `hTi : rat (Tm A μ)⁻¹ * rat (Tm A μ) = 1`. Rewrite using `[← rat_mul, Matrix.nonsing_inv_mul _ hdet, rat_one]`. Establish `hTi' : rat (Tm A μ) * rat (Tm A μ)⁻¹ = 1`.
+
+Rewrite using `[← rat_mul, Matrix.mul_nonsing_inv _ hdet, rat_one]`. Establish `e1 : mat (κ g) = rat (Tm A μ)⁻¹ * (mt (dblSp A) g * rat (Tm A μ))`. Rewrite using `[← hκ g, ← Matrix.mul_assoc, hTi, Matrix.one_mul]`. Establish `e2 : mt (dblSp A) g = rat (Tm A μ) * mat (κ g) * rat (Tm A μ)⁻¹`. Rewrite using `[hκ g, Matrix.mul_assoc, hTi', Matrix.mul_one]`.
+
+Rewrite using `[GlobalTheory.MixModel.mem_GQ_iff, ChartRat.mem_GF_iff]`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Rewrite using `[e1]`. Conclude with `ratMx_mul (rat_mem _) (ratMx_mul h (rat_mem _))`.
+
+Introduce `h`. Rewrite using `[e2]`. Conclude with `ratMx_mul (ratMx_mul (rat_mem _) h) (rat_mem _)`.
+-/
 theorem chart_mem_GF_iff : ∀ (D : D7) (A : HSp D) (μ : D.host.E), IsSkew μ → ∀ κ : GA D (dblSp A) ≃* G D A.rank,
     IsChart A μ κ → ∀ g, g ∈ GQ (dblSp A) ↔ κ g ∈ GF D A.rank := by
   intro D A μ hμ κ hκ g

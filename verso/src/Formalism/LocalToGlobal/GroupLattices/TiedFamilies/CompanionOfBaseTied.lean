@@ -12,6 +12,9 @@ namespace Formalism.L2.G
 
 section Re
 
+/- English proof (translation)
+Substitute `h` using the available equality. Rewrite using `[reGL_rfl]`. Both sides reduce to the same expression.
+-/
 theorem reGL_mulVec {a b : ℕ} (h : a = b) {E : Type} [Field E] (M : GL (Fin a) E) (x : Fin a → E) (i : Fin b) :
     ((reGL h E M).1 *ᵥ fun j : Fin b => x (Fin.cast h.symm j)) i = (M.1 *ᵥ x) (Fin.cast h.symm i) := by
   subst h
@@ -22,6 +25,17 @@ end Re
 
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
+/- English proof (translation)
+Establish `h2` using `hB.2 (fun j => x (Fin.cast (rank_eq_first_level D.R).symm j))`. Establish `e1 : (fun j => x (Fin.cast (rank_eq_first_level D.R).symm j)) ∈ selfDualLatticeCoords D 0 (Nat.zero_le _) ↔ x ∈ D.sp.crdLat0 (D.sp.X 0).L0`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨v, hv, e⟩`. Use `⟨v, hv, ?_⟩` and prove the remaining obligations.
+
+Use function extensionality and compare the values at `a`. Use `congrFun e (Fin.cast (rank_eq_first_level D.R) a)` as an intermediate fact. Conclude with `this`. Introduce and unpack `⟨v, hv, e⟩`. Use `⟨v, hv, ?_⟩` and prove the remaining obligations.
+
+Use function extensionality and compare the values at `j`. Use `congrFun e (Fin.cast (rank_eq_first_level D.R).symm j)` as an intermediate fact. Conclude with `this`. Rewrite using `[← e1, h2]`. Prove the components needed by the constructor for the conclusion.
+
+Introduce `h a`. Use `h (Fin.cast (rank_eq_first_level D.R) a)` as an intermediate fact. Rewrite `this` using `[← map_inv, reGL_mulVec]`. Conclude with `this`. Introduce `h j`.
+
+Rewrite using `[← map_inv, reGL_mulVec]`. Conclude with `h _`.
+-/
 theorem stdB_mem (D : D7) (B : GL (Fin D.R.k) D.host.E) (hB : Cmp.StdB D B) (x : Fin D.R.k → D.host.E) :
     x ∈ D.sp.crdLat0 (D.sp.X 0).L0 ↔
       ∀ a, ((B⁻¹ : GL (Fin D.R.k) D.host.E).1 *ᵥ x) a ∈ (algebraMap (𝓞 D.host.E) D.host.E).range := by
@@ -54,6 +68,11 @@ variable {R : Ranks} {F E : Type} [Field F] [NumberField F] [Field E] [NumberFie
     {clsLat : ∀ i, C.cls i → Submodule (𝓞 E) (sp.X i).V}
     {L : ColLevel R F E sp gp C A clsLat} {p nV : ℕ} {W Qq : Type} [CommRing W] [Field Qq] [Algebra W Qq]
 
+/- English proof (translation)
+Proceed by induction on `hy using Submodule.span_induction with`. Consider the case `mem y hy => exact L.Lb_dual y hy`. Consider the case `zero => rw [smul_zero]`. Conclude with `L.Lb.zero_mem`. Consider the case `add y z _ _ h1 h2 => rw [smul_add]`.
+
+Conclude with `L.Lb.add_mem h1 h2`. Consider the case `smul c y _ h => rw [smul_comm]`. Conclude with `L.Lb.smul_mem c h`.
+-/
 theorem T_smul_mem (L : ColLevel R F E sp gp C A clsLat) (y : Fin R.k → E)
     (hy : y ∈ Submodule.span (𝓞 E) (dualSet (sp.cm.sig : E →+* E) sp.gram0 L.Lb)) : (A.T : E) • y ∈ L.Lb := by
   induction hy using Submodule.span_induction with
@@ -62,6 +81,9 @@ theorem T_smul_mem (L : ColLevel R F E sp gp C A clsLat) (y : Fin R.k → E)
   | add y z _ _ h1 h2 => rw [smul_add]; exact L.Lb.add_mem h1 h2
   | smul c y _ h => rw [smul_comm]; exact L.Lb.smul_mem c h
 
+/- English proof (translation)
+The claim follows from `sup_le (fun x hx => Submodule.subset_span (L.Lb_int x hx)) Submodule.smul_le_right`.
+-/
 theorem companion_le (L : ColLevel R F E sp gp C A clsLat) (𝔞 : Ideal (𝓞 E)) :
     L.Lb ⊔ 𝔞 • Submodule.span (𝓞 E) (dualSet (sp.cm.sig : E →+* E) sp.gram0 L.Lb) ≤
       Submodule.span (𝓞 E) (dualSet (sp.cm.sig : E →+* E) sp.gram0 L.Lb) :=
@@ -90,6 +112,9 @@ def locIdStd (D : D7) (u : D.what₂.Word) (w : D.what₂.places.Pl) (hg : GIdx 
         exact ⟨1, by simp⟩
       · exact ⟨0, by simp [h]⟩)))
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem locIdStd_fr (D : D7) (u : D.what₂.Word) (w : D.what₂.places.Pl) (hg : GIdx D.host (D.mem u).A.T (D.what₂.places.resChar w))
     {Lc : ColLevel D.R D.host.F D.host.E D.sp D.host.g (D.mem u).C (D.mem u).A (D.clsLat u)} {nV : ℕ} {W' Qq' : Type}
     [CommRing W'] [Field Qq'] [Algebra W' Qq'] (I : LocId Lc (D.what₂.places.resChar w) nV W' Qq')
@@ -101,6 +126,9 @@ theorem locIdStd_fr (D : D7) (u : D.what₂.Word) (w : D.what₂.places.Pl) (hg 
       bc (((RingHom.fst _ _).comp ((locIdStd D u w hg I B hB 𝔞 hL).spl w' h).toRingHom).comp
         (inclE (F := D.host.F) (w'.adicCompletion D.host.F))) B := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem locIdStd_iw (D : D7) (u : D.what₂.Word) (w : D.what₂.places.Pl) (hg : GIdx D.host (D.mem u).A.T (D.what₂.places.resChar w))
     {Lc : ColLevel D.R D.host.F D.host.E D.sp D.host.g (D.mem u).C (D.mem u).A (D.clsLat u)} {nV : ℕ} {W' Qq' : Type}
     [CommRing W'] [Field Qq'] [Algebra W' Qq'] (I : LocId Lc (D.what₂.places.resChar w) nV W' Qq')
@@ -108,6 +136,9 @@ theorem locIdStd_iw (D : D7) (u : D.what₂.Word) (w : D.what₂.places.Pl) (hg 
     (hL : Lc.Lb ⊔ 𝔞 • Submodule.span (𝓞 D.host.E) (dualSet (D.sp.cm.sig : D.host.E →+* D.host.E) D.sp.gram0 Lc.Lb) =
       D.sp.crdLat0 (D.sp.X 0).L0) : (locIdStd D u w hg I B hB 𝔞 hL).iw = I.iw := rfl
 
+/- English proof (translation)
+Establish `hi : IsIntegral ℤ (D.host.conj ((aT u).piU : D.host.E))` using `map_isIntegral_int D.host.conj (RingOfIntegers.isIntegral_coe _)`. Conclude with `⟨Ideal.span {(⟨_, hi⟩ : 𝓞 D.host.E)}, (hb u ⟨_, hi⟩ rfl).1⟩`.
+-/
 theorem companion_of_baseTied (D : D7) (H : Formalism.L2.Herm.HermCols D) (aT : ∀ u, Formalism.L2.Herm.AtT D u (H.vT u) (H.Fv u))
     (hb : Formalism.L2.Herm.BaseTied D H aT) (u : D.what₂.Word) :
     ∃ 𝔞 : Ideal (𝓞 D.host.E), (H.lev0 u).Lb ⊔ 𝔞 • Submodule.span (𝓞 D.host.E)

@@ -20,6 +20,15 @@ open GlobalTheory.RawLift
 
 namespace GlobalTheory.RawLift.VecNonzero
 
+/- English proof (translation)
+Take `⟨i1, i2, i3, i4, i5, K, hK, hKc⟩` from `GlobalTheory.AdelicMatrixLattice.lattice D T S`. Use `haveI : BorelSpace (WO S T) := ⟨rfl⟩`. Take `⟨-, c, hc⟩` from `GlobalTheory.exists_normalise_meanSquare_of_cocompact (WO S T) (ratL T S) K hK hKc f hf.cont h0 (by`. Introduce and unpack `_ ⟨γ, rfl⟩ w`. Conclude with `(congrArg norm (hf.quasi γ w)).trans (by rw [norm_mul, hψ.1.2.1, one_mul]))`.
+
+Establish `h1` using `hc μ 𝓕 hμ.1 hμ.2.1 hμ.2.2`. Establish `e1 : thetaIP μ 𝓕 f f = ((∫ w in 𝓕, ‖f w‖ ^ 2 ∂μ : ℝ) : ℂ)`. Unfold `thetaIP`. Rewrite using `[← integral_complex_ofReal]`. Use `integral_congr_ae (Filter.Eventually.of_forall fun w => ?_)` and prove the remaining obligations.
+
+Simplify using `only [Complex.star_def, Complex.conj_mul']`. Use `push_cast`. Both sides reduce to the same expression. Introduce `h`. Rewrite `h` using `[e1, Complex.ofReal_eq_zero]`.
+
+Simplify using `only [norm_mul, mul_pow] at h1`. Rewrite `h1` using `[integral_const_mul, h, mul_zero]`. Conclude with `zero_ne_one h1`.
+-/
 theorem thetaInner_self_ne_zero {D : D7} {ψ : AddChar (AF D.host.F) ℂ} {S T : HSp D} (hψ : IsStdChar D ψ (-1))
     {f : WO S T → ℂ} (hf : IsThetaFunO ψ S T f) (h0 : f ≠ 0) {μ : Measure (WO S T)} {𝓕 : Set (WO S T)}
     (hμ : IsCovolOne (ratL T S) μ 𝓕) : thetaIP μ 𝓕 f f ≠ 0 := by
@@ -51,6 +60,17 @@ open GlobalTheory.RawLift.VecNonzero
 
 open scoped ComplexOrder in
 
+/- English proof (translation)
+Take `⟨ε, hε, hG, -⟩` from `h`. Establish `e1 : ∀ a, (ε a : ℂ) = 1` using `fun a => by`. Break down `hε a with h | h` into its components or cases. Simplify using `[h.1]`. Conclude with `absurd a.2 (not_lt.2 h.2)`.
+
+Establish `hB : Bᴴ * Gm * B = 1`. Rewrite using `[hG]`. Simplify using `only [e1, Matrix.diagonal_one]`. Establish `hu : IsUnit B.det` using `Matrix.isUnit_det_of_left_inverse hB`. Establish `h1` using `Matrix.mul_nonsing_inv B hu`.
+
+Establish `h2 : Gm = (B⁻¹)ᴴ * B⁻¹`. Establish `h3 : (B⁻¹)ᴴ * (Bᴴ * Gm * B) * B⁻¹ = (B⁻¹)ᴴ * B⁻¹` using `by rw [hB, Matrix.mul_one]`. Establish `h4 : (B⁻¹)ᴴ * Bᴴ = 1` using `by rw [← Matrix.conjTranspose_mul, h1, Matrix.conjTranspose_one]`. Rewrite using `[← h3]`. Simplify using `only [Matrix.mul_assoc, h1, Matrix.mul_one]`.
+
+Rewrite using `[← Matrix.mul_assoc, h4, Matrix.one_mul]`. Use `⟨Matrix.mul_one _, by simp, ?_⟩` and prove the remaining obligations. Rewrite using `[Matrix.mul_one, h2]`. Conclude with `Matrix.PosDef.conjTranspose_mul_self _ (Matrix.mulVec_injective_iff_isUnit.2 ((Matrix.isUnit_iff_isUnit_det _).2 (by`. Rewrite using `[Matrix.det_nonsing_inv]`.
+
+Conclude with `hu.ringInverse)))`.
+-/
 theorem isCartanInv_one_of_onb {k : ℕ} {Gm B : Matrix (Fin k) (Fin k) ℂ} (h : IsONBasis Gm 1 B k) : IsCartanInv Gm 1 := by
   obtain ⟨ε, hε, hG, -⟩ := h
   have e1 : ∀ a, (ε a : ℂ) = 1 := fun a => by
@@ -74,6 +94,15 @@ theorem isCartanInv_one_of_onb {k : ℕ} {Gm B : Matrix (Fin k) (Fin k) ℂ} (h 
     (Matrix.mulVec_injective_iff_isUnit.2 ((Matrix.isUnit_iff_isUnit_det _).2 (by
       rw [Matrix.det_nonsing_inv]; exact hu.ringInverse)))
 
+/- English proof (translation)
+Introduce `D G _ _ Pl0 T A Ks _ _ _ R F hL hF i t μ 𝓕 hμ`. Establish `hW` using `hL.thP.ωP i t`. Establish `hth : IsThetaFunO R.ψ (Vc D i) (Wc D i) (R.vP i t)`. Use `hL.thP.pt_theta i t 1` as an intermediate fact. Unfold `RealDat.ptP pureTensorO at this`.
+
+Rewrite `this` using `[GlobalTheory.AdTh.VecFock.pureTensorL_one]`. Then use the resulting hypothesis. Establish `hv0 : R.vP i t ≠ 0` using `GlobalTheory.AdTh.VecNe.thPVec_ne_zero (GlobalTheory.SDFrameLattice.isSelfDualC_of_isSDFrame D _ _ _ _ (hL.lev.βV i)) (GlobalTheory.SDFrameLattice.isSelfDualC_of_isSDFrame D _ _ _ _ (hL.lev.βW i)) ((D.sp.W_rank _ (Nat.le_add_left _ _) i.2).trans_le (r_le_V i)) (hL.thP.vP i t)`. Use `⟨thetaInner_self_ne_zero hW.std hth hv0 hμ, ?_⟩` and prove the remaining obligations. Take `⟨-, -, v, w, hv1, -, hio⟩` from `hL.thP.ioP i t`. Establish `hvac` using `GlobalTheory.DatumFock.isFockVacAt_thPVec _ _ _ _ (fun _ => 1) _ _ _ _ _ _ _ _ _ _ (hL.thP.vP i t) hth`.
+
+Establish `hinj` using `GlobalTheory.FockVecInj.pureTensorO_injective D R.ψ R.θ (Vc D i) (Wc D i) hW.std hL.models.inf (fun _ => 1) (R.BV i) (cart (R.MW i (sg0 D A))) (onb (R.MW i (sg0 D A))) (fun _ => (Vc D i).rank) (fun τ => ((Wc D i).sig (tauE D τ)).1) (fun τ => isCartanInv_one_of_onb (hL.models.BV i …`. Use `⟨fun ρ => v ρ, w, hv1, ?_⟩` and prove the remaining obligations. Establish `hj : jointVec R i t (fun ρ => v ρ) w = R.ptP i t (RealDat.Delta i)`. Unfold `jointVec`. Rewrite using `[hio]`.
+
+Rewrite using `[hj]`. Use `thetaInner_self_ne_zero hW.std (hL.thP.pt_theta i t _) (fun h => ?_) hμ` and prove the remaining obligations. Use `GlobalTheory.AdTh.IoExtPf.Delta_ne i (hinj ?_)` and prove the remaining obligations. Conclude with `h.trans (map_zero (pureTensorO R.ψ R.θ (Vc D i) (Wc D i) (fun _ => 1) (cart (R.MW i (sg0 D A))) (R.BV i) (onb (R.MW i (sg0 D A))) (R.vP i t))).symm`.
+-/
 theorem vecNe : ∀ (D : D7) (G : Type) [Group G] [Fintype G] (Pl0 T : Type) (A : FamIn D.what₂.LL G Pl0 T D.R.m) (Ks : Type) [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] (R : RealDat D A Ks) (F : Face D A), Laws R F → R.FullP → ∀ i t, VecNe R i t := by
   intro D G _ _ Pl0 T A Ks _ _ _ R F hL hF i t μ 𝓕 hμ
   have hW := hL.thP.ωP i t

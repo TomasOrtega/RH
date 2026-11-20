@@ -15,10 +15,16 @@ set_option autoImplicit false
 
 namespace GlobalTheory.FlatModel.HTCong
 
+/- English proof (translation)
+Establish `e : (p : ℂ_[p]) = algebraMap ℚ_[p] ℂ_[p] (p : ℚ_[p])` using `(map_natCast _ p).symm`. Rewrite using `[e, norm_algebraMap', Padic.norm_p]`.
+-/
 theorem norm_natp (p : ℕ) [Fact p.Prime] : ‖(p : ℂ_[p])‖ = (p : ℝ)⁻¹ := by
   have e : (p : ℂ_[p]) = algebraMap ℚ_[p] ℂ_[p] (p : ℚ_[p]) := (map_natCast _ p).symm
   rw [e, norm_algebraMap', Padic.norm_p]
 
+/- English proof (translation)
+Take `⟨w, rfl⟩` from `Ideal.mem_span_singleton'.1 hz`. Establish `hw : ‖(w : ℂ_[p])‖ ≤ 1` using `(GlobalTheory.PadicComplexHost.mem_iff_norm p _).1 w.2`. Use `push_cast`. Rewrite using `[norm_mul, norm_pow, norm_natp]`. Conclude with `mul_le_of_le_one_left (by positivity) hw`.
+-/
 theorem norm_le_of_mem_span (p : ℕ) [Fact p.Prime] (n : ℕ) (z : 𝓞_ℂ_[p])
     (hz : z ∈ Ideal.span {(p : 𝓞_ℂ_[p]) ^ n}) : ‖(z : ℂ_[p])‖ ≤ (p : ℝ)⁻¹ ^ n := by
   obtain ⟨w, rfl⟩ := Ideal.mem_span_singleton'.1 hz
@@ -31,6 +37,17 @@ end GlobalTheory.FlatModel.HTCong
 
 namespace GlobalTheory.FlatModel.HTCong
 
+/- English proof (translation)
+Introduce `E _ _ p _ _ P n N g J ta x h Tc U hh i`. Establish `key : P.pairV (∑ b, (U b : ℂ_[p]) • P.bLie (x b)) (∑ m, (Tc i m : ℂ_[p]) ⊗ₜ[ℤ_[p]] ta m) = ((∑ b, (∑ a, Tc i a * (P.al₀ (ta a)).1 (x b)) * U b : 𝓞_ℂ_[p]) : ℂ_[p])`. Establish `e1 : ∀ m, (Tc i m : ℂ_[p]) ⊗ₜ[ℤ_[p]] ta m = (Tc i m : ℂ_[p]) • ((1 : ℂ_[p]) ⊗ₜ[ℤ_[p]] ta m)`. Introduce `m`. Rewrite using `[TensorProduct.smul_tmul', smul_eq_mul, _root_.mul_one]`.
+
+Simplify using `only [e1, map_sum, map_smul, LinearMap.sum_apply, LinearMap.smul_apply, P.pairV_bLie, smul_eq_mul]`. Use `push_cast`. Simplify using `only [Finset.sum_mul, Finset.mul_sum]`. Establish `ha : ∀ z : 𝓞_ℂ_[p], algebraMap 𝓞_ℂ_[p] ℂ_[p] z = (z : ℂ_[p])` using `fun _ => rfl`. Simplify using `only [ha]`.
+
+Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun b _ => Finset.sum_congr rfl fun m _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[key, ← AddSubgroupClass.coe_sub]`. Use `norm_le_of_mem_span p n _ ?_` and prove the remaining obligations.
+
+Establish `e2 : (∑ b, (∑ a, Tc i a * h a b) * U b) - (∑ b, (∑ a, Tc i a * (P.al₀ (ta a)).1 (x b)) * U b) = ∑ b, ∑ a, (Tc i a * U b) * (h a b - (P.al₀ (ta a)).1 (x b))`. Rewrite using `[← Finset.sum_sub_distrib]`. Use `Finset.sum_congr rfl fun b _ => ?_` and prove the remaining obligations. Rewrite using `[← sub_mul, ← Finset.sum_sub_distrib, Finset.sum_mul]`. Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations.
+
+Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e2]`. Conclude with `Ideal.sum_mem _ fun b _ => Ideal.sum_mem _ fun a _ => Ideal.mul_mem_left _ _ (hh a b)`.
+-/
 theorem pair_comb_congr : ∀ (E : Type) [Field E] [NumberField E] (p : ℕ) [Fact p.Prime] [StarRing (𝓞 E)] (P : PtP E p) (n N g : ℕ) {J : Type}
     (ta : Fin N → P.T) (x : Fin g → LieG P.Gt) (h : Fin N → Fin g → 𝓞_ℂ_[p]) (Tc : J → Fin N → 𝓞_ℂ_[p])
     (U : Fin g → 𝓞_ℂ_[p]), (∀ m b, h m b - (P.al₀ (ta m)).1 (x b) ∈ Ideal.span {(p : 𝓞_ℂ_[p]) ^ n}) → ∀ i : J,

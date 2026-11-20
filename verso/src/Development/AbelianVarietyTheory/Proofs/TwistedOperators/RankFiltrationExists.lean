@@ -11,6 +11,11 @@ open GlobalTheory.PRep GlobalTheory.SplitWeil GlobalTheory.SmGL Matrix Topology
 
 namespace GlobalTheory.IndefiniteRowSideFullHecke.OpenClosedSequences
 
+/- English proof (translation)
+Use `⟨Φ.2.1.comp_continuous hi.continuous, ?_⟩` and prove the remaining obligations. Establish `h0 : IsClosed (Function.support Φ.1)` using `(Φ.2.1.isOpen_fiber 0).isClosed_compl`. Establish `h1 : IsCompact (Function.support Φ.1)` using `Φ.2.2.of_isClosed_subset h0 subset_closure`. Establish `h2 : IsCompact (i ⁻¹' (Function.support Φ.1 ∩ C))` using `hi.isCompact_preimage' (h1.inter_right hC) fun x hx => hs x hx.2 hx.1`. Use `HasCompactSupport.intro' h2 ((h0.inter hC).preimage hi.continuous) fun y hy => ?_` and prove the remaining obligations.
+
+Assume the negation of the conclusion as `h`. Conclude with `hy ⟨h, hiC y⟩`.
+-/
 theorem comp_mem_SB_of_isInducing {X Y : Type} [TopologicalSpace X] [TopologicalSpace Y] {i : Y → X}
     (hi : IsInducing i) (Φ : SB X) {C : Set X} (hC : IsClosed C) (hiC : ∀ y, i y ∈ C)
     (hs : ∀ x ∈ C, Φ.1 x ≠ 0 → x ∈ Set.range i) : (fun y => Φ.1 (i y)) ∈ SB Y := by
@@ -30,18 +35,29 @@ variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchim
 
 omit [DecidableEq a] [DecidableEq b] in
 
+/- English proof (translation)
+Take `⟨_, _⟩` from `SplitWeil.Model.secondCountable_and_t2_local_field (k := k)`. Conclude with `GlobalTheory.isOpen_setOf_le_rank k b a κ`.
+-/
 theorem isOpen_le_rank (κ : ℕ) : IsOpen {x : Matrix b a k | κ ≤ x.rank} := by
   obtain ⟨_, _⟩ := SplitWeil.Model.secondCountable_and_t2_local_field (k := k)
   exact GlobalTheory.isOpen_setOf_le_rank k b a κ
 
 omit [DecidableEq a] [DecidableEq b] in
 
+/- English proof (translation)
+Use `(isOpen_le_rank (k := k) (a := a) (b := b) κ).isClosed_compl` as an intermediate fact. Simplify `this` using `only [Set.compl_ofPred, not_le]`.
+-/
 theorem isClosed_rank_lt (κ : ℕ) : IsClosed {x : Matrix b a k | x.rank < κ} := by
   have := (isOpen_le_rank (k := k) (a := a) (b := b) κ).isClosed_compl
   simpa only [Set.compl_ofPred, not_le] using this
 
 omit [DecidableEq a] [DecidableEq b] in
 
+/- English proof (translation)
+Take `⟨_, _⟩` from `SplitWeil.Model.secondCountable_and_t2_local_field (k := k)`. Establish `: NonarchimedeanAddGroup k` using `⟨fun V hV => by`. Take `⟨s, hs⟩` from `SplitWeil.exists_cball_subset hV`. Conclude with `⟨⟨⟨⟨⟨SplitWeil.cball s, SplitWeil.add_mem_cball⟩, by simp [SplitWeil.cball]⟩, SplitWeil.neg_mem_cball⟩, SplitWeil.isOpen_cball s⟩, hs⟩⟩`. Establish `: TotallyDisconnectedSpace k` using `inferInstance`.
+
+Establish `: TotallyDisconnectedSpace (Matrix b a k)` using `inferInstanceAs (TotallyDisconnectedSpace (b → a → k))`. Establish `: LocallyCompactSpace (Matrix b a k)` using `inferInstanceAs (LocallyCompactSpace (b → a → k))`. Take `⟨G, hG, hG0⟩` from `GlobalTheory.SBExtend.exists_extension (Matrix b a k) {x | κ ≤ x.rank} {x | x.rank ∈ s} (isOpen_le_rank κ) (fun x hx => (hs _ hx).1) f`. Use `⟨⟨fun y => G.1 y.1, comp_mem_SB_of_isInducing IsInducing.subtypeVal G (isClosed_rank_lt n) (fun y => y.2) fun x hx _ => ⟨⟨x, hx⟩, rfl⟩⟩, fun x hx => hG0 _ (not_le.2 hx), fun x => hG x⟩` and prove the remaining obligations.
+-/
 theorem exists_extend_rankIn {s : Set ℕ} {κ n : ℕ} (hs : ∀ r ∈ s, κ ≤ r ∧ r < n) (f : SB (RankIn k a b s)) :
     ∃ F : SB (RankIn k a b (Set.Iio n)), (∀ x : RankIn k a b (Set.Iio n), x.1.rank < κ → F.1 x = 0) ∧
       ∀ x : RankIn k a b s, F.1 ⟨x.1, (hs _ x.2).2⟩ = f.1 x := by
@@ -71,10 +87,16 @@ def resFilt (μ : kˣ →* ℂˣ) {s : Set ℕ} {κ m n : ℕ} (hmn : m ≤ n) (
   map_smul' _ _ := rfl
   isIntertwining' _ := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem resFilt_apply (μ : kˣ →* ℂˣ) {s : Set ℕ} {κ m n : ℕ} (hmn : m ≤ n) (hs : ∀ r, r ∈ s ↔ κ ≤ r ∧ r < m)
     (Φ : (filt a b μ (Set.Iio n) κ).toSubmodule) (x : RankIn k a b s) :
     (resFilt μ hmn hs Φ).1 x = Φ.1.1 ⟨x.1, ((hs _).1 x.2).2.trans_le hmn⟩ := rfl
 
+/- English proof (translation)
+Introduce `f`. Take `⟨F, h0, hF⟩` from `exists_extend_rankIn (κ := κ) (n := n) (fun r hr => ⟨((hs r).1 hr).1, ((hs r).1 hr).2.trans_le hmn⟩) f`. Conclude with `⟨⟨F, h0⟩, Subtype.ext (funext hF)⟩`.
+-/
 theorem resFilt_surjective (μ : kˣ →* ℂˣ) {s : Set ℕ} {κ m n : ℕ} (hmn : m ≤ n)
     (hs : ∀ r, r ∈ s ↔ κ ≤ r ∧ r < m) : Function.Surjective (resFilt (a := a) (b := b) μ hmn hs) := by
   intro f
@@ -82,6 +104,11 @@ theorem resFilt_surjective (μ : kˣ →* ℂˣ) {s : Set ℕ} {κ m n : ℕ} (h
     (fun r hr => ⟨((hs r).1 hr).1, ((hs r).1 hr).2.trans_le hmn⟩) f
   exact ⟨⟨F, h0⟩, Subtype.ext (funext hF)⟩
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce `h x hx`. Distinguish the cases in `hκ : x.1.rank < κ`. Conclude with `Φ.2 x hκ`. Conclude with `congrFun (congrArg Subtype.val h) ⟨x.1, (hs _).2 ⟨not_lt.1 hκ, hx⟩⟩`.
+
+Introduce `h`. Conclude with `Subtype.ext (funext fun x => h _ ((hs _).1 x.2).2)`.
+-/
 theorem ker_resFilt (μ : kˣ →* ℂˣ) {s : Set ℕ} {κ m n : ℕ} (hmn : m ≤ n)
     (hs : ∀ r, r ∈ s ↔ κ ≤ r ∧ r < m) (Φ : (filt a b μ (Set.Iio n) κ).toSubmodule) :
     resFilt μ hmn hs Φ = 0 ↔ Φ.1 ∈ (filt a b μ (Set.Iio n) m).toSubmodule := by
@@ -95,6 +122,15 @@ theorem ker_resFilt (μ : kˣ →* ℂˣ) {s : Set ℕ} {κ m n : ℕ} (hmn : m 
 
 end
 
+/- English proof (translation)
+Use `⟨eq_top_iff.2 fun _ _ _ hx => absurd hx (Nat.not_lt_zero _), Subrepresentation.toSubmodule_injective <| eq_bot_iff.2 fun _ hΦ => Subtype.ext (funext fun x => hΦ x x.2), fun κ hκ => ⟨?_, ?_, ?_⟩⟩` and prove the remaining obligations. Conclude with `fun Φ hΦ x hx => hΦ x (Nat.lt_succ_of_lt hx)`. Establish `hs : ∀ r, r ∈ Set.Ico κ a ↔ κ ≤ r ∧ r < a` using `fun _ => Iff.rfl`. Establish `hinj : Function.Injective (resFilt (a` using `Fin a) (b := Fin (a + t)) μ le_rfl hs) := by`. Use `(injective_iff_map_eq_zero _).2 fun Φ hΦ => ?_` and prove the remaining obligations.
+
+Conclude with `Subtype.ext (Subtype.ext (funext fun x => (ker_resFilt μ le_rfl hs Φ).1 hΦ x x.2))`. Set `e` to `Representation.Equiv.mk (LinearEquiv.ofBijective (resFilt (a := Fin a) (b := Fin (a + t)) μ le_rfl hs).toLinearMap ⟨hinj, resFilt_surjective μ le_rfl hs⟩) (resFilt μ le_rfl hs).isIntertwining'`. Use `⟨e.symm, fun Φ x => ?_⟩` and prove the remaining obligations. Use `split_ifs with h`. Establish `h1 : e (e.symm Φ) = Φ` using `e.toLinearEquiv.apply_symm_apply Φ`.
+
+Conclude with `congrFun (congrArg Subtype.val h1) ⟨x.1, h, x.2⟩`. Conclude with `(e.symm Φ).2 x (not_le.1 h)`. Establish `hs : ∀ r, r ∈ ({κ} : Set ℕ) ↔ κ ≤ r ∧ r < κ + 1` using `fun r => by`. Rewrite using `[Set.mem_singleton_iff]`. Use linear arithmetic over natural numbers and integers.
+
+Set `ρ` to `resFilt (a := Fin a) (b := Fin (a + t)) μ (Nat.succ_le_of_lt hκ) hs`. Establish `hker : Submodule.comap (filt (Fin a) (Fin (a + t)) μ (Set.Iio a) κ).toSubmodule.subtype (filt (Fin a) (Fin (a + t)) μ (Set.Iio a) (κ + 1)).toSubmodule = LinearMap.ker ρ.toLinearMap` using `Submodule.ext fun Φ => (ker_resFilt μ _ hs Φ).symm`. Use `⟨Representation.Equiv.mk ((Submodule.quotEquivOfEq _ _ hker).trans (LinearMap.quotKerEquivOfSurjective ρ.toLinearMap (resFilt_surjective μ _ hs))) fun g => ?_, fun Φ x => rfl⟩` and prove the remaining obligations. Conclude with `Submodule.linearMap_qext _ rfl`.
+-/
 theorem rankFiltration (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k]
     [IsNonarchimedeanLocalField k] (a t : ℕ) (μ : kˣ →* ℂˣ) : RankFiltration a t μ := by
   refine ⟨eq_top_iff.2 fun _ _ _ hx => absurd hx (Nat.not_lt_zero _),

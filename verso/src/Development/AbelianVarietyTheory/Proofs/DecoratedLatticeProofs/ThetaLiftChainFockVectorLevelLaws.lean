@@ -10,6 +10,9 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 namespace GlobalTheory.ChainOnto
 
+/- English proof (translation)
+Introduce `D hgap c hc k hk s s' hs hs' p hp φ`. Take `⟨h1, h2⟩` from `GlobalTheory.T.thetaChainStep_vector_twoLevel_law D hgap c hc k hk s s' hs hs' p hp`. Use `⟨fun κ hκ => ?_, fun κ hκ => ?_⟩` and prove the remaining obligations. Conclude with `GlobalTheory.FiniteFock.om_pureTensorO_of_finite c.ψ c.θ s.V s'.V _ _ p.ω hc.inf hp.weil _ _ _ _ p.f hp.theta κ (Subgroup.mem_inf.1 hκ).1 1 (one_mem _) _ (h1 κ hκ) φ`. Conclude with `GlobalTheory.FiniteFock.om_pureTensorO_of_finite c.ψ c.θ s.V s'.V _ _ p.ω hc.inf hp.weil _ _ _ _ p.f hp.theta 1 (one_mem _) κ (Subgroup.mem_inf.1 hκ).1 _ (h2 κ hκ) φ`.
+-/
 theorem levelLaw : ∀ D : D7, LevelLaw D := by
   intro D hgap c hc k hk s s' hs hs' p hp φ
   obtain ⟨h1, h2⟩ := GlobalTheory.T.thetaChainStep_vector_twoLevel_law D hgap c hc k hk s s' hs hs' p hp

@@ -21,6 +21,11 @@ open GlobalTheory.HeckePoint
 
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {D : Datum H} {l : Level H}
 
+/- English proof (translation)
+Take `⟨ρ, hρ⟩` from `exists_ptsEquiv m.cart (Over.mk z) (z ≫ f) rfl`. Take `⟨w, hw, -⟩` from `m.lin`. Establish `tu : (toUnit (Over.mk z)).left = z` using `by simp`. Establish `tv : (toUnit (Over.mk (z ≫ f))).left = z ≫ f` using `by simp`. Use `⟨ρ, hρ, fun a x => Over.OverMorphism.ext ?_, fun n x x' c => GlobalTheory.weilIs_iff_of_isGrpPullback_comm _ _ _ _ f m.cm.F _ _ u.t.PP.isLB o.t.PP.isLB m.cart ⟨w, hw⟩ (Over.mk z) n x x' _ _ _ (hρ x) (hρ x'), fun a => Over.OverMorphism.ext ?_, fun a => Over.OverMorphism.ext ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[hρ, Over.comp_left, Over.comp_left, hρ, Category.assoc, m.act, Category.assoc]`. Rewrite using `[hρ, Over.comp_left, Over.comp_left, tu, tv, Category.assoc, m.eta a, Category.assoc]`. Rewrite using `[hρ, Over.comp_left, Over.comp_left, tu, tv, Category.assoc, m.etaA a, Category.assoc]`.
+-/
 theorem exists_transfer_pts {B B' : Type} [CommRing B] [CommRing B'] {b : Base l B} {b' : Base l B'} {X S : Scheme.{0}}
     {sX : X ⟶ Sp B} {s : S ⟶ Sp B'} {u : Obj D l b sX} {o : Obj D l b' s} {f : S ⟶ X} (m : ObjMap o u f)
     {k : Type} [Field k] (z : Sp k ⟶ S) :
@@ -42,6 +47,29 @@ theorem exists_transfer_pts {B B' : Type} [CommRing B] [CommRing B'] {b : Base l
   · rw [hρ, Over.comp_left, Over.comp_left, tu, tv, Category.assoc, m.eta a, Category.assoc]
   · rw [hρ, Over.comp_left, Over.comp_left, tu, tv, Category.assoc, m.etaA a, Category.assoc]
 
+/- English proof (translation)
+Introduce `E _ _ _ H D l Xo 𝔓 p i Z hA k _ _ z y C hC`. Take `⟨rfl, hC⟩` from `hC`. Establish `hp : p.Prime` using `hA.2.2.1`. Establish `hL : Out.Laws` using `GlobalTheory.firstFiveLaws.1`. Take `⟨⟨hom, hfin, het, hsur, hlin, hiso⟩, hlev⟩` from `Z.isog`.
+
+Use `Xo.smooth` as an intermediate fact. Use `Z.et₁` as an intermediate fact. Establish `: Smooth Xo.s` using `SmoothOfRelativeDimension.smooth D.dim Xo.s`. Establish `: IsLocallyNoetherian Xo.X` using `LocallyOfFiniteType.isLocallyNoetherian Xo.s`. Establish `: IsLocallyNoetherian Z.Hk` using `LocallyOfFiniteType.isLocallyNoetherian Z.π₁`.
+
+Take `⟨ρ, e₂, e₃, e₄, e₅, e₆⟩` from `exists_transfer_pts Z.m₁ z`. Take `⟨ρ₁, f₂, f₃, f₄, f₅, f₆⟩` from `exists_transfer_pts Z.m₂ z`. Set `σ : (Over.mk z ⟶ Z.o₁.t.G) →* (Over.mk z ⟶ Z.o₂.t.G)` to `MonoidHom.mk' (fun x => x ≫ Z.ψ) fun a c => MonObj.mul_comp a c Z.ψ`. Set `ψp` to `ρ₁.toMonoidHom.comp (σ.comp ρ.symm.toMonoidHom)`. Establish `hψ : ∀ x, ψp (ρ x) = ρ₁ (x ≫ Z.ψ)` using `fun x => congrArg (fun u => ρ₁ (u ≫ Z.ψ)) (ρ.symm_apply_apply x)`.
+
+Establish `c₁` using `Z.m₁.cart.1`. Establish `c₂` using `Z.m₂.cart.1`. Set `α : pullback Xo.univ.t.G.hom (z ≫ Z.π₁) ⟶ Z.o₁.t.G.left` to `c₁.lift (pullback.fst _ _) (pullback.snd _ _ ≫ z) (by rw [pullback.condition, Category.assoc])`. Establish `α₁ : α ≫ Z.m₁.cm.F = pullback.fst _ _` using `c₁.lift_fst _ _ _`. Establish `α₂ : α ≫ Z.o₁.t.G.hom = pullback.snd _ _ ≫ z` using `c₁.lift_snd _ _ _`.
+
+Establish `hα : ∀ x, fibPt _ (ρ x) ≫ α = x.left` using `fun x => c₁.hom_ext (by rw [Category.assoc, α₁, fibPt, pullback.lift_fst, e₂]) (by rw [Category.assoc, α₂, fibPt, pullback.lift_snd_assoc, Over.w x]; exact Category.id_comp _)`. Use `⟨by rw [Category.assoc, Category.assoc, Z.base₂], pullback.lift (α ≫ Z.ψ.left ≫ Z.m₂.cm.F) (pullback.snd _ _) (by rw [Category.assoc, Category.assoc, c₂.w, Over.w_assoc, reassoc_of% α₂]), ψp, pullback.lift_snd _ _ _, fun x => ?_, fun a x => ?_, fun v => ?_, Subgroup.ext fun x => …` and prove the remaining obligations. Take `⟨x, rfl⟩` from `ρ.surjective x`. Apply `pullback.hom_ext` to reduce the goal to its premises. Rewrite using `[Category.assoc, pullback.lift_fst, reassoc_of% hα x, hψ, fibPt, pullback.lift_fst, f₂, Over.comp_left, Category.assoc]`.
+
+Rewrite using `[Category.assoc, pullback.lift_snd, fibPt, fibPt, pullback.lift_snd, pullback.lift_snd]`. Take `⟨x, rfl⟩` from `ρ.surjective x`. Rewrite using `[← e₃, hψ, hψ, ← f₃, Category.assoc, hlin, Category.assoc]`. Take `⟨v, rfl⟩` from `ρ₁.surjective v`. Take `⟨x, rfl⟩` from `exists_lift_pt Z.ψ z v`.
+
+Conclude with `⟨ρ x, hψ x⟩`. Take `⟨x, rfl⟩` from `ρ.surjective x`. Rewrite using `[MonoidHom.mem_ker, hψ, map_eq_one_iff _ ρ₁.injective, Z.ker k z x, hC x _ (e₂ x)]`. Take `⟨x, rfl⟩` from `ρ.surjective x`. Take `⟨x', rfl⟩` from `ρ.surjective x'`.
+
+Rewrite using `[hψ, hψ]`. Use `(f₄ _ _ _ _).1 ?_` and prove the remaining obligations. Use `replace h := (e₄ _ _ _ _).2 h`. Set `P` to `polOf Z.o₁.t Z.o₁.proper Z.o₁.ample Z.o₁.ktriv (ObjDim.smoothOfRelativeDimension Z.o₁)`. Set `P'` to `polOf Z.o₂.t Z.o₂.proper Z.o₂.ample Z.o₂.ktriv (ObjDim.smoothOfRelativeDimension Z.o₂)`.
+
+Establish `hn₀ : 0 < n` using `Nat.pos_of_ne_zero (by`. Introduce and unpack `rfl`. Conclude with `hp.one_lt.ne' ((Nat.coprime_zero_left p).1 hn))`. Establish `: Unique (Over.mk z).left` using `inferInstanceAs (Unique (PrimeSpectrum k))`. Take `⟨t₁, t₂⟩` from `pow_eq_one_of_weilIs hL.kerPow P hn₀ h`.
+
+Take `⟨c', hc', -⟩` from `(hL.weil _ P' n _).1 (x ≫ Z.ψ) (x' ≫ Z.ψ) (by rw [← MonObj.pow_comp, t₁, MonObj.one_comp]) (by rw [← MonObj.pow_comp, t₂, MonObj.one_comp])`. Establish `e` using `(weilIs_along_hom hL.globalFns _ _ _ Z.ψ _ _ (p ^ 2) n _ x x' _ _ P.isAb P'.isAb P.isLB P'.isLB hom hiso hc').2 h`. Rewrite using `[unitOn_pow]`. Conclude with `e ▸ hc'`. Rewrite using `[← e₅, ← e₆, hψ, hψ, Category.assoc, Category.assoc, (hlev p' hp' a).1, (hlev p' hp' a).2, f₅, f₆]`.
+
+Conclude with `⟨rfl, rfl⟩`.
+-/
 theorem pointQuot_snd : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (D : Datum H) (l : Level H) (Xo : Moduli D l) (𝔓 : Ideal (𝓞 E)) (p i : ℕ) (Z : Corr Xo 𝔓 p i), admitted l 𝔓 p → ∀ (k : Type) [Field k] [IsAlgClosed k] (z : Sp k ⟶ Z.Hk) (y : Sp k ⟶ Xo.X) (C : Subgroup (Over.mk y ⟶ Xo.univ.t.G)), Z.toKerScheme.Carries z y C → PointQuot Xo p y (z ≫ Z.π₂) C := by
   intro E _ _ _ H D l Xo 𝔓 p i Z hA k _ _ z y C hC
   obtain ⟨rfl, hC⟩ := hC

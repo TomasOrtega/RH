@@ -17,14 +17,23 @@ variable {G : Type} [Group G] [TopologicalSpace G] {Qp K₀ K : Type} [Field Qp]
     [CommRing O] [Algebra O LL] {v : AddValuation LL (WithTop ℚ)} {n : ℕ}
     (W : LocWach PD LL O v n) (T : LocLat G Qp LL O) (π' : LetA O n) (c : ZMod n)
 
+/- English proof (translation)
+Simplify using `[toLA, TensorProduct.map_tmul]`.
+-/
 theorem toLA_tmul' (S : Submodule O (LcQ W T π' c)) (a : ↥W.AΔ) (s : ↥S) :
     toLA W T π' c S (a ⊗ₜ s) = algebraMap (LetA O n) W.EE ((letE c : LetA O n) * a) ⊗ₜ (s : LcQ W T π' c) := by
   simp [toLA, TensorProduct.map_tmul]
 
+/- English proof (translation)
+Simplify using `[smulLA, TensorProduct.map_tmul]`.
+-/
 theorem smulLA_tmul' (b : LetA O n) (e : W.EE) (y : LcQ W T π' c) :
     smulLA W T π' c b (e ⊗ₜ y) = (algebraMap (LetA O n) W.EE b * e) ⊗ₜ y := by
   simp [smulLA, TensorProduct.map_tmul]
 
+/- English proof (translation)
+Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul x y => simp [smulLA_tmul', map_mul, mul_assoc]`. Consider the case `add x y hx hy => simp [map_add, hx, hy]`.
+-/
 theorem smulLA_mul' (a b : LetA O n) (x : LA W T π' c) :
     smulLA W T π' c (a * b) x = smulLA W T π' c a (smulLA W T π' c b x) := by
   induction x using TensorProduct.induction_on with
@@ -32,6 +41,11 @@ theorem smulLA_mul' (a b : LetA O n) (x : LA W T π' c) :
   | tmul x y => simp [smulLA_tmul', map_mul, mul_assoc]
   | add x y hx hy => simp [map_add, hx, hy]
 
+/- English proof (translation)
+Introduce `δ hδ`. Establish `h` using `hπ δ hδ`. Use function extensionality and compare the values at `i`. Establish `hi` using `congrFun h i`. Simplify using `only [LocWach.γA, letγ, AlgHom.pi_apply, AlgHom.comp_apply, Pi.evalAlgHom_apply] at hi ⊢`.
+
+Simplify using `only [Formalism.MainNotions.DeltaInvariantLattices.Eat]`. Rewrite using `[← Polynomial.aeval_algHom_apply, hi]`.
+-/
 theorem eat_mem (E : ZMod n → Polynomial O) (hπ : π' ∈ W.AΔ) : Formalism.MainNotions.DeltaInvariantLattices.Eat E π' ∈ W.AΔ := by
   intro δ hδ
   have h := hπ δ hδ
@@ -43,6 +57,21 @@ theorem eat_mem (E : ZMod n → Polynomial O) (hπ : π' ∈ W.AΔ) : Formalism.
 
 open PowerSeries in
 
+/- English proof (translation)
+Introduce and unpack `_ ⟨_, ⟨t, rfl⟩, rfl⟩`. Proceed by induction on `t using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `add x y hx hy => rw [map_add, map_add]`. Conclude with `add_mem hx hy`.
+
+Consider the case `tmul a s`. Apply `Submodule.subset_span` to reduce the goal to its premises. Take `⟨⟨y, hy⟩, hys⟩` from `Submodule.Quotient.mk_surjective _ (s : LcQ W T π' c)`. Establish `hΛΔ : Eπ ^ h' ∈ W.AΔ` using `Subalgebra.pow_mem _ hEΔ h'`. Set `a' : Fin 1 → ↥W.AΔ` to `fun _ => ⟨Eπ ^ h' * Eπ ^ h' * a, Subalgebra.mul_mem _ (Subalgebra.mul_mem _ hΛΔ hΛΔ) a.2⟩`.
+
+Set `y' : Fin 1 → W.DD T` to `fun _ => y`. Use `⟨1, a', y', ⟨fun _ => hy, ?_⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[Fin.sum_univ_one, toLA_tmul', smulLA_tmul', smulLA_tmul', ← map_mul, ← map_mul]`. Establish `hm : mkL W T π' c (y' 0) hy = (s : LcQ W T π' c)` using `hys`. Rewrite using `[hm]`.
+
+Use `congr 2`. Simplify using `only [a']`. Expand and normalize the polynomial expressions, which then agree. Introduce `τ ζ hpt i`. Simplify using `only [expS, Fin.sum_univ_one, serC, a', y']`.
+
+Use `split_ifs with hi`. Distinguish the cases in `hlt : i.toNat < 2 * h'`. Establish `hX : X ^ (2 * h') ∣ W.lev c ζ (Eπ ^ h' * Eπ ^ h' * (a : LetA O n))`. Establish `hXE : X ∣ W.lev c ζ Eπ` using `PowerSeries.X_dvd_iff.mpr (hlev τ ζ hpt)`. Establish `h2 : W.lev c ζ (Eπ ^ h' * Eπ ^ h' * (a : LetA O n)) = W.lev c ζ Eπ ^ (2 * h') * W.lev c ζ (a : LetA O n)`.
+
+Rewrite using `[map_mul, map_mul, map_pow, ← pow_add, two_mul]`. Rewrite using `[h2]`. Conclude with `Dvd.dvd.mul_right (pow_dvd_pow_of_dvd hXE _) _`. Establish `hc : coeff i.toNat (W.lev c ζ (Eπ ^ h' * Eπ ^ h' * (a : LetA O n))) = 0` using `(PowerSeries.X_pow_dvd_iff.mp hX) _ hlt`. Rewrite using `[hc, zero_smul]`.
+
+Conclude with `Submodule.zero_mem _`. Use `Submodule.smul_mem _ _ ?_` and prove the remaining obligations. Use `hanti τ _ _ (by omega) (hval τ ζ hpt y hy)` and prove the remaining obligations. Conclude with `Submodule.zero_mem _`.
+-/
 theorem filtration_value_local (Pt : ZMod n → LL → (K →ₐ[Qp] LL) → Prop) (Eπ : LetA O n) (h' : ℕ)
     (hEΔ : Eπ ∈ W.AΔ)
     (hlev : ∀ τ ζ, Pt c ζ τ → constantCoeff (W.lev c ζ Eπ) = 0)
@@ -88,6 +117,13 @@ theorem filtration_value_local (Pt : ZMod n → LL → (K →ₐ[Qp] LL) → Pro
           refine hanti τ _ _ (by omega) (hval τ ζ hpt y hy)
       · exact Submodule.zero_mem _
 
+/- English proof (translation)
+Take `⟨t, rfl⟩` from `hr`. Proceed by induction on `t using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul a s`. Use `⟨(⟨b, hb⟩ * a) ⊗ₜ s, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[toLA_tmul', toLA_tmul', smulLA_tmul', ← map_mul]`. Use `congr 2`. Simplify using `only [Subalgebra.coe_mul]`. Expand and normalize the polynomial expressions, which then agree. Consider the case `add x y hx hy => rw [map_add, map_add]`.
+
+Conclude with `add_mem hx hy`.
+-/
 theorem R_smul' {b : LetA O n} (hb : b ∈ W.AΔ) {r : LA W T π' c}
     (hr : r ∈ LinearMap.range (toLA W T π' c ⊤)) :
     smulLA W T π' c b r ∈ LinearMap.range (toLA W T π' c ⊤) := by
@@ -102,6 +138,11 @@ theorem R_smul' {b : LetA O n} (hb : b ∈ W.AΔ) {r : LA W T π' c}
     ring
   | add x y hx hy => rw [map_add, map_add]; exact add_mem hx hy
 
+/- English proof (translation)
+Introduce and unpack `_ ⟨r, hr, rfl⟩`. Establish `hr2` using `R_smul' W T π' c (Subalgebra.pow_mem _ hEΔ (2 * h')) hr`. Use `⟨smulLA W T π' c (Eπ ^ h') (smulLA W T π' c (Eπ ^ (2 * h')) r), h4 ⟨_, hr2, rfl⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[← smulLA_mul', ← smulLA_mul']`. Use `congr 1`.
+
+Rewrite using `[show 3 * h' = h' + 2 * h' by ring, pow_add]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem lattice_contains_power_local (Pt : ZMod n → LL → (K →ₐ[Qp] LL) → Prop) (Eπ : LetA O n) (h' M : ℕ)
     (hEΔ : Eπ ∈ W.AΔ)
     (h4 : (LinearMap.range (toLA W T π' c ⊤)).map (smulLA W T π' c (Eπ ^ h')) ≤ NL W T Pt π' Eπ h' c) :
@@ -119,6 +160,15 @@ end Local
 set_option synthInstance.maxHeartbeats 400000 in
 set_option maxHeartbeats 1000000 in
 
+/- English proof (translation)
+Establish `hyL : (letE (c - 1) : LetA ↥(OL LL) (finrank ℚ_[l] ↥(K0 K))) • y = y`. Use `hy.2` as an intermediate fact. Simplify `this` using `[letS, LinearMap.mem_ker, sub_eq_zero]`. Establish `hφ` using `MLC.φD_letter' ((HW l).W K 1 LL hG) T hyL`. Rewrite `hφ` using `[sub_add_cancel]`.
+
+Establish `hp4` using `((h1 l K 1 LL hG).2.2.2.1 T hT).2 c ζ τ hpt`. Establish `key : ∀ (k : ℕ) (hz : ((HW l).W K 1 LL hG).Q ^ k • ((HW l).W K 1 LL hG).φD T y ∈ ((HW l).W K 1 LL hG).N T), ((HW l).W K 1 LL hG).levN T c ζ ⟨_, hz⟩ (k : ℤ) ∈ Formalism.MainNotions.DeltaInvariantLattices.FilC (PD` using `(D.loc l).PD K) T τ (-(h' : ℤ)) := by`. Introduce `k hz`. Establish `h3` using `hp4.2.1 ⟨_, hz⟩ (k : ℤ)`. Establish `hsub : ((letE c : LetA ↥(OL LL) (finrank ℚ_[l] ↥(K0 K))) • (⟨_, hz⟩ : ↥(((HW l).W K 1 LL hG).N T))) = ⟨_, hz⟩`.
+
+Apply `Subtype.ext` to reduce the goal to its premises. Use `show (letE c : LetA ↥(OL LL) (finrank ℚ_[l] ↥(K0 K))) • (((HW l).W K 1 LL hG).Q ^ k • ((HW l).W K 1 LL hG).φD T y) = _`. Rewrite using `[smul_comm, hφ]`. Rewrite `h3` using `[hsub]`. Conclude with `MLC.filC_le_bot T τ h' (hJ τ) _ (Submodule.mem_inf.mp h3).2`.
+
+Unfold `valAt`. Use `split_ifs with h`. Conclude with `Submodule.smul_mem _ _ (key _ _)`. Conclude with `Submodule.zero_mem _`.
+-/
 theorem val_fil (D : D7) (HW : HWOf D.loc) (F : FonOf D.loc D.locA HW) (Cm : CmpOf D.loc D.locA HW F)
     (h1 : adm1 D HW F Cm) {l : ℕ} [Fact l.Prime] (K LL : FinExt l) (hG : Good K 1 LL)
     (T : LocLat ↥(GK K) ℚ_[l] ↥LL.1 ↥(OL LL)) (hT : IsCrys ((D.loc l).PD K) T.ρ) (h' : ℕ)
@@ -156,6 +206,11 @@ set_option synthInstance.maxHeartbeats 400000 in
 set_option maxHeartbeats 1000000 in
 open PowerSeries in
 
+/- English proof (translation)
+Establish `hζ` using `framepf_pt_prim D HW hG c ζ τ hpt`. Establish `hζ' : IsPrimitiveRoot ζ ((D.loc l).PD K).p` using `by rw [(D.loc l).PD_p K]; exact hζ`. Take `⟨u, hu, -⟩` from `framepf_lev_q_simple ((HW l).W K 1 LL hG) c ζ hζ'`. Take `⟨w, hw⟩` from `hr.2.2.2.2.1`. Establish `h1` using `congrArg (fun f => constantCoeff (((HW l).W K 1 LL hG).lev c ζ f)) hw`.
+
+Simplify using `only [hu, map_mul, constantCoeff_X, zero_mul] at h1`. Establish `hwu : IsUnit (constantCoeff (((HW l).W K 1 LL hG).lev c ζ (w : LetA ↥(OL LL) _)))` using `(PowerSeries.isUnit_iff_constantCoeff).mp (w.isUnit.map _)`. Conclude with `(hwu.mul_right_eq_zero).mp h1.symm`.
+-/
 theorem lev_eat_zero (D : D7) (HW : HWOf D.loc) {l : ℕ} [Fact l.Prime] (K LL : FinExt l)
     (hG : Good K 1 LL) (π' : LetA ↥(OL LL) (finrank ℚ_[l] ↥(K0 K)))
     (E : ZMod (finrank ℚ_[l] ↥(K0 K)) → Polynomial ↥(OL LL))
@@ -176,6 +231,9 @@ theorem lev_eat_zero (D : D7) (HW : HWOf D.loc) {l : ℕ} [Fact l.Prime] (K LL :
 set_option synthInstance.maxHeartbeats 400000 in
 set_option maxHeartbeats 1000000 in
 
+/- English proof (translation)
+The claim follows from `filtration_value_local ((HW l).W K 1 LL hG) T π' c (Formalism.MainNotions.DeltaInvariantLattices.ptK D.loc HW hG) (Formalism.MainNotions.DeltaInvariantLattices.Eat E π') h' (eat_mem ((HW l).W K 1 LL hG) π' E hr.1) (fun τ ζ hpt => lev_eat_zero D HW K LL hG π' E hr c ζ τ hpt) (fun …`.
+-/
 theorem model_lattice_filtration (D : D7) (HW : HWOf D.loc) (F : FonOf D.loc D.locA HW) (Cm : CmpOf D.loc D.locA HW F)
     (CA CB CK : ℝ) (hA : Adm1 D HW F Cm CA CB CK) (l : ℕ) [Fact l.Prime] (hl : l ≠ 2) (K LL : FinExt l)
     (hG : Good K 1 LL) (π' : LetA ↥(OL LL) (finrank ℚ_[l] ↥(K0 K)))
@@ -196,6 +254,9 @@ theorem model_lattice_filtration (D : D7) (HW : HWOf D.loc) (F : FonOf D.loc D.l
 set_option synthInstance.maxHeartbeats 400000 in
 set_option maxHeartbeats 1000000 in
 
+/- English proof (translation)
+The claim follows from `lattice_contains_power_local ((HW l).W K 1 LL hG) T π' c (Formalism.MainNotions.DeltaInvariantLattices.ptK D.loc HW hG) (Formalism.MainNotions.DeltaInvariantLattices.Eat E π') h' (MK l K h') (eat_mem ((HW l).W K 1 LL hG) π' E hr.1) (model_lattice_filtration D HW F Cm CA CB CK hA …`.
+-/
 theorem model_lattice_power (D : D7) (HW : HWOf D.loc) (F : FonOf D.loc D.locA HW) (Cm : CmpOf D.loc D.locA HW F)
     (CA CB CK : ℝ) (hA : Adm1 D HW F Cm CA CB CK) (l : ℕ) [Fact l.Prime] (hl : l ≠ 2) (K LL : FinExt l)
     (hG : Good K 1 LL) (π' : LetA ↥(OL LL) (finrank ℚ_[l] ↥(K0 K)))

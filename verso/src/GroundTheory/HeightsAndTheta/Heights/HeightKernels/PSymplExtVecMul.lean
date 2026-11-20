@@ -6,6 +6,9 @@ namespace GroundTheory.Heights₂.Heights
 
 open Matrix
 
+/- English proof (translation)
+Introduce `R _ n α β γ δ p q Q w`. Use function extensionality and compare the values at `y`. Apply the tactic sequence `rcases y with y | y <;> refine Fin.cases ?_ (fun j => ?_) y <;>`. Simplify using `[vecMul, dotProduct, symplCons, symplExt, Fintype.sum_sum_type, Fin.sum_univ_succ]`.
+-/
 theorem SymplExtVecMul.proof : SymplExtVecMul.Statement := by
   intro R _ n α β γ δ p q Q w
   funext y

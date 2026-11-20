@@ -10,6 +10,25 @@ def expChar (c : ℂ) : Multiplicative ℝ →* ℂ where
   map_mul' x y := by
     simp only [toAdd_mul, Complex.ofReal_add, mul_add, Complex.exp_add]
 
+/- English proof (translation)
+Establish `expChar_injective : Function.Injective expChar`. Introduce `c c' h`. Establish `hd : ∀ d : ℂ, HasDerivAt (fun t : ℝ => Complex.exp (d * (t : ℂ))) d 0`. Introduce `d`. Establish `h1 : HasDerivAt (fun t : ℝ => d * (t : ℂ)) (d * 1) 0` using `((hasDerivAt_id (0 : ℝ)).ofReal_comp).const_mul d`.
+
+Establish `h2` using `h1.cexp`. Simplify using `using h2`. Establish `hf : (fun t : ℝ => Complex.exp (c * (t : ℂ))) = fun t : ℝ => Complex.exp (c' * (t : ℂ))`. Use function extensionality and compare the values at `t`. Use `DFunLike.congr_fun h (Multiplicative.ofAdd t)` as an intermediate fact.
+
+Simplify `this` using `[expChar]`. Establish `e` using `hd c`. Rewrite `e` using `[hf]`. Conclude with `e.unique (hd c')`. Set `v : ℝ → (C → ℂ)` to `fun t c' => Complex.exp ((c' : ℂ) * t)`.
+
+Establish `hli : LinearIndependent ℂ (fun c' : C => (expChar (c' : ℂ) : Multiplicative ℝ → ℂ))` using `(linearIndependent_monoidHom (Multiplicative ℝ) ℂ).comp (fun c' : C => expChar (c' : ℂ)) (expChar_injective.comp Subtype.val_injective)`. Establish `htop : Submodule.span ℂ (Set.range v) = ⊤`. Assume the negation of the conclusion as `hne`. Take `⟨f, hf0, hle⟩` from `Submodule.exists_le_ker_of_lt_top _ (lt_top_iff_ne_top.2 hne)`. Apply `hf0` to reduce the goal to its premises.
+
+Establish `hw : ∀ i : C, f (Pi.single i 1) = 0`. Establish `hsum : ∑ i : C, f (Pi.single i 1) • (expChar (i : ℂ) : Multiplicative ℝ → ℂ) = 0`. Use function extensionality and compare the values at `x`. Establish `hx : f (v (Multiplicative.toAdd x)) = 0` using `hle (Submodule.subset_span ⟨_, rfl⟩)`. Establish `hv : v (Multiplicative.toAdd x) = ∑ i : C, (v (Multiplicative.toAdd x) i) • Pi.single i 1`.
+
+Use function extensionality and compare the values at `j`. Simplify using `[Finset.sum_apply, Pi.single_apply]`. Rewrite `hx` using `[hv, map_sum]`. Simplify using `only [map_smul, smul_eq_mul] at hx`. Simplify using `only [Finset.sum_apply, Pi.smul_apply, smul_eq_mul, Pi.zero_apply]`.
+
+Rewrite using `[← hx]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Simplify using `[expChar, v, mul_comm]`. Conclude with `fun i => Fintype.linearIndependent_iff.1 hli _ hsum i`. Conclude with `(Pi.basisFun ℂ C).ext fun i => by simpa using hw i`.
+
+Establish `hmem : (fun c' : C => if (c' : ℂ) = c then (1 : ℂ) else 0) ∈ Submodule.span ℂ (Set.range v)`. Rewrite using `[htop]`. Conclude with `Submodule.mem_top`. Take `⟨a, ha⟩` from `Finsupp.mem_span_range_iff_exists_finsupp.1 hmem`. Use `⟨a.support, a, fun c' hc' => ?_⟩` and prove the remaining obligations.
+
+Use `congrFun ha ⟨c', hc'⟩` as an intermediate fact. Rewrite `this` using `[Finsupp.sum, Finset.sum_apply]`. Simplify `this` using `[v]`.
+-/
 theorem lagrange (C : Finset ℂ) (c : ℂ) : ∃ (τs : Finset ℝ) (a : ℝ → ℂ), ∀ c' ∈ C,
     ∑ t ∈ τs, a t * Complex.exp (c' * t) = if c' = c then 1 else 0 := by
   classical

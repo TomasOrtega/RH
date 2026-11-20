@@ -13,9 +13,23 @@ section Pw
 
 variable {F : Type} [NormedField F] (p : ℕ) [Fact p.Prime] [CharP F p] [PerfectRing F p]
 
+/- English proof (translation)
+Simplify using `[pw]`.
+-/
 theorem coefDet_pw_natCast (n : ℕ) (x : F) : pw p (n : ℤ) x = x ^ p ^ n := by
   simp [pw]
 
+/- English proof (translation)
+Unfold `pw`. Distinguish the cases in `hk : 0 ≤ k`. Rewrite using `[if_pos hk, if_pos (by omega), ← pow_mul, ← pow_succ]`. Use `congr 2`. Use linear arithmetic over natural numbers and integers.
+
+Rewrite using `[if_neg hk]`. Take `⟨n, hn⟩ : ∃ n : ℕ, (-k).toNat = n + 1` from `⟨(-k).toNat - 1, by omega⟩`. Rewrite using `[hn, Function.iterate_succ_apply']`. Establish `e : ((frobeniusEquiv F p).symm (((frobeniusEquiv F p).symm)^[n] x)) ^ p = ((frobeniusEquiv F p).symm)^[n] x`. Use `frobenius_apply_frobeniusEquiv_symm F p (((frobeniusEquiv F p).symm)^[n] x)` as an intermediate fact.
+
+Rewrite `this` using `[frobenius_def]`. Then use the resulting hypothesis. Rewrite using `[e]`. Distinguish the cases in `hk1 : 0 ≤ k + 1`. Rewrite using `[if_pos hk1]`. Establish `hn0 : n = 0` using `by omega`.
+
+Establish `h0 : (k + 1).toNat = 0` using `by omega`. Rewrite using `[hn0, h0]`. Simplify using the standard rewrite rules. Rewrite using `[if_neg hk1]`. Use `congr 1`.
+
+Use linear arithmetic over natural numbers and integers.
+-/
 theorem coefDet_pw_pow_p (k : ℤ) (x : F) : pw p k x ^ p = pw p (k + 1) x := by
   unfold pw
   by_cases hk : 0 ≤ k
@@ -36,6 +50,11 @@ theorem coefDet_pw_pow_p (k : ℤ) (x : F) : pw p k x ^ p = pw p (k + 1) x := by
       rw [hn0, h0]; simp
     · rw [if_neg hk1]; congr 1; omega
 
+/- English proof (translation)
+Proceed by induction on `a with`. Consider the case `zero => simp`. Consider the case `succ a ih`. Rewrite using `[pow_succ, pow_mul, ih, coefDet_pw_pow_p]`. Use `congr 1`.
+
+Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem coefDet_pw_pow (k : ℤ) (x : F) (a : ℕ) : pw p k x ^ p ^ a = pw p (k + a) x := by
   induction a with
   | zero => simp
@@ -49,6 +68,11 @@ section Det
 
 variable {F : Type} [NormedField F] (p : ℕ) [Fact p.Prime] [CharP F p] [PerfectRing F p]
 
+/- English proof (translation)
+Rewrite using `[← Matrix.det_mul_row (fun j => y j ^ p ^ h), ← Matrix.det_mul_column (fun r => a r ^ p ^ (h - (r : ℕ)))]`. Use `congr 1`. Use extensionality with `r j`. Simplify using `only [Matrix.of_apply]`. Establish `key : (y j ^ p ^ (r : ℕ)) ^ p ^ (h - (r : ℕ)) = y j ^ p ^ h`.
+
+Rewrite using `[← pow_mul, ← pow_add, Nat.add_sub_cancel' r.isLt.le]`. Rewrite using `[mul_pow, mul_pow, key]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem coefDet_det_scaled {h : ℕ} (a lam y : Fin h → F) :
     (Matrix.of fun r j : Fin h => (a r * (lam j * y j ^ p ^ (r : ℕ))) ^ p ^ (h - (r : ℕ))).det =
       (∏ r, a r ^ p ^ (h - (r : ℕ))) * ((∏ j, y j ^ p ^ h) *
@@ -61,6 +85,11 @@ theorem coefDet_det_scaled {h : ℕ} (a lam y : Fin h → F) :
   rw [mul_pow, mul_pow, key]
   ring
 
+/- English proof (translation)
+Rewrite using `[← Matrix.det_permute]`. Use `congr 1`. Use extensionality with `r j`. Simplify using `only [Matrix.submatrix_apply, Matrix.of_apply, Fin.revPerm_apply, Fin.val_rev, id]`. Rewrite using `[← pow_mul, ← pow_succ']`.
+
+Use `congr 2`. Use `r.isLt` as an intermediate fact. Use linear arithmetic over natural numbers and integers.
+-/
 theorem coefDet_det_rev {h : ℕ} (lam : Fin h → F) :
     (Matrix.of fun r j : Fin h => lam j ^ p ^ (h - (r : ℕ))).det =
       ((Equiv.Perm.sign (Fin.revPerm : Equiv.Perm (Fin h)) : ℤ) : F) *
@@ -71,6 +100,11 @@ theorem coefDet_det_rev {h : ℕ} (lam : Fin h → F) :
   rw [← pow_mul, ← pow_succ']
   congr 2; have := r.isLt; omega
 
+/- English proof (translation)
+Introduce `c j hc`. Establish `h1` using `hO c j hc`. Establish `e : (∑ i, (c i : F) * lam i) ^ p = ∑ i, (c i : F) * lam i ^ p`. Rewrite using `[← frobenius_def (R := F) p, map_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[map_mul, map_intCast, frobenius_def]`. Use `show ‖lam j ^ p‖ ≤ ‖∑ i, (c i : F) * lam i ^ p‖`. Rewrite using `[← e, norm_pow, norm_pow]`. Conclude with `pow_le_pow_left₀ (norm_nonneg _) h1 p`.
+-/
 theorem coefDet_orth_pow {h : ℕ} (lam : Fin h → F) (hO : Orth p lam) : Orth p (fun j => lam j ^ p) := by
   intro c j hc
   have h1 := hO c j hc
@@ -82,6 +116,9 @@ theorem coefDet_orth_pow {h : ℕ} (lam : Fin h → F) (hO : Orth p lam) : Orth 
   rw [← e, norm_pow, norm_pow]
   exact pow_le_pow_left₀ (norm_nonneg _) h1 p
 
+/- English proof (translation)
+Apply the tactic sequence `rcases Int.units_eq_one_or (Equiv.Perm.sign σ) with e | e <;> simp [e]`.
+-/
 theorem coefDet_norm_sign_cast {n : Type} [Fintype n] [DecidableEq n] (σ : Equiv.Perm n) :
     ‖((Equiv.Perm.sign σ : ℤ) : F)‖ = 1 := by
   rcases Int.units_eq_one_or (Equiv.Perm.sign σ) with e | e <;> simp [e]
@@ -95,6 +132,29 @@ end
 namespace GlobalTheory.PMonE
 open Finset
 
+/- English proof (translation)
+Use `set c : Fin h → F := fun r => lam r * π r ^ p ^ (r : ℕ) with hc`. Establish `hc0 : ∀ r, c r ≠ 0` using `fun r => mul_ne_zero (hl r) (pow_ne_zero _ (hπ r))`. Establish `hA' : Antitone (fun j => ‖(fun j => lam j ^ p) j‖)` using `fun i j hij => by`. Simplify using `only [norm_pow]`. Conclude with `pow_le_pow_left₀ (norm_nonneg _) (hA hij) p`.
+
+Establish `hDn : ‖(Matrix.of fun r j : Fin h => lam j ^ p ^ (h - (r : ℕ))).det‖ = ∏ j : Fin h, ‖lam j‖ ^ p ^ (h - (j : ℕ))`. Rewrite using `[coefDet_det_rev, norm_mul, coefDet_norm_sign_cast, one_mul]`. Establish `hM` using `mooreNorm F p h (fun j => lam j ^ p) hA' (coefDet_orth_pow p lam hO)`. Rewrite using `[hM]`. Use `prod_congr rfl fun j _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[norm_pow, ← pow_mul, ← pow_succ']`. Use `congr 2`. Use `j.isLt` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish `hD0 : (Matrix.of fun r j : Fin h => lam j ^ p ^ (h - (r : ℕ))).det ≠ 0`.
+
+Rewrite using `[← norm_ne_zero_iff, hDn]`. Conclude with `(prod_pos fun j _ => pow_pos (norm_pos_iff.mpr (hl j)) _).ne'`. Prove the components needed by the constructor for the conclusion. Establish `e : coefB p ϖ lam π L U L = Matrix.of fun r j : Fin h => ((c r)⁻¹ * (lam j * π j ^ p ^ (r : ℕ))) ^ p ^ (h - (r : ℕ))`. Use extensionality with `r j`.
+
+Simplify using `only [coefB, Matrix.of_apply, term, le_add_iff_nonneg_right, zero_le, if_true, sub_self, neg_zero, zpow_zero, mul_one, zero_mul, add_zero, coefDet_pw_natCast, hc]`. Rewrite using `[div_eq_inv_mul]`. Rewrite using `[e, coefDet_det_scaled, norm_mul, norm_mul, norm_prod, norm_prod, hDn]`. Establish `hX : ∏ r : Fin h, ‖c r‖ ^ p ^ (h - (r : ℕ)) = (∏ j : Fin h, ‖π j‖ ^ p ^ h) * ∏ j : Fin h, ‖lam j‖ ^ p ^ (h - (j : ℕ))`. Rewrite using `[← prod_mul_distrib]`.
+
+Use `prod_congr rfl fun r _ => ?_` and prove the remaining obligations. Rewrite using `[hc]`. Simplify using `only`. Rewrite using `[norm_mul, norm_pow, mul_pow, ← pow_mul, ← pow_add, Nat.add_sub_cancel' r.isLt.le, mul_comm]`. Establish `hX0 : ∏ r : Fin h, ‖c r‖ ^ p ^ (h - (r : ℕ)) ≠ 0` using `(prod_pos fun r _ => pow_pos (norm_pos_iff.mpr (hc0 r)) _).ne'`.
+
+Simplify using `only [norm_pow, norm_inv, inv_pow]`. Rewrite using `[prod_inv_distrib, ← hX, inv_mul_cancel₀ hX0]`. Use `set y : Fin h → F := fun j => pw p (-((L : ℤ) * h)) (π j) with hy`. Establish `hy0 : ∀ j, y j ≠ 0`. Introduce `j hyj`.
+
+Establish `h1` using `coefDet_pw_pow p (-((L : ℤ) * h)) (π j) (L * h)`. Establish `h0 : pw p (0 : ℤ) (π j) = π j` using `by simp [pw]`. Rewrite `h1` using `[show pw p (-((L : ℤ) * h)) (π j) = y j from rfl, hyj, zero_pow (pow_ne_zero _ (Fact.out : p.Prime).ne_zero)]`. Move the coercions through the operations in `at h1`. Rewrite `h1` using `[neg_add_cancel, h0]`.
+
+Conclude with `hπ j h1.symm`. Establish `e : coefB p ϖ lam π L U 0 = Matrix.of fun r j : Fin h => ((ϖ ^ L / c r) * (lam j * y j ^ p ^ (r : ℕ))) ^ p ^ (h - (r : ℕ))`. Use extensionality with `r j`. Simplify using `only [coefB, Matrix.of_apply, term, zero_le, if_true, hc, hy, coefDet_pw_pow]`. Establish `e1 : ((r : ℕ) : ℤ) + (((0 : ℕ) : ℤ) - L) * h = -((L : ℤ) * h) + ((r : ℕ) : ℤ)` using `by push_cast; ring`.
+
+Establish `e2 : ϖ ^ (-(((0 : ℕ) : ℤ) - L)) = ϖ ^ L`. Rewrite using `[show -(((0 : ℕ) : ℤ) - L) = (L : ℤ) by push_cast; ring, zpow_natCast]`. Rewrite using `[e1, e2]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree.
+
+Rewrite using `[e, coefDet_det_scaled]`. Conclude with `mul_ne_zero (prod_ne_zero_iff.mpr fun r _ => pow_ne_zero _ (div_ne_zero (pow_ne_zero _ hϖ) (hc0 r))) (mul_ne_zero (prod_ne_zero_iff.mpr fun j _ => pow_ne_zero _ (hy0 j)) hD0)`.
+-/
 theorem coefB_det (F : Type) [NormedField F] [IsUltrametricDist F] (p : ℕ) [Fact p.Prime] [CharP F p]
     [PerfectRing F p] (h : ℕ) (ϖ : F) (hϖ : ϖ ≠ 0) (lam π : Fin h → F) (hl : ∀ j, lam j ≠ 0)
     (hπ : ∀ j, π j ≠ 0) (hA : Antitone (fun j => ‖lam j‖)) (hO : Orth p lam) (L U : ℕ) :

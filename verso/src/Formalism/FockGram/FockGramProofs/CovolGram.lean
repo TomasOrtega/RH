@@ -7,6 +7,13 @@ noncomputable section
 
 namespace Formalism.E
 
+/- English proof (translation)
+Introduce `E ι _ _ _ _ _ _ _ b`. Establish `hc : Fintype.card (Fin (Module.finrank ℝ E)) = Fintype.card ι`. Rewrite using `[Fintype.card_fin, Module.finrank_eq_card_basis b]`. Set `o : OrthonormalBasis ι ℝ E` to `(stdOrthonormalBasis ℝ E).reindex (Fintype.equivOfCardEq hc)`. Establish `hfd : volume (ZSpan.fundamentalDomain o.toBasis) = 1`.
+
+Rewrite using `[measure_congr (ZSpan.fundamentalDomain_ae_parallelepiped o.toBasis volume), OrthonormalBasis.coe_toBasis, OrthonormalBasis.volume_parallelepiped]`. Establish `hcov : ZLattice.covolume (Submodule.span ℤ (Set.range b)) = |o.toBasis.det b|`. Rewrite using `[ZLattice.covolume_eq_measure_fundamentalDomain _ volume (ZSpan.isAddFundamentalDomain b volume), measureReal_def, ZSpan.measure_fundamentalDomain b volume o.toBasis, hfd, mul_one, ENNReal.toReal_ofReal (abs_nonneg _)]`. Establish `hg : Matrix.gram ℝ b = (o.toBasis.toMatrix b)ᵀ * o.toBasis.toMatrix b`. Use extensionality with `i j`.
+
+Simplify using `only [Matrix.gram_apply, Matrix.mul_apply, Matrix.transpose_apply, Basis.toMatrix_apply, OrthonormalBasis.coe_toBasis_repr_apply, OrthonormalBasis.repr_apply_apply]`. Rewrite using `[← o.sum_inner_mul_inner (b i) (b j)]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[real_inner_comm (o k) (b i)]`. Rewrite using `[hcov, hg, Matrix.det_mul, Matrix.det_transpose, ← sq, Real.sqrt_sq_eq_abs, Basis.det_apply]`.
+-/
 theorem covolumeEqSqrtDetGram : CovolGram := by
   intro E ι _ _ _ _ _ _ _ b
   classical

@@ -20,6 +20,23 @@ variable {G : Type*} [Group G] [TopologicalSpace G] [IsTopologicalGroup G] [Loca
   [T2Space G] [TotallyDisconnectedSpace G] {W : Type*} [AddCommGroup W] [Module ℂ W]
   {ρ : Representation ℂ G W}
 
+/- English proof (translation)
+Use `set b := Module.finBasis ℂ (fixedVectors ρ K) with hb`. Use `set ℓ : Fin (Module.finrank ℂ (fixedVectors ρ K)) → smoothVectors (Representation.dual ρ) := fun i => ((extendFixed hρ hKc hKo (b.coord i) : fixedVectors (contragredient ρ) K) : smoothVectors (Representation.dual ρ)) with hℓ`. Establish `hℓK : ∀ i, ∀ k ∈ K, ∀ v, (ℓ i : Module.Dual ℂ W) (ρ k v) = (ℓ i : Module.Dual ℂ W) v` using `fun i => mem_fixedVectors_contragredient.1 (extendFixed hρ hKc hKo (b.coord i)).2`. Establish `hℓv : ∀ i, ∀ v (hv : v ∈ fixedVectors ρ K), (ℓ i : Module.Dual ℂ W) v = b.coord i ⟨v, hv⟩` using `fun i v hv => by show b.coord i (fixedProj ρ hρ hKc hKo v) = _`. Use `congr 1`.
+
+Conclude with `Subtype.ext (fixedProj_apply_of_mem hρ hKc hKo hv)`. Set `T' : smoothVectors (Representation.dual ρ) →ₗ[ℂ] ℂ` to `{ toFun := fun μ => ∑ i, (μ : Module.Dual ℂ W) (b i : W) * T (ℓ i) map_add' := fun μ ν => by`. Simplify using `only [Submodule.coe_add, LinearMap.add_apply, add_mul, Finset.sum_add_distrib]`. Use the proof step `map_smul' := fun c μ => by`. Simplify using `only [SetLike.val_smul, LinearMap.smul_apply, smul_eq_mul, RingHom.id_apply, Finset.mul_sum, mul_assoc] }`.
+
+Establish `hT' : ∀ k ∈ K, ∀ μ, T' (contragredient ρ k μ) = T' μ`. Introduce `k hk μ`. Simplify using `only [T', LinearMap.coe_mk, AddHom.coe_mk]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[contragredient_apply_apply]`.
+
+Use `congr 2`. Conclude with `(b i).2 k⁻¹ (inv_mem hk)`. Establish `key` using `eq_of_invariant_of_eqOn (isSmooth_contragredient ρ) hKc hKo hT hT' ?_`. Conclude with `LinearMap.congr_fun key μ`. Introduce `μ hμ`.
+
+Establish `hμK` using `mem_fixedVectors_contragredient.1 hμ`. Establish `hdec : μ = ∑ i, (μ : Module.Dual ℂ W) (b i : W) • ℓ i`. Apply `Subtype.ext` to reduce the goal to its premises. Establish `h` using `eq_of_invariant_of_eqOn hρ hKc hKo (f := (μ : Module.Dual ℂ W)) (g := ((∑ i, (μ : Module.Dual ℂ W) (b i : W) • ℓ i : smoothVectors (Representation.dual ρ)) : Module.Dual ℂ W)) hμK ?_ ?_`. Conclude with `h`.
+
+Introduce `k hk v`. Rewrite using `[Submodule.coe_sum, LinearMap.sum_apply, LinearMap.sum_apply]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[SetLike.val_smul, LinearMap.smul_apply, LinearMap.smul_apply, hℓK i k hk v]`. Introduce `v hv`.
+
+Rewrite using `[Submodule.coe_sum, LinearMap.sum_apply]`. Simplify using `only [SetLike.val_smul, LinearMap.smul_apply, smul_eq_mul, hℓv _ v hv]`. Use `conv_lhs => rw [show v = ((⟨v, hv⟩ : fixedVectors ρ K) : W) from rfl, ← b.sum_repr ⟨v, hv⟩]`. Rewrite using `[Submodule.coe_sum, _root_.map_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[SetLike.val_smul, map_smul, smul_eq_mul, Module.Basis.coord_apply, mul_comm]`. Use `conv_lhs => rw [hdec]`. Rewrite using `[_root_.map_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[map_smul, smul_eq_mul]`.
+-/
 theorem eq_sum_of_invariant (hρ : IsSmooth ρ) {K : Subgroup G} (hKc : IsCompact (K : Set G))
     (hKo : IsOpen (K : Set G)) [FiniteDimensional ℂ (fixedVectors ρ K)]
     (T : smoothVectors (Representation.dual ρ) →ₗ[ℂ] ℂ)
@@ -89,6 +106,9 @@ variable {G₁ G₂ : Type*} [Group G₁] [TopologicalSpace G₁] [IsTopological
   [TopologicalSpace G₂] [IsTopologicalGroup G₂] (e : G₁ ≃ₜ* G₂) {W : Type*} [AddCommGroup W]
   [Module ℂ W] (ρ : Representation ℂ G₂ W)
 
+/- English proof (translation)
+Rewrite using `[mem_smoothVectors, mem_smoothVectors]`. Establish `: (stabilizerOf (ρ.comp e.toMonoidHom) v : Set G₁) = e ⁻¹' (stabilizerOf ρ v : Set G₂)`. Both sides reduce to the same expression. Rewrite using `[this]`. Conclude with `e.toHomeomorph.isOpen_preimage`.
+-/
 theorem mem_smoothVectors_comp_iff {v : W} :
     v ∈ smoothVectors (ρ.comp e.toMonoidHom) ↔ v ∈ smoothVectors ρ := by
   rw [mem_smoothVectors, mem_smoothVectors]
@@ -97,6 +117,13 @@ theorem mem_smoothVectors_comp_iff {v : W} :
   rw [this]
   exact e.toHomeomorph.isOpen_preimage
 
+/- English proof (translation)
+Rewrite using `[mem_smoothVectors, mem_smoothVectors]`. Establish `hrep : ∀ g, Representation.dual (ρ.comp e.toMonoidHom) g = Representation.dual ρ (e g)`. Introduce `g`. Use extensionality with `ℓ' v`. Rewrite using `[dual_apply_apply, dual_apply_apply]`.
+
+Use `show ℓ' (ρ (e.toMonoidHom g⁻¹) v) = ℓ' (ρ (e g)⁻¹ v)`. Rewrite using `[map_inv]`. Both sides reduce to the same expression. Establish `: (stabilizerOf (Representation.dual (ρ.comp e.toMonoidHom)) ℓ : Set G₁) = e ⁻¹' (stabilizerOf (Representation.dual ρ) ℓ : Set G₂)`. Use extensionality with `g`.
+
+Simplify using `only [SetLike.mem_coe, mem_stabilizerOf, Set.mem_preimage, hrep]`. Rewrite using `[this]`. Conclude with `e.toHomeomorph.isOpen_preimage`.
+-/
 theorem mem_smoothVectors_dual_comp_iff {ℓ : Module.Dual ℂ W} :
     ℓ ∈ smoothVectors (Representation.dual (ρ.comp e.toMonoidHom)) ↔
       ℓ ∈ smoothVectors (Representation.dual ρ) := by
@@ -129,17 +156,30 @@ abbrev splitSymm (g : GL (Fin (d a)) F) (y : ∀ i : {i // i ≠ a}, GL (Fin (d 
 
 variable {d a} in
 @[simp]
+/- English proof (translation)
+Simplify using `[splitSymm, Equiv.piSplitAt]`.
+-/
 theorem splitSymm_apply_self (g : GL (Fin (d a)) F) (y : ∀ i : {i // i ≠ a}, GL (Fin (d i)) F) :
     splitSymm d a g y a = g := by
   simp [splitSymm, Equiv.piSplitAt]
 
 variable {d a} in
 @[simp]
+/- English proof (translation)
+Simplify using `[splitSymm, Equiv.piSplitAt, j.2]`.
+-/
 theorem splitSymm_apply_ne (g : GL (Fin (d a)) F) (y : ∀ i : {i // i ≠ a}, GL (Fin (d i)) F)
     (j : {i // i ≠ a}) : splitSymm d a g y j = y j := by
   simp [splitSymm, Equiv.piSplitAt, j.2]
 
 variable {d a} in
+/- English proof (translation)
+Use function extensionality and compare the values at `i`. Distinguish the cases in `hi : i = a`. Substitute `hi` using the available equality. Simplify using the standard rewrite rules. Rewrite using `[Pi.mul_apply]`.
+
+Establish `h1` using `splitSymm_apply_ne (g * g') (y * y') ⟨i, hi⟩`. Establish `h2` using `splitSymm_apply_ne g y ⟨i, hi⟩`. Establish `h3` using `splitSymm_apply_ne g' y' ⟨i, hi⟩`. Simplify using `only at h1 h2 h3`. Rewrite using `[h1, h2, h3]`.
+
+Both sides reduce to the same expression.
+-/
 theorem splitSymm_mul (g g' : GL (Fin (d a)) F) (y y' : ∀ i : {i // i ≠ a}, GL (Fin (d i)) F) :
     splitSymm d a (g * g') (y * y') = splitSymm d a g y * splitSymm d a g' y' := by
   funext i
@@ -155,6 +195,11 @@ theorem splitSymm_mul (g g' : GL (Fin (d a)) F) (y y' : ∀ i : {i // i ≠ a}, 
     rfl
 
 variable {d a} in
+/- English proof (translation)
+Use function extensionality and compare the values at `i`. Distinguish the cases in `hi : i = a`. Substitute `hi` using the available equality. Simplify using the standard rewrite rules. Use `splitSymm_apply_ne (F := F) (d := d) 1 1 ⟨i, hi⟩` as an intermediate fact.
+
+Simplify using `using this`.
+-/
 theorem splitSymm_one : splitSymm (F := F) d a 1 1 = 1 := by
   funext i
   by_cases hi : i = a
@@ -163,6 +208,9 @@ theorem splitSymm_one : splitSymm (F := F) d a 1 1 = 1 := by
     simpa using this
 
 variable {d a} in
+/- English proof (translation)
+Rewrite using `[eq_comm, ← mul_eq_one_iff_eq_inv, ← splitSymm_mul, inv_mul_cancel, inv_mul_cancel, splitSymm_one]`.
+-/
 theorem splitSymm_inv (g : GL (Fin (d a)) F) (y : ∀ i : {i // i ≠ a}, GL (Fin (d i)) F) :
     (splitSymm d a g y)⁻¹ = splitSymm d a g⁻¹ y⁻¹ := by
   rw [eq_comm, ← mul_eq_one_iff_eq_inv, ← splitSymm_mul, inv_mul_cancel, inv_mul_cancel,
@@ -212,6 +260,11 @@ def peelSnd : ((∀ i, GL (Fin (d i)) F) × H) ≃ₜ*
       ((continuous_fst.comp continuous_snd).prodMk continuous_fst)).prodMk
       (continuous_snd.comp continuous_snd)
 
+/- English proof (translation)
+Apply `(peelFst d H a).injective` to reduce the goal to its premises. Rewrite using `[ContinuousMulEquiv.apply_symm_apply]`. Take `⟨g, y, h⟩` from `q`. Use `show (g, (y, h)) = (splitSymm d a g y a, ((fun j : {i // i ≠ a} => splitSymm d a g y j), h))`. Rewrite using `[splitSymm_apply_self]`.
+
+Use `congr 2`. Use function extensionality and compare the values at `j`. Conclude with `(splitSymm_apply_ne g y j).symm`.
+-/
 theorem peelFst_symm_apply (q : GL (Fin (d a)) F × ((∀ i : {i // i ≠ a}, GL (Fin (d i)) F) × H)) :
     (peelFst d H a).symm q = (splitSymm d a q.1 q.2.1, q.2.2) := by
   apply (peelFst d H a).injective
@@ -223,6 +276,11 @@ theorem peelFst_symm_apply (q : GL (Fin (d a)) F × ((∀ i : {i // i ≠ a}, GL
   funext j
   exact (splitSymm_apply_ne g y j).symm
 
+/- English proof (translation)
+Apply `(peelSnd d H a).injective` to reduce the goal to its premises. Rewrite using `[ContinuousMulEquiv.apply_symm_apply]`. Take `⟨y, g, h⟩` from `q`. Use `show (y, (g, h)) = ((fun j : {i // i ≠ a} => splitSymm d a g y j), (splitSymm d a g y a, h))`. Rewrite using `[splitSymm_apply_self]`.
+
+Use `congr 2`. Use function extensionality and compare the values at `j`. Conclude with `(splitSymm_apply_ne g y j).symm`.
+-/
 theorem peelSnd_symm_apply (q : (∀ i : {i // i ≠ a}, GL (Fin (d i)) F) × (GL (Fin (d a)) F × H)) :
     (peelSnd d H a).symm q = (splitSymm d a q.2.1 q.1, q.2.2) := by
   apply (peelSnd d H a).injective
@@ -236,6 +294,11 @@ theorem peelSnd_symm_apply (q : (∀ i : {i // i ≠ a}, GL (Fin (d i)) F) × (G
 
 variable [∀ n : ℕ, MeasurableSpace (GL (Fin n) F)] [∀ n : ℕ, BorelSpace (GL (Fin n) F)]
 
+/- English proof (translation)
+Set `_ : Unique {i // i = a}` to `⟨⟨⟨a, rfl⟩⟩, fun x => Subtype.ext x.2⟩`. Establish `h2` using `measurePreserving_piUnique (fun i : {i // i = a} => μ i)`. Establish `h3` using `h2.prod (MeasurePreserving.id (Measure.pi fun j : {i // ¬ i = a} => μ j))`. Establish `h1 : MeasurePreserving (MeasurableEquiv.piEquivPiSubtypeProd (fun i => GL (Fin (d i)) F) fun i => i = a) (Measure.pi μ) ((Measure.pi fun i : {i // i = a} => μ i).prod (Measure.pi fun j : {i // ¬ i = a} => μ j))`. Use `measurePreserving_piEquivPiSubtypeProd μ (fun i => i = a)` and compare the differences between its conclusion and the goal.
+
+Conclude with `h3.comp h1`.
+-/
 theorem measurePreserving_piSplitAt (μ : ∀ i, Measure (GL (Fin (d i)) F))
     [∀ i, SigmaFinite (μ i)] :
     MeasurePreserving (Equiv.piSplitAt a fun i => GL (Fin (d i)) F) (Measure.pi μ)
@@ -259,6 +322,15 @@ variable {F : Type*} [Field F] [ValuativeRel F] [TopologicalSpace F] [IsNonarchi
   [MeasurableSpace F] [BorelSpace F] {m : ℕ} [MeasurableSpace (GL (Fin m) F)]
   [BorelSpace (GL (Fin m) F)]
 
+/- English proof (translation)
+Establish `hmod : (LocalField.modulus ((k : Matrix (Fin m) (Fin m) F).det) : ℝ) = 1`. Establish `h1` using `detPow_of_mem_integralGL hk (1 : ℂ)`. Rewrite `h1` using `[detPow, Complex.cpow_one]`. Establish `h2 : absDet k = 1` using `by exact_mod_cast h1`. Conclude with `h2`.
+
+Establish `h` using `integral_comp_mul_left_matrix (LocalField.selfDualMeasure ψ) k (fun X => Φ (((k⁻¹ : GL (Fin m) F) : Matrix (Fin m) (Fin m) F) * X) * (ψ (trace (X * y)) : ℂ))`. Rewrite `h` using `[hmod, one_pow, inv_one, one_smul]`. Unfold `GJMatrix.localMatrixFourier`. Establish `hR : ∫ X, Φ (((k⁻¹ : GL (Fin m) F) : Matrix (Fin m) (Fin m) F) * X) * (ψ (trace (X * y)) : ℂ) ∂GJMatrix.matrixMeasure (LocalField.selfDualMeasure ψ) = ∫ X, Φ X * (ψ (trace (X * y)) : ℂ) ∂GJMatrix.matrixMeasure (LocalField.selfDualMeasure ψ)` using `integral_congr_ae (Filter.Eventually.of_forall fun X => by simp only [hΦ])`. Rewrite using `[← hR, ← h]`.
+
+Use `integral_congr_ae (Filter.Eventually.of_forall fun X => ?_)` and prove the remaining obligations. Establish `e1 : ((k⁻¹ : GL (Fin m) F) : Matrix (Fin m) (Fin m) F) * ((k : Matrix (Fin m) (Fin m) F) * X) = X`. Rewrite using `[← Matrix.mul_assoc, ← Units.val_mul, inv_mul_cancel, Units.val_one, Matrix.one_mul]`. Establish `e2 : trace (X * (y * (k : Matrix (Fin m) (Fin m) F))) = trace ((k : Matrix (Fin m) (Fin m) F) * X * y)`. Rewrite using `[← Matrix.mul_assoc, Matrix.trace_mul_cycle]`.
+
+Simplify using `only [e1, e2]`.
+-/
 theorem localMatrixFourier_mul_right_of_invariant {ψ : AddChar F Circle}
     {Φ : Matrix (Fin m) (Fin m) F → ℂ} {k : GL (Fin m) F} (hk : k ∈ integralGL F m)
     (hΦ : ∀ x, Φ (((k⁻¹ : GL (Fin m) F) : Matrix (Fin m) (Fin m) F) * x) = Φ x)

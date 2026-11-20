@@ -12,9 +12,15 @@ namespace Formalism.IndefR.Tow.SobPf.Avg
 
 variable {n : ℕ}
 
+/- English proof (translation)
+Conclude with `Iff.rfl`.
+-/
 theorem mem_UH_iff {G g : Matrix (Fin n) (Fin n) ℂ} : g ∈ Formalism.QuantumDeterminants.UH G ↔ gᴴ * G * g = G := by
   exact Iff.rfl
 
+/- English proof (translation)
+Unfold `Formalism.IndefR.Datum.IsCartanInv at hs`. Take `⟨_, _, hp⟩` from `hs`. Establish `h : (G * s).det ≠ 0` using `hp.det_pos.ne'`. Rewrite `h` using `[Matrix.det_mul]`. Conclude with `isUnit_iff_ne_zero.2 (left_ne_zero_of_mul h)`.
+-/
 theorem isUnit_det_of_cartan {G s : Matrix (Fin n) (Fin n) ℂ} (hs : IsCartanInv G s) : IsUnit G.det := by
   unfold Formalism.IndefR.Datum.IsCartanInv at hs
   obtain ⟨_, _, hp⟩ := hs
@@ -22,6 +28,9 @@ theorem isUnit_det_of_cartan {G s : Matrix (Fin n) (Fin n) ℂ} (hs : IsCartanIn
   rw [Matrix.det_mul] at h
   exact isUnit_iff_ne_zero.2 (left_ne_zero_of_mul h)
 
+/- English proof (translation)
+Establish `hu' : uᴴ * G * u = G` using `hu`. Establish `h` using `congrArg Matrix.det hu'`. Rewrite `h` using `[Matrix.det_mul, Matrix.det_mul]`. Rewrite `hG` using `[← h]`. Conclude with `isUnit_of_mul_isUnit_right hG`.
+-/
 theorem isUnit_det_of_UH {G u : Matrix (Fin n) (Fin n) ℂ} (hG : IsUnit G.det) (hu : u ∈ Formalism.QuantumDeterminants.UH G) :
     IsUnit u.det := by
   have hu' : uᴴ * G * u = G := hu
@@ -30,6 +39,11 @@ theorem isUnit_det_of_UH {G u : Matrix (Fin n) (Fin n) ℂ} (hG : IsUnit G.det) 
   rw [← h] at hG
   exact isUnit_of_mul_isUnit_right hG
 
+/- English proof (translation)
+Establish `hu' : uᴴ * G * u = G` using `hu`. Establish `hdu` using `isUnit_det_of_UH hG hu`. Establish `hdh : IsUnit uᴴ.det` using `by rw [Matrix.det_conjTranspose]; exact hdu.star`. Rewrite using `[Matrix.conjTranspose_nonsing_inv]`. Combine the equalities or inequalities in the displayed calculation.
+
+Rewrite using `[Matrix.mul_assoc, ← Matrix.mul_assoc (uᴴ)⁻¹, Matrix.nonsing_inv_mul _ hdh, Matrix.one_mul]`.
+-/
 theorem UH_inv_left {G u : Matrix (Fin n) (Fin n) ℂ} (hG : IsUnit G.det) (hu : u ∈ Formalism.QuantumDeterminants.UH G) :
     (u⁻¹)ᴴ * G = G * u := by
   have hu' : uᴴ * G * u = G := hu
@@ -40,6 +54,9 @@ theorem UH_inv_left {G u : Matrix (Fin n) (Fin n) ℂ} (hG : IsUnit G.det) (hu :
     _ = G * u := by
       rw [Matrix.mul_assoc, ← Matrix.mul_assoc (uᴴ)⁻¹, Matrix.nonsing_inv_mul _ hdh, Matrix.one_mul]
 
+/- English proof (translation)
+Establish `hu' : uᴴ * G * u = G` using `hu`. Establish `hdu` using `isUnit_det_of_UH hG hu`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem UH_inv_right {G u : Matrix (Fin n) (Fin n) ℂ} (hG : IsUnit G.det) (hu : u ∈ Formalism.QuantumDeterminants.UH G) :
     G * u⁻¹ = uᴴ * G := by
   have hu' : uᴴ * G * u = G := hu
@@ -47,12 +64,22 @@ theorem UH_inv_right {G u : Matrix (Fin n) (Fin n) ℂ} (hG : IsUnit G.det) (hu 
   calc G * u⁻¹ = uᴴ * G * u * u⁻¹ := by rw [hu']
     _ = uᴴ * G := by rw [Matrix.mul_assoc, Matrix.mul_nonsing_inv _ hdu, Matrix.mul_one]
 
+/- English proof (translation)
+Use `show (u⁻¹)ᴴ * G * u⁻¹ = G`. Rewrite using `[UH_inv_left hG hu, Matrix.mul_assoc, Matrix.mul_nonsing_inv _ (isUnit_det_of_UH hG hu), Matrix.mul_one]`.
+-/
 theorem inv_mem_UH {G u : Matrix (Fin n) (Fin n) ℂ} (hG : IsUnit G.det) (hu : u ∈ Formalism.QuantumDeterminants.UH G) :
     u⁻¹ ∈ Formalism.QuantumDeterminants.UH G := by
   show (u⁻¹)ᴴ * G * u⁻¹ = G
   rw [UH_inv_left hG hu, Matrix.mul_assoc, Matrix.mul_nonsing_inv _ (isUnit_det_of_UH hG hu),
     Matrix.mul_one]
 
+/- English proof (translation)
+Establish `hX' : Xᴴ * G + G * X = 0` using `hX`. Establish `h1` using `UH_inv_left hG hu`. Establish `h2` using `UH_inv_right hG hu`. Use `show (u⁻¹ * X * u)ᴴ * G + G * (u⁻¹ * X * u) = 0`. Establish `e : (u⁻¹ * X * u)ᴴ * G + G * (u⁻¹ * X * u) = uᴴ * (Xᴴ * G + G * X) * u`.
+
+Rewrite using `[Matrix.conjTranspose_mul, Matrix.conjTranspose_mul, Matrix.mul_add, Matrix.add_mul]`. Use `congr 1`. Simplify using `only [Matrix.mul_assoc]`. Rewrite using `[h1]`. Simplify using `only [Matrix.mul_assoc]`.
+
+Rewrite using `[← Matrix.mul_assoc G u⁻¹, h2, Matrix.mul_assoc]`. Rewrite using `[e, hX', Matrix.mul_zero, Matrix.zero_mul]`.
+-/
 theorem conj_mem_lieG {G u X : Matrix (Fin n) (Fin n) ℂ} (hG : IsUnit G.det) (hu : u ∈ Formalism.QuantumDeterminants.UH G)
     (hX : X ∈ lieG G) : u⁻¹ * X * u ∈ lieG G := by
   have hX' : Xᴴ * G + G * X = 0 := hX
@@ -68,16 +95,27 @@ theorem conj_mem_lieG {G u X : Matrix (Fin n) (Fin n) ℂ} (hG : IsUnit G.det) (
       rw [← Matrix.mul_assoc G u⁻¹, h2, Matrix.mul_assoc]
   rw [e, hX', Matrix.mul_zero, Matrix.zero_mul]
 
+/- English proof (translation)
+Rewrite using `[← Matrix.exp_conj' u (r • Y) ((Matrix.isUnit_iff_isUnit_det u).2 hu)]`. Use `congr 1`. Rewrite using `[Matrix.mul_smul, Matrix.smul_mul]`.
+-/
 theorem exp_conj_inv {u : Matrix (Fin n) (Fin n) ℂ} (hu : IsUnit u.det) (Y : Matrix (Fin n) (Fin n) ℂ) (r : ℝ) :
     u⁻¹ * NormedSpace.exp (r • Y) * u = NormedSpace.exp (r • (u⁻¹ * Y * u)) := by
   rw [← Matrix.exp_conj' u (r • Y) ((Matrix.isUnit_iff_isUnit_det u).2 hu)]
   congr 1
   rw [Matrix.mul_smul, Matrix.smul_mul]
 
+/- English proof (translation)
+Simplify using `only [oneProd, List.ofFn_succ, List.prod_cons]`.
+-/
 theorem oneProd_succ {d : ℕ} (Y : Fin (d + 1) → Matrix (Fin n) (Fin n) ℂ) (t : Fin (d + 1) → ℝ) :
     oneProd Y t = NormedSpace.exp (t 0 • Y 0) * oneProd (fun i => Y i.succ) (fun i => t i.succ) := by
   simp only [oneProd, List.ofFn_succ, List.prod_cons]
 
+/- English proof (translation)
+Introduce `d`. Proceed by induction on `d with`. Consider the case `zero`. Introduce `Y t`. Simplify using `[oneProd, Matrix.nonsing_inv_mul _ hu]`.
+
+Consider the case `succ d ih`. Introduce `Y t`. Establish `e` using `ih (fun i => Y i.succ) (fun i => t i.succ)`. Rewrite using `[oneProd_succ, oneProd_succ, ← e, ← exp_conj_inv hu]`. Simplify using `only [Matrix.mul_assoc, Matrix.mul_nonsing_inv_cancel_left _ _ hu]`.
+-/
 theorem oneProd_conj {u : Matrix (Fin n) (Fin n) ℂ} (hu : IsUnit u.det) :
     ∀ {d : ℕ} (Y : Fin d → Matrix (Fin n) (Fin n) ℂ) (t : Fin d → ℝ),
       u⁻¹ * oneProd Y t * u = oneProd (fun i => u⁻¹ * Y i * u) t := by
@@ -92,12 +130,18 @@ theorem oneProd_conj {u : Matrix (Fin n) (Fin n) ℂ} (hu : IsUnit u.det) :
     rw [oneProd_succ, oneProd_succ, ← e, ← exp_conj_inv hu]
     simp only [Matrix.mul_assoc, Matrix.mul_nonsing_inv_cancel_left _ _ hu]
 
+/- English proof (translation)
+Rewrite using `[← oneProd_conj hu Y t, ← Matrix.mul_assoc, ← Matrix.mul_assoc, Matrix.mul_nonsing_inv _ hu, Matrix.one_mul]`.
+-/
 theorem oneProd_mul {u : Matrix (Fin n) (Fin n) ℂ} (hu : IsUnit u.det) {d : ℕ}
     (Y : Fin d → Matrix (Fin n) (Fin n) ℂ) (t : Fin d → ℝ) :
     oneProd Y t * u = u * oneProd (fun i => u⁻¹ * Y i * u) t := by
   rw [← oneProd_conj hu Y t, ← Matrix.mul_assoc, ← Matrix.mul_assoc, Matrix.mul_nonsing_inv _ hu,
     Matrix.one_mul]
 
+/- English proof (translation)
+Establish `e : (fun i => NormedSpace.exp (Fin.append t s i • Fin.append X Y i)) = Fin.append (fun i => NormedSpace.exp (t i • X i)) (fun j => NormedSpace.exp (s j • Y j))`. Use function extensionality and compare the values at `i`. Apply the tactic sequence `refine Fin.addCases (fun i => ?_) (fun j => ?_) i <;> simp [Fin.append_left, Fin.append_right]`. Simplify using `only [oneProd]`. Rewrite using `[e, List.ofFn_fin_append, List.prod_append]`.
+-/
 theorem oneProd_append {d d' : ℕ} (X : Fin d → Matrix (Fin n) (Fin n) ℂ) (Y : Fin d' → Matrix (Fin n) (Fin n) ℂ)
     (t : Fin d → ℝ) (s : Fin d' → ℝ) :
     oneProd (Fin.append X Y) (Fin.append t s) = oneProd X t * oneProd Y s := by
@@ -118,6 +162,9 @@ def appL (d d' : ℕ) : (Fin d → ℝ) →L[ℝ] (Fin (d + d') → ℝ) :=
         funext i
         refine Fin.addCases (fun i => ?_) (fun i => ?_) i <;> simp }
 
+/- English proof (translation)
+Use function extensionality and compare the values at `i`. Use `Fin.addCases (fun i => ?_) (fun i => ?_) i` and prove the remaining obligations. Simplify using `[appL]`. Simplify using `[appL]`.
+-/
 theorem append_eq_appL {d d' : ℕ} (t : Fin d → ℝ) (s : Fin d' → ℝ) :
     Fin.append t s = appL d d' t + Fin.append (0 : Fin d → ℝ) s := by
   funext i

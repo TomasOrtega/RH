@@ -3,5 +3,8 @@ import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsDeRham
 import Development.AbelianVarietyTheory.Definitions.AutomorphicMembership.MultiplicationLatticeSecond
 open AlgebraicGeometry CategoryTheory Limits NumberField ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Geo.Tor Formalism.L2.Pj Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotions.ModuliIntegralCharts GlobalTheory.ShFam GlobalTheory.LocM
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.DRFlag.exists_isDRFlag | exact GlobalTheory.DRFlag.exists_isDRFlag | (intros; apply GlobalTheory.DRFlag.exists_isDRFlag <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.exists_de_rham_flag : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (Dw : Datum H) (Xo : ∀ l : Level H, Moduli Dw l) (p : ℕ) (W : ValuationSubring ℂ), p.Prime → (p : ℂ) ∈ W.nonunits → ∀ (Y : LocalSystem Xo p W) (i₀ : Idx H p), ∀ Z : Mdl Y i₀, (∀ σ, Z.ty σ ⊆ Finset.range (Dw.mult σ + 1)) → ∃ Z', IsDRFlag Z Z' := by
   first | exact @GlobalTheory.DRFlag.exists_isDRFlag | exact GlobalTheory.DRFlag.exists_isDRFlag | (intros; apply GlobalTheory.DRFlag.exists_isDRFlag <;> assumption)

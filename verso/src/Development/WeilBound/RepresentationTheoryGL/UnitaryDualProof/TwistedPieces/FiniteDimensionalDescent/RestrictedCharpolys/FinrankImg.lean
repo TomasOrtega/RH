@@ -14,6 +14,9 @@ variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchim
 
 omit [ValuativeRel k] [IsNonarchimedeanLocalField k] [Fact p.Prime] [CharP k p] in
 include B in
+/- English proof (translation)
+Break down `Nat.eq_zero_or_pos d with h | h` into its components or cases. Substitute `h` using the available equality. Use `B.recon 1` as an intermediate fact. Simplify using `at this`. Conclude with `h`.
+-/
 theorem d_pos : 0 < d := by
   rcases Nat.eq_zero_or_pos d with h | h
   · subst h
@@ -35,19 +38,33 @@ def img (S : Submodule k (Matrix (Fin n) (Fin n) k)) : Submodule k (Matrix (Fin 
 def coefF {m : ℕ} (w : Fin m × Fin d → k) : Fin m → k := fun l => ∑ j, w (l, j) ^ p ^ c * B.β j
 
 omit [ValuativeRel k] [IsNonarchimedeanLocalField k] in
+/- English proof (translation)
+Use function extensionality and compare the values at `l`. Simplify using `only [coefF, Pi.add_apply, add_pow_char_pow, add_mul, Finset.sum_add_distrib]`.
+-/
 theorem coefF_add {m : ℕ} (w w' : Fin m × Fin d → k) : coefF B (w + w') = coefF B w + coefF B w' := by
   funext l; simp only [coefF, Pi.add_apply, add_pow_char_pow, add_mul, Finset.sum_add_distrib]
 
 omit [ValuativeRel k] [IsNonarchimedeanLocalField k] [Fact p.Prime] [CharP k p] in
+/- English proof (translation)
+Use function extensionality and compare the values at `l`. Simplify using `only [coefF, Pi.smul_apply, smul_eq_mul, mul_pow, Finset.mul_sum, mul_assoc]`.
+-/
 theorem coefF_smul {m : ℕ} (l : k) (w : Fin m × Fin d → k) : coefF B (l • w) = (l ^ p ^ c) • coefF B w := by
   funext l
   simp only [coefF, Pi.smul_apply, smul_eq_mul, mul_pow, Finset.mul_sum, mul_assoc]
 
 omit [ValuativeRel k] [IsNonarchimedeanLocalField k] [Fact p.Prime] [CharP k p] in
+/- English proof (translation)
+Use function extensionality and compare the values at `l`. Conclude with `B.recon (x l)`.
+-/
 theorem coefF_cF {m : ℕ} (x : Fin m → k) : coefF B (fun lj => B.cF (x lj.1) lj.2) = x := by
   funext l; exact B.recon (x l)
 
 omit [ValuativeRel k] [IsNonarchimedeanLocalField k] [Fact p.Prime] [CharP k p] in
+/- English proof (translation)
+Use function extensionality and compare the values at `x`. Take `⟨l, j⟩` from `x`. Establish `h1 : (fun j => w (l, j)) = fun j => w' (l, j)`. Rewrite using `[← B.uniq (fun j => w (l, j)), ← B.uniq (fun j => w' (l, j))]`. Conclude with `congrArg B.cF (congrFun h l)`.
+
+Conclude with `congrFun h1 j`.
+-/
 theorem coefF_inj {m : ℕ} {w w' : Fin m × Fin d → k} (h : coefF B w = coefF B w') : w = w' := by
   funext x
   obtain ⟨l, j⟩ := x
@@ -69,6 +86,11 @@ def Lmap (S : Submodule k (Matrix (Fin n) (Fin n) k)) :
     rw [Algebra.smul_def, map_mul, φ_scal, ← Algebra.smul_def]
 
 omit [ValuativeRel k] [IsNonarchimedeanLocalField k] in
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce `w w' h`. Establish `h1` using `φ_inj B (congrArg Subtype.val h)`. Conclude with `coefF_inj B ((Module.finBasis k S).equivFun.symm.injective (Subtype.ext h1))`. Introduce and unpack `⟨_, ⟨s, hs, rfl⟩⟩`.
+
+Use `⟨fun lj => B.cF ((Module.finBasis k S).equivFun ⟨s, hs⟩ lj.1) lj.2, Subtype.ext ?_⟩` and prove the remaining obligations. Establish `e1 : (Module.finBasis k S).equivFun.symm (coefF B fun lj => B.cF ((Module.finBasis k S).equivFun ⟨s, hs⟩ lj.1) lj.2) = ⟨s, hs⟩`. Rewrite using `[coefF_cF, LinearEquiv.symm_apply_apply]`. Conclude with `congrArg (fun t : S => φ B (t : Matrix (Fin n) (Fin n) k)) e1`.
+-/
 theorem Lmap_bij (S : Submodule k (Matrix (Fin n) (Fin n) k)) : Function.Bijective (Lmap B S) := by
   constructor
   · intro w w' h
@@ -82,6 +104,9 @@ theorem Lmap_bij (S : Submodule k (Matrix (Fin n) (Fin n) k)) : Function.Bijecti
     exact congrArg (fun t : S => φ B (t : Matrix (Fin n) (Fin n) k)) e1
 
 omit [ValuativeRel k] [IsNonarchimedeanLocalField k] in
+/- English proof (translation)
+Establish `e` using `(LinearEquiv.ofBijective (Lmap B S) (Lmap_bij B S)).finrank_eq`. Rewrite using `[← e, Module.finrank_fintype_fun_eq_card, Fintype.card_prod, Fintype.card_fin, Fintype.card_fin, mul_comm]`.
+-/
 theorem finrank_img (S : Submodule k (Matrix (Fin n) (Fin n) k)) :
     Module.finrank k (img B S) = d * Module.finrank k S := by
   have e := (LinearEquiv.ofBijective (Lmap B S) (Lmap_bij B S)).finrank_eq

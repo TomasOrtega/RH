@@ -13,6 +13,9 @@ attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalDat
 
 namespace GlobalTheory.RoadU
 
+/- English proof (translation)
+Introduce `E Ω _ _ _ _ _ _ l _ ι a ha π χ hs r hr w hw`. Introduce `P AI hT A hAw O _ _ _ Bw hj σ hσ hsph`. Establish `hc` using `GlobalTheory.Cong.satake_locComp E a π w σ hσ`. Take `⟨B, hB⟩` from `GlobalTheory.SatInd.exists_hasSatGL_of_isIrreducible σ.smooth σ.irred (hc.2.1 hsph)`. Conclude with `hC E Ω l ι a ha π χ hs r hr w hw B ((hc.1 B).2 hB) P AI hT A hAw O Bw hj σ hσ hsph`.
+-/
 theorem holds_csd_crys_of_holdsS (hC : SphericalLevelCondition .csd .crys) : Holds .csd .crys := by
   intro E Ω _ _ _ _ _ _ l _ ι a ha π χ hs r hr w hw
   intro P AI hT A hAw O _ _ _ Bw hj σ hσ hsph
@@ -20,6 +23,9 @@ theorem holds_csd_crys_of_holdsS (hC : SphericalLevelCondition .csd .crys) : Hol
   obtain ⟨B, hB⟩ := GlobalTheory.SatInd.exists_hasSatGL_of_isIrreducible σ.smooth σ.irred (hc.2.1 hsph)
   exact hC E Ω l ι a ha π χ hs r hr w hw B ((hc.1 B).2 hB) P AI hT A hAw O Bw hj σ hσ hsph
 
+/- English proof (translation)
+Introduce `hI hC`. Establish `hG` using `GlobalTheory.CrysTwistBack.holds_good_crys GlobalTheory.automorphicFormsFiniteGL hI.hk (holds_csd_crys_of_holdsS hC)`. Introduce `E Ω _ _ _ _ _ _ l _ ι a ha π χ hs r hr w hw B _`. Conclude with `hG E Ω l ι a ha π χ hs r hr w hw`.
+-/
 theorem holdsS_good_crys : Inputs → SphericalLevelCondition .csd .crys → SphericalLevelCondition .good .crys := by
   intro hI hC
   have hG := GlobalTheory.CrysTwistBack.holds_good_crys GlobalTheory.automorphicFormsFiniteGL hI.hk (holds_csd_crys_of_holdsS hC)

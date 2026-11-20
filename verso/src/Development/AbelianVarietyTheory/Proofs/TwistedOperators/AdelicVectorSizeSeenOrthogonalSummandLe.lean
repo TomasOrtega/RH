@@ -14,6 +14,9 @@ variable {D : D7}
 def bF {m n : ℕ} (Y : Matrix (Fin m) (Fin n) (AE D)) (v : HeightOneSpectrum (𝓞 D.host.F)) : ℝ≥0 :=
   max 1 (Finset.univ.sup fun p : Fin m × Fin n => absFin D.host.F v (compFin D.host.F D.host.E v (Y p.1 p.2)))
 
+/- English proof (translation)
+Unfold `bF`. Use `le_trans ?_ (le_max_right _ _)` and prove the remaining obligations. Establish `h` using `Finset.le_sup (f := fun p : Fin m × Fin n => absFin D.host.F v (compFin D.host.F D.host.E v (Y p.1 p.2))) (Finset.mem_univ (i, j))`. Conclude with `h`.
+-/
 theorem absFin_le_bF {m n : ℕ} (Y : Matrix (Fin m) (Fin n) (AE D)) (v : HeightOneSpectrum (𝓞 D.host.F))
     (i : Fin m) (j : Fin n) : absFin D.host.F v (compFin D.host.F D.host.E v (Y i j)) ≤ bF Y v := by
   unfold bF
@@ -22,6 +25,9 @@ theorem absFin_le_bF {m n : ℕ} (Y : Matrix (Fin m) (Fin n) (AE D)) (v : Height
     absFin D.host.F v (compFin D.host.F D.host.E v (Y p.1 p.2))) (Finset.mem_univ (i, j))
   exact h
 
+/- English proof (translation)
+Unfold `vFin`. Establish `h` using `Finset.le_sup (f := fun i => absFin D.host.F v (compFin D.host.F D.host.E v (x i))) (Finset.mem_univ i)`. Conclude with `h`.
+-/
 theorem le_vFin {n : ℕ} (x : Fin n → AE D) (v : HeightOneSpectrum (𝓞 D.host.F)) (i : Fin n) :
     absFin D.host.F v (compFin D.host.F D.host.E v (x i)) ≤ vFin v x := by
   unfold vFin
@@ -37,6 +43,9 @@ open scoped NNReal
 
 variable {D : D7}
 
+/- English proof (translation)
+Establish `h : ∀ᶠ v in Filter.cofinite, ∀ p : Fin m × Fin n, absFin D.host.F v (compFin D.host.F D.host.E v (Y p.1 p.2)) ≤ 1` using `Filter.eventually_all.2 fun p => eventually_absFin_le_one D.host.F (Y p.1 p.2)`. Use `h.mono fun v hv => ?_` and prove the remaining obligations. Unfold `bF`. Conclude with `max_eq_left (Finset.sup_le fun p _ => hv p)`.
+-/
 theorem eventually_bF_eq_one {m n : ℕ} (Y : Matrix (Fin m) (Fin n) (AE D)) :
     ∀ᶠ v in Filter.cofinite, bF Y v = 1 := by
   have h : ∀ᶠ v in Filter.cofinite, ∀ p : Fin m × Fin n,
@@ -46,10 +55,16 @@ theorem eventually_bF_eq_one {m n : ℕ} (Y : Matrix (Fin m) (Fin n) (AE D)) :
   unfold bF
   exact max_eq_left (Finset.sup_le fun p _ => hv p)
 
+/- English proof (translation)
+The claim follows from `(Filter.eventually_cofinite.1 (eventually_bF_eq_one Y)).subset fun _ hv => hv`.
+-/
 theorem finite_mulSupport_bF {m n : ℕ} (Y : Matrix (Fin m) (Fin n) (AE D)) :
     (Function.mulSupport (bF Y)).Finite :=
   (Filter.eventually_cofinite.1 (eventually_bF_eq_one Y)).subset fun _ hv => hv
 
+/- English proof (translation)
+Rewrite using `[vFin]`. Use `Finset.sup_le fun i _ => ?_` and prove the remaining obligations. Simplify using `only [Matrix.mulVec, dotProduct, map_sum, map_mul]`. Conclude with `absFin_sum_le D.host.F v _ _ fun j _ => (absFin_mul_le D.host.F v _ _).trans (mul_le_mul' (absFin_le_bF Y v i j) (le_vFin x v j))`.
+-/
 theorem vFin_mulVec_le {m n : ℕ} (Y : Matrix (Fin m) (Fin n) (AE D)) (x : Fin n → AE D)
     (v : HeightOneSpectrum (𝓞 D.host.F)) : vFin v (Y *ᵥ x) ≤ bF Y v * vFin v x := by
   rw [vFin]
@@ -73,6 +88,9 @@ def bI {m n : ℕ} (Y : Matrix (Fin m) (Fin n) (AE D)) (w : InfinitePlace D.host
   max 1 (Finset.univ.sup fun p : EmbOver D.host.E w × Fin m =>
     ∑ j, ‖infEmb p.1 (compInf D.host.F D.host.E w (Y p.2 j))‖₊)
 
+/- English proof (translation)
+Unfold `bI`. Use `le_trans ?_ (le_max_right _ _)` and prove the remaining obligations. Establish `h` using `Finset.le_sup (f := fun p : EmbOver D.host.E w × Fin m => ∑ j, ‖infEmb p.1 (compInf D.host.F D.host.E w (Y p.2 j))‖₊) (Finset.mem_univ (τ, i))`. Conclude with `h`.
+-/
 theorem sum_le_bI {m n : ℕ} (Y : Matrix (Fin m) (Fin n) (AE D)) (w : InfinitePlace D.host.F)
     (τ : EmbOver D.host.E w) (i : Fin m) :
     ∑ j, ‖infEmb τ (compInf D.host.F D.host.E w (Y i j))‖₊ ≤ bI Y w := by
@@ -83,6 +101,9 @@ theorem sum_le_bI {m n : ℕ} (Y : Matrix (Fin m) (Fin n) (AE D)) (w : InfiniteP
     ∑ j, ‖infEmb p.1 (compInf D.host.F D.host.E w (Y p.2 j))‖₊) (Finset.mem_univ (τ, i))
   exact h
 
+/- English proof (translation)
+Unfold `vInf`. Establish `h` using `Finset.le_sup (f := fun p : EmbOver D.host.E w × Fin n => ‖infEmb p.1 (compInf D.host.F D.host.E w (x p.2))‖₊) (Finset.mem_univ (τ, i))`. Conclude with `h`.
+-/
 theorem le_vInf {n : ℕ} (x : Fin n → AE D) (w : InfinitePlace D.host.F) (τ : EmbOver D.host.E w) (i : Fin n) :
     ‖infEmb τ (compInf D.host.F D.host.E w (x i))‖₊ ≤ vInf w x := by
   classical
@@ -91,6 +112,11 @@ theorem le_vInf {n : ℕ} (x : Fin n → AE D) (w : InfinitePlace D.host.F) (τ 
     ‖infEmb p.1 (compInf D.host.F D.host.E w (x p.2))‖₊) (Finset.mem_univ (τ, i))
   exact h
 
+/- English proof (translation)
+Rewrite using `[vInf]`. Use `Finset.sup_le fun p _ => ?_` and prove the remaining obligations. Simplify using `only [Matrix.mulVec, dotProduct, map_sum, map_mul]`. Use `(nnnorm_sum_le _ _).trans ?_` and prove the remaining obligations. Use `le_trans ?_ (mul_le_mul' (sum_le_bI Y w p.1 p.2) le_rfl)` and prove the remaining obligations.
+
+Rewrite using `[Finset.sum_mul]`. Use `Finset.sum_le_sum fun j _ => ?_` and prove the remaining obligations. Rewrite using `[nnnorm_mul]`. Conclude with `mul_le_mul' le_rfl (le_vInf x w p.1 j)`.
+-/
 theorem vInf_mulVec_le {m n : ℕ} (Y : Matrix (Fin m) (Fin n) (AE D)) (x : Fin n → AE D)
     (w : InfinitePlace D.host.F) : vInf w (Y *ᵥ x) ≤ bI Y w * vInf w x := by
   rw [vInf]
@@ -112,6 +138,15 @@ open scoped NNReal
 
 variable {D : D7}
 
+/- English proof (translation)
+Use `set u : Fin V.rank → AE D := fun i => incA D (ξ i) with hu`. Take `⟨i, hi⟩` from `Function.ne_iff.1 hξ`. Establish `h1 : ∀ᶠ v in Filter.cofinite, vFin v u ≤ 1` using `(Filter.eventually_all.2 fun i => eventually_absFin_le_one D.host.F (u i)).mono fun v hv => Finset.sup_le fun i _ => hv i`. Establish `h2 : ∀ᶠ v in Filter.cofinite, 1 ≤ absFin D.host.F v (compFin D.host.F D.host.E v (incA D (ξ i)))`. Use `(eventually_absFin_le_one D.host.F (incA D (ξ i)⁻¹)).mono fun v hv => ?_` and prove the remaining obligations.
+
+Establish `e : incA D (ξ i) * incA D (ξ i)⁻¹ = 1` using `by rw [← map_mul, mul_inv_cancel₀ hi, map_one]`. Use `absFin_mul_le D.host.F v (compFin D.host.F D.host.E v (incA D (ξ i))) (compFin D.host.F D.host.E v (incA D (ξ i)⁻¹))` as an intermediate fact. Rewrite `this` using `[← map_mul, e, map_one, absFin_one]`. Conclude with `this.trans (mul_le_of_le_one_right' hv)`. Use `((h1.and h2).and ((eventually_bF_eq_one (mt V g⁻¹)).and (eventually_bF_eq_one (mt V g)))).mono fun v hv => le_antisymm ?_ ?_` and prove the remaining obligations.
+
+Use `(vFin_mulVec_le _ u v).trans ?_` and prove the remaining obligations. Rewrite using `[hv.2.1, one_mul]`. Conclude with `hv.1.1`. Establish `e : u = mt V g *ᵥ seen V g ξ`. Rewrite using `[seen, Matrix.mulVec_mulVec, GlobalTheory.MixModel.mt_mul_inv, Matrix.one_mulVec]`.
+
+Use `hv.1.2.trans ((le_vFin u v i).trans ?_)` and prove the remaining obligations. Rewrite using `[e]`. Use `(vFin_mulVec_le _ _ v).trans ?_` and prove the remaining obligations. Rewrite using `[hv.2.2, one_mul]`.
+-/
 theorem eventually_vFin_seen_eq_one (V : HSp D) (g : GA D V) {ξ : Fin V.rank → D.host.E} (hξ : ξ ≠ 0) :
     ∀ᶠ v in Filter.cofinite, vFin v (seen V g ξ) = 1 := by
   set u : Fin V.rank → AE D := fun i => incA D (ξ i) with hu
@@ -137,6 +172,9 @@ theorem eventually_vFin_seen_eq_one (V : HSp D) (g : GA D V) {ξ : Fin V.rank �
     refine (vFin_mulVec_le _ _ v).trans ?_
     rw [hv.2.2, one_mul]
 
+/- English proof (translation)
+Establish `e1 : (o.emb (h, 1))⁻¹ = o.emb (h⁻¹, 1)` using `by rw [← map_inv, Prod.inv_mk, inv_one]`. Establish `e2 : (fun i => incA D ((o.iA *ᵥ η) i)) = o.jA *ᵥ fun i => incA D (η i)`. Use function extensionality and compare the values at `i`. Conclude with `RingHom.map_mulVec (incA D) o.iA η i`. Rewrite using `[seen, seen, e1, e2, Matrix.mulVec_mulVec, GlobalTheory.MixModel.OrthDec.emb_jA, Matrix.mulVec_mulVec]`.
+-/
 theorem seen_emb {S A B : HSp D} (o : GlobalTheory.MixModel.OrthDec S A B) (h : GA D A) (η : Fin A.rank → D.host.E) :
     seen S (o.emb (h, 1)) (o.iA *ᵥ η) = o.jA *ᵥ seen A h η := by
   have e1 : (o.emb (h, 1))⁻¹ = o.emb (h⁻¹, 1) := by rw [← map_inv, Prod.inv_mk, inv_one]
@@ -153,6 +191,11 @@ open scoped NNReal
 
 variable {D : D7}
 
+/- English proof (translation)
+Establish `h : ∀ w : InfinitePlace D.host.F, vInf w (0 : Fin n → AE D) = 0` using `fun w => by classical`. Unfold `vInf`. Use `le_antisymm (Finset.sup_le fun p _ => ?_) zero_le` and prove the remaining obligations. Simplify using the standard rewrite rules. Take `⟨w⟩` from `(inferInstance : Nonempty (InfinitePlace D.host.F))`.
+
+Unfold `vsize`. Rewrite using `[Finset.prod_eq_zero (Finset.mem_univ w) (h w), zero_mul, NNReal.coe_zero]`.
+-/
 theorem vsize_zero {n : ℕ} : vsize (0 : Fin n → AE D) = 0 := by
   have h : ∀ w : InfinitePlace D.host.F, vInf w (0 : Fin n → AE D) = 0 := fun w => by
     classical
@@ -170,6 +213,17 @@ namespace GlobalTheory.HtOrth.Transp
 open NumberField IsDedekindDomain GlobalTheory.AdelicU GlobalTheory.HtOrth
 open scoped NNReal
 
+/- English proof (translation)
+Introduce `D S A B o`. Use `⟨(((∏ w, bI o.jA w) * ∏ᶠ v, bF o.jA v : ℝ≥0) : ℝ), fun h η => ?_⟩` and prove the remaining obligations. Distinguish the cases in `hη : η = 0`. Substitute `hη` using the available equality. Establish `e : (o.iA *ᵥ (0 : Fin A.rank → D.host.E)) = 0` using `Matrix.mulVec_zero _`.
+
+Establish `z : ∀ (V : HSp D) (g : GA D V), seen V g 0 = 0` using `fun V g => by`. Establish `h0 : (fun i => incA D ((0 : Fin V.rank → D.host.E) i)) = 0` using `funext fun i => map_zero _`. Rewrite using `[seen, h0, Matrix.mulVec_zero]`. Rewrite using `[e, z, z, vsize_zero]`. Conclude with `mul_nonneg (NNReal.coe_nonneg _) (vsize_nonneg _)`.
+
+Establish `hη' : o.iA *ᵥ η ≠ 0` using `fun e => hη (by`. Use `congrArg (o.qA *ᵥ ·) e` as an intermediate fact. Simplify `this)` using `[Matrix.mulVec_mulVec, GlobalTheory.MixModel.OrthDec.qA_iA]`. Establish `f1` using `Filter.eventually_cofinite.1 (eventually_vFin_seen_eq_one A h hη)`. Establish `f2` using `Filter.eventually_cofinite.1 (eventually_vFin_seen_eq_one S (o.emb (h, 1)) hη')`.
+
+Rewrite `f2`, the goal using `[seen_emb]`. Establish `hf : (Function.mulSupport fun v => vFin v (seen A h η)).Finite` using `f1.subset fun v hv => hv`. Establish `hf' : (Function.mulSupport fun v => vFin v (o.jA *ᵥ seen A h η)).Finite` using `f2.subset fun v hv => hv`. Unfold `vsize`. Rewrite using `[← NNReal.coe_mul, NNReal.coe_le_coe]`.
+
+Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Finset.prod_mul_distrib, finprod_mul_distrib (finite_mulSupport_bF o.jA) hf, mul_mul_mul_comm]`.
+-/
 theorem vsize_seen_emb_le : ∀ (D : D7) (S A B : HSp D) (o : GlobalTheory.MixModel.OrthDec S A B), ∃ C : ℝ,
     ∀ (h : GA D A) (η : Fin A.rank → D.host.E),
       GlobalTheory.HtOrth.vsize (GlobalTheory.HtOrth.seen S (o.emb (h, 1)) (o.iA *ᵥ η)) ≤ C * GlobalTheory.HtOrth.vsize (GlobalTheory.HtOrth.seen A h η) := by

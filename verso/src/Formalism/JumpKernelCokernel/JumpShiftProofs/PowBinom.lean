@@ -2,6 +2,23 @@ import Formalism.JumpKernelCokernel.Statement
 
 namespace Formalism.KernelCokernelLengths
 
+/- English proof (translation)
+Introduce `A _ ℓ u ε q b Y hℓ hY`. Use `set k := (Y - 1) / ℓ with hk`. Use `set I : Ideal A := Ideal.span {(ℓ : A), q ^ ℓ} with hI`. Establish `hYle : Y ≤ ℓ * (k + 1)`. Establish `h` using `Nat.lt_mul_div_succ (Y - 1) (show 0 < ℓ by omega)`.
+
+Rewrite `h` using `[← hk]`. Use linear arithmetic over natural numbers and integers. Establish `hmem : (u * q ^ ℓ + (ℓ : A) * ε) ^ b ∈ Ideal.span {(ℓ : A) ^ (b - k)} ⊔ Ideal.span {q ^ Y} * I ^ (b - k - 1)`. Rewrite using `[add_pow]`. Use `Ideal.sum_mem _ (fun m hm => ?_)` and prove the remaining obligations.
+
+Rewrite `hm` using `[Finset.mem_range]`. Distinguish the cases in `hmk : m ≤ k`. Apply `Ideal.mem_sup_left` to reduce the goal to its premises. Rewrite using `[Ideal.mem_span_singleton]`. Establish `h1 : (ℓ : A) ^ (b - k) ∣ ((ℓ : A) * ε) ^ (b - m)`.
+
+Rewrite using `[mul_pow]; exact Dvd.dvd.mul_right (pow_dvd_pow _ (by omega)) _`. Conclude with `Dvd.dvd.mul_right (Dvd.dvd.mul_left h1 _) _`. Apply `Ideal.mem_sup_right` to reduce the goal to its premises. Take `⟨e, rfl⟩ : ∃ e, m = k + 1 + e` from `⟨m - (k + 1), by omega⟩`. Establish `hℓI : (ℓ : A) ∈ I` using `Ideal.subset_span (by simp)`.
+
+Establish `hqI : q ^ ℓ ∈ I` using `Ideal.subset_span (by simp)`. Establish `hin : (q ^ ℓ) ^ e * (ℓ : A) ^ (b - (k + 1 + e)) ∈ I ^ (b - k - 1)`. Use `Ideal.mul_mem_mul (Ideal.pow_mem_pow hqI e) (Ideal.pow_mem_pow hℓI (b - (k + 1 + e)))` as an intermediate fact. Rewrite `this` using `[← pow_add]`. Conclude with `Ideal.pow_le_pow_right (by omega) this`.
+
+Establish `hp : q ^ (ℓ * (k + 1)) = q ^ Y * q ^ (ℓ * (k + 1) - Y)`. Rewrite using `[← pow_add]`. Use `congr 1`. Use linear arithmetic over natural numbers and integers. Establish `heq : (u * q ^ ℓ) ^ (k + 1 + e) * ((ℓ : A) * ε) ^ (b - (k + 1 + e)) * (b.choose (k + 1 + e) : A) = q ^ Y * ((q ^ ℓ) ^ e * (ℓ : A) ^ (b - (k + 1 + e)) * (u ^ (k + 1 + e) * q ^ (ℓ * (k + 1) - Y) * ε ^ (b - (k + 1 + e)) * (b.choose (k + 1 + e) : A)))`.
+
+Establish `hq : (q ^ ℓ) ^ (k + 1 + e) = q ^ Y * q ^ (ℓ * (k + 1) - Y) * (q ^ ℓ) ^ e`. Rewrite using `[pow_add, ← pow_mul, hp]`. Rewrite using `[mul_pow, mul_pow, hq]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[heq]`.
+
+Conclude with `Ideal.mul_mem_mul (Ideal.mem_span_singleton_self _) (Ideal.mul_mem_right _ _ hin)`. Take `⟨a, ha, c, hc, hac⟩` from `Submodule.mem_sup.mp hmem`. Take `⟨α, rfl⟩` from `Ideal.mem_span_singleton'.mp ha`. Take `⟨β, hβ, rfl⟩` from `Ideal.mem_span_singleton_mul.mp hc`. Conclude with `⟨α, β, by rw [← hac]; ring, hβ⟩`.
+-/
 theorem power_binomial_bound : PowBinom := by
   intro A _ ℓ u ε q b Y hℓ hY
   set k := (Y - 1) / ℓ with hk

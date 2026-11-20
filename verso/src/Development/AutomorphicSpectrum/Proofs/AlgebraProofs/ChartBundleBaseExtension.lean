@@ -22,12 +22,21 @@ def mixChart (c : ∀ k, ι k) (s : ∀ k : K ⊕ K', Sum.elim ι ι' k) : ∀ k
 
 def secondChart (s : ∀ k : K ⊕ K', Sum.elim ι ι' k) : ∀ k, ι' k := fun k => s (.inr k)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem restrictChart_mixChart (c : ∀ k, ι k) (s : ∀ k : K ⊕ K', Sum.elim ι ι' k) :
     restrictChart (mixChart c s) = c := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem secondChart_mixChart (c : ∀ k, ι k) (s : ∀ k : K ⊕ K', Sum.elim ι ι' k) :
     secondChart (mixChart c s) = secondChart s := rfl
 
+/- English proof (translation)
+Simplify using `only [mseg, Fintype.prod_sum_type]`. Both sides reduce to the same expression.
+-/
 theorem mseg_joinCoord {F : Type*} [CommMonoid F] (x : (Σ k, ι k) → F) (z : (Σ k, ι' k) → F)
     (s : ∀ k : K ⊕ K', Sum.elim ι ι' k) :
     mseg (joinCoord x z) s = mseg x (restrictChart s) * mseg z (secondChart s) := by
@@ -44,6 +53,9 @@ variable {O : Type} [CommRing O] {Ω Ω₁ : Type} [Field Ω] [Field Ω₁] [Alg
   {K' : Type} [Fintype K'] {ι' : K' → Type} [∀ k, Fintype (ι' k)]
   {x : (Σ k, ι k) → Ω} {z : (Σ k, ι' k) → Ω₁}
 
+/- English proof (translation)
+Rewrite using `[bcCoord, mseg_joinCoord]`. Simplify using `[mseg, map_prod]`.
+-/
 theorem mseg_bcCoord (x : (Σ k, ι k) → Ω) (z : (Σ k, ι' k) → Ω₁)
     (s : ∀ k : K ⊕ K', Sum.elim ι ι' k) :
     mseg (bcCoord x z) s =
@@ -51,16 +63,25 @@ theorem mseg_bcCoord (x : (Σ k, ι k) → Ω) (z : (Σ k, ι' k) → Ω₁)
   rw [bcCoord, mseg_joinCoord]
   simp [mseg, map_prod]
 
+/- English proof (translation)
+Introduce `h`. Conclude with `hs (by rw [mseg_bcCoord, h]; simp)`.
+-/
 theorem first_ne_zero {s : ∀ k : K ⊕ K', Sum.elim ι ι' k} (hs : mseg (bcCoord x z) s ≠ 0) :
     mseg x (restrictChart s) ≠ 0 := by
   intro h
   exact hs (by rw [mseg_bcCoord, h]; simp)
 
+/- English proof (translation)
+Introduce `h`. Conclude with `hs (by rw [mseg_bcCoord, h]; simp)`.
+-/
 theorem second_ne_zero {s : ∀ k : K ⊕ K', Sum.elim ι ι' k} (hs : mseg (bcCoord x z) s ≠ 0) :
     mseg z (secondChart s) ≠ 0 := by
   intro h
   exact hs (by rw [mseg_bcCoord, h]; simp)
 
+/- English proof (translation)
+Establish `h` using `div_mem_chartRing (o := O) (mseg (bcCoord x z)) s (mixChart c s)`. Rewrite `h` using `[mseg_bcCoord x z (mixChart c s), mseg_bcCoord x z s, restrictChart_mixChart, secondChart_mixChart, mul_div_mul_right _ _ (second_ne_zero hs), ← map_div₀]`. Conclude with `h`.
+-/
 theorem ratio_first {s : ∀ k : K ⊕ K', Sum.elim ι ι' k} (hs : mseg (bcCoord x z) s ≠ 0)
     (c : ∀ k, ι k) :
     algebraMap Ω Ω₁ (mseg x c / mseg x (restrictChart s)) ∈
@@ -70,6 +91,9 @@ theorem ratio_first {s : ∀ k : K ⊕ K', Sum.elim ι ι' k} (hs : mseg (bcCoor
     secondChart_mixChart, mul_div_mul_right _ _ (second_ne_zero hs), ← map_div₀] at h
   exact h
 
+/- English proof (translation)
+Establish `h` using `div_mem_chartRing (o := O) (mseg (bcCoord x z)) t (mixChart (restrictChart t) s)`. Rewrite `h` using `[mseg_bcCoord x z (mixChart (restrictChart t) s), mseg_bcCoord x z t, restrictChart_mixChart, secondChart_mixChart, mul_div_mul_left _ _ ((map_ne_zero (algebraMap Ω Ω₁)).2 (first_ne_zero ht))]`. Conclude with `h`.
+-/
 theorem ratio_second {s t : ∀ k : K ⊕ K', Sum.elim ι ι' k} (ht : mseg (bcCoord x z) t ≠ 0) :
     mseg z (secondChart s) / mseg z (secondChart t) ∈ chartRing O (mseg (bcCoord x z)) t := by
   have h := div_mem_chartRing (o := O) (mseg (bcCoord x z)) t (mixChart (restrictChart t) s)
@@ -78,6 +102,9 @@ theorem ratio_second {s t : ∀ k : K ⊕ K', Sum.elim ι ι' k} (ht : mseg (bcC
       ((map_ne_zero (algebraMap Ω Ω₁)).2 (first_ne_zero ht))] at h
   exact h
 
+/- English proof (translation)
+Establish `hle : chartRing O (mseg x) (restrictChart s) ≤ (chartRing O (mseg (bcCoord x z)) s).comap (IsScalarTower.toAlgHom O Ω Ω₁)`. Use `Algebra.adjoin_le ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨c, rfl⟩`. Conclude with `ratio_first hs c`. Conclude with `hle ha`.
+-/
 theorem map_mem_chartRing {s : ∀ k : K ⊕ K', Sum.elim ι ι' k} (hs : mseg (bcCoord x z) s ≠ 0)
     {a : Ω} (ha : a ∈ chartRing O (mseg x) (restrictChart s)) :
     algebraMap Ω Ω₁ a ∈ chartRing O (mseg (bcCoord x z)) s := by
@@ -95,6 +122,17 @@ def pullFam (x : (Σ k, ι k) → Ω) (z : (Σ k, ι' k) → Ω₁) (E : ChartBu
     (bc : V →ₗ[Ω] V₁) : (∀ k : K ⊕ K', Sum.elim ι ι' k) → AddSubgroup V₁ := fun s =>
   spanOver (chartRing O (mseg (bcCoord x z)) s) (bc '' (E.lat (restrictChart s) : Set V))
 
+/- English proof (translation)
+Use `⟨fun s _ a ha v hv => LocFreeBC.smul_mem_spanOver _ _ ha hv, fun s t hs ht v hv => ?_⟩` and prove the remaining obligations. Establish `hf : mseg (bcCoord x z) s / mseg (bcCoord x z) t ∈ chartRing O (mseg (bcCoord x z)) t` using `div_mem_chartRing _ t s`. Establish `hst : ∀ a ∈ chartRing O (mseg (bcCoord x z)) t, ∀ e ∈ pullFam x z E bc t, a • e ∈ pullFam x z E bc t` using `fun a ha e he => LocFreeBC.smul_mem_spanOver _ _ ha he`. Establish `hfac : mseg (bcCoord x z) s / mseg (bcCoord x z) t = algebraMap Ω Ω₁ (mseg x (restrictChart s) / mseg x (restrictChart t)) * (mseg z (secondChart s) / mseg z (secondChart t))`. Rewrite using `[mseg_bcCoord x z s, mseg_bcCoord x z t, map_div₀, mul_div_mul_comm]`.
+
+Express the relevant statement in the definitionally equal form `v ∈ AddSubgroup.closure _ at hv`. Proceed by induction on `hv using AddSubgroup.closure_induction with`. Consider the case `mem v hv`. Take `⟨a, ha, _, ⟨e, he, rfl⟩, rfl⟩` from `hv`. Take `⟨m₁, hm₁⟩` from `exists_pow_mul_mem_chartRing (mseg (bcCoord x z)) s t hs ha`.
+
+Take `⟨m₂, hm₂⟩` from `E.overlap _ _ (first_ne_zero hs) (first_ne_zero ht) e he`. Use `⟨m₁ + m₂, AddSubgroup.subset_closure ⟨_, mul_mem hm₁ (pow_mem (ratio_second (s := s) ht) m₂), _, ⟨_, hm₂, rfl⟩, ?_⟩⟩` and prove the remaining obligations. Rewrite using `[map_smul, ← algebraMap_smul Ω₁ (_ ^ m₂) (bc e), smul_smul, smul_smul]`. Use `congr 1`. Rewrite using `[pow_add, map_pow]`.
+
+Use `nth_rw 2 [hfac]`. Rewrite using `[mul_pow]`. Expand and normalize the polynomial expressions, which then agree. Consider the case `zero => exact ⟨0, by simp⟩`. Consider the case `add v w _ _ hv hw => exact LocFreeBC.loc_add _ _ hst hf hv hw`.
+
+Consider the case `neg v _ hv`. Take `⟨n, hn⟩` from `hv`. Conclude with `⟨n, by simpa using neg_mem hn⟩`.
+-/
 theorem isLatFamily_pullFam (E : ChartBundle O (mseg x) N V) (bc : V →ₗ[Ω] V₁) :
     IsLatFamily O (bcCoord x z) (pullFam x z E bc) := by
   refine ⟨fun s _ a ha v hv => LocFreeBC.smul_mem_spanOver _ _ ha hv,
@@ -127,6 +165,9 @@ theorem isLatFamily_pullFam (E : ChartBundle O (mseg x) N V) (bc : V →ₗ[Ω] 
     obtain ⟨n, hn⟩ := hv
     exact ⟨n, by simpa using neg_mem hn⟩
 
+/- English proof (translation)
+Conclude with `LocFreeBC.locFree_baseChange _ _ (fun _ ha => map_mem_chartRing hs ha) bc hbc N _ (((BundleOfFamily.main O Ω K ι x N V).2 E).2 _ (first_ne_zero hs))`.
+-/
 theorem locFree_pullFam (E : ChartBundle O (mseg x) N V) (bc : V →ₗ[Ω] V₁)
     (hbc : IsBaseChange Ω₁ bc) (s : ∀ k : K ⊕ K', Sum.elim ι ι' k)
     (hs : mseg (bcCoord x z) s ≠ 0) :
@@ -135,6 +176,11 @@ theorem locFree_pullFam (E : ChartBundle O (mseg x) N V) (bc : V →ₗ[Ω] V₁
   exact LocFreeBC.locFree_baseChange _ _ (fun _ ha => map_mem_chartRing hs ha) bc hbc N _
     (((BundleOfFamily.main O Ω K ι x N V).2 E).2 _ (first_ne_zero hs))
 
+/- English proof (translation)
+Take `⟨EB, hEB⟩` from `(BundleOfFamily.main O Ω₁ (K ⊕ K') (Sum.elim ι ι') (bcCoord x z) N V₁).1 (pullFam x z E bc) (isLatFamily_pullFam E bc) (locFree_pullFam E bc hbc)`. Use `⟨EB, fun s hs => ?_⟩` and prove the remaining obligations. Rewrite using `[hEB s hs]`. Use `congrArg AddSubgroup.closure (Set.ext fun v => ?_)` and prove the remaining obligations. Prove the components needed by the constructor for the conclusion.
+
+Introduce and unpack `⟨a, ha, _, ⟨e, he, rfl⟩, rfl⟩`. Conclude with `⟨a, ha, e, he, rfl⟩`. Introduce and unpack `⟨a, ha, e, he, rfl⟩`. Conclude with `⟨a, ha, _, ⟨e, he, rfl⟩, rfl⟩`.
+-/
 theorem exists_pullBC [IsDomain O] [IsDiscreteValuationRing O] (E : ChartBundle O (mseg x) N V)
     (bc : V →ₗ[Ω] V₁) (hbc : IsBaseChange Ω₁ bc) :
     ∃ EB : ChartBundle O (mseg (bcCoord x z)) N V₁, IsPullBC O x z bc E EB := by
@@ -152,6 +198,9 @@ theorem exists_pullBC [IsDomain O] [IsDiscreteValuationRing O] (E : ChartBundle 
 
 end Pull
 
+/- English proof (translation)
+Introduce `O _ _ _ Ω _ _ K _ _ ι _ x N V _ _ E`. Use `⟨fun K' _ _ ι' _ z => ?_, fun Ω₁ _ _ _ _ K' _ _ ι' _ z V₁ _ _ _ _ bc hbc => exists_pullBC E bc hbc⟩` and prove the remaining obligations. Conclude with `exists_pullBC (Ω₁ := Ω) (V₁ := V) (z := z) E LinearMap.id (IsBaseChange.ofEquiv (LinearEquiv.refl Ω V))`.
+-/
 theorem main : ∀ (O : Type) [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] (Ω : Type) [Field Ω] [Algebra O Ω] (K : Type) [Fintype K] [DecidableEq K] (ι : K → Type) [∀ k, Fintype (ι k)] (x : (Σ k, ι k) → Ω) (N : ℕ) (V : Type) [AddCommGroup V] [Module Ω V] (E : ChartBundle O (mseg x) N V), (∀ (K' : Type) [Fintype K'] [DecidableEq K'] (ι' : K' → Type) [∀ k, Fintype (ι' k)] (z : (Σ k, ι' k) → Ω), ∃ EB : ChartBundle O (mseg (joinCoord x z)) N V, IsPull O x z E EB) ∧ ∀ (Ω₁ : Type) [Field Ω₁] [Algebra O Ω₁] [Algebra Ω Ω₁] [IsScalarTower O Ω Ω₁] (K' : Type) [Fintype K'] [DecidableEq K'] (ι' : K' → Type) [∀ k, Fintype (ι' k)] (z : (Σ k, ι' k) → Ω₁) (V₁ : Type) [AddCommGroup V₁] [Module Ω₁ V₁] [Module Ω V₁] [IsScalarTower Ω Ω₁ V₁] (bc : V →ₗ[Ω] V₁), IsBaseChange Ω₁ bc → ∃ EB : ChartBundle O (mseg (bcCoord x z)) N V₁, IsPullBC O x z bc E EB := by
   intro O _ _ _ Ω _ _ K _ _ ι _ x N V _ _ E
   refine ⟨fun K' _ _ ι' _ z => ?_,

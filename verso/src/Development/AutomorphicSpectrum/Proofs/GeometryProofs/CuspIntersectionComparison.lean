@@ -33,6 +33,9 @@ def aff {n : ℕ} (t₀ : Fin n → ℂ) (ρ : ℝ) (π : Equiv.Perm (Fin n)) (u
 def affInv {n : ℕ} (t₀ : Fin n → ℂ) (ρ : ℝ) (π : Equiv.Perm (Fin n)) (t : Fin n → ℂ) : Fin n → ℂ :=
   ((ρ : ℂ)⁻¹ • (t - t₀)) ∘ π.symm
 
+/- English proof (translation)
+Establish `h : (ρ : ℂ) ≠ 0` using `by exact_mod_cast hρ.ne'`. Use function extensionality and compare the values at `i`. Simplify using `[aff, affInv, Function.comp, h]`.
+-/
 theorem aff_affInv {n : ℕ} (t₀ : Fin n → ℂ) {ρ : ℝ} (hρ : 0 < ρ) (π : Equiv.Perm (Fin n)) (t : Fin n → ℂ) :
     aff t₀ ρ π (affInv t₀ ρ π t) = t := by
   have h : (ρ : ℂ) ≠ 0 := by exact_mod_cast hρ.ne'
@@ -41,6 +44,17 @@ theorem aff_affInv {n : ℕ} (t₀ : Fin n → ℂ) {ρ : ℝ} (hρ : 0 < ρ) (�
 
 open scoped ComplexOrder in
 
+/- English proof (translation)
+Establish `hH : (R.Hmᵀ).IsHermitian`. Use extensionality with `i j`. Conclude with `R.herm.apply j i`. Establish `hM : (R.Hmᵀ).PosDef`. Use `Matrix.PosDef.of_dotProduct_mulVec_pos hH fun x hx => ?_` and prove the remaining obligations.
+
+Establish `h1` using `R.pos x hx`. Establish `e : star x ⬝ᵥ (R.Hmᵀ *ᵥ x) = x ⬝ᵥ R.Hm *ᵥ star x`. Rewrite using `[Matrix.mulVec_transpose, dotProduct_comm, ← Matrix.dotProduct_mulVec]`. Establish `him : (star x ⬝ᵥ (R.Hmᵀ *ᵥ x)).im = 0` using `hH.im_star_dotProduct_mulVec_self x`. Rewrite using `[Complex.pos_iff]`.
+
+Conclude with `⟨by rw [e]; exact h1, him.symm⟩`. Set `C : Matrix (Fin g) (Fin m) ℂ` to `(Matrix.of u)ᵀ`. Establish `hC : Function.Injective C.mulVec` using `Matrix.mulVec_injective_iff.2 hu`. Establish `e : R.gram u = Cᴴ * R.Hmᵀ * C`. Use extensionality with `a b`.
+
+Simplify using `only [RiemLat.gram, RiemLat.ip, Matrix.of_apply, Matrix.mul_apply, dotProduct, Matrix.mulVec, Matrix.conjTranspose_apply, Matrix.transpose_apply, Pi.star_apply, C]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.mul_sum, Finset.sum_mul]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+
+Establish `hp` using `(hM.conjTranspose_mul_mul_same hC).det_pos`. Rewrite `hp` using `[← e]`. Conclude with `(Complex.pos_iff.1 hp).1`.
+-/
 theorem gram_det_pos {E : Type} [Field E] [NumberField E] [IsCMField E] {g : ℕ} {Λ : Type} [AddCommGroup Λ]
     [Module (𝓞 E) Λ] (R : RiemLat E g Λ) {m : ℕ} (u : Fin m → Fin g → ℂ) (hu : LinearIndependent ℂ u) :
     0 < (R.gram u).det.re := by
@@ -69,6 +83,9 @@ theorem gram_det_pos {E : Type} [Field E] [NumberField E] [IsCMField E] {g : ℕ
   rw [← e] at hp
   exact (Complex.pos_iff.1 hp).1
 
+/- English proof (translation)
+Take `⟨A, _, φ, u, χ, h1, h2, -, -, -, h3⟩` from `h`. Take `⟨v', e', d'⟩` from `h3 i`. Take `⟨w', f', g'⟩` from `h3 j`. Conclude with `⟨t.PP.isLB, tan i, tan j, A, inferInstance, φ, g, u, R.Hm, χ, v', w', x i, x j, h1, h2, e', f', d', g', rfl⟩`.
+-/
 theorem hodgeInnerProduct_of_fibreLatticeVector {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E}
     {X : Scheme.{0}} {t : SAB H X} {z : Sp ℂ ⟶ X} {g : ℕ} {Λ : Type} [AddCommGroup Λ] [Module (𝓞 E) Λ]
     {R : RiemLat E g Λ} {A₀ : Type} {x : A₀ → Fin g → ℂ} {v : A₀ → (epsAt z ⟶ t.G)}
@@ -88,6 +105,13 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {D : Da
   [∀ τ, AddCommGroup (W τ)] [∀ τ, Module Ω (W τ)]
   {Dc : ComponentData II (CMType H) K J Ω W} {Hd : HodgeData Dc} {S₀ : Finset ℕ}
 
+/- English proof (translation)
+Take `⟨-, hP⟩` from `GlobalTheory.T.component_data_intersection_bound hG E H D Xo l c Y II K J Ω W Dc Hd S₀ Or z w co`. Take `⟨-, hP2⟩` from `hP d`. Take `⟨-, -, hform⟩` from `hP2 s hs`. Set `Γ : CMType H → Matrix (Fin (Dc.N - Dc.j)) (Fin (Dc.N - Dc.j)) ℂ` to `fun τ => Matrix.of fun p q => (Real.pi : ℂ) * R.ip (x τ p) (x τ q)`. Establish `hΓ : ∀ τ, Or.𝔐.M.GramAt Or.𝔐.t.PP.L z (s τ) (Γ τ)` using `fun τ => ⟨fun p => v (τ, p), fun p => hv (τ, p), fun p q => hodgeInnerProduct_of_fibreLatticeVector hfib (fun i => (hv i).isTanAt) (τ, p) (τ, q)⟩`.
+
+Establish `hdet : ∀ τ, Real.log (Γ τ).det.re = ((Dc.N - Dc.j : ℕ) : ℝ) * Real.log Real.pi + Real.log (R.gram (x τ)).det.re`. Introduce `τ`. Establish `hpos` using `gram_det_pos R (x τ) (hx τ)`. Establish `e1 : Γ τ = (Real.pi : ℂ) • R.gram (x τ)`. Use extensionality with `p q`.
+
+Both sides reduce to the same expression. Rewrite using `[e1, Matrix.det_smul, Fintype.card_fin, ← Complex.ofReal_pow, Complex.re_ofReal_mul, Real.log_mul (pow_ne_zero _ Real.pi_ne_zero) hpos.ne', Real.log_pow]`. Establish `h1` using `hform hI Γ hΓ`. Simplify using `only [hdet, Finset.sum_add_distrib, Finset.sum_const, Finset.card_univ, nsmul_eq_mul] at h1`. Conclude with `h1`.
+-/
 theorem point_formula (Or : CptOrigin Y S₀ Dc Hd) {z : Sp ℂ ⟶ Or.𝔐.X} {w : (Σ k, J k) → ℂ}
     (co : CoordsAt Or.𝔐.ξ Dc.y z w) (hI : Or.𝔐.Interior z) (hG : Top.Given) (d : MuFrameAt Hd w)
     {s : CMType H → Fin (Dc.N - Dc.j) → Or.𝔐.Li} (hs : Or.IsSmallPart d s)
@@ -117,6 +141,9 @@ theorem point_formula (Or : CptOrigin Y S₀ Dc Hd) {z : Sp ℂ ⟶ Or.𝔐.X} {
   simp only [hdet, Finset.sum_add_distrib, Finset.sum_const, Finset.card_univ, nsmul_eq_mul] at h1
   exact h1
 
+/- English proof (translation)
+Take `⟨A, i, φ, u, χ, h1, h2, h3, h4, h5, -⟩` from `h`. Conclude with `⟨A, i, φ, u, χ, h1, h2, h3, h4, h5, fun i => i.elim⟩`.
+-/
 theorem fibreLat_of_vec {X : Scheme.{0}} {t : SAB H X} {z : Sp ℂ ⟶ X} {g : ℕ} {Λ : Type} [AddCommGroup Λ]
     [Module (𝓞 E) Λ] {R : RiemLat E g Λ} {A₀ : Type} {x : A₀ → Fin g → ℂ} {v : A₀ → (epsAt z ⟶ t.G)}
     (h : FibreLatVec t z R x v) : FibreLat t z R := by
@@ -133,6 +160,11 @@ section Free
 
 variable {K : Type} [Fintype K] {J : K → Type} [∀ k, Fintype (J k)] {Ω : Type} [Field Ω] {y : (Σ k, J k) → Ω}
 
+/- English proof (translation)
+Take `⟨h1, v, ⟨d, g, h, hg, hh, hy, he, h0, rfl⟩, hv⟩` from `h`. Establish `hu : (∏ k, c k ^ d k) ≠ 0` using `Finset.prod_ne_zero_iff.2 fun k _ => pow_ne_zero _ (hc k)`. Use `⟨fun k => mul_ne_zero (hc k) (h1 k), _, ⟨d, g, h, hg, hh, hy, he, ?_, ?_⟩, hv⟩` and prove the remaining obligations. Unfold `torusSmul`. Rewrite using `[eval_smul_homog h d hh]`.
+
+Conclude with `mul_ne_zero hu h0`. Unfold `torusSmul`. Rewrite using `[eval_smul_homog g d hg, eval_smul_homog h d hh, mul_div_mul_left _ _ hu]`.
+-/
 theorem inFrameDomain_torus {cc : (k : K) → J k} {f : Ω} {z : (Σ k, J k) → ℂ} (h : InFrameDomain y cc f z)
     {c : K → ℂ} (hc : ∀ k, c k ≠ 0) : InFrameDomain y cc f (torusSmul c z) := by
   obtain ⟨h1, v, ⟨d, g, h, hg, hh, hy, he, h0, rfl⟩, hv⟩ := h
@@ -145,17 +177,30 @@ theorem inFrameDomain_torus {cc : (k : K) → J k} {f : Ω} {z : (Σ k, J k) →
     rw [eval_smul_homog g d hg, eval_smul_homog h d hh, mul_div_mul_left _ _ hu]
 
 omit [Fintype K] [∀ k, Fintype (J k)] in
+/- English proof (translation)
+Use function extensionality and compare the values at `p`. Simplify using `[torusSmul, hc]`.
+-/
 theorem torusSmul_inv {c : K → ℂ} (hc : ∀ k, c k ≠ 0) (z : (Σ k, J k) → ℂ) :
     torusSmul (fun k => (c k)⁻¹) (torusSmul c z) = z := by
   funext p
   simp [torusSmul, hc]
 
 omit [Fintype K] [∀ k, Fintype (J k)] in
+/- English proof (translation)
+Use function extensionality and compare the values at `p`. Simplify using `[torusSmul, hc]`.
+-/
 theorem torusSmul_inv' {c : K → ℂ} (hc : ∀ k, c k ≠ 0) (z : (Σ k, J k) → ℂ) :
     torusSmul c (torusSmul (fun k => (c k)⁻¹) z) = z := by
   funext p
   simp [torusSmul, hc]
 
+/- English proof (translation)
+Establish `hex : ∃ v, IsValueAt y u w v`. Assume the negation of the conclusion as `hn`. Conclude with `hv (dif_neg hn)`. Take `⟨v₀, dg, pg, ph, hpg, hph, hne, heq, hhne, hv₀⟩` from `hex`. Establish `e0 : GroundTheory.Heights₂.Heights.LowerBoundFree.valAt y u w = v₀` using `valAt_eq hw ⟨dg, pg, ph, hpg, hph, hne, heq, hhne, hv₀⟩`.
+
+Establish `c1` using `(MvPolynomial.continuous_eval (MvPolynomial.map (Int.castRingHom ℂ) pg)).continuousAt (x := w)`. Establish `c2` using `(MvPolynomial.continuous_eval (MvPolynomial.map (Int.castRingHom ℂ) ph)).continuousAt (x := w)`. Establish `c3 : ContinuousAt (fun w' : (Σ k, J k) → ℂ => ∏ k, ‖w' ⟨k, cc k⟩‖ ^ a k) w` using `tendsto_finsetProd _ fun k _ => ((continuous_apply (⟨k, cc k⟩ : Σ k, J k)).norm.continuousAt.zpow₀ _ (Or.inl (norm_ne_zero_iff.2 (hc k))))`. Establish `hne0 : ‖MvPolynomial.eval w (MvPolynomial.map (Int.castRingHom ℂ) pg) / MvPolynomial.eval w (MvPolynomial.map (Int.castRingHom ℂ) ph)‖ * ∏ k, ‖w ⟨k, cc k⟩‖ ^ a k ≠ 0` using `mul_ne_zero (norm_ne_zero_iff.2 (by rw [← hv₀, ← e0]; exact hv)) (Finset.prod_ne_zero_iff.2 fun k _ => zpow_ne_zero _ (norm_ne_zero_iff.2 (hc k)))`. Establish `c4` using `(((c1.div c2 hhne).norm.mul c3).log hne0).eventually (lt_mem_nhds (sub_lt_self _ hε))`.
+
+Use `filter_upwards [c4, c2.eventually_ne hhne] with w' h1 h2 hw'`. Establish `e1 : GroundTheory.Heights₂.Heights.LowerBoundFree.valAt y u w' = _` using `valAt_eq hw' ⟨dg, pg, ph, hpg, hph, hne, heq, h2, rfl⟩`. Rewrite using `[e0, hv₀, e1]`. Conclude with `h1.le`.
+-/
 theorem factor_near {u : Ω} {w : (Σ k, J k) → ℂ} (hw : w ∈ mcPts (mCoordIdeal y)) (hv : valAt y u w ≠ 0)
     (cc : (k : K) → J k) (hc : ∀ k, w ⟨k, cc k⟩ ≠ 0) (a : K → ℤ) {ε : ℝ} (hε : 0 < ε) :
     ∀ᶠ w' in 𝓝 w, w' ∈ mcPts (mCoordIdeal y) →
@@ -185,6 +230,13 @@ theorem factor_near {u : Ω} {w : (Σ k, J k) → ℂ} (hw : w ∈ mcPts (mCoord
 
 end Free
 
+/- English proof (translation)
+Establish `h1 : ∀ k, ‖u k‖ < 1` using `(pi_norm_lt_iff one_pos).1 (mem_ball_zero_iff.1 hu.1)`. Use `⟨logLift a u, ⟨fun i => ?_, fun k hk => ?_⟩, funext fun k => ?_⟩` and prove the remaining obligations. Establish `hi : ((Fin.castLE h i : Fin n) : ℕ) < a` using `i.2`. Simplify using `only [logLift, if_pos hi, Complex.log_re]`. Conclude with `Real.log_neg (norm_pos_iff.2 (hu.2 _ hi)) (h1 _)`.
+
+Simplify using `only [logLift, if_neg (not_lt.2 hk)]`. Conclude with `h1 k`. Distinguish the cases in `hk : (k : ℕ) < a`. Simplify using `only [expCover, logLift, if_pos hk]`. Conclude with `Complex.exp_log (hu.2 k hk)`.
+
+Simplify using `only [expCover, logLift, if_neg hk]`.
+-/
 theorem exists_lift {n a : ℕ} (h : a ≤ n) {u : Fin n → ℂ} (hu : u ∈ Flat.punct n a 1) :
     ∃ w ∈ logCover h, expCover a w = u := by
   have h1 : ∀ k, ‖u k‖ < 1 := (pi_norm_lt_iff one_pos).1 (mem_ball_zero_iff.1 hu.1)
@@ -199,6 +251,13 @@ theorem exists_lift {n a : ℕ} (h : a ≤ n) {u : Fin n → ℂ} (hu : u ∈ Fl
       exact Complex.exp_log (hu.2 k hk)
     · simp only [expCover, logLift, if_neg hk]
 
+/- English proof (translation)
+Take `⟨-, -, h3, h4, -⟩` from `GlobalTheory.T.first_minimum_and_cusp_weight_bounds E g Λ Ψ R σ m hσ hr hm`. Distinguish the cases in `hI : I = ⊥`. Establish `: R.nz σ I = 1`. Use `dif_neg ?_` and prove the remaining obligations. Introduce and unpack `⟨r, v, hr1, hv, hli, -⟩`.
+
+Use `hv ⟨0, hr1⟩` as an intermediate fact. Rewrite `this` using `[hI, Submodule.mem_bot]`. Conclude with `hli.ne_zero _ this`. Rewrite using `[this, Real.log_one, neg_zero]`. Conclude with `h4`.
+
+Conclude with `(h3 I ⟨hI, h1, h2⟩).1`.
+-/
 theorem neg_log_nz_le {E : Type} [Field E] [NumberField E] [IsCMField E] {g : ℕ} {Λ : Type} [AddCommGroup Λ]
     [Module (𝓞 E) Λ] {Ψ : Type} [Fintype Ψ] (R : RiemLat E g Λ) (σ : Ψ → (𝓞 E →+* ℂ)) {m : ℕ} (hσ : IsCMFam σ)
     (hr : R.HasRank σ m) (hm : 1 ≤ m) {I : Submodule (𝓞 E) Λ} (h1 : IsSaturated I) (h2 : IsIsoSub R.form I) :
@@ -219,6 +278,35 @@ end Val
 
 open Val in
 
+/- English proof (translation)
+Introduce `hG E _ _ _ _ H D Xo l c Y II K _ J _ Ω _ _ W _ _ Dc Hd S₀ Or U z w x hU hz hx ε hε`. Take `⟨d, s, ν, hs, hν, -, rfl⟩` from `hx`. Establish `hw : w ∈ mcPts (mCoordIdeal Dc.y)` using `(GlobalTheory.T.complex_points_iff_centres _ Ω Or.𝔐.ξ K J Dc.y Or.𝔐.tie w).2 ⟨z, Or.𝔐.all _, hz⟩`. Take `⟨a, t₀, ht, cw, hcw, hwe⟩` from `Dc.chart_cover w hw`. Establish `ht₀ : t₀ ∈ Metric.ball (0 : Fin (Fintype.card (CMType H) * Dc.j * (Dc.N - Dc.j)) → ℂ) 1` using `mem_ball_zero_iff.2 (by linarith)`.
+
+Establish `hγ : (Dc.chart a).γ t₀ = torusSmul (fun k => (cw k)⁻¹) w` using `by rw [hwe, torusSmul_inv hcw]`. Establish `hci : ∀ k, (cw k)⁻¹ ≠ 0` using `fun k => inv_ne_zero (hcw k)`. Establish `hz₀ : CoordsAt Or.𝔐.ξ Dc.y z ((Dc.chart a).γ t₀)`. Rewrite using `[hγ]`. Conclude with `WeightSheet.coordsAt_torusSmul _ hz hci`.
+
+Establish `hd₀ : InFrameDomain Dc.y d.c d.f ((Dc.chart a).γ t₀)`. Rewrite using `[hγ]`. Conclude with `inFrameDomain_torus d.inDom hci`. Take `⟨a₀, g, Λ, i₁, i₂, L, π, ρ, σ, pt, b, hρ, hσ, hb, hu, hfib, I, hI1, hI2, hlim⟩` from `chart_centre hG Or a t₀ ht₀ z hz₀ { d with inDom := hd₀ } s hs ν hν`. Take `⟨δ₁, hδ₁, hlim⟩` from `hlim ε hε`.
+
+Take `⟨V, T, hV, hV0, hT, hT0, hVT⟩` from `GlobalTheory.T.chart_local_analytic_trivialization K J II (CMType H) Ω W Dc a t₀ ht₀`. Establish `hv0 : valAt Dc.y d.u w ≠ 0` using `(((GlobalTheory.T.component_data_intersection_bound hG E H D Xo l c Y II K J Ω W Dc Hd S₀ Or z w hz).2 d).2 s hs).2.1`. Establish `c1 : Tendsto (torusSmul (fun k => (cw k)⁻¹)) (𝓝 w) (𝓝 ((Dc.chart a).γ t₀))`. Rewrite using `[hγ]`. Use `Continuous.tendsto ?_ _` and prove the remaining obligations.
+
+Unfold `torusSmul`. Use `fun_prop`. Establish `c2 : Tendsto (fun w' => T (torusSmul (fun k => (cw k)⁻¹) w')) (𝓝 w) (𝓝 t₀)`. Use `(hT _ hV0).continuousAt.tendsto` as an intermediate fact. Rewrite `this` using `[hT0]`.
+
+Conclude with `this.comp c1`. Establish `c3 : Tendsto (fun w' => affInv t₀ ρ π (T (torusSmul (fun k => (cw k)⁻¹) w'))) (𝓝 w) (𝓝 0)`. Establish `hc : Continuous (affInv t₀ ρ π)`. Unfold `affInv`. Use `fun_prop`.
+
+Use `(hc.tendsto' t₀ 0 ?_).comp c2` and prove the remaining obligations. Use function extensionality and compare the values at `i`. Simplify using `[affInv]`. Establish `hev : ∀ᶠ w' in 𝓝 w, w' ∈ Dc.Xo → Real.log (‖valAt Dc.y d.u w‖ * ∏ k, ‖w ⟨k, d.c k⟩‖ ^ Hd.aMu k) + Real.log ν / 2 - ε ≤ corrW Hd U w'` using `by filter_upwards [c1.eventually (hV.mem_nhds hV0), c3.eventually (Metric.ball_mem_nhds 0 hδ₁), c3.eventually (Metric.ball_mem_nhds 0 one_pos), ChartGeo.inFrameDomain_eventually Dc.y d.c d.f d.inDom, factor_near hw hv0 d.c d.inDom.1 Hd.aMu (half_pos hε)] with w' a1 a2 a3 a4 a5 hw …`. Take `⟨-, c', hc', he⟩` from `hVT _ ⟨a1, mcPts_smul Dc.arith.2.1.2.1 _ hci hw'.1⟩`.
+
+Use `set u := affInv t₀ ρ π (T (torusSmul (fun k => (cw k)⁻¹) w')) with hud`. Take `⟨-, -, co, hL, hint⟩` from `hu u a3`. Establish `e1 : t₀ + (ρ : ℂ) • (u ∘ π) = T (torusSmul (fun k => (cw k)⁻¹) w')` using `aff_affInv t₀ hρ π _`. Rewrite `co` using `[e1]`. Establish `co' : CoordsAt Or.𝔐.ξ Dc.y (pt u) w'`.
+
+Use `WeightSheet.coordsAt_torusSmul _ (WeightSheet.coordsAt_torusSmul _ co hc') hcw` as an intermediate fact. Rewrite `this` using `[← he, torusSmul_inv' hcw]`. Then use the resulting hypothesis. Establish `hI : Or.𝔐.Interior (pt u)` using `not_not.1 fun hn => hw'.2 ((Or.bd _ _ co').2 hn)`. Take `⟨q, hq, hqu⟩` from `exists_lift L.a_le (hint.1 hI)`. Use `clear_value u`.
+
+Substitute `hqu` using the available equality. Take `⟨v, hv, hf⟩` from `hfib q hq`. Establish `k1` using `point_formula Or co' hI hG { d with inDom := a4 } hs (L.riem q hq) (fun τ i => b τ i (expCover a₀ q)) (fun τ => (hb.2 _ a3 τ).1) v hv hf`. Establish `k2` using `WeightSheet.eq_cuspW_of_fibre Or hU co' hI _ (fibreLat_of_vec hf) hL`. Establish `hr : (L.riem q hq).HasRank σ (Dc.N - Dc.j)` using `fun τ => by`.
+
+Establish `h1` using `finrank_span_eq_card (hb.2 _ a3 τ).1`. Rewrite `h1` using `[(hb.2 _ a3 τ).2, Fintype.card_fin]`. Conclude with `h1`. Establish `hm : 1 ≤ Dc.N - Dc.j`. Establish `h1` using `Dc.j_le`.
+
+Establish `h2` using `Dc.two_le_N`. Use linear arithmetic over natural numbers and integers. Establish `k3` using `neg_log_nz_le (L.riem q hq) σ hσ hr hm hI1 hI2`. Establish `k4` using `hlim q hq (mem_ball_zero_iff.1 a2)`. Establish `k5` using `a5 hw'.1`.
+
+Unfold `corrW`. Rewrite using `[k1, k2]`. Simplify using `only`. Combine the linear equalities and inequalities to obtain the conclusion. Take `⟨δ, hδ, h⟩` from `Metric.eventually_nhds_iff_ball.1 hev`.
+
+Conclude with `⟨δ, hδ, fun w' h1 h2 => h w' (by rwa [Metric.mem_ball, dist_eq_norm]) h1⟩`.
+-/
 theorem corrW_lower_near : Top.Given → ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] [IsAbelianGalois ℚ E] (H : Host E) (D : Datum H) (Xo : ∀ l : Tor.Level H, Moduli D l) (l : Tor.Level H) (c : Coeff l) (Y : Model (Xo l) c (algebraMap (𝓞 c.F) c.F)) (II : IntersectionSystem) (K : Type) [Fintype K] (J : K → Type) [∀ k, Fintype (J k)] (Ω : Type) [Field Ω] [Algebra ℚ Ω] (W : CMType H → Type) [∀ τ, AddCommGroup (W τ)] [∀ τ, Module Ω (W τ)] (Dc : ComponentData II (CMType H) K J Ω W) (Hd : HodgeData Dc) (S₀ : Finset ℕ) (Or : CptOrigin Y S₀ Dc Hd) (U : ((Σ k, J k) → ℂ) → ℝ) (z : Sp ℂ ⟶ Or.𝔐.X) (w : (Σ k, J k) → ℂ) (x : ℝ), Or.𝔐.IsCuspWeight Or.sm U → CoordsAt Or.𝔐.ξ Dc.y z w → Or.PhiWeight z w x → ∀ ε > (0 : ℝ), ∃ δ > (0 : ℝ), ∀ w' ∈ Dc.Xo, ‖w' - w‖ < δ → x - ε ≤ corrW Hd U w' := by
   intro hG E _ _ _ _ H D Xo l c Y II K _ J _ Ω _ _ W _ _ Dc Hd S₀ Or U z w x hU hz hx ε hε
   obtain ⟨d, s, ν, hs, hν, -, rfl⟩ := hx

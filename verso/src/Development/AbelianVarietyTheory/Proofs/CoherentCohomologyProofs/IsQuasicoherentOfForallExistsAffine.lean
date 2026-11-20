@@ -16,10 +16,16 @@ abbrev resAlgebra (h : V ≤ U) : Algebra Γ(X, U) Γ(X, V) :=
 abbrev resModule (h : V ≤ U) : Module Γ(X, U) Γ(F, V) :=
   Module.compHom Γ(F, V) (X.presheaf.map (homOfLE h).op).hom
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem resModule_smul (h : V ≤ U) (r : Γ(X, U)) (s : Γ(F, V)) :
     letI := resModule F h
     r • s = X.presheaf.map (homOfLE h).op r • s := rfl
 
+/- English proof (translation)
+The claim follows from `letI := resAlgebra h letI := resModule F h .of_algebraMap_smul fun _ _ ↦ rfl`.
+-/
 theorem res_isScalarTower (h : V ≤ U) :
     letI := resAlgebra h
     letI := resModule F h
@@ -37,6 +43,9 @@ def resLinear (h : V ≤ U) :
     map_smul' := fun r s ↦ F.map_smul (homOfLE h) r s }
 
 @[simp]
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem resLinear_apply (h : V ≤ U) (s : Γ(F, U)) :
     resLinear F h s = F.presheaf.map (homOfLE h).op s := rfl
 
@@ -51,32 +60,57 @@ def resBasicOpen (f : Γ(X, U)) : Γ(F, U) →ₗ[Γ(X, U)] Γ(F, X.basicOpen f)
   resLinear F (X.basicOpen_le f)
 
 @[simp]
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem resBasicOpen_apply (f : Γ(X, U)) (s : Γ(F, U)) :
     resBasicOpen F f s = F.presheaf.map (homOfLE (X.basicOpen_le f)).op s := rfl
 
+/- English proof (translation)
+Rewrite using `[← F.presheaf.map_comp_apply]`. Both sides reduce to the same expression.
+-/
 theorem res_res (h : V ≤ U) (h' : W ≤ V) (s : Γ(F, U)) :
     F.presheaf.map (homOfLE h').op (F.presheaf.map (homOfLE h).op s) =
       F.presheaf.map (homOfLE (h'.trans h)).op s := by
   rw [← F.presheaf.map_comp_apply]; rfl
 
+/- English proof (translation)
+Establish `: (homOfLE h).op = 𝟙 (op U)` using `rfl`. Rewrite using `[this, F.presheaf.map_id]`. Both sides reduce to the same expression.
+-/
 theorem res_self (h : U ≤ U) (s : Γ(F, U)) : F.presheaf.map (homOfLE h).op s = s := by
   have : (homOfLE h).op = 𝟙 (op U) := rfl
   rw [this, F.presheaf.map_id]; rfl
 
+/- English proof (translation)
+Rewrite using `[← X.presheaf.map_comp_apply]`. Both sides reduce to the same expression.
+-/
 theorem res_res_ring (h : V ≤ U) (h' : W ≤ V) (s : Γ(X, U)) :
     X.presheaf.map (homOfLE h').op (X.presheaf.map (homOfLE h).op s) =
       X.presheaf.map (homOfLE (h'.trans h)).op s := by
   rw [← X.presheaf.map_comp_apply]; rfl
 
+/- English proof (translation)
+Establish `: (homOfLE h).op = 𝟙 (op U)` using `rfl`. Rewrite using `[this, X.presheaf.map_id]`. Both sides reduce to the same expression.
+-/
 theorem res_self_ring (h : U ≤ U) (s : Γ(X, U)) : X.presheaf.map (homOfLE h).op s = s := by
   have : (homOfLE h).op = 𝟙 (op U) := rfl
   rw [this, X.presheaf.map_id]; rfl
 
+/- English proof (translation)
+Rewrite using `[← res_res_ring (X.basicOpen_le f) hV]`. Conclude with `(X.toRingedSpace.isUnit_res_basicOpen f).map _`.
+-/
 theorem isUnit_res_of_le_basicOpen (f : Γ(X, U)) (h : V ≤ U) (hV : V ≤ X.basicOpen f) :
     IsUnit (X.presheaf.map (homOfLE h).op f) := by
   rw [← res_res_ring (X.basicOpen_le f) hV]
   exact (X.toRingedSpace.isUnit_res_basicOpen f).map _
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce `h`. Use `⟨fun s ↦ ?_, fun t ht ↦ ?_⟩` and prove the remaining obligations. Take `⟨n, t, ht⟩` from `IsLocalizedModule.Away.surj (resBasicOpen F f) f s`. Conclude with `⟨n, t, by rw [← map_pow]; exact ht⟩`.
+
+Take `⟨n, hn⟩` from `IsLocalizedModule.Away.exists_of_eq (f := resBasicOpen F f) f (x := t) (y := 0) (by rw [map_zero]; exact ht)`. Conclude with `⟨n, by simpa using hn⟩`. Introduce and unpack `⟨h₁, h₂⟩`. Use `IsLocalizedModule.Away.mk_of_addCommGroup ?_ (fun s ↦ ?_) h₂` and prove the remaining obligations. Use `(isUnit_res_of_le_basicOpen f (X.basicOpen_le f) le_rfl).map (algebraMap Γ(X, X.basicOpen f) (Module.End Γ(X, X.basicOpen f) Γ(F, X.basicOpen f)))` as an intermediate fact.
+
+Rewrite `this`, the goal using `[Module.End.isUnit_iff]`. Conclude with `this`. Take `⟨n, t, ht⟩` from `h₁ s`. Conclude with `⟨n, t, by rw [← map_pow] at ht; exact ht⟩`.
+-/
 theorem isLocalizedModule_resBasicOpen_iff (f : Γ(X, U)) :
     IsLocalizedModule.Away f (resBasicOpen F f) ↔
       (∀ s : Γ(F, X.basicOpen f), ∃ (n : ℕ) (t : Γ(F, U)),
@@ -105,9 +139,15 @@ section Spec
 
 variable (hU : IsAffineOpen U)
 
+/- English proof (translation)
+The claim follows from `(hU.fromSpec.image_le_opensRange W).trans hU.opensRange_fromSpec.le`.
+-/
 theorem fromSpec_image_le (W : (Spec Γ(X, U)).Opens) : hU.fromSpec ''ᵁ W ≤ U :=
   (hU.fromSpec.image_le_opensRange W).trans hU.opensRange_fromSpec.le
 
+/- English proof (translation)
+Establish `: X.presheaf.map (homOfLE (fromSpec_image_le hU W)).op ≫ (hU.fromSpec.appIso W).hom = (Scheme.ΓSpecIso Γ(X, U)).inv ≫ (Spec Γ(X, U)).presheaf.map W.leTop.op`. Rewrite using `[Scheme.Hom.appIso_hom', Scheme.Hom.map_appLE, Scheme.Hom.appLE, hU.fromSpec_app_self, Category.assoc, ← Functor.map_comp]`. Both sides reduce to the same expression. Rewrite using `[← ConcreteCategory.comp_apply, ← ConcreteCategory.comp_apply, ← Category.assoc, ← this]`. Simplify using the standard rewrite rules.
+-/
 theorem fromSpec_appIso_inv_res (W : (Spec Γ(X, U)).Opens) (r : Γ(X, U)) :
     (hU.fromSpec.appIso W).inv
       ((Spec Γ(X, U)).presheaf.map W.leTop.op ((Scheme.ΓSpecIso Γ(X, U)).inv r)) =
@@ -120,6 +160,9 @@ theorem fromSpec_appIso_inv_res (W : (Spec Γ(X, U)).Opens) (r : Γ(X, U)) :
   rw [← ConcreteCategory.comp_apply, ← ConcreteCategory.comp_apply, ← Category.assoc, ← this]
   simp
 
+/- English proof (translation)
+Rewrite using `[← fromSpec_appIso_inv_res]`. Both sides reduce to the same expression.
+-/
 theorem restrict_fromSpec_smul (W : (Spec Γ(X, U)).Opens) (r : Γ(X, U))
     (s : Γ(F.restrict hU.fromSpec, W)) :
     (F.restrictAppIso hU.fromSpec W).hom (r • s) =
@@ -128,6 +171,17 @@ theorem restrict_fromSpec_smul (W : (Spec Γ(X, U)).Opens) (r : Γ(X, U))
   rw [← fromSpec_appIso_inv_res]
   rfl
 
+/- English proof (translation)
+Use `forall_congr' fun f ↦ ?_` and prove the remaining obligations. Rewrite using `[isLocalizedModule_resBasicOpen_iff]`. Establish `key : ∀ (U' V' : X.Opens) (hU' : U' ≤ U) (hV' : V' ≤ U'), U' = U → V' = X.basicOpen f → (((∀ s : Γ(F, V'), ∃ (n : ℕ) (t : Γ(F, U')), X.presheaf.map (homOfLE (hV'.trans hU')).op (f ^ n) • s = F.presheaf.map (homOfLE hV').op t) ∧ (∀ t : Γ(F, U'), F.presheaf.map (homOfLE hV').op t = …`. Introduce `U' V' hU' hV' e e'`. Substitute `e e'` using the available equality.
+
+Simplify using `only [res_self_ring, map_pow]`. Rewrite using `[← key (hU.fromSpec ''ᵁ ⊤) (hU.fromSpec ''ᵁ PrimeSpectrum.basicOpen f) (fromSpec_image_le hU _) (hU.fromSpec.image_mono le_top) (by rw [Scheme.Hom.image_top_eq_opensRange, hU.opensRange_fromSpec]) (hU.fromSpec_image_basicOpen f)]`. Set `φ` to `((modulesSpecToSheaf.obj (F.restrict hU.fromSpec)).obj.map (PrimeSpectrum.basicOpen f).leTop.op).hom`. Prove the components needed by the constructor for the conclusion. Introduce `h`.
+
+Establish `h : IsLocalizedModule.Away f φ` using `h`. Use `⟨fun s ↦ ?_, fun t ht ↦ ?_⟩` and prove the remaining obligations. Take `⟨n, t, ht⟩` from `IsLocalizedModule.Away.surj φ f s`. Conclude with `⟨n, t, (restrict_fromSpec_smul F hU _ (f ^ n) s).symm.trans ht⟩`. Take `⟨n, hn⟩` from `IsLocalizedModule.Away.exists_of_eq (f := φ) f (x := t) (y := 0) (by rw [map_zero]; exact ht)`.
+
+Rewrite `hn` using `[smul_zero]`. Conclude with `⟨n, (restrict_fromSpec_smul F hU _ (f ^ n) t).symm.trans hn⟩`. Introduce and unpack `⟨h₁, h₂⟩`. Use `IsLocalizedModule.Away.mk_of_addCommGroup (f := φ) ?_ (fun s ↦ ?_) (fun t ht ↦ ?_)` and prove the remaining obligations. Conclude with `Scheme.Modules.isUnit_algebraMap_end_of_le_basicOpen f le_rfl`.
+
+Take `⟨n, t, ht⟩` from `h₁ s`. Conclude with `⟨n, t, (restrict_fromSpec_smul F hU _ (f ^ n) s).trans ht⟩`. Take `⟨n, hn⟩` from `h₂ t ht`. Conclude with `⟨n, (restrict_fromSpec_smul F hU _ (f ^ n) t).trans hn⟩`.
+-/
 theorem isLocalizing_restrict_fromSpec_iff :
     IsLocalizing (modulesSpecToSheaf.obj (F.restrict hU.fromSpec)) ↔
       ∀ f : Γ(X, U), IsLocalizedModule.Away f (resBasicOpen F f) := by
@@ -173,18 +227,27 @@ theorem isLocalizing_restrict_fromSpec_iff :
 
 end Spec
 
+/- English proof (translation)
+Rewrite using `[isQuasicoherent_iff_isIso_fromTildeΓ, isIso_fromTildeΓ_iff_isLocalizing, isLocalizing_restrict_fromSpec_iff]`.
+-/
 theorem isQuasicoherent_restrict_fromSpec_iff (hU : IsAffineOpen U) :
     (F.restrict hU.fromSpec).IsQuasicoherent ↔
       ∀ f : Γ(X, U), IsLocalizedModule.Away f (resBasicOpen F f) := by
   rw [isQuasicoherent_iff_isIso_fromTildeΓ, isIso_fromTildeΓ_iff_isLocalizing,
     isLocalizing_restrict_fromSpec_iff]
 
+/- English proof (translation)
+The claim follows from `(isQuasicoherent_restrict_fromSpec_iff F hU).mp inferInstance f`.
+-/
 theorem isLocalizedModule_resBasicOpen [F.IsQuasicoherent] (hU : IsAffineOpen U) (f : Γ(X, U)) :
     IsLocalizedModule.Away f (resBasicOpen F f) :=
   (isQuasicoherent_restrict_fromSpec_iff F hU).mp inferInstance f
 
 set_option backward.isDefEq.respectTransparency false in
 
+/- English proof (translation)
+The claim follows from `haveI := Scheme.Modules.isIso_fromTildeΓ_of_isQuasicoherent M ⟨SheafOfModules.Presentation.ofIsIso.{u, u, u} M.fromTildeΓ (presentationTilde.{u} _ .univ (by simp) _ (Submodule.span_eq _))⟩`.
+-/
 theorem nonempty_presentation_Spec {R : CommRingCat.{u}} (M : (Spec R).Modules)
     [M.IsQuasicoherent] : Nonempty M.Presentation :=
   haveI := Scheme.Modules.isIso_fromTildeΓ_of_isQuasicoherent M
@@ -192,6 +255,9 @@ theorem nonempty_presentation_Spec {R : CommRingCat.{u}} (M : (Spec R).Modules)
     (presentationTilde.{u} _ .univ (by simp) _ (Submodule.span_eq _))⟩
 
 set_option backward.isDefEq.respectTransparency false in
+/- English proof (translation)
+Set `e` to `Scheme.Modules.overEquiv U`. Establish `: Limits.PreservesColimitsOfSize.{u, u} e.inverse` using `inferInstance`. Set `iso : e.inverse.obj (F.restrict U.ι) ≅ F.over U` to `e.inverse.mapIso ((Scheme.Modules.overFunctorEquiv U).app F).symm ≪≫ (e.unitIso.app (F.over U)).symm`. Conclude with `⟨SheafOfModules.Presentation.ofIsIso.{u, u, u} iso.hom (P.map e.inverse (U.sheafOfModulesEquivOverInverseUnit X.ringCatSheaf).symm)⟩`.
+-/
 theorem nonempty_presentation_over_of_restrict (P : (F.restrict U.ι).Presentation) :
     Nonempty (F.over U).Presentation := by
   let e := Scheme.Modules.overEquiv U
@@ -203,6 +269,9 @@ theorem nonempty_presentation_over_of_restrict (P : (F.restrict U.ι).Presentati
     (P.map e.inverse (U.sheafOfModulesEquivOverInverseUnit X.ringCatSheaf).symm)⟩
 
 set_option backward.isDefEq.respectTransparency false in
+/- English proof (translation)
+Take `⟨P⟩` from `nonempty_presentation_Spec (F.restrict hU.fromSpec)`. Set `iso : Scheme.Modules.restrictFunctor hU.fromSpec ⋙ Scheme.Modules.restrictFunctor hU.isoSpec.hom ≅ Scheme.Modules.restrictFunctor U.ι` to `(Scheme.Modules.restrictFunctorComp _ _).symm ≪≫ Scheme.Modules.restrictFunctorCongr hU.isoSpec_hom_fromSpec`. Conclude with `⟨SheafOfModules.Presentation.ofIsIso.{u, u, u} (iso.app F).hom (Scheme.Modules.presentationRestrict hU.isoSpec.hom P)⟩`.
+-/
 theorem nonempty_presentation_restrict_ι (hU : IsAffineOpen U)
     [(F.restrict hU.fromSpec).IsQuasicoherent] : Nonempty (F.restrict U.ι).Presentation := by
   obtain ⟨P⟩ := nonempty_presentation_Spec (F.restrict hU.fromSpec)
@@ -215,6 +284,11 @@ theorem nonempty_presentation_restrict_ι (hU : IsAffineOpen U)
 
 set_option backward.isDefEq.respectTransparency false in
 
+/- English proof (translation)
+Establish `H (i : ι) : Nonempty (F.over (𝒰 i)).Presentation`. Use `(isQuasicoherent_restrict_fromSpec_iff F (haff i)).mpr (h i)` as an intermediate fact. Take `⟨P⟩` from `nonempty_presentation_restrict_ι F (haff i)`. Conclude with `nonempty_presentation_over_of_restrict F P`. Use `SheafOfModules.QuasicoherentData.isQuasicoherent (M := F) { I := ι, X := 𝒰, coversTop := ?_, presentation := fun i ↦ (H i).some }` and prove the remaining obligations.
+
+Rewrite using `[Opens.coversTop_iff]`. Conclude with `hcov`.
+-/
 theorem isQuasicoherent_of_affineCover {ι : Type*} (𝒰 : ι → X.Opens) (hcov : IsOpenCover 𝒰)
     (haff : ∀ i, IsAffineOpen (𝒰 i))
     (h : ∀ i (f : Γ(X, 𝒰 i)), IsLocalizedModule.Away f (resBasicOpen F f)) :
@@ -228,6 +302,9 @@ theorem isQuasicoherent_of_affineCover {ι : Type*} (𝒰 : ι → X.Opens) (hco
   rw [Opens.coversTop_iff]
   exact hcov
 
+/- English proof (translation)
+Use `choose 𝒰 haff hx hloc using h`. Use `isQuasicoherent_of_affineCover F 𝒰 ?_ haff hloc` and prove the remaining obligations. Rewrite using `[IsOpenCover, eq_top_iff]`. Conclude with `fun x _ ↦ Opens.mem_iSup.mpr ⟨x, hx x⟩`.
+-/
 theorem isQuasicoherent_of_forall_exists_affine
     (h : ∀ x : X, ∃ U : X.Opens, IsAffineOpen U ∧ x ∈ U ∧
       ∀ f : Γ(X, U), IsLocalizedModule.Away f (resBasicOpen F f)) :
@@ -237,6 +314,9 @@ theorem isQuasicoherent_of_forall_exists_affine
   rw [IsOpenCover, eq_top_iff]
   exact fun x _ ↦ Opens.mem_iSup.mpr ⟨x, hx x⟩
 
+/- English proof (translation)
+Use `⟨fun _ U hU f ↦ isLocalizedModule_resBasicOpen F hU f, fun h ↦ ?_⟩` and prove the remaining obligations. Use `isQuasicoherent_of_forall_exists_affine F fun x ↦ ?_` and prove the remaining obligations. Take `⟨_, ⟨U, hU, rfl⟩, hx, -⟩` from `X.isBasis_affineOpens.exists_subset_of_mem_open (Set.mem_univ x) isOpen_univ`. Conclude with `⟨U, hU, hx, h U hU⟩`.
+-/
 theorem isQuasicoherent_iff_forall_affine :
     F.IsQuasicoherent ↔ ∀ U : X.Opens, IsAffineOpen U →
       ∀ f : Γ(X, U), IsLocalizedModule.Away f (resBasicOpen F f) := by
@@ -246,6 +326,9 @@ theorem isQuasicoherent_iff_forall_affine :
     X.isBasis_affineOpens.exists_subset_of_mem_open (Set.mem_univ x) isOpen_univ
   exact ⟨U, hU, hx, h U hU⟩
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fun _ i f ↦ isLocalizedModule_resBasicOpen F (haff i) f, isQuasicoherent_of_affineCover F 𝒰 hcov haff⟩`.
+-/
 theorem isQuasicoherent_iff_affineCover {ι : Type*} (𝒰 : ι → X.Opens) (hcov : IsOpenCover 𝒰)
     (haff : ∀ i, IsAffineOpen (𝒰 i)) :
     F.IsQuasicoherent ↔ ∀ i (f : Γ(X, 𝒰 i)), IsLocalizedModule.Away f (resBasicOpen F f) :=
@@ -254,6 +337,13 @@ theorem isQuasicoherent_iff_affineCover {ι : Type*} (𝒰 : ι → X.Opens) (hc
 
 set_option backward.isDefEq.respectTransparency false in
 
+/- English proof (translation)
+Use `isQuasicoherent_of_forall_exists_affine F fun x ↦ ?_` and prove the remaining obligations. Take `⟨i, hi⟩` from `hcov x`. Take `⟨_, ⟨U, hU, rfl⟩, hx, hUi⟩` from `X.isBasis_affineOpens.exists_subset_of_mem_open hi (g i).opensRange.2`. Establish `hU : IsAffineOpen U` using `hU`. Use `⟨U, hU, hx, (isQuasicoherent_restrict_fromSpec_iff F hU).mp ?_⟩` and prove the remaining obligations.
+
+Establish `hr : Set.range hU.fromSpec ⊆ Set.range (g i)`. Rewrite using `[hU.range_fromSpec]`. Conclude with `hUi`. Set `l` to `IsOpenImmersion.lift (g i) hU.fromSpec hr`. Establish `hl : l ≫ g i = hU.fromSpec` using `IsOpenImmersion.lift_fac _ _ _`.
+
+Establish `: IsOpenImmersion (l ≫ g i)` using `hl ▸ inferInstance`. Establish `: IsOpenImmersion l` using `IsOpenImmersion.of_comp l (g i)`. Set `iso : Scheme.Modules.restrictFunctor (g i) ⋙ Scheme.Modules.restrictFunctor l ≅ Scheme.Modules.restrictFunctor hU.fromSpec` to `(Scheme.Modules.restrictFunctorComp _ _).symm ≪≫ Scheme.Modules.restrictFunctorCongr hl`. Use `h i` as an intermediate fact. Conclude with `(SheafOfModules.isQuasicoherent (Spec Γ(X, U)).ringCatSheaf).prop_of_iso (iso.app F) (inferInstanceAs ((F.restrict (g i)).restrict l).IsQuasicoherent)`.
+-/
 theorem isQuasicoherent_of_restrict {ι : Type*} {Y : ι → Scheme.{u}} (g : ∀ i, Y i ⟶ X)
     [∀ i, IsOpenImmersion (g i)] (hcov : ∀ x : X, ∃ i, x ∈ (g i).opensRange)
     (h : ∀ i, (F.restrict (g i)).IsQuasicoherent) : F.IsQuasicoherent := by
@@ -280,6 +370,9 @@ section Elementwise
 
 variable [F.IsQuasicoherent]
 
+/- English proof (translation)
+Substitute `hV` using the available equality. Conclude with `((isLocalizedModule_resBasicOpen_iff F f).mp (isLocalizedModule_resBasicOpen F hU f)).1 s`.
+-/
 theorem exists_pow_smul_eq_res (hU : IsAffineOpen U) (f : Γ(X, U)) (h : V ≤ U)
     (hV : V = X.basicOpen f) (s : Γ(F, V)) :
     ∃ (n : ℕ) (t : Γ(F, U)),
@@ -287,12 +380,18 @@ theorem exists_pow_smul_eq_res (hU : IsAffineOpen U) (f : Γ(X, U)) (h : V ≤ U
   subst hV
   exact ((isLocalizedModule_resBasicOpen_iff F f).mp (isLocalizedModule_resBasicOpen F hU f)).1 s
 
+/- English proof (translation)
+Substitute `hV` using the available equality. Conclude with `((isLocalizedModule_resBasicOpen_iff F f).mp (isLocalizedModule_resBasicOpen F hU f)).2 t ht`.
+-/
 theorem exists_pow_smul_eq_zero (hU : IsAffineOpen U) (f : Γ(X, U)) (h : V ≤ U)
     (hV : V = X.basicOpen f) (t : Γ(F, U)) (ht : F.presheaf.map (homOfLE h).op t = 0) :
     ∃ n : ℕ, f ^ n • t = 0 := by
   subst hV
   exact ((isLocalizedModule_resBasicOpen_iff F f).mp (isLocalizedModule_resBasicOpen F hU f)).2 t ht
 
+/- English proof (translation)
+Substitute `hV` using the available equality. Conclude with `isLocalizedModule_resBasicOpen F hU f`.
+-/
 theorem isLocalizedModule_resLinear (hU : IsAffineOpen U) (f : Γ(X, U)) (h : V ≤ U)
     (hV : V = X.basicOpen f) :
     letI := resModule F h
@@ -300,6 +399,11 @@ theorem isLocalizedModule_resLinear (hU : IsAffineOpen U) (f : Γ(X, U)) (h : V 
   subst hV
   exact isLocalizedModule_resBasicOpen F hU f
 
+/- English proof (translation)
+Use `IsLocalizedModule.Away.mk_of_addCommGroup ?_ (fun s ↦ ?_) (fun t ht ↦ ?_)` and prove the remaining obligations. Use `(isUnit_res_of_le_basicOpen (φ a) h hV.le).map (algebraMap Γ(X, V) (Module.End Γ(X, V) Γ(F, V)))` as an intermediate fact. Rewrite `this`, the goal using `[Module.End.isUnit_iff]`. Use `this using 1` and compare the differences between its conclusion and the goal. Use extensionality with `s`.
+
+Conclude with `hsV a s`. Take `⟨n, t, ht⟩` from `exists_pow_smul_eq_res F hU (φ a) h hV s`. Conclude with `⟨n, t, by rw [hsV, hl, map_pow, map_pow, ht]⟩`. Take `⟨n, hn⟩` from `exists_pow_smul_eq_zero F hU (φ a) h hV t (by rw [← hl, ht])`. Conclude with `⟨n, by rw [hsU, map_pow, hn]⟩`.
+-/
 theorem isLocalizedModule_of_ringHom (hU : IsAffineOpen U) {A : Type*} [CommRing A]
     (φ : A →+* Γ(X, U)) (a : A) (h : V ≤ U) (hV : V = X.basicOpen (φ a))
     [Module A Γ(F, U)] [Module A Γ(F, V)]
@@ -323,6 +427,11 @@ end Elementwise
 
 section Algebra
 
+/- English proof (translation)
+Use `bijective_of_isLocalized_span s hs P (fun b ↦ g b ∘ₗ φ) P g φ fun b ↦ ?_` and prove the remaining obligations. Establish `: IsLocalizedModule.map (.powers b.1) (g b ∘ₗ φ) (g b) φ = LinearMap.id`. Use `IsLocalizedModule.linearMap_ext (.powers b.1) (g b ∘ₗ φ) (g b) ?_` and prove the remaining obligations. Rewrite using `[IsLocalizedModule.map_comp]`. Both sides reduce to the same expression.
+
+Rewrite using `[this]`. Conclude with `Function.bijective_id`.
+-/
 theorem bijective_of_isLocalizedModule_comp {B M N : Type*} [CommRing B] [AddCommGroup M]
     [Module B M] [AddCommGroup N] [Module B N] (φ : M →ₗ[B] N) (s : Set B)
     (hs : Ideal.span s = ⊤) (P : s → Type*) [∀ b, AddCommGroup (P b)] [∀ b, Module B (P b)]
@@ -336,6 +445,9 @@ theorem bijective_of_isLocalizedModule_comp {B M N : Type*} [CommRing B] [AddCom
   rw [this]
   exact Function.bijective_id
 
+/- English proof (translation)
+Rewrite using `[isLocalizedModule_iff_isBaseChange S C]`. Use `(TensorProduct.isBaseChange A M B).of_comp ?_` and prove the remaining obligations. Use `h using 1` and compare the differences between its conclusion and the goal. Use extensionality with `m`. Simplify using the standard rewrite rules.
+-/
 theorem isLocalizedModule_comp_liftBaseChange {A B M N P : Type*} (C : Type*) [CommRing A]
     [CommRing B] [CommRing C] [Algebra A B] [Algebra A C] [Algebra B C] [IsScalarTower A B C]
     [AddCommGroup M] [Module A M] [AddCommGroup N] [Module A N] [Module B N]
@@ -352,6 +464,9 @@ theorem isLocalizedModule_comp_liftBaseChange {A B M N P : Type*} (C : Type*) [C
 
 end Algebra
 
+/- English proof (translation)
+The claim follows from `res_isScalarTower F h IsBaseChange Γ(X, V) (resLinear F h) := by letI := resAlgebra h letI := resModule F h haveI := res_isScalarTower F h let s : Set Γ(X, V) := {b | ∃ f : Γ(X, U), X.basicOpen b = X.basicOpen f} have hs : Ideal.span s = ⊤ := by rw [← hV.self_le_iSup_basicOpen_if …`.
+-/
 theorem isBaseChange_resLinear [F.IsQuasicoherent] (hU : IsAffineOpen U) (hV : IsAffineOpen V)
     (h : V ≤ U) :
     letI := resAlgebra h
@@ -395,6 +510,11 @@ theorem isBaseChange_resLinear [F.IsQuasicoherent] (hU : IsAffineOpen U) (hV : I
     (fun b ↦ Γ(F, X.basicOpen b.1)) (fun b ↦ resBasicOpen F b.1)
   exact IsBaseChange.of_equiv (LinearEquiv.ofBijective _ hbij) fun t ↦ by simp
 
+/- English proof (translation)
+Take `rfl : mod = resModule F h` from `Module.ext' _ _ fun r s ↦ by`. Rewrite using `[resModule_smul, ← halg, algebraMap_smul]`. Take `rfl : alg = resAlgebra h` from `Algebra.algebra_ext _ _ halg`. Use `letI := resModule F h`. Take `rfl : l = resLinear F h` from `LinearMap.ext hl`.
+
+Conclude with `isBaseChange_resLinear F hU hV h`.
+-/
 theorem isBaseChange_of_eq_res [F.IsQuasicoherent] (hU : IsAffineOpen U) (hV : IsAffineOpen V)
     (h : V ≤ U) [alg : Algebra Γ(X, U) Γ(X, V)] [mod : Module Γ(X, U) Γ(F, V)]
     [IsScalarTower Γ(X, U) Γ(X, V) Γ(F, V)]
@@ -408,6 +528,9 @@ theorem isBaseChange_of_eq_res [F.IsQuasicoherent] (hU : IsAffineOpen U) (hV : I
   obtain rfl : l = resLinear F h := LinearMap.ext hl
   exact isBaseChange_resLinear F hU hV h
 
+/- English proof (translation)
+The claim follows from `res_isScalarTower F h IsBaseChange Γ(X, V) (resLinear F h) := by refine ⟨fun _ _ _ hU hV h ↦ isBaseChange_resLinear F hU hV h, fun H ↦ ?_⟩ refine (isQuasicoherent_iff_forall_affine F).mpr fun U hU f ↦ ?_ haveI := hU.isLocalization_basicOpen f exact (isLocalizedModule_iff_isBaseCh …`.
+-/
 theorem isQuasicoherent_iff_isBaseChange :
     F.IsQuasicoherent ↔ ∀ (U V : X.Opens), IsAffineOpen U → IsAffineOpen V → ∀ h : V ≤ U,
       letI := resAlgebra h
@@ -426,6 +549,9 @@ instance stalkModule (x : X) : Module (X.presheaf.stalk x) (F.presheaf.stalk x :
   PresheafOfModules.instModuleCarrierStalkCommRingCatCarrierAbPresheafOpensCarrier
     (R := X.presheaf) F.val x
 
+/- English proof (translation)
+The claim follows from `PresheafOfModules.germ_smul (R := X.presheaf) F.val x U hx r s`.
+-/
 theorem germ_smul (x : X) (hx : x ∈ U) (r : Γ(X, U)) (s : Γ(F, U)) :
     F.presheaf.germ U x hx (r • s) = X.presheaf.germ U x hx r • F.presheaf.germ U x hx s :=
   PresheafOfModules.germ_smul (R := X.presheaf) F.val x U hx r s
@@ -433,6 +559,9 @@ theorem germ_smul (x : X) (hx : x ∈ U) (r : Γ(X, U)) (s : Γ(F, U)) :
 instance stalkModuleSections (x : U) : Module Γ(X, U) (F.presheaf.stalk (x : X) :) :=
   Module.compHom _ (X.presheaf.germ U x x.2).hom
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem stalkModuleSections_smul (x : U) (r : Γ(X, U)) (t : (F.presheaf.stalk (x : X) :)) :
     r • t = X.presheaf.germ U x x.2 r • t := rfl
 
@@ -446,9 +575,15 @@ def germLinear (x : U) : Γ(F, U) →ₗ[Γ(X, U)] (F.presheaf.stalk (x : X) :) 
   map_smul' r s := germ_smul F x x.2 r s
 
 @[simp]
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem germLinear_apply (x : U) (s : Γ(F, U)) :
     germLinear F x s = F.presheaf.germ U x x.2 s := rfl
 
+/- English proof (translation)
+Use `hU.isLocalization_stalk x` as an intermediate fact. Rewrite using `[X.mem_basicOpen']`. Conclude with `(IsLocalization.AtPrime.isUnit_to_map_iff (X.presheaf.stalk (x : X)) (hU.primeIdealOf x).asIdeal f).symm`.
+-/
 theorem mem_primeCompl_primeIdealOf_iff (hU : IsAffineOpen U) (x : U) (f : Γ(X, U)) :
     f ∈ (hU.primeIdealOf x).asIdeal.primeCompl ↔ (x : X) ∈ X.basicOpen f := by
   have := hU.isLocalization_stalk x
@@ -456,6 +591,17 @@ theorem mem_primeCompl_primeIdealOf_iff (hU : IsAffineOpen U) (x : U) (f : Γ(X,
   exact (IsLocalization.AtPrime.isUnit_to_map_iff (X.presheaf.stalk (x : X))
     (hU.primeIdealOf x).asIdeal f).symm
 
+/- English proof (translation)
+Establish `hr` using `(X.mem_basicOpen' r.1 x).mp ((mem_primeCompl_primeIdealOf_iff hU x r.1).mp r.2)`. Use `hr.map (algebraMap (X.presheaf.stalk (x : X)) (Module.End (X.presheaf.stalk (x : X)) (F.presheaf.stalk (x : X) :)))` as an intermediate fact. Rewrite `this`, the goal using `[Module.End.isUnit_iff]`. Conclude with `this`. Use `surj t := by`.
+
+Take `⟨W, hxW, s, rfl⟩` from `F.presheaf.exists_germ_eq t`. Take `⟨f, hfW, hxf⟩` from `hU.exists_basicOpen_le (V := W) ⟨x, hxW⟩ x.2`. Take `⟨n, t, ht⟩` from `exists_pow_smul_eq_res F hU f (X.basicOpen_le f) rfl (F.presheaf.map (homOfLE hfW).op s)`. Use `⟨⟨t, ⟨f ^ n, pow_mem ((mem_primeCompl_primeIdealOf_iff hU x f).mpr hxf) n⟩⟩, ?_⟩` and prove the remaining obligations. Use `congr(F.presheaf.germ _ x hxf $ht)` as an intermediate fact.
+
+Rewrite `this` using `[germ_smul, TopCat.Presheaf.germ_res_apply, TopCat.Presheaf.germ_res_apply, ← map_pow, TopCat.Presheaf.germ_res_apply]`. Conclude with `this`. Use `exists_of_eq {s t} e := by`. Take `⟨W, hxW, i, j, e'⟩` from `F.presheaf.germ_eq x x.2 x.2 s t e`. Take `⟨f, hfW, hxf⟩` from `hU.exists_basicOpen_le (V := W) ⟨x, hxW⟩ x.2`.
+
+Take `⟨n, hn⟩` from `exists_pow_smul_eq_zero F hU f (X.basicOpen_le f) rfl (s - t) (by`. Establish `e'' : F.presheaf.map (homOfLE i.le).op s = F.presheaf.map (homOfLE i.le).op t` using `e'`. Rewrite using `[← res_res F i.le hfW, map_sub, e'', sub_self, map_zero])`. Use `⟨⟨f ^ n, pow_mem ((mem_primeCompl_primeIdealOf_iff hU x f).mpr hxf) n⟩, ?_⟩` and prove the remaining obligations. Rewrite `hn` using `[smul_sub, sub_eq_zero]`.
+
+Conclude with `hn`.
+-/
 theorem isLocalizedModule_germLinear [F.IsQuasicoherent] (hU : IsAffineOpen U) (x : U) :
     IsLocalizedModule (hU.primeIdealOf x).asIdeal.primeCompl (germLinear F x) where
   map_units r := by
@@ -484,6 +630,9 @@ theorem isLocalizedModule_germLinear [F.IsQuasicoherent] (hU : IsAffineOpen U) (
     rw [smul_sub, sub_eq_zero] at hn
     exact hn
 
+/- English proof (translation)
+The claim follows from `haveI := hU.isLocalization_stalk x (isLocalizedModule_iff_isBaseChange (hU.primeIdealOf x).asIdeal.primeCompl _ _).mp (isLocalizedModule_germLinear F hU x)`.
+-/
 theorem isBaseChange_germLinear [F.IsQuasicoherent] (hU : IsAffineOpen U) (x : U) :
     IsBaseChange (X.presheaf.stalk (x : X)) (germLinear F x) :=
   haveI := hU.isLocalization_stalk x
@@ -492,6 +641,9 @@ theorem isBaseChange_germLinear [F.IsQuasicoherent] (hU : IsAffineOpen U) (x : U
 
 end Stalk
 
+/- English proof (translation)
+Use `tfae_have 1 ↔ 2 := isQuasicoherent_iff_forall_affine F`. Use `tfae_have 2 → 3 := fun h ↦ ⟨X.affineOpens, fun i ↦ i.1, iSup_affineOpens_eq_top X, fun i ↦ i.2, fun i ↦ h i.1 i.2⟩`. Use `tfae_have 3 → 1 := fun ⟨_, 𝒰, hcov, haff, h⟩ ↦ isQuasicoherent_of_affineCover F 𝒰 hcov haff h`. Use `tfae_finish`.
+-/
 theorem isQuasicoherent_tfae :
     List.TFAE [F.IsQuasicoherent,
       ∀ U : X.Opens, IsAffineOpen U →
@@ -504,6 +656,9 @@ theorem isQuasicoherent_tfae :
   tfae_have 3 → 1 := fun ⟨_, 𝒰, hcov, haff, h⟩ ↦ isQuasicoherent_of_affineCover F 𝒰 hcov haff h
   tfae_finish
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨isQuasicoherent_iff_forall_affine F, fun _ ↦ isQuasicoherent_iff_affineCover F, fun _ _ _ hU hV h ↦ isBaseChange_resLinear F hU hV h, fun _ _ hU x ↦ isLocalizedModule_germLinear F hU x⟩`.
+-/
 theorem quasicoherent_local :
     (F.IsQuasicoherent ↔ ∀ U : X.Opens, IsAffineOpen U →
       ∀ f : Γ(X, U), IsLocalizedModule.Away f (resBasicOpen F f)) ∧

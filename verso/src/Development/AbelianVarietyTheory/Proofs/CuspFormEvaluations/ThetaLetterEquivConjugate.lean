@@ -13,11 +13,17 @@ variable {ι : Type} {σ : ι → ι} {Ψ : ι → Prop} {dim : ι → ℕ} {p q
   (hσ : Function.Involutive σ) (hΨ : ∀ τ, ¬ Ψ τ ↔ Ψ (σ τ))
   (hp : ∀ τ, Ψ τ → dim τ = p) (hq : ∀ τ, Ψ τ → dim (σ τ) = q) (n : ℕ)
 
+/- English proof (translation)
+Unfold `halfRowEquiv`. Simplify using `only [Equiv.coe_fn_mk, dif_pos h]`.
+-/
 theorem halfRowEquiv_of_mem {τ : ι} (h : Ψ τ) (i : Fin (dim τ)) :
     halfRowEquiv hσ hΨ hp hq ⟨τ, i⟩ = (⟨τ, h⟩, Sum.inl (i.cast (hp _ h))) := by
   unfold halfRowEquiv
   simp only [Equiv.coe_fn_mk, dif_pos h]
 
+/- English proof (translation)
+Establish `hn : ¬ Ψ (σ τ)` using `fun h' => (hΨ τ).2 h' h`. Unfold `halfRowEquiv`. Simplify using `only [Equiv.coe_fn_mk, dif_neg hn]`. Conclude with `Prod.ext (Subtype.ext (hσ τ)) rfl`.
+-/
 theorem halfRowEquiv_invol {τ : ι} (h : Ψ τ) (i : Fin (dim (σ τ))) :
     halfRowEquiv hσ hΨ hp hq ⟨σ τ, i⟩ = (⟨τ, h⟩, Sum.inr (i.cast (hq _ h))) := by
   have hn : ¬ Ψ (σ τ) := fun h' => (hΨ τ).2 h' h
@@ -32,6 +38,9 @@ noncomputable def typeLetterEquiv : Formalism.L2.Pj.Letter ι dim n ≃ Var {τ 
 
 variable {n}
 
+/- English proof (translation)
+Use `show Equiv.prodAssoc _ _ _ (halfRowEquiv hσ hΨ hp hq ⟨τ, i⟩, b) = (t, r, b)`. Rewrite using `[h]`. Both sides reduce to the same expression.
+-/
 theorem typeLetterEquiv_apply {τ : ι} {i : Fin (dim τ)} {t : {τ // Ψ τ}} {r : Fin p ⊕ Fin q}
     (h : halfRowEquiv hσ hΨ hp hq ⟨τ, i⟩ = (t, r)) (b : Fin n) :
     typeLetterEquiv hσ hΨ hp hq n ⟨τ, i, b⟩ = (t, r, b) := by
@@ -41,6 +50,9 @@ theorem typeLetterEquiv_apply {τ : ι} {i : Fin (dim τ)} {t : {τ // Ψ τ}} {
 
 include hσ hΨ in
 
+/- English proof (translation)
+Distinguish the cases in `h : Ψ τ`. Conclude with `Or.inl h`. Conclude with `Or.inr ⟨σ τ, (hΨ τ).1 h, (hσ τ).symm⟩`.
+-/
 theorem half_cases (τ : ι) : Ψ τ ∨ ∃ τ', Ψ τ' ∧ τ = σ τ' := by
   by_cases h : Ψ τ
   · exact Or.inl h
@@ -48,6 +60,11 @@ theorem half_cases (τ : ι) : Ψ τ ∨ ∃ τ', Ψ τ' ∧ τ = σ τ' := by
 
 variable {K : Type} [Field K]
 
+/- English proof (translation)
+Establish `ex : ∀ b, typeLetterEquiv hσ hΨ hp hq n ⟨τ, i, b⟩ = xVar ⟨τ, h⟩ (i.cast (hp _ h)) b` using `fun b => typeLetterEquiv_apply hσ hΨ hp hq (halfRowEquiv_of_mem hσ hΨ hp hq h i) b`. Establish `ey : ∀ b, typeLetterEquiv hσ hΨ hp hq n ⟨σ τ, j, b⟩ = yVar ⟨τ, h⟩ (j.cast (hq _ h)) b` using `fun b => typeLetterEquiv_apply hσ hΨ hp hq (halfRowEquiv_invol hσ hΨ hp hq h j) b`. Rewrite using `[laplacian_apply]`. Simplify using `only [Formalism.L2.Pj.lap, Matrix.one_apply, ite_smul, one_smul, zero_smul, Finset.sum_ite_eq, Finset.mem_univ, if_true]`. Simplify using `only [LinearMap.sum_apply, LinearMap.comp_apply, Derivation.coeFn_coe, map_sum]`.
+
+Use `Finset.sum_congr rfl fun b _ => ?_` and prove the remaining obligations. Rewrite using `[← ex b, ← ey b, pderiv_rename (typeLetterEquiv hσ hΨ hp hq n).injective, pderiv_rename (typeLetterEquiv hσ hΨ hp hq n).injective]`.
+-/
 theorem rename_lap_one {τ : ι} (h : Ψ τ) (i : Fin (dim τ)) (j : Fin (dim (σ τ)))
     (P : MvPolynomial (Formalism.L2.Pj.Letter ι dim n) K) :
     rename (typeLetterEquiv hσ hΨ hp hq n) (Formalism.L2.Pj.lap dim n K 1 τ (σ τ) i j P) =
@@ -65,6 +82,13 @@ theorem rename_lap_one {τ : ι} (h : Ψ τ) (i : Fin (dim τ)) (j : Fin (dim (�
   rw [← ex b, ← ey b, pderiv_rename (typeLetterEquiv hσ hΨ hp hq n).injective,
     pderiv_rename (typeLetterEquiv hσ hΨ hp hq n).injective]
 
+/- English proof (translation)
+Establish `key : (rename (typeLetterEquiv hσ hΨ hp hq n)).comp (Formalism.L2.Pj.rowShift dim n K τ i i' s) = (rowAdd t r r' s).comp (rename (typeLetterEquiv hσ hΨ hp hq n))`. Use `MvPolynomial.algHom_ext fun ℓ => ?_` and prove the remaining obligations. Simplify using `only [AlgHom.comp_apply, rename_X, Formalism.L2.Pj.rowShift, aeval_X]`. Use `split_ifs with hl`. Take `⟨b, rfl⟩` from `hl`.
+
+Simplify using `only [map_add, map_mul, rename_C, rename_X]`. Rewrite using `[typeLetterEquiv_apply hσ hΨ hp hq h b, typeLetterEquiv_apply hσ hΨ hp hq h' b, rowAdd_X_self]`. Rewrite using `[rename_X]`. Break down `hx : typeLetterEquiv hσ hΨ hp hq n ℓ with ⟨t0, r0, k0⟩` into its components or cases. Use `(rowAdd_X_of_ne r s k0 fun ⟨h1, h2⟩ => hl ⟨k0, ?_⟩).symm` and prove the remaining obligations.
+
+Apply `(typeLetterEquiv hσ hΨ hp hq n).injective` to reduce the goal to its premises. Rewrite using `[hx, typeLetterEquiv_apply hσ hΨ hp hq h k0, h1, h2]`. Conclude with `DFunLike.congr_fun key P`.
+-/
 theorem rename_rowShift {τ : ι} {i i' : Fin (dim τ)} {t : {τ // Ψ τ}} {r r' : Fin p ⊕ Fin q}
     (h : halfRowEquiv hσ hΨ hp hq ⟨τ, i⟩ = (t, r')) (h' : halfRowEquiv hσ hΨ hp hq ⟨τ, i'⟩ = (t, r))
     (s : K) (P : MvPolynomial (Formalism.L2.Pj.Letter ι dim n) K) :
@@ -87,6 +111,11 @@ theorem rename_rowShift {τ : ι} {i i' : Fin (dim τ)} {t : {τ // Ψ τ}} {r r
       rw [hx, typeLetterEquiv_apply hσ hΨ hp hq h k0, h1, h2]
   exact DFunLike.congr_fun key P
 
+/- English proof (translation)
+Rewrite using `[isWeightedHomogeneous_rowInd_iff, support_rename_of_injective (typeLetterEquiv hσ hΨ hp hq n).injective]`. Simplify using `only [Finset.mem_image, forall_exists_index, and_imp, forall_apply_eq_imp_iff₂]`. Use `forall₂_congr fun m _ => ?_` and prove the remaining obligations. Establish `hk : ∀ k : Fin n, (Finsupp.mapDomain (typeLetterEquiv hσ hΨ hp hq n) m) (t, r, k) = m ⟨τ, i, k⟩` using `fun k => by`. Rewrite using `[← typeLetterEquiv_apply hσ hΨ hp hq h k, Finsupp.mapDomain_apply (typeLetterEquiv hσ hΨ hp hq n).injective]`.
+
+Simplify using `only [hk]`.
+-/
 theorem rowDeg_iff_rename {τ : ι} {i : Fin (dim τ)} {t : {τ // Ψ τ}} {r : Fin p ⊕ Fin q}
     (h : halfRowEquiv hσ hΨ hp hq ⟨τ, i⟩ = (t, r))
     (P : MvPolynomial (Formalism.L2.Pj.Letter ι dim n) K) (d : ℕ) :
@@ -103,6 +132,33 @@ theorem rowDeg_iff_rename {τ : ι} {i : Fin (dim τ)} {t : {τ // Ψ τ}} {r : 
       Finsupp.mapDomain_apply (typeLetterEquiv hσ hΨ hp hq n).injective]
   simp only [hk]
 
+/- English proof (translation)
+Establish `inj` using `rename_injective (R := K) _ (typeLetterEquiv hσ hΨ hp hq n).injective`. Establish `key : ∀ τ (i : Fin (dim τ)), Sum.elim (fun x : Fin p => a (halfRowEquiv hσ hΨ hp hq ⟨τ, i⟩).1.1 x) (fun y : Fin q => a (σ (halfRowEquiv hσ hΨ hp hq ⟨τ, i⟩).1.1) y) (halfRowEquiv hσ hΨ hp hq ⟨τ, i⟩).2 = a τ i`. Introduce `τ i`. Break down `half_cases hσ hΨ τ with h | ⟨τ', h', rfl⟩` into its components or cases. Rewrite using `[halfRowEquiv_of_mem hσ hΨ hp hq h]`.
+
+Simplify using the standard rewrite rules. Rewrite using `[halfRowEquiv_invol hσ hΨ hp hq h']`. Simplify using the standard rewrite rules. Establish `step : ∀ {τ : ι} {i i' : Fin (dim τ)} {t : {τ // Ψ τ}} {r r' : Fin p ⊕ Fin q}, halfRowEquiv hσ hΨ hp hq ⟨τ, i⟩ = (t, r') → halfRowEquiv hσ hΨ hp hq ⟨τ, i'⟩ = (t, r) → ∀ s : K, (Formalism.L2.Pj.rowShift dim n K τ i i' s P = P ↔ rowAdd t r r' s (rename (typeLetterEquiv hσ hΨ hp hq …`. Introduce `τ i i' t r r' h h' s`.
+
+Rewrite using `[← rename_rowShift hσ hΨ hp hq h h' s P]`. Conclude with `inj.eq_iff.symm`. Simplify using `only [Formalism.L2.Pj.HHa, Set.mem_setOf_eq, Formalism.L2.Pj.harmK, Formalism.L2.Pj.RowInv, Formalism.L2.Pj.RowDeg, Submodule.mem_iInf, LinearMap.mem_ker]`. Use `and_congr ?_ (and_comm.trans (and_congr ?_ ?_))` and prove the remaining obligations. Prove the components needed by the constructor for the conclusion.
+
+Introduce and unpack `hP ⟨τ, h⟩ x y`. Use `rename_lap_one hσ hΨ hp hq h (x.cast (hp _ h).symm) (y.cast (hq _ h).symm) P` as an intermediate fact. Rewrite `this` using `[hP τ h, map_zero]`. Simplify using `using this.symm`. Introduce `hQ τ h i j`.
+
+Apply `inj` to reduce the goal to its premises. Rewrite using `[rename_lap_one hσ hΨ hp hq h, map_zero]`. Conclude with `hQ _ _ _`. Prove the components needed by the constructor for the conclusion. Introduce `hd t r`.
+
+Take `⟨⟨τ, i⟩, hx⟩` from `(halfRowEquiv hσ hΨ hp hq).surjective (t, r)`. Use `(rowDeg_iff_rename hσ hΨ hp hq hx P (a τ i)).1 fun m hm => hd m hm τ i` as an intermediate fact. Establish `k` using `key τ i`. Simplify using `only [hx] at k`. Rewrite using `[k]`.
+
+Conclude with `this`. Introduce `hQ m hm τ i`. Establish `h2` using `hQ (halfRowEquiv hσ hΨ hp hq ⟨τ, i⟩).1 (halfRowEquiv hσ hΨ hp hq ⟨τ, i⟩).2`. Rewrite `h2` using `[key τ i]`. Conclude with `(rowDeg_iff_rename hσ hΨ hp hq (rfl : halfRowEquiv hσ hΨ hp hq ⟨τ, i⟩ = _) P (a τ i)).2 h2 m hm`.
+
+Prove the components needed by the constructor for the conclusion. Introduce `hP t r r' hrr s`. Consider the cases of `r with`. Consider the case `inl x`. Consider the cases of `r' with`.
+
+Consider the case `inl y`. Establish `hxy : x < y` using `hrr`. Establish `h1` using `halfRowEquiv_of_mem hσ hΨ hp hq t.2 (y.cast (hp _ t.2).symm)`. Establish `h2` using `halfRowEquiv_of_mem hσ hΨ hp hq t.2 (x.cast (hp _ t.2).symm)`. Simplify using `only [Fin.cast_cast, Fin.cast_eq_self, Subtype.coe_eta] at h1 h2`.
+
+Conclude with `(step h1 h2 s).1 (hP _ _ _ (by simpa using hxy) s)`. Consider the case `inr y => exact (hrr : False).elim`. Consider the case `inr x`. Consider the cases of `r' with`. Consider the case `inl y => exact (hrr : False).elim`.
+
+Consider the case `inr y`. Establish `hxy : x < y` using `hrr`. Establish `h1` using `halfRowEquiv_invol hσ hΨ hp hq t.2 (y.cast (hq _ t.2).symm)`. Establish `h2` using `halfRowEquiv_invol hσ hΨ hp hq t.2 (x.cast (hq _ t.2).symm)`. Simplify using `only [Fin.cast_cast, Fin.cast_eq_self, Subtype.coe_eta] at h1 h2`.
+
+Conclude with `(step h1 h2 s).1 (hP _ _ _ (by simpa using hxy) s)`. Introduce `hQ τ i i' hlt s`. Break down `half_cases hσ hΨ τ with h | ⟨τ', h', rfl⟩` into its components or cases. Use `(step (halfRowEquiv_of_mem hσ hΨ hp hq h i) (halfRowEquiv_of_mem hσ hΨ hp hq h i') s).2 ?_` and prove the remaining obligations. Conclude with `rowAdd_eq_self_of_forall_int (hQ ⟨τ, h⟩ (Sum.inl (i'.cast (hp _ h))) (Sum.inl (i.cast (hp _ h))) (show i'.cast (hp _ h) < i.cast (hp _ h) by simpa using hlt)) s`.
+
+Use `(step (halfRowEquiv_invol hσ hΨ hp hq h' i) (halfRowEquiv_invol hσ hΨ hp hq h' i') s).2 ?_` and prove the remaining obligations. Conclude with `rowAdd_eq_self_of_forall_int (hQ ⟨τ', h'⟩ (Sum.inr (i'.cast (hq _ h'))) (Sum.inr (i.cast (hq _ h'))) (show i'.cast (hq _ h') < i.cast (hq _ h') by simpa using hlt)) s`.
+-/
 theorem mem_HHa_iff_rename [CharZero K] (a : ι → ℕ → ℕ)
     (P : MvPolynomial (Formalism.L2.Pj.Letter ι dim n) K) :
     P ∈ Formalism.L2.Pj.HHa dim n K σ Ψ a ↔ IsHarmonic (rename (typeLetterEquiv hσ hΨ hp hq n) P) ∧
@@ -189,6 +245,13 @@ theorem mem_HHa_iff_rename [CharZero K] (a : ι → ℕ → ℕ)
           (hQ ⟨τ', h'⟩ (Sum.inr (i'.cast (hq _ h'))) (Sum.inr (i.cast (hq _ h')))
             (show i'.cast (hq _ h') < i.cast (hq _ h') by simpa using hlt)) s
 
+/- English proof (translation)
+Rewrite using `[Q.as_sum, map_sum, Finset.mul_sum]`. Use `Submodule.sum_mem _ fun m hm => ?_` and prove the remaining obligations. Rewrite using `[pderiv_monomial]`. Distinguish the cases in `hu : m u = 0`. Simplify using `[hu]`.
+
+Rewrite `hQ`, the goal using `[mem_restrictTotalDegree]`. Rewrite using `[X, monomial_mul, one_mul]`. Establish `hle : Finsupp.single u 1 ≤ m` using `Finsupp.single_le_iff.2 (Nat.one_le_iff_ne_zero.2 hu)`. Establish `hdeg : Finsupp.degree (Finsupp.single v 1 + (m - Finsupp.single u 1)) = Finsupp.degree m` using `by conv_rhs => rw [← add_tsub_cancel_of_le hle]`. Simplify using `only [map_add, Finsupp.degree_single]`.
+
+Combine the equalities or inequalities in the displayed calculation.
+-/
 private theorem X_mul_pderiv_mem_restrictTotalDegree {S' F' : Type*} [Field F'] [DecidableEq S'] {N : ℕ}
     (v u : S') {Q : MvPolynomial S' F'} (hQ : Q ∈ restrictTotalDegree S' F' N) :
     X v * pderiv u Q ∈ restrictTotalDegree S' F' N := by
@@ -209,6 +272,33 @@ private theorem X_mul_pderiv_mem_restrictTotalDegree {S' F' : Type*} [Field F'] 
       _ ≤ Q.totalDegree := le_totalDegree hm
       _ ≤ N := hQ
 
+/- English proof (translation)
+Distinguish the cases in `hA : ∀ τ, Antitone fun i : Fin (dim τ) => a τ i`. Use `right`. Establish `hx : ∀ t : {τ // Ψ τ}, partOf (diffOf fun x : Fin p => a t.1 x) = fun x : Fin p => a t.1 x` using `fun t => partOf_diffOf fun x y hxy => hA t.1 (show x.cast (hp _ t.2).symm ≤ y.cast (hp _ t.2).symm from hxy)`. Establish `hy : ∀ t : {τ // Ψ τ}, partOf (diffOf fun y : Fin q => a (σ t.1) y) = fun y : Fin q => a (σ t.1) y` using `fun t => partOf_diffOf fun x y hxy => hA (σ t.1) (show x.cast (hq _ t.2).symm ≤ y.cast (hq _ t.2).symm from hxy)`. Use `⟨fun t => diffOf fun x : Fin p => a t.1 x, fun t => diffOf fun y : Fin q => a (σ t.1) y, ?_, fun P => ?_⟩` and prove the remaining obligations.
+
+Establish `hg : ∀ τ (m : ℕ) (hm : dim τ = m), ∑ x : Fin m, a τ x = ∑ i : Fin (dim τ), a τ i`. Introduce `τ m hm`. Substitute `hm` using the available equality. Both sides reduce to the same expression. Simplify using `only [typeDegree, ← sum_partOf, hx, hy]`.
+
+Rewrite using `[Finset.sum_congr rfl fun t _ => by rw [hg t.1 p (hp _ t.2), hg (σ t.1) q (hq _ t.2)], Finset.sum_add_distrib, ← Fintype.sum_subtype_add_sum_subtype Ψ]`. Use `congr 1`. Conclude with `Finset.sum_congr (by congr; exact Subsingleton.elim _ _) fun _ _ => rfl`. Use `Fintype.sum_equiv ⟨fun t => ⟨σ t.1, (hΨ (σ t.1)).2 ((hσ t.1).symm ▸ t.2)⟩, fun u => ⟨σ u.1, (hΨ u.1).1 u.2⟩, fun t => Subtype.ext (hσ t.1), fun u => Subtype.ext (hσ u.1)⟩ _ _ fun t => rfl` and prove the remaining obligations. Rewrite using `[mem_HHa_iff_rename hσ hΨ hp hq a P, mem_rowHighest_iff_rowAdd]`.
+
+Simplify using `only [hx, hy]`. Use `left`. Introduce `P hP`. Assume the negation of the conclusion as `hP0`. Apply `hA` to reduce the goal to its premises.
+
+Introduce `τ`. Establish `: Fintype (Formalism.L2.Pj.Letter ι dim n)` using `inferInstanceAs (Fintype (Σ τ : ι, Fin (dim τ) × Fin n))`. Simplify using `only [Formalism.L2.Pj.HHa, Set.mem_setOf_eq, Formalism.L2.Pj.RowInv, Formalism.L2.Pj.RowDeg] at hP`. Take `⟨-, hinv, hdeg⟩` from `hP`. Establish `hz : Function.Injective (fun x : Fin (dim τ) × Fin n => (⟨τ, x⟩ : Formalism.L2.Pj.Letter ι dim n))` using `fun x y h => eq_of_heq (Sigma.mk.inj h).2`.
+
+Establish `hv : ∀ i j : Fin (dim τ), i < j → Capelli.rowOp K (fun x : Fin (dim τ) × Fin n => (⟨τ, x⟩ : Formalism.L2.Pj.Letter ι dim n)) i j P = 0`. Introduce `i j hij`. Establish `hfun : ∀ t : K, (fun s => X s + ∑ k : Fin n, if s = (⟨τ, (j, k)⟩ : Formalism.L2.Pj.Letter ι dim n) then C t * X (⟨τ, (i, k)⟩ : Formalism.L2.Pj.Letter ι dim n) else 0) = (fun ℓ : Formalism.L2.Pj.Letter ι dim n => if ∃ b, ℓ = ⟨τ, (j, b)⟩ then X ℓ + C t * X ⟨τ, (i, ℓ.2.2)⟩ else X ℓ)`. Introduce `t`. Use function extensionality and compare the values at `ℓ`.
+
+Use `split_ifs with hl`. Take `⟨b, rfl⟩` from `hl`. Rewrite using `[Finset.sum_eq_single b]`. Simplify using the standard rewrite rules. Introduce `k _ hk`.
+
+Rewrite using `[if_neg]`. Introduce `h`. Conclude with `hk (congrArg (fun x : Formalism.L2.Pj.Letter ι dim n => x.2.2) h).symm`. Simplify using the standard rewrite rules. Rewrite using `[Finset.sum_eq_zero, add_zero]`.
+
+Introduce `k _`. Rewrite using `[if_neg]`. Introduce `h`. Conclude with `hl ⟨k, h⟩`. Establish `hall : ∀ t : K, bind₁ (fun s => X s + ∑ k : Fin n, if s = (⟨τ, (j, k)⟩ : Formalism.L2.Pj.Letter ι dim n) then C t * X (⟨τ, (i, k)⟩ : Formalism.L2.Pj.Letter ι dim n) else 0) P = P`.
+
+Introduce `t`. Rewrite using `[hfun t]`. Conclude with `hinv τ j i hij t`. Establish `hw : Function.Injective fun k : Fin n => (⟨τ, (j, k)⟩ : Formalism.L2.Pj.Letter ι dim n)` using `fun k k' h => congrArg (fun x : Formalism.L2.Pj.Letter ι dim n => x.2.2) h`. Establish `huw : ∀ k l : Fin n, (⟨τ, (i, k)⟩ : Formalism.L2.Pj.Letter ι dim n) ≠ ⟨τ, (j, l)⟩` using `fun k l h => hij.ne (Fin.ext (congrArg (fun x : Formalism.L2.Pj.Letter ι dim n => (x.2.1 : ℕ)) h))`.
+
+Rewrite using `[Capelli.rowOp_apply]`. Conclude with `((rowAdd_invariant_iff (fun k : Fin n => (⟨τ, (i, k)⟩ : Formalism.L2.Pj.Letter ι dim n)) (fun k : Fin n => (⟨τ, (j, k)⟩ : Formalism.L2.Pj.Letter ι dim n)) hw huw P).out 1 2).1 hall`. Establish `hκ : ∀ i : Fin (dim τ), Capelli.rowOp K (fun x : Fin (dim τ) × Fin n => (⟨τ, x⟩ : Formalism.L2.Pj.Letter ι dim n)) i i P = (((a τ i : ℕ) : ℤ) : K) • P` using `fun i => HighestUnique.rowOp_self _ fun m hm => hdeg m hm τ i`. Establish `hW : ∀ i j : Fin (dim τ), ∀ w ∈ restrictTotalDegree (Formalism.L2.Pj.Letter ι dim n) K P.totalDegree, Capelli.rowOp K (fun x : Fin (dim τ) × Fin n => (⟨τ, x⟩ : Formalism.L2.Pj.Letter ι dim n)) i j w ∈ restrictTotalDegree (Formalism.L2.Pj.Letter ι dim n) K P.totalDegree`. Introduce `i j w hw`.
+
+Rewrite using `[Capelli.rowOp_apply]`. Conclude with `Submodule.sum_mem _ fun k _ => X_mul_pderiv_mem_restrictTotalDegree _ _ hw`. Establish `hant` using `highest_weight_antitone (K := K) _ (Capelli.rowOp_lie _ hz) (restrictTotalDegree (Formalism.L2.Pj.Letter ι dim n) K P.totalDegree) hW P (by simp [mem_restrictTotalDegree]) hP0 (fun i => ((a τ i : ℕ) : ℤ)) hv hκ`. Introduce `x y hxy`. Establish `h5` using `hant hxy`.
+
+Simplify using `only at h5 ⊢`. Conclude with `h5` after adjusting the coercions.
+-/
 theorem HHa_eq_zero_or_rowHighest [CharZero K] [Fintype ι] [Fintype {τ // Ψ τ}] (a : ι → ℕ → ℕ) :
     (∀ P : MvPolynomial (Formalism.L2.Pj.Letter ι dim n) K, P ∈ Formalism.L2.Pj.HHa dim n K σ Ψ a → P = 0) ∨
       ∃ (k : {τ // Ψ τ} → Fin p → ℕ) (k' : {τ // Ψ τ} → Fin q → ℕ),
@@ -323,11 +413,17 @@ noncomputable def thetaLetterEquiv : LtN Dw n ≃ Var {τ : E →+* ℂ // InPsi
 
 variable {n}
 
+/- English proof (translation)
+Unfold `thetaLetterEquiv`. Conclude with `typeLetterEquiv_apply _ _ _ _ (halfRowEquiv_of_mem _ _ _ _ h i) k`.
+-/
 theorem thetaLetterEquiv_of_mem {τ : E →+* ℂ} (h : InPsi H τ) (i : Fin (Dw.mult τ)) (k : Fin n) :
     thetaLetterEquiv Dw n ⟨τ, i, k⟩ = xVar ⟨τ, h⟩ (i.cast (mult_of_mem Dw h)) k := by
   unfold thetaLetterEquiv
   exact typeLetterEquiv_apply _ _ _ _ (halfRowEquiv_of_mem _ _ _ _ h i) k
 
+/- English proof (translation)
+Unfold `thetaLetterEquiv`. Conclude with `typeLetterEquiv_apply _ _ _ _ (halfRowEquiv_invol _ _ _ _ h i) k`.
+-/
 theorem thetaLetterEquiv_conjugate {τ : E →+* ℂ} (h : InPsi H τ)
     (i : Fin (Dw.mult (ComplexEmbedding.conjugate τ))) (k : Fin n) :
     thetaLetterEquiv Dw n ⟨ComplexEmbedding.conjugate τ, i, k⟩ =
@@ -335,12 +431,20 @@ theorem thetaLetterEquiv_conjugate {τ : E →+* ℂ} (h : InPsi H τ)
   unfold thetaLetterEquiv
   exact typeLetterEquiv_apply _ _ _ _ (halfRowEquiv_invol _ _ _ _ h i) k
 
+/- English proof (translation)
+Rewrite using `[xForm_apply]`. Simplify using `only [Formalism.L2.Pj.letB, map_sum, map_mul, rename_C, rename_X, thetaLetterEquiv_of_mem Dw h]`.
+-/
 theorem rename_letB_of_mem {τ : E →+* ℂ} (h : InPsi H τ) (i : Fin (Dw.mult τ)) (v : Fin n → E) :
     rename (thetaLetterEquiv Dw n) (letB c τ i v) =
       xForm ⟨τ, h⟩ (i.cast (mult_of_mem Dw h)) fun k => embF c τ (v k) := by
   rw [xForm_apply]
   simp only [Formalism.L2.Pj.letB, map_sum, map_mul, rename_C, rename_X, thetaLetterEquiv_of_mem Dw h]
 
+/- English proof (translation)
+Rewrite using `[yForm_apply]`. Simplify using `only [Formalism.L2.Pj.letB, map_sum, map_mul, rename_C, rename_X, thetaLetterEquiv_conjugate Dw h]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Use `congr 2`. Apply `Subtype.ext` to reduce the goal to its premises.
+
+Use `show (ComplexEmbedding.conjugate τ) (v k) = τ (FD.cc (v k))`. Rewrite using `[ComplexEmbedding.conjugate_coe_eq]`. Unfold `FD.cc`. Conclude with `(IsCMField.complexEmbedding_complexConj E τ (v k)).symm`.
+-/
 theorem rename_letB_conjugate {τ : E →+* ℂ} (h : InPsi H τ)
     (i : Fin (Dw.mult (ComplexEmbedding.conjugate τ))) (v : Fin n → E) :
     rename (thetaLetterEquiv Dw n) (letB c (ComplexEmbedding.conjugate τ) i v) =
@@ -355,6 +459,25 @@ theorem rename_letB_conjugate {τ : E →+* ℂ} (h : InPsi H τ)
   unfold FD.cc
   exact (IsCMField.complexEmbedding_complexConj E τ (v k)).symm
 
+/- English proof (translation)
+Establish `back : ∀ Q : MvPolynomial (LtN Dw n) c.F, rename (thetaLetterEquiv Dw n).symm (rename (thetaLetterEquiv Dw n) Q) = Q` using `fun Q => by`. Rewrite using `[rename_rename, Equiv.symm_comp_self]`. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Introduce `hP`.
+
+Establish `hle : Formalism.L2.Pj.symO c Λ ≤ (GlobalTheory.Harm.symO Dw.p Dw.q (fun t : {τ : E →+* ℂ // InPsi H τ} => embF c t.1) Λ.La).toSubring.comap (rename (R` using `c.F) (thetaLetterEquiv Dw n)).toRingHom := by`. Unfold `Formalism.L2.Pj.symO`. Rewrite using `[Subring.closure_le]`. Introduce and unpack `x (⟨o, rfl⟩ | ⟨σ, i, b, hb, rfl⟩)`. Use `show rename (thetaLetterEquiv Dw n) (C (o : c.F)) ∈ GlobalTheory.Harm.symO Dw.p Dw.q (fun t : {τ : E →+* ℂ // InPsi H τ} => embF c t.1) Λ.La`.
+
+Rewrite using `[rename_C]`. Use `Subalgebra.algebraMap_mem (GlobalTheory.Harm.symO Dw.p Dw.q (fun t : {τ : E →+* ℂ // InPsi H τ} => embF c t.1) Λ.La) (⟨(o : c.F), o.2⟩ : 𝓞 c.F)` as an intermediate fact. Conclude with `this`. Use `show rename (thetaLetterEquiv Dw n) (letB c σ i b) ∈ GlobalTheory.Harm.symO Dw.p Dw.q (fun t : {τ : E →+* ℂ // InPsi H τ} => embF c t.1) Λ.La`. Break down `half_cases (ComplexEmbedding.involutive_conjugate E) (not_mem_hostType_iff H) σ with h | ⟨τ, h, rfl⟩` into its components or cases.
+
+Rewrite using `[rename_letB_of_mem Dw c h]`. Conclude with `Algebra.subset_adjoin (Or.inl ⟨⟨σ, h⟩, _, b, hb, rfl⟩)`. Rewrite using `[rename_letB_conjugate Dw c h]`. Conclude with `Algebra.subset_adjoin (Or.inr ⟨⟨τ, h⟩, _, b, hb, rfl⟩)`. Conclude with `hle hP`.
+
+Introduce `hP`. Establish `hle : (GlobalTheory.Harm.symO Dw.p Dw.q (fun t : {τ : E →+* ℂ // InPsi H τ} => embF c t.1) Λ.La).toSubring ≤ (Formalism.L2.Pj.symO c Λ).comap (rename (R` using `c.F) (thetaLetterEquiv Dw n).symm).toRingHom := by`. Rewrite using `[GlobalTheory.Harm.symO, Algebra.adjoin_eq_ring_closure, Subring.closure_le]`. Introduce and unpack `x (⟨o, rfl⟩ | ⟨t, a, v, hv, rfl⟩ | ⟨t, b, v, hv, rfl⟩)`. Use `show rename (thetaLetterEquiv Dw n).symm (C (o : c.F)) ∈ Formalism.L2.Pj.symO c Λ`.
+
+Rewrite using `[rename_C]`. Conclude with `Subring.subset_closure (Or.inl ⟨⟨(o : c.F), RingOfIntegers.isIntegral_coe o⟩, rfl⟩)`. Use `show rename (thetaLetterEquiv Dw n).symm (xForm t a fun k => embF c t.1 (v k)) ∈ Formalism.L2.Pj.symO c Λ`. Use `rename_letB_of_mem Dw c t.2 (a.cast (mult_of_mem Dw t.2).symm) v` as an intermediate fact. Simplify using `only [Fin.cast_cast, Fin.cast_eq_self, Subtype.coe_eta] at this`.
+
+Rewrite using `[← this, back]`. Conclude with `Subring.subset_closure (Or.inr ⟨t.1, _, v, hv, rfl⟩)`. Use `show rename (thetaLetterEquiv Dw n).symm (yForm t b fun k => embF c t.1 (FD.cc (v k))) ∈ Formalism.L2.Pj.symO c Λ`. Use `rename_letB_conjugate Dw c t.2 (b.cast (mult_conjEmb_of_mem Dw t.2).symm) v` as an intermediate fact. Simplify using `only [Subtype.coe_eta] at this`.
+
+Establish `h4 : rename (thetaLetterEquiv Dw n).symm (yForm t b fun k => embF c t.1 (FD.cc (v k))) = letB c (ComplexEmbedding.conjugate t.1) (b.cast (mult_conjEmb_of_mem Dw t.2).symm) v`. Rewrite using `[← back (letB c (ComplexEmbedding.conjugate t.1) (b.cast (mult_conjEmb_of_mem Dw t.2).symm) v), this]`. Apply the tactic sequence `all_goals rfl`. Rewrite using `[h4]`. Conclude with `Subring.subset_closure (Or.inr ⟨_, _, v, hv, rfl⟩)`.
+
+Establish `h3 : rename (thetaLetterEquiv Dw n).symm (rename (thetaLetterEquiv Dw n) P) ∈ Formalism.L2.Pj.symO c Λ` using `hle hP`. Rewrite `h3` using `[back]`. Then use the resulting hypothesis.
+-/
 theorem mem_symO_iff_rename (Λ : GenLat E n) (P : MvPolynomial (LtN Dw n) c.F) :
     P ∈ Formalism.L2.Pj.symO c Λ ↔ rename (thetaLetterEquiv Dw n) P ∈
       GlobalTheory.Harm.symO Dw.p Dw.q (fun t : {τ : E →+* ℂ // InPsi H τ} => embF c t.1) Λ.La := by
@@ -420,6 +543,9 @@ end Datum
 
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Geo.Tor Formalism.L2.Pj in
 
+/- English proof (translation)
+Introduce `E _ _ _ H Dw l c n _`. Use `⟨thetaLetterEquiv Dw n, fun Λ P => mem_symO_iff_rename Dw c Λ P, fun a => ?_⟩` and prove the remaining obligations. Conclude with `HHa_eq_zero_or_rowHighest (n := n) (K := c.F) (Ψ := InPsi H) (ComplexEmbedding.involutive_conjugate E) (not_mem_hostType_iff H) (fun _ => mult_of_mem Dw) (fun _ => mult_conjEmb_of_mem Dw) (fun τ i => a (τ, i))`.
+-/
 theorem theta_letter_dictionary :
     ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (Dw : Datum H) (l : Level H)
       (c : Coeff l) (n : ℕ) [Fintype {τ : E →+* ℂ // InPsi H τ}],

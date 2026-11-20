@@ -18,6 +18,15 @@ noncomputable section
 open CategoryTheory AlgebraicGeometry ReciprocityTheory.AnForm.M
 open GlobalTheory.Toroidal GlobalTheory.Cartier GlobalTheory.ProjVar GlobalTheory.TrueGeo GlobalTheory.CxPts GlobalTheory.ShFam
 
+/- English proof (translation)
+Introduce `_ _ D O hO _ A T H h x' R hR u c a`. Take `⟨x, P, hc⟩` from `hO`. Set `I` to `h.man c`. Establish `hm : ∀ n, (metsOf x' O.Φ c (some R) (I.ε a) n).SmoothOn Set.univ` using `fun n => by`. Use `(FlagCpt.smoothOn_met_of_eigMet _ _ _ _ _ _ _ _ _ _ _ (O.Φ.C c) (I.ε a) (x'.eigMetAt _ (some R)) Set.univ isOpen_univ (ToroidalCompactificationData.smoothOn_eigMetAt_some _ _ _ _ _ _ _ x' _ R hR (ToroidalCompactificationData.hodge_smoothOn _ _ _ _ _ _ _ x' _)) n).2` as an intermediate fact.
+
+Conclude with `⟨fun _ _ => this.1 trivial, fun g => (this.2 g).mono fun y hy => ⟨trivial, hy.2⟩⟩`. Establish `h0 : ∀ n, (O.met.h0 c (I.ε a) n).SmoothOn Set.univ` using `fun n => by`. Rewrite using `[hc.h0_eq]`. Use `(FlagCpt.smoothOn_met_of_eigMet _ _ _ _ _ _ _ _ _ _ _ (O.Φ.C c) (I.ε a) (x.eigMet _) Set.univ isOpen_univ (x.smoothOn_eigMet _) n).2` as an intermediate fact. Conclude with `⟨fun _ _ => this.1 trivial, fun g => (this.2 g).mono fun y hy => ⟨trivial, hy.2⟩⟩`.
+
+Establish `hg : ((O.var c).an (I.ε a)).SmoothOn Set.univ (chgWith O (metsOf x' O.Φ) c (some R) u (I.ε a))`. Introduce `i`. Use `(ContDiffOn.sum (s := Finset.univ) fun r _ => (contDiffOn_const (c := u r.1 r.2)).mul (GlobalTheory.HodgeChgSmooth.smoothOn_lnRatio (hm (O.ex r)) (h0 (O.ex r)) i)).congr fun v _ => ?_` and prove the remaining obligations. Simplify using `[chgWith]`. Establish `key` using `GlobalTheory.HodgeChgSmooth.smoothOn_of_manIs I (O.dim_eq c) a isOpen_univ hg (f := psiOf h x' R u c a) fun z _ => rfl`.
+
+Simplify `key` using `[FinHolAtlas.Smooth]`.
+-/
 theorem GlobalTheory.ArDegIndep.psiOf_smooth : Hypotheses2 → HypothesesH → OnObj fun D O A T H h =>
     ∀ x' : GlobalTheory.ShFam.ToroidalCompactificationData O.s, ∀ R : ℝ, 2 ≤ R → ∀ (u : Wt O.Y) (c : O.Y.Comp), (T.M c).Smooth (psiOf h x' R u c) := by
   intro _ _ D O hO _ A T H h x' R hR u c a

@@ -21,6 +21,9 @@ open scoped nonZeroDivisors
 open GlobalTheory.CosetOrth
 
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.CosetOrthDens.exists_finPt_sub_mem | exact GlobalTheory.CosetOrthDens.exists_finPt_sub_mem | (intros; apply GlobalTheory.CosetOrthDens.exists_finPt_sub_mem <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.dense_rationalHomPoints_idealCompletion : ∀ {D : D7} (S T : HSp D) (r : D.host.E) (I : FractionalIdeal (𝓞 D.host.E)⁰ D.host.E), r ≠ 0 → I ≠ 0 →
   ∀ U : AddSubgroup (WO S T), IsOpen (U : Set (WO S T)) → ∀ u : WO S T, HatPt r I u →
   ∃ z : Matrix (Fin T.rank) (Fin S.rank) D.host.E, (∀ i j, z i j ∈ I) ∧ u - finPt (S := S) (T := T) rfl rfl r z ∈ U := by

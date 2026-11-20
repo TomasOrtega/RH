@@ -30,9 +30,15 @@ def gau (R : RD d) (X : Mx F E d.m d.n) : ℂ := ∏ w, fP (1 : PX d.m d.n) (R.l
 
 def vac (R : RD d) (g : Yf d → ℂ) (X : Mx F E d.m d.n) : ℂ := gau R X * g (fin d X)
 
+/- English proof (translation)
+The claim follows from `Submodule.subset_span ⟨fun _ => 1, g, hg, rfl⟩`.
+-/
 theorem vac_mem (R : RD d) {g : Yf d → ℂ} (hg : g ∈ SB (Yf d)) : vac R g ∈ R.fock :=
   Submodule.subset_span ⟨fun _ => 1, g, hg, rfl⟩
 
+/- English proof (translation)
+The claim follows from `(hT.1 F E σ d).2.1 _ ((hF F E σ d R).1 (vac_mem R hg))`.
+-/
 theorem exists_lift (hT : TAll) (hF : FockMem) (R : RD d) {g : Yf d → ℂ} (hg : g ∈ SB (Yf d)) :
     ∃ Ω ∈ d.sch, d.T Ω = vac R g :=
   (hT.1 F E σ d).2.1 _ ((hF F E σ d R).1 (vac_mem R hg))
@@ -40,6 +46,15 @@ theorem exists_lift (hT : TAll) (hF : FockMem) (R : RD d) {g : Yf d → ℂ} (hg
 def zOf (u : Iw d → ℝ) : InfinitePlace F → Fin d.m → Fin d.n → ℂ :=
   fun w a j => ⟨u (w, a, j, true), u (w, a, j, false)⟩
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce and unpack `rfl w`. Use function extensionality and compare the values at `a j`. Apply `Complex.ext` to reduce the goal to its premises. Simplify using `[zOf, arc]`.
+
+Simplify using `[zOf, arc]`. Introduce `h`. Apply `(EuclideanSpace.equiv (Iw d) ℝ).injective` to reduce the goal to its premises. Use function extensionality and compare the values at `i`. Take `⟨w, a, j, b⟩` from `i`.
+
+Establish `hw` using `congrFun (congrFun (h w) a) j`. Consider the cases of `b`. Simplify using `only [arc, ContinuousLinearEquiv.apply_symm_apply, Bool.false_eq_true, if_false]`. Rewrite using `[hw]`. Both sides reduce to the same expression.
+
+Simplify using `only [arc, ContinuousLinearEquiv.apply_symm_apply, if_true]`. Rewrite using `[hw]`. Both sides reduce to the same expression.
+-/
 theorem arc_eq_iff (R : RD d) (X : Mx F E d.m d.n) (u : Vw d) :
     arc R X = u ↔ ∀ w, R.loc w X = zOf (EuclideanSpace.equiv (Iw d) ℝ u) w := by
   constructor
@@ -61,6 +76,21 @@ theorem arc_eq_iff (R : RD d) (X : Mx F E d.m d.n) (u : Vw d) :
       rw [hw]
       rfl
 
+/- English proof (translation)
+Take `⟨L, hL⟩` from `KFock.archEquiv d R`. Use `set Z := zOf (EuclideanSpace.equiv (Iw d) ℝ u) with hZ`. Set `cI` to `L.symm Z`. Set `c : Fin d.m × Fin d.n × Fin 2 → AF F` to `fun k => (Prod.mk ((InfiniteAdeleRing.ringEquiv_mixedSpace F).symm (cI k)) (y k) : AF F)`. Establish `hc1 : (fun k => InfiniteAdeleRing.ringEquiv_mixedSpace F (c k).1) = cI`.
+
+Use function extensionality and compare the values at `k`. Conclude with `RingEquiv.apply_symm_apply _ _`. Use `⟨d.cmb c, ⟨?_, ?_⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[arc_eq_iff]`. Introduce `w`.
+
+Rewrite using `[← hL c w, hc1]`. Use `show L (L.symm Z) w = Z w`. Rewrite using `[ContinuousLinearEquiv.apply_symm_apply]`. Use function extensionality and compare the values at `k show (d.crd (d.cmb c) k).2 = y k`. Rewrite using `[KFock.crd_cmb']`.
+
+Introduce and unpack `X ⟨hX1, hX2⟩`. Rewrite `hX1` using `[arc_eq_iff]`. Establish `e1 : L (fun k => InfiniteAdeleRing.ringEquiv_mixedSpace F (d.crd X k).1) = Z`. Use function extensionality and compare the values at `w`. Rewrite using `[hL, KFock.cmb_crd]`.
+
+Conclude with `hX1 w`. Establish `e2 : (fun k => InfiniteAdeleRing.ringEquiv_mixedSpace F (d.crd X k).1) = cI`. Establish `h` using `congrArg L.symm e1`. Rewrite `h` using `[ContinuousLinearEquiv.symm_apply_apply]`. Then use the resulting hypothesis. Establish `e3 : d.crd X = c`.
+
+Use function extensionality and compare the values at `k`. Use `Prod.ext ?_ ?_` and prove the remaining obligations. Apply `(InfiniteAdeleRing.ringEquiv_mixedSpace F).injective` to reduce the goal to its premises. Rewrite using `[congrFun e2 k]`. Conclude with `(congrFun hc1 k).symm`.
+
+Conclude with `congrFun hX2 k`. Rewrite using `[← e3, KFock.cmb_crd]`.
+-/
 theorem exists_jn (R : RD d) (u : Vw d) (y : Yf d) : ∃! X : Mx F E d.m d.n, arc R X = u ∧ fin d X = y := by
   obtain ⟨L, hL⟩ := KFock.archEquiv d R
   set Z := zOf (EuclideanSpace.equiv (Iw d) ℝ u) with hZ
@@ -99,10 +129,19 @@ theorem exists_jn (R : RD d) (u : Vw d) (y : Yf d) : ∃! X : Mx F E d.m d.n, ar
 
 def jn (R : RD d) (u : Vw d) (y : Yf d) : Mx F E d.m d.n := (exists_jn R u y).exists.choose
 
+/- English proof (translation)
+The claim follows from `(exists_jn R u y).exists.choose_spec.1`.
+-/
 theorem arc_jn (R : RD d) (u : Vw d) (y : Yf d) : arc R (jn R u y) = u := (exists_jn R u y).exists.choose_spec.1
 
+/- English proof (translation)
+The claim follows from `(exists_jn R u y).exists.choose_spec.2`.
+-/
 theorem fin_jn (R : RD d) (u : Vw d) (y : Yf d) : fin d (jn R u y) = y := (exists_jn R u y).exists.choose_spec.2
 
+/- English proof (translation)
+The claim follows from `((exists_jn R (arc R X) (fin d X)).unique (exists_jn R (arc R X) (fin d X)).exists.choose_spec ⟨rfl, rfl⟩)`.
+-/
 theorem jn_arc_fin (R : RD d) (X : Mx F E d.m d.n) : jn R (arc R X) (fin d X) = X :=
   ((exists_jn R (arc R X) (fin d X)).unique (exists_jn R (arc R X) (fin d X)).exists.choose_spec ⟨rfl, rfl⟩)
 

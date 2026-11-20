@@ -55,8 +55,14 @@ def IsRMeas {r : ℕ} (μ : Meas p r) : Prop := ‖μ‖ ≤ 1
 def wt {r : ℕ} (f : C(Fin r → ℤ_[p], ℂ_[p])) (μ : Meas p r) : Meas p r :=
   μ.comp (ContinuousLinearMap.mul ℂ_[p] C(Fin r → ℤ_[p], ℂ_[p]) f)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem wt_apply {r : ℕ} (f g : C(Fin r → ℤ_[p], ℂ_[p])) (μ : Meas p r) : wt f μ g = μ (f * g) := rfl
 
+/- English proof (translation)
+The claim follows from `(continuous_algebraMap ℚ_[p] ℂ_[p]).comp continuous_subtype_val`.
+-/
 theorem continuous_zc : Continuous (zc : ℤ_[p] → ℂ_[p]) :=
   (continuous_algebraMap ℚ_[p] ℂ_[p]).comp continuous_subtype_val
 
@@ -257,9 +263,15 @@ def IntMomSplit : Prop :=
       ∀ (p : ℕ) [Fact p.Prime], SplitK D p → Nat.Coprime (Ideal.absNorm cc) p →
         ∀ lam : Qbar →+* ℂ_[p], HidaSetting B lam ∧ IntAt B χ lam ∧ MomAt B χ lam
 
+/- English proof (translation)
+Use extensionality with `f`. Simplify using `[wt_apply]`.
+-/
 example {p r : ℕ} [Fact p.Prime] (μ : Meas p r) : wt 1 μ = μ := by
   ext f; simp [wt_apply]
 
+/- English proof (translation)
+Simplify using `[parPt]`.
+-/
 example {p : ℕ} [Fact p.Prime] (lam : Qbar →+* ℂ_[p]) (Lp : PeriodPair) (C : WeierstrassCurve.VariableChange ℂ_[p]) :
     parPt lam Lp C 0 = 0 := by simp [parPt]
 

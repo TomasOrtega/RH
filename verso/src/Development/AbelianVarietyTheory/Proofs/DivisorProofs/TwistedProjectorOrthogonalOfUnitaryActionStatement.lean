@@ -4,6 +4,9 @@ import Mathlib
 import Formalism.LocalToGlobal.IndefiniteReal.GramCEqTranspose
 open NumberField
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.twistedProjector_orthogonal_of_unitary | exact GlobalTheory.twistedProjector_orthogonal_of_unitary | (intros; apply GlobalTheory.twistedProjector_orthogonal_of_unitary <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.twistedProjector_orthogonal_of_unitary_action : ∀ {LL Ks : Type} [Field LL] [NumberField LL] [Field Ks] [NumberField Ks] [Algebra Ks LL]
     {WL : Type} [AddCommGroup WL] [Module LL WL] [Module Ks WL] [IsScalarTower Ks LL WL]
     [Module (𝓞 LL) WL] [IsScalarTower (𝓞 LL) LL WL] [Module (𝓞 Ks) WL] [IsScalarTower (𝓞 Ks) Ks WL]

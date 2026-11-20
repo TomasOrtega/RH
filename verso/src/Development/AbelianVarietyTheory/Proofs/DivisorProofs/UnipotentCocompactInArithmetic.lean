@@ -17,6 +17,9 @@ namespace GlobalTheory.UnipCocompact
 
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E}
 
+/- English proof (translation)
+Simplify using `only [form, dotProduct, Matrix.mulVec, map_sum, map_mul, hσ, Finset.mul_sum, ← Finset.sum_neg_distrib]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[hJ]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem form_swap {n : ℕ} {J : Matrix (Fin n) (Fin n) E} (hσ : ∀ x, σ (σ x) = x)
     (hJ : ∀ i j, σ (J j i) = -J i j) (v w : Fin n → E) : form σ J v w = -σ (form σ J w v) := by
   simp only [form, dotProduct, Matrix.mulVec, map_sum, map_mul, hσ, Finset.mul_sum, ← Finset.sum_neg_distrib]
@@ -24,16 +27,25 @@ theorem form_swap {n : ℕ} {J : Matrix (Fin n) (Fin n) E} (hσ : ∀ x, σ (σ 
   refine Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => ?_
   rw [hJ]; ring
 
+/- English proof (translation)
+Simplify using `only [form, dotProduct, Matrix.mulVec, Pi.add_apply, map_add, mul_add, Finset.sum_add_distrib]`.
+-/
 theorem form_add {n : ℕ} (J : Matrix (Fin n) (Fin n) E) (x v w : Fin n → E) :
     form σ J x (v + w) = form σ J x v + form σ J x w := by
   simp only [form, dotProduct, Matrix.mulVec, Pi.add_apply, map_add, mul_add, Finset.sum_add_distrib]
 
+/- English proof (translation)
+Simplify using `only [form, dotProduct, Matrix.mulVec, Pi.smul_apply, smul_eq_mul, map_mul, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Conclude with `Finset.sum_congr rfl fun j _ => by ring`.
+-/
 theorem form_smul {n : ℕ} (J : Matrix (Fin n) (Fin n) E) (x v : Fin n → E) (s : E) :
     form σ J x (s • v) = σ s * form σ J x v := by
   simp only [form, dotProduct, Matrix.mulVec, Pi.smul_apply, smul_eq_mul, map_mul, Finset.mul_sum]
   refine Finset.sum_congr rfl fun i _ => ?_
   exact Finset.sum_congr rfl fun j _ => by ring
 
+/- English proof (translation)
+Simplify using `only [Formalism.UG.cT, form, dotProduct, Matrix.mulVec, Matrix.mul_apply, Matrix.transpose_apply, Matrix.map_apply, Matrix.of_apply, Matrix.smul_apply, smul_eq_mul, map_sum, map_mul, hσ, Finset.mul_sum, Finset.sum_mul]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun j _ => Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Simplify using `only [RingHom.coe_coe]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem gram_col {n : ℕ} (J : Matrix (Fin n) (Fin n) E) (hσ : ∀ x, σ (σ x) = x) (c : E) (x v : Fin n → E)
     (i : Fin 1) :
     ((Formalism.UG.cT (σ : E →+* E) (Matrix.of fun k (_ : Fin 1) => x k) * (c • J.map σ)) *ᵥ v) i =
@@ -52,6 +64,13 @@ namespace GlobalTheory.UnipCocompact
 
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E}
 
+/- English proof (translation)
+Set `S : Submodule E (Fin n → E)` to `{ carrier := {v | ∃ (s t : E) (u : Fin n₁ → E), v = s • H.x + H.ι *ᵥ u + t • H.y} add_mem' := by`. Introduce and unpack `_ _ ⟨s, t, u, rfl⟩ ⟨s', t', u', rfl⟩`. Conclude with `⟨s + s', t + t', u + u', by rw [Matrix.mulVec_add, add_smul, add_smul]; abel⟩`. Use the proof step `zero_mem' := ⟨0, 0, 0, by simp⟩`. Use the proof step `smul_mem' := by`.
+
+Introduce and unpack `r _ ⟨s, t, u, rfl⟩`. Conclude with `⟨r * s, r * t, r • u, by rw [Matrix.mulVec_smul, smul_add, smul_add, smul_smul, smul_smul]⟩ }`. Establish `hle : Submodule.span E (Y.L : Set (Fin n → E)) ≤ S` using `Submodule.span_le.2 fun z hz => by`. Take `⟨s, t, u, -, -, -, e⟩` from `hH.split z hz`. Conclude with `⟨s, t, u, e⟩`.
+
+Rewrite `hle` using `[hL.span_eq_top]`. Conclude with `hle (Submodule.mem_top (x := v))`.
+-/
 theorem exists_decomp {B : Base F E} {n n₁ : ℕ} {H : Plane E n n₁} {Y : Spc F E n} {Y₁ : Spc F E n₁} {i₀ i₁ : ℕ}
     (hL : Y.L.IsLattice E) (hH : H.IsAdapted σ B Y Y₁ i₀ i₁) (v : Fin n → E) :
     ∃ (s t : E) (u : Fin n₁ → E), v = s • H.x + H.ι *ᵥ u + t • H.y := by
@@ -76,6 +95,55 @@ namespace GlobalTheory.UnipCocompact
 
 open GlobalTheory.ThK.SquareIntegrability in
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ B a a' G X om om' hT d₁ W₁ H' i₀ i₁ hH`. Establish `hcm` using `hT.base.cm`. Establish `hσ : ∀ x, σ (σ x) = x` using `GlobalTheory.SiegelSet.sigma_sigma hcm`. Take `⟨c, hc0, hcσ⟩` from `GlobalTheory.CMImag.exists_imag_ne_zero F E σ hcm`. Establish `hW` using `hT.geo.hW`.
+
+Establish `hσinj : Function.Injective σ` using `fun p q h => by rw [← hσ p, ← hσ q, h]`. Use `set J := G.W.J with hJdef`. Use `set C : Matrix (Fin (a + a')) (Fin 1) E := Matrix.of fun k _ => H'.x k with hCdef`. Establish `hJ' : IsHermND σ (c • J.map σ)`. Use `⟨fun i j => ?_, ?_⟩` and prove the remaining obligations.
+
+Simplify using `only [Matrix.smul_apply, Matrix.map_apply, smul_eq_mul, map_mul, hσ, hcσ]`. Rewrite using `[show σ (J i j) = -J j i from hW.skew j i]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[Matrix.det_smul]`. Use `mul_ne_zero (pow_ne_zero _ hc0) ?_` and prove the remaining obligations.
+
+Use `(RingHom.map_det (σ : E →+* E) J).symm` as an intermediate fact. Rewrite using `[show J.map σ = (σ : E →+* E).mapMatrix J from rfl, this]`. Conclude with `(map_ne_zero _).2 (GlobalTheory.SkewDet.det_ne_zero_of_isSkew F E σ B _ _ _ G.W hW)`. Establish `hxy` using `hH.xy`. Establish `hx0 : H'.x ≠ 0` using `fun h => by`.
+
+Rewrite `hxy` using `[h]`. Simplify using `[form] at hxy`. Establish `hperp : ∀ v, (Formalism.UG.cT (σ : E →+* E) C * (c • J.map σ)) *ᵥ v = 0 ↔ form σ J H'.x v = 0` using `fun v => by`. Prove the components needed by the constructor for the conclusion. Introduce `h`.
+
+Use `congrFun h 0` as an intermediate fact. Rewrite `this` using `[gram_col J hσ c H'.x v 0]`. Conclude with `hσinj ((mul_eq_zero.1 this).resolve_left hc0 |>.trans (map_zero σ).symm)`. Introduce `h`. Use function extensionality and compare the values at `i`.
+
+Rewrite using `[gram_col J hσ c H'.x v i, h, map_zero, mul_zero]`. Both sides reduce to the same expression. Establish `hC : GlobalTheory.UAut.IsIsoCols σ (c • J.map σ) C`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Conclude with `linearIndependent_unique_iff.2 (fun h => hx0 (funext fun k => congrFun h k))`.
+
+Use extensionality with `i j`. Use `congrFun ((hperp H'.x).2 hH.xx) i` as an intermediate fact. Rewrite using `[Matrix.mul_apply, Matrix.zero_apply]`. Simplify using `only [Matrix.mulVec, dotProduct] at this`. Simplify `this` using `only [hCdef, Matrix.of_apply, Pi.zero_apply]`.
+
+Establish `hLat : G.W.L.IsLattice E` using `hW.lat`. Establish `hxι : ∀ u, form σ J H'.x (H'.ι *ᵥ u) = 0` using `fun u => by`. Rewrite using `[form_swap hσ hW.skew, (hH.orth u).1, map_zero, neg_zero]`. Establish `hincV : ∀ (s : E) (u : Fin d₁ → E), (fun k => inclR (F` using `F) (AF F) ((s • H'.x + H'.ι *ᵥ u) k)) = inclR (F := F) (AF F) s • incV F H'.x + incM F H'.ι *ᵥ incV F u := fun s u => by`. Use function extensionality and compare the values at `k`.
+
+Simplify using `only [Pi.add_apply, Pi.smul_apply, smul_eq_mul, map_add, map_mul, incV, incM, Matrix.mulVec, dotProduct, map_sum, Matrix.map_apply]`. Use `set e := toGAd hσ J hc0 with he`. Establish `hfwd : ∀ u ∈ unip σ G.W H', e u ∈ GlobalTheory.UAut.unipFlag σ (c • J.map σ) C (fun _ => 0)`. Introduce `u hu`. Rewrite `hu` using `[GlobalTheory.UnipCT.unip_eq]`.
+
+Take `⟨hu1, hu2⟩` from `hu`. Use `Subgroup.subset_closure ⟨fun i => ⟨0, fun _ _ => rfl, ?_⟩, fun v hv => ?_⟩` and prove the remaining obligations. Rewrite using `[Matrix.mulVec_zero, Matrix.sub_mulVec, Matrix.one_mulVec, sub_eq_zero]`. Conclude with `hu1`. Establish `hv0` using `(hperp v).1 hv`.
+
+Take `⟨s, t, w, rfl⟩` from `exists_decomp hLat hH v`. Establish `ht : t = 0`. Rewrite `hv0` using `[form_add, form_add, form_smul, form_smul, hH.xx, hxι, hH.xy]`. Simplify using `using hv0`. Substitute `ht` using the available equality.
+
+Rewrite `*` using `[zero_smul, add_zero]`. Take `⟨b, hb⟩` from `hu2 (incV F w)`. Use `⟨fun _ => b, ?_⟩` and prove the remaining obligations. Rewrite using `[hincV]`. Establish `hm : (((matHom (AF F) σ (c • J.map σ)) (e u) : GL (Fin (a + a')) (AF F ⊗[F] E)) : Matrix (Fin (a + a')) (Fin (a + a')) (AF F ⊗[F] E)) = mat u` using `rfl`.
+
+Rewrite using `[hm, Matrix.sub_mulVec, Matrix.one_mulVec, Matrix.mulVec_add, Matrix.mulVec_smul, hu1, hb]`. Use function extensionality and compare the values at `k`. Simplify using `only [Pi.add_apply, Pi.sub_apply, Pi.smul_apply, smul_eq_mul, SiegelSet.adMat, Matrix.mulVec, dotProduct, Matrix.map_apply, hCdef, Matrix.of_apply, Finset.univ_unique, Finset.sum_singleton, incV]`. Expand and normalize the polynomial expressions, which then agree. Establish `hcol : ∀ j : Fin d₁, (Formalism.UG.cT (σ : E →+* E) C * (c • J.map σ)) *ᵥ (fun i => H'.ι i j) = 0` using `fun j => by`.
+
+Rewrite using `[hperp]`. Use `hxι (Pi.single j 1)` as an intermediate fact. Rewrite `this` using `[Matrix.mulVec_single_one]`. Then use the resulting hypothesis. Establish `hbwd : ∀ g ∈ GlobalTheory.UAut.unipFlag σ (c • J.map σ) C (fun _ => 0), e.symm g ∈ unip σ G.W H'`. Establish `hle : GlobalTheory.UAut.unipFlag σ (c • J.map σ) C (fun _ => 0) ≤ (unip σ G.W H').comap e.symm.toMonoidHom`.
+
+Use `(Subgroup.closure_le _).2 fun g hg => ?_` and prove the remaining obligations. Take `⟨h1, h2⟩` from `hg`. Establish `hm : mat (e.symm g) = (((matHom (AF F) σ (c • J.map σ)) g : GL (Fin (a + a')) (AF F ⊗[F] E)) : Matrix (Fin (a + a')) (Fin (a + a')) (AF F ⊗[F] E))` using `rfl`. Rewrite using `[SetLike.mem_coe, Subgroup.mem_comap, GlobalTheory.UnipCT.unip_eq]`. Take `⟨a₀, ha₀, e₀⟩` from `h1 0`.
+
+Establish `ha0 : a₀ = 0` using `funext fun j => ha₀ j le_rfl`. Substitute `ha0` using the available equality. Rewrite `e₀` using `[Matrix.mulVec_zero, Matrix.sub_mulVec, Matrix.one_mulVec, sub_eq_zero]`. Use `choose A hA using fun j => h2 _ (hcol j)`. Use `⟨?_, fun z => ⟨∑ j, z j * A j 0, ?_⟩⟩` and prove the remaining obligations.
+
+Use `show mat (e.symm g) *ᵥ incV F H'.x = incV F H'.x`. Rewrite using `[hm]`. Conclude with `e₀`. Use `show mat (e.symm g) *ᵥ (incM F H'.ι *ᵥ z) = incM F H'.ι *ᵥ z + (∑ j, z j * A j 0) • incV F H'.x`. Establish `hM : ((((matHom (AF F) σ (c • J.map σ)) g : GL (Fin (a + a')) (AF F ⊗[F] E)) : Matrix (Fin (a + a')) (Fin (a + a')) (AF F ⊗[F] E)) - 1) * incM F H'.ι = Matrix.of fun i j => inclR (F` using `F) (AF F) (H'.x i) * A j 0 := by`.
+
+Use extensionality with `i j`. Use `congrFun (hA j) i` as an intermediate fact. Simplify using `only [SiegelSet.adMat, Matrix.mulVec, dotProduct, Matrix.map_apply, hCdef, Matrix.of_apply, Finset.univ_unique, Finset.sum_singleton] at this`. Rewrite using `[Matrix.mul_apply, Matrix.of_apply]`. Conclude with `this`.
+
+Rewrite using `[hm, ← sub_eq_iff_eq_add']`. Rewrite using `[show ∀ (P : Matrix (Fin (a + a')) (Fin (a + a')) (AF F ⊗[F] E)) (v : Fin (a + a') → AF F ⊗[F] E), P *ᵥ v - v = (P - 1) *ᵥ v from fun P v => by rw [Matrix.sub_mulVec, Matrix.one_mulVec]]`. Rewrite using `[Matrix.mulVec_mulVec, hM]`. Use function extensionality and compare the values at `i`. Simplify using `only [Matrix.mulVec, dotProduct, Matrix.of_apply, Pi.smul_apply, smul_eq_mul, incV, Finset.sum_mul, Finset.mul_sum]`.
+
+Use `Finset.sum_congr rfl fun j _ => by ring` and prove the remaining obligations. Conclude with `fun g hg => hle hg`. Take `⟨K', hK', hKs⟩` from `GlobalTheory.UAut.cocompact_unipFlag hJ' hσ hC (fun _ => 0)`. Establish `hcont : Continuous e.symm` using `continuous_induced_rng.2 continuous_subtype_val`. Set `f : GlobalTheory.UAut.unipFlag σ (c • J.map σ) C (fun _ => 0) → unip σ G.W H'` to `fun g => ⟨e.symm g, hbwd g g.2⟩`.
+
+Establish `hf : Continuous f` using `(hcont.comp continuous_subtype_val).subtype_mk _`. Use `⟨f '' K', hK'.image hf, fun n => ?_⟩` and prove the remaining obligations. Set `m : GlobalTheory.UAut.unipFlag σ (c • J.map σ) C (fun _ => 0)` to `⟨e n, hfwd n n.2⟩`. Take `⟨γ, hγ, hγK⟩` from `hKs m`. Use `⟨f γ, ?_, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[Subgroup.mem_subgroupOf]`. Take `⟨w, -, hw⟩` from `Subgroup.mem_subgroupOf.1 hγ`. Conclude with `⟨w, hw⟩`. Use `⟨γ * m, hγK, ?_⟩` and prove the remaining obligations. Apply `Subtype.ext` to reduce the goal to its premises.
+
+Use `show e.symm (γ.1 * e n) = e.symm γ.1 * n.1`. Rewrite using `[map_mul, MulEquiv.symm_apply_apply]`.
+-/
 theorem cocompact_unip : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E) (a a' : ℕ) (G : Geo σ a a') (X : Chars F E) (om : Rep σ G.V G.W) (om' : Rep σ G.V' G.W), IsTriple B G X om om' → ∀ (d₁ : ℕ) (W₁ : Spc F E d₁) (H' : Plane E (a + a') d₁) (i₀ i₁ : ℕ), H'.IsAdapted σ B G.W W₁ i₀ i₁ → GlobalTheory.Cusp.Cocompact (ratU σ G.W.J) (unip σ G.W H') := by
   intro F E _ _ _ _ _ σ B a a' G X om om' hT d₁ W₁ H' i₀ i₁ hH
   have hcm := hT.base.cm

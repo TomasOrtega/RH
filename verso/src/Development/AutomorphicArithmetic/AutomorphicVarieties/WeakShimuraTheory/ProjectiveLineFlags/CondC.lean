@@ -7,6 +7,35 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.WeakShimuraTheory.
 open NumberField IsDedekindDomain Formalism.ConjugateSelfDual Formalism.HC ReciprocityTheory.Gal IsLocalRing Polynomial UpperTheory.V UpperTheory.V.Base UpperTheory.V.Alg UpperTheory.V.HV UpperTheory.V.GradeZeroInterpolatingElement UpperTheory.V.Ws GlobalTheory.GalOfCusp
 
 set_option maxHeartbeats 800000 in
+/- English proof (translation)
+Introduce `Ω _ _ _ l _ c D T hfit _ c' h K η hη2 hker hperm`. Take `⟨hrange, hinj, -, -, hres, -⟩` from `P1.towerGal D T`. Use `haveI : IsLocalHom (inc h) := (P1.coefRes c).2.2.1 c' h`. Establish `hgood : D.Good`. Break down `hfit.2 with ⟨h2, -⟩ | ⟨h3, -⟩` into its components or cases.
+
+Use `exacts [h2.1, h3.1]`. Establish `hlev` using `P1.levEps K.V`. Establish `hsurj` using `(phiKer K.V).1`. Establish `hφ : Function.Injective (ResidueField.map (inc h))` using `(ResidueField.map (inc h)).injective`. Establish `hη2' : η * η = 1` using `by rw [← pow_two]; exact hη2`.
+
+Establish `hE2 : ∀ x, ((η (K.V.pr x) : (ResidueField c'.O)ˣ) : ResidueField c'.O) * η (K.V.pr x) = 1` using `fun x => congrArg (fun θ => ((θ (K.V.pr x) : (ResidueField c'.O)ˣ) : ResidueField c'.O)) hη2'`. Establish `hpm : ∀ x, ∃ y : ResidueField c.O, ResidueField.map (inc h) y = η (K.V.pr x)`. Introduce `x`. Break down `mul_self_eq_one_iff.mp (hE2 x) with e | e` into its components or cases. Conclude with `⟨1, by rw [map_one, e]⟩`.
+
+Conclude with `⟨-1, by rw [map_neg, map_one, e]⟩`. Use `choose f hf using hpm`. Establish `hff : ∀ x, f x * f x = 1` using `fun x => hφ (by rw [map_mul, hf, map_one, hE2])`. Establish `hfmul : ∀ a b, f (a * b) = f a * f b` using `fun a b => hφ (by rw [map_mul, hf, hf, hf]; exact congrArg Units.val ((η.comp K.V.pr).map_mul a b))`. Establish `hf1 : f 1 = 1` using `hφ (by rw [hf, map_one]; exact congrArg Units.val (η.comp K.V.pr).map_one)`.
+
+Set `F' : G T.L Ω →* (ResidueField c.O)ˣ` to `{ toFun := fun x => ⟨f x, f x, hff x, hff x⟩ map_one' := Units.ext hf1 map_mul' := fun a b => Units.ext (hfmul a b) }`. Set `e` to `(MonoidHom.ofInjective hinj).trans (MulEquiv.subgroupCongr hrange)`. Set `η' : T.GalL →* (ResidueField c.O)ˣ` to `F'.comp e.symm.toMonoidHom`. Establish `hxg : ∀ g : T.GalL, resLe (Tower.F_le T) (e.symm g) = (g : G T.F Ω)` using `fun g => congrArg Subtype.val (e.apply_symm_apply g)`. Establish `hmain : η' = 1`.
+
+Use `hfit.1.g3' η' ?_ ?_ ?_` and prove the remaining obligations. Rewrite using `[pow_two]`. Use `MonoidHom.ext fun g => ?_` and prove the remaining obligations. Conclude with `Units.ext (hff _)`. Introduce `g hom`.
+
+Establish `hq : resQ T.F (g : G T.F Ω) = resQ T.L (e.symm g)` using `by rw [← hxg]; exact (hres _).1`. Rewrite `hom` using `[hq]`. Establish `hb` using `hgood.om_bar (resQ T.L (e.symm g))`. Simplify using `only [Raw.bar, hom, Units.val_one, map_one] at hb`. Establish `heps : K.V.frame.eps c'.O (ResidueField c'.O) (K.V.pr (e.symm g)) = 1`.
+
+Apply `Units.ext` to reduce the goal to its premises. Rewrite using `[hlev.2.2.2 c'.O (ResidueField c'.O) (e.symm g), Units.val_one]`. Establish `hc : (cycZ (↥T.L) Ω l) (e.symm g) = cycZ ℚ Ω l (resQ T.L (e.symm g))` using `((hres _).2.2).symm`. Establish `key : algebraMap ℤ_[l] c'.O ↑(cycZ ℚ Ω l (resQ T.L (e.symm g))) = inc h (algebraMap ℤ_[l] c.O ↑(cycZ ℚ Ω l (resQ T.L (e.symm g))))` using `((Subalgebra.inclusion h).commutes _).symm`. Use `show residue c'.O (algebraMap ℤ_[l] c'.O ↑(cycZ (↥T.L) Ω l (e.symm g))) = 1`.
+
+Rewrite using `[hc, key, ← ResidueField.map_residue]`. Apply the tactic sequence `have hb' : residue c.O (algebraMap ℤ_[l] c.O ↑(cycZ ℚ Ω l (resQ T.L (e.symm g)))) = 1 := by first | exact hb | exact hb.symm`. Rewrite using `[hb', map_one]`. Establish `hη1 : η (K.V.pr (e.symm g)) = 1` using `hker heps`. Apply `Units.ext` to reduce the goal to its premises.
+
+Use `show f (e.symm g) = 1`. Conclude with `hφ (by rw [hf, hη1]; simp)`. Introduce `i`. Take `⟨j, hj⟩` from `hperm i`. Use `⟨j, fun g => ?_⟩` and prove the remaining obligations.
+
+Establish `hq : resQ T.F (g : G T.F Ω) = resQ T.L (e.symm g)` using `by rw [← hxg]; exact (hres _).1`. Use `show f (e.symm g) * residue c.O ↑(chi D T.pr i (resQ T.F ↑g)) = residue c.O ↑(chi D T.pr j (resQ T.F ↑g))`. Rewrite using `[hq]`. Generalize the expression as in `e.symm g = x`. Establish `hc' : ((η (K.V.pr x) : (ResidueField c'.O)ˣ) : ResidueField c'.O) * (K.r.chib i (K.V.pr x) : ResidueField c'.O) = K.r.chib j (K.V.pr x)` using `congrArg (fun θ => ((θ (K.V.pr x) : (ResidueField c'.O)ˣ) : ResidueField c'.O)) hj`.
+
+Rewrite `hc'` using `[K.chib i x, K.chib j x, map_mul (residue c'.O), map_mul (residue c'.O)]`. Establish `hκ : residue c'.O (K.κ x : c'.O) ≠ 0` using `((K.κ x).isUnit.map (residue _)).ne_zero`. Apply `hφ` to reduce the goal to its premises. Rewrite using `[map_mul, ResidueField.map_residue (inc h), ResidueField.map_residue (inc h), hf x]`. Apply `mul_left_cancel₀ hκ` to reduce the goal to its premises.
+
+Take the linear combination `hc'`. Use `MonoidHom.ext fun y => ?_` and prove the remaining obligations. Take `⟨x, rfl⟩` from `hsurj y`. Establish `h1 : f x = 1`. Establish `hm` using `congrArg (fun θ => ((θ (e x) : (ResidueField c.O)ˣ) : ResidueField c.O)) hmain`.
+
+Rewrite using `[show f x = f (e.symm (e x)) by rw [e.symm_apply_apply]]`. Conclude with `hm`. Apply `Units.ext` to reduce the goal to its premises. Rewrite using `[← hf x, h1, map_one]`. Both sides reduce to the same expression.
+-/
 theorem UpperTheory.V.Ws.P1.condC :
     ∀ {Ω : Type} [Field Ω] [CharZero Ω] [IsAlgClosure ℚ Ω] {l : ℕ} [Fact l.Prime] {c : Coef l} (D : Raw Ω c) (T : Tower D), T.Fit → T.Deep → ∀ (c' : Coef l) (h : c.O ≤ c'.O) (K : Link T c' h) (η : K.V.frame.G₀ →* (ResidueField c'.O)ˣ), η ^ 2 = 1 → (K.V.frame.eps c'.O (ResidueField c'.O)).ker ≤ η.ker →
           (∀ i, ∃ j, η * K.r.chib i = K.r.chib j) → η = 1 := by

@@ -15,6 +15,15 @@ variable {H : Type} [NormedAddCommGroup H] [InnerProductSpace ℂ H]
 def cvec (s : ℕ) (F : ℂ → ℂ → H) (x c : ℂ) : H :=
   (((‖x‖ ^ (s - 1))⁻¹ : ℝ) : ℂ) • F x (c / x ^ (s - 1))
 
+/- English proof (translation)
+Establish `ha : x ^ (s - 1) ≠ 0` using `pow_ne_zero _ hx`. Establish `hx0 : ‖x‖ ≠ 0` using `norm_ne_zero_iff.mpr hx`. Establish `hx0' : ‖x'‖ ≠ 0` using `norm_ne_zero_iff.mpr hx'`. Establish `hk : ‖x ^ (s - 1)‖ ^ 2 ≠ 0` using `pow_ne_zero _ (norm_ne_zero_iff.mpr ha)`. Establish `key` using `integral_comp_mul_C (fun c => ⟪cvec s F x c, cvec s G x' c⟫_ℂ) (x ^ (s - 1)) ha`.
+
+Establish `hL : ∫ c, ⟪cvec s F x c, cvec s G x' c⟫_ℂ = (‖x ^ (s - 1)‖ ^ 2) • ∫ z, ⟪cvec s F x (x ^ (s - 1) * z), cvec s G x' (x ^ (s - 1) * z)⟫_ℂ`. Rewrite using `[key, smul_smul, mul_inv_cancel₀ hk, one_smul]`. Rewrite using `[hL, ← integral_smul]`. Use `congr 1`. Use function extensionality and compare the values at `D`.
+
+Simplify using `only [cvec]`. Rewrite using `[mul_div_cancel_left₀ D ha, mul_div_right_comm (x ^ (s - 1)) D (x' ^ (s - 1))]`. Establish `hc : ‖x ^ (s - 1)‖ ^ 2 * (‖x‖ ^ (s - 1))⁻¹ * (‖x'‖ ^ (s - 1))⁻¹ = ‖x ^ (s - 1) / x' ^ (s - 1)‖`. Rewrite using `[norm_div, norm_pow, norm_pow]`. Clear the denominators using the available nonvanishing facts.
+
+Rewrite using `[inner_smul_left, inner_smul_right, inner_smul_right, Complex.conj_ofReal, Complex.real_smul, ← hc]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem cvec_inner (s : ℕ) (F G : ℂ → ℂ → H) (x x' : ℂ) (hx : x ≠ 0) (hx' : x' ≠ 0) :
     ∫ c, ⟪cvec s F x c, cvec s G x' c⟫_ℂ =
       ∫ D, ⟪F x D, ((‖x ^ (s - 1) / x' ^ (s - 1)‖ : ℝ) : ℂ) • G x' ((x ^ (s - 1) / x' ^ (s - 1)) * D)⟫_ℂ := by
@@ -39,6 +48,13 @@ theorem cvec_inner (s : ℕ) (F G : ℂ → ℂ → H) (x x' : ℂ) (hx : x ≠ 
   push_cast
   ring
 
+/- English proof (translation)
+Establish `ha : (x ^ (s - 1))⁻¹ ≠ 0` using `inv_ne_zero (pow_ne_zero _ hx)`. Establish `hr : ‖x‖ ^ (s - 1) ≠ 0` using `pow_ne_zero _ (norm_ne_zero_iff.mpr hx)`. Establish `hce : cvec s F x = fun c => (((‖x‖ ^ (s - 1))⁻¹ : ℝ) : ℂ) • F x ((x ^ (s - 1))⁻¹ * c)`. Use function extensionality and compare the values at `c`. Simplify using `only [cvec, div_eq_inv_mul]`.
+
+Rewrite using `[hce]`. Establish `h1 : ∀ c, ‖((((‖x‖ ^ (s - 1))⁻¹ : ℝ) : ℂ) • F x ((x ^ (s - 1))⁻¹ * c))‖ ^ 2 = ((‖x‖ ^ (s - 1)) ^ 2)⁻¹ * ‖F x ((x ^ (s - 1))⁻¹ * c)‖ ^ 2`. Introduce `c`. Rewrite using `[norm_smul, Complex.norm_real, Real.norm_eq_abs, abs_of_nonneg (by positivity), mul_pow, inv_pow]`. Repeatedly rewrite using `[h1]`.
+
+Rewrite using `[integral_const_mul, integral_comp_mul_C (fun D => ‖F x D‖ ^ 2) _ ha, smul_eq_mul, norm_inv, norm_pow, inv_pow, inv_inv, ← mul_assoc, inv_mul_cancel₀ (pow_ne_zero 2 hr), one_mul]`.
+-/
 theorem integral_norm_cvec_sq (s : ℕ) (F : ℂ → ℂ → H) (x : ℂ) (hx : x ≠ 0) :
     ∫ c, ‖cvec s F x c‖ ^ 2 = ∫ D, ‖F x D‖ ^ 2 := by
   have ha : (x ^ (s - 1))⁻¹ ≠ 0 := inv_ne_zero (pow_ne_zero _ hx)
@@ -55,11 +71,19 @@ theorem integral_norm_cvec_sq (s : ℕ) (F : ℂ → ℂ → H) (x : ℂ) (hx : 
   rw [integral_const_mul, integral_comp_mul_C (fun D => ‖F x D‖ ^ 2) _ ha, smul_eq_mul,
     norm_inv, norm_pow, inv_pow, inv_inv, ← mul_assoc, inv_mul_cancel₀ (pow_ne_zero 2 hr), one_mul]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `c`. Simplify using `only [cvec, div_eq_inv_mul]`.
+-/
 theorem cvec_eq_comp (s : ℕ) (F : ℂ → ℂ → H) (x : ℂ) :
     cvec s F x = fun c => (((‖x‖ ^ (s - 1))⁻¹ : ℝ) : ℂ) • F x ((x ^ (s - 1))⁻¹ * c) := by
   funext c
   simp only [cvec, div_eq_inv_mul]
 
+/- English proof (translation)
+Establish `ha : x ^ (s - 1) ≠ 0` using `pow_ne_zero _ hx`. Establish `hr : ‖x‖ ^ (s - 1) ≠ 0` using `pow_ne_zero _ (norm_ne_zero_iff.mpr hx)`. Use `⟨fun h => ?_, fun h => ?_⟩` and prove the remaining obligations. Rewrite using `[cvec_eq_comp]`. Conclude with `(memLp_comp_mul h _ (inv_ne_zero ha)).const_smul _`.
+
+Use `(memLp_comp_mul h (x ^ (s - 1)) ha).const_smul ((‖x‖ ^ (s - 1) : ℝ) : ℂ)` as an intermediate fact. Use `this using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `D`. Simplify using `only [Pi.smul_apply, cvec, smul_smul]`. Rewrite using `[mul_div_cancel_left₀ D ha, ← Complex.ofReal_mul, mul_inv_cancel₀ hr, Complex.ofReal_one, one_smul]`.
+-/
 theorem memLp_cvec (s : ℕ) (F : ℂ → ℂ → H) (x : ℂ) (hx : x ≠ 0) :
     MemLp (F x) 2 volume ↔ MemLp (cvec s F x) 2 volume := by
   have ha : x ^ (s - 1) ≠ 0 := pow_ne_zero _ hx
@@ -73,15 +97,24 @@ theorem memLp_cvec (s : ℕ) (F : ℂ → ℂ → H) (x : ℂ) (hx : x ≠ 0) :
     simp only [Pi.smul_apply, cvec, smul_smul]
     rw [mul_div_cancel_left₀ D ha, ← Complex.ofReal_mul, mul_inv_cancel₀ hr, Complex.ofReal_one, one_smul]
 
+/- English proof (translation)
+Simplify using `only [cvec, smul_sub]`.
+-/
 theorem cvec_sub (s : ℕ) (F G : ℂ → ℂ → H) (x c : ℂ) :
     cvec s F x c - cvec s G x c = cvec s (fun x D => F x D - G x D) x c := by
   simp only [cvec, smul_sub]
 
+/- English proof (translation)
+Unfold `rhoR lamR`. Rewrite using `[Complex.cpow_nat_inv_pow _ hs, div_pow]`.
+-/
 theorem rhoR_pow_eq {s : ℕ} (hs : s ≠ 0) (σ x : ℂ) :
     rhoR s σ x ^ s = x ^ (s - 1) / (x + σ) ^ (s - 1) := by
   unfold rhoR lamR
   rw [Complex.cpow_nat_inv_pow _ hs, div_pow]
 
+/- English proof (translation)
+Rewrite using `[← norm_pow, rhoR_pow_eq hs]`.
+-/
 theorem norm_rhoR_pow {s : ℕ} (hs : s ≠ 0) (σ x : ℂ) :
     ‖rhoR s σ x‖ ^ s = ‖x ^ (s - 1) / (x + σ) ^ (s - 1)‖ := by
   rw [← norm_pow, rhoR_pow_eq hs]
@@ -92,6 +125,9 @@ section cpicMain
 
 variable {H : Type} [NormedAddCommGroup H] [InnerProductSpace ℂ H] [CompleteSpace H]
 
+/- English proof (translation)
+Rewrite using `[cvec_inner s _ _ x (x + σ) hx hxσ]`. Unfold `pairD`. Rewrite using `[rhoR_pow_eq hs, norm_rhoR_pow hs]`.
+-/
 theorem pairD_of_cvec {s : ℕ} (hs : s ≠ 0) (β ε : ℂ) (bt bt' : ℂ → H) (σ x : ℂ) (hx : x ≠ 0) (hxσ : x + σ ≠ 0) :
     ∫ c, ⟪cvec s (fun x D => mainD s β ε bt x D) x c, cvec s (fun x D => mainD s β ε bt' x D) (x + σ) c⟫_ℂ =
       pairD s β ε bt bt' x (x + σ) (rhoR s σ x) := by

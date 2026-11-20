@@ -20,12 +20,20 @@ section Places
 variable {K M N : Type} [Field K] [NumberField K] [Field M] [NumberField M] [Field N] [NumberField N]
   [Algebra K M] [Algebra M N] [Algebra K N] [IsScalarTower K M N]
 
+/- English proof (translation)
+Apply `HeightOneSpectrum.ext` to reduce the goal to its premises. Simplify using `only [HeightOneSpectrum.under_asIdeal]`. Conclude with `Ideal.under_under w.asIdeal`.
+-/
 theorem under_under (w : HeightOneSpectrum (𝓞 N)) :
     (w.under (𝓞 M)).under (𝓞 K) = w.under (𝓞 K) := by
   apply HeightOneSpectrum.ext
   simp only [HeightOneSpectrum.under_asIdeal]
   exact Ideal.under_under w.asIdeal
 
+/- English proof (translation)
+Establish `h1 : v.asIdeal ≤ (w.under (𝓞 K)).asIdeal`. Introduce `x hx`. Rewrite using `[HeightOneSpectrum.under_asIdeal, Ideal.under_def, Ideal.mem_comap, GlobalTheory.DegOneLift.mem_iff_lt_one]`. Rewrite `hx` using `[GlobalTheory.DegOneLift.mem_iff_lt_one]`. Use `GlobalTheory.DegOneLift.lt_one_of_continuous i hi hx` as an intermediate fact.
+
+Rewrite `this` using `[he]`. Conclude with `this`. Conclude with `HeightOneSpectrum.ext (v.isMaximal.eq_of_le (w.under (𝓞 K)).isPrime.ne_top h1)`.
+-/
 theorem eq_under_of_continuous {v : HeightOneSpectrum (𝓞 K)} {w : HeightOneSpectrum (𝓞 N)}
     (i : v.adicCompletion K →+* w.adicCompletion N) (hi : Continuous i)
     (he : ∀ x : K, i (algebraMap K _ x) = algebraMap N _ (algebraMap K N x)) : v = w.under (𝓞 K) := by
@@ -44,6 +52,27 @@ end GlobalTheory.LiftTrans
 
 open GlobalTheory.LiftTrans in
 
+/- English proof (translation)
+Introduce `K M N _ _ _ _ _ _ _ _ _ _ _ _ _ a π P Q h1 h2`. Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `w f B hf hB`. Take `⟨f1, hf1⟩` from `GlobalTheory.AboveL.ResDeg.normV_eq_under_pow K M (w.under (𝓞 M))`. Take `⟨f2, hf2⟩` from `GlobalTheory.AboveL.ResDeg.normV_eq_under_pow M N w`.
+
+Rewrite `hf1` using `[under_under]`. Establish `hP` using `h1.sat (w.under (𝓞 M)) f1 B (by rw [under_under]; exact hf1) (by rw [under_under]; exact hB)`. Establish `hQ` using `h2.sat w f2 _ hf2 hP`. Establish `hff : f = f1 * f2`. Establish `h2le` using `GlobalTheory.DegOneLift.two_le_normV (w.under (𝓞 K))`.
+
+Apply `Nat.pow_right_injective h2le` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `normV (w.under (𝓞 K)) ^ f = normV (w.under (𝓞 K)) ^ (f1 * f2)`. Rewrite using `[← hf, pow_mul, ← hf1, hf2]`. Rewrite `hQ` using `[Multiset.map_map]`. Use `hQ using 2` and compare the differences between its conclusion and the goal.
+
+Simplify using `[Function.comp, hff, pow_mul]`. Introduce `τ`. Rewrite using `[h2.inf τ, h1.inf, RingHom.comp_assoc, ← IsScalarTower.algebraMap_eq]`. Introduce `v w i hi hie σ σ' hσ hσ'`. Establish `hv` using `eq_under_of_continuous i.toRingHom hi hie`.
+
+Substitute `hv` using the available equality. Use `set u := w.under (𝓞 M) with hu`. Use `haveI : w.asIdeal.LiesOver u.asIdeal := by rw [hu, HeightOneSpectrum.under_asIdeal]; infer_instance`. Use `haveI : u.asIdeal.LiesOver (w.under (𝓞 K)).asIdeal := by`. Prove the components needed by the constructor for the conclusion.
+
+Rewrite using `[hu, HeightOneSpectrum.under_asIdeal, HeightOneSpectrum.under_asIdeal, Ideal.under_under]`. Use `haveI : w.asIdeal.LiesOver (w.under (𝓞 K)).asIdeal := by rw [HeightOneSpectrum.under_asIdeal]; infer_instance`. Set `φ1` to `GroundTheory.Global.adicCompletionMap (w.under (𝓞 K)) u`. Set `φ2` to `GroundTheory.Global.adicCompletionMap u w`. Establish `hcomp : ∀ y, φ2 (φ1 y) = GroundTheory.Global.adicCompletionMap (w.under (𝓞 K)) w y` using `fun y => congrFun (congrArg DFunLike.coe (GlobalTheory.BCChar.adicCompletionMap_comp_adicCompletionMap (w.under (𝓞 K)) u w)) y`.
+
+Establish `hiφ : ∀ y, i y = φ2 (φ1 y)` using `fun y => by`. Rewrite using `[hcomp]`. Conclude with `congrFun ((HeightOneSpectrum.denseRange_algebraMap (R := 𝓞 K) (K := K) (w.under (𝓞 K))).equalizer hi (GroundTheory.Global.continuous_adicCompletionMap _ _) (funext fun x => (hie x).trans (GroundTheory.Global.adicCompletionMap_algebraMap _ _ x).symm)) y`. Establish `hb2 : Function.Bijective φ2` using `⟨φ2.injective, fun z => by`. Take `⟨y, rfl⟩` from `i.surjective z`.
+
+Conclude with `⟨φ1 y, (hiφ y).symm⟩⟩`. Establish `hb1 : Function.Bijective φ1` using `⟨φ1.injective, fun t => by`. Take `⟨y, hy⟩` from `i.surjective (φ2 t)`. Conclude with `⟨y, hb2.1 (by rw [← hiφ, hy])⟩⟩`. Take `⟨τ, hτ, -⟩` from `GlobalTheory.CuspRep.LocEx.exists_isLocComp GlobalTheory.automorphicFormsFiniteGL M a P u`.
+
+Take `⟨e1, he1⟩` from `h1.loc (w.under (𝓞 K)) u (RingEquiv.ofBijective φ1 hb1) (GroundTheory.Global.continuous_adicCompletionMap _ _) (fun x => GroundTheory.Global.adicCompletionMap_algebraMap _ _ x) σ τ hσ hτ`. Take `⟨e2, he2⟩` from `h2.loc u w (RingEquiv.ofBijective φ2 hb2) (GroundTheory.Global.continuous_adicCompletionMap _ _) (fun x => GroundTheory.Global.adicCompletionMap_algebraMap _ _ x) τ σ' hτ hσ'`. Use `⟨e1.trans e2, fun g x => ?_⟩` and prove the remaining obligations. Establish `hg : Matrix.GeneralLinearGroup.map (RingEquiv.ofBijective φ2 hb2).toRingHom (Matrix.GeneralLinearGroup.map (RingEquiv.ofBijective φ1 hb1).toRingHom g) = Matrix.GeneralLinearGroup.map i.toRingHom g`. Apply `Units.ext` to reduce the goal to its premises.
+
+Use extensionality with `j k`. Simplify using `only [Matrix.GeneralLinearGroup.map_apply]`. Conclude with `congrArg _ (hiφ _).symm`. Rewrite using `[LinearEquiv.trans_apply, LinearEquiv.trans_apply, he1, he2, hg]`.
+-/
 theorem GlobalTheory.LiftTrans.isLift_trans : ∀ (K M N : Type) [Field K] [NumberField K] [IsTotallyComplex K] [Field M] [NumberField M] [IsTotallyComplex M] [Field N] [NumberField N] [IsTotallyComplex N] [Algebra K M] [Algebra M N] [Algebra K N] [IsScalarTower K M N] (a : ℕ) (π : CuspSub K a) (P : CuspSub M a) (Q : CuspSub N a), IsLift π P → IsLift P Q → IsLift π Q := by
   intro K M N _ _ _ _ _ _ _ _ _ _ _ _ _ a π P Q h1 h2
   refine ⟨?_, ?_, ?_⟩

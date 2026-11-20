@@ -23,6 +23,11 @@ def datE : PG.Dat E (Fin M) r where
 
 variable {σ J P T}
 
+/- English proof (translation)
+Take `⟨hee, hff, hef, hez, hfz, hzz, hT⟩` from `hP`. Use `⟨fun x => ?_, fun i j => ?_, hee, hff, hef, hez, hfz, ?_⟩` and prove the remaining obligations. Use `show σ (σ x) = x`. Conclude with `hσσ x`. Use `show σ (J j i) = J i j`.
+
+Conclude with `hJ.1 i j`. Use `show (algebraMap F E (-T))⁻¹ * hE σ J P.z P.z = 1`. Rewrite using `[hzz, inv_mul_cancel₀]`. Rewrite using `[Ne, map_eq_zero_iff _ (algebraMap F E).injective, neg_eq_zero]`. Conclude with `hT`.
+-/
 theorem datE_hyp (hσσ : ∀ x, σ (σ x) = x) (hJ : IsHermND σ J) (hP : P.IsStd σ J T) :
     (datE σ J P T).Hyp := by
   obtain ⟨hee, hff, hef, hez, hfz, hzz, hT⟩ := hP
@@ -38,14 +43,23 @@ theorem datE_hyp (hσσ : ∀ x, σ (σ x) = x) (hJ : IsHermND σ J) (hP : P.IsS
 
 variable (R : Type) [CommRing R] [Algebra F R]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `i`. Simplify using `[ratV]`.
+-/
 theorem ratV_sub' (x y : Fin M → E) :
     ratV (F := F) R (x - y) = ratV (F := F) R x - ratV (F := F) R y := by
   funext i; simp [ratV]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `i`. Simplify using `[ratV]`.
+-/
 theorem ratV_add' (x y : Fin M → E) :
     ratV (F := F) R (x + y) = ratV (F := F) R x + ratV (F := F) R y := by
   funext i; simp [ratV]
 
+/- English proof (translation)
+Rewrite using `[PG.Dat.pX_apply, PG.Dat.pX_apply]`. Use `show ∑ a, hR R σ J (ratV (F := F) R (P.f a)) (ratV (F := F) R v) • ratV (F := F) R (P.e a) = ratV (F := F) R (∑ a, hE σ J (P.f a) v • P.e a)`. Simplify using `only [hR_ratV]`. Use function extensionality and compare the values at `i`. Simplify using `[ratV, Finset.sum_apply, map_sum]`.
+-/
 theorem ratV_pX (v : Fin M → E) :
     (datR R σ J P T).pX (ratV (F := F) R v) = ratV (F := F) R ((datE σ J P T).pX v) := by
   rw [PG.Dat.pX_apply, PG.Dat.pX_apply]
@@ -55,6 +69,9 @@ theorem ratV_pX (v : Fin M → E) :
   funext i
   simp [ratV, Finset.sum_apply, map_sum]
 
+/- English proof (translation)
+Rewrite using `[PG.Dat.pXv_apply, PG.Dat.pXv_apply]`. Use `show ∑ a, hR R σ J (ratV (F := F) R (P.e a)) (ratV (F := F) R v) • ratV (F := F) R (P.f a) = ratV (F := F) R (∑ a, hE σ J (P.e a) v • P.f a)`. Simplify using `only [hR_ratV]`. Use function extensionality and compare the values at `i`. Simplify using `[ratV, Finset.sum_apply, map_sum]`.
+-/
 theorem ratV_pXv (v : Fin M → E) :
     (datR R σ J P T).pXv (ratV (F := F) R v) = ratV (F := F) R ((datE σ J P T).pXv v) := by
   rw [PG.Dat.pXv_apply, PG.Dat.pXv_apply]
@@ -64,6 +81,9 @@ theorem ratV_pXv (v : Fin M → E) :
   funext i
   simp [ratV, Finset.sum_apply, map_sum]
 
+/- English proof (translation)
+Rewrite using `[PG.Dat.pz_apply, PG.Dat.pz_apply]`. Use `show (inclR (F := F) R ((algebraMap F E (-T))⁻¹) * hR R σ J (ratV (F := F) R P.z) (ratV (F := F) R v)) • ratV (F := F) R P.z = ratV (F := F) R (((algebraMap F E (-T))⁻¹ * hE σ J P.z v) • P.z)`. Simplify using `only [hR_ratV]`. Use function extensionality and compare the values at `i`. Simplify using `[ratV, map_mul]`.
+-/
 theorem ratV_pz (v : Fin M → E) :
     (datR R σ J P T).pz (ratV (F := F) R v) = ratV (F := F) R ((datE σ J P T).pz v) := by
   rw [PG.Dat.pz_apply, PG.Dat.pz_apply]
@@ -74,19 +94,31 @@ theorem ratV_pz (v : Fin M → E) :
   funext i
   simp [ratV, map_mul]
 
+/- English proof (translation)
+Rewrite using `[PG.Dat.pU_apply, PG.Dat.pU_apply, ratV_pX, ratV_pXv, ratV_pz, ratV_add', ratV_add']`.
+-/
 theorem ratV_pU (v : Fin M → E) :
     (datR R σ J P T).pU (ratV (F := F) R v) = ratV (F := F) R ((datE σ J P T).pU v) := by
   rw [PG.Dat.pU_apply, PG.Dat.pU_apply, ratV_pX, ratV_pXv, ratV_pz, ratV_add', ratV_add']
 
+/- English proof (translation)
+Rewrite using `[PG.Dat.pW_apply, PG.Dat.pW_apply, ratV_pU, ratV_sub']`.
+-/
 theorem ratV_pW (v : Fin M → E) :
     (datR R σ J P T).pW (ratV (F := F) R v) = ratV (F := F) R ((datE σ J P T).pW v) := by
   rw [PG.Dat.pW_apply, PG.Dat.pW_apply, ratV_pU, ratV_sub']
 
+/- English proof (translation)
+Use function extensionality and compare the values at `i`. Conclude with `RingHom.map_mulVec (inclR (F := F) R) Q x i`.
+-/
 theorem ratV_mulVec' (Q : Matrix (Fin M) (Fin M) E) (x : Fin M → E) :
     ratV (F := F) R (Q *ᵥ x) = (Q.map (inclR (F := F) R)) *ᵥ ratV (F := F) R x := by
   funext i
   exact RingHom.map_mulVec (inclR (F := F) R) Q x i
 
+/- English proof (translation)
+Rewrite using `[ratV_mulVec']`. Use `show (((g : HR R σ J).1 : GL (Fin M) (R ⊗[F] E)) : Matrix (Fin M) (Fin M) (R ⊗[F] E)) *ᵥ _ = _`. Rewrite using `[← hγ]`. Both sides reduce to the same expression.
+-/
 theorem lin_rat (g : HA R σ J) (γ : GL (Fin M) E)
     (hγ : Formalism.UG.bc (inclR (F := F) R) γ = (g : HR R σ J).1) (x : Fin M → E) :
     lin R σ J g (ratV (F := F) R x) = ratV (F := F) R ((γ : Matrix (Fin M) (Fin M) E) *ᵥ x) := by
@@ -95,6 +127,9 @@ theorem lin_rat (g : HA R σ J) (γ : GL (Fin M) E)
   rw [← hγ]
   rfl
 
+/- English proof (translation)
+Rewrite using `[PG.Dat.Pi_apply, PG.Dat.Pi_apply, ratV_pW, lin_rat R g γ hγ, ratV_pW, ratV_pU, ratV_add']`. Both sides reduce to the same expression.
+-/
 theorem Pi_rat (g : HA R σ J) (γ : GL (Fin M) E)
     (hγ : Formalism.UG.bc (inclR (F := F) R) γ = (g : HR R σ J).1) (v : Fin M → E) :
     (datR R σ J P T).Pi (lin R σ J g) (ratV (F := F) R v) =
@@ -102,6 +137,9 @@ theorem Pi_rat (g : HA R σ J) (γ : GL (Fin M) E)
   rw [PG.Dat.Pi_apply, PG.Dat.Pi_apply, ratV_pW, lin_rat R g γ hγ, ratV_pW, ratV_pU, ratV_add']
   rfl
 
+/- English proof (translation)
+Use function extensionality and compare the values at `k`. Distinguish the cases in `h : k = j`. Substitute `h` using the available equality. Simplify using `[ratV]`. Simplify using `[ratV, h]`.
+-/
 theorem single_rat (j : Fin M) :
     (Pi.single j 1 : Fin M → R ⊗[F] E) = ratV (F := F) R (Pi.single j 1) := by
   funext k
@@ -116,6 +154,29 @@ section Main
 variable {F E : Type} [Field F] [Field E] [Algebra F E] {R : Type} [CommRing R] [Algebra F R]
   {σ : E →ₐ[F] E} {M : ℕ} {J : Matrix (Fin M) (Fin M) E} {r : ℕ} {P : Frame E M r} {T : F}
 
+/- English proof (translation)
+Take `⟨γ, hγU, hγ⟩` from `Subgroup.mem_map.1 (Subgroup.mem_subgroupOf.1 hr)`. Establish `H` using `datE_hyp hσσ hJ hP`. Establish `hrinj : Function.Injective (ratV (F` using `F) R : (Fin M → E) → Fin M → R ⊗[F] E) := by`. Introduce `x y h`. Use function extensionality and compare the values at `i`.
+
+Conclude with `hinj (congrFun h i)`. Establish `hUJ : ∀ δ ∈ Formalism.UG.UJ (σ : E →+* E) J, (datE σ J P T).Uni (Matrix.mulVecLin (δ : Matrix (Fin M) (Fin M) E))`. Introduce `δ hδ x y`. Use `show Formalism.UG.hform (σ : E →+* E) J (_ *ᵥ x) (_ *ᵥ y) = Formalism.UG.hform (σ : E →+* E) J x y`. Rewrite using `[Formalism.UG.P.hform_mulVec]`.
+
+Establish `: Formalism.UG.cT (σ : E →+* E) (δ : Matrix (Fin M) (Fin M) E) * J * (δ : Matrix (Fin M) (Fin M) E) = J` using `hδ`. Rewrite using `[this]`. Establish `hfix : ∀ w, lin R σ J g (ratV (F` using `F) R w) = ratV (F := F) R w → (γ : Matrix (Fin M) (Fin M) E) *ᵥ w = w := by`. Introduce `w hw`. Rewrite `hw` using `[lin_rat R g γ hγ]`.
+
+Conclude with `hrinj hw`. Establish `hFe : (datE σ J P T).FixEZ (Matrix.mulVecLin (γ : Matrix (Fin M) (Fin M) E))` using `⟨fun a => hfix _ (stabilizer_fixes_frame_vector R σ J P hg a), hfix _ (stabilizer_fixes_normal_vector hg)⟩`. Establish `hinv : ∀ w, (γ : Matrix (Fin M) (Fin M) E) *ᵥ w = w → ((γ⁻¹ : GL (Fin M) E) : Matrix (Fin M) (Fin M) E) *ᵥ w = w`. Introduce `w hw`. Use `conv_lhs => rw [← hw]`.
+
+Rewrite using `[Matrix.mulVec_mulVec, ← Units.val_mul, inv_mul_cancel, Units.val_one, Matrix.one_mulVec]`. Establish `hFe' : (datE σ J P T).FixEZ (Matrix.mulVecLin ((γ⁻¹ : GL (Fin M) E) : Matrix (Fin M) (Fin M) E))` using `⟨fun a => hinv _ (hFe.1 a), hinv _ hFe.2⟩`. Set `S` to `Matrix.mulVecLin (γ : Matrix (Fin M) (Fin M) E)`. Set `S'` to `Matrix.mulVecLin ((γ⁻¹ : GL (Fin M) E) : Matrix (Fin M) (Fin M) E)`. Establish `hSS' : S ∘ₗ S' = LinearMap.id`.
+
+Apply `LinearMap.ext` to reduce the goal to its premises. Introduce `v`. Simplify using `only [S, S', LinearMap.comp_apply, Matrix.mulVecLin_apply, Matrix.mulVec_mulVec, ← Units.val_mul, mul_inv_cancel, Units.val_one, Matrix.one_mulVec, LinearMap.id_apply]`. Establish `hS'S : S' ∘ₗ S = LinearMap.id`. Apply `LinearMap.ext` to reduce the goal to its premises.
+
+Introduce `v`. Simplify using `only [S, S', LinearMap.comp_apply, Matrix.mulVecLin_apply, Matrix.mulVec_mulVec, ← Units.val_mul, inv_mul_cancel, Units.val_one, Matrix.one_mulVec, LinearMap.id_apply]`. Establish `hc1 : (datE σ J P T).Pi S ∘ₗ (datE σ J P T).Pi S' = LinearMap.id`. Apply `LinearMap.ext` to reduce the goal to its premises. Introduce `v`.
+
+Rewrite using `[LinearMap.comp_apply, PG.Dat.Pi_comp H hFe.1 hFe' (hUJ _ ((Formalism.UG.UJ _ J).inv_mem hγU)), hSS', PG.Dat.Pi_id H]`. Both sides reduce to the same expression. Establish `hc2 : (datE σ J P T).Pi S' ∘ₗ (datE σ J P T).Pi S = LinearMap.id`. Apply `LinearMap.ext` to reduce the goal to its premises. Introduce `v`.
+
+Rewrite using `[LinearMap.comp_apply, PG.Dat.Pi_comp H hFe'.1 hFe (hUJ _ hγU), hS'S, PG.Dat.Pi_id H]`. Both sides reduce to the same expression. Set `γ' : GL (Fin M) E` to `{ val := LinearMap.toMatrix' ((datE σ J P T).Pi S) inv := LinearMap.toMatrix' ((datE σ J P T).Pi S') val_inv := by rw [← LinearMap.toMatrix'_comp, hc1, LinearMap.toMatrix'_id] inv_val := by rw [← LinearMap.toMatrix'_comp, hc2, LinearMap.toMatrix'_id] }`. Establish `hγ'U : γ' ∈ Formalism.UG.UJ (σ : E →+* E) J` using `by show Formalism.UG.cT (σ : E →+* E) (LinearMap.toMatrix' ((datE σ J P T).Pi S)) * J * LinearMap.toMatrix' ((datE σ J P T).Pi S) = J`. Apply `uj_of_uni` to reduce the goal to its premises.
+
+Introduce `x y`. Rewrite using `[LinearMap.toMatrix'_mulVec, LinearMap.toMatrix'_mulVec]`. Conclude with `PG.Dat.Pi_uni H hFe (hUJ _ hγU) x y`. Use `Subgroup.mem_subgroupOf.2 (Subgroup.mem_map.2 ⟨γ', hγ'U, Units.ext ?_⟩)` and prove the remaining obligations. Use `show (LinearMap.toMatrix' ((datE σ J P T).Pi S)).map (inclR (F := F) R) = piMat (P := P) (T := T) g`.
+
+Use extensionality with `i j`. Rewrite using `[Matrix.map_apply, piMat, LinearMap.toMatrix'_apply, LinearMap.toMatrix'_apply, single_rat R j, Pi_rat R g γ hγ]`. Both sides reduce to the same expression.
+-/
 theorem piG_rat (hinj : Function.Injective (inclR (F := F) R : E →+* R ⊗[F] E))
     (hσσ : ∀ x, σ (σ x) = x) (hJ : IsHermND σ J) (hP : P.IsStd σ J T)
     (g : HA R σ J) (hg : g ∈ S0 R σ J P) (hr : g ∈ HFinIn R σ J) :
@@ -190,6 +251,9 @@ theorem piG_rat (hinj : Function.Injective (inclR (F := F) R : E →+* R ⊗[F] 
 
 end Main
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ M J r P T hσσ hJ hP g hg hr`. Establish `hinj : Function.Injective (inclR (F` using `F) (AF F) : E →+* AF F ⊗[F] E) := Algebra.TensorProduct.includeRight_injective (NumberField.AdeleRing.algebraMap_injective _ _)`. Conclude with `piG_rat hinj hσσ hJ hP g hg hr`.
+-/
 theorem projection_preserves_rational : PiRat := by
   intro F E _ _ _ _ _ σ M J r P T hσσ hJ hP g hg hr
   have hinj : Function.Injective (inclR (F := F) (AF F) : E →+* AF F ⊗[F] E) :=

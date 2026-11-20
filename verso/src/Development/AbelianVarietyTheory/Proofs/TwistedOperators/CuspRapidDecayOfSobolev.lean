@@ -19,17 +19,32 @@ variable {D : D7} {ψ : AddChar (AF D.host.F) ℂ} {θ : InfFam D} {V W : HSp D}
   {ω : GA D V × GA D W →* Module.End ℂ (WO V W → ℂ)} {ν : Measure (GA D W)} {𝓕 : Set (GA D W)}
   {f f' : WO V W → ℂ} {F : GA D W → ℂ} {A d : ℕ}
 
+/- English proof (translation)
+Unfold `thetaKO`. Rewrite using `[← Module.End.mul_apply, ← map_mul, Prod.mk_mul_mk]`.
+-/
 theorem thetaKO_om (g g₀ : GA D V) (h h₀ : GA D W) (f : WO V W → ℂ) :
     thetaKO ω g h (ω (g₀, h₀) f) = thetaKO ω (g * g₀) (h * h₀) f := by
   unfold thetaKO
   rw [← Module.End.mul_apply, ← map_mul, Prod.mk_mul_mk]
 
+/- English proof (translation)
+Simplify using `only [sobO, wordSum, l2O, Measure.restrict_smul, eLpNorm_smul_measure_of_ne_top' ENNReal.ofNat_ne_top, Finset.mul_sum]`. Both sides reduce to the same expression.
+-/
 theorem sobO_smul_measure (c : ℝ≥0) (μ : Measure (WO V W)) (𝓓 : Set (WO V W)) (d : ℕ) (f : WO V W → ℂ) :
     sobO ψ θ (c • μ) 𝓓 d f = (c ^ (2 : ℝ≥0∞).toReal⁻¹ : ℝ≥0) * sobO ψ θ μ 𝓓 d f := by
   simp only [sobO, wordSum, l2O, Measure.restrict_smul, eLpNorm_smul_measure_of_ne_top' ENNReal.ofNat_ne_top,
     Finset.mul_sum]
   rfl
 
+/- English proof (translation)
+Take `⟨i1, i2, i3, i4, i5, -⟩` from `GlobalTheory.AdelicMatrixLattice.lattice D W V`. Establish `: BorelSpace (WO V W)` using `⟨rfl⟩`. Take `⟨C, hC0, hC⟩` from `H.real ψ hθ hU`. Take `⟨h0, h1⟩` from `measure_dom hμ h𝓓`. Use `lift μ 𝓓 to ℝ≥0 using h1 with m hm`.
+
+Establish `hm0 : m ≠ 0` using `by simpa using h0`. Establish `hc : IsCovolOne (ratL W V) (m⁻¹ • μ) 𝓓` using `⟨Measure.IsAddHaarMeasure.nnreal_smul μ (inv_ne_zero hm0), h𝓓.mono Measure.smul_absolutelyContinuous, by`. Rewrite using `[Measure.smul_apply, ← hm, ENNReal.smul_def, smul_eq_mul, ← ENNReal.coe_mul, inv_mul_cancel₀ hm0]`. Use the proof step `rfl⟩`. Use `lift C to ℝ≥0 using hC0`.
+
+Use `⟨C * m⁻¹ ^ (2 : ℝ≥0∞).toReal⁻¹ * 2 ^ A, fun f hf g h => ?_⟩` and prove the remaining obligations. Establish `h2` using `(hC χS χT ω hω _ _ hc f hf).2 g`. Rewrite `h2` using `[sobO_smul_measure, ENNReal.toReal_mul, ENNReal.coe_toReal]`. Use `(norm_le_quotHeight_pow (A := A) (thetaKO_left hω hf.1 g) (fun h => (h2 h).trans_eq (by` and prove the remaining obligations. Rewrite using `[mul_pow, ← mul_assoc])) h).trans_eq ?_`.
+
+Simplify using `only [NNReal.coe_mul, NNReal.coe_pow, NNReal.coe_ofNat]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem kernel_le (H : KernelBound V W A d) (hθ : IsInfFam θ) (hω : IsWeilDatumO ψ V W χS χT ω)
     {μ : Measure (WO V W)} {𝓓 : Set (WO V W)} (hμ : μ.IsAddHaarMeasure) (h𝓓 : IsAddFundamentalDomain (ratL W V) 𝓓 μ)
     {U : AddSubgroup (WO V W)} (hU : IsOpen (U : Set (WO V W))) :
@@ -53,6 +68,11 @@ theorem kernel_le (H : KernelBound V W A d) (hθ : IsInfFam θ) (hω : IsWeilDat
   simp only [NNReal.coe_mul, NNReal.coe_pow, NNReal.coe_ofNat]
   ring
 
+/- English proof (translation)
+Take `⟨C, hC⟩` from `kernel_le H hθ hω hμ h𝓓 hU`. Use `⟨C, fun f hf ν 𝓕 F => iSup_le fun g => ?_⟩` and prove the remaining obligations. Establish `hs` using `sobO_ne_top hω.std hθ hμ h𝓓 hf.1 d`. Establish `hg` using `pow_pos (height_pos V g) A`. Rewrite using `[ENNReal.ofReal_div_of_pos hg, ofReal_norm_eq_enorm]`.
+
+Use `ENNReal.div_le_of_le_mul ((enorm_integral_le_lintegral_enorm _).trans ?_)` and prove the remaining obligations. Rewrite using `[mul_right_comm, decayInt, ← lintegral_const_mul' _ _ (ENNReal.mul_ne_top (ENNReal.mul_ne_top ENNReal.coe_ne_top hs) ENNReal.ofReal_ne_top)]`. Use `lintegral_mono fun h => ?_` and prove the remaining obligations. Rewrite using `[← ENNReal.ofReal_toReal hs, ← ENNReal.ofReal_coe_nnreal, ← ENNReal.ofReal_mul C.coe_nonneg, ← ENNReal.ofReal_mul (by positivity), ← ENNReal.ofReal_mul (by positivity), ← ofReal_norm_eq_enorm, norm_mul]`. Conclude with `ENNReal.ofReal_le_ofReal ((mul_le_mul_of_nonneg_right (hC f hf g h) (norm_nonneg _)).trans_eq (by ring))`.
+-/
 theorem growthSize_lift_le (H : KernelBound V W A d) (hθ : IsInfFam θ) (hω : IsWeilDatumO ψ V W χS χT ω)
     {μ : Measure (WO V W)} {𝓓 : Set (WO V W)} (hμ : μ.IsAddHaarMeasure) (h𝓓 : IsAddFundamentalDomain (ratL W V) 𝓓 μ)
     {U : AddSubgroup (WO V W)} (hU : IsOpen (U : Set (WO V W))) :
@@ -71,6 +91,11 @@ theorem growthSize_lift_le (H : KernelBound V W A d) (hθ : IsInfFam θ) (hω : 
     ← ENNReal.ofReal_mul (by positivity), ← ENNReal.ofReal_mul (by positivity), ← ofReal_norm_eq_enorm, norm_mul]
   exact ENNReal.ofReal_le_ofReal ((mul_le_mul_of_nonneg_right (hC f hf g h) (norm_nonneg _)).trans_eq (by ring))
 
+/- English proof (translation)
+Take `⟨U, hU, hl⟩` from `isTheta_iff_level.1 hf`. Take `⟨μ, 𝓓, hμ⟩` from `exists_isCovolOne V W`. Take `⟨C, hC⟩` from `kernel_le H hθ hω hμ.1 hμ.2.1 hU`. Take `⟨B, hB⟩` from `hF.decay A`. Use `⟨C * (sobO ψ θ μ 𝓓 d f).toReal * B, fun g h => ?_⟩` and prove the remaining obligations.
+
+Establish `hg` using `pow_pos (height_pos V g) A`. Rewrite using `[norm_mul, mul_right_comm]`. Use `(mul_le_mul_of_nonneg_right (hC f hl g h) (norm_nonneg _)).trans ?_` and prove the remaining obligations. Rewrite using `[mul_assoc, mul_comm _ ‖F h‖]`. Conclude with `mul_le_mul_of_nonneg_left (hB h) (by positivity)`.
+-/
 theorem integrand_le (H : KernelBound V W A d) (hθ : IsInfFam θ) (hω : IsWeilDatumO ψ V W χS χT ω)
     (hf : IsThetaFunO ψ V W f) (hF : RapidDec W F) :
     ∃ C : ℝ, ∀ g h, ‖thetaKO ω g h f * F h‖ ≤ C * height V g ^ A := by
@@ -85,6 +110,9 @@ theorem integrand_le (H : KernelBound V W A d) (hθ : IsInfFam θ) (hω : IsWeil
   rw [mul_assoc, mul_comm _ ‖F h‖]
   exact mul_le_mul_of_nonneg_left (hB h) (by positivity)
 
+/- English proof (translation)
+Take `⟨C, hC⟩` from `integrand_le H hθ hω hf hF`. Establish `hc : Continuous fun g => C * height V g ^ A` using `continuous_const.mul ((continuous_height V).pow A)`. Conclude with `⟨_, (hc.continuousAt.eventually_lt continuousAt_const (lt_add_one _)).mono fun g hg h => (hC g h).trans hg.le⟩`.
+-/
 theorem integrand_loc (H : KernelBound V W A d) (hθ : IsInfFam θ) (hω : IsWeilDatumO ψ V W χS χT ω)
     (hf : IsThetaFunO ψ V W f) (hF : RapidDec W F) (g₀ : GA D V) :
     ∃ B : ℝ, ∀ᶠ g in 𝓝 g₀, ∀ h, ‖thetaKO ω g h f * F h‖ ≤ B := by
@@ -92,14 +120,23 @@ theorem integrand_loc (H : KernelBound V W A d) (hθ : IsInfFam θ) (hω : IsWei
   have hc : Continuous fun g => C * height V g ^ A := continuous_const.mul ((continuous_height V).pow A)
   exact ⟨_, (hc.continuousAt.eventually_lt continuousAt_const (lt_add_one _)).mono fun g hg h => (hC g h).trans hg.le⟩
 
+/- English proof (translation)
+The claim follows from `(GlobalTheory.CuspDecay.measure_lt_top GlobalTheory.Mem.VolFin.finVol W ν 𝓕 hν h𝓕).ne`.
+-/
 theorem vol_ne_top (hν : ν.IsHaarMeasure) (h𝓕 : IsFundamentalDomain (GQ W) 𝓕 ν) : ν 𝓕 ≠ ∞ :=
   (GlobalTheory.CuspDecay.measure_lt_top GlobalTheory.Mem.VolFin.finVol W ν 𝓕 hν h𝓕).ne
 
+/- English proof (translation)
+The claim follows from `have : BorelSpace (GA D W) := ⟨rfl⟩ ((thetaKO_continuous hω hf g).mul hF.continuous).measurable.aestronglyMeasurable`.
+-/
 theorem integrand_meas (hω : IsWeilDatumO ψ V W χS χT ω) (hf : IsThetaFunO ψ V W f) (hF : RapidDec W F) (g : GA D V) :
     AEStronglyMeasurable (fun h => thetaKO ω g h f * F h) (ν.restrict 𝓕) :=
   have : BorelSpace (GA D W) := ⟨rfl⟩
   ((thetaKO_continuous hω hf g).mul hF.continuous).measurable.aestronglyMeasurable
 
+/- English proof (translation)
+Establish `: SecondCountableTopology (GA D V)` using `(GlobalTheory.Mem.AdelicGroupTop.adelic_unitary_topology D V).2.1`. Establish `: IsFiniteMeasure (ν.restrict 𝓕)` using `isFiniteMeasure_restrict.2 (vol_ne_top hν h𝓕)`. Use `continuous_iff_continuousAt.2 fun g₀ => ?_` and prove the remaining obligations. Take `⟨B, hB⟩` from `integrand_loc H hθ hω hf hF g₀`. Conclude with `continuousAt_of_dominated (bound := fun _ => B) (.of_forall (integrand_meas hω hf hF)) (hB.mono fun h hh => .of_forall hh) (integrable_const B) (.of_forall fun h => (((hω.om_cont f hf 0).comp (Continuous.prodMk_left h)).mul continuous_const).continuousAt)`.
+-/
 theorem continuous_lift (H : KernelBound V W A d) (hθ : IsInfFam θ) (hω : IsWeilDatumO ψ V W χS χT ω)
     (hν : ν.IsHaarMeasure) (h𝓕 : IsFundamentalDomain (GQ W) 𝓕 ν) (hf : IsThetaFunO ψ V W f) (hF : RapidDec W F) :
     Continuous (lift ω ν 𝓕 f F) := by
@@ -111,6 +148,13 @@ theorem continuous_lift (H : KernelBound V W A d) (hθ : IsInfFam θ) (hω : IsW
     (hB.mono fun h hh => .of_forall hh) (integrable_const B) (.of_forall fun h =>
       (((hω.om_cont f hf 0).comp (Continuous.prodMk_left h)).mul continuous_const).continuousAt)
 
+/- English proof (translation)
+Establish `: IsTopologicalGroup (GA D V)` using `(GlobalTheory.Mem.AdelicGroupTop.adelic_unitary_topology D V).2.2.2.2.1`. Establish `: IsFiniteMeasure (ν.restrict 𝓕)` using `isFiniteMeasure_restrict.2 (vol_ne_top hν h𝓕)`. Take `⟨A, d, H⟩` from `hG V.rank W.rank`. Take `⟨ht, hd⟩` from `tame_dOmS hθ hω hX`. Establish `hf' : IsThetaFunO ψ V W (dOmS θ ω τ X f)` using `ht.theta hf`.
+
+Take `⟨B, hB⟩` from `integrand_loc (H V W rfl rfl) hθ hω hf' hF g`. Establish `hco : Filter.Tendsto (fun t : ℝ => g * oneP θ V τ X t) (𝓝 0) (𝓝 g)`. Use `(continuous_const (y := g).mul (continuous_oneP hθ hX)).tendsto 0` as an intermediate fact. Rewrite `this` using `[Pi.mul_apply, oneP_zero hθ, mul_one]`. Conclude with `this`.
+
+Use `(hasDerivAt_integral_of_dominated_loc_of_deriv_le (μ := ν.restrict 𝓕) (x₀ := (0 : ℝ)) (F := fun t h => thetaKO ω (g * oneP θ V τ X t) h f * F h) (F' := fun t h => thetaKO ω (g * oneP θ V τ X t) h (dOmS θ ω τ X f) * F h) (bound := fun _ => B) (hco.eventually hB) (.of_forall fun t …` as an intermediate fact. Simplify using `only [oneP_zero hθ, mul_one] at this`. Conclude with `this`.
+-/
 theorem hasDerivAt_lift (hG : ThetaGrowth D) (hθ : IsInfFam θ) (hω : IsWeilDatumO ψ V W χS χT ω)
     (hν : ν.IsHaarMeasure) (h𝓕 : IsFundamentalDomain (GQ W) 𝓕 ν) (hf : IsThetaFunO ψ V W f) (hF : RapidDec W F)
     {τ : D.what₂.Tau} {X : Matrix (Fin V.rank) (Fin V.rank) ℂ} (hX : X ∈ lieAt V τ) (g : GA D V) :
@@ -137,6 +181,9 @@ theorem hasDerivAt_lift (hG : ThetaGrowth D) (hθ : IsInfFam θ) (hω : IsWeilDa
   simp only [oneP_zero hθ, mul_one] at this
   exact this
 
+/- English proof (translation)
+Take `⟨-, -, -, _, _, -, _⟩` from `GlobalTheory.Mem.AdelicGroupTop.adelic_unitary_topology D W`. Use `(GlobalTheory.Mem.AdelicGroupFund.rightInvariant_and_exists_fundamentalDomain D W ν hν).1` as an intermediate fact. Use function extensionality and compare the values at `g`. Simplify using `only [lift, Lift.liftInt, rTr, thetaKO_om]`. Conclude with `GlobalTheory.Mem.IntByParts.setIntegral_mul_right (GQ W) ν h𝓕 (Φ := fun h => thetaKO ω (g * g₀) h f * F h) (fun γ hγ h => by simp only [thetaKO_left hω hf _ γ hγ, hF γ hγ]) h₀`.
+-/
 theorem lift_om (hω : IsWeilDatumO ψ V W χS χT ω) (hν : ν.IsHaarMeasure) (h𝓕 : IsFundamentalDomain (GQ W) 𝓕 ν)
     (hf : IsThetaFunO ψ V W f) (hF : ∀ γ ∈ GQ W, ∀ h, F (γ * h) = F h) (g₀ : GA D V) (h₀ : GA D W) :
     lift ω ν 𝓕 (ω (g₀, h₀) f) (rTr W h₀ F) = rTr V g₀ (lift ω ν 𝓕 f F) := by
@@ -147,6 +194,13 @@ theorem lift_om (hω : IsWeilDatumO ψ V W χS χT ω) (hν : ν.IsHaarMeasure) 
   exact GlobalTheory.Mem.IntByParts.setIntegral_mul_right (GQ W) ν h𝓕 (Φ := fun h => thetaKO ω (g * g₀) h f * F h)
     (fun γ hγ h => by simp only [thetaKO_left hω hf _ γ hγ, hF γ hγ]) h₀
 
+/- English proof (translation)
+Use `⟨fun γ hγ g => ?_, ?_, continuous_lift H hθ hω hν h𝓕 hf hF⟩` and prove the remaining obligations. Establish `e : ∀ h, thetaKO ω (γ * g) h f = thetaKO ω g h f` using `fun h => by`. Use `thetaKO_om (ω := ω) γ g 1 h f` as an intermediate fact. Rewrite `this` using `[one_mul]`. Rewrite using `[← this]`.
+
+Conclude with `hω.om_aut γ hγ 1 (one_mem _) _ (hω.om_pres _ _ hf)`. Simplify using `only [lift, Lift.liftInt, e]`. Take `⟨U, U', hU, -, e⟩` from `GlobalTheory.Mem.ThetaLevel.exists_level D ψ hω.std V W ω (GlobalTheory.Ker.isWeak_of_datum hω) hω.om_cont f hf`. Use `⟨U, hU, fun k h1 h2 g => ?_⟩` and prove the remaining obligations. Use `congrFun (lift_om hω hν h𝓕 hf hF.1 k 1) g` as an intermediate fact.
+
+Rewrite `this` using `[e k h1 h2 1 (one_mem _) (one_mem _), show rTr W 1 F = F from funext fun h => congrArg F (mul_one h)]`. Conclude with `this.symm`.
+-/
 theorem isAutFun_lift (H : KernelBound V W A d) (hθ : IsInfFam θ) (hω : IsWeilDatumO ψ V W χS χT ω)
     (hν : ν.IsHaarMeasure) (h𝓕 : IsFundamentalDomain (GQ W) 𝓕 ν) (hf : IsThetaFunO ψ V W f) (hF : RapidDec W F) :
     IsAutFun V (lift ω ν 𝓕 f F) := by
@@ -164,6 +218,13 @@ theorem isAutFun_lift (H : KernelBound V W A d) (hθ : IsInfFam θ) (hω : IsWei
     rw [e k h1 h2 1 (one_mem _) (one_mem _), show rTr W 1 F = F from funext fun h => congrArg F (mul_one h)] at this
     exact this.symm
 
+/- English proof (translation)
+Take `⟨-, -, -, _, _, -, _⟩` from `GlobalTheory.Mem.AdelicGroupTop.adelic_unitary_topology D W`. Use `(GlobalTheory.Mem.AdelicGroupFund.rightInvariant_and_exists_fundamentalDomain D W ν hν).1` as an intermediate fact. Take `⟨A, d, H⟩` from `hG V.rank W.rank`. Take `⟨ht, hd⟩` from `tame_dOmT hθ hω hY`. Establish `hf' : IsThetaFunO ψ V W (dOmT θ ω τ Y f)` using `ht.theta hf`.
+
+Establish `h0` using `hF.rapidDec`. Establish `h1` using `(hF.rder hY).rapidDec`. Take `⟨B0, hB0⟩` from `integrand_le (H V W rfl rfl) hθ hω hf h0`. Take `⟨B1, hB1⟩` from `integrand_le (H V W rfl rfl) hθ hω hf' h0`. Take `⟨B2, hB2⟩` from `integrand_le (H V W rfl rfl) hθ hω hf h1`.
+
+Establish `key` using `GlobalTheory.Mem.IntByParts.setIntegral_deriv_eq_zero (GQ W) ν h𝓕 (vol_ne_top hν h𝓕) (Φ := fun h => thetaKO ω g h f * F h) (Φ' := fun h => thetaKO ω g h (dOmT θ ω τ Y f) * F h + thetaKO ω g h f * Rder θ W τ Y F h) (fun γ hγ h => by simp only [thetaKO_left hω hf _ γ hγ, h0.left hγ …`. Rewrite `key` using `[integral_add (integrableOn_of_rapidDec hG hθ hω hf' hν h𝓕 h0 g) (integrableOn_of_rapidDec hG hθ hω hf hν h𝓕 h1 g), add_comm]`. Conclude with `key`.
+-/
 theorem lift_der_add (hG : ThetaGrowth D) (hθ : IsInfFam θ) (hω : IsWeilDatumO ψ V W χS χT ω)
     (hν : ν.IsHaarMeasure) (h𝓕 : IsFundamentalDomain (GQ W) 𝓕 ν) (hf : IsThetaFunO ψ V W f) (hF : RapidDecSm θ W F)
     {τ : D.what₂.Tau} {Y : Matrix (Fin W.rank) (Fin W.rank) ℂ} (hY : Y ∈ lieAt W τ) (g : GA D V) :
@@ -192,6 +253,9 @@ theorem lift_der_add (hG : ThetaGrowth D) (hθ : IsInfFam θ) (hω : IsWeilDatum
     (integrableOn_of_rapidDec hG hθ hω hf hν h𝓕 h1 g), add_comm] at key
   exact key
 
+/- English proof (translation)
+Use function extensionality and compare the values at `g`. Use `integral_add (integrableOn_of_rapidDec hG hθ hω hf hν h𝓕 hF g) ((integrableOn_of_rapidDec hG hθ hω hf' hν h𝓕 hF g).const_mul c)` as an intermediate fact. Rewrite `this` using `[integral_const_mul]`. Use `Eq.trans ?_ this` and prove the remaining obligations. Simplify using `only [lift, Lift.liftInt, thetaKO, map_add, map_smul, Pi.add_apply, Pi.smul_apply, smul_eq_mul, add_mul, mul_assoc]`.
+-/
 theorem lift_add_smul (hG : ThetaGrowth D) (hθ : IsInfFam θ) (hω : IsWeilDatumO ψ V W χS χT ω)
     (hν : ν.IsHaarMeasure) (h𝓕 : IsFundamentalDomain (GQ W) 𝓕 ν) (hf : IsThetaFunO ψ V W f)
     (hf' : IsThetaFunO ψ V W f') (hF : RapidDec W F) (c : ℂ) :
@@ -203,6 +267,15 @@ theorem lift_add_smul (hG : ThetaGrowth D) (hθ : IsInfFam θ) (hω : IsWeilDatu
   refine Eq.trans ?_ this
   simp only [lift, Lift.liftInt, thetaKO, map_add, map_smul, Pi.add_apply, Pi.smul_apply, smul_eq_mul, add_mul, mul_assoc]
 
+/- English proof (translation)
+Establish `hp` using `fun a : D.what₂.Tau × Fin V.rank × Fin V.rank => GlobalTheory.SmoothAutCheck.parts_mem V a.1 (Matrix.single a.2.1 a.2.2 1)`. Establish `ht` using `fun a => (tame_dOmS hθ hω (hp a).1).1.add hω.std hθ ((tame_dOmS hθ hω (hp a).2).1.smul Complex.I)`. Use `choose c hc using fun l => (tame_word ht l).2`. Take `⟨C, hC⟩` from `growthSize_lift_le H hθ hω hμ h𝓓 hU`. Use `⟨C * ∑ n ∈ Finset.range (k + 1), ∑ a : Fin n → _, c (List.ofFn a), fun f hf F hF => ?_⟩` and prove the remaining obligations.
+
+Simplify using `only [growthSob, wordSum, ENNReal.coe_mul, ENNReal.coe_finset_sum, Finset.mul_sum, Finset.sum_mul]`. Use `Finset.sum_le_sum fun n hn => Finset.sum_le_sum fun a _ => ?_` and prove the remaining obligations. Establish `e` using `(wordAct_rel (A := glDer θ V) (R := fun φ x => φ = lift ω ν 𝓕 x F ∧ IsThetaFunO ψ V W x) (List.ofFn a) (fun i _ φ x h => ⟨by`. Establish `h1 : IsThetaFunO ψ V W _` using `(tame_dOmS hθ hω (hp i).1).1.theta h.2`. Establish `h2 : IsThetaFunO ψ V W _` using `(tame_dOmS hθ hω (hp i).2).1.theta h.2`.
+
+Rewrite using `[h.1]`. Use `Eq.trans ?_ (lift_add_smul hG hθ hω hν h𝓕 h1 h2 hF _).symm` and prove the remaining obligations. Conclude with `congrArg₂ (fun a b => a + Complex.I • b) (funext fun g => (hasDerivAt_lift hG hθ hω hν h𝓕 h.2 hF (hp i).1 g).deriv) (funext fun g => (hasDerivAt_lift hG hθ hω hν h𝓕 h.2 hF (hp i).2 g).deriv), (ht i).theta h.2⟩) ⟨rfl, hf.1⟩).1`. Rewrite using `[e]`. Use `(hC _ ((tame_word ht _).1 U f hf) ν 𝓕 F).trans (mul_le_mul' ?_ le_rfl)` and prove the remaining obligations.
+
+Rewrite using `[mul_assoc]`. Use `mul_le_mul' le_rfl ((hc _ μ 𝓓 d f hf.1).trans (mul_le_mul' le_rfl (sobO_mono ?_)))` and prove the remaining obligations. Use `Finset.mem_range.1 hn` as an intermediate fact. Rewrite using `[List.length_ofFn]`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem growthSob_lift_le (hG : ThetaGrowth D) (H : KernelBound V W A d) (hθ : IsInfFam θ)
     (hω : IsWeilDatumO ψ V W χS χT ω) (hν : ν.IsHaarMeasure) (h𝓕 : IsFundamentalDomain (GQ W) 𝓕 ν) (k : ℕ)
     {μ : Measure (WO V W)} {𝓓 : Set (WO V W)} (hμ : μ.IsAddHaarMeasure) (h𝓓 : IsAddFundamentalDomain (ratL W V) 𝓓 μ)
@@ -234,6 +307,19 @@ theorem growthSob_lift_le (hG : ThetaGrowth D) (H : KernelBound V W A d) (hθ : 
   rw [List.length_ofFn]
   omega
 
+/- English proof (translation)
+Introduce `V W θ ψ χS χT ω hθ hω ν 𝓕 hν h𝓕`. Take `⟨A, d, H⟩` from `hG V.rank W.rank`. Use `replace H := H V W rfl rfl`. Establish `hdec : ∀ F, RapidDecSm θ W F → ∀ A, decayInt ν 𝓕 A F ≠ ∞` using `fun F hF A => ne_top_of_le_ne_top (ENNReal.mul_ne_top ((rapidDec_iff_decaySize.1 hF.rapidDec).2.2 A) (vol_ne_top hν h𝓕)) (decayInt_le ν 𝓕 A F)`. Establish `hsm : ∀ f F, IsThetaFunO ψ V W f → RapidDecSm θ W F → lift ω ν 𝓕 f F ∈ SmFun θ V` using `fun f F hf hF => by`.
+
+Use `GlobalTheory.Mem.DerClosed.mem_smFun_of_closed D θ hθ V {φ | ∃ f, IsThetaFunO ψ V W f ∧ φ = lift ω ν 𝓕 f F} ?_ ?_ _ ⟨f, hf, rfl⟩` and prove the remaining obligations. Introduce and unpack `_ ⟨f, hf, rfl⟩`. Conclude with `continuous_lift H hθ hω hν h𝓕 hf hF.rapidDec`. Introduce and unpack `_ ⟨f, hf, rfl⟩ τ X hX`. Conclude with `⟨_, ⟨_, (tame_dOmS hθ hω hX).1.theta hf, rfl⟩, hasDerivAt_lift hG hθ hω hν h𝓕 hf hF.rapidDec hX⟩`.
+
+Use `{ integ := fun f F hf hF g h₀ => integrableOn_of_rapidDec hG hθ hω hf hν h𝓕 (hF.rapidDec.mul_right h₀) g integ_der := fun f F hf hF τ Y hY g => integrableOn_of_rapidDec hG hθ hω hf hν h𝓕 (hF.rder hY).rapidDec g aut := fun f F hf hF => isAutFun_lift H hθ hω hν h𝓕 hf hF.rapidDec eq …` and prove the remaining obligations. Simplify `(tame_dOmS hθ hω hX).2 f hf 1 z⟩` using `only [one_mul, map_one, Module.End.one_apply]`. Use `dT := fun f hf τ Y hY => ⟨(tame_dOmT hθ hω hY).1.theta hf, fun z => by`. Simplify `(tame_dOmT hθ hω hY).2 f hf 1 z⟩` using `only [one_mul, map_one, Module.End.one_apply]`. Use `derS := fun f F hf hF τ X hX => funext fun g => (hasDerivAt_lift hG hθ hω hν h𝓕 hf hF.rapidDec hX g).deriv`.
+
+Use `derT := fun f F hf hF τ Y hY g => ?_`. Use `growth := fun f F hf hF => ?_`. Use `decay_ne_top := hdec`. Use `bound := ⟨A, fun k => ⟨d + k * 2, fun μ 𝓓 hμ h𝓓 U hU => (growthSob_lift_le hG H hθ hω hν h𝓕 k hμ h𝓓 hU).imp fun C hC f hf F hF => hC f hf F hF.rapidDec⟩⟩ }`. Simplify using `only [lift_om hω hν h𝓕 hf hF.left, lift_der_add hG hθ hω hν h𝓕 hf hF hY g]`.
+
+Conclude with `hasDerivAt_const _ _`. Take `⟨U, hU, hl⟩` from `isTheta_iff_level.1 hf`. Take `⟨μ, 𝓓, hμ⟩` from `exists_isCovolOne V W`. Use `unifModGrowth_iff.2 ⟨A, growthSize_rWord_ne_top hθ (hsm f F hf hF) fun k => ?_⟩` and prove the remaining obligations. Take `⟨C, hC⟩` from `growthSob_lift_le hG H hθ hω hν h𝓕 k hμ.1 hμ.2.1 hU`.
+
+Conclude with `ne_top_of_le_ne_top (ENNReal.mul_ne_top (ENNReal.mul_ne_top ENNReal.coe_ne_top (sobO_ne_top hω.std hθ hμ.1 hμ.2.1 hf _)) (hdec F hF A)) (hC f hl F hF.rapidDec)`.
+-/
 theorem liftPropsRapid_of_growth (D : D7) (hG : ThetaGrowth D) : LiftPropsRapid D := by
   intro V W θ ψ χS χT ω hθ hω ν 𝓕 hν h𝓕
   obtain ⟨A, d, H⟩ := hG V.rank W.rank
@@ -273,6 +359,9 @@ theorem liftPropsRapid_of_growth (D : D7) (hG : ThetaGrowth D) : LiftPropsRapid 
     exact ne_top_of_le_ne_top (ENNReal.mul_ne_top (ENNReal.mul_ne_top ENNReal.coe_ne_top
       (sobO_ne_top hω.std hθ hμ.1 hμ.2.1 hf _)) (hdec F hF A)) (hC f hl F hF.rapidDec)
 
+/- English proof (translation)
+Introduce `D θ hθ V e he φ ha hs hg hc`. Establish `R` using `(GlobalTheory.T.adelicUnitary_realPoints_structure_realPlaces D).2 θ hθ V`. Take `rfl` from `GlobalTheory.SmoothForms.eq_expInf R he`. Conclude with `((rapidDec_iff_isRapidDecay hθ).1 (rapidDec_of_cuspDecaySobolev hP hθ ha ((GlobalTheory.SmoothForms.smooth_iff R φ).2 hs) (unifModGrowth_of_isUnifModerate hθ hg) hc)).2.2`.
+-/
 theorem cuspRapidDecay_of_sobolev (hP : GlobalTheory.Published.CuspDecaySobolev) : GlobalTheory.Published.CuspRapidDecay := by
   intro D θ hθ V e he φ ha hs hg hc
   have R := (GlobalTheory.T.adelicUnitary_realPoints_structure_realPlaces D).2 θ hθ V
@@ -280,9 +369,15 @@ theorem cuspRapidDecay_of_sobolev (hP : GlobalTheory.Published.CuspDecaySobolev)
   exact ((rapidDec_iff_isRapidDecay hθ).1 (rapidDec_of_cuspDecaySobolev hP hθ ha
     ((GlobalTheory.SmoothForms.smooth_iff R φ).2 hs) (unifModGrowth_of_isUnifModerate hθ hg) hc)).2.2
 
+/- English proof (translation)
+The claim follows from `liftProps_of_rapid hP (liftPropsRapid_of_growth D hG)`.
+-/
 theorem liftProps_of_rapidDecay (hP : GlobalTheory.Published.CuspRapidDecay) (D : D7) (hG : ThetaGrowth D) : LiftProps D :=
   liftProps_of_rapid hP (liftPropsRapid_of_growth D hG)
 
+/- English proof (translation)
+The claim follows from `liftProps_of_rapidDecay (cuspRapidDecay_of_sobolev hP) D hG`.
+-/
 theorem liftProps_of_growth (hP : GlobalTheory.Published.CuspDecaySobolev) (D : D7) (hG : ThetaGrowth D) : LiftProps D :=
   liftProps_of_rapidDecay (cuspRapidDecay_of_sobolev hP) D hG
 

@@ -3,16 +3,27 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.GaloisLibrary.Selm
 
 open NumberField Formalism.ConjugateSelfDual ReciprocityTheory.Gal IsLocalRing UpperTheory.V.HV UpperTheory.V.U3 UpperTheory.V.Base UpperTheory.V.Pr UpperTheory.V.Fr UpperTheory.V
 
+/- English proof (translation)
+Establish `h1 : A.valuation ζ ^ m = 1` using `by rw [← map_pow, h, map_one]`. Conclude with `(pow_eq_one_iff_left hm).1 h1`.
+-/
 private theorem aux_one {Ω : Type} [Field Ω] (A : ValuationSubring Ω) {m : ℕ} (hm : m ≠ 0) {ζ : Ω}
     (h : ζ ^ m = 1) : A.valuation ζ = 1 := by
   have h1 : A.valuation ζ ^ m = 1 := by rw [← map_pow, h, map_one]
   exact (pow_eq_one_iff_left hm).1 h1
 
+/- English proof (translation)
+Use `lt_of_le_of_ne zero_le' fun h => ?_` and prove the remaining obligations. Take `⟨x, y, hxy⟩` from `(GroupWithZero.toNontrivial (G₀ := Γ)).exists_pair_ne`. Conclude with `hxy (by rw [← mul_one x, ← mul_one y, ← h, mul_zero, mul_zero])`.
+-/
 private theorem vg_ne {Γ : Type} [LinearOrderedCommGroupWithZero Γ] : (0 : Γ) < 1 := by
   refine lt_of_le_of_ne zero_le' fun h => ?_
   obtain ⟨x, y, hxy⟩ := (GroupWithZero.toNontrivial (G₀ := Γ)).exists_pair_ne
   exact hxy (by rw [← mul_one x, ← mul_one y, ← h, mul_zero, mul_zero])
 
+/- English proof (translation)
+Proceed by induction on `i with`. Consider the case `zero => rw [pow_zero, sub_self, map_zero]`. Conclude with `vg_ne`. Consider the case `succ i ih`. Establish `e : 1 - η ^ (i + 1) = η * (1 - η ^ i) - (η - 1)` using `by ring`.
+
+Rewrite using `[e]`. Use `A.valuation.map_sub_lt ?_ h` and prove the remaining obligations. Rewrite using `[map_mul, h1, one_mul]`. Conclude with `ih`.
+-/
 private theorem power_bounds_of_between {Ω : Type} [Field Ω] (A : ValuationSubring Ω) {η : Ω} (h1 : A.valuation η = 1)
     (h : A.valuation (η - 1) < 1) (i : ℕ) : A.valuation (1 - η ^ i) < 1 := by
   induction i with
@@ -23,6 +34,13 @@ private theorem power_bounds_of_between {Ω : Type} [Field Ω] (A : ValuationSub
     refine A.valuation.map_sub_lt ?_ h
     rw [map_mul, h1, one_mul]; exact ih
 
+/- English proof (translation)
+Assume the negation of the conclusion as `hne`. Apply `hv` to reduce the goal to its premises. Establish `hs : ∑ i ∈ Finset.range m, η ^ i = 0`. Use `mul_geom_sum η m` as an intermediate fact. Rewrite `this` using `[hη, sub_self]`.
+
+Conclude with `(mul_eq_zero.1 this).resolve_left (sub_ne_zero.2 hne)`. Establish `e : (m : Ω) = ∑ i ∈ Finset.range m, (1 - η ^ i)`. Rewrite using `[Finset.sum_sub_distrib, hs]`. Simplify using the standard rewrite rules. Rewrite using `[e]`.
+
+Establish `h10 : (1 : A.ValueGroup) ≠ 0` using `vg_ne.ne'`. Conclude with `A.valuation.map_sum_lt h10 fun i _ => power_bounds_of_between A (aux_one A hm hη) h i`.
+-/
 private theorem root_of_unity_eq_one_of_close_residue {Ω : Type} [Field Ω] (A : ValuationSubring Ω) {m : ℕ} (hm : m ≠ 0)
     (hv : ¬ A.valuation (m : Ω) < 1) {η : Ω} (hη : η ^ m = 1) (h : A.valuation (η - 1) < 1) : η = 1 := by
   by_contra hne
@@ -37,6 +55,13 @@ private theorem root_of_unity_eq_one_of_close_residue {Ω : Type} [Field Ω] (A 
   have h10 : (1 : A.ValueGroup) ≠ 0 := vg_ne.ne'
   exact A.valuation.map_sum_lt h10 fun i _ => power_bounds_of_between A (aux_one A hm hη) h i
 
+/- English proof (translation)
+Establish `h1` using `aux_one A hm hζ`. Establish `h0 : ζ ≠ 0`. Introduce and unpack `rfl`. Rewrite `hζ` using `[zero_pow hm]`. Conclude with `zero_ne_one hζ`.
+
+Establish `e : g ζ / ζ - 1 = (g ζ - ζ) / ζ` using `by field_simp`. Establish `: g ζ / ζ = 1`. Use `root_of_unity_eq_one_of_close_residue A hm hv (by rw [div_pow, ← map_pow, hζ, map_one, div_one]) ?_` and prove the remaining obligations. Rewrite using `[e, map_div₀, h1, div_one]`. Conclude with `hg.2 ζ h1.le`.
+
+Conclude with `(div_eq_one_iff_eq h0).1 this`.
+-/
 private theorem ine_fix {Ω : Type} [Field Ω] [CharZero Ω] [IsAlgClosure ℚ Ω] (A : ValuationSubring Ω) {m : ℕ} (hm : m ≠ 0)
     (hv : ¬ A.valuation (m : Ω) < 1) {g : G ℚ Ω} (hg : g ∈ Ine (F := ℚ) A) (ζ : Ω) (hζ : ζ ^ m = 1) : g ζ = ζ := by
   have h1 := aux_one A hm hζ
@@ -50,9 +75,19 @@ private theorem ine_fix {Ω : Type} [Field Ω] [CharZero Ω] [IsAlgClosure ℚ �
     rw [e, map_div₀, h1, div_one]; exact hg.2 ζ h1.le
   exact (div_eq_one_iff_eq h0).1 this
 
+/- English proof (translation)
+The claim follows from `(A.valuation_le_one_iff _).2 (natCast_mem A n)`.
+-/
 private theorem val_nat_le {Ω : Type} [Field Ω] (A : ValuationSubring Ω) (n : ℕ) : A.valuation (n : Ω) ≤ 1 :=
   (A.valuation_le_one_iff _).2 (natCast_mem A n)
 
+/- English proof (translation)
+Use `haveI : IsAlgClosed Ω := IsAlgClosure.isAlgClosed ℚ`. Use `haveI : NeZero w := ⟨hw⟩`. Use `haveI : NeZero (w : Ω) := ⟨Nat.cast_ne_zero.2 hw⟩`. Take `⟨z, hz⟩` from `HasEnoughRootsOfUnity.exists_primitiveRoot Ω w`. Take `⟨a, -, ha⟩` from `hz.eq_pow_of_pow_eq_one (ξ := s z) (by rw [← map_pow, hz.pow_eq_one, map_one])`.
+
+Establish `h1 : ∀ ζ : Ω, ζ ^ w = 1 → s ζ = ζ ^ a` using `fun ζ h => by`. Take `⟨b, -, rfl⟩` from `hz.eq_pow_of_pow_eq_one h`. Rewrite using `[map_pow, ← ha, ← pow_mul, ← pow_mul, mul_comm]`. Use `⟨a, fun ζ h => ?_⟩` and prove the remaining obligations. Proceed by induction on `n with`.
+
+Consider the case `zero => simp`. Consider the case `succ n ih => rw [pow_succ', AlgEquiv.mul_apply, ih, map_pow, h1 ζ h, ← pow_mul, pow_succ']`.
+-/
 private theorem act_pow {Ω : Type} [Field Ω] [CharZero Ω] [IsAlgClosure ℚ Ω] {w : ℕ} (hw : w ≠ 0) (n : ℕ) (s : G ℚ Ω) :
     ∃ a : ℕ, ∀ ζ : Ω, ζ ^ w = 1 → (s ^ n) ζ = ζ ^ a ^ n := by
   haveI : IsAlgClosed Ω := IsAlgClosure.isAlgClosed ℚ
@@ -68,6 +103,17 @@ private theorem act_pow {Ω : Type} [Field Ω] [CharZero Ω] [IsAlgClosure ℚ �
   | zero => simp
   | succ n ih => rw [pow_succ', AlgEquiv.mul_apply, ih, map_pow, h1 ζ h, ← pow_mul, pow_succ']
 
+/- English proof (translation)
+Take `⟨a, ha⟩` from `hidx`. Use `haveI : Hb.Normal := ⟨fun n hn g => by`. Establish `: g * n * g⁻¹ = g * n * g⁻¹ * n⁻¹ * n` using `by group`. Rewrite using `[this]`. Conclude with `Hb.mul_mem (hab (Subgroup.commutator_mem_commutator (Subgroup.mem_top g) (Subgroup.mem_top n))) hn⟩`.
+
+Use `⟨1 + a + m, fun s hs => ⟨⟨⟨H₀.pow_mem hs _, ?_⟩, ?_⟩, ?_⟩⟩` and prove the remaining obligations. Establish `: s ^ l ∈ Hth Ω l w` using `⟨act_pow hw l s, by show ∃ a : ℕ, ∀ ζ : Ω, ζ ^ w = 1 → (s ^ l)⁻¹ ζ = ζ ^ a ^ l`. Rewrite using `[← inv_pow]`. Conclude with `act_pow hw l s⁻¹⟩`. Rewrite using `[add_assoc, pow_add, pow_one, pow_mul]`.
+
+Conclude with `Subgroup.pow_mem _ this _`. Establish `: s ^ l ^ a ∈ Hb` using `ha ▸ Hb.pow_index_mem s`. Rewrite using `[add_comm 1 a, add_assoc, pow_add, pow_mul]`. Conclude with `Subgroup.pow_mem _ this _`. Establish `: s ^ l ^ m ∈ Hlay Ω l m`.
+
+Establish `hl : l.Prime` using `Fact.out`. Use `haveI : NeZero (l ^ (m + 1)) := ⟨pow_ne_zero _ hl.ne_zero⟩`. Use `show (cycMod ℚ Ω l (m + 1) ^ (l - 1)) (s ^ l ^ m) = 1`. Rewrite using `[MonoidHom.pow_apply, map_pow, ← pow_mul, ← Nat.totient_prime_pow_succ hl, ← ZMod.card_units_eq_totient]`. Conclude with `pow_card_eq_one`.
+
+Rewrite using `[add_comm (1 + a) m, pow_add, pow_mul]`. Conclude with `Subgroup.pow_mem _ this _`.
+-/
 private theorem pow_mem_Upl {Ω : Type} [Field Ω] [CharZero Ω] [IsAlgClosure ℚ Ω] (l : ℕ) [Fact l.Prime]
     {Hb H₀ : Subgroup (G ℚ Ω)} {w : ℕ} (hw : w ≠ 0) (hab : commutator (G ℚ Ω) ≤ Hb) (hidx : ∃ a : ℕ, Hb.index = l ^ a) (m : ℕ) :
     ∃ N : ℕ, ∀ s ∈ H₀, s ^ l ^ N ∈ Upl l Hb H₀ w m := by
@@ -94,6 +140,13 @@ private theorem pow_mem_Upl {Ω : Type} [Field Ω] [CharZero Ω] [IsAlgClosure �
     rw [add_comm (1 + a) m, pow_add, pow_mul]
     exact Subgroup.pow_mem _ this _
 
+/- English proof (translation)
+Take `⟨N, hN⟩` from `hU`. Establish `h0 : ∀ s ∈ H₀, s ∈ E → κ s = 1` using `fun s hs hE => by`. Establish `h1` using `h _ ⟨hN s hs, E.pow_mem hE _⟩`. Rewrite `h1` using `[map_pow]`. Establish `h3 : (κ s : k) ^ l ^ N = 1` using `by rw [← Units.val_pow_eq_pow_val, h1, Units.val_one]`.
+
+Establish `h4 : ((κ s : k) - 1) ^ l ^ N = 0` using `by rw [sub_pow_char_pow, h3, one_pow, sub_self]`. Conclude with `Units.ext (sub_eq_zero.1 (pow_eq_zero_iff (pow_ne_zero _ (Fact.out : l.Prime).ne_zero) |>.1 h4))`. Introduce `s hs`. Distinguish the cases in `hH : s ∈ H₀`. Conclude with `h0 s hH hs`.
+
+Use `h0 (s * t) ((Subgroup.mul_mem_iff_of_index_two h2).2 (by simp [hH, ht])) (E.mul_mem hs htE)` as an intermediate fact. Rewrite `this` using `[map_mul, hκ, mul_one]`. Then use the resulting hypothesis.
+-/
 private theorem core {Γ k : Type} [Group Γ] [Field k] (l : ℕ) [Fact l.Prime] [CharP k l] (κ : Γ →* kˣ)
     (U H₀ E : Subgroup Γ) (hU : ∃ N : ℕ, ∀ s ∈ H₀, s ^ l ^ N ∈ U) (h2 : H₀.index = 2) (t : Γ) (ht : t ∉ H₀) (htE : t ∈ E)
     (hκ : κ t = 1) (h : ∀ s ∈ U ⊓ E, κ s = 1) : ∀ s ∈ E, κ s = 1 := by
@@ -110,6 +163,21 @@ private theorem core {Γ k : Type} [Group Γ] [Field k] (l : ℕ) [Fact l.Prime]
   · have := h0 (s * t) ((Subgroup.mul_mem_iff_of_index_two h2).2 (by simp [hH, ht])) (E.mul_mem hs htE)
     rwa [map_mul, hκ, mul_one] at this
 
+/- English proof (translation)
+Introduce `Ω _ _ _ l hl O _ _ _ η Ψ σ B M Hb hG H₀ w h0 hW m i j`. Establish `hU` using `pow_mem_Upl l (H₀ := H₀) hW.prime.ne_zero hG.Hb_ab hG.Hb_idx m`. Take `⟨A, hA, hI⟩` from `h0.ram`. Take `⟨t, ht, htH⟩` from `SetLike.not_le_iff_exists.1 hI`. Take `⟨a, ka, kb⟩` from `hG.cyc`.
+
+Establish `hM1 : A.valuation (M : Ω) = 1` using `le_antisymm (val_nat_le A M) (not_lt.1 hA)`. Establish `hMa : ¬ A.valuation ((M ^ a : ℕ) : Ω) < 1`. Rewrite using `[Nat.cast_pow, map_pow, hM1, one_pow]`. Conclude with `lt_irrefl _`. Establish `hfix` using `ine_fix A (pow_ne_zero a hG.M_ne) hMa ht`.
+
+Establish `hη : η t = 1` using `ka t hfix`. Establish `hΨ : barChar O Ψ t = 1` using `kb t hfix`. Establish `hlv : ¬ A.valuation (l : Ω) < 1` using `fun h => hA (by`. Take `⟨c, rfl⟩` from `hG.l_dvd`. Rewrite using `[Nat.cast_mul, map_mul]`.
+
+Conclude with `lt_of_le_of_lt (mul_le_of_le_one_right' (val_nat_le A c)) h)`. Establish `hω : omO Ω l O t = 1`. Establish `h1 : cycZ ℚ Ω l t = 1` using `(UpperTheory.V.Base.places ℚ Ω l A).2.2.2 hlv ht`. Simplify using `[GC.cycF, cycMod, h1]`. Establish `he : etaO O η t = 1` using `by simp [hη]`.
+
+Set `κ : G ℚ Ω →* (ResidueField O)ˣ` to `omO Ω l O ^ i * barChar O Ψ ^ j`. Establish `hκ : ∀ s, κ s = omO Ω l O s ^ i * barChar O Ψ s ^ j` using `fun s => by simp [κ]`. Establish `hκt : κ t = 1` using `by rw [hκ, hω, hΨ]; simp`. Use `⟨fun h s => ?_, fun h s => ?_, fun h s hs => ?_⟩` and prove the remaining obligations. Rewrite using `[← hκ]`.
+
+Conclude with `core l κ _ H₀ ⊤ hU h0.idx t htH trivial hκt (fun s hs => by rw [hκ]; exact h s hs.1) s trivial`. Use `core l (κ * (etaO O η)⁻¹) _ H₀ ⊤ hU h0.idx t htH trivial (by rw [MonoidHom.mul_apply, MonoidHom.inv_apply, hκt, he]; simp) (fun s hs => by rw [MonoidHom.mul_apply, MonoidHom.inv_apply, hκ, h s hs.1, mul_inv_cancel]) s trivial` as an intermediate fact. Rewrite `this` using `[MonoidHom.mul_apply, MonoidHom.inv_apply, hκ]`. Conclude with `mul_inv_eq_one.1 this`. Rewrite using `[← hκ]`.
+
+Conclude with `core l κ _ H₀ η.ker hU h0.idx t htH hη hκt (fun s hs => by rw [hκ]; exact h s hs) s hs`.
+-/
 theorem UpperTheory.V.Fr.l15 :
     ∀ {Ω : Type} [Field Ω] [CharZero Ω] [IsAlgClosure ℚ Ω] (l : ℕ) [Fact l.Prime] {O : Type} [CommRing O] [IsLocalRing O] [CharP (ResidueField O) l] (η : G ℚ Ω →* ℤˣ) (Ψ : G ℚ Ω →* Oˣ) (σ : G ℚ Ω) (B : ValuationSubring Ω) (M : ℕ) (Hb : Subgroup (G ℚ Ω)), Gen l η Ψ σ B M Hb → ∀ (H₀ : Subgroup (G ℚ Ω)) (w : ℕ), FrobeniusSplitPrimeDatum η M H₀ → FrobeniusWitnessPrime l η Ψ M w → ∀ (m : ℕ) (i j : ℤ), ((∀ s ∈ Upl l Hb H₀ w m, omO Ω l O s ^ i * barChar O Ψ s ^ j = 1) → ∀ s, omO Ω l O s ^ i * barChar O Ψ s ^ j = 1) ∧ ((∀ s ∈ Upl l Hb H₀ w m, omO Ω l O s ^ i * barChar O Ψ s ^ j = etaO O η s) → ∀ s, omO Ω l O s ^ i * barChar O Ψ s ^ j = etaO O η s) ∧ ((∀ s ∈ Upl l Hb H₀ w m ⊓ η.ker, omO Ω l O s ^ i * barChar O Ψ s ^ j = 1) → ∀ s ∈ η.ker, omO Ω l O s ^ i * barChar O Ψ s ^ j = 1) := by
   intro Ω _ _ _ l hl O _ _ _ η Ψ σ B M Hb hG H₀ w h0 hW m i j

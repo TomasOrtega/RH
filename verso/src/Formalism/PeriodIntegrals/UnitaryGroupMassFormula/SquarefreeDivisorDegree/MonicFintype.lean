@@ -16,10 +16,16 @@ def Mon (g : ℕ) [Fact g.Prime] (n : ℕ) : Finset (ZMod g)[X] :=
   (Finset.univ : Finset {p : (ZMod g)[X] // p.Monic ∧ p.natDegree = n}).map
     (Function.Embedding.subtype _)
 
+/- English proof (translation)
+Simplify using `[Mon]`.
+-/
 theorem mem_Mon {g : ℕ} [Fact g.Prime] {n : ℕ} {p : (ZMod g)[X]} :
     p ∈ Mon g n ↔ p.Monic ∧ p.natDegree = n := by
   simp [Mon]
 
+/- English proof (translation)
+Rewrite using `[Mon, Finset.card_map, Finset.card_univ, Fintype.card_congr ((monicEquivDegreeLT n).trans (degreeLTEquiv (ZMod g) n).toEquiv)]`. Simplify using the standard rewrite rules.
+-/
 theorem card_Mon (g : ℕ) [Fact g.Prime] (n : ℕ) : (Mon g n).card = g ^ n := by
   rw [Mon, Finset.card_map, Finset.card_univ,
     Fintype.card_congr ((monicEquivDegreeLT n).trans (degreeLTEquiv (ZMod g) n).toEquiv)]

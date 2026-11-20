@@ -19,6 +19,15 @@ variable {k r : ℕ} {z z' : Fin (2 * r + k + 1) → ℂ} {Wp Wq : Type} [Normed
 def Dens (μ : Measure (Mt k r)) (l : Fin r) (u v : Ix S → RadSp k r z z' π π') (c : Fin r → ℂ) (t : ℂ) : ℂ :=
   ((‖t‖ ^ (-2 : ℤ) : ℝ) : ℂ) * form μ l.succ u v (Function.update c l t)
 
+/- English proof (translation)
+Establish `hint` using `formIntOuter_of_l2I μ hμ l.castSucc u v hu hv c Iu Iv`. Use `set f : Cf r l.castSucc → ℂ := fun c' => ((∏ j, ‖c' j‖ ^ (-2 : ℤ) : ℝ) : ℂ) * ∑ a, pairAt μ (u a) (v a) (glue l.castSucc c c') with hf`. Establish `hmp` using `coordinate_split_measurePreserving (r := r) l`. Establish `hval : ∀ p : ℂ × Cf r l.succ, f ((coordinateSplit (r` using `r) l).symm p) = ((‖p.1‖ ^ (-2 : ℤ) : ℝ) : ℂ) * (((∏ j, ‖p.2 j‖ ^ (-2 : ℤ) : ℝ) : ℂ) * ∑ a, pairAt μ (u a) (v a) (glue l.succ (Function.update c l p.1) p.2)) := by`. Introduce `p`.
+
+Establish `hw` using `weight_coordinate_split (r := r) l ((coordinateSplit (r := r) l).symm p)`. Establish `hg` using `glue_coordinate_split (r := r) l c ((coordinateSplit (r := r) l).symm p)`. Simplify using `only [MeasurableEquiv.apply_symm_apply] at hw hg`. Simplify using `only [hf]`. Rewrite using `[hw, hg, Complex.ofReal_mul, mul_assoc]`.
+
+Establish `hF : Integrable (fun p : ℂ × Cf r l.succ => f ((coordinateSplit (r` using `r) l).symm p)) (volume.prod volume) := (hmp.symm.integrable_comp_emb (coordinateSplit (r := r) l).symm.measurableEmbedding (g := f)).mpr hint`. Establish `h2` using `hF.integral_prod_left`. Use `⟨h2.congr (Filter.Eventually.of_forall fun t => ?_), (form_split μ l u v c hint).symm⟩` and prove the remaining obligations. Use `show ∫ c'', f ((coordinateSplit (r := r) l).symm (t, c'')) = Dens μ l u v c t`. Simplify using `only [hval, Dens, form]`.
+
+Rewrite using `[integral_const_mul]`.
+-/
 theorem dens_int (μ : Measure (Mt k r)) [SFinite μ] (hμ : B.IsHaarOn (Glev k r (Fin.last r)) μ) (l : Fin r)
     (u v : Ix S → RadSp k r z z' π π') (hu : ∀ a, u a ∈ lcSub k r z z' π π') (hv : ∀ a, v a ∈ lcSub k r z z' π π')
     (c : Fin r → ℂ) (Iu : ∀ a, LevelSquareIntegrable μ l.castSucc (u a) c) (Iv : ∀ a, LevelSquareIntegrable μ l.castSucc (v a) c) :
@@ -71,6 +80,11 @@ def LevelDensitySquareIntegrable : Prop :=
         (∀ t, t ≠ 0 → ph L st μ l w x y c t = ∑ i, a i * iteratedFDeriv ℝ (j i) (Dens μ l (u i) (v i) c) t (vv i)) ∧
         ∑ i, a i * (if j i = 0 then form μ l.castSucc (u i) (v i) c else 0) = RRform L st μ l.castSucc w x y c
 
+/- English proof (translation)
+Introduce `Wp Wq _ _ _ _ _ _ S _ _ P z z' π π' X μ L st l0 D hD h1 h2 hz hz' hπ hπ' w hw l hl x y hx hy c hc`. Establish `: SFinite μ` using `sfinite_of_isHaarOn _ μ hD.2.1`. Take `⟨n, K, C, u, v, j, vv, a, hL2, hjn, hrest, hexp, hI⟩` from `h Wp Wq S P z z' π π' X μ L st l0 D hD h1 h2 hz hz' hπ hπ' w hw l hl x y hx hy c hc`. Establish `hdi` using `fun i => dens_int μ hD.2.1 l (u i) (v i) (fun b => (hL2 i b).1) (fun b => (hL2 i b).2.2.1) c (fun b => (hL2 i b).2.1) (fun b => (hL2 i b).2.2.2)`. Use `⟨n, K, C, fun i => Dens μ l (u i) (v i) c, j, vv, a, hjn, fun i => ⟨(hdi i).1, hrest i⟩, hexp, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[← hI]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Use `split_ifs`. Rewrite using `[(hdi i).2]`. Both sides reduce to the same expression.
+-/
 theorem step_density_of_square (h : LevelDensitySquareIntegrable) : StepExp0 := by
   intro Wp Wq _ _ _ _ _ _ S _ _ P z z' π π' X μ L st l0 D hD h1 h2 hz hz' hπ hπ' w hw l hl x y hx hy c hc
   have : SFinite μ := sfinite_of_isHaarOn _ μ hD.2.1

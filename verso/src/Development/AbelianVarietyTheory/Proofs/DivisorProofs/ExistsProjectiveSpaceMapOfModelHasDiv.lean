@@ -20,6 +20,9 @@ namespace GlobalTheory.UMin.CrdMap
 
 open GlobalTheory.ProjSpace GlobalTheory.Cartier GlobalTheory.QCoh.Qcqs
 
+/- English proof (translation)
+Establish `hφ` using `toProj_coord o n`. Establish `h1` using `(ProjCoord.secCoord_iff (Equiv.refl _) (toProj (PSpace.str o n) (coord o n) (iSup_nonzeroLocus_coord o n)) c (pt c v hv) (by rw [hφ, Category.comp_id, pt_str]) v).2 ⟨by simpa using hv, by rw [hφ, Category.comp_id]; rfl⟩`. Conclude with `(FibreEmbed.secCoord_iff_of_secMaps (LB.isLB_pull (O1_isLB o n) _) (O1_isLB o n) (fun j => secMaps_toProjIso _ _ _ j) (iSup_nonzeroLocus_secPull (iSup_nonzeroLocus_coord o n) _) (iSup_nonzeroLocus_coord o n)).1 h1`.
+-/
 theorem pCrd_pt {o A : Type} [CommRing o] [CommRing A] {n : ℕ} (c : o →+* A) (v : Fin (n + 1) → A)
     (hv : Ideal.span (Set.range v) = ⊤) : PCrd (pt c v hv) v := by
   have hφ := toProj_coord o n
@@ -35,6 +38,9 @@ variable {o Ω : Type} [CommRing o] [Field Ω] [Algebra o Ω] (M : RatModel o Ω
 
 def dOpen (i : Fin (n + 1)) : M.Z.Opens := ⟨{z | M.Div c i z}, M.isOpen_setOf_div c i⟩
 
+/- English proof (translation)
+Establish `: V = ⊥` using `SetLike.coe_injective (Set.not_nonempty_iff_eq_empty.1 hV)`. Substitute `this` using the available equality. Use `infer_instance`.
+-/
 theorem subsingleton_of_not_nonempty {X : Scheme.{0}} {V : X.Opens} (hV : ¬ (V : Set X).Nonempty) :
     Subsingleton Γ(X, V) := by
   have : V = ⊥ := SetLike.coe_injective (Set.not_nonempty_iff_eq_empty.1 hV)
@@ -43,6 +49,9 @@ theorem subsingleton_of_not_nonempty {X : Scheme.{0}} {V : X.Opens} (hV : ¬ (V 
 
 variable {M} in
 
+/- English proof (translation)
+Distinguish the cases in `hV : (V : Set M.Z).Nonempty`. Conclude with `M.valF_injective hV (h hV)`. Use `subsingleton_of_not_nonempty hV` as an intermediate fact. Conclude with `Subsingleton.elim _ _`.
+-/
 theorem eq_of_valF {V : M.Z.Opens} {f g : Γ(M.Z, V)}
     (h : ∀ hV : (V : Set M.Z).Nonempty, valF M.pt V f = valF M.pt V g) : f = g := by
   by_cases hV : (V : Set M.Z).Nonempty
@@ -57,6 +66,9 @@ def fnOf (V : M.Z.Opens) (x : Ω) : Γ(M.Z, V) :=
 
 variable {M} in
 
+/- English proof (translation)
+Rewrite using `[fnOf, dif_pos h]`. Conclude with `h.choose_spec`.
+-/
 theorem valF_fnOf {V : M.Z.Opens} {x : Ω} (h : ∃ f : Γ(M.Z, V), valF M.pt V f = x) :
     valF M.pt V (fnOf M V x) = x := by
   rw [fnOf, dif_pos h]
@@ -66,19 +78,31 @@ def ratioFn (i j : Fin (n + 1)) : Γ(M.Z, dOpen M c i) := fnOf M (dOpen M c i) (
 
 variable {M c}
 
+/- English proof (translation)
+Establish `hne' : ((dOpen M c i : M.Z.Opens) : Set M.Z).Nonempty` using `hne.mono hV`. Rewrite using `[M.valF_resG hV hne, ratioFn, valF_fnOf]`. Conclude with `(RatModel.mem_ringOn_iff_exists hne').1 (RatModel.mem_ringOn.2 fun z hz => hz.2 j)`.
+-/
 theorem valF_ratioFn {i j : Fin (n + 1)} {V : M.Z.Opens} (hV : V ≤ dOpen M c i) (hne : (V : Set M.Z).Nonempty) :
     valF M.pt V (resG M.Z hV (ratioFn M c i j)) = c j / c i := by
   have hne' : ((dOpen M c i : M.Z.Opens) : Set M.Z).Nonempty := hne.mono hV
   rw [M.valF_resG hV hne, ratioFn, valF_fnOf]
   exact (RatModel.mem_ringOn_iff_exists hne').1 (RatModel.mem_ringOn.2 fun z hz => hz.2 j)
 
+/- English proof (translation)
+Rewrite using `[← M.res_apply V hne, map_one]`.
+-/
 theorem valF_one' {V : M.Z.Opens} (hne : (V : Set M.Z).Nonempty) : valF M.pt V 1 = 1 := by
   rw [← M.res_apply V hne, map_one]
 
+/- English proof (translation)
+Rewrite using `[← M.res_apply V hne, map_mul, M.res_apply, M.res_apply]`.
+-/
 theorem valF_mul' {V : M.Z.Opens} (hne : (V : Set M.Z).Nonempty) (f g : Γ(M.Z, V)) :
     valF M.pt V (f * g) = valF M.pt V f * valF M.pt V g := by
   rw [← M.res_apply V hne, map_mul, M.res_apply, M.res_apply]
 
+/- English proof (translation)
+The claim follows from `top_unique fun z _ => TopologicalSpace.Opens.mem_iSup.2 (hd z) self i := eq_of_valF fun hne => by obtain ⟨z, hz⟩ := hne have := valF_ratioFn (j := i) (le_refl (dOpen M c i)) ⟨z, hz⟩ rw [resG_self] at this rw [this, valF_one' ⟨z, hz⟩, div_self hz.1] mul i j k := eq_of_valF fun hne …`.
+-/
 theorem isCoordFamily_ratioFn (hd : M.HasDiv c) : IsCoordFamily (dOpen M c) (ratioFn M c) where
   cover := top_unique fun z _ => TopologicalSpace.Opens.mem_iSup.2 (hd z)
   self i := eq_of_valF fun hne => by
@@ -109,11 +133,21 @@ section Main
 
 variable {o Ω : Type} [CommRing o] [Field Ω] [Algebra o Ω] {M : RatModel o Ω} {n : ℕ} {c : Fin (n + 1) → Ω}
 
+/- English proof (translation)
+Rewrite using `[valF, dif_pos h, fnOn, RingHom.comp_apply, resG_self]`. Simplify using the standard rewrite rules.
+-/
 theorem appLE_eq_fnOn {X : Scheme.{0}} (x : Sp Ω ⟶ X) (U : X.Opens) (h : ⊤ ≤ x ⁻¹ᵁ U) (f : Γ(X, U)) :
     (x.appLE U ⊤ h).hom f = fnOn ⊤ (valF x U f) := by
   rw [valF, dif_pos h, fnOn, RingHom.comp_apply, resG_self]
   simp
 
+/- English proof (translation)
+Use `set H := isCoordFamily_ratioFn hd`. Take `⟨i, hi⟩` from `hd (genericPoint M.Z)`. Establish `hpt : ⊤ ≤ M.pt ⁻¹ᵁ dOpen M c i` using `M.top_le_preimage_pt ⟨_, RatModel.div_genericPoint hi.1⟩`. Establish `h₁ : ⊤ ≤ (M.pt ≫ H.toHom M.s) ⁻¹ᵁ chart o n i` using `GlobalTheory.Points.le_preimage_comp M.pt _ (H.le_toHom_preimage M.s i) hpt`. Establish `h₂ : ⊤ ≤ pt (algebraMap o Ω) c hc ⁻¹ᵁ chart o n i`.
+
+Rewrite using `[pt_preimage_chart]`. Conclude with `fun y _ => mem_spOpen.2 fun hm => y.isPrime.ne_top (Ideal.eq_top_of_isUnit_mem _ hm (Ne.isUnit hi.1))`. Use `hom_ext (by rw [Category.assoc, H.toHom_str, M.pt_s, pt_str]) fun _ => ⟨⊤, trivial, i, h₁, h₂, fun j => ?_⟩` and prove the remaining obligations. Establish `hu : IsUnit (fnOn (⊤ : (Sp Ω).Opens) (c i))` using `(Ne.isUnit hi.1).map _`. Use `hu.mul_right_cancel ?_` and prove the remaining obligations.
+
+Rewrite using `[pullRatio_pt_top_mul _ _ _ i j (Ne.isUnit hi.1) h₂, ← appLE_pullRatio (φ := H.toHom M.s) (hi := H.le_toHom_preimage M.s i) M.pt hpt, H.pullRatio_toHom, appLE_eq_fnOn, ← map_mul]`. Use `congr 1`. Use `valF_ratioFn (M := M) (c := c) (j := j) (le_refl (dOpen M c i)) ⟨_, RatModel.div_genericPoint hi.1⟩` as an intermediate fact. Rewrite `this` using `[resG_self]`. Rewrite using `[this, div_mul_cancel₀ _ hi.1]`.
+-/
 theorem pt_comp_toHom (hd : M.HasDiv c) (hc : Ideal.span (Set.range c) = ⊤) :
     M.pt ≫ (isCoordFamily_ratioFn hd).toHom M.s = pt (algebraMap o Ω) c hc := by
   set H := isCoordFamily_ratioFn hd
@@ -134,6 +168,11 @@ theorem pt_comp_toHom (hd : M.HasDiv c) (hc : Ideal.span (Set.range c) = ⊤) :
   rw [resG_self] at this
   rw [this, div_mul_cancel₀ _ hi.1]
 
+/- English proof (translation)
+Introduce `k Ω _ _ _ M n c hd`. Take `⟨i, hi⟩` from `hd (genericPoint M.Z)`. Establish `hc : Ideal.span (Set.range c) = ⊤` using `Ideal.eq_top_of_isUnit_mem _ (Ideal.subset_span ⟨i, rfl⟩) (Ne.isUnit hi.1)`. Use `⟨(isCoordFamily_ratioFn hd).toHom M.s, (isCoordFamily_ratioFn hd).toHom_str M.s, ?_⟩` and prove the remaining obligations. Rewrite using `[pt_comp_toHom hd hc]`.
+
+Conclude with `pCrd_pt _ c hc`.
+-/
 theorem exists_map_of_hasDiv : ∀ (k Ω : Type) [CommRing k] [Field Ω] [Algebra k Ω] (M : RatModel k Ω) (n : ℕ)
     (c : Fin (n + 1) → Ω), M.HasDiv c → ∃ h : M.Z ⟶ PSpace k n, h ≫ PSpace.str k n = M.s ∧ PCrd (M.pt ≫ h) c := by
   intro k Ω _ _ _ M n c hd

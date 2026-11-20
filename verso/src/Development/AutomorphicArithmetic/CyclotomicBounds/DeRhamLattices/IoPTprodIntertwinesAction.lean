@@ -13,6 +13,11 @@ set_option maxHeartbeats 1600000
 open GlobalTheory.PlaceRead
 open GlobalTheory.HeightCounting.Up (PrN)
 
+/- English proof (translation)
+Introduce `D X X0 Y S YS Z c w j H ι hι u _ g v`. Establish `hC : GlobalTheory.Hk3.Core X.R.toRealDat X.F.lv2` using `⟨X.char.lev, X.char.grp, X.char.fam, X.char.models, X.char.chain, X.char.thP⟩`. Establish `hB` using `Z.good.base (c.twI w) j (c.sd w)`. Establish `hBo` using `GlobalTheory.BigOn.Exp.TwConj.baseOf_of_realPin X.char.lev Z.good Z.pin (c.twI w) j (c.sd w)`. Take `⟨hg, -, -⟩` from `GlobalTheory.PlaceRead.twVia_good D c w Z.ρ Z.good H.ok j ι`.
+
+Establish `ht` using `H.tup ι hι`. Conclude with `(GlobalTheory.CoefActIo.act_ioP hC hB hBo hg ht).2 g _ v`.
+-/
 theorem _root_.UpperTheory.KN.ioP_tprod_intertwines_action :
     ∀ (D : D7) (X : RealSide D) (X0 : BaseLevelRowSide D) (Y : GlobalTheory.Mem.R3.Read (A3 := X.A3) X.R.toRealDat X.F.lv2 X0) (S : NX.RatDat D.ntw) (YS : NX.NExpRealS X.R X.cG S) (Z : ExportTie YS X.geo.v₀) (c : NChoice D) (w : D.what₂.places.Pl) (j : Fin D.R.m) (H : AtPlace Y Z c w j),
       ∀ ι : KE c w →+* ℂ, (∀ x, ι (c.embW w x) = D.what₂.embLL x) →

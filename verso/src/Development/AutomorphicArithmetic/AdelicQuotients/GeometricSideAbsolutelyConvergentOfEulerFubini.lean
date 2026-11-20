@@ -2,6 +2,33 @@ import Development.AutomorphicArithmetic.Foundations.Convolution.LocalGroupAnaly
 open UpperTheory.ConvolutionTheory.G UpperTheory.ConvolutionTheory.T4
 open MeasureTheory
 
+/- English proof (translation)
+Introduce `hE hF V G _ _ _ _ _ _ _ _ Gi _ _ _ _ _ _ _ _ Gv _ _ _ _ _ _ _ _ q p K T _ _ _ _ _ _ _ _ Ti _ _ _ _ _ _ _ _ Tv _ _ _ _ _ _ _ _ qT pT KT hRP hRPT j ji jv hqj hpj hK μ μi m ν νi nv hP hPi hPv S a b ha hb hEa hEb θ θi θv hqθ hpθ cθi cθv δ z cz hpz hinv hC hB φi φ cφi sφi cφ hS`. Establish `invI : ∀ t, (ji t)⁻¹ * q δ * θi (ji t) = q δ`. Introduce `t`. Take `⟨τ, h1, -⟩` from `hRPT.surj t (fun _ => 1) (Filter.Eventually.of_forall fun v => one_mem _)`. Establish `h` using `congrArg q (hinv τ)`.
+
+Rewrite `h` using `[map_mul, map_mul, map_inv, hqθ, hqj, h1]`. Conclude with `h`. Establish `invV : ∀ v t, (jv v t)⁻¹ * p v δ * θv v (jv v t) = p v δ`. Introduce `v t`. Establish `hev : ∀ᶠ w in Filter.cofinite, Function.update (fun w => (1 : Tv w)) v t w ∈ KT w` using `by filter_upwards [Filter.eventually_cofinite_ne v] with w hw`.
+
+Rewrite using `[Function.update_of_ne hw]`. Conclude with `one_mem _`. Take `⟨τ, -, h1⟩` from `hRPT.surj 1 _ hev`. Establish `h2 : pT v τ = t` using `by rw [h1 v, Function.update_self]`. Establish `h` using `congrArg (p v) (hinv τ)`.
+
+Rewrite `h` using `[map_mul, map_mul, map_inv, hpθ, hpj, h2]`. Conclude with `h`. Establish `twI : ∀ t g, (ji t * g)⁻¹ * q δ * θi (ji t * g) = g⁻¹ * q δ * θi g`. Introduce `t g`. Rewrite using `[map_mul, mul_inv_rev]`.
+
+Combine the equalities or inequalities in the displayed calculation. Establish `twV : ∀ v t g, (jv v t * g)⁻¹ * p v δ * θv v (jv v t * g) = g⁻¹ * p v δ * θv v g`. Introduce `v t g`. Rewrite using `[map_mul, mul_inv_rev]`. Combine the equalities or inequalities in the displayed calculation.
+
+Set `Fi : Gi → ℂ` to `fun x => ∫ s, φi (q (z s) * (x⁻¹ * q δ * θi x))`. Set `Fv : ∀ v, Gv v → ℂ` to `fun v x => φ v (x⁻¹ * p v δ * θv v x)`. Establish `hf` using `hF Gi Ti μi ji νi hPi θi (q δ) (fun s => q (z s)) cθi (hRP.cq.comp cz) invI hC hB φi cφi sφi`. Establish `hfm : Measurable Fi` using `hf.1`. Establish `hf2 : qI μi ji νi Fi = ∫ s, qI μi ji νi fun x => φi (q (z s) * (x⁻¹ * q δ * θi x))` using `hf.2`.
+
+Establish `hFiI : ∀ t g, Fi (ji t * g) = Fi g`. Introduce `t g`. Use `show (∫ s, φi (q (z s) * ((ji t * g)⁻¹ * q δ * θi (ji t * g)))) = ∫ s, φi (q (z s) * (g⁻¹ * q δ * θi g))`. Simplify using `only [twI]`. Establish `hFv : ∀ v, Measurable (Fv v) ∧ ∀ t g, Fv v (jv v t * g) = Fv v g`.
+
+Introduce `v`. Use `⟨((cφ v).comp ((continuous_inv.mul continuous_const).mul (cθv v))).measurable, ?_⟩` and prove the remaining obligations. Introduce `t g`. Use `show φ v ((jv v t * g)⁻¹ * p v δ * θv v (jv v t * g)) = φ v (g⁻¹ * p v δ * θv v g)`. Rewrite using `[twV]`.
+
+Establish `hFS : ∀ v ∉ S, ∀ x, ((∃ t, ∃ y ∈ K v, x = jv v t * y) → Fv v x = 1) ∧ ((¬ ∃ t, ∃ y ∈ K v, x = jv v t * y) → Fv v x = 0)`. Introduce `v hv x`. Take `⟨h1, h2⟩` from `hS v hv`. Prove the components needed by the constructor for the conclusion. Introduce `h show φ v (x⁻¹ * p v δ * θv v x) = 1`.
+
+Rewrite using `[h1]`. Conclude with `Set.indicator_of_mem ((h2 x).2 h) _`. Introduce `h show φ v (x⁻¹ * p v δ * θv v x) = 0`. Rewrite using `[h1]`. Conclude with `Set.indicator_of_notMem (fun hm => h ((h2 x).1 hm)) _`.
+
+Establish `he` using `hE V G Gi Gv q p K T Ti Tv qT pT KT hRP hRPT j ji jv hqj hpj hK μ μi m ν νi nv hP hPi hPv S a b ha hb hEa hEb Fi Fv hfm hFiI hFv hFS`. Establish `key : (fun x => ∫ s, φi (q (z s * (x⁻¹ * δ * θ x))) * ∏ᶠ v, φ v (p v (z s * (x⁻¹ * δ * θ x)))) = fun x => Fi (q x) * ∏ᶠ v, Fv v (p v x)`. Use function extensionality and compare the values at `x`. Establish `h1 : ∀ s, q (z s * (x⁻¹ * δ * θ x)) = q (z s) * ((q x)⁻¹ * q δ * θi (q x))`. Introduce `s`.
+
+Rewrite using `[map_mul, map_mul, map_mul, map_inv, hqθ]`. Establish `h2 : ∀ s v, p v (z s * (x⁻¹ * δ * θ x)) = (p v x)⁻¹ * p v δ * θv v (p v x)`. Introduce `s v`. Rewrite using `[map_mul, hpz, one_mul, map_mul, map_mul, map_inv, hpθ]`. Simplify using `only [h1, h2]`.
+
+Conclude with `integral_mul_const _ _`. Rewrite using `[key]`. Conclude with `⟨he.1, he.2.trans (congrArg (fun w => ((a : ℝ) : ℂ) / ((b : ℝ) : ℂ) * w * ∏ v ∈ S, qI (m v) (jv v) (nv v) (Fv v)) hf2)⟩`.
+-/
 theorem UpperTheory.geometric_side_absolutely_convergent_of_euler_fubini :
     Euler → Fub → SideAbs := by
   intro hE hF V G _ _ _ _ _ _ _ _ Gi _ _ _ _ _ _ _ _ Gv _ _ _ _ _ _ _ _ q p K

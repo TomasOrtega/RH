@@ -24,6 +24,9 @@ def Good (u : S → ℝ) : Prop := Measurable u ∧ LInv j B u ∧ MemLp u 2 (μ
 
 variable {j B μ DB}
 
+/- English proof (translation)
+Rewrite `h` using `[MulAction.orbitRel_apply]`. Take `⟨⟨g, hg⟩, rfl⟩` from `h`. Take `⟨γ, hγ, rfl⟩` from `Subgroup.mem_map.mp hg`. Conclude with `hu γ hγ y`.
+-/
 theorem linv_rel {u : S → ℝ} (hu : LInv j B u) {x y : S} (h : MulAction.orbitRel (B.map j) S x y) :
     u x = u y := by
   rw [MulAction.orbitRel_apply] at h
@@ -31,22 +34,39 @@ theorem linv_rel {u : S → ℝ} (hu : LInv j B u) {x y : S} (h : MulAction.orbi
   obtain ⟨γ, hγ, rfl⟩ := Subgroup.mem_map.mp hg
   exact hu γ hγ y
 
+/- English proof (translation)
+Conclude with `measurable_quotient_mk''`.
+-/
 theorem measurable_pr : Measurable (pr j B) := by
   exact measurable_quotient_mk''
 
+/- English proof (translation)
+Unfold `pr`. Apply `Quotient.sound` to reduce the goal to its premises. Conclude with `MulAction.orbitRel_apply.mpr ⟨⟨j γ, Subgroup.mem_map_of_mem j hγ⟩, rfl⟩`.
+-/
 theorem pr_mul {γ : Λ} (hγ : γ ∈ B) (x : S) : pr j B (j γ * x) = pr j B x := by
   unfold pr
   apply Quotient.sound
   exact MulAction.orbitRel_apply.mpr ⟨⟨j γ, Subgroup.mem_map_of_mem j hγ⟩, rfl⟩
 
+/- English proof (translation)
+Conclude with `linv_rel hu (Quotient.mk_out' x)`.
+-/
 theorem lift_pr {u : S → ℝ} (hu : LInv j B u) (x : S) : lift j B u (pr j B x) = u x := by
   exact linv_rel hu (Quotient.mk_out' x)
 
+/- English proof (translation)
+Use `measurable_from_quotient.mpr ?_` and prove the remaining obligations. Establish `: (lift j B u ∘ Quotient.mk'') = u` using `funext fun x => lift_pr hu x`. Rewrite using `[this]`. Conclude with `hm`.
+-/
 theorem measurable_lift {u : S → ℝ} (hm : Measurable u) (hu : LInv j B u) : Measurable (lift j B u) := by
   refine measurable_from_quotient.mpr ?_
   have : (lift j B u ∘ Quotient.mk'') = u := funext fun x => lift_pr hu x
   rw [this]; exact hm
 
+/- English proof (translation)
+Take `⟨hm, hi, hmem⟩` from `h`. Unfold `nu`. Rewrite using `[memLp_map_measure_iff (measurable_lift hm hi).aestronglyMeasurable measurable_pr.aemeasurable]`. Establish `: (lift j B u ∘ pr j B) = u` using `funext fun x => lift_pr hi x`. Rewrite using `[this]`.
+
+Conclude with `hmem`.
+-/
 theorem memLp_lift {u : S → ℝ} (h : Good j B μ DB u) : MemLp (lift j B u) 2 (nu j B μ DB) := by
   obtain ⟨hm, hi, hmem⟩ := h
   unfold nu
@@ -59,24 +79,40 @@ variable (j B μ DB) in
 def cls (u : S → ℝ) : HL j B μ DB := by
   classical exact if h : Good j B μ DB u then (memLp_lift h).toLp (lift j B u) else 0
 
+/- English proof (translation)
+Unfold `Good`. Rewrite using `[memLp_two_iff_integrable_sq hm.aestronglyMeasurable]`. Conclude with `⟨fun h => h.2.2, fun h => ⟨hm, hu, h⟩⟩`.
+-/
 theorem good_iff {u : S → ℝ} (hm : Measurable u) (hu : LInv j B u) :
     Good j B μ DB u ↔ IntegrableOn (fun x => u x ^ 2) DB μ := by
   unfold Good
   rw [memLp_two_iff_integrable_sq hm.aestronglyMeasurable]
   exact ⟨fun h => h.2.2, fun h => ⟨hm, hu, h⟩⟩
 
+/- English proof (translation)
+Use `⟨hu.1.sub hv.1, fun γ hγ x => ?_, hu.2.2.sub hv.2.2⟩` and prove the remaining obligations. Use `show u (j γ * x) - v (j γ * x) = u x - v x`. Rewrite using `[hu.2.1 γ hγ x, hv.2.1 γ hγ x]`.
+-/
 theorem good_sub {u v : S → ℝ} (hu : Good j B μ DB u) (hv : Good j B μ DB v) :
     Good j B μ DB (fun x => u x - v x) := by
   refine ⟨hu.1.sub hv.1, fun γ hγ x => ?_, hu.2.2.sub hv.2.2⟩
   show u (j γ * x) - v (j γ * x) = u x - v x
   rw [hu.2.1 γ hγ x, hv.2.1 γ hγ x]
 
+/- English proof (translation)
+Unfold `cls`. Rewrite using `[dif_pos (good_sub hu hv), dif_pos hu, dif_pos hv]`. Conclude with `MemLp.toLp_sub (memLp_lift hu) (memLp_lift hv)`.
+-/
 theorem cls_sub {u v : S → ℝ} (hu : Good j B μ DB u) (hv : Good j B μ DB v) :
     cls j B μ DB (fun x => u x - v x) = cls j B μ DB u - cls j B μ DB v := by
   unfold cls
   rw [dif_pos (good_sub hu hv), dif_pos hu, dif_pos hv]
   exact MemLp.toLp_sub (memLp_lift hu) (memLp_lift hv)
 
+/- English proof (translation)
+Unfold `cls`. Rewrite using `[dif_pos hu, dif_pos hv, L2.inner_def]`. Establish `h1` using `(memLp_lift hu).coeFn_toLp`. Establish `h2` using `(memLp_lift hv).coeFn_toLp`. Establish `hcongr : (fun q => ⟪((memLp_lift hu).toLp (lift j B u) : Qt j B → ℝ) q, ((memLp_lift hv).toLp (lift j B v) : Qt j B → ℝ) q⟫_ℝ) =ᵐ[nu j B μ DB] fun q => lift j B u q * lift j B v q` using `by filter_upwards [h1, h2] with q hq1 hq2`.
+
+Rewrite using `[hq1, hq2]`. Simplify using `only [RCLike.inner_apply, conj_trivial]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[integral_congr_ae hcongr]`. Establish `hm : Measurable (fun q => lift j B u q * lift j B v q)` using `(measurable_lift hu.1 hu.2.1).mul (measurable_lift hv.1 hv.2.1)`.
+
+Unfold `nu`. Rewrite using `[integral_map measurable_pr.aemeasurable hm.aestronglyMeasurable]`. Use `integral_congr_ae (Filter.Eventually.of_forall fun x => ?_)` and prove the remaining obligations. Simplify using `only [lift_pr hu.2.1, lift_pr hv.2.1]`.
+-/
 theorem cls_inner {u v : S → ℝ} (hu : Good j B μ DB u) (hv : Good j B μ DB v) :
     ⟪cls j B μ DB u, cls j B μ DB v⟫_ℝ = ∫ x in DB, u x * v x ∂μ := by
   unfold cls
@@ -98,11 +134,23 @@ theorem cls_inner {u v : S → ℝ} (hu : Good j B μ DB u) (hv : Good j B μ DB
   refine integral_congr_ae (Filter.Eventually.of_forall fun x => ?_)
   simp only [lift_pr hu.2.1, lift_pr hv.2.1]
 
+/- English proof (translation)
+Rewrite using `[← real_inner_self_eq_norm_sq, cls_inner hu hu]`. Simplify using `only [sq]`.
+-/
 theorem cls_norm_sq {u : S → ℝ} (hu : Good j B μ DB u) :
     ‖cls j B μ DB u‖ ^ 2 = ∫ x in DB, u x ^ 2 ∂μ := by
   rw [← real_inner_self_eq_norm_sq, cls_inner hu hu]
   simp only [sq]
 
+/- English proof (translation)
+Establish `hf` using `(Lp.aestronglyMeasurable f).aemeasurable`. Use `set g := hf.mk f with hgdef`. Establish `hg : Measurable g` using `hf.measurable_mk`. Establish `hfg : (f : Qt j B → ℝ) =ᵐ[nu j B μ DB] g` using `hf.ae_eq_mk`. Establish `hinv : LInv j B (g ∘ pr j B)` using `fun γ hγ x => by show g (pr j B (j γ * x)) = g (pr j B x)`.
+
+Rewrite using `[pr_mul hγ x]`. Establish `hLg : MemLp g 2 (nu j B μ DB)` using `(Lp.memLp f).ae_eq hfg`. Establish `hgood : Good j B μ DB (g ∘ pr j B)`. Use `⟨hg.comp measurable_pr, hinv, ?_⟩` and prove the remaining obligations. Unfold `nu at hLg`.
+
+Conclude with `(memLp_map_measure_iff hg.aestronglyMeasurable measurable_pr.aemeasurable).1 hLg`. Use `⟨g ∘ pr j B, hgood, ?_⟩` and prove the remaining obligations. Establish `hl : lift j B (g ∘ pr j B) = g` using `funext fun q => by show g (Quotient.mk _ q.out) = g q`. Rewrite using `[Quotient.out_eq]`. Unfold `cls`.
+
+Rewrite using `[dif_pos hgood]`. Apply `Lp.ext` to reduce the goal to its premises. Use `filter_upwards [(memLp_lift hgood).coeFn_toLp, hfg] with q h1 h2`. Rewrite using `[h1, hl, h2]`.
+-/
 theorem cls_surj (f : HL j B μ DB) : ∃ u, Good j B μ DB u ∧ cls j B μ DB u = f := by
   have hf := (Lp.aestronglyMeasurable f).aemeasurable
   set g := hf.mk f with hgdef
@@ -126,6 +174,9 @@ theorem cls_surj (f : HL j B μ DB) : ∃ u, Good j B μ DB u ∧ cls j B μ DB 
   filter_upwards [(memLp_lift hgood).coeFn_toLp, hfg] with q h1 h2
   rw [h1, hl, h2]
 
+/- English proof (translation)
+Unfold `cls`. Rewrite using `[dif_pos hu, dif_pos hv, MemLp.toLp_eq_toLp_iff]`. Unfold `nu Filter.EventuallyEq`. Rewrite using `[ae_map_iff measurable_pr.aemeasurable (measurableSet_eq_fun (measurable_lift hu.1 hu.2.1) (measurable_lift hv.1 hv.2.1))]`. Simplify using `only [lift_pr hu.2.1, lift_pr hv.2.1]`.
+-/
 theorem cls_eq_iff {u v : S → ℝ} (hu : Good j B μ DB u) (hv : Good j B μ DB v) :
     cls j B μ DB u = cls j B μ DB v ↔ u =ᵐ[μ.restrict DB] v := by
   unfold cls; rw [dif_pos hu, dif_pos hv, MemLp.toLp_eq_toLp_iff]
@@ -134,12 +185,22 @@ theorem cls_eq_iff {u v : S → ℝ} (hu : Good j B μ DB u) (hv : Good j B μ D
     (measurableSet_eq_fun (measurable_lift hu.1 hu.2.1) (measurable_lift hv.1 hv.2.1))]
   simp only [lift_pr hu.2.1, lift_pr hv.2.1]
 
+/- English proof (translation)
+Establish `hc : ((B.map j : Subgroup S) : Set S).Countable`. Rewrite using `[Subgroup.coe_map]`. Conclude with `(Set.to_countable _).image _`. Conclude with `hc.to_subtype`.
+-/
 theorem countable_map [Countable Λ] : Countable (B.map j) := by
   have hc : ((B.map j : Subgroup S) : Set S).Countable := by
     rw [Subgroup.coe_map]
     exact (Set.to_countable _).image _
   exact hc.to_subtype
 
+/- English proof (translation)
+Use `haveI := countable_map (j := j) (B := B)`. Establish `inv : ∀ w : S → ℝ, LInv j B w → ∀ (g : B.map j) (x : S), w (g • x) = w x` using `fun w hw g x => linv_rel hw (by rw [MulAction.orbitRel_apply]; exact MulAction.mem_orbit x g)`. Establish `htm : MeasurableSet {x | u x ≠ v x}` using `(measurableSet_eq_fun hu hv).compl`. Establish `ht : ∀ g : B.map j, g • {x | u x ≠ v x} = {x | u x ≠ v x}`. Introduce `g`.
+
+Use extensionality with `x`. Rewrite using `[Set.mem_smul_set_iff_inv_smul_mem]`. Simplify using `only [Set.mem_setOf_eq]`. Rewrite using `[inv u hiu g⁻¹ x, inv v hiv g⁻¹ x]`. Establish `hts : μ ({x | u x ≠ v x} ∩ DB) = 0`.
+
+Rewrite using `[← Measure.restrict_apply htm]`. Conclude with `ae_iff.1 h`. Conclude with `ae_iff.2 (hD.measure_zero_of_invariant _ ht hts)`.
+-/
 theorem ae_spread [Countable Λ] [MeasurableMul S] [μ.IsMulLeftInvariant]
     (hD : IsFundamentalDomain (B.map j) DB μ) {u v : S → ℝ} (hu : Measurable u) (hv : Measurable v)
     (hiu : LInv j B u) (hiv : LInv j B v) (h : u =ᵐ[μ.restrict DB] v) : u =ᵐ[μ] v := by
@@ -158,6 +219,9 @@ theorem ae_spread [Countable Λ] [MeasurableMul S] [μ.IsMulLeftInvariant]
     exact ae_iff.1 h
   exact ae_iff.2 (hD.measure_zero_of_invariant _ ht hts)
 
+/- English proof (translation)
+Conclude with `(measurePreserving_mul_left μ g).quasiMeasurePreserving.ae_eq h`.
+-/
 theorem ae_translate [MeasurableMul S] [μ.IsMulLeftInvariant] {u v : S → ℝ} (g : S)
     (h : u =ᵐ[μ] v) : (fun x => u (g * x)) =ᵐ[μ] fun x => v (g * x) := by
   exact (measurePreserving_mul_left μ g).quasiMeasurePreserving.ae_eq h

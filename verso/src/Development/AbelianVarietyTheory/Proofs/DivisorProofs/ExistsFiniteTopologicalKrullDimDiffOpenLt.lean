@@ -10,6 +10,19 @@ open GlobalTheory GlobalTheory.Cartier GlobalTheory.CxPts GlobalTheory.Points Gl
 
 namespace GlobalTheory.Div
 
+/- English proof (translation)
+Introduce `T _ _ _ _ Z _`. Establish `hfin : (irreducibleComponents Z).Finite` using `NoetherianSpace.finite_irreducibleComponents`. Establish `hne : ∀ K : irreducibleComponents Z, ∃ x : Z, x ∈ (K : Set Z)` using `fun K => K.2.1.nonempty`. Use `choose p hp using hne`. Use `haveI : Finite (irreducibleComponents Z) := hfin.to_subtype`.
+
+Use `⟨Set.range (fun K => (p K : T)), Set.finite_range _, fun U _ hSU d hd => ?_⟩` and prove the remaining obligations. Establish `hsub : (Z \ U : Set T) ⊆ Z` using `Set.diff_subset`. Establish `hi : IsInducing (Set.inclusion hsub)` using `(IsEmbedding.inclusion hsub).isInducing`. Establish `hcl : IsClosed {x : Z | (x : T) ∉ U}` using `(IsOpen.preimage continuous_subtype_val ‹IsOpen U›).isClosed_compl`. Use `Order.krullDim_lt_coe_iff.2 fun s => ?_` and prove the remaining obligations.
+
+Establish `hm` using `IrreducibleCloseds.map_strictMono_of_isInducing hi`. Set `s'` to `s.map _ hm`. Take `⟨K, hK, hsK⟩` from `exists_mem_irreducibleComponents_subset_of_isIrreducible (s'.last : Set Z) s'.last.isIrreducible`. Set `K' : IrreducibleCloseds Z` to `⟨K, hK.1, isClosed_of_mem_irreducibleComponents K hK⟩`. Establish `hlast : (s'.last : Set Z) ⊆ {x : Z | (x : T) ∉ U}`.
+
+Establish `: s'.last = IrreducibleCloseds.map _ hi.continuous s.last`. Simplify using `[s']`. Rewrite using `[this]`. Use `closure_minimal ?_ hcl` and prove the remaining obligations. Introduce and unpack `_ ⟨y, -, rfl⟩`.
+
+Conclude with `y.2.2`. Establish `hlt : s'.last < K'`. Use `lt_of_le_of_ne hsK fun h => ?_` and prove the remaining obligations. Establish `h1 : p ⟨K, hK⟩ ∈ (s'.last : Set Z)`. Rewrite using `[h]`.
+
+Conclude with `hp ⟨K, hK⟩`. Conclude with `hlast h1 (hSU ⟨⟨K, hK⟩, rfl⟩)`. Establish `h2` using `Order.krullDim_lt_coe_iff.1 hd (s'.snoc K' hlt)`. Simplify using `[s'] at h2`. Conclude with `h2`.
+-/
 theorem exists_finite_topologicalKrullDim_diff_lt :
     ∀ (T : Type) [TopologicalSpace T] [NoetherianSpace T] [QuasiSober T] [T0Space T] (Z : Set T),
       IsClosed Z → ∃ S : Set T, S.Finite ∧ ∀ U : Set T, IsOpen U → S ⊆ U → ∀ d : ℕ,

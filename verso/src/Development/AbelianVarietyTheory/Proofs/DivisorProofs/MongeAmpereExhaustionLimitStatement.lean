@@ -6,6 +6,9 @@ import ReciprocityTheory.AnalyticForms.PotentialTheory.ContDiffAtOfIsPotential
 open MeasureTheory ReciprocityTheory.AnForm ReciprocityTheory.AnForm.M GlobalTheory.IndefiniteRowSideFullHecke.BoundaryPolynomialFunctions GlobalTheory.LogResInt
 open scoped ENNReal
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.chartSumInt_lt_top_of_monotone_limit | exact GlobalTheory.chartSumInt_lt_top_of_monotone_limit | (intros; apply GlobalTheory.chartSumInt_lt_top_of_monotone_limit <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.monge_ampere_exhaustion_limit : ∀ (d : ℕ) (X : Type) [TopologicalSpace X] (A : FinHolAtlas d X) (n : ℕ) (Y : Type)
     [TopologicalSpace Y] (B : FinHolAtlas n Y) (μ : Y → X) (hμ : HoloMap B A μ) (P : LocPot X)
     (Ψ : ℕ → LocPot X) (O : ℕ → Set X) (a : ℕ → ℝ) (G : Set Y) (g : Y → ℝ≥0∞) (C : ℝ≥0∞),

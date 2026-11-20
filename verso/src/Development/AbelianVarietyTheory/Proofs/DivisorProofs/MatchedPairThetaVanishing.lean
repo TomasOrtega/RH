@@ -16,6 +16,11 @@ open scoped TensorProduct
 
 variable {F : Type} [Field F] [NumberField F]
 
+/- English proof (translation)
+Use `⟨fun x z hz => ?_, GlobalTheory.TensUniq.pure_mem_schA f φ hSB hstd⟩` and prove the remaining obligations. Establish `hz0 : ∀ v i, evFin F v (z i) = 0` using `fun v i => by`. Establish `h` using `congrFun (hz ((0, 1) : AF F) (map_zero (InfiniteAdeleRing.ringEquiv_mixedSpace F))) i`. Establish `h2 : (1 : Af F) * (z i).2 = 0` using `congrArg Prod.snd h`. Rewrite `h2` using `[one_mul]`.
+
+Rewrite using `[evFin, AlgHom.comp_apply]`. Use `map_zero (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.evalV F v)` and compare the differences between its conclusion and the goal. Conclude with `h2`. Simplify using `only [Pi.add_apply, map_add, hz0, add_zero]`.
+-/
 theorem rest_finPart {κ : Type} [Fintype κ] (f : SInf F κ) (φ : ∀ v : Pl F, (κ → Fv F v) → ℂ)
     (hSB : ∀ v, φ v ∈ SB (κ → Fv F v))
     (hstd : ∀ᶠ v in Filter.cofinite, φ v = Set.indicator {x | ∀ i, x i ∈ v.adicCompletionIntegers F} 1) :
@@ -30,6 +35,9 @@ theorem rest_finPart {κ : Type} [Fintype κ] (f : SInf F κ) (φ : ∀ v : Pl F
     exact h2
   simp only [Pi.add_apply, map_add, hz0, add_zero]
 
+/- English proof (translation)
+The claim follows from `h _ (rest_finPart f φ hSB hstd)`.
+-/
 theorem hasDerivAt_pure {κ : Type} [Fintype κ] {T : ℝ → ((κ → AF F) → ℂ) → (κ → AF F) → ℂ} {f f₁ : SInf F κ}
     (φ : ∀ v : Pl F, (κ → Fv F v) → ℂ) (hSB : ∀ v, φ v ∈ SB (κ → Fv F v))
     (hstd : ∀ᶠ v in Filter.cofinite, φ v = Set.indicator {x | ∀ i, x i ∈ v.adicCompletionIntegers F} 1)
@@ -37,6 +45,9 @@ theorem hasDerivAt_pure {κ : Type} [Fintype κ] {T : ℝ → ((κ → AF F) →
     ∀ x, HasDerivAt (fun t => T t (GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.pure f φ) x) (GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.pure f₁ φ x) 0 :=
   h _ (rest_finPart f φ hSB hstd)
 
+/- English proof (translation)
+The claim follows from `h _ (rest_finPart f φ hSB hstd)`.
+-/
 theorem acts_pure {κ : Type} [Fintype κ] {T : ((κ → AF F) → ℂ) → (κ → AF F) → ℂ} {f f₁ : SInf F κ}
     (φ : ∀ v : Pl F, (κ → Fv F v) → ℂ) (hSB : ∀ v, φ v ∈ SB (κ → Fv F v))
     (hstd : ∀ᶠ v in Filter.cofinite, φ v = Set.indicator {x | ∀ i, x i ∈ v.adicCompletionIntegers F} 1)
@@ -45,6 +56,21 @@ theorem acts_pure {κ : Type} [Fintype κ] {T : ((κ → AF F) → ℂ) → (κ 
 
 variable {E : Type} [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E} {n d : ℕ} {Y : Spc F E n} {W : Spc F E d}
 
+/- English proof (translation)
+Establish `hs : ∀ᶠ v in Filter.cofinite, φ v = Set.indicator {x | ∀ i, x i ∈ v.adicCompletionIntegers F} 1` using `(hev.and hstd).mono fun v hv => hv.1.trans hv.2`. Establish `hD : ∀ f ∈ M.Pol B.ψ B.emb, GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.pure f φ ∈ PolData B M` using `fun f hf => Submodule.subset_span ⟨f, hf, φ, hSB, hev, rfl⟩`. Use `⟨inf_le_left, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `γ hγ f hf f₁ h`. Establish `h₁` using `hP1 γ hγ f hf f₁ h`.
+
+Use `⟨h₁, ?_⟩` and prove the remaining obligations. Use `show GlobalTheory.ThetaFacInf.pureL φ f₁ ∈ N`. Rewrite using `[GlobalTheory.ThetaFacInf.pureL_apply]`. Conclude with `hN.coinv.lie γ hγ _ (hD f hf) _ (hD f₁ h₁) (hasDerivAt_pure φ hSB hs h)`. Introduce `k hk f hf f₁ h`.
+
+Establish `h₁` using `hP2 k hk f hf f₁ h`. Use `⟨Submodule.sub_mem _ h₁ hf, ?_⟩` and prove the remaining obligations. Use `show GlobalTheory.ThetaFacInf.pureL φ (f₁ - f) ∈ N`. Rewrite using `[map_sub, GlobalTheory.ThetaFacInf.pureL_apply, GlobalTheory.ThetaFacInf.pureL_apply, ← acts_pure φ hSB hs h]`. Conclude with `hN.coinv.cpt k hk _ (hD f hf)`.
+
+Introduce `γ hγ f hf f₁ h`. Take `⟨f₂, hf₂, -, huniq⟩` from `hP3 γ hγ f hf.1`. Establish `e` using `huniq f₁ h`. Substitute `e` using the available equality. Use `⟨hf₂, ?_⟩` and prove the remaining obligations.
+
+Use `show GlobalTheory.ThetaFacInf.pureL φ f₁ ∈ N`. Rewrite using `[GlobalTheory.ThetaFacInf.pureL_apply]`. Establish `hfN : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.pure f φ ∈ N` using `hf.2`. Conclude with `hN.stab.lie γ hγ _ hfN _ (hD f₁ hf₂) (hasDerivAt_pure φ hSB hs h)`. Introduce `k hk f hf f₁ h`.
+
+Take `⟨f₂, hf₂, -, huniq⟩` from `hP4 k hk f hf.1`. Establish `e` using `huniq f₁ h`. Substitute `e` using the available equality. Use `⟨hf₂, ?_⟩` and prove the remaining obligations. Use `show GlobalTheory.ThetaFacInf.pureL φ f₁ ∈ N`.
+
+Rewrite using `[GlobalTheory.ThetaFacInf.pureL_apply, ← acts_pure φ hSB hs h]`. Establish `hfN : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.pure f φ ∈ N` using `hf.2`. Conclude with `hN.stab.cpt k hk _ hfN`.
+-/
 theorem thetaSubInf_fib (B : Base F E) (M : Model σ Y W) (om : Rep σ Y W)
     (hstd : ∀ᶠ v in Filter.cofinite, M.vac v = Set.indicator {x | ∀ i, x i ∈ v.adicCompletionIntegers F} 1)
     (hP1 : ∀ γ ∈ Lines σ Y, ∀ f ∈ M.Pol B.ψ B.emb, ∀ f₁ : SInf F (Fin n × Fin d),
@@ -105,6 +131,9 @@ namespace GlobalTheory.ThetaFacInf.Fib
 open NumberField IsDedekindDomain Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes GlobalTheory.WeilM GlobalTheory.AdelicU GlobalTheory.LFun GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels GlobalTheory.ThK
 open scoped TensorProduct
 
+/- English proof (translation)
+Introduce `hKP F E _ _ _ _ _ σ B a a' G X om om' R Rf hM N hN φ hSB hev`. Take `⟨hP1, hP2, hP3, hP4⟩` from `GlobalTheory.T.real_line_polynomial_equivariance hKP F E σ B a a' G X om om' hM.triple`. Conclude with `thetaSubInf_fib B G.M om hM.triple.geo.hM.std hP1 hP2 hP3 hP4 N hN φ hSB hev`.
+-/
 theorem thetaSubInf_pol_comap : GlobalTheory.ThK.KP → ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E)
     (B : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Base F E) (a a' : ℕ) (G : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Geo σ a a') (X : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Chars F E)
     (om : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Rep σ G.V G.W) (om' : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Rep σ G.V' G.W) (R : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.RealMaps F a a')

@@ -13,6 +13,9 @@ section Gen
 
 variable {K : Type*} [Field K] [NumberField K]
 
+/- English proof (translation)
+The claim follows from `(Ideal.span_singleton_prime (by exact_mod_cast hp.out.ne_zero)).mpr (Nat.prime_iff_prime_int.mp hp.out)`.
+-/
 theorem spanPrime (p : ℕ) [hp : Fact p.Prime] : (Ideal.span {(p : ℤ)}).IsPrime :=
   (Ideal.span_singleton_prime (by exact_mod_cast hp.out.ne_zero)).mpr (Nat.prime_iff_prime_int.mp hp.out)
 
@@ -21,6 +24,11 @@ attribute [local instance] spanPrime
 abbrev Sp (K : Type*) [Field K] [NumberField K] (p : ℕ) [Fact p.Prime] : Submonoid (𝓞 K) :=
   Algebra.algebraMapSubmonoid (𝓞 K) (Ideal.span {(p : ℤ)}).primeCompl
 
+/- English proof (translation)
+Introduce and unpack `_ ⟨x, hx, rfl⟩`. Apply `mem_nonZeroDivisors_of_ne_zero` to reduce the goal to its premises. Introduce `h`. Apply `hx` to reduce the goal to its premises. Establish `hx0 : x = 0` using `(algebraMap ℤ (𝓞 K)).injective_int (h.trans (map_zero _).symm)`.
+
+Rewrite using `[hx0]`. Conclude with `Ideal.zero_mem _`.
+-/
 theorem Sp_le (p : ℕ) [hp : Fact p.Prime] : Sp K p ≤ nonZeroDivisors (𝓞 K) := by
   rintro _ ⟨x, hx, rfl⟩
   apply mem_nonZeroDivisors_of_ne_zero
@@ -30,6 +38,11 @@ theorem Sp_le (p : ℕ) [hp : Fact p.Prime] : Sp K p ≤ nonZeroDivisors (𝓞 K
   rw [hx0]
   exact Ideal.zero_mem _
 
+/- English proof (translation)
+Take `⟨x, hx, rfl⟩` from `ht`. Use `⟨x.natAbs, ?_, ?_⟩` and prove the remaining obligations. Use `Nat.Coprime.symm ((Nat.Prime.coprime_iff_not_dvd hp.out).mpr fun h => hx ?_)` and prove the remaining obligations. Conclude with `Ideal.mem_span_singleton.mpr (Int.ofNat_dvd_left.mpr h)`. Establish `hc : ((x.natAbs : ℕ) : 𝓞 K) = ((x.natAbs : ℤ) : 𝓞 K)` using `(Int.cast_natCast _).symm`.
+
+Break down `Int.natAbs_eq x with h | h` into its components or cases. Use `⟨1, ?_⟩` and prove the remaining obligations. Rewrite using `[one_mul, algebraMap_int_eq, eq_intCast, hc, ← h]`. Use `⟨-1, ?_⟩` and prove the remaining obligations. Rewrite using `[algebraMap_int_eq, eq_intCast, hc, neg_one_mul, ← Int.cast_neg, ← neg_eq_iff_eq_neg.mpr h]`.
+-/
 theorem nat_of_Sp {p : ℕ} [hp : Fact p.Prime] {t : 𝓞 K} (ht : t ∈ Sp K p) :
     ∃ s : ℕ, Nat.Coprime s p ∧ ∃ u : 𝓞 K, (s : 𝓞 K) = u * t := by
   obtain ⟨x, hx, rfl⟩ := ht
@@ -43,6 +56,37 @@ theorem nat_of_Sp {p : ℕ} [hp : Fact p.Prime] {t : 𝓞 K} (ht : t ∈ Sp K p)
     · refine ⟨-1, ?_⟩
       rw [algebraMap_int_eq, eq_intCast, hc, neg_one_mul, ← Int.cast_neg, ← neg_eq_iff_eq_neg.mpr h]
 
+/- English proof (translation)
+Take `⟨T, hT⟩` from `hfg`. Establish `hS` using `Sp_le (K := K) p`. Set `R` to `Localization.subalgebra.ofField K (Sp K p) hS`. Use `haveI : IsDedekindDomain R := IsLocalization.isDedekindDomain (𝓞 K) hS R`. Establish `hp0 : Ideal.span {(p : ℤ)} ≠ ⊥` using `by simp [hp.out.ne_zero]`.
+
+Use `haveI : IsPrincipalIdealRing R := IsDedekindDomain.isPrincipalIdealRing_localization_over_prime (𝓞 K) (Ideal.span {(p : ℤ)}) hp0 (Sₚ := R)`. Use `haveI : IsScalarTower R K V := IsScalarTower.of_algebraMap_smul (fun r v => rfl)`. Set `M : Submodule R V` to `Submodule.span R (T : Set V)`. Use `haveI : Module.Finite R M := Module.Finite.span_of_finite R T.finite_toSet`. Use `haveI : Module.IsTorsionFree R V := ⟨fun r hr x y h => by`.
+
+Establish `hr0 : (r : K) ≠ 0` using `fun h0 => hr.ne_zero (Subtype.ext h0)`. Conclude with `smul_right_injective V hr0 h⟩`. Use `haveI : Module.IsTorsionFree R M := Function.Injective.moduleIsTorsionFree M.subtype Subtype.val_injective (fun r m => rfl)`. Take `⟨n, bas⟩` from `Module.basisOfFiniteTypeTorsionFree' (R := R) (M := M)`. Establish `natsmul : ∀ (s : ℕ) (y : V), y ∈ A → (s : K) • y ∈ A` using `fun s y hy => by`.
+
+Rewrite using `[Nat.cast_smul_eq_nsmul]`. Conclude with `A.nsmul_mem hy s`. Establish `key : ∀ x ∈ M, ∃ s : ℕ, Nat.Coprime s p ∧ (s : K) • x ∈ A`. Introduce `x hx`. Proceed by induction on `hx using Submodule.span_induction with`.
+
+Consider the case `mem y hy => exact ⟨1, Nat.coprime_one_left p, by rw [Nat.cast_one, one_smul, ← hT]; exact AddSubgroup.subset_closure hy⟩`. Consider the case `zero => exact ⟨1, Nat.coprime_one_left p, by rw [smul_zero]; exact A.zero_mem⟩`. Consider the case `add x y _ _ h1 h2`. Take `⟨s1, hs1, m1⟩` from `h1`. Take `⟨s2, hs2, m2⟩` from `h2`.
+
+Use `⟨s1 * s2, Nat.Coprime.mul_left hs1 hs2, ?_⟩` and prove the remaining obligations. Establish `e : ((s1 * s2 : ℕ) : K) • (x + y) = (s2 : K) • ((s1 : K) • x) + (s1 : K) • ((s2 : K) • y)`. Rewrite using `[smul_add, smul_smul, smul_smul, Nat.cast_mul, mul_comm (s2 : K) (s1 : K)]`. Rewrite using `[e]`. Conclude with `A.add_mem (natsmul _ _ m1) (natsmul _ _ m2)`.
+
+Consider the case `smul r x _ h`. Take `⟨s, hs, m⟩` from `h`. Take `⟨⟨a, t⟩, hat⟩` from `IsLocalization.surj (Sp K p) r`. Take `⟨s0, hs0, u, hu⟩` from `nat_of_Sp (K := K) t.2`. Use `⟨s0 * s, Nat.Coprime.mul_left hs0 hs, ?_⟩` and prove the remaining obligations.
+
+Establish `hatK : (r : K) * ((t : 𝓞 K) : K) = ((a : 𝓞 K) : K)` using `congrArg Subtype.val hat`. Establish `hs0K : ((s0 : ℕ) : K) = ((u : 𝓞 K) : K) * ((t : 𝓞 K) : K)`. Rewrite using `[← map_natCast (algebraMap (𝓞 K) K) s0, hu, map_mul]`. Establish `e : ((s0 * s : ℕ) : K) • (r • x) = (((u * a : 𝓞 K)) : K) • ((s : K) • x)` using `by show ((s0 * s : ℕ) : K) • ((r : K) • x) = _`. Rewrite using `[smul_smul, smul_smul, Nat.cast_mul, hs0K]`.
+
+Use `congr 1`. Rewrite using `[show (((u * a : 𝓞 K)) : K) = ((u : 𝓞 K) : K) * ((a : 𝓞 K) : K) from rfl, ← hatK]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e]`. Conclude with `hO _ _ m`.
+
+Use `⟨n, fun i => (bas i : V), ?_, fun i => key _ (bas i).2, ?_⟩` and prove the remaining obligations. Establish `h1 : LinearIndependent R (M.subtype ∘ bas)` using `bas.linearIndependent.map' M.subtype (Submodule.ker_subtype M)`. Conclude with `(LinearIndependent.iff_fractionRing (R := R) (K := K)).1 h1`. Introduce `y hy`. Establish `hyM : y ∈ M`.
+
+Rewrite `hy` using `[← hT]`. Conclude with `(AddSubgroup.closure_le M.toAddSubgroup).2 (fun z hz => Submodule.subset_span hz) hy`. Establish `hsum` using `congrArg Subtype.val (bas.sum_repr ⟨y, hyM⟩)`. Simplify using `only [Submodule.coe_sum, Submodule.coe_smul] at hsum`. Take `⟨t, ht⟩` from `IsLocalization.exist_integer_multiples_of_finite (Sp K p) (fun i => bas.repr ⟨y, hyM⟩ i)`.
+
+Use `choose a ha using ht`. Take `⟨s0, hs0, u, hu⟩` from `nat_of_Sp (K := K) t.2`. Use `⟨s0, hs0, fun i => u * a i, ?_⟩` and prove the remaining obligations. Establish `hs0K : ((s0 : ℕ) : K) = ((u : 𝓞 K) : K) * ((t : 𝓞 K) : K)`. Rewrite using `[← map_natCast (algebraMap (𝓞 K) K) s0, hu, map_mul]`.
+
+Establish `haK : ∀ i, ((a i : 𝓞 K) : K) = ((t : 𝓞 K) : K) * ((bas.repr ⟨y, hyM⟩ i : R) : K)`. Introduce `i`. Use `congrArg Subtype.val (ha i)` as an intermediate fact. Conclude with `this`. Use `conv_lhs => rw [← hsum]`.
+
+Rewrite using `[Finset.smul_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Use `show ((s0 : ℕ) : K) • (((bas.repr ⟨y, hyM⟩ i : R) : K) • (bas i : V)) = _`. Rewrite using `[smul_smul, hs0K]`. Use `congr 1`.
+
+Rewrite using `[show (((u * a i : 𝓞 K)) : K) = ((u : 𝓞 K) : K) * ((a i : 𝓞 K) : K) from rfl, haK i]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem exists_loc_basis {V : Type*} [AddCommGroup V] [Module K V] (p : ℕ) [hp : Fact p.Prime]
     (A : AddSubgroup V) (hfg : A.FG) (hO : ∀ (c : 𝓞 K) (y : V), y ∈ A → ((c : K)) • y ∈ A) :
     ∃ (n : ℕ) (b : Fin n → V), LinearIndependent K b ∧
@@ -124,6 +168,19 @@ theorem exists_loc_basis {V : Type*} [AddCommGroup V] [Module K V] (p : ℕ) [hp
     rw [show (((u * a i : 𝓞 K)) : K) = ((u : 𝓞 K) : K) * ((a i : 𝓞 K) : K) from rfl, haK i]
     ring
 
+/- English proof (translation)
+Use `choose! s hs c hc using h`. Use `⟨∏ y ∈ T, s y, Nat.Coprime.prod_left fun y hy => hs y hy, fun y hy => ?_⟩` and prove the remaining obligations. Proceed by induction on `hy using AddSubgroup.closure_induction with`. Consider the case `mem y hy`. Use `⟨fun i => ((∏ z ∈ T.erase y, s z : ℕ) : 𝓞 K) * c y i, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[← Finset.mul_prod_erase T s hy, Nat.cast_mul, mul_comm, mul_smul, hc y hy, Finset.smul_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[smul_smul]`. Use `congr 1`. Consider the case `zero => exact ⟨0, by simp⟩`.
+
+Consider the case `add x y _ _ hx hy`. Take `⟨c1, h1⟩` from `hx`. Take `⟨c2, h2⟩` from `hy`. Use `⟨c1 + c2, ?_⟩` and prove the remaining obligations. Rewrite using `[smul_add, h1, h2, ← Finset.sum_add_distrib]`.
+
+Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[Pi.add_apply, ← add_smul]`. Use `push_cast`. Both sides reduce to the same expression. Consider the case `neg x _ hx`.
+
+Take `⟨c1, h1⟩` from `hx`. Use `⟨-c1, ?_⟩` and prove the remaining obligations. Rewrite using `[smul_neg, h1, ← Finset.sum_neg_distrib]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[Pi.neg_apply, ← neg_smul]`.
+
+Use `push_cast`. Both sides reduce to the same expression.
+-/
 theorem uniform_den {V : Type*} [AddCommGroup V] [Module K V] (p : ℕ) {n : ℕ} (b : Fin n → V) (T : Finset V)
     (h : ∀ y ∈ T, ∃ s : ℕ, Nat.Coprime s p ∧ ∃ c : Fin n → 𝓞 K, (s : K) • y = ∑ i, ((c i : K)) • b i) :
     ∃ S : ℕ, Nat.Coprime S p ∧ ∀ y ∈ AddSubgroup.closure (T : Set V),
@@ -157,6 +214,9 @@ theorem uniform_den {V : Type*} [AddCommGroup V] [Module K V] (p : ℕ) {n : ℕ
     push_cast
     rfl
 
+/- English proof (translation)
+Take `⟨n, b, hli, hmem, hsp⟩` from `exists_loc_basis p A hfg hO`. Take `⟨T, hT⟩` from `hfg`. Take `⟨S, hS, hSp⟩` from `uniform_den p b T (fun y hy => hsp y (hT ▸ AddSubgroup.subset_closure hy))`. Conclude with `⟨n, b, hli, hmem, S, hS, fun y hy => hSp y (hT ▸ hy)⟩`.
+-/
 theorem exists_loc_basis_unif {V : Type*} [AddCommGroup V] [Module K V] (p : ℕ) [hp : Fact p.Prime]
     (A : AddSubgroup V) (hfg : A.FG) (hO : ∀ (c : 𝓞 K) (y : V), y ∈ A → ((c : K)) • y ∈ A) :
     ∃ (n : ℕ) (b : Fin n → V), LinearIndependent K b ∧
@@ -175,22 +235,39 @@ variable {K : Type*} [Field K] (p : ℕ)
 
 def IntAt (x : K) : Prop := ∃ s : ℕ, Nat.Coprime s p ∧ IsIntegral ℤ ((s : K) * x)
 
+/- English proof (translation)
+Establish `e : i1 = i2` using `Subsingleton.elim _ _`. Substitute `e` using the available equality. Conclude with `h`.
+-/
 theorem isInt_cast {R : Type*} [CommRing R] {i1 i2 : Algebra ℤ R} {x : R} (h : @IsIntegral ℤ R _ _ i1 x) :
     @IsIntegral ℤ R _ _ i2 x := by
   have e : i1 = i2 := Subsingleton.elim _ _
   subst e
   exact h
 
+/- English proof (translation)
+Establish `h` using `isIntegral_algebraMap (R := ℤ) (A := K) (x := (t : ℤ))`. Rewrite `h` using `[map_natCast]`. Then use the resulting hypothesis.
+-/
 theorem isInt_nat (t : ℕ) : IsIntegral ℤ (t : K) := by
   have h := isIntegral_algebraMap (R := ℤ) (A := K) (x := (t : ℤ))
   rwa [map_natCast] at h
 
+/- English proof (translation)
+Simplify using `using isIntegral_algebraMap (R := ℤ) (A := K) (x := t)`.
+-/
 theorem isInt_int (t : ℤ) : IsIntegral ℤ (t : K) := by
   simpa using isIntegral_algebraMap (R := ℤ) (A := K) (x := t)
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨1, Nat.coprime_one_left _, by simpa using h⟩`.
+-/
 theorem intAt_of_int {x : K} (h : IsIntegral ℤ x) : IntAt p x :=
   ⟨1, Nat.coprime_one_left _, by simpa using h⟩
 
+/- English proof (translation)
+Take `⟨s, hs, hx'⟩` from `hx`. Take `⟨t, ht, hy'⟩` from `hy`. Use `⟨s * t, Nat.Coprime.mul hs ht, ?_⟩` and prove the remaining obligations. Establish `e : ((s * t : ℕ) : K) * (x * y) = ((s : K) * x) * ((t : K) * y)` using `by push_cast; ring`. Rewrite using `[e]`.
+
+Conclude with `isInt_cast (hx'.mul hy')`.
+-/
 theorem intAt_mul {x y : K} (hx : IntAt p x) (hy : IntAt p y) : IntAt p (x * y) := by
   obtain ⟨s, hs, hx'⟩ := hx
   obtain ⟨t, ht, hy'⟩ := hy
@@ -199,6 +276,11 @@ theorem intAt_mul {x y : K} (hx : IntAt p x) (hy : IntAt p y) : IntAt p (x * y) 
   rw [e]
   exact isInt_cast (hx'.mul hy')
 
+/- English proof (translation)
+Take `⟨s, hs, hx'⟩` from `hx`. Take `⟨t, ht, hy'⟩` from `hy`. Use `⟨s * t, Nat.Coprime.mul hs ht, ?_⟩` and prove the remaining obligations. Establish `e : ((s * t : ℕ) : K) * (x + y) = (t : K) * ((s : K) * x) + (s : K) * ((t : K) * y)` using `by push_cast; ring`. Rewrite using `[e]`.
+
+Conclude with `isInt_cast (((isInt_nat (K := K) t).mul (isInt_cast hx')).add ((isInt_nat (K := K) s).mul (isInt_cast hy')))`.
+-/
 theorem intAt_add {x y : K} (hx : IntAt p x) (hy : IntAt p y) : IntAt p (x + y) := by
   obtain ⟨s, hs, hx'⟩ := hx
   obtain ⟨t, ht, hy'⟩ := hy
@@ -208,10 +290,19 @@ theorem intAt_add {x y : K} (hx : IntAt p x) (hy : IntAt p y) : IntAt p (x + y) 
   rw [e]
   exact isInt_cast (((isInt_nat (K := K) t).mul (isInt_cast hx')).add ((isInt_nat (K := K) s).mul (isInt_cast hy')))
 
+/- English proof (translation)
+The claim follows from `intAt_of_int p isIntegral_zero`.
+-/
 theorem intAt_zero : IntAt p (0 : K) := intAt_of_int p isIntegral_zero
 
+/- English proof (translation)
+The claim follows from `intAt_of_int p isIntegral_one`.
+-/
 theorem intAt_one : IntAt p (1 : K) := intAt_of_int p isIntegral_one
 
+/- English proof (translation)
+Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simpa using intAt_zero (K := K) p`. Consider the case `insert a s ha ih`. Rewrite using `[Finset.sum_insert ha]`. Conclude with `intAt_add p (h a (Finset.mem_insert_self a s)) (ih fun i hi => h i (Finset.mem_insert_of_mem hi))`.
+-/
 theorem intAt_sum {ι : Type*} (s : Finset ι) (f : ι → K) (h : ∀ i ∈ s, IntAt p (f i)) : IntAt p (∑ i ∈ s, f i) := by
   classical
   induction s using Finset.induction_on with
@@ -220,6 +311,9 @@ theorem intAt_sum {ι : Type*} (s : Finset ι) (f : ι → K) (h : ∀ i ∈ s, 
     rw [Finset.sum_insert ha]
     exact intAt_add p (h a (Finset.mem_insert_self a s)) (ih fun i hi => h i (Finset.mem_insert_of_mem hi))
 
+/- English proof (translation)
+Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simpa using intAt_one (K := K) p`. Consider the case `insert a s ha ih`. Rewrite using `[Finset.prod_insert ha]`. Conclude with `intAt_mul p (h a (Finset.mem_insert_self a s)) (ih fun i hi => h i (Finset.mem_insert_of_mem hi))`.
+-/
 theorem intAt_prod {ι : Type*} (s : Finset ι) (f : ι → K) (h : ∀ i ∈ s, IntAt p (f i)) : IntAt p (∏ i ∈ s, f i) := by
   classical
   induction s using Finset.induction_on with
@@ -228,6 +322,9 @@ theorem intAt_prod {ι : Type*} (s : Finset ι) (f : ι → K) (h : ∀ i ∈ s,
     rw [Finset.prod_insert ha]
     exact intAt_mul p (h a (Finset.mem_insert_self a s)) (ih fun i hi => h i (Finset.mem_insert_of_mem hi))
 
+/- English proof (translation)
+Rewrite using `[Matrix.det_apply]`. Use `intAt_sum p _ _ fun σ _ => ?_` and prove the remaining obligations. Rewrite using `[Units.smul_def, zsmul_eq_mul]`. Conclude with `intAt_mul p (intAt_of_int p (isInt_int _)) (intAt_prod p _ _ fun i _ => h _ _)`.
+-/
 theorem intAt_det {n : Type*} [Fintype n] [DecidableEq n] (M : Matrix n n K) (h : ∀ i j, IntAt p (M i j)) :
     IntAt p M.det := by
   rw [Matrix.det_apply]
@@ -235,6 +332,19 @@ theorem intAt_det {n : Type*} [Fintype n] [DecidableEq n] (M : Matrix n n K) (h 
   rw [Units.smul_def, zsmul_eq_mul]
   exact intAt_mul p (intAt_of_int p (isInt_int _)) (intAt_prod p _ _ fun i _ => h _ _)
 
+/- English proof (translation)
+Assume the negation of the conclusion as `hlt`. Use `push_neg at hlt`. Take `⟨P, hPm, hP⟩` from `hy`. Establish `hsum : y ^ P.natDegree = -∑ i ∈ Finset.range P.natDegree, (P.coeff i : k) * y ^ i`. Establish `h` using `hP`.
+
+Rewrite `h` using `[hPm.as_sum]`. Simplify using `only [Polynomial.eval₂_add, Polynomial.eval₂_X_pow, Polynomial.eval₂_finset_sum, Polynomial.eval₂_mul, Polynomial.eval₂_C, Polynomial.eval₂_X_pow, algebraMap_int_eq, eq_intCast] at h`. Use `eq_neg_of_add_eq_zero_left ?_` and prove the remaining obligations. Rewrite using `[← h]`. Use `congr 1`.
+
+Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Use `congr 1`. Rewrite using `[← Polynomial.C_eq_intCast, Polynomial.eval₂_C]`. Simplify using the standard rewrite rules. Establish `hy1 : 1 ≤ ‖y‖` using `hlt.le`.
+
+Break down `Nat.eq_zero_or_pos P.natDegree with hn | hn` into its components or cases. Rewrite `hsum` using `[hn, pow_zero, Finset.range_zero, Finset.sum_empty, neg_zero]`. Conclude with `one_ne_zero hsum`. Establish `hle : ‖∑ i ∈ Finset.range P.natDegree, (P.coeff i : k) * y ^ i‖ ≤ ‖y‖ ^ (P.natDegree - 1)`. Use `IsUltrametricDist.norm_sum_le_of_forall_le_of_nonneg (by positivity) fun i hi => ?_` and prove the remaining obligations.
+
+Rewrite using `[norm_mul, norm_pow]`. Establish `hc : ‖(P.coeff i : k)‖ ≤ 1` using `IsUltrametricDist.norm_intCast_le_one ..`. Establish `hp : ‖y‖ ^ i ≤ ‖y‖ ^ (P.natDegree - 1)` using `pow_le_pow_right₀ hy1 (by have := Finset.mem_range.mp hi; omega)`. Combine the equalities or inequalities in the displayed calculation. Rewrite `hle` using `[← norm_neg, ← hsum, norm_pow]`.
+
+Establish `hlt2 : ‖y‖ ^ (P.natDegree - 1) < ‖y‖ ^ P.natDegree` using `pow_lt_pow_right₀ hlt (by omega)`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem norm_le_one_of_int {k : Type*} [NormedField k] [IsUltrametricDist k] {y : k}
     (hy : IsIntegral ℤ y) : ‖y‖ ≤ 1 := by
   by_contra hlt
@@ -269,6 +379,9 @@ theorem norm_le_one_of_int {k : Type*} [NormedField k] [IsUltrametricDist k] {y 
     have hlt2 : ‖y‖ ^ (P.natDegree - 1) < ‖y‖ ^ P.natDegree := pow_lt_pow_right₀ hlt (by omega)
     linarith
 
+/- English proof (translation)
+Establish `h1 : ((s : ℚ_[p]) : ℂ_[p]) = (s : ℂ_[p])` using `map_natCast (algebraMap ℚ_[p] ℂ_[p]) s`. Rewrite using `[← h1, PadicComplex.norm_extends, PadicAlgCl.norm_extends, Padic.norm_natCast_eq_one_iff]`. Use `first`. Consider the case `exact h.symm`. Consider the case `exact (Nat.Prime.coprime_iff_not_dvd Fact.out).mp h.symm`.
+-/
 theorem norm_nat_coprime [Fact p.Prime] {s : ℕ} (h : Nat.Coprime s p) : ‖(s : ℂ_[p])‖ = 1 := by
   have h1 : ((s : ℚ_[p]) : ℂ_[p]) = (s : ℂ_[p]) := map_natCast (algebraMap ℚ_[p] ℂ_[p]) s
   rw [← h1, PadicComplex.norm_extends, PadicAlgCl.norm_extends, Padic.norm_natCast_eq_one_iff]
@@ -276,6 +389,9 @@ theorem norm_nat_coprime [Fact p.Prime] {s : ℕ} (h : Nat.Coprime s p) : ‖(s 
   | exact h.symm
   | exact (Nat.Prime.coprime_iff_not_dvd Fact.out).mp h.symm
 
+/- English proof (translation)
+Take `⟨s, hs, hx⟩` from `h`. Establish `h1 : ‖ψ ((s : K) * x)‖ ≤ 1`. Use `letI : Algebra ℤ ℂ_[p] := Ring.toIntAlgebra _`. Conclude with `norm_le_one_of_int (isInt_cast (hx.map ψ.toIntAlgHom))`. Rewrite `h1` using `[map_mul, map_natCast, norm_mul, norm_nat_coprime p hs, one_mul]`. Then use the resulting hypothesis.
+-/
 theorem norm_le_of_intAt [Fact p.Prime] (ψ : K →+* ℂ_[p]) {x : K} (h : IntAt p x) : ‖ψ x‖ ≤ 1 := by
   obtain ⟨s, hs, hx⟩ := h
   have h1 : ‖ψ ((s : K) * x)‖ ≤ 1 := by
@@ -283,6 +399,9 @@ theorem norm_le_of_intAt [Fact p.Prime] (ψ : K →+* ℂ_[p]) {x : K} (h : IntA
     exact norm_le_one_of_int (isInt_cast (hx.map ψ.toIntAlgHom))
   rwa [map_mul, map_natCast, norm_mul, norm_nat_coprime p hs, one_mul] at h1
 
+/- English proof (translation)
+Introduce and unpack `rfl`. Conclude with `hp.out.one_lt.ne' ((Nat.coprime_zero_left p).mp h)`.
+-/
 theorem ne_zero_of_coprime [hp : Fact p.Prime] {s : ℕ} (h : Nat.Coprime s p) : s ≠ 0 := by
   rintro rfl
   exact hp.out.one_lt.ne' ((Nat.coprime_zero_left p).mp h)
@@ -299,8 +418,14 @@ abbrev AAs (D : D7) : Submodule (𝓞 D.host.E) D.host.E := (D.host.AA0 : Submod
 
 abbrev IsInt (x : D.host.E) : Prop := x ∈ (1 : Submodule (𝓞 D.host.E) D.host.E)
 
+/- English proof (translation)
+The claim follows from `Submodule.mem_one.mpr ⟨1, map_one _⟩`.
+-/
 theorem isInt_one : IsInt (D := D) 1 := Submodule.mem_one.mpr ⟨1, map_one _⟩
 
+/- English proof (translation)
+Unfold `Formalism.MainNotions.StandardLatticesGL3.stdL`. Rewrite using `[Submodule.mem_pi]`. Conclude with `⟨fun h i => h i (Set.mem_univ i), fun h i _ => h i⟩`.
+-/
 theorem mem_stdL {N : ℕ} (x : Fin N → D.host.E) : x ∈ Formalism.MainNotions.StandardLatticesGL3.stdL D N ↔ ∀ i, IsInt (D := D) (x i) := by
   unfold Formalism.MainNotions.StandardLatticesGL3.stdL
   rw [Submodule.mem_pi]
@@ -312,6 +437,13 @@ def intS (N N' : ℕ) : Submodule (𝓞 D.host.E) (Matrix (Fin N') (Fin N) D.hos
   add_mem' := fun {A B} hA hB a c => by simpa using Submodule.add_mem _ (hA a c) (hB a c)
   smul_mem' := fun r A hA a c => by simpa using Submodule.smul_mem _ r (hA a c)
 
+/- English proof (translation)
+Unfold `homL`. Use `Submodule.span_le.mpr fun A hA => ?_` and prove the remaining obligations. Use `show ∀ a c, IsInt (D := D) (A a c)`. Introduce `a c`. Establish `h1 : (Pi.single c (1 : D.host.E) : Fin N → D.host.E) ∈ Formalism.MainNotions.StandardLatticesGL3.stdL D N`.
+
+Rewrite using `[mem_stdL]`. Introduce `i`. Distinguish the cases in `h : i = c`. Substitute `h` using the available equality. Rewrite using `[Pi.single_eq_same]`.
+
+Conclude with `isInt_one`. Rewrite using `[Pi.single_eq_of_ne h]`. Conclude with `Submodule.zero_mem _`. Establish `h2` using `(mem_stdL _).mp (hA _ h1) a`. Simplify `h2` using `[Matrix.mulVec, dotProduct, Pi.single_apply]`.
+-/
 theorem homL_le_intS (N N' : ℕ) : homL D (Formalism.MainNotions.StandardLatticesGL3.stdL D N) (Formalism.MainNotions.StandardLatticesGL3.stdL D N') ≤ intS (D := D) N N' := by
   unfold homL
   refine Submodule.span_le.mpr fun A hA => ?_
@@ -329,6 +461,21 @@ theorem homL_le_intS (N N' : ℕ) : homL D (Formalism.MainNotions.StandardLattic
   have h2 := (mem_stdL _).mp (hA _ h1) a
   simpa [Matrix.mulVec, dotProduct, Pi.single_apply] using h2
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce `hx`. Unfold `YYl at hx`. Proceed by induction on `hx using Submodule.span_induction with`. Consider the case `mem B hB`.
+
+Take `⟨a, ha, A, hA, rfl⟩` from `hB`. Establish `hA'` using `homL_le_intS (D := D) 1 1 hA 0 0`. Take `⟨r, hr⟩` from `Submodule.mem_one.mp hA'`. Rewrite using `[Matrix.smul_apply, smul_eq_mul, ← hr, mul_comm, ← Algebra.smul_def]`. Conclude with `Submodule.smul_mem _ r ha`.
+
+Consider the case `zero => exact Submodule.zero_mem _`. Consider the case `add B C _ _ hB hC`. Rewrite using `[Matrix.add_apply]`. Conclude with `Submodule.add_mem _ hB hC`. Consider the case `smul r B _ hB`.
+
+Rewrite using `[Matrix.smul_apply]`. Conclude with `Submodule.smul_mem _ r hB`. Introduce `hx`. Establish `hx' : x = x 0 0 • (1 : Matrix (Fin 1) (Fin 1) D.host.E)`. Use extensionality with `i j`.
+
+Use `fin_cases i`. Use `fin_cases j`. Simplify using the standard rewrite rules. Rewrite using `[hx']`. Unfold `YYl`.
+
+Use `Submodule.subset_span ?_` and prove the remaining obligations. Rewrite using `[Set.mem_setOf_eq]`. Use `⟨x 0 0, hx, 1, ?_, rfl⟩` and prove the remaining obligations. Unfold `homL`. Use `Submodule.subset_span ?_` and prove the remaining obligations.
+
+Rewrite using `[Set.mem_setOf_eq]`. Introduce `v hv`. Rewrite using `[Matrix.one_mulVec]` and apply the resulting hypothesis.
+-/
 theorem mem_one_by_one_lattice_iff (x : Matrix (Fin 1) (Fin 1) D.host.E) :
     x ∈ YYl D (Formalism.MainNotions.StandardLatticesGL3.stdL D 1) (Formalism.MainNotions.StandardLatticesGL3.stdL D 1) ↔ x 0 0 ∈ AAs D := by
   constructor
@@ -365,6 +512,13 @@ theorem mem_one_by_one_lattice_iff (x : Matrix (Fin 1) (Fin 1) D.host.E) :
     intro v hv
     rwa [Matrix.one_mulVec]
 
+/- English proof (translation)
+Establish `hb : D.host.𝔟 ≠ ⊥`. Introduce `h`. Establish `h2` using `D.host.𝔟_spec.2`. Rewrite `h2` using `[h]`. Simplify using `at h2`.
+
+Establish `hb' : (D.host.𝔟 : FractionalIdeal (nonZeroDivisors (𝓞 D.host.E)) D.host.E) ≠ 0` using `FractionalIdeal.coeIdeal_ne_zero.mpr hb`. Use `show (1 : D.host.E) ∈ ((D.host.AA0 : FractionalIdeal (nonZeroDivisors (𝓞 D.host.E)) D.host.E) : Submodule (𝓞 D.host.E) D.host.E)`. Rewrite using `[FractionalIdeal.mem_coe]`. Unfold `Formalism.BasicNotions.Host.AA0`. Rewrite using `[FractionalIdeal.mem_inv_iff hb']`.
+
+Introduce `y hy`. Rewrite using `[one_mul]`. Conclude with `FractionalIdeal.coeIdeal_le_one hy`.
+-/
 theorem one_mem_AA (D : D7) : (1 : D.host.E) ∈ AAs D := by
   have hb : D.host.𝔟 ≠ ⊥ := by
     intro h
@@ -382,6 +536,11 @@ theorem one_mem_AA (D : D7) : (1 : D.host.E) ∈ AAs D := by
   rw [one_mul]
   exact FractionalIdeal.coeIdeal_le_one hy
 
+/- English proof (translation)
+Establish `hint : IsIntegral ℤ (((c : D.host.K) : D.host.E))`. Establish `h` using `(NumberField.RingOfIntegers.isIntegral_coe c).algebraMap (B := D.host.E)`. Rewrite `h` using `[IntermediateField.algebraMap_apply]`. Conclude with `isInt_cast h`. Establish `he : algebraMap (𝓞 D.host.E) D.host.E (IsIntegralClosure.mk' (𝓞 D.host.E) _ hint) = ((c : D.host.K) : D.host.E)` using `IsIntegralClosure.algebraMap_mk' _ _ _`.
+
+Establish `h` using `Submodule.smul_mem (AAs D) (IsIntegralClosure.mk' (𝓞 D.host.E) _ hint) hy`. Rewrite `h` using `[Algebra.smul_def, he]`. Rewrite using `[Algebra.smul_def, IntermediateField.algebraMap_apply]` and apply the resulting hypothesis.
+-/
 theorem okK_smul_mem (c : 𝓞 D.host.K) {y : D.host.E} (hy : y ∈ AAs D) : ((c : D.host.K)) • y ∈ AAs D := by
   have hint : IsIntegral ℤ (((c : D.host.K) : D.host.E)) := by
     have h := (NumberField.RingOfIntegers.isIntegral_coe c).algebraMap (B := D.host.E)
@@ -393,12 +552,22 @@ theorem okK_smul_mem (c : 𝓞 D.host.K) {y : D.host.E} (hy : y ∈ AAs D) : ((c
   rw [Algebra.smul_def, he] at h
   rwa [Algebra.smul_def, IntermediateField.algebraMap_apply]
 
+/- English proof (translation)
+Use `haveI := FractionalIdeal.isNoetherian D.host.AA0`. Establish `h1 : (AAs D).FG` using `(Submodule.fg_top _).1 (IsNoetherian.noetherian ⊤)`. Establish `h2` using `h1.restrictScalars (R := ℤ)`. Conclude with `(Submodule.fg_iff_addSubgroup_fg _).1 h2`.
+-/
 theorem aa_fg (D : D7) : (AAs D).toAddSubgroup.FG := by
   haveI := FractionalIdeal.isNoetherian D.host.AA0
   have h1 : (AAs D).FG := (Submodule.fg_top _).1 (IsNoetherian.noetherian ⊤)
   have h2 := h1.restrictScalars (R := ℤ)
   exact (Submodule.fg_iff_addSubgroup_fg _).1 h2
 
+/- English proof (translation)
+Establish `hz : IsAlgebraic ℚ z` using `Algebra.IsAlgebraic.isAlgebraic z`. Establish `h1 : IsAlgebraic ℤ z` using `(IsFractionRing.isAlgebraic_iff ℤ ℚ D.host.E).2 hz`. Take `⟨y, hy0, hy⟩` from `h1.exists_integral_multiple`. Use `⟨y.natAbs, Int.natAbs_pos.2 hy0, ?_⟩` and prove the remaining obligations. Rewrite `hy` using `[zsmul_eq_mul]`.
+
+Break down `Int.natAbs_eq y with h | h` into its components or cases. Establish `: ((y.natAbs : ℕ) : D.host.E) = (y : D.host.E)` using `by conv_rhs => rw [h]`. Simplify using the standard rewrite rules. Rewrite using `[this]`. Conclude with `hy`.
+
+Establish `: ((y.natAbs : ℕ) : D.host.E) = -(y : D.host.E)` using `by conv_rhs => rw [h]`. Simplify using the standard rewrite rules. Rewrite using `[this, neg_mul]`. Conclude with `hy.neg`.
+-/
 theorem nat_mult (z : D.host.E) : ∃ k : ℕ, 0 < k ∧ IsIntegral ℤ ((k : D.host.E) * z) := by
   have hz : IsAlgebraic ℚ z := Algebra.IsAlgebraic.isAlgebraic z
   have h1 : IsAlgebraic ℤ z := (IsFractionRing.isAlgebraic_iff ℤ ℚ D.host.E).2 hz
@@ -415,6 +584,17 @@ theorem nat_mult (z : D.host.E) : ∃ k : ℕ, 0 < k ∧ IsIntegral ℤ ((k : D.
       simp
     rw [this, neg_mul]; exact hy.neg
 
+/- English proof (translation)
+Take `⟨n, b, hli, hmem, S, hS, hsp⟩` from `exists_loc_basis_unif (K := D.host.K) (V := D.host.E) p (AAs D).toAddSubgroup (aa_fg D) (fun c y hy => okK_smul_mem c hy)`. Establish `hspan : ⊤ ≤ Submodule.span D.host.K (Set.range b)`. Introduce `x _`. Take `⟨k, hk, hint⟩` from `nat_mult (D := D) x`. Establish `hmx : (k : D.host.E) * x ∈ AAs D`.
+
+Use `Submodule.smul_mem (AAs D) (⟨(k : D.host.E) * x, hint⟩ : 𝓞 D.host.E) (one_mem_AA D)` as an intermediate fact. Establish `e : (⟨(k : D.host.E) * x, hint⟩ : 𝓞 D.host.E) • (1 : D.host.E) = (k : D.host.E) * x`. Rewrite using `[Algebra.smul_def, mul_one]`. Both sides reduce to the same expression. Apply the tactic sequence `first | simpa [Algebra.smul_def] using this | (convert this using 1; exact e.symm)`.
+
+Take `⟨c, hc⟩` from `hsp _ hmx`. Establish `hS0 : ((S : D.host.K) * (k : D.host.K)) ≠ 0` using `mul_ne_zero (by exact_mod_cast ne_zero_of_coprime p hS) (by exact_mod_cast hk.ne')`. Establish `hx : x = ((S : D.host.K) * (k : D.host.K))⁻¹ • ∑ i, ((c i : D.host.K)) • b i`. Rewrite using `[← hc]`. Use `show x = ((S : D.host.K) * (k : D.host.K))⁻¹ • ((S : D.host.K) • ((k : D.host.E) * x))`.
+
+Rewrite using `[show (k : D.host.E) * x = (k : D.host.K) • x from by`. Rewrite using `[Algebra.smul_def]`. Use the proof step `rfl]`. Rewrite using `[smul_smul, smul_smul, mul_assoc, inv_mul_cancel₀ hS0, one_smul]`. Rewrite using `[hx]`.
+
+Conclude with `Submodule.smul_mem _ _ (Submodule.sum_mem _ fun i _ => Submodule.smul_mem _ _ (Submodule.subset_span ⟨i, rfl⟩))`. Establish `hn : n = Fintype.card D.what₂.Tau`. Rewrite using `[G0.card_eq D, Module.finrank_eq_card_basis (Module.Basis.mk hli hspan), Fintype.card_fin]`. Substitute `hn` using the available equality. Conclude with `⟨b, hli, hspan, hmem, S, hS, hsp⟩`.
+-/
 theorem exists_basis (D : D7) (p : ℕ) [hp : Fact p.Prime] :
     ∃ b : Fin (Fintype.card D.what₂.Tau) → D.host.E, LinearIndependent D.host.K b ∧
       ⊤ ≤ Submodule.span D.host.K (Set.range b) ∧
@@ -453,11 +633,22 @@ section Form
 
 variable (D : D7)
 
+/- English proof (translation)
+The claim follows from `(G0.herm D).symm y x`.
+-/
 theorem hK_symm (x y : D.host.E) : G0.hK D x y = G0.cK D (G0.hK D y x) := (G0.herm D).symm y x
 
+/- English proof (translation)
+Simplify using `only [G0.hK, smul_mul_assoc, map_smul, smul_eq_mul]`.
+-/
 theorem hK_smul_left (k : D.host.K) (x y : D.host.E) : G0.hK D (k • x) y = k * G0.hK D x y := by
   simp only [G0.hK, smul_mul_assoc, map_smul, smul_eq_mul]
 
+/- English proof (translation)
+Establish `hc : ((G0.cK D k : D.host.K) : D.host.E) = D.host.conj (k : D.host.E)` using `rfl`. Establish `e : x * D.host.conj (k • y) = G0.cK D k • (x * D.host.conj y)`. Rewrite using `[Algebra.smul_def, Algebra.smul_def, map_mul, IntermediateField.algebraMap_apply, IntermediateField.algebraMap_apply, hc]`. Expand and normalize the polynomial expressions, which then agree. Simplify using `only [G0.hK]`.
+
+Rewrite using `[e, map_smul, smul_eq_mul]`.
+-/
 private theorem hK_smul_right' (k : D.host.K) (x y : D.host.E) :
     G0.hK D x (k • y) = G0.cK D k * G0.hK D x y := by
   have hc : ((G0.cK D k : D.host.K) : D.host.E) = D.host.conj (k : D.host.E) := rfl
@@ -468,19 +659,34 @@ private theorem hK_smul_right' (k : D.host.K) (x y : D.host.E) :
   simp only [G0.hK]
   rw [e, map_smul, smul_eq_mul]
 
+/- English proof (translation)
+Rewrite using `[← Finset.sum_congr rfl fun i _ => hK_smul_right' D (k i) x (f i)]`. Simplify using `only [G0.hK, map_sum, Finset.mul_sum]`.
+-/
 theorem hK_sum_smul_right {ι : Type*} (s : Finset ι) (k : ι → D.host.K) (f : ι → D.host.E) (x : D.host.E) :
     G0.hK D x (∑ i ∈ s, k i • f i) = ∑ i ∈ s, G0.cK D (k i) * G0.hK D x (f i) := by
   rw [← Finset.sum_congr rfl fun i _ => hK_smul_right' D (k i) x (f i)]
   simp only [G0.hK, map_sum, Finset.mul_sum]
 
+/- English proof (translation)
+The claim follows from `hK_smul_right' D k x y`.
+-/
 theorem hK_smul_right (k : D.host.K) (x y : D.host.E) : G0.hK D x (k • y) = G0.cK D k * G0.hK D x y :=
   hK_smul_right' D k x y
 
+/- English proof (translation)
+The claim follows from `map_natCast _ s`.
+-/
 theorem cK_nat (s : ℕ) : G0.cK D (s : D.host.K) = s := map_natCast _ s
 
+/- English proof (translation)
+The claim follows from `h.map (G0.cK D).toIntAlgHom`.
+-/
 theorem cK_int {x : D.host.K} (h : IsIntegral ℤ x) : IsIntegral ℤ (G0.cK D x) :=
   h.map (G0.cK D).toIntAlgHom
 
+/- English proof (translation)
+Take `⟨c, hc⟩` from `(SD.mm_unimod D x).1 hx y hy`. Use `show IsIntegral ℤ (Algebra.trace D.host.K D.host.E (x * D.host.conj y))`. Rewrite using `[← hc]`. Conclude with `isInt_cast c.2`.
+-/
 theorem hK_of_mem {x y : D.host.E} (hx : x ∈ AAs D) (hy : y ∈ AAs D) : IsIntegral ℤ (G0.hK D x y) := by
   obtain ⟨c, hc⟩ := (SD.mm_unimod D x).1 hx y hy
   show IsIntegral ℤ (Algebra.trace D.host.K D.host.E (x * D.host.conj y))
@@ -494,12 +700,80 @@ def phiQ (D : D7) : D.host.E →+* Qbar :=
     rw [mem_algebraicClosure_iff']
     exact (Algebra.IsIntegral.isIntegral x).map D.host.φ₀.toRatAlgHom)
 
+/- English proof (translation)
+Unfold `lamC`. Rewrite using `[dif_pos (show D.host.φ₀ x ∈ Qbar from (phiQ D x).2)]`. Both sides reduce to the same expression.
+-/
 theorem lamC_phi (D : D7) {p : ℕ} [Fact p.Prime] (lam : Qbar →+* ℂ_[p]) (x : D.host.E) :
     lamC lam (D.host.φ₀ x) = lam (phiQ D x) := by
   unfold lamC
   rw [dif_pos (show D.host.φ₀ x ∈ Qbar from (phiQ D x).2)]
   rfl
 
+/- English proof (translation)
+Introduce `D p _ hp5 hin lam`. Take `⟨b, hli, hspan, hmem, S, hS, hsp⟩` from `exists_basis D p`. Set `bm : Fin (Fintype.card D.what₂.Tau) → Matrix (Fin 1) (Fin 1) D.host.E` to `fun m => Matrix.of fun _ _ => b m`. Set `G : Matrix (Fin (Fintype.card D.what₂.Tau)) (Fin (Fintype.card D.what₂.Tau)) D.host.K` to `Matrix.of fun m k => G0.hK D (b m) (b k)`. Establish `hmemE : ∀ i, ∃ s : ℕ, Nat.Coprime s p ∧ (s : D.host.E) * b i ∈ AAs D`.
+
+Introduce `i`. Take `⟨s, hs, h⟩` from `hmem i`. Conclude with `⟨s, hs, by simpa [Algebra.smul_def] using h⟩`. Establish `hLoc : LocBasis D p (YYl D (Formalism.MainNotions.StandardLatticesGL3.stdL D 1) (Formalism.MainNotions.StandardLatticesGL3.stdL D 1)) bm`. Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[Fintype.linearIndependent_iff]`. Introduce `g hg i`. Establish `h0` using `congrFun (congrFun hg 0) 0`. Simplify using `only [Matrix.sum_apply, Matrix.smul_apply, Matrix.zero_apply, bm, Matrix.of_apply] at h0`. Conclude with `Fintype.linearIndependent_iff.1 hli g h0 i`.
+
+Introduce `i`. Take `⟨s, hs, h⟩` from `hmemE i`. Use `⟨s, hs, (mem_one_by_one_lattice_iff _).2 ?_⟩` and prove the remaining obligations. Simplify `h` using `[bm]`. Introduce `y hy`.
+
+Take `⟨c, hc⟩` from `hsp _ ((mem_one_by_one_lattice_iff y).1 hy)`. Use `⟨S, hS, c, ?_⟩` and prove the remaining obligations. Use `Matrix.ext fun i j => ?_` and prove the remaining obligations. Use `fin_cases i`. Use `fin_cases j`.
+
+Simplify using `only [Matrix.sum_apply, Matrix.smul_apply, smul_eq_mul, bm, Matrix.of_apply]`. Rewrite `hc` using `[Algebra.smul_def, map_natCast]`. Simplify using `only [Algebra.smul_def] at hc`. Conclude with `hc`. Establish `hGint : ∀ m k, IntAt p (G m k)`.
+
+Introduce `m k`. Take `⟨s, hs, h1⟩` from `hmemE m`. Take `⟨t, ht, h2⟩` from `hmemE k`. Use `⟨s * t, Nat.Coprime.mul_left hs ht, ?_⟩` and prove the remaining obligations. Use `hK_of_mem D h1 h2` as an intermediate fact.
+
+Rewrite `this` using `[show (s : D.host.E) * b m = (s : D.host.K) • b m from by rw [Algebra.smul_def, map_natCast], show (t : D.host.E) * b k = (t : D.host.K) • b k from by rw [Algebra.smul_def, map_natCast], hK_smul_left, hK_smul_right, cK_nat]`. Establish `e : ((s * t : ℕ) : D.host.K) * G m k = (s : D.host.K) * ((t : D.host.K) * G0.hK D (b m) (b k))`. Simplify using `only [G, Matrix.of_apply]`. Rewrite using `[Nat.cast_mul]`. Expand and normalize the polynomial expressions, which then agree.
+
+Rewrite using `[e]`. Conclude with `isInt_cast this`. Set `bK : Module.Basis (Fin (Fintype.card D.what₂.Tau)) D.host.K D.host.E` to `Module.Basis.mk hli hspan`. Establish `hB` using `traceForm_nondegenerate D.host.K D.host.E`. Set `z` to `(Algebra.traceForm D.host.K D.host.E).dualBasis hB bK`.
+
+Set `w : Fin (Fintype.card D.what₂.Tau) → D.host.E` to `fun n => D.host.conj (z n)`. Establish `hw : ∀ m n, G0.hK D (b m) (w n) = if m = n then 1 else 0`. Introduce `m n`. Establish `h1` using `LinearMap.BilinForm.apply_dualBasis_left hB bK n m`. Rewrite `h1` using `[Algebra.traceForm_apply, Module.Basis.mk_apply]`.
+
+Use `show Algebra.trace D.host.K D.host.E (b m * D.host.conj (D.host.conj (z n))) = _`. Rewrite using `[CU.conj_conj, mul_comm, h1]`. Establish `hwS : ∀ n, (S : D.host.K) • w n ∈ AAs D`. Introduce `n`. Rewrite using `[SD.mm_unimod]`.
+
+Introduce `y hy`. Take `⟨c, hc⟩` from `hsp y hy`. Establish `e1 : G0.hK D ((S : D.host.K) • w n) y = G0.cK D (c n)`. Rewrite using `[hK_smul_left, ← cK_nat D S]`. Establish `e2 : G0.cK D (S : D.host.K) * G0.hK D (w n) y = G0.hK D (w n) ((S : D.host.K) • y)`.
+
+Rewrite using `[hK_smul_right]`. Rewrite using `[e2, hc, hK_sum_smul_right]`. Rewrite using `[Finset.sum_eq_single n]`. Rewrite using `[hK_symm, hw, if_pos rfl, map_one, mul_one]`. Introduce `i _ hi`.
+
+Rewrite using `[hK_symm, hw, if_neg hi, map_zero, mul_zero]`. Introduce `h`. Conclude with `absurd (Finset.mem_univ n) h`. Use `show G0.hK D ((S : D.host.K) • w n) y ∈ _`. Rewrite using `[e1]`.
+
+Conclude with `⟨⟨G0.cK D (c n), isInt_cast (cK_int D (isInt_cast (c n).2))⟩, rfl⟩`. Use `choose c' hc' using fun n => hsp _ (hwS n)`. Establish `hSS : ((S : D.host.K) * S) ≠ 0`. Establish `: (S : D.host.K) ≠ 0` using `by exact_mod_cast ne_zero_of_coprime p hS`. Conclude with `mul_ne_zero this this`.
+
+Set `H : Matrix (Fin (Fintype.card D.what₂.Tau)) (Fin (Fintype.card D.what₂.Tau)) D.host.K` to `Matrix.of fun n k => ((c' n k : D.host.K)) / ((S : D.host.K) * S)`. Establish `hwH : ∀ n, w n = ∑ k, H n k • b k`. Introduce `n`. Establish `e` using `hc' n`. Rewrite `e` using `[smul_smul]`.
+
+Combine the equalities or inequalities in the displayed calculation. Rewrite using `[smul_smul, inv_mul_cancel₀ hSS, one_smul]`. Use `_ = ∑ k, H n k • b k := by`. Rewrite using `[e, Finset.smul_sum]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[smul_smul]`. Use `congr 1`. Simplify using `only [H, Matrix.of_apply]`. Rewrite using `[div_eq_inv_mul]`. Set `Hc : Matrix (Fin (Fintype.card D.what₂.Tau)) (Fin (Fintype.card D.what₂.Tau)) D.host.K` to `Matrix.of fun k n => G0.cK D (H n k)`.
+
+Establish `hGH : G * Hc = 1`. Use `Matrix.ext fun m n => ?_` and prove the remaining obligations. Rewrite using `[Matrix.mul_apply, Matrix.one_apply, ← hw m n, hwH n, hK_sum_smul_right]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Simplify using `only [G, Hc, Matrix.of_apply]`.
+
+Expand and normalize the polynomial expressions, which then agree. Establish `hHint : ∀ k n, IntAt p (Hc k n)`. Introduce `k n`. Use `⟨S * S, Nat.Coprime.mul_left hS hS, ?_⟩` and prove the remaining obligations. Establish `e : ((S * S : ℕ) : D.host.K) * Hc k n = G0.cK D ((c' n k : D.host.K))`.
+
+Simplify using `only [Hc, H, Matrix.of_apply]`. Rewrite using `[← cK_nat D (S * S), ← map_mul]`. Use `congr 1`. Rewrite using `[Nat.cast_mul]`. Establish `hS1 : (S : D.host.K) ≠ 0` using `by exact_mod_cast ne_zero_of_coprime p hS`.
+
+Clear the denominators using the available nonvanishing facts. Rewrite using `[e]`. Conclude with `isInt_cast (cK_int D (isInt_cast (c' n k).2))`. Establish `hdet : G.det * Hc.det = 1` using `by rw [← Matrix.det_mul, hGH, Matrix.det_one]`. Set `ψ : D.host.K →+* ℂ_[p]` to `lam.comp ((phiQ D).comp (algebraMap D.host.K D.host.E))`.
+
+Establish `hn1 : ‖ψ G.det‖ = 1`. Establish `h1` using `norm_le_of_intAt p ψ (intAt_det p G hGint)`. Establish `h2` using `norm_le_of_intAt p ψ (intAt_det p Hc hHint)`. Establish `h3 : ‖ψ G.det‖ * ‖ψ Hc.det‖ = 1` using `by rw [← norm_mul, ← map_mul, hdet, map_one, norm_one]`. Use polynomial arithmetic with `[norm_nonneg (ψ G.det), norm_nonneg (ψ Hc.det)]`.
+
+Use `⟨bm, hLoc, ?_, ?_⟩` and prove the remaining obligations. Establish `e : (Matrix.of fun m n => lamC lam (D.host.φ₀ ((hYY D (bm m) (bm n) : D.host.K) : D.host.E))) = ψ.mapMatrix G`. Use extensionality with `m n`. Simplify using `only [Matrix.of_apply, RingHom.mapMatrix_apply, Matrix.map_apply, G, ψ, RingHom.comp_apply, lamC_phi]`. Use `congr 3`.
+
+Unfold `hYY G0.hK`. Simplify using `[bm]`. Rewrite using `[e, ← RingHom.map_det]`. Conclude with `hn1`. Set `e` to `Fintype.equivFin D.what₂.Tau`.
+
+Set `N : Matrix D.what₂.Tau D.what₂.Tau ℂ` to `Matrix.of fun τ τ' => embT D τ (b (e τ'))`. Establish `hGN : (D.host.φ₀.comp (algebraMap D.host.K D.host.E)).mapMatrix (G.submatrix e e) = N.transpose * N.map (starRingEnd ℂ)`. Use extensionality with `τ₁ τ₂`. Simplify using `only [RingHom.mapMatrix_apply, Matrix.map_apply, Matrix.submatrix_apply, RingHom.comp_apply, Matrix.mul_apply, Matrix.transpose_apply, N, G, Matrix.of_apply]`. Use `show D.host.φ₀ ((Algebra.trace D.host.K D.host.E (b (e τ₁) * D.host.conj (b (e τ₂))) : D.host.K) : D.host.E) = _`.
+
+Rewrite using `[← FL.sum_tau_trace]`. Use `Finset.sum_congr rfl fun σ _ => ?_` and prove the remaining obligations. Rewrite using `[map_mul, CU.emb_conj]`. Establish `hGne : G.det ≠ 0`. Introduce `h0`.
+
+Rewrite `hdet` using `[h0, zero_mul]`. Conclude with `zero_ne_one hdet`. Establish `hNne : N.det ≠ 0`. Introduce `h0`. Establish `h1` using `congrArg Matrix.det hGN`.
+
+Rewrite `h1` using `[← RingHom.map_det, Matrix.det_submatrix_equiv_self, Matrix.det_mul, Matrix.det_transpose, h0, zero_mul]`. Conclude with `hGne ((map_eq_zero_iff _ (D.host.φ₀.comp (algebraMap D.host.K D.host.E)).injective).1 h1)`. Set `NQ : Matrix D.what₂.Tau D.what₂.Tau Qbar` to `Matrix.of fun τ τ' => IntegralOrthonormalChange.embQ D τ (b (e τ'))`. Establish `hNQ : (algebraMap Qbar ℂ).mapMatrix NQ = N`. Use extensionality with `τ τ'`.
+
+Both sides reduce to the same expression. Establish `hNQne : NQ.det ≠ 0`. Introduce `h0`. Apply `hNne` to reduce the goal to its premises. Rewrite using `[← hNQ, ← RingHom.map_det, h0, map_zero]`.
+
+Establish `e2 : (Matrix.of fun (τ τ' : D.what₂.Tau) => lamC lam (embT D τ (bm (Fintype.equivFin D.what₂.Tau τ') 0 0))) = lam.mapMatrix NQ`. Use extensionality with `τ τ'`. Simplify using `only [Matrix.of_apply, RingHom.mapMatrix_apply, Matrix.map_apply, bm, NQ]`. Conclude with `IntegralOrthonormalChange.lamC_embT D lam τ _`. Rewrite using `[e2, ← RingHom.map_det]`.
+
+Conclude with `(map_ne_zero lam).2 hNQne`.
+-/
 theorem local_orthonormal_basis : LocBasisMM := by
   classical
   intro D p _ hp5 hin lam
@@ -666,6 +940,9 @@ end Formalism.L2.KerInert.FrLocB
 
 namespace Formalism.L2.KerInert
 
+/- English proof (translation)
+The claim follows from `FrLocB.local_orthonormal_basis`.
+-/
 theorem local_orthonormal_basis : LocBasisMM := FrLocB.local_orthonormal_basis
 
 end Formalism.L2.KerInert

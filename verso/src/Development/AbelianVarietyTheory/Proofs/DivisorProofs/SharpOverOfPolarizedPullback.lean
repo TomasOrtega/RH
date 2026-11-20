@@ -14,6 +14,9 @@ noncomputable section
 
 namespace GlobalTheory.Poinc
 
+/- English proof (translation)
+Introduce `g n F W T T' P P' u f φ hS hφ hL`. Take `⟨c, hc, pr, hpr, huniv, hbun⟩` from `hS`. Take `⟨c', hc', pr', hpr', huniv', hbun', -⟩` from `sharpOver_pullback_end g n _ _ F W T T' P P' u f φ c hc pr hpr huniv hbun hφ hL`. Conclude with `⟨c', hc', pr', hpr', huniv', hbun'⟩`.
+-/
 theorem sharpOver_baseChange : ∀ (g n : ℕ) (F : SFam g n (zetaAway n)) (W : Matrix (Fin 8) (Fin 8) ℤ) (T T' : Scheme.{0}) (P : PolAV T) (P' : PolAV T') (u : T ⟶ F.X) (f : T' ⟶ T) (φ : P'.A.left ⟶ P.A.left), SharpOver F W P u → IsGrpPullback P'.A P.A f φ → LBIso P'.L (P.L.pull φ) → SharpOver F W P' (f ≫ u) := by
   intro g n F W T T' P P' u f φ hS hφ hL
   obtain ⟨c, hc, pr, hpr, huniv, hbun⟩ := hS

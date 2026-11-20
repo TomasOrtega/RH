@@ -14,6 +14,9 @@ open GlobalTheory.SmGL GlobalTheory.PRep GlobalTheory.IndLineGL
 open scoped GlobalTheory.IndLineGL
 
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.IndLineGL.proportional_of_glInd | exact GlobalTheory.IndLineGL.proportional_of_glInd | (intros; apply GlobalTheory.IndLineGL.proportional_of_glInd <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.unitary_char_induced_jacquet : GlobalTheory.ThK.KP → ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
     (a a' m : ℕ), m + 2 = a + a' → a' < a → ∀ (α₀ β₀ : kˣ →* ℂˣ), IsSmoothChar α₀ → IsSmoothChar β₀ →
     (∀ x, ‖((α₀ x : ℂˣ) : ℂ)‖ = 1) → (∀ x, ‖((β₀ x : ℂˣ) : ℂ)‖ = 1) →

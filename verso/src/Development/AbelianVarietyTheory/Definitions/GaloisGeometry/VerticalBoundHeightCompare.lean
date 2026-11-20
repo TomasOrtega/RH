@@ -22,6 +22,11 @@ def prDR (i : K →ₐ[ℂ] L) : DR ℂ K →+* DR ℂ L :=
   haveI : IsScalarTower ℂ K L := IsScalarTower.of_algebraMap_eq fun c => (i.commutes c).symm
   (mapDR ℂ K L).toRingHom
 
+/- English proof (translation)
+Use `letI : Algebra K L := i.toRingHom.toAlgebra`. Use `haveI : IsScalarTower ℂ K L := IsScalarTower.of_algebraMap_eq fun c => (i.commutes c).symm`. Use `show (mapDR ℂ K L) (ExteriorAlgebra.ι K _) = _`. Rewrite using `[mapDR, ExteriorAlgebra.lift_ι_apply]`. Use `show ExteriorAlgebra.ι L (KaehlerDifferential.map ℂ ℂ K L (D ℂ K x)) = _`.
+
+Rewrite using `[map_D]`. Both sides reduce to the same expression.
+-/
 theorem prDR_ι_D (i : K →ₐ[ℂ] L) (x : K) :
     prDR i (ExteriorAlgebra.ι K (D ℂ K x)) = ExteriorAlgebra.ι L (D ℂ L (i x)) := by
   letI : Algebra K L := i.toRingHom.toAlgebra
@@ -34,19 +39,31 @@ theorem prDR_ι_D (i : K →ₐ[ℂ] L) (x : K) :
 
 def prodRing (i1 i2 : K →ₐ[ℂ] L) (B : Subalgebra ℂ K) : Subalgebra ℂ L := Algebra.adjoin ℂ (i1 '' B ∪ i2 '' B)
 
+/- English proof (translation)
+The claim follows from `Algebra.subset_adjoin (Or.inl ⟨b, hb, rfl⟩)`.
+-/
 theorem fst_mem_prodRing (i1 i2 : K →ₐ[ℂ] L) {B : Subalgebra ℂ K} {b : K} (hb : b ∈ B) : i1 b ∈ prodRing i1 i2 B :=
   Algebra.subset_adjoin (Or.inl ⟨b, hb, rfl⟩)
 
+/- English proof (translation)
+The claim follows from `Algebra.subset_adjoin (Or.inr ⟨b, hb, rfl⟩)`.
+-/
 theorem snd_mem_prodRing (i1 i2 : K →ₐ[ℂ] L) {B : Subalgebra ℂ K} {b : K} (hb : b ∈ B) : i2 b ∈ prodRing i1 i2 B :=
   Algebra.subset_adjoin (Or.inr ⟨b, hb, rfl⟩)
 
 def prodMap (i1 i2 : K →ₐ[ℂ] L) (B : Subalgebra ℂ K) : B ⊗[ℂ] B →ₐ[ℂ] L :=
   Algebra.TensorProduct.productMap (i1.comp B.val) (i2.comp B.val)
 
+/- English proof (translation)
+Rewrite using `[prodMap, Algebra.TensorProduct.productMap_range, prodRing, Algebra.adjoin_union, AlgHom.range_comp, AlgHom.range_comp, Subalgebra.range_val, ← Subalgebra.coe_map, ← Subalgebra.coe_map, Algebra.adjoin_eq, Algebra.adjoin_eq]`.
+-/
 theorem range_prodMap (i1 i2 : K →ₐ[ℂ] L) (B : Subalgebra ℂ K) : (prodMap i1 i2 B).range = prodRing i1 i2 B := by
   rw [prodMap, Algebra.TensorProduct.productMap_range, prodRing, Algebra.adjoin_union, AlgHom.range_comp, AlgHom.range_comp,
     Subalgebra.range_val, ← Subalgebra.coe_map, ← Subalgebra.coe_map, Algebra.adjoin_eq, Algebra.adjoin_eq]
 
+/- English proof (translation)
+Establish `e : prodMap i1 i2 B = (Algebra.TensorProduct.productMap i1 i2).comp (Algebra.TensorProduct.map B.val B.val)`. Apply the tactic sequence `ext <;> simp [prodMap]`. Rewrite using `[e, AlgHom.coe_comp]`. Conclude with `hP.inj.comp (TensorProduct.map_injective_of_flat_flat B.val.toLinearMap B.val.toLinearMap Subtype.val_injective Subtype.val_injective)`.
+-/
 theorem IsProdField.prodMap_injective {i1 i2 : K →ₐ[ℂ] L} (hP : IsProdField i1 i2) (B : Subalgebra ℂ K) :
     Function.Injective (prodMap i1 i2 B) := by
   have e : prodMap i1 i2 B =
@@ -60,12 +77,18 @@ def IsProdField.prodEquiv {i1 i2 : K →ₐ[ℂ] L} (hP : IsProdField i1 i2) (B 
     B ⊗[ℂ] B ≃ₐ[ℂ] prodRing i1 i2 B :=
   (AlgEquiv.ofInjective _ (hP.prodMap_injective B)).trans (Subalgebra.equivOfEq _ _ (range_prodMap i1 i2 B))
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem IsProdField.coe_prodEquiv {i1 i2 : K →ₐ[ℂ] L} (hP : IsProdField i1 i2) (B : Subalgebra ℂ K) (z : B ⊗[ℂ] B) :
     (hP.prodEquiv B z : L) = prodMap i1 i2 B z := rfl
 
 def IsProdField.diagMul {i1 i2 : K →ₐ[ℂ] L} (hP : IsProdField i1 i2) (B : Subalgebra ℂ K) : prodRing i1 i2 B →ₐ[ℂ] K :=
   (Algebra.TensorProduct.productMap B.val B.val).comp (hP.prodEquiv B).symm.toAlgHom
 
+/- English proof (translation)
+Introduce `b hb h1 h2`. Establish `e1 : (⟨i1 b, h1⟩ : prodRing i1 i2 B) = hP.prodEquiv B ((⟨b, hb⟩ : B) ⊗ₜ 1)` using `Subtype.ext (by rw [hP.coe_prodEquiv]; simp [prodMap])`. Establish `e2 : (⟨i2 b, h2⟩ : prodRing i1 i2 B) = hP.prodEquiv B (1 ⊗ₜ (⟨b, hb⟩ : B))` using `Subtype.ext (by rw [hP.coe_prodEquiv]; simp [prodMap])`. Rewrite using `[e1, e2]`. Apply the tactic sequence `constructor <;> simp [IsProdField.diagMul]`.
+-/
 theorem IsProdField.diagMul_spec {i1 i2 : K →ₐ[ℂ] L} (hP : IsProdField i1 i2) (B : Subalgebra ℂ K) :
     ∀ b ∈ B, ∀ (h1 : i1 b ∈ prodRing i1 i2 B) (h2 : i2 b ∈ prodRing i1 i2 B),
       hP.diagMul B ⟨i1 b, h1⟩ = b ∧ hP.diagMul B ⟨i2 b, h2⟩ = b := by
@@ -77,6 +100,9 @@ theorem IsProdField.diagMul_spec {i1 i2 : K →ₐ[ℂ] L} (hP : IsProdField i1 
   rw [e1, e2]
   constructor <;> simp [IsProdField.diagMul]
 
+/- English proof (translation)
+Use `AlgHom.ext_of_eq_adjoin (s := i1 '' B ∪ i2 '' B) rfl ?_` and prove the remaining obligations. Introduce and unpack `x (⟨b, hb, rfl⟩ | ⟨b, hb, rfl⟩)`. Conclude with `(hμ b hb _ (snd_mem_prodRing i1 i2 hb)).1.trans (hP.diagMul_spec B b hb _ (snd_mem_prodRing i1 i2 hb)).1.symm`. Conclude with `(hμ b hb (fst_mem_prodRing i1 i2 hb) _).2.trans (hP.diagMul_spec B b hb (fst_mem_prodRing i1 i2 hb) _).2.symm`.
+-/
 theorem IsProdField.eq_diagMul {i1 i2 : K →ₐ[ℂ] L} (hP : IsProdField i1 i2) (B : Subalgebra ℂ K)
     (μ : prodRing i1 i2 B →ₐ[ℂ] K)
     (hμ : ∀ b ∈ B, ∀ (h1 : i1 b ∈ prodRing i1 i2 B) (h2 : i2 b ∈ prodRing i1 i2 B), μ ⟨i1 b, h1⟩ = b ∧ μ ⟨i2 b, h2⟩ = b) :
@@ -88,6 +114,9 @@ theorem IsProdField.eq_diagMul {i1 i2 : K →ₐ[ℂ] L} (hP : IsProdField i1 i2
 
 def diagEq (i1 i2 : K →ₐ[ℂ] L) {d : ℕ} (t : Fin d → K) : Fin d → L := fun l => i1 (t l) - i2 (t l)
 
+/- English proof (translation)
+The claim follows from `sub_mem (fst_mem_prodRing i1 i2 (ht l)) (snd_mem_prodRing i1 i2 (ht l))`.
+-/
 theorem diagEq_mem_prodRing (i1 i2 : K →ₐ[ℂ] L) {B : Subalgebra ℂ K} {d : ℕ} {t : Fin d → K} (ht : ∀ l, t l ∈ B)
     (l : Fin d) : diagEq i1 i2 t l ∈ prodRing i1 i2 B :=
   sub_mem (fst_mem_prodRing i1 i2 (ht l)) (snd_mem_prodRing i1 i2 (ht l))
@@ -96,6 +125,9 @@ def diagForm (i1 i2 : K →ₐ[ℂ] L) {d : ℕ} (t : Fin d → K) (a : ℕ) : D
   ∑ S ∈ Finset.univ.powersetCard a, (List.ofFn fun l : Fin d =>
     if l ∈ S then prDR i1 (ExteriorAlgebra.ι K (D ℂ K (t l))) else -prDR i2 (ExteriorAlgebra.ι K (D ℂ K (t l)))).prod
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Establish `e : (Finset.univ : Finset (Fin 1)).powersetCard 1 = {Finset.univ}` using `by decide`. Rewrite using `[diagForm, e]`. Simplify using `[prDR_ι_D]`. Simplify using `[diagForm, prDR_ι_D]`.
+-/
 example (i1 i2 : K →ₐ[ℂ] L) (t : Fin 1 → K) :
     diagForm i1 i2 t 1 = ExteriorAlgebra.ι L (D ℂ L (i1 (t 0))) ∧
       diagForm i1 i2 t 0 = -ExteriorAlgebra.ι L (D ℂ L (i2 (t 0))) := by
@@ -105,6 +137,9 @@ example (i1 i2 : K →ₐ[ℂ] L) (t : Fin 1 → K) :
     simp [prDR_ι_D]
   · simp [diagForm, prDR_ι_D]
 
+/- English proof (translation)
+Establish `e : (Finset.univ : Finset (Fin 2)).powersetCard 1 = {{0}, {1}}` using `by decide`. Rewrite using `[diagForm, e, Finset.sum_pair (by decide)]`. Simplify using `[prDR_ι_D, sub_eq_add_neg]`.
+-/
 example (i1 i2 : K →ₐ[ℂ] L) (t : Fin 2 → K) :
     diagForm i1 i2 t 1 =
       -(ExteriorAlgebra.ι L (D ℂ L (i1 (t 0))) * ExteriorAlgebra.ι L (D ℂ L (i2 (t 1)))) -
@@ -121,6 +156,13 @@ structure IsEtFrame (B : Subalgebra ℂ K) {d : ℕ} (t : Fin d → K) : Prop wh
 def IsEtCoord (B : Subalgebra ℂ K) {d : ℕ} (t : Fin d → K) : Prop :=
   (∀ l, t l ∈ B) ∧ IsEtFrame B t
 
+/- English proof (translation)
+Use `haveI := ht.2.frac`. Establish `hB : ∀ b : B, D ℂ K (algebraMap B K b) ∈ Submodule.span K (Set.range fun l => D ℂ K (t l))`. Introduce `b`. Take `⟨c, -, hc⟩` from `ht.2.2 b b.2`. Rewrite using `[show algebraMap B K b = (b : K) from rfl, hc]`.
+
+Conclude with `Submodule.sum_mem _ fun l _ => Submodule.smul_mem _ _ (Submodule.subset_span ⟨l, rfl⟩)`. Rewrite using `[eq_top_iff, ← KaehlerDifferential.span_range_derivation, Submodule.span_le]`. Introduce and unpack `_ ⟨x, rfl⟩`. Take `⟨a, b, -, rfl⟩` from `IsFractionRing.div_surjective (A := B) x`. Rewrite using `[SetLike.mem_coe, Derivation.leibniz_div]`.
+
+Conclude with `Submodule.smul_mem _ _ (sub_mem (Submodule.smul_mem _ _ (hB a)) (Submodule.smul_mem _ _ (hB b)))`.
+-/
 theorem IsEtCoord.span_eq_top {B : Subalgebra ℂ K} {d : ℕ} {t : Fin d → K} (ht : IsEtCoord B t) :
     Submodule.span K (Set.range fun l => D ℂ K (t l)) = ⊤ := by
   haveI := ht.2.frac
@@ -138,6 +180,9 @@ theorem IsEtCoord.span_eq_top {B : Subalgebra ℂ K} {d : ℕ} {t : Fin d → K}
 def IsEtCoord.basis {B : Subalgebra ℂ K} {d : ℕ} {t : Fin d → K} (ht : IsEtCoord B t) :
     Module.Basis (Fin d) K Ω[K⁄ℂ] := Module.Basis.mk ht.2.1 ht.span_eq_top.ge
 
+/- English proof (translation)
+Rewrite using `[Module.finrank_eq_card_basis ht.basis, Fintype.card_fin]`.
+-/
 theorem IsEtCoord.finrank_eq {B : Subalgebra ℂ K} {d : ℕ} {t : Fin d → K} (ht : IsEtCoord B t) :
     Module.finrank K Ω[K⁄ℂ] = d := by
   rw [Module.finrank_eq_card_basis ht.basis, Fintype.card_fin]
@@ -151,6 +196,9 @@ structure IsDiagChart (i1 i2 : K →ₐ[ℂ] L) (B : Subalgebra ℂ K) {d : ℕ}
   prod : IsProdField i1 i2
   coord : ∀ l, t l ∈ B
 
+/- English proof (translation)
+Use `⟨fun H => ⟨H.mem, H.cut _ (hP.diagMul_spec B)⟩, fun ⟨hh, H⟩ => ⟨hh, fun μ hμ => ?_, hP, ht⟩⟩` and prove the remaining obligations. Rewrite using `[hP.eq_diagMul B μ hμ]`. Conclude with `H`.
+-/
 theorem isDiagChart_iff {i1 i2 : K →ₐ[ℂ] L} (hP : IsProdField i1 i2) {B : Subalgebra ℂ K} {d : ℕ} {t : Fin d → K}
     (ht : ∀ l, t l ∈ B) (h : L) :
     IsDiagChart i1 i2 B t h ↔ ∃ hh : h ∈ prodRing i1 i2 B, hP.diagMul B ⟨h, hh⟩ = 1 ∧
@@ -160,6 +208,9 @@ theorem isDiagChart_iff {i1 i2 : K →ₐ[ℂ] L} (hP : IsProdField i1 i2) {B : 
   rw [hP.eq_diagMul B μ hμ]
   exact H
 
+/- English proof (translation)
+Introduce and unpack `rfl`. Establish `h1` using `(H.cut _ (H.prod.diagMul_spec B)).1`. Rewrite `h1` using `[show (⟨0, H.mem⟩ : prodRing i1 i2 B) = 0 from rfl, map_zero]`. Conclude with `zero_ne_one h1`.
+-/
 theorem IsDiagChart.ne_zero {i1 i2 : K →ₐ[ℂ] L} {B : Subalgebra ℂ K} {d : ℕ} {t : Fin d → K} {h : L}
     (H : IsDiagChart i1 i2 B t h) : h ≠ 0 := by
   rintro rfl
@@ -169,6 +220,9 @@ theorem IsDiagChart.ne_zero {i1 i2 : K →ₐ[ℂ] L} {B : Subalgebra ℂ K} {d 
 
 def chartRing (i1 i2 : K →ₐ[ℂ] L) (B : Subalgebra ℂ K) (h : L) : Subalgebra ℂ L := Algebra.adjoin ℂ (prodRing i1 i2 B ∪ {h⁻¹})
 
+/- English proof (translation)
+Introduce `_ hx` and use `Algebra.subset_adjoin (Or.inl hx)`.
+-/
 theorem prodRing_le_chartRing (i1 i2 : K →ₐ[ℂ] L) (B : Subalgebra ℂ K) (h : L) :
     prodRing i1 i2 B ≤ chartRing i1 i2 B h := fun _ hx => Algebra.subset_adjoin (Or.inl hx)
 
@@ -176,6 +230,13 @@ def biForms (i1 i2 : K →ₐ[ℂ] L) (B : Subalgebra ℂ K) (h : L) (a b : ℕ)
   Submodule.span _ {y | ∃ c ∈ chartRing i1 i2 B h, ∃ α ∈ GlobalTheory.PD.omB ℂ K B a, ∃ β ∈ GlobalTheory.PD.omB ℂ K B b,
     y = c • (prDR i1 α * prDR i2 β)}
 
+/- English proof (translation)
+Proceed by induction on `ms with`. Consider the case `nil => left`. Simplify using the standard rewrite rules. Consider the case `cons n ms ih`. Establish `e : ExteriorAlgebra.ι L m * ExteriorAlgebra.ι L n = -(ExteriorAlgebra.ι L n * ExteriorAlgebra.ι L m)` using `eq_neg_of_add_eq_zero_left (ExteriorAlgebra.ι_add_mul_swap m n)`.
+
+Rewrite using `[List.map_cons, List.prod_cons, ← mul_assoc, e, neg_mul, mul_assoc]`. Apply the tactic sequence `rcases ih with ih | ih <;> rw [ih]`. Use `right`. Rewrite using `[mul_assoc]`. Use `left`.
+
+Rewrite using `[mul_neg, neg_neg, mul_assoc]`.
+-/
 theorem ι_mul_listProd {M : Type} [AddCommGroup M] [Module L M] (m : M) (ms : List M) :
     ExteriorAlgebra.ι L m * (ms.map (ExteriorAlgebra.ι L)).prod = (ms.map (ExteriorAlgebra.ι L)).prod * ExteriorAlgebra.ι L m ∨
     ExteriorAlgebra.ι L m * (ms.map (ExteriorAlgebra.ι L)).prod =
@@ -190,6 +251,13 @@ theorem ι_mul_listProd {M : Type} [AddCommGroup M] [Module L M] (m : M) (ms : L
     · right; rw [mul_assoc]
     · left; rw [mul_neg, neg_neg, mul_assoc]
 
+/- English proof (translation)
+Proceed by induction on `js with`. Consider the case `nil => left`. Simplify using the standard rewrite rules. Consider the case `cons j js ih`. Distinguish the cases in `hj : j ∈ S`.
+
+Simplify using `only [List.map_cons, List.prod_cons, List.filter_cons, hj, if_true, not_true_eq_false, decide_true, decide_false, Bool.false_eq_true, if_false]`. Apply the tactic sequence `rcases ih with e | e <;> rw [e]`. Use `left`. Rewrite using `[mul_assoc]`. Use `right`.
+
+Rewrite using `[mul_neg, mul_assoc]`. Simplify using `only [List.map_cons, List.prod_cons, List.filter_cons, hj, if_true, not_false_eq_true, decide_true, decide_false, Bool.false_eq_true, if_false]`. Apply the tactic sequence `rcases ih with e | e <;> rw [e] <;>`. Apply the tactic sequence `rcases ι_mul_listProd (L := L) (v j) ((js.filter (· ∈ S)).map u) with c | c <;>`. Simplify using `only [neg_mul, mul_neg, neg_neg, ← mul_assoc, c, true_or, or_true]`.
+-/
 theorem listProd_shuffle {M : Type} [AddCommGroup M] [Module L M] {d : ℕ} (u v : Fin d → M) (S : Finset (Fin d))
     (js : List (Fin d)) :
     (js.map fun j => if j ∈ S then ExteriorAlgebra.ι L (u j) else -ExteriorAlgebra.ι L (v j)).prod =
@@ -213,6 +281,9 @@ theorem listProd_shuffle {M : Type} [AddCommGroup M] [Module L M] {d : ℕ} (u v
         rcases ι_mul_listProd (L := L) (v j) ((js.filter (· ∈ S)).map u) with c | c <;>
         simp only [neg_mul, mul_neg, neg_neg, ← mul_assoc, c, true_or, or_true]
 
+/- English proof (translation)
+Use `Submodule.subset_span ⟨1, one_mem _, fun i => t (js.get i), fun i => ht _, ?_⟩` and prove the remaining obligations. Rewrite using `[one_smul, ExteriorAlgebra.ιMulti_apply]`. Use `congr 1`. Use `conv_lhs => rw [← List.ofFn_get js, List.map_ofFn]`. Both sides reduce to the same expression.
+-/
 theorem listProd_mem_omB {B : Subalgebra ℂ K} {d : ℕ} {t : Fin d → K} (ht : ∀ l, t l ∈ B) (js : List (Fin d)) :
     (js.map fun j => ExteriorAlgebra.ι K (D ℂ K (t j))).prod ∈ GlobalTheory.PD.omB ℂ K B js.length := by
   refine Submodule.subset_span ⟨1, one_mem _, fun i => t (js.get i), fun i => ht _, ?_⟩
@@ -221,6 +292,19 @@ theorem listProd_mem_omB {B : Subalgebra ℂ K} {d : ℕ} {t : Fin d → K} (ht 
   conv_lhs => rw [← List.ofFn_get js, List.map_ofFn]
   rfl
 
+/- English proof (translation)
+Use `Submodule.sum_mem _ fun S hS => ?_` and prove the remaining obligations. Establish `hcard : S.card = a` using `(Finset.mem_powersetCard.1 hS).2`. Establish `hl1 : ((List.finRange d).filter (· ∈ S)).length = a`. Rewrite using `[← hcard, ← List.toFinset_card_of_nodup ((List.nodup_finRange d).filter _)]`. Use `congr 1`.
+
+Use extensionality with `j`. Simplify using the standard rewrite rules. Establish `hl2 : ((List.finRange d).filter (· ∉ S)).length = d - a`. Rewrite using `[← hcard, ← List.toFinset_card_of_nodup ((List.nodup_finRange d).filter _)]`. Rewrite using `[show ((List.finRange d).filter (· ∉ S)).toFinset = Sᶜ by ext j; simp, Finset.card_compl, Fintype.card_fin]`.
+
+Establish `h1` using `listProd_mem_omB ht ((List.finRange d).filter (· ∈ S))`. Establish `h2` using `listProd_mem_omB ht ((List.finRange d).filter (· ∉ S))`. Rewrite `h1` using `[hl1]`. Rewrite `h2` using `[hl2]`. Establish `hX` using `Submodule.subset_span (R := chartRing i1 i2 B h) (s := {y | ∃ c ∈ chartRing i1 i2 B h, ∃ α ∈ GlobalTheory.PD.omB ℂ K B a, ∃ β ∈ GlobalTheory.PD.omB ℂ K B (d - a), y = c • (prDR i1 α * prDR i2 β)}) ⟨1, one_mem _, _, h1, _, h2, rfl⟩`.
+
+Establish `hp : ∀ (i : K →ₐ[ℂ] L) (js : List (Fin d)), prDR i (js.map fun j => ExteriorAlgebra.ι K (D ℂ K (t j))).prod = ((js.map fun j => D ℂ L (i (t j))).map (ExteriorAlgebra.ι L)).prod`. Introduce `i js`. Rewrite using `[map_list_prod, List.map_map, List.map_map]`. Conclude with `congrArg List.prod (List.map_congr_left fun j _ => prDR_ι_D i (t j))`. Rewrite `hX` using `[one_smul, hp, hp]`.
+
+Rewrite using `[List.ofFn_eq_map]`. Simplify using `only [prDR_ι_D]`. Apply the tactic sequence `rcases listProd_shuffle (L := L) (fun j => D ℂ L (i1 (t j))) (fun j => D ℂ L (i2 (t j))) S (List.finRange d) with e | e <;>`. Rewrite using `[e]`. Conclude with `hX`.
+
+Conclude with `Submodule.neg_mem _ hX`.
+-/
 theorem diagForm_mem_biForms (i1 i2 : K →ₐ[ℂ] L) {B : Subalgebra ℂ K} {d : ℕ} {t : Fin d → K} (ht : ∀ l, t l ∈ B)
     (h : L) (a : ℕ) : diagForm i1 i2 t a ∈ biForms i1 i2 B h a (d - a) := by
   refine Submodule.sum_mem _ fun S hS => ?_
@@ -266,6 +350,17 @@ def locDiag (i1 i2 : K →ₐ[ℂ] L) (B : Subalgebra ℂ K) {d : ℕ} (t : Fin 
       (biForms i1 i2 B h a (d - a)) :=
   if hw : diagForm i1 i2 t a ∈ biForms i1 i2 B h a (d - a) then frac _ (⟨_, hw⟩ : biForms i1 i2 B h a (d - a)) 1 else 0
 
+/- English proof (translation)
+Use `set j := IsScalarTower.toAlgHom ℂ (K ⊗[ℂ] K) (FractionRing (K ⊗[ℂ] K)) with hj`. Establish `e : Algebra.TensorProduct.productMap (j.comp Algebra.TensorProduct.includeLeft) (j.comp Algebra.TensorProduct.includeRight) = j`. Use `Algebra.TensorProduct.ext' fun x y => ?_` and prove the remaining obligations. Simplify using `[← map_mul]`. Use `⟨?_, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[e]`. Conclude with `IsFractionRing.injective (K ⊗[ℂ] K) (FractionRing (K ⊗[ℂ] K))`. Establish `hm : ∀ z : K ⊗[ℂ] K, j z ∈ IntermediateField.adjoin ℂ (Set.range (j.comp Algebra.TensorProduct.includeLeft) ∪ Set.range (j.comp Algebra.TensorProduct.includeRight))`. Introduce `z`. Proceed by induction on `z using TensorProduct.induction_on with`.
+
+Consider the case `zero => rw [map_zero]`. Conclude with `zero_mem _`. Consider the case `add x y hx hy => rw [map_add]`. Conclude with `add_mem hx hy`. Consider the case `tmul x y`.
+
+Rewrite using `[show x ⊗ₜ[ℂ] y = (x ⊗ₜ[ℂ] (1 : K)) * ((1 : K) ⊗ₜ[ℂ] y) by simp, map_mul]`. Conclude with `mul_mem (IntermediateField.subset_adjoin _ _ (Or.inl ⟨x, rfl⟩)) (IntermediateField.subset_adjoin _ _ (Or.inr ⟨y, rfl⟩))`. Rewrite using `[eq_top_iff]`. Introduce `x _`. Take `⟨a, b, -, rfl⟩` from `IsFractionRing.div_surjective (A := K ⊗[ℂ] K) x`.
+
+Conclude with `div_mem (hm a) (hm b)`.
+-/
 theorem isProdField_fractionRing (K : Type) [Field K] [Algebra ℂ K] [IsDomain (K ⊗[ℂ] K)] :
     IsProdField
       ((IsScalarTower.toAlgHom ℂ (K ⊗[ℂ] K) (FractionRing (K ⊗[ℂ] K))).comp Algebra.TensorProduct.includeLeft)
@@ -293,6 +388,23 @@ theorem isProdField_fractionRing (K : Type) [Field K] [Algebra ℂ K] [IsDomain 
     obtain ⟨a, b, -, rfl⟩ := IsFractionRing.div_surjective (A := K ⊗[ℂ] K) x
     exact div_mem (hm a) (hm b)
 
+/- English proof (translation)
+Use `set B := Algebra.adjoin ℂ (Set.range t) with hB`. Establish `ht : ∀ l, t l ∈ B` using `fun l => Algebra.subset_adjoin ⟨l, rfl⟩`. Set `f : Fin d → prodRing i1 i2 B` to `fun l => ⟨_, diagEq_mem_prodRing i1 i2 ht l⟩`. Set `I : Ideal (prodRing i1 i2 B)` to `Ideal.span (Set.range f)`. Set `p1 : B →ₐ[ℂ] prodRing i1 i2 B` to `(i1.comp B.val).codRestrict _ fun b => fst_mem_prodRing i1 i2 b.2`.
+
+Set `p2 : B →ₐ[ℂ] prodRing i1 i2 B` to `(i2.comp B.val).codRestrict _ fun b => snd_mem_prodRing i1 i2 b.2`. Establish `h12 : (Ideal.Quotient.mkₐ ℂ I).comp p1 = (Ideal.Quotient.mkₐ ℂ I).comp p2`. Use `AlgHom.ext_of_eq_adjoin (s := Set.range t) rfl ?_` and prove the remaining obligations. Introduce and unpack `x ⟨l, rfl⟩`. Conclude with `Ideal.Quotient.eq.2 (Ideal.subset_span ⟨l, rfl⟩)`.
+
+Establish `key : ((Ideal.Quotient.mkₐ ℂ I).comp p1).comp (Algebra.TensorProduct.productMap (AlgHom.id ℂ B) (AlgHom.id ℂ B)) = (Ideal.Quotient.mkₐ ℂ I).comp (hP.prodEquiv B).toAlgHom`. Use `Algebra.TensorProduct.ext' fun x y => ?_` and prove the remaining obligations. Establish `e : hP.prodEquiv B (x ⊗ₜ y) = p1 x * p2 y` using `Subtype.ext (by rw [hP.coe_prodEquiv, prodMap, Algebra.TensorProduct.productMap_apply_tmul]; rfl)`. Establish `e2` using `DFunLike.congr_fun h12 y`. Simplify using `only [AlgHom.comp_apply] at e2`.
+
+Simplify using `only [AlgHom.comp_apply, Algebra.TensorProduct.productMap_apply_tmul, AlgHom.id_apply, map_mul, e2]`. Rewrite using `[← map_mul, ← e]`. Both sides reduce to the same expression. Use `(isDiagChart_iff hP ht 1).2 ⟨one_mem _, map_one _, fun z hz h0 => ?_⟩` and prove the remaining obligations. Take `⟨w, hw⟩` from `(hP.prodEquiv B).surjective ⟨z, hz⟩`.
+
+Establish `hw0 : Algebra.TensorProduct.productMap (AlgHom.id ℂ B) (AlgHom.id ℂ B) w = 0`. Establish `e : B.val.comp (Algebra.TensorProduct.productMap (AlgHom.id ℂ B) (AlgHom.id ℂ B)) = Algebra.TensorProduct.productMap B.val B.val`. Apply the tactic sequence `ext <;> simp`. Apply `Subtype.val_injective` to reduce the goal to its premises. Establish `e2` using `DFunLike.congr_fun e w`.
+
+Rewrite `h0` using `[← hw]`. Simplify using `only [IsProdField.diagMul, AlgHom.comp_apply] at h0 e2`. Conclude with `e2.trans (by simpa using h0)`. Establish `hI : (⟨z, hz⟩ : prodRing i1 i2 B) ∈ I`. Establish `e` using `DFunLike.congr_fun key w`.
+
+Simplify using `only [AlgHom.comp_apply, hw0, map_zero] at e`. Rewrite using `[← hw]`. Conclude with `Ideal.Quotient.eq_zero_iff_mem.1 e.symm`. Take `⟨c, hc⟩` from `Ideal.mem_span_range_iff_exists_fun.1 hI`. Use `⟨0, fun l => c l, fun l => (c l).2, ?_⟩` and prove the remaining obligations.
+
+Establish `e` using `congrArg Subtype.val hc`. Simplify using `only [AddSubmonoidClass.coe_finsetSum, MulMemClass.coe_mul] at e`. Rewrite using `[pow_zero, one_mul]`. Conclude with `e.symm`.
+-/
 theorem IsProdField.isDiagChart_adjoin {i1 i2 : K →ₐ[ℂ] L} (hP : IsProdField i1 i2) {d : ℕ} (t : Fin d → K) :
     IsDiagChart i1 i2 (Algebra.adjoin ℂ (Set.range t)) t 1 := by
   set B := Algebra.adjoin ℂ (Set.range t) with hB
@@ -337,6 +449,15 @@ theorem IsProdField.isDiagChart_adjoin {i1 i2 : K →ₐ[ℂ] L} (hP : IsProdFie
   rw [pow_zero, one_mul]
   exact e.symm
 
+/- English proof (translation)
+Use `⟨fun l => Algebra.subset_adjoin ⟨l, rfl⟩, hli, fun b hb => ?_, inferInstance⟩` and prove the remaining obligations. Proceed by induction on `hb using Algebra.adjoin_induction with`. Consider the case `mem x hx`. Take `⟨l, rfl⟩` from `hx`. Use `⟨Pi.single l 1, fun m => ?_, by simp [Pi.single_apply]⟩` and prove the remaining obligations.
+
+Rewrite using `[Pi.single_apply]`. Use `split_ifs`. Use `exacts [one_mem _, zero_mem _]`. Consider the case `algebraMap r => exact ⟨0, fun _ => zero_mem _, by simp⟩`. Consider the case `add x y _ _ hx hy`.
+
+Take `⟨c, hc, e⟩` from `hx`. Take `⟨c', hc', e'⟩` from `hy`. Conclude with `⟨c + c', fun l => add_mem (hc l) (hc' l), by simp [e, e', add_smul, Finset.sum_add_distrib]⟩`. Consider the case `mul x y hx' hy' hx hy`. Take `⟨c, hc, e⟩` from `hx`.
+
+Take `⟨c', hc', e'⟩` from `hy`. Conclude with `⟨fun l => x * c' l + y * c l, fun l => add_mem (mul_mem hx' (hc' l)) (mul_mem hy' (hc l)), by`. Simplify using `[e, e', add_smul, Finset.sum_add_distrib, Finset.smul_sum, mul_smul]⟩`.
+-/
 theorem isEtCoord_adjoin {d : ℕ} (t : Fin d → K) [IsFractionRing (Algebra.adjoin ℂ (Set.range t)) K]
     (hli : LinearIndependent K fun l => D ℂ K (t l)) : IsEtCoord (Algebra.adjoin ℂ (Set.range t)) t := by
   classical
@@ -367,6 +488,11 @@ def coord (d : ℕ) : Fin d → Fn d := fun l => algebraMap (MvPolynomial (Fin d
 
 abbrev polyRing (d : ℕ) : Subalgebra ℂ (Fn d) := Algebra.adjoin ℂ (Set.range (coord d))
 
+/- English proof (translation)
+Proceed by induction on `p using MvPolynomial.induction_on with`. Consider the case `C c => exact (polyRing d).algebraMap_mem c`. Consider the case `add p q hp hq => rw [map_add]`. Conclude with `add_mem hp hq`. Consider the case `mul_X p l hp => rw [map_mul]`.
+
+Conclude with `mul_mem hp (Algebra.subset_adjoin ⟨l, rfl⟩)`.
+-/
 theorem algebraMap_mem (d : ℕ) (p : MvPolynomial (Fin d) ℂ) : algebraMap _ (Fn d) p ∈ polyRing d := by
   induction p using MvPolynomial.induction_on with
   | C c => exact (polyRing d).algebraMap_mem c
@@ -378,6 +504,11 @@ instance isFractionRing (d : ℕ) : IsFractionRing (polyRing d) (Fn d) :=
     obtain ⟨a, b, -, rfl⟩ := IsFractionRing.div_surjective (A := MvPolynomial (Fin d) ℂ) z
     exact ⟨⟨_, algebraMap_mem d a⟩, ⟨_, algebraMap_mem d b⟩, rfl⟩
 
+/- English proof (translation)
+Use `isEtCoord_adjoin _ ?_` and prove the remaining obligations. Use `haveI : Algebra.FormallyEtale (MvPolynomial (Fin d) ℂ) (Fn d) := .of_isLocalization (nonZeroDivisors _)`. Set `b : Module.Basis (Fin d) (Fn d) Ω[Fn d⁄ℂ]` to `((mvPolynomialBasis ℂ (Fin d)).baseChange (Fn d)).map (tensorKaehlerEquivOfFormallyEtale ℂ (MvPolynomial (Fin d) ℂ) (Fn d))`. Establish `hb : (fun l => D ℂ (Fn d) (coord d l)) = b`. Use function extensionality and compare the values at `l`.
+
+Simplify using `only [b, Module.Basis.map_apply, Module.Basis.baseChange_apply, tensorKaehlerEquivOfFormallyEtale_apply, mapBaseChange_tmul, one_smul, mvPolynomialBasis_apply, map_D, coord]`. Rewrite using `[hb]`. Conclude with `b.linearIndependent`.
+-/
 theorem isEtCoord (d : ℕ) : IsEtCoord (polyRing d) (coord d) := by
   refine isEtCoord_adjoin _ ?_
   haveI : Algebra.FormallyEtale (MvPolynomial (Fin d) ℂ) (Fn d) := .of_isLocalization (nonZeroDivisors _)
@@ -390,6 +521,13 @@ theorem isEtCoord (d : ℕ) : IsEtCoord (polyRing d) (coord d) := by
   rw [hb]
   exact b.linearIndependent
 
+/- English proof (translation)
+Set `P` to `MvPolynomial σ k`. Set `F` to `FractionRing P`. Use `letI : Algebra (P ⊗[k] A) (F ⊗[k] A) := (Algebra.TensorProduct.map (IsScalarTower.toAlgHom k P F) (AlgHom.id k A)).toAlgebra`. Use `haveI : IsScalarTower P (P ⊗[k] A) (F ⊗[k] A) := .of_algebraMap_eq fun x => by simp [RingHom.algebraMap_toAlgebra]`. Use `haveI := IsLocalization.tensorProduct_tensorProduct k A (nonZeroDivisors P) F (by ext; simp [RingHom.algebraMap_toAlgebra])`.
+
+Set `e : P ⊗[k] A ≃+* MvPolynomial σ A` to `((Algebra.TensorProduct.comm k P A).toRingEquiv.trans (MvPolynomial.scalarRTensorAlgEquiv).toRingEquiv)`. Use `haveI : IsDomain (P ⊗[k] A) := e.toMulEquiv.isDomain`. Establish `hinj : Function.Injective (algebraMap P (P ⊗[k] A))` using `Algebra.TensorProduct.includeLeft_injective (S := P) (algebraMap k A).injective`. Use `IsLocalization.isDomain_of_le_nonZeroDivisors (F ⊗[k] A) (M := Algebra.algebraMapSubmonoid (P ⊗[k] A) (nonZeroDivisors P)) ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨p, hp, rfl⟩`.
+
+Conclude with `mem_nonZeroDivisors_of_ne_zero fun h => nonZeroDivisors.ne_zero hp (hinj (h.trans (map_zero _).symm))`.
+-/
 theorem isDomain_tensor (k : Type) [Field k] (σ : Type) (A : Type) [CommRing A] [IsDomain A]
     [Algebra k A] : IsDomain (FractionRing (MvPolynomial σ k) ⊗[k] A) := by
   let P := MvPolynomial σ k
@@ -420,10 +558,19 @@ def pr1 (d : ℕ) : Fn d →ₐ[ℂ] Fn2 d :=
 def pr2 (d : ℕ) : Fn d →ₐ[ℂ] Fn2 d :=
   (IsScalarTower.toAlgHom ℂ (Fn d ⊗[ℂ] Fn d) (Fn2 d)).comp Algebra.TensorProduct.includeRight
 
+/- English proof (translation)
+The claim follows from `isProdField_fractionRing (Fn d)`.
+-/
 theorem isProdField (d : ℕ) : IsProdField (pr1 d) (pr2 d) := isProdField_fractionRing (Fn d)
 
+/- English proof (translation)
+The claim follows from `(isProdField d).isDiagChart_adjoin _`.
+-/
 theorem isDiagChart (d : ℕ) : IsDiagChart (pr1 d) (pr2 d) (polyRing d) (coord d) 1 := (isProdField d).isDiagChart_adjoin _
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨(isEtCoord d).finrank_eq, isProdField d, isEtCoord d, isDiagChart d⟩`.
+-/
 example (d : ℕ) : Module.finrank (Fn d) Ω[Fn d⁄ℂ] = d ∧ IsProdField (pr1 d) (pr2 d) ∧ IsEtCoord (polyRing d) (coord d) ∧
     IsDiagChart (pr1 d) (pr2 d) (polyRing d) (coord d) 1 :=
   ⟨(isEtCoord d).finrank_eq, isProdField d, isEtCoord d, isDiagChart d⟩

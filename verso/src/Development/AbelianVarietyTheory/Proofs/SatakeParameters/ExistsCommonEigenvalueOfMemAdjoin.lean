@@ -2,6 +2,13 @@ import Mathlib
 
 namespace GlobalTheory.CommonEigenvalueAdjoin
 
+/- English proof (translation)
+Introduce `a ha`. Proceed by induction on `ha using Algebra.adjoin_induction with`. Consider the case `mem x hx => exact h x hx`. Consider the case `algebraMap r => exact ⟨r, by simp, by simp⟩`. Consider the case `add x y _ _ hx hy`.
+
+Take `⟨l, h1, h2⟩` from `hx`. Take `⟨m, h3, h4⟩` from `hy`. Conclude with `⟨l + m, by rw [LinearMap.add_apply, h1, h3, add_smul], by rw [LinearMap.add_apply, h2, h4, add_smul]⟩`. Consider the case `mul x y _ _ hx hy`. Take `⟨l, h1, h2⟩` from `hx`.
+
+Take `⟨m, h3, h4⟩` from `hy`. Conclude with `⟨m * l, by rw [Module.End.mul_apply, h3, map_smul, h1, smul_smul], by rw [Module.End.mul_apply, h4, map_smul, h2, smul_smul]⟩`.
+-/
 theorem exists_common_eigenvalue_of_mem_adjoin {M : Type} [AddCommGroup M] [Module ℂ M]
     (s : Set (Module.End ℂ M)) (u u' : M)
     (h : ∀ x ∈ s, ∃ l : ℂ, x u = l • u ∧ x u' = l • u') :

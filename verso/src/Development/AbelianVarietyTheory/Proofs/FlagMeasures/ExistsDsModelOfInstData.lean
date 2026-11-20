@@ -15,6 +15,19 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 namespace GlobalTheory.RowLev
 
+/- English proof (translation)
+Substitute `hn` using the available equality. Establish `hm` using `D.R.two_le_m`. Establish `hk` using `D.R.m_add_three_le_k`. Establish `hr : D.R.r = D.R.k + D.R.m - 1` using `rfl`. Simplify using `only [Fin.cast_eq_self]`.
+
+Use `⟨?_, fun i => if h : i.val < D.R.k - 1 then (D.hc τ).v ⟨i.val, h⟩ else if h' : i.val - (D.R.k - 1) < D.R.m then -(D.hc τ).b ⟨i.val - (D.R.k - 1), h'⟩ else 0, ?_, ?_⟩` and prove the remaining obligations. Establish `h` using `(GlobalTheory.Mem.Vol.lamSH_isHCParam D.R (D.hc τ)).1`. Introduce `a b hab`. Use `h (a := Fin.cast (dimS_eq D.R).symm a) (b := Fin.cast (dimS_eq D.R).symm b) hab` as an intermediate fact. Simplify `this` using `[lamSH]`.
+
+Introduce `a`. Simplify using `only [lamS]`. Apply the tactic sequence `split_ifs <;> simp`. Establish `hpar : ∀ a : ℕ, decide (a ≤ 0 ∨ Even (a - 0)) = decide (a % 2 = 0)`. Introduce `a`.
+
+Rewrite using `[decide_eq_decide, Nat.sub_zero, Nat.even_iff]`. Use linear arithmetic over natural numbers and integers. Use extensionality with `x`. Simplify using `only [parA, TPar.Dpar, tparRec, tparHC, hpar, Nat.not_odd_zero, if_false, add_zero, Nat.not_lt_zero, Finset.filter_false, Finset.biUnion_empty, Finset.union_empty, Prod.mk.eta, Finset.image_id', Finset.mem_union, Finset.mem_image, Finset.mem_univ, true_and]`. Prove the components needed by the constructor for the conclusion.
+
+Introduce and unpack `(⟨i, rfl⟩ | ⟨i, rfl⟩)`. Use `⟨⟨i.val, by have := i.2; omega⟩, ?_⟩` and prove the remaining obligations. Simplify using `[epsS, i.2]`. Use `⟨⟨i.val + (D.R.k - 1), by have := i.2; omega⟩, ?_⟩` and prove the remaining obligations. Simplify using `[epsS, i.2]`.
+
+Introduce and unpack `⟨a, rfl⟩`. Distinguish the cases in `h : a.val < D.R.k - 1`. Conclude with `Or.inl ⟨⟨a.val, h⟩, by simp [epsS, h]⟩`. Establish `h' : a.val - (D.R.k - 1) < D.R.m` using `by have := a.2; omega`. Conclude with `Or.inr ⟨⟨_, h'⟩, by simp [epsS, h, h']⟩`.
+-/
 theorem isEnum_parA_zero (D : D7) {n : ℕ} (hn : n = D.R.r) (τ : D.what₂.Tau) :
     IsEnum (parA (tparRec D) 0 τ) (fun i : Fin n => lamS D.R (D.hc τ) (Fin.cast hn i))
       (fun i => epsS D.R (Fin.cast hn i)) := by

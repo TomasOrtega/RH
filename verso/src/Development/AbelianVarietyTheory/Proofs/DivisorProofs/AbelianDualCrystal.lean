@@ -13,6 +13,9 @@ import Development.AbelianVarietyTheory.Proofs.DivisorProofs.DualAbelianSchemeEx
 
 namespace GlobalTheory
 
+/- English proof (translation)
+The claim follows from `GlobalTheory.abelianDualCrystal_of_dualAbelianScheme GlobalTheory.dualAbelianScheme`.
+-/
 theorem abelianDualCrystal : GlobalTheory.Published.AbelianDualCrystal :=
   GlobalTheory.abelianDualCrystal_of_dualAbelianScheme GlobalTheory.dualAbelianScheme
 

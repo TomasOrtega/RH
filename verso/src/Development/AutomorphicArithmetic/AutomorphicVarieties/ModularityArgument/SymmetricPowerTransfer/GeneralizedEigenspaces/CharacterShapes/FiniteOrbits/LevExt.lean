@@ -12,10 +12,16 @@ attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalDat
 section Gen
 variable {F : Type} [Field F] [NumberField F] {Δ : F}
 
+/- English proof (translation)
+Substitute `e` using the available equality. Both sides reduce to the same expression.
+-/
 private theorem eD_congr {K : Type} [Field K] {Δ s s' : K} (h : s * s = Δ) (h' : s' * s' = Δ) (e : s = s') :
     Sig.eD h = Sig.eD h' := by
   subst e; rfl
 
+/- English proof (translation)
+Unfold `SD.lvS`. Rewrite using `[Subgroup.mem_subgroupOf, Subgroup.mem_comap]`. Use `show (MulAut.conj y⁻¹) (g : DA Δ) ∈ _ ↔ _`. Rewrite using `[MulAut.conj_apply, inv_inv]`.
+-/
 private theorem mem_lvS (A : SD Δ) (y : DA Δ) (g : SA Δ) :
     g ∈ A.lvS y ↔ y⁻¹ * (g : DA Δ) * y ∈ A.dat.U2 := by
   unfold SD.lvS
@@ -23,10 +29,18 @@ private theorem mem_lvS (A : SD Δ) (y : DA Δ) (g : SA Δ) :
   show (MulAut.conj y⁻¹) (g : DA Δ) ∈ _ ↔ _
   rw [MulAut.conj_apply, inv_inv]
 
+/- English proof (translation)
+Establish `: (y⁻¹ * g * y).1 v = (y.1 v)⁻¹ * g.1 v * y.1 v` using `rfl`. Rewrite using `[this, h, inv_one, one_mul, mul_one]`.
+-/
 private theorem conj_at (y g : DA Δ) (v : Pl F) (h : y.1 v = 1) : (y⁻¹ * g * y).1 v = g.1 v := by
   have : (y⁻¹ * g * y).1 v = (y.1 v)⁻¹ * g.1 v * y.1 v := rfl
   rw [this, h, inv_one, one_mul, mul_one]
 
+/- English proof (translation)
+Establish `d0` using `((datOk F Δ A₀ hA₀).2.2.2.2 x).1 h0`. Use `((datOk F Δ A hA).2.2.2.2 x).2 ⟨fun v hv => ?_, fun v hv => d0.2 v fun h => hv (hE.sub h)⟩` and prove the remaining obligations. Distinguish the cases in `h : v ∈ A₀.Sg`. Rewrite using `[hE.V v h, eD_congr (A.hs v hv) (A₀.hs v h) (hE.s v h)]`. Conclude with `d0.1 v h`.
+
+Rewrite using `[hE.iw v hv h]`. Conclude with `hn v hv h`.
+-/
 private theorem up (A A₀ : SD Δ) (hA : A.Ok) (hA₀ : A₀.Ok) (hE : A.Ext A₀) (x : DA Δ) (h0 : x ∈ A₀.dat.U2)
     (hn : ∀ v (h : v ∈ A.Sg), v ∉ A₀.Sg → Sig.eD (A.hs v h) (x.1 v) ∈ (Sig.Lev.iw (Kv v)).J 2) : x ∈ A.dat.U2 := by
   have d0 := ((datOk F Δ A₀ hA₀).2.2.2.2 x).1 h0
@@ -42,12 +56,18 @@ end Gen
 section Br
 variable {L : Type} [Field L] [NumberField L] [IsCMField L] {B : Bridge L}
 
+/- English proof (translation)
+Rewrite `h` using `[hB.splS w R g]`. Conclude with `(R.J (Sig.Lev.iw _) (iw w) rfl (fun a => R.Uo a) 2 _).1 h`.
+-/
 private theorem spl (hB : B.Ok) (w : Plc L) (R : B.toRingBr.Split w) (g : SA B.Δ)
     (h : cLoc w (B.bS g : UA L 2) ∈ (iw w).J 2) :
     Sig.eD R.hs ((g : DA B.Δ).1 (un w)) ∈ (Sig.Lev.iw (Kv (un w))).J 2 := by
   rw [hB.splS w R g] at h
   exact (R.J (Sig.Lev.iw _) (iw w) rfl (fun a => R.Uo a) 2 _).1 h
 
+/- English proof (translation)
+Take `⟨h1, h2⟩` from `Subgroup.mem_inf.1 h`. Use `⟨h1, fun w hw => ?_⟩` and prove the remaining obligations. Simplify using `only [Subgroup.mem_iInf] at h2`. Conclude with `h2 w hw`.
+-/
 private theorem lev_mem {n : ℕ} {U : Subgroup (UA L n)} {S : Finset (Plc L)} {V : ∀ w : Plc L, Sig.Lev (Kw w)} {x : UA L n}
     (h : x ∈ lev U S V) : x ∈ U ∧ ∀ w ∈ S, cLoc w x ∈ (V w).J n := by
   obtain ⟨h1, h2⟩ := Subgroup.mem_inf.1 h
@@ -58,6 +78,11 @@ private theorem lev_mem {n : ℕ} {U : Subgroup (UA L n)} {S : Finset (Plc L)} {
 end Br
 
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Introduce `L _ _ _ B hB T S VL A hA hF A₀ hA₀ hE S₁ h1 _ U y hy hU g hg`. Take `⟨hgU, hgJ⟩` from `lev_mem hg`. Use `(mem_lvS A y g).2 (up A A₀ hA hA₀ hE _ ((mem_lvS A₀ y g).1 (hU g hgU)) ?_)` and prove the remaining obligations. Introduce `v hv h0`. Take `⟨w, hwS, rfl⟩` from `(hF.sg v).1 hv`.
+
+Establish `hsp : IsSplitAt w` using `hF.pl.split w hwS`. Rewrite using `[conj_at y (g : DA B.Δ) _ (hy _ hv), eD_congr (A.hs _ hv) (T w hsp).hs (hF.s w hwS hsp)]`. Conclude with `spl hB w (T w hsp) g (hgJ w ((h1 w hwS).resolve_right h0))`.
+-/
 theorem UpperTheory.V.Z.Sym.So.levExt :
     UpperTheory.V.Z.Sym.So.LevExt := by
   intro L _ _ _ B hB T S VL A hA hF A₀ hA₀ hE S₁ h1 _ U y hy hU g hg

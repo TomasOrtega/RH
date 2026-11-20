@@ -13,6 +13,9 @@ namespace GlobalTheory.SmVecDeriv
 variable {n : ℕ} {H : Type} [NormedAddCommGroup H] [InnerProductSpace ℂ H]
   {G : Matrix (Fin n) (Fin n) ℂ} {π : Matrix (Fin n) (Fin n) ℂ → (H →L[ℂ] H)}
 
+/- English proof (translation)
+Use `contDiff_pi.2 fun i => ?_` and prove the remaining obligations. Use `Fin.lastCases ?_ (fun j => ?_) i` and prove the remaining obligations. Simplify using `using contDiff_snd`. Simplify using `only [Fin.snoc_castSucc] fun_prop`.
+-/
 theorem contDiff_snoc {k : ℕ} :
     ContDiff ℝ ∞ fun p : (Fin k → ℝ) × ℝ => (Fin.snoc p.1 p.2 : Fin (k + 1) → ℝ) := by
   refine contDiff_pi.2 fun i => ?_
@@ -21,6 +24,9 @@ theorem contDiff_snoc {k : ℕ} :
   · simp only [Fin.snoc_castSucc]
     fun_prop
 
+/- English proof (translation)
+Use `Fin.lastCases ?_ (fun j => ?_) i` and prove the remaining obligations. Simplify using `using hX`. Simplify using `using hXs j`.
+-/
 theorem snoc_mem {k : ℕ} {Xs : Fin k → Matrix (Fin n) (Fin n) ℂ} (hXs : ∀ i, Xs i ∈ lieG G)
     {X : Matrix (Fin n) (Fin n) ℂ} (hX : X ∈ lieG G) (i : Fin (k + 1)) :
     (Fin.snoc Xs X : Fin (k + 1) → Matrix (Fin n) (Fin n) ℂ) i ∈ lieG G := by
@@ -28,6 +34,9 @@ theorem snoc_mem {k : ℕ} {Xs : Fin k → Matrix (Fin n) (Fin n) ℂ} (hXs : �
   · simpa using hX
   · simpa using hXs j
 
+/- English proof (translation)
+Rewrite using `[← rep_mul hπ (expProd_mem_UH hG hXs t) (exp_mem_UH hG hX s)]`. Simplify using `[List.ofFn_succ', -List.ofFn_succ]`.
+-/
 theorem rep_snoc (hG : IsUnit G) (hπ : IsURepOn (Formalism.QuantumDeterminants.UH G) π) {k : ℕ} {Xs : Fin k → Matrix (Fin n) (Fin n) ℂ}
     (hXs : ∀ i, Xs i ∈ lieG G) {X : Matrix (Fin n) (Fin n) ℂ} (hX : X ∈ lieG G) (t : Fin k → ℝ) (s : ℝ) (u : H) :
     π (List.ofFn fun i => NormedSpace.exp ((Fin.snoc t s : Fin (k + 1) → ℝ) i •
@@ -36,6 +45,15 @@ theorem rep_snoc (hG : IsUnit G) (hπ : IsURepOn (Formalism.QuantumDeterminants.
   rw [← rep_mul hπ (expProd_mem_UH hG hXs t) (exp_mem_UH hG hX s)]
   simp [List.ofFn_succ', -List.ofFn_succ]
 
+/- English proof (translation)
+Proceed by induction on `l generalizing k with`. Consider the case `nil`. Establish `h1` using `(hw (k + 1) (Fin.snoc Xs X) (snoc_mem hXs hX)).comp contDiff_snoc`. Use `h1 using 2 with p` and compare the differences between its conclusion and the goal. Conclude with `(rep_snoc hG hπ hXs hX p.1 p.2 w).symm`.
+
+Consider the case `cons Y l ih`. Establish `hl' : ∀ Z ∈ l, Z ∈ lieG G` using `fun Z hZ => hl Z (by simp [hZ])`. Establish `hY` using `hl Y (by simp)`. Establish `h1` using `ih hl' (k + 1) (Fin.snoc Xs Y) (snoc_mem hXs hY)`. Establish `hs : ContDiff ℝ ∞ fun q : ((Fin k → ℝ) × ℝ) × ℝ => (((Fin.snoc q.1.1 q.2 : Fin (k + 1) → ℝ), q.1.2) : (Fin (k + 1) → ℝ) × ℝ)` using `(contDiff_snoc.comp (contDiff_fst.fst.prodMk contDiff_snd)).prodMk contDiff_fst.snd`.
+
+Establish `h2 : ContDiff ℝ ∞ (Function.uncurry fun (p : (Fin k → ℝ) × ℝ) (r : ℝ) => π (List.ofFn fun i => NormedSpace.exp (p.1 i • Xs i)).prod (π (NormedSpace.exp (r • Y)) (word π l (π (NormedSpace.exp (p.2 • X)) w))))`. Use `h1.comp hs using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `q`. Conclude with `(rep_snoc hG hπ hXs hY q.1.1 q.2 _).symm`. Establish `h3` using `(ContDiff.fderiv (𝕜 := ℝ) (m := ∞) (n := ∞) (g := fun _ : (Fin k → ℝ) × ℝ => (0 : ℝ)) h2 contDiff_const (le_of_eq rfl)).clm_apply (contDiff_const (c := (1 : ℝ)))`.
+
+Use `h3 using 2 with p` and compare the differences between its conclusion and the goal. Establish `hu` using `word_mem hG hπ hl' (rep_mem hG hπ hw (exp_mem_UH hG hX p.2))`. Establish `h4` using `(((π _).restrictScalars ℝ).hasFDerivAt.comp_hasDerivAt (0 : ℝ) (hasDerivAt_dRep hu hY) : HasDerivAt (fun r : ℝ => π (List.ofFn fun i => NormedSpace.exp (p.1 i • Xs i)).prod (π (NormedSpace.exp (r • Y)) (word π l (π (NormedSpace.exp (p.2 • X)) w)))) _ 0)`. Conclude with `h4.deriv.symm`.
+-/
 theorem contDiff_word (hG : IsUnit G) (hπ : IsURepOn (Formalism.QuantumDeterminants.UH G) π) {w : H} (hw : w ∈ smSub G π)
     {X : Matrix (Fin n) (Fin n) ℂ} (hX : X ∈ lieG G) {l : List (Matrix (Fin n) (Fin n) ℂ)}
     (hl : ∀ Y ∈ l, Y ∈ lieG G) (k : ℕ) (Xs : Fin k → Matrix (Fin n) (Fin n) ℂ) (hXs : ∀ i, Xs i ∈ lieG G) :
@@ -68,6 +86,9 @@ theorem contDiff_word (hG : IsUnit G) (hπ : IsURepOn (Formalism.QuantumDetermin
         (π (NormedSpace.exp (r • Y)) (word π l (π (NormedSpace.exp (p.2 • X)) w)))) _ 0)
     exact h4.deriv.symm
 
+/- English proof (translation)
+Establish `h1` using `(contDiff_word hG hπ hw hX hl 0 Fin.elim0 (fun i => i.elim0)).comp ((contDiff_const (c := (0 : Fin 0 → ℝ))).prodMk (contDiff_id (E := ℝ)))`. Simplify `h1` using `[Function.comp_def, rep_one hπ]`.
+-/
 theorem contDiff_word_curve (hG : IsUnit G) (hπ : IsURepOn (Formalism.QuantumDeterminants.UH G) π) {w : H} (hw : w ∈ smSub G π)
     {X : Matrix (Fin n) (Fin n) ℂ} (hX : X ∈ lieG G) {l : List (Matrix (Fin n) (Fin n) ℂ)}
     (hl : ∀ Y ∈ l, Y ∈ lieG G) :
@@ -76,6 +97,13 @@ theorem contDiff_word_curve (hG : IsUnit G) (hπ : IsURepOn (Formalism.QuantumDe
     ((contDiff_const (c := (0 : Fin 0 → ℝ))).prodMk (contDiff_id (E := ℝ)))
   simpa [Function.comp_def, rep_one hπ] using h1
 
+/- English proof (translation)
+Introduce `n ε H _ _ _ σ P G hP h hσ l hl w hw X hX`. Establish `hG` using `gram_unit hP h`. Establish `hπ` using `isURepOn_trRep hP h hσ`. Establish `h1` using `((contDiff_word_curve hG hπ hw hX hl).differentiable (by simp) 0).hasDerivAt`. Use `h1 using 1` and compare the differences between its conclusion and the goal.
+
+Use `ext_inner_smooth hP h hσ fun u hu => ?_` and prove the remaining obligations. Take `⟨u', -, h2⟩` from `word_adjoint hG hπ hl hu`. Establish `h3` using `(hasDerivAt_const (0 : ℝ) u).inner ℂ h1`. Establish `h4` using `(hasDerivAt_const (0 : ℝ) u').inner ℂ (hasDerivAt_dRep hw hX)`. Simplify using `only [h2 _ (rep_mem hG hπ hw (exp_mem_UH hG hX _)), inner_zero_left, add_zero] at h3 h4`.
+
+Rewrite using `[h2 _ (dRep_mem hG hπ hw hX)]`. Conclude with `h4.unique h3`.
+-/
 theorem hasDerivAt_word : ∀ (n : ℕ) (ε : Fin n → Bool) (H : Type) [NormedAddCommGroup H] [InnerProductSpace ℂ H] [CompleteSpace H] (σ : Matrix (Fin n) (Fin n) ℂ → (H →L[ℂ] H)) (P G : Matrix (Fin n) (Fin n) ℂ), IsUnit P → Pᴴ * Formalism.REAL.Jm ε * P = G → IsURepOn (UJset ε) σ → ∀ l : List (Matrix (Fin n) (Fin n) ℂ), (∀ X ∈ l, X ∈ lieG G) → ∀ w ∈ smSub G (trRep σ P), ∀ X ∈ lieG G, HasDerivAt (fun t : ℝ => word (trRep σ P) l ((trRep σ P) (NormedSpace.exp (t • X)) w)) (word (trRep σ P) l (dRep (trRep σ P) X w)) 0 := by
   intro n ε H _ _ _ σ P G hP h hσ l hl w hw X hX
   have hG := gram_unit hP h

@@ -18,6 +18,23 @@ section General
 
 variable {X : Scheme.{0}} {Ω : Type} [Field Ω] [CharZero Ω] {ξ : Spec (CommRingCat.of Ω) ⟶ X}
 
+/- English proof (translation)
+Use `set B := Algebra.adjoin ℚ (Set.range fun j => x j / x c) with hB`. Establish `hle : ∀ a ∈ chartRing ℤ x c, a ∈ B`. Introduce `a ha`. Establish `h2 : chartRing ℤ x c ≤ B.restrictScalars ℤ` using `Algebra.adjoin_le Algebra.subset_adjoin`. Conclude with `h2 ha`.
+
+Set `I : Ideal (chartRing ℤ x c)` to `{ carrier := {a | (a : Ω) * f ∈ B} add_mem' := fun {u v} hu hv => by show ((u + v : chartRing ℤ x c) : Ω) * f ∈ B`. Rewrite using `[Subalgebra.coe_add, add_mul]`. Conclude with `add_mem hu hv`. Use the proof step `zero_mem' := by show ((0 : chartRing ℤ x c) : Ω) * f ∈ B`. Simplify using the standard rewrite rules.
+
+Use the proof step `smul_mem' := fun a u hu => by show ((a • u : chartRing ℤ x c) : Ω) * f ∈ B`. Rewrite using `[smul_eq_mul, Subalgebra.coe_mul, _root_.mul_assoc]`. Conclude with `mul_mem (hle _ a.2) hu }`. Set `T : Submonoid (chartRing ℤ x c)` to `{ carrier := {u | ∃ b : ℕ, b ≠ 0 ∧ (u : Ω) = b} one_mem' := ⟨1, one_ne_zero, by simp⟩ mul_mem' := by`. Introduce and unpack `u v ⟨b, hb, hu⟩ ⟨b', hb', hv⟩`.
+
+Conclude with `⟨b * b', mul_ne_zero hb hb', by rw [Subalgebra.coe_mul, hu, hv]; push_cast; rfl⟩ }`. Assume the negation of the conclusion as `hcon`. Establish `hdisj : Disjoint (I : Set (chartRing ℤ x c)) (T : Set (chartRing ℤ x c))`. Rewrite using `[Set.disjoint_left]`. Introduce and unpack `u hu ⟨b, hb, hub⟩`.
+
+Establish `hu' : (b : Ω) * f ∈ B` using `by rw [← hub]; exact hu`. Apply `hcon` to reduce the goal to its premises. Establish `h2` using `B.smul_mem hu' ((b : ℚ)⁻¹)`. Establish `hb0 : (b : Ω) ≠ 0` using `Nat.cast_ne_zero.2 hb`. Establish `e : ((b : ℚ)⁻¹) • ((b : Ω) * f) = f`.
+
+Rewrite using `[Algebra.smul_def, map_inv₀, map_natCast, ← _root_.mul_assoc, inv_mul_cancel₀ hb0, _root_.one_mul]`. Rewrite `h2` using `[e]`. Then use the resulting hypothesis. Take `⟨P, hP, hIP, hPT⟩` from `Ideal.exists_le_prime_disjoint I T hdisj`. Take `⟨p, hp, hpP⟩` from `TieVB.exists_point hT hc P hP`. Establish `h0 : ∀ r : ℕ, r.Prime → ¬ InFibre ξ r p`.
+
+Introduce `r hr hfib`. Establish `hrT : (r : chartRing ℤ x c) ∈ T` using `⟨r, hr.ne_zero, by simp⟩`. Establish `hnot : (r : chartRing ℤ x c) ∉ P` using `fun h => Set.disjoint_left.1 hPT h hrT`. Establish `hu` using `not_not.1 (mt (hpP (r : chartRing ℤ x c)).2 hnot)`. Apply `hfib` to reduce the goal to its premises.
+
+Simplify using `using hu`. Take `⟨s, hsA, hsu, hsf⟩` from `TieVB.exists_den hT hp (hf p hp h0)`. Establish `hI : (⟨s, hsA⟩ : chartRing ℤ x c) ∈ I` using `hle _ hsf`. Conclude with `(hpP ⟨s, hsA⟩).1 (hIP hI) hsu`.
+-/
 theorem mem_adjoin_rat_of_regular {κ : Type} {x : κ → Ω} (hT : CoordTie ℤ ξ x)
     {c : κ} (hc : x c ≠ 0) {f : Ω}
     (hf : ∀ p : Cpt ξ, InChart ξ x c p → (∀ r : ℕ, r.Prime → ¬ InFibre ξ r p) → f ∈ regAt ξ p) :
@@ -71,6 +88,9 @@ theorem mem_adjoin_rat_of_regular {κ : Type} {x : κ → Ω} (hT : CoordTie ℤ
   have hI : (⟨s, hsA⟩ : chartRing ℤ x c) ∈ I := hle _ hsf
   exact (hpP ⟨s, hsA⟩).1 (hIP hI) hsu
 
+/- English proof (translation)
+Use `Algebra.adjoin_le ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨c', rfl⟩`. Use `show (∏ k, y ⟨k, c' k⟩) / ∏ k, y ⟨k, c k⟩ ∈ _`. Rewrite using `[← Finset.prod_div_distrib]`. Conclude with `prod_mem fun k _ => Algebra.subset_adjoin ⟨⟨k, c' k⟩, rfl⟩`.
+-/
 theorem adjoin_segre_le {K : Type} [Fintype K] {ι : K → Type} {y : (Σ k, ι k) → Ω} (c : (k : K) → ι k) :
     Algebra.adjoin ℚ (Set.range fun c' : (k : K) → ι k => (∏ k, y ⟨k, c' k⟩) / ∏ k, y ⟨k, c k⟩) ≤
       Algebra.adjoin ℚ (Set.range fun p : Σ k, ι k => y p / y ⟨p.1, c p.1⟩) := by
@@ -80,6 +100,9 @@ theorem adjoin_segre_le {K : Type} [Fintype K] {ι : K → Type} {y : (Σ k, ι 
   rw [← Finset.prod_div_distrib]
   exact prod_mem fun k _ => Algebra.subset_adjoin ⟨⟨k, c' k⟩, rfl⟩
 
+/- English proof (translation)
+Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simp`. Consider the case `insert r s hr ih => rw [Finset.sum_insert hr, Finset.prod_insert hr, zpow_add₀ ha, ih]`.
+-/
 theorem zpow_sum_of_ne {R : Type} {a : Ω} (ha : a ≠ 0) (s : Finset R) (f : R → ℤ) :
     a ^ (∑ r ∈ s, f r) = ∏ r ∈ s, a ^ f r := by
   classical
@@ -87,6 +110,17 @@ theorem zpow_sum_of_ne {R : Type} {a : Ω} (ha : a ≠ 0) (s : Finset R) (f : R 
   | empty => simp
   | insert r s hr ih => rw [Finset.sum_insert hr, Finset.prod_insert hr, zpow_add₀ ha, ih]
 
+/- English proof (translation)
+Establish `h1 : ∀ k, Y k ^ (-(∑ r, (-n r) * xd r k + (-(q : ℤ)) * A k)) = (∏ r, (Y k ^ xd r k) ^ n r) * Y k ^ ((q : ℤ) * A k)`. Introduce `k`. Establish `e1 : -(∑ r, (-n r) * xd r k + (-(q : ℤ)) * A k) = ∑ r, xd r k * n r + (q : ℤ) * A k`. Rewrite using `[neg_add, ← Finset.sum_neg_distrib]`. Use `congr 1`.
+
+Conclude with `Finset.sum_congr rfl fun r _ => by ring`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e1, zpow_add₀ (hY k), zpow_sum_of_ne (hY k)]`. Simplify using `only [zpow_mul]`. Establish `h2 : ∏ k, Y k ^ ((q : ℤ) * A k) = Y k₀ ^ q`.
+
+Rewrite using `[Finset.prod_eq_single k₀ (fun k _ hk => by rw [hA k hk]; simp) (fun h => absurd (Finset.mem_univ _) h), hA₀]`. Simplify using the standard rewrite rules. Establish `h3 : ∏ r, ((∏ k, Y k ^ xd r k) * e r) ^ (-n r) = ((∏ k, ∏ r, (Y k ^ xd r k) ^ n r) * ∏ r, e r ^ n r)⁻¹`. Simplify using `only [zpow_neg, Finset.prod_inv_distrib]`. Use `congr 1`.
+
+Simplify using `only [mul_zpow, Finset.prod_mul_distrib]`. Use `congr 1`. Rewrite using `[Finset.prod_comm]`. Conclude with `Finset.prod_congr rfl fun r _ => (Finset.prod_zpow _ _ _).symm`. Simplify using `only [h1, Finset.prod_mul_distrib]`.
+
+Rewrite using `[h2, h3, div_inv_eq_mul]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem eps_identity {K R : Type} [Fintype K] [Fintype R] {Y : K → Ω} (hY : ∀ k, Y k ≠ 0) (xd : R → K → ℤ)
     {e : R → Ω} (n : R → ℤ) (A : K → ℤ) (k₀ : K) (hA₀ : A k₀ = 1)
     (hA : ∀ k, k ≠ k₀ → A k = 0) (q : ℕ) (s : Ω) :
@@ -119,6 +153,29 @@ theorem eps_identity {K R : Type} [Fintype K] [Fintype R] {Y : K → Ω} (hY : �
 
 end General
 
+/- English proof (translation)
+Introduce `E _ _ _ H D l Xo c O _ β Y S RM Sys Fx o nu hn`. Use `haveI : CharZero c.F := inferInstance`. Use `haveI : CharZero RM.Ω := charZero_of_injective_ringHom o.𝔐.cst.injective`. Establish `hkA : (RM.kA : ℝ) = Fx.kA` using `by exact_mod_cast o.kA_eq`. Establish `hkpos : (0 : ℝ) < Fx.kA` using `by rw [← hkA]; exact_mod_cast RM.kA_pos`.
+
+Set `n₀ : Option (RootIx D) → ℤ` to `fun j => j.elim (-(Fx.q' : ℤ)) fun r => -Fx.n r`. Establish `hs0 : o.g Fx.sE * ∏ r, o.e r ^ Fx.n r ≠ 0` using `mul_ne_zero ((map_ne_zero o.g).2 Fx.sE_ne) (Finset.prod_ne_zero_iff.2 fun r _ => zpow_ne_zero _ (o.lines r).1)`. Establish `ha : ∀ k, (combLine (RM.line 1) n₀).a k = ∑ r, (-Fx.n r) * RM.xdeg r k + (-(Fx.q' : ℤ)) * RM.A.a k`. Introduce `k`. Use `show (∑ j, n₀ j • (RM.line 1 j).a) k = _`.
+
+Rewrite using `[Finset.sum_apply, Fintype.sum_option, add_comm]`. Use `congr 1`. Use `Finset.sum_congr rfl fun r _ => ?_` and prove the remaining obligations. Simplify using `[n₀, RootModel.line, RM.x_deg]`. Establish `key : ∀ c' : ∀ k, RM.ι k, (∀ k, RM.y ⟨k, c' k⟩ ≠ 0) → IsIntegral (Algebra.adjoin ℚ (Set.range fun p : Σ k, RM.ι k => RM.y p / RM.y ⟨p.1, c' p.1⟩)) ((o.g Fx.sE * ∏ r, o.e r ^ Fx.n r) * ∏ k, RM.y ⟨k, c' k⟩ ^ (-((combLine (RM.line 1) n₀).a k)))`.
+
+Introduce `c' hc'`. Establish `hx : (∏ k, RM.y ⟨k, c' k⟩) ≠ 0` using `Finset.prod_ne_zero_iff.2 fun k _ => hc' k`. Establish `ya : o.g (Fx.yf (o.ix.symm (c' o.k₀))) = RM.y ⟨o.k₀, c' o.k₀⟩`. Rewrite using `[← o.y_eq, Equiv.apply_symm_apply]`. Establish `hfeq : (o.g Fx.sE * ∏ r, o.e r ^ Fx.n r) * ∏ k, RM.y ⟨k, c' k⟩ ^ (-((combLine (RM.line 1) n₀).a k)) = o.g Fx.sE * o.g (Fx.yf (o.ix.symm (c' o.k₀))) ^ Fx.q' / ∏ r, ((∏ k, RM.y ⟨k, c' k⟩ ^ RM.xdeg r k) * o.e r) ^ (-Fx.n r)`.
+
+Simplify using `only [ha]`. Rewrite using `[ya]`. Conclude with `eps_identity hc' RM.xdeg Fx.n RM.A.a o.k₀ o.A_deg.1 o.A_deg.2 Fx.q' _`. Establish `hreg : ∀ p : Cpt o.𝔐.ξ, InChart o.𝔐.ξ (fun c'' : (k : RM.K) → RM.ι k => ∏ k, RM.y ⟨k, c'' k⟩) c' p → (∀ r : ℕ, r.Prime → ¬ InFibre o.𝔐.ξ r p) → o.g Fx.sE * o.g (Fx.yf (o.ix.symm (c' o.k₀))) ^ Fx.q' / ∏ r, ((∏ k, RM.y ⟨k, c' k⟩ ^ RM.xdeg r k) * o.e r) ^ (-Fx.n r) ∈ regAt o.𝔐.ξ p`. Introduce `p hp hp0`.
+
+Establish `hch : InChart o.𝔐.ξ (fun i' => o.g (Fx.yf i')) (o.ix.symm (c' o.k₀)) p`. Use `⟨?_, fun j => ?_⟩` and prove the remaining obligations. Use `show o.g (Fx.yf (o.ix.symm (c' o.k₀))) ≠ 0`. Rewrite using `[ya]`. Conclude with `hc' _`.
+
+Use `show o.g (Fx.yf j) / o.g (Fx.yf (o.ix.symm (c' o.k₀))) ∈ _`. Rewrite using `[ya, ← o.y_eq]`. Conclude with `Lat.block_ratio_mem hp o.k₀ (o.ix j)`. Establish `ht` using `GlobalTheory.CompanionTheory.Ar.Chg.CoverEff.tens_isGenAt (Λ := o.Fl.rootLat) (fun r => -Fx.n r) (p := p) (s := fun r => (∏ k, RM.y ⟨k, c' k⟩ ^ RM.xdeg r k) * o.e r) fun r => ⟨mul_ne_zero (Finset.prod_ne_zero_iff.2 fun k _ => zpow_ne_zero _ (hc' k)) (o.lines r).1, (o.lines r).2 _ …`. Conclude with `(o.eff p hp0 _ _ hch ht).1`.
+
+Establish `hB` using `adjoin_segre_le c' (mem_adjoin_rat_of_regular o.𝔐.tie hx hreg)`. Rewrite using `[hfeq]`. Conclude with `isIntegral_algebraMap (x := (⟨_, hB⟩ : Algebra.adjoin ℚ (Set.range fun p : Σ k, RM.ι k => RM.y p / RM.y ⟨p.1, c' p.1⟩)))`. Take `⟨N₀, hN, hmem⟩` from `GlobalTheory.T.integral_section_lattice_multiple RM.K RM.ι RM.Ω RM.y 0 (combLine (RM.line 1) n₀).a _ key`. Use `⟨n₀, N₀, ?_, hN, ?_, ?_⟩` and prove the remaining obligations.
+
+Introduce `j`. Consider the cases of `j with`. Consider the case `none => show ((-(Fx.q' : ℤ) : ℤ) : ℝ) = ((Fx.kA * Fx.q' : ℕ) : ℝ) * (-1 / (RM.kA : ℝ))`. Rewrite using `[hkA]`. Use `push_cast`.
+
+Clear the denominators using the available nonvanishing facts. Consider the case `some r => show ((-Fx.n r : ℤ) : ℝ) = ((Fx.kA * Fx.q' : ℕ) : ℝ) * (-nu r.1 r.2)`. Use `push_cast`. Rewrite using `[hn r]`. Use `push_cast`.
+
+Expand and normalize the polynomial expressions, which then agree. Rewrite using `[_root_.mul_assoc]`. Conclude with `mul_ne_zero (Nat.cast_ne_zero.2 hN.ne') hs0`. Rewrite using `[_root_.mul_assoc]`. Conclude with `hmem`.
+-/
 theorem section_on_model : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (D : Datum H) (l : Level H) (Xo : Moduli D l) (c : Coeff l) (O : Type) [CommRing O] (β : O →+* c.F) (Y : Model Xo c β) (S : Finset ℕ) (RM : RootModel (CMType H) (D.p + D.q)) (Sys : PB.AnSys (dimFl (CMType H) (D.p + D.q)) (Option (RootIx D))) (Fx : FixedData Y Sys) (Or : RootOrigin Y S RM Fx) (nu : Wt (CMType H) (D.p + D.q)), (∀ r, (Fx.n r : ℝ) = (Fx.kA * Fx.q' : ℕ) * nu r.1 r.2) → ∃ (n₀ : Option (RootIx D) → ℤ) (N₀ : ℕ), (∀ j, (n₀ j : ℝ) = (Fx.kA * Fx.q' : ℕ) * RM.coef nu (-1) j) ∧ 0 < N₀ ∧ ((N₀ : RM.Ω) * Or.g Fx.sE * ∏ r, Or.e r ^ Fx.n r) ≠ 0 ∧ ((N₀ : RM.Ω) * Or.g Fx.sE * ∏ r, Or.e r ^ Fx.n r) ∈ chartLatNm RM.y (combLine (RM.line 1) n₀).a 1 := by
   intro E _ _ _ H D l Xo c O _ β Y S RM Sys Fx o nu hn
   classical

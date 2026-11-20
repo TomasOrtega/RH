@@ -7,6 +7,13 @@ open UpperTheory.V.W (Plc Lp)
 
 attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField
 
+/- English proof (translation)
+Introduce `L _ _ _`. Establish `hlo : ∀ (v : Pl (Lp L)) (w : Plc L), un w = v → w.asIdeal.LiesOver v.asIdeal`. Introduce `v w h`. Substitute `h` using the available equality. Conclude with `⟨rfl⟩`.
+
+Use `⟨fun v w h => @GroundTheory.Global.SemiLocal.completionMap _ _ _ _ _ _ _ v w (hlo v w h), ?_, ?_⟩` and prove the remaining obligations. Introduce `v w h`. Conclude with `@GroundTheory.Global.SemiLocal.continuous_completionMap _ _ _ _ _ _ _ v w (hlo v w h)`. Introduce `v w h a`. Establish `e` using `@GroundTheory.Global.SemiLocal.completionMap_algebraMap _ _ _ _ _ _ _ v w (hlo v w h) a`.
+
+Simplify using `only [cv]`. Rewrite using `[e]`. Conclude with `IsScalarTower.algebraMap_apply (Lp L) L _ a`.
+-/
 theorem UpperTheory.V.Z.Sym.Dict.Br.phiEx :
     ∀ (L : Type) [Field L] [NumberField L] [IsCMField L], ∃ φ : ∀ (v : Pl (Lp L)) (w : Plc L), un w = v → Kv v →+* Kw w, (∀ v w h, Continuous (φ v w h)) ∧ ∀ v w h (a : Lp L), φ v w h (cv v a) = algebraMap L (Kw w) (algebraMap (Lp L) L a) := by
   intro L _ _ _

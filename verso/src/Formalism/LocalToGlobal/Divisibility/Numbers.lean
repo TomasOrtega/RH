@@ -41,6 +41,9 @@ abbrev q : ℕ := N.H.q
 
 abbrev d : ℕ := N.H.d
 
+/- English proof (translation)
+The claim follows from `N.H.hyp`.
+-/
 theorem hyp : HostHyp N.q N.d := N.H.hyp
 
 def Nm : ℕ := N.R.N N.R.m
@@ -86,6 +89,15 @@ def frobUnitMod (M p : ℕ) : (ZMod M)ˣ := by
 def hArt {φ : Formalism.HC.Frame} (H : Formalism.HC.HostRaw φ) (p : ℕ) : φ.A :=
   φ.iotaInv (H.art (frobUnitMod H.condN p)).2
 
+/- English proof (translation)
+Establish `h0 : M.factorization p = 0`. Distinguish the cases in `hp : p.Prime`. Conclude with `Nat.factorization_eq_zero_of_not_dvd (hp.coprime_iff_not_dvd.1 h)`. Conclude with `Nat.factorization_eq_zero_of_not_prime M hp`. Establish `k1 : ∀ (A : ℕ), A = M → ∀ w : ZMod M, ((w.cast : ZMod A) = (p : ZMod A) ↔ w = (p : ZMod M))`.
+
+Introduce and unpack `A rfl w`. Rewrite using `[ZMod.cast_id]`. Establish `k2 : ∀ (B : ℕ), B = 1 → ∀ w : ZMod M, (w.cast : ZMod B) = 1`. Introduce and unpack `B rfl w`. Conclude with `Subsingleton.elim _ _`.
+
+Establish `key : ∀ w : (ZMod M)ˣ, (((w : ZMod M).cast : ZMod (ordCompl[p] M)) = (p : ZMod (ordCompl[p] M)) ∧ ((w : ZMod M).cast : ZMod (ordProj[p] M)) = 1) ↔ w = ZMod.unitOfCoprime p h`. Introduce `w`. Rewrite using `[k1 _ (by rw [h0, pow_zero, Nat.div_one]), and_iff_left (k2 _ (by rw [h0, pow_zero]) _), Units.ext_iff, ZMod.coe_unitOfCoprime]`. Establish `hex : ∃ w : (ZMod M)ˣ, ((w : ZMod M).cast : ZMod (ordCompl[p] M)) = (p : ZMod (ordCompl[p] M)) ∧ ((w : ZMod M).cast : ZMod (ordProj[p] M)) = 1` using `⟨_, (key _).2 rfl⟩`. Unfold `frobUnitMod`.
+
+Rewrite using `[dif_pos hex]`. Conclude with `(key _).1 hex.choose_spec`.
+-/
 theorem frobUnitMod_of_coprime {M p : ℕ} (h : Nat.Coprime p M) : frobUnitMod M p = ZMod.unitOfCoprime p h := by
   have h0 : M.factorization p = 0 := by
     by_cases hp : p.Prime
@@ -118,6 +130,9 @@ def hP (p : ℕ) : N.R.A :=
   if h : Nat.Coprime p N.H.condN then N.R.iotaInv (N.H.art (ZMod.unitOfCoprime p h)).2
   else N.R.iotaInv (N.H.art (frobUnitMod N.H.condN p)).2
 
+/- English proof (translation)
+Unfold `hP hArt`. Use `split`. Name the introduced variables `h`. Rewrite using `[frobUnitMod_of_coprime h]`. Both sides reduce to the same expression.
+-/
 theorem hP_eq_hArt (p : ℕ) : N.hP p = hArt N.H.toHostRaw p := by
   unfold hP hArt
   split

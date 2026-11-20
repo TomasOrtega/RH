@@ -12,9 +12,15 @@ def reix {n m : Type} [Fintype n] [DecidableEq n] [Fintype m] [DecidableEq m] (e
     GL n k →* GL m k :=
   Units.map (Matrix.reindexAlgEquiv k k e).toAlgHom.toMonoidHom
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem reix_val {n m : Type} [Fintype n] [DecidableEq n] [Fintype m] [DecidableEq m] (e : n ≃ m)
     (g : GL n k) : (reix e g).1 = g.1.submatrix e.symm e.symm := rfl
 
+/- English proof (translation)
+Take `⟨h, rfl⟩` from `hg`. Use `⟨Units.map (Matrix.reindexAlgEquiv 𝒪[k] 𝒪[k] e).toAlgHom.toMonoidHom h, Units.ext ?_⟩` and prove the remaining obligations. Use extensionality with `i j`. Both sides reduce to the same expression.
+-/
 theorem reix_mem_KO {n m : Type} [Fintype n] [DecidableEq n] [Fintype m] [DecidableEq m] (e : n ≃ m)
     {g : GL n k} (hg : g ∈ KO k n) : reix e g ∈ KO k m := by
   obtain ⟨h, rfl⟩ := hg
@@ -22,12 +28,30 @@ theorem reix_mem_KO {n m : Type} [Fintype n] [DecidableEq n] [Fintype m] [Decida
   ext i j
   rfl
 
+/- English proof (translation)
+Use `ext1`. Rewrite using `[reix_val, val_torusElt, val_torusElt, submatrix_diagonal_equiv]`. Both sides reduce to the same expression.
+-/
 theorem reix_torusElt {n m : Type} [Fintype n] [DecidableEq n] [Fintype m] [DecidableEq m] (e : n ≃ m)
     (ϖ : kˣ) (f : n → ℤ) : reix e (torusElt k n ϖ f) = torusElt k m ϖ (f ∘ e.symm) := by
   ext1
   rw [reix_val, val_torusElt, val_torusElt, submatrix_diagonal_equiv]
   rfl
 
+/- English proof (translation)
+Set `σ` to `Tuple.sort (fun i => -a i)`. Set `τ` to `Tuple.sort (fun i => -b i)`. Establish `ha : Antitone (a ∘ σ)` using `fun i j hij => by`. Use `Tuple.monotone_sort (fun i => -a i) hij` as an intermediate fact. Simplify using `only [Function.comp_apply, neg_le_neg_iff] at this`.
+
+Conclude with `this`. Establish `hb : Antitone (b ∘ τ)` using `fun i j hij => by`. Use `Tuple.monotone_sort (fun i => -b i) hij` as an intermediate fact. Simplify using `only [Function.comp_apply, neg_le_neg_iff] at this`. Conclude with `this`.
+
+Take `⟨S₁, h₁, e₁⟩` from `Formalism.UG.P.cartan_perm_glint (L := k) 𝒪[k] σ.symm`. Take `⟨S₂, h₂, e₂⟩` from `Formalism.UG.P.cartan_perm_glint (L := k) 𝒪[k] σ`. Take `⟨T₁, h₃, e₃⟩` from `Formalism.UG.P.cartan_perm_glint (L := k) 𝒪[k] τ.symm`. Take `⟨T₂, h₄, e₄⟩` from `Formalism.UG.P.cartan_perm_glint (L := k) 𝒪[k] τ`. Establish `hA : torusElt k (Fin N) ϖ a = S₁ * torusElt k (Fin N) ϖ (a ∘ σ) * S₂` using `by ext1`.
+
+Simplify using `only [Units.val_mul, val_torusElt, e₁, e₂]`. Conclude with `Formalism.UG.P.cartan_diag_perm (fun i => (ϖ : k) ^ a i) σ`. Establish `hB : torusElt k (Fin N) ϖ b = T₁ * torusElt k (Fin N) ϖ (b ∘ τ) * T₂` using `by ext1`. Simplify using `only [Units.val_mul, val_torusElt, e₃, e₄]`. Conclude with `Formalism.UG.P.cartan_diag_perm (fun i => (ϖ : k) ^ b i) τ`.
+
+Establish `E : (T₁⁻¹ * x * S₁) * torusElt k (Fin N) ϖ (a ∘ σ) * (S₂ * y * T₂⁻¹) = torusElt k (Fin N) ϖ (b ∘ τ)`. Establish `h' : torusElt k (Fin N) ϖ (b ∘ τ) = T₁⁻¹ * torusElt k (Fin N) ϖ b * T₂⁻¹`. Rewrite using `[hB]`. Use `group`. Rewrite using `[h', ← h, hA]`.
+
+Use `group`. Establish `hab : a ∘ σ = b ∘ τ`. Use `Formalism.UG.P.cartan_unique_gen 𝒪[k] (valuation k) (fun _ => Iff.rfl) (ϖ : k) ϖ.ne_zero (hϖ ▸ uniformizer_lt_one) (a ∘ σ) (b ∘ τ) ha hb (T₁⁻¹ * x * S₁) (mul_mem (mul_mem (inv_mem h₃) hx) h₁) (S₂ * y * T₂⁻¹) (mul_mem (mul_mem h₂ hy) (inv_mem h₄)) ?_` and prove the remaining obligations. Use `congrArg Units.val E` as an intermediate fact. Simplify using `only [Units.val_mul, val_torusElt] at this`.
+
+Simplify `this` using `only [Units.val_mul, Matrix.mul_assoc]`. Conclude with `(Equiv.Perm.ofFn_comp_perm σ a).symm.trans (hab ▸ Equiv.Perm.ofFn_comp_perm τ b)`.
+-/
 theorem perm_of_eq {N : ℕ} {ϖ : kˣ} (hϖ : valuation k (ϖ : k) = uniformizer k) (a b : Fin N → ℤ)
     (x y : GL (Fin N) k) (hx : x ∈ KO k (Fin N)) (hy : y ∈ KO k (Fin N))
     (h : x * torusElt k (Fin N) ϖ a * y = torusElt k (Fin N) ϖ b) :
@@ -72,6 +96,15 @@ end GlobalTheory.CellDisjoint
 
 namespace GlobalTheory.CellDisjoint
 
+/- English proof (translation)
+Introduce `k _ _ _ _ ϖ hϖ r l t a b hab`. Use `Set.disjoint_left.2 fun g ha hb => hab (Subtype.ext ?_)` and prove the remaining obligations. Take `⟨x, hx, y, hy, rfl⟩` from `DoubleCoset.mem_doubleCoset.1 ha`. Take `⟨x', hx', y', hy', e⟩` from `DoubleCoset.mem_doubleCoset.1 hb`. Establish `hK : ∀ z : GL (Fin r ⊕ Blocks l t) k, z ∈ (parahoric k (Fin r) (Blocks l t) : Set _) → z ∈ KO k (Fin r ⊕ Blocks l t)` using `fun z hz => (mem_parahoric.1 hz).1`.
+
+Establish `e' : (x'⁻¹ * x) * mtor ϖ (a.1 ∘ (blkEquiv l t).symm) * (y * y'⁻¹) = mtor ϖ (b.1 ∘ (blkEquiv l t).symm)`. Combine the equalities or inequalities in the displayed calculation. Set `ρ : Fin (r + l * t) ≃ Fin r ⊕ Blocks l t` to `finSumFinEquiv.symm.trans (Equiv.sumCongr (Equiv.refl (Fin r)) (blkEquiv l t))`. Establish `hρ : ∀ f : Fin (l * t) → ℤ, (Sum.elim (0 : Fin r → ℤ) (f ∘ (blkEquiv l t).symm)) ∘ ρ.symm.symm = Fin.append (0 : Fin r → ℤ) f`. Introduce `f`.
+
+Use function extensionality and compare the values at `j`. Use `Fin.addCases (fun i => ?_) (fun i => ?_) j` and prove the remaining obligations. Simplify using `[ρ]`. Simplify using `[ρ]`. Establish `e''` using `congrArg (reix (k := k) ρ.symm) e'`.
+
+Simplify using `only [map_mul, mtor, reix_torusElt, hρ] at e''`. Establish `hp` using `perm_of_eq hϖ _ _ _ _ (mul_mem (reix_mem_KO _ (inv_mem (hK _ hx'))) (reix_mem_KO _ (hK _ hx))) (mul_mem (reix_mem_KO _ (hK _ hy)) (reix_mem_KO _ (inv_mem (hK _ hy')))) e''`. Rewrite `hp` using `[List.ofFn_fin_append, List.ofFn_fin_append, List.perm_append_left_iff]`. Conclude with `List.ofFn_injective (List.Perm.eq_of_sortedGE (List.sortedGE_ofFn_iff.2 a.2) (List.sortedGE_ofFn_iff.2 b.2) hp)`.
+-/
 theorem dcell_pairwise_disjoint : ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k]
     [IsNonarchimedeanLocalField k] (ϖ : kˣ),
     valuation k (ϖ : k) = uniformizer k → ∀ (r l t : ℕ),

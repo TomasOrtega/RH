@@ -7,6 +7,21 @@ open IsLocalRing Polynomial CategoryTheory Limits
 
 namespace GlobalTheory.TorsorColimElem
 
+/- English proof (translation)
+Introduce `ι _ _ _ R _ f hid hcomp B _ g hcompat hsurj hinj q hq D _ _ act hT`. Set `F : ι ⥤ CommRingCat.{0}` to `{ obj := fun i => CommRingCat.of (R i) map := fun {i j} h => CommRingCat.ofHom (f i j h.le) map_id := fun i => by`. Use extensionality with `x`. Simplify using `[hid]`. Use `map_comp := fun {i j k} a b => by`.
+
+Use extensionality with `x`. Simplify using `only [CommRingCat.hom_comp, CommRingCat.hom_ofHom, RingHom.coe_comp, Function.comp_apply]`. Conclude with `(RingHom.congr_fun (hcomp i j k a.le b.le) x).symm }`. Set `c : Cocone F` to `{ pt := CommRingCat.of B ι := { app := fun i => CommRingCat.ofHom (g i) naturality := fun i j h => by`. Use extensionality with `x`.
+
+Simplify using `only [Functor.const_obj_obj, Functor.const_obj_map, Category.comp_id, CommRingCat.hom_comp, CommRingCat.hom_ofHom, RingHom.coe_comp, Function.comp_apply, F]`. Conclude with `RingHom.congr_fun (hcompat i j h.le) x } }`. Establish `hc : IsColimit c` using `by haveI : ReflectsColimit F (forget CommRingCat) := reflectsColimit_of_reflectsIsomorphisms F (forget CommRingCat)`. Apply `isColimitOfReflects (forget CommRingCat)` to reduce the goal to its premises. Apply `Types.FilteredColimit.isColimitOf` to reduce the goal to its premises.
+
+Introduce `x`. Take `⟨i, y, hy⟩` from `hsurj x`. Conclude with `⟨i, y, hy.symm⟩`. Introduce `i j x y hxy`. Establish `hxy' : g i x = g j y` using `hxy`.
+
+Take `⟨k, hik, hjk⟩` from `directed_of (· ≤ ·) i j`. Establish `h0 : g k (f i k hik x - f j k hjk y) = 0`. Establish `e1 : g k (f i k hik x) = g i x` using `by rw [← hcompat i k hik]; rfl`. Establish `e2 : g k (f j k hjk y) = g j y` using `by rw [← hcompat j k hjk]; rfl`. Rewrite using `[map_sub, e1, e2, hxy', sub_self]`.
+
+Take `⟨l, hkl, hl⟩` from `hinj k _ h0`. Use `⟨l, homOfLE (hik.trans hkl), homOfLE (hjk.trans hkl), ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `f i l _ x = f j l _ y`. Rewrite `hl` using `[map_sub, sub_eq_zero]`. Rewrite using `[← hcomp i k l hik hkl, ← hcomp j k l hjk hkl]`.
+
+Conclude with `hl`. Establish `hT' : GlobalTheory.LocAcyc.IsZModTorsor B D q act` using `hT`. Take `⟨j, Dj, i1, i2, actj, hTj, ⟨e⟩⟩` from `@GlobalTheory.T.exists_zmodTorsor_model_of_filtered_colimit ι _ _ F c hc q hq D _ ‹Algebra B D› act hT'`. Conclude with `⟨j, Dj, i1, i2, actj, hTj, ⟨e⟩⟩`.
+-/
 theorem exists_torsor_model_of_elements : ∀ (ι : Type) [Preorder ι] [IsDirected ι (· ≤ ·)] [Nonempty ι] (R : ι → Type) [∀ i, CommRing (R i)]
     (f : ∀ i j, i ≤ j → R i →+* R j),
     (∀ i (h : i ≤ i), f i i h = RingHom.id (R i)) →

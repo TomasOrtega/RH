@@ -16,6 +16,9 @@ open MvPolynomial (X)
 
 namespace GlobalTheory.CanonConn
 
+/- English proof (translation)
+The claim follows from `GlobalTheory.CanonConn.exists_isNab GlobalTheory.firstFiveLaws.1`.
+-/
 theorem exists_isNab_uncond : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l), ∃ (_ : StarRing (𝓞 E)) (nab : NabV Xo c), IsNab Xo c nab :=
   GlobalTheory.CanonConn.exists_isNab GlobalTheory.firstFiveLaws.1
 

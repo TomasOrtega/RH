@@ -11,6 +11,19 @@ open GroundTheory.Automorphic GroundTheory.Automorphic.Reduction GroundTheory.Au
 open GroundTheory.Automorphic.AutomorphicForm GroundTheory.Automorphic.CuspidalSpectrum UpperTheory.ConvolutionTheory UpperTheory.ConvolutionTheory.C
 open scoped TensorProduct InnerProductSpace ComplexConjugate Pointwise
 
+/- English proof (translation)
+Introduce `K _ _ n r w J hJ U hU x`. Establish `key : ∀ (h : AdelicGLn.FiniteAdelicGL K n) (v : Pl K), finAt v (finEmb K n h) = AdelicGLn.finiteRestrictedEquiv K n h v`. Introduce `h v`. Use `show AdelicGLn.finiteRestrictedEquiv K n (AdelicGLn.prodEquiv K n (finEmb K n h)).2 v = _`. Rewrite using `[prodEquiv_finEmb]`.
+
+Establish `hint : ∀ h : AdelicGLn.FiniteAdelicGL K n, h ∈ AdelicGLn.integralFiniteGL K n ↔ ∀ v : Pl K, finAt v (finEmb K n h) ∈ GLnLocal.integralGL (v.adicCompletion K) n`. Introduce `h`. Rewrite using `[AdelicGLn.mem_integralFiniteGL_iff_forall]`. Simplify using `only [key]`. Distinguish the cases in `hx : x ∈ U`.
+
+Take `⟨h1, h2⟩` from `(hU x).1 hx`. Establish `hy : x ∈ ({y | ∀ v, v ∉ Set.range w → finAt v (finEmb K n y) ∈ GLnLocal.integralGL (v.adicCompletion K) n} : Set (AdelicGLn.FiniteAdelicGL K n))` using `fun v _ => (hint x).1 h1 v`. Rewrite using `[Set.indicator_of_mem hx, Set.indicator_of_mem hy, Finset.prod_eq_one]`. Simplify using the standard rewrite rules. Introduce `i _`.
+
+Rewrite using `[Set.indicator_of_mem (SetLike.mem_coe.2 (h2 i))]`. Both sides reduce to the same expression. Rewrite using `[Set.indicator_of_notMem hx]`. Distinguish the cases in `hJx : ∀ i, finAt (w i) (finEmb K n x) ∈ J i`. Establish `hy : x ∉ ({y | ∀ v, v ∉ Set.range w → finAt v (finEmb K n y) ∈ GLnLocal.integralGL (v.adicCompletion K) n} : Set (AdelicGLn.FiniteAdelicGL K n))`.
+
+Introduce `hy`. Use `hx ((hU x).2 ⟨(hint x).2 fun v => ?_, hJx⟩)` and prove the remaining obligations. Distinguish the cases in `hv : v ∈ Set.range w`. Take `⟨i, rfl⟩` from `hv`. Conclude with `hJ i (hJx i)`.
+
+Conclude with `hy v hv`. Rewrite using `[Set.indicator_of_notMem hy, zero_mul]`. Use `push_neg at hJx`. Take `⟨i, hi⟩` from `hJx`. Rewrite using `[Finset.prod_eq_zero (Finset.mem_univ i) (Set.indicator_of_notMem (SetLike.mem_coe.not.2 hi) _), mul_zero]`.
+-/
 theorem UpperTheory.indicator_level_eq_prod_local_indicator :
     ∀ (K : Type) [Field K] [NumberField K] (n r : ℕ) (w : Fin r → Pl K) (J : ∀ i, Subgroup (Gw n (w i))),
           (∀ i, J i ≤ GLnLocal.integralGL ((w i).adicCompletion K) n) → ∀ U : Set (AdelicGLn.FiniteAdelicGL K n),

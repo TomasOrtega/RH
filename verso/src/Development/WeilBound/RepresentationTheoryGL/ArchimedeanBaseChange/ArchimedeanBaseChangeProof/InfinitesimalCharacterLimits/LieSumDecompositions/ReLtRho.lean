@@ -17,6 +17,9 @@ namespace Grow
 
 variable {E : Type} [Field E] [NumberField E] [IsTotallyComplex E] {N : ℕ}
 
+/- English proof (translation)
+Set `S : Subgroup (GA E N)` to `{ carrier := {γ | ∀ g, φ.1 (γ * g) = φ.1 g} one_mem' := fun g => by rw [one_mul] mul_mem' := fun {x y} hx hy g => by rw [mul_assoc, hx, hy] inv_mem' := fun {x} hx g => by rw [← hx, mul_inv_cancel_left] }`. Establish `: latticeGL E N ≤ S` using `sup_le (by rintro _ ⟨γ, rfl⟩; exact hφ.left γ) (Subgroup.zpowers_le.2 (hcen 1))`. Conclude with `this`.
+-/
 theorem leftInv {φ : Sm E N} (hφ : IsAutForm φ) (hcen : ∀ (t : ℝ) g, φ.1 (splitCentre E N t * g) = φ.1 g) :
     ∀ γ ∈ latticeGL E N, ∀ g, φ.1 (γ * g) = φ.1 g := by
   let S : Subgroup (GA E N) :=
@@ -27,6 +30,17 @@ theorem leftInv {φ : Sm E N} (hφ : IsAutForm φ) (hcen : ∀ (t : ℝ) g, φ.1
   have : latticeGL E N ≤ S := sup_le (by rintro _ ⟨γ, rfl⟩; exact hφ.left γ) (Subgroup.zpowers_le.2 (hcen 1))
   exact this
 
+/- English proof (translation)
+Take `⟨hA, hS, _, hCT⟩` from `dict_holds E N`. Establish `hcen' : ∀ (t : ℝ) g, φ.1 (An.tor E (fun _ => t) * g) = φ.1 g` using `fun t g => by`. Rewrite using `[← hS]`. Conclude with `hcen t g`. Establish `hnice` using `niceAut_holds E N φ hφ hcen'`.
+
+Establish `hct` using `(hCT φ hφ r hr0 hrN).1`. Establish `hfin` using `finTr_holds E N φ hφ r hr0 hrN _ hct`. Establish `hadd : ∀ s t, aT E N r (s + t) = aT E N r s * aT E N r t` using `fun s t => by`. Rewrite using `[hA, hA, hA]`. Conclude with `JSqIntGlue.aR_add r s t`.
+
+Establish `hcont : ∀ g, Continuous fun t => An.ctn r φ.1 (aT E N r t * g)`. Introduce `g`. Establish `e : (fun t => An.ctn r φ.1 (aT E N r t * g)) = fun t => An.ctn r φ.1 (An.aR E N r t * g)`. Use function extensionality and compare the values at `fun t => by rw [hA]`. Rewrite using `[e]`.
+
+Conclude with `JSqIntGlue.continuous_ctn_comp hnice.cont r ((JSqIntGlue.continuous_aR r).mul continuous_const)`. Take `⟨p, hp, hpk, hroots⟩` from `killPoly_holds (GA E N) (aT E N r) (An.ctn r φ.1) hadd hcont hfin`. Use `⟨p, hp, fun g => ?_, fun z hz => ?_⟩` and prove the remaining obligations. Use `hpk g` as an intermediate fact. Simplify `this` using `only [hA]`.
+
+Take `⟨c, rfl, F, hF, hF0, hFe⟩` from `hroots z hz`. Conclude with `⟨c, ⟨_, hct, F, hF, hF0, hFe⟩, rfl⟩`.
+-/
 theorem exists_kill {φ : Sm E N} (hφ : IsAutForm φ) (hcen : ∀ (t : ℝ) g, φ.1 (splitCentre E N t * g) = φ.1 g)
     {r : ℕ} (hr0 : 0 < r) (hrN : r < N) :
     ∃ p : ℂ[X], p.Monic ∧ An.Kill r φ.1 p ∧ ∀ z, p.IsRoot z → ∃ c ∈ Exp r φ.1, z = Complex.exp c := by
@@ -51,6 +65,11 @@ theorem exists_kill {φ : Sm E N} (hφ : IsAutForm φ) (hcen : ∀ (t : ℝ) g, 
   · obtain ⟨c, rfl, F, hF, hF0, hFe⟩ := hroots z hz
     exact ⟨c, ⟨_, hct, F, hF, hF0, hFe⟩, rfl⟩
 
+/- English proof (translation)
+Take `⟨_, hS, _, _⟩` from `dict_holds E N`. Establish `hcen' : ∀ (t : ℝ) g, φ.1 (An.tor E (fun _ => t) * g) = φ.1 g` using `fun t g => by`. Rewrite using `[← hS]`. Conclude with `hcen t g`. Establish `hnice` using `niceAut_holds E N φ hφ hcen'`.
+
+Take `⟨M, hM⟩` from `initBnd_holds E N φ hφ hcen'`. Conclude with `GlobalTheory.CompanionTheory.AnBoot.bootGlue diffstep_holds (ctstepglue_holds GlobalTheory.CompanionTheory.LinRec.recBound) E N φ.1 M κ hnice hM hκ`.
+-/
 theorem bnd_of' {φ : Sm E N} (hφ : IsAutForm φ) (hcen : ∀ (t : ℝ) g, φ.1 (splitCentre E N t * g) = φ.1 g)
     (κ : ℕ → ℝ) (hκ : ∀ r, 0 < r → r < N → ∃ p : ℂ[X], p.Monic ∧ An.Kill r φ.1 p ∧
       ∀ z, p.IsRoot z → ‖z‖ < Real.exp (κ r)) : An.Bnd φ.1 κ := by
@@ -61,6 +80,11 @@ theorem bnd_of' {φ : Sm E N} (hφ : IsAutForm φ) (hcen : ∀ (t : ℝ) g, φ.1
   obtain ⟨M, hM⟩ := initBnd_holds E N φ hφ hcen'
   exact GlobalTheory.CompanionTheory.AnBoot.bootGlue diffstep_holds (ctstepglue_holds GlobalTheory.CompanionTheory.LinRec.recBound) E N φ.1 M κ hnice hM hκ
 
+/- English proof (translation)
+Use `bnd_of' hφ hcen κ fun r hr0 hrN => ?_` and prove the remaining obligations. Take `⟨p, hp, hk, hroots⟩` from `exists_kill hφ hcen hr0 hrN`. Use `⟨p, hp, hk, fun z hz => ?_⟩` and prove the remaining obligations. Take `⟨c, hc, rfl⟩` from `hroots z hz`. Rewrite using `[Complex.norm_exp]`.
+
+Conclude with `Real.exp_lt_exp.2 (hκ r hr0 hrN c hc)`.
+-/
 theorem bnd_of {φ : Sm E N} (hφ : IsAutForm φ) (hcen : ∀ (t : ℝ) g, φ.1 (splitCentre E N t * g) = φ.1 g)
     (κ : ℕ → ℝ) (hκ : ∀ r, 0 < r → r < N → ∀ c ∈ Exp r φ.1, c.re < κ r) : An.Bnd φ.1 κ := by
   refine bnd_of' hφ hcen κ fun r hr0 hrN => ?_
@@ -71,6 +95,11 @@ theorem bnd_of {φ : Sm E N} (hφ : IsAutForm φ) (hcen : ∀ (t : ℝ) g, φ.1 
   exact Real.exp_lt_exp.2 (hκ r hr0 hrN c hc)
 
 omit [IsTotallyComplex E] in
+/- English proof (translation)
+Establish `hd : (0 : ℝ) < Module.finrank ℚ E` using `by exact_mod_cast Module.finrank_pos`. Unfold `pE at h`. Establish `h2 : c.re / (Module.finrank ℚ E : ℝ) ≤ (r : ℝ) * ((N : ℝ) - r) / 2` using `by linarith`. Establish `h3` using `(div_le_iff₀ hd).1 h2`. Unfold `An.rho`.
+
+Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem re_le_rho {r : ℕ} {c : ℂ} (h : pE E N r c ≤ 0) : c.re ≤ An.rho E N r := by
   have hd : (0 : ℝ) < Module.finrank ℚ E := by exact_mod_cast Module.finrank_pos
   unfold pE at h
@@ -81,6 +110,11 @@ theorem re_le_rho {r : ℕ} {c : ℂ} (h : pE E N r c ≤ 0) : c.re ≤ An.rho E
     _ = _ := by ring
 
 omit [IsTotallyComplex E] in
+/- English proof (translation)
+Establish `hd : (0 : ℝ) < Module.finrank ℚ E` using `by exact_mod_cast Module.finrank_pos`. Unfold `pE at h`. Establish `h2 : c.re / (Module.finrank ℚ E : ℝ) < (r : ℝ) * ((N : ℝ) - r) / 2` using `by linarith`. Establish `h3` using `(div_lt_iff₀ hd).1 h2`. Unfold `An.rho`.
+
+Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem re_lt_rho {r : ℕ} {c : ℂ} (h : pE E N r c < 0) : c.re < An.rho E N r := by
   have hd : (0 : ℝ) < Module.finrank ℚ E := by exact_mod_cast Module.finrank_pos
   unfold pE at h
@@ -93,6 +127,9 @@ theorem re_lt_rho {r : ℕ} {c : ℂ} (h : pE E N r c < 0) : c.re < An.rho E N r
 end Grow
 
 open Grow in
+/- English proof (translation)
+Introduce `E _ _ _ N χ hχ hcen hnp`. Use `⟨ContAut.continuous_of_isOpen_stab E N χ hχ.level, leftInv hχ hcen, fun ε hε => ?_⟩` and prove the remaining obligations. Conclude with `bnd_of hχ hcen _ fun r hr0 hrN c hc => by`. Use `re_le_rho (hnp r hr0 hrN c hc)` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem growPHolds : GrowPHolds := by
   intro E _ _ _ N χ hχ hcen hnp
   refine ⟨ContAut.continuous_of_isOpen_stab E N χ hχ.level, leftInv hχ hcen, fun ε hε => ?_⟩
@@ -101,6 +138,17 @@ theorem growPHolds : GrowPHolds := by
     linarith
 
 open Grow in
+/- English proof (translation)
+Introduce `E _ _ _ N u hu hsq`. Establish `hcen` using `hsq.1`. Establish `hk : ∀ r, ∃ κ : ℝ, 0 < r → r < N → κ < An.rho E N r ∧ ∃ p : ℂ[X], p.Monic ∧ An.Kill r u.1 p ∧ ∀ z, p.IsRoot z → ‖z‖ < Real.exp κ`. Introduce `r`. Distinguish the cases in `hr : 0 < r ∧ r < N`.
+
+Use `swap`. Conclude with `⟨0, fun h1 h2 => (hr ⟨h1, h2⟩).elim⟩`. Take `⟨hr0, hrN⟩` from `hr`. Take `⟨p, hp, hpk, hroots⟩` from `exists_kill hu hcen hr0 hrN`. Establish `hroot' : ∀ z ∈ p.roots.toFinset, ‖z‖ < Real.exp (An.rho E N r)`.
+
+Introduce `z hz`. Rewrite `hz` using `[Multiset.mem_toFinset, mem_roots hp.ne_zero]`. Take `⟨c, hc, rfl⟩` from `hroots z hz`. Rewrite using `[Complex.norm_exp]`. Conclude with `Real.exp_lt_exp.2 (re_lt_rho (expNeg_holds E N u hu hsq r hr0 hrN c hc))`.
+
+Take `⟨κ, hκ, hκz⟩` from `JSqIntGlue.exists_lt_of_finset _ _ hroot'`. Use `⟨κ, fun _ _ => ⟨hκ, p, hp, hpk, fun z hz => hκz z ?_⟩⟩` and prove the remaining obligations. Rewrite using `[Multiset.mem_toFinset, mem_roots hp.ne_zero]`. Conclude with `hz`. Use `choose κ hκ using hk`.
+
+Conclude with `⟨ContAut.continuous_of_isOpen_stab E N u hu.level, leftInv hu hcen, κ, fun r h1 h2 => (hκ r h1 h2).1, bnd_of' hu hcen κ fun r h1 h2 => (hκ r h1 h2).2⟩`.
+-/
 theorem growQHolds : GrowQHolds := by
   intro E _ _ _ N u hu hsq
   have hcen := hsq.1
@@ -126,6 +174,25 @@ theorem growQHolds : GrowQHolds := by
   exact ⟨ContAut.continuous_of_isOpen_stab E N u hu.level, leftInv hu hcen, κ, fun r h1 h2 => (hκ r h1 h2).1,
     bnd_of' hu hcen κ fun r h1 h2 => (hκ r h1 h2).2⟩
 
+/- English proof (translation)
+Introduce `E _ _ _ N H hc h0 hl m hm hB`. Take `⟨_, hS, hL, _⟩` from `dict_holds E N`. Use `set φ : GA E N → ℂ := fun g => ((Real.sqrt (H g) : ℝ) : ℂ) with hφ`. Establish `hφc : Continuous φ` using `Complex.continuous_ofReal.comp (Real.continuous_sqrt.comp hc)`. Establish `hφB : An.Bnd φ (fun r => m r / 2)`.
+
+Introduce `ω hω hωB t₀ Q hQ`. Take `⟨C, hC⟩` from `hB ω hω hωB t₀ Q hQ`. Use `⟨Real.sqrt (max C 0), fun b hb x hx q hq => ?_⟩` and prove the remaining obligations. Establish `h1` using `hC b hb x hx q hq`. Rewrite `h1` using `[Complex.norm_real, Real.norm_of_nonneg (h0 _)]`.
+
+Use `set S := ∑ r ∈ Finset.range N, m r * An.sr x r with hSdef`. Establish `e2 : ∑ r ∈ Finset.range N, m r / 2 * An.sr x r = S / 2`. Rewrite using `[hSdef, Finset.sum_div]`. Conclude with `Finset.sum_congr rfl fun r _ => by ring`. Establish `e : Real.exp (∑ r ∈ Finset.range N, m r / 2 * An.sr x r) = Real.sqrt (Real.exp S)`.
+
+Rewrite using `[e2]`. Use `conv_rhs => rw [show S = S / 2 + S / 2 by ring]`. Rewrite using `[Real.exp_add, Real.sqrt_mul_self (Real.exp_pos _).le]`. Establish `h2 : H (b * An.tor E x * q) ≤ max C 0 * Real.exp S` using `h1.trans (mul_le_mul_of_nonneg_right (le_max_left _ _) (Real.exp_pos _).le)`. Combine the equalities or inequalities in the displayed calculation.
+
+Rewrite using `[hφ, Complex.norm_real, Real.norm_of_nonneg (Real.sqrt_nonneg _)]`. Use `_ ≤ Real.sqrt (max C 0 * Real.exp S) := Real.sqrt_le_sqrt h2`. Use `_ = Real.sqrt (max C 0) * Real.sqrt (Real.exp S) := Real.sqrt_mul (le_max_right _ _) _`. Use `_ = _ := by rw [e]`. Establish `hκ : ∀ r, 0 < r → r < N → m r / 2 < An.rho E N r` using `fun r h1 h2 => by`.
+
+Use `hm r h1 h2` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hslab` using `GlobalTheory.CompanionTheory.SlabGlue.slabGlue boxvol_holds E N Measure.haar φ (fun r => m r / 2) hφc hφB hκ`. Establish `hfd` using `isFundamentalDomain_stdDom (latticeGL E N) (Measure.haar : Measure (GA E N))`. Take `⟨ω, hω, hωB, t, ht, hsieg⟩` from `GroundTheory.Automorphic.Reduction.exists_siegelSet (K := E) N`.
+
+Establish `: MeasurableConstSMul (latticeGL E N) (GA E N)` using `⟨fun γ => measurable_const_mul (γ : GA E N)⟩`. Establish `: SMulInvariantMeasure (latticeGL E N) (GA E N) (Measure.haar : Measure (GA E N))` using `⟨fun γ s _ => measure_preimage_mul _ γ.1 s⟩`. Establish `hle` using `JSqIntGlue.setLIntegral_le_of_cover hfd (S := An.slab ω (max 0 (-Real.log t))) (fun g => by`. Take `⟨γ, hγ, h⟩` from `JSqIntGlue.exists_mem_slab hS hL ht hsieg g`. Conclude with `⟨⟨γ, hγ⟩, h⟩) (fun g => ENNReal.ofReal (H g)) (fun γ g => by`.
+
+Use `show ENNReal.ofReal (H (γ.1 * g)) = ENNReal.ofReal (H g)`. Rewrite using `[hl γ.1 γ.2 g])`. Establish `e : ∀ g, ‖φ g‖ₑ ^ 2 = ENNReal.ofReal (H g)` using `fun g => by show ‖((Real.sqrt (H g) : ℝ) : ℂ)‖ₑ ^ 2 = _`. Rewrite using `[← ofReal_norm, Complex.norm_real, Real.norm_of_nonneg (Real.sqrt_nonneg _), ← ENNReal.ofReal_pow (Real.sqrt_nonneg _), Real.sq_sqrt (h0 g)]`. Simplify using `only [e] at hslab`.
+
+Conclude with `hle.trans_lt (hslab ω hω hωB _)`.
+-/
 theorem intBnd : IntBnd := by
   intro E _ _ _ N H hc h0 hl m hm hB
   obtain ⟨_, hS, hL, _⟩ := dict_holds E N

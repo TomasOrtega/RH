@@ -9,6 +9,9 @@ open GlobalTheory.CompanionTheory.LFUDom
 
 namespace GlobalTheory.CompanionTheory.LFUDom
 
+/- English proof (translation)
+The claim follows from `_root_.UpperTheory.Reformulated.B.IntegralSumCosets.integral_eq_measure_mul_sum_cosets`.
+-/
 theorem integral_eq_measure_mul_sum_cosets :
     ∀ (G : Type) [Group G] [TopologicalSpace G] [IsTopologicalGroup G] [MeasurableSpace G] [BorelSpace G]
   (μ : Measure G) [μ.IsMulRightInvariant] [IsFiniteMeasureOnCompacts μ] (K : Subgroup G),

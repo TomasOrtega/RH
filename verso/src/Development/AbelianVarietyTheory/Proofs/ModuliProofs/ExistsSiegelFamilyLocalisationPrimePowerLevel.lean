@@ -33,10 +33,16 @@ open GlobalTheory.ZM
 noncomputable section
 namespace GlobalTheory.SiegelFromSharp
 
+/- English proof (translation)
+Rewrite using `[← Spec.map_comp]`. Both sides reduce to the same expression.
+-/
 theorem spMap_comp {R R' R'' : Type} [CommRing R] [CommRing R'] [CommRing R''] (f : R →+* R') (g : R' →+* R'') :
     spMap g ≫ spMap f = spMap (g.comp f) := by
   rw [← Spec.map_comp]; rfl
 
+/- English proof (translation)
+The claim follows from `Spec.map_id _`.
+-/
 theorem spMap_id (R : Type) [CommRing R] : spMap (RingHom.id R) = 𝟙 _ := Spec.map_id _
 
 def restrictBase {h k : ℕ} {B B' : Type} [CommRing B] [CommRing B'] {ζ : B} {ζ' : B'} (j : B →+* B') (hj : j ζ = ζ')
@@ -60,12 +66,18 @@ def restrictBase {h k : ℕ} {B B' : Type} [CommRing B] [CommRing B'] {ζ : B} {
     have e : φ.hom.comp j = β := congrArg CommRingCat.Hom.hom (Spec.map_injective this)
     rw [hz, ← e, ← hj]; rfl
 
+/- English proof (translation)
+Take `⟨N, i, hi, hq, rfl⟩` from `h`. Use `isProper_str R N` as an intermediate fact. Conclude with `⟨inferInstance, inferInstance⟩`.
+-/
 theorem finiteType_of_isQProjOver {R : Type} [CommRing R] {X : Scheme.{0}} {f : X ⟶ Sp R} (h : IsQProjOver f) :
     QuasiCompact f ∧ LocallyOfFiniteType f := by
   obtain ⟨N, i, hi, hq, rfl⟩ := h
   have := isProper_str R N
   exact ⟨inferInstance, inferInstance⟩
 
+/- English proof (translation)
+Simplify using `only [constPt, Category.assoc, spMap_comp]`. Use `congr 1`. Apply the tactic sequence `ext x <;> simp [dirMap]`.
+-/
 theorem dirMap_base {o K : Type} [CommRing o] [Field K] {r : ℕ} (β : o →+* K) (lam : (Fin r → K) →ₗ[K] K) :
     spMap (dirMap lam) ≫ spMap ((algebraMap K (TrivSqZeroExt K (Fin r → K))).comp β) =
       constPt (spMap (dirMap lam)) ≫ spMap ((algebraMap K (TrivSqZeroExt K (Fin r → K))).comp β) := by
@@ -73,10 +85,42 @@ theorem dirMap_base {o K : Type} [CommRing o] [Field K] {r : ℕ} (β : o →+* 
   congr 1
   ext x <;> simp [dirMap]
 
+/- English proof (translation)
+Simplify using `only [constPt, Category.assoc]`.
+-/
 theorem constPt_comp {K : Type} [Field K] {X Y : Scheme.{0}} (x : Sp (DualNumber K) ⟶ X) (f : X ⟶ Y) :
     constPt x ≫ f = constPt (x ≫ f) := by
   simp only [constPt, Category.assoc]
 
+/- English proof (translation)
+Establish `hk : Odd (N' ^ 2)` using `hodd.pow`. Establish `hk3 : 3 ≤ N' ^ 2` using `by nlinarith`. Establish `hζ : b.ζ ^ N' ^ 2 = 1`. Use `Units.ext (har.2.2 ?_)` and prove the remaining obligations. Rewrite using `[Units.val_pow_eq_pow_val, map_pow, (b.prim ℂ em).pow_eq_one, Units.val_one, map_one]`.
+
+Use `haveI : IsDedekindDomain o := har.1`. Use `haveI : CharZero o := RingHom.charZero em`. Take `⟨hq, hflat, hred, htan⟩` from `GlobalTheory.T.thetaClosureOpenFamily_qproj_flat_reduced_ext L1 L2 o g n N' J b em _ Mat κ F hodd`. Take `⟨hqc, hft⟩` from `finiteType_of_isQProjOver (hq.resolve_right (not_not.2 inferInstance))`. Use `haveI : IsLocallyNoetherian F.U.toScheme := LocallyOfFiniteType.isLocallyNoetherian (F.U.ι ≫ F.Y.s)`.
+
+Take `⟨c, hc, hsharp⟩` from `GlobalTheory.T.exists_eighthPower_principalSiegel_of_dense L1 L2 L3 h g W J a bas hW hbas hu _ o b em _ _ F.univ hk F.dense`. Establish `pull : ∀ (S : Scheme.{0}) (s : S ⟶ Sp o) (c' : SiegPre h (N' ^ 2) (b.ζ : o) s) (t : TObj g (N' ^ 2) J b s) (f : S ⟶ F.U.toScheme), c'.Principal → IsSharp W a bas t c' → (SiegPB c' c f ↔ TMap t F.univ f)`. Introduce `S s c' t f h1 h2`. Use `GlobalTheory.T.siegelPullback_iff_eighthPower_pullback L1 L2 h g W J a bas hW hbas _ o b _ _ _ _ c c' F.univ t f hc h1 hsharp h2` as an intermediate fact. Conclude with `⟨this.1, this.2 hu⟩`.
+
+Establish `hsm : SmoothOfRelativeDimension (h * (h + 1) / 2) (F.U.ι ≫ F.Y.s)`. Use `GlobalTheory.T.smoothOfRelativeDimension_of_flat_dedekind_tangent_le o _ _ _ har.2.1 hflat hft (GlobalTheory.T.le_ringKrullDim_thetaFamily_genericFibre L1 L2 g n N' J Mat κ w w' o b em _ _ F h3 hodd har good) ?_` and prove the remaining obligations. Introduce `K _ _ r β x hx hlam`. Take `⟨p1, p2, -⟩` from `GlobalTheory.T.siegelPre_pullback_principal_ringChange h (N' ^ 2) o o (b.ζ : o) (b.ζ : o) (RingHom.id o) _ _ _ (spMap ((algebraMap K (TrivSqZeroExt K (Fin r → K))).comp β)) x rfl (by rw [spMap_id, Category.comp_id, hx])`. Take `⟨c', hc'⟩` from `p1 c`.
+
+Establish `hp'` using `p2 c c' hc' hc`. Take `⟨t', ht'⟩` from `GlobalTheory.T.exists_thetaObject_eighthPower_principalSiegel L1 L2 h g W J a bas hW hbas _ o b _ _ c' hk hk3 hζ hp'`. Establish `hm : TMap t' F.univ x` using `(pull _ _ c' t' x hp' ht').1 hc'`. Use `GlobalTheory.T.siegelFamily_tangent_dimension_bound L1 L2 L3 h g W J a bas hW hbas w w' hw hw' _ o b K r β t' c' hp' ht' ?_` and prove the remaining obligations. Introduce `lam t'' m1 m2`.
+
+Use `hlam lam ?_` and prove the remaining obligations. Rewrite using `[← constPt_comp]`. Use `htan (DualNumber K) _ _ _ t'' ?_ (((GlobalTheory.T.thetaLevelPullback_id_comp_cancel o g _ J b _ _ _ _ _ _ F.univ t' t'').2 x _ hm).1 m1) (((GlobalTheory.T.thetaLevelPullback_id_comp_cancel o g _ J b _ _ _ _ _ _ F.univ t' t'').2 x _ hm).1 m2)` and prove the remaining obligations. Rewrite using `[Category.assoc, Category.assoc, hx]`. Conclude with `dirMap_base β lam`.
+
+Take `⟨q1, q2, -⟩` from `GlobalTheory.T.siegelPre_pullback_principal_ringChange h (N' ^ 2) o _ (b.ζ : o) _ j _ _ (F.U.ι ≫ F.Y.s) (pullback.snd (F.U.ι ≫ F.Y.s) (spMap j)) (pullback.fst _ _) hj pullback.condition`. Take `⟨u, hupb⟩` from `q1 c`. Establish `hup` using `q2 c u hupb hc`. Use `⟨⟨pullback (F.U.ι ≫ F.Y.s) (spMap j), pullback.snd _ _, (smoothOfRelativeDimension_isStableUnderBaseChange _).of_isPullback (IsPullback.of_hasPullback _ _) hsm, inferInstance, u, hup, ?_, ?_⟩⟩` and prove the remaining obligations. Introduce `C O _ _ _ _ _ _ _ _ hO hpC β c₁ hgen hamp`.
+
+Establish `hp₁ : c₁.Principal` using `GlobalTheory.T.principal_siegel_of_generic_principal_special_ample L1 L2 h _ hk hk3 _ _ C O hO p hp hpC β c₁ hgen hamp`. Establish `hp₀ : (restrictBase j hj c₁).Principal` using `hp₁`. Take `⟨t, ht⟩` from `GlobalTheory.T.exists_thetaObject_eighthPower_principalSiegel L1 L2 h g W J a bas hW hbas _ o b _ _ (restrictBase j hj c₁) hk hk3 hζ hp₀`. Establish `hfrom` using `GlobalTheory.T.fromC_sharpClass_fibre_of_charZero L1 L2 h g W J a w w' bas hW hbas hw hw' hu N' o b em har _ _ t _ hp₀ ht C (spMap (algebraMap O C))`. Use `haveI : IsDomain O := hO.1.isDomain _`.
+
+Establish `hdense : Dense (fromSet em (SharpClass (b` using `b) W a bas em) t) := by`. Establish `hd : DenseRange (PrimeSpectrum.comap (algebraMap O C))`. Rewrite using `[PrimeSpectrum.denseRange_comap_iff_ker_le_nilRadical, (RingHom.injective_iff_ker_eq_bot _).1 hO.1]`. Conclude with `bot_le`. Conclude with `Dense.mono (fun z hz => ⟨C, inferInstance, _, hz, hfrom⟩) hd`.
+
+Establish `hshape : t.Shape Mat κ`. Take `⟨_, _, _, _, _, _, _, tc, -, -, -, -, -, htc⟩` from `hfrom`. Establish `hs` using `(good.shape tc htc).1`. Take `⟨cc, hcc, hcs⟩` from `htc`. Conclude with `GlobalTheory.T.eighthPower_shape_depends_only_on_matrices L1 L2 h g W J a bas hW hbas _ o b Mat κ _ _ _ _ cc _ tc t hh inferInstance hcc hp₀ hcs ht hs`.
+
+Take `⟨f, ⟨hf, hm⟩, -⟩` from `rep _ _ t inferInstance hdense fun K _ _ x t' hx => (GlobalTheory.T.thetaLevel_shape_primitivity_pullback_descent o g _ J b Mat κ w w' _ _ _ _ x t t' hx).1 hshape`. Establish `hpb : SiegPB c₁ c f` using `(pull _ _ (restrictBase j hj c₁) t f hp₀ ht).2 hm`. Use `⟨pullback.lift f (spMap β) hf, pullback.lift_snd _ _ _, ?_⟩` and prove the remaining obligations. Use `((GlobalTheory.T.siegelPullback_id_comp_cancel h _ _ _ _ _ _ _ _ _ _ _ _ _ c u c₁ _ _).2 hupb).2 ?_` and prove the remaining obligations. Rewrite using `[pullback.lift_fst]` and apply the resulting hypothesis.
+
+Introduce `K _ x c₁ m1 m2`. Establish `hp₁ : c₁.Principal` using `(GlobalTheory.T.siegelPre_pullback_principal_ringChange h (N' ^ 2) _ _ _ _ (RingHom.id _) _ _ _ _ x rfl (by rw [spMap_id, Category.comp_id])).2.1 u c₁ m1 hup`. Establish `hp₀ : (restrictBase j hj c₁).Principal` using `hp₁`. Take `⟨t, ht⟩` from `GlobalTheory.T.exists_thetaObject_eighthPower_principalSiegel L1 L2 h g W J a bas hW hbas _ o b _ _ (restrictBase j hj c₁) hk hk3 hζ hp₀`. Establish `n1` using `(pull _ _ (restrictBase j hj c₁) t _ hp₀ ht).1 (((GlobalTheory.T.siegelPullback_id_comp_cancel h _ _ _ _ _ _ _ _ _ _ _ _ _ c u c₁ _ _).2 hupb).1 m1)`.
+
+Establish `n2` using `(pull _ _ (restrictBase j hj c₁) t _ hp₀ ht).1 (((GlobalTheory.T.siegelPullback_id_comp_cancel h _ _ _ _ _ _ _ _ _ _ _ _ _ c u c₁ _ _).2 hupb).1 m2)`. Establish `e : x ≫ pullback.snd _ _ = constPt x ≫ pullback.snd _ _`. Rewrite using `[constPt_comp]`. Conclude with `hconst K _`. Use `pullback.hom_ext (htan (DualNumber K) _ _ _ t ?_ n1 n2) e` and prove the remaining obligations.
+
+Rewrite using `[Category.assoc, Category.assoc, pullback.condition, ← Category.assoc, e, Category.assoc]`.
+-/
 theorem nonempty_siegelFamily (L1 : Out.Laws) (L2 : Out.Laws2)
     (L3 : ∀ (S : Scheme.{0}) (P : Out.PolAV S) (M : LB P.A.left), M.IsLB → ∃ t : LB.Gen (Theta P.A M), t.IsGen)
     {h g p n N' : ℕ} (hh : 1 ≤ h) (hp : p.Prime) {W : Matrix (Fin 8) (Fin 8) ℤ} {J : Type} [Finite J]
@@ -171,6 +215,19 @@ theorem nonempty_siegelFamily (L1 : Out.Laws) (L2 : Out.Laws2)
     refine pullback.hom_ext (htan (DualNumber K) _ _ _ t ?_ n1 n2) e
     rw [Category.assoc, Category.assoc, pullback.condition, ← Category.assoc, e, Category.assoc]
 
+/- English proof (translation)
+Introduce `L1 L2 L3 L4 h p n hh hp hn hodd hnp`. Take `⟨W, hW, hb⟩` from `exists_isE8_isSharpBasis`. Take `⟨bas, hbas⟩` from `hb h`. Establish `hinv : (W + W.transpose) * (W + W.transpose)⁻¹ = 1` using `Matrix.mul_nonsing_inv _ (by rw [hW.2]; exact isUnit_one)`. Set `a : (Fin 8 × Fin 8) ⊕ Bool → Matrix (Fin 8) (Fin 8) ℤ` to `Sum.elim (fun uv => Matrix.single uv.1 uv.2 1) (fun e => (W + W.transpose)⁻¹ * (if e then W else W.transpose))`.
+
+Establish `hw : (W + W.transpose) * a (.inr true) = W`. Express the relevant statement in the definitionally equal form `_ * (_ * W) = W`. Rewrite using `[← Matrix.mul_assoc, hinv, Matrix.one_mul]`. Establish `hw' : (W + W.transpose) * a (.inr false) = W.transpose`. Express the relevant statement in the definitionally equal form `_ * (_ * W.transpose) = W.transpose`.
+
+Rewrite using `[← Matrix.mul_assoc, hinv, Matrix.one_mul]`. Establish `hu : ∀ u v, ∃ j, a j = Matrix.single u v 1` using `fun u v => ⟨.inl (u, v), rfl⟩`. Take `⟨Mat, κ, hcl⟩` from `GlobalTheory.T.isGoodThetaComplexClass_E8Sharp L1 L2 L3 L4 h _ W _ a _ _ bas hW hbas hw hw' hu`. Take `⟨j₁, h₁⟩` from `hcl n hn hodd`. Take `⟨j₂, h₂⟩` from `GlobalTheory.T.nonempty_thetaFamily_over_open_closure L1 L2 _ _ Mat κ n (.inr true) (.inr false) hn hodd`.
+
+Take `⟨j₃, h₃⟩` from `GlobalTheory.T.existsUnique_map_to_thetaFamily_openPart L1 L2 _ _ Mat κ n (.inr true) (.inr false) hn hodd`. Take `⟨m, hm⟩ : ∃ m, m = j₁ + j₂ + j₃ + 1` from `⟨_, rfl⟩`. Establish `hn3 : 3 ≤ n`. Use `hn.two_le` as an intermediate fact. Take `⟨e, he⟩` from `hodd`.
+
+Use linear arithmetic over natural numbers and integers. Establish `h3 : 3 ≤ n ^ m` using `hn3.trans (Nat.le_self_pow (by omega) n)`. Take `⟨o, _, b, em, j, har, hj, -, hconst⟩` from `GlobalTheory.T.exists_cyclotomic_base_ring_inverting_prime n (m * 2) p ((n ^ m) ^ 2) hn hp hnp (by omega) (pow_mul n m 2).symm`. Establish `good` using `h₁ m (by omega) _ rfl o b em`. Take `⟨F⟩` from `h₂ m (by omega) o b em _ _ har good`.
+
+Use `⟨m * 2, hn3.trans (Nat.le_self_pow (by omega) n), ?_⟩` and prove the remaining obligations. Rewrite using `[pow_mul]`. Conclude with `nonempty_siegelFamily L1 L2 L3 hh hp hW hbas hw hw' hu h3 hodd.pow j har hj hconst good F (h₃ m (by omega) o b em _ _ har good F)`.
+-/
 theorem exists_siegelFamily : Out.Laws → Out.Laws2 → (∀ (S : Scheme.{0}) (P : Out.PolAV S) (M : LB P.A.left), M.IsLB → ∃ t : LB.Gen (Theta P.A M), t.IsGen) → ThetaUnifAV → N0 := by
   intro L1 L2 L3 L4 h p n hh hp hn hodd hnp
   obtain ⟨W, hW, hb⟩ := exists_isE8_isSharpBasis

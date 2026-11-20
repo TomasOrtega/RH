@@ -13,6 +13,9 @@ namespace GlobalTheory.Fam.BaseLevel
 
 open NumberField IsDedekindDomain GlobalTheory.Mem.Col2 Formalism.L2.Forms GlobalTheory.SeeSaw GlobalTheory.SeeSaw.TopLevel
 
+/- English proof (translation)
+Unfold `levFn`. Use `congr 2`. Use `Finset.prod_congr rfl fun PP hPP => Finset.prod_congr rfl fun c hc => ?_` and prove the remaining obligations. Conclude with `congrArg (fun f : (kP PP)ˣ →* ℂˣ => f _) (e c (Finset.mem_range.1 hc) PP hPP)`.
+-/
 theorem levFn_congr {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {n r t s : ℕ} (h : r ≤ n)
     (β) {SG Q : Finset (Pl E)} (P : LevelP SG r ℂ) (cg cg' : ℕ → ∀ PP : Pl E, (kP PP)ˣ →* ℂˣ) (xq : ∀ PP : Pl E, (kP PP)ˣ →* ℂˣ)
     (e : ∀ c, c < s → ∀ PP ∈ SG, cg (c + 1) PP = cg' (c + 1) PP) (g) :
@@ -22,6 +25,11 @@ theorem levFn_congr {F E : Type} [Field F] [NumberField F] [Field E] [NumberFiel
   refine Finset.prod_congr rfl fun PP hPP => Finset.prod_congr rfl fun c hc => ?_
   exact congrArg (fun f : (kP PP)ˣ →* ℂˣ => f _) (e c (Finset.mem_range.1 hc) PP hPP)
 
+/- English proof (translation)
+Use `MonoidHom.ext fun u => ?_` and prove the remaining obligations. Take `⟨a, ha⟩` from `Ideal.Quotient.mk_surjective (u : kP P)`. Use `haveI : Nontrivial (kP P) := Ideal.Quotient.nontrivial_iff.2 P.isPrime.ne_top`. Establish `ha0 : (a : D.host.E) ≠ 0`. Introduce `h0`.
+
+Establish `h1 : a = 0` using `RingOfIntegers.coe_eq_zero_iff.1 h0`. Apply `u.ne_zero` to reduce the goal to its premises. Rewrite using `[← ha, h1, map_zero]`. Rewrite using `[h a (Units.mk0 _ ha0) u rfl ha.symm, h' a (Units.mk0 _ ha0) u rfl ha.symm]`.
+-/
 theorem isRes_unique {D : D7} {χ : Formalism.L2.Host.HChar D.host.E} {P : Pl D.host.E} {c c' : (kP P)ˣ →* ℂˣ}
     (h : IsRes χ P c) (h' : IsRes χ P c') : c = c' := by
   refine MonoidHom.ext fun u => ?_
@@ -36,6 +44,11 @@ theorem isRes_unique {D : D7} {χ : Formalism.L2.Host.HChar D.host.E} {P : Pl D.
 
 variable {B : GlobalTheory.Mem.Base} {X : PreX B.toPre} (I : TC B X) (l : I.Laws) (Z : TC.Later B (I.cols l))
 
+/- English proof (translation)
+Introduce `a k u hk hu`. Establish `ht` using `(h.ch_tied.mu0 j).atg ⟨PP, hw⟩ k a u hk hu`. Establish `e : ∀ (j : Fin B.R.m) (P : HeightOneSpectrum (𝓞 B.fields.E)) (hw : P ∈ (B.primes X).vGs), Formalism.L2.Col.chiP I.Ch P j = I.Ch.chi j ⟨P, hw⟩`. Introduce `j P hw`. Unfold `Formalism.L2.Col.chiP`.
+
+Rewrite using `[dif_pos hw]`. Simplify using `[Formalism.L2.Col.chiAt, Formalism.L2.Col.extChi]`. Use `Units.ext (Eq.trans ?_ ht.symm)` and prove the remaining obligations. Establish `e2` using `(chiC_apply I j PP u).trans (congrArg (fun f : _ →* B.LLˣ => B.embLL ((f u : B.LLˣ) : B.LL)) (e j PP hw))`. Conclude with `(Units.val_inv_eq_inv_val _).trans ((congrArg (·⁻¹) e2).trans ((map_inv₀ B.embLL _).symm.trans (congrArg B.embLL (Units.val_inv_eq_inv_val _).symm)))`.
+-/
 theorem isRes_chiC (h : I.Ok) (j : Fin B.R.m) (PP : Pl (I.rec7 l Z).host.E) (hw : PP ∈ (B.primes X).vGs) :
     IsRes (D := I.rec7 l Z) (I.C.mu0 j) PP (chiC I j PP)⁻¹ := by
   intro a k u hk hu
@@ -53,6 +66,19 @@ theorem isRes_chiC (h : I.Ok) (j : Fin B.R.m) (PP : Pl (I.rec7 l Z).host.E) (hw 
 
 set_option maxHeartbeats 2000000 in
 
+/- English proof (translation)
+Establish `hK` using `hF.what₂`. Take `⟨-, gP, -, -⟩` from `GlobalTheory.Mem.Col2.TC.spaces_in_coordinates I ok pins l Z`. Establish `gX : (I.rec7 l Z).sp.X'.gram = 1`. Use `congrArg (Matrix.reindex (finCongr (rankP (I.rec7 l Z))) (finCongr (rankP (I.rec7 l Z)))).symm gP` as an intermediate fact. Rewrite `this` using `[gramP, Equiv.symm_apply_apply]`.
+
+Rewrite using `[this, Matrix.reindex_symm, Matrix.reindex_apply, Matrix.submatrix_one_equiv]`. Take `⟨c', -⟩` from `F.clsP.y_bij.2 (Quotient.mk'' 1)`. Use `haveI : NeZero (B.R.N B.R.m - 1) := ⟨by`. Use `Formalism.L2.Col.rank_X'_eq B.R` as an intermediate fact. Use `B.R.m_add_three_le_k` as an intermediate fact.
+
+Unfold `Ranks.r at *`. Use the proof step `omega⟩`. Establish `hR` using `rd_all I hK c'`. Establish `hLb : F.clsP.lev.Lb = Formalism.L2.Col.stdLat B.fields.E (B.R.N B.R.m - 1)`. Use extensionality with `x`.
+
+Use `(hK.lb x).trans (Iff.trans ?_ (Formalism.L2.Col.mem_stdLat x).symm)` and prove the remaining obligations. Conclude with `forall_congr' fun j => ⟨fun ⟨r, h, _⟩ => ⟨r, h.symm⟩, fun ⟨r, h⟩ => ⟨r, h.symm, fun _ => one_dvd _⟩⟩`. Establish `key` using `@lev_iff B.fields.F B.fields.E B.fields.K _ _ _ _ (GlobalTheory.Mem.Col2.starE B) _ _ B.sp.cm (B.R.N B.R.m - 1) _ (rankP (I.rec7 l Z)) _ _ _ gX gP _ _ _ F.clsP.lev hLb B.R.r B.R.t B.R.m (Formalism.L2.Col.r_le_X' B.R) hr (Formalism.L2.Col.t_pos B.R) (Formalism.L2.Col.rank_X'_eq B. …`. Establish `e : Formalism.L2.Col.chiP I.Ch PP.1 = Formalism.L2.Col.chiAt I.Ch PP` using `dif_pos PP.2`. Use `show B.embLL ((Formalism.L2.Col.chiP I.Ch PP.1 i a : B.LLˣ) : B.LL) = _`.
+
+Rewrite using `[e])`. Establish `hc : ∀ c, c < B.R.m → ∀ PP ∈ (B.primes X).vGs, cg (c + 1) PP = chiC I (c + 1 - 1) PP` using `fun c hc PP hPP => inv_injective (isRes_unique (D := I.rec7 l Z) (hcg ⟨c, hc⟩ PP hPP) (isRes_chiC I l Z ok ⟨c, hc⟩ PP hPP))`. Use `⟨fun h => ⟨fun hh => ?_, fun ⟨κ, h1, h2⟩ => ⟨h1, (key _ κ.1 h2).1.2 κ.2⟩⟩, fun h κ hκ => ?_⟩` and prove the remaining obligations. Take `⟨y, hy⟩` from `exists_copy (rankP (I.rec7 l Z)) (Lev.finE (I.rec7 l Z).sp.X' h)`. Conclude with `⟨⟨y, (key _ y hy).1.1 hh.2⟩, hh.1, hy⟩`.
+
+Use `Eq.trans ?_ ((key _ κ.1 hκ.2).2 κ.2)` and prove the remaining obligations. Conclude with `congrArg Units.val (levFn_congr (F := B.fields.F) hr 1 P' cg (fun i => chiC I (i - 1)) (fun PP => (ξ PP)⁻¹) hc _)`.
+-/
 theorem topLev_datY (ok : I.Ok) (pins : TC.Pins B X) (v : B.Word) {Ch : ℕ → Type} {chOf : ∀ i, ((I.rec7 l Z).mem v).C.cls i → Ch i}
     (F : FormsTiedSym (I.rec7 l Z) v Ch chOf) (hF : I.StdF l Z v F) (hr : (I.rec7 l Z).R.r ≤ (I.rec7 l Z).sp.X'.rank)
     (P' : LevelP (B.primes X).vGs B.R.r ℂ) (cg : ℕ → ∀ PP : Pl B.fields.E, (kP PP)ˣ →* ℂˣ) (ξ : ∀ PP : Pl B.fields.E, (kP PP)ˣ →* ℂˣ)
@@ -95,6 +121,11 @@ theorem topLev_datY (ok : I.Ok) (pins : TC.Pins B X) (v : B.Word) {Ch : ℕ → 
 
 set_option maxHeartbeats 2000000 in
 
+/- English proof (translation)
+Substitute `hPg hQ hβ` using the available equality. Establish `he : ∀ g w, eG.symm g w = g w` using `fun g w => (hG (eG.symm g) w.1 w.2 w.2).symm.trans (congrFun (eG.apply_symm_apply g) w)`. Use `topLev_datY I l Z ok pins v F hF hr _ cg ξ (fun g => ?_) (fun g hg => ?_) hcg` and prove the remaining obligations. Conclude with `⟨fun h w => he g w ▸ h w (Set.mem_univ w), fun h w _ => (he g w).symm ▸ h w⟩`. Establish `e` using `Formalism.L2.Col.LevFam.chr_apply (X := B.fields) I.Ps ⟨eG.symm g.1, g.2⟩`.
+
+Use `(congrArg (fun x : B.fields.Kˣ => B.embLL (x : B.fields.K)) e).trans ?_` and prove the remaining obligations. Use `show B.embLL ((∏ w, _ : B.fields.Kˣ) : B.fields.K) = _`. Rewrite using `[Units.coe_prod, map_prod]`. Use `Finset.prod_congr rfl fun w _ => ?_` and prove the remaining obligations. Conclude with `congrArg (fun x => B.embLL (((I.Ps w).lam x : B.fields.Kˣ) : B.fields.K)) (Subtype.ext (he g.1 w))`.
+-/
 theorem topLev_levPOf (ok : I.Ok) (pins : TC.Pins B X) (v : B.Word) {Ch : ℕ → Type} {chOf : ∀ i, ((I.rec7 l Z).mem v).C.cls i → Ch i}
     (F : FormsTiedSym (I.rec7 l Z) v Ch chOf) (hF : I.StdF l Z v F) (hr : (I.rec7 l Z).R.r ≤ (I.rec7 l Z).sp.X'.rank)
     (Pg Q : Finset (Pl (I.rec7 l Z).host.E)) (β : GL (Fin (I.rec7 l Z).sp.X'.rank) (EAf (I.rec7 l Z)))
@@ -126,6 +157,11 @@ def PairDataBaseTupleLevelEqualsClassLevel {D : D7} {O : Obj D} (x : R3.TwIn O.e
 
 set_option maxHeartbeats 2000000 in
 
+/- English proof (translation)
+Establish `key : ∀ k : Bl.RPk b.R b.S, k = Bl.rpkX y.y → ∀ t : k.P.T, k.P.I.tup t = D.what₂.mu0 →`. Use `letI := k.B.alg`. Use the proof step `GlobalTheory.Core.Rk.Top.TopLev K₀ (levS _ k.B.Q.Rl.toRealDat.βX (datXP k.B.Q.Rl.toRealDat (k.B.Q.Rl.toRealDat.levR k.B.Q.F.lv2 true) t)) (levChi _ k.B.Q.Rl.toRealDat.βX (datXP k.B.Q.Rl.toRealDat (k.B.Q.Rl.toRealDat.levR k.B.Q.F.lv2 true) t)) := by`. Introduce `k hk`. Substitute `hk` using the available equality.
+
+Conclude with `h`. Conclude with `key (Bl.rpkB b) y.eq t ht`.
+-/
 theorem topLev_of_btw {D : D7} {O : Obj D} {c : ℝ} (b : GlobalTheory.Fc.Bundle D O c) (x : R3.TwIn O.ex) (y : Bl.BTw b x)
     {u : D.what₂.Word} (K₀ : ClsPTied u) (h : PairDataBaseTupleLevelEqualsClassLevel x K₀) (t : (packB b).P.T) (ht : (packB b).P.I.tup t = D.what₂.mu0) :
     GlobalTheory.Core.Rk.Top.TopLev K₀ (levS _ (pk (packB b)).βX (datXP (pk (packB b)) (lvP (packB b)) t))
@@ -142,6 +178,13 @@ theorem topLev_of_btw {D : D7} {O : Obj D} {c : ℝ} (b : GlobalTheory.Fc.Bundle
 
 set_option maxHeartbeats 2000000 in
 
+/- English proof (translation)
+Consider the cases of `a with`. Consider the case `mk Dc Sp Zsc lam err lam_eq x pack intersectionNumber_baseChange hκ hv hfw htup htupT hjA hjA0 heMt hPY hPW heFT hIL heE heW hjW heRR`. Consider the cases of `x with`. Consider the case `mk G Pl0 I0 T' A3 core R F' cG geo pins err' Y Z' C' sEE div JA amb0 JM mjH`. Consider the cases of `pack`.
+
+Introduce `t ht`. Establish `hT' : Y.tup = q.x.what₂.r.Y.tup` using `eq_of_heq htup`. Establish `z` using `q.x.what₂.r.z.lev`. Establish `hix : R3.ixOf q.w.I _ t = q.w.I.mu0` using `(q.x.what₂.r.tup_ix t).symm.trans ((congrFun hT' t).symm.trans ht)`. Establish `hQ : q.x.what₂.r.z.R.Q t = ∅` using `(z.Q t).trans ((congrArg q.w.I.Q hix).trans q.w.I.twistPrimes_reference_tuple_eq_empty)`.
+
+Establish `hc` using `z.is.chi`. Rewrite `hc` using `[z.C]`. Conclude with `topLev_levPOf q.w.I q.w.l q.Z q.w.ok q.w.pins v F hF r_le_X q.x.what₂.r.z.R.Pg (q.x.what₂.r.z.R.Q t) q.x.what₂.r.z.R.βX z.Pg hQ z.beta.2 q.x.what₂.r.z.R.eG q.x.what₂.r.z.idG q.x.what₂.r.z.R.chi (q.x.what₂.r.z.R.xiR t) hc`.
+-/
 theorem Top_of_args {hL : GlobalTheory.Published.LocalLanglandsGL} {p : Bl.Prm hL} {K : Ctx} (q : Bl.WPt p.s K)
     (a : R3.TwArgs q.O.ex q.x.what₂) (v : q.B.Word) {Ch : ℕ → Type} {chOf : ∀ i, ((q.w.D q.Z).mem v).C.cls i → Ch i}
     (F : FormsTiedSym (q.w.D q.Z) v Ch chOf) (hF : TC.StdF q.w.I q.w.l q.Z v F) : PairDataBaseTupleLevelEqualsClassLevel (O := q.O) a.x F.clsP := by
@@ -163,6 +206,9 @@ theorem Top_of_args {hL : GlobalTheory.Published.LocalLanglandsGL} {p : Bl.Prm h
 
 set_option maxHeartbeats 2000000 in
 
+/- English proof (translation)
+Introduce `hL p K q c b hw u t ht`. Take `⟨-, -, -, ⟨hC⟩, -⟩` from `colsStd_of_bWit q b hw`. Establish `hx : hw.a.x = hw.x` using `eq_of_heq hw.ax`. Conclude with `(levG_one_iff _ _ _).2 (topLev_of_btw b hw.x hw.y _ (hx ▸ Top_of_args q hw.a u _ (hC u)) t ht)`.
+-/
 theorem levG_base_of_bWit : ∀ {hL : GlobalTheory.Published.LocalLanglandsGL} {p : Bl.Prm hL} {K : Ctx} (q : Bl.WPt p.s K) {c : ℝ} (b : Bundle (q.w.D q.Z) q.O c), Bl.BWit q b → ∀ (u : (q.w.D q.Z).what₂.Word) (t : (packB b).P.T), (packB b).P.I.tup t = (q.w.D q.Z).what₂.mu0 → LevG ((packB b).R.T.cols.forms u).clsP.toG 1 (levS _ (pk (packB b)).βX (datXP (pk (packB b)) (lvP (packB b)) t)) (levChi _ (pk (packB b)).βX (datXP (pk (packB b)) (lvP (packB b)) t)) := by
   intro hL p K q c b hw u t ht
   obtain ⟨-, -, -, ⟨hC⟩, -⟩ := colsStd_of_bWit q b hw

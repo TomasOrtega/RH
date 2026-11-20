@@ -8,15 +8,26 @@ namespace Formalism.L2.Pj
 
 open NumberField Formalism.BasicNotions nonZeroDivisors
 
+/- English proof (translation)
+Introduce `h`. Establish `h2` using `D.host.𝔟_spec.2`. Rewrite `h2` using `[h, Ideal.smul_bot, sup_bot_eq]`. Conclude with `bot_ne_top h2`.
+-/
 theorem b_ne_bot (D : D7) : D.host.𝔟 ≠ ⊥ := by
   intro h
   have h2 := D.host.𝔟_spec.2
   rw [h, Ideal.smul_bot, sup_bot_eq] at h2
   exact bot_ne_top h2
 
+/- English proof (translation)
+The claim follows from `FractionalIdeal.one_mem_inv_coe_ideal (b_ne_bot D)`.
+-/
 theorem one_mem_inverse_halfDifferent (D : D7) : (1 : D.host.E) ∈ D.host.AA0 :=
   FractionalIdeal.one_mem_inv_coe_ideal (b_ne_bot D)
 
+/- English proof (translation)
+Establish `hN : ((Ideal.absNorm D.host.ccK : ℕ) : D.host.E) ∈ (D.host.ccE : FractionalIdeal (𝓞 D.host.E)⁰ D.host.E)`. Rewrite using `[FractionalIdeal.mem_coeIdeal]`. Use `⟨((Ideal.absNorm D.host.ccK : ℕ) : 𝓞 D.host.E), ?_, by simp⟩` and prove the remaining obligations. Use `Ideal.mem_map_of_mem (algebraMap (𝓞 D.host.K) (𝓞 D.host.E)) (Ideal.absNorm_mem D.host.ccK)` as an intermediate fact. Simplify `this` using `[Host.ccE]`.
+
+Use `FractionalIdeal.mul_mem_mul hN (one_mem_inverse_halfDifferent D)` as an intermediate fact. Rewrite `this` using `[mul_one]`. Conclude with `this`.
+-/
 theorem normK_mem_AA (D : D7) : ((Ideal.absNorm D.host.ccK : ℕ) : D.host.E) ∈ D.host.AA := by
   have hN : ((Ideal.absNorm D.host.ccK : ℕ) : D.host.E) ∈
       (D.host.ccE : FractionalIdeal (𝓞 D.host.E)⁰ D.host.E) := by
@@ -28,14 +39,27 @@ theorem normK_mem_AA (D : D7) : ((Ideal.absNorm D.host.ccK : ℕ) : D.host.E) �
   rw [mul_one] at this
   exact this
 
+/- English proof (translation)
+Rewrite using `[Nat.cast_ne_zero, Ne, Ideal.absNorm_eq_zero_iff]`. Conclude with `D.host.ccK_ne_bot`.
+-/
 theorem normK_ne_zero (D : D7) : ((Ideal.absNorm D.host.ccK : ℕ) : D.host.E) ≠ 0 := by
   rw [Nat.cast_ne_zero, Ne, Ideal.absNorm_eq_zero_iff]
   exact D.host.ccK_ne_bot
 
+/- English proof (translation)
+The claim follows from `_root_.UpperTheory.Reformulated.B.EmbeddingTypes.exists_smul_mem_base_lattice_alt D j y`.
+-/
 theorem exists_smul_mem_base_lattice_alt (D : D7) (j : ℕ) (y : (D.sp.W j).V) :
     ∃ s ∈ (𝓞 D.host.E)⁰, s • y ∈ (D.sp.W j).L0 :=
   _root_.UpperTheory.Reformulated.B.EmbeddingTypes.exists_smul_mem_base_lattice_alt D j y
 
+/- English proof (translation)
+Take `⟨s, hs, hsy⟩` from `exists_smul_mem_base_lattice_alt D j y`. Use `set n : 𝓞 D.host.E := ((Ideal.absNorm D.host.ccK : ℕ) : 𝓞 D.host.E)`. Establish `hn : algebraMap (𝓞 D.host.E) D.host.E n = ((Ideal.absNorm D.host.ccK : ℕ) : D.host.E)`. Simplify using `[n]`. Establish `hn0 : n ∈ (𝓞 D.host.E)⁰`.
+
+Apply `mem_nonZeroDivisors_of_ne_zero` to reduce the goal to its premises. Introduce `h0`. Apply `normK_ne_zero D` to reduce the goal to its premises. Rewrite using `[← hn, h0, map_zero]`. Use `⟨n * s, mul_mem hn0 hs, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[mul_smul, ← algebraMap_smul D.host.E n, hn]`. Conclude with `Submodule.subset_span ⟨_, normK_mem_AA D, s • y, hsy, rfl⟩`.
+-/
 theorem exists_smul_mem_latW (D : D7) (j : ℕ) (y : (D.sp.W j).V) :
     ∃ s ∈ (𝓞 D.host.E)⁰, s • y ∈ latW D j := by
   obtain ⟨s, hs, hsy⟩ := exists_smul_mem_base_lattice_alt D j y
@@ -73,11 +97,17 @@ instance latW_isLocalized (D : D7) (j : ℕ) :
     exact ⟨(⟨s • y, hsy⟩, ⟨s, hs⟩), rfl⟩
   exists_of_eq {x₁ x₂} h := ⟨1, by rw [one_smul, one_smul]; exact Subtype.ext h⟩
 
+/- English proof (translation)
+Rewrite using `[IsFractionRing.finrank_right_eq (R := 𝓞 D.host.E) (S := D.host.E) (N := (D.sp.W j).V)]`. Conclude with `(IsLocalizedModule.finrank_eq (p := (𝓞 D.host.E)⁰) (f := (latW D j).subtype) le_rfl).symm`.
+-/
 theorem latW_finrank (D : D7) (j : ℕ) :
     Module.finrank (𝓞 D.host.E) (latW D j) = Module.finrank D.host.E (D.sp.W j).V := by
   rw [IsFractionRing.finrank_right_eq (R := 𝓞 D.host.E) (S := D.host.E) (N := (D.sp.W j).V)]
   exact (IsLocalizedModule.finrank_eq (p := (𝓞 D.host.E)⁰) (f := (latW D j).subtype) le_rfl).symm
 
+/- English proof (translation)
+Rewrite using `[latW_finrank, (D.sp.W j).rank_eq, D.sp.W_rank j hj.1 hj.2]`. Use `D.R.m_add_three_le_k` as an intermediate fact. Simplify using `only [Ranks.sigW, Ranks.r]`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem latW_rank (D : D7) (j : ℕ) (hj : 1 ≤ j ∧ j ≤ D.R.m) :
     Module.finrank (𝓞 D.host.E) (latW D j) = (D.R.sigW j).1 + (D.R.sigW j).2 := by
   rw [latW_finrank, (D.sp.W j).rank_eq, D.sp.W_rank j hj.1 hj.2]

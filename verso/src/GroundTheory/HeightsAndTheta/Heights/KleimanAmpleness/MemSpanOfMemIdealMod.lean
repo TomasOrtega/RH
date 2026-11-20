@@ -20,6 +20,11 @@ variable {S : Type} [CommRing S] {K : Type} [Fintype K] [DecidableEq K] {ι : K 
 
 omit [Fintype K] [DecidableEq K] [∀ k, Fintype (ι k)] in
 
+/- English proof (translation)
+Proceed by induction on `hv using Submodule.span_induction with`. Consider the case `mem z hz => exact Submodule.subset_span hz`. Consider the case `zero => exact zero_mem _`. Consider the case `add a b _ _ ha hb => exact add_mem ha hb`. Consider the case `smul a z _ hz`.
+
+Use `Submodule.smul_mem _ (⟨a, h a.2⟩ : B) hz` as an intermediate fact. Rewrite `this`, the goal using `[Subalgebra.smul_def]`. Conclude with `this`.
+-/
 theorem mem_span_of_le {A B : Subalgebra S Ω} (h : A ≤ B) {s : Set Ω} {v : Ω}
     (hv : v ∈ Submodule.span A s) : v ∈ Submodule.span B s := by
   induction hv using Submodule.span_induction with
@@ -33,11 +38,19 @@ theorem mem_span_of_le {A B : Subalgebra S Ω} (h : A ≤ B) {s : Set Ω} {v : �
 
 omit [Fintype K] [DecidableEq K] [∀ k, Fintype (ι k)] in
 
+/- English proof (translation)
+Use `Submodule.smul_mem _ (⟨a, ha⟩ : A) hv` as an intermediate fact. Rewrite `this` using `[Subalgebra.smul_def]`. Then use the resulting hypothesis.
+-/
 theorem mul_mem_span {A : Subalgebra S Ω} {s : Set Ω} {a v : Ω} (ha : a ∈ A)
     (hv : v ∈ Submodule.span A s) : a * v ∈ Submodule.span A s := by
   have := Submodule.smul_mem _ (⟨a, ha⟩ : A) hv
   rwa [Subalgebra.smul_def] at this
 
+/- English proof (translation)
+Use `zpow_mem_of_inv_mem _ ?_ ?_ n` and prove the remaining obligations. Establish `: y ⟨k₀, d k₀⟩ / baseVec y k₀ e i = baseVec y k₀ e (e (d k₀)) / baseVec y k₀ e i`. Simplify using `[IndefiniteRowSideFullHecke.Kleiman2.blockVec]`. Rewrite using `[this]`. Conclude with `chartRing_le_overRing d i (ReciprocityTheory.ChartRestriction.G.Geo.div_mem_chartRing _ i _)`.
+
+Rewrite using `[inv_div]`. Conclude with `chartRingOver_le_overRing d i (div_mem_chartRingOver d k₀ (e.symm i))`.
+-/
 theorem zpow_ratio_mem_overRing (d : ∀ k, ι k) (i : Fin (N + 1)) (n : ℤ) :
     (y ⟨k₀, d k₀⟩ / baseVec y k₀ e i) ^ n ∈ overRing (S := S) y k₀ e d i := by
   refine zpow_mem_of_inv_mem _ ?_ ?_ n
@@ -48,6 +61,19 @@ theorem zpow_ratio_mem_overRing (d : ∀ k, ι k) (i : Fin (N + 1)) (n : ℤ) :
   · rw [inv_div]
     exact chartRingOver_le_overRing d i (div_mem_chartRingOver d k₀ (e.symm i))
 
+/- English proof (translation)
+Rewrite using `[TranslateEq.mem_twist_twistSys_iff (TranslateEq.ofSecond (bundleOfDeg (e := e) hy β)).toSubSystem c (Kleiman.singleChart hi) (Finset.mem_singleton_self i)]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨u, hu, rfl⟩ d hd`. Establish `hu' : u ∈ latOf (S` using `S) y k₀ e β i := (ofSecond_sub_single (bundleOfDeg (e := e) hy β) hi u).1 hu`. Establish `h1` using `(mem_latOf β i u).1 hu' d hd`.
+
+Rewrite using `[genInv_add_baseDeg β c hd]`. Establish `heq : baseVec y k₀ e i ^ c • u * (genInv y β d * y ⟨k₀, d k₀⟩ ^ (-c)) = (y ⟨k₀, d k₀⟩ / baseVec y k₀ e i) ^ (-c) * (u * genInv y β d)`. Establish `ha : baseVec y k₀ e i ^ c ≠ 0` using `zpow_ne_zero c hi`. Establish `hb : y ⟨k₀, d k₀⟩ ^ c ≠ 0` using `zpow_ne_zero c (hd k₀)`. Rewrite using `[smul_eq_mul, div_zpow]`.
+
+Simplify using `only [zpow_neg]`. Clear the denominators using the available nonvanishing facts. Rewrite using `[heq]`. Conclude with `mul_mem (zpow_ratio_mem_overRing d i (-c)) h1`. Introduce `h`.
+
+Use `⟨baseVec y k₀ e i ^ (-c) * t, ?_, ?_⟩` and prove the remaining obligations. Use `(ofSecond_sub_single (bundleOfDeg (e := e) hy β) hi _).2 ((mem_latOf β i _).2 fun d hd => ?_)` and prove the remaining obligations. Establish `h1` using `h d hd`. Rewrite `h1` using `[genInv_add_baseDeg β c hd]`. Establish `heq : baseVec y k₀ e i ^ (-c) * t * genInv y β d = (y ⟨k₀, d k₀⟩ / baseVec y k₀ e i) ^ c * (t * (genInv y β d * y ⟨k₀, d k₀⟩ ^ (-c)))`.
+
+Establish `ha : baseVec y k₀ e i ^ c ≠ 0` using `zpow_ne_zero c hi`. Establish `hb : y ⟨k₀, d k₀⟩ ^ c ≠ 0` using `zpow_ne_zero c (hd k₀)`. Rewrite using `[div_zpow, zpow_neg, zpow_neg]`. Clear the denominators using the available nonvanishing facts. Rewrite using `[heq]`.
+
+Conclude with `mul_mem (zpow_ratio_mem_overRing d i c) h1`. Rewrite using `[smul_eq_mul, ← mul_assoc, ← zpow_add₀ hi, add_neg_cancel, zpow_zero, one_mul]`.
+-/
 theorem mem_twist_single (hy : IndefiniteRowSideFullHecke.Kleiman2.IsModelWithBase S y k₀) (β : K → ℤ) (c : ℤ) {i : Fin (N + 1)}
     (hi : baseVec y k₀ e i ≠ 0) (t : Ω) :
     t ∈ ((TranslateEq.ofSecond (bundleOfDeg (e := e) hy β)).twist (Kleiman.twistSys S (baseVec y k₀ e) c)).sub
@@ -87,6 +113,11 @@ theorem mem_twist_single (hy : IndefiniteRowSideFullHecke.Kleiman2.IsModelWithBa
 
 omit [Fintype K] [DecidableEq K] [∀ k, Fintype (ι k)] in
 
+/- English proof (translation)
+Proceed by induction on `hs using Submonoid.closure_induction with`. Consider the case `mem a ha`. Take `⟨j, hj, rfl⟩` from `ha`. Establish `hj' : j = i` using `by simpa using hj`. Rewrite using `[hj', aeval_X, div_self hi]`.
+
+Consider the case `one => simp`. Consider the case `mul a b _ _ ha hb => rw [map_mul, ha, hb, mul_one]`.
+-/
 theorem aeval_ratio_monos {i : Fin (N + 1)} (hi : baseVec y k₀ e i ≠ 0) {s : Kleiman.Poly S N}
     (hs : s ∈ Kleiman.monos ({i} : Finset (Fin (N + 1)))) :
     aeval (fun j => baseVec y k₀ e j / baseVec y k₀ e i) s = 1 := by
@@ -98,6 +129,17 @@ theorem aeval_ratio_monos {i : Fin (N + 1)} (hi : baseVec y k₀ e i ≠ 0) {s :
   | one => simp
   | mul a b _ _ ha hb => rw [map_mul, ha, hb, mul_one]
 
+/- English proof (translation)
+Proceed by induction on `hq using Submodule.span_induction with`. Consider the case `mem z hz`. Take `⟨f, s, n, hf, hs, hfn, hsn, rfl⟩` from `hz`. Establish `h1` using `Kleiman.aeval_div_of_isHomogeneous (x := baseVec y k₀ e) hfn i`. Establish `h2` using `Kleiman.aeval_div_of_isHomogeneous (x := baseVec y k₀ e) hsn i`.
+
+Rewrite `h2` using `[aeval_ratio_monos hi hs]`. Establish `hxn : baseVec y k₀ e i ^ n ≠ 0` using `pow_ne_zero n hi`. Establish `hf' : aeval (baseVec y k₀ e) f = baseVec y k₀ e i ^ n * aeval (fun j => baseVec y k₀ e j / baseVec y k₀ e i) f`. Rewrite using `[h1]`. Clear the denominators using the available nonvanishing facts.
+
+Establish `hs' : aeval (baseVec y k₀ e) s = baseVec y k₀ e i ^ n`. Clear denominators, using `at h2` for the nonvanishing conditions. Conclude with `h2.symm`. Rewrite using `[hf', hs', mul_div_cancel_left₀ _ hxn]`. Conclude with `aeval_mem_of_mem_satIdeal hf hi hd`.
+
+Consider the case `zero => exact zero_mem _`. Consider the case `add a b _ _ ha hb => exact add_mem ha hb`. Consider the case `smul a z _ hz`. Rewrite using `[Kleiman.chartRing_smul_def]`. Establish `ha : (a : Ω) ∈ ReciprocityTheory.ChartRestriction.G.Geo.chartRing S (baseVec y k₀ e) i`.
+
+Rewrite using `[TranslateEq.chartRing.equiv (S := S) (baseVec y k₀ e) hi]`. Conclude with `a.2`. Conclude with `mul_mem_span (chartRing_le_overRing d i ha) hz`.
+-/
 theorem mem_span_of_mem_idealMod {J : Ideal (MRingOver S ι)} {i : Fin (N + 1)} (hi : baseVec y k₀ e i ≠ 0)
     {q : Ω} (hq : q ∈ Kleiman.idealMod (x := baseVec y k₀ e) (satIdeal S y k₀ e J) (Kleiman.singleChart hi))
     {d : ∀ k, ι k} (hd : ∀ k, y ⟨k, d k⟩ ≠ 0) :
@@ -124,6 +166,15 @@ theorem mem_span_of_mem_idealMod {J : Ideal (MRingOver S ι)} {i : Fin (N + 1)} 
       rw [TranslateEq.chartRing.equiv (S := S) (baseVec y k₀ e) hi]; exact a.2
     exact mul_mem_span (chartRing_le_overRing d i ha) hz
 
+/- English proof (translation)
+Proceed by induction on `hu using Submodule.span_induction with`. Consider the case `mem z hz`. Take `⟨q, hq, a, ha, rfl⟩` from `hz`. Establish `ha'` using `(mem_twist_single hy β c hi a).1 ha d hd`. Rewrite using `[smul_eq_mul, mul_assoc, mul_comm]`.
+
+Conclude with `mul_mem_span ha' (mem_span_of_mem_idealMod hi hq hd)`. Consider the case `zero => rw [zero_mul]`. Conclude with `zero_mem _`. Consider the case `add a b _ _ ha hb => rw [add_mul]`. Conclude with `add_mem ha hb`.
+
+Consider the case `smul a z _ hz`. Rewrite using `[Kleiman.chartRing_smul_def, mul_assoc]`. Establish `ha : (a : Ω) ∈ ReciprocityTheory.ChartRestriction.G.Geo.chartRing S (baseVec y k₀ e) i`. Rewrite using `[TranslateEq.chartRing.equiv (S := S) (baseVec y k₀ e) hi]`. Conclude with `a.2`.
+
+Conclude with `mul_mem_span (chartRing_le_overRing d i ha) hz`.
+-/
 theorem mem_ideal_single (hy : IndefiniteRowSideFullHecke.Kleiman2.IsModelWithBase S y k₀) (β : K → ℤ) (c : ℤ)
     {J : Ideal (MRingOver S ι)} {i : Fin (N + 1)} (hi : baseVec y k₀ e i ≠ 0) {u : Ω}
     (hu : u ∈ (((TranslateEq.ofSecond (bundleOfDeg (e := e) hy β)).twist (Kleiman.twistSys S (baseVec y k₀ e) c)).twist
@@ -147,6 +198,9 @@ theorem mem_ideal_single (hy : IndefiniteRowSideFullHecke.Kleiman2.IsModelWithBa
 
 omit [Fintype K] [DecidableEq K] [∀ k, Fintype (ι k)] in
 
+/- English proof (translation)
+Use `sup_le le_sup_left (le_trans ?_ le_sup_right)` and prove the remaining obligations. Use `Algebra.adjoin_le ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨j, rfl⟩`. Conclude with `TranslateEq.div_mem_chartRing_of_mem I hi j`.
+-/
 theorem overRing_le_chart (d : ∀ k, ι k) (I : Kleiman.Chart (baseVec y k₀ e)) {i : Fin (N + 1)} (hi : i ∈ I.1) :
     overRing (S := S) y k₀ e d i ≤ chartRingOver S y d ⊔ Kleiman.chartRing S (baseVec y k₀ e) I := by
   refine sup_le le_sup_left (le_trans ?_ le_sup_right)
@@ -156,6 +210,25 @@ theorem overRing_le_chart (d : ∀ k, ι k) (I : Kleiman.Chart (baseVec y k₀ e
 
 end Charts
 
+/- English proof (translation)
+Introduce `S _ _ K _ _ ι _ _ Ω _ _ y k₀ N e J hJ hy _ β`. Use `set x := baseVec y k₀ e with hx`. Use `⟨TranslateEq.ofSecond (bundleOfDeg (e := e) hy β), satIdeal S y k₀ e J, fun p hp n => homogeneousComponent_mem_satIdeal hp n, fun c z'' hz'' => ?_⟩` and prove the remaining obligations. Establish `hγ : β + c • IndefiniteRowSideFullHecke.Kleiman2.baseDeg k₀ = β + (c : ℤ) • IndefiniteRowSideFullHecke.Kleiman2.baseDeg k₀`. Rewrite using `[natCast_zsmul]`.
+
+Rewrite `hz''`, the goal using `[hγ]`. Use `set γ := β + (c : ℤ) • IndefiniteRowSideFullHecke.Kleiman2.baseDeg k₀ with hγdef`. Take `⟨w, hwa, hwb, hwc⟩` from `hV S K ι Ω y J hJ γ z'' hz''`. Establish `hlift` using `hL S K ι Ω y k₀ N e J γ w hy hwa hwb`. Use `choose sf hsf using hlift`.
+
+Establish `hpick : ∀ I : Kleiman.Chart x, ∃ i, i ∈ I.1` using `fun I => I.2.1`. Use `choose pick hpick using hpick`. Establish `hxp : ∀ I : Kleiman.Chart x, x (pick I) ≠ 0` using `fun I => (Kleiman.mem_support x).1 (I.2.2 (hpick I))`. Establish `hsingle : ∀ {i} (hi : x i ≠ 0), pick (Kleiman.singleChart hi) = i` using `fun {i} hi => by`. Simplify `hpick (Kleiman.singleChart hi)` using `[Kleiman.singleChart]`.
+
+Use `⟨fun I => sf (pick I) (hxp I), fun I => ?_, fun I₁ I₂ h12 => ?_, fun t ht htI => ?_⟩` and prove the remaining obligations. Establish `h1` using `(mem_twist_single (S := S) hy β (c : ℤ) (hxp I) _).2 fun d hd => (hsf _ (hxp I) d hd).1`. Use `SubSystem.mono _ (Kleiman.singleChart (hxp I)) I ?_ _ h1` and prove the remaining obligations. Conclude with `Finset.singleton_subset_iff.2 (hpick I)`. Use `hI S K ι Ω y k₀ N e J hy β (c : ℤ) I₂ _ fun d hd => ?_` and prove the remaining obligations.
+
+Establish `h1` using `(hsf _ (hxp I₁) d hd).2`. Establish `h2` using `(hsf _ (hxp I₂) d hd).2`. Establish `h1'` using `mem_span_of_le (overRing_le_chart d I₂ (h12 (hpick I₁))) h1`. Establish `h2'` using `mem_span_of_le (overRing_le_chart d I₂ (hpick I₂)) h2`. Use `sub_mem h1' h2'` as an intermediate fact.
+
+Rewrite `this` using `[← sub_mul, sub_sub_sub_cancel_right]`. Conclude with `this`. Use `hwc t ?_ fun d hd => ?_` and prove the remaining obligations. Simplify using `only [secOver, Submodule.mem_iInf, Submodule.mem_comap, LinearMap.mulRight_apply, Subalgebra.mem_toSubmodule]`. Introduce `d hd`.
+
+Establish `hi : x (e (d k₀)) ≠ 0` using `by simpa [hx, IndefiniteRowSideFullHecke.Kleiman2.blockVec] using hd k₀`. Establish `h1` using `(mem_twist_single (S := S) hy β (c : ℤ) hi t).1 ((Submodule.mem_iInf _).1 ht (Kleiman.singleChart hi)) d hd`. Rewrite `h1` using `[overRing_self]`. Conclude with `h1`. Establish `hi : x (e (d k₀)) ≠ 0` using `by simpa [hx, IndefiniteRowSideFullHecke.Kleiman2.blockVec] using hd k₀`.
+
+Establish `h1` using `mem_ideal_single hy β (c : ℤ) hi (htI (Kleiman.singleChart hi)) hd`. Establish `key : ∀ j (hj : x j ≠ 0), j = e (d k₀) → (sf j hj - w d) * genInv y γ d ∈ Submodule.span (overRing (S` using `S) y k₀ e d (e (d k₀))) (dehom S y J d) := by`. Introduce `j hj hj'`. Substitute `hj'` using the available equality. Conclude with `(hsf _ hj d hd).2`.
+
+Establish `h2` using `key _ (hxp (Kleiman.singleChart hi)) (hsingle hi)`. Establish `h3` using `add_mem h1 h2`. Rewrite `h3` using `[← add_mul, sub_add_sub_cancel, overRing_self]`. Conclude with `h3`.
+-/
 theorem QuotSecsBase.proof (hV : QuotCocycleValues.Statement) (hL : QuotChartLift.Statement)
     (hI : QuotIdealSub.Statement) : QuotSecsBase.Statement := by
   intro S _ _ K _ _ ι _ _ Ω _ _ y k₀ N e J hJ hy _ β

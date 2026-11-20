@@ -20,6 +20,11 @@ import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsBoxSubsetOfMe
 open MeasureTheory NumberField IsDedekindDomain ValuativeRel GroundTheory.Global GroundTheory.Global.SemiLocal
 open GlobalTheory.PRep GlobalTheory.SmGL GlobalTheory.SplitWeil UpperTheory.ConvolutionTheory.C UpperTheory.ConvolutionTheory.L1 UpperTheory.ConvolutionTheory.Loc UpperTheory.V.Z.Tf.L4
 
+/- English proof (translation)
+Take `⟨d, -, h⟩` from `GlobalTheory.GamMul.NearOne.one_add_small_near_one k n N hN`. Use `⟨valuation k (d : k), ?_, fun g hg => ?_⟩` and prove the remaining obligations. Conclude with `zero_lt_iff.2 ((Valuation.ne_zero_iff _).2 d.ne_zero)`. Take `⟨A, hA, hAN, -⟩` from `h ((g : Matrix (Fin n) (Fin n) k) - 1) (fun i j => hg i j)`. Establish `e : A = g` using `Units.ext (by rw [hA]; simp)`.
+
+Conclude with `e ▸ hAN`.
+-/
 private theorem ball_sub_nhds (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
     (n : ℕ) (N : Set (GL (Fin n) k)) (hN : N ∈ nhds (1 : GL (Fin n) k)) :
     ∃ ρ : ValueGroupWithZero k, 0 < ρ ∧ ball n ρ ⊆ N := by
@@ -30,6 +35,21 @@ private theorem ball_sub_nhds (k : Type) [Field k] [ValuativeRel k] [Topological
     have e : A = g := Units.ext (by rw [hA]; simp)
     exact e ▸ hAN
 
+/- English proof (translation)
+Choose the witnesses or unpack the hypotheses as in `⟨ϖ, hϖ⟩ : ∃ ϖ : Eˣ, valuation E (ϖ : E) = uniformizer E := by`. Take `⟨x, hx⟩` from `valuation_surjective (K := E) (uniformizer E)`. Conclude with `⟨Units.mk0 x fun h => uniformizer_ne_zero (R := E) (by rw [← hx, h, map_zero]), hx⟩`. Take `⟨ρ, hρ, hρN⟩` from `ball_sub_nhds E n N hN`. Take `⟨c, hc⟩` from `psiInv k E ϖ hϖ`.
+
+Take `⟨a₁, h₁⟩` from `howeLine E n W π hs hi hg ϖ hϖ c`. Take `⟨a₂, h₂⟩` from `howeBall E n ϖ hϖ c ρ hρ`. Take `⟨a, ha, ψ, hψ, hinv⟩` from `hc (max 1 (max a₁ a₂))`. Establish `ha1 : 1 ≤ a` using `le_trans (le_max_left _ _) ha`. Take `⟨J, hJ, ho, hk⟩` from `howeGroup E n ϖ hϖ a c ha1`.
+
+Take `⟨hlc, hmul⟩` from `howeChar E n ϖ hϖ a c ha1 ψ hψ`. Establish `hmem : ∀ x, x ∈ J ↔ x ∈ howeSet n ϖ a c` using `fun x => by rw [← hJ]; rfl`. Establish `hline` using `h₁ a (le_trans (le_trans (le_max_left _ _) (le_max_right _ _)) ha) ψ hψ`. Take `⟨⟨e, he⟩, he0, hspan⟩` from `finrank_eq_one_iff'.1 hline`. Use `⟨J, fun x => (ψ (GlobalTheory.Whittaker.superDiag x) : ℂ), e, ⟨hk, ho⟩, ⟨hlc, fun x _ => Circle.norm_coe _, fun x hx y hy => ?_⟩, ?_, fun h => he0 (Subtype.ext h), fun g hgJ => he g ((hmem g).1 hgJ), fun x hx => ?_, fun y hy => ?_⟩` and prove the remaining obligations.
+
+Use `beta_reduce`. Rewrite using `[hmul x ((hmem x).1 hx) y ((hmem y).1 hy), Circle.coe_mul]`. Rewrite using `[hJ]`. Conclude with `(h₂ a (le_trans (le_trans (le_max_right _ _) (le_max_right _ _)) ha)).trans hρN`. Take `⟨t, ht⟩` from `hspan ⟨x, fun g hg => hx g ((hmem g).2 hg)⟩`.
+
+Conclude with `⟨t, (congrArg Subtype.val ht).symm⟩`. Establish `hy'` using `(hmem y).1 hy`. Establish `hent : ∀ i j, ((Matrix.GeneralLinearGroup.map (s : E →+* E) y : GL (Fin n) E) : Matrix (Fin n) (Fin n) E) i j = s ((y : Matrix (Fin n) (Fin n) E) i j)` using `fun _ _ => rfl`. Use `⟨(hmem _).2 fun i j => ?_, ?_⟩` and prove the remaining obligations. Establish `e1 : ((Matrix.GeneralLinearGroup.map (s : E →+* E) y : GL (Fin n) E) : Matrix (Fin n) (Fin n) E) i j - (1 : Matrix (Fin n) (Fin n) E) i j = s ((y : Matrix (Fin n) (Fin n) E) i j - (1 : Matrix (Fin n) (Fin n) E) i j)`.
+
+Rewrite using `[hent, map_sub, Matrix.one_apply, apply_ite s, map_one, map_zero]`. Rewrite using `[e1, galIsom k E]`. Conclude with `hy' i j`. Establish `hsd : GlobalTheory.Whittaker.superDiag (Matrix.GeneralLinearGroup.map (s : E →+* E) y) = s (GlobalTheory.Whittaker.superDiag y)`. Simplify using `only [GlobalTheory.Whittaker.superDiag, map_sum, hent]`.
+
+Express the relevant statement in the definitionally equal form `((ψ (GlobalTheory.Whittaker.superDiag (Matrix.GeneralLinearGroup.map (s : E →+* E) y)) : Circle) : ℂ) = _`. Rewrite using `[hsd, hinv]`.
+-/
 private theorem local_type (k E : Type) [Field k] [CharZero k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
     [Field E] [ValuativeRel E] [TopologicalSpace E] [IsNonarchimedeanLocalField E]
     [Algebra k E] [ValuativeExtension k E] [FiniteDimensional k E] [IsGalois k E] (s : E ≃ₐ[k] E)
@@ -75,6 +95,23 @@ private theorem local_type (k E : Type) [Field k] [CharZero k] [ValuativeRel k] 
       change ((ψ (GlobalTheory.Whittaker.superDiag (Matrix.GeneralLinearGroup.map (s : E →+* E) y)) : Circle) : ℂ) = _
       rw [hsd, hinv]
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ _ _ _ σ hσ _ n _ μ _ V hV v w hw N hN`. Take `⟨iA, iV, iFD, iG, s, -, -, -, hgal, -⟩` from `UpperTheory.V.Z.Tf.Orb.placeData F E σ hσ v w hw`. Use `haveI : CharZero (v.adicCompletion F) := algebraRat.charZero _`. Take `⟨π, hπ, -⟩` from `UpperTheory.ConvolutionTheory.Dp.exCusp E n μ V hV`. Take `⟨hl, -, -, -⟩` from `UpperTheory.V.Z.Tf.Orb.gLTop (w.1.adicCompletion E) n`.
+
+Use `letI : MeasurableSpace (Gw n w.1) := borel _`. Use `haveI : BorelSpace (Gw n w.1) := ⟨rfl⟩`. Take `⟨⟨τ, hτ⟩, -, -⟩` from `occursBasics E n μ V w.1 MeasureTheory.Measure.haar hV`. Establish `hloc : (UpperTheory.CBC.Cusp.cx π).locComp w.1 τ` using `(UpperTheory.ConvolutionTheory.Dp.locIff E n μ π V hπ w.1 τ).2 ((occursIff E n μ V hV w.1 τ).1 hτ)`. Establish `hgen : GlobalTheory.LocGL.IsGeneric τ.ρ` using `GlobalTheory.CuspRep.Generic.isGeneric_of_isLocComp E n π w.1 τ hloc`.
+
+Take `⟨J, χ, e, hCO, hchr, hJN, he0, heJ, hline, hst⟩` from `local_type (v.adicCompletion F) (w.1.adicCompletion E) s n τ.V τ.ρ τ.smooth τ.irred hgen N hN`. Establish `hrank` using `lineRank E n μ V hV w.1 τ hτ J χ hCO hchr ⟨e, hline⟩`. Take `⟨f, hf0, hfV, hfe⟩` from `hτ`. Establish `hinj : Function.Injective f`. Set `K : Subrepresentation τ.ρ` to `⟨LinearMap.ker f, fun g x hx => by`.
+
+Rewrite `hx`, the goal using `[LinearMap.mem_ker]`. Rewrite using `[hfe, hx, map_zero]⟩`. Use `haveI := τ.irred`. Break down `eq_bot_or_eq_top K with h | h` into its components or cases. Use `LinearMap.ker_eq_bot.1 ?_` and prove the remaining obligations.
+
+Conclude with `congrArg Subrepresentation.toSubmodule h`. It suffices to derive a contradiction. Apply `hf0` to reduce the goal to its premises. Establish `h' : LinearMap.ker f = ⊤` using `congrArg Subrepresentation.toSubmodule h`. Conclude with `LinearMap.ker_eq_top.1 h'`.
+
+Use `⟨J, χ, hCO, hchr, hJN, hrank, fun h => ?_, fun x hx => ?_⟩` and prove the remaining obligations. Establish `hm : f e ∈ V ⊓ eigL μ w.1 J χ`. Use `⟨hfV e, ?_⟩` and prove the remaining obligations. Simplify using `only [eigL, SetLike.mem_coe, Submodule.mem_iInf]`. Introduce `x hx`.
+
+Express the relevant statement in the definitionally equal form `rhoL μ w.1 x (f e) = χ x • f e`. Rewrite using `[← hfe, heJ x hx, map_smul]`. Rewrite `hm` using `[h, Submodule.mem_bot]`. Conclude with `he0 (hinj (by rw [hm, map_zero]))`. Establish `hcm : UpperTheory.ConvolutionTheory.GM.cmp w (PositivityTheory.Rg.Tf.Geo.mapGL n (PositivityTheory.Rg.Tf.Geo.galFin σ v) x) = Matrix.GeneralLinearGroup.map (s : w.1.adicCompletion E →+* w.1.adicCompletion E) (UpperTheory.ConvolutionTheory.GM.cmp w x)` using `Units.ext (Matrix.ext fun i j => hgal _)`.
+
+Rewrite using `[hcm]`. Conclude with `hst _ hx`.
+-/
 theorem UpperTheory.ConvolutionTheory.T.howeType :
     UpperTheory.ConvolutionTheory.T.HoweType := by
   intro F E _ _ _ _ _ _ _ _ σ hσ _ n _ μ _ V hV v w hw N hN

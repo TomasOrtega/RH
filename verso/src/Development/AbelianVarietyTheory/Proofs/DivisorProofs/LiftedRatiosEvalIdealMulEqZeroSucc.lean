@@ -11,6 +11,9 @@ set_option autoImplicit false
 
 namespace GlobalTheory.FormalAlg.JStep
 
+/- English proof (translation)
+Simplify using `only [AbLaw.cst, RingHom.comp_apply, rs]`. Rewrite using `[← CommRingCat.comp_apply, Scheme.Hom.map_appLE]`. Rewrite using `[Scheme.Hom.comp_appTop, CommRingCat.comp_apply, ← CommRingCat.comp_apply (g.appTop)]`. Use `congr 1`.
+-/
 theorem appLE_cst {R : Type} [CommRing R] {X X' : Scheme.{0}} (g : X ⟶ X') (f : X' ⟶ Spec (CommRingCat.of R))
     (U' : X'.Opens) (U : X.Opens) (h : U ≤ g ⁻¹ᵁ U') (r : R) :
     (g.appLE U' U h).hom (AbLaw.cst f U' r) = AbLaw.cst (g ≫ f) U r := by
@@ -19,11 +22,29 @@ theorem appLE_cst {R : Type} [CommRing R] {X X' : Scheme.{0}} (g : X ⟶ X') (f 
   rw [Scheme.Hom.comp_appTop, CommRingCat.comp_apply, ← CommRingCat.comp_apply (g.appTop)]
   congr 1
 
+/- English proof (translation)
+Rewrite using `[thick, cst_comp_spec, RingHom.comp_apply, Ideal.Quotient.eq_zero_iff_mem.2 ha, map_zero]`.
+-/
 theorem cst_pow_eq_zero {R : Type} [CommRing R] (I : Ideal R) (e : ℕ) {X : Scheme.{0}}
     (p : X ⟶ Spec (CommRingCat.of (R ⧸ I ^ (e + 1)))) (V : X.Opens) {a : R} (ha : a ∈ I ^ (e + 1)) :
     AbLaw.cst (p ≫ thick R I e) V a = 0 := by
   rw [thick, cst_comp_spec, RingHom.comp_apply, Ideal.Quotient.eq_zero_iff_mem.2 ha, map_zero]
 
+/- English proof (translation)
+Introduce `R _ I Y β hpb n C e a F i ha hF`. Establish `hsq` using `(GlobalTheory.T.isPullback_thick_tower_squares R I Y β hpb).1 e`. Establish `hk` using `(GlobalTheory.T.baseChange_quotient_closedImmersion_idealSheaf R (I ^ (e + 1)) (Y (e + 1)).left (Y e).left ((Y (e + 1)).hom ≫ thick R I (e + 1)) (β e) (Y e).hom hsq).2.2 (C.D (e + 1) i) (C.aff (e + 1) i)`. Establish `hw : β e ≫ (Y (e + 1)).hom ≫ thick R I (e + 1) = (Y e).hom ≫ thick R I e`. Rewrite using `[← Category.assoc, (hpb e).w, Category.assoc, thickTrans_comp]`.
+
+Establish `hev : ((β e).appLE (C.D (e + 1) i) (C.D e i) (C.pre e i).ge).hom (C.ev (e + 1) i F) = C.ev e i F`. Establish `hcomp : ((β e).appLE (C.D (e + 1) i) (C.D e i) (C.pre e i).ge).hom.comp (C.ev (e + 1) i) = C.ev e i`. Apply `MvPolynomial.ringHom_ext` to reduce the goal to its premises. Introduce `r`. Simplify using `[Charts.ev, appLE_cst, hw]`.
+
+Introduce `j`. Simplify using `[Charts.ev, C.ρ_pull]`. Conclude with `RingHom.congr_fun hcomp F`. Establish `hx : C.ev (e + 1) i F ∈ RingHom.ker ((β e).app (C.D (e + 1) i)).hom`. Rewrite using `[RingHom.mem_ker]`.
+
+Establish `h2 : ((β e).appLE (C.D (e + 1) i) (C.D e i) (C.pre e i).ge).hom (C.ev (e + 1) i F) = rs (Y e).left (C.pre e i).ge (((β e).app (C.D (e + 1) i)).hom (C.ev (e + 1) i F))` using `rfl`. Rewrite `h2` using `[hev, hF]`. Establish `h3` using `congrArg (rs (Y e).left (C.pre e i).le) h2`. Rewrite `h3` using `[map_zero, rs_rs, rs_self]`. Conclude with `h3.symm`.
+
+Rewrite `hx` using `[hk.2]`. Rewrite using `[map_mul, Charts.ev, MvPolynomial.eval₂Hom_C]`. Establish `hm : AbLaw.cst ((Y (e + 1)).hom ≫ thick R I (e + 1)) (C.D (e + 1) i) a * C.ev (e + 1) i F ∈ (I * I ^ (e + 1)).map (AbLaw.cst ((Y (e + 1)).hom ≫ thick R I (e + 1)) (C.D (e + 1) i))`. Rewrite using `[Ideal.map_mul]`. Conclude with `Ideal.mul_mem_mul (Ideal.mem_map_of_mem _ ha) hx`.
+
+Establish `hbot : (I * I ^ (e + 1)).map (AbLaw.cst ((Y (e + 1)).hom ≫ thick R I (e + 1)) (C.D (e + 1) i)) = ⊥`. Use `le_bot_iff.1 (Ideal.map_le_iff_le_comap.2 fun r hr => ?_)` and prove the remaining obligations. Rewrite `hr` using `[← pow_succ']`. Simplify using `only [Ideal.mem_comap, Ideal.mem_bot]`. Conclude with `cst_pow_eq_zero I (e + 1) (Y (e + 1)).hom _ hr`.
+
+Rewrite `hm` using `[hbot]`. Conclude with `(Ideal.mem_bot).1 hm`.
+-/
 theorem ev_succ_C_mul_eq_zero : ∀ (R : Type) [CommRing R] (I : Ideal R), ∀ (Y : ∀ e : ℕ, Over (Spec (CommRingCat.of (R ⧸ I ^ (e + 1))))) (β : ∀ e, (Y e).left ⟶ (Y (e + 1)).left), (∀ e, IsPullback (β e) (Y e).hom (Y (e + 1)).hom (thickTrans R I e)) → ∀ (n : ℕ) (C : Charts I Y β n), ∀ (e : ℕ) (a : R) (F : MvPolynomial (Fin (n + 1)) R) (i : Fin (n + 1)), a ∈ I → C.ev e i F = 0 → C.ev (e + 1) i (MvPolynomial.C a * F) = 0 := by
   intro R _ I Y β hpb n C e a F i ha hF
   have hsq := (GlobalTheory.T.isPullback_thick_tower_squares R I Y β hpb).1 e

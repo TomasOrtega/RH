@@ -8,6 +8,11 @@ open GlobalTheory.Desc
 
 namespace GlobalTheory.GenericFibreChart
 
+/- English proof (translation)
+Establish `w : l ≫ i ≫ h = q ≫ j` using `by rw [← Category.assoc, hl, H.w]`. Use `⟨⟨w⟩, ⟨PullbackCone.IsLimit.mk _ (fun s => H.lift (s.fst ≫ i) s.snd (by rw [Category.assoc]; exact s.condition)) ?_ ?_ ?_⟩⟩` and prove the remaining obligations. Introduce `s`. Rewrite using `[← cancel_mono i, Category.assoc, hl, H.lift_fst]`. Introduce `s`.
+
+Conclude with `H.lift_snd _ _ _`. Introduce `s m h1 h2`. Apply `H.hom_ext` to reduce the goal to its premises. Rewrite using `[H.lift_fst, ← h1, Category.assoc, hl]`. Rewrite using `[H.lift_snd, h2]`.
+-/
 theorem isPullback_of_fac_mono {C : Type*} [Category C] {P V G S T : C} {p : P ⟶ G} {q : P ⟶ T}
     {h : G ⟶ S} {j : T ⟶ S} (H : IsPullback p q h j) (i : V ⟶ G) [Mono i] (l : P ⟶ V)
     (hl : l ≫ i = p) : IsPullback l q (i ≫ h) j := by
@@ -23,6 +28,13 @@ theorem isPullback_of_fac_mono {C : Type*} [Category C] {P V G S T : C} {p : P �
     · rw [H.lift_fst, ← h1, Category.assoc, hl]
     · rw [H.lift_snd, h2]
 
+/- English proof (translation)
+Establish `w : p ≫ a = q ≫ g`. Rewrite using `[← cancel_mono m, Category.assoc, Category.assoc, H.w]`. Use `⟨⟨w⟩, ⟨PullbackCone.IsLimit.mk _ (fun s => H.lift s.fst s.snd (by` and prove the remaining obligations. Rewrite using `[← Category.assoc, ← Category.assoc, s.condition])) ?_ ?_ ?_⟩⟩`. Introduce `s`.
+
+Conclude with `H.lift_fst _ _ _`. Introduce `s`. Conclude with `H.lift_snd _ _ _`. Introduce `s m h1 h2`. Apply `H.hom_ext` to reduce the goal to its premises.
+
+Rewrite using `[H.lift_fst, h1]`. Rewrite using `[H.lift_snd, h2]`.
+-/
 theorem isPullback_of_comp_mono {C : Type*} [Category C] {P X Y W Z : C} {p : P ⟶ X} {q : P ⟶ Y}
     {a : X ⟶ W} {g : Y ⟶ W} (m : W ⟶ Z) [Mono m] (H : IsPullback p q (a ≫ m) (g ≫ m)) :
     IsPullback p q a g := by
@@ -40,6 +52,17 @@ theorem isPullback_of_comp_mono {C : Type*} [Category C] {P X Y W Z : C} {p : P 
     · rw [H.lift_fst, h1]
     · rw [H.lift_snd, h2]
 
+/- English proof (translation)
+Introduce `R₀ _ f A R _ _ ρ hf G V φ hV hP`. Establish `hu : IsUnit (((algebraMap R (FractionRing R)).comp ρ) f)`. Rewrite using `[isUnit_iff_ne_zero, RingHom.comp_apply]`. Conclude with `fun h => hf ((IsFractionRing.injective R (FractionRing R)) (by rw [h, map_zero]))`. Set `ψ : Localization.Away f →+* FractionRing R` to `IsLocalization.Away.lift f hu`.
+
+Establish `hψ : ψ.comp (algebraMap R₀ (Localization.Away f)) = (algebraMap R (FractionRing R)).comp ρ` using `IsLocalization.Away.lift_comp f hu`. Establish `hg : spMap ψ ≫ GlobalTheory.Desc.awayMap f = jK R ≫ spMap ρ`. Rewrite using `[← Spec.map_comp, ← Spec.map_comp, ← CommRingCat.ofHom_comp, ← CommRingCat.ofHom_comp, hψ]`. Establish `hr : Set.range (pullback.fst G.hom (jK R)) ⊆ Set.range V.ι`. Introduce and unpack `_ ⟨x, rfl⟩`.
+
+Rewrite using `[Scheme.Opens.range_ι]`. Use `(hV _).2 ?_` and prove the remaining obligations. Establish `hx : G.hom (pullback.fst G.hom (jK R) x) = jK R (pullback.snd G.hom (jK R) x)`. Rewrite using `[← Scheme.Hom.comp_apply, pullback.condition, Scheme.Hom.comp_apply]`. Rewrite using `[hx]`.
+
+Introduce `hmem`. Establish `hmem' : algebraMap R (FractionRing R) (ρ f) ∈ (pullback.snd G.hom (jK R) x : PrimeSpectrum (FractionRing R)).asIdeal` using `hmem`. Conclude with `(pullback.snd G.hom (jK R) x : PrimeSpectrum (FractionRing R)).isPrime.ne_top (Ideal.eq_top_of_isUnit_mem _ hmem' hu)`. Use `haveI : IsOpenImmersion (GlobalTheory.Desc.awayMap f) := IsOpenImmersion.of_isLocalization f`. Use `⟨spMap ψ, IsOpenImmersion.lift V.ι _ hr, IsOpenImmersion.lift_fac _ _ _, ?_⟩` and prove the remaining obligations.
+
+Establish `h1` using `isPullback_of_fac_mono (IsPullback.of_hasPullback G.hom (jK R)) V.ι (IsOpenImmersion.lift V.ι _ hr) (IsOpenImmersion.lift_fac _ _ _)`. Establish `h2` using `h1.paste_horiz hP`. Use `isPullback_of_comp_mono (GlobalTheory.Desc.awayMap f) ?_` and prove the remaining obligations. Rewrite using `[hg]`. Conclude with `h2`.
+-/
 theorem exists_isPullback_generic :
     ∀ (R₀ : Type) [CommRing R₀] (f : R₀) (A : Over (Sp (Localization.Away f))) (R : Type)
       [CommRing R] [IsDomain R] (ρ : R₀ →+* R), ρ f ≠ 0 →

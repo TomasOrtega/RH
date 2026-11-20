@@ -15,6 +15,9 @@ noncomputable section
 
 namespace GlobalTheory.TorsionTransfer
 
+/- English proof (translation)
+Substitute `hg` using the available equality. Establish `e : x₀ = pushHom h T x` using `Over.OverMorphism.ext hx`. Rewrite using `[e, ← map_pow]`. Both sides reduce to the same expression.
+-/
 theorem pow_left_of_isGrpPullback {S S' : Scheme.{0}} {G' : Over S'} {G : Over S} [GrpObj G'] [GrpObj G]
     {f : S' ⟶ S} {φ : G'.left ⟶ G.left} (h : IsGrpPullback G' G f φ) (T : Over S') (g : T.left ⟶ S)
     (hg : T.hom ≫ f = g) (x : T ⟶ G') (x₀ : Over.mk g ⟶ G) (hx : x₀.left = x.left ≫ φ) (n : ℕ) :
@@ -24,6 +27,21 @@ theorem pow_left_of_isGrpPullback {S S' : Scheme.{0}} {G' : Over S'} {G : Over S
   rw [e, ← map_pow]
   rfl
 
+/- English proof (translation)
+Introduce `V₁ _ X _ K _ ev Z _ ψ hψ K₀ _ e Y _ φ hφ n y hy q hq hs`. Set `P` to `(Over.pullback (spMap ev)).obj X`. Set `T0 : Over (Sp K)` to `Over.mk (𝟙 (Sp K))`. Establish `hqP : q ≫ P.hom = T0.hom` using `hs`. Set `qq : T0 ⟶ P` to `Over.homMk q hqP`.
+
+Establish `hP` using `isGrpPullback_pullback X (spMap ev)`. Establish `h1` using `pow_left_of_isGrpPullback hP T0 (spMap ev) (Category.id_comp _) qq y hq.symm n`. Establish `h0` using `pow_left_of_isGrpPullback hP T0 (spMap ev) (Category.id_comp _) qq y hq.symm 0`. Rewrite `h1` using `[hy]`. Rewrite `h0` using `[pow_zero, pow_zero]`.
+
+Establish `hqn : (qq ^ n).left = (1 : T0 ⟶ P).left`. Apply `pullback.hom_ext` to reduce the goal to its premises. Conclude with `h1.symm.trans h0`. Conclude with `(Over.w (qq ^ n)).trans (Over.w (1 : T0 ⟶ P)).symm`. Establish `hzw : (q ≫ ψ) ≫ Z.hom = T0.hom`.
+
+Establish `w` using `hψ.1.w`. Rewrite using `[Category.assoc, w, Category.comp_id]`. Conclude with `hs`. Set `zz : T0 ⟶ Z` to `Over.homMk (q ≫ ψ) hzw`. Establish `k1` using `pow_left_of_isGrpPullback hψ T0 (𝟙 _) (Category.comp_id _) qq zz rfl n`.
+
+Establish `k0` using `pow_left_of_isGrpPullback hψ T0 (𝟙 _) (Category.comp_id _) qq zz rfl 0`. Rewrite `k0` using `[pow_zero, pow_zero]`. Establish `hzn : (zz ^ n).left = (1 : T0 ⟶ Z).left`. Rewrite using `[k1, hqn]`. Conclude with `k0.symm`.
+
+Establish `hyw : (q ≫ ψ ≫ φ) ≫ Y.hom = spMap e`. Establish `w` using `hφ.1.w`. Rewrite using `[Category.assoc, Category.assoc, w, ← Category.assoc ψ, ← Category.assoc q, ← Category.assoc q, hzw]`. Conclude with `Category.id_comp _`. Use `⟨Over.homMk (q ≫ ψ ≫ φ) hyw, ?_, rfl⟩` and prove the remaining obligations.
+
+Establish `m1` using `pow_left_of_isGrpPullback hφ T0 (spMap e) (Category.id_comp _) zz (Over.homMk (q ≫ ψ ≫ φ) hyw) (by simp [zz]) n`. Establish `m0` using `pow_left_of_isGrpPullback hφ T0 (spMap e) (Category.id_comp _) zz (Over.homMk (q ≫ ψ ≫ φ) hyw) (by simp [zz]) 0`. Rewrite `m0` using `[pow_zero, pow_zero]`. Apply `Over.OverMorphism.ext` to reduce the goal to its premises. Rewrite using `[m1, hzn, m0]`.
+-/
 theorem torsion_transfer : ∀ (V₁ : Type) [CommRing V₁] (X : Over (Sp V₁)) [GrpObj X] (K : Type) [Field K] (ev : V₁ →+* K)
   (Z : Over (Sp K)) [GrpObj Z] (ψ : ((Over.pullback (spMap ev)).obj X).left ⟶ Z.left),
   IsGrpPullback ((Over.pullback (spMap ev)).obj X) Z (𝟙 _) ψ →

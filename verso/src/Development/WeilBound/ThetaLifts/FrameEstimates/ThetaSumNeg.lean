@@ -18,12 +18,20 @@ section
 variable {B : Base F E} {n d : ℕ} {X : Spc F E n} {W : Spc F E d} {M : Model σ X W} {χX χW : Chr F E} {om : Rep σ X W}
   {r s r' s' : ℕ}
 
+/- English proof (translation)
+Establish `e : L = (L ^ (1 / 2 : ℝ)) ^ 2`. Rewrite using `[← ENNReal.rpow_two, ← ENNReal.rpow_mul]`. Evaluate the numerical expressions. Use `conv_lhs => rw [e, ← mul_pow]`. Conclude with `⟨fun h => (ENNReal.pow_le_pow_left_iff two_ne_zero).1 h, fun h => by gcongr⟩`.
+-/
 theorem sq_iff {a P L : ℝ≥0∞} : a ^ 2 ≤ P ^ 2 * L ↔ a ≤ P * L ^ (1 / 2 : ℝ) := by
   have e : L = (L ^ (1 / 2 : ℝ)) ^ 2 := by
     rw [← ENNReal.rpow_two, ← ENNReal.rpow_mul]; norm_num
   conv_lhs => rw [e, ← mul_pow]
   exact ⟨fun h => (ENNReal.pow_le_pow_left_iff two_ne_zero).1 h, fun h => by gcongr⟩
 
+/- English proof (translation)
+Use `ENNReal.tsum_le_tsum fun x => ENNReal.ofReal_le_ofReal ?_` and prove the remaining obligations. Distinguish the cases in `hx : ∃ c ∈ C, At (evI F) (mat g⁻¹ * incM F x.1 * (mat h⁻¹)ᵀ - c)`. Take `⟨c, h1, h2⟩` from `hx`. Unfold `maj`. Rewrite using `[if_pos ⟨c, h1, h2⟩, if_pos ⟨c, hC h1, h2⟩]`.
+
+Use `conv_lhs => unfold maj`. Rewrite using `[if_neg hx]`. Conclude with `sq_maj_nonneg _ _ _ _`.
+-/
 theorem latSum_mono {τ : ∀ w : InfinitePlace F, EmbOver E w} {C C' : Set (Ten F E n d)} (hC : C ⊆ C') (N : ℕ) (S)
     (g : UA σ X.J) (h : UA σ W.J) : latSum τ C N S g h ≤ latSum τ C' N S g h := by
   refine ENNReal.tsum_le_tsum fun x => ENNReal.ofReal_le_ofReal ?_
@@ -41,9 +49,17 @@ def Qb (N : ℕ) (Φ : SInf F (Fin n × Fin d) → Fn F n d) : Prop :=
   (∀ f, Φ f ∈ schA F (Fin n × Fin d)) ∧ ∃ (p : Seminorm ℂ (SInf F (Fin n × Fin d))) (C : Set (Ten F E n d)), Continuous p ∧
     IsCompact C ∧ ∀ f g h, ‖theta om (Φ f) g h‖ₑ ^ 2 ≤ ENNReal.ofReal (p f) ^ 2 * latSum B.emb C N (fullRank E n d) g h
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fun _ => zero_mem _, 0, ∅, continuous_const, isCompact_empty, fun f g h => by simp [theta, thetaSum]⟩`.
+-/
 theorem qb_zero (N : ℕ) : Qb B om N fun _ => 0 :=
   ⟨fun _ => zero_mem _, 0, ∅, continuous_const, isCompact_empty, fun f g h => by simp [theta, thetaSum]⟩
 
+/- English proof (translation)
+Take `⟨a1, p, C, b1, c1, d1⟩` from `h1`. Take `⟨a2, q, C', b2, c2, d2⟩` from `h2`. Use `⟨fun f => add_mem (a1 f) (a2 f), p + q, C ∪ C', (b1.add b2 : Continuous fun f => p f + q f), c1.union c2, fun f g h => sq_iff.2 ?_⟩` and prove the remaining obligations. Establish `e1` using `sq_iff.1 ((d1 f g h).trans (mul_le_mul_right (latSum_mono (C' := C ∪ C') Set.subset_union_left N _ g h) _))`. Establish `e2` using `sq_iff.1 ((d2 f g h).trans (mul_le_mul_right (latSum_mono (C' := C ∪ C') Set.subset_union_right N _ g h) _))`.
+
+Rewrite using `[theta_add hp (a1 f) (a2 f), Seminorm.add_apply, ENNReal.ofReal_add (apply_nonneg p f) (apply_nonneg q f), add_mul]`. Conclude with `(enorm_add_le _ _).trans (add_le_add e1 e2)`.
+-/
 theorem Qb.add (hp : IsPair B M χX χW om r s r' s') {N : ℕ} {Φ Ψ : SInf F (Fin n × Fin d) → Fn F n d} (h1 : Qb B om N Φ)
     (h2 : Qb B om N Ψ) : Qb B om N fun f => Φ f + Ψ f := by
   obtain ⟨a1, p, C, b1, c1, d1⟩ := h1
@@ -55,6 +71,9 @@ theorem Qb.add (hp : IsPair B M χX χW om r s r' s') {N : ℕ} {Φ Ψ : SInf F 
   rw [theta_add hp (a1 f) (a2 f), Seminorm.add_apply, ENNReal.ofReal_add (apply_nonneg p f) (apply_nonneg q f), add_mul]
   exact (enorm_add_le _ _).trans (add_le_add e1 e2)
 
+/- English proof (translation)
+Take `⟨a1, p, C, b1, c1, d1⟩` from `h1`. Use `⟨fun f => Submodule.smul_mem _ _ (a1 f), ‖c‖₊ • p, C, (continuous_const.mul b1 : Continuous fun f => ‖c‖ * p f), c1, fun f g h => sq_iff.2 ?_⟩` and prove the remaining obligations. Establish `e1` using `sq_iff.1 (d1 f g h)`. Rewrite using `[theta_smul hp c (a1 f), enorm_mul, show (‖c‖₊ • p) f = ‖c‖ * p f from rfl, ENNReal.ofReal_mul (norm_nonneg c), ofReal_norm, mul_assoc]`. Conclude with `mul_le_mul_right e1 _`.
+-/
 theorem Qb.smul (hp : IsPair B M χX χW om r s r' s') {N : ℕ} {Φ : SInf F (Fin n × Fin d) → Fn F n d} (h1 : Qb B om N Φ)
     (c : ℂ) : Qb B om N fun f => c • Φ f := by
   obtain ⟨a1, p, C, b1, c1, d1⟩ := h1
@@ -65,6 +84,9 @@ theorem Qb.smul (hp : IsPair B M χX χW om r s r' s') {N : ℕ} {Φ : SInf F (F
     ofReal_norm, mul_assoc]
   exact mul_le_mul_right e1 _
 
+/- English proof (translation)
+Proceed by induction on `S using Finset.induction_on with`. Consider the case `empty => simpa using qb_zero N`. Consider the case `insert a S ha ih => simpa [Finset.sum_insert ha] using (h a).add hp ih`.
+-/
 theorem qb_sum (hp : IsPair B M χX χW om r s r' s') {N : ℕ} {ι : Type} (S : Finset ι)
     {Φ : ι → SInf F (Fin n × Fin d) → Fn F n d} (h : ∀ i, Qb B om N (Φ i)) : Qb B om N fun f => ∑ i ∈ S, Φ i f := by
   classical
@@ -72,12 +94,22 @@ theorem qb_sum (hp : IsPair B M χX χW om r s r' s') {N : ℕ} {ι : Type} (S :
   | empty => simpa using qb_zero N
   | insert a S ha ih => simpa [Finset.sum_insert ha] using (h a).add hp ih
 
+/- English proof (translation)
+Unfold `thetaSum`. Rewrite using `[← (Equiv.neg (κ → F)).tsum_eq]`. Use `tsum_congr fun ξ => congrArg Φ (funext fun i => ?_)` and prove the remaining obligations. Simplify using the standard rewrite rules.
+-/
 theorem thetaSum_neg {κ : Type} (Φ : (κ → AF F) → ℂ) : thetaSum F (fun x => Φ (-x)) = thetaSum F Φ := by
   unfold thetaSum
   rw [← (Equiv.neg (κ → F)).tsum_eq]
   refine tsum_congr fun ξ => congrArg Φ (funext fun i => ?_)
   simp
 
+/- English proof (translation)
+Take `⟨e, c, he, hc, h1⟩` from `hP F E σ B n d X W M χX χW om r s r' s' hp`. Establish `hc0 : c ≠ 0` using `fun h0 => by simp [h0] at hc`. Establish `hs` using `(IsUWeilPair.isUSplitting hp.weil).pres (g, h) Φ hΦ`. Establish `hcomm : g * e = e * g` using `Subtype.ext (Units.ext (by`. Express the relevant statement in the definitionally equal form `mat g * mat e = mat e * mat g`.
+
+Rewrite using `[he]`. Use the proof step `simp))`. Establish `e1 : om (g, h) (om (e, 1) Φ) = om (e, 1) (om (g, h) Φ)`. Rewrite using `[← Module.End.mul_apply, ← Module.End.mul_apply, ← map_mul, ← map_mul, Prod.mk_mul_mk, Prod.mk_mul_mk, hcomm, mul_one, one_mul]`. Rewrite `e1` using `[h1 Φ hΦ, h1 _ hs, map_smul]`.
+
+Unfold `theta`. Rewrite using `[smul_right_injective _ hc0 e1, thetaSum_neg]`.
+-/
 theorem theta_neg (hP : Parity) (hp : IsPair B M χX χW om r s r' s') {Φ : Fn F n d} (hΦ : Φ ∈ schA F _) (g h) :
     theta om (fun x => Φ (-x)) g h = theta om Φ g h := by
   obtain ⟨e, c, he, hc, h1⟩ := hP F E σ B n d X W M χX χW om r s r' s' hp
@@ -96,6 +128,19 @@ theorem theta_neg (hP : Parity) (hp : IsPair B M χX χW om r s r' s') {Φ : Fn 
 set_option maxHeartbeats 800000 in
 open scoped Classical in
 
+/- English proof (translation)
+Take `⟨μ, hμ, -⟩` from `ParityOfCoefficients.exists_haar (F := F) (κ := Fin n × Fin d)`. Take `⟨c, hc, h1⟩` from `theta_mul_le hS hE hp μ hμ`. Establish `hφ' : (fun y => φ (-y)) ∈ SB (Fin n × Fin d → Af F)` using `⟨hφ.1.comp_continuous continuous_neg, hφ.2.comp_homeomorph (Homeomorph.neg _)⟩`. Take `⟨p, C, hpc, hC, h2⟩` from `hB F E σ B n d X W M χX χW om r s r' s' hp μ hμ φ hφ _ hφ' N`. Set `P : SInf F (Fin n × Fin d) →L[ℂ] SInf F (Fin n × Fin d)` to `SchwartzMap.compCLMOfContinuousLinearEquiv ℂ (ContinuousLinearEquiv.neg ℝ)`.
+
+Establish `hPf : ∀ f : SInf F (Fin n × Fin d), (fun x => pureA F f φ (-x)) = pureA F (P f) fun y => φ (-y)` using `fun f => by`. Use function extensionality and compare the values at `x`. Unfold `pureA`. Use `congr 1`. Conclude with `congrArg f (funext fun i => map_neg (InfiniteAdeleRing.ringEquiv_mixedSpace F) (x i).1)`.
+
+Set `q : Seminorm ℂ (SInf F (Fin n × Fin d))` to `p + p.comp P.toLinearMap`. Establish `hq : Continuous q` using `(hpc.add (hpc.comp P.continuous) : Continuous fun f => p f + p (P f))`. Use `⟨fun f => pureA_mem f hφ, NNReal.mk √c (Real.sqrt_nonneg c) • q, C, (continuous_const.mul hq : Continuous fun f => √c * q f), hC, fun f g h => ?_⟩` and prove the remaining obligations. Establish `hm` using `pureA_mem f hφ`. Establish `e` using `h1 _ hm _ (ParityOfCoefficients.neg_mem_schA hm) g h`.
+
+Rewrite `e` using `[theta_neg hP hp hm]`. Use `sq_le_of_coef hc (apply_nonneg q f) e (fun x hx => h0 f μ hμ _ fun hr => hx ?_) fun x => ?_` and prove the remaining obligations. Rewrite `hr` using `[Matrix.map_mul, Matrix.map_mul, ThKEst.W.incM_piW]`. Establish `hr2` using `ThKEst.W.rank_of_mul _ _ _ hr`. Conclude with `ThKEst.W.rank_of_map (B.τ₁.comp σ).toRingHom x hr2`.
+
+Rewrite using `[hPf]`. Use `(h2 f (P f) _).trans (mul_le_mul_of_nonneg_right ?_ (sq_maj_nonneg _ _ _ _))` and prove the remaining obligations. Establish `a1` using `apply_nonneg p f`. Establish `a2` using `apply_nonneg p (P f)`. Express the relevant statement in the definitionally equal form `p f * p (P f) ≤ (p f + p (P f)) * (p f + p (P f))`.
+
+Use the polynomial consequences of the given equalities and inequalities.
+-/
 theorem qb_piece (hP : Parity) (hS : CoefSum) (hE : CoefEq) (hB : CoefBd) (hp : IsPair B M χX χW om r s r' s') (N : ℕ)
     {φ : (Fin n × Fin d → Af F) → ℂ} (hφ : φ ∈ SB _)
     (h0 : ∀ (f : SInf F (Fin n × Fin d)) (μ : Measure (Fin n × Fin d → AF F)), μ.IsAddHaarMeasure → ∀ z : Ten F E n d,
@@ -133,6 +178,17 @@ theorem qb_piece (hP : Parity) (hS : CoefSum) (hE : CoefEq) (hB : CoefBd) (hp : 
 
 end
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ B n d X W M χX χW om r s r' s' hp φ hφ N`. Take `⟨m, c, χ, hχ, e⟩` from `(hF F E σ B n d X W M χX χW om r s r' s' hp).2.2.2 φ hφ`. Establish `key : Qb B om N fun f => ∑ i, c i • GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.pure f (χ i)` using `qb_sum hp _ fun i => Qb.smul hp (c := c i) <| by`. Take `⟨k, ξ, e1, hξ⟩` from `hC F E σ B n d X W M χX χW om r s r' s' hp _ (hχ i).2.2`. Establish `hstd : ∀ᶠ u in cofinite, χ i u = ThKEst.W.stdF _ u` using `((hχ i).2.1.and hp.good.std).mono fun v hv => hv.1.trans hv.2`.
+
+Establish `hg : ThKEst.W.Good (χ i)` using `⟨(hχ i).1, hstd⟩`. Establish `e2 : (fun f : SInf F (Fin n × Fin d) => GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.pure f (χ i)) = fun f : SInf F (Fin n × Fin d) => ∑ j, pureA F f (ThKEst.W.pf (Function.update (χ i) B.v₁ (ξ j)))` using `funext fun f => by conv_lhs => rw [← Function.update_eq_self B.v₁ (χ i), ThKEst.W.pure_update (v := B.v₁) f hstd, e1]`. Establish `e3 : ∀ j, pureA F f (ThKEst.W.pf (Function.update (χ i) B.v₁ (ξ j))) = tens (evFin F B.v₁) (ξ j) (GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.pure f (Function.update (χ i) B.v₁ 1))` using `fun j => ThKEst.W.pure_update (v := B.v₁) f hstd (ξ j)`. Rewrite using `[Finset.sum_congr rfl fun j _ => e3 j]`. Use function extensionality and compare the values at `x`.
+
+Rewrite using `[Finset.sum_apply]`. Unfold `tens`. Rewrite using `[Finset.sum_apply, Finset.sum_mul]`. Rewrite using `[e2]`. Use `qb_sum hp _ fun j => qb_piece hP hS hE hB hp N (ThKEst.W.pf_mem (hg.update (hξ j).1.1)) fun f μ hμ z hz => ?_` and prove the remaining obligations.
+
+Rewrite using `[← ThKEst.W.pure_eq, ThKEst.W.pure_update (v := B.v₁) f hstd]`. Use `(hξ j).2 _ ⟨fun x z hz => ?_, ?_⟩ μ hμ z hz` and prove the remaining obligations. Establish `h1` using `(ThKEst.W.at_iff (v := B.v₁) z).1 hz`. Establish `h2 : z = fun i => GlobalTheory.EmbChart.atPlace B.v₁ (evFin F B.v₁ (z i))` using `funext fun i => (congrFun h1 i).symm.trans (ThKEst.W.ep_mul (v := B.v₁) (z i))`. Rewrite using `[h2]`.
+
+Conclude with `ThKEst.W.indep_pure (v := B.v₁) f (χ i) x _`. Rewrite using `[← ThKEst.W.pure_update (v := B.v₁) f hstd]`. Conclude with `ThKEst.W.pure_mem f (hg.update (hξ j).1.1)`. Take `⟨-, p, C, h1, h2, h3⟩` from `key`. Conclude with `⟨p, C, h1, h2, fun f g h => by rw [e f]; exact h3 f g h⟩`.
+-/
 theorem sqSo_of' (hF : SoFin) (hC : SoCut) (hP : Parity) (hS : CoefSum) (hE : CoefEq) (hB : CoefBd) : SqSo := by
   classical
   intro F E _ _ _ _ _ σ B n d X W M χX χW om r s r' s' hp φ hφ N

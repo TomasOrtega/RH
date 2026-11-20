@@ -17,9 +17,17 @@ def GTransform : Prop :=
     ((strictTransform π Z D).support : Set X₁) ∪ π.base ⁻¹' (Z.support : Set X) =
       π.base ⁻¹' (D.support : Set X) ∪ π.base ⁻¹' (Z.support : Set X)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem strictTransform_eq_blowup {X X₁ : Scheme.{0}} (π : X₁ ⟶ X) (Z D : X.IdealSheafData) :
     strictTransform π Z D = Blowup.strictTransform π Z D := rfl
 
+/- English proof (translation)
+Rewrite using `[strictTransform_eq_blowup]`. Apply `Set.Subset.antisymm` to reduce the goal to its premises. Use `Set.union_subset_union_left _ ?_` and prove the remaining obligations. Conclude with `EmbeddedResolution.support_strictTransform_subset_preimage π Z D`. Introduce and unpack `x (hx | hx)`.
+
+Distinguish the cases in `hz : π.base x ∈ (Z.support : Set X)`. Conclude with `Or.inr hz`. Conclude with `Or.inl ((EmbeddedResolution.mem_support_strictTransform_iff_of_notMem_support π Z D x hz).2 hx)`. Conclude with `Or.inr hx`.
+-/
 theorem support_strictTransform_union {X X₁ : Scheme.{0}} [IsLocallyNoetherian X₁] (π : X₁ ⟶ X)
     (Z D : X.IdealSheafData) :
     ((strictTransform π Z D).support : Set X₁) ∪ π.base ⁻¹' (Z.support : Set X) =
@@ -34,6 +42,9 @@ theorem support_strictTransform_union {X X₁ : Scheme.{0}} [IsLocallyNoetherian
       · exact Or.inl ((EmbeddedResolution.mem_support_strictTransform_iff_of_notMem_support π Z D x hz).2 hx)
     · exact Or.inr hx
 
+/- English proof (translation)
+Introduce `_ _ π Z D _ _ _` and use `support_strictTransform_union π Z D`.
+-/
 theorem gTransform : GTransform := fun _ _ π Z D _ _ _ => support_strictTransform_union π Z D
 
 end PositivityTheory.ResPlug.WeightsCompactStabilizer

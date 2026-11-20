@@ -10,6 +10,17 @@ set_option autoImplicit false
 
 namespace GlobalTheory.CompanionTheory.CarriedPot
 
+/- English proof (translation)
+Introduce `e X X' _ _ A h P hP`. Use `⟨fun x j => ?_, fun x x' y hy => ?_⟩` and prove the remaining obligations. Establish `hs` using `hP.1 (h.symm x) j`. Establish `e₁ : (P.pullback h.symm h.symm.continuous).φ x ∘ ((tAtlas A h).chart j).symm = P.φ (h.symm x) ∘ (A.chart j).symm` using `funext fun w => by`. Simplify using `only [Function.comp_apply, tAtlas_symm, LocPot.pullback, Homeomorph.symm_apply_apply]`.
+
+Establish `e₂ : ((tAtlas A h).chart j).target ∩ ((tAtlas A h).chart j).symm ⁻¹' (P.pullback h.symm h.symm.continuous).U x = (A.chart j).target ∩ (A.chart j).symm ⁻¹' P.U (h.symm x)`. Use extensionality with `w`. Simplify using `only [Set.mem_inter_iff, Set.mem_preimage, tAtlas_target, tAtlas_symm, LocPot.pullback, Homeomorph.symm_apply_apply]`. Rewrite using `[e₁, e₂]`. Conclude with `hs`.
+
+Take `⟨W, hW, hyW, G, hG, hd⟩` from `hP.2 (h.symm x) (h.symm x') (h.symm y) hy`. Use `⟨h.symm ⁻¹' W, hW.preimage h.symm.continuous, hyW, G ∘ h.symm, fun j => ?_, fun z hz => ?_⟩` and prove the remaining obligations. Establish `hs` using `hG j`. Establish `e₁ : (G ∘ h.symm) ∘ ((tAtlas A h).chart j).symm = G ∘ (A.chart j).symm` using `funext fun w => by`. Simplify using `only [Function.comp_apply, tAtlas_symm, Homeomorph.symm_apply_apply]`.
+
+Establish `e₂ : ((tAtlas A h).chart j).target ∩ ((tAtlas A h).chart j).symm ⁻¹' (h.symm ⁻¹' W) = (A.chart j).target ∩ (A.chart j).symm ⁻¹' W`. Use extensionality with `w`. Simplify using `only [Set.mem_inter_iff, Set.mem_preimage, tAtlas_target, tAtlas_symm, Homeomorph.symm_apply_apply]`. Rewrite using `[e₁, e₂]`. Conclude with `hs`.
+
+Conclude with `hd (h.symm z) hz`.
+-/
 theorem isPotential_tAtlas_pullback : ∀ (e : ℕ) (X X' : Type) [TopologicalSpace X] [TopologicalSpace X']
     (A : FinHolAtlas e X) (h : X ≃ₜ X') (P : LocPot X), IsPotential A P →
       IsPotential (tAtlas A h) (P.pullback h.symm h.symm.continuous) := by
@@ -49,6 +60,9 @@ end PotentialityTransport
 section
 open CategoryTheory AlgebraicGeometry NumberField ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Geo.Tor ReciprocityTheory.AnForm ReciprocityTheory.AnForm.M
 open Formalism.BasicNotions GlobalTheory GlobalTheory.Cartier GlobalTheory.ProjVar GlobalTheory.TrueGeo GlobalTheory.ArInt GlobalTheory.Mean4 GlobalTheory.Mean4O GlobalTheory.CxPts GlobalTheory.Mean4O.CombForm
+/- English proof (translation)
+Apply the tactic sequence `first | exact @PotentialityTransport.GlobalTheory.CompanionTheory.CarriedPot.isPotential_tAtlas_pullback | exact PotentialityTransport.GlobalTheory.CompanionTheory.CarriedPot.isPotential_tAtlas_pullback | (intros; apply PotentialityTransport.GlobalTheory.CompanionTheory.CarriedPo …`.
+-/
 theorem _root_.GlobalTheory.Adopt.isPotential_transport_homeomorph : ∀ (e : ℕ) (X X' : Type) [TopologicalSpace X] [TopologicalSpace X'] (A : FinHolAtlas e X) (h : X ≃ₜ X') (P : LocPot X), IsPotential A P → IsPotential (tAtlas A h) (P.pullback h.symm h.symm.continuous) := by
   first | exact @PotentialityTransport.GlobalTheory.CompanionTheory.CarriedPot.isPotential_tAtlas_pullback | exact PotentialityTransport.GlobalTheory.CompanionTheory.CarriedPot.isPotential_tAtlas_pullback | (intros; apply PotentialityTransport.GlobalTheory.CompanionTheory.CarriedPot.isPotential_tAtlas_pullback <;> assumption)
 

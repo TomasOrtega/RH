@@ -17,6 +17,11 @@ open NumberField IsDedekindDomain ReciprocityTheory.ChartRestriction.G.Geo.Tor R
 
 namespace GlobalTheory.KeyRootTw
 
+/- English proof (translation)
+Introduce `E _ _ _ H Dw m τ i hi`. Unfold `Datum.mult at hi`. Distinguish the cases in `h : τ (H.rt : E) = H.rt0`. Rewrite `hi` using `[if_pos h]`. Simplify using `only [wtOf, dif_pos h, dif_pos hi, Pi.zero_apply, zero_sub]`.
+
+Rewrite `hi` using `[if_neg h]`. Establish `h' : conjEmb τ (H.rt : E) = H.rt0` using `conj_mem h`. Simplify using `only [wtOf, dif_neg h, dif_pos h', dif_pos hi, Pi.zero_apply, neg_zero, zero_sub]`.
+-/
 theorem wtOf_zero_fst : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (Dw : Datum H) (m : ℤ) (τ : E →+* ℂ) (i : ℕ), i < Dw.mult τ → (wtOf Dw 0 m).1 (τ, i) = -m := by
   intro E _ _ _ H Dw m τ i hi
   unfold Datum.mult at hi
@@ -27,6 +32,19 @@ theorem wtOf_zero_fst : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (
     have h' : conjEmb τ (H.rt : E) = H.rt0 := conj_mem h
     simp only [wtOf, dif_neg h, dif_pos h', dif_pos hi, Pi.zero_apply, neg_zero, zero_sub]
 
+/- English proof (translation)
+Introduce `E _ _ _ H Dw l Xo c σ r U x Z ρ K a C ha hC hρ hK z hz ht`. Take `⟨hd, hl⟩` from `hz`. Establish `hA : 0 < ‖σ a‖ * C` using `mul_pos (norm_pos_iff.2 ((map_ne_zero σ).2 ha)) hC`. Establish `h1` using `homN_idem U x hd hl (ht hd)`. Establish `hm : ∀ (m m' : ℤ) (f g : Rul Xo c), homN U x (wtOf Dw 0 (m + m')) (f * g) z = homN U x (wtOf Dw 0 m) f z * homN U x (wtOf Dw 0 m') g z` using `fun m m' f g => by`.
+
+Rewrite using `[← homN_mul U x (even_wtOf _ _) (even_wtOf _ _) f g z hd, ← wtOf_add, add_zero]`. Rewrite `h1` using `[← wtOf_zero (Dw := Dw)]`. Establish `h2 : homN U x (wtOf Dw 0 (-4)) (a • (idem Z * K)) z = ‖σ a‖ * C`. Use `hm 0 (-4) (idem Z) K` as an intermediate fact. Rewrite `this` using `[zero_add, h1, one_mul]`.
+
+Rewrite using `[homN_smul, this, hK z.1 z.2 hd]`. Establish `hi` using `idem_mul_idem Z`. Establish `h3 : homN U x (wtOf Dw 0 (-1)) (idem Z * (ρ : Rul Xo c)) z ^ 4 = ‖σ a‖ * C`. Establish `e : idem Z * (ρ : Rul Xo c) ^ 4 = idem Z * (ρ : Rul Xo c) * (idem Z * (ρ : Rul Xo c)) * (idem Z * (ρ : Rul Xo c) * (idem Z * (ρ : Rul Xo c)))`. Rewrite using `[mul_mul_mul_comm (idem Z), hi, mul_mul_mul_comm (idem Z), hi]`.
+
+Expand and normalize the polynomial expressions, which then agree. Rewrite using `[← h2, ← hρ, e, show (-4 : ℤ) = (-1 + -1) + (-1 + -1) by norm_num, hm, hm]`. Expand and normalize the polynomial expressions, which then agree. Establish `h4 : homN U x (wtOf Dw 0 (-1)) (idem Z * (ρ : Rul Xo c)) z = (‖σ a‖ * C) ^ ((1 / 4) : ℝ)`. Rewrite using `[← h3, ← Real.rpow_natCast, ← Real.rpow_mul (homN_nonneg _ _ _ _ _)]`.
+
+Evaluate the numerical expressions. Use `⟨?_, h4⟩` and prove the remaining obligations. Establish `h5` using `hm 1 (-1) (idem Z * ((ρ⁻¹ : (Rul Xo c)ˣ) : Rul Xo c)) (idem Z * (ρ : Rul Xo c))`. Rewrite `h5` using `[mul_mul_mul_comm, hi, Units.inv_mul, mul_one, add_neg_cancel, h1, h4]`. Rewrite using `[Real.rpow_neg hA.le]`.
+
+Conclude with `eq_inv_of_mul_eq_one_left h5.symm`.
+-/
 theorem homN_root : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l) (σ : c.F →+* ℂ) (r : ℕ) (U : Unf Xo c σ r) (x : ℝ) (Z : Comp Xo c) (ρ : (Rul Xo c)ˣ) (K : Rul Xo c) (a : c.F) (C : ℝ), a ≠ 0 → 0 < C → idem Z * (ρ : Rul Xo c) ^ 4 = a • (idem Z * K) → (∀ k, ∀ y ∈ (U.X k).dom, homN U x (wtOf Dw 0 (-4)) K ⟨k, y⟩ = C) → ∀ z ∈ framesOn U Z, (∀ hz : z.2 ∈ (U.X z.1).dom, Tested (U.un z.1 ⟨z.2, hz⟩)) → homN U x (wtOf Dw 0 1) (idem Z * ((ρ⁻¹ : (Rul Xo c)ˣ) : Rul Xo c)) z = (‖σ a‖ * C) ^ (-(1 / 4) : ℝ) ∧ homN U x (wtOf Dw 0 (-1)) (idem Z * (ρ : Rul Xo c)) z = (‖σ a‖ * C) ^ ((1 / 4) : ℝ) := by
   intro E _ _ _ H Dw l Xo c σ r U x Z ρ K a C ha hC hρ hK z hz ht
   obtain ⟨hd, hl⟩ := hz
@@ -56,6 +74,19 @@ theorem homN_root : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : 
   rw [Real.rpow_neg hA.le]
   exact eq_inv_of_mul_eq_one_left h5.symm
 
+/- English proof (translation)
+Introduce `E _ _ _ H Dw l Xo c Z w v hv ρ K a B ha hρ h0 h1`. Establish `hV` using `isVal_valOn hv`. Establish `hi` using `val_idem hv`. Establish `hone : v 1 = 0`. Use `hV.mul (idem Z) 1` as an intermediate fact.
+
+Rewrite `this` using `[mul_one, hi, zero_add, eq_comm]`. Then use the resulting hypothesis. Establish `hu` using `hV.mul (ρ : Rul Xo c) ((ρ⁻¹ : (Rul Xo c)ˣ) : Rul Xo c)`. Rewrite `hu` using `[Units.mul_inv, hone]`. Establish `h4` using `congrArg v hρ`. Rewrite `h4` using `[hV.smul _ _ ha, hV.mul, hV.mul, hi, zero_add, zero_add, show (ρ : Rul Xo c) ^ 4 = ρ * ρ * (ρ * ρ) by ring, hV.mul, hV.mul]`.
+
+Rewrite using `[hV.mul, hi, zero_add]`. Establish `n1` using `hV.ne_bot (ρ : Rul Xo c)`. Establish `n2` using `hV.ne_bot ((ρ⁻¹ : (Rul Xo c)ˣ) : Rul Xo c)`. Establish `t1 : v (ρ : Rul Xo c) ≠ ⊤` using `fun h => by`. Rewrite `hu` using `[h, EReal.top_add_of_ne_bot n2]`.
+
+Conclude with `EReal.zero_ne_top hu`. Establish `t2 : v ((ρ⁻¹ : (Rul Xo c)ˣ) : Rul Xo c) ≠ ⊤` using `fun h => by`. Rewrite `hu` using `[h, EReal.add_top_of_ne_bot n1]`. Conclude with `EReal.zero_ne_top hu`. Use `lift v (ρ : Rul Xo c) to ℝ using ⟨t1, n1⟩ with p`.
+
+Use `lift v ((ρ⁻¹ : (Rul Xo c)ˣ) : Rul Xo c) to ℝ using ⟨t2, n2⟩ with q`. Use `lift v K to ℝ using ⟨(h1.trans_lt (EReal.coe_lt_top _)).ne, hV.ne_bot K⟩ with k`. Rewrite `hu` using `[← EReal.coe_add, ← EReal.coe_zero, EReal.coe_eq_coe_iff]`. Rewrite `h4` using `[← EReal.coe_add, ← EReal.coe_add, ← EReal.coe_add, EReal.coe_eq_coe_iff]`. Rewrite `h0` using `[← EReal.coe_zero, EReal.coe_le_coe_iff]`.
+
+Rewrite `h1` using `[EReal.coe_le_coe_iff]`. Conclude with `⟨EReal.coe_le_coe_iff.2 (by linarith), EReal.coe_le_coe_iff.2 (by linarith)⟩`.
+-/
 theorem val_root : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l) (Z : Comp Xo c) (w : HeightOneSpectrum (𝓞 c.F)) (v : Rul Xo c → EReal), v ∈ valOn Z w → ∀ (ρ : (Rul Xo c)ˣ) (K : Rul Xo c) (a : c.F) (B : ℝ), a ≠ 0 → idem Z * (ρ : Rul Xo c) ^ 4 = a • (idem Z * K) → 0 ≤ v K → v K ≤ ((4 * B : ℝ) : EReal) → ((-(vAdd w a : ℝ) / 4 - B : ℝ) : EReal) ≤ v (idem Z * ((ρ⁻¹ : (Rul Xo c)ˣ) : Rul Xo c)) ∧ v (idem Z * ((ρ⁻¹ : (Rul Xo c)ˣ) : Rul Xo c)) ≤ ((-(vAdd w a : ℝ) / 4 : ℝ) : EReal) := by
   intro E _ _ _ H Dw l Xo c Z w v hv ρ K a B ha hρ h0 h1
   have hV := isVal_valOn hv
@@ -84,6 +115,19 @@ theorem val_root : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : R
   rw [EReal.coe_le_coe_iff] at h1
   exact ⟨EReal.coe_le_coe_iff.2 (by linarith), EReal.coe_le_coe_iff.2 (by linarith)⟩
 
+/- English proof (translation)
+Introduce `K E _ _ _ _ φ w hw`. Rewrite using `[GlobalTheory.DefectSumCompare.ord_vw_eq_vla w (conjDifferent_ne_bot φ)]`. Assume the negation of the conclusion as `h0`. Establish `hd` using `(QAt.BeSumPf.vla_ne_zero_iff w (conjDifferent_ne_bot φ)).1 h0`. Use `letI := φ.toAlgebra`.
+
+Establish `h2 : Ideal.absNorm (conjDifferent φ) = (discr E).natAbs ^ Module.finrank E K`. Use `Ideal.absNorm_algebraMap (𝓞 E) (𝓞 K) (differentIdeal ℤ (𝓞 E))` as an intermediate fact. Rewrite `this` using `[absNorm_differentIdeal E, ← IsFractionRing.finrank_eq (𝓞 E) E (𝓞 K) K]`. Conclude with `this`. Establish `h3` using `Ideal.le_of_dvd hd (Ideal.absNorm_mem (conjDifferent φ))`.
+
+Rewrite `h3` using `[h2, Nat.cast_pow]`. Establish `h4` using `w.isPrime.mem_of_pow_mem _ h3`. Establish `key : ∀ n : ℕ, n ≠ 0 → (n : 𝓞 K) ∈ w.asIdeal → ∃ p : ℕ, p.Prime ∧ p ∣ n ∧ (p : 𝓞 K) ∈ w.asIdeal`. Introduce `n`. Proceed by induction on `n using induction_on_primes with`.
+
+Consider the case `zero => exact fun h => absurd rfl h`. Consider the case `one => exact fun _ h => absurd ((Ideal.eq_top_iff_one _).2 (by simpa using h)) w.isPrime.ne_top`. Consider the case `prime_mul p n hp ih`. Introduce `hn hm`. Rewrite `hm` using `[Nat.cast_mul]`.
+
+Break down `w.isPrime.mem_or_mem hm with h | h` into its components or cases. Conclude with `⟨p, hp, dvd_mul_right _ _, h⟩`. Take `⟨p', h1, h2, h3⟩` from `ih (right_ne_zero_of_mul hn) h`. Conclude with `⟨p', h1, h2.mul_left _, h3⟩`. Take `⟨p, hp, hpd, hpw⟩` from `key _ (Int.natAbs_ne_zero.mpr (discr_ne_zero E)) h4`.
+
+Conclude with `hw p hp hpd hpw`.
+-/
 theorem ord_conjDifferent_eq_zero : ∀ (K E : Type) [Field K] [NumberField K] [Field E] [NumberField E] (φ : E →+* K) (w : HeightOneSpectrum (𝓞 K)), (∀ p : ℕ, p.Prime → p ∣ (NumberField.discr E).natAbs → ((p : ℕ) : 𝓞 K) ∉ w.asIdeal) → ord_vw w (conjDifferent φ) = 0 := by
   intro K E _ _ _ _ φ w hw
   rw [GlobalTheory.DefectSumCompare.ord_vw_eq_vla w (conjDifferent_ne_bot φ)]
@@ -112,6 +156,19 @@ theorem ord_conjDifferent_eq_zero : ∀ (K E : Type) [Field K] [NumberField K] [
   obtain ⟨p, hp, hpd, hpw⟩ := key _ (Int.natAbs_ne_zero.mpr (discr_ne_zero E)) h4
   exact hw p hp hpd hpw
 
+/- English proof (translation)
+Introduce `K E _ _ _ _ m φ g a C ha hC hlog hg`. Establish `hK : (0 : ℝ) < Module.finrank ℚ K` using `Nat.cast_pos.mpr Module.finrank_pos`. Establish `h0` using `lineDeg_num ha`. Establish `hf` using `fin_mul (finite_vAdd ha) (lw K)`. Establish `h1 : ∑ᶠ w, (-(vAdd w a : ℝ) / 4 - ∑ τ, (m τ : ℝ) * (ord_vw w (conjDifferent (φ τ)) : ℝ)) * lw K w = -(1 / 4) * ∑ᶠ w, (vAdd w a : ℝ) * lw K w - g * lrd E`.
+
+Establish `e : ∀ w, (-(vAdd w a : ℝ) / 4 - ∑ τ, (m τ : ℝ) * (ord_vw w (conjDifferent (φ τ)) : ℝ)) * lw K w = -(1 / 4) * ((vAdd w a : ℝ) * lw K w) - ∑ τ, (m τ : ℝ) * ((ord_vw w (conjDifferent (φ τ)) : ℝ) * lw K w)` using `fun w => by`. Rewrite using `[sub_mul, Finset.sum_mul]`. Simplify using `only [mul_assoc]`. Expand and normalize the polynomial expressions, which then agree. Establish `f2 : ∀ τ, (Function.support fun w => (m τ : ℝ) * ((ord_vw w (conjDifferent (φ τ)) : ℝ) * lw K w)).Finite` using `fun τ => (fin_mul (finite_ord (φ τ)) (lw K)).subset (Function.support_mul_subset_right _ _)`.
+
+Establish `f3 : (Function.support fun w => ∑ τ, (m τ : ℝ) * ((ord_vw w (conjDifferent (φ τ)) : ℝ) * lw K w)).Finite` using `(Set.finite_iUnion f2).subset fun w hw => by`. Take `⟨τ, -, h⟩` from `Finset.exists_ne_zero_of_sum_ne_zero hw`. Conclude with `Set.mem_iUnion.2 ⟨τ, h⟩`. Rewrite using `[finsum_congr e, finsum_sub_distrib (hf.subset (Function.support_mul_subset_right _ _)) f3, ← mul_finsum, finsum_sum_comm _ _ fun τ _ => f2 τ]`. Simplify using `only [← mul_finsum, sum_ord]`.
+
+Rewrite using `[← Finset.sum_mul, ← hg]`. Use `push_cast`. Both sides reduce to the same expression. Establish `h2 : ∑ σ : K →+* ℂ, Real.log ((‖σ a‖ * C σ) ^ (-(1 / 4) : ℝ)) = -(1 / 4) * (∑ σ : K →+* ℂ, Real.log ‖σ a‖ + ∑ σ, Real.log (C σ))`. Rewrite using `[← Finset.sum_add_distrib, Finset.mul_sum]`.
+
+Use `Finset.sum_congr rfl fun σ _ => ?_` and prove the remaining obligations. Establish `hp : 0 < ‖σ a‖` using `norm_pos_iff.2 ((map_ne_zero σ).2 ha)`. Rewrite using `[Real.log_rpow (mul_pos hp (hC σ)), Real.log_mul hp.ne' (hC σ).ne']`. Establish `h3 : -(2 * (g : ℝ) * Real.log (2 * Real.pi)) ≤ (∑ σ, Real.log (C σ)) / (Module.finrank ℚ K : ℝ)`. Rewrite using `[le_div_iff₀ hK]`.
+
+Use `Finset.sum_le_sum (s := Finset.univ) fun σ _ => (abs_le.1 (hlog σ)).1` as an intermediate fact. Rewrite `this` using `[Finset.sum_const, Finset.card_univ, Embeddings.card, nsmul_eq_mul, mul_comm]`. Then use the resulting hypothesis. Unfold `lineDeg at h0 ⊢`. Rewrite using `[h1, h2, mul_div_assoc, add_div]`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem le_lineDeg_root : ∀ (K E : Type) [Field K] [NumberField K] [Field E] [NumberField E] (m : (E →+* ℂ) → ℕ) (φ : (E →+* ℂ) → (E →+* K)) (g : ℕ) (a : K) (C : (K →+* ℂ) → ℝ), a ≠ 0 → (∀ σ, 0 < C σ) → (∀ σ, |Real.log (C σ)| ≤ 2 * (g : ℝ) * Real.log (2 * Real.pi)) → ∑ τ, m τ = g → -((g : ℝ) * (Real.log (2 * Real.pi) / 2 + lrd E)) ≤ lineDeg (fun σ => (‖σ a‖ * C σ) ^ (-(1 / 4) : ℝ)) (fun w => -(vAdd w a : ℝ) / 4 - ∑ τ, (m τ : ℝ) * (ord_vw w (conjDifferent (φ τ)) : ℝ)) := by
   intro K E _ _ _ _ m φ g a C ha hC hlog hg
   have hK : (0 : ℝ) < Module.finrank ℚ K := Nat.cast_pos.mpr Module.finrank_pos
@@ -152,6 +209,53 @@ theorem le_lineDeg_root : ∀ (K E : Type) [Field K] [NumberField K] [Field E] [
   rw [h1, h2, mul_div_assoc, add_div]
   linarith
 
+/- English proof (translation)
+Introduce `E _ _ _ H Dw l Xo c r U x hU hx hF hpq hg hun`. Take `⟨κ, k₁, k₂, k₃, k₄, k₅, k₆, -, -⟩` from `GlobalTheory.KeyFamClosing.keyFam_one`. Set `e : Fin (Fintype.card (Σ τ : E →+* ℂ, Fin (Dw.mult τ))) ≃ Σ τ : E →+* ℂ, Fin (Dw.mult τ)` to `(Fintype.equivFin _).symm`. Take `⟨K, hKmem, hKval⟩` from `GlobalTheory.T.exists_unit_section_thetaKeyRule_weightFour κ k₁ k₂ k₆ E H Dw l Xo c _ e hpq`. Establish `hσ0` using `goodEmb_goodOf c c.F.val.toRingHom`.
+
+Take `⟨⟨ρ, hρmem⟩, hρ⟩` from `GlobalTheory.T.exists_keySection_fourthRoot_perComponent κ k₁ k₂ k₆ k₄ E H Dw l Xo c _ e _ r (U _) K hσ0 (hU _ hσ0) hF hpq hKmem hKval`. Establish `hkr : GlobalTheory.IndefiniteRowSideFullHecke.FibreFramesOnModels.IsKeyRule κ`. Use `⟨?_, k₂, k₃, k₄, ?_⟩` and prove the remaining obligations. Simplify `k₁` using `only [GlobalTheory.KeyCl.Homog, mul_one]`. Simplify `k₅` using `only [GlobalTheory.KeyCl.ArchNorm, mul_one]`.
+
+Establish `hval` using `GlobalTheory.T.theta_key_section_valuation_bounds_different κ hkr E H Dw l Xo c _ e K hpq hg hKmem hKval`. Establish `hC` using `fun σ : c.F →+* ℂ => GlobalTheory.T.thetaKeySection_norm_complexPoints_eq_two_pi_pow κ k₁ k₂ k₅ E H Dw l Xo c _ e (goodOf c σ) r (U (goodOf c σ)) x K (goodEmb_goodOf c σ) (hU _ (goodEmb_goodOf c σ)) (hx _ (goodEmb_goodOf c σ)) ⟨⟨ρ, hρmem⟩⟩ hpq hKmem hKval`. Use `choose C hCpos hClog hCeq using hC`. Establish `hgE` using `card_frame_index Dw e`. Establish `hsum : ∑ τ : E →+* ℂ, Dw.mult τ = Fintype.card (Σ τ : E →+* ℂ, Fin (Dw.mult τ))`.
+
+Simplify using `[Fintype.card_sigma]`. Establish `hwt : ∀ (m : ℤ) (τ : E →+* ℂ) (i : ℕ), i < Dw.mult τ → (wtOf Dw 0 m).1 (τ, i) = -m` using `wtOf_zero_fst E H Dw`. Establish `hex : exZ Dw (wtOf Dw 0 1) = -keyEx Dw`. Use function extensionality and compare the values at `i`. Break down `i with _ | ⟨τ, i⟩` into its components or cases.
+
+Both sides reduce to the same expression. Simplify using `only [exZ, keyEx, Pi.neg_apply]`. Conclude with `hwt 1 τ i i.2`. Establish `hadd : wtOf Dw 0 1 + wtOf Dw 0 (-1) = 0`. Rewrite using `[← wtOf_add, add_zero, add_neg_cancel, wtOf_zero]`.
+
+Use `⟨⟨⟨ρ, hρmem⟩⟩, fun Z => ?_⟩` and prove the remaining obligations. Take `⟨a, ha, haK⟩` from `hρ Z`. Establish `hP : HasPts U Z` using `hasPts U hpq hg hU Z`. Use `set s : Rul Xo c := idem Z * ((ρ⁻¹ : (Rul Xo c)ˣ) : Rul Xo c) with hs`. Use `set s' : Rul Xo c := idem Z * (ρ : Rul Xo c) with hs'`.
+
+Establish `hsm : s ∈ secZ Xo c (exZ Dw (wtOf Dw 0 1))`. Use `mul_mem_secZ (idem_mem_secZ Z) (inv_mem_secZ hρmem)` as an intermediate fact. Rewrite `this` using `[zero_add, ← hex]`. Then use the resulting hypothesis. Establish `hsm' : s' ∈ secZ Xo c (exZ Dw (wtOf Dw 0 (-1)))`. Use `mul_mem_secZ (idem_mem_secZ Z) hρmem` as an intermediate fact.
+
+Establish `h2 : exZ Dw (wtOf Dw 0 (-1)) = keyEx Dw`. Establish `h3` using `exZ_add_eq (Dw := Dw) (wtOf Dw 0 1) (wtOf Dw 0 (-1))`. Rewrite `h3` using `[hadd, hex]`. Apply the tactic sequence `have h4 : exZ Dw (0 : WTZ E) = 0 := by funext i; cases i <;> rfl`. Rewrite `h3` using `[h4]`.
+
+Conclude with `(neg_add_eq_zero.1 h3.symm).symm`. Rewrite `this` using `[zero_add, ← h2]`. Then use the resulting hypothesis. Establish `hsupp : s ∈ suppOn Z` using `by rw [hs, mul_comm]; exact mul_mem_suppOn _ (idem_mem_suppOn Z)`. Establish `hsupp' : s' ∈ suppOn Z` using `by rw [hs', mul_comm]; exact mul_mem_suppOn _ (idem_mem_suppOn Z)`. Establish `hnorm` using `fun σ : c.F →+* ℂ => fun z (hz : z ∈ framesOn (U (goodOf c σ)) Z) => homN_root E H Dw l Xo c (goodOf c σ) r (U (goodOf c σ)) x Z ρ K a (C σ) ha (hCpos σ) haK (hCeq σ) z hz ((hP.1 σ).2 z hz)`.
+
+Establish `hgood : ∀ σ, GoodEmb c σ → goodOf c σ = σ` using `fun σ h => if_pos h`. Establish `hmono : ∀ (m : ℤ) (τ : E →+* ℂ) (i j : ℕ), i ≤ j → j < Dw.mult τ → (wtOf Dw 0 m).1 (τ, j) ≤ (wtOf Dw 0 m).1 (τ, i)` using `fun m τ i j hij hj => by`. Rewrite using `[hwt m τ i (lt_of_le_of_lt hij hj), hwt m τ j hj]`. Establish `hbd : ∀ σ, GoodEmb c σ → ∃ D : ℝ, ∀ z ∈ framesOn (U σ) Z, homN (U σ) x (wtOf Dw 0 1) s z ≤ D`. Introduce `σ hσ`.
+
+Use `⟨(‖σ a‖ * C σ) ^ (-(1 / 4) : ℝ), fun z hz => ?_⟩` and prove the remaining obligations. Establish `h1` using `hnorm σ`. Rewrite `h1` using `[hgood σ hσ]`. Conclude with `(h1 z hz).1.le`. Establish `hbd' : ∀ σ, GoodEmb c σ → ∃ D : ℝ, ∀ z ∈ framesOn (U σ) Z, homN (U σ) x (wtOf Dw 0 (-1)) s' z ≤ D`.
+
+Introduce `σ hσ`. Use `⟨(‖σ a‖ * C σ) ^ ((1 / 4) : ℝ), fun z hz => ?_⟩` and prove the remaining obligations. Establish `h1` using `hnorm σ`. Rewrite `h1` using `[hgood σ hσ]`. Conclude with `(h1 z hz).2.le`.
+
+Set `B : HeightOneSpectrum (𝓞 c.F) → ℝ` to `fun w => ∑ τ : E →+* ℂ, (Dw.mult τ : ℝ) * (ord_vw w (conjDifferent (embF c τ)) : ℝ)`. Establish `hbnd` using `fun w (v : Rul Xo c → EReal) (hv : v ∈ valOn Z w) => val_root E H Dw l Xo c Z w v hv ρ K a (B w) ha haK (hval w v (valOn_subset Z w hv)).1 (hval w v (valOn_subset Z w hv)).2`. Set `t : TwSec U x Z (wtOf Dw 0 1)` to `{ even := even_wtOf _ _ sig := s inv := s' sig_mem := hsm inv_mem := by`. Establish `h5` using `exZ_neg_eq (Dw := Dw) (wtOf Dw 0 1)`. Establish `h6 : -wtOf Dw 0 1 = wtOf Dw 0 (-1)` using `neg_eq_of_add_eq_zero_right hadd`.
+
+Rewrite using `[← h5, h6]`. Conclude with `hsm'`. Use `idem_sig := by rw [hs, ← mul_assoc, idem_mul_idem]`. Use `idem_inv := by rw [hs', ← mul_assoc, idem_mul_idem]`. Use `mul_inv := by rw [hs, hs', mul_mul_mul_comm, idem_mul_idem, Units.inv_mul, mul_one]`.
+
+Use `cInf := fun σ => (‖σ a‖ * C σ) ^ (-(1 / 4) : ℝ)`. Use `cInf_pos := fun σ => Real.rpow_pos_of_pos (mul_pos (norm_pos_iff.2 ((map_ne_zero σ).2 ha)) (hCpos σ)) _`. Use `norm_inf := fun σ z hz => by`. Rewrite using `[(hnorm σ z hz).1, norm_goodOf]`. Use `cusp_sig := fun G hG f hf => GlobalTheory.T.mul_mem_cuspForms_of_boundedSection_component E H Dw l Xo c r U x Z (wtOf Dw 0 1) s ⟨⟨ρ, hρmem⟩⟩ hU hpq (even_wtOf _ _) (hmono 1) hsm hsupp hbd G hG f hf`.
+
+Use `cusp_inv := fun G hG f hf => by`. Establish `h7` using `GlobalTheory.T.mul_mem_cuspForms_of_boundedSection_component E H Dw l Xo c r U x Z (wtOf Dw 0 (-1)) s' ⟨⟨ρ, hρmem⟩⟩ hU hpq (even_wtOf _ _) (hmono (-1)) hsm' hsupp' hbd' (G + wtOf Dw 0 1) (hG.add (even_wtOf _ _)) f hf`. Rewrite `h7` using `[add_assoc, hadd, add_zero]`. Then use the resulting hypothesis. Use `lo := fun w => -(vAdd w a : ℝ) / 4 - B w`. Use `hi := fun w => -(vAdd w a : ℝ) / 4`.
+
+Use `lo_le := fun w v hv => (hbnd w v hv).1`. Use `le_hi := fun w v hv => (hbnd w v hv).2`. Use `finite_lo := by`. Use `((finite_vAdd ha).union (Set.finite_iUnion fun τ => finite_ord (embF c τ))).subset fun w hw => ?_` and prove the remaining obligations. Assume the negation of the conclusion as `hn`.
+
+Simplify using `only [Set.mem_union, Function.mem_support, Set.mem_iUnion, not_or, not_exists, not_not] at hn`. Apply `hw` to reduce the goal to its premises. Simplify using `[B, hn.1, hn.2]`. Use `finite_hi := by`. Use `(finite_vAdd ha).subset fun w hw => ?_` and prove the remaining obligations.
+
+Assume the negation of the conclusion as `hn`. Simplify using `only [Function.mem_support, not_not] at hn`. Apply `hw` to reduce the goal to its premises. Simplify using `[hn]`. Use `pts := hP }`.
+
+Use `⟨t, ?_, ?_⟩` and prove the remaining obligations. Introduce `w hw`. Take `⟨v, hv, hint⟩` from `hun Z w hw`. Establish `hB : B w = 0`. Use `Finset.sum_eq_zero fun τ _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[ord_conjDifferent_eq_zero c.F E (embF c τ) w fun p hp hd => hw p (mem_badPrimes.2 ⟨hp, Or.inr (Or.inr (Or.inl hd))⟩)]`. Simplify using the standard rewrite rules. Take `⟨h1, h2⟩` from `hbnd w v hv`. Rewrite `h1` using `[hB, sub_zero]`. Break down `hint s with h | ⟨n, hn⟩` into its components or cases.
+
+Rewrite using `[h] at h2; exact absurd h2 (by simp)`. Use `⟨n, ?_⟩ show -(vAdd w a : ℝ) / 4 - B w = n` and prove the remaining obligations. Rewrite using `[hB, sub_zero]`. Rewrite `h1`, `h2` using `[hn]`. Conclude with `le_antisymm (EReal.coe_le_coe_iff.1 h1) (EReal.coe_le_coe_iff.1 h2)`.
+
+Establish `h8` using `le_lineDeg_root c.F E (fun τ => Dw.mult τ) (fun τ => embF c τ) _ a C ha hCpos hClog hsum show _ ≤ lineDeg _ _`. Rewrite using `[hgE]`. Conclude with `h8`.
+-/
 theorem exists_twSec_keyRoot : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l) (r : ℕ) (U : ∀ σ : c.F →+* ℂ, Unf Xo c σ r) (x : ℝ), (∀ σ, GoodEmb c σ → IsUnf (U σ)) → (∀ σ, GoodEmb c σ → ∀ k (τ : E →+* ℂ), ‖τ ((U σ).X k).ξ0‖ = x) → FnAlgClosed Xo c → 1 ≤ Dw.p + Dw.q → (∀ p : ℕ, p.Prime → l.GoodAt p) → UnramPts Xo c (badPrimes H l) → Nonempty (KeySec Xo c) ∧ ∀ Z : Comp Xo c, ∃ t : TwSec U x Z (wtOf Dw 0 1), IntOff (badPrimes H l) t.lo ∧ -(((Module.finrank ℚ E / 2 * (Dw.p + Dw.q) : ℕ) : ℝ) * (Real.log (2 * Real.pi) / 2 + lrd E)) ≤ t.degLo := by
   intro E _ _ _ H Dw l Xo c r U x hU hx hF hpq hg hun
   obtain ⟨κ, k₁, k₂, k₃, k₄, k₅, k₆, -, -⟩ := GlobalTheory.KeyFamClosing.keyFam_one

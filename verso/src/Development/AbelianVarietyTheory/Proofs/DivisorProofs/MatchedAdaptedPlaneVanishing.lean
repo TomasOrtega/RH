@@ -22,6 +22,17 @@ noncomputable section
 
 namespace GlobalTheory.ThKLiftGood
 
+/- English proof (translation)
+Establish `hmap : ∀ z : G, Measure.map (· * z) μ = Measure.modularCharacterFun z • μ` using `fun z => Measure.map_right_mul_eq_modularCharacterFun_smul μ z`. Establish `hpos` using `Measure.modularCharacterFun_pos y`. Establish `hemb : MeasurableEmbedding fun h : G => h * y` using `(MeasurableEquiv.mulRight y).measurableEmbedding`. Establish `hq : Measure.QuasiMeasurePreserving (Equiv.mulRight y).symm μ μ`. Use `⟨measurable_mul_const y⁻¹, ?_⟩` and prove the remaining obligations.
+
+Use `hmap y⁻¹` as an intermediate fact. Use `show Measure.map (· * y⁻¹) μ ≪ μ`. Rewrite using `[this]`. Conclude with `Measure.smul_absolutelyContinuous`. Establish `h𝓕' : IsFundamentalDomain Γ (Equiv.mulRight y '' 𝓕) μ` using `h𝓕.image_of_equiv (Equiv.mulRight y) hq (Equiv.refl _) fun γ h => by`.
+
+Simplify using `[Subgroup.smul_def, mul_assoc]`. Establish `hpre : (fun h : G => h * y) ⁻¹' (Equiv.mulRight y '' 𝓕) = 𝓕` using `Set.preimage_image_eq 𝓕 (Equiv.mulRight y).injective`. Use `⟨(Measure.modularCharacterFun y : ℝ)⁻¹, inv_pos.2 (by exact_mod_cast hpos), fun φ hφ => ⟨fun hi => ?_, ?_⟩⟩` and prove the remaining obligations. Establish `h1` using `(h𝓕.integrableOn_iff h𝓕' (f := φ) fun γ h => hφ γ.1 γ.2 h).1 hi`. Establish `h2 : IntegrableOn φ (Equiv.mulRight y '' 𝓕) (Measure.map (· * y) μ)`.
+
+Rewrite using `[hmap y, IntegrableOn, Measure.restrict_smul]`. Conclude with `Integrable.smul_measure_nnreal h1`. Rewrite `h2` using `[hemb.integrableOn_map_iff, hpre]`. Conclude with `h2`. Establish `h1` using `hemb.setIntegral_map (μ := μ) φ (Equiv.mulRight y '' 𝓕)`.
+
+Rewrite `h1` using `[hpre, hmap y, Measure.restrict_smul, integral_smul_nnreal_measure, ← h𝓕.setIntegral_eq h𝓕' (f := φ) fun γ h => hφ γ.1 γ.2 h]`. Rewrite using `[← h1, NNReal.smul_def, Complex.real_smul, ← mul_assoc, ← Complex.ofReal_mul, inv_mul_cancel₀ (by exact_mod_cast hpos.ne'), Complex.ofReal_one, one_mul]`.
+-/
 theorem quasi {G : Type} [Group G] [TopologicalSpace G] [IsTopologicalGroup G] [LocallyCompactSpace G]
     [SecondCountableTopology G] [T2Space G] [MeasurableSpace G] [BorelSpace G] (μ : Measure G) [μ.IsHaarMeasure]
     (Γ : Subgroup G) [Countable Γ] {𝓕 : Set G} (h𝓕 : IsFundamentalDomain Γ 𝓕 μ) (y : G) :
@@ -58,6 +69,9 @@ theorem quasi {G : Type} [Group G] [TopologicalSpace G] [IsTopologicalGroup G] [
 
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E}
 
+/- English proof (translation)
+Use function extensionality and compare the values at `Y`. Simplify using `[GlobalTheory.SplitFlip.omA, GlobalTheory.FullRankCoinv.lact, GlobalTheory.SplitFlip.gdet_invT, GlobalTheory.SplitFlip.apow_inv, GlobalTheory.SplitFlip.invT_val, neg_div]`.
+-/
 theorem omA_left {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] {n d : ℕ}
     (ν β : kˣ →* ℂˣ) (g : GL (Fin n) k) (Ψ : Matrix (Fin n) (Fin d) k → ℂ) :
     GlobalTheory.SplitFlip.omA ν β g 1 Ψ = GlobalTheory.FullRankCoinv.lact ν (GlobalTheory.SplitFlip.invT g) Ψ := by
@@ -65,10 +79,16 @@ theorem omA_left {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsN
   simp [GlobalTheory.SplitFlip.omA, GlobalTheory.FullRankCoinv.lact, GlobalTheory.SplitFlip.gdet_invT, GlobalTheory.SplitFlip.apow_inv,
     GlobalTheory.SplitFlip.invT_val, neg_div]
 
+/- English proof (translation)
+Simplify using `only [theta, ← Module.End.mul_apply, ← map_mul, Prod.mk_mul_mk, mul_one]`.
+-/
 theorem theta_left {n d : ℕ} {X : Spc F E n} {W : Spc F E d} (om : Rep σ X W) (Ψ : Fn F n d) (x g : UA σ X.J) (h : UA σ W.J) :
     theta om (om (x, 1) Ψ) g h = theta om Ψ (g * x) h := by
   simp only [theta, ← Module.End.mul_apply, ← map_mul, Prod.mk_mul_mk, mul_one]
 
+/- English proof (translation)
+Simplify using `only [theta, ← Module.End.mul_apply, ← map_mul, Prod.mk_mul_mk, mul_one]`.
+-/
 theorem theta_right {n d : ℕ} {X : Spc F E n} {W : Spc F E d} (om : Rep σ X W) (Ψ : Fn F n d) (g : UA σ X.J) (y h : UA σ W.J) :
     theta om (om (1, y) Ψ) g h = theta om Ψ g (h * y) := by
   simp only [theta, ← Module.End.mul_apply, ← map_mul, Prod.mk_mul_mk, mul_one]

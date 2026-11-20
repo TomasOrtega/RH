@@ -16,17 +16,28 @@ namespace ExtInhabitants
 
 def c0 : Fin (flatAtlas 1).n := ⟨0, Nat.one_pos⟩
 
+/- English proof (translation)
+Use extensionality with `y`. Simplify using `only [piece, mem_ofPred_eq, mem_univ, iff_true]`. Conclude with `⟨by simp, fun k hk => absurd hk (by simp [c0, Fin.lt_def])⟩`.
+-/
 theorem piece_flat : piece (flatAtlas 1) c0 = univ := by
   ext y
   simp only [piece, mem_ofPred_eq, mem_univ, iff_true]
   exact ⟨by simp, fun k hk => absurd hk (by simp [c0, Fin.lt_def])⟩
 
+/- English proof (translation)
+Unfold `chartIntegral`. Rewrite using `[Fintype.sum_subsingleton _ c0, piece_flat, Measure.restrict_univ]`. Simplify using the standard rewrite rules.
+-/
 theorem chartIntegral_flat (f : Fin (flatAtlas 1).n → (Fin 1 → ℂ) → ℝ≥0∞) :
     chartIntegral (flatAtlas 1) f = ∫⁻ y, f c0 y := by
   unfold chartIntegral
   rw [Fintype.sum_subsingleton _ c0, piece_flat, Measure.restrict_univ]
   simp
 
+/- English proof (translation)
+Establish `he : ∑ k : Fin 2, ‖exE k c0 y‖ ^ 2 = 1 + ‖y 0‖ ^ 2`. Simplify using `[exE, Fin.sum_univ_two]`. Establish `he₂ : ∑ k : Fin 1, ‖exE₂ k c0 y‖ ^ 2 = 1` using `by simp [exE₂]`. Simplify using `only [EmbDatum.wt, fsWeight]`. Express the relevant statement in the definitionally equal form `Real.exp (-(Real.log (∑ k : Fin 1, ‖exE₂ k c0 y‖ ^ 2) + (m : ℝ) * Real.log (∑ k : Fin 2, ‖exE k c0 y‖ ^ 2))) = _`.
+
+Rewrite using `[he, he₂, Real.log_one, zero_add, Real.exp_neg, Real.exp_nat_mul, Real.exp_log (by positivity)]`.
+-/
 theorem exp_neg_wt (m : ℕ) (y : Fin 1 → ℂ) :
     Real.exp (-exEmb.wt m c0 y) = ((1 + ‖y 0‖ ^ 2) ^ m)⁻¹ := by
   have he : ∑ k : Fin 2, ‖exE k c0 y‖ ^ 2 = 1 + ‖y 0‖ ^ 2 := by
@@ -38,10 +49,24 @@ theorem exp_neg_wt (m : ℕ) (y : Fin 1 → ℂ) :
   rw [he, he₂, Real.log_one, zero_add, Real.exp_neg, Real.exp_nat_mul,
     Real.exp_log (by positivity)]
 
+/- English proof (translation)
+Use polynomial arithmetic with `[sq_nonneg (t - 1 / 2), sq_nonneg (t ^ 2 - t), sq_nonneg t, mul_nonneg ht (sq_nonneg t), mul_nonneg ht (sq_nonneg (t - 1))]`.
+-/
 theorem one_add_pow_three_le (t : ℝ) (ht : 0 ≤ t) : (1 + t) ^ 3 ≤ 4 * (1 + t ^ 2) ^ 2 := by
   nlinarith [sq_nonneg (t - 1 / 2), sq_nonneg (t ^ 2 - t), sq_nonneg t, mul_nonneg ht (sq_nonneg t),
     mul_nonneg ht (sq_nonneg (t - 1))]
 
+/- English proof (translation)
+Establish `hfin : (Module.finrank ℝ (Fin 1 → ℂ) : ℝ) < 3`. Rewrite using `[Module.finrank_pi_fintype]`. Simplify using the standard rewrite rules. Evaluate the numerical expressions. Establish `hI` using `finite_integral_one_add_norm (E := Fin 1 → ℂ) (μ := volume) hfin`.
+
+Establish `hpt : ∀ y : Fin 1 → ℂ, ENNReal.ofReal (c * ((1 + ‖y 0‖ ^ 2) ^ 2)⁻¹) ≤ ENNReal.ofReal (4 * |c|) * ENNReal.ofReal ((1 + ‖y‖) ^ (-(3 : ℝ)))`. Introduce `y`. Rewrite using `[← ENNReal.ofReal_mul (by positivity)]`. Apply `ENNReal.ofReal_le_ofReal` to reduce the goal to its premises. Establish `hy : ‖y‖ ≤ ‖y 0‖`.
+
+Use `(pi_norm_le_iff_of_nonneg (norm_nonneg _)).mpr fun i => ?_` and prove the remaining obligations. Rewrite using `[Subsingleton.elim i 0]`. Establish `hr : (1 + ‖y‖) ^ (-(3 : ℝ)) = ((1 + ‖y‖) ^ 3)⁻¹`. Rewrite using `[Real.rpow_neg (by positivity)]`. Use `norm_cast`.
+
+Rewrite using `[hr]`. Establish `he : ((1 + ‖y 0‖ ^ 2) ^ 2)⁻¹ ≤ 4 * ((1 + ‖y 0‖) ^ 3)⁻¹`. Rewrite using `[← div_eq_mul_inv, le_div_iff₀ (by positivity)]`. Rewrite using `[inv_mul_le_iff₀ (by positivity)]`. Combine the linear relations using `[one_add_pow_three_le ‖y 0‖ (norm_nonneg _)]`.
+
+Establish `hmono : ((1 + ‖y 0‖) ^ 3)⁻¹ ≤ ((1 + ‖y‖) ^ 3)⁻¹`. Apply `inv_anti₀ (by positivity)` to reduce the goal to its premises. Use `gcongr`. Combine the equalities or inequalities in the displayed calculation. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem lintegral_inv_one_add_sq_sq_lt_top (c : ℝ) :
     ∫⁻ y : Fin 1 → ℂ, ENNReal.ofReal (c * ((1 + ‖y 0‖ ^ 2) ^ 2)⁻¹) < ⊤ := by
   have hfin : (Module.finrank ℝ (Fin 1 → ℂ) : ℝ) < 3 := by
@@ -84,11 +109,19 @@ end ExtInhabitants
 
 open ExtInhabitants
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨exEmb, exZ, le_rfl, le_rfl, ⟨0, by change (0 : Fin 1 → ℂ) ∈ zeroSet (flatAtlas 1) (fun i => lin exE (exC i)) rw [exZero]; rfl⟩⟩`.
+-/
 theorem extDelta_hyp : ∃ (X : EmbDatum 1) (Z : ZeroDatum X), 1 ≤ 1 ∧ 2 ≤ 2 ∧ Z.S.Nonempty :=
   ⟨exEmb, exZ, le_rfl, le_rfl, ⟨0, by
     change (0 : Fin 1 → ℂ) ∈ zeroSet (flatAtlas 1) (fun i => lin exE (exC i))
     rw [exZero]; rfl⟩⟩
 
+/- English proof (translation)
+Establish `hfin : topNormSq exEmb.A (exEmb.wt 2) exOne < ⊤`. Express the relevant statement in the definitionally equal form `chartIntegral (flatAtlas 1) _ < ⊤`. Rewrite using `[chartIntegral_flat]`. Simplify using `only [exOne, norm_one, one_pow, mul_one]`. Simplify using `only [exp_neg_wt]`.
+
+Simplify using `using lintegral_inv_one_add_sq_sq_lt_top 2`. Use `⟨fun _ => exOne, (topNormSq exEmb.A (exEmb.wt 2) exOne).toReal, fun _ => mem_topSections_flat 2 (fun _ => 1) analyticOnNhd_const, fun _ => (ENNReal.ofReal_toReal hfin.ne).ge, fun h => ?_⟩` and prove the remaining obligations. Use `congr_fun (congr_fun h c0) 0` as an intermediate fact. Simplify using `[exOne] at this`.
+-/
 theorem topSecCompact_hyp : ∃ (F : ℕ → Fin exEmb.A.n → exEmb.U → ℂ) (C : ℝ),
     (∀ n, F n ∈ topSections exEmb.A exEmb.L₂ exEmb.L 2) ∧
     (∀ n, topNormSq exEmb.A (exEmb.wt 2) (F n) ≤ ENNReal.ofReal C) ∧ F 0 ≠ 0 := by
@@ -104,6 +137,23 @@ theorem topSecCompact_hyp : ∃ (F : ℕ → Fin exEmb.A.n → exEmb.U → ℂ) 
   have := congr_fun (congr_fun h c0) 0
   simp [exOne] at this
 
+/- English proof (translation)
+Use `⟨fun k => ?_, fun k l x _ => by simp [exZdz, jac_flat, trivLB], ?_, fun h => ?_⟩` and prove the remaining obligations. Conclude with `(continuous_apply 0).continuousOn`. Express the relevant statement in the definitionally equal form `chartIntegral (flatAtlas 1) _ < ⊤`. Rewrite using `[chartIntegral_flat]`. Use `lt_of_le_of_lt (lintegral_mono fun y => ?_) (lintegral_inv_one_add_sq_sq_lt_top 2)` and prove the remaining obligations.
+
+Apply `ENNReal.ofReal_le_ofReal` to reduce the goal to its premises. Establish `hev : extEv exZ c0 y = ‖y 0‖ ^ 2 * (1 + ‖y 0‖ ^ 2)⁻¹`. Establish `hs : ∑ i : Fin 1, ‖exZ.s i c0 y‖ ^ 2 = ‖y 0‖ ^ 2`. Simplify using `[ZeroDatum.s, exS_apply]`. Establish `he : fsWeight exE c0 y = Real.log (1 + ‖y 0‖ ^ 2)`.
+
+Simplify using `[fsWeight, exE, Fin.sum_univ_two]`. Establish `hr : rSq exZ.c = 1`. Simplify using `[rSq, exC, Fin.sum_univ_two]`. Unfold `extEv`. Rewrite using `[hs, he, hr, Real.exp_neg, Real.exp_log (by positivity), div_one]`.
+
+Establish `hw : Real.exp (-exEmb.wt 3 c0 y) = ((1 + ‖y 0‖ ^ 2) ^ 3)⁻¹` using `exp_neg_wt 3 y`. Establish `ha0 : 0 ≤ ‖y 0‖ ^ 2` using `by positivity`. Simplify using `only [exZdz, hw, hev]`. Unfold `extFactor`. Rewrite using `[zero_pow two_ne_zero, add_zero, pow_one]`.
+
+Generalize the expression as in `‖y 0‖ ^ 2 = a at ha0 ⊢`. Break down `ha0.lt_or_eq with hapos | ha0'` into its components or cases. Establish `hden : 1 ≤ extDen 1 (a * (1 + a)⁻¹)`. Establish `ht1 : a * (1 + a)⁻¹ ≤ 1`. Rewrite using `[← div_eq_mul_inv, div_le_one (by positivity)]; linarith`.
+
+Establish `hx : 1 ≤ extX 1 (a * (1 + a)⁻¹)`. Unfold `extX`. Establish `: Real.log (a * (1 + a)⁻¹ + 1 ^ 2) ≤ Real.log (1 + 1 ^ 2)` using `Real.log_le_log (by positivity) (by linarith)`. Combine the linear equalities and inequalities to obtain the conclusion. Unfold `extDen curvEta`.
+
+Use `Real.log_nonneg hx` as an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Establish `hne : (1 + a) ≠ 0` using `by positivity`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[← ha0']`.
+
+Simplify using the standard rewrite rules. Use `congr_fun (congr_fun h c0) (fun _ => 1)` as an intermediate fact. Simplify using `[exZdz] at this`.
+-/
 theorem extNonInt_hyp :
     (∀ k, ContinuousOn (exZdz k ∘ (exEmb.A.chart k).symm) (exEmb.A.chart k).target) ∧
     (∀ k l, ∀ x ∈ (exEmb.A.chart k).source ∩ (exEmb.A.chart l).source,

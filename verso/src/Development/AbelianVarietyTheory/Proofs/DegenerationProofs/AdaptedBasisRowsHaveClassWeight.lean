@@ -31,6 +31,19 @@ noncomputable section
 namespace GlobalTheory.ZH.ClassWeight
 open GlobalTheory.UT
 
+/- English proof (translation)
+Establish `hN` using `S.N_ge`. Establish `hr` using `S.r_pos`. Establish `: NeZero S.N` using `⟨by omega⟩`. Establish `: NeZero (S.r * S.N)` using `⟨Nat.mul_ne_zero (by omega) (by omega)⟩`. Use `Fintype.ofFinite T` as an intermediate fact.
+
+Take `⟨d, ⟨e⟩⟩` from `hT.2`. Establish `hu : IsUnit (Nat.card T : o)`. Rewrite using `[Nat.card_congr e.toEquiv, Nat.card_fun, Nat.card_zmod, Nat.cast_pow]`. Conclude with `S.unit.pow _`. Establish `hζ : S.ζN ^ S.N = 1` using `(S.prim.pow (pow_pos (NeZero.pos _) 2) (by ring) : IsPrimitiveRoot S.ζN S.N).pow_eq_one`.
+
+Establish `h1 : ∀ a : ZMod S.N, S.ζN ^ (-a).val * S.ζN ^ a.val = 1` using `fun a => by`. Use `(AddChar.zmodChar S.N hζ).map_add_eq_mul (-a) a` as an intermediate fact. Rewrite `this` using `[neg_add_cancel, AddChar.map_zero_eq_one]`. Conclude with `this.symm`. Set `φ : Matrix S.J S.J o →+ (S.J → K)` to `{ toFun := fun M => (M.map y).mulVec v map_zero' := by simp map_add' := fun M M' => by rw [Matrix.map_add _ (map_add y), Matrix.add_mulVec] }`.
+
+Establish `hφ : ∀ (a : o) M, φ (a • M) = y a • φ M` using `fun a M => by`. Use function extensionality and compare the values at `i`. Simplify using `[φ, Matrix.mulVec, dotProduct, Finset.mul_sum, _root_.mul_assoc]`. Use `show φ _ = v`. Rewrite using `[ThetaSys.proj, finsum_eq_sum_of_fintype, hφ, map_sum]`.
+
+Establish `h2 : ∀ t : T, φ (S.ζN ^ (-(c t)).val • S.ρ t) = v` using `fun t => by`. Rewrite using `[hφ]`. Use `(congrArg _ (h t)).trans ?_` and prove the remaining obligations. Rewrite using `[smul_smul, ← map_pow, ← map_mul, h1, map_one, one_smul]`. Simplify using `only [h2, Finset.sum_const, Finset.card_univ]`.
+
+Rewrite using `[← Nat.cast_smul_eq_nsmul K, smul_smul, ← map_natCast y, ← map_mul, ← Nat.card_eq_fintype_card, Ring.inverse_mul_cancel _ hu, map_one, one_smul]`.
+-/
 theorem proj_mulVec {o Ω : Type} [CommRing o] [Field Ω] [Algebra o Ω] (S : ThetaSys o Ω) {T : AddSubgroup S.Gam}
     (hT : S.IsoFree T) (c : T →+ ZMod S.N) {K : Type} [CommRing K] (y : o →+* K) (v : S.J → K)
     (h : ∀ t : T, ((S.ρ t).map y).mulVec v = y S.ζN ^ (c t).val • v) : ((S.proj T c).map y).mulVec v = v := by
@@ -65,6 +78,13 @@ theorem proj_mulVec {o Ω : Type} [CommRing o] [Field Ω] [Algebra o Ω] (S : Th
   rw [← Nat.cast_smul_eq_nsmul K, smul_smul, ← map_natCast y, ← map_mul, ← Nat.card_eq_fintype_card,
     Ring.inverse_mul_cancel _ hu, map_one, one_smul]
 
+/- English proof (translation)
+Establish `h₄` using `congrArg E h₃`. Rewrite `h₄` using `[map_smul, h₂, smul_comm, ← h₃, map_sum]`. Simplify using `only [map_smul, h₁, Finset.smul_sum, smul_smul] at h₄`. Rewrite `h₄` using `[Finset.sum_comm]`. Simplify using `only [← Finset.sum_smul] at h₄`.
+
+Use function extensionality and compare the values at `l`. Apply `hκ` to reduce the goal to its premises. Establish `h₅` using `Fintype.linearIndependent_iffₛ.1 hs _ _ h₄ l`. Simplify using `only [Matrix.mulVec, dotProduct, map_sum, map_mul, Pi.smul_apply, smul_eq_mul]`. Rewrite using `[← h₅]`.
+
+Conclude with `Finset.sum_congr rfl fun j _ => mul_comm _ _`.
+-/
 theorem mulVec_eq_of_eigen {K B M J : Type} [CommRing K] [CommRing B] [AddCommGroup M] [Module B M] [Fintype J]
     (κ : K →+* B) (hκ : Function.Injective κ) (E : M →ₗ[B] M) {s : J → M} (hs : LinearIndependent B s)
     (m : Matrix J J K) (h₁ : ∀ j, E (s j) = ∑ l, κ (m l j) • s l) {t : M} {z c : K} (h₂ : E t = κ z • t)
@@ -87,12 +107,18 @@ attribute [local instance] gtGroup
 variable {R : Type} [CommRing R] [IsDomain R] {I : Ideal R} {D : DegData R I} {F : Type} [Field F]
   [Algebra (FractionRing R) F]
 
+/- English proof (translation)
+Rewrite `h`, the goal using `[isTor_iff, isTorusPtF_iff_eq]`. Rewrite using `[h, ← map_nsmul]`. Both sides reduce to the same expression.
+-/
 theorem isTor_nsmul {τ : Multiplicative D.toPre.X →* Fˣ} {g : GtPtF D.toPre F} (h : IsTor τ g) (n : ℕ) :
     IsTor (τ ^ n) (n • g) := by
   rw [isTor_iff, isTorusPtF_iff_eq] at h ⊢
   rw [h, ← map_nsmul]
   rfl
 
+/- English proof (translation)
+Use `⟨⟨0, g, n • g, (isNsmul_iff_eq _ _ _).2 rfl, (isIota_iff_eq D.tau_bimult _ _).2 ?_⟩, rfl, rfl⟩` and prove the remaining obligations. Use `isTor_nsmul h n` as an intermediate fact. Rewrite `this` using `[hn, isTor_iff, isTorusPtF_iff_eq]`. Rewrite using `[this, map_zero]`. Conclude with `map_zero _`.
+-/
 theorem exists_qkPt_tor {τ : Multiplicative D.toPre.X →* Fˣ} {g : GtPtF D.toPre F} (h : IsTor τ g) {n : ℕ}
     (hn : τ ^ n = 1) : ∃ q : QkPt D.toPre F n, q.y = 0 ∧ q.g = g := by
   refine ⟨⟨0, g, n • g, (isNsmul_iff_eq _ _ _).2 rfl, (isIota_iff_eq D.tau_bimult _ _).2 ?_⟩, rfl, rfl⟩
@@ -104,6 +130,15 @@ theorem exists_qkPt_tor {τ : Multiplicative D.toPre.X →* Fˣ} {g : GtPtF D.to
 variable [CharZero R] [IsAlgClosed F] {A : PolAV (Spec (CommRingCat.of (FractionRing R)))}
   {G : Over (Spec (CommRingCat.of R))} [GrpObj G] [IsCommMonObj G]
 
+/- English proof (translation)
+Take `⟨w, hw⟩` from `(GlobalTheory.UT.SymFrame.main hL R I hA D F N hN q).1`. Take `⟨e, he⟩` from `GlobalTheory.exists_linearEquiv_expandsF hL.1.globalFns U F hN.pos w₀ hw₀`. Establish `hΦ` using `GlobalTheory.T.symmetricLift_oddOrder_acts_as_expansionOperator hL R I hA D A G hG U F N hN q x hx θ hθ w₀ hw₀ w hw t t' s (e t') hs ((he _ _).2 rfl) ha`. Establish `h₁` using `((TorusWeight.torus_weight hL R I hA D A G hG U F N hN q τ hy hτ w hw).2 _ _).1 hΦ`. Establish `h₂ : e t' = (τ (Multiplicative.ofAdd c)).val • s` using `fam_ext fun α j => by`.
+
+Use `(h₁ α j).trans ?_` and prove the remaining obligations. Distinguish the cases in `h : ∃ m, α = c + N • m`. Take `⟨m, rfl⟩` from `h`. Establish `: τ (Multiplicative.ofAdd (c + N • m)) = τ (Multiplicative.ofAdd c)`. Rewrite using `[ofAdd_add, map_mul, ofAdd_nsmul, map_pow, ← MonoidHom.pow_apply, hτN, MonoidHom.one_apply, _root_.mul_one]`.
+
+Rewrite using `[this]`. Both sides reduce to the same expression. Establish `h0` using `hc α (fun m hm => h ⟨m, hm⟩) j`. Rewrite using `[DVR.smul_f, h0, mul_zero, mul_zero]`. Establish `h₃` using `e.injective (h₂.trans ((congrArg _ ((he _ _).1 hs).symm).trans (e.map_smul _ _).symm))`.
+
+Conclude with `Subtype.ext (funext fun j => congrArg (fun z : LB.Sec _ => z.f j) h₃)`.
+-/
 theorem act_of_class (hL : LL) (hA : AdmBase R I) (hG : IsSemiAbelian G) (U : Unif I D A G) {N : ℕ} (hN : Odd N)
     (q : QkPt D.toPre F N) {τ : Multiplicative D.toPre.X →* Fˣ} (hy : q.y = 0) (hτ : IsTor τ q.g) (hτN : τ ^ N = 1)
     {x : TFK (R := R) F ⟶ A.A} (hx : QkToAkU U.toUnifPre F N q x)
@@ -129,6 +164,21 @@ theorem act_of_class (hL : LL) (hA : AdmBase R I) (hG : IsSemiAbelian G) (U : Un
   exact Subtype.ext (funext fun j => congrArg (fun z : LB.Sec _ => z.f j) h₃)
 end
 
+/- English proof (translation)
+Establish `: CharZero u.V` using `((algebraMap (FractionRing u.V) (PadicAlgCl p)).comp (algebraMap u.V (FractionRing u.V))).charZero`. Establish `hA : AdmBase u.V (IsLocalRing.maximalIdeal u.V)` using `⟨inferInstance, inferInstance, inferInstance, u.complete⟩`. Establish `hr` using `S.r_pos`. Establish `hN₂` using `S.N_ge`. Establish `: NeZero S.N` using `⟨by omega⟩`.
+
+Establish `: NeZero (S.r * S.N)` using `⟨Nat.mul_ne_zero (by omega) (by omega)⟩`. Take `⟨x, hx, hadd, -, honto⟩` from `GlobalTheory.T.uniformised_model_labelled_torsion_points o Ω S ρ p y₀ u`. Set `y : o →+* PadicAlgCl p` to `y₀.comp (algebraMap o S.R)`. Take `⟨pk, τ, hy, hτ, hq, hval⟩` from `GlobalTheory.T.exists_torus_torsionPoint_standardAlternatingForm hL hT o Ω S ρ p y₀ u l x hx hadd honto a.1 a.2`. Establish `hζ : y S.ζN ^ S.N = 1`.
+
+Establish `h : IsPrimitiveRoot S.ζN S.N` using `S.prim.pow (pow_pos (NeZero.pos _) 2) (by ring)`. Rewrite using `[← map_pow, h.pow_eq_one, map_one]`. Establish `hwt : ∀ α, ((τ ^ S.r) (Multiplicative.ofAdd α)).val = y S.ζN ^ (l.wt α a).val` using `fun α => by`. Take `⟨a', ha'⟩` from `l.yy_onto (QuotientAddGroup.mk α)`. Rewrite using `[MonoidHom.pow_apply, Units.val_pow_eq_pow_val, hval a' α ha', l.wt_eq a' α ha' a, ZMod.castHom_apply, ZMod.cast_eq_val, ZMod.val_natCast, ← pow_eq_pow_mod _ hζ, ← map_pow y, ThetaSys.ζN, ← pow_mul]`.
+
+Use `(map_pow y _ _).symm.trans (congrArg y ?_)` and prove the remaining obligations. Rewrite using `[← pow_mul]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree. Establish `hτN : (τ ^ S.r) ^ S.N = 1` using `MonoidHom.ext fun α => Units.ext (by`.
+
+Rewrite using `[MonoidHom.pow_apply, Units.val_pow_eq_pow_val, ← ofAdd_toAdd α, hwt, ← pow_mul, mul_comm, pow_mul, hζ, one_pow]`. Use the proof step `rfl)`. Set `_` to `TorusExt.gtGroup u.D.toPre (PadicAlgCl p)`. Establish `hτ'` using `isTor_nsmul hτ S.r`. Take `⟨q, hq₀, hq₁⟩` from `exists_qkPt_tor hτ' hτN`.
+
+Establish `hxr : x a ^ S.r = x (S.r • a)`. Establish `h0 : x 0 = 1`. Use `hadd 0 0` as an intermediate fact. Rewrite `this` using `[add_zero]`. Conclude with `left_eq_mul.1 this`.
+
+Conclude with `(map_pow (⟨⟨fun z => x z.toAdd, h0⟩, fun z z' => hadd _ _⟩ : Multiplicative S.Gam →* _) (Multiplicative.ofAdd a.1) S.r).symm`. Establish `hq'` using `(GlobalTheory.T.uniformisation_torsion_maps_compatible_in_level hL u.V _ hA u.D u.A u.G u.semi u.U (PadicAlgCl p) S.N S.r (S.r * S.N) (by omega) hr (mul_comm _ _) q pk (x a)).2 (hq₀.trans hy.symm) ((TorusExt.isNsmul_iff_eq _ _ _).2 hq₁) hq`. Rewrite `hq'` using `[hxr]`. Conclude with `⟨q, _, _, hq₀, hq₁ ▸ hτ', hτN, hq', hx _, hwt⟩`.
+-/
 theorem exists_torus_point (hL : LL) (hT : UTorsSt) {o Ω : Type} [CommRing o] [Field Ω] [Algebra o Ω] [ArithBase o Ω]
     {S : ThetaSys o Ω} {ρ : S.Real} {p : ℕ} [Fact p.Prime] {y₀ : S.R →+* PadicAlgCl p} {u : ρ.UTest p y₀} (l : u.Lab)
     (a : S.perp l.yy.ker) : ∃ (q : QkPt u.D.toPre (PadicAlgCl p) S.N) (x : TFK (R := u.V) (PadicAlgCl p) ⟶ u.A.A)
@@ -174,6 +224,19 @@ theorem exists_torus_point (hL : LL) (hT : UTorsSt) {o Ω : Type} [CommRing o] [
   rw [hxr] at hq'
   exact ⟨q, _, _, hq₀, hq₁ ▸ hτ', hτN, hq', hx _, hwt⟩
 
+/- English proof (translation)
+Introduce `hL hT o Ω _ _ _ _ S ρ p _ y₀ u l σ cls f hB b hb i`. Establish `: CharZero u.V` using `((algebraMap (FractionRing u.V) (PadicAlgCl p)).comp (algebraMap u.V (FractionRing u.V))).charZero`. Establish `hA : AdmBase u.V (IsLocalRing.maximalIdeal u.V)` using `⟨inferInstance, inferInstance, inferInstance, u.complete⟩`. Establish `hodd : Odd S.N` using `by rw [ρ.N_eq]; exact ρ.n_odd.pow.pow`. Establish `hN₄ : 4 ≤ S.N`.
+
+Establish `h₁ : 2 ≤ ρ.n ^ ρ.k` using `ρ.n_prime.two_le.trans (Nat.le_self_pow (by have := ρ.two_le; omega) _)`. Rewrite using `[ρ.N_eq]`. Conclude with `Nat.pow_le_pow_left h₁ 2`. Take `⟨w, hw⟩` from `u.lb`. Take `⟨w₀, hw₀⟩` from `u.U.toUnifPre.ext`.
+
+Use `choose s hs using fun j => exists_moved u hw (ρ.s j)`. Take `⟨t, e, ht, he, hcrd⟩` from `GlobalTheory.T.exists_generic_sections_from_integral_model hL o Ω S ρ p y₀ u S.N S.J σ f hB.2.2.2.1 hB.2.2.2.2.1 w₀ hw₀`. Take `⟨c, hc⟩` from `GlobalTheory.T.abelianSections_proportional_of_coordinates hL.1.globalFns u.V u.A (PadicAlgCl p) S.N S.J S.J t s (b.map (algebraMap _ (PadicAlgCl p))) fun z => by`. Take `⟨a, rfl⟩ : ∃ a : u.PtC, z = a ≫ u.U.gen.hom` from `⟨z ≫ u.U.gen.inv, by simp⟩`. Take `⟨v, hv⟩` from `((CrdCalc.crd_calculus _ (LPow u.A.A u.A.L (S.N : ℤ) (TFK (R := u.V) (PadicAlgCl p))) _ s (DVR.linComb_isLB _ u.A.isLB _ _)).1 (PadicAlgCl p) (ptSecT u.A.A (a ≫ u.U.gen.hom)).left).1`.
+
+Establish `h₁` using `hb a v (GlobalTheory.T.homogeneousCoordinates_of_geometricFibre o Ω S ρ p y₀ u w hw s hs a v hv)`. Conclude with `⟨v, (GlobalTheory.T.crd_ne_zero_injective_surjective_of_basis hL o Ω S ρ p y₀ u l S.N hN₄ S.J σ cls f hB).1 a _ h₁, hv, hcrd a _ h₁⟩`. Set `y : o →+* PadicAlgCl p` to `y₀.comp (algebraMap o S.R)`. Use `proj_mulVec S l.isoFree _ y _ fun a => ?_` and prove the remaining obligations. Take `⟨q, x, τ, hq₀, hτ, hτN, hq, hx, hwt⟩` from `exists_torus_point hL hT l a`.
+
+Take `⟨θ, hθ, hact⟩` from `GlobalTheory.T.exists_symmetricLift_action_geometricFibre o Ω S ρ p y₀ u w hw s hs a.1 _ hx (hq w₀ hw₀).1`. Take `⟨E, hE, -⟩` from `GlobalTheory.thetaGrp_acts_linearly hL.1.globalFns _ u.A (S.N : ℤ) (TFK (R := u.V) (PadicAlgCl p))`. Establish `h₁ : ∀ j, E θ (SecM.ofSec u.A.A (s j)) = ∑ m, kf u.V (PadicAlgCl p) (y (S.ρ a m j)) • SecM.ofSec u.A.A (s m)` using `fun j => hact j (SecM.toSec u.A.A (E θ (SecM.ofSec u.A.A (s j)))) ((hE _ _ _).2 rfl)`. Establish `h₂ : E θ (SecM.ofSec u.A.A (t i)) = kf u.V (PadicAlgCl p) (y S.ζN ^ (l.wt (cls i) a).val) • SecM.ofSec u.A.A (t i)`. Establish `h₃` using `act_of_class hL hA u.semi u.U hodd q hq₀ hτ hτN hq hθ hw₀ (ht i) (cls i) (fun α hα => he i α (hB.2.2.2.2.2.1 i α hα)) (t' := SecM.toSec u.A.A (E θ (SecM.ofSec u.A.A (t i)))) ((hE _ _ _).2 rfl)`.
+
+Conclude with `h₃.trans (congrArg (fun z => kf u.V (PadicAlgCl p) z • SecM.ofSec u.A.A (t i)) (hwt (cls i)))`. Conclude with `mulVec_eq_of_eigen (kf u.V (PadicAlgCl p)) (kf_bijective _ _).1 (E θ).toLinearMap (GlobalTheory.T.linearIndependent_thetaBasis_geometric_fibre hL o Ω S ρ p y₀ u w hw s hs) ((S.ρ a).map y) h₁ h₂ (hc i)`.
+-/
 theorem row_weight : GlobalTheory.UT.LL → UTorsSt → ∀ (o Ω : Type) [CommRing o] [Field Ω] [Algebra o Ω] [ArithBase o Ω] (S : ThetaSys o Ω) (ρ : S.Real) (p : ℕ) [Fact p.Prime] (y₀ : S.R →+* PadicAlgCl p) (u : ρ.UTest p y₀) (l : u.Lab) (σ : S.J → (u.H S.N).Sec) (cls : S.J → u.D.toPre.X) (f : S.J → ∀ α, u.D.toPre.SecB S.N α), u.Basis l S.N σ cls f → ∀ b : Matrix S.J S.J (FractionRing u.V), u.Link σ b → ∀ i, ((S.proj _ (l.wt (cls i))).map fun a => y₀ (algebraMap o S.R a)).mulVec (b.map (algebraMap _ (PadicAlgCl p)) i) = b.map (algebraMap _ (PadicAlgCl p)) i := by
   intro hL hT o Ω _ _ _ _ S ρ p _ y₀ u l σ cls f hB b hb i
   have : CharZero u.V :=

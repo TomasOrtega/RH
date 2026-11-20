@@ -16,14 +16,25 @@ open GlobalTheory.WpFam
 
 namespace GlobalTheory.HilbFam
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem famGL_coe_redGL (N : ℕ) (γ : SL(2, ℤ)) :
     ((redGL N γ : GL (Fin 2) (ZMod N)) : Matrix (Fin 2) (Fin 2) (ZMod N)) =
       (γ : Matrix (Fin 2) (Fin 2) ℤ).map (Int.cast : ℤ → ZMod N) := rfl
 
+/- English proof (translation)
+Rewrite using `[gact_one, vact, vmul, vmul, vmul, Matrix.vecMul_vecMul, Units.val_mul]`.
+-/
 theorem famGL_vmul_gact (N : ℕ) (y : Fin 2 → ZMod N) (α : GL (Fin 2) (ZMod N)) (γ : SL(2, ℤ)) :
     vmul y (gact N 1 α γ) = vact N (vmul y α) γ := by
   rw [gact_one, vact, vmul, vmul, vmul, Matrix.vecMul_vecMul, Units.val_mul]
 
+/- English proof (translation)
+Introduce `hE F _ _ _ hF s N _ L hs hL y κ`. Use `GlobalTheory.T.hilbertTwistedLattice_jets_modular_family hE F hF s N L hs (Nat.pos_of_ne_zero (NeZero.ne N)) hL (GL (Fin 2) (ZMod N)) (gact N 1) (fun α ↦ (α : Matrix (Fin 2) (Fin 2) (ZMod N))) (fun α ↦ wB N (vmul y α)) κ ?_ ?_` and prove the remaining obligations. Introduce `α γ`. Simplify using `only [gact_one, Units.val_mul, famGL_coe_redGL]`. Introduce `α γ τ`.
+
+Simplify using `only [famGL_vmul_gact]`. Conclude with `GlobalTheory.T.weierstrass_modular_transformation_level N (vmul y α) γ τ`.
+-/
 theorem isFam_hfun_GL : EisExp → ∀ (F : Type) [Field F] [NumberField F] [IsTotallyReal F], 2 ≤ Module.finrank ℚ F → ∀ (s N : ℕ) [NeZero N] (L : Lat F), 1 ≤ s → HasLevel N L → ∀ (y : Fin 2 → ZMod N) (κ : Emb F → ℕ), IsFam (gact N 1) (wt (2 * s) κ : ℕ) (fun α ↦ hfun (2 * s) (twist N L ((α : GL (Fin 2) (ZMod N)) : Matrix (Fin 2) (Fin 2) (ZMod N))) κ (wB N (vmul y (α)))) := by
   intro hE F _ _ _ hF s N _ L hs hL y κ
   refine GlobalTheory.T.hilbertTwistedLattice_jets_modular_family hE F hF s N L hs (Nat.pos_of_ne_zero (NeZero.ne N)) hL (GL (Fin 2) (ZMod N)) (gact N 1)

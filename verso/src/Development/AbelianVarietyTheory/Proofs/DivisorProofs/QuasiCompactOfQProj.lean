@@ -13,12 +13,20 @@ noncomputable section
 
 namespace GlobalTheory.UPel.HT
 
+/- English proof (translation)
+Take `⟨N, i, -, hi, rfl⟩` from `h`. Establish `: IsProper (PSpace.str R N)` using `isProper_str R N`. Use `infer_instance`.
+-/
 theorem quasiCompact_of_qProj {R : Type} [CommRing R] {X : Scheme.{0}} {f : X ⟶ Sp R} (h : IsQProjOver f) :
     QuasiCompact f := by
   obtain ⟨N, i, -, hi, rfl⟩ := h
   have : IsProper (PSpace.str R N) := isProper_str R N
   infer_instance
 
+/- English proof (translation)
+Establish `h0 : o.eta 0 = 1`. Establish `h` using `o.eta_add 0 0`. Rewrite `h` using `[add_zero]`. Conclude with `(mul_eq_left.mp h.symm)`. Establish `hn : ∀ n : ℕ, o.eta (n • x) = o.eta x ^ n`.
+
+Introduce `n`. Proceed by induction on `n with`. Consider the case `zero => simp [h0]`. Consider the case `succ n ih => rw [succ_nsmul, o.eta_add, ih, pow_succ]`. Rewrite using `[← hn, o.eta_ker]`.
+-/
 theorem Obj.eta_pow {p : ℕ} [Fact p.Prime] {D : Datum p} {R : Type} [CommRing R] {b : Base D R} {N : ℕ}
     {S : Scheme.{0}} {s : S ⟶ Sp R} (o : Obj b N s) (x : D.La) : o.eta x ^ N = 1 := by
   have h0 : o.eta 0 = 1 := by
@@ -32,11 +40,17 @@ theorem Obj.eta_pow {p : ℕ} [Fact p.Prime] {D : Datum p} {R : Type} [CommRing 
     | succ n ih => rw [succ_nsmul, o.eta_add, ih, pow_succ]
   rw [← hn, o.eta_ker]
 
+/- English proof (translation)
+Take `⟨⟨f, ν, rfl, -, hf⟩, -⟩` from `h`. Conclude with `(hf N hN hp).2.2.2.1`.
+-/
 theorem Datum.Cls.fullMark {p : ℕ} [Fact p.Prime] (D : Datum p) (N : ℕ) (hN : 0 < N) (hp : N.Coprime p)
     (D' : PLat D.O D.inv) (t : D.La → D'.La) (h : D.Cls N D' t) : FullMark N D' t := by
   obtain ⟨⟨f, ν, rfl, -, hf⟩, -⟩ := h
   exact (hf N hN hp).2.2.2.1
 
+/- English proof (translation)
+Introduce `p _ D R _ b N σ ρ M hN hp hty`. Take `⟨h, hL⟩` from `GlobalTheory.T.harrisTaylor_relDim_and_diagonal_isLineBundle p D R b N M.X M.s M.univ`. Use `⟨h, hL, ?_⟩` and prove the remaining obligations. Conclude with `GlobalTheory.PELU.nonempty_unif D.O D.inv D.g ρ R σ D.La (M.univ.fam h hL) N (D.Cls N) (D.a * (D.n - 1)) hN (fun a => M.univ.eta_pow a) M.smooth (quasiCompact_of_qProj M.qproj) (fun D' t hc => Datum.Cls.fullMark D N (by omega) hp D' t hc) (GlobalTheory.T.complexPoints_classify_ma …`.
+-/
 theorem model_uniformised : ∀ (p : ℕ) [Fact p.Prime] (D : Datum p) (R : Type) [CommRing R] (b : Base D R) (N : ℕ)
     (σ : R →+* ℂ) (ρ : D.O →+* Matrix (Fin D.g) (Fin D.g) ℂ) (M : Model b N), 3 ≤ N → N.Coprime p →
     b.IsType σ ρ → M.Uniformised σ ρ := by

@@ -24,6 +24,9 @@ def lieAct (a : OE) (x : LieG G) : LieG G :=
     haveI := io.hom a
     rw [IsMonHom.one_hom]⟩
 
+/- English proof (translation)
+Establish `h : ((TrivSqZeroExt.fstHom O O O).toRingHom).comp (dualScale c).toRingHom = (TrivSqZeroExt.fstHom O O O).toRingHom`. Use `RingHom.ext fun x => ?_` and prove the remaining obligations. Simplify using `[dualScale]`. Apply `Over.OverMorphism.ext` to reduce the goal to its premises. Simplify using `only [ptMap, Over.comp_left, Over.homMk_left, ← Spec.map_comp, ← CommRingCat.ofHom_comp, h]`.
+-/
 theorem fst_scale (c : O) :
     ptMap (TrivSqZeroExt.fstHom O O O) ≫ ptMap (dualScale c) = ptMap (TrivSqZeroExt.fstHom O O O) := by
 

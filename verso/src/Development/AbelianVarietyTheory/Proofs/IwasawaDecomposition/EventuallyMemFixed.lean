@@ -8,6 +8,9 @@ open NumberField IsDedekindDomain
 
 namespace GlobalTheory.CuspRep.AeFix
 
+/- English proof (translation)
+Introduce `E _ _ _ a π x`. Use `filter_upwards [GlobalTheory.CuspRep.LocSph.eventually_mem ((π.cusp x.1 x.2).1.level.mem_nhds (by simp))] with w hw`. Use `GlobalTheory.LGrp.mem_fixed.2 fun k hk => Subtype.ext ?_` and prove the remaining obligations. Take `⟨g, rfl⟩` from `hk`. Conclude with `hw g`.
+-/
 theorem eventually_mem_fixed : ∀ (E : Type) [Field E] [NumberField E] [NumberField.IsTotallyComplex E] (a : ℕ) (π : GlobalTheory.CuspRep.CuspSub E a) (x : π.V), ∀ᶠ v in Filter.cofinite, x ∈ GlobalTheory.PRep.fixed (π.locRep v) (GlobalTheory.LFun.KGL v a) := by
   intro E _ _ _ a π x
   filter_upwards [GlobalTheory.CuspRep.LocSph.eventually_mem ((π.cusp x.1 x.2).1.level.mem_nhds (by simp))] with w hw

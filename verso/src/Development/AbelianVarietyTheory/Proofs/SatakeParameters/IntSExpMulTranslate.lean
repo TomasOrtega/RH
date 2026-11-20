@@ -17,6 +17,23 @@ open Formalism.G (unitBall)
 
 namespace GlobalTheory.ThLoc
 
+/- English proof (translation)
+Establish `hN0 : normInt d m n ≠ 0`. Introduce `h`. Apply `hN` to reduce the goal to its premises. Rewrite using `[h]`. Conclude with `dvd_zero _`.
+
+Take `⟨S, neg, hcard, hker, hnegP, hE, hprod, hs2C⟩` from `D.CurveNormEndomorphisms.cdata L hmod hCM m n hN0`. Establish `hpN : ¬ p ∣ (S.card + 1)`. Introduce `h`. Apply `hN` to reduce the goal to its premises. Rewrite using `[← hcard]`.
+
+Conclude with `h` after adjusting the coercions. Establish `hpt : ∀ P : S, E.ptW p L ι W (P : ℂ) = .some _ _ (E.AnaSysW.nonsing hU (P : ℂ) (hker P).2)`. Introduce `P`. Unfold `E.ptW`. Rewrite using `[dif_pos ⟨(hker P).2, E.AnaSysW.nonsing hU (P : ℂ) (hker P).2⟩]`.
+
+Establish `hint : ∀ P : S, ‖E.AnaSysW.xc p L ι W P‖ ≤ 1 ∧ ‖E.AnaSysW.yc p L ι W P‖ ≤ 1`. Introduce `P`. Establish `h` using `E.TransW.ptW_int E.analytic_point_map_add E.analytic_point_eq_zero_iff hU hW (P : ℂ) (S.card + 1) hpN (hker P).1 (hker P).2`. Rewrite `h` using `[hpt P]`. Conclude with `h`.
+
+Use `⟨S, neg, fun P => E.AnaSysW.xc p L ι W P, fun P => E.AnaSysW.yc p L ι W P, ?_, fun P => (hint P).1, fun P => (hint P).2, ?_, ?_⟩` and prove the remaining obligations. Apply `D.CurveNormEndomorphisms.endoCurve_of_endoZ (RingHom.id ℂ_[p]) W (wF := fun P : S => PowerSeries.map (ι : ℂ →+* ℂ_[p]) (F.taylor0 (fun z => L.weierstrassP (z + (P : ℂ)))))` to reduce the goal to its premises. Introduce `P`. Conclude with `(E.AnaSysW.nonsing hU (P : ℂ) (hker P).2).1`. Introduce `P`.
+
+Prove the components needed by the constructor for the conclusion. Simplify using `only [E.AnaSysW.xc, (hnegP P).1]`. Simplify using `only [WeierstrassCurve.Affine.negY, E.AnaSysW.xc, E.AnaSysW.yc]`. Rewrite using `[(hnegP P).2, (hnegP P).1, map_neg]`. Expand and normalize the polynomial expressions, which then agree.
+
+Establish `h` using `D.CurveNormEndomorphisms.isEndoZ_map (ι : ℂ →+* ℂ_[p]) hE`. Simplify using `only [PowerSeries.map_id, RingHom.id_apply, E.AnaSysW.xc, sub_add_cancel]`. Rewrite using `[E.weierstrass_series_eq_transported p L ι W hU]`. Conclude with `h`. Rewrite using `[← map_mul, hprod, Fintype.card_coe]`.
+
+Simplify using the standard rewrite rules. Rewrite using `[← map_sub, ← map_mul, ← map_mul, hs2C, map_sum]`. Simplify using `[E.AnaSysW.xc]`.
+-/
 theorem endoDatum_of_model (d : ℕ) (L : PeriodPair) (hmod : d % 4 = 3) (hCM : HasCMBy d L)
     (p : ℕ) [Fact p.Prime] (ι : ℂ ≃+* ℂ_[p]) (W : WeierstrassCurve ℂ_[p]) (hU : Unif p L ι W)
     (hW : IntCurve W) (m n : ℤ) (hN : ¬ (p : ℤ) ∣ normInt d m n) :
@@ -72,6 +89,29 @@ theorem endoDatum_of_model (d : ℕ) (L : PeriodPair) (hmod : d % 4 = 3) (hCM : 
   · rw [← map_sub, ← map_mul, ← map_mul, hs2C, map_sum]
     simp [E.AnaSysW.xc]
 
+/- English proof (translation)
+Establish `hnorm : normInt d (-1) 2 = d`. Take `⟨k, hk⟩ : ∃ k : ℤ, (d : ℤ) + 1 = 4 * k` from `⟨((d : ℤ) + 1) / 4, by omega⟩`. Establish `hdiv : ((d : ℤ) + 1) / 4 = k` using `by omega`. Unfold `normInt`. Rewrite using `[hdiv]`.
+
+Take the linear combination `-hk`. Establish `hN : ¬ ((3 : ℕ) : ℤ) ∣ normInt d (-1) 2`. Rewrite using `[hnorm]`. Use linear arithmetic over natural numbers and integers. Take `⟨S, neg, xP, yP, hE, hx, hy, hprod, hs⟩` from `endoDatum_of_model d L hmod hCM 3 ι W hU hW (-1) 2 hN`.
+
+Use `set al := ι (((-1 : ℤ) : ℂ) + ((2 : ℤ) : ℂ) * omegaK d) with hal`. Use `set albar := ι (((-1 : ℤ) : ℂ) + ((2 : ℤ) : ℂ) * (1 - omegaK d)) with halbar`. Establish `hsum : al + albar = ((0 : ℤ) : ℂ_[3])`. Rewrite using `[hal, halbar, ← map_add]`. Establish `e : (((-1 : ℤ) : ℂ) + ((2 : ℤ) : ℂ) * omegaK d) + (((-1 : ℤ) : ℂ) + ((2 : ℤ) : ℂ) * (1 - omegaK d)) = 0`.
+
+Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e]`. Simplify using the standard rewrite rules. Establish `hsq : al ^ 2 = -(d : ℂ_[3])`.
+
+Rewrite using `[hal, ← map_pow]`. Establish `e : (((-1 : ℤ) : ℂ) + ((2 : ℤ) : ℂ) * omegaK d) ^ 2 = -(d : ℂ)`. Use `push_cast`. Take the linear combination `4 * D.CurveNormEndomorphisms.omega_sq d`. Rewrite using `[e, map_neg, map_natCast]`.
+
+Establish `h2 : ‖(2 : ℂ_[3])‖ = 1` using `Top.OrthogonalGaussModelNormLemmas.norm_two 3 (by norm_num)`. Establish `hal1 : ‖al‖ = 1`. Establish `h1` using `congrArg norm hsq`. Rewrite `h1` using `[norm_pow, norm_neg, E.ScaledModelNorms.norm_nat 3 (show ¬ 3 ∣ d by omega)]`. Conclude with `(pow_eq_one_iff_of_nonneg (norm_nonneg _) two_ne_zero).1 h1`.
+
+Establish `hdiff : ‖al - albar‖ = 1`. Establish `e : al - albar = 2 * al`. Use `hsum` as an intermediate fact. Move the coercions through the operations in `at this`. Take the linear combination `-this`.
+
+Rewrite using `[e, norm_mul, h2, hal1, one_mul]`. Establish `hb : ‖(al ^ 2 - 1) * (W.b₂ / 12)‖ ≤ 1`. Take `⟨k, hk⟩ : ∃ k : ℕ, d + 1 = 3 * k` from `⟨(d + 1) / 3, by omega⟩`. Establish `hk' : (d : ℂ_[3]) + 1 = 3 * (k : ℂ_[3])` using `by exact_mod_cast hk`. Establish `e : (al ^ 2 - 1) * (W.b₂ / 12) = -((k : ℂ_[3]) * W.b₂) / 2 ^ 2`.
+
+Rewrite using `[hsq]`. Take the linear combination `(-W.b₂ / 12) * hk'`. Establish `hb2 : ‖W.b₂‖ ≤ 1`. Establish `hm : W.b₂ ∈ unitBall ℂ_[3]`. Take `⟨a1, a2, -⟩` from `Top.OrthogonalGaussModelNormLemmas.coeffIn hW`.
+
+Unfold `WeierstrassCurve.b₂`. Conclude with `add_mem (pow_mem a1 2) (mul_mem (ofNat_mem _ 4) a2)`. Conclude with `hm`. Rewrite using `[e, norm_div, norm_pow, h2, one_pow, div_one, norm_neg, norm_mul]`. Conclude with `mul_le_one₀ (IsUltrametricDist.norm_natCast_le_one _ k) (norm_nonneg _) hb2`.
+
+Establish `h` using `G.curveJetsUnramThm ℂ_[3] W (Top.OrthogonalGaussModelNormLemmas.coeffIn hW) h2 (ι (F.s2 L)) al albar 0 S neg xP yP hE hx hy hprod hal1 hsum hdiff hb hs i hi`. Unfold `E.phW`. Rewrite using `[← E.weierstrass_series_eq_transported 3 L ι W hU]`. Conclude with `h`.
+-/
 theorem jets_phW_three (d : ℕ) (L : PeriodPair) (hmod : d % 4 = 3) (h3 : d % 3 = 2) (hCM : HasCMBy d L)
     (ι : ℂ ≃+* ℂ_[3]) (W : WeierstrassCurve ℂ_[3]) (hU : Unif 3 L ι W) (hW : IntCurve W)
     (i : ℕ) (hi : 1 ≤ i) : ‖C.jet (logSer W) (E.phW 3 L ι W) i‖ ≤ 1 := by
@@ -133,6 +173,13 @@ theorem jets_phW_three (d : ℕ) (L : PeriodPair) (hmod : d % 4 = 3) (h3 : d % 3
   rw [← E.weierstrass_series_eq_transported 3 L ι W hU]
   exact h
 
+/- English proof (translation)
+Establish `hl2' : ¬ p ∣ 2` using `fun h => hp2 ((Nat.prime_dvd_prime_iff_eq Fact.out Nat.prime_two).1 h)`. Establish `h2t : ((2 : ℕ) : ℂ) * (ω₀ / 2) ∈ L.lattice` using `by simpa using E.TransW.half_mem hω 1`. Take `⟨hc1, -⟩` from `E.analytic_translate_model p L ι W hU hW (ω₀ / 2) 2 (by norm_num) hl2' h2t hω2`. Establish `hN2 : ¬ p ∣ 2 * N` using `fun h => ((Nat.Prime.dvd_mul Fact.out).1 h).elim hl2' hlN`. Establish `m3 : ((2 * N : ℕ) : ℂ) * (s + ω₀ / 2) ∈ L.lattice`.
+
+Rewrite using `[mul_add]`. Conclude with `add_mem (E.TransW.two_mem hNs) (E.TransW.half_mem hω N)`. Establish `hsim` using `(E.TransW.hW_sim p L ι W (ω₀ / 2) s (2 * N) (by omega) (E.TransW.two_mem hNs) (E.TransW.half_mem hω N) hω2).mul_left (B.fExp (E.phW p L ι W))`. Use `(hsim.gaussOne ?_).1` and prove the remaining obligations. Rewrite using `[mul_left_comm, ← E.TransW.gW_eq]`.
+
+Conclude with `E.Tor.gaussOne_C_mul (by rw [norm_inv, hc1, inv_one]) (E.TransW.gW_gauss E.analytic_translate_system_model E.analytic_point_map_add E.analytic_point_eq_zero_iff hU hW _ (2 * N) hN2 m3)`.
+-/
 theorem intS_exp_mul_translate (p : ℕ) [Fact p.Prime] (hp2 : p ≠ 2) (L : PeriodPair) (ι : ℂ ≃+* ℂ_[p])
     (W : WeierstrassCurve ℂ_[p]) (hU : Unif p L ι W) (hW : IntCurve W) (ω₀ : ℂ) (hω : ω₀ ∈ L.lattice)
     (hω2 : ω₀ / 2 ∉ L.lattice) (s : ℂ) (N : ℕ) (hN : 0 < N) (hlN : ¬ p ∣ N)
@@ -152,6 +199,15 @@ theorem intS_exp_mul_translate (p : ℕ) [Fact p.Prime] (hp2 : p ≠ 2) (L : Per
   exact E.Tor.gaussOne_C_mul (by rw [norm_inv, hc1, inv_one])
     (E.TransW.gW_gauss E.analytic_translate_system_model E.analytic_point_map_add E.analytic_point_eq_zero_iff hU hW _ (2 * N) hN2 m3)
 
+/- English proof (translation)
+Introduce `d L hd8 hd3 hCM ι W hU hW ω₀ hω h1 _ n _ κ _ r s N hr hN h3N hs`. Establish `hω2 : ω₀ / 2 ∉ L.lattice` using `fun h => h1 (hCM _ h)`. Take `⟨hlp, -, -, -, hu⟩` from `C.curveFrame ℂ_[3] (unitBall ℂ_[3]) W (Top.OrthogonalGaussModelNormLemmas.coeffIn hW)`. Establish `hph : PowerSeries.constantCoeff (E.phW 3 L ι W) = 0` using `E.AnaSysW.cc_phW 3 L ι W`. Take `⟨e1, hInt⟩` from `E.prodInt ℂ_[3] κ n (E.phW 3 L ι W) r (fun k i => B.fExp (E.phW 3 L ι W) * E.inW 3 ι W (F.opU L (s k i) (F.th0 L (ω₀ / 2)))) hph hr (fun k i => intS_exp_mul_translate 3 (by norm_num) L ι W hU hW ω₀ hω hω2 (s k i) N hN h3N (hs k i))`.
+
+Establish `key` using `(G.kernelTwo ℂ_[3] _ _ _ hlp hu hph (jets_phW_three d L (by omega) hd3 hCM ι W hU hW) n (fun _ => 1) (fun _ => by simp) _ (fun m => hInt m)).1`. Take `⟨hl0, -, hv0, -, hlv⟩` from `hlp`. Rewrite `key` using `[Top.KJ.phSum_one]`. Express the relevant statement in the definitionally equal form `Formalism.DworkPowerSeriesWeights.JetsIntegral (G.toZ _ (Formalism.DworkPowerSeriesWeights.mvExp _ * _)) at key`. Rewrite `key` using `[← e1, Top.KJ.toZ_thetaProd hv0]`.
+
+Use `key using 1` and compare the differences between its conclusion and the goal. Unfold `Top.thetaZ`. Use `congr 1`. Use function extensionality and compare the values at `k i`. Express the relevant statement in the definitionally equal form `_ = PowerSeries.subst _ (B.fExp (-(E.phW 3 L ι W)) * _)`.
+
+Rewrite using `[← mul_assoc, ← B.fExp_add (by rw [map_neg]; exact neg_eq_zero.2 hph) hph, neg_add_cancel, B.ParO.fExp_zero, one_mul]`. Unfold `E.inW`. Rewrite using `[PowerSeries.subst_comp_subst_apply (PowerSeries.HasSubst.of_constantCoeff_zero' hl0) (PowerSeries.HasSubst.of_constantCoeff_zero' hv0), hlv]`. Conclude with `(PowerSeries.X_subst _).symm`.
+-/
 theorem thetaZJetsThree : ThetaZJetsThree := by
   intro d L hd8 hd3 hCM ι W hU hW ω₀ hω h1 _ n _ κ _ r s N hr hN h3N hs
   have hω2 : ω₀ / 2 ∉ L.lattice := fun h => h1 (hCM _ h)

@@ -8,6 +8,11 @@ attribute [local instance] Over.cartesianMonoidalCategory
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Introduce `hW hfib`. Use `haveI : IsAffineHom (pullback.fst A.hom (spMap a)) := isAffineHom_isStableUnderBaseChange.of_isPullback (IsPullback.of_hasPullback _ _).flip inferInstance`. Use `⟨(pullback.fst A.hom (spMap a)) ⁻¹ᵁ W, hW.preimage _, ?_⟩` and prove the remaining obligations. Introduce `s`. Take `⟨x, hxW, hx⟩` from `hfib (spMap a s) ⟨s, rfl⟩`.
+
+Take `⟨z, hz1, hz2⟩` from `Scheme.Pullback.exists_preimage_pullback (f := A.hom) (g := spMap a) x s hx`. Conclude with `⟨z, by show (pullback.fst A.hom (spMap a)) z ∈ W; rw [hz1]; exact hxW, hz2⟩`.
+-/
 theorem affine_preimage_pullback_meets_fibres {R R' : Type} [CommRing R] [CommRing R'] (a : R →+* R')
     (A : Over (Sp R)) (W : A.left.Opens) : IsAffineOpen W →
     (∀ t ∈ Set.range (spMap a), ∃ x ∈ W, A.hom x = t) →

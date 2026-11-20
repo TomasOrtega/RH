@@ -11,6 +11,11 @@ section Quot
 
 variable {R V : Type*} [CommRing R] [AddCommGroup V] [Module R V]
 
+/- English proof (translation)
+Take `⟨a, ha⟩` from `Submodule.Quotient.mk_surjective _ (e (Submodule.Quotient.mk ⟨l, hl⟩))`. Establish `h0 : e (r • Submodule.Quotient.mk (⟨l, hl⟩ : L)) = 0`. Rewrite using `[map_smul, ← ha, ← Submodule.Quotient.mk_smul, Submodule.Quotient.mk_eq_zero, smul_eq_mul]`. Conclude with `I.mul_mem_right a hr`. Rewrite `h0` using `[LinearEquiv.map_eq_zero_iff, ← Submodule.Quotient.mk_smul, Submodule.Quotient.mk_eq_zero]`.
+
+Conclude with `h0`.
+-/
 theorem neighbourBasic_smul_mem {I : Ideal R} {L N : Submodule R V}
     (e : (L ⧸ N.comap L.subtype) ≃ₗ[R] (R ⧸ I)) {r : R} (hr : r ∈ I) {l : V} (hl : l ∈ L) :
     r • l ∈ N := by
@@ -22,6 +27,11 @@ theorem neighbourBasic_smul_mem {I : Ideal R} {L N : Submodule R V}
     Submodule.Quotient.mk_eq_zero] at h0
   exact h0
 
+/- English proof (translation)
+Take `⟨x₀, hx₀⟩` from `Submodule.Quotient.mk_surjective _ (e.symm (Submodule.Quotient.mk 1))`. Use `⟨x₀, x₀.2, fun l hl => ?_⟩` and prove the remaining obligations. Take `⟨a, ha⟩` from `Submodule.Quotient.mk_surjective _ (e (Submodule.Quotient.mk ⟨l, hl⟩))`. Use `⟨a, ?_⟩` and prove the remaining obligations. Establish `h1 : Submodule.Quotient.mk (p` using `N.comap L.subtype) (⟨l, hl⟩ - a • x₀) = 0 := by`.
+
+Rewrite using `[Submodule.Quotient.mk_sub, Submodule.Quotient.mk_smul, hx₀, ← map_smul, ← Submodule.Quotient.mk_smul, smul_eq_mul, mul_one, ha, LinearEquiv.symm_apply_apply, sub_self]`. Rewrite `h1` using `[Submodule.Quotient.mk_eq_zero]`. Conclude with `h1`.
+-/
 theorem neighbourBasic_gen {I : Ideal R} {L N : Submodule R V}
     (e : (L ⧸ N.comap L.subtype) ≃ₗ[R] (R ⧸ I)) :
     ∃ l₀ ∈ L, ∀ l ∈ L, ∃ a : R, l - a • l₀ ∈ N := by
@@ -36,6 +46,17 @@ theorem neighbourBasic_gen {I : Ideal R} {L N : Submodule R V}
   rw [Submodule.Quotient.mk_eq_zero] at h1
   exact h1
 
+/- English proof (translation)
+Introduce `l' hl'`. Take `⟨a, ha⟩` from `Submodule.Quotient.mk_surjective _ (e (Submodule.Quotient.mk ⟨l, hl⟩))`. Take `⟨a', ha'⟩` from `Submodule.Quotient.mk_surjective _ (e (Submodule.Quotient.mk ⟨l', hl'⟩))`. Establish `haI : a ∉ I`. Introduce `haI`.
+
+Apply `hlN` to reduce the goal to its premises. Establish `: e (Submodule.Quotient.mk ⟨l, hl⟩) = 0`. Rewrite using `[← ha, Submodule.Quotient.mk_eq_zero]`. Conclude with `haI`. Rewrite `this` using `[LinearEquiv.map_eq_zero_iff, Submodule.Quotient.mk_eq_zero]`.
+
+Conclude with `this`. Take `⟨b, i, hi, hbi⟩` from `hI.exists_inv haI`. Use `⟨a' * b, ?_⟩` and prove the remaining obligations. Establish `h1 : e (Submodule.Quotient.mk (p` using `N.comap L.subtype) (⟨l', hl'⟩ - (a' * b) • ⟨l, hl⟩)) = 0 := by`. Rewrite using `[Submodule.Quotient.mk_sub, Submodule.Quotient.mk_smul, map_sub, map_smul, ← ha, ← ha', ← Submodule.Quotient.mk_smul, ← Submodule.Quotient.mk_sub, Submodule.Quotient.mk_eq_zero, smul_eq_mul]`.
+
+Establish `: a' - a' * b * a = a' * i`. Take the linear combination `(-a') * hbi`. Rewrite using `[this]`. Conclude with `I.mul_mem_left a' hi`. Rewrite `h1` using `[LinearEquiv.map_eq_zero_iff, Submodule.Quotient.mk_eq_zero]`.
+
+Conclude with `h1`.
+-/
 theorem neighbourBasic_gen' {I : Ideal R} (hI : I.IsMaximal) {L N : Submodule R V}
     (e : (L ⧸ N.comap L.subtype) ≃ₗ[R] (R ⧸ I)) {l : V} (hl : l ∈ L) (hlN : l ∉ N) :
     ∀ l' ∈ L, ∃ a : R, l' - a • l ∈ N := by
@@ -63,6 +84,11 @@ theorem neighbourBasic_gen' {I : Ideal R} (hI : I.IsMaximal) {L N : Submodule R 
   rw [LinearEquiv.map_eq_zero_iff, Submodule.Quotient.mk_eq_zero] at h1
   exact h1
 
+/- English proof (translation)
+Assume the negation of the conclusion as `H`. Use `push Not at H`. Apply `hI` to reduce the goal to its premises. Take `⟨x₀, hx₀⟩` from `Submodule.Quotient.mk_surjective _ (e.symm (Submodule.Quotient.mk 1))`. Establish `h0 : Submodule.Quotient.mk (p` using `N.comap L.subtype) x₀ = 0 := by`.
+
+Rewrite using `[Submodule.Quotient.mk_eq_zero]`. Conclude with `H x₀ x₀.2`. Rewrite `hx₀` using `[h0, eq_comm, LinearEquiv.symm_apply_eq, map_zero]`. Rewrite `hx₀` using `[Submodule.Quotient.mk_eq_zero]`. Conclude with `(Ideal.eq_top_iff_one I).mpr hx₀`.
+-/
 theorem neighbourBasic_not_le {I : Ideal R} (hI : I ≠ ⊤) {L N : Submodule R V}
     (e : (L ⧸ N.comap L.subtype) ≃ₗ[R] (R ⧸ I)) : ∃ l ∈ L, l ∉ N := by
   by_contra H
@@ -82,6 +108,29 @@ section DedekindLFunctions
 variable {R K : Type*} [CommRing R] [IsDedekindDomain R] [Field K] [Algebra R K]
   [IsFractionRing R K]
 
+/- English proof (translation)
+Distinguish the cases in `hbot : P = ⊥`. It suffices to derive a contradiction. Apply `hnc` to reduce the goal to its premises. Establish `hF : IsField R` using `Ring.isField_iff_maximal_bot.mpr (hbot ▸ hP)`. Conclude with `(IsFractionRing.surjective_iff_isField (R := R) (K := K)).mpr hF c'`.
+
+Set `J : Ideal R` to `{ carrier := {t | ∃ p ∈ P, ∃ q ∈ P, algebraMap R K t = algebraMap R K p + algebraMap R K q * c'} add_mem' := by`. Introduce and unpack `x y ⟨p, hp, q, hq, hx⟩ ⟨p', hp', q', hq', hy⟩`. Use `⟨p + p', P.add_mem hp hp', q + q', P.add_mem hq hq', ?_⟩` and prove the remaining obligations. Simplify using `only [map_add, hx, hy]`. Expand and normalize the polynomial expressions, which then agree.
+
+Use the proof step `zero_mem' := ⟨0, P.zero_mem, 0, P.zero_mem, by simp⟩`. Use the proof step `smul_mem' := by`. Introduce and unpack `r x ⟨p, hp, q, hq, hx⟩`. Use `⟨r * p, P.mul_mem_left r hp, r * q, P.mul_mem_left r hq, ?_⟩` and prove the remaining obligations. Simplify using `only [smul_eq_mul, map_mul, hx]`.
+
+Use `ring }`. Establish `hPJ : P ≤ J` using `fun p hp => ⟨p, hp, 0, P.zero_mem, by simp⟩`. Distinguish the cases in `hJ : J = ⊤`. Establish `h1 : (1 : R) ∈ J` using `hJ ▸ Submodule.mem_top`. Take `⟨p, hp, q, hq, h1⟩` from `h1`.
+
+Take `⟨a, ha⟩` from `hc p hp`. Take `⟨b, hb⟩` from `hc q hq`. Use `⟨a, b, ?_⟩` and prove the remaining obligations. Rewrite using `[ha, hb]`. Combine the equalities or inequalities in the displayed calculation.
+
+It suffices to derive a contradiction. Establish `hPJ' : P = J` using `hP.eq_of_le hJ hPJ`. Apply `hnc` to reduce the goal to its premises. Establish `hinj` using `IsFractionRing.injective R K`. Set `N : Submodule R K` to `Submodule.map (Algebra.linearMap R K) P`.
+
+Establish `hN : N ≠ ⊥`. Introduce `h0`. Apply `hbot` to reduce the goal to its premises. Rewrite using `[eq_bot_iff]`. Introduce `p hp`.
+
+Establish `: algebraMap R K p ∈ N` using `Submodule.mem_map_of_mem hp`. Rewrite `this` using `[h0, Submodule.mem_bot]`. Rewrite using `[Submodule.mem_bot]`. Conclude with `hinj (by rw [this, map_zero])`. Establish `hN' : N.FG` using `(IsNoetherian.noetherian P).map _`.
+
+Establish `hint : IsIntegral R c'`. Use `isIntegral_of_smul_mem_submodule N hN hN' c' ?_` and prove the remaining obligations. Introduce `n hn`. Take `⟨q, hq, rfl⟩` from `Submodule.mem_map.mp hn`. Take `⟨t, ht⟩` from `hc' q hq`.
+
+Establish `htJ : t ∈ J` using `⟨0, P.zero_mem, q, hq, by rw [ht]; simp⟩`. Rewrite `htJ` using `[← hPJ']`. Use `Submodule.mem_map.mpr ⟨t, htJ, ?_⟩` and prove the remaining obligations. Simplify using `only [Algebra.linearMap_apply, smul_eq_mul]`. Rewrite using `[ht, mul_comm]`.
+
+Conclude with `IsIntegrallyClosed.isIntegral_iff.mp hint`.
+-/
 theorem neighbourBasic_ded (P : Ideal R) (hP : P.IsMaximal) (c c' : K)
     (hc : ∀ p ∈ P, algebraMap R K p * c ∈ Set.range (algebraMap R K))
     (hc' : ∀ p ∈ P, algebraMap R K p * c' ∈ Set.range (algebraMap R K))
@@ -148,14 +197,47 @@ section Main
 variable {R K V : Type*} [CommRing R] [Field K] [StarRing K] [Algebra R K]
   [AddCommGroup V] [Module K V] [Module R V] [IsScalarTower R K V]
 
+/- English proof (translation)
+Rewrite using `[← algebraMap_smul K a x, LinearMap.map_smulₛₗ₂, starRingEnd_apply, smul_eq_mul]`.
+-/
 theorem neighbourBasic_h_smul_left (h : V →ₗ⋆[K] V →ₗ[K] K) (a : R) (x y : V) :
     h (a • x) y = star (algebraMap R K a) * h x y := by
   rw [← algebraMap_smul K a x, LinearMap.map_smulₛₗ₂, starRingEnd_apply, smul_eq_mul]
 
+/- English proof (translation)
+Rewrite using `[← algebraMap_smul K a y, map_smul, smul_eq_mul]`.
+-/
 theorem neighbourBasic_h_smul_right (h : V →ₗ⋆[K] V →ₗ[K] K) (a : R) (x y : V) :
     h x (a • y) = algebraMap R K a * h x y := by
   rw [← algebraMap_smul K a y, map_smul, smul_eq_mul]
 
+/- English proof (translation)
+Establish `hone : ∀ k : K, k ∈ (1 : Submodule R K) ↔ k ∈ Set.range (algebraMap R K)` using `fun k => by rw [Submodule.mem_one]; rfl`. Establish `rmul : ∀ a b : K, a ∈ Set.range (algebraMap R K) → b ∈ Set.range (algebraMap R K) → a * b ∈ Set.range (algebraMap R K)`. Introduce and unpack `_ _ ⟨x, rfl⟩ ⟨y, rfl⟩`. Conclude with `⟨x * y, map_mul _ _ _⟩`. Establish `radd : ∀ a b : K, a ∈ Set.range (algebraMap R K) → b ∈ Set.range (algebraMap R K) → a + b ∈ Set.range (algebraMap R K)`.
+
+Introduce and unpack `_ _ ⟨x, rfl⟩ ⟨y, rfl⟩`. Conclude with `⟨x + y, map_add _ _ _⟩`. Establish `ralg : ∀ r : R, algebraMap R K r ∈ Set.range (algebraMap R K)` using `fun r => ⟨r, rfl⟩`. Establish `rstar : ∀ a : K, a ∈ Set.range (algebraMap R K) → star a ∈ Set.range (algebraMap R K)`. Introduce and unpack `_ ⟨x, rfl⟩`.
+
+Conclude with `hstar x`. Establish `memD : ∀ (A : Submodule R V) (x : V), x ∈ dual h A ↔ ∀ y ∈ A, h y x ∈ Set.range (algebraMap R K)`. Introduce `A x`. Rewrite using `[dualBasic_mem_dual]`. Simplify using `only [hone]`.
+
+Establish `hMM : ∀ m ∈ M, m ∈ dual h M` using `fun m hm => (memD M m).mpr (fun y hy => (hone _).mp (hM y hy m hm))`. Take `⟨l₀, hl₀, hgen⟩` from `neighbourBasic_gen eL`. Take `⟨m₀, hm₀, hm₀N⟩` from `neighbourBasic_not_le hP.ne_top eM`. Establish `hm₀L : m₀ ∉ L` using `fun h' => hm₀N (Submodule.mem_inf.mpr ⟨h', hm₀⟩)`. Establish `gen : ∀ y : V, (∀ n ∈ L ⊓ M, h n y ∈ Set.range (algebraMap R K)) → h l₀ y ∈ Set.range (algebraMap R K) → y ∈ L`.
+
+Introduce `y hN h0`. Rewrite using `[← hL, memD]`. Introduce `l hl`. Take `⟨a, ha⟩` from `hgen l hl`. Establish `e1 : l = a • l₀ + (l - a • l₀)` using `by abel`.
+
+Rewrite using `[e1, map_add, LinearMap.add_apply, neighbourBasic_h_smul_left]`. Conclude with `radd _ _ (rmul _ _ (rstar _ (ralg a)) h0) (hN _ ha)`. Establish `hNM : ∀ y ∈ dual h M, ∀ n ∈ L ⊓ M, h n y ∈ Set.range (algebraMap R K)` using `fun y hy n hn => (memD M y).mp hy n (Submodule.mem_inf.mp hn).2`. Establish `hPy : ∀ y ∈ dual h M, ∀ p ∈ P, algebraMap R K p * h l₀ y ∈ Set.range (algebraMap R K)`. Introduce `y hy p hp`.
+
+Take `⟨t, ht⟩` from `hstar p`. Establish `htP : t ∈ conjIdeal (K` using `K) P := Ideal.subset_span ⟨p, hp, ht⟩`. Use `hNM y hy _ (neighbourBasic_smul_mem eL htP hl₀)` as an intermediate fact. Rewrite `this` using `[neighbourBasic_h_smul_left, ht, star_star]`. Then use the resulting hypothesis. Establish `stepA : ∀ y ∈ L, y ∈ dual h M → y ∈ M`.
+
+Introduce `y hyL hyM`. Assume the negation of the conclusion as `hyN'`. Establish `hyN : y ∉ L ⊓ M` using `fun h' => hyN' (Submodule.mem_inf.mp h').2`. Apply `hm₀L` to reduce the goal to its premises. Rewrite using `[← hL, memD]`.
+
+Introduce `l hl`. Establish `hlD : l ∈ dual h M`. Take `⟨a, ha⟩` from `neighbourBasic_gen' hPc eL hyL hyN l hl`. Establish `e1 : l = (l - a • y) + a • y` using `by abel`. Rewrite using `[e1]`.
+
+Conclude with `(dual h M).add_mem (hMM _ (Submodule.mem_inf.mp ha).2) ((dual h M).smul_mem a hyM)`. Use `(memD M l).mp hlD m₀ hm₀` as an intermediate fact. Rewrite using `[← hs.eq m₀ l, starRingEnd_apply]`. Conclude with `rstar _ this`. Use `show dual h M = M`.
+
+Use `le_antisymm ?_ (fun m hm => hMM m hm)` and prove the remaining obligations. Introduce `x hx`. Establish `hm₀D` using `hMM m₀ hm₀`. Establish `hc' : h l₀ m₀ ∉ Set.range (algebraMap R K)` using `fun h' => hm₀L (gen m₀ (hNM m₀ hm₀D) h')`. Take `⟨a, b, hab⟩` from `neighbourBasic_ded P hP (h l₀ x) (h l₀ m₀) (hPy x hx) (hPy m₀ hm₀D) hc'`.
+
+Establish `hyD : x - b • m₀ ∈ dual h M` using `(dual h M).sub_mem hx ((dual h M).smul_mem b hm₀D)`. Establish `hy0 : h l₀ (x - b • m₀) ∈ Set.range (algebraMap R K)`. Rewrite using `[map_sub, neighbourBasic_h_smul_right, hab]; exact ⟨a, by ring⟩`. Establish `hyM` using `stepA _ (gen _ (hNM _ hyD) hy0) hyD`. Establish `e1 : x = (x - b • m₀) + b • m₀` using `by abel`.
+
+Rewrite using `[e1]`. Conclude with `M.add_mem hyM (M.smul_mem b hm₀)`.
+-/
 theorem neighbourBasic_unimod [IsDedekindDomain R] [IsFractionRing R K]
     (h : V →ₗ⋆[K] V →ₗ[K] K) (hs : h.IsSymm)
     (hstar : ∀ r : R, star (algebraMap R K r) ∈ Set.range (algebraMap R K))

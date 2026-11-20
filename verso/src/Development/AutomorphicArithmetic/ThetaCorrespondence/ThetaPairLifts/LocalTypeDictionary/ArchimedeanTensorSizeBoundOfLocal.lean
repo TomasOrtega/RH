@@ -14,6 +14,15 @@ namespace GlobalTheory.ArchTens
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 end GlobalTheory.ArchTens
 open GlobalTheory.ArchTens in
+/- English proof (translation)
+Take `⟨F1, h1⟩` from `_root_.GlobalTheory.T.local_character_power_conductor_bound hP`. Take `⟨F2, h2⟩` from `_root_.GlobalTheory.T.archimedean_tensor_factor_unfolding hP`. Take `⟨F3, h3⟩` from `_root_.GlobalTheory.T.archimedean_tensor_volume_bound hP`. Use `⟨max F1 (max F2 F3), fun CF hCF => ?_⟩` and prove the remaining obligations. Take `⟨C1, h1⟩` from `h1 CF (le_trans (le_max_left _ _) hCF)`.
+
+Take `⟨C2, h2⟩` from `h2 CF (le_trans ((le_max_left _ _).trans (le_max_right _ _)) hCF)`. Take `⟨C3, h3⟩` from `h3 CF (le_trans ((le_max_right _ _).trans (le_max_right _ _)) hCF)`. Use `⟨max (max (4 * C1) (2 * C2)) (max (2 * C3) 0), fun ε C hC => ?_⟩` and prove the remaining obligations. Establish `hC1 : C1 ≤ C / 2 / 2` using `by have := (le_max_left _ _).trans ((le_max_left _ _).trans hC); linarith`. Establish `hC2 : C2 ≤ C / 2` using `by have := (le_max_right _ _).trans ((le_max_left _ _).trans hC); linarith`.
+
+Establish `hC3 : C3 ≤ C / 2` using `by have := (le_max_left _ _).trans ((le_max_right _ _).trans hC); linarith`. Establish `hC0 : 0 ≤ C` using `(le_max_right _ _).trans ((le_max_right _ _).trans hC)`. Take `⟨x1, h1⟩` from `h1 ε (C / 2 / 2) hC1`. Take `⟨x2, h2⟩` from `h2 ε (C / 2) hC2`. Take `⟨x3, h3⟩` from `h3 ε (C / 2) hC3`.
+
+Use `⟨max x1 (max x2 x3), ?_⟩` and prove the remaining obligations. Introduce `D large₂ he hx Γ _ _ Pl0 T A Ks _ _ _ R F hS ch hIs hAt hF`. Conclude with `infTensAt_of_places ch hC0 (h2 D large₂ he (((le_max_left _ _).trans (le_max_right _ _)).trans hx) Γ Pl0 T A Ks R F hS ch hIs hAt hF (h1 D large₂ he ((le_max_left _ _).trans hx) Γ Pl0 T A Ks R F hS ch hIs hAt hF)) (h3 D large₂ he (((le_max_right _ _).trans (le_max_right _ _)).tra …`.
+-/
 theorem _root_.GlobalTheory.SumSize.archimedean_tensor_size_bound_of_local (hP : _root_.GlobalTheory.FunPr.ThetaLocalInputs) : InfTensK := by
   obtain ⟨F1, h1⟩ := _root_.GlobalTheory.T.local_character_power_conductor_bound hP
   obtain ⟨F2, h2⟩ := _root_.GlobalTheory.T.archimedean_tensor_factor_unfolding hP
@@ -42,6 +51,9 @@ end
 section
 open GlobalTheory.SumSize GlobalTheory.RowClaim
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @_root_.GlobalTheory.SumSize.archimedean_tensor_size_bound_of_local | exact _root_.GlobalTheory.SumSize.archimedean_tensor_size_bound_of_local | (intros; apply _root_.GlobalTheory.SumSize.archimedean_tensor_size_bound_of_local <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.sum_size_archimedean_tensor_bound : _root_.GlobalTheory.FunPr.ThetaLocalInputs → InfTensK := by
   first | exact @_root_.GlobalTheory.SumSize.archimedean_tensor_size_bound_of_local | exact _root_.GlobalTheory.SumSize.archimedean_tensor_size_bound_of_local | (intros; apply _root_.GlobalTheory.SumSize.archimedean_tensor_size_bound_of_local <;> assumption)
 end

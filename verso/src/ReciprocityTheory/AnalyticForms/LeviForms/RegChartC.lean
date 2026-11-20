@@ -9,6 +9,9 @@ noncomputable section
 
 variable {D : ℕ}
 
+/- English proof (translation)
+Introduce `x hx`. Rewrite `hx` using `[mem_closedBall_iff_norm]`. Rewrite `hz`, the goal using `[mem_ball_zero_iff]`. Use `norm_sub_norm_le x z` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 lemma closedBall_sub_of {z : Fin D → ℂ} {r s R : ℝ} (hz : z ∈ ball (0 : Fin D → ℂ) r)
     (hs : s ≤ R - r) : closedBall z s ⊆ ball 0 R := by
   intro x hx
@@ -17,6 +20,11 @@ lemma closedBall_sub_of {z : Fin D → ℂ} {r s R : ℝ} (hz : z ∈ ball (0 : 
   have := norm_sub_norm_le x z
   linarith
 
+/- English proof (translation)
+Take `⟨x, hx, hf, hn⟩` from `exists_far_point (0 : Fin D → ℂ) (s := 1 / 2) (by norm_num)`. Establish `hxB : x ∈ ball (0 : Fin D → ℂ) R` using `by rw [mem_ball_zero_iff]; simp at hn; linarith`. Establish `hxA` using `not_mem_coordDiv_of (S := S) (by norm_num : (0 : ℝ) < 1 / 2) hf`. Take `⟨h1, h2⟩` from `hb x ⟨hxB, hxA⟩`. Establish `h3 : 1 ≤ Real.log (rLoc S m x)`.
+
+Rewrite using `[← Real.log_exp 1]`. Conclude with `Real.log_le_log (Real.exp_pos 1) (rLoc_ge S m (norm_coord_le_of_ball hR2 hxB))`. Use the polynomial consequences of the given equalities and inequalities.
+-/
 lemma fifth_volume_constant_nonneg {S : Finset (Fin D)} (m : Fin D → ℕ) {u : (Fin D → ℂ) → ℝ} {R C₅ : ℝ}
     (hR2 : R ≤ 2) (hR : 1 < R)
     (hb : ∀ z ∈ ball (0 : Fin D → ℂ) R \ coordDiv S, -C₅ * Real.log (rLoc S m z) ≤ u z ∧ u z ≤ C₅) :
@@ -30,6 +38,65 @@ lemma fifth_volume_constant_nonneg {S : Finset (Fin D)} (m : Fin D → ℕ) {u :
     exact Real.log_le_log (Real.exp_pos 1) (rLoc_ge S m (norm_coord_le_of_ball hR2 hxB))
   nlinarith
 
+/- English proof (translation)
+Establish `hC₅ : 0 ≤ C₅` using `fifth_volume_constant_nonneg m hR2 (by linarith) hb`. Establish `hub : ∀ x ∈ ball (0 : Fin D → ℂ) R \ coordDiv S, u x ≤ C₅` using `fun x hx => (hb x hx).2`. Use `set R' := R - 5 / 4 with hR'`. Establish `hR'0 : 0 < R'` using `by linarith`. Establish `hC0 : 0 < C₁` using `by linarith`.
+
+Establish `hlC : 0 ≤ Real.log C₁` using `Real.log_nonneg hC₁`. Establish `hl8 : 0 < Real.log (8 * C₁)` using `Real.log_pos (by linarith)`. Establish `hl4 : 0 ≤ Real.log 4` using `Real.log_nonneg (by norm_num)`. Use `set Λ := Real.log C₁ + Real.log (8 * C₁) with hΛ`. Establish `hΛ0 : 0 < Λ` using `by linarith`.
+
+Use `set K₁ := Real.exp 1 + mTot S m * (Real.log 4 + 2 * Real.log (8 * C₁) + 2) with hK₁`. Establish `hmT` using `mTot_nonneg S m`. Establish `he1 : 1 ≤ Real.exp 1` using `by linarith [Real.add_one_le_exp (1 : ℝ)]`. Use `⟨6 * C₅ * Λ + 2 * C₅ + 1, max (max (Real.exp 1) K₁) (max (Real.log (2 * C₁ / R')) (2 * (Real.log C₁ - Real.log R'))), by have := mul_nonneg (mul_nonneg (by norm_num : (0:ℝ) ≤ 6) hC₅) hΛ0.le; linarith, fun t ht hℓ => ?_⟩` and prove the remaining obligations. Use `set ℓ := Real.log (1 / t) with hℓdef`.
+
+Establish `hℓt : Real.log t = -ℓ` using `by rw [hℓdef, one_div, Real.log_inv, neg_neg]`. Establish `h1 : Real.exp 1 ≤ ℓ` using `le_trans (le_trans (le_max_left _ _) (le_max_left _ _)) hℓ`. Establish `h2 : K₁ ≤ ℓ` using `le_trans (le_trans (le_max_right _ _) (le_max_left _ _)) hℓ`. Establish `h3 : Real.log (2 * C₁ / R') ≤ ℓ` using `le_trans (le_trans (le_max_left _ _) (le_max_right _ _)) hℓ`. Establish `h4 : 2 * (Real.log C₁ - Real.log R') ≤ ℓ` using `le_trans (le_trans (le_max_right _ _) (le_max_right _ _)) hℓ`.
+
+Establish `hℓ1 : 1 ≤ ℓ` using `he1.trans h1`. Establish `hlℓ : 1 ≤ Real.log ℓ`. Rewrite using `[← Real.log_exp 1]`. Conclude with `Real.log_le_log (Real.exp_pos 1) h1`. Establish `hteq : t = Real.exp (-ℓ)` using `by rw [← hℓt, Real.exp_log ht]`.
+
+Establish `hCt : C₁ * t ≤ R' / 2`. Establish `: 2 * C₁ / R' ≤ Real.exp ℓ`. Rewrite using `[← Real.exp_log (by positivity : 0 < 2 * C₁ / R')]; exact Real.exp_le_exp.2 h3`. Rewrite using `[hteq, Real.exp_neg]`. Rewrite `this` using `[div_le_iff₀ hR'0]`.
+
+Establish `hE` using `Real.exp_pos ℓ`. Rewrite using `[mul_inv_le_iff₀ hE]`. Use the polynomial consequences of the given equalities and inequalities. Use `⟨h1, hCt, fun z hz => ?_⟩` and prove the remaining obligations. Use `set κ := 2 * C₅ * Real.log ℓ + 1 with hκ`.
+
+Take `⟨w, -, hW1, hW2, hW3⟩` from `ext_exists S (by linarith : (0 : ℝ) < R) hC₅ hc hp hub κ`. Establish `hwu : ∀ x ∈ ball (0 : Fin D → ℂ) R \ coordDiv S, u x ≤ w x` using `fun x hx => by`. Rewrite using `[hW2 x hx]`. Conclude with `le_max_left _ _`. Use `set s₈ := t / (8 * C₁) with hs₈`.
+
+Use `set s₄ := t / (4 * C₁) with hs₄`. Establish `hs₈0 : 0 < s₈` using `by positivity`. Establish `hs₄0 : 0 < s₄` using `by positivity`. Establish `hs84 : s₈ < s₄`. Rewrite using `[hs₈, hs₄]; exact div_lt_div_of_pos_left ht (by positivity) (by linarith)`.
+
+Establish `hs4C : s₄ ≤ C₁ * t`. Rewrite using `[hs₄, div_le_iff₀ (by positivity)]`. Establish `h4c : 1 ≤ 4 * C₁ * C₁` using `by nlinarith`. Use polynomial arithmetic with `[mul_le_mul_of_nonneg_left h4c ht.le]`. Establish `hsub : ∀ s, s ≤ R' → closedBall z s ⊆ ball 0 R` using `fun s hs => closedBall_sub_of hz (by linarith)`.
+
+Establish `hCtR : C₁ * t ≤ R'` using `by linarith`. Establish `hlow : -C₅ * (2 * Real.log ℓ) ≤ pmoff S u z s₈`. Use `le_trans ?_ (pmo_lower hR2 hC₅ m hb hs₈0 (hsub _ (by linarith)))` and prove the remaining obligations. Establish `hlog : Real.log (4 / s₈ ^ 2) = Real.log 4 + 2 * ℓ + 2 * Real.log (8 * C₁)`. Rewrite using `[Real.log_div (by norm_num) (by positivity), Real.log_pow, hs₈, Real.log_div ht.ne' (by positivity), hℓt]`.
+
+Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hlog]`. Establish `hK0 : 0 < K₁`. Establish `: 0 ≤ mTot S m * (Real.log 4 + 2 * Real.log (8 * C₁) + 2)` using `mul_nonneg hmT (by linarith)`.
+
+Combine the linear relations using `[Real.exp_pos 1]`. Establish `hA : Real.exp 1 + mTot S m * (Real.log 4 + 2 * ℓ + 2 * Real.log (8 * C₁)) ≤ K₁ * ℓ`. Rewrite using `[hK₁]`. Establish `e1 : Real.exp 1 ≤ Real.exp 1 * ℓ` using `le_mul_of_one_le_right (Real.exp_pos 1).le hℓ1`. Establish `e2 : mTot S m * (Real.log 4 + 2 * ℓ + 2 * Real.log (8 * C₁)) ≤ mTot S m * (Real.log 4 + 2 * Real.log (8 * C₁) + 2) * ℓ`.
+
+Rewrite using `[mul_assoc]`. Use `mul_le_mul_of_nonneg_left ?_ hmT` and prove the remaining obligations. Use polynomial arithmetic with `[mul_nonneg (by linarith : 0 ≤ Real.log 4 + 2 * Real.log (8 * C₁)) (by linarith : (0:ℝ) ≤ ℓ - 1)]`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hApos : 0 < Real.exp 1 + mTot S m * (Real.log 4 + 2 * ℓ + 2 * Real.log (8 * C₁))`.
+
+Establish `: 0 ≤ mTot S m * (Real.log 4 + 2 * ℓ + 2 * Real.log (8 * C₁))` using `mul_nonneg hmT (by linarith)`. Combine the linear relations using `[Real.exp_pos 1]`. Establish `hB : Real.log (Real.exp 1 + mTot S m * (Real.log 4 + 2 * ℓ + 2 * Real.log (8 * C₁))) ≤ 2 * Real.log ℓ`. Combine the equalities or inequalities in the displayed calculation. Use `mul_le_mul_of_nonneg_left hB hC₅` as an intermediate fact.
+
+Combine the linear equalities and inequalities to obtain the conclusion. Establish `hκlow : -κ < pmoff S u z s₄`. Use `pmo_mono hub hs₈0 hs84.le (hsub s₄ (by linarith))` as an intermediate fact. Rewrite using `[hκ]`. Combine the linear equalities and inequalities to obtain the conclusion.
+
+Use `set g : ℝ → ℝ := fun σ => polyMax w z (Real.exp σ) with hg`. Establish `hconv` using `(polyMaxLogConvex_thm D (ball 0 R) w z R' isOpen_ball hW1 hR'0 (hsub R' le_rfl)).1`. Use `set a := Real.log s₈ with ha`. Use `set b := Real.log (C₁ * t) with hbdef`. Use `set σ := Real.log R' with hσ`.
+
+Establish `ha' : a = -ℓ - Real.log (8 * C₁)`. Rewrite using `[ha, hs₈, Real.log_div ht.ne' (by positivity), hℓt]`. Establish `hb' : b = Real.log C₁ - ℓ`. Rewrite using `[hbdef, Real.log_mul hC0.ne' ht.ne', hℓt]`. Expand and normalize the polynomial expressions, which then agree.
+
+Establish `hab : a < b` using `by rw [ha', hb']; linarith`. Establish `hbσ : ℓ / 2 ≤ σ - b` using `by rw [hb']; linarith`. Establish `hbσ' : b < σ` using `by linarith`. Establish `hslope` using `hconv.slope_mono_adjacent (by simp only [Set.mem_Iic]; linarith) (by simp only [Set.mem_Iic]; exact le_rfl) hab hbσ'`. Establish `hga : g a = polyMax w z s₈` using `by simp only [hg, ha, Real.exp_log hs₈0]`.
+
+Establish `hgb : g b = polyMax w z (C₁ * t)` using `by simp only [hg, hbdef, Real.exp_log (mul_pos hC0 ht)]`. Establish `hgσ : g σ ≤ C₅`. Simplify using `only [hg, hσ, Real.exp_log hR'0]`. Use `polyMax_le' hR'0.le fun x hx => le_of_forall_pos_le_add fun δ hδ => ?_` and prove the remaining obligations. Take `⟨y, hy, -, hwy⟩` from `hW3 x (hsub R' le_rfl hx) δ hδ`.
+
+Establish `: max (u y) (-κ) ≤ C₅` using `max_le (hub y hy) (by`. Use `mul_nonneg hC₅ (by linarith : (0:ℝ) ≤ Real.log ℓ); rw [hκ]; linarith)` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hga_low : -C₅ * (2 * Real.log ℓ) ≤ g a`. Rewrite using `[hga]; exact hlow.trans (pmo_le_polyMax hW1.1 hwu hs₈0 (hsub _ (by linarith)))`.
+
+Establish `hga_up : g a ≤ pmoff S u z s₄`. Rewrite using `[hga]`. Use `polyMax_le_pmo hub hW3 hs₈0.le hs84 (hsub s₄ (by linarith))` as an intermediate fact. Rewrite `this` using `[max_eq_left hκlow.le]`. Then use the resulting hypothesis. Establish `hgb_up : pmoff S u z (C₁ * t) ≤ g b`.
+
+Rewrite using `[hgb]; exact pmo_le_polyMax hW1.1 hwu (by positivity) (hsub _ hCtR)`. Establish `hgab : g a ≤ g b`. Use `polyMax_mono' hW1.1 hs₈0.le (by linarith) (hsub _ hCtR) (z := z)` as an intermediate fact. Rewrite using `[hga, hgb]`. Conclude with `this`.
+
+Establish `hCl : 0 ≤ C₅ * Real.log ℓ` using `mul_nonneg hC₅ (by linarith)`. Establish `hN : g σ - g b ≤ C₅ + 2 * C₅ * Real.log ℓ` using `by linarith`. Establish `hN0 : 0 ≤ C₅ + 2 * C₅ * Real.log ℓ` using `by linarith`. Establish `hba : b - a = Λ` using `by rw [ha', hb', hΛ]; ring`. Establish `hosc : g b - g a ≤ Λ * ((C₅ + 2 * C₅ * Real.log ℓ) / (ℓ / 2))`.
+
+Rewrite `hslope` using `[hba]`. Rewrite `hslope` using `[div_le_iff₀ hΛ0]`. Establish `q1 : (g σ - g b) / (σ - b) ≤ (C₅ + 2 * C₅ * Real.log ℓ) / (σ - b)` using `div_le_div_of_nonneg_right hN (by linarith)`. Establish `q2 : (C₅ + 2 * C₅ * Real.log ℓ) / (σ - b) ≤ (C₅ + 2 * C₅ * Real.log ℓ) / (ℓ / 2)` using `div_le_div_of_nonneg_left hN0 (by linarith) hbσ`. Use `mul_le_mul_of_nonneg_right (q1.trans q2) hΛ0.le` as an intermediate fact.
+
+Combine the linear equalities and inequalities to obtain the conclusion. Use `⟨?_, ?_⟩` and prove the remaining obligations. Use `le_trans ?_ hlow` and prove the remaining obligations. Establish `: 2 * C₅ ≤ 6 * C₅ * Λ + 2 * C₅ + 1`. Use `mul_nonneg hC₅ hΛ0.le` as an intermediate fact.
+
+Combine the linear equalities and inequalities to obtain the conclusion. Use `mul_le_mul_of_nonneg_right this (by linarith : (0:ℝ) ≤ Real.log ℓ)` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hℓ0 : 0 < ℓ` using `by linarith`. Establish `key : Λ * ((C₅ + 2 * C₅ * Real.log ℓ) / (ℓ / 2)) ≤ epsT (6 * C₅ * Λ + 2 * C₅ + 1) t`.
+
+Establish `e : Λ * ((C₅ + 2 * C₅ * Real.log ℓ) / (ℓ / 2)) = 2 * Λ * (C₅ + 2 * C₅ * Real.log ℓ) / ℓ`. Clear the denominators using the available nonvanishing facts. Rewrite using `[e, epsT, ← hℓdef]`. Use `div_le_div_of_nonneg_right ?_ hℓ0.le` and prove the remaining obligations. Establish `n1 : C₅ ≤ C₅ * Real.log ℓ` using `le_mul_of_one_le_right hC₅ hlℓ`.
+
+Establish `n2 : 0 ≤ Λ * (C₅ * Real.log ℓ)` using `mul_nonneg hΛ0.le hCl`. Establish `n3 : Λ * C₅ ≤ Λ * (C₅ * Real.log ℓ)` using `mul_le_mul_of_nonneg_left n1 hΛ0.le`. Establish `n4 : 0 ≤ (2 * C₅ + 1) * Real.log ℓ` using `mul_nonneg (by linarith) (by linarith)`. Combine the linear equalities and inequalities to obtain the conclusion. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem oscGen {S : Finset (Fin D)} (m : Fin D → ℕ) {u : (Fin D → ℂ) → ℝ} {R C₅ : ℝ}
     (hR2 : R ≤ 2) (hR : 5 / 4 < R)
     (hc : ContinuousOn u (ball 0 R \ coordDiv S)) (hp : IsPsh (ball 0 R \ coordDiv S) u)

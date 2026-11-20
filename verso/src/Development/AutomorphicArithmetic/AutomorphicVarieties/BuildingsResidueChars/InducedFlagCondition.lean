@@ -9,18 +9,30 @@ section
 
 variable {Ω : Type} [Field Ω] [CharZero Ω] [IsAlgClosure ℚ Ω] {l : ℕ} [Fact l.Prime]
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨{ g.toRingEquiv with commutes' := fun x => hg x }, rfl⟩`.
+-/
 private theorem ex_lift (k₀ : IntermediateField ℚ Ω) {g : G ℚ Ω} (hg : g ∈ k₀.fixingSubgroup) :
     ∃ h : G k₀ Ω, resQ k₀ h = g :=
   ⟨{ g.toRingEquiv with commutes' := fun x => hg x }, rfl⟩
 
+/- English proof (translation)
+Introduce `x` and use `g.commutes x`.
+-/
 private theorem res_mem (F : IntermediateField ℚ Ω) (g : G F Ω) : resQ F g ∈ F.fixingSubgroup :=
   fun x => g.commutes x
 
+/- English proof (translation)
+Rewrite using `[valuation_lt_one_iff', valuation_lt_one_iff', ← map_inv₀, map_eq_zero_iff _ t.injective]`. Both sides reduce to the same expression.
+-/
 private theorem val_comap (A : ValuationSubring Ω) (t : G ℚ Ω) (y : Ω) :
     (A.comap (t : Ω →+* Ω)).valuation y < 1 ↔ A.valuation (t y) < 1 := by
   rw [valuation_lt_one_iff', valuation_lt_one_iff', ← map_inv₀, map_eq_zero_iff _ t.injective]
   rfl
 
+/- English proof (translation)
+Rewrite using `[← Subgroup.inv_mem_iff, mem_Dec]`. Use extensionality with `x`. Rewrite using `[ValuationSubring.mem_pointwise_smul_iff_inv_smul_mem, inv_inv]`. Use `show t (t⁻¹ (s (t x))) ∈ A ↔ t x ∈ A`. Rewrite using `[mul_inv_apply, apply_mem_iff_of_mem_Dec hs]`.
+-/
 private theorem dec_conj {A : ValuationSubring Ω} (t : G ℚ Ω) {s : G ℚ Ω} (hs : s ∈ Dec (F := ℚ) A) :
     t⁻¹ * s * t ∈ Dec (F := ℚ) (A.comap (t : Ω →+* Ω)) := by
   rw [← Subgroup.inv_mem_iff, mem_Dec]
@@ -29,6 +41,11 @@ private theorem dec_conj {A : ValuationSubring Ω} (t : G ℚ Ω) {s : G ℚ Ω}
   show t (t⁻¹ (s (t x))) ∈ A ↔ t x ∈ A
   rw [mul_inv_apply, apply_mem_iff_of_mem_Dec hs]
 
+/- English proof (translation)
+Use `⟨dec_conj t hs.1, fun x hx => ?_⟩` and prove the remaining obligations. Rewrite using `[val_comap, map_sub]`. Use `show A.valuation (t (t⁻¹ (s (t x))) - t x) < 1`. Rewrite using `[mul_inv_apply]`. Use `hs.2 _ ?_` and prove the remaining obligations.
+
+Rewrite `hx`, the goal using `[ValuationSubring.valuation_le_one_iff]`. Conclude with `hx`.
+-/
 private theorem ine_conj {A : ValuationSubring Ω} (t : G ℚ Ω) {s : G ℚ Ω} (hs : s ∈ Ine (F := ℚ) A) :
     t⁻¹ * s * t ∈ Ine (F := ℚ) (A.comap (t : Ω →+* Ω)) := by
   refine ⟨dec_conj t hs.1, fun x hx => ?_⟩
@@ -39,12 +56,18 @@ private theorem ine_conj {A : ValuationSubring Ω} (t : G ℚ Ω) {s : G ℚ Ω}
   rw [ValuationSubring.valuation_le_one_iff] at hx ⊢
   exact hx
 
+/- English proof (translation)
+Establish `h' : ‖(a : Qbar l) - b‖ < ‖(b : Qbar l)‖` using `hb ▸ h`. Establish `e` using `IsUltrametricDist.norm_add_eq_max_of_norm_ne_norm h'.ne`. Rewrite `e` using `[sub_add_cancel, max_eq_right h'.le]`. Rewrite using `[e, hb]`.
+-/
 private theorem norm_of_cong {a b : (Qbar l)ˣ} (h : Cong a b) (hb : ‖(b : Qbar l)‖ = 1) : ‖(a : Qbar l)‖ = 1 := by
   have h' : ‖(a : Qbar l) - b‖ < ‖(b : Qbar l)‖ := hb ▸ h
   have e := IsUltrametricDist.norm_add_eq_max_of_norm_ne_norm h'.ne
   rw [sub_add_cancel, max_eq_right h'.le] at e
   rw [e, hb]
 
+/- English proof (translation)
+Take `⟨κ, ⟨g, hg⟩, h2, h3⟩` from `hO`. Use `⟨fun i s => κ i ⟨h s, hD s⟩, ⟨g, fun s => ⟨(hg ⟨h s, hD s⟩).1 1 0 (by decide), (hg ⟨h s, hD s⟩).2⟩⟩, fun i s hs => h2 i ⟨h s, hD s⟩ ⟨hD s, hs.2⟩, fun i s => h3 i ⟨h s, hD s⟩⟩` and prove the remaining obligations.
+-/
 private theorem pull (k₀ : IntermediateField ℚ Ω) [NumberField k₀] {S : Type} (r : G k₀ Ω →* GL (Fin 2) (Qbar l))
     {m : Fin 2 → ℤ} {ψ : Fin 2 → G k₀ Ω →* (Qbar l)ˣ} {B : ValuationSubring Ω} (hO : OrdAt r m ψ B) (h : S → G k₀ Ω)
     (hD : ∀ s, resQ k₀ (h s) ∈ Dec (F := ℚ) B) :
@@ -56,6 +79,37 @@ private theorem pull (k₀ : IntermediateField ℚ Ω) [NumberField k₀] {S : T
 
 end
 
+/- English proof (translation)
+Introduce `Ω _ _ _ l _ c D T k₀ _ _ φ ι k t r α β R δ H`. Use `⟨![(k : ℤ) + t, k, 0, -(t : ℤ)], ?_, fun A hA => ?_⟩` and prove the remaining obligations. Use `H.dat.hk` as an intermediate fact. Use `H.dat.ht` as an intermediate fact. Introduce `i`.
+
+Apply the tactic sequence `fin_cases i <;> simp <;> omega`. Establish `hA' : (A.comap (resQ T.F T.g0 : Ω →+* Ω)).valuation (l : Ω) < 1`. Rewrite using `[val_comap, map_natCast]`. Conclude with `hA`. Establish `hD : ∀ s : Dec (F` using `T.F) A, resQ T.F s ∈ Dec (F := ℚ) A := fun s => s.2`.
+
+Use `choose h hh using fun s : Dec (F := T.F) A => ex_lift k₀ (H.hyp.spl A hA (hD s))`. Use `choose h' hh' using fun s : Dec (F := T.F) A => ex_lift k₀ (H.hyp.spl _ hA' (dec_conj (resQ T.F T.g0) (hD s)))`. Establish `hcomm : ∀ (χ : G ℚ Ω →* (Qbar l)ˣ) s, χ (resQ k₀ (h' s)) = χ (resQ T.F s)` using `fun χ s => by`. Rewrite using `[hh', map_mul, map_mul, map_inv, inv_mul_cancel_comm]`. Establish `hne : ∃ s : Dec (F` using `T.F) A, ¬ Cong (up D.ξ (resQ T.F s)) 1 := by`.
+
+Take `⟨g, hg, hg4⟩` from `H.hyp.two.bigL A hA`. Use `⟨⟨g, hg⟩, fun hc => hg4 ?_⟩` and prove the remaining obligations. Use `(H.chars.al g 1).2 (by rwa [pow_one])` as an intermediate fact. Rewrite `this` using `[pow_one]`. Rewrite using `[this, one_pow]`.
+
+Establish `hR : ∀ s, Rib (r (h s)) (up D.ξ (resQ T.F s))` using `fun s => by`. Use `H.rib (h s) (hh s ▸ res_mem T.F s)` as an intermediate fact. Rewrite `this` using `[hh]`. Then use the resulting hypothesis. Establish `hR' : ∀ s, Rib (r (h' s)) (up D.ξ (resQ T.F s))` using `fun s => by`. Use `H.rib (h' s) (by` as an intermediate fact.
+
+Rewrite using `[hh', ← map_inv, ← map_mul, ← map_mul]`. Conclude with `res_mem T.F _)`. Rewrite `this` using `[hcomm]`. Then use the resulting hypothesis. Establish `hmix : ∀ s : Dec (F` using `T.F) A, (R (resQ T.F s) : M4 (Qbar l)) = mix (β / α) (r (h s)) (r (h' s)) := fun s => by`. Rewrite using `[← hh s]`.
+
+Conclude with `H.mix.on _ _ (by rw [hh, hh'])`. Establish `hγ : ‖((β / α : (Qbar l)ˣ) : Qbar l)‖ = 1`. Rewrite using `[Units.val_div_eq_div_val, norm_div, norm_of_cong H.α_cong (H.chars.unit _ _), norm_of_cong H.β_cong (H.chars.unit _ _), div_one]`. Establish `hI : ∀ s : Dec (F` using `T.F) A, (s : G T.F Ω) ∈ Ine (F := T.F) A → resQ T.F s ∈ Ine (F := ℚ) A := fun s hs => ⟨hD s, hs.2⟩`. Establish `hdet : ∀ {M : GL (Fin 2) (Qbar l)} {a b : (Qbar l)ˣ}, Matrix.GeneralLinearGroup.det M = a * b → (M : Matrix (Fin 2) (Fin 2) (Qbar l)).det = a * b` using `fun e => congrArg Units.val e`.
+
+Break down `H.dat.above A _ hA _ H.chars.out (fun y => (Iff.rfl : _ ↔ y ∈ A.comap (resQ T.F T.g0 : Ω →+* Ω))) with ⟨o, o'⟩ | ⟨o, o'⟩` into its components or cases. Use `all_goals`. Take `⟨κ, f, i1, c1⟩` from `pull k₀ r o h fun s => hh s ▸ hD s`. Take `⟨κ', f', i2, c2⟩` from `pull k₀ r o' h' fun s => hh' s ▸ dec_conj _ (hD s)`. Take `⟨d1, u1, w1⟩` from `UpperTheory.mix_stable_line_local l _ _ _ κ hne hR f`.
+
+Take `⟨d2, u2, w2⟩` from `UpperTheory.mix_stable_line_local l _ _ _ κ' hne hR' f'`. Establish `j1` using `fun i s hs => i1 i s (hh s ▸ hI s hs)`. Establish `j2` using `fun i s hs => i2 i s (hh' s ▸ ine_conj _ (hI s hs))`. Simplify using `only [hh, hcomm] at j1 j2`. Establish `c10` using `c1 0`.
+
+Establish `c11` using `c1 1`. Establish `c20` using `c2 0`. Establish `c21` using `c2 1`. Simplify using `only [Matrix.cons_val_zero, Matrix.cons_val_one, MonoidHom.comp_apply, MonoidHom.one_apply, hh, hcomm] at c10 c11 c20 c21`. Take `⟨u, hu, eu⟩` from `u1 c10`.
+
+Take `⟨w, hw, ew⟩` from `w2 c20`. Take `⟨n, hn, hf⟩` from `(UpperTheory.mix_flag_exists l H.hyp.good.l_odd _ u w hγ hu hw).1`. Use `⟨n, hn, fun s hs => ?_⟩` and prove the remaining obligations. Take `⟨g1, g2⟩` from `hf _ _ _ _ _ _ (Units.ne_zero _) (Units.ne_zero _) (eu ⟨s, hs⟩) (ew ⟨s, hs⟩) (hdet (d1 _)) (hdet (d2 _))`. Rewrite `g1`, `g2` using `[← hmix]`.
+
+Use `⟨g1, fun i => ?_⟩` and prove the remaining obligations. Rewrite using `[g2]`. Use `fin_cases i`. Conclude with `⟨c10 _, fun hs' => congrArg Units.val (j1 0 _ hs')⟩`. Conclude with `⟨c20 _, fun hs' => congrArg Units.val (j2 0 _ hs')⟩`.
+
+Conclude with `⟨c21 _, fun hs' => congrArg Units.val (j2 1 _ hs')⟩`. Conclude with `⟨c11 _, fun hs' => congrArg Units.val (j1 1 _ hs')⟩`. Take `⟨u, hu, eu⟩` from `u2 c20`. Take `⟨w, hw, ew⟩` from `w1 c10`. Take `⟨n, hn, hf⟩` from `(UpperTheory.mix_flag_exists l H.hyp.good.l_odd _ u w hγ hu hw).2`.
+
+Use `⟨n, hn, fun s hs => ?_⟩` and prove the remaining obligations. Take `⟨g1, g2⟩` from `hf _ _ _ _ _ _ (Units.ne_zero _) (Units.ne_zero _) (ew ⟨s, hs⟩) (eu ⟨s, hs⟩) (hdet (d1 _)) (hdet (d2 _))`. Rewrite `g1`, `g2` using `[← hmix]`. Use `⟨g1, fun i => ?_⟩` and prove the remaining obligations. Rewrite using `[g2]`.
+
+Use `fin_cases i`. Conclude with `⟨c20 _, fun hs' => congrArg Units.val (j2 0 _ hs')⟩`. Conclude with `⟨c10 _, fun hs' => congrArg Units.val (j1 0 _ hs')⟩`. Conclude with `⟨c11 _, fun hs' => congrArg Units.val (j1 1 _ hs')⟩`. Conclude with `⟨c21 _, fun hs' => congrArg Units.val (j2 1 _ hs')⟩`.
+-/
 theorem UpperTheory.induced_flag_condition :
     UpperTheory.V.Sd.S2.IndFlag := by
   intro Ω _ _ _ l _ c D T k₀ _ _ φ ι k t r α β R δ H

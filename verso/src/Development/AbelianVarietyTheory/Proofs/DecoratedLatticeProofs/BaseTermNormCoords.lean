@@ -18,6 +18,27 @@ namespace GlobalTheory.Unf
 
 set_option maxHeartbeats 1000000 in
 
+/- English proof (translation)
+Introduce `D ψ V V₀ W ρ d χV χW om om' hω hω' vS vN vb vU vW x₀ G Φ hG hΦ 𝓐 𝓑 hlay g`. Take `⟨a1, a2, a3, a4, a5, a6, a7⟩` from `GlobalTheory.Mem.AdelicGroupTop.adelic_unitary_topology D V`. Take `⟨b1, b2, b3, b4, b5, b6, b7⟩` from `GlobalTheory.Mem.AdelicGroupTop.adelic_unitary_topology D W`. Take `⟨c1, c2, c3, c4⟩` from `GlobalTheory.Mem.TrueRecord.top_NFlag V (GlobalTheory.MixPer.isIsoSub_e d)`. Take `⟨hN1, hN2, hN3⟩` from `vN.unit`.
+
+Use `haveI := vW.haar`. Use `haveI : SFinite vN.ν := inferInstance`. Use `haveI : SFinite vW.μ := inferInstance`. Establish `hTL` using `GlobalTheory.T.mixedThetaSeries_terms_laws_unipotent_rational D ψ V V₀ W ρ d χV χW om om' hω hω' vS`. Establish `hsplit : ∀ (n : GA D V) (h : GA D W), om (n * g, h) Φ = om (n, 1) (om (g, h) Φ)`.
+
+Introduce `n h`. Rewrite using `[← Module.End.mul_apply, ← map_mul, Prod.mk_mul_mk, one_mul]`. Establish `hψn : ∀ x, ‖ψ x‖ₑ = 1` using `fun x => by`. Rewrite using `[← ofReal_norm_eq_enorm, hω.std.1.2.1 x, ENNReal.ofReal_one]`. Establish `hFm : Measurable (fun p : flagN d × GA D W => ‖G p.2 * term ψ d W vS (om (p.1.1 * g, p.2) Φ) x₀‖ₑ)`.
+
+Use `Continuous.measurable ?_` and prove the remaining obligations. Use `((hG.2.1.comp continuous_snd).mul ?_).enorm` and prove the remaining obligations. Conclude with `((hTL Φ hΦ).2.2.2.1 x₀).comp (((continuous_subtype_val.comp continuous_fst).mul continuous_const).prodMk continuous_snd)`. Establish `hfib : ∀ h : GA D W, ‖G h‖ₑ * ∫⁻ u, ∫⁻ b in vb.𝓕, ‖d.mixS W ψ vS.μ vS.𝓕 (om (g, h) Φ) (rat x₀ ⬝ u.1.1) (rat x₀ ⬝ b)‖ₑ ∂vb.μ ∂vU.ν = ∫⁻ n in 𝓐, ‖G h * term ψ d W vS (om (n.1 * g, h) Φ) x₀‖ₑ ∂vN.ν`. Introduce `h`.
+
+Establish `hΨ : IsThetaFunO ψ V W (om (g, h) Φ)` using `hω.om_pres (g, h) Φ hΦ`. Establish `hfm : Measurable (fun m : GA D V => ‖term ψ d W vS (om (m, 1) (om (g, h) Φ)) x₀‖ₑ)` using `(((hTL _ hΨ).2.2.2.1 x₀).comp (continuous_id.prodMk continuous_const)).enorm.measurable`. Establish `hinv : ∀ c, ∀ n ∈ flagN d, (fun m : GA D V => ‖term ψ d W vS (om (m, 1) (om (g, h) Φ)) x₀‖ₑ) (d.nC c * n) = (fun m : GA D V => ‖term ψ d W vS (om (m, 1) (om (g, h) Φ)) x₀‖ₑ) n`. Introduce `c n hn`. Establish `hΨ'` using `hω.om_pres (n, 1) _ hΨ`.
+
+Establish `t1` using `(hTL _ hΨ').1 x₀ 0 1 c`. Rewrite `t1` using `[d.nB_zero, OneMemClass.coe_one, map_one, mul_one, mul_one, ← Module.End.mul_apply, ← map_mul, Prod.mk_mul_mk, one_mul]`. Use `show ‖term ψ d W vS (om (d.nC c * n, 1) (om (g, h) Φ)) x₀‖ₑ = ‖term ψ d W vS (om (n, 1) (om (g, h) Φ)) x₀‖ₑ`. Rewrite using `[t1, enorm_mul, hψn, one_mul]`. Simplify using `[term]`.
+
+Establish `hval : ∀ (u : UX D ρ) (b : Mx D ρ V₀.rank), ‖term ψ d W vS (om (d.nB b * d.levi u.1, 1) (om (g, h) Φ)) x₀‖ₑ = ‖d.mixS W ψ vS.μ vS.𝓕 (om (g, h) Φ) (rat x₀ ⬝ u.1.1) (rat x₀ ⬝ b)‖ₑ`. Introduce `u b`. Establish `t1` using `(hTL _ hΨ).1 x₀ b u 0`. Rewrite `t1` using `[d.nC_zero, one_mul]`. Rewrite using `[t1, enorm_mul, hψn, one_mul]`.
+
+Establish `hl` using `hlay _ hfm hinv`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[hl]`. Simplify using `only [hval]`. Use `_ = ∫⁻ n in 𝓐, ‖G h * term ψ d W vS (om (n.1 * g, h) Φ) x₀‖ₑ ∂vN.ν := by`.
+
+Rewrite using `[← lintegral_const_mul' _ _ enorm_ne_top]`. Use `lintegral_congr fun n => ?_` and prove the remaining obligations. Rewrite using `[enorm_mul, hsplit]`. Rewrite using `[← Measure.prod_restrict, lintegral_prod_symm _ hFm.aemeasurable]`. Use `lintegral_congr fun h => ?_` and prove the remaining obligations.
+
+Conclude with `hfib h`.
+-/
 theorem base_term_norm_coords : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ) (V V₀ W : HSp D) (ρ : ℕ) (d : HypDec V V₀ ρ) (χV χW : (AE D)ˣ →* Circle) (om : Om V W) (om' : Om V₀ W), IsWeilDatumO ψ V W χV χW om → IsWeilDatumO ψ V₀ W χV χW om' → ∀ (vS : VolM D W.rank ρ) (vN : VolN d) (vb : VolM D ρ V₀.rank) (vU : VolU D ρ) (vW : Vol W) (x₀ : Matrix (Fin W.rank) (Fin ρ) D.host.E) (G : GA D W → ℂ) (Φ : WO V W → ℂ), RapidDec W G → IsThetaFunO ψ V W Φ → ∀ (𝓐 : Set (flagN d)) (𝓑 : Set (GA D W)), (∀ f : GA D V → ENNReal, Measurable f → (∀ c, ∀ n ∈ flagN d, f (d.nC c * n) = f n) → ∫⁻ n in 𝓐, f n.1 ∂vN.ν = ∫⁻ u, ∫⁻ b in vb.𝓕, f (d.nB b * d.levi u.1) ∂vb.μ ∂vU.ν) → ∀ g : GA D V, ∫⁻ h in 𝓑, ‖G h‖ₑ * ∫⁻ u, ∫⁻ b in vb.𝓕, ‖d.mixS W ψ vS.μ vS.𝓕 (om (g, h) Φ) (rat x₀ ⬝ u.1.1) (rat x₀ ⬝ b)‖ₑ ∂vb.μ ∂vU.ν ∂vW.μ = ∫⁻ p in 𝓐 ×ˢ 𝓑, ‖G p.2 * term ψ d W vS (om (p.1.1 * g, p.2) Φ) x₀‖ₑ ∂(vN.ν.prod vW.μ) := by
   intro D ψ V V₀ W ρ d χV χW om om' hω hω' vS vN vb vU vW x₀ G Φ hG hΦ 𝓐 𝓑 hlay g
   obtain ⟨a1, a2, a3, a4, a5, a6, a7⟩ := GlobalTheory.Mem.AdelicGroupTop.adelic_unitary_topology D V

@@ -5,6 +5,19 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.ModularityArgument
 import Development.AutomorphicArithmetic.AutomorphicVarieties.PadicHodgeTheory.FinrankPointDerivationsVanishingEqOfIsCompl
 open Formalism.BasicNotions Formalism.BasicNotions.Loc ReciprocityTheory.Gal Module UpperTheory.V.Loc UpperTheory.V.U3 UpperTheory.V.Alg IsLocalRing Polynomial Topology
 
+/- English proof (translation)
+Introduce `hL l _ O _ _ _ _ _ _ _ D U E _ _ _ _ _ _ _ _ x hx`. Take `⟨-, n, P, φ, hφ, hIP, ⟨y, hy, hyP⟩, hIt, h0, -⟩` from `GlobalTheory.T.exists_unique_ordinaryPrime_dim_succ_near_base hL D U E x hx`. Establish `hPx : P ≤ RingHom.ker x`. Establish `hm : P ∈ GlobalTheory.OrdLoc.primesAt0 D U` using `by rw [h0]; rfl`. Conclude with `hm.2 x hx`.
+
+Set `T : Submodule E (U.R →ₗ[O] E)` to `{ carrier := {δ | (∀ a b, δ (a * b) = algebraMap O E (x a) * δ b + algebraMap O E (x b) * δ a) ∧ ∀ a ∈ GlobalTheory.OrdLoc.IY D U, δ a = 0} zero_mem' := ⟨by simp, by simp⟩ add_mem' := by`. Introduce and unpack `δ δ' ⟨h1, h2⟩ ⟨h3, h4⟩`. Use `⟨fun a b => ?_, fun a ha => ?_⟩` and prove the remaining obligations. Simplify using `only [LinearMap.add_apply, h1 a b, h3 a b]`. Expand and normalize the polynomial expressions, which then agree.
+
+Simplify using `only [LinearMap.add_apply, h2 a ha, h4 a ha, add_zero]`. Use the proof step `smul_mem' := by`. Introduce and unpack `c δ ⟨h1, h2⟩`. Use `⟨fun a b => ?_, fun a ha => ?_⟩` and prove the remaining obligations. Simplify using `only [LinearMap.smul_apply, h1 a b, smul_eq_mul]`.
+
+Expand and normalize the polynomial expressions, which then agree. Simplify using `only [LinearMap.smul_apply, h2 a ha, smul_zero] }`. Establish `hT : ∀ δ, δ ∈ T ↔ (∀ a b, δ (a * b) = algebraMap O E (x a) * δ b + algebraMap O E (x b) * δ a) ∧ ∀ a ∈ GlobalTheory.OrdLoc.IY D U, δ a = 0` using `fun δ => Iff.rfl`. Establish `h1` using `GlobalTheory.T.saturatedOrdinaryIdeal_tangent_finrank_eq_twelve hL D U E x hx T hT`. Establish `h2 : finrank E ↥T = n` using `UpperTheory.finrank_pointDerivations_vanishing_eq_of_isCompl n P x φ hφ T fun δ => by`.
+
+Rewrite using `[hT]`. Use `and_congr_right fun h => ⟨fun h' a ha => ?_, fun h' a ha => h' a (hIP ha)⟩` and prove the remaining obligations. Establish `e` using `h y a`. Rewrite `e` using `[h' _ (hyP a ha), show x a = 0 from hPx ha, map_zero, zero_mul, add_zero]`. Conclude with `(mul_eq_zero.1 e.symm).resolve_left fun h0 => hy (IsFractionRing.injective O E (h0.trans (map_zero _).symm))`.
+
+Take `rfl : n = 12` from `by rw [← h2, h1]`. Conclude with `⟨by rw [← hIt, h0], φ, hIt ▸ hφ⟩`.
+-/
 theorem GlobalTheory.OrdLoc.rtCompl : LocalPublishedTheorems → ∀ {l : ℕ} [Fact l.Prime] {O : Type} [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] [CharZero O] [Algebra ℤ_[l] O] [Module.Finite ℤ_[l] O] [IsAdicComplete (maximalIdeal O) O] (D : Dat3 l O) (U : D.Univ) (E : Type) [Field E] [Algebra ℚ_[l] E] [Module.Finite ℚ_[l] E] [Algebra O E] [Algebra ℤ_[l] E] [IsScalarTower ℤ_[l] O E] [IsScalarTower ℤ_[l] ℚ_[l] E] [IsFractionRing O E] (x : U.R →ₐ[O] O), IsBase D.η D.Ψ U.r.hom x → GlobalTheory.OrdLoc.primesAt0 D U = {GlobalTheory.OrdLoc.It D U} ∧ ∃ φ : U.R →ₐ[O] MvPowerSeries (Fin 12) E, UpperTheory.V.Loc.IsCompl (GlobalTheory.OrdLoc.It D U) x φ := by
   intro hL l _ O _ _ _ _ _ _ _ D U E _ _ _ _ _ _ _ _ x hx
   obtain ⟨-, n, P, φ, hφ, hIP, ⟨y, hy, hyP⟩, hIt, h0, -⟩ := GlobalTheory.T.exists_unique_ordinaryPrime_dim_succ_near_base hL D U E x hx

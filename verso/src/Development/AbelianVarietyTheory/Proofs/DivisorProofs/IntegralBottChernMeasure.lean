@@ -15,6 +15,13 @@ noncomputable section
 
 namespace GlobalTheory.BcUnique
 
+/- English proof (translation)
+Take `⟨c, hc, e⟩` from `vol_eq 1`. Establish `hv : (vol 1 : Alt 1) = (Complex.I / 2) • ((sym (0, 0) : Ev 1) : Alt 1)`. Simplify using `[vol, Fin.prod_univ_one]`. Establish `ho : (ofValues β : Alt 1) = β (EuclideanSpace.single 0 1) (EuclideanSpace.single 0 1) • ((sym (0, 0) : Ev 1) : Alt 1)`. Simplify using `[ofValues, Fin.sum_univ_one, GlobalTheory.GoodMetric.coordVec]`.
+
+Establish `hr : (bas 1).repr (vol 1 : Alt 1) Finset.univ = c` using `by simp [e]`. Rewrite `hr` using `[hv, _root_.map_smul, Finsupp.smul_apply, smul_eq_mul]`. Establish `hr0 : (bas 1).repr ((sym (0, 0) : Ev 1) : Alt 1) Finset.univ ≠ 0`. Introduce `h0`. Rewrite `hr` using `[h0, mul_zero]`.
+
+Conclude with `hc hr.symm`. Rewrite using `[dens, ho, hv, _root_.map_smul, _root_.map_smul, Finsupp.smul_apply, Finsupp.smul_apply, smul_eq_mul, smul_eq_mul, mul_div_mul_right _ _ hr0, div_div_eq_mul_div, Complex.div_I, diagVal]`. Simplify using `[Complex.mul_re]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem re_dens_ofValues_one (β : V 1 → V 1 → ℂ) :
     (dens (ofValues β : Alt 1)).re = 2 * diagVal β (EuclideanSpace.single 0 1) := by
   obtain ⟨c, hc, e⟩ := vol_eq 1
@@ -35,6 +42,15 @@ end GlobalTheory.BcUnique
 
 namespace GlobalTheory.BcUnique
 
+/- English proof (translation)
+Use `set T := h.seq hS (G.restrict hi h₁) G (G.quot hS h₁ h₃) σ`. Establish `key : ∀ c : AlgChart p σ 1, ∀ y ∈ c.e.source, (dens ((h.atlas σ).loc (bcFld T) c (c.e y))).re = (g.met σ).bcDens hS h₁ h₃ c y`. Introduce `c y hy`. Establish `hl : (h.atlas σ).loc (bcFld T) c (c.e y) = bcFld T ⟨(c, y), hy⟩` using `(h.atlas σ).loc_crd _ ⟨(c, y), hy⟩`. Rewrite using `[hl]`.
+
+Conclude with `re_dens_ofValues_one _`. Establish `e₁ : (h.atlas σ).part (bcFld T) 1 = CurveDens.part fun c y => (g.met σ).bcDens hS h₁ h₃ c y`. Use `(CurveDens.part_congr (ρ := fun c y => (((1 : ℤˣ) : ℤ) : ℝ) * (dens ((h.atlas σ).loc (bcFld T) c (c.e y))).re) ?_ : _)` and prove the remaining obligations. Introduce `c y hy`. Simplify using `only [Units.val_one, Int.cast_one, one_mul, key c y hy]`.
+
+Establish `e₂ : (h.atlas σ).part (bcFld T) (-1) = CurveDens.part fun c y => -(g.met σ).bcDens hS h₁ h₃ c y`. Use `(CurveDens.part_congr (ρ := fun c y => (((-1 : ℤˣ) : ℤ) : ℝ) * (dens ((h.atlas σ).loc (bcFld T) c (c.e y))).re) ?_ : _)` and prove the remaining obligations. Introduce `c y hy`. Simplify using `only [Units.val_neg, Units.val_one, Int.cast_neg, Int.cast_one, neg_one_mul, key c y hy]`. Rewrite using `[HolAtlas.integral, e₁, e₂, ← CurveDens.total_bcDens hS h₁ h₃ (G σ)]`.
+
+Both sides reduce to the same expression.
+-/
 theorem integral_bcFld_seq (k : Type) [CommRing k] (X : Scheme.{0}) (p : X ⟶ Sp k) (h : IsRegVar p 1)
     (S : ShortComplex X.Modules) (hS : S.ShortExact) (r s : ℕ) (g : VMetric p S.X₂ (r + s)) (G : g.IsCInf)
     (hi : VB.IsSubbundle S.f) (h₁ : VB.IsVB S.X₁ r) (h₃ : VB.IsVB S.X₃ s) (σ : k →+* ℂ)

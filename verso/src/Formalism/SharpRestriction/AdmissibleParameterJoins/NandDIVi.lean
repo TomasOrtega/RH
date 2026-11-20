@@ -7,6 +7,11 @@ namespace Formalism.MainNotions.J
 
 open Formalism.BasicNotions
 
+/- English proof (translation)
+Take `⟨x0, h⟩` from `h`. Use `⟨max x0 (Fm.x1 + 1), fun x hx i => ?_⟩` and prove the remaining obligations. Establish `hx1 : Fm.x1 < x` using `lt_of_lt_of_le (by linarith) (le_trans (le_max_right _ _) hx)`. Use `h x (le_trans (le_max_left _ _) hx) i` as an intermediate fact. Unfold `Formalism.MainNotions.LocalQuadraticParts.adm22`.
+
+Rewrite using `[Fm.L_x x i hx1, Fm.L_ez x i]`. Conclude with `this`.
+-/
 theorem family_scale_epsilon_condition {eps : ℝ} (Fm : FamP eps) (h : Formalism.MainNotions.ArithmeticCylinders.FamilyExpDeficitBound' Fm) : Formalism.MainNotions.LocalQuadraticParts.IrreducibilityFamily Fm := by
   obtain ⟨x0, h⟩ := h
   refine ⟨max x0 (Fm.x1 + 1), fun x hx i => ?_⟩

@@ -14,15 +14,24 @@ noncomputable section
 
 namespace FunctorialResolution.EmbeddedResolution
 
+/- English proof (translation)
+Introduce `k _ X X' q _ τ _ c h`. Conclude with `hasEtaleCoordCodim_of_locally_smooth_over_affineSpace q τ c h`.
+-/
 theorem locallyConstCodimImpliesConstantCodim : LocallyConstCodimImpliesConstantCodim.{u} := by
   intro k _ X X' q _ τ _ c h
   exact hasEtaleCoordCodim_of_locally_smooth_over_affineSpace q τ c h
 
+/- English proof (translation)
+Introduce `k _ n m`. Conclude with `⟨hasSmoothCoordCodim_affineSpaceInl hsm k n m, hasSmoothCoordCodim_affineSpaceInrEmbedding hsm k n m⟩`.
+-/
 theorem linearEmbeddingsHaveLocallyConstCodim_of_affineSpaceIsSmooth (hsm : AffineSpaceIsSmooth.{u}) :
     LinearEmbeddingsHaveLocallyConstCodim.{u} := by
   intro k _ n m
   exact ⟨hasSmoothCoordCodim_affineSpaceInl hsm k n m, hasSmoothCoordCodim_affineSpaceInrEmbedding hsm k n m⟩
 
+/- English proof (translation)
+The claim follows from `isIndependentOfPresentedEmbedding_of_locallyConstCodim Alg hAlg hw hsm hcmp locallyConstCodimImpliesConstantCodim (linearEmbeddingsHaveLocallyConstCodim_of_affineSpaceIsSmooth hsm)`.
+-/
 theorem isIndependentOfPresentedEmbedding_embeddedResolutionRule (Alg : PrincipalizationAlgorithm.{u})
     (hAlg : IsFunctorialPrincipalization Alg) (hw : TransitionsAreBlowupsForEmbeddings Alg) (hsm : AffineSpaceIsSmooth.{u})
     (hcmp : ClosedEmbeddingsRelatedByAutomorphism.{u}) :

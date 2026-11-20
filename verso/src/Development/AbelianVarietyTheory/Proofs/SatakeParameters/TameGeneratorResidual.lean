@@ -8,6 +8,11 @@ open Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotions.N Formal
 
 namespace GlobalTheory.RowTie
 
+/- English proof (translation)
+Introduce `σ k v _ _ i hl hne hg`. Use `⟨GlobalTheory.T.charpoly_reduction_good_prime D h1 h2 h4 σ k v i hl hne hg, ?_⟩` and prove the remaining obligations. Take `⟨φ, hI, hW⟩` from `GlobalTheory.T.exists_frobenius_conj_inertia_pow_mod_wild _ _ _ D.nd D.naut k v _ (D.ntypes.tg_mem k v)`. Use `⟨φ, ?_⟩` and prove the remaining obligations. Establish `h` using `GlobalTheory.T.reduction_trivial_on_wild_inertia D h1 h3 h4 σ k v i hl hne hg _ hI hW`.
+
+Rewrite `h` using `[map_mul, map_inv, map_pow, mul_inv_eq_one]`. Conclude with `h`.
+-/
 theorem tameGenerator_residual (D : D7) (h1 : GlobalTheory.RowCopy.RbarTie D) (h2 : GlobalTheory.RowTie.IotaRed D)
     (h3 : GlobalTheory.RowTie.LabTame D.nd D.naut) (h4 : GlobalTheory.RowTie.RowRepAtG D) :
     GlobalTheory.RowCopy.JointOccurrenceCondition D := by

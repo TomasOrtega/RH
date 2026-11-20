@@ -15,12 +15,26 @@ open scoped Matrix ContDiff ComplexOrder ENNReal Classical
 
 namespace GlobalTheory.FlagCell2
 
+/- English proof (translation)
+Establish `hb : (upU y).BlockTriangular id` using `fun a b (hab : b < a) => by`. Simplify using `only [upU, Matrix.of_apply, dif_neg (not_lt.2 hab.le), if_neg (ne_of_gt hab)]`. Rewrite using `[Matrix.det_of_upperTriangular hb]`. Conclude with `Finset.prod_eq_one fun a _ => by simp [upU]`.
+-/
 theorem det_upU {K : Type} [Field K] {s : ℕ} (y : Low s → K) : (upU y).det = 1 := by
   have hb : (upU y).BlockTriangular id := fun a b (hab : b < a) => by
     simp only [upU, Matrix.of_apply, dif_neg (not_lt.2 hab.le), if_neg (ne_of_gt hab)]
   rw [Matrix.det_of_upperTriangular hb]
   exact Finset.prod_eq_one fun a _ => by simp [upU]
 
+/- English proof (translation)
+Establish `hPar : Par 0 ⊤ (upM y₀)` using `fun τ => ⟨fun _ _ => trivial, by simp [upM, det_upU], trivial, fun _ _ hi => absurd hi (Nat.not_lt_zero _)⟩`. Take `⟨p, ⟨hpf, hpB⟩, huq⟩` from `hR.lifts K x A hA (upM y₀) hPar`. Establish `hfz : f (p (IsLocalRing.closedPoint K)) = x (IsLocalRing.closedPoint K)`. Rewrite using `[← hpf]`. Both sides reduce to the same expression.
+
+Establish `hA' : A ∈ E.S (f (p (IsLocalRing.closedPoint K)))` using `hfz ▸ hA`. Take `⟨u', hu'S, hu'v⟩` from `(hbears p hA').1 hpB`. Establish `huu : u' = u`. Establish `h1` using `Fr.mem_genericPoint hu'S`. Establish `hdA : ∀ τ, (A.map φ τ).det ≠ 0` using `fun τ => by`.
+
+Use `Mat.det_map A φ.toRingHom τ` as an intermediate fact. Rewrite `this` using `[show A.map φ.toRingHom = A.map φ from rfl]`. Rewrite using `[this]`. Conclude with `(map_ne_zero _).2 (Fr.det_ne hg.1 τ)`. Establish `hdu : ∀ τ, (upM u τ).det ≠ 0` using `fun τ => by simp [upM, det_upU]`.
+
+Establish `hP` using `(Fr.mem_iff hg.2).1 h1`. Rewrite `hP` using `[Mat.mul_inv_rev, ← mul_assoc, mul_assoc (upM u'), Mat.mul_inv hdA, mul_one]`. Establish `he : upM u' = (upM u' * (upM u)⁻¹) * upM u` using `by rw [mul_assoc, Mat.inv_mul hdu, mul_one]`. Use function extensionality and compare the values at `⟨τ, s⟩`. Use `huniq (m τ) (fun s => u' ⟨τ, s⟩) (fun s => u ⟨τ, s⟩) ((upM u' * (upM u)⁻¹) τ) (fun i j hij => (hP τ).2.2.2 i j i.2 hij) (congrFun he τ)` as an intermediate fact.
+
+Conclude with `congrFun this s`. Substitute `huu` using the available equality. Use `⟨p, ⟨hpf, ⟨hA', hu'S⟩, hu'v⟩, fun p' ⟨hp'f, ⟨h1, h2⟩, hv⟩ => huq p' ⟨hp'f, (hbears p' h1).2 ⟨u', h2, hv⟩⟩⟩` and prove the remaining obligations.
+-/
 theorem pts_of {F : Type} [Field F] {X Y : Var F} {ι : Type} [Fintype ι] {m : ι → ℕ} {E : Fr (ratOf X) m 0}
     {E' : Fr (ratOf Y) m m} {φ : X.Fn →ₐ[F] Y.Fn} {f : Y.X ⟶ X.X} (hR : Refines E E' φ f) {A : Mat m X.Fn}
     {u : Cell m → Y.Fn} (hg : InCell E E' φ f A u (genericPoint Y.X)) {K : Type} [Field K] (x : Sp K ⟶ X.X)
@@ -56,6 +70,9 @@ theorem pts_of {F : Type} [Field F] {X Y : Var F} {ι : Type} [Fintype ι] {m : 
   subst huu
   refine ⟨p, ⟨hpf, ⟨hA', hu'S⟩, hu'v⟩, fun p' ⟨hp'f, ⟨h1, h2⟩, hv⟩ => huq p' ⟨hp'f, (hbears p' h1).2 ⟨u', h2, hv⟩⟩⟩
 
+/- English proof (translation)
+Introduce `F _ X Y ι _ m E E' φ f hR A u hg K _ x hA y₀`. Conclude with `pts_of hR hg x hA y₀ (fun p hp => GlobalTheory.T.bearsFlag_unitriangular_iff_mem_cell F X Y ι m E E' φ f hR A K p hp y₀) (fun s y y' b hb h => upU_unique_of_lower Y.Fn s y y' b hb h)`.
+-/
 theorem cell_points_existsUnique : ∀ (F : Type) [Field F] (X Y : Var F) (ι : Type) [Fintype ι] (m : ι → ℕ) (E : Fr (ratOf X) m 0) (E' : Fr (ratOf Y) m m) (φ : X.Fn →ₐ[F] Y.Fn) (f : Y.X ⟶ X.X), Refines E E' φ f → ∀ (A : Mat m X.Fn) (u : Cell m → Y.Fn), InCell E E' φ f A u (genericPoint Y.X) → ∀ (K : Type) [Field K] (x : Sp K ⟶ X.X), A ∈ E.S (x (IsLocalRing.closedPoint K)) → ∀ y₀ : Cell m → K, ∃! p : Sp K ⟶ Y.X, p ≫ f = x ∧ InCell E E' φ f A u (p (IsLocalRing.closedPoint K)) ∧ ∀ j, (ratOf Y).val p (u j) = y₀ j := by
   intro F _ X Y ι _ m E E' φ f hR A u hg K _ x hA y₀
   exact pts_of hR hg x hA y₀ (fun p hp => GlobalTheory.T.bearsFlag_unitriangular_iff_mem_cell F X Y ι m E E' φ f hR A K p hp y₀)

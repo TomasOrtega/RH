@@ -12,6 +12,11 @@ namespace GlobalTheory.NLink.BBSize
 
 variable {D : D7}
 
+/- English proof (translation)
+Establish `hl` using `(D.nd.lPrime i).out`. Use `le_trans ?_ (TwistedPlaces.sum_nLam_le D hl)` and prove the remaining obligations. Apply `Finset.sum_le_sum_of_subset_of_nonneg` to reduce the goal to its premises. Introduce `v hv`. Conclude with `(Set.Finite.mem_toFinset _).2 (hS v hv)`.
+
+Introduce `v _ _`. Check the signs of the components of the expression.
+-/
 theorem sum_locDeg_le (i : D.nd.Loc) (S : Finset (HeightOneSpectrum (𝓞 D.host.E)))
     (hS : ∀ v ∈ S, v ∈ placesOver D.host.E (D.nd.l i)) :
     ∑ w ∈ S, (locDeg D.host.E w : ℝ) ≤ 2 * D.R.f := by
@@ -23,6 +28,9 @@ theorem sum_locDeg_le (i : D.nd.Loc) (S : Finset (HeightOneSpectrum (𝓞 D.host
   · intro v _ _
     positivity
 
+/- English proof (translation)
+Rewrite using `[Finset.card_eq_sum_ones, Nat.cast_sum]`. Apply `Finset.sum_le_sum` to reduce the goal to its premises. Introduce `v _`. Conclude with `TwistedPlaces.nLam_pos D v` after adjusting the coercions.
+-/
 theorem card_le_sum_locDeg (S : Finset (HeightOneSpectrum (𝓞 D.host.E))) :
     (S.card : ℝ) ≤ ∑ w ∈ S, (locDeg D.host.E w : ℝ) := by
   rw [Finset.card_eq_sum_ones, Nat.cast_sum]
@@ -30,12 +38,20 @@ theorem card_le_sum_locDeg (S : Finset (HeightOneSpectrum (𝓞 D.host.E))) :
   intro v _
   exact_mod_cast TwistedPlaces.nLam_pos D v
 
+/- English proof (translation)
+Establish `: (0 : ℚ) ≤ D.nd.vdel i`. Unfold `NData.vdel`. Check the signs of the components of the expression. Conclude with `this` after adjusting the coercions.
+-/
 theorem vdel_nonneg (i : D.nd.Loc) : (0 : ℝ) ≤ (D.nd.vdel i : ℝ) := by
   have : (0 : ℚ) ≤ D.nd.vdel i := by
     unfold NData.vdel
     positivity
   exact_mod_cast this
 
+/- English proof (translation)
+Use `D.nd.lPrime i` as an intermediate fact. Establish `h` using `LargeLevelLemmas.vdel_le i`. Establish `hs : D.nd.s0 i = 1` using `UpperTheory.Small.localLevel_eq_one_of_not_mem_smallPrimes D.nd i h2`. Establish `hv : (padicValNat (D.nd.l i) D.R.t.factorial : ℚ) ≤ D.R.t`. Conclude with `padicValNat_factorial_le (D.nd.l i) D.R.t` after adjusting the coercions.
+
+Rewrite `h` using `[hs]`. Establish `: D.nd.vdel i ≤ 2 * (D.R.t : ℚ)`. Move the coercions through the operations in `at h`. Combine the linear equalities and inequalities to obtain the conclusion. Conclude with `this` after adjusting the coercions.
+-/
 theorem vdel_le_two_t (i : D.nd.Loc) (h2 : D.nd.l i ∉ D.host.small) : (D.nd.vdel i : ℝ) ≤ 2 * D.R.t := by
   have := D.nd.lPrime i
   have h := LargeLevelLemmas.vdel_le i
@@ -48,6 +64,11 @@ theorem vdel_le_two_t (i : D.nd.Loc) (h2 : D.nd.l i ∉ D.host.small) : (D.nd.vd
     linarith
   exact_mod_cast this
 
+/- English proof (translation)
+Establish `h1 : t * (A * b) ≤ 6 * (c * f * n * t ^ 2 * V * large₂)`. Combine the equalities or inequalities in the displayed calculation. Establish `h2 : 4 * V * (k + 1) * v ≤ 24 * (c * f * n * t ^ 2 * V * large₂)`. Combine the equalities or inequalities in the displayed calculation. Establish `h3 : t * k * h ≤ 2 * (c * f * n * t ^ 2 * V * large₂)`.
+
+Combine the equalities or inequalities in the displayed calculation. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem blk_arith {f t n V large₂ c A k b v h : ℝ} (hf : 1 ≤ f) (ht : 1 ≤ t) (hn : 1 ≤ n) (hV : 1 ≤ V)
     (hL : 1 ≤ large₂) (hc : 1 ≤ c) (hA : A ≤ 6 * f) (hk0 : 0 ≤ k) (hk : k ≤ 2 * f) (hb0 : 0 ≤ b)
     (hb : b ≤ c * t * n * V * large₂) (hv0 : 0 ≤ v) (hv : v ≤ 2 * t) (hh : h ≤ c * t) :
@@ -67,6 +88,11 @@ theorem blk_arith {f t n V large₂ c A k b v h : ℝ} (hf : 1 ≤ f) (ht : 1 �
       _ ≤ _ := by gcongr
   linarith
 
+/- English proof (translation)
+Establish `h1 : A * (m * v) ≤ 4 * (c * f * n * t ^ 2 * V * large₂)`. Combine the equalities or inequalities in the displayed calculation. Establish `h2 : k * (2 * v) ≤ 8 * (c * f * n * t ^ 2 * V * large₂)`. Combine the equalities or inequalities in the displayed calculation. Establish `h3 : k * (2 * (c * r * n * V * large₂)) ≤ 4 * (c * f * n * t ^ 2 * V * large₂)`.
+
+Combine the equalities or inequalities in the displayed calculation. Rewrite using `[mul_add]`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem col_arith {f t n V large₂ c A k m r v : ℝ} (hf : 1 ≤ f) (ht : 1 ≤ t) (hn : 1 ≤ n) (hV : 1 ≤ V)
     (hL : 1 ≤ large₂) (hc : 1 ≤ c) (hA : A ≤ 2 * f) (hk0 : 0 ≤ k) (hk : k ≤ 2 * f) (hm0 : 0 ≤ m) (hm : m ≤ t)
     (hr0 : 0 ≤ r) (hr : r ≤ t) (hv0 : 0 ≤ v) (hv : v ≤ 2 * t) :
@@ -88,8 +114,14 @@ theorem col_arith {f t n V large₂ c A k m r v : ℝ} (hf : 1 ≤ f) (ht : 1 �
   rw [mul_add]
   linarith
 
+/- English proof (translation)
+The claim follows from `(TwistedPlaces.m_ge_one D).trans (TwistedPlaces.m_le_f D)`.
+-/
 theorem f_ge_one (D : D7) : (1 : ℝ) ≤ D.R.f := (TwistedPlaces.m_ge_one D).trans (TwistedPlaces.m_le_f D)
 
+/- English proof (translation)
+Use `TwistedPlaces.t_ge_one D` as an intermediate fact. Establish `h0 : (0 : ℝ) ≤ D.R.r` using `by positivity`. Unfold `Ranks.nV`. Use `push_cast`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem nV_ge_one (D : D7) : (1 : ℝ) ≤ D.R.nV := by
   have := TwistedPlaces.t_ge_one D
   have h0 : (0 : ℝ) ≤ D.R.r := by positivity
@@ -97,6 +129,13 @@ theorem nV_ge_one (D : D7) : (1 : ℝ) ≤ D.R.nV := by
   push_cast
   linarith
 
+/- English proof (translation)
+Establish `hrow` using `sum_locDeg_le i dc.row (fun v hv => (dc.cover v).1 (Or.inl hv))`. Establish `hcol` using `sum_locDeg_le i dc.col (fun v hv => (dc.cover v).1 (Or.inr hv))`. Establish `hr` using `card_le_sum_locDeg dc.row`. Establish `hk` using `card_le_sum_locDeg dc.col`. Establish `hA : ∑ w ∈ dc.row, ((locDeg D.host.E w : ℝ) + 2) ≤ 6 * D.R.f`.
+
+Rewrite using `[Finset.sum_add_distrib, Finset.sum_const, nsmul_eq_mul]`. Combine the linear equalities and inequalities to obtain the conclusion. Use `blk_arith (f_ge_one D) (TwistedPlaces.t_ge_one D) (TwistedPlaces.n_ge_one D) (nV_ge_one D) (TwistedPlaces.L_ge_one L) hc hA (Nat.cast_nonneg dc.col.card) (hk.trans hcol) (Nat.cast_nonneg cB) hB (vdel_nonneg i) (vdel_le_two_t i h2) hh` as an intermediate fact. Unfold `KillingConditions.localErrorBoundDecomposition`. Use `push_cast`.
+
+Rewrite using `[← Finset.sum_mul]`. Conclude with `this`.
+-/
 theorem blockBoundDeclaration_le_middleRange (L : SizeData₂ D) (i : D.nd.Loc) (h2 : D.nd.l i ∉ D.host.small) (dc : TruncatedSeriesCountingIdentities.Decl D i) (cB : ℕ) {c : ℝ}
     (hc : 1 ≤ c) (hB : (cB : ℝ) ≤ c * D.R.t * D.R.n * D.R.nV * TwistedPlaces.large₂ L)
     (hh : (h0 D.nd i dc.col : ℝ) ≤ c * D.R.t) :
@@ -116,6 +155,15 @@ theorem blockBoundDeclaration_le_middleRange (L : SizeData₂ D) (i : D.nd.Loc) 
   rw [← Finset.sum_mul]
   exact this
 
+/- English proof (translation)
+Establish `hb` using `blockBoundDeclaration_le_middleRange L i h2 dc cB hc hB hh`. Establish `hcol` using `sum_locDeg_le i dc.col (fun v hv => (dc.cover v).1 (Or.inr hv))`. Establish `hk` using `card_le_sum_locDeg dc.col`. Establish `hrt : (D.R.r : ℝ) ≤ D.R.t` using `by linarith [TwistedPlaces.t_ge D]`. Establish `hmt : (D.R.m : ℝ) ≤ D.R.t` using `by linarith [TwistedPlaces.m_le_k D, TwistedPlaces.k_le_r D]`.
+
+Establish `hc'` using `col_arith (f_ge_one D) (TwistedPlaces.t_ge_one D) (TwistedPlaces.n_ge_one D) (nV_ge_one D) (TwistedPlaces.L_ge_one L) hc hcol (Nat.cast_nonneg dc.col.card) (hk.trans hcol) (Nat.cast_nonneg D.R.m) hmt (Nat.cast_nonneg D.R.r) hrt (vdel_nonneg i) (vdel_le_two_t i h2)`. Establish `hs : ∑ u ∈ dc.col, ((locDeg D.host.E u : ℝ) * (D.R.m : ℝ) * (D.nd.vdel i : ℝ) + 2 * (D.nd.vdel i : ℝ) + (Br.h0W i u ρ π : ℝ) + (D.R.r : ℝ) * (c0 u : ℝ)) ≤ ∑ u ∈ dc.col, ((locDeg D.host.E u : ℝ) * ((D.R.m : ℝ) * (D.nd.vdel i : ℝ)) + (2 * (D.nd.vdel i : ℝ) + 2 * (c * D.R.r * D.R.n …`. Apply `Finset.sum_le_sum` to reduce the goal to its premises. Introduce `u hu'`. Take `⟨h1, h3⟩` from `hu u hu'`.
+
+Establish `h4` using `mul_le_mul_of_nonneg_left h1 (Nat.cast_nonneg (α := ℝ) D.R.r)`. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite `hs` using `[Finset.sum_add_distrib (f := fun u => (locDeg D.host.E u : ℝ) * ((D.R.m : ℝ) * (D.nd.vdel i : ℝ))), ← Finset.sum_mul, Finset.sum_const, nsmul_eq_mul]`. Unfold `KillingConditions.localErrorBoundDecomposition at hb`. Unfold `localErrorBoundPlaces`.
+
+Move the coercions through the operations in `at hb ⊢`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem blockBoundAtZero_le_middleRange (L : SizeData₂ D) (i : D.nd.Loc) (h2 : D.nd.l i ∉ D.host.small)
     (ρ : D.nd.X i → (GE D.nd →* GL (Fin D.R.r) (D.nd.O i))) (π : D.nd.X i) (dc : TruncatedSeriesCountingIdentities.Decl D i)
     (c0 : HeightOneSpectrum (𝓞 D.host.E) → ℕ) (cB : ℕ) {c : ℝ}
@@ -148,6 +196,15 @@ theorem blockBoundAtZero_le_middleRange (L : SizeData₂ D) (i : D.nd.Loc) (h2 :
   push_cast at hb ⊢
   linarith
 
+/- English proof (translation)
+Introduce `D L _ HW X R c hc hD hJ i hi hg hR π hπ`. Take `⟨hB, hh, hS⟩` from `hJ i hi hg hR`. Establish `h2 : D.nd.l i ∉ D.host.small` using `fun h => hR.1 (Or.inl h)`. Establish `hq : D.nd.l i ≠ D.host.q` using `fun h => hR.2.1 (Or.inl h)`. Establish `hd : D.nd.l i ≠ D.host.d` using `fun h => hR.2.1 (Or.inr h)`.
+
+Establish `hL` using `TwistedPlaces.L_ge_one L`. Establish `hM0 : 0 ≤ c * D.R.f * D.R.n * (D.R.t : ℝ) ^ 2 * D.R.nV * TwistedPlaces.large₂ L`. Establish `: 0 ≤ c` using `by linarith`. Establish `: 0 ≤ TwistedPlaces.large₂ L` using `by linarith`. Check the signs of the components of the expression.
+
+Establish `hM` using `le_mul_of_one_le_right hM0 hL`. Establish `hE : 60 * c * D.R.f * D.R.n * (D.R.t : ℝ) ^ 2 * D.R.nV * (TwistedPlaces.large₂ L) ^ 2 = 60 * (c * D.R.f * D.R.n * (D.R.t : ℝ) ^ 2 * D.R.nV * TwistedPlaces.large₂ L * TwistedPlaces.large₂ L)` using `by ring`. Rewrite using `[hE]`. Break down `TwistedPlaces.split_or_inert D h2 hq hd with hs | hin` into its components or cases. Rewrite using `[hD.error_bound_split_eq i hs π]`.
+
+Use `blockBoundAtZero_le_middleRange L i h2 (X.ρ i) π (X.dc i) (X.c0 i) (X.cB i) hc hB hh (fun u hu => ⟨(hS hs u hu).1, (hS hs u hu).2 π hπ⟩)` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite using `[hD.error_bound_inert_eq i hin π]`. Use `blockBoundDeclaration_le_middleRange L i h2 (X.dc i) (X.cB i) hc hB hh` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem main : ∀ (D : D7) (L : SizeData₂ D) (P : ParameterChoice' D L) (HW : HWOf D.loc) (X : KillingConditions.HubData D) (R : KillingConditions.RowK) (c : ℝ), 1 ≤ c → KillingConditions.DataAD L HW X R → KillingConditions.InvariantsBoundsWithCoarseColumnConstant L X c → KillingConditions.BBLe L X (60 * c) := by
   intro D L _ HW X R c hc hD hJ i hi hg hR π hπ
   obtain ⟨hB, hh, hS⟩ := hJ i hi hg hR

@@ -7,6 +7,9 @@ open MeasureTheory NumberField GroundTheory.Automorphic GroundTheory.Automorphic
 open GroundTheory.Automorphic.CuspidalProjection PositivityTheory.Rg.Tf.Core UpperTheory.ConvolutionTheory.K
 open scoped InnerProductSpace
 
+/- English proof (translation)
+Apply `Matrix.GeneralLinearGroup.ext` to reduce the goal to its premises. Introduce `i j`. Conclude with `(UpperTheory.ConvolutionTheory.K.adBasic K).2.2 σ τ _`.
+-/
 private theorem mapTrans (K : Type) [Field K] [NumberField K] (n : ℕ) (σ τ : K ≃+* K)
     (g : AdelicGLn.AdelicGL K n) :
     (Matrix.GeneralLinearGroup.map (Formalism.L2.Host.CT.adMap (σ.trans τ)) g : AdelicGLn.AdelicGL K n) =
@@ -16,6 +19,9 @@ private theorem mapTrans (K : Type) [Field K] [NumberField K] (n : ℕ) (σ τ :
   intro i j
   exact (UpperTheory.ConvolutionTheory.K.adBasic K).2.2 σ τ _
 
+/- English proof (translation)
+Apply `Matrix.GeneralLinearGroup.ext` to reduce the goal to its premises. Introduce `i j`. Conclude with `(UpperTheory.ConvolutionTheory.K.adBasic K).2.1 _`.
+-/
 private theorem mapRefl (K : Type) [Field K] [NumberField K] (n : ℕ)
     (g : AdelicGLn.AdelicGL K n) :
     (Matrix.GeneralLinearGroup.map (Formalism.L2.Host.CT.adMap (RingEquiv.refl K)) g : AdelicGLn.AdelicGL K n) = g := by
@@ -28,19 +34,31 @@ private noncomputable def resMap (K : Type) [Field K] [NumberField K] (n : ℕ) 
   ⟨Matrix.GeneralLinearGroup.map (Formalism.L2.Host.CT.adMap σ) (g : AdelicGLn.AdelicGL K n),
     (UpperTheory.ConvolutionTheory.K.adNormOne K n σ g).1.2 g.2⟩
 
+/- English proof (translation)
+The claim follows from `Subtype.ext (mapTrans K n σ τ g).symm`.
+-/
 private theorem resMap_trans (K : Type) [Field K] [NumberField K] (n : ℕ) (σ τ : K ≃+* K) (g : G1 K n) :
     resMap K n τ (resMap K n σ g) = resMap K n (σ.trans τ) g :=
   Subtype.ext (mapTrans K n σ τ g).symm
 
+/- English proof (translation)
+The claim follows from `Subtype.ext (mapRefl K n g)`.
+-/
 private theorem resMap_refl (K : Type) [Field K] [NumberField K] (n : ℕ) (g : G1 K n) :
     resMap K n (RingEquiv.refl K) g = g :=
   Subtype.ext (mapRefl K n g)
 
+/- English proof (translation)
+Use `Continuous.subtype_mk (Continuous.comp ?_ continuous_subtype_val) _` and prove the remaining obligations. Conclude with `Continuous.units_map _ (continuous_id.matrix_map (Formalism.L2.Host.CT.continuous_adMap σ))`.
+-/
 private theorem resMap_cont (K : Type) [Field K] [NumberField K] (n : ℕ) (σ : K ≃+* K) :
     Continuous (resMap K n σ) := by
   refine Continuous.subtype_mk (Continuous.comp ?_ continuous_subtype_val) _
   exact Continuous.units_map _ (continuous_id.matrix_map (Formalism.L2.Host.CT.continuous_adMap σ))
 
+/- English proof (translation)
+Proceed by induction on `m with`. Consider the case `zero => exact (resMap_refl K n g).symm`. Consider the case `succ m ih`. Rewrite using `[Function.iterate_succ_apply', ih, resMap_trans, pow_succ']`. Both sides reduce to the same expression.
+-/
 private theorem resMap_iter (K : Type) [Field K] [NumberField K] (n : ℕ) (σ : K ≃+* K) (m : ℕ) (g : G1 K n) :
     (resMap K n σ)^[m] g = resMap K n (σ ^ m) g := by
   induction m with
@@ -49,6 +67,11 @@ private theorem resMap_iter (K : Type) [Field K] [NumberField K] (n : ℕ) (σ :
     rw [Function.iterate_succ_apply', ih, resMap_trans, pow_succ']
     rfl
 
+/- English proof (translation)
+Introduce `K _ _ n σ`. Take `⟨m, hm, hσ⟩` from `UpperTheory.ConvolutionTheory.K.autOrder K σ`. Use `⟨{ toFun := resMap K n σ invFun := resMap K n σ.symm left_inv := fun g => by rw [resMap_trans, RingEquiv.self_trans_symm, resMap_refl] right_inv := fun g => by rw [resMap_trans, RingEquiv.symm_trans_self, resMap_refl] map_mul' := fun g h => Subtype.ext (map_mul (Matrix.GeneralLin …` and prove the remaining obligations. Conclude with `(UpperTheory.ConvolutionTheory.K.adNormOne K n σ g).2`. Express the relevant statement in the definitionally equal form `(resMap K n σ)^[m] g = g`.
+
+Rewrite using `[resMap_iter, hσ]`. Conclude with `resMap_refl K n g`.
+-/
 theorem UpperTheory.ConvolutionTheory.K.galEquiv :
     ∀ (K : Type) [Field K] [NumberField K] (n : ℕ) (σ : K ≃+* K), ∃ e : G1 K n ≃ₜ* G1 K n,
       (∀ g : G1 K n, ((e g : G1 K n) : AdelicGLn.AdelicGL K n) =

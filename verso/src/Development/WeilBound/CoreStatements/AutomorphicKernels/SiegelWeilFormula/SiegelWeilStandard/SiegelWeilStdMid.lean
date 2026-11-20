@@ -11,8 +11,14 @@ open GlobalTheory.ThK.Dbl PositivityTheory.Rg.Sw
 
 namespace PositivityTheory.SiegelWeilFormula.Fin
 
+/- English proof (translation)
+The claim follows from `KLI.locInst_of hT kfour.auxEx KFock.fockMem (KFock.liftEx hT.1)`.
+-/
 theorem locInst_of (hT : TAll) : LocInst := KLI.locInst_of hT kfour.auxEx KFock.fockMem (KFock.liftEx hT.1)
 
+/- English proof (translation)
+The claim follows from `have hT := tAll_of hW siegelWeilStd_of hT (locInst_of hT) (Kdil.gIdil_full hT kfour.auxEx (locOpEx_of_tAll hT) (KAway.awayAct_of_tAll hT) (locInst_of hT)) hKP (KK.polyKFin_of hT KFock.fockMem) hLD hCT HSt.holLeadB`.
+-/
 theorem siegelWeilStd_mid (hW : TWeyl) (hKP : KFinPoly) (hLD : LDEx) (hCT : CTSplit) : SiegelWeilStd :=
   have hT := tAll_of hW
   siegelWeilStd_of hT (locInst_of hT)

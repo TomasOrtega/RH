@@ -8,6 +8,17 @@ open PositivityTheory.Rg.Tf.Core PositivityTheory.Rg.Tf.Adel PositivityTheory.Rg
 
 open private pow_le_exp_eventually err_bound2 solve_bound2 from Development.AutomorphicArithmetic.Foundations.Convolution.PolynomialCoefficientBounds.PowLeExpEventually
 
+/- English proof (translation)
+Introduce `d hd hfac p hp cq a₀ h0 h1`. Use `⟨cq + 2 + Real.log (4 / a₀), ?_⟩` and prove the remaining obligations. Introduce `c₁`. Take `⟨A, hA⟩ : ∃ A, A = |c₁ + cq + 1| + 1` from `⟨_, rfl⟩`. Establish `hη₀a : a₀ * Real.exp (-(p * A)) < a₀`.
+
+Establish `hA0 : 0 < A` using `by rw [hA]; positivity`. Establish `hp' : (0 : ℝ) < p` using `by exact_mod_cast hp`. Establish `: Real.exp (-(p * A)) < 1` using `Real.exp_lt_one_iff.2 (by nlinarith [mul_pos hp' hA0])`. Use the polynomial consequences of the given equalities and inequalities. Use `⟨a₀ * Real.exp (-(p * A)), by positivity, hη₀a, ?_⟩` and prove the remaining obligations.
+
+Introduce `η hηp hη`. Establish `hηa : η < a₀` using `hη.trans_lt hη₀a`. Introduce `I _ a ζ ha hζ0 hinj c c' hc hbd i hi hζ`. Take `⟨s₀, K₁, hsep⟩` from `UpperTheory.ConvolutionTheory.FX.separate0 η hηp I a ζ ha hζ0 hinj`. Take `⟨K, hK⟩` from `hbd s₀`.
+
+Establish `hev : ∀ᶠ j : ℕ in atTop, ‖c j i‖ ≤ (Real.exp (p * A) + 2) * Real.exp (-j)` using `by filter_upwards [hK, hfac (c₁ + cq + 2 + Real.log (4 / a₀)), pow_le_exp_eventually d hd ((|K₁| + 1) * |K| / a₀ + 1) (by positivity)] with j hj hF hL`. Establish `h` using `hsep (j / p) j (fun i => c j i * (a i : ℂ) ^ d j) _ hj i`. Establish `hai : 0 ≤ a i` using `by linarith`. Simplify using `only [norm_mul, norm_pow, Complex.norm_real, Real.norm_eq_abs, abs_of_nonneg hai] at h`. Conclude with `(solve_bound2 _ _ _ η a₀ cq K₁ K _ _ _ _ (norm_nonneg _) hηp hηa h1 hi hζ (by positivity) hL h).trans (err_bound2 p hp c₁ cq a₀ h0 h1 A η hA hηp hη j _ hF)`.
+
+Establish `hlim : Tendsto (fun j : ℕ => (Real.exp (p * A) + 2) * Real.exp (-j)) atTop (𝓝 0)`. Use `(Real.tendsto_exp_neg_atTop_nhds_zero.comp tendsto_natCast_atTop_atTop).const_mul (Real.exp (p * A) + 2)` as an intermediate fact. Simplify using `using this`. Conclude with `tendsto_nhds_unique (hc i) (squeeze_zero_norm' hev hlim)`.
+-/
 theorem UpperTheory.V.Z.InvariantSubmoduleMonicPolynomial.exponents3 :
     ∀ (d : ℕ → ℕ), Tendsto (fun j : ℕ => (d j : ℝ) / j) atTop (𝓝 0) → (∀ B : ℝ, ∀ᶠ j : ℕ in atTop, Real.exp (B * j) ≤ (d j).factorial) →
       ∀ (p : ℕ), 0 < p → ∀ (cq a₀ : ℝ), 0 < a₀ → a₀ ≤ 1 → ∃ N : ℝ, ∀ c₁ : ℝ, ∃ η₀ : ℝ, 0 < η₀ ∧ η₀ < a₀ ∧ ∀ η : ℝ, 0 < η → η ≤ η₀ →

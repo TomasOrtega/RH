@@ -5,6 +5,21 @@ open CategoryTheory Limits AlgebraicGeometry Opposite GlobalTheory.EtC
 
 namespace LateralTheory.CohomologicalPurity
 
+/- English proof (translation)
+Introduce `hA9 hG`. Introduce `q _ X Z S p ι _ d e _ _ hq U hU N i`. Take `⟨gys, rs, hgys⟩` from `hG d`. Set `P : SP d` to `⟨X, Z, S, p, ι, e, U, inferInstance, inferInstance, inferInstance, hU⟩`. Establish `hqX : IsUnit (q : Γ(P.X, ⊤))`.
+
+Simplify using `using hq.map p.appTop.hom`. Establish `hex` using `(hgys q P hqX).1`. Establish `hsub : ∀ m j : ℤ, m < 0 → Subsingleton (Ht q (sch.obj Z) m j)` using `fun m j hm => (hA9 (ZMod q) (tw q j)).1 _ m hm`. Take `⟨j, rfl⟩ : ∃ j, i = j + d` from `⟨i - d, by ring⟩`. Prove the components needed by the constructor for the conclusion.
+
+Introduce `hN`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Take `⟨m, rfl⟩ : ∃ m, N = m + 2 * d` from `⟨N - 2 * d, by ring⟩`. Establish `hm : m < 0` using `by omega`. Use `hsub m j hm` as an intermediate fact.
+
+Rewrite using `[injective_iff_map_eq_zero]`. Introduce `a ha`. Take `⟨b, rfl⟩` from `((hex m j).2.2 a).1 ha`. Rewrite using `[Subsingleton.elim b 0, map_zero]`. Take `⟨m, rfl⟩ : ∃ m, N = m + 2 * d - 1` from `⟨N - 2 * d + 1, by ring⟩`.
+
+Establish `hm : m < 0` using `by omega`. Use `hsub m j hm` as an intermediate fact. Introduce `u`. Conclude with `((hex m j).1 u).1 (Subsingleton.elim _ _)`. Introduce `hN`.
+
+Take `⟨m, rfl⟩ : ∃ m, N = m + 2 * d` from `⟨N - 2 * d, by ring⟩`. Establish `hm : m < 0` using `by omega`. Use `hsub m j hm` as an intermediate fact. Rewrite using `[injective_iff_map_eq_zero]`. Introduce `a ha`.
+
+Take `⟨b, rfl⟩` from `((hex m j).2.2 a).1 ha`. Rewrite using `[Subsingleton.elim b 0, map_zero]`.
+-/
 theorem LeafSemi_of : LeafSemi := by
   intro hA9 hG
   intro q _ X Z S p ι _ d e _ _ hq U hU N i

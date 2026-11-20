@@ -21,6 +21,9 @@ def fnEquiv (V : Cover Y) : V.X.functionField ≃+* V.G.functionField :=
     ⟨(SmallSec.fnMap V.j (GlobalTheory.HtGen.SplitCover.j_gen_specializes V)).injective,
       SmallSec.fnMap_surjective V.j (GlobalTheory.HtGen.SplitCover.j_gen_specializes V)⟩
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem fnEquiv_apply (V : Cover Y) (f : V.X.functionField) :
     fnEquiv V f = SmallSec.fnMap V.j (GlobalTheory.HtGen.SplitCover.j_gen_specializes V) f := rfl
 
@@ -37,6 +40,9 @@ def frameLf (V : Cover Y) {g : ℕ} (H : Matrix (Fin (g + g)) (Fin g) V.G.functi
     (σ : ∀ k : ℕ, Fin k → Fin (g + g)) : Matrix (Fin g) (Fin (g + g)) V.X.functionField :=
   leftInv (frameUm V H σ) (σ g)
 
+/- English proof (translation)
+Unfold `frameC`. Rewrite using `[dif_pos (div_ne_zero h h')]`. Both sides reduce to the same expression.
+-/
 theorem frameC_val {K : Type} [Field K] {g : ℕ} (H : Matrix (Fin (g + g)) (Fin g) K) (σ : ∀ k : ℕ, Fin k → Fin (g + g))
     (k : Fin g) (h : minorAt H ((k : ℕ) + 1) k.2 (σ ((k : ℕ) + 1)) ≠ 0) (h' : minorAt H k k.2.le (σ k) ≠ 0) :
     (frameC H σ k : K) = minorAt H ((k : ℕ) + 1) k.2 (σ ((k : ℕ) + 1)) / minorAt H k k.2.le (σ k) := by

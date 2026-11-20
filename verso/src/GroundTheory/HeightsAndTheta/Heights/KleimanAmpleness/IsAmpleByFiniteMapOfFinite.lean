@@ -15,6 +15,15 @@ section Core
 
 variable {S : Type} [CommRing S] {Ω : Type} [Field Ω] [Algebra S Ω]
 
+/- English proof (translation)
+Use `choose M hM using hz`. Set `e' : Fin m → A` to `fun j => ⟨e j, he j⟩`. Establish `hspan : Ideal.span (Set.range e') = ⊤`. Rewrite using `[Ideal.eq_top_iff_one]`. Establish `h1 : (1 : A) = ∑ j, e' j` using `Subtype.ext (by simp [e', hsum])`.
+
+Rewrite using `[h1]`. Conclude with `Ideal.sum_mem _ fun j _ => Ideal.subset_span ⟨j, rfl⟩`. Establish `hpow` using `Ideal.span_pow_eq_top _ hspan (∑ j, M j)`. Establish `hle : Ideal.span ((fun a => a ^ (∑ j, M j)) '' Set.range e') ≤ mulMemIdeal A z`. Rewrite using `[Ideal.span_le]`.
+
+Introduce and unpack `_ ⟨_, ⟨j, rfl⟩, rfl⟩`. Establish `hj : M j ≤ ∑ j, M j` using `Finset.single_le_sum (fun _ _ => Nat.zero_le _) (Finset.mem_univ j)`. Express the relevant statement in the definitionally equal form `((e' j ^ (∑ j, M j) : A) : Ω) * z ∈ A`. Rewrite using `[SubmonoidClass.coe_pow, ← Nat.sub_add_cancel hj, pow_add, mul_assoc]`. Conclude with `A.mul_mem (A.pow_mem (he j) _) (hM j)`.
+
+Rewrite `hle` using `[hpow]`. Establish `h1 : (1 : A) ∈ mulMemIdeal A z` using `hle Submodule.mem_top`. Simplify `h1` using `[mulMemIdeal]`.
+-/
 theorem mem_of_pow_mul_mem (A : Subalgebra S Ω) {m : ℕ} (e : Fin m → Ω) (he : ∀ j, e j ∈ A)
     (hsum : ∑ j, e j = 1) (z : Ω) (hz : ∀ j, ∃ M : ℕ, e j ^ M * z ∈ A) : z ∈ A := by
   classical
@@ -38,6 +47,39 @@ theorem mem_of_pow_mul_mem (A : Subalgebra S Ω) {m : ℕ} (e : Fin m → Ω) (h
   have h1 : (1 : A) ∈ mulMemIdeal A z := hle Submodule.mem_top
   simpa [mulMemIdeal] using h1
 
+/- English proof (translation)
+Use `set Q := Submodule.span A (Set.range g) with hQdef`. Establish `hone : (1 : Ω) ∈ Q * Q'`. Rewrite using `[hQQ]`. Conclude with `Submodule.mem_one.mpr ⟨1, map_one _⟩`. Choose the witnesses or unpack the hypotheses as in `⟨w, hwQ, hsum⟩ : ∃ w : Fin m → Ω, (∀ b, w b ∈ Q') ∧ ∑ b, g b * w b = 1 := by`.
+
+Use `Submodule.mul_induction_on (C := fun z => ∃ w : Fin m → Ω, (∀ b, w b ∈ Q') ∧ ∑ b, g b * w b = z) hone ?_ ?_` and prove the remaining obligations. Introduce `q hq q' hq'`. Take `⟨a, rfl⟩` from `(Submodule.mem_span_range_iff_exists_fun A).mp hq`. Use `⟨fun b => (a b : Ω) * q', fun b => Q'.smul_mem (a b) hq', ?_⟩` and prove the remaining obligations. Rewrite using `[Finset.sum_mul]`.
+
+Use `Finset.sum_congr rfl fun b _ => ?_` and prove the remaining obligations. Rewrite using `[Subalgebra.smul_def, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree. Introduce and unpack `_ _ ⟨w, hw, rfl⟩ ⟨w', hw', rfl⟩`. Use `⟨w + w', fun b => Q'.add_mem (hw b) (hw' b), ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[← Finset.sum_add_distrib]`. Conclude with `Finset.sum_congr rfl fun b _ => by simp [mul_add]`. Establish `hmulA : ∀ p ∈ Q, ∀ q ∈ Q', p * q ∈ A`. Introduce `p hp q hq`. Establish `h` using `Submodule.mul_mem_mul hp hq`.
+
+Rewrite `h` using `[hQQ, Submodule.mem_one]`. Take `⟨y, hy⟩` from `h`. Rewrite using `[← hy]`. Conclude with `y.2`. Establish `hg : ∀ a, g a ∈ Q` using `fun a => Submodule.subset_span ⟨a, rfl⟩`.
+
+Establish `he : ∀ j, g j * w j ∈ A` using `fun j => hmulA _ (hg j) _ (hwQ j)`. Establish `hprod : ∀ q : Fin k → Ω, (∀ l, q l ∈ Q') → t * ∏ l, q l ∈ A`. Introduce `q hq`. Use `mem_of_pow_mul_mem A (fun j => g j * w j) he hsum _ fun j => ?_` and prove the remaining obligations. Distinguish the cases in `hj : g j = 0`.
+
+Conclude with `⟨1, by simp [hj]⟩`. Establish `h1 : t / g j ^ k ∈ powMulMem A (g j * w j) (he j)`. Use `(Algebra.adjoin_le ?_) (ht j hj)` and prove the remaining obligations. Introduce and unpack `_ (ha | ⟨c, rfl⟩)`. Conclude with `⟨0, by simpa using ha⟩`.
+
+Use `⟨1, ?_⟩` and prove the remaining obligations. Establish `: (g j * w j) ^ 1 * (g c / g j) = g c * w j`. Clear the denominators using the available nonvanishing facts. Rewrite using `[this]`. Conclude with `hmulA _ (hg c) _ (hwQ j)`.
+
+Take `⟨M, hM⟩` from `h1`. Use `⟨M, ?_⟩` and prove the remaining obligations. Establish `: (g j * w j) ^ M * (t * ∏ l, q l) = (g j * w j) ^ M * (t / g j ^ k) * ∏ l, (g j * q l)`. Rewrite using `[Finset.prod_mul_distrib, Finset.prod_const, Finset.card_univ, Fintype.card_fin]`. Clear the denominators using the available nonvanishing facts.
+
+Rewrite using `[this]`. Conclude with `A.mul_mem hM (Subalgebra.prod_mem _ fun l _ => hmulA _ (hg j) _ (hq l))`. Establish `hQ'k : ∀ q ∈ Q' ^ k, t * q ∈ A`. Introduce `q hq`. Rewrite `hq` using `[Submodule.pow_eq_span_pow_set]`.
+
+Proceed by induction on `hq using Submodule.span_induction with`. Consider the case `mem z hz`. Take `⟨f, rfl⟩` from `Set.mem_pow.mp hz`. Rewrite using `[List.prod_ofFn]`. Conclude with `hprod (fun l => f l) fun l => (f l).2`.
+
+Consider the case `zero => simp`. Consider the case `add a b _ _ ha hb => rw [mul_add]`. Conclude with `A.add_mem ha hb`. Consider the case `smul a z _ hz`. Rewrite using `[Subalgebra.smul_def, smul_eq_mul, mul_left_comm]`.
+
+Conclude with `A.mul_mem a.2 hz`. Establish `h1 : (1 : Ω) ∈ Q ^ k * Q' ^ k`. Rewrite using `[← mul_pow, hQQ, one_pow]`. Conclude with `Submodule.mem_one.mpr ⟨1, map_one _⟩`. Establish `key : ∀ z ∈ Q ^ k * Q' ^ k, t * z ∈ Q ^ k`.
+
+Introduce `z hz`. Use `Submodule.mul_induction_on hz ?_ ?_` and prove the remaining obligations. Introduce `p hp q hq`. Establish `: t * (p * q) = (⟨t * q, hQ'k q hq⟩ : A) • p`. Rewrite using `[Subalgebra.smul_def]`.
+
+Expand and normalize the polynomial expressions, which then agree. Rewrite using `[this]`. Conclude with `Submodule.smul_mem _ _ hp`. Introduce `a b ha hb`. Rewrite using `[mul_add]`.
+
+Conclude with `Submodule.add_mem _ ha hb`. Simplify using `using key 1 h1`.
+-/
 theorem mem_pow_of_div_pow_mem (A : Subalgebra S Ω) (Q' : Submodule A Ω) {m : ℕ} (g : Fin m → Ω)
     (hQQ : Submodule.span A (Set.range g) * Q' = 1) (k : ℕ) (t : Ω)
     (ht : ∀ j, g j ≠ 0 → t / g j ^ k ∈ Algebra.adjoin S ((A : Set Ω) ∪ Set.range fun b => g b / g j)) :
@@ -125,6 +167,19 @@ section Graph
 
 variable {S : Type} [CommRing S] {Ω : Type} [Field Ω] [Algebra S Ω] {N m : ℕ} {x : Fin (N + 1) → Ω}
 
+/- English proof (translation)
+Use `set I := Kleiman.singleChart hi with hIdef`. Establish `hiI : i ∈ I.1` using `Finset.mem_singleton_self i`. Apply `le_antisymm` to reduce the goal to its premises. Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨b, rfl⟩`.
+
+Establish `hb : s b ∈ (Q.twist (Kleiman.twistSys S x n)).sub I`. Rewrite using `[← hgen I]`. Conclude with `Submodule.subset_span ⟨b, rfl⟩`. Take `⟨y, hy, hyb⟩` from `(TranslateEq.mem_twist_twistSys_iff Q.toSubSystem n I hiI (s b)).mp hb`. Establish `: x i ^ (-n) * s b = y`.
+
+Simplify using `only [hyb, smul_eq_mul, zpow_neg]`. Clear the denominators using the available nonvanishing facts. Use `show x i ^ (-n) * s b ∈ _`. Rewrite using `[this]`. Conclude with `hy`.
+
+Introduce `y hy`. Establish `hy' : x i ^ n * y ∈ Submodule.span (Kleiman.chartRing S x I) (Set.range s)`. Rewrite using `[hgen I]`. Conclude with `(TranslateEq.mem_twist_twistSys_iff Q.toSubSystem n I hiI _).mpr ⟨y, hy, rfl⟩`. Take `⟨a, ha⟩` from `(Submodule.mem_span_range_iff_exists_fun _).mp hy'`.
+
+Rewrite using `[Submodule.mem_span_range_iff_exists_fun]`. Use `⟨a, ?_⟩` and prove the remaining obligations. Simplify using `only [Subalgebra.smul_def, smul_eq_mul] at ha ⊢`. Establish `: ∑ b, (a b : Ω) * (x i ^ (-n) * s b) = x i ^ (-n) * ∑ b, (a b : Ω) * s b`. Rewrite using `[Finset.mul_sum]; exact Finset.sum_congr rfl fun b _ => by ring`.
+
+Rewrite using `[this, ha, zpow_neg]`. Clear the denominators using the available nonvanishing facts.
+-/
 theorem span_graphGen_eq_sub (Q : Kleiman.LineBundle S x) (n : ℤ) (s : Fin m → Ω) (hgen : IsGraphGen Q n s)
     {i : Fin (N + 1)} (hi : x i ≠ 0) :
     Submodule.span (Kleiman.chartRing S x (Kleiman.singleChart hi)) (Set.range fun b => x i ^ (-n) * s b) =
@@ -156,6 +211,23 @@ theorem span_graphGen_eq_sub (Q : Kleiman.LineBundle S x) (n : ℤ) (s : Fin m �
     rw [this, ha, zpow_neg]
     field_simp
 
+/- English proof (translation)
+Rewrite using `[Kleiman.SubSystem.pow_sub]`. Prove the components needed by the constructor for the conclusion. Introduce `ht j hj`. Proceed by induction on `k generalizing t with`. Consider the case `zero`.
+
+Rewrite `ht` using `[pow_zero, Submodule.mem_one]`. Take `⟨a, rfl⟩` from `ht`. Rewrite using `[pow_zero, mul_one]`. Conclude with `chartRing_le_graphRing x s hi j a.2`. Consider the case `succ k ih`.
+
+Rewrite `ht` using `[pow_succ']`. Use `Submodule.mul_induction_on ht ?_ ?_` and prove the remaining obligations. Introduce `p hp q hq`. Establish `: p * q * (x i ^ n * (s j)⁻¹) ^ (k + 1) = (p * (x i ^ n * (s j)⁻¹)) * (q * (x i ^ n * (s j)⁻¹) ^ k)` using `by ring`. Rewrite using `[this]`.
+
+Conclude with `Subalgebra.mul_mem _ ((mem_sub_iff_graph Q n s hgen hi p).mp hp j hj) (ih q hq)`. Introduce `a b ha hb`. Rewrite using `[add_mul]`. Conclude with `Subalgebra.add_mem _ ha hb`. Introduce `ht`.
+
+Take `⟨Q', hQ'⟩` from `Q.invertible (Kleiman.singleChart hi)`. Rewrite `hQ'`, the goal using `[← span_graphGen_eq_sub Q n s hgen hi]`. Use `mem_pow_of_div_pow_mem _ Q' _ hQ' k t fun j hj => ?_` and prove the remaining obligations. Establish `hsj : s j ≠ 0`. Introduce `h0`.
+
+Apply `hj` to reduce the goal to its premises. Simplify using `[h0]`. Establish `hgdiv : ∀ b, x i ^ (-n) * s b / (x i ^ (-n) * s j) = s b / s j`. Introduce `b`. Simplify using `only [zpow_neg]`.
+
+Clear the denominators using the available nonvanishing facts. Establish `ht' : t / (x i ^ (-n) * s j) ^ k = t * (x i ^ n * (s j)⁻¹) ^ k`. Rewrite using `[div_eq_mul_inv, ← inv_pow, mul_inv, zpow_neg, inv_inv]`. Rewrite using `[ht']`. Use `(graphRing_le x s hi j _ (fun a ha => Algebra.subset_adjoin (Or.inl ha)) fun b => ?_) (ht j hsj)` and prove the remaining obligations.
+
+Rewrite using `[← hgdiv]`. Conclude with `Algebra.subset_adjoin (Or.inr ⟨b, rfl⟩)`.
+-/
 theorem mem_pow_sub_iff_graph (Q : Kleiman.LineBundle S x) (n : ℤ) (s : Fin m → Ω) (hgen : IsGraphGen Q n s)
     {i : Fin (N + 1)} (hi : x i ≠ 0) (k : ℕ) (t : Ω) :
     t ∈ (Q.pow k).sub (Kleiman.singleChart hi) ↔
@@ -197,11 +269,19 @@ theorem mem_pow_sub_iff_graph (Q : Kleiman.LineBundle S x) (n : ℤ) (s : Fin m 
     rw [← hgdiv]
     exact Algebra.subset_adjoin (Or.inr ⟨b, rfl⟩)
 
+/- English proof (translation)
+Simplify using `only [Pi.smul_apply, graphDeg_inl, graphDeg_inr, smul_neg, neg_neg, nsmul_eq_mul, mul_one]`. Rewrite using `[mul_pow, inv_pow, ← zpow_natCast (a ^ n), ← zpow_mul, zpow_neg, zpow_natCast, mul_comm n]`.
+-/
 theorem pow_graphDeg_exp (n : ℤ) (k : ℕ) (a b : Ω) :
     a ^ (-(k • graphDeg n) (Sum.inl ())) * b ^ (-(k • graphDeg n) (Sum.inr ())) = (a ^ n * b⁻¹) ^ k := by
   simp only [Pi.smul_apply, graphDeg_inl, graphDeg_inr, smul_neg, neg_neg, nsmul_eq_mul, mul_one]
   rw [mul_pow, inv_pow, ← zpow_natCast (a ^ n), ← zpow_mul, zpow_neg, zpow_natCast, mul_comm n]
 
+/- English proof (translation)
+Use extensionality with `t`. Rewrite using `[mem_secs_iff, mem_secOver_graph_iff]`. Simplify using `only [pow_graphDeg_exp]`. Prove the components needed by the constructor for the conclusion. Introduce `h i j hi hj`.
+
+Conclude with `(mem_pow_sub_iff_graph Q n s hgen hi k t).mp (h i hi) j hj`. Introduce `h i hi`. Conclude with `(mem_pow_sub_iff_graph Q n s hgen hi k t).mpr fun j hj => h i j hi hj`.
+-/
 theorem pow_secs_eq_secOver (Q : Kleiman.LineBundle S x) (n : ℤ) (s : Fin m → Ω) (hgen : IsGraphGen Q n s)
     (k : ℕ) : (Q.pow k).secs = secOver S (graphVec x s) (k • graphDeg n) := by
   ext t
@@ -219,6 +299,17 @@ section Ample
 
 variable {S : Type} [CommRing S] {Ω : Type} [Field Ω] [Algebra S Ω] {N m : ℕ} {x : Fin (N + 1) → Ω}
 
+/- English proof (translation)
+Introduce `c hc`. Take `⟨i, j, rfl⟩ : ∃ (i : Fin (N + 1)) (j : Fin m), c = graphChart i j` from `⟨c (Sum.inl ()), c (Sum.inr ()), graphChart_eta c⟩`. Establish `hi : x i ≠ 0` using `hc (Sum.inl ())`. Establish `hj : s j ≠ 0` using `hc (Sum.inr ())`. Establish `hone : x i ^ (-n) * s j * (x i ^ n * (s j)⁻¹) = 1`.
+
+Rewrite using `[zpow_neg]`. Clear the denominators using the available nonvanishing facts. Establish `hy : (x i ^ (-n) * s j) ^ D.m ∈ (Q.pow D.m).sub (Kleiman.singleChart hi)`. Use `(mem_pow_sub_iff_graph Q n s hgen hi D.m _).mpr fun j' hj' => ?_` and prove the remaining obligations. Rewrite using `[← mul_pow]`.
+
+Establish `: x i ^ (-n) * s j * (x i ^ n * (s j')⁻¹) = s j / s j'`. Rewrite using `[zpow_neg]`. Clear the denominators using the available nonvanishing facts. Rewrite using `[this]`. Conclude with `Subalgebra.pow_mem _ (div_mem_graphRing_inr x s i j' j) _`.
+
+Rewrite `hy` using `[← D.generates (Kleiman.singleChart hi)]`. Take `⟨a, ha⟩` from `(Submodule.mem_span_range_iff_exists_fun _).mp hy`. Use `⟨fun l => a l, fun l => chartRing_le_graphRing x s hi j (a l).2, ?_⟩` and prove the remaining obligations. Rewrite using `[prod_graph, pow_graphDeg_exp]`. Combine the equalities or inequalities in the displayed calculation.
+
+Rewrite using `[Finset.sum_mul]`. Use `Finset.sum_congr rfl fun l _ => ?_` and prove the remaining obligations. Rewrite using `[Subalgebra.smul_def, smul_eq_mul, mul_assoc]`. Use `_ = 1 := by rw [ha, ← mul_pow, hone, one_pow]`.
+-/
 theorem generatesOver_graph (Q : Kleiman.LineBundle S x) (n : ℤ) (s : Fin m → Ω) (hgen : IsGraphGen Q n s)
     (D : Kleiman.AmpleData S x Q) : GeneratesOver S (graphVec x s) (D.m • graphDeg n) D.h := by
   intro c hc
@@ -248,6 +339,23 @@ theorem generatesOver_graph (Q : Kleiman.LineBundle S x) (n : ℤ) (s : Fin m �
         rw [Subalgebra.smul_def, smul_eq_mul, mul_assoc]
     _ = 1 := by rw [ha, ← mul_pow, hone, one_pow]
 
+/- English proof (translation)
+Introduce `f hf`. Establish `hf0 : f ∈ IndefiniteRowSideFullHecke.Kleiman2.preimRing S (graphVec x s) D.h j` using `hf`. Simplify using `only [IndefiniteRowSideFullHecke.Kleiman2.preimRing, Algebra.mem_iInf] at hf0`. Rewrite using `[Kleiman.ampleRing, Set.mem_iInter]`. Introduce `I`.
+
+Take `⟨i, hiI⟩` from `I.2.1`. Establish `hi : x i ≠ 0` using `(Kleiman.mem_support x).mp (I.2.2 hiI)`. It suffices to establish `h : ∃ M : ℕ, f * D.h j ^ M ∈ (Q.pow (D.m * M)).sub (Kleiman.singleChart hi) by`. Take `⟨M, hM⟩` from `h`. Conclude with `⟨M, (Q.pow (D.m * M)).mono _ I (Finset.singleton_subset_iff.mpr hiI) _ hM⟩`.
+
+Establish `hsec : ∀ l, D.h l ∈ (Q.pow D.m).sub (Kleiman.singleChart hi)` using `fun l => (mem_secs_iff _ _).mp (D.mem_secs l) i hi`. Establish `hM : ∀ j', ∃ M : ℕ, s j' ≠ 0 → (D.h j * (x i ^ n * (s j')⁻¹) ^ D.m) ^ M * f ∈ graphRing S x s i j'`. Introduce `j'`. Distinguish the cases in `hj' : s j' = 0`. Conclude with `⟨0, fun h => absurd hj' h⟩`.
+
+Establish `he : D.h j * (x i ^ n * (s j')⁻¹) ^ D.m ∈ graphRing S x s i j'` using `(mem_pow_sub_iff_graph Q n s hgen hi D.m _).mp (hsec j) j' hj'`. Establish `hle : chartRingOver S (IndefiniteRowSideFullHecke.Kleiman2.joinVec (graphVec x s) (IndefiniteRowSideFullHecke.Kleiman2.oneBlock D.h)) (IndefiniteRowSideFullHecke.Kleiman2.joinChart (graphChart i j') fun _ => j) ≤ powMulMem (graphRing S x s i j') _ he`. Use `Algebra.adjoin_le ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨⟨(⟨⟩ | ⟨⟩) | ⟨⟩, a⟩, rfl⟩`. Conclude with `⟨0, by rw [pow_zero, one_mul]; exact div_mem_graphRing_inl x s i a j'⟩`.
+
+Conclude with `⟨0, by rw [pow_zero, one_mul]; exact div_mem_graphRing_inr x s i j' a⟩`. Use `⟨1, ?_⟩` and prove the remaining obligations. Establish `h1` using `(mem_pow_sub_iff_graph Q n s hgen hi D.m _).mp (hsec a) j' hj'`. Express the relevant statement in the definitionally equal form `(D.h j * (x i ^ n * (s j')⁻¹) ^ D.m) ^ 1 * (D.h a / D.h j) ∈ _`. Establish `: (D.h j * (x i ^ n * (s j')⁻¹) ^ D.m) ^ 1 * (D.h a / D.h j) = D.h a * (x i ^ n * (s j')⁻¹) ^ D.m`.
+
+Clear the denominators using the available nonvanishing facts. Rewrite using `[this]`. Conclude with `h1`. Take `⟨M, hM⟩` from `hle (hf0 (graphChart i j') (by rintro (⟨⟩ | ⟨⟩); exacts [hi, hj']))`. Conclude with `⟨M, fun _ => hM⟩`.
+
+Use `choose M hM using hM`. Use `⟨∑ j', M j', (mem_pow_sub_iff_graph Q n s hgen hi _ _).mpr fun j' hj' => ?_⟩` and prove the remaining obligations. Establish `he : D.h j * (x i ^ n * (s j')⁻¹) ^ D.m ∈ graphRing S x s i j'` using `(mem_pow_sub_iff_graph Q n s hgen hi D.m _).mp (hsec j) j' hj'`. Take `⟨d, hd⟩` from `Nat.exists_eq_add_of_le (Finset.single_le_sum (fun _ _ => Nat.zero_le _) (Finset.mem_univ j') : M j' ≤ ∑ j', M j')`. Rewrite using `[hd]`.
+
+Establish `: f * D.h j ^ (M j' + d) * (x i ^ n * (s j')⁻¹) ^ (D.m * (M j' + d)) = (D.h j * (x i ^ n * (s j')⁻¹) ^ D.m) ^ d * ((D.h j * (x i ^ n * (s j')⁻¹) ^ D.m) ^ M j' * f)`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[this]`. Conclude with `Subalgebra.mul_mem _ (Subalgebra.pow_mem _ he _) (hM j' hj')`.
+-/
 theorem preimRing_subset_ampleRing (Q : Kleiman.LineBundle S x) (n : ℤ) (s : Fin m → Ω)
     (hgen : IsGraphGen Q n s) (D : Kleiman.AmpleData S x Q) {j : Fin (D.r + 1)} (hj : D.h j ≠ 0) :
     (IndefiniteRowSideFullHecke.Kleiman2.preimRing S (graphVec x s) D.h j : Set Ω) ⊆
@@ -300,6 +408,21 @@ theorem preimRing_subset_ampleRing (Q : Kleiman.LineBundle S x) (n : ℤ) (s : F
   rw [this]
   exact Subalgebra.mul_mem _ (Subalgebra.pow_mem _ he _) (hM j' hj')
 
+/- English proof (translation)
+Introduce `f hf`. Use `show f ∈ IndefiniteRowSideFullHecke.Kleiman2.preimRing S (graphVec x s) D.h j`. Simplify using `only [IndefiniteRowSideFullHecke.Kleiman2.preimRing, Algebra.mem_iInf]`. Introduce `c hc`. Take `⟨i, j', rfl⟩ : ∃ (i : Fin (N + 1)) (j' : Fin m), c = graphChart i j'` from `⟨c (Sum.inl ()), c (Sum.inr ()), graphChart_eta c⟩`.
+
+Establish `hi : x i ≠ 0` using `hc (Sum.inl ())`. Establish `hj' : s j' ≠ 0` using `hc (Sum.inr ())`. Use `set R := chartRingOver S (IndefiniteRowSideFullHecke.Kleiman2.joinVec (graphVec x s) (IndefiniteRowSideFullHecke.Kleiman2.oneBlock D.h)) (IndefiniteRowSideFullHecke.Kleiman2.joinChart (graphChart i j') fun _ => j) with hRdef`. Establish `hgR : graphRing S x s i j' ≤ R`. Use `Algebra.adjoin_le ?_` and prove the remaining obligations.
+
+Introduce and unpack `_ ⟨⟨⟨⟩ | ⟨⟩, a⟩, rfl⟩`. Conclude with `Algebra.subset_adjoin ⟨⟨Sum.inl (Sum.inl ()), a⟩, rfl⟩`. Conclude with `Algebra.subset_adjoin ⟨⟨Sum.inl (Sum.inr ()), a⟩, rfl⟩`. Establish `hhR : ∀ l, D.h l / D.h j ∈ R` using `fun l => Algebra.subset_adjoin ⟨⟨Sum.inr (), l⟩, rfl⟩`. Establish `hcc : x i ^ n * (s j')⁻¹ ≠ 0` using `mul_ne_zero (zpow_ne_zero n hi) (inv_ne_zero hj')`.
+
+Establish `hinv : (D.h j * (x i ^ n * (s j')⁻¹) ^ D.m)⁻¹ ∈ R`. Take `⟨u, hu, hsum⟩` from `generatesOver_graph Q n s hgen D (graphChart i j') hc`. Rewrite `hsum` using `[prod_graph, pow_graphDeg_exp]`. Establish `: (D.h j * (x i ^ n * (s j')⁻¹) ^ D.m)⁻¹ = ∑ l, u l * (D.h l / D.h j)`. Rewrite using `[← mul_one (D.h j * (x i ^ n * (s j')⁻¹) ^ D.m)⁻¹, ← hsum, Finset.mul_sum]`.
+
+Use `Finset.sum_congr rfl fun l _ => ?_` and prove the remaining obligations. Establish `: (x i ^ n * (s j')⁻¹) ^ D.m ≠ 0` using `pow_ne_zero _ hcc`. Clear the denominators using the available nonvanishing facts. Rewrite using `[this]`. Conclude with `Subalgebra.sum_mem _ fun l _ => Subalgebra.mul_mem _ (hgR (hu l)) (hhR l)`.
+
+Take `⟨M, hM⟩` from `Set.mem_iInter.mp hf (Kleiman.singleChart hi)`. Establish `h1` using `(mem_pow_sub_iff_graph Q n s hgen hi _ _).mp hM j' hj'`. Establish `: f = f * D.h j ^ M * (x i ^ n * (s j')⁻¹) ^ (D.m * M) * ((D.h j * (x i ^ n * (s j')⁻¹) ^ D.m)⁻¹) ^ M`. Establish `hne : D.h j * (x i ^ n * (s j')⁻¹) ^ D.m ≠ 0` using `mul_ne_zero hj (pow_ne_zero _ hcc)`. Establish `key : D.h j ^ M * ((x i ^ n * (s j')⁻¹) ^ D.m) ^ M * ((D.h j * (x i ^ n * (s j')⁻¹) ^ D.m)⁻¹) ^ M = 1`.
+
+Rewrite using `[← mul_pow, ← mul_pow, mul_inv_cancel₀ hne, one_pow]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[this]`. Conclude with `Subalgebra.mul_mem _ (hgR h1) (Subalgebra.pow_mem _ hinv _)`.
+-/
 theorem ampleRing_subset_preimRing (Q : Kleiman.LineBundle S x) (n : ℤ) (s : Fin m → Ω)
     (hgen : IsGraphGen Q n s) (D : Kleiman.AmpleData S x Q) {j : Fin (D.r + 1)} (hj : D.h j ≠ 0) :
     Kleiman.ampleRing Q.toSubSystem D.m (D.h j) ⊆
@@ -344,6 +467,9 @@ theorem ampleRing_subset_preimRing (Q : Kleiman.LineBundle S x) (n : ℤ) (s : F
   rw [this]
   exact Subalgebra.mul_mem _ (hgR h1) (Subalgebra.pow_mem _ hinv _)
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨D.m, D.r + 1, D.h, D.m_pos, fun l => by rw [← pow_secs_eq_secOver Q n s hgen]; exact D.mem_secs l, generatesOver_graph Q n s hgen D, hfin⟩`.
+-/
 theorem isAmpleByFiniteMap_of_finite (Q : Kleiman.LineBundle S x) (n : ℤ) (s : Fin m → Ω)
     (hgen : IsGraphGen Q n s) (D : Kleiman.AmpleData S x Q)
     (hfin : ∀ j, D.h j ≠ 0 → ∃ (r : ℕ) (b : Fin r → Ω),
@@ -356,6 +482,9 @@ theorem isAmpleByFiniteMap_of_finite (Q : Kleiman.LineBundle S x) (n : ℤ) (s :
 
 end Ample
 
+/- English proof (translation)
+Introduce `S _ N Ω _ _ x Q n m s hgen hD`. Take `⟨D⟩` from `hD`. Use `isAmpleByFiniteMap_of_finite Q n s hgen D fun j hj => ?_` and prove the remaining obligations. Take `⟨r, b, hb, hsub⟩` from `hfin S N Ω x Q D j hj`. Conclude with `⟨r, b, fun l => ampleRing_subset_preimRing Q n s hgen D hj (hb l), (preimRing_subset_ampleRing Q n s hgen D hj).trans hsub⟩`.
+-/
 theorem AmpleEq.proof (hfin : Kleiman.AmpleRingFinite.Statement) : AmpleEq.Statement := by
   intro S _ N Ω _ _ x Q n m s hgen hD
   obtain ⟨D⟩ := hD

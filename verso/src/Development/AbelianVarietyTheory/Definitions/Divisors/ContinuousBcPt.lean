@@ -16,11 +16,22 @@ variable {k K : Type} [CommRing k] [CommRing K] {X G : Scheme.{0}} {p : X ⟶ Sp
 
 def bcPt (w : j ≫ p = q ≫ spMap ρ) (τ : K →+* ℂ) (z : CxPts q τ) : CxPts p (τ.comp ρ) := CxPts.bcMap w τ z
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem bcPt_val (w : j ≫ p = q ≫ spMap ρ) (τ : K →+* ℂ) (z : CxPts q τ) : (bcPt w τ z).1 = z.1 ≫ j := rfl
 
+/- English proof (translation)
+The claim follows from `CxPts.continuous_of_comp (bcPt_val w τ)`.
+-/
 theorem continuous_bcPt (w : j ≫ p = q ≫ spMap ρ) (τ : K →+* ℂ) : Continuous (bcPt w τ) :=
   CxPts.continuous_of_comp (bcPt_val w τ)
 
+/- English proof (translation)
+Establish `hm : ∀ y, (bcPt w τ y).1 = y.1 ≫ j` using `bcPt_val w τ`. Unfold `CInfAt at h ⊢`. Take `⟨W, ι, hι, g, F, O, hW, hO, hmem, hF, he⟩` from `h`. Use `⟨j ⁻¹ᵁ W, ι, hι, fun a => j.app W (g a), F, O, (CxPts.mem_ptsIn_preimage hm).2 hW, hO, ?_, hF, ?_⟩` and prove the remaining obligations. Simplify `hmem` using `only [CxPts.ev_of_comp hm]`.
+
+Use `filter_upwards [(continuous_bcPt w τ).continuousAt.tendsto.eventually he] with y hy`. Simplify `hy` using `only [CxPts.ev_of_comp hm]`.
+-/
 theorem cInfAt_bcPt (w : j ≫ p = q ≫ spMap ρ) (τ : K →+* ℂ) {f : CxPts p (τ.comp ρ) → ℝ} {z : CxPts q τ}
     (h : CInfAt f (bcPt w τ z)) : CInfAt (fun y => f (bcPt w τ y)) z := by
   have hm : ∀ y, (bcPt w τ y).1 = y.1 ≫ j := bcPt_val w τ

@@ -45,10 +45,18 @@ noncomputable def contrML (w₀ : ι) (μ : ι → Module.Dual ℂ V) : Multilin
 noncomputable def contr (w₀ : ι) (μ : ι → Module.Dual ℂ V) : (⨂[ℂ] _ : ι, V) →ₗ[ℂ] V :=
   PiTensorProduct.lift (contrML w₀ μ)
 
+/- English proof (translation)
+Rewrite using `[contr, PiTensorProduct.lift.tprod]`. Both sides reduce to the same expression.
+-/
 theorem contr_tprod (w₀ : ι) (μ : ι → Module.Dual ℂ V) (x : ι → V) :
     contr w₀ μ (PiTensorProduct.tprod ℂ x) = (∏ i ∈ Finset.univ.erase w₀, μ i (x i)) • x w₀ := by
   rw [contr, PiTensorProduct.lift.tprod]; rfl
 
+/- English proof (translation)
+Proceed by induction on `T using PiTensorProduct.induction_on with`. Consider the case `smul_tprod r x`. Rewrite using `[map_smul, map_smul, map_smul, contr_tprod, PiTensorProduct.dualDistrib_apply, map_smul, ← Finset.mul_prod_erase _ _ (Finset.mem_univ w₀), Function.update_self, smul_eq_mul, smul_eq_mul, smul_eq_mul]`. Use `congr 1`. Rewrite using `[mul_comm]`.
+
+Use `congr 1`. Conclude with `Finset.prod_congr rfl fun k hk => by rw [Function.update_of_ne (Finset.ne_of_mem_erase hk)]`. Consider the case `add a b ha hb => rw [map_add, map_add, ha, hb, map_add]`.
+-/
 theorem dual_contr (w₀ : ι) (μ : ι → Module.Dual ℂ V) (ν : Module.Dual ℂ V) (T : ⨂[ℂ] _ : ι, V) :
     ν (contr w₀ μ T) =
       PiTensorProduct.dualDistrib (PiTensorProduct.tprod ℂ (Function.update μ w₀ ν)) T := by
@@ -62,6 +70,11 @@ theorem dual_contr (w₀ : ι) (μ : ι → Module.Dual ℂ V) (ν : Module.Dual
     exact Finset.prod_congr rfl fun k hk => by rw [Function.update_of_ne (Finset.ne_of_mem_erase hk)]
   | add a b ha hb => rw [map_add, map_add, ha, hb, map_add]
 
+/- English proof (translation)
+Proceed by induction on `T using PiTensorProduct.induction_on with`. Consider the case `smul_tprod r x`. Rewrite using `[map_smul, map_smul, map_smul, GlobalTheory.RealLift.atPl, PiTensorProduct.map_tprod, contr_tprod, contr_tprod, map_smul, Function.update_self, L.map_smul]`. Use `congr 2`. Conclude with `Finset.prod_congr rfl fun k hk => by`.
+
+Simplify using `[Function.update_of_ne (Finset.ne_of_mem_erase hk)]`. Consider the case `add a b ha hb => simp only [map_add, ha, hb]`.
+-/
 theorem contr_atPl (w₀ : ι) (μ : ι → Module.Dual ℂ V) (L : Module.End ℂ V) (T : ⨂[ℂ] _ : ι, V) :
     contr w₀ μ (GlobalTheory.RealLift.atPl (V := fun _ : ι => V) w₀ L T) = L (contr w₀ μ T) := by
   induction T using PiTensorProduct.induction_on with
@@ -73,6 +86,11 @@ theorem contr_atPl (w₀ : ι) (μ : ι → Module.Dual ℂ V) (L : Module.End �
       simp [Function.update_of_ne (Finset.ne_of_mem_erase hk)]
   | add a b ha hb => simp only [map_add, ha, hb]
 
+/- English proof (translation)
+Introduce `ι _ _ V _ _ J L w₀ hL T hT`. Apply `GlobalTheory.PiTensorCommute.eq_zero_of_forall_dualDistrib (M := fun _ : ι => V)` to reduce the goal to its premises. Introduce `f`. Establish `hv : contr w₀ f T = 0` using `hL _ fun j => by rw [← contr_atPl, hT j, map_zero]`. Establish `h` using `dual_contr w₀ f (f w₀) T`.
+
+Rewrite `h` using `[hv, map_zero, Function.update_eq_self]`. Conclude with `h.symm`.
+-/
 theorem atPl_noCommonKernel : ∀ (ι : Type) [Fintype ι] [DecidableEq ι] (V : Type) [AddCommGroup V] [Module ℂ V] (J : Type)
     (L : J → Module.End ℂ V) (w₀ : ι), (∀ v : V, (∀ j, L j v = 0) → v = 0) →
     ∀ T : ⨂[ℂ] _ : ι, V, (∀ j, GlobalTheory.RealLift.atPl (V := fun _ : ι => V) w₀ (L j) T = 0) → T = 0 := by

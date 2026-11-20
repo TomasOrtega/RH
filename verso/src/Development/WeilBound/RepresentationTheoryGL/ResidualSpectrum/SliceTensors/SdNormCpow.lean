@@ -2,10 +2,38 @@ import Mathlib
 
 namespace PositivityTheory.Rg.Rs.StrStepA
 
+/- English proof (translation)
+Rewrite using `[Complex.norm_natCast_cpow_of_pos (by omega)]`. Simplify using the standard rewrite rules.
+-/
 theorem sd_norm_cpow (q : ℕ) (hq : 1 < q) (x : ℝ) : ‖(q : ℂ) ^ (-(x : ℂ))‖ = (q : ℝ) ^ (-x) := by
   rw [Complex.norm_natCast_cpow_of_pos (by omega)]
   simp
 
+/- English proof (translation)
+Establish `hQ : (1 : ℝ) < q` using `by exact_mod_cast hq`. Establish `hQ0 : (0 : ℝ) < q` using `by linarith`. Use `set z : ℂ := α * (q : ℂ) ^ (-(u : ℂ)) with hz`. Establish `hzM : z ∈ M` using `(hM z).2 ⟨u, hu, α, hα, rfl⟩`. Establish `hnz : ‖z‖ = ‖α‖ * (q : ℝ) ^ (-u)` using `by rw [hz, norm_mul, sd_norm_cpow q hq]`.
+
+Establish `hsmall : ‖z‖ < (q : ℝ) ^ (-(1 / 2) : ℝ)`. Rewrite using `[hnz]`. Establish `h1 : ‖α‖ * (q : ℝ) ^ (-u) < (q : ℝ) ^ (1 / 2 : ℝ) * (q : ℝ) ^ (-u)` using `mul_lt_mul_of_pos_right (hB α hα).2 (Real.rpow_pos_of_pos hQ0 _)`. Establish `h2 : (q : ℝ) ^ (1 / 2 : ℝ) * (q : ℝ) ^ (-u) = (q : ℝ) ^ (1 / 2 - u)`. Rewrite using `[← Real.rpow_add hQ0]`.
+
+Put the polynomial expressions in normal form. Establish `h3 : (q : ℝ) ^ (1 / 2 - u) ≤ (q : ℝ) ^ (-(1 / 2) : ℝ)` using `Real.rpow_le_rpow_of_exponent_le hQ.le (by linarith)`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hc1 : 0 < M.count z` using `Multiset.count_pos.2 hzM`. Establish `hc2 : 0 < M.count ((q : ℂ) * z)` using `lt_of_lt_of_le hc1 (hgap z hsmall)`.
+
+Take `⟨x, hx, β, hβ, e⟩` from `(hM _).1 (Multiset.count_pos.1 hc2)`. Establish `en : (q : ℝ) * (‖α‖ * (q : ℝ) ^ (-u)) = ‖β‖ * (q : ℝ) ^ (-x)`. Establish `h` using `congrArg norm e`. Rewrite `h` using `[norm_mul, hnz, norm_mul, sd_norm_cpow q hq, Complex.norm_natCast]`. Conclude with `h`.
+
+Establish `hβn : ‖β‖ = ‖α‖ * (q : ℝ) ^ (1 - u + x)`. Establish `e1 : (q : ℝ) ^ (1 - u + x) = q * (q : ℝ) ^ (-u) * (q : ℝ) ^ x`. Rewrite using `[Real.rpow_add hQ0, Real.rpow_sub hQ0, Real.rpow_one, Real.rpow_neg hQ0.le]`. Clear the denominators using the available nonvanishing facts. Establish `hxx : (q : ℝ) ^ (-x) * (q : ℝ) ^ x = 1` using `by rw [← Real.rpow_add hQ0]; simp`.
+
+Combine the equalities or inequalities in the displayed calculation. Take `⟨n, hn⟩` from `hint x hx u hu`. Establish `hk : 1 - u + x = ((n + 1 : ℤ) : ℝ)` using `by push_cast; linarith`. Rewrite `hβn` using `[hk, Real.rpow_intCast]`. Take `⟨hb1, hb2⟩` from `hB β hβ`.
+
+Take `⟨ha1, ha2⟩` from `hB α hα`. Establish `hpos : (0 : ℝ) < (q : ℝ) ^ (-(1 / 2) : ℝ)` using `Real.rpow_pos_of_pos hQ0 _`. Establish `hhalf : (q : ℝ) ^ (-(1 / 2) : ℝ) * (q : ℝ) = (q : ℝ) ^ (1 / 2 : ℝ)`. Establish `h` using `(Real.rpow_add hQ0 (-(1 / 2) : ℝ) 1).symm`. Rewrite `h` using `[Real.rpow_one]`.
+
+Rewrite using `[h]`. Evaluate the numerical expressions. Break down `lt_trichotomy (n + 1) 0 with hneg | hzero | hposn` into its components or cases. It suffices to derive a contradiction. Establish `hle : (q : ℝ) ^ (n + 1) ≤ (q : ℝ) ^ (-1 : ℤ)` using `zpow_le_zpow_right₀ hQ.le (by omega)`.
+
+Establish `hzp : (0 : ℝ) < (q : ℝ) ^ (n + 1)` using `zpow_pos hQ0 _`. Establish `: ‖β‖ < (q : ℝ) ^ (1 / 2 : ℝ) * (q : ℝ) ^ (-1 : ℤ)`. Rewrite using `[hβn]`. Combine the equalities or inequalities in the displayed calculation. Rewrite `this` using `[← hhalf, zpow_neg_one, mul_assoc, mul_inv_cancel₀ hQ0.ne', mul_one]`.
+
+Combine the linear equalities and inequalities to obtain the conclusion. Establish `hx' : x = u - 1`. Establish `: (n : ℝ) = -1` using `by exact_mod_cast (by omega : n = -1)`. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite using `[← hx']`.
+
+Conclude with `hx`. It suffices to derive a contradiction. Establish `hle : (q : ℝ) ^ (1 : ℤ) ≤ (q : ℝ) ^ (n + 1)` using `zpow_le_zpow_right₀ hQ.le (by omega)`. Establish `: (q : ℝ) ^ (-(1 / 2) : ℝ) * (q : ℝ) ^ (1 : ℤ) < ‖β‖`. Rewrite using `[hβn]`.
+
+Combine the equalities or inequalities in the displayed calculation. Rewrite `this` using `[zpow_one, hhalf]`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem step_down (q : ℕ) (hq : 1 < q) (B₀ : Multiset ℂ)
     (hB : ∀ β ∈ B₀, (q : ℝ) ^ (-(1 / 2) : ℝ) < ‖β‖ ∧ ‖β‖ < (q : ℝ) ^ (1 / 2 : ℝ)) {α : ℂ} (hα : α ∈ B₀)
     (S : Set ℝ) (hint : ∀ x ∈ S, ∀ y ∈ S, ∃ n : ℤ, x - y = n) (M : Multiset ℂ)

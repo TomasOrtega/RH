@@ -29,49 +29,115 @@ instance : LinearMapClass (HermForm R M) R M (M →ₗ⋆[R] R) where
   map_add h := h.toSesq.map_add
   map_smulₛₗ h := h.toSesq.map_smul
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem toSesq_apply (h : HermForm R M) (x : M) : h.toSesq x = h x := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem mk_apply (B : SesqForm R M) (hB) (x : M) : (⟨B, hB⟩ : HermForm R M) x = B x := rfl
 
+/- English proof (translation)
+The claim follows from `DFunLike.ext _ _ fun x => LinearMap.ext (H x)`.
+-/
 @[ext] theorem ext {h h' : HermForm R M} (H : ∀ x y, h x y = h' x y) : h = h' :=
   DFunLike.ext _ _ fun x => LinearMap.ext (H x)
 
+/- English proof (translation)
+Introduce `_ _ H` and use `ext fun x y => congrArg (fun B : SesqForm R M => B x y) H`.
+-/
 theorem toSesq_injective : Function.Injective (toSesq : HermForm R M → SesqForm R M) :=
   fun _ _ H => ext fun x y => congrArg (fun B : SesqForm R M => B x y) H
 
 variable (h : HermForm R M)
 
+/- English proof (translation)
+The claim follows from `h.star_apply' x y`.
+-/
 @[simp] theorem star_apply (x y : M) : star (h x y) = h y x := h.star_apply' x y
 
+/- English proof (translation)
+The claim follows from `h.star_apply' x y`.
+-/
 @[simp] theorem conj_apply (x y : M) : starRingEnd R (h x y) = h y x := h.star_apply' x y
 
+/- English proof (translation)
+The claim follows from `h.star_apply x x`.
+-/
 theorem isSelfAdjoint_apply_self (x : M) : IsSelfAdjoint (h x x) := h.star_apply x x
 
+/- English proof (translation)
+Simplify using the standard rewrite rules.
+-/
 theorem add_left (x y z : M) : h (x + y) z = h x z + h y z := by simp
+/- English proof (translation)
+Simplify using the standard rewrite rules.
+-/
 theorem add_right (x y z : M) : h x (y + z) = h x y + h x z := by simp
+/- English proof (translation)
+Simplify using the standard rewrite rules.
+-/
 theorem sub_left (x y z : M) : h (x - y) z = h x z - h y z := by simp
+/- English proof (translation)
+Simplify using the standard rewrite rules.
+-/
 theorem sub_right (x y z : M) : h x (y - z) = h x y - h x z := by simp
+/- English proof (translation)
+Simplify using the standard rewrite rules.
+-/
 theorem neg_left (x y : M) : h (-x) y = -h x y := by simp
+/- English proof (translation)
+Simplify using the standard rewrite rules.
+-/
 theorem neg_right (x y : M) : h x (-y) = -h x y := by simp
+/- English proof (translation)
+Simplify using the standard rewrite rules.
+-/
 theorem zero_left (y : M) : h 0 y = 0 := by simp
+/- English proof (translation)
+Simplify using the standard rewrite rules.
+-/
 theorem zero_right (x : M) : h x 0 = 0 := by simp
 
+/- English proof (translation)
+Simplify using the standard rewrite rules.
+-/
 theorem smul_left (a : R) (x y : M) : h (a • x) y = a * h x y := by simp
 
+/- English proof (translation)
+Rewrite using `[map_smulₛₗ]`. Both sides reduce to the same expression.
+-/
 theorem smul_right (a : R) (x y : M) : h x (a • y) = star a * h x y := by
   rw [map_smulₛₗ]; rfl
 
+/- English proof (translation)
+Simplify using `[LinearMap.sum_apply]`.
+-/
 theorem sum_left {ι : Type*} (s : Finset ι) (f : ι → M) (y : M) :
     h (∑ i ∈ s, f i) y = ∑ i ∈ s, h (f i) y := by simp [LinearMap.sum_apply]
 
+/- English proof (translation)
+Simplify using the standard rewrite rules.
+-/
 theorem sum_right {ι : Type*} (s : Finset ι) (x : M) (f : ι → M) :
     h x (∑ i ∈ s, f i) = ∑ i ∈ s, h x (f i) := by simp
 
+/- English proof (translation)
+Rewrite using `[← h.star_apply x y, star_eq_zero]`.
+-/
 theorem apply_eq_zero_comm (x y : M) : h x y = 0 ↔ h y x = 0 := by
   rw [← h.star_apply x y, star_eq_zero]
 
+/- English proof (translation)
+Introduce `x y` and use `(h.apply_eq_zero_comm x y).1`.
+-/
 theorem isRefl : h.toSesq.IsRefl := fun x y => (h.apply_eq_zero_comm x y).1
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fun x y => h.star_apply y x⟩`.
+-/
 theorem isSymm_flip : h.toSesq.flip.IsSymm := ⟨fun x y => h.star_apply y x⟩
 
 def ofFun (f : M → M → R) (add_left : ∀ x y z, f (x + y) z = f x z + f y z)
@@ -82,42 +148,72 @@ def ofFun (f : M → M → R) (add_left : ∀ x y z, f (x + y) z = f x z + f y z
     (fun a x y => by rw [← star_symm, smul_left, star_mul', star_symm]; rfl)
   star_apply' := star_symm
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem ofFun_apply (f : M → M → R) (h₁ h₂ h₃) (x y : M) :
     ofFun f h₁ h₂ h₃ x y = f x y := rfl
 
 def comap (f : N →ₗ[R] M) : HermForm R N :=
   ofFun (fun x y => h (f x) (f y)) (by simp) (by simp) (by simp)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem comap_apply (f : N →ₗ[R] M) (x y : N) : h.comap f x y = h (f x) (f y) := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem comap_id : h.comap LinearMap.id = h := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem comap_comp (f : N →ₗ[R] M) (g : P →ₗ[R] N) :
     h.comap (f ∘ₗ g) = (h.comap f).comap g := rfl
 
 def restrict (W : Submodule R M) : HermForm R W := h.comap W.subtype
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem restrict_apply (W : Submodule R M) (x y : W) :
     h.restrict W x y = h x y := rfl
 
 def toDual : M →ₗ⋆[R] Module.Dual R M := h.toSesq.flip
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem toDual_apply (y x : M) : h.toDual y x = h x y := rfl
 
 def Nondegenerate : Prop := h.toSesq.Nondegenerate
 
 def Unimodular : Prop := Function.Bijective h.toDual
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fun H => H.1, fun H => ⟨H, fun y hy => H y fun x => (h.apply_eq_zero_comm x y).1 (hy x)⟩⟩`.
+-/
 theorem nondegenerate_iff_left : h.Nondegenerate ↔ ∀ x, (∀ y, h x y = 0) → x = 0 :=
   ⟨fun H => H.1, fun H => ⟨H, fun y hy => H y fun x => (h.apply_eq_zero_comm x y).1 (hy x)⟩⟩
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fun H => H.2, fun H => ⟨fun x hx => H x fun y => (h.apply_eq_zero_comm x y).1 (hx y), H⟩⟩`.
+-/
 theorem nondegenerate_iff_right : h.Nondegenerate ↔ ∀ y, (∀ x, h x y = 0) → y = 0 :=
   ⟨fun H => H.2, fun H => ⟨fun x hx => H x fun y => (h.apply_eq_zero_comm x y).1 (hx y), H⟩⟩
 
+/- English proof (translation)
+Rewrite using `[nondegenerate_iff_right, injective_iff_map_eq_zero]`. Simplify using `[LinearMap.ext_iff]`.
+-/
 theorem nondegenerate_iff_injective : h.Nondegenerate ↔ Function.Injective h.toDual := by
   rw [nondegenerate_iff_right, injective_iff_map_eq_zero]
   simp [LinearMap.ext_iff]
 
+/- English proof (translation)
+Rewrite using `[nondegenerate_iff_injective]`. Use `and_congr_right fun _ => forall_congr' fun φ => exists_congr fun y => ?_` and prove the remaining obligations. Simplify using `[LinearMap.ext_iff]`.
+-/
 theorem unimodular_iff :
     h.Unimodular ↔ h.Nondegenerate ∧ ∀ φ : Module.Dual R M, ∃ y, ∀ x, h x y = φ x := by
   rw [nondegenerate_iff_injective]
@@ -126,23 +222,41 @@ theorem unimodular_iff :
 
 variable {h}
 
+/- English proof (translation)
+The claim follows from `H.1 x hx`.
+-/
 theorem Nondegenerate.eq_zero_left (H : h.Nondegenerate) {x : M} (hx : ∀ y, h x y = 0) : x = 0 :=
   H.1 x hx
 
+/- English proof (translation)
+The claim follows from `H.2 y hy`.
+-/
 theorem Nondegenerate.eq_zero_right (H : h.Nondegenerate) {y : M} (hy : ∀ x, h x y = 0) : y = 0 :=
   H.2 y hy
 
+/- English proof (translation)
+The claim follows from `sub_eq_zero.1 (H.eq_zero_left fun y => by rw [sub_left, hx, sub_self])`.
+-/
 theorem Nondegenerate.ext_left (H : h.Nondegenerate) {x x' : M} (hx : ∀ y, h x y = h x' y) :
     x = x' :=
   sub_eq_zero.1 (H.eq_zero_left fun y => by rw [sub_left, hx, sub_self])
 
+/- English proof (translation)
+The claim follows from `sub_eq_zero.1 (H.eq_zero_right fun x => by rw [sub_right, hy, sub_self])`.
+-/
 theorem Nondegenerate.ext_right (H : h.Nondegenerate) {y y' : M} (hy : ∀ x, h x y = h x y') :
     y = y' :=
   sub_eq_zero.1 (H.eq_zero_right fun x => by rw [sub_right, hy, sub_self])
 
+/- English proof (translation)
+The claim follows from `(h.unimodular_iff.1 H).1`.
+-/
 theorem Unimodular.nondegenerate (H : h.Unimodular) : h.Nondegenerate :=
   (h.unimodular_iff.1 H).1
 
+/- English proof (translation)
+The claim follows from `(h.unimodular_iff.1 H).2 φ`.
+-/
 theorem Unimodular.exists_eq (H : h.Unimodular) (φ : Module.Dual R M) :
     ∃ y, ∀ x, h x y = φ x :=
   (h.unimodular_iff.1 H).2 φ
@@ -150,9 +264,15 @@ theorem Unimodular.exists_eq (H : h.Unimodular) (φ : Module.Dual R M) :
 noncomputable def Unimodular.toDualEquiv (H : h.Unimodular) : M ≃ₗ⋆[R] Module.Dual R M :=
   LinearEquiv.ofBijective h.toDual H
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem Unimodular.toDualEquiv_apply (H : h.Unimodular) (y x : M) :
     H.toDualEquiv y x = h x y := rfl
 
+/- English proof (translation)
+Rewrite using `[← H.toDualEquiv_apply, LinearEquiv.apply_symm_apply]`.
+-/
 @[simp] theorem Unimodular.apply_toDualEquiv_symm (H : h.Unimodular) (φ : Module.Dual R M)
     (x : M) : h x (H.toDualEquiv.symm φ) = φ x := by
   rw [← H.toDualEquiv_apply, LinearEquiv.apply_symm_apply]
@@ -160,21 +280,36 @@ noncomputable def Unimodular.toDualEquiv (H : h.Unimodular) : M ≃ₗ⋆[R] Mod
 def IsIsometry (h₁ : HermForm R M) (h₂ : HermForm R N) (f : M →ₗ[R] N) : Prop :=
   ∀ x y, h₂ (f x) (f y) = h₁ x y
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fun H => ext H, fun H x y => by rw [← H]; rfl⟩`.
+-/
 theorem isIsometry_iff_comap {h₁ : HermForm R M} {h₂ : HermForm R N} {f : M →ₗ[R] N} :
     h₁.IsIsometry h₂ f ↔ h₂.comap f = h₁ :=
   ⟨fun H => ext H, fun H x y => by rw [← H]; rfl⟩
 
+/- English proof (translation)
+Introduce `_ _` and use `rfl`.
+-/
 theorem IsIsometry.id (h : HermForm R M) : h.IsIsometry h LinearMap.id := fun _ _ => rfl
 
+/- English proof (translation)
+Introduce `x y` and use `(hg _ _).trans (hf x y)`.
+-/
 theorem IsIsometry.comp {h₁ : HermForm R M} {h₂ : HermForm R N} {h₃ : HermForm R P}
     {g : N →ₗ[R] P} {f : M →ₗ[R] N} (hg : h₂.IsIsometry h₃ g) (hf : h₁.IsIsometry h₂ f) :
     h₁.IsIsometry h₃ (g ∘ₗ f) := fun x y => (hg _ _).trans (hf x y)
 
+/- English proof (translation)
+Rewrite using `[injective_iff_map_eq_zero]`. Conclude with `fun x hx => H.eq_zero_left fun y => by rw [← hf, hx, zero_left]`.
+-/
 theorem IsIsometry.injective {h₁ : HermForm R M} {h₂ : HermForm R N} {f : M →ₗ[R] N}
     (hf : h₁.IsIsometry h₂ f) (H : h₁.Nondegenerate) : Function.Injective f := by
   rw [injective_iff_map_eq_zero]
   exact fun x hx => H.eq_zero_left fun y => by rw [← hf, hx, zero_left]
 
+/- English proof (translation)
+Introduce `_ _` and use `rfl`.
+-/
 theorem isIsometry_subtype (h : HermForm R M) (W : Submodule R M) :
     (h.restrict W).IsIsometry h W.subtype := fun _ _ => rfl
 
@@ -198,16 +333,31 @@ instance : LinearEquivClass (h₁.IsometryEquiv h₂) R M N where
   map_add f := map_add f.toLinearEquiv
   map_smulₛₗ f := map_smulₛₗ f.toLinearEquiv
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem coe_toLinearEquiv (f : h₁.IsometryEquiv h₂) : ⇑f.toLinearEquiv = f := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem coe_mk (e : M ≃ₗ[R] N) (he) : ⇑(⟨e, he⟩ : h₁.IsometryEquiv h₂) = e := rfl
 
+/- English proof (translation)
+The claim follows from `DFunLike.ext _ _ H`.
+-/
 @[ext] theorem ext {f g : h₁.IsometryEquiv h₂} (H : ∀ x, f x = g x) : f = g :=
   DFunLike.ext _ _ H
 
+/- English proof (translation)
+The claim follows from `f.map_app' x y`.
+-/
 @[simp] theorem map_app (f : h₁.IsometryEquiv h₂) (x y : M) : h₂ (f x) (f y) = h₁ x y :=
   f.map_app' x y
 
+/- English proof (translation)
+The claim follows from `f.map_app'`.
+-/
 theorem isIsometry (f : h₁.IsometryEquiv h₂) : h₁.IsIsometry h₂ f.toLinearEquiv.toLinearMap :=
   f.map_app'
 
@@ -223,34 +373,64 @@ theorem isIsometry (f : h₁.IsometryEquiv h₂) : h₁.IsIsometry h₂ f.toLine
 @[trans] def trans (f : h₁.IsometryEquiv h₂) (g : h₂.IsometryEquiv h₃) : h₁.IsometryEquiv h₃ :=
   ⟨f.toLinearEquiv.trans g.toLinearEquiv, fun x y => (g.map_app _ _).trans (f.map_app x y)⟩
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem refl_apply (h : HermForm R M) (x : M) : refl h x = x := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem trans_apply (f : h₁.IsometryEquiv h₂) (g : h₂.IsometryEquiv h₃) (x : M) :
     f.trans g x = g (f x) := rfl
 
+/- English proof (translation)
+The claim follows from `f.toLinearEquiv.apply_symm_apply x`.
+-/
 @[simp] theorem apply_symm_apply (f : h₁.IsometryEquiv h₂) (x : N) : f (f.symm x) = x :=
   f.toLinearEquiv.apply_symm_apply x
 
+/- English proof (translation)
+The claim follows from `f.toLinearEquiv.symm_apply_apply x`.
+-/
 @[simp] theorem symm_apply_apply (f : h₁.IsometryEquiv h₂) (x : M) : f.symm (f x) = x :=
   f.toLinearEquiv.symm_apply_apply x
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem symm_symm (f : h₁.IsometryEquiv h₂) : f.symm.symm = f := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem toLinearEquiv_symm (f : h₁.IsometryEquiv h₂) :
     f.symm.toLinearEquiv = f.toLinearEquiv.symm := rfl
 
+/- English proof (translation)
+Rewrite using `[← f.map_app, apply_symm_apply]`.
+-/
 theorem map_app_left (f : h₁.IsometryEquiv h₂) (x : M) (y : N) :
     h₂ (f x) y = h₁ x (f.symm y) := by rw [← f.map_app, apply_symm_apply]
 
+/- English proof (translation)
+Rewrite using `[← f.map_app, apply_symm_apply]`.
+-/
 theorem map_app_right (f : h₁.IsometryEquiv h₂) (x : N) (y : M) :
     h₂ x (f y) = h₁ (f.symm x) y := by rw [← f.map_app, apply_symm_apply]
 
+/- English proof (translation)
+Rewrite using `[nondegenerate_iff_left]`. Introduce `x hx`. Establish `: f.symm x = 0` using `H.eq_zero_left fun y => by rw [← f.map_app_right, hx]`. Simplify using `using congrArg f this`.
+-/
 theorem nondegenerate (f : h₁.IsometryEquiv h₂) (H : h₁.Nondegenerate) : h₂.Nondegenerate := by
   rw [nondegenerate_iff_left]
   intro x hx
   have : f.symm x = 0 := H.eq_zero_left fun y => by rw [← f.map_app_right, hx]
   simpa using congrArg f this
 
+/- English proof (translation)
+Use `h₂.unimodular_iff.2 ⟨f.nondegenerate H.nondegenerate, fun φ => ?_⟩` and prove the remaining obligations. Take `⟨y, hy⟩` from `H.exists_eq (φ ∘ₗ f.toLinearEquiv.toLinearMap)`. Conclude with `⟨f y, fun x => by rw [f.map_app_right, hy]; simp⟩`.
+-/
 theorem unimodular (f : h₁.IsometryEquiv h₂) (H : h₁.Unimodular) : h₂.Unimodular := by
   refine h₂.unimodular_iff.2 ⟨f.nondegenerate H.nondegenerate, fun φ => ?_⟩
   obtain ⟨y, hy⟩ := H.exists_eq (φ ∘ₗ f.toLinearEquiv.toLinearMap)
@@ -265,10 +445,19 @@ namespace Isometric
 
 variable {h₁ : HermForm R M} {h₂ : HermForm R N} {h₃ : HermForm R P}
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨.refl h⟩`.
+-/
 @[refl] theorem refl (h : HermForm R M) : h.Isometric h := ⟨.refl h⟩
 
+/- English proof (translation)
+The claim follows from `H.elim fun f => ⟨f.symm⟩`.
+-/
 @[symm] theorem symm (H : h₁.Isometric h₂) : h₂.Isometric h₁ := H.elim fun f => ⟨f.symm⟩
 
+/- English proof (translation)
+The claim follows from `H.elim fun f => H'.elim fun g => ⟨f.trans g⟩`.
+-/
 @[trans] theorem trans (H : h₁.Isometric h₂) (H' : h₂.Isometric h₃) : h₁.Isometric h₃ :=
   H.elim fun f => H'.elim fun g => ⟨f.trans g⟩
 
@@ -282,33 +471,60 @@ def unitaryGroup (h : HermForm R M) : Subgroup (M ≃ₗ[R] M) where
     rw [← hg]
     exact congrArg₂ (fun a b => h a b) (g.apply_symm_apply x) (g.apply_symm_apply y)
 
+/- English proof (translation)
+Unfold both sides. The equivalence is reflexive.
+-/
 theorem mem_unitaryGroup {g : M ≃ₗ[R] M} :
     g ∈ h.unitaryGroup ↔ ∀ x y, h (g x) (g y) = h x y := Iff.rfl
 
+/- English proof (translation)
+Unfold both sides. The equivalence is reflexive.
+-/
 theorem mem_unitaryGroup_iff_isIsometry {g : M ≃ₗ[R] M} :
     g ∈ h.unitaryGroup ↔ h.IsIsometry h g.toLinearMap := Iff.rfl
 
 namespace unitaryGroup
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem smul_def (g : h.unitaryGroup) (x : M) : g • x = (g : M ≃ₗ[R] M) x := rfl
 
+/- English proof (translation)
+The claim follows from `g.2 x y`.
+-/
 @[simp] theorem map_app (g : h.unitaryGroup) (x y : M) :
     h ((g : M ≃ₗ[R] M) x) ((g : M ≃ₗ[R] M) y) = h x y := g.2 x y
 
+/- English proof (translation)
+The claim follows from `g.2 x y`.
+-/
 @[simp] theorem smul_app (g : h.unitaryGroup) (x y : M) : h (g • x) (g • y) = h x y := g.2 x y
 
+/- English proof (translation)
+Rewrite using `[← smul_app g x, smul_inv_smul]`.
+-/
 theorem smul_app_left (g : h.unitaryGroup) (x y : M) : h (g • x) y = h x (g⁻¹ • y) := by
   rw [← smul_app g x, smul_inv_smul]
 
+/- English proof (translation)
+Rewrite using `[← smul_app g _ y, smul_inv_smul]`.
+-/
 theorem smul_app_right (g : h.unitaryGroup) (x y : M) : h x (g • y) = h (g⁻¹ • x) y := by
   rw [← smul_app g _ y, smul_inv_smul]
 
+/- English proof (translation)
+The claim follows from `Subtype.ext (LinearEquiv.ext H)`.
+-/
 @[ext] theorem ext {g g' : h.unitaryGroup}
     (H : ∀ x, (g : M ≃ₗ[R] M) x = (g' : M ≃ₗ[R] M) x) : g = g' :=
   Subtype.ext (LinearEquiv.ext H)
 
 def toIsometryEquiv (g : h.unitaryGroup) : h.IsometryEquiv h := ⟨g.1, g.2⟩
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem toIsometryEquiv_apply (g : h.unitaryGroup) (x : M) :
     toIsometryEquiv g x = (g : M ≃ₗ[R] M) x := rfl
 
@@ -319,9 +535,15 @@ def toEnd : h.unitaryGroup →* Module.End R M where
   map_one' := rfl
   map_mul' _ _ := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem toEnd_apply (g : h.unitaryGroup) (x : M) :
     toEnd h g x = (g : M ≃ₗ[R] M) x := rfl
 
+/- English proof (translation)
+Introduce `_ _ H` and use `ext fun x => congrArg (fun f : Module.End R M => f x) H`.
+-/
 theorem toEnd_injective : Function.Injective (toEnd h) :=
   fun _ _ H => ext fun x => congrArg (fun f : Module.End R M => f x) H
 
@@ -330,6 +552,9 @@ end unitaryGroup
 def IsometryEquiv.toUnitary (f : h.IsometryEquiv h) : h.unitaryGroup :=
   ⟨f.toLinearEquiv, f.map_app'⟩
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem IsometryEquiv.coe_toUnitary (f : h.IsometryEquiv h) :
     (f.toUnitary : M ≃ₗ[R] M) = f.toLinearEquiv := rfl
 
@@ -341,10 +566,16 @@ def IsometryEquiv.unitaryCongr {h₁ : HermForm R M} {h₂ : HermForm R N}
   right_inv g := by ext; simp
   map_mul' g g' := by ext; simp
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem IsometryEquiv.unitaryCongr_apply {h₁ : HermForm R M} {h₂ : HermForm R N}
     (f : h₁.IsometryEquiv h₂) (g : h₁.unitaryGroup) (x : N) :
     (f.unitaryCongr g : N ≃ₗ[R] N) x = f ((g : M ≃ₗ[R] M) (f.symm x)) := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem IsometryEquiv.unitaryCongr_symm {h₁ : HermForm R M} {h₂ : HermForm R N}
     (f : h₁.IsometryEquiv h₂) : f.unitaryCongr.symm = f.symm.unitaryCongr := rfl
 
@@ -355,6 +586,11 @@ section Field
 variable {K V : Type*} [Field K] [StarRing K] [AddCommGroup V] [Module K V]
   [FiniteDimensional K V] {h : HermForm K V}
 
+/- English proof (translation)
+Set `b` to `Module.finBasis K V`. Set `σ : V ≃ₗ⋆[K] V` to `(b.equivFun.trans (starLinearEquiv K (A := Fin (Module.finrank K V) → K))).trans b.equivFun.symm`. Set `φ : V →ₗ[K] Module.Dual K V` to `h.toDual.comp σ.toLinearMap`. Establish `hinj : Function.Injective φ` using `(h.nondegenerate_iff_injective.1 H).comp σ.injective`. Establish `hsurj : Function.Surjective φ` using `(LinearMap.injective_iff_surjective_of_finrank_eq_finrank (Subspace.dual_finrank_eq).symm).1 hinj`.
+
+Conclude with `⟨h.nondegenerate_iff_injective.1 H, Function.Surjective.of_comp (g := σ) hsurj⟩`.
+-/
 theorem Nondegenerate.unimodular (H : h.Nondegenerate) : h.Unimodular := by
   let b := Module.finBasis K V
   let σ : V ≃ₗ⋆[K] V :=
@@ -367,6 +603,9 @@ theorem Nondegenerate.unimodular (H : h.Nondegenerate) : h.Unimodular := by
       (Subspace.dual_finrank_eq).symm).1 hinj
   exact ⟨h.nondegenerate_iff_injective.1 H, Function.Surjective.of_comp (g := σ) hsurj⟩
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨Unimodular.nondegenerate, Nondegenerate.unimodular⟩`.
+-/
 theorem unimodular_iff_nondegenerate : h.Unimodular ↔ h.Nondegenerate :=
   ⟨Unimodular.nondegenerate, Nondegenerate.unimodular⟩
 
@@ -374,6 +613,9 @@ noncomputable def IsIsometry.toUnitary {f : V →ₗ[K] V} (hf : h.IsIsometry h 
     (H : h.Nondegenerate) : h.unitaryGroup :=
   ⟨LinearEquiv.ofInjectiveEndo f (hf.injective H), hf⟩
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem IsIsometry.toUnitary_apply {f : V →ₗ[K] V} (hf : h.IsIsometry h f)
     (H : h.Nondegenerate) (x : V) : (hf.toUnitary H : V ≃ₗ[K] V) x = f x := rfl
 
@@ -383,9 +625,15 @@ section Complex
 
 variable {V : Type*} [AddCommGroup V] [Module ℂ V] (h : HermForm ℂ V)
 
+/- English proof (translation)
+The claim follows from `Complex.conj_eq_iff_im.1 (h.conj_apply x x)`.
+-/
 @[simp] theorem im_apply_self (x : V) : (h x x).im = 0 :=
   Complex.conj_eq_iff_im.1 (h.conj_apply x x)
 
+/- English proof (translation)
+The claim follows from `Complex.conj_eq_iff_re.1 (h.conj_apply x x)`.
+-/
 @[simp] theorem ofReal_re_apply_self (x : V) : ((h x x).re : ℂ) = h x x :=
   Complex.conj_eq_iff_re.1 (h.conj_apply x x)
 
@@ -395,11 +643,17 @@ def NegDef : Prop := ∀ x, x ≠ 0 → (h x x).re < 0
 
 variable {h}
 
+/- English proof (translation)
+The claim follows from `h.nondegenerate_iff_left.2 fun x hx => by by_contra hne simpa [hx x] using H x hne`.
+-/
 theorem PosDef.nondegenerate (H : h.PosDef) : h.Nondegenerate :=
   h.nondegenerate_iff_left.2 fun x hx => by
     by_contra hne
     simpa [hx x] using H x hne
 
+/- English proof (translation)
+The claim follows from `h.nondegenerate_iff_left.2 fun x hx => by by_contra hne simpa [hx x] using H x hne`.
+-/
 theorem NegDef.nondegenerate (H : h.NegDef) : h.Nondegenerate :=
   h.nondegenerate_iff_left.2 fun x hx => by
     by_contra hne
@@ -445,6 +699,9 @@ instance {K : Type u} [Field K] [CharZero K] [StarRing K] (V : HermSpace.{u, v} 
 abbrev HermSpace.toHermModule {K : Type u} [Field K] [StarRing K] (V : HermSpace.{u, v} K) :
     HermModule.{u, v} K := ⟨V, V.form⟩
 
+/- English proof (translation)
+The claim follows from `V.nondegenerate.unimodular`.
+-/
 theorem HermSpace.unimodular {K : Type u} [Field K] [StarRing K] (V : HermSpace.{u, v} K) :
     V.form.Unimodular := V.nondegenerate.unimodular
 
@@ -469,6 +726,9 @@ instance IsStarFixed.rat {E : Type*} [CommRing E] [StarRing E] [Algebra ℚ E] :
   ⟨fun a => DFunLike.congr_fun
     (Subsingleton.elim ((starRingEnd E).comp (algebraMap ℚ E)) (algebraMap ℚ E)) a⟩
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fun a => by rw [IsScalarTower.algebraMap_apply F₀ F E, IsStarFixed.star_algebraMap]⟩`.
+-/
 theorem IsStarFixed.of_isScalarTower (F₀ : Type*) [CommSemiring F₀] [Algebra F₀ F] [Algebra F₀ E]
     [IsScalarTower F₀ F E] [IsStarFixed F E] : IsStarFixed F₀ E :=
   ⟨fun a => by rw [IsScalarTower.algebraMap_apply F₀ F E, IsStarFixed.star_algebraMap]⟩
@@ -478,21 +738,36 @@ variable [IsStarFixed F E]
 def starAlgEquiv : E ≃ₐ[F] E :=
   { (starRingAut : RingAut E) with commutes' := IsStarFixed.star_algebraMap }
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem starAlgEquiv_apply (x : E) : starAlgEquiv F E x = star x := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem starAlgEquiv_symm : (starAlgEquiv F E).symm = starAlgEquiv F E := rfl
 
 variable {F E}
 
+/- English proof (translation)
+The claim follows from `map_smul (starAlgEquiv F E) a x`.
+-/
 theorem IsStarFixed.star_smul (a : F) (x : E) : star (a • x) = a • star x :=
   map_smul (starAlgEquiv F E) a x
 
 end IsStarFixed
 
+/- English proof (translation)
+The claim follows from `hx.map (starAlgEquiv F E)`.
+-/
 theorem IsStarFixed.isIntegral_star {F E : Type*} [CommRing F] [CommRing E] [StarRing E]
     [Algebra F E] [IsStarFixed F E] {x : E} (hx : IsIntegral F x) : IsIntegral F (star x) :=
   hx.map (starAlgEquiv F E)
 
+/- English proof (translation)
+The claim follows from `letI := φ.toAlgebra ⟨fun r s => by change star (φ r * s) = φ (star r) * star s rw [star_mul', hφ]⟩`.
+-/
 theorem starModule_toAlgebra {R S : Type*} [CommSemiring R] [CommSemiring S] [StarRing R]
     [StarRing S] (φ : R →+* S) (hφ : ∀ x, φ (star x) = star (φ x)) :
     letI := φ.toAlgebra
@@ -502,22 +777,34 @@ theorem starModule_toAlgebra {R S : Type*} [CommSemiring R] [CommSemiring S] [St
     change star (φ r * s) = φ (star r) * star s
     rw [star_mul', hφ]⟩
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fun r s => by rw [Algebra.smul_def, Algebra.smul_def, star_mul', hφ]⟩`.
+-/
 theorem starModule_of_algebraMap {R S : Type*} [CommSemiring R] [CommSemiring S] [StarRing R]
     [StarRing S] [Algebra R S] (hφ : ∀ x, algebraMap R S (star x) = star (algebraMap R S x)) :
     StarModule R S :=
   ⟨fun r s => by rw [Algebra.smul_def, Algebra.smul_def, star_mul', hφ]⟩
 
+/- English proof (translation)
+Rewrite using `[← algebraMap_smul R a y, h.smul_right, IsStarFixed.star_algebraMap, Algebra.smul_def]`.
+-/
 theorem HermForm.smul_right_of_isStarFixed {F R M : Type*} [CommRing F] [CommRing R] [StarRing R]
     [Algebra F R] [IsStarFixed F R] [AddCommGroup M] [Module R M] [Module F M]
     [IsScalarTower F R M] (h : HermForm R M) (a : F) (x y : M) : h x (a • y) = a • h x y := by
   rw [← algebraMap_smul R a y, h.smul_right, IsStarFixed.star_algebraMap, Algebra.smul_def]
 
+/- English proof (translation)
+Rewrite using `[← algebraMap_smul R a x, h.smul_left]`.
+-/
 theorem HermForm.smul_left_of_tower {S R M : Type*} [CommRing S] [CommRing R] [StarRing R]
     [Algebra S R] [AddCommGroup M] [Module R M] [Module S M]
     [IsScalarTower S R M] (h : HermForm R M) (a : S) (x y : M) :
     h (a • x) y = algebraMap S R a * h x y := by
   rw [← algebraMap_smul R a x, h.smul_left]
 
+/- English proof (translation)
+Rewrite using `[← algebraMap_smul R a y, h.smul_right]`.
+-/
 theorem HermForm.smul_right_of_tower {S R M : Type*} [CommRing S] [CommRing R] [StarRing R]
     [Algebra S R] [AddCommGroup M] [Module R M] [Module S M]
     [IsScalarTower S R M] (h : HermForm R M) (a : S) (x y : M) :
@@ -565,50 +852,98 @@ noncomputable def tmul (e : E) (a : A) : StarTensor F E A := e ⊗ₜ[F] a
 
 variable {F E A}
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem toTensor_tmul (e : E) (a : A) : toTensor F E A (tmul F e a) = e ⊗ₜ[F] a := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem toTensor_symm_tmul (e : E) (a : A) :
     (toTensor F E A).symm (e ⊗ₜ[F] a) = tmul F e a := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem algebraMap_left (e : E) : algebraMap E (StarTensor F E A) e = tmul F e 1 := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem algebraMap_right (a : A) : algebraMap A (StarTensor F E A) a = tmul F 1 a := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem one_def : (1 : StarTensor F E A) = tmul F 1 1 := rfl
 
+/- English proof (translation)
+The claim follows from `Algebra.TensorProduct.tmul_mul_tmul e e' a a'`.
+-/
 @[simp] theorem tmul_mul_tmul (e e' : E) (a a' : A) :
     tmul F e a * tmul F e' a' = tmul F (e * e') (a * a') :=
   Algebra.TensorProduct.tmul_mul_tmul e e' a a'
 
+/- English proof (translation)
+Simplify using `[algebraMap_left, algebraMap_right]`.
+-/
 theorem tmul_eq_mul (e : E) (a : A) :
     tmul F e a = algebraMap E (StarTensor F E A) e * algebraMap A (StarTensor F E A) a := by
   simp [algebraMap_left, algebraMap_right]
 
+/- English proof (translation)
+The claim follows from `TensorProduct.add_tmul e e' a`.
+-/
 theorem add_tmul (e e' : E) (a : A) : tmul F (e + e') a = tmul F e a + tmul F e' a :=
   TensorProduct.add_tmul e e' a
 
+/- English proof (translation)
+The claim follows from `TensorProduct.tmul_add e a a'`.
+-/
 theorem tmul_add (e : E) (a a' : A) : tmul F e (a + a') = tmul F e a + tmul F e a' :=
   TensorProduct.tmul_add e a a'
 
+/- English proof (translation)
+The claim follows from `TensorProduct.zero_tmul E a`.
+-/
 @[simp] theorem zero_tmul (a : A) : tmul F (0 : E) a = 0 := TensorProduct.zero_tmul E a
 
+/- English proof (translation)
+The claim follows from `TensorProduct.tmul_zero A e`.
+-/
 @[simp] theorem tmul_zero (e : E) : tmul F e (0 : A) = 0 := TensorProduct.tmul_zero A e
 
+/- English proof (translation)
+The claim follows from `TensorProduct.smul_tmul c e a`.
+-/
 theorem smul_tmul (c : F) (e : E) (a : A) : tmul F (c • e) a = tmul F e (c • a) :=
   TensorProduct.smul_tmul c e a
 
+/- English proof (translation)
+Simplify using `[Algebra.smul_def, algebraMap_left]`.
+-/
 @[simp] theorem left_smul_tmul (c e : E) (a : A) : c • tmul F e a = tmul F (c * e) a := by
   simp [Algebra.smul_def, algebraMap_left]
 
+/- English proof (translation)
+Simplify using `[Algebra.smul_def, algebraMap_right]`. Use the proof step `@[elab_as_elim]`.
+-/
 @[simp] theorem right_smul_tmul (c : A) (e : E) (a : A) : c • tmul F e a = tmul F e (c * a) := by
   simp [Algebra.smul_def, algebraMap_right]
 
 @[elab_as_elim]
+/- English proof (translation)
+The claim follows from `TensorProduct.induction_on (motive := motive) x zero tmul add`.
+-/
 theorem induction_on {motive : StarTensor F E A → Prop} (x : StarTensor F E A)
     (zero : motive 0) (tmul : ∀ e a, motive (tmul F e a))
     (add : ∀ x y, motive x → motive y → motive (x + y)) : motive x :=
   TensorProduct.induction_on (motive := motive) x zero tmul add
 
+/- English proof (translation)
+The claim follows from `RingHom.ext fun x => x.induction_on (by simp) (fun e a => by rw [tmul_eq_mul, map_mul, map_mul, hE, hA]) (fun x y hx hy => by rw [map_add, map_add, hx, hy])`.
+-/
 theorem ringHom_ext {C : Type*} [Semiring C] {f g : StarTensor F E A →+* C}
     (hE : ∀ e, f (algebraMap E _ e) = g (algebraMap E _ e))
     (hA : ∀ a, f (algebraMap A _ a) = g (algebraMap A _ a)) : f = g :=
@@ -628,8 +963,14 @@ noncomputable def commRight : StarTensor F E A ≃ₐ[A] A ⊗[F] E :=
   letI := Algebra.TensorProduct.rightAlgebra (R := F) (A := E) (B := A)
   (Algebra.TensorProduct.commRight F A E).symm
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem commRight_tmul (e : E) (a : A) : commRight F E A (tmul F e a) = a ⊗ₜ[F] e := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem commRight_symm_tmul (e : E) (a : A) :
     (commRight F E A).symm (a ⊗ₜ[F] e) = tmul F e a := rfl
 
@@ -651,10 +992,16 @@ instance [Module.Finite F A] : Module.Finite E (StarTensor F E A) :=
 instance [Module.Flat F A] : Module.Flat E (StarTensor F E A) :=
   inferInstanceAs (Module.Flat E (E ⊗[F] A))
 
+/- English proof (translation)
+The claim follows from `Algebra.TensorProduct.includeLeft_injective (S := F) hA`.
+-/
 theorem algebraMap_left_injective [Module.Flat F E] (hA : Function.Injective (algebraMap F A)) :
     Function.Injective (algebraMap E (StarTensor F E A)) :=
   Algebra.TensorProduct.includeLeft_injective (S := F) hA
 
+/- English proof (translation)
+The claim follows from `Algebra.TensorProduct.includeRight_injective hE`.
+-/
 theorem algebraMap_right_injective [Module.Flat F A] (hE : Function.Injective (algebraMap F E)) :
     Function.Injective (algebraMap A (StarTensor F E A)) :=
   Algebra.TensorProduct.includeRight_injective hE
@@ -666,15 +1013,27 @@ variable (E) in
 noncomputable def map (f : A →ₐ[F] B) : StarTensor F E A →ₐ[E] StarTensor F E B :=
   Algebra.TensorProduct.map (AlgHom.id E E) f
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem map_tmul (f : A →ₐ[F] B) (e : E) (a : A) :
     map E f (tmul F e a) = tmul F e (f a) := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem map_algebraMap_right (f : A →ₐ[F] B) (a : A) :
     map E f (algebraMap A _ a) = algebraMap B _ (f a) := rfl
 
+/- English proof (translation)
+The claim follows from `Algebra.TensorProduct.map_id`.
+-/
 @[simp] theorem map_id : map E (AlgHom.id F A) = AlgHom.id E _ :=
   Algebra.TensorProduct.map_id
 
+/- English proof (translation)
+The claim follows from `AlgHom.ext fun x => x.induction_on (by simp) (fun _ _ => rfl) (fun x y hx hy => by rw [map_add, map_add, hx, hy])`.
+-/
 theorem map_comp (g : B →ₐ[F] C) (f : A →ₐ[F] B) :
     map E (g.comp f) = (map E g).comp (map E f) :=
   AlgHom.ext fun x => x.induction_on (by simp) (fun _ _ => rfl)
@@ -686,13 +1045,22 @@ noncomputable def lift {D : Type*} [CommRing D] (f : E →+* D) (g : A →+* D)
   (Algebra.TensorProduct.lift (⟨f, fun _ => rfl⟩ : E →ₐ[F] D)
     (⟨g, fun c => (hfg c).symm⟩ : A →ₐ[F] D) fun _ _ => Commute.all _ _).toRingHom
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem lift_tmul {D : Type*} [CommRing D] (f : E →+* D) (g : A →+* D) (hfg) (e : E)
     (a : A) : lift f g hfg (tmul F e a) = f e * g a := rfl
 
+/- English proof (translation)
+Simplify using `[algebraMap_left]`.
+-/
 @[simp] theorem lift_algebraMap_left {D : Type*} [CommRing D] (f : E →+* D) (g : A →+* D) (hfg)
     (e : E) : lift f g hfg (algebraMap E (StarTensor F E A) e) = f e := by
   simp [algebraMap_left]
 
+/- English proof (translation)
+Simplify using `[algebraMap_right]`.
+-/
 @[simp] theorem lift_algebraMap_right {D : Type*} [CommRing D] (f : E →+* D) (g : A →+* D) (hfg)
     (a : A) : lift f g hfg (algebraMap A (StarTensor F E A) a) = g a := by
   simp [algebraMap_right]
@@ -701,6 +1069,9 @@ variable (F E) in
 
 noncomputable def rid : StarTensor F E F ≃ₐ[E] E := Algebra.TensorProduct.rid F E E
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem rid_tmul (e : E) (a : F) : rid F E (tmul F e a) = a • e := rfl
 
 end NoStar
@@ -715,6 +1086,9 @@ variable (F E A) in
 noncomputable def conjHom : StarTensor F E A →ₐ[F] StarTensor F E A :=
   Algebra.TensorProduct.map (starAlgEquiv F E).toAlgHom (AlgHom.id F A)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem conjHom_tmul (e : E) (a : A) : conjHom F E A (tmul F e a) = tmul F (star e) a :=
   rfl
 
@@ -725,6 +1099,9 @@ noncomputable instance : StarRing (StarTensor F E A) where
   star_mul x y := by rw [map_mul, mul_comm]
   star_add x y := map_add _ x y
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem star_tmul (e : E) (a : A) : star (tmul F e a) = tmul F (star e) a := rfl
 
 instance : IsStarFixed A (StarTensor F E A) :=
@@ -738,9 +1115,15 @@ instance (S : Type*) [CommSemiring S] [StarRing S] [Algebra S E] [SMulCommClass 
     [StarModule S E] : StarModule S (StarTensor F E A) :=
   starModule_of_algebraMap fun s => congrArg (fun e => tmul F e (1 : A)) (algebraMap_star_comm s)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem star_algebraMap_left (e : E) :
     star (algebraMap E (StarTensor F E A) e) = algebraMap E _ (star e) := rfl
 
+/- English proof (translation)
+The claim follows from `DFunLike.congr_fun (ringHom_ext (f := φ.comp (starRingEnd _)) (g := (starRingEnd C).comp φ) hE (fun a => by simpa [starRingEnd_apply] using (hA a).symm)) x`.
+-/
 theorem map_star_of {C : Type*} [CommRing C] [StarRing C] (φ : StarTensor F E A →+* C)
     (hE : ∀ e, φ (algebraMap E _ (star e)) = star (φ (algebraMap E _ e)))
     (hA : ∀ a, star (φ (algebraMap A _ a)) = φ (algebraMap A _ a)) (x : StarTensor F E A) :
@@ -750,18 +1133,32 @@ theorem map_star_of {C : Type*} [CommRing C] [StarRing C] (φ : StarTensor F E A
 
 variable {B : Type*} [CommRing B] [Algebra F B]
 
+/- English proof (translation)
+The claim follows from `x.induction_on (by simp) (fun _ _ => rfl) (fun x y hx hy => by simp [hx, hy])`.
+-/
 theorem map_star (f : A →ₐ[F] B) (x : StarTensor F E A) : map E f (star x) = star (map E f x) :=
   x.induction_on (by simp) (fun _ _ => rfl) (fun x y hx hy => by simp [hx, hy])
 
+/- English proof (translation)
+The claim follows from `x.induction_on (by simp) (fun _ _ => by simp [hf, hg]) (fun x y hx hy => by simp [hx, hy])`.
+-/
 theorem lift_star {D : Type*} [CommRing D] [StarRing D] (f : E →+* D) (g : A →+* D) (hfg)
     (hf : ∀ e, f (star e) = star (f e)) (hg : ∀ a, star (g a) = g a)
     (x : StarTensor F E A) : lift f g hfg (star x) = star (lift f g hfg x) :=
   x.induction_on (by simp) (fun _ _ => by simp [hf, hg]) (fun x y hx hy => by simp [hx, hy])
 
+/- English proof (translation)
+The claim follows from `x.induction_on (by simp) (fun _ _ => by simp [IsStarFixed.star_smul]) (fun x y hx hy => by simp [hx, hy])`.
+-/
 theorem rid_star (x : StarTensor F E F) : rid F E (star x) = star (rid F E x) :=
   x.induction_on (by simp) (fun _ _ => by simp [IsStarFixed.star_smul])
     (fun x y hx hy => by simp [hx, hy])
 
+/- English proof (translation)
+Use `x.induction_on (by simp) (fun e a => ?_) (fun x y hx hy => ?_)` and prove the remaining obligations. Take `⟨c, hc⟩` from `hE e`. Use `⟨c • a, ?_⟩` and prove the remaining obligations. Rewrite using `[star_tmul, ← add_tmul, ← hc, algebraMap_right, ← smul_tmul, Algebra.algebraMap_eq_smul_one]`. Rewrite using `[star_add, add_add_add_comm]`.
+
+Conclude with `add_mem hx hy`.
+-/
 theorem add_star_mem_range (hE : ∀ e : E, e + star e ∈ (algebraMap F E).range)
     (x : StarTensor F E A) : x + star x ∈ (algebraMap A (StarTensor F E A)).range := by
   refine x.induction_on (by simp) (fun e a => ?_) (fun x y hx hy => ?_)
@@ -786,6 +1183,9 @@ instance (priority := 100) ringOfIntegersIsScalarTower : IsScalarTower (𝓞 K) 
   inferInstanceAs (IsScalarTower (integralClosure ℤ K) K V)
 
 variable {K V} in
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem ringOfIntegers_smul_def (a : 𝓞 K) (x : V) : a • x = (a : K) • x := rfl
 
 instance (priority := 100) (L : Type*) [Ring L] [Algebra K L] [Module L V] [IsScalarTower K L V] :
@@ -802,33 +1202,57 @@ section CM
 
 variable (E : Type*) [Field E] [NumberField E] [IsCMField E]
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem star_eq_complexConj (x : E) : star x = IsCMField.complexConj E x := rfl
 
 instance : IsStarFixed (maximalRealSubfield E) E := ⟨(IsCMField.complexConj E).commutes⟩
 
+/- English proof (translation)
+The claim follows from `AlgEquiv.ext fun _ => rfl`.
+-/
 theorem starAlgEquiv_eq_complexConj :
     starAlgEquiv (maximalRealSubfield E) E = IsCMField.complexConj E := AlgEquiv.ext fun _ => rfl
 
 variable {E}
 
+/- English proof (translation)
+The claim follows from `IsCMField.complexEmbedding_complexConj E τ x`.
+-/
 @[simp] theorem complexEmbedding_star (τ : E →+* ℂ) (x : E) : τ (star x) = star (τ x) :=
   IsCMField.complexEmbedding_complexConj E τ x
 
+/- English proof (translation)
+The claim follows from `IsCMField.complexConj_eq_self_iff E x`.
+-/
 theorem star_eq_self_iff_mem (x : E) : star x = x ↔ x ∈ maximalRealSubfield E :=
   IsCMField.complexConj_eq_self_iff E x
 
+/- English proof (translation)
+The claim follows from `(star_eq_self_iff_mem _).1 (by rw [star_add, star_star, add_comm])`.
+-/
 theorem add_star_mem (x : E) : x + star x ∈ maximalRealSubfield E :=
   (star_eq_self_iff_mem _).1 (by rw [star_add, star_star, add_comm])
 
+/- English proof (translation)
+The claim follows from `(star_eq_self_iff_mem _).1 (by rw [star_mul, star_star])`.
+-/
 theorem mul_star_mem (x : E) : x * star x ∈ maximalRealSubfield E :=
   (star_eq_self_iff_mem _).1 (by rw [star_mul, star_star])
 
 variable (E) in
 
+/- English proof (translation)
+Use `by_contra! H`. Conclude with `IsCMField.complexConj_ne_one E (AlgEquiv.ext H)`.
+-/
 theorem exists_star_ne : ∃ x : E, star x ≠ x := by
   by_contra! H
   exact IsCMField.complexConj_ne_one E (AlgEquiv.ext H)
 
+/- English proof (translation)
+The claim follows from `(star_eq_self_iff_mem _).1 (h.star_apply x x)`.
+-/
 theorem HermForm.apply_self_mem {V : Type*} [AddCommGroup V] [Module E V] (h : HermForm E V)
     (x : V) : h x x ∈ maximalRealSubfield E :=
   (star_eq_self_iff_mem _).1 (h.star_apply x x)
@@ -839,8 +1263,14 @@ noncomputable instance : StarRing (𝓞 E) where
   star_mul x y := by rw [map_mul, mul_comm]
   star_add x y := map_add _ x y
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem ringOfIntegers_star_def (x : 𝓞 E) : star x = IsCMField.ringOfIntegersComplexConj E x := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem ringOfIntegers_coe_star (x : 𝓞 E) :
     algebraMap (𝓞 E) E (star x) = star (algebraMap (𝓞 E) E x) := rfl
 
@@ -857,6 +1287,9 @@ instance {K L : Type*} [Field K] [CommRing L] [StarRing L] [Algebra K L] [IsStar
     IsStarFixed (𝓞 K) L :=
   .of_isScalarTower K L (𝓞 K)
 
+/- English proof (translation)
+The claim follows from `IsCMField.ringOfIntegersComplexConj_eq_self_iff E x`.
+-/
 theorem ringOfIntegers_star_eq_self_iff (x : 𝓞 E) :
     star x = x ↔ x ∈ (algebraMap (𝓞 (maximalRealSubfield E)) (𝓞 E)).range :=
   IsCMField.ringOfIntegersComplexConj_eq_self_iff E x
@@ -890,13 +1323,22 @@ instance isPushout : Algebra.IsPushout (maximalRealSubfield E) E A (CMTensor E A
 instance isPushout' : Algebra.IsPushout (maximalRealSubfield E) A E (CMTensor E A) :=
   StarTensor.isPushout'
 
+/- English proof (translation)
+Rewrite using `[(StarTensor.commRight _ E A).toLinearEquiv.finrank_eq, Module.finrank_baseChange, Algebra.IsQuadraticExtension.finrank_eq_two]`.
+-/
 theorem finrank_right [StrongRankCondition A] : Module.finrank A (CMTensor E A) = 2 := by
   rw [(StarTensor.commRight _ E A).toLinearEquiv.finrank_eq, Module.finrank_baseChange,
     Algebra.IsQuadraticExtension.finrank_eq_two]
 
+/- English proof (translation)
+The claim follows from `StarTensor.algebraMap_right_injective (RingHom.injective _)`.
+-/
 theorem algebraMap_right_injective : Function.Injective (algebraMap A (CMTensor E A)) :=
   StarTensor.algebraMap_right_injective (RingHom.injective _)
 
+/- English proof (translation)
+The claim follows from `StarTensor.algebraMap_left_injective (RingHom.injective _)`.
+-/
 theorem algebraMap_left_injective [Nontrivial A] :
     Function.Injective (algebraMap E (CMTensor E A)) :=
   StarTensor.algebraMap_left_injective (RingHom.injective _)
@@ -904,6 +1346,11 @@ theorem algebraMap_left_injective [Nontrivial A] :
 instance [Nontrivial A] : Nontrivial (CMTensor E A) :=
   (algebraMap_left_injective (E := E) (A := A)).nontrivial
 
+/- English proof (translation)
+Use `⟨fun hx => ?_, ?_⟩` and prove the remaining obligations. Take `⟨a, ha⟩` from `StarTensor.add_star_mem_range (fun e : E => ⟨⟨_, add_star_mem e⟩, rfl⟩) x`. Use `⟨(2 : maximalRealSubfield E)⁻¹ • a, ?_⟩` and prove the remaining obligations. Rewrite using `[Algebra.smul_def, map_mul, ha, hx, ← IsScalarTower.algebraMap_apply, ← two_mul, ← mul_assoc, ← map_ofNat (algebraMap (maximalRealSubfield E) (CMTensor E A)) 2, ← map_mul, inv_mul_cancel₀ two_ne_zero, map_one, one_mul]`. Introduce and unpack `⟨a, rfl⟩`.
+
+Conclude with `IsStarFixed.star_algebraMap a`.
+-/
 theorem star_eq_self_iff (x : CMTensor E A) :
     star x = x ↔ x ∈ (algebraMap A (CMTensor E A)).range := by
   refine ⟨fun hx => ?_, ?_⟩

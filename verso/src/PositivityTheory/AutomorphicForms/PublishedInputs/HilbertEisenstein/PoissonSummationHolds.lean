@@ -17,6 +17,9 @@ variable {F : Type} [Field F] [NumberField F]
 def nId (c : HeightOneSpectrum (𝓞 F) → ℕ) : (FractionalIdeal (𝓞 F)⁰ F)ˣ :=
   ∏ᶠ w, primeIdealUnit w ^ (c w : ℤ)
 
+/- English proof (translation)
+The claim follows from `count_finprod_primeIdealUnit_zpow _ (Filter.eventually_cofinite.2 (hc.subset fun v hv => by simp only [Set.mem_ofPred_eq] at hv ⊢ exact_mod_cast hv)) w`.
+-/
 theorem count_nId {c : HeightOneSpectrum (𝓞 F) → ℕ} (hc : {w | c w ≠ 0}.Finite)
     (w : HeightOneSpectrum (𝓞 F)) :
     FractionalIdeal.count F w ((nId c : (FractionalIdeal (𝓞 F)⁰ F)ˣ) : FractionalIdeal (𝓞 F)⁰ F) = c w :=
@@ -24,11 +27,17 @@ theorem count_nId {c : HeightOneSpectrum (𝓞 F) → ℕ} (hc : {w | c w ≠ 0}
     simp only [Set.mem_ofPred_eq] at hv ⊢
     exact_mod_cast hv)) w
 
+/- English proof (translation)
+Rewrite using `[FractionalIdeal.count_coe F w differentIdeal_ne_bot]`. Both sides reduce to the same expression.
+-/
 theorem count_different (w : HeightOneSpectrum (𝓞 F)) :
     FractionalIdeal.count F w ((differentIdeal ℤ (𝓞 F) : Ideal (𝓞 F)) : FractionalIdeal (𝓞 F)⁰ F) = dd w := by
   rw [FractionalIdeal.count_coe F w differentIdeal_ne_bot]
   rfl
 
+/- English proof (translation)
+Rewrite using `[mem_idealFiniteAdeles]`. Use `forall_congr' fun w => ?_` and prove the remaining obligations. Rewrite using `[count_nId hc]`. Both sides reduce to the same expression.
+-/
 theorem mem_nId_iff {c : HeightOneSpectrum (𝓞 F) → ℕ} (hc : {w | c w ≠ 0}.Finite) (a : Af F) :
     (∀ w, Valued.v (pLoc F w a) ≤ WithZero.exp (-(c w : ℤ))) ↔ a ∈ idealFiniteAdeles (nId c) := by
   rw [mem_idealFiniteAdeles]
@@ -36,6 +45,9 @@ theorem mem_nId_iff {c : HeightOneSpectrum (𝓞 F) → ℕ} (hc : {w | c w ≠ 
   rw [count_nId hc]
   rfl
 
+/- English proof (translation)
+Rewrite using `[mem_idealFiniteAdeles]`. Use `forall_congr' fun w => ?_` and prove the remaining obligations. Rewrite using `[count_traceDualIdeal, count_nId hc, count_different, neg_neg]`. Both sides reduce to the same expression.
+-/
 theorem mem_dual_iff {c : HeightOneSpectrum (𝓞 F) → ℕ} (hc : {w | c w ≠ 0}.Finite) (a : Af F) :
     (∀ w, Valued.v (pLoc F w a) ≤ WithZero.exp ((c w : ℤ) + dd w)) ↔
       a ∈ idealFiniteAdeles (traceDualIdeal F (nId c)) := by
@@ -44,6 +56,9 @@ theorem mem_dual_iff {c : HeightOneSpectrum (𝓞 F) → ℕ} (hc : {w | c w ≠
   rw [count_traceDualIdeal, count_nId hc, count_different, neg_neg]
   rfl
 
+/- English proof (translation)
+Take `⟨v⟩ : Nonempty (InfinitePlace F)` from `inferInstance`. Conclude with `Finset.prod_eq_zero (Finset.mem_univ v) (by simp)`.
+-/
 theorem arch_zero [IsTotallyReal F] : arch (0 : UpperTheory.V.TR.Rinf F) 0 = 0 := by
   obtain ⟨v⟩ : Nonempty (InfinitePlace F) := inferInstance
   exact Finset.prod_eq_zero (Finset.mem_univ v) (by simp)
@@ -51,6 +66,9 @@ theorem arch_zero [IsTotallyReal F] : arch (0 : UpperTheory.V.TR.Rinf F) 0 = 0 :
 def gFin (c : HeightOneSpectrum (𝓞 F) → ℕ) : (Fin 2 → Af F) → ℂ :=
   finiteTensor2 ![cosetIndicator (nId c) 0, cosetIndicator (nId c) 1]
 
+/- English proof (translation)
+The claim follows from `finiteTensor2_mem fun i => by fin_cases i · exact cosetIndicator_mem_finiteSchwartzBruhat _ _ · exact cosetIndicator_mem_finiteSchwartzBruhat _ _`.
+-/
 theorem gFin_mem (c : HeightOneSpectrum (𝓞 F) → ℕ) : gFin c ∈ finiteSchwartzBruhat2 F :=
   finiteTensor2_mem fun i => by
     fin_cases i
@@ -59,6 +77,13 @@ theorem gFin_mem (c : HeightOneSpectrum (𝓞 F) → ℕ) : gFin c ∈ finiteSch
 
 variable [IsTotallyReal F]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `x`. Rewrite using `[schwartzBruhatTensor2, hφ, gFin, finiteTensor2_apply, Phi]`. Simplify using `only [infPart, finPart, toR_homeomorphMixedSpace, Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.head_cons, cosetIndicator_apply, sub_zero]`. Use `congr 1`. Establish `h0` using `mem_nId_iff hc (pFin F (x 0))`.
+
+Establish `h1` using `mem_nId_iff hc (pFin F (x 1) - 1)`. Simplify using `only [map_sub, map_one] at h1`. Apply the tactic sequence `by_cases a : (x 0).2 ∈ idealFiniteAdeles (nId c) <;> by_cases b : (x 1).2 - 1 ∈ idealFiniteAdeles (nId c)`. Rewrite using `[if_pos fun w => ⟨h0.2 a w, h1.2 b w⟩, if_pos a, if_pos b, mul_one]`. Rewrite using `[if_neg (fun h => b (h1.1 fun w => (h w).2)), if_neg b, mul_zero]`.
+
+Rewrite using `[if_neg (fun h => a (h0.1 fun w => (h w).1)), if_neg a, zero_mul]`. Rewrite using `[if_neg (fun h => a (h0.1 fun w => (h w).1)), if_neg a, zero_mul]`.
+-/
 theorem phi_eq {c : HeightOneSpectrum (𝓞 F) → ℕ} (hc : {w | c w ≠ 0}.Finite)
     (φ : SchwartzMap (Fin 2 → mixedSpace F) ℂ) (hφ : ∀ u, φ u = arch (toR F (u 0)) (toR F (u 1))) :
     Phi c = schwartzBruhatTensor2 φ (gFin c) := by
@@ -80,12 +105,24 @@ def cst (c : HeightOneSpectrum (𝓞 F) → ℕ) : ℂ :=
   (-Complex.I) ^ Fintype.card (InfinitePlace F) *
     (((finiteAdeleMeasure F (idealFiniteAdeles (nId c))).toReal : ℝ) : ℂ) ^ 2
 
+/- English proof (translation)
+Use `mul_ne_zero (pow_ne_zero _ (neg_ne_zero.mpr Complex.I_ne_zero)) (pow_ne_zero _ ?_)` and prove the remaining obligations. Rewrite using `[Complex.ofReal_ne_zero]`. Conclude with `ENNReal.toReal_ne_zero.mpr ⟨(isOpen_idealFiniteAdeles _).measure_ne_zero _ ⟨0, zero_mem _⟩, finiteAdeleMeasure_idealFiniteAdeles_ne_top _⟩`.
+-/
 theorem cst_ne_zero (c : HeightOneSpectrum (𝓞 F) → ℕ) : cst c ≠ 0 := by
   refine mul_ne_zero (pow_ne_zero _ (neg_ne_zero.mpr Complex.I_ne_zero)) (pow_ne_zero _ ?_)
   rw [Complex.ofReal_ne_zero]
   exact ENNReal.toReal_ne_zero.mpr ⟨(isOpen_idealFiniteAdeles _).measure_ne_zero _ ⟨0, zero_mem _⟩,
     finiteAdeleMeasure_idealFiniteAdeles_ne_top _⟩
 
+/- English proof (translation)
+Establish `hφ' : (⇑φ : (Fin 2 → mixedSpace F) → ℂ) = fun u => arch (toR F (u 0)) (toR F (u 1))` using `funext hφ`. Rewrite using `[phi_eq hc φ hφ, adelicFourier2_schwartzBruhatTensor2, schwartzBruhatTensor2, mixedFourier2Schwartz_apply, hφ', mixedFourier2_arch, gFin, finiteFourier2_finiteTensor2, finiteTensor2_apply]`. Simplify using `only [Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.head_cons, finiteFourier_cosetIndicator, zero_mul, one_mul, AddChar.map_zero_eq_one, Circle.coe_one, infPart, finPart, toR_homeomorphMixedSpace, PhiH, cst]`. Establish `h0` using `mem_dual_iff hc (pFin F (y 0))`. Establish `h1` using `mem_dual_iff hc (pFin F (y 1))`.
+
+Rewrite using `[show pFin F (y 1) = (y 1).2 from rfl]`. Apply the tactic sequence `by_cases a : (y 0).2 ∈ idealFiniteAdeles (traceDualIdeal F (nId c)) <;>`. Distinguish the cases in `b : (y 1).2 ∈ idealFiniteAdeles (traceDualIdeal F (nId c))`. Rewrite using `[if_pos fun w => ⟨h0.2 a w, h1.2 b w⟩]`. Simplify using `only [Set.indicator_apply, SetLike.mem_coe, a, b, if_true, Pi.one_apply]`.
+
+Expand and normalize the polynomial expressions, which then agree. Rewrite using `[if_neg (fun h => b (h1.1 fun w => (h w).2))]`. Simplify using `only [Set.indicator_apply, SetLike.mem_coe, a, b, if_true, if_false, Pi.one_apply]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[if_neg (fun h => a (h0.1 fun w => (h w).1))]`.
+
+Simplify using `only [Set.indicator_apply, SetLike.mem_coe, a, b, if_true, if_false, Pi.one_apply]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[if_neg (fun h => a (h0.1 fun w => (h w).1))]`. Simplify using `only [Set.indicator_apply, SetLike.mem_coe, a, b, if_true, if_false, Pi.one_apply]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem fourier_phi {c : HeightOneSpectrum (𝓞 F) → ℕ} (hc : {w | c w ≠ 0}.Finite)
     (φ : SchwartzMap (Fin 2 → mixedSpace F) ℂ) (hφ : ∀ u, φ u = arch (toR F (u 0)) (toR F (u 1)))
     (y : Fin 2 → Ad F) :
@@ -115,19 +152,43 @@ theorem fourier_phi {c : HeightOneSpectrum (𝓞 F) → ℕ} (hc : {w | c w ≠ 
     simp only [Set.indicator_apply, SetLike.mem_coe, a, b, if_true, if_false, Pi.one_apply]
     ring
 
+/- English proof (translation)
+Use function extensionality and compare the values at `i`. Simplify using `[rowA]`.
+-/
 theorem rowA_zero : rowA (0 : Fin 2 → F) = 0 := by
   funext i
   simp [rowA]
 
+/- English proof (translation)
+Simplify using `[Phi, map_zero, arch_zero]`.
+-/
 theorem phi_zero (c : HeightOneSpectrum (𝓞 F) → ℕ) : Phi c 0 = 0 := by
   simp [Phi, map_zero, arch_zero]
 
+/- English proof (translation)
+Simplify using `[PhiH, map_zero, arch_zero]`.
+-/
 theorem phiH_zero (c : HeightOneSpectrum (𝓞 F) → ℕ) : PhiH c 0 = 0 := by
   simp [PhiH, map_zero, arch_zero]
 
 end UpperTheory.HilbertEisensteinWeightOne.PoissonSummationAdelic
 
 open UpperTheory.HilbertEisensteinWeightOne UpperTheory.HilbertEisensteinWeightOne.PoissonSummationAdelic in
+/- English proof (translation)
+Introduce `F _ _ _ ω c hyp`. Establish `hc` using `finite_support_of_cond F ω c hyp.fin hyp.cond`. Take `⟨φ, hφ⟩` from `exists_schwartz_arch F`. Establish `hmem : Phi c ∈ schwartzBruhat2 F`. Rewrite using `[phi_eq hc φ hφ]`.
+
+Conclude with `schwartzBruhatTensor2_mem φ (gFin_mem c)`. Use `⟨cst c, fun h => ?_⟩` and prove the remaining obligations. Take `⟨S1, S2, E⟩` from `poisson_rightTranslate hmem h`. Establish `hF : ∀ ξ : Fin 2 → F, adelicFourier2 F (Phi c) ((fun i ↦ algebraMap F (Ad F) (ξ i)) ᵥ* ((h⁻¹ : GA F 2) : Matrix (Fin 2) (Fin 2) (Ad F))ᵀ) = cst c * PhiH c (((h⁻¹ : GA F 2) : Matrix (Fin 2) (Fin 2) (Ad F)) *ᵥ rowA ξ)`. Introduce `ξ`.
+
+Rewrite using `[fourier_phi hc φ hφ, Matrix.vecMul_transpose]`. Both sides reduce to the same expression. Simplify using `only [hF, norm_mul] at S2 E`. Establish `hsupp1 : Function.support (fun ξ : Fin 2 → F => Phi c (rowA ξ ᵥ* (h : Matrix (Fin 2) (Fin 2) (Ad F)))) ⊆ {ξ | ξ ≠ 0}`. Introduce `ξ hξ`.
+
+Introduce and unpack `(rfl : ξ = 0)`. Apply `hξ` to reduce the goal to its premises. Simplify using `only`. Rewrite using `[rowA_zero, Matrix.zero_vecMul, phi_zero]`. Establish `hsupp2 : Function.support (fun ξ : Fin 2 → F => PhiH c (((h⁻¹ : GA F 2) : Matrix (Fin 2) (Fin 2) (Ad F)) *ᵥ rowA ξ)) ⊆ {ξ | ξ ≠ 0}`.
+
+Introduce `ξ hξ`. Introduce and unpack `(rfl : ξ = 0)`. Apply `hξ` to reduce the goal to its premises. Simplify using `only`. Rewrite using `[rowA_zero, Matrix.mulVec_zero, phiH_zero]`.
+
+Establish `hC : ‖cst c‖ ≠ 0` using `norm_ne_zero_iff.mpr (cst_ne_zero c)`. Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Conclude with `(S1.subtype {ξ | ξ ≠ 0} : _)`. Conclude with `(((summable_mul_left_iff hC).mp S2).subtype {ξ | ξ ≠ 0} : _)`. Rewrite using `[thetaS, thetaT]`.
+
+Rewrite using `[show (∑' ξ : {ξ : Fin 2 → F // ξ ≠ 0}, Phi c (rowA ξ.1 ᵥ* (h : Matrix (Fin 2) (Fin 2) (Ad F)))) = ∑' ξ : ({ξ | ξ ≠ 0} : Set (Fin 2 → F)), Phi c (rowA (ξ : Fin 2 → F) ᵥ* (h : Matrix (Fin 2) (Fin 2) (Ad F))) from rfl, tsum_subtype_eq_of_support_subset hsupp1, show (∑' ξ : {ξ : Fin …`. Express the relevant statement in the definitionally equal form `∑' ξ : Fin 2 → F, Phi c ((fun i ↦ algebraMap F (Ad F) (ξ i)) ᵥ* (h : Matrix (Fin 2) (Fin 2) (Ad F))) = _`. Rewrite using `[E, tsum_mul_left, absD, Complex.ofReal_inv]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem UpperTheory.HilbertEisensteinWeightOne.poisson_summation_holds : SPois := by
   intro F _ _ _ ω c hyp
   have hc := finite_support_of_cond F ω c hyp.fin hyp.cond

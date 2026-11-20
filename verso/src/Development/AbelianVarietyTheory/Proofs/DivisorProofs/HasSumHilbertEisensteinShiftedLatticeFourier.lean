@@ -24,10 +24,27 @@ noncomputable def shearSub {F : Type} [Field F] (x : F) : (Fin 2 → F) ≃ₗ[F
   left_inv v := by ext i; fin_cases i <;> simp
   right_inv v := by ext i; fin_cases i <;> simp
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem shearSub_zero {F : Type} [Field F] (x : F) (v : Fin 2 → F) : shearSub x v 0 = v 0 := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem shearSub_one {F : Type} [Field F] (x : F) (v : Fin 2 → F) : shearSub x v 1 = v 1 - v 0 * x := rfl
 
+/- English proof (translation)
+Introduce `F _ _ _ k 𝔞 𝔟 a₀ a x w hk hc hw`. Establish `hw' : (fun i : Emb F ↦ w i + ((i x : ℝ) : ℂ)) ∈ upperHalf F`. Introduce `i`. Simplify using `using hw i`. Establish `hg : gval k (split 𝔞 𝔟 x) w 1 = gval k (split 𝔞 𝔟 0) (fun i : Emb F ↦ w i + ((i x : ℝ) : ℂ)) 1`.
+
+Use `GlobalTheory.T.hilbertEisensteinValue_linear_change F k (split 𝔞 𝔟 x) (split 𝔞 𝔟 0) (shearSub x) w 1 (fun i : Emb F ↦ w i + ((i x : ℝ) : ℂ)) 1 1 hk (fun v ↦ by` as an intermediate fact. Express the relevant statement in the definitionally equal form `(_ ∧ _) ↔ (_ ∧ _)`. Rewrite using `[shearSub_zero, shearSub_one, mul_zero, sub_zero]) (fun i ↦ by simp) (fun v i ↦ by`. Simplify using `only [coord, shearSub_zero, shearSub_one, Pi.one_apply, map_sub, map_mul]`. Use `push_cast`.
+
+Use the proof step `ring)`. Simplify using `using this`. Establish `h` using `hc.2.2.2 _ hw'`. Rewrite using `[hg]`. Use `h using 2 with ξ` and compare the differences between its conclusion and the goal.
+
+Rewrite using `[mul_assoc]`. Use `congr 1`. Unfold `eTr qPow`. Rewrite using `[← Complex.exp_add, ← GlobalTheory.T.sum_realEmbeddings_eq_trace_totallyReal F (ξ * x), ← mul_add, ← Finset.sum_add_distrib]`. Use `congr 2`.
+
+Use `Finset.sum_congr rfl fun i _ ↦ ?_` and prove the remaining obligations. Rewrite using `[map_mul]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem hasSum_split_shift : ∀ (F : Type) [Field F] [NumberField F] [IsTotallyReal F] (k : ℕ) (𝔞 𝔟 : Frac F) (a₀ : ℂ) (a : F → ℂ) (x : F) (w : Emb F → ℂ), Even k → IsCoef k 𝔞 𝔟 a₀ a → w ∈ upperHalf F → HasSum (fun ξ : F ↦ a ξ * eTr (ξ * x) * qPow ξ w) ((cK F k : ℂ) * gval k (split 𝔞 𝔟 x) w 1 / ((2 * Real.pi * Complex.I) ^ Module.finrank ℚ F * (omegaFactor 𝔞 : ℂ)) ^ k) := by
   intro F _ _ _ k 𝔞 𝔟 a₀ a x w hk hc hw
   have hw' : (fun i : Emb F ↦ w i + ((i x : ℝ) : ℂ)) ∈ upperHalf F := by

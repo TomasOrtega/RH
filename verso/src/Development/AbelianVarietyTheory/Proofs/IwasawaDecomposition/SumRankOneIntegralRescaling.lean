@@ -6,6 +6,13 @@ open ReciprocityTheory.ChartRestriction.G.FD NumberField GlobalTheory.UnipKill
 
 namespace GlobalTheory.UnipKill
 
+/- English proof (translation)
+Introduce `E _ _ _ N X d ξ t ht`. Use `choose a ha hmem using fun j => GlobalTheory.T.exists_nat_smul_mem_lattice' E N X (ξ j)`. Take `⟨b, hb, hint⟩` from `GlobalTheory.T.exists_common_denominator_isIntegral E d (fun j => t j / ((a j : ℕ) : E) ^ 2)`. Establish `ha0 : ∀ j, ((a j : ℕ) : E) ≠ 0` using `fun j => Nat.cast_ne_zero.2 (ha j).ne'`. Use `⟨X.m * b, fun j => ((a j : ℕ) : E) • ξ j, fun j => (b : E) * (t j / ((a j : ℕ) : E) ^ 2), Nat.mul_pos X.m_pos hb, hmem, fun j => ⟨_, rfl⟩, ?_, hint, ?_⟩` and prove the remaining obligations.
+
+Introduce `j`. Rewrite using `[cc_mul, div_eq_mul_inv, cc_mul, cc_inv, cc_pow, cc_natCast, cc_natCast, ht, ← div_eq_mul_inv]`. Rewrite using `[Finset.smul_sum]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[rk1_smul_left, rk1_smul_right, cc_natCast, smul_smul, smul_smul, smul_smul]`.
+
+Use `congr 1`. Use `ha0 j` as an intermediate fact. Use `push_cast`. Clear the denominators using the available nonvanishing facts.
+-/
 theorem scaleDecomp : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (N : ℕ) (X : Data E N)
     (d : ℕ) (ξ : Fin d → Fin N → E) (t : Fin d → E), (∀ j, cc (t j) = t j) →
     ∃ (k : ℕ) (ξ' : Fin d → Fin N → E) (s : Fin d → E), 0 < k ∧ (∀ j, ξ' j ∈ X.Λ) ∧

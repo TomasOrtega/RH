@@ -13,6 +13,9 @@ open GlobalTheory.ZJ
 namespace GlobalTheory
 namespace NormGlue
 
+/- English proof (translation)
+Rewrite using `[Scheme.Hom.appIso_hom']`. Express the relevant statement in the definitionally equal form `_ = (X.presheaf.map (homOfLE h').op ≫ f.appLE _ _ _).hom ψ`. Rewrite using `[Scheme.Hom.map_appLE]`.
+-/
 theorem appLE_eq_appIso {X Y : Scheme.{0}} (f : Y ⟶ X) [IsOpenImmersion f] (W : X.Opens)
     (V : Y.Opens) (h : V ≤ f ⁻¹ᵁ W) (h' : f ''ᵁ V ≤ W) (ψ : Γ(X, W)) :
     (f.appLE W V h).hom ψ = (f.appIso V).hom.hom (resG X h' ψ) := by
@@ -20,11 +23,19 @@ theorem appLE_eq_appIso {X Y : Scheme.{0}} (f : Y ⟶ X) [IsOpenImmersion f] (W 
   change _ = (X.presheaf.map (homOfLE h').op ≫ f.appLE _ _ _).hom ψ
   rw [Scheme.Hom.map_appLE]
 
+/- English proof (translation)
+Introduce and unpack `_ ⟨x, hx, rfl⟩`. Conclude with `h hx`.
+-/
 theorem image_le {X Y : Scheme.{0}} (f : Y ⟶ X) [IsOpenImmersion f] {W : X.Opens}
     {V : Y.Opens} (h : V ≤ f ⁻¹ᵁ W) : f ''ᵁ V ≤ W := by
   rintro _ ⟨x, hx, rfl⟩
   exact h hx
 
+/- English proof (translation)
+Introduce `a b hab`. Rewrite `hab` using `[appLE_eq_appIso f W V h (image_le f h), appLE_eq_appIso f W V h (image_le f h)]`. Establish `h1` using `(f.appIso V).commRingCatIsoToRingEquiv.injective hab`. Take `⟨x, hx⟩` from `hV`. Use `haveI : Nonempty (f ''ᵁ V) := ⟨⟨f x, x, hx, rfl⟩⟩`.
+
+Conclude with `map_injective_of_isIntegral X (homOfLE (image_le f h)) h1`.
+-/
 theorem appLE_injective {X Y : Scheme.{0}} [IsIntegral X] (f : Y ⟶ X) [IsOpenImmersion f]
     (W : X.Opens) (V : Y.Opens) (h : V ≤ f ⁻¹ᵁ W) (hV : (V : Set Y).Nonempty) :
     Function.Injective (f.appLE W V h).hom := by
@@ -35,6 +46,13 @@ theorem appLE_injective {X Y : Scheme.{0}} [IsIntegral X] (f : Y ⟶ X) [IsOpenI
   haveI : Nonempty (f ''ᵁ V) := ⟨⟨f x, x, hx, rfl⟩⟩
   exact map_injective_of_isIntegral X (homOfLE (image_le f h)) h1
 
+/- English proof (translation)
+Establish `e : (y₀ ≫ f) ⁻¹ᵁ (f ''ᵁ V) = y₀ ⁻¹ᵁ V`. Rewrite using `[Scheme.Hom.comp_preimage, Scheme.Hom.preimage_image_eq]`. Unfold `valF`. Distinguish the cases in `h : ⊤ ≤ y₀ ⁻¹ᵁ V`. Rewrite using `[dif_pos h, dif_pos (e ▸ h)]`.
+
+Use `congr 1`. Rewrite using `[← Scheme.Hom.appLE_comp_appLE y₀ f (f ''ᵁ V) V ⊤ (f.preimage_image_eq V).ge h, ← Scheme.Hom.appIso_hom']`. Express the relevant statement in the definitionally equal form `(y₀.appLE V ⊤ h).hom (((f.appIso V).inv ≫ (f.appIso V).hom).hom u) = _`. Rewrite using `[Iso.inv_hom_id]`. Both sides reduce to the same expression.
+
+Rewrite using `[dif_neg h, dif_neg (e ▸ h)]`.
+-/
 theorem valF_comp_appIso {F : Type} [Field F] {X Y : Scheme.{0}} (f : Y ⟶ X) [IsOpenImmersion f]
     (V : Y.Opens) (u : Γ(Y, V)) (y₀ : Sp F ⟶ Y) :
     valF (y₀ ≫ f) (f ''ᵁ V) ((f.appIso V).inv.hom u) = valF y₀ V u := by
@@ -51,20 +69,36 @@ theorem valF_comp_appIso {F : Type} [Field F] {X Y : Scheme.{0}} (f : Y ⟶ X) [
     rfl
   · rw [dif_neg h, dif_neg (e ▸ h)]
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem val_res_pullU {X Y : Scheme.{0}} (f : Y ⟶ X) (W : X.Opens) (V : Y.Opens)
     (h : V ≤ f ⁻¹ᵁ W) (ψ : Γ(X, W)ˣ) :
     (Semi.res h (pullU f W ψ)).val = (f.appLE W V h).hom ψ.val := rfl
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨genericPoint Y, fun O hO => ((genericPoint_spec Y).mem_open_set_iff O.isOpen).2 (by simpa using hO)⟩`.
+-/
 theorem exists_generic (Y : Scheme.{0}) [IsIntegral Y] :
     ∃ ξ : Y, ∀ O : Y.Opens, (O : Set Y).Nonempty → ξ ∈ O :=
   ⟨genericPoint Y, fun O hO => ((genericPoint_spec Y).mem_open_set_iff O.isOpen).2 (by simpa using hO)⟩
 
+/- English proof (translation)
+Take `⟨x, ⟨y', rfl⟩, hx⟩` from `nonempty_preirreducible_inter f.isOpenEmbedding.isOpen_range U.isOpen ⟨f y, y, rfl⟩ hU`. Conclude with `⟨y', hx⟩`.
+-/
 theorem preimage_nonempty {X Y : Scheme.{0}} [IsIntegral X] (f : Y ⟶ X) [IsOpenImmersion f] (y : Y)
     {U : X.Opens} (hU : (U : Set X).Nonempty) : ((f ⁻¹ᵁ U : Y.Opens) : Set Y).Nonempty := by
   obtain ⟨x, ⟨y', rfl⟩, hx⟩ := nonempty_preirreducible_inter f.isOpenEmbedding.isOpen_range U.isOpen
     ⟨f y, y, rfl⟩ hU
   exact ⟨y', hx⟩
 
+/- English proof (translation)
+Distinguish the cases in `hU : (U : Set X).Nonempty`. Use `haveI : Nonempty Y := ⟨ξ⟩ haveI : IsIntegral Y := isIntegral_of_isOpenImmersion f`. Establish `hne` using `preimage_nonempty f ξ hU`. Establish `hm : f ξ ∈ U` using `hξ _ hne`. Establish `e` using `congrArg Units.val (h hm)`.
+
+Rewrite `e` using `[gm_val f ξ U hm, gm_val f ξ U hm]`. Establish `e'` using `germ_injective_of_isIntegral Y (U := f ⁻¹ᵁ U) ξ hm e`. Apply `Units.ext` to reduce the goal to its premises. Apply `appLE_injective f U (f ⁻¹ᵁ U) le_rfl hne` to reduce the goal to its premises. Rewrite using `[Scheme.Hom.appLE_eq_app]`.
+
+Conclude with `e'`. Conclude with `unit_ext fun x hx => (hU ⟨x, hx⟩).elim`.
+-/
 theorem unit_eq_of_gm {X Y : Scheme.{0}} [IsIntegral X] (f : Y ⟶ X) [IsOpenImmersion f] (ξ : Y)
     (hξ : ∀ O : Y.Opens, (O : Set Y).Nonempty → ξ ∈ O) {U : X.Opens} {u u' : Γ(X, U)ˣ}
     (h : f ξ ∈ U → gm f ξ U u = gm f ξ U u') : u = u' := by
@@ -82,25 +116,40 @@ theorem unit_eq_of_gm {X Y : Scheme.{0}} [IsIntegral X] (f : Y ⟶ X) [IsOpenImm
     exact e'
   · exact unit_ext fun x hx => (hU ⟨x, hx⟩).elim
 
+/- English proof (translation)
+The claim follows from `h ⟨z, rfl⟩`.
+-/
 theorem mem_of_range {F : Type} [Field F] {X : Scheme.{0}} {x : Sp F ⟶ X} {U : Set X}
     (h : Set.range x ⊆ U) (z : Sp F) : x z ∈ U := h ⟨z, rfl⟩
 
+/- English proof (translation)
+Establish `: Subsingleton (Sp F)` using `inferInstanceAs (Subsingleton (PrimeSpectrum F))`. Introduce and unpack `_ ⟨y, rfl⟩`. Rewrite using `[Subsingleton.elim y z]` and apply the resulting hypothesis.
+-/
 theorem range_sub {F : Type} [Field F] {X : Scheme.{0}} {x : Sp F ⟶ X} {U : Set X} (z : Sp F)
     (h : x z ∈ U) : Set.range x ⊆ U := by
   have : Subsingleton (Sp F) := inferInstanceAs (Subsingleton (PrimeSpectrum F))
   rintro _ ⟨y, rfl⟩
   rwa [Subsingleton.elim y z]
 
+/- English proof (translation)
+The claim follows from `(toStk z).injective (by rw [toStk_valF x U z h, toStk_valF x' U' z h', e])`.
+-/
 theorem valF_eq_of_gm {F : Type} [Field F] {X X' : Scheme.{0}} {x : Sp F ⟶ X} {x' : Sp F ⟶ X'}
     {U : X.Opens} {U' : X'.Opens} (z : Sp F) (h : x z ∈ U) (h' : x' z ∈ U') {u : Γ(X, U)ˣ} {u' : Γ(X', U')ˣ}
     (e : gm x z U u = gm x' z U' u') : valF x U u.val = valF x' U' u'.val :=
   (toStk z).injective (by rw [toStk_valF x U z h, toStk_valF x' U' z h', e])
 
+/- English proof (translation)
+Introduce and unpack `_ ⟨y, rfl⟩`. Conclude with `((IsLocalRing.specializes_closedPoint y).map b.continuous).mem_open hU h`.
+-/
 theorem range_sub_of_closedPoint {R : Type} [CommRing R] [IsLocalRing R] {X : Scheme.{0}} (b : Sp R ⟶ X)
     {U : Set X} (hU : IsOpen U) (h : b (IsLocalRing.closedPoint R) ∈ U) : Set.range b ⊆ U := by
   rintro _ ⟨y, rfl⟩
   exact ((IsLocalRing.specializes_closedPoint y).map b.continuous).mem_open hU h
 
+/- English proof (translation)
+Take `⟨b, hb, hc⟩` from `h`. Establish `: (gPt p ≫ b) z ∈ W` using `range_sub_of_closedPoint b W.isOpen hc ⟨gPt p z, rfl⟩`. Rewrite `this` using `[hb]`. Conclude with `this`.
+-/
 theorem IntAt_mem {X Y : Scheme.{0}} {a : X ⟶ Y} {W : Y.Opens} {p : ℕ} [Fact p.Prime]
     {x : Sp (PadicAlgCl p) ⟶ X} (h : IntAt a W x) (z : Sp (PadicAlgCl p)) : a (x z) ∈ W := by
   obtain ⟨b, hb, hc⟩ := h
@@ -108,6 +157,19 @@ theorem IntAt_mem {X Y : Scheme.{0}} {a : X ⟶ Y} {W : Y.Opens} {p : ℕ} [Fact
   rw [hb] at this
   exact this
 
+/- English proof (translation)
+Distinguish the cases in `hW : (W : Set X).Nonempty`. Take `⟨y, hy⟩` from `hne hW`. Take `⟨ψ, hψ, e⟩` from `(GlobalTheory.regular_of_bounded_at_padicAlgCl_points.2 X π hX (f ''ᵁ V) W (image_le _ h) ((f.appIso V).inv.hom u.val) ⟨f y, y, hy, rfl⟩).2 (u.isUnit.map _) (by`. Introduce `p _ b hb hr`. Establish `hr' : Set.range (gPt p ≫ b) ⊆ Set.range f`.
+
+Introduce `t ht`. Take `⟨s, -, rfl⟩` from `hr ht`. Conclude with `⟨s, rfl⟩`. Establish `fac` using `IsOpenImmersion.lift_fac f (gPt p ≫ b) hr'`. Use `set x := IsOpenImmersion.lift f (gPt p ≫ b) hr'`.
+
+Establish `hx : Set.range x ⊆ V`. Introduce and unpack `_ ⟨t, rfl⟩`. Establish `: (x ≫ f) t ∈ f ''ᵁ V` using `by rw [fac]; exact hr ⟨t, rfl⟩`. Take `⟨s, hs, e⟩` from `this`. Establish `: s = x t` using `f.isOpenEmbedding.injective e`.
+
+Conclude with `this ▸ hs`. Use `hu p x ⟨b, fac.symm, hb⟩ hx` as an intermediate fact. Rewrite `this` using `[← valF_comp_appIso f V u.val x, fac]`. Conclude with `this)`. Establish `e' : Semi.res h (pullU f W hψ.unit) = u`.
+
+Apply `Units.ext` to reduce the goal to its premises. Rewrite using `[val_res_pullU, appLE_eq_appIso f W V h (image_le f h), IsUnit.unit_spec, e]`. Conclude with `Iso.inv_hom_id_apply _ _`. Use `⟨hψ.unit, fun Z r z hz => ?_⟩` and prove the remaining obligations. Rewrite using `[← e', gm_res r z h hz, gm_pull r f z W (h hz)]`.
+
+Conclude with `⟨1, fun Z r z hz => (hW ⟨_, h hz⟩).elim⟩`.
+-/
 theorem exists_ext (X : Scheme.{0}) [IsIntegral X] (π : X ⟶ Sp ℤ) [Flat π]
     [LocallyOfFiniteType π] (hX : Geo.Tor.IsNormalScheme X) {Y : Scheme.{0}} (f : Y ⟶ X) [IsOpenImmersion f]
     (W : X.Opens) (V : Y.Opens) (h : V ≤ f ⁻¹ᵁ W) (hne : (W : Set X).Nonempty → (V : Set Y).Nonempty)
@@ -143,6 +205,31 @@ theorem exists_ext (X : Scheme.{0}) [IsIntegral X] (π : X ⟶ Sp ℤ) [Flat π]
     rw [← e', gm_res r z h hz, gm_pull r f z W (h hz)]
   · exact ⟨1, fun Z r z hz => (hW ⟨_, h hz⟩).elim⟩
 
+/- English proof (translation)
+Take `⟨y₀, hy₀⟩` from `hW₀`. Use `haveI : Nonempty A₀ := ⟨y₀⟩`. Use `haveI : IsIntegral A₀ := isIntegral_of_isOpenImmersion a`. Use `haveI : Nonempty W₀.toScheme := ⟨⟨y₀, hy₀⟩⟩`. Use `haveI : IsIntegral W₀.toScheme := isIntegral_of_isOpenImmersion W₀.ι`.
+
+Take `⟨ξ, hξ⟩` from `exists_generic W₀.toScheme`. Establish `key : ∀ j, ∃ s : Γ(A₀, L.U j ⊓ a ⁻¹ᵁ W)ˣ, ∀ (Z : Scheme.{0}) (r : Z ⟶ W₀.toScheme) (z : Z), W₀.ι (r z) ∈ L.U j → a (W₀.ι (r z)) ∈ W → gm (r ≫ W₀.ι) z _ s = gm r z ((L.pull W₀.ι).U (fun _ => j)) (gn.s (fun _ => j))`. Introduce `j`. Take `⟨ψ, hψ⟩` from `exists_ext X π hX (W₀.ι ≫ a) (a ''ᵁ (L.U j ⊓ a ⁻¹ᵁ W)) ((L.pull W₀.ι).U (fun _ => j) ⊓ (W₀.ι ≫ a) ⁻¹ᵁ W) (fun y hy => ⟨W₀.ι y, ⟨mem_pull.1 hy.1, hy.2⟩, rfl⟩) (by`. Introduce and unpack `⟨_, y, hy, rfl⟩`.
+
+Take `⟨t, ht⟩` from `preimage_nonempty W₀.ι ξ (U := L.U j ⊓ a ⁻¹ᵁ W) ⟨y, hy⟩`. Conclude with `⟨t, mem_pull.2 ht.1, ht.2⟩)`. Use the proof step `(Semi.res inf_le_left (gn.s (fun _ => j))) (by`. Introduce and unpack `p _ x ⟨b, hb, c, hc, hcb⟩ hx`. Set `z : Sp (PadicAlgCl p)` to `IsLocalRing.closedPoint _`.
+
+Establish `hr : Set.range b ⊆ Set.range a` using `range_sub_of_closedPoint b a.isOpenEmbedding.isOpen_range ⟨c, hcb⟩`. Establish `fac` using `IsOpenImmersion.lift_fac a b hr`. Use `set b' := IsOpenImmersion.lift a b hr`. Establish `hb' : gPt p ≫ b' = x ≫ W₀.ι`. Rewrite using `[← cancel_mono a, Category.assoc, fac, hb, Category.assoc]`.
+
+Establish `hc' : b' (cPt p) = c` using `a.isOpenEmbedding.injective ((congrArg (fun q : Sp (OO p) ⟶ X => q (cPt p)) fac).trans hcb.symm)`. Establish `h1` using `hν.int p b' j (hc' ▸ hc.1)`. Establish `h2` using `hn p x ⟨b, hb, hcb ▸ hc.2⟩ (fun _ => j) (fun t ht => (hx ht).1)`. Rewrite `h2` using `[Fintype.prod_unique, zpow_one, ← hb', h1, _root_.mul_one]`. Rewrite using `[← h2]`.
+
+Conclude with `congrArg _ (valF_eq_of_gm z (mem_of_range hx z) (mem_of_range hx z).1 (gm_res x z _ (mem_of_range hx z) _)))`. Use `⟨Semi.res (a.preimage_image_eq _).ge (pullU a _ ψ), fun Z r z h₁ h₂ => ?_⟩` and prove the remaining obligations. Establish `hm : (r ≫ W₀.ι) z ∈ L.U j ⊓ a ⁻¹ᵁ W` using `⟨h₁, h₂⟩`. Establish `hm' : r z ∈ (L.pull W₀.ι).U (fun _ => j) ⊓ (W₀.ι ≫ a) ⁻¹ᵁ W` using `⟨mem_pull.2 h₁, h₂⟩`. Rewrite using `[gm_res _ z _ hm, gm_pull (r ≫ W₀.ι) a z (a ''ᵁ (L.U j ⊓ a ⁻¹ᵁ W)) ⟨_, hm, rfl⟩, Category.assoc, hψ Z r z hm', gm_res r z _ hm']`.
+
+Use `choose s hs using key`. Use `⟨s, fun y j j' hj hj' hy => ?_, fun p _ x j hx hj h₀ => ?_⟩` and prove the remaining obligations. Establish `l₁ : L.U j ⊓ L.U j' ⊓ a ⁻¹ᵁ W ≤ L.U j ⊓ a ⁻¹ᵁ W` using `inf_le_inf_right _ inf_le_left`. Establish `l₂ : L.U j ⊓ L.U j' ⊓ a ⁻¹ᵁ W ≤ L.U j' ⊓ a ⁻¹ᵁ W` using `inf_le_inf_right _ inf_le_right`. Establish `e : Semi.res l₁ (s j) = Semi.res inf_le_left (L.g j j') * Semi.res l₂ (s j')`.
+
+Use `unit_eq_of_gm W₀.ι ξ hξ fun hm => ?_` and prove the remaining obligations. Rewrite using `[map_mul, gm_res _ ξ _ hm, gm_res _ ξ _ hm, gm_res _ ξ _ hm]`. Establish `e₁` using `hs j _ (𝟙 _) ξ hm.1.1 hm.2`. Establish `e₂` using `hs j' _ (𝟙 _) ξ hm.1.2 hm.2`. Establish `e₃` using `gen_trans hgen (𝟙 _) ξ (j := fun _ => j) (j' := fun _ => j') (mem_pull.2 hm.1.1) (mem_pull.2 hm.1.2)`.
+
+Rewrite `e₃` using `[trF, Fintype.prod_unique, zpow_one]`. Rewrite `e₁`, `e₂`, `e₃` using `[Category.id_comp]`. Rewrite using `[e₁, e₂]`. Conclude with `e₃`. Establish `hm : (𝟙 A₀ : A₀ ⟶ A₀) y ∈ L.U j ⊓ L.U j' ⊓ a ⁻¹ᵁ W` using `⟨⟨hj, hj'⟩, hy⟩`.
+
+Use `congrArg (gm (𝟙 A₀) y _) e` as an intermediate fact. Rewrite `this` using `[map_mul, gm_res _ y _ hm, gm_res _ y _ hm, gm_res _ y _ hm]`. Then use the resulting hypothesis. Set `z : Sp (PadicAlgCl p)` to `IsLocalRing.closedPoint _`. Establish `hr : Set.range x ⊆ Set.range W₀.ι` using `by rw [Scheme.Opens.range_ι]; exact h₀`. Establish `fac` using `IsOpenImmersion.lift_fac W₀.ι x hr`.
+
+Generalize the expression as in `IsOpenImmersion.lift W₀.ι x hr = x' at fac`. Substitute `fac` using the available equality. Establish `h₁ : W₀.ι (x' z) ∈ L.U j` using `mem_of_range hj z`. Establish `h₂ : a (W₀.ι (x' z)) ∈ W` using `IntAt_mem hx z`. Take `⟨b, hb, hc⟩` from `hx`.
+
+Establish `h` using `hn p x' ⟨b, hb.trans (Category.assoc _ _ _), hc⟩ (fun _ => j) (range_sub z (mem_pull.2 h₁))`. Rewrite `h` using `[Fintype.prod_unique, zpow_one]`. Rewrite using `[← h, valF_eq_of_gm z (show (x' ≫ W₀.ι) z ∈ L.U j ⊓ a ⁻¹ᵁ W from ⟨h₁, h₂⟩) (mem_pull.2 h₁) (hs j _ x' z h₁ h₂)]`.
+-/
 theorem exists_coord (X A₀ : Scheme.{0}) [IsIntegral X] (π : X ⟶ Sp ℤ) [Flat π] [LocallyOfFiniteType π]
     (hX : Geo.Tor.IsNormalScheme X) (a : A₀ ⟶ X) [IsOpenImmersion a] (L : LB A₀) (ν : Nrm L) (hν : IsNrm L ν)
     (W : X.Opens) (W₀ : A₀.Opens) (gn : LB.Gen (L.pull W₀.ι)) (hW₀ : (W₀ : Set A₀).Nonempty) (hgen : gn.IsGen)
@@ -222,6 +309,31 @@ theorem exists_coord (X A₀ : Scheme.{0}) [IsIntegral X] (π : X ⟶ Sp ℤ) [F
 end NormGlue
 open NormGlue in
 
+/- English proof (translation)
+Introduce `X A₀ _ π _ _ hX a _ L hL ν hν H`. Take `⟨-, -, hJ, hcl, -⟩` from `GlobalTheory.jacobson_closedPoints_tools_int X π`. Use `choose W W₀ gn hW hW₀ hgen hn using fun i : {w : X // IsClosed ({w} : Set X)} => H i.1 i.2`. Use `choose s hs hsn using fun i => exists_coord X A₀ π hX a L ν hν (W i) (W₀ i) (gn i) (hW₀ i) (hgen i) (hn i)`. Take `⟨w₀, hw₀, -⟩` from `hcl (genericPoint X) PEmpty (fun k => k.elim) ⊤ trivial`.
+
+Use `haveI : Nonempty A₀ := ⟨(hW₀ ⟨w₀, hw₀⟩).some⟩`. Use `haveI : IsIntegral A₀ := isIntegral_of_isOpenImmersion a`. Take `⟨ξ, hξ⟩` from `exists_generic A₀`. Take `⟨j₀, hj₀⟩` from `exists_chart hL ξ`. Establish `hξW : ∀ i, a ξ ∈ W i` using `fun i => hξ _ (preimage_nonempty a ξ ⟨_, hW i⟩)`.
+
+Establish `hξ₀ : ∀ i, ξ ∈ W₀ i` using `fun i => hξ _ (hW₀ i)`. Establish `key : ∀ i i', ∃ g : Γ(X, W i ⊓ W i')ˣ, gm a ξ _ g = gm (𝟙 A₀) ξ _ (s i' j₀) * (gm (𝟙 A₀) ξ _ (s i j₀))⁻¹`. Introduce `i i'`. Establish `hm : (𝟙 A₀ : A₀ ⟶ A₀) ξ ∈ (L.U j₀ ⊓ a ⁻¹ᵁ W i) ⊓ (L.U j₀ ⊓ a ⁻¹ᵁ W i') ⊓ (W₀ i ⊓ W₀ i')` using `⟨⟨⟨hj₀, hξW i⟩, hj₀, hξW i'⟩, hξ₀ i, hξ₀ i'⟩`. Take `⟨g, hg⟩` from `exists_ext X π hX a (W i ⊓ W i') ((L.U j₀ ⊓ a ⁻¹ᵁ W i) ⊓ (L.U j₀ ⊓ a ⁻¹ᵁ W i') ⊓ (W₀ i ⊓ W₀ i')) (fun t ht => ⟨ht.1.1.2, ht.1.2.2⟩) (fun _ => ⟨ξ, hm⟩) (Semi.res (inf_le_left.trans inf_le_right) (s i' j₀) * (Semi.res (inf_le_left.trans inf_le_left) (s i j₀))⁻¹) (by`.
+
+Introduce and unpack `p _ x ⟨b, hb, hc⟩ hx`. Set `z : Sp (PadicAlgCl p)` to `IsLocalRing.closedPoint _`. Establish `hz` using `mem_of_range hx z`. Establish `h₁` using `hsn i p x j₀ ⟨b, hb, hc.1⟩ (range_sub z hz.1.1.1) (range_sub z hz.2.1)`. Establish `h₂` using `hsn i' p x j₀ ⟨b, hb, hc.2⟩ (range_sub z hz.1.1.1) (range_sub z hz.2.2)`.
+
+Establish `e : valF x _ (Semi.res (inf_le_left.trans inf_le_right : (L.U j₀ ⊓ a ⁻¹ᵁ W i) ⊓ (L.U j₀ ⊓ a ⁻¹ᵁ W i') ⊓ (W₀ i ⊓ W₀ i') ≤ _) (s i' j₀) * (Semi.res (inf_le_left.trans inf_le_left) (s i j₀))⁻¹).val * valF x _ (s i j₀).val = valF x _ (s i' j₀).val`. Apply `(toStk z).injective` to reduce the goal to its premises. Rewrite using `[map_mul, toStk_valF x _ z hz, toStk_valF x _ z hz.1.1, toStk_valF x _ z hz.1.2, map_mul, map_inv, gm_res x z _ hz, gm_res x z _ hz, ← Units.val_mul, inv_mul_cancel_right]`. Rewrite `h₂` using `[← e, norm_mul, _root_.mul_assoc, h₁, _root_.mul_one]`. Conclude with `h₂)`.
+
+Use `⟨g, ?_⟩` and prove the remaining obligations. Use `hg _ (𝟙 _) ξ hm` as an intermediate fact. Rewrite `this` using `[Category.id_comp, map_mul, map_inv, gm_res _ ξ _ hm, gm_res _ ξ _ hm]`. Then use the resulting hypothesis. Use `choose g hg using key`. Set `M : LB X` to `⟨_, W, g⟩`.
+
+Establish `le : ∀ (j : L.ι) (I : PUnit → M.ι), L.U j ⊓ (M.pull a).U I ≤ L.U j ⊓ a ⁻¹ᵁ W (I PUnit.unit)` using `fun j I t ht => ⟨ht.1, (mem_pull (L := M)).1 ht.2⟩`. Use `⟨M, ⟨fun q => Semi.res (le q.1 q.2) (s (q.2 PUnit.unit) q.1)⟩, W₀, ⟨?_, fun i => ?_, fun i j k => ?_⟩, ?_, hW₀, ?_⟩` and prove the remaining obligations. Conclude with `hJ _ _ fun x hx => ⟨fun _ => trivial, fun _ => TopologicalSpace.Opens.mem_iSup.2 ⟨⟨x, hx⟩, hW _⟩⟩`. Use `unit_eq_of_gm a ξ hξ fun hm => ?_` and prove the remaining obligations. Rewrite using `[gm_res a ξ _ hm, map_one]`.
+
+Conclude with `(hg i i).trans (mul_inv_cancel _)`. Use `unit_eq_of_gm a ξ hξ fun hm => ?_` and prove the remaining obligations. Rewrite using `[map_mul, gm_res a ξ _ hm, gm_res a ξ _ hm, gm_res a ξ _ hm]`. Use `(congrArg₂ (· * ·) (hg i j) (hg j k)).trans (Eq.trans ?_ (hg i k).symm)` and prove the remaining obligations. Rewrite using `[mul_comm, _root_.mul_assoc, inv_mul_cancel_left]`.
+
+Introduce and unpack `⟨j, I⟩ ⟨j', I'⟩`. Use `unit_eq_of_gm (𝟙 A₀) ξ hξ fun hm => ?_` and prove the remaining obligations. Use `((gm_res _ ξ _ hm _).trans (gm_res _ ξ _ hm.1 _)).trans (Eq.trans ?_ ((map_mul _ _ _).trans (congrArg₂ (· * ·) (gm_div (M.pull a) L (𝟙 A₀) ξ (j, I) (j', I') hm) ((gm_res _ ξ _ hm _).trans (gm_res _ ξ _ hm.2 _)))).symm)` and prove the remaining obligations. Establish `e` using `gm_pull_g M a (𝟙 A₀) ξ I I' hm.1.2 hm.2.2`. Rewrite `e` using `[Category.id_comp]`.
+
+Establish `e'` using `e.trans (hg (I PUnit.unit) (I' PUnit.unit))`. Establish `c` using `gm_cocycle hL (𝟙 A₀) ξ hm.1.1 hm.2.1 hj₀`. Establish `e₁` using `hs (I PUnit.unit) ξ j j₀ hm.1.1 hj₀ (hξW _)`. Establish `e₂` using `hs (I' PUnit.unit) ξ j' j₀ hm.2.1 hj₀ (hξW _)`. Use `e₁.trans (Eq.trans ?_ (congrArg₂ (· * ·) (congrArg (fun t => _ * t⁻¹) e') e₂).symm)` and prove the remaining obligations.
+
+Establish `alg : ∀ {G : Type} [CommGroup G] (u v t c d : G), u * v = t → t * c = u * (d * c⁻¹)⁻¹ * (v * d)`. Introduce `G _ u v t c d h`. Rewrite using `[← h, mul_inv, inv_inv]`. Simplify using `[mul_comm, mul_left_comm, _root_.mul_assoc]`. Conclude with `alg _ _ _ _ _ c`.
+
+Introduce `p _ x i j hx hj hD`. Set `z : Sp (PadicAlgCl p)` to `IsLocalRing.closedPoint _`. Establish `h₁ : x z ∈ L.U j ⊓ (M.pull a).U (fun _ => i)` using `⟨mem_of_range hj z, (mem_pull (L := M)).2 (IntAt_mem hx z)⟩`. Rewrite using `[← hsn i p x j hx hj hD]`. Conclude with `congrArg (fun t => ‖t‖ * ν p x j) (valF_eq_of_gm z h₁ (le _ _ h₁) (gm_res x z _ h₁ _))`.
+-/
 theorem exists_lineBundle_of_normOne_generators : ∀ (X A₀ : Scheme.{0}) [IsIntegral X] (π : X ⟶ Sp ℤ) [Flat π] [LocallyOfFiniteType π], Geo.Tor.IsNormalScheme X → ∀ (a : A₀ ⟶ X) [IsOpenImmersion a] (L : LB A₀), L.IsLB → ∀ ν : Nrm L, IsNrm L ν → (∀ w : X, IsClosed ({w} : Set X) → ∃ (W : X.Opens) (W₀ : A₀.Opens) (gen₀ : LB.Gen (L.pull W₀.ι)), w ∈ W ∧ (W₀ : Set A₀).Nonempty ∧ gen₀.IsGen ∧ ∀ (p : ℕ) [Fact p.Prime] (x : Sp (PadicAlgCl p) ⟶ W₀.toScheme), IntAt (W₀.ι ≫ a) W x → NormOne ν gen₀ x) → ∃ (M : LB X) (w : LB.Iso (M.pull a) L) (D : M.ι → A₀.Opens), M.IsLB ∧ w.IsGen ∧ (∀ i, (D i : Set A₀).Nonempty) ∧ ∀ (p : ℕ) [Fact p.Prime] (x : Sp (PadicAlgCl p) ⟶ A₀) (i : M.ι) (j : L.ι), IntAt a (M.U i) x → Set.range x ⊆ L.U j → Set.range x ⊆ D i → ‖valF x _ (w.s (j, fun _ => i)).val‖ * ν p x j = 1 := by
   intro X A₀ _ π _ _ hX a _ L hL ν hν H
   obtain ⟨-, -, hJ, hcl, -⟩ := GlobalTheory.jacobson_closedPoints_tools_int X π

@@ -22,6 +22,15 @@ attribute [local instance] Matrix.normedAddCommGroup Matrix.normedSpace
 
 section thr
 
+/- English proof (translation)
+Unfold `JF.TransportedAlt`. Establish `hr0 : (0 : ℝ) ≤ r` using `Nat.cast_nonneg r`. Establish `hk0 : (0 : ℝ) ≤ k` using `Nat.cast_nonneg k`. Establish `hn : ((2 * r + k + 1 : ℕ) : ℝ) = 2 * (r : ℝ) + k + 1` using `by push_cast; ring`. Rewrite `hm`, the goal using `[hn]`.
+
+Rewrite using `[lt_div_iff₀ (by positivity)]`. Break down `Nat.eq_zero_or_pos m with h0 | hpos` into its components or cases. Substitute `h0` using the available equality. Simplify using `only [Nat.cast_zero, mul_zero, sub_zero] at hm ⊢`. Establish `hn1 : (1 : ℝ) ≤ 2 * (r : ℝ) + k + 1` using `by linarith`.
+
+Establish `hr1 : (1 : ℝ) ≤ (r : ℝ) + 1` using `by linarith`. Establish `hP : 1 ≤ ((r : ℝ) + 1) ^ 3 * (2 * (r : ℝ) + k + 1)` using `one_le_mul_of_one_le_of_one_le (one_le_pow₀ hr1) hn1`. Establish `h3 : ((r : ℝ) + 1) * (2 * (r : ℝ) + k + 1) ^ 2 ≤ ((r : ℝ) + 1) ^ 4 * (2 * (r : ℝ) + k + 1) ^ 3`. Combine the equalities or inequalities in the displayed calculation. Establish `hN : 0 ≤ ((r : ℝ) + 1) ^ 4 * ((N : ℝ) * (2 * (r : ℝ) + k + 1) ^ 2)` using `by positivity`.
+
+Establish `hpos2 : 0 < ((r : ℝ) + 1) * (2 * (r : ℝ) + k + 1) ^ 2` using `by positivity`. Use polynomial arithmetic with `[h3, hN, hpos2, hA]`. Establish `hm1 : (1 : ℝ) ≤ m` using `by exact_mod_cast hpos`. Use polynomial arithmetic with `[hm, hm1]`.
+-/
 theorem thr_of_budget {k r m N : ℕ} {A₀ : ℝ}
     (hm : 6 * ((r : ℝ) + 1) * m + 9 * ((r : ℝ) + 1) * ((2 * r + k + 1 : ℕ) : ℝ) ^ 2 ≤ A₀)
     (hA : 10 * ((r : ℝ) + 1) ^ 4 * ((N : ℝ) * (2 * (r : ℝ) + k + 1) ^ 2 + (2 * (r : ℝ) + k + 1) ^ 3) ≤ A₀) :
@@ -57,6 +66,15 @@ section jf
 variable {k r : ℕ} {Wp Wq : Type} [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp]
   [NormedAddCommGroup Wq] [InnerProductSpace ℂ Wq]
 
+/- English proof (translation)
+Use `Formalism.FourierDecayAlt.P.B5.haar_sigmaFinite D.haarW` as an intermediate fact. Use `Formalism.FourierDecayAlt.P.B5.haar_sigmaFinite D.haarN` as an intermediate fact. Use `Formalism.FourierDecayAlt.P.B5.haar_sigmaFinite D.haarW'` as an intermediate fact. Establish `hN` using `Formalism.QuantumDeterminants.bessel_unipotent_equiv_holds Wp Wq k r D.z D.z' cStd D.π D.π' D.μW D.μN D.μW' F D.z_mem D.z'_mem D.haarN.conc (fun n₀ h => D.haarN.left n₀ h)`. Establish `hW` using `Formalism.FourierDecayAlt.P.bessel_words_of_domain Formalism.FourierDecayAlt.P.bessel_integral_domain`.
+
+Use `⟨?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `g₀ hg₀`. Take `⟨U, F', hU, hgU, hc, he⟩` from `(hW k r Wp Wq D A m F hT hF).1 g₀ hg₀`. Conclude with `⟨U, F', hU, hgU, hc, he⟩`. Introduce `g _ n hn`.
+
+Establish `e` using `hN g n hn.1 1 WeylGroupFacts.mem_n_one`. Rewrite `e` using `[Matrix.mul_one, Formalism.FourierDecayAlt.P.BesselCapelliCommutation.psi_one D.z'_mem, mul_one]`. Conclude with `e`. Introduce `g _ n hn`. Establish `e` using `hN g 1 WeylGroupFacts.mem_n_one n hn.1`.
+
+Rewrite `e` using `[Matrix.one_mul, Formalism.FourierDecayAlt.P.BesselCapelliCommutation.psi_one D.z_mem, one_mul]`. Conclude with `e`. Introduce `g _ h hh h' hh'`. Conclude with `Formalism.QuantumDeterminants.bessel_unitary_equiv_holds Wp Wq k r D.z D.z' cStd D.π D.π' D.μW D.μN D.μW' F D.z_mem D.z'_mem D.haarN.conc D.haarW.conc D.haarW'.conc (fun h₀ hh₀ => D.haarW.left h₀ hh₀) (fun h₀ hh₀ => D.haarW'.left h₀ hh₀) (Formalism.FourierDecayAlt.P.conjugation_i …`.
+-/
 theorem jf_mem_FFlM [FiniteDimensional ℂ Wp] [FiniteDimensional ℂ Wq] (D : B.RealPlaceData k r Wp Wq) (A : ℝ) (m : ℕ)
     (F : B.Mat k r → (Wq →L[ℂ] Wp)) (hT : JF.TransportedAlt k r A m) (hF : B.InCC A m F) :
     B.JF D F ∈ FFlM (m : ℕ∞) k r D.z D.z' D.π D.π' 0 (Q.OmPlus k r D.z D.z') := by

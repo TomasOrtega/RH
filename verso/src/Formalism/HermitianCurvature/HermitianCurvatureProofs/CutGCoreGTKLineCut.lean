@@ -77,6 +77,11 @@ section asm
 
 variable {Wp Wq : Type} [NormedAddCommGroup Wp] [NormedSpace ℂ Wp] [NormedAddCommGroup Wq] [NormedSpace ℂ Wq]
 
+/- English proof (translation)
+Use `first`. Consider the case `exact Iff.rfl`. Consider the case `(simp only [NF.Fib, FibAt, Set.mem_setOf_eq, NF.Stab, Prod.forall]`. Prove the components needed by the constructor for the conclusion. Introduce `h a ha b hb hab`.
+
+Conclude with `h a b ⟨ha, hb, hab⟩`. Introduce and unpack `h a b ⟨ha, hb, hab⟩`. Conclude with `h a ha b hb hab)`.
+-/
 theorem fib_iff_fibAt {k r : ℕ} {z z' : Fin (2 * r + k + 1) → ℂ} {μsec : ℂ → Matrix (Fin (k + 1)) (Fin (k + 1)) ℂ}
     {π : Q.Mx k r → (Wp →L[ℂ] Wp)} {π' : Q.Mx k r → (Wq →L[ℂ] Wq)} {ζ : ℂ} {X : Wq →L[ℂ] Wp} :
     X ∈ NF.Fib k r z z' μsec π π' ζ ↔ X ∈ FibAt k r z z' π π' (NF.muZ k r μsec ζ) := by
@@ -89,6 +94,9 @@ theorem fib_iff_fibAt {k r : ℕ} {z z' : Fin (2 * r + k + 1) → ℂ} {μsec : 
      · rintro h a b ⟨ha, hb, hab⟩
        exact h a ha b hb hab)
 
+/- English proof (translation)
+Simplify using `only [FibAt, Set.mem_setOf_eq] at hX ⊢`. Introduce `h hh h' hh' hg`. Rewrite using `[ContinuousLinearMap.smul_comp, ContinuousLinearMap.comp_smul, hX h hh h' hh' hg]`.
+-/
 theorem fibAt_smul {k r : ℕ} {z z' : Fin (2 * r + k + 1) → ℂ} {π : Q.Mx k r → (Wp →L[ℂ] Wp)}
     {π' : Q.Mx k r → (Wq →L[ℂ] Wq)} {g : Q.Mx k r} {X : Wq →L[ℂ] Wp} (hX : X ∈ FibAt k r z z' π π' g) (c : ℂ) :
     c • X ∈ FibAt k r z z' π π' g := by
@@ -96,6 +104,9 @@ theorem fibAt_smul {k r : ℕ} {z z' : Fin (2 * r + k + 1) → ℂ} {π : Q.Mx k
   intro h hh h' hh' hg
   rw [ContinuousLinearMap.smul_comp, ContinuousLinearMap.comp_smul, hX h hh h' hh' hg]
 
+/- English proof (translation)
+Unfold `CapEig at hX ⊢`. Introduce `Y v`. Rewrite using `[ContinuousLinearMap.smul_apply, ContinuousLinearMap.smul_apply, hX Y v, smul_comm]`.
+-/
 theorem capEig_smul {P : M.Par} {π' : Q.Mx P.k P.r → (Wq →L[ℂ] Wq)}
     {Fr : Fin (P.k - 1) → Fin (2 * P.r + P.k + 1) → ℂ} {ρ : M.Ty P} {X : Wq →L[ℂ] Wp}
     (hX : CapEig (Wp := Wp) P π' Fr ρ X) (c : ℂ) : CapEig P π' Fr ρ (c • X) := by
@@ -110,12 +121,20 @@ section hs
 variable {Wp Wq : Type} [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp] [NormedAddCommGroup Wq]
   [InnerProductSpace ℂ Wq] [FiniteDimensional ℂ Wq]
 
+/- English proof (translation)
+Use `first`. Consider the case `rfl`. Consider the case `(simp [B.hsVec]; done)`. Consider the case `(unfold B.hsVec; rw [← WithLp.toLp_smul]; rfl)`.
+-/
 theorem hsVec_smul (c : ℂ) (A : Wq →L[ℂ] Wp) : B.hsVec (c • A) = c • B.hsVec A := by
   first
   | rfl
   | (simp [B.hsVec]; done)
   | (unfold B.hsVec; rw [← WithLp.toLp_smul]; rfl)
 
+/- English proof (translation)
+Introduce `h`. Apply `hA` to reduce the goal to its premises. Establish `hi : ∀ i, A (stdOrthonormalBasis ℂ Wq i) = 0`. Introduce `i`. Establish `h2` using `congrArg (fun x : PiLp 2 (fun _ : Fin (Module.finrank ℂ Wq) => Wp) => (WithLp.ofLp x : Fin _ → Wp) i) h`.
+
+Simplify `h2` using `[B.hsVec]`. Apply `ContinuousLinearMap.coe_injective` to reduce the goal to its premises. Conclude with `(stdOrthonormalBasis ℂ Wq).toBasis.ext (fun i => by simpa using hi i)`.
+-/
 theorem hsVec_ne_zero {A : Wq →L[ℂ] Wp} (hA : A ≠ 0) : B.hsVec A ≠ 0 := by
   intro h
   apply hA
@@ -129,6 +148,23 @@ theorem hsVec_ne_zero {A : Wq →L[ℂ] Wp} (hA : A ≠ 0) : B.hsVec A ≠ 0 := 
 
 end hs
 
+/- English proof (translation)
+Introduce `hEig hAt hEx Wp Wq _ _ _ _ _ _ P Bs X d hH Qρ hK ζ hζ ρ`. Take `⟨hpl, hk, hcs, -, -, -, -⟩` from `id hH`. Take `⟨hOK, hz, hz', hTz, hTz', -, -⟩` from `id hpl`. Establish `hT : 0 < Tz P.k P.r Bs.z` using `by rw [hTz]; exact hOK.T_pos`. Establish `hT' : 0 < Tz P.k P.r Bs.z'` using `by rw [hTz']; exact hOK.T'_pos`.
+
+Establish `hζ' : Tz P.k P.r Bs.z * Tz P.k P.r Bs.z' < Complex.normSq ζ`. Rewrite using `[hTz, hTz']`. Conclude with `hζ`. Use `set g := NF.muZ P.k P.r Bs.μsec ζ with hgdef`. Establish `hg : g ∈ Q.Glev P.k P.r (Fin.last P.r)` using `Formalism.FourierDecayAlt.P.NFRadRedA.uwb_glev (Formalism.FourierDecayAlt.P.NFRadRedA.muZ_uwb hcs.1 hζ')`.
+
+Establish `hGG : Q.GGl P.k P.r Bs.z Bs.z' g ≠ 0`. Unfold `Q.GGl`. Rewrite using `[Formalism.FourierDecayAlt.P.NFRadRedA.zeta_muZ hz hz' hcs.1 hζ']`. Combine the linear equalities and inequalities to obtain the conclusion. Take `⟨-, -, Fr, -, -, -, hFr, -⟩` from `Formalism.FourierDecayAlt.P.Qx8.geom_at hOK.k_pos hz hz' hT hT' hg hGG`.
+
+Take `⟨E0, hE0f, hE0e, hE0n⟩` from `hEx Wp Wq P Bs.z Bs.z' Bs.π Bs.π' hpl hk g hg hGG Fr hFr ρ`. Use `set s : ℝ := ‖B.hsVec E0‖ with hs`. Establish `hs0 : s ≠ 0`. Rewrite using `[hs]`. Conclude with `norm_ne_zero_iff.mpr (hsVec_ne_zero hE0n)`.
+
+Use `set E : Wq →L[ℂ] Wp := ((s : ℂ)⁻¹) • E0 with hEdef`. Establish `hEf : E ∈ NF.Fib P.k P.r Bs.z Bs.z' Bs.μsec Bs.π Bs.π' ζ` using `fib_iff_fibAt.mpr (fibAt_smul hE0f _)`. Establish `hEe : CapEig P Bs.π' Fr ρ E` using `capEig_smul hE0e _`. Establish `hEn : E ≠ 0`. Rewrite using `[hEdef]`.
+
+Conclude with `smul_ne_zero (inv_ne_zero (by exact_mod_cast hs0)) hE0n`. Establish `hunit : inner ℂ (B.hsVec E) (B.hsVec E) = (1 : ℂ)`. Rewrite using `[hEdef, hsVec_smul, inner_smul_left, inner_smul_right, inner_self_eq_norm_sq_to_K, ← hs]`. Simplify using `only [map_inv₀, Complex.conj_ofReal]`. Establish `: (s : ℂ) ≠ 0` using `by exact_mod_cast hs0`.
+
+Clear the denominators using the available nonvanishing facts. Both sides reduce to the same expression. Use `⟨E, hEf, (hEig Wp Wq P Bs X d hH Qρ hK ζ hζ Fr hFr ρ E hEf).mpr hEe, hunit, fun Z hZf hZq => ?_⟩` and prove the remaining obligations. Establish `hZe : CapEig P Bs.π' Fr ρ Z` using `(hEig Wp Wq P Bs X d hH Qρ hK ζ hζ Fr hFr ρ Z hZf).mp hZq`. Take `⟨c, hc⟩` from `hAt Wp Wq P Bs.z Bs.z' Bs.π Bs.π' hpl hk g hg hGG Fr hFr ρ E Z (fib_iff_fibAt.mp hEf) (fib_iff_fibAt.mp hZf) hEe hZe hEn`.
+
+Establish `hi : inner ℂ (B.hsVec E) (B.hsVec Z) = c`. Rewrite using `[hc, hsVec_smul c E, inner_smul_right, hunit, mul_one]`. Rewrite using `[hi]`. Conclude with `hc`.
+-/
 theorem gTKLine_of_cut : GTKLineOfCut := by
   intro hEig hAt hEx Wp Wq _ _ _ _ _ _ P Bs X d hH Qρ hK ζ hζ ρ
   obtain ⟨hpl, hk, hcs, -, -, -, -⟩ := id hH

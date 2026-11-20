@@ -15,6 +15,11 @@ noncomputable section
 
 namespace PositivityTheory.HtPt.Ge
 
+/- English proof (translation)
+Use `haveI := Module.finitePresentation_of_projective A M`. Set `S` to `nonZeroDivisors A`. Set `F` to `Localization S`. Set `f` to `LocalizedModule.mkLinearMap S M`. Set `g` to `Algebra.linearMap A F`.
+
+Establish `e1 : finrank A (Module.Dual A M) = finrank A (LocalizedModule S M →ₗ[F] F)` using `(IsLocalizedModule.finrank_eq S (IsLocalizedModule.mapExtendScalars S f g F) le_rfl).symm`. Rewrite using `[e1, ← IsLocalization.finrank_eq F S le_rfl, Subspace.dual_finrank_eq, IsLocalization.finrank_eq F S le_rfl, IsLocalizedModule.finrank_eq S f le_rfl]`.
+-/
 theorem finrank_dual_eq_of_projective (A K : Type) [CommRing A] [IsDomain A] [Field K] [Algebra A K]
     [IsFractionRing A K] (M : Type) [AddCommGroup M] [Module A M] [Module.Finite A M]
     [Module.Projective A M] : finrank A (Module.Dual A M) = finrank A M := by
@@ -29,6 +34,9 @@ theorem finrank_dual_eq_of_projective (A K : Type) [CommRing A] [IsDomain A] [Fi
   rw [e1, ← IsLocalization.finrank_eq F S le_rfl, Subspace.dual_finrank_eq,
     IsLocalization.finrank_eq F S le_rfl, IsLocalizedModule.finrank_eq S f le_rfl]
 
+/- English proof (translation)
+Establish `h1 : IsIntegral ℤ (σ (a : E))` using `(RingOfIntegers.isIntegral_coe a).map σ.toIntAlgHom`. Establish `h2 : IsIntegral A (σ (a : E))` using `h1.tower_top`. Take `⟨y, hy⟩` from `IsIntegrallyClosed.isIntegral_iff.1 h2`. Conclude with `⟨y, hy⟩`.
+-/
 theorem ringOfIntegers_mem_range (A K : Type) [CommRing A] [IsDomain A] [IsIntegrallyClosed A] [Field K]
     [Algebra A K] [IsFractionRing A K] {E : Type} [Field E] [NumberField E] (σ : E →+* K) (a : 𝓞 E) :
     σ (a : E) ∈ (algebraMap A K).range := by
@@ -44,6 +52,23 @@ def qLin {A K : Type} [CommRing A] [Field K] [Algebra A K] {E : Type} [Field E] 
   map_add' x y := by simp [HTChart.q, add_smul, Finset.sum_add_distrib]
   map_smul' a x := by simp [HTChart.q, Finset.smul_sum, mul_smul]
 
+/- English proof (translation)
+Introduce `A K _ _ _ _ _ _ _ _ E _ _ c hc p R N _ Ω _ _ _ _ D κ m hκ htest hproj'`. Establish `hκR : κ ∣ (p : A) ^ R` using `dvd_trans (dvd_mul_right κ _) hκ`. Establish `h1` using `PositivityTheory.HtPt.Gc.chart_ii A K E c hc p R N Ω D κ hκR hproj' htest`. Use `⟨h1, ?_⟩` and prove the remaining obligations. Introduce `σ d d' hd hd' hP1 hP2`.
+
+Establish `hinj : Function.Injective (algebraMap A K)` using `IsFractionRing.injective A K`. Establish `hint : ∀ (σ : E →+* K) (a : 𝓞 E), σ (a : E) ∈ (algebraMap A K).range` using `fun σ a => ringOfIntegers_mem_range A K σ a`. Take `⟨⟨i, hi⟩, -, hr⟩` from `PositivityTheory.HtPt.Ga.dual_map A K hinj E c hc p R N Ω D κ σ d m hint hd hκ h1.2 hP2`. Take `⟨-, -, hsurj⟩` from `PositivityTheory.HtPt.Ga.q_surj A K hinj E c hc p R N Ω D κ σ m (hint σ) hκ h1.2`. Establish `hcz` using `PositivityTheory.HtPt.Gd.chart_comp_zero A K E c hc p R N Ω D κ σ d d' m i hκ hd hd' h1.2 hP1 hP2 htest hi`.
+
+Use `⟨i, hi, hr i hi, ?_, hsurj⟩` and prove the remaining obligations. Introduce `x`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨y, hy, hxy⟩`. Distinguish the cases in `hu : IsUnit (p : A)`.
+
+Take `⟨u, hu⟩` from `hu`. Use `⟨0, (↑u⁻¹ : A) ^ m • x, ?_⟩` and prove the remaining obligations. Rewrite using `[map_zero, zero_add, smul_smul, ← mul_pow, ← hu, Units.mul_inv, one_pow, one_smul]`. Use `haveI : Module.Finite A (D.omHT σ) := Module.Finite.iff_fg.mpr (PositivityTheory.HtPt.Gd.omHT_fg D σ) haveI : Module.Finite A (D.omHT (σ.comp c.toRingHom)) := Module.Finite.iff_fg.mpr (PositivityTheory.HtPt.Gd.omHT_fg D _)`. Set `q' : (Fin N → A) →ₗ[A] D.omHT σ` to `(qLin D σ).codRestrict (D.omHT σ) (PositivityTheory.HtPt.Ga.q_mem D σ)`.
+
+Establish `hrank : finrank A (Module.Dual A (D.omHT (σ.comp c.toRingHom))) + finrank A (D.omHT σ) = N`. Rewrite using `[finrank_dual_eq_of_projective A K (D.omHT (σ.comp c.toRingHom)), add_comm]`. Conclude with `PositivityTheory.HtPt.Gb.chart_rank A K E c hc p R N Ω D κ σ d d' hu hκR hd hd' hP1 hP2 htest`. Take `⟨rr, hrr⟩` from `hr i hi`. Take `⟨w, x', hx⟩` from `PositivityTheory.HtPt.Gd.split_exact A (Module.Dual A (D.omHT (σ.comp c.toRingHom))) (D.omHT σ) N ((p : A) ^ m) i rr q' hrank hrr (fun z => by`.
+
+Take `⟨x0, y', hy', h⟩` from `hsurj z.1 z.2`. Conclude with `⟨x0, ⟨y', hy'⟩, Subtype.ext h⟩)`. Use the proof step `(fun w => by`. Take `⟨y0, hy0, h0⟩` from `hcz w`. Conclude with `⟨⟨y0, hy0⟩, Subtype.ext h0⟩)`.
+
+Use `x ⟨⟨y, hy⟩, Subtype.ext hxy⟩`. Conclude with `⟨w, x', hx⟩`. Introduce and unpack `⟨w, x', rfl⟩`. Take `⟨y0, hy0, h0⟩` from `hcz w`. Use `⟨y0 + D.q σ x', (D.omHT σ).add_mem hy0 (PositivityTheory.HtPt.Ga.q_mem D σ x'), ?_⟩` and prove the remaining obligations.
+
+Establish `hq : ∀ z, D.q σ z = qLin D σ z` using `fun _ => rfl`. Rewrite using `[hq, map_add, map_smul, ← hq, ← hq, h0, smul_add]`. Apply the tactic sequence `all_goals rfl`.
+-/
 theorem chart_sequence : ChartSequence := by
   intro A K _ _ _ _ _ _ _ _ E _ _ c hc p R N _ Ω _ _ _ _ D κ m hκ htest hproj'
   have hκR : κ ∣ (p : A) ^ R := dvd_trans (dvd_mul_right κ _) hκ

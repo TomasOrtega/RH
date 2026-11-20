@@ -5,10 +5,20 @@ set_option maxSynthPendingDepth 1
 
 namespace GroundTheory.Heights₂.Heights.IndefiniteRowSideFullHecke.Model
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem blowUpChart_eq_model {A K : Type} [CommRing A] [Field K] [Algebra A K] {n : ℕ}
     (x : Fin n → A) (i : Fin n) :
     _root_.GroundTheory.Heights₂.Heights.Model.blowUpChart K x i = blowUpChart A K x i := rfl
 
+/- English proof (translation)
+Apply `le_antisymm` to reduce the goal to its premises. Conclude with `IsLocalRing.le_maximalIdeal (Ideal.IsPrime.comap (algebraMap A (blowUpChart A K x i)) (hK := hP)).ne_top`. Rewrite using `[← hx, Ideal.span_le]`. Introduce and unpack `_ ⟨j, rfl⟩`. Establish `hxi : algebraMap A K (x i) ≠ 0`.
+
+Rewrite using `[map_ne_zero_iff _ (IsFractionRing.injective A K)]`. Conclude with `hi`. Establish `hmem : algebraMap A K (x j) / algebraMap A K (x i) ∈ blowUpChart A K x i` using `Algebra.subset_adjoin ⟨j, rfl⟩`. Establish `hfac : algebraMap A (blowUpChart A K x i) (x j) = ⟨_, hmem⟩ * algebraMap A (blowUpChart A K x i) (x i)`. Apply `Subtype.ext` to reduce the goal to its premises.
+
+Simplify using `[div_mul_cancel₀ _ hxi]`. Use `show algebraMap A _ (x j) ∈ P`. Rewrite using `[hfac]`. Conclude with `P.mul_mem_left _ hxP`.
+-/
 theorem BlowUpChart.comap_eq_maximalIdeal {A K : Type} [CommRing A] [IsDomain A] [IsLocalRing A]
     [Field K] [Algebra A K] [IsFractionRing A K] {n : ℕ} {x : Fin n → A}
     (hx : Ideal.span (Set.range x) = IsLocalRing.maximalIdeal A) {i : Fin n} (hi : x i ≠ 0)
@@ -31,6 +41,13 @@ theorem BlowUpChart.comap_eq_maximalIdeal {A K : Type} [CommRing A] [IsDomain A]
     rw [hfac]
     exact P.mul_mem_left _ hxP
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce `h A K _ _ _ _ _ _ _ n x hx hne`. Take `⟨i, hi, hu, -⟩` from `h A K n x hx hne`. Conclude with `⟨i, hi, hu, fun P hP hxP => BlowUpChart.comap_eq_maximalIdeal hx hi P hP hxP⟩`. Introduce `h A _ _ _ _ K _ _ _ n x hx hne`.
+
+Take `⟨i, hi, hu, -⟩` from `h A K n x hx hne`. Establish `hne' : Ideal.span {algebraMap A (blowUpChart A K x i) (x i)} ≠ ⊤`. Rewrite using `[Ne, Ideal.span_singleton_eq_top]`. Conclude with `hu`. Take `⟨Q, hQ, hle⟩` from `Ideal.exists_le_maximal _ hne'`.
+
+Conclude with `⟨i, hi, hu, Q, hQ.isPrime, hle (Ideal.subset_span rfl), BlowUpChart.comap_eq_maximalIdeal hx hi Q hQ.isPrime (hle (Ideal.subset_span rfl))⟩`.
+-/
 theorem BlowUpChart.equiv :
     _root_.GroundTheory.Heights₂.Heights.Model.BlowUpChart.Statement ↔
       _root_.GroundTheory.Heights₂.Heights.IndefiniteRowSideFullHecke.Model.BlowUpChart.Statement := by

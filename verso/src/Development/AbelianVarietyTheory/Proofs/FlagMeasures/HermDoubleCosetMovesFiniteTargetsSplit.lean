@@ -12,6 +12,55 @@ open scoped Pointwise ENNReal Classical
 
 namespace GlobalTheory.HL
 
+/- English proof (translation)
+Take `⟨hBA, hidx, hinv, hfin⟩` from `hB`. Establish `hsupp : Function.support (ind M) = {w | M w}`. Use extensionality with `w`. Simplify using `[ind]`. Establish `hMinv : ∀ w, ∀ b ∈ B, (M (w + b) ↔ M w)`.
+
+Introduce `w b hb`. Establish `h` using `hinv w b hb`. Simplify using `only [ind] at h`. Apply the tactic sequence `by_cases h1 : M (w + b) <;> by_cases h2 : M w <;> simp [h1, h2] at h ⊢`. Establish `hTfin : {y | ∃ w, M w ∧ f y = m w}.Finite`.
+
+Set `g : Y → W ⧸ B` to `fun y => if h : ∃ w, M w ∧ f y = m w then (QuotientAddGroup.mk h.choose : W ⧸ B) else 0`. Use `Set.Finite.of_finite_image (f := g) (hfin.subset ?_) ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨y, hy, rfl⟩`. Establish `hy' : ∃ w, M w ∧ f y = m w` using `hy`. Use `⟨hy'.choose, ?_, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[hsupp]`. Conclude with `hy'.choose_spec.1`. Simplify using `only [g, dif_pos hy']`. Introduce `y1 hy1 y2 hy2 heq`. Establish `hy1' : ∃ w, M w ∧ f y1 = m w` using `hy1`.
+
+Establish `hy2' : ∃ w, M w ∧ f y2 = m w` using `hy2`. Simplify using `only [g, dif_pos hy1', dif_pos hy2'] at heq`. Apply `hf` to reduce the goal to its premises. Rewrite using `[hy1'.choose_spec.2, hy2'.choose_spec.2]`. Establish `hb : -hy1'.choose + hy2'.choose ∈ B` using `QuotientAddGroup.eq.mp heq`.
+
+Establish `h` using `hm _ hy1'.choose_spec.1 _ hb`. Rewrite `h` using `[add_neg_cancel_left]`. Conclude with `h.symm`. Establish `hFine : ∀ y, Fine A (ind fun w => M w ∧ f y = m w) B`. Introduce `y`.
+
+Use `⟨hBA, hidx, ?_, hfin.subset ?_⟩` and prove the remaining obligations. Introduce `w b hb`. Simplify using `only [ind]`. Distinguish the cases in `hw : M w`. Establish `h1 : M (w + b)` using `(hMinv w b hb).mpr hw`.
+
+Simplify using `only [h1, hw, true_and, hm w hw b hb]`. Establish `h1 : ¬ M (w + b)` using `fun h => hw ((hMinv w b hb).mp h)`. Simplify using `only [h1, hw, false_and]`. Apply `Set.image_mono` to reduce the goal to its premises. Introduce `w hw`.
+
+Rewrite using `[hsupp]`. Assume the negation of the conclusion as `hM`. Use `(Function.mem_support.mp hw) ?_` and prove the remaining obligations. Simplify using `only [ind]`. Rewrite using `[if_neg (fun h => hM h.1)]`.
+
+Establish `hnice : ∀ y, Nice A (ind fun w => M w ∧ f y = m w)` using `fun y => ⟨B, hFine y⟩`. Establish `hzero : ∀ y, y ∉ {y | ∃ w, M w ∧ f y = m w} → cint A (ind fun w => M w ∧ f y = m w) = 0`. Introduce `y hy`. Establish `h : (ind fun w => M w ∧ f y = m w) = fun _ => 0`. Use function extensionality and compare the values at `w`.
+
+Simplify using `only [ind]`. Rewrite using `[if_neg]`. Conclude with `fun h => hy ⟨w, h⟩`. Rewrite using `[h]`. Simplify using `[cint]`.
+
+Take `⟨-, hI2, hI3, hI4⟩` from `GlobalTheory.T.indexMeasureIntegral_linear_positive_norm_bound A`. Use `⟨hTfin, hnice, hTfin.subset ?_, fun y => mul_nonneg hc (hI3 _).1, ?_⟩` and prove the remaining obligations. Introduce `y hy`. Express the relevant statement in the definitionally equal form `c * _ ≠ 0 at hy`. Assume the negation of the conclusion as `hyT`.
+
+Rewrite `hy` using `[hzero y hyT]`. Simplify using `at hy`. Introduce `P g G hG hG0`. Establish `hGeq : G = fun w => ∑ y ∈ hTfin.toFinset.filter P, g y * ind (fun w => M w ∧ f y = m w) w`. Use function extensionality and compare the values at `w`.
+
+Distinguish the cases in `hw : M w`. Take `⟨y0, hy0⟩` from `hex w hw`. Establish `hy0T : y0 ∈ hTfin.toFinset`. Rewrite using `[Set.Finite.mem_toFinset]`. Conclude with `⟨w, hw, hy0⟩`.
+
+Rewrite using `[hG w y0 ⟨hw, hy0⟩]`. Establish `hother : ∀ y, y ≠ y0 → ind (fun w => M w ∧ f y = m w) w = 0`. Introduce `y hne`. Simplify using `only [ind]`. Rewrite using `[if_neg]`.
+
+Introduce and unpack `⟨-, h⟩`. Conclude with `hne (hf (h.trans hy0.symm))`. Distinguish the cases in `hP : P y0`. Rewrite using `[if_pos hP, Finset.sum_eq_single y0]`. Simplify using `only [ind]`.
+
+Rewrite using `[if_pos ⟨hw, hy0⟩, mul_one]`. Introduce `y _ hne`. Rewrite using `[hother y hne, mul_zero]`. Introduce `h`. Conclude with `absurd (Finset.mem_filter.mpr ⟨hy0T, hP⟩) h`.
+
+Rewrite using `[if_neg hP, Finset.sum_eq_zero]`. Introduce `y hy`. Establish `hne : y ≠ y0`. Introduce and unpack `rfl`. Conclude with `hP (Finset.mem_filter.mp hy).2`.
+
+Rewrite using `[hother y hne, mul_zero]`. Rewrite using `[hG0 w hw, Finset.sum_eq_zero]`. Introduce `y _`. Simplify using `only [ind]`. Rewrite using `[if_neg (fun h => hw h.1), mul_zero]`.
+
+Establish `hcG : Nice A G ∧ cint A G = ∑ y ∈ hTfin.toFinset.filter P, g y * cint A (ind fun w => M w ∧ f y = m w)`. Take `⟨hn, hs⟩` from `hI4 Y (hTfin.toFinset.filter P) (fun y w => g y * ind (fun w => M w ∧ f y = m w) w) (fun y _ => (hI2 (g y) _ (hnice y)).1)`. Rewrite using `[hGeq]`. Conclude with `⟨hn, hs.trans (Finset.sum_congr rfl fun y _ => (hI2 (g y) _ (hnice y)).2)⟩`. Use `⟨hcG.1, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[hcG.2]`. Establish `hsub : Function.support (fun y : {y // P y} => ((c * (cint A (ind fun w => M w ∧ f y.1 = m w)).re : ℝ) : ℂ) * g y.1) ⊆ ↑(hTfin.toFinset.subtype P)`. Introduce `y hy`. Rewrite using `[Finset.mem_coe, Finset.mem_subtype, Set.Finite.mem_toFinset]`. Assume the negation of the conclusion as `hyT`.
+
+Use `(Function.mem_support.mp hy) ?_` and prove the remaining obligations. Rewrite using `[hzero y.1 hyT]`. Simplify using the standard rewrite rules. Rewrite using `[finsum_eq_sum_of_support_subset _ hsub]`. Use `(Finset.sum_subtype_eq_sum_filter (fun y => ((c * (cint A (ind fun w => M w ∧ f y = m w)).re : ℝ) : ℂ) * g y)).trans ?_` and prove the remaining obligations.
+
+Rewrite using `[Finset.mul_sum]`. Use `Finset.sum_congr rfl fun y _ => ?_` and prove the remaining obligations. Establish `him` using `(hI3 (fun w => M w ∧ f y = m w)).2`. Establish `hre : ((cint A (ind fun w => M w ∧ f y = m w)).re : ℂ) = cint A (ind fun w => M w ∧ f y = m w)` using `Complex.ext (by simp) (by simp [him])`. Use `push_cast`.
+
+Rewrite using `[hre]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem split_by_target {W Y Z : Type} [AddCommGroup W] (A B : AddSubgroup W) (M : W → Prop) (m : W → Z)
     (f : Y → Z) (hf : Function.Injective f) (hB : Fine A (ind M) B)
     (hm : ∀ w, M w → ∀ b ∈ B, m (w + b) = m w) (hex : ∀ w, M w → ∃ y, f y = m w) (c : ℝ) (hc : 0 ≤ c) :
@@ -147,6 +196,11 @@ theorem split_by_target {W Y Z : Type} [AddCommGroup W] (A B : AddSubgroup W) (M
     rw [hre]
     ring
 
+/- English proof (translation)
+Introduce `F _ _ _ _ _ E _ _ _ L r k S j β βJ d Λ hT hFF`. Take `⟨B, hB, hinv⟩` from `GlobalTheory.T.exists_fineSubgroup_moves_at_lattice L r k S j β βJ d Λ hT hFF`. Establish `hex : ∀ w, S.Mv (j + 1) d Λ w → ∃ Λ₁ : Submodule L.O S.V, (Λ₁ : Set S.V) = S.moved Λ w.1.1 w.2.1 (S.sOf w)`. Introduce `w hw`. Take `⟨Λ₁, h1, -⟩` from `GlobalTheory.T.hermitianDoubleCoset_move_term_weight_character L r k S j β βJ d Λ hT hFF w.1.1 w.1.2 w.2.1 (S.sOf w) hw`.
+
+Conclude with `⟨Λ₁, h1⟩`. Establish `hc : 0 ≤ S.cK β βJ`. Unfold `Frames.cK`. Check the signs of the components of the expression. Conclude with `split_by_target (S.refA (j + 1) Λ) B (S.Mv (j + 1) d Λ) (fun w => S.moved Λ w.1.1 w.2.1 (S.sOf w)) (fun Λ₁ : Submodule L.O S.V => (Λ₁ : Set S.V)) SetLike.coe_injective hB (fun w hw b hb => (hinv w hw b hb).1) hex (S.cK β βJ) hc`.
+-/
 theorem moves_split_by_target : ∀ {F : Type} [Field F] [ValuativeRel F] [TopologicalSpace F] [IsNonarchimedeanLocalField F] [CharZero F] {E : Type} [CommRing E] [Algebra F E] [TopologicalSpace E] (L : LocE F E), ∀ (r k : ℕ) (S : Frames L r k), ∀ (j : Fin r) (β βJ : ℕ) (d : S.Datum) (Λ : Submodule L.O S.V), S.IsTerm d Λ → S.InFF β (j + 1) βJ d Λ → {Λ₁ : Submodule L.O S.V | ∃ w, S.MvTo (j + 1) d Λ Λ₁ w}.Finite ∧ (∀ Λ₁, Nice (S.refA (j + 1) Λ) (ind (S.MvTo (j + 1) d Λ Λ₁))) ∧ {Λ₁ | S.kern β (j + 1) βJ d Λ Λ₁ ≠ 0}.Finite ∧ (∀ Λ₁, 0 ≤ S.kern β (j + 1) βJ d Λ Λ₁) ∧ ∀ (P : Submodule L.O S.V → Prop) (g : Submodule L.O S.V → ℂ) (G : S.MW → ℂ), (∀ w Λ₁, S.MvTo (j + 1) d Λ Λ₁ w → G w = if P Λ₁ then g Λ₁ else 0) → (∀ w, ¬ S.Mv (j + 1) d Λ w → G w = 0) → Nice (S.refA (j + 1) Λ) G ∧ ∑ᶠ y : {y // P y}, (S.kern β (j + 1) βJ d Λ y : ℂ) * g y = (S.cK β βJ : ℂ) * cint (S.refA (j + 1) Λ) G := by
   intro F _ _ _ _ _ E _ _ _ L r k S j β βJ d Λ hT hFF
   obtain ⟨B, hB, hinv⟩ := GlobalTheory.T.exists_fineSubgroup_moves_at_lattice L r k S j β βJ d Λ hT hFF

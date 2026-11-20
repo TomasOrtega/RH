@@ -13,10 +13,18 @@ namespace GlobalTheory.CompanionTheory.Ar.Fl.ChgGen
 
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E}
 
+/- English proof (translation)
+Rewrite using `[NumberField.IsCMField.complexEmbedding_complexConj]`. Both sides reduce to the same expression.
+-/
 theorem tau_conj (τ : E →+* ℂ) (a : E) : τ (IsCMField.complexConj E a) = ComplexEmbedding.conjugate τ a := by
   rw [NumberField.IsCMField.complexEmbedding_complexConj]
   rfl
 
+/- English proof (translation)
+Establish `hmul : T * gramE D e = T' * gramE D e`. Use extensionality with `m j`. Simplify using `only [Matrix.mul_apply, gramE, Matrix.of_apply]`. Rewrite using `[← h m (e j), ← h' m (e j)]`. Establish `hu : IsUnit (gramE D e).det` using `isUnit_iff_ne_zero.mpr hg`.
+
+Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Matrix.mul_assoc, Matrix.mul_nonsing_inv _ hu, Matrix.mul_one]`. Use `_ = T' * gramE D e * (gramE D e)⁻¹ := by rw [hmul]`. Use `_ = T' := by rw [Matrix.mul_assoc, Matrix.mul_nonsing_inv _ hu, Matrix.mul_one]`.
+-/
 theorem transition_unique (D : Datum H) {I : Type} [Fintype I] [DecidableEq I] (x e : I → D.La) (T T' : Matrix I I E)
     (hg : (gramE D e).det ≠ 0) (h : IsTransition D x e T) (h' : IsTransition D x e T') : T = T' := by
   have hmul : T * gramE D e = T' * gramE D e := by
@@ -35,6 +43,43 @@ namespace GlobalTheory.CompanionTheory.Ar.Fl
 
 open ChgGen in
 
+/- English proof (translation)
+Introduce `E _ _ _ H D l Xo c g ty FU i U τ φ e x T ρ he hT hdet hC`. Unfold `IsConstMul at hC ⊢`. Establish `hcard : Fintype.card (Fin D.p ⊕ Fin D.q) = (FU.Di i).p + (FU.Di i).q`. Rewrite using `[Fintype.card_sum, Fintype.card_fin, Fintype.card_fin, (FU.sig i).1, (FU.sig i).2]`. Take `⟨T₀, hT₀, hgram, -, n, S, hn, hS, hST⟩` from `GlobalTheory.T.exists_transition_matrix_gram E H (FU.Di i) _ x e hcard he`.
+
+Establish `hg : (gramE (FU.Di i) e).det ≠ 0` using `(GlobalTheory.T.gram_det_ne_zero_local_basis_cofinite E H (FU.Di i) _ e hcard he).1`. Establish `hTT : T₀ = T` using `transition_unique (FU.Di i) x e T₀ T hg hT₀ hT`. Rewrite `hgram`, `hST` using `[hTT]`. Establish `hconj : (⇑τ ∘ ⇑(IsCMField.complexConj E)) = ⇑(ComplexEmbedding.conjugate τ)`. Use function extensionality and compare the values at `fun a => tau_conj τ a`.
+
+Establish `hlin : ∀ (σ : E →+* ℂ) (a : Fin D.p ⊕ Fin D.q → ℂ) (z : Fin D.p ⊕ Fin D.q → Fin g → ℂ), tyPart ty σ (∑ j, a j • z j) = ∑ j, a j • tyPart ty σ (z j)`. Introduce `σ a z`. Use function extensionality and compare the values at `k`. Simplify using `only [tyPart, Finset.sum_apply, Pi.smul_apply, _root_.smul_eq_mul]`. Distinguish the cases in `hk : ty k = σ`.
+
+Simplify using `only [if_pos hk]`. Simplify using `only [if_neg hk, MulZeroClass.mul_zero, Finset.sum_const_zero]`. Establish `hinj : ∀ (M : Matrix (Fin D.p ⊕ Fin D.q) (Fin D.p ⊕ Fin D.q) ℂ), M.det ≠ 0 → ∀ u : Fin D.p ⊕ Fin D.q → Fin g → ℂ, (∀ m, ∑ l, M m l • u l = 0) → u = 0`. Introduce `M hM u hu`. Use function extensionality and compare the values at `l k`.
+
+Establish `hv : M *ᵥ (fun l => u l k) = 0`. Use function extensionality and compare the values at `m`. Use `congrFun (hu m) k` as an intermediate fact. Simplify `this` using `[Matrix.mulVec, dotProduct, Finset.sum_apply]`. Establish `hU : IsUnit M.det` using `isUnit_iff_ne_zero.mpr hM`.
+
+Establish `h2` using `congrArg (fun v => M⁻¹ *ᵥ v) hv`. Simplify using `only [Matrix.mulVec_mulVec, Matrix.nonsing_inv_mul _ hU, Matrix.one_mulVec, Matrix.mulVec_zero] at h2`. Conclude with `congrFun h2 l`. Establish `hcomb : ∀ (Bm : Matrix (Fin D.q) (Fin D.p ⊕ Fin D.q) ℂ) (M : Matrix (Fin D.p ⊕ Fin D.q) (Fin D.p ⊕ Fin D.q) ℂ) (W : Fin D.q → Fin g → ℂ) (m : Fin D.p ⊕ Fin D.q), ∑ j, (Bm * Mᵀ) j m • W j = ∑ l, M m l • ∑ j, Bm j l • W j`. Introduce `Bm M W m`.
+
+Simplify using `only [Matrix.mul_apply, Matrix.transpose_apply, Finset.sum_smul, Finset.smul_sum, _root_.smul_smul]`. Rewrite using `[Finset.sum_comm]`. Conclude with `Finset.sum_congr rfl fun l _ => Finset.sum_congr rfl fun j _ => by rw [_root_.mul_comm]`. Introduce `P y v w V W C Fm B hPer hu hfr hV hW hCa hB hF`. Establish `hn' : (n : ℂ) ≠ 0` using `by exact_mod_cast hn.ne'`.
+
+Establish `hP : ∀ m k, P (x m) k = ∑ b, ty k (T m b) * P (e b) k`. Introduce `m k`. Establish `h1 : (n : ℂ) * P (x m) k = ∑ b, ty k (T m b) * P (e b) k * n`. Use `congrArg (fun z => z k) (congrArg P (hS m))` as an intermediate fact. Simplify using `only [_root_.map_nsmul, _root_.map_sum, Finset.sum_apply, Pi.smul_apply, nsmul_eq_mul] at this`.
+
+Rewrite using `[this]`. Use `Finset.sum_congr rfl fun b _ => ?_` and prove the remaining obligations. Rewrite using `[hPer.1 (S m b) (e b) k, hST m b, _root_.map_mul, _root_.map_natCast]`. Expand and normalize the polynomial expressions, which then agree. Rewrite `h1` using `[← Finset.sum_mul, _root_.mul_comm (n : ℂ)]`.
+
+Conclude with `mul_right_cancel₀ hn' h1`. Establish `hPσ : ∀ (σ : E →+* ℂ) m, tyPart ty σ (P (x m)) = ∑ b, σ (T m b) • tyPart ty σ (P (e b))`. Introduce `σ m`. Use function extensionality and compare the values at `k`. Simplify using `only [tyPart, Finset.sum_apply, Pi.smul_apply, _root_.smul_eq_mul]`.
+
+Distinguish the cases in `hk : ty k = σ`. Simplify using `only [if_pos hk]`. Rewrite using `[hP m k, hk]`. Simplify using `only [if_neg hk, MulZeroClass.mul_zero, Finset.sum_const_zero]`. Establish `hBmat : B = Fm * T.map τ * (gramE (FU.Di i) e).map τ * (T.map (ComplexEmbedding.conjugate τ))ᵀ`.
+
+Establish `h1 : B = Fm * (gramE (FU.Di i) x).map τ`. Use extensionality with `j m`. Rewrite using `[← hF j m, Matrix.mul_apply]`. Simplify using `only [Matrix.map_apply, gramE, Matrix.of_apply]`. Rewrite using `[h1, hgram, Matrix.map_mul, Matrix.map_mul, Matrix.transpose_map, Matrix.map_map, hconj]`.
+
+Simplify using `only [Matrix.mul_assoc]`. Establish `hTc : (T.map (ComplexEmbedding.conjugate τ)).det ≠ 0`. Rewrite using `[← RingHom.mapMatrix_apply, ← RingHom.map_det]`. Conclude with `(_root_.map_ne_zero _).mpr hdet`. Establish `ha' : ∀ a, tyPart ty τ (∑ m, (C * T.map τ) a m • P (e m)) = V a`.
+
+Introduce `a`. Rewrite using `[← hCa a, hlin, hlin]`. Simplify using `only [hPσ τ, Matrix.mul_apply, Matrix.map_apply, Finset.smul_sum, Finset.sum_smul, _root_.smul_smul]`. Conclude with `Finset.sum_comm`. Establish `hb' : ∀ m, tyPart ty (ComplexEmbedding.conjugate τ) (P (e m)) = ∑ j, (Fm * T.map τ * (gramE (FU.Di i) e).map τ) j m • W j`.
+
+Establish `key` using `hinj (T.map (ComplexEmbedding.conjugate τ)) hTc (fun l => tyPart ty (ComplexEmbedding.conjugate τ) (P (e l)) - ∑ j, (Fm * T.map τ * (gramE (FU.Di i) e).map τ) j l • W j) (by`. Introduce `m`. Simplify using `only [smul_sub, Finset.sum_sub_distrib, Matrix.map_apply]`. Rewrite using `[← hPσ (ComplexEmbedding.conjugate τ) m, hB m, hBmat, sub_eq_zero]`. Conclude with `hcomb _ _ W m)`.
+
+Introduce `m`. Conclude with `sub_eq_zero.mp (congrFun key m)`. Establish `hc' : ∀ j m, ∑ r, (Fm * T.map τ) j r * τ (sesq (FU.Di i) (e r) (e m)) = (Fm * T.map τ * (gramE (FU.Di i) e).map τ) j m`. Introduce `j m`. Rewrite using `[Matrix.mul_apply (M := Fm * T.map τ)]`.
+
+Simplify using `only [Matrix.map_apply, gramE, Matrix.of_apply]`. Establish `key` using `hC P y v w V W (C * T.map τ) (Fm * T.map τ) (Fm * T.map τ * (gramE (FU.Di i) e).map τ) hPer hu hfr hV hW ha' hb' hc'`. Rewrite `key` using `[← Matrix.fromRows_mul, Matrix.det_mul, ← RingHom.mapMatrix_apply, ← RingHom.map_det]`. Establish `hτ : τ T.det ≠ 0` using `(_root_.map_ne_zero τ).mpr hdet`. Rewrite using `[eq_div_iff hτ, ← key]`.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem constMul_change_generator : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (D : Datum H) (l : Level H) (Xo : Moduli D l) (c : Coeff l) (g : ℕ) (ty : Fin g → (E →+* ℂ)) (FU : FamilyUnif Xo (algebraMap (KA l) ℂ) ty) (i : Fin FU.n) (U : Set (Xo.XF c)) (τ : E →+* ℂ) (φ : FrameFn Xo c) (e x : Fin D.p ⊕ Fin D.q → (FU.Di i).La) (T : Matrix (Fin D.p ⊕ Fin D.q) (Fin D.p ⊕ Fin D.q) E) (ρ : ℂ), LinearIndependent (𝓞 E) e → IsTransition (FU.Di i) x e T → T.det ≠ 0 → IsConstMul U τ φ FU i e ρ → IsConstMul U τ φ FU i x (ρ / τ T.det) := by
   intro E _ _ _ H D l Xo c g ty FU i U τ φ e x T ρ he hT hdet hC
   unfold IsConstMul at hC ⊢

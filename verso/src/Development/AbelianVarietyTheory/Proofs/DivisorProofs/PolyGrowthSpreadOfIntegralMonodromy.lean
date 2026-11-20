@@ -3,6 +3,9 @@ open Filter Topology
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Establish `hS : 0 ≤ ∑ j, ∑ i, ‖M j i‖` using `Finset.sum_nonneg fun j _ => Finset.sum_nonneg fun i _ => norm_nonneg _`. Use `(pi_norm_le_iff_of_nonneg (mul_nonneg hS (norm_nonneg x))).2 fun j => ?_` and prove the remaining obligations. Rewrite using `[h j]`. Combine the equalities or inequalities in the displayed calculation.
+-/
 lemma intMatrix_smul_sum_norm_le {m g : ℕ} (M : Fin m → Fin m → ℤ) (x y : Fin m → Fin g → ℂ)
     (h : ∀ j, y j = ∑ i, M j i • x i) :
     ‖y‖ ≤ (∑ j, ∑ i, ‖M j i‖) * ‖x‖ := by
@@ -18,6 +21,33 @@ lemma intMatrix_smul_sum_norm_le {m g : ℕ} (M : Fin m → Fin m → ℤ) (x y 
         (Finset.single_le_sum (f := fun j => ∑ i, ‖M j i‖)
           (fun j _ => Finset.sum_nonneg fun i _ => norm_nonneg _) (Finset.mem_univ j)) (norm_nonneg x)
 
+/- English proof (translation)
+Introduce `g m lam C k P Q h1 h2 h3 R`. Use `set τ : ℂ := 2 * Real.pi * Complex.I with hτ`. Establish `hτre : τ.re = 0` using `by simp [hτ]`. Establish `hτim : τ.im = 2 * Real.pi` using `by simp [hτ]`. Establish `hτn : ‖τ‖ = 2 * Real.pi` using `by simp [hτ, abs_of_pos Real.pi_pos]`.
+
+Establish `hexp : ∀ s, Complex.exp (s + τ) = Complex.exp s`. Introduce `s`. Rewrite using `[Complex.exp_add, hτ, Complex.exp_two_pi_mul_I, mul_one]`. Establish `hSP : 0 ≤ ∑ j, ∑ i, ‖P j i‖` using `Finset.sum_nonneg fun j _ => Finset.sum_nonneg fun i _ => norm_nonneg _`. Establish `hSQ : 0 ≤ ∑ j, ∑ i, ‖Q j i‖` using `Finset.sum_nonneg fun j _ => Finset.sum_nonneg fun i _ => norm_nonneg _`.
+
+Use `set A : ℝ := 1 + ∑ j, ∑ i, ‖P j i‖ + ∑ j, ∑ i, ‖Q j i‖ with hA`. Establish `hA1 : 1 ≤ A` using `by linarith`. Establish `hPA : ∀ s : ℂ, s.re < 0 → ‖lam (s + τ)‖ ≤ A * ‖lam s‖` using `fun s hs => (intMatrix_smul_sum_norm_le P _ _ (h1 s hs)).trans (mul_le_mul_of_nonneg_right (by linarith) (norm_nonneg _))`. Establish `hQA : ∀ s : ℂ, s.re < 0 → ‖lam s‖ ≤ A * ‖lam (s + τ)‖` using `fun s hs => (intMatrix_smul_sum_norm_le Q _ _ (h2 s hs)).trans (mul_le_mul_of_nonneg_right (by linarith) (norm_nonneg _))`. Use `set B : ℝ := A * (1 + 2 * Real.pi) ^ k with hB`.
+
+Establish `hB1 : 1 ≤ B` using `one_le_mul_of_one_le_of_one_le hA1 (one_le_pow₀ (by linarith [Real.pi_pos]))`. Establish `hgrow : ∀ s t : ℂ, ‖t‖ ≤ ‖s‖ + 2 * Real.pi → (1 + ‖t‖) ^ k ≤ (1 + 2 * Real.pi) ^ k * (1 + ‖s‖) ^ k`. Introduce `s t h`. Rewrite using `[← mul_pow]`. Apply `pow_le_pow_left₀ (by positivity)` to reduce the goal to its premises.
+
+Use polynomial arithmetic with `[norm_nonneg s, Real.pi_pos]`. Establish `hM : 0 ≤ max C 0` using `le_max_right _ _`. Establish `key : ∀ n : ℕ, ∀ s : ℂ, s.re < 0 → ‖Complex.exp s‖ ≤ 1 / 2 → |s.im| ≤ Real.pi + 2 * Real.pi * n → ‖lam s‖ ≤ max C 0 * B ^ n * (1 + ‖s‖) ^ k`. Introduce `n`. Proceed by induction on `n with`.
+
+Consider the case `zero`. Introduce `s hs he hi`. Establish `hX : 0 ≤ (1 + ‖s‖) ^ k` using `by positivity`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[pow_zero, mul_one]`.
+
+Conclude with `mul_le_mul_of_nonneg_right (le_max_left _ _) hX`. Consider the case `succ n ih`. Introduce `s hs he hi`. Establish `hX : 0 ≤ (1 + ‖s‖) ^ k` using `by positivity`. Establish `hBn : 1 ≤ B ^ (n + 1)` using `one_le_pow₀ hB1`.
+
+Distinguish the cases in `hsm : |s.im| ≤ Real.pi`. Combine the equalities or inequalities in the displayed calculation. Apply `mul_le_mul_of_nonneg_right _ hX` to reduce the goal to its premises. Combine the equalities or inequalities in the displayed calculation. Use `push_neg at hsm`.
+
+Establish `hn0 : (0 : ℝ) ≤ 2 * Real.pi * n` using `by positivity`. Establish `hcast : ((n + 1 : ℕ) : ℝ) = (n : ℝ) + 1` using `by push_cast; ring`. Rewrite `hi` using `[hcast]`. Take `⟨hi1, hi2⟩` from `abs_le.mp hi`. Choose the witnesses or unpack the hypotheses as in `⟨t, hlt, htre, hte, htn, hti⟩ : ∃ t : ℂ, ‖lam s‖ ≤ A * ‖lam t‖ ∧ t.re = s.re ∧ Complex.exp t = Complex.exp s ∧ ‖t‖ ≤ ‖s‖ + 2 * Real.pi ∧ |t.im| ≤ Real.pi + 2 * Real.pi * n := by`.
+
+Break down `lt_abs.mp hsm with hpos | hneg` into its components or cases. Use `⟨s - τ, ?_, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Use `hPA (s - τ) (by simp [Complex.sub_re, hτre, hs])` as an intermediate fact. Rewrite `this` using `[sub_add_cancel]`. Then use the resulting hypothesis. Simplify using `[hτre]`.
+
+Use `hexp (s - τ)` as an intermediate fact. Rewrite `this` using `[sub_add_cancel]`. Conclude with `this.symm`. Combine the equalities or inequalities in the displayed calculation. Apply the tactic sequence `rw [Complex.sub_im, hτim, abs_le]; constructor <;> nlinarith [Real.pi_pos]`.
+
+Use `⟨s + τ, hQA s hs, ?_, hexp s, ?_, ?_⟩` and prove the remaining obligations. Simplify using `[hτre]`. Combine the equalities or inequalities in the displayed calculation. Apply the tactic sequence `rw [Complex.add_im, hτim, abs_le]; constructor <;> nlinarith [Real.pi_pos]`. Establish `hIH` using `ih t (by rw [htre]; exact hs) (by rw [hte]; exact he) hti`.
+
+Combine the equalities or inequalities in the displayed calculation. Use `⟨max C 0 * B ^ ⌈R / (2 * Real.pi)⌉₊, fun s hs he hi => key _ s hs he (hi.trans ?_)⟩` and prove the remaining obligations. Establish `hc : R / (2 * Real.pi) ≤ (⌈R / (2 * Real.pi)⌉₊ : ℝ)` using `Nat.le_ceil _`. Rewrite `hc` using `[div_le_iff₀ (by positivity)]`. Combine the linear relations using `[Real.pi_pos]`.
+-/
 theorem polyGrowth_spread_of_integral_monodromy : ∀ (g m : ℕ) (lam : ℂ → Fin m → Fin g → ℂ) (C : ℝ) (k : ℕ) (P Q : Fin m → Fin m → ℤ), (∀ s : ℂ, s.re < 0 → ∀ j, lam (s + 2 * Real.pi * Complex.I) j = ∑ i, P j i • lam s i) → (∀ s : ℂ, s.re < 0 → ∀ j, lam s j = ∑ i, Q j i • lam (s + 2 * Real.pi * Complex.I) i) → (∀ s : ℂ, s.re < 0 → ‖Complex.exp s‖ ≤ 1 / 2 → |s.im| ≤ Real.pi → ‖lam s‖ ≤ C * (1 + ‖s‖) ^ k) → ∀ R : ℝ, ∃ C' : ℝ, ∀ s : ℂ, s.re < 0 → ‖Complex.exp s‖ ≤ 1 / 2 → |s.im| ≤ R → ‖lam s‖ ≤ C' * (1 + ‖s‖) ^ k := by
   intro g m lam C k P Q h1 h2 h3 R
   set τ : ℂ := 2 * Real.pi * Complex.I with hτ

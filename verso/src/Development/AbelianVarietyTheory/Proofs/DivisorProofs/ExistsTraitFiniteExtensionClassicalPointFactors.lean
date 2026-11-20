@@ -15,12 +15,40 @@ open GlobalTheory.Poinc
 attribute [local instance] Over.cartesianMonoidalCategory
 namespace GlobalTheory.TraitExtLab
 
+/- English proof (translation)
+Use `show Spec.map _ = Spec.map _ ≫ Spec.map _`. Rewrite using `[← Spec.map_comp]`. Both sides reduce to the same expression.
+-/
 theorem spMap_comp' {A B C : Type} [CommRing A] [CommRing B] [CommRing C] (f : A →+* B) (g : B →+* C) :
     spMap (g.comp f) = spMap g ≫ spMap f := by
   show Spec.map _ = Spec.map _ ≫ Spec.map _
   rw [← Spec.map_comp]
   rfl
 
+/- English proof (translation)
+Introduce `g n F o Ω _ _ _ _ S u' p _ y₀ T ι hι hy`. Use `haveI : Algebra.FiniteType ℤ o := ArithBase.ft (o := o) (Ω := Ω)`. Use `haveI : Algebra.FiniteType o S.R := (Subalgebra.fg_iff_finiteType _).1 S.fg`. Use `haveI : Algebra.FiniteType ℤ S.R := Algebra.FiniteType.trans (S := o) inferInstance inferInstance`. Establish `hQ` using `GlobalTheory.T.padic_mem_range_complete_dvr_padicAlgCl p T.V T.complete ι hι`.
+
+Take `⟨W, _, _, _, hWc, _, fV, fK, κ, hfV, hfVl, -, hfK, hκι, hκ, hy₀⟩` from `GlobalTheory.T.exists_finite_extension_complete_dvr_padicAlgCl p T.V T.complete ι hι hQ S.R y₀`. Establish `hbase : GlobalTheory.Mum.Base W` using `⟨⟨inferInstance, inferInstance, inferInstance, hWc⟩, inferInstance⟩`. Take `⟨T', f, gK, hf, hfl, hff, hgK, hTy⟩` from `traitExtSt g n _ (zetaAway n) F W hbase inferInstance (spMap fK ≫ T.y)`. Use `letI : Algebra (FractionRing W) (FractionRing T'.V) := gK.toAlgebra`. Use `letI : Algebra W T'.V := f.toAlgebra`.
+
+Use `haveI : Module.Finite W T'.V := hff`. Use `haveI : Algebra.IsIntegral W T'.V := Algebra.IsIntegral.of_finite W T'.V`. Use `haveI : IsLocalHom (algebraMap W T'.V) := hfl`. Establish `hcomp : (algebraMap (FractionRing W) (FractionRing T'.V)).comp (algebraMap W (FractionRing W)) = (algebraMap T'.V (FractionRing T'.V)).comp (algebraMap W T'.V)` using `RingHom.ext hgK`. Establish `hI : ∀ a : T'.V, _root_.IsIntegral (FractionRing W) (algebraMap T'.V (FractionRing T'.V) a)` using `fun a => IsIntegral.map_of_comp_eq (algebraMap W (FractionRing W)) (algebraMap T'.V (FractionRing T'.V)) hcomp (Algebra.IsIntegral.isIntegral a)`.
+
+Use `haveI : Algebra.IsAlgebraic (FractionRing W) (FractionRing T'.V) := ⟨fun x => by`. Take `⟨a, b, -, rfl⟩` from `IsFractionRing.div_surjective (A := T'.V) x`. Rewrite using `[div_eq_mul_inv]`. Conclude with `(hI a).isAlgebraic.mul (hI b).isAlgebraic.inv⟩`. Use `letI : Algebra (FractionRing W) (PadicAlgCl p) := κ.toAlgebra`.
+
+Set `ιA : FractionRing T'.V →ₐ[FractionRing W] PadicAlgCl p` to `IsAlgClosed.lift`. Set `ι' : FractionRing T'.V →+* PadicAlgCl p` to `ιA`. Establish `hι'κ : ι'.comp gK = κ` using `ιA.comp_algebraMap`. Establish `hint` using `GlobalTheory.unitBall_eq_of_integral_dvr p W T'.V hf κ ι' (fun v => by show ι' (algebraMap T'.V (FractionRing T'.V) (f v)) = _`. Rewrite using `[← hgK]`.
+
+Conclude with `congrArg (fun h : FractionRing W →+* PadicAlgCl p => h (algebraMap W (FractionRing W) v)) hι'κ) hκ`. Establish `hιc : ι'.comp (gK.comp fK) = ι` using `by rw [← RingHom.comp_assoc, hι'κ, hκι]`. Establish `hr : ∀ a, y₀ a ∈ ι'.range` using `fun a => by`. Take `⟨x, hx⟩` from `hy₀ a`. Conclude with `⟨gK x, by rw [← hx, ← hι'κ]; rfl⟩`.
+
+Set `eι : FractionRing T'.V ≃+* ι'.range` to `RingEquiv.ofBijective ι'.rangeRestrict ⟨fun a b hab => ι'.injective (congrArg Subtype.val hab), ι'.rangeRestrict_surjective⟩`. Set `yK : S.R →+* FractionRing T'.V` to `eι.symm.toRingHom.comp (y₀.codRestrict ι'.range hr)`. Establish `hyK : ι'.comp yK = y₀` using `RingHom.ext fun a => congrArg Subtype.val (eι.apply_symm_apply (y₀.codRestrict ι'.range hr a))`. Establish `hne : f (fV T.ϖ) ≠ 0` using `fun h => T.irr.ne_zero (hfV (hf (by rw [h, map_zero, map_zero])))`. Take `⟨m, hm⟩` from `IsDiscreteValuationRing.associated_pow_irreducible hne T'.irr`.
+
+Establish `hbase' : GlobalTheory.Mum.Base T'.V` using `⟨⟨inferInstance, inferInstance, inferInstance, T'.complete⟩, inferInstance⟩`. Use `haveI : IsLocalHom (f.comp fV) := by haveI : IsLocalHom f := hfl haveI : IsLocalHom fV := hfVl`. Conclude with `RingHom.isLocalHom_comp f fV`. Take `⟨e₀, he₀⟩` from `TraitUniq.traitUniq g n _ (zetaAway n) F T T' T'.V (f.comp fV) (RingHom.id _) (gK.comp fK) (RingHom.id _) hbase' inferInstance (hf.comp hfV) Function.injective_id inferInstance inferInstance (fun a => by simp only [RingHom.comp_apply, hfK, hgK]) (fun a => rfl) (by rw [hTy, spMap_ …`. Use `⟨T', ι', yK, e₀.symm, m, hint, hyK, ?_, ?_, ?_⟩` and prove the remaining obligations.
+
+Use `haveI : Epi (spMap ι') := Flat.epi_of_flat_of_surjective _`. Rewrite using `[← cancel_epi (spMap ι'), ← Category.assoc, ← spMap_comp', hyK, hy, hTy, ← hιc, spMap_comp', spMap_comp', Category.assoc, Category.assoc]`. Take `⟨u, hu⟩` from `hm`. Establish `hunit : ∀ w : T'.Vˣ, ‖ι' (algebraMap T'.V _ (w : T'.V))‖ = 1` using `fun w => by`. Establish `h1` using `(hint _).2 ⟨(w : T'.V), rfl⟩`.
+
+Establish `h2` using `(hint _).2 ⟨((w⁻¹ : T'.Vˣ) : T'.V), rfl⟩`. Establish `h3 : ‖ι' (algebraMap T'.V _ (w : T'.V))‖ * ‖ι' (algebraMap T'.V _ ((w⁻¹ : T'.Vˣ) : T'.V))‖ = 1`. Rewrite using `[← norm_mul, ← map_mul, ← map_mul, Units.mul_inv, map_one, map_one, norm_one]`. Use polynomial arithmetic with `[norm_nonneg (ι' (algebraMap T'.V _ (w : T'.V))), norm_nonneg (ι' (algebraMap T'.V _ ((w⁻¹ : T'.Vˣ) : T'.V)))]`. Establish `e1 : ι (algebraMap T.V _ T.ϖ) = ι' (algebraMap T'.V _ (f (fV T.ϖ)))`.
+
+Rewrite using `[← hιc, RingHom.comp_apply, RingHom.comp_apply, hfK, hgK]`. Establish `e2 : f (fV T.ϖ) = T'.ϖ ^ m * ((u⁻¹ : T'.Vˣ) : T'.V)`. Rewrite using `[← hu, mul_assoc, Units.mul_inv, mul_one]`. Rewrite using `[e1, e2, map_mul, map_mul, norm_mul, hunit, mul_one, map_pow, map_pow, norm_pow]`. Introduce `a b`.
+
+Establish `h` using `he₀ (e₀.symm a) (e₀.symm b)`. Simplify using `only [AddEquiv.apply_symm_apply, Nat.cast_one, one_mul] at h`. Conclude with `h.symm`.
+-/
 theorem main : ∀ (g n : ℕ) (F : SFam g n (zetaAway n)) (o Ω : Type) [CommRing o] [Field Ω] [Algebra o Ω] [ArithBase o Ω] (S : ThetaSys o Ω) (u' : Sp S.R ⟶ F.X) (p : ℕ) [Fact p.Prime] (y₀ : S.R →+* PadicAlgCl p) (T : Trait F) (ι : FractionRing T.V →+* PadicAlgCl p), (∀ x, ‖ι x‖ ≤ 1 ↔ x ∈ Set.range (algebraMap T.V (FractionRing T.V))) → spMap y₀ ≫ u' = spMap ι ≫ T.y → ∃ (T' : Trait F) (ι' : FractionRing T'.V →+* PadicAlgCl p) (yK : S.R →+* FractionRing T'.V) (e : T'.D.toPre.X ≃+ T.D.toPre.X) (k : ℕ), (∀ x, ‖ι' x‖ ≤ 1 ↔ x ∈ Set.range (algebraMap T'.V (FractionRing T'.V))) ∧ ι'.comp yK = y₀ ∧ spMap yK ≫ u' = T'.y ∧ ‖ι (algebraMap T.V _ T.ϖ)‖ = ‖ι' (algebraMap T'.V _ T'.ϖ)‖ ^ k ∧ ∀ a b, T'.β a b = k * T.β (e a) (e b) := by
   intro g n F o Ω _ _ _ _ S u' p _ y₀ T ι hι hy
   haveI : Algebra.FiniteType ℤ o := ArithBase.ft (o := o) (Ω := Ω)

@@ -7,6 +7,9 @@ namespace Formalism.BasicNotions.CmpTie.Incl
 
 variable (l : ℕ) [Fact l.Prime]
 
+/- English proof (translation)
+The claim follows from `incl_native l (comparison_toBdRPlus l) f`.
+-/
 theorem incl_F (f : Reformulated.AutPerF.Bcris l (Cmp6.OC l) →+* Reformulated.AutPerF.BdR l (Cmp6.OC l)) :
     IsCrisDRF f ↔ Formalism.Per6.IsCrisDR l (((Cmp6.cD l).toRingHom.comp f).comp (Cmp6.cBc l).symm.toRingHom) :=
   incl_native l (comparison_toBdRPlus l) f

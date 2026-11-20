@@ -17,16 +17,25 @@ variable {G : Type} [Group G] [TopologicalSpace G] {Qp K₀ K : Type} [Field Qp]
     {v : AddValuation LL (WithTop ℚ)} {n : ℕ} [NeZero n] {W : LocWach PD LL O v n}
     [Fintype (K →ₐ[Qp] LL)]
 
+/- English proof (translation)
+Take `⟨k, hk, hak⟩` from `(W.DelF_def a).1 ha`. Take `⟨k', hk', hbk⟩` from `(W.DelF_def b).1 hb`. Use `(W.DelF_def _).2 ⟨k * k', Nat.mul_pos hk hk', ?_⟩` and prove the remaining obligations. Rewrite using `[mul_pow, pow_mul, hak, one_pow, one_mul, mul_comm k k', pow_mul, hbk, one_pow]`.
+-/
 theorem finiteDelta_mul_mem {a b : W.Gam} (ha : a ∈ W.DelF) (hb : b ∈ W.DelF) : a * b ∈ W.DelF := by
   obtain ⟨k, hk, hak⟩ := (W.DelF_def a).1 ha
   obtain ⟨k', hk', hbk⟩ := (W.DelF_def b).1 hb
   refine (W.DelF_def _).2 ⟨k * k', Nat.mul_pos hk hk', ?_⟩
   rw [mul_pow, pow_mul, hak, one_pow, one_mul, mul_comm k k', pow_mul, hbk, one_pow]
 
+/- English proof (translation)
+Take `⟨k, hk, hak⟩` from `(W.DelF_def a).1 ha`. Conclude with `(W.DelF_def _).2 ⟨k, hk, by rw [inv_pow, hak, inv_one]⟩`.
+-/
 theorem finiteDelta_inv_mem {a : W.Gam} (ha : a ∈ W.DelF) : a⁻¹ ∈ W.DelF := by
   obtain ⟨k, hk, hak⟩ := (W.DelF_def a).1 ha
   exact (W.DelF_def _).2 ⟨k, hk, by rw [inv_pow, hak, inv_one]⟩
 
+/- English proof (translation)
+Take `⟨-, ⟨π', E, -, ⟨r, b, hbΔ, huniq, -⟩, -⟩, -⟩` from `hP9 T hcr hs hp2`. Establish `hb : ∀ j, b j ∈ W.N T ∧ ∀ δ ∈ W.DelF, W.γD T δ (b j) = b j` using `fun j => (show b j ∈ W.N T ∧ ∀ δ ∈ W.DelF, W.γD T δ (b j) = b j from hbΔ j)`. Take `⟨B, hB⟩` from `exists_EE_basis_of_lattice hcr b (fun j => (hb j).1) huniq`. Conclude with `⟨r, B, fun j δ hδ => by rw [hB]; exact (hb j).2 δ hδ, fun j => by rw [hB]; exact (hb j).1⟩`.
+-/
 theorem exists_basis_Delta_fixed_mem_N (hP9 : Formalism.MainNotions.DeltaInvariantLattices.P9W W) (hs : W.s = 1) (hp2 : PD.p ≠ 2)
     (T : LocLat G Qp LL O) (hcr : IsCrys PD T.ρ) :
     ∃ (r : ℕ) (B : Module.Basis (Fin r) W.EE (W.DD T)),
@@ -37,6 +46,17 @@ theorem exists_basis_Delta_fixed_mem_N (hP9 : Formalism.MainNotions.DeltaInvaria
   obtain ⟨B, hB⟩ := exists_EE_basis_of_lattice hcr b (fun j => (hb j).1) huniq
   exact ⟨r, B, fun j δ hδ => by rw [hB]; exact (hb j).2 δ hδ, fun j => by rw [hB]; exact (hb j).1⟩
 
+/- English proof (translation)
+Establish `hcard` using `(hP9 T hcr hs hp2).1`. Establish `h1 : (1 : W.Gam) ∈ W.DelF` using `(W.DelF_def 1).2 ⟨1, one_pos, one_pow 1⟩`. Establish `hpos : 0 < W.DelF.card` using `Finset.card_pos.2 ⟨1, h1⟩`. Establish `hp` using `PD.hp`. Establish `hlt : W.DelF.card < PD.p`.
+
+Rewrite using `[hcard]`. Conclude with `lt_of_le_of_lt (Nat.div_le_self _ _) (Nat.sub_lt hp.pos one_pos)`. Establish `hcop : Nat.Coprime W.DelF.card PD.p` using `Nat.coprime_comm.1 ((Nat.Prime.coprime_iff_not_dvd hp).2 fun hd => absurd (Nat.le_of_dvd hpos hd) (not_le.2 hlt))`. Establish `hb` using `Nat.gcd_eq_gcd_ab W.DelF.card PD.p`. Rewrite `hb` using `[hcop.gcd_eq_one]`.
+
+Establish `hb' : ((W.DelF.card : ℕ) : W.EE) * (Nat.gcdA W.DelF.card PD.p : W.EE) = 1 - ((PD.p : ℕ) : W.EE) * (Nat.gcdB W.DelF.card PD.p : W.EE)`. Establish `h2` using `congrArg (Int.cast : ℤ → W.EE) hb`. Move the coercions through the operations in `at h2`. Take the linear combination `-h2`. Establish `hu : IsUnit (1 - ((PD.p : ℕ) : W.EE) * (Nat.gcdB W.DelF.card PD.p : W.EE))`.
+
+Establish `hc` using `W.EE_complete`. Apply `Ideal.isUnit_of_sub_one_mem_jacobson_bot` to reduce the goal to its premises. Apply `IsAdicComplete.le_jacobson_bot (I := Ideal.span {((PD.p : ℕ) : W.EE)})` to reduce the goal to its premises. Rewrite using `[sub_sub_cancel_left]`. Conclude with `(Ideal.neg_mem_iff _).2 (Ideal.mul_mem_right _ _ (Ideal.subset_span rfl))`.
+
+Rewrite `hu` using `[← hb']`. Conclude with `isUnit_of_mul_isUnit_left hu`.
+-/
 theorem isUnit_card_finiteDelta (hP9 : Formalism.MainNotions.DeltaInvariantLattices.P9W W) (hs : W.s = 1) (hp2 : PD.p ≠ 2)
     (T : LocLat G Qp LL O) (hcr : IsCrys PD T.ρ) : IsUnit ((W.DelF.card : ℕ) : W.EE) := by
   have hcard := (hP9 T hcr hs hp2).1
@@ -64,6 +84,17 @@ theorem isUnit_card_finiteDelta (hP9 : Formalism.MainNotions.DeltaInvariantLatti
   rw [← hb'] at hu
   exact isUnit_of_mul_isUnit_left hu
 
+/- English proof (translation)
+Take `⟨M, h, hJ'⟩` from `hJ T₁ hc₁`. Establish `hL` using `(hLem3 T₁ T₂ F M h hc₁.2.2.2 hc₂.2.2.2 hon hJ').1`. Establish `hX : W.X = letπ` using `by show (W.φA ^ (W.s - 1)) letπ = letπ`. Rewrite using `[hs]`. Both sides reduce to the same expression.
+
+Establish `hunit : IsUnit (algebraMap (LetA O n) W.EE (W.X ^ (⨆ j, (M j + h j))))`. Rewrite using `[hX, map_pow]`. Conclude with `W.EE_π.pow _`. Establish `hi : ∀ i : ZMod n, ∃ v : W.DD T₁, W.map F v = (letE i : LetA O n) • y`. Introduce `i`.
+
+Take `⟨z, -, hz⟩` from `hL i _ (Submodule.mem_map_of_mem (f := (letE i : LetA O n) • LinearMap.id) hy)`. Use `⟨(↑hunit.unit⁻¹ : W.EE) • z, ?_⟩` and prove the remaining obligations. Establish `hz' : W.map F z = algebraMap (LetA O n) W.EE (W.X ^ (⨆ j, (M j + h j))) • (letE i : LetA O n) • y`. Rewrite using `[algebraMap_smul]`. Conclude with `hz`.
+
+Rewrite using `[map_smul, hz', smul_smul, hunit.val_inv_mul, one_smul]`. Use `choose v hv using hi`. Use `⟨∑ i, v i, ?_⟩` and prove the remaining obligations. Rewrite using `[map_sum]`. Simplify using `only [hv]`.
+
+Rewrite using `[← Finset.sum_smul, sum_letE, one_smul]`.
+-/
 theorem exists_lift_of_onto (hs : W.s = 1) (hLem3 : Formalism.MainNotions.DeltaInvariantLattices.WachLatticeLengthLemma W)
     (hJ : ∀ T : LocLat G Qp LL O, CrysLat PD T → ∃ M h : ZMod n → ℕ, Formalism.MainNotions.DeltaInvariantLattices.JumpsLet W T M h)
     {T₁ T₂ : LocLat G Qp LL O} (F : LatHom T₁.L T₂.L) (hc₁ : CrysLat PD T₁) (hc₂ : CrysLat PD T₂)
@@ -92,6 +123,13 @@ theorem exists_lift_of_onto (hs : W.s = 1) (hLem3 : Formalism.MainNotions.DeltaI
   simp only [hv]
   rw [← Finset.sum_smul, sum_letE, one_smul]
 
+/- English proof (translation)
+Use `⟨(↑hcu.unit⁻¹ : W.EE) • ∑ δ ∈ W.DelF, W.γD T₁ δ w, fun δ' hδ' => ?_, ?_⟩` and prove the remaining obligations. Establish `hγc : W.γE δ' ((W.DelF.card : ℕ) : W.EE) = ((W.DelF.card : ℕ) : W.EE)` using `map_natCast _ _`. Establish `h1 : W.γE δ' (↑hcu.unit⁻¹ : W.EE) * ↑hcu.unit = 1`. Rewrite using `[IsUnit.unit_spec]`. Combine the equalities or inequalities in the displayed calculation.
+
+Establish `hinv : W.γE δ' (↑hcu.unit⁻¹ : W.EE) = ↑hcu.unit⁻¹`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[W.γD_smul, hinv, map_sum]`. Use `congr 1`. Simplify using `only [← W.γD_mul]`.
+
+Conclude with `Finset.sum_nbij' (fun δ => δ' * δ) (fun δ => δ'⁻¹ * δ) (fun δ hδ => finiteDelta_mul_mem hδ' hδ) (fun δ hδ => finiteDelta_mul_mem (finiteDelta_inv_mem hδ') hδ) (fun δ _ => by group) (fun δ _ => by group) (fun δ _ => rfl)`. Rewrite using `[map_smul, map_sum]`. Rewrite using `[Finset.sum_congr rfl fun δ hδ => by rw [W.map_γ, hw, hy δ hδ]]`. Rewrite using `[Finset.sum_const, ← Nat.cast_smul_eq_nsmul W.EE, smul_smul, hcu.val_inv_mul, one_smul]`.
+-/
 theorem exists_invariant_lift_average (hcu : IsUnit ((W.DelF.card : ℕ) : W.EE)) {T₁ T₂ : LocLat G Qp LL O}
     (F : LatHom T₁.L T₂.L) (w : W.DD T₁) (y : W.DD T₂)
     (hy : ∀ δ ∈ W.DelF, W.γD T₂ δ y = y) (hw : W.map F w = y) :

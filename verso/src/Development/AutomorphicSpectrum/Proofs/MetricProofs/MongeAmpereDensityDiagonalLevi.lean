@@ -11,6 +11,19 @@ open scoped ComplexOrder
 
 namespace GlobalTheory.CompanionTheory.Ar.PB.MaDiag
 
+/- English proof (translation)
+Use `set C := A - B with hC`. Establish `hΦ : ∀ w : Fin e → ℂ, w ⬝ᵥ (C *ᵥ star w) = 0`. Introduce `w`. Rewrite using `[hC, Matrix.sub_mulVec, dotProduct_sub, h w, sub_self]`. Establish `expand : ∀ (u w : Fin e → ℂ) (c : ℂ), (u + c • w) ⬝ᵥ (C *ᵥ star (u + c • w)) = u ⬝ᵥ (C *ᵥ star u) + star c * (u ⬝ᵥ (C *ᵥ star w)) + c * (w ⬝ᵥ (C *ᵥ star u)) + c * star c * (w ⬝ᵥ (C *ᵥ star w))`.
+
+Introduce `u w c`. Simplify using `only [star_add, star_smul, Matrix.mulVec_add, Matrix.mulVec_smul, add_dotProduct, dotProduct_add, smul_dotProduct, dotProduct_smul, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree. Establish `hsI : (star Complex.I : ℂ) = -Complex.I` using `Complex.conj_I`. Establish `hpair : ∀ u w : Fin e → ℂ, u ⬝ᵥ (C *ᵥ star w) = 0`.
+
+Introduce `u w`. Establish `h1` using `expand u w 1`. Establish `h2` using `expand u w Complex.I`. Rewrite `h1` using `[hΦ (u + (1 : ℂ) • w), hΦ u, hΦ w, star_one]`. Rewrite `h2` using `[hΦ (u + Complex.I • w), hΦ u, hΦ w, hsI]`.
+
+Take the linear combination `(-1 / 2 : ℂ) * h1 + (-Complex.I / 2) * h2 + ((u ⬝ᵥ (C *ᵥ star w) - w ⬝ᵥ (C *ᵥ star u)) / 2) * Complex.I_sq`. Use extensionality with `i j`. Establish `hs : star (Pi.single j (1 : ℂ) : Fin e → ℂ) = Pi.single j 1`. Use extensionality with `k`. Distinguish the cases in `hk : k = j`.
+
+Substitute `hk` using the available equality. Simplify using the standard rewrite rules. Simplify using `[Pi.single_apply, hk]`. Use `hpair (Pi.single i 1) (Pi.single j 1)` as an intermediate fact. Rewrite `this` using `[hs]`.
+
+Simplify `this` using `[C, sub_eq_zero]`.
+-/
 theorem matrix_eq_of_form {e : ℕ} (A B : Matrix (Fin e) (Fin e) ℂ)
     (h : ∀ w : Fin e → ℂ, w ⬝ᵥ (A *ᵥ star w) = w ⬝ᵥ (B *ᵥ star w)) : A = B := by
   set C := A - B with hC
@@ -43,6 +56,9 @@ theorem matrix_eq_of_form {e : ℕ} (A B : Matrix (Fin e) (Fin e) ℂ)
   rw [hs] at this
   simpa [C, sub_eq_zero] using this
 
+/- English proof (translation)
+Establish `h4 : ∀ X : ℂ, X / 4 = ((1 / 4 : ℝ) : ℂ) * X` using `fun X => by push_cast; ring`. Rewrite using `[h4]`. Apply the tactic sequence `apply Complex.ext <;> simp <;> ring`.
+-/
 private theorem pair_inv_mul_eq_of_mul_self_eq_one (c d : ℂ) (a b p q : ℝ) :
     c * ((((a + q : ℝ) : ℂ) + Complex.I * ((b - p : ℝ) : ℂ)) / 4 * star d) =
       ((((c.re * d.re * a + c.re * d.im * b + c.im * d.re * p + c.im * d.im * q) +
@@ -57,6 +73,29 @@ private theorem pair_inv_mul_eq_of_mul_self_eq_one (c d : ℂ) (a b p q : ℝ) :
   rw [h4]
   apply Complex.ext <;> simp <;> ring
 
+/- English proof (translation)
+Use `set H := fderiv ℝ (fderiv ℝ f) z with hH`. Establish `hsymm : ∀ x y, H x y = H y x` using `fun x y => hf.isSymmSndFDerivAt minSmoothness_of_isRCLikeNormedField.le x y`. Establish `hsmul : ∀ (c : ℂ) (u : Fin e → ℂ), c • u = c.re • u + c.im • (Complex.I • u)`. Introduce `c u`. Use extensionality with `k`.
+
+Simplify using `only [Pi.add_apply, Pi.smul_apply, smul_eq_mul, Complex.real_smul]`. Use `conv_lhs => rw [← Complex.re_add_im c]`. Expand and normalize the polynomial expressions, which then agree. Establish `hHs : ∀ (c d : ℂ) (u v : Fin e → ℂ), H (c • u) (d • v) = c.re * d.re * H u v + c.re * d.im * H u (Complex.I • v) + c.im * d.re * H (Complex.I • u) v + c.im * d.im * H (Complex.I • u) (Complex.I • v)`. Introduce `c d u v`.
+
+Rewrite using `[hsmul c u, hsmul d v]`. Simplify using `only [map_add, map_smul, ContinuousLinearMap.add_apply, ContinuousLinearMap.coe_smul', Pi.smul_apply, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree. Use `set E := fun i : Fin e => (Pi.single i (1 : ℂ) : Fin e → ℂ) with hE`. Establish `hw : ∀ x : Fin e → ℂ, x = ∑ i, x i • E i`.
+
+Introduce `x`. Use extensionality with `k`. Simplify using `[hE, Finset.sum_apply, Pi.single_apply]`. Establish `hHsum : ∀ x y : Fin e → ℂ, H x y = ∑ i, ∑ j, H (x i • E i) (y j • E j)`. Introduce `x y`.
+
+Use `conv_lhs => rw [hw x, hw y]`. Simplify using `only [map_sum, ContinuousLinearMap.sum_apply]`. Conclude with `Finset.sum_comm`. Establish `hpair : ∀ i j, w i * (hessC f z i j * star (w j)) = (((H (w i • E i) (w j • E j) + H ((Complex.I * w i) • E i) ((Complex.I * w j) • E j)) / 4 : ℝ) : ℂ) + Complex.I * (((H (w i • E i) ((Complex.I * w j) • E j) - H ((Complex.I * w i) • E i) (w j • E j)) / 4 : ℝ) : ℂ)`. Introduce `i j`.
+
+Establish `hx : hessC f z i j = (((H (E i) (E j) + H (Complex.I • E i) (Complex.I • E j) : ℝ) : ℂ) + Complex.I * ((H (E i) (Complex.I • E j) - H (Complex.I • E i) (E j) : ℝ) : ℂ)) / 4` using `rfl`. Rewrite using `[hx, hHs (w i) (w j), hHs (Complex.I * w i) (Complex.I * w j), hHs (w i) (Complex.I * w j), hHs (Complex.I * w i) (w j)]`. Conclude with `pair_inv_mul_eq_of_mul_self_eq_one (w i) (w j) _ _ _ _`. Establish `hanti : ∀ F : Fin e → Fin e → ℝ, (∀ i j, F i j = -F j i) → ∑ i, ∑ j, F i j = 0`. Introduce `F hF`.
+
+Establish `h1 : ∑ i, ∑ j, F i j = ∑ j, ∑ i, F i j` using `Finset.sum_comm`. Establish `h2 : ∑ j, ∑ i, F i j = -∑ j, ∑ i, F j i`. Rewrite using `[← Finset.sum_neg_distrib]`. Use `Finset.sum_congr rfl (fun j _ => ?_)` and prove the remaining obligations. Rewrite using `[← Finset.sum_neg_distrib]`.
+
+Conclude with `Finset.sum_congr rfl (fun i _ => hF i j)`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hQ0 : ∑ i, ∑ j, ((H (w i • E i) ((Complex.I * w j) • E j) - H ((Complex.I * w i) • E i) (w j • E j)) / 4 : ℝ) = 0`. Apply `hanti` to reduce the goal to its premises. Introduce `i j`.
+
+Rewrite using `[hsymm (w i • E i), hsymm ((Complex.I * w i) • E i)]`. Expand and normalize the polynomial expressions, which then agree. Establish `hLHS : w ⬝ᵥ (hessC f z *ᵥ star w) = ∑ i, ∑ j, w i * (hessC f z i j * star (w j))`. Simplify using `only [dotProduct, Matrix.mulVec, Finset.mul_sum, Pi.star_apply]`. Establish `hlevi : levi f z w = (H w w + H (Complex.I • w) (Complex.I • w)) / 4` using `rfl`.
+
+Rewrite using `[hLHS]`. Repeatedly rewrite using `[hpair]`. Rewrite using `[Finset.sum_congr rfl (fun i _ => Finset.sum_add_distrib), Finset.sum_add_distrib]`. Simplify using `only [← Finset.mul_sum, ← Complex.ofReal_sum]`. Rewrite using `[hQ0, Complex.ofReal_zero, mul_zero, add_zero, hlevi, hHsum w w, hHsum (Complex.I • w) (Complex.I • w)]`.
+
+Simplify using `only [Pi.smul_apply, smul_eq_mul]`. Use `congr 1`. Simplify using `only [add_div, Finset.sum_add_distrib, Finset.sum_div]`.
+-/
 theorem dot_hessC_star {e : ℕ} (f : (Fin e → ℂ) → ℝ) (z : Fin e → ℂ)
     (hf : ContDiffAt ℝ 2 f z) (w : Fin e → ℂ) :
     w ⬝ᵥ (hessC f z *ᵥ star w) = (levi f z w : ℂ) := by
@@ -125,6 +164,13 @@ theorem dot_hessC_star {e : ℕ} (f : (Fin e → ℂ) → ℝ) (z : Fin e → �
   congr 1
   simp only [add_div, Finset.sum_add_distrib, Finset.sum_div]
 
+/- English proof (translation)
+Establish `hs : M.map (starRingEnd ℂ) *ᵥ star w = star (M *ᵥ w)`. Use extensionality with `q`. Simplify using `[Matrix.mulVec, dotProduct, star_sum]`. Rewrite using `[← Matrix.mulVec_mulVec, ← Matrix.mulVec_mulVec, hs, Matrix.dotProduct_mulVec, Matrix.vecMul_transpose]`. Simplify using `only [dotProduct, Matrix.mulVec_diagonal, Pi.star_apply]`.
+
+Use `push_cast`. Apply `Finset.sum_congr rfl` to reduce the goal to its premises. Introduce `q _`. Rewrite using `[← Complex.mul_conj']`. Simplify using `only [Complex.star_def]`.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem dot_congr_diag {e : ℕ} (dd : Fin e → ℝ) (M : Matrix (Fin e) (Fin e) ℂ) (w : Fin e → ℂ) :
     w ⬝ᵥ ((Mᵀ * Matrix.diagonal (fun q => (dd q : ℂ)) * M.map (starRingEnd ℂ)) *ᵥ star w) =
       ((∑ q, dd q * ‖(M *ᵥ w) q‖ ^ 2 : ℝ) : ℂ) := by
@@ -141,6 +187,11 @@ theorem dot_congr_diag {e : ℕ} (dd : Fin e → ℝ) (M : Matrix (Fin e) (Fin e
   simp only [Complex.star_def]
   ring
 
+/- English proof (translation)
+Establish `hc : (M.map (starRingEnd ℂ)).det = starRingEnd ℂ M.det`. Rewrite using `[RingHom.map_det]`. Both sides reduce to the same expression. Rewrite using `[Matrix.det_mul, Matrix.det_mul, Matrix.det_transpose, Matrix.det_diagonal, hc]`. Use `push_cast`.
+
+Rewrite using `[← Complex.mul_conj']`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem det_congr_diag {e : ℕ} (dd : Fin e → ℝ) (M : Matrix (Fin e) (Fin e) ℂ) :
     (Mᵀ * Matrix.diagonal (fun q => (dd q : ℂ)) * M.map (starRingEnd ℂ)).det =
       (((∏ q, dd q) * ‖M.det‖ ^ 2 : ℝ) : ℂ) := by
@@ -152,6 +203,11 @@ theorem det_congr_diag {e : ℕ} (dd : Fin e → ℝ) (M : Matrix (Fin e) (Fin e
   rw [← Complex.mul_conj']
   ring
 
+/- English proof (translation)
+Establish `hH : hessC φ z = Mᵀ * Matrix.diagonal (fun q => (dd q : ℂ)) * M.map (starRingEnd ℂ)`. Apply `matrix_eq_of_form` to reduce the goal to its premises. Introduce `w`. Rewrite using `[dot_hessC_star φ z hφ w, dot_congr_diag, hl w]`. Simplify using `only [maDens]`.
+
+Rewrite using `[hH, ReciprocityTheory.AnForm.A.mdisc_const, det_congr_diag, Complex.ofReal_re]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem maDens_diag_levi (e : ℕ) (φ : (Fin e → ℂ) → ℝ) (z : Fin e → ℂ) (dd : Fin e → ℝ)
     (M : Matrix (Fin e) (Fin e) ℂ) (hφ : ContDiffAt ℝ 2 φ z)
     (hl : ∀ v, levi φ z v = ∑ q, dd q * ‖(M *ᵥ v) q‖ ^ 2) :

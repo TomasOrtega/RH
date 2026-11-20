@@ -15,8 +15,16 @@ namespace Cmp6
 
 variable (l : ℕ) [Fact l.Prime]
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem cPd_eq_cP : cPd l = cP l := rfl
 
+/- English proof (translation)
+Establish `h0 : algebraMap ℚ_[l] (Reformulated.AutPerF.AinfInv l (OC l)) (z : ℚ_[l]) = algebraMap (Reformulated.AutPerF.Ainf l (OC l)) (Reformulated.AutPerF.AinfInv l (OC l)) (algebraMap ℤ_[l] (Reformulated.AutPerF.Ainf l (OC l)) z)` using `Reformulated.AutPerF.padicLift_algebraMap l (algebraMap ℤ_[l] (Reformulated.AutPerF.AinfInv l (OC l))) (Reformulated.AutPerF.AinfInv.isUnit_p l (R := OC l)) z`. Establish `h1 : algebraMap ℚ_[l] (Reformulated.AutPerF.BdR l (OC l)) (z : ℚ_[l]) = algebraMap (Reformulated.AutPerF.BdRPlus l (OC l)) (Reformulated.AutPerF.BdR l (OC l)) (algebraMap (Reformulated.AutPerF.Ainf l (OC l)) (Reformulated.AutPerF.BdRPlus l (OC l)) (algebraMap ℤ_[l] (Reformulated. …`. Express the relevant statement in the definitionally equal form `algebraMap (Reformulated.AutPerF.BdRPlus l (OC l)) (Reformulated.AutPerF.BdR l (OC l)) (algebraMap (Reformulated.AutPerF.AinfInv l (OC l)) (Reformulated.AutPerF.BdRPlus l (OC l)) (algebraMap ℚ_[l] (Reformulated.AutPerF.AinfInv l (OC l)) (z : ℚ_[l]))) = _`. Rewrite using `[h0]`. Both sides reduce to the same expression.
+
+Rewrite using `[h1, cD_algebraMap, cPd_eq_cP, comparison_algebraMap_ainf]`. Both sides reduce to the same expression.
+-/
 theorem cD_zD (z : ℤ_[l]) :
     cD l (algebraMap ℚ_[l] (Reformulated.AutPerF.BdR l (OC l)) (z : ℚ_[l])) = Formalism.Per6.zD l z := by
   have h0 : algebraMap ℚ_[l] (Reformulated.AutPerF.AinfInv l (OC l)) (z : ℚ_[l]) =
@@ -36,10 +44,16 @@ theorem cD_zD (z : ℤ_[l]) :
   rw [h1, cD_algebraMap, cPd_eq_cP, comparison_algebraMap_ainf]
   rfl
 
+/- English proof (translation)
+The claim follows from `isLogA_iff_of_compat l (cP l) (comparison_algebraMap_ainf l) (θD_cP l) ε y`.
+-/
 theorem isLogA_iff_cP (ε : PreTilt ↥(PadicComplexInt l) l) (y : Reformulated.AutPerF.BdRPlus l (OC l)) :
     IsLogA l ε y ↔ Formalism.Per6.IsLog l ε (cP l y) :=
   isLogA_iff_of_compat l (cP l) (comparison_algebraMap_ainf l) (θD_cP l) ε y
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨cBc_zB l, cD_zD l, fun y => cD_algebraMap l y, θD_cP l, cBc_smul l, cD_gal l, cBc_frob_of l (cA_frob l), cD_fil l, isLogA_iff_cP l, cBc_aB l⟩`.
+-/
 theorem compat_native :
     (∀ z : ℤ_[l], cBc l (algebraMap ℚ_[l] (Reformulated.AutPerF.Bcris l (OC l)) (z : ℚ_[l])) = Formalism.Per6.zB l z) ∧
     (∀ z : ℤ_[l], cD l (algebraMap ℚ_[l] (Reformulated.AutPerF.BdR l (OC l)) (z : ℚ_[l])) = Formalism.Per6.zD l z) ∧

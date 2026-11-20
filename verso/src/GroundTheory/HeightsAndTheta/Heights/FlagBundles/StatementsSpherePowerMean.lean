@@ -13,6 +13,9 @@ def SpherePowerMean.Statement : Prop :=
   ∀ u : E3, ‖u‖ = 1 → ∀ k : ℕ,
     ∫ n, ⟪u, (n : E3)⟫_ℝ ^ k ∂sphereMeasure = 2⁻¹ * ∫ x in (-1 : ℝ)..1, x ^ k
 
+/- English proof (translation)
+Simplify using the standard rewrite rules.
+-/
 example : ‖(EuclideanSpace.single 2 1 : E3)‖ = 1 := by simp
 
 end

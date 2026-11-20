@@ -11,10 +11,16 @@ noncomputable section
 
 variable (K : Type*) [Field K] [NumberField K]
 
+/- English proof (translation)
+Simplify `summable_norm_comp_add (idealLattice K I) f a` using `[add_comm]`.
+-/
 theorem idealLattice_summable_norm (I : (FractionalIdeal (𝓞 K)⁰ K)ˣ) (f : 𝓢(mixedSpace K, ℂ))
     (a : mixedSpace K) : Summable fun α : idealLattice K I => ‖f (α + a)‖ := by
   simpa [add_comm] using summable_norm_comp_add (idealLattice K I) f a
 
+/- English proof (translation)
+Establish `h` using `summable_norm_comp_add (idealLattice K (traceDualIdeal K I)) (mixedFourierSchwartz K f) 0`. Simplify `h` using `[norm_mul, Circle.norm_coe, mixedFourierSchwartz_apply]`.
+-/
 theorem traceDualIdeal_summable_norm (I : (FractionalIdeal (𝓞 K)⁰ K)ˣ)
     (f : 𝓢(mixedSpace K, ℂ)) (a : mixedSpace K) :
     Summable fun β : idealLattice K (traceDualIdeal K I) =>
@@ -22,6 +28,21 @@ theorem traceDualIdeal_summable_norm (I : (FractionalIdeal (𝓞 K)⁰ K)ˣ)
   have h := summable_norm_comp_add (idealLattice K (traceDualIdeal K I)) (mixedFourierSchwartz K f) 0
   simpa [norm_mul, Circle.norm_coe, mixedFourierSchwartz_apply] using h
 
+/- English proof (translation)
+Use `set L := euclideanIdealLattice K I`. Use `set F : 𝓢(euclidean.mixedSpace K, ℂ) := SchwartzMap.compCLMOfContinuousLinearEquiv ℂ (mixedToEuclidean K).symm f`. Establish `hF : (F : euclidean.mixedSpace K → ℂ) = f ∘ (mixedToEuclidean K).symm` using `rfl`. Establish `h` using `lattice_poisson_summation L F (mixedToEuclidean K a)`. Set `eL : idealLattice K I ≃ L` to `{ toFun := fun α => ⟨mixedToEuclidean K α, by`.
+
+Rewrite using `[mem_euclideanIdealLattice, ContinuousLinearEquiv.symm_apply_apply]`. Conclude with `α.2⟩`. Use `invFun := fun ℓ => ⟨(mixedToEuclidean K).symm ℓ, ℓ.2⟩`. Use `left_inv := fun α => Subtype.ext (ContinuousLinearEquiv.symm_apply_apply _ _)`. Use `right_inv := fun ℓ => Subtype.ext (ContinuousLinearEquiv.apply_symm_apply _ _) }`.
+
+Set `eD : idealLattice K (traceDualIdeal K I) ≃ dualLattice L` to `{ toFun := fun β => ⟨mixedToEuclideanConj K β, by`. Rewrite using `[dualLattice_euclideanIdealLattice, mem_euclideanConjIdealLattice, ContinuousLinearEquiv.symm_apply_apply]`. Conclude with `β.2⟩`. Use `invFun := fun μ => ⟨(mixedToEuclideanConj K).symm μ, by`. Establish `hμ : (μ : euclidean.mixedSpace K) ∈ euclideanConjIdealLattice K (traceDualIdeal K I)`.
+
+Rewrite using `[← dualLattice_euclideanIdealLattice]`. Conclude with `μ.2`. Conclude with `hμ⟩`. Use `left_inv := fun β => Subtype.ext (ContinuousLinearEquiv.symm_apply_apply _ _)`. Use `right_inv := fun μ => Subtype.ext (ContinuousLinearEquiv.apply_symm_apply _ _) }`.
+
+Establish `hlhs : ∑' ℓ : L, F (ℓ + mixedToEuclidean K a) = ∑' α : idealLattice K I, f (α + a)`. Rewrite using `[← Equiv.tsum_eq eL]`. Use `tsum_congr fun α => ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `f ((mixedToEuclidean K).symm (mixedToEuclidean K α + mixedToEuclidean K a)) = _`. Rewrite using `[← map_add, ContinuousLinearEquiv.symm_apply_apply]`.
+
+Establish `hrhs : ∑' μ : dualLattice L, 𝓕 (F : euclidean.mixedSpace K → ℂ) μ * 𝐞 ⟪(μ : euclidean.mixedSpace K), mixedToEuclidean K a⟫ = ∑' β : idealLattice K (traceDualIdeal K I), mixedFourier K f β * 𝐞 (mixedTraceForm K β a)`. Rewrite using `[← Equiv.tsum_eq eD]`. Use `tsum_congr fun β => ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `𝓕 (F : euclidean.mixedSpace K → ℂ) (mixedToEuclideanConj K β) * 𝐞 ⟪mixedToEuclideanConj K β, mixedToEuclidean K a⟫ = _`. Rewrite using `[hF, ← mixedFourier_eq, inner_mixedToEuclideanConj_mixedToEuclidean]`.
+
+Rewrite `h` using `[hlhs, hrhs, covolume_euclideanIdealLattice]`. Conclude with `h`.
+-/
 theorem idealLattice_poisson_summation (I : (FractionalIdeal (𝓞 K)⁰ K)ˣ)
     (f : 𝓢(mixedSpace K, ℂ)) (a : mixedSpace K) :
     ∑' α : idealLattice K I, f (α + a) =

@@ -17,6 +17,11 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {n : ℕ}
 
 omit [IsCMField E] in
 
+/- English proof (translation)
+Establish `hO : GLnLocal.integralGL (w.adicCompletion E) n = GlobalTheory.LFun.KGL w n`. Establish `h : (ValuativeRel.valuation (w.adicCompletion E)).integer = Formalism.UG.Ov E w` using `Subring.ext fun x => GroundTheory.Global.mem_valuationInteger_iff w x`. Rewrite using `[GlobalTheory.LFun.KGL, ← h]`. Both sides reduce to the same expression. Rewrite using `[← hO, GLnLocal.mem_integralGL_iff]`.
+
+Simplify using `only [GroundTheory.Global.mem_valuationInteger_iff]`. Both sides reduce to the same expression.
+-/
 theorem mem_KGL_iff_val (w : Pl E) (g : GLw n w) :
     g ∈ GlobalTheory.LFun.KGL w n ↔ (∀ i j, Valued.v (g.val i j) ≤ 1) ∧ ∀ i j, Valued.v ((g⁻¹).val i j) ≤ 1 := by
   have hO : GLnLocal.integralGL (w.adicCompletion E) n = GlobalTheory.LFun.KGL w n := by
@@ -27,6 +32,9 @@ theorem mem_KGL_iff_val (w : Pl E) (g : GLw n w) :
   simp only [GroundTheory.Global.mem_valuationInteger_iff]
   rfl
 
+/- English proof (translation)
+Distinguish the cases in `huw : u = w`. Conclude with `Or.inl huw`. Conclude with `(over_split ⟨u, huw, h⟩).2.2 u h`.
+-/
 theorem eq_or_eq_conjSrc {w u : Pl E}
     (h : u.under (𝓞 (maximalRealSubfield E)) = w.under (𝓞 (maximalRealSubfield E))) :
     u = w ∨ u = conjSrc (conjE E) w := by
@@ -34,12 +42,20 @@ theorem eq_or_eq_conjSrc {w u : Pl E}
   · exact Or.inl huw
   · exact (over_split ⟨u, huw, h⟩).2.2 u h
 
+/- English proof (translation)
+Assume the negation of the conclusion as `hne`. Conclude with `hw ⟨_, hne, (GlobalTheory.Mem.Chr.under_eq_iff_conjPl (IsCMField.complexConj E) (Algebra.IsQuadraticExtension.finrank_eq_two _ _) (IsCMField.complexConj_ne_one E) w _).2 (Or.inr (conjPl_self_conjSrc w))⟩`.
+-/
 theorem conjSrc_eq_of_not_split {w : Pl E} (hw : ¬ IsSplitAt w) : conjSrc (conjE E) w = w := by
   by_contra hne
   exact hw ⟨_, hne, (GlobalTheory.Mem.Chr.under_eq_iff_conjPl (IsCMField.complexConj E)
     (Algebra.IsQuadraticExtension.finrank_eq_two _ _) (IsCMField.complexConj_ne_one E) w _).2
       (Or.inr (conjPl_self_conjSrc w))⟩
 
+/- English proof (translation)
+Establish `key : ∀ (v : Pl E) (_ : v = w) (f : v.adicCompletion E →+* w.adicCompletion E), Continuous f → (∀ k : E, f (algebraMap E _ k) = algebraMap E _ (conjE E k)) → f (pLoc E v a) = cj w (pLoc E w a)`. Introduce and unpack `v rfl f hf h`. Establish `hex : ∃ s : v.adicCompletion E →+* v.adicCompletion E, Continuous s ∧ ∀ x : E, s (algebraMap E _ x) = algebraMap E _ (IsCMField.complexConj E x)` using `⟨f, hf, h⟩`. Rewrite using `[cj, dif_pos hex]`. Conclude with `congrFun ((HeightOneSpectrum.denseRange_algebraMap (K := E) v).equalizer hf hex.choose_spec.1 (funext fun k => (h k).trans (hex.choose_spec.2 k).symm)) _`.
+
+Conclude with `key _ (conjSrc_eq_of_not_split hw) _ (conjLoc_spec (conjE E) _).1 (conjLoc_spec (conjE E) _).2.1`.
+-/
 theorem conjLoc_eq_cj {w : Pl E} (hw : ¬ IsSplitAt w) (a : Af E) :
     conjLoc (conjE E) w (pLoc E (conjSrc (conjE E) w) a) = cj w (pLoc E w a) := by
   have key : ∀ (v : Pl E) (_ : v = w) (f : v.adicCompletion E →+* w.adicCompletion E), Continuous f →
@@ -52,6 +68,11 @@ theorem conjLoc_eq_cj {w : Pl E} (hw : ¬ IsSplitAt w) (a : Af E) :
       (funext fun k => (h k).trans (hex.choose_spec.2 k).symm)) _
   exact key _ (conjSrc_eq_of_not_split hw) _ (conjLoc_spec (conjE E) _).1 (conjLoc_spec (conjE E) _).2.1
 
+/- English proof (translation)
+Unfold `UL`. Use `split_ifs with hw`. Conclude with `Subgroup.mem_top _`. Establish `h` using `comp_eq x w`. Establish `e : (cLoc (conjSrc (conjE E) w) x).val.map (conjLoc (conjE E) w) = (cLoc w x).val.map (cj w)` using `Matrix.ext fun i j => conjLoc_eq_cj hw _`.
+
+Rewrite `h` using `[e]`. Express the relevant statement in the definitionally equal form `((cLoc w x).val.map (cj w))ᵀ * 1 * (cLoc w x).val = 1`. Rewrite using `[Matrix.mul_one]`. Conclude with `h`.
+-/
 theorem cLoc_mem_UL (w : Pl E) (x : UA E n) : cLoc w x ∈ UL n w := by
   unfold UL
   split_ifs with hw
@@ -64,6 +85,9 @@ theorem cLoc_mem_UL (w : Pl E) (x : UA E n) : cLoc w x ∈ UL n w := by
     rw [Matrix.mul_one]
     exact h
 
+/- English proof (translation)
+Establish `h` using `comp_eq x u`. Establish `e : ((cLoc u x)⁻¹).val = ((cLoc (conjSrc (conjE E) u) x).val.map (conjLoc (conjE E) u))ᵀ` using `(Units.eq_inv_of_mul_eq_one_right h).symm`. Rewrite using `[e]`. Conclude with `(conjLoc_spec (conjE E) u).2.2 _`.
+-/
 theorem val_inv_entry (x : UA E n) (u : Pl E) (i j : Fin n) :
     Valued.v (((cLoc u x)⁻¹).val i j) = Valued.v ((cLoc (conjSrc (conjE E) u) x).val j i) := by
   have h := comp_eq x u
@@ -72,6 +96,9 @@ theorem val_inv_entry (x : UA E n) (u : Pl E) (i j : Fin n) :
   rw [e]
   exact (conjLoc_spec (conjE E) u).2.2 _
 
+/- English proof (translation)
+Rewrite `h`, the goal using `[mem_KGL_iff_val]`. Apply the tactic sequence `refine ⟨fun i j => (val_inv_entry x u j i) ▸ h.2 j i, fun i j => ?_⟩`. Apply the tactic sequence `have h2 := val_inv_entry x⁻¹ u j i`. Rewrite `h2` using `[map_inv, map_inv, inv_inv]`. Conclude with `h2 ▸ h.1 j i`.
+-/
 theorem integral_conjSrc (x : UA E n) (u : Pl E) (h : cLoc u x ∈ GlobalTheory.LFun.KGL u n) :
     cLoc (conjSrc (conjE E) u) x ∈ GlobalTheory.LFun.KGL (conjSrc (conjE E) u) n := by
   rw [mem_KGL_iff_val] at h ⊢
@@ -80,6 +107,9 @@ theorem integral_conjSrc (x : UA E n) (u : Pl E) (h : cLoc u x ∈ GlobalTheory.
   rw [map_inv, map_inv, inv_inv] at h2
   exact h2 ▸ h.1 j i
 
+/- English proof (translation)
+Simplify using `only [globLev, Subgroup.mem_iInf, Subgroup.mem_comap]`. Use `forall₂_congr fun w _ => ⟨?_, fun h => ⟨_, h, rfl⟩⟩` and prove the remaining obligations. Introduce and unpack `⟨a, ha, e⟩`. Establish `: a = ⟨cLoc w k.1, cLoc_mem_UL w k.1⟩` using `Subtype.ext e`. Conclude with `this ▸ ha`.
+-/
 theorem mem_globLev (S : Set (Pl E)) (K' : ∀ w : Pl E, Subgroup (UL n w)) (k : finU E n) :
     k ∈ globLev S K' ↔ ∀ w ∈ S, (⟨cLoc w k.1, cLoc_mem_UL w k.1⟩ : UL n w) ∈ K' w := by
   simp only [globLev, Subgroup.mem_iInf, Subgroup.mem_comap]
@@ -93,10 +123,20 @@ variable (E n) in
 def finPart : finU E n →* GL (Fin n) (Af E) :=
   (GeneralLinearGroup.map (pFin E)).comp ((UA E n).subtype.comp (finU E n).subtype)
 
+/- English proof (translation)
+The claim follows from `(Continuous.units_map _ (continuous_id.matrix_map (continuous_snd : Continuous (pFin E)))).comp (continuous_subtype_val.comp continuous_subtype_val)`.
+-/
 theorem continuous_finPart : Continuous (finPart E n) :=
   (Continuous.units_map _ (continuous_id.matrix_map (continuous_snd : Continuous (pFin E)))).comp
     (continuous_subtype_val.comp continuous_subtype_val)
 
+/- English proof (translation)
+Use extensionality with `k`. Establish `e : k ∈ (AdelicGLn.integralFiniteGL E n).comap (finPart E n) ↔ ∀ u, cLoc u k.1 ∈ GlobalTheory.LFun.KGL u n`. Rewrite using `[Subgroup.mem_comap, AdelicGLn.mem_integralFiniteGL_iff, ← map_inv]`. Simplify using `only [mem_KGL_iff_val, ← map_inv, GroundTheory.Global.mem_integralFiniteAdeles]`. Conclude with `⟨fun h u => ⟨fun i j => h.1 i j u, fun i j => h.2 i j u⟩, fun h => ⟨fun i j u => (h u).1 i j, fun i j u => (h u).2 i j⟩⟩`.
+
+Rewrite using `[e, mem_globLev]`. Use `⟨fun h u => ?_, fun h w _ => h w⟩` and prove the remaining obligations. Take `⟨w, ⟨hw, hwu⟩, -⟩` from `hS u`. Break down `eq_or_eq_conjSrc hwu.symm with rfl | rfl` into its components or cases. Conclude with `h u hw`.
+
+Conclude with `integral_conjSrc k.1 w (h w hw)`.
+-/
 theorem globLev_KL_eq {S : Set (Pl E)} (hS : IsSection S) :
     globLev S (KL n) = (AdelicGLn.integralFiniteGL E n).comap (finPart E n) := by
   ext k
@@ -112,15 +152,26 @@ theorem globLev_KL_eq {S : Set (Pl E)} (hS : IsSection S) :
   · exact h u hw
   · exact integral_conjSrc k.1 w (h w hw)
 
+/- English proof (translation)
+The claim follows from `continuous_pi fun w => ((InfinitePlace.Completion.isometryEquivComplexOfIsComplex (IsTotallyComplex.isComplex w)).continuous.comp (continuous_apply w)).comp continuous_fst`.
+-/
 theorem continuous_pInf_ad : Continuous (pInf E) :=
   continuous_pi fun w =>
     ((InfinitePlace.Completion.isometryEquivComplexOfIsComplex (IsTotallyComplex.isComplex w)).continuous.comp
       (continuous_apply w)).comp continuous_fst
 
+/- English proof (translation)
+The claim follows from `((continuous_infEq E).comp (continuous_star.comp continuous_pInf_ad)).prodMk ((continuous_conjFin _).comp continuous_snd)`.
+-/
 theorem continuous_conj_ad : Continuous (conjAd E) :=
   ((continuous_infEq E).comp (continuous_star.comp continuous_pInf_ad)).prodMk
     ((continuous_conjFin _).comp continuous_snd)
 
+/- English proof (translation)
+Use `haveI : T2Space (FiniteAdeleRing (𝓞 E) E) := inferInstanceAs (T2Space (RestrictedProduct (fun v : HeightOneSpectrum (𝓞 E) => v.adicCompletion E) (fun v => (v.adicCompletionIntegers E : Set (v.adicCompletion E))) Filter.cofinite))`. Use `haveI : T2Space (InfiniteAdeleRing E) := inferInstanceAs (T2Space ((v : InfinitePlace E) → v.Completion))`. Use `haveI : T2Space (Ad E) := inferInstanceAs (T2Space (InfiniteAdeleRing E × FiniteAdeleRing (𝓞 E) E))`. Establish `h1 : IsClosed ((UA E n : Subgroup (GA E n)) : Set (GA E n))` using `by show IsClosed {g : GA E n | ((g : Matrix (Fin n) (Fin n) (Ad E)).map (conjAd E))ᵀ * 1 * (g : Matrix (Fin n) (Fin n) (Ad E)) = 1}`. Conclude with `isClosed_eq (((Units.continuous_val.matrix_map continuous_conj_ad).matrix_transpose.matrix_mul continuous_const).matrix_mul Units.continuous_val) continuous_const`.
+
+Establish `h2 : IsClosed ((finU E n : Subgroup (UA E n)) : Set (UA E n))` using `by haveI : T2Space (GL (Fin n) (Cinf E)) := Units.isEmbedding_embedProduct.t2Space`. Establish `hc : Continuous (cInf (E` using `E) (n := n)) := (Continuous.units_map _ (continuous_id.matrix_map continuous_pInf_ad)).comp continuous_subtype_val`. Conclude with `isClosed_eq hc continuous_const`. Conclude with `h1.isClosedEmbedding_subtypeVal.comp h2.isClosedEmbedding_subtypeVal`.
+-/
 theorem isClosedEmbedding_finU : Topology.IsClosedEmbedding (fun x : finU E n => ((x : UA E n) : GA E n)) := by
   haveI : T2Space (FiniteAdeleRing (𝓞 E) E) :=
     inferInstanceAs (T2Space (RestrictedProduct (fun v : HeightOneSpectrum (𝓞 E) => v.adicCompletion E)
@@ -139,14 +190,31 @@ theorem isClosedEmbedding_finU : Topology.IsClosedEmbedding (fun x : finU E n =>
     exact isClosed_eq hc continuous_const
   exact h1.isClosedEmbedding_subtypeVal.comp h2.isClosedEmbedding_subtypeVal
 
+/- English proof (translation)
+The claim follows from `Continuous.units_map _ (continuous_const.add (continuous_id.matrix_map (continuous_const.prodMk continuous_id : Continuous fun x : Af E => ((0, x) : InfiniteAdeleRing E × Af E))))`.
+-/
 theorem continuous_finGL_ad : Continuous (finGL E n) :=
   Continuous.units_map _ (continuous_const.add (continuous_id.matrix_map
     (continuous_const.prodMk continuous_id : Continuous fun x : Af E => ((0, x) : InfiniteAdeleRing E × Af E))))
 
+/- English proof (translation)
+The claim follows from `(Continuous.units_map _ (continuous_id.matrix_map ((RestrictedProduct.continuous_eval w).comp continuous_snd))).comp continuous_subtype_val`.
+-/
 theorem continuous_cLoc (w : Pl E) : Continuous (cLoc (n := n) w) :=
   (Continuous.units_map _ (continuous_id.matrix_map
     ((RestrictedProduct.continuous_eval w).comp continuous_snd))).comp continuous_subtype_val
 
+/- English proof (translation)
+Introduce `E _ _ _ _ n _ S hS K' hK`. Establish `hO : IsOpen (globLev S (KL n) : Set (finU E n))`. Rewrite using `[globLev_KL_eq hS]`. Conclude with `(AdelicGLn.isOpen_integralFiniteGL E n).preimage continuous_finPart`. Establish `hle : globLev S K' ≤ globLev S (KL n)` using `fun k hk => (mem_globLev S _ k).2 fun w hw => (hK.1 w).2.1 ((mem_globLev S _ k).1 hk w hw)`.
+
+Use `⟨hO, ?_, ?_, hle, fun k hk => hk⟩` and prove the remaining obligations. Use `IsCompact.of_isClosed_subset (isClosedEmbedding_finU.isCompact_preimage ((AdelicGLn.isCompact_integralFiniteGL E n).image continuous_finGL_ad)) (Subgroup.isClosed_of_isOpen _ hO) fun x hx => ⟨finPart E n x, ?_, ?_⟩` and prove the remaining obligations. Rewrite `hx` using `[globLev_KL_eq hS]`. Conclude with `hx`. Establish `h1 : GeneralLinearGroup.map (pInf E) ((x : UA E n) : GA E n) = 1` using `x.2`.
+
+Conclude with `ga_ext (by rw [pInf_finGL, h1]) (by rw [pFin_finGL]; rfl)`. Establish `hfin : {w | w ∈ S ∧ K' w ≠ KL n w}.Finite` using `(Filter.eventually_cofinite.1 hK.2).subset fun w hw => hw.2`. Establish `e : (globLev S K' : Set (finU E n)) = (globLev S (KL n) : Set (finU E n)) ∩ ⋂ w ∈ {w | w ∈ S ∧ K' w ≠ KL n w}, (fun k : finU E n => (⟨cLoc w k.1, cLoc_mem_UL w k.1⟩ : UL n w)) ⁻¹' (K' w : Set (UL n w))`. Use extensionality with `k`. Simplify using `only [Set.mem_inter_iff, Set.mem_iInter, Set.mem_preimage, SetLike.mem_coe]`.
+
+Use `⟨fun hk => ⟨hle hk, fun w hw => (mem_globLev S _ k).1 hk w hw.1⟩, fun hk => ?_⟩` and prove the remaining obligations. Use `(mem_globLev S _ k).2 fun w hw => ?_` and prove the remaining obligations. Distinguish the cases in `h : K' w = KL n w`. Rewrite using `[h]`. Conclude with `(mem_globLev S _ k).1 hk.1 w hw`.
+
+Conclude with `hk.2 w ⟨hw, h⟩`. Rewrite using `[e]`. Conclude with `hO.inter (hfin.isOpen_biInter fun w _ => (hK.1 w).1.preimage (Continuous.subtype_mk ((continuous_cLoc w).comp continuous_subtype_val) _))`.
+-/
 theorem globLev_isOpen_isCompact_isLevel : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E], Unr E → ∀ n : ℕ, 1 ≤ n →
     ∀ (S : Set (Pl E)), IsSection S → ∀ (K' : ∀ w : Pl E, Subgroup (UL n w)),
     IsLevelFam (fun w : Pl E => MonoidHom.id (UL n w)) (KL n) K' →

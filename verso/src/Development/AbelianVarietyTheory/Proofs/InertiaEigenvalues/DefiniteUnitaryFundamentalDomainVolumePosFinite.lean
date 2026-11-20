@@ -13,6 +13,13 @@ noncomputable section
 
 namespace GlobalTheory.DefVol
 
+/- English proof (translation)
+Introduce `D G _ _ Pl0 T A Ks _ _ _ R F h i t`. Establish `hm` using `h.models.νV i t`. Establish `hH : (R.νV i t).IsHaarMeasure` using `hm.1.1`. Establish `hfd : IsFundamentalDomain (GQ (Vc D i)) (R.fdV i t) (R.νV i t)` using `hm.2`. Take `⟨hs, hp⟩` from `h.posDef i`.
+
+Establish `hc : GlobalTheory.Unf.CoCpt (Vc D i)` using `GlobalTheory.SeeSaw.Inh.coCpt_of_isDefinite hs (fun τ => Or.inl (hp τ))`. Use `⟨?_, GlobalTheory.Unf.vol_fund_lt_top hc ⟨_, _, hH, hfd⟩⟩` and prove the remaining obligations. Use `Formalism.L2.GlobalTheoryTheory.GenusMassVolumes.Unfold.measurableConstSMul_subgroup (GQ (Vc D i))` as an intermediate fact. Use `Formalism.L2.GlobalTheoryTheory.GenusMassVolumes.Unfold.smulInvariant_subgroup (GQ (Vc D i)) (R.νV i t)` as an intermediate fact. Rewrite using `[pos_iff_ne_zero]`.
+
+Introduce `h0`. Establish `hu` using `hfd.measure_zero_of_invariant (t := Set.univ) (fun g => Set.smul_set_univ) (by simpa using h0)`. Conclude with `(Measure.measure_univ_ne_zero.2 (NeZero.ne (R.νV i t))) hu`.
+-/
 theorem fdV_measure_pos_lt_top : ∀ (D : D7) (G : Type) [Group G] [Fintype G] (Pl0 T : Type) (A : FamIn D.what₂.LL G Pl0 T D.R.m)
     (Ks : Type) [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] (R : RealDat D A Ks) (F : Face D A), Laws R F →
     ∀ (i : Fin D.R.m) (t : T), 0 < R.νV i t (R.fdV i t) ∧ R.νV i t (R.fdV i t) < ⊤ := by

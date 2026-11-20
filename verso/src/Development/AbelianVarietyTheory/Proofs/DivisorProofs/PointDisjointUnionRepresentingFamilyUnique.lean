@@ -13,6 +13,9 @@ noncomputable section
 
 namespace GlobalTheory.DualCon.ProdGlue
 
+/- English proof (translation)
+Establish `e'` using `congrArg (CechPic.pull (lift (fst A Z) (snd A Z ≫ z)).left) ((same_iff hN hM _ _).1 e)`. Rewrite `e'` using `[pull_evc, pull_evc, lift_fst, lift_snd_assoc, lift_snd_assoc, Category.assoc, Category.assoc]`. Conclude with `(same_iff hN hM _ _).2 e'`.
+-/
 theorem same_precomp {S : Scheme.{0}} {A T U Y Z : Over S} {N : LB (A ⊗ T).left} {M : LB (A ⊗ U).left}
     (hN : N.IsLB) (hM : M.IsLB) {y : Y ⟶ T} {u : Y ⟶ U} (z : Z ⟶ Y)
     (e : Same A N M y u) : Same A N M (z ≫ y) (z ≫ u) := by
@@ -20,6 +23,25 @@ theorem same_precomp {S : Scheme.{0}} {A T U Y Z : Over S} {N : LB (A ⊗ T).lef
   rw [pull_evc, pull_evc, lift_fst, lift_snd_assoc, lift_snd_assoc, Category.assoc, Category.assoc] at e'
   exact (same_iff hN hM _ _).2 e'
 
+/- English proof (translation)
+Introduce `S A _ κ _ X V hV hVd Bt B j _ hj hjd b bt hb P Pt hP hPt hPi T x y hxy e`. Establish `mem : ∀ i (p : Bt.left), bt.left p ∈ V i → p ∈ Set.range (j i).left`. Introduce `i p hp`. Establish `hp' : p ∈ (⨆ i', (j i').left.opensRange)` using `by rw [hj]; trivial`. Take `⟨i', q, rfl⟩` from `(TopologicalSpace.Opens.mem_iSup.1 hp')`.
+
+Establish `h1 : bt.left ((j i').left q) ∈ V i'`. Rewrite using `[← Scheme.Hom.comp_apply, ← Over.comp_left, hb i', Over.comp_left, Scheme.Hom.comp_apply]`. Express the relevant statement in the definitionally equal form `(V i').ι ((b i').left q) ∈ V i'`. Conclude with `(Scheme.Opens.range_ι (V i')).subset ⟨_, rfl⟩`. Distinguish the cases in `hii : i' = i`.
+
+Substitute `hii` using the available equality. Conclude with `⟨q, rfl⟩`. Conclude with `absurd (⟨h1, hp⟩ : bt.left ((j i').left q) ∈ (V i' ⊓ V i : X.left.Opens)) (fun h ↦ (hVd hii).le_bot h)`. Establish `loc : ∀ i, ((x ≫ bt).left ⁻¹ᵁ V i).ι ≫ x.left = ((x ≫ bt).left ⁻¹ᵁ V i).ι ≫ y.left`. Introduce `i`.
+
+Set `Ti : Over S` to `Over.mk (((x ≫ bt).left ⁻¹ᵁ V i).ι ≫ T.hom)`. Set `w : Ti ⟶ T` to `Over.homMk ((x ≫ bt).left ⁻¹ᵁ V i).ι rfl`. Establish `lf : ∀ z : T ⟶ Bt, z ≫ bt = x ≫ bt → ∃ zi : Ti ⟶ B i, zi ≫ j i = w ≫ z`. Introduce `z hz`. Establish `r : Set.range (w ≫ z).left ⊆ Set.range (j i).left`.
+
+Introduce and unpack `_ ⟨p, rfl⟩`. Apply `mem i` to reduce the goal to its premises. Rewrite using `[← Scheme.Hom.comp_apply, ← Over.comp_left, Category.assoc, hz, Over.comp_left, Scheme.Hom.comp_apply]`. Conclude with `(Scheme.Opens.range_ι ((x ≫ bt).left ⁻¹ᵁ V i)).subset ⟨p, rfl⟩`. Conclude with `⟨Over.homMk (IsOpenImmersion.lift (j i).left _ r) (by rw [← Over.w (j i), IsOpenImmersion.lift_fac_assoc, Over.w]), Over.OverMorphism.ext (IsOpenImmersion.lift_fac _ _ _)⟩`.
+
+Take `⟨xi, hx⟩` from `lf x rfl`. Take `⟨yi, hy⟩` from `lf y hxy.symm`. Establish `hQ` using `(hP i).fam.isLB`. Establish `hb' : xi ≫ b i = yi ≫ b i`. Establish `k : xi ≫ b i ≫ Over.homMk (V i).ι = yi ≫ b i ≫ Over.homMk (V i).ι`.
+
+Rewrite using `[← hb, reassoc_of% hx, reassoc_of% hy, hxy]`. Apply `Over.OverMorphism.ext` to reduce the goal to its premises. Rewrite using `[← cancel_mono (V i).ι]`. Conclude with `congrArg (fun q ↦ q.left) k`. Establish `hs : Same A (P i) (P i) xi yi`.
+
+Establish `e2` using `(same_iff hPt hPt _ _).1 (same_precomp hPt hPt w e)`. Rewrite using `[same_iff hQ hQ, ← evc_comp_of_iso (j i) hPt hQ (hPi i), ← evc_comp_of_iso (j i) hPt hQ (hPi i), Category.assoc, Category.assoc, hx, hy]`. Conclude with `e2`. Establish `h3` using `Model.rep_ext (hP i) hb' hs`. Conclude with `congrArg (fun q ↦ q.left) (show w ≫ x = w ≫ y by rw [← hx, ← hy, h3])`.
+
+Use `Over.OverMorphism.ext (Scheme.hom_ext_of_forall _ _ fun z ↦ ?_)` and prove the remaining obligations. Take `⟨i, hi⟩` from `TopologicalSpace.Opens.mem_iSup.1 (show (x ≫ bt).left z ∈ ⨆ i, V i by rw [hV]; trivial)`. Conclude with `⟨_, hi, loc i⟩`.
+-/
 theorem eq_of_same_of_disjoint_cover : ∀ {S : Scheme.{0}} (A : Over S) [GrpObj A] {κ : Type} [Finite κ] (X : Over S) (V : κ → X.left.Opens), (⨆ i, V i = ⊤) → (Pairwise fun i i' => Disjoint (V i) (V i')) → ∀ (Bt : Over S) (B : κ → Over S) (j : ∀ i, B i ⟶ Bt) [∀ i, IsOpenImmersion (j i).left], (⨆ i, (j i).left.opensRange = ⊤) → (Pairwise fun i i' => Disjoint (j i).left.opensRange (j i').left.opensRange) → ∀ (b : ∀ i, B i ⟶ Over.mk ((V i).ι ≫ X.hom)) (bt : Bt ⟶ X), (∀ i, j i ≫ bt = b i ≫ Over.homMk (V i).ι) → ∀ (P : ∀ i, LB (A ⊗ B i).left) (Pt : LB (A ⊗ Bt).left), (∀ i, Rep A (b i) (P i)) → Pt.IsLB → (∀ i, LBIso (Pt.pull (A ◁ j i).left) (P i)) → ∀ (T : Over S) (x y : T ⟶ Bt), x ≫ bt = y ≫ bt → Same A Pt Pt x y → x = y := by
   intro S A _ κ _ X V hV hVd Bt B j _ hj hjd b bt hb P Pt hP hPt hPi T x y hxy e
 

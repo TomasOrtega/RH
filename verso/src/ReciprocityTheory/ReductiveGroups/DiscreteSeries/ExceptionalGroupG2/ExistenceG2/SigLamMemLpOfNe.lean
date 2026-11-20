@@ -31,22 +31,36 @@ namespace ReciprocityTheory.ChartRestriction.DS.G2
 variable {n : ℕ} {ε : Fin n → Bool} {lam : Fin n → ℝ} {T : S7.KType ε (lowK ε lam)}
   {Ψ : Matrix (Fin n) (Fin n) ℂ → (T.V →L[ℂ] T.V)} {v₀ : T.V}
 
+/- English proof (translation)
+Establish `h1 : Formalism.MainNotions.S.umat (1 : Formalism.REAL.UJ ε) = 1` using `rfl`. Rewrite using `[h1]`. Conclude with `(sigLam_isURepOn hgap hP hv₀).1.1`.
+-/
 theorem sigLam_umat_one (hgap : StdGap ε lam) (hP : IsPsiFor ε lam T Ψ) (hv₀ : v₀ ≠ 0) :
     sigLam ε Ψ v₀ (Formalism.MainNotions.S.umat (1 : Formalism.REAL.UJ ε)) = 1 := by
   have h1 : Formalism.MainNotions.S.umat (1 : Formalism.REAL.UJ ε) = 1 := rfl
   rw [h1]
   exact (sigLam_isURepOn hgap hP hv₀).1.1
 
+/- English proof (translation)
+Establish `h1 : Formalism.MainNotions.S.umat (a * b) = Formalism.MainNotions.S.umat a * Formalism.MainNotions.S.umat b` using `rfl`. Rewrite using `[h1]`. Conclude with `(sigLam_isURepOn hgap hP hv₀).1.2 _ (umat_mem_UJset a) _ (umat_mem_UJset b)`.
+-/
 theorem sigLam_umat_mul (hgap : StdGap ε lam) (hP : IsPsiFor ε lam T Ψ) (hv₀ : v₀ ≠ 0) (a b : Formalism.REAL.UJ ε) :
     sigLam ε Ψ v₀ (Formalism.MainNotions.S.umat (a * b)) = (sigLam ε Ψ v₀ (Formalism.MainNotions.S.umat a)).comp (sigLam ε Ψ v₀ (Formalism.MainNotions.S.umat b)) := by
   have h1 : Formalism.MainNotions.S.umat (a * b) = Formalism.MainNotions.S.umat a * Formalism.MainNotions.S.umat b := rfl
   rw [h1]
   exact (sigLam_isURepOn hgap hP hv₀).1.2 _ (umat_mem_UJset a) _ (umat_mem_UJset b)
 
+/- English proof (translation)
+The claim follows from `(sigLam_isURepOn hgap hP hv₀).2.1 _ (umat_mem_UJset g) v`.
+-/
 theorem sigLam_umat_iso (hgap : StdGap ε lam) (hP : IsPsiFor ε lam T Ψ) (hv₀ : v₀ ≠ 0) (g : Formalism.REAL.UJ ε)
     (v : Hlam ε Ψ v₀) : ‖sigLam ε Ψ v₀ (Formalism.MainNotions.S.umat g) v‖ = ‖v‖ :=
   (sigLam_isURepOn hgap hP hv₀).2.1 _ (umat_mem_UJset g) v
 
+/- English proof (translation)
+Use `GraphTrick.memLp_of_ne (ρ := fun g => sigLam ε Ψ v₀ (Formalism.MainNotions.S.umat g)) (measurePreserving_mul_right ε) (sigLam_umat_one hgap hP hv₀) (sigLam_umat_mul hgap hP hv₀) (sigLam_umat_iso hgap hP hv₀) ?_ w₀ x₀ hx₀ h0 x` and prove the remaining obligations. Introduce `S hS hinv`. Use `sigLam_irred hgap hP hv₀ S hS ?_` and prove the remaining obligations. Introduce `g hg v hv`. Take `⟨y, rfl⟩` from `exists_unitary_preimage ε (by simpa [mir_UJset_eq] using hg)`.
+
+Conclude with `hinv y v hv`.
+-/
 theorem sigLam_memLp_of_ne (hgap : StdGap ε lam) (hP : IsPsiFor ε lam T Ψ) (hv₀ : v₀ ≠ 0) (w₀ x₀ : Hlam ε Ψ v₀)
     (hx₀ : x₀ ≠ 0)
     (h0 : MemLp (fun g : Formalism.REAL.UJ ε => ⟪w₀, sigLam ε Ψ v₀ (Formalism.MainNotions.S.umat g) x₀⟫_ℂ) 2 (Formalism.REAL.muG ε))
@@ -61,11 +75,21 @@ theorem sigLam_memLp_of_ne (hgap : StdGap ε lam) (hP : IsPsiFor ε lam T Ψ) (h
   obtain ⟨y, rfl⟩ := exists_unitary_preimage ε (by simpa [mir_UJset_eq] using hg)
   exact hinv y v hv
 
+/- English proof (translation)
+Rewrite using `[Submodule.coe_inner, sigLam_coe hgap hP hv₀ (umat_mem_UJset g)]`.
+-/
 theorem inner_sigLam_umat (hgap : StdGap ε lam) (hP : IsPsiFor ε lam T Ψ) (hv₀ : v₀ ≠ 0) (y z : Hlam ε Ψ v₀)
     (g : Formalism.REAL.UJ ε) :
     ⟪y, sigLam ε Ψ v₀ (Formalism.MainNotions.S.umat g) z⟫_ℂ = inner ℂ (y : L2 ε) (rreg ε (Formalism.MainNotions.S.umat g) (z : L2 ε)) := by
   rw [Submodule.coe_inner, sigLam_coe hgap hP hv₀ (umat_mem_UJset g)]
 
+/- English proof (translation)
+Use `set w₀ : Hlam ε Ψ v₀ := ⟨uniformisationL2 ε Ψ v₀ T.w, datumEmbedding_mem_Hlam hP T.w⟩ with hw₀`. Establish `hne : w₀ ≠ 0` using `fun h => datumEmbedding_highest_ne_zero hgap hP hv₀ (congrArg Subtype.val h)`. Establish `e : ∀ z : Hlam ε Ψ v₀, (fun g : Formalism.REAL.UJ ε => ⟪w₀, sigLam ε Ψ v₀ (Formalism.MainNotions.S.umat g) z⟫_ℂ) = fun g => inner ℂ (uniformisationL2 ε Ψ v₀ T.w) (rreg ε (Formalism.MainNotions.S.umat g) (z : L2 ε))` using `fun z => funext fun g => inner_sigLam_umat hgap hP hv₀ w₀ z g`. Establish `h0 : MemLp (fun g : Formalism.REAL.UJ ε => inner ℂ (uniformisationL2 ε Ψ v₀ T.w) (rreg ε (Formalism.MainNotions.S.umat g) (uniformisationL2 ε Ψ v₀ T.w))) 2 (Formalism.REAL.muG ε)`. Establish `hΨ : MemLp (fun g : Formalism.REAL.UJ ε => Ψ (Formalism.MainNotions.S.umat g)) 2 (Formalism.REAL.muG ε)` using `memLp_muG_of_haar ε Ψ 2 hP.2.2.2.2`.
+
+Establish `h1` using `(((innerSL ℂ T.w).comp (ContinuousLinearMap.apply ℂ T.V T.w)).comp_memLp' hΨ).const_mul ((‖uniformisationL2 ε Ψ v₀ T.w‖ ^ 2 : ℝ) : ℂ)`. Establish `e' : (fun g : Formalism.REAL.UJ ε => inner ℂ (uniformisationL2 ε Ψ v₀ T.w) (rreg ε (Formalism.MainNotions.S.umat g) (uniformisationL2 ε Ψ v₀ T.w))) = fun g => ((‖uniformisationL2 ε Ψ v₀ T.w‖ ^ 2 : ℝ) : ℂ) * ((innerSL ℂ T.w).comp (ContinuousLinearMap.apply ℂ T.V T.w)) (Ψ (Formalis …`. Use function extensionality and compare the values at `g`. Rewrite using `[formulaF hgap hP hv₀ (umat_mem_UJset g) T.w T.w]`. Both sides reduce to the same expression.
+
+Rewrite using `[e']`. Conclude with `h1`. Establish `h0'` using `e w₀ ▸ h0`. Rewrite using `[← e]`. Conclude with `sigLam_memLp_of_ne hgap hP hv₀ w₀ w₀ hne h0' x`.
+-/
 theorem coef_memLp_all (hgap : StdGap ε lam) (hP : IsPsiFor ε lam T Ψ) (hv₀ : v₀ ≠ 0) (x : Hlam ε Ψ v₀) :
     MemLp (fun g : Formalism.REAL.UJ ε =>
       inner ℂ (uniformisationL2 ε Ψ v₀ T.w) (rreg ε (Formalism.MainNotions.S.umat g) (x : L2 ε))) 2 (Formalism.REAL.muG ε) := by
@@ -93,6 +117,15 @@ theorem coef_memLp_all (hgap : StdGap ε lam) (hP : IsPsiFor ε lam T Ψ) (hv₀
   rw [← e]
   exact sigLam_memLp_of_ne hgap hP hv₀ w₀ w₀ hne h0' x
 
+/- English proof (translation)
+Introduce `v w`. Use `set w₀ : Hlam ε Ψ v₀ := ⟨uniformisationL2 ε Ψ v₀ T.w, datumEmbedding_mem_Hlam hP T.w⟩ with hw₀`. Establish `hne : w₀ ≠ 0` using `fun h => datumEmbedding_highest_ne_zero hgap hP hv₀ (congrArg Subtype.val h)`. Establish `hA : ∀ z : Hlam ε Ψ v₀, MemLp (fun g : Formalism.REAL.UJ ε => ⟪w₀, sigLam ε Ψ v₀ (Formalism.MainNotions.S.umat g) z⟫_ℂ) 2 (Formalism.REAL.muG ε)`. Introduce `z`.
+
+Establish `e : (fun g : Formalism.REAL.UJ ε => ⟪w₀, sigLam ε Ψ v₀ (Formalism.MainNotions.S.umat g) z⟫_ℂ) = fun g => inner ℂ (uniformisationL2 ε Ψ v₀ T.w) (rreg ε (Formalism.MainNotions.S.umat g) (z : L2 ε))`. Use function extensionality and compare the values at `fun g => inner_sigLam_umat hgap hP hv₀ w₀ z g`. Rewrite using `[e]`. Conclude with `coef_memLp_all hgap hP hv₀ z`. Establish `hstar : ∀ g : Formalism.REAL.UJ ε, ⟪w, sigLam ε Ψ v₀ (Formalism.MainNotions.S.umat g) w₀⟫_ℂ = star ⟪w₀, sigLam ε Ψ v₀ (Formalism.MainNotions.S.umat g⁻¹) w⟫_ℂ`.
+
+Introduce `g`. Establish `hs` using `GraphTrick.star_eq (ρ := fun g : Formalism.REAL.UJ ε => sigLam ε Ψ v₀ (Formalism.MainNotions.S.umat g)) (sigLam_umat_one hgap hP hv₀) (sigLam_umat_mul hgap hP hv₀) (sigLam_umat_iso hgap hP hv₀) g`. Rewrite using `[← hs, ContinuousLinearMap.star_eq_adjoint, ContinuousLinearMap.adjoint_inner_right]`. Conclude with `(inner_conj_symm w _).symm`. Establish `hB : MemLp (fun g : Formalism.REAL.UJ ε => ⟪w, sigLam ε Ψ v₀ (Formalism.MainNotions.S.umat g) w₀⟫_ℂ) 2 (Formalism.REAL.muG ε)`.
+
+Establish `h1` using `((hA w).comp_measurePreserving (Measure.measurePreserving_inv (Formalism.REAL.muG ε))).star`. Rewrite using `[funext hstar]`. Conclude with `h1`. Conclude with `sigLam_memLp_of_ne hgap hP hv₀ w w₀ hne hB v`.
+-/
 theorem sqInt_sigLam (hgap : StdGap ε lam) (hP : IsPsiFor ε lam T Ψ) (hv₀ : v₀ ≠ 0) : Formalism.MainNotions.S.IsSqIntOn ε (sigLam ε Ψ v₀) := by
   intro v w
   set w₀ : Hlam ε Ψ v₀ := ⟨uniformisationL2 ε Ψ v₀ T.w, datumEmbedding_mem_Hlam hP T.w⟩ with hw₀

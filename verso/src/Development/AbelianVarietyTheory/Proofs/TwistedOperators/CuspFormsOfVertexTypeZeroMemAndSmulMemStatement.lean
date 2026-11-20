@@ -33,5 +33,8 @@ open Formalism.REAL Formalism.MainNotions.S GlobalTheory.SmoothGlob GlobalTheory
 open scoped InnerProductSpace
 
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.PlaceDecomp.cls_zero_smul | exact GlobalTheory.PlaceDecomp.cls_zero_smul | (intros; apply GlobalTheory.PlaceDecomp.cls_zero_smul <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.cuspFormsOfVertexType_zero_mem_and_smul_mem : ∀ (D : D7) (θ : InfFam D), IsInfFam θ → ∀ (N : GlobalTheory.Grid.Node D) (U : Subgroup (GA D N.V)), (0 : GA D N.V → ℂ) ∈ Cls θ N U ∧ ∀ (c : ℂ) (f : GA D N.V → ℂ), f ∈ Cls θ N U → c • f ∈ Cls θ N U := by
   first | exact @GlobalTheory.PlaceDecomp.cls_zero_smul | exact GlobalTheory.PlaceDecomp.cls_zero_smul | (intros; apply GlobalTheory.PlaceDecomp.cls_zero_smul <;> assumption)

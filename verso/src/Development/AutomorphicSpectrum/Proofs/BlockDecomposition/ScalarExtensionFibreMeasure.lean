@@ -20,6 +20,15 @@ open GlobalTheory.CompanionTheory.WeilSiegel.Frame GlobalTheory.CompanionTheory.
 
 namespace GlobalTheory.CompanionTheory.WeilSiegel.FreeStage
 
+/- English proof (translation)
+Use `haveI : LocallyCompactSpace U := hU.locallyCompactSpace`. Set `K` to `CompactExhaustion.choice U`. Establish `hfin : ∀ n, μ (Subtype.val '' K n) < ∞`. Introduce `n`. Establish `hLc : IsCompact (Subtype.val '' K n)` using `(K.isCompact n).image continuous_subtype_val`.
+
+Establish `hLU : Subtype.val '' K n ⊆ U`. Introduce and unpack `_ ⟨x, -, rfl⟩`. Conclude with `x.2`. Take `⟨f, hf1, hfc, hfs, hf01⟩` from `exists_continuousMap_one_of_isCompact_subset_isOpen hLc hU hLU`. Establish `hi` using `hint f f.continuous hfc hfs`.
+
+Establish `hle : μ (Subtype.val '' K n) ≤ ∫⁻ x, ENNReal.ofReal (f x) ∂μ`. Combine the equalities or inequalities in the displayed calculation. Conclude with `hle.trans_lt hi.lintegral_lt_top`. Use `⟨⟨⟨fun n => Subtype.val '' K n ∪ Uᶜ, fun _ => Set.mem_univ _, fun n => ?_, ?_⟩⟩⟩` and prove the remaining obligations. Conclude with `(measure_union_le _ _).trans_lt (ENNReal.add_lt_top.2 ⟨hfin n, by simp [h0]⟩)`.
+
+Use `Set.eq_univ_of_forall fun x => ?_` and prove the remaining obligations. Distinguish the cases in `hx : x ∈ U`. Conclude with `Set.mem_iUnion.2 ⟨K.find ⟨x, hx⟩, Or.inl ⟨⟨x, hx⟩, K.mem_find _, rfl⟩⟩`. Conclude with `Set.mem_iUnion.2 ⟨0, Or.inr hx⟩`.
+-/
 theorem sigmaFinite_of_integrable {V : Type} [TopologicalSpace V] [LocallyCompactSpace V]
     [SecondCountableTopology V] [T2Space V] [MeasurableSpace V] [BorelSpace V] {U : Set V} (hU : IsOpen U)
     {μ : Measure V} (h0 : μ Uᶜ = 0)
@@ -55,6 +64,35 @@ namespace GlobalTheory.CompanionTheory.WeilSiegel.FreeStage
 open GlobalTheory.CompanionTheory.SW.StageMeasure in
 set_option maxHeartbeats 4000000 in
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ hCM M J hJ t ht n T hT hT' R _ _ _ _ _ hR d b lam hlam m m₁ m' hm hm₁ hm' c hc φ hφ`. Take `⟨i₁, i₂, i₃, i₄, -⟩` from `id hR`. Take `⟨k₁, k₂, k₃, k₄, -, -, -, hBorel, -, -⟩` from `GlobalTheory.T.tensor_locally_compact_ring F E σ hCM R`. Take `⟨-, hW, hH⟩` from `GlobalTheory.T.coordinate_haar_measure F E σ hCM R d b lam hlam`. Establish `hJ'` using `GlobalTheory.T.block_one_scalar_preserves_nondegenerate F E σ M J hJ t ht`.
+
+Take `⟨g₁, g₂, g₃, g₄, g₅, gAct⟩` from `GlobalTheory.T.adelic_unitary_group_locally_compact F E σ hCM (M + 1) _ hJ' R`. Take `⟨u₁, u₂, u₃, u₄, u₅, uAct⟩` from `GlobalTheory.T.adelic_unitary_group_locally_compact F E σ hCM M J hJ R`. Establish `hgram : gramR R σ (blockOne (algebraMap F E t) J) (fun _ : Fin 1 => (Fin.cons 1 (fun _ => 0) : Fin (M + 1) → R ⊗[F] E)) = (hermScal R σ (algebraMap F R t) : HermR R σ 1)`. Rewrite using `[gram_first, inclR_algebraMap]`. Both sides reduce to the same expression.
+
+Establish `hunit : IsUnit (gramR R σ (blockOne (algebraMap F E t) J) (fun _ : Fin 1 => (Fin.cons 1 (fun _ => 0) : Fin (M + 1) → R ⊗[F] E))).det`. Rewrite using `[gram_first]`. Establish `e` using `Matrix.det_fin_one (Matrix.of fun (_ _ : Fin 1) => inclR (F := F) R (algebraMap F E t))`. Use `show IsUnit (Matrix.det (Matrix.of fun (_ _ : Fin 1) => inclR (F := F) R (algebraMap F E t)))`. Rewrite using `[e]`.
+
+Conclude with `((isUnit_iff_ne_zero.2 (by simpa using ht)).map (inclR (F := F) R))`. Take `⟨s, hsm, hs₁, hs₂⟩` from `GlobalTheory.T.rank_one_gram_measurable_section F E σ hCM (M + 1) _ hJ' R hR _ hunit`. Establish `hs₁'` using `fun y (hy : gramR R σ (blockOne (algebraMap F E t) J) y = (hermScal R σ (algebraMap F R t) : HermR R σ 1)) => hs₁ y (hy.trans hgram.symm)`. Establish `hs₂' : ∀ C : Set (Fin 1 → Fin (M + 1) → R ⊗[F] E), IsCompact C → ∃ C' : Set (HA R σ (blockOne (algebraMap F E t) J)), IsCompact C' ∧ ∀ y ∈ C, gramR R σ (blockOne (algebraMap F E t) J) y = (hermScal R σ (algebraMap F R t) : HermR R σ 1) → s y ∈ C'`. Introduce `C hC`.
+
+Take `⟨C', hC', h⟩` from `hs₂ C hC`. Conclude with `⟨C', hC', fun y hy hg => h y hy (hg.trans hgram.symm)⟩`. Take `⟨B, hBo, hTB, fib, hfib, hfibT⟩` from `GlobalTheory.T.scalar_extension_fibre_formula F E σ hCM M J hJ t ht n T hT hT' R hR d b lam hlam m₁ m' hm₁ hm' c hc s hsm hs₁' hs₂'`. Take `⟨h₁, h₂, h₃, h₄, hlift⟩` from `GlobalTheory.T.hermitian_matrices_locally_compact_borel F E σ hCM R (n + 1)`. Take `⟨g, hgc, hg⟩` from `hlift (M + 1) _ hJ'`.
+
+Establish `hWn` using `hW (n + 1) (M + 1)`. Establish `hHn` using `hH (n + 1)`. Establish `hBn` using `hBorel (n + 1) (M + 1)`. Establish `hU' : gramR R σ (blockOne (algebraMap F E t) J) ⁻¹' (Subtype.val '' B) = g ⁻¹' B`. Use extensionality with `X`.
+
+Simplify using `[hg X]`. Establish `hfree` using `GlobalTheory.T.linearly_independent_frames_open F E σ hCM R hR (n + 1) (M + 1)`. Establish `hm₀ : Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.IsFibreFamily (coordW R b lam (n + 1) (M + 1)) (gramR R σ (blockOne (algebraMap F E t) J)) Subtype.val (g ⁻¹' Set.univ ∩ {X | LinearIndependent (R ⊗[F] E) X}) (coordHerm R σ b lam (n + 1)) Set.univ m`. Rewrite using `[Set.preimage_univ, Set.univ_inter]`. Conclude with `hm`.
+
+Rewrite `hfib` using `[hU']`. Establish `hmT : fib (hermOf R σ _ hT') = m (hermOf R σ _ hT')` using `GlobalTheory.T.measurable_embedding_of_injective_proper _ _ _ (coordW R b lam (n + 1) (M + 1)) (coordHerm R σ b lam (n + 1)) (gramR R σ (blockOne (algebraMap F E t) J)) g Subtype.val Subtype.val_injective hgc hg _ hfree Set.univ B isOpen_univ hBo (Set.subset_univ _) m fib hm₀ hfi …`. Establish `hBa` using `hBorel (n + 1) (M + 1)`. Establish `hBb` using `hBorel n M`. Establish `hBc` using `hBorel 1 (M + 1)`.
+
+Establish `hact : Measurable fun p : HA R σ (blockOne (algebraMap F E t) J) × (Fin (n + 1) → Fin (M + 1) → R ⊗[F] E) => actW R σ _ p.1 p.2` using `(gAct (n + 1)).1.measurable`. Establish `hactu : ∀ u : HA R σ J, Measurable (actW R σ J u : (Fin n → Fin M → R ⊗[F] E) → Fin n → Fin M → R ⊗[F] E)` using `fun u => ((uAct n).1.comp (Continuous.prodMk_right u)).measurable`. Establish `hframe : Measurable fun p : (Fin 1 → Fin (M + 1) → R ⊗[F] E) × (Fin n → Fin M → R ⊗[F] E) => actW R σ _ (s p.1) (consTup p.2)` using `hact.comp ((hsm.comp measurable_fst).prodMk (measurable_consTup.comp measurable_snd))`. Establish `hF : Measurable fun p : (Fin 1 → Fin (M + 1) → R ⊗[F] E) × (Fin n → Fin M → R ⊗[F] E) => φ (actW R σ _ (s p.1) (consTup p.2))` using `hφ.comp hframe`. Use `haveI hσ : SigmaFinite (m' (hermOf R σ T hT)) := by`.
+
+Use `sigmaFinite_of_integrable (GlobalTheory.T.linearly_independent_frames_open F E σ hCM R hR n M) ?_ ?_` and prove the remaining obligations. Conclude with `measure_mono_null (Set.compl_subset_compl.2 Set.inter_subset_right) (hm'.1 _)`. Introduce `f hfc hfs hft`. Conclude with `(hm'.2.2 f hfc hfs hft).1 _ (Set.mem_univ _)`. Use `⟨fun y => ∫⁻ X, φ (actW R σ _ (s y) (consTup X)) ∂(m' (hermOf R σ T hT)), hF.lintegral_prod_right', ?_, ?_⟩` and prove the remaining obligations.
+
+Introduce `h`. Take `⟨ι, -, hιm, hιr, -, hιa⟩` from `GlobalTheory.CompanionTheory.SW.StabFirst.stab_first F E σ hCM M J hJ t ht R`. Establish `hy` using `hs₁' (actW R σ _ h (fun _ => Fin.cons 1 (fun _ => 0))) (((gAct 1).2.2.2 h _).trans hgram)`. Use `set y := actW R σ _ h (fun _ : Fin 1 => (Fin.cons 1 (fun _ => 0) : Fin (M + 1) → R ⊗[F] E)) with hydef`. Establish `hfix : actW R σ _ ((s y)⁻¹ * h) (fun _ : Fin 1 => (Fin.cons 1 (fun _ => 0) : Fin (M + 1) → R ⊗[F] E)) = (fun _ : Fin 1 => Fin.cons 1 (fun _ => 0))`.
+
+Combine the equalities or inequalities in the displayed calculation. Rewrite using `[hy]`. Use `_ = actW R σ _ ((s y)⁻¹ * s y) (fun _ : Fin 1 => (Fin.cons 1 (fun _ => 0) : Fin (M + 1) → R ⊗[F] E)) := ((gAct 1).2.2.1 _ _ _).symm`. Use `_ = _ := by rw [inv_mul_cancel, (gAct 1).2.1]`. Take `⟨u, hu⟩` from `(hιr _).2 hfix`.
+
+Establish `hh : h = s y * ι u` using `by rw [hu, mul_inv_cancel_left]`. Establish `hX : ∀ X : Fin n → Fin M → R ⊗[F] E, actW R σ _ h (consTup X) = actW R σ _ (s y) (consTup (actW R σ J u X))`. Introduce `X`. Rewrite using `[hh, (gAct (n + 1)).2.2.1, hιa]`. Establish `hinv` using `GlobalTheory.T.local_gram_fibration_disintegration F E σ hCM M J hJ R hR n _ _ m' (hW n M) (hH n) hm' u (hermOf R σ T hT)`.
+
+Establish `hmeas : Measurable fun X : Fin n → Fin M → R ⊗[F] E => φ (actW R σ _ (s y) (consTup X))` using `hφ.comp (hact.comp ((measurable_const (a := s y)).prodMk measurable_consTup))`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[← hmT, hfibT, lintegral_smul_measure, lintegral_map hφ hframe, lintegral_prod _ hF.aemeasurable]`. Simplify using `[ENNReal.smul_def]`.
+-/
 theorem fibre_block_stages_free : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E), IsCMExt F E σ → ∀ (M : ℕ) (J : Matrix (Fin M) (Fin M) E), IsHermND σ J → ∀ (t : F), t ≠ 0 → ∀ (n : ℕ) (T : Matrix (Fin n) (Fin n) E) (hT : ∀ a b, σ (T b a) = T a b) (hT' : ∀ a b, σ (blockOne (algebraMap F E t) T b a) = blockOne (algebraMap F E t) T a b), ∀ (R : Type) [CommRing R] [Algebra F R] [TopologicalSpace R] [MeasurableSpace R] [BorelSpace R], IsLocR R → ∀ (d : ℕ) (b : Module.Basis (Fin d) F E) (lam : Measure R), lam.IsAddHaarMeasure → ∀ m m₁ m', IsGramFibFree R σ (blockOne (algebraMap F E t) J) (n + 1) (coordW R b lam (n + 1) (M + 1)) (coordHerm R σ b lam (n + 1)) m → IsGramFib R σ (blockOne (algebraMap F E t) J) 1 (coordW R b lam 1 (M + 1)) (coordHerm R σ b lam 1) m₁ → IsGramFibFree R σ J n (coordW R b lam n M) (coordHerm R σ b lam n) m' → ∀ c : ℝ≥0, (coordK R b lam).map (fun y => inclR R (algebraMap F E t) * y) = c • coordK R b lam → ∀ φ : (Fin (n + 1) → Fin (M + 1) → R ⊗[F] E) → ℝ≥0∞, Measurable φ → ∃ Ψ : (Fin 1 → Fin (M + 1) → R ⊗[F] E) → ℝ≥0∞, Measurable Ψ ∧ (∀ h : HA R σ (blockOne (algebraMap F E t) J), Ψ (actW R σ _ h (fun _ => Fin.cons 1 (fun _ => 0))) = ∫⁻ X, φ (actW R σ _ h (consTup X)) ∂(m' (hermOf R σ T hT))) ∧ ∫⁻ X, φ X ∂(m (hermOf R σ _ hT')) = (c : ℝ≥0∞) ^ n * ∫⁻ y, Ψ y ∂(m₁ (hermScal R σ (algebraMap F R t))) := by
   intro F E _ _ _ _ _ σ hCM M J hJ t ht n T hT hT' R _ _ _ _ _ hR d b lam hlam m m₁ m' hm hm₁ hm' c hc φ hφ
   obtain ⟨i₁, i₂, i₃, i₄, -⟩ := id hR

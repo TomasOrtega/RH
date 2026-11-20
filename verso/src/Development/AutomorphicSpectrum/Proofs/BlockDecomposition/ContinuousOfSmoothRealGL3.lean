@@ -16,6 +16,15 @@ open GlobalTheory.CompanionTheory.GL2Factorization
 
 namespace GlobalTheory.CompanionTheory.GL2Factorization
 
+/- English proof (translation)
+Introduce `W hW`. Establish `hc : ContinuousOn (ext W) {m : M3 | (Matrix.of m).det ≠ 0}` using `hW.continuousOn`. Establish `hv : Continuous fun g : GL (Fin 3) ℝ => (Matrix.of.symm g.val : M3)` using `(Units.continuous_val : Continuous fun g : GL (Fin 3) ℝ => (g.val : Matrix (Fin 3) (Fin 3) ℝ))`. Establish `hm : ∀ g : GL (Fin 3) ℝ, (Matrix.of.symm g.val : M3) ∈ {m : M3 | (Matrix.of m).det ≠ 0}`. Introduce `g`.
+
+Establish `: (g.val).det ≠ 0` using `((Matrix.isUnit_iff_isUnit_det _).1 g.isUnit).ne_zero`. Simplify using `using this`. Establish `he : W = fun g => ext W (Matrix.of.symm g.val : M3)`. Use function extensionality and compare the values at `g`. Establish `h : (Matrix.of (Matrix.of.symm g.val : M3)).det ≠ 0` using `hm g`.
+
+Rewrite using `[Ad3.ext, dif_pos h]`. Use `congr 1`. Apply `Units.ext` to reduce the goal to its premises. Simplify using the standard rewrite rules. Rewrite using `[he]`.
+
+Conclude with `hc.comp_continuous hv hm`.
+-/
 theorem smoothR_continuous : ∀ W : GL (Fin 3) ℝ → ℂ, SmoothR W → Continuous W := by
   intro W hW
   have hc : ContinuousOn (ext W) {m : M3 | (Matrix.of m).det ≠ 0} := hW.continuousOn

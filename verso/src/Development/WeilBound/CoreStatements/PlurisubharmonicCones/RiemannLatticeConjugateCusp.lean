@@ -17,6 +17,17 @@ open scoped ComplexConjugate
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {g : ℕ} {Λ : Type} [AddCommGroup Λ] [Module (𝓞 E) Λ]
   {Ψ : Type} [Fintype Ψ]
 
+/- English proof (translation)
+Establish `h3 : ∀ I : Submodule (𝓞 E) Λ, IsIsoSub R.form I → R'.nz σ' I = R.nz σ I`. Introduce `I hI`. Unfold `RiemLat.nz`. Use `split_ifs with h`. Establish `hv` using `h.choose_spec.choose_spec.2.1`.
+
+Unfold `RiemLat.nzOf`. Use `congr 1`. Use `Finset.prod_congr rfl fun τ _ => ?_` and prove the remaining obligations. Establish `h4 : (R'.gram fun a => eigComp R'.B (σ' τ) (R'.P (h.choose_spec.choose a))) = (starRingEnd ℂ).mapMatrix (R.gram fun a => eigComp R.B (σ τ) (R.P (h.choose_spec.choose a)))`. Use extensionality with `a b`.
+
+Simplify using `only [RiemLat.gram, eigComp_eq, RingHom.mapMatrix_apply, Matrix.map_apply, Matrix.of_apply]`. Conclude with `h2 I hI τ _ (hv a) _ (hv b)`. Rewrite using `[h4, ← RingHom.map_det, Complex.conj_re]`. Both sides reduce to the same expression. Unfold `RiemLat.cuspW RiemLat.IsCusp`.
+
+Use `congr 2`. Use extensionality with `x`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨I, ⟨a, b, c⟩, rfl⟩`. Conclude with `⟨I, ⟨a, b, (h1 I).1 c⟩, by rw [h3 I ((h1 I).1 c)]⟩`.
+
+Introduce and unpack `⟨I, ⟨a, b, c⟩, rfl⟩`. Conclude with `⟨I, ⟨a, b, (h1 I).2 c⟩, by rw [h3 I c]⟩`.
+-/
 theorem cuspW_of_conj (R R' : RiemLat E g Λ) (σ σ' : Ψ → (𝓞 E →+* ℂ))
     (h1 : ∀ I : Submodule (𝓞 E) Λ, IsIsoSub R'.form I ↔ IsIsoSub R.form I)
     (h2 : ∀ I : Submodule (𝓞 E) Λ, IsIsoSub R.form I → ∀ τ, ∀ v ∈ I, ∀ w ∈ I,
@@ -51,6 +62,9 @@ def conjL (f : Module.End ℂ (Fin g → ℂ)) : Module.End ℂ (Fin g → ℂ) 
   map_add' x y := by rw [star_add, map_add, star_add]
   map_smul' c x := by rw [star_smul, map_smul, star_smul, star_star, RingHom.id_apply]
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem conjL_apply (f : Module.End ℂ (Fin g → ℂ)) (x : Fin g → ℂ) : conjL f x = star (f (star x)) := rfl
 
 def conjB (ρ : 𝓞 E →+* Module.End ℂ (Fin g → ℂ)) : 𝓞 E →+* Module.End ℂ (Fin g → ℂ) where
@@ -61,11 +75,17 @@ def conjB (ρ : 𝓞 E →+* Module.End ℂ (Fin g → ℂ)) : 𝓞 E →+* Modu
   map_add' a b := LinearMap.ext fun x => by simp [conjL_apply]
 
 omit [NumberField E] [IsCMField E] in
+/- English proof (translation)
+Use `show star (ρ a (star (star x))) = _`. Rewrite using `[star_star]`.
+-/
 theorem conjB_star (ρ : 𝓞 E →+* Module.End ℂ (Fin g → ℂ)) (a : 𝓞 E) (x : Fin g → ℂ) :
     conjB ρ a (star x) = star (ρ a x) := by
   show star (ρ a (star (star x))) = _
   rw [star_star]
 
+/- English proof (translation)
+Simplify using `only [dotProduct, mulVec, map_sum, map_mul, Matrix.map_apply, Pi.star_apply, Complex.star_def, Complex.conj_conj]`.
+-/
 theorem dot_conj (H : Matrix (Fin g) (Fin g) ℂ) (z w : Fin g → ℂ) :
     z ⬝ᵥ H.map (starRingEnd ℂ) *ᵥ star w = conj (star z ⬝ᵥ H *ᵥ star (star w)) := by
   simp only [dotProduct, mulVec, map_sum, map_mul, Matrix.map_apply, Pi.star_apply, Complex.star_def,
@@ -95,12 +115,18 @@ def conjLat (R : RiemLat E g Λ) : RiemLat E g Λ where
     show star (R.P (a • x)) = conjB R.B a (star (R.P x))
     rw [conjB_star, R.act]
 
+/- English proof (translation)
+Use `show star y ⬝ᵥ R.Hm.map (starRingEnd ℂ) *ᵥ star (star x) = conj (y ⬝ᵥ R.Hm *ᵥ star x)`. Rewrite using `[dot_conj]`. Simplify using `only [star_star x, star_star y]`.
+-/
 theorem conjLat_ip (R : RiemLat E g Λ) (x y : Fin g → ℂ) : (conjLat R).ip (star x) (star y) = conj (R.ip x y) := by
   show star y ⬝ᵥ R.Hm.map (starRingEnd ℂ) *ᵥ star (star x) = conj (y ⬝ᵥ R.Hm *ᵥ star x)
   rw [dot_conj]
   simp only [star_star x, star_star y]
 
 omit [IsCMField E] in
+/- English proof (translation)
+Rewrite using `[proj_apply, proj_apply, star_sum]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[conjB_star, star_smul, coef_conj]`. Both sides reduce to the same expression.
+-/
 theorem proj_conjB (ρ : 𝓞 E →+* Module.End ℂ (Fin g → ℂ)) (s : 𝓞 E →+* ℂ) (x : Fin g → ℂ) :
     proj (conjB ρ) ((starRingEnd ℂ).comp s) (star x) = star (proj ρ s x) := by
   rw [proj_apply, proj_apply, star_sum]
@@ -110,6 +136,9 @@ theorem proj_conjB (ρ : 𝓞 E →+* Module.End ℂ (Fin g → ℂ)) (s : 𝓞 
 
 end
 
+/- English proof (translation)
+Introduce `E _ _ _ g Λ _ _ Ψ _ R σ _`. Use `⟨cuspW_of_conj R R σ _ (fun _ => Iff.rfl) fun I hI τ v hv w hw => gram_conj R hI (σ τ) hv hw, conjLat R, fun _ => rfl, rfl, conjB_star R.B, cuspW_of_conj R _ σ _ (fun I => ?_) fun I _ τ v _ w _ => ?_⟩` and prove the remaining obligations. Conclude with `forall₄_congr fun v _ w _ => neg_eq_zero`. Conclude with `(congrArg₂ (conjLat R).ip (proj_conjB R.B (σ τ) (R.P v)) (proj_conjB R.B (σ τ) (R.P w))).trans (conjLat_ip R _ _)`.
+-/
 theorem riemann_lattice_conjugate_cusp : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (g : ℕ) (Λ : Type) [AddCommGroup Λ] [Module (𝓞 E) Λ] (Ψ : Type) [Fintype Ψ] (R : RiemLat E g Λ) (σ : Ψ → (𝓞 E →+* ℂ)), IsCMFam σ → R.cuspW (fun τ => (starRingEnd ℂ).comp (σ τ)) = R.cuspW σ ∧ ∃ R' : RiemLat E g Λ, (∀ v, R'.P v = star (R.P v)) ∧ R'.Hm = R.Hm.map (starRingEnd ℂ) ∧ (∀ a x, R'.B a (star x) = star (R.B a x)) ∧ R'.cuspW (fun τ => (starRingEnd ℂ).comp (σ τ)) = R.cuspW σ := by
   intro E _ _ _ g Λ _ _ Ψ _ R σ _
   refine ⟨cuspW_of_conj R R σ _ (fun _ => Iff.rfl) fun I hI τ v hv w hw => gram_conj R hI (σ τ) hv hw,

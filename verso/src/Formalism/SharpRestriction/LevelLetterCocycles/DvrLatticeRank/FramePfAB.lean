@@ -17,6 +17,21 @@ variable {G : Type} [Group G] [TopologicalSpace G] {Qp K₀ K : Type} [Field Qp]
     [CommRing O] [Algebra O LL] {v : AddValuation LL (WithTop ℚ)} {n : ℕ}
     {W : LocWach PD LL O v n} {T : LocLat G Qp LL O}
 
+/- English proof (translation)
+Take `⟨h1, hΔ, hl⟩` from `(mem_LamPS W T Eπ h' c y).1 hy`. Take `⟨a, haΔ, hac, ha⟩` from `framepf_phi_coordΔ Bs hT c (framepf_φspan_le (c - 1) h1) (fun δ hδ => by rw [gradNPf_γD_smul, map_pow, hEΔ δ hδ, hΔ δ hδ]) (by rw [smul_comm, hl])`. Use `⟨∑ m, (∑ k, a k * S m k) • W.φD T (Bs.b m), framepf_mem_Pc Bs c _ (fun m => Subalgebra.sum_mem _ fun k _ => W.AΔ.mul_mem (haΔ k) (hS m k)) (fun m => ?_), ?_⟩` and prove the remaining obligations. Rewrite using `[Finset.mul_sum]`. Conclude with `Finset.sum_congr rfl fun k _ => by rw [← mul_assoc, hac]`.
+
+Use `show (π' ^ M * Eπ ^ (3 * h')) • (∑ m, (∑ k, a k * S m k) • W.φD T (Bs.b m)) = _`. Rewrite using `[← sub_eq_zero]`. Apply `gradNPf_tf W T (Eπ ^ h') (by rw [map_pow]; exact huE.pow _)` to reduce the goal to its premises. Establish `h2 : Eπ ^ h' • Ψ (Φ y) = ∑ m, (∑ j, (∑ k, a k * P j k) * R m j) • W.φD T (Bs.b m)`. Rewrite using `[← algebraMap_smul W.EE, ← map_smul, ← map_smul, algebraMap_smul, ha, hΦ, map_sum]`.
+
+Simplify using `only [hΨ, algebraMap_smul, Finset.smul_sum, smul_smul]`. Rewrite using `[Finset.sum_comm]`. Conclude with `Finset.sum_congr rfl fun m _ => Finset.sum_smul.symm`. Establish `h3 : ∀ m, ∑ j, (∑ k, a k * P j k) * R m j = algebraMap O (LetA O n) lam * a m + π' ^ M * Eπ ^ (4 * h') * ∑ k, a k * S m k`. Introduce `m`.
+
+Establish `: ∑ j, (∑ k, a k * P j k) * R m j = ∑ k, a k * ∑ j, R m j * P j k`. Simplify using `only [Finset.sum_mul, Finset.mul_sum]`. Rewrite using `[Finset.sum_comm]`. Conclude with `Finset.sum_congr rfl fun k _ => Finset.sum_congr rfl fun j _ => by ring`. Rewrite using `[this]`.
+
+Simplify using `only [hRP, mul_add, Finset.sum_add_distrib, mul_ite, mul_zero, Finset.sum_ite_eq, Finset.mem_univ, if_true, Finset.mul_sum]`. Use `congr 1`. Rewrite using `[mul_left_comm, mul_comm (a m), hac]`. Conclude with `Finset.sum_congr rfl fun k _ => by ring`. Establish `h4 : Eπ ^ h' • (lam • y) = ∑ m, (algebraMap O (LetA O n) lam * a m) • W.φD T (Bs.b m)`.
+
+Rewrite using `[smul_comm, ha, Finset.smul_sum]`. Conclude with `Finset.sum_congr rfl fun m _ => by rw [mul_smul, algebraMap_smul]`. Rewrite using `[smul_sub, smul_sub, h2, h4, smul_smul, Finset.smul_sum, ← Finset.sum_sub_distrib, ← Finset.sum_sub_distrib]`. Use `Finset.sum_eq_zero fun m _ => ?_` and prove the remaining obligations. Rewrite using `[h3, smul_smul, ← sub_smul, ← sub_smul]`.
+
+Use `zero_smul (LetA O n) (W.φD T (Bs.b m)) using 2` and compare the differences between its conclusion and the goal. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem framepf_αβ_core (Bs : FramepfBas W T) (hT : IsCrys PD T.ρ) (π' Eπ : LetA O n) (h' M : ℕ)
     (c : ZMod n) (huE : IsUnit (algebraMap (LetA O n) W.EE Eπ)) (hEΔ : Eπ ∈ W.AΔ)
     (eb : Fin Bs.r → LcQ W T π' c) (P R S : Fin Bs.r → Fin Bs.r → LetA O n) (hS : ∀ m k, S m k ∈ W.AΔ)

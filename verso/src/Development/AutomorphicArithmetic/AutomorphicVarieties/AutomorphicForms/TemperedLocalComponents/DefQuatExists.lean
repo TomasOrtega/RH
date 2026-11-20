@@ -19,10 +19,20 @@ private noncomputable def bc : ℍ[F,a,0,b] →ₐ[F] ℍ[R,algebraMap F R a,0,a
       i_mul_j := by ext <;> simp
       j_mul_i := by ext <;> simp }
 
+/- English proof (translation)
+Apply the tactic sequence `fin_cases i <;> ext <;> simp [bc, QuaternionAlgebra.Basis.lift, QuaternionAlgebra.basisOneIJK]`.
+-/
 private theorem bc_basis (i : Fin 4) :
     bc R a b (QuaternionAlgebra.basisOneIJK a 0 b i) = QuaternionAlgebra.basisOneIJK _ _ _ i := by
   fin_cases i <;> ext <;> simp [bc, QuaternionAlgebra.Basis.lift, QuaternionAlgebra.basisOneIJK]
 
+/- English proof (translation)
+Set `B` to `Algebra.TensorProduct.basis R (QuaternionAlgebra.basisOneIJK a 0 b)`. Set `e` to `B.equiv (QuaternionAlgebra.basisOneIJK (algebraMap F R a) 0 (algebraMap F R b)) (Equiv.refl _)`. Establish `h : (Algebra.TensorProduct.lift (Algebra.ofId R A) ((g.restrictScalars F).comp (bc R a b)) fun _ _ => Algebra.commutes _ _).toLinearMap = g.toLinearMap ∘ₗ e.toLinearMap`. Use `B.ext fun i => ?_` and prove the remaining obligations. Simplify using `only [LinearMap.comp_apply, LinearEquiv.coe_coe, e, Module.Basis.equiv_apply, Equiv.refl_apply]`.
+
+Simplify using `only [B, Algebra.TensorProduct.basis_apply, AlgHom.toLinearMap_apply]`. Use `(Algebra.TensorProduct.lift_tmul _ _ _ _ _).trans ?_` and prove the remaining obligations. Rewrite using `[map_one, one_mul, ← bc_basis]`. Both sides reduce to the same expression. Establish `h2` using `hg.comp e.bijective`.
+
+Use `h2 using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `x`. Conclude with `LinearMap.congr_fun h x`.
+-/
 private theorem lift_bij {A : Type} [Ring A] [Algebra R A] [Algebra F A] [IsScalarTower F R A]
     (g : ℍ[R,algebraMap F R a,0,algebraMap F R b] →ₐ[R] A) (hg : Function.Bijective g) :
     Function.Bijective (Algebra.TensorProduct.lift (Algebra.ofId R A) ((g.restrictScalars F).comp (bc R a b))
@@ -54,6 +64,9 @@ private noncomputable def spl {c d : R} (p q : R) (hc : c = -1) (hd : d = p ^ 2 
       j_mul_i := by ext i j; fin_cases i <;> fin_cases j <;> simp }
 
 variable {R} in
+/- English proof (translation)
+Use extensionality with `i j`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;> simp [spl, QuaternionAlgebra.Basis.lift, Matrix.algebraMap_matrix_apply] <;> ring`.
+-/
 private theorem spl_apply {c d : R} (p q : R) (hc : c = -1) (hd : d = p ^ 2 + q ^ 2) (x : ℍ[R,c,0,d]) :
     spl p q hc hd x = !![x.re + x.imJ * p - x.imK * q, -x.imI + x.imJ * q + x.imK * p;
       x.imI + x.imJ * q + x.imK * p, x.re - x.imJ * p + x.imK * q] := by
@@ -61,6 +74,19 @@ private theorem spl_apply {c d : R} (p q : R) (hc : c = -1) (hd : d = p ^ 2 + q 
   fin_cases i <;> fin_cases j <;> simp [spl, QuaternionAlgebra.Basis.lift, Matrix.algebraMap_matrix_apply] <;> ring
 
 variable {R} in
+/- English proof (translation)
+Rewrite `hu` using `[hd]`. Prove the components needed by the constructor for the conclusion. Rewrite using `[injective_iff_map_eq_zero]`. Introduce `x hx`. Rewrite `hx` using `[spl_apply]`.
+
+Establish `h00` using `congrFun (congrFun hx 0) 0`. Establish `h01` using `congrFun (congrFun hx 0) 1`. Establish `h10` using `congrFun (congrFun hx 1) 0`. Establish `h11` using `congrFun (congrFun hx 1) 1`. Simplify using `at h00 h01 h10 h11`.
+
+Use `ext`. Simplify using the standard rewrite rules. Take the linear combination `u * (p ^ 2 + q ^ 2) * (h00 + h11) - x.re * hu`. Simplify using the standard rewrite rules. Take the linear combination `u * (p ^ 2 + q ^ 2) * (h10 - h01) - x.imI * hu`.
+
+Simplify using the standard rewrite rules. Take the linear combination `u * (p * (h00 - h11) + q * (h10 + h01)) - x.imJ * hu`. Simplify using the standard rewrite rules. Take the linear combination `u * (-q * (h00 - h11) + p * (h10 + h01)) - x.imK * hu`. Introduce `m`.
+
+Use `⟨⟨u * (p ^ 2 + q ^ 2) * (m 0 0 + m 1 1), u * (p ^ 2 + q ^ 2) * (m 1 0 - m 0 1), u * (p * (m 0 0 - m 1 1) + q * (m 1 0 + m 0 1)), u * (-q * (m 0 0 - m 1 1) + p * (m 1 0 + m 0 1))⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[spl_apply]`. Use extensionality with `i j`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;> simp`. Take the linear combination `m 0 0 * hu`.
+
+Take the linear combination `m 0 1 * hu`. Take the linear combination `m 1 0 * hu`. Take the linear combination `m 1 1 * hu`.
+-/
 private theorem spl_bij {c d : R} (p q : R) (hc : c = -1) (hd : d = p ^ 2 + q ^ 2) (u : R) (hu : u * (2 * d) = 1) :
     Function.Bijective (spl p q hc hd) := by
   rw [hd] at hu
@@ -93,6 +119,21 @@ private theorem spl_bij {c d : R} (p q : R) (hc : c = -1) (hd : d = p ^ 2 + q ^ 
     · linear_combination m 1 0 * hu
     · linear_combination m 1 1 * hu
 
+/- English proof (translation)
+Use `set n : F := x.re ^ 2 - a * x.imI ^ 2 - b * x.imJ ^ 2 + a * b * x.imK ^ 2 with hn`. Establish `hn0 : n ≠ 0`. Introduce `h`. Establish `h1` using `congrArg τ h`. Simplify using `only [hn, map_add, map_sub, map_mul, map_pow, map_zero] at h1`.
+
+Establish `p1` using `sq_nonneg (τ x.re)`. Establish `p2` using `mul_nonneg (neg_pos.2 ha).le (sq_nonneg (τ x.imI))`. Establish `p3` using `mul_nonneg (neg_pos.2 hb).le (sq_nonneg (τ x.imJ))`. Establish `p4` using `mul_nonneg (mul_pos_of_neg_of_neg ha hb).le (sq_nonneg (τ x.imK))`. Establish `q1 : τ x.re ^ 2 = 0` using `by linarith`.
+
+Establish `q2 : -τ a * τ x.imI ^ 2 = 0` using `by linarith`. Establish `q3 : -τ b * τ x.imJ ^ 2 = 0` using `by linarith`. Establish `q4 : τ a * τ b * τ x.imK ^ 2 = 0` using `by linarith`. Simplify using `[ha.ne, hb.ne] at q1 q2 q3 q4`. Apply `hx` to reduce the goal to its premises.
+
+Apply the tactic sequence `ext <;> simp [*]`. Establish `e1 : x * (n⁻¹ • star x) = 1`. Use `ext`. Simplify using the standard rewrite rules. Clear the denominators using the available nonvanishing facts.
+
+Simplify using `only [hn]`. Expand and normalize the polynomial expressions, which then agree. Use `all_goals`. Simplify using `[hn0]`. Expand and normalize the polynomial expressions, which then agree.
+
+Establish `e2 : (n⁻¹ • star x) * x = 1`. Use `ext`. Simplify using the standard rewrite rules. Clear the denominators using the available nonvanishing facts. Simplify using `only [hn]`.
+
+Expand and normalize the polynomial expressions, which then agree. Use `all_goals`. Simplify using `[hn0]`. Expand and normalize the polynomial expressions, which then agree. Conclude with `⟨⟨x, _, e1, e2⟩, rfl⟩`.
+-/
 private theorem isUnit_of_neg (τ : F →+* ℝ) (ha : τ a < 0) (hb : τ b < 0) (x : ℍ[F,a,0,b]) (hx : x ≠ 0) : IsUnit x := by
   set n : F := x.re ^ 2 - a * x.imI ^ 2 - b * x.imJ ^ 2 + a * b * x.imK ^ 2 with hn
   have hn0 : n ≠ 0 := by
@@ -130,6 +171,11 @@ private theorem isUnit_of_neg (τ : F →+* ℝ) (ha : τ a < 0) (hb : τ b < 0)
       ring
   exact ⟨⟨x, _, e1, e2⟩, rfl⟩
 
+/- English proof (translation)
+Use `⟨fun x hx => ?_⟩` and prove the remaining obligations. Rewrite `hx` using `[Subalgebra.mem_center_iff]`. Establish `h1` using `hx ⟨0, 1, 0, 0⟩`. Establish `h2` using `hx ⟨0, 0, 1, 0⟩`. Simplify using `[QuaternionAlgebra.ext_iff] at h1 h2`.
+
+Use `Algebra.mem_bot.2 ⟨x.re, ?_⟩` and prove the remaining obligations. Apply the tactic sequence `ext <;> simp <;> grind`.
+-/
 private theorem central [CharZero F] (ha : a ≠ 0) (hb : b ≠ 0) : Algebra.IsCentral F ℍ[F,a,0,b] := by
   refine ⟨fun x hx => ?_⟩
   rw [Subalgebra.mem_center_iff] at hx
@@ -139,6 +185,11 @@ private theorem central [CharZero F] (ha : a ≠ 0) (hb : b ≠ 0) : Algebra.IsC
   refine Algebra.mem_bot.2 ⟨x.re, ?_⟩
   ext <;> simp <;> grind
 
+/- English proof (translation)
+Use `letI := τ.toAlgebra`. Establish `h` using `(lift_bij ℝ a b (AlgHom.id _ _) Function.bijective_id).1`. Use `haveI : NoZeroDivisors ℍ[ℝ,algebraMap F ℝ a,0,algebraMap F ℝ b] := ⟨fun {x y} hxy => by`. Distinguish the cases in `hx : x = 0`. Conclude with `Or.inl hx`.
+
+Conclude with `Or.inr ((isUnit_of_neg _ _ (RingHom.id ℝ) ha hb x hx).mul_right_eq_zero.1 hxy)⟩`. Conclude with `h.noZeroDivisors _ (map_zero _) (map_mul _)`.
+-/
 private theorem definite (τ : F →+* ℝ) (ha : τ a < 0) (hb : τ b < 0) :
     letI := τ.toAlgebra; NoZeroDivisors (ℝ ⊗[F] ℍ[F,a,0,b]) := by
   letI := τ.toAlgebra
@@ -152,6 +203,25 @@ private theorem definite (τ : F →+* ℝ) (ha : τ a < 0) (hb : τ b < 0) :
 end Alg
 
 open GlobalTheory.QuadSymbol GlobalTheory.IdeleNormChar in
+/- English proof (translation)
+Take `⟨w₀⟩ : Nonempty (InfinitePlace F)` from `inferInstance`. Use `haveI : Fact (∀ r : F, r ^ 2 ≠ -1 + 0 * r) := ⟨fun r hr => by`. Use `congrArg (InfinitePlace.embedding_of_isReal (IsTotallyReal.isReal w₀)) hr` as an intermediate fact. Simplify using `only [map_pow, zero_mul, add_zero, map_neg, map_one] at this`. Use polynomial arithmetic with `[sq_nonneg (InfinitePlace.embedding_of_isReal (IsTotallyReal.isReal w₀) r)]⟩`.
+
+Use `haveI := Model.isQuadratic (-1 : F)`. Use `haveI := Model.numberField (-1 : F)`. Set `a₀ : AdeleRing (𝓞 F) F` to `((-1 : InfiniteAdeleRing F), (1 : Af F))`. Establish `ha₀ : a₀ * a₀ = 1` using `Prod.ext (neg_one_mul (-1 : InfiniteAdeleRing F) |>.trans (neg_neg 1)) (one_mul (1 : Af F))`. Set `a : (AdeleRing (𝓞 F) F)ˣ` to `⟨a₀, a₀, ha₀, ha₀⟩`.
+
+Establish `hf : finComp a = 1` using `funext fun _ => Units.ext rfl`. Establish `hi : infComp a = infDiag F (-1)` using `funext fun w => Units.ext (by`. Express the relevant statement in the definitionally equal form `(-1 : w.Completion) = _`. Simplify using `[infDiag, GlobalTheory.QuadSymbol.toUnits])`. Establish `hs : normSign (QuadraticAlgebra F (-1) 0) a = 1`.
+
+Express the relevant statement in the definitionally equal form `etaProd F _ (finComp a) (infComp a) = 1`. Establish `h1 : ∀ (A : Type) [CommRing A] [Algebra F A], eta F (QuadraticAlgebra F (-1) 0) A 1 = 1` using `fun A _ _ => eta_eq_one_iff.2 (one_mem _)`. Rewrite using `[hf, hi, etaProd, Finset.prod_congr rfl fun w _ => Model.eta_real_place w (IsTotallyReal.isReal w)]`. Simplify using `only [Pi.one_apply, h1, finprod_one, one_mul, Finset.prod_const, Finset.card_univ]`. Use `Even.neg_one_pow ?_` and prove the remaining obligations.
+
+Rewrite using `[InfinitePlace.card_eq_nrRealPlaces_add_nrComplexPlaces, IsTotallyReal.nrComplexPlaces_eq_zero, add_zero, ← IsTotallyReal.finrank]` and apply the resulting hypothesis. Take `⟨t, ht⟩` from `(normSign_eq_one_iff _ a).1 hs`. Take `⟨x, y, e⟩` from `(Model.mem_normGroup_sqrt (-1 : F)).1 ht`. Rewrite `e` using `[div_eq_mul_inv, ← map_inv, map_neg, map_one, neg_one_mul, sub_neg_eq_add]`. Use `replace e : a₀ * algebraMap F (AdeleRing (𝓞 F) F) (t⁻¹ : Fˣ) = x ^ 2 + y ^ 2 := e`.
+
+Use `⟨(t⁻¹ : Fˣ), fun τ => ?_, x.2, y.2, (one_mul _).symm.trans (congrArg Prod.snd e)⟩` and prove the remaining obligations. Set `w` to `InfinitePlace.mk (Complex.ofRealHom.comp τ)`. Establish `hw : w.IsReal` using `IsTotallyReal.isReal w`. Establish `e1 : (-1 : w.Completion) * algebraMap F w.Completion (t⁻¹ : Fˣ) = x.1 w ^ 2 + y.1 w ^ 2` using `congrArg (fun z : AdeleRing (𝓞 F) F => z.1 w) e`. Establish `e2` using `congrArg (InfinitePlace.Completion.extensionEmbeddingOfIsReal hw) e1`.
+
+Establish `e3 : InfinitePlace.Completion.extensionEmbeddingOfIsReal hw (algebraMap F w.Completion (t⁻¹ : Fˣ)) = τ (t⁻¹ : Fˣ)`. Establish `hr : ComplexEmbedding.IsReal (Complex.ofRealHom.comp τ)`. Rewrite using `[ComplexEmbedding.isReal_iff]`. Use extensionality with `z`. Simplify using the standard rewrite rules.
+
+Use `(InfinitePlace.Completion.extensionEmbeddingOfIsReal_coe hw _).trans (Complex.ofReal_injective ?_)` and prove the remaining obligations. Rewrite using `[InfinitePlace.embedding_of_isReal_apply, InfinitePlace.embedding_mk_eq_of_isReal hr]`. Both sides reduce to the same expression. Simplify using `only [map_mul, map_neg, map_one, map_add, map_pow, e3] at e2`. Use `lt_of_le_of_ne ?_ ((map_ne_zero τ).2 (Units.ne_zero _))` and prove the remaining obligations.
+
+Use polynomial arithmetic with `[sq_nonneg (InfinitePlace.Completion.extensionEmbeddingOfIsReal hw (x.1 w)), sq_nonneg (InfinitePlace.Completion.extensionEmbeddingOfIsReal hw (y.1 w))]`.
+-/
 private theorem arith (F : Type) [Field F] [NumberField F] [IsTotallyReal F] (h : Even (Module.finrank ℚ F)) :
     ∃ b : F, (∀ τ : F →+* ℝ, τ b < 0) ∧ ∃ p q : Af F, algebraMap F (Af F) b = p ^ 2 + q ^ 2 := by
   obtain ⟨w₀⟩ : Nonempty (InfinitePlace F) := inferInstance
@@ -201,6 +271,15 @@ private theorem arith (F : Type) [Field F] [NumberField F] [IsTotallyReal F] (h 
 end UpperTheory.V.Af.PQuat
 
 open UpperTheory.V.Af.PQuat in
+/- English proof (translation)
+Introduce `F _ _ _ h`. Take `⟨b, hb, p, q, hpq⟩` from `arith F h`. Take `⟨w⟩ : Nonempty (InfinitePlace F)` from `inferInstance`. Set `τ : F →+* ℝ` to `InfinitePlace.embedding_of_isReal (IsTotallyReal.isReal w)`. Establish `hb0 : b ≠ 0` using `fun e => by simpa [e] using hb τ`.
+
+Establish `hm : ∀ σ : F →+* ℝ, σ (-1) < 0` using `fun σ => by simp`. Use `letI : DivisionRing ℍ[F,-1,0,b] := DivisionRing.ofIsUnitOrEqZero fun x => (em (x = 0)).symm.imp_left (isUnit_of_neg _ _ τ (hm τ) (hb τ) x)`. Establish `hc : ∀ v : InfinitePlace F, ∃ j : ℍ[F,-1,0,b] →+* Matrix (Fin 2) (Fin 2) ℂ, ∀ x, j (algebraMap F _ x) = algebraMap ℂ _ (v.embedding x)` using `fun v => by`. Use `letI := v.embedding.toAlgebra`. Take `⟨s, hs⟩` from `IsAlgClosed.exists_pow_nat_eq (algebraMap F ℂ b) two_pos`.
+
+Set `g` to `((spl s 0 (c := algebraMap F ℂ (-1)) (d := algebraMap F ℂ b) (by simp) (by simp [hs])).restrictScalars F).comp (bc ℂ (-1) b)`. Conclude with `⟨g.toRingHom, fun x => (g.commutes x).trans (IsScalarTower.algebraMap_apply F ℂ _ x)⟩`. Use `choose jc hjc using hc`. Conclude with `⟨{ D := ℍ[F,-1,0,b] central := central _ _ (by simp) hb0 rank := QuaternionAlgebra.finrank_eq_four _ _ _ definite := fun σ => definite _ _ σ (hm σ) (hb σ) jf := ((spl p q (by simp) hpq).restrictScalars F).comp (bc (Af F) (-1) b) jf_bij := lift_bij _ _ _ _ (spl_bij p q _ hpq (alge …`. Rewrite using `[← map_ofNat (algebraMap F (Af F)) 2, ← map_mul, ← map_mul, inv_mul_cancel₀ (by simp [hb0]), map_one]))`.
+
+Use `jc := jc`. Use `jc_alg := hjc }⟩`.
+-/
 theorem UpperTheory.V.Af.defQuatExists :
     UpperTheory.V.Published.DefQuatExists := by
   intro F _ _ _ h

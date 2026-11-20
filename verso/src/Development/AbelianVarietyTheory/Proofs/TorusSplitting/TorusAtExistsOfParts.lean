@@ -13,22 +13,34 @@ variable {ι : Type} [Fintype ι]
 
 open NumberField in
 variable {ι : Type} [Fintype ι] in
+/- English proof (translation)
+Simplify using `[_root_.ReciprocityTheory.ChartRestriction.G.I2.Hf, add_mul, Finset.sum_add_distrib]`.
+-/
 theorem _root_.GlobalTheory.TorusAtAssembly.im_Hf_add_left (x y z : EuclideanSpace ℂ ι) :
     (_root_.ReciprocityTheory.ChartRestriction.G.I2.Hf (x + y) z).im = (_root_.ReciprocityTheory.ChartRestriction.G.I2.Hf x z).im + (_root_.ReciprocityTheory.ChartRestriction.G.I2.Hf y z).im := by
   simp [_root_.ReciprocityTheory.ChartRestriction.G.I2.Hf, add_mul, Finset.sum_add_distrib]
 
 open NumberField in
 variable {ι : Type} [Fintype ι] in
+/- English proof (translation)
+Simplify using `[_root_.ReciprocityTheory.ChartRestriction.G.I2.Hf, mul_add, Finset.sum_add_distrib]`.
+-/
 theorem _root_.GlobalTheory.TorusAtAssembly.im_Hf_add_right (x y z : EuclideanSpace ℂ ι) :
     (_root_.ReciprocityTheory.ChartRestriction.G.I2.Hf x (y + z)).im = (_root_.ReciprocityTheory.ChartRestriction.G.I2.Hf x y).im + (_root_.ReciprocityTheory.ChartRestriction.G.I2.Hf x z).im := by
   simp [_root_.ReciprocityTheory.ChartRestriction.G.I2.Hf, mul_add, Finset.sum_add_distrib]
 
+/- English proof (translation)
+Simplify using `[Hf, Finset.sum_neg_distrib]`.
+-/
 theorem im_Hf_neg_left (x z : EuclideanSpace ℂ ι) :
     (Hf (-x) z).im = -(Hf x z).im := by
   simp [Hf, Finset.sum_neg_distrib]
 
 open NumberField in
 variable {ι : Type} [Fintype ι] in
+/- English proof (translation)
+Establish `h : _root_.ReciprocityTheory.ChartRestriction.G.I2.Hf y x = (starRingEnd ℂ) (_root_.ReciprocityTheory.ChartRestriction.G.I2.Hf x y)`. Simplify using `[_root_.ReciprocityTheory.ChartRestriction.G.I2.Hf, map_sum, mul_comm]`. Rewrite using `[h, Complex.conj_im]`.
+-/
 theorem _root_.GlobalTheory.TorusAtAssembly.im_Hf_swap (x y : EuclideanSpace ℂ ι) :
     (_root_.ReciprocityTheory.ChartRestriction.G.I2.Hf y x).im = -(_root_.ReciprocityTheory.ChartRestriction.G.I2.Hf x y).im := by
   have h : _root_.ReciprocityTheory.ChartRestriction.G.I2.Hf y x = (starRingEnd ℂ) (_root_.ReciprocityTheory.ChartRestriction.G.I2.Hf x y) := by
@@ -41,6 +53,9 @@ variable {E : Type} [Field E] [NumberField E]
 
 open NumberField in
 variable {E : Type} [Field E] [NumberField E] in
+/- English proof (translation)
+Unfold `_root_.ReciprocityTheory.ChartRestriction.G.I2.act`. Use extensionality with `i`. Simplify using `[mul_add]`.
+-/
 theorem _root_.GlobalTheory.TorusAtAssembly.act_add {dim : (E →+* ℂ) → ℕ} (α : 𝓞 E) (x y : _root_.ReciprocityTheory.ChartRestriction.G.I2.Vsp dim) :
     _root_.ReciprocityTheory.ChartRestriction.G.I2.act α (x + y) = _root_.ReciprocityTheory.ChartRestriction.G.I2.act α x + _root_.ReciprocityTheory.ChartRestriction.G.I2.act α y := by
   unfold _root_.ReciprocityTheory.ChartRestriction.G.I2.act
@@ -49,6 +64,11 @@ theorem _root_.GlobalTheory.TorusAtAssembly.act_add {dim : (E →+* ℂ) → ℕ
 
 open NumberField in
 variable {E : Type} [Field E] [NumberField E] in
+/- English proof (translation)
+Unfold `_root_.ReciprocityTheory.ChartRestriction.G.I2.Hf _root_.ReciprocityTheory.ChartRestriction.G.I2.act`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Establish `hc : (starRingEnd ℂ) (i.fst (β : E)) = i.fst (α : E)`. Rewrite using `[h]`. Unfold `_root_.ReciprocityTheory.ChartRestriction.G.FD.cc`.
+
+Rewrite using `[IsCMField.complexEmbedding_complexConj, Complex.conj_conj]`. Simplify using `only [map_mul, hc]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem _root_.GlobalTheory.TorusAtAssembly.Hf_act_conj [IsCMField E] {dim : (E →+* ℂ) → ℕ} (α β : 𝓞 E)
     (h : (β : E) = _root_.ReciprocityTheory.ChartRestriction.G.FD.cc (α : E))
     (x y : _root_.ReciprocityTheory.ChartRestriction.G.I2.Vsp dim) : _root_.ReciprocityTheory.ChartRestriction.G.I2.Hf x (_root_.ReciprocityTheory.ChartRestriction.G.I2.act β y) = _root_.ReciprocityTheory.ChartRestriction.G.I2.Hf (_root_.ReciprocityTheory.ChartRestriction.G.I2.act α x) y := by
@@ -65,24 +85,36 @@ noncomputable def sgnFloor (t : ℝ) : ℤ := ((Int.negOnePow ⌊t⌋ : ℤˣ) :
 
 open NumberField in
 variable {E : Type} [Field E] [NumberField E] in
+/- English proof (translation)
+Apply the tactic sequence `rcases Int.units_eq_one_or (Int.negOnePow ⌊t⌋) with h | h <;> simp [_root_.GlobalTheory.TorusAtAssembly.sgnFloor, h]`.
+-/
 theorem _root_.GlobalTheory.TorusAtAssembly.sgnFloor_pm (t : ℝ) :
     _root_.GlobalTheory.TorusAtAssembly.sgnFloor t = 1 ∨ _root_.GlobalTheory.TorusAtAssembly.sgnFloor t = -1 := by
   rcases Int.units_eq_one_or (Int.negOnePow ⌊t⌋) with h | h <;> simp [_root_.GlobalTheory.TorusAtAssembly.sgnFloor, h]
 
 open NumberField in
 variable {E : Type} [Field E] [NumberField E] in
+/- English proof (translation)
+Simplify using `[_root_.GlobalTheory.TorusAtAssembly.sgnFloor]`.
+-/
 private theorem sgnFloor_intCast_eq_negOnePow (k : ℤ) :
     _root_.GlobalTheory.TorusAtAssembly.sgnFloor (k : ℝ) = ((Int.negOnePow k : ℤˣ) : ℤ) := by
   simp [_root_.GlobalTheory.TorusAtAssembly.sgnFloor]
 
 open NumberField in
 variable {E : Type} [Field E] [NumberField E] in
+/- English proof (translation)
+Rewrite using `[sgnFloor_intCast_eq_negOnePow, mul_comm, Real.cos_int_mul_pi, Int.cast_negOnePow]`.
+-/
 theorem _root_.GlobalTheory.TorusAtAssembly.sgnFloor_cos (k : ℤ) :
     (_root_.GlobalTheory.TorusAtAssembly.sgnFloor (k : ℝ) : ℝ) = Real.cos (Real.pi * k) := by
   rw [sgnFloor_intCast_eq_negOnePow, mul_comm, Real.cos_int_mul_pi, Int.cast_negOnePow]
 
 open NumberField in
 variable {E : Type} [Field E] [NumberField E] in
+/- English proof (translation)
+Rewrite using `[← _root_.GlobalTheory.TorusAtAssembly.sgnFloor_cos]`. Establish `h : ((a : ℝ) + b + c + 2 * k) = ((a + b + c + 2 * k : ℤ) : ℝ)` using `by push_cast; ring`. Rewrite using `[h, sgnFloor_intCast_eq_negOnePow, sgnFloor_intCast_eq_negOnePow, sgnFloor_intCast_eq_negOnePow, sgnFloor_intCast_eq_negOnePow, Int.negOnePow_add, Int.negOnePow_add, Int.negOnePow_add, Int.negOnePow_two_mul]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem _root_.GlobalTheory.TorusAtAssembly.sgnFloor_add (a b c k : ℤ) :
     (_root_.GlobalTheory.TorusAtAssembly.sgnFloor ((a : ℝ) + b + c + 2 * k) : ℝ) =
       _root_.GlobalTheory.TorusAtAssembly.sgnFloor (a : ℝ) * _root_.GlobalTheory.TorusAtAssembly.sgnFloor (b : ℝ) * Real.cos (Real.pi * c) := by
@@ -104,6 +136,15 @@ variable {E : Type} [Field E] [NumberField E] in
 variable [IsCMField E] {dim : (E →+* ℂ) → ℕ}
   {b : Module.Basis (Fin (2 * Fintype.card (_root_.ReciprocityTheory.ChartRestriction.G.I2.Idx dim))) ℝ (_root_.ReciprocityTheory.ChartRestriction.G.I2.Vsp dim)} {w w' : 𝓞 E} in
 
+/- English proof (translation)
+Establish `hQ : ∀ x ∈ _root_.ReciprocityTheory.ChartRestriction.G.I2.lat b, ∃ k : ℤ, (_root_.ReciprocityTheory.ChartRestriction.G.I2.Hf x (_root_.ReciprocityTheory.ChartRestriction.G.I2.act w x)).im = k`. Introduce `x hx`. Take `⟨k, hk⟩` from `par x hx x hx`. Rewrite `hk` using `[_root_.GlobalTheory.TorusAtAssembly.Hf_act_conj w w' hw, _root_.GlobalTheory.TorusAtAssembly.im_Hf_swap x (_root_.ReciprocityTheory.ChartRestriction.G.I2.act w x)]`. Establish `h0 : (_root_.ReciprocityTheory.ChartRestriction.G.I2.Hf x x).im = 0`.
+
+Use `_root_.GlobalTheory.TorusAtAssembly.im_Hf_swap x x` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Conclude with `⟨k, by linarith⟩`. Introduce `x y hx hy`. Take `⟨k, hk⟩` from `par x hx y hy`.
+
+Rewrite `hk` using `[_root_.GlobalTheory.TorusAtAssembly.Hf_act_conj w w' hw, _root_.GlobalTheory.TorusAtAssembly.im_Hf_swap y (_root_.ReciprocityTheory.ChartRestriction.G.I2.act w x)]`. Take `⟨a, ha⟩` from `hQ x hx`. Take `⟨a', ha'⟩` from `hQ y hy`. Take `⟨s, hs⟩` from `hQ (x + y) (Submodule.add_mem _ hx hy)`. Rewrite `hs` using `[_root_.GlobalTheory.TorusAtAssembly.act_add, _root_.GlobalTheory.TorusAtAssembly.im_Hf_add_left, _root_.GlobalTheory.TorusAtAssembly.im_Hf_add_right, _root_.GlobalTheory.TorusAtAssembly.im_Hf_add_right]`.
+
+Use `⟨s - a - a' - 2 * k, ?_⟩` and prove the remaining obligations. Use `push_cast`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem _root_.GlobalTheory.TorusAtAssembly.integral_of_parity (hw : (w' : E) = _root_.ReciprocityTheory.ChartRestriction.G.FD.cc (w : E))
     (par : ∀ x ∈ _root_.ReciprocityTheory.ChartRestriction.G.I2.lat b, ∀ y ∈ _root_.ReciprocityTheory.ChartRestriction.G.I2.lat b, ∃ k : ℤ,
       (_root_.ReciprocityTheory.ChartRestriction.G.I2.Hf x (_root_.ReciprocityTheory.ChartRestriction.G.I2.act w y)).im - (_root_.ReciprocityTheory.ChartRestriction.G.I2.Hf x (_root_.ReciprocityTheory.ChartRestriction.G.I2.act w' y)).im - (_root_.ReciprocityTheory.ChartRestriction.G.I2.Hf x y).im = 2 * k) :
@@ -168,6 +209,53 @@ end TorusAtAssembly
 open NumberField in
 variable {E : Type} [Field E] [NumberField E] in
 
+/- English proof (translation)
+Introduce `hframe hbasis hsign hiso hsec`. Unfold `_root_.ReciprocityTheory.ChartRestriction.G.I2.TorusAtExistsStatement`. Introduce `E _ _ _ r X hperf w0 hpar x hx`. Take `⟨e, he_orth, he_flag⟩` from `hframe E r X x hx`. Take `⟨bas, hbas⟩` from `hbasis E r X`.
+
+Take `⟨sg, hsg, hsgeq⟩` from `hsign E r X`. Take `⟨dim, hp, hn, Φ, hcard, hdim, hpos, hneg, hact, him⟩` from `hiso E r X e he_orth`. Establish `hint : IsIntegral ℤ (_root_.ReciprocityTheory.ChartRestriction.G.FD.cc (w0 : E))`. Unfold `_root_.ReciprocityTheory.ChartRestriction.G.FD.cc`. Conclude with `map_isIntegral_int (IsCMField.complexConj E) w0.isIntegral_coe`.
+
+Set `w' : 𝓞 E` to `⟨_root_.ReciprocityTheory.ChartRestriction.G.FD.cc (w0 : E), hint⟩`. Establish `hw' : (w' : E) = _root_.ReciprocityTheory.ChartRestriction.G.FD.cc (w0 : E)` using `rfl`. Set `φ : (Fin r → E) →+ _root_.ReciprocityTheory.ChartRestriction.G.I2.Vsp dim` to `{ toFun := fun v => Φ (fun τ => _root_.ReciprocityTheory.ChartRestriction.G.FD.Data.emb τ.1 v) map_zero' := by`. Establish `h : (fun τ : X.Ψ => _root_.ReciprocityTheory.ChartRestriction.G.FD.Data.emb τ.1 (0 : Fin r → E)) = 0`. Use function extensionality and compare the values at `τ a`.
+
+Simplify using `[_root_.ReciprocityTheory.ChartRestriction.G.FD.Data.emb]`. Simplify using `only [h, map_zero]`. Use the proof step `map_add' := fun u v => by`. Establish `h : (fun τ : X.Ψ => _root_.ReciprocityTheory.ChartRestriction.G.FD.Data.emb τ.1 (u + v)) = (fun τ : X.Ψ => _root_.ReciprocityTheory.ChartRestriction.G.FD.Data.emb τ.1 u) + (fun τ : X.Ψ => _root_.ReciprocityTheory.ChartRestriction.G.FD.Data.emb τ.1 v)`. Use function extensionality and compare the values at `τ a`.
+
+Simplify using `[_root_.ReciprocityTheory.ChartRestriction.G.FD.Data.emb]`. Simplify using `only [h, map_add] }`. Establish `hφ : ∀ v, φ v = Φ (fun τ => _root_.ReciprocityTheory.ChartRestriction.G.FD.Data.emb τ.1 v)` using `fun v => rfl`. Establish `hsmul : ∀ (α : 𝓞 E) (v : Fin r → E), α • v = (α : E) • v` using `fun α v => by`. Use function extensionality and compare the values at `i`.
+
+Both sides reduce to the same expression. Establish `hφactE : ∀ (α : 𝓞 E) (v : Fin r → E), φ ((α : E) • v) = _root_.ReciprocityTheory.ChartRestriction.G.I2.act α (φ v)`. Introduce `α v`. Rewrite using `[hφ, hφ, ← hact]`. Use `congr 1`.
+
+Use function extensionality and compare the values at `τ a`. Simplify using `[_root_.ReciprocityTheory.ChartRestriction.G.FD.Data.emb, map_mul]`. Establish `hφact : ∀ (α : 𝓞 E) (v : Fin r → E), φ (α • v) = _root_.ReciprocityTheory.ChartRestriction.G.I2.act α (φ v)`. Introduce `α v`. Rewrite using `[hsmul, hφactE]`.
+
+Establish `himφ : ∀ u v, (_root_.ReciprocityTheory.ChartRestriction.G.I2.Hf (φ u) (φ v)).im = sg * ((Algebra.trace ℚ E (X.ξ0 * _root_.ReciprocityTheory.ChartRestriction.G.FD.herm X.Gm u v) : ℚ) : ℝ)` using `fun u v => (him _ _).trans (hsgeq u v)`. Set `bT : Module.Basis (Fin (2 * Fintype.card (_root_.ReciprocityTheory.ChartRestriction.G.I2.Idx dim))) ℝ (_root_.ReciprocityTheory.ChartRestriction.G.I2.Vsp dim)` to `(bas.map Φ).reindex (finCongr (by rw [hcard]))`. Establish `hL : ∀ y, y ∈ _root_.ReciprocityTheory.ChartRestriction.G.I2.lat bT ↔ ∃ v ∈ X.Λ, φ v = y`. Introduce `y`. Establish `hrange : Set.range bT = (Φ.toLinearMap.restrictScalars ℤ) '' Set.range bas`.
+
+Use extensionality with `z`. Simplify using `only [bT, Module.Basis.range_reindex, Set.mem_range, Set.mem_image, Module.Basis.map_apply, exists_exists_eq_and, LinearMap.coe_restrictScalars, LinearEquiv.coe_coe]`. Unfold `_root_.ReciprocityTheory.ChartRestriction.G.I2.lat`. Rewrite using `[hrange, Submodule.span_image, Submodule.mem_map]`. Prove the components needed by the constructor for the conclusion.
+
+Introduce and unpack `⟨y0, hy0, rfl⟩`. Take `⟨v, hv, rfl⟩` from `(hbas y0).1 hy0`. Conclude with `⟨v, hv, rfl⟩`. Introduce and unpack `⟨v, hv, rfl⟩`. Conclude with `⟨_, (hbas _).2 ⟨v, hv, rfl⟩, rfl⟩`.
+
+Establish `hmem : ∀ v ∈ X.Λ, φ v ∈ _root_.ReciprocityTheory.ChartRestriction.G.I2.lat bT` using `fun v hv => (hL _).2 ⟨v, hv, rfl⟩`. Establish `stable : ∀ (α : 𝓞 E) (y : _root_.ReciprocityTheory.ChartRestriction.G.I2.Vsp dim), y ∈ _root_.ReciprocityTheory.ChartRestriction.G.I2.lat bT → _root_.ReciprocityTheory.ChartRestriction.G.I2.act α y ∈ _root_.ReciprocityTheory.ChartRestriction.G.I2.lat bT`. Introduce `α y hy`. Take `⟨v, hv, rfl⟩` from `(hL y).1 hy`. Rewrite using `[← hφact]`.
+
+Conclude with `hmem _ (X.Λ.smul_mem α hv)`. Establish `par : ∀ y ∈ _root_.ReciprocityTheory.ChartRestriction.G.I2.lat bT, ∀ z ∈ _root_.ReciprocityTheory.ChartRestriction.G.I2.lat bT, ∃ k : ℤ, (_root_.ReciprocityTheory.ChartRestriction.G.I2.Hf y (_root_.ReciprocityTheory.ChartRestriction.G.I2.act w0 z)).im - (_root_.ReciprocityTheory. …`. Introduce `y hy z hz`. Take `⟨u, hu, rfl⟩` from `(hL y).1 hy`. Take `⟨v, hv, rfl⟩` from `(hL z).1 hz`.
+
+Take `⟨k, hk⟩` from `hpar u hu v hv`. Establish `hsub : (w0 - w') • v = ((w0 : E) - _root_.ReciprocityTheory.ChartRestriction.G.FD.cc (w0 : E)) • v`. Rewrite using `[hsmul]`. Both sides reduce to the same expression. Establish `hsplit : φ (w0 • v) = φ ((w0 - w') • v) + φ (w' • v)`.
+
+Rewrite using `[← map_add, ← add_smul, sub_add_cancel]`. Rewrite using `[← hφact, ← hφact, hsplit, _root_.GlobalTheory.TorusAtAssembly.im_Hf_add_right, himφ, himφ, himφ, hsub]`. Establish `hkR` using `congrArg (fun q : ℚ => (q : ℝ)) hk`. Move the coercions through the operations in `at hkR`. Break down `hsg with rfl | rfl` into its components or cases.
+
+Conclude with `⟨k, by linarith⟩`. Conclude with `⟨-k, by push_cast; linarith⟩`. Establish `hneg0 : ∀ y z : _root_.ReciprocityTheory.ChartRestriction.G.I2.Vsp dim, (_root_.ReciprocityTheory.ChartRestriction.G.I2.Hf (-y) z).im = -(_root_.ReciprocityTheory.ChartRestriction.G.I2.Hf y z).im`. Introduce `y z`. Establish `h` using `_root_.GlobalTheory.TorusAtAssembly.im_Hf_add_left y (-y) z`.
+
+Rewrite `h` using `[add_neg_cancel]`. Establish `h0 : (_root_.ReciprocityTheory.ChartRestriction.G.I2.Hf (0 : _root_.ReciprocityTheory.ChartRestriction.G.I2.Vsp dim) z).im = 0` using `by simp [_root_.ReciprocityTheory.ChartRestriction.G.I2.Hf]`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `perfect : ∀ ψ : _root_.ReciprocityTheory.ChartRestriction.G.I2.lat bT →+ ℤ, ∃ y ∈ _root_.ReciprocityTheory.ChartRestriction.G.I2.lat bT, ∀ z : _root_.ReciprocityTheory.ChartRestriction.G.I2.lat bT, (ψ z : ℝ) = (_root_.ReciprocityTheory.ChartRestriction.G.I2.Hf y (z : _root_.Recip …`. Introduce `ψ`.
+
+Set `g : X.Λ →+ _root_.ReciprocityTheory.ChartRestriction.G.I2.lat bT` to `(φ.comp X.Λ.subtype.toAddMonoidHom).codRestrict (_root_.ReciprocityTheory.ChartRestriction.G.I2.lat bT) (fun v => hmem v v.2)`. Take `⟨u, hu, hχ⟩` from `hperf (ψ.comp g)`. Establish `hval : ∀ v (hv : v ∈ X.Λ), (ψ ⟨φ v, hmem v hv⟩ : ℝ) = ((Algebra.trace ℚ E (X.ξ0 * _root_.ReciprocityTheory.ChartRestriction.G.FD.herm X.Gm u v) : ℚ) : ℝ)`. Introduce `v hv`. Establish `h` using `congrArg (fun q : ℚ => (q : ℝ)) (hχ ⟨v, hv⟩)`.
+
+Move the coercions through the operations in `at h`. Conclude with `h`. Break down `hsg with rfl | rfl` into its components or cases. Use `⟨φ u, hmem u hu, fun z => ?_⟩` and prove the remaining obligations. Take `⟨v, hv, hvz⟩` from `(hL z).1 z.2`.
+
+Take `rfl : z = ⟨φ v, hmem v hv⟩` from `Subtype.ext hvz.symm`. Rewrite using `[hval v hv]`. Use `show _ = (_root_.ReciprocityTheory.ChartRestriction.G.I2.Hf (φ u) (φ v)).im`. Rewrite using `[himφ]`. Expand and normalize the polynomial expressions, which then agree.
+
+Use `⟨-φ u, neg_mem (hmem u hu), fun z => ?_⟩` and prove the remaining obligations. Take `⟨v, hv, hvz⟩` from `(hL z).1 z.2`. Take `rfl : z = ⟨φ v, hmem v hv⟩` from `Subtype.ext hvz.symm`. Rewrite using `[hval v hv]`. Use `show _ = (_root_.ReciprocityTheory.ChartRestriction.G.I2.Hf (-φ u) (φ v)).im`.
+
+Rewrite using `[hneg0, himφ]`. Expand and normalize the polynomial expressions, which then agree. Set `T : _root_.ReciprocityTheory.ChartRestriction.G.I2.PT E` to `_root_.GlobalTheory.TorusAtAssembly.torus (dim := dim) (b := bT) (w := w0) (w' := w') r hdim hw' stable par perfect`. Take `⟨s, hs, hs0⟩` from `hsec E T`. Use `⟨ { T := T φ := φ sg := sg sg_pm := hsg dim_pos := hp dim_neg := hn e := e e_orth := he_orth e_flag := he_flag coord_pos := fun τ a v => hpos _ τ a coord_neg := fun τ a v => hneg _ τ a w0 := w0 act_eq := hφactE lat := hL im_eq := fun u _ v _ => himφ u v eps_eq := ?_ s := s s_mem …` and prove the remaining obligations.
+
+Introduce `v hv`. Establish `hv' : (w0 : E) • v ∈ X.Λ`. Rewrite using `[← hsmul]`. Conclude with `X.Λ.smul_mem w0 hv`. Take `⟨k, hk⟩` from `_root_.GlobalTheory.TorusAtAssembly.integral_of_parity hw' par (φ v) (φ ((w0 : E) • v)) (hmem v hv) (hmem _ hv')`.
+
+Use `show ((_root_.GlobalTheory.TorusAtAssembly.sgnFloor (_root_.ReciprocityTheory.ChartRestriction.G.I2.Hf (φ v) (_root_.ReciprocityTheory.ChartRestriction.G.I2.act w0 (φ v))).im : ℤ) : ℝ) = _`. Rewrite using `[← hφactE, hk, _root_.GlobalTheory.TorusAtAssembly.sgnFloor_cos]`. Use `congr 2`. Conclude with `hk.symm`.
+-/
 theorem _root_.GlobalTheory.torusAtExists_of_parts :
     (∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (r : ℕ) (X : _root_.ReciprocityTheory.ChartRestriction.G.FD.Data E r), ∀ x ∈ X.dom, ∃ e : X.Ψ → Fin r → (Fin r → ℂ), (∀ τ a b, _root_.ReciprocityTheory.ChartRestriction.G.FD.hermC τ.1 X.Gm (e τ a) (e τ b) = if a = b then ((_root_.ReciprocityTheory.ChartRestriction.G.FD.sgn X.p0 a : ℝ) : ℂ) else 0) ∧ ∀ τ (i : ℕ) (hi : i ≤ r), Submodule.span ℂ (Set.range fun a : Fin i => e τ (Fin.castLE hi a)) = Submodule.span ℂ (Set.range fun a : Fin i => _root_.ReciprocityTheory.ChartRestriction.G.FD.col (_root_.ReciprocityTheory.ChartRestriction.G.FD.mat x τ) (Fin.castLE hi a))) → (∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (r : ℕ) (X : _root_.ReciprocityTheory.ChartRestriction.G.FD.Data E r), ∃ b : Module.Basis (Fin (2 * (X.Ψ.card * r))) ℝ (X.Ψ → Fin r → ℂ), ∀ y, y ∈ Submodule.span ℤ (Set.range b) ↔ ∃ v ∈ X.Λ, (fun τ : X.Ψ => _root_.ReciprocityTheory.ChartRestriction.G.FD.Data.emb τ.1 v) = y) → (∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (r : ℕ) (X : _root_.ReciprocityTheory.ChartRestriction.G.FD.Data E r), ∃ sg : ℝ, (sg = 1 ∨ sg = -1) ∧ ∀ u v : Fin r → E, ∑ τ : X.Ψ, X.c τ * (_root_.ReciprocityTheory.ChartRestriction.G.FD.hermC τ.1 X.Gm (_root_.ReciprocityTheory.ChartRestriction.G.FD.Data.emb τ.1 u) (_root_.ReciprocityTheory.ChartRestriction.G.FD.Data.emb τ.1 v)).im = sg * ((Algebra.trace ℚ E (X.ξ0 * _root_.ReciprocityTheory.ChartRestriction.G.FD.herm X.Gm u v) : ℚ) : ℝ)) → (∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (r : ℕ) (X : _root_.ReciprocityTheory.ChartRestriction.G.FD.Data E r) (e : X.Ψ → Fin r → (Fin r → ℂ)), (∀ τ a b, _root_.ReciprocityTheory.ChartRestriction.G.FD.hermC τ.1 X.Gm (e τ a) (e τ b) = if a = b then ((_root_.ReciprocityTheory.ChartRestriction.G.FD.sgn X.p0 a : ℝ) : ℂ) else 0) → ∃ (dim : (E →+* ℂ) → ℕ) (hp : ∀ τ : X.Ψ, dim τ.1 = X.p0) (hn : ∀ τ : X.Ψ, dim (ComplexEmbedding.conjugate τ.1) = r - X.p0) (Φ : (X.Ψ → Fin r → ℂ) ≃ₗ[ℝ] _root_.ReciprocityTheory.ChartRestriction.G.I2.Vsp dim), Fintype.card (_root_.ReciprocityTheory.ChartRestriction.G.I2.Idx dim) = X.Ψ.card * r ∧ (∀ τ, dim τ + dim (ComplexEmbedding.conjugate τ) = r) ∧ (∀ y (τ : X.Ψ) (a : Fin (dim τ.1)), (Φ y) ⟨τ.1, a⟩ = (Real.sqrt (X.c τ) : ℂ) * _root_.ReciprocityTheory.ChartRestriction.G.FD.hermC τ.1 X.Gm (y τ) (e τ (Fin.castLE (by rw [hp τ]; exact X.p0_le) a))) ∧ (∀ y (τ : X.Ψ) (a : Fin (dim (ComplexEmbedding.conjugate τ.1))), (Φ y) ⟨ComplexEmbedding.conjugate τ.1, a⟩ = (Real.sqrt (X.c τ) : ℂ) * (starRingEnd ℂ) (-_root_.ReciprocityTheory.ChartRestriction.G.FD.hermC τ.1 X.Gm (y τ) (e τ ⟨X.p0 + a.1, by have h1 : a.1 < r - X.p0 := lt_of_lt_of_eq a.2 (hn τ); have := X.p0_le; omega⟩))) ∧ (∀ (α : 𝓞 E) y, Φ (fun τ => τ.1 (α : E) • y τ) = _root_.ReciprocityTheory.ChartRestriction.G.I2.act α (Φ y)) ∧ ∀ y y', (_root_.ReciprocityTheory.ChartRestriction.G.I2.Hf (Φ y) (Φ y')).im = ∑ τ : X.Ψ, X.c τ * (_root_.ReciprocityTheory.ChartRestriction.G.FD.hermC τ.1 X.Gm (y τ) (y' τ)).im) → (∀ (E : Type) [Field E] [NumberField E] (X : _root_.ReciprocityTheory.ChartRestriction.G.I2.PT E), ∃ s ∈ X.Sec 1 1, s ≠ 0) → _root_.ReciprocityTheory.ChartRestriction.G.I2.TorusAtExistsStatement := by
   intro hframe hbasis hsign hiso hsec

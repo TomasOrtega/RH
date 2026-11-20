@@ -22,6 +22,15 @@ namespace GlobalTheory.LieFilt
 
 attribute [local instance] Over.cartesianMonoidalCategory
 
+/- English proof (translation)
+Take `⟨α, hα, ⟨f, hf, hfs⟩, hN⟩` from `exists_sepElt j χ hχ`. Establish `he : ∀ τ (a : Fin (r τ) → K), IsEigV ρ (χ τ) (∑ i, a i • U τ i)` using `fun τ a b => by`. Simplify using `only [map_sum, map_smul, hU τ _ b, Finset.smul_sum]`. Conclude with `Finset.sum_congr rfl fun _ _ => smul_comm _ _ _`. Use `⟨fun a a' h => ?_, fun w => ?_⟩` and prove the remaining obligations.
+
+Simplify using `only [Fintype.sum_sigma] at h`. Use function extensionality and compare the values at `⟨τ, i⟩`. Establish `h1` using `proj_sum_eig ρ χ α hα _ (fun τ => he τ fun i => a ⟨τ, i⟩) τ`. Establish `h2` using `proj_sum_eig ρ χ α hα _ (fun τ => he τ fun i => a' ⟨τ, i⟩) τ`. Rewrite `h1` using `[h, h2]`.
+
+Conclude with `congrFun ((hb τ _ (he τ fun i => a' ⟨τ, i⟩)).unique h1 rfl) i`. Use `choose a ha _ using fun τ => hb τ _ (eig_of_alpha ρ χ α hN τ (proj_eig_alpha ρ χ α hα f hf hfs τ w))`. Use `⟨fun s => a s.1 s.2, ?_⟩` and prove the remaining obligations. Simplify using `only [Fintype.sum_sigma, ← ha]`. Rewrite using `[← LinearMap.sum_apply, sum_proj ρ χ α hα]`.
+
+Both sides reduce to the same expression.
+-/
 theorem bijective_sum_of_eigBases {E F K M : Type} [Field E] [NumberField E] [Field F] [CharZero F] [CommRing K]
     [Algebra F K] [AddCommGroup M] [Module K M] (j : F →+* ℂ) (χ : (E →+* ℂ) → (𝓞 E →+* F))
     (hχ : ∀ τ a, j (χ τ a) = τ (a : E)) (ρ : 𝓞 E →+* Module.End K M) {r : (E →+* ℂ) → ℕ}
@@ -47,6 +56,13 @@ theorem bijective_sum_of_eigBases {E F K M : Type} [Field E] [NumberField E] [Fi
 
 open scoped CategoryTheory.MonObj in
 
+/- English proof (translation)
+Introduce `E _ _ _ H Dw l Xo c Oz _ β Z K _ φ x g ch hV r u hu P hP`. Use `letI : Algebra c.F K := φ.toAlgebra`. Set `U : ∀ τ, Fin (r τ) → TanM x Z.t.G` to `fun τ i => LieMet.tanOf ((hu τ).1 i).1`. Establish `hU : ∀ τ i a, actR Z.t.act a (U τ i) = φ (embK c τ a) • U τ i` using `fun τ i a => LieMet.tan_ext (((hu τ).1 i).2 a)`. Establish `hW : ∀ τ (w : TanM x Z.t.G), (∀ a, actR Z.t.act a w = φ (embK c τ a) • w) → ∃! a : Fin (r τ) → K, w = ∑ i, a i • U τ i` using `fun τ w hw => (existsUnique_congr fun a => LieMet.isComb_iff (U τ) a w).1 ((hu τ).2 _ ⟨LieMet.isTan_tv w, fun a => congrArg (fun v => (tv v).left) (hw a)⟩)`.
+
+Establish `hb` using `bijective_sum_of_eigBases (K := K) (M := TanM x Z.t.G) c.F.val.toRingHom (embK c) (embK_coe c) (actR Z.t.act) U hU hW`. Take `⟨Φ, hΦ⟩` from `LocM.TanPair.exists_tanM_equiv E H Z.X Z.t K x ch.U hV g ch.e ch.isFrame`. Establish `e : P.mulVec = Φ ∘ fun a : (Σ τ, Fin (r τ)) → K => ∑ s, a s • U s.1 s.2`. Use function extensionality and compare the values at `a b`. Simplify using `only [Function.comp_apply, map_sum, map_smul, Finset.sum_apply, Pi.smul_apply, Matrix.mulVec, dotProduct, smul_eq_mul]`.
+
+Conclude with `Finset.sum_congr rfl fun s _ => (mul_comm _ _).trans (congrArg _ ((hP s _ hV b).trans (hΦ (U s.1 s.2) b).symm))`. Rewrite using `[e]`. Conclude with `Φ.bijective.comp hb`.
+-/
 theorem bijective_mulVec_of_eigBases : ∀ {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E}
     {Dw : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Datum H} {l : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Level H}
     {Xo : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Moduli Dw l} {c : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Coeff l} {Oz : Type} [CommRing Oz]

@@ -28,6 +28,21 @@ namespace GlobalTheory.AdSpan.TorWt
 
 variable {D : D7} {S T : HSp D}
 
+/- English proof (translation)
+Take `⟨h0th, hlin, hfl⟩` from `GlobalTheory.T.thetaFunction_space_heisenberg_laws D S T C`. Establish `key` using `(hfl F hF).2.2.2.1`. Establish `r0 : IsRealPt (0 : WO S T)`. Use extensionality with `i j`. Simplify using the standard rewrite rules.
+
+Establish `hv : ∀ y : Matrix (Fin S.rank) (Fin T.rank) D.host.E, F (-(ratW T S yᵀ - finW S T y)) = 0`. Introduce `y`. Establish `e` using `key y 0 r0`. Rewrite `e` using `[h0 y, zero_sub]`. Conclude with `(mul_eq_zero.1 e.symm).resolve_left (Complex.exp_ne_zero _)`.
+
+Take `⟨R, hRc, -, hadd, -, hR2, -, hfin, -⟩` from `GlobalTheory.T.realPoints_classicalModel_realVectorSpace D S T C`. Establish `hrat` using `(GlobalTheory.T.symplecticCharacter_real_finite_points_match D S T C).2.2.2.2.2.2.2`. Take `⟨B, hB⟩` from `(GlobalTheory.T.thetaKernel_orthonormalFrame_inDomain_periodLinear D S T C).1`. Establish `hdom` using `((GlobalTheory.T.thetaKernel_orthonormalFrame_inDomain_periodLinear D S T C).2 B hB).2.1`. Establish `hd` using `(GlobalTheory.T.realPeriodMap_homeomorph_riemannForm_density D.host.E T.rank C.X C.g C.q0 C.hr C.bas C.idx S.rank C.sympl C.even _ hdom).2.2.2.1`.
+
+Establish `hRe : ∀ y : Matrix (Fin S.rank) (Fin T.rank) D.host.E, R (embR C.X y) = ratW T S yᵀ - finW S T y`. Introduce `y`. Take `⟨h1, h2, h3, -⟩` from `hrat y`. Establish `e : C.realPt (ratW T S yᵀ - finW S T y) = embR C.X y`. Use `hadd (ratW T S yᵀ - finW S T y) (finW S T y)` as an intermediate fact.
+
+Rewrite `this` using `[sub_add_cancel, h1, hfin _ h2, add_zero]`. Conclude with `this.symm`. Rewrite using `[← e, hR2 _ h3]`. Establish `hG : (fun v => F (-(R v))) = fun _ => (0 : ℂ)`. Use `hd.equalizer (hF.cont.comp (continuous_neg.comp hRc)) continuous_const (funext fun y => ?_)` and prove the remaining obligations.
+
+Simplify using `only [Function.comp_apply]`. Rewrite using `[hRe y]`. Conclude with `hv y`. Use `(hlin F 0 hF h0th).2 fun w hw => ?_` and prove the remaining obligations. Establish `e` using `congrFun hG (-(C.realPt w))`.
+
+Rewrite `e` using `[map_neg, neg_neg, hR2 w hw]`. Rewrite using `[e]`. Both sides reduce to the same expression.
+-/
 theorem eq_zero_of_rho_finW_zero (C : Ctx S T) {F : WO S T → ℂ} (hF : C.IsTh F)
     (h0 : ∀ y : Matrix (Fin S.rank) (Fin T.rank) D.host.E, C.rho (finW S T y) F 0 = 0) : F = 0 := by
   obtain ⟨h0th, hlin, hfl⟩ := GlobalTheory.T.thetaFunction_space_heisenberg_laws D S T C
@@ -70,12 +85,24 @@ namespace GlobalTheory.AdSpan.TorWt
 
 variable {D : D7} {S T : HSp D}
 
+/- English proof (translation)
+Use function extensionality and compare the values at `x`. Simplify using `only [Ctx.rho, heisO, Pi.add_apply, Pi.smul_apply, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem rho_add_smul (C : Ctx S T) (w : WO S T) (F G : WO S T → ℂ) (a : ℂ) :
     C.rho w (F + a • G) = C.rho w F + a • C.rho w G := by
   funext x
   simp only [Ctx.rho, heisO, Pi.add_apply, Pi.smul_apply, smul_eq_mul]
   ring
 
+/- English proof (translation)
+Take `⟨h0th, hlin, hfl⟩` from `GlobalTheory.T.thetaFunction_space_heisenberg_laws D S T C`. Establish `hdom` using `((GlobalTheory.T.thetaKernel_orthonormalFrame_inDomain_periodLinear D S T C).2 B hB).2.1`. Establish `hdom'` using `((GlobalTheory.T.thetaKernel_orthonormalFrame_inDomain_periodLinear D S T C).2 B' hB').2.1`. Establish `hth : ∀ x ∈ C.X.dom, ∀ ψ : TF S.rank C.g, SW.IsSB ψ → C.IsTh (C.Th x ψ)` using `fun x hx ψ hψ => (GlobalTheory.T.adelicZakTheta_exists_unique D S T C x hx ψ hψ).1.1`. Establish `hhe : ∀ (y : Matrix (Fin S.rank) (Fin T.rank) D.host.E) (ψ : TF S.rank C.g), SW.IsSB ψ → SW.IsSB (heisG C.X C.bas y ψ)` using `fun y ψ h => ((GlobalTheory.SW.heisG_laws D.host.E T.rank C.X C.g C.bas C.idx S.rank C.sympl C.even).2.2.2 y ψ h).1`.
+
+Establish `hw` using `(GlobalTheory.T.thetaSeries_testFunction_holomorphic_weight D.host.E T.rank C.X C.g C.q0 C.hr C.bas C.idx S.rank C.sympl C.even c c')`. Use `set la := bchar (wtOf C.X C.hr c c' S.rank) b`. Establish `t1 : C.IsTh (C.fvec B' (C.Th (C.xB B') φ) Q)` using `(GlobalTheory.T.fockPolynomialVector_laws D S T C B' hB' (fun _ => 1) _ (hth _ hdom' φ hφ) Q).1`. Establish `t2 : C.IsTh (C.fvec B (C.Th (C.xB B) φ) Q)` using `(GlobalTheory.T.fockPolynomialVector_laws D S T C B hB (fun _ => 1) _ (hth _ hdom φ hφ) Q).1`. Establish `tG : C.IsTh (C.fvec B' (C.Th (C.xB B') φ) Q + (-la) • C.fvec B (C.Th (C.xB B) φ) Q)` using `((hlin _ _ t1 ((hfl _ t2).1 (-la))).1)`.
+
+Establish `val : ∀ (B₀ : C.Bas), C.IsB B₀ → C.xB B₀ ∈ C.X.dom → ∀ y : Matrix (Fin S.rank) (Fin T.rank) D.host.E, C.rho (finW S T y) (C.fvec B₀ (C.Th (C.xB B₀) φ) Q) 0 = thP C.X C.hr C.bas C.idx (heisG C.X C.bas (-y) φ) (C.toH Q) (C.xB B₀)`. Introduce `B₀ hB₀ hd₀ y`. Establish `e1` using `(GlobalTheory.T.fockPolynomialVector_laws D S T C B₀ hB₀ (fun _ => 1) _ (hth _ hd₀ φ hφ) Q).2.2.2.2.2 (finW S T y) ((GlobalTheory.T.symplecticCharacter_real_finite_points_match D S T C).2.2.2.2.2.2.2 y).2.1`. Rewrite using `[← e1, ((GlobalTheory.T.thetaKernel_testFunction_map_linear_injective_equivariant D S T C _ hd₀ φ hφ).2.2.1 y)]`. Conclude with `((GlobalTheory.T.fockPolynomialVector_testTheta_zero_eq_thetaSeries D S T C).2 B₀ hB₀ _ (hhe (-y) φ hφ)).2 Q`.
+
+Establish `hG` using `eq_zero_of_rho_finW_zero C tG fun y => by`. Rewrite using `[rho_add_smul, Pi.add_apply, Pi.smul_apply, val B' hB' hdom' y, val B hB hdom y, hx, (hw _ (hhe (-y) φ hφ) _ hQ).2.1 _ hdom b hb, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree. Rewrite `hG` using `[neg_smul, ← sub_eq_add_neg, sub_eq_zero]`. Conclude with `hG`.
+-/
 theorem fvec_Th_rmul (C : Ctx S T) {B B' : C.Bas} (hB : C.IsB B) (hB' : C.IsB B') {b : Frame C.X.Ψ T.rank}
     (hb : b ∈ Bor C.X.Ψ T.rank) (hx : C.xB B' = rmul (C.xB B) b)
     (c : C.X.Ψ → Fin C.q0 → ℕ) (c' : C.X.Ψ → Fin C.X.p0 → ℕ) (Q : MvPolynomial (FVar D T.rank S.rank) ℂ)
@@ -119,22 +146,42 @@ namespace GlobalTheory.AdSpan.TorWt
 
 variable {D : D7} {S T : HSp D}
 
+/- English proof (translation)
+Rewrite using `[← Complex.exp_conj, map_mul, Complex.conj_ofReal, Complex.conj_I, ← Complex.exp_add]`. Use `Complex.exp_zero using 2` and compare the differences between its conclusion and the goal. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem conj_exp_mul_exp (x : ℝ) : conj (cexp ((x : ℂ) * I)) * cexp ((x : ℂ) * I) = 1 := by
   rw [← Complex.exp_conj, map_mul, Complex.conj_ofReal, Complex.conj_I, ← Complex.exp_add]
   convert Complex.exp_zero using 2
   ring
 
+/- English proof (translation)
+Rewrite using `[← Complex.exp_conj, map_mul, Complex.conj_ofReal, Complex.conj_I]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem conj_exp (x : ℝ) : conj (cexp ((x : ℂ) * I)) = cexp (-((x : ℂ) * I)) := by
   rw [← Complex.exp_conj, map_mul, Complex.conj_ofReal, Complex.conj_I]
   congr 1
   ring
 
+/- English proof (translation)
+Rewrite using `[sgnM, det_diagonal]`. Use `Finset.prod_ne_zero_iff.2 fun a _ => ?_` and prove the remaining obligations. Unfold `sgn`. Apply the tactic sequence `split_ifs <;> norm_num`.
+-/
 theorem det_sgnM_ne (C : Ctx S T) : (sgnM C.X).det ≠ 0 := by
   rw [sgnM, det_diagonal]
   refine Finset.prod_ne_zero_iff.2 fun a _ => ?_
   unfold sgn
   split_ifs <;> norm_num
 
+/- English proof (translation)
+Use `set P := B ρ`. Use `set d : Matrix (Fin T.rank) (Fin T.rank) ℂ := diagonal (fun a => cexp ((t a : ℂ) * I))`. Use `set G := gramAt D T ρ`. Establish `hP : Pᴴ * G * P = sgnM C.X` using `hB ρ`. Establish `hdet : IsUnit P.det`.
+
+Establish `h` using `congrArg Matrix.det hP`. Rewrite `h` using `[det_mul, det_mul]`. Use `isUnit_iff_ne_zero.2 fun h0 => det_sgnM_ne C ?_` and prove the remaining obligations. Rewrite using `[← h, h0, mul_zero]`. Establish `hdd : dᴴ * sgnM C.X * d = sgnM C.X`.
+
+Simplify using `only [d, sgnM, diagonal_conjTranspose, diagonal_mul_diagonal]`. Use `congr 1`. Use function extensionality and compare the values at `a`. Simplify using `only [Pi.star_apply, RCLike.star_def]`. Rewrite using `[mul_comm, ← mul_assoc, mul_comm _ (conj _), conj_exp_mul_exp, one_mul]`.
+
+Use `show (P * d * P⁻¹)ᴴ * G * (P * d * P⁻¹) = G`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [conjTranspose_mul, Matrix.mul_assoc]`. Use `_ = (P⁻¹)ᴴ * (Pᴴ * G * P) * P⁻¹ := by rw [hP, hdd]`. Use `_ = (P * P⁻¹)ᴴ * G * (P * P⁻¹) := by simp only [conjTranspose_mul, Matrix.mul_assoc]`.
+
+Use `_ = G := by rw [mul_nonsing_inv _ hdet]; simp`.
+-/
 theorem mem_UH_tor (C : Ctx S T) {B : C.Bas} (hB : C.IsB B) (ρ : D.what₂.Tau) (t : Fin T.rank → ℝ) :
     B ρ * diagonal (fun a => cexp ((t a : ℂ) * I)) * (B ρ)⁻¹ ∈ Formalism.QuantumDeterminants.UH (gramAt D T ρ) := by
   set P := B ρ
@@ -159,6 +206,9 @@ theorem mem_UH_tor (C : Ctx S T) {B : C.Bas} (hB : C.IsB B) (ρ : D.what₂.Tau)
     _ = (P * P⁻¹)ᴴ * G * (P * P⁻¹) := by simp only [conjTranspose_mul, Matrix.mul_assoc]
     _ = G := by rw [mul_nonsing_inv _ hdet]; simp
 
+/- English proof (translation)
+Establish `h` using `GlobalTheory.PointAtPlaceHom.atTau_spec C.inf T ρ (mem_UH_tor C hB ρ t)`. Use `split_ifs with e`. Substitute `e` using the available equality. Conclude with `h.2.1`. Conclude with `h.2.2 τ e`.
+-/
 theorem compAt_torAt (C : Ctx S T) {B : C.Bas} (hB : C.IsB B) (ρ : D.what₂.Tau) (t : Fin T.rank → ℝ)
     (τ : D.what₂.Tau) : compAt C.θ τ (mt T (torAt C.θ T B ρ t)) =
       if τ = ρ then B ρ * diagonal (fun a => cexp ((t a : ℂ) * I)) * (B ρ)⁻¹ else 1 := by
@@ -174,6 +224,13 @@ namespace GlobalTheory.AdSpan.TorWt
 
 variable {D : D7} {S T : HSp D}
 
+/- English proof (translation)
+Establish `hdet : IsUnit (B ρ).det`. Establish `h` using `congrArg Matrix.det (hB ρ)`. Rewrite `h` using `[det_mul, det_mul]`. Use `isUnit_iff_ne_zero.2 fun h0 => det_sgnM_ne C ?_` and prove the remaining obligations. Rewrite using `[← h, h0, mul_zero]`.
+
+Use function extensionality and compare the values at `τ`. Simplify using `only [Ctx.mvB, compAt_torAt C hB ρ t τ]`. Use `split_ifs with e`. Substitute `e` using the available equality. Rewrite using `[Matrix.mul_assoc, nonsing_inv_mul _ hdet, Matrix.mul_one]`.
+
+Rewrite using `[Matrix.one_mul]`.
+-/
 theorem mvB_torAt (C : Ctx S T) {B : C.Bas} (hB : C.IsB B) (ρ : D.what₂.Tau) (t : Fin T.rank → ℝ) :
     C.mvB (torAt C.θ T B ρ t) B = fun τ => if τ = ρ then B ρ * diagonal (fun a => cexp ((t a : ℂ) * I)) else B τ := by
   have hdet : IsUnit (B ρ).det := by
@@ -192,11 +249,23 @@ def bT (C : Ctx S T) (ρ : D.what₂.Tau) (t : Fin T.rank → ℝ) : Frame C.X.�
   if σ = C.m.e ρ then (diagonal (fun a => cexp (-((t a : ℂ) * I))) : Matrix (Fin T.rank) (Fin T.rank) ℂ)
   else (1 : Matrix (Fin T.rank) (Fin T.rank) ℂ)
 
+/- English proof (translation)
+Use function extensionality and compare the values at `a c`. Apply the tactic sequence `by_cases e : σ = C.m.e ρ <;> simp [mat, bT, e] <;> rfl`.
+-/
 theorem mat_bT (C : Ctx S T) (ρ : D.what₂.Tau) (t : Fin T.rank → ℝ) (σ : C.X.Ψ) :
     mat (bT C ρ t) σ = if σ = C.m.e ρ then diagonal (fun a => cexp (-((t a : ℂ) * I))) else 1 := by
   funext a c
   by_cases e : σ = C.m.e ρ <;> simp [mat, bT, e] <;> rfl
 
+/- English proof (translation)
+Introduce `σ`. Distinguish the cases in `e : σ = C.m.e ρ`. Establish `h : mat (bT C ρ t) σ = diagonal (fun a => cexp (-((t a : ℂ) * I)))`. Rewrite using `[mat_bT, if_pos e]`. Use `⟨?_, fun a c hca => ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[h, det_diagonal]`. Conclude with `Finset.prod_ne_zero_iff.2 fun a _ => Complex.exp_ne_zero _`. Use `congrFun (congrFun h a) c` as an intermediate fact. Simplify using `only [mat, Matrix.of_apply] at this`. Rewrite using `[this, diagonal_apply_ne _ (ne_of_gt hca)]`.
+
+Establish `h : mat (bT C ρ t) σ = 1`. Rewrite using `[mat_bT, if_neg e]`. Use `⟨by rw [h, det_one]; exact one_ne_zero, fun a c hca => ?_⟩` and prove the remaining obligations. Use `congrFun (congrFun h a) c` as an intermediate fact. Simplify using `only [mat, Matrix.of_apply] at this`.
+
+Rewrite using `[this, one_apply_ne (ne_of_gt hca)]`.
+-/
 theorem bT_mem (C : Ctx S T) (ρ : D.what₂.Tau) (t : Fin T.rank → ℝ) : bT C ρ t ∈ Bor C.X.Ψ T.rank := by
   intro σ
   by_cases e : σ = C.m.e ρ
@@ -215,6 +284,13 @@ theorem bT_mem (C : Ctx S T) (ρ : D.what₂.Tau) (t : Fin T.rank → ℝ) : bT 
     simp only [mat, Matrix.of_apply] at this
     rw [this, one_apply_ne (ne_of_gt hca)]
 
+/- English proof (translation)
+Rewrite using `[mvB_torAt C hB ρ t]`. Use function extensionality and compare the values at `σ a c`. Use `show conj ((if C.m.e.symm σ = ρ then B ρ * diagonal (fun a => cexp ((t a : ℂ) * I)) else B (C.m.e.symm σ)) a c) = (mat (C.xB B) σ * mat (bT C ρ t) σ) a c`. Rewrite using `[mat_bT]`. Distinguish the cases in `e : σ = C.m.e ρ`.
+
+Substitute `e` using the available equality. Rewrite using `[if_pos (Equiv.symm_apply_apply _ _), if_pos rfl, mul_diagonal, mul_diagonal, map_mul, conj_exp]`. Simplify using `[mat, Ctx.xB]`. Establish `e' : C.m.e.symm σ ≠ ρ` using `fun h => e (by rw [← h, Equiv.apply_symm_apply])`. Rewrite using `[if_neg e', if_neg e, Matrix.mul_one]`.
+
+Both sides reduce to the same expression.
+-/
 theorem xB_mvB_torAt (C : Ctx S T) {B : C.Bas} (hB : C.IsB B) (ρ : D.what₂.Tau) (t : Fin T.rank → ℝ) :
     C.xB (C.mvB (torAt C.θ T B ρ t) B) = rmul (C.xB B) (bT C ρ t) := by
   rw [mvB_torAt C hB ρ t]
@@ -236,6 +312,11 @@ namespace GlobalTheory.AdSpan.TorWt
 
 variable {D : D7} {S T : HSp D}
 
+/- English proof (translation)
+Establish `hb : ∀ σ i, bT C ρ t σ i i = if σ = C.m.e ρ then cexp (-((t i : ℂ) * I)) else 1`. Introduce `σ i`. Use `congrFun (congrFun (mat_bT C ρ t σ) i) i` as an intermediate fact. Simplify using `only [mat, Matrix.of_apply] at this`. Rewrite using `[this]`.
+
+Apply the tactic sequence `split_ifs <;> simp`. Unfold `bchar`. Rewrite using `[Finset.prod_eq_single (C.m.e ρ) (fun σ _ hσ => Finset.prod_eq_one fun i _ => by`. Rewrite using `[hb, if_neg hσ, _root_.one_zpow]) (fun h => absurd (Finset.mem_univ _) h)]`. Conclude with `Finset.prod_congr rfl fun i _ => by rw [hb, if_pos rfl]`.
+-/
 theorem bchar_bT (C : Ctx S T) (ρ : D.what₂.Tau) (t : Fin T.rank → ℝ) (la : Wt C.X.Ψ T.rank) :
     bchar la (bT C ρ t) = ∏ a, cexp (-((t a : ℂ) * I)) ^ la (C.m.e ρ) a := by
   have hb : ∀ σ i, bT C ρ t σ i i = if σ = C.m.e ρ then cexp (-((t i : ℂ) * I)) else 1 := by
@@ -249,6 +330,11 @@ theorem bchar_bT (C : Ctx S T) (ρ : D.what₂.Tau) (t : Fin T.rank → ℝ) (la
     rw [hb, if_neg hσ, _root_.one_zpow]) (fun h => absurd (Finset.mem_univ _) h)]
   exact Finset.prod_congr rfl fun i _ => by rw [hb, if_pos rfl]
 
+/- English proof (translation)
+Establish `hdet : IsUnit (B ρ).det`. Establish `h` using `congrArg Matrix.det (hB ρ)`. Rewrite `h` using `[det_mul, det_mul]`. Use `isUnit_iff_ne_zero.2 fun h0 => det_sgnM_ne C ?_` and prove the remaining obligations. Rewrite using `[← h, h0, mul_zero]`.
+
+Unfold `detPow`. Rewrite using `[Finset.prod_eq_single ρ (fun τ _ hτ => by rw [compAt_torAt C hB ρ t τ, if_neg hτ, det_one, _root_.one_zpow]) (fun h => absurd (Finset.mem_univ _) h), compAt_torAt C hB ρ t ρ, if_pos rfl, det_mul, det_mul, det_diagonal, mul_comm, ← mul_assoc, ← det_mul, nonsing_inv_mul _ hdet, de …`.
+-/
 theorem detPow_torAt (C : Ctx S T) {B : C.Bas} (hB : C.IsB B) (ρ : D.what₂.Tau) (t : Fin T.rank → ℝ)
     (m : D.what₂.Tau → ℤ) : detPow C.θ T m (torAt C.θ T B ρ t) = (∏ a, cexp ((t a : ℂ) * I)) ^ m ρ := by
   have hdet : IsUnit (B ρ).det := by
@@ -261,6 +347,9 @@ theorem detPow_torAt (C : Ctx S T) {B : C.Bas} (hB : C.IsB B) (ρ : D.what₂.Ta
     (fun h => absurd (Finset.mem_univ _) h), compAt_torAt C hB ρ t ρ, if_pos rfl, det_mul, det_mul,
     det_diagonal, mul_comm, ← mul_assoc, ← det_mul, nonsing_inv_mul _ hdet, det_one, one_mul]
 
+/- English proof (translation)
+Simplify using `only [← Complex.exp_int_mul, ← Complex.exp_sum, ← Complex.exp_add]`. Use `congr 1`. Use `push_cast`. Rewrite using `[Finset.mul_sum, Finset.sum_mul, ← Finset.sum_add_distrib]`. Conclude with `Finset.sum_congr rfl fun a _ => by ring`.
+-/
 theorem scalar_eq (t : Fin T.rank → ℝ) (k : ℤ) (w : Fin T.rank → ℤ) :
     cexp (((∑ a, ((k - w a : ℤ) : ℝ) * t a : ℝ) : ℂ) * I) =
       (∏ a, cexp ((t a : ℂ) * I)) ^ k * ∏ a, cexp (-((t a : ℂ) * I)) ^ w a := by
@@ -274,6 +363,13 @@ end GlobalTheory.AdSpan.TorWt
 
 namespace GlobalTheory.AdSpan.TorWt
 
+/- English proof (translation)
+Introduce `D S T C om hom B hB f hf hF c c' Q hQ ρ t m hz`. Use `⟨GlobalTheory.PointAtPlaceHom.atTau_mem T ρ _, ?_⟩` and prove the remaining obligations. Take `⟨φ, hφ, rfl⟩` from `GlobalTheory.T.exists_testFunction_of_fockVacuum_thetaFunction D S T C B hB f hf hF`. Establish `hB' : C.IsB (C.mvB (torAt C.θ T B ρ t) B)` using `(((GlobalTheory.T.thetaKernel_orthonormalFrame_inDomain_periodLinear D S T C).2 B hB).2.2.2.2.2 _).1`. Establish `hdom'` using `((GlobalTheory.T.thetaKernel_orthonormalFrame_inDomain_periodLinear D S T C).2 _ hB').2.1`.
+
+Establish `hth' : C.IsTh (C.Th (C.xB (C.mvB (torAt C.θ T B ρ t) B)) φ)` using `(GlobalTheory.T.adelicZakTheta_exists_unique D S T C _ hdom' φ hφ).1.1`. Establish `e1` using `((GlobalTheory.T.weakWeilRep_carries_derivatives_vacua_fockVectors D S T C om hom 1 (torAt C.θ T B ρ t) _ hf).2 B hB).2 Q`. Establish `h1 : (fun τ => compAt C.θ τ (mt S (1 : GA D S))) = fun _ => 1`. Use function extensionality and compare the values at `fun τ => GlobalTheory.PointAtPlaceHom.infMat_one S (C.θ τ)`. Rewrite `e1` using `[h1]`.
+
+Establish `e2 : om (1, torAt C.θ T B ρ t) (C.fvec B (C.Th (C.xB B) φ) Q) = C.fvec (C.mvB (torAt C.θ T B ρ t) B) (om (1, torAt C.θ T B ρ t) (C.Th (C.xB B) φ)) Q` using `e1`. Rewrite using `[e2, hz φ hφ, (GlobalTheory.T.fockPolynomialVector_laws D S T C _ hB' (fun _ => 1) _ hth' Q).2.2.2.2.1, fvec_Th_rmul C hB hB' (bT_mem C ρ t) (xB_mvB_torAt C hB ρ t) c c' Q hQ φ hφ, smul_smul, detPow_torAt C hB ρ t m, bchar_bT, scalar_eq t (m ρ) (ThFr.wtOf C.X C.hr c c' S.rank (C. …`.
+-/
 theorem torAt_fvec : ∀ (D : D7) (S T : HSp D) (C : Ctx S T) (om : GA D S × GA D T →* Module.End ℂ (WO S T → ℂ)), IsWeak C.ψ S T om → ∀ B, C.IsB B → ∀ f, C.IsTh f → C.IsFock B f → ∀ (c : C.X.Ψ → Fin C.q0 → ℕ) (c' : C.X.Ψ → Fin C.X.p0 → ℕ) (Q : MvPolynomial (FVar D T.rank S.rank) ℂ), C.toH Q ∈ Harm.rowHighest ℂ c c' → ∀ (ρ : D.what₂.Tau) (t : Fin T.rank → ℝ) (m : D.what₂.Tau → ℤ), RealScal C om B (torAt C.θ T B ρ t) (detPow C.θ T m (torAt C.θ T B ρ t)) → torAt C.θ T B ρ t ∈ GinfC T ∧ om (1, torAt C.θ T B ρ t) (C.fvec B f Q) = cexp (((∑ a, ((m ρ - ThFr.wtOf C.X C.hr c c' S.rank (C.m.e ρ) a : ℤ) : ℝ) * t a : ℝ) : ℂ) * I) • C.fvec B f Q := by
   intro D S T C om hom B hB f hf hF c c' Q hQ ρ t m hz
   refine ⟨GlobalTheory.PointAtPlaceHom.atTau_mem T ρ _, ?_⟩

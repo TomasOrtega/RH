@@ -11,6 +11,17 @@ open IsLocalRing Matrix Filter UpperTheory.V.Alg UpperTheory.V.W UpperTheory.V.A
 open scoped TensorProduct
 open UpperTheory.V.CA
 
+/- English proof (translation)
+Take `⟨s, hs, hgen⟩` from `h`. Use `haveI : Finite s := hs.to_subtype`. Rewrite `hgen` using `[topGen_iff]`. Use `Finite.of_injective (fun φ : {φ : G →* Z // IsOpen (φ.ker : Set G)} => fun x : s => φ.1 x) ?_` and prove the remaining obligations. Introduce `φ ψ hφψ`.
+
+Apply `Subtype.ext` to reduce the goal to its premises. Establish `hE : Subgroup.closure s ≤ φ.1.eqLocus ψ.1`. Rewrite using `[Subgroup.closure_le]`. Introduce `x hx`. Conclude with `congrFun hφψ ⟨x, hx⟩`.
+
+Establish `hopen : IsOpen (φ.1.eqLocus ψ.1 : Set G)`. Apply `Subgroup.isOpen_mono (H₁ := φ.1.ker ⊓ ψ.1.ker)` to reduce the goal to its premises. Introduce `x hx`. Rewrite `hx` using `[Subgroup.mem_inf, MonoidHom.mem_ker, MonoidHom.mem_ker]`. Use `show φ.1 x = ψ.1 x`.
+
+Rewrite using `[hx.1, hx.2]`. Rewrite using `[Subgroup.coe_inf]`. Conclude with `φ.2.inter ψ.2`. Establish `hclosed : IsClosed (φ.1.eqLocus ψ.1 : Set G)` using `Subgroup.isClosed_of_isOpen _ hopen`. Establish `htop : (Subgroup.closure s).topologicalClosure ≤ φ.1.eqLocus ψ.1` using `Subgroup.topologicalClosure_minimal _ hE hclosed`.
+
+Rewrite `htop` using `[hgen]`. Use extensionality with `x`. Conclude with `htop (Subgroup.mem_top x)`.
+-/
 private theorem oo_finite_hom (G : Type) [Group G] [TopologicalSpace G] [IsTopologicalGroup G] (h : TopFG G)
     (Z : Type) [Group Z] [Finite Z] : Finite {φ : G →* Z // IsOpen (φ.ker : Set G)} := by
   obtain ⟨s, hs, hgen⟩ := h
@@ -38,12 +49,20 @@ private theorem oo_finite_hom (G : Type) [Group G] [TopologicalSpace G] [IsTopol
   ext x
   exact htop (Subgroup.mem_top x)
 
+/- English proof (translation)
+Introduce `H hH`. Use `haveI : NeZero l := ⟨(Fact.out : l.Prime).ne_zero⟩`. Conclude with `oo_finite_hom H ((TopFG.subgroup_quot G h).1 H hH) (Multiplicative (ZMod l))`.
+-/
 private theorem oo_phi (G : Type) [Group G] [TopologicalSpace G] [IsTopologicalGroup G] [CompactSpace G]
     (l : ℕ) [Fact l.Prime] (h : TopFG G) : PhiCond G l := by
   intro H hH
   haveI : NeZero l := ⟨(Fact.out : l.Prime).ne_zero⟩
   exact oo_finite_hom H ((TopFG.subgroup_quot G h).1 H hH) (Multiplicative (ZMod l))
 
+/- English proof (translation)
+Establish `h1 : (MonoidAlgebra.mapDomainRingHom (Polynomial A) φ) (MonoidAlgebra.single 1 Polynomial.X - (MonoidAlgebra.mapRingHom H Polynomial.C) (MonoidAlgebra.single g 1)) = MonoidAlgebra.single 1 Polynomial.X - (MonoidAlgebra.mapRingHom G Polynomial.C) (MonoidAlgebra.single (φ g) 1)`. Rewrite using `[map_sub]`. Simplify using `[MonoidAlgebra.mapDomain_single]`. Use `show (-1) ^ i * ((D.D (Polynomial A)) ((MonoidAlgebra.mapDomainRingHom (Polynomial A) φ) _)).coeff (n - i) = _`. Rewrite using `[h1]`.
+
+Both sides reduce to the same expression.
+-/
 private theorem oo_lam_comap {n : ℕ} {A G H : Type} [CommRing A] [Group G] [Group H] (D : GDet n A G) (φ : H →* G)
     (i : ℕ) (g : H) : (D.comap φ).lam i (MonoidAlgebra.single g 1) = D.lam i (MonoidAlgebra.single (φ g) 1) := by
   have h1 : (MonoidAlgebra.mapDomainRingHom (Polynomial A) φ)
@@ -55,6 +74,25 @@ private theorem oo_lam_comap {n : ℕ} {A G H : Type} [CommRing A] [Group G] [Gr
   rw [h1]
   rfl
 
+/- English proof (translation)
+Use `haveI : IsAdicComplete (maximalIdeal R) R := IsCO.complete (O := O)`. Use `set e : ResidueField O →+* ResidueField R := ResidueField.map (algebraMap O R) with he_def`. Establish `hbij : Function.Bijective e` using `resMap_bijective O R`. Use `haveI : Finite (ResidueField R) := Finite.of_surjective e hbij.2`. Use `haveI : CharP (ResidueField R) l := charP_of_injective_ringHom hbij.1 l`.
+
+Set `χ : Fin n → G →* (ResidueField R)ˣ` to `fun i => pushCh e ((r.chib i).comp p)`. Establish `hres : residue R = e.comp (res O R : R →+* ResidueField O)`. Use extensionality with `x`. Conclude with `((RingEquiv.ofBijective e hbij).apply_symm_apply (residue R x)).symm`. Establish `hmap : D.map (residue R) = GDet.ofChars χ`.
+
+Rewrite using `[hres, ← (d_gmap D).2.1, hr]`. Apply `GDet.ext` to reduce the goal to its premises. Introduce `B _ _ x`. Simplify using `only [GDet.map, GDet.comap, GDet.ofChars, GDet.ofRep, Resid.Dbar, MonoidHom.comp_apply]`. Use `congr 1`.
+
+Proceed by induction on `x using MonoidAlgebra.induction_linear with`. Consider the case `zero => simp`. Consider the case `add a b ha hb`. Simplify using `only [RingHom.toMonoidHom_eq_coe, MonoidHom.coe_coe, AlgHom.toRingHom_eq_coe, RingHom.coe_coe, AlgHom.coe_toRingHom, map_add] at ha hb ⊢`. Rewrite using `[ha, hb]`.
+
+Consider the case `single g b`. Simplify using `[GDet.repAlg, MonoidAlgebra.lift_single, diagRep, GDet.diagRep, χ, pushCh, MonoidAlgebra.mapDomain_single]`. Both sides reduce to the same expression. Establish `hopen : ∀ i, IsOpen ((χ i).ker : Set G)`. Introduce `i`.
+
+Establish `hk : ((χ i).ker : Set G) = p ⁻¹' ((r.chib i).ker : Set F.G₀)`. Use extensionality with `g`. Simplify using `only [Set.mem_preimage, SetLike.mem_coe, MonoidHom.mem_ker, χ, pushCh, MonoidHom.comp_apply]`. Conclude with `(Units.map_injective (f := (e : ResidueField O →* ResidueField R)) hbij.1).eq_iff' (map_one _)`. Rewrite using `[hk]`.
+
+Conclude with `(r.chib_open i).preimage hp`. Establish `hinj : Function.Injective χ`. Introduce `i j hij`. Apply `r.chib_inj` to reduce the goal to its premises. Apply `MonoidHom.ext` to reduce the goal to its premises.
+
+Introduce `g'`. Take `⟨g, rfl⟩` from `hs g'`. Establish `h1` using `congrArg (fun φ : G →* (ResidueField R)ˣ => φ g) hij`. Simplify using `only [χ, pushCh, MonoidHom.comp_apply] at h1`. Conclude with `Units.map_injective (f := (e : ResidueField O →* ResidueField R)) hbij.1 h1`.
+
+Take `⟨hh, hmf⟩` from `exists_multFree_of_phiCond_of_injective_chars l χ h0 hopen hinj`. Conclude with `(g_kills_tr D χ hc hmap hmf hn y).mpr hy`.
+-/
 private theorem oo_kills {l : ℕ} [Fact l.Prime] {F : GFrame l} {O : Type} [CommRing O] [IsLocalRing O]
     [Finite (ResidueField O)] [CharP (ResidueField O) l]
     [Algebra ℤ_[l] O] {n : ℕ} (r : Resid F O n) {G : Type} [Group G] [TopologicalSpace G] [IsTopologicalGroup G]
@@ -111,6 +149,13 @@ section
 variable {O : Type} [CommRing O] [IsLocalRing O] {R R' : Type} [CommRing R] [Algebra O R] [IsCO O R]
   [CommRing R'] [Algebra O R'] [IsCO O R'] (f : R →ₐ[O] R')
 
+/- English proof (translation)
+Introduce `N`. Establish `hm : maximalIdeal R ≤ (maximalIdeal R').comap (f : R →+* R')`. Introduce `x hx`. Rewrite using `[Ideal.mem_comap, ← res_eq_zero_iff O, RingHom.coe_coe, res_map, res_eq_zero_iff]`. Conclude with `hx`.
+
+Establish `hN : maximalIdeal R ^ N ≤ (maximalIdeal R' ^ N).comap (f : R →+* R')`. Rewrite using `[← Ideal.map_le_iff_le_comap, Ideal.map_pow]`. Conclude with `Ideal.pow_right_mono (Ideal.map_le_iff_le_comap.mpr hm) N`. Establish `h1` using `(hu N).comp (Ideal.quotientMap (maximalIdeal R' ^ N) (f : R →+* R') hN)`. Use `h1 using 1` and compare the differences between its conclusion and the goal.
+
+Use function extensionality and compare the values at `g`. Simplify using `[Ideal.quotientMap_mk]`.
+-/
 private theorem oo_adic_map {Γ : Type} [TopologicalSpace Γ] {u : Γ → R} (hu : AdicCont (maximalIdeal R) u) :
     AdicCont (maximalIdeal R') fun g => f (u g) := by
   intro N
@@ -126,6 +171,13 @@ private theorem oo_adic_map {Γ : Type} [TopologicalSpace Γ] {u : Γ → R} (hu
   funext g
   simp [Ideal.quotientMap_mk]
 
+/- English proof (translation)
+Take `⟨hc, hr⟩` from `h`. Use `⟨fun i => ?_, ?_⟩` and prove the remaining obligations. Establish `key : ∀ g : G, (D.map (f : R →+* R')).lam i (MonoidAlgebra.single g 1) = f (D.lam i (MonoidAlgebra.single g 1))`. Introduce `g`. Establish `h2` using `((d_gmap D).2.2.1 (f : R →+* R') (MonoidAlgebra.single g 1)).2 i`.
+
+Simplify using `using h2`. Use `show AdicCont _ fun g => (D.map (f : R →+* R')).lam i (MonoidAlgebra.single g 1)`. Simplify using `only [key]`. Conclude with `oo_adic_map f (hc i)`. Rewrite using `[(d_gmap D).2.1]`.
+
+Establish `h3 : (res O R' : R' →+* ResidueField O).comp (f : R →+* R') = res O R`. Use extensionality with `x`. Simplify using `[res_map]`. Rewrite using `[h3, hr]`.
+-/
 private theorem oo_def_map {n : ℕ} {G : Type} [Group G] [TopologicalSpace G] {Dbar : GDet n (ResidueField O) G}
     {D : GDet n R G} (h : IsDef O Dbar D) : IsDef O Dbar (D.map (f : R →+* R')) := by
   obtain ⟨hc, hr⟩ := h
@@ -146,6 +198,23 @@ private theorem oo_def_map {n : ℕ} {G : Type} [Group G] [TopologicalSpace G] {
 
 end
 
+/- English proof (translation)
+Introduce `l _ L G0 T Λ n O _ _ _ _ _ r B _ _ _ u J D A W _ hn`. Use `haveI : Finite (ResidueField O) := IsCoef.finite (l := l)`. Use `haveI : CharP (ResidueField O) l := IsCoef.char`. Establish `hdef : IsDef O (r.Dbar.comap (Λ.h.p₀.comp (πo0 Λ))) (W.t.D.map ((Ideal.Quotient.mkₐ O (ii W) : W.R →ₐ[O] W.R ⧸ ii W) : W.R →+* W.R ⧸ ii W))` using `oo_def_map (Ideal.Quotient.mkₐ O (ii W)) ⟨W.t.cont, W.t.red⟩`. Establish `hmk : ((Ideal.Quotient.mkₐ O (ii W) : W.R →ₐ[O] W.R ⧸ ii W) : W.R →+* W.R ⧸ ii W) = Ideal.Quotient.mk (ii W)` using `rfl`.
+
+Rewrite `hdef` using `[hmk]`. Establish `hpc : Continuous (Λ.h.p₀.comp (πo0 Λ))` using `Λ.h.p₀_cont.comp Λ.πo0_cont`. Establish `hps : Function.Surjective (Λ.h.p₀.comp (πo0 Λ))` using `Λ.h.p₀_surj.comp Λ.πo0_surj`. Establish `hfgPh : TopFG Λ.Ph`. Take `⟨s, hs⟩` from `Λ.fg`.
+
+Conclude with `⟨s, s.finite_toSet, (topGen_iff _).mpr hs⟩`. Establish `hfg : TopFG (Ph0 Λ)` using `(TopFG.subgroup_quot Λ.Ph hfgPh).1 (Ph0 Λ) Λ.Ph0_open`. Establish `hphi : PhiCond (Ph0 Λ) l` using `oo_phi (Ph0 Λ) l hfg`. Establish `hkill : ∀ k : Ph0 Λ, πo0 Λ k = 1 → (W.t.D.map (Ideal.Quotient.mk (ii W))).Kills (MonoidAlgebra.single k 1 - 1)`. Introduce `k hk`.
+
+Apply `oo_kills r (Λ.h.p₀.comp (πo0 Λ)) hpc hps hphi _ hdef.cont hdef.red hn` to reduce the goal to its premises. Introduce `g`. Establish `hy : MonoidAlgebra.mapRingHom (Ph0 Λ) (Ideal.Quotient.mk (ii W)) (MonoidAlgebra.single g 1 * (MonoidAlgebra.single k 1 - 1)) = MonoidAlgebra.single g 1 * (MonoidAlgebra.single k 1 - 1)`. Simplify using the standard rewrite rules. Establish `h1` using `((d_gmap W.t.D).2.2.1 (Ideal.Quotient.mk (ii W)) (MonoidAlgebra.single g 1 * (MonoidAlgebra.single k 1 - 1))).2 1`.
+
+Rewrite `h1` using `[hy]`. Use `show (W.t.D.map (Ideal.Quotient.mk (ii W))).lam 1 _ = 0`. Rewrite using `[h1, Ideal.Quotient.eq_zero_iff_mem]`. Conclude with `Ideal.subset_span (Rel.ker g k hk)`. Take `⟨D', hD'⟩` from `gdet_desc n (W.R ⧸ ii W) (Ph0 Λ) Λ.G.G₀ (πo0 Λ) (W.t.D.map (Ideal.Quotient.mk (ii W))) Λ.πo0_surj hkill`.
+
+Use `⟨D', hD', ?_⟩` and prove the remaining obligations. Introduce `i N`. Establish `h2` using `hdef.cont i N`. Rewrite `h2` using `[← hD']`. Simplify using `only [oo_lam_comap] at h2`.
+
+Introduce `S`. Establish `h4 : IsClosed (πo0 Λ ⁻¹' ((fun g => Ideal.Quotient.mk (maximalIdeal (W.R ⧸ ii W) ^ N) (D'.lam i (MonoidAlgebra.single g 1))) ⁻¹' Sᶜ))` using `(h2 S).isClosed_compl`. Establish `hcm : IsClosedMap (πo0 Λ)` using `Λ.πo0_cont.isClosedMap`. Establish `hsj : Function.Surjective (πo0 Λ)` using `Λ.πo0_surj`. Establish `h5` using `hcm _ h4`.
+
+Rewrite `h5` using `[Set.image_preimage_eq _ hsj, Set.preimage_compl]`. Conclude with `isClosed_compl_iff.mp h5`.
+-/
 theorem UpperTheory.V.Pa.Core.ooDet :
     ∀ (l : ℕ) [Fact l.Prime] (L : Loc) (G0 : Glob l L) (T : TWGrp G0) (Λ : Lim T) (n : ℕ) (O : Type) [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] [IsCoef l O] [Algebra ℤ_[l] O] (r : Resid G0.frame O n) (B : Type) [CommRing B] [Algebra O B] [IsCO O B] (u : Pair r B) (J : Ideal B) (D : ℕ) (A : TWAut u J Unit D T) (W : RRObj Λ A) [IsCO O (W.R ⧸ ii W)], 1 ≤ n → ∃ D' : GDet n (W.R ⧸ ii W) Λ.G.G₀, D'.comap (πo0 Λ) = W.t.D.map (Ideal.Quotient.mk (ii W)) ∧ D'.IsCont (maximalIdeal (W.R ⧸ ii W)) := by
   intro l _ L G0 T Λ n O _ _ _ _ _ r B _ _ _ u J D A W _ hn

@@ -16,6 +16,15 @@ variable {D : D7} {O : Obj D} {c : ℝ}
 
 set_option maxHeartbeats 800000 in
 
+/- English proof (translation)
+Establish `key : ∀ k : Bl.RPk b.R b.S, k = Bl.rpkX y.y → ∀ (t : k.P.T) (F : Fin ((k.P.A3.side3 k.P.Ps k.P.ψs k.P.Zs).nV t) → D.what₂.LL) (F' : Fin ((k.B.Q.F.fc (k.B.Q.Rl.toCx3 k.B.Q.F).zs).Df1.nV t) → D.what₂.LL), HEq F F' → ∃ (s : x.T) (v : Fin (rDim D x.A3.A x.F.P1 x.F.ψ1 s) → D.what₂.LL) …`. Introduce `k hk`. Substitute `hk` using the available equality. Introduce `t F F' hF`. Establish `e : F = F'` using `eq_of_heq hF`.
+
+Substitute `e` using the available equality. Use `⟨t, (rV0 D x.A3.A x.F.P1 x.F.ψ1 t).mulVec F, rfl, heq_of_eq ?_, HEq.rfl⟩` and prove the remaining obligations. Establish `hOk` using `y.intersectionNumber_baseChange.ok`. Establish `hb : BlockHyp (x.A3.A.fam.R t) (x.A3.A.fam.lvl x.F.P1 x.F.ψ1) x.A3.A.fam.v0 1` using `⟨hOk.ok2.conj, hOk.ok2.irr, hOk.ok2.what₂ t⟩`. Establish `key` using `BlockDat.lf_lvl_vE hb`.
+
+Unfold `R3.rowForm rV0`. Use `show (x.A3.A.fam.R t).S.basis.equivFun.symm (((x.A3.A.fam.R t).vE (x.A3.A.fam.lvl x.F.P1 x.F.ψ1)) *ᵥ F) = _`. Use `congr 1`. Use `conv_lhs => rw [← key]`. Rewrite using `[Matrix.mul_assoc]`.
+
+Conclude with `(Matrix.mulVec_mulVec _ _ _).symm`. Conclude with `key (Bl.rpkB b) y.eq t F F' hF`.
+-/
 theorem row_of_btw (b : Bundle D O c) (x : R3.TwIn O.ex) (y : Bl.BTw b x) (t : (packB b).P.T)
     (F : Fin (((packB b).P.A3.side3 (packB b).P.Ps (packB b).P.ψs (packB b).P.Zs).nV t) → D.what₂.LL)
     (F' : Fin (((packB b).Q.F.fc (cxW (packB b)).zs).Df1.nV t) → D.what₂.LL) (hF : HEq F F') :
@@ -54,6 +63,11 @@ open GlobalTheory.Mem.Col2 GlobalTheory.Mem.Top.Bl
 
 set_option maxHeartbeats 800000 in
 
+/- English proof (translation)
+Consider the cases of `x with`. Consider the case `mk G Pl0 I0 T' A3 core R F cG geo pins err' Y Z' C' sEE div JA amb0 JM mjH`. Consider the cases of `pack`. Substitute `hP` using the available equality. Consider the cases of `hψ`.
+
+Consider the cases of `hτ`. Consider the cases of `hj`. Conclude with `⟨s, v, rfl, HEq.rfl, HEq.rfl⟩`.
+-/
 theorem row_of_pack {D : D7} {L : SizeData₂ D} {hT : GatTies D} {Gi : Formalism.MainNotions.G.Inst D L} {Gl : Formalism.MainNotions.G.LatInst D}
     {Kc : Formalism.MainNotions.G.Consts} {Yd : DivX D} {cX : ExtraC} {ex : Extra D L hT Gi Gl Kc Yd cX} (x : R3.TwIn ex)
     {G : Type} [g : Group G] [fi : Fintype G] {Pl0 I0 T0 : Type} (A3 : FamIn3 D.what₂.LL G Pl0 I0 (List ℕ) T0 D.R.m)
@@ -80,6 +94,9 @@ theorem row_of_pack {D : D7} {L : SizeData₂ D} {hT : GatTies D} {Gi : Formalis
 
 set_option maxHeartbeats 800000 in
 
+/- English proof (translation)
+The claim follows from `row_of_pack a.x (R3.famT t) a.pack (R3.lev1 w.I) (R3.chr1 w.I) rfl HEq.rfl t.r.Y.tup t.r.Y.jA a.tup a.jA s v`.
+-/
 theorem row_of_args {K : Ctx} {B : GlobalTheory.Mem.Base} {f : GlobalTheory.Mem.Top.Fr B.toPre} {T : TwDat B} {w : ColW B f T} {Z : w.Lt} {Wt : Set B.places.Pl}
     {L : SizeData₂ (w.st Z).toD7} {hT : GatTies (w.st Z).toD7} {Gi : Formalism.MainNotions.G.Inst (w.st Z).toD7 L} {Gl : Formalism.MainNotions.G.LatInst (w.st Z).toD7}
     {Kc : Formalism.MainNotions.G.Consts} {Yd : DivX (w.st Z).toD7} {cX : ExtraC} {ex : Extra (w.st Z).toD7 L hT Gi Gl Kc Yd cX}
@@ -94,6 +111,9 @@ theorem row_of_args {K : Ctx} {B : GlobalTheory.Mem.Base} {f : GlobalTheory.Mem.
 
 set_option maxHeartbeats 800000 in
 
+/- English proof (translation)
+Take `⟨τ, hτ⟩` from `s`. Simplify using `only at h`. Substitute `h` using the available equality. Conclude with `⟨v, fun i i' e => congrArg v (Fin.ext e), HEq.rfl⟩`.
+-/
 theorem rowForm_all (X : Stages) {px : PreX X.B.toPre} (I : ColIn X.B px) (hX : X.B.fields.Ok) (U : Set I.ι)
     (Xg : Finset (R3.Gc X.B px → X.B.LL)) (tr : R3.TrI X.B px) (s : R3.TupU I U) (a : I.ι) (h : s.1 = I.tup a)
     (v : Fin (rDim X.toD7 (R3.famR X I hX U Xg tr).A (R3.lev1 I) (R3.chr1 I) s) → X.toD7.what₂.LL) :
@@ -108,6 +128,13 @@ theorem rowForm_all (X : Stages) {px : PreX X.B.toPre} (I : ColIn X.B px) (hX : 
 
 set_option maxHeartbeats 800000 in
 
+/- English proof (translation)
+Establish `hs : s.1 = w.I.tup (t.r.Y.tup s)` using `(R3.tup_ixOf w.I s).symm.trans (congrArg w.I.tup (t.r.tup_ix s)).symm`. Take `⟨v', hv, hf⟩` from `rowForm_all (w.st Z) w.I t.hX _ t.r.z.Xg t.r.z.tr s (t.r.Y.tup s) hs v`. Establish `hj : rx.all.jA (t.r.Y.tup s) v' = t.r.Y.jA s v` using `(rx.jA_use s).2 v' v hv`. Take `⟨x, ⟨φ, hφ, hres, hx⟩, he⟩` from `rx.crd (t.r.Y.tup s) v'`. Substitute `hx` using the available equality.
+
+Use `⟨φ, ⟨_, hres.trans hf⟩, fun u => ?_⟩` and prove the remaining obligations. Rewrite using `[← hj, he]`. Establish `key : ∀ (a : w.C.Tup) (φ : Frm w.I a) hφ, RecVal (I` using `w.I) (l := w.l) (Z := Z) u a φ (rx.e a (Df.toCx w.I t.hX a ⟨φ.1, hφ⟩)) := by`. Introduce `a φ hφ`. Use `⟨fun h => ?_, fun p => rx.eMtTw u a _ p⟩` and prove the remaining obligations.
+
+Substitute `h` using the available equality. Conclude with `fun p => rx.eMt0 u _ p`. Conclude with `key _ φ hφ`.
+-/
 theorem one_form_rows {K : Ctx} {B : GlobalTheory.Mem.Base} {f : GlobalTheory.Mem.Top.Fr B.toPre} {T : TwDat B} {w : ColW B f T} {Z : w.Lt} {Wt : Set B.places.Pl}
     {p0 : BaseLevelRowSide (w.D Z)} {t : RowsT K w Z Wt p0} (rx : RXs t) (s : R3.TupU w.I (R3.usedOf w.I T Wt))
     (v : Fin (rDim (w.st Z).toD7 (R3.famT t).A (R3.lev1 w.I) (R3.chr1 w.I) s) → (w.st Z).toD7.what₂.LL) :
@@ -132,6 +159,9 @@ theorem one_form_rows {K : Ctx} {B : GlobalTheory.Mem.Base} {f : GlobalTheory.Me
 
 end Rows
 
+/- English proof (translation)
+Substitute `ha` using the available equality. Consider the cases of `hx`. Consider the cases of `hG`. Conclude with `h`.
+-/
 theorem one_form_congr {B : GlobalTheory.Mem.Base} {X : PreX B.toPre} {I : Col2.TC B X} {l : I.Laws} {Z : Col2.TC.Later B (I.cols l)}
     {a a' : (I.rec7 l Z).what₂.Tup} {V V' : Type} {x : V} {x' : V'} {G : (I.rec7 l Z).what₂.Amb a} {G' : (I.rec7 l Z).what₂.Amb a'}
     (ha : a = a') (hx : HEq x x') (hG : HEq G G') (h : ∃ φ : Frm I a', IsRes φ x' ∧ ∀ u, RecVal u a' φ G') :
@@ -143,6 +173,9 @@ theorem one_form_congr {B : GlobalTheory.Mem.Base} {X : PreX B.toPre} {I : Col2.
 
 set_option maxHeartbeats 800000 in
 
+/- English proof (translation)
+Establish `e : a.x = x` using `eq_of_heq ax`. Substitute `e` using the available equality. Take `⟨s', v', k1, k2, k3⟩` from `row_of_args (w := q.w) (Z := q.Z) (ex := q.O.ex) (t := q.x.what₂) a s v`. Conclude with `one_form_congr (I := q.w.I) (l := q.w.l) (Z := q.Z) k1 k2 k3 (one_form_rows rx s' v')`.
+-/
 theorem one_form {hL : GlobalTheory.Published.LocalLanglandsGL} {p : Bl.Prm hL} {K : Ctx} (q : Bl.WPt p.s K) (x : R3.TwIn q.O.ex)
     (a : R3.TwArgs q.O.ex q.x.what₂) (ax : HEq a.x x) (rx : Bl.RXs q.x.what₂) (s : x.T)
     (v : Fin (rDim (q.w.D q.Z) x.A3.A x.F.P1 x.F.ψ1 s) → (q.w.D q.Z).what₂.LL) :
@@ -155,6 +188,9 @@ theorem one_form {hL : GlobalTheory.Published.LocalLanglandsGL} {p : Bl.Prm hL} 
 
 set_option maxHeartbeats 800000 in
 
+/- English proof (translation)
+Introduce `hL p K q c b hb hR t F F' hF`. Take `⟨rx⟩` from `hR`. Take `⟨s, v, h1, h2, h3⟩` from `row_of_btw b hb.x hb.y t F F' hF`. Conclude with `one_form_congr (I := q.w.I) (l := q.w.l) (Z := q.Z) h1 h2 h3 (one_form q hb.x hb.a hb.ax rx s v)`.
+-/
 theorem recVal_packB : ∀ {hL : GlobalTheory.Published.LocalLanglandsGL} {p : Bl.Prm hL} {K : Ctx} (q : Bl.WPt p.s K) {c : ℝ} (b : Bundle (q.w.D q.Z) q.O c), Bl.BWit q b → Nonempty (Bl.RXs q.x.what₂) → ∀ (t : (packB b).P.T) (F : Fin (((packB b).P.A3.side3 (packB b).P.Ps (packB b).P.ψs (packB b).P.Zs).nV t) → (q.w.D q.Z).what₂.LL) (F' : Fin (((packB b).Q.F.fc (cxW (packB b)).zs).Df1.nV t) → (q.w.D q.Z).what₂.LL), HEq F F' → ∃ φ : GlobalTheory.TopVal.Frm q.w.I ((packB b).P.I.tup t), GlobalTheory.TopVal.IsRes φ ((packB b).Q.F.eV (cxW (packB b)).zs t F') ∧ ∀ u, GlobalTheory.TopVal.RecVal (I := q.w.I) (l := q.w.l) (Z := q.Z) u ((packB b).P.I.tup t) φ ((packB b).P.I.jA t ((rV0 (q.w.D q.Z) (packB b).P.A3.A (packB b).P.Ps (packB b).P.ψs t).mulVec F)) := by
   intro hL p K q c b hb hR t F F' hF
   obtain ⟨rx⟩ := hR

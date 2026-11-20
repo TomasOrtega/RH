@@ -15,6 +15,15 @@ open GlobalTheory.WpFam
 
 namespace GlobalTheory.WpFam
 
+/- English proof (translation)
+Introduce `N _ x γ τ`. Establish `h` using `congrFun (EisensteinSeries.G2_slash_action γ) τ`. Rewrite `h` using `[ModularForm.SL_slash_apply, Pi.sub_apply, EisensteinSeries.D2]`. Establish `hj : UpperHalfPlane.denom γ τ ≠ 0` using `UpperHalfPlane.denom_ne_zero _ _`. Establish `hd : UpperHalfPlane.denom γ τ = ((γ 1 0 : ℤ) : ℂ) * τ + ((γ 1 1 : ℤ) : ℂ)`.
+
+Simplify using `[ModularGroup.denom_apply]`. Establish `hG : EisensteinSeries.G2 (γ • τ) = UpperHalfPlane.denom γ τ ^ 2 * EisensteinSeries.G2 τ - 2 * Real.pi * Complex.I * ((γ 1 0 : ℤ) : ℂ) * UpperHalfPlane.denom γ τ`. Rewrite `h` using `[zpow_neg, zpow_ofNat]`. Clear denominators, using `at h` for the nonvanishing conditions. Take the linear combination `h`.
+
+Establish `hwp` using `((GlobalTheory.QFam.isFam_iff_values _ _ _ _).1 (GlobalTheory.T.weierstrassP_torsion_isModularFamily N).1) x γ τ`. Establish `hpi : (2 * Real.pi * Complex.I : ℂ) ≠ 0`. Simplify using `[Real.pi_ne_zero, Complex.I_ne_zero]`. Rewrite `hwp` using `[zpow_ofNat]`. Rewrite using `[wB, wB, gN, gN, hwp, hG, hd]`.
+
+Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem wB_smul_transform : ∀ (N : ℕ) [NeZero N] (x : Fin 2 → ZMod N) (γ : SL(2, ℤ)) (τ : ℍ), wB N x (γ • τ) = (((γ : Matrix (Fin 2) (Fin 2) ℤ) 1 0 * (τ : ℂ) + (γ : Matrix (Fin 2) (Fin 2) ℤ) 1 1) : ℂ) ^ 2 * wB N (vact N x γ) τ - ((γ : Matrix (Fin 2) (Fin 2) ℤ) 1 0 : ℂ) * ((γ : Matrix (Fin 2) (Fin 2) ℤ) 1 0 * (τ : ℂ) + (γ : Matrix (Fin 2) (Fin 2) ℤ) 1 1) / (2 * Real.pi * Complex.I) := by
   intro N _ x γ τ
   have h := congrFun (EisensteinSeries.G2_slash_action γ) τ

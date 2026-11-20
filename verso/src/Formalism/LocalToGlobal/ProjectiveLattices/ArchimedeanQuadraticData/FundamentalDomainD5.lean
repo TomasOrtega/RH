@@ -14,6 +14,121 @@ namespace Formalism.L2.Pj.FundamentalDomainD5
 
 open NumberField Matrix ComplexConjugate ReciprocityTheory.MultiplicativeHeights
 
+/- English proof (translation)
+Introduce `K _ _ _ ι _ _ r p S σ Q L laStar hinj hcm hp hla hQ hform hL hSD hmin`. Introduce `μ`. Break down `Nat.eq_zero_or_pos r with hr0 | hr0` into its components or cases. Substitute `hr0` using the available equality. Use `⟨fun w => ⟨0, L.zero_mem, ?_⟩, fun j => j.elim0, fun j => j.elim0, linearIndependent_empty_type, fun j => j.elim0⟩` and prove the remaining obligations.
+
+Simplify using `[normSq]`. Check the signs of the components of the expression. Use `set f := Fintype.card ι with hf`. Establish `hdeg : Module.finrank ℚ K = 2 * f` using `finrank_cmType σ hinj hcm`. Use `set N := Module.finrank ℚ K * r with hN`.
+
+Establish `hNpos : 0 < N` using `Nat.mul_pos Module.finrank_pos hr0`. Take `⟨e, heL, heli, hecoord⟩` from `lattice_zbasis L hL.1 hL.2`. Establish `hcardN : Fintype.card (ι × Fin r × Fin 2) = N`. Simplify using `only [Fintype.card_prod, Fintype.card_fin, hN, hdeg, hf]`. Expand and normalize the polynomial expressions, which then agree.
+
+Set `eqv : Fin N ≃ ι × Fin r × Fin 2` to `(Fintype.equivFinOfCardEq hcardN).symm`. Set `A : Matrix (Fin N) (Fin N) ℝ` to `Matrix.of fun k j => rho eqv (Phi σ Q (e j)) k`. Establish `hAR : ∀ c : Fin N → ℝ, A *ᵥ c = ∑ j, c j • rho eqv (Phi σ Q (e j))`. Introduce `c`. Use function extensionality and compare the values at `k`.
+
+Simplify using `only [Matrix.mulVec, dotProduct, Finset.sum_apply, Pi.smul_apply, smul_eq_mul]`. Conclude with `Finset.sum_congr rfl fun j _ => mul_comm _ _`. Establish `hAQ : ∀ c : Fin N → ℚ, A *ᵥ (fun j => ((c j : ℚ) : ℝ)) = rho eqv (Phi σ Q (∑ j, c j • e j))`. Introduce `c`. Rewrite using `[hAR, Phi_sum, rho_sum]`.
+
+Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[Phi_qsmul, rho_smul]`. Set `T : Matrix (Fin N) (Fin N) ℚ` to `Matrix.of fun k j => Algebra.trace ℚ K (S.h (e k) (e j))`. Establish `hfinrank : Module.finrank ℚ (Fin r → K) = N`. Rewrite using `[Module.finrank_pi_fintype, Finset.sum_const, Finset.card_univ, Fintype.card_fin, smul_eq_mul, hN, mul_comm]`.
+
+Establish `: Nonempty (Fin N)` using `⟨⟨0, hNpos⟩⟩`. Set `eB : Module.Basis (Fin N) ℚ (Fin r → K)` to `basisOfLinearIndependentOfCardEqFinrank heli (by rw [Fintype.card_fin, hfinrank])`. Establish `heB : ∀ j, eB j = e j` using `fun j => by simp [eB]`. Establish `htrq : ∀ (q : ℚ) (z : K), Algebra.trace ℚ K ((q : K) * z) = q * Algebra.trace ℚ K z`. Introduce `q z`.
+
+Rewrite using `[← Rat.smul_def, map_smul, smul_eq_mul]`. Establish `hTdet : T.det ≠ 0`. Introduce `h0`. Take `⟨s, hs0, hs⟩` from `Matrix.exists_mulVec_eq_zero_iff.2 h0`. Use `set x := ∑ j, s j • e j with hx`.
+
+Establish `hx0 : x ≠ 0`. Introduce `hx0`. Conclude with `hs0 (funext fun j => Fintype.linearIndependent_iff.1 heli s hx0 j)`. Establish `hTx : ∀ k, Algebra.trace ℚ K (S.h (e k) x) = 0`. Introduce `k`.
+
+Establish `h1` using `congrFun hs k`. Simplify using `only [Matrix.mulVec, dotProduct, Matrix.of_apply, Pi.zero_apply, T] at h1`. Rewrite using `[hx, h_sum_right, map_sum]`. Simplify using `only [h_qsmul_right, htrq]`. Rewrite using `[← h1]`.
+
+Conclude with `Finset.sum_congr rfl fun j _ => mul_comm _ _`. Establish `hall : ∀ v : Fin r → K, Algebra.trace ℚ K (S.h v x) = 0`. Introduce `v`. Rewrite using `[← eB.sum_repr v, h_sum_left, map_sum]`. Use `Finset.sum_eq_zero fun k _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[heB, h_qsmul_left, htrq, hTx k, mul_zero]`. Conclude with `hx0 (nondeg σ Q hQ p S hform x hall)`. Establish `hid : ∀ y v : Fin r → K, rho eqv (Theta p (Phi σ Q y)) ⬝ᵥ rho eqv (Phi σ Q v) = (1 / 2 : ℝ) * ((Algebra.trace ℚ K (S.h y v) : ℚ) : ℝ)` using `trace_id σ hinj hcm Q p S hform eqv`. Establish `hAdet : A.det ≠ 0`. Introduce `h0`.
+
+Take `⟨c, hc0, hc⟩` from `Matrix.exists_mulVec_eq_zero_iff.2 h0`. Establish `hTR : (T.map (Rat.castHom ℝ)).det ≠ 0`. Rewrite using `[show T.map (Rat.castHom ℝ) = (Rat.castHom ℝ).mapMatrix T from rfl, ← RingHom.map_det]`. Conclude with `(map_ne_zero _).2 hTdet`. Apply `hc0` to reduce the goal to its premises.
+
+Use `Matrix.eq_zero_of_mulVec_eq_zero hTR ?_` and prove the remaining obligations. Use function extensionality and compare the values at `k`. Establish `h1 : rho eqv (Theta p (Phi σ Q (e k))) ⬝ᵥ (A *ᵥ c) = 0` using `by rw [hc, dotProduct_zero]`. Rewrite `h1` using `[hAR, dotProduct_sum]`. Simplify using `only [dotProduct_smul, hid, smul_eq_mul] at h1`.
+
+Simplify using `only [Matrix.mulVec, dotProduct, Matrix.map_apply, Matrix.of_apply, Pi.zero_apply, Rat.coe_castHom, T]`. Establish `h2 : ∑ j, ((Algebra.trace ℚ K (S.h (e k) (e j)) : ℚ) : ℝ) * c j = 2 * ∑ j, c j * ((1 / 2 : ℝ) * ((Algebra.trace ℚ K (S.h (e k) (e j)) : ℚ) : ℝ))`. Rewrite using `[Finset.mul_sum]`. Conclude with `Finset.sum_congr rfl fun j _ => by ring`. Rewrite using `[h2, h1, mul_zero]`.
+
+Use `set dK : ℝ := |(NumberField.discr K : ℝ)| with hdK`. Establish `hdpos : 0 < dK` using `abs_pos.2 (by exact_mod_cast NumberField.discr_ne_zero K)`. Use `set μ' : ℝ := laStar / dK with hμ'`. Establish `hμ'pos : 0 < μ'` using `div_pos hla hdpos`. Establish `hAu : IsUnit A.det` using `isUnit_iff_ne_zero.2 hAdet`.
+
+Establish `hTTdet : Tᵀ.det ≠ 0` using `by rw [Matrix.det_transpose]; exact hTdet`. Establish `hAtdet : Aᵀ.det ≠ 0` using `by rw [Matrix.det_transpose]; exact hAdet`. Establish `hdual : ∀ t : Fin N → ℤ, t ≠ 0 → μ' ^ 2 ≤ ((A⁻¹)ᵀ *ᵥ fun i => (t i : ℝ)) ⬝ᵥ ((A⁻¹)ᵀ *ᵥ fun i => (t i : ℝ))`. Introduce `t ht`. Use `set u := (A⁻¹)ᵀ *ᵥ fun i => (t i : ℝ) with hu`.
+
+Establish `hAtu : Aᵀ *ᵥ u = fun i => (t i : ℝ)`. Rewrite using `[hu, Matrix.mulVec_mulVec, ← Matrix.transpose_mul, Matrix.nonsing_inv_mul A hAu, Matrix.transpose_one, Matrix.one_mulVec]`. Use `set tq : Fin N → ℚ := fun i => (t i : ℚ) with htq`. Use `set s : Fin N → ℚ := (Tᵀ)⁻¹ *ᵥ ((2 : ℚ) • tq) with hs`. Establish `hTs : Tᵀ *ᵥ s = (2 : ℚ) • tq`.
+
+Rewrite using `[hs, Matrix.mulVec_mulVec, Matrix.mul_nonsing_inv _ (isUnit_iff_ne_zero.2 hTTdet), Matrix.one_mulVec]`. Use `set y := ∑ j, s j • e j with hy`. Establish `hyk : ∀ k, Algebra.trace ℚ K (S.h y (e k)) = 2 * (t k : ℚ)`. Introduce `k`. Establish `h1` using `congrFun hTs k`.
+
+Simplify using `only [Matrix.mulVec, dotProduct, Matrix.transpose_apply, Matrix.of_apply, Pi.smul_apply, smul_eq_mul, htq, T] at h1`. Rewrite using `[hy, h_sum_left, map_sum]`. Simplify using `only [h_qsmul_left, htrq]`. Rewrite using `[← h1]`. Conclude with `Finset.sum_congr rfl fun j _ => mul_comm _ _`.
+
+Establish `hAty : Aᵀ *ᵥ rho eqv (Theta p (Phi σ Q y)) = fun i => (t i : ℝ)`. Use function extensionality and compare the values at `k`. Establish `h1` using `hid y (e k)`. Rewrite `h1` using `[dotProduct]`. Simplify using `only [Matrix.mulVec, dotProduct, Matrix.transpose_apply, A, Matrix.of_apply]`.
+
+Rewrite using `[show (∑ m, rho eqv (Phi σ Q (e k)) m * rho eqv (Theta p (Phi σ Q y)) m) = ∑ m, rho eqv (Theta p (Phi σ Q y)) m * rho eqv (Phi σ Q (e k)) m from Finset.sum_congr rfl fun m _ => mul_comm _ _, h1, hyk k]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Establish `hu' : rho eqv (Theta p (Phi σ Q y)) = u`. Establish `h1 : Aᵀ *ᵥ (rho eqv (Theta p (Phi σ Q y)) - u) = 0`.
+
+Rewrite using `[Matrix.mulVec_sub, hAty, hAtu, sub_self]`. Conclude with `sub_eq_zero.1 (Matrix.eq_zero_of_mulVec_eq_zero hAtdet h1)`. Establish `hint : ∀ v ∈ L, ∃ n : ℤ, Algebra.trace ℚ K (S.h y v) = n`. Introduce `v hv`. Take `⟨n, hn⟩` from `hecoord v hv`.
+
+Use `⟨∑ k, n k * (2 * t k), ?_⟩` and prove the remaining obligations. Rewrite using `[hn, h_sum_right, map_sum]`. Use `push_cast`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[h_qsmul_right, htrq, hyk k]`.
+
+Establish `hdy : ((NumberField.discr K : ℤ) : K) • y ∈ L`. Use `hSD.2 _ fun v hv => ?_` and prove the remaining obligations. Establish `hz : ∀ a : 𝓞 K, ∃ n : ℤ, Algebra.trace ℚ K (S.h y v * a) = n`. Introduce `a`. Establish `hav : (a : K) • v ∈ L` using `L.smul_mem a hv`.
+
+Take `⟨n, hn⟩` from `hint _ hav`. Use `⟨n, ?_⟩` and prove the remaining obligations. Rewrite using `[mul_comm, ← h_smul_right, hn]`. Establish `hI` using `discr_mul_integral (S.h y v) hz`. Use `⟨⟨S.h (((NumberField.discr K : ℤ) : K) • y) v, ?_⟩, rfl⟩` and prove the remaining obligations.
+
+Rewrite using `[h_smul_left, map_intCast]`. Conclude with `hI`. Establish `hy0 : y ≠ 0`. Introduce `hy0`. Establish `hs0 : s = 0` using `funext fun j => Fintype.linearIndependent_iff.1 heli s hy0 j`.
+
+Apply `ht` to reduce the goal to its premises. Use function extensionality and compare the values at `i`. Establish `h1` using `congrFun hTs i`. Rewrite `h1` using `[hs0, Matrix.mulVec_zero]`. Simplify using `only [Pi.zero_apply, Pi.smul_apply, smul_eq_mul, htq] at h1`.
+
+Establish `h2 : (t i : ℚ) = 0` using `by linarith`. Conclude with `h2` after adjusting the coercions. Establish `hdy0 : ((NumberField.discr K : ℤ) : K) • y ≠ 0` using `smul_ne_zero (by exact_mod_cast NumberField.discr_ne_zero K) hy0`. Take `⟨i, hi⟩` from `hmin _ hdy hdy0`. Establish `hscale : normSq (Q i *ᵥ embVec (σ i) (((NumberField.discr K : ℤ) : K) • y)) = dK ^ 2 * normSq (Q i *ᵥ embVec (σ i) y)`.
+
+Rewrite using `[embVec_smul, Matrix.mulVec_smul, map_intCast]`. Simplify using `only [normSq, Pi.smul_apply, smul_eq_mul, norm_mul, mul_pow, Finset.mul_sum, Complex.norm_intCast]`. Rewrite using `[hdK, sq_abs]`. Establish `huu : u ⬝ᵥ u = majSq σ Q y` using `by rw [← hu', theta_dot_self, phi_dot_self]`. Rewrite using `[huu, hμ', div_pow, div_le_iff₀ (by positivity)]`.
+
+Establish `hle : normSq (Q i *ᵥ embVec (σ i) y) ≤ majSq σ Q y` using `Finset.single_le_sum (f := fun i => normSq (Q i *ᵥ embVec (σ i) y)) (fun j _ => Finset.sum_nonneg fun _ _ => sq_nonneg _) (Finset.mem_univ i)`. Combine the equalities or inequalities in the displayed calculation. Establish `hRdet : IsUnit ((A⁻¹)ᵀ).det`. Rewrite using `[Matrix.det_transpose]`. Conclude with `Matrix.isUnit_nonsing_inv_det A hAu`.
+
+Establish `hRinv : ((A⁻¹)ᵀ)⁻¹ᵀ = A`. Establish `h1 : ((A⁻¹)ᵀ)⁻¹ = Aᵀ` using `Matrix.inv_eq_right_inv (by`. Rewrite using `[← Matrix.transpose_mul, Matrix.mul_nonsing_inv A hAu, Matrix.transpose_one])`. Rewrite using `[h1, Matrix.transpose_transpose]`. Establish `hdual' : ∀ t : Fin N → ℤ, t ≠ 0 → μ' ^ 2 ≤ (fun i => (t i : ℝ)) ⬝ᵥ (((A⁻¹)ᵀᵀ * (A⁻¹)ᵀ) *ᵥ fun i => (t i : ℝ))`.
+
+Introduce `t ht`. Rewrite using `[← Matrix.mulVec_mulVec, Matrix.dotProduct_mulVec, Matrix.vecMul_transpose]`. Conclude with `hdual t ht`. Take `⟨c, hcli, hcb⟩` from `Formalism.MainNotions.ModuliIntegralCharts.H1.PhiCMin.shortDual_holds N ((A⁻¹)ᵀᵀ * (A⁻¹)ᵀ) (A⁻¹)ᵀ μ' hNpos rfl hRdet hμ'pos hdual' (N / μ') (by positivity)`. Rewrite `hcb` using `[hRinv]`.
+
+Use `set v : Fin N → Fin r → K := fun j => ∑ k, ((c j k : ℤ) : ℚ) • e k with hv`. Establish `hzsm : ∀ (n : ℤ) (x : Fin r → K), x ∈ L → ((n : ℚ) • x) ∈ L`. Introduce `n x hx`. Rewrite using `[Int.cast_smul_eq_zsmul]`. Conclude with `L.toAddSubgroup.zsmul_mem hx n`.
+
+Establish `hvL : ∀ j, v j ∈ L` using `fun j => L.sum_mem fun k _ => hzsm _ _ (heL k)`. Establish `hAv : ∀ j, A *ᵥ (fun k => (c j k : ℝ)) = rho eqv (Phi σ Q (v j))`. Introduce `j`. Rewrite using `[hv, ← hAQ]`. Use `congr 1`.
+
+Use `set ℓ : ℝ := 2 * (N : ℝ) / μ' with hℓ`. Establish `hcb' : ∀ j, (A *ᵥ fun k => (c j k : ℝ)) ⬝ᵥ (A *ᵥ fun k => (c j k : ℝ)) ≤ ℓ ^ 2`. Introduce `j`. Establish `h1` using `hcb j`. Establish `h2 : ((N : ℝ) / μ' + N / μ') = ℓ` using `by rw [hℓ]; ring`.
+
+Rewrite `h1` using `[h2]`. Then use the resulting hypothesis. Establish `hvb : ∀ j, majSq σ Q (v j) ≤ ℓ ^ 2`. Introduce `j`. Rewrite using `[← phi_dot_self σ Q eqv, ← hAv j]`. Conclude with `hcb' j`.
+
+Set `Cz : Matrix (Fin N) (Fin N) ℤ` to `Matrix.of c`. Establish `hCz : Cz.det ≠ 0`. Introduce `h0`. Take `⟨m, hm0, hm⟩` from `Matrix.exists_vecMul_eq_zero_iff.2 h0`. Apply `hm0` to reduce the goal to its premises.
+
+Use function extensionality and compare the values at `j`. Use `Fintype.linearIndependent_iff.1 hcli m ?_ j` and prove the remaining obligations. Use function extensionality and compare the values at `k`. Establish `h1` using `congrFun hm k`. Simplify `h1` using `[Matrix.vecMul, dotProduct, Cz, Finset.sum_apply]`.
+
+Establish `hCR : (Cz.map (Int.castRingHom ℝ)).det ≠ 0`. Rewrite using `[show Cz.map (Int.castRingHom ℝ) = (Int.castRingHom ℝ).mapMatrix Cz from rfl, ← RingHom.map_det]`. Simplify using `using hCz`. Establish `hCQ : (Cz.map (Int.castRingHom ℚ)).det ≠ 0`. Rewrite using `[show Cz.map (Int.castRingHom ℚ) = (Int.castRingHom ℚ).mapMatrix Cz from rfl, ← RingHom.map_det]`.
+
+Simplify using `using hCz`. Establish `hvli : LinearIndependent ℚ v`. Rewrite using `[Fintype.linearIndependent_iff]`. Introduce `q hq`. Establish `h1 : ∑ k, (∑ j, q j * (c j k : ℚ)) • e k = 0`.
+
+Rewrite using `[← hq]`. Simplify using `only [hv, Finset.smul_sum, smul_smul, Finset.sum_smul]`. Conclude with `Finset.sum_comm`. Establish `h2` using `Fintype.linearIndependent_iff.1 heli _ h1`. Establish `h3 : q ᵥ* (Cz.map (Int.castRingHom ℚ)) = 0`.
+
+Use function extensionality and compare the values at `k`. Simplify `h2 k` using `[Matrix.vecMul, dotProduct, Cz]`. Conclude with `fun j => congrFun (Matrix.eq_zero_of_vecMul_eq_zero hCQ h3) j`. Establish `hspanQ : Submodule.span ℚ (Set.range v) = ⊤` using `hvli.span_eq_top_of_card_eq_finrank (by rw [Fintype.card_fin, hfinrank])`. Establish `hspanK : Submodule.span K (Set.range v) = ⊤`.
+
+Rewrite using `[eq_top_iff]`. Introduce `x _`. Establish `hx : x ∈ Submodule.span ℚ (Set.range v)` using `hspanQ ▸ Submodule.mem_top`. Conclude with `Submodule.span_le_restrictScalars ℚ K _ hx`. Take `⟨vb, hvbS, hvbli⟩` from `exists_basis_in (Set.range v) hspanK`.
+
+Establish `hf1 : (1 : ℝ) ≤ f` using `by exact_mod_cast Fintype.card_pos`. Establish `hr1 : (1 : ℝ) ≤ r` using `by exact_mod_cast hr0`. Use `set X : ℝ := (f : ℝ) * r with hX`. Establish `hX1 : 1 ≤ X` using `one_le_mul_of_one_le_of_one_le hf1 hr1`. Establish `hNX : (N : ℝ) = 2 * X` using `by rw [hN, hdeg, hX]; push_cast; ring`.
+
+Use `set Dq : ℝ := dK / laStar with hDq`. Establish `hDqpos : 0 < Dq` using `div_pos hdpos hla`. Establish `hμval : μ = 4 * X ^ 3 * Dq` using `by show ReciprocityTheory.ChartRestriction.G.FD.d5mu (Fintype.card ι) r |(NumberField.discr K : ℝ)| laStar = _`. Simplify using `only [ReciprocityTheory.ChartRestriction.G.FD.d5mu, hX, hDq]`. Expand and normalize the polynomial expressions, which then agree.
+
+Establish `hℓval : ℓ = 4 * X * Dq`. Rewrite using `[hℓ, hNX, hμ', hDq]`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Establish `hX3 : X ≤ X ^ 3` using `by simpa using pow_le_pow_right₀ hX1 (show 1 ≤ 3 by norm_num)`.
+
+Establish `hX23 : X ^ 2 ≤ X ^ 3` using `pow_le_pow_right₀ hX1 (by norm_num)`. Establish `hℓμ : ℓ ^ 2 ≤ μ ^ 2`. Use `pow_le_pow_left₀ (by rw [hℓval]; positivity) ?_ 2` and prove the remaining obligations. Rewrite using `[hℓval, hμval]`. Use the polynomial consequences of the given equalities and inequalities.
+
+Establish `hcovμ : ((N : ℝ) * ℓ / 2) ^ 2 ≤ μ ^ 2`. Use `pow_le_pow_left₀ (by rw [hℓval, hNX]; positivity) ?_ 2` and prove the remaining obligations. Rewrite using `[hℓval, hμval, hNX]`. Use the polynomial consequences of the given equalities and inequalities. Use `⟨fun w => ?_, vb, fun j => ?_, hvbli, fun j => ?_⟩` and prove the remaining obligations.
+
+Establish `hbli : LinearIndependent ℝ (fun j => A *ᵥ (fun k => (c j k : ℝ)))`. Rewrite using `[Fintype.linearIndependent_iff]`. Introduce `a ha`. Establish `h1 : A *ᵥ (a ᵥ* Cz.map (Int.castRingHom ℝ)) = 0`. Combine the equalities or inequalities in the displayed calculation.
+
+Use `congr 1`. Use function extensionality and compare the values at `k`. Simplify using `[Matrix.vecMul, dotProduct, Cz, Finset.sum_apply]`. Use `_ = ∑ i, a i • A *ᵥ fun k => (c i k : ℝ) := by`. Rewrite using `[Matrix.mulVec_sum]`.
+
+Simplify using `[Matrix.mulVec_smul]`. Use `_ = 0 := ha`. Establish `h2` using `Matrix.eq_zero_of_mulVec_eq_zero hAdet h1`. Conclude with `fun j => congrFun (Matrix.eq_zero_of_vecMul_eq_zero hCR h2) j`. Establish `hcr` using `cover_round (N := N) (fun j => A *ᵥ (fun k => (c j k : ℝ))) hbli ℓ hcb' (rho eqv w)`.
+
+Take `⟨n, hn⟩` from `hcr`. Establish `hlL : (∑ j, ((n j : ℤ) : ℚ) • v j) ∈ L` using `Submodule.sum_mem L fun j _ => hzsm (n j) (v j) (hvL j)`. Use `⟨_, hlL, ?_⟩` and prove the remaining obligations. Establish `hsumr : ∑ j, (n j : ℝ) • (A *ᵥ (fun k => (c j k : ℝ))) = rho eqv (Phi σ Q (∑ j, ((n j : ℤ) : ℚ) • v j))`. Rewrite using `[Phi_sum, rho_sum]`.
+
+Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[Phi_qsmul, rho_smul, hAv j]`. Simplify using `[Rat.cast_intCast]`. Rewrite `hn` using `[hsumr]`. Establish `heq : ∑ i, normSq (Q i *ᵥ embVec (σ i) (∑ j, ((n j : ℤ) : ℚ) • v j) - w i) = (rho eqv w - rho eqv (Phi σ Q (∑ j, ((n j : ℤ) : ℚ) • v j))) ⬝ᵥ (rho eqv w - rho eqv (Phi σ Q (∑ j, ((n j : ℤ) : ℚ) • v j)))`.
+
+Rewrite using `[← rho_sub, rho_dot_self]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Simplify using `only [normSq, Phi, Pi.sub_apply]`. Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Rewrite using `[← norm_neg, neg_sub]`.
+
+Rewrite using `[heq]`. Conclude with `hn.trans hcovμ`. Take `⟨j', hj'⟩` from `hvbS j`. Rewrite using `[← hj']`. Conclude with `hvL j'`.
+
+Take `⟨j', hj'⟩` from `hvbS j`. Rewrite using `[← hj']`. Conclude with `(hvb j').trans hℓμ`.
+-/
 theorem d5_translation : ReciprocityTheory.ChartRestriction.G.FD.CoveringRadiusStatement := by
   intro K _ _ _ ι _ _ r p S σ Q L laStar hinj hcm hp hla hQ hform hL hSD hmin
   intro μ

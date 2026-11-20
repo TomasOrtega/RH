@@ -9,6 +9,9 @@ import Development.AbelianVarietyTheory.Proofs.DivisorProofs.GenericDegreePullba
 
 open GlobalTheory.Published GlobalTheory.CovTest
 
+/- English proof (translation)
+Introduce `hC hR` and use `let ⟨G, hG, hS⟩ := GlobalTheory.T.exists_homogeneous_swap_regular hC ⟨G, hG, GlobalTheory.T.swap_identity_from_regular_base hC hR GlobalTheory.T.generic_degree_pullback_formula G hS⟩`.
+-/
 theorem GlobalTheory.CovTest.homog_swap_exists_of_ar_calc : ArCalc → RegularAlteration → ∃ G, Homog G ∧ Swap2 G := fun hC hR =>
   let ⟨G, hG, hS⟩ := GlobalTheory.T.exists_homogeneous_swap_regular hC
   ⟨G, hG, GlobalTheory.T.swap_identity_from_regular_base hC hR GlobalTheory.T.generic_degree_pullback_formula G hS⟩

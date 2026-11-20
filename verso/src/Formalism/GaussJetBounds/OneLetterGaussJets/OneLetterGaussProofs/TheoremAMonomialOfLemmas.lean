@@ -11,12 +11,88 @@ namespace Formalism.DworkPowerSeriesWeights.OddLevelGainBounds
 
 open Formalism.IncomingBounds
 
+/- English proof (translation)
+Break down `Nat.eq_zero_or_pos n with rfl | hn` into its components or cases. Simplify using the standard rewrite rules. Rewrite using `[max_eq_right hn]`.
+-/
 theorem logb_max_one_nat (l n : ℕ) :
     Real.logb (l : ℝ) ((max 1 n : ℕ) : ℝ) = Real.logb (l : ℝ) (n : ℝ) := by
   rcases Nat.eq_zero_or_pos n with rfl | hn
   · simp
   · rw [max_eq_right hn]
 
+/- English proof (translation)
+Introduce `K _ _ _ l d N0 N1 _ hl hl3 hd hde hpi h0 K0 hK0 ζ hζ be hbe x hx g hg0 hg U hU ε hε TT nu1 nu2 size hnu21 hnu1s spec κ hκtop hκD hspec hcap hrow hkill`. Establish `hodd : Odd l` using `hl.odd_of_ne_two (by omega)`. Establish `hl2 : 2 ≤ l` using `hl.two_le`. Establish `hlpos : 0 < l` using `by omega`. Establish `hpi0 : 0 < ‖(l : K)‖` using `norm_pos_iff.mpr (Nat.cast_ne_zero.mpr hl.ne_zero)`.
+
+Take `⟨⟨sig, hsigD, hsigA, hFn⟩, -⟩` from `lemmaFa l d hl3 hd hde (fun s => (Dl d TT nu1 size s : ℝ)) (fun s => Nat.cast_nonneg _)`. Establish `hsig0 : ∀ s, 0 ≤ sig s` using `fun s => (hsigD.1 s).1`. Establish `hnotop : ∀ (s : ZMod d) (k : Fin N0), (s ∈ TT ∧ k.val = 0) → spec (s, k) = none`. Introduce `s k hsk`. Break down `h : spec (s, k) with _ | ⟨s0, j⟩` into its components or cases.
+
+Both sides reduce to the same expression. Conclude with `absurd hsk (hspec s k s0 j h).2.2.2.1`. Take `⟨eps, heps0, hepsT, hmain⟩` from `hA l d hl3 hd hde TT nu1 nu2 size hnu21 hnu1s sig ⟨hsigD, hFn⟩ (ZV d N0 N1) (fun y => y.1) (frameTop TT) (fun y => spec (y.1, y.2.1)) (fun y => κ y) (by`. Introduce `i hi`. Establish `hi'` using `of_decide_eq_true hi`.
+
+Conclude with `⟨hi'.1, hnotop _ _ hi'⟩)`. Use the proof step `(by`. Introduce `s hs`. Establish `hset : Finset.univ.filter (fun i : ZV d N0 N1 => i.1 = s ∧ frameTop TT i = true) = Finset.univ.image (fun b : Fin N1 => ((s, ⟨0, h0⟩, b) : ZV d N0 N1))`. Use extensionality with `⟨s', k, b⟩`.
+
+Simplify using `only [Finset.mem_filter, Finset.mem_univ, true_and, Finset.mem_image, frameTop, decide_eq_true_eq, Prod.mk.injEq]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨rfl, -, hk⟩`. Conclude with `⟨b, rfl, Fin.ext hk.symm, rfl⟩`. Introduce and unpack `⟨b', rfl, rfl, rfl⟩`.
+
+Conclude with `⟨rfl, hs, rfl⟩`. Rewrite using `[hset, Finset.sum_image (fun b _ b' _ h => by simpa using h)]`. Conclude with `hκtop s hs)` after adjusting the coercions. Use the proof step `(by intro s; exact_mod_cast hκD s)`. Use the proof step `(by`.
+
+Introduce `i s0 j h`. Take `⟨h1, h2, h3, -, h5, h6⟩` from `hspec i.1 i.2.1 s0 j h`. Conclude with `⟨h1, h2, h3, h5, h6⟩)`. Use the proof step `(by intro s0 j; exact_mod_cast hcap s0 j)`. Establish `R` using `dualRadiiInequalities l d hl3 hd hde TT sig eps hsigA hsig0 heps0 hepsT`.
+
+Take `⟨hS1, hS2⟩` from `hS K l d hl hodd hd hde hpi K0 hK0 ζ hζ be hbe`. Establish `hM1 : ∀ (z i : ZV d N0 N1), ‖frameM (N1` using `N1) x z i‖ ≤ 1 := by`. Introduce `z i`. Unfold `frameM`. Use `split_ifs`.
+
+Conclude with `hx _`. Simplify using the standard rewrite rules. Establish `hMlt : ∀ (z i : ZV d N0 N1), frameM (N1` using `N1) x z i ≠ 0 → i.1 = z.1 := by`. Introduce `z i h`. Unfold `frameM at h`.
+
+Use `split_ifs at h with h'`. Conclude with `h'.1`. Conclude with `absurd rfl h`. Establish `hsmall : ∀ (i j : ZV d N0 N1) (α β : ℕ), ¬ MonoWtGe ‖(l : K)‖ (fun _ => rho l) (1 / ((l : ℝ) - 1)) (pureMon l i j α β) (MvPowerSeries.coeff (pureMon l i j α β) (bSum (frameM (N1` using `N1) x) be)) → i.1 ≠ j.1 ∧ i.1 + (α : ZMod d) = j.1 + (β : ZMod d) ∧ Odd (α + β) := by`. Introduce `i j α β hnot`.
+
+Apply `jet_bipower hde hl2` to reduce the goal to its premises. Assume the negation of the conclusion as `hnb`. Apply `hnot` to reduce the goal to its premises. Establish `hc` using `jet_collapse (fun y : ZV d N0 N1 => y.1) (frameM (N1 := N1) x) hM1 hMlt be (pureMon l i j α β)`. Establish `hmd : (pureMon l i j α β).mapDomain (fun y : ZV d N0 N1 => y.1) = Finsupp.single i.1 (l ^ α) + Finsupp.single j.1 (l ^ β)`.
+
+Simplify using `[pureMon, Finsupp.mapDomain_add, Finsupp.mapDomain_single]`. Rewrite `hc` using `[hmd]`. Establish `h2` using `hS2 _ hnb`. Rewrite `h2`, the goal using `[monoWtGe_iff]`. Use `hc.trans (h2.trans_eq ?_)` and prove the remaining obligations.
+
+Use `congr 2`. Rewrite using `[asmR_dot_pureMon, dot_add, asmR_dot_single, asmR_dot_single]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Establish `key : ∀ (i j : ZV d N0 N1) (α β : ℕ), pureMon l i j α β ≤ κ → ¬ MonoWtGe ‖(l : K)‖ (fun _ => rho l) (1 / ((l : ℝ) - 1)) (pureMon l i j α β) (MvPowerSeries.coeff (pureMon l i j α β) (bSum (frameM (N1` using `N1) x) be)) → frameTop TT i = true → frameTop TT j = false → 1 ≤ (l : ℝ) ^ α * rowRad l sig eps (fun y : ZV d N0 N1 => y.1) (frameTop TT) (fun y => spec (y.1, y.2.1)) i + (l : ℝ) ^ β * rowRad l sig eps (fun y : ZV d N0 N1 => y.1) (frameTop TT) (fun y => spec (y.1, y.2.1)) j := by`.
+
+Introduce and unpack `⟨s0, k0, b⟩ ⟨s, k, b'⟩ α β hle hnot hti htj`. Take `⟨hne, heq, hab⟩` from `hsmall _ _ α β hnot`. Simplify using `only at hne heq`. Establish `hti' : s0 ∈ TT ∧ k0.val = 0` using `of_decide_eq_true hti`. Establish `htj' : ¬ (s ∈ TT ∧ k.val = 0)` using `of_decide_eq_false htj`.
+
+Take `rfl : k0 = ⟨0, h0⟩` from `Fin.ext hti'.2`. Rewrite using `[jet_rowRad_top l sig eps _ _ _ _ hti]`. Take `⟨hz, hw⟩` from `hFP K l d N0 N1 hl hpi h0 x hx be hS1 s0 s hne k b b' α β`. Establish `hbb : b = b'`. Assume the negation of the conclusion as `hbb`.
+
+Apply `hnot` to reduce the goal to its premises. Rewrite using `[hz hbb, monoWtGe_iff, norm_zero]`. Conclude with `Real.rpow_nonneg hpi0.le _`. Substitute `hbb` using the available equality. Establish `hij : ((s0, ⟨0, h0⟩, b) : ZV d N0 N1) ≠ (s, k, b)` using `fun h => hne (congrArg Prod.fst h)`.
+
+Establish `hκi : l ^ α ≤ κ (s0, ⟨0, h0⟩, b)`. Use `hle (s0, ⟨0, h0⟩, b)` as an intermediate fact. Simplify `this` using `[pureMon, Finsupp.single_apply, hij, Ne.symm hij]`. Establish `hκj : l ^ β ≤ κ (s, k, b)`. Use `hle (s, k, b)` as an intermediate fact.
+
+Simplify `this` using `[pureMon, Finsupp.single_apply, hij, Ne.symm hij]`. Establish `hnu : κ (s0, ⟨0, h0⟩, b) ≤ nu1 s0`. Rewrite using `[← hκtop s0 hti'.1]`. Conclude with `Finset.single_le_sum (f := fun b => κ (s0, ⟨0, h0⟩, b)) (fun _ _ => Nat.zero_le _) (Finset.mem_univ b)`. Establish `hsz : κ (s, k, b) ≤ Dl d TT nu1 size s`.
+
+Rewrite using `[← hκD s]`. Conclude with `Finset.single_le_sum (f := fun y => κ y) (fun _ _ => Nat.zero_le _) (by simp [htj])`. Take `⟨j0, hj0⟩ : ∃ j0 : ℤ, j0 = (α : ℤ) - β` from `⟨_, rfl⟩`. Establish `hsj : s = s0 + (j0 : ZMod d)`. Rewrite using `[hj0]`.
+
+Use `push_cast`. Take the linear combination `(-1 : ZMod d) * heq`. Establish `hjodd : Odd j0`. Take `⟨c, hc⟩` from `hab`. Conclude with `⟨(c : ℤ) - β, by omega⟩`.
+
+Establish `hlev1 : 0 < j0 → l ^ j0.toNat ≤ nu1 s0`. Introduce `hj`. Establish `: j0.toNat = α - β` using `by omega`. Rewrite using `[this]`. Conclude with `(Nat.pow_le_pow_right hlpos (Nat.sub_le α β)).trans (hκi.trans hnu)`.
+
+Establish `hlev2 : j0 < 0 → l ^ (-j0).toNat ≤ Dl d TT nu1 size s`. Introduce `hj`. Establish `: (-j0).toNat = β - α` using `by omega`. Rewrite using `[this]`. Conclude with `(Nat.pow_le_pow_right hlpos (Nat.sub_le β α)).trans (hκj.trans hsz)`.
+
+Distinguish the cases in `hsp : spec (s, k) = some (s0, j0)`. Rewrite using `[jet_rowRad_spec l sig eps (fun y : ZV d N0 N1 => y.1) (frameTop TT) (fun y => spec (y.1, y.2.1)) (s, k, b) htj hsp]`. Break down `lt_trichotomy α β with hαβ | hαβ | hαβ` into its components or cases. Rewrite using `[if_neg (by omega)]`. Establish `ht : (-j0).toNat = β - α` using `by omega`.
+
+Rewrite using `[ht]`. Use `R.2.2.1 s0 α (β - α) (max (sig s) ((l : ℝ) ^ (β - α))⁻¹) (by omega) (le_max_right _ _)` as an intermediate fact. Rewrite `this` using `[Nat.add_sub_cancel' hαβ.le]`. Then use the resulting hypothesis. Substitute `hαβ` using the available equality. It suffices to derive a contradiction.
+
+Take `⟨c, hc⟩` from `hab`. Use linear arithmetic over natural numbers and integers. Rewrite using `[if_pos (by omega)]`. Establish `ht : j0.toNat = α - β` using `by omega`. Rewrite using `[ht]`.
+
+Use `R.2.1 s0 β (α - β) (max (sig s) (1 - (l : ℝ) ^ (α - β) * eps s0)) (by omega) (le_max_right _ _)` as an intermediate fact. Rewrite `this` using `[Nat.add_sub_cancel' hαβ.le]`. Then use the resulting hypothesis. It suffices to derive a contradiction. Apply `hnot` to reduce the goal to its premises. Apply `hw` to reduce the goal to its premises.
+
+Establish `hk` using `hkill s0 hti'.1 s k j0 htj' hjodd hsj hlev1 hlev2 hsp`. Distinguish the cases in `hβα : β ≤ α`. Rewrite using `[if_pos hβα]`. Rewrite `hk` using `[if_pos (by omega : (0 : ℤ) ≤ j0)]`. Establish `ht : j0.toNat = α - β` using `by omega`.
+
+Rewrite `hk` using `[ht]`. Then use the resulting hypothesis. Rewrite using `[if_neg hβα]`. Rewrite `hk` using `[if_neg (by omega : ¬ (0 : ℤ) ≤ j0)]`. Establish `ht : (-j0).toNat = β - α` using `by omega`. Rewrite `hk` using `[ht]`. Then use the resulting hypothesis.
+
+Establish `hpure : ∀ (i j : ZV d N0 N1) (α β : ℕ), pureMon l i j α β ≤ κ → ¬ MonoWtGe ‖(l : K)‖ (fun _ => rho l) (1 / ((l : ℝ) - 1)) (pureMon l i j α β) (MvPowerSeries.coeff (pureMon l i j α β) (bSum (frameM (N1` using `N1) x) be)) → 1 ≤ (l : ℝ) ^ α * rowRad l sig eps (fun y : ZV d N0 N1 => y.1) (frameTop TT) (fun y => spec (y.1, y.2.1)) i + (l : ℝ) ^ β * rowRad l sig eps (fun y : ZV d N0 N1 => y.1) (frameTop TT) (fun y => spec (y.1, y.2.1)) j := by`. Introduce `i j α β hle hnot`. Take `⟨hne, heq, hab⟩` from `hsmall i j α β hnot`. Establish `hsw : pureMon l j i β α = pureMon l i j α β`. Unfold `pureMon`.
+
+Conclude with `add_comm _ _`. Apply the tactic sequence `cases hti : frameTop TT i <;> cases htj : frameTop TT j`. Conclude with `R.1 i.1 j.1 α β _ _ (jet_rowRad_ge l sig eps _ _ _ i hti) (jet_rowRad_ge l sig eps _ _ _ j htj) hab heq`. Establish `h` using `key j i β α (by rw [hsw]; exact hle) (by rw [hsw]; exact hnot) htj hti`. Combine the linear equalities and inequalities to obtain the conclusion.
+
+Conclude with `key i j α β hle hnot hti htj`. Rewrite using `[jet_rowRad_top l sig eps _ _ _ _ hti, jet_rowRad_top l sig eps _ _ _ _ htj]`. Conclude with `R.2.2.2 i.1 (of_decide_eq_true hti).1 j.1 (of_decide_eq_true htj).1 α β hab heq`. Establish `hκa : ∀ y : ZV d N0 N1, κ y ≤ max 1 (kaMaxOneLetter d TT nu1 nu2)`. Introduce and unpack `⟨s, k, b⟩`.
+
+Use `le_trans ?_ (le_max_right _ _)` and prove the remaining obligations. Consider the cases of `hty : frameTop TT ((s, k, b) : ZV d N0 N1)`. Establish `hty' : ¬ (s ∈ TT ∧ k.val = 0)` using `of_decide_eq_false hty`. Establish `h1 : κ (s, k, b) ≤ ∑ b : Fin N1, κ (s, k, b)` using `Finset.single_le_sum (f := fun b => κ (s, k, b)) (fun _ _ => Nat.zero_le _) (Finset.mem_univ b)`. Establish `h2 : capL d TT nu1 nu2 s ≤ Finset.univ.sup (capL d TT nu1 nu2)` using `Finset.le_sup (f := capL d TT nu1 nu2) (Finset.mem_univ s)`.
+
+Conclude with `h1.trans ((hrow s k hty').trans (h2.trans (le_max_right _ _)))`. Establish `hty' : s ∈ TT ∧ k.val = 0` using `of_decide_eq_true hty`. Take `rfl : k = ⟨0, h0⟩` from `Fin.ext hty'.2`. Establish `h1 : κ (s, ⟨0, h0⟩, b) ≤ nu1 s`. Rewrite using `[← hκtop s hty'.1]`.
+
+Conclude with `Finset.single_le_sum (f := fun b => κ (s, ⟨0, h0⟩, b)) (fun _ _ => Nat.zero_le _) (Finset.mem_univ b)`. Establish `h2 : nu1 s ≤ TT.sup nu1` using `Finset.le_sup (f := nu1) hty'.1`. Conclude with `h1.trans (h2.trans (le_max_left _ _))`. Establish `hLR` using `hR K l d N0 N1 hl hodd hd hde hpi K0 hK0 ζ hζ be hbe (ZV d N0 N1) (fun y => y.1) (frameM (N1 := N1) x) hM1 hMlt g hg0 hg U hU ε hε (rowRad l sig eps (fun y : ZV d N0 N1 => y.1) (frameTop TT) (fun y => spec (y.1, y.2.1))) (jet_rowRad_nonneg l sig eps _ _ _ hsig0 heps0) κ (max 1 (k …`. Establish `hcard : (Fintype.card (ZV d N0 N1) : ℝ) = (d : ℝ) * N0 * N1`.
+
+Simplify using `only [ZV, Fintype.card_prod, ZMod.card, Fintype.card_fin]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Rewrite `hLR` using `[hcard, logb_max_one_nat]`. Use `hLR.trans (Real.rpow_le_rpow_of_exponent_ge hpi0 hpi.le ?_)` and prove the remaining obligations.
+
+Combine the linear relations using `[hmain]`.
+-/
 theorem theorem_A_monomial_of_lemmas (hS : LemmaS.{u}) (hR : LemmaRA.{u, 0}) (hA : ThmAAssembly7)
     (hFP : FramePure.{u}) : ThmAJet7.{u} := by
   intro K _ _ _ l d N0 N1 _ hl hl3 hd hde hpi h0 K0 hK0 ζ hζ be hbe x hx g hg0 hg U hU ε hε
@@ -237,6 +313,9 @@ theorem theorem_A_monomial_of_lemmas (hS : LemmaS.{u}) (hR : LemmaRA.{u, 0}) (hA
   refine hLR.trans (Real.rpow_le_rpow_of_exponent_ge hpi0 hpi.le ?_)
   linarith [hmain]
 
+/- English proof (translation)
+The claim follows from `theorem_A_monomial_of_lemmas lemmaS.{u} lemma_R_log_loss.{u, 0} hA frame_pure_weight.{u}`.
+-/
 theorem thmAJet7_of (hA : ThmAAssembly7) : ThmAJet7.{u} :=
   theorem_A_monomial_of_lemmas lemmaS.{u} lemma_R_log_loss.{u, 0} hA frame_pure_weight.{u}
 

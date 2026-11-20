@@ -22,6 +22,27 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheo
   {RM : Top.RootModel (CMType H) (Dw.p + Dw.q)}
   {Sys : PB.AnSys (Top.dimFl (CMType H) (Dw.p + Dw.q)) (Option (RootIx Dw))} {Fx : FixedData Y Sys}
 
+/- English proof (translation)
+Use `letI algΩ := Small.cstAlg Or`. Take `⟨ψ, hψ, hc⟩` from `GlobalTheory.T.root_origin_component_generic_point E H Dw l Xo c Y SS RM Sys Fx Or Z hZ`. Take `⟨hgx, y₀, hy₀, hy₀c⟩` from `isGenFr_genFr h Z`. Take `⟨N, ec, hx, hb, hj, hli₀, hli, hmem⟩` from `flags_setup Or Fr Z ψ hψ hc y₀ hy₀`. Use `letI algfn : Algebra Or.𝔐.Ω₀ RM.Ω := Or.𝔐.fn.toAlgebra`.
+
+Establish `hg'` using `generic_cast Or.Fl.j (labelRk Dw) (fun s => Dw.mult (Small.labelC s)) (Small.mult_labelC Dw) Or.Fl.V₀ Or.Fl.b Or.Fl.deg Or.Fl.generic`. Take `⟨v, Tm, hv1, hv0, hvi, hvd, hbT, hT0, hTd⟩` from `lin_core Or.Fl.j Or.Fl.V₀ _ Or.Fl.deg hg' (fun s => ec (Small.labelC s)) (fun s => hli₀ _) hmem (fun s => hli _)`. Take `⟨T, hTi, hTr, hTv⟩` from `exists_strictHenselian_absolutely_closed_local_ring v hvi`. Take `⟨φ, hφC, hφX, hφd⟩` from `exists_lift ψ T hTi`. Establish `hφk : ∀ x, φ (algebraMap (kap Z) (Om Z) x) = Or.𝔐.fn (ψ x)` using `fun x => by`.
+
+Rewrite using `[IsScalarTower.algebraMap_apply (kap Z) (MvPolynomial (FlagVar Dw) (kap Z)) (Om Z) x]`. Conclude with `hφC x`. Establish `hφc : ∀ a : c.F, φ (algebraMap c.F (Om Z) a) = Or.𝔐.cst a` using `fun a => by`. Rewrite using `[gfp_tower Z a, hφk, hc]`. Set `φA : Om Z →ₐ[c.F] RM.Ω` to `{ φ with commutes' := hφc }`.
+
+Establish `hS` using `GlobalTheory.abelianSchemeLaws_all.1.secBaseChange`. Take `⟨y₃, h₃⟩` from `GlobalTheory.Frames.FramedBaseChange.exists_frMap hS E H Dw l Xo c _ _ φA (genFr h Z)`. Establish `hk : φ.comp (algebraMap (kap Z) (Om Z)) = Or.𝔐.fn.comp ψ.toRingHom` using `RingHom.ext hφk`. Establish `hbase : spMap φ ≫ (genFr h Z).x = Fr.y₀.x`. Rewrite using `[hgx, ← Category.assoc, spc, hk, ← hy₀]`.
+
+Conclude with `hx`. Establish `hx₃ : y₃.x = Fr.y₀.x` using `h₃.1.trans hbase`. Establish `hcoef : ∀ s (i j : Fin (Dw.mult (Small.labelC s))), φ (genCoef Z (Small.labelC s) i j) = v s j i`. Introduce `s i j`. Unfold `genCoef`.
+
+Use `split_ifs with h1 h2`. Rewrite using `[hφX]`. Conclude with `hTv s i j h1`. Substitute `h2` using the available equality. Rewrite using `[map_one, hv1]`.
+
+Rewrite using `[map_zero, hv0 s j i (lt_of_le_of_ne (not_lt.1 h1) (Ne.symm h2))]`. Establish `hy3 : ∀ s, y₃.u (Small.labelC s) = fun m => (N.pt (∑ l, v s l m • Or.Fl.j (ec (Small.labelC s) l))).left`. Introduce `s`. Use function extensionality and compare the values at `i`. Establish `h1` using `GlobalTheory.T.is_comb_base_change E H Dw l Xo _ _ φ (genFr h Z).x _ _ _ _ (hy₀c (Small.labelC s) i)`.
+
+Establish `hv : (fun j => spMap (Formalism.L2.Pj.dualMap φ) ≫ spMap (Formalism.L2.Pj.dualMap (algebraMap (kap Z) (Om Z))) ≫ y₀.u (Small.labelC s) j) = fun j => (N.pt (Or.Fl.j (ec (Small.labelC s) j))).left`. Use function extensionality and compare the values at `j`. Rewrite using `[hj, ← Category.assoc, spc, ← dualMap_comp₂, hk]`. Rewrite `h1` using `[hbase, hv, comb_iff N]`. Rewrite using `[h₃.2.1]`.
+
+Use `h1.trans ?_` and prove the remaining obligations. Simplify using `only [hcoef]`. Take `⟨t, ht⟩ : ∃ t, FrBor t y₃ Fr.y₀` from `frBor_of_comb y₃ Fr.y₀ hx₃.symm (fun τ i => by`. Take `⟨s, rfl⟩` from `(Small.labelC_bijective H).2 τ`. Use `⟨Tm s i, isUnit_iff_ne_zero.2 (hTd s i), fun j hij => hT0 s i j hij, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[hx₃, hy3 s, comb_iff N]`. Conclude with `(hb s i).symm.trans (congrArg (fun e => (N.pt e).left) (hbT s i)))`. Use `⟨φA, y₃, t, h₃, ht, hφd.trans ?_⟩` and prove the remaining obligations. Rewrite using `[hTr, ← adjoin_all_eq_strict v hv1 hv0]`. Conclude with `hvd`.
+-/
 theorem ModelDimension.geo_core (Or : RootOrigin Y SS RM Fx) (Fr : Small.GenFrame Or) (h : GenFrEx Xo c) (Z : Comp Xo c)
     (hZ : GlobalTheory.CompanionTheory.Ar.genPt Fx.ξf = Y.j (Formalism.L2.Pj.genPt Z)) :
     letI := Small.cstAlg Or
@@ -91,6 +112,9 @@ attribute [-instance] GlobalTheory.CompHt.fintypePsi
 
 namespace ModelDimension
 
+/- English proof (translation)
+Introduce `E _ _ _ H Dw l Xo c r U h e _ Y S RM Sys Fx Or Fr Z hZ`. Conclude with `geo_core Or Fr h Z hZ`.
+-/
 theorem component_laws_unif_frame : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l) (r : ℕ) (U : ∀ σ : c.F →+* ℂ, Unf Xo c σ r) (h : GenFrEx Xo c) (e : Comp Xo c → Rul Xo c), CompLaws U h e → ∀ (Y : Model Xo c (algebraMap (𝓞 c.F) c.F)) (S : Finset ℕ) (RM : Top.RootModel (CMType H) (Dw.p + Dw.q)) (Sys : PB.AnSys (Top.dimFl (CMType H) (Dw.p + Dw.q)) (Option (RootIx Dw))) (Fx : FixedData Y Sys) (Or : RootOrigin Y S RM Fx) (Fr : Small.GenFrame Or) (Z : Comp Xo c), GlobalTheory.CompanionTheory.Ar.genPt Fx.ξf = Y.j (Formalism.L2.Pj.genPt Z) → letI := Small.cstAlg Or; ∃ (φ : Om Z →ₐ[c.F] RM.Ω) (P : FrPt Xo c RM.Ω) (t : Ix Dw → (RM.Ω)ˣ), FrMap φ (genFr h Z) P ∧ FrBor t P Fr.y₀ ∧ (letI := φ.toRingHom.toAlgebra; Module.finrank (Om Z) RM.Ω = Or.Fl.deg) := by
   intro E _ _ _ H Dw l Xo c r U h e _ Y S RM Sys Fx Or Fr Z hZ
   exact geo_core Or Fr h Z hZ

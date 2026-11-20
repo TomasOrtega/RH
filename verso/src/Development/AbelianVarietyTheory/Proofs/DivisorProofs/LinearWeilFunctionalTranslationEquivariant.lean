@@ -15,10 +15,16 @@ namespace GlobalTheory.LocalUnitSubgroupClosure
 
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E}
 
+/- English proof (translation)
+Introduce `u _`. Simplify using `[mat]`.
+-/
 theorem one_mem_UAt {n : ℕ} (Y : Spc F E n) {R : Type} [Zero R] (ev : AF F → R) : (1 : UA σ Y.J) ∈ UAt σ Y ev := by
   intro u _
   simp [mat]
 
+/- English proof (translation)
+Introduce `u hu`. Establish `e : mat (g * h) - 1 = (mat g - 1) * mat h + (mat h - 1)`. Simplify using `only [mat, Subgroup.coe_mul, Units.val_mul]`. Use `noncomm_ring`. Rewrite using `[e, smul_add, ← Matrix.smul_mul, hg u hu, hh u hu, Matrix.zero_mul, add_zero]`.
+-/
 theorem mul_mem_UAt {n : ℕ} {Y : Spc F E n} {R : Type} [Zero R] {ev : AF F → R} {g h : UA σ Y.J}
     (hg : g ∈ UAt σ Y ev) (hh : h ∈ UAt σ Y ev) : g * h ∈ UAt σ Y ev := by
   intro u hu
@@ -26,8 +32,14 @@ theorem mul_mem_UAt {n : ℕ} {Y : Spc F E n} {R : Type} [Zero R] {ev : AF F →
     simp only [mat, Subgroup.coe_mul, Units.val_mul]; noncomm_ring
   rw [e, smul_add, ← Matrix.smul_mul, hg u hu, hh u hu, Matrix.zero_mul, add_zero]
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem mat_mul {n : ℕ} {Y : Spc F E n} (g h : UA σ Y.J) : mat (g * h) = mat g * mat h := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem mat_one {n : ℕ} {Y : Spc F E n} : mat (1 : UA σ Y.J) = 1 := rfl
 
 end GlobalTheory.LocalUnitSubgroupClosure
@@ -37,10 +49,16 @@ namespace GlobalTheory.LocalUnitSubgroupClosure
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E}
 variable {a a' : ℕ} {B : Base F E} {G : Geo σ a a'} {X : Chars F E} {om : Rep σ G.V G.W} {om' : Rep σ G.V' G.W}
 
+/- English proof (translation)
+The claim follows from `(IsUWeilPair.isUSplitting hT.weil).pres p Φ hΦ`.
+-/
 theorem pres (hT : IsTriple B G X om om') (p : UA σ G.V.J × UA σ G.W.J) {Φ : (Fin a × Fin (a + a') → AF F) → ℂ}
     (hΦ : Φ ∈ schA F (Fin a × Fin (a + a'))) : om p Φ ∈ schA F (Fin a × Fin (a + a')) :=
   (IsUWeilPair.isUSplitting hT.weil).pres p Φ hΦ
 
+/- English proof (translation)
+Introduce `r hr`. Establish `hr2 : Rest (evFin F v) φ₂ r` using `⟨hr.1, by rw [← h2 r hr]; exact pres hT _ hr.2⟩`. Establish `e : om (1, h₁ * h₂) = om (1, h₁) * om (1, h₂)` using `by rw [← map_mul]; simp`. Rewrite using `[e, Module.End.mul_apply, h2 r hr, h1 r hr2]`.
+-/
 theorem acts_comp (hT : IsTriple B G X om om') {v : Pl F} {h₁ h₂ : UA σ G.W.J}
     {φ φ₂ φ₃ : (Fin a × Fin (a + a') → Fv F v) → ℂ}
     (h2 : Acts (evFin F v) (om (1, h₂)) φ φ₂) (h1 : Acts (evFin F v) (om (1, h₁)) φ₂ φ₃) :
@@ -50,6 +68,9 @@ theorem acts_comp (hT : IsTriple B G X om om') {v : Pl F} {h₁ h₂ : UA σ G.W
   have e : om (1, h₁ * h₂) = om (1, h₁) * om (1, h₂) := by rw [← map_mul]; simp
   rw [e, Module.End.mul_apply, h2 r hr, h1 r hr2]
 
+/- English proof (translation)
+Introduce `r _`. Rewrite using `[show ((1, 1) : UA σ G.V.J × UA σ G.W.J) = 1 from rfl, map_one, Module.End.one_apply]`.
+-/
 theorem acts_one {v : Pl F} (φ : (Fin a × Fin (a + a') → Fv F v) → ℂ) :
     Acts (evFin F v) (om (1, 1)) φ φ := by
   intro r _
@@ -60,6 +81,9 @@ noncomputable section
 def cmpGL {n : ℕ} {Y : Spc F E n} {v : Pl F} (t : E →ₐ[F] Fv F v) (h : UA σ Y.J) : GL (Fin n) (Fv F v) :=
   Units.map (piW t).mapMatrix.toMonoidHom h.1
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem cmpGL_val {n : ℕ} {Y : Spc F E n} {v : Pl F} (t : E →ₐ[F] Fv F v) (h : UA σ Y.J) :
     (cmpGL t h).1 = (mat h).map (piW t) := rfl
 
@@ -77,14 +101,45 @@ namespace GlobalTheory.LocalUnitSubgroupClosure
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E}
 variable {a a' : ℕ} {B : Base F E} {G : Geo σ a a'} {X : Chars F E} {om : Rep σ G.V G.W} {om' : Rep σ G.V' G.W}
 
+/- English proof (translation)
+Rewrite using `[← cmpGL_val]`. Conclude with `(Matrix.isUnit_iff_isUnit_det _).1 (cmpGL t h).isUnit`.
+-/
 theorem isUnit_det_cmp {n : ℕ} {Y : Spc F E n} {v : Pl F} (t : E →ₐ[F] Fv F v) (h : UA σ Y.J) :
     IsUnit ((mat h).map (piW t)).det := by
   rw [← cmpGL_val]; exact (Matrix.isUnit_iff_isUnit_det _).1 (cmpGL t h).isUnit
 
+/- English proof (translation)
+Use `(algebraMap F (Fv F v)).injective.ne (two_ne_zero (α := F))` as an intermediate fact. Rewrite `this` using `[map_ofNat, map_zero]`. Then use the resulting hypothesis.
+-/
 theorem two_ne_zero_Fv (v : Pl F) : (2 : Fv F v) ≠ 0 := by
   have := (algebraMap F (Fv F v)).injective.ne (two_ne_zero (α := F))
   rwa [map_ofNat, map_zero] at this
 
+/- English proof (translation)
+Distinguish the cases in `h0 : ∀ φ ∈ SB (Fin a × Fin (a + a') → Fv F v), ι φ = 0`. Use `⟨1, fun h _ => ⟨cmpGL t h, rfl, fun φ hφ φ₁ hφ₁ _ => ?_⟩⟩` and prove the remaining obligations. Rewrite using `[h0 φ₁ hφ₁, h0 φ hφ]`. Use function extensionality and compare the values at `Y`. Simplify using `[GlobalTheory.SplitFlip.omA]`.
+
+Use `push Not at h0`. Take `⟨φ₀, hφ₀, hne⟩` from `h0`. Take `⟨Y₀, hY₀⟩` from `Function.ne_iff.1 hne`. Use `set P : UA σ G.W.J → ℂ → Prop := fun h c => ∀ φ ∈ SB (Fin a × Fin (a + a') → Fv F v), ∀ φ₁ ∈ SB (Fin a × Fin (a + a') → Fv F v), Acts (evFin F v) (om (1, h)) φ φ₁ → ∀ Y, ι φ₁ Y = c * ι φ (Y * (((mat h).map (piW t))⁻¹)ᵀ) with hP`. Establish `uniq : ∀ h ∈ UAt σ G.W (evFin F v), ∀ c c', P h c → P h c' → c = c'`.
+
+Introduce `h hh c c' hc hc'`. Take `⟨φ₁, ⟨hφ₁, hA⟩, -⟩` from `hEx h hh φ₀ hφ₀`. Use `set M := (mat h).map (piW t)`. Establish `key : Y₀ * Mᵀ * M⁻¹ᵀ = Y₀`. Rewrite using `[Matrix.mul_assoc, ← Matrix.transpose_mul, Matrix.nonsing_inv_mul _ (isUnit_det_cmp t h), Matrix.transpose_one, Matrix.mul_one]`.
+
+Establish `e1` using `hc φ₀ hφ₀ φ₁ hφ₁ hA (Y₀ * Mᵀ)`. Establish `e2` using `hc' φ₀ hφ₀ φ₁ hφ₁ hA (Y₀ * Mᵀ)`. Rewrite `e1`, `e2` using `[key]`. Conclude with `mul_right_cancel₀ hY₀ (e1.symm.trans e2)`. Set `c : UA σ G.W.J → ℂ` to `fun h => if hh : h ∈ UAt σ G.W (evFin F v) then (hS h hh).choose else 0`.
+
+Establish `hc : ∀ h (hh : h ∈ UAt σ G.W (evFin F v)), P h (c h)`. Introduce `h hh`. Simplify using `only [c, dif_pos hh]`. Conclude with `(hS h hh).choose_spec`. Establish `P1 : P 1 1`.
+
+Introduce `φ hφ φ₁ hφ₁ hA Y`. Establish `: φ₁ = φ` using `(hEx 1 (one_mem_UAt _ _) φ hφ).unique ⟨hφ₁, hA⟩ ⟨hφ, acts_one φ⟩`. Substitute `this` using the available equality. Rewrite using `[mat_one, Matrix.map_one (piW t) (map_zero _) (map_one _), inv_one, Matrix.transpose_one, Matrix.mul_one, one_mul]`. Establish `c1 : c 1 = 1` using `uniq 1 (one_mem_UAt _ _) _ _ (hc 1 (one_mem_UAt _ _)) P1`.
+
+Establish `Pmul : ∀ h₁ (hh₁ : h₁ ∈ UAt σ G.W (evFin F v)) h₂ (hh₂ : h₂ ∈ UAt σ G.W (evFin F v)), P (h₁ * h₂) (c h₁ * c h₂)`. Introduce `h₁ hh₁ h₂ hh₂ φ hφ φ₁₂ hφ₁₂ hA Y`. Take `⟨φ₂, ⟨hφ₂, hA2⟩, -⟩` from `hEx h₂ hh₂ φ hφ`. Take `⟨φ₃, ⟨hφ₃, hA3⟩, -⟩` from `hEx h₁ hh₁ φ₂ hφ₂`. Establish `: φ₁₂ = φ₃` using `(hEx (h₁ * h₂) (mul_mem_UAt hh₁ hh₂) φ hφ).unique ⟨hφ₁₂, hA⟩ ⟨hφ₃, acts_comp hT hA2 hA3⟩`.
+
+Substitute `this` using the available equality. Rewrite using `[hc h₁ hh₁ φ₂ hφ₂ φ₁₂ hφ₁₂ hA3, hc h₂ hh₂ φ hφ φ₂ hφ₂ hA2, mat_mul, Matrix.map_mul, Matrix.mul_inv_rev, Matrix.transpose_mul, Matrix.mul_assoc, mul_assoc]`. Establish `cmul : ∀ h₁ (hh₁ : h₁ ∈ UAt σ G.W (evFin F v)) h₂ (hh₂ : h₂ ∈ UAt σ G.W (evFin F v)), c (h₁ * h₂) = c h₁ * c h₂` using `fun h₁ hh₁ h₂ hh₂ => uniq _ (mul_mem_UAt hh₁ hh₂) _ _ (hc _ (mul_mem_UAt hh₁ hh₂)) (Pmul h₁ hh₁ h₂ hh₂)`. Use `choose sec hsec hsecv using hsurj`. Establish `secmul : ∀ g₁ g₂, sec (g₁ * g₂) = sec g₁ * sec g₂` using `fun g₁ g₂ => hinj _ (hsec _) _ (mul_mem_UAt (hsec g₁) (hsec g₂)) (by`.
+
+Rewrite using `[hsecv, mat_mul, Matrix.map_mul, hsecv, hsecv, Units.val_mul])`. Establish `sec1 : sec 1 = 1` using `hinj _ (hsec _) _ (one_mem_UAt _ _) (by`. Rewrite using `[hsecv, mat_one, Matrix.map_one (piW t) (map_zero _) (map_one _), Units.val_one])`. Set `κ : GL (Fin (a + a')) (Fv F v) →* ℂ` to `{ toFun := fun g => c (sec g) map_one' := by simp only [sec1, c1] map_mul' := fun g₁ g₂ => by simp only [secmul, cmul _ (hsec g₁) _ (hsec g₂)] }`. Take `⟨χ, hχ⟩` from `GlobalTheory.ghom_factors_through_det (two_ne_zero_Fv v) κ.toHomUnits`.
+
+Use `⟨χ * apowHom ((a : ℂ) / 2), fun h hh => ⟨cmpGL t h, rfl, fun φ hφ φ₁ hφ₁ hA => ?_⟩⟩` and prove the remaining obligations. Establish `hsh : sec (cmpGL t h) = h` using `hinj _ (hsec _) _ hh (by rw [hsecv, cmpGL_val])`. Establish `hch : c h = (χ (Matrix.GeneralLinearGroup.det (cmpGL t h)) : ℂ)`. Use `congrArg Units.val (hχ (cmpGL t h))` as an intermediate fact. Rewrite `this` using `[MonoidHom.coe_toHomUnits]`.
+
+Rewrite using `[← this]`. Use `show c h = c (sec (cmpGL t h))`. Rewrite using `[hsh]`. Use function extensionality and compare the values at `Y`. Rewrite using `[hc h hh φ hφ φ₁ hφ₁ hA Y, hch]`.
+
+Simplify using `only [GlobalTheory.SplitFlip.omA, GlobalTheory.SplitFlip.invT_val, map_one, inv_one, Units.val_one, MonoidHom.mul_apply, Units.val_mul, Fintype.card_fin, GlobalTheory.SplitFlip.apow_one, one_mul, Matrix.one_mul, Matrix.coe_units_inv, cmpGL_val]`. Establish `hv : ((apowHom (v` using `v) ((a : ℂ) / 2) (GlobalTheory.SplitFlip.gdet (cmpGL t h)) : ℂˣ) : ℂ) * GlobalTheory.SplitFlip.apow (GlobalTheory.SplitFlip.gdet (cmpGL t h)) (-(a : ℂ) / 2) = 1 := by show GlobalTheory.SplitFlip.apow _ _ * GlobalTheory.SplitFlip.apow _ _ = 1`. Rewrite using `[← GlobalTheory.SplitFlip.apow_add, show (a : ℂ) / 2 + -(a : ℂ) / 2 = 0 by ring, GlobalTheory.SplitFlip.apow_zero]`. Rewrite using `[mul_one, mul_assoc (χ _ : ℂ), hv, mul_one]`.
+-/
 theorem core (hT : IsTriple B G X om om') (v : Pl F) (t : E →ₐ[F] Fv F v)
     (ι : ((Fin a × Fin (a + a') → Fv F v) → ℂ) →ₗ[ℂ] (Matrix (Fin a) (Fin (a + a')) (Fv F v) → ℂ))
     (hEx : ∀ h ∈ UAt σ G.W (evFin F v), ∀ φ ∈ SB (Fin a × Fin (a + a') → Fv F v),
@@ -178,6 +233,9 @@ end GlobalTheory.LocalUnitSubgroupClosure
 
 namespace GlobalTheory.LocalUnitSubgroupClosure
 
+/- English proof (translation)
+Introduce `hPr F E _ _ _ _ _ σ B a a' G X om om' hT v hv t ι _ hS`. Establish `hEx` using `(GlobalTheory.T.theta_action_exists hPr F E σ B a (a + a') G.V G.W G.M X.β (X.β / X.α) om _ _ _ _ (GlobalTheory.ThK.Check.isPair_of_isTriple hT).1 v).1 1 (one_mem_UAt _ _)`. Conclude with `core hT v t ι hEx (GlobalTheory.T.local_unitary_group_surjects_general_linear_right hPr F E σ B a a' G X om om' hT v hv t) (GlobalTheory.T.local_unitary_determined_by_split_image F E σ B a a' G X om om' hT v hv t) hS`.
+-/
 theorem linear_weil_functional_character_weight_zero : GlobalTheory.FunPr.Hypotheses₂ → ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E)
     (a a' : ℕ) (G : Geo σ a a') (X : Chars F E) (om : Rep σ G.V G.W) (om' : Rep σ G.V' G.W), IsTriple B G X om om' →
     ∀ v, X.Good v →

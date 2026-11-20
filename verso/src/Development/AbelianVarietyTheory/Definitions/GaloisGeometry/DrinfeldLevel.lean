@@ -63,10 +63,18 @@ def FreeChart.self (R : Type) [CommRing R] : FreeChart (Over.mk (𝟙 (Sp R))) w
     simp only [Iso.symm_hom, asIso_inv, IsIso.inv_hom_id, Over.mk_hom]
     simp [spMap, Algebra.algebraMap_self]
 
+/- English proof (translation)
+The claim follows from `Module.finrank_self R`.
+-/
 example (R : Type) [CommRing R] [Nontrivial R] :
     Module.finrank (FreeChart.self R).R (FreeChart.self R).B = 1 :=
   Module.finrank_self R
 
+/- English proof (translation)
+Introduce `x`. Establish `: Nontrivial R`. Assume the negation of the conclusion as `h`. Rewrite `h` using `[not_nontrivial_iff_subsingleton]`. Conclude with `(PrimeSpectrum.isEmpty_iff_subsingleton.mpr h).false x`.
+
+Conclude with `⟨FreeChart.self R, inferInstanceAs (IsOpenImmersion (𝟙 _)), ⟨x, rfl⟩, Module.finrank_self R⟩`.
+-/
 example (R : Type) [CommRing R] : IsFinLocFree (Over.mk (𝟙 (Sp R))) 1 := by
   intro x
   have : Nontrivial R := by

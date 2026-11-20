@@ -19,6 +19,17 @@ section Abstract
 
 variable {G A B ι : Type} [Group G] [MulAction G A] [MulAction G B]
 
+/- English proof (translation)
+Use `set H := MulAction.stabilizer G (p a₀) with hH`. Establish `hS : {a | a ∈ MulAction.orbit G a₀ ∧ p a = p a₀} = MulAction.orbit H a₀`. Use extensionality with `a`. Simplify using `only [Set.mem_setOf_eq, MulAction.mem_orbit_iff]`. Prove the components needed by the constructor for the conclusion.
+
+Introduce and unpack `⟨⟨g, rfl⟩, hg⟩`. Use `⟨⟨g, ?_⟩, rfl⟩` and prove the remaining obligations. Rewrite using `[MulAction.mem_stabilizer_iff, ← hp]`. Conclude with `hg`. Introduce and unpack `⟨h, rfl⟩`.
+
+Use `⟨⟨(h : G), rfl⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[Subgroup.smul_def, hp]`. Conclude with `h.2`. Establish `hle : MulAction.stabilizer G a₀ ≤ H` using `fun g hg => by`. Rewrite `hg`, the goal using `[MulAction.mem_stabilizer_iff]`.
+
+Rewrite using `[← hp, hg]`. Establish `hsub : MulAction.stabilizer H a₀ = (MulAction.stabilizer G a₀).subgroupOf H`. Use extensionality with `x`. Simplify using `[Subgroup.mem_subgroupOf, MulAction.mem_stabilizer_iff, Subgroup.smul_def]`. Establish `hstab : Nat.card (MulAction.stabilizer H a₀) = Nat.card (MulAction.stabilizer G a₀)`.
+
+Rewrite using `[hsub]`. Conclude with `Nat.card_congr (Subgroup.subgroupOfEquivOfLe hle).toEquiv`. Rewrite using `[hS, Nat.card_congr (MulAction.orbitEquivQuotientStabilizer H a₀), ← hstab]`. Conclude with `(Subgroup.card_eq_card_quotient_mul_card_subgroup _).symm`.
+-/
 theorem card_fibre_orbit (p : A → B) (hp : ∀ (g : G) a, p (g • a) = g • p a) (a₀ : A) :
     Nat.card {a | a ∈ MulAction.orbit G a₀ ∧ p a = p a₀} * Nat.card (MulAction.stabilizer G a₀) =
       Nat.card (MulAction.stabilizer G (p a₀)) := by
@@ -46,6 +57,11 @@ theorem card_fibre_orbit (p : A → B) (hp : ∀ (g : G) a, p (g • a) = g • 
     exact Nat.card_congr (Subgroup.subgroupOfEquivOfLe hle).toEquiv
   rw [hS, Nat.card_congr (MulAction.orbitEquivQuotientStabilizer H a₀), ← hstab]
   exact (Subgroup.card_eq_card_quotient_mul_card_subgroup _).symm
+/- English proof (translation)
+Substitute `h` using the available equality. Break down `Nat.eq_zero_or_pos s with hs | hs` into its components or cases. Simplify using `[hs]`. Establish `hf' : (f : ℝ) ≠ 0` using `by exact_mod_cast hf`. Rewrite using `[← ENNReal.ofReal_natCast, ← ENNReal.ofReal_mul (Nat.cast_nonneg _)]`.
+
+Use `congr 1`. Use `push_cast`. Rewrite using `[mul_inv, ← mul_assoc, mul_inv_cancel₀ hf', one_mul]`.
+-/
 private lemma natCast_mul_ofReal_inv_eq_ofReal_inv_of_mul_eq (f s S : ℕ) (hf : f ≠ 0) (h : f * s = S) :
     (f : ℝ≥0∞) * ENNReal.ofReal ((S : ℝ))⁻¹ = ENNReal.ofReal ((s : ℝ))⁻¹ := by
   subst h
@@ -57,6 +73,37 @@ private lemma natCast_mul_ofReal_inv_eq_ofReal_inv_of_mul_eq (f s S : ℕ) (hf :
     push_cast
     rw [mul_inv, ← mul_assoc, mul_inv_cancel₀ hf', one_mul]
 
+/- English proof (translation)
+Distinguish the cases in `hne : what₂.Nonempty`. Use `swap`. Rewrite `hne` using `[Finset.not_nonempty_iff_eq_empty]`. Establish `hreps0 : reps = ∅`. Rewrite using `[← Finset.not_nonempty_iff_eq_empty]`.
+
+Introduce and unpack `⟨M, hM⟩`. Take `⟨a, ha, -⟩` from `Set.nonempty_of_ncard_ne_zero (s := {a | a ∈ 𝒜 ∧ p a = M}) (by rw [hcount M hM]; exact hc)`. Take `⟨i, ⟨hi, -⟩, -⟩` from `hrow a ha`. Simplify using `[hne] at hi`. Simplify using `[hne, hreps0]`.
+
+Take `⟨i0, hi0⟩` from `hne`. Establish `: Nonempty B` using `⟨p (m i0)⟩`. Establish `: Nonempty ι` using `⟨i0⟩`. Use `choose! Mof hMof using fun i (hi : i ∈ what₂) => (hreps (m i) (hm i hi)).exists`. Use `choose! r hr using fun a (ha : a ∈ 𝒜) => (hrow a ha).exists`.
+
+Establish `hL : ∑ i ∈ what₂, ENNReal.ofReal ((Nat.card (MulAction.stabilizer G (m i)) : ℝ))⁻¹ * N (p (m i)) = ∑ i ∈ what₂, ENNReal.ofReal ((Nat.card (MulAction.stabilizer G (m i)) : ℝ))⁻¹ * N (Mof i)` using `Finset.sum_congr rfl fun i hi => by`. Take `⟨g, hg⟩` from `(hMof i hi).2`. Rewrite using `[← hg, hN]`. Establish `hfib : ∑ i ∈ what₂, ENNReal.ofReal ((Nat.card (MulAction.stabilizer G (m i)) : ℝ))⁻¹ * N (Mof i) = ∑ M ∈ reps, ∑ i ∈ what₂.filter (fun i => Mof i = M), ENNReal.ofReal ((Nat.card (MulAction.stabilizer G (m i)) : ℝ))⁻¹ * N (Mof i)` using `(Finset.sum_fiberwise_of_maps_to (fun i hi => (hMof i hi).1) _).symm`. Rewrite using `[hL, hfib, Finset.mul_sum]`.
+
+Use `Finset.sum_congr rfl fun M hM => ?_` and prove the remaining obligations. Establish `hN' : ∀ i ∈ what₂.filter (fun i => Mof i = M), ENNReal.ofReal ((Nat.card (MulAction.stabilizer G (m i)) : ℝ))⁻¹ * N (Mof i) = ENNReal.ofReal ((Nat.card (MulAction.stabilizer G (m i)) : ℝ))⁻¹ * N M` using `fun i hi => by`. Rewrite using `[(Finset.mem_filter.1 hi).2]`. Rewrite using `[Finset.sum_congr rfl hN', ← Finset.sum_mul, ← mul_assoc]`. Use `congr 1`.
+
+Establish `hFne : ({a | a ∈ 𝒜 ∧ p a = M} : Set A).ncard ≠ 0` using `by rw [hcount M hM]; exact hc`. Establish `hFfin` using `Set.finite_of_ncard_ne_zero hFne`. Establish `hrow_fib : ∀ i ∈ what₂.filter (fun i => Mof i = M), ((Nat.card {a | a ∈ MulAction.orbit G (m i) ∧ p a = M} : ℕ) : ℝ≥0∞) * ENNReal.ofReal ((Nat.card (MulAction.stabilizer G M) : ℝ))⁻¹ = ENNReal.ofReal ((Nat.card (MulAction.stabilizer G (m i)) : ℝ))⁻¹`. Introduce `i hi`. Take `⟨hi, hiM⟩` from `Finset.mem_filter.1 hi`.
+
+Take `⟨g, hg⟩` from `(hMof i hi).2`. Rewrite `hg` using `[hiM]`. Establish `hp0 : p (g⁻¹ • m i) = M` using `by rw [hp, ← hg, inv_smul_smul]`. Establish `key` using `card_fibre_orbit p hp (g⁻¹ • m i)`. Rewrite `key` using `[MulAction.orbit_smul, hp0]`.
+
+Establish `hs : Nat.card (MulAction.stabilizer G (g⁻¹ • m i)) = Nat.card (MulAction.stabilizer G (m i))` using `(Nat.card_congr (MulAction.stabilizerEquivStabilizer (g := g⁻¹) (a := m i) rfl).toEquiv).symm`. Rewrite `key` using `[hs]`. Use `natCast_mul_ofReal_inv_eq_ofReal_inv_of_mul_eq _ _ _ ?_ key` and prove the remaining obligations. Establish `hsub : ({a | a ∈ MulAction.orbit G (m i) ∧ p a = M} : Set A) ⊆ {a | a ∈ 𝒜 ∧ p a = M}`. Introduce and unpack `a ⟨⟨g', rfl⟩, hpa⟩`.
+
+Conclude with `⟨h𝒜 g' _ (hm i hi), hpa⟩`. Establish `hfin : ({a | a ∈ MulAction.orbit G (m i) ∧ p a = M} : Set A).Finite` using `hFfin.subset hsub`. Establish `hmem : g⁻¹ • m i ∈ ({a | a ∈ MulAction.orbit G (m i) ∧ p a = M} : Set A)` using `⟨⟨g⁻¹, rfl⟩, hp0⟩`. Use `haveI := hfin.to_subtype`. Establish `: Nonempty ({a | a ∈ MulAction.orbit G (m i) ∧ p a = M} : Set A)` using `⟨⟨_, hmem⟩⟩`.
+
+Conclude with `Nat.card_pos.ne'`. Establish `hB : ∑ i ∈ what₂.filter (fun i => Mof i = M), Nat.card {a | a ∈ MulAction.orbit G (m i) ∧ p a = M} = c`. Rewrite using `[← hcount M hM, Set.ncard_eq_toFinset_card _ hFfin, Finset.card_eq_sum_card_fiberwise (f := r) (t := what₂.filter (fun i => Mof i = M))]`. Use `Finset.sum_congr rfl fun i hi => ?_` and prove the remaining obligations. Take `⟨hi, hiM⟩` from `Finset.mem_filter.1 hi`.
+
+Use `symm`. Rewrite using `[Nat.card_coe_set_eq, ← Set.ncard_coe_finset]`. Use `congr 1`. Use extensionality with `a`. Simplify using `only [Finset.coe_filter, Set.Finite.mem_toFinset, Set.mem_ofPred_eq]`.
+
+Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨⟨ha, hpa⟩, hra⟩`. Take `⟨-, g, hg⟩` from `hr a ha`. Rewrite `hg` using `[hra]`. Conclude with `⟨⟨g, hg⟩, hpa⟩`.
+
+Introduce and unpack `⟨⟨g, rfl⟩, hpa⟩`. Establish `ha : g • m i ∈ 𝒜` using `h𝒜 g _ (hm i hi)`. Conclude with `⟨⟨ha, hpa⟩, (hrow _ ha).unique (hr _ ha) ⟨hi, g, rfl⟩⟩`. Introduce `a ha`. Rewrite `ha` using `[Finset.mem_coe, Set.Finite.mem_toFinset]`.
+
+Take `⟨ha, hpa⟩` from `ha`. Take `⟨hra, g, hg⟩` from `hr a ha`. Rewrite using `[Finset.mem_coe, Finset.mem_filter]`. Use `⟨hra, ?_⟩` and prove the remaining obligations. Establish `hma : m (r a) = g⁻¹ • a` using `eq_inv_smul_iff.2 hg`.
+
+Conclude with `(hreps (m (r a)) (hm _ hra)).unique (hMof _ hra) ⟨hM, g⁻¹, by rw [hma, hp, hpa]⟩`. Rewrite using `[← Finset.sum_congr rfl hrow_fib, ← Finset.sum_mul]`. Use `congr 1`. Rewrite using `[← hB, Nat.cast_sum]`.
+-/
 theorem sum_over_fibres (p : A → B) (hp : ∀ (g : G) a, p (g • a) = g • p a) (𝒜 : Set A)
     (h𝒜 : ∀ (g : G), ∀ a ∈ 𝒜, g • a ∈ 𝒜) (what₂ : Finset ι) (m : ι → A) (hm : ∀ i ∈ what₂, m i ∈ 𝒜)
     (hrow : ∀ a ∈ 𝒜, ∃! i, i ∈ what₂ ∧ ∃ g : G, g • m i = a) (reps : Finset B)
@@ -161,6 +208,11 @@ section Geometry
 
 open GlobalTheory.IndefiniteRowSideFullHecke.DiscriminantKernelAutomorphisms GlobalTheory.RowMassCompare
 
+/- English proof (translation)
+Unfold `Formalism.HermitianLatticesTheory.gmap`. Simplify using `only [Submodule.mem_map, LinearMap.coe_restrictScalars, LinearEquiv.coe_coe]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨y, hy, hxy⟩`. Rewrite `hy` using `[γ.injective hxy]`.
+
+Conclude with `hy`. Introduce `hx`. Conclude with `⟨x, hx, rfl⟩`.
+-/
 theorem mem_gmap {K V : Type} [Field K] [NumberField K] [AddCommGroup V] [Module K V]
     [Module (𝓞 K) V] [IsScalarTower (𝓞 K) K V] (γ : V ≃ₗ[K] V) (M : Submodule (𝓞 K) V) (x : V) :
     γ x ∈ Formalism.HermitianLatticesTheory.gmap γ M ↔ x ∈ M := by
@@ -173,15 +225,26 @@ theorem mem_gmap {K V : Type} [Field K] [NumberField K] [AddCommGroup V] [Module
   · intro hx
     exact ⟨x, hx, rfl⟩
 
+/- English proof (translation)
+The claim follows from `S.herm.eq_iff.1 h`.
+-/
 theorem hT_swap {E : Type} [Field E] [NumberField E] [StarRing E] (S : HSpace E) {x y : S.V}
     (h : S.hT x y = 0) : S.hT y x = 0 := S.herm.eq_iff.1 h
 
 variable (D : D7) {T : D.host.E} (F0 : FlagG (VS D) D.R.rS T)
 
+/- English proof (translation)
+Simplify using `only [orth, Submodule.mem_iInf, LinearMap.mem_ker]`.
+-/
 theorem mem_orth {U : Submodule D.host.E (hS D).V} {v : (hS D).V} :
     v ∈ orth (hS D) U ↔ ∀ x ∈ U, (hS D).hT x v = 0 := by
   simp only [orth, Submodule.mem_iInf, LinearMap.mem_ker]
 
+/- English proof (translation)
+Rewrite using `[mem_orth D]`. Prove the components needed by the constructor for the conclusion. Introduce `h a`. Conclude with `h _ (Submodule.subset_span ⟨a, rfl⟩)`. Introduce `h x hx`.
+
+Establish `hle : F0.X ≤ LinearMap.ker ((hS D).hT.flip v)` using `Submodule.span_le.2 (by rintro _ ⟨a, rfl⟩; simpa using h a)`. Simplify using `using hle hx`.
+-/
 theorem mem_orthX {v : (hS D).V} : v ∈ orth (hS D) F0.X ↔ ∀ a, (hS D).hT (F0.e a) v = 0 := by
   rw [mem_orth D]
   constructor
@@ -192,6 +255,9 @@ theorem mem_orthX {v : (hS D).V} : v ∈ orth (hS D) F0.X ↔ ∀ a, (hS D).hT (
       Submodule.span_le.2 (by rintro _ ⟨a, rfl⟩; simpa using h a)
     simpa using hle hx
 
+/- English proof (translation)
+Introduce `x hx`. Rewrite using `[mem_orthX D F0]`. Introduce `a`. Establish `hle : F0.X ≤ LinearMap.ker ((hS D).hT (F0.e a))` using `Submodule.span_le.2 (by rintro _ ⟨b, rfl⟩; exact F0.e_iso a b)`. Conclude with `hle hx`.
+-/
 theorem X_le_orth : F0.X ≤ orth (hS D) F0.X := by
   intro x hx
   rw [mem_orthX D F0]
@@ -200,12 +266,20 @@ theorem X_le_orth : F0.X ≤ orth (hS D) F0.X := by
     Submodule.span_le.2 (by rintro _ ⟨b, rfl⟩; exact F0.e_iso a b)
   exact hle hx
 
+/- English proof (translation)
+Unfold `FlagG.Xa FlagG.X`. Use `congr 1`. Use extensionality with `x`. Simplify using the standard rewrite rules.
+-/
 theorem Xa_top : F0.Xa D.R.rS = F0.X := by
   unfold FlagG.Xa FlagG.X
   congr 1
   ext x
   simp
 
+/- English proof (translation)
+Use `show v ∈ ((Λ ⊓ toO (hS D) (orth (hS D) F0.X)) ⊔ toO (hS D) F0.X) ⊓ toO (hS D) (orth (hS D) F0.X) ↔ _`. Rewrite using `[Submodule.mem_inf, Submodule.mem_sup]`. Simplify using `only [Submodule.mem_inf, toO, Submodule.restrictScalars_mem]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨⟨l, ⟨hl, hlo⟩, b, hb, rfl⟩, hv⟩`.
+
+Conclude with `⟨hv, l, hl, hlo, by simpa using hb⟩`. Introduce and unpack `⟨hv, l, hl, hlo, hvl⟩`. Conclude with `⟨⟨l, ⟨hl, hlo⟩, v - l, hvl, by abel⟩, hv⟩`.
+-/
 theorem mem_Lsub {Λ : LatV D} {v : (hS D).V} :
     v ∈ Lsub Λ (lf D F0) ↔ v ∈ orth (hS D) F0.X ∧ ∃ l ∈ Λ, l ∈ orth (hS D) F0.X ∧ v - l ∈ F0.X := by
   show v ∈ ((Λ ⊓ toO (hS D) (orth (hS D) F0.X)) ⊔ toO (hS D) F0.X) ⊓ toO (hS D) (orth (hS D) F0.X) ↔ _
@@ -217,6 +291,15 @@ theorem mem_Lsub {Λ : LatV D} {v : (hS D).V} :
   · rintro ⟨hv, l, hl, hlo, hvl⟩
     exact ⟨⟨l, ⟨hl, hlo⟩, v - l, hvl, by abel⟩, hv⟩
 
+/- English proof (translation)
+Establish `hX : v - v' ∈ orth (hS D) F0.X` using `X_le_orth D F0 h`. Rewrite using `[mem_Lsub D F0, mem_Lsub D F0]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨hv, l, hl, hlo, hvl⟩`. Use `⟨?_, l, hl, hlo, ?_⟩` and prove the remaining obligations.
+
+Use `(orth (hS D) F0.X).sub_mem hv hX` as an intermediate fact. Use `this using 1` and compare the differences between its conclusion and the goal. Normalize the expressions using the abelian group laws. Use `F0.X.sub_mem hvl h` as an intermediate fact. Use `this using 1` and compare the differences between its conclusion and the goal.
+
+Normalize the expressions using the abelian group laws. Introduce and unpack `⟨hv, l, hl, hlo, hvl⟩`. Use `⟨?_, l, hl, hlo, ?_⟩` and prove the remaining obligations. Use `(orth (hS D) F0.X).add_mem hv hX` as an intermediate fact. Use `this using 1` and compare the differences between its conclusion and the goal.
+
+Normalize the expressions using the abelian group laws. Use `F0.X.add_mem hvl h` as an intermediate fact. Use `this using 1` and compare the differences between its conclusion and the goal. Normalize the expressions using the abelian group laws.
+-/
 theorem Lsub_congr {Λ : LatV D} {v v' : (hS D).V} (h : v - v' ∈ F0.X) :
     v ∈ Lsub Λ (lf D F0) ↔ v' ∈ Lsub Λ (lf D F0) := by
   have hX : v - v' ∈ orth (hS D) F0.X := X_le_orth D F0 h
@@ -241,6 +324,13 @@ theorem Lsub_congr {Λ : LatV D} {v v' : (hS D).V} (h : v - v' ∈ F0.X) :
 
 variable {D F0}
 
+/- English proof (translation)
+Establish `h` using `hγ.2.1 D.R.rS`. Rewrite `h` using `[Xa_top]`. Prove the components needed by the constructor for the conclusion. Introduce `hx`. Rewrite `hx` using `[← h]`.
+
+Take `⟨y, hy, hyx⟩` from `Submodule.mem_map.1 hx`. Establish `hyx' : y = x` using `γ.injective (by simpa using hyx)`. Rewrite using `[← hyx']`. Conclude with `hy`. Introduce `hx`.
+
+Rewrite using `[← h]`. Conclude with `Submodule.mem_map_of_mem hx`.
+-/
 theorem stab_X {γ : (VS D).V ≃ₗ[D.host.E] (VS D).V} (hγ : γ ∈ stabF D F0) {x : (VS D).V} :
     γ x ∈ F0.X ↔ x ∈ F0.X := by
   have h := hγ.2.1 D.R.rS
@@ -256,6 +346,11 @@ theorem stab_X {γ : (VS D).V ≃ₗ[D.host.E] (VS D).V} (hγ : γ ∈ stabF D F
     rw [← h]
     exact Submodule.mem_map_of_mem hx
 
+/- English proof (translation)
+Establish `hiso : ∀ a b, (hS D).hT (γ a) (γ b) = (hS D).hT a b` using `hγ.1`. Rewrite using `[mem_orth D, mem_orth D]`. Prove the components needed by the constructor for the conclusion. Introduce `h y hy`. Rewrite using `[← hiso]`.
+
+Conclude with `h _ ((stab_X hγ).2 hy)`. Introduce `h y hy`. Take `⟨y', rfl⟩ : ∃ y', γ y' = y` from `⟨γ.symm y, by simp⟩`. Rewrite using `[hiso]`. Conclude with `h _ ((stab_X hγ).1 hy)`.
+-/
 theorem stab_orth {γ : (VS D).V ≃ₗ[D.host.E] (VS D).V} (hγ : γ ∈ stabF D F0) {x : (VS D).V} :
     γ x ∈ orth (hS D) F0.X ↔ x ∈ orth (hS D) F0.X := by
   have hiso : ∀ a b, (hS D).hT (γ a) (γ b) = (hS D).hT a b := hγ.1
@@ -269,6 +364,13 @@ theorem stab_orth {γ : (VS D).V ≃ₗ[D.host.E] (VS D).V} (hγ : γ ∈ stabF 
     rw [hiso]
     exact h _ ((stab_X hγ).1 hy)
 
+/- English proof (translation)
+Rewrite using `[mem_Lsub, mem_Lsub, stab_orth hγ]`. Apply `and_congr_right` to reduce the goal to its premises. Introduce `_`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨l, hl, hlo, hvl⟩`.
+
+Take `⟨l', rfl⟩ : ∃ l', γ l' = l` from `⟨γ.symm l, by simp⟩`. Use `⟨l', (mem_gmap γ Λ l').1 hl, (stab_orth hγ).1 hlo, ?_⟩` and prove the remaining obligations. Rewrite `hvl` using `[← map_sub]`. Conclude with `(stab_X hγ).1 hvl`. Introduce and unpack `⟨l, hl, hlo, hvl⟩`.
+
+Use `⟨γ l, (mem_gmap γ Λ l).2 hl, (stab_orth hγ).2 hlo, ?_⟩` and prove the remaining obligations. Rewrite using `[← map_sub]`. Conclude with `(stab_X hγ).2 hvl`.
+-/
 theorem Lsub_gmap {γ : (VS D).V ≃ₗ[D.host.E] (VS D).V} (hγ : γ ∈ stabF D F0) (Λ : LatV D) {v : (VS D).V} :
     γ v ∈ Lsub (Formalism.HermitianLatticesTheory.gmap γ Λ) (lf D F0) ↔ v ∈ Lsub Λ (lf D F0) := by
   rw [mem_Lsub, mem_Lsub, stab_orth hγ]
@@ -285,6 +387,29 @@ theorem Lsub_gmap {γ : (VS D).V ≃ₗ[D.host.E] (VS D).V} (hγ : γ ∈ stabF 
     rw [← map_sub]
     exact (stab_X hγ).2 hvl
 
+/- English proof (translation)
+Take `⟨hgen, ⟨hlat, hunim, ⟨hzΛ, hzt⟩, hloc, hprim⟩, hXS⟩` from `hΛ`. Establish `hz : γ F0.z = F0.z` using `hγ.2.2`. Establish `hiso : γ ∈ Formalism.HermitianLatticesTheory.isom (VS D).hT` using `hγ.1`. Establish `hiso' : ∀ a b, (VS D).hT (γ a) (γ b) = (VS D).hT a b` using `hγ.1`. Establish `hfixX : ∀ x ∈ F0.X, γ x = x` using `fun x hx => LinearMap.eqOn_span (f := (γ : (VS D).V →ₗ[D.host.E] (VS D).V)) (g := LinearMap.id) (by rintro _ ⟨a, rfl⟩; simp [he a]) hx`.
+
+Establish `hXL : XLam (Formalism.HermitianLatticesTheory.gmap γ Λ) (lf D F0) = XLam Λ (lf D F0)`. Use extensionality with `x`. Use `show x ∈ Formalism.HermitianLatticesTheory.gmap γ Λ ∧ x ∈ F0.X ↔ x ∈ Λ ∧ x ∈ F0.X`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨hx, hxX⟩`.
+
+Use `⟨(mem_gmap γ Λ x).1 ?_, hxX⟩` and prove the remaining obligations. Rewrite using `[hfixX x hxX]` and apply the resulting hypothesis. Introduce and unpack `⟨hx, hxX⟩`. Use `⟨?_, hxX⟩` and prove the remaining obligations. Rewrite using `[← hfixX x hxX]`.
+
+Conclude with `(mem_gmap γ Λ x).2 hx`. Establish `hlocg : ∀ p : Ideal (𝓞 D.host.E), Formalism.HermitianLatticesTheory.loc (K` using `D.host.E) p (Formalism.HermitianLatticesTheory.gmap γ Λ) = Formalism.HermitianLatticesTheory.gmap γ (Formalism.HermitianLatticesTheory.loc (K := D.host.E) p Λ) := by`. Introduce `p`. Use extensionality with `x`. Simplify using `only [Formalism.HermitianLatticesTheory.loc, Formalism.HermitianLatticesTheory.isomAct_mem_locS, Formalism.HermitianLatticesTheory.isomAct_mem_gmap, Formalism.HermitianLatticesTheory.isomAct_smul]`.
+
+Establish `hdual : Formalism.HermitianLatticesTheory.dual (VS D).hT (Formalism.HermitianLatticesTheory.gmap γ Λ) = Formalism.HermitianLatticesTheory.gmap γ (Formalism.HermitianLatticesTheory.dual (VS D).hT Λ)`. Use extensionality with `x`. Rewrite using `[Formalism.HermitianLatticesTheory.isomAct_mem_dual, Formalism.HermitianLatticesTheory.isomAct_mem_gmap, Formalism.HermitianLatticesTheory.isomAct_mem_dual]`. Establish `key : ∀ y, (VS D).hT (γ y) x = (VS D).hT y (γ.symm x)` using `fun y => by`. Rewrite using `[← hiso' y (γ.symm x), LinearEquiv.apply_symm_apply]`.
+
+Prove the components needed by the constructor for the conclusion. Introduce `H y hy`. Use `H (γ y) ((mem_gmap γ Λ y).2 hy)` as an intermediate fact. Rewrite `this` using `[key]`. Then use the resulting hypothesis. Introduce `H y hy`.
+
+Take `⟨y', rfl⟩ : ∃ y', γ y' = y` from `⟨γ.symm y, by simp⟩`. Rewrite using `[key]`. Conclude with `H y' ((mem_gmap γ Λ y').1 hy)`. Use `⟨⟨Formalism.HermitianLatticesTheory.isomAct_lattice γ Λ hgen.1, fun p hp => ?_⟩, ⟨Formalism.HermitianLatticesTheory.isomAct_lattice γ Λ hlat, ?_, ⟨?_, hzt⟩, ?_, ?_⟩, hXL.trans hXS⟩` and prove the remaining obligations. Take `⟨g, hg, hgl⟩` from `hgen.2 p hp`.
+
+Use `⟨γ * g, mul_mem hiso hg, ?_⟩` and prove the remaining obligations. Rewrite using `[gmap_mul', hgl, hlocg]`. Use `show Formalism.HermitianLatticesTheory.dual _ _ = _`. Rewrite using `[hdual]`. Conclude with `congrArg (Formalism.HermitianLatticesTheory.gmap γ) hunim`.
+
+Use `show F0.z ∈ Formalism.HermitianLatticesTheory.gmap γ Λ`. Use `(mem_gmap γ Λ F0.z).2 hzΛ` as an intermediate fact. Rewrite `this` using `[hz]`. Then use the resulting hypothesis. Introduce `P`. Take `⟨c, hc0, hcg, hcl⟩` from `hloc P`.
+
+Conclude with `⟨c, hc0, hcg, by rw [hXL]; exact hcl⟩`. Introduce `c hc`. Apply `hprim c` to reduce the goal to its premises. Establish `h1 : γ (c • F0.z) = c • F0.z` using `by rw [map_smul, hz]`. Apply `(Lsub_gmap hγ Λ).1` to reduce the goal to its premises.
+
+Rewrite using `[h1]`. Conclude with `hc`.
+-/
 theorem rowLat_gmap {γ : (VS D).V ≃ₗ[D.host.E] (VS D).V} (hγ : γ ∈ stabF D F0) (he : ∀ a, γ (F0.e a) = F0.e a)
     {Λ : LatV D} (hΛ : IsRowLat D F0 Λ) : IsRowLat D F0 (Formalism.HermitianLatticesTheory.gmap γ Λ) := by
   obtain ⟨hgen, ⟨hlat, hunim, ⟨hzΛ, hzt⟩, hloc, hprim⟩, hXS⟩ := hΛ
@@ -361,34 +486,61 @@ def cplMap : (D.host.E × ((Fin D.R.rS → D.host.E) × (Fin D.R.rS → D.host.E
 def decMap : ((D.sp.X 0).V × (D.host.E × ((Fin D.R.rS → D.host.E) × (Fin D.R.rS → D.host.E)))) →ₗ[D.host.E]
     (VS D).V := (D.sp.iXY 0).coprod (cplMap F0)
 
+/- English proof (translation)
+Simplify using `only [cplMap, LinearMap.coprod_apply, LinearMap.toSpanSingleton_apply, Fintype.linearCombination_apply]`.
+-/
 theorem cplMap_apply (c : D.host.E) (a b : Fin D.R.rS → D.host.E) :
     cplMap F0 (c, a, b) = c • F0.z + (∑ i, a i • F0.e i + ∑ i, b i • D.sp.hypF i) := by
   simp only [cplMap, LinearMap.coprod_apply, LinearMap.toSpanSingleton_apply, Fintype.linearCombination_apply]
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem decMap_apply (w : (D.sp.X 0).V) (q) : decMap F0 (w, q) = D.sp.iXY 0 w + cplMap F0 q := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem sumMap_apply (w : (D.sp.X 0).V) (c : D.host.E) : sumMap D F0 (w, c) = D.sp.iXY 0 w + c • F0.z := rfl
 
+/- English proof (translation)
+The claim follows from `D.sp.iXY_isom 0 (by have := D.R.two_le_m; omega) x y`.
+-/
 theorem iota_isom (x y : (D.sp.X 0).V) : (VS D).hT (D.sp.iXY 0 x) (D.sp.iXY 0 y) = (D.sp.X 0).hT x y := D.sp.iXY_isom 0 (by have := D.R.two_le_m; omega) x y
 
 variable {F0} (he : F0.e = D.sp.hypE) {t : D.host.E} (hz : F0.z = t • D.sp.zm) (hT : T ≠ 0)
 
 include hz in
+/- English proof (translation)
+Rewrite using `[hz]`. Simplify using `[D.sp.zm_orth]`.
+-/
 theorem definiteInclusion_orthogonal_negativeVector (w : (D.sp.X 0).V) : (VS D).hT (D.sp.iXY 0 w) F0.z = 0 := by
   rw [hz]
   simp [D.sp.zm_orth]
 
 include he in
+/- English proof (translation)
+Rewrite using `[he]`. Conclude with `(D.sp.hyp_orthX a w).1`.
+-/
 theorem iota_e (w : (D.sp.X 0).V) (a) : (VS D).hT (D.sp.iXY 0 w) (F0.e a) = 0 := by
   rw [he]
   exact (D.sp.hyp_orthX a w).1
 
 include he in
+/- English proof (translation)
+The claim follows from `(mem_orthX D F0).2 fun a => hT_swap _ (iota_e he w a)`.
+-/
 theorem iota_orth (w : (D.sp.X 0).V) : D.sp.iXY 0 w ∈ orth (hS D) F0.X := (mem_orthX D F0).2 fun a => hT_swap _ (iota_e he w a)
 
+/- English proof (translation)
+The claim follows from `(mem_orthX D F0).2 F0.z_orth`.
+-/
 theorem z_orthX : F0.z ∈ orth (hS D) F0.X := (mem_orthX D F0).2 F0.z_orth
 
 include he hz in
+/- English proof (translation)
+Take `⟨c, a, b⟩` from `q`. Rewrite using `[cplMap_apply]`. Establish `h3 : ∀ i, (VS D).hT (D.sp.iXY 0 w) (D.sp.hypF i) = 0` using `fun i => (D.sp.hyp_orthX i w).2`. Simplify using `[definiteInclusion_orthogonal_negativeVector hz, iota_e he, h3]`.
+-/
 theorem iota_cpl (w : (D.sp.X 0).V) (q) : (VS D).hT (D.sp.iXY 0 w) (cplMap F0 q) = 0 := by
   obtain ⟨c, a, b⟩ := q
   rw [cplMap_apply]
@@ -396,6 +548,11 @@ theorem iota_cpl (w : (D.sp.X 0).V) (q) : (VS D).hT (D.sp.iXY 0 w) (cplMap F0 q)
   simp [definiteInclusion_orthogonal_negativeVector hz, iota_e he, h3]
 
 include he in
+/- English proof (translation)
+Rewrite using `[decMap_apply, cplMap_apply]`. Establish `h1 : (VS D).hT (F0.e j) (D.sp.iXY 0 w) = 0` using `hT_swap _ (iota_e he w j)`. Establish `h2 : (VS D).hT (F0.e j) F0.z = 0` using `F0.z_orth j`. Establish `h3 : ∀ i, (VS D).hT (F0.e j) (F0.e i) = 0` using `fun i => F0.e_iso j i`. Establish `h4 : ∀ i, (VS D).hT (F0.e j) (D.sp.hypF i) = if j = i then 1 else 0` using `fun i => by`.
+
+Rewrite using `[he]`. Conclude with `D.sp.hyp_ef j i`. Simplify using `[h1, h2, h3, h4]`.
+-/
 theorem e_dec (j) (w : (D.sp.X 0).V) (c a b) : (VS D).hT (F0.e j) (decMap F0 (w, c, a, b)) = b j := by
   rw [decMap_apply, cplMap_apply]
   have h1 : (VS D).hT (F0.e j) (D.sp.iXY 0 w) = 0 := hT_swap _ (iota_e he w j)
@@ -407,6 +564,11 @@ theorem e_dec (j) (w : (D.sp.X 0).V) (c a b) : (VS D).hT (F0.e j) (decMap F0 (w,
   simp [h1, h2, h3, h4]
 
 include he hz in
+/- English proof (translation)
+Rewrite using `[decMap_apply, cplMap_apply]`. Establish `h1 : (VS D).hT F0.z (D.sp.iXY 0 w) = 0` using `hT_swap _ (definiteInclusion_orthogonal_negativeVector hz w)`. Establish `h2 : (VS D).hT F0.z F0.z = -T` using `F0.z_norm`. Establish `h3 : ∀ i, (VS D).hT F0.z (F0.e i) = 0` using `fun i => hT_swap _ (F0.z_orth i)`. Establish `h4 : ∀ i, (VS D).hT F0.z (D.sp.hypF i) = 0` using `fun i => by`.
+
+Rewrite using `[hz]`. Simplify using `[(D.sp.hyp_orthz i).2]`. Simplify using `[h1, h2, h3, h4]`.
+-/
 theorem z_dec (w : (D.sp.X 0).V) (c a b) : (VS D).hT F0.z (decMap F0 (w, c, a, b)) = c * -T := by
   rw [decMap_apply, cplMap_apply]
   have h1 : (VS D).hT F0.z (D.sp.iXY 0 w) = 0 := hT_swap _ (definiteInclusion_orthogonal_negativeVector hz w)
@@ -418,6 +580,23 @@ theorem z_dec (w : (D.sp.X 0).V) (c a b) : (VS D).hT F0.z (decMap F0 (w, c, a, b
   simp [h1, h2, h3, h4]
 
 include he hz hT in
+/- English proof (translation)
+Establish `hinj : Function.Injective (decMap F0)`. Use `(injective_iff_map_eq_zero (decMap F0)).2 ?_` and prove the remaining obligations. Introduce and unpack `⟨w, c, a, b⟩ h0`. Establish `hb : ∀ j, b j = 0` using `fun j => by`. Use `e_dec he j w c a b` as an intermediate fact.
+
+Rewrite `this` using `[h0, map_zero]`. Conclude with `this.symm`. Establish `hc : c = 0`. Use `z_dec he hz w c a b` as an intermediate fact. Rewrite `this` using `[h0, map_zero]`.
+
+Conclude with `(mul_eq_zero.1 this.symm).resolve_right (neg_ne_zero.2 hT)`. Establish `hb' : b = 0` using `funext hb`. Substitute `hb' hc` using the available equality. Rewrite `h0` using `[decMap_apply, cplMap_apply]`. Simplify using `only [zero_smul, Pi.zero_apply, Finset.sum_const_zero, add_zero, zero_add] at h0`.
+
+Establish `ha : ∀ j, a j = 0` using `fun j => by`. Use `congrArg (fun v => (VS D).hT v (D.sp.hypF j)) h0` as an intermediate fact. Establish `hx : (VS D).hT (D.sp.iXY 0 w) (D.sp.hypF j) = 0` using `(D.sp.hyp_orthX j w).2`. Establish `he' : ∀ i, (VS D).hT (F0.e i) (D.sp.hypF j) = if i = j then 1 else 0` using `fun i => by`. Rewrite using `[he]`.
+
+Conclude with `D.sp.hyp_ef i j`. Simplify `this` using `[hx, he']`. Establish `ha' : a = 0` using `funext ha`. Substitute `ha'` using the available equality. Simplify using `only [Pi.zero_apply, zero_smul, Finset.sum_const_zero, add_zero] at h0`.
+
+Establish `hw : w = 0` using `(D.sp.X 0).nondeg.1 w fun y => by`. Rewrite using `[← iota_isom, h0, map_zero, LinearMap.zero_apply]`. Substitute `hw` using the available equality. Both sides reduce to the same expression. Establish `hdim : Module.finrank D.host.E ((D.sp.X 0).V × (D.host.E × ((Fin D.R.rS → D.host.E) × (Fin D.R.rS → D.host.E)))) = Module.finrank D.host.E (VS D).V`.
+
+Establish `h1 : Module.finrank D.host.E (D.sp.X 0).V = D.R.N 0` using `(D.sp.X 0).rank_eq.trans (D.sp.X_rank 0 (Nat.zero_le _))`. Establish `h2 : Module.finrank D.host.E (VS D).V = D.R.rankY 0` using `(D.sp.Y 0).rank_eq.trans (D.sp.Y_rank 0 (Nat.zero_le _))`. Rewrite using `[Module.finrank_prod, Module.finrank_prod, Module.finrank_prod, Module.finrank_self, Module.finrank_fin_fun, h1, h2]`. Take `⟨j, hj⟩` from `D.R.m_even`. Establish `h2m` using `D.R.two_le_m`.
+
+Simplify using `only [Ranks.N, Ranks.rankY, Ranks.r, Ranks.rS, zero_mul, add_zero]`. Use linear arithmetic over natural numbers and integers. Conclude with `⟨hinj, (LinearMap.injective_iff_surjective_of_finrank_eq_finrank hdim).1 hinj⟩`.
+-/
 theorem dec_bij : Function.Bijective (decMap F0) := by
   have hinj : Function.Injective (decMap F0) := by
     refine (injective_iff_map_eq_zero (decMap F0)).2 ?_
@@ -463,12 +642,22 @@ theorem dec_bij : Function.Bijective (decMap F0) := by
   exact ⟨hinj, (LinearMap.injective_iff_surjective_of_finrank_eq_finrank hdim).1 hinj⟩
 
 include he in
+/- English proof (translation)
+Take `⟨w, c⟩` from `p`. Rewrite using `[sumMap_apply]`. Conclude with `add_mem (iota_orth he w) (Submodule.smul_mem _ c z_orthX)`.
+-/
 theorem sumMap_orth (p) : sumMap D F0 p ∈ orth (hS D) F0.X := by
   obtain ⟨w, c⟩ := p
   rw [sumMap_apply]
   exact add_mem (iota_orth he w) (Submodule.smul_mem _ c z_orthX)
 
 include he hz hT in
+/- English proof (translation)
+Take `⟨⟨w, c, a, b⟩, rfl⟩` from `(dec_bij he hz hT).2 v`. Establish `hb : ∀ j, b j = 0` using `fun j => by`. Rewrite using `[← e_dec he j w c a b]`. Conclude with `(mem_orthX D F0).1 hv j`. Use `⟨(w, c), ?_⟩` and prove the remaining obligations.
+
+Establish `hb' : b = 0` using `funext hb`. Substitute `hb'` using the available equality. Rewrite using `[decMap_apply, cplMap_apply, sumMap_apply]`. Simplify using `only [Pi.zero_apply, zero_smul, Finset.sum_const_zero, add_zero]`. Establish `hmem : ∑ i, a i • F0.e i ∈ F0.X` using `Submodule.sum_mem _ fun i _ => Submodule.smul_mem _ _ (by unfold FlagG.X; exact Submodule.subset_span ⟨i, rfl⟩)`.
+
+Use `hmem using 1` and compare the differences between its conclusion and the goal. Normalize the expressions using the abelian group laws.
+-/
 theorem exists_sumMap {v : (VS D).V} (hv : v ∈ orth (hS D) F0.X) : ∃ p, v - sumMap D F0 p ∈ F0.X := by
   obtain ⟨⟨w, c, a, b⟩, rfl⟩ := (dec_bij he hz hT).2 v
   have hb : ∀ j, b j = 0 := fun j => by
@@ -485,6 +674,13 @@ theorem exists_sumMap {v : (VS D).V} (hv : v ∈ orth (hS D) F0.X) : ∃ p, v - 
   abel
 
 include he hz hT in
+/- English proof (translation)
+Take `⟨w, c⟩` from `p`. Establish `hX : sumMap D F0 (w, c) ∈ Submodule.span D.host.E (Set.range F0.e)` using `hp`. Take `⟨a, ha⟩` from `(Submodule.mem_span_range_iff_exists_fun (R := D.host.E)).1 hX`. Rewrite `ha` using `[sumMap_apply]`. Establish `h0 : decMap F0 (w, c, -a, 0) = 0`.
+
+Rewrite using `[decMap_apply, cplMap_apply]`. Simplify using `only [Pi.neg_apply, neg_smul, Finset.sum_neg_distrib, Pi.zero_apply, zero_smul, Finset.sum_const_zero, add_zero]`. Rewrite using `[ha]`. Normalize the expressions using the abelian group laws. Establish `h1` using `(dec_bij he hz hT).1 (h0.trans (map_zero (decMap F0)).symm)`.
+
+Establish `hw : w = 0` using `congrArg Prod.fst h1`. Establish `hc : c = 0` using `congrArg (fun x => x.2.1) h1`. Rewrite using `[hw, hc]`. Both sides reduce to the same expression.
+-/
 theorem eq_zero_of_sumMap {p} (hp : sumMap D F0 p ∈ F0.X) : p = 0 := by
   obtain ⟨w, c⟩ := p
   have hX : sumMap D F0 (w, c) ∈ Submodule.span D.host.E (Set.range F0.e) := hp
@@ -501,6 +697,9 @@ theorem eq_zero_of_sumMap {p} (hp : sumMap D F0 p ∈ F0.X) : p = 0 := by
   have hc : c = 0 := congrArg (fun x => x.2.1) h1
   rw [hw, hc]
   rfl
+/- English proof (translation)
+Rewrite using `[decMap_apply, decMap_apply]`. Simplify using `only [map_add, LinearMap.add_apply, iota_isom, iota_cpl he hz, hT_swap (VS D) (iota_cpl he hz w' q), zero_add, add_zero]`.
+-/
 private lemma hT_decMap_eq_add_hT_cplMap (D : D7) {T : D.host.E} (F0 : FlagG (VS D) D.R.rS T)
     (he : F0.e = D.sp.hypE) {t : D.host.E} (hz : F0.z = t • D.sp.zm) (w w' : (D.sp.X 0).V)
     (q q' : (D.host.E × ((Fin D.R.rS → D.host.E) × (Fin D.R.rS → D.host.E)))) :
@@ -521,6 +720,27 @@ def Induces (γ : (VS D).V ≃ₗ[D.host.E] (VS D).V) (g : (D.sp.X 0).V ≃ₗ[D
 
 include he hz hT in
 
+/- English proof (translation)
+Establish `hg' : ∀ x y, (D.sp.X 0).hT (g x) (g y) = (D.sp.X 0).hT x y` using `hg`. Set `φ` to `LinearEquiv.ofBijective (decMap F0) (dec_bij he hz hT)`. Set `G : ((D.sp.X 0).V × (D.host.E × ((Fin D.R.rS → D.host.E) × (Fin D.R.rS → D.host.E)))) ≃ₗ[D.host.E] ((D.sp.X 0).V × (D.host.E × ((Fin D.R.rS → D.host.E) × (Fin D.R.rS → D.host.E))))` to `g.prodCongr (LinearEquiv.refl D.host.E (D.host.E × ((Fin D.R.rS → D.host.E) × (Fin D.R.rS → D.host.E))))`. Set `γ : (VS D).V ≃ₗ[D.host.E] (VS D).V` to `φ.symm.trans (G.trans φ)`. Establish `hγ : ∀ u, γ (decMap F0 u) = decMap F0 (G u)`.
+
+Introduce `u`. Establish `h1 : decMap F0 u = φ u` using `rfl`. Rewrite using `[h1]`. Simplify using `only [γ, LinearEquiv.trans_apply, LinearEquiv.symm_apply_apply]`. Both sides reduce to the same expression.
+
+Establish `hG0 : ∀ q, G (0, q) = (0, q)`. Introduce `q`. Simplify using `[G]`. Establish `he' : ∀ a, F0.e a = decMap F0 (0, 0, Pi.single a 1, 0)`. Introduce `a`.
+
+Rewrite using `[decMap_apply, cplMap_apply]`. Simplify using `[Pi.single_apply, ite_smul]`. Establish `hz' : F0.z = decMap F0 (0, 1, 0, 0)`. Rewrite using `[decMap_apply, cplMap_apply]`. Simplify using the standard rewrite rules.
+
+Establish `hsum : ∀ w c, sumMap D F0 (w, c) = decMap F0 (w, c, 0, 0)`. Introduce `w c`. Rewrite using `[sumMap_apply, decMap_apply, cplMap_apply]`. Simplify using the standard rewrite rules. Establish `hγe : ∀ a, γ (F0.e a) = F0.e a`.
+
+Introduce `a`. Rewrite using `[he' a, hγ, hG0]`. Establish `hγz : γ F0.z = F0.z`. Rewrite using `[hz', hγ, hG0]`. Establish `hiso : ∀ x y, (VS D).hT (γ x) (γ y) = (VS D).hT x y`.
+
+Introduce `x y`. Take `⟨⟨w, q⟩, rfl⟩` from `(dec_bij he hz hT).2 x`. Take `⟨⟨w', q'⟩, rfl⟩` from `(dec_bij he hz hT).2 y`. Rewrite using `[hγ, hγ]`. Establish `hGa : ∀ w q, G (w, q) = (g w, q)` using `fun _ _ => rfl`.
+
+Rewrite using `[hGa, hGa, hT_decMap_eq_add_hT_cplMap D F0 he hz, hT_decMap_eq_add_hT_cplMap D F0 he hz, hg']`. Establish `hXa : ∀ j, (F0.Xa j).map (γ : (VS D).V →ₗ[D.host.E] (VS D).V) = F0.Xa j`. Introduce `j`. Simplify using `only [FlagG.Xa, Submodule.map_span, Set.image_image, LinearEquiv.coe_coe, hγe]`. Use `⟨γ, ⟨hiso, hXa, hγz⟩, hγe, ?_⟩` and prove the remaining obligations.
+
+Introduce `p`. Take `⟨w, c⟩` from `p`. Establish `hh : hat g (w, c) = (g w, c)` using `rfl`. Rewrite using `[hh, hsum, hsum, hγ]`. Establish `hGa : G (w, c, 0, 0) = (g w, c, 0, 0)` using `rfl`.
+
+Rewrite using `[hGa, sub_self]`. Conclude with `F0.X.zero_mem`.
+-/
 theorem exists_ext {g} (hg : g ∈ Formalism.HermitianLatticesTheory.isom (D.sp.X 0).hT) :
     ∃ γ ∈ stabF D F0, (∀ a, γ (F0.e a) = F0.e a) ∧ Induces F0 γ g := by
   have hg' : ∀ x y, (D.sp.X 0).hT (g x) (g y) = (D.sp.X 0).hT x y := hg
@@ -571,6 +791,9 @@ theorem exists_ext {g} (hg : g ∈ Formalism.HermitianLatticesTheory.isom (D.sp.
   have hGa : G (w, c, 0, 0) = (g w, c, 0, 0) := rfl
   rw [hGa, sub_self]
   exact F0.X.zero_mem
+/- English proof (translation)
+Establish `h1 : (VS D).hT x v' = 0` using `(mem_orth D).1 hv' x hx`. Establish `h2 : (VS D).hT x' v = 0` using `(mem_orth D).1 hv x' hx'`. Establish `h3 : (VS D).hT x x' = 0` using `(mem_orth D).1 (X_le_orth D F0 hx') x hx`. Establish `h4 : (VS D).hT v x' = 0` using `hT_swap (VS D) h2`. Simplify using `only [map_sub, LinearMap.sub_apply, h1, h3, h4, sub_zero]`.
+-/
 private lemma hT_sub_of_mem_orth_of_mem (D : D7) {T : D.host.E} (F0 : FlagG (VS D) D.R.rS T)
     {v v' x x' : (VS D).V} (hv : v ∈ orth (hS D) F0.X) (hv' : v' ∈ orth (hS D) F0.X)
     (hx : x ∈ F0.X) (hx' : x' ∈ F0.X) :
@@ -583,6 +806,29 @@ private lemma hT_sub_of_mem_orth_of_mem (D : D7) {T : D.host.E} (F0 : FlagG (VS 
 
 include he hz hT in
 
+/- English proof (translation)
+Establish `hγi : ∀ x y, (VS D).hT (γ x) (γ y) = (VS D).hT x y` using `hγ.1`. Establish `hγz : γ F0.z = F0.z` using `hγ.2.2`. Set `φ` to `LinearEquiv.ofBijective (decMap F0) (dec_bij he hz hT)`. Set `g₀ : (D.sp.X 0).V →ₗ[D.host.E] (D.sp.X 0).V` to `(LinearMap.fst D.host.E (D.sp.X 0).V (D.host.E × ((Fin D.R.rS → D.host.E) × (Fin D.R.rS → D.host.E)))) ∘ₗ (φ.symm : (VS D).V →ₗ[D.host.E] ((D.sp.X 0).V × (D.host.E × ((Fin D.R.rS → D.host.E) × (Fin D.R.rS → D.host.E))))) ∘ₗ (γ : (VS D).V →ₗ[D.host.E] (VS D).V) ∘ₗ (D.sp.iXY 0)`. Establish `horth : ∀ w, γ (D.sp.iXY 0 w) ∈ orth (hS D) F0.X` using `fun w => (stab_orth hγ).2 (iota_orth he w)`.
+
+Establish `hK : ∀ w, γ (D.sp.iXY 0 w) - D.sp.iXY 0 (g₀ w) ∈ F0.X`. Introduce `w`. Establish `hu : decMap F0 (φ.symm (γ (D.sp.iXY 0 w))) = γ (D.sp.iXY 0 w)` using `φ.apply_symm_apply _`. Establish `hg0 : g₀ w = (φ.symm (γ (D.sp.iXY 0 w))).1` using `rfl`. Rewrite using `[hg0]`.
+
+Generalize the expression as in `φ.symm (γ (D.sp.iXY 0 w)) = u at hu ⊢`. Take `⟨w', c, a, b⟩` from `u`. Establish `hb : b = 0`. Use function extensionality and compare the values at `j`. Establish `h1` using `e_dec he j w' c a b`.
+
+Rewrite `h1` using `[hu]`. Rewrite using `[← h1]`. Conclude with `(mem_orthX D F0).1 (horth w) j`. Establish `hc : c = 0`. Establish `h1` using `z_dec he hz w' c a b`.
+
+Rewrite `h1` using `[hu]`. Establish `h2 : (VS D).hT F0.z (γ (D.sp.iXY 0 w)) = 0`. Rewrite using `[← hγz, hγi]`. Conclude with `hT_swap (VS D) (definiteInclusion_orthogonal_negativeVector hz w)`. Rewrite `h1` using `[h2]`.
+
+Establish `h3 : c * T = 0` using `by linear_combination h1`. Conclude with `(mul_eq_zero.1 h3).resolve_right hT`. Substitute `hb` using the available equality. Substitute `hc` using the available equality. Establish `hmem : (∑ i, a i • F0.e i) ∈ F0.X` using `Submodule.sum_mem _ fun i _ => Submodule.smul_mem _ _ (Submodule.subset_span (s := Set.range F0.e) ⟨i, rfl⟩)`.
+
+Rewrite using `[← hu, decMap_apply, cplMap_apply]`. Use `hmem using 1` and compare the differences between its conclusion and the goal. Simplify using the standard rewrite rules. Establish `hiso0 : ∀ x y, (D.sp.X 0).hT (g₀ x) (g₀ y) = (D.sp.X 0).hT x y`. Introduce `x y`.
+
+Rewrite using `[← iota_isom, ← iota_isom]`. Establish `hx' : D.sp.iXY 0 (g₀ x) = γ (D.sp.iXY 0 x) - (γ (D.sp.iXY 0 x) - D.sp.iXY 0 (g₀ x))` using `by abel`. Establish `hy' : D.sp.iXY 0 (g₀ y) = γ (D.sp.iXY 0 y) - (γ (D.sp.iXY 0 y) - D.sp.iXY 0 (g₀ y))` using `by abel`. Rewrite using `[hx', hy', hT_sub_of_mem_orth_of_mem D F0 (horth x) (horth y) (hK x) (hK y), hγi]`. Establish `hinj : Function.Injective g₀`.
+
+Rewrite using `[← LinearMap.ker_eq_bot, LinearMap.ker_eq_bot']`. Introduce `w hw`. Apply `(D.sp.X 0).nondeg.1 w` to reduce the goal to its premises. Introduce `y`. Rewrite using `[← hiso0, hw, map_zero, LinearMap.zero_apply]`.
+
+Set `g : (D.sp.X 0).V ≃ₗ[D.host.E] (D.sp.X 0).V` to `LinearEquiv.ofBijective g₀ ⟨hinj, LinearMap.injective_iff_surjective.1 hinj⟩`. Use `⟨g, hiso0, ?_⟩` and prove the remaining obligations. Introduce `p`. Take `⟨w, c⟩` from `p`. Establish `hh : hat g (w, c) = (g₀ w, c)` using `rfl`.
+
+Rewrite using `[hh, sumMap_apply, sumMap_apply, map_add, map_smul, hγz]`. Establish `h5 : γ (D.sp.iXY 0 w) + c • F0.z - (D.sp.iXY 0 (g₀ w) + c • F0.z) = γ (D.sp.iXY 0 w) - D.sp.iXY 0 (g₀ w)` using `by abel`. Rewrite using `[h5]`. Conclude with `hK w`.
+-/
 theorem exists_res {γ} (hγ : γ ∈ stabF D F0) : ∃ g ∈ Formalism.HermitianLatticesTheory.isom (D.sp.X 0).hT, Induces F0 γ g := by
   have hγi : ∀ x y, (VS D).hT (γ x) (γ y) = (VS D).hT x y := hγ.1
   have hγz : γ F0.z = F0.z := hγ.2.2
@@ -645,6 +891,11 @@ theorem exists_res {γ} (hγ : γ ∈ stabF D F0) : ∃ g ∈ Formalism.Hermitia
   rw [h5]
   exact hK w
 
+/- English proof (translation)
+Use extensionality with `p`. Rewrite using `[Formalism.HermitianLatticesTheory.isomAct_mem_gmap]`. Express the relevant statement in the definitionally equal form `sumMap D F0 p ∈ Lsub (Formalism.HermitianLatticesTheory.gmap γ Λ) (lf D F0) ↔ sumMap D F0 ((hat g).symm p) ∈ Lsub Λ (lf D F0)`. Take `⟨q, rfl⟩ : ∃ q, p = hat g q` from `⟨(hat g).symm p, ((hat g).apply_symm_apply p).symm⟩`. Rewrite using `[LinearEquiv.symm_apply_apply, ← Lsub_gmap hγ Λ]`.
+
+Use `Lsub_congr D F0 ?_` and prove the remaining obligations. Rewrite using `[← neg_sub]`. Conclude with `F0.X.neg_mem (h q)`.
+-/
 theorem latL_gmap {γ g} (hγ : γ ∈ stabF D F0) (h : Induces F0 γ g) (Λ : LatV D) :
     latL D F0 (Formalism.HermitianLatticesTheory.gmap γ Λ) = Formalism.HermitianLatticesTheory.gmap (hat g) (latL D F0 Λ) := by
   ext p
@@ -658,6 +909,11 @@ theorem latL_gmap {γ g} (hγ : γ ∈ stabF D F0) (h : Induces F0 γ g) (Λ : L
   exact F0.X.neg_mem (h q)
 
 include he hz hT in
+/- English proof (translation)
+Use extensionality with `v`. Distinguish the cases in `hv : v ∈ orth (hS D) F0.X`. Take `⟨p, hp⟩` from `exists_sumMap he hz hT hv`. Rewrite using `[Lsub_congr D F0 hp, Lsub_congr D F0 hp]`. Express the relevant statement in the definitionally equal form `p ∈ latL D F0 Λ ↔ p ∈ latL D F0 Λ'`.
+
+Rewrite using `[h]`. Establish `h1 : ∀ Λ'' : LatV D, v ∉ Lsub Λ'' (lf D F0)` using `fun Λ'' hm => hv (Submodule.mem_inf.1 hm).2`. Conclude with `iff_of_false (h1 Λ) (h1 Λ')`.
+-/
 theorem Lsub_eq_of_latL {Λ Λ' : LatV D} (h : latL D F0 Λ = latL D F0 Λ') :
     Lsub Λ (lf D F0) = Lsub Λ' (lf D F0) := by
   ext v
@@ -678,10 +934,16 @@ open GlobalTheory.IndefiniteRowSideFullHecke.DiscriminantKernelAutomorphisms Glo
 variable {D : D7} {T : D.host.E} {F0 : FlagG (VS D) D.R.rS T}
   (he : F0.e = D.sp.hypE) {t : D.host.E} (hz : F0.z = t • D.sp.zm) (hT : T ≠ 0)
 
+/- English proof (translation)
+Simplify using `only [orth, Submodule.mem_iInf, LinearMap.mem_ker]`. Conclude with `Iff.rfl`.
+-/
 theorem mem_perpS {v : (VS D).V} : v ∈ perpS (VS D) F0.X ↔ v ∈ orth (hS D) F0.X := by
   simp only [orth, Submodule.mem_iInf, LinearMap.mem_ker]
   exact Iff.rfl
 
+/- English proof (translation)
+Rewrite using `[Submodule.Quotient.eq]`. Conclude with `Iff.rfl`.
+-/
 theorem mk_eq_mk {x y : perpS (VS D) F0.X} :
     (Submodule.Quotient.mk x : WbQ D F0) = Submodule.Quotient.mk y ↔ x.1 - y.1 ∈ F0.X := by
   rw [Submodule.Quotient.eq]
@@ -699,6 +961,13 @@ def quotEquiv : ((D.sp.X 0).V × D.host.E) ≃ WbQ D F0 :=
       obtain ⟨p, hp⟩ := exists_sumMap he hz hT (mem_perpS.1 x.2)
       exact ⟨p, (mk_eq_mk.2 hp).symm⟩)
 
+/- English proof (translation)
+Take `⟨p, hp⟩ : ∃ p, (quotEquiv he hz hT).symm (Submodule.Quotient.mk x) = p` from `⟨_, rfl⟩`. Establish `hp' : quotEquiv he hz hT p = Submodule.Quotient.mk x`. Rewrite using `[← hp]`. Conclude with `Equiv.apply_symm_apply _ _`. Rewrite using `[hp]`.
+
+Establish `h1 : sumMap D F0 p - x.1 ∈ F0.X` using `mk_eq_mk.1 (show (Submodule.Quotient.mk ⟨sumMap D F0 p, mem_perpS.2 (sumMap_orth he p)⟩ : WbQ D F0) = Submodule.Quotient.mk x from hp')`. Use `show (Submodule.Quotient.mk ⟨sumMap D F0 (hat g p), mem_perpS.2 (sumMap_orth he (hat g p))⟩ : WbQ D F0) = Submodule.Quotient.mk ⟨γ x.1, hx⟩`. Rewrite using `[mk_eq_mk]`. Establish `h2` using `h p`. Establish `h3 : γ (sumMap D F0 p - x.1) ∈ F0.X` using `(stab_X hγ).2 h1`.
+
+Establish `h4 : sumMap D F0 (hat g p) - γ x.1 = γ (sumMap D F0 p - x.1) - (γ (sumMap D F0 p) - sumMap D F0 (hat g p))`. Rewrite using `[map_sub]`. Normalize the expressions using the abelian group laws. Rewrite using `[h4]`. Conclude with `F0.X.sub_mem h3 h2`.
+-/
 theorem induced_eq {γ g} (hγ : γ ∈ stabF D F0) (h : Induces F0 γ g) (x : perpS (VS D) F0.X)
     (hx : γ x.1 ∈ perpS (VS D) F0.X) :
     quotEquiv he hz hT (hat g ((quotEquiv he hz hT).symm (Submodule.Quotient.mk x))) =
@@ -725,6 +994,23 @@ theorem induced_eq {γ g} (hγ : γ ∈ stabF D F0) (h : Induces F0 γ g) (x : p
 
 include he hz hT in
 
+/- English proof (translation)
+Establish `hPhi : ∀ g : Formalism.HermitianLatticesTheory.isom (D.sp.X 0).hT, Formalism.HermitianLatticesTheory.gmap (hat g.1) (latL D F0 Λ) = latL D F0 Λ → (fun y => quotEquiv he hz hT (hat g.1 ((quotEquiv he hz hT).symm y))) ∈ autLz D F0 Λ`. Introduce `g hg`. Take `⟨γ, hγ, hγe, hind⟩` from `exists_ext he hz hT g.2`. Establish `hrow : IsRowLat D F0 (Formalism.HermitianLatticesTheory.gmap γ Λ)` using `rowLat_gmap hγ hγe hΛ`. Establish `hL : Lsub (Formalism.HermitianLatticesTheory.gmap γ Λ) (lf D F0) = Lsub Λ (lf D F0)`.
+
+Apply `Lsub_eq_of_latL he hz hT` to reduce the goal to its premises. Rewrite using `[latL_gmap hγ hind, hg]`. Take `⟨n, hn, hnX, hnΛ⟩` from `hlift _ _ hrow hΛ hL`. Simplify using `only [autLz, Set.mem_ofPred_eq]`. Use `⟨n * γ, GlobalTheory.RowMassCompare.mul_mem_stabF D F0 hn hγ, ?_, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[GlobalTheory.RowMassCompare.gmap_mul', hnΛ]`. Introduce `x hx`. Establish `hx1 : γ x.1 ∈ perpS (VS D) F0.X` using `mem_perpS.2 ((stab_orth hγ).2 (mem_perpS.1 x.2))`. Rewrite using `[induced_eq he hz hT hγ hind x hx1, mk_eq_mk]`. Use `show γ x.1 - n (γ x.1) ∈ F0.X`.
+
+Rewrite using `[← neg_sub]`. Conclude with `F0.X.neg_mem (hnX _ (mem_perpS.1 hx1))`. Set `Ψ : {g : Formalism.HermitianLatticesTheory.isom (D.sp.X 0).hT // Formalism.HermitianLatticesTheory.gmap (hat g.1) (latL D F0 Λ) = latL D F0 Λ} → autLz D F0 Λ` to `fun g => ⟨_, hPhi g.1 g.2⟩`. Establish `hinj : Function.Injective Ψ`. Introduce `g g' hgg`.
+
+Apply `Subtype.ext` to reduce the goal to its premises. Apply `Subtype.ext` to reduce the goal to its premises. Apply `LinearEquiv.ext` to reduce the goal to its premises. Introduce `w`. Establish `h2 : quotEquiv he hz hT (hat g.1.1 ((quotEquiv he hz hT).symm (quotEquiv he hz hT (w, 0)))) = quotEquiv he hz hT (hat g'.1.1 ((quotEquiv he hz hT).symm (quotEquiv he hz hT (w, 0))))` using `congrFun (congrArg Subtype.val hgg) _`.
+
+Rewrite `h2` using `[Equiv.symm_apply_apply]`. Conclude with `congrArg Prod.fst ((quotEquiv he hz hT).injective h2)`. Establish `hsurj : Function.Surjective Ψ`. Introduce and unpack `⟨φ, γ, hγ, hγΛ, hφ⟩`. Take `⟨g, hg, hind⟩` from `exists_res he hz hT hγ`.
+
+Use `⟨⟨⟨g, hg⟩, ?_⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[← latL_gmap hγ hind, hγΛ]`. Apply `Subtype.ext` to reduce the goal to its premises. Use function extensionality and compare the values at `y`. Take `⟨x, rfl⟩` from `Submodule.Quotient.mk_surjective _ y`.
+
+Establish `hx1 : γ x.1 ∈ perpS (VS D) F0.X` using `mem_perpS.2 ((stab_orth hγ).2 (mem_perpS.1 x.2))`. Use `show quotEquiv he hz hT (hat g ((quotEquiv he hz hT).symm (Submodule.Quotient.mk x))) = φ (Submodule.Quotient.mk x)`. Rewrite using `[hφ x hx1, induced_eq he hz hT hγ hind x hx1]`. Conclude with `Nat.card_congr (Equiv.ofBijective Ψ ⟨hinj, hsurj⟩).symm`.
+-/
 theorem card_autLz
     (hlift : ∀ Λ₁ Λ₂ : LatV D, IsRowLat D F0 Λ₁ → IsRowLat D F0 Λ₂ → Lsub Λ₁ (lf D F0) = Lsub Λ₂ (lf D F0) →
       ∃ n ∈ stabF D F0, (∀ x ∈ orth (hS D) F0.X, n x - x ∈ F0.X) ∧ Formalism.HermitianLatticesTheory.gmap n Λ₁ = Λ₂)
@@ -795,6 +1081,33 @@ end Count
 
 open GlobalTheory.IndefiniteRowSideFullHecke.DiscriminantKernelAutomorphisms GlobalTheory.RowMassCompare in
 
+/- English proof (translation)
+Use `letI iW : MulAction (Formalism.HermitianLatticesTheory.isom (D.sp.X 0).hT) (LatW D) := actW D`. Use `letI iWE : MulAction (Formalism.HermitianLatticesTheory.isom (D.sp.X 0).hT) (Submodule (𝓞 D.host.E) ((D.sp.X 0).V × D.host.E)) := actWE D`. Establish `hT0 : ((Tu D u : ℕ) : D.host.E) ≠ 0` using `Nat.cast_ne_zero.mpr hp.ne_zero`. Establish `hz' : F0.z = (D.cOf u)⁻¹ • D.sp.zm` using `hz.trans rfl`. Establish `hlift` using `GlobalTheory.T.row_lattices_same_middle_conjugate_unipotent D u hp h3 hs F0 he hz`.
+
+Set `p : Submodule (𝓞 D.host.E) ((D.sp.X 0).V × D.host.E) → LatW D` to `fun 𝓛 => 𝓛.comap ((LinearMap.inl D.host.E (D.sp.X 0).V D.host.E).restrictScalars (𝓞 D.host.E))`. Establish `hp_eq : ∀ (g : Formalism.HermitianLatticesTheory.isom (D.sp.X 0).hT) 𝓛, p (g • 𝓛) = g • p 𝓛`. Introduce `g 𝓛`. Use extensionality with `w`. Use `show (w, (0 : D.host.E)) ∈ Formalism.HermitianLatticesTheory.gmap (hat g.1) 𝓛 ↔ w ∈ Formalism.HermitianLatticesTheory.gmap g.1 (p 𝓛)`.
+
+Rewrite using `[Formalism.HermitianLatticesTheory.isomAct_mem_gmap, Formalism.HermitianLatticesTheory.isomAct_mem_gmap]`. Both sides reduce to the same expression. Set `𝒜 : Set (Submodule (𝓞 D.host.E) ((D.sp.X 0).V × D.host.E))` to `{𝓛 | ∃ Λ', IsRowLat D F0 Λ' ∧ latL D F0 Λ' = 𝓛}`. Establish `h𝒜 : ∀ (g : Formalism.HermitianLatticesTheory.isom (D.sp.X 0).hT), ∀ a ∈ 𝒜, g • a ∈ 𝒜`. Introduce and unpack `g _ ⟨Λ', hΛ', rfl⟩`.
+
+Take `⟨γ, hγ, hγe, hind⟩` from `exists_ext he hz' hT0 g.2`. Conclude with `⟨Formalism.HermitianLatticesTheory.gmap γ Λ', rowLat_gmap hγ hγe hΛ', latL_gmap hγ hind Λ'⟩`. Establish `hrow : ∀ a ∈ 𝒜, ∃! Λ, Λ ∈ what₂ ∧ ∃ g : Formalism.HermitianLatticesTheory.isom (D.sp.X 0).hT, g • latL D F0 Λ = a`. Introduce and unpack `_ ⟨Λ', hΛ', rfl⟩`. Take `⟨Λ'', ⟨hΛ''s, γ, hγ, hγΛ⟩, huniq⟩` from `hrows.2 Λ' hΛ'`.
+
+Take `⟨g, hg, hind⟩` from `exists_res he hz' hT0 hγ`. Use `⟨Λ'', ⟨hΛ''s, ⟨g, hg⟩, ?_⟩, ?_⟩` and prove the remaining obligations. Use `show Formalism.HermitianLatticesTheory.gmap (hat g) (latL D F0 Λ'') = latL D F0 Λ'`. Rewrite using `[← hγΛ, latL_gmap hγ hind]`. Introduce and unpack `Λ₁ ⟨hΛ₁s, g₁, hg₁⟩`.
+
+Apply `huniq` to reduce the goal to its premises. Use `⟨hΛ₁s, ?_⟩` and prove the remaining obligations. Take `⟨γ₁, hγ₁, hγ₁e, hind₁⟩` from `exists_ext he hz' hT0 g₁.2`. Establish `hrow₁ : IsRowLat D F0 Λ₁` using `hrows.1 Λ₁ hΛ₁s`. Establish `hL : latL D F0 (Formalism.HermitianLatticesTheory.gmap γ₁ Λ₁) = latL D F0 Λ'`.
+
+Rewrite using `[latL_gmap hγ₁ hind₁]`. Conclude with `hg₁`. Establish `hLs` using `Lsub_eq_of_latL he hz' hT0 hL`. Take `⟨n, hn, -, hnΛ⟩` from `hlift _ _ (rowLat_gmap hγ₁ hγ₁e hrow₁) hΛ' hLs`. Conclude with `⟨n * γ₁, mul_mem_stabF D F0 hn hγ₁, by rw [GlobalTheory.RowMassCompare.gmap_mul', hnΛ]⟩`.
+
+Establish `hpL : ∀ Λ, p (latL D F0 Λ) = L0X D Λ (lf D F0)`. Introduce `Λ`. Use extensionality with `w`. Conclude with `(GlobalTheory.IndefiniteRowSideFullHecke.DiscriminantKernelAutomorphisms.mem_orthModIsotropicLatticePerpNegative_iff D u F0 hz Λ w).symm`. Establish `hreps' : ∀ a ∈ 𝒜, ∃! M, M ∈ reps ∧ ∃ g : Formalism.HermitianLatticesTheory.isom (D.sp.X 0).hT, g • M = p a`.
+
+Introduce and unpack `_ ⟨Λ', hΛ', rfl⟩`. Rewrite using `[hpL]`. Take `⟨M, ⟨hMs, g, hg, hgM⟩, huniq⟩` from `hreps.2 _ (GlobalTheory.T.rowBaseLattices_mem_same_hermitianGenus D u hp h3 hs F0 he hz Λ₀ hΛ₀ Λ' hΛ')`. Use `⟨M, ⟨hMs, ⟨g, hg⟩, hgM⟩, ?_⟩` and prove the remaining obligations. Introduce and unpack `M' ⟨hM's, g', hg'⟩`.
+
+Conclude with `huniq M' ⟨hM's, g'.1, g'.2, hg'⟩`. Establish `hcount : ∀ M ∈ reps, {a | a ∈ 𝒜 ∧ p a = M}.ncard = (Tu D u - 1) ^ D.R.f`. Introduce `M hM`. Conclude with `GlobalTheory.T.card_middleLattices_over_genus_lattice D u hp h3 hs F0 he hz Λ₀ hΛ₀ M (hreps.1 M hM)`. Establish `hc : (Tu D u - 1) ^ D.R.f ≠ 0` using `pow_ne_zero _ (by omega)`.
+
+Establish `key` using `sum_over_fibres p hp_eq 𝒜 h𝒜 what₂ (latL D F0) (fun Λ hΛ => ⟨Λ, hrows.1 Λ hΛ, rfl⟩) hrow reps hreps' ((Tu D u - 1) ^ D.R.f) hc hcount N (fun g M => hN g.1 g.2 M)`. Establish `hL : ∀ Λ ∈ what₂, ENNReal.ofReal (wRow D F0 Λ) * N (L0X D Λ (lf D F0)) = ENNReal.ofReal ((Nat.card (MulAction.stabilizer (Formalism.HermitianLatticesTheory.isom (D.sp.X 0).hT) (latL D F0 Λ)) : ℝ))⁻¹ * N (p (latL D F0 Λ))`. Introduce `Λ hΛ`. Establish `hc' : Nat.card (autLz D F0 Λ) = Nat.card (MulAction.stabilizer (Formalism.HermitianLatticesTheory.isom (D.sp.X 0).hT) (latL D F0 Λ))`. Rewrite using `[card_autLz he hz' hT0 hlift (hrows.1 Λ hΛ)]`.
+
+Conclude with `Nat.card_congr (Equiv.subtypeEquivRight (fun g => Iff.rfl))`. Use `show ENNReal.ofReal ((Nat.card (autLz D F0 Λ) : ℝ))⁻¹ * _ = _`. Rewrite using `[hc', hpL]`. Establish `hR : ∀ M ∈ reps, ENNReal.ofReal ((Nat.card (Formalism.ThetaLiftIndependence.autL (D.sp.X 0).hT M) : ℝ))⁻¹ * N M = ENNReal.ofReal ((Nat.card (MulAction.stabilizer (Formalism.HermitianLatticesTheory.isom (D.sp.X 0).hT) M) : ℝ))⁻¹ * N M`. Introduce `M _`.
+
+Establish `e : Nat.card (Formalism.ThetaLiftIndependence.autL (D.sp.X 0).hT M) = Nat.card (MulAction.stabilizer (Formalism.HermitianLatticesTheory.isom (D.sp.X 0).hT) M)` using `Nat.card_congr { toFun := fun x => ⟨⟨x.1, x.2.1⟩, x.2.2⟩ invFun := fun y => ⟨y.1.1, show _ ∧ _ from ⟨y.1.2, y.2⟩⟩ left_inv := fun _ => rfl right_inv := fun _ => rfl }`. Rewrite using `[e]`. Rewrite using `[Finset.sum_congr rfl hL, Finset.sum_congr rfl hR]`. Conclude with `key`.
+-/
 theorem rows_sum (D : D7) (u : D.what₂.Word) (hp : (Tu D u).Prime) (h3 : 3 ≤ Tu D u)
     (hs : SplitsCompletely (E := D.host.E) (Tu D u)) (F0 : FlagG (VS D) D.R.rS ((Tu D u : ℕ) : D.host.E))
     (he : F0.e = D.sp.hypE) (hz : F0.z = D.zmOf u) (what₂ : Finset (LatV D)) (hrows : IsRowReps D F0 what₂)
@@ -888,6 +1201,13 @@ theorem rows_sum (D : D7) (u : D.what₂.Word) (hp : (Tu D u).Prime) (h3 : 3 ≤
   rw [Finset.sum_congr rfl hL, Finset.sum_congr rfl hR]
   exact key
 
+/- English proof (translation)
+Introduce `D u hp h3 hs F0 he hz what₂ hrows Λ₀ hΛ₀ reps hreps N hN`. Establish `hex : ∃ s, Formalism.ThetaLiftIndependence.IsClassReps (D.sp.X 0).hT (L0X D Λ₀ (lf D F0)) s` using `⟨reps, hreps⟩`. Establish `h1` using `rows_sum D u hp h3 hs F0 he hz what₂ hrows Λ₀ hΛ₀ reps hreps (fun L => (N L : ℝ≥0∞)) (fun γ hγ L => by simp only [hN γ hγ L])`. Establish `h2` using `rows_sum D u hp h3 hs F0 he hz what₂ hrows Λ₀ hΛ₀ hex.choose hex.choose_spec (fun _ => 1) (fun _ _ _ => rfl)`. Establish `hm : ENNReal.ofReal (Formalism.HermitianLatticesTheory.mass (D.sp.X 0).hT (L0X D Λ₀ (lf D F0))) = ∑ L' ∈ hex.choose, ENNReal.ofReal ((Nat.card (Formalism.ThetaLiftIndependence.autL (D.sp.X 0).hT L') : ℝ))⁻¹`.
+
+Rewrite using `[Formalism.HermitianLatticesTheory.mass, dif_pos hex, ENNReal.ofReal_sum_of_nonneg]`. Introduce `L' _`. Check the signs of the components of the expression. Use `beta_reduce at h1 h2`. Simplify using `only [mul_one] at h2`.
+
+Rewrite using `[h1, hm, h2]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem mean_rows_eq_mean_genus : ∀ (D : D7) (u : D.what₂.Word), (Tu D u).Prime → 3 ≤ Tu D u → SplitsCompletely (E := D.host.E) (Tu D u) → ∀ F0 : FlagG (VS D) D.R.rS ((Tu D u : ℕ) : D.host.E), F0.e = D.sp.hypE → F0.z = D.zmOf u → ∀ what₂ : Finset (LatV D), IsRowReps D F0 what₂ → ∀ Λ₀ : LatV D, IsRowLat D F0 Λ₀ → ∀ reps : Finset (LatW D), Formalism.ThetaLiftIndependence.IsClassReps (D.sp.X 0).hT (L0X D Λ₀ (lf D F0)) reps → ∀ N : LatW D → ℕ∞, (∀ γ ∈ Formalism.HermitianLatticesTheory.isom (D.sp.X 0).hT, ∀ L, N (Formalism.HermitianLatticesTheory.gmap γ L) = N L) → (∑ Λ ∈ what₂, ENNReal.ofReal (wRow D F0 Λ) * (N (L0X D Λ (lf D F0)) : ℝ≥0∞)) * ENNReal.ofReal (Formalism.HermitianLatticesTheory.mass (D.sp.X 0).hT (L0X D Λ₀ (lf D F0))) = (∑ Λ ∈ what₂, ENNReal.ofReal (wRow D F0 Λ)) * ∑ L' ∈ reps, ENNReal.ofReal ((Nat.card (Formalism.ThetaLiftIndependence.autL (D.sp.X 0).hT L') : ℝ))⁻¹ * (N L' : ℝ≥0∞) := by
   intro D u hp h3 hs F0 he hz what₂ hrows Λ₀ hΛ₀ reps hreps N hN
   classical

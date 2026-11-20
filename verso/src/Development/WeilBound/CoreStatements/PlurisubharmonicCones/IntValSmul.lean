@@ -10,6 +10,9 @@ namespace LevelTowerAlt.Lin
 variable {E L Ψ : Type} [Field E] [NumberField E] [Field L] [NumberField L] {V : Type} [AddCommGroup V] [Module L V]
   [Module (𝓞 L) V] [IsScalarTower (𝓞 L) L V]
 
+/- English proof (translation)
+Simplify using `only [eigSp, Submodule.mem_iInf, LinearMap.mem_ker, LinearMap.sub_apply, LinearMap.smul_apply, LinearMap.id_apply, sub_eq_zero]`.
+-/
 theorem mem_eigSp {R W O : Type} [CommRing R] [AddCommGroup W] [Module R W] [CommRing O]
     (ρ : O →+* Module.End R W) (σ : O →+* R) (x : W) : x ∈ eigSp ρ σ ↔ ∀ a, ρ a x = σ a • x := by
   simp only [eigSp, Submodule.mem_iInf, LinearMap.mem_ker, LinearMap.sub_apply, LinearMap.smul_apply,
@@ -18,8 +21,14 @@ theorem mem_eigSp {R W O : Type} [CommRing R] [AddCommGroup W] [Module R W] [Com
 def intVal (σ : 𝓞 E →+* L) (a : 𝓞 E) : 𝓞 L :=
   ⟨σ a, (NumberField.RingOfIntegers.isIntegral a).map σ.toIntAlgHom⟩
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem intVal_coe (σ : 𝓞 E →+* L) (a : 𝓞 E) : ((intVal σ a : 𝓞 L) : L) = σ a := rfl
 
+/- English proof (translation)
+Rewrite using `[← intVal_coe σ a]`. Conclude with `(algebraMap_smul L (intVal σ a) x).symm`.
+-/
 theorem intVal_smul (σ : 𝓞 E →+* L) (a : 𝓞 E) (x : V) : intVal σ a • x = σ a • x := by
   rw [← intVal_coe σ a]
   exact (algebraMap_smul L (intVal σ a) x).symm
@@ -54,6 +63,9 @@ structure Pre (E L Ψ : Type) [Field E] [NumberField E] [Field L] [NumberField L
 
 variable {V₀ : Type} [AddCommGroup V₀] [Module (𝓞 L) V₀] {B : HermitianBundle.{0} L} (P : Pre E L Ψ V V₀ B)
 
+/- English proof (translation)
+Establish `h1 : P.ρ₀ a x = intVal (P.σ s) a • x`. Apply `P.j_inj` to reduce the goal to its premises. Rewrite using `[P.j_ρ, map_smul, intVal_smul]`. Conclude with `(mem_eigSp _ _ _).1 hx a`. Rewrite using `[← P.f_ρ, h1, map_smul]`.
+-/
 theorem Pre.eig {s : Ψ ⊕ Ψ} {x : V₀} (hx : P.j x ∈ eigSp P.ρ (P.σ s)) (a : 𝓞 E) :
     P.ρ' a (P.f x) = intVal (P.σ s) a • P.f x := by
   have h1 : P.ρ₀ a x = intVal (P.σ s) a • x := by
@@ -62,6 +74,15 @@ theorem Pre.eig {s : Ψ ⊕ Ψ} {x : V₀} (hx : P.j x ∈ eigSp P.ρ (P.σ s)) 
     exact (mem_eigSp _ _ _).1 hx a
   rw [← P.f_ρ, h1, map_smul]
 
+/- English proof (translation)
+Choose the witnesses or unpack the hypotheses as in `⟨a, ha⟩ : ∃ a, P.σ s a ≠ P.σ s' a := by`. Assume the negation of the conclusion as `hc`. Use `push_neg at hc`. Conclude with `h (P.σ_bij.1 (RingHom.ext hc))`. Establish `key : ∀ (c : 𝓞 L) (u : B.carrier), ((1 : ComplexAt ι) ⊗ₜ[𝓞 L] (c • u) : Fibre ι B.carrier) = (ι (c : L) : ℂ) • ((1 : ComplexAt ι) ⊗ₜ[𝓞 L] u)`.
+
+Introduce `c u`. Rewrite using `[← TensorProduct.smul_tmul, TensorProduct.smul_tmul']`. Use `congr 1`. Establish `hτ : Function.Injective (ι.comp (P.σ s'))` using `ι.injective.comp (P.σ_inj s')`. Establish `e` using `P.adj ι a (P.f x) (P.f y)`.
+
+Rewrite `e` using `[P.eig hx, P.eig hy, key, key, (B.metric.form ι).smul_left, InnerProductSpace.Core.inner_smul_right (c := (B.metric.form ι).toCore), intVal_coe, intVal_coe]`. Establish `hb` using `P.bar_conj _ hτ a`. Simplify using `only [RingHom.comp_apply] at hb`. Rewrite `e` using `[hb]`. Establish `hne : (starRingEnd ℂ) (ι (P.σ s a)) ≠ (starRingEnd ℂ) (ι (P.σ s' a))`.
+
+Introduce `heq`. Conclude with `ha (ι.injective ((starRingEnd ℂ).injective heq))`. Establish `: ((starRingEnd ℂ) (ι (P.σ s a)) - (starRingEnd ℂ) (ι (P.σ s' a))) * (B.metric.form ι).inner ((1 : ComplexAt ι) ⊗ₜ[𝓞 L] P.f x) ((1 : ComplexAt ι) ⊗ₜ[𝓞 L] P.f y) = 0`. Rewrite using `[sub_mul, e, sub_self]`. Conclude with `(mul_eq_zero.1 this).resolve_left (sub_ne_zero.2 hne)`.
+-/
 theorem Pre.orth {s s' : Ψ ⊕ Ψ} (h : s ≠ s') (ι : L →+* ℂ) {x y : V₀} (hx : P.j x ∈ eigSp P.ρ (P.σ s))
     (hy : P.j y ∈ eigSp P.ρ (P.σ s')) :
     (B.metric.form ι).inner ((1 : ComplexAt ι) ⊗ₜ[𝓞 L] P.f x) ((1 : ComplexAt ι) ⊗ₜ[𝓞 L] P.f y) = 0 := by
@@ -89,16 +110,25 @@ theorem Pre.orth {s s' : Ψ ⊕ Ψ} (h : s ≠ s') (ι : L →+* ℂ) {x y : V�
     rw [sub_mul, e, sub_self]
   exact (mul_eq_zero.1 this).resolve_left (sub_ne_zero.2 hne)
 
+/- English proof (translation)
+Establish `h` using `hx.map' P.j (LinearMap.ker_eq_bot.2 P.j_inj)`. Conclude with `h.localization (Rₛ := L) (S := nonZeroDivisors (𝓞 L))`.
+-/
 theorem Pre.li {ι : Type} {x : ι → V₀} (hx : LinearIndependent (𝓞 L) x) : LinearIndependent L fun i => P.j (x i) := by
   have h := hx.map' P.j (LinearMap.ker_eq_bot.2 P.j_inj)
   exact h.localization (Rₛ := L) (S := nonZeroDivisors (𝓞 L))
 
 def Pre.inv : LinearMap.range P.j →ₗ[𝓞 L] V₀ := (LinearEquiv.ofInjective P.j P.j_inj).symm.toLinearMap
 
+/- English proof (translation)
+Use `(LinearEquiv.ofInjective P.j P.j_inj).apply_symm_apply x` as an intermediate fact. Conclude with `congrArg Subtype.val this`.
+-/
 theorem Pre.j_inv (x : LinearMap.range P.j) : P.j (P.inv x) = x := by
   have := (LinearEquiv.ofInjective P.j P.j_inj).apply_symm_apply x
   exact congrArg Subtype.val this
 
+/- English proof (translation)
+The claim follows from `P.j_inj (P.j_inv _)`.
+-/
 theorem Pre.inv_j (x : V₀) : P.inv ⟨P.j x, x, rfl⟩ = x := P.j_inj (P.j_inv _)
 
 def Pre.lin : LinPt E L Ψ V where
@@ -145,6 +175,15 @@ def Pre.lin : LinPt E L Ψ V where
     exact P.orth h ι (by rw [P.j_inv]; exact hx) (by rw [P.j_inv]; exact hy)
 
 include P in
+/- English proof (translation)
+Establish `h2 : Module.rank (𝓞 L) V₀ ≤ (Module.finrank L V : Cardinal)`. Apply `_root_.rank_le` to reduce the goal to its premises. Introduce `s hs`. Use `(P.li hs).fintype_card_le_finrank` as an intermediate fact. Simplify using `using this`.
+
+Establish `hq : Module.rank (𝓞 L) (B.carrier ⧸ LinearMap.range P.f) = 0`. Rewrite using `[rank_eq_zero_iff]`. Introduce `q`. Take `⟨y, rfl⟩` from `Submodule.Quotient.mk_surjective _ q`. Take `⟨a, x, ha, h⟩` from `P.full y`.
+
+Use `⟨a, ha, ?_⟩` and prove the remaining obligations. Rewrite using `[← Submodule.Quotient.mk_smul, Submodule.Quotient.mk_eq_zero, ← h]`. Conclude with `⟨x, rfl⟩`. Establish `h1 : Module.rank (𝓞 L) B.carrier ≤ Module.rank (𝓞 L) V₀`. Rewrite using `[← rank_quotient_add_rank_of_isDomain (LinearMap.range P.f), hq, zero_add]`.
+
+Conclude with `rank_range_le P.f`. Conclude with `Module.finrank_le_of_rank_le (h1.trans h2)`.
+-/
 theorem Pre.rank_le [Module.Finite L V] : Module.finrank (𝓞 L) B.carrier ≤ Module.finrank L V := by
   have h2 : Module.rank (𝓞 L) V₀ ≤ (Module.finrank L V : Cardinal) := by
     apply _root_.rank_le

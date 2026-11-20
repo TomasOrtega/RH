@@ -4,6 +4,15 @@ universe u_1 u_3 u_4
 
 namespace Bl.general_b_fact_side
 
+/- English proof (translation)
+Introduce `R _ _ _ N₁ N₂ _ _ _ _ _ _ h1 h2`. Establish `hfin : (associatedPrimes R N₁ ∪ associatedPrimes R N₂).Finite` using `(associatedPrimes.finite R N₁).union (associatedPrimes.finite R N₂)`. Establish `hns : ¬ ((IsLocalRing.maximalIdeal R : Set R) ⊆ ⋃ p ∈ associatedPrimes R N₁ ∪ associatedPrimes R N₂, (p : Set R))`. Introduce `hsub`. Rewrite `hsub` using `[Ideal.subset_iUnion_iff_mem_of_isMaximal_of_finite hfin ⊥ ⊥ (fun I hI _ _ => hI.elim (fun h => h.1) (fun h => h.1)) bot_ne_top bot_ne_top]`.
+
+Conclude with `hsub.elim h1 h2`. Take `⟨z, hzm, hz⟩` from `Set.not_subset.mp hns`. Use `⟨z, hzm, ?_, ?_⟩` and prove the remaining obligations. Establish `hz1 : z ∉ ⋃ p ∈ associatedPrimes R N₁, (p : Set R)` using `fun h => by`. Take `⟨p, hp, hzp⟩` from `Set.mem_iUnion₂.mp h`.
+
+Conclude with `hz (Set.mem_biUnion (Or.inl hp) hzp)`. Rewrite `hz1` using `[biUnion_associatedPrimes_eq_compl_regular R N₁]`. Simplify using `using hz1`. Establish `hz2 : z ∉ ⋃ p ∈ associatedPrimes R N₂, (p : Set R)` using `fun h => by`. Take `⟨p, hp, hzp⟩` from `Set.mem_iUnion₂.mp h`.
+
+Conclude with `hz (Set.mem_biUnion (Or.inr hp) hzp)`. Rewrite `hz2` using `[biUnion_associatedPrimes_eq_compl_regular R N₂]`. Simplify using `using hz2`.
+-/
 theorem goal1 :
   ∀ {R : Type u_1} [inst : CommRing.{u_1} R] [inst_1 : IsLocalRing.{u_1} R] [IsNoetherianRing.{u_1} R] {N₁ : Type u_3}
   {N₂ : Type u_4} [inst_3 : AddCommGroup.{u_3} N₁] [inst_4 : Module.{u_1, u_3} R N₁] [Module.Finite.{u_1, u_3} R N₁]

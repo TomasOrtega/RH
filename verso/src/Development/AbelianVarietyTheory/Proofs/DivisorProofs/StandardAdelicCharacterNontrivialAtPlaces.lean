@@ -25,6 +25,11 @@ namespace GlobalTheory.PsiNontriv
 
 variable {F : Type} [Field F] [NumberField F]
 
+/- English proof (translation)
+Use `first`. Consider the case `exact @_root_.GlobalTheory.TraceRealEmbeddingSum.trace_eq_sum_mult_mul_re`. Consider the case `exact _root_.GlobalTheory.TraceRealEmbeddingSum.trace_eq_sum_mult_mul_re`. Consider the case `(apply _root_.GlobalTheory.TraceRealEmbeddingSum.trace_eq_sum_mult_mul_re <;> assumption)`. Consider the case `(intros; apply _root_.GlobalTheory.TraceRealEmbeddingSum.trace_eq_sum_mult_mul_re <;> assumption)`.
+
+Consider the case `(intros; apply @_root_.GlobalTheory.TraceRealEmbeddingSum.trace_eq_sum_mult_mul_re <;> first | assumption | infer_instance)`. Consider the case `(intros; exact _root_.GlobalTheory.TraceRealEmbeddingSum.trace_eq_sum_mult_mul_re ..)`.
+-/
 theorem trace_re (x : F) :
     ((Algebra.trace ℚ F x : ℚ) : ℝ) = ∑ w : InfinitePlace F, (w.mult : ℝ) * (w.embedding x).re := by
   first
@@ -35,6 +40,11 @@ theorem trace_re (x : F) :
   | (intros; apply @_root_.GlobalTheory.TraceRealEmbeddingSum.trace_eq_sum_mult_mul_re <;> first | assumption | infer_instance)
   | (intros; exact _root_.GlobalTheory.TraceRealEmbeddingSum.trace_eq_sum_mult_mul_re ..)
 
+/- English proof (translation)
+Rewrite using `[trace_re, Algebra.trace_prod_apply, PI.ProdFormulaE.Tr.trace_pi, PI.ProdFormulaE.Tr.trace_pi, InfinitePlace.sum_eq_sum_add_sum]`. Simplify using `only [Algebra.trace_complex_apply, mixedEmbedding.mixedEmbedding_apply_isReal, mixedEmbedding.mixedEmbedding_apply_isComplex, Algebra.trace_self_apply]`. Use `congr 1`. Use `Fintype.sum_congr _ _ fun w => ?_` and prove the remaining obligations. Rewrite using `[InfinitePlace.mult_isReal, Nat.cast_one, one_mul, ← InfinitePlace.embedding_of_isReal_apply w.2, Complex.ofReal_re]`.
+
+Use `Fintype.sum_congr _ _ fun w => ?_` and prove the remaining obligations. Rewrite using `[InfinitePlace.mult_isComplex]`. Use `push_cast`. Both sides reduce to the same expression.
+-/
 theorem trace_mixedEmbedding (x : F) :
     Algebra.trace ℝ (mixedEmbedding.mixedSpace F) (mixedEmbedding F x) = ((Algebra.trace ℚ F x : ℚ) : ℝ) := by
   rw [trace_re, Algebra.trace_prod_apply, PI.ProdFormulaE.Tr.trace_pi, PI.ProdFormulaE.Tr.trace_pi,
@@ -59,6 +69,11 @@ open GlobalTheory.StdDual (codiff codiff_ne_zero)
 
 variable {F : Type} [Field F] [NumberField F]
 
+/- English proof (translation)
+Introduce `u hu`. Establish `h1 : u.1 = 0` using `(InfiniteAdeleRing.ringEquiv_mixedSpace F).injective (by rw [map_zero]; exact hu)`. Use `Prod.ext ?_ ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `u.1 * a = 0`. Rewrite using `[h1, zero_mul]`.
+
+Express the relevant statement in the definitionally equal form `u.2 * 0 = 0`. Conclude with `mul_zero _`.
+-/
 theorem at_pairA_zero (a : Ainf F) : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.At (GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.evI F) (pairA F a 0) := by
   intro u hu
   have h1 : u.1 = 0 := (InfiniteAdeleRing.ringEquiv_mixedSpace F).injective (by rw [map_zero]; exact hu)
@@ -68,6 +83,11 @@ theorem at_pairA_zero (a : Ainf F) : GlobalTheory.IndefiniteRowSideFullHecke.Wei
   · change u.2 * 0 = 0
     exact mul_zero _
 
+/- English proof (translation)
+Establish `e : pairA F 0 (algebraMap F (Af F) x) = algebraMap F (AF F) x + pairA F (algebraMap F (Ainf F) (-x)) 0`. Use `Prod.ext ?_ (add_zero _).symm` and prove the remaining obligations. Use `show (0 : Ainf F) = algebraMap F (Ainf F) x + algebraMap F (Ainf F) (-x)`. Rewrite using `[map_neg, add_neg_cancel]`. Establish `hev : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.evI F (pairA F (algebraMap F (Ainf F) (-x)) 0) = mixedEmbedding F (-x)` using `(InfiniteAdeleRing.mixedEmbedding_eq_algebraMap_comp (K := F)).symm`.
+
+Rewrite using `[e, AddChar.map_add_eq_mul, hψ.2.1, one_mul, hψ.2.2 _ (at_pairA_zero _), hev, map_neg, map_neg, trace_mixedEmbedding]`. Use `congr 1`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem isStd_fin_rat {ψ : AddChar (AF F) ℂ} (hψ : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.IsStd ψ) (x : F) :
     ψ (pairA F 0 (algebraMap F (Af F) x)) =
       Complex.exp (2 * Real.pi * Complex.I * ((Algebra.trace ℚ F x : ℚ) : ℂ)) := by
@@ -84,6 +104,17 @@ theorem isStd_fin_rat {ψ : AddChar (AF F) ℂ} (hψ : GlobalTheory.IndefiniteRo
   push_cast
   ring
 
+/- English proof (translation)
+Introduce `F _ _ ψ hψ v h1`. Use `set c := FractionalIdeal.count F v (codiff F) with hc`. Take `⟨π, hπ⟩` from `v.valuation_exists_uniformizer F`. Use `set x : Fv F v := algebraMap F (Fv F v) (π ^ (c - 1)) with hx`. Establish `hmem : GlobalTheory.AdelicU.singleFin v x ∈ adelicIdeal (codiff F)`.
+
+Rewrite using `[GlobalTheory.SplitUnram.mem_adelicIdeal_codiff_iff hψ.1 (isStd_fin_rat hψ)]`. Introduce `α hα`. Establish `e : α * GlobalTheory.AdelicU.singleFin v x = GlobalTheory.AdelicU.singleFin v (α v * x)`. Apply `GlobalTheory.AdelicU.af_ext` to reduce the goal to its premises. Introduce `u`.
+
+Distinguish the cases in `hu : u = v`. Substitute `hu` using the available equality. Rewrite using `[map_mul, GlobalTheory.AdelicU.evalV_singleFin_self, GlobalTheory.AdelicU.evalV_singleFin_self]`. Both sides reduce to the same expression. Rewrite using `[map_mul, GlobalTheory.AdelicU.evalV_singleFin_ne hu, GlobalTheory.AdelicU.evalV_singleFin_ne hu, mul_zero]`.
+
+Rewrite using `[e]`. Use `DFunLike.congr_fun h1 (α v * x)` as an intermediate fact. Rewrite `this` using `[AddChar.one_apply]`. Conclude with `this`. Establish `h2` using `(mem_adelicIdeal_iff codiff_ne_zero).1 hmem v`.
+
+Rewrite `h2` using `[show (GlobalTheory.AdelicU.singleFin v x) v = x from GlobalTheory.AdelicU.evalV_singleFin_self v x, hx, valued_algebraMap, map_zpow₀, hπ, ← WithZero.exp_zsmul, WithZero.exp_le_exp, smul_eq_mul]`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem psiAt_ne_one : ∀ {F : Type} [Field F] [NumberField F] (ψ : AddChar (AF F) ℂ), GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.IsStd ψ →
     ∀ v : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Pl F, GlobalTheory.LatVac.psiAt ψ v ≠ 1 := by
   intro F _ _ ψ hψ v h1

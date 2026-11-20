@@ -20,6 +20,17 @@ variable {D : D7}
 
 variable {G : Type} [Group G] [Fintype G] {Pl0 T0 : Type} {A : FamIn D.what₂.LL G Pl0 T0 D.R.m}
 
+/- English proof (translation)
+Take `⟨c, hβ⟩` from `hL.βW i`. Establish `hN : ((1 ^ c : ℕ) : 𝓞 D.host.E) ∉ P.asIdeal`. Rewrite using `[one_pow, Nat.cast_one]`. Conclude with `(Ideal.ne_top_iff_one _).1 P.isPrime.ne_top`. Establish `hoff : ∀ PP, PP ∈ (R.datWp i R.triv).Pg ∨ PP ∈ (R.datWp i R.triv).Q → PP ≠ P ∧ ¬ Lev.IsConjPl PP P`.
+
+Introduce `PP hPP`. Establish `hPP' : PP ∈ R.Pg` using `hPP.elim id fun h => absurd h (Finset.notMem_empty _)`. Establish `hS : PP ∈ (R.Sb : Set (Formalism.L2.DIV.Pl D.host.E))` using `hF.Sb hPP'`. Use `⟨fun h => hso.2.1 (h ▸ hS), fun h => hso.2.2 PP hS ?_⟩` and prove the remaining obligations. Rewrite using `[Formalism.L2.Col.conjIdeal_asIdeal]`.
+
+Use `PP.isMaximal.eq_of_le (Formalism.L2.Col.conjPrime₂ P).isPrime.ne_top fun a ha => ?_` and prove the remaining obligations. Take `⟨a', ha', e⟩` from `h a ha`. Rewrite using `[Formalism.L2.Col.mem_conjP]`. Establish `: Formalism.L2.Col.cO D.host.E a = a'` using `RingOfIntegers.ext e.symm`. Rewrite using `[this]` and apply the resulting hypothesis.
+
+Take `⟨e, he⟩` from `GlobalTheory.MovedIdem.exists_isIdemAt P hso.1`. Take `⟨ϖ, h1, h2⟩` from `SetLike.exists_of_lt (Ideal.pow_lt_self P.asIdeal P.ne_bot P.isPrime.ne_top 2 le_rfl)`. Take `⟨-, hrep, hel⟩` from `GlobalTheory.SplitPlace.split_local (Wc D i) P e he`. Take `⟨α, hα⟩` from `(hel ϖ h1 h2).1 k (hk.trans (r_le_rank_Wc i))`. Take `⟨Lp, hLp, -, hs, hK⟩` from `loc_package hβ (L := R.datWp i R.triv) ⟨hso.1, hN, hoff⟩ he`.
+
+Take `⟨Rc, hA, h3, h4⟩` from `hrep α hα.2.1`. Conclude with `⟨α, Rc, ⟨e, ϖ, he, h1, h2, hα⟩, isDC_of_splits hs levG_le_flag ((hLp α).2 hα.2.1) (fun a ha => (hLp a).2 (hA a ha)) hK (fun γ hγ => (h3 γ hγ).2) h4⟩`.
+-/
 theorem exists_heckeElt {Ks : Type} [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] {R : RealDat D A Ks}
     (hL : R.toLevCh.Is A.μ0) (hF : R.IsFam) (i : Fin D.R.m) {P : Formalism.L2.DIV.Pl D.host.E}
     (hso : Bridge.SplitOff P (R.Sb : Set (Formalism.L2.DIV.Pl D.host.E))) {k : ℕ} (hk : k ≤ D.R.r) :

@@ -48,6 +48,19 @@ def NFDomMeas : Prop :=
       AEStronglyMeasurable (topD p (D.cutF p.T.base χ (TBBx4.fpm p f (fun _ => ContinuousLinearMap.id ℂ Wq) p₀) ε) w)
         volume
 
+/- English proof (translation)
+Introduce `Wp Wq _ _ _ _ _ _ P p H w c hc`. Unfold `topD TBB.Ew TBB.NP KB.Pl.RR`. Generalize the expression as in `TBB.nPt P.k P.r (TBB.TTp p) (TBB.bigPt P.r c) = a`. Generalize the expression as in `TBB.normC (fun x => 1) w = b`. Generalize the expression as in `TBB.bigPt P.r c = x at hc ⊢`.
+
+Unfold `D.RRplace`. Distinguish the cases in `hl : D.IsLocPt x (P.r + 1)`. Establish `hG : ¬ 0 < TBB.Gp p x` using `fun h => hc ⟨hl, h⟩`. Rewrite using `[dif_pos ⟨hl, hl⟩, dif_neg (by omega)]`. Establish `hv : ∀ H' : B.Mat P.k P.r → (Wq →L[ℂ] Wp), D.vecV p.T.base p.ν' p.m₀ H' x = 0`.
+
+Introduce `H'`. Unfold `D.vecV`. Rewrite using `[dif_neg]`. Introduce and unpack `⟨-, h⟩`. Apply `hG` to reduce the goal to its premises.
+
+Unfold `TBB.Gp`. Conclude with `h`. Establish `h0 : B.hsVec (0 : Wq →L[ℂ] Wp) = 0`. Unfold `B.hsVec`. Use extensionality with `i`.
+
+Simplify using the standard rewrite rules. Establish `hi0 : B.hsInner (0 : Wq →L[ℂ] Wp) 0 = 0`. Simplify using `[B.hsInner, h0]`. Simplify using `[hv]`. Use `split_ifs with hw`.
+
+Simplify using `[hi0]`. Unfold `Top.topOf`. Simplify using `[hv, hi0]`. Simplify using `[hl]`.
+-/
 theorem domination_at_zero_holds : NFDomZero := by
   intro Wp Wq _ _ _ _ _ _ P p H w c hc
   unfold topD TBB.Ew TBB.NP KB.Pl.RR

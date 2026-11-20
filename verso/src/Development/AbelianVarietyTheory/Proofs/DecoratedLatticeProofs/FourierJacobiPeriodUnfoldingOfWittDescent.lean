@@ -25,6 +25,17 @@ open scoped TensorProduct
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 open GlobalTheory.Unf GlobalTheory.Unf.FB
 
+/- English proof (translation)
+Introduce `D hD ψ σ J B s vL Y G Φ hY hG hΦ`. Use `haveI := s.vW.haar`. Take `⟨hcnt, hdisc, hfd⟩` from `GlobalTheory.RationalSubgroupFund.countable_discrete_exists_fundamentalDomain D B.V (GQ B.V ⊓ besGrp B.d B.o) inf_le_left`. Take `⟨𝓑, h𝓑⟩` from `hfd s.vW.μ s.vW.haar`. Take `⟨hcont, hclN, hnorm, huniq, hrat⟩` from `GlobalTheory.Unf.besSemi D σ B`.
+
+Establish `hU` using `B.vN.unit`. Establish `hHR : (semiMeas (flagN B.d) (embA B.d B.o) B.vA.μ B.vN.ν).IsHaarMeasure` using `(GlobalTheory.MixPer.jacGrp_besGrp_haar D B.V B.V₀ B.A B.L σ B.d B.o B.vN.ν B.vN.𝓝 hU).2.2 B.vA.μ B.vA.haar`. Take `⟨𝓡, h𝓡, hint⟩` from `GlobalTheory.Unf.semiFd_iterated D B.V B.A (flagN B.d) (embA B.d B.o) hcont hclN hnorm huniq hrat B.vA B.vN.ν B.vN.𝓝 hU.1 hU.2.1 hHR`. Take `⟨hFc, hFi⟩` from `GlobalTheory.T.unfoldedBessel_continuous_leftInvariant D hD ψ σ J B s vL Y G Φ hY hG hΦ`. Take `⟨hI, hL⟩` from `GlobalTheory.T.fourierJacobiPeriod_lift_eq_integral_unfolded D hD ψ σ J B s vL Y G Φ hY hG hΦ 𝓑 h𝓑`.
+
+Establish `habs` using `GlobalTheory.Unf.BesInt.absConv_of_invariant D σ B _ hFc hFi`. Establish `hm : ∀ h : GA D B.V, Measurable fun g : GA D B.V => unfF s vL Y G Φ (g * h)` using `fun h => (hFc.comp (continuous_mul_right h)).measurable`. Establish `key` using `GlobalTheory.quot_fubini_mean (GA D B.V) s.vW.μ (besGrp B.d B.o) (GQ B.V ⊓ besGrp B.d B.o) inf_le_right (GlobalTheory.BesClosed.besGrp_isClosed D B.V B.V₀ B.A B.L σ B.d B.o) hcnt hdisc B.μR hHR 𝓡 𝓑 h𝓡 h𝓑 (unfF s vL Y G Φ) hFc.measurable hFi hI (fun h => ((hint _ (hm h)).1).2 (hab …`. Rewrite `key` using `[← hL]`. Use `key using 2 with h` and compare the differences between its conclusion and the goal.
+
+Establish `e2 : (∫ r : besGrp B.d B.o in 𝓡, unfF s vL Y G Φ (r * h) ∂B.μR) = ∫ h₁ in B.vA.𝓕, ∫ n in B.vN.𝓝, unfF s vL Y G Φ (n.1 * embA B.d B.o h₁ * h) ∂B.vN.ν ∂B.vA.μ` using `(hint _ (hm h)).2 (habs h)`. Rewrite using `[e2, BesLev.per, besPer]`. Use `congr 1`. Use function extensionality and compare the values at `h₁`. Use `congr 1`.
+
+Use function extensionality and compare the values at `n`. Conclude with `(GlobalTheory.T.unfoldedFunction_eq_besselPeriodIntegrand D hD ψ σ J B s vL Y G Φ hΦ h h₁ n).symm`.
+-/
 theorem GlobalTheory.Unf.unfFB_of_descent : ∀ D : D7, Descent D → UnfFB D := by
   intro D hD ψ σ J B s vL Y G Φ hY hG hΦ
   haveI := s.vW.haar

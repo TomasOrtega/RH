@@ -22,6 +22,13 @@ open GlobalTheory.Hk3 (Core Good IsSF SchurAll TwoSided FixAll EEc Wcc eH IsLab 
 
 namespace GlobalTheory.Div
 
+/- English proof (translation)
+Use `le_antisymm (Submodule.span_mono (Set.range_subset_iff.2 fun k => ⟨b k, rfl⟩)) ?_` and prove the remaining obligations. Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨v, rfl⟩`. Establish `hv : v ∈ Submodule.span K (Set.range b)` using `b.span_eq ▸ Submodule.mem_top`. Proceed by induction on `hv using Submodule.span_induction with`.
+
+Consider the case `mem y hy => obtain ⟨k, rfl⟩ := hy`. Conclude with `Submodule.subset_span ⟨k, rfl⟩`. Consider the case `zero => rw [map_zero]`. Conclude with `Submodule.zero_mem _`. Consider the case `add y z _ _ hy hz => rw [map_add]`.
+
+Conclude with `Submodule.add_mem _ hy hz`. Consider the case `smul a y _ hy => rw [map_smulₛₗ]`. Conclude with `Submodule.smul_mem _ _ hy`.
+-/
 theorem span_range_comp_basis {K V W ι : Type} [Field K] [AddCommGroup V] [Module K V] [AddCommGroup W] [Module ℂ W]
     (σ : K →+* ℂ) (j : V →ₛₗ[σ] W) (b : Module.Basis ι K V) :
     Submodule.span ℂ (Set.range fun k => j (b k)) = Submodule.span ℂ (Set.range j) := by
@@ -35,6 +42,15 @@ theorem span_range_comp_basis {K V W ι : Type} [Field K] [AddCommGroup V] [Modu
   | add y z _ _ hy hz => rw [map_add]; exact Submodule.add_mem _ hy hz
   | smul a y _ hy => rw [map_smulₛₗ]; exact Submodule.smul_mem _ _ hy
 
+/- English proof (translation)
+Establish `hsp' : Submodule.span ℂ (Set.range fun k => j (b k)) = ⊤` using `(span_range_comp_basis σ j b).trans hsp`. Establish `key` using `GlobalTheory.span_image_eigAt_of_basis σ j b op opC hli hsp' hcomm`. Establish `hmem : u ∈ Formalism.L2.Col.eigAt opC x` using `Formalism.L2.Col.mem_eigAt_of_forall_apply hu`. Establish `hocc : Formalism.L2.Col.Occurs opC x` using `fun hbot => hu0 ((Submodule.eq_bot_iff _).1 hbot u hmem)`. Take `⟨s, _, rfl⟩` from `key.2.2 hpc hso x hocc`.
+
+Use `⟨s, rfl, (key.1 s).symm, ?_⟩` and prove the remaining obligations. Establish `hin : u ∈ Submodule.span ℂ (j '' ((Z ⊓ Formalism.L2.Col.eigAt op s : Submodule K V) : Set V))`. Rewrite using `[← GlobalTheory.span_image_inf_of_linearIndependent σ j b hli]`. Conclude with `⟨huZ, (key.1 s) ▸ hmem⟩`. Assume the negation of the conclusion as `hcon`.
+
+Use `push_neg at hcon`. Apply `hu0` to reduce the goal to its premises. Establish `hle : Submodule.span ℂ (j '' ((Z ⊓ Formalism.L2.Col.eigAt op s : Submodule K V) : Set V)) ≤ ⊥`. Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨y, hy, rfl⟩`.
+
+Distinguish the cases in `hy0 : y = 0`. Substitute `hy0` using the available equality. Simplify using the standard rewrite rules. Conclude with `absurd hy.2 (hcon y hy0 hy.1)`. Conclude with `(Submodule.mem_bot ℂ).1 (hle hin)`.
+-/
 theorem exists_sys_of_mem_span {K V W I ι : Type} [Field K] [AddCommGroup V] [Module K V] [AddCommGroup W] [Module ℂ W]
     [Finite ι] (σ : K →+* ℂ) (j : V →ₛₗ[σ] W) (b : Module.Basis ι K V) (op : I → Module.End K V)
     (opC : I → Module.End ℂ W) (Z : Submodule K V) (hli : LinearIndependent ℂ (fun k => j (b k)))
@@ -64,6 +80,9 @@ theorem exists_sys_of_mem_span {K V W I ι : Type} [Field K] [AddCommGroup V] [M
     · exact absurd hy.2 (hcon y hy0 hy.1)
   exact (Submodule.mem_bot ℂ).1 (hle hin)
 
+/- English proof (translation)
+Rewrite using `[Submodule.map_le_iff_le_comap]`. Introduce `v hv`. Conclude with `Submodule.span_mono (Set.image_mono hAB) (h v hv)`.
+-/
 theorem map_le_span_image {K V W H : Type} [Field K] [AddCommGroup V] [Module K V] [AddCommGroup W] [Module ℂ W]
     [AddCommGroup H] [Module ℂ H] {σ : K →+* ℂ} (j : V →ₛₗ[σ] W) (Θ : H →ₗ[ℂ] W) (E : Submodule ℂ H)
     (A B : Submodule K V) (h : ∀ v ∈ E, Θ v ∈ Submodule.span ℂ (j '' (A : Set V))) (hAB : A ≤ B) :
@@ -74,6 +93,21 @@ theorem map_le_span_image {K V W H : Type} [Field K] [AddCommGroup V] [Module K 
 
 set_option maxHeartbeats 400000 in
 
+/- English proof (translation)
+Introduce `D G _ _ Pl0 I0 T A3 Ks _ _ _ R F s hLI hOk hCW hEx hSch hTw hHk hPG hIx c hc`. Take `⟨Tc, hTc, hx⟩` from `GlobalTheory.T.operatorFamily_adjointLift_single_eigensystem R F hLI hOk hCW hEx hSch hTw hHk`. Take `⟨x, hxc⟩` from `hx c`. Distinguish the cases in `h0 : ∀ w ∈ R.EEc c, LinearMap.adjoint (R.Th A3.A.μ0) w = 0`. Take `⟨p⟩` from `hIx`.
+
+Use `⟨p, hc, ?_⟩` and prove the remaining obligations. Use `rewrite [Submodule.map_le_iff_le_comap]`. Introduce `w hw`. Establish `h` using `h0 w hw`. Simplify using `only [Submodule.mem_comap, h, Submodule.zero_mem]`.
+
+Use `push_neg at h0`. Take `⟨w, hw, hne⟩` from `h0`. Set `b` to `(A3.A.fam.R A3.A.μ0).S.basis`. Set `j` to `R.jX A3.A.μ0`. Set `op` to `(A3.rowI A3.A.μ0).opAll`.
+
+Establish `hmodels` using `hCW.base.models`. Establish `hjX` using `GlobalTheory.OneFormTest.model_jX R.toRealDat hmodels.HX hmodels.jX A3.A.μ0`. Establish `hExt` using `(GlobalTheory.classPres_extMem_extBij_isom _ _ _ _ _ _ _ _ _ _ (R.B.R A3.A.μ0).pres).2.1`. Establish `h2 : ∀ f, (R.HX A3.A.μ0).e (R.jX A3.A.μ0 f) = (R.B.R A3.A.μ0).pres.extL f` using `hmodels.jX A3.A.μ0`. Establish `hli0 : LinearIndependent ℂ (fun k => (R.B.R A3.A.μ0).pres.extL ((A3.A.MtildeCSD A3.A.μ0).basis k))` using `hExt.1`.
+
+Establish `hli : LinearIndependent ℂ (fun k => j (b k))`. Use `LinearIndependent.of_comp (R.HX A3.A.μ0).e ?_` and prove the remaining obligations. Establish `h3 : ((R.HX A3.A.μ0).e ∘ fun k => j (b k)) = fun k => (R.B.R A3.A.μ0).pres.extL ((A3.A.MtildeCSD A3.A.μ0).basis k)` using `funext fun k => h2 _`. Use `rewrite [h3]`. Conclude with `hli0`.
+
+Establish `hcomm : ∀ i f, j (op i f) = Tc i (j f)` using `hTc`. Establish `hpc : Formalism.L2.Col.PairComm op` using `(hOk.what₂ A3.A.μ0).comm`. Establish `hso : Formalism.L2.Col.SplitOver op`. Introduce and unpack `(i | k)`. Conclude with `(hOk.ok2.what₂ A3.A.μ0).split i`.
+
+Conclude with `(hOk.what₂ A3.A.μ0).split k`. Establish `hZ` using `(GlobalTheory.T.range_adjoint_le_span_jX_image_ZHg R F hLI hOk hCW hEx hSch hPG).1 A3.A.μ0`. Take `⟨s', hxs, heig, f, hf0, hfZ, hfE⟩` from `exists_sys_of_mem_span D.what₂.embLL j b op Tc ((A3.A.fam.R A3.A.μ0).ZHg A3.A.X) hli hjX.2.2 hcomm hpc hso x (LinearMap.adjoint (R.Th A3.A.μ0) w) (hxc w hw) hne (hZ ⟨w, rfl⟩)`. Take `⟨p, hp⟩` from `GlobalTheory.Div.exists_ix_of_mem_eigAt A3 hOk s' f hf0 hfZ hfE`. Use `⟨p, hc, map_le_span_image j (LinearMap.adjoint (R.Th A3.A.μ0)) (R.EEc c) (Formalism.L2.Col.eigAt op s') ((A3.rowI A3.A.μ0).inertTypeEigenspaceSum p.1) (fun v hv => heig.le (Formalism.L2.Col.mem_eigAt_of_forall_apply (hxc v hv))) (Formalism.L2.Col.eigAt_le_eigSum hp)⟩` and prove the remaining obligations.
+-/
 theorem carries_of_eEc_ne_bot : ∀ {D : D7} {G : Type} [Group G] [Fintype G] {Pl0 I0 T : Type} {A3 : FamIn3 D.what₂.LL G Pl0 I0 (List ℕ) T D.R.m} {Ks : Type} [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] (R : RealDat3 D A3 Ks) (F : Face3 D A3) {s : ℕ}, GlobalTheory.Chain.LiftInteg D → A3.fam3.Ok3 s → R.WeakCharacterisation F → R.toRealDat.ExAt → SchurAll R.toRealDat → (∀ P, Good R.toRealDat A3.A.μ0 P → conjPl P = P → TwoSided R.toRealDat A3.A.μ0 P) → ((∀ t (k : A3.okI t × List ℕ), A3.heckeRI t k = 0 ∨ ∃ y, Formalism.L2.Col.InertTypeOk (A3.A.fam.R t).n y ∧ A3.heckeRI t k = A3.heckeRI t (k.1, y)) ∧ ∀ j t (k : A3.okI t × List ℕ), A3.heckeLI j t k = 0 ∨ ∃ y, Formalism.L2.Col.InertTypeOk (A3.A.fam.L j t).n y ∧ A3.heckeLI j t k = A3.heckeLI j t (k.1, y)) → R.PGEquiv F → Nonempty A3.fam3.base3.Ix → (∀ c, R.EEc c ≠ ⊥ → ∃ p, R.Carries p c) := by
   intro D G _ _ Pl0 I0 T A3 Ks _ _ _ R F s hLI hOk hCW hEx hSch hTw hHk hPG hIx c hc
   obtain ⟨Tc, hTc, hx⟩ := GlobalTheory.T.operatorFamily_adjointLift_single_eigensystem R F hLI hOk hCW hEx hSch hTw hHk

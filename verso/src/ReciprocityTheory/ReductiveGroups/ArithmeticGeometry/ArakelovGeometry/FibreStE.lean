@@ -8,6 +8,9 @@ open ReciprocityTheory.ChartRestriction.G.Geo ReciprocityTheory.ChartRestriction
 
 variable {Ω : Type*} [Field Ω] [CharZero Ω] {ι : Type} [Fintype ι] {D : ℕ}
 
+/- English proof (translation)
+Establish `hs : (s : Ω) ∈ fnField x` using `(IntermediateField.mem_extendScalars _).mp s.2`. Unfold `fnTrace`. Rewrite using `[dif_pos hs]`.
+-/
 theorem fnTrace_coe (x : ι → Ω) (e : Fin (D + 1) → ι) (s : Lx x e) :
     fnTrace x e (s : Ω) =
       ((Algebra.trace (fnField (x ∘ e)) (Lx x e) s : fnField (x ∘ e)) : Ω) := by
@@ -15,6 +18,61 @@ theorem fnTrace_coe (x : ι → Ω) (e : Fin (D + 1) → ι) (s : Lx x e) :
   unfold fnTrace
   rw [dif_pos hs]
 
+/- English proof (translation)
+Use `set y := x ∘ e with hy`. Establish `hx0 : x (e 0) ≠ 0` using `coord_ne_zero y h.free 0`. Establish `hfin` using `Lx_finite x e h`. Take `⟨c, hc⟩` from `exists_primitive x e h`. Use `set θL : Lx x e := ∑ i, (c i : Lx x e) * gL x e i with hθLdef`.
+
+Set `Θ : MvPolynomial ι ℤ` to `∑ i, MvPolynomial.C (c i) * MvPolynomial.X i`. Establish `hθ : deh x (e 0) Θ = (θL : Ω)`. Simplify using `[Θ, θL, gL, deh_X]`. Take `⟨θ, hθdef⟩ : ∃ θ : Ω, θ = deh x (e 0) Θ` from `⟨_, rfl⟩`. Establish `hθθ : θ = (θL : Ω)` using `hθdef.trans hθ`.
+
+Establish `hfrac` using `chartRing_frac y h.free`. Establish `hclosed` using `chartRing_closed y h.free`. Establish `hθA : IsIntegral (chartRing y) θ`. Establish `: (θL : Ω) = ∑ i, (c i : Ω) * (x i / x (e 0))` using `by simp [θL, gL]`. Rewrite using `[hθθ, this]`.
+
+Use `IsIntegral.sum _ fun i _ => IsIntegral.mul ?_ (coord_div_isIntegral x e h i)` and prove the remaining obligations. Simplify using `using isIntegral_algebraMap (R := chartRing y) (A := Ω) (x := ((c i : ℤ) : chartRing y))`. Establish `hθK : IsIntegral (fnField y) θ` using `hθA.tower_top`. Establish `hPK : minpoly (fnField y) θ = (minpoly (chartRing y) θ).map (algebraMap (chartRing y) (fnField y))` using `minpoly.isIntegrallyClosed_eq_field_fractions' (fnField y) hθA`. Establish `hθL : minpoly (fnField y) θ = minpoly (fnField y) θL`.
+
+Rewrite using `[hθθ]`. Conclude with `minpoly.algebraMap_eq (algebraMap (Lx x e) Ω).injective θL`. Establish `hδ : (minpoly (fnField y) θL).natDegree = projDeg x e`. Rewrite using `[projDeg, relfinrank_eq_finrank_of_le (fnField_comp_le x e), ← IntermediateField.finrank_top', ← hc, IntermediateField.adjoin.finrank (.of_finite _ _)]`. Establish `hind` using `chartGen_indep y h.free`.
+
+Set `r : chartRing y →+* MvPolynomial (Fin (D + 1)) ℤ` to `(MvPolynomial.rename Subtype.val).toRingHom.comp hind.aevalEquiv.symm.toRingHom`. Establish `hr : ∀ a : chartRing y, deh y 0 (r a) = algebraMap (chartRing y) Ω a`. Introduce `a`. Take `⟨g, rfl⟩` from `hind.aevalEquiv.surjective a`. Establish `h1 : r (hind.aevalEquiv g) = MvPolynomial.rename Subtype.val g` using `by show MvPolynomial.rename Subtype.val (hind.aevalEquiv.symm (hind.aevalEquiv g)) = _`.
+
+Rewrite using `[AlgEquiv.symm_apply_apply]`. Establish `h2 : ((hind.aevalEquiv g : Algebra.adjoin ℤ (Set.range (chartGen y))) : fnField y) = MvPolynomial.aeval (chartGen y) g` using `hind.algebraMap_aevalEquiv g`. Rewrite using `[h1, ← aeval_chartGen, ← h2]`. Both sides reduce to the same expression. Establish `hrc : (deh y 0).comp r = algebraMap (chartRing y) Ω` using `RingHom.ext hr`.
+
+Establish `hrK : (dehK y).comp r = algebraMap (chartRing y) (fnField y)`. Use extensionality with `a`. Rewrite using `[RingHom.comp_apply, coe_dehK, hr, IsScalarTower.algebraMap_apply (chartRing y) (fnField y) Ω]`. Both sides reduce to the same expression. Establish `hev : ∀ (p : (chartRing y)[X]) (t : Ω), (p.map r).eval₂ (deh y 0) t = aeval t (p.map (algebraMap (chartRing y) (fnField y)))`.
+
+Introduce `p t`. Rewrite using `[eval₂_map, hrc, IsScalarTower.algebraMap_eq (chartRing y) (fnField y) Ω, ← eval₂_map, aeval_def]`. Establish `hdehK : (algebraMap (fnField y) Ω).comp (dehK y) = deh y 0` using `RingHom.ext fun _ => rfl`. Use `set Pa := minpoly (chartRing y) θ with hPa`. Establish `hPa_deg : (Pa.map r).natDegree = (minpoly (fnField y) θL).natDegree`.
+
+Rewrite using `[(minpoly.monic hθA).natDegree_map, ← hθL, hPK, (minpoly.monic hθA).natDegree_map]`. Establish `hq : ∀ i, ∃ q : (fnField y)[X], aeval θL q = gL x e i`. Introduce `i`. Establish `htop : Algebra.adjoin (fnField y) {θL} = ⊤`. Rewrite using `[← adjoin_simple_toSubalgebra_of_isAlgebraic (IsIntegral.of_finite _ θL).isAlgebraic, hc, top_toSubalgebra]`.
+
+Establish `hm : gL x e i ∈ Algebra.adjoin (fnField y) {θL}` using `htop ▸ Algebra.mem_top`. Rewrite `hm` using `[Algebra.adjoin_singleton_eq_range_aeval]`. Take `⟨q, hq⟩` from `hm`. Conclude with `⟨q, hq⟩`. Use `choose q hq using hq`.
+
+Establish `hqΩ : ∀ i, aeval θ (q i) = x i / x (e 0)`. Introduce `i`. Establish `: (θL : Ω) = algebraMap (Lx x e) Ω θL` using `rfl`. Rewrite using `[hθθ, this, aeval_algebraMap_apply, hq i]`. Both sides reduce to the same expression.
+
+Take `⟨b, Qa, hb0, hQa⟩` from `exists_clear (A := chartRing y) (K := fnField y) q`. Establish `hsep : (minpoly (fnField y) θ).Separable` using `(minpoly.irreducible hθK).separable`. Take `⟨u, v, huv⟩` from `hsep`. Take `⟨b', UV, hb'0, hUV⟩` from `exists_clear (A := chartRing y) (K := fnField y) ![u, v]`. Establish `hinjA : Function.Injective (algebraMap (chartRing y) Ω)`.
+
+Rewrite using `[IsScalarTower.algebraMap_eq (chartRing y) (fnField y) Ω]`. Conclude with `(algebraMap (fnField y) Ω).injective.comp (IsFractionRing.injective _ _)`. Establish `hne : ∀ a : chartRing y, a ≠ 0 → deh y 0 (r a) ≠ 0` using `fun a ha => by`. Rewrite using `[hr]`. Conclude with `(map_ne_zero_iff _ hinjA).mpr ha`.
+
+Set `G : Gen x e` to `{ Θ := Θ P := Pa.map r monic := (minpoly.monic hθA).map r root := by rw [← hθdef, hev, ← hPK]; exact minpoly.aeval _ _ min := by`. Introduce `H hH h0 j`. Establish `hm : H.map (dehK y) = 0`. Assume the negation of the conclusion as `hne'`. Establish `h1 : aeval θ (H.map (dehK y)) = 0`.
+
+Rewrite using `[aeval_def, eval₂_map, hdehK, hθdef]`. Conclude with `h0`. Establish `h2` using `natDegree_le_natDegree (minpoly.degree_le_of_ne_zero (fnField y) θ hne' h1)`. Establish `h3` using `natDegree_map_le (f := dehK y) (p := H)`. Rewrite `h2` using `[hθL]`.
+
+Rewrite `hH` using `[hPa_deg]`. Use linear arithmetic over natural numbers and integers. Use `congrArg (fun p => p.coeff j) hm` as an intermediate fact. Simplify using `only [coeff_map, coeff_zero] at this`. Rewrite using `[← coe_dehK, this]`.
+
+Simplify using the standard rewrite rules. Use `dd := r b`. Use `dd_ne := hne b hb0`. Use `Q := fun i => (Qa i).map r`. Use `hQ := by`.
+
+Introduce `i`. Rewrite using `[← hθdef, hev, hQa i, map_mul, aeval_C, hqΩ i, deh_X, hr, IsScalarTower.algebraMap_apply (chartRing y) (fnField y) Ω]`. Use `cc := r b'`. Use `cc_ne := hne b' hb'0`. Use `U := (UV 0).map r`.
+
+Use `V := (UV 1).map r`. Use `hUV := by`. Establish `e1 : (UV 0).map r * Pa.map r + (UV 1).map r * derivative (Pa.map r) - C (r b') = (UV 0 * Pa + UV 1 * derivative Pa - C b').map r`. Rewrite using `[Polynomial.map_sub, Polynomial.map_add, Polynomial.map_mul, Polynomial.map_mul, Polynomial.derivative_map, Polynomial.map_C]`. Establish `e2 : (UV 0 * Pa + UV 1 * derivative Pa - C b').map (algebraMap (chartRing y) (fnField y)) = 0`.
+
+Rewrite using `[Polynomial.map_sub, Polynomial.map_add, Polynomial.map_mul, Polynomial.map_mul, ← Polynomial.derivative_map, Polynomial.map_C, hUV 0, hUV 1, ← hPK]`. Simplify using `only [Matrix.cons_val_zero, Matrix.cons_val_one]`. Take the linear combination `(C (algebraMap (chartRing y) (fnField y) b')) * huv`. Rewrite using `[e1, Polynomial.map_map, hrc, IsScalarTower.algebraMap_eq (chartRing y) (fnField y) Ω, ← Polynomial.map_map, e2, Polynomial.map_zero] }`. Use `⟨G, ?_, ?_, ?_⟩` and prove the remaining obligations.
+
+Use `show (Pa.map r).natDegree = _`. Rewrite using `[hPa_deg, hδ]`. Introduce `H`. Establish `hS : ∀ j, (dehK y (G.S j) : fnField y) = psumC (minpoly (fnField y) θL) (minpoly (fnField y) θL).natDegree j`. Introduce `j`.
+
+Use `show dehK y (psumC (Pa.map r) (Pa.map r).natDegree j) = _`. Rewrite using `[map_psumC, Polynomial.map_map, hrK, ← hPK, hθL, hPa_deg]`. Use `set s : Lx x e := ∑ j ∈ Finset.range (H.natDegree + 1), dehK y (H.coeff j) • θL ^ j with hsdef`. Establish `hs : (s : Ω) = H.eval₂ (deh y 0) (deh x (e 0) G.Θ)` using `by show _ = H.eval₂ (deh y 0) (deh x (e 0) Θ)`. Rewrite using `[eval₂_eq_sum_range, hθ, hsdef]`.
+
+Simplify using `[Algebra.smul_def]`. Rewrite using `[← hs, fnTrace_coe, map_sum]`. Simplify using `only [LinearMap.map_smul, smul_eq_mul, trace_pow_eq_psumC hc]`. Rewrite using `[Gen.TrP, map_sum]`. Use `push_cast`.
+
+Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[map_mul, ← coe_dehK y (G.S j), hS j]`. Both sides reduce to the same expression. Introduce `m F`. Set `t : Lx x e` to `⟨deh x (e 0) F, deh_mem_fnField x (e 0) F⟩`.
+
+Establish `h1 : deh y 0 m * deh x (e 0) F = ((dehK y m • t : Lx x e) : Ω)`. Rewrite using `[Algebra.smul_def]`. Both sides reduce to the same expression. Rewrite using `[h1, fnTrace_coe, show deh x (e 0) F = (t : Ω) from rfl, fnTrace_coe, LinearMap.map_smul, smul_eq_mul]`. Use `push_cast`.
+
+Both sides reduce to the same expression.
+-/
 theorem exists_gen (x : ι → Ω) (e : Fin (D + 1) → ι) (h : IsProjFrame x e) :
     ∃ G : Gen x e, G.P.natDegree = projDeg x e ∧
       (∀ H, fnTrace x e (H.eval₂ (deh (x ∘ e) 0) (deh x (e 0) G.Θ)) =

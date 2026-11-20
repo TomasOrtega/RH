@@ -6,25 +6,40 @@ noncomputable def UpperTheory.Reformulated.B.AntidiagonalWeylElement.cT :
 
 namespace UpperTheory.Reformulated.B.AntidiagonalWeylElement
 
+/- English proof (translation)
+Simplify using `only [cT, Matrix.map_mul, Matrix.transpose_mul]`.
+-/
 private theorem cT_mul {A : Type} [CommRing A] (σ : A →+* A) {m p q : Type} [Fintype p]
     (M : Matrix m p A) (N : Matrix p q A) : cT σ (M * N) = cT σ N * cT σ M := by
   simp only [cT, Matrix.map_mul, Matrix.transpose_mul]
 
+/- English proof (translation)
+Simplify using `only [cT]`. Rewrite using `[Matrix.map_one _ (map_zero σ) (map_one σ), Matrix.transpose_one]`.
+-/
 private theorem cT_one {A : Type} [CommRing A] (σ : A →+* A) {n : Type} [DecidableEq n] :
     cT σ (1 : Matrix n n A) = 1 := by
   simp only [cT]
   rw [Matrix.map_one _ (map_zero σ) (map_one σ), Matrix.transpose_one]
 
+/- English proof (translation)
+Use extensionality with `i j`. Simplify using `[cT]`.
+-/
 private theorem cT_add {A : Type} [CommRing A] (σ : A →+* A) {m p : Type} (M N : Matrix m p A) :
     cT σ (M + N) = cT σ M + cT σ N := by
   ext i j
   simp [cT]
 
+/- English proof (translation)
+Use extensionality with `i j`. Simplify using `[cT]`.
+-/
 private theorem cT_sub {A : Type} [CommRing A] (σ : A →+* A) {m p : Type} (M N : Matrix m p A) :
     cT σ (M - N) = cT σ M - cT σ N := by
   ext i j
   simp [cT]
 
+/- English proof (translation)
+Use extensionality with `i j`. Simplify using `[cT, hσ]`.
+-/
 private theorem cT_cT {A : Type} [CommRing A] (σ : A →+* A) (hσ : ∀ x : A, σ (σ x) = x)
     {m p : Type} (M : Matrix m p A) : cT σ (cT σ M) = M := by
   ext i j
@@ -32,6 +47,11 @@ private theorem cT_cT {A : Type} [CommRing A] (σ : A →+* A) (hσ : ∀ x : A,
 
 end UpperTheory.Reformulated.B.AntidiagonalWeylElement
 
+/- English proof (translation)
+Introduce `A _ n _ _ σ J a b ha hb`. Establish `ha' : cT σ (a : Matrix n n A) * J * (a : Matrix n n A) = J` using `ha`. Establish `hb' : cT σ (b : Matrix n n A) * J * (b : Matrix n n A) = J` using `hb`. Use `show cT σ ((a * b : GL n A) : Matrix n n A) * J * ((a * b : GL n A) : Matrix n n A) = J`. Rewrite using `[Units.val_mul, cT_mul]`.
+
+Combine the equalities or inequalities in the displayed calculation. Simplify using `only [Matrix.mul_assoc]`. Use `_ = J := by rw [ha', hb']`.
+-/
 theorem UpperTheory.Reformulated.B.AntidiagonalWeylElement.aux2 :
     ∀ {A : Type} [inst : CommRing A] {n : Type} [inst_1 : Fintype n] [inst_2 : DecidableEq n] (σ : A →+* A)
       (J : Matrix n n A) {a b : GL n A},
@@ -47,12 +67,20 @@ theorem UpperTheory.Reformulated.B.AntidiagonalWeylElement.aux2 :
         simp only [Matrix.mul_assoc]
     _ = J := by rw [ha', hb']
 
+/- English proof (translation)
+Introduce `A _ n _ _ σ J`. Rewrite using `[Units.val_one, cT_one, Matrix.one_mul, Matrix.mul_one]`.
+-/
 theorem UpperTheory.Reformulated.B.AntidiagonalWeylElement.aux3 :
     ∀ {A : Type} [inst : CommRing A] {n : Type} [inst_1 : Fintype n] [inst_2 : DecidableEq n] (σ : A →+* A)
       (J : Matrix n n A), UpperTheory.Reformulated.B.AntidiagonalWeylElement.cT σ (↑(1 : GL n A) : Matrix n n A) * J * (↑(1 : GL n A) : Matrix n n A) = J := by
   intro A _ n _ _ σ J
   rw [Units.val_one, cT_one, Matrix.one_mul, Matrix.mul_one]
 
+/- English proof (translation)
+Introduce `A _ n _ _ σ J g hg`. Establish `hg' : cT σ (g : Matrix n n A) * J * (g : Matrix n n A) = J` using `hg`. Establish `h1 : (g : Matrix n n A) * ((g⁻¹ : GL n A) : Matrix n n A) = 1`. Rewrite using `[← Units.val_mul, mul_inv_cancel, Units.val_one]`. Establish `h2 : cT σ ((g⁻¹ : GL n A) : Matrix n n A) * cT σ (g : Matrix n n A) = 1`.
+
+Rewrite using `[← cT_mul, h1, cT_one]`. Use `show cT σ ((g⁻¹ : GL n A) : Matrix n n A) * J * ((g⁻¹ : GL n A) : Matrix n n A) = J`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem UpperTheory.Reformulated.B.AntidiagonalWeylElement.aux4 :
     ∀ {A : Type} [inst : CommRing A] {n : Type} [inst_1 : Fintype n] [inst_2 : DecidableEq n] (σ : A →+* A)
       (J : Matrix n n A) {g : GL n A},
@@ -104,6 +132,9 @@ noncomputable def UpperTheory.Reformulated.B.AntidiagonalWeylElement.cM :
     fun {n : ℕ} (L : Type) [Field L] (c : Fin (2 : ℕ) → Fin n) (b : Fin n) (p : Fin (2 : ℕ)) ↦
       if b = c p then (1 : L) else (0 : L)
 
+/- English proof (translation)
+Introduce `n a h p`. Use `p.isLt` as an intermediate fact. Use linear arithmetic over natural numbers and integers.
+-/
 theorem UpperTheory.Reformulated.B.AntidiagonalWeylElement.aux12 :
     ∀ (n a : ℕ), (2 : ℕ) * (a + (2 : ℕ)) ≤ n → ∀ (p : Fin (2 : ℕ)), a + (↑p : ℕ) < n := by
   intro n a h p
@@ -115,6 +146,9 @@ noncomputable def UpperTheory.Reformulated.B.AntidiagonalWeylElement.cI :
     fun (n a : ℕ) (h : (2 : ℕ) * (a + (2 : ℕ)) ≤ n) (p : Fin (2 : ℕ)) ↦
       (⟨a + (↑p : ℕ), UpperTheory.Reformulated.B.AntidiagonalWeylElement.aux12 n a h p⟩ : Fin n)
 
+/- English proof (translation)
+Introduce `n a h p`. Use `p.isLt` as an intermediate fact. Use linear arithmetic over natural numbers and integers.
+-/
 theorem UpperTheory.Reformulated.B.AntidiagonalWeylElement.zero_contDiffOn_supported :
     ∀ (n a : ℕ), (2 : ℕ) * (a + (2 : ℕ)) ≤ n → ∀ (p : Fin (2 : ℕ)), n - (2 : ℕ) - a + (↑p : ℕ) < n := by
   intro n a h p
@@ -152,21 +186,38 @@ noncomputable def UpperTheory.Reformulated.B.AntidiagonalWeylElement.partner :
 
 namespace UpperTheory.Reformulated.B.AntidiagonalWeylElement
 
+/- English proof (translation)
+Use extensionality with `i j`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;> simp [w2, Matrix.mul_apply, Fin.sum_univ_two]`.
+-/
 private theorem weyl_mul_weyl (L : Type) [Field L] : w2 L * w2 L = 1 := by
   ext i j
   fin_cases i <;> fin_cases j <;> simp [w2, Matrix.mul_apply, Fin.sum_univ_two]
 
+/- English proof (translation)
+Use extensionality with `i j`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;> simp [w2]`.
+-/
 private theorem w2_transpose_eq_self (L : Type) [Field L] : (w2 L).transpose = w2 L := by
   ext i j
   fin_cases i <;> fin_cases j <;> simp [w2]
 
+/- English proof (translation)
+Use extensionality with `i j`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;> simp [w2, cT]`.
+-/
 private theorem conj_transpose_antidiag_fixed {L : Type} [Field L] (σ : L →+* L) : cT σ (w2 L) = w2 L := by
   ext i j
   fin_cases i <;> fin_cases j <;> simp [w2, cT]
 
+/- English proof (translation)
+Simplify using `only [partner, inv_one, Units.val_one, cT_one, Matrix.mul_one, weyl_mul_weyl]`.
+-/
 private theorem partner_one {L : Type} [Field L] (σ : L →+* L) : partner σ 1 = 1 := by
   simp only [partner, inv_one, Units.val_one, cT_one, Matrix.mul_one, weyl_mul_weyl]
 
+/- English proof (translation)
+Simplify using `only [partner, mul_inv_rev, Units.val_mul, cT_mul]`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [Matrix.mul_one, Matrix.mul_assoc]`. Use `_ = _ := by`. Rewrite using `[← weyl_mul_weyl L]`.
+
+Simplify using `only [Matrix.mul_assoc]`.
+-/
 private theorem partner_mul {L : Type} [Field L] (σ : L →+* L) (g g' : GL (Fin 2) L) :
     partner σ (g * g') = partner σ g * partner σ g' := by
   simp only [partner, mul_inv_rev, Units.val_mul, cT_mul]
@@ -177,23 +228,37 @@ private theorem partner_mul {L : Type} [Field L] (σ : L →+* L) (g g' : GL (Fi
         rw [← weyl_mul_weyl L]
         simp only [Matrix.mul_assoc]
 
+/- English proof (translation)
+Simplify using `[Matrix.mul_apply, cM, Matrix.transpose_apply]`. Conclude with `if_congr eq_comm rfl rfl`.
+-/
 private theorem cM_tr_mul {n : ℕ} (L : Type) [Field L] (c d : Fin 2 → Fin n) (p q : Fin 2) :
     ((cM L c).transpose * cM L d) p q = if c p = d q then 1 else 0 := by
   simp [Matrix.mul_apply, cM, Matrix.transpose_apply]
   exact if_congr eq_comm rfl rfl
 
+/- English proof (translation)
+Use extensionality with `p q`. Rewrite using `[cM_tr_mul, Matrix.one_apply]`. Simplify using `[cI, Fin.ext_iff]`.
+-/
 private theorem cII {n a : ℕ} (L : Type) [Field L] (h : 2 * (a + 2) ≤ n) :
     (cM L (cI n a h)).transpose * cM L (cI n a h) = 1 := by
   ext p q
   rw [cM_tr_mul, Matrix.one_apply]
   simp [cI, Fin.ext_iff]
 
+/- English proof (translation)
+Use extensionality with `p q`. Rewrite using `[cM_tr_mul, Matrix.one_apply]`. Simplify using `[cJ, Fin.ext_iff]`.
+-/
 private theorem cJJ {n a : ℕ} (L : Type) [Field L] (h : 2 * (a + 2) ≤ n) :
     (cM L (cJ n a h)).transpose * cM L (cJ n a h) = 1 := by
   ext p q
   rw [cM_tr_mul, Matrix.one_apply]
   simp [cJ, Fin.ext_iff]
 
+/- English proof (translation)
+Use extensionality with `p q`. Rewrite using `[cM_tr_mul, if_neg]`. Both sides reduce to the same expression. Use `p.isLt` as an intermediate fact. Simplify using `only [cI, cJ, Fin.ext_iff]`.
+
+Use linear arithmetic over natural numbers and integers.
+-/
 private theorem cIJ {n a : ℕ} (L : Type) [Field L] (h : 2 * (a + 2) ≤ n) :
     (cM L (cI n a h)).transpose * cM L (cJ n a h) = 0 := by
   ext p q
@@ -203,6 +268,11 @@ private theorem cIJ {n a : ℕ} (L : Type) [Field L] (h : 2 * (a + 2) ≤ n) :
     simp only [cI, cJ, Fin.ext_iff]
     omega
 
+/- English proof (translation)
+Use extensionality with `p q`. Rewrite using `[cM_tr_mul, if_neg]`. Both sides reduce to the same expression. Use `q.isLt` as an intermediate fact. Simplify using `only [cI, cJ, Fin.ext_iff]`.
+
+Use linear arithmetic over natural numbers and integers.
+-/
 private theorem cJI {n a : ℕ} (L : Type) [Field L] (h : 2 * (a + 2) ≤ n) :
     (cM L (cJ n a h)).transpose * cM L (cI n a h) = 0 := by
   ext p q
@@ -212,11 +282,21 @@ private theorem cJI {n a : ℕ} (L : Type) [Field L] (h : 2 * (a + 2) ≤ n) :
     simp only [cI, cJ, Fin.ext_iff]
     omega
 
+/- English proof (translation)
+Simplify using `only [Matrix.mul_assoc]`.
+-/
 private theorem sand {m r : Type} [Fintype r] [Fintype m] {L : Type} [Field L]
     (P R S T : Matrix m r L) (A B : Matrix r r L) :
     P * A * T.transpose * (R * B * S.transpose) = P * (A * (T.transpose * R) * B) * S.transpose := by
   simp only [Matrix.mul_assoc]
 
+/- English proof (translation)
+Establish `e1 : X * X' - 1 = (X - 1) * (X' - 1) + (X - 1) + (X' - 1)` using `by noncomm_ring`. Establish `e2 : Y * Y' - 1 = (Y - 1) * (Y' - 1) + (Y - 1) + (Y' - 1)` using `by noncomm_ring`. Establish `s1 : P * (X - 1) * P.transpose * (P * (X' - 1) * P.transpose) = P * ((X - 1) * (X' - 1)) * P.transpose`. Rewrite using `[sand, PP, Matrix.mul_one]`. Establish `s2 : Q * (Y - 1) * Q.transpose * (Q * (Y' - 1) * Q.transpose) = Q * ((Y - 1) * (Y' - 1)) * Q.transpose`.
+
+Rewrite using `[sand, QQ, Matrix.mul_one]`. Establish `s3 : P * (X - 1) * P.transpose * (Q * (Y' - 1) * Q.transpose) = 0`. Rewrite using `[sand, PQ]`. Simplify using the standard rewrite rules. Establish `s4 : Q * (Y - 1) * Q.transpose * (P * (X' - 1) * P.transpose) = 0`.
+
+Rewrite using `[sand, QP]`. Simplify using the standard rewrite rules. Rewrite using `[e1, e2]`. Simplify using `only [Matrix.mul_add, Matrix.add_mul, Matrix.mul_one, Matrix.one_mul, s1, s2, s3, s4]`. Normalize the expressions using the abelian group laws.
+-/
 private theorem blk_mul {m r : Type} [Fintype m] [DecidableEq m] [Fintype r] [DecidableEq r]
     {L : Type} [Field L] (P Q : Matrix m r L)
     (PP : P.transpose * P = 1) (QQ : Q.transpose * Q = 1)
@@ -240,6 +320,9 @@ private theorem blk_mul {m r : Type} [Fintype m] [DecidableEq m] [Fintype r] [De
 
 end UpperTheory.Reformulated.B.AntidiagonalWeylElement
 
+/- English proof (translation)
+Introduce `L _ n σ a h`. Rewrite using `[partner_one, Units.val_one]`. Simplify using `[blockM]`.
+-/
 theorem UpperTheory.Reformulated.B.AntidiagonalWeylElement.blockM_one_partner_eq_one :
     ∀ {L : Type} [inst : Field L] {n : ℕ} (σ : L →+* L) (a : ℕ) (h : (2 : ℕ) * (a + (2 : ℕ)) ≤ n),
       UpperTheory.Reformulated.B.AntidiagonalWeylElement.blockM a h (↑(1 : GL (Fin (2 : ℕ)) L) : Matrix (Fin (2 : ℕ)) (Fin (2 : ℕ)) L)
@@ -249,6 +332,9 @@ theorem UpperTheory.Reformulated.B.AntidiagonalWeylElement.blockM_one_partner_eq
   rw [partner_one, Units.val_one]
   simp [blockM]
 
+/- English proof (translation)
+Introduce `L _ n σ a h g g'`. Rewrite using `[partner_mul, Units.val_mul]`. Conclude with `blk_mul _ _ (cII L h) (cJJ L h) (cIJ L h) (cJI L h) _ _ _ _`.
+-/
 theorem UpperTheory.Reformulated.B.AntidiagonalWeylElement.blockM_mul_alt :
     ∀ {L : Type} [inst : Field L] {n : ℕ} (σ : L →+* L) (a : ℕ) (h : (2 : ℕ) * (a + (2 : ℕ)) ≤ n)
       (g g' : GL (Fin (2 : ℕ)) L),
@@ -271,6 +357,19 @@ noncomputable def UpperTheory.Reformulated.B.AntidiagonalWeylElement.rootGL :
 
 namespace UpperTheory.Reformulated.B.AntidiagonalWeylElement
 
+/- English proof (translation)
+Establish `st : (1 + P * A * P.transpose + Q * B * Q.transpose) * J = J + P * (A * w) * Q.transpose + Q * (B * w) * P.transpose`. Simplify using `only [Matrix.add_mul, Matrix.one_mul, Matrix.mul_assoc, PJ, QJ]`. Establish `t1 : J * (P * C * P.transpose) = Q * (w * C) * P.transpose`. Rewrite using `[← Matrix.mul_assoc, ← Matrix.mul_assoc, JP]`. Simplify using `only [Matrix.mul_assoc]`.
+
+Establish `t2 : J * (Q * D * Q.transpose) = P * (w * D) * Q.transpose`. Rewrite using `[← Matrix.mul_assoc, ← Matrix.mul_assoc, JQ]`. Simplify using `only [Matrix.mul_assoc]`. Establish `t3 : P * (A * w) * Q.transpose * (P * C * P.transpose) = 0`. Rewrite using `[sand, QP]`.
+
+Simplify using the standard rewrite rules. Establish `t4 : P * (A * w) * Q.transpose * (Q * D * Q.transpose) = P * (A * w * D) * Q.transpose`. Rewrite using `[sand, QQ, Matrix.mul_one]`. Establish `t5 : Q * (B * w) * P.transpose * (P * C * P.transpose) = Q * (B * w * C) * P.transpose`. Rewrite using `[sand, PP, Matrix.mul_one]`.
+
+Establish `t6 : Q * (B * w) * P.transpose * (Q * D * Q.transpose) = 0`. Rewrite using `[sand, PQ]`. Simplify using the standard rewrite rules. Establish `f1 : P * (w * D) * Q.transpose + P * (A * w) * Q.transpose + P * (A * w * D) * Q.transpose = 0`. Rewrite using `[← Matrix.add_mul, ← Matrix.add_mul, ← Matrix.mul_add, ← Matrix.mul_add, e1]`.
+
+Simplify using the standard rewrite rules. Establish `f2 : Q * (w * C) * P.transpose + Q * (B * w) * P.transpose + Q * (B * w * C) * P.transpose = 0`. Rewrite using `[← Matrix.add_mul, ← Matrix.add_mul, ← Matrix.mul_add, ← Matrix.mul_add, e2]`. Simplify using the standard rewrite rules. Establish `g1` using `eq_neg_of_add_eq_zero_right f1`.
+
+Establish `g2` using `eq_neg_of_add_eq_zero_right f2`. Rewrite using `[st]`. Simplify using `only [Matrix.mul_add, Matrix.add_mul, Matrix.mul_one, t1, t2, t3, t4, t5, t6]`. Rewrite using `[g1, g2]`. Normalize the expressions using the abelian group laws.
+-/
 private theorem blk_unit {m r : Type} [Fintype m] [DecidableEq m] [Fintype r] [DecidableEq r]
     {L : Type} [Field L] (P Q : Matrix m r L) (J : Matrix m m L) (w A B C D : Matrix r r L)
     (PP : P.transpose * P = 1) (QQ : Q.transpose * Q = 1)
@@ -308,6 +407,11 @@ private theorem blk_unit {m r : Type} [Fintype m] [DecidableEq m] [Fintype r] [D
   rw [g1, g2]
   abel
 
+/- English proof (translation)
+Use `show (if (i : ℕ) + j + 1 = n then (1 : L) else 0) = _`. Establish `e : ((i : ℕ) + j + 1 = n) ↔ j = Fin.rev i`. Rewrite using `[Fin.ext_iff, Fin.val_rev]`. Use `i.isLt` as an intermediate fact. Use linear arithmetic over natural numbers and integers.
+
+Simplify using `only [e]`.
+-/
 private theorem antiJ_apply {L : Type} [Field L] {n : ℕ} (i j : Fin n) :
     antiJ L n i j = if j = Fin.rev i then 1 else 0 := by
   show (if (i : ℕ) + j + 1 = n then (1 : L) else 0) = _
@@ -317,6 +421,11 @@ private theorem antiJ_apply {L : Type} [Field L] {n : ℕ} (i j : Fin n) :
     omega
   simp only [e]
 
+/- English proof (translation)
+Use `show (if (i : ℕ) + j + 1 = n then (1 : L) else 0) = _`. Establish `e : ((i : ℕ) + j + 1 = n) ↔ i = Fin.rev j`. Rewrite using `[Fin.ext_iff, Fin.val_rev]`. Use `j.isLt` as an intermediate fact. Use linear arithmetic over natural numbers and integers.
+
+Simplify using `only [e]`.
+-/
 private theorem antiJ_apply' {L : Type} [Field L] {n : ℕ} (i j : Fin n) :
     antiJ L n i j = if i = Fin.rev j then 1 else 0 := by
   show (if (i : ℕ) + j + 1 = n then (1 : L) else 0) = _
@@ -326,18 +435,32 @@ private theorem antiJ_apply' {L : Type} [Field L] {n : ℕ} (i j : Fin n) :
     omega
   simp only [e]
 
+/- English proof (translation)
+Use extensionality with `i j`. Rewrite using `[Matrix.transpose_apply, antiJ_apply, antiJ_apply']`.
+-/
 private theorem antiJ_tr {L : Type} [Field L] {n : ℕ} : (antiJ L n).transpose = antiJ L n := by
   ext i j
   rw [Matrix.transpose_apply, antiJ_apply, antiJ_apply']
 
+/- English proof (translation)
+Simplify using `[Matrix.mul_apply, antiJ_apply]`.
+-/
 private theorem J_mul {L : Type} [Field L] {n : ℕ} {p : Type} (M : Matrix (Fin n) p L) (i : Fin n) (q : p) :
     (antiJ L n * M) i q = M (Fin.rev i) q := by
   simp [Matrix.mul_apply, antiJ_apply]
 
+/- English proof (translation)
+Simplify using `[Matrix.mul_apply, antiJ_apply']`.
+-/
 private theorem mul_J {L : Type} [Field L] {n : ℕ} {p : Type} (M : Matrix p (Fin n) L) (i : p) (j : Fin n) :
     (M * antiJ L n) i j = M i (Fin.rev j) := by
   simp [Matrix.mul_apply, antiJ_apply']
 
+/- English proof (translation)
+Use extensionality with `i p`. Rewrite using `[J_mul]`. Use `i.isLt` as an intermediate fact. Apply the tactic sequence `fin_cases p <;>`. Apply the tactic sequence `simp [Matrix.mul_apply, Fin.sum_univ_two, cM, w2, cI, cJ, Fin.ext_iff, Fin.val_rev] <;>`.
+
+Apply the tactic sequence `split_ifs <;> first | rfl | (exfalso; omega)`.
+-/
 private theorem JP {L : Type} [Field L] {n a : ℕ} (h : 2 * (a + 2) ≤ n) :
     antiJ L n * cM L (cI n a h) = cM L (cJ n a h) * w2 L := by
   ext i p
@@ -347,6 +470,11 @@ private theorem JP {L : Type} [Field L] {n a : ℕ} (h : 2 * (a + 2) ≤ n) :
     simp [Matrix.mul_apply, Fin.sum_univ_two, cM, w2, cI, cJ, Fin.ext_iff, Fin.val_rev] <;>
     split_ifs <;> first | rfl | (exfalso; omega)
 
+/- English proof (translation)
+Use extensionality with `i p`. Rewrite using `[J_mul]`. Use `i.isLt` as an intermediate fact. Apply the tactic sequence `fin_cases p <;>`. Apply the tactic sequence `simp [Matrix.mul_apply, Fin.sum_univ_two, cM, w2, cI, cJ, Fin.ext_iff, Fin.val_rev] <;>`.
+
+Apply the tactic sequence `split_ifs <;> first | rfl | (exfalso; omega)`.
+-/
 private theorem JQ {L : Type} [Field L] {n a : ℕ} (h : 2 * (a + 2) ≤ n) :
     antiJ L n * cM L (cJ n a h) = cM L (cI n a h) * w2 L := by
   ext i p
@@ -356,28 +484,43 @@ private theorem JQ {L : Type} [Field L] {n a : ℕ} (h : 2 * (a + 2) ≤ n) :
     simp [Matrix.mul_apply, Fin.sum_univ_two, cM, w2, cI, cJ, Fin.ext_iff, Fin.val_rev] <;>
     split_ifs <;> first | rfl | (exfalso; omega)
 
+/- English proof (translation)
+Use `congrArg Matrix.transpose (JP (L := L) h)` as an intermediate fact. Rewrite `this` using `[Matrix.transpose_mul, Matrix.transpose_mul, antiJ_tr, w2_transpose_eq_self]`. Then use the resulting hypothesis.
+-/
 private theorem PJ {L : Type} [Field L] {n a : ℕ} (h : 2 * (a + 2) ≤ n) :
     (cM L (cI n a h)).transpose * antiJ L n = w2 L * (cM L (cJ n a h)).transpose := by
   have := congrArg Matrix.transpose (JP (L := L) h)
   rwa [Matrix.transpose_mul, Matrix.transpose_mul, antiJ_tr, w2_transpose_eq_self] at this
 
+/- English proof (translation)
+Use `congrArg Matrix.transpose (JQ (L := L) h)` as an intermediate fact. Rewrite `this` using `[Matrix.transpose_mul, Matrix.transpose_mul, antiJ_tr, w2_transpose_eq_self]`. Then use the resulting hypothesis.
+-/
 private theorem QJ {L : Type} [Field L] {n a : ℕ} (h : 2 * (a + 2) ≤ n) :
     (cM L (cJ n a h)).transpose * antiJ L n = w2 L * (cM L (cI n a h)).transpose := by
   have := congrArg Matrix.transpose (JQ (L := L) h)
   rwa [Matrix.transpose_mul, Matrix.transpose_mul, antiJ_tr, w2_transpose_eq_self] at this
 
+/- English proof (translation)
+Use extensionality with `i j`. Simplify using `only [cT, cM, Matrix.transpose_apply, Matrix.map_apply]`. Apply the tactic sequence `split_ifs <;> simp`.
+-/
 private theorem cT_cM {L : Type} [Field L] {n : ℕ} (σ : L →+* L) (c : Fin 2 → Fin n) :
     cT σ (cM L c) = (cM L c).transpose := by
   ext i j
   simp only [cT, cM, Matrix.transpose_apply, Matrix.map_apply]
   split_ifs <;> simp
 
+/- English proof (translation)
+Use extensionality with `i j`. Simplify using `only [cT, cM, Matrix.transpose_apply, Matrix.map_apply]`. Apply the tactic sequence `split_ifs <;> simp`.
+-/
 private theorem cT_cM_tr {L : Type} [Field L] {n : ℕ} (σ : L →+* L) (c : Fin 2 → Fin n) :
     cT σ (cM L c).transpose = cM L c := by
   ext i j
   simp only [cT, cM, Matrix.transpose_apply, Matrix.map_apply]
   split_ifs <;> simp
 
+/- English proof (translation)
+Simplify using `only [blockM, cT_add, cT_mul, cT_sub, cT_one, cT_cM, cT_cM_tr, Matrix.mul_assoc]`.
+-/
 private theorem cT_blockM {L : Type} [Field L] {n a : ℕ} (σ : L →+* L) (h : 2 * (a + 2) ≤ n)
     (X Y : Matrix (Fin 2) (Fin 2) L) :
     cT σ (blockM a h X Y) =
@@ -387,6 +530,17 @@ private theorem cT_blockM {L : Type} [Field L] {n a : ℕ} (σ : L →+* L) (h :
 
 end UpperTheory.Reformulated.B.AntidiagonalWeylElement
 
+/- English proof (translation)
+Introduce `L _ n σ hσ a h g`. Use `show cT σ (blockM a h (g : Matrix (Fin 2) (Fin 2) L) (partner σ g)) * antiJ L n * blockM a h (g : Matrix (Fin 2) (Fin 2) L) (partner σ g) = antiJ L n`. Rewrite using `[cT_blockM]`. Establish `hg1 : ((g⁻¹ : GL (Fin 2) L) : Matrix (Fin 2) (Fin 2) L) * (g : Matrix (Fin 2) (Fin 2) L) = 1`. Rewrite using `[← Units.val_mul, inv_mul_cancel, Units.val_one]`.
+
+Establish `hw` using `weyl_mul_weyl L`. Establish `k1 : cT σ (g : Matrix (Fin 2) (Fin 2) L) * w2 L * partner σ g = w2 L`. Establish `: cT σ (g : Matrix (Fin 2) (Fin 2) L) * cT σ ((g⁻¹ : GL (Fin 2) L) : Matrix (Fin 2) (Fin 2) L) = 1`. Rewrite using `[← cT_mul, hg1, cT_one]`. Combine the equalities or inequalities in the displayed calculation.
+
+Simplify using `only [partner, Matrix.mul_assoc]`. Use `_ = _ := by rw [hw, Matrix.mul_one, this, Matrix.one_mul]`. Establish `k2 : cT σ (partner σ g) * w2 L * (g : Matrix (Fin 2) (Fin 2) L) = w2 L`. Establish `: cT σ (partner σ g) = w2 L * ((g⁻¹ : GL (Fin 2) L) : Matrix (Fin 2) (Fin 2) L) * w2 L`. Simplify using `only [partner, cT_mul, conj_transpose_antidiag_fixed, cT_cT σ hσ, Matrix.mul_assoc]`.
+
+Rewrite using `[this]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[hw, Matrix.mul_one, Matrix.mul_assoc]`. Use `_ = _ := by rw [hg1, Matrix.mul_one]`. Establish `e1 : w2 L * (partner σ g - 1) + (cT σ (g : Matrix (Fin 2) (Fin 2) L) - 1) * w2 L + (cT σ (g : Matrix (Fin 2) (Fin 2) L) - 1) * w2 L * (partner σ g - 1) = 0`.
+
+Combine the equalities or inequalities in the displayed calculation. Establish `e2 : w2 L * ((g : Matrix (Fin 2) (Fin 2) L) - 1) + (cT σ (partner σ g) - 1) * w2 L + (cT σ (partner σ g) - 1) * w2 L * ((g : Matrix (Fin 2) (Fin 2) L) - 1) = 0`. Combine the equalities or inequalities in the displayed calculation. Conclude with `blk_unit _ _ _ (w2 L) _ _ _ _ (cII L h) (cJJ L h) (cIJ L h) (cJI L h) (JP h) (JQ h) (PJ h) (QJ h) e1 e2`.
+-/
 theorem UpperTheory.Reformulated.B.AntidiagonalWeylElement.rootGL_mem_unitary :
     ∀ {L : Type} [inst : Field L] {n : ℕ} (σ : L →+* L),
       (∀ (x : L), (σ : L → L) ((σ : L → L) x) = x) →
@@ -436,6 +590,9 @@ noncomputable def UpperTheory.Reformulated.B.AntidiagonalWeylElement.rootHom :
         (h : (2 : ℕ) * (a + (2 : ℕ)) ≤ n) ↦
       (UpperTheory.Reformulated.B.AntidiagonalWeylElement.rootGL σ a h).codRestrict (UpperTheory.Reformulated.B.AntidiagonalWeylElement.GU σ n) (UpperTheory.Reformulated.B.AntidiagonalWeylElement.rootGL_mem_unitary σ hσ a h)
 
+/- English proof (translation)
+Introduce `L _`. Conclude with `weyl_mul_weyl L`.
+-/
 theorem UpperTheory.Reformulated.B.AntidiagonalWeylElement.span_sub_smul_le_comap_mul_twKer :
     ∀ {L : Type} [inst : Field L],
       UpperTheory.Reformulated.B.AntidiagonalWeylElement.w2 L * UpperTheory.Reformulated.B.AntidiagonalWeylElement.w2 L = (1 : Matrix (Fin (2 : ℕ)) (Fin (2 : ℕ)) L) := by
@@ -459,6 +616,9 @@ noncomputable def UpperTheory.Reformulated.B.AntidiagonalWeylElement.sR :
         (h : (2 : ℕ) * (a + (2 : ℕ)) ≤ n) ↦
       (UpperTheory.Reformulated.B.AntidiagonalWeylElement.rootHom σ hσ a h : GL (Fin (2 : ℕ)) L → ↥(UpperTheory.Reformulated.B.AntidiagonalWeylElement.GU σ n)) (UpperTheory.Reformulated.B.AntidiagonalWeylElement.wU L)
 
+/- English proof (translation)
+Introduce `L _ x`. Use extensionality with `i j`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;> simp [Matrix.mul_apply, Fin.sum_univ_two]`.
+-/
 theorem UpperTheory.Reformulated.B.AntidiagonalWeylElement.unipotent_mul_neg :
     ∀ {L : Type} [inst : Field L] (x : L),
       !![(1 : L), x; (0 : L), (1 : L)] * !![(1 : L), -x; (0 : L), (1 : L)] = (1 : Matrix (Fin (2 : ℕ)) (Fin (2 : ℕ)) L) := by
@@ -466,6 +626,9 @@ theorem UpperTheory.Reformulated.B.AntidiagonalWeylElement.unipotent_mul_neg :
   ext i j
   fin_cases i <;> fin_cases j <;> simp [Matrix.mul_apply, Fin.sum_univ_two]
 
+/- English proof (translation)
+Introduce `L _ x`. Use extensionality with `i j`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;> simp [Matrix.mul_apply, Fin.sum_univ_two]`.
+-/
 theorem UpperTheory.Reformulated.B.AntidiagonalWeylElement.neg_unipotent_mul :
     ∀ {L : Type} [inst : Field L] (x : L),
       !![(1 : L), -x; (0 : L), (1 : L)] * !![(1 : L), x; (0 : L), (1 : L)] = (1 : Matrix (Fin (2 : ℕ)) (Fin (2 : ℕ)) L) := by
@@ -495,6 +658,13 @@ namespace UpperTheory.Reformulated.B.AntidiagonalWeylElement
 private abbrev Up {n : ℕ} {L : Type} [Field L] (M : Matrix (Fin n) (Fin n) L) : Prop :=
   (∀ i j : Fin n, j < i → M i j = 0) ∧ ∀ i : Fin n, M i i = 1
 
+/- English proof (translation)
+Use `⟨fun i j hij => ?_, fun i => ?_⟩` and prove the remaining obligations. Rewrite using `[Matrix.mul_apply]`. Apply `Finset.sum_eq_zero` to reduce the goal to its premises. Introduce `k _`. Break down `lt_or_ge k i with hk | hk` into its components or cases.
+
+Rewrite using `[hM.1 i k hk, zero_mul]`. Rewrite using `[hN.1 k j (lt_of_lt_of_le hij hk), mul_zero]`. Rewrite using `[Matrix.mul_apply, Finset.sum_eq_single i]`. Rewrite using `[hM.2, hN.2, one_mul]`. Introduce `k _ hk`.
+
+Break down `lt_or_gt_of_ne hk with h | h` into its components or cases. Rewrite using `[hM.1 i k h, zero_mul]`. Rewrite using `[hN.1 k i h, mul_zero]`. Simplify using the standard rewrite rules.
+-/
 private theorem up_mul {n : ℕ} {L : Type} [Field L] {M N : Matrix (Fin n) (Fin n) L}
     (hM : Up M) (hN : Up N) : Up (M * N) := by
   refine ⟨fun i j hij => ?_, fun i => ?_⟩
@@ -515,6 +685,13 @@ private theorem up_mul {n : ℕ} {L : Type} [Field L] {M N : Matrix (Fin n) (Fin
 private def pm {n : ℕ} (A A1 B B1 k : Fin n) : Fin n :=
   if k = A then A1 else if k = A1 then A else if k = B then B1 else if k = B1 then B else k
 
+/- English proof (translation)
+Unfold `pm`. Distinguish the cases in `h1 : k = A`. Simplify using `[h1]`. Distinguish the cases in `h2 : k = A1`. Substitute `h2` using the available equality.
+
+Simplify using `[h1]`. Distinguish the cases in `h3 : k = B`. Substitute `h3` using the available equality. Simplify using `[h1, h2, Fin.ext_iff]`. Distinguish the cases in `h4 : k = B1`.
+
+Substitute `h4` using the available equality. Simplify using `[h1, h2, h3, Fin.ext_iff]`. Simplify using `[h1, h2, h3, h4, Fin.ext_iff]`. Use linear arithmetic over natural numbers and integers.
+-/
 private theorem pm_cases {n : ℕ} (A A1 B B1 k : Fin n) :
     ((k : ℕ) = A ∧ (pm A A1 B B1 k : ℕ) = A1) ∨ ((k : ℕ) = A1 ∧ (pm A A1 B B1 k : ℕ) = A) ∨
       ((k : ℕ) = B ∧ (pm A A1 B B1 k : ℕ) = B1) ∨ ((k : ℕ) = B1 ∧ (pm A A1 B B1 k : ℕ) = B) ∨
@@ -534,6 +711,9 @@ private theorem pm_cases {n : ℕ} (A A1 B B1 k : Fin n) :
   · simp [h1, h2, h3, h4, Fin.ext_iff]
     omega
 
+/- English proof (translation)
+Establish `c1` using `pm_cases A A1 B B1 k`. Establish `c2` using `pm_cases A A1 B B1 (pm A A1 B B1 k)`. Rewrite using `[Fin.ext_iff]`. Use linear arithmetic over natural numbers and integers.
+-/
 private theorem pm_invol {n : ℕ} {A A1 B B1 : Fin n} (hA : (A : ℕ) + 1 = A1) (hB : (B : ℕ) + 1 = B1)
     (hAB : (A1 : ℕ) < B) (k : Fin n) : pm A A1 B B1 (pm A A1 B B1 k) = k := by
   have c1 := pm_cases A A1 B B1 k
@@ -541,6 +721,9 @@ private theorem pm_invol {n : ℕ} {A A1 B B1 : Fin n} (hA : (A : ℕ) + 1 = A1)
   rw [Fin.ext_iff]
   omega
 
+/- English proof (translation)
+Establish `c1` using `pm_cases A A1 B B1 i`. Establish `c2` using `pm_cases A A1 B B1 j`. Simplify using `only [Fin.lt_def, Fin.ext_iff] at hij ⊢`. Use linear arithmetic over natural numbers and integers.
+-/
 private theorem pm_lt {n : ℕ} {A A1 B B1 : Fin n} (hA : (A : ℕ) + 1 = A1) (hB : (B : ℕ) + 1 = B1)
     (hAB : (A1 : ℕ) < B) {i j : Fin n} (hij : j < i) :
     pm A A1 B B1 j < pm A A1 B B1 i ∨ (pm A A1 B B1 i = A ∧ pm A A1 B B1 j = A1) ∨
@@ -550,6 +733,19 @@ private theorem pm_lt {n : ℕ} {A A1 B B1 : Fin n} (hA : (A : ℕ) + 1 = A1) (h
   simp only [Fin.lt_def, Fin.ext_iff] at hij ⊢
   omega
 
+/- English proof (translation)
+Establish `d1 : A ≠ A1` using `by simp only [ne_eq, Fin.ext_iff]; omega`. Establish `d2 : A ≠ B` using `by simp only [ne_eq, Fin.ext_iff]; omega`. Establish `d3 : A ≠ B1` using `by simp only [ne_eq, Fin.ext_iff]; omega`. Establish `d4 : A1 ≠ B` using `by simp only [ne_eq, Fin.ext_iff]; omega`. Establish `d5 : A1 ≠ B1` using `by simp only [ne_eq, Fin.ext_iff]; omega`.
+
+Establish `d6 : B ≠ B1` using `by simp only [ne_eq, Fin.ext_iff]; omega`. Establish `e1` using `d1.symm`. Establish `e2` using `d2.symm`. Establish `e3` using `d3.symm`. Establish `e4` using `d4.symm`.
+
+Establish `e5` using `d5.symm`. Establish `e6` using `d6.symm`. Use `clear hA hB hAB`. Establish `cases' : ∀ k : Fin n, k = A ∨ k = A1 ∨ k = B ∨ k = B1 ∨ (k ≠ A ∧ A ≠ k ∧ k ≠ A1 ∧ A1 ≠ k ∧ k ≠ B ∧ B ≠ k ∧ k ≠ B1 ∧ B1 ≠ k)`. Introduce `k`.
+
+Distinguish the cases in `h1 : k = A`. Conclude with `Or.inl h1`. Distinguish the cases in `h2 : k = A1`. Conclude with `Or.inr (Or.inl h2)`. Distinguish the cases in `h3 : k = B`.
+
+Conclude with `Or.inr (Or.inr (Or.inl h3))`. Distinguish the cases in `h4 : k = B1`. Conclude with `Or.inr (Or.inr (Or.inr (Or.inl h4)))`. Conclude with `Or.inr (Or.inr (Or.inr (Or.inr ⟨h1, Ne.symm h1, h2, Ne.symm h2, h3, Ne.symm h3, h4, Ne.symm h4⟩)))`. Apply the tactic sequence `rcases cases' i with rfl | rfl | rfl | rfl | ⟨i1, i2, i3, i4, i5, i6, i7, i8⟩ <;>`.
+
+Apply the tactic sequence `rcases cases' j with rfl | rfl | rfl | rfl | ⟨j1, j2, j3, j4, j5, j6, j7, j8⟩ <;>`. Apply the tactic sequence `clear cases' <;>`. Simplify using `[pm, Matrix.one_apply, *]`.
+-/
 private theorem S_abs {n : ℕ} {L : Type} [Field L] {A A1 B B1 : Fin n} (hA : (A : ℕ) + 1 = A1)
     (hB : (B : ℕ) + 1 = B1) (hAB : (A1 : ℕ) < B) (i j : Fin n) :
     (1 : Matrix (Fin n) (Fin n) L) i j +
@@ -593,6 +789,9 @@ private theorem S_abs {n : ℕ} {L : Type} [Field L] {A A1 B B1 : Fin n} (hA : (
     clear cases' <;>
     simp [pm, Matrix.one_apply, *]
 
+/- English proof (translation)
+Simplify using `only [Matrix.mul_apply, Matrix.transpose_apply, cM, Finset.sum_mul]`. Conclude with `Finset.sum_comm`.
+-/
 private theorem conj_apply {n : ℕ} {L : Type} [Field L] (c : Fin 2 → Fin n)
     (Z : Matrix (Fin 2) (Fin 2) L) (i j : Fin n) :
     (cM L c * Z * (cM L c).transpose) i j =
@@ -600,6 +799,9 @@ private theorem conj_apply {n : ℕ} {L : Type} [Field L] (c : Fin 2 → Fin n)
   simp only [Matrix.mul_apply, Matrix.transpose_apply, cM, Finset.sum_mul]
   exact Finset.sum_comm
 
+/- English proof (translation)
+Simplify using `only [blockM, Matrix.add_apply, conj_apply]`.
+-/
 private theorem block_apply {L : Type} [Field L] {n a : ℕ} (h : 2 * (a + 2) ≤ n)
     (X Y : Matrix (Fin 2) (Fin 2) L) (i j : Fin n) :
     blockM a h X Y i j = (1 : Matrix (Fin n) (Fin n) L) i j +
@@ -607,6 +809,9 @@ private theorem block_apply {L : Type} [Field L] {n a : ℕ} (h : 2 * (a + 2) �
       (∑ p, ∑ q, (if i = cJ n a h p then (1 : L) else 0) * (Y - 1) p q * (if j = cJ n a h q then 1 else 0)) := by
   simp only [blockM, Matrix.add_apply, conj_apply]
 
+/- English proof (translation)
+Establish `c0 : (cI n a h 0 : ℕ) = a` using `rfl`. Establish `c1 : (cI n a h 1 : ℕ) = a + 1` using `rfl`. Establish `d0 : (cJ n a h 0 : ℕ) = n - 2 - a` using `rfl`. Establish `d1 : (cJ n a h 1 : ℕ) = n - 2 - a + 1` using `rfl`. Use linear arithmetic over natural numbers and integers.
+-/
 private theorem vals {n a : ℕ} (h : 2 * (a + 2) ≤ n) :
     (cI n a h 0 : ℕ) + 1 = cI n a h 1 ∧ (cJ n a h 0 : ℕ) + 1 = cJ n a h 1 ∧
       (cI n a h 1 : ℕ) < cJ n a h 0 ∧ (cI n a h 1 : ℕ) + cJ n a h 0 + 1 = n ∧
@@ -617,11 +822,19 @@ private theorem vals {n a : ℕ} (h : 2 * (a + 2) ≤ n) :
   have d1 : (cJ n a h 1 : ℕ) = n - 2 - a + 1 := rfl
   omega
 
+/- English proof (translation)
+Establish `e : (((wU L)⁻¹ : GL (Fin 2) L) : Matrix (Fin 2) (Fin 2) L) = w2 L` using `rfl`. Simplify using `only [partner]`. Rewrite using `[e, conj_transpose_antidiag_fixed, weyl_mul_weyl, Matrix.one_mul]`.
+-/
 private theorem partner_wU {L : Type} [Field L] (σ : L →+* L) : partner σ (wU L) = w2 L := by
   have e : (((wU L)⁻¹ : GL (Fin 2) L) : Matrix (Fin 2) (Fin 2) L) = w2 L := rfl
   simp only [partner]
   rw [e, conj_transpose_antidiag_fixed, weyl_mul_weyl, Matrix.one_mul]
 
+/- English proof (translation)
+Establish `e : (((nU z)⁻¹ : GL (Fin 2) L) : Matrix (Fin 2) (Fin 2) L) = !![1, -z; 0, 1]` using `rfl`. Establish `e2 : cT σ !![(1 : L), -z; 0, 1] = !![1, 0; -σ z, 1]`. Use extensionality with `i j`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;> simp [cT]`. Simplify using `only [partner]`.
+
+Rewrite using `[e, e2]`. Simplify using `[w2, Matrix.mul_fin_two]`.
+-/
 private theorem partner_nU {L : Type} [Field L] (σ : L →+* L) (z : L) :
     partner σ (nU z) = !![1, -σ z; 0, 1] := by
   have e : (((nU z)⁻¹ : GL (Fin 2) L) : Matrix (Fin 2) (Fin 2) L) = !![1, -z; 0, 1] := rfl
@@ -632,6 +845,11 @@ private theorem partner_nU {L : Type} [Field L] (σ : L →+* L) (z : L) :
   rw [e, e2]
   simp [w2, Matrix.mul_fin_two]
 
+/- English proof (translation)
+Establish `e : (((sR σ hσ a h : GU σ n) : GL (Fin n) L) : Matrix (Fin n) (Fin n) L) = blockM a h (w2 L) (partner σ (wU L))` using `rfl`. Take `⟨v1, v2, v3, -, -⟩` from `vals h`. Establish `z00 : (w2 L - 1) 0 0 = -1` using `by simp [w2]`. Establish `z01 : (w2 L - 1) 0 1 = 1` using `by simp [w2]`. Establish `z10 : (w2 L - 1) 1 0 = 1` using `by simp [w2]`.
+
+Establish `z11 : (w2 L - 1) 1 1 = -1` using `by simp [w2]`. Rewrite using `[e, partner_wU, block_apply]`. Simplify using `only [Fin.sum_univ_two, z00, z01, z10, z11]`. Conclude with `S_abs v1 v2 v3 i j`.
+-/
 private theorem S_apply {L : Type} [Field L] {n a : ℕ} (σ : L →+* L)
     (hσ : ∀ x : L, σ (σ x) = x) (h : 2 * (a + 2) ≤ n) (i j : Fin n) :
     (((sR σ hσ a h : GU σ n) : GL (Fin n) L) : Matrix (Fin n) (Fin n) L) i j =
@@ -647,6 +865,13 @@ private theorem S_apply {L : Type} [Field L] {n a : ℕ} (σ : L →+* L)
   simp only [Fin.sum_univ_two, z00, z01, z10, z11]
   exact S_abs v1 v2 v3 i j
 
+/- English proof (translation)
+Establish `e : (((uR σ hσ a h z : GU σ n) : GL (Fin n) L) : Matrix (Fin n) (Fin n) L) = blockM a h !![1, z; 0, 1] (partner σ (nU z))` using `rfl`. Establish `x00 : (!![(1 : L), z; 0, 1] - 1) 0 0 = 0` using `by simp`. Establish `x01 : (!![(1 : L), z; 0, 1] - 1) 0 1 = z` using `by simp`. Establish `x10 : (!![(1 : L), z; 0, 1] - 1) 1 0 = 0` using `by simp`. Establish `x11 : (!![(1 : L), z; 0, 1] - 1) 1 1 = 0` using `by simp`.
+
+Establish `y00 : (!![(1 : L), -σ z; 0, 1] - 1) 0 0 = 0` using `by simp`. Establish `y01 : (!![(1 : L), -σ z; 0, 1] - 1) 0 1 = -σ z` using `by simp`. Establish `y10 : (!![(1 : L), -σ z; 0, 1] - 1) 1 0 = 0` using `by simp`. Establish `y11 : (!![(1 : L), -σ z; 0, 1] - 1) 1 1 = 0` using `by simp`. Establish `k : ∀ (P Q : Prop) [Decidable P] [Decidable Q] (t : L), (if P then (1 : L) else 0) * t * (if Q then 1 else 0) = if P ∧ Q then t else 0`.
+
+Introduce `P Q _ _ t`. Apply the tactic sequence `by_cases hP : P <;> by_cases hQ : Q <;> simp [hP, hQ]`. Rewrite using `[e, partner_nU, block_apply]`. Simplify using `only [Fin.sum_univ_two, x00, x01, x10, x11, y00, y01, y10, y11, mul_zero, zero_mul, add_zero, zero_add]`. Rewrite using `[k, k]`.
+-/
 private theorem U_apply {L : Type} [Field L] {n a : ℕ} (σ : L →+* L)
     (hσ : ∀ x : L, σ (σ x) = x) (h : 2 * (a + 2) ≤ n) (z : L) (i j : Fin n) :
     (((uR σ hσ a h z : GU σ n) : GL (Fin n) L) : Matrix (Fin n) (Fin n) L) i j =
@@ -670,6 +895,17 @@ private theorem U_apply {L : Type} [Field L] {n a : ℕ} (σ : L →+* L)
   simp only [Fin.sum_univ_two, x00, x01, x10, x11, y00, y01, y10, y11, mul_zero, zero_mul, add_zero, zero_add]
   rw [k, k]
 
+/- English proof (translation)
+Use `⟨fun i j hij => ?_, fun i => ?_⟩` and prove the remaining obligations. Establish `n0 : i ≠ j` using `ne_of_gt hij`. Establish `n1 : ¬ (i = A ∧ j = A1)`. Introduce and unpack `⟨rfl, rfl⟩`. Simplify using `only [Fin.lt_def] at hij`.
+
+Use linear arithmetic over natural numbers and integers. Establish `n2 : ¬ (i = B ∧ j = B1)`. Introduce and unpack `⟨rfl, rfl⟩`. Simplify using `only [Fin.lt_def] at hij`. Use linear arithmetic over natural numbers and integers.
+
+Rewrite using `[hU, Matrix.one_apply_ne n0, if_neg n1, if_neg n2]`. Simplify using the standard rewrite rules. Establish `n1 : ¬ (i = A ∧ i = A1)`. Introduce and unpack `⟨rfl, e⟩`. Rewrite `hA` using `[← e]`.
+
+Use linear arithmetic over natural numbers and integers. Establish `n2 : ¬ (i = B ∧ i = B1)`. Introduce and unpack `⟨rfl, e⟩`. Rewrite `hB` using `[← e]`. Use linear arithmetic over natural numbers and integers.
+
+Rewrite using `[hU, Matrix.one_apply_eq, if_neg n1, if_neg n2]`. Simplify using the standard rewrite rules.
+-/
 private theorem up_U {n : ℕ} {L : Type} [Field L] {A A1 B B1 : Fin n} (hA : (A : ℕ) + 1 = A1)
     (hB : (B : ℕ) + 1 = B1) {x t : L} {U : Matrix (Fin n) (Fin n) L}
     (hU : ∀ i j, U i j = (1 : Matrix (Fin n) (Fin n) L) i j + (if i = A ∧ j = A1 then x else 0) +
@@ -697,6 +933,9 @@ private theorem up_U {n : ℕ} {L : Type} [Field L] {A A1 B B1 : Fin n} (hA : (A
     rw [hU, Matrix.one_apply_eq, if_neg n1, if_neg n2]
     simp
 
+/- English proof (translation)
+Rewrite using `[Matrix.mul_apply]`. Simplify using `only [hU]`. Simplify using `[add_mul, Finset.sum_add_distrib, Matrix.one_apply, hAB]`.
+-/
 private theorem row_U {n : ℕ} {L : Type} [Field L] {A A1 B B1 : Fin n} (hAB : A ≠ B)
     {x t : L} {U : Matrix (Fin n) (Fin n) L}
     (hU : ∀ i j, U i j = (1 : Matrix (Fin n) (Fin n) L) i j + (if i = A ∧ j = A1 then x else 0) +
@@ -706,6 +945,9 @@ private theorem row_U {n : ℕ} {L : Type} [Field L] {A A1 B B1 : Fin n} (hAB : 
   simp only [hU]
   simp [add_mul, Finset.sum_add_distrib, Matrix.one_apply, hAB]
 
+/- English proof (translation)
+Rewrite using `[Matrix.mul_apply]`. Simplify using `only [hU]`. Simplify using `[mul_add, Finset.sum_add_distrib, Matrix.one_apply, hAB]`.
+-/
 private theorem col_U {n : ℕ} {L : Type} [Field L] {A A1 B B1 : Fin n} (hAB : A1 ≠ B1)
     {x t : L} {U : Matrix (Fin n) (Fin n) L}
     (hU : ∀ i j, U i j = (1 : Matrix (Fin n) (Fin n) L) i j + (if i = A ∧ j = A1 then x else 0) +
@@ -715,6 +957,19 @@ private theorem col_U {n : ℕ} {L : Type} [Field L] {A A1 B B1 : Fin n} (hAB : 
   simp only [hU]
   simp [mul_add, Finset.sum_add_distrib, Matrix.one_apply, hAB]
 
+/- English proof (translation)
+Establish `e` using `congrFun (congrFun hW A1) B1`. Establish `r0 : antiJ L n A1 B1 = 0` using `by show (if (A1 : ℕ) + B1 + 1 = n then (1 : L) else 0) = 0`. Rewrite using `[if_neg]`. Use linear arithmetic over natural numbers and integers. Rewrite `e` using `[r0, Matrix.mul_apply]`.
+
+Simplify using `only [mul_J] at e`. Establish `ne : B ≠ B1` using `by simp only [ne_eq, Fin.ext_iff]; omega`. Establish `hz : ∀ l : Fin n, l ≠ B ∧ l ≠ B1 → cT σ W A1 (Fin.rev l) * W l B1 = 0`. Introduce and unpack `l ⟨l1, l2⟩`. Simplify using `only [ne_eq, Fin.ext_iff] at l1 l2`.
+
+Use `l.isLt` as an intermediate fact. Distinguish the cases in `c : (l : ℕ) < B`. Establish `: W (Fin.rev l) A1 = 0` using `hu.1 _ _ (by`. Rewrite using `[Fin.lt_def, Fin.val_rev]`. Use the proof step `omega)`.
+
+Use `show σ (W (Fin.rev l) A1) * W l B1 = 0`. Rewrite using `[this, map_zero, zero_mul]`. Rewrite using `[hu.1 l B1 (by rw [Fin.lt_def]; omega), mul_zero]`. Rewrite `e` using `[Fintype.sum_eq_add B B1 ne hz]`. Establish `rB : Fin.rev B = A1`.
+
+Rewrite using `[Fin.ext_iff, Fin.val_rev]`. Use linear arithmetic over natural numbers and integers. Establish `rB1 : Fin.rev B1 = A`. Rewrite using `[Fin.ext_iff, Fin.val_rev]`. Use linear arithmetic over natural numbers and integers.
+
+Rewrite `e` using `[rB, rB1]`. Establish `e' : σ (W A1 A1) * W B B1 + σ (W A A1) * W B1 B1 = 0` using `e`. Rewrite `e'` using `[hu.2 A1, hu.2 B1, map_one, one_mul, mul_one]`. Rewrite using `[add_comm]`. Conclude with `e'`.
+-/
 private theorem unit_entry {n : ℕ} {L : Type} [Field L] (σ : L →+* L) {A A1 B B1 : Fin n}
     (hA : (A : ℕ) + 1 = A1) (hB : (B : ℕ) + 1 = B1) (hAB : (A1 : ℕ) < B)
     (hs1 : (A1 : ℕ) + B + 1 = n) (hs2 : (A : ℕ) + B1 + 1 = n)
@@ -752,6 +1007,17 @@ private theorem unit_entry {n : ℕ} {L : Type} [Field L] (σ : L →+* L) {A A1
   rw [add_comm]
   exact e'
 
+/- English proof (translation)
+Establish `key : ∀ i j, (S * W * S) i j = W (pm A A1 B B1 i) (pm A A1 B B1 j)`. Introduce `i j`. Establish `r1 : ∀ k, (S * W) i k = W (pm A A1 B B1 i) k`. Introduce `k`. Rewrite using `[Matrix.mul_apply]`.
+
+Simplify using `[hS]`. Rewrite using `[Matrix.mul_apply]`. Simplify using `only [r1, hS]`. Rewrite using `[Finset.sum_eq_single (pm A A1 B B1 j)]`. Rewrite using `[pm_invol hA hB hAB, if_pos rfl, mul_one]`.
+
+Introduce `k _ hk`. Rewrite using `[if_neg, mul_zero]`. Introduce `e`. Apply `hk` to reduce the goal to its premises. Rewrite using `[← e, pm_invol hA hB hAB]`.
+
+Simplify using the standard rewrite rules. Use `⟨fun i j hij => ?_, fun i => ?_⟩` and prove the remaining obligations. Rewrite using `[key]`. Break down `pm_lt hA hB hAB hij with c | ⟨c1, c2⟩ | ⟨c1, c2⟩` into its components or cases. Conclude with `hu.1 _ _ c`.
+
+Rewrite using `[c1, c2, w1]`. Rewrite using `[c1, c2, w2']`. Rewrite using `[key, hu.2]`.
+-/
 private theorem conj_up {n : ℕ} {L : Type} [Field L] {A A1 B B1 : Fin n} (hA : (A : ℕ) + 1 = A1)
     (hB : (B : ℕ) + 1 = B1) (hAB : (A1 : ℕ) < B) {S W : Matrix (Fin n) (Fin n) L}
     (hS : ∀ i j, S i j = if pm A A1 B B1 i = j then 1 else 0) (hu : Up W)
@@ -780,6 +1046,13 @@ private theorem conj_up {n : ℕ} {L : Type} [Field L] {A A1 B B1 : Fin n} (hA :
     · rw [c1, c2, w2']
   · rw [key, hu.2]
 
+/- English proof (translation)
+Establish `dAB : A ≠ B` using `by simp only [ne_eq, Fin.ext_iff]; omega`. Establish `dAB1 : A1 ≠ B1` using `by simp only [ne_eq, Fin.ext_iff]; omega`. Establish `wup : Up (U1 * V * U2)` using `up_mul (up_mul (up_U hA hB hU1) hV) (up_U hA hB hU2)`. Establish `w1 : (U1 * V * U2) A A1 = 0`. Establish `ltA : A < A1` using `by rw [Fin.lt_def]; omega`.
+
+Rewrite using `[col_U dAB1 hU2, row_U dAB hU1, row_U dAB hU1, hV.2 A, hV.2 A1, hV.1 A1 A ltA]`. Take the linear combination `hz`. Establish `w2' : (U1 * V * U2) B B1 = 0`. Apply the tactic sequence `have := unit_entry σ hA hB hAB hs1 hs2 hW wup`. Rewrite `this` using `[w1, map_zero, zero_add]`. Then use the resulting hypothesis.
+
+Conclude with `conj_up hA hB hAB hS wup w1 w2'`.
+-/
 private theorem unip_core {n : ℕ} {L : Type} [Field L] (σ : L →+* L) {A A1 B B1 : Fin n}
     (hA : (A : ℕ) + 1 = A1) (hB : (B : ℕ) + 1 = B1) (hAB : (A1 : ℕ) < B)
     (hs1 : (A1 : ℕ) + B + 1 = n) (hs2 : (A : ℕ) + B1 + 1 = n)
@@ -804,6 +1077,9 @@ private theorem unip_core {n : ℕ} {L : Type} [Field L] (σ : L →+* L) {A A1 
     rwa [w1, map_zero, zero_add] at this
   exact conj_up hA hB hAB hS wup w1 w2'
 
+/- English proof (translation)
+Establish `e : wU L * wU L = 1` using `Units.ext (weyl_mul_weyl L)`. Use `show rootHom σ hσ a h (wU L) * rootHom σ hσ a h (wU L) = 1`. Rewrite using `[← map_mul, e, map_one]`.
+-/
 private theorem sR_sq {L : Type} [Field L] {n a : ℕ} (σ : L →+* L)
     (hσ : ∀ x : L, σ (σ x) = x) (h : 2 * (a + 2) ≤ n) :
     sR σ hσ a h * sR σ hσ a h = 1 := by
@@ -811,6 +1087,11 @@ private theorem sR_sq {L : Type} [Field L] {n a : ℕ} (σ : L →+* L)
   show rootHom σ hσ a h (wU L) * rootHom σ hσ a h (wU L) = 1
   rw [← map_mul, e, map_one]
 
+/- English proof (translation)
+Establish `e : nU (-t) * nU t = 1`. Apply `Units.ext` to reduce the goal to its premises. Use `show !![(1 : L), -t; 0, 1] * !![(1 : L), t; 0, 1] = 1`. Conclude with `neg_unipotent_mul t`. Use `show rootHom σ hσ a h (nU (-t)) * rootHom σ hσ a h (nU t) = 1`.
+
+Rewrite using `[← map_mul, e, map_one]`.
+-/
 private theorem uR_neg {L : Type} [Field L] {n a : ℕ} (σ : L →+* L)
     (hσ : ∀ x : L, σ (σ x) = x) (h : 2 * (a + 2) ≤ n) (t : L) :
     uR σ hσ a h (-t) * uR σ hσ a h t = 1 := by
@@ -823,6 +1104,15 @@ private theorem uR_neg {L : Type} [Field L] {n a : ℕ} (σ : L →+* L)
 
 end UpperTheory.Reformulated.B.AntidiagonalWeylElement
 
+/- English proof (translation)
+Introduce `L _ _ σ n hσ a h v hv`. Use `⟨((v : GL (Fin n) L) : Matrix (Fin n) (Fin n) L) (cI n a h 0) (cI n a h 1), fun x => ?_⟩` and prove the remaining obligations. Take `⟨v1, v2, v3, v4, v5⟩` from `vals h`. Generalize the expression as in `hy : ((v : GL (Fin n) L) : Matrix (Fin n) (Fin n) L) (cI n a h 0) (cI n a h 1) = y`. Use `⟨sR σ hσ a h * (uR σ hσ a h x * v * uR σ hσ a h (-(x + y))) * sR σ hσ a h, ?_, ?_⟩` and prove the remaining obligations.
+
+Establish `hw` using `(uR σ hσ a h x * v * uR σ hσ a h (-(x + y))).2`. Conclude with `unip_core σ v1 v2 v3 v4 v5 (U_apply σ hσ h x) (U_apply σ hσ h (-(x + y))) (V := ((v : GL (Fin n) L) : Matrix (Fin n) (Fin n) L)) hv (by rw [hy]; ring) (S_apply σ hσ h) hw`. Establish `hss` using `sR_sq σ hσ h`. Establish `hnp` using `uR_neg σ hσ h (x + y)`. Combine the equalities or inequalities in the displayed calculation.
+
+Rewrite using `[hnp, mul_one]`. Use `_ = sR σ hσ a h * (uR σ hσ a h x * v * uR σ hσ a h (-(x + y))) * 1 * uR σ hσ a h (x + y) := by`. Simplify using `only [mul_assoc, one_mul]`. Use `_ = _ := by`. Rewrite using `[← hss]`.
+
+Simplify using `only [mul_assoc]`.
+-/
 theorem UpperTheory.Reformulated.B.AntidiagonalWeylElement.sR_uR_mul_unip :
     ∀ (L : Type) [inst : Field L] [Valued L (WithZero (Multiplicative ℤ))] (σ : L →+* L) (n : ℕ)
       (hσ : ∀ (x : L), (σ : L → L) ((σ : L → L) x) = x) (a : ℕ) (h : (2 : ℕ) * (a + (2 : ℕ)) ≤ n)

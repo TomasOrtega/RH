@@ -13,6 +13,9 @@ open NumberField IsDedekindDomain in
 open scoped TensorProduct Matrix in
 variable {F E : Type} [Field F] [Field E] [Algebra F E] (c : E ≃ₐ[F] E) {n : ℕ}
   (G : Matrix (Fin n) (Fin n) E) in
+/- English proof (translation)
+Unfold `_root_.GlobalTheory.UnRep.hermE`. Simplify using `only [dotProduct, Matrix.mulVec, Finset.sum_mul]`. Use `Finset.sum_congr rfl fun a _ => Finset.sum_congr rfl fun b _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem _root_.GlobalTheory.UnRep.ReflLaws.hermE_eq_dot (v x : Fin n → E) :
     _root_.GlobalTheory.UnRep.hermE c G v x = (G *ᵥ fun b => c (x b)) ⬝ᵥ v := by
   unfold _root_.GlobalTheory.UnRep.hermE
@@ -24,6 +27,11 @@ open NumberField IsDedekindDomain in
 open scoped TensorProduct Matrix in
 variable {F E : Type} [Field F] [Field E] [Algebra F E] (c : E ≃ₐ[F] E) {n : ℕ}
   (G : Matrix (Fin n) (Fin n) E) in
+/- English proof (translation)
+Unfold `_root_.GlobalTheory.UnRep.refl`. Rewrite using `[Matrix.add_mulVec, Matrix.one_mulVec, Matrix.smul_mulVec, Matrix.vecMulVec_mulVec, _root_.GlobalTheory.UnRep.ReflLaws.hermE_eq_dot]`. Use `congr 1`. Use extensionality with `i`. Simplify using `only [Pi.smul_apply, smul_eq_mul, MulOpposite.smul_eq_mul_unop, MulOpposite.unop_op, _root_.GlobalTheory.UnRep.ReflLaws.hermE_eq_dot]`.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem _root_.GlobalTheory.UnRep.ReflLaws.refl_mulVec (x : Fin n → E) (u : E) (v : Fin n → E) :
     _root_.GlobalTheory.UnRep.refl c G x u *ᵥ v =
       v + ((u - 1) * _root_.GlobalTheory.UnRep.hermE c G v x /
@@ -41,6 +49,9 @@ open NumberField IsDedekindDomain in
 open scoped TensorProduct Matrix in
 variable {F E : Type} [Field F] [Field E] [Algebra F E] (c : E ≃ₐ[F] E) {n : ℕ}
   (G : Matrix (Fin n) (Fin n) E) in
+/- English proof (translation)
+Simplify using `only [_root_.GlobalTheory.UnRep.ReflLaws.hermE_eq_dot, dotProduct_add, dotProduct_smul, smul_eq_mul]`.
+-/
 private theorem hermE_add_smul_left' (v x y : Fin n → E) (t : E) :
     _root_.GlobalTheory.UnRep.hermE c G (v + t • x) y =
       _root_.GlobalTheory.UnRep.hermE c G v y + t * _root_.GlobalTheory.UnRep.hermE c G x y := by
@@ -51,6 +62,9 @@ open NumberField IsDedekindDomain in
 open scoped TensorProduct Matrix in
 variable {F E : Type} [Field F] [Field E] [Algebra F E] (c : E ≃ₐ[F] E) {n : ℕ}
   (G : Matrix (Fin n) (Fin n) E) in
+/- English proof (translation)
+Unfold `_root_.GlobalTheory.UnRep.hermE`. Simplify using `only [map_sum, map_mul, hinv, hG]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+-/
 private theorem hermE_conj_eq_swap_of_involutive_of_conj_symm (hinv : ∀ z : E, c (c z) = z) (hG : ∀ a b, c (G a b) = G b a)
     (a b : Fin n → E) :
     c (_root_.GlobalTheory.UnRep.hermE c G a b) = _root_.GlobalTheory.UnRep.hermE c G b a := by
@@ -64,6 +78,9 @@ open NumberField IsDedekindDomain in
 open scoped TensorProduct Matrix in
 variable {F E : Type} [Field F] [Field E] [Algebra F E] (c : E ≃ₐ[F] E) {n : ℕ}
   (G : Matrix (Fin n) (Fin n) E) in
+/- English proof (translation)
+Establish `hfun : (fun b => c ((y + t • x) b)) = (fun b => c (y b)) + c t • fun b => c (x b)`. Use function extensionality and compare the values at `b`. Simplify using `[map_add, map_mul]`. Simplify using `only [_root_.GlobalTheory.UnRep.ReflLaws.hermE_eq_dot, hfun, Matrix.mulVec_add, Matrix.mulVec_smul, add_dotProduct, smul_dotProduct, smul_eq_mul]`.
+-/
 private theorem hermE_add_smul_right' (v x y : Fin n → E) (t : E) :
     _root_.GlobalTheory.UnRep.hermE c G v (y + t • x) =
       _root_.GlobalTheory.UnRep.hermE c G v y + c t * _root_.GlobalTheory.UnRep.hermE c G v x := by
@@ -77,6 +94,15 @@ open NumberField IsDedekindDomain in
 open scoped TensorProduct Matrix in
 variable {F E : Type} [Field F] [Field E] [Algebra F E] (c : E ≃ₐ[F] E) {n : ℕ}
   (G : Matrix (Fin n) (Fin n) E) in
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ c n G hG x hx`. Take `⟨hinv, -, hsym, -⟩` from `hG`. Use `⟨_root_.GlobalTheory.UnRep.ReflLaws.refl_mulVec c G x, ?_, ?_, ?_⟩` and prove the remaining obligations. Unfold `_root_.GlobalTheory.UnRep.refl`. Simplify using the standard rewrite rules.
+
+Introduce `u u'`. Use `Matrix.toLin'.injective (LinearMap.ext fun v => ?_)` and prove the remaining obligations. Simplify using `only [Matrix.toLin'_apply, ← Matrix.mulVec_mulVec, _root_.GlobalTheory.UnRep.ReflLaws.refl_mulVec, hermE_add_smul_left']`. Rewrite using `[add_assoc, ← add_smul]`. Use `congr 2`.
+
+Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Introduce `u hu`. Unfold `_root_.GlobalTheory.UnRep.IsUnE`. Introduce `v y`.
+
+Establish `hxx : c (_root_.GlobalTheory.UnRep.hermE c G x x) = _root_.GlobalTheory.UnRep.hermE c G x x` using `hermE_conj_eq_swap_of_involutive_of_conj_symm c G hinv hsym x x`. Establish `hyx : c (_root_.GlobalTheory.UnRep.hermE c G y x) = _root_.GlobalTheory.UnRep.hermE c G x y` using `hermE_conj_eq_swap_of_involutive_of_conj_symm c G hinv hsym y x`. Simplify using `only [_root_.GlobalTheory.UnRep.ReflLaws.refl_mulVec, hermE_add_smul_left', hermE_add_smul_right', map_div₀, map_mul, map_sub, map_one, hxx, hyx]`. Clear the denominators using the available nonvanishing facts. Take the linear combination `(_root_.GlobalTheory.UnRep.hermE c G v x * _root_.GlobalTheory.UnRep.hermE c G x y * 1) * hu`.
+-/
 theorem _root_.GlobalTheory.UnRep.ReflLaws.refl_laws : ∀ (F E : Type) [Field F] [NumberField F] [Field E]
     [NumberField E] [Algebra F E] (c : E ≃ₐ[F] E) (n : ℕ) (G : Matrix (Fin n) (Fin n) E),
     _root_.GlobalTheory.UnRep.IsHermForm c G → ∀ x : Fin n → E,

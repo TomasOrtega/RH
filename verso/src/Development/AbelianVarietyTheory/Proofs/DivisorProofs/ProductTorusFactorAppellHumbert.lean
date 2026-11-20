@@ -18,6 +18,43 @@ noncomputable section
 
 open GlobalTheory.PullHermitian in
 
+/- English proof (translation)
+Introduce `A _ L₀ g u L hL ht0 U H χ' hU hF hH0 m l hm`. Use `set φ := (lift (𝟙 A) (1 : A ⟶ A)).left with hφ`. Take `⟨t, ht⟩` from `ht0`. Establish `e0 : u.ex 0 = 1`. Establish `h` using `u.ex_add 0 0`.
+
+Simplify using `using h`. Establish `comp1 : ∀ {X : Over (Sp ℂ)} (f : X ⟶ A), f ≫ (1 : A ⟶ A) = 1` using `fun f => by`. Rewrite using `[Hom.one_def, Hom.one_def]`. Simplify using the standard rewrite rules. Establish `hx : ∀ z, (U.ex (Fin.append z 0)).left = (u.ex z).left ≫ φ` using `fun z => by`.
+
+Rewrite using `[hU, e0, hφ, ← Over.comp_left, comp_lift, Category.comp_id, comp1]`. Establish `hmem : ∀ l' : Fin g → ℂ, Fin.append l' 0 ∈ U.Λ ↔ l' ∈ u.Λ`. Introduce `l'`. Rewrite using `[← U.ker, ← u.ker, hU, e0]`. Prove the components needed by the constructor for the conclusion.
+
+Introduce `h`. Use `congrArg (· ≫ fst A A) h` as an intermediate fact. Simplify using `using this`. Introduce `h`. Rewrite using `[h]`.
+
+Apply the tactic sequence `first | simp | (ext <;> simp) | rfl`. Establish `hper : ∀ (l' : u.Λ) z, u.ex (z + l') = u.ex z` using `fun l' z => by`. Rewrite using `[u.ex_add, (u.ker l').2 l'.2, _root_.mul_one]`. Establish `happ : ∀ z w : Fin g → ℂ, Fin.append z 0 + Fin.append w 0 = Fin.append (z + w) (0 : Fin g → ℂ)`. Introduce `z w`.
+
+Use function extensionality and compare the values at `i`. Use `Fin.addCases (fun i => ?_) (fun i => ?_) i` and prove the remaining obligations. Simplify using `only [Fin.append_left, Pi.add_apply]`. Simplify using `only [Fin.append_right, Pi.add_apply, Pi.zero_apply, add_zero]`. Establish `hapd : Differentiable ℂ (fun z : Fin g → ℂ => Fin.append z (0 : Fin g → ℂ))`.
+
+Use `differentiable_pi.2 fun i => ?_` and prove the remaining obligations. Use `Fin.addCases (fun j => ?_) (fun j => ?_) i` and prove the remaining obligations. Simplify `differentiable_apply j` using `only [Fin.append_left]`. Simplify `differentiable_const (0 : ℂ)` using `only [Fin.append_right, Pi.zero_apply]`. Use `set V : L.ι → Set (Fin g → ℂ) := fun p => {z | ⊤ ≤ (u.ex z).left ⁻¹ᵁ (L.pull φ).U (fun _ => p)} with hV`.
+
+Establish `hVsub' : ∀ p z, z ∈ V p → ⊤ ≤ ((u.ex z).left ≫ φ) ⁻¹ᵁ L.U p` using `fun p z hz q hq => Set.mem_iInter.1 (hz hq) PUnit.unit`. Establish `hVsub : ∀ p z, z ∈ V p → ⊤ ≤ (U.ex (Fin.append z 0)).left ⁻¹ᵁ L.U p` using `fun p z hz => by`. Rewrite using `[hx]`. Conclude with `hVsub' p z hz`. Establish `hVof : ∀ p z, ⊤ ≤ (U.ex (Fin.append z 0)).left ⁻¹ᵁ L.U p → z ∈ V p` using `fun p z h => wchart_of (u.ex z).left L φ p (hx z ▸ h)`.
+
+Take `⟨r, hr, hrφ⟩` from `exists_glue V (fun p => (u.hol _ 0).1) (fun z => by`. Take `⟨p, hp⟩` from `exists_chart (U.ex (Fin.append z 0)).left hL`. Conclude with `⟨p, hVof p z hp⟩)`. Use the proof step `(fun p z => valAt' (u.ex z).left ((L.pull φ).U (fun _ => p)) (t.s (fun _ => p)).val / U.fr p (Fin.append z 0))`. Use the proof step `(fun p => by`.
+
+Establish `d1` using `(u.hol ((L.pull φ).U (fun _ => p)) (t.s (fun _ => p)).val).2`. Establish `d2 : DifferentiableOn ℂ (fun z => U.fr p (Fin.append z 0)) (V p)` using `(U.fr_hol p).comp (s := V p) hapd.differentiableOn fun z hz => hVsub p z hz`. Simplify using `only [div_eq_mul_inv]`. Conclude with `d1.mul (d2.inv fun z hz => U.fr_ne p _ (hVsub p z hz)))`. Use the proof step `(fun p q z hp hq => by`.
+
+Establish `hpq` using `inf_of (u.ex z).left hp hq`. Establish `h1` using `ht (fun _ => p) (fun _ => q)`. Establish `h2` using `congrArg (unitVal (u.ex z).left hpq) h1`. Rewrite `h2` using `[map_mul, unitVal_res (u.ex z).left _ hpq hp, unitVal_res (u.ex z).left _ hpq hq]`. Establish `h3` using `unitVal_linComb (u.ex z).left L φ 1 p q hpq (inf_of _ (hVsub' p z hp) (hVsub' q z hq))`.
+
+Establish `h4` using `U.fr_compat p q (Fin.append z 0) (inf_of _ (hVsub p z hp) (hVsub q z hq))`. Rewrite `h4` using `[hx]`. Rewrite using `[valAt'_eq_unitVal _ hp, valAt'_eq_unitVal _ hq, h4, valAt'_eq_unitVal _ (inf_of _ (hVsub' p z hp) (hVsub' q z hq)), h2, h3]`. Establish `h5` using `U.fr_ne q _ (hVsub q z hq)`. Simplify using `only [Units.val_mul, zpow_one]`.
+
+Use the proof step `field_simp)`. Use `haveI := u.discrete`. Establish `key` using `appellHumbert_trivial_of_nowhere_vanishing g u.Λ u.full 0 (fun l' => χ' ⟨Fin.append (l' : Fin g → ℂ) 0, (hmem _).2 l'.2⟩) r Matrix.isHermitian_zero (fun l' => hF.2.1 _) hr (fun z => by`. Take `⟨p, hp⟩` from `exists_chart (U.ex (Fin.append z 0)).left hL`. Establish `hp'` using `hVof p z hp`.
+
+Rewrite using `[hrφ p z hp', valAt'_eq_unitVal _ hp']`. Conclude with `div_ne_zero (Units.ne_zero _) (U.fr_ne p _ hp))`. Use the proof step `(fun l' z => by`. Take `⟨p, hp⟩` from `exists_chart (U.ex (Fin.append z 0)).left hL`. Establish `hz` using `hVof p z hp`.
+
+Establish `hz' : z + l' ∈ V p` using `by show ⊤ ≤ (u.ex (z + l')).left ⁻¹ᵁ _`. Rewrite using `[hper]`. Conclude with `hz`. Rewrite using `[hrφ p _ hz', hrφ p z hz, hper]`. Establish `hf` using `hF.2.2 ⟨Fin.append (l' : Fin g → ℂ) 0, (hmem _).2 l'.2⟩ p (Fin.append z 0) hp`.
+
+Establish `e1 : Fin.append z 0 ⬝ᵥ H.mulVec (star (Fin.append (l' : Fin g → ℂ) 0)) = 0` using `hH0 z l'`. Establish `e2 : Fin.append (l' : Fin g → ℂ) 0 ⬝ᵥ H.mulVec (star (Fin.append (l' : Fin g → ℂ) 0)) = 0` using `hH0 l' l'`. Simplify using `only [e1, e2, mul_zero, add_zero, Complex.exp_zero, _root_.mul_one, happ] at hf`. Establish `hc : χ' ⟨Fin.append (l' : Fin g → ℂ) 0, (hmem _).2 l'.2⟩ ≠ 0` using `norm_ne_zero_iff.1 (by rw [hF.2.1]; exact one_ne_zero)`. Establish `h6` using `U.fr_ne p _ (hVsub p _ hz')`.
+
+Simplify using `only [hermForm, Matrix.zero_mulVec, dotProduct_zero, mul_zero, add_zero, Complex.exp_zero, _root_.mul_one]`. Rewrite using `[hf]`. Use the proof step `field_simp)`. Establish `hm' : m = ⟨Fin.append l 0, hm ▸ m.2⟩` using `Subtype.ext hm`. Rewrite using `[hm']`.
+
+Conclude with `key.2.1 ⟨l, (hmem l).1 (hm ▸ m.2)⟩`.
+-/
 theorem GlobalTheory.TorusRM.char_axis_eq_one_of_herm_axis_zero : ∀ (A : Over (Sp ℂ)) [GrpObj A] (L₀ : LB A.left) (g : ℕ) (u : HolUnif A L₀ g)
     (L : LB (A ⊗ A).left), L.IsLB → HasGen (L.pull (lift (𝟙 A) (1 : A ⟶ A)).left) →
     ∀ (U : HolUnif (A ⊗ A) L (g + g)) (H : Matrix (Fin (g + g)) (Fin (g + g)) ℂ) (χ' : U.Λ → ℂ),

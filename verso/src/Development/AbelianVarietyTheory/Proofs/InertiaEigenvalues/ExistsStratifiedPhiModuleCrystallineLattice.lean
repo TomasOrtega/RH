@@ -19,6 +19,15 @@ open scoped Formalism.Per NNReal
 
 namespace GlobalTheory.BSP
 
+/- English proof (translation)
+Take `⟨σ, ⟨h1, h2⟩, -⟩` from `En.univ (ainfObj K) bk.ι ((ainfHom K g).comp bk.ι)`. Establish `hn` using `GlobalTheory.T.discPeriod_comparison_relation_map_prismHom l K bk d ρ τ s ht En.Q (ainfObj K) En.inl En.inl En.inr bk.ι σ (ε.map (toDisc l (BK.hf En.inl X) bk.ρ₀)) hε`. Take `⟨Fk, hFk⟩` from `hn.1`. Establish `hr` using `hn.2 Fk hFk`. Establish `hr' : ht.Rel (B` using `ainfObj K) (BK.hf bk.ι X) bk.ι ((ainfHom K g).comp bk.ι) ((ε.map (toDisc l (BK.hf En.inl X) bk.ρ₀)).map Fk) := by`.
+
+Establish `key : ∀ f₁ f₂ : Hom bk.prism (ainfObj K), ht.Rel (BK.hf bk.ι X) f₁ f₂ ((ε.map (toDisc l (BK.hf En.inl X) bk.ρ₀)).map Fk) → f₁ = bk.ι → f₂ = (ainfHom K g).comp bk.ι → ht.Rel (BK.hf bk.ι X) bk.ι ((ainfHom K g).comp bk.ι) ((ε.map (toDisc l (BK.hf En.inl X) bk.ρ₀)).map Fk)`. Introduce and unpack `f₁ f₂ h rfl rfl`. Conclude with `h`. Conclude with `key _ _ hr h1 h2`. Establish `e : S.ε bk.ι ((ainfHom K g).comp bk.ι) = ε.map σ.f`.
+
+Establish `key : ∀ f₁ f₂ : Hom bk.prism (ainfObj K), S.ε f₁ f₂ = ε.map σ.f → f₁ = bk.ι → f₂ = (ainfHom K g).comp bk.ι → S.ε bk.ι ((ainfHom K g).comp bk.ι) = ε.map σ.f`. Introduce and unpack `f₁ f₂ h rfl rfl`. Conclude with `h`. Conclude with `key _ _ (hSε (ainfObj K) σ) h1 h2`. Establish `hm : (ε.map (toDisc l (BK.hf En.inl X) bk.ρ₀)).map Fk = (ε.map σ.f).map bk.iA` using `Matrix.ext fun i j => hFk.ext (ε i j)`.
+
+Establish `hM : (S.ε bk.ι ((ainfHom K g).comp bk.ι)).map bk.iA = (ε.map (toDisc l (BK.hf En.inl X) bk.ρ₀)).map Fk` using `(congrArg (fun M => Matrix.map M bk.iA) e).trans hm.symm`. Conclude with `Eq.mpr (congrArg (ht.Rel (B := ainfObj K) (BK.hf bk.ι X) bk.ι ((ainfHom K g).comp bk.ι)) hM) hr'`.
+-/
 theorem rel_gal_of_env {l : ℕ} [Fact l.Prime] {K : FinExt l} {bk : BK K} {τ : Ainf l} {d : ℕ}
     {ρ : ↥(GK K) → Matrix (Fin d) (Fin d) ℤ_[l]} {s : Seed bk d ρ τ} (ht : Height s)
     (En : Env bk bk.prism (bk.toP bk.E) (bk.toP X)) (ε : Matrix (Fin d) (Fin d) En.Q.A)
@@ -51,6 +60,11 @@ theorem rel_gal_of_env {l : ℕ} [Fact l.Prime] {K : FinExt l} {bk : BK K} {τ :
       (congrArg (fun M => Matrix.map M bk.iA) e).trans hm.symm
     exact Eq.mpr (congrArg (ht.Rel (B := ainfObj K) (BK.hf bk.ι X) bk.ι ((ainfHom K g).comp bk.ι)) hM) hr'
 
+/- English proof (translation)
+Introduce `l _ K bk τ hτ d ρ hρ s ht`. Take `⟨En⟩` from `GlobalTheory.T.nonempty_breuilKisinPrismCoproduct l K bk bk.prism (bk.toP bk.E) (bk.toP X) (GlobalTheory.T.isOrientedPrismUniformizerFrame_breuilKisinHom l K bk bk.prism (Hom.id bk.prism))`. Take `⟨En₂⟩` from `GlobalTheory.T.nonempty_breuilKisinPrismCoproduct l K bk En.Q (BK.hf En.inl bk.E) (BK.hf En.inl X) (GlobalTheory.T.isOrientedPrismUniformizerFrame_breuilKisinHom l K bk En.Q En.inl)`. Take `⟨⟨tb⟩, -⟩` from `GlobalTheory.T.breuilKisinEnvelopes_adicTopologicalBasis l K bk En En₂`. Take `⟨ε, hε⟩` from `GlobalTheory.T.exists_comparison_matrix_prismCoproduct l K bk d ρ τ s ht hτ hρ En`.
+
+Establish `hφ` using `GlobalTheory.T.frobenius_eq_of_pow_smul_comparisonMatrix l K bk d ρ τ s ht hτ En.Q En.inl En.inr (Digits l) tb 0 ε (ε.map (toDisc l (BK.hf En.inl X) bk.ρ₀)) hε ((congrArg (fun c => c • ε.map (toDisc l (BK.hf En.inl X) bk.ρ₀)) (pow_zero ((l : ℕ) : Disc l (BK.hf En.inl X) bk.ρ₀))). …`. Establish `hc` using `GlobalTheory.T.breuilKisin_comparison_unit_cocycle_every_prism l K bk d ρ τ s ht En ε hε`. Take `⟨S, hSa, hSA, hSε⟩` from `GlobalTheory.T.stratifiedPhiModule_of_coproduct_cocycle l K bk En d (ht.a + s.N) ht.b ht.A ht.A' ht.A_mul ε hφ hc`. Take `⟨T, hT⟩` from `GlobalTheory.T.exists_realization_matrix_stratifiedPhiModule l K bk d ρ τ s ht hτ S hSa hSA (rel_gal_of_env ht En ε hε S hSε)`. Conclude with `⟨S, T, hT⟩`.
+-/
 theorem exists_strat_mreal : ∀ (l : ℕ) [Fact l.Prime] (K : FinExt l) (bk : BK K) (τ : Ainf l), bk.IsPer τ →
     ∀ (d : ℕ) (ρ : ↥(GK K) → Matrix (Fin d) (Fin d) ℤ_[l]), (∀ g, IsUnit (ρ g)) → ∀ (s : Seed bk d ρ τ),
     Height s → ∃ (S : Strat bk d) (T : Matrix (Fin d) (Fin d) (WCb l)), MReal S ρ T := by

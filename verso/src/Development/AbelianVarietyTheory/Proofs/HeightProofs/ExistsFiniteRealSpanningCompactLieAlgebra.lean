@@ -39,6 +39,11 @@ def kSub {n : ℕ} (ε : Fin n → Bool) : Submodule ℝ (Matrix (Fin n) (Fin n)
     have h := inK_smul_real ε hZ t
     rwa [Complex.coe_smul] at h
 
+/- English proof (translation)
+Introduce `n ε`. Set `b` to `Module.finBasis ℝ (kSub ε)`. Use `⟨Module.finrank ℝ (kSub ε), fun j => ((b j : kSub ε) : Matrix (Fin n) (Fin n) ℂ), fun j => (b j).2, ?_⟩` and prove the remaining obligations. Introduce `Y hY`. Use `⟨fun j => b.repr ⟨Y, hY⟩ j, ?_⟩` and prove the remaining obligations.
+
+Establish `h2` using `congrArg Subtype.val (b.sum_repr ⟨Y, hY⟩)`. Simplify using `only [Submodule.coe_sum, Submodule.coe_smul] at h2`. Use `conv_lhs => rw [← h2]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[Complex.coe_smul]`.
+-/
 theorem finite_real_span : ∀ {n : ℕ} (ε : Fin n → Bool), ∃ (r : ℕ) (X : Fin r → Mx n), (∀ j, inK ε (X j)) ∧ ∀ Y, inK ε Y → ∃ c : Fin r → ℝ, Y = ∑ j, (c j : ℂ) • X j := by
   intro n ε
   let b := Module.finBasis ℝ (kSub ε)

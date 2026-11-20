@@ -23,6 +23,9 @@ def cdesc {U : Over S} (h : ∀ i, V i ⟶ U) : cop V ⟶ U :=
     intro i
     simp [cop])
 
+/- English proof (translation)
+Use `ext1`. Express the relevant statement in the definitionally equal form `Sigma.ι (fun i => (V i).left) i ≫ Sigma.desc (fun i => (h i).left) = (h i).left`. Conclude with `Sigma.ι_desc _ _`.
+-/
 theorem cι_cdesc {U : Over S} (h : ∀ i, V i ⟶ U) (i : ι) : cι V i ≫ cdesc V h = h i := by
   ext1
   change Sigma.ι (fun i => (V i).left) i ≫ Sigma.desc (fun i => (h i).left) = (h i).left
@@ -31,6 +34,9 @@ theorem cι_cdesc {U : Over S} (h : ∀ i, V i ⟶ U) (i : ι) : cι V i ≫ cde
 def cop_isColimit : IsColimit (Cofan.mk (cop V).left (fun i => (cι V i).left)) :=
   coproductIsCoproduct _
 
+/- English proof (translation)
+Establish `: IsZariskiLocalAtSource @Etale` using `HasRingHomProperty.instIsZariskiLocalAtSource`. Conclude with `IsZariskiLocalAtSource.sigmaDesc (P := @Etale) hV`.
+-/
 theorem cop_etale (hV : ∀ i, Etale (V i).hom) : Etale (cop V).hom := by
   have : IsZariskiLocalAtSource @Etale := HasRingHomProperty.instIsZariskiLocalAtSource
   exact IsZariskiLocalAtSource.sigmaDesc (P := @Etale) hV
@@ -38,6 +44,17 @@ theorem cop_etale (hV : ∀ i, Etale (V i).hom) : Etale (cop V).hom := by
 end GlobalTheory.EtC.LocGlob
 
 open GlobalTheory.EtC.LocGlob in
+/- English proof (translation)
+Introduce `R _ F S E E' α p hF hq1 hq2 hEqv U hU n`. Establish `cont1` using `GlobalTheory.T.finitarySheaf_continuous_baseChange_levelwiseQcqs R F hF S E (α ≫ p) hq1`. Establish `cont2` using `GlobalTheory.T.finitarySheaf_continuous_baseChange_levelwiseQcqs R F hF S E' p hq2`. Use `choose O instO s g hs v hv using GlobalTheory.T.exists_strictlyHenselianEtaleStalk_over_point S U hU`. Establish `loc` using `fun u => @GlobalTheory.T.etaleSpaceCohomology_stalk_local_classes R _ F S _ _ (bcMap α p) cont1 cont2 (O u) (instO u) (s u) (hs u) (@hEqv (O u) (instO u) (s u) (hs u)) U hU (g u) n`.
+
+Establish `surjOf : ∀ (V : U.left → Over S) (g' : ∀ u, Over.mk (s u) ⟶ V u) (h : ∀ u, V u ⟶ U), (∀ u, g' u ≫ h u = g u) → Surjective (cdesc V h).left`. Introduce `V g' h hg`. Use `⟨fun u0 => ⟨((g' u0 ≫ cι V u0).left) (v u0), ?_⟩⟩` and prove the remaining obligations. Rewrite using `[← Scheme.Hom.comp_apply, ← Over.comp_left, Category.assoc, cι_cdesc, hg, hv]`. Use `⟨fun x => ?_, fun y hy => ?_⟩` and prove the remaining obligations.
+
+Use `choose V g' h y hV hg hy using fun u => (loc u).1 x`. Take `⟨Y, hY⟩` from `(GlobalTheory.T.etaleSpaceCohomology_baseChange_coprod_bijective R F S E' p (cop V) U.left V (cι V) (cop_isColimit V) n).2 y`. Use `⟨cop V, cdesc V h, Y, cop_etale V hV, surjOf V g' h hg, ?_⟩` and prove the remaining obligations. Apply `(GlobalTheory.T.etaleSpaceCohomology_baseChange_coprod_bijective R F S E (α ≫ p) (cop V) U.left V (cι V) (cop_isColimit V) n).1` to reduce the goal to its premises. Use function extensionality and compare the values at `u`.
+
+Simplify using `only`. Establish `hYu : pull R ((bc p).map (cι V u)) F n Y = y u` using `congrFun hY u`. Rewrite using `[← pull_comp, ← pull_comp, (bcMap α p).naturality, ← Functor.map_comp, cι_cdesc, pull_comp, hYu, hy u]`. Use `choose V g' h hV hg hy0 using fun u => (loc u).2 y hy`. Use `⟨cop V, cdesc V h, cop_etale V hV, surjOf V g' h hg, ?_⟩` and prove the remaining obligations.
+
+Apply `(GlobalTheory.T.etaleSpaceCohomology_baseChange_coprod_bijective R F S E' p (cop V) U.left V (cι V) (cop_isColimit V) n).1` to reduce the goal to its premises. Use function extensionality and compare the values at `u`. Simplify using `only [map_zero]`. Rewrite using `[← pull_comp, ← Functor.map_comp, cι_cdesc, hy0 u]`.
+-/
 theorem GlobalTheory.EtC.loc_glob_classes : ∀ (R : Type) [CommRing R] (F : Shv R) (S : Scheme.{0}) (E E' : Spc) (α : E ⟶ E') (p : E' ⟶ sch.obj S), Finitary F → QcqsOver (α ≫ p) → QcqsOver p → (∀ (O : Type) [CommRing O] (s : Spec (CommRingCat.of O) ⟶ S), IsStalk O s → Eqv R ((bcMap α p).app (Over.mk s)) F) → ∀ (U : Over S), Etale U.hom → ∀ n : ℤ, (∀ x : H R ((bc (α ≫ p)).obj U) F n, ∃ (V : Over S) (h : V ⟶ U) (y : H R ((bc p).obj V) F n), Etale V.hom ∧ Surjective h.left ∧ pull R ((bcMap α p).app V) F n y = pull R ((bc (α ≫ p)).map h) F n x) ∧ ∀ y : H R ((bc p).obj U) F n, pull R ((bcMap α p).app U) F n y = 0 → ∃ (V : Over S) (h : V ⟶ U), Etale V.hom ∧ Surjective h.left ∧ pull R ((bc p).map h) F n y = 0 := by
   intro R _ F S E E' α p hF hq1 hq2 hEqv U hU n
   have cont1 := GlobalTheory.T.finitarySheaf_continuous_baseChange_levelwiseQcqs R F hF S E (α ≫ p) hq1
@@ -67,6 +84,9 @@ theorem GlobalTheory.EtC.loc_glob_classes : ∀ (R : Type) [CommRing R] (F : Shv
     simp only [map_zero]
     rw [← pull_comp, ← Functor.map_comp, cι_cdesc, hy0 u]
 
+/- English proof (translation)
+The claim follows from `GlobalTheory.EtC.loc_glob_classes`.
+-/
 example : ∀ (R : Type) [CommRing R] (F : Shv R) (S : Scheme.{0}) (E E' : Spc) (α : E ⟶ E') (p : E' ⟶ sch.obj S), Finitary F → QcqsOver (α ≫ p) → QcqsOver p → (∀ (O : Type) [CommRing O] (s : Spec (CommRingCat.of O) ⟶ S), IsStalk O s → Eqv R ((bcMap α p).app (Over.mk s)) F) → ∀ (U : Over S), Etale U.hom → ∀ n : ℤ, (∀ x : H R ((bc (α ≫ p)).obj U) F n, ∃ (V : Over S) (h : V ⟶ U) (y : H R ((bc p).obj V) F n), Etale V.hom ∧ Surjective h.left ∧ pull R ((bcMap α p).app V) F n y = pull R ((bc (α ≫ p)).map h) F n x) ∧ ∀ y : H R ((bc p).obj U) F n, pull R ((bcMap α p).app U) F n y = 0 → ∃ (V : Over S) (h : V ⟶ U), Etale V.hom ∧ Surjective h.left ∧ pull R ((bc p).map h) F n y = 0 := GlobalTheory.EtC.loc_glob_classes
 
 end

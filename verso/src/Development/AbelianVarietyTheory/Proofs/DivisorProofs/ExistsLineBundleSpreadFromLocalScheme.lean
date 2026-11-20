@@ -11,6 +11,31 @@ noncomputable section
 namespace GlobalTheory.SpreadLB
 
 open GlobalTheory.CechPic in
+/- English proof (translation)
+Introduce `S Y U YU _ f _ _ j _ e fU hpb L hL x N hN hag`. Take `⟨W₁, hx₁, N₁, hN₁, hq⟩` from `GlobalTheory.T.exists_lineBundle_nhd_of_stalk_baseChange f x N hN`. Establish `hr1 : Set.range (pullback.fst f (S.fromSpecStalk x)) ⊆ Set.range (f ⁻¹ᵁ W₁).ι`. Introduce and unpack `_ ⟨y, rfl⟩`. Rewrite using `[Scheme.Opens.range_ι]`.
+
+Use `show f (pullback.fst f (S.fromSpecStalk x) y) ∈ W₁`. Establish `hsp : f (pullback.fst f (S.fromSpecStalk x) y) ⤳ x`. Establish `: f (pullback.fst f (S.fromSpecStalk x) y) ∈ Set.range (S.fromSpecStalk x)` using `⟨pullback.snd f (S.fromSpecStalk x) y, by rw [← Scheme.Hom.comp_apply, ← pullback.condition, Scheme.Hom.comp_apply]⟩`. Rewrite `this` using `[Scheme.range_fromSpecStalk]`. Then use the resulting hypothesis. Conclude with `hsp.mem_open W₁.isOpen hx₁`.
+
+Set `q₁` to `IsOpenImmersion.lift (f ⁻¹ᵁ W₁).ι (pullback.fst f (S.fromSpecStalk x)) hr1`. Establish `hq₁ : q₁ ≫ (f ⁻¹ᵁ W₁).ι = pullback.fst f (S.fromSpecStalk x)` using `IsOpenImmersion.lift_fac _ _ _`. Establish `iso1` using `hq q₁ hq₁`. Use `haveI : IsOpenImmersion e := MorphismProperty.of_isPullback (P := @IsOpenImmersion) hpb.flip inferInstance`. Use `haveI : QuasiCompact e := MorphismProperty.of_isPullback (P := @QuasiCompact) hpb.flip inferInstance`.
+
+Use `haveI : QuasiCompact (f ⁻¹ᵁ W₁).ι := MorphismProperty.of_isPullback (P := @QuasiCompact) (isPullback_morphismRestrict f W₁) inferInstance`. Set `h : pullback (f ⁻¹ᵁ W₁).ι e ⟶ S` to `pullback.fst (f ⁻¹ᵁ W₁).ι e ≫ (f ⁻¹ᵁ W₁).ι ≫ f`. Take `⟨W₂, hx₂, iso2⟩` from `GlobalTheory.T.exists_lineBundleIso_nhd_of_stalk_baseChange h x (N₁.pull (pullback.fst (f ⁻¹ᵁ W₁).ι e)) (L.pull (pullback.snd (f ⁻¹ᵁ W₁).ι e)) (pull_isLB hN₁ _) (pull_isLB hL _) (by set r := pullback.fst h (S.fromSpecStalk x)`. Establish `hs : (r ≫ pullback.fst (f ⁻¹ᵁ W₁).ι e ≫ (f ⁻¹ᵁ W₁).ι) ≫ f = pullback.snd h (S.fromSpecStalk x) ≫ S.fromSpecStalk x`. Rewrite using `[← pullback.condition]`.
+
+Simplify using `only [h, Category.assoc]`. Both sides reduce to the same expression. Set `s` to `pullback.lift _ _ hs`. Establish `hs1 : s ≫ q₁ = r ≫ pullback.fst (f ⁻¹ᵁ W₁).ι e`. Rewrite using `[← cancel_mono (f ⁻¹ᵁ W₁).ι, Category.assoc, hq₁]`.
+
+Simplify using `only [s, pullback.lift_fst, Category.assoc]`. Establish `hs2 : s ≫ pullback.fst f (S.fromSpecStalk x) = (r ≫ pullback.snd (f ⁻¹ᵁ W₁).ι e) ≫ e`. Simplify using `only [s, pullback.lift_fst, Category.assoc, pullback.condition]`. Establish `i3` using `(cls_eq_iff (pull_isLB hN _) (pull_isLB hL _)).2 (hag _ s _ hs2)`. Establish `i1` using `(cls_eq_iff (pull_isLB hN₁ _) hN).2 iso1`.
+
+Use `(cls_eq_iff (pull_isLB (pull_isLB hN₁ _) r) (pull_isLB (pull_isLB hL _) r)).1 ?_` and prove the remaining obligations. Rewrite using `[cls_pull (pull_isLB hN₁ _), cls_pull hN₁, cls_pull (pull_isLB hL _), cls_pull hL, ← pull_comp, ← pull_comp, ← hs1, pull_comp, ← cls_pull hN₁ _ (pull_isLB hN₁ _), i1, ← cls_pull hN _ (pull_isLB hN _), i3, cls_pull hL])`. Use `⟨W₁ ⊓ W₂, ⟨hx₁, hx₂⟩, ?_⟩` and prove the remaining obligations. Establish `hle : f ⁻¹ᵁ (W₁ ⊓ W₂) ≤ f ⁻¹ᵁ W₁` using `fun y hy => hy.1`. Use `⟨N₁.pull (Y.homOfLE hle), pull_isLB hN₁ _, fun T a b hab => ?_⟩` and prove the remaining obligations.
+
+Establish `hc : (a ≫ Y.homOfLE hle) ≫ (f ⁻¹ᵁ W₁).ι = b ≫ e` using `by rw [Category.assoc, Scheme.homOfLE_ι, hab]`. Set `c` to `pullback.lift _ _ hc`. Establish `hcr : Set.range c ⊆ Set.range (h ⁻¹ᵁ W₂).ι`. Introduce and unpack `_ ⟨t, rfl⟩`. Rewrite using `[Scheme.Opens.range_ι]`.
+
+Use `show h (c t) ∈ W₂`. Establish `: c ≫ h = a ≫ (f ⁻¹ᵁ (W₁ ⊓ W₂)).ι ≫ f`. Simplify using `only [h, c, pullback.lift_fst_assoc, Category.assoc, Scheme.homOfLE_ι_assoc]`. Rewrite using `[← Scheme.Hom.comp_apply, this, Scheme.Hom.comp_apply]`. Conclude with `((a t).2 : _).2`.
+
+Set `d` to `IsOpenImmersion.lift (h ⁻¹ᵁ W₂).ι c hcr`. Establish `hd : d ≫ (h ⁻¹ᵁ W₂).ι = c` using `IsOpenImmersion.lift_fac _ _ _`. Establish `i2` using `(cls_eq_iff (pull_isLB (pull_isLB hN₁ _) _) (pull_isLB (pull_isLB hL _) _)).2 iso2`. Use `(cls_eq_iff (pull_isLB (pull_isLB hN₁ _) a) (pull_isLB hL b)).1 ?_` and prove the remaining obligations. Establish `e1 : a ≫ Y.homOfLE hle = d ≫ (h ⁻¹ᵁ W₂).ι ≫ pullback.fst (f ⁻¹ᵁ W₁).ι e`.
+
+Rewrite using `[← Category.assoc, hd]`. Simplify using `only [c, pullback.lift_fst]`. Establish `e2 : b = d ≫ (h ⁻¹ᵁ W₂).ι ≫ pullback.snd (f ⁻¹ᵁ W₁).ι e`. Rewrite using `[← Category.assoc, hd]`. Simplify using `only [c, pullback.lift_snd]`.
+
+Rewrite using `[cls_pull (pull_isLB hN₁ _), cls_pull hN₁, ← pull_comp, e1, cls_pull hL, e2, pull_comp, pull_comp, pull_comp d, pull_comp (h ⁻¹ᵁ W₂).ι, ← cls_pull hN₁ _ (pull_isLB hN₁ _), ← cls_pull (pull_isLB hN₁ _) _ (pull_isLB (pull_isLB hN₁ _) _), i2, cls_pull (pull_isLB hL _), cls_pull hL]`.
+-/
 theorem exists_spread : ∀ {S Y U YU : Scheme.{0}} [IsLocallyNoetherian S] (f : Y ⟶ S) [QuasiCompact f] [QuasiSeparated f] (j : U ⟶ S) [IsOpenImmersion j] (e : YU ⟶ Y) (fU : YU ⟶ U), IsPullback e fU f j → ∀ (L : LB YU), L.IsLB → ∀ (x : S) (N : LB (pullback f (S.fromSpecStalk x))), N.IsLB → (∀ (T : Scheme.{0}) (a : T ⟶ pullback f (S.fromSpecStalk x)) (b : T ⟶ YU), a ≫ pullback.fst f (S.fromSpecStalk x) = b ≫ e → LBIso (N.pull a) (L.pull b)) → ∃ W : S.Opens, x ∈ W ∧ ∃ N' : LB ↑(f ⁻¹ᵁ W), N'.IsLB ∧ ∀ (T : Scheme.{0}) (a : T ⟶ ↑(f ⁻¹ᵁ W)) (b : T ⟶ YU), a ≫ (f ⁻¹ᵁ W).ι = b ≫ e → LBIso (N'.pull a) (L.pull b) := by
 
   intro S Y U YU _ f _ _ j _ e fU hpb L hL x N hN hag

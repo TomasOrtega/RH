@@ -18,6 +18,17 @@ namespace FiniteNet
 
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {r : ℕ}
 
+/- English proof (translation)
+Establish `hd` using `Ne.isUnit (FrameNet.det_ne_zero_of_ortho X hx τ)`. Establish `hsurj : ∀ u : Fin r → ℂ, ∃ c, u = mat x τ *ᵥ c` using `fun u => ⟨(mat x τ)⁻¹ *ᵥ u, by rw [mulVec_mulVec, mul_nonsing_inv _ hd, one_mulVec]⟩`. Take `⟨c, rfl⟩` from `hsurj u`. Take `⟨d, rfl⟩` from `hsurj v`. Rewrite using `[UnipMove.GraphH.maj_ortho X hx, UnipMove.GraphH.maj_ortho X hx]`.
+
+Establish `hg : ∀ i b, hermC τ.1 X.Gm (ReciprocityTheory.ChartRestriction.G.FD.col (mat x τ) i) (ReciprocityTheory.ChartRestriction.G.FD.col (mat x τ) b) = if i = b then ((sgn X.p0 (i : ℕ) : ℝ) : ℂ) else 0`. Introduce `i b`. Use `congrFun (congrFun (hx τ) i) b` as an intermediate fact. Simplify `this` using `[gram, Matrix.diagonal_apply]`. Establish `h1 : hermC τ.1 X.Gm (mat x τ *ᵥ c) (mat x τ *ᵥ d) = ∑ i, c i * (conj (d i) * ((sgn X.p0 (i : ℕ) : ℝ) : ℂ))`.
+
+Rewrite using `[Data.mulVec_eq_sum_col _ c, Data.mulVec_eq_sum_col _ d, hermC_sum_left]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[hermC_smul_left, hermC_sum_right]`. Repeatedly rewrite using `[hermC_smul_right, hg, mul_ite, mul_zero]`. Simplify using the standard rewrite rules.
+
+Rewrite using `[h1]`. Express the relevant statement in the definitionally equal form `_ ≤ (∑ i, ‖c i‖ ^ 2 + ∑ i, ‖d i‖ ^ 2) / 2`. Rewrite using `[← Finset.sum_add_distrib, Finset.sum_div]`. Use `(norm_sum_le _ _).trans (Finset.sum_le_sum fun i _ => ?_)` and prove the remaining obligations. Establish `hs : ‖((sgn X.p0 (i : ℕ) : ℝ) : ℂ)‖ = 1`.
+
+Unfold `sgn`. Apply the tactic sequence `split_ifs <;> simp`. Rewrite using `[norm_mul, norm_mul, hs, Complex.norm_conj]`. Use polynomial arithmetic with `[sq_nonneg (‖c i‖ - ‖d i‖)]`.
+-/
 theorem norm_hermC_le_of_ortho (X : Data E r) {x : Frame X.Ψ r} (hx : X.IsOrtho x) (τ : X.Ψ)
     (u v : Fin r → ℂ) : ‖hermC τ.1 X.Gm u v‖ ≤ (X.maj x τ u + X.maj x τ v) / 2 := by
   have hd := Ne.isUnit (FrameNet.det_ne_zero_of_ortho X hx τ)
@@ -49,6 +60,13 @@ theorem norm_hermC_le_of_ortho (X : Data E r) {x : Frame X.Ψ r} (hx : X.IsOrtho
   rw [norm_mul, norm_mul, hs, Complex.norm_conj]
   nlinarith [sq_nonneg (‖c i‖ - ‖d i‖)]
 
+/- English proof (translation)
+Establish `hxd : x ∈ X.dom` using `PIW.FdPA.orthonormal_domain r X x hx`. Establish `key : ∀ τ : X.Ψ, ‖τ.1 (herm X.Gm u v)‖ ≤ B`. Introduce `τ`. Establish `h1` using `norm_hermC_le_of_ortho X hx τ (Data.emb τ.1 u) (Data.emb τ.1 v)`. Rewrite `h1` using `[hermC_emb]`.
+
+Establish `h2 : ∀ w : Fin r → E, X.maj x τ (Data.emb τ.1 w) ≤ ∑ τ, X.maj x τ (Data.emb τ.1 w)` using `fun w => Finset.single_le_sum (f := fun τ : X.Ψ => X.maj x τ (Data.emb τ.1 w)) (fun _ _ => MajorantOperators.maj_nonneg hxd _ _) (Finset.mem_univ τ)`. Combine the linear relations using `[h2 u, h2 v]`. Distinguish the cases in `h : σ ∈ X.Ψ`. Conclude with `key ⟨σ, h⟩`. Establish `h' : ComplexEmbedding.conjugate σ ∈ X.Ψ`.
+
+Assume the negation of the conclusion as `h'`. Conclude with `h ((X.cmType σ).2 h')`. Use `key ⟨_, h'⟩` as an intermediate fact. Simplify `this` using `[ComplexEmbedding.conjugate_coe_eq]`.
+-/
 theorem norm_herm_le_of_ortho (X : Data E r) {x : Frame X.Ψ r} (hx : X.IsOrtho x) {B : ℝ}
     {u v : Fin r → E} (hu : ∑ τ, X.maj x τ (Data.emb τ.1 u) ≤ B)
     (hv : ∑ τ, X.maj x τ (Data.emb τ.1 v) ≤ B) (σ : E →+* ℂ) : ‖σ (herm X.Gm u v)‖ ≤ B := by
@@ -69,6 +87,11 @@ theorem norm_herm_le_of_ortho (X : Data E r) {x : Frame X.Ψ r} (hx : X.IsOrtho 
     have := key ⟨_, h'⟩
     simpa [ComplexEmbedding.conjugate_coe_eq] using this
 
+/- English proof (translation)
+Establish `hxb : rmul x b ∈ X.dom` using `OrthogonalFrameDomain.rmul_mem_dom X hx hb`. Rewrite using `[← FrameDegreeData.pnorm_rmul X la P hP.2.1 x hx b hb]`. Establish `hχ : ‖X.χ la γ‖ = 1`. Take `⟨n, hn, h⟩` from `X.χ_fin la`. Use `congrArg norm (h γ hγ)` as an intermediate fact.
+
+Rewrite `this` using `[norm_pow, norm_one]`. Conclude with `(pow_eq_one_iff_of_nonneg (norm_nonneg _) hn.ne').1 this`. Unfold `Data.pnorm dmin`. Simplify using `only [MajInv.gram_lact X (X.Γ_stab γ hγ)]`. Rewrite using `[hP.2.2 γ hγ _ hxb, norm_mul, hχ, one_mul]`.
+-/
 theorem pnorm_lact_rmul (X : Data E r) {la : Wt X.Ψ r} {P : Frame X.Ψ r → ℂ} (hP : X.IsSec la P)
     {γ : GL (Fin r) E} (hγ : γ ∈ X.Γ) {x b : Frame X.Ψ r} (hx : x ∈ X.dom) (hb : b ∈ Bor X.Ψ r) :
     X.pnorm la P (lact γ (rmul x b)) = X.pnorm la P x := by
@@ -83,10 +106,16 @@ theorem pnorm_lact_rmul (X : Data E r) {la : Wt X.Ψ r} {P : Frame X.Ψ r → �
   simp only [MajInv.gram_lact X (X.Γ_stab γ hγ)]
   rw [hP.2.2 γ hγ _ hxb, norm_mul, hχ, one_mul]
 
+/- English proof (translation)
+Use `choose p _ hp using X.signature`. Conclude with `⟨fun τ => p τ, PIW.FdPA.orthonormal_domain r X _ hp⟩`.
+-/
 theorem dom_nonempty (X : Data E r) : X.dom.Nonempty := by
   choose p _ hp using X.signature
   exact ⟨fun τ => p τ, PIW.FdPA.orthonormal_domain r X _ hp⟩
 
+/- English proof (translation)
+Establish `h2 : 0 < Real.log 2` using `Real.log_pos one_lt_two`. Establish `h3` using `Real.pi_pos`. Unfold `epStar`. Check the signs of the components of the expression.
+-/
 theorem epStar_pos {M f w k : ℝ} (hM : 0 < M) (hf : 0 ≤ f) (hw : 0 < w) (hk : 0 < k) :
     0 < epStar M f w k := by
   have h2 : 0 < Real.log 2 := Real.log_pos one_lt_two
@@ -100,6 +129,21 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E]
 
 open FiniteNet
 
+/- English proof (translation)
+Take `⟨V, hV₁, hV₂, hV₃, -⟩` from `exists_finset_types_of_bounded_bases X hB`. Establish `hnet` using `fun v : V => FrameNet.exists_frame_net X.toData v.1 (hV₁ v.1 v.2).2.1 (fun i k => X.L'_int _ ((hV₁ v.1 v.2).1 i) _ ((hV₁ v.1 v.2).1 k)) hB hη0 hη`. Use `choose N hN₁ hN₂ hN₃ _ using hnet`. Use `⟨Finset.univ.biUnion N, fun y hy => ?_, fun x hx hmin => ?_, ?_⟩` and prove the remaining obligations. Take `⟨v, -, hv⟩` from `Finset.mem_biUnion.1 hy`.
+
+Conclude with `FrameNet.shortFrames_subset_dom X.toData _ B (hN₁ v hv)`. Take `⟨b, hb, ho⟩` from `(orthonormalFlagTranslate_holds (E := E) r X.toData).1 x hx`. Take `⟨v, hv₁, hv₂, hv₃⟩` from `exists_short_basis_at X x hx ε hε hmin`. Establish `hv₄ : ∀ i, ∑ τ, X.maj (rmul x b) τ (Data.emb τ.1 (v i)) ≤ B` using `fun i => by`. Simplify using `only [MajInv.maj_rmul X.toData hx hb]`.
+
+Conclude with `(hv₃ i).trans hεB`. Take `⟨γ, hγ, w, hw, hvw⟩` from `hV₂ v hv₁ hv₂ fun σ i k => norm_herm_le_of_ortho X.toData ho (hv₄ i) (hv₄ k) σ`. Establish `hγ'` using `X.Γ_stab _ (X.Γ.inv_mem hγ)`. Establish `ho' : X.IsOrtho (lact γ⁻¹ (rmul x b))` using `fun τ => (MajInv.gram_lact X.toData hγ' _ τ).trans (ho τ)`. Take `⟨A, hA₁, hA₂⟩` from `hN₂ ⟨w, hw⟩ (lact γ⁻¹ (rmul x b)) ⟨ho', fun i => by`.
+
+Use `le_trans (le_of_eq (Finset.sum_congr rfl fun τ _ => ?_)) (hv₄ i)` and prove the remaining obligations. Rewrite using `[← MajInv.maj_lact X.toData hγ' (rmul x b) τ]`. Use `congr 1`. Establish `h1 : w i = ((γ⁻¹ : GL (Fin r) E) : Matrix (Fin r) (Fin r) E) *ᵥ v i`. Rewrite using `[hvw i, mulVec_mulVec, Units.inv_mul, one_mulVec]`.
+
+Express the relevant statement in the definitionally equal form `Data.emb τ.1 (w i) = _`. Rewrite using `[h1]`. Use function extensionality and compare the values at `a`. Conclude with `RingHom.map_mulVec τ.1 _ (v i) a⟩`. Conclude with `⟨γ⁻¹, X.Γ.inv_mem hγ, b, hb, A, ho', Finset.mem_biUnion.2 ⟨⟨w, hw⟩, Finset.mem_univ _, hA₁⟩, hA₂⟩`.
+
+Combine the equalities or inequalities in the displayed calculation. Conclude with `Finset.card_biUnion_le` after adjusting the coercions. Use `_ ≤ ∑ _v : V, _ := Finset.sum_le_sum fun v _ => hN₃ v`. Use `_ = V.card * _ := by`. Rewrite using `[Finset.sum_const, nsmul_eq_mul, Finset.card_univ, Fintype.card_coe]`.
+
+Use `_ ≤ _ := mul_le_mul_of_nonneg_right hV₃ (Real.exp_pos _).le`.
+-/
 theorem exists_net_of_thick_points {r : ℕ} (X : DataX E r) {ε B η : ℝ} (hε : 0 < ε) (hB : 1 ≤ B)
     (hεB : (2 * fdeg E * r : ℝ) ^ 4 * dE E ^ 2 / (4 * ε) ≤ B) (hη0 : 0 < η) (hη : η ≤ 1) :
     ∃ N : Finset (Frame X.Ψ r), (∀ y ∈ N, y ∈ X.dom) ∧
@@ -147,6 +191,35 @@ theorem exists_net_of_thick_points {r : ℕ} (X : DataX E r) {ε B η : ℝ} (h�
           rw [Finset.sum_const, nsmul_eq_mul, Finset.card_univ, Fintype.card_coe]
       _ ≤ _ := mul_le_mul_of_nonneg_right hV₃ (Real.exp_pos _).le
 
+/- English proof (translation)
+Introduce `ε B η`. Take `⟨x₀, hx₀⟩` from `dom_nonempty X.toData`. Establish `hp0 : ∀ (P : Frame X.Ψ r → ℂ) y, 0 ≤ X.pnorm la P y` using `fun P y => by`. Unfold `Data.pnorm`. Check the signs of the components of the expression.
+
+Break down `Nat.eq_zero_or_pos r with rfl | hr` into its components or cases. Use `⟨{x₀}, Finset.singleton_nonempty _, by simpa using hx₀, fun P _ x _ => ⟨x₀, Finset.mem_singleton_self _, ?_⟩, by simp, by simp⟩` and prove the remaining obligations. Rewrite using `[Subsingleton.elim x x₀]`. Combine the linear relations using `[hp0 P x₀]`. Establish `hr1 : (1 : ℝ) ≤ r` using `by exact_mod_cast hr`.
+
+Establish `hε : 0 < ε` using `epStar_pos hM (Nat.cast_nonneg _) hw0 X.minWeight_pos`. Establish `hB : 1 ≤ B` using `le_max_left _ _`. Establish `hL : (0 : ℝ) ≤ ∑ τ, ∑ i, |(la τ i : ℝ)|` using `by positivity`. Establish `hη0 : 0 < η` using `by positivity`. Establish `hη : η ≤ 1`.
+
+Use `(div_le_one (by positivity)).2 ?_` and prove the remaining obligations. Establish `h1 : (1 : ℝ) ≤ (r : ℝ) ^ 2` using `one_le_pow₀ hr1`. Use the polynomial consequences of the given equalities and inequalities. Take `⟨N, hN₁, hN₂, hN₃⟩` from `exists_net_of_thick_points X hε hB (le_max_right _ _) hη0 hη`. Establish `hNA : (1 : ℝ) ≤ X.NA` using `by exact_mod_cast X.NA_pos`.
+
+Establish `hNC : (1 : ℝ) ≤ X.NC` using `by exact_mod_cast X.NC_pos`. Establish `hg : (1 : ℝ) ≤ X.g` using `by exact_mod_cast X.g_pos`. Use `set T : ℝ := (1 + 2 * B) * ((X.NA : ℝ) * X.NC * r * B) * X.g with hTdef`. Use `set G : ℝ := 2 * (fdeg E : ℝ) * (r : ℝ) ^ 2 * Real.log (6 * (r : ℝ) ^ 2 / η) + 2 * (fdeg E : ℝ) * (r : ℝ) ^ 3 * Real.log (r * B) with hG`. Establish `hT1 : 1 ≤ T`.
+
+Establish `h1 : (1 : ℝ) ≤ 1 + 2 * B` using `by linarith`. Rewrite using `[hTdef]`. Use `bound`. Establish `hG0 : 0 ≤ G`. Establish `h1 : 0 ≤ Real.log (6 * (r : ℝ) ^ 2 / η)` using `Real.log_nonneg (by rw [le_div_iff₀ hη0]; nlinarith)`.
+
+Establish `h2 : 0 ≤ Real.log (r * B)` using `Real.log_nonneg (by nlinarith)`. Check the signs of the components of the expression. Rewrite `hN₃` using `[← mul_pow, ← mul_pow, ← hTdef]`. Establish `hbound : ∀ n : ℕ, 0 < n → (n : ℝ) ≤ T ^ (2 * fdeg E * r ^ 2) * Real.exp G → Real.log n ≤ 2 * (fdeg E : ℝ) * (r : ℝ) ^ 2 * Real.log T + G ∧ Real.log n ≤ 2 * (fdeg E : ℝ) * (r : ℝ) ^ 2 * Real.log (3 * (X.NA : ℝ) * X.NC * X.g * r * B ^ 2) + G`. Introduce `n hn h`.
+
+Establish `h1` using `Real.log_le_log (by exact_mod_cast hn) h`. Rewrite `h1` using `[Real.log_mul (by positivity) (Real.exp_pos _).ne', Real.log_exp, Real.log_pow]`. Move the coercions through the operations in `at h1`. Use `⟨h1, h1.trans ?_⟩` and prove the remaining obligations. Use `gcongr`.
+
+Combine the equalities or inequalities in the displayed calculation. Establish `hmain : ∀ P ∈ X.SS la, ∀ x ∈ X.dom, 0 < X.pnorm la P x → ∃ y ∈ N, X.pnorm la P x ≤ 4 * X.pnorm la P y`. Introduce `P hP x hx hpos`. Take `⟨C, hC⟩` from `hP.1.2`. Use `set S : Set ℝ := (fun y => X.pnorm la P y) '' X.dom with hS`.
+
+Establish `hbdd : BddAbove S` using `⟨C, by rintro _ ⟨y, hy, rfl⟩; exact hC y hy⟩`. Establish `hle : ∀ y ∈ X.dom, X.pnorm la P y ≤ sSup S` using `fun y hy => le_csSup hbdd ⟨y, hy, rfl⟩`. Establish `hx'` using `hle x hx`. Establish `hne : S.Nonempty` using `⟨_, x, hx, rfl⟩`. Establish `hhalf : sSup S / 2 < sSup S` using `by linarith`.
+
+Take `⟨_, ⟨z, hz, rfl⟩, hz'⟩` from `exists_lt_of_lt_csSup hne hhalf`. Use `replace hz' : sSup S / 2 < X.pnorm la P z := hz'`. Establish `hmax` using `maxBound_holds r X la P M w hP hM hw hw0 hT z hz (fun y hy => by have := hle y hy; linarith) (by linarith)`. Take `⟨γ, hγ, b, hb, A, ho, hA₁, hA₂⟩` from `hN₂ z hz fun v hv hv0 => by`. Take `⟨τ, hτ⟩` from `hmax v hv hv0`.
+
+Conclude with `hτ.trans (Finset.single_le_sum (f := fun τ : X.Ψ => X.maj z τ (Data.emb τ.1 v)) (fun _ _ => MajorantOperators.maj_nonneg hz _ _) (Finset.mem_univ τ))`. Establish `h` using `(pnorm_near_half_max X.toData la P hP.1.1.1 (sSup S) hle _ ho (by rw [pnorm_lact_rmul X.toData hP.1.1 hγ hz hb]; exact hz'.le) A hA₂).2`. Conclude with `⟨_, hA₁, by linarith⟩`. Break down `N.eq_empty_or_nonempty with rfl | ⟨y₀, hy₀⟩` into its components or cases. Use `⟨{x₀}, Finset.singleton_nonempty _, by simpa using hx₀, fun P hP x hx => ⟨x₀, Finset.mem_singleton_self _, ?_⟩, hbound _ (by simp) ?_⟩` and prove the remaining obligations.
+
+Assume the negation of the conclusion as `h`. Take `⟨y, hy, -⟩` from `hmain P hP x hx (by linarith [hp0 P x₀, not_le.1 h])`. Simplify using `at hy`. Rewrite using `[Finset.card_singleton, Nat.cast_one]`. Conclude with `one_le_mul_of_one_le_of_one_le (one_le_pow₀ hT1) (Real.one_le_exp hG0)`.
+
+Use `⟨N, ⟨y₀, hy₀⟩, hN₁, fun P hP x hx => ?_, hbound _ (Finset.card_pos.2 ⟨y₀, hy₀⟩) hN₃⟩` and prove the remaining obligations. Break down `(hp0 P x).eq_or_lt with h | h` into its components or cases. Conclude with `⟨y₀, hy₀, by linarith [hp0 P y₀]⟩`. Conclude with `hmain P hP x hx h`.
+-/
 theorem exists_finite_net {r : ℕ} (X : DataX E r) (la : Wt X.Ψ r) (M w : ℝ)
     (hM : 0 < M) (hw : (∑ τ, X.spread la τ) ≤ w) (hw0 : 0 < w)
     (hT : ∀ v ∈ X.L', herm X.Gm v v = 0 → ∀ b : E, cc b = b → IsIntegral ℤ b →
@@ -251,6 +324,9 @@ theorem exists_finite_net {r : ℕ} (X : DataX E r) (la : Wt X.Ψ r) (M w : ℝ)
 
 open ReciprocityTheory.ChartRestriction.G.I2.TiledBoundaries (E4) in
 
+/- English proof (translation)
+Take `⟨X, la, P, M, hP, hla, hx, hM, -, hT⟩` from `exists_cuspData_rank_one`. Take `⟨N, h1, h2, h3, -⟩` from `exists_finite_net X la M (max 1 (∑ τ, X.spread la τ)) hM (le_max_right _ _) (lt_of_lt_of_le one_pos (le_max_left _ _)) hT`. Conclude with `⟨X, la, P, N, hP, hla, hx, h1, h2, h3⟩`.
+-/
 theorem exists_finite_net_rank_one : ∃ (X : DataX E4 1) (la : Wt X.Ψ 1) (P : Frame X.Ψ 1 → ℂ)
     (N : Finset (Frame X.Ψ 1)), P ∈ X.SS la ∧ la ≠ 0 ∧ (∃ x ∈ X.dom, P x ≠ 0) ∧ N.Nonempty ∧
     (∀ y ∈ N, y ∈ X.dom) ∧

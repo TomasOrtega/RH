@@ -12,6 +12,21 @@ section SlopeTestRemainingChoices
 
 variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] {n : ℕ}
 
+/- English proof (translation)
+Rewrite `hg` using `[GlobalTheory.StepData.mem_KOne]`. Unfold `GlobalTheory.StepData.MaxM at hg`. Establish `hint : ∀ i j, (g : Matrix (Fin n) (Fin n) k) i j ∈ 𝒪[k]`. Introduce `i j`. Establish `h1` using `hg i j`.
+
+Rewrite `h1` using `[Matrix.sub_apply]`. Establish `h2 : valuation k ((1 : Matrix (Fin n) (Fin n) k) i j) ≤ 1`. Rewrite using `[Matrix.one_apply]`. Apply the tactic sequence `split_ifs <;> simp`. Rewrite using `[Valuation.mem_integer_iff]`.
+
+Combine the equalities or inequalities in the displayed calculation. Set `M : Matrix (Fin n) (Fin n) 𝒪[k]` to `fun i j => ⟨(g : Matrix (Fin n) (Fin n) k) i j, hint i j⟩`. Establish `hdet : ((M.det : 𝒪[k]) : k) = ((GeneralLinearGroup.det g : kˣ) : k)`. Rewrite using `[Matrix.GeneralLinearGroup.val_det_apply]`. Establish `h3` using `RingHom.map_det (𝒪[k].subtype) M`.
+
+Rewrite `h3` using `[Subring.coe_subtype]`. Rewrite using `[h3]`. Use `congr 1`. Establish `hres : IsLocalRing.residue 𝒪[k] M.det = IsLocalRing.residue 𝒪[k] 1`. Rewrite using `[RingHom.map_det, map_one]`.
+
+Establish `hM : (IsLocalRing.residue 𝒪[k]).mapMatrix M = 1`. Use extensionality with `i j`. Rewrite using `[RingHom.mapMatrix_apply, Matrix.map_apply, Matrix.one_apply]`. Establish `h5 : IsLocalRing.residue 𝒪[k] (M i j) = IsLocalRing.residue 𝒪[k] (if i = j then 1 else 0)`. Rewrite using `[GlobalTheory.StepData.residue_eq_iff_lt]`.
+
+Establish `h6` using `hg i j`. Rewrite `h6` using `[Matrix.sub_apply, Matrix.one_apply]`. Apply the tactic sequence `split_ifs at h6 ⊢ <;> simpa [M] using h6`. Rewrite using `[h5]`. Apply the tactic sequence `split_ifs <;> simp`.
+
+Rewrite using `[hM, Matrix.det_one]`. Establish `h4` using `(GlobalTheory.StepData.residue_eq_iff_lt _ _).mp hres`. Rewrite `h4` using `[hdet]`. Simplify using `using h4`.
+-/
 private theorem val_det_sub_one_lt {g : GL (Fin n) k} (hg : g ∈ KOne k (Fin n)) :
     valuation k ((GeneralLinearGroup.det g : kˣ) - 1 : k) < 1 := by
   classical
@@ -55,6 +70,11 @@ private theorem val_det_sub_one_lt {g : GL (Fin n) k} (hg : g ∈ KOne k (Fin n)
   rw [hdet] at h4
   simpa using h4
 
+/- English proof (translation)
+Introduce `hbot`. Establish `hm : e v ∈ fixed σ H`. Rewrite `hv`, the goal using `[GlobalTheory.Parabolic.mem_fixed]`. Introduce `u hu`. Use `Representation.IntertwiningMap.isIntertwining _ _ e.toIntertwiningMap u v` as an intermediate fact.
+
+Simplify using `only [Representation.Equiv.coe_toIntertwiningMap] at this`. Rewrite using `[← this, hv u hu]`. Rewrite `hm` using `[hbot, Submodule.mem_bot]`. Conclude with `h0 ((map_eq_zero_iff e (EquivLike.injective e)).mp hm)`.
+-/
 private theorem fixed_ne_bot {G V W : Type} [Group G] [AddCommGroup V] [Module ℂ V] [AddCommGroup W] [Module ℂ W]
     {ρ : Representation ℂ G V} {σ : Representation ℂ G W} (e : ρ.Equiv σ) {H : Subgroup G} {v : V}
     (hv : v ∈ fixed ρ H) (h0 : v ≠ 0) : fixed σ H ≠ ⊥ := by
@@ -85,10 +105,20 @@ private def dOf (i₀ : Fin n) (u : kˣ) : GL (Fin n) k :=
       · subst h; simp
       · simp [Function.update_of_ne h]⟩
 
+/- English proof (translation)
+Use `ext`. Simplify using `[dOf, Matrix.GeneralLinearGroup.val_det_apply, det_diagonal, Finset.prod_update_of_mem]`.
+-/
 private theorem det_dOf (i₀ : Fin n) (u : kˣ) : GeneralLinearGroup.det (dOf i₀ u) = u := by
   ext
   simp [dOf, Matrix.GeneralLinearGroup.val_det_apply, det_diagonal, Finset.prod_update_of_mem]
 
+/- English proof (translation)
+Rewrite using `[GlobalTheory.StepData.mem_KOne]`. Unfold `GlobalTheory.StepData.MaxM`. Introduce `i j`. Simplify using `only [dOf, Matrix.sub_apply, Matrix.diagonal_apply, Matrix.one_apply]`. Distinguish the cases in `hij : i = j`.
+
+Substitute `hij` using the available equality. Distinguish the cases in `h : i = i₀`. Substitute `h` using the available equality. Simplify using `using hu`. Simplify using `[Function.update_of_ne h]`.
+
+Simplify using `[hij]`.
+-/
 private theorem dOf_mem {i₀ : Fin n} {u : kˣ} (hu : valuation k ((u : k) - 1) < 1) : dOf i₀ u ∈ KOne k (Fin n) := by
   rw [GlobalTheory.StepData.mem_KOne]
   unfold GlobalTheory.StepData.MaxM
@@ -102,6 +132,9 @@ private theorem dOf_mem {i₀ : Fin n} {u : kˣ} (hu : valuation k ((u : k) - 1)
     · simp [Function.update_of_ne h]
   · simp [hij]
 
+/- English proof (translation)
+Apply `Units.ext` to reduce the goal to its premises. Simplify using `only [Units.val_mul, GroundTheory.Automorphic.Cartan.coe_diagPow, dOf, diagonal_mul_diagonal, mul_comm]`.
+-/
 private theorem dOf_comm (i₀ : Fin n) (u : kˣ) (μ : Fin n → ℤ) :
     dOf i₀ u * GroundTheory.Automorphic.Cartan.diagPow k n μ = GroundTheory.Automorphic.Cartan.diagPow k n μ * dOf i₀ u := by
   apply Units.ext
@@ -109,6 +142,31 @@ private theorem dOf_comm (i₀ : Fin n) (u : kˣ) (μ : Fin n → ℤ) :
 
 end SlopeTestRemainingChoices
 
+/- English proof (translation)
+Unfold `DZ at hy ht`. Unfold `TameChar`. Introduce `u hu`. Assume the negation of the conclusion as `hne`. Take `⟨v, hv, hv0⟩` from `(Submodule.ne_bot_iff _).mp hy`.
+
+Establish `ht' : fixed (twist y.rep (detChar (Fin y.fst) χ)) (KOne k (Fin y.fst)) ≠ ⊥`. Take `⟨w', hw', hw0'⟩` from `(Submodule.ne_bot_iff _).mp ht`. Conclude with `fixed_ne_bot (y.twEquiv χ hχ).symm hw' hw0'`. Take `⟨w, hw, hw0⟩` from `(Submodule.ne_bot_iff _).mp ht'`. Use `set σ := twist y.rep (detChar (Fin y.fst) χ) with hσ`.
+
+Use `set K := KOne k (Fin y.fst) with hK`. Set `i₀ : Fin y.fst` to `⟨0, h0⟩`. Establish `hd : dOf i₀ u ∈ K` using `dOf_mem hu`. Use `set c : ℂ := ((χ u : ℂˣ) : ℂ) with hc`. Establish `hc0 : c ≠ 0` using `Units.ne_zero _`.
+
+Establish `hc1 : c⁻¹ - 1 ≠ 0`. Introduce `h`. Apply `hne` to reduce the goal to its premises. Apply `Units.ext` to reduce the goal to its premises. Rewrite using `[Units.val_one]`.
+
+Conclude with `inv_eq_one.mp (sub_eq_zero.mp h)`. Establish `key : ∀ x ∈ fixed σ K, ∀ μ : Fin y.fst → ℤ, y.rep (GroundTheory.Automorphic.Cartan.diagPow k y.fst μ) x ∈ twKer y.rep K 1`. Introduce `x hx μ`. Rewrite `hx` using `[GlobalTheory.Parabolic.mem_fixed]`. Establish `hdx : c • y.rep (dOf i₀ u) x = x`.
+
+Establish `h1` using `hx (dOf i₀ u) hd`. Rewrite `h1` using `[hσ, twist_apply, detChar_apply, det_dOf]`. Then use the resulting hypothesis. Establish `hdx' : y.rep (dOf i₀ u) x = c⁻¹ • x`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[smul_smul, inv_mul_cancel₀ hc0, one_smul]`.
+
+Use `_ = c⁻¹ • x := by rw [hdx]`. Establish `hz : y.rep (dOf i₀ u) (y.rep (GroundTheory.Automorphic.Cartan.diagPow k y.fst μ) x) = c⁻¹ • y.rep (GroundTheory.Automorphic.Cartan.diagPow k y.fst μ) x`. Rewrite using `[← Module.End.mul_apply, ← map_mul, dOf_comm, map_mul, Module.End.mul_apply, hdx', map_smul]`. Establish `hgen : y.rep (dOf i₀ u) (y.rep (GroundTheory.Automorphic.Cartan.diagPow k y.fst μ) x) - (((1 : ↥K →* ℂˣ) ⟨dOf i₀ u, hd⟩ : ℂˣ) : ℂ) • y.rep (GroundTheory.Automorphic.Cartan.diagPow k y.fst μ) x ∈ twKer y.rep K 1`. Unfold `twKer`.
+
+Conclude with `Submodule.subset_span ⟨⟨dOf i₀ u, hd⟩, _, rfl⟩`. Rewrite `hgen` using `[hz, MonoidHom.one_apply, Units.val_one, one_smul]`. Rewrite `hgen` using `[show ∀ z : y.snd.rep.V, c⁻¹ • z - z = (c⁻¹ - 1) • z from fun z => by rw [sub_smul, one_smul]]`. Establish `h2` using `Submodule.smul_mem _ (c⁻¹ - 1)⁻¹ hgen`. Rewrite `h2` using `[smul_smul, inv_mul_cancel₀ hc1, one_smul]`. Then use the resulting hypothesis.
+
+Establish `hall : ∀ g, y.rep g w ∈ twKer y.rep K 1`. Introduce `g`. Take `⟨μ, -, k1, hk1, k2, hk2, rfl⟩` from `GroundTheory.Automorphic.Cartan.exists_eq_mul_diagPow_mul k y.fst g`. Rewrite `hk1`, `hk2` using `[← GlobalTheory.CompanionTheory.SphSupp.KO_eq_integralGL]`. Establish `hx` using `GlobalTheory.DepthZeroJac.apply_mem_fixed (π := σ) hw hk2`.
+
+Establish `h3` using `key _ hx μ`. Rewrite `h3` using `[hσ, twist_apply, map_smul]`. Establish `h4` using `Submodule.smul_mem _ (((detChar (Fin y.fst) χ) k2 : ℂˣ) : ℂ)⁻¹ h3`. Rewrite `h4` using `[smul_smul, inv_mul_cancel₀ (Units.ne_zero _), one_smul]`. Rewrite using `[map_mul, map_mul, Module.End.mul_apply, Module.End.mul_apply]`.
+
+Conclude with `GlobalTheory.DepthZeroJac.apply_mem_twKer_of_normalizer (GlobalTheory.DepthZeroJac.mem_normalizer_KOne hk1) h4`. Use `haveI : y.rep.IsIrreducible := y.snd.rep.irr`. Establish `htop` using `GroundTheory.Automorphic.SchurOrthogonality.span_orbit_eq_top (π := y.rep) hw0`. Establish `hvk : v ∈ twKer y.rep K 1`. Establish `h5 : v ∈ Submodule.span ℂ (Set.range fun g => y.rep g w)`.
+
+Rewrite using `[htop]`. Conclude with `Submodule.mem_top`. Conclude with `Submodule.span_le.mpr (by rintro _ ⟨g, rfl⟩; exact hall g) h5`. Conclude with `hv0 (GlobalTheory.IwahoriInj.eq_zero_of_fixed y.snd.rep.smooth GlobalTheory.DepthZeroJac.isCompact_KOne hv hvk)`.
+-/
 private theorem tame_of_dz {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
     (y : IrrGL k) (χ : kˣ →* ℂˣ) (hχ : IsSmoothChar χ) (h0 : 0 < y.1) (hy : DZ y) (ht : DZ (y.tw χ hχ)) : TameChar χ := by
   classical
@@ -177,6 +235,9 @@ private theorem tame_of_dz {k : Type} [Field k] [ValuativeRel k] [TopologicalSpa
     exact Submodule.span_le.mpr (by rintro _ ⟨g, rfl⟩; exact hall g) h5
   exact hv0 (GlobalTheory.IwahoriInj.eq_zero_of_fixed y.snd.rep.smooth GlobalTheory.DepthZeroJac.isCompact_KOne hv hvk)
 
+/- English proof (translation)
+Take `⟨v, hv, hv0⟩` from `Submodule.exists_mem_ne_zero_of_ne_bot hy`. Use `fixed_ne_bot (y.twEquiv χ hχ) (v := v) (GlobalTheory.Parabolic.mem_fixed.2 fun g hg => ?_) hv0` and prove the remaining obligations. Establish `h1 : χ (GeneralLinearGroup.det g) = 1` using `ht _ (val_det_sub_one_lt (n := y.1) hg)`. Rewrite using `[twist_apply, detChar_apply, h1]`. Simplify using `using GlobalTheory.Parabolic.mem_fixed.1 hv g hg`.
+-/
 private theorem dz_of_tame {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
     (y : IrrGL k) (χ : kˣ →* ℂˣ) (hχ : IsSmoothChar χ) (hy : DZ y) (ht : TameChar χ) : DZ (y.tw χ hχ) := by
   obtain ⟨v, hv, hv0⟩ := Submodule.exists_mem_ne_zero_of_ne_bot hy
@@ -187,6 +248,9 @@ private theorem dz_of_tame {k : Type} [Field k] [ValuativeRel k] [TopologicalSpa
 
 end UpperTheory.Zero.LLC
 
+/- English proof (translation)
+Unfold `TwTame`. Introduce `k _ _ _ _ _ y χ hχ h0 hy`. Conclude with `⟨fun ht => tame_of_dz y χ hχ h0 hy ht, fun ht => dz_of_tame y χ hχ hy ht⟩`.
+-/
 theorem UpperTheory.Zero.LLC.twTame :
     UpperTheory.Zero.LLC.TwTame := by
   unfold TwTame

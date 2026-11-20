@@ -10,15 +10,24 @@ namespace GlobalTheory.JR.TruncInt
 
 variable {F E : Type} [NontriviallyNormedField F] [NontriviallyNormedField E] [NormedAlgebra F E] [StarRing E]
 
+/- English proof (translation)
+Unfold `Et.absK`. Rewrite using `[dif_pos h]`. Conclude with `NNReal.coe_ne_zero.2 (IsUnit.map (distribHaarChar A.K) (Group.isUnit h.unit)).ne_zero`.
+-/
 theorem absK_ne_zero (A : Et F E) {t : A.K} (h : IsUnit t) : A.absK t ≠ 0 := by
   unfold Et.absK
   rw [dif_pos h]
   exact NNReal.coe_ne_zero.2 (IsUnit.map (distribHaarChar A.K) (Group.isUnit h.unit)).ne_zero
 
+/- English proof (translation)
+Unfold `Et.absK`. Apply the tactic sequence `split_ifs <;> simp`.
+-/
 theorem absK_nonneg (A : Et F E) (t : A.K) : 0 ≤ A.absK t := by
   unfold Et.absK
   split_ifs <;> simp
 
+/- English proof (translation)
+Introduce `s` and use `by have h := Set.indicator_const_preimage W s c simp only [Set.mem_insert_iff, Set.mem_singleton_iff] at h rcases h with h | h | h | h <;> rw [h] exacts [isOpen_univ, hW.isOpen, hW.isClosed.isOpen_compl, isOpen_empty]`.
+-/
 theorem isLocallyConstant_indicator {X : Type} [TopologicalSpace X] {W : Set X} (hW : IsClopen W) (c : ℂ) :
     IsLocallyConstant (W.indicator fun _ => c) := fun s => by
   have h := Set.indicator_const_preimage W s c
@@ -30,6 +39,59 @@ end GlobalTheory.JR.TruncInt
 
 open GlobalTheory.JR.TruncInt in
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ A hN hK ψ hψ m x y₀ hy₀ D hDo hDc φ hφ hsq`. Take `⟨hNs, hNmul, hNt, hNu1, hNu2⟩` from `hN`. Take `⟨habs, habs1, hvol⟩` from `hK`. Use `set a : A.K := (x : A.K) * A.NL y₀ with ha_def`. Establish `ha : IsUnit a` using `x.isUnit.mul (hNu2 y₀ hy₀)`.
+
+Establish `hx : IsUnit (x : A.K)` using `x.isUnit`. Establish `hkey : ∀ b : A.K, ∀ s : A.K, s ^ 2 = 1 + Ring.inverse a * b → a * s ^ 2 = a + b`. Introduce `b s hs`. Rewrite using `[hs, mul_add, mul_one, ← mul_assoc, Ring.mul_inverse_cancel a ha, one_mul]`. Establish `hsec : ∀ a' : A.K, ∀ s : A.K, s ^ 2 = 1 + Ring.inverse a * ((x : A.K) * a' - a) → A.NL (y₀ * algebraMap A.K A.L s) = a'`.
+
+Introduce `a' s hs`. Establish `h1` using `hkey _ s hs`. Rewrite using `[hNmul, hNs]`. Apply `hx.mul_left_cancel` to reduce the goal to its premises. Combine the equalities or inequalities in the displayed calculation.
+
+Establish `habsT : ∀ a' : A.K, (x : A.K) * a' - a ∈ (D : Set A.K) → A.absK a' = A.absK a / A.absK x ∧ IsUnit a'`. Introduce `a' hD`. Take `⟨s, s', hs, hs', hss, hsq2, -⟩` from `hsq _ hD`. Establish `h1` using `hkey _ s hsq2`. Establish `h2 : (x : A.K) * a' = a * s ^ 2` using `by rw [h1]; ring`.
+
+Establish `hsu : IsUnit s` using `⟨⟨s, s', hss, by rw [mul_comm]; exact hss⟩, rfl⟩`. Establish `hu : IsUnit a'`. Establish `: IsUnit ((x : A.K) * a')` using `by rw [h2]; exact ha.mul (hsu.pow 2)`. Conclude with `isUnit_of_mul_isUnit_right this`. Use `⟨?_, hu⟩` and prove the remaining obligations.
+
+Establish `h3` using `congrArg A.absK h2`. Rewrite `h3` using `[habs (x : A.K) a', habs a (s ^ 2), pow_two, habs s s, habs1 s s' hs hs' hss, mul_one, mul_one]`. Rewrite using `[eq_div_iff (absK_ne_zero A hx), ← h3]`. Expand and normalize the polynomial expressions, which then agree. Use `set f : A.L → A.K := fun y => (x : A.K) * A.NL y - a with hf`.
+
+Establish `hfc : Continuous f` using `(continuous_const.mul (EtMeas.continuous_NL A)).sub continuous_const`. Establish `hSu : ∀ y, f y ∈ (D : Set A.K) → IsUnit y` using `fun y hy => hNu1 y (habsT _ hy).2`. Use `set h : A.L → ℂ := fun y => φ y * Set.indicator (D : Set A.K) (fun _ => (1 : ℂ)) (f y) with hh`. Use `show ∫ y, h y ∂(m.μL x) = _`. Establish `hDcl : IsClosed (D : Set A.K)` using `AddSubgroup.isClosed_of_isOpen D hDo`.
+
+Establish `hTest : IsTest h`. Use `⟨hφ.1.mul ((isLocallyConstant_indicator ⟨hDcl, hDo⟩ (1 : ℂ)).comp_continuous hfc), ?_⟩` and prove the remaining obligations. Conclude with `hφ.2.mul_right`. Establish `hsupp : tsupport h ⊆ {y | IsUnit y}`. Use `(closure_minimal ?_ (hDcl.preimage hfc)).trans ?_` and prove the remaining obligations.
+
+Introduce `y hy`. Assume the negation of the conclusion as `hn`. Conclude with `hy (by simp only [h, Set.indicator_of_notMem (show f y ∉ (D : Set A.K) from hn), mul_zero])`. Introduce `y hy`. Conclude with `hSu y hy`.
+
+Establish `hμ` using `(GlobalTheory.JR.exists_meas_and_scale F E A ψ hψ).2 m x`. Rewrite using `[hμ, integral_smul_measure, ENNReal.toReal_ofReal (absK_nonneg A _)]`. Establish `hxa : A.absK a / A.absK x ≠ 0` using `div_ne_zero (absK_ne_zero A ha) (absK_ne_zero A hx)`. Establish `hxaC : ((A.absK a / A.absK x : ℝ) : ℂ) ≠ 0` using `by exact_mod_cast hxa`. Establish `hpt : ∀ y, h y = ((A.absK a / A.absK x : ℝ) : ℂ) * (h y * ((A.absK (A.NL y) : ℂ))⁻¹)`.
+
+Introduce `y`. Distinguish the cases in `hy : f y ∈ (D : Set A.K)`. Rewrite using `[(habsT _ hy).1, mul_comm (h y), mul_inv_cancel_left₀ hxaC]`. Simplify using `only [h, Set.indicator_of_notMem hy, mul_zero, zero_mul]`. Establish `hI1 : ∫ y, h y ∂(m.μL 1) = ∫ y, ((A.absK a / A.absK x : ℝ) : ℂ) * (h y * ((A.absK (A.NL y) : ℂ))⁻¹) ∂(m.μL 1)` using `integral_congr_ae (ae_of_all _ hpt)`.
+
+Rewrite using `[hI1, integral_const_mul]`. Set `σ : A.K → A.L` to `fun a' => if hb : (x : A.K) * a' - a ∈ (D : Set A.K) then y₀ * algebraMap A.K A.L (Classical.choose (hsq _ hb)) else if he : ∃ y : A.L, A.NL y = a' then Classical.choose he else 0`. Establish `hσD : ∀ a' (hb : (x : A.K) * a' - a ∈ (D : Set A.K)), ∃ s : A.K, σ a' = y₀ * algebraMap A.K A.L s ∧ s ^ 2 = 1 + Ring.inverse a * ((x : A.K) * a' - a) ∧ ∀ y : A.L, φ (y * algebraMap A.K A.L s) = φ y`. Introduce `a' hb`. Take `⟨s', -, -, -, h4, h5⟩` from `Classical.choose_spec (hsq _ hb)`.
+
+Conclude with `⟨Classical.choose (hsq _ hb), by simp only [σ, dif_pos hb], h4, h5⟩`. Establish `hσN : ∀ a', ((x : A.K) * a' - a ∈ (D : Set A.K) ∨ ∃ y : A.L, A.NL y = a') → A.NL (σ a') = a'`. Introduce `a' hor`. Distinguish the cases in `hb : (x : A.K) * a' - a ∈ (D : Set A.K)`. Take `⟨s, hσs, hs2, -⟩` from `hσD a' hb`.
+
+Rewrite using `[hσs]`. Conclude with `hsec a' s hs2`. Establish `he` using `hor.resolve_left hb`. Simplify using `only [σ, dif_neg hb, dif_pos he]`. Conclude with `Classical.choose_spec he`.
+
+Establish `hσ : ∀ y : A.L, IsUnit y → A.NL (σ (A.NL y)) = A.NL y` using `fun y _ => hσN _ (Or.inr ⟨y, rfl⟩)`. Rewrite using `[m.nat.2 σ hσ h hTest hsupp]`. Use `set T : Set A.K := {a' | (x : A.K) * a' - a ∈ (D : Set A.K)} with hT`. Establish `hTm : MeasurableSet T` using `(hDo.preimage ((continuous_const.mul continuous_id).sub continuous_const)).measurableSet`. Establish `hTN : T ⊆ {a' : A.K | ∃ y : A.L, IsUnit y ∧ A.NL y = a'}`.
+
+Introduce `a' hb`. Use `⟨σ a', ?_, hσN a' (Or.inl hb)⟩` and prove the remaining obligations. Conclude with `hNu1 _ (by rw [hσN a' (Or.inl hb)]; exact (habsT a' hb).2)`. Establish `hNL0 : A.NL 0 = 0` using `by simpa using hNs 0`. Establish `hpt2 : ∀ a', A.orbL m.ν h (σ a') * ((A.absK a' : ℂ))⁻¹ = T.indicator (fun a' => A.orbL m.ν φ y₀ * ((A.absK a' : ℂ))⁻¹) a'`.
+
+Introduce `a'`. Distinguish the cases in `hb : a' ∈ T`. Take `⟨s, hσs, -, hφs⟩` from `hσD a' hb`. Establish `hNσ : A.NL (σ a') = a'` using `hσN a' (Or.inl hb)`. Rewrite using `[Set.indicator_of_mem hb]`.
+
+Use `congr 1`. Unfold `Et.orbL`. Use `congr 1`. Use function extensionality and compare the values at `t`. Establish `hft : f (t.1 * σ a') ∈ (D : Set A.K)` using `by show (x : A.K) * A.NL (t.1 * σ a') - a ∈ (D : Set A.K)`.
+
+Rewrite using `[hNmul, hNt, hNσ, one_mul]`. Conclude with `hb`. Use `show φ (t.1 * σ a') * Set.indicator _ _ (f (t.1 * σ a')) = φ (t.1 * y₀)`. Rewrite using `[Set.indicator_of_mem hft, mul_one, hσs, ← mul_assoc, hφs]`. Rewrite using `[Set.indicator_of_notMem hb]`.
+
+Establish `hz : ∀ t : unitary A.L, h (t.1 * σ a') = 0`. Introduce `t`. Establish `hft : f (t.1 * σ a') ∉ (D : Set A.K)`. Distinguish the cases in `he : ∃ y : A.L, A.NL y = a'`. Use `show (x : A.K) * A.NL (t.1 * σ a') - a ∉ (D : Set A.K)`.
+
+Rewrite using `[hNmul, hNt, hσN a' (Or.inr he), one_mul]`. Conclude with `hb`. Establish `h0 : σ a' = 0` using `by simp only [σ, dif_neg (show ¬ ((x : A.K) * a' - a ∈ (D : Set A.K)) from hb), dif_neg he] show (x : A.K) * A.NL (t.1 * σ a') - a ∉ (D : Set A.K)`. Rewrite using `[h0, mul_zero, hNL0, mul_zero, zero_sub]`. Introduce `hD`.
+
+Take `⟨s, s', -, -, hss, hs2, -⟩` from `hsq _ hD`. Establish `h1` using `hkey _ s hs2`. Rewrite `h1` using `[add_neg_cancel]`. Establish `hsu : IsUnit s` using `⟨⟨s, s', hss, by rw [mul_comm]; exact hss⟩, rfl⟩`. Establish `hu : IsUnit (a * s ^ 2)` using `ha.mul (hsu.pow 2)`.
+
+Rewrite `hu` using `[h1, isUnit_zero_iff]`. Use `haveI := subsingleton_of_zero_eq_one hu`. Conclude with `he ⟨0, Subsingleton.elim _ _⟩`. Simplify using `only [h, Set.indicator_of_notMem hft, mul_zero]`. Simplify using `only [Et.orbL, hz, integral_zero, zero_mul]`.
+
+Establish `hI2 : ∫ a' in {a' : A.K | ∃ y : A.L, IsUnit y ∧ A.NL y = a'}, A.orbL m.ν h (σ a') * ((A.absK a' : ℂ))⁻¹ ∂m.μK = ∫ a' in {a' : A.K | ∃ y : A.L, IsUnit y ∧ A.NL y = a'}, T.indicator (fun a' => A.orbL m.ν φ y₀ * ((A.absK a' : ℂ))⁻¹) a' ∂m.μK` using `integral_congr_ae (ae_of_all _ hpt2)`. Rewrite using `[hI2, setIntegral_indicator hTm, Set.inter_eq_right.2 hTN]`. Establish `hI3 : ∫ a' in T, A.orbL m.ν φ y₀ * ((A.absK a' : ℂ))⁻¹ ∂m.μK = ∫ a' in T, A.orbL m.ν φ y₀ * (((A.absK a / A.absK x : ℝ) : ℂ))⁻¹ ∂m.μK` using `setIntegral_congr_fun hTm (fun a' hb => by simp only [(habsT a' hb).1])`. Rewrite using `[hI3, setIntegral_const, Measure.real, hT, hvol m.μK m.sdK.1 x a _ hDo.measurableSet, ENNReal.toReal_mul, ENNReal.toReal_ofReal (inv_nonneg.2 (absK_nonneg A _))]`. Establish `hx0 : A.absK x ≠ 0` using `absK_ne_zero A hx`.
+
+Establish `ha0 : A.absK a ≠ 0` using `absK_ne_zero A ha`. Simplify using `only [Complex.real_smul]`. Establish `hx0C : ((A.absK x : ℝ) : ℂ) ≠ 0` using `by exact_mod_cast hx0`. Establish `ha0C : ((A.absK a : ℝ) : ℂ) ≠ 0` using `by exact_mod_cast ha0`. Use `push_cast`.
+
+Clear the denominators using the available nonvanishing facts.
+-/
 theorem GlobalTheory.JR.truncated_integral_eq_vol_mul_orbL : ∀ (F E : Type) [NontriviallyNormedField F] [NontriviallyNormedField E] [NormedAlgebra F E] [StarRing E] [Unram F E] (A : Et F E), ((∀ s : A.K, A.NL (algebraMap A.K A.L s) = s ^ 2) ∧ (∀ y y' : A.L, A.NL (y * y') = A.NL y * A.NL y') ∧ (∀ t : unitary A.L, A.NL (t : A.L) = 1) ∧ (∀ y : A.L, IsUnit (A.NL y) → IsUnit y) ∧ (∀ y : A.L, IsUnit y → IsUnit (A.NL y))) → ((∀ s t : A.K, A.absK (s * t) = A.absK s * A.absK t) ∧ (∀ s s' : A.K, s ∈ A.OK → s' ∈ A.OK → s * s' = 1 → A.absK s = 1) ∧ (∀ (μ : Measure A.K), μ.IsAddHaarMeasure → ∀ (x : A.Kˣ) (a : A.K) (S : Set A.K), MeasurableSet S → μ {a' : A.K | (x : A.K) * a' - a ∈ S} = ENNReal.ofReal (A.absK (x : A.K))⁻¹ * μ S)) → ∀ (ψ : AddChar F ℂ), IsStdChar ψ → ∀ (m : A.Meas ψ) (x : A.Kˣ) (y₀ : A.L), IsUnit y₀ → ∀ (D : AddSubgroup A.K), IsOpen (D : Set A.K) → IsCompact (D : Set A.K) → ∀ φ : A.L → ℂ, IsTest φ → (∀ b ∈ D, ∃ s s' : A.K, s ∈ A.OK ∧ s' ∈ A.OK ∧ s * s' = 1 ∧ s ^ 2 = 1 + Ring.inverse ((x : A.K) * A.NL y₀) * b ∧ ∀ y : A.L, φ (y * algebraMap A.K A.L s) = φ y) → ∫ y, φ y * Set.indicator (D : Set A.K) (fun _ => (1 : ℂ)) ((x : A.K) * A.NL y - (x : A.K) * A.NL y₀) ∂(m.μL x) = ((m.μK D).toReal : ℂ) * A.orbL m.ν φ y₀ := by
   intro F E _ _ _ _ _ A hN hK ψ hψ m x y₀ hy₀ D hDo hDc φ hφ hsq
   classical

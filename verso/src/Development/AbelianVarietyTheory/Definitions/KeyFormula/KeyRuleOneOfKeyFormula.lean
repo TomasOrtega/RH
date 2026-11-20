@@ -62,6 +62,9 @@ def ThetaLaw (g : ℕ) (sp : Matrix (Fin g ⊕ Fin g) (Fin g ⊕ Fin g) ℤ) (n 
     theta (halfVec k) (halfVec k') (zAct sp τ z) (spAct sp τ) ^ 2 =
       c * (jAut sp τ).det * eC (expArg sp τ z) * theta (halfVec n) (halfVec n') z τ ^ 2
 
+/- English proof (translation)
+Use extensionality with `j`. Distinguish the cases in `h : j = i`. Substitute `h` using the available equality. Simplify using the standard rewrite rules. Simplify using `[Matrix.one_apply, h, Ne.symm h]`.
+-/
 theorem smul_one_row {g : ℕ} (c : ℂ) (i : Fin g) :
     c • (1 : Matrix (Fin g) (Fin g) ℂ) i = Pi.single i c := by
   ext j
@@ -70,6 +73,13 @@ theorem smul_one_row {g : ℕ} (c : ℂ) (i : Fin g) :
     simp
   · simp [Matrix.one_apply, h, Ne.symm h]
 
+/- English proof (translation)
+Unfold `NormalAt`. Simplify using `only [smul_one_row]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨u, h1, h2, h3, h4, h5, h6⟩`. Use `⟨u, h1, h2, h3, h4, ?_, h6⟩` and prove the remaining obligations.
+
+Use `h5 using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `z`. Simplify using the standard rewrite rules. Introduce and unpack `⟨u, h1, h2, h3, h4, h5, h6⟩`. Use `⟨u, h1, h2, h3, h4, ?_, h6⟩` and prove the remaining obligations.
+
+Use `h5 using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `z`. Simplify using the standard rewrite rules.
+-/
 theorem normalAt_one_iff (x : KeyIn ℂ) (τ : Matrix (Fin x.P.g) (Fin x.P.g) ℂ) (a b : Fin x.P.g → ℂ) :
     NormalAt x τ 1 a b 1 ↔ ∃ u : HolUnif x.P.A x.P.L x.P.g,
       τ.IsSymm ∧ (τ.map Complex.im).PosDef ∧
@@ -90,16 +100,27 @@ theorem normalAt_one_iff (x : KeyIn ℂ) (τ : Matrix (Fin x.P.g) (Fin x.P.g) �
     funext z
     simp
 
+/- English proof (translation)
+Take `⟨_, hs, hp, -⟩` from `h`. Conclude with `⟨hs, hp⟩`.
+-/
 theorem NormalAt.mem_siegelH {x : KeyIn ℂ} {τ M : Matrix (Fin x.P.g) (Fin x.P.g) ℂ} {a b : Fin x.P.g → ℂ} {c : ℂ}
     (h : NormalAt x τ M a b c) : τ ∈ ReciprocityTheory.PTheta.SiegelH (Fin x.P.g) := by
   obtain ⟨_, hs, hp, -⟩ := h
   exact ⟨hs, hp⟩
 
+/- English proof (translation)
+Introduce `P hg' rig hr th hth v hv th' hth' v' hv' a M hP`. Conclude with `h P hg' rig hr th hth v hv th' hth' v' hv' a M (hg.trans hP)`.
+-/
 theorem ClauseH.mono {R : Type} [CommRing R] {N : ℕ → ℕ} {g₀ g₁ : ℕ} {κ : KeyIn R → Rˣ}
     (h : ClauseH R N g₀ κ) (hg : g₀ ≤ g₁) : ClauseH R N g₁ κ := by
   intro P hg' rig hr th hth v hv th' hth' v' hv' a M hP
   exact h P hg' rig hr th hth v hv th' hth' v' hv' a M (hg.trans hP)
 
+/- English proof (translation)
+Take `⟨κ, h1, h2, h3, h4⟩` from `h`. Use `⟨κ, fun K _ _ => (h1 K).mono hg, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `K K' _ _ _ _ f x x' hx`. Conclude with `h2 K K' f x x' (hg.trans hx)`. Introduce `R K _ _ _ _ _ _ _ x xK hx`.
+
+Conclude with `h3 R K x xK (hg.trans hx)`. Introduce `x τ a b hx hs`. Conclude with `h4 x τ a b (hg.trans hx) (hS _ a b hx hs)`.
+-/
 theorem KeyRule.mono {N : ℕ → ℕ} {g₀ g₁ : ℕ} {S S' : ∀ g : ℕ, (Fin g → ℂ) → (Fin g → ℂ) → Prop}
     (h : KeyRule N g₀ S) (hg : g₀ ≤ g₁) (hS : ∀ g a b, g₁ ≤ g → S' g a b → S g a b) : KeyRule N g₁ S' := by
   obtain ⟨κ, h1, h2, h3, h4⟩ := h
@@ -111,6 +132,13 @@ theorem KeyRule.mono {N : ℕ → ℕ} {g₀ g₁ : ℕ} {S S' : ∀ g : ℕ, (F
   · intro x τ a b hx hs
     exact h4 x τ a b (hg.trans hx) (hS _ a b hx hs)
 
+/- English proof (translation)
+Take `⟨κ, h1, h2, h3, h4, -⟩` from `h`. Use `⟨κ, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `K _ _ P hg rig hr th hth v hv th' hth' v' hv' a M _ hs hM`. Simplify `h1 K P hg rig hr th hth v hv th' hth' v' hv' a M hs hM` using `only [mul_one]`. Introduce `K K' _ _ _ _ f x x' _ hpb`.
+
+Conclude with `h2 K K' f x x' hpb`. Introduce `R K _ _ _ _ _ _ _ x xK _ hpb`. Conclude with `h3 R K x xK hpb`. Introduce `x τ a b _ hS hN`. Take `⟨u, hs, hp, hΛ, hr, hf, hd⟩` from `(normalAt_one_iff x τ a b).1 hN`.
+
+Conclude with `h4 x u τ a b hs hp hS.1 hS.2 hΛ hr hf hd`.
+-/
 theorem keyRule_one_of_keyFormula (h : KeyFormula) : KeyRule (fun _ => 1) 1 charHalf := by
   obtain ⟨κ, h1, h2, h3, h4, -⟩ := h
   refine ⟨κ, ?_, ?_, ?_, ?_⟩
@@ -126,6 +154,11 @@ theorem keyRule_one_of_keyFormula (h : KeyFormula) : KeyRule (fun _ => 1) 1 char
 
 open ReciprocityTheory.ChartRestriction.G.Key.Chi in
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce `h n n'`. Take `⟨k, k', c, hk, hk', hc, hl⟩` from `h n n'`. Conclude with `⟨k, k', hk, hk', c, hc, hl⟩`. Introduce `h n n'`.
+
+Take `⟨k, k', hk, hk', c, hc, hl⟩` from `h n n'`. Conclude with `⟨k, k', c, hk, hk', hc, hl⟩`.
+-/
 theorem chiAt_iff_thetaLaw (g : ℕ) (sp : Matrix (Fin g ⊕ Fin g) (Fin g ⊕ Fin g) ℤ) :
     ChiAt g sp ↔ ∀ n n' : Fin g → ℤ, ∃ k k' : Fin g → ℤ,
       (∀ i, k i = 0 ∨ k i = 1) ∧ (∀ i, k' i = 0 ∨ k' i = 1) ∧ ThetaLaw g sp n n' k k' := by
@@ -137,6 +170,9 @@ theorem chiAt_iff_thetaLaw (g : ℕ) (sp : Matrix (Fin g ⊕ Fin g) (Fin g ⊕ F
     obtain ⟨k, k', hk, hk', c, hc, hl⟩ := h n n'
     exact ⟨k, k', c, hk, hk', hc, hl⟩
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨⟨fun _ => Or.inr rfl, fun _ => Or.inr rfl⟩, fun h => by simpa using congrFun h.1 0⟩`.
+-/
 example : charHalf 1 (fun _ => 1 / 2) (fun _ => 1 / 2) ∧ ¬ charZero' 1 (fun _ => 1 / 2) (fun _ => 1 / 2) :=
   ⟨⟨fun _ => Or.inr rfl, fun _ => Or.inr rfl⟩, fun h => by simpa using congrFun h.1 0⟩
 

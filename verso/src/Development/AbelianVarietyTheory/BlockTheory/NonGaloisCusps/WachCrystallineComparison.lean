@@ -46,6 +46,9 @@ def ExpInj (W : LocWach PD LL O v n) (T : LocLat G Qp LL O) (i : ZMod n) (ζ : L
     (∀ k : ℕ, ∑ a, serSMul (f a) (fun r : ℕ => ex (x a) (r : ℤ)) k = 0) →
       (∑ a, f a ⊗ₜ[LetA O n] x a : PowerSeries LL ⊗[LetA O n] ↥(W.N T)) = 0
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨W.cmp_π T, Submodule.span_le.mpr (by rintro _ ⟨x, rfl⟩; exact W.cmp_mem T x)⟩`.
+-/
 example (W : LocWach PD LL O v n) (T : LocLat G Qp LL O) :
     (∀ y : ↥(W.N T), W.cmp T ((letπ : LetA O n) • y) = 0) ∧
     Submodule.span LL (Set.range fun x : ↥(W.N T) => W.cmp T x) ≤ Dcris PD T.ρ :=
@@ -71,6 +74,9 @@ def WachCrisComparisonSpan (l : ℕ) [Fact l.Prime] (P : LocPrime l) (AI : LocAi
     ∀ (i : ZMod (Module.finrank ℚ_[l] ↥(K0 K))) (ζ : ↥LL.1) (j : ℕ), j < s →
       IsPrimitiveRoot ζ (l ^ j) → ExpGen (H.W K s LL h) T i ((C.C K s LL h).tie.levB T i ζ)
 
+/- English proof (translation)
+Introduce `K s LL h T hT` and use `⟨(hc K s LL h T hT).1, fun i ζ j hj hζ => ((hc K s LL h T hT).2 i ζ j hj hζ).1⟩`.
+-/
 theorem WachCrisComparison.span {l : ℕ} [Fact l.Prime] {P : LocPrime l} {AI : LocAinf l P}
     {H : LocHW l P} {F : LocFon l P AI H} {C : LocCmpT l P AI H F}
     (hc : WachCrisComparison l P AI H F C) : WachCrisComparisonSpan l P AI H F C :=

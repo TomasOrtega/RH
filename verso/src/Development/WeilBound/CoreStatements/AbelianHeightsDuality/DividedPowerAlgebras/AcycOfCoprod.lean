@@ -26,6 +26,11 @@ def cm (M : CommAlgCat.{0} R) (G : D ⥤ D) :
   naturality _ _ := rfl
   smul _ _ _ := rfl
 
+/- English proof (translation)
+Establish `one : ∀ {G G' : D ⥤ D} (_ : G ⟶ G'), (∀ g : D → M, (∀ a b (_ : a ⟶ b), g b = g a) → ∀ a, g (G.obj a) = g (G'.obj a)) ∧ (∀ c, (cm M G).pull1 c = (cm M G').pull1 c) ∧ ∀ c, (cm M G).pull2 c = (cm M G').pull2 c` using `fun {G G'} θ ↦ ⟨fun g hg a ↦ (hg _ _ (θ.app a)).symm, (cm M G).pullCohomologyOne_eq_of_natTrans (cm M G') θ fun _ _ ↦ rfl, (cm M G).pullCohomologyTwo_eq_of_natTrans (cm M G') θ fun _ _ ↦ rfl⟩`. Proceed by induction on `h with`. Consider the case `refl => exact ⟨fun _ _ _ ↦ rfl, fun _ ↦ rfl, fun _ ↦ rfl⟩`. Consider the case `tail _ hz ih`. Break down `hz with ⟨⟨θ⟩⟩ | ⟨⟨θ⟩⟩` into its components or cases.
+
+Conclude with `⟨fun g hg a ↦ (ih.1 g hg a).trans ((one θ).1 g hg a), fun c ↦ (ih.2.1 c).trans ((one θ).2.1 c), fun c ↦ (ih.2.2 c).trans ((one θ).2.2 c)⟩`. Conclude with `⟨fun g hg a ↦ (ih.1 g hg a).trans ((one θ).1 g hg a).symm, fun c ↦ (ih.2.1 c).trans ((one θ).2.1 c).symm, fun c ↦ (ih.2.2 c).trans ((one θ).2.2 c).symm⟩`.
+-/
 theorem cm_zigzag (M : CommAlgCat.{0} R) {G G' : D ⥤ D} (h : Zigzag G G') :
     (∀ g : D → M, (∀ a b (_ : a ⟶ b), g b = g a) → ∀ a, g (G.obj a) = g (G'.obj a)) ∧
     (∀ c, (cm M G).pull1 c = (cm M G').pull1 c) ∧ ∀ c, (cm M G).pull2 c = (cm M G').pull2 c := by
@@ -44,6 +49,15 @@ theorem cm_zigzag (M : CommAlgCat.{0} R) {G G' : D ⥤ D} (h : Zigzag G G') :
     · exact ⟨fun g hg a ↦ (ih.1 g hg a).trans ((one θ).1 g hg a).symm,
         fun c ↦ (ih.2.1 c).trans ((one θ).2.1 c).symm, fun c ↦ (ih.2.2 c).trans ((one θ).2.2 c).symm⟩
 
+/- English proof (translation)
+Use `⟨⟨d⟩, fun M ↦ ?_⟩` and prove the remaining obligations. Take `⟨h0, h1, h2⟩` from `cm_zigzag M h`. Use `⟨fun g hg a b ↦ (h0 g hg a).trans (h0 g hg b).symm, fun c ↦ ?_, fun c ↦ ?_⟩` and prove the remaining obligations. Use `((CoefMap.pullCohomologyOne_id c).symm.trans (h1 c)).trans ?_` and prove the remaining obligations. Take `⟨f, rfl⟩` from `H1.mk_surjective _ c`.
+
+Rewrite using `[CoefMap.pullCohomologyOne_class, H1.mk_eq_zero]`. Use `⟨0, ?_⟩` and prove the remaining obligations. Rewrite using `[map_zero]`. Use function extensionality and compare the values at `T T' φ`. Conclude with `(Z1.id f d).symm`.
+
+Use `((CoefMap.pullCohomologyTwo_id c).symm.trans (h2 c)).trans ?_` and prove the remaining obligations. Take `⟨z, rfl⟩` from `H2.mk_surjective _ c`. Rewrite using `[CoefMap.pullCohomologyTwo_class, H2.mk_eq_zero]`. Use `⟨fun _ _ _ ↦ (z.1 d d d (𝟙 d) (𝟙 d) : M), ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `T T' T'' φ ψ`.
+
+Conclude with `sub_add_cancel (z.1 d d d (𝟙 d) (𝟙 d) : M) (z.1 d d d (𝟙 d) (𝟙 d) : M)`.
+-/
 theorem acyc_of_zigzag (d : D) (h : Zigzag (𝟭 D) ((Functor.const D).obj d)) : Acyc R D := by
   refine ⟨⟨d⟩, fun M ↦ ?_⟩
   obtain ⟨h0, h1, h2⟩ := cm_zigzag M h
@@ -62,6 +76,11 @@ theorem acyc_of_zigzag (d : D) (h : Zigzag (𝟭 D) ((Functor.const D).obj d)) :
     funext T T' T'' φ ψ
     exact sub_add_cancel (z.1 d d d (𝟙 d) (𝟙 d) : M) (z.1 d d d (𝟙 d) (𝟙 d) : M)
 
+/- English proof (translation)
+Use `choose m hm hu using h`. Set `Q : D ⥤ D` to `{ obj := P map := fun {a b} φ ↦ m a b (φ ≫ i b) map_id := fun a ↦ (hu a a _ (𝟙 _) ⟨by simp, by simp⟩).symm map_comp := fun {a b c} φ ψ ↦ (hu a c _ _ ⟨by`. Rewrite using `[← Category.assoc, (hm a b _).1, Category.assoc, (hm b c _).1, Category.assoc], by`. Rewrite using `[← Category.assoc, (hm a b _).2, (hm b c _).2]⟩).symm }`. Set `θ : 𝟭 D ⟶ Q` to `{ app := i, naturality := fun a b φ ↦ (hm a b _).1.symm }`.
+
+Set `η : (Functor.const D).obj d ⟶ Q` to `{ app := j, naturality := fun a b φ ↦ (Category.id_comp _).trans (hm a b _).2.symm }`. Conclude with `acyc_of_zigzag d ((Zigzag.of_hom θ).trans (Zigzag.of_inv η))`.
+-/
 theorem acyc_of_coprod (d : D) (P : D → D) (i : ∀ a, a ⟶ P a) (j : ∀ a, d ⟶ P a)
     (h : ∀ a b (φ : a ⟶ P b), ∃! ψ : P a ⟶ P b, i a ≫ ψ = φ ∧ j a ≫ ψ = j b) : Acyc R D := by
   choose m hm hu using h
@@ -84,12 +103,18 @@ section Comma
 variable {R : Type} [CommRing R] {C : Type u} [Category.{v} C] {C' : Type u'} [Category.{v'} C']
   {G : C' ⥤ C} {T : C}
 
+/- English proof (translation)
+Take `⟨⟨a⟩, h⟩` from `h`. Use `⟨g a.left a.hom, fun S c ↦ (h M).1 (fun b ↦ g b.left b.hom) (fun b b' φ ↦ ?_) (CostructuredArrow.mk c) a⟩` and prove the remaining obligations. Conclude with `(hg _ _ φ.left b'.hom).symm.trans (congrArg _ (CostructuredArrow.w φ))`.
+-/
 theorem Acyc.zero (h : Acyc R (CostructuredArrow G T)) (M : CommAlgCat.{0} R) (g : ∀ S, (G.obj S ⟶ T) → M)
     (hg : ∀ S S' (ψ : S ⟶ S') (c : G.obj S' ⟶ T), g S (G.map ψ ≫ c) = g S' c) : ∃ m, ∀ S c, g S c = m := by
   obtain ⟨⟨a⟩, h⟩ := h
   refine ⟨g a.left a.hom, fun S c ↦ (h M).1 (fun b ↦ g b.left b.hom) (fun b b' φ ↦ ?_) (CostructuredArrow.mk c) a⟩
   exact (hg _ _ φ.left b'.hom).symm.trans (congrArg _ (CostructuredArrow.w φ))
 
+/- English proof (translation)
+Set `f' : Z1 ((Functor.const (CostructuredArrow G T)).obj M)` to `⟨fun a b φ ↦ (f a.left b.left φ.left b.hom : M), fun a b c φ ψ ↦ (hf _ _ _ φ.left ψ.left c.hom).trans (congrArg (fun t ↦ f _ _ φ.left t + f _ _ ψ.left c.hom) (CostructuredArrow.w ψ))⟩`. Take `⟨g, hg⟩` from `H1.mk_eq_zero.1 ((h.2 M).2.1 (H1.mk _ f'))`. Conclude with `⟨fun S c ↦ g (CostructuredArrow.mk c), fun S S' ψ c ↦ (congrFun (congrFun (congrFun hg (CostructuredArrow.mk (G.map ψ ≫ c))) (CostructuredArrow.mk c)) (CostructuredArrow.homMk ψ rfl)).symm⟩`.
+-/
 theorem Acyc.one (h : Acyc R (CostructuredArrow G T)) (M : CommAlgCat.{0} R)
     (f : ∀ S S', (S ⟶ S') → (G.obj S' ⟶ T) → M)
     (hf : ∀ S S' S'' (φ : S ⟶ S') (ψ : S' ⟶ S'') (c : G.obj S'' ⟶ T),
@@ -104,6 +129,13 @@ theorem Acyc.one (h : Acyc R (CostructuredArrow G T)) (M : CommAlgCat.{0} R)
     (congrFun (congrFun (congrFun hg (CostructuredArrow.mk (G.map ψ ≫ c))) (CostructuredArrow.mk c))
       (CostructuredArrow.homMk ψ rfl)).symm⟩
 
+/- English proof (translation)
+Set `z' : Z2 ((Functor.const (CostructuredArrow G T)).obj M)` to `⟨fun a b c φ ψ ↦ (z a.left b.left c.left φ.left ψ.left c.hom : M), fun a b c e φ ψ χ ↦ (congrArg (fun t ↦ z _ _ _ φ.left ψ.left t + z _ _ _ (φ.left ≫ ψ.left) χ.left e.hom) (CostructuredArrow.w χ)).symm.trans (hz _ _ _ _ φ.left ψ.left χ.left e.hom)⟩`. Take `⟨g, hg⟩` from `H2.mk_eq_zero.1 ((h.2 M).2.2 (H2.mk _ z'))`. Set `w : ∀ S S', (S ⟶ S') → (G.obj S' ⟶ T) → M` to `fun S S' ψ c ↦ g (CostructuredArrow.mk (G.map ψ ≫ c)) (CostructuredArrow.mk c) (CostructuredArrow.homMk ψ rfl)`. Establish `hw : ∀ S S' (ψ : S ⟶ S') (c : G.obj S' ⟶ T) (c₀ : G.obj S ⟶ T) (e : G.map ψ ≫ c = c₀), (g (CostructuredArrow.mk c₀) (CostructuredArrow.mk c) (CostructuredArrow.homMk ψ e) : M) = w S S' ψ c`. Introduce `S S' ψ c c₀ e`.
+
+Substitute `e` using the available equality. Both sides reduce to the same expression. Use `⟨w, fun S S' S'' φ ψ c ↦ ?_⟩` and prove the remaining obligations. Establish `k` using `congrFun (congrFun (congrFun (congrFun (congrFun hg (CostructuredArrow.mk (G.map φ ≫ G.map ψ ≫ c))) (CostructuredArrow.mk (G.map ψ ≫ c))) (CostructuredArrow.mk c)) (CostructuredArrow.homMk φ rfl)) (CostructuredArrow.homMk ψ rfl)`. Rewrite using `[← hw S S'' (φ ≫ ψ) c (G.map φ ≫ G.map ψ ≫ c) (by simp)]`.
+
+Conclude with `k.symm`.
+-/
 theorem Acyc.two (h : Acyc R (CostructuredArrow G T)) (M : CommAlgCat.{0} R)
     (z : ∀ S S' S'', (S ⟶ S') → (S' ⟶ S'') → (G.obj S'' ⟶ T) → M)
     (hz : ∀ S S' S'' S''' (φ : S ⟶ S') (ψ : S' ⟶ S'') (χ : S'' ⟶ S''') (c : G.obj S''' ⟶ T),
@@ -135,6 +167,27 @@ section QA
 
 variable {R : Type} [CommRing R] {C : Type u} [Category.{v} C] {C' : Type u'} [Category.{v'} C']
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Rewrite using `[injective_iff_map_eq_zero]`. Introduce `c hc`. Take `⟨f, rfl⟩` from `H1.mk_surjective _ c`. Rewrite `hc` using `[CoefMap.pullCohomologyOne_class, H1.mk_eq_zero]`.
+
+Take `⟨g, hg⟩` from `hc`. Set `g' : ∀ S, F.obj (G.obj S)` to `g`. Establish `hg' : ∀ S S' (ψ : S ⟶ S'), f.1 _ _ (G.map ψ) = g' S' - mp F (G.map ψ) (g' S)` using `fun S S' ψ ↦ (congrFun (congrFun (congrFun hg S) S') ψ).symm`. Establish `ex : ∀ T, ∃ m : F.obj T, ∀ S (c : G.obj S ⟶ T), f.1 _ _ c + mp F c (g' S) = m` using `fun T ↦ (h T).zero _ _ fun S S' ψ c ↦ by`. Simplify using `only [Z1.comp f, hg', mp_comp, map_sub]`.
+
+Expand and normalize the polynomial expressions, which then agree. Use `choose m hm using ex`. Use `H1.mk_eq_zero.2 ⟨m, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `T T' φ`. Take `⟨a⟩` from `(h T).1`.
+
+Set `c : G.obj a.left ⟶ T` to `a.hom`. Rewrite using `[amitsur_d0_apply, ← hm T _ c, ← hm T' _ (c ≫ φ)]`. Simplify using `only [Z1.comp f, mp_comp, map_add]`. Expand and normalize the polynomial expressions, which then agree. Introduce `c`.
+
+Take `⟨f, rfl⟩` from `H1.mk_surjective _ c`. Set `f' : ∀ S S', (S ⟶ S') → F.obj (G.obj S')` to `f.1`. Establish `hf : ∀ S S' S'' (φ : S ⟶ S') (ψ : S' ⟶ S''), f' S S'' (φ ≫ ψ) = mp F (G.map ψ) (f' S S' φ) + f' S' S'' ψ` using `fun S S' S'' φ ψ ↦ f.2 φ ψ`. Establish `ex : ∀ T, ∃ v : ∀ S, (G.obj S ⟶ T) → F.obj T, ∀ S S' (ψ : S ⟶ S') (c : G.obj S' ⟶ T), -mp F c (f' S S' ψ) = v S' c - v S (G.map ψ ≫ c)` using `fun T ↦ (h T).one _ (fun S S' ψ c ↦ -mp F c (f' S S' ψ)) fun S S' S'' φ ψ c ↦ by`. Simplify using `only [hf, mp_comp, map_add]`.
+
+Expand and normalize the polynomial expressions, which then agree. Use `choose v hv using ex`. Establish `ex : ∀ T T' (φ : T ⟶ T'), ∃ m : F.obj T', ∀ S (c : G.obj S ⟶ T), v T' S (c ≫ φ) - mp F φ (v T S c) = m` using `fun T T' φ ↦ (h T).zero _ _ fun S S' ψ c ↦ by`. Establish `e1` using `hv T' S S' ψ (c ≫ φ)`. Establish `e2` using `congrArg (mp F φ) (hv T S S' ψ c)`.
+
+Simplify using `only [mp_comp, map_sub, map_neg, Category.assoc] at e1 e2 ⊢`. Take the linear combination `e1 - e2`. Use `choose m hm using ex`. Use `⟨H1.mk _ ⟨m, fun T T' T'' φ ψ ↦ ?_⟩, ?_⟩` and prove the remaining obligations. Take `⟨a⟩` from `(h T).1`.
+
+Set `c : G.obj a.left ⟶ T` to `a.hom`. Rewrite using `[← hm T T'' _ _ c, ← hm T T' _ _ c, ← hm T' T'' _ _ (c ≫ φ)]`. Simplify using `only [mp_comp, map_sub, Category.assoc]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[CoefMap.pullCohomologyOne_class, H1.mk_eq_mk]`.
+
+Use `⟨fun S ↦ v _ S (𝟙 _), ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `S S' ψ`. Establish `e1` using `hm _ _ (G.map ψ) S (𝟙 _)`. Establish `e2` using `hv _ S S' ψ (𝟙 _)`. Rewrite `e1` using `[Category.id_comp]`.
+
+Rewrite `e2` using `[Category.comp_id, mp_id]`. Express the relevant statement in the definitionally equal form `v _ S' (𝟙 _) - mp F (G.map ψ) (v _ S (𝟙 _)) = m _ _ (G.map ψ) - f' S S' ψ`. Take the linear combination `e1 - e2`.
+-/
 theorem qa1 (F : C ⥤ CommAlgCat.{0} R) (G : C' ⥤ C) (h : ∀ T, Acyc R (CostructuredArrow G T)) :
     Function.Bijective (CoefMap.restrict F G).pull1 := by
   constructor
@@ -189,6 +242,35 @@ theorem qa1 (F : C ⥤ CommAlgCat.{0} R) (G : C' ⥤ C) (h : ∀ T, Acyc R (Cost
       change v _ S' (𝟙 _) - mp F (G.map ψ) (v _ S (𝟙 _)) = m _ _ (G.map ψ) - f' S S' ψ
       linear_combination e1 - e2
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Rewrite using `[injective_iff_map_eq_zero]`. Introduce `c hc`. Take `⟨z, rfl⟩` from `H2.mk_surjective _ c`. Rewrite `hc` using `[CoefMap.pullCohomologyTwo_class, H2.mk_eq_zero]`.
+
+Take `⟨g, hg⟩` from `hc`. Set `f : ∀ S S', (S ⟶ S') → F.obj (G.obj S')` to `g`. Establish `hf : ∀ S S' S'' (φ : S ⟶ S') (ψ : S' ⟶ S''), z.1 _ _ _ (G.map φ) (G.map ψ) = mp F (G.map ψ) (f S S' φ) - f S S'' (φ ≫ ψ) + f S' S'' ψ` using `fun S S' S'' φ ψ ↦ (congrFun (congrFun (congrFun (congrFun (congrFun hg S) S') S'') φ) ψ).symm`. Establish `ex : ∀ T, ∃ v : ∀ S, (G.obj S ⟶ T) → F.obj T, ∀ S S' (ψ : S ⟶ S') (c : G.obj S' ⟶ T), z.1 _ _ _ (G.map ψ) c - mp F c (f S S' ψ) = v S' c - v S (G.map ψ ≫ c)` using `fun T ↦ (h T).one _ (fun S S' ψ c ↦ z.1 _ _ _ (G.map ψ) c - mp F c (f S S' ψ)) fun S S' S'' φ ψ c ↦ by`. Establish `e` using `z.2 (G.map φ) (G.map ψ) c`.
+
+Simplify using `only [hf, mp_comp, map_add, map_sub, Functor.map_comp] at e ⊢`. Take the linear combination `e`. Use `choose v hv using ex`. Establish `ex : ∀ T T' (φ : T ⟶ T'), ∃ m : F.obj T', ∀ S (c : G.obj S ⟶ T), z.1 _ _ _ c φ - mp F φ (v T S c) + v T' S (c ≫ φ) = m` using `fun T T' φ ↦ (h T).zero _ _ fun S S' ψ c ↦ by`. Establish `e` using `z.2 (G.map ψ) c φ`.
+
+Establish `e1` using `hv T' S S' ψ (c ≫ φ)`. Establish `e2` using `congrArg (mp F φ) (hv T S S' ψ c)`. Simplify using `only [mp_comp, map_sub, Category.assoc] at e1 e2 ⊢`. Take the linear combination `e + e1 - e2`. Use `choose m hm using ex`.
+
+Use `H2.mk_eq_zero.2 ⟨m, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `T T' T'' φ ψ`. Take `⟨a⟩` from `(h T).1`. Set `c : G.obj a.left ⟶ T` to `a.hom`. Establish `e` using `z.2 c φ ψ`.
+
+Rewrite using `[d1_apply, ← hm T T'' _ _ c, ← hm T T' _ _ c, ← hm T' T'' _ _ (c ≫ φ)]`. Simplify using `only [mp_comp, map_sub, map_add, Category.assoc]`. Take the linear combination `e`. Introduce `c`. Take `⟨z, rfl⟩` from `H2.mk_surjective _ c`.
+
+Set `y : ∀ S S' S'', (S ⟶ S') → (S' ⟶ S'') → F.obj (G.obj S'')` to `z.1`. Establish `hy : ∀ S S' S'' S''' (φ : S ⟶ S') (ψ : S' ⟶ S'') (χ : S'' ⟶ S'''), mp F (G.map χ) (y _ _ _ φ ψ) + y _ _ _ (φ ≫ ψ) χ = y _ _ _ φ (ψ ≫ χ) + y _ _ _ ψ χ` using `fun S S' S'' S''' φ ψ χ ↦ z.2 φ ψ χ`. Establish `ex : ∀ T, ∃ w : ∀ S S', (S ⟶ S') → (G.obj S' ⟶ T) → F.obj T, ∀ S S' S'' (φ : S ⟶ S') (ψ : S' ⟶ S'') (c : G.obj S'' ⟶ T), mp F c (y _ _ _ φ ψ) = w S S' φ (G.map ψ ≫ c) - w S S'' (φ ≫ ψ) c + w S' S'' ψ c` using `fun T ↦ (h T).two _ (fun S S' S'' φ ψ c ↦ mp F c (y _ _ _ φ ψ)) fun S S' S'' S''' φ ψ χ c ↦ by`. Simplify using `only [mp_comp, ← map_add, hy]`. Use `choose w hw using ex`.
+
+Establish `ex : ∀ T T' (φ : T ⟶ T'), ∃ x : ∀ S, (G.obj S ⟶ T) → F.obj T', ∀ S S' (ψ : S ⟶ S') (c : G.obj S' ⟶ T), mp F φ (w T S S' ψ c) - w T' S S' ψ (c ≫ φ) = x S' c - x S (G.map ψ ≫ c)` using `fun T T' φ ↦ (h T).one _ (fun S S' ψ c ↦ mp F φ (w T S S' ψ c) - w T' S S' ψ (c ≫ φ)) fun S S' S'' ψ χ c ↦ by`. Establish `e1` using `hw T' S S' S'' ψ χ (c ≫ φ)`. Establish `e2` using `congrArg (mp F φ) (hw T S S' S'' ψ χ c)`. Simplify using `only [mp_comp, map_sub, map_add, Category.assoc] at e1 e2 ⊢`. Take the linear combination `e2 - e1`.
+
+Use `choose x hx using ex`. Establish `ex : ∀ T T' T'' (φ : T ⟶ T') (φ' : T' ⟶ T''), ∃ m : F.obj T'', ∀ S (c : G.obj S ⟶ T), mp F φ' (x T T' φ S c) + x T' T'' φ' S (c ≫ φ) - x T T'' (φ ≫ φ') S c = m` using `fun T T' T'' φ φ' ↦ (h T).zero _ _ fun S S' ψ c ↦ by`. Establish `e1` using `congrArg (mp F φ') (hx T T' φ S S' ψ c)`. Establish `e2` using `hx T' T'' φ' S S' ψ (c ≫ φ)`. Establish `e3` using `hx T T'' (φ ≫ φ') S S' ψ c`.
+
+Simplify using `only [mp_comp, map_sub, Category.assoc] at e1 e2 e3 ⊢`. Take the linear combination `e1 + e2 - e3`. Use `choose m hm using ex`. Use `⟨H2.mk _ ⟨m, fun T T' T'' T''' φ ψ χ ↦ ?_⟩, ?_⟩` and prove the remaining obligations. Take `⟨a⟩` from `(h T).1`.
+
+Set `c : G.obj a.left ⟶ T` to `a.hom`. Rewrite using `[← hm T T' T'' _ _ _ c, ← hm T T'' T''' _ _ _ c, ← hm T T' T''' _ _ _ c, ← hm T' T'' T''' _ _ _ (c ≫ φ)]`. Simplify using `only [mp_comp, map_sub, map_add, Category.assoc]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[CoefMap.pullCohomologyTwo_class, H2.mk_eq_mk]`.
+
+Use `⟨fun S S' ψ ↦ x _ _ (G.map ψ) S (𝟙 _) - w _ S S' ψ (𝟙 _), ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `S S' S'' φ ψ`. Establish `e1` using `hm _ _ _ (G.map φ) (G.map ψ) S (𝟙 _)`. Establish `e2` using `hw _ S S' S'' φ ψ (𝟙 _)`. Establish `e3` using `hx _ _ (G.map ψ) S S' φ (𝟙 _)`.
+
+Rewrite `e1`, `e3` using `[Category.id_comp]`. Rewrite `e2`, `e3` using `[Category.comp_id]`. Rewrite `e2` using `[mp_id]`. Express the relevant statement in the definitionally equal form `mp F (G.map ψ) (x _ _ (G.map φ) S (𝟙 _) - w _ S S' φ (𝟙 _)) - (x _ _ (G.map (φ ≫ ψ)) S (𝟙 _) - w _ S S'' (φ ≫ ψ) (𝟙 _)) + (x _ _ (G.map ψ) S' (𝟙 _) - w _ S' S'' ψ (𝟙 _)) = m _ _ _ (G.map φ) (G.map ψ) - y _ _ _ φ ψ`. Rewrite using `[map_sub, G.map_comp]`.
+
+Take the linear combination `e1 + e2 - e3`.
+-/
 theorem qa2 (F : C ⥤ CommAlgCat.{0} R) (G : C' ⥤ C) (h : ∀ T, Acyc R (CostructuredArrow G T)) :
     Function.Bijective (CoefMap.restrict F G).pull2 := by
   constructor

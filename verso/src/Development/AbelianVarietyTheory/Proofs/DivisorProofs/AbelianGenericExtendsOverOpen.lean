@@ -54,12 +54,18 @@ section Transport
 
 variable {X : Scheme.{0}} {W L L' W' W₁ L₁ L₁' W₁' D : X.Modules}
 
+/- English proof (translation)
+The claim follows from `ShortComplex.shortExact_of_iso (S₁ := ShortComplex.mk a b w) (ShortComplex.isoMk ι.symm (Iso.refl _) κ (by simp) (by simp)) s`.
+-/
 theorem shortExact_congr (ι : W₁ ≅ W) (κ : L ≅ L₁) {a : W ⟶ D} {b : D ⟶ L} {w : a ≫ b = 0}
     (s : (ShortComplex.mk a b w).ShortExact) (w' : (ι.hom ≫ a) ≫ b ≫ κ.hom = 0) :
     (ShortComplex.mk (ι.hom ≫ a) (b ≫ κ.hom) w').ShortExact :=
   ShortComplex.shortExact_of_iso (S₁ := ShortComplex.mk a b w)
     (ShortComplex.isoMk ι.symm (Iso.refl _) κ (by simp) (by simp)) s
 
+/- English proof (translation)
+The claim follows from `fun x ↦ by rw [← Category.assoc, h x, Category.assoc, h' x, Category.assoc]`.
+-/
 theorem isEquivariant_comp {α : O →+* End W} {β : O →+* End D} {γ : O →+* End L} {a : W ⟶ D} {b : D ⟶ L}
     (h : IsEquivariant α β a) (h' : IsEquivariant β γ b) : IsEquivariant α γ (a ≫ b) := fun x ↦ by
   rw [← Category.assoc, h x, Category.assoc, h' x, Category.assoc]
@@ -91,6 +97,11 @@ section Pairing
 
 variable {P : LB (A ⊗ A).left}
 
+/- English proof (translation)
+Establish `hP` using `hd.isLB`. Establish `hs' : (swap P).IsLB` using `pull_isLB hP _`. Establish `sym {Y : Over T} (x y : Y ⟶ A) : evc hP x y = evc hP y x`. Rewrite using `[← evc_swap hP hs', evc, (cls_eq_iff hs' hP).2 hs, evc]`. Use `⟨hP, (triv_ev_iff hP _ _).2 (hd.additive.evc_one hP _), hd.zero, fun Y x hx ↦ hd.eq_one x ?_, fun _ ↦ hd.eq_one⟩` and prove the remaining obligations.
+
+Establish `k` using `congrArg (CechPic.pull (lift (snd A Y) (fst A Y)).left) ((triv_ev_iff hP _ _).1 hx)`. Rewrite `k` using `[pull_evc, map_zero, lift_fst_assoc, lift_snd]`. Rewrite using `[triv_ev_iff hP, sym, k]`.
+-/
 theorem isPerfect_of_symm (hd : IsDual A A P) (hs : LBIso (swap P) P) : IsPerfect A A P := by
   have hP := hd.isLB
   have hs' : (swap P).IsLB := pull_isLB hP _
@@ -104,6 +115,11 @@ theorem isPerfect_of_symm (hd : IsDual A A P) (hs : LBIso (swap P) P) : IsPerfec
 
 omit [GrpObj A] in
 
+/- English proof (translation)
+Establish `e₁ : sqMap w ≫ (fst A₁ A₁).left = (fst A₂ A₂).left ≫ π` using `pullback.lift_fst _ _ _`. Establish `e₂ : sqMap w ≫ (snd A₁ A₁).left = (snd A₂ A₂).left ≫ π` using `pullback.lift_snd _ _ _`. Apply `pullback.hom_ext` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `m' ≫ (fst A A).left = (sqMap w ≫ m) ≫ (fst A A).left`. Rewrite using `[Category.assoc, m₁, m₁', ← Category.assoc, e₁, Category.assoc, eπ]`.
+
+Express the relevant statement in the definitionally equal form `m' ≫ (snd A A).left = (sqMap w ≫ m) ≫ (snd A A).left`. Rewrite using `[Category.assoc, m₂, m₂', ← Category.assoc, e₂, Category.assoc, eπ]`.
+-/
 theorem sqMap_comp {S₁ S₂ : Scheme.{0}} {A₁ : Over S₁} {A₂ : Over S₂} {b : S₂ ⟶ S₁} {π : A₂.left ⟶ A₁.left}
     (w : π ≫ A₁.hom = A₂.hom ≫ b) {f₁ : A₁.left ⟶ A.left} {f₂ : A₂.left ⟶ A.left} (eπ : π ≫ f₁ = f₂)
     {m : (A₁ ⊗ A₁).left ⟶ (A ⊗ A).left} {m' : (A₂ ⊗ A₂).left ⟶ (A ⊗ A).left}
@@ -120,6 +136,19 @@ theorem sqMap_comp {S₁ S₂ : Scheme.{0}} {A₁ : Over S₁} {A₂ : Over S₂
 
 set_option maxHeartbeats 800000 in
 
+/- English proof (translation)
+Establish `hπ (V : T.Opens) (hV : IsAffineOpen V) : IsGrpPullback (onAff A hV) A hV.fromSpec (pullback.fst A.hom hV.fromSpec)` using `isGrpPullback_pullback A _`. Establish `hAV` using `fun (V : T.Opens) (hV : IsAffineOpen V) ↦ DeRhamSheaf.VB.isAbelianScheme_onAff A hA hV`. Establish `hgV` using `fun (V : T.Opens) (hV : IsAffineOpen V) ↦ DeRhamSheaf.VB.smooth_onAff A hg hV`. Use `choose m m₁ m₂ using fun (V : T.Opens) (hV : IsAffineOpen V) ↦ exists_prod_pullback (hπ V hV) (hπ V hV)`. Establish `hL (V : T.Opens) (hV : IsAffineOpen V)` using `pull_isLB hP.isLB (m V hV)`.
+
+Establish `hPV (V : T.Opens) (hV : IsAffineOpen V) : IsPerfect (onAff A hV) (onAff A hV) (P.pull (m V hV))` using `hP.baseChange (hπ V hV) (hπ V hV) (m₁ V hV) (m₂ V hV) (hL V hV) ((cls_eq_iff (hL V hV) (hL V hV)).1 rfl)`. Use `choose φ hφ using fun (V : T.Opens) (hV : IsAffineOpen V) ↦ exists_isCorrForm (cupSquare_of_free hD.1 (AbelianSchemeGerms.isAbelianScheme_tensor _ _ (hAV V hV) (hAV V hV)) (smooth_prod (hgV V hV) (hgV V hV))) (hL V hV) (hPV V hV).zero_left (hPV V hV).zero_right`. Establish `pφ (V : T.Opens) (hV : IsAffineOpen V) : (φ V hV).IsPerfPair` using `((hφ V hV).perfect hD (hAV V hV) (hgV V hV) (hAV V hV) (hgV V hV) (hPV V hV)).1`. Use `choose b pb k using fun (V : T.Opens) (hV : IsAffineOpen V) ↦ by`. Take `⟨_, _, -⟩` from `Free.prim hD.1 (hAV V hV) (hgV V hV)`.
+
+Conclude with `exists_inverse (φ V hV) (pφ V hV)`. Establish `hb : ∀ (V V' : T.Opens) (hV : IsAffineOpen V) (hV' : IsAffineOpen V') (h : V' ≤ V) (s t : Γ(H, V)), (b V' hV').compl₁₂ (e V' hV').toLinearMap (e V' hV').toLinearMap (Twist.resM H h s) (Twist.resM H h t) = resG T h ((b V hV).compl₁₂ (e V hV).toLinearMap (e V hV).toLinearMap s t)`. Introduce `V V' hV hV' h s t`. Use `letI := resAlg h`. Take `⟨π, hπ', eπ⟩` from `DeRhamSheaf.VB.exists_transition A hV hV' h`.
+
+Take `⟨_, _, -⟩` from `Free.prim hD.1 (hAV V hV) (hgV V hV)`. Simplify using `only [LinearMap.compl₁₂_apply, LinearEquiv.coe_coe]`. Rewrite using `[he V V' hV hV' h π hπ' eπ, he V V' hV hV' h π hπ' eπ]`. Use `inverse_bc (hD.2.2.1 _ _ g (hAV V hV) (hgV V hV) _ _ π hπ').1 (pφ V' hV') (corr_bc hD.1 (hAV V' hV') (hgV V' hV') hπ' (hL V hV) (hL V' hV') ?_ (hφ V hV) (hφ V' hV')) (k V hV) (k V' hV') _ _` and prove the remaining obligations. Conclude with `(congrArg (fun z ↦ CechPic.pull z (cls P hP.isLB)) (sqMap_comp hπ'.1.w eπ (m₁ V hV) (m₂ V hV) (m₁ V' hV') (m₂ V' hV'))).trans (CechPic.pull_comp _ _ _)`.
+
+Use `⟨AffinePairingGlue.toDual _ hb, fun V hV ↦ ⟨m V hV, φ V hV, m₁ V hV, m₂ V hV, hφ V hV, pφ V hV, ?_⟩⟩` and prove the remaining obligations. Introduce `s x y hx`. Establish `ex : x = b V hV (e V hV s)` using `LinearMap.ext fun w ↦ by`. Take `⟨w, rfl⟩` from `(e V hV).surjective w`. Rewrite using `[hx, AffinePairingGlue.dualApp_toDual_affine _ hb hV]`.
+
+Both sides reduce to the same expression. Rewrite using `[ex, k]`.
+-/
 theorem exists_isPolPairing (hD : AbelianDeRham) (hA : IsAbelianScheme A) (hg : SmoothOfRelativeDimension g A.hom)
     (hP : IsPerfect A A P) (he : IsDRIso A H e) : ∃ β : H ⟶ dual H, IsPolPairing e P β := by
   have hπ (V : T.Opens) (hV : IsAffineOpen V) :
@@ -162,11 +191,19 @@ theorem exists_isPolPairing (hD : AbelianDeRham) (hA : IsAbelianScheme A) (hg : 
 def formOn (β : H ⟶ dual H) (V : T.Opens) : Γ(H, V) →ₗ[Γ(T, V)] Γ(H, V) →ₗ[Γ(T, V)] Γ(T, V) :=
   Lagr.evU H V ∘ₗ appLinear β V
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem formOn_apply (β : H ⟶ dual H) (V : T.Opens) (s t : Γ(H, V)) :
     formOn β V s t = dualApp (β.app V s) le_rfl t := rfl
 
 variable {β : H ⟶ dual H}
 
+/- English proof (translation)
+Take `⟨m, φ, -, -, -, pφ, k⟩` from `hβ V hV`. Take `⟨_, _, -⟩` from `Free.prim hD.1 (DeRhamSheaf.VB.isAbelianScheme_onAff A hA hV) (DeRhamSheaf.VB.smooth_onAff A hg hV)`. Take `⟨b, pb, kb⟩` from `exists_inverse φ pφ`. Establish `ex (s : Γ(H, V)) : formOn β V s ∘ₗ (e V hV).symm.toLinearMap = b (e V hV s)` using `pφ.bijective_left.1 (LinearMap.ext fun y ↦ (k s _ y fun t ↦ by simp [formOn_apply]).trans (kb _ _).symm)`. Use `LinearMap.IsPerfPair.congr b (e V hV) (e V hV) _ (LinearMap.ext₂ fun s t ↦ ?_)` and prove the remaining obligations.
+
+Simplify using `using LinearMap.congr_fun (ex ((e V hV).symm s)) t`.
+-/
 theorem IsPolPairing.perfect (hD : AbelianDeRham) (hA : IsAbelianScheme A) (hg : SmoothOfRelativeDimension g A.hom)
     (hβ : IsPolPairing e P β) {V : T.Opens} (hV : IsAffineOpen V) : (formOn β V).IsPerfPair := by
   obtain ⟨m, φ, -, -, -, pφ, k⟩ := hβ V hV
@@ -178,6 +215,9 @@ theorem IsPolPairing.perfect (hD : AbelianDeRham) (hA : IsAbelianScheme A) (hg :
   refine LinearMap.IsPerfPair.congr b (e V hV) (e V hV) _ (LinearMap.ext₂ fun s t ↦ ?_)
   simpa using LinearMap.congr_fun (ex ((e V hV).symm s)) t
 
+/- English proof (translation)
+Establish `hb : ∀ (V V' : T.Opens) (_ : IsAffineOpen V) (_ : IsAffineOpen V') (h : V' ≤ V) (s t : Γ(H, V)), formOn β V' (Twist.resM H h s) (Twist.resM H h t) = resG T h (formOn β V s t)` using `fun V V' _ _ h s t ↦ by`. Rewrite using `[formOn_apply, formOn_apply, Twist.app_resM, dualApp_res, dualApp_resM]`. Establish `e₁ : β = AffinePairingGlue.toDual (fun V _ ↦ formOn β V) hb` using `hom_dual_ext_affine fun V hV s t ↦ (AffinePairingGlue.dualApp_toDual_affine _ hb hV s t).symm`. Rewrite using `[e₁]`. Conclude with `AffinePairingGlue.isIso_toDual _ hb hH fun V hV ↦ hβ.perfect hD hA hg hV`.
+-/
 theorem IsPolPairing.isIso (hD : AbelianDeRham) (hA : IsAbelianScheme A) (hg : SmoothOfRelativeDimension g A.hom)
     (hβ : IsPolPairing e P β) (hH : IsVB H (2 * g)) : IsIso β := by
   have hb : ∀ (V V' : T.Opens) (_ : IsAffineOpen V) (_ : IsAffineOpen V') (h : V' ≤ V) (s t : Γ(H, V)),
@@ -188,6 +228,11 @@ theorem IsPolPairing.isIso (hD : AbelianDeRham) (hA : IsAbelianScheme A) (hg : S
   rw [e₁]
   exact AffinePairingGlue.isIso_toDual _ hb hH fun V hV ↦ hβ.perfect hD hA hg hV
 
+/- English proof (translation)
+Establish `hp` using `hβ.perfect hD hA hg hV`. Take `⟨m, φ, m₁, m₂, hφ, -, k⟩` from `hβ V hV`. Take `⟨h₁, h₂, h₃⟩` from `Free.prim hD.1 (DeRhamSheaf.VB.isAbelianScheme_onAff A hA hV) (DeRhamSheaf.VB.smooth_onAff A hg hV)`. Establish `hπ : IsGrpPullback (onAff A hV) A hV.fromSpec (pullback.fst A.hom hV.fromSpec)` using `isGrpPullback_pullback A _`. Establish `hL` using `pull_isLB hd.isLB m`.
+
+Conclude with `AnnIso.pairing_vanishes_of_annihilator_isotropic _ _ _ (e V hV) g h₁ h₂ h₃ (formOn β V).flip inferInstance φ (fun x y u v hx hy ↦ (k u x y hx).trans (hy u)) S hS hrk (hiso _ (hd.baseChange hπ hπ m₁ m₂ hL ((cls_eq_iff hL hL).1 rfl)) φ hφ) t s ht hs`.
+-/
 theorem IsPolPairing.isotropic (hD : AbelianDeRham) (hA : IsAbelianScheme A) (hg : SmoothOfRelativeDimension g A.hom)
     (hd : IsDual A A P) (hβ : IsPolPairing e P β) {V : T.Opens} (hV : IsAffineOpen V)
     (S : Submodule Γ(T, V) (primDR (onAff A hV))) (hS : ∃ S', IsCompl S S')
@@ -211,6 +256,15 @@ end Pairing
 
 section Hodge
 
+/- English proof (translation)
+Use `choose c hcF hc using HodgeSubExists.main hP T A g hA hg`. Establish `uniq` using `HodgeSub.corr_unique hP T A g hA hg`. Set `j : ∀ V : T.Opens, ∀ hV : IsAffineOpen V, Γ(IndefiniteRowSideFullHecke.ZeroSectionBase.hodge A, V) →ₗ[Γ(T, V)] primDR (onAff A hV)` to `fun V hV ↦ { toFun := c V hV map_add' := fun s s' ↦ uniq V hV _ _ _ (hc V hV (s + s')) (HodgeSub.corr_add_smul A V hV s s' _ _ 1 (hc V hV s) (hc V hV s')).1 map_smul' := fun r s ↦ uniq V hV _ _ _ (hc V hV (r • s)) (HodgeSub.corr_add_smul A V hV s s _ _ r (hc V hV s) (hc V hV s)). …`. Take `⟨a, ha⟩` from `hom_of_affine_compatible T _ H (fun V hV ↦ (e V hV).symm.toLinearMap ∘ₗ j V hV) (by`. Introduce `V V' hV hV' h s`.
+
+Use `letI := resAlg h`. Take `⟨φ, hφ, hfst⟩` from `HodgeSub.exists_proj A V V' hV hV' h`. Apply `(e V' hV').injective` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `e V' hV' ((e V' hV').symm (c V' hV' _)) = _`. Rewrite using `[LinearEquiv.apply_symm_apply, he V V' hV hV' h φ hφ hfst]`.
+
+Express the relevant statement in the definitionally equal form `_ = (bcMor hφ).pull (e V hV ((e V hV).symm (c V hV s)))`. Rewrite using `[LinearEquiv.apply_symm_apply]`. Conclude with `uniq V' hV' _ _ _ (hc V' hV' _) (HodgeSub.Nat.corr_res hP T A g hA hg V V' hV hV' h φ hφ hfst s _ (hc V hV s)))`. Use `⟨a, fun V hV s ↦ ?_⟩` and prove the remaining obligations. Establish `k : e V hV (a.app V s) = c V hV s` using `(congrArg (e V hV) (LinearMap.congr_fun (ha V hV) s)).trans ((e V hV).apply_symm_apply _)`.
+
+Conclude with `k.symm ▸ ⟨hcF V hV s, hc V hV s⟩`.
+-/
 theorem exists_isHodgeIncl (hP : CovTop.Hypotheses2) (hA : IsAbelianScheme A) (hg : SmoothOfRelativeDimension g A.hom)
     (he : IsDRIso A H e) : ∃ a : omega A ⟶ H, IsHodgeIncl e a := by
   choose c hcF hc using HodgeSubExists.main hP T A g hA hg
@@ -238,6 +292,11 @@ theorem exists_isHodgeIncl (hP : CovTop.Hypotheses2) (hA : IsAbelianScheme A) (h
     (congrArg (e V hV) (LinearMap.congr_fun (ha V hV) s)).trans ((e V hV).apply_symm_apply _)
   exact k.symm ▸ ⟨hcF V hV s, hc V hV s⟩
 
+/- English proof (translation)
+Take `⟨W', hW'⟩` from `hW`. Establish `hr : LinearMap.range f = W.comap ε.toLinearMap` using `Submodule.ext h`. Use `⟨W'.comap ε.toLinearMap, ?_⟩` and prove the remaining obligations. Rewrite using `[hr]`. Use `(OrderIso.isCompl_iff (f := (Submodule.orderIsoMapComap ε.symm))).1 hW'` as an intermediate fact.
+
+Simplify `this` using `[Submodule.map_equiv_eq_comap_symm]`.
+-/
 theorem exists_isCompl_range {R M N L : Type*} [CommRing R] [AddCommGroup M] [Module R M] [AddCommGroup N]
     [Module R N] [AddCommGroup L] [Module R L] (ε : M ≃ₗ[R] N) (f : L →ₗ[R] M) (W : Submodule R N)
     (h : ∀ s, s ∈ LinearMap.range f ↔ ε s ∈ W) (hW : ∃ W', IsCompl W W') :
@@ -249,6 +308,11 @@ theorem exists_isCompl_range {R M N L : Type*} [CommRing R] [AddCommGroup M] [Mo
   have := (OrderIso.isCompl_iff (f := (Submodule.orderIsoMapComap ε.symm))).1 hW'
   simpa [Submodule.map_equiv_eq_comap_symm] using this
 
+/- English proof (translation)
+Use `⟨fun s s' h ↦ ?_, exists_isCompl_range (e V hV) _ (PrimitiveSubmodule (onAff A hV)) (fun s ↦ ⟨?_, fun hs ↦ ?_⟩) (hP.p5.2.1 Γ(T, V) (onAff A hV) g (DeRhamSheaf.VB.isAbelianScheme_onAff A hA hV) (DeRhamSheaf.VB.smooth_onAff A hg hV)).2.1⟩` and prove the remaining obligations. Establish `h' : a.app V s = a.app V s'` using `h`. Conclude with `GlobalTheory.T.hodge_correspondence_unique_left hP T A g hA hg V hV s s' _ (ha V hV s).2 (h' ▸ (ha V hV s').2)`. Introduce and unpack `⟨t, rfl⟩`. Conclude with `(ha V hV t).1`.
+
+Take `⟨t, ht⟩` from `HodgeSubSurj.main hP T A g hA hg V hV _ hs`. Conclude with `⟨t, (e V hV).injective (HodgeSub.corr_unique hP T A g hA hg V hV t _ _ (ha V hV t).2 ht)⟩`.
+-/
 theorem IsHodgeIncl.split (hP : CovTop.Hypotheses2) (hA : IsAbelianScheme A) (hg : SmoothOfRelativeDimension g A.hom)
     {a : omega A ⟶ H} (ha : IsHodgeIncl e a) (V : T.Opens) (hV : IsAffineOpen V) :
     Function.Injective (appLinear a V) ∧ ∃ N, IsCompl (LinearMap.range (appLinear a V)) N := by
@@ -262,6 +326,11 @@ theorem IsHodgeIncl.split (hP : CovTop.Hypotheses2) (hA : IsAbelianScheme A) (hg
   · obtain ⟨t, ht⟩ := HodgeSubSurj.main hP T A g hA hg V hV _ hs
     exact ⟨t, (e V hV).injective (HodgeSub.corr_unique hP T A g hA hg V hV t _ _ (ha V hV t).2 ht)⟩
 
+/- English proof (translation)
+Establish `w : a ≫ β ≫ dualMap a = 0` using `hom_dual_ext_affine fun V hV s t ↦ by`. Establish `hAV` using `DeRhamSheaf.VB.isAbelianScheme_onAff A hA hV`. Establish `hgV` using `DeRhamSheaf.VB.smooth_onAff A hg hV`. Take `⟨-, hc, -, -, hrk⟩` from `hP.p5.2.1 Γ(T, V) (onAff A hV) g hAV hgV`. Conclude with `hβ.isotropic hP.p5 hA hg hd hV _ hc hrk (fun Q hQ φ hφ x y hx hy ↦ PrincipalPolPairing.isotropic hP.p5 hAV hgV hQ.isLB hφ x ((Submodule.mem_dualAnnihilator _).2 hx) y ((Submodule.mem_dualAnnihilator _).2 hy)) (ha V hV s).1 (ha V hV t).1`.
+
+Use `hA.proper` as an intermediate fact. Use `hg` as an intermediate fact. Conclude with `⟨w, lagrangian_shortExact T g _ H (isVB_omega A g) hH a β (hβ.isIso hP.p5 hA hg hH) (ha.split hP hA hg) w⟩`.
+-/
 theorem hodge_shortExact (hP : CovTop.Hypotheses2) (hA : IsAbelianScheme A) (hg : SmoothOfRelativeDimension g A.hom)
     {P : LB (A ⊗ A).left} (hd : IsDual A A P) (hH : IsVB H (2 * g)) {a : omega A ⟶ H} (ha : IsHodgeIncl e a)
     {β : H ⟶ dual H} (hβ : IsPolPairing e P β) :
@@ -283,6 +352,21 @@ section Conj
 
 variable (p : ℕ) [Fact p.Prime] (h0 : (p : Γ(T, ⊤)) = 0)
 
+/- English proof (translation)
+Use `letI : Algebra (ZMod p) Γ(T, ⊤) := ((Ideal.Quotient.lift (Ideal.span {(p : ℤ)}) (Int.castRingHom Γ(T, ⊤)) (fun x hx ↦ by`. Take `⟨y, rfl⟩` from `Ideal.mem_span_singleton'.1 hx`. Simplify using `[h0])).comp (Int.quotientSpanNatEquivZMod p).symm.toRingHom).toAlgebra`. Establish `hH` using `DeRhamSheaf.VB.isVB_of_isDeRhamSheaf hP.p5 T A g hA hg H ⟨e, he⟩`. Establish `hAV` using `fun (V : T.Opens) (hV : IsAffineOpen V) ↦ DeRhamSheaf.VB.isAbelianScheme_onAff A hA hV`.
+
+Establish `hgV` using `fun (V : T.Opens) (hV : IsAffineOpen V) ↦ DeRhamSheaf.VB.smooth_onAff A hg hV`. Establish `hCV` using `fun (V : T.Opens) (hV : IsAffineOpen V) ↦ hC p Γ(T, V) (SS.FrobField.cast_zero h0 V) (onAff A hV) g (hAV V hV) (hgV V hV) (ConjSeq.cast_left p Γ(T, V) (SS.FrobField.cast_zero h0 V) (onAff A hV)) (ConjSeq.frobMor p Γ(T, V) (SS.FrobField.cast_zero h0 V) (onAff A hV) (ConjSeq.cast_l …`. Take `⟨C, hCs⟩` from `ConjSeq.ConjSub.exists_conjSub hP p A g hA hg H e he`. Establish `hzC : Ψ ≫ cokernel.π C.incl = 0` using `ConjSeq.frobLin_comp_cokernel_π_eq_zero p A g hA hg H e he C hCs Ψ hΨ`. Use `haveI := C.mono_incl`.
+
+Set `Ψc : (frobPull p h0).obj H ⟶ C.toMod` to `Abelian.monoLift C.incl Ψ hzC`. Establish `hΨc : Ψc ≫ C.incl = Ψ` using `Abelian.monoLift_comp _ _ _`. Establish `hepi : Epi Ψc` using `ConjIso.epi_frobPull_conj p A g hA hg H e he C hCs Ψc (by rw [hΨc]; exact hΨ)`. Establish `hz : (frobPull p h0).map a ≫ Ψ = 0` using `frobPull_hom_ext_affine p h0 fun V hV s ↦ by`. Use `(congrArg (Ψ.app V) (QCoh.pullback_map_app_pullbackSections (frob T p h0) _ _ _)).trans ?_` and prove the remaining obligations.
+
+Apply `(e V hV).injective` to reduce the goal to its premises. Conclude with `(hΨ V hV _).trans (((hCV V hV).1 _ (ha V hV s).1).trans (map_zero (e V hV)).symm)`. Establish `hz' : (frobPull p h0).map a ≫ Ψc = 0`. Rewrite using `[← cancel_mono C.incl, Category.assoc, hΨc, hz, zero_comp]`. Establish `hco : IsColimit (CokernelCofork.ofπ ((frobPull p h0).map b) (show (frobPull p h0).map a ≫ (frobPull p h0).map b = 0 by rw [← Functor.map_comp, w, Functor.map_zero]))` using `isColimitCoforkMapOfIsColimit' (frobPull p h0) w hs.gIsCokernel`.
+
+Take `⟨π, hπ⟩` from `CokernelCofork.IsColimit.desc' hco Ψc hz'`. Establish `hπ' : (frobPull p h0).map b ≫ π = Ψc` using `hπ`. Establish `: Epi π` using `epi_of_epi_fac hπ'`. Establish `: IsIso π` using `isIso_of_epi_of_isVB π g (hL.frobPull p h0) (ConjSeq.isVB_conj hC hP p A g hA hg H e he C hCs)`. Establish `hmem (V : T.Opens) (s : Γ(H, V)) : s ∈ LinearMap.range (appLinear (π ≫ C.incl) V) ↔ s ∈ C.sec V`.
+
+Use `⟨?_, fun h ↦ ?_⟩` and prove the remaining obligations. Introduce and unpack `⟨t, rfl⟩`. Conclude with `C.incl_app_mem _`. Take `⟨t, rfl⟩` from `C.mem_sec_iff.1 h`. Conclude with `⟨(inv π).app V t, congr(($(IsIso.inv_hom_id_assoc π C.incl)).app V t)⟩`.
+
+Establish `w' : (π ≫ C.incl) ≫ β ≫ dualMap (π ≫ C.incl) = 0` using `hom_dual_ext_affine fun V hV s t ↦ by`. Take `⟨-, hc, hrk, hd'⟩` from `hCV V hV`. Conclude with `hβ.isotropic hP.p5 hA hg hd hV _ hc hrk (fun Q hQ φ hφ x y hx hy ↦ hd' (onAff A hV) (hAV V hV) (hgV V hV) _ _ Q hQ φ hφ x y (fun c ↦ hx _ (Submodule.subset_span ⟨c, rfl⟩)) fun c ↦ hy _ (Submodule.subset_span ⟨c, rfl⟩)) ((hCs V hV _).1 (C.incl_app_mem _)) ((hCs V hV _).1 (C.incl_a …`. Use `⟨π ≫ C.incl, by rw [← Category.assoc, hπ', hΨc], w', lagrangian_shortExact T g _ H (hL.frobPull p h0) hH _ β (hβ.isIso hP.p5 hA hg hH) (fun V hV ↦ ⟨QCoh.injective_app_of_mono _ V, exists_isCompl_range (e V hV) _ _ (fun s ↦ (hmem V s).trans (hCs V hV s)) (hCV V hV).2.1⟩) w'⟩` and prove the remaining obligations.
+-/
 theorem exists_conj (hC : ConjugateFiltration) (hP : CovTop.Hypotheses2) (hA : IsAbelianScheme A)
     (hg : SmoothOfRelativeDimension g A.hom) {P : LB (A ⊗ A).left} (hd : IsDual A A P) (he : IsDRIso A H e)
     {a : omega A ⟶ H} (ha : IsHodgeIncl e a) {β : H ⟶ dual H} (hβ : IsPolPairing e P β)
@@ -343,6 +427,13 @@ section Datum
 
 variable {c : O →+* O} {i : OAct O A} {P : LB (A ⊗ A).left}
 
+/- English proof (translation)
+Take `⟨hd, hs, hr⟩` from `h`. Establish `hP` using `hd.isLB`. Establish `hs' : (swap P).IsLB` using `pull_isLB hP _`. Establish `sym {Y : Over T} (x y : Y ⟶ A) : evc hP x y = evc hP y x`. Rewrite using `[← evc_swap hP hs', evc, (cls_eq_iff hs' hP).2 hs, evc]`.
+
+Establish `ros (z : O) {Y : Over T} (x y : Y ⟶ A) : evc hP (x ≫ i.act z) y = evc hP x (y ≫ i.act (c z))`. Establish `k` using `congrArg (CechPic.pull (lift x y).left) ((cls_eq_iff (pull_isLB hP _) (pull_isLB hP _)).2 (hr z))`. Rewrite `k` using `[cls_ev hP, cls_ev hP, pull_evc, pull_evc]`. Simplify `k` using `only [lift_fst_assoc, lift_snd_assoc, lift_fst, lift_snd]`. Use `BirigidLift.dual_ext hd ?_` and prove the remaining obligations.
+
+Rewrite using `[← ros, sym, ← ros, sym]`.
+-/
 theorem IsSelfDual.act_conj_conj (h : IsSelfDual c i P) (x : O) : i.act (c (c x)) = i.act x := by
   obtain ⟨hd, hs, hr⟩ := h
   have hP := hd.isLB
@@ -358,6 +449,21 @@ theorem IsSelfDual.act_conj_conj (h : IsSelfDual c i P) (x : O) : i.act (c (c x)
 
 variable (p : ℕ) [Fact p.Prime] (h0 : (p : Γ(T, ⊤)) = 0)
 
+/- English proof (translation)
+Use `letI : Algebra (ZMod p) Γ(T, ⊤) := ((Ideal.Quotient.lift (Ideal.span {(p : ℤ)}) (Int.castRingHom Γ(T, ⊤)) (fun x hx ↦ by`. Take `⟨y, rfl⟩` from `Ideal.mem_span_singleton'.1 hx`. Simplify using `[h0])).comp (Int.quotientSpanNatEquivZMod p).symm.toRingHom).toAlgebra`. Take `⟨H, hH₀⟩` from `exists_isDeRhamSheaf hP.p5 T A g hA hg`. Establish `hH` using `DeRhamSheaf.VB.isVB_of_isDeRhamSheaf hP.p5 T A g hA hg H hH₀`.
+
+Take `⟨e, he⟩` from `(isDeRhamSheaf_iff A H).1 hH₀`. Take `⟨ρ, hρ⟩` from `GlobalTheory.T.exists_de_rham_ring_action O T A hA i H e he`. Take `⟨a, ha⟩` from `exists_isHodgeIncl hP hA hg he`. Take `⟨β, hβ⟩` from `exists_isPolPairing hP.p5 hA hg (isPerfect_of_symm h.1 h.2.1) he`. Take `⟨Ψ, hΨ⟩ : ∃ Ψ, IsLinFrob e p h0 Ψ` from `LinFrob.exists_linFrob hP p A g hA hg H e he`.
+
+Take `⟨w₁, s₁⟩` from `hodge_shortExact hP hA hg h.1 hH ha hβ`. Use `hg` as an intermediate fact. Establish `hω` using `isVB_omega A g`. Take `⟨u, hu, w₂, s₂⟩` from `exists_conj p h0 hC hP hA hg h.1 he ha hβ hω.dual s₁ hΨ`. Use `hω.isIso_toBidual_of_local_frames` as an intermediate fact.
+
+Use `DualPull.isIso_theta (frob T p h0) hω.dual` as an intermediate fact. Set `θ` to `(frobPull p h0).map (cartierDualToBidual (omega A)) ≫ DualPull.theta (frob T p h0) (Lie A)`. Establish `ea : IsEquivariant (omegaAct i) ρ a` using `GlobalTheory.T.hodge_inclusion_equivariant hP O T A g hA hg i H e ρ a hρ ha`. Establish `eβ` using `GlobalTheory.T.polarization_pairing_equivariant hP O c T A g hA hg i P h H e ρ β hρ hβ`. Establish `eΨ` using `GlobalTheory.T.frobenius_equivariant_de_rham O T A i H e p h0 ρ Ψ hρ hΨ`.
+
+Establish `eb : IsEquivariant ρ ((lieAct i).comp c) (β ≫ dualMap a)` using `fun x ↦ by`. Rewrite using `[← Category.assoc, eβ, Category.assoc, Category.assoc, ← dualMap_comp, ← ea (c x), dualMap_comp]`. Both sides reduce to the same expression. Use `s₁.epi_g` as an intermediate fact. Establish `eu : IsEquivariant (pullAct ((lieAct i).comp c) (frob T p h0)) ρ u` using `fun x ↦ by`.
+
+Rewrite using `[← cancel_epi ((frobPull p h0).map (β ≫ dualMap a)), ← Category.assoc, ← eb.pullback (frob T p h0) x, Category.assoc, ← Category.assoc _ u, hu, eΨ x]`. Establish `eθ (x : O) : act (pullAct (omegaAct i) (frob T p h0)) x ≫ θ = θ ≫ dualMap (act (pullAct ((lieAct i).comp c) (frob T p h0)) (c x))`. Establish `k : act ((lieAct i).comp c) (c x) = dualMap (act (omegaAct i) x)` using `congrArg dualMap (@omegaMap_congr _ _ _ _ _ _ _ (i.hom _) (i.hom _) (h.act_conj_conj x))`. Rewrite using `[act_pullAct, act_pullAct, k, ← Category.assoc, ← Functor.map_comp, toBidual_naturality_dualSheafTranspose, Functor.map_comp, Category.assoc, Category.assoc, DualPull.theta_naturality]`. Establish `ev : IsEquivariant ρ (pullAct (omegaAct i) (frob T p h0)) ((β ≫ dualMap u) ≫ inv θ)` using `fun x ↦ by`.
+
+Rewrite using `[← cancel_mono θ, Category.assoc, Category.assoc, IsIso.inv_hom_id, Category.comp_id, Category.assoc, eθ, Category.assoc, IsIso.inv_hom_id_assoc, ← Category.assoc, eβ, Category.assoc, Category.assoc, ← dualMap_comp, ← eu (c x), dualMap_comp]`. Establish `w₂' : u ≫ (β ≫ dualMap u) ≫ inv θ = 0` using `by rw [← Category.assoc, w₂, zero_comp]`. Establish `s₂' : (ShortComplex.mk u ((β ≫ dualMap u) ≫ inv θ) w₂').ShortExact` using `ShortComplex.shortExact_of_iso (S₁ := ShortComplex.mk u (β ≫ dualMap u) w₂) (ShortComplex.isoMk (Iso.refl _) (Iso.refl _) (asIso θ).symm (by simp) (by simp)) s₂`. Conclude with `⟨⟨H, ρ, a, _, u, _, w₁, w₂', hH, s₁, s₂', ea, eb, eu, ev⟩, e, β, Ψ, he, hρ, ha, hβ, hΨ, rfl, hu, (Category.assoc _ _ _).trans ((congrArg (_ ≫ ·) (IsIso.inv_hom_id θ)).trans (Category.comp_id _))⟩`.
+-/
 theorem exists_datum [QuasiSeparated A.hom] (hC : ConjugateFiltration) (hP : CovTop.Hypotheses2) (hA : IsAbelianScheme A)
     (hg : SmoothOfRelativeDimension g A.hom) (h : IsSelfDual c i P) :
     ∃ d : TwoSeq.Datum (omegaAct i) ((lieAct i).comp c) (pullAct ((lieAct i).comp c) (frob T p h0))
@@ -414,6 +520,11 @@ section On
 variable (q : ℕ) [Fact q.Prime] (k : Type) [Field k] [CharP k q] (c : O →+* O) {C : Scheme.{0}} [Algebra k Γ(C, ⊤)]
   {G : Over C} [GrpObj G] [QuasiSeparated G.hom] (i : OAct O G) {f : T ⟶ C} {φ : A.left ⟶ G.left}
 
+/- English proof (translation)
+Use `hA.proper` as an intermediate fact. Take `⟨d, hd⟩` from `exists_datum q (cast_eq_zero q k f) hC hP hA hg hs`. Establish `e₁ : IsEquivariant (pullAct (omegaAct i) f) (omegaAct j) (omegaRes h.1).hom` using `isEquivariant_omegaBase h.1 h.2`. Establish `e₂ : IsEquivariant (pullAct ((lieAct i).comp c) f) ((lieAct j).comp c) (lieRes h.1 hω).hom` using `fun x ↦ isEquivariant_lieBase h.1 h.2 (c x)`. Establish `e₀ {M : C.Modules} (α : O →+* End M) : IsEquivariant (pullAct (pullAct α (frob C q (natCast_eq_zero C q k))) f) (pullAct (pullAct α f) (frob T q (cast_eq_zero q k f))) ((frobPullPullbackIso q (natCast_eq_zero C q k) f (cast_eq_zero q k f)).app M).hom` using `fun x ↦ (frobPullPullbackIso q (natCast_eq_zero C q k) f (cast_eq_zero q k f)).hom.naturality (act α x)`.
+
+Use `⟨transport d (omegaRes h.1) (lieRes h.1 hω) (frobLieRes h.1 q (natCast_eq_zero C q k) (cast_eq_zero q k f) hω) (frobOmegaRes h.1 q (natCast_eq_zero C q k) (cast_eq_zero q k f)) e₁ e₂ (isEquivariant_comp (e₀ _) (e₂.pullback _)) (isEquivariant_comp (e₀ _) (e₁.pullback _)), ?_⟩` and prove the remaining obligations. Unfold `IsDRDatumOn`. Simplify `hd` using `only [transport, Iso.inv_hom_id_assoc, Category.assoc, Iso.inv_hom_id, Category.comp_id]`.
+-/
 theorem exists_datumOn (hC : ConjugateFiltration) (hP : CovTop.Hypotheses2) (hA : IsAbelianScheme A)
     (hg : SmoothOfRelativeDimension g A.hom) {j : OAct O A} (h : CurveRootGeometry.IsActPull j i f φ) {P : LB (A ⊗ A).left}
     (hs : IsSelfDual c j P) (hω : IsVB (omega G) g) :
@@ -436,6 +547,21 @@ theorem exists_datumOn (hC : ConjugateFiltration) (hP : CovTop.Hypotheses2) (hA 
 
 end On
 
+/- English proof (translation)
+Use `hG.smooth` as an intermediate fact. Use `hG.geomConnected` as an intermediate fact. Establish `: ConnectedSpace G.left` using `(GroupConn.connectedSpace_group C G).1`. Take `⟨x⟩ : Nonempty G.left` from `inferInstance`. Take `⟨g, hg⟩` from `exists_dim_of_preconnected G.hom x`.
+
+Establish `hgA : SmoothOfRelativeDimension g A.hom` using `(smoothOfRelativeDimension_isStableUnderBaseChange g).of_isPullback h.1.1 hg`. Use `hc.isNoetherian` as an intermediate fact. Use `hc.smooth` as an intermediate fact. Establish `: Nonempty U` using `⟨⟨_, hU⟩⟩`. Establish `: CompactSpace U.toScheme` using `isCompact_iff_compactSpace.1 (TopologicalSpace.NoetherianSpace.isCompact (U : Set C))`.
+
+Establish `: IsLocallyNoetherian U.toScheme` using `isLocallyNoetherian_of_isOpenImmersion U.ι`. Establish `: AlgebraicGeometry.IsNoetherian U.toScheme` using `{}`. Establish `hN : Geo.Tor.IsNormalScheme U.toScheme` using `AbelianLocusNormalisation.isNormalScheme_of_open U.ι (@GlobalTheory.IsNormalScheme.pred _ (isNormalScheme_of_smooth (strHom k C)))`. Set `η : Sp C.functionField ⟶ U.toScheme` to `U.fromSpecStalkOfMem _ hU`. Establish `hη : η ≫ U.ι = CurveRootGeometry.genPt C` using `Scheme.Opens.fromSpecStalkOfMem_ι _ _ _`.
+
+Establish `: IsPreimmersion (η ≫ U.ι)` using `hη ▸ inferInstanceAs (IsPreimmersion (C.fromSpecStalk _))`. Establish `: IsPreimmersion η` using `.of_comp η U.ι`. Establish `: IsDominant η`. Establish `k` using `(IsGenericPointHom.quasiCompact_and_dominant_of_comp (k := η) (i := U.ι) (hη ▸ IsGenericPointHom.fromSpecStalk C)).2`. Use `infer_instance`.
+
+Establish `hw : φ₀ ≫ G.hom = (Q.A.hom ≫ η) ≫ U.ι` using `by rw [h₀.1.1.w, Category.assoc, hη]`. Set `ψ₀ : Q.A.left ⟶ A.left` to `h.1.1.lift φ₀ _ hw`. Establish `hψ₀ : ψ₀ ≫ φ = φ₀` using `h.1.1.lift_fst _ _ _`. Establish `: Mono φ` using `MorphismProperty.of_isPullback (P := .monomorphisms _) h.1.1.flip (inferInstanceAs (Mono U.ι))`. Establish `hp : CurveRootGeometry.IsActPull j₀ j η ψ₀`.
+
+Use `⟨h.1.cancel (h₀.1.congr hη.symm hψ₀.symm) (h.1.1.lift_snd _ _ _), fun x ↦ ?_⟩` and prove the remaining obligations. Rewrite using `[← cancel_mono φ, Category.assoc, Category.assoc, hψ₀, h.2, ← Category.assoc, hψ₀, h₀.2]`. Take `⟨P, hs, hgen⟩` from `GlobalTheory.T.abelian_extension_over_normal_base hD hP.p22 O c U hN _ η (IsGenericPointHom.of_isPreimmersion η) A j hA Q j₀ ψ₀ hp hr`. Establish `hω` using `isVB_omega G g`. Take `⟨d, hd⟩` from `exists_datumOn q k c i hC hP hA hgA h hs hω`.
+
+Use `⟨P, g, hω, d, hs, hd, fun ψ m e₁ ↦ ?_⟩` and prove the remaining obligations. Take `rfl : ψ = ψ₀` from `by rw [← cancel_mono φ, e₁, hψ₀]`. Conclude with `hgen m`.
+-/
 theorem exists_datumOn_open (hD : DualAbelianScheme) (hC : ConjugateFiltration) (hP : CovTop.Hypotheses2) (c : O →+* O)
     (q : ℕ) [Fact q.Prime] (k : Type) [Field k] [CharP k q] {C : Scheme.{0}} [Algebra k Γ(C, ⊤)] [IsIntegral C]
     (hc : IsSmoothProjCurve k C) {G : Over C} [GrpObj G] [hG : IsSemiAbelian G] (i : OAct O G)
@@ -487,6 +613,11 @@ theorem exists_datumOn_open (hD : DualAbelianScheme) (hC : ConjugateFiltration) 
   obtain rfl : ψ = ψ₀ := by rw [← cancel_mono φ, e₁, hψ₀]
   exact hgen m
 
+/- English proof (translation)
+Introduce `hX hP O _ c q _ k _ _ _ C _ _ hc G _ hG i ⟨Q, j₀, φ₀, h₀, hr⟩`. Use `hc.isNoetherian` as an intermediate fact. Take `⟨U, hU, hA⟩` from `GlobalTheory.T.semiabelian_abelian_near_generic_point C _ (CurveRootGeometry.genPt C) (IsGenericPointHom.fromSpecStalk C) G hG Q.A φ₀ h₀.1 Q.isAb`. Use `hG.comm` as an intermediate fact. Establish `h : CurveRootGeometry.IsActPull (OAct.pullback U.ι G i) i U.ι (pullback.fst G.hom U.ι)` using `⟨isGrpPullback_pullback G U.ι, fun x ↦ pullback.lift_fst _ _ _⟩`.
+
+Take `⟨P, g, hg, d, hs, hd, -⟩` from `exists_datumOn_open hX.dual hX.conj hP c q k hc i Q j₀ φ₀ h₀ hr hU hA h`. Conclude with `⟨U, _, _, _, _, h.1, P, g, hg, d, hU, hA, h, hs, hd⟩`.
+-/
 theorem main : GlobalTheory.CovTop.HypothesesXH → GlobalTheory.CovTop.Hypotheses2 → ∀ (O : Type) [CommRing O] (c : O →+* O) (q : ℕ) [Fact q.Prime]
     (k : Type) [Field k] [IsAlgClosed k] [CharP k q] (C : Scheme.{0}) [Algebra k Γ(C, ⊤)] [IsIntegral C],
     IsSmoothProjCurve k C → ∀ (G : Over C) [GrpObj G] [IsSemiAbelian G] (i : OAct O G), CurveRootGeometry.AbGen c i →

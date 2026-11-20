@@ -7,6 +7,21 @@ import Development.AutomorphicArithmetic.CoprimeRanks.FieldAny
 
 open Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotions.Inhab Formalism.HC GlobalTheory.EX UpperTheory.Top HostParam.Seam
 
+/- English proof (translation)
+Introduce `h`. Use `⟨2, by norm_num, fun eps h0 h1 => ?_⟩` and prove the remaining obligations. Take `⟨CT2, C8, c6, Cb, x0, hC, hc6, hCb, h⟩` from `h eps 4 h0 h1 (by norm_num)`. Take `⟨Y1, hY1⟩` from `QH.pairEx 1 one_pos eps 1 h0 h1 le_rfl`. Take `⟨x1, hx1⟩` from `admissibleClassesTwistedChar eps h0 h1`.
+
+Take `⟨x2, hx2⟩` from `Filter.eventually_atTop.1 ((tendsto_rpow_atTop (by positivity : 0 < eps / 5)).eventually_ge_atTop 8)`. Use `⟨CT2, C8, 4, c6, Cb, max (max x0 Y1) (max (max x1 x2) 4), by linarith, by norm_num, hc6, hCb, Scales.univ 2 1 le_rfl, fun s hs hx hS => ?_⟩` and prove the remaining obligations. Establish `hJ : s.J = 1` using `Scales.mem_univ.1 hS`. Simplify using `only [max_le_iff] at hx`. Take `⟨⟨a0, aY⟩, ⟨a1, a2⟩, a4⟩` from `hx`.
+
+Take `⟨q, d, hP⟩` from `hY1 s.x aY`. Rewrite `hP` using `[Real.rpow_one]`. Take `⟨hyp, hsp, -⟩` from `pairHyp eps s.x q d hP.pair`. Establish `hz` using `hx2 s.x a2`. Establish `hcard : Nat.card (⊥ : Subgroup (DirichletCharacter ℂ 1)) = 1` using `Subgroup.card_bot`.
+
+Establish `hW : s.x ≤ s.x ^ (2 + 8 * s.eps)`. Use `Real.rpow_le_rpow_of_exponent_le s.one_lt_alt.le (show (1 : ℝ) ≤ 2 + 8 * s.eps by linarith [s.eps_pos])` as an intermediate fact. Rewrite `this` using `[Real.rpow_one]`. Then use the resulting hypothesis. Take `⟨e, he2, w1, w2⟩` from `(anyFrame_window (⊥ : Subgroup (DirichletCharacter ℂ 1))).2.2 2 (s.x ^ (2 + 8 * s.eps)) (by rw [hcard]; push_cast; linarith)`. Establish `he : 4 * 1 ≤ 2 ^ e` using `le_trans (by norm_num) (Nat.pow_le_pow_right two_pos he2)`.
+
+Establish `hq3 : q ≠ 3`. Introduce and unpack `rfl`. Establish `b1` using `hP.pair.q_lo.trans_le (Real.log_le_self (Nat.cast_nonneg _))`. Move the coercions through the operations in `at b1`. Combine the linear equalities and inequalities to obtain the conclusion.
+
+Take `⟨φ, H0, f1, f2, f3, f4, f5, f6, f7, f8, -⟩` from `exists_fieldRows_any_ord (⊥ : Subgroup (DirichletCharacter ℂ 1)) (e := e) (b := ⌊s.x ^ (eps / 5)⌋₊) hyp hq3 hP.coprime he (by rw [hcard, one_pow]; exact Nat.one_le_two_pow) (Nat.le_floor (by push_cast; linarith)) fun p hp hp2 hpb => hsp p hp hp2 ((Nat.le_floor_iff (by linarith)). …`. Rewrite `w1`, `w2` using `[← f1]`. Take `⟨R, rfl, hR, hA⟩` from `hx1 s φ H0 hs a1 w1 w2`. Substitute `f2 f3 f4` using the available equality. Take `⟨H, q0, -, g2, g3, -⟩` from `h s R H0 1 s.x hs a0 hR (by rw [hJ]; norm_num) (by have : R.o = 1 := f5.trans hcard`.
+
+Rewrite using `[this]`. Use the proof step `norm_num)`. Use the proof step `(by exact_mod_cast f8) one_pos (by norm_num) f7`. Use the proof step `⟨by rw [hJ, div_one, Real.rpow_one], le_rfl⟩ hP f6 hA`. Conclude with `⟨R, H, q0, hR, g2, g3, trivial⟩`.
+-/
 theorem UpperTheory.T3.hostExOneOf :
     (∀ eps C0 : ℝ, 0 < eps → eps < 1 / 52 → 1 ≤ C0 → ∃ CT2 C8 c6 Cb x0 : ℝ, C0 ≤ C8 ∧ 0 < c6 ∧ 0 < Cb ∧
       ∀ (s : Scale) (R : Ranks) (H0 : HostAx R.toFrame) (M : ℕ) (Y : ℝ), s.eps = eps → x0 ≤ s.x → RankVal s R →

@@ -18,6 +18,17 @@ open scoped LinearAlgebra.Projectivization
 
 namespace GlobalTheory.ProjEmbed
 
+/- English proof (translation)
+Take `⟨μ, hμ⟩` from `Submodule.mem_span_singleton.1 hv`. Establish `hcomp : ∀ w, fderiv ℂ g z0 w a0 = fderiv ℂ (fun z => g z a0) z0 w` using `fun w => by`. Rewrite using `[fderiv_pi (fun i => (differentiableAt_pi.1 hg) i)]`. Both sides reduce to the same expression. Establish `hc0 : fderiv ℂ (fun z => g z a0) z0 = 0`.
+
+Rewrite using `[(show (fun z => g z a0) =ᶠ[𝓝 z0] fun _ => (1 : ℂ) from h1).fderiv_eq]`. Conclude with `fderiv_const_apply 1`. Establish `hga : g z0 a0 = 1` using `h1.self_of_nhds`. Establish `hμ0 : μ = 0`. Use `congrFun hμ a0` as an intermediate fact.
+
+Rewrite `this` using `[Pi.smul_apply, hga, smul_eq_mul, mul_one, hcomp, hc0]`. Simplify using `using this`. Establish `hL : fderiv ℂ g z0 v = 0` using `by rw [← hμ, hμ0, zero_smul]`. Use function extensionality and compare the values at `b`. Establish `e1 : fderiv ℂ (fun z : Fin d → ℂ => z b) z0 = fderiv ℂ (fun z => Ψ b (g z)) z0` using `(show (fun z : Fin d → ℂ => z b) =ᶠ[𝓝 z0] fun z => Ψ b (g z) from he b).fderiv_eq`.
+
+Establish `e2 : fderiv ℂ (fun z : Fin d → ℂ => z b) z0 v = v b`. Rewrite using `[(hasFDerivAt_apply b z0).fderiv]`. Both sides reduce to the same expression. Establish `e3 : fderiv ℂ (fun z => Ψ b (g z)) z0 v = fderiv ℂ (Ψ b) (g z0) (fderiv ℂ g z0 v)`. Rewrite using `[show (fun z => Ψ b (g z)) = Ψ b ∘ g from rfl, fderiv_comp z0 (hΨ b) hg]`.
+
+Both sides reduce to the same expression. Rewrite using `[← e2, e1, e3, hL, map_zero]`. Both sides reduce to the same expression.
+-/
 theorem fderiv_mem_span_eq_zero (d M : ℕ) (g : (Fin d → ℂ) → Fin M → ℂ) (z0 : Fin d → ℂ)
     (a0 : Fin M) (Ψ : Fin d → (Fin M → ℂ) → ℂ) (hg : DifferentiableAt ℂ g z0)
     (hΨ : ∀ b, DifferentiableAt ℂ (Ψ b) (g z0)) (he : ∀ b, ∀ᶠ z in 𝓝 z0, z b = Ψ b (g z))
@@ -48,6 +59,23 @@ theorem fderiv_mem_span_eq_zero (d M : ℕ) (g : (Fin d → ℂ) → Fin M → �
   rw [← e2, e1, e3, hL, map_zero]
   rfl
 
+/- English proof (translation)
+Introduce `k _ X p σ d R _ hP`. Take `⟨N, i, hci, hi⟩` from `hP`. Take `⟨F, hFi, hFr⟩` from `GlobalTheory.T.exists_injective_projective_embedding k X p σ N i hi`. Use `⟨N, F, hFi, fun x => ?_⟩` and prove the remaining obligations. Establish `hcov : (⨆ a, i ⁻¹ᵁ GlobalTheory.ProjSpace.chart k N a) = ⊤`.
+
+Rewrite using `[← Scheme.Hom.preimage_iSup, GlobalTheory.ProjSpace.iSup_chart, Scheme.Hom.preimage_top]`. Take `⟨a, ha⟩` from `exists_mem_ptsIn hcov x`. Use `set W0 := i ⁻¹ᵁ GlobalTheory.ProjSpace.chart k N a with hW0`. Use `set G : CxPts p σ → Fin (N + 1) → ℂ := fun y j => ev p σ W0 (GlobalTheory.ProjSpace.pullRatio i W0 a le_rfl j) y with hG`. Use `⟨ptsIn p σ W0, isOpen_ptsIn _, ha, G, fun j => (R.finAtlas_holoOn_iff (isOpen_ptsIn _)).2 (R.holoOn_ev _ _), fun y hy => hFr a y hy, ?_⟩` and prove the remaining obligations.
+
+Introduce `j hx v hv`. Take `⟨c, hc⟩` from `R.isAlgAtlas_finAtlas j`. Rewrite `hx`, `hv` using `[hc]`. Establish `hxs : x ∈ c.e.source` using `hx`. Establish `hxU : x ∈ ptsIn p σ c.U` using `c.source_subset hxs`.
+
+Use `choose Ψ hΨd hΨe using fun b : Fin d => GlobalTheory.T.projective_chart_holomorphic_ratio k X p σ N i hi a c.U (c.x b) x hxU ha`. Establish `hz0 : c.finChart.symm (c.finChart x) = x` using `c.finChart.left_inv hx`. Establish `hgx : (G ∘ c.finChart.symm) (c.finChart x) = G x` using `by simp only [Function.comp_apply, hz0]`. Establish `hmt : c.finChart x ∈ c.finChart.target` using `c.finChart.map_source hx`. Establish `hsymm : Tendsto c.finChart.symm (𝓝 (c.finChart x)) (𝓝 x)`.
+
+Use `c.finChart.continuousAt_symm hmt` as an intermediate fact. Rewrite `this` using `[ContinuousAt, hz0]`. Then use the resulting hypothesis. Establish `htg : ∀ᶠ z in 𝓝 (c.finChart x), z ∈ c.finChart.target` using `c.finChart.open_target.mem_nhds hmt`. Establish `hW : ∀ᶠ z in 𝓝 (c.finChart x), c.finChart.symm z ∈ ptsIn p σ W0` using `hsymm.eventually ((isOpen_ptsIn _).mem_nhds ha)`. Use `fderiv_mem_span_eq_zero d (N + 1) (G ∘ c.finChart.symm) (c.finChart x) a Ψ ?_ ?_ ?_ ?_ v (hgx ▸ hv)` and prove the remaining obligations.
+
+Use `differentiableAt_pi.2 fun b => ?_` and prove the remaining obligations. Establish `hh` using `(c.analyticOnNhd_finChart_iff (isOpen_ptsIn W0) (ev p σ W0 (GlobalTheory.ProjSpace.pullRatio i W0 a le_rfl b))).2 (c.holo W0 _) (c.finChart x) ⟨hmt, by simpa only [Set.mem_preimage, hz0] using ha⟩`. Conclude with `hh.differentiableAt`. Introduce `b`. Rewrite using `[hgx]`.
+
+Conclude with `hΨd b`. Introduce `b filter_upwards [htg, hsymm.eventually (hΨe b)] with z hz hz'`. Establish `hzs : c.finChart.symm z ∈ c.e.source` using `c.finChart.map_target hz`. Combine the equalities or inequalities in the displayed calculation. Use `filter_upwards [hW] with z hz show ev p σ W0 (GlobalTheory.ProjSpace.pullRatio i W0 a le_rfl a) (c.finChart.symm z) = 1`.
+
+Rewrite using `[GlobalTheory.ProjSpace.pullRatio_self, ev_eq hz, map_one]`.
+-/
 theorem isProjective_finAtlas : ∀ (k : Type) [CommRing k] (X : Scheme.{0}) (p : X ⟶ Sp k) (σ : k →+* ℂ) (d : ℕ) (R : AnRead p σ d) [CompactSpace (CxPts p σ)], IsProjOver p → IsProjective R.finAtlas := by
   intro k _ X p σ d R _ hP
   obtain ⟨N, i, hci, hi⟩ := hP

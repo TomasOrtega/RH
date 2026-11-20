@@ -25,6 +25,19 @@ noncomputable section
 
 namespace GlobalTheory.NormIdealUnit
 
+/- English proof (translation)
+Introduce `D PP hPP v φ hφ`. Establish `hq : ((D.host.QS * D.host.q : ℕ) : 𝓞 D.host.E) ∉ PP.asIdeal` using `fun h => hPP (by`. Rewrite using `[Nat.cast_mul]`. Conclude with `Ideal.mul_mem_right _ _ h)`. Establish `hN : ((Ideal.absNorm D.host.ccK : ℕ) : 𝓞 D.host.E) ∉ PP.asIdeal` using `fun h => hPP (by`.
+
+Rewrite using `[Nat.cast_mul]`. Conclude with `Ideal.mul_mem_left _ _ h)`. Establish `unit : ∀ x : 𝓞 D.host.E, x ∉ PP.asIdeal → Valued.v (rdQ φ (x : D.host.E)) = 1` using `fun x hx => le_antisymm (GlobalTheory.TameLiftChar.val_rdQ_le_one φ x) (not_lt.1 fun h => hx ((hφ x).2 h))`. Use `⟨⟨_, ReciprocityTheory.ChartRestriction.G.PullbackSections.PfModelLatA.normCc_mem_AA D, ?_⟩, ?_⟩` and prove the remaining obligations. Use `unit _ hN` as an intermediate fact.
+
+Simplify using `using this`. Establish `hnot : ¬ D.host.𝔟 ≤ PP.asIdeal` using `haveI := PP.isPrime`. Use the proof step `UpperTheory.Ram.half_not_le D.host _ hq`. Take `⟨z, hz, hzP⟩` from `Set.not_subset.1 hnot`. Establish `hz1` using `unit z hzP`.
+
+Establish `hB : ((D.host.𝔟 : Ideal (𝓞 D.host.E)) : FractionalIdeal (nonZeroDivisors (𝓞 D.host.E)) D.host.E) ≠ 0` using `FractionalIdeal.coeIdeal_ne_zero.2 (Formalism.L2.Pj.b_ne_bot D)`. Establish `hAA0 : ∀ a : D.host.E, a ∈ D.host.AA0 → Valued.v (rdQ φ a) ≤ 1`. Introduce `a ha`. Unfold `Host.AA0 at ha`. Rewrite `ha` using `[FractionalIdeal.mem_inv_iff hB]`.
+
+Take `⟨w, hw⟩` from `(FractionalIdeal.mem_one_iff _).1 (ha _ ((FractionalIdeal.mem_coeIdeal _).2 ⟨z, hz, rfl⟩))`. Establish `h3` using `GlobalTheory.TameLiftChar.val_rdQ_le_one φ w`. Rewrite `h3` using `[RingOfIntegers.coe_eq_algebraMap, hw, ← GlobalTheory.TameLiftChar.rdQHom_apply, map_mul, map_mul, GlobalTheory.TameLiftChar.rdQHom_apply, GlobalTheory.TameLiftChar.rdQHom_apply]`. Rewrite `h3` using `[← RingOfIntegers.coe_eq_algebraMap]`. Rewrite `h3` using `[hz1]`.
+
+Simplify using `using h3`. Establish `hle : D.host.AA ≤ D.host.AA0`. Unfold `Host.AA`. Combine the equalities or inequalities in the displayed calculation. Conclude with `fun a ha => hAA0 a (hle ha)`.
+-/
 theorem unit_at_split_place : ∀ (D : D7) (PP : Pl D.host.E), ((D.host.QS * D.host.q * Ideal.absNorm D.host.ccK : ℕ) : 𝓞 D.host.E) ∉ PP.asIdeal → ∀ (v : FinPl D) (φ : SplitProj D v), IsProjAt φ PP → ((∃ a : D.host.E, a ∈ D.host.AA ∧ Valued.v (rdQ φ a) = 1) ∧ ∀ a : D.host.E, a ∈ D.host.AA → Valued.v (rdQ φ a) ≤ 1) := by
   intro D PP hPP v φ hφ
   have hq : ((D.host.QS * D.host.q : ℕ) : 𝓞 D.host.E) ∉ PP.asIdeal := fun h => hPP (by

@@ -13,6 +13,11 @@ namespace GlobalTheory.WeilDict
 
 open Polynomial in
 
+/- English proof (translation)
+Establish `hmon : (X ^ N - X : Polynomial Ω).Monic` using `monic_X_pow_sub (by rw [degree_X]; exact_mod_cast (by omega : 1 < N))`. Establish `hb : ζ ∈ ((X ^ N - X : Polynomial Ω).map j).roots`. Rewrite using `[mem_roots (hmon.map j).ne_zero]`. Simplify using `[hζ]`. Rewrite `hb` using `[Splits.roots_map (IsAlgClosed.splits _), Multiset.mem_map]`.
+
+Take `⟨y, -, hy⟩` from `hb`. Conclude with `⟨y, hy⟩`.
+-/
 theorem exists_eq_of_pow_eq_self {Ω L : Type} [Field Ω] [IsAlgClosed Ω] [Field L] (j : Ω →+* L) {N : ℕ}
     (hN : 2 ≤ N) {ζ : L} (hζ : ζ ^ N = ζ) : ∃ z, j z = ζ := by
   have hmon : (X ^ N - X : Polynomial Ω).Monic :=
@@ -27,6 +32,13 @@ theorem exists_eq_of_pow_eq_self {Ω L : Type} [Field Ω] [IsAlgClosed Ω] [Fiel
 variable {E Ω : Type} [Field E] [NumberField E] [Field Ω] [Algebra E Ω] [IsAlgClosure E Ω]
   {A : ValuationSubring Ω} {w : HeightOneSpectrum (𝓞 E)}
 
+/- English proof (translation)
+Use `haveI : IsAlgClosed Ω := IsAlgClosure.isAlgClosed E`. Rewrite using `[GlobalTheory.FrobTeich.isFrob_iff_teichmuller E Ω A w h σ]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨-, hT⟩ ζ m hm hζ`. Take `⟨z, rfl⟩` from `exists_eq_of_pow_eq_self (ι : Ω →+* Kbar w) (Nat.one_lt_pow hm.ne' (one_lt_normV w)) hζ`.
+
+Establish `hz : z ^ normV w ^ m = z` using `(ι : Ω →+* Kbar w).injective (by rw [map_pow]; exact hζ)`. Express the relevant statement in the definitionally equal form `g (ι z) = ι z ^ normV w`. Rewrite using `[H z, hT z m hm hz, map_pow]`. Introduce `hT`. Use `⟨hσ, fun z m hm hz => (ι : Ω →+* Kbar w).injective ?_⟩` and prove the remaining obligations.
+
+Express the relevant statement in the definitionally equal form `ι (σ z) = ι (z ^ normV w)`. Rewrite using `[← H z, map_pow]`. Conclude with `hT _ m hm (by rw [← map_pow, hz])`.
+-/
 theorem isFrob_iff_of_lifts (h : IsPlaceOver A w) {ι : Ω →ₐ[E] Kbar w} {g : GalLoc w} {σ : G E Ω}
     (hσ : σ ∈ Dec (F := E) A) (H : Lifts ι g σ) :
     IsFrob (F := E) A (normV w) σ ↔

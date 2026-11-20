@@ -13,6 +13,23 @@ namespace ReciprocityTheory.ChartRestriction.G.TB.Canon
 
 open ReciprocityTheory.ChartRestriction.G.Geo.Tor.Germ ReciprocityTheory.ChartRestriction.G.TB.LogPf
 
+/- English proof (translation)
+Set `S` to `ℚ ⊗[ℤ] O`. Set `_ : Algebra O S` to `Algebra.TensorProduct.rightAlgebra`. Establish `: IsLocalization (Algebra.algebraMapSubmonoid O (nonZeroDivisors ℤ)) S` using `IsLocalization.tensorRight _ _`. Establish `: IsReduced S` using `isReduced_localizationPreserves (Algebra.algebraMapSubmonoid O (nonZeroDivisors ℤ)) S inferInstance`. Establish `: IsArtinianRing S` using `IsArtinianRing.of_finite ℚ S`.
+
+Establish `: ∀ I : MaximalSpectrum S, Algebra.FormallyUnramified ℚ (S ⧸ I.asIdeal)` using `fun I => by`. Set `_` to `Ideal.Quotient.field I.asIdeal`. Conclude with `Algebra.FormallyUnramified.of_isSeparable ℚ _`. Establish `: Algebra.FormallyUnramified ℚ S` using `Algebra.FormallyUnramified.of_equiv ((IsArtinianRing.equivPi S).restrictScalars ℚ).symm`. Take `⟨t, ht, ht1⟩` from `(Algebra.FormallyUnramified.iff_exists_tensorProduct (R := ℚ) (S := S)).1 this`.
+
+Set `L' : S →ₗ[ℚ] Module.End ℚ W` to `LinearMap.liftBaseChange ℚ L.toAddMonoidHom.toIntLinearMap`. Set `D' : S →ₗ[ℚ] W` to `LinearMap.liftBaseChange ℚ D.toIntLinearMap`. Set `Φ : S ⊗[ℚ] S →ₗ[ℚ] W` to `TensorProduct.lift (L'.compl₂ D')`. Establish `key : ∀ (a : O) (u : S ⊗[ℚ] S), Φ (((1 : S) ⊗ₜ[ℚ] ((1 : ℚ) ⊗ₜ[ℤ] a : S) - ((1 : ℚ) ⊗ₜ[ℤ] a : S) ⊗ₜ[ℚ] (1 : S)) * u) = R a (Φ u) - L a (Φ u) + L' (Algebra.TensorProduct.lmul' ℚ u) (D a)`. Introduce `a u`.
+
+Proceed by induction on `u using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `add u v hu hv => simp only [mul_add, map_add, hu, hv, LinearMap.add_apply]`. Normalize the expressions using the abelian group laws. Consider the case `tmul x y`.
+
+Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `add x x' hx hx' => simp only [add_tmul, mul_add, map_add, hx, hx', LinearMap.add_apply]`. Normalize the expressions using the abelian group laws. Consider the case `tmul p x`.
+
+Proceed by induction on `y using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `add y y' hy hy' => simp only [tmul_add, mul_add, map_add, hy, hy', LinearMap.add_apply]`. Normalize the expressions using the abelian group laws. Consider the case `tmul q y`.
+
+Establish `c` using `LinearMap.congr_fun (hc x a) (D y)`. Simplify using `only [Module.End.mul_apply] at c`. Simplify using `only [S, sub_mul, Algebra.TensorProduct.tmul_mul_tmul, one_mul, map_sub, Φ, TensorProduct.lift.tmul, LinearMap.compl₂_apply, L', D', LinearMap.liftBaseChange_tmul, AddMonoidHom.coe_toIntLinearMap, RingHom.toAddMonoidHom_eq_coe, AddMonoidHom.coe_coe, LinearMap.smul_apply, map_smul …`. Use `module`. Use `⟨-Φ t, fun a => ?_⟩` and prove the remaining obligations.
+
+Use `key a t` as an intermediate fact. Rewrite using `[ht, map_zero, ht1, show L' 1 = 1 from by show L' ((1 : ℚ) ⊗ₜ[ℤ] (1 : O)) = 1`. Conclude with `(LinearMap.liftBaseChange_tmul ℚ _ _ _).trans ((one_smul _ _).trans (map_one L))] at this`. Simplify using `only [map_neg, Module.End.one_apply] at this ⊢`. Take the linear combination `(norm := abel) -this`.
+-/
 theorem inner_of_derivation {O W : Type} [CommRing O] [Module.Free ℤ O] [Module.Finite ℤ O] [IsReduced O] [AddCommGroup W]
     [Module ℚ W] (L R : O →+* Module.End ℚ W) (hc : ∀ a b, L a * R b = R b * L a) (D : O →+ W)
     (hD : ∀ a b, D (a * b) = R b (D a) + L a (D b)) : ∃ β : W, ∀ a, D a = R a β - L a β := by
@@ -66,6 +83,25 @@ variable {k : Type} [CommRing k] [Algebra ℚ k] {τ : Type} [DecidableEq τ]
 def primT (T : Finset τ) (ω : τ → MvPowerSeries τ k) : MvPowerSeries τ k := fun m =>
   algebraMap ℚ k (((∑ w ∈ T, m w : ℕ) : ℚ)⁻¹) * ∑ w ∈ T, if m w = 0 then 0 else coeff (m - Finsupp.single w 1) (ω w)
 
+/- English proof (translation)
+Use extensionality with `n`. Rewrite using `[MvPowerSeries.coeff_pderiv]`. Establish `hS : (∑ w ∈ T, (n + Finsupp.single v 1 : τ →₀ ℕ) w) = (∑ w ∈ T, n w) + 1`. Simplify using `[Finset.sum_add_distrib, Finsupp.single_apply, hv]`. Establish `hterm : ∀ w ∈ T, (if (n + Finsupp.single v 1 : τ →₀ ℕ) w = 0 then 0 else coeff (n + Finsupp.single v 1 - Finsupp.single w 1) (ω w)) * ((n v : k) + 1) = ((n w : k) + if w = v then 1 else 0) * coeff n (ω v)`.
+
+Introduce `w hw`. Distinguish the cases in `hwv : w = v`. Substitute `hwv` using the available equality. Establish `h1 : (n + Finsupp.single w 1 : τ →₀ ℕ) w ≠ 0` using `by simp`. Rewrite using `[if_neg h1, add_tsub_cancel_right, if_pos rfl]`.
+
+Expand and normalize the polynomial expressions, which then agree. Establish `hvw : v ≠ w` using `Ne.symm hwv`. Distinguish the cases in `hn : n w = 0`. Establish `h0 : (n + Finsupp.single v 1 : τ →₀ ℕ) w = 0`. Rewrite using `[Finsupp.add_apply, Finsupp.single_apply, if_neg hvw, hn, add_zero]`.
+
+Rewrite using `[if_pos h0, if_neg hwv, hn]`. Simplify using the standard rewrite rules. Choose the witnesses or unpack the hypotheses as in `⟨p, rfl⟩ : ∃ p : τ →₀ ℕ, n = p + Finsupp.single w 1 := by`. Use `⟨n - Finsupp.single w 1, ?_⟩` and prove the remaining obligations. Use extensionality with `x`.
+
+Distinguish the cases in `hx : x = w`. Substitute `hx` using the available equality. Rewrite using `[Finsupp.add_apply, Finsupp.tsub_apply, Finsupp.single_eq_same]`. Use linear arithmetic over natural numbers and integers. Rewrite using `[Finsupp.add_apply, Finsupp.tsub_apply, Finsupp.single_apply, if_neg (Ne.symm hx)]`.
+
+Simplify using the standard rewrite rules. Establish `h1 : (p + Finsupp.single w 1 + Finsupp.single v 1 : τ →₀ ℕ) w ≠ 0`. Simplify using `[Finsupp.single_apply, hvw]`. Establish `h2 : p + Finsupp.single w 1 + Finsupp.single v 1 - Finsupp.single w 1 = p + Finsupp.single v 1`. Rewrite using `[add_right_comm, add_tsub_cancel_right]`.
+
+Establish `h3 : (p + Finsupp.single w 1 : τ →₀ ℕ) v = p v`. Rewrite using `[Finsupp.add_apply, Finsupp.single_apply, if_neg hwv, add_zero]`. Establish `h4 : (p + Finsupp.single w 1 : τ →₀ ℕ) w = p w + 1`. Rewrite using `[Finsupp.add_apply, Finsupp.single_eq_same]`. Rewrite using `[if_neg h1, h2, h3, h4, if_neg hwv, ← MvPowerSeries.coeff_pderiv, hω w hw v hv, MvPowerSeries.coeff_pderiv]`.
+
+Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Use `show (algebraMap ℚ k (((∑ w ∈ T, (n + Finsupp.single v 1 : τ →₀ ℕ) w : ℕ) : ℚ)⁻¹) * ∑ w ∈ T, (if (n + Finsupp.single v 1 : τ →₀ ℕ) w = 0 then 0 else coeff (n + Finsupp.single v 1 - Finsupp.single w 1) (ω w))) * ((n v : k) + 1) = coeff n (ω v)`. Rewrite using `[mul_assoc, Finset.sum_mul, Finset.sum_congr rfl hterm, ← Finset.sum_mul, Finset.sum_add_distrib, hS]`. Simplify using `only [Finset.sum_ite_eq', hv, if_true, ite_true]`.
+
+Establish `hc : (∑ w ∈ T, (n w : k)) + 1 = algebraMap ℚ k (((∑ w ∈ T, n w) + 1 : ℕ) : ℚ)` using `by simp`. Rewrite using `[hc, ← mul_assoc, ← map_mul, inv_mul_cancel₀ (by positivity), map_one, one_mul]`.
+-/
 theorem pderiv_primT (T : Finset τ) (ω : τ → MvPowerSeries τ k)
     (hω : ∀ a ∈ T, ∀ c ∈ T, pderiv k c (ω a) = pderiv k a (ω c)) (v : τ) (hv : v ∈ T) : pderiv k v (primT T ω) = ω v := by
   ext n
@@ -133,10 +169,16 @@ variable {n l : ℕ}
 
 def gen (j : Fin n) : Q k d n := ⟨pt k d j, cc_pt j⟩
 
+/- English proof (translation)
+Introduce `j i` and use `(b j).2 i`.
+-/
 theorem czQ (b : Fin n → Q k d l) : CZ (fun j => (b j).1) := fun j i => (b j).2 i
 
 def sb (b : Fin n → Q k d l) : PS k n d →+* PS k l d := evHom (czQ b)
 
+/- English proof (translation)
+The claim follows from `evHom_apply (czQ b) f`.
+-/
 theorem sb_apply (b : Fin n → Q k d l) (f : PS k n d) : sb b f = ev (fun j => (b j).1) f := evHom_apply (czQ b) f
 
 def sq (b : Fin n → Q k d l) : Q k d n →+ Q k d l where
@@ -145,8 +187,14 @@ def sq (b : Fin n → Q k d l) : Q k d n →+ Q k d l where
   map_zero' := Subtype.ext (funext fun _ => map_zero _)
   map_add' _ _ := Subtype.ext (funext fun _ => map_add _ _ _)
 
+/- English proof (translation)
+The claim follows from `Subtype.ext <| funext fun i => (sb_apply b _).trans (ev_X (czQ b) j i)`.
+-/
 @[simp] theorem sq_gen (b : Fin n → Q k d l) (j : Fin n) : sq b (gen j) = b j := Subtype.ext <| funext fun i => (sb_apply b _).trans (ev_X (czQ b) j i)
 
+/- English proof (translation)
+Simplify using `only [sb_apply]`. Rewrite using `[ev_ev (czQ b) (czQ a)]`. Use `congr 1`. Use function extensionality and compare the values at `j i`. Conclude with `(sb_apply b _).symm`.
+-/
 theorem sb_sb {m : ℕ} (b : Fin n → Q k d l) (a : Fin m → Q k d n) (f : PS k m d) :
     sb b (sb a f) = sb (fun j => sq b (a j)) f := by
   simp only [sb_apply]
@@ -155,12 +203,18 @@ theorem sb_sb {m : ℕ} (b : Fin n → Q k d l) (a : Fin m → Q k d n) (f : PS 
   funext j i
   exact (sb_apply b _).symm
 
+/- English proof (translation)
+The claim follows from `(sb_apply _ f).trans (ev_pt f)`.
+-/
 theorem sb_gen (f : PS k n d) : sb gen f = f := (sb_apply _ f).trans (ev_pt f)
 
 def E2 (f : PS k 2 d) (u v : Q k d n) : PS k n d := sb ![u, v] f
 
 def E3 (f : PS k 3 d) (u v w : Q k d n) : PS k n d := sb ![u, v, w] f
 
+/- English proof (translation)
+Establish `e : (fun j => sq b (![u, v] j)) = ![sq b u, sq b v]`. Use function extensionality and compare the values at `i`. Apply the tactic sequence `fin_cases i <;> rfl`. Use `show sb b (sb ![u, v] f) = sb ![sq b u, sq b v] f`. Rewrite using `[sb_sb, e]`.
+-/
 @[simp] theorem formalPointSubstitutionSeries_valueAtTwoPoints (b : Fin n → Q k d l) (f : PS k 2 d) (u v : Q k d n) : sb b (E2 f u v) = E2 f (sq b u) (sq b v) := by
   have e : (fun j => sq b (![u, v] j)) = ![sq b u, sq b v] := by
     funext i
@@ -168,6 +222,9 @@ def E3 (f : PS k 3 d) (u v w : Q k d n) : PS k n d := sb ![u, v, w] f
   show sb b (sb ![u, v] f) = sb ![sq b u, sq b v] f
   rw [sb_sb, e]
 
+/- English proof (translation)
+Establish `e : (fun j => sq b (![u, v, w] j)) = ![sq b u, sq b v, sq b w]`. Use function extensionality and compare the values at `i`. Apply the tactic sequence `fin_cases i <;> rfl`. Use `show sb b (sb ![u, v, w] f) = sb ![sq b u, sq b v, sq b w] f`. Rewrite using `[sb_sb, e]`.
+-/
 @[simp] theorem formalPointSubstitutionSeries_valueAtThreePoints (b : Fin n → Q k d l) (f : PS k 3 d) (u v w : Q k d n) :
     sb b (E3 f u v w) = E3 f (sq b u) (sq b v) (sq b w) := by
   have e : (fun j => sq b (![u, v, w] j)) = ![sq b u, sq b v, sq b w] := by
@@ -176,6 +233,9 @@ def E3 (f : PS k 3 d) (u v w : Q k d n) : PS k n d := sb ![u, v, w] f
   show sb b (sb ![u, v, w] f) = sb ![sq b u, sq b v, sq b w] f
   rw [sb_sb, e]
 
+/- English proof (translation)
+Establish `h : (![gen 0, gen 1] : Fin 2 → Q k d 2) = gen`. Use function extensionality and compare the values at `i`. Apply the tactic sequence `fin_cases i <;> rfl`. Use `show sb ![gen 0, gen 1] f = f`. Rewrite using `[h, sb_gen]`.
+-/
 theorem formalSeriesValueAtTwoPoints_genericPoints (f : PS k 2 d) : E2 f (gen 0) (gen 1) = f := by
   have h : (![gen 0, gen 1] : Fin 2 → Q k d 2) = gen := by
     funext i
@@ -183,6 +243,9 @@ theorem formalSeriesValueAtTwoPoints_genericPoints (f : PS k 2 d) : E2 f (gen 0)
   show sb ![gen 0, gen 1] f = f
   rw [h, sb_gen]
 
+/- English proof (translation)
+Establish `h : (![gen 0, gen 1, gen 2] : Fin 3 → Q k d 3) = gen`. Use function extensionality and compare the values at `i`. Apply the tactic sequence `fin_cases i <;> rfl`. Use `show sb ![gen 0, gen 1, gen 2] f = f`. Rewrite using `[h, sb_gen]`.
+-/
 theorem formalSeriesValueAtThreePoints_genericPoints (f : PS k 3 d) : E3 f (gen 0) (gen 1) (gen 2) = f := by
   have h : (![gen 0, gen 1, gen 2] : Fin 3 → Q k d 3) = gen := by
     funext i
@@ -192,35 +255,55 @@ theorem formalSeriesValueAtThreePoints_genericPoints (f : PS k 3 d) : E3 f (gen 
 
 def Dir (j : Fin n) (p : Q k d n) (t : PS k n d) : Prop := ∀ b c, pderiv k (j, b) (p.1 c) = if c = b then t else 0
 
+/- English proof (translation)
+Introduce `b c`. Use `show pderiv k (j, b) (pt k d j c) = _`. Rewrite using `[pderiv_pt]`. Simplify using the standard rewrite rules.
+-/
 theorem dir_same (j : Fin n) : Dir j (gen j : Q k d n) 1 := by
   intro b c
   show pderiv k (j, b) (pt k d j c) = _
   rw [pderiv_pt]
   simp
 
+/- English proof (translation)
+Introduce `b c`. Use `show pderiv k (j, b) (pt k d i c) = _`. Rewrite using `[pderiv_pt]`. Simplify using `[h]`.
+-/
 theorem dir_ne {i j : Fin n} (h : i ≠ j) : Dir j (gen i : Q k d n) 0 := by
   intro b c
   show pderiv k (j, b) (pt k d i c) = _
   rw [pderiv_pt]
   simp [h]
 
+/- English proof (translation)
+Introduce `b c`. Use `show pderiv k (j, b) 0 = _`. Simplify using the standard rewrite rules.
+-/
 theorem dir_zero (j : Fin n) : Dir j (0 : Q k d n) 0 := by
   intro b c
   show pderiv k (j, b) 0 = _
   simp
 
+/- English proof (translation)
+Introduce `b c`. Use `show pderiv k (j, b) (p.1 c + q.1 c) = _`. Rewrite using `[map_add, h b c, h' b c]`. Apply the tactic sequence `split_ifs <;> simp`.
+-/
 theorem Dir.add {j : Fin n} {p q : Q k d n} {s t : PS k n d} (h : Dir j p s) (h' : Dir j q t) : Dir j (p + q) (s + t) := by
   intro b c
   show pderiv k (j, b) (p.1 c + q.1 c) = _
   rw [map_add, h b c, h' b c]
   split_ifs <;> simp
 
+/- English proof (translation)
+Rewrite using `[sb_apply, pderiv_ev (czQ a), Fintype.sum_prod_type]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Simplify using `only [h i b, mul_ite, mul_zero, Finset.sum_ite_eq', Finset.sum_ite_eq, Finset.mem_univ, if_true, sb_apply]`.
+-/
 theorem pd_sb {m : ℕ} (a : Fin m → Q k d n) (t : Fin m → PS k n d) {j : Fin n} (h : ∀ i, Dir j (a i) (t i)) (b : Fin d)
     (f : PS k m d) : pderiv k (j, b) (sb a f) = ∑ i, sb a (pderiv k (i, b) f) * t i := by
   rw [sb_apply, pderiv_ev (czQ a), Fintype.sum_prod_type]
   refine Finset.sum_congr rfl fun i _ => ?_
   simp only [h i b, mul_ite, mul_zero, Finset.sum_ite_eq', Finset.sum_ite_eq, Finset.mem_univ, if_true, sb_apply]
 
+/- English proof (translation)
+Establish `hd : ∀ i, Dir j (![u, v] i) (![s, t] i)` using `fun i => by fin_cases i`. Conclude with `hu`. Conclude with `hv`. Use `show pderiv k (j, b) (sb ![u, v] f) = _`. Rewrite using `[pd_sb ![u, v] ![s, t] hd b f, Fin.sum_univ_two]`.
+
+Apply the tactic sequence `all_goals rfl`.
+-/
 theorem pderiv_eval_two {j : Fin n} {u v : Q k d n} {s t : PS k n d} (hu : Dir j u s) (hv : Dir j v t) (b : Fin d) (f : PS k 2 d) :
     pderiv k (j, b) (E2 f u v) = E2 (pderiv k (0, b) f) u v * s + E2 (pderiv k (1, b) f) u v * t := by
   have hd : ∀ i, Dir j (![u, v] i) (![s, t] i) := fun i => by
@@ -231,6 +314,11 @@ theorem pderiv_eval_two {j : Fin n} {u v : Q k d n} {s t : PS k n d} (hu : Dir j
   rw [pd_sb ![u, v] ![s, t] hd b f, Fin.sum_univ_two]
   all_goals rfl
 
+/- English proof (translation)
+Establish `hd : ∀ i, Dir j (![u, v, w] i) (![s, t, r] i)` using `fun i => by fin_cases i`. Conclude with `hu`. Conclude with `hv`. Conclude with `hw`. Use `show pderiv k (j, b) (sb ![u, v, w] f) = _`.
+
+Rewrite using `[pd_sb ![u, v, w] ![s, t, r] hd b f, Fin.sum_univ_three]`. Apply the tactic sequence `all_goals rfl`.
+-/
 theorem pderiv_eval_three {j : Fin n} {u v w : Q k d n} {s t r : PS k n d} (hu : Dir j u s) (hv : Dir j v t) (hw : Dir j w r) (b : Fin d)
     (f : PS k 3 d) : pderiv k (j, b) (E3 f u v w) =
       E3 (pderiv k (0, b) f) u v w * s + E3 (pderiv k (1, b) f) u v w * t + E3 (pderiv k (2, b) f) u v w * r := by
@@ -243,6 +331,23 @@ theorem pderiv_eval_three {j : Fin n} {u v w : Q k d n} {s t r : PS k n d} (hu :
   rw [pd_sb ![u, v, w] ![s, t, r] hd b f, Fin.sum_univ_three]
   all_goals rfl
 
+/- English proof (translation)
+Set `a : Fin n × Fin d → PS k n d` to `fun p => ((Function.update gen j 0 p.1 : Q k d n) : Pt k n d) p.2`. Establish `ha : MvPowerSeries.HasSubst a` using `(czQ (Function.update gen j 0)).hasSubst`. Establish `key : ∀ e : Fin n × Fin d →₀ ℕ, coeff m (e.prod fun s i => a s ^ i) = if e = m ∧ ∀ b, m (j, b) = 0 then 1 else 0`. Introduce `e`. Distinguish the cases in `he : ∀ b, e (j, b) = 0`.
+
+Establish `hp : (e.prod fun s i => a s ^ i) = MvPowerSeries.monomial e 1`. Use `(Finsupp.prod_congr fun s hs => ?_).trans (MvPowerSeries.monomial_one_eq e).symm` and prove the remaining obligations. Establish `hs1 : s.1 ≠ j`. Introduce `h1`. Apply `Finsupp.mem_support_iff.mp hs` to reduce the goal to its premises.
+
+Rewrite using `[show s = (j, s.2) from Prod.ext h1 rfl]`. Conclude with `he s.2`. Use `show ((Function.update gen j 0 s.1 : Q k d n) : Pt k n d) s.2 ^ e s = X s ^ e s`. Rewrite using `[Function.update_of_ne hs1]`. Both sides reduce to the same expression.
+
+Rewrite using `[hp, MvPowerSeries.coeff_monomial]`. Distinguish the cases in `hem : e = m`. Substitute `hem` using the available equality. Simplify using `[he]`. Rewrite using `[if_neg (Ne.symm hem), if_neg (fun h => hem h.1)]`.
+
+Use `push_neg at he`. Take `⟨b, hb⟩` from `he`. Establish `hp : (e.prod fun s i => a s ^ i) = 0`. Use `Finset.prod_eq_zero (Finsupp.mem_support_iff.mpr hb) ?_` and prove the remaining obligations. Use `show ((Function.update gen j 0 j : Q k d n) : Pt k n d) b ^ e (j, b) = 0`.
+
+Use `first`. Consider the case `rw [Function.update_self]`. Consider the case `rw [Function.update_same]`. Conclude with `zero_pow hb`. Rewrite using `[hp, map_zero, if_neg]`.
+
+Introduce and unpack `⟨rfl, h⟩`. Conclude with `hb (h b)`. Rewrite using `[sb_apply]`. Use `show coeff m (MvPowerSeries.subst a f) = _`. Rewrite using `[MvPowerSeries.coeff_subst ha, finsum_eq_single _ m]`.
+
+Use `show coeff m f • coeff m (m.prod fun s i => a s ^ i) = _`. Rewrite using `[key]`. Apply the tactic sequence `by_cases hm : ∀ b, m (j, b) = 0 <;> simp [hm]`. Introduce `e he show coeff e f • coeff m (e.prod fun s i => a s ^ i) = 0`. Rewrite using `[key, if_neg (fun h => he h.1), smul_zero]`.
+-/
 theorem coeff_kill (j : Fin n) (f : PS k n d) (m : Fin n × Fin d →₀ ℕ) :
     coeff m (sb (Function.update gen j 0) f) = if ∀ b, m (j, b) = 0 then coeff m f else 0 := by
   let a : Fin n × Fin d → PS k n d := fun p => ((Function.update gen j 0 p.1 : Q k d n) : Pt k n d) p.2
@@ -290,6 +395,17 @@ theorem coeff_kill (j : Fin n) (f : PS k n d) (m : Fin n × Fin d →₀ ℕ) :
 
 variable [Algebra ℚ k]
 
+/- English proof (translation)
+Use extensionality with `m`. Rewrite using `[map_zero]`. Distinguish the cases in `hm : ∀ b, m (j, b) = 0`. Use `congrArg (coeff m) h0` as an intermediate fact. Rewrite `this` using `[coeff_kill, if_pos hm, map_zero]`.
+
+Conclude with `this`. Use `push_neg at hm`. Take `⟨b, hb⟩` from `hm`. Choose the witnesses or unpack the hypotheses as in `⟨m', rfl⟩ : ∃ m' : Fin n × Fin d →₀ ℕ, m = m' + Finsupp.single (j, b) 1 := by`. Use `⟨m - Finsupp.single (j, b) 1, ?_⟩` and prove the remaining obligations.
+
+Use extensionality with `x`. Distinguish the cases in `hx : x = (j, b)`. Substitute `hx` using the available equality. Rewrite using `[Finsupp.add_apply, Finsupp.tsub_apply, Finsupp.single_eq_same]`. Use linear arithmetic over natural numbers and integers.
+
+Rewrite using `[Finsupp.add_apply, Finsupp.tsub_apply, Finsupp.single_apply, if_neg (Ne.symm hx)]`. Simplify using the standard rewrite rules. Establish `hc` using `congrArg (coeff m') (h b)`. Rewrite `hc` using `[MvPowerSeries.coeff_pderiv, map_zero]`. Establish `hu : IsUnit ((m' (j, b) : k) + 1)`.
+
+Establish `e : ((m' (j, b) : k) + 1) = algebraMap ℚ k ((m' (j, b) : ℚ) + 1)` using `by simp`. Rewrite using `[e]`. Conclude with `(isUnit_iff_ne_zero.mpr (by positivity)).map (algebraMap ℚ k)`. Conclude with `hu.mul_left_eq_zero.mp hc`.
+-/
 theorem zero_of_pd (j : Fin n) {f : PS k n d} (h : ∀ b, pderiv k (j, b) f = 0) (h0 : sb (Function.update gen j 0) f = 0) :
     f = 0 := by
   ext m
@@ -317,14 +433,25 @@ theorem zero_of_pd (j : Fin n) {f : PS k n d} (h : ∀ b, pderiv k (j, b) f = 0)
       exact (isUnit_iff_ne_zero.mpr (by positivity)).map (algebraMap ℚ k)
     exact hu.mul_left_eq_zero.mp hc
 
+/- English proof (translation)
+Use function extensionality and compare the values at `i`. Apply the tactic sequence `fin_cases i <;> first | rfl | simp [Function.update_apply]`.
+-/
 theorem update_three_one_zero : (Function.update gen 1 0 : Fin 3 → Q k d 3) = ![gen 0, 0, gen 2] := by
   funext i
   fin_cases i <;> first | rfl | simp [Function.update_apply]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `i`. Apply the tactic sequence `fin_cases i <;> first | rfl | simp [Function.update_apply]`.
+-/
 theorem update_three_two_zero : (Function.update gen 2 0 : Fin 3 → Q k d 3) = ![gen 0, gen 1, 0] := by
   funext i
   fin_cases i <;> first | rfl | simp [Function.update_apply]
 
+/- English proof (translation)
+Distinguish the cases in `h : i = j`. Substitute `h` using the available equality. Both sides reduce to the same expression. Use extensionality with `m`. Simplify using `only [MvPowerSeries.coeff_pderiv, Finsupp.add_apply, Finsupp.single_apply, h, Ne.symm h, if_false, ite_false, add_zero]`.
+
+Rewrite using `[add_right_comm m (Finsupp.single i 1) (Finsupp.single j 1)]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 private theorem pd_comm_lemma (i j : Fin n × Fin d) (f : PS k n d) :
     pderiv k i (pderiv k j f) = pderiv k j (pderiv k i f) := by
   by_cases h : i = j
@@ -336,6 +463,15 @@ private theorem pd_comm_lemma (i j : Fin n × Fin d) (f : PS k n d) :
     rw [add_right_comm m (Finsupp.single i 1) (Finsupp.single j 1)]
     ring
 
+/- English proof (translation)
+Establish `hψ : ∀ (u w : Q k d 3), E2 (E3 (pderiv k (1, b) α) (gen 0) 0 (gen 1)) u w = E3 (pderiv k (1, b) α) u 0 w`. Introduce `u w`. Use `show sb ![u, w] (E3 (pderiv k (1, b) α) (gen 0) 0 (gen 1)) = _`. Rewrite using `[formalPointSubstitutionSeries_valueAtThreePoints, sq_gen, sq_gen, map_zero]`. Apply the tactic sequence `all_goals rfl`.
+
+Establish `d0 : Dir (3 : Fin 4) (gen 0 : Q k d 4) 0` using `dir_ne (by decide)`. Establish `d1 : Dir (3 : Fin 4) (gen 1 : Q k d 4) 0` using `dir_ne (by decide)`. Establish `d2 : Dir (3 : Fin 4) (gen 2 : Q k d 4) 0` using `dir_ne (by decide)`. Establish `d3 : Dir (3 : Fin 4) (gen 3 : Q k d 4) 1` using `dir_same 3`. Establish `e` using `congrArg (pderiv k ((3 : Fin 4), b)) (coc (gen 0) (gen 1) (gen 3) (gen 2))`.
+
+Rewrite `e` using `[map_add, map_add, pderiv_eval_three d0 d1 d2, pderiv_eval_three (d0.add d1) d3 d2, pderiv_eval_three d1 d3 d2, pderiv_eval_three d0 (d1.add d3) d2]`. Simplify using `only [mul_zero, zero_add, add_zero, mul_one] at e`. Establish `e'` using `congrArg (sb (![gen 0, gen 1, gen 2, 0] : Fin 4 → Q k d 3)) e`. Establish `s0 : sq (![gen 0, gen 1, gen 2, 0] : Fin 4 → Q k d 3) (gen 0) = gen 0` using `sq_gen _ 0`. Establish `s1 : sq (![gen 0, gen 1, gen 2, 0] : Fin 4 → Q k d 3) (gen 1) = gen 1` using `sq_gen _ 1`.
+
+Establish `s2 : sq (![gen 0, gen 1, gen 2, 0] : Fin 4 → Q k d 3) (gen 2) = gen 2` using `sq_gen _ 2`. Establish `s3 : sq (![gen 0, gen 1, gen 2, 0] : Fin 4 → Q k d 3) (gen 3) = 0` using `sq_gen _ 3`. Rewrite `e'` using `[map_add, formalPointSubstitutionSeries_valueAtThreePoints, formalPointSubstitutionSeries_valueAtThreePoints, formalPointSubstitutionSeries_valueAtThreePoints, map_add, map_add, s0, s1, s2, s3, add_zero, formalSeriesValueAtThreePoints_genericPoints]`. Rewrite using `[hψ, hψ, e']`. Expand and normalize the polynomial expressions, which then agree.
+-/
 private theorem d1_lemma_2 (α : PS k 3 d)
     (coc : ∀ {n} (x y t w : Q k d n), E3 α x y w + E3 α (x + y) t w = E3 α y t w + E3 α x (y + t) w)
     (b : Fin d) :
@@ -364,6 +500,13 @@ private theorem d1_lemma_2 (α : PS k 3 d)
   rw [hψ, hψ, e']
   ring
 
+/- English proof (translation)
+Establish `hs : α = E3 α (gen 1) (gen 0) (gen 2)` using `(formalSeriesValueAtThreePoints_genericPoints α).symm.trans (sym _ _ _)`. Establish `d0 : Dir (0 : Fin 3) (gen 1 : Q k d 3) 0` using `dir_ne (by decide)`. Establish `d1 : Dir (0 : Fin 3) (gen 0 : Q k d 3) 1` using `dir_same 0`. Establish `d2 : Dir (0 : Fin 3) (gen 2 : Q k d 3) 0` using `dir_ne (by decide)`. Establish `h1` using `d1_lemma_2 α coc b`.
+
+Establish `e : pderiv k (0, b) α = E3 (pderiv k (1, b) α) (gen 1) (gen 0) (gen 2)` using `by conv_lhs => rw [hs]`. Rewrite using `[pderiv_eval_three d0 d1 d2]`. Simplify using `only [mul_zero, zero_add, add_zero, mul_one]`. Rewrite using `[e]`. Use `show sb ![gen 1, gen 0, gen 2] (pderiv k (1, b) α) = _`.
+
+Use `conv_lhs => rw [h1]`. Rewrite using `[map_sub, formalPointSubstitutionSeries_valueAtTwoPoints, formalPointSubstitutionSeries_valueAtTwoPoints, map_add, sq_gen, sq_gen, sq_gen]`. Apply the tactic sequence `all_goals rfl`.
+-/
 private theorem d0_lemma_4 (α : PS k 3 d) (sym : ∀ {n} (x y w : Q k d n), E3 α x y w = E3 α y x w)
     (coc : ∀ {n} (x y t w : Q k d n), E3 α x y w + E3 α (x + y) t w = E3 α y t w + E3 α x (y + t) w)
     (b : Fin d) :
@@ -384,6 +527,15 @@ private theorem d0_lemma_4 (α : PS k 3 d) (sym : ∀ {n} (x y w : Q k d n), E3 
   rw [map_sub, formalPointSubstitutionSeries_valueAtTwoPoints, formalPointSubstitutionSeries_valueAtTwoPoints, map_add, sq_gen, sq_gen, sq_gen]
   all_goals rfl
 
+/- English proof (translation)
+Establish `a0 : Dir (0 : Fin 3) (gen 0 : Q k d 3) 1` using `dir_same 0`. Establish `a1 : Dir (0 : Fin 3) (gen 1 : Q k d 3) 0` using `dir_ne (by decide)`. Establish `a2 : Dir (0 : Fin 3) (gen 2 : Q k d 3) 0` using `dir_ne (by decide)`. Establish `b0 : Dir (1 : Fin 3) (gen 0 : Q k d 3) 0` using `dir_ne (by decide)`. Establish `b1 : Dir (1 : Fin 3) (gen 1 : Q k d 3) 1` using `dir_same 1`.
+
+Establish `b2 : Dir (1 : Fin 3) (gen 2 : Q k d 3) 0` using `dir_ne (by decide)`. Establish `e1` using `congrArg (pderiv k ((0 : Fin 3), c)) (d1_lemma_2 α coc b)`. Establish `e2` using `congrArg (pderiv k ((1 : Fin 3), b)) (d0_lemma_4 α sym coc c)`. Rewrite `e1` using `[map_sub, pderiv_eval_two (a0.add a1) a2, pderiv_eval_two a1 a2]`. Rewrite `e2` using `[map_sub, pderiv_eval_two (b1.add b0) b2, pderiv_eval_two b0 b2]`.
+
+Simplify using `only [mul_zero, add_zero, zero_add, mul_one, sub_zero] at e1 e2`. Rewrite `e1` using `[pd_comm_lemma, e2]`. Establish `e3` using `congrArg (sb (![gen 0, 0, gen 1] : Fin 3 → Q k d 2)) e1`. Establish `t0 : sq (![gen 0, 0, gen 1] : Fin 3 → Q k d 2) (gen 0) = gen 0` using `sq_gen _ 0`. Establish `t1 : sq (![gen 0, 0, gen 1] : Fin 3 → Q k d 2) (gen 1) = 0` using `sq_gen _ 1`.
+
+Establish `t2 : sq (![gen 0, 0, gen 1] : Fin 3 → Q k d 2) (gen 2) = gen 1` using `sq_gen _ 2`. Rewrite `e3` using `[formalPointSubstitutionSeries_valueAtTwoPoints, formalPointSubstitutionSeries_valueAtTwoPoints, map_add, map_add, t0, t1, t2, add_zero, zero_add, formalSeriesValueAtTwoPoints_genericPoints, formalSeriesValueAtTwoPoints_genericPoints]`. Conclude with `e3.symm`.
+-/
 private theorem closed_lemma_5 (α : PS k 3 d) (sym : ∀ {n} (x y w : Q k d n), E3 α x y w = E3 α y x w)
     (coc : ∀ {n} (x y t w : Q k d n), E3 α x y w + E3 α (x + y) t w = E3 α y t w + E3 α x (y + t) w)
     (b c : Fin d) :
@@ -408,6 +560,37 @@ private theorem closed_lemma_5 (α : PS k 3 d) (sym : ∀ {n} (x y w : Q k d n),
   rw [formalPointSubstitutionSeries_valueAtTwoPoints, formalPointSubstitutionSeries_valueAtTwoPoints, map_add, map_add, t0, t1, t2, add_zero, zero_add, formalSeriesValueAtTwoPoints_genericPoints, formalSeriesValueAtTwoPoints_genericPoints] at e3
   exact e3.symm
 
+/- English proof (translation)
+Set `T : Finset (Fin 2 × Fin d)` to `Finset.univ.filter (fun p => p.1 = 0)`. Set `ω : Fin 2 × Fin d → PS k 2 d` to `fun p => E3 (pderiv k (1, p.2) α) (gen 0) 0 (gen 1)`. Establish `hω : ∀ a ∈ T, ∀ c ∈ T, pderiv k c (ω a) = pderiv k a (ω c)`. Introduce and unpack `⟨a1, a2⟩ ha ⟨c1, c2⟩ hc`. Simplify using `only [T, Finset.mem_filter, Finset.mem_univ, true_and] at ha hc`.
+
+Substitute `ha hc` using the available equality. Conclude with `closed_lemma_5 α sym coc a2 c2`. Establish `hpd : ∀ b, pderiv k (0, b) (-primT T ω) = -E3 (pderiv k (1, b) α) (gen 0) 0 (gen 1)`. Introduce `b`. Rewrite using `[map_neg, pderiv_primT T ω hω (0, b) (by simp [T])]`.
+
+Apply the tactic sequence `all_goals rfl`. Establish `hz : sb (Function.update gen 0 0 : Fin 2 → Q k d 2) (primT T ω) = 0`. Use extensionality with `m`. Rewrite using `[coeff_kill, map_zero]`. Distinguish the cases in `hm : ∀ b, m (0, b) = 0`.
+
+Rewrite using `[if_pos hm] show algebraMap ℚ k (((∑ w ∈ T, m w : ℕ) : ℚ)⁻¹) * _ = 0`. Establish `h0 : (∑ w ∈ T, m w) = 0` using `Finset.sum_eq_zero fun p hp => by`. Take `⟨p1, p2⟩` from `p`. Simplify using `only [T, Finset.mem_filter, Finset.mem_univ, true_and] at hp`. Substitute `hp` using the available equality.
+
+Conclude with `hm p2`. Rewrite using `[h0]`. Simplify using the standard rewrite rules. Rewrite using `[if_neg hm]`. Establish `h2 : (Function.update gen 0 0 : Fin 2 → Q k d 2) = ![0, gen 1]`.
+
+Use function extensionality and compare the values at `i`. Apply the tactic sequence `fin_cases i <;> first | rfl | simp [Function.update_apply]`. Rewrite `hz` using `[h2]`. Establish `hP1 : ∀ {n : ℕ} (w : Q k d n), E2 (-primT T ω) 0 w = 0`. Introduce `n w`.
+
+Establish `e` using `congrArg (sb (![0, w] : Fin 2 → Q k d n)) hz`. Express the relevant statement in the definitionally equal form `sb (![0, w] : Fin 2 → Q k d n) (E2 (primT T ω) 0 (gen 1)) = _ at e`. Rewrite `e` using `[formalPointSubstitutionSeries_valueAtTwoPoints, map_zero, map_zero, sq_gen]`. Use `show sb ![0, w] (-primT T ω) = 0`. Rewrite using `[map_neg, neg_eq_zero]`.
+
+Conclude with `e`. Establish `hax : ∀ {n : ℕ} (b : Fin d) (w : Q k d n), E3 (pderiv k (1, b) α) 0 0 w = 0`. Introduce `n b w`. Establish `z0 : Dir (0 : Fin 2) (0 : Q k d 2) 0` using `dir_zero 0`. Establish `z1 : Dir (0 : Fin 2) (gen 0 : Q k d 2) 1` using `dir_same 0`.
+
+Establish `z2 : Dir (0 : Fin 2) (gen 1 : Q k d 2) 0` using `dir_ne (by decide)`. Establish `e` using `congrArg (pderiv k ((0 : Fin 2), b)) (ax (gen 0 : Q k d 2) (gen 1))`. Rewrite `e` using `[pderiv_eval_three z0 z1 z2, map_zero]`. Simplify using `only [mul_zero, zero_add, add_zero, mul_one] at e`. Establish `e'` using `congrArg (sb (![0, w] : Fin 2 → Q k d n)) e`.
+
+Rewrite `e'` using `[formalPointSubstitutionSeries_valueAtThreePoints, map_zero, map_zero, sq_gen, sq_gen]`. Conclude with `e'`. Establish `hneg : ∀ (f : PS k 2 d) (u v : Q k d 3), E2 (-f) u v = -E2 f u v` using `fun f u v => map_neg _ f`. Establish `hG : α - (E2 (-primT T ω) (gen 0) (gen 2) + E2 (-primT T ω) (gen 1) (gen 2) - E2 (-primT T ω) (gen 0 + gen 1) (gen 2)) = 0`. Apply `zero_of_pd 1` to reduce the goal to its premises.
+
+Introduce `b`. Establish `c0 : Dir (1 : Fin 3) (gen 0 : Q k d 3) 0` using `dir_ne (by decide)`. Establish `c1 : Dir (1 : Fin 3) (gen 1 : Q k d 3) 1` using `dir_same 1`. Establish `c2 : Dir (1 : Fin 3) (gen 2 : Q k d 3) 0` using `dir_ne (by decide)`. Rewrite using `[map_sub, map_sub, map_add, pderiv_eval_two c0 c2, pderiv_eval_two c1 c2, pderiv_eval_two (c0.add c1) c2, d1_lemma_2 α coc b, hpd b]`.
+
+Simplify using `only [mul_zero, add_zero, zero_add, mul_one]`. Rewrite using `[hneg, hneg]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[update_three_one_zero, map_sub, map_sub, map_add, formalPointSubstitutionSeries_valueAtTwoPoints, formalPointSubstitutionSeries_valueAtTwoPoints, formalPointSubstitutionSeries_valueAtTwoPoints, map_add]`. Establish `u0 : sq (![gen 0, 0, gen 2] : Fin 3 → Q k d 3) (gen 0) = gen 0` using `sq_gen _ 0`.
+
+Establish `u1 : sq (![gen 0, 0, gen 2] : Fin 3 → Q k d 3) (gen 1) = 0` using `sq_gen _ 1`. Establish `u2 : sq (![gen 0, 0, gen 2] : Fin 3 → Q k d 3) (gen 2) = gen 2` using `sq_gen _ 2`. Establish `hα : sb (![gen 0, 0, gen 2] : Fin 3 → Q k d 3) α = 0` using `(sym (gen 0) 0 (gen 2)).trans (ax (gen 0) (gen 2))`. Rewrite using `[u0, u1, u2, add_zero, hP1, hα]`. Expand and normalize the polynomial expressions, which then agree.
+
+Use `⟨-primT T ω, ?_, hP1, ?_⟩` and prove the remaining obligations. Introduce `n x y w`. Establish `e` using `congrArg (sb (![x, y, w] : Fin 3 → Q k d n)) hG`. Rewrite `e` using `[map_sub, map_sub, map_add, formalPointSubstitutionSeries_valueAtTwoPoints, formalPointSubstitutionSeries_valueAtTwoPoints, formalPointSubstitutionSeries_valueAtTwoPoints, map_add, sq_gen, sq_gen, sq_gen, map_zero, sub_eq_zero]`. Conclude with `e`.
+
+Introduce `n b w`. Rewrite using `[hpd b]`. Use `show sb ![0, w] (-(E3 (pderiv k (1, b) α) (gen 0) 0 (gen 1))) = 0`. Rewrite using `[map_neg, neg_eq_zero, formalPointSubstitutionSeries_valueAtThreePoints, sq_gen, sq_gen, map_zero]`. Conclude with `hax b w`.
+-/
 theorem split (α : PS k 3 d) (ax : ∀ {n} (y w : Q k d n), E3 α 0 y w = 0) (sym : ∀ {n} (x y w : Q k d n), E3 α x y w = E3 α y x w)
     (coc : ∀ {n} (x y t w : Q k d n), E3 α x y w + E3 α (x + y) t w = E3 α y t w + E3 α x (y + t) w) :
     ∃ H : PS k 2 d, (∀ {n} (x y w : Q k d n), E3 α x y w = E2 H x w + E2 H y w - E2 H (x + y) w) ∧
@@ -493,6 +676,17 @@ theorem split (α : PS k 3 d) (ax : ∀ {n} (y w : Q k d n), E3 α 0 y w = 0) (s
     rw [map_neg, neg_eq_zero, formalPointSubstitutionSeries_valueAtThreePoints, sq_gen, sq_gen, map_zero]
     exact hax b w
 
+/- English proof (translation)
+Establish `h0 : ∀ {n : ℕ} (x y : Q k d n), E3 f x y 0 = 0`. Introduce `n x y`. Establish `e` using `add x y 0 0`. Rewrite `e` using `[add_zero]`. Take the linear combination `-e`.
+
+Establish `hd : ∀ b, pderiv k (2, b) f = 0`. Introduce `b`. Establish `e` using `congrArg (pderiv k ((3 : Fin 4), b)) (add (gen 0) (gen 1) (gen 2) (gen 3))`. Establish `d0 : Dir (3 : Fin 4) (gen 0 : Q k d 4) 0` using `dir_ne (by decide)`. Establish `d1 : Dir (3 : Fin 4) (gen 1 : Q k d 4) 0` using `dir_ne (by decide)`.
+
+Establish `d2 : Dir (3 : Fin 4) (gen 2 : Q k d 4) 0` using `dir_ne (by decide)`. Establish `d3 : Dir (3 : Fin 4) (gen 3 : Q k d 4) 1` using `dir_same 3`. Rewrite `e` using `[map_add, pderiv_eval_three d0 d1 (d2.add d3), pderiv_eval_three d0 d1 d2, pderiv_eval_three d0 d1 d3]`. Simplify using `only [mul_zero, zero_add, add_zero, mul_one] at e`. Establish `e'` using `congrArg (sb (![gen 0, gen 1, gen 2, 0] : Fin 4 → Q k d 3)) e`.
+
+Establish `s0 : sq (![gen 0, gen 1, gen 2, 0] : Fin 4 → Q k d 3) (gen 0) = gen 0` using `sq_gen _ 0`. Establish `s1 : sq (![gen 0, gen 1, gen 2, 0] : Fin 4 → Q k d 3) (gen 1) = gen 1` using `sq_gen _ 1`. Establish `s2 : sq (![gen 0, gen 1, gen 2, 0] : Fin 4 → Q k d 3) (gen 2) = gen 2` using `sq_gen _ 2`. Establish `s3 : sq (![gen 0, gen 1, gen 2, 0] : Fin 4 → Q k d 3) (gen 3) = 0` using `sq_gen _ 3`. Rewrite `e'` using `[formalPointSubstitutionSeries_valueAtThreePoints, formalPointSubstitutionSeries_valueAtThreePoints, map_add, s0, s1, s2, s3, add_zero, h b (gen 0) (gen 1), formalSeriesValueAtThreePoints_genericPoints]`.
+
+Conclude with `e'`. Establish `hz : sb (Function.update gen 2 0) f = 0`. Rewrite using `[update_three_two_zero]`. Conclude with `h0 (gen 0) (gen 1)`. Conclude with `zero_of_pd 2 hd hz`.
+-/
 theorem zero_of_add (f : PS k 3 d) (add : ∀ {n} (x y v v' : Q k d n), E3 f x y (v + v') = E3 f x y v + E3 f x y v')
     (h : ∀ {n} b (x y : Q k d n), E3 (pderiv k (2, b) f) x y 0 = 0) : f = 0 := by
   have h0 : ∀ {n : ℕ} (x y : Q k d n), E3 f x y 0 = 0 := by

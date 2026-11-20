@@ -12,6 +12,11 @@ noncomputable section
 
 namespace GlobalTheory.CompanionTheory.WeilSiegel.FreePartner
 
+/- English proof (translation)
+Use `haveI : FiniteDimensional F E := Module.Finite.of_restrictScalars_finite ℚ F E`. Use `haveI : Algebra.FormallyEtale F E := Algebra.FormallyEtale.of_isSeparable F E`. Use `haveI : Algebra.FormallySmooth F E := inferInstance`. Use `haveI : Algebra.FinitePresentation F E := Algebra.FinitePresentation.of_finiteType.mp inferInstance`. Use `haveI : Algebra.Smooth F E := ⟨inferInstance, inferInstance⟩`.
+
+Use `haveI : Algebra.Smooth R (R ⊗[F] E) := inferInstance`. Conclude with `GlobalTheory.isReduced_algebra_of_smooth_of_isReduced R (R ⊗[F] E)`.
+-/
 theorem isReduced_tens (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
     (R : Type) [CommRing R] [Algebra F R] [IsReduced R] : IsReduced (R ⊗[F] E) := by
   haveI : FiniteDimensional F E := Module.Finite.of_restrictScalars_finite ℚ F E
@@ -22,6 +27,9 @@ theorem isReduced_tens (F E : Type) [Field F] [NumberField F] [Field E] [NumberF
   haveI : Algebra.Smooth R (R ⊗[F] E) := inferInstance
   exact GlobalTheory.isReduced_algebra_of_smooth_of_isReduced R (R ⊗[F] E)
 
+/- English proof (translation)
+Establish `e : (JR (F` using `F) R J).det = inclR (F := F) R J.det := by`. Rewrite using `[RingHom.map_det]`. Both sides reduce to the same expression. Rewrite using `[e]`. Conclude with `(IsUnit.mk0 _ h).map _`.
+-/
 theorem isUnit_det_JR {F E : Type} [Field F] [Field E] [Algebra F E] (R : Type) [CommRing R]
     [Algebra F R] {M : ℕ} {J : Matrix (Fin M) (Fin M) E} (h : J.det ≠ 0) :
     IsUnit (JR (F := F) R J).det := by
@@ -31,6 +39,23 @@ theorem isUnit_det_JR {F E : Type} [Field F] [Field E] [Algebra F E] (R : Type) 
   rw [e]
   exact (IsUnit.mk0 _ h).map _
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ hσ M J hJ R _ _ _ _ _ hloc x hx`. Take `⟨-, -, -, -, hA, hRed, -, -⟩` from `hloc`. Use `haveI := hA`. Use `haveI := hRed`. Use `haveI : FiniteDimensional F E := Module.Finite.of_restrictScalars_finite ℚ F E`.
+
+Use `haveI : IsArtinianRing (R ⊗[F] E) := IsArtinianRing.of_finite R _`. Use `haveI : IsReduced (R ⊗[F] E) := isReduced_tens F E R`. Establish `hinv : ∀ z : R ⊗[F] E, sigR R σ (sigR R σ z) = z` using `HermTop.sigR_sigR R (HermTop.sigma_sigma hσ)`. Establish `hlip` using `FreeOpen.lip_of_artinian_reduced (R ⊗[F] E)`. Take `⟨P, hP⟩` from `hlip (Fin M) (Fin 1) (Matrix.of fun i (_ : Fin 1) => sigR R σ (x i)) (by`.
+
+Introduce `c hc`. Establish `h1 : ∀ i, sigR R σ (x i) * c 0 = 0`. Introduce `i`. Use `congrFun hc i` as an intermediate fact. Simplify `this` using `[Matrix.mulVec, dotProduct]`.
+
+Establish `h2 : sigR R σ (c 0) • x = 0`. Use function extensionality and compare the values at `i`. Use `congrArg (sigR R σ) (h1 i)` as an intermediate fact. Rewrite `this` using `[map_mul, hinv, map_zero]`. Simplify `this` using `[mul_comm]`.
+
+Establish `h3` using `Fintype.linearIndependent_iff.mp hx (fun _ => sigR R σ (c 0)) (by simpa using h2) 0`. Establish `h4 : c 0 = 0`. Use `congrArg (sigR R σ) h3` as an intermediate fact. Simplify `this` using `[hinv]`. Use function extensionality and compare the values at `j`.
+
+Rewrite using `[Subsingleton.elim j 0]`. Simplify using `using h4)`. Establish `hu` using `isUnit_det_JR (F := F) R hJ.2`. Use `⟨(JR R J)⁻¹ *ᵥ (fun j => P 0 j), ?_⟩` and prove the remaining obligations. Establish `hv : JR R J *ᵥ ((JR R J)⁻¹ *ᵥ (fun j => P 0 j)) = fun j => P 0 j`.
+
+Rewrite using `[Matrix.mulVec_mulVec, Matrix.mul_nonsing_inv _ hu, Matrix.one_mulVec]`. Establish `h00` using `congrFun (congrFun hP 0) 0`. Simplify using `only [Matrix.mul_apply, Matrix.of_apply, Matrix.one_apply_eq] at h00`. Establish `hform' : hR R σ J x ((JR R J)⁻¹ *ᵥ (fun j => P 0 j)) = ∑ i, sigR R σ (x i) * (JR R J *ᵥ ((JR R J)⁻¹ *ᵥ (fun j => P 0 j))) i`. Simplify using `only [hR, hform, Matrix.mulVec, dotProduct, Finset.mul_sum, mul_assoc]`.
+
+Rewrite using `[hform', hv, ← h00]`. Conclude with `Finset.sum_congr rfl fun i _ => mul_comm _ _`.
+-/
 theorem exists_partner : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E), IsCMExt F E σ → ∀ (M : ℕ) (J : Matrix (Fin M) (Fin M) E), IsHermND σ J → ∀ (R : Type) [CommRing R] [Algebra F R] [TopologicalSpace R] [MeasurableSpace R] [BorelSpace R], IsLocR R → ∀ x : Fin M → R ⊗[F] E, LinearIndependent (R ⊗[F] E) (fun _ : Fin 1 => x) → ∃ y : Fin M → R ⊗[F] E, hR R σ J x y = 1 := by
   intro F E _ _ _ _ _ σ hσ M J hJ R _ _ _ _ _ hloc x hx
   obtain ⟨-, -, -, -, hA, hRed, -, -⟩ := hloc

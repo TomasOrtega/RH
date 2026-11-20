@@ -24,6 +24,9 @@ def ringOf {T : Scheme.{0}} {n : ℕ} (g : T ⟶ Sp (MvPolynomial (Fin n) Rg)) :
 def cstT {T : Scheme.{0}} (t : T ⟶ Sp Rg) : Rg →+* Γ(T, ⊤) :=
   t.appTop.hom.comp (Scheme.ΓSpecIso (CommRingCat.of Rg)).inv.hom
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem ringOf_X {T : Scheme.{0}} {n : ℕ} (g : T ⟶ Sp (MvPolynomial (Fin n) Rg)) (k : Fin n) :
     ringOf g (MvPolynomial.X k) = coord g k := rfl
 
@@ -49,6 +52,9 @@ def monSec (a : Fin mA → LB.Sec N) (d : ℕ) (ν : Fin mA →₀ ℕ) : LB.Sec
     · simp only [map_zero, mul_zero]
 
 omit [CommRing Rg] in
+/- English proof (translation)
+Rewrite using `[CommRingCat.ofHom_id, Spec.map_id]`. Conclude with `IsPullback.id_horiz f`.
+-/
 theorem idPb {R : Type} [CommRing R] {X : Scheme.{0}} (f : X ⟶ Sp R) :
     IsPullback (𝟙 X) f f (Spec.map (CommRingCat.ofHom (RingHom.id R))) := by
   rw [CommRingCat.ofHom_id, Spec.map_id]
@@ -59,9 +65,15 @@ variable {X : Scheme.{0}} {M : LB X}
 def vecOf {f : X ⟶ Sp Rg} (Q : Perf f M) (s : LB.Sec M) : Fin Q.a → Rg :=
   ((Q.sec Rg (RingHom.id Rg) X (𝟙 X) f (idPb f)).choose.symm (finSecPullId s)).1
 
+/- English proof (translation)
+The claim follows from `((Q.sec Rg (RingHom.id Rg) X (𝟙 X) f (idPb f)).choose.symm (finSecPullId s)).2`.
+-/
 theorem vecOf_ker {f : X ⟶ Sp Rg} (Q : Perf f M) (s : LB.Sec M) : (Q.D₀.map (RingHom.id Rg)).mulVec (vecOf Q s) = 0 :=
   ((Q.sec Rg (RingHom.id Rg) X (𝟙 X) f (idPb f)).choose.symm (finSecPullId s)).2
 
+/- English proof (translation)
+Establish `h` using `(Q.sec Rg (RingHom.id Rg) X (𝟙 X) f (idPb f)).choose_spec ((Q.sec Rg (RingHom.id Rg) X (𝟙 X) f (idPb f)).choose.symm (finSecPullId s)) i`. Rewrite `h` using `[Equiv.apply_symm_apply]`. Conclude with `h`.
+-/
 theorem vecOf_spec {f : X ⟶ Sp Rg} (Q : Perf f M) (s : LB.Sec M) (i : Q.I) :
     rs X (le_pull M (𝟙 X) (Q.le i)) ((finSecPullId s).f (fun _ => Q.ch i)) =
       ∑ k, cst f ((𝟙 X) ⁻¹ᵁ Q.W i) (vecOf Q s k) * (Scheme.Hom.app (𝟙 X) (Q.W i)).hom (Q.u k i) := by

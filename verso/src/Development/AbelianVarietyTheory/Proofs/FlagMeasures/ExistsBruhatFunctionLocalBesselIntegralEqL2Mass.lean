@@ -35,6 +35,13 @@ def rmulE {k r : ℕ} (a b : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) 
     show Continuous fun x : Formalism.QuantumDeterminants.Mt k r => ∑ l, x i l * _
     fun_prop
 
+/- English proof (translation)
+Introduce `f hf`. Use `set R := rmulE a b hab hba`. Combine the equalities or inequalities in the displayed calculation. Use `lintegral_congr fun x => lintegral_congr fun s => ?_` and prove the remaining obligations. Use `congr 1`.
+
+Use `show Matrix.of.symm (Matrix.of (fun i j => (Matrix.of s * Matrix.of x) i j) * a) = fun i j => (Matrix.of s * Matrix.of (Matrix.of.symm (Matrix.of x * a))) i j`. Rewrite using `[Equiv.apply_symm_apply]`. Use function extensionality and compare the values at `i j`. Use `show (Matrix.of s * Matrix.of x * a) i j = (Matrix.of s * (Matrix.of x * a)) i j`. Rewrite using `[Matrix.mul_assoc]`.
+
+Use `_ = ∫⁻ x, (∫⁻ s, f (fun i j => (Matrix.of s * Matrix.of x) i j) ∂μS) ∂(ν.map R) := (MeasureTheory.lintegral_map_equiv (fun x => ∫⁻ s, f (fun i j => (Matrix.of s * Matrix.of x) i j) ∂μS) R).symm`.
+-/
 theorem quot_rmul {k r : ℕ} (a b : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ) (hab : a * b = 1)
     (hba : b * a = 1) {μG μS ν : Measure (Formalism.QuantumDeterminants.Mt k r)} (hG : μG.map (rmulE a b hab hba) = μG)
     (hq : IsQuotMeas μG μS ν) : IsQuotMeas μG μS (ν.map (rmulE a b hab hba)) := by
@@ -64,6 +71,9 @@ variable {D : D7} {X : HidaSetting D} {θ : ℝ}
 def yInv (C : Choice X θ) (τ : D.what₂.Tau) : Matrix (Fin (2 * D.R.rS + D.R.k + 1)) (Fin (2 * D.R.rS + D.R.k + 1)) ℂ :=
   Formalism.QuantumDeterminants.Hpk D.R.k D.R.rS * (C.y τ)ᴴ * Formalism.QuantumDeterminants.Hpk D.R.k D.R.rS
 
+/- English proof (translation)
+Take `⟨-, hi⟩` from `Formalism.MainNotions.S.Inh.unitary_group_inv_mem (C.y τ) (C.y_mem τ)`. Conclude with `⟨(Matrix.mul_eq_one_comm_of_card_eq (Fin _) (Fin _) ℂ rfl).mp hi, hi⟩`.
+-/
 theorem y_inv (C : Choice X θ) (τ : D.what₂.Tau) : C.y τ * yInv C τ = 1 ∧ yInv C τ * C.y τ = 1 := by
   obtain ⟨-, hi⟩ := Formalism.MainNotions.S.Inh.unitary_group_inv_mem (C.y τ) (C.y_mem τ)
   exact ⟨(Matrix.mul_eq_one_comm_of_card_eq (Fin _) (Fin _) ℂ rfl).mp hi, hi⟩
@@ -71,6 +81,15 @@ theorem y_inv (C : Choice X θ) (τ : D.what₂.Tau) : C.y τ * yInv C τ = 1 �
 def Ry (C : Choice X θ) (τ : D.what₂.Tau) : Formalism.QuantumDeterminants.Mt D.R.k D.R.rS ≃ᵐ Formalism.QuantumDeterminants.Mt D.R.k D.R.rS :=
   rmulE (C.y τ) (yInv C τ) (y_inv C τ).1 (y_inv C τ).2
 
+/- English proof (translation)
+Take `⟨h1, h2, hg, -⟩` from `C.isT τ`. Establish `hy' : (C.y τ)ᴴ * Formalism.QuantumDeterminants.Hpk D.R.k D.R.rS * C.y τ = Formalism.QuantumDeterminants.Hpk D.R.k D.R.rS` using `C.y_mem τ`. Establish `hJ : (C.Q τ * C.y τ * C.Qi τ)ᴴ * Formalism.REAL.Jm (X.B.I.ε (vOf X τ)) * (C.Q τ * C.y τ * C.Qi τ) = Formalism.REAL.Jm (X.B.I.ε (vOf X τ))`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [Matrix.conjTranspose_mul, Matrix.mul_assoc]`.
+
+Use `_ = Formalism.REAL.Jm (X.B.I.ε (vOf X τ)) := by rw [hg, hy', Formalism.L2.SG.Pf.Choice.qiHqi _ h2 hg]`. Use `set γy := Formalism.L2.SG.Pf.GoodS.toUJn (C.Q τ * C.y τ * C.Qi τ) hJ`. Use `haveI : (Formalism.REAL.muG (X.B.I.ε (vOf X τ))).IsMulRightInvariant := ⟨fun g => Formalism.REAL.indefinite_unitary_unimodular _ _ g⟩`. Establish `he` using `eT_emb C τ (vOf X τ)`. Establish `hcomm : (Ry C τ) ∘ eT C τ (vOf X τ) = eT C τ (vOf X τ) ∘ (fun γ => γ * γy)`.
+
+Use function extensionality and compare the values at `γ`. Use `show Matrix.of.symm (Matrix.of (Matrix.of.symm (C.Qi τ * uMat γ * C.Q τ)) * C.y τ) = Matrix.of.symm (C.Qi τ * uMat (γ * γy) * C.Q τ)`. Rewrite using `[Equiv.apply_symm_apply, show uMat (γ * γy) = uMat γ * uMat γy from rfl, show uMat γy = C.Q τ * C.y τ * C.Qi τ from rfl]`. Use `congr 1`. Simplify using `only [Matrix.mul_assoc]`.
+
+Rewrite using `[h1, Matrix.mul_one]`. Use `show ((Formalism.REAL.muG (X.B.I.ε (vOf X τ))).map (eT C τ (vOf X τ))).map (Ry C τ) = (Formalism.REAL.muG (X.B.I.ε (vOf X τ))).map (eT C τ (vOf X τ))`. Rewrite using `[Measure.map_map (Ry C τ).measurable he.measurable, hcomm, ← Measure.map_map he.measurable (measurable_mul_const γy), map_mul_right_eq_self]`.
+-/
 theorem muGB_rinv (C : Choice X θ) (τ : D.what₂.Tau) :
     (muGB X (C.Q τ) (C.Qi τ) τ).map (Ry C τ) = muGB X (C.Q τ) (C.Qi τ) τ := by
   obtain ⟨h1, h2, hg, -⟩ := C.isT τ
@@ -103,6 +122,15 @@ def shiftC (C : Choice X θ) : Choice X θ :=
     nuS := fun u τ => (C.nuS u τ).map (Ry C τ)
     nuS_q := fun u τ => quot_rmul _ _ _ _ (muGB_rinv C τ) (C.nuS_q u τ) }
 
+/- English proof (translation)
+Take `⟨β, hβm, hβ1⟩` from `bruhat_mulMap C u τ`. Use `⟨β, hβm, hβ1, ?_⟩` and prove the remaining obligations. Establish `hid` using `loc_id (shiftC C) u τ hβm hβ1`. Rewrite using `[hid]`. Take `⟨hz, hTz⟩` from `Formalism.L2.SG.Pf.zTr C u τ`.
+
+Establish `hT : 0 < Formalism.QuantumDeterminants.Tz D.R.k D.R.rS (zB X (C.Qi τ) u τ)` using `by rw [hTz]; exact Formalism.L2.SG.Pf.Choice.Tr_pos D u`. Establish `hconc` using `Formalism.L2.SG.Pf.GoodS.nu_conc hz hT (Formalism.L2.SG.Pf.haarTr C τ) (Formalism.L2.SG.Pf.LocF.muS_haar C u τ) (C.nuS_q u τ)`. Establish `hae : ∀ᵐ x ∂(C.nuS u τ), Matrix.of x ∈ Formalism.QuantumDeterminants.UH (Formalism.QuantumDeterminants.Hpk D.R.k D.R.rS)`. Rewrite using `[ae_iff]`. Conclude with `hconc`.
+
+Use `show ∫⁻ x, (‖wT C u τ (Matrix.of x)‖₊ : ℝ≥0∞) ^ 2 ∂((C.nuS u τ).map (Ry C τ)) = ∫⁻ x, (‖phiOf hB u τ (Matrix.of x)‖₊ : ℝ≥0∞) ^ 2 ∂(C.nuS u τ)`. Rewrite using `[MeasureTheory.lintegral_map_equiv]`. Use `lintegral_congr_ae ?_` and prove the remaining obligations. Use `filter_upwards [hae] with x hx`. Rewrite using `[Formalism.L2.SG.Pf.GoodS.phi_eq C hB u τ _ hx]`.
+
+Both sides reduce to the same expression.
+-/
 theorem loc_main (D : D7) (X : HidaSetting D) (θ : ℝ) (C : Choice X θ) (hB : WuBessel C) (u : D.what₂.Word)
     (τ : D.what₂.Tau) :
     ∃ β : Formalism.REAL.UJ (X.B.I.ε (vOf X τ)) → ℝ≥0∞, Measurable β ∧

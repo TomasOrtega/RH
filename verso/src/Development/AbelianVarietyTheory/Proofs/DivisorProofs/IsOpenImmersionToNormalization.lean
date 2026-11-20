@@ -4,6 +4,9 @@ open AlgebraicGeometry CategoryTheory
 
 namespace GlobalTheory.NormalizationOpenImmersion
 
+/- English proof (translation)
+Establish `: IsImmersion (c ≫ p)` using `h ▸ inferInstance`. Establish `: IsImmersion c` using `IsImmersion.of_comp c p`. Use `infer_instance`.
+-/
 theorem isOpenImmersion_toNormalization {V P X : Scheme.{0}} (c : V ⟶ P) (p : P ⟶ X) [IsSeparated p]
     (j : V ⟶ X) [IsOpenImmersion j] [inst : QuasiCompact c] [inst_1 : QuasiSeparated c]
     (h : c ≫ p = j) : IsOpenImmersion c.toNormalization := by
@@ -11,6 +14,9 @@ theorem isOpenImmersion_toNormalization {V P X : Scheme.{0}} (c : V ⟶ P) (p : 
   have : IsImmersion c := IsImmersion.of_comp c p
   infer_instance
 
+/- English proof (translation)
+Introduce `c p _ j _ _ _ h` and use `isOpenImmersion_toNormalization c p j h`.
+-/
 theorem main : ∀ {V P X : AlgebraicGeometry.Scheme.{0}} (c : V ⟶ P) (p : P ⟶ X) [IsSeparated p]
     (j : V ⟶ X) [IsOpenImmersion j] [inst : QuasiCompact c] [inst_1 : QuasiSeparated c]
     (h : c ≫ p = j), IsOpenImmersion c.toNormalization :=

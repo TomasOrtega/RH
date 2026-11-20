@@ -23,6 +23,11 @@ def embGramDet {d j : ℕ} (H : Matrix (Fin d) (Fin d) K) (E : Matrix (Fin d) (F
   ((E.map φ)ᴴ * H.map φ * E.map φ).det
 
 omit [NumberField K] [StarRing K] in
+/- English proof (translation)
+Establish `hm : ∀ {a b : ℕ} (M : Matrix (Fin a) (Fin b) K), M.map (ComplexEmbedding.conjugate φ) = (M.map φ).map (starRingEnd ℂ)`. Introduce `a b M`. Use extensionality with `i k`. Simplify using `[ComplexEmbedding.conjugate_coe_eq]`. Unfold `embGramDet`.
+
+Rewrite using `[hm E, hm H, RingHom.map_det, RingHom.mapMatrix_apply, Matrix.map_mul, Matrix.map_mul]`. Use `congr 2`.
+-/
 theorem embGramDet_conjugate {d j : ℕ} (H : Matrix (Fin d) (Fin d) K)
     (E : Matrix (Fin d) (Fin j) K) (φ : K →+* ℂ) :
     embGramDet H E (ComplexEmbedding.conjugate φ) = starRingEnd ℂ (embGramDet H E φ) := by
@@ -36,6 +41,9 @@ theorem embGramDet_conjugate {d j : ℕ} (H : Matrix (Fin d) (Fin d) K)
   congr 2
 
 omit [NumberField K] [StarRing K] in
+/- English proof (translation)
+Break down `InfinitePlace.embedding_mk_eq φ with h | h` into its components or cases. Rewrite using `[h]`. Rewrite using `[h, embGramDet_conjugate, Complex.conj_re]`.
+-/
 theorem embGramDet_re_mk {d j : ℕ} (H : Matrix (Fin d) (Fin d) K)
     (E : Matrix (Fin d) (Fin j) K) (φ : K →+* ℂ) :
     (embGramDet H E (InfinitePlace.mk φ).embedding).re = (embGramDet H E φ).re := by
@@ -43,6 +51,11 @@ theorem embGramDet_re_mk {d j : ℕ} (H : Matrix (Fin d) (Fin d) K)
   · rw [h]
   · rw [h, embGramDet_conjugate, Complex.conj_re]
 
+/- English proof (translation)
+Use extensionality with `a c`. Simplify using `only [gram, Formalism.HN.gramPl, Matrix.of_apply, majAt_eq, metMat, cv, Matrix.mul_apply, Matrix.conjTranspose_apply, Matrix.map_apply, Matrix.transpose_apply, dotProduct, Matrix.mulVec, Pi.star_apply, Finset.mul_sum, Finset.sum_mul]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Use `Finset.sum_congr rfl fun x _ => ?_` and prove the remaining obligations.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem gram_eq_mul {d j : ℕ} (X : InfinitePlace K → Matrix (Fin d) (Fin d) ℂ)
     (v : InfinitePlace K) (e : Fin j → Fin d → K) :
     gram X v e = (((Matrix.of e)ᵀ).map v.embedding)ᴴ * (((X v)⁻¹)ᴴ * (X v)⁻¹) *
@@ -56,6 +69,11 @@ theorem gram_eq_mul {d j : ℕ} (X : InfinitePlace K → Matrix (Fin d) (Fin d) 
   refine Finset.sum_congr rfl fun x _ => ?_
   ring
 
+/- English proof (translation)
+Unfold `gramR`. Rewrite using `[RingHom.map_det, RingHom.mapMatrix_apply]`. Use `congr 1`. Use extensionality with `a b`. Simplify using `only [Matrix.map_apply, Matrix.of_apply, Matrix.mul_apply, Matrix.conjTranspose_apply, Matrix.transpose_apply, dotProduct, Matrix.mulVec, Pi.star_apply, map_sum, map_mul, Rb.tw_apply, Finset.mul_sum, Finset.sum_mul]`.
+
+Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Simplify using `only [Complex.star_def, Complex.conj_conj]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem map_gramR {d j : ℕ} (H : Matrix (Fin d) (Fin d) K) (e : Fin j → Fin d → K)
     (φ : K →+* ℂ) :
     φ (gramR H e) = ((((Matrix.of e)ᵀ).map (Rb.tw φ))ᴴ * H.map φ *
@@ -72,6 +90,9 @@ theorem map_gramR {d j : ℕ} (H : Matrix (Fin d) (Fin d) K) (e : Fin j → Fin 
   simp only [Complex.star_def, Complex.conj_conj]
   ring
 
+/- English proof (translation)
+Rewrite using `[gram_eq_mul, hX v]`. Both sides reduce to the same expression.
+-/
 private theorem det_gram_eq_embGramDet {K : Type} [Field K] [NumberField K] [StarRing K] {d j : ℕ}
     (H : Matrix (Fin d) (Fin d) K) (X : InfinitePlace K → Matrix (Fin d) (Fin d) ℂ)
     (hX : ∀ v : InfinitePlace K, ((X v)⁻¹)ᴴ * (X v)⁻¹ = H.map v.embedding)
@@ -80,6 +101,9 @@ private theorem det_gram_eq_embGramDet {K : Type} [Field K] [NumberField K] [Sta
   rw [gram_eq_mul, hX v]
   rfl
 
+/- English proof (translation)
+Establish `hP : (((X v)⁻¹)ᴴ * (X v)⁻¹).PosDef` using `Rb.metMat_posDef X v (hX v)`. Establish `hS` using `hP.posSemidef.conjTranspose_mul_mul_same (((Matrix.of e)ᵀ).map v.embedding)`. Rewrite `hS` using `[← gram_eq_mul]`. Conclude with `(Complex.le_def.mp hS.det_nonneg).1`.
+-/
 private theorem det_gram_re_nonneg' {K : Type} [Field K] [NumberField K] [StarRing K] {d j : ℕ}
     (X : InfinitePlace K → Matrix (Fin d) (Fin d) ℂ) (hX : ∀ v : InfinitePlace K, IsUnit (X v).det)
     (e : Fin j → Fin d → K) (v : InfinitePlace K) : 0 ≤ (gram X v e).det.re := by
@@ -88,6 +112,21 @@ private theorem det_gram_re_nonneg' {K : Type} [Field K] [NumberField K] [StarRi
   rw [← gram_eq_mul] at hS
   exact (Complex.le_def.mp hS.det_nonneg).1
 
+/- English proof (translation)
+Establish `hU : ∀ v : InfinitePlace K, IsUnit (X v).det` using `fun v => (hR.2 v).1`. Establish `hX : ∀ v : InfinitePlace K, ((X v)⁻¹)ᴴ * (X v)⁻¹ = H.map v.embedding` using `fun v => (hR.2 v).2`. Establish `hK0 : IsCMSub (cmMax K)` using `fun σ a ha => ha σ`. Use `set E : Matrix (Fin d) (Fin j) K := (Matrix.of e)ᵀ with hE`. Use `set g : InfinitePlace K → ℝ := fun v => (gram X v e).det.re with hg`.
+
+Establish `hg0 : ∀ v, 0 ≤ g v` using `fun v => det_gram_re_nonneg' X hU e v`. Establish `hloc : ∀ v : InfinitePlace K, ‖v.embedding (gramR H e)‖ ^ 2 ≤ g (Rb.plc v) * g v`. Introduce `v`. Establish `hPD : (H.map v.embedding).PosDef`. Rewrite using `[← hX v]`.
+
+Conclude with `Rb.metMat_posDef X v (hU v)`. Establish `hcs` using `determinant_cauchy_schwarz d j (H.map v.embedding) hPD ((E.map (Rb.tw v.embedding))ᴴ) ((E.map v.embedding)ᴴ)`. Rewrite `hcs` using `[Matrix.conjTranspose_conjTranspose, Matrix.conjTranspose_conjTranspose]`. Rewrite using `[map_gramR]`. Establish `h1 : g (Rb.plc v) = (embGramDet H E (Rb.tw v.embedding)).re`.
+
+Simplify using `only [hg]`. Rewrite using `[det_gram_eq_embGramDet H X hX e, Rb.plc, embGramDet_re_mk]`. Establish `h2 : g v = (embGramDet H E v.embedding).re`. Simplify using `only [hg]`. Rewrite using `[det_gram_eq_embGramDet H X hX e]`.
+
+Rewrite using `[h1, h2]`. Unfold `embGramDet`. Rewrite using `[Rb.Hmap_tw (cmMax K) hK0 H hR.1]`. Conclude with `hcs`. Establish `hperm : ∏ v : InfinitePlace K, g (Rb.plc v) = ∏ v : InfinitePlace K, g v` using `Equiv.prod_comp (Function.Involutive.toPerm _ (fun v => Rb.plc_plc v)) g`.
+
+Establish `hsq : (∏ v : InfinitePlace K, ‖v.embedding (gramR H e)‖) ^ 2 ≤ (∏ v : InfinitePlace K, g v) ^ 2`. Establish `hsq2 : (∏ v : InfinitePlace K, g v) ^ 2 = ∏ v : InfinitePlace K, (g (Rb.plc v) * g v)`. Rewrite using `[Finset.prod_mul_distrib, hperm, sq]`. Rewrite using `[← Finset.prod_pow, hsq2]`. Conclude with `Finset.prod_le_prod (fun v _ => by positivity) (fun v _ => hloc v)`.
+
+Establish `ha : 0 ≤ ∏ v : InfinitePlace K, ‖v.embedding (gramR H e)‖` using `Finset.prod_nonneg fun v _ => norm_nonneg _`. Establish `hb : 0 ≤ ∏ v : InfinitePlace K, g v` using `Finset.prod_nonneg fun v _ => hg0 v`. Use the polynomial consequences of the given equalities and inequalities.
+-/
 theorem prod_norm_gramR_le (K : Type) [Field K] [NumberField K] [StarRing K] [IsTotallyComplex K]
     (d j : ℕ) (H : Matrix (Fin d) (Fin d) K) (X : InfinitePlace K → Matrix (Fin d) (Fin d) ℂ)
     (hR : IsRatHerm (cmMax K) H X) (e : Fin j → Fin d → K) :

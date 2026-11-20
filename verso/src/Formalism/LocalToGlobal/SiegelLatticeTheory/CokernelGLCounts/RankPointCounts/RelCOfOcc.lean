@@ -32,6 +32,9 @@ def coefA (t0 t : TauC Y u u') : D.host.E :=
 def coefA' (t0 t : TauC Y u u') : D.host.E :=
   brS (VS D) (yT' Y u u' t) (yT' Y u u' t0) / brS (VS D) (yT' Y u u' t0) (yT' Y u u' t0)
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨t, h1, h2, h3, h4, h5⟩`. Conclude with `⟨t, ⟨h1, h2, h3, h4⟩, h5⟩`. Introduce and unpack `⟨t, ⟨h1, h2, h3, h4⟩, h5⟩`. Conclude with `⟨t, h1, h2, h3, h4, h5⟩`.
+-/
 theorem occ_iff (νL νB : X.B.I.Ginf → Measure X.B.I.Ginf) (ng : PN.Pts D.host.E D.R.rS → ℝ)
     (c : Set (TauC Y u u')) (γ : PN.Pts D.host.E D.R.rS) (ν : NuC D) :
     PN.Occ (Y.tO u u') (NOf2 Y u u' νL νB ng) c γ ν ↔ ∃ t, OccT Y u u' c γ t ∧ nmlOf Y u u' t = ν := by
@@ -84,6 +87,9 @@ def NmlSep : Prop :=
           coefA Y u u' t0 t1 = coefA Y u u' t0 t2 → coefA' Y u u' t0 t1 = coefA' Y u u' t0 t2 →
           nmlOf Y u u' t1 = nmlOf Y u u' t2
 
+/- English proof (translation)
+Establish `hrefl` using `(CorankRelation.corankOne_equivalence_holds D X Y u u' hTie).1 t h.1`. Establish `ht : t ∈ clsOf Y u u' t` using `⟨h.1, rfl, hrefl⟩`. Rewrite `ht` using `[h.2.2.1, ← h0.2.2.1]`. Conclude with `⟨ht.2.1, ht.2.2⟩`.
+-/
 theorem relC_of_occ {D : D7} {X : HidaSetting D} {Y : Full X} {u u' : D.what₂.Word} (hTie : ConcTie X Y)
     {c : Set (TauC Y u u')} {γ : PN.Pts D.host.E D.R.rS} {t0 t : TauC Y u u'}
     (h0 : OccT Y u u' c γ t0) (h : OccT Y u u' c γ t) : RelC Y u u' t0 t := by
@@ -92,6 +98,23 @@ theorem relC_of_occ {D : D7} {X : HidaSetting D} {Y : Full X} {u u' : D.what₂.
   rw [h.2.2.1, ← h0.2.2.1] at ht
   exact ⟨ht.2.1, ht.2.2⟩
 
+/- English proof (translation)
+Introduce `Cg cb Cw cT CT C0`. Take `⟨a1, b1, H1⟩` from `hL Cg cb Cw cT CT C0`. Take `⟨a2, b2, H2⟩` from `hI Cg cb Cw cT CT C0`. Take `⟨a3, b3, H3⟩` from `hS Cg cb Cw cT CT C0`. Use `⟨max a1 (max a2 a3), max b1 (max b2 b3), fun C' Cl hC hCl D large₂ X Y u u' hctx νL νB ng c γ hocc hNG => ?_⟩` and prove the remaining obligations.
+
+Establish `hC1 : a1 ≤ C'` using `le_trans (le_max_left _ _) hC`. Establish `hC2 : a2 ≤ C'` using `le_trans (le_trans (le_max_left _ _) (le_max_right _ _)) hC`. Establish `hC3 : a3 ≤ C'` using `le_trans (le_trans (le_max_right _ _) (le_max_right _ _)) hC`. Establish `hl1 : b1 ≤ Cl` using `le_trans (le_max_left _ _) hCl`. Establish `hl2 : b2 ≤ Cl` using `le_trans (le_trans (le_max_left _ _) (le_max_right _ _)) hCl`.
+
+Establish `hl3 : b3 ≤ Cl` using `le_trans (le_trans (le_max_right _ _) (le_max_right _ _)) hCl`. Take `⟨ν0, hν0⟩` from `hocc`. Take `⟨t0, ht0, -⟩` from `(occ_iff Y u u' νL νB ng c γ ν0).1 hν0`. Establish `hTie : ConcTie X Y` using `hctx.2.2`. Establish `hG0 : Gt t0 ≠ 0` using `ht0.1.1`.
+
+Take `⟨J, J', hJ, hJ', hmem, hb, hb'⟩` from `H2 C' Cl hC2 hl2 D large₂ X Y u u' hctx γ hNG t0 hG0 ht0.2.2.2`. Use `set pick : NuC D → TauC Y u u' := fun ν => if h : ∃ t, OccT Y u u' c γ t ∧ nmlOf Y u u' t = ν then h.choose else t0 with hpick`. Establish `hpick_spec : ∀ ν, PN.Occ (Y.tO u u') (NOf2 Y u u' νL νB ng) c γ ν → OccT Y u u' c γ (pick ν) ∧ nmlOf Y u u' (pick ν) = ν`. Introduce `ν hν`. Establish `h` using `(occ_iff Y u u' νL νB ng c γ ν).1 hν`.
+
+Simplify using `only [hpick, dif_pos h]`. Conclude with `h.choose_spec`. Use `⟨J, J', 1, 1, fun ν => (coefA Y u u' t0 (pick ν), coefA' Y u u' t0 (pick ν)), hJ, hJ', one_ne_zero, one_ne_zero, fun ν hν => ?_, fun ν₁ ν₂ h₁ h₂ hκ => ?_, ?_, ?_⟩` and prove the remaining obligations. Take `⟨hp, -⟩` from `hpick_spec ν hν`. Take `⟨m1, m2⟩` from `hmem _ hp.1.1 hp.2.2.2 (relC_of_occ hTie ht0 hp)`.
+
+Take `⟨n1, n2⟩` from `H1 C' Cl hC1 hl1 D large₂ X Y u u' hctx γ hNG t0 _ hG0 hp.1.1 ht0.2.2.2 hp.2.2.2 (relC_of_occ hTie ht0 hp)`. Conclude with `⟨m1, n1, m2, n2⟩`. Take `⟨hp1, he1⟩` from `hpick_spec ν₁ h₁`. Take `⟨hp2, he2⟩` from `hpick_spec ν₂ h₂`. Establish `hk1` using `congrArg Prod.fst hκ`.
+
+Establish `hk2` using `congrArg Prod.snd hκ`. Simplify using `only at hk1 hk2`. Rewrite using `[← he1, ← he2]`. Conclude with `H3 C' Cl hC3 hl3 D large₂ X Y u u' hctx γ hNG t0 _ _ hG0 hp1.1.1 hp2.1.1 ht0.2.2.2 hp1.2.2.2 hp2.2.2.2 (relC_of_occ hTie ht0 hp1) (relC_of_occ hTie ht0 hp2) hk1 hk2`. Rewrite using `[map_one]`.
+
+Simplify using `using hb`. Rewrite using `[map_one]`. Simplify using `using hb'`.
+-/
 theorem nmlInv_of (hL : NmlLine) (hI : NmlInt) (hS : NmlSep) : NormalInvariants.NmlInv := by
   intro Cg cb Cw cT CT C0
   obtain ⟨a1, b1, H1⟩ := hL Cg cb Cw cT CT C0

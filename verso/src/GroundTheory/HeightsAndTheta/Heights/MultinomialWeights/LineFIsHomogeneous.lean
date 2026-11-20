@@ -10,6 +10,11 @@ namespace GroundTheory.Heights₂.Heights.TheoremB
 
 open MvPolynomial Finset Filter Topology
 
+/- English proof (translation)
+Establish `h1 : (lineClass d u).IsHomogeneous 1`. Unfold `lineClass lamDotX`. Use `IsHomogeneous.neg ?_` and prove the remaining obligations. Conclude with `IsHomogeneous.sum _ _ _ (fun p _ => isHomogeneous_C_mul_X (u p) p)`. Use `h1.pow (d.D + 1)` as an intermediate fact.
+
+Simplify `this` using `[lineF]`.
+-/
 theorem lineF_isHomogeneous {d : IndexData} (u : Idx d → ℚ) :
     (lineF d u).IsHomogeneous (d.D + 1) := by
   have h1 : (lineClass d u).IsHomogeneous 1 := by
@@ -19,6 +24,11 @@ theorem lineF_isHomogeneous {d : IndexData} (u : Idx d → ℚ) :
   have := h1.pow (d.D + 1)
   simpa [lineF] using this
 
+/- English proof (translation)
+Establish `h2` using `d.two_le_N`. Set `a : Fin d.N` to `⟨0, by omega⟩`. Set `b : Fin d.N` to `⟨1, by omega⟩`. Establish `hab : 0 < u (τ, a) - u (τ, b)` using `hu τ a b rfl`. Establish `h1 : u (τ, a) ≤ univ.sup' (finN_nonempty d) (fun i => u (τ, i))` using `le_sup' (fun i => u (τ, i)) (mem_univ a)`.
+
+Establish `h3 : univ.inf' (finN_nonempty d) (fun i => u (τ, i)) ≤ u (τ, b)` using `inf'_le (fun i => u (τ, i)) (mem_univ b)`. Unfold `spread`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem spread_pos {d : IndexData} {u : Weight d} (hu : IsRegular d u) (τ : Fin d.f) :
     0 < spread d u τ := by
   have h2 := d.two_le_N
@@ -32,6 +42,57 @@ theorem spread_pos {d : IndexData} {u : Weight d} (hu : IsRegular d u) (τ : Fin
   unfold spread
   linarith
 
+/- English proof (translation)
+Introduce `C7 hC7`. Take `⟨CD, hCD⟩` from `hTD C7 hC7`. Take `⟨C5, hC5⟩` from `hPL`. Use `⟨max CD 0 * (1 + max C5 0) + 6, ?_⟩` and prove the remaining obligations. Introduce `d S u g B0 hT hB0 hcard h82 hI9 hP1 hPF h7 hM5`.
+
+Use `set M : ℝ := max CD 0 * (1 + max C5 0) with hMdef`. Establish `hM : 0 ≤ M` using `mul_nonneg (le_max_right _ _) (by linarith [le_max_right C5 0])`. Take `⟨A0, b0, hA0, hb0⟩` from `hLim d S h82 B0`. Take `⟨Q, hQ⟩` from `hF3 d (lineF d u) (lineF_isHomogeneous u)`. Establish `hdom : IsDominant d (uR d u)` using `fun τ a b h => (hT.1 τ a b h).le`.
+
+Establish `hEq` using `(hEv d S h82 B0 A0 b0 hA0 hb0 u Q hQ).2`. Establish `ha` using `hTA d S hI9 u hdom`. Establish `hb` using `hTB d S u g B0 hT hB0 hM5 Q hQ`. Establish `hc` using `hTC d S h82 hP1 B0 A0 b0 hA0 hb0 hPF`. Establish `hf : (1 : ℝ) ≤ d.f` using `by exact_mod_cast S.f_pos`.
+
+Establish `hN : (2 : ℝ) ≤ d.N` using `by exact_mod_cast d.two_le_N`. Establish `hrd` using `S.one_le_rd`. Use `set bz := bZero d (uR d u) g with hbz`. Establish `hHn : 0 ≤ ‖uR d u‖ / g` using `div_nonneg (norm_nonneg _) hT.2.1.le`. Establish `hbz16 : 16 ≤ bz`.
+
+Establish `hfN : 4 ≤ (d.f : ℝ) * (d.N : ℝ) ^ 2` using `by nlinarith`. Rewrite using `[hbz, bZero]`. Use the polynomial consequences of the given equalities and inequalities. Establish `hB0_16 : 16 ≤ B0`. Rewrite using `[hB0]; exact Nat.le_floor (by push_cast; linarith)`.
+
+Establish `hB0le : (B0 : ℝ) ≤ bz` using `by rw [hB0]; exact Nat.floor_le (by linarith)`. Establish `hB0ge : (16 : ℝ) ≤ B0` using `by exact_mod_cast hB0_16`. Establish `hcardB0 : S.level.primeFactors.card ≤ B0` using `by rw [hB0]; exact Nat.le_floor hcard`. Use `set Λ := Real.log (bz * S.rd) + |S.lval| with hΛdef`. Establish `hlogB0 : Real.log B0 ≤ Real.log (bz * S.rd)` using `Real.log_le_log (by linarith) (by nlinarith)`.
+
+Establish `hlogB0rd : Real.log (B0 * S.rd) ≤ Real.log (bz * S.rd)` using `Real.log_le_log (by positivity) (mul_le_mul_of_nonneg_right hB0le (by linarith))`. Establish `hlogB0nn : 0 ≤ Real.log B0` using `Real.log_nonneg (by linarith)`. Establish `hΛ0 : 0 ≤ Λ` using `by linarith [abs_nonneg S.lval]`. Establish `hlogΛ : Real.log B0 ≤ Λ` using `by linarith [abs_nonneg S.lval]`. Establish `hsum0 : 0 ≤ ∑ p ∈ S.level.primeFactors, Real.log p / (p : ℝ)` using `sum_nonneg fun p _ => div_nonneg (Real.log_natCast_nonneg p) (Nat.cast_nonneg p)`.
+
+Establish `hsum : ∑ p ∈ S.level.primeFactors, Real.log p / (p : ℝ) ≤ max C5 0 * Real.log B0`. Combine the equalities or inequalities in the displayed calculation. Use `sum_le_sum fun p hp => ?_` and prove the remaining obligations. Establish `hp2 : (2 : ℝ) ≤ p` using `by exact_mod_cast (Nat.prime_of_mem_primeFactors hp).two_le`. Conclude with `div_le_div_of_nonneg_left (Real.log_natCast_nonneg p) (by linarith) (by linarith)`.
+
+Use `_ ≤ C5 * Real.log B0 := hC5 B0 (by omega) _ (fun p hp => Nat.prime_of_mem_primeFactors hp) hcardB0`. Use `_ ≤ max C5 0 * Real.log B0 := mul_le_mul_of_nonneg_right (le_max_left _ _) hlogB0nn`. Establish `hA0low : -(M * Λ) ≤ A0`. Establish `hd` using `hCD d S B0 A0 (by omega) h7 hA0`. Establish `e1 : CD * Real.log B0 ≤ max CD 0 * Real.log B0` using `mul_le_mul_of_nonneg_right (le_max_left _ _) hlogB0nn`.
+
+Establish `e2 : CD * ∑ p ∈ S.level.primeFactors, Real.log p / (p : ℝ) ≤ max CD 0 * (max C5 0 * Real.log B0)` using `(mul_le_mul_of_nonneg_right (le_max_left _ _) hsum0).trans (mul_le_mul_of_nonneg_left hsum (le_max_right _ _))`. Establish `e3 : M * Real.log B0 ≤ M * Λ` using `mul_le_mul_of_nonneg_left hlogΛ hM`. Establish `e4 : M * Real.log B0 = max CD 0 * Real.log B0 + max CD 0 * (max C5 0 * Real.log B0)`. Rewrite using `[hMdef]`. Expand and normalize the polynomial expressions, which then agree.
+
+Combine the linear equalities and inequalities to obtain the conclusion. Establish `hτ : ∀ τ : Fin d.f, -((M + 4) * Λ * ∑ i : Fin d.N, |uR d u (τ, i)|) ≤ A0 * cTau d (uR d u) τ + ((d.j : ℝ) * A0 + (d.N : ℝ) * b0) * ubar d (uR d u) τ`. Introduce `τ`. Take `⟨hc0, hc1⟩` from `hCB d (uR d u) hdom τ`. Establish `hn` using `hNU d (uR d u) τ`.
+
+Use `set s := ∑ i : Fin d.N, |uR d u (τ, i)|`. Establish `hs : 0 ≤ s` using `sum_nonneg fun i _ => abs_nonneg _`. Establish `hMΛ : 0 ≤ M * Λ` using `mul_nonneg hM hΛ0`. Establish `p1 : -(M * Λ) * s ≤ A0 * cTau d (uR d u) τ`. Break down `le_total 0 A0 with h | h` into its components or cases.
+
+Use polynomial arithmetic with `[mul_nonneg h hc0, mul_nonneg hMΛ hs]`. Establish `q1 : A0 * s ≤ A0 * cTau d (uR d u) τ` using `mul_le_mul_of_nonpos_left hc1 h`. Establish `q2 : -(M * Λ) * s ≤ A0 * s` using `mul_le_mul_of_nonneg_right hA0low hs`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hcΛ : |(d.j : ℝ) * A0 + (d.N : ℝ) * b0| ≤ 4 * (d.N : ℝ) * Λ`.
+
+Establish `: 4 * (d.N : ℝ) * (Real.log (B0 * S.rd) + |S.lval|) ≤ 4 * (d.N : ℝ) * Λ` using `mul_le_mul_of_nonneg_left (by linarith) (by positivity)`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `p2 : |((d.j : ℝ) * A0 + (d.N : ℝ) * b0) * ubar d (uR d u) τ| ≤ 4 * Λ * s`. Rewrite using `[abs_mul]`. Combine the equalities or inequalities in the displayed calculation.
+
+Establish `p3` using `neg_abs_le (((d.j : ℝ) * A0 + (d.N : ℝ) * b0) * ubar d (uR d u) τ)`. Establish `p4 : -(M * Λ) * s - 4 * Λ * s = -((M + 4) * Λ * s)` using `by ring`. Combine the linear equalities and inequalities to obtain the conclusion. Use `set X1 := ∑ p : Idx d, |(u p : ℝ)| with hX1`. Establish `hX1eq : ∑ τ : Fin d.f, ∑ i : Fin d.N, |uR d u (τ, i)| = X1`.
+
+Rewrite using `[hX1, Fintype.sum_prod_type]`. Both sides reduce to the same expression. Establish `hX10 : 0 ≤ X1` using `sum_nonneg fun p _ => abs_nonneg _`. Establish `hsumτ : -((M + 4) * Λ * X1) ≤ ∑ τ : Fin d.f, (A0 * cTau d (uR d u) τ + ((d.j : ℝ) * A0 + (d.N : ℝ) * b0) * ubar d (uR d u) τ)`. Use `sum_le_sum fun τ (_ : τ ∈ (univ : Finset (Fin d.f))) => hτ τ` as an intermediate fact.
+
+Rewrite `this` using `[sum_neg_distrib, ← mul_sum, hX1eq]`. Conclude with `this`. Use `set X2 := (jPrime d : ℝ) * ∑ τ : Fin d.f, spread d (uR d u) τ with hX2`. Establish `hj' : (1 : ℝ) ≤ jPrime d`. Establish `h1` using `d.one_le_j`.
+
+Establish `h2` using `d.j_lt_N`. Establish `: 1 ≤ jPrime d` using `by unfold jPrime; omega`. Conclude with `this` after adjusting the coercions. Establish `hspr : 0 < ∑ τ : Fin d.f, spread d (uR d u) τ` using `sum_pos (fun τ _ => spread_pos hT.1 τ) ⟨tau0 S, mem_univ _⟩`. Establish `hX2pos : 0 < X2` using `mul_pos (by linarith) hspr`.
+
+Use `set L := S.vol * (degAt d u : ℝ) with hL`. Establish `hD1 : (0 : ℝ) < (d.D : ℝ) + 1` using `by positivity`. Establish `hcoef : 0 < 4 / ((d.f : ℝ) * d.N) * ((d.D : ℝ) + 1)`. Establish `: 0 < (d.f : ℝ) * d.N` using `by positivity`. Check the signs of the components of the expression.
+
+Establish `hbr : |restTot S B0 Q| ≤ 4 / ((d.f : ℝ) * d.N) * ((d.D : ℝ) + 1) * L * X2`. Rewrite using `[hX2]`. Combine the linear relations using `[hb]`. Establish `hL0 : 0 ≤ L`. Assume the negation of the conclusion as `hneg0`.
+
+Establish `hneg : L < 0` using `not_le.mp hneg0`. Establish `: 4 / ((d.f : ℝ) * d.N) * ((d.D : ℝ) + 1) * L * X2 < 0` using `mul_neg_of_neg_of_pos (mul_neg_of_pos_of_neg hcoef hneg) hX2pos`. Combine the linear relations using `[abs_nonneg (restTot S B0 Q)]`. Establish `hKL : 0 ≤ ((d.D : ℝ) + 1) * L` using `mul_nonneg hD1.le hL0`. Establish `h42 : 4 / ((d.f : ℝ) * d.N) ≤ 2`.
+
+Establish `hfN : (1 : ℝ) * 2 ≤ (d.f : ℝ) * d.N` using `mul_le_mul hf hN (by norm_num) (by linarith)`. Rewrite using `[div_le_iff₀ (by positivity)]; linarith`. Establish `hrest : -(2 * (((d.D : ℝ) + 1) * L * X2)) ≤ restTot S B0 Q`. Establish `e1 : 4 / ((d.f : ℝ) * d.N) * ((d.D : ℝ) + 1) * L * X2 ≤ 2 * (((d.D : ℝ) + 1) * L * X2)`. Combine the equalities or inequalities in the displayed calculation.
+
+Combine the linear relations using `[neg_abs_le (restTot S B0 Q)]`. Establish `hmain : ((d.D : ℝ) + 1) * L * (-((M + 4) * Λ * X1)) ≤ ((d.D : ℝ) + 1) * L * ∑ τ : Fin d.f, (A0 * cTau d (uR d u) τ + ((d.j : ℝ) * A0 + (d.N : ℝ) * b0) * ubar d (uR d u) τ)` using `mul_le_mul_of_nonneg_left hsumτ hKL`. Establish `key : (M + 4) * Λ * X1 + 2 * X2 ≤ (M + 6) * (Λ * X1 + X2)`. Combine the linear relations using `[mul_nonneg hΛ0 hX10, mul_nonneg hM hX2pos.le, hX2pos]`. Establish `hkey` using `mul_le_mul_of_nonneg_left key hKL`.
+
+Establish `e5 : -(M + 6) * ((d.D : ℝ) + 1) * L * (Λ * X1 + X2) = -(((d.D : ℝ) + 1) * L * ((M + 6) * (Λ * X1 + X2)))` using `by ring`. Establish `e6 : ((d.D : ℝ) + 1) * L * ((M + 4) * Λ * X1 + 2 * X2) = -(((d.D : ℝ) + 1) * L * (-((M + 4) * Λ * X1))) + 2 * (((d.D : ℝ) + 1) * L * X2)` using `by ring`. Establish `fin : -(M + 6) * ((d.D : ℝ) + 1) * L * (Λ * X1 + X2) ≤ bigP S B0 u`. Rewrite using `[e5]`. Combine the linear relations using `[ha, hrest, hmain, hkey, hEq]`.
+
+Conclude with `fin`.
+-/
 theorem TheoremTUpper.proof (hLim : LimitsExist.Statement) (hEv : HeightEvaluation.Statement)
     (hCB : CBounds.Statement) (hNU : NormUbar.Statement) (hTA : TermA.Statement)
     (hTB : TermB.Statement) (hTC : TermC.Statement) (hTD : TermD.Statement)

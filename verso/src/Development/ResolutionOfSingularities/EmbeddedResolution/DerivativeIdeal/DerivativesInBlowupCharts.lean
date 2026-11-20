@@ -12,6 +12,21 @@ variable (k : Type*) [CommRing k] (ι : Type*) [DecidableEq ι]
   [IsScalarTower k (MvPolynomial ι k) S₁] [Algebra.FormallyEtale (MvPolynomial ι k) S₁]
   (φ : S →ₐ[k] S₁) (T : Finset ι) (s : ι)
 
+/- English proof (translation)
+Set `_ : Algebra S S₁` to `φ.toRingHom.toAlgebra`. Establish `: IsScalarTower k S S₁`. Use `IsScalarTower.of_algebraMap_eq fun x => ?_` and prove the remaining obligations. Use `show algebraMap k S₁ x = φ (algebraMap k S x)`. Conclude with `(φ.commutes x).symm`.
+
+Establish `hsmul : ∀ (a : S) (z : S₁), a • z = φ a * z` using `fun _ _ => rfl`. Set `L₁ : S →ₗ[k] S₁` to `(partialDeriv k ι S₁ i).toLinearMap.comp φ.toLinearMap`. Set `L₂ : S →ₗ[k] S₁` to `(LinearMap.mulLeft k (coord k ι S₁ s)).comp (φ.toLinearMap.comp (partialDeriv k ι S i).toLinearMap)`. Establish `h₁ : ∀ a b : S, L₁ (a * b) = a • L₁ b + b • L₁ a`. Introduce `a b`.
+
+Use `show partialDeriv k ι S₁ i (φ (a * b)) = a • partialDeriv k ι S₁ i (φ b) + b • partialDeriv k ι S₁ i (φ a)`. Simplify using `only [hsmul, map_mul, (partialDeriv k ι S₁ i).leibniz, smul_eq_mul]`. Establish `h₂ : ∀ a b : S, L₂ (a * b) = a • L₂ b + b • L₂ a`. Introduce `a b`. Use `show coord k ι S₁ s * φ (partialDeriv k ι S i (a * b)) = a • (coord k ι S₁ s * φ (partialDeriv k ι S i b)) + b • (coord k ι S₁ s * φ (partialDeriv k ι S i a))`.
+
+Simplify using `only [hsmul, (partialDeriv k ι S i).leibniz, smul_eq_mul, map_add, map_mul]`. Expand and normalize the polynomial expressions, which then agree. Establish `hD : Derivation.mk' L₁ h₁ = Derivation.mk' L₂ h₂`. Use `derivation_ext_of_coord k ι S S₁ _ _ ?_` and prove the remaining obligations. Introduce `j`.
+
+Use `show partialDeriv k ι S₁ i (φ (coord k ι S j)) = coord k ι S₁ s * φ (partialDeriv k ι S i (coord k ι S j))`. Distinguish the cases in `hjT : j ∈ T`. Distinguish the cases in `hjs : j = s`. Substitute `hjs` using the available equality. Rewrite using `[hs]`.
+
+Simplify using `only [partialDeriv_coord, if_neg his, map_zero, mul_zero]`. Rewrite using `[hin j hjT hjs, (partialDeriv k ι S₁ i).leibniz]`. Simplify using `only [smul_eq_mul, partialDeriv_coord, if_neg his, mul_zero, zero_add]`. Distinguish the cases in `hij : i = j`. Simplify using `[hij]`.
+
+Simplify using `[hij]`. Rewrite using `[hout j hjT]`. Establish `hij : i ≠ j` using `by rintro rfl; exact hjT hiT`. Simplify using `only [partialDeriv_coord, if_neg hij, map_zero, mul_zero]`. Conclude with `DFunLike.congr_fun hD f`.
+-/
 theorem partialDeriv_map_of_mem
     (hin : ∀ i ∈ T, i ≠ s → φ (coord k ι S i) = coord k ι S₁ i * coord k ι S₁ s)
     (hs : φ (coord k ι S s) = coord k ι S₁ s)
@@ -61,6 +76,19 @@ theorem partialDeriv_map_of_mem
       simp only [partialDeriv_coord, if_neg hij, map_zero, mul_zero]
   exact DFunLike.congr_fun hD f
 
+/- English proof (translation)
+Set `_ : Algebra S S₁` to `φ.toRingHom.toAlgebra`. Establish `halg : ∀ x : S, algebraMap S S₁ x = φ x` using `fun x => rfl`. Establish `: IsScalarTower k S S₁` using `IsScalarTower.of_algebraMap_eq fun x => by rw [halg]; exact (φ.commutes x).symm`. Establish `hsmul : ∀ (a : S) (x : S₁), a • x = φ a * x`. Introduce `a x`.
+
+Rewrite using `[Algebra.smul_def, halg]`. Establish `his : i ≠ s` using `fun h => hiT (by rw [h]; exact hsT)`. Establish `h₁ : ∀ a b : S, ((partialDeriv k ι S₁ i).toLinearMap.comp (φ.toLinearMap : S →ₗ[k] S₁)) (a * b) = a • ((partialDeriv k ι S₁ i).toLinearMap.comp (φ.toLinearMap : S →ₗ[k] S₁)) b + b • ((partialDeriv k ι S₁ i).toLinearMap.comp (φ.toLinearMap : S →ₗ[k] S₁)) a`. Introduce `a b`. Use `show partialDeriv k ι S₁ i (φ (a * b)) = a • partialDeriv k ι S₁ i (φ b) + b • partialDeriv k ι S₁ i (φ a)`.
+
+Rewrite using `[map_mul, Derivation.leibniz]`. Simplify using `only [hsmul, smul_eq_mul]`. Establish `h₂ : ∀ a b : S, ((φ.toLinearMap : S →ₗ[k] S₁).comp (partialDeriv k ι S i).toLinearMap) (a * b) = a • ((φ.toLinearMap : S →ₗ[k] S₁).comp (partialDeriv k ι S i).toLinearMap) b + b • ((φ.toLinearMap : S →ₗ[k] S₁).comp (partialDeriv k ι S i).toLinearMap) a`. Introduce `a b`. Use `show φ (partialDeriv k ι S i (a * b)) = a • φ (partialDeriv k ι S i b) + b • φ (partialDeriv k ι S i a)`.
+
+Rewrite using `[Derivation.leibniz]`. Simplify using `only [smul_eq_mul, map_add, map_mul, hsmul]`. Establish `key : Derivation.mk' ((partialDeriv k ι S₁ i).toLinearMap.comp (φ.toLinearMap : S →ₗ[k] S₁)) h₁ = Derivation.mk' ((φ.toLinearMap : S →ₗ[k] S₁).comp (partialDeriv k ι S i).toLinearMap) h₂`. Use `derivation_ext_of_coord k ι S S₁ _ _ ?_` and prove the remaining obligations. Introduce `j`.
+
+Use `show partialDeriv k ι S₁ i (φ (coord k ι S j)) = φ (partialDeriv k ι S i (coord k ι S j))`. Distinguish the cases in `hj : j ∈ T`. Distinguish the cases in `hjs : j = s`. Rewrite using `[hjs, hs, partialDeriv_coord_of_ne k ι S₁ i s his, partialDeriv_coord_of_ne k ι S i s his, map_zero]`. Establish `hij : i ≠ j` using `fun h => hiT (by rw [h]; exact hj)`.
+
+Rewrite using `[hin j hj hjs, Derivation.leibniz, partialDeriv_coord_of_ne k ι S₁ i s his, partialDeriv_coord_of_ne k ι S₁ i j hij, partialDeriv_coord_of_ne k ι S i j hij, smul_zero, smul_zero, add_zero, map_zero]`. Rewrite using `[hout j hj, partialDeriv_coord, partialDeriv_coord] split_ifs with h`. Conclude with `(map_one φ).symm`. Conclude with `(map_zero φ).symm`. Conclude with `DFunLike.congr_fun key f`.
+-/
 theorem partialDeriv_map_of_notMem
     (hin : ∀ i ∈ T, i ≠ s → φ (coord k ι S i) = coord k ι S₁ i * coord k ι S₁ s)
     (hs : φ (coord k ι S s) = coord k ι S₁ s)
@@ -114,6 +142,43 @@ theorem partialDeriv_map_of_notMem
       · exact (map_zero φ).symm
   exact DFunLike.congr_fun key f
 
+/- English proof (translation)
+Set `_ : Algebra S S₁` to `φ.toRingHom.toAlgebra`. Establish `: IsScalarTower k S S₁` using `IsScalarTower.of_algebraMap_eq fun c => (φ.commutes c).symm`. Establish `hsmul : ∀ (a : S) (z : S₁), a • z = φ a * z` using `fun a z => Algebra.smul_def a z`. Establish `hsum_add : ∀ x y : S, (∑ i ∈ T, coord k ι S i * partialDeriv k ι S i (x + y)) = (∑ i ∈ T, coord k ι S i * partialDeriv k ι S i x) + (∑ i ∈ T, coord k ι S i * partialDeriv k ι S i y)`. Introduce `x y`.
+
+Rewrite using `[← Finset.sum_add_distrib]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[map_add, mul_add]`. Establish `hsum_smul : ∀ (c : k) (x : S), (∑ i ∈ T, coord k ι S i * partialDeriv k ι S i (c • x)) = c • (∑ i ∈ T, coord k ι S i * partialDeriv k ι S i x)`. Introduce `c x`.
+
+Rewrite using `[Finset.smul_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[Derivation.map_smul, mul_smul_comm]`. Establish `hsum_leib : ∀ a b : S, (∑ i ∈ T, coord k ι S i * partialDeriv k ι S i (a * b)) = a * (∑ i ∈ T, coord k ι S i * partialDeriv k ι S i b) + b * (∑ i ∈ T, coord k ι S i * partialDeriv k ι S i a)`. Introduce `a b`.
+
+Rewrite using `[Finset.mul_sum, Finset.mul_sum, ← Finset.sum_add_distrib]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[Derivation.leibniz]`. Simplify using `only [smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree.
+
+Set `L₁ : S →ₗ[k] S₁` to `{ toFun := fun x => coord k ι S₁ s * partialDeriv k ι S₁ s (φ x) map_add' := by`. Introduce `x y`. Use `show coord k ι S₁ s * partialDeriv k ι S₁ s (φ (x + y)) = coord k ι S₁ s * partialDeriv k ι S₁ s (φ x) + coord k ι S₁ s * partialDeriv k ι S₁ s (φ y)`. Rewrite using `[map_add, map_add, mul_add]`. Use the proof step `map_smul' := by`.
+
+Introduce `c x`. Use `show coord k ι S₁ s * partialDeriv k ι S₁ s (φ (c • x)) = c • (coord k ι S₁ s * partialDeriv k ι S₁ s (φ x))`. Rewrite using `[map_smul, Derivation.map_smul, mul_smul_comm] }`. Set `L₂ : S →ₗ[k] S₁` to `{ toFun := fun x => φ (∑ i ∈ T, coord k ι S i * partialDeriv k ι S i x) map_add' := by`. Introduce `x y`.
+
+Use `show φ (∑ i ∈ T, coord k ι S i * partialDeriv k ι S i (x + y)) = φ (∑ i ∈ T, coord k ι S i * partialDeriv k ι S i x) + φ (∑ i ∈ T, coord k ι S i * partialDeriv k ι S i y)`. Rewrite using `[hsum_add, map_add]`. Use the proof step `map_smul' := by`. Introduce `c x`. Use `show φ (∑ i ∈ T, coord k ι S i * partialDeriv k ι S i (c • x)) = c • φ (∑ i ∈ T, coord k ι S i * partialDeriv k ι S i x)`.
+
+Rewrite using `[hsum_smul, map_smul] }`. Establish `hleib1 : ∀ a b : S, L₁ (a * b) = a • L₁ b + b • L₁ a`. Introduce `a b`. Use `show coord k ι S₁ s * partialDeriv k ι S₁ s (φ (a * b)) = a • (coord k ι S₁ s * partialDeriv k ι S₁ s (φ b)) + b • (coord k ι S₁ s * partialDeriv k ι S₁ s (φ a))`. Rewrite using `[map_mul, Derivation.leibniz, hsmul a, hsmul b]`.
+
+Simplify using `only [smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree. Establish `hleib2 : ∀ a b : S, L₂ (a * b) = a • L₂ b + b • L₂ a`. Introduce `a b`. Use `show φ (∑ i ∈ T, coord k ι S i * partialDeriv k ι S i (a * b)) = a • φ (∑ i ∈ T, coord k ι S i * partialDeriv k ι S i b) + b • φ (∑ i ∈ T, coord k ι S i * partialDeriv k ι S i a)`.
+
+Rewrite using `[hsum_leib, map_add, map_mul, map_mul, hsmul a, hsmul b]`. Establish `hD : Derivation.mk' L₁ hleib1 = Derivation.mk' L₂ hleib2`. Use `derivation_ext_of_coord k ι S S₁ _ _ fun j => ?_` and prove the remaining obligations. Use `show coord k ι S₁ s * partialDeriv k ι S₁ s (φ (coord k ι S j)) = φ (∑ i ∈ T, coord k ι S i * partialDeriv k ι S i (coord k ι S j))`. Establish `hsum : (∑ i ∈ T, coord k ι S i * partialDeriv k ι S i (coord k ι S j)) = if j ∈ T then coord k ι S j else 0`.
+
+Establish `hterm : ∀ i ∈ T, coord k ι S i * partialDeriv k ι S i (coord k ι S j) = if i = j then coord k ι S j else 0`. Introduce `i _`. Rewrite using `[partialDeriv_coord]`. Distinguish the cases in `h : i = j`. Substitute `h` using the available equality.
+
+Simplify using the standard rewrite rules. Simplify using `[h]`. Rewrite using `[Finset.sum_congr rfl hterm]`. Distinguish the cases in `hj : j ∈ T`. Rewrite using `[Finset.sum_eq_single j]`.
+
+Simplify using `[hj]`. Introduce `i _ hij`. Rewrite using `[if_neg hij]`. Introduce `h`. Conclude with `absurd hj h`.
+
+Rewrite using `[if_neg hj]`. Use `Finset.sum_eq_zero fun i hi => ?_` and prove the remaining obligations. Establish `hij : i ≠ j`. Introduce and unpack `rfl`. Conclude with `hj hi`.
+
+Rewrite using `[if_neg hij]`. Rewrite using `[hsum]`. Distinguish the cases in `hjs : j = s`. Substitute `hjs` using the available equality. Rewrite using `[hs, if_pos hsT, hs, partialDeriv_coord_self, mul_one]`.
+
+Distinguish the cases in `hjT : j ∈ T`. Establish `h1 : partialDeriv k ι S₁ s (coord k ι S₁ s) = 1` using `partialDeriv_coord_self k ι S₁ s`. Establish `h2 : partialDeriv k ι S₁ s (coord k ι S₁ j) = 0` using `partialDeriv_coord_of_ne k ι S₁ s j (Ne.symm hjs)`. Rewrite using `[if_pos hjT, hin j hjT hjs, Derivation.leibniz, h1, h2]`. Simplify using `only [smul_eq_mul]`.
+
+Expand and normalize the polynomial expressions, which then agree. Establish `hne : s ≠ j`. Introduce and unpack `rfl`. Conclude with `hjT hsT`. Rewrite using `[if_neg hjT, map_zero, hout j hjT, partialDeriv_coord_of_ne k ι S₁ s j hne, mul_zero]`.
+
+Conclude with `DFunLike.congr_fun hD f`.
+-/
 theorem coord_mul_partialDeriv_map_eq_map_sum
     (hin : ∀ i ∈ T, i ≠ s → φ (coord k ι S i) = coord k ι S₁ i * coord k ι S₁ s)
     (hs : φ (coord k ι S s) = coord k ι S₁ s)
@@ -237,6 +302,9 @@ theorem coord_mul_partialDeriv_map_eq_map_sum
           partialDeriv_coord_of_ne k ι S₁ s j hne, mul_zero]
   exact DFunLike.congr_fun hD f
 
+/- English proof (translation)
+Rewrite using `[coord_mul_partialDeriv_map_eq_map_sum k ι S S₁ φ T s hin hs hout hsT f]`. Use `congrArg φ ?_` and prove the remaining obligations. Conclude with `(Finset.add_sum_erase T (fun i => coord k ι S i * partialDeriv k ι S i f) hsT).symm`.
+-/
 theorem coord_mul_partialDeriv_map_eq_map_add_sum_erase
     (hin : ∀ i ∈ T, i ≠ s → φ (coord k ι S i) = coord k ι S₁ i * coord k ι S₁ s)
     (hs : φ (coord k ι S s) = coord k ι S₁ s)
@@ -249,6 +317,11 @@ theorem coord_mul_partialDeriv_map_eq_map_add_sum_erase
   refine congrArg φ ?_
   exact (Finset.add_sum_erase T (fun i => coord k ι S i * partialDeriv k ι S i f) hsT).symm
 
+/- English proof (translation)
+Establish `h1 : partialDeriv k ι S₁ i (φ f) = coord k ι S₁ s * φ (partialDeriv k ι S i f)` using `partialDeriv_map_of_mem k ι S S₁ φ T s hin hs hout i hiT his f`. Establish `hy : partialDeriv k ι S₁ i (coord k ι S₁ s) = 0` using `partialDeriv_coord_of_ne k ι S₁ i s his`. Establish `hpow : partialDeriv k ι S₁ i (coord k ι S₁ s ^ (e + 1)) = 0`. Rewrite using `[Derivation.leibniz_pow, hy, smul_zero, smul_zero]`. Rewrite `h1` using `[hfg, Derivation.leibniz, hpow, smul_zero, add_zero, smul_eq_mul]`.
+
+Establish `key : (φ (partialDeriv k ι S i f) - coord k ι S₁ s ^ e * partialDeriv k ι S₁ i g) * coord k ι S₁ s = 0`. Take the linear combination `-h1`. Establish `h3 : φ (partialDeriv k ι S i f) - coord k ι S₁ s ^ e * partialDeriv k ι S₁ i g = 0` using `(mem_nonZeroDivisors_iff.mp hnzd).2 _ key`. Take the linear combination `h3`.
+-/
 theorem map_partialDeriv_eq_pow_mul_of_mem
     (hin : ∀ i ∈ T, i ≠ s → φ (coord k ι S i) = coord k ι S₁ i * coord k ι S₁ s)
     (hs : φ (coord k ι S s) = coord k ι S₁ s)
@@ -273,6 +346,9 @@ theorem map_partialDeriv_eq_pow_mul_of_mem
     (mem_nonZeroDivisors_iff.mp hnzd).2 _ key
   linear_combination h3
 
+/- English proof (translation)
+Establish `his : i ≠ s` using `fun h => hiT (by rw [h]; exact hsT)`. Establish `hz : partialDeriv k ι S₁ i (coord k ι S₁ s) = 0` using `partialDeriv_coord_of_ne k ι S₁ i s his`. Establish `hpow : partialDeriv k ι S₁ i (coord k ι S₁ s ^ (e + 1)) = 0`. Rewrite using `[Derivation.leibniz_pow, hz, smul_zero, smul_zero]`. Rewrite using `[← partialDeriv_map_of_notMem k ι S S₁ φ T s hin hs hout hsT i hiT f, hfg, Derivation.leibniz, hpow, smul_zero, add_zero, smul_eq_mul]`.
+-/
 theorem map_partialDeriv_eq_pow_mul_of_notMem
     (hin : ∀ i ∈ T, i ≠ s → φ (coord k ι S i) = coord k ι S₁ i * coord k ι S₁ s)
     (hs : φ (coord k ι S s) = coord k ι S₁ s)
@@ -288,6 +364,17 @@ theorem map_partialDeriv_eq_pow_mul_of_notMem
   rw [← partialDeriv_map_of_notMem k ι S S₁ φ T s hin hs hout hsT i hiT f, hfg,
     Derivation.leibniz, hpow, smul_zero, add_zero, smul_eq_mul]
 
+/- English proof (translation)
+Establish `hpow : partialDeriv k ι S₁ s (coord k ι S₁ s ^ (e + 1)) = ((e + 1 : ℕ) : S₁) * coord k ι S₁ s ^ e`. Rewrite using `[Derivation.leibniz_pow, partialDeriv_coord_self, Nat.add_sub_cancel]`. Simplify using `only [smul_eq_mul, mul_one, nsmul_eq_mul]`. Establish `h2 : partialDeriv k ι S₁ s (φ f) = coord k ι S₁ s ^ (e + 1) * partialDeriv k ι S₁ s g + ((e + 1 : ℕ) : S₁) * coord k ι S₁ s ^ e * g`. Rewrite using `[hfg, Derivation.leibniz, hpow]`.
+
+Simplify using `only [smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree. Establish `hsum2 : ∑ i ∈ T.erase s, φ (coord k ι S i * partialDeriv k ι S i f) = coord k ι S₁ s ^ (e + 1) * ∑ i ∈ T.erase s, coord k ι S₁ i * partialDeriv k ι S₁ i g`. Rewrite using `[Finset.mul_sum]`. Use `Finset.sum_congr rfl fun i hi => ?_` and prove the remaining obligations.
+
+Establish `hiT : i ∈ T` using `Finset.mem_of_mem_erase hi`. Establish `his : i ≠ s` using `Finset.ne_of_mem_erase hi`. Rewrite using `[map_mul, hin i hiT his, map_partialDeriv_eq_pow_mul_of_mem k ι S S₁ φ T s hin hs hout hnzd i hiT his f g e hfg]`. Expand and normalize the polynomial expressions, which then agree. Establish `h1 : coord k ι S₁ s * partialDeriv k ι S₁ s (φ f) = coord k ι S₁ s * φ (partialDeriv k ι S s f) + coord k ι S₁ s ^ (e + 1) * ∑ i ∈ T.erase s, coord k ι S₁ i * partialDeriv k ι S₁ i g`.
+
+Rewrite using `[coord_mul_partialDeriv_map_eq_map_add_sum_erase k ι S S₁ φ T s hin hs hout hsT f, map_add, map_mul, hs, map_sum, hsum2]`. Rewrite `h1` using `[h2]`. Establish `h0 : (φ (partialDeriv k ι S s f) - coord k ι S₁ s ^ e * (coord k ι S₁ s * partialDeriv k ι S₁ s g + ((e + 1 : ℕ) : S₁) * g - ∑ i ∈ T.erase s, coord k ι S₁ i * partialDeriv k ι S₁ i g)) * coord k ι S₁ s = 0`. Take the linear combination `-h1`. Establish `h3` using `(mem_nonZeroDivisors_iff.mp hnzd).2 _ h0`.
+
+Take the linear combination `h3`.
+-/
 theorem map_partialDeriv_self_eq_pow_mul
     (hin : ∀ i ∈ T, i ≠ s → φ (coord k ι S i) = coord k ι S₁ i * coord k ι S₁ s)
     (hs : φ (coord k ι S s) = coord k ι S₁ s)
@@ -333,10 +420,16 @@ theorem map_partialDeriv_self_eq_pow_mul
   have h3 := (mem_nonZeroDivisors_iff.mp hnzd).2 _ h0
   linear_combination h3
 
+/- English proof (translation)
+The claim follows from `Ideal.mul_mem_mul (Ideal.subset_span (Set.mem_singleton_iff.mpr rfl)) hg`.
+-/
 private theorem mul_mem_span_singleton_mul {R : Type*} [CommRing R] (a : R) (I : Ideal R)
     {g : R} (hg : g ∈ I) : a * g ∈ Ideal.span ({a} : Set R) * I :=
   Ideal.mul_mem_mul (Ideal.subset_span (Set.mem_singleton_iff.mpr rfl)) hg
 
+/- English proof (translation)
+Use `Finset.cons_induction_on t ?_ ?_` and prove the remaining obligations. Simplify using the standard rewrite rules. Introduce `a u ha ih`. Rewrite using `[Finset.sum_cons, Finset.sum_cons]`. Simplify using `[ih]`.
+-/
 private theorem finset_sum_smul_derivation_apply {k : Type*} [CommRing k] {S : Type*} [CommRing S]
     [Algebra k S] {ι : Type*} (t : Finset ι) (c : ι → S) (D : ι → Derivation k S S) (x : S) :
     (∑ i ∈ t, c i • D i) x = ∑ i ∈ t, c i * D i x := by
@@ -346,6 +439,23 @@ private theorem finset_sum_smul_derivation_apply {k : Type*} [CommRing k] {S : T
     rw [Finset.sum_cons, Finset.sum_cons]
     simp [ih]
 
+/- English proof (translation)
+Take `⟨e, rfl⟩ : ∃ e : ℕ, m = e + 1` from `⟨m - 1, by omega⟩`. Simplify using `only [Nat.add_sub_cancel]`. Establish `hmem : ∀ x ∈ J, ∃ g ∈ J₁, φ x = coord k ι S₁ s ^ (e + 1) * g`. Introduce `x hx`. Take `⟨g, hg, hgx⟩` from `Ideal.mem_span_singleton_mul.1 (hJ (Ideal.mem_map_of_mem φ hx))`.
+
+Conclude with `⟨g, hg, hgx.symm⟩`. Establish `hkey : ∀ x ∈ J, ∀ i : ι, φ (partialDeriv k ι S i x) ∈ Ideal.span {coord k ι S₁ s ^ e} * derivIdeal k J₁`. Introduce `x hx i`. Take `⟨g, hg, hgx⟩` from `hmem x hx`. Distinguish the cases in `hiT : i ∈ T`.
+
+Distinguish the cases in `his : i = s`. Establish `hbr : coord k ι S₁ s * partialDeriv k ι S₁ s g + ((e + 1 : ℕ) : S₁) * g - ∑ j ∈ T.erase s, coord k ι S₁ j * partialDeriv k ι S₁ j g ∈ derivIdeal k J₁`. Use `sub_mem (add_mem ?_ ?_) ?_` and prove the remaining obligations. Conclude with `Ideal.mul_mem_left _ _ (derivation_apply_mem_derivIdeal k J₁ (partialDeriv k ι S₁ s) hg)`. Conclude with `Ideal.mul_mem_left _ _ (le_derivIdeal k J₁ hg)`.
+
+Use `sum_mem fun j _ => ?_` and prove the remaining obligations. Conclude with `Ideal.mul_mem_left _ _ (derivation_apply_mem_derivIdeal k J₁ (partialDeriv k ι S₁ j) hg)`. Rewrite using `[his, map_partialDeriv_self_eq_pow_mul k ι S S₁ φ T s hin hs hout hsT hnzd x g e hgx]`. Conclude with `mul_mem_span_singleton_mul _ _ hbr`. Rewrite using `[map_partialDeriv_eq_pow_mul_of_mem k ι S S₁ φ T s hin hs hout hnzd i hiT his x g e hgx]`.
+
+Conclude with `mul_mem_span_singleton_mul _ _ (derivation_apply_mem_derivIdeal k J₁ (partialDeriv k ι S₁ i) hg)`. Rewrite using `[map_partialDeriv_eq_pow_mul_of_notMem k ι S S₁ φ T s hin hs hout hsT i hiT x g e hgx, pow_succ, mul_assoc]`. Conclude with `mul_mem_span_singleton_mul _ _ (Ideal.mul_mem_left _ _ (derivation_apply_mem_derivIdeal k J₁ (partialDeriv k ι S₁ i) hg))`. Rewrite using `[Ideal.map_le_iff_le_comap, derivIdeal_le_iff]`. Use `⟨?_, ?_⟩` and prove the remaining obligations.
+
+Introduce `x hx`. Take `⟨g, hg, hgx⟩` from `hmem x hx`. Use `Ideal.mem_comap.mpr ?_` and prove the remaining obligations. Rewrite using `[hgx, pow_succ, mul_assoc]`. Conclude with `mul_mem_span_singleton_mul _ _ (Ideal.mul_mem_left _ _ (le_derivIdeal k J₁ hg))`.
+
+Introduce `D x hx`. Use `Ideal.mem_comap.mpr ?_` and prove the remaining obligations. Establish `h1 : D x = (∑ i : ι, D (coord k ι S i) • partialDeriv k ι S i) x` using `congrArg (fun E : Derivation k S S => E x) (eq_sum_smul_partialDeriv k ι S D)`. Establish `hDx : D x = ∑ i : ι, D (coord k ι S i) * partialDeriv k ι S i x`. Rewrite using `[h1]`.
+
+Conclude with `finset_sum_smul_derivation_apply Finset.univ (fun i => D (coord k ι S i)) (fun i => partialDeriv k ι S i) x`. Rewrite using `[hDx, map_sum]`. Use `sum_mem fun i _ => ?_` and prove the remaining obligations. Rewrite using `[map_mul]`. Conclude with `Ideal.mul_mem_left _ _ (hkey x hx i)`.
+-/
 theorem map_derivIdeal_le_span_pow_mul [Fintype ι]
     (hin : ∀ i ∈ T, i ≠ s → φ (coord k ι S i) = coord k ι S₁ i * coord k ι S₁ s)
     (hs : φ (coord k ι S s) = coord k ι S₁ s)
@@ -408,6 +518,15 @@ theorem map_derivIdeal_le_span_pow_mul [Fintype ι]
     rw [map_mul]
     exact Ideal.mul_mem_left _ _ (hkey x hx i)
 
+/- English proof (translation)
+Establish `key : ∀ r : ℕ, r ≤ m → Ideal.map φ (derivIdealIterate k r J) ≤ Ideal.span {coord k ι S₁ s ^ (m - r)} * derivIdealIterate k r J₁`. Introduce `r`. Proceed by induction on `r with`. Consider the case `zero`. Introduce `_`.
+
+Rewrite using `[derivIdealIterate_zero k J, derivIdealIterate_zero k J₁, Nat.sub_zero]`. Conclude with `hJ`. Consider the case `succ r ih`. Introduce `hr`. Establish `hrm : r ≤ m` using `Nat.le_of_succ_le hr`.
+
+Establish `h1 : 1 ≤ m - r` using `by omega`. Establish `hstep` using `map_derivIdeal_le_span_pow_mul k ι S S₁ φ T s hin hs hout hsT hnzd (derivIdealIterate k r J) (derivIdealIterate k r J₁) (m - r) h1 (ih hrm)`. Establish `hmm : m - r - 1 = m - (r + 1)` using `by omega`. Rewrite `hstep` using `[hmm]`. Rewrite using `[derivIdealIterate_succ k r J, derivIdealIterate_succ k r J₁]`.
+
+Conclude with `hstep`. Conclude with `key j hj`.
+-/
 theorem map_derivIdealIterate_le_span_pow_mul [Fintype ι]
     (hin : ∀ i ∈ T, i ≠ s → φ (coord k ι S i) = coord k ι S₁ i * coord k ι S₁ s)
     (hs : φ (coord k ι S s) = coord k ι S₁ s)

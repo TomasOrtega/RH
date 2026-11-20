@@ -23,6 +23,9 @@ namespace FormIntegralPositivity
 
 variable {n : ℕ}
 
+/- English proof (translation)
+Take `⟨U, hU, hxU, hsU, -⟩` from `hs`. Rewrite using `[analyticAt_pi_iff]`. Introduce `i`. Conclude with `ReciprocityTheory.ChartRestriction.G.Geo.osgood d U (fun y => s y i) hU (fun y hy => differentiableWithinAt_pi.mp (hsU y hy) i) (A *ᵥ x) hxU`.
+-/
 theorem analyticAt_sheet {d : ℕ} {J : Ideal (MvPolynomial (Fin n) ℂ)} {A : Matrix (Fin d) (Fin n) ℂ}
     {x : Fin n → ℂ} {s : (Fin d → ℂ) → Fin n → ℂ} (hs : IsSheetAt J A x s) :
     AnalyticAt ℂ s (A *ᵥ x) := by
@@ -32,6 +35,13 @@ theorem analyticAt_sheet {d : ℕ} {J : Ideal (MvPolynomial (Fin n) ℂ)} {A : M
   exact ReciprocityTheory.ChartRestriction.G.Geo.osgood d U (fun y => s y i) hU
     (fun y hy => differentiableWithinAt_pi.mp (hsU y hy) i) (A *ᵥ x) hxU
 
+/- English proof (translation)
+Establish `hsx : s (A *ᵥ x) = x`. Take `⟨_, _, _, _, h, _⟩` from `hs`. Conclude with `h`. Establish `hS : ContDiffAt ℝ 2 s (A *ᵥ x)` using `(analyticAt_sheet hs).restrictScalars.contDiffAt`. Establish `hf' : ContDiffAt ℝ 2 (f ∘ s) (A *ᵥ x)` using `(hsx ▸ hf).comp _ hS`.
+
+Establish `hg' : ContDiffAt ℝ 2 (g ∘ s) (A *ᵥ x)` using `(hsx ▸ hg).comp _ hS`. Establish `hadd : hessC ((fun z => f z + g z) ∘ s) (A *ᵥ x) = hessC (f ∘ s) (A *ᵥ x) + hessC (g ∘ s) (A *ᵥ x)` using `ReciprocityTheory.AnForm.A.hessC_add (f ∘ s) (g ∘ s) _ hf' hg'`. Establish `key : ∀ F : (Fin n → ℂ) → ℝ, (fun k => hessC (vecCons F φ k ∘ s) (A *ᵥ x)) = Function.update (fun k => hessC (vecCons f φ k ∘ s) (A *ᵥ x)) 0 (hessC (F ∘ s) (A *ᵥ x))`. Introduce `F`. Use function extensionality and compare the values at `k`.
+
+Break down `Fin.eq_zero_or_eq_succ k with rfl | ⟨i, rfl⟩` into its components or cases. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Simplify using `only [maDens]`. Rewrite using `[key (fun z => f z + g z), key g, hadd, ReciprocityTheory.AnForm.A.mdisc_update_add, ← key f, Complex.add_re, mul_add]`.
+-/
 theorem maDens_cons_add {d : ℕ} {J : Ideal (MvPolynomial (Fin n) ℂ)}
     {A : Matrix (Fin (d + 1)) (Fin n) ℂ} {x : Fin n → ℂ} {s : (Fin (d + 1) → ℂ) → Fin n → ℂ}
     (hs : IsSheetAt J A x s) (f g : (Fin n → ℂ) → ℝ) (φ : Fin d → (Fin n → ℂ) → ℝ)
@@ -58,6 +68,15 @@ theorem maDens_cons_add {d : ℕ} {J : Ideal (MvPolynomial (Fin n) ℂ)}
   rw [key (fun z => f z + g z), key g, hadd, ReciprocityTheory.AnForm.A.mdisc_update_add, ← key f, Complex.add_re,
     mul_add]
 
+/- English proof (translation)
+Establish `hO : IsOpen {z : Fin n → ℂ | z ≠ 0}` using `isOpen_ne_fun continuous_id continuous_const`. Establish `hL : ContDiffAt ℝ 2 (fun z => Real.log (h.dualNorm z)) x` using `((contDiffOn_log_dualNorm h).contDiffAt (isOpen_compl_singleton.mem_nhds hx)).of_le (WithTop.coe_le_coe.2 le_top)`. Establish `hb : ContDiffAt ℝ 2 (fsLogReg h u' ε) x` using `((FubiniStudyLogRegularization.contDiffOn_fsLogReg h u' hε).contDiffAt (hO.mem_nhds hx)).of_le (WithTop.coe_le_coe.2 le_top)`. Establish `hΨ : (fun (_ : Fin (e + 1)) z => Real.log (h.dualNorm z)) = vecCons (fun z => Real.log (h.dualNorm z)) (fun _ z => Real.log (h.dualNorm z))`. Use function extensionality and compare the values at `k`.
+
+Apply the tactic sequence `rcases Fin.eq_zero_or_eq_succ k with rfl | ⟨i, rfl⟩ <;> simp`. Rewrite using `[hΨ, ← maDens_cons_add hs _ _ _ hb hL]`. Set `T : Fin (e + 1) → Matrix (Fin (n + 1)) (Fin n) ℂ` to `vecCons (FubiniStudyLogRegularization.regMat h u' ε) fun _ => FubiniStudyLogRegularization.regMat h 0 1`. Establish `hpot : (fun k => vecCons (fun z => fsLogReg h u' ε z + Real.log (h.dualNorm z)) (fun _ z => Real.log (h.dualNorm z)) k ∘ s) = fun k => (fun z => Real.log √(∑ i, ‖(T k *ᵥ z) i‖ ^ 2)) ∘ s`. Use function extensionality and compare the values at `k y`.
+
+Break down `Fin.eq_zero_or_eq_succ k with rfl | ⟨i, rfl⟩` into its components or cases. Simplify using `only [Function.comp_apply, cons_val_zero, T]`. Conclude with `FubiniStudyLogRegularization.fsLogReg_add_log h u' hε _`. Simplify using `only [Function.comp_apply, cons_val_succ, T]`. Conclude with `FubiniStudyLogRegularization.log_dualNorm_eq h _`.
+
+Rewrite using `[hpot]`. Use `hD n (e + 1) (n + 1) J A x s T hs fun k => ?_` and prove the remaining obligations. Break down `Fin.eq_zero_or_eq_succ k with rfl | ⟨i, rfl⟩` into its components or cases. Conclude with `FubiniStudyLogRegularization.regMat_mulVec_ne_zero h u' hε hx`. Conclude with `FubiniStudyLogRegularization.regMat_mulVec_ne_zero h 0 one_pos hx`.
+-/
 theorem dens_sum_nonneg (hD : SheetLogNormDens.Statement) (h : HermNorm n) (u' : Fin n → ℂ) {ε : ℝ}
     (hε : 0 < ε) {e : ℕ} {J : Ideal (MvPolynomial (Fin n) ℂ)} {A : Matrix (Fin (e + 1)) (Fin n) ℂ}
     {x : Fin n → ℂ} {s : (Fin (e + 1) → ℂ) → Fin n → ℂ} (hs : IsSheetAt J A x s) (hx : x ≠ 0) :
@@ -96,6 +115,31 @@ end FormIntegralPositivity
 
 open FormIntegralPositivity in
 
+/- English proof (translation)
+Introduce `n e h W u u' ε δ δ' hW hF hε hδ hδδ'`. Take `⟨F, hF⟩` from `hF`. Take `⟨j, hj⟩` from `hW.isRelevant`. Establish `hℓ : ∃ ℓ : Fin n → ℂ, linForm ℓ ∉ W` using `⟨Pi.single j 1, by rwa [linForm_single]⟩`. Establish `hℓW : linForm hℓ.choose ∉ W` using `hℓ.choose_spec`.
+
+Establish `hδ' : 0 < δ'` using `hδ.trans_le hδδ'`. Establish `hform : ∀ a b, formInt h W e a b = varInt (W ⊔ Ideal.span {linForm hℓ.choose - 1}) (e + 1) a (vecCons b fun _ x => Real.log (h.dualNorm x))`. Introduce `a b`. Rewrite using `[formInt, dif_pos hℓ]`. Establish `hcone : ∀ δ₀, 0 < δ₀ → coneIntegral h W (e + 1) (fsLogReg h u δ₀) = varInt (W ⊔ Ideal.span {linForm hℓ.choose - 1}) (e + 1) (fsLogReg h u δ₀) (fun _ x => Real.log (h.dualNorm x))` using `fun δ₀ hδ₀ => hC n (e + 1) h W F hℓ.choose (fsLogReg h u δ₀) hW hF hℓW (fun t x ht => FubiniStudyLogRegularization.fsLogReg_smul h u δ₀ ht x) (FubiniStudyLogRegularization.contDiffOn_fsLogReg h u hδ₀).continuousOn`.
+
+Rewrite using `[hform, hform, hcone δ hδ, hcone δ' hδ']`. Unfold `varInt`. Use `split_ifs with hA`. Use `swap`. Simplify using the standard rewrite rules.
+
+Establish `hAfin` using `hA.choose_spec`. Unfold `chartInt`. Establish `hint : ∀ δ₀, 0 < δ₀ → ∀ (c : Fin (e + 1) → ℝ) (ψ : Fin (e + 1) → (Fin n → ℂ) → ℝ), (∀ k (t : ℂ) x, t ≠ 0 → ψ k (t • x) = ψ k x) → (∀ k, ContDiffOn ℝ ∞ (ψ k) {x | x ≠ 0}) → Integrable (chartDens (W ⊔ Ideal.span {linForm hℓ.choose - 1}) hA.choose (fsLogReg h u δ₀) fun k x => c k * …`. Introduce `δ₀ hδ₀ c ψ hψ hψs`. Use `Integrable.mono' (hM n e h W F hℓ.choose hA.choose (fsLogReg h u δ₀) c ψ hW hF hℓW hAfin (fun t x ht => FubiniStudyLogRegularization.fsLogReg_smul h u δ₀ ht x) (FubiniStudyLogRegularization.contDiffOn_fsLogReg h u hδ₀).continuousOn hψ hψs) ?_ (Eventually.of_forall fun y => ?_)` and prove the remaining obligations.
+
+Conclude with `(SheetSumMeasurable.measurable_sheetSum hAfin (fun a b => a * b) (continuous_fst.mul continuous_snd).measurable (FubiniStudyLogRegularization.measurable_fsLogReg h u δ₀) _).aestronglyMeasurable`. Rewrite using `[Real.norm_eq_abs]`. Conclude with `abs_chartDens_le _ _ _ _ y`. Establish `h1 : ∀ δ₀, 0 < δ₀ → Integrable (chartDens (W ⊔ Ideal.span {linForm hℓ.choose - 1}) hA.choose (fsLogReg h u δ₀) (vecCons (fsLogReg h u' ε) fun _ x => Real.log (h.dualNorm x)))`. Introduce `δ₀ hδ₀`.
+
+Establish `e1 : (fun (k : Fin (e + 1)) x => (vecCons 0 fun _ => 1 : Fin (e + 1) → ℝ) k * Real.log (h.dualNorm x) + (vecCons (fsLogReg h u' ε) fun _ _ => 0 : Fin (e + 1) → (Fin n → ℂ) → ℝ) k x) = vecCons (fsLogReg h u' ε) fun _ x => Real.log (h.dualNorm x)`. Use function extensionality and compare the values at `k x`. Apply the tactic sequence `rcases Fin.eq_zero_or_eq_succ k with rfl | ⟨i, rfl⟩ <;> simp`. Rewrite using `[← e1]`. Use `hint δ₀ hδ₀ _ _ (fun k t x ht => ?_) fun k => ?_` and prove the remaining obligations.
+
+Break down `Fin.eq_zero_or_eq_succ k with rfl | ⟨i, rfl⟩` into its components or cases. Conclude with `FubiniStudyLogRegularization.fsLogReg_smul h u' ε ht x`. Both sides reduce to the same expression. Break down `Fin.eq_zero_or_eq_succ k with rfl | ⟨i, rfl⟩` into its components or cases. Conclude with `FubiniStudyLogRegularization.contDiffOn_fsLogReg h u' hε`.
+
+Conclude with `contDiffOn_const`. Establish `h2 : ∀ δ₀, 0 < δ₀ → Integrable (chartDens (W ⊔ Ideal.span {linForm hℓ.choose - 1}) hA.choose (fsLogReg h u δ₀) fun _ x => Real.log (h.dualNorm x))`. Introduce `δ₀ hδ₀`. Use `hint δ₀ hδ₀ (fun _ => 1) (fun _ _ => 0) (fun _ _ _ _ => rfl) fun _ => contDiffOn_const` as an intermediate fact. Simplify using `using this`.
+
+Rewrite using `[← integral_add (h1 δ hδ) (h2 δ hδ), ← integral_add (h1 δ' hδ') (h2 δ' hδ')]`. Use `integral_mono ((h1 δ hδ).add (h2 δ hδ)) ((h1 δ' hδ').add (h2 δ' hδ')) fun y => ?_` and prove the remaining obligations. Establish `hfin` using `IndefiniteRowSideFullHecke.ComplexSets.fibre_finite hAfin y`. Simplify using `only [chartDens, sheetSum, finsum_mem_eq_finite_toFinset_sum _ hfin]`. Rewrite using `[← Finset.sum_add_distrib, ← Finset.sum_add_distrib]`.
+
+Use `Finset.sum_le_sum fun x hx => ?_` and prove the remaining obligations. Rewrite `hx` using `[Set.Finite.mem_toFinset]`. Take `⟨hxZ, rfl⟩` from `hx`. Establish `hx0 : x ≠ 0`. Introduce and unpack `rfl`.
+
+Use `hxZ _ (Ideal.mem_sup_right (Ideal.mem_span_singleton_self _))` as an intermediate fact. Simplify using `[linForm] at this`. Use `split_ifs with hs`. Establish `hpos` using `dens_sum_nonneg hD h u' hε hs.choose_spec hx0`. Establish `hmono` using `mul_le_mul_of_nonneg_right (FubiniStudyLogRegularization.fsLogReg_mono h u hδ hδδ' x) hpos`.
+
+Combine the linear equalities and inequalities to obtain the conclusion. Simplify using the standard rewrite rules.
+-/
 theorem FormIntPos.proof (hC : ConeToProjective.Statement) (hM : SliceFormMass.Statement)
     (hD : SheetLogNormDens.Statement) : FormIntPos.Statement := by
   intro n e h W u u' ε δ δ' hW hF hε hδ hδδ'

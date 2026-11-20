@@ -23,11 +23,17 @@ variable {K : Type} [Fintype K] {ι : K → Type} [∀ k, Fintype (ι k)]
   {E : Ψ → Type} [∀ τ, AddCommGroup (E τ)] [∀ τ, Module Ω (E τ)]
   {D : ComponentData II Ψ K ι Ω E} {O Lt : Type} [CommRing O] [AddCommGroup Lt] [Module O Lt]
 
+/- English proof (translation)
+Take `⟨t, -, ht, hs, -⟩` from `NbarChartSemipos.hyps_of_setting X one_pos`. Conclude with `⟨t, ht, hs⟩`.
+-/
 theorem NbarSmooth.hyps_of_setting (X : ComponentSetting D O Lt) :
     ∃ t : ℝ, 0 < t ∧ X.M.atlas.Smooth (X.S.regWeight t) := by
   obtain ⟨t, -, ht, hs, -⟩ := NbarChartSemipos.hyps_of_setting X one_pos
   exact ⟨t, ht, hs⟩
 
+/- English proof (translation)
+The claim follows from `LowerBoundFree.NbarSmooth.hyps_of_setting _`.
+-/
 theorem Line.NbarSmooth.hyps_inhabited :
     ∃ t : ℝ, 0 < t ∧ (Line.projLineComponentSetting Line.zeroSystem Line.zero_hII).M.atlas.Smooth
       ((Line.projLineComponentSetting Line.zeroSystem Line.zero_hII).S.regWeight t) :=

@@ -9,6 +9,17 @@ local notation "ℚ̄" => AlgebraicClosure ℚ
 variable {K L : FiniteSubfield} [Fact (K ≤ L)] {S : Set (HeightOneSpectrum (𝓞 K.1))} {ℓ : ℕ} [Fact ℓ.Prime]
   (hL : ∀ x : L.1, algebraMap L.1 ℚ̄ x ∈ maxUnramifiedOutside K.1 ℚ̄ S) [Normal K.1 L.1]
 
+/- English proof (translation)
+Establish `hℓ : ℓ.Prime` using `Fact.out`. Distinguish the cases in `h2 : ℓ = 2`. Use `right`. Substitute `h2` using the available equality. Establish `hTC : IsTotallyComplex L.1` using `hK.resolve_left (by simp)`.
+
+Use `haveI : IsGalois K.1 L.1 := ⟨⟩`. Use `⟨fun v => ?_⟩` and prove the remaining obligations. Assume the negation of the conclusion as `hv`. Rewrite `hv` using `[InfinitePlace.not_isComplex_iff_isReal]`. Take `⟨w, rfl⟩` from `InfinitePlace.comap_surjective (k := K.1) (K := L.1) v`.
+
+Establish `hw : w.IsComplex` using `hTC.isComplex w`. Establish `hram : ¬ InfinitePlace.IsUnramified K.1 w` using `InfinitePlace.not_isUnramified_iff.2 ⟨hw, hv⟩`. Establish `hcard` using `InfinitePlace.not_isUnramified_iff_card_stabilizer_eq_two.1 hram`. Establish `hdvd : 2 ∣ Nat.card (L.1 ≃ₐ[K.1] L.1)` using `hcard ▸ Subgroup.card_subgroup_dvd_card (MulAction.stabilizer (L.1 ≃ₐ[K.1] L.1) w)`. Establish `hidx : (gsOpenSubgroup S hL : Subgroup (galUnramifiedOutside K.1 ℚ̄ S)).index = Nat.card (L.1 ≃ₐ[K.1] L.1)`.
+
+Rewrite using `[Subgroup.index]`. Conclude with `Nat.card_congr (gsQuotientGalEquiv hL).toEquiv`. Rewrite `hcop` using `[hidx]`. Use `Nat.Coprime.coprime_dvd_left hdvd hcop` as an intermediate fact. Evaluate the numerical expressions using `at this`.
+
+Use `left`. Conclude with `hℓ.odd_of_ne_two h2`.
+-/
 theorem odd_or_tc_base_pf
     (hcop : Nat.Coprime (gsOpenSubgroup S hL : Subgroup (galUnramifiedOutside K.1 ℚ̄ S)).index ℓ)
     (hK : ℓ ≠ 2 ∨ IsTotallyComplex L.1) : Odd ℓ ∨ IsTotallyComplex K.1 := by

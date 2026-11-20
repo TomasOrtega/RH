@@ -8,6 +8,11 @@ open Formalism.GM Formalism.GM.M Formalism.GM.TM Formalism.GM.MeanGammaLemmas Fo
 section Triv
 variable {p : ℕ} [Fact p.Prime] {N r : ℕ}
 
+/- English proof (translation)
+Introduce `x hx`. Rewrite `hx` using `[MvPolynomial.mem_restrictSupport_iff]`. Rewrite using `[x.as_sum]`. Use `S.sum_mem fun m hm => ?_` and prove the remaining obligations. Establish `hmon : monomial m (coeff m x) = coeff m x • monomial m (1 : ℚ_[p])`.
+
+Rewrite using `[smul_monomial, smul_eq_mul, mul_one]`. Rewrite using `[hmon]`. Conclude with `S.smul_mem _ (h m (hx hm))`.
+-/
 theorem supp_le_of_monomial {σ : Type} (Q : Set (σ →₀ ℕ)) (S : Submodule ℚ_[p] (MvPolynomial σ ℚ_[p]))
     (h : ∀ m ∈ Q, monomial m (1 : ℚ_[p]) ∈ S) : restrictSupport ℚ_[p] Q ≤ S := by
   intro x hx
@@ -19,14 +24,27 @@ theorem supp_le_of_monomial {σ : Type} (Q : Set (σ →₀ ℕ)) (S : Submodule
   rw [hmon]
   exact S.smul_mem _ (h m (hx hm))
 
+/- English proof (translation)
+Simplify using `[Formalism.GM.M.glAct, h]`.
+-/
 theorem glAct_none (LL : Letters N) (j : ℕ) (h : ∀ i : Fin N, ¬ (i : ℕ) < j) (c d : Fin r) :
     glAct p LL j c d = 0 := by
   simp [Formalism.GM.M.glAct, h]
 
+/- English proof (translation)
+Simplify using `[Formalism.GM.M.wt, h]`.
+-/
 theorem wt_none (LL : Letters N) (j : ℕ) (h : ∀ i : Fin N, ¬ (i : ℕ) < j) (c : Fin r)
     (m : Fin N × Fin r →₀ ℕ) : wt LL j c m = 0 := by
   simp [Formalism.GM.M.wt, h]
 
+/- English proof (translation)
+Simplify using `only [Formalism.GM.M.glAct]`. Rewrite using `[Finset.sum_eq_single i0]`. Establish `hlt : (i0 : ℕ) < 1` using `by omega`. Rewrite using `[if_pos hlt]`. Apply the tactic sequence `split_ifs <;> simp`.
+
+Introduce `b _ hb`. Establish `hnb : ¬ (b : ℕ) < 1`. Introduce `hlt`. Conclude with `hb (Fin.ext (by omega))`. Rewrite using `[if_neg hnb]`.
+
+Introduce `hn`. Conclude with `absurd (Finset.mem_univ i0) hn`.
+-/
 theorem glAct_one (LL : Letters N) (i0 : Fin N) (h0 : (i0 : ℕ) = 0) (c d : Fin r)
     (x : MvPolynomial (Fin N × Fin r) ℚ_[p]) :
     glAct p LL 1 c d x =
@@ -44,6 +62,11 @@ theorem glAct_one (LL : Letters N) (i0 : Fin N) (h0 : (i0 : ℕ) = 0) (c d : Fin
   · intro hn
     exact absurd (Finset.mem_univ i0) hn
 
+/- English proof (translation)
+Simplify using `only [Formalism.GM.M.wt]`. Rewrite using `[Finset.sum_eq_single i0]`. Rewrite using `[if_pos (by omega)]`. Introduce `b _ hb`. Establish `hnb : ¬ (b : ℕ) < 1`.
+
+Introduce `hlt`. Conclude with `hb (Fin.ext (by omega))`. Rewrite using `[if_neg hnb]`. Introduce `hn`. Conclude with `absurd (Finset.mem_univ i0) hn`.
+-/
 theorem wt_one (LL : Letters N) (i0 : Fin N) (h0 : (i0 : ℕ) = 0) (c : Fin r) (m : Fin N × Fin r →₀ ℕ) :
     wt LL 1 c m = if LL.vec i0 then (m (i0, c) : ℤ) else -(m (i0, c) : ℤ) := by
   simp only [Formalism.GM.M.wt]
@@ -57,6 +80,25 @@ theorem wt_one (LL : Letters N) (i0 : Fin N) (h0 : (i0 : ℕ) = 0) (c : Fin r) (
   · intro hn
     exact absurd (Finset.mem_univ i0) hn
 
+/- English proof (translation)
+Introduce `n`. Proceed by induction on `n with`. Consider the case `zero`. Introduce `m hm hs`. Use `hbase m (fun c hc => ?_) (by omega)` and prove the remaining obligations.
+
+Establish `h1` using `Finset.add_sum_erase Finset.univ (fun c => m (i0, c)) (Finset.mem_univ t)`. Establish `h2 : ∑ x ∈ Finset.univ.erase t, m (i0, x) = 0` using `by omega`. Conclude with `Finset.sum_eq_zero_iff.mp h2 c (Finset.mem_erase.mpr ⟨hc, Finset.mem_univ c⟩)`. Consider the case `succ n ih`. Introduce `m hm hs`.
+
+Choose the witnesses or unpack the hypotheses as in `⟨a, hat, ha⟩ : ∃ a, a ≠ t ∧ m (i0, a) ≠ 0 := by`. Assume the negation of the conclusion as `hne`. Use `push_neg at hne`. Establish `hsum : ∑ c, m (i0, c) = m (i0, t)` using `Finset.sum_eq_single t (fun c _ hc => hne c hc) (fun hn => absurd (Finset.mem_univ t) hn)`. Use linear arithmetic over natural numbers and integers.
+
+Take `⟨m', hm'⟩ : ∃ m' : Fin N × Fin r →₀ ℕ, m' = m - Finsupp.single (i0, a) 1 + Finsupp.single (i0, t) 1` from `⟨_, rfl⟩`. Establish `hle : Finsupp.single (i0, a) 1 ≤ m`. Rewrite using `[Finsupp.single_le_iff]`. Use linear arithmetic over natural numbers and integers. Establish `heq : m' + Finsupp.single (i0, a) 1 = m + Finsupp.single (i0, t) 1`.
+
+Rewrite using `[hm', add_right_comm, tsub_add_cancel_of_le hle]`. Establish `key : ∀ (f : Fin N × Fin r →₀ ℕ) (b : Fin r), ∑ c, ((f + Finsupp.single (i0, b) 1 : Fin N × Fin r →₀ ℕ)) (i0, c) = ∑ c, f (i0, c) + 1`. Introduce `f b`. Simplify using `[Finsupp.single_apply, Finset.sum_add_distrib]`. Establish `hsum : ∑ c, m' (i0, c) = d`.
+
+Establish `h3` using `congrArg (fun f : Fin N × Fin r →₀ ℕ => ∑ c, f (i0, c)) heq`. Simplify using `only [key] at h3`. Use linear arithmetic over natural numbers and integers. Establish `ht : m' (i0, t) = m (i0, t) + 1`. Establish `h3` using `congrArg (fun f : Fin N × Fin r →₀ ℕ => f (i0, t)) heq`.
+
+Simplify using `[Finsupp.single_apply, hat] at h3`. Use linear arithmetic over natural numbers and integers. Establish `hmem` using `ih m' (by omega) hsum`. Establish `hX` using `hst a _ hmem`. Establish `he : Finsupp.single (i0, a) 1 + (m' - Finsupp.single (i0, t) 1) = m`.
+
+Rewrite using `[hm', add_tsub_cancel_right, add_tsub_cancel_of_le hle]`. Establish `hcalc : X (i0, a) * pderiv (i0, t) (monomial m' (1 : ℚ_[p])) = ((m (i0, t) + 1 : ℕ) : ℚ_[p]) • monomial m (1 : ℚ_[p])`. Rewrite using `[pderiv_monomial, ← pow_one (X (i0, a)), ← monomial_single_add, he, smul_monomial, ht]`. Simplify using the standard rewrite rules. Rewrite `hX` using `[hcalc]`.
+
+Establish `hne : ((m (i0, t) + 1 : ℕ) : ℚ_[p]) ≠ 0` using `by exact_mod_cast Nat.succ_ne_zero (m (i0, t))`. Establish `h4` using `S.smul_mem (((m (i0, t) + 1 : ℕ) : ℚ_[p]))⁻¹ hX`. Rewrite `h4` using `[smul_smul, inv_mul_cancel₀ hne, one_smul]`. Then use the resulting hypothesis.
+-/
 theorem move_mem (i0 : Fin N) (t : Fin r) (d : ℕ) (S : Submodule ℚ_[p] (MvPolynomial (Fin N × Fin r) ℚ_[p]))
     (hbase : ∀ m : Fin N × Fin r →₀ ℕ, (∀ c, c ≠ t → m (i0, c) = 0) → m (i0, t) = d →
       monomial m (1 : ℚ_[p]) ∈ S)
@@ -111,6 +153,49 @@ theorem move_mem (i0 : Fin N) (t : Fin r) (d : ℕ) (S : Submodule ℚ_[p] (MvPo
     have h4 := S.smul_mem (((m (i0, t) + 1 : ℕ) : ℚ_[p]))⁻¹ hX
     rwa [smul_smul, inv_mul_cancel₀ hne, one_smul] at h4
 
+/- English proof (translation)
+Distinguish the cases in `hex : ∃ i0 : Fin N, (i0 : ℕ) < j`. Take `⟨i0, hi0⟩` from `hex`. Establish `hj1 : j = 1` using `by omega`. Establish `h0 : (i0 : ℕ) = 0` using `by omega`. Substitute `hj1` using the available equality.
+
+Break down `Bool.eq_false_or_eq_true (LL.vec i0) with hv | hv` into its components or cases. Use `⟨fun c => if c = (⟨0, hr⟩ : Fin r) then (LL.deg i0 : ℤ) else 0, ?_⟩` and prove the remaining obligations. Simplify using `only [Formalism.GM.M.IsoC, Formalism.GM.M.Pol]`. Use `le_sInf ?_` and prove the remaining obligations. Introduce and unpack `S ⟨hHS, hGS⟩`.
+
+Apply `supp_le_of_monomial` to reduce the goal to its premises. Introduce `m hm`. Establish `hm' : ∀ i, ∑ c, m (i, c) = LL.deg i` using `hm`. Establish `hbase : ∀ m : Fin N × Fin r →₀ ℕ, (∀ c, c ≠ (⟨0, hr⟩ : Fin r) → m (i0, c) = 0) → m (i0, ⟨0, hr⟩) = LL.deg i0 → monomial m (1 : ℚ_[p]) ∈ S`. Introduce `m hz hd`.
+
+Apply `hHS` to reduce the goal to its premises. Simplify using `only [Formalism.GM.M.HWC, Formalism.GM.M.WtSpC, Submodule.mem_inf, Submodule.mem_iInf, LinearMap.mem_ker]`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Rewrite using `[MvPolynomial.mem_restrictSupport_iff]`. Introduce `m2 hm2`.
+
+Establish `hm3` using `MvPolynomial.support_monomial_subset (Finset.mem_coe.mp hm2)`. Rewrite `hm3` using `[Finset.mem_singleton]`. Substitute `hm3` using the available equality. Simplify using `only [Set.mem_setOf_eq]`. Introduce `c _`.
+
+Rewrite using `[wt_one LL i0 h0 c, hv, if_pos rfl]`. Distinguish the cases in `hc : c = ⟨0, hr⟩`. Rewrite using `[if_pos hc, hc, hd]`. Rewrite using `[if_neg hc, hz c hc]`. Simplify using the standard rewrite rules.
+
+Introduce `c d hcd`. Establish `hd0 : d ≠ ⟨0, hr⟩`. Introduce `hd0`. Establish `hlt` using `hcd.2.2`. Rewrite `hlt` using `[hd0, Fin.lt_def]`.
+
+Conclude with `Nat.not_lt_zero _ hlt`. Rewrite using `[glAct_one LL i0 h0 c d, hv, if_pos rfl, pderiv_monomial, hz d hd0]`. Simplify using the standard rewrite rules. Establish `hst : ∀ a, ∀ x ∈ S, X (i0, a) * pderiv (i0, (⟨0, hr⟩ : Fin r)) x ∈ S`. Introduce `a x hx`.
+
+Establish `h1` using `hGS a (Finset.mem_univ _) ⟨0, hr⟩ (Finset.mem_univ _) x hx`. Rewrite `h1` using `[glAct_one LL i0 h0, hv, if_pos rfl]`. Then use the resulting hypothesis. Establish `hle : m (i0, ⟨0, hr⟩) ≤ LL.deg i0`. Rewrite using `[← hm' i0]`. Conclude with `Finset.single_le_sum (f := fun c => m (i0, c)) (fun _ _ => Nat.zero_le _) (Finset.mem_univ _)`.
+
+Conclude with `move_mem i0 ⟨0, hr⟩ (LL.deg i0) S hbase hst (LL.deg i0 - m (i0, ⟨0, hr⟩)) m (by omega) (hm' i0)`. Use `⟨fun c => -(if c = (⟨r - 1, by omega⟩ : Fin r) then (LL.deg i0 : ℤ) else 0), ?_⟩` and prove the remaining obligations. Simplify using `only [Formalism.GM.M.IsoC, Formalism.GM.M.Pol]`. Use `le_sInf ?_` and prove the remaining obligations. Introduce and unpack `S ⟨hHS, hGS⟩`.
+
+Apply `supp_le_of_monomial` to reduce the goal to its premises. Introduce `m hm`. Establish `hm' : ∀ i, ∑ c, m (i, c) = LL.deg i` using `hm`. Establish `hbase : ∀ m : Fin N × Fin r →₀ ℕ, (∀ c, c ≠ (⟨r - 1, by omega⟩ : Fin r) → m (i0, c) = 0) → m (i0, ⟨r - 1, by omega⟩) = LL.deg i0 → monomial m (1 : ℚ_[p]) ∈ S`. Introduce `m hz hd`.
+
+Apply `hHS` to reduce the goal to its premises. Simplify using `only [Formalism.GM.M.HWC, Formalism.GM.M.WtSpC, Submodule.mem_inf, Submodule.mem_iInf, LinearMap.mem_ker]`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Rewrite using `[MvPolynomial.mem_restrictSupport_iff]`. Introduce `m2 hm2`.
+
+Establish `hm3` using `MvPolynomial.support_monomial_subset (Finset.mem_coe.mp hm2)`. Rewrite `hm3` using `[Finset.mem_singleton]`. Substitute `hm3` using the available equality. Simplify using `only [Set.mem_setOf_eq]`. Introduce `c _`.
+
+Rewrite using `[wt_one LL i0 h0 c, hv, if_neg Bool.false_ne_true]`. Distinguish the cases in `hc : c = ⟨r - 1, by omega⟩`. Rewrite using `[if_pos hc, hc, hd]`. Rewrite using `[if_neg hc, hz c hc]`. Simplify using the standard rewrite rules.
+
+Introduce `c d hcd`. Establish `hct : c ≠ ⟨r - 1, by omega⟩`. Introduce `hct`. Establish `hlt` using `hcd.2.2`. Rewrite `hlt` using `[Fin.lt_def, hct]`.
+
+Establish `hdr` using `d.isLt`. Simplify using `only at hlt`. Use linear arithmetic over natural numbers and integers. Rewrite using `[glAct_one LL i0 h0 c d, hv, if_neg Bool.false_ne_true, pderiv_monomial, hz c hct]`. Simplify using the standard rewrite rules.
+
+Establish `hst : ∀ a, ∀ x ∈ S, X (i0, a) * pderiv (i0, (⟨r - 1, by omega⟩ : Fin r)) x ∈ S`. Introduce `a x hx`. Establish `h1` using `hGS ⟨r - 1, by omega⟩ (Finset.mem_univ _) a (Finset.mem_univ _) x hx`. Rewrite `h1` using `[glAct_one LL i0 h0, hv, if_neg Bool.false_ne_true]`. Establish `h2` using `S.neg_mem h1`.
+
+Rewrite `h2` using `[neg_neg]`. Then use the resulting hypothesis. Establish `hle : m (i0, ⟨r - 1, by omega⟩) ≤ LL.deg i0`. Rewrite using `[← hm' i0]`. Conclude with `Finset.single_le_sum (f := fun c => m (i0, c)) (fun _ _ => Nat.zero_le _) (Finset.mem_univ _)`. Conclude with `move_mem i0 ⟨r - 1, by omega⟩ (LL.deg i0) S hbase hst (LL.deg i0 - m (i0, ⟨r - 1, by omega⟩)) m (by omega) (hm' i0)`.
+
+Use `push_neg at hex`. Establish `hn : ∀ i : Fin N, ¬ (i : ℕ) < j` using `fun i => not_lt.mpr (hex i)`. Use `⟨0, fun F _ => ?_⟩` and prove the remaining obligations. Use `Formalism.CountingSumsFrames.hwc_le_isoC (p := p) LL j 0 ?_` and prove the remaining obligations. Simplify using `only [Formalism.GM.M.HWC, Formalism.GM.M.WtSpC, Submodule.mem_inf, Submodule.mem_iInf, LinearMap.mem_ker, MvPolynomial.mem_restrictSupport_iff]`.
+
+Use `⟨fun m _ => ?_, fun c d _ => ?_⟩` and prove the remaining obligations. Simplify using `only [Set.mem_setOf_eq]`. Introduce `c _`. Rewrite using `[wt_none LL j hn]`. Both sides reduce to the same expression.
+
+Simplify using `[glAct_none LL j hn]`.
+-/
 theorem pol_le_iso (LL : Letters N) (j : ℕ) (hj : j ≤ 1) (hr : 1 ≤ r) :
     ∃ la : Fin r → ℤ, Pol p r LL ≤ IsoC p LL j univ la := by
   by_cases hex : ∃ i0 : Fin N, (i0 : ℕ) < j
@@ -229,6 +314,15 @@ theorem pol_le_iso (LL : Letters N) (j : ℕ) (hj : j ≤ 1) (hr : 1 ≤ r) :
 
 end Triv
 
+/- English proof (translation)
+Introduce `p _ N r LL j T P hj hr hP`. Take `⟨la, hla⟩` from `pol_le_iso (p := p) LL j hj hr`. Take `⟨hPP, hran, hker⟩` from `hP`. Distinguish the cases in `hT : la ∈ T`. Use `left`.
+
+Introduce `F hF`. Establish `hFr : F ∈ LinearMap.range P`. Rewrite using `[hran]`. Conclude with `Submodule.mem_iSup_of_mem la (Submodule.mem_iSup_of_mem hT (hla hF))`. Take `⟨y, rfl⟩` from `hFr`.
+
+Establish `h1` using `congrArg (fun f => f y) hPP`. Simplify using `using h1`. Use `right`. Introduce `F hF`. Establish `hFk : F ∈ LinearMap.ker P`.
+
+Rewrite using `[hker]`. Conclude with `Submodule.mem_iSup_of_mem la (Submodule.mem_iSup_of_mem hT (hla hF))`. Conclude with `hFk`.
+-/
 theorem trivial_projection_holds : TrivProj := by
   intro p _ N r LL j T P hj hr hP
   obtain ⟨la, hla⟩ := pol_le_iso (p := p) LL j hj hr
@@ -249,6 +343,99 @@ theorem trivial_projection_holds : TrivProj := by
       exact Submodule.mem_iSup_of_mem la (Submodule.mem_iSup_of_mem hT (hla hF))
     exact hFk
 
+/- English proof (translation)
+Introduce `p _ K r _ LL q J M ρ w e1 hK hr hρ hv hHP hHE`. Take `⟨hP1, hP2⟩` from `hHP`. Take `⟨PE, hE1, hE2, hE3, hE4, hE5⟩` from `hHE (K + 1) le_rfl w`. Use `set v : Fin (K + 1) × Fin r := (Fin.last K, ρ) with hvdef`. Use `set Wt := WtSpC p LL (K + 1) univ w with hWtdef`.
+
+Set `Cs : Fin (K + 2) → Finset (Fin r)` to `fun i => if (i : ℕ) = K + 1 then univ.erase ρ else univ`. Set `s : Fin (K + 2) → Finset (Fin q)` to `fun i => univ.filter fun k => J k = (i : ℕ) ∨ (K ≤ (i : ℕ) ∧ K + 1 ≤ J k)`. Set `thr : Fin (K + 2) → WithTop ℤ` to `fun i => (s i).inf M`. Set `T : Fin (K + 2) → Set (Fin r → ℤ)` to `fun i => {la | ((la 0 : ℤ) : WithTop ℤ) ≤ thr i}`. Establish `h0ρ : (0 : Fin r) ≠ ρ`.
+
+Introduce `h`. Establish `h'` using `congrArg Fin.val h`. Establish `h0 : ((0 : Fin r) : ℕ) = 0` using `by simp`. Rewrite `h'` using `[hρ, h0]`. Use linear arithmetic over natural numbers and integers.
+
+Establish `hCsT : ∀ i : Fin (K + 2), (i : ℕ) = K + 1 → Cs i = univ.erase ρ` using `fun i h => if_pos h`. Establish `hCsL : ∀ i : Fin (K + 2), (i : ℕ) ≠ K + 1 → Cs i = univ` using `fun i h => if_neg h`. Establish `hCs : ∀ i, Cs i = univ ∨ Cs i = univ.erase ρ`. Introduce `i`. Distinguish the cases in `h : (i : ℕ) = K + 1`.
+
+Conclude with `Or.inr (hCsT i h)`. Conclude with `Or.inl (hCsL i h)`. Establish `h0Cs : ∀ i, (0 : Fin r) ∈ Cs i`. Introduce `i`. Apply the tactic sequence `rcases hCs i with h | h <;> rw [h]`.
+
+Conclude with `mem_univ _`. Conclude with `mem_erase.mpr ⟨h0ρ, mem_univ _⟩`. Establish `hsat : ∀ i, CsSaturated (Cs i) (T i)` using `fun i la la' h => by show ((la 0 : ℤ) : WithTop ℤ) ≤ thr i ↔ ((la' 0 : ℤ) : WithTop ℤ) ≤ thr i`. Rewrite using `[h 0 (h0Cs i)]`. Establish `hthrle : ∀ (i : Fin (K + 2)) (k : Fin q), (J k = (i : ℕ) ∨ (K ≤ (i : ℕ) ∧ K + 1 ≤ J k)) → thr i ≤ M k` using `fun i k hk => Finset.inf_le (mem_filter.mpr ⟨mem_univ k, hk⟩)`.
+
+Establish `hthrc : ∀ i : Fin (K + 2), thr i = ⊤ ∨ ∃ k, (J k = (i : ℕ) ∨ (K ≤ (i : ℕ) ∧ K + 1 ≤ J k)) ∧ thr i = M k`. Introduce `i`. Break down `(s i).eq_empty_or_nonempty with he | hne` into its components or cases. Use `left show (s i).inf M = ⊤`. Rewrite using `[he, Finset.inf_empty]`.
+
+Use `right`. Take `⟨k, hk, hke⟩` from `Finset.exists_mem_eq_inf (s i) hne M`. Conclude with `⟨k, (mem_filter.mp hk).2, hke⟩`. Establish `hex : ∀ i : Fin (K + 2), ∃ P, IsTypeProj p LL i (Cs i) (T i) P ∧ (∀ F G, fock p (P F) G = fock p F (P G)) ∧ ∀ F ∈ PolZ p r LL, ((p : ℚ_[p]) ^ e1) • P F ∈ IntPol p (Fin (K + 1) × Fin r)` using `fun i => hP1 i (Nat.lt_succ_iff.mp i.isLt) (Cs i) (hCs i) (T i) (hsat i)`. Use `choose P hPt hPsa hPint using hex`.
+
+Establish `hPlow : ∀ i : Fin (K + 2), (i : ℕ) ≠ K + 1 → IsTypeProj p LL i univ (T i) (P i)`. Introduce `i h`. Use `hPt i` as an intermediate fact. Rewrite `this` using `[hCsL i h]`. Then use the resulting hypothesis. Establish `hPtop : ∀ i : Fin (K + 2), (i : ℕ) = K + 1 → IsTypeProj p LL (K + 1) (univ.erase ρ) (T i) (P i)`.
+
+Introduce `i h`. Use `hPt i` as an intermediate fact. Rewrite `this` using `[hCsT i h, h]`. Then use the resulting hypothesis. Establish `hPP : ∀ i x, P i (P i x) = P i x` using `fun i x => LinearMap.congr_fun (hPt i).1 x`. Establish `hsub : ∀ i i' : Fin (K + 2), (i : ℕ) ≤ (i' : ℕ) → Cs i' ⊆ Cs i`.
+
+Introduce `i i' h`. Distinguish the cases in `hi : (i : ℕ) = K + 1`. Rewrite using `[hCsT i hi, hCsT i' (by have := i'.isLt; omega)]`. Rewrite using `[hCsL i hi]`. Conclude with `subset_univ _`.
+
+Establish `hcomm : ∀ i i' x, P i (P i' x) = P i' (P i x)`. Introduce `i i' x`. Break down `le_total (i : ℕ) (i' : ℕ) with h | h` into its components or cases. Conclude with `LinearMap.congr_fun (hP2 i i' (Cs i) (Cs i') (T i) (T i') (P i) (P i') h (hsub i i' h) (hCs i) (hCs i') (hPt i) (hPt i')) x`. Conclude with `(LinearMap.congr_fun (hP2 i' i (Cs i') (Cs i) (T i') (T i) (P i') (P i) h (hsub i' i h) (hCs i') (hCs i) (hPt i') (hPt i)) x).symm`.
+
+Establish `hPpol : ∀ i, ∀ x ∈ Pol p r LL, P i x ∈ Pol p r LL` using `fun i => typeProj_polC LL i (Cs i) (T i) (P i) (hPt i)`. Establish `hPgl : ∀ i, ∀ c ∈ univ.erase ρ, ∀ d ∈ univ.erase ρ, ∀ x, P i (glAct p LL (K + 1) c d x) = glAct p LL (K + 1) c d (P i x)`. Introduce `i c hc d hd x`. Distinguish the cases in `hi : (i : ℕ) = K + 1`. Conclude with `typeProj_glActC LL (K + 1) _ (T i) (P i) (hPtop i hi) c hc d hd x`.
+
+Conclude with `typeProj_comm_later LL i (K + 1) (Nat.lt_succ_iff.mp i.isLt) (T i) (P i) (hPlow i hi) c d x`. Establish `hPcar : ∀ i c x, P i (glAct p LL (K + 1) c c x) = glAct p LL (K + 1) c c (P i x)`. Introduce `i c x`. Distinguish the cases in `hi : (i : ℕ) = K + 1`. Distinguish the cases in `hc : c = ρ`.
+
+Substitute `hc` using the available equality. Conclude with `typeProj_commC LL (K + 1) _ (T i) (P i) (hPtop i hi) (glAct p LL (K + 1) c c) (fun a ha b hb x => cartan_comm_erase' LL (K + 1) c a ha b hb x) x`. Conclude with `hPgl i c (mem_erase.mpr ⟨hc, mem_univ _⟩) c (mem_erase.mpr ⟨hc, mem_univ _⟩) x`. Conclude with `typeProj_comm_later LL i (K + 1) (Nat.lt_succ_iff.mp i.isLt) (T i) (P i) (hPlow i hi) c c x`. Establish `hPWt : ∀ i, ∀ x ∈ Wt, P i x ∈ Wt` using `fun i => comm_wtsp LL (K + 1) (P i) (hPcar i) w`.
+
+Establish `hPres : ∀ i x, P i (resL p v 0 x) = resL p v 0 (P i x)`. Introduce `i`. Use `typeProj_commC LL i (Cs i) (T i) (P i) (hPt i) (resL p v 0) (fun c hc d hd x => ?_)` and prove the remaining obligations. Use `resL_glAct LL i c d v 0 (fun i' hi' => ?_) x` and prove the remaining obligations. Distinguish the cases in `hi : (i : ℕ) = K + 1`.
+
+Rewrite `hc`, `hd` using `[hCsT i hi]`. Conclude with `⟨fun h => Finset.ne_of_mem_erase hc (Prod.mk.inj h).2, fun h => Finset.ne_of_mem_erase hd (Prod.mk.inj h).2⟩`. Establish `hne : i' ≠ Fin.last K`. Introduce `h`. Rewrite `hi'` using `[h, Fin.val_last]`.
+
+Use `i.isLt` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Conclude with `⟨fun h => hne (Prod.mk.inj h).1, fun h => hne (Prod.mk.inj h).1⟩`. Establish `hPfree : ∀ i, ∀ x ∈ FreeOf p v, P i x ∈ FreeOf p v`. Introduce `i x hx`.
+
+Rewrite using `[← resL_fix' v x hx, hPres i x]`. Conclude with `resL_free v _`. Establish `hEcomm` using `hwProj_comm' LL (K + 1) ρ w PE`. Establish `hEP : ∀ i, ∀ x ∈ Wt, PE (P i x) = P i (PE x)` using `fun i => hEcomm (P i) hE1 hE2 hE3 (hPgl i) (hPWt i)`. Establish `hEres : ∀ x ∈ Wt, PE (resL p v 0 x) = resL p v 0 (PE x)` using `hEcomm (resL p v 0) hE1 hE2 hE3 (fun c hc d hd x => resL_glAct LL (K + 1) c d v 0 (fun i' _ => ⟨fun h => Finset.ne_of_mem_erase hc (Prod.mk.inj h).2, fun h => Finset.ne_of_mem_erase hd (Prod.mk.inj h).2⟩) x) (resL_keep_supp v 0 _)`.
+
+Establish `hEeul : ∀ i0 : Fin (K + 1), ∀ x ∈ Wt, PE (ProjS.eulL (fun c : Fin r => (i0, c)) x) = ProjS.eulL (fun c : Fin r => (i0, c)) (PE x)` using `fun i0 => hEcomm (ProjS.eulL (fun c : Fin r => (i0, c))) hE1 hE2 hE3 (fun c _ d _ x => eul_glAct LL (K + 1) i0 c d x) (comm_wtsp LL (K + 1) _ (fun c x => eul_glAct LL (K + 1) i0 c c x) w)`. Establish `hEfix : ∀ g ∈ HWC p LL (K + 1) (univ.erase ρ) w ⊓ Wt, PE g = g`. Introduce `g hg`. Rewrite `hg` using `[← hE2]`. Take `⟨z, rfl⟩` from `hg`.
+
+Conclude with `LinearMap.congr_fun hE1 z`. Establish `hgfix : ∀ g ∈ XSp p LL J M ρ, ∀ i, P i g = g`. Introduce `g hg i`. Take `⟨hg1, hgI⟩` from `Submodule.mem_inf.mp hg`. Establish `hgP` using `(Submodule.mem_inf.mp hg1).1`.
+
+Rewrite `hgI` using `[Submodule.mem_iInf]`. Distinguish the cases in `hi : (i : ℕ) = K + 1`. Break down `hthrc i with ht | ⟨k, hk, ht⟩` into its components or cases. Use `ycondC_fix LL (K + 1) (univ.erase ρ) (mem_erase.mpr ⟨h0ρ, mem_univ _⟩) ⊤ (T i) (P i) (hPtop i hi) (fun la _ => ?_) g (Submodule.mem_inf.mpr ⟨?_, hgP⟩)` and prove the remaining obligations. Use `show ((la 0 : ℤ) : WithTop ℤ) ≤ thr i`.
+
+Rewrite using `[ht]`. Conclude with `le_top`. Use `le_ycondC LL (K + 1) (univ.erase ρ) ⊤ ⊤ (fun x _ => ?_) (fun _ _ _ _ _ _ => trivial) trivial` and prove the remaining obligations. Rewrite using `[mem_restrictSupport_iff]`. Introduce `m _`.
+
+Conclude with `(le_top : ((wt LL (K + 1) 0 m : ℤ) : WithTop ℤ) ≤ ⊤)`. Establish `hk' : K + 1 ≤ J k` using `by omega`. Establish `h1` using `hgI k`. Rewrite `h1` using `[if_pos hk']`. Establish `h2` using `(Submodule.mem_inf.mp h1).2`.
+
+Establish `hT : T i = {la | ((la 0 : ℤ) : WithTop ℤ) ≤ M k}` using `by show {la : Fin r → ℤ | ((la 0 : ℤ) : WithTop ℤ) ≤ thr i} = _`. Rewrite using `[ht]`. Establish `h3 : g ∈ LinearMap.range (P i)`. Rewrite using `[(hPtop i hi).2.1, hT]`. Conclude with `h2`.
+
+Take `⟨z, rfl⟩` from `h3`. Conclude with `hPP i z`. Use `ycond_fix LL i (T i) (thr i) (P i) (hPlow i hi) (fun la h => h) g (Submodule.mem_inf.mpr ⟨?_, hgP⟩)` and prove the remaining obligations. Break down `hthrc i with ht | ⟨k, hk, ht⟩` into its components or cases. Rewrite using `[ht]`.
+
+Use `le_ycond LL i ⊤ ⊤ (fun x _ => ?_) (fun _ _ _ _ => trivial) trivial` and prove the remaining obligations. Rewrite using `[mem_restrictSupport_iff]`. Introduce `m _`. Conclude with `(le_top : ((wt LL i 0 m : ℤ) : WithTop ℤ) ≤ ⊤)`. Rewrite using `[ht]`.
+
+Establish `h1` using `hgI k`. Use `i.isLt` as an intermediate fact. Break down `hk with hk | ⟨hk1, hk2⟩` into its components or cases. Rewrite `h1` using `[if_neg (by omega), hk]`. Conclude with `h1`.
+
+Rewrite `h1` using `[if_pos hk2]`. Rewrite using `[show (i : ℕ) = K by omega]`. Conclude with `(Submodule.mem_inf.mp h1).1`. Set `Q` to `lcomp P (List.finRange (K + 2))`. Set `f : (Fin (K + 1) × Fin r →₀ ℕ) → MvPolynomial (Fin (K + 1) × Fin r) ℚ_[p]` to `fun m => if (∀ c ∈ (univ : Finset (Fin r)), wt LL (K + 1) c m = w c) then PE (Q (monomial m 1)) else 0`.
+
+Use `⟨(basisMonomials (Fin (K + 1) × Fin r) ℚ_[p]).constr ℚ_[p] f, fun m hm hmv => ?_⟩` and prove the remaining obligations. Establish `hPr : (basisMonomials (Fin (K + 1) × Fin r) ℚ_[p]).constr ℚ_[p] f (monomial m 1) = f m`. Use `(basisMonomials (Fin (K + 1) × Fin r) ℚ_[p]).constr_basis ℚ_[p] f m` as an intermediate fact. Rewrite `this` using `[coe_basisMonomials]`. Then use the resulting hypothesis. Rewrite using `[hPr]`.
+
+Distinguish the cases in `hw : ∀ c ∈ (univ : Finset (Fin r)), wt LL (K + 1) c m = w c`. Rewrite using `[show f m = PE (Q (monomial m 1)) from if_pos hw] set u : MvPolynomial (Fin (K + 1) × Fin r) ℚ_[p] := monomial m 1 with hu`. Establish `huP : u ∈ Pol p r LL` using `monomial_mem_supp' _ m hm`. Establish `huZ : u ∈ PolZ p r LL`. Use `Submodule.mem_inf.mpr ⟨huP, mem_intPol_of_norm _ fun m' => ?_⟩` and prove the remaining obligations.
+
+Apply the tactic sequence `rw [hu, coeff_monomial]; split_ifs <;> simp`. Establish `huW : u ∈ Wt` using `monomial_mem_supp' _ m hw`. Establish `huF : u ∈ FreeOf p v` using `monomial_mem_supp' _ m hmv`. Use `set y := Q u with hy`. Establish `hyW : y ∈ Wt` using `lcomp_keep P (Wt : Set _) _ (fun j _ => hPWt j) u huW`.
+
+Establish `hyF : y ∈ FreeOf p v` using `lcomp_keep P (FreeOf p v : Set _) _ (fun j _ => hPfree j) u huF`. Establish `hyP : y ∈ Pol p r LL` using `lcomp_keep P (Pol p r LL : Set _) _ (fun j _ => hPpol j) u huP`. Establish `hyfix : ∀ i, P i y = y` using `fun i => lcomp_fix P hPP hcomm _ i (List.mem_finRange i) _`. Establish `hl : List.finRange (K + 2) = 0 :: 1 :: ((List.finRange K).map Fin.succ).map Fin.succ`. Rewrite using `[List.finRange_succ, List.finRange_succ]`.
+
+Simplify using the standard rewrite rules. Establish `hint0` using `lcomp_int LL e1 P hPpol hPint (((List.finRange K).map Fin.succ).map Fin.succ) u huZ`. Rewrite `hint0` using `[List.length_map, List.length_map, List.length_finRange]`. Establish `hy'P : lcomp P (((List.finRange K).map Fin.succ).map Fin.succ) u ∈ Pol p r LL` using `lcomp_keep P (Pol p r LL : Set _) _ (fun j _ => hPpol j) u huP`. Establish `hyy : y = lcomp P (((List.finRange K).map Fin.succ).map Fin.succ) u ∨ y = 0`.
+
+Establish `hy2 : y = P 0 (P 1 (lcomp P (((List.finRange K).map Fin.succ).map Fin.succ) u))`. Rewrite using `[hy]`. Use `show lcomp P (List.finRange (K + 2)) u = _`. Rewrite using `[hl, lcomp_cons, lcomp_cons, LinearMap.comp_apply, LinearMap.comp_apply]`. Rewrite using `[hy2]`.
+
+Break down `trivial_projection_holds p (K + 1) r LL _ (T 1) (P 1) (by simp) (by omega) (hPlow 1 (by simp; omega)) with h1 | h1` into its components or cases. Rewrite using `[h1 _ hy'P]`. Break down `trivial_projection_holds p (K + 1) r LL _ (T 0) (P 0) (by simp) (by omega) (hPlow 0 (by simp)) with h0 | h0` into its components or cases. Conclude with `Or.inl (h0 _ hy'P)`. Conclude with `Or.inr (h0 _ hy'P)`.
+
+Rewrite using `[h1 _ hy'P, map_zero]`. Conclude with `Or.inr rfl`. Establish `hint : ((p : ℚ_[p]) ^ (e1 * K)) • y ∈ PolZ p r LL`. Break down `hyy with h | h` into its components or cases. Rewrite using `[h]`.
+
+Conclude with `hint0`. Rewrite using `[h, smul_zero]`. Conclude with `Submodule.zero_mem _`. Use `set z := PE y with hz`. Establish `hzfix : ∀ i, P i z = z` using `fun i => by rw [hz, ← hEP i y hyW, hyfix i]`.
+
+Establish `hzR : z ∈ HWC p LL (K + 1) (univ.erase ρ) w ⊓ Wt` using `hE2 ▸ LinearMap.mem_range_self PE y`. Establish `hzP : z ∈ Pol p r LL`. Rewrite `hyP`, the goal using `[pol_iff_eul]`. Introduce `i`. Rewrite using `[hz, ← hEeul i y hyW, hyP i, map_smul]`.
+
+Establish `hzF : z ∈ FreeOf p v`. Establish `h1 : resL p v 0 z = z` using `by rw [hz, ← hEres y hyW, resL_fix' v y hyF]`. Rewrite using `[← h1]`. Conclude with `resL_free v z`. Establish `hzX : z ∈ XSp p LL J M ρ`.
+
+Use `Submodule.mem_inf.mpr ⟨Submodule.mem_inf.mpr ⟨hzP, hzF⟩, (Submodule.mem_iInf _).mpr fun k => ?_⟩` and prove the remaining obligations. Use `split_ifs with hk`. Use `Submodule.mem_inf.mpr ⟨?_, ?_⟩` and prove the remaining obligations. Establish `h1` using `typeProj_range_le_ycond LL K (T ⟨K, by omega⟩) (M k) (P ⟨K, by omega⟩) (hPlow ⟨K, by omega⟩ (by simp)) (fun la hla => le_trans hla (hthrle ⟨K, by omega⟩ k (Or.inr ⟨le_rfl, hk⟩))) z`. Rewrite `h1` using `[hzfix]`. Then use the resulting hypothesis.
+
+Establish `h1 : z ∈ LinearMap.range (P ⟨K + 1, by omega⟩)` using `⟨z, hzfix _⟩`. Rewrite `h1` using `[(hPtop ⟨K + 1, by omega⟩ rfl).2.1]`. Conclude with `(iSup₂_le fun la hla => le_iSup₂_of_le (f := fun (la : Fin r → ℤ) (_ : ((la 0 : ℤ) : WithTop ℤ) ≤ M k) => IsoC p LL (K + 1) (univ.erase ρ) la) la (le_trans hla (hthrle ⟨K + 1, by omega⟩ k (Or.inr ⟨Nat.le_succ K, hk⟩))) le_rfl) h1`. Establish `h1` using `typeProj_range_le_ycond LL (J k) (T ⟨J k, by omega⟩) (M k) (P ⟨J k, by omega⟩) (hPlow ⟨J k, by omega⟩ (by simp; omega)) (fun la hla => le_trans hla (hthrle ⟨J k, by omega⟩ k (Or.inl rfl))) z`. Rewrite `h1` using `[hzfix]`. Then use the resulting hypothesis.
+
+Use `⟨Submodule.mem_inf.mpr ⟨Submodule.mem_inf.mpr ⟨hzX, (Submodule.mem_inf.mp hzR).1⟩, (Submodule.mem_inf.mp hzR).2⟩, ?_, ?_⟩` and prove the remaining obligations. Establish `h5` using `hE5 _ hint (Wt.smul_mem _ hyW)`. Rewrite `h5` using `[map_smul, smul_smul, ← pow_add]`. Rewrite using `[show (K + 1) * e1 = e1 + e1 * K by ring]`. Conclude with `h5`.
+
+Introduce `g hg`. Take `⟨hg1, hgW⟩` from `Submodule.mem_inf.mp hg`. Take `⟨hgX, hgH⟩` from `Submodule.mem_inf.mp hg1`. Rewrite using `[hz, ← hE4 g y hgW hyW, hEfix g (Submodule.mem_inf.mpr ⟨hgH, hgW⟩)]`. Conclude with `lcomp_fock P hPsa g (hgfix g hgX) _ u`.
+
+Rewrite using `[show f m = 0 from if_neg hw]`. Use `⟨Submodule.zero_mem _, by rw [smul_zero]; exact Submodule.zero_mem _, fun g hg => ?_⟩` and prove the remaining obligations. Rewrite using `[fock_right_zero', fock_monomial_zero']`. Introduce `hmg`. Establish `hgW` using `(Submodule.mem_inf.mp hg).2`.
+
+Rewrite `hgW` using `[WtSpC, mem_restrictSupport_iff]`. Conclude with `hw (hgW (Finset.mem_coe.mpr hmg))`.
+-/
 theorem highest_vector_projection_holds : HighestVectorProjectionPos := by
   classical
   intro p _ K r _ LL q J M ρ w e1 hK hr hρ hv hHP hHE

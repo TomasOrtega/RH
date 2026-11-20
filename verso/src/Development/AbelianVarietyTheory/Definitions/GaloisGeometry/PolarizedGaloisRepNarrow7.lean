@@ -61,6 +61,9 @@ variable {π : CuspSub E a} {ι : Qbar l ≃+* ℂ} {r : G E Ω →* GL (Fin a) 
 
 end API
 
+/- English proof (translation)
+Establish `h1 : (0 : ℝ) < |(d : ℝ)|` using `abs_pos.2 (by exact_mod_cast hd)`. Establish `h2 : (0 : ℝ) < (a : ℝ)` using `by exact_mod_cast ha`. Establish `h3 : (0 : ℝ) < |(d : ℝ)| * a` using `mul_pos h1 h2`. Rewrite using `[norm_one]`. Conclude with `⟨Real.rpow_lt_one_of_one_lt_of_neg hq (by linarith), Real.one_lt_rpow hq (by linarith)⟩`.
+-/
 example (q : ℝ) (hq : 1 < q) (d : ℤ) (hd : d ≠ 0) (a : ℕ) (ha : 1 ≤ a) :
     q ^ (-(|(d : ℤ)| : ℝ) * (a : ℝ) / 2) < ‖(1 : ℂ)‖ ∧ ‖(1 : ℂ)‖ < q ^ ((|(d : ℤ)| : ℝ) * (a : ℝ) / 2) := by
   have h1 : (0 : ℝ) < |(d : ℝ)| := abs_pos.2 (by exact_mod_cast hd)
@@ -69,8 +72,14 @@ example (q : ℝ) (hq : 1 < q) (d : ℤ) (hd : d ≠ 0) (a : ℕ) (ha : 1 ≤ a)
   rw [norm_one]
   exact ⟨Real.rpow_lt_one_of_one_lt_of_neg hq (by linarith), Real.one_lt_rpow hq (by linarith)⟩
 
+/- English proof (translation)
+The claim follows from `Or.inl (Or.inl ⟨1, rfl⟩)`.
+-/
 example (π : CuspSub E 3) (p : Prop) : GlobalTheory.CBGal.OddOrSlightlyReg π ∨ p := Or.inl (Or.inl ⟨1, rfl⟩)
 
+/- English proof (translation)
+Rewrite using `[GlobalTheory.CBGal.oddOrSlightlyReg_iff_of_even π ⟨1, rfl⟩, not_or]`.
+-/
 example (π : CuspSub E 2) (p : Prop) :
     ¬ (GlobalTheory.CBGal.OddOrSlightlyReg π ∨ p) ↔ ¬ GlobalTheory.CBGal.SlightlyReg π ∧ ¬ p := by
   rw [GlobalTheory.CBGal.oddOrSlightlyReg_iff_of_even π ⟨1, rfl⟩, not_or]

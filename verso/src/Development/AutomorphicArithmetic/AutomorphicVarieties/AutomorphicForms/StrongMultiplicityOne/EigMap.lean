@@ -13,6 +13,9 @@ section
 
 variable {E : Type} [Field E] [NumberField E] {n : ℕ} {w : HeightOneSpectrum (𝓞 E)} {B : Multiset ℂˣ}
 
+/- English proof (translation)
+Establish `hf` using `Formalism.UG.P.finite_support_cosets (Formalism.UG.Final.GLintComm E w n) (GlobalTheory.LFun.Tj_mem_hecke (n := n) hϖ j).2`. Use `⟨hf.toFinset, fun F => finsum_eq_sum_of_support_subset _ fun c hc => ?_⟩` and prove the remaining obligations. Rewrite using `[Set.Finite.coe_toFinset]`. Conclude with `left_ne_zero_of_mul hc`.
+-/
 private theorem sum_Tj {ϖ : w.adicCompletion E} (hϖ : Formalism.UG.IsUnifV E w ϖ) (j : ℕ) :
     ∃ s : Finset (GL (Fin n) (w.adicCompletion E) ⧸ GlobalTheory.LFun.KGL w n),
       ∀ F : GL (Fin n) (w.adicCompletion E) ⧸ GlobalTheory.LFun.KGL w n → ℂ,
@@ -23,9 +26,17 @@ private theorem sum_Tj {ϖ : w.adicCompletion E} (hϖ : Formalism.UG.IsUnifV E w
   rw [Set.Finite.coe_toFinset]
   exact left_ne_zero_of_mul hc
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨h, fun _ _ _ => rfl, fun _ _ _ _ _ => by simp⟩`.
+-/
 private theorem eig_zero (h : B.card = n) : Eig w B (fun _ : GL (Fin n) (w.adicCompletion E) => (0 : ℂ)) :=
   ⟨h, fun _ _ _ => rfl, fun _ _ _ _ _ => by simp⟩
 
+/- English proof (translation)
+Use `⟨h.card, fun g k hk => by simp only [h.inv g k hk, h'.inv g k hk], fun ϖ hϖ j hj g => ?_⟩` and prove the remaining obligations. Take `⟨s, hs⟩` from `sum_Tj (n := n) hϖ j`. Establish `e` using `h.eig ϖ hϖ j hj g`. Establish `e'` using `h'.eig ϖ hϖ j hj g`. Rewrite `e`, `e'`, the goal using `[hs]`.
+
+Simplify using `only [mul_sub, Finset.sum_sub_distrib, e, e']`.
+-/
 private theorem eig_sub {W W' : GL (Fin n) (w.adicCompletion E) → ℂ} (h : Eig w B W) (h' : Eig w B W') :
     Eig w B (fun y => W y - W' y) := by
   refine ⟨h.card, fun g k hk => by simp only [h.inv g k hk, h'.inv g k hk], fun ϖ hϖ j hj g => ?_⟩
@@ -35,6 +46,11 @@ private theorem eig_sub {W W' : GL (Fin n) (w.adicCompletion E) → ℂ} (h : Ei
   rw [hs] at e e' ⊢
   simp only [mul_sub, Finset.sum_sub_distrib, e, e']
 
+/- English proof (translation)
+Use `⟨hB, fun g k hk => by simp only [fun x => (h x).inv g k hk], fun ϖ hϖ j hj g => ?_⟩` and prove the remaining obligations. Take `⟨s, hs⟩` from `sum_Tj (n := n) hϖ j`. Rewrite using `[hs]`. Simplify using `only [← integral_const_mul]`. Rewrite using `[← integral_finset_sum _ fun c _ => (hi _).const_mul _]`.
+
+Use `integral_congr_ae (Filter.Eventually.of_forall fun x => ?_)` and prove the remaining obligations. Establish `e` using `(h x).eig ϖ hϖ j hj g`. Rewrite `e` using `[hs]`. Simplify using `only [← mul_assoc, ← e, Finset.sum_mul]`.
+-/
 private theorem eig_int {X : Type} [MeasurableSpace X] (μ : Measure X) (hB : B.card = n)
     (F : X → GL (Fin n) (w.adicCompletion E) → ℂ) (a : X → ℂ) (h : ∀ x, Eig w B (F x))
     (hi : ∀ y, Integrable (fun x => F x y * a x) μ) : Eig w B (fun y => ∫ x, F x y * a x ∂μ) := by
@@ -51,6 +67,15 @@ private theorem eig_int {X : Type} [MeasurableSpace X] (μ : Measure X) (hB : B.
 end
 
 open GroundTheory.Automorphic.FourierWhittaker in
+/- English proof (translation)
+Introduce `hC E _ _ _ n w B f hf`. Use `⟨fun hN g => ?_, fun hN α g => ?_, fun f' hf' g => eig_sub (hf g) (hf' g)⟩` and prove the remaining obligations. Use `eig_int ((vecMeasure E (Pos n)).restrict (vecDomain E (Pos n))) (hf 1).card (fun X y => f (uGL X * (g * finGL E n (locGL E n w y)))) (fun X => (GroundTheory.Global.adelicChar E (-supSum 0 X) : ℂ)) (fun X => ?_) fun y => ?_` and prove the remaining obligations. Simplify `hf (uGL X * g)` using `only [mul_assoc]`. Establish `hc : Continuous fun X : Pos n → Ad E => f (uGL X * (g * finGL E n (locGL E n w y))) * (GroundTheory.Global.adelicChar E (-supSum 0 X) : ℂ)` using `(hN.cont.comp (continuous_uGL.mul continuous_const)).mul (continuous_subtype_val.comp (GroundTheory.Global.continuous_adelicChar.comp (continuous_supSum 0).neg))`.
+
+Conclude with `(hc.continuousOn.integrableOn_compact isCompact_closure_vecDomain).mono_set subset_closure`. Use `eig_int volume (hf 1).card (fun x y => chart f (g * finGL E n (locGL E n w y)) x) α (fun x => ?_) fun y => ?_` and prove the remaining obligations. Distinguish the cases in `hx : IsUnit (Matrix.of x)`. Use `hf (g * infGL E n hx.unit)` as an intermediate fact. Simplify `this` using `only [chart, dif_pos hx, mul_assoc, GlobalTheory.CuspRep.infGL_comm]`.
+
+Simplify `eig_zero (w := w) (hf 1).card` using `only [chart, dif_neg hx]`. Take `⟨C, hC'⟩` from `hN.bdd haveI : BorelSpace (Lie E n) := inferInstance haveI : (volume : Measure (Cinf E)).IsAddHaarMeasure := inferInstance haveI : (volume : Measure (Fin n → Cinf E)).IsAddHaarMeasure := Measure.pi.isAddHaarMeasure _ haveI : (volume : Measure (Lie E n)).IsAddHaarMeasure := Measur …`. Use `α.integrable.bdd_mul (c := C) ((hC E n f hN.cont).2 _).aestronglyMeasurable (Filter.Eventually.of_forall fun x => ?_)` and prove the remaining obligations. Unfold `chart`. Use `split_ifs`.
+
+Conclude with `hC' _`. Simplify using `using (norm_nonneg _).trans (hC' 1)`.
+-/
 theorem UpperTheory.V.Af.StrongMultiplicityOne.eigMap :
     UpperTheory.V.Af.StrongMultiplicityOne.ChartCont → UpperTheory.V.Af.StrongMultiplicityOne.EigMap := by
   intro hC E _ _ _ n w B f hf

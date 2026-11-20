@@ -14,16 +14,25 @@ section Index
 
 variable {A : Type} [CommRing A] {r k : ℕ}
 
+/- English proof (translation)
+Introduce `g hg`. Conclude with `((S3x1.mem_pointwise_stabiliser_iff _).1 hg).1`.
+-/
 theorem pointwise_subgroup_le_parabolic : (S3x1.s0G : Subgroup (GL (Idx r k) A)) ≤ S3x1.parG (r := r) (S3x1.gpUnit (A := A) (k := k)) := by
   intro g hg
   exact ((S3x1.mem_pointwise_stabiliser_iff _).1 hg).1
 
+/- English proof (translation)
+Use `S3x2.card_of_subgroupSet _ _ fun x => ⟨fun hx => ?_, ?_⟩` and prove the remaining obligations. Conclude with `⟨Matrix.GeneralLinearGroup.mk'' x (S3x1.par_det S3x1.gpUnit ((S3x1.mem_pointwise_stabiliser_iff x).1 hx).1), hx, rfl⟩`. Introduce and unpack `⟨g, hg, rfl⟩`. Conclude with `hg`.
+-/
 theorem card_s0G : Nat.card {x : Matrix (Idx r k) (Idx r k) A // IsInertiaInfiniteCyclotomic x} =
     Nat.card (S3x1.s0G : Subgroup (GL (Idx r k) A)) := by
   refine S3x2.card_of_subgroupSet _ _ fun x => ⟨fun hx => ?_, ?_⟩
   · exact ⟨Matrix.GeneralLinearGroup.mk'' x (S3x1.par_det S3x1.gpUnit ((S3x1.mem_pointwise_stabiliser_iff x).1 hx).1), hx, rfl⟩
   · rintro ⟨g, hg, rfl⟩; exact hg
 
+/- English proof (translation)
+Use `S3x2.card_of_subgroupSet _ _ fun x => ⟨fun hx => ?_, ?_⟩` and prove the remaining obligations. Conclude with `⟨Matrix.GeneralLinearGroup.mk'' x (S3x1.par_det S3x1.gpUnit ((S3x1.isS_iff x).1 hx)), (S3x1.isS_iff x).1 hx, rfl⟩`. Introduce and unpack `⟨g, hg, rfl⟩`. Conclude with `(S3x1.isS_iff _).2 hg`.
+-/
 theorem card_sG : Nat.card {x : Matrix (Idx r k) (Idx r k) A // IsS x} =
     Nat.card (S3x1.parG (r := r) (S3x1.gpUnit (A := A) (k := k))) := by
   refine S3x2.card_of_subgroupSet _ _ fun x => ⟨fun hx => ?_, ?_⟩
@@ -37,12 +46,18 @@ section Local
 
 variable {o : Type} [CommRing o] [IsLocalRing o] {r k : ℕ}
 
+/- English proof (translation)
+Use extensionality with `x`. Rewrite using `[M.mem_parahoricTimesPrincipalCongruence_iff, Subgroup.mem_comap]`. Both sides reduce to the same expression.
+-/
 theorem first_congruence_eq_reduction_comap (M : FrameLevel o r k) :
     M.K1 = (S3x1.s0G : Subgroup (GL (Idx r k) (IsLocalRing.ResidueField o))).comap (red o (Idx r k)) := by
   ext x
   rw [M.mem_parahoricTimesPrincipalCongruence_iff, Subgroup.mem_comap]
   rfl
 
+/- English proof (translation)
+Use extensionality with `x`. Rewrite using `[L.mem_Knat, Subgroup.mem_comap, S3x1.isS_iff]`. Both sides reduce to the same expression.
+-/
 theorem Knat_eq (L : Levels o r k) :
     L.Knat = (S3x1.parG (r := r) (S3x1.gpUnit (A := IsLocalRing.ResidueField o) (k := k))).comap
       (red o (Idx r k)) := by
@@ -54,6 +69,15 @@ end Local
 
 noncomputable def fac (q x : ℕ) : ℝ := 1 - ((q : ℝ) ^ (x + 1))⁻¹
 
+/- English proof (translation)
+Unfold `densP`. Use `Finset.prod_nbij' (fun i => (i - a - 1).toNat) (fun x => (a : ℤ) + 1 + x) ?_ ?_ ?_ ?_ ?_` and prove the remaining obligations. Introduce `i hi`. Simplify using `only [Finset.mem_Icc, Finset.mem_range] at *`. Use linear arithmetic over natural numbers and integers.
+
+Introduce `x hx`. Simplify using `only [Finset.mem_Icc, Finset.mem_range] at *`. Use linear arithmetic over natural numbers and integers. Introduce `i hi`. Simplify using `only [Finset.mem_Icc] at hi`.
+
+Use linear arithmetic over natural numbers and integers. Introduce `x hx show ((a : ℤ) + 1 + x - a - 1).toNat = x`. Use linear arithmetic over natural numbers and integers. Introduce `i hi`. Simplify using `only [Finset.mem_Icc] at hi`.
+
+Take `⟨x, rfl⟩ : ∃ x : ℕ, i = (a : ℤ) + 1 + x` from `⟨(i - a - 1).toNat, by omega⟩`. Establish `e1 : ((a : ℤ) + 1 + x - a - 1).toNat = x` using `by omega`. Establish `e2 : (a : ℤ) + 1 + x = ((a + x + 1 : ℕ) : ℤ)` using `by push_cast; ring`. Rewrite using `[e1, e2, fac]`. Simplify using `only [Int.cast_one, one_pow, one_mul, _root_.zpow_neg, zpow_natCast]`.
+-/
 theorem densityProduct_eq_prod_range (q a m : ℕ) :
     densP 1 q ((a : ℤ) + 1) ((a + m : ℕ) : ℤ) = ∏ x ∈ range m, fac q (a + x) := by
   unfold densP
@@ -78,6 +102,13 @@ theorem densityProduct_eq_prod_range (q a m : ℕ) :
     rw [e1, e2, fac]
     simp only [Int.cast_one, one_pow, one_mul, _root_.zpow_neg, zpow_natCast]
 
+/- English proof (translation)
+Establish `hq0 : (q : ℝ) ≠ 0` using `by positivity`. Establish `hpow : (q : ℝ) ^ (n * n) = ∏ _x ∈ range n, (q : ℝ) ^ n`. Rewrite using `[Finset.prod_const, Finset.card_range, pow_mul]`. Rewrite using `[Fin.prod_univ_eq_prod_range (fun i => q ^ n - q ^ i) n, ← Finset.prod_range_reflect, Nat.cast_prod, hpow, ← Finset.prod_mul_distrib]`. Use `Finset.prod_congr rfl fun j hj => ?_` and prove the remaining obligations.
+
+Rewrite `hj` using `[Finset.mem_range]`. Rewrite using `[Nat.cast_sub (Nat.pow_le_pow_right hq (by omega)), fac]`. Establish `e : n = (n - 1 - j) + (j + 1)` using `by omega`. Use `push_cast`. Use `conv_lhs => rw [e]`.
+
+Use `conv_rhs => rw [e]`. Establish `e' : n - 1 - j + (j + 1) - 1 - j = n - 1 - j` using `by omega`. Rewrite using `[e', pow_add]`. Clear the denominators using the available nonvanishing facts.
+-/
 theorem gl_real (q n : ℕ) (hq : 1 ≤ q) :
     ((∏ i : Fin n, (q ^ n - q ^ (i : ℕ)) : ℕ) : ℝ) = (q : ℝ) ^ (n * n) * ∏ x ∈ range n, fac q x := by
   have hq0 : (q : ℝ) ≠ 0 := by positivity
@@ -96,6 +127,9 @@ theorem gl_real (q n : ℕ) (hq : 1 ≤ q) :
   rw [e', pow_add]
   field_simp
 
+/- English proof (translation)
+Establish `e : Idx r k ≃ Fin (k + 2 * r + 1)` using `Fintype.equivFinOfCardEq (by simp; ring)`. Conclude with `Nat.card_congr (Units.mapEquiv (Matrix.reindexAlgEquiv K K e).toMulEquiv).toEquiv`.
+-/
 theorem card_GL_idx (K : Type) [Field K] [Fintype K] (r k : ℕ) :
     Nat.card (GL (Idx r k) K) = Nat.card (GL (Fin (k + 2 * r + 1)) K) := by
   have e : Idx r k ≃ Fin (k + 2 * r + 1) := Fintype.equivFinOfCardEq (by simp; ring)
@@ -105,21 +139,33 @@ section Om
 
 variable {o : Type} [CommRing o] [IsLocalRing o] {r k : ℕ}
 
+/- English proof (translation)
+Use `⟨by rw [Matrix.det_mul]; exact h.1.mul h'.1, ?_⟩` and prove the remaining obligations. Rewrite using `[Matrix.map_mul, S3x1.isNU_iff]`. Conclude with `S3x1.par_mul S3x1.gpUni ((S3x1.isNU_iff _).1 h.2) ((S3x1.isNU_iff _).1 h'.2)`.
+-/
 theorem kppO_mul {j j' : Matrix (Idx r k) (Idx r k) o} (h : KppO j) (h' : KppO j') : KppO (j * j') := by
   refine ⟨by rw [Matrix.det_mul]; exact h.1.mul h'.1, ?_⟩
   rw [Matrix.map_mul, S3x1.isNU_iff]
   exact S3x1.par_mul S3x1.gpUni ((S3x1.isNU_iff _).1 h.2) ((S3x1.isNU_iff _).1 h'.2)
 
+/- English proof (translation)
+Use `⟨Matrix.isUnit_nonsing_inv_det j h.1, ?_⟩` and prove the remaining obligations. Rewrite using `[S3x1.isNU_iff]`. Use `S3x1.par_rinv S3x1.gpUni ((S3x1.isNU_iff _).1 h.2) ?_` and prove the remaining obligations. Rewrite using `[← Matrix.map_mul, Matrix.mul_nonsing_inv _ h.1, Matrix.map_one _ (map_zero _) (map_one _)]`.
+-/
 theorem kppO_inv {j : Matrix (Idx r k) (Idx r k) o} (h : KppO j) : KppO j⁻¹ := by
   refine ⟨Matrix.isUnit_nonsing_inv_det j h.1, ?_⟩
   rw [S3x1.isNU_iff]
   refine S3x1.par_rinv S3x1.gpUni ((S3x1.isNU_iff _).1 h.2) ?_
   rw [← Matrix.map_mul, Matrix.mul_nonsing_inv _ h.1, Matrix.map_one _ (map_zero _) (map_one _)]
 
+/- English proof (translation)
+Use `⟨by rw [S3x3.det_of_isN hn]; exact isUnit_one, ?_⟩` and prove the remaining obligations. Conclude with `⟨_, 1, S3x3.isN_map _ hn, ⟨1, isUpUni_one _, S3x1.hEmb_one.symm⟩, (Matrix.mul_one _).symm⟩`.
+-/
 theorem kppO_of_isN {n : Matrix (Idx r k) (Idx r k) o} (hn : IsN n) : KppO n := by
   refine ⟨by rw [S3x3.det_of_isN hn]; exact isUnit_one, ?_⟩
   exact ⟨_, 1, S3x3.isN_map _ hn, ⟨1, isUpUni_one _, S3x1.hEmb_one.symm⟩, (Matrix.mul_one _).symm⟩
 
+/- English proof (translation)
+Use `⟨by rw [S3x3.det_hEmb]; exact hd, ?_⟩` and prove the remaining obligations. Conclude with `⟨1, _, (S3x1.isN_iff _).2 (S3x1.par_one S3x1.gpOne), ⟨_, hu, rfl⟩, by`. Rewrite using `[S3x3.hEmb_map, Matrix.one_mul]⟩`.
+-/
 theorem kppO_hEmb {h : Matrix (Fin k) (Fin k) o} (hd : IsUnit h.det)
     (hu : IsUpUni (h.map (IsLocalRing.residue o))) : KppO (hEmb r h) := by
   refine ⟨by rw [S3x3.det_hEmb]; exact hd, ?_⟩
@@ -136,6 +182,13 @@ open Matrix Finset
 open Formalism.DoubleCosetMeasures (IsUpUni upUniG)
 open Formalism.FourierDecayAlt.S3 Formalism.FourierDecayAlt.P.FrameLevelIndices
 
+/- English proof (translation)
+Introduce `o _ _ _ r k L M`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Rewrite using `[first_congruence_eq_reduction_comap M, Knat_eq L]`. Conclude with `Subgroup.comap_mono pointwise_subgroup_le_parabolic`. Rewrite using `[first_congruence_eq_reduction_comap M, Knat_eq L, Subgroup.relIndex_comap, Subgroup.map_comap_eq_self_of_surjective (S3x2.red_surjective o _)]`.
+
+Establish `: Fintype (IsLocalRing.ResidueField o)` using `Fintype.ofFinite _`. Establish `h1` using `Subgroup.relIndex_mul_relIndex ⊥ (S3x1.s0G : Subgroup (GL (Idx r k) (IsLocalRing.ResidueField o))) (S3x1.parG (r := r) (S3x1.gpUnit (A := IsLocalRing.ResidueField o) (k := k))) bot_le pointwise_subgroup_le_parabolic`. Rewrite `h1` using `[Subgroup.relIndex_bot_left, Subgroup.relIndex_bot_left, ← card_s0G, ← card_sG, card_pointwise_stabiliser (IsLocalRing.ResidueField o) r k, ← Nat.card_eq_fintype_card]`. Establish `hpos : 0 < Nat.card {x : Matrix (Idx r k) (Idx r k) (IsLocalRing.ResidueField o) // IsInertiaInfiniteCyclotomic x}`. Rewrite using `[card_s0G]`.
+
+Conclude with `Nat.card_pos`. Conclude with `Nat.eq_of_mul_eq_mul_left hpos h1`.
+-/
 theorem first_congruence_index : Formalism.FourierDecayAlt.S3.CongruenceLevelIndex := by
   intro o _ _ _ r k L M
   refine ⟨?_, ?_⟩
@@ -153,6 +206,13 @@ theorem first_congruence_index : Formalism.FourierDecayAlt.S3.CongruenceLevelInd
       rw [card_s0G]; exact Nat.card_pos
     exact Nat.eq_of_mul_eq_mul_left hpos h1
 
+/- English proof (translation)
+Introduce `K _ _ r k`. Establish `hq : 1 ≤ Fintype.card K` using `Fintype.card_pos`. Rewrite using `[card_GL_idx, Matrix.card_GL_field, card_frame_stabiliser K r k, card_unipotent_radical K r k, Matrix.card_GL_field, gl_real _ _ hq, Nat.cast_mul, gl_real _ _ hq, show k + 2 * r + 1 = k + (2 * r + 1) from rfl, densityProduct_eq_prod_range, Finset.prod_range_add, show ((r : ℤ) + 1 …`. Establish `e : (k + (2 * r + 1)) * (k + (2 * r + 1)) = k * k + (r * (r - 1) + 2 * r * (k + 1) + r ^ 2) + (r + 1) * (2 * k + 2 * r + 1)`. Break down `r with _ | r` into its components or cases.
+
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Simplify using `only [Nat.add_sub_cancel]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e, pow_add, pow_add]`.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem frameIndex_statement : Formalism.FourierDecayAlt.S3.FrameIndex := by
   intro K _ _ r k
   have hq : 1 ≤ Fintype.card K := Fintype.card_pos
@@ -169,6 +229,19 @@ theorem frameIndex_statement : Formalism.FourierDecayAlt.S3.FrameIndex := by
   rw [e, pow_add, pow_add]
   ring
 
+/- English proof (translation)
+Introduce `o _ _ _ ϖ hϖ r k j n n' h hj hn hn' hd hu`. Take `⟨hK, X, hX, hcm⟩` from `hj`. Use `⟨?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Use `⟨kppO_mul (kppO_mul (kppO_of_isN hn) hK) (kppO_of_isN hn'), b33 n * X * b11 n', ?_, ?_⟩` and prove the remaining obligations. Take `⟨-, -, -, -, n31, n32⟩` from `hn`.
+
+Take `⟨-, -, -, n21', n31', -⟩` from `hn'`. Rewrite using `[S3x1.block31_mul, S3x1.block31_mul, n31, n32, n21', n31', hX]`. Simplify using the standard rewrite rules. Introduce `l hl`. Rewrite using `[S3x7.corner_invariant hn.2.1 hn'.1]`.
+
+Conclude with `hcm l hl`. Use `⟨kppO_mul (kppO_hEmb hd hu) hK, X, ?_, hcm⟩` and prove the remaining obligations. Rewrite using `[S3x1.block31_mul, S3x1.levi_embedding_block31, S3x1.levi_embedding_block32, S3x1.levi_embedding_block33, hX]`. Simplify using the standard rewrite rules. Use `⟨kppO_mul hK (kppO_hEmb hd hu), X, ?_, hcm⟩` and prove the remaining obligations.
+
+Rewrite using `[S3x1.block31_mul, S3x1.levi_embedding_block11, S3x1.levi_embedding_block21, S3x1.levi_embedding_block31, hX]`. Simplify using the standard rewrite rules. Take `⟨Y, hY, -, hYc⟩` from `S3x7.inverse_corner hϖ j X hK hX`. Use `⟨kppO_inv hK, Y, hY, fun l hl => ?_⟩` and prove the remaining obligations. Establish `h1 : IsLocalRing.residue o (cm X l hl) ≠ 0`.
+
+Rewrite using `[Ne, IsLocalRing.residue_eq_zero_iff, IsLocalRing.mem_maximalIdeal, mem_nonunits_iff, not_not]`. Conclude with `hcm l hl`. Establish `h2 : IsLocalRing.residue o (cm Y l hl) ≠ 0`. Rewrite using `[hYc l hl]`. Conclude with `mul_ne_zero (pow_ne_zero _ (neg_ne_zero.2 one_ne_zero)) h1`.
+
+Rewrite `h2` using `[Ne, IsLocalRing.residue_eq_zero_iff, IsLocalRing.mem_maximalIdeal, mem_nonunits_iff, not_not]`. Conclude with `h2`.
+-/
 theorem omStable_statement : Formalism.FourierDecayAlt.S3.OmStable := by
   intro o _ _ _ ϖ hϖ r k j n n' h hj hn hn' hd hu
   obtain ⟨hK, X, hX, hcm⟩ := hj

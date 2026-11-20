@@ -16,6 +16,9 @@ def sesq (H : (Fin D → ℂ) →L[ℝ] (Fin D → ℂ) →L[ℝ] ℝ) (u v : Fi
   ((H u v + H (Complex.I • u) (Complex.I • v) : ℝ) +
     Complex.I * ((H u (Complex.I • v) - H (Complex.I • u) v : ℝ))) / 4
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem cxHessian_eq_sesq (f : (Fin D → ℂ) → ℝ) (z : Fin D → ℂ) (i j : Fin D) :
     cxHessian f z i j = sesq (fderiv ℝ (fderiv ℝ f) z) (Pi.single i 1) (Pi.single j 1) := rfl
 
@@ -23,67 +26,108 @@ section Sesq
 
 variable (H : (Fin D → ℂ) →L[ℝ] (Fin D → ℂ) →L[ℝ] ℝ)
 
+/- English proof (translation)
+Simplify using `only [sesq, smul_add, map_add, _root_.add_apply]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem sesq_add_left (u u' v : Fin D → ℂ) : sesq H (u + u') v = sesq H u v + sesq H u' v := by
   simp only [sesq, smul_add, map_add, _root_.add_apply]
   push_cast
   ring
 
+/- English proof (translation)
+Simplify using `only [sesq, smul_add, map_add]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem sesq_add_right (u v v' : Fin D → ℂ) : sesq H u (v + v') = sesq H u v + sesq H u v' := by
   simp only [sesq, smul_add, map_add]
   push_cast
   ring
 
+/- English proof (translation)
+Simplify using `only [sesq, smul_comm Complex.I r u, map_smul, _root_.smul_apply, smul_eq_mul]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem sesq_real_smul_left (r : ℝ) (u v : Fin D → ℂ) : sesq H (r • u) v = r * sesq H u v := by
   simp only [sesq, smul_comm Complex.I r u, map_smul, _root_.smul_apply, smul_eq_mul]
   push_cast
   ring
 
+/- English proof (translation)
+Simplify using `only [sesq, smul_comm Complex.I r v, map_smul, smul_eq_mul]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem sesq_real_smul_right (r : ℝ) (u v : Fin D → ℂ) : sesq H u (r • v) = r * sesq H u v := by
   simp only [sesq, smul_comm Complex.I r v, map_smul, smul_eq_mul]
   push_cast
   ring
 
+/- English proof (translation)
+Establish `h : Complex.I • Complex.I • u = -u` using `by rw [smul_smul, Complex.I_mul_I, neg_one_smul]`. Simplify using `only [sesq, h, map_neg, _root_.neg_apply]`. Use `push_cast`. Take the linear combination `(-(H u (Complex.I • v) : ℂ) + (H (Complex.I • u) v : ℂ)) / 4 * Complex.I_sq`.
+-/
 theorem sesq_I_left (u v : Fin D → ℂ) : sesq H (Complex.I • u) v = Complex.I * sesq H u v := by
   have h : Complex.I • Complex.I • u = -u := by rw [smul_smul, Complex.I_mul_I, neg_one_smul]
   simp only [sesq, h, map_neg, _root_.neg_apply]
   push_cast
   linear_combination (-(H u (Complex.I • v) : ℂ) + (H (Complex.I • u) v : ℂ)) / 4 * Complex.I_sq
 
+/- English proof (translation)
+Establish `h : Complex.I • Complex.I • v = -v` using `by rw [smul_smul, Complex.I_mul_I, neg_one_smul]`. Simplify using `only [sesq, h, map_neg]`. Use `push_cast`. Take the linear combination `((H u (Complex.I • v) : ℂ) - (H (Complex.I • u) v : ℂ)) / 4 * Complex.I_sq`.
+-/
 theorem sesq_I_right (u v : Fin D → ℂ) : sesq H u (Complex.I • v) = -Complex.I * sesq H u v := by
   have h : Complex.I • Complex.I • v = -v := by rw [smul_smul, Complex.I_mul_I, neg_one_smul]
   simp only [sesq, h, map_neg]
   push_cast
   linear_combination ((H u (Complex.I • v) : ℂ) - (H (Complex.I • u) v : ℂ)) / 4 * Complex.I_sq
 
+/- English proof (translation)
+Use function extensionality and compare the values at `p`. Simplify using `only [Pi.add_apply, Pi.smul_apply, Complex.real_smul, smul_eq_mul]`. Use `conv_lhs => rw [← Complex.re_add_im a]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem smul_eq_re_add_im (a : ℂ) (u : Fin D → ℂ) : a • u = a.re • u + a.im • (Complex.I • u) := by
   funext p
   simp only [Pi.add_apply, Pi.smul_apply, Complex.real_smul, smul_eq_mul]
   conv_lhs => rw [← Complex.re_add_im a]
   ring
 
+/- English proof (translation)
+Rewrite using `[smul_eq_re_add_im, sesq_add_left, sesq_real_smul_left, sesq_real_smul_left, sesq_I_left]`. Use `conv_rhs => rw [← Complex.re_add_im a]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem sesq_smul_left (a : ℂ) (u v : Fin D → ℂ) : sesq H (a • u) v = a * sesq H u v := by
   rw [smul_eq_re_add_im, sesq_add_left, sesq_real_smul_left, sesq_real_smul_left, sesq_I_left]
   conv_rhs => rw [← Complex.re_add_im a]
   ring
 
+/- English proof (translation)
+Rewrite using `[smul_eq_re_add_im, sesq_add_right, sesq_real_smul_right, sesq_real_smul_right, sesq_I_right]`. Apply the tactic sequence `have hs : star a = (a.re : ℂ) - a.im * Complex.I := by apply Complex.ext <;> simp`. Rewrite using `[hs]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem sesq_smul_right (a : ℂ) (u v : Fin D → ℂ) : sesq H u (a • v) = star a * sesq H u v := by
   rw [smul_eq_re_add_im, sesq_add_right, sesq_real_smul_right, sesq_real_smul_right, sesq_I_right]
   have hs : star a = (a.re : ℂ) - a.im * Complex.I := by apply Complex.ext <;> simp
   rw [hs]
   ring
 
+/- English proof (translation)
+The claim follows from `map_sum (AddMonoidHom.mk' (fun a => sesq H a v) fun a b => sesq_add_left H a b v) u Finset.univ`.
+-/
 theorem sesq_sum_left (u : Fin D → Fin D → ℂ) (v : Fin D → ℂ) :
     sesq H (∑ k, u k) v = ∑ k, sesq H (u k) v :=
   map_sum (AddMonoidHom.mk' (fun a => sesq H a v) fun a b => sesq_add_left H a b v) u Finset.univ
 
+/- English proof (translation)
+The claim follows from `map_sum (AddMonoidHom.mk' (fun b => sesq H u b) fun a b => sesq_add_right H u a b) v Finset.univ`.
+-/
 theorem sesq_sum_right (u : Fin D → ℂ) (v : Fin D → Fin D → ℂ) :
     sesq H u (∑ l, v l) = ∑ l, sesq H u (v l) :=
   map_sum (AddMonoidHom.mk' (fun b => sesq H u b) fun a b => sesq_add_right H u a b) v Finset.univ
 
+/- English proof (translation)
+Use function extensionality and compare the values at `p`. Simplify using `[Finset.sum_apply, Pi.single_apply]`.
+-/
 theorem eq_sum_smul_single (a : Fin D → ℂ) : a = ∑ k, a k • (Pi.single k 1 : Fin D → ℂ) := by
   funext p
   simp [Finset.sum_apply, Pi.single_apply]
 
+/- English proof (translation)
+Use `conv_lhs => rw [eq_sum_smul_single a, eq_sum_smul_single b]`. Rewrite using `[sesq_sum_left]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[sesq_sum_right]`. Use `Finset.sum_congr rfl fun l _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[sesq_smul_left, sesq_smul_right]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem sesq_expand (a b : Fin D → ℂ) :
     sesq H a b = ∑ k, ∑ l, a k * star (b l) * sesq H (Pi.single k 1) (Pi.single l 1) := by
   conv_lhs => rw [eq_sum_smul_single a, eq_sum_smul_single b]
@@ -100,9 +144,19 @@ def realCLE (P : Matrix (Fin D) (Fin D) ℂ) (hP : P.det ≠ 0) : (Fin D → ℂ
   letI := P.invertibleOfIsUnitDet (isUnit_iff_ne_zero.mpr hP)
   ((P.toLinearEquiv' this).restrictScalars ℝ).toContinuousLinearEquiv
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem realCLE_apply (P : Matrix (Fin D) (Fin D) ℂ) (hP : P.det ≠ 0) (y : Fin D → ℂ) :
     realCLE P hP y = P *ᵥ y := rfl
 
+/- English proof (translation)
+Establish `h1 : (fderiv ℝ fun y => φ (c + L y) + κ) = fun y => (fderiv ℝ φ (c + L y)).comp (L : (Fin D → ℂ) →L[ℝ] (Fin D → ℂ))`. Use function extensionality and compare the values at `y`. Rewrite using `[fderiv_add_const]`. Establish `: (fun y => φ (c + L y)) = (fun w => φ (c + w)) ∘ L` using `rfl`. Rewrite using `[this, L.comp_right_fderiv, fderiv_comp_add_left]`.
+
+Establish `h2 : (fun y => (fderiv ℝ φ (c + L y)).comp (L : (Fin D → ℂ) →L[ℝ] (Fin D → ℂ))) = (L.symm.arrowCongr (ContinuousLinearEquiv.refl ℝ ℝ)) ∘ ((fun w => fderiv ℝ φ (c + w)) ∘ L)`. Use function extensionality and compare the values at `y`. Use extensionality with `w`. Simplify using `[ContinuousLinearEquiv.arrowCongr_apply]`. Rewrite using `[h1, h2, ContinuousLinearEquiv.comp_fderiv, L.comp_right_fderiv, fderiv_comp_add_left]`.
+
+Simplify using `[ContinuousLinearEquiv.arrowCongr_apply]`.
+-/
 theorem fderiv_fderiv_comp_affine (φ : (Fin D → ℂ) → ℝ) (c : Fin D → ℂ) (L : (Fin D → ℂ) ≃L[ℝ] (Fin D → ℂ))
     (κ : ℝ) (z u v : Fin D → ℂ) :
     fderiv ℝ (fderiv ℝ fun y => φ (c + L y) + κ) z u v = fderiv ℝ (fderiv ℝ φ) (c + L z) (L u) (L v) := by
@@ -120,6 +174,15 @@ theorem fderiv_fderiv_comp_affine (φ : (Fin D → ℂ) → ℝ) (c : Fin D → 
   rw [h1, h2, ContinuousLinearEquiv.comp_fderiv, L.comp_right_fderiv, fderiv_comp_add_left]
   simp [ContinuousLinearEquiv.arrowCongr_apply]
 
+/- English proof (translation)
+Use extensionality with `i j`. Use `set L := realCLE P hP`. Use `set H := fderiv ℝ (fderiv ℝ φ) (c + P *ᵥ z)`. Establish `hI : ∀ w, L (Complex.I • w) = Complex.I • L w` using `fun w => by`. Simplify using `only [L, realCLE_apply, Matrix.mulVec_smul]`.
+
+Establish `hent : cxHessian (fun y => φ (c + P *ᵥ y) + κ) z i j = sesq H (L (Pi.single i 1)) (L (Pi.single j 1))`. Establish `hg : (fun y => φ (c + P *ᵥ y) + κ) = fun y => φ (c + L y) + κ` using `rfl`. Rewrite using `[cxHessian_eq_sesq, hg]`. Simplify using `only [sesq, fderiv_fderiv_comp_affine, hI]`. Both sides reduce to the same expression.
+
+Rewrite using `[hent, sesq_expand]`. Simplify using `only [L, realCLE_apply, Matrix.mul_apply, Matrix.transpose_apply, Matrix.map_apply, Finset.sum_mul, mulVec_single_one]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun k _ => Finset.sum_congr rfl fun l _ => ?_` and prove the remaining obligations. Establish `hc : cxHessian φ (c + P *ᵥ z) l k = sesq H (Pi.single l 1) (Pi.single k 1)` using `rfl`.
+
+Simplify using `only [Matrix.col_apply, starRingEnd_apply, hc]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem cxHessian_comp_affine (φ : (Fin D → ℂ) → ℝ) (c : Fin D → ℂ) (P : Matrix (Fin D) (Fin D) ℂ)
     (hP : P.det ≠ 0) (κ : ℝ) (z : Fin D → ℂ) :
     cxHessian (fun y => φ (c + P *ᵥ y) + κ) z =
@@ -143,6 +206,11 @@ theorem cxHessian_comp_affine (φ : (Fin D → ℂ) → ℝ) (c : Fin D → ℂ)
   simp only [Matrix.col_apply, starRingEnd_apply, hc]
   ring
 
+/- English proof (translation)
+Establish `hS : ∀ S : Finset (Fin D), (∑ k ∈ S, P * A k * Q) = P * (∑ k ∈ S, A k) * Q` using `fun S => by`. Rewrite using `[Finset.mul_sum, Finset.sum_mul]`. Simplify using `only [mixedDisc, hS, det_mul]`. Simplify using `only [Finset.mul_sum]`. Use `Finset.sum_congr rfl fun S _ => ?_` and prove the remaining obligations.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem mixedDisc_mul_mul (P Q : Matrix (Fin D) (Fin D) ℂ) (A : Fin D → Matrix (Fin D) (Fin D) ℂ) :
     mixedDisc (fun k => P * A k * Q) = P.det * Q.det * mixedDisc A := by
   have hS : ∀ S : Finset (Fin D), (∑ k ∈ S, P * A k * Q) = P * (∑ k ∈ S, A k) * Q := fun S => by
@@ -152,6 +220,9 @@ theorem mixedDisc_mul_mul (P Q : Matrix (Fin D) (Fin D) ℂ) (A : Fin D → Matr
   refine Finset.sum_congr rfl fun S _ => ?_
   ring
 
+/- English proof (translation)
+Establish `hQ : (P.map (starRingEnd ℂ)).det = starRingEnd ℂ P.det` using `(RingHom.map_det (starRingEnd ℂ) P).symm`. Simplify using `only [maDensity, cxHessian_comp_affine φ c P hP κ z]`. Rewrite using `[mixedDisc_mul_mul (Pᵀ) (P.map (starRingEnd ℂ)) (fun _ => cxHessian φ (c + P *ᵥ z)), det_transpose, hQ, Complex.mul_conj, Complex.re_ofReal_mul]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem maDensity_comp_affine (φ : (Fin D → ℂ) → ℝ) (c : Fin D → ℂ) (P : Matrix (Fin D) (Fin D) ℂ)
     (hP : P.det ≠ 0) (κ : ℝ) (z : Fin D → ℂ) :
     maDensity (fun _ : Fin D => fun y => φ (c + P *ᵥ y) + κ) z =
@@ -162,6 +233,9 @@ theorem maDensity_comp_affine (φ : (Fin D → ℂ) → ℝ) (c : Fin D → ℂ)
     Complex.mul_conj, Complex.re_ofReal_mul]
   ring
 
+/- English proof (translation)
+Establish `h : ((realCLE P hP : (Fin D → ℂ) →L[ℝ] (Fin D → ℂ)) : (Fin D → ℂ) →ₗ[ℝ] (Fin D → ℂ)) = (Matrix.toLin' P).restrictScalars ℝ`. Use extensionality with `y`. Simplify using `[realCLE_apply]`. Rewrite using `[h, LinearMap.det_restrictScalars, LinearMap.det_toLin', Algebra.norm_complex_apply]`.
+-/
 theorem det_realCLE (P : Matrix (Fin D) (Fin D) ℂ) (hP : P.det ≠ 0) :
     LinearMap.det ((realCLE P hP : (Fin D → ℂ) →L[ℝ] (Fin D → ℂ)) : (Fin D → ℂ) →ₗ[ℝ] (Fin D → ℂ)) =
       Complex.normSq P.det := by
@@ -171,6 +245,11 @@ theorem det_realCLE (P : Matrix (Fin D) (Fin D) ℂ) (hP : P.det ≠ 0) :
     simp [realCLE_apply]
   rw [h, LinearMap.det_restrictScalars, LinearMap.det_toLin', Algebra.norm_complex_apply]
 
+/- English proof (translation)
+Use `set L := realCLE P hP`. Establish `hpos : 0 < Complex.normSq P.det` using `Complex.normSq_pos.mpr hP`. Establish `hdet` using `det_realCLE P hP`. Establish `hmap` using `Measure.map_linearMap_addHaar_eq_smul_addHaar (volume : Measure (Fin D → ℂ)) (f := ((L : (Fin D → ℂ) →L[ℝ] (Fin D → ℂ)) : (Fin D → ℂ) →ₗ[ℝ] (Fin D → ℂ))) (by rw [hdet]; exact hpos.ne')`. Establish `hcoe : ⇑((L : (Fin D → ℂ) →L[ℝ] (Fin D → ℂ)) : (Fin D → ℂ) →ₗ[ℝ] (Fin D → ℂ)) = ⇑L` using `rfl`.
+
+Rewrite `hmap` using `[hcoe, hdet]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[hmap, integral_smul_measure, integral_add_left_eq_self, ENNReal.toReal_ofReal (abs_nonneg _), abs_inv, abs_of_pos hpos, smul_eq_mul]`.
+-/
 theorem integral_comp_affine (f : (Fin D → ℂ) → ℝ) (c : Fin D → ℂ) (P : Matrix (Fin D) (Fin D) ℂ)
     (hP : P.det ≠ 0) :
     ∫ y, f (c + P *ᵥ y) = (Complex.normSq P.det)⁻¹ * ∫ y, f y := by

@@ -9,6 +9,11 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 namespace GlobalTheory.TypePrimeUnif
 
+/- English proof (translation)
+Introduce `h`. Use `Q.isPrime` as an intermediate fact. Establish `hle : Q.asIdeal ^ 2 ≤ Q.asIdeal` using `Ideal.pow_le_self two_ne_zero`. Break down `Ideal.IsPrime.mul_mem_pow Q.asIdeal h with h1 | h1` into its components or cases. Break down `Ideal.IsPrime.mul_mem_pow Q.asIdeal (mul_comm a b ▸ h) with h2 | h2` into its components or cases.
+
+Take `⟨u, v, huv⟩` from `hab`. Conclude with `Q.isPrime.ne_top ((Ideal.eq_top_iff_one _).2 (huv ▸ Q.asIdeal.add_mem (Q.asIdeal.mul_mem_left u h1) (Q.asIdeal.mul_mem_left v h2)))`. Conclude with `ha h1 h2`. Conclude with `hb (hle h1) h1`.
+-/
 theorem mul_not_mem_sq {R : Type*} [CommRing R] [IsDedekindDomain R] (Q : HeightOneSpectrum R) {a b : R}
     (hab : IsCoprime a b) (ha : a ∈ Q.asIdeal → a ∉ Q.asIdeal ^ 2) (hb : b ∈ Q.asIdeal → b ∉ Q.asIdeal ^ 2) :
     a * b ∉ Q.asIdeal ^ 2 := by
@@ -23,6 +28,9 @@ theorem mul_not_mem_sq {R : Type*} [CommRing R] [IsDedekindDomain R] (Q : Height
     · exact ha h1 h2
   · exact hb (hle h1) h1
 
+/- English proof (translation)
+Introduce `D Q _`. Establish `key : ∀ k, ((D.host.g k : ℕ) : 𝓞 D.host.E) ∈ Q.asIdeal → ((D.host.g k : ℕ) : 𝓞 D.host.E) ∉ Q.asIdeal ^ 2` using `fun k hk => (GlobalTheory.Mem.Chr.splitsC_main D.R D.host (D.host.g k) (D.host.g_prime k) (D.nd.g_split k) Q hk).2.1`. Establish `hc : Nat.Coprime (D.host.g 0) (D.host.g 1)` using `(Nat.coprime_primes (D.host.g_prime 0) (D.host.g_prime 1)).2 D.host.g_ne`. Rewrite using `[Nat.cast_mul]`. Conclude with `mul_not_mem_sq Q (Nat.Coprime.cast hc) (key 0) (key 1)`.
+-/
 theorem prod_not_mem_sq : ∀ (D : D7) (Q : Pl D.host.E), ((D.host.g 0 * D.host.g 1 : ℕ) : 𝓞 D.host.E) ∈ Q.asIdeal → ((D.host.g 0 * D.host.g 1 : ℕ) : 𝓞 D.host.E) ∉ Q.asIdeal ^ 2 := by
   intro D Q _
   have key : ∀ k, ((D.host.g k : ℕ) : 𝓞 D.host.E) ∈ Q.asIdeal →

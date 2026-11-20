@@ -11,6 +11,37 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.G
 open GlobalTheory.CompanionTheory.Ar.BT hiding genPt
 open GlobalTheory.CompanionTheory.Ar.HTTie
 
+/- English proof (translation)
+Take `⟨p, hp⟩ : ∃ p : PrimeSpectrum R, x p = q.1` from `hq`. Take `⟨_, hS, hzs, hg⟩` from `stalk_loc hξ (κ.toRingHom.comp (algebraMap R (FractionRing R))) (κ.injective.comp (IsFractionRing.injective R _)) x hx p q hp hsub`. Take `⟨s, hs, hv⟩` from `hHT`. Establish `hcore` using `fun W f hval (e' : E) (v : epsAt (X.fromSpecStalk q.1) ⟶ G) (hv' : M.Extends q e' v) => core_tan h455 M p.asIdeal.primeCompl Γ i x hzs (genMap ξ q) _ hg M₀ j hj n w₀ w hwj s hv W f hval e' v hv'.1 hv'.2`. Take `⟨W₀, f₀, hW₀, hf₀⟩` from `lift_sec G Γ x n i htor q.1 _ hzs s`.
+
+Establish `hval₀ : ∀ {B : Type} [CommRing B] (y : Spec (CommRingCat.of B) ⟶ Γ.G.left) (b : X.presheaf.stalk q.1 →+* B), y ≫ Γ.G.hom = Spec.map (CommRingCat.ofHom (b.comp (algebraMap R (X.presheaf.stalk q.1)))) → ∀ h : ⊤ ≤ (y ≫ i) ⁻¹ᵁ W₀, valAt (y ≫ i) W₀ h f₀ = valAt y ⊤ le_top s` using `fun y b hb h => hf₀ y (Spec.map (CommRingCat.ofHom b)) (hb.trans (spec_comp _ _)) h`. Establish `hlat` using `(lieLat_carrier X G Ω ξ E M q).1`. Establish `hw : w ∈ M.omLat q` using `fun e' he' => by`. Take `⟨v, hv'⟩` from `(hlat e').1 he'`. Take `⟨c, hc, -⟩` from `hcore W₀ f₀ hval₀ e' v hv'`.
+
+Conclude with `⟨c, hc.symm⟩`. Establish `hn' : (n : Ω) ≠ 0` using `Nat.cast_ne_zero.2 hn`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨-, W, f, hWm, hf, hd⟩`. Establish `hsec : (i.app W).hom f - Γ.G.left.presheaf.map (homOfLE (le_top : i ⁻¹ᵁ W ≤ ⊤)).op s = 0`.
+
+Use `h876 R T Γ (i ⁻¹ᵁ W) _ fun t h => ?_` and prove the remaining obligations. Rewrite using `[valAt_sub, sub_eq_zero]`. Use `Eq.trans ?_ (valAt_res _ _ ⊤ le_top h le_top s).symm` and prove the remaining obligations. Rewrite using `[hs t]`. Use `(valAt_comp (Γ.pt t).left i W h f).symm.trans ?_` and prove the remaining obligations.
+
+Set `k` to `AlgebraicClosure Ω`. Set `a : Ω →+* k` to `algebraMap Ω k`. Set `ψ : Over.mk (spMap a ≫ ξ) ⟶ Over.mk ξ` to `Over.homMk (spMap a) rfl`. Take `⟨g, hg1, hg2⟩` from `tors_ex κ.toRingHom htor hx t`. Set `c : kˣ` to `Units.map ((a.comp κ.toRingHom).comp (algebraMap R (FractionRing R))).toMonoidHom (χ t)`.
+
+Establish `e0 : (ψ ≫ g).left = spMap a ≫ ptG κ.toRingHom i t` using `by rw [← hg2]; rfl`. Establish `e1 : (ψ ≫ g).left = Spec.map (CommRingCat.ofHom (a.comp κ.toRingHom)) ≫ (Γ.pt t).left ≫ i`. Rewrite using `[e0, spec_comp, Category.assoc]`. Establish `h1 : ⊤ ≤ (Spec.map (CommRingCat.ofHom (a.comp κ.toRingHom)) ≫ (Γ.pt t).left ≫ i) ⁻¹ᵁ W` using `fun z _ => h (by trivial)`. Establish `h2` using `hf k a (ψ ≫ y) (ψ ≫ g) c (by rw [e1]; exact h1) rfl (by rw [← comp_pow', hg1, MonObj.comp_one]) ((hW t k a (ψ ≫ y) (ψ ≫ g) c rfl e0).2 rfl)`.
+
+Apply `(a.comp κ.toRingHom).injective` to reduce the goal to its premises. Conclude with `(valAt_spec (a.comp κ.toRingHom) _ W h h1 f).symm.trans ((valAt_congr e1 W _ h1 f).symm.trans h2)`. Establish `hval : ∀ {B : Type} [CommRing B] (y : Spec (CommRingCat.of B) ⟶ Γ.G.left) (b : X.presheaf.stalk q.1 →+* B), y ≫ Γ.G.hom = Spec.map (CommRingCat.ofHom (b.comp (algebraMap R (X.presheaf.stalk q.1)))) → ∀ h : ⊤ ≤ (y ≫ i) ⁻¹ᵁ W, valAt (y ≫ i) W h f = valAt y ⊤ le_top s`. Introduce `B _ y _ _ h`. Use `(valAt_comp y i W h f).trans ?_` and prove the remaining obligations.
+
+Rewrite using `[sub_eq_zero.1 hsec]`. Conclude with `valAt_res y (i ⁻¹ᵁ W) ⊤ le_top h le_top s`. Use `⟨(n : Ω)⁻¹ • (w' - w), fun e' he' => ?_, ?_⟩` and prove the remaining obligations. Take `⟨v, hv'⟩` from `(hlat e').1 he'`. Establish `hm : ⊤ ≤ v.left ⁻¹ᵁ W` using `HtUniq.tan_le v hv'.1 hWm`.
+
+Take `⟨c, hc, hr⟩` from `hcore W f hval e' v hv'`. Take `⟨r, hr⟩` from `hr hm`. Take `⟨r', hr', he⟩` from `hd e' v hv' hm`. Establish `: ((n : Ω)⁻¹ • (w' - w)) e' = r' - genMap ξ q r`. Establish `he' : w' e' = genMap ξ q (BT.valAt v.left W hm f).snd + n * r'` using `he`.
+
+Establish `hc' : w e' = genMap ξ q (BT.valAt v.left W hm f).snd + n * genMap ξ q r`. Rewrite using `[hc, hr, map_add, map_mul, map_natCast]`. Both sides reduce to the same expression. Rewrite using `[LinearMap.smul_apply, LinearMap.sub_apply, smul_eq_mul, inv_mul_eq_iff_eq_mul₀ hn', mul_sub, he', hc', add_sub_add_left_eq_sub]`. Rewrite using `[this]`.
+
+Conclude with `sub_mem hr' ⟨r, rfl⟩`. Rewrite using `[← Nat.cast_smul_eq_nsmul Ω, smul_smul, mul_inv_cancel₀ hn', one_smul, add_sub_cancel]`. Introduce and unpack `⟨u, hu, rfl⟩`. Use `⟨add_mem hw (nsmul_mem hu n), W₀, f₀, hW₀, ?_, ?_⟩` and prove the remaining obligations. Introduce `K _ _ a xk g' c h hxk hg' hweil`.
+
+Take `⟨g₀, hg₀⟩` from `hfull K a g' hg'`. Establish `hg0 : g₀ ^ n = 1` using `pow_descend a hg₀ hg'`. Take `⟨t, ht⟩` from `tors_pt κ.toRingHom htor hx g₀ hg0`. Establish `hc₁` using `(hW t K a xk g' c hxk (by rw [hg₀, ht])).1 hweil`. Establish `e1 : g'.left = (Spec.map (CommRingCat.ofHom (a.comp κ.toRingHom)) ≫ (Γ.pt t).left) ≫ i`.
+
+Rewrite using `[hg₀, ht, spec_comp]`. Simplify using `only [ptG, Category.assoc]`. Use `(valAt_congr e1 W₀ h (by rw [← e1]; exact h) f₀).trans ?_` and prove the remaining obligations. Rewrite using `[hval₀ _ (a.comp (genMap ξ q)) (by`. Rewrite using `[Category.assoc, Over.w, RingHom.comp_assoc, hg, ← RingHom.comp_assoc, spec_comp (algebraMap R _)]`.
+
+Use the proof step `rfl)]`. Use `(valAt_spec (a.comp κ.toRingHom) (Γ.pt t).left ⊤ le_top le_top s).trans ?_` and prove the remaining obligations. Rewrite using `[hs t, hc₁]`. Both sides reduce to the same expression. Introduce `e' v hv' h`.
+
+Take `⟨c, hc', hr⟩` from `hcore W₀ f₀ hval₀ e' v hv'`. Take `⟨r, hr⟩` from `hr h`. Use `⟨genMap ξ q r + u e', add_mem ⟨r, rfl⟩ (hu e' ((hlat e').2 ⟨v, hv'⟩)), ?_⟩` and prove the remaining obligations. Rewrite using `[LinearMap.add_apply, LinearMap.smul_apply, hc', hr, map_add, map_mul, map_natCast, nsmul_eq_mul, mul_add, ← add_assoc]`. Both sides reduce to the same expression.
+-/
 theorem isHTAt_iff (h455 : type_of% @GlobalTheory.T.lie_model_finite_base_change) (h876 : type_of% @GlobalTheory.T.section_eq_zero_of_values)
     {X : Scheme.{0}} {Ω : Type} [Field Ω] [CharZero Ω] {ξ : Spec (CommRingCat.of Ω) ⟶ X} (hξ : IsCptGen ξ)
     {G : Over X} [GrpObj G] [IsCommMonObj G] [Smooth G.hom] [IsSeparated G.hom] (L : LB G.left) {n : ℕ} (hn : n ≠ 0)

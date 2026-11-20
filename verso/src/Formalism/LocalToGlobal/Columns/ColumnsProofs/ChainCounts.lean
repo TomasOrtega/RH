@@ -18,6 +18,9 @@ variable {E : Type} [Field E] [NumberField E]
 def UnifAt (P : HeightOneSpectrum (𝓞 E)) : Prop :=
   ∀ a : E, IntAt P a → redP P a = 0 → IntAt P (a / (qOf P : E))
 
+/- English proof (translation)
+Establish `h : qOf P ≠ 0`. Unfold `qOf`. Rewrite using `[Ne, Ideal.absNorm_eq_zero_iff]`. Conclude with `P.ne_bot`. Conclude with `h` after adjusting the coercions.
+-/
 theorem qOf_ne_zero (P : HeightOneSpectrum (𝓞 E)) : (qOf P : E) ≠ 0 := by
   have h : qOf P ≠ 0 := by
     unfold qOf
@@ -25,22 +28,40 @@ theorem qOf_ne_zero (P : HeightOneSpectrum (𝓞 E)) : (qOf P : E) ≠ 0 := by
     exact P.ne_bot
   exact_mod_cast h
 
+/- English proof (translation)
+Simplify using `using IntAt.coe P (0 : 𝓞 E)`.
+-/
 theorem intAt_zero (P : HeightOneSpectrum (𝓞 E)) : IntAt P (0 : E) := by
   simpa using IntAt.coe P (0 : 𝓞 E)
 
+/- English proof (translation)
+Simplify using `using IntAt.coe P (1 : 𝓞 E)`.
+-/
 theorem intAt_one (P : HeightOneSpectrum (𝓞 E)) : IntAt P (1 : E) := by
   simpa using IntAt.coe P (1 : 𝓞 E)
 
+/- English proof (translation)
+Simplify using `using IntAt.coe P (k : 𝓞 E)`.
+-/
 theorem intAt_natCast (P : HeightOneSpectrum (𝓞 E)) (k : ℕ) : IntAt P (k : E) := by
   simpa using IntAt.coe P (k : 𝓞 E)
 
+/- English proof (translation)
+Use `IntAt.mul (IntAt.coe P (-1 : 𝓞 E)) h` as an intermediate fact. Simplify using `using this`.
+-/
 theorem intAt_neg {P : HeightOneSpectrum (𝓞 E)} {a : E} (h : IntAt P a) : IntAt P (-a) := by
   have := IntAt.mul (IntAt.coe P (-1 : 𝓞 E)) h
   simpa using this
 
+/- English proof (translation)
+Simplify `IntAt.add ha (intAt_neg hb)` using `[sub_eq_add_neg]`.
+-/
 theorem intAt_sub {P : HeightOneSpectrum (𝓞 E)} {a b : E} (ha : IntAt P a) (hb : IntAt P b) : IntAt P (a - b) := by
   simpa [sub_eq_add_neg] using IntAt.add ha (intAt_neg hb)
 
+/- English proof (translation)
+Take `⟨k', rfl⟩` from `Int.eq_ofNat_of_zero_le hk`. Rewrite using `[zpow_natCast]`. Establish `h` using `intAt_natCast (E := E) P (qOf P ^ k')`. Move the coercions through the operations in `at h`. Conclude with `IntAt.mul h ha`.
+-/
 theorem intAt_zpow_mul (P : HeightOneSpectrum (𝓞 E)) {k : ℤ} (hk : 0 ≤ k) {a : E} (ha : IntAt P a) :
     IntAt P ((qOf P : E) ^ k * a) := by
   obtain ⟨k', rfl⟩ := Int.eq_ofNat_of_zero_le hk
@@ -49,12 +70,18 @@ theorem intAt_zpow_mul (P : HeightOneSpectrum (𝓞 E)) {k : ℤ} (hk : 0 ≤ k)
   push_cast at h
   exact IntAt.mul h ha
 
+/- English proof (translation)
+Establish `h` using `reduction_add (intAt_sub ha hb) hb`. Rewrite `h` using `[sub_add_cancel]`. Rewrite using `[h, add_sub_cancel_right]`.
+-/
 theorem reduction_sub' {P : HeightOneSpectrum (𝓞 E)} {a b : E} (ha : IntAt P a) (hb : IntAt P b) :
     redP P (a - b) = redP P a - redP P b := by
   have h := reduction_add (intAt_sub ha hb) hb
   rw [sub_add_cancel] at h
   rw [h, add_sub_cancel_right]
 
+/- English proof (translation)
+Rewrite using `[Ideal.absNorm_apply, Submodule.cardQuot_apply]`.
+-/
 theorem card_quot (P : HeightOneSpectrum (𝓞 E)) : Nat.card (𝓞 E ⧸ P.asIdeal) = Ideal.absNorm P.asIdeal := by
   rw [Ideal.absNorm_apply, Submodule.cardQuot_apply]
 
@@ -63,17 +90,34 @@ instance finite_quot (P : HeightOneSpectrum (𝓞 E)) : Finite (𝓞 E ⧸ P.asI
   rw [card_quot, Ne, Ideal.absNorm_eq_zero_iff]
   exact P.ne_bot
 
+/- English proof (translation)
+Take `⟨s', hs', h'⟩` from `(mem_locP P N _).1 h`. Use `(mem_locP P N w).2 ⟨s' * s, fun hm => (P.isPrime.mem_or_mem hm).elim hs' hs, ?_⟩` and prove the remaining obligations. Rewrite using `[mul_smul]` and apply the resulting hypothesis.
+-/
 theorem mem_localization_of_smul_mem₂ [StarRing E] {n : ℕ} (P : HeightOneSpectrum (𝓞 E)) (N : Submodule (𝓞 E) (Sp E n)) {s : 𝓞 E}
     (hs : s ∉ P.asIdeal) {w : Sp E n} (h : s • w ∈ localization₂ P.asIdeal N) : w ∈ localization₂ P.asIdeal N := by
   obtain ⟨s', hs', h'⟩ := (mem_locP P N _).1 h
   refine (mem_locP P N w).2 ⟨s' * s, fun hm => (P.isPrime.mem_or_mem hm).elim hs' hs, ?_⟩
   rwa [mul_smul]
 
+/- English proof (translation)
+Rewrite using `[Nat.cast_smul_eq_nsmul]`. Conclude with `M.nsmul_mem h k`.
+-/
 theorem natCast_smul_mem {n : ℕ} (M : Submodule (𝓞 E) (Sp E n)) (k : ℕ) {w : Sp E n} (h : w ∈ M) :
     ((k : ℕ) : E) • w ∈ M := by
   rw [Nat.cast_smul_eq_nsmul]
   exact M.nsmul_mem h k
 
+/- English proof (translation)
+Introduce `a ⟨r, s, hs, hsa⟩ hred`. Establish `hr : r ∈ P.asIdeal`. Use `reduction_spec P hs hsa` as an intermediate fact. Rewrite `this` using `[hred, mul_zero]`. Conclude with `Ideal.Quotient.eq_zero_iff_mem.1 this.symm`.
+
+Establish `hqP : ((qOf P : ℕ) : 𝓞 E) ∈ P.asIdeal` using `Ideal.absNorm_mem P.asIdeal`. Take `⟨I, hI⟩ : P.asIdeal ∣ Ideal.span {((qOf P : ℕ) : 𝓞 E)}` from `Ideal.dvd_iff_le.2 ((Ideal.span_singleton_le_iff_mem _).2 hqP)`. Establish `hIP : ¬ I ≤ P.asIdeal`. Introduce `hle`. Apply `h` to reduce the goal to its premises.
+
+Establish `: Ideal.span {((qOf P : ℕ) : 𝓞 E)} ≤ P.asIdeal ^ 2`. Rewrite using `[hI, sq]`. Conclude with `Ideal.mul_mono_right hle`. Conclude with `(Ideal.span_singleton_le_iff_mem _).1 this`. Take `⟨s', hs'I, hs'P⟩` from `Set.not_subset.1 hIP`.
+
+Establish `hmem : r * s' ∈ Ideal.span {((qOf P : ℕ) : 𝓞 E)}`. Rewrite using `[hI]`. Conclude with `Ideal.mul_mem_mul hr hs'I`. Take `⟨t, ht⟩` from `Ideal.mem_span_singleton'.1 hmem`. Use `⟨t, s' * s, fun hm => (P.isPrime.mem_or_mem hm).elim hs'P hs, ?_⟩` and prove the remaining obligations.
+
+Establish `hq` using `qOf_ne_zero (E := E) P`. Establish `ht'` using `congrArg (algebraMap (𝓞 E) E) ht`. Simplify using `only [map_mul, map_natCast] at ht'`. Rewrite using `[map_mul, div_eq_mul_inv, show algebraMap (𝓞 E) E s' * algebraMap (𝓞 E) E s * (a * ((qOf P : ℕ) : E)⁻¹) = (algebraMap (𝓞 E) E s * a) * algebraMap (𝓞 E) E s' * ((qOf P : ℕ) : E)⁻¹ by ring, hsa, ← ht', mul_inv_cancel_right₀ hq]`.
+-/
 theorem unifAt_of_not_mem_sq (P : HeightOneSpectrum (𝓞 E)) (h : ((qOf P : ℕ) : 𝓞 E) ∉ P.asIdeal ^ 2) : UnifAt P := by
   intro a ⟨r, s, hs, hsa⟩ hred
   have hr : r ∈ P.asIdeal := by
@@ -110,9 +154,15 @@ section Scl
 
 variable {E : Type} [Field E] [NumberField E] [StarRing E]
 
+/- English proof (translation)
+Unfold both sides. The equivalence is reflexive.
+-/
 theorem mem_stabL_iff {n : ℕ} {M : Submodule (𝓞 E) (Sp E n)} {κ : Sp E n ≃ₗ[E] Sp E n} :
     κ ∈ stabL E n M ↔ ∀ x, κ x ∈ M ↔ x ∈ M := Iff.rfl
 
+/- English proof (translation)
+Unfold `LocE.sclLat`. Rewrite using `[Submodule.mem_comap]`. Unfold `stdAt`. Rewrite using `[mem_localization_standardLattice]`. Both sides reduce to the same expression.
+-/
 theorem mem_sclLat (P : HeightOneSpectrum (𝓞 E)) (q N : ℕ) (e : ℕ → ℤ) (v : Sp E N) :
     v ∈ LocE.sclLat P q N e ↔ ∀ l : Fin N, IntAt P (((q : E) ^ e l.1)⁻¹ * v l) := by
   unfold LocE.sclLat
@@ -121,6 +171,13 @@ theorem mem_sclLat (P : HeightOneSpectrum (𝓞 E)) (q N : ℕ) (e : ℕ → ℤ
   rw [mem_localization_standardLattice]
   rfl
 
+/- English proof (translation)
+Introduce `v hv`. Rewrite `hv`, the goal using `[mem_sclLat]`. Introduce `l`. Establish `hq` using `qOf_ne_zero (E := E) P`. Establish `key : ((qOf P : E) ^ e l.1)⁻¹ * v l = (qOf P : E) ^ (e' l.1 - e l.1) * (((qOf P : E) ^ e' l.1)⁻¹ * v l)`.
+
+Rewrite using `[zpow_sub₀ hq]`. Establish `h1 : (qOf P : E) ^ e l.1 ≠ 0` using `zpow_ne_zero _ hq`. Establish `h2 : (qOf P : E) ^ e' l.1 ≠ 0` using `zpow_ne_zero _ hq`. Clear the denominators using the available nonvanishing facts. Rewrite using `[key]`.
+
+Conclude with `intAt_zpow_mul P (by have := h l; omega) (hv l)`.
+-/
 theorem sclLat_anti (P : HeightOneSpectrum (𝓞 E)) (N : ℕ) {e e' : ℕ → ℤ} (h : ∀ l : Fin N, e l.1 ≤ e' l.1) :
     LocE.sclLat P (qOf P) N e' ≤ LocE.sclLat P (qOf P) N e := by
   intro v hv
@@ -135,6 +192,11 @@ theorem sclLat_anti (P : HeightOneSpectrum (𝓞 E)) (N : ℕ) {e e' : ℕ → �
   rw [key]
   exact intAt_zpow_mul P (by have := h l; omega) (hv l)
 
+/- English proof (translation)
+Rewrite `hw`, the goal using `[mem_sclLat]`. Introduce `l`. Establish `hq` using `qOf_ne_zero (E := E) P`. Establish `key : ((qOf P : E) ^ e' l.1)⁻¹ * w l = (qOf P : E) ^ (e l.1 + 1 - e' l.1) * (((qOf P : E) ^ e l.1)⁻¹ * ((qOf P : E)⁻¹ • w) l)`. Rewrite using `[zpow_sub₀ hq, zpow_add₀ hq, zpow_one, Pi.smul_apply, smul_eq_mul]`.
+
+Establish `h1 : (qOf P : E) ^ e l.1 ≠ 0` using `zpow_ne_zero _ hq`. Establish `h2 : (qOf P : E) ^ e' l.1 ≠ 0` using `zpow_ne_zero _ hq`. Clear the denominators using the available nonvanishing facts. Rewrite using `[key]`. Conclude with `intAt_zpow_mul P (by have := h l; omega) (hw l)`.
+-/
 theorem mem_sclLat_of_qinv (P : HeightOneSpectrum (𝓞 E)) (N : ℕ) {e e' : ℕ → ℤ} (h : ∀ l : Fin N, e' l.1 ≤ e l.1 + 1)
     {w : Sp E N} (hw : ((qOf P : E))⁻¹ • w ∈ LocE.sclLat P (qOf P) N e) : w ∈ LocE.sclLat P (qOf P) N e' := by
   rw [mem_sclLat] at hw ⊢
@@ -149,6 +211,11 @@ theorem mem_sclLat_of_qinv (P : HeightOneSpectrum (𝓞 E)) (N : ℕ) {e e' : �
   rw [key]
   exact intAt_zpow_mul P (by have := h l; omega) (hw l)
 
+/- English proof (translation)
+Rewrite `hv`, the goal using `[mem_sclLat]`. Introduce `l`. Establish `: ((q : E) ^ e l.1)⁻¹ * (a • v) l = a * (((q : E) ^ e l.1)⁻¹ * v l)`. Rewrite using `[Pi.smul_apply, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree.
+
+Rewrite using `[this]`. Conclude with `IntAt.mul ha (hv l)`.
+-/
 theorem smul_mem_sclLat {P : HeightOneSpectrum (𝓞 E)} {q N : ℕ} {e : ℕ → ℤ} {a : E} (ha : IntAt P a) {v : Sp E N}
     (hv : v ∈ LocE.sclLat P q N e) : a • v ∈ LocE.sclLat P q N e := by
   rw [mem_sclLat] at hv ⊢
@@ -160,6 +227,13 @@ theorem smul_mem_sclLat {P : HeightOneSpectrum (𝓞 E)} {q N : ℕ} {e : ℕ �
 
 def basV (q N : ℕ) (e : ℕ → ℤ) (l : Fin N) : Sp E N := ((q : E) ^ e l.1) • (Pi.single l 1 : Sp E N)
 
+/- English proof (translation)
+Rewrite using `[mem_sclLat]`. Introduce `l'`. Establish `hq` using `qOf_ne_zero (E := E) P`. Unfold `basV`. Rewrite using `[Pi.smul_apply, smul_eq_mul, Pi.single_apply]`.
+
+Use `split_ifs with h`. Substitute `h` using the available equality. Rewrite using `[mul_one, inv_mul_cancel₀ (zpow_ne_zero _ hq)]`. Conclude with `intAt_one P`. Rewrite using `[mul_zero, mul_zero]`.
+
+Conclude with `intAt_zero P`.
+-/
 theorem basV_mem (P : HeightOneSpectrum (𝓞 E)) (N : ℕ) (e : ℕ → ℤ) (l : Fin N) :
     basV (E := E) (qOf P) N e l ∈ LocE.sclLat P (qOf P) N e := by
   rw [mem_sclLat]
@@ -174,6 +248,13 @@ theorem basV_mem (P : HeightOneSpectrum (𝓞 E)) (N : ℕ) (e : ℕ → ℤ) (l
   · rw [mul_zero, mul_zero]
     exact intAt_zero P
 
+/- English proof (translation)
+Establish `hq` using `qOf_ne_zero (E := E) P`. Use function extensionality and compare the values at `l''`. Rewrite using `[Finset.sum_apply, Finset.sum_eq_single l'']`. Unfold `basV`. Rewrite using `[Pi.smul_apply, Pi.smul_apply, Pi.single_eq_same, smul_eq_mul, smul_eq_mul, mul_one]`.
+
+Establish `h1 : (qOf P : E) ^ e l''.1 ≠ 0` using `zpow_ne_zero _ hq`. Clear the denominators using the available nonvanishing facts. Introduce `b _ hb`. Unfold `basV`. Rewrite using `[Pi.smul_apply, Pi.smul_apply, Pi.single_eq_of_ne (Ne.symm hb), smul_zero, smul_zero]`.
+
+Introduce `h`. Conclude with `absurd (Finset.mem_univ _) h`.
+-/
 theorem sum_basV (P : HeightOneSpectrum (𝓞 E)) (N : ℕ) (e : ℕ → ℤ) (x : Sp E N) :
     ∑ l, (((qOf P : E) ^ e l.1)⁻¹ * x l) • basV (E := E) (qOf P) N e l = x := by
   have hq := qOf_ne_zero (E := E) P
@@ -192,6 +273,21 @@ theorem sum_basV (P : HeightOneSpectrum (𝓞 E)) (N : ℕ) (e : ℕ → ℤ) (x
 def redM (P : HeightOneSpectrum (𝓞 E)) {N : ℕ} (e : ℕ → ℤ) (κ : Sp E N ≃ₗ[E] Sp E N) : Fin N → Fin N → 𝓞 E ⧸ P.asIdeal :=
   fun l l' => redP P (((qOf P : E) ^ e l.1)⁻¹ * κ (basV (qOf P) N e l') l)
 
+/- English proof (translation)
+Introduce `x hx`. Establish `hq` using `qOf_ne_zero (E := E) P`. Set `T : Sp E N →ₗ[E] Sp E N` to `((qOf P : E))⁻¹ • (κ'.toLinearMap - κ.toLinearMap)`. Establish `hT : ∀ y, T y = ((qOf P : E))⁻¹ • (κ' y - κ y)` using `fun y => rfl`. Establish `hbas : ∀ l', T (basV (qOf P) N e l') ∈ LocE.sclLat P (qOf P) N e`.
+
+Introduce `l'`. Rewrite using `[hT, mem_sclLat]`. Introduce `l`. Establish `hb` using `basV_mem (E := E) P N e l'`. Establish `hu` using `(mem_sclLat P _ N e _).1 ((mem_stabL_iff.1 hκ' _).2 hb) l`.
+
+Establish `hv` using `(mem_sclLat P _ N e _).1 ((mem_stabL_iff.1 hκ _).2 hb) l`. Establish `hr : redP P (((qOf P : E) ^ e l.1)⁻¹ * κ' (basV (qOf P) N e l') l - ((qOf P : E) ^ e l.1)⁻¹ * κ (basV (qOf P) N e l') l) = 0`. Rewrite using `[reduction_sub' hu hv]`. Use `congrFun (congrFun hred l) l'` as an intermediate fact. Unfold `redM at this`.
+
+Rewrite using `[this, sub_self]`. Establish `h3` using `hU _ (intAt_sub hu hv) hr`. Establish `key : ((qOf P : E) ^ e l.1)⁻¹ * ((qOf P : E)⁻¹ • (κ' (basV (qOf P) N e l') - κ (basV (qOf P) N e l'))) l = (((qOf P : E) ^ e l.1)⁻¹ * κ' (basV (qOf P) N e l') l - ((qOf P : E) ^ e l.1)⁻¹ * κ (basV (qOf P) N e l') l) / (qOf P : E)`. Rewrite using `[Pi.smul_apply, Pi.sub_apply, smul_eq_mul]`. Clear the denominators using the available nonvanishing facts.
+
+Rewrite using `[key]`. Conclude with `h3`. Establish `hTx : T x ∈ LocE.sclLat P (qOf P) N e`. Rewrite using `[← sum_basV P N e x, map_sum]`. Use `Submodule.sum_mem _ fun l _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[map_smul]`. Conclude with `smul_mem_sclLat ((mem_sclLat P _ N e x).1 hx l) (hbas l)`. Establish `e1 : (κ⁻¹ * κ') x - x = κ⁻¹ (κ' x - κ x)`. Rewrite using `[map_sub]`. Use `show κ.symm (κ' x) - x = κ.symm (κ' x) - κ.symm (κ x)`.
+
+Rewrite using `[LinearEquiv.symm_apply_apply]`. Rewrite using `[e1, ← map_smul]`. Conclude with `(mem_stabL_iff.1 (Subgroup.inv_mem _ hκ) _).2 hTx`.
+-/
 theorem cong_of_redM {P : HeightOneSpectrum (𝓞 E)} (hU : UnifAt P) {N : ℕ} {e : ℕ → ℤ} {κ κ' : Sp E N ≃ₗ[E] Sp E N}
     (hκ : κ ∈ stabL E N (LocE.sclLat P (qOf P) N e)) (hκ' : κ' ∈ stabL E N (LocE.sclLat P (qOf P) N e))
     (hred : redM P e κ = redM P e κ') :
@@ -239,11 +335,17 @@ section AtG
 
 variable {E : Type} [Field E] [NumberField E] [StarRing E]
 
+/- English proof (translation)
+Unfold both sides. The equivalence is reflexive.
+-/
 theorem mem_flagU_iff {N : ℕ} {M : ℕ → Submodule (𝓞 E) (Sp E N)} {e : ℕ → Sp E N} {r : ℕ} {st : Set ℕ}
     {κ : Sp E N ≃ₗ[E] Sp E N} :
     κ ∈ LocE.flagU M e r st ↔ (∀ s ∈ st, κ ∈ stabL E N (M s)) ∧ ∀ s < r, κ ∈ stabL E N (M s) ∧ κ (e s) - e s ∈ M s :=
   Iff.rfl
 
+/- English proof (translation)
+Unfold `LocE.flagG LocE.lamY`. Apply `sclLat_anti` to reduce the goal to its premises. Introduce `l`. Apply the tactic sequence `split_ifs <;> omega`.
+-/
 theorem flagG_le (P : HeightOneSpectrum (𝓞 E)) (k₀ n c s : ℕ) :
     LocE.flagG P (qOf P) k₀ n c s ≤ LocE.lamY P (qOf P) n c fun i => i + 1 := by
   unfold LocE.flagG LocE.lamY
@@ -251,6 +353,9 @@ theorem flagG_le (P : HeightOneSpectrum (𝓞 E)) (k₀ n c s : ℕ) :
   intro l
   split_ifs <;> omega
 
+/- English proof (translation)
+Unfold `LocE.flagG`. Unfold `LocE.lamY at hw`. Use `mem_sclLat_of_qinv P _ (fun l => ?_) hw` and prove the remaining obligations. Apply the tactic sequence `split_ifs <;> omega`.
+-/
 theorem mem_flagG_of_qinv (P : HeightOneSpectrum (𝓞 E)) (k₀ n c s : ℕ) {w : Sp E (n + c)}
     (hw : ((qOf P : E))⁻¹ • w ∈ LocE.lamY P (qOf P) n c fun i => i + 1) : w ∈ LocE.flagG P (qOf P) k₀ n c s := by
   unfold LocE.flagG
@@ -258,6 +363,13 @@ theorem mem_flagG_of_qinv (P : HeightOneSpectrum (𝓞 E)) (k₀ n c s : ℕ) {w
   refine mem_sclLat_of_qinv P _ (fun l => ?_) hw
   split_ifs <;> omega
 
+/- English proof (translation)
+Unfold `LocE.bvecG LocE.lamY`. Rewrite using `[mem_sclLat]`. Introduce `l`. Establish `hq` using `qOf_ne_zero (E := E) P`. Rewrite using `[Pi.smul_apply, smul_eq_mul]`.
+
+Unfold `Loc.eN`. Use `split_ifs with h`. Rewrite using `[h, mul_one, inv_mul_cancel₀ (zpow_ne_zero _ hq)]`. Conclude with `intAt_one P`. Rewrite using `[mul_zero, mul_zero]`.
+
+Conclude with `intAt_zero P`.
+-/
 theorem bvecG_mem (P : HeightOneSpectrum (𝓞 E)) (k₀ n c s : ℕ) :
     LocE.bvecG E (qOf P) k₀ n c s ∈ LocE.lamY P (qOf P) n c fun i => i + 1 := by
   unfold LocE.bvecG LocE.lamY
@@ -272,6 +384,13 @@ theorem bvecG_mem (P : HeightOneSpectrum (𝓞 E)) (k₀ n c s : ℕ) :
   · rw [mul_zero, mul_zero]
     exact intAt_zero P
 
+/- English proof (translation)
+Use `⟨mem_stabL_iff.2 fun x => ⟨fun hx => ?_, fun hx => ?_⟩, fun s' => mem_flagG_of_qinv P k₀ n c s (hc _ (bvecG_mem P k₀ n c s'))⟩` and prove the remaining obligations. Establish `hxΛ : x ∈ LocE.lamY P (qOf P) n c fun i => i + 1` using `(mem_stabL_iff.1 hs x).1 (flagG_le P k₀ n c s hx)`. Establish `h1` using `mem_flagG_of_qinv P k₀ n c s (hc x hxΛ)`. Establish `: x = κ x - (κ x - x)` using `by abel`. Rewrite using `[this]`.
+
+Conclude with `sub_mem hx h1`. Establish `hxΛ` using `flagG_le P k₀ n c s hx`. Establish `h1` using `mem_flagG_of_qinv P k₀ n c s (hc x hxΛ)`. Establish `: κ x = (κ x - x) + x` using `by abel`. Rewrite using `[this]`.
+
+Conclude with `add_mem h1 hx`.
+-/
 theorem stab_flagG_of_cong (P : HeightOneSpectrum (𝓞 E)) {n c : ℕ} {κ : Sp E (n + c) ≃ₗ[E] Sp E (n + c)}
     (hs : κ ∈ stabL E (n + c) (LocE.lamY P (qOf P) n c fun i => i + 1))
     (hc : ∀ x ∈ LocE.lamY P (qOf P) n c (fun i => i + 1), ((qOf P : E))⁻¹ • (κ x - x) ∈ LocE.lamY P (qOf P) n c fun i => i + 1)
@@ -290,6 +409,11 @@ theorem stab_flagG_of_cong (P : HeightOneSpectrum (𝓞 E)) {n c : ℕ} {κ : Sp
     rw [this]
     exact add_mem h1 hx
 
+/- English proof (translation)
+Establish `hJ : κ ∈ LocE.JG P (qOf P) k₀ r t n c`. Unfold `LocE.JG`. Use `Subgroup.mem_inf.2 ⟨hs, mem_flagU_iff.2 ⟨fun s _ => (stab_flagG_of_cong P hs hc k₀ s).1, fun s _ => ⟨(stab_flagG_of_cong P hs hc k₀ s).1, (stab_flagG_of_cong P hs hc k₀ s).2 s⟩⟩⟩` and prove the remaining obligations. Use `⟨hJ, ?_⟩` and prove the remaining obligations. Unfold `LocE.JGsharp`.
+
+Use `Subgroup.mem_inf.2 ⟨hJ, mem_flagU_iff.2 ⟨fun s hs' => absurd hs' (Set.notMem_empty s), fun s _ => ⟨(stab_flagG_of_cong P hs hc k₀ 0).1, (stab_flagG_of_cong P hs hc k₀ 0).2 k₀⟩⟩⟩` and prove the remaining obligations.
+-/
 theorem mem_JG_of_cong (P : HeightOneSpectrum (𝓞 E)) {n c : ℕ} {κ : Sp E (n + c) ≃ₗ[E] Sp E (n + c)}
     (hs : κ ∈ stabL E (n + c) (LocE.lamY P (qOf P) n c fun i => i + 1))
     (hc : ∀ x ∈ LocE.lamY P (qOf P) n c (fun i => i + 1), ((qOf P : E))⁻¹ • (κ x - x) ∈ LocE.lamY P (qOf P) n c fun i => i + 1)
@@ -303,6 +427,9 @@ theorem mem_JG_of_cong (P : HeightOneSpectrum (𝓞 E)) {n c : ℕ} {κ : Sp E (
   refine Subgroup.mem_inf.2 ⟨hJ, mem_flagU_iff.2 ⟨fun s hs' => absurd hs' (Set.notMem_empty s), fun s _ =>
     ⟨(stab_flagG_of_cong P hs hc k₀ 0).1, (stab_flagG_of_cong P hs hc k₀ 0).2 k₀⟩⟩⟩
 
+/- English proof (translation)
+Unfold `LocE.flagS LocE.lamY`. Apply `sclLat_anti` to reduce the goal to its premises. Introduce `l`. Apply the tactic sequence `split_ifs <;> omega`.
+-/
 theorem flagS_le (P : HeightOneSpectrum (𝓞 E)) (k₀ rS n c s : ℕ) :
     LocE.flagS P (qOf P) k₀ rS n c s ≤ LocE.lamY P (qOf P) n c fun i => i + 1 := by
   unfold LocE.flagS LocE.lamY
@@ -310,6 +437,9 @@ theorem flagS_le (P : HeightOneSpectrum (𝓞 E)) (k₀ rS n c s : ℕ) :
   intro l
   split_ifs <;> omega
 
+/- English proof (translation)
+Unfold `LocE.flagS`. Unfold `LocE.lamY at hw`. Use `mem_sclLat_of_qinv P _ (fun l => ?_) hw` and prove the remaining obligations. Apply the tactic sequence `split_ifs <;> omega`.
+-/
 theorem mem_flagS_of_qinv (P : HeightOneSpectrum (𝓞 E)) (k₀ rS n c s : ℕ) {w : Sp E (n + c)}
     (hw : ((qOf P : E))⁻¹ • w ∈ LocE.lamY P (qOf P) n c fun i => i + 1) : w ∈ LocE.flagS P (qOf P) k₀ rS n c s := by
   unfold LocE.flagS
@@ -317,6 +447,13 @@ theorem mem_flagS_of_qinv (P : HeightOneSpectrum (𝓞 E)) (k₀ rS n c s : ℕ)
   refine mem_sclLat_of_qinv P _ (fun l => ?_) hw
   split_ifs <;> omega
 
+/- English proof (translation)
+Use `⟨mem_stabL_iff.2 fun x => ⟨fun hx => ?_, fun hx => ?_⟩, fun s' => mem_flagS_of_qinv P k₀ rS n c s (hc _ (bvecG_mem P k₀ n c s'))⟩` and prove the remaining obligations. Establish `hxΛ : x ∈ LocE.lamY P (qOf P) n c fun i => i + 1` using `(mem_stabL_iff.1 hs x).1 (flagS_le P k₀ rS n c s hx)`. Establish `h1` using `mem_flagS_of_qinv P k₀ rS n c s (hc x hxΛ)`. Establish `: x = κ x - (κ x - x)` using `by abel`. Rewrite using `[this]`.
+
+Conclude with `sub_mem hx h1`. Establish `hxΛ` using `flagS_le P k₀ rS n c s hx`. Establish `h1` using `mem_flagS_of_qinv P k₀ rS n c s (hc x hxΛ)`. Establish `: κ x = (κ x - x) + x` using `by abel`. Rewrite using `[this]`.
+
+Conclude with `add_mem h1 hx`.
+-/
 theorem stab_flagS_of_cong (P : HeightOneSpectrum (𝓞 E)) {n c : ℕ} {κ : Sp E (n + c) ≃ₗ[E] Sp E (n + c)}
     (hs : κ ∈ stabL E (n + c) (LocE.lamY P (qOf P) n c fun i => i + 1))
     (hc : ∀ x ∈ LocE.lamY P (qOf P) n c (fun i => i + 1), ((qOf P : E))⁻¹ • (κ x - x) ∈ LocE.lamY P (qOf P) n c fun i => i + 1)
@@ -335,6 +472,9 @@ theorem stab_flagS_of_cong (P : HeightOneSpectrum (𝓞 E)) {n c : ℕ} {κ : Sp
     rw [this]
     exact add_mem h1 hx
 
+/- English proof (translation)
+Unfold `LocE.JGsym`. Conclude with `Subgroup.mem_inf.2 ⟨hs, mem_flagU_iff.2 ⟨fun s _ => (stab_flagS_of_cong P hs hc k₀ rS s).1, fun s _ => ⟨(stab_flagS_of_cong P hs hc k₀ rS s).1, (stab_flagS_of_cong P hs hc k₀ rS s).2 _⟩⟩⟩`.
+-/
 theorem mem_JGsym_of_cong (P : HeightOneSpectrum (𝓞 E)) {n c : ℕ} {κ : Sp E (n + c) ≃ₗ[E] Sp E (n + c)}
     (hs : κ ∈ stabL E (n + c) (LocE.lamY P (qOf P) n c fun i => i + 1))
     (hc : ∀ x ∈ LocE.lamY P (qOf P) n c (fun i => i + 1), ((qOf P : E))⁻¹ • (κ x - x) ∈ LocE.lamY P (qOf P) n c fun i => i + 1)
@@ -349,6 +489,19 @@ section Yb
 
 variable {E : Type} [Field E] [NumberField E] [StarRing E]
 
+/- English proof (translation)
+Establish `hq : ((qOf w.1 : ℕ) : E) ≠ 0` using `qOf_ne_zero w.1`. Establish `hzm : ((qOf w.1 : ℕ) : E) • y - ((qOf w.1 : ℕ) : E) • y' ∈ d.at w.1` using `sub_mem hy hy'`. Establish `hbe : d.be w (((qOf w.1 : ℕ) : E) • y - ((qOf w.1 : ℕ) : E) • y') = 0`. Establish `h1` using `hd.be_add w _ hzm _ hy'`. Rewrite `h1` using `[sub_add_cancel, h]`.
+
+Conclude with `(add_eq_right.mp h1.symm)`. Take `⟨s, hs, hsz⟩` from `(mem_locP w.1 d.N _).1 hzm`. Establish `hbe2 : d.be w (s • (((qOf w.1 : ℕ) : E) • y - ((qOf w.1 : ℕ) : E) • y')) = 0`. Rewrite using `[hd.be_smul w s _ hzm, hbe, smul_zero]`. Establish `hker` using `hd.be_ker w _ hsz hbe2`.
+
+Establish `key : ((qOf w.1 : ℕ) : E)⁻¹ • (s • (((qOf w.1 : ℕ) : E) • y - ((qOf w.1 : ℕ) : E) • y')) ∈ localization₂ w.1.asIdeal d.N`. Use `Submodule.smul_induction_on hker (fun a ha x hx => ?_) (fun x x' hx hx' => ?_)` and prove the remaining obligations. Establish `hI` using `hU (algebraMap (𝓞 E) E a) (IntAt.coe _ a) (by rw [reduction_coe]; exact Ideal.Quotient.eq_zero_iff_mem.2 ha)`. Take `⟨r, s', hs', hr⟩` from `hI`. Use `(mem_locP w.1 d.N _).2 ⟨s', hs', ?_⟩` and prove the remaining obligations.
+
+Establish `e1 : s' • (((qOf w.1 : ℕ) : E)⁻¹ • (a • x)) = r • x`. Rewrite using `[algebra_compatible_smul E a x, algebra_compatible_smul E s', algebra_compatible_smul E r, smul_smul, smul_smul]`. Use `congr 1`. Rewrite using `[← hr]`. Expand and normalize the polynomial expressions, which then agree.
+
+Rewrite using `[e1]`. Conclude with `d.N.smul_mem r hx`. Rewrite using `[smul_add]`. Conclude with `add_mem hx hx'`. Establish `key2 : s • (((qOf w.1 : ℕ) : E)⁻¹ • (((qOf w.1 : ℕ) : E) • y - ((qOf w.1 : ℕ) : E) • y')) ∈ localization₂ w.1.asIdeal d.N`.
+
+Rewrite using `[algebra_compatible_smul E s, smul_smul, mul_comm, ← smul_smul, ← algebra_compatible_smul E s]`. Conclude with `key`. Use `mem_localization_of_smul_mem₂ w.1 d.N hs key2` as an intermediate fact. Rewrite `this` using `[smul_sub, inv_smul_smul₀ hq, inv_smul_smul₀ hq]`. Then use the resulting hypothesis.
+-/
 theorem be_diff {n : ℕ} {ST SG : Finset (HeightOneSpectrum (𝓞 E))} {d : Deco E n ST SG} (hd : d.Ok) (w : SG) (hU : UnifAt w.1)
     {y y' : Sp E n} (hy : ((qOf w.1 : ℕ) : E) • y ∈ d.at w.1) (hy' : ((qOf w.1 : ℕ) : E) • y' ∈ d.at w.1)
     (h : d.be w (((qOf w.1 : ℕ) : E) • y) = d.be w (((qOf w.1 : ℕ) : E) • y')) : y - y' ∈ d.at w.1 := by
@@ -395,13 +548,24 @@ variable {X : Fields} {Pr : Primes X} {R : Ranks}
 
 def UnifG (Pr : Primes X) : Prop := ∀ P ∈ Pr.vGs, UnifAt P
 
+/- English proof (translation)
+The claim follows from `(Finset.mem_union.1 P.2).resolve_right (by rw [hQ]; exact Finset.notMem_empty _)`.
+-/
 theorem mem_vGs_of_QE (hQ : QE sel (mu : Chr X.F X.E X.K) = ∅) (P : rowSG Pr sel mu) : P.1 ∈ Pr.vGs :=
   (Finset.mem_union.1 P.2).resolve_right (by rw [hQ]; exact Finset.notMem_empty _)
 
+/- English proof (translation)
+Unfold `rowSG uSG`. Rewrite using `[hQ, Finset.union_empty]`.
+-/
 theorem rowSG_eq_of_QE (hQ : QE sel (mu : Chr X.F X.E X.K) = ∅) : rowSG Pr sel mu = Pr.vGs := by
   unfold rowSG uSG
   rw [hQ, Finset.union_empty]
 
+/- English proof (translation)
+Unfold `Primes.vGs`. Rewrite using `[Finset.prod_union]`. Rewrite using `[Finset.prod_congr rfl (fun P hP => hPr.vG_norm 0 P hP), Finset.prod_congr rfl (fun P hP => hPr.vG_norm 1 P hP), Finset.prod_const, Finset.prod_const, hPr.vG_card 0, hPr.vG_card 1, mul_pow]`. Rewrite using `[Finset.disjoint_left]`. Introduce `P h0 h1`.
+
+Conclude with `hPr.g_ne ((hPr.vG_norm 0 P h0).symm.trans (hPr.vG_norm 1 P h1))`.
+-/
 theorem prod_vGs (hPr : Pr.Ok) : ∏ P ∈ Pr.vGs, Ideal.absNorm P.asIdeal = (Pr.g 0 * Pr.g 1) ^ X.f := by
   unfold Primes.vGs
   rw [Finset.prod_union]
@@ -411,13 +575,22 @@ theorem prod_vGs (hPr : Pr.Ok) : ∏ P ∈ Pr.vGs, Ideal.absNorm P.asIdeal = (Pr
     intro P h0 h1
     exact hPr.g_ne ((hPr.vG_norm 0 P h0).symm.trans (hPr.vG_norm 1 P h1))
 
+/- English proof (translation)
+Rewrite using `[Finset.prod_coe_sort (rowSG Pr sel mu) (fun P => Ideal.absNorm P.asIdeal ^ D), rowSG_eq_of_QE sel mu hQ, Finset.prod_pow, prod_vGs hPr, ← pow_mul]`.
+-/
 theorem prod_rowSG (hPr : Pr.Ok) (hQ : QE sel (mu : Chr X.F X.E X.K) = ∅) (D : ℕ) :
     ∏ P : rowSG Pr sel mu, Ideal.absNorm P.1.asIdeal ^ D = (Pr.g 0 * Pr.g 1) ^ (X.f * D) := by
   rw [Finset.prod_coe_sort (rowSG Pr sel mu) (fun P => Ideal.absNorm P.asIdeal ^ D), rowSG_eq_of_QE sel mu hQ, Finset.prod_pow,
     prod_vGs hPr, ← pow_mul]
 
+/- English proof (translation)
+The claim follows from `Nat.mul_pos (hPr.g_prime 0).pos (hPr.g_prime 1).pos`.
+-/
 theorem gg_pos (hPr : Pr.Ok) : 0 < Pr.g 0 * Pr.g 1 := Nat.mul_pos (hPr.g_prime 0).pos (hPr.g_prime 1).pos
 
+/- English proof (translation)
+Unfold `Ranks.N cOf`. Establish `h1 : j * (R.t + 1) = j * R.t + j` using `by ring`. Establish `h2 : R.m * (R.t + 1) = R.m * R.t + R.m` using `by ring`. Establish `h3 : j * R.t ≤ R.m * R.t` using `Nat.mul_le_mul_right _ hj`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem dimY_le (R : Ranks) {j : ℕ} (hj : j ≤ R.m) : R.N j + cOf R j ≤ R.N R.m := by
   unfold Ranks.N cOf
   have h1 : j * (R.t + 1) = j * R.t + j := by ring
@@ -425,6 +598,9 @@ theorem dimY_le (R : Ranks) {j : ℕ} (hj : j ≤ R.m) : R.N j + cOf R j ≤ R.N
   have h3 : j * R.t ≤ R.m * R.t := Nat.mul_le_mul_right _ hj
   omega
 
+/- English proof (translation)
+Unfold `Ranks.N`. Use `Nat.mul_le_mul_right (R.t + 1) hj` as an intermediate fact. Use linear arithmetic over natural numbers and integers.
+-/
 theorem N_le (R : Ranks) {j : ℕ} (hj : j ≤ R.m) : R.N j ≤ R.N R.m := by
   unfold Ranks.N
   have := Nat.mul_le_mul_right (R.t + 1) hj
@@ -434,6 +610,15 @@ def redIdx (j : ℕ) (b : L.β j) :
     ∀ P : rowSG Pr sel mu, Fin (R.N j + cOf R j) → Fin (R.N j + cOf R j) → 𝓞 X.E ⧸ P.1.asIdeal :=
   fun P => redM P.1 (LocE.scE (R.N j) fun i => i + 1) (L.h j b P)
 
+/- English proof (translation)
+Introduce `b b' hbb`. Use `hL.inj i hi b b' fun P => ?_` and prove the remaining obligations. Establish `hP` using `mem_vGs_of_QE sel mu hQ P`. Establish `hs : ∀ b : L.β (i + 1), L.h (i + 1) b P ∈ stabL X.E _ (LocE.lamY P.1 (qOf P.1) (R.N (i + 1)) (cOf R (i + 1)) fun i => i + 1)`. Introduce `b`.
+
+Use `hL.stabG (i + 1) b P hP` as an intermediate fact. Unfold `lamYat at this`. Rewrite `this` using `[if_pos hP]`. Then use the resulting hypothesis. Establish `hc` using `cong_of_redM (hU P.1 hP) (hs b) (hs b') (congrFun hbb P)`. Take `⟨hJ, _⟩` from `mem_JG_of_cong P.1 (Subgroup.mul_mem _ (Subgroup.inv_mem _ (hs b)) (hs b')) hc R.k R.r R.t`.
+
+Establish `hJs` using `mem_JGsym_of_cong P.1 (Subgroup.mul_mem _ (Subgroup.inv_mem _ (hs b)) (hs b')) hc R.k R.rS R.r R.t`. Establish `hJat : (L.h (i + 1) b P)⁻¹ * L.h (i + 1) b' P ∈ Jat (Pr` using `Pr) cst.sharp (i + 1) P.1 := by`. Unfold `Jat`. Use `split_ifs`. Apply the tactic sequence `all_goals first | exact hJs | exact hJ`.
+
+Conclude with `⟨1, Subgroup.one_mem _, _, hJat, by rw [one_mul, mul_inv_cancel_left]⟩`.
+-/
 theorem redIdx_inj {Ch : Chars X Pr R.m} {G : ChGlob X R.m} {m2 : ℕ} (hL : ChIdx.Ok Ch sel mu cst L G m2) (hU : UnifG Pr)
     (hQ : QE sel (mu : Chr X.F X.E X.K) = ∅) {i : ℕ} (hi : i < m2) : Function.Injective (redIdx sel mu L (i + 1)) := by
   intro b b' hbb
@@ -454,10 +639,16 @@ theorem redIdx_inj {Ch : Chars X Pr R.m} {G : ChGlob X R.m} {m2 : ℕ} (hL : ChI
     all_goals first | exact hJs | exact hJ
   exact ⟨1, Subgroup.one_mem _, _, hJat, by rw [one_mul, mul_inv_cancel_left]⟩
 
+/- English proof (translation)
+Rewrite using `[Nat.card_fun, Nat.card_fun, card_quot, Nat.card_eq_fintype_card, Fintype.card_fin, ← pow_mul]`.
+-/
 theorem card_fun_quot {n : ℕ} (P : HeightOneSpectrum (𝓞 X.E)) :
     Nat.card (Fin n → Fin n → 𝓞 X.E ⧸ P.asIdeal) = Ideal.absNorm P.asIdeal ^ (n * n) := by
   rw [Nat.card_fun, Nat.card_fun, card_quot, Nat.card_eq_fintype_card, Fintype.card_fin, ← pow_mul]
 
+/- English proof (translation)
+Rewrite using `[← Nat.card_eq_fintype_card]`. Use `(Nat.card_le_card_of_injective _ (redIdx_inj sel mu cst L hL hU hQ hi)).trans (le_of_eq ?_)` and prove the remaining obligations. Rewrite using `[Nat.card_pi, Finset.prod_congr rfl (fun P _ => card_fun_quot P.1), prod_rowSG sel mu hPr hQ]`.
+-/
 theorem card_beta_le {Ch : Chars X Pr R.m} {G : ChGlob X R.m} {m2 : ℕ} (hL : ChIdx.Ok Ch sel mu cst L G m2) (hPr : Pr.Ok)
     (hU : UnifG Pr) (hQ : QE sel (mu : Chr X.F X.E X.K) = ∅) {i : ℕ} (hi : i < m2) :
     Fintype.card (L.β (i + 1)) ≤
@@ -470,6 +661,9 @@ def redY {n : ℕ} {ST : Finset (HeightOneSpectrum (𝓞 X.E))} (d : Deco X.E n 
     ∀ P : rowSG Pr sel mu, Fin n → 𝓞 X.E ⧸ P.1.asIdeal :=
   fun P => if h : P.1 ∈ Pr.vGs then d.be ⟨P.1, h⟩ (((qOf P.1 : ℕ) : X.E) • repY Y) else 0
 
+/- English proof (translation)
+Rewrite using `[mem_locLat]`. Use `forall_congr' fun P => ?_` and prove the remaining obligations. Rewrite using `[if_pos (mem_vGs_of_QE sel mu hQ P), zpow_zero, inv_one, one_smul]`.
+-/
 theorem memA_iff (hQ : QE sel (mu : Chr X.F X.E X.K) = ∅) {n : ℕ} (N : Submodule (𝓞 X.E) (Sp X.E n)) (z : Sp X.E n) :
     z ∈ locLat (rowSG Pr sel mu) N (fun P => if P.1 ∈ Pr.vGs then 0 else (cst.M : ℤ)) ↔
       ∀ P : rowSG Pr sel mu, z ∈ localization₂ P.1.asIdeal N := by
@@ -477,6 +671,9 @@ theorem memA_iff (hQ : QE sel (mu : Chr X.F X.E X.K) = ∅) {n : ℕ} (N : Submo
   refine forall_congr' fun P => ?_
   rw [if_pos (mem_vGs_of_QE sel mu hQ P), zpow_zero, inv_one, one_smul]
 
+/- English proof (translation)
+Rewrite using `[mem_locLat]`. Use `forall_congr' fun P => ?_` and prove the remaining obligations. Rewrite using `[if_pos (mem_vGs_of_QE sel mu hQ P), zpow_neg_one, inv_inv]`.
+-/
 theorem memB_iff (hQ : QE sel (mu : Chr X.F X.E X.K) = ∅) {n : ℕ} (N : Submodule (𝓞 X.E) (Sp X.E n)) (z : Sp X.E n) :
     z ∈ locLat (rowSG Pr sel mu) N (fun P => if P.1 ∈ Pr.vGs then -1 else -(cst.M : ℤ)) ↔
       ∀ P : rowSG Pr sel mu, ((qOf P.1 : ℕ) : X.E) • z ∈ localization₂ P.1.asIdeal N := by
@@ -484,6 +681,17 @@ theorem memB_iff (hQ : QE sel (mu : Chr X.F X.E X.K) = ∅) {n : ℕ} (N : Submo
   refine forall_congr' fun P => ?_
   rw [if_pos (mem_vGs_of_QE sel mu hQ P), zpow_neg_one, inv_inv]
 
+/- English proof (translation)
+Take `⟨y, hy, rfl⟩` from `hY`. Use `set A := locLat (rowSG Pr sel mu) N (fun P => if P.1 ∈ Pr.vGs then 0 else (cst.M : ℤ)) with hA`. Establish `hyY : y ∈ {z | z - y ∈ A}` using `by show y - y ∈ A`. Rewrite using `[sub_self]`. Conclude with `zero_mem _`.
+
+Establish `hr : repY {z | z - y ∈ A} ∈ {z | z - y ∈ A}`. Unfold `repY`. Conclude with `Classical.epsilon_spec ⟨y, hyY⟩`. Establish `hr' : repY {z | z - y ∈ A} - y ∈ A` using `hr`. Use `⟨fun P => ?_, ?_⟩` and prove the remaining obligations.
+
+Establish `e1 : ((qOf P.1 : ℕ) : X.E) • repY {z | z - y ∈ A} = ((qOf P.1 : ℕ) : X.E) • y + ((qOf P.1 : ℕ) : X.E) • (repY {z | z - y ∈ A} - y)`. Rewrite using `[← smul_add, add_sub_cancel]`. Rewrite using `[e1]`. Conclude with `add_mem ((memB_iff sel mu cst hQ N y).1 hy P) (natCast_smul_mem _ _ ((memA_iff sel mu cst hQ N _).1 hr' P))`. Use extensionality with `z show z - y ∈ A ↔ z - repY {z | z - y ∈ A} ∈ A`.
+
+Prove the components needed by the constructor for the conclusion. Introduce `hz`. Establish `: z - repY {z | z - y ∈ A} = (z - y) - (repY {z | z - y ∈ A} - y)` using `by abel`. Rewrite using `[this]`. Conclude with `sub_mem hz hr'`.
+
+Introduce `hz`. Establish `: z - y = (z - repY {z | z - y ∈ A}) + (repY {z | z - y ∈ A} - y)` using `by abel`. Rewrite using `[this]`. Conclude with `add_mem hz hr'`.
+-/
 theorem ybSet_rep (hQ : QE sel (mu : Chr X.F X.E X.K) = ∅) {n : ℕ} (N : Submodule (𝓞 X.E) (Sp X.E n)) {Y : Set (Sp X.E n)}
     (hY : Y ∈ ybSet sel mu cst N) :
     (∀ P : rowSG Pr sel mu, ((qOf P.1 : ℕ) : X.E) • repY Y ∈ localization₂ P.1.asIdeal N) ∧
@@ -517,6 +725,17 @@ theorem ybSet_rep (hQ : QE sel (mu : Chr X.F X.E X.K) = ∅) {n : ℕ} (N : Subm
       rw [this]
       exact add_mem hz hr'
 
+/- English proof (translation)
+Introduce `Y hY Y' hY' h`. Take `⟨hq, hYe⟩` from `ybSet_rep sel mu cst hQ d.1.N hY`. Take `⟨hq', hYe'⟩` from `ybSet_rep sel mu cst hQ d.1.N hY'`. Establish `hdiff : repY Y - repY Y' ∈ locLat (rowSG Pr sel mu) d.1.N (fun P => if P.1 ∈ Pr.vGs then 0 else (cst.M : ℤ))`. Use `(memA_iff sel mu cst hQ d.1.N _).2 fun P => ?_` and prove the remaining obligations.
+
+Establish `hP` using `mem_vGs_of_QE sel mu hQ P`. Establish `hh` using `congrFun h P`. Unfold `redY at hh`. Rewrite `hh` using `[dif_pos hP, dif_pos hP]`. Conclude with `be_diff d.2 ⟨P.1, hP⟩ (hU P.1 hP) (hq P) (hq' P) hh`.
+
+Rewrite using `[hYe, hYe']`. Use extensionality with `z`. Simplify using `only [Set.mem_ofPred_eq]`. Prove the components needed by the constructor for the conclusion. Introduce `hz`.
+
+Establish `: z - repY Y' = (z - repY Y) + (repY Y - repY Y')` using `by abel`. Rewrite using `[this]`. Conclude with `add_mem hz hdiff`. Introduce `hz`. Establish `: z - repY Y = (z - repY Y') - (repY Y - repY Y')` using `by abel`.
+
+Rewrite using `[this]`. Conclude with `sub_mem hz hdiff`.
+-/
 theorem redY_injOn (hU : UnifG Pr) (hQ : QE sel (mu : Chr X.F X.E X.K) = ∅) {n : ℕ} {ST : Finset (HeightOneSpectrum (𝓞 X.E))}
     (d : DecoSet X.E n ST Pr.vGs) : Set.InjOn (redY sel mu d.1) (ybSet sel mu cst d.1.N) := by
   intro Y hY Y' hY' h
@@ -542,6 +761,11 @@ theorem redY_injOn (hU : UnifG Pr) (hQ : QE sel (mu : Chr X.F X.E X.K) = ∅) {n
     rw [this]
     exact sub_mem hz hdiff
 
+/- English proof (translation)
+Establish `hinj` using `redY_injOn sel mu cst hU hQ d`. Establish `hcard : Nat.card (∀ P : rowSG Pr sel mu, Fin n → 𝓞 X.E ⧸ P.1.asIdeal) = (Pr.g 0 * Pr.g 1) ^ (X.f * n)`. Rewrite using `[Nat.card_pi, ← prod_rowSG sel mu hPr hQ n]`. Use `Finset.prod_congr rfl fun P _ => ?_` and prove the remaining obligations. Rewrite using `[Nat.card_fun, card_quot, Nat.card_eq_fintype_card, Fintype.card_fin]`.
+
+Use `⟨Set.Finite.of_finite_image (Set.toFinite _) hinj, ?_⟩` and prove the remaining obligations. Rewrite using `[← hcard, ← Set.ncard_univ]`. Conclude with `Set.ncard_le_ncard_of_injOn _ (fun _ _ => Set.mem_univ _) hinj`.
+-/
 theorem ybSet_count (hPr : Pr.Ok) (hU : UnifG Pr) (hQ : QE sel (mu : Chr X.F X.E X.K) = ∅) {n : ℕ}
     {ST : Finset (HeightOneSpectrum (𝓞 X.E))} (d : DecoSet X.E n ST Pr.vGs) :
     (ybSet sel mu cst d.1.N).Finite ∧ (ybSet sel mu cst d.1.N).ncard ≤ (Pr.g 0 * Pr.g 1) ^ (X.f * n) := by
@@ -554,6 +778,9 @@ theorem ybSet_count (hPr : Pr.Ok) (hU : UnifG Pr) (hQ : QE sel (mu : Chr X.F X.E
   rw [← hcard, ← Set.ncard_univ]
   exact Set.ncard_le_ncard_of_injOn _ (fun _ _ => Set.mem_univ _) hinj
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨_, 0, zero_mem _, rfl⟩`.
+-/
 theorem ybSet_nonempty {n : ℕ} (N : Submodule (𝓞 X.E) (Sp X.E n)) : (ybSet sel mu cst N).Nonempty :=
   ⟨_, 0, zero_mem _, rfl⟩
 
@@ -565,6 +792,9 @@ structure CountsN (m2 : ℕ) : Prop where
   nY : ∀ (u : Pr.Word) (p : ChPt (R := R) sel mu u (m2 + 1)),
     (ybSet sel mu cst p.deco.1.N).ncard ≤ (Pr.g 0 * Pr.g 1) ^ (X.f * R.N R.m)
 
+/- English proof (translation)
+The claim follows from `Fintype.card_eq_one_iff.2 hL.zero_uniq nLast := Fintype.card_eq_one_iff.2 hL.last_uniq nMid j hj1 hj2 := by obtain ⟨i, rfl⟩ : ∃ i, j = i + 1 := ⟨j - 1, by omega⟩ refine (card_beta_le sel mu cst L hL hPr hU hQ (by omega : i < m2)).trans ?_ have hD := dimY_le R (j := i + 1) (by rw …`.
+-/
 theorem countsN_of {Ch : Chars X Pr R.m} {G : ChGlob X R.m} {m2 : ℕ} (hL : ChIdx.Ok Ch sel mu cst L G m2) (hPr : Pr.Ok)
     (hU : UnifG Pr) (hQ : QE sel (mu : Chr X.F X.E X.K) = ∅) : CountsN sel mu cst L m2 where
   n0 := Fintype.card_eq_one_iff.2 hL.zero_uniq
@@ -581,6 +811,9 @@ theorem countsN_of {Ch : Chars X Pr R.m} {G : ChGlob X R.m} {m2 : ℕ} (hL : ChI
     refine (ybSet_count sel mu cst hPr hU hQ p.deco).2.trans ?_
     exact Nat.pow_le_pow_right (gg_pos hPr) (Nat.mul_le_mul_left _ (N_le R (by rw [hL.hm]; omega)))
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨(countsN_of sel mu cst L hL hPr hU hQ).ybFin u⟩`.
+-/
 theorem ybHyp_of {Ch : Chars X Pr R.m} {G : ChGlob X R.m} {m2 : ℕ} (hL : ChIdx.Ok Ch sel mu cst L G m2) (hPr : Pr.Ok)
     (hU : UnifG Pr) (hQ : QE sel (mu : Chr X.F X.E X.K) = ∅) (u : Pr.Word) (b : L.β (m2 + 1)) :
     YbHyp (R := R) sel mu cst L u m2 b :=
@@ -594,6 +827,9 @@ open Classical
 
 variable {X : Fields} {Pr : Primes X}
 
+/- English proof (translation)
+Unfold `divs at h`. Use `split_ifs at h with hf`. Simplify using `using hf.mem_toFinset.1 h`. Conclude with `absurd h (Finset.notMem_empty _)`.
+-/
 theorem mem_of_mem_divs {A : Type} [CommRing A] [IsDedekindDomain A] {a : A} {P : HeightOneSpectrum A} (h : P ∈ divs a) :
     a ∈ P.asIdeal := by
   unfold divs at h
@@ -601,20 +837,68 @@ theorem mem_of_mem_divs {A : Type} [CommRing A] [IsDedekindDomain A] {a : A} {P 
   · simpa using hf.mem_toFinset.1 h
   · exact absurd h (Finset.notMem_empty _)
 
+/- English proof (translation)
+Apply `RingOfIntegers.ext` to reduce the goal to its premises. Use `show starRingEnd X.E (starRingEnd X.E (x : X.E)) = (x : X.E)`. Rewrite using `[starRingEnd_apply, starRingEnd_apply, star_star]`.
+-/
 theorem conjO_conjO (x : 𝓞 X.E) : X.conjO (X.conjO x) = x := by
   apply RingOfIntegers.ext
   show starRingEnd X.E (starRingEnd X.E (x : X.E)) = (x : X.E)
   rw [starRingEnd_apply, starRingEnd_apply, star_star]
 
+/- English proof (translation)
+Rewrite using `[← Module.finrank_mul_finrank ℚ X.F X.E, hX.rankE, Fields.f, hX.card_Tau, mul_comm]`.
+-/
 theorem finrank_E (hX : X.Ok) : Module.finrank ℚ X.E = 2 * X.f := by
   rw [← Module.finrank_mul_finrank ℚ X.F X.E, hX.rankE, Fields.f, hX.card_Tau, mul_comm]
 
+/- English proof (translation)
+Rewrite using `[Ideal.absNorm_span_singleton, ← finrank_E hX, ← NumberField.RingOfIntegers.rank]`. Establish `: ((g : ℕ) : 𝓞 X.E) = algebraMap ℤ (𝓞 X.E) (g : ℤ)` using `by simp`. Rewrite using `[this, Algebra.norm_algebraMap]`. Simplify using `[Int.natAbs_pow]`.
+-/
 theorem absNorm_natCast (hX : X.Ok) (g : ℕ) : Ideal.absNorm (Ideal.span {((g : ℕ) : 𝓞 X.E)}) = g ^ (2 * X.f) := by
   rw [Ideal.absNorm_span_singleton, ← finrank_E hX, ← NumberField.RingOfIntegers.rank]
   have : ((g : ℕ) : 𝓞 X.E) = algebraMap ℤ (𝓞 X.E) (g : ℤ) := by simp
   rw [this, Algebra.norm_algebraMap]
   simp [Int.natAbs_pow]
 
+/- English proof (translation)
+Introduce `hsq`. Establish `hgp : (Pr.g i).Prime` using `hPr.g_prime i`. Establish `hπ : ∀ P ∈ Pr.vG i, X.conjO (Pr.piG i) ∈ P.asIdeal` using `fun P hP => mem_of_mem_divs hP`. Establish `hgσ : X.conjO ((Pr.g i : ℕ) : 𝓞 X.E) = ((Pr.g i : ℕ) : 𝓞 X.E)` using `map_natCast _ _`. Establish `hgmem : ∀ P ∈ Pr.vG i, ((Pr.g i : ℕ) : 𝓞 X.E) ∈ P.asIdeal`.
+
+Introduce `P hP`. Rewrite using `[← hPr.piG_norm i]`. Conclude with `Ideal.mul_mem_left _ _ (hπ P hP)`. Establish `hne0 : ((Pr.g i : ℕ) : 𝓞 X.E) ≠ 0` using `Nat.cast_ne_zero.2 hgp.ne_zero`. Use `set A : Finset (Ideal (𝓞 X.E)) := (Pr.vG i).image fun P => P.asIdeal with hA`.
+
+Use `set B : Finset (Ideal (𝓞 X.E)) := (Pr.vG i).image fun P => P.asIdeal.comap X.conjO with hB`. Establish `hT : ∀ Q ∈ A ∪ B, ((Pr.g i : ℕ) : 𝓞 X.E) ∈ Q ∧ Q.IsMaximal`. Introduce `Q hQ`. Break down `Finset.mem_union.1 hQ with hQA | hQB` into its components or cases. Take `⟨P, hP, rfl⟩` from `Finset.mem_image.1 hQA`.
+
+Conclude with `⟨hgmem P hP, P.isMaximal⟩`. Take `⟨P, hP, rfl⟩` from `Finset.mem_image.1 hQB`. Establish `hm : ((Pr.g i : ℕ) : 𝓞 X.E) ∈ P.asIdeal.comap X.conjO`. Rewrite using `[Ideal.mem_comap, hgσ]`. Conclude with `hgmem P hP`.
+
+Establish `: (P.asIdeal.comap X.conjO).IsPrime` using `Ideal.IsPrime.comap _`. Use `⟨hm, Ideal.IsPrime.isMaximal this ?_⟩` and prove the remaining obligations. Introduce `hbot`. Rewrite `hm` using `[hbot]`. Conclude with `hne0 ((Submodule.mem_bot _).1 hm)`.
+
+Establish `hdisj : Disjoint A B`. Rewrite using `[Finset.disjoint_left]`. Introduce `Q hQA hQB`. Take `⟨P, hP, rfl⟩` from `Finset.mem_image.1 hQA`. Take `⟨P', hP', he⟩` from `Finset.mem_image.1 hQB`.
+
+Establish `h1 : Pr.piG i ∈ P.asIdeal`. Rewrite using `[← he, Ideal.mem_comap]`. Conclude with `hπ P' hP'`. Establish `h2` using `hπ P hP`. Take `⟨a, b, hab⟩` from `hPr.piG_cop i`.
+
+Apply `P.isPrime.ne_top` to reduce the goal to its premises. Rewrite using `[Ideal.eq_top_iff_one, ← hab]`. Conclude with `add_mem (Ideal.mul_mem_left _ _ h1) (Ideal.mul_mem_left _ _ h2)`. Establish `hcardA : A.card = X.f`. Rewrite using `[hA, Finset.card_image_of_injective _ (fun P P' h => HeightOneSpectrum.ext h), hPr.vG_card i]`.
+
+Establish `hcardB : B.card = X.f`. Rewrite using `[hB, Finset.card_image_of_injective _ ?_, hPr.vG_card i]`. Introduce `P P' h`. Apply `HeightOneSpectrum.ext` to reduce the goal to its premises. Use extensionality with `x`.
+
+Use `congrArg (fun I : Ideal (𝓞 X.E) => X.conjO x ∈ I) h` as an intermediate fact. Simplify `this` using `[Ideal.mem_comap, conjO_conjO]`. Establish `hcardT : (A ∪ B).card = 2 * X.f`. Rewrite using `[Finset.card_union_of_disjoint hdisj, hcardA, hcardB]`. Expand and normalize the polynomial expressions, which then agree.
+
+Establish `hP0T : P0.asIdeal ∈ A ∪ B` using `Finset.mem_union_left _ (Finset.mem_image_of_mem _ hP0)`. Establish `hdvd : ∏ Q ∈ A ∪ B, (if Q = P0.asIdeal then Q ^ 2 else Q) ∣ Ideal.span {((Pr.g i : ℕ) : 𝓞 X.E)}`. Apply `Finset.prod_dvd_of_coprime` to reduce the goal to its premises. Introduce `Q hQ Q' hQ' hne`. Establish `hc : IsCoprime Q Q'` using `Ideal.isCoprime_iff_sup_eq.2 (Ideal.IsMaximal.coprime_of_ne (hT Q hQ).2 (hT Q' hQ').2 hne)`.
+
+Simplify using `only [Function.onFun]`. Use `split_ifs`. Conclude with `hc.pow`. Conclude with `hc.pow_left`. Conclude with `hc.pow_right`.
+
+Conclude with `hc`. Introduce `Q hQ`. Rewrite using `[Ideal.dvd_span_singleton]`. Use `split_ifs with h`. Rewrite using `[h]`.
+
+Conclude with `hsq`. Conclude with `(hT Q hQ).1`. Establish `hgQ : ∀ Q ∈ A ∪ B, Pr.g i ∣ Ideal.absNorm Q`. Introduce `Q hQ`. Establish `h1 : Ideal.absNorm Q ∣ (Pr.g i) ^ (2 * X.f)`.
+
+Rewrite using `[← absNorm_natCast hX]`. Conclude with `map_dvd Ideal.absNorm (Ideal.dvd_span_singleton.2 (hT Q hQ).1)`. Take `⟨k, _, hk⟩` from `(Nat.dvd_prime_pow hgp).1 h1`. Establish `hk0 : k ≠ 0`. Introduce and unpack `rfl`.
+
+Rewrite `hk` using `[pow_zero, Ideal.absNorm_eq_one_iff]`. Conclude with `(hT Q hQ).2.ne_top hk`. Rewrite using `[hk]`. Conclude with `dvd_pow_self _ hk0`. Establish `h2 : (Pr.g i) ^ (2 * X.f) * Pr.g i ∣ Ideal.absNorm (Ideal.span {((Pr.g i : ℕ) : 𝓞 X.E)})`.
+
+Use `dvd_trans ?_ (map_dvd Ideal.absNorm hdvd)` and prove the remaining obligations. Rewrite using `[map_prod]`. Establish `e1 : (Pr.g i) ^ (2 * X.f) * Pr.g i = ∏ Q ∈ A ∪ B, (Pr.g i * if Q = P0.asIdeal then Pr.g i else 1)`. Rewrite using `[Finset.prod_mul_distrib, Finset.prod_const, hcardT, Finset.prod_ite_eq', if_pos hP0T]`. Rewrite using `[e1]`.
+
+Use `Finset.prod_dvd_prod_of_dvd _ _ fun Q hQ => ?_` and prove the remaining obligations. Use `split_ifs with h`. Rewrite using `[map_pow, sq]`. Conclude with `mul_dvd_mul (hgQ Q hQ) (hgQ Q hQ)`. Rewrite using `[mul_one]`.
+
+Conclude with `hgQ Q hQ`. Rewrite `h2` using `[absNorm_natCast hX, ← pow_succ, Nat.pow_dvd_pow_iff_le_right hgp.one_lt]`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem g_not_mem_sq (hX : X.Ok) (hPr : Pr.Ok) (i : Fin 2) {P0 : HeightOneSpectrum (𝓞 X.E)} (hP0 : P0 ∈ Pr.vG i) :
     ((Pr.g i : ℕ) : 𝓞 X.E) ∉ P0.asIdeal ^ 2 := by
   intro hsq
@@ -712,6 +996,11 @@ theorem g_not_mem_sq (hX : X.Ok) (hPr : Pr.Ok) (i : Fin 2) {P0 : HeightOneSpectr
   rw [absNorm_natCast hX, ← pow_succ, Nat.pow_dvd_pow_iff_le_right hgp.one_lt] at h2
   omega
 
+/- English proof (translation)
+Introduce `P hP`. Apply `unifAt_of_not_mem_sq` to reduce the goal to its premises. Unfold `qOf`. Break down `Finset.mem_union.1 hP with h | h` into its components or cases. Rewrite using `[hPr.vG_norm 0 P h]`.
+
+Conclude with `g_not_mem_sq hX hPr 0 h`. Rewrite using `[hPr.vG_norm 1 P h]`. Conclude with `g_not_mem_sq hX hPr 1 h`.
+-/
 theorem unifG_of (hX : X.Ok) (hPr : Pr.Ok) : UnifG Pr := by
   intro P hP
   apply unifAt_of_not_mem_sq
@@ -732,10 +1021,16 @@ variable {X : Fields} {Pr : Primes X} {R : Ranks}
   (sel : HeightOneSpectrum (𝓞 X.F) → HeightOneSpectrum (𝓞 X.E)) {S : Set ℕ}
   (mu : Tup X.F X.E X.K S) (cst : LocCst X (rowSG Pr sel mu)) (L : ChIdx X Pr R (QE sel (mu : Chr X.F X.E X.K)))
 
+/- English proof (translation)
+The claim follows from `countsN_of sel mu cst L hL hPr (unifG_of hX hPr) hQ`.
+-/
 theorem countsN_ref (hX : X.Ok) (hPr : Pr.Ok) (hQ : QE sel (mu : Chr X.F X.E X.K) = ∅) {Ch : Chars X Pr R.m}
     {G : ChGlob X R.m} {m2 : ℕ} (hL : ChIdx.Ok Ch sel mu cst L G m2) : CountsN sel mu cst L m2 :=
   countsN_of sel mu cst L hL hPr (unifG_of hX hPr) hQ
 
+/- English proof (translation)
+The claim follows from `ybHyp_of sel mu cst L hL hPr (unifG_of hX hPr) hQ u b`.
+-/
 theorem ybHyp_ref (hX : X.Ok) (hPr : Pr.Ok) (hQ : QE sel (mu : Chr X.F X.E X.K) = ∅) {Ch : Chars X Pr R.m}
     {G : ChGlob X R.m} {m2 : ℕ} (hL : ChIdx.Ok Ch sel mu cst L G m2) (u : Pr.Word) (b : L.β (m2 + 1)) :
     YbHyp (R := R) sel mu cst L u m2 b :=

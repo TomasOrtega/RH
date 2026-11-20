@@ -8,9 +8,15 @@ open ReciprocityTheory.ChartRestriction.G.Geo Polynomial Module
 
 variable {Ω : Type*} [Field Ω] [CharZero Ω] {κ : Type*} [Fintype κ] {D : ℕ}
 
+/- English proof (translation)
+Conclude with `TraceNormBounds.fnField_comp_le' x e`.
+-/
 theorem fnField_comp_le (x : κ → Ω) (e : Fin (D + 1) → κ) : fnField (x ∘ e) ≤ fnField x := by
   exact TraceNormBounds.fnField_comp_le' x e
 
+/- English proof (translation)
+The claim follows from `TraceNormBounds.projDeg_pos' x e h`.
+-/
 theorem projDeg_pos (x : κ → Ω) (e : Fin (D + 1) → κ) (h : IsRatProjFrame x e) :
     0 < projDeg x e :=
   TraceNormBounds.projDeg_pos' x e h
@@ -25,17 +31,30 @@ def fnTrace (x : κ → Ω) (e : Fin (D + 1) → κ) (t : Ω) : Ω :=
 def secTrace (x : κ → Ω) (e : Fin (D + 1) → κ) (n : ℕ) (s : Ω) : Ω :=
   x (e 0) ^ n * fnTrace x e (s / x (e 0) ^ n)
 
+/- English proof (translation)
+Conclude with `TraceNormBounds.exists_indep_sections' x e h`.
+-/
 theorem exists_indep_sections (x : κ → Ω) (e : Fin (D + 1) → κ) (h : IsRatProjFrame x e) :
     ∃ (k : ℕ) (ε : Fin (projDeg x e) → Ω), (∀ l, ε l ∈ sec ℤ x k) ∧
       LinearIndependent (fnField (x ∘ e)) ε := by
   exact TraceNormBounds.exists_indep_sections' x e h
 
+/- English proof (translation)
+Unfold `secTrace fnTrace`. Rewrite using `[dif_pos (TraceNormBounds.sec_div_mem x (e 0) hs)]`. Conclude with `TraceNormBounds.trace_mem_sec x e h n hs`.
+-/
 theorem secTrace_mem (x : κ → Ω) (e : Fin (D + 1) → κ) (h : IsProjFrame x e) (n : ℕ) {s : Ω}
     (hs : s ∈ sec ℤ x n) : secTrace x e n s ∈ sec ℤ (x ∘ e) n := by
   unfold secTrace fnTrace
   rw [dif_pos (TraceNormBounds.sec_div_mem x (e 0) hs)]
   exact TraceNormBounds.trace_mem_sec x e h n hs
 
+/- English proof (translation)
+Establish `hx0 : x (e 0) ≠ 0`. Introduce `h0`. Establish `hmem : (MvPolynomial.X 0 : MvPolynomial (Fin (D + 1)) ℤ) ∈ coordIdeal ℤ (x ∘ e)`. Rewrite using `[coordIdeal, RingHom.mem_ker]`. Simplify using `[coneMap, h0]`.
+
+Rewrite `hmem` using `[h.free]`. Conclude with `MvPolynomial.X_ne_zero 0 ((Ideal.mem_bot).1 hmem)`. Use `TraceNormBounds.eq_zero_of_trace' x e h ε hε hli n hs (fun l => ?_)` and prove the remaining obligations. Establish `h1` using `h0 l`. Unfold `secTrace fnTrace at h1`.
+
+Use `split_ifs at h1 with hm`. Conclude with `(mul_eq_zero.1 h1).resolve_left (pow_ne_zero _ hx0)`. Apply the tactic sequence `exact absurd (TraceNormBounds.sec_div_mem x (e 0) (by first | exact TraceNormBounds.mul_mem_sec x hs (hε l) | exact mul_mem_sec x hs (hε l) | exact ReciprocityTheory.ChartRestriction.G.Geo.mul_mem_sec x hs (hε l))) hm`.
+-/
 theorem eq_zero_of_secTrace_mul_eq_zero (x : κ → Ω) (e : Fin (D + 1) → κ) (h : IsRatProjFrame x e)
     {k : ℕ} (ε : Fin (projDeg x e) → Ω) (hε : ∀ l, ε l ∈ sec ℤ x k)
     (hli : LinearIndependent (fnField (x ∘ e)) ε) (n : ℕ) {s : Ω} (hs : s ∈ sec ℤ x n)

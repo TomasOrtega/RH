@@ -5,6 +5,9 @@ open CategoryTheory Limits AlgebraicGeometry Opposite CochainComplex CochainComp
 
 namespace LateralTheory.KummerTheory
 
+/- English proof (translation)
+Introduce `p hp s h U y`. Take `⟨q, rfl⟩ : ∃ q, p = q + 1` from `⟨p - 1, by omega⟩`. Conclude with `hα q s h U y`.
+-/
 theorem cupSch_ev_pos {R : Type} [CommRing R] {X : Scheme.{0}} {I : Cx R} {n : ℤ}
     (α : Cochain ((chains R).obj (sch.obj X)) I n)
     (hα : ∀ (p : ℕ) (s : ℤ) (h : -((p + 1 : ℕ) : ℤ) + n = s) (U : Scheme.{0}) (y : Sx (sch.obj X) (p + 1) U),
@@ -14,12 +17,24 @@ theorem cupSch_ev_pos {R : Type} [CommRing R] {X : Scheme.{0}} {I : Cx R} {n : �
   obtain ⟨q, rfl⟩ : ∃ q, p = q + 1 := ⟨p - 1, by omega⟩
   exact hα q s h U y
 
+/- English proof (translation)
+Substitute `hs` using the available equality. Substitute `ht` using the available equality. Both sides reduce to the same expression.
+-/
 theorem cupSch_mul_cast {R : Type} [CommRing R] {I J K : Cx R} (μ : Pair I J K) (U : Scheme.{0}) {n m k : ℤ}
     (f : ∀ s : ℤ, s = n → Sec (I.X s) U) (g : ∀ t : ℤ, t = m → Sec (J.X t) U)
     (s t : ℤ) (hs : s = n) (ht : t = m) (h : s + t = k) (hk : n + m = k) :
     μ.mul U s t k h (f s hs) (g t ht) = μ.mul U n m k hk (f n rfl) (g m rfl) := by
   subst hs; subst ht; rfl
 
+/- English proof (translation)
+Introduce `R _ I J K μ X n m k hk x y a b hx hy`. Take `⟨α, rfl, ha, hα⟩` from `hx`. Take `⟨β, rfl, hb, hβ⟩` from `hy`. Take `⟨γ, hγ, hc⟩` from `hAW R μ (sch.obj X) hk α β`. Use `⟨γ, hc.symm, ?_, ?_⟩` and prove the remaining obligations.
+
+Establish `h0` using `hγ 0 k (by simp) X (𝟙 X)`. Rewrite using `[h0, Fin.sum_univ_one]`. Simplify using `only [Fin.val_zero, Nat.cast_zero, mul_zero, Int.negOnePow_zero, one_smul]`. Rewrite using `[← ha, ← hb]`. Conclude with `cupSch_mul_cast μ X (fun s hs => ev α.1 0 s (by omega) X (𝟙 X)) (fun t ht => ev β.1 0 t (by omega) X (𝟙 X)) _ _ (by simp) (by simp) _ hk`.
+
+Introduce `p s h U z`. Rewrite using `[hγ (p + 1) s h U z]`. Use `Finset.sum_eq_zero fun i _ => ?_` and prove the remaining obligations. Distinguish the cases in `hi : (i : ℕ) = 0`. Rewrite using `[cupSch_ev_pos β.1 hβ ((p + 1) - (i : ℕ)) (by omega), map_zero, smul_zero]`.
+
+Rewrite using `[cupSch_ev_pos α.1 hα (i : ℕ) (by omega), map_zero, LinearMap.zero_apply, smul_zero]`.
+-/
 theorem CupSch_of (hAW : CupAW) : CupSch := by
   intro R _ I J K μ X n m k hk x y a b hx hy
   obtain ⟨α, rfl, ha, hα⟩ := hx

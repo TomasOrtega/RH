@@ -14,6 +14,9 @@ attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalDat
 section Loc
 variable {E : Type} [Field E] [NumberField E] [IsTotallyComplex E] {a : ℕ}
 
+/- English proof (translation)
+Establish `h : (⟨1, ParLaws.toCl ((CG.ofChar χ).loc w)⟩ : IrrGL (w.adicCompletion E)) = IrrGL.ofChar (χ.loc w) (ParLaws.isSmoothChar_loc χ w)` using `ParLawsT.cls_loc_eq_of_isLocComp (CG.isLoc_ofChar χ w)`. Rewrite using `[h]`. Conclude with `⟨_, hasSupport_self (IrrGL.isCusp_ofChar _ _), fun y hy => Or.inl (by rw [Multiset.mem_singleton.1 hy]; rfl)⟩`.
+-/
 theorem good_loc_ofChar (χ : HChar E) (w : HeightOneSpectrum (𝓞 E)) :
     UpperTheory.Zero.LLC.Good (⟨1, ParLaws.toCl ((CG.ofChar χ).loc w)⟩ : IrrGL (w.adicCompletion E)) := by
   have h : (⟨1, ParLaws.toCl ((CG.ofChar χ).loc w)⟩ : IrrGL (w.adicCompletion E)) =
@@ -21,6 +24,9 @@ theorem good_loc_ofChar (χ : HChar E) (w : HeightOneSpectrum (𝓞 E)) :
   rw [h]
   exact ⟨_, hasSupport_self (IrrGL.isCusp_ofChar _ _), fun y hy => Or.inl (by rw [Multiset.mem_singleton.1 hy]; rfl)⟩
 
+/- English proof (translation)
+Proceed by induction on `π using Quotient.inductionOn with | _ π =>`. Take `⟨σ, hσ, -⟩` from `LocEx.exists_isLocComp GlobalTheory.automorphicFormsFiniteGL E a π w`. Use `(ParLawsT.cls_loc_eq_of_isLocComp (hσ.twist χ)).trans ?_` and prove the remaining obligations. Rewrite using `[show (⟨a, ParLaws.toCl (CG.loc (Quotient.mk _ π) w)⟩ : IrrGL (w.adicCompletion E)) = _ from ParLawsT.cls_loc_eq_of_isLocComp hσ]`. Conclude with `(IrrGL.tw_of σ.ρ σ.smooth σ.irred _ _).symm`.
+-/
 theorem cls_loc_twist (π : CG E a) (χ : HChar E) (w : HeightOneSpectrum (𝓞 E)) :
     (⟨a, ParLaws.toCl ((π.twist χ).loc w)⟩ : IrrGL (w.adicCompletion E)) =
       IrrGL.tw ⟨a, ParLaws.toCl (π.loc w)⟩ (χ.loc w) (ParLaws.isSmoothChar_loc χ w) := by
@@ -36,11 +42,17 @@ end Loc
 section Host
 variable {R : Ranks} {H : Formalism.BasicNotions.Host R} {a : ℕ}
 
+/- English proof (translation)
+Introduce `w` and use `by haveI := host_isCMField H have h := good_loc_ofChar χ.1.toChar w rwa [CG.ofChar_toChar] at h`.
+-/
 theorem goodAll_one (χ : HostCGu H 1) : GoodAll χ := fun w => by
   haveI := host_isCMField H
   have h := good_loc_ofChar χ.1.toChar w
   rwa [CG.ofChar_toChar] at h
 
+/- English proof (translation)
+The claim follows from `host_isCMField H; GoodAll (H := H) (π.tw χ) ↔ GoodAll π := by haveI := host_isCMField H refine forall_congr' fun w => ?_ have h := cls_loc_twist π.1 χ.1.toChar w have h2 := GlobalTheory.RecT.good_tw_iff (⟨a, ParLaws.toCl (π.1.loc w)⟩ : IrrGL (w.adicCompletion H.E)) (χ.1.toChar.lo …`.
+-/
 theorem goodAll_tw_iff (π : HostCGu H a) (χ : HostCGu H 1) :
     haveI := host_isCMField H; GoodAll (H := H) (π.tw χ) ↔ GoodAll π := by
   haveI := host_isCMField H
@@ -59,6 +71,17 @@ open Formalism.ConjugateSelfDual ReciprocityTheory.Gal GlobalTheory.WeilDeligne 
 variable {E Ω : Type} [Field E] [NumberField E] [Field Ω] [Algebra E Ω] [IsAlgClosure E Ω] [IsTotallyComplex E]
   {A : ValuationSubring Ω} {w : HeightOneSpectrum (𝓞 E)}
 
+/- English proof (translation)
+Establish `e : χ.loc w = SmGL.unrChar (w.adicCompletion E) (χ.val w)`. Use `MonoidHom.ext fun x => ?_` and prove the remaining obligations. Establish `h2` using `unif_spec w`. Establish `h0 : Valued.v (x : w.adicCompletion E) ≠ 0` using `by simp`. Establish `h1 : IsUnitAt w (x * (atFin w (unif w) ^ ord (w.adicCompletion E) x)⁻¹)`.
+
+Unfold `IsUnitAt IsUnifAt at *`. Rewrite using `[Units.val_mul, Units.val_inv_eq_inv_val, Units.val_zpow_eq_zpow_val, map_mul, map_inv₀, map_zpow₀, h2, ← WithZero.exp_zsmul, SphCompletion.ord_completion]`. Simplify using `only [smul_eq_mul, mul_neg, mul_one, neg_neg]`. Rewrite using `[WithZero.exp_log h0, mul_inv_cancel₀ h0]`. Establish `h3` using `hu _ h1`.
+
+Rewrite `h3` using `[map_mul, map_inv, map_zpow, mul_inv_eq_one]`. Conclude with `h3`. Take `⟨a, ha, H⟩` from `ParLawsT.isRecT_locRecT hT h`. Establish `e2 : ParLawsT.locParT hT (CG.ofChar χ) h = WD.mk (WDRep.diag h fun _ : Fin 1 => (χ.val w)⁻¹)`. Rewrite using `[ParLawsT.locParT_ofChar_eq, H.one]`.
+
+Establish `: ∀ (ξ : (w.adicCompletion E)ˣ →* ℂˣ) (hξ : WeilDeligne.IsSmooth (ξ.comp a)), ξ = SmGL.unrChar (w.adicCompletion E) (χ.val w) → WD.lpOfChar h (ξ.comp a) hξ = WD.mk (WDRep.diag h fun _ : Fin 1 => (χ.val w)⁻¹)`. Introduce and unpack `ξ hξ rfl`. Conclude with `Test.lpOfChar_unrChar ha _ _`. Conclude with `this _ _ e`. Rewrite using `[e2, WD.frobEig_diag]`.
+
+Conclude with `⟨(WD.unr_mk _).2 (WDRep.unr_diag _), by simp⟩`.
+-/
 theorem locParT_unr (hT : UpperTheory.Zero.LLC.RecTExists) (χ : HChar E) (h : IsPlaceOver A w) (hu : χ.UnrAt w) :
     (ParLawsT.locParT hT (CG.ofChar χ) h).unr ∧
       (ParLawsT.locParT hT (CG.ofChar χ) h).frobEig = {(((χ.val w)⁻¹ : ℂˣ) : ℂ)} := by
@@ -154,6 +177,9 @@ def trueCGT (hT : UpperTheory.Zero.LLC.RecTExists) (D : D7) (hE : IsEmpty D.nd.L
 
 set_option synthInstance.maxHeartbeats 400000 in
 
+/- English proof (translation)
+The claim follows from `host_isCMField D.host ∃ η η' : HostCGu D.host 1, η.1 = CG.ofChar χ ∧ η'.1 = CG.ofChar χ⁻¹ ∧ (∀ w, (ParLawsT.locGT hT D.nd.plOm η w).unr) ∧ (∀ w, ¬ IsSplitPl D.host w → (ParLawsT.locGT hT D.nd.plOm η w).frobEig = {-1}) ∧ (∀ w, (ParLawsT.locGT hT D.nd.plOm η' w).unr ∧ (ParLawsT.loc …`.
+-/
 theorem etaLawsT (hT : UpperTheory.Zero.LLC.RecTExists) (D : D7) {χ : HChar D.host.E} (hχ : IsEtaT D.host χ) :
     haveI := host_isCMField D.host
     ∃ η η' : HostCGu D.host 1, η.1 = CG.ofChar χ ∧ η'.1 = CG.ofChar χ⁻¹ ∧
@@ -183,6 +209,9 @@ theorem etaLawsT (hT : UpperTheory.Zero.LLC.RecTExists) (D : D7) {χ : HChar D.h
     rw [Multiset.singleton_inj] at ha' hb'
     rw [← ha', ← hb', ← Units.val_mul, ← mul_inv, CGTrueModel.val_split hχ hw hc, inv_one, Units.val_one]
 
+/- English proof (translation)
+The claim follows from `host_isCMField D.host; D.naut.ralg π ↔ (C.e a π).IsRegAlg := by rw [D.naut.ralg_def]; simp only [C.inf]; exact (GlobalTheory.CuspRep.CG.isRegAlg_iff _).symm`.
+-/
 theorem CGTrueT.ralg {hT D T} (C : CGTrueT hT D T) a (π : D.naut.CG a) :
     haveI := host_isCMField D.host; D.naut.ralg π ↔ (C.e a π).IsRegAlg := by
   rw [D.naut.ralg_def]; simp only [C.inf]; exact (GlobalTheory.CuspRep.CG.isRegAlg_iff _).symm

@@ -10,6 +10,9 @@ namespace PositivityTheory.Rg.Rs.PrIrr
 
 variable {E : Type} [Field E] [NumberField E] [IsTotallyComplex E] {N : ℕ}
 
+/- English proof (translation)
+Introduce `o φ hφ`. Rewrite `hφ`, the goal using `[Submodule.mem_sInf]`. Conclude with `fun U hU => hS U hU o φ (hφ U hU)`.
+-/
 theorem isStable_sInf (S : Set (Submodule ℂ (Sm E N))) (hS : ∀ U ∈ S, IsStable U) : IsStable (sInf S) := by
   intro o φ hφ
   rw [Submodule.mem_sInf] at hφ ⊢
@@ -27,6 +30,31 @@ def orthIn (V U : Submodule ℂ (Sm E N)) (hV : V ≤ W) : Submodule ℂ (Sm E N
   smul_mem' := fun c x hx => ⟨V.smul_mem c hx.1, fun u hu => by
     rw [cls_smul h c (hV hx.1), inner_smul_left, hx.2 u hu, mul_zero]⟩
 
+/- English proof (translation)
+Take `⟨L, hLo, hLc, hψT⟩` from `exists_type (hA ψ hψW)`. Establish `: FiniteDimensional ℂ (orbSpan ψ)` using `(hA ψ hψW).kfin`. Establish `hρ` using `isContRep_sub (orbSpan ψ) (orbSpan_stable ψ)`. Use `set ρ := sub (cptRep E N) (orbSpan ψ) (orbSpan_stable ψ)`. Use `set T := typePart L ρ`.
+
+Use `set A := SupSpansPsiPart W ψ`. Establish `hAst : IsStable A` using `isStable_admissible_span hW ψ`. Establish `hAW : A ≤ W` using `admissible_span_le W ψ`. Establish `hfd : ∀ V' ≤ A, FiniteDimensional ℂ (V' ⊓ T : Submodule ℂ (Sm E N))` using `fun V' h' => haveI := finiteDimensional_admissible_isotypic hA (hA ψ hψW) hLo ρ hρ Submodule.finiteDimensional_of_le (inf_le_inf_right T h')`. Set `Cand : Submodule ℂ (Sm E N) → Prop` to `fun V' => IsStable V' ∧ V' ≤ A ∧ ∃ v ∈ V' ⊓ T, inner ℂ (cls h ψ) (cls h v) ≠ 0`.
+
+Establish `hψψ : inner ℂ (cls h ψ) (cls h ψ) ≠ 0` using `fun e => hψ0 (hinj ψ hψW (inner_self_eq_zero.1 e))`. Establish `hex : ∃ n, ∃ V', Cand V' ∧ Module.finrank ℂ (V' ⊓ T : Submodule ℂ (Sm E N)) = n` using `⟨_, A, ⟨hAst, le_rfl, ψ, ⟨mem_admissible_span_self hψW, hψT⟩, hψψ⟩, rfl⟩`. Take `⟨V1, hV1, hV1n⟩` from `Nat.find_spec hex`. Establish `hmin : ∀ V', Cand V' → Nat.find hex ≤ Module.finrank ℂ (V' ⊓ T : Submodule ℂ (Sm E N))` using `fun V' hV' => Nat.find_min' hex ⟨V', hV', rfl⟩`. Set `V0` to `sInf {U : Submodule ℂ (Sm E N) | IsStable U ∧ V1 ⊓ T ≤ U}`.
+
+Establish `hV0st : IsStable V0` using `isStable_sInf _ fun U hU => hU.1`. Establish `hV0le : V0 ≤ V1` using `sInf_le ⟨hV1.1, inf_le_left⟩`. Establish `hgen : ∀ U, IsStable U → V1 ⊓ T ≤ U → V0 ≤ U` using `fun U hU hle => sInf_le ⟨hU, hle⟩`. Establish `hTV0 : V1 ⊓ T ≤ V0` using `le_sInf fun U hU => hU.2`. Establish `hV0T : V0 ⊓ T = V1 ⊓ T` using `le_antisymm (inf_le_inf_right T hV0le) (le_inf hTV0 inf_le_right)`.
+
+Establish `hV0A : V0 ≤ A` using `hV0le.trans hV1.2.1`. Take `⟨v, hvT, hvψ⟩` from `hV1.2.2`. Establish `hvT0 : v ∈ V0 ⊓ T` using `hV0T ▸ hvT`. Establish `key : ∀ U', Cand U' → U' ≤ V0 → V0 ≤ U'`. Introduce `U' hU' hle`.
+
+Use `hfd V1 hV1.2.1` as an intermediate fact. Use `hfd U' hU'.2.1` as an intermediate fact. Establish `h1 : U' ⊓ T ≤ V1 ⊓ T` using `hV0T ▸ inf_le_inf_right T hle`. Establish `h2 : Module.finrank ℂ (V1 ⊓ T : Submodule ℂ (Sm E N)) ≤ Module.finrank ℂ (U' ⊓ T : Submodule ℂ (Sm E N))` using `hV1n ▸ hmin U' hU'`. Establish `h3 : U' ⊓ T = V1 ⊓ T` using `Submodule.eq_of_le_of_finrank_le h1 h2`.
+
+Conclude with `hgen U' hU'.1 (h3 ▸ inf_le_left)`. Use `⟨V0, hV0st, hV0A, fun e => ?_, fun U hU hUst => ?_, v, hvT0.1, hvψ⟩` and prove the remaining obligations. Establish `hv0 : v = 0` using `(Submodule.mem_bot ℂ).1 (e ▸ hvT0.1)`. Rewrite `hvψ` using `[hv0]`. Conclude with `hvψ (by rw [show (0 : Sm E N) = (0 : ℂ) • (0 : Sm E N) by simp, cls_smul h 0 W.zero_mem, zero_smul, inner_zero_right])`.
+
+Set `C` to `orthIn h V0 U (hV0A.trans hAW)`. Establish `hCst : IsStable C` using `fun o x hx => ⟨hV0st o x hx.1, fun u hu => by`. Take `⟨B, hB, hadjB⟩` from `hadj o`. Rewrite using `[hadjB x (hAW (hV0A hx.1)) u (hAW (hV0A (hU hu)))]`. Conclude with `hx.2 _ (hB U hUst u hu)⟩`.
+
+Use `hfd U (hU.trans hV0A)` as an intermediate fact. Take `⟨v1, ⟨hv1U, hv1T⟩, hv1⟩` from `exists_orth h hW hA hinj hUst (hU.trans (hV0A.trans hAW)) (hAW (hV0A hvT0.1)) hLo hLc ρ hρ hvT0.2`. Establish `hv2C : v - v1 ∈ C` using `⟨V0.sub_mem hvT0.1 (hU hv1U), hv1⟩`. Establish `hv2T : v - v1 ∈ T` using `T.sub_mem hvT0.2 hv1T`. Establish `hsplit : inner ℂ (cls h ψ) (cls h v) = inner ℂ (cls h ψ) (cls h v1) + inner ℂ (cls h ψ) (cls h (v - v1))`.
+
+Rewrite using `[cls_sub h (hAW (hV0A hvT0.1)) (hAW (hV0A (hU hv1U))), inner_sub_right]`. Expand and normalize the polynomial expressions, which then agree. Distinguish the cases in `hc : inner ℂ (cls h ψ) (cls h v1) = 0`. Use `left`. Establish `hC : Cand C` using `⟨hCst, fun x hx => hV0A hx.1, v - v1, ⟨hv2C, hv2T⟩, by`.
+
+Rewrite `hvψ` using `[hsplit, hc, zero_add]`. Conclude with `hvψ⟩`. Establish `hV0C` using `key C hC fun x hx => hx.1`. Rewrite using `[eq_bot_iff]`. Introduce `u hu`.
+
+Conclude with `(Submodule.mem_bot ℂ).2 (hinj u (hAW (hV0A (hU hu))) (inner_self_eq_zero.1 ((hV0C (hU hu)).2 u hu)))`. Use `right`. Conclude with `le_antisymm hU (key U ⟨hUst, hU.trans hV0A, v1, ⟨hv1U, hv1T⟩, hc⟩ hU)`.
+-/
 theorem exists_irr (hW : IsStable W) (hA : ∀ φ ∈ W, IsAutForm φ) (hinj : ∀ x ∈ W, cls h x = 0 → x = 0)
     (hadj : ∀ o : Op E N, ∃ B : Module.End ℂ (Sm E N), (∀ U : Submodule ℂ (Sm E N), IsStable U → ∀ u ∈ U, B u ∈ U) ∧
       ∀ φ ∈ W, ∀ ψ ∈ W, inner ℂ (cls h (act o φ)) (cls h ψ) = inner ℂ (cls h φ) (cls h (B ψ)))

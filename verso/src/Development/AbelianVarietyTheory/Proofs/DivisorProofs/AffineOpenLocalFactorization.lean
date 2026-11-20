@@ -8,6 +8,15 @@ attribute [local instance] Over.cartesianMonoidalCategory
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Introduce `M W hW R _ b p hp`. Establish `hopen : IsOpen (X` using `PrimeSpectrum R) (b ⁻¹ᵁ W).carrier := (b ⁻¹ᵁ W).isOpen`. Take `⟨_, ⟨f, rfl⟩, hpf, hsub⟩` from `(PrimeSpectrum.isTopologicalBasis_basic_opens (R := R)).exists_subset_of_mem_open (a := p) (show p ∈ (b ⁻¹ᵁ W).carrier from hp) hopen`. Establish `H : Set.range (spMap (algebraMap R (Localization.Away f)) ≫ b) ⊆ Set.range hW.fromSpec`. Rewrite using `[IsAffineOpen.range_fromSpec]`.
+
+Introduce and unpack `_ ⟨x, rfl⟩`. Establish `hx : (spMap (algebraMap R (Localization.Away f))) x ∈ (PrimeSpectrum.basicOpen f : Set (PrimeSpectrum R))`. Rewrite using `[← PrimeSpectrum.localization_away_comap_range (Localization.Away f) f]`. Conclude with `⟨x, rfl⟩`. Conclude with `hsub hx`.
+
+Set `h` to `IsOpenImmersion.lift hW.fromSpec _ H`. Use `⟨f, (Spec.preimage h).hom, hpf, ?_⟩` and prove the remaining obligations. Establish `e : spMap (Spec.preimage h).hom = h`. Simplify using `[spMap, Spec.map_preimage]`. Rewrite using `[e]`.
+
+Conclude with `IsOpenImmersion.lift_fac _ _ _`.
+-/
 theorem affine_factor_basicOpen_affineOpen :
     ∀ (M : Scheme.{0}) (W : M.Opens) (hW : IsAffineOpen W) (R : Type) [CommRing R] (b : Sp R ⟶ M) (p : PrimeSpectrum R),
     b p ∈ W → ∃ (f : R) (g : Γ(M, W) →+* Localization.Away f), f ∉ p.asIdeal ∧

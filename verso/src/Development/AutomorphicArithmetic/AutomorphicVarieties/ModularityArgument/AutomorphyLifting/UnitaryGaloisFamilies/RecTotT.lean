@@ -6,6 +6,11 @@ open UpperTheory.V.Af UpperTheory.V.Af.Gu UpperTheory.V.Z.Win UpperTheory.V.Z.Wi
 
 attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField
 
+/- English proof (translation)
+Proceed by induction on `L with`. Consider the case `nil`. Express the relevant statement in the definitionally equal form `(WD.lpZero h).lpTw s = WD.lpZero h`. Rewrite using `[WD.lpZero, WD.lpTw_mk]`. Conclude with `WD.sound ⟨.refl _ _, fun _ _ => Subsingleton.elim _ _, fun _ => Subsingleton.elim _ _⟩`.
+
+Consider the case `cons x L ih`. Express the relevant statement in the definitionally equal form `(x.lpSum (sumList L)).lpTw s = (x.lpTw s).lpSum (sumList (L.map fun x => x.lpTw s))`. Rewrite using `[WD.lpTw_sum, ih]`.
+-/
 private theorem tw_sumList {E Ω : Type} [Field E] [NumberField E] [Field Ω] [Algebra E Ω] [IsAlgClosure E Ω]
     {A : ValuationSubring Ω} {w : HeightOneSpectrum (𝓞 E)} {h : IsPlaceOver A w} (s : ℝ) (L : List (WD h)) :
     (sumList L).lpTw s = sumList (L.map fun x => x.lpTw s) := by
@@ -18,6 +23,13 @@ private theorem tw_sumList {E Ω : Type} [Field E] [NumberField E] [Field Ω] [A
     change (x.lpSum (sumList L)).lpTw s = (x.lpTw s).lpSum (sumList (L.map fun x => x.lpTw s))
     rw [WD.lpTw_sum, ih]
 
+/- English proof (translation)
+Introduce `hProd hSpeh E Ω _ _ _ _ _ _ n c a d hn P w ρ σ hpos hP hS τ e A h rc hrc`. Establish `h1` using `hProd E Ω n c (fun i => d i * a i) hn w σ (fun i => (hS i).2.1) τ e A h rc hrc`. Establish `h2 : ∀ i, rc (cl (σ i)) = sumList ((List.range (d i)).map fun k : ℕ => (rc (cl (ρ i))).lpTw (((d i : ℝ) - 1) / 2 - k))` using `fun i => hSpeh E Ω (a i) (d i) (P i) w (ρ i) (σ i) (hpos i).1 (hpos i).2 (hP i) (hS i).1 (hS i).2.2 A h rc hrc`. Establish `h3 : rc (algNorm τ) = (rc (cl τ)).lpTw ((1 - (n : ℝ)) / 2)`. Take `⟨_, _, L⟩` from `hrc`.
+
+Conclude with `L.nu _ _`. Rewrite using `[h3, h1, tw_sumList, List.map_ofFn]`. Use `congrArg sumList (congrArg List.ofFn (funext fun i => ?_))` and prove the remaining obligations. Rewrite using `[Function.comp_apply, h2, tw_sumList, List.map_map, List.ofFn_eq_map, ← List.map_coe_finRange_eq_range, List.map_map]`. Use `congrArg sumList (List.map_congr_left fun k _ => ?_)` and prove the remaining obligations.
+
+Simplify using `only [Function.comp_apply, WD.lpTw_add]`. Use `congrArg₂ WD.lpTw rfl ?_` and prove the remaining obligations. Simplify using `only [ex]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem UpperTheory.V.Z.Win.Gu.recTotT :
     ProdT → SpehT → RecTotT := by
   intro hProd hSpeh E Ω _ _ _ _ _ _ n c a d hn P w ρ σ hpos hP hS τ e A h rc hrc

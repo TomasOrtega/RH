@@ -10,6 +10,11 @@ open GlobalTheory.Mum
 
 namespace GlobalTheory.Mum
 
+/- English proof (translation)
+Introduce `X Z h het hs hui`. Establish `hd : Surjective (pullback.diagonal h)` using `(UniversallyInjective.iff_diagonal h).1 hui`. Establish `: IsIso (pullback.diagonal h)` using `(isIso_iff_isOpenImmersion_and_surjective _).2 ⟨inferInstance, hd⟩`. Establish `: Mono h` using `(pullback.isIso_diagonal_iff h).1 this`. Establish `: IsOpenImmersion h` using `IsOpenImmersion.of_flat_of_mono h`.
+
+Conclude with `(isIso_iff_isOpenImmersion_and_surjective h).2 ⟨this, hs⟩`.
+-/
 theorem isIso_of_etale_of_surjective_of_universallyInjective :
     ∀ (X Z : Scheme.{0}) (h : X ⟶ Z), Etale h → Surjective h → UniversallyInjective h → IsIso h := by
   intro X Z h het hs hui

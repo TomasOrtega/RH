@@ -11,6 +11,13 @@ open scoped CategoryTheory.Obj
 
 namespace GlobalTheory.CMNormIdentity
 
+/- English proof (translation)
+Establish `h : ∀ z : PrimeSpectrum (DualNumber ℂ), ∀ a, a ∈ z.asIdeal ↔ a.fst = 0` using `fun z a => by`. Prove the components needed by the constructor for the conclusion. Introduce `ha`. Assume the negation of the conclusion as `h0`. Conclude with `z.2.ne_top (z.asIdeal.eq_top_of_isUnit_mem ha (TrivSqZeroExt.isUnit_iff_isUnit_fst.2 (Ne.isUnit h0)))`.
+
+Introduce `ha`. Use `z.2.mem_of_pow_mem 2 ?_` and prove the remaining obligations. Apply the tactic sequence `rw [show a ^ 2 = 0 by ext <;> simp [pow_two, ha]]`. Conclude with `z.asIdeal.zero_mem`. Use extensionality with `a`.
+
+Rewrite using `[h, h]`.
+-/
 theorem primeSpectrum_dualNumber_eq (x y : PrimeSpectrum (DualNumber ℂ)) : x = y := by
   have h : ∀ z : PrimeSpectrum (DualNumber ℂ), ∀ a, a ∈ z.asIdeal ↔ a.fst = 0 := fun z a => by
     constructor
@@ -28,6 +35,17 @@ section Unif
 
 variable {A : Over (Sp ℂ)} [GrpObj A] {L : LB A.left} {g : ℕ} (u : HolUnif A L g)
 
+/- English proof (translation)
+Take `⟨y, hy, hv'⟩` from `hc`. Establish `hl : v'.left = spMap (epsScaleR c) ≫ v.left`. Use `hy 0` as an intermediate fact. Simplify using `only [List.ofFn_succ, List.ofFn_zero, List.prod_cons, List.prod_nil, _root_.mul_one] at hv'`. Rewrite using `[hv']`.
+
+Simplify using `using this`. Introduce `U`. Rewrite using `[hl]`. Introduce `hU f`. Establish `hU' : ⊤ ≤ v.left ⁻¹ᵁ U` using `fun x _ => by`.
+
+Use `hU (Set.mem_univ x)` as an intermediate fact. Establish `hx : (spMap (epsScaleR c)) x = x` using `primeSpectrum_dualNumber_eq _ _`. Express the relevant statement in the definitionally equal form `v.left ((spMap (epsScaleR c)) x) ∈ U at this`. Rewrite `this` using `[hx]`. Then use the resulting hypothesis. Rewrite using `[map_smul, ← h U hU' f]`.
+
+Establish `e : (spMap (epsScaleR c) ≫ v.left).appLE U ⊤ hU = v.left.appLE U ⊤ hU' ≫ (spMap (epsScaleR c)).appTop`. Rewrite using `[Scheme.Hom.appTop, Scheme.Hom.app_eq_appLE]`. Conclude with `(Scheme.Hom.appLE_comp_appLE (spMap (epsScaleR c)) v.left U ⊤ ⊤ hU' le_rfl).symm`. Establish `e2` using `congrArg (fun k => k.hom ((v.left.appLE U ⊤ hU').hom f)) (Scheme.ΓSpecIso_naturality (CommRingCat.ofHom (epsScaleR c)))`. Rewrite using `[e]`.
+
+Use `(congrArg TrivSqZeroExt.snd e2).trans ?_` and prove the remaining obligations. Simplify using `[epsScaleR]`.
+-/
 theorem isDiff_of_isLieComb {w : Fin g → ℂ} {v v' : epsR ℂ ⟶ A} (h : u.IsDiff w v) (c : ℂ)
     (hc : IsLieComb ![c] ![v] v') : u.IsDiff (c • w) v' := by
   obtain ⟨y, hy, hv'⟩ := hc
@@ -54,6 +72,11 @@ theorem isDiff_of_isLieComb {w : Fin g → ℂ} {v v' : epsR ℂ ⟶ A} (h : u.I
   refine (congrArg TrivSqZeroExt.snd e2).trans ?_
   simp [epsScaleR]
 
+/- English proof (translation)
+Establish `hm : ∀ z, (F - F') z ∈ u.Λ` using `fun z => by`. Rewrite using `[← u.ker]`. Establish `h1` using `u.ex_add ((F - F') z) (F' z)`. Rewrite `h1` using `[LinearMap.sub_apply, sub_add_cancel, h z]`. Conclude with `(right_eq_mul.1 h1)`.
+
+Use `haveI := u.discrete`. Establish `hc : Continuous (fun z => (⟨(F - F') z, hm z⟩ : u.Λ))` using `(LinearMap.continuous_of_finiteDimensional (F - F')).subtype_mk _`. Use `LinearMap.ext fun z => ?_` and prove the remaining obligations. Use `congrArg Subtype.val (PreconnectedSpace.constant inferInstance hc (x := z) (y := 0))` as an intermediate fact. Simplify `this` using `[sub_eq_zero]`.
+-/
 theorem lift_unique {g₀ : ℕ} (F F' : (Fin g₀ → ℂ) →ₗ[ℂ] (Fin g → ℂ)) (h : ∀ z, u.ex (F z) = u.ex (F' z)) :
     F = F' := by
   have hm : ∀ z, (F - F') z ∈ u.Λ := fun z => by
@@ -70,6 +93,21 @@ theorem lift_unique {g₀ : ℕ} (F F' : (Fin g₀ → ℂ) →ₗ[ℂ] (Fin g �
 
 end Unif
 
+/- English proof (translation)
+Set `b` to `RingOfIntegers.basis E`. Establish `hli : LinearIndependent ℂ (fun (τ : E →+* ℂ) (i : Module.Free.ChooseBasisIndex ℤ (𝓞 E)) => τ (b i : E))`. Rewrite using `[Fintype.linearIndependent_iff]`. Introduce `f hf`. Use `EigenNorm.eq_zero_of_sum_embedding_mul f fun s => ?_` and prove the remaining obligations.
+
+Establish `hb : ∀ i, ∑ τ : E →+* ℂ, τ (b i : E) * f τ = 0` using `fun i => by`. Simplify `congrFun hf i` using `[mul_comm]`. Rewrite using `[← b.sum_repr s]`. Simplify using `only [map_sum, RingOfIntegers.coe_eq_algebraMap, map_zsmul, Finset.sum_mul, smul_mul_assoc] at hb ⊢`. Rewrite using `[Finset.sum_comm]`.
+
+Simplify using `only [← Finset.smul_sum, hb, smul_zero, Finset.sum_const_zero]`. Establish `hsp` using `hli.span_eq_top_of_card_eq_finrank' (by`. Rewrite using `[Embeddings.card, Module.finrank_fintype_fun_eq_card, ← Module.finrank_eq_card_chooseBasisIndex, RingOfIntegers.rank])`. Establish `hc : ∀ i : Module.Free.ChooseBasisIndex ℤ (𝓞 E), ∃ c : (E →+* ℂ) → ℂ, ∑ τ, c τ • (fun j => τ (b j : E)) = Pi.single i 1` using `fun i => (Submodule.mem_span_range_iff_exists_fun ℂ).1 (hsp ▸ Submodule.mem_top)`. Use `choose c hc using hc`.
+
+Use `⟨fun τ => AddMonoidHom.mk' (fun a => ∑ i, c i τ • X (b i • a)) fun a a' => by` and prove the remaining obligations. Simplify using `[smul_add, Finset.sum_add_distrib], fun s a => ?_⟩`. Establish `hb : ∀ j, X (b j • a) = ∑ τ : E →+* ℂ, τ (b j : E) • ∑ i, c i τ • X (b i • a)` using `fun j => by`. Simplify using `only [Finset.smul_sum, smul_smul]`. Rewrite using `[Finset.sum_comm]`.
+
+Establish `: ∀ i, ∑ τ : E →+* ℂ, τ (b j : E) * c i τ = (Pi.single i 1 : _ → ℂ) j` using `fun i => by`. Rewrite using `[← hc i]`. Simplify using `[mul_comm]`. Simplify using `only [← Finset.sum_smul, this]`. Simplify using `[Pi.single_apply]`.
+
+Simplify using `only [AddMonoidHom.mk'_apply]`. Use `conv_lhs => rw [← b.sum_repr s]`. Use `conv_rhs => rw [← b.sum_repr s]`. Simplify using `only [Finset.sum_smul, smul_assoc, map_sum, map_zsmul, RingOfIntegers.coe_eq_algebraMap] at hb ⊢`. Rewrite using `[Finset.sum_comm]`.
+
+Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[← Finset.smul_sum, ← hb]`.
+-/
 theorem exists_eigen_components {E : Type} [Field E] [NumberField E] {L V : Type} [AddCommGroup L] [Module (𝓞 E) L]
     [AddCommGroup V] [Module ℂ V] (X : L →+ V) :
     ∃ x : (E →+* ℂ) → L →+ V, ∀ (s : 𝓞 E) a, X (s • a) = ∑ τ : E →+* ℂ, τ (s : E) • x τ a := by
@@ -110,11 +148,23 @@ theorem exists_eigen_components {E : Type} [Field E] [NumberField E] {L V : Type
   refine Finset.sum_congr rfl fun j _ => ?_
   rw [← Finset.smul_sum, ← hb]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `k`. Conclude with `EigenNorm.eq_zero_of_sum_embedding_mul (fun τ => f τ k) (fun s => by simpa using congrFun (hf s) k) τ`.
+-/
 theorem eq_zero_of_sum_embedding_smul {E : Type} [Field E] [NumberField E] {g : ℕ} (f : (E →+* ℂ) → Fin g → ℂ)
     (hf : ∀ s : 𝓞 E, ∑ τ : E →+* ℂ, τ (s : E) • f τ = 0) (τ : E →+* ℂ) : f τ = 0 := by
   funext k
   exact EigenNorm.eq_zero_of_sum_embedding_mul (fun τ => f τ k) (fun s => by simpa using congrFun (hf s) k) τ
 
+/- English proof (translation)
+Set `S : L →+ L →+ ℂ` to `AddMonoidHom.mk' (fun a => AddMonoidHom.mk' (fun b => B a b + B b a) fun b c => by`. Rewrite using `[hl, hr]; ring) fun a b => by`. Use extensionality with `c`. Simplify using `only [AddMonoidHom.mk'_apply, AddMonoidHom.add_apply, hl, hr]`. Expand and normalize the polynomial expressions, which then agree.
+
+Establish `hS : ∀ i, S (e i) = 0` using `fun i => by`. Establish `: (S (e i)).toIntLinearMap = 0`. Use `LinearMap.ext_on_range he fun j => ?_` and prove the remaining obligations. Use `h2 i j` as an intermediate fact. Rewrite `this` using `[hl, hr, hr, h1, h1]`.
+
+Simplify `this` using `[S]`. Conclude with `AddMonoidHom.ext fun c => LinearMap.congr_fun this c`. Establish `hS' : S.toIntLinearMap = 0` using `LinearMap.ext_on_range he hS`. Establish `h3 : S a = 0` using `LinearMap.congr_fun hS' a`. Establish `h4 : B a a + B a a = 0` using `DFunLike.congr_fun h3 a`.
+
+Take the linear combination `h4 / 2`.
+-/
 theorem quadratic_eq_zero {L : Type} [AddCommGroup L] (B : L → L → ℂ) (hl : ∀ a b c, B (a + b) c = B a c + B b c)
     (hr : ∀ a b c, B a (b + c) = B a b + B a c) {m : ℕ} (e : Fin m → L)
     (he : Submodule.span ℤ (Set.range e) = ⊤) (h1 : ∀ i, B (e i) (e i) = 0)
@@ -136,6 +186,29 @@ theorem quadratic_eq_zero {L : Type} [AddCommGroup L] (B : L → L → ℂ) (hl 
   have h4 : B a a + B a a = 0 := DFunLike.congr_fun h3 a
   linear_combination h4 / 2
 
+/- English proof (translation)
+Introduce `E _ _ _ H P₀ P _ u₀ u H₀ χ₀ Hm χ hu₀ hu hT hT' act L _ _ h ρ φ v₀ w₀ m e nn hρ hadd hsmul hsymm hnn hφ hφa hφs hv₀ hw₀ hLie he hiso`. Use `choose F hF _ hFd _ using fun a => GlobalTheory.HomLinear.exists_linear_of_isMonHom P₀.A P.A P₀.isAb P.isAb P₀.L P.L P₀.g P.g u₀ u hT hT' (φ a) (hφ a)`. Establish `hFa : ∀ a b, F (a + b) = F a + F b` using `fun a b => lift_unique u _ _ fun z => by`. Rewrite using `[LinearMap.add_apply, u.ex_add, hF, hF, hF, hφa, MonObj.comp_mul]`. Set `X : L →+ (Fin P.g → ℂ)` to `AddMonoidHom.mk' (fun a => F a w₀) fun a b => by`.
+
+Rewrite using `[hFa, LinearMap.add_apply]`. Establish `hX : ∀ a, X a = F a w₀` using `fun _ => rfl`. Establish `hXd : ∀ a, u.IsDiff (X a) (v₀ ≫ φ a)` using `fun a => (hFd a w₀ v₀ hv₀ hw₀).2`. Establish `hXrt : ∀ a, X (H.rt • a) = ρ • X a` using `fun a => by`. Use `(hT _ (hFd (H.rt • a) w₀ v₀ hv₀ hw₀).1).unique (hXd _) ?_` and prove the remaining obligations.
+
+Rewrite using `[hφs]`. Conclude with `isDiff_of_isLieComb u (hXd a) ρ (hLie a)`. Take `⟨x, hx⟩` from `exists_eigen_components (E := E) X`. Establish `hsum : ∀ a, ∑ τ, x τ a = X a` using `fun a => by`. Simplify using `using (hx 1 a).symm`.
+
+Establish `hxs : ∀ τ (s : 𝓞 E) a, x τ (s • a) = τ (s : E) • x τ a` using `fun τ s a => by`. Use `sub_eq_zero.1 (eq_zero_of_sum_embedding_smul (fun τ => x τ (s • a) - τ (s : E) • x τ a) (fun t => ?_) τ)` and prove the remaining obligations. Establish `h1` using `hx (t * s) a`. Rewrite `h1` using `[mul_smul, hx]`. Simplify using `only [smul_sub, Finset.sum_sub_distrib, h1, smul_smul]`.
+
+Simplify using the standard rewrite rules. Establish `hx0 : ∀ τ, τ (H.rt : E) ≠ ρ → x τ = 0` using `fun τ hτ => by ext1 a`. Use `eq_zero_of_sum_embedding_smul (fun τ => (τ (H.rt : E) - ρ) • x τ a) (fun t => by` as an intermediate fact. Establish `h1` using `hx (H.rt * t) a`. Rewrite `h1` using `[mul_smul, hXrt, hx, Finset.smul_sum]`.
+
+Simplify using `only [sub_smul, smul_sub, smul_smul, Finset.sum_sub_distrib]`. Rewrite using `[sub_eq_zero]`. Simplify `h1.symm) τ` using `[smul_smul, mul_comm]`. Conclude with `(smul_eq_zero.1 this).resolve_left (sub_ne_zero.2 hτ)`. Establish `hc : (((hermForm H₀ w₀ w₀).re : ℝ) : ℂ) = hermForm H₀ w₀ w₀` using `Complex.conj_eq_iff_re.1 (EigenNorm.hermForm_conj H₀ hu₀.1 w₀ w₀).symm`.
+
+Use `⟨x, fun a => hsum a ▸ hXd a, hxs, hx0, ?_⟩` and prove the remaining obligations. Rewrite using `[← hc]`. Use `EigenNorm.hermForm_eigen E H P.g Hm hu.1 L h ρ _ x hρ hadd hsmul hsymm hxs hx0 fun a => ?_` and prove the remaining obligations. Rewrite using `[hc, hsum]`. Establish `haddr : ∀ a b c, h a (b + c) = h a b + h a c` using `fun a b c => by`.
+
+Rewrite using `[hsymm (b + c) a, hsymm b a, hsymm c a, hadd, map_add]`. Establish `key : ∀ a, ((∃ i, a = e i) ∨ ∃ i j, a = e i + e j) → hermForm Hm (X a) (X a) - hermForm H₀ w₀ w₀ * ∑ τ ∈ Finset.univ.filter (fun τ : E →+* ℂ => τ (H.rt : E) = ρ), τ (h a a) = 0` using `fun a ha => by`. Take `⟨N, hN, hiso⟩` from `hiso a ha`. Establish `h1` using `hermForm_pull_eq_of_lbIso_pow P₀.A P.A P₀.L P.L P₀.isLB P.isLB P₀.g P.g u₀ u H₀ χ₀ Hm χ hu₀ hu (φ a) (F a) (hF a) N (N * nn a) hiso w₀ w₀`. Establish `hN' : (N : ℂ) ≠ 0` using `by exact_mod_cast (by omega : N ≠ 0)`.
+
+Rewrite using `[← hnn, hX]`. Apply `mul_left_cancel₀ hN'` to reduce the goal to its premises. Move the coercions through the operations in `at h1`. Take the linear combination `h1`. Conclude with `sub_eq_zero.1 (quadratic_eq_zero (fun a b => hermForm Hm (X a) (X b) - hermForm H₀ w₀ w₀ * ∑ τ ∈ Finset.univ.filter (fun τ : E →+* ℂ => τ (H.rt : E) = ρ), τ (h a b)) (fun a b c => by`.
+
+Simplify using `only [map_add, EigenNorm.hermForm_add_left, hadd, Finset.sum_add_distrib]`. Use the proof step `ring)`. Use the proof step `(fun a b c => by`. Simplify using `only [map_add, EigenNorm.hermForm_add_right, haddr, Finset.sum_add_distrib]`. Use the proof step `ring)`.
+
+Use `e he (fun i => key _ (Or.inl ⟨i, rfl⟩)) (fun i j => key _ (Or.inr ⟨i, j, rfl⟩)) a)`.
+-/
 theorem exists_eigen_hermForm_eq :
   ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (P₀ P : Out.PolAV (Sp ℂ)), P₀.g = 1 →
   ∀ (u₀ : HolUnif P₀.A P₀.L P₀.g) (u : HolUnif P.A P.L P.g) (H₀ : Matrix (Fin P₀.g) (Fin P₀.g) ℂ) (χ₀ : u₀.Λ → ℂ)

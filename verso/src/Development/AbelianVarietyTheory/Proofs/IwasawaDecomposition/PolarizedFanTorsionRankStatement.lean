@@ -6,6 +6,9 @@ open AlgebraicGeometry CategoryTheory Limits NumberField IsLocalRing Topological
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Out ReciprocityTheory.ChartRestriction.G.Geo.Tor ReciprocityTheory.AnForm.R Formalism.L2.Pj
 open GlobalTheory.Toroidal GlobalTheory.Models GlobalTheory.LN GlobalTheory.ShFam GlobalTheory.LocM GlobalTheory.PolFan GlobalTheory.TorRef
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.TorRef.ChartMono.exists_monomial | exact GlobalTheory.TorRef.ChartMono.exists_monomial | (intros; apply GlobalTheory.TorRef.ChartMono.exists_monomial <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.polarized_fan_torsion_rank : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (q g d : ℕ) (φs : InvFun ℤ) (𝒩 : Finset ℕ)
     (φ : InvFun (𝓞 E)) (R : Type) [CommRing R] [IsDomain R] [IsLocalRing R] (t : SAB H (Sp R))
     (P : PELUnif (maximalIdeal R) t) (m : ℕ) (γ : Fin m → LinearMap.BilinForm ℤ P.D.toPre.X),

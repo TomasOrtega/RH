@@ -26,8 +26,14 @@ def mono (e : ℕ) : M e →ₗ[K] polyAlg M where
   map_add' a b := Subtype.ext (by simp)
   map_smul' c a := Subtype.ext (smul_monomial c e (a : A)).symm
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem mono_val (e : ℕ) (a : M e) : (mono M e a : A[X]) = monomial e (a : A) := rfl
 
+/- English proof (translation)
+Introduce `a b h` and use `Subtype.ext (monomial_injective e (congrArg Subtype.val h))`.
+-/
 theorem mono_injective (e : ℕ) : Function.Injective (mono M e) := fun a b h =>
   Subtype.ext (monomial_injective e (congrArg Subtype.val h))
 
@@ -40,6 +46,13 @@ instance : SetLike.GradedMonoid (piece M) where
     exact ⟨⟨a * b, SetLike.mul_mem_graded a.2 b.2⟩,
       Subtype.ext (by simp [mono_val, monomial_mul_monomial])⟩
 
+/- English proof (translation)
+Proceed by induction on `x using DirectSum.induction_on with`. Consider the case `zero => simp`. Consider the case `of i y`. Rewrite using `[DirectSum.coeAddMonoidHom_of]`. Distinguish the cases in `h : i = n`.
+
+Substitute `h` using the available equality. Rewrite using `[DirectSum.of_eq_same]`. Rewrite using `[DirectSum.of_eq_of_ne _ _ _ (Ne.symm h)]`. Take `⟨_, a, rfl⟩` from `y`. Simplify using `[mono_val, coeff_monomial, h]`.
+
+Consider the case `add x y hx hy => simp [hx, hy]`.
+-/
 theorem coeff_coe (x : DirectSum ℕ fun e => piece M e) (n : ℕ) :
     ((DirectSum.coeAddMonoidHom (piece M) x : polyAlg M) : A[X]).coeff n =
       ((x n : polyAlg M) : A[X]).coeff n := by
@@ -55,6 +68,15 @@ theorem coeff_coe (x : DirectSum ℕ fun e => piece M e) (n : ℕ) :
       simp [mono_val, coeff_monomial, h]
   | add x y hx hy => simp [hx, hy]
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Rewrite using `[injective_iff_map_eq_zero]`. Introduce `x hx`. Use `ext1 n`. Establish `h` using `coeff_coe M x n`.
+
+Rewrite `h` using `[hx]`. Take `⟨a, ha⟩` from `(x n).2`. Rewrite `h` using `[← ha, mono_val, coeff_monomial_same]`. Establish `ha0 : a = 0` using `Subtype.ext (by simpa using h.symm)`. Apply `Subtype.ext` to reduce the goal to its premises.
+
+Rewrite using `[← ha, ha0, map_zero]`. Both sides reduce to the same expression. Introduce `r`. Use `⟨∑ n ∈ (r : A[X]).support, DirectSum.of (fun e => piece M e) n ⟨mono M n ⟨_, r.2 n⟩, _, rfl⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[map_sum]`.
+
+Apply `Subtype.ext` to reduce the goal to its premises. Simplify using `only [DirectSum.coeAddMonoidHom_of, AddSubmonoidClass.coe_finset_sum, mono_val]`. Conclude with `(as_sum_support _).symm`.
+-/
 theorem isInternal : DirectSum.IsInternal (piece M) := by
   constructor
   · rw [injective_iff_map_eq_zero]
@@ -80,6 +102,11 @@ def grading : GradedAlgebra (piece M) where
   toGradedMonoid := inferInstance
   toDecomposition := (isInternal M).chooseDecomposition
 
+/- English proof (translation)
+Use `Function.Injective.isDomain ((mapRingHom π).comp (polyAlg M).val.toRingHom) ?_` and prove the remaining obligations. Rewrite using `[injective_iff_map_eq_zero]`. Introduce `r hr`. Apply `Subtype.ext` to reduce the goal to its premises. Use extensionality with `n`.
+
+Establish `h : (r : A[X]).map π = 0` using `hr`. Use `hπ n _ (r.2 n) ?_` and prove the remaining obligations. Rewrite using `[← coeff_map, h, coeff_zero]`.
+-/
 theorem isDomain {B : Type} [CommRing B] [IsDomain B] (π : A →+* B)
     (hπ : ∀ n, ∀ a ∈ M n, π a = 0 → a = 0) : IsDomain (polyAlg M) := by
   refine Function.Injective.isDomain ((mapRingHom π).comp (polyAlg M).val.toRingHom) ?_
@@ -104,8 +131,14 @@ variable {K : Type} [Field K] {X : Scheme.{0}} (p : X ⟶ Sp K) (L : LB X)
 def constHom (U : X.Opens) : K →+* Γ(X, U) :=
   (p.appLE ⊤ U (fun _ _ => trivial)).hom.comp (Scheme.ΓSpecIso (CommRingCat.of K)).inv.hom
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem constHom_apply (U : X.Opens) (a : K) : constHom p U a = constFn p U a := rfl
 
+/- English proof (translation)
+The claim follows from `congrArg (fun φ => φ.hom ((Scheme.ΓSpecIso (CommRingCat.of K)).inv.hom a)) (Scheme.Hom.appLE_map p (U := ⊤) (V := U) (fun _ _ => trivial) (homOfLE h).op)`.
+-/
 theorem res_constHom {U V : X.Opens} (h : V ≤ U) (a : K) :
     (X.presheaf.map (homOfLE h).op).hom (constHom p U a) = constHom p V a :=
   congrArg (fun φ => φ.hom ((Scheme.ΓSpecIso (CommRingCat.of K)).inv.hom a))
@@ -127,6 +160,11 @@ def evalFam (j : PUnit → L.ι) : Fam p L →+* Γ(X, chart L j) :=
 def trans (e : ℕ) (i j : PUnit → L.ι) : Γ(X, chart L i ⊓ chart L j) :=
   ((lbPow L e).g i j).val
 
+/- English proof (translation)
+Establish `: (lbPow L 0).g i j = 1`. Unfold `lbPow LB.LinComb`. Simplify using `only`. Conclude with `Finset.prod_eq_one fun _ _ => zpow_zero _`. Unfold `trans`.
+
+Rewrite using `[this]`. Both sides reduce to the same expression.
+-/
 theorem trans_zero (i j : PUnit → L.ι) : trans L 0 i j = 1 := by
   have : (lbPow L 0).g i j = 1 := by
     unfold lbPow LB.LinComb
@@ -136,6 +174,11 @@ theorem trans_zero (i j : PUnit → L.ι) : trans L 0 i j = 1 := by
   rw [this]
   rfl
 
+/- English proof (translation)
+Unfold `trans lbPow LB.LinComb`. Simplify using `only`. Rewrite using `[← Units.val_mul, ← Finset.prod_mul_distrib]`. Use `congr 1`. Use `Finset.prod_congr rfl fun _ _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[Nat.cast_add, _root_.zpow_add]`.
+-/
 theorem trans_add (e e' : ℕ) (i j : PUnit → L.ι) :
     trans L (e + e') i j = trans L e i j * trans L e' i j := by
   unfold trans lbPow LB.LinComb
@@ -173,6 +216,15 @@ def secEquiv (e : ℕ) : (lbPow L e).Sec ≃ secs p L e where
   left_inv _ := rfl
   right_inv _ := rfl
 
+/- English proof (translation)
+Use function extensionality and compare the values at `j`. Express the relevant statement in the definitionally equal form `evalFam p L j a = 0`. Distinguish the cases in `hj : Nonempty (chart L j)`. Take `⟨x⟩` from `hj`. Take `⟨y⟩` from `‹Nonempty (chart L j₀)›`.
+
+Take `⟨z, hz⟩` from `nonempty_preirreducible_inter (chart L j).isOpen (chart L j₀).isOpen ⟨x.1, x.2⟩ ⟨y.1, y.2⟩`. Use `haveI : Nonempty (chart L j ⊓ chart L j₀ : X.Opens) := ⟨⟨z, hz⟩⟩`. Apply `map_injective_of_isIntegral X (homOfLE (inf_le_left : chart L j ⊓ chart L j₀ ≤ chart L j))` to reduce the goal to its premises. Establish `h2` using `ha j j₀`. Rewrite `h2` using `[h, map_zero, MulZeroClass.mul_zero]`.
+
+Conclude with `h2.trans (map_zero _).symm`. Establish `hb : chart L j = ⊥`. Use extensionality with `x`. Conclude with `⟨fun hx => (hj ⟨⟨x, hx⟩⟩).elim, fun hx => hx.elim⟩`. Use `haveI : Subsingleton Γ(X, chart L j) := by`.
+
+Rewrite using `[hb]`. Use `infer_instance`. Conclude with `Subsingleton.elim _ _`.
+-/
 theorem eq_zero_of_chart [IsIntegral X] (j₀ : PUnit → L.ι) [Nonempty (chart L j₀)] (e : ℕ)
     (a : Fam p L) (ha : a ∈ secs p L e) (h : evalFam p L j₀ a = 0) : a = 0 := by
   funext j
@@ -198,6 +250,17 @@ theorem eq_zero_of_chart [IsIntegral X] (j₀ : PUnit → L.ι) [Nonempty (chart
 
 end Sections
 
+/- English proof (translation)
+Introduce `K _ X _ p L hL`. Take `⟨x⟩ : Nonempty X` from `inferInstance`. Establish `hx : x ∈ ⨆ i, L.U i` using `hL.cover ▸ trivial`. Take `⟨i, hi⟩` from `TopologicalSpace.Opens.mem_iSup.1 hx`. Use `haveI : Nonempty (chart L fun _ => i) := ⟨⟨x, Set.mem_iInter.2 fun _ => hi⟩⟩`.
+
+Use `⟨polyAlg (secs p L), inferInstance, isDomain (secs p L) (evalFam p L fun _ => i) (eq_zero_of_chart p L _), inferInstance, piece (secs p L), grading (secs p L), fun e => (secEquiv p L e).trans (LinearEquiv.ofInjective _ (mono_injective (secs p L) e)).toEquiv, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `e s s' s'' h`. Establish `h1 : secEquiv p L e s'' = secEquiv p L e s + secEquiv p L e s'` using `Subtype.ext (funext h)`. Conclude with `(congrArg (LinearEquiv.ofInjective _ (mono_injective (secs p L) e)) h1).trans (map_add _ _ _)`. Introduce `e a s s' h`.
+
+Establish `h1 : secEquiv p L e s' = a • secEquiv p L e s` using `Subtype.ext (funext h)`. Conclude with `(congrArg (LinearEquiv.ofInjective _ (mono_injective (secs p L) e)) h1).trans (map_smul _ _ _)`. Introduce `e e' s s' s'' h`. Establish `h1 : (secEquiv p L (e + e') s'' : Fam p L) = (secEquiv p L e s : Fam p L) * (secEquiv p L e' s' : Fam p L)` using `funext h`. Apply `Subtype.ext` to reduce the goal to its premises.
+
+Express the relevant statement in the definitionally equal form `Polynomial.monomial (e + e') (secEquiv p L (e + e') s'' : Fam p L) = Polynomial.monomial e (secEquiv p L e s : Fam p L) * Polynomial.monomial e' (secEquiv p L e' s' : Fam p L)`. Rewrite using `[h1, Polynomial.monomial_mul_monomial]`. Introduce `j`. Use `⟨(evalFam p L j).comp ((Polynomial.evalRingHom 1).comp (polyAlg (secs p L)).val.toRingHom), fun a => ?_, fun e s => ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `evalFam p L j (Polynomial.eval 1 (Polynomial.C (algebraMap K (Fam p L) a))) = _`.
+
+Rewrite using `[Polynomial.eval_C]`. Both sides reduce to the same expression. Express the relevant statement in the definitionally equal form `evalFam p L j (Polynomial.eval 1 (Polynomial.monomial e (secEquiv p L e s : Fam p L))) = _`. Rewrite using `[Polynomial.eval_monomial, one_pow, _root_.mul_one]`. Both sides reduce to the same expression.
+-/
 theorem exists_sectionRing :
     (∀ (K : Type) [Field K] (X : Scheme.{0}) [IsIntegral X] (p : X ⟶ Sp K) (L : LB X), L.IsLB → ∃ (R : Type) (_ : CommRing R) (_ : IsDomain R) (_ : Algebra K R) (𝒜 : ℕ → Submodule K R) (_ : GradedAlgebra 𝒜) (Φ : ∀ e : ℕ, (lbPow L e).Sec ≃ 𝒜 e), (∀ e (s s' s'' : (lbPow L e).Sec), (∀ j, s''.f j = s.f j + s'.f j) → Φ e s'' = Φ e s + Φ e s') ∧ (∀ e (a : K) (s s' : (lbPow L e).Sec), (∀ j, s'.f j = constFn p _ a * s.f j) → Φ e s' = a • Φ e s) ∧ (∀ e e' (s : (lbPow L e).Sec) (s' : (lbPow L e').Sec) (s'' : (lbPow L (e + e')).Sec), (∀ j, s''.f j = (show Γ(X, (lbPow L (e + e')).U j) from s.f j) * (show Γ(X, (lbPow L (e + e')).U j) from s'.f j)) → (Φ (e + e') s'' : R) = Φ e s * Φ e' s') ∧ ∀ (j : PUnit → L.ι), ∃ ρ : R →+* Γ(X, (lbPow L 0).U j), (∀ a : K, ρ (algebraMap K R a) = constFn p _ a) ∧ ∀ e (s : (lbPow L e).Sec), ρ (Φ e s) = s.f j) := by
   intro K _ X _ p L hL

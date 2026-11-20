@@ -13,21 +13,40 @@ open GlobalTheory.LiftLevel GlobalTheory.LiftDat
 
 variable {D : D7}
 
+/- English proof (translation)
+Use extensionality with `a`. Rewrite using `[GlobalTheory.SW.Lev.mem_conjI, Ideal.mem_comap]`.
+-/
 theorem conjI_eq_comap (P : Ideal (𝓞 D.host.E)) : conjI P = P.comap GlobalTheory.SW.Lev.bar := by
   ext a; rw [GlobalTheory.SW.Lev.mem_conjI, Ideal.mem_comap]
 
+/- English proof (translation)
+Introduce `a` and use `⟨GlobalTheory.SW.Lev.bar a, GlobalTheory.SW.Lev.bar_bar a⟩`.
+-/
 theorem bar_surj : Function.Surjective (GlobalTheory.SW.Lev.bar : 𝓞 D.host.E →+* 𝓞 D.host.E) :=
   fun a => ⟨GlobalTheory.SW.Lev.bar a, GlobalTheory.SW.Lev.bar_bar a⟩
 
+/- English proof (translation)
+Rewrite using `[conjI_eq_comap]`. Conclude with `Ideal.comap_isMaximal_of_surjective _ bar_surj`.
+-/
 theorem conjI_isMax (PP : Formalism.L2.DIV.Pl D.host.E) : (conjI PP.asIdeal).IsMaximal := by
   rw [conjI_eq_comap]
   exact Ideal.comap_isMaximal_of_surjective _ bar_surj
 
+/- English proof (translation)
+Use extensionality with `a`. Use `SetLike.ext_iff.1 h (GlobalTheory.SW.Lev.bar a)` as an intermediate fact. Rewrite `this` using `[GlobalTheory.SW.Lev.mem_conjI, GlobalTheory.SW.Lev.mem_conjI, GlobalTheory.SW.Lev.bar_bar]`. Then use the resulting hypothesis.
+-/
 theorem conjI_inj {P P' : Ideal (𝓞 D.host.E)} (h : conjI P = conjI P') : P = P' := by
   ext a
   have := SetLike.ext_iff.1 h (GlobalTheory.SW.Lev.bar a)
   rwa [GlobalTheory.SW.Lev.mem_conjI, GlobalTheory.SW.Lev.mem_conjI, GlobalTheory.SW.Lev.bar_bar] at this
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce `hx PP hPP`. Conclude with `GlobalTheory.SW.Lev.mem_conjI.1 (liftI_le hPP hx)`. Introduce `h`. Unfold `liftI`.
+
+Rewrite using `[Ideal.prod_eq_iInf_of_pairwise_isCoprime]`. Simplify using `only [Submodule.mem_iInf]`. Introduce `PP hPP`. Conclude with `GlobalTheory.SW.Lev.mem_conjI.2 (h PP hPP)`. Introduce `PP _ PP' _ hne`.
+
+Establish `hne' : conjI PP.asIdeal ≠ conjI PP'.asIdeal` using `fun e => hne (HeightOneSpectrum.ext (conjI_inj e))`. Conclude with `(Ideal.isCoprime_iff_sup_eq).2 ((conjI_isMax PP).coprime_of_ne (conjI_isMax PP') hne')`.
+-/
 theorem mem_liftI {Pg Q : Finset (Formalism.L2.DIV.Pl D.host.E)} {x : 𝓞 D.host.E} :
     x ∈ liftI Pg Q ↔ ∀ PP ∈ Pg ∪ Q, GlobalTheory.SW.Lev.bar x ∈ PP.asIdeal := by
   constructor
@@ -44,6 +63,13 @@ theorem mem_liftI {Pg Q : Finset (Formalism.L2.DIV.Pl D.host.E)} {x : 𝓞 D.hos
         hne (HeightOneSpectrum.ext (conjI_inj e))
       exact (Ideal.isCoprime_iff_sup_eq).2 ((conjI_isMax PP).coprime_of_ne (conjI_isMax PP') hne')
 
+/- English proof (translation)
+Establish `hc : IsCoprime (Ideal.span {x}) (liftI Pg Q)`. Unfold `liftI`. Use `IsCoprime.prod_right fun PP hPP => ?_` and prove the remaining obligations. Establish `hx : x ∉ conjI PP.asIdeal` using `fun hm => h PP hPP (GlobalTheory.SW.Lev.mem_conjI.1 hm)`. Take `⟨y, i, hi, e⟩` from `(conjI_isMax PP).exists_inv hx`.
+
+Conclude with `Ideal.isCoprime_iff_exists.2 ⟨y * x, Ideal.mul_mem_left _ _ (Ideal.mem_span_singleton_self x), i, hi, e⟩`. Take `⟨i, hi, j, hj, e⟩` from `Ideal.isCoprime_iff_exists.1 hc`. Take `⟨a, rfl⟩` from `Ideal.mem_span_singleton'.1 hi`. Use `isUnit_iff_exists_inv.2 ⟨Ideal.Quotient.mk _ a, ?_⟩` and prove the remaining obligations. Establish `: Ideal.Quotient.mk (liftI Pg Q) j = 0` using `Ideal.Quotient.eq_zero_iff_mem.2 hj`.
+
+Rewrite using `[← map_mul, mul_comm, eq_sub_of_add_eq e, map_sub, this, sub_zero, map_one]`.
+-/
 theorem isUnit_mk_liftI {Pg Q : Finset (Formalism.L2.DIV.Pl D.host.E)} {x : 𝓞 D.host.E}
     (h : ∀ PP ∈ Pg ∪ Q, GlobalTheory.SW.Lev.bar x ∉ PP.asIdeal) : IsUnit (Ideal.Quotient.mk (liftI Pg Q) x) := by
   have hc : IsCoprime (Ideal.span {x}) (liftI Pg Q) := by
@@ -61,9 +87,17 @@ theorem isUnit_mk_liftI {Pg Q : Finset (Formalism.L2.DIV.Pl D.host.E)} {x : 𝓞
 section CongLemmas
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {r : ℕ} (X : ReciprocityTheory.ChartRestriction.G.FD.Data E r)
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨1, by rw [Ideal.span_singleton_one, Ideal.isCoprime_iff_sup_eq, top_sup_eq], by rwa [one_smul]⟩`.
+-/
 theorem cong_of_sub_mem {𝔪 : Ideal (𝓞 E)} {u v : Fin r → E} (h : u - v ∈ 𝔪 • X.Λ) : GlobalTheory.SW.Cong X 𝔪 u v :=
   ⟨1, by rw [Ideal.span_singleton_one, Ideal.isCoprime_iff_sup_eq, top_sup_eq], by rwa [one_smul]⟩
 
+/- English proof (translation)
+Take `⟨s, hs, hm⟩` from `h`. Use `⟨s, hs, ?_⟩` and prove the remaining obligations. Establish `: s • (u - v) = s • (y - v) - s • (y - u)`. Rewrite using `[← smul_sub]`. Use `congr 1`.
+
+Normalize the expressions using the abelian group laws. Rewrite using `[this]`. Conclude with `sub_mem hm (Submodule.smul_mem _ s hy)`.
+-/
 theorem cong_congr_left {𝔪 : Ideal (𝓞 E)} {y u v : Fin r → E} (hy : y - u ∈ 𝔪 • X.Λ)
     (h : GlobalTheory.SW.Cong X 𝔪 y v) : GlobalTheory.SW.Cong X 𝔪 u v := by
   obtain ⟨s, hs, hm⟩ := h
@@ -73,6 +107,9 @@ theorem cong_congr_left {𝔪 : Ideal (𝓞 E)} {y u v : Fin r → E} (hy : y - 
   rw [this]
   exact sub_mem hm (Submodule.smul_mem _ s hy)
 
+/- English proof (translation)
+The claim follows from `Submodule.sum_mem _ fun j _ => Submodule.smul_mem_smul (hd j) (hβ j)`.
+-/
 theorem sum_mem_of_coeff {𝔪 : Ideal (𝓞 E)} {m : ℕ} (β : Fin m → Fin r → E) (hβ : ∀ i, β i ∈ X.Λ)
     (d : Fin m → 𝓞 E) (hd : ∀ j, d j ∈ 𝔪) : ∑ j, d j • β j ∈ 𝔪 • X.Λ :=
   Submodule.sum_mem _ fun j _ => Submodule.smul_mem_smul (hd j) (hβ j)
@@ -83,17 +120,28 @@ section Mat
 open GlobalTheory.LiftLevel GlobalTheory.LiftDat
 variable {D : D7}
 
+/- English proof (translation)
+Rewrite using `[Ideal.Quotient.eq, Ideal.Quotient.eq, GlobalTheory.SW.Lev.mem_conjI, map_sub]`.
+-/
 theorem mk_conjI_eq_iff (P : Ideal (𝓞 D.host.E)) (x y : 𝓞 D.host.E) :
     Ideal.Quotient.mk (conjI P) x = Ideal.Quotient.mk (conjI P) y ↔
       Ideal.Quotient.mk P (GlobalTheory.SW.Lev.bar x) = Ideal.Quotient.mk P (GlobalTheory.SW.Lev.bar y) := by
   rw [Ideal.Quotient.eq, Ideal.Quotient.eq, GlobalTheory.SW.Lev.mem_conjI, map_sub]
 
+/- English proof (translation)
+Rewrite using `[← Matrix.map_one f (map_zero f) (map_one f), ← Matrix.ext_iff]`. Simplify using `only [Matrix.map_apply]`.
+-/
 theorem mapMat_eq_one_iff {R' : Type*} [CommRing R'] {r : ℕ} (f : 𝓞 D.host.E →+* R')
     (A : Matrix (Fin r) (Fin r) (𝓞 D.host.E)) :
     A.map f = 1 ↔ ∀ a b, f (A a b) = f ((1 : Matrix (Fin r) (Fin r) (𝓞 D.host.E)) a b) := by
   rw [← Matrix.map_one f (map_zero f) (map_one f), ← Matrix.ext_iff]
   simp only [Matrix.map_apply]
 
+/- English proof (translation)
+Rewrite using `[mem_Jgrp]`. Use `forall₂_congr fun PP hPP => ?_` and prove the remaining obligations. Rewrite using `[Units.ext_iff]`. Establish `e1 : ((Matrix.GeneralLinearGroup.map (toConj Pg Q PP (Finset.mem_union_left _ hPP)) κ : GL (Fin r) _) : Matrix (Fin r) (Fin r) _) = ct.transpose.map (Ideal.Quotient.mk (conjI PP.asIdeal))`. Use extensionality with `a b`.
+
+Rewrite using `[Matrix.GeneralLinearGroup.map_apply, hκ]`. Both sides reduce to the same expression. Rewrite using `[e1, Units.val_one, Matrix.transpose_map, Matrix.transpose_eq_one, mapMat_eq_one_iff, mapMat_eq_one_iff]`. Conclude with `forall₂_congr fun a b => mk_conjI_eq_iff _ _ _`.
+-/
 theorem jgrp_iff {Pg Q : Finset (Formalism.L2.DIV.Pl D.host.E)} {r : ℕ} (κ : GL (Fin r) (𝓞 D.host.E ⧸ liftI Pg Q))
     (ct : Matrix (Fin r) (Fin r) (𝓞 D.host.E)) (hκ : κ.val = ctᵀ.map (Ideal.Quotient.mk _)) :
     κ ∈ Jgrp Pg Q r ↔ ∀ PP ∈ Pg, ct.map ((Ideal.Quotient.mk PP.asIdeal).comp GlobalTheory.SW.Lev.bar) = 1 := by
@@ -108,6 +156,9 @@ theorem jgrp_iff {Pg Q : Finset (Formalism.L2.DIV.Pl D.host.E)} {r : ℕ} (κ : 
   rw [e1, Units.val_one, Matrix.transpose_map, Matrix.transpose_eq_one, mapMat_eq_one_iff, mapMat_eq_one_iff]
   exact forall₂_congr fun a b => mk_conjI_eq_iff _ _ _
 
+/- English proof (translation)
+Rewrite using `[RingHom.map_det, RingHom.mapMatrix_apply, Matrix.map_map, Matrix.transpose_map, Matrix.det_transpose]`. Both sides reduce to the same expression.
+-/
 theorem conjRes_det {Pg Q : Finset (Formalism.L2.DIV.Pl D.host.E)} {PP : Formalism.L2.DIV.Pl D.host.E} (h : PP ∈ Pg ∪ Q) {r : ℕ}
     (ct : Matrix (Fin r) (Fin r) (𝓞 D.host.E)) :
     conjRes Pg Q PP h (ctᵀ.map (Ideal.Quotient.mk (liftI Pg Q))).det =
@@ -123,6 +174,47 @@ namespace GlobalTheory.LiftDat
 
 open GlobalTheory.LiftDatComb GlobalTheory.LiftLevel
 
+/- English proof (translation)
+Introduce `D S T C hn Pg Q ξ h1 h2 h3 h4 β hβ hsp Lv0 hind y c hyc Y hY`. Use `set ct : Matrix (Fin T.rank) (Fin T.rank) (𝓞 D.host.E) := fun a b => c (Fin.castLE hn a) b with hct`. Establish `hTop : ∀ PP ∈ Pg ∪ Q, topL T.rank (Y PP) = ct.map ((Ideal.Quotient.mk PP.asIdeal).comp Lev.bar)`. Introduce `PP hPP`. Use extensionality with `a b`.
+
+Rewrite using `[topL, dif_pos ⟨lt_of_lt_of_le a.2 hn, b.2⟩, hY PP hPP]`. Both sides reduce to the same expression. Establish `hcong0 : ∀ i, GlobalTheory.SW.Cong C.X (liftI Pg Q) (y i) 0 ↔ ∀ j, c i j ∈ liftI Pg Q`. Introduce `i`. Prove the components needed by the constructor for the conclusion.
+
+Introduce `hc`. Take `⟨s, hs, hm⟩` from `cong_congr_left C.X (hyc i) hc`. Conclude with `hind (c i) ⟨s, hs, hm⟩`. Introduce `hc`. Use `cong_of_sub_mem C.X ?_` and prove the remaining obligations.
+
+Rewrite using `[sub_zero, ← sub_add_cancel (y i) (∑ j, c i j • β j)]`. Conclude with `add_mem (hyc i) (sum_mem_of_coeff C.X β hβ _ hc)`. Establish `hrow : ∀ PP ∈ Pg ∪ Q, ∀ i j, (Y PP i j = 0 ↔ Lev.bar (c i j) ∈ PP.asIdeal)`. Introduce `PP hPP i j`. Rewrite using `[hY PP hPP, Ideal.Quotient.eq_zero_iff_mem]`.
+
+Establish `hdetU : ∀ PP ∈ Pg ∪ Q, IsUnit (topL T.rank (Y PP)).det → Lev.bar ct.det ∉ PP.asIdeal`. Introduce `PP hPP hu hm`. Establish `e : (ct.map ((Ideal.Quotient.mk PP.asIdeal).comp Lev.bar)).det = ((Ideal.Quotient.mk PP.asIdeal).comp Lev.bar) ct.det` using `(RingHom.map_det _ _).symm`. Rewrite `hu` using `[hTop PP hPP, e, RingHom.comp_apply, Ideal.Quotient.eq_zero_iff_mem.2 hm]`. Conclude with `not_isUnit_zero hu`.
+
+Use `set L := mkLevel C Pg Q ξ h1 h2 h3 h4 β hβ hsp Lv0 with hL`. Unfold `Level.dat`. Distinguish the cases in `h : (∃ k : L.J, L.Red (fun i => y (Fin.castLE hn i)) k) ∧ ∀ k : Fin S.rank, T.rank ≤ (k : ℕ) → GlobalTheory.SW.Cong C.X L.𝔪 (y k) 0`. Rewrite using `[dif_pos h]`. Take `⟨k', hk'm, hk'c⟩` from `h.1.choose_spec`.
+
+Use `set κ := h.1.choose with hκdef`. Establish `hκval : (κ.1 : GL (Fin T.rank) (𝓞 D.host.E ⧸ liftI Pg Q)).val = ctᵀ.map (Ideal.Quotient.mk (liftI Pg Q))`. Rewrite using `[← hk'm]`. Use extensionality with `a b`. Simplify using `only [Matrix.map_apply, Matrix.transpose_apply]`.
+
+Use `Ideal.Quotient.eq.2 ?_` and prove the remaining obligations. Take `⟨s, hs, hm⟩` from `cong_congr_left C.X (hyc (Fin.castLE hn b)) (hk'c b)`. Use `hind (fun j => c (Fin.castLE hn b) j - k' j b) ⟨s, hs, by` as an intermediate fact. Use `hm using 2` and compare the differences between its conclusion and the goal. Simplify using `only [sub_zero, sub_smul, Finset.sum_sub_distrib]`.
+
+Use the proof step `rfl⟩ a`. Rewrite using `[← neg_sub]`. Conclude with `neg_mem this`. Establish `hJ` using `(jgrp_iff (κ.1 : GL (Fin T.rank) (𝓞 D.host.E ⧸ liftI Pg Q)) ct hκval).1 κ.2`. Establish `hlowc : ∀ i : Fin S.rank, T.rank ≤ (i : ℕ) → ∀ j, c i j ∈ liftI Pg Q` using `fun i hi => (hcong0 i).1 (h.2 i hi)`.
+
+Establish `hLow : ∀ PP ∈ Pg ∪ Q, LowZero T.rank (Y PP)` using `fun PP hPP i j hi _ => (hrow PP hPP i j).2 (mem_liftI.1 (hlowc i hi j) PP hPP)`. Establish `hdetQ : ∀ PP (hPP : PP ∈ Pg ∪ Q), conjRes Pg Q PP hPP (κ.1 : GL (Fin T.rank) (𝓞 D.host.E ⧸ liftI Pg Q)).val.det = (topL T.rank (Y PP)).det`. Introduce `PP hPP`. Rewrite using `[hκval]`. Conclude with `(conjRes_det hPP ct).trans (congrArg Matrix.det (hTop PP hPP).symm)`.
+
+Establish `hQc : ∀ PP ∈ Q, LowZero T.rank (Y PP) ∧ IsUnit (topL T.rank (Y PP)).det` using `fun PP hPP => ⟨hLow PP (Finset.mem_union_right _ hPP), by`. Rewrite using `[← hdetQ PP (Finset.mem_union_right _ hPP), ← Matrix.GeneralLinearGroup.val_det_apply]`. Conclude with `(Units.isUnit _).map _⟩`. Establish `hK : omegaK Pg Y = 1`. Unfold `omegaK`.
+
+Rewrite using `[if_pos]`. Introduce `PP hPP`. Conclude with `⟨hLow PP (Finset.mem_union_left _ hPP), by rw [hTop PP (Finset.mem_union_left _ hPP)]; exact hJ PP hPP⟩`. Rewrite using `[hK, one_mul]`. Unfold `omegaQ`.
+
+Rewrite using `[dif_pos hQc]`. Use `show ((lamHom Pg Q T.rank ξ (⟨κ.1, κ.2⟩ : Jgrp Pg Q T.rank) : ℂˣ) : ℂ) = _`. Rewrite using `[lamHom_apply, Units.val_inv_eq_inv_val, Units.coe_prod, ← Finset.prod_inv_distrib]`. Use `Finset.prod_congr rfl fun PP _ => ?_` and prove the remaining obligations. Establish `e : Units.map (conjRes Pg Q PP.1 (Finset.mem_union_right _ PP.2)).toMonoidHom (Matrix.GeneralLinearGroup.det (κ.1 : GL (Fin T.rank) (𝓞 D.host.E ⧸ liftI Pg Q))) = (hQc PP.1 PP.2).2.unit`.
+
+Use `ext`. Simplify using `only [Units.coe_map, RingHom.toMonoidHom_eq_coe, MonoidHom.coe_coe, IsUnit.unit_spec, Matrix.GeneralLinearGroup.val_det_apply]`. Conclude with `hdetQ _ _`. Rewrite using `[e, _root_.zpow_neg_one]`. Rewrite using `[dif_neg h]`.
+
+Use `symm`. Assume the negation of the conclusion as `hne`. Establish `hK : omegaK Pg Y ≠ 0` using `left_ne_zero_of_mul hne`. Establish `hQ : omegaQ Q T.rank ξ (-1) Y ≠ 0` using `right_ne_zero_of_mul hne`. Establish `hKc : ∀ PP ∈ Pg, LowZero T.rank (Y PP) ∧ topL T.rank (Y PP) = 1`.
+
+Assume the negation of the conclusion as `hc`. Conclude with `hK (by unfold omegaK; rw [if_neg hc])`. Establish `hQc : ∀ PP ∈ Q, LowZero T.rank (Y PP) ∧ IsUnit (topL T.rank (Y PP)).det`. Assume the negation of the conclusion as `hc`. Conclude with `hQ (by unfold omegaQ; rw [dif_neg hc])`.
+
+Apply `h` to reduce the goal to its premises. Establish `hLow : ∀ PP ∈ Pg ∪ Q, LowZero T.rank (Y PP)`. Introduce `PP hPP`. Break down `Finset.mem_union.1 hPP with hP | hP` into its components or cases. Use `exacts [(hKc PP hP).1, (hQc PP hP).1]`.
+
+Establish `hlowc : ∀ i : Fin S.rank, T.rank ≤ (i : ℕ) → ∀ j, c i j ∈ liftI Pg Q` using `fun i hi j => mem_liftI.2 fun PP hPP => (hrow PP hPP i j).1 (hLow PP hPP i j hi j.2)`. Establish `hdet : IsUnit (ctᵀ.map (Ideal.Quotient.mk (liftI Pg Q))).det`. Rewrite using `[← RingHom.mapMatrix_apply, ← RingHom.map_det, Matrix.det_transpose]`. Use `isUnit_mk_liftI fun PP hPP => hdetU PP hPP ?_` and prove the remaining obligations. Break down `Finset.mem_union.1 hPP with hP | hP` into its components or cases.
+
+Rewrite using `[(hKc PP hP).2, Matrix.det_one]`. Conclude with `isUnit_one`. Conclude with `(hQc PP hP).2`. Use `set κ : GL (Fin T.rank) (𝓞 D.host.E ⧸ liftI Pg Q) := ((Matrix.isUnit_iff_isUnit_det _).2 hdet).unit with hκ`. Establish `hκval : κ.val = ctᵀ.map (Ideal.Quotient.mk (liftI Pg Q))` using `IsUnit.unit_spec _`.
+
+Establish `hκJ : κ ∈ Jgrp Pg Q T.rank` using `(jgrp_iff κ ct hκval).2 fun PP hPP => by`. Rewrite using `[← hTop PP (Finset.mem_union_left _ hPP)]`. Conclude with `(hKc PP hPP).2`. Conclude with `⟨⟨⟨κ, hκJ⟩, ctᵀ, hκval.symm, fun i => cong_of_sub_mem C.X (hyc (Fin.castLE hn i))⟩, fun k hk => (hcong0 k).2 (hlowc k hk)⟩`.
+-/
 theorem dat_mkLevel_eq : ∀ (D : D7) (S T : HSp D) (C : Ctx S T) (hn : T.rank ≤ S.rank) (Pg Q : Finset (Formalism.L2.DIV.Pl D.host.E)) (ξ : ∀ PP : Formalism.L2.DIV.Pl D.host.E, (Formalism.L2.DIV.kP PP)ˣ →* ℂˣ) (h1 : GlobalTheory.LiftLevel.liftI Pg Q ≠ ⊤) (h2 : GlobalTheory.LiftLevel.liftI Pg Q ≠ ⊥) (h3 : IsCoprime (GlobalTheory.LiftLevel.liftI Pg Q) (conjI (GlobalTheory.LiftLevel.liftI Pg Q))) (h4 : IsCoprime (GlobalTheory.LiftLevel.liftI Pg Q) (Ideal.span {2})) (β : Fin T.rank → Fin T.rank → D.host.E) (hβ : ∀ i, β i ∈ C.X.Λ) (hsp : C.X.Λ ≤ Submodule.span (𝓞 D.host.E) (Set.range β) ⊔ GlobalTheory.LiftLevel.liftI Pg Q • C.X.Λ) (Lv0 : GlobalTheory.SW.Level C.X), (∀ d : Fin T.rank → 𝓞 D.host.E, GlobalTheory.SW.Cong C.X (GlobalTheory.LiftLevel.liftI Pg Q) (∑ j, d j • β j) 0 → ∀ j, d j ∈ GlobalTheory.LiftLevel.liftI Pg Q) → ∀ (y : Matrix (Fin S.rank) (Fin T.rank) D.host.E) (c : Fin S.rank → Fin T.rank → 𝓞 D.host.E), (∀ i, y i - ∑ j, c i j • β j ∈ GlobalTheory.LiftLevel.liftI Pg Q • C.X.Λ) → ∀ Y : ∀ PP : Formalism.L2.DIV.Pl D.host.E, Matrix (Fin S.rank) (Fin T.rank) (Formalism.L2.DIV.kP PP), (∀ PP ∈ Pg ∪ Q, ∀ i j, Y PP i j = Ideal.Quotient.mk PP.asIdeal (GlobalTheory.SW.Lev.bar (c i j))) → (GlobalTheory.LiftDat.mkLevel C Pg Q ξ h1 h2 h3 h4 β hβ hsp Lv0).dat hn y = omegaK Pg Y * omegaQ Q T.rank ξ (-1) Y := by
   intro D S T C hn Pg Q ξ h1 h2 h3 h4 β hβ hsp Lv0 hind y c hyc Y hY
   set ct : Matrix (Fin T.rank) (Fin T.rank) (𝓞 D.host.E) := fun a b => c (Fin.castLE hn a) b with hct

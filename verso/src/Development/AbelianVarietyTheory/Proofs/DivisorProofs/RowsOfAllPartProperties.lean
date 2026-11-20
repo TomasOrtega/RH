@@ -6,6 +6,9 @@ open Formalism.BasicNotions Formalism.MainNotions GlobalTheory.EX GlobalTheory.E
 
 namespace GlobalTheory.Fc.Ind
 
+/- English proof (translation)
+Introduce `D O c b hF hB hP hFr hD hN hG hT`. Conclude with `{ exAt := hF.1 jEvBar := hF.2.1 geoAct := hF.2.2.1 evInj := hF.2.2.2 ioExt := hB.ioExt oneMap := hB.oneMap prim := hP.1 sep := hP.2 ok := b.ok1 framesOK := b.B.Q.frames hFr divRows := hD psi := b.psi d0 := GlobalTheory.T.base_level_rows_eq_dimension_all D O c b export_ := hN good …`.
+-/
 theorem pRows_of_parts : ∀ (D : D7) (O : Obj D) (c : ℝ) (b : Ind.Part D O c), Ind.PFire D O c b → Ind.PRB D O c b →
     Ind.PPA D O c b → Ind.PFrames D O c b → Ind.PDiv D O c b → Ind.PNmj D O c b → Formalism.BasicNotions.GoodFTAll D → b.pt.Ties →
     Ind.PRows D O c b := by

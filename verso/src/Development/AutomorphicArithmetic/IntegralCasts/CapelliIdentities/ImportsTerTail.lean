@@ -1,5 +1,12 @@
 import Mathlib
 
+/- English proof (translation)
+Introduce `Ω _ A a b ha hb hab m`. Proceed by induction on `m with`. Consider the case `zero => simp`. Consider the case `succ n ih`. Establish `e : a ^ (n + 1) - b ^ (n + 1) = (a ^ n - b ^ n) * a + (a - b) * b ^ n` using `by ring`.
+
+Rewrite using `[e]`. Use `A.valuation.map_add_lt ?_ ?_` and prove the remaining obligations. Rewrite using `[map_mul]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[map_mul, map_pow]`.
+
+Establish `hb' : A.valuation b ^ n ≤ 1` using `pow_le_one' hb n`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem UpperTheory.Reformulated.B.Qf13.pow_cong :
     ∀ {Ω : Type} [inst : Field Ω] (A : ValuationSubring Ω) {a b : Ω},
     (A.valuation : Ω → A.ValueGroup) a ≤ (1 : A.ValueGroup) →

@@ -22,10 +22,26 @@ namespace GlobalTheory.SemiTrace
 
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
+/- English proof (translation)
+The claim follows from `D.sp.cm.cmUnram.2.1 _ x`.
+-/
 theorem tauE_star (D : D7) (τ : D.what₂.Tau) (x : D.host.E) :
     tauE D τ (star x) = starRingEnd ℂ (tauE D τ x) :=
   D.sp.cm.cmUnram.2.1 _ x
 
+/- English proof (translation)
+Establish `h1 : ((Algebra.trace ℚ D.host.E e : ℚ) : ℂ) = ∑ σ : D.host.E →+* ℂ, σ e`. Use `trace_eq_sum_embeddings (K := ℚ) (L := D.host.E) ℂ (x := e)` as an intermediate fact. Rewrite `this` using `[eq_ratCast]`. Rewrite using `[this]`. Conclude with `(Fintype.sum_equiv (RingHom.equivRatAlgHom D.host.E ℂ) _ _ fun _ => rfl).symm`.
+
+Establish `hi` using `GlobalTheory.StdRat.tauE_injective D`. Establish `hcm` using `GlobalTheory.StdRat.tauE_cm D`. Establish `hb : Function.Bijective (Sum.elim (tauE D) fun t => ComplexEmbedding.conjugate (tauE D t))`. Establish `hc : ∀ σ : D.host.E →+* ℂ, ComplexEmbedding.conjugate (ComplexEmbedding.conjugate σ) = σ` using `fun σ => star_star σ`. Prove the components needed by the constructor for the conclusion.
+
+Apply the tactic sequence `rintro (a | a) (b | b) h <;> simp only [Sum.elim_inl, Sum.elim_inr] at h`. Rewrite using `[hi h]`. Conclude with `absurd ⟨a, h⟩ ((hcm (tauE D b)).1 ⟨b, rfl⟩)`. Conclude with `absurd ⟨b, h.symm⟩ ((hcm (tauE D a)).1 ⟨a, rfl⟩)`. Use `congrArg ComplexEmbedding.conjugate h` as an intermediate fact.
+
+Rewrite `this` using `[hc, hc]`. Rewrite using `[hi this]`. Introduce `σ`. Distinguish the cases in `h : ∃ t, tauE D t = ComplexEmbedding.conjugate σ`. Take `⟨t, ht⟩` from `h`.
+
+Conclude with `⟨Sum.inr t, by simp only [Sum.elim_inr]; rw [ht, hc]⟩`. Take `⟨t, ht⟩` from `(hcm σ).2 h`. Conclude with `⟨Sum.inl t, ht⟩`. Establish `h4` using `hb.sum_comp fun σ : D.host.E →+* ℂ => σ e`. Rewrite `h4` using `[Fintype.sum_sum_type, ← h1]`.
+
+Simplify using `only [Sum.elim_inl, Sum.elim_inr, ComplexEmbedding.conjugate_coe_eq] at h4`. Rewrite using `[← h4, ← Finset.sum_add_distrib]`. Use `Finset.sum_congr rfl fun t _ => ?_` and prove the remaining obligations. Rewrite using `[Complex.add_conj]`.
+-/
 theorem sum_two_re_tauE (D : D7) (e : D.host.E) :
     ∑ t, (((2 * (tauE D t e).re : ℝ)) : ℂ) = ((Algebra.trace ℚ D.host.E e : ℚ) : ℂ) := by
   classical
@@ -60,6 +76,11 @@ theorem sum_two_re_tauE (D : D7) (e : D.host.E) :
   refine Finset.sum_congr rfl fun t _ => ?_
   rw [Complex.add_conj]
 
+/- English proof (translation)
+Establish `h : Complex.I * ((u⁻¹ : ℝ) : ℂ) * ((1 + Complex.I * (u : ℂ)) / 2) ^ 2 = ((-1 / 2 : ℝ) : ℂ) + Complex.I * (((1 - u ^ 2) / (4 * u) : ℝ) : ℂ)`. Establish `hu' : (u : ℂ) ≠ 0` using `Complex.ofReal_ne_zero.2 hu.ne'`. Use `push_cast`. Clear the denominators using the available nonvanishing facts. Put the polynomial expressions in normal form.
+
+Rewrite using `[Complex.I_sq, Complex.I_pow_three]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[h]`. Simplify using `only [Complex.add_re, Complex.mul_re, Complex.I_re, Complex.I_im, Complex.ofReal_re, Complex.ofReal_im]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem re_xi_mul_sq (u : ℝ) (hu : 0 < u) :
     (Complex.I * ((u⁻¹ : ℝ) : ℂ) * ((1 + Complex.I * (u : ℂ)) / 2) ^ 2).re = -1 / 2 := by
   have h : Complex.I * ((u⁻¹ : ℝ) : ℂ) * ((1 + Complex.I * (u : ℂ)) / 2) ^ 2
@@ -79,6 +100,27 @@ end GlobalTheory.SemiTrace
 namespace GlobalTheory.SemiTrace
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
+/- English proof (translation)
+Introduce `D ψ θ S T a b hS hT δ sc hP y k hk`. Substitute `hS hT` using the available equality. Establish `hd : 0 < Real.sqrt D.host.d` using `Real.sqrt_pos.2 (Nat.cast_pos.2 (Nat.pos_of_ne_zero D.host.hyp.2.1.ne_zero))`. Use `set M := (LinearMap.toMatrix' y).reindex (finCongr (rfl : T.rank = T.rank).symm) (finCongr (rfl : S.rank = S.rank).symm) with hMdef`. Establish `hMij : ∀ i j, M i j = y (Pi.single j 1) i`.
+
+Introduce `i j`. Simplify using `[M, LinearMap.toMatrix'_apply]`. Use `set s : D.what₂.Tau → ℝ := fun τ => ∑ i, ∑ j, Complex.normSq (tauE D τ (M i j)) with hs`. Establish `hh : ∀ τ, tauE D τ (GlobalTheory.LatVac.hRat S T M M) = ((s τ : ℝ) : ℂ)`. Introduce `τ`.
+
+Simplify using `only [GlobalTheory.LatVac.hRat, hP.gS, hP.gT, inv_one, Matrix.one_apply, ite_mul, one_mul, zero_mul, mul_ite, mul_one, mul_zero, Finset.sum_ite_eq, Finset.sum_ite_eq', Finset.mem_univ, if_true, map_sum, map_mul, tauE_star, hs]`. Simplify using `only [apply_ite (⇑(tauE D τ)), map_zero, Finset.sum_ite_eq, Finset.mem_univ, if_true, map_mul, tauE_star]`. Use `push_cast`. Rewrite using `[Finset.sum_comm]`. Combine the equalities or inequalities in the displayed calculation.
+
+Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_comm]`. Simplify using `only [Finset.sum_ite_eq', Finset.sum_ite_eq, Finset.mem_univ, if_true]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[Complex.normSq_eq_conj_mul_self]`.
+
+Use `_ = _ := Finset.sum_comm`. Establish `hτ : ∀ τ, (tauE D τ (D.host.xi0 * ((1 + D.host.sqrtMinusD) / 2) ^ 2 * GlobalTheory.LatVac.hRat S T M M)).re = -(s τ) / 2`. Introduce `τ`. Rewrite using `[map_mul, map_mul, map_pow, map_div₀, map_add, map_one, map_ofNat, hh, hP.xi, Formalism.L2.Theta.tauE_sqrtMinusD, Complex.re_mul_ofReal, re_xi_mul_sq _ hd]`. Expand and normalize the polynomial expressions, which then agree.
+
+Establish `hk' : (k : ℂ) = ((-(∑ τ, s τ) : ℝ) : ℂ)`. Establish `e1` using `sum_two_re_tauE D (D.host.xi0 * ((1 + D.host.sqrtMinusD) / 2) ^ 2 * GlobalTheory.LatVac.hRat S T M M)`. Rewrite `e1` using `[← hk]`. Move the coercions through the operations in `at e1`. Rewrite using `[← e1]`.
+
+Simplify using `only [hτ]`. Use `push_cast`. Rewrite using `[← Finset.sum_neg_distrib]`. Use `Finset.sum_congr rfl fun τ _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+
+Establish `hsc : sc * Complex.normSq δ = 2 * (Real.sqrt D.host.d)⁻¹`. Rewrite using `[← Complex.sq_norm]`. Conclude with `hP.scale`. Establish `hq : Formalism.L2.Th1.H.qOf (Real.sqrt D.host.d / 2) (HV sc) (embH (tauE D) δ y) = ∑ τ, s τ`. Simplify using `only [Formalism.L2.Th1.H.qOf, HV, LinearMap.mk₂'ₛₗ_apply, embH, AddMonoidHom.coe_mk, ZeroHom.coe_mk, Complex.mul_conj]`.
+
+Rewrite using `[show ((sc : ℂ) * ∑ x, ∑ x_1, ∑ x_2, ((Complex.normSq (δ * tauE D x (y (Pi.single x_2 1) x_1)) : ℝ) : ℂ)) = ((sc * ∑ x, ∑ x_1, ∑ x_2, Complex.normSq (δ * tauE D x (y (Pi.single x_2 1) x_1)) : ℝ) : ℂ) by push_cast; rfl, Complex.ofReal_re]`. Repeatedly rewrite using `[Complex.normSq_mul, ← Finset.mul_sum]`. Simplify using `only [hs, hMij]`. Rewrite using `[← mul_assoc sc, hsc]`. Clear the denominators using the available nonvanishing facts.
+
+Establish `hsum : ((∑ τ, s τ : ℝ) : ℂ) = -(k : ℂ)` using `by rw [hk']; push_cast; ring`. Rewrite using `[alV, Formalism.L2.Th1.H.alphaQ, hq, hsum, show (Real.pi : ℂ) * Complex.I * -(k : ℂ) = ((-k : ℤ) : ℂ) * ((Real.pi : ℂ) * Complex.I) by push_cast; ring, Complex.exp_int_mul, Complex.exp_pi_mul_I, _root_.zpow_neg, ← _root_.inv_zpow, inv_neg, inv_one]`.
+-/
 theorem alV_embH_eq_neg_one_zpow : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ) (θ : InfFam D) (S T : HSp D) (a b : ℕ) (hS : S.rank = a) (hT : T.rank = b) (δ : ℂ) (sc : ℝ), StdPair θ S T δ sc ψ → ∀ (y : Formalism.L2.Col.HomE D.host.E a b) (k : ℤ), (k : ℚ) = Algebra.trace ℚ D.host.E (D.host.xi0 * ((1 + D.host.sqrtMinusD) / 2) ^ 2 * GlobalTheory.LatVac.hRat S T ((LinearMap.toMatrix' (y)).reindex (finCongr hT.symm) (finCongr hS.symm)) ((LinearMap.toMatrix' (y)).reindex (finCongr hT.symm) (finCongr hS.symm))) → alV D.host.d sc (embH (tauE D) δ y) = (-1 : ℂ) ^ k := by
   intro D ψ θ S T a b hS hT δ sc hP y k hk
   subst hS hT

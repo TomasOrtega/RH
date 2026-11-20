@@ -15,6 +15,9 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 namespace GlobalTheory.FinUA
 
+/- English proof (translation)
+Unfold `GlobalTheory.AdLat.hermA`. Simplify using `only [dotProduct, Matrix.mulVec, Matrix.map_apply, Matrix.neg_apply, Matrix.transpose_apply, TensorProduct.tmul_neg, Finset.mul_sum, ← Finset.sum_neg_distrib]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun a _ => Finset.sum_congr rfl fun b _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem hermA_neg_transpose {F E : Type} [Field F] [NumberField F] [Field E] [Algebra F E] {n : ℕ}
     (c : E ≃ₐ[F] E) (J : Matrix (Fin n) (Fin n) E) (x y : Fin n → GlobalTheory.AdLat.RA F E) :
     GlobalTheory.AdLat.hermA c (-Jᵀ) x y =
@@ -27,6 +30,11 @@ theorem hermA_neg_transpose {F E : Type} [Field F] [NumberField F] [Field E] [Al
   refine Finset.sum_congr rfl fun a _ => Finset.sum_congr rfl fun b _ => ?_
   ring
 
+/- English proof (translation)
+Rewrite using `[hermA_neg_transpose, hermA_neg_transpose]`. Use `congr 1`. Establish `e : (fun b => GlobalTheory.AdLat.sg (FiniteAdeleRing (𝓞 F) F) c ((g *ᵥ y) b)) = (g.map (GlobalTheory.AdLat.sg (FiniteAdeleRing (𝓞 F) F) c)) *ᵥ (fun b => GlobalTheory.AdLat.sg (FiniteAdeleRing (𝓞 F) F) c (y b))`. Use function extensionality and compare the values at `b`. Simplify using `[Matrix.mulVec, dotProduct, map_sum]`.
+
+Rewrite using `[e]`. Use `conv_rhs => rw [← h]`. Rewrite using `[Matrix.mul_assoc, ← Matrix.mulVec_mulVec, ← Matrix.mulVec_mulVec, Matrix.dotProduct_mulVec _ (Matrix.transpose _), Matrix.vecMul_transpose]`.
+-/
 theorem hermA_mulVec {F E : Type} [Field F] [NumberField F] [Field E] [Algebra F E] {n : ℕ}
     (c : E ≃ₐ[F] E) (J : Matrix (Fin n) (Fin n) E) (g : Matrix (Fin n) (Fin n) (GlobalTheory.AdLat.RA F E))
     (h : (g.map (GlobalTheory.AdLat.sg (FiniteAdeleRing (𝓞 F) F) c))ᵀ *
@@ -46,6 +54,17 @@ theorem hermA_mulVec {F E : Type} [Field F] [NumberField F] [Field E] [Algebra F
   rw [Matrix.mul_assoc, ← Matrix.mulVec_mulVec, ← Matrix.mulVec_mulVec, Matrix.dotProduct_mulVec _ (Matrix.transpose _),
     Matrix.vecMul_transpose]
 
+/- English proof (translation)
+Introduce `D V g`. Use `⟨(Matrix.isUnit_iff_isUnit_det _).1 (finHom V g).isUnit, fun x y => hermA_mulVec _ _ _ ?_ x y⟩` and prove the remaining obligations. Establish `h : Formalism.UG.cT (sigR (AF D.host.F) D.sp.cm.sig) g.1.1 * JR (AF D.host.F) V.gram * g.1.1 = JR (AF D.host.F) V.gram` using `g.2`. Set `φ` to `(Algebra.TensorProduct.map (sndA D.host.F) (AlgHom.id D.host.F D.host.E)).toRingHom`. Establish `hc : ∀ t, D.sp.cm.sig t = IsCMField.complexConj D.host.E t` using `(GlobalTheory.Member.latHat_eq_hat_and_gram D V).2.2.2.2.2.1`.
+
+Establish `hφ : ∀ z, φ (sigR (AF D.host.F) D.sp.cm.sig z) = GlobalTheory.AdLat.sg (Af D.host.F) (IsCMField.complexConj D.host.E) (φ z)`. Introduce `z`. Proceed by induction on `z using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul a t => simp [φ, sigR, GlobalTheory.AdLat.sg, hc]`.
+
+Consider the case `add a b ha hb => simp only [map_add, ha, hb]`. Establish `hJ : (JR (AF D.host.F) V.gram).map φ = V.gram.map fun t => ((1 : Af D.host.F) ⊗ₜ[D.host.F] t : Af D.host.F ⊗[D.host.F] D.host.E)`. Use extensionality with `a b`. Simplify using `[φ, JR, inclR]`. Establish `h2` using `congrArg (fun M => Matrix.map M φ) h`.
+
+Simplify using `only [Matrix.map_mul] at h2`. Rewrite `h2` using `[hJ]`. Establish `hg : (Formalism.UG.cT (sigR (AF D.host.F) D.sp.cm.sig) g.1.1).map φ = ((g.1.1.map φ).map (GlobalTheory.AdLat.sg (Af D.host.F) (IsCMField.complexConj D.host.E)))ᵀ`. Use extensionality with `a b`. Conclude with `hφ _`.
+
+Rewrite `h2` using `[hg]`. Conclude with `h2`.
+-/
 theorem isUA_finHom : ∀ (D : D7) (V : Formalism.BasicNotions.TH.HSp D) (g : GA D V),
     GlobalTheory.UCls.IsUA (IsCMField.complexConj D.host.E) (-(V.gram)ᵀ)
       ((finHom V g).1 : Matrix (Fin V.rank) (Fin V.rank) (GlobalTheory.AdLat.RA (maximalRealSubfield D.host.E) D.host.E)) := by

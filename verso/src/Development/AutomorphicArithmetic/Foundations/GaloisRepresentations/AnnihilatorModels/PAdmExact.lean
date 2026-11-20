@@ -4,6 +4,13 @@ import Development.AutomorphicArithmetic.Foundations.GaloisRepresentations.Annih
 open TensorProduct Module
 open UpperTheory.Gal.crystallineComparison
 
+/- English proof (translation)
+Take `⟨fU, bU⟩` from `hB U ρU`. Take `⟨fV, -⟩` from `hB V ρV`. Take `⟨fW, bW⟩` from `hB W ρW`. Take `⟨hle, hdim⟩` from `hD F G B σ L U V W ρU ρV ρW i p hi hp inj ex fV`. Establish `hmono` using `Submodule.finrank_mono hle`.
+
+Establish `hrank : finrank L V = finrank L U + finrank L W`. Establish `h1` using `LinearMap.finrank_range_add_finrank_ker p`. Rewrite `h1` using `[LinearMap.range_eq_top.mpr surj, finrank_top, LinearMap.exact_iff.mp ex, LinearMap.finrank_range_of_inj inj]`. Use linear arithmetic over natural numbers and integers. Unfold `admitted at hA ⊢`.
+
+Rewrite `hA` using `[hrank, mul_add]`. Establish `h2 : finrank L (Dinv σ ρU) = e * finrank L U` using `by omega`. Establish `h3 : finrank L (Dinv σ ρW) = e * finrank L W` using `by omega`. Use `⟨h2, h3, Submodule.eq_of_le_of_finrank_eq hle ?_⟩` and prove the remaining obligations. Use linear arithmetic over natural numbers and integers.
+-/
 private theorem admissible_exact_sequence (hD : DinvExact) {F G B : Type} [Field F] [Group G] [AddCommGroup B] [Module F B]
     (σ : G → End F B) {L : Type} [Field L] [Algebra F L] {e : ℕ} (hB : Bound σ L e)
     {U V W : Type} [AddCommGroup U] [Module L U] [Module F U] [IsScalarTower F L U] [Module.Finite L U]
@@ -32,6 +39,19 @@ private theorem admissible_exact_sequence (hD : DinvExact) {F G B : Type} [Field
   refine ⟨h2, h3, Submodule.eq_of_le_of_finrank_eq hle ?_⟩
   omega
 
+/- English proof (translation)
+Introduce `hD`. Unfold `AdmExact`. Introduce `F G B _ _ _ _ σ L _ _ e hB V W _ _ _ _ _ _ _ _ _ _ ρ ρ' f hf`. Use `⟨fun inj hA => ?_, fun surj hA => ?_⟩` and prove the remaining obligations. Set `ρQ : Representation L G (W ⧸ LinearMap.range f)` to `{ toFun := fun g => (LinearMap.range f).mapQ (LinearMap.range f) (ρ' g) (by`.
+
+Introduce and unpack `_ ⟨v, rfl⟩`. Conclude with `⟨ρ g v, hf g v⟩)`. Use the proof step `map_one' := by`. Use extensionality with `w`. Simplify using the standard rewrite rules.
+
+Use the proof step `map_mul' := by`. Introduce `g h`. Use extensionality with `w`. Simplify using `[map_mul] }`. Establish `hQ : UpperTheory.Gal.crystallineComparison.Inter ρ' ρQ (LinearMap.range f).mkQ` using `fun g w => rfl`.
+
+Conclude with `(admissible_exact_sequence hD σ hB ρ ρ' ρQ f (LinearMap.range f).mkQ hf hQ inj (LinearMap.exact_map_mkQ_range f) (Submodule.mkQ_surjective _) hA).1`. Establish `hK : ∀ (g : G) (x : LinearMap.ker f), ρ g x ∈ LinearMap.ker f`. Introduce `g x`. Rewrite using `[LinearMap.mem_ker, hf g x, LinearMap.mem_ker.mp x.2, map_zero]`. Set `ρK : Representation L G (LinearMap.ker f)` to `{ toFun := fun g => LinearMap.codRestrict (LinearMap.ker f) ((ρ g).comp (LinearMap.ker f).subtype) (hK g) map_one' := by`.
+
+Use extensionality with `x`. Simplify using the standard rewrite rules. Use the proof step `map_mul' := by`. Introduce `g h`. Use extensionality with `x`.
+
+Simplify using `only [map_mul, Module.End.mul_apply]`. Use `rfl }`. Establish `hKi : UpperTheory.Gal.crystallineComparison.Inter ρK ρ (LinearMap.ker f).subtype` using `fun g x => rfl`. Take `⟨-, hW, hmap⟩` from `admissible_exact_sequence hD σ hB ρK ρ ρ' (LinearMap.ker f).subtype f hKi hf (LinearMap.ker f).injective_subtype (LinearMap.exact_subtype_ker_map f) surj hA`. Conclude with `⟨hW, hmap⟩`.
+-/
 theorem UpperTheory.Gal.crystallineComparison.admissibleExact_of_dualInvariantExact :
     DinvExact → AdmExact := by
   intro hD

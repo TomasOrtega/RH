@@ -16,6 +16,19 @@ open scoped Classical
 
 namespace GlobalTheory.ThetaUniq
 
+/- English proof (translation)
+Introduce `_ F E _ _ _ _ _ σ B n d X W M hB hM _ L hadd hsmul hadm hinv`. Establish `hψ : IsStd B.ψ` using `hB.std`. Establish `hschr : ∀ y z : Fin n × Fin d → F, ∀ Ψ ∈ schA F (Fin n × Fin d), L (schr B.ψ ((fun i => algebraMap F (AF F) (y i)), (fun i => algebraMap F (AF F) (z i))) Ψ) = L Ψ`. Introduce `y z Ψ hΨ`. Take `⟨x, hx⟩` from `GlobalTheory.T.model_coordinates_rational_surjective F E σ B n d X W M hB hM y z`.
+
+Establish `h` using `hinv x Ψ hΨ`. Rewrite `h` using `[Darboux.rho, hx]`. Conclude with `h`. Establish `htr : ∀ ξ : Fin n × Fin d → F, ∀ Ψ ∈ schA F (Fin n × Fin d), L (fun x => Ψ (x + fun i => algebraMap F (AF F) (ξ i))) = L Ψ`. Introduce `ξ Ψ hΨ`.
+
+Establish `h` using `hschr ξ 0 Ψ hΨ`. Establish `e : schr B.ψ ((fun i => algebraMap F (AF F) (ξ i)), (fun i => algebraMap F (AF F) ((0 : Fin n × Fin d → F) i))) Ψ = fun x => Ψ (x + fun i => algebraMap F (AF F) (ξ i))`. Use function extensionality and compare the values at `x`. Simplify using `[schr]`. Rewrite `h` using `[e]`.
+
+Conclude with `h`. Establish `hmod : ∀ z : Fin n × Fin d → F, ∀ Ψ ∈ schA F (Fin n × Fin d), L (fun x => B.ψ (x ⬝ᵥ fun i => algebraMap F (AF F) (z i)) * Ψ x) = L Ψ`. Introduce `z Ψ hΨ`. Establish `h` using `hschr 0 z Ψ hΨ`. Establish `e : schr B.ψ ((fun i => algebraMap F (AF F) ((0 : Fin n × Fin d → F) i)), (fun i => algebraMap F (AF F) (z i))) Ψ = fun x => B.ψ (x ⬝ᵥ fun i => algebraMap F (AF F) (z i)) * Ψ x`.
+
+Establish `h0 : (fun i => algebraMap F (AF F) ((0 : Fin n × Fin d → F) i)) = 0` using `by funext i; simp`. Use function extensionality and compare the values at `x`. Rewrite using `[h0]`. Simplify using `[schr]`. Rewrite `h` using `[e]`.
+
+Conclude with `h`. Conclude with `GlobalTheory.T.translation_invariant_functional_schwartz F (Fin n × Fin d) L hadd hsmul htr (GlobalTheory.T.schwartz_functional_archimedean_factor_alt F (Fin n × Fin d) B.ψ hψ L hadd hsmul hadm htr hmod)`.
+-/
 theorem unique_of_ratInv : GlobalTheory.ThK.KP → ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E)
     (n d : ℕ) (X : Spc F E n) (W : Spc F E d) (M : Model σ X W), B.IsGood σ → M.IsGood B.ψ → (∃ r s r' s' : ℕ, X.IsHerm σ B r s ∧ W.IsSkew σ B r' s') →
     ∀ L : Fn F n d → ℂ, (∀ Ψ ∈ schA F (Fin n × Fin d), ∀ Ψ' ∈ schA F (Fin n × Fin d), L (Ψ + Ψ') = L Ψ + L Ψ') →

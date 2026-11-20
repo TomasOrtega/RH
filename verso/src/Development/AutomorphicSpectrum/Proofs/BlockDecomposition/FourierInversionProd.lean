@@ -12,20 +12,37 @@ namespace GlobalTheory.CompanionTheory.TubeFourier
 def planeCoord : EuclideanSpace ℝ (Fin 2) ≃ᵐ ℝ × ℝ :=
   (MeasurableEquiv.toLp 2 (Fin 2 → ℝ)).symm.trans MeasurableEquiv.finTwoArrow
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem planeCoord_apply (v : EuclideanSpace ℝ (Fin 2)) : planeCoord v = (v 0, v 1) := rfl
 
+/- English proof (translation)
+Rewrite using `[show (planeCoord : EuclideanSpace ℝ (Fin 2) → ℝ × ℝ) = fun v => (v 0, v 1) from funext planeCoord_apply]`. Use `fun_prop`.
+-/
 theorem continuous_planeCoord : Continuous planeCoord := by
   rw [show (planeCoord : EuclideanSpace ℝ (Fin 2) → ℝ × ℝ) = fun v => (v 0, v 1) from funext planeCoord_apply]
   fun_prop
 
+/- English proof (translation)
+Conclude with `(volume_preserving_finTwoArrow ℝ).comp (EuclideanSpace.volume_preserving_symm_measurableEquiv_toLp (Fin 2))`.
+-/
 theorem measurePreserving_planeCoord : MeasurePreserving planeCoord volume volume := by
   exact (volume_preserving_finTwoArrow ℝ).comp (EuclideanSpace.volume_preserving_symm_measurableEquiv_toLp (Fin 2))
 
+/- English proof (translation)
+Rewrite using `[planeCoord_apply, planeCoord_apply]`. Simplify using `[rdot, PiLp.inner_apply, Fin.sum_univ_two, mul_comm]`.
+-/
 theorem inner_eq_rdot (v w : EuclideanSpace ℝ (Fin 2)) :
     inner ℝ v w = rdot (planeCoord v) (planeCoord w) := by
   rw [planeCoord_apply, planeCoord_apply]
   simp [rdot, PiLp.inner_apply, Fin.sum_univ_two, mul_comm]
 
+/- English proof (translation)
+Rewrite using `[Real.fourier_eq', ← measurePreserving_planeCoord.integral_comp' (fun y : ℝ × ℝ => Complex.exp (-(Complex.I * ((rdot y ((2 * Real.pi) • planeCoord w) : ℝ) : ℂ))) • h y)]`. Use `congr 1`. Use extensionality with `v`. Rewrite using `[inner_eq_rdot]`. Use `congr 2`.
+
+Simplify using `only [rdot, Prod.smul_fst, Prod.smul_snd, smul_eq_mul]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem fourier_comp_planeCoord {X : Type} [NormedAddCommGroup X] [NormedSpace ℂ X]
     (h : ℝ × ℝ → X) (w : EuclideanSpace ℝ (Fin 2)) :
     𝓕 (fun v => h (planeCoord v)) w =
@@ -40,6 +57,19 @@ theorem fourier_comp_planeCoord {X : Type} [NormedAddCommGroup X] [NormedSpace �
   push_cast
   ring
 
+/- English proof (translation)
+Introduce `X _ _ _ h hc hi hT y`. Use `set T : ℝ × ℝ → X := fun t => ∫ y : ℝ × ℝ, Complex.exp (-(Complex.I * ((rdot y t : ℝ) : ℂ))) • h y with hTdef`. Use `set f : EuclideanSpace ℝ (Fin 2) → X := fun v => h (planeCoord v) with hf`. Establish `hfc : Continuous f` using `hc.comp continuous_planeCoord`. Establish `hfi : Integrable f` using `(measurePreserving_planeCoord.integrable_comp_emb planeCoord.measurableEmbedding).mpr hi`.
+
+Establish `hFf : ∀ w, 𝓕 f w = T ((2 * Real.pi) • planeCoord w)` using `fun w => fourier_comp_planeCoord h w`. Establish `hFi : Integrable (𝓕 f)`. Rewrite using `[show 𝓕 f = fun w => T ((2 * Real.pi) • planeCoord w) from funext hFf]`. Establish `h1 : Integrable (fun t : ℝ × ℝ => T ((2 * Real.pi) • t))` using `hT.comp_smul (by positivity)`. Conclude with `(measurePreserving_planeCoord.integrable_comp_emb planeCoord.measurableEmbedding).mpr h1`.
+
+Establish `hinv` using `congrFun (hfc.fourierInv_fourier_eq hfi hFi) (planeCoord.symm y)`. Establish `hsub` using `Measure.integral_comp_smul (μ := (volume : Measure (ℝ × ℝ))) (f := fun t => Complex.exp (Complex.I * ((rdot y t : ℝ) : ℂ)) • T t) (R := 2 * Real.pi)`. Establish `hrank : Module.finrank ℝ (ℝ × ℝ) = 2` using `by simp`. Rewrite `hsub` using `[hrank]`. Establish `hlhs : 𝓕⁻ (𝓕 f) (planeCoord.symm y) = ∫ s : ℝ × ℝ, (fun t => Complex.exp (Complex.I * ((rdot y t : ℝ) : ℂ)) • T t) ((2 * Real.pi) • s)`.
+
+Rewrite using `[Real.fourierInv_eq', ← measurePreserving_planeCoord.integral_comp' (fun s : ℝ × ℝ => (fun t => Complex.exp (Complex.I * ((rdot y t : ℝ) : ℂ)) • T t) ((2 * Real.pi) • s))]`. Use `congr 1`. Use extensionality with `w`. Simplify using `only [hFf, inner_eq_rdot, MeasurableEquiv.apply_symm_apply]`. Use `congr 2`.
+
+Simplify using `only [rdot, Prod.smul_fst, Prod.smul_snd, smul_eq_mul]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Rewrite `hlhs` using `[hinv]`. Establish `hy : h y = f (planeCoord.symm y)` using `by simp [hf]`.
+
+Rewrite using `[hy, hlhs, hsub, abs_of_pos (by positivity), ← Complex.coe_smul]`. Use `push_cast`. Both sides reduce to the same expression.
+-/
 theorem fourier_inversion_prod : ∀ (X : Type) [NormedAddCommGroup X] [NormedSpace ℂ X] [CompleteSpace X] (h : ℝ × ℝ → X), Continuous h → Integrable h → Integrable (fun t : ℝ × ℝ => ∫ y : ℝ × ℝ, Complex.exp (-(Complex.I * ((rdot y t : ℝ) : ℂ))) • h y) → ∀ y : ℝ × ℝ, h y = (((2 * Real.pi) ^ 2 : ℂ)⁻¹) • ∫ t : ℝ × ℝ, Complex.exp (Complex.I * ((rdot y t : ℝ) : ℂ)) • ∫ y' : ℝ × ℝ, Complex.exp (-(Complex.I * ((rdot y' t : ℝ) : ℂ))) • h y' := by
   intro X _ _ _ h hc hi hT y
   set T : ℝ × ℝ → X := fun t => ∫ y : ℝ × ℝ, Complex.exp (-(Complex.I * ((rdot y t : ℝ) : ℂ))) • h y with hTdef

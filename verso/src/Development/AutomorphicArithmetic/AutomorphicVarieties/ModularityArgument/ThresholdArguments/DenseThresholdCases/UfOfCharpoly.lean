@@ -18,6 +18,11 @@ open UpperTheory.V UpperTheory.V.Af UpperTheory.V.Sd UpperTheory.V.Z.Sym UpperTh
 open UpperTheory.V.W (Plc Lp)
 open scoped Matrix
 attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField
+/- English proof (translation)
+Set `e : ℂˣ →* (Qbar l)ˣ` to `Units.map ι.symm.toRingHom.toMonoidHom`. Establish `he : ∀ x : ℂˣ, ι ((e x : (Qbar l)ˣ) : Qbar l) = (x : ℂ)` using `fun x => by simp [e]`. Establish `hc : g.val.charpoly = (X - C ((e (c 0) : (Qbar l)ˣ) : Qbar l)) * (X - C ((e (c 1) : (Qbar l)ˣ) : Qbar l))`. Apply `Polynomial.map_injective ι.toRingHom ι.injective` to reduce the goal to its premises. Rewrite using `[h, Fin.prod_univ_two]`.
+
+Simplify using `[Polynomial.map_mul, he]`. Rewrite using `[(Ga.ufFacts _ g).1 _ _ hc]`. Simplify using `only [_root_.map_add, ← _root_.map_div, ← _root_.map_inv, he]`.
+-/
 private theorem uf_of_charpoly {l : ℕ} [Fact l.Prime] (ι : Qbar l ≃+* ℂ) (g : GL (Fin 2) (Qbar l)) (c : Fin 2 → ℂˣ)
     (h : g.val.charpoly.map ι.toRingHom = ∏ j, (X - C (c j : ℂ))) :
     ι (Ga.uf g) = ((c 0 / c 1 : ℂˣ) : ℂ) + (((c 0 / c 1 : ℂˣ)⁻¹ : ℂˣ) : ℂ) := by
@@ -30,6 +35,9 @@ private theorem uf_of_charpoly {l : ℕ} [Fact l.Prime] (ι : Qbar l ≃+* ℂ) 
     simp [Polynomial.map_mul, he]
   rw [(Ga.ufFacts _ g).1 _ _ hc]
   simp only [_root_.map_add, ← _root_.map_div, ← _root_.map_inv, he]
+/- English proof (translation)
+Establish `e` using `uf_of_charpoly ι g (fun j => φ j x * absPow k (-((((2 : ℕ) : ℂ) - 1) / 2)) x) h`. Establish `hx : (φ 0 x * absPow k (-((((2 : ℕ) : ℂ) - 1) / 2)) x) / (φ 1 x * absPow k (-((((2 : ℕ) : ℂ) - 1) / 2)) x) = (φ 0 / φ 1) x`. Simplify using `only [MonoidHom.div_apply, mul_div_mul_right_eq_div]`. Simplify using `only [hx] at e`. Conclude with `e`.
+-/
 private theorem uf_of_pol {l : ℕ} [Fact l.Prime] (ι : Qbar l ≃+* ℂ) {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k]
     [IsNonarchimedeanLocalField k] (g : GL (Fin 2) (Qbar l)) (φ : Fin 2 → kˣ →* ℂˣ) (x : kˣ)
     (h : g.val.charpoly.map ι.toRingHom = UpperTheory.V.Z.Sym.W.psPol φ x) :
@@ -40,12 +48,20 @@ private theorem uf_of_pol {l : ℕ} [Fact l.Prime] (ι : Qbar l ≃+* ℂ) {k : 
     simp only [MonoidHom.div_apply, mul_div_mul_right_eq_div]
   simp only [hx] at e
   exact e
+/- English proof (translation)
+Establish `h0 : (x : K) ≠ 0` using `x.ne_zero`. Simplify using `only [Units.val_pow_eq_pow_val, Units.val_inv_eq_inv_val, inv_pow]`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
+-/
 private theorem two_roots {K : Type} [Field K] (x : Kˣ) :
     (((x ^ 2 : Kˣ) : K) + (((x ^ 2)⁻¹ : Kˣ) : K)) = ((x : K) + ((x⁻¹ : Kˣ) : K)) ^ 2 - 2 := by
   have h0 : (x : K) ≠ 0 := x.ne_zero
   simp only [Units.val_pow_eq_pow_val, Units.val_inv_eq_inv_val, inv_pow]
   field_simp
   ring
+/- English proof (translation)
+Introduce `e`. Apply the tactic sequence `fin_cases i <;> fin_cases j`. Conclude with `hp (by simpa using e)`. Conclude with `h0 (by`. Establish `e' : ψ 0 = ψ 1 * p` using `e`.
+
+Rewrite using `[e', mul_div_cancel_left])`. Conclude with `h1 (by`. Establish `e' : ψ 1 = ψ 0 * p` using `e`. Rewrite using `[e', div_mul_cancel_left])`. Conclude with `hp (by simpa using e)`.
+-/
 private theorem two_ne {H : Type*} [CommGroup H] {p : H} (ψ : Fin 2 → H) (hp : p ≠ 1) (h0 : ψ 0 / ψ 1 ≠ p)
     (h1 : ψ 0 / ψ 1 ≠ p⁻¹) (i j : Fin 2) : ψ i ≠ ψ j * p := by
   intro e
@@ -58,6 +74,11 @@ private theorem two_ne {H : Type*} [CommGroup H] {p : H} (ψ : Fin 2 → H) (hp 
       have e' : ψ 1 = ψ 0 * p := e
       rw [e', div_mul_cancel_left])
   · exact hp (by simpa using e)
+/- English proof (translation)
+Introduce `e`. Establish `e' : absPow k (((1 : ℝ)) : ℂ) = absPow k (((0 : ℝ)) : ℂ)`. Use `push_cast`. Rewrite using `[absPow_zero]`. Conclude with `e`.
+
+Conclude with `one_ne_zero (GlobalTheory.TypeTwo.absPow_ofReal_injective k _ _ e')`.
+-/
 private theorem abs_ne_one (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] :
     absPow k 1 ≠ 1 := by
   intro e
@@ -66,6 +87,11 @@ private theorem abs_ne_one (k : Type) [Field k] [ValuativeRel k] [TopologicalSpa
     rw [absPow_zero]
     exact e
   exact one_ne_zero (GlobalTheory.TypeTwo.absPow_ofReal_injective k _ _ e')
+/- English proof (translation)
+Establish `two : absPow k 2 = absPow k 1 ^ 2`. Rewrite using `[pow_two, ← absPow_add]`. Evaluate the numerical expressions. Use `two_ne ψ (abs_ne_one k) (fun e => h.2 2 (by norm_num) ?_) (fun e => h.2 (-2) (by norm_num) ?_) i j` and prove the remaining obligations. Rewrite using `[e]`.
+
+Use `push_cast`. Conclude with `two.symm`. Rewrite using `[e]`. Use `push_cast`. Rewrite using `[absPow_neg, two, inv_pow]`.
+-/
 private theorem reg_one {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
     (ψ : Fin 2 → kˣ →* ℂˣ) (h : Reg (ψ 0 / ψ 1)) (i j : Fin 2) : ψ i ≠ ψ j * absPow k 1 := by
   have two : absPow k 2 = absPow k 1 ^ 2 := by
@@ -73,11 +99,31 @@ private theorem reg_one {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace 
   refine two_ne ψ (abs_ne_one k) (fun e => h.2 2 (by norm_num) ?_) (fun e => h.2 (-2) (by norm_num) ?_) i j
   · rw [e]; push_cast; exact two.symm
   · rw [e]; push_cast; rw [absPow_neg, two, inv_pow]
+/- English proof (translation)
+Use `two_ne ψ (abs_ne_one k) (fun e' => h.2 1 (by norm_num) ?_) (fun e' => h.2 (-1) (by norm_num) ?_) i j` and prove the remaining obligations. Rewrite using `[← e, e']`. Simplify using the standard rewrite rules. Rewrite using `[← e, e']`. Simplify using `[absPow_neg]`.
+-/
 private theorem reg_two {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
     (ψ : Fin 2 → kˣ →* ℂˣ) (a : kˣ →* ℂˣ) (h : Reg a) (e : ψ 0 / ψ 1 = a ^ 2) (i j : Fin 2) : ψ i ≠ ψ j * absPow k 1 := by
   refine two_ne ψ (abs_ne_one k) (fun e' => h.2 1 (by norm_num) ?_) (fun e' => h.2 (-1) (by norm_num) ?_) i j
   · rw [← e, e']; simp
   · rw [← e, e']; simp [absPow_neg]
+/- English proof (translation)
+Introduce `Pw L Ω _ _ _ _ _ _ l _ ι hl hE M m hM r σ hAd hGal P ψ hGood hReg σ' hσ' hev`. Take `⟨r', hGal', -⟩` from `_root_.UpperTheory.V.Z.Sym.W.galois_exists_w_statement Pw L Ω l ι hl hE 2 (by norm_num) σ' hσ'`. Establish `hr` using `Ga.badClosed L Ω l r hGal.cont`. Establish `hr'` using `Ga.badClosed L Ω l r' hGal'.cont`. Set `E : Set (G L Ω)` to `{g | Ga.uf (r' g) = Ga.uf (r g) ^ 2 - 2}`.
+
+Establish `hEc : IsClosed E` using `isClosed_eq hr'.1 ((hr.1.pow 2).sub continuous_const)`. Establish `hstab : ∀ c : G (maximalRealSubfield L) Ω, IsConjEl c → ∀ s s' : G L Ω, s'.restrictScalars (maximalRealSubfield L) = c * s.restrictScalars (maximalRealSubfield L) * c⁻¹ → s' ∈ E → s ∈ E`. Introduce `c hc s s' hss hs'`. Take `⟨Q, hQ⟩` from `hGal.pair c hc`. Take `⟨Q', hQ'⟩` from `hGal'.pair c hc`.
+
+Establish `e1` using `(Ga.ufFacts _ (r s)).2.2.2.1 (r s') Q _ (hQ s s' hss)`. Establish `e2` using `(Ga.ufFacts _ (r' s)).2.2.2.1 (r' s') Q' _ (hQ' s s' hss)`. Express the relevant statement in the definitionally equal form `Ga.uf (r' s') = Ga.uf (r s') ^ 2 - 2 at hs'`. Express the relevant statement in the definitionally equal form `Ga.uf (r' s) = Ga.uf (r s) ^ 2 - 2`. Rewrite using `[← e1, ← e2]`.
+
+Conclude with `hs'`. Establish `hfrob : ∀ᶠ w in Filter.cofinite, w ∈ P → ∀ s, Ga.FrobAt w s → s ∈ E`. Use `hev.mono fun w hw hwP s hs => ?_` and prove the remaining obligations. Take `⟨ψ', ⟨hsm', τ', hc', hq'⟩, hrat⟩` from `hw hwP`. Take `⟨hsp, hlw, hsm, τ, hc, ⟨eqv⟩⟩` from `hGood.mem w hwP`.
+
+Take `⟨A, hA, hF⟩` from `hs`. Take `⟨a, ha⟩` from `GlobalTheory.localArtinExists_holds L Ω A w hA`. Establish `hq : IsSubquotient τ.ρ (prinSeries (ψ w))` using `IsSubquotient.of_injective eqv.toIntertwiningMap eqv.toLinearEquiv.injective`. Establish `hpt : UpperTheory.V.Z.Sym.W.PT τ` using `_root_.UpperTheory.V.Z.Sym.W.plain_of_statement Pw.af.litN L 2 w τ (ψ w) hsm hq (reg_one (ψ w) (hReg w hwP))`. Establish `hpt' : UpperTheory.V.Z.Sym.W.PT τ'` using `_root_.UpperTheory.V.Z.Sym.W.plain_of_statement Pw.af.litN L 2 w τ' ψ' hsm' hq' (reg_two ψ' _ (hReg w hwP) hrat)`.
+
+Set `t : Weil hA` to `⟨s, mem_Weil_of_isFrob hA hF⟩`. Establish `c1` using `_root_.UpperTheory.V.Z.Sym.W.eigW_alt Pw.af L Ω l ι 2 r w hlw A hA a ha τ (hGal.loc w hsp τ hc) hpt (ψ w) hsm hq t`. Establish `c2` using `_root_.UpperTheory.V.Z.Sym.W.eigW_alt Pw.af L Ω l ι 2 r' w hlw A hA a ha τ' (hGal'.loc w hsp τ' hc') hpt' ψ' hsm' hq' t`. Establish `u1` using `uf_of_pol ι (r s) (ψ w) (a t) c1`. Establish `u2` using `uf_of_pol ι (r' s) ψ' (a t) c2`.
+
+Rewrite `u2` using `[hrat]`. Apply `ι.injective` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `ι (Ga.uf (r' s)) = ι (Ga.uf (r s) ^ 2 - 2)`. Rewrite using `[u2, _root_.map_sub, _root_.map_pow, u1, _root_.map_ofNat]`. Conclude with `two_roots _`.
+
+Establish `hsub` using `Ga.spread L Ω hE E (Ga.Bad r) hEc hr.2.2 hstab P M hM hGood.meets hfrob`. Establish `hreg` using `_root_.UpperTheory.V.Z.Sym.Ga.exists_regular_elt_in_open_subgroup_infinite_order L Ω l ι M m r hAd.toIn_alt`. Establish `hirr` using `Ga.sym4Irr l (G L Ω) r hGal.cont hAd.irr (fun H hH => let ⟨s, hs, _, a, b, h⟩ := hreg H hH; ⟨s, hs, a, b, h⟩)`. Take `⟨s, -, hs, -⟩` from `hreg ⊤ isOpen_univ`. Conclude with `Ga.noKappa l (G L Ω) r r' hirr (Ga.Bad r)ᶜ hr.2.2.isOpen_compl ⟨s, hs⟩ (fun g hg => hsub hg)`.
+-/
 theorem UpperTheory.V.Z.Sym.W.branch_two_w_statement :
     _root_.UpperTheory.V.Z.Sym.W.Branch2WAlt := by
   intro Pw L Ω _ _ _ _ _ _ l _ ι hl hE M m hM r σ hAd hGal P ψ hGood hReg σ' hσ' hev

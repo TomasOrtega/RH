@@ -30,12 +30,18 @@ def AdForms (ρ : Γ →* Module.End ℂ W) (J : Subgroup G) (χ : J →* ℂˣ)
 
 def stab (J : Subgroup G) (y : G) : Subgroup Γ := J.comap ((MulAut.conj y⁻¹).toMonoidHom.comp ι)
 
+/- English proof (translation)
+Simplify using `[stab, MulAut.conj_apply]`.
+-/
 theorem mem_stab {J : Subgroup G} {y : G} {γ : Γ} : γ ∈ stab ι J y ↔ y⁻¹ * ι γ * y ∈ J := by
   simp [stab, MulAut.conj_apply]
 
 def stabK {J : Subgroup G} {y : G} (γ : stab ι J y) : J :=
   ⟨(y⁻¹ * ι (γ : Γ) * y)⁻¹, J.inv_mem ((mem_stab ι).1 γ.2)⟩
 
+/- English proof (translation)
+Simplify using `only [stabK]`. Use `group`.
+-/
 theorem stabK_spec {J : Subgroup G} {y : G} (γ : stab ι J y) : ι (γ : Γ) * y * (stabK ι γ : G) = y := by
   simp only [stabK]
   group
@@ -90,6 +96,9 @@ def decG (h : G) : Γ := (P.reps h).exists.choose_spec.choose
 
 def decK (h : G) : J := (P.reps h).exists.choose_spec.choose_spec.choose
 
+/- English proof (translation)
+Conclude with `(P.reps h).exists.choose_spec.choose_spec.choose_spec`.
+-/
 theorem dec_spec (h : G) : h = ι (P.decG h) * P.y (P.decC h) * (P.decK h : G) := by
   exact (P.reps h).exists.choose_spec.choose_spec.choose_spec
 
@@ -108,6 +117,9 @@ def extL : S.Forms →ₛₗ[σ] (G → W) where
     simp only [ext, Submodule.coe_smul, Pi.smul_apply, map_smulₛₗ, Pi.smul_apply, RingHom.id_apply]
     rw [smul_comm]
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem extL_apply (f : S.Forms) : P.extL f = P.ext f := rfl
 
 end ClassPres

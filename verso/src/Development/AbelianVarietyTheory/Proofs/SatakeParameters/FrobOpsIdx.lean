@@ -17,6 +17,31 @@ noncomputable section
 namespace GlobalTheory.FrobOpsIdx
 open Polynomial
 
+/- English proof (translation)
+Introduce `hS E Ω _ _ _ _ _ _ l _ ι a Kw W0 hW`. Establish `hl : l.Prime` using `Fact.out`. Set `J : Type` to `{p : HeightOneSpectrum (𝓞 E) × ValuationSubring Ω × G E Ω × ℕ // p.1 ∈ W0 ∧ IsPlaceOver p.2.1 p.1 ∧ IsFrob p.2.1 (normV p.1) p.2.2.1 ∧ 1 ≤ p.2.2.2}`. Establish `hf : ∀ j : J, ∃ f : GL (Fin a) (j.1.1.adicCompletion E) →₀ ℂ, (∀ g, ∃ (m : ℤ) (e : ℕ), f g = (m : ℂ) / ((normV j.1.1 : ℕ) : ℂ) ^ e) ∧ ∀ (σ : SmIrr (GL (Fin a) (j.1.1.adicCompletion E))) (B : Multiset ℂˣ), GlobalTheory.LFun.HasSatGL j.1.1 σ.ρ B → ∀ v ∈ PRep.fixed σ.ρ (GlobalTheory …` using `fun j => (hS E j.1.1 a).2 (j.1.2.2.2 : ℤ)`. Set `zz : ∀ j : J, SmIrr (GL (Fin a) (j.1.1.adicCompletion E)) → ℂ` to `fun j σ => if h : ∃ B, GlobalTheory.LFun.HasSatGL j.1.1 σ.ρ B then ((UpperTheory.V.Af.algSat a (normV j.1.1) h.choose).map (· ^ j.1.2.2.2)).sum else 0`.
+
+Establish `hz : ∀ (j : J) (σ : SmIrr (GL (Fin a) (j.1.1.adicCompletion E))) (B : Multiset ℂˣ), GlobalTheory.LFun.HasSatGL j.1.1 σ.ρ B → zz j σ = ((UpperTheory.V.Af.algSat a (normV j.1.1) B).map (· ^ j.1.2.2.2)).sum`. Introduce `j σ B hB`. Establish `h : ∃ B, GlobalTheory.LFun.HasSatGL j.1.1 σ.ρ B` using `⟨B, hB⟩`. Simplify using `only [zz, dif_pos h]`. Rewrite using `[show h.choose = B from h.choose_spec.unique hB]`.
+
+Set `T : LocOps l ι Kw J` to `{ pl := fun j => j.1.1 split := fun j => (hW _ j.2.1).1 away := fun j => (hW _ j.2.1).2.1 f := fun j => (hf j).choose int := fun j g => by`. Take `⟨m, e, he⟩` from `(hf j).choose_spec.1 g`. Rewrite using `[he]`. Conclude with `GlobalTheory.FrobOps.norm_le_one ι m _ e (GlobalTheory.FrobOps.not_dvd_normV hl _ (hW _ j.2.1).2.1)`. Use `z := zz`.
+
+Use `act := fun j σ v hv => by`. Rewrite `hv` using `[(hW _ j.2.1).2.2]`. Distinguish the cases in `h : ∃ B, GlobalTheory.LFun.HasSatGL j.1.1 σ.ρ B`. Take `⟨B, hB⟩` from `h`. Rewrite using `[hz j σ B hB, (hf j).choose_spec.2 σ B hB v hv]`.
+
+Simplify using `only [zpow_natCast]`. Establish `h0 : PRep.fixed σ.ρ (GlobalTheory.LFun.KGL j.1.1 a) = ⊥`. Assume the negation of the conclusion as `hne`. Conclude with `h ((hS E j.1.1 a).1 σ hne)`. Rewrite `hv` using `[h0, Submodule.mem_bot]`.
+
+Substitute `hv` using the available equality. Simplify using `[opOf] }`. Set `fr : J → G E Ω` to `fun j => j.1.2.2.1`. Set `nn : J → ℕ` to `fun j => j.1.2.2.2`. Set `x : J → G E Ω` to `fun j => (fr j)⁻¹ ^ nn j`.
+
+Use `⟨J, T, x, fr, nn, fun j => rfl, ?_, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `j`. Conclude with `⟨j.2.1, j.1.2.1, j.2.2.1, j.2.2.2.1⟩`. Introduce `w hw A hA s hsF`. Conclude with `⟨⟨(w, A, s, 1), hw, hA, hsF, le_rfl⟩, rfl, rfl, rfl⟩`.
+
+Introduce `j g`. Take `⟨m, e, he⟩` from `(hf j).choose_spec.1 g`. Use `⟨(m : ℚ) / ((normV j.1.1 : ℕ) : ℚ) ^ e, ?_⟩` and prove the remaining obligations. Use `show (hf j).choose g = _`. Rewrite using `[he]`.
+
+Use `push_cast`. Both sides reduce to the same expression. Introduce `j σ _ B hB ρ hFE show ι.symm (zz j σ) = trc ρ (x j)`. Rewrite using `[hz j σ B hB]`. Apply `ι.injective` to reduce the goal to its premises.
+
+Rewrite using `[RingEquiv.apply_symm_apply, GlobalTheory.FrobOps.iota_trc]`. Conclude with `(GlobalTheory.FrobOps.trace_pow_of_charpoly _ _ (by rw [Matrix.charpoly_map]; exact hFE) _).symm`. Introduce `w hw σ _ B hBσ r hr A hA s hsF`. Rewrite using `[← Matrix.charpoly_map]`. Use `GlobalTheory.CharpolyNewton.charpoly_eq_prod_of_trace_pow ℂ a _ _ ?_ ?_` and prove the remaining obligations.
+
+Simplify using `[UpperTheory.V.Af.algSat, hBσ.card]`. Introduce `n hn`. Set `j : J` to `⟨(w, A, s, n), hw, hA, hsF, hn⟩`. Establish `h2 : trc r (x j) = ι.symm (zz j σ)` using `hr j rfl`. Rewrite `h2` using `[hz j σ B hBσ]`.
+
+Rewrite using `[← GlobalTheory.FrobOps.iota_trc]`. Express the relevant statement in the definitionally equal form `ι (trc r (x j)) = _`. Rewrite using `[h2, RingEquiv.apply_symm_apply]`.
+-/
 theorem frobOpsIdx : SphOps → ∀ (E Ω : Type) [Field E] [NumberField E] [IsCMField E] [Field Ω] [Algebra E Ω] [IsAlgClosure E Ω] (l : ℕ) [Fact l.Prime] (ι : Qbar l ≃+* ℂ) (a : ℕ) (Kw : Levels E a) (W0 : Set (HeightOneSpectrum (𝓞 E))), (∀ w ∈ W0, IsSplitAt w ∧ ((l : ℕ) : 𝓞 E) ∉ w.asIdeal ∧ Kw w = GlobalTheory.LFun.KGL w a) → ∃ (J : Type) (T : LocOps l ι Kw J) (x fr : J → G E Ω) (n : J → ℕ), (∀ j, x j = (fr j)⁻¹ ^ n j) ∧ (∀ j, T.pl j ∈ W0 ∧ ∃ A : ValuationSubring Ω, IsPlaceOver A (T.pl j) ∧ IsFrob A (normV (T.pl j)) (fr j)) ∧ (∀ w ∈ W0, ∀ A : ValuationSubring Ω, IsPlaceOver A w → ∀ s : G E Ω, IsFrob A (normV w) s → ∃ j, T.pl j = w ∧ fr j = s ∧ n j = 1) ∧ (∀ j g, ∃ q : ℚ, T.f j g = q) ∧ (∀ (j : J) (σ : SmIrr (GL (Fin a) ((T.pl j).adicCompletion E))), GlobalTheory.PRep.fixed σ.ρ (Kw (T.pl j)) ≠ ⊥ → ∀ B, GlobalTheory.LFun.HasSatGL (T.pl j) σ.ρ B → ∀ ρ : G E Ω →* GL (Fin a) (Qbar l), ((ρ (fr j)⁻¹ : GL (Fin a) (Qbar l)) : Matrix (Fin a) (Fin a) (Qbar l)).charpoly.map ι.toRingHom = ((UpperTheory.V.Af.algSat a (normV (T.pl j)) B).map fun b => Polynomial.X - Polynomial.C b).prod → ι.symm (T.z j σ) = trc ρ (x j)) ∧ ∀ w ∈ W0, ∀ σ : SmIrr (GL (Fin a) (w.adicCompletion E)), GlobalTheory.PRep.fixed σ.ρ (Kw w) ≠ ⊥ → ∀ B, GlobalTheory.LFun.HasSatGL w σ.ρ B → ∀ r : G E Ω →* GL (Fin a) (Qbar l), (∀ j (h : T.pl j = w), trc r (x j) = ι.symm (T.z j (h ▸ σ))) → ∀ A : ValuationSubring Ω, IsPlaceOver A w → ∀ s : G E Ω, IsFrob A (normV w) s → ((r s⁻¹ : GL (Fin a) (Qbar l)) : Matrix (Fin a) (Fin a) (Qbar l)).charpoly.map ι.toRingHom = ((UpperTheory.V.Af.algSat a (normV w) B).map fun b => Polynomial.X - Polynomial.C b).prod := by
   intro hS E Ω _ _ _ _ _ _ l _ ι a Kw W0 hW
   classical

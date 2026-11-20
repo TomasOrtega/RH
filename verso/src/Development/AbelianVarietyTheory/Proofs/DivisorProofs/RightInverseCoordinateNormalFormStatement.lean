@@ -24,6 +24,9 @@ open scoped Classical
 attribute [local instance] MvPolynomial.gradedAlgebra
 
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.RightInvCompl.exists_mul_eq_inclusion | exact GlobalTheory.RightInvCompl.exists_mul_eq_inclusion | (intros; apply GlobalTheory.RightInvCompl.exists_mul_eq_inclusion <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.right_inverse_coordinate_normal_form : ∀ (K : Type) [Field K] (N n : ℕ) (g : Matrix (Fin N) (Fin n) K) (c : Matrix (Fin n) (Fin N) K), g * c = 1 →
     N ≤ n ∧ ∃ M P : Matrix (Fin n) (Fin n) K, M * P = 1 ∧ P * M = 1 ∧ g * M = (Matrix.of fun (j : Fin N) (k : Fin n) => if (j : ℕ) = (k : ℕ) then (1 : K) else 0) := by
   first | exact @GlobalTheory.RightInvCompl.exists_mul_eq_inclusion | exact GlobalTheory.RightInvCompl.exists_mul_eq_inclusion | (intros; apply GlobalTheory.RightInvCompl.exists_mul_eq_inclusion <;> assumption)

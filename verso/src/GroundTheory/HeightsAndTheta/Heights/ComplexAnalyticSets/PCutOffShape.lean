@@ -12,6 +12,11 @@ noncomputable section
 private def cutProfile (k : ℕ) (w : ℝ) : ℝ :=
   if w = 0 then 0 else if 1 ≤ w then 1 else cutStep (Real.log (-Real.log w) / ((k : ℝ) + 1))
 
+/- English proof (translation)
+Establish `hk : (0 : ℝ) < (k : ℝ) + 1` using `by positivity`. Establish `h1 : Real.log w < -Real.exp ((k : ℝ) + 1)`. Rewrite using `[← Real.log_abs, ← Real.log_exp (-Real.exp _)]`. Conclude with `Real.log_lt_log (abs_pos.2 h0) hw`. Establish `h2 : (k : ℝ) + 1 < Real.log (-Real.log w)`.
+
+Rewrite using `[← Real.log_exp ((k : ℝ) + 1)]`. Conclude with `Real.log_lt_log (Real.exp_pos _) (by linarith)`. Establish `h3 : 1 < Real.log (-Real.log w) / ((k : ℝ) + 1)` using `(one_lt_div hk).2 h2`. Conclude with `Real.smoothTransition.zero_of_nonpos (by linarith)`.
+-/
 private theorem cutStep_small (k : ℕ) {w : ℝ} (h0 : w ≠ 0) (hw : |w| < cutLevel k) :
     cutStep (Real.log (-Real.log w) / ((k : ℝ) + 1)) = 0 := by
   have hk : (0 : ℝ) < (k : ℝ) + 1 := by positivity
@@ -24,6 +29,13 @@ private theorem cutStep_small (k : ℕ) {w : ℝ} (h0 : w ≠ 0) (hw : |w| < cut
   have h3 : 1 < Real.log (-Real.log w) / ((k : ℝ) + 1) := (one_lt_div hk).2 h2
   exact Real.smoothTransition.zero_of_nonpos (by linarith)
 
+/- English proof (translation)
+Establish `hk : (0 : ℝ) < (k : ℝ) + 1` using `by positivity`. Establish `hw0 : 0 < w` using `(Real.exp_pos _).trans hw`. Establish `hl : -Real.exp (((k : ℝ) + 1) / 2) < Real.log w`. Rewrite using `[← Real.log_exp (-Real.exp _)]`. Conclude with `Real.log_lt_log (Real.exp_pos _) hw`.
+
+Establish `hneg : 0 < -Real.log w` using `neg_pos.2 (Real.log_neg hw0 h1)`. Establish `h2 : Real.log (-Real.log w) < ((k : ℝ) + 1) / 2`. Rewrite using `[← Real.log_exp (((k : ℝ) + 1) / 2)]`. Conclude with `Real.log_lt_log hneg (by linarith)`. Establish `h3 : Real.log (-Real.log w) / ((k : ℝ) + 1) < 1 / 2`.
+
+Rewrite using `[div_lt_iff₀ hk]`. Combine the linear equalities and inequalities to obtain the conclusion. Conclude with `Real.smoothTransition.one_of_one_le (by linarith)`.
+-/
 private theorem cutStep_large (k : ℕ) {w : ℝ} (hw : Real.exp (-Real.exp (((k : ℝ) + 1) / 2)) < w)
     (h1 : w < 1) : cutStep (Real.log (-Real.log w) / ((k : ℝ) + 1)) = 1 := by
   have hk : (0 : ℝ) < (k : ℝ) + 1 := by positivity
@@ -39,6 +51,19 @@ private theorem cutStep_large (k : ℕ) {w : ℝ} (hw : Real.exp (-Real.exp (((k
     rw [div_lt_iff₀ hk]; linarith
   exact Real.smoothTransition.one_of_one_le (by linarith)
 
+/- English proof (translation)
+Take `⟨hc0, hc1⟩` from `cutLevel_mem k`. Use `set c' := Real.exp (-Real.exp (((k : ℝ) + 1) / 2))`. Establish `hc'1 : c' < 1` using `Real.exp_lt_one_iff.2 (neg_neg_of_pos (Real.exp_pos _))`. Use `(isOpen_Ioi.contDiffOn_iff).2 fun x hx => ?_` and prove the remaining obligations. Break down `lt_or_ge x (cutLevel k) with hxc | hxc` into its components or cases.
+
+Use `(contDiffAt_const (c := (0 : ℝ))).congr_of_eventuallyEq ?_` and prove the remaining obligations. Use `filter_upwards [Ioo_mem_nhds (Set.mem_Ioi.1 hx) hxc] with w hw`. Establish `hwa : |w| < cutLevel k` using `abs_lt.2 hw`. Unfold `cutProfile`. Use `split_ifs with h0 h1`.
+
+Both sides reduce to the same expression. Conclude with `absurd (h1.trans_lt (hw.2.trans hc1)) (lt_irrefl _)`. Conclude with `cutStep_small k h0 hwa`. Break down `lt_or_ge c' x with hxc' | hxc'` into its components or cases. Use `(contDiffAt_const (c := (1 : ℝ))).congr_of_eventuallyEq ?_` and prove the remaining obligations.
+
+Use `filter_upwards [Ioi_mem_nhds hxc'] with w hw`. Establish `hw0 : 0 < w` using `(Real.exp_pos _).trans hw`. Unfold `cutProfile`. Use `split_ifs with h0 h1`. Conclude with `absurd h0 hw0.ne'`.
+
+Both sides reduce to the same expression. Conclude with `cutStep_large k hw (not_le.1 h1)`. Establish `hx0 : 0 < x` using `hc0.trans_le hxc`. Establish `hx1 : x < 1` using `hxc'.trans_lt hc'1`. Establish `hform : ContDiffAt ℝ ∞ (fun w => cutStep (Real.log (-Real.log w) / ((k : ℝ) + 1))) x`.
+
+Establish `hlog : ContDiffAt ℝ ∞ (fun w => Real.log (-Real.log w)) x` using `((Real.contDiffAt_log.2 hx0.ne').neg).log (neg_ne_zero.2 (Real.log_neg hx0 hx1).ne)`. Conclude with `Real.smoothTransition.contDiffAt.comp x (contDiffAt_const.sub (contDiffAt_const.mul (hlog.div_const _)))`. Use `hform.congr_of_eventuallyEq ?_` and prove the remaining obligations. Use `filter_upwards [Ioo_mem_nhds hx0 hx1] with w hw`. Simplify using `[cutProfile, hw.1.ne', not_le.2 hw.2]`.
+-/
 private theorem cutProfile_contDiffOn (k : ℕ) :
     ContDiffOn ℝ ∞ (cutProfile k) (Set.Ioi (-cutLevel k)) := by
   obtain ⟨hc0, hc1⟩ := cutLevel_mem k
@@ -77,6 +102,21 @@ private theorem cutProfile_contDiffOn (k : ℕ) :
     filter_upwards [Ioo_mem_nhds hx0 hx1] with w hw
     simp [cutProfile, hw.1.ne', not_le.2 hw.2]
 
+/- English proof (translation)
+Introduce `m Q`. Establish `hF : ∀ k, logLogCut Q k = cutProfile k ∘ fun y => ‖eval y Q‖ ^ 2` using `fun k => rfl`. Establish `hstep : ∀ t, cutStep t ∈ Set.Icc (0 : ℝ) 1` using `fun t => ⟨Real.smoothTransition.nonneg _, Real.smoothTransition.le_one _⟩`. Use `⟨fun k => ⟨?_, fun y => ?_, fun y hy => ?_⟩, fun y hy => ?_⟩` and prove the remaining obligations. Rewrite using `[hF]`.
+
+Establish `hw : ContDiff ℝ ∞ fun y : Fin m → ℂ => ‖eval y Q‖ ^ 2` using `contDiff_norm_sq ℝ |>.comp (((AnalyticOnNhd.eval_mvPolynomial Q).contDiff (n := ∞)).restrict_scalars ℝ)`. Conclude with `(cutProfile_contDiffOn k).comp_contDiff hw fun y => (neg_neg_of_pos (cutLevel_mem k).1).trans_le (by positivity)`. Unfold `logLogCut`. Use `split_ifs`. Conclude with `⟨le_rfl, zero_le_one⟩`.
+
+Conclude with `⟨zero_le_one, le_rfl⟩`. Conclude with `hstep _`. Establish `h1` using `(cutLevel_mem k).2`. Unfold `logLogCut logAbsSq`. Use `split_ifs with h0 h1'`.
+
+Both sides reduce to the same expression. Conclude with `absurd (h1'.trans_lt (hy.trans h1)) (lt_irrefl _)`. Conclude with `cutStep_small k h0 (by rwa [abs_of_nonneg (by positivity)])`. Establish `hw0 : ‖eval y Q‖ ^ 2 ≠ 0` using `by positivity`. Distinguish the cases in `hw1 : 1 ≤ ‖eval y Q‖ ^ 2`.
+
+Simplify using `[logLogCut, hw0, hw1]`. Use `tendsto_const_nhds.congr' ?_` and prove the remaining obligations. Use `set L := Real.log (-Real.log (‖eval y Q‖ ^ 2))`. Take `⟨N, hN⟩` from `exists_nat_gt (2 * |L|)`. Use `filter_upwards [eventually_ge_atTop N] with k hk`.
+
+Establish `hk' : (0 : ℝ) < (k : ℝ) + 1` using `by positivity`. Establish `hNk : (N : ℝ) ≤ k` using `by exact_mod_cast hk`. Establish `h3 : L / ((k : ℝ) + 1) < 1 / 2`. Rewrite using `[div_lt_iff₀ hk']`. Combine the linear relations using `[le_abs_self L]`.
+
+Simplify using `only [logLogCut, logAbsSq, hw0, hw1, if_false]`. Conclude with `(Real.smoothTransition.one_of_one_le (by linarith)).symm`.
+-/
 theorem CutOffShape.proof : CutOffShape.Statement := by
   intro m Q
   have hF : ∀ k, logLogCut Q k = cutProfile k ∘ fun y => ‖eval y Q‖ ^ 2 := fun k => rfl

@@ -7,6 +7,9 @@ open CategoryTheory Limits AlgebraicGeometry Opposite GlobalTheory.EtC
 namespace LateralTheory.E.LeafConsPfB
 open LateralTheory.E.E4 LateralTheory.E.LeafGhostCut LateralTheory.E.EtaleTopologySheaves LateralTheory.E.LeafConsPfA
 
+/- English proof (translation)
+Substitute `hu he` using the available equality. Both sides reduce to the same expression.
+-/
 theorem rpl_congr (q : ℕ) (i : ℤ) {U E U' E' : Scheme.{0}} (f : U ⟶ E) (f' : U' ⟶ E') {u u2 : U' ⟶ U} {e e2 : E' ⟶ E}
     (hu : u = u2) (he : e = e2) (c : f' ≫ e = u ≫ f) (c2 : f' ≫ e2 = u2 ≫ f) (n : ℤ) (y) :
     rpl q i f f' u e c n y = rpl q i f f' u2 e2 c2 n y := by
@@ -18,12 +21,18 @@ abbrev uT {Y B W : Scheme.{0}} (p : Y ⟶ B) (ι : W ⟶ B) :
     pullback (pullback.snd p (top B).hom ≫ (top B).hom) ι ⟶ pullback p ι :=
   pullback.map _ ι p ι (pullback.fst p (top B).hom) (𝟙 W) (𝟙 B) (by rw [Category.comp_id, pullback.condition]) (by simp)
 
+/- English proof (translation)
+The claim follows from `(pullback.lift_fst _ _ _).symm`.
+-/
 theorem uT_comm {Y B W : Scheme.{0}} (p : Y ⟶ B) (ι : W ⟶ B) :
     prU p ι (top B) ≫ pullback.fst p (top B).hom = uT p ι ≫ pullback.fst p ι := (pullback.lift_fst _ _ _).symm
 
 instance {Y B : Scheme.{0}} (p : Y ⟶ B) : IsIso (pullback.fst p (top B).hom) := by infer_instance
 instance {Y B W : Scheme.{0}} (p : Y ⟶ B) (ι : W ⟶ B) : IsIso (uT p ι) := by infer_instance
 
+/- English proof (translation)
+The claim follows from `(rpl_comp q i f f' f'' u e u' e' c c' _ n y).symm`.
+-/
 theorem rpl_comp' (q : ℕ) (i : ℤ) {U E U' E' U'' E'' : Scheme.{0}} (f : U ⟶ E) (f' : U' ⟶ E') (f'' : U'' ⟶ E'')
     (u : U' ⟶ U) (e : E' ⟶ E) (u' : U'' ⟶ U') (e' : E'' ⟶ E') (c : f' ≫ e = u ≫ f) (c' : f'' ≫ e' = u' ≫ f')
     (n : ℤ) (y) :
@@ -38,6 +47,9 @@ abbrev TL (q : ℕ) (i : ℤ) {B W : Scheme.{0}} (ι : W ⟶ B) (n : ℤ) :=
   rpl q i ι (prB ι (top B)) (pullback.snd (top B).hom ι) (top B).hom pullback.condition n
 
 set_option maxHeartbeats 800000 in
+/- English proof (translation)
+Simplify using `only [mY, pullback.map]`. Use `erw [pullback.lift_fst, pullback.lift_fst_assoc]`. Simplify using `only [Category.assoc]`.
+-/
 theorem L1 {B Y0 Y1 Y2 : Scheme.{0}} (p : Y0 ⟶ B) (g1 : Y1 ⟶ Y0) (g2 : Y2 ⟶ Y1) :
     pullback.fst (g2 ≫ g1 ≫ p) (top B).hom ≫ g2 ≫ g1 =
       mY (g1 ≫ p) g2 (top B) ≫ mY p g1 (top B) ≫ pullback.fst p (top B).hom := by
@@ -46,12 +58,20 @@ theorem L1 {B Y0 Y1 Y2 : Scheme.{0}} (p : Y0 ⟶ B) (g1 : Y1 ⟶ Y0) (g2 : Y2 �
   simp only [Category.assoc]
 
 set_option maxHeartbeats 800000 in
+/- English proof (translation)
+Simplify using `only [uT, toBW, pullback.map]`. Use `erw [pullback.lift_snd, pullback.lift_snd]`.
+-/
 theorem L3 {B W Y : Scheme.{0}} (p : Y ⟶ B) (ι : W ⟶ B) :
     uT p ι ≫ pullback.snd p ι = toBW p ι (top B) ≫ pullback.snd (top B).hom ι := by
   simp only [uT, toBW, pullback.map]
   erw [pullback.lift_snd, pullback.lift_snd]
 
 set_option maxHeartbeats 800000 in
+/- English proof (translation)
+Apply `pullback.hom_ext` to reduce the goal to its premises. Use `L1 p g1 g2` as an intermediate fact. Simplify using `only [mY] at this`. Simplify using `only [uT, mW, mY, Category.assoc, pullback.lift_fst, pullback.lift_fst_assoc, pullback.map]`. Simplify using `only [uT, mW, mY, Category.assoc, pullback.lift_snd, pullback.lift_snd_assoc, pullback.map]`.
+
+Simplify using the standard rewrite rules.
+-/
 theorem L2 {B W Y0 Y1 Y2 : Scheme.{0}} (ι : W ⟶ B) (p : Y0 ⟶ B) (g1 : Y1 ⟶ Y0) (g2 : Y2 ⟶ Y1) :
     uT (g2 ≫ g1 ≫ p) ι ≫ pullback.map (g2 ≫ g1 ≫ p) ι p ι (g2 ≫ g1) (𝟙 W) (𝟙 B) (by simp) (by simp) =
       mW (g1 ≫ p) g2 ι (top B) ≫ mW p g1 ι (top B) ≫ uT p ι := by
@@ -62,6 +82,19 @@ theorem L2 {B W Y0 Y1 Y2 : Scheme.{0}} (ι : W ⟶ B) (p : Y0 ⟶ B) (g1 : Y1 �
   · simp only [uT, mW, mY, Category.assoc, pullback.lift_snd, pullback.lift_snd_assoc, pullback.map]
     simp
 
+/- English proof (translation)
+Introduce `q _ i B W Y0 Y1 Y2 ι _ p g1 g2 K0 K1 K2 L f g ℓ l0 l1 l2 lL r0 r1 r2 rL mf mg mℓ`. Use `⟨fun n y => l0 (top B) n (TT q i p ι n y), fun n y => l2 (top B) n (TT q i (g2 ≫ g1 ≫ p) ι n y), fun n c => lL (top B) n (TL q i ι n c), ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `n`. Conclude with `(r2.1 _ n).1.comp (rpl_bij _ _ _ _ _ _ _ _).1`. Introduce `n`.
+
+Conclude with `(rL.1 _ n).2.comp (rpl_bij _ _ _ _ _ _ _ _).2`. Introduce `n y`. Establish `h1` using `mf (top B) n (TT q i p ι n y)`. Establish `h2` using `mg (top B) n (rpl q i (prU p ι (top B)) (prU (g1 ≫ p) ι (top B)) (mW p g1 ι (top B)) (mY p g1 (top B)) (pullback.lift_fst _ _ _).symm n (TT q i p ι n y))`. Use `show l2 (top B) n _ = l0 (top B) n (TT q i p ι n y) ≫ (shiftFunctor _ n).map (f ≫ g)`.
+
+Rewrite using `[Functor.map_comp]`. Use `Eq.trans ?_ (Category.assoc _ _ _)` and prove the remaining obligations. Rewrite using `[← h1, ← h2]`. Use `congrArg (l2 (top B) n) ?_` and prove the remaining obligations. Rewrite using `[rpl_comp', rpl_comp', rpl_comp']`.
+
+Apply `rpl_congr` to reduce the goal to its premises. Simplify `L2 ι p g1 g2` using `only [Category.assoc]`. Simplify `L1 p g1 g2` using `only [Category.assoc]`. Introduce `n c`. Establish `h` using `mℓ (top B) n (TL q i ι n c)`.
+
+Use `Eq.trans ?_ h` and prove the remaining obligations. Use `congrArg (l2 (top B) n) ?_` and prove the remaining obligations. Rewrite using `[rpl_comp', rpl_comp']`. Apply `rpl_congr` to reduce the goal to its premises. Simplify `L3 (g2 ≫ g1 ≫ p) ι` using `only [Category.assoc]`.
+
+Simplify using `only [toBY]`. Conclude with `pullback.condition`.
+-/
 theorem LeafGlob_pf : LateralTheory.E.LeafConsPf.LeafGlob := by
   intro q _ i B W Y0 Y1 Y2 ι _ p g1 g2 K0 K1 K2 L f g ℓ l0 l1 l2 lL r0 r1 r2 rL mf mg mℓ
   refine ⟨fun n y => l0 (top B) n (TT q i p ι n y), fun n y => l2 (top B) n (TT q i (g2 ≫ g1 ≫ p) ι n y),

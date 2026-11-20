@@ -7,6 +7,9 @@ open scoped TensorProduct
 
 namespace GlobalTheory.MassLink
 
+/- English proof (translation)
+Introduce `D` and use `letI : IsCMField D.host.E := D.host.isCMField_hostE Formalism.L2.Pj.unramBridge_holds D.host.E (Formalism.L2.Pj.cmUnram_conj D)`.
+-/
 theorem host_unr : ∀ D : D7, letI : IsCMField D.host.E := D.host.isCMField_hostE;
     GlobalTheory.UCls.Unr D.host.E := fun D =>
   letI : IsCMField D.host.E := D.host.isCMField_hostE

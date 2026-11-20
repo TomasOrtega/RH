@@ -23,6 +23,37 @@ open GroundTheory.Global GroundTheory.Automorphic.Reduction AutomorphicForm Glob
 
 variable {E : Type} [Field E] [NumberField E] [IsTotallyComplex E] {a : ℕ}
 
+/- English proof (translation)
+Use `set Ω := omegaOp (E := E) (a := a) (⇑b) ε with hΩ`. Use `set W := Submodule.span ℂ (Set.range fun k => cptRep E a k φ) with hWdef`. Use `haveI : FiniteDimensional ℂ W := hk`. Establish `hZ : Ω ∈ Zalg E a`. Rewrite using `[hΩ, GlobalTheory.T.omega_operator_eq_casimir_sum E a d b ε hε horth]`.
+
+Use `Subalgebra.smul_mem _ (Subalgebra.sum_mem _ fun w _ => Subalgebra.add_mem _ ?_ ?_) _` and prove the remaining obligations. Conclude with `GlobalTheory.T.casimir_mem_center_enveloping E a _`. Conclude with `GlobalTheory.T.casimir_mem_center_enveloping E a _`. Use `set Vz := Submodule.span ℂ ((fun z : Module.End ℂ (Sm E a) => z φ) '' Zalg E a) with hVz`. Use `haveI : FiniteDimensional ℂ Vz := hz`.
+
+Establish `hVs : ∀ w ∈ Vz, Ω w ∈ Vz`. Introduce `w hw`. Use `Submodule.span_induction (p := fun w _ => Ω w ∈ Vz) ?_ ?_ ?_ ?_ hw` and prove the remaining obligations. Introduce and unpack `_ ⟨z, hz, rfl⟩`. Conclude with `Submodule.subset_span ⟨Ω * z, Subalgebra.mul_mem _ hZ hz, rfl⟩`.
+
+Rewrite using `[map_zero]`. Conclude with `Submodule.zero_mem _`. Introduce `x y _ _ hx hy`. Rewrite using `[map_add]`. Conclude with `Submodule.add_mem _ hx hy`.
+
+Introduce `c x _ hx`. Rewrite using `[map_smul]`. Conclude with `Submodule.smul_mem _ c hx`. Establish `hφV : φ ∈ Vz` using `Submodule.subset_span ⟨1, Subalgebra.one_mem _, rfl⟩`. Take `⟨q, hqm, -, hq⟩` from `AutomorphicForm.exists_monic_aeval_apply_eq_zero Ω Vz hVs hφV`.
+
+Establish `hqW : ∀ w ∈ W, Polynomial.aeval Ω q w = 0`. Introduce `w hw`. Use `Submodule.span_induction (p := fun w _ => Polynomial.aeval Ω q w = 0) ?_ ?_ ?_ ?_ hw` and prove the remaining obligations. Introduce and unpack `_ ⟨k, rfl⟩`. Establish `hcomm : ∀ m, cptRep E a k (Ω m) = Ω (cptRep E a k m)` using `fun m => (congrArg (fun T : Module.End ℂ (Sm E a) => T m) (GlobalTheory.T.omega_operator_commutes_infinite_gl E a d b ε hε horth (Unitary.toUnits k))).symm`.
+
+Use `AutomorphicForm.map_aeval_apply_of_intertwine (cptRep E a k) hcomm q φ` as an intermediate fact. Rewrite `this` using `[hq, map_zero]`. Conclude with `this.symm`. Rewrite using `[map_zero]`. Introduce `x y _ _ hx hy`.
+
+Rewrite using `[map_add, hx, hy, add_zero]`. Introduce `c x _ hx`. Rewrite using `[map_smul, hx, smul_zero]`. Establish `hlap : Commute Ω (lapOp (⇑b))`. Simplify using `only [lapOp, Commute, SemiconjBy]`.
+
+Rewrite using `[Finset.mul_sum, Finset.sum_mul]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Establish `h1 : Ω * liB (b i) = liB (b i) * Ω` using `omegaOp_comm_liB b ε hε horth (b i)`. Rewrite using `[← mul_assoc, h1, mul_assoc, h1, mul_assoc]`. Establish `hTW : ∀ w ∈ W, (lapOp (⇑b) - Ω) w ∈ W`.
+
+Introduce `w hw`. Establish `e : (lapOp (E` using `E) (a := a) (⇑b) - Ω) w = ∑ i, ((1 : ℂ) - (ε i : ℂ)) • liB (b i) (liB (b i) w) := by`. Simplify using `only [hΩ, lapOp, omegaOp, LinearMap.sub_apply, LinearMap.sum_apply, LinearMap.smul_apply, Module.End.mul_apply]`. Rewrite using `[← Finset.sum_sub_distrib]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations.
+
+Use `module`. Rewrite using `[e]`. Use `Submodule.sum_mem _ fun i _ => ?_` and prove the remaining obligations. Break down `hε i with h | h` into its components or cases. Simplify using `[h]`.
+
+Use `W.smul_mem _ ?_` and prove the remaining obligations. Establish `hs` using `mem_archSkew.1 (hskew i h)`. Conclude with `GlobalTheory.T.compact_span_finite_dim_stable E a φ (b i) hs hk _ (GlobalTheory.T.compact_span_finite_dim_stable E a φ (b i) hs hk _ hw)`. Establish `hφW : φ ∈ W`. Use `Submodule.subset_span ⟨1, ?_⟩` and prove the remaining obligations.
+
+Express the relevant statement in the definitionally equal form `cptRep E a 1 φ = φ`. Rewrite using `[map_one]`. Both sides reduce to the same expression. Establish `hc : Commute Ω (lapOp (⇑b) - Ω)`. Use `LinearMap.ext fun x => ?_` and prove the remaining obligations.
+
+Establish `h2` using `LinearMap.congr_fun hlap.eq x`. Simplify using `only [Module.End.mul_apply] at h2 ⊢`. Rewrite using `[LinearMap.sub_apply, LinearMap.sub_apply, map_sub, h2]`. Establish `hsum : Ω + (lapOp (⇑b) - Ω) = lapOp (⇑b)` using `LinearMap.ext fun x => by simp`. Take `⟨P, hP1, hP2, hP3⟩` from `exists_monic_aeval_add Ω (lapOp (⇑b) - Ω) hc W hTW q hqm hqW hφW`.
+
+Use `⟨P, hP1, hP2, ?_⟩` and prove the remaining obligations. Rewrite `hP3` using `[hsum]`. Then use the resulting hypothesis.
+-/
 theorem exists_aeval_lapOp_eq_zero_of_finite (φ : Sm E a)
     (hk : FiniteDimensional ℂ (Submodule.span ℂ (Set.range fun k => cptRep E a k φ)))
     (hz : FiniteDimensional ℂ (Submodule.span ℂ ((fun z : Module.End ℂ (Sm E a) => z φ) '' Zalg E a)))
@@ -103,6 +134,11 @@ theorem exists_aeval_lapOp_eq_zero_of_finite (φ : Sm E a)
   refine ⟨P, hP1, hP2, ?_⟩
   rwa [hsum] at hP3
 
+/- English proof (translation)
+Introduce `E _ _ _ a φ hk hz _ _ ν _`. Take `⟨d, b, ε, hε, horth, hskew⟩` from `exists_archCartanBasis (K := E) (n := a)`. Take `⟨P, hm, hd, hP⟩` from `exists_aeval_lapOp_eq_zero_of_finite φ hk hz b ε hε horth hskew`. Take `⟨κ, hκs, hκc, -, hκ⟩` from `(isExpLieAlgebra E a).exists_kernel_eq_conv_of_aeval_laplacian ν b P hm hd Filter.univ_mem`. Use `⟨κ, IsExpLieAlgebra.continuous_of_isSmoothFun hκs, hκc, fun g => ?_⟩` and prove the remaining obligations.
+
+Establish `h1` using `hκ (sliceL g (smL E a φ)) (by rw [← sliceL_aeval_lapOp, hP, map_zero, map_zero]) 1`. Simplify `h1` using `[archSlice_apply, smL]`.
+-/
 theorem exists_kernel_of_finite : ∀ (E : Type) [Field E] [NumberField E] [IsTotallyComplex E] (a : ℕ) (φ : Sm E a),
     FiniteDimensional ℂ (Submodule.span ℂ (Set.range fun k => cptRep E a k φ)) →
     FiniteDimensional ℂ (Submodule.span ℂ ((fun z : Module.End ℂ (Sm E a) => z φ) '' Zalg E a)) →

@@ -6,6 +6,17 @@ namespace GlobalTheory.EtaleCoordRank
 
 open KaehlerDifferential TensorProduct
 
+/- English proof (translation)
+Introduce `R B K _ _ _ _ _ d t h`. Establish `key : ∃ b : Module.Basis (Fin d) B Ω[B⁄R], ∀ i, b i = D R B (t i)`. Use `letI : Algebra (MvPolynomial (Fin d) R) B := (MvPolynomial.eval₂Hom (algebraMap R B) t).toAlgebra`. Use `haveI : IsScalarTower R (MvPolynomial (Fin d) R) B := IsScalarTower.of_algebraMap_eq fun r => by`. Express the relevant statement in the definitionally equal form `algebraMap R B r = MvPolynomial.eval₂Hom (algebraMap R B) t (MvPolynomial.C r)`.
+
+Simplify using the standard rewrite rules. Use `haveI : Algebra.Etale (MvPolynomial (Fin d) R) B := h`. Take `⟨⟨b, hb⟩, _⟩` from `GlobalTheory.EtaleCoordJacobian.exists_basis_of_etale R B (Fin d)`. Use `⟨b, fun i => ?_⟩` and prove the remaining obligations. Rewrite using `[hb]`.
+
+Use `congr 1`. Express the relevant statement in the definitionally equal form `MvPolynomial.eval₂Hom (algebraMap R B) t (MvPolynomial.X i) = t i`. Simplify using the standard rewrite rules. Take `⟨b, hb⟩` from `key`. Set `b' : Module.Basis (Fin d) K (K ⊗[B] Ω[B⁄R])` to `b.baseChange K`.
+
+Use `⟨by rw [Module.finrank_eq_card_basis b', Fintype.card_fin], ?_⟩` and prove the remaining obligations. Introduce `ι e u ht`. Establish `hli : LinearIndependent K (fun i => b' (e i))` using `b'.linearIndependent.comp e e.injective`. Establish `hfun : (fun i => (1 : K) ⊗ₜ[B] KaehlerDifferential.D R B ((u i : B) * t (e i))) = (fun i => Units.map (algebraMap B K : B →* K) (u i)) • (fun i => b' (e i))`. Use function extensionality and compare the values at `i`.
+
+Simplify using `only [Pi.smul_apply', Units.smul_def, Units.coe_map, MonoidHom.coe_coe, b', Module.Basis.baseChange_apply, hb]`. Rewrite using `[Derivation.leibniz, tmul_add, tmul_smul, tmul_smul, ← algebraMap_smul K (u i : B), ← algebraMap_smul K (t (e i)), ht, zero_smul, add_zero]`. Rewrite using `[hfun]`. Conclude with `hli.units_smul _`.
+-/
 theorem finrank_and_linearIndependent_D_unit_mul : ∀ (R B K : Type) [CommRing R] [CommRing B] [Field K] [Algebra R B] [Algebra B K] (d : ℕ) (t : Fin d → B), (MvPolynomial.eval₂Hom (algebraMap R B) t).Etale → Module.finrank K (K ⊗[B] Ω[B⁄R]) = d ∧ ∀ (ι : Type) (e : ι ↪ Fin d) (u : ι → Bˣ), (∀ i, algebraMap B K (t (e i)) = 0) → LinearIndependent K (fun i => (1 : K) ⊗ₜ[B] KaehlerDifferential.D R B ((u i : B) * t (e i))) := by
   intro R B K _ _ _ _ _ d t h
   have key : ∃ b : Module.Basis (Fin d) B Ω[B⁄R], ∀ i, b i = D R B (t i) := by

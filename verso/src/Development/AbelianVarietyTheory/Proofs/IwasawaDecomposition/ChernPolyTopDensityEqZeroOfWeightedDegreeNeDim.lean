@@ -33,6 +33,15 @@ def gradedCoeff (σ : Type) : Subring (Polynomial (MvPolynomial σ ℂ)) where
     intro p hp k
     rw [Polynomial.coeff_neg]; exact (hp k).neg
 
+/- English proof (translation)
+Establish `hent : ∀ i j, (1 - (Polynomial.X : Polynomial (MvPolynomial σ ℂ)) • M.map Polynomial.C) i j ∈ gradedCoeff σ`. Introduce `i j`. Rewrite using `[Matrix.sub_apply, Matrix.smul_apply, Matrix.map_apply, smul_eq_mul]`. Use `Subring.sub_mem _ ?_ ?_` and prove the remaining obligations. Rewrite using `[Matrix.one_apply] split_ifs`.
+
+Conclude with `Subring.one_mem _`. Conclude with `Subring.zero_mem _`. Introduce `l`. Rewrite using `[mul_comm, Polynomial.coeff_C_mul_X]`. Use `split_ifs with h`.
+
+Substitute `h` using the available equality. Conclude with `hM i j`. Conclude with `isHomogeneous_zero _ _ _`. Establish `hdet : Matrix.charpolyRev M ∈ gradedCoeff σ`. Rewrite using `[Matrix.charpolyRev, Matrix.det_apply']`.
+
+Use `Subring.sum_mem _ fun s _ => Subring.mul_mem _ (intCast_mem _ _) ?_` and prove the remaining obligations. Conclude with `Subring.prod_mem _ fun i _ => hent _ _`. Conclude with `hdet k`.
+-/
 theorem charpolyRev_coeff_isHomogeneous {σ r : Type} [Fintype r] [DecidableEq r]
     (M : Matrix r r (MvPolynomial σ ℂ)) (hM : ∀ i j, (M i j).IsHomogeneous 1) (k : ℕ) :
     ((Matrix.charpolyRev M).coeff k).IsHomogeneous k := by
@@ -55,6 +64,9 @@ theorem charpolyRev_coeff_isHomogeneous {σ r : Type} [Fintype r] [DecidableEq r
     exact Subring.prod_mem _ fun i _ => hent _ _
   exact hdet k
 
+/- English proof (translation)
+Use `charpolyRev_coeff_isHomogeneous _ (fun i j => ?_) k` and prove the remaining obligations. Rewrite using `[Matrix.neg_apply, curvPoly, Matrix.of_apply]`. Conclude with `(IsHomogeneous.sum _ _ _ fun a _ => IsHomogeneous.sum _ _ _ fun b _ => isHomogeneous_C_mul_X _ _).neg`.
+-/
 theorem chernPoly_isHomogeneous {n : ℕ} {r : Type} [Fintype r] [DecidableEq r]
     (G : ReciprocityTheory.L2DbarEstimates.V n → Matrix r r ℂ) (v : ReciprocityTheory.L2DbarEstimates.V n) (k : ℕ) :
     (chernPoly G v k).IsHomogeneous k := by
@@ -63,6 +75,13 @@ theorem chernPoly_isHomogeneous {n : ℕ} {r : Type} [Fintype r] [DecidableEq r]
   exact (IsHomogeneous.sum _ _ _ fun a _ => IsHomogeneous.sum _ _ _ fun b _ =>
     isHomogeneous_C_mul_X _ _).neg
 
+/- English proof (translation)
+Rewrite using `[φ.as_sum, map_sum]`. Use `IsWeightedHomogeneous.sum _ _ _ fun d hd => ?_` and prove the remaining obligations. Rewrite using `[aeval_monomial]`. Establish `hdeg : (Finsupp.weight w) d = m` using `hφ (mem_support_iff.mp hd)`. Establish `h1 : IsWeightedHomogeneous w' (d.prod fun i k => g i ^ k) (∑ i ∈ d.support, d i • w i)` using `IsWeightedHomogeneous.prod _ _ _ fun i _ => (hg i).pow (d i)`.
+
+Establish `h2 : (∑ i ∈ d.support, d i • w i) = m`. Rewrite using `[← hdeg, Finsupp.weight_apply, Finsupp.sum]`. Rewrite `h1` using `[h2]`. Establish `h3` using `(isWeightedHomogeneous_C w' (algebraMap ℝ ℂ (coeff d φ))).mul h1`. Rewrite `h3` using `[zero_add]`.
+
+Rewrite using `[MvPolynomial.algebraMap_apply]`. Conclude with `h3`.
+-/
 theorem aeval_isWeightedHomogeneous {σ τ : Type} {w : σ → ℕ} {w' : τ → ℕ}
     {φ : MvPolynomial σ ℝ} {m : ℕ} (hφ : IsWeightedHomogeneous w φ m)
     (g : σ → MvPolynomial τ ℂ) (hg : ∀ i, IsWeightedHomogeneous w' (g i) (w i)) :
@@ -81,6 +100,11 @@ theorem aeval_isWeightedHomogeneous {σ τ : Type} {w : σ → ℕ} {w' : τ →
   rw [MvPolynomial.algebraMap_apply]
   exact h3
 
+/- English proof (translation)
+Unfold `topCoeff`. Use `Finset.sum_eq_zero fun w _ => ?_` and prove the remaining obligations. Rewrite using `[hP.coeff_eq_zero, mul_zero]`. Introduce `h`. Apply `hd` to reduce the goal to its premises.
+
+Rewrite using `[← h, Finsupp.degree_eq_weight_one, map_sum]`. Simplify using `[Finsupp.weight_single]`.
+-/
 theorem topCoeff_eq_zero {n d : ℕ} {P : MvPolynomial (Fin n × Fin n) ℂ} (hP : P.IsHomogeneous d) (hd : d ≠ n) :
     topCoeff P = 0 := by
   unfold topCoeff
@@ -95,6 +119,9 @@ end GlobalTheory.GoodMetric.ChernDegree
 
 open GlobalTheory.GoodMetric.ChernDegree in
 
+/- English proof (translation)
+Establish `h : (aeval (fun x : ι × ℕ => chernPoly (fun u => G u x.1) v x.2) Q).IsHomogeneous d` using `aeval_isWeightedHomogeneous hQ _ fun x => chernPoly_isHomogeneous _ _ _`. Rewrite using `[chernTop, topCoeff_eq_zero h hd, Complex.zero_re, mul_zero]`.
+-/
 theorem GlobalTheory.GoodMetric.chernTop_eq_zero_of_weightedHomogeneous (n : ℕ) (ι : Type) (m : ι → ℕ)
     (G : ReciprocityTheory.L2DbarEstimates.V n → FlagBundle.Mat m ℂ) (v : ReciprocityTheory.L2DbarEstimates.V n) (Q : MvPolynomial (ι × ℕ) ℝ) (d : ℕ)
     (hQ : MvPolynomial.IsWeightedHomogeneous (Prod.snd : ι × ℕ → ℕ) Q d) (hd : d ≠ n) :
@@ -103,5 +130,8 @@ theorem GlobalTheory.GoodMetric.chernTop_eq_zero_of_weightedHomogeneous (n : ℕ
     aeval_isWeightedHomogeneous hQ _ fun x => chernPoly_isHomogeneous _ _ _
   rw [chernTop, topCoeff_eq_zero h hd, Complex.zero_re, mul_zero]
 
+/- English proof (translation)
+The claim follows from `GlobalTheory.GoodMetric.chernTop_eq_zero_of_weightedHomogeneous`.
+-/
 example : ∀ (n : ℕ) (ι : Type) (m : ι → ℕ) (G : ReciprocityTheory.L2DbarEstimates.V n → FlagBundle.Mat m ℂ) (v : ReciprocityTheory.L2DbarEstimates.V n) (Q : MvPolynomial (ι × ℕ) ℝ) (d : ℕ), MvPolynomial.IsWeightedHomogeneous (Prod.snd : ι × ℕ → ℕ) Q d → d ≠ n → chernTop Q G v = 0 :=
   GlobalTheory.GoodMetric.chernTop_eq_zero_of_weightedHomogeneous

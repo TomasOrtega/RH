@@ -10,6 +10,23 @@ namespace Formalism.FourierDecayAlt.P
 
 open Formalism.FourierDecayAlt Formalism.REAL Formalism.QuantumDeterminants Formalism.FourierDecayAlt.Q Formalism.FourierDecayAlt.P.Qx5 Formalism.FourierDecayAlt.P.Qx2 Formalism.FourierDecayAlt.P.PBN Formalism.FourierDecayAlt.P.PBN.MC
 
+/- English proof (translation)
+Introduce `hRR hLR hTC hGP k r Wp Wq _ _ _ _ _ _ Bs F y hF x hx`. Use `set D := OmPlus k r Bs.z Bs.z' with hDdef`. Establish `hD : IsOpen D` using `Formalism.FourierDecayAlt.P.SmoothnessOnGoodSet.isOpen_OmPlus Bs.z Bs.z'`. Take `⟨ε, hε, hn⟩` from `Formalism.FourierDecayAlt.P.TLB.nice_of_cpt hF`. Take `⟨hf, hLf, hRf, -⟩` from `Formalism.FourierDecayAlt.P.bessel_function_finite_class k r Wp Wq Bs F ε hε hn`.
+
+Establish `h1N : (1 : Mx k r) ∈ Nlev k r 0` using `⟨(Formalism.QuantumDeterminants.unipotent_subgroup_holds k r).1, by simp [Glev, UH]⟩`. Establish `hN : ∀ g ∈ Glev k r 0 ∩ D, ∀ n ∈ Nlev k r 0, n * g ∈ D`. Introduce `g hg n hn`. Establish `hDom` using `Formalism.FourierDecayAlt.P.JCx2.rma_isDom_omPlus (k := k) (r := r) Bs.z_mem Bs.z'_mem`. Use `hDom.2 g hg n ⟨1, Formalism.FourierDecayAlt.P.Qx8.uw_one Bs.z, n, hn, (one_mul n).symm⟩ 1 ⟨1, Formalism.FourierDecayAlt.P.Qx8.uw_one Bs.z', 1, h1N, (one_mul 1).symm⟩` as an intermediate fact.
+
+Rewrite `this` using `[Matrix.mul_one]`. Then use the resulting hypothesis. Use `set v₀ : VS k r 0 D (Wq →L[ℂ] Wp) := ⟨cut k r 0 D (B.JF Bs F), cut_mem hD hf⟩ with hv₀`. Establish `hcellB : ∀ c ∈ OmX r, wCell k r (Fin.last r) c * x.2 ∈ C6.bigPos Bs` using `fun c hc => (Formalism.FourierDecayAlt.P.big_cell_values k r Wp Wq Bs (c, x.2) ⟨hc, hx.2.1, hx.2.2⟩).1`. Establish `hcell : ∀ c ∈ OmX r, wCell k r (Fin.last r) c * x.2 ∈ Glev k r 0 ∩ D`. Introduce `c hc`.
+
+Establish `h` using `hcellB c hc`. Conclude with `⟨Formalism.FourierDecayAlt.P.OrbitalIntegralIdentities.glev0 h.1, fun l _ => h.2.2 l (by simp), h.2.1⟩`. Establish `hdiff : ∀ x' : SA (Wq →L[ℂ] Wp) hD, ∀ c ∈ OmX r, DifferentiableAt ℝ (fun c' => ((x' : Module.End ℂ (VS k r 0 D (Wq →L[ℂ] Wp))) v₀ : Mx k r → (Wq →L[ℂ] Wp)) (wCell k r (Fin.last r) c' * x.2)) c` using `fun x' c hc => cell_diff Bs ((x' : Module.End ℂ (VS k r 0 D (Wq →L[ℂ] Wp))) v₀).2.1 hx.2.1 hx.2.2 hc`. Establish `hWS : ∀ x' : SA (Wq →L[ℂ] Wp) hD, resW ((x' : Module.End ℂ (VS k r 0 D (Wq →L[ℂ] Wp))) v₀ : Mx k r → (Wq →L[ℂ] Wp)) x.2 ∈ WSm r (Wq →L[ℂ] Wp)` using `fun x' => resG_wsm Bs ((x' : Module.End ℂ (VS k r 0 D (Wq →L[ℂ] Wp))) v₀).2.1 hx.2.1 hx.2.2`. Establish `hcl` using `claim hD v₀ x.2 y hRR hLR hTC hGP Bs.z Bs.z' Bs.z_mem Bs.z'_mem hN hf hLf hRf rfl hx.2.1 hcell hdiff hWS r le_rfl 1 (Subalgebra.one_mem _) x.1 hx.1`.
+
+Rewrite `hcl` using `[mul_one]`. Establish `eR : Q.crd (Q.vAB r y r).1 (Q.resG k r (Fin.last r) (B.JF Bs F)) x.1 x.2 = (Q.vAB r y r).1 (fun c' => Q.resG k r (Fin.last r) (((1 : SA (Wq →L[ℂ] Wp) hD) : Module.End ℂ (VS k r 0 D (Wq →L[ℂ] Wp))) v₀ : Mx k r → (Wq →L[ℂ] Wp)) c' x.2) x.1`. Use `(vAB_loc y r _ _ (fun c' hc' => ?_) x.1 hx.1).1` and prove the remaining obligations. Rewrite using `[resG_last, resG_last]`. Use `congr 1`.
+
+Conclude with `(cut_of_mem _ (hcell c' hc')).symm`. Rewrite using `[eR, ← hcl, resG_last, resG_last]`. Use `congr 1`. Establish `hγ` using `hcell x.1 hx.1`. Establish `e1 : ((qminor (EA (E` using `Wq →L[ℂ] Wp) hD) (C3.xR k r r le_rfl) (C3.xR k r r le_rfl) (y + ((2 * r + k : ℕ) : ℂ) / 2) : SA (Wq →L[ℂ] Wp) hD) : Module.End ℂ (VS k r 0 D (Wq →L[ℂ] Wp))) = qminor (Eh (E := Wq →L[ℂ] Wp) (i := 0) hD) (cI ∘ C3.xR k r r le_rfl) (cI ∘ C3.xR k r r le_rfl) (y + ((2 * r + k : ℕ) : ℂ) …`.
+
+Use `map_qminor (SA (Wq →L[ℂ] Wp) hD).val (EA hD) (C3.xR k r r le_rfl) (C3.xR k r r le_rfl) (y + ((2 * r + k : ℕ) : ℂ) / 2)` as an intermediate fact. Rewrite `this` using `[Subalgebra.coe_val]`. Rewrite using `[this]`. Conclude with `qminor_reindex (Eh hD) cI cI_inj _ _ _`. Rewrite using `[e1, rep_qminor hD _ _ _ v₀ _ hγ]`.
+
+Establish `hpos : posL k r 0 ∘ (cI ∘ C3.xR k r r le_rfl) = C3.xR k r r le_rfl` using `funext fun l => posL_cI _`. Establish `hloc` using `(good_qminor (E := Wq →L[ℂ] Wp) hD (cI ∘ C3.xR k r r le_rfl) (cI ∘ C3.xR k r r le_rfl) (y + ((2 * r + k : ℕ) : ℂ) / 2)).loc (cut k r 0 D (B.JF Bs F)) (B.JF Bs F) (fun x' hx' => cut_of_mem _ hx') _ hγ`. Rewrite `hloc` using `[hpos]`. Rewrite using `[hpos]`. Conclude with `hloc.symm`.
+-/
 theorem minor_cell_of_parts : PBN.MinorCellOfParts := by
   intro hRR hLR hTC hGP k r Wp Wq _ _ _ _ _ _ Bs F y hF x hx
   set D := OmPlus k r Bs.z Bs.z' with hDdef

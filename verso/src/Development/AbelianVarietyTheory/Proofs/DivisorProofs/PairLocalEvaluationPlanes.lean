@@ -12,6 +12,9 @@ open GlobalTheory.Doubling (absE)
 
 namespace GlobalTheory.ConeBump.LocConst
 
+/- English proof (translation)
+Rewrite using `[IsLocallyConstant.iff_eventually_eq]`. Introduce `q₀`. Use `filter_upwards [continuous_fst.continuousAt.eventually (hp.eventually_eq q₀.1), continuous_snd.continuousAt.eventually ((hf q₀.1).eventually_eq q₀.2)] with q h1 h2`. Rewrite using `[h1, h2]`.
+-/
 private theorem isLocallyConstant_prod {α β γ δ : Type} [TopologicalSpace α] [TopologicalSpace β] {p : α → γ}
     (hp : IsLocallyConstant p) (f : γ → β → δ) (hf : ∀ a, IsLocallyConstant (f (p a))) :
     IsLocallyConstant fun q : α × β => f (p q.1) q.2 := by
@@ -23,6 +26,9 @@ private theorem isLocallyConstant_prod {α β γ δ : Type} [TopologicalSpace α
 
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E}
 
+/- English proof (translation)
+Use `haveI : IsModuleTopology (AF F) (AE F E) := ⟨rfl⟩`. Set `L : AE F E →ₗ[AF F] (Fin n × Fin d → AF F) × (Fin n × Fin d → AF F)` to `M.co.e.toLinearMap ∘ₗ { toFun := fun l => l • u, map_add' := fun a b => add_smul a b u, map_smul' := fun a b => smul_assoc a b u }`. Establish `hL : Continuous L` using `IsModuleTopology.continuous_of_linearMap L`. Establish `he : Continuous (evFin F v)` using `(RestrictedProduct.continuous_eval v).comp continuous_snd`. Conclude with `(continuous_pi fun k => he.comp ((continuous_apply k).comp hL.fst)).prodMk (continuous_pi fun k => he.comp ((continuous_apply k).comp hL.snd))`.
+-/
 private theorem continuous_locCo_smul {n d : ℕ} {X : Spc F E n} {W : Spc F E d} (M : Model σ X W) (v : Pl F)
     (u : Matrix (Fin n) (Fin d) (AE F E)) : Continuous fun l : AE F E => GlobalTheory.LatVac.locCo M.co v (l • u) := by
   haveI : IsModuleTopology (AF F) (AE F E) := ⟨rfl⟩
@@ -34,6 +40,15 @@ private theorem continuous_locCo_smul {n d : ℕ} {X : Spc F E n} {W : Spc F E d
   exact (continuous_pi fun k => he.comp ((continuous_apply k).comp hL.fst)).prodMk
     (continuous_pi fun k => he.comp ((continuous_apply k).comp hL.snd))
 
+/- English proof (translation)
+Establish `h1W : (1 : UA σ W.J) ∈ UAt σ W (evFin F v)` using `(UAtSub σ W (evFin F v)).one_mem`. Take `⟨U, hU, hUact⟩` from `(hA F E σ B n d X W M χX χW om r s r' s' hP v).2.2 φ hφ`. Rewrite using `[IsLocallyConstant.iff_eventually_eq]`. Introduce `k₀`. Use `haveI : Module.Finite F E := Module.Finite.of_restrictScalars_finite ℚ F E`.
+
+Use `haveI : IsTopologicalRing (AE F E) := GlobalTheory.Doubling.isTopologicalRing_tens`. Establish `hc : Continuous fun k : KAt K (evFin F v) => ((k₀⁻¹ * k : KAt K (evFin F v)).1, (1 : UA σ W.J))` using `(continuous_subtype_val.comp (continuous_const.mul continuous_id)).prodMk continuous_const`. Establish `h0 : ((k₀⁻¹ * k₀ : KAt K (evFin F v)).1, (1 : UA σ W.J)) = 1`. Rewrite using `[inv_mul_cancel]`. Both sides reduce to the same expression.
+
+Establish `hev : ∀ᶠ k in 𝓝 k₀, ((k₀⁻¹ * k : KAt K (evFin F v)).1, (1 : UA σ W.J)) ∈ U` using `hc.continuousAt.preimage_mem_nhds (by rw [h0]; exact hU)`. Use `filter_upwards [hev] with k hk`. Establish `hfix : Acts (evFin F v) (om ((k₀⁻¹ * k).1, 1)) φ φ` using `hUact _ hk (mem_KAt.1 (k₀⁻¹ * k).2).2 h1W`. Establish `ha` using `acts_locOp_om hA hP (mem_KAt.1 k₀.2).2 h1W hφ`. Establish `ek : (k.1, (1 : UA σ W.J)) = (k₀.1, 1) * ((k₀⁻¹ * k).1, 1)`.
+
+Rewrite using `[Prod.mk_mul_mk, mul_one, ← Subgroup.coe_mul, mul_inv_cancel_left]`. Use `locOp_eq hφ (locOp_mem _ _ _) fun ρ hρ => ?_` and prove the remaining obligations. Rewrite using `[ek, map_mul, Module.End.mul_apply, hfix ρ hρ, ha ρ hρ]`.
+-/
 private theorem isLocallyConstant_locOp_om (hA : ActsEx) {n d : ℕ} {X : Spc F E n} {W : Spc F E d} {B : Base F E}
     {M : Model σ X W} {χX χW : Chr F E} {om : Rep σ X W} {r s r' s' : ℕ} (hP : IsPair B M χX χW om r s r' s')
     (K : Subgroup (UA σ X.J)) (v : Pl F) {φ : (Fin n × Fin d → Fv F v) → ℂ} (hφ : φ ∈ SB (Fin n × Fin d → Fv F v)) :
@@ -61,6 +76,13 @@ private theorem isLocallyConstant_locOp_om (hA : ActsEx) {n d : ℕ} {X : Spc F 
 end GlobalTheory.ConeBump.LocConst
 
 open scoped GlobalTheory.VacAny in
+/- English proof (translation)
+Introduce `hKP F E _ _ _ _ _ σ B n d n₁ d₁ X W M χX χW om r s r' s' hP m m' H H' v ev K φ hφ`. Establish `hc : Continuous B.ψ` using `hP.base.std.1`. Use `GlobalTheory.ConeBump.LocConst.isLocallyConstant_prod (GlobalTheory.ConeBump.LocConst.isLocallyConstant_locOp_om (GlobalTheory.T.theta_action_exists hKP.base) hP K v hφ) (fun ψ (l : idelesAt E (evFin F v)) => ev (locOp v (M.co.rho B.ψ (partFin v (shiftA H H' l.1))) ψ)) fun k => ? …` and prove the remaining obligations. Establish `hψ` using `locOp_mem v (om (k.1, 1)) φ`. Generalize the expression as in `locOp v (om (k.1, 1)) φ = ψ at hψ`.
+
+Establish `hχl : IsLocallyConstant (GlobalTheory.LatVac.psiAt B.ψ v)` using `GlobalTheory.SchrSB.isLocallyConstant_addChar _ (GlobalTheory.SchrSB.continuous_psiAt B.ψ hc v)`. Establish `hχ0 : ∀ᶠ y in 𝓝 (0 : Fv F v), GlobalTheory.LatVac.psiAt B.ψ v y = 1` using `by simpa using hχl.eventually_eq 0`. Establish `hS` using `GlobalTheory.SchrLocConst.schr_isLocallyConstant _ hχ0 ψ hψ`. Establish `hL` using `GlobalTheory.ConeBump.LocConst.continuous_locCo_smul M v (Matrix.vecMulVec (incV F H.x) (incV F H'.y))`. Establish `hcl : Continuous fun l : idelesAt E (evFin F v) => l.1.1` using `Units.continuous_val.comp continuous_subtype_val`.
+
+Establish `h` using `(hS.comp_continuous (hL.comp hcl)).comp ev`. Use `h using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `l`. Rewrite using `[(locOp_rho M.co hc v _ hψ).2]`. Both sides reduce to the same expression.
+-/
 theorem _root_.GlobalTheory.T.pair_local_evaluation_planes : GlobalTheory.ThK.KP → ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E)
     (n d n₁ d₁ : ℕ) (X : Spc F E n) (W : Spc F E d) (M : Model σ X W) (χX χW : Chr F E) (om : Rep σ X W) (r s r' s' : ℕ),
     IsPair B M χX χW om r s r' s' → ∀ (m m' : ℕ) (H : Plane E n m) (H' : Plane E d m') (v : Pl F)

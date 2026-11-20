@@ -13,6 +13,13 @@ section General
 variable {F G H V W : Type} [Field F] [Group G] [Group H] [AddCommGroup V] [Module F V]
   [AddCommGroup W] [Module F W]
 
+/- English proof (translation)
+Set `φ : Subrepresentation (twist ρ χ) ≃o Subrepresentation ρ` to `{ toFun := fun S => ⟨S.toSubmodule, fun g v hv => by`. Establish `h1` using `S.apply_mem_toSubmodule g hv`. Rewrite `h1` using `[twist_apply]`. Establish `h2` using `S.toSubmodule.smul_mem ((χ g : F)⁻¹) h1`. Rewrite using `[smul_smul, inv_mul_cancel₀ (Units.ne_zero _), one_smul] at h2⟩` and apply the resulting hypothesis.
+
+Use `invFun := fun S => ⟨S.toSubmodule, fun g v hv => by`. Rewrite using `[twist_apply]`. Conclude with `S.toSubmodule.smul_mem _ (S.apply_mem_toSubmodule g hv)⟩`. Use `left_inv := fun _ => rfl`. Use `right_inv := fun _ => rfl`.
+
+Use the proof step `map_rel_iff' := Iff.rfl }`. Rewrite using `[hasFiniteLength_iff_wellFounded, hasFiniteLength_iff_wellFounded]`. Conclude with `and_congr ⟨fun _ => φ.symm.toOrderEmbedding.wellFoundedGT, fun _ => φ.toOrderEmbedding.wellFoundedGT⟩ ⟨fun _ => φ.symm.toOrderEmbedding.wellFoundedLT, fun _ => φ.toOrderEmbedding.wellFoundedLT⟩`.
+-/
 theorem hasFiniteLength_twist_iff (ρ : Representation F G V) (χ : G →* Fˣ) :
     HasFiniteLength (twist ρ χ) ↔ HasFiniteLength ρ := by
   let φ : Subrepresentation (twist ρ χ) ≃o Subrepresentation ρ :=
@@ -32,6 +39,9 @@ theorem hasFiniteLength_twist_iff (ρ : Representation F G V) (χ : G →* Fˣ) 
     fun _ => φ.toOrderEmbedding.wellFoundedGT⟩ ⟨fun _ => φ.symm.toOrderEmbedding.wellFoundedLT,
     fun _ => φ.toOrderEmbedding.wellFoundedLT⟩
 
+/- English proof (translation)
+The claim follows from `IsFiniteLength.of_surjective h (f := Representation.IntertwiningMap.equivLinearMapAsModule ρ σ f) hf`.
+-/
 theorem hasFiniteLength_of_surjective {ρ : Representation F G V} {σ : Representation F G W}
     (f : ρ.IntertwiningMap σ) (hf : Function.Surjective f) (h : HasFiniteLength ρ) :
     HasFiniteLength σ :=
@@ -45,6 +55,11 @@ section Blocks
 variable {R : Type} [CommRing R] {α n : Type} {m : α → Type} [Fintype α] [LinearOrder α]
   [∀ a, Fintype (m a)] [∀ a, DecidableEq (m a)] [Fintype n] [DecidableEq n]
 
+/- English proof (translation)
+Rewrite using `[mem_unipRad]`. Use `and_congr_right fun _ => ⟨fun h i j hij => ?_, fun h a x y => ?_⟩` and prove the remaining obligations. Take `⟨⟨a, x⟩, rfl⟩` from `e.surjective i`. Take `⟨⟨b, y⟩, rfl⟩` from `e.surjective j`. Simplify using `only [blk_apply] at hij`.
+
+Substitute `hij` using the available equality. Rewrite using `[h a x y]`. Simplify using `[Matrix.one_apply, e.injective.eq_iff]`. Rewrite using `[h _ _ (by simp)]`. Simplify using `[Matrix.one_apply, e.injective.eq_iff]`.
+-/
 theorem mem_unipRad_iff_blk {e : (Σ a, m a) ≃ n} {g : GL n R} :
     g ∈ unipRad R e ↔ g ∈ parab R e ∧
       ∀ i j, blk e i = blk e j → (g : Matrix n n R) i j = (1 : Matrix n n R) i j := by
@@ -61,12 +76,20 @@ theorem mem_unipRad_iff_blk {e : (Σ a, m a) ≃ n} {g : GL n R} :
 
 omit [LinearOrder α] in
 
+/- English proof (translation)
+Take `⟨⟨a, x⟩, rfl⟩` from `e.surjective i`. Take `⟨⟨b, y⟩, rfl⟩` from `e.surjective j`. Conclude with `leviEmb_apply_ne R e g (by simpa using h) x y`.
+-/
 theorem leviEmb_apply_of_blk_ne (e : (Σ a, m a) ≃ n) (g : Levi R m) {i j : n}
     (h : blk e i ≠ blk e j) : (leviEmb R e g : Matrix n n R) i j = 0 := by
   obtain ⟨⟨a, x⟩, rfl⟩ := e.surjective i
   obtain ⟨⟨b, y⟩, rfl⟩ := e.surjective j
   exact leviEmb_apply_ne R e g (by simpa using h) x y
 
+/- English proof (translation)
+Use `Units.ext (Matrix.ext fun i j => ?_)` and prove the remaining obligations. Take `⟨⟨a, x⟩, rfl⟩` from `e.surjective i`. Take `⟨⟨b, y⟩, rfl⟩` from `e.surjective j`. Distinguish the cases in `hab : a = b`. Substitute `hab` using the available equality.
+
+Rewrite using `[leviEmb_apply_same, leviProj_apply]`. Rewrite using `[leviEmb_apply_ne R e _ hab, h _ _ (by simpa using hab)]`.
+-/
 theorem leviEmb_leviProj_of_blk (e : (Σ a, m a) ≃ n) (p : parab R e)
     (h : ∀ i j, blk e i ≠ blk e j → ((p : GL n R) : Matrix n n R) i j = 0) :
     leviEmb R e (leviProj R e p) = p := by
@@ -78,6 +101,9 @@ theorem leviEmb_leviProj_of_blk (e : (Σ a, m a) ≃ n) (p : parab R e)
     rw [leviEmb_apply_same, leviProj_apply]
   · rw [leviEmb_apply_ne R e _ hab, h _ _ (by simpa using hab)]
 
+/- English proof (translation)
+Break down `p with ⟨p, hp⟩` into its components or cases. Simplify using `only at h`. Substitute `h` using the available equality. Conclude with `leviProj_leviEmb R e g`.
+-/
 theorem leviProj_eq_of_coe_eq (e : (Σ a, m a) ≃ n) (p : parab R e) (g : Levi R m)
     (h : (p : GL n R) = leviEmb R e g) : leviProj R e p = g := by
   rcases p with ⟨p, hp⟩
@@ -95,6 +121,13 @@ variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchim
   [∀ b, Fintype (m' b)] [∀ b, DecidableEq (m' b)] [Fintype n] [DecidableEq n] [Fintype n']
   [DecidableEq n'] {V : Type} [AddCommGroup V] [Module ℂ V]
 
+/- English proof (translation)
+Establish `hle : twKer (π.comp Φ) (unipRad k e') 1 ≤ twKer π (unipRad k e) 1`. Use `Submodule.span_le.2 ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨u, v, rfl⟩`. Conclude with `Submodule.subset_span ⟨⟨Φ u, hU u u.2⟩, v, by simp⟩`. Set `f : (jacU e' (π.comp Φ)).IntertwiningMap ((jacU e π).comp Ψ)` to `⟨(twKer (π.comp Φ) (unipRad k e') 1).mapQ (twKer π (unipRad k e) 1) LinearMap.id hle, fun g => by`.
+
+Use extensionality with `v`. Use `show Submodule.Quotient.mk (π (Φ (leviEmb k e' g)) v) = (Submodule.Quotient.mk (π (leviEmb k e (Ψ g)) v) : Jacquet π (unipRad k e))`. Rewrite using `[hL]⟩`. Establish `hf : Function.Surjective f`. Introduce `x`.
+
+Take `⟨v, rfl⟩` from `Submodule.Quotient.mk_surjective _ x`. Conclude with `⟨Submodule.Quotient.mk v, rfl⟩`. Rewrite using `[← hasFiniteLength_comp_iff _ Ψ hΨ]`. Conclude with `hasFiniteLength_of_surjective f hf h`.
+-/
 theorem hasFiniteLength_jacU_of_transport (e : (Σ a, m a) ≃ n) (e' : (Σ b, m' b) ≃ n')
     (Φ : GL n' k →* GL n k) (Ψ : Levi k m' →* Levi k m) (hΨ : Function.Surjective Ψ)
     (hU : ∀ u ∈ unipRad k e', Φ u ∈ unipRad k e)
@@ -128,6 +161,15 @@ variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchim
   [∀ b, Fintype (m' b)] [∀ b, DecidableEq (m' b)] [Fintype n] [DecidableEq n] [Fintype n']
   [DecidableEq n'] {V : Type} [AddCommGroup V] [Module ℂ V]
 
+/- English proof (translation)
+Use `set Φ : GL n' k →* GL n k := (Units.mapEquiv (Matrix.reindexAlgEquiv k k ψ).toMulEquiv).toMonoidHom`. Establish `hΦ : ∀ (g : GL n' k) (i j : n), (Φ g : Matrix n n k) i j = (g : Matrix n' n' k) (ψ.symm i) (ψ.symm j)` using `fun _ _ _ => rfl`. Use `hasFiniteLength_jacU_of_transport (e.trans ψ) e Φ (MonoidHom.id _) Function.surjective_id (fun u hu => ?_) (fun g => ?_) π h` and prove the remaining obligations. Rewrite `hu`, the goal using `[mem_unipRad]`. Use `⟨mem_parab_iff.2 fun a b x y hab => ?_, fun a x y => ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[hΦ]`. Simplify using `using mem_parab_iff.1 hu.1 a b x y hab`. Rewrite using `[hΦ]`. Simplify using `using hu.2 a x y`. Use `Units.ext (Matrix.ext fun i j => ?_)` and prove the remaining obligations.
+
+Rewrite using `[hΦ]`. Take `⟨⟨a, x⟩, rfl⟩` from `(e.trans ψ).surjective i`. Take `⟨⟨b, y⟩, rfl⟩` from `(e.trans ψ).surjective j`. Simplify using `only [Equiv.trans_apply, Equiv.symm_apply_apply, MonoidHom.id_apply]`. Distinguish the cases in `hab : a = b`.
+
+Substitute `hab` using the available equality. Rewrite using `[leviEmb_apply_same, show ψ (e ⟨a, x⟩) = (e.trans ψ) ⟨a, x⟩ from rfl, show ψ (e ⟨a, y⟩) = (e.trans ψ) ⟨a, y⟩ from rfl, leviEmb_apply_same]`. Rewrite using `[leviEmb_apply_ne k e _ hab, show ψ (e ⟨a, x⟩) = (e.trans ψ) ⟨a, x⟩ from rfl, show ψ (e ⟨b, y⟩) = (e.trans ψ) ⟨b, y⟩ from rfl, leviEmb_apply_ne k _ _ hab]`.
+-/
 theorem hasFiniteLength_jacU_reindex (e : (Σ b, m' b) ≃ n') (ψ : n' ≃ n)
     (π : Representation ℂ (GL n k) V)
     (h : HasFiniteLength (jacU e (π.comp
@@ -156,6 +198,17 @@ theorem hasFiniteLength_jacU_reindex (e : (Σ b, m' b) ≃ n') (ψ : n' ≃ n)
     · rw [leviEmb_apply_ne k e _ hab, show ψ (e ⟨a, x⟩) = (e.trans ψ) ⟨a, x⟩ from rfl,
         show ψ (e ⟨b, y⟩) = (e.trans ψ) ⟨b, y⟩ from rfl, leviEmb_apply_ne k _ _ hab]
 
+/- English proof (translation)
+Use `set e₁ := s.trans e`. Establish `hblk : ∀ i, blk e i = f (blk e₁ i)` using `fun i => by`. Use `hs (s.symm (e.symm i))` as an intermediate fact. Rewrite `this` using `[Equiv.apply_symm_apply]`. Conclude with `this`.
+
+Establish `hlt : ∀ i j, blk e i < blk e j ↔ blk e₁ i < blk e₁ j` using `fun i j => by`. Rewrite using `[hblk, hblk, hf.lt_iff_lt]`. Establish `heq : ∀ i j, blk e i = blk e j ↔ blk e₁ i = blk e₁ j` using `fun i j => by`. Rewrite using `[hblk, hblk, hf.injective.eq_iff]`. Establish `hpar : ∀ g : GL n k, g ∈ parab k e ↔ g ∈ parab k e₁` using `fun g => by`.
+
+Rewrite using `[mem_parab, mem_parab]`. Conclude with `forall_congr' fun i => forall_congr' fun j => by rw [hlt]`. Set `Ψ : Levi k m' →* Levi k m` to `(leviProj k e).comp ((leviEmb k e₁).codRestrict (parab k e) fun g => (hpar _).2 (leviEmb_mem_parab k e₁ g))`. Establish `hL : ∀ g, leviEmb k e₁ g = leviEmb k e (Ψ g)` using `fun g => by`. Use `(leviEmb_leviProj_of_blk (R := k) e ⟨leviEmb k e₁ g, (hpar _).2 (leviEmb_mem_parab k e₁ g)⟩ fun i j hij => ?_).symm` and prove the remaining obligations.
+
+Conclude with `leviEmb_apply_of_blk_ne e₁ g fun h' => hij ((heq i j).2 h')`. Establish `hΨ : Function.Surjective Ψ`. Introduce `g`. Use `⟨leviProj k e₁ ⟨leviEmb k e g, (hpar _).1 (leviEmb_mem_parab k e g)⟩, ?_⟩` and prove the remaining obligations. Use `leviProj_eq_of_coe_eq (R := k) e _ g ?_` and prove the remaining obligations.
+
+Conclude with `leviEmb_leviProj_of_blk (R := k) e₁ _ fun i j hij => leviEmb_apply_of_blk_ne e g fun h' => hij ((heq i j).1 h')`. Use `hasFiniteLength_jacU_of_transport e e₁ (MonoidHom.id _) Ψ hΨ (fun u hu => ?_) (fun g => hL g) π h` and prove the remaining obligations. Rewrite `hu`, the goal using `[mem_unipRad_iff_blk]`. Conclude with `⟨(hpar _).2 hu.1, fun i j hij => hu.2 i j ((heq i j).1 hij)⟩`.
+-/
 theorem hasFiniteLength_jacU_relabel (e : (Σ a, m a) ≃ n) (s : (Σ b, m' b) ≃ (Σ a, m a))
     (f : β → α) (hf : StrictMono f) (hs : ∀ x, (s x).1 = f x.1) (π : Representation ℂ (GL n k) V)
     (h : HasFiniteLength (jacU (s.trans e) π)) : HasFiniteLength (jacU e π) := by
@@ -190,6 +243,19 @@ theorem hasFiniteLength_jacU_relabel (e : (Σ a, m a) ≃ n) (s : (Σ b, m' b) �
 
 end Stages
 
+/- English proof (translation)
+Introduce `hP k _ _ _ _ α n m _ _ _ _ _ _ e V _ _ π hπ hl`. Set `α'` to `{a : α // Nonempty (m a)}`. Set `o : Fin (Fintype.card α') ≃o α'` to `monoEquivOfFin α' rfl`. Set `d : Fin (Fintype.card α') → ℕ` to `fun i => Fintype.card (m (o i).1)`. Establish `hd : ∀ i, 0 < d i` using `fun i => Fintype.card_pos_iff.2 (o i).2`.
+
+Set `T : (Σ a' : α', m a'.1) ≃ (Σ a, m a)` to `{ toFun := fun x => ⟨x.1.1, x.2⟩ invFun := fun x => ⟨⟨x.1, ⟨x.2⟩⟩, x.2⟩ left_inv := fun _ => rfl right_inv := fun _ => rfl }`. Set `s : (Σ i, Fin (d i)) ≃ (Σ a, m a)` to `((Equiv.sigmaCongrRight fun i => (Fintype.equivFin (m (o i).1)).symm).trans (Equiv.sigmaCongrLeft (β := fun a' : α' => m a'.1) o.toEquiv)).trans T`. Establish `hs : ∀ x, (s x).1 = (fun i => (o i).1) x.1`. Introduce and unpack `⟨i, j⟩`. Both sides reduce to the same expression.
+
+Establish `hf : StrictMono (fun i => (o i).1)` using `fun i j h => o.strictMono h`. Set `e₁` to `s.trans e`. Set `ψ : Fin (∑ i, d i) ≃ n` to `finSigmaFinEquiv.symm.trans e₁`. Set `Φ : GL (Fin (∑ i, d i)) k →* GL n k` to `(Units.mapEquiv (Matrix.reindexAlgEquiv k k ψ).toMulEquiv).toMonoidHom`. Establish `hΦs : Function.Surjective Φ` using `(Units.mapEquiv _).surjective`.
+
+Establish `hΦc : Continuous Φ`. Use `Units.continuous_iff.2 ⟨continuous_matrix fun i j => ?_, continuous_matrix fun i j => ?_⟩` and prove the remaining obligations. Conclude with `Units.continuous_val.matrix_elem (ψ.symm i) (ψ.symm j)`. Conclude with `Units.continuous_coe_inv.matrix_elem (ψ.symm i) (ψ.symm j)`. Establish `h1` using `(hP k _ d hd).1 V (π.comp Φ) (isSmooth_comp hπ Φ hΦc) ((hasFiniteLength_comp_iff π Φ hΦs).2 hl)`.
+
+Establish `h2 : HasFiniteLength (jacU (finSigmaFinEquiv.trans ψ) π)` using `hasFiniteLength_jacU_reindex _ ψ π ((hasFiniteLength_twist_iff (jacU finSigmaFinEquiv (π.comp Φ)) _).1 h1)`. Establish `he : finSigmaFinEquiv.trans ψ = e₁`. Use extensionality with `x`. Simplify using `[ψ]`. Rewrite `h2` using `[he]`.
+
+Conclude with `(hasFiniteLength_twist_iff (jacU e π) (deltaHalf k m)⁻¹).2 (hasFiniteLength_jacU_relabel e s _ hf hs π h2)`.
+-/
 theorem jacquetFiniteLength_of_standard :
     GlobalTheory.Published.StandardFunctorsFiniteLength → ∀ (k : Type) [Field k] [ValuativeRel k]
       [TopologicalSpace k] [IsNonarchimedeanLocalField k], GlobalTheory.SmGL.JacquetFiniteLength k := by

@@ -18,6 +18,39 @@ def LeviTau : Prop :=
       compAt θ τ A = a ∧ (∀ τ', τ' ≠ τ → compAt θ τ' A = 1) ∧ A.map (finPart D) = 1 ∧
       ∀ (Φ : schwartzA θ V.rank n) (x : Mx D V.rank n), (ω (ι y) Φ).1 x = C * Φ.1 (HMul.hMul x A : Mx D V.rank n)
 
+/- English proof (translation)
+Introduce `D n V ψ χ θ μ ω H l s ν τ ε fr ι hC y hy`. Take `⟨hadd, hcmul, hrmul, hphase, f₁, hf₁, hf₁0⟩` from `hS V.rank n`. Establish `unip : ∀ (b : Matrix (Fin n) (Fin n) ℂ) (y' : GR n), bᴴ = b → mR y' = nU b → ∀ (Ψ' : Mx D V.rank n → ℂ) (hΨ' : AwayCls θ τ fr Ψ') (f : (Fin V.rank → Fin n → ℂ) → ℂ) (hf : IsSch f), (ω (ι y') ⟨tens θ τ fr f Ψ', hΨ'.2 f hf⟩).1 = tens θ τ fr (fun u => Complex.exp (Complex.I * (tLoc …`. Introduce `b y' hb hy' Ψ' hΨ' f hf`. Use function extensionality and compare the values at `x`.
+
+Rewrite using `[hU D n V ψ χ θ μ ω H l s ν τ ε fr ι hC y' b hb hy']`. Use `show _ * tens θ τ fr f Ψ' x = _`. Simplify using `only [tens]`. Expand and normalize the polynomial expressions, which then agree. Break down `hy with ⟨b, hb, hyb⟩ | ⟨c, hc, hyc⟩ | ⟨a, ha, hya⟩` into its components or cases.
+
+Conclude with `⟨fun f u => Complex.exp (Complex.I * (tLoc l τ : ℂ) * (b * gramX ε u).trace) * f u, fun f hf => hphase ε (tLoc l τ) b f hb hf, fun Ψ hΨ f hf => unip b y hb hyb Ψ hΨ f hf⟩`. Take `⟨w, hw⟩` from `hW D n`. Establish `hcn : (-c)ᴴ = -c` using `by rw [Matrix.conjTranspose_neg, hc]`. Take `⟨yn, hyn⟩` from `OG.exists_nU n (-c) hcn`. Establish `hconj` using `OG.iota_conj hC.hθ hC.hι w hw y yn c hyc hyn`.
+
+Establish `hy' : ι y = w * ι yn * w⁻¹` using `by rw [hconj]; group`. Take `⟨κ, Aop, A'op, hκ, hFT⟩` from `hF D n V ψ χ θ μ ω H l s ν τ ε fr ι hC w hw`. Establish `hsch : ∀ f, IsSch f → IsSch (fun u => κ * ftLoc ε (tLoc l τ) f u) ∧ IsSch (fun u => κ⁻¹ * ftLoc ε (-tLoc l τ) f u)` using `fun f hf => ⟨((hFT 0 (OG.awayCls_zero τ fr)).2.2 f hf).1, ((hFT 0 (OG.awayCls_zero τ fr)).2.2 f hf).2.1⟩`. Establish `step : ∀ (Ψ : Mx D V.rank n → ℂ) (hΨ : AwayCls θ τ fr Ψ) (f : (Fin V.rank → Fin n → ℂ) → ℂ) (hf : IsSch f), (ω (ι y) ⟨tens θ τ fr f Ψ, hΨ.2 f hf⟩).1 = tens θ τ fr (fun u => κ * ftLoc ε (tLoc l τ) (fun u' => Complex.exp (Complex.I * (tLoc l τ : ℂ) * ((-c) * gramX ε u').trace) * (κ …`. Introduce `Ψ hΨ f hf`.
+
+Take `⟨-, hA', hfs⟩` from `hFT Ψ hΨ`. Take `⟨-, s2, -, e2⟩` from `hfs f hf`. Take `⟨-, -, hfs'⟩` from `hFT (A'op Ψ) hA'`. Establish `sP` using `hphase ε (tLoc l τ) (-c) _ hcn s2`. Establish `e1 : ω w⁻¹ ⟨tens θ τ fr f Ψ, hΨ.2 f hf⟩ = ⟨tens θ τ fr (fun u => κ⁻¹ * ftLoc ε (-tLoc l τ) f u) (A'op Ψ), hA'.2 _ s2⟩` using `Subtype.ext e2`.
+
+Establish `e4 : ω (ι yn) ⟨tens θ τ fr (fun u => κ⁻¹ * ftLoc ε (-tLoc l τ) f u) (A'op Ψ), hA'.2 _ s2⟩ = ⟨_, hA'.2 _ sP⟩` using `Subtype.ext (unip (-c) yn hcn hyn (A'op Ψ) hA' _ s2)`. Take `⟨-, -, e5, -⟩` from `hfs' _ sP`. Take `⟨-, -, e6, -⟩` from `hfs' _ s2`. Prove the components needed by the constructor for the conclusion. Rewrite using `[hy', map_mul, map_mul, Module.End.mul_apply, Module.End.mul_apply, e1, e4]`.
+
+Conclude with `e5`. Establish `hid : ω w (ω w⁻¹ ⟨tens θ τ fr f Ψ, hΨ.2 f hf⟩) = ⟨tens θ τ fr f Ψ, hΨ.2 f hf⟩`. Rewrite using `[← Module.End.mul_apply, ← map_mul, mul_inv_cancel, map_one, Module.End.one_apply]`. Rewrite `hid` using `[e1]`. Rewrite using `[← e6, hid]`.
+
+Use `⟨fun g u => (κ * ftLoc ε (tLoc l τ) (fun u' => κ⁻¹ * ftLoc ε (-tLoc l τ) f₁ u') 0)⁻¹ * (κ * ftLoc ε (tLoc l τ) (fun u' => Complex.exp (Complex.I * (tLoc l τ : ℂ) * ((-c) * gramX ε u').trace) * (κ⁻¹ * ftLoc ε (-tLoc l τ) g u')) u), fun g hg => ?_, fun Ψ hΨ f hf => ?_⟩` and prove the remaining obligations. Conclude with `hcmul _ _ (hsch _ (hphase ε (tLoc l τ) (-c) _ hcn (hsch g hg).2)).1`. Use `set c₀ := κ * ftLoc ε (tLoc l τ) (fun u' => κ⁻¹ * ftLoc ε (-tLoc l τ) f₁ u') 0 with hc₀`. Establish `hAA : AwayCls θ τ fr (Aop (A'op Ψ))` using `(hFT (A'op Ψ) (hFT Ψ hΨ).2.1).1`. Establish `hrel : ∀ x, Ψ x = c₀ * Aop (A'op Ψ) x`.
+
+Introduce `x`. Take `⟨x', hx1, hx2, hx3⟩` from `OG.exists_slice hC.hθ τ x (0 : Matrix (Fin V.rank) (Fin n) ℂ)`. Establish `e` using `congrFun (step Ψ hΨ f₁ hf₁).2 x'`. Establish `hz0 : fr⁻¹ * compAt θ τ x' = (0 : Fin V.rank → Fin n → ℂ)`. Rewrite using `[hx1]`.
+
+Conclude with `Matrix.mul_zero _`. Simplify using `only [tens] at e`. Rewrite `e` using `[hz0, hf₁0, one_mul]`. Rewrite using `[← hΨ.1 x' x hx2 hx3, ← hAA.1 x' x hx2 hx3]`. Conclude with `e`.
+
+Distinguish the cases in `hz : c₀ = 0`. Establish `hΨ0 : ∀ x, Ψ x = 0` using `fun x => by rw [hrel x, hz, zero_mul]`. Establish `h00 : (⟨tens θ τ fr f Ψ, hΨ.2 f hf⟩ : schwartzA θ V.rank n) = 0`. Apply `Subtype.ext` to reduce the goal to its premises. Use function extensionality and compare the values at `x`.
+
+Simplify using `[tens, hΨ0 x]`. Rewrite using `[h00, map_zero]`. Use function extensionality and compare the values at `x`. Simplify using `[tens, hΨ0 x]`. Rewrite using `[(step Ψ hΨ f hf).1]`.
+
+Use function extensionality and compare the values at `x`. Simplify using `only [tens]`. Rewrite using `[hrel x]`. Clear the denominators using the available nonvanishing facts. Take `⟨C, A, hA1, hA2, hA3, hact⟩` from `hLv D n V ψ χ θ μ ω H l s ν τ ε fr ι hC y a ha hya`.
+
+Use `⟨fun f u => C * f (Matrix.of u * a), fun f hf => hcmul C _ (hrmul a f ha hf), ?_⟩` and prove the remaining obligations. Introduce `Ψ hΨ f hf`. Use function extensionality and compare the values at `x`. Rewrite using `[hact]`. Establish `hcomp : compAt θ τ (HMul.hMul x A : Mx D V.rank n) = compAt θ τ x * a`.
+
+Rewrite using `[GlobalTheory.AdForm.RatMove.compAt_mul, hA1]`. Establish `hPsi : Ψ (HMul.hMul x A : Mx D V.rank n) = Ψ x`. Apply `hΨ.1` to reduce the goal to its premises. Introduce `τ' hτ'`. Rewrite using `[GlobalTheory.AdForm.RatMove.compAt_mul, hA2 τ' hτ', Matrix.mul_one]`.
+
+Rewrite using `[Matrix.map_mul, hA3, Matrix.mul_one]`. Use `show C * tens θ τ fr f Ψ (HMul.hMul x A : Mx D V.rank n) = tens θ τ fr (fun u => C * f (Matrix.of u * a)) Ψ x`. Simplify using `only [tens]`. Rewrite using `[hcomp, hPsi, ← Matrix.mul_assoc, mul_assoc]`. Both sides reduce to the same expression.
+-/
 theorem opGen_of' (hU : UnipTau) (hLv : LeviTau) (hW : WEx) (hS : SchOps) (hF : FTfact) : OpGen := by
   intro D n V ψ χ θ μ ω H l s ν τ ε fr ι hC y hy
   obtain ⟨hadd, hcmul, hrmul, hphase, f₁, hf₁, hf₁0⟩ := hS V.rank n

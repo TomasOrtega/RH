@@ -29,6 +29,9 @@ open GlobalTheory.KSplit
 namespace GlobalTheory.VPrimeAct
 open scoped TensorProduct
 
+/- English proof (translation)
+Use function extensionality and compare the values at `Y`. Simplify using `only [GlobalTheory.SplitFlip.omA, GlobalTheory.SplitFlip.omB, GlobalTheory.SplitFlip.gdet_invT, map_inv, inv_inv, MonoidHom.inv_apply, GlobalTheory.SplitFlip.apow_inv, neg_div, neg_neg, GlobalTheory.SplitFlip.invT_invT, GlobalTheory.SplitFlip.invT_inv_val]`.
+-/
 private theorem omA_invT {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
     {A D : Type} [Fintype A] [DecidableEq A] [Fintype D] [DecidableEq D]
     (ν α : kˣ →* ℂˣ) (g : GL A k) (h : GL D k) (Ψ : Matrix A D k → ℂ) :
@@ -37,6 +40,13 @@ private theorem omA_invT {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace
   simp only [GlobalTheory.SplitFlip.omA, GlobalTheory.SplitFlip.omB, GlobalTheory.SplitFlip.gdet_invT, map_inv, inv_inv,
     MonoidHom.inv_apply, GlobalTheory.SplitFlip.apow_inv, neg_div, neg_neg, GlobalTheory.SplitFlip.invT_invT, GlobalTheory.SplitFlip.invT_inv_val]
 
+/- English proof (translation)
+Use `symm`. Apply `inv_mul_eq_one.mp` to reduce the goal to its premises. Apply `Units.ext` to reduce the goal to its premises. Rewrite using `[Units.val_mul, GlobalTheory.SplitFlip.invT_inv_val, Units.val_one]`. Establish `h1 : (b⁻¹).1ᵀ * P.1 = s • J`.
+
+Rewrite using `[hP, Matrix.mul_smul, ← Matrix.mul_assoc, ← Matrix.transpose_mul, Units.mul_inv, Matrix.transpose_one, Matrix.one_mul]`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [Units.val_mul, Matrix.transpose_mul, Matrix.mul_assoc]`. Use `_ = P.1 * (P⁻¹).1 := by`. Rewrite using `[h1, Matrix.mul_smul, Matrix.smul_mul, hU, Matrix.mul_smul, Matrix.smul_mul, hP, Matrix.smul_mul]`.
+
+Use `_ = 1 := Units.mul_inv P`.
+-/
 private theorem conj_eq_invT {k : Type} [Field k] {n : ℕ} (b P G G' : GL (Fin n) k) (J : Matrix (Fin n) (Fin n) k) (s : k)
     (hU : G.1ᵀ * J * G'.1 = J) (hP : P.1 = s • (b.1ᵀ * J)) :
     P * G' * P⁻¹ = GlobalTheory.SplitFlip.invT (b⁻¹ * G * b) := by
@@ -52,6 +62,15 @@ private theorem conj_eq_invT {k : Type} [Field k] {n : ℕ} (b P G G' : GL (Fin 
         rw [h1, Matrix.mul_smul, Matrix.smul_mul, hU, Matrix.mul_smul, Matrix.smul_mul, hP, Matrix.smul_mul]
     _ = 1 := Units.mul_inv P
 
+/- English proof (translation)
+Take `⟨hrs, A, hA⟩` from `h`. Establish `hNN : Matrix.fromBlocks (1 : Matrix (Fin r) (Fin r) ℂ) 0 0 (-1 : Matrix (Fin s) (Fin s) ℂ) * Matrix.fromBlocks (1 : Matrix (Fin r) (Fin r) ℂ) 0 0 (-1 : Matrix (Fin s) (Fin s) ℂ) = 1`. Rewrite using `[Matrix.fromBlocks_multiply]`. Simplify using `[Matrix.fromBlocks_one]`. Establish `hN : IsUnit (Matrix.fromBlocks (1 : Matrix (Fin r) (Fin r) ℂ) 0 0 (-1 : Matrix (Fin s) (Fin s) ℂ))` using `⟨⟨_, _, hNN, hNN⟩, rfl⟩`.
+
+Establish `h1` using `Matrix.rank_of_isUnit _ hN`. Establish `h2 : (Aᵀ * M * A.map star).rank ≤ M.rank` using `(Matrix.rank_mul_le_left _ _).trans (Matrix.rank_mul_le_right _ _)`. Rewrite `h2` using `[hA, h1]`. Simplify using `only [Fintype.card_sum, Fintype.card_fin, hrs] at h2`. Establish `h3 : LinearMap.range M.mulVecLin = ⊤`.
+
+Apply `Submodule.eq_top_of_finrank_eq` to reduce the goal to its premises. Use `M.rank_le_width` as an intermediate fact. Simplify using `only [Matrix.rank, Fintype.card_fin] at h2 this`. Rewrite using `[Module.finrank_fin_fun]`. Use linear arithmetic over natural numbers and integers.
+
+Establish `hu : IsUnit M` using `(Matrix.mulVec_surjective_iff_isUnit).mp (LinearMap.range_eq_top.mp h3)`. Conclude with `((Matrix.isUnit_iff_isUnit_det M).mp hu).ne_zero`.
+-/
 private theorem det_ne_zero_of_hasSig {n r s : ℕ} {M : Matrix (Fin n) (Fin n) ℂ} (h : HasSig M r s) : M.det ≠ 0 := by
   obtain ⟨hrs, A, hA⟩ := h
   have hNN : Matrix.fromBlocks (1 : Matrix (Fin r) (Fin r) ℂ) 0 0 (-1 : Matrix (Fin s) (Fin s) ℂ) *
@@ -78,14 +97,29 @@ open scoped TensorProduct
 
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E}
 
+/- English proof (translation)
+Take `⟨τ⟩ : Nonempty (E →+* ℂ)` from `inferInstance`. Apply `τ.injective` to reduce the goal to its premises. Rewrite using `[h.2.2.2 τ, h.2.2.2 τ, star_star]`.
+-/
 private theorem conj_conj (h : IsCMExt F E σ) (x : E) : σ (σ x) = x := by
   obtain ⟨τ⟩ : Nonempty (E →+* ℂ) := inferInstance
   apply τ.injective
   rw [h.2.2.2 τ, h.2.2.2 τ, star_star]
 
+/- English proof (translation)
+The claim follows from `AlgHom.ext fun x => by simp [conj_conj h]`.
+-/
 private theorem comp_comp (h : IsCMExt F E σ) {K : Type} [Ring K] [Algebra F K] (t : E →ₐ[F] K) : (t.comp σ).comp σ = t :=
   AlgHom.ext fun x => by simp [conj_conj h]
 
+/- English proof (translation)
+Assume the negation of the conclusion as `hc`. Use `push_neg at hc`. Establish `hfix : ∀ x, σ x = x` using `fun x => by`. Assume the negation of the conclusion as `hne`. Conclude with `hc (x - σ x) (sub_ne_zero.mpr (Ne.symm hne)) (by rw [map_sub, conj_conj h]; ring)`.
+
+Take `⟨τ⟩ : Nonempty (E →+* ℂ)` from `inferInstance`. Establish `hreal : ComplexEmbedding.IsReal τ`. Rewrite using `[ComplexEmbedding.isReal_iff]`. Use extensionality with `x`. Rewrite using `[ComplexEmbedding.conjugate_coe_eq]`.
+
+Use `h.2.2.2 τ x` as an intermediate fact. Rewrite `this` using `[hfix]`. Conclude with `this.symm`. Establish `hc'` using `h.2.1.isComplex (InfinitePlace.mk τ)`. Rewrite `hc'` using `[← InfinitePlace.not_isReal_iff_isComplex]`.
+
+Conclude with `hc' (InfinitePlace.isReal_mk_iff.mpr hreal)`.
+-/
 private theorem exists_anti (h : IsCMExt F E σ) : ∃ ξ : E, ξ ≠ 0 ∧ σ ξ = -ξ := by
   by_contra hc
   push_neg at hc
@@ -104,6 +138,17 @@ private theorem exists_anti (h : IsCMExt F E σ) : ∃ ξ : E, ξ ≠ 0 ∧ σ �
   rw [← InfinitePlace.not_isReal_iff_isComplex] at hc'
   exact hc' (InfinitePlace.isReal_mk_iff.mpr hreal)
 
+/- English proof (translation)
+Take `⟨ξ, hξ0, hξ⟩` from `exists_anti h`. Establish `hli : LinearIndependent F ![(1 : E), ξ]`. Rewrite using `[LinearIndependent.pair_iff]`. Introduce `s u hsu`. Simplify using `only [Algebra.smul_def, mul_one] at hsu`.
+
+Establish `h2` using `congrArg σ hsu`. Simplify using `only [map_add, map_mul, AlgHom.commutes, hξ, map_zero] at h2`. Establish `h3 : algebraMap F E u * ξ = 0` using `by linear_combination (hsu - h2) / 2`. Establish `hu : u = 0` using `(map_eq_zero (algebraMap F E)).mp ((mul_eq_zero.mp h3).resolve_right hξ0)`. Substitute `hu` using the available equality.
+
+Use `⟨(map_eq_zero (algebraMap F E)).mp (by simpa using hsu), rfl⟩` and prove the remaining obligations. Establish `hcard : Fintype.card (Fin 2) = Module.finrank F E` using `by rw [h.2.2.1]; rfl`. Set `b` to `basisOfLinearIndependentOfCardEqFinrank hli hcard`. Establish `hb : ∀ i, b i = ![(1 : E), ξ] i` using `fun i => by simp [b]`. Use `⟨(1 : AF F) ⊗ₜ[F] ξ, ⟨?_, ?_, ⟨Algebra.TensorProduct.basis (AF F) b, ?_, ?_⟩⟩⟩` and prove the remaining obligations.
+
+Apply the tactic sequence `refine ⟨⟨(1 : AF F) ⊗ₜ[F] ξ, (1 : AF F) ⊗ₜ[F] ξ⁻¹, ?_, ?_⟩, rfl⟩ <;>`. Simplify using `[Algebra.TensorProduct.tmul_mul_tmul, hξ0, ← Algebra.TensorProduct.one_def]`. Simplify using `[cA, Algebra.TensorProduct.map_tmul, hξ, TensorProduct.tmul_neg]`. Rewrite using `[Algebra.TensorProduct.basis_apply, hb]`. Both sides reduce to the same expression.
+
+Rewrite using `[Algebra.TensorProduct.basis_apply, hb]`. Both sides reduce to the same expression.
+-/
 private theorem exists_isQuad (h : IsCMExt F E σ) : ∃ ξ : AE F E, IsQuad (cA σ) ξ := by
   obtain ⟨ξ, hξ0, hξ⟩ := exists_anti h
   have hli : LinearIndependent F ![(1 : E), ξ] := by
@@ -133,6 +178,25 @@ open scoped TensorProduct
 
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E}
 
+/- English proof (translation)
+Take `⟨ξ, hξ⟩` from `exists_isQuad h`. Use extensionality with `x`. Set `L` to `GlobalTheory.SplitGLLift.liftPair (v := v) h t`. Establish `key : ∀ p q : Fv F v × Fv F v, p + q + p * q = 0 → (1 + L p) * (1 + L q) = 1`. Introduce `p q hpq`.
+
+Use `congrArg L hpq` as an intermediate fact. Rewrite `this` using `[map_add, map_add, map_mul, map_zero]`. Take the linear combination `this`. Establish `hx1 : ((x : Fv F v) - 1, (0 : Fv F v)) + (((x⁻¹ : (Fv F v)ˣ) : Fv F v) - 1, 0) + ((x : Fv F v) - 1, (0 : Fv F v)) * (((x⁻¹ : (Fv F v)ˣ) : Fv F v) - 1, 0) = 0`. Use `Prod.ext ?_ ?_` and prove the remaining obligations.
+
+Simplify using `only [Prod.fst_add, Prod.fst_mul, Prod.fst_zero]`. Take the linear combination `Units.mul_inv x`. Simplify using the standard rewrite rules. Establish `hx2 : (((x⁻¹ : (Fv F v)ˣ) : Fv F v) - 1, (0 : Fv F v)) + ((x : Fv F v) - 1, (0 : Fv F v)) + (((x⁻¹ : (Fv F v)ˣ) : Fv F v) - 1, 0) * ((x : Fv F v) - 1, (0 : Fv F v)) = 0`. Use `Prod.ext ?_ ?_` and prove the remaining obligations.
+
+Simplify using `only [Prod.fst_add, Prod.fst_mul, Prod.fst_zero]`. Take the linear combination `Units.mul_inv x`. Simplify using the standard rewrite rules. Set `z : (AE F E)ˣ` to `⟨1 + L ((x : Fv F v) - 1, 0), 1 + L (((x⁻¹ : (Fv F v)ˣ) : Fv F v) - 1, 0), key _ _ hx1, key _ _ hx2⟩`. Establish `hzt : Units.map (piW t).toMonoidHom z = x`.
+
+Use `ext`. Simplify using `[z, L, GlobalTheory.SplitGLLift.piW_liftPair]`. Establish `hzc : piW (t.comp σ) (z : AE F E) = 1`. Simplify using `[z, L, GlobalTheory.SplitGLLift.piW_comp_liftPair]`. Establish `hzA : At (evFin F v) ((z : AE F E) - 1)`.
+
+Simplify `GlobalTheory.SplitGLLift.at_liftPair h t ((x : Fv F v) - 1, 0)` using `[z, L]`. Set `z' : (AE F E)ˣ` to `Units.map (cA σ : AE F E →* AE F E) z`. Establish `hz'v : (z' : AE F E) = 1 + L (0, (x : Fv F v) - 1)`. Simplify using `[z', z, L, GlobalTheory.SplitGLLift.cA_liftPair]`. Establish `hz't : Units.map (piW (t.comp σ)).toMonoidHom z' = x`.
+
+Use `ext`. Simplify using `[hz'v, L, GlobalTheory.SplitGLLift.piW_comp_liftPair]`. Establish `hz'c : piW ((t.comp σ).comp σ) (z' : AE F E) = 1`. Rewrite using `[comp_comp h, hz'v]`. Simplify using `[L, GlobalTheory.SplitGLLift.piW_liftPair]`.
+
+Establish `hz'A : At (evFin F v) ((z' : AE F E) - 1)`. Simplify `GlobalTheory.SplitGLLift.at_liftPair h t (0, (x : Fv F v) - 1)` using `[hz'v, L]`. Establish `e1` using `GlobalTheory.ChrLocal.chrW_piW_eq F E σ h χ v t z hzA hzc`. Establish `e2` using `GlobalTheory.ChrLocal.chrW_piW_eq F E σ h χ v (t.comp σ) z' hz'A hz'c`. Rewrite `e1` using `[hzt]`.
+
+Rewrite `e2` using `[hz't]`. Rewrite using `[MonoidHom.inv_apply, e1, e2, ResEtaPow.map_conj hξ hχ z, map_inv]`.
+-/
 private theorem chrW_comp (h : IsCMExt F E σ) (χ : Chr F E) {m : ℕ}
     (hχ : ResEtaPow (Units.map (algebraMap F (AF F)).toMonoidHom).range χ m) {v : Pl F} (t : E →ₐ[F] Fv F v) :
     chrW χ (t.comp σ) = (chrW χ t)⁻¹ := by
@@ -186,12 +250,18 @@ open scoped TensorProduct
 
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E}
 
+/- English proof (translation)
+Establish `: (J.map t).det = t J.det` using `(AlgHom.map_det t J).symm`. Rewrite using `[this]`. Conclude with `(map_ne_zero t).mpr hJ`.
+-/
 private theorem det_map_ne_zero {m : ℕ} {J : Matrix (Fin m) (Fin m) E} (hJ : J.det ≠ 0) {K : Type} [Field K] [Algebra F K]
     (t : E →ₐ[F] K) : (J.map t).det ≠ 0 := by
   have : (J.map t).det = t J.det := (AlgHom.map_det t J).symm
   rw [this]
   exact (map_ne_zero t).mpr hJ
 
+/- English proof (translation)
+Take `w` from `Classical.arbitrary (InfinitePlace F)`. Establish `h` using `det_ne_zero_of_hasSig (hX.sig w)`. Introduce `h0`. Apply `h` to reduce the goal to its premises. Rewrite using `[show (X.J.map (B.emb w).1).det = (B.emb w).1 X.J.det from (RingHom.map_det (B.emb w).1 X.J).symm, h0, map_zero]`.
+-/
 private theorem det_ne_zero_herm {B : Base F E} {m : ℕ} {X : Spc F E m} {r s : ℕ} (hX : X.IsHerm σ B r s) : X.J.det ≠ 0 := by
   obtain w := Classical.arbitrary (InfinitePlace F)
   have h := det_ne_zero_of_hasSig (hX.sig w)
@@ -199,6 +269,9 @@ private theorem det_ne_zero_herm {B : Base F E} {m : ℕ} {X : Spc F E m} {r s :
   apply h
   rw [show (X.J.map (B.emb w).1).det = (B.emb w).1 X.J.det from (RingHom.map_det (B.emb w).1 X.J).symm, h0, map_zero]
 
+/- English proof (translation)
+Take `w` from `Classical.arbitrary (InfinitePlace F)`. Establish `h` using `det_ne_zero_of_hasSig (hX.sig w)`. Introduce `h0`. Apply `h` to reduce the goal to its premises. Rewrite using `[Matrix.det_smul, show (X.J.map (B.emb w).1).det = (B.emb w).1 X.J.det from (RingHom.map_det (B.emb w).1 X.J).symm, h0, map_zero, mul_zero]`.
+-/
 private theorem det_ne_zero_skew {B : Base F E} {m : ℕ} {X : Spc F E m} {r s : ℕ} (hX : X.IsSkew σ B r s) : X.J.det ≠ 0 := by
   obtain w := Classical.arbitrary (InfinitePlace F)
   have h := det_ne_zero_of_hasSig (hX.sig w)
@@ -210,6 +283,21 @@ end GlobalTheory.VPrimeAct
 
 open GlobalTheory.VPrimeAct in
 
+/- English proof (translation)
+Introduce `hPr F E _ _ _ _ _ σ B n d X W M χX χW om r s r' s' hP v t b c ι hι g hg φ hφ φ₁ hφ₁ hA`. Establish `hcm : IsCMExt F E σ` using `hP.base.cm`. Establish `hJX : (X.J.map t).det ≠ 0` using `det_map_ne_zero (det_ne_zero_herm hP.herm) t`. Establish `hJW : (W.J.map t).det ≠ 0` using `det_map_ne_zero (det_ne_zero_skew hP.skew) t`. Establish `hb : b.1.det ≠ 0` using `((Matrix.isUnit_iff_isUnit_det _).mp b.isUnit).ne_zero`.
+
+Establish `hc : c.1.det ≠ 0` using `((Matrix.isUnit_iff_isUnit_det _).mp c.isUnit).ne_zero`. Set `P : GL (Fin n) (Fv F v)` to `Matrix.nonsingInvUnit (-(b.1ᵀ * X.J.map t)) (isUnit_iff_ne_zero.mpr (by`. Rewrite using `[Matrix.det_neg, Matrix.det_mul, Matrix.det_transpose]`. Conclude with `mul_ne_zero (pow_ne_zero _ (by norm_num)) (mul_ne_zero hb hJX)))`. Set `Q : GL (Fin d) (Fv F v)` to `Matrix.nonsingInvUnit (c.1ᵀ * W.J.map t) (isUnit_iff_ne_zero.mpr (by`.
+
+Rewrite using `[Matrix.det_mul, Matrix.det_transpose]`. Conclude with `mul_ne_zero hc hJW))`. Establish `hPv : P.1 = -(b.1ᵀ * X.J.map t)` using `rfl`. Establish `hQv : Q.1 = c.1ᵀ * W.J.map t` using `rfl`. Establish `hW2 : M.IsLinW B.ψ (t.comp σ) P⁻¹ Q⁻¹ ι`.
+
+Unfold `Model.IsLinW`. Unfold `Model.IsLinBar at hι`. Rewrite using `[comp_comp hcm]`. Use `hι using 2` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `u`.
+
+Simplify using `only [inv_inv, hPv, hQv, Matrix.transpose_mul, Matrix.transpose_transpose, Matrix.neg_mul, Matrix.mul_assoc]`. Take `⟨κ, hκ⟩` from `GlobalTheory.T.linear_model_compact_conjugate_exists hPr F E σ B n d X W M χX χW om r s r' s' hP v (t.comp σ) P⁻¹ Q⁻¹ ι hW2`. Establish `hs` using `GlobalTheory.T.linear_model_unitary_intertwines hPr F E σ B n d X W M χX χW om r s r' s' hP v (t.comp σ) P⁻¹ Q⁻¹ ι hW2 κ hκ g hg`. Establish `key : ι φ₁ = GlobalTheory.SplitFlip.omA (chrW χW (t.comp σ))⁻¹ (chrW χX t)⁻¹ (locMat (t.comp σ) P⁻¹ g) 1 (ι φ)`. Rewrite using `[hκ g hg φ hφ φ₁ hφ₁ hA, hs]`.
+
+Use function extensionality and compare the values at `Y`. Simplify using `only [GlobalTheory.SplitFlip.omA, Pi.smul_apply, smul_eq_mul, Fintype.card_fin, MonoidHom.inv_apply, Units.val_inv_eq_inv_val, inv_inv, map_one, Units.val_one, inv_one, mul_one, GlobalTheory.SplitFlip.apow_one, Matrix.mul_one]`. Establish `eg : locMat (t.comp σ) P⁻¹ g = GlobalTheory.SplitFlip.invT (locMat t b g)`. Express the relevant statement in the definitionally equal form `P⁻¹⁻¹ * _ * P⁻¹ = GlobalTheory.SplitFlip.invT (b⁻¹ * _ * b)`. Rewrite using `[inv_inv]`.
+
+Conclude with `conj_eq_invT b P _ _ (X.J.map t) (-1) (GlobalTheory.Div.CoordOpp.unit_map σ g t) (by rw [hPv, neg_one_smul])`. Establish `e1 : (1 : GL (Fin d) (Fv F v)) = GlobalTheory.SplitFlip.invT 1` using `(map_one _).symm`. Rewrite using `[key, eg, chrW_comp hcm χW hP.resW, inv_inv, ← omA_invT, ← e1]`.
+-/
 private theorem GlobalTheory.VPrimeAct.act_left : GlobalTheory.FunPr.Hypotheses₂ → ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E) (n d : ℕ)
     (X : Spc F E n) (W : Spc F E d) (M : Model σ X W) (χX χW : Chr F E) (om : Rep σ X W) (r s r' s' : ℕ), IsPair B M χX χW om r s r' s' →
     ∀ (v : Pl F) (t : E →ₐ[F] Fv F v) (b : GL (Fin n) (Fv F v)) (c : GL (Fin d) (Fv F v)), ∀ ι, M.IsLinBar B.ψ t b c ι →
@@ -253,6 +341,17 @@ private theorem GlobalTheory.VPrimeAct.act_left : GlobalTheory.FunPr.Hypotheses�
 end Helpers
 
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Introduce `hP F E _ _ _ _ _ σ B a a' G X om om' hT v hv t ι₀ hι`. Establish `hcm : IsCMExt F E σ` using `hT.base.cm`. Take `⟨hsm, hun⟩` from `GlobalTheory.T.local_character_smooth_unitary hP F E σ B a a' G X om om' hT v hv t`. Establish `key : ∀ g ∈ UAt σ G.V' (evFin F v), ∀ φ ∈ SB (Fin a' × Fin (a + a') → Fv F v), ∀ φ₁ ∈ SB (Fin a' × Fin (a + a') → Fv F v), Acts (evFin F v) (om' (g, 1)) φ φ₁ → ι₀ φ₁ = GlobalTheory.FullRankCoinv.lact (chrW X.ν t) (GlobalTheory.KSplit.locMat t 1 g) (ι₀ φ)`. Introduce `g hg φ hφ φ₁ hφ₁ hA`.
+
+Rewrite using `[GlobalTheory.VPrimeAct.act_left hP F E σ B a' (a + a') G.V' G.W G.M' X.α (X.α / X.β) om' G.q (a' - G.q) (a + a' - (G.p + G.q)) (G.p + G.q) (GlobalTheory.ThK.Inhab.pairV' hT) v t 1 1 ι₀ hι g hg φ hφ φ₁ hφ₁ hA]`. Use function extensionality and compare the values at `Y`. Simplify using `only [GlobalTheory.SplitFlip.omB, GlobalTheory.FullRankCoinv.lact, map_one, Units.val_one, mul_one, GlobalTheory.SplitFlip.apow_one, Matrix.mul_one, Fintype.card_fin, Chars.ν]`. Use `⟨hsm, hun, fun g₀ => ?_, fun g hg => ⟨GlobalTheory.KSplit.locMat t 1 g, key g hg⟩⟩` and prove the remaining obligations. Take `⟨w⟩ : Nonempty (InfinitePlace F)` from `inferInstance`.
+
+Establish `hdet : IsUnit (G.V'.J.map t).det` using `GlobalTheory.SplitUnitLift.isUnit_det_of_cartan G.V'.J t (B.emb w).1 1 one_ne_zero (G.V'.θ w) (by rw [one_smul]; exact hT.geo.hV'.cartan w)`. Establish `herm : ∀ i j, σ (G.V'.J j i) = algebraMap F E 1 * G.V'.J i j` using `fun i j => by`. Rewrite using `[map_one, one_mul]`. Conclude with `hT.geo.hV'.herm i j`. Establish `hK` using `GlobalTheory.SplitUnitLift.liftU_mem_UAt hcm t G.V' 1 herm hdet g₀`.
+
+Establish `hK2` using `GlobalTheory.SplitUnitLift.liftU_piW hcm t G.V'.J 1 herm hdet g₀`. Establish `hloc : GlobalTheory.KSplit.locMat t 1 (GlobalTheory.SplitUnitLift.liftU hcm t G.V'.J 1 herm hdet g₀) = g₀`. Apply `Units.ext` to reduce the goal to its premises. Rewrite using `[GlobalTheory.KSplit.locMat_val, hK2]`. Simplify using the standard rewrite rules.
+
+Take `⟨S, hS⟩` from `GlobalTheory.T.weilRepresentationLocality_unitaryGroupV' B G X om om' hT v _ hK`. Use `⟨_, hK, fun φ hφ => ⟨S φ, (hS φ hφ).1, (hS φ hφ).2, ?_⟩⟩` and prove the remaining obligations. Rewrite using `[key _ hK φ hφ _ (hS φ hφ).1 (hS φ hφ).2, hloc]`.
+-/
 theorem _root_.GlobalTheory.T.local_linear_functional_triple_at_good_place : GlobalTheory.FunPr.Hypotheses₂ → ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E) (a a' : ℕ) (G : Geo σ a a') (X : Chars F E) (om : Rep σ G.V G.W) (om' : Rep σ G.V' G.W), IsTriple B G X om om' → ∀ v, X.Good v → ∀ (t : E →ₐ[F] Fv F v) (ι₀ : ((Fin a' × Fin (a + a') → Fv F v) → ℂ) →ₗ[ℂ] (Matrix (Fin a') (Fin (a + a') ) (Fv F v) → ℂ)), G.M'.IsLinBar B.ψ t 1 1 ι₀ →
   GlobalTheory.SmGL.IsSmoothChar (chrW X.ν t) ∧ GlobalTheory.SmGL.IsUnitaryChar (chrW X.ν t) ∧
   (∀ g₀ : GL (Fin a') (Fv F v), ∃ g ∈ UAt σ G.V' (evFin F v), ∀ φ ∈ SB (Fin a' × Fin (a + a') → Fv F v), ∃ φ₁ ∈ SB (Fin a' × Fin (a + a') → Fv F v),

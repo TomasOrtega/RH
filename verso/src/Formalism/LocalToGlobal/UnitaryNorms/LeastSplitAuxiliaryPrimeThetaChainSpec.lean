@@ -15,20 +15,41 @@ open Formalism.BasicNotions Formalism.FrobeniusOrbits Formalism.MainNotions
 
 variable (D : D7)
 
+/- English proof (translation)
+Conclude with `AbsolutelyIrreducibleSpan.condE_pos (D := D)`.
+-/
 theorem condE_pos : 0 < LevelStarExponents.condE D := by
   exact AbsolutelyIrreducibleSpan.condE_pos (D := D)
 
+/- English proof (translation)
+Conclude with `⟨(AbsolutelyIrreducibleSpan.auxiliary_prime_mem (D := D)).1, (AbsolutelyIrreducibleSpan.auxiliary_prime_mem (D := D)).2.1⟩`.
+-/
 theorem leastSplitAuxiliaryPrimeThetaChain_spec : (AbsolutelyIrreducibleSpan.q0 D).Prime ∧ AbsolutelyIrreducibleSpan.q0 D % (AbsolutelyIrreducibleSpan.rPr D * LevelStarExponents.condE D) = 1 := by
   exact ⟨(AbsolutelyIrreducibleSpan.auxiliary_prime_mem (D := D)).1, (AbsolutelyIrreducibleSpan.auxiliary_prime_mem (D := D)).2.1⟩
 
+/- English proof (translation)
+Establish `h1` using `(AbsolutelyIrreducibleSpan.auxiliary_prime_mem (D := D)).2.1`. Rewrite using `[← Nat.mod_mod_of_dvd _ hm, h1]`. Conclude with `Nat.mod_eq_of_lt (by omega)`.
+-/
 theorem split_prime_mod_divisor_eq_one {m : ℕ} (hm : m ∣ AbsolutelyIrreducibleSpan.rPr D * LevelStarExponents.condE D) (h2 : 2 ≤ m) : AbsolutelyIrreducibleSpan.q0 D % m = 1 := by
   have h1 := (AbsolutelyIrreducibleSpan.auxiliary_prime_mem (D := D)).2.1
   rw [← Nat.mod_mod_of_dvd _ hm, h1]
   exact Nat.mod_eq_of_lt (by omega)
 
+/- English proof (translation)
+Conclude with `split_prime_mod_divisor_eq_one D (Dvd.dvd.mul_left hm _) h2`.
+-/
 theorem q0_mod_eq_one_of_dvd_condE {m : ℕ} (hm : m ∣ LevelStarExponents.condE D) (h2 : 2 ≤ m) : AbsolutelyIrreducibleSpan.q0 D % m = 1 := by
   exact split_prime_mod_divisor_eq_one D (Dvd.dvd.mul_left hm _) h2
 
+/- English proof (translation)
+Establish `h1` using `(AbsolutelyIrreducibleSpan.auxiliary_prime_mem (D := D)).2.1`. Establish `hr` using `(AbsolutelyIrreducibleSpan.rPr_mem (D := D)).2`. Establish `hd : AbsolutelyIrreducibleSpan.rPr D ∣ AbsolutelyIrreducibleSpan.q0 D - 1`. Establish `h` using `Nat.div_add_mod (AbsolutelyIrreducibleSpan.q0 D) (AbsolutelyIrreducibleSpan.rPr D * LevelStarExponents.condE D)`. Rewrite `h` using `[h1]`.
+
+Establish `e : AbsolutelyIrreducibleSpan.q0 D - 1 = AbsolutelyIrreducibleSpan.rPr D * LevelStarExponents.condE D * (AbsolutelyIrreducibleSpan.q0 D / (AbsolutelyIrreducibleSpan.rPr D * LevelStarExponents.condE D))`. Use linear arithmetic over natural numbers and integers. Rewrite using `[e, mul_assoc]`. Conclude with `dvd_mul_right _ _`. Prove the components needed by the constructor for the conclusion.
+
+Introduce `he`. Rewrite `hd` using `[he]`. Conclude with `hr (dvd_mul_of_dvd_left (dvd_mul_of_dvd_left (dvd_mul_of_dvd_right hd _) _) _)`. Introduce `he`. Rewrite `hd` using `[he]`.
+
+Conclude with `hr (dvd_mul_of_dvd_left (dvd_mul_of_dvd_right hd _) _)`.
+-/
 theorem leastSplitAuxiliaryPrime_ne_typePrimes : AbsolutelyIrreducibleSpan.q0 D ≠ D.host.pde ∧ AbsolutelyIrreducibleSpan.q0 D ≠ D.host.pde' := by
   have h1 := (AbsolutelyIrreducibleSpan.auxiliary_prime_mem (D := D)).2.1
   have hr := (AbsolutelyIrreducibleSpan.rPr_mem (D := D)).2
@@ -47,6 +68,13 @@ theorem leastSplitAuxiliaryPrime_ne_typePrimes : AbsolutelyIrreducibleSpan.q0 D 
     rw [he] at hd
     exact hr (dvd_mul_of_dvd_left (dvd_mul_of_dvd_right hd _) _)
 
+/- English proof (translation)
+Establish `hb` using `D.host.qd_big`. Establish `hq : D.host.q ∣ LevelStarExponents.condE D`. Unfold `LevelStarExponents.condE`. Conclude with `dvd_mul_of_dvd_left (dvd_mul_left _ _) _`. Establish `hd : D.host.d ∣ LevelStarExponents.condE D`.
+
+Unfold `LevelStarExponents.condE`. Conclude with `dvd_mul_left _ _`. Establish `mq` using `q0_mod_eq_one_of_dvd_condE D hq (by omega)`. Establish `md` using `q0_mod_eq_one_of_dvd_condE D hd (by omega)`. Establish `h2` using `AbsolutelyIrreducibleSpan.auxiliary_prime_odd D`.
+
+Use `⟨fun h => by rw [h] at h2; norm_num at h2, fun h => ?_, fun h => ?_⟩` and prove the remaining obligations. Rewrite `mq` using `[h, Nat.mod_self]`. Conclude with `absurd mq (by norm_num)`. Rewrite `md` using `[h, Nat.mod_self]`. Conclude with `absurd md (by norm_num)`.
+-/
 theorem q0_ne_two_and_ne_q_and_ne_d : AbsolutelyIrreducibleSpan.q0 D ≠ 2 ∧ AbsolutelyIrreducibleSpan.q0 D ≠ D.host.q ∧ AbsolutelyIrreducibleSpan.q0 D ≠ D.host.d := by
   have hb := D.host.qd_big
   have hq : D.host.q ∣ LevelStarExponents.condE D := by
@@ -64,6 +92,11 @@ theorem q0_ne_two_and_ne_q_and_ne_d : AbsolutelyIrreducibleSpan.q0 D ≠ 2 ∧ A
   · rw [h, Nat.mod_self] at md
     exact absurd md (by norm_num)
 
+/- English proof (translation)
+Establish `hm2 : 2 ≤ m` using `hm.two_le`. Establish `hq` using `q0_mod_eq_one_of_dvd_condE D hdv hm2`. Establish `hq0` using `(AbsolutelyIrreducibleSpan.auxiliary_prime_mem (D := D)).1`. Establish `h2 : AbsolutelyIrreducibleSpan.q0 D ≠ 2` using `(q0_ne_two_and_ne_q_and_ne_d D).1`. Establish `hv : ((1 : (ZMod m)ˣ) : ZMod m) = (AbsolutelyIrreducibleSpan.q0 D : ZMod m)`.
+
+Rewrite using `[Units.val_one, ← ZMod.natCast_mod (AbsolutelyIrreducibleSpan.q0 D) m, hq, Nat.cast_one]`. Rewrite using `[← sqSign_eq_jacobi hm hq0 hm4 h2 1 hv]`. Simplify using `[sqSign]`.
+-/
 theorem split_prime_jacobi_of_three_mod_four {m : ℕ} (hm : m.Prime) (hm4 : m % 4 = 3) (hdv : m ∣ LevelStarExponents.condE D) :
     jacobiSym (-(m : ℤ)) (AbsolutelyIrreducibleSpan.q0 D) = 1 := by
   have hm2 : 2 ≤ m := hm.two_le
@@ -75,6 +108,9 @@ theorem split_prime_jacobi_of_three_mod_four {m : ℕ} (hm : m.Prime) (hm4 : m %
   rw [← sqSign_eq_jacobi hm hq0 hm4 h2 1 hv]
   simp [sqSign]
 
+/- English proof (translation)
+Establish `hh` using `D.host.hyp`. Establish `h16` using `hh.2.2.2.1`. Conclude with `split_prime_jacobi_of_three_mod_four D hh.2.1 (by omega) (by`. Unfold `LevelStarExponents.condE`. Conclude with `dvd_mul_left _ _)`.
+-/
 theorem split_prime_jacobi_neg_d : jacobiSym (-(D.host.d : ℤ)) (AbsolutelyIrreducibleSpan.q0 D) = 1 := by
   have hh := D.host.hyp
   have h16 := hh.2.2.2.1
@@ -82,6 +118,11 @@ theorem split_prime_jacobi_neg_d : jacobiSym (-(D.host.d : ℤ)) (AbsolutelyIrre
     unfold LevelStarExponents.condE
     exact dvd_mul_left _ _)
 
+/- English proof (translation)
+Establish `hh` using `D.host.hyp`. Establish `hq2` using `hh.1.two_le`. Establish `hdv : D.host.q ∣ LevelStarExponents.condE D`. Unfold `LevelStarExponents.condE`. Conclude with `dvd_mul_of_dvd_left (dvd_mul_left _ _) _`.
+
+Establish `h2 : 2 ≤ LevelStarExponents.condE D` using `le_trans hq2 (Nat.le_of_dvd (condE_pos D) hdv)`. Conclude with `q0_mod_eq_one_of_dvd_condE D dvd_rfl h2`.
+-/
 theorem split_prime_mod_conductor_eq_one : AbsolutelyIrreducibleSpan.q0 D % D.host.condN = 1 := by
   have hh := D.host.hyp
   have hq2 := hh.1.two_le
@@ -91,6 +132,9 @@ theorem split_prime_mod_conductor_eq_one : AbsolutelyIrreducibleSpan.q0 D % D.ho
   have h2 : 2 ≤ LevelStarExponents.condE D := le_trans hq2 (Nat.le_of_dvd (condE_pos D) hdv)
   exact q0_mod_eq_one_of_dvd_condE D dvd_rfl h2
 
+/- English proof (translation)
+Use `haveI : Fact (AbsolutelyIrreducibleSpan.q0 D).Prime := ⟨(AbsolutelyIrreducibleSpan.auxiliary_prime_mem (D := D)).1⟩`. Conclude with `Formalism.BasicNotions.Examples₂.placesOver_ncard_of_split (hpm := split_prime_mod_conductor_eq_one D) ..`.
+-/
 theorem split_prime_splits_completely : (placesOver D.host.E (AbsolutelyIrreducibleSpan.q0 D)).ncard = Module.finrank ℚ D.host.E := by
   haveI : Fact (AbsolutelyIrreducibleSpan.q0 D).Prime := ⟨(AbsolutelyIrreducibleSpan.auxiliary_prime_mem (D := D)).1⟩
   exact Formalism.BasicNotions.Examples₂.placesOver_ncard_of_split (hpm := split_prime_mod_conductor_eq_one D) ..
@@ -104,6 +148,11 @@ structure LevelTied (D : D7) : Prop where
   eq : ∀ p, p ∈ D.host.levelPrimes ↔
     (∃ i, p = D.host.g i) ∨ p = D.host.pde ∨ p = D.host.pde' ∨ (∃ u, p = (D.mem u).A.T) ∨ p = AbsolutelyIrreducibleSpan.q0 D
 
+/- English proof (translation)
+Introduce `p hp`. Break down `(h.eq p).mp hp with ⟨i, rfl⟩ | rfl | rfl | ⟨u, rfl⟩ | rfl` into its components or cases. Conclude with `D.host.g_prime i`. Conclude with `D.host.pde_prime`. Conclude with `D.host.pde'_prime`.
+
+Conclude with `(D.mem u).A.T_prime`. Conclude with `(AbsolutelyIrreducibleSpan.auxiliary_prime_mem (D := D)).1`.
+-/
 theorem LevelTied.prime (h : LevelTied D) : ∀ p ∈ D.host.levelPrimes, p.Prime := by
   intro p hp
   rcases (h.eq p).mp hp with ⟨i, rfl⟩ | rfl | rfl | ⟨u, rfl⟩ | rfl
@@ -113,6 +162,9 @@ theorem LevelTied.prime (h : LevelTied D) : ∀ p ∈ D.host.levelPrimes, p.Prim
   · exact (D.mem u).A.T_prime
   · exact (AbsolutelyIrreducibleSpan.auxiliary_prime_mem (D := D)).1
 
+/- English proof (translation)
+Conclude with `(h.eq _).mpr (Or.inr (Or.inr (Or.inr (Or.inr rfl))))`.
+-/
 theorem LevelTied.auxiliary_prime_mem (h : LevelTied D) : AbsolutelyIrreducibleSpan.q0 D ∈ D.host.levelPrimes := by
   exact (h.eq _).mpr (Or.inr (Or.inr (Or.inr (Or.inr rfl))))
 

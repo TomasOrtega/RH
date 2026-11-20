@@ -36,15 +36,27 @@ def fv (f : C1 (OAff s)) {A B : Z.affineOpens} (h : B.1 ≤ A.1) : Γ(Z, B.1) :=
 
 def gv (g : C0 (OAff s)) (A : Z.affineOpens) : Γ(Z, A.1) := g (Opposite.op A)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem fv_d0 (g : C0 (OAff s)) {A B : Z.affineOpens} (h : B.1 ≤ A.1) :
     fv s (d0 (OAff s) g) h = gv s g B - resG Z h (gv s g A) := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem fv_add (f f' : C1 (OAff s)) {A B : Z.affineOpens} (h : B.1 ≤ A.1) :
     fv s (f + f') h = fv s f h + fv s f' h := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem fv_smul (r : R) (f : C1 (OAff s)) {A B : Z.affineOpens} (h : B.1 ≤ A.1) :
     fv s (r • f) h = (secMap s B.1).hom r * fv s f h := rfl
 
+/- English proof (translation)
+The claim follows from `eq_sub_of_add_eq (f.2 (homOfLE hBA).op (homOfLE hCB).op).symm`.
+-/
 theorem res_val (f : Z1 (OAff s)) {A B C : Z.affineOpens} (hBA : B.1 ≤ A.1) (hCB : C.1 ≤ B.1) :
     resG Z hCB (fv s f.1 hBA) = fv s f.1 (hCB.trans hBA) - fv s f.1 (A := B) hCB :=
   eq_sub_of_add_eq (f.2 (homOfLE hBA).op (homOfLE hCB).op).symm
@@ -55,6 +67,13 @@ def rho (f : C1 (OAff s)) (i i' : J) : Γ(Z, W i ⊓ W i') :=
   fv s f (A := ⟨W i, hW i⟩) (B := ⟨W i ⊓ W i', hW2 i i'⟩) inf_le_left -
     fv s f (A := ⟨W i', hW i'⟩) (B := ⟨W i ⊓ W i', hW2 i i'⟩) inf_le_right
 
+/- English proof (translation)
+Introduce `i i' i''`. Set `T : Z.affineOpens` to `⟨W i ⊓ W i' ⊓ W i'', hW3 i i' i''⟩`. Establish `h1` using `res_val s f (A := ⟨W i, hW i⟩) (B := ⟨W i ⊓ W i', hW2 i i'⟩) (C := T) inf_le_left inf_le_left`. Establish `h2` using `res_val s f (A := ⟨W i', hW i'⟩) (B := ⟨W i ⊓ W i', hW2 i i'⟩) (C := T) inf_le_right inf_le_left`. Establish `h3` using `res_val s f (A := ⟨W i', hW i'⟩) (B := ⟨W i' ⊓ W i'', hW2 i' i''⟩) (C := T) inf_le_left (le_inf (inf_le_left.trans inf_le_right) inf_le_right)`.
+
+Establish `h4` using `res_val s f (A := ⟨W i'', hW i''⟩) (B := ⟨W i' ⊓ W i'', hW2 i' i''⟩) (C := T) inf_le_right (le_inf (inf_le_left.trans inf_le_right) inf_le_right)`. Establish `h5` using `res_val s f (A := ⟨W i, hW i⟩) (B := ⟨W i ⊓ W i'', hW2 i i''⟩) (C := T) inf_le_left (le_inf (inf_le_left.trans inf_le_left) inf_le_right)`. Establish `h6` using `res_val s f (A := ⟨W i'', hW i''⟩) (B := ⟨W i ⊓ W i'', hW2 i i''⟩) (C := T) inf_le_right (le_inf (inf_le_left.trans inf_le_left) inf_le_right)`. Simplify using `only [rho, map_sub]`. Rewrite using `[h1, h2, h3, h4, h5, h6]`.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem rho_isCoc (hW3 : ∀ i i' i'', IsAffineOpen (W i ⊓ W i' ⊓ W i'')) (f : Z1 (OAff s)) :
     IsCoc W (rho W s hW hW2 f.1) := by
   intro i i' i''
@@ -73,18 +92,30 @@ theorem rho_isCoc (hW3 : ∀ i i' i'', IsAffineOpen (W i ⊓ W i' ⊓ W i'')) (f
   rw [h1, h2, h3, h4, h5, h6]
   ring
 
+/- English proof (translation)
+Simplify using `only [rho, fv_add]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem rho_add (f f' : C1 (OAff s)) (i i' : J) :
     rho W s hW hW2 (f + f') i i' = rho W s hW hW2 f i i' + rho W s hW hW2 f' i i' := by
   simp only [rho, fv_add]
   ring
 
+/- English proof (translation)
+Simplify using `only [rho, fv_smul]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem rho_smul (r : R) (f : C1 (OAff s)) (i i' : J) :
     rho W s hW hW2 (r • f) i i' = (secMap s (W i ⊓ W i')).hom r * rho W s hW hW2 f i i' := by
   simp only [rho, fv_smul]
   ring
 
+/- English proof (translation)
+The claim follows from `sub_self (0 : Γ(Z, W i ⊓ W i'))`.
+-/
 theorem rho_zero (i i' : J) : rho W s hW hW2 0 i i' = 0 := sub_self (0 : Γ(Z, W i ⊓ W i'))
 
+/- English proof (translation)
+Proceed by induction on `N with`. Consider the case `zero => simp only [Finset.univ_eq_empty, Finset.sum_empty]`. Conclude with `rho_zero W s hW hW2 i i'`. Consider the case `succ n ih`. Rewrite using `[Fin.sum_univ_succ, Fin.sum_univ_succ, rho_add, rho_smul, ih]`.
+-/
 theorem rho_sum {N : ℕ} (r : Fin N → R) (f : Fin N → C1 (OAff s)) (i i' : J) :
     rho W s hW hW2 (∑ k, r k • f k) i i' = ∑ k, (secMap s (W i ⊓ W i')).hom (r k) * rho W s hW hW2 (f k) i i' := by
   induction N with
@@ -92,6 +123,9 @@ theorem rho_sum {N : ℕ} (r : Fin N → R) (f : Fin N → C1 (OAff s)) (i i' : 
   | succ n ih =>
     rw [Fin.sum_univ_succ, Fin.sum_univ_succ, rho_add, rho_smul, ih]
 
+/- English proof (translation)
+Simplify using `only [rho, fv_d0, map_neg]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem rho_d0 (g : C0 (OAff s)) (i i' : J) :
     rho W s hW hW2 (d0 (OAff s) g) i i' =
       resG Z inf_le_left (-gv s g ⟨W i, hW i⟩) - resG Z inf_le_right (-gv s g ⟨W i', hW i'⟩) := by

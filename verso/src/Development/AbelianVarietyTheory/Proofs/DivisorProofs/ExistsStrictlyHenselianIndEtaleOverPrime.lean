@@ -11,6 +11,13 @@ noncomputable section
 
 namespace GlobalTheory.StrictHensPrime
 
+/- English proof (translation)
+Take `⟨S, _, _, hH, hloc, hsep, -, -, -, ι, _, _, _, Si, hmono, hcov, hSi⟩` from `GlobalTheory.exists_strictHenselisation (Localization.AtPrime p) (SeparableClosure (IsLocalRing.ResidueField (Localization.AtPrime p)))`. Set `_ : Algebra A S` to `((algebraMap (Localization.AtPrime p) S).comp (algebraMap A (Localization.AtPrime p))).toAlgebra`. Establish `_ : IsScalarTower A (Localization.AtPrime p) S` using `IsScalarTower.of_algebraMap_eq (fun _ => rfl)`. Establish `hI : GlobalTheory.IndefiniteRowSideFullHecke.ProjectiveSpaceOverSpec.IsIndEtale (algebraMap (Localization.AtPrime p) S)`. Use `GlobalTheory.StrictHensUnion.indEtale_of_directed_union _ S ι Si hmono hcov fun i => ?_` and prove the remaining obligations.
+
+Take `⟨B, _, _, _, q, _, ⟨e⟩⟩` from `hSi i`. Conclude with `GlobalTheory.StrictHensUnion.indEtale_of_algEquiv e (GlobalTheory.StrictHensUnion.indEtale_localization_of_etale _ B q.primeCompl)`. Use `⟨S, inferInstance, inferInstance, inferInstance, ⟨hH, hsep⟩, ?_, ?_⟩` and prove the remaining obligations. Conclude with `IndEtaleAtPrime.indEt_of_indEt_atPrime A S p hI`. Rewrite using `[IsScalarTower.algebraMap_eq A (Localization.AtPrime p) S, ← Ideal.comap_comap, IsLocalRing.maximalIdeal_comap]`.
+
+Conclude with `Localization.AtPrime.under_maximalIdeal`.
+-/
 theorem exists_sh_indEt (A : Type) [CommRing A] (p : Ideal A) [p.IsPrime] :
     ∃ (O : Type) (_ : CommRing O) (_ : Algebra A O) (_ : IsLocalRing O), SH O ∧ IndEt A O ∧
       (IsLocalRing.maximalIdeal O).comap (algebraMap A O) = p := by
@@ -36,5 +43,8 @@ end GlobalTheory.StrictHensPrime
 
 end
 
+/- English proof (translation)
+The claim follows from `GlobalTheory.StrictHensPrime.exists_sh_indEt`.
+-/
 example : ∀ (A : Type) [CommRing A] (p : Ideal A) [p.IsPrime], ∃ (O : Type) (_ : CommRing O) (_ : Algebra A O) (_ : IsLocalRing O), SH O ∧ IndEt A O ∧ (IsLocalRing.maximalIdeal O).comap (algebraMap A O) = p :=
   GlobalTheory.StrictHensPrime.exists_sh_indEt

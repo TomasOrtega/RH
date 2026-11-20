@@ -4,6 +4,15 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.AutomorphicForms.L
 open NumberField MeasureTheory
 open GroundTheory.Automorphic GroundTheory.Automorphic.AutomorphicForm GroundTheory.Automorphic.CuspidalSpectrum
 
+/- English proof (translation)
+Set `S : Subrepresentation (ρ.restrict C).toRepresentation` to `⟨ρ.kSpan C v, fun k _ hw => ρ.map_mem_kSpan_of_mem C hw k⟩`. Establish `hc : Representation.HasContinuousCoeff (W` using `ρ.kSpan C v) S.toRepresentation := by`. Introduce `φ w`. Use `φ.continuous_of_finiteDimensional.comp ?_` and prove the remaining obligations. Conclude with `Continuous.subtype_mk ((ρ.continuous_orbit (w : E)).comp continuous_subtype_val) _`.
+
+Take `⟨N, hN, hN'⟩` from `UpperTheory.V.KernelIndexFullLattice.homFin_holds C M (ρ.kSpan C v) σ hσ S.toRepresentation hc F hF`. Use `⟨N.map j, inferInstance, fun P hP hPF => ?_⟩` and prove the remaining obligations. Establish `hr : ∀ x : ρ.kSpan C v, ((P : E →ₗ[ℂ] E) ∘ₗ (ρ.kSpan C v).subtype) x ∈ LinearMap.range j`. Introduce `x`. Take `⟨m, -, hm⟩` from `hPF x x.2`.
+
+Conclude with `⟨m, hm⟩`. Set `f : ρ.kSpan C v →ₗ[ℂ] M` to `(LinearEquiv.ofInjective j hj).symm.toLinearMap ∘ₗ LinearMap.codRestrict (LinearMap.range j) _ hr`. Establish `hf : ∀ x, j (f x) = P x` using `fun x => congrArg Subtype.val ((LinearEquiv.ofInjective j hj).apply_symm_apply ⟨_, hr x⟩)`. Use `⟨f ⟨v, ρ.mem_kSpan_self C v⟩, hN' f (fun k x => hj ?_) (fun x => ?_) _, hf _⟩` and prove the remaining obligations. Rewrite using `[hjσ, hf, hf, ← hP]`.
+
+Both sides reduce to the same expression. Take `⟨m, hm, e⟩` from `hPF x x.2`. Rewrite using `[hj ((hf x).trans e.symm)]` and apply the resulting hypothesis.
+-/
 private theorem UpperTheory.V.KernelIndexFullLattice.pvFin_abs {G E M : Type} [Group G] [TopologicalSpace G]
     [NormedAddCommGroup E] [NormedSpace ℂ E] [AddCommGroup M] [Module ℂ M]
     (C : Subgroup G) [IsTopologicalGroup C] [CompactSpace C] [T2Space C] (ρ : BanachRep G E)
@@ -37,6 +46,19 @@ private theorem UpperTheory.V.KernelIndexFullLattice.pvFin_abs {G E M : Type} [G
   · obtain ⟨m, hm, e⟩ := hPF x x.2
     rwa [hj ((hf x).trans e.symm)]
 
+/- English proof (translation)
+Introduce `K _ _ n μ₁ _ π U hUc hUo v hv hfin`. Set `j : π.carrier →ₗ[ℂ] CuspL2 μ₁` to `cuspVecL μ₁ ∘ₗ π.carrier.subtype`. Establish `hj : Function.Injective j`. Use `(injective_iff_map_eq_zero j).2 fun m hm => Subtype.ext ?_` and prove the remaining obligations. Conclude with `eq_zero_of_cuspVecL_eq_zero (μ := μ₁) (π.le_central m.2) hm`.
+
+Take `⟨N, hN, hN'⟩` from `UpperTheory.V.KernelIndexFullLattice.pvFin_abs (archCompact K n) (archRepT μ₁) π.toModule.gk.σ π.toModule.gk.isKFinite j hj (fun k m => cuspToL2_sigma μ₁ k (π.le_central m.2)) (fixedVectors π.toModule.τ U) (π.isAdmissible.2 U hUc hUo) v hfin`. Use `⟨N, hN, fun P hPk hPu hP => hN' P hPk fun x hx => ?_⟩` and prove the remaining obligations. Establish `hxU : ∀ u ∈ U, cuspRepT μ₁ (retractOne (finEmb K n u)) x = x`. Introduce `u hu`. Proceed by induction on `hx using Submodule.span_induction with`.
+
+Consider the case `mem x hx`. Take `⟨k, rfl⟩` from `hx`. Establish `hcomm : retractOne (finEmb K n u) * archP K n k = archP K n k * retractOne (finEmb K n u)`. Rewrite using `[← retract_infEmb, ← retractOne_mul, ← retractOne_mul, infEmb_mul_finEmb_comm]`. Establish `h1` using `(cuspRepT μ₁).map_mul_apply (retractOne (finEmb K n u)) (archP K n k) v`.
+
+Establish `h2` using `(cuspRepT μ₁).map_mul_apply (archP K n k) (retractOne (finEmb K n u)) v`. Rewrite `h2` using `[hv u hu, ← hcomm, h1]`. Conclude with `h2`. Consider the case `zero => exact map_zero _`. Consider the case `add x y _ _ hx hy => rw [map_add, hx, hy]`.
+
+Consider the case `smul c x _ hx => rw [map_smul, hx]`. Take `⟨φ, hφ, e⟩` from `hP x`. Use `⟨⟨φ, hφ⟩, fun u hu => hj ?_, e⟩` and prove the remaining obligations. Establish `h` using `cuspToL2_finRepCusp μ₁ u (π.le_central hφ)`. Rewrite `h` using `[e, ← hPu u hu, hxU u hu, ← e]`.
+
+Conclude with `h`.
+-/
 theorem UpperTheory.V.KernelIndexFullLattice.pvFin_holds :
     UpperTheory.V.KernelIndexFullLattice.PvFin := by
   intro K _ _ n μ₁ _ π U hUc hUo v hv hfin

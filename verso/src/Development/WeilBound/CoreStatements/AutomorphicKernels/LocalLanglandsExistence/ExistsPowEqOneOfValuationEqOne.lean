@@ -21,12 +21,20 @@ def IsRoot (z : ℂˣ) : Prop := ∃ n : ℕ, 0 < n ∧ z ^ n = 1
 
 def IsCls (d : ℤ) (a : ℂˣ) (μ : ℂ) : Prop := ∃ q : ℕ, 0 < q ∧ μ ^ q = ((a ^ ((q : ℤ) * d) : ℂˣ) : ℂ)
 
+/- English proof (translation)
+Use `⟨k.natAbs, Int.natAbs_pos.2 hk, ?_⟩` and prove the remaining obligations. Break down `Int.natAbs_eq k with e | e` into its components or cases. Rewrite `h` using `[e, zpow_natCast]`. Conclude with `h`. Rewrite `h` using `[e, zpow_neg, zpow_natCast, inv_eq_one]`.
+
+Conclude with `h`.
+-/
 theorem isRoot_of_zpow {g : ℂˣ} {k : ℤ} (hk : k ≠ 0) (h : g ^ k = 1) : IsRoot g := by
   refine ⟨k.natAbs, Int.natAbs_pos.2 hk, ?_⟩
   rcases Int.natAbs_eq k with e | e
   · rw [e, zpow_natCast] at h; exact h
   · rw [e, zpow_neg, zpow_natCast, inv_eq_one] at h; exact h
 
+/- English proof (translation)
+Take `⟨m, hm, h1⟩` from `ha`. Take `⟨n, hn, h2⟩` from `hb`. Establish `e1 : a ^ (m * n) = 1` using `by rw [pow_mul, h1, one_pow]`. Establish `e2 : b ^ (m * n) = 1` using `by rw [Nat.mul_comm m n, pow_mul, h2, one_pow]`. Conclude with `⟨m * n, Nat.mul_pos hm hn, by rw [mul_pow, e1, e2, one_mul]⟩`.
+-/
 theorem IsRoot.mul {a b : ℂˣ} (ha : IsRoot a) (hb : IsRoot b) : IsRoot (a * b) := by
   obtain ⟨m, hm, h1⟩ := ha
   obtain ⟨n, hn, h2⟩ := hb
@@ -34,14 +42,25 @@ theorem IsRoot.mul {a b : ℂˣ} (ha : IsRoot a) (hb : IsRoot b) : IsRoot (a * b
   have e2 : b ^ (m * n) = 1 := by rw [Nat.mul_comm m n, pow_mul, h2, one_pow]
   exact ⟨m * n, Nat.mul_pos hm hn, by rw [mul_pow, e1, e2, one_mul]⟩
 
+/- English proof (translation)
+Take `⟨m, hm, h1⟩` from `ha`. Conclude with `⟨m, hm, by rw [inv_pow, h1, inv_one]⟩`.
+-/
 theorem IsRoot.inv {a : ℂˣ} (ha : IsRoot a) : IsRoot a⁻¹ := by
   obtain ⟨m, hm, h1⟩ := ha
   exact ⟨m, hm, by rw [inv_pow, h1, inv_one]⟩
 
+/- English proof (translation)
+Take `⟨m, hm, h1⟩` from `ha`. Conclude with `⟨m, hm, by rw [← pow_mul, Nat.mul_comm, pow_mul, h1, one_pow]⟩`.
+-/
 theorem IsRoot.pow {a : ℂˣ} (ha : IsRoot a) (f : ℕ) : IsRoot (a ^ f) := by
   obtain ⟨m, hm, h1⟩ := ha
   exact ⟨m, hm, by rw [← pow_mul, Nat.mul_comm, pow_mul, h1, one_pow]⟩
 
+/- English proof (translation)
+Take `⟨q, hq, h1⟩` from `ha`. Take `⟨p, hp, h2⟩` from `hb`. Establish `e1 : μ ^ (q * p) = ((a ^ (((q * p : ℕ) : ℤ) * d) : ℂˣ) : ℂ)`. Rewrite using `[pow_mul, h1, ← Units.val_pow_eq_pow_val, ← zpow_natCast, ← zpow_mul, show ((q * p : ℕ) : ℤ) * d = (q : ℤ) * d * (p : ℤ) by push_cast; ring]`. Establish `e2 : μ ^ (q * p) = ((b ^ (((q * p : ℕ) : ℤ) * d) : ℂˣ) : ℂ)`.
+
+Rewrite using `[Nat.mul_comm q p, pow_mul, h2, ← Units.val_pow_eq_pow_val, ← zpow_natCast, ← zpow_mul, show ((p * q : ℕ) : ℤ) * d = (p : ℤ) * d * (q : ℤ) by push_cast; ring]`. Establish `hk : ((q * p : ℕ) : ℤ) * d ≠ 0` using `mul_ne_zero (by exact_mod_cast (Nat.mul_pos hq hp).ne') hd`. Use `isRoot_of_zpow hk ?_` and prove the remaining obligations. Rewrite using `[mul_zpow, inv_zpow, mul_inv_eq_one]`. Conclude with `Units.ext (e1.symm.trans e2)`.
+-/
 theorem IsCls.root {d : ℤ} {a b : ℂˣ} {μ : ℂ} (hd : d ≠ 0) (ha : IsCls d a μ) (hb : IsCls d b μ) :
     IsRoot (a * b⁻¹) := by
   obtain ⟨q, hq, h1⟩ := ha
@@ -58,6 +77,9 @@ theorem IsCls.root {d : ℤ} {a b : ℂˣ} {μ : ℂ} (hd : d ≠ 0) (ha : IsCls
   rw [mul_zpow, inv_zpow, mul_inv_eq_one]
   exact Units.ext (e1.symm.trans e2)
 
+/- English proof (translation)
+Take `⟨q, hq, h1⟩` from `ha`. Take `⟨n, hn, h2⟩` from `hab`. Establish `hab' : a ^ n = b ^ n` using `by rw [mul_pow, inv_pow, mul_inv_eq_one] at h2; exact h2`. Use `⟨q * n, Nat.mul_pos hq hn, ?_⟩` and prove the remaining obligations. Rewrite using `[pow_mul, h1, ← Units.val_pow_eq_pow_val, ← zpow_natCast, ← zpow_mul, show (q : ℤ) * d * (n : ℤ) = (n : ℤ) * ((q : ℤ) * d) by ring, zpow_mul, zpow_natCast, hab', ← zpow_natCast, ← zpow_mul, show ((q * n : ℕ) : ℤ) * d = (n : ℤ) * ((q : ℤ) * d) by push_cast; ring]`.
+-/
 theorem IsCls.of_root {d : ℤ} {a b : ℂˣ} {μ : ℂ} (ha : IsCls d a μ) (hab : IsRoot (a * b⁻¹)) : IsCls d b μ := by
   obtain ⟨q, hq, h1⟩ := ha
   obtain ⟨n, hn, h2⟩ := hab
@@ -67,6 +89,9 @@ theorem IsCls.of_root {d : ℤ} {a b : ℂˣ} {μ : ℂ} (ha : IsCls d a μ) (ha
     show (q : ℤ) * d * (n : ℤ) = (n : ℤ) * ((q : ℤ) * d) by ring, zpow_mul, zpow_natCast, hab', ← zpow_natCast,
     ← zpow_mul, show ((q * n : ℕ) : ℤ) * d = (n : ℤ) * ((q : ℤ) * d) by push_cast; ring]
 
+/- English proof (translation)
+Take `⟨n, hn, h1⟩` from `hα`. Use `isOfFinOrder_iff_pow_eq_one.2 ⟨n, hn, MonoidHom.ext fun y => ?_⟩` and prove the remaining obligations. Rewrite using `[MonoidHom.pow_apply, GlobalTheory.SmGL.unrChar_apply, MonoidHom.one_apply, ← zpow_natCast, ← zpow_mul, mul_comm, zpow_mul, zpow_natCast, h1, one_zpow]`.
+-/
 theorem isOfFinOrder_unrChar (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
     {α : ℂˣ} (hα : IsRoot α) : IsOfFinOrder (GlobalTheory.SmGL.unrChar k α) := by
   obtain ⟨n, hn, h1⟩ := hα
@@ -85,6 +110,13 @@ variable {Ω : Type} [Field Ω] {A : ValuationSubring Ω}
   [Field L] [NumberField L] [Algebra L Ω] [IsAlgClosure L Ω] [Algebra K L] [IsScalarTower K L Ω]
   {v : HeightOneSpectrum (𝓞 K)} {v' : HeightOneSpectrum (𝓞 L)}
 
+/- English proof (translation)
+Take `⟨f, hf⟩` from `normV_eq_pow_of_isPlaceOver h h'`. Use `⟨f, fun σ => ?_, ?_⟩` and prove the remaining obligations. Take `⟨a, b, hab⟩` from `(mem_Weil h').1 σ.2`. Establish `h1` using `deg_eq hab`. Rewrite `hab` using `[hf]`.
+
+Establish `h2` using `actsAs_resG (K := K) hab`. Establish `h3` using `deg_eq (σ := resWeil h h' σ) h2`. Rewrite using `[h3, h1]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+
+Break down `Nat.eq_zero_or_pos f with rfl | hpos` into its components or cases. Establish `h1` using `one_lt_normV v'`. Rewrite `h1` using `[hf, pow_zero]`. Conclude with `absurd h1 (lt_irrefl 1)`. Conclude with `hpos`.
+-/
 theorem exists_deg_resWeil_pos (h : IsPlaceOver A v) (h' : IsPlaceOver A v') :
     ∃ f : ℕ, (∀ σ : Weil h', deg (resWeil h h' σ) = f * deg σ) ∧ 0 < f := by
   obtain ⟨f, hf⟩ := normV_eq_pow_of_isPlaceOver h h'
@@ -103,6 +135,11 @@ theorem exists_deg_resWeil_pos (h : IsPlaceOver A v) (h' : IsPlaceOver A v') :
       exact absurd h1 (lt_irrefl 1)
     · exact hpos
 
+/- English proof (translation)
+Take `⟨N, hN, hN'⟩` from `eig_pow_of_induces h h' _ _ hy σ`. Take `⟨M, hM, hφM⟩` from `hφ.exists_pow_eq_one`. Introduce `μ hμ`. Take `⟨τ, hτd, hτ⟩` from `hN' μ hμ`. Rewrite `hτ` using `[MonoidHom.comp_apply, hdec τ (resWeil h h' τ) (fun w => resWeil_apply h h' τ w), GlobalTheory.WeilDeligne.unrChar_apply, hτd]`.
+
+Establish `e1 : ((φ (a τ)) ^ M : ℂˣ) = 1` using `by rw [← MonoidHom.pow_apply, hφM]; rfl`. Use `⟨N * M, Nat.mul_pos hN hM, ?_⟩` and prove the remaining obligations. Rewrite using `[pow_mul, hτ, ← Units.val_pow_eq_pow_val, mul_pow, e1, one_mul, ← zpow_natCast, ← zpow_mul, show ((N * M : ℕ) : ℤ) * deg σ = (N : ℤ) * deg σ * (M : ℤ) by push_cast; ring]`.
+-/
 theorem eig_isCls (h : IsPlaceOver A v) (h' : IsPlaceOver A v') {a : Weil h' →* (v'.adicCompletion L)ˣ}
     (χ φ : (v'.adicCompletion L)ˣ →* ℂˣ) (hφ : IsOfFinOrder φ) (z : ℂˣ)
     (hdec : ∀ (σ' : Weil h') (σ : Weil h), (∀ w : Ω, (σ : G K Ω) w = (σ' : G L Ω) w) →
@@ -129,6 +166,19 @@ open Polynomial
 variable {E Ω : Type} [Field E] [NumberField E] [Field Ω] [Algebra E Ω] [IsAlgClosure E Ω]
   {A : ValuationSubring Ω} {w : HeightOneSpectrum (𝓞 E)} {h : IsPlaceOver A w}
 
+/- English proof (translation)
+Rewrite `H`, the goal using `[prod_charPol_eq, prod_charPol_eq]`. Establish `H'` using `congrArg Polynomial.roots H`. Rewrite `H'` using `[roots_multiset_prod_X_sub_C, roots_multiset_prod_X_sub_C]`. Use `set Mp : Fin r → Multiset ℂ := fun i => ((x i).eig σ).filter (fun μ => p μ) with hMp`. Use `set Mn : Fin r → Multiset ℂ := fun i => ((x i).eig σ).filter (fun μ => ¬ p μ) with hMn`.
+
+Establish `hsplit : ∀ i, (x' i).eig σ = (Mp i).map (· * s) + Mn i`. Introduce `i`. Distinguish the cases in `hT : T i`. Rewrite using `[hx'T i hT, hMp, hMn]`. Simplify using `only`.
+
+Rewrite using `[Multiset.filter_eq_self.2 (hxT i hT), Multiset.filter_eq_nil.2 (fun μ hμ => not_not.2 (hxT i hT μ hμ)), add_zero]`. Rewrite using `[hx'N i hT, hMp, hMn]`. Simplify using `only`. Rewrite using `[Multiset.filter_eq_nil.2 (hxN i hT), Multiset.filter_eq_self.2 (hxN i hT), Multiset.map_zero, zero_add]`. Establish `hf1 : ∀ i, ((x₀ i).eig σ).filter (fun μ => p μ) = 0` using `fun i => Multiset.filter_eq_nil.2 (hx₀ i)`.
+
+Establish `hg1 : ∀ i, ((x₀ i).eig σ).filter (fun μ => ¬ p μ) = (x₀ i).eig σ` using `fun i => Multiset.filter_eq_self.2 (hx₀ i)`. Establish `E1` using `congrArg (Multiset.filter fun μ : ℂ => p μ) H'`. Establish `E2` using `congrArg (Multiset.filter fun μ : ℂ => ¬ p μ) H'`. Simplify using `only [filter_finsetSum, Multiset.filter_add, Multiset.filter_nsmul, hf1, hg1, smul_zero, add_zero, zero_add] at E1 E2`. Establish `E3` using `congrArg (Multiset.map (· * s)) E1`.
+
+Simplify using `only [map_finsetSum, Multiset.map_nsmul] at E3`. Use `congr 2`. Simplify using `only [hsplit, nsmul_add, Finset.sum_add_distrib]`. Establish `E1' : ∑ i, (c i).toNat • (Mp i).map (· * s) = ∑ i, (-c i).toNat • (Mp i).map (· * s)` using `E3`. Establish `E2' : ∑ i, (c i).toNat • Mn i + ∑ i, (-c i).toNat • (x₀ i).eig σ = ∑ i, (c i).toNat • (x₀ i).eig σ + ∑ i, (-c i).toNat • Mn i`.
+
+Rewrite using `[← Finset.sum_add_distrib, ← Finset.sum_add_distrib]`. Conclude with `E2`. Rewrite using `[E1', add_assoc, E2']`. Normalize the expressions using the abelian group laws.
+-/
 theorem charPol_rel_partial {r : ℕ} (c : Fin r → ℤ) (x x₀ x' : Fin r → WD h) (σ : Weil h) (p : ℂ → Prop)
     (T : Fin r → Prop) (hxT : ∀ i, T i → ∀ μ ∈ (x i).eig σ, p μ) (hxN : ∀ i, ¬ T i → ∀ μ ∈ (x i).eig σ, ¬ p μ)
     (hx₀ : ∀ i, ∀ μ ∈ (x₀ i).eig σ, ¬ p μ) (s : ℂ)
@@ -188,6 +238,61 @@ variable {Ω : Type} [Field Ω] {A : ValuationSubring Ω}
 
 open scoped Classical in
 
+/- English proof (translation)
+Use `choose f hf hfpos using fun i => exists_deg_resWeil_pos h (h' i)`. Proceed by induction on `n with`. Consider the case `zero`. Introduce `χ hχ x z φ hφ hdec hcard hx hrel e he`. Establish `hroot : ∀ i, IsRoot (z i)` using `fun i => by`.
+
+Assume the negation of the conclusion as `hni`. Establish `hmem : i ∈ Finset.univ.filter fun i => ¬ IsRoot (z i)` using `Finset.mem_filter.2 ⟨Finset.mem_univ _, hni⟩`. Use `Finset.card_pos.2 ⟨i, hmem⟩` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Use `H r L v' h' hloc ψ' hψc hψtr a ha χ hχ c x x₀ ⟨1, Set.mem_singleton _, fun i => φ i * GlobalTheory.SmGL.unrChar _ (z i ^ f i)⁻¹, fun i => (hφ i).mul (isOfFinOrder_unrChar _ ((hroot i).pow (f i)).inv), fun i σ' σ hσ => ?_⟩ hx hx₀ hrel t e e₀ ht he he₀` and prove the remaining obligations.
+
+Establish `hd : deg σ = f i * deg σ'` using `by rw [eq_resWeil_of_agree h (h' i) hσ, hf]`. Rewrite using `[hdec i σ' σ hσ, MonoidHom.mul_apply, GlobalTheory.SmGL.unrChar_apply, (ha i).ord_eq, GlobalTheory.WeilDeligne.unrChar_apply, GlobalTheory.WeilDeligne.unrChar_apply, one_zpow, mul_one, hd, inv_zpow', neg_neg, ← zpow_natCast (z i), ← zpow_mul]`. Consider the case `succ n ih`. Introduce `χ hχ x z φ hφ hdec hcard hx hrel e he`. Distinguish the cases in `hle : (Finset.univ.filter fun i => ¬ IsRoot (z i)).card ≤ n`.
+
+Conclude with `ih χ hχ x z φ hφ hdec hle hx hrel e he`. Choose the witnesses or unpack the hypotheses as in `⟨i0, hi0⟩ : ∃ i0, ¬ IsRoot (z i0) := by`. Assume the negation of the conclusion as `hne`. Use `push Not at hne`. Apply `hle` to reduce the goal to its premises.
+
+Rewrite using `[Finset.card_eq_zero.2 (Finset.filter_eq_empty_iff.2 fun i _ => not_not.2 (hne i))]`. Conclude with `Nat.zero_le _`. Take `⟨Z, hZ⟩ : ∃ Z : ℂˣ, Z = z i0` from `⟨_, rfl⟩`. Establish `hZroot : ¬ IsRoot Z` using `hZ ▸ hi0`. Establish `hT0 : IsRoot (z i0 * Z⁻¹)` using `⟨1, one_pos, by rw [hZ, mul_inv_cancel, pow_one]⟩`.
+
+Take `⟨δ, hδ⟩ : ∃ δ : Fin r → ℤ, ∀ i, δ i = if IsRoot (z i * Z⁻¹) then 1 else 0` from `⟨_, fun _ => rfl⟩`. Establish `hδT : ∀ i, IsRoot (z i * Z⁻¹) → δ i = 1` using `fun i hi => by rw [hδ, if_pos hi]`. Establish `hδN : ∀ i, ¬ IsRoot (z i * Z⁻¹) → δ i = 0` using `fun i hi => by rw [hδ, if_neg hi]`. Establish `hce : ∀ i, ∃ (cc : ((v' i).adicCompletion (L i))ˣ) (m : ℕ), HasConductor (ψ' i) cc ∧ HasExponent (χ i) m` using `fun i => by obtain ⟨cc, m, R, h1, h2, -⟩ := he i; exact ⟨cc, m, h1, h2⟩`. Use `choose cc nn hcc hnn using hce`.
+
+Take `⟨m, hm⟩ : ∃ m : Fin r → ℤ, ∀ i, m i = (nn i : ℤ) - ord _ (cc i)` from `⟨_, fun _ => rfl⟩`. Take `⟨P, hP⟩ : ∃ P : ℂ, P = ∏ i, (e i / e₀ i) ^ (c i)` from `⟨_, rfl⟩`. Take `⟨k, hk⟩ : ∃ k : ℤ, k = ∑ i, δ i * f i * m i * c i` from `⟨_, rfl⟩`. Establish `key : ∀ w : ℂ, (∃ q : ℕ, 0 < q ∧ w ^ q = 1) → (P * (Z : ℂ) ^ k) * w ^ (-k) = 1`. Introduce `w hw`.
+
+Establish `hw0 : w ≠ 0`. Introduce and unpack `rfl`. Take `⟨q, hq, hq1⟩` from `hw`. Rewrite `hq1` using `[zero_pow hq.ne']`. Conclude with `zero_ne_one hq1`.
+
+Take `⟨W, hW⟩ : ∃ W : ℂˣ, (W : ℂ) = w` from `⟨Units.mk0 w hw0, rfl⟩`. Establish `hWroot : IsRoot W`. Take `⟨q, hq, hq1⟩` from `hw`. Conclude with `⟨q, hq, Units.ext (by rw [Units.val_pow_eq_pow_val, hW, hq1, Units.val_one])⟩`. Take `⟨u, hu⟩ : ∃ u : ℂˣ, u = W * Z⁻¹` from `⟨_, rfl⟩`.
+
+Establish `hχ' : ∀ i, IsSmoothChar (χ i * GlobalTheory.SmGL.unrChar _ ((u ^ δ i) ^ f i)⁻¹)` using `fun i => (hχ i).mul (isSmoothChar_of_isUnram (isUnram_unrChar _ _))`. Establish `hres : ∀ i (σ' : Weil (h' i)), GlobalTheory.WeilDeligne.unrChar (h' i) ((u ^ δ i) ^ f i) σ' = GlobalTheory.WeilDeligne.unrChar h (u ^ δ i) (resWeil h (h' i) σ')`. Introduce `i σ'`. Rewrite using `[GlobalTheory.WeilDeligne.unrChar_apply, GlobalTheory.WeilDeligne.unrChar_apply, hf, ← zpow_natCast, ← zpow_mul]`. Establish `hind : ∀ i, Induces (WD.lpOfChar (h' i) ((χ i * GlobalTheory.SmGL.unrChar _ ((u ^ δ i) ^ f i)⁻¹).comp (a i)) ((ha i).smooth (hχ' i))) ((x i).lpTwist (GlobalTheory.WeilDeligne.unrChar h (u ^ δ i)) (isSmooth_unrChar h (u ^ δ i)))`.
+
+Introduce `i`. Establish `h1` using `induces_lpTwist h (h' i) (hx i) _ (isSmooth_unrChar h (u ^ δ i)) _ (isSmooth_unrChar (h' i) ((u ^ δ i) ^ f i)) (hres i)`. Rewrite `h1` using `[lpTwist_lpOfChar_unr (ha i) (hχ i)]`. Then use the resulting hypothesis. Establish `hdec' : ∀ i (σ' : Weil (h' i)) (σ : Weil h), (∀ w : Ω, (σ : G K Ω) w = (σ' : G (L i) Ω) w) → (χ i * GlobalTheory.SmGL.unrChar _ ((u ^ δ i) ^ f i)⁻¹ : ((v' i).adicCompletion (L i))ˣ →* ℂˣ) (a i σ') = φ i (a i σ') * GlobalTheory.WeilDeligne.unrChar h (z i * u ^ δ i) σ`. Introduce `i σ' σ hσ`.
+
+Establish `hd : deg σ = f i * deg σ'` using `by rw [eq_resWeil_of_agree h (h' i) hσ, hf]`. Rewrite using `[MonoidHom.mul_apply, hdec i σ' σ hσ, GlobalTheory.SmGL.unrChar_apply, (ha i).ord_eq, GlobalTheory.WeilDeligne.unrChar_apply, GlobalTheory.WeilDeligne.unrChar_apply, hd, inv_zpow', neg_neg, ← zpow_natCast (u ^ δ i), ← zpow_mul, mul_zpow, mul_assoc]`. Establish `hcard' : (Finset.univ.filter fun i => ¬ IsRoot (z i * u ^ δ i)).card ≤ n`. Establish `hsub : (Finset.univ.filter fun i => ¬ IsRoot (z i * u ^ δ i)) ⊆ (Finset.univ.filter fun i => ¬ IsRoot (z i)).erase i0`. Introduce `i hi`.
+
+Rewrite `hi` using `[Finset.mem_filter]`. Establish `hN : ¬ IsRoot (z i * Z⁻¹)`. Introduce `hT`. Apply `hi.2` to reduce the goal to its premises. Establish `e1 : z i * u ^ δ i = (z i * Z⁻¹) * W`.
+
+Rewrite using `[hδT i hT, zpow_one, hu, mul_assoc, mul_comm Z⁻¹ W]`. Rewrite using `[e1]`. Conclude with `hT.mul hWroot`. Rewrite using `[Finset.mem_erase, Finset.mem_filter]`. Use `⟨fun hii => hN (by rw [hii]; exact hT0), Finset.mem_univ _, ?_⟩` and prove the remaining obligations.
+
+Establish `h2` using `hi.2`. Rewrite `h2` using `[hδN i hN, zpow_zero, mul_one]`. Then use the resulting hypothesis. Establish `h1` using `Finset.card_le_card hsub`. Establish `hmem : i0 ∈ (Finset.univ.filter fun i => ¬ IsRoot (z i))` using `Finset.mem_filter.2 ⟨Finset.mem_univ _, hi0⟩`. Rewrite `h1` using `[Finset.card_erase_of_mem hmem]`.
+
+Use linear arithmetic over natural numbers and integers. Establish `hrel' : ∀ σ, ∏ i, ((x i).lpTwist (GlobalTheory.WeilDeligne.unrChar h (u ^ δ i)) (isSmooth_unrChar h (u ^ δ i))).charPol σ ^ (c i).toNat * (x₀ i).charPol σ ^ (-c i).toNat = ∏ i, (x₀ i).charPol σ ^ (c i).toNat * ((x i).lpTwist (GlobalTheory.WeilDeligne.unrChar h (u ^ δ i)) (isSmoot …`. Introduce `σ`. Distinguish the cases in `hd : deg σ = 0`. Establish `h1 : ∀ i, GlobalTheory.WeilDeligne.unrChar h (u ^ δ i) σ = 1` using `fun i => by`.
+
+Rewrite using `[GlobalTheory.WeilDeligne.unrChar_apply, hd, zpow_zero]`. Simplify using `only [charPol_lpTwist_of_eq_one _ _ _ (h1 _)]`. Conclude with `hrel σ`. Use `charPol_rel_partial c x x₀ _ σ (IsCls (deg σ) Z) (fun i => IsRoot (z i * Z⁻¹)) ?_ ?_ ?_ ((GlobalTheory.WeilDeligne.unrChar h u σ : ℂˣ) : ℂ) ?_ ?_ (hrel σ)` and prove the remaining obligations. Introduce `i hT μ hμ`.
+
+Conclude with `(eig_isCls h (h' i) (χ i) (φ i) (hφ i) (z i) (hdec i) _ (hx i) σ μ hμ).of_root hT`. Introduce `i hT μ hμ hZμ`. Conclude with `hT ((eig_isCls h (h' i) (χ i) (φ i) (hφ i) (z i) (hdec i) _ (hx i) σ μ hμ).root hd hZμ)`. Introduce `i μ hμ hZμ`. Establish `h1 : IsCls (deg σ) 1 μ` using `eig_isCls h (h' i) 1 1 (isOfFinOrder_iff_pow_eq_one.2 ⟨1, one_pos, one_pow 1⟩) 1 (fun _ _ _ => by simp [GlobalTheory.WeilDeligne.unrChar_apply]) _ (hx₀ i) σ μ hμ`.
+
+Establish `h2` using `(h1.root hd hZμ).inv`. Rewrite `h2` using `[one_mul, inv_inv]`. Conclude with `hZroot h2`. Introduce `i hT`. Rewrite using `[eig_lpTwist, hδT i hT, zpow_one]`.
+
+Introduce `i hT`. Rewrite using `[eig_lpTwist, hδN i hT, zpow_zero, GlobalTheory.WeilDeligne.unrChar_apply, one_zpow, Units.val_one]`. Simplify using the standard rewrite rules. Establish `he' : ∀ i, IsTateMeas (ψ' i) t (χ i * GlobalTheory.SmGL.unrChar _ ((u ^ δ i) ^ f i)⁻¹) (((((u ^ δ i) ^ f i)⁻¹ ^ m i : ℂˣ) : ℂ) * e i)` using `fun i => by`. Establish `h1` using `isTateMeas_mul_unrChar ((u ^ δ i) ^ f i)⁻¹ (hcc i) (hnn i) (he i)`.
+
+Rewrite `h1` using `[← hm i]`. Then use the resulting hypothesis. Establish `hT` using `ih (fun i => χ i * GlobalTheory.SmGL.unrChar _ ((u ^ δ i) ^ f i)⁻¹) hχ' (fun i => (x i).lpTwist (GlobalTheory.WeilDeligne.unrChar h (u ^ δ i)) (isSmooth_unrChar h (u ^ δ i))) (fun i => z i * u ^ δ i) φ hφ hdec' hcard' hind hrel' (fun i => (((((u ^ δ i) ^ f i)⁻¹ ^ m i : ℂˣ) : ℂ) * …`. Establish `e2 : ∀ i, (((((u ^ δ i) ^ f i)⁻¹ ^ m i : ℂˣ) : ℂ) * e i / e₀ i) ^ c i = ((((u ^ δ i) ^ f i)⁻¹ ^ (m i * c i) : ℂˣ) : ℂ) * (e i / e₀ i) ^ c i`. Introduce `i`. Rewrite using `[mul_div_assoc, mul_zpow, zpow_mul, Units.val_zpow_eq_zpow_val, Units.val_zpow_eq_zpow_val, Units.val_zpow_eq_zpow_val]`.
+
+Establish `zs : ∀ (s : Finset (Fin r)) (g : Fin r → ℤ), ∏ i ∈ s, u ^ g i = u ^ ∑ i ∈ s, g i`. Introduce `s g`. Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simp`. Consider the case `insert j s hj ih' => rw [Finset.prod_insert hj, Finset.sum_insert hj, ih', zpow_add]`.
+
+Establish `e5 : ∀ i, ((u ^ δ i) ^ f i)⁻¹ ^ (m i * c i) = u ^ (-(δ i * f i * m i * c i))`. Introduce `i`. Rewrite using `[← zpow_natCast (u ^ δ i), ← zpow_mul, ← zpow_neg, ← zpow_mul, show -(δ i * (f i : ℤ)) * (m i * c i) = -(δ i * f i * m i * c i) by ring]`. Establish `e3 : ∏ i, ((u ^ δ i) ^ f i)⁻¹ ^ (m i * c i) = u ^ (-k)`. Rewrite using `[Finset.prod_congr rfl fun i _ => e5 i, zs, Finset.sum_neg_distrib, hk]`.
+
+Establish `e4 : u ^ (-k) = Z ^ k * W ^ (-k)`. Rewrite using `[hu, mul_zpow, inv_zpow', neg_neg, mul_comm]`. Simplify using `only [e2] at hT`. Rewrite `hT` using `[Finset.prod_mul_distrib, ← hP, ← Units.coe_prod, e3, e4]`. Rewrite using `[← hT, Units.val_mul, Units.val_zpow_eq_zpow_val, Units.val_zpow_eq_zpow_val, hW]`.
+
+Expand and normalize the polynomial expressions, which then agree. Establish `h1` using `key 1 ⟨1, one_pos, one_pow 1⟩`. Rewrite `h1` using `[one_zpow, mul_one]`. Establish `hk0 : k = 0` using `by set q : ℕ := k.natAbs + 1 with hq`. Establish `hprim` using `Complex.isPrimitiveRoot_exp q (by omega)`.
+
+Establish `h2` using `key _ ⟨q, by omega, hprim.pow_eq_one⟩`. Rewrite `h2` using `[h1, one_mul, zpow_neg, inv_eq_one, hprim.zpow_eq_one_iff_dvd]`. Conclude with `Int.eq_zero_of_dvd_of_natAbs_lt_natAbs h2 (by rw [Int.natAbs_natCast]; omega)`. Rewrite `h1` using `[hk0, zpow_zero, mul_one]`. Rewrite using `[← hP]`.
+
+Conclude with `h1`.
+-/
 theorem main {K : Type} [Field K] [NumberField K] [Algebra K Ω] [IsAlgClosure K Ω] {v : HeightOneSpectrum (𝓞 K)}
     {h : IsPlaceOver A v} {ψ : AddChar (v.adicCompletion K) Circle} (H : KernelCondTw h ψ {1})
     {r : ℕ} {L : Fin r → Type} [∀ i, Field (L i)] [∀ i, NumberField (L i)] [∀ i, Algebra (L i) Ω]

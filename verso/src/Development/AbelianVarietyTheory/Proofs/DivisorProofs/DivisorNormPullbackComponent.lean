@@ -12,6 +12,19 @@ open AlgebraicGeometry CategoryTheory TopologicalSpace
 
 namespace GlobalTheory.DivPullback
 
+/- English proof (translation)
+Establish `hU : IsAffineOpen U.1` using `U.2`. Establish `hV : IsAffineOpen V.1` using `V.2`. Establish `hC : hU.fromSpec ⁻¹' (C : Set S) = PrimeSpectrum.zeroLocus {t}`. Rewrite using `[← PrimeSpectrum.zeroLocus_span, ← ht, Scheme.IdealSheafData.vanishingIdeal_ideal, PrimeSpectrum.zeroLocus_vanishingIdeal_eq_closure]`. Conclude with `(C.isClosed.preimage hU.fromSpec.continuous).closure_eq.symm`.
+
+Establish `hset : hV.fromSpec ⁻¹' ((C.preimage f.continuous : Closeds X) : Set X) = PrimeSpectrum.zeroLocus {f.appLE U.1 V.1 e t}`. Use extensionality with `q`. Establish `h1 : f (hV.fromSpec q) = hU.fromSpec (Spec.map (f.appLE U.1 V.1 e) q)`. Rewrite using `[← Scheme.Hom.comp_apply, ← IsAffineOpen.SpecMap_appLE_fromSpec f hU hV e, Scheme.Hom.comp_apply]`. Express the relevant statement in the definitionally equal form `f (hV.fromSpec q) ∈ (C : Set S) ↔ _`.
+
+Rewrite using `[h1, ← Set.mem_preimage, hC]`. Use `Set.singleton_subset_iff.trans (Iff.trans ?_ Set.singleton_subset_iff.symm)` and prove the remaining obligations. Conclude with `Iff.rfl`. Establish `hrad : (Ideal.span {f.appLE U.1 V.1 e t}).IsRadical`. Establish `h0 : (Ideal.span {t}).IsRadical`.
+
+Rewrite using `[← ht, Scheme.IdealSheafData.vanishingIdeal_ideal]`. Conclude with `PrimeSpectrum.isRadical_vanishingIdeal _`. Establish `hs` using `f.smooth_appLE hU hV e`. Use `algebraize [(f.appLE U.1 V.1 e).hom]`. Establish `: _root_.IsReduced (Γ(S, U.1) ⧸ Ideal.span {t})` using `(Ideal.isRadical_iff_quotient_reduced _).1 h0`.
+
+Establish `: _root_.IsReduced (TensorProduct Γ(S, U.1) (Γ(S, U.1) ⧸ Ideal.span {t}) Γ(X, V.1))` using `GlobalTheory.isReduced_algebra_of_smooth_of_isReduced (Γ(S, U.1) ⧸ Ideal.span {t}) _`. Establish `e1 : Ideal.map (algebraMap Γ(S, U.1) Γ(X, V.1)) (Ideal.span {t}) = Ideal.span {f.appLE U.1 V.1 e t}`. Rewrite using `[Ideal.map_span, Set.image_singleton]`. Both sides reduce to the same expression. Rewrite using `[Ideal.isRadical_iff_quotient_reduced, ← e1]`.
+
+Set `ψ : (Γ(X, V.1) ⧸ Ideal.map (algebraMap Γ(S, U.1) Γ(X, V.1)) (Ideal.span {t})) ≃+* TensorProduct Γ(S, U.1) (Γ(S, U.1) ⧸ Ideal.span {t}) Γ(X, V.1)` to `(Algebra.TensorProduct.quotIdealMapEquivTensorQuot Γ(X, V.1) (Ideal.span {t})).toRingEquiv.trans (Algebra.TensorProduct.comm Γ(S, U.1) Γ(X, V.1) _).toRingEquiv`. Conclude with `isReduced_of_injective ψ.toRingHom ψ.injective`. Rewrite using `[Scheme.IdealSheafData.vanishingIdeal_ideal]`. Use `(congrArg PrimeSpectrum.vanishingIdeal hset).trans ?_` and prove the remaining obligations. Rewrite using `[← PrimeSpectrum.zeroLocus_span, PrimeSpectrum.vanishingIdeal_zeroLocus_eq_radical, hrad.radical]`.
+-/
 theorem vanishingIdeal_preimage {X S : Scheme.{0}} (f : X ⟶ S) [Smooth f] (C : Closeds S) (U : S.affineOpens)
     (t : Γ(S, U.1)) (ht : (Scheme.IdealSheafData.vanishingIdeal C).ideal U = Ideal.span {t}) (V : X.affineOpens)
     (e : V.1 ≤ f ⁻¹ᵁ U.1) :
@@ -58,6 +71,13 @@ namespace GlobalTheory.DivPullback
 
 open GlobalTheory.CxPts GlobalTheory.ShFam ReciprocityTheory.ChartRestriction.G.Geo.Tor
 
+/- English proof (translation)
+Use `⟨fun y => h.1 (m y), fun z => ?_⟩` and prove the remaining obligations. Take `⟨V, t, g, hy, ht, hg, e⟩` from `h.2 (m z)`. Establish `hz : z ∈ ptsIn p' σ' (f ⁻¹ᵁ V.1)` using `(mem_ptsIn_preimage hm).2 hy`. Take `⟨W, hW, hzW, hWle⟩` from `Opens.isBasis_iff_nbhd.1 Y'.isBasis_affineOpens (mem_ptsIn.1 hz)`. Establish `hsub : ∀ z' ∈ ptsIn p' σ' W, m z' ∈ ptsIn p σ V.1` using `fun z' hz' => (mem_ptsIn_preimage hm).1 (ptsIn_mono hWle hz')`.
+
+Establish `hev : ∀ z' ∈ ptsIn p' σ' W, ev p' σ' W (f.appLE V.1 W hWle t) z' = ev p σ V.1 t (m z')` using `fun z' hz' => by`. Rewrite using `[ev_of_comp hm, ← ev_res hWle hz']`. Both sides reduce to the same expression. Use `⟨⟨W, hW⟩, f.appLE V.1 W hWle t, g ∘ m, mem_ptsIn.2 hzW, vanishingIdeal_preimage f C V t ht ⟨W, hW⟩ hWle, (hg.comp_map (isOpen_ptsIn _) hm R').mono hsub, fun z' hz' => ?_⟩` and prove the remaining obligations. Rewrite using `[hev z' hz']`.
+
+Conclude with `e (m z') (hsub z' hz')`.
+-/
 theorem isDivNorm_comp {k k' : Type} [CommRing k] [CommRing k'] {Y Y' : Scheme.{0}} {p : Y ⟶ Sp k}
     {p' : Y' ⟶ Sp k'} {σ : k →+* ℂ} {σ' : k' →+* ℂ} {d d' : ℕ} (f : Y' ⟶ Y) [Smooth f]
     {m : CxPts p' σ' → CxPts p σ} (hm : ∀ z, (m z).1 = z.1 ≫ f) {R : AnRead p σ d} (R' : AnRead p' σ' d')
@@ -87,6 +107,9 @@ open GlobalTheory GlobalTheory.Toroidal GlobalTheory.Cartier GlobalTheory.ProjVa
 
 namespace GlobalTheory.DivPullback
 
+/- English proof (translation)
+Introduce `D A N j S κ s Φ k σ C n hπ h`. Use `haveI := hπ`. Conclude with `isDivNorm_comp (Φ.C k).π (m := (Φ.C k).down) (fun _ => rfl) _ h`.
+-/
 theorem isDivNorm_flag : ∀ (D : D7) (A : Amb D) (N j : ℕ) (S : Sig A N j) (κ : Lv A) (s : FinalTheorems S κ) (Φ : s.Flag) (k : s.Comp) (σ : D.what₂.LL →+* ℂ) (C : Closeds (gen s.T.Z : Scheme.{0})) (n : CxPts (genStr s.T.Z) (embOf κ.e σ) → ℝ), Smooth (Φ.C k).π → IsDivNorm (manifold s.T.Z (embOf κ.e σ)) C n → IsDivNorm ((Φ.C k).Y.an σ) (C.preimage (Φ.C k).π.continuous) (fun z => n ((Φ.C k).down z)) := by
   intro D A N j S κ s Φ k σ C n hπ h
   haveI := hπ

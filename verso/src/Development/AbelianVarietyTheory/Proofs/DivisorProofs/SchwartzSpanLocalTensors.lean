@@ -15,12 +15,18 @@ namespace GlobalTheory.PureAtPlace
 
 variable {F : Type} [Field F] [NumberField F] (v : Pl F) {κ : Type}
 
+/- English proof (translation)
+Establish `hO : IsOpen (v.adicCompletionIntegers F : Set (Fv F v))` using `Valued.isOpen_valuationSubring _`. Establish `hC : IsCompact (v.adicCompletionIntegers F : Set (Fv F v))` using `isCompact_iff_compactSpace.2 (GlobalTheory.AdelicUnitaryTop.compactSpace_adicCompletionIntegers F v)`. Conclude with `IsCompact.locallyCompactSpace_of_mem_nhds_of_addGroup hC (x := 0) (hO.mem_nhds (zero_mem _))`.
+-/
 theorem lc_Fv : LocallyCompactSpace (Fv F v) := by
   have hO : IsOpen (v.adicCompletionIntegers F : Set (Fv F v)) := Valued.isOpen_valuationSubring _
   have hC : IsCompact (v.adicCompletionIntegers F : Set (Fv F v)) :=
     isCompact_iff_compactSpace.2 (GlobalTheory.AdelicUnitaryTop.compactSpace_adicCompletionIntegers F v)
   exact IsCompact.locallyCompactSpace_of_mem_nhds_of_addGroup hC (x := 0) (hO.mem_nhds (zero_mem _))
 
+/- English proof (translation)
+Take `⟨K, hK, hKU, hKc⟩` from `local_compact_nhds hU`. Take `⟨B, hB, hxB, hBK⟩` from `loc_compact_Haus_tot_disc_of_zero_dim.mem_nhds_iff.1 hK`. Conclude with `⟨B, hB, hKc.of_isClosed_subset hB.isClosed hBK, hxB, hBK.trans hKU⟩`.
+-/
 theorem exists_compact_clopen {H : Type} [TopologicalSpace H] [LocallyCompactSpace H] [T2Space H]
     [TotallyDisconnectedSpace H] {x : H} {U : Set H} (hU : U ∈ 𝓝 x) :
     ∃ B, IsClopen B ∧ IsCompact B ∧ x ∈ B ∧ B ⊆ U := by
@@ -34,38 +40,73 @@ def sgT (a : κ → Fv F v) : κ → Af F := fun i => singleFin v (a i)
 
 def prT (y : κ → Af F) : κ → Af F := y - sgT v (evT v y)
 
+/- English proof (translation)
+The claim follows from `funext fun i => map_add _ _ _`.
+-/
 theorem evT_add (y y' : κ → Af F) : evT v (y + y') = evT v y + evT v y' := funext fun i => map_add _ _ _
 
+/- English proof (translation)
+The claim follows from `funext fun i => map_add _ _ _`.
+-/
 theorem sgT_add (a b : κ → Fv F v) : sgT v (a + b) = sgT v a + sgT v b := funext fun i => map_add _ _ _
 
+/- English proof (translation)
+The claim follows from `funext fun i => map_zero _`.
+-/
 theorem sgT_zero : sgT v (0 : κ → Fv F v) = 0 := funext fun i => map_zero _
 
+/- English proof (translation)
+Rewrite using `[prT, show y - sgT v (evT v y) = y + (-sgT v (evT v y)) from sub_eq_add_neg _ _]`. Use function extensionality and compare the values at `i`. Simplify using `[evT, sgT, evalV_singleFin_self]`.
+-/
 theorem evT_prT (y : κ → Af F) : evT v (prT v y) = 0 := by
   rw [prT, show y - sgT v (evT v y) = y + (-sgT v (evT v y)) from sub_eq_add_neg _ _]
   funext i
   simp [evT, sgT, evalV_singleFin_self]
 
+/- English proof (translation)
+Use `conv_lhs => rw [prT]`. Rewrite using `[evT_prT, sgT_zero, sub_zero]`.
+-/
 theorem prT_prT (y : κ → Af F) : prT v (prT v y) = prT v y := by
   conv_lhs => rw [prT]
   rw [evT_prT, sgT_zero, sub_zero]
 
+/- English proof (translation)
+Rewrite using `[prT]`. Normalize the expressions using the abelian group laws.
+-/
 theorem sgT_add_prT (y : κ → Af F) : sgT v (evT v y) + prT v y = y := by
   rw [prT]; abel
 
+/- English proof (translation)
+Simplify using `only [prT, evT_add, sgT_add]`. Normalize the expressions using the abelian group laws.
+-/
 theorem prT_add (y y' : κ → Af F) : prT v (y + y') = prT v y + prT v y' := by
   simp only [prT, evT_add, sgT_add]; abel
 
+/- English proof (translation)
+The claim follows from `continuous_pi fun i => (GlobalTheory.BoxCosetSum.continuous_evalV' v).comp (continuous_apply i)`.
+-/
 theorem continuous_evT : Continuous (evT v : (κ → Af F) → κ → Fv F v) :=
   continuous_pi fun i => (GlobalTheory.BoxCosetSum.continuous_evalV' v).comp (continuous_apply i)
 
+/- English proof (translation)
+The claim follows from `continuous_pi fun i => (continuous_singleFin v).comp (continuous_apply i)`.
+-/
 theorem continuous_sgT : Continuous (sgT v : (κ → Fv F v) → κ → Af F) :=
   continuous_pi fun i => (continuous_singleFin v).comp (continuous_apply i)
 
+/- English proof (translation)
+The claim follows from `continuous_id.sub ((continuous_sgT v).comp (continuous_evT v))`.
+-/
 theorem continuous_prT : Continuous (prT v : (κ → Af F) → κ → Af F) :=
   continuous_id.sub ((continuous_sgT v).comp (continuous_evT v))
 
 attribute [local instance] GlobalTheory.AdelicUnitaryTop.t2Space_finiteAdeleRing_of_numberField
 
+/- English proof (translation)
+Use `⟨(ha.1.comp_continuous (continuous_evT v)).mul (hb.1.comp_continuous (continuous_prT v)), ?_⟩` and prove the remaining obligations. Establish `hK : IsCompact ((fun p : (κ → Fv F v) × (κ → Af F) => sgT v p.1 + p.2) '' (tsupport a ×ˢ tsupport b))` using `(IsCompact.prod ha.2 hb.2).image (((continuous_sgT v).comp continuous_fst).add continuous_snd)`. Use `HasCompactSupport.intro' hK hK.isClosed fun y hy => ?_` and prove the remaining obligations. Assume the negation of the conclusion as `h`. Apply `hy` to reduce the goal to its premises.
+
+Establish `h'` using `mul_ne_zero_iff.1 h`. Conclude with `⟨(evT v y, prT v y), ⟨subset_tsupport _ h'.1, subset_tsupport _ h'.2⟩, sgT_add_prT v y⟩`.
+-/
 theorem mem_SB_prod {a : (κ → Fv F v) → ℂ} {b : (κ → Af F) → ℂ} (ha : a ∈ SB (κ → Fv F v)) (hb : b ∈ SB (κ → Af F)) :
     (fun y => a (evT v y) * b (prT v y)) ∈ SB (κ → Af F) := by
   refine ⟨(ha.1.comp_continuous (continuous_evT v)).mul (hb.1.comp_continuous (continuous_prT v)), ?_⟩
@@ -84,6 +125,13 @@ def Sp : Submodule ℂ ((κ → Af F) → ℂ) :=
 
 def Good (W : Set (κ → Af F)) : Prop := ∀ s ∈ Sp v κ, W.indicator s ∈ Sp v κ
 
+/- English proof (translation)
+Introduce `s hs`. Proceed by induction on `hs using Submodule.span_induction with`. Consider the case `mem x hx => obtain ⟨a, b, ha, hb, rfl⟩ := hx`. Conclude with `hW a b ha hb`. Consider the case `zero => simp`.
+
+Consider the case `add x y _ _ hx hy`. Establish `e : W.indicator (x + y) = W.indicator x + W.indicator y`. Apply the tactic sequence `funext z; by_cases hz : z ∈ W <;> simp [hz]`. Rewrite using `[e]`. Conclude with `add_mem hx hy`.
+
+Consider the case `smul c x _ hx`. Establish `e : W.indicator (c • x) = c • W.indicator x`. Apply the tactic sequence `funext z; by_cases hz : z ∈ W <;> simp [hz]`. Rewrite using `[e]`. Conclude with `Submodule.smul_mem _ c hx`.
+-/
 theorem good_of_gen {W : Set (κ → Af F)}
     (hW : ∀ a b, a ∈ SB (κ → Fv F v) → b ∈ SB (κ → Af F) →
       W.indicator (fun y => a (evT v y) * b (prT v y)) ∈ Sp v κ) : Good v W := by
@@ -100,24 +148,39 @@ theorem good_of_gen {W : Set (κ → Af F)}
       funext z; by_cases hz : z ∈ W <;> simp [hz]
     rw [e]; exact Submodule.smul_mem _ c hx
 
+/- English proof (translation)
+Introduce `s _` and use `by rw [Set.indicator_empty]; exact (Sp v κ).zero_mem`.
+-/
 theorem good_empty : Good v (∅ : Set (κ → Af F)) := fun s _ => by
   rw [Set.indicator_empty]; exact (Sp v κ).zero_mem
 
+/- English proof (translation)
+Introduce `s hs`. Establish `e : Wᶜ.indicator s = s - W.indicator s`. Apply the tactic sequence `funext z; by_cases hz : z ∈ W <;> simp [hz]`. Rewrite using `[e]`. Conclude with `sub_mem hs (h s hs)`.
+-/
 theorem good_compl {W : Set (κ → Af F)} (h : Good v W) : Good v Wᶜ := by
   intro s hs
   have e : Wᶜ.indicator s = s - W.indicator s := by
     funext z; by_cases hz : z ∈ W <;> simp [hz]
   rw [e]; exact sub_mem hs (h s hs)
 
+/- English proof (translation)
+Apply the tactic sequence `funext z; by_cases h1 : z ∈ W₁ <;> by_cases h2 : z ∈ W₂ <;> simp [h1, h2]`.
+-/
 theorem indicator_union_eq {W₁ W₂ : Set (κ → Af F)} (s : (κ → Af F) → ℂ) :
     (W₁ ∪ W₂).indicator s = W₁.indicator s + W₁ᶜ.indicator (W₂.indicator s) := by
   funext z; by_cases h1 : z ∈ W₁ <;> by_cases h2 : z ∈ W₂ <;> simp [h1, h2]
 
+/- English proof (translation)
+Introduce `s hs`. Rewrite using `[indicator_union_eq]`. Conclude with `add_mem (h₁ s hs) (good_compl v h₁ _ (h₂ s hs))`.
+-/
 theorem good_union {W₁ W₂ : Set (κ → Af F)} (h₁ : Good v W₁) (h₂ : Good v W₂) : Good v (W₁ ∪ W₂) := by
   intro s hs
   rw [indicator_union_eq]
   exact add_mem (h₁ s hs) (good_compl v h₁ _ (h₂ s hs))
 
+/- English proof (translation)
+Use `good_of_gen v fun a b ha hb => Submodule.subset_span ⟨B₁.indicator a, B₂.indicator b, GlobalTheory.CoverSB.indicator_mem_SB h₁ ha, GlobalTheory.CoverSB.indicator_mem_SB h₂ hb, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `y`. Apply the tactic sequence `by_cases e1 : evT v y ∈ B₁ <;> by_cases e2 : prT v y ∈ B₂ <;> simp [Set.indicator, e1, e2]`.
+-/
 theorem good_box {B₁ : Set (κ → Fv F v)} {B₂ : Set (κ → Af F)} (h₁ : IsClopen B₁) (h₂ : IsClopen B₂) :
     Good v {y | evT v y ∈ B₁ ∧ prT v y ∈ B₂} := by
   refine good_of_gen v fun a b ha hb => Submodule.subset_span
@@ -125,6 +188,27 @@ theorem good_box {B₁ : Set (κ → Fv F v)} {B₂ : Set (κ → Af F)} (h₁ :
   funext y
   by_cases e1 : evT v y ∈ B₁ <;> by_cases e2 : prT v y ∈ B₂ <;> simp [Set.indicator, e1, e2]
 
+/- English proof (translation)
+Use `haveI := lc_Fv v`. Use `haveI := GlobalTheory.AdelicUnitaryTop.locallyCompact_finiteAdele F`. Use `haveI := GlobalTheory.TamePartR.totallyDisconnected_finiteAdele F`. Use `haveI := GlobalTheory.TamePartR.td_adic v`. Establish `hcl : IsClosed (Function.support g)`.
+
+Establish `: Function.support g = (g ⁻¹' {0})ᶜ` using `by ext; simp`. Rewrite using `[this]`. Conclude with `(hg.1.isOpen_fiber 0).isClosed_compl`. Establish `hcpt : IsCompact (Function.support g)`. Use `hg.2` as an intermediate fact.
+
+Rewrite `this` using `[HasCompactSupport, tsupport, hcl.closure_eq]`. Conclude with `this`. Set `p : Set (κ → Af F) → Prop` to `fun T => ∃ W, Good v W ∧ T ⊆ W ∧ W.indicator g ∈ Sp v κ`. Establish `hp : p (Function.support g)`. Use `hcpt.induction_on ?_ ?_ ?_ ?_` and prove the remaining obligations.
+
+Conclude with `⟨∅, good_empty v, subset_rfl, by rw [Set.indicator_empty]; exact (Sp v κ).zero_mem⟩`. Introduce and unpack `s t hst ⟨W, hW, htW, h⟩`. Conclude with `⟨W, hW, hst.trans htW, h⟩`. Introduce and unpack `s t ⟨W₁, hW₁, hs, h₁⟩ ⟨W₂, hW₂, ht, h₂⟩`. Use `⟨W₁ ∪ W₂, good_union v hW₁ hW₂, Set.union_subset_union hs ht, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[indicator_union_eq]`. Conclude with `add_mem h₁ (good_compl v hW₁ _ h₂)`. Introduce `x _`. Set `Φ : (κ → Fv F v) × (κ → Af F) → κ → Af F` to `fun q => sgT v q.1 + prT v q.2`. Establish `hΦc : Continuous Φ` using `((continuous_sgT v).comp continuous_fst).add ((continuous_prT v).comp continuous_snd)`.
+
+Establish `hΦ : ∀ y, Φ (evT v y, prT v y) = y` using `fun y => by`. Simplify using `only [Φ, prT_prT]`. Conclude with `sgT_add_prT v y`. Establish `hU : Φ ⁻¹' {y | g y = g x} ∈ 𝓝 (evT v x, prT v x)`. Use `hΦc.continuousAt.preimage_mem_nhds ?_` and prove the remaining obligations.
+
+Rewrite using `[hΦ]`. Conclude with `(hg.1.isOpen_fiber (g x)).mem_nhds rfl`. Take `⟨u, hu, t, ht, hut⟩` from `mem_nhds_prod_iff.1 hU`. Take `⟨B₁, hB₁, hB₁c, hx₁, hB₁u⟩` from `exists_compact_clopen hu`. Take `⟨B₂, hB₂, hB₂c, hx₂, hB₂t⟩` from `exists_compact_clopen ht`.
+
+Establish `hWo : IsOpen {y | evT v y ∈ B₁ ∧ prT v y ∈ B₂}` using `(hB₁.isOpen.preimage (continuous_evT v)).inter (hB₂.isOpen.preimage (continuous_prT v))`. Use `⟨_, mem_nhdsWithin_of_mem_nhds (hWo.mem_nhds ⟨hx₁, hx₂⟩), _, good_box v hB₁ hB₂, subset_rfl, ?_⟩` and prove the remaining obligations. Establish `e : {y | evT v y ∈ B₁ ∧ prT v y ∈ B₂}.indicator g = g x • fun y => B₁.indicator (1 : (κ → Fv F v) → ℂ) (evT v y) * B₂.indicator 1 (prT v y)`. Use function extensionality and compare the values at `y`. Apply the tactic sequence `by_cases e1 : evT v y ∈ B₁ <;> by_cases e2 : prT v y ∈ B₂`.
+
+Establish `hy : g y = g x`. Use `hut (show (evT v y, prT v y) ∈ u ×ˢ t from ⟨hB₁u e1, hB₂t e2⟩)` as an intermediate fact. Rewrite `this` using `[Set.mem_preimage, hΦ]`. Conclude with `this`. Simplify using `[Set.indicator, e1, e2, hy]`.
+
+Apply the tactic sequence `all_goals simp [Set.indicator, e1, e2]`. Rewrite using `[e]`. Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span ⟨_, _, GlobalTheory.LocalBoxIndicator.indicator_mem_SB hB₁ hB₁c, GlobalTheory.LocalBoxIndicator.indicator_mem_SB hB₂ hB₂c, rfl⟩)`. Take `⟨W, -, hW, h⟩` from `hp`. Rewrite `h` using `[Set.indicator_eq_self.2 hW]`. Then use the resulting hypothesis.
+-/
 theorem mem_Sp [Finite κ] {g : (κ → Af F) → ℂ} (hg : g ∈ SB (κ → Af F)) : g ∈ Sp v κ := by
   haveI := lc_Fv v
   haveI := GlobalTheory.AdelicUnitaryTop.locallyCompact_finiteAdele F
@@ -184,6 +268,9 @@ namespace GlobalTheory.PureAtPlace
 
 variable {F : Type} [Field F] [NumberField F] (v : Pl F) {κ : Type}
 
+/- English proof (translation)
+Use `af_ext fun u => ?_` and prove the remaining obligations. Distinguish the cases in `h : u = v`. Substitute `h` using the available equality. Simplify using `[evalV_singleFin_self]`. Simplify using `[evalV_singleFin_ne h]`.
+-/
 theorem sub_single_mul (w : Af F) : (1 - singleFin v 1) * w = w - singleFin v (evalV F v w) := by
   refine af_ext fun u => ?_
   by_cases h : u = v
@@ -193,6 +280,9 @@ theorem sub_single_mul (w : Af F) : (1 - singleFin v 1) * w = w - singleFin v (e
 def restF (f : (κ → mixedEmbedding.mixedSpace F) → ℂ) (b : (κ → Af F) → ℂ) : (κ → AF F) → ℂ :=
   pureA F f (fun y => b (prT v y))
 
+/- English proof (translation)
+Use function extensionality and compare the values at `x`. Simplify using `only [tens, restF, pureA]`. Establish `: (fun i => evFin F v (x i)) = evT v (fun i => (x i).2)` using `rfl`. Rewrite using `[this]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem tens_restF (f : (κ → mixedEmbedding.mixedSpace F) → ℂ) (b : (κ → Af F) → ℂ) (φ : (κ → Fv F v) → ℂ) :
     tens (evFin F v) φ (restF v f b) = pureA F f (fun y => φ (evT v y) * b (prT v y)) := by
   funext x
@@ -200,6 +290,17 @@ theorem tens_restF (f : (κ → mixedEmbedding.mixedSpace F) → ℂ) (b : (κ �
   have : (fun i => evFin F v (x i)) = evT v (fun i => (x i).2) := rfl
   rw [this]; ring
 
+/- English proof (translation)
+Set `u : AF F` to `((1 : Ainf F), 1 - singleFin v 1)`. Establish `hu : evFin F v u = 0` using `by show evalV F v (1 - singleFin v 1) = 0`. Rewrite using `[map_sub, map_one, evalV_singleFin_self, sub_self]`. Establish `h0` using `hz u hu`. Establish `h1 : ∀ i, (z i).1 = 0` using `fun i => by`.
+
+Establish `e : (u * z i).1 = 0` using `congrArg Prod.fst (congrFun h0 i)`. Establish `e' : (u * z i).1 = 1 * (z i).1` using `rfl`. Rewrite `e` using `[e', one_mul]`. Conclude with `e`. Establish `h2 : prT v (fun i => (z i).2) = 0`.
+
+Use function extensionality and compare the values at `i`. Establish `e : (u * z i).2 = 0` using `congrArg Prod.snd (congrFun h0 i)`. Establish `e' : (u * z i).2 = (1 - singleFin v 1) * (z i).2` using `rfl`. Rewrite `e` using `[e', sub_single_mul]`. Conclude with `e`.
+
+Establish `ea : (fun i => ((x + z) i).1) = fun i => (x i).1` using `funext fun i => by show (x i).1 + (z i).1 = _; rw [h1, add_zero]`. Establish `eb : (fun i => ((x + z) i).2) = (fun i => (x i).2) + (fun i => (z i).2)` using `rfl`. Simplify using `only [restF, pureA]`. Rewrite using `[eb, prT_add, h2, add_zero]`. Use `congr 2`.
+
+Use function extensionality and compare the values at `i`. Rewrite using `[show ((x + z) i).1 = (x i).1 from congrFun ea i]`.
+-/
 theorem restF_add_at (f : (κ → mixedEmbedding.mixedSpace F) → ℂ) (b : (κ → Af F) → ℂ) (x z : κ → AF F)
     (hz : At (evFin F v) z) : restF v f b (x + z) = restF v f b x := by
   let u : AF F := ((1 : Ainf F), 1 - singleFin v 1)
@@ -230,6 +331,17 @@ end GlobalTheory.PureAtPlace
 
 namespace GlobalTheory.PureAtPlace
 
+/- English proof (translation)
+Introduce `F _ _ v κ _`. Use `Submodule.span_le.2 ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨f, g, hg, rfl⟩`. Establish `hgS` using `mem_Sp v hg`. Use `clear hg`.
+
+Proceed by induction on `hgS using Submodule.span_induction with`. Consider the case `mem s hs`. Take `⟨a, b, ha, hb, rfl⟩` from `hs`. Use `Submodule.subset_span ⟨a, restF v f b, ha, fun φ' hφ' => ⟨fun x z hz => restF_add_at v f b x z hz, ?_⟩, (tens_restF v f b a).symm⟩` and prove the remaining obligations. Rewrite using `[tens_restF]`.
+
+Conclude with `Submodule.subset_span ⟨f, _, mem_SB_prod v hφ' hb, rfl⟩`. Consider the case `zero`. Establish `e : pureA F f 0 = 0` using `by funext x; simp [pureA]`. Rewrite using `[e]`. Conclude with `zero_mem _`.
+
+Consider the case `add x y _ _ hx hy`. Establish `e : pureA F f (x + y) = pureA F f x + pureA F f y` using `by funext z; simp [pureA, mul_add]`. Rewrite using `[e]`. Conclude with `add_mem hx hy`. Consider the case `smul c x _ hx`.
+
+Establish `e : pureA F f (c • x) = c • pureA F f x` using `by funext z; simp [pureA]; ring`. Rewrite using `[e]`. Conclude with `Submodule.smul_mem _ c hx`.
+-/
 theorem schA_le_span_tens : ∀ (F : Type) [Field F] [NumberField F] (v : Pl F) (κ : Type) [Fintype κ],
     schA F κ ≤ Submodule.span ℂ {Φ | ∃ (φ : (κ → Fv F v) → ℂ) (r : (κ → AF F) → ℂ), φ ∈ SB (κ → Fv F v) ∧
       (∀ φ' ∈ SB (κ → Fv F v), Rest (evFin F v) φ' r) ∧ Φ = tens (evFin F v) φ r} := by

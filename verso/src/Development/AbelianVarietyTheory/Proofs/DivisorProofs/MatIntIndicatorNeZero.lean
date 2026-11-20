@@ -16,6 +16,11 @@ namespace GlobalTheory.FullRankCoinv.LeftScale
 
 variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
 
+/- English proof (translation)
+Use `⟨⟨?_, ?_⟩, fun Y hY => Set.indicator_of_notMem (fun h => hY (hr Y h)) _⟩` and prove the remaining obligations. Rewrite using `[IsLocallyConstant.iff_eventually_eq]`. Introduce `x`. Distinguish the cases in `hx : x ∈ U`. Use `filter_upwards [hU.isOpen.mem_nhds hx] with y hy`.
+
+Rewrite using `[Set.indicator_of_mem hy, Set.indicator_of_mem hx]`. Use `filter_upwards [hU.compl.isOpen.mem_nhds hx] with y hy`. Rewrite using `[Set.indicator_of_notMem hy, Set.indicator_of_notMem hx]`. Conclude with `HasCompactSupport.intro' hc hU.isClosed fun x hx => Set.indicator_of_notMem hx _`.
+-/
 theorem indicator_one_mem_fullRk {n d : ℕ} {U : Set (Matrix (Fin n) (Fin d) k)} (hU : IsClopen U) (hc : IsCompact U)
     (hr : ∀ Y ∈ U, Y.rank = n) : U.indicator (fun _ => (1 : ℂ)) ∈ fullRk k n d := by
   refine ⟨⟨?_, ?_⟩, fun Y hY => Set.indicator_of_notMem (fun h => hY (hr Y h)) _⟩
@@ -28,6 +33,13 @@ theorem indicator_one_mem_fullRk {n d : ℕ} {U : Set (Matrix (Fin n) (Fin d) k)
       rw [Set.indicator_of_notMem hy, Set.indicator_of_notMem hx]
   · exact HasCompactSupport.intro' hc hU.isClosed fun x hx => Set.indicator_of_notMem hx _
 
+/- English proof (translation)
+Use `haveI := SplitWeil.secondCountable k`. Use `haveI := SplitWeil.t2Space k`. Set `e : (Fin n × Fin d → k) ≃ₜ Matrix (Fin n) (Fin d) k` to `{ toEquiv := Equiv.curry _ _ _ continuous_toFun := continuous_pi fun i => continuous_pi fun j => continuous_apply (i, j) continuous_invFun := continuous_pi fun p => (continuous_apply p.2).comp (continuous_apply p.1) }`. Establish `ho : IsOpen (e ⁻¹' U)` using `hU.preimage e.continuous`. Establish `hcp : IsCompact (e ⁻¹' U)` using `e.isCompact_preimage.2 hc`.
+
+Establish `hn : (e ⁻¹' U).Nonempty` using `hne.preimage e.surjective`. Establish `h1 : matInt ν (U.indicator (fun _ => (1 : ℂ))) = ∫ v, (e ⁻¹' U).indicator (fun _ => (1 : ℂ)) v ∂(Measure.pi fun _ => ν)` using `rfl`. Rewrite using `[h1, integral_indicator_const _ ho.measurableSet]`. Establish `hpos` using `ho.measure_pos (Measure.pi fun _ : Fin n × Fin d => ν) hn`. Establish `hlt` using `hcp.measure_lt_top (μ := Measure.pi fun _ : Fin n × Fin d => ν)`.
+
+Simplify using `[Measure.real, ENNReal.toReal_eq_zero_iff, hpos.ne', hlt.ne]`.
+-/
 theorem matInt_indicator_ne_zero [MeasurableSpace k] [BorelSpace k] (ν : Measure k) [ν.IsAddHaarMeasure] {n d : ℕ}
     {U : Set (Matrix (Fin n) (Fin d) k)} (hU : IsOpen U) (hc : IsCompact U) (hne : U.Nonempty) :
     matInt ν (U.indicator (fun _ => (1 : ℂ))) ≠ 0 := by
@@ -47,6 +59,9 @@ theorem matInt_indicator_ne_zero [MeasurableSpace k] [BorelSpace k] (ν : Measur
   have hlt := hcp.measure_lt_top (μ := Measure.pi fun _ : Fin n × Fin d => ν)
   simp [Measure.real, ENNReal.toReal_eq_zero_iff, hpos.ne', hlt.ne]
 
+/- English proof (translation)
+Unfold `matInt`. Simplify using `only [Pi.smul_apply, smul_eq_mul]`. Conclude with `integral_const_mul _ _`.
+-/
 theorem matInt_smul [MeasurableSpace k] (ν : Measure k) {n d : ℕ} (c : ℂ) (φ : Matrix (Fin n) (Fin d) k → ℂ) :
     matInt ν (c • φ) = c * matInt ν φ := by
   unfold matInt
@@ -63,6 +78,11 @@ def stabKO {n d : ℕ} (φ : Matrix (Fin n) (Fin d) k → ℂ) : Subgroup (KO k 
     rw [Matrix.mul_assoc, ← Units.val_mul, ← Subgroup.coe_mul, inv_mul_cancel] at this
     simpa using this.symm
 
+/- English proof (translation)
+Take `⟨U, hU, hinv⟩` from `sb_right_invariant k n d φ hφ`. Use `haveI : CompactSpace (KO k (Fin d)) := isCompact_iff_compactSpace.mp (isCompact_KO (k := k) (n := Fin d))`. Establish `ho : IsOpen (stabKO φ : Set (KO k (Fin d)))`. Use `Subgroup.isOpen_of_mem_nhds _ (g := 1) ?_` and prove the remaining obligations. Conclude with `Filter.mem_of_superset (continuous_subtype_val.continuousAt.preimage_mem_nhds (by simpa using hU)) fun u hu => hinv _ hu`.
+
+Use `haveI := Subgroup.quotient_finite_of_isOpen _ ho`. Conclude with `Subgroup.finiteIndex_of_finite_quotient`.
+-/
 theorem finiteIndex_stabKO {n d : ℕ} {φ : Matrix (Fin n) (Fin d) k → ℂ}
     (hφ : φ ∈ GlobalTheory.WeilM.SB (Matrix (Fin n) (Fin d) k)) : (stabKO φ).FiniteIndex := by
   obtain ⟨U, hU, hinv⟩ := sb_right_invariant k n d φ hφ

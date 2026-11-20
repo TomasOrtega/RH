@@ -12,44 +12,82 @@ variable {ι κ : Type*}
 
 def IsSiegel (Ω : Matrix ι ι ℂ) : Prop := Ω.IsSymm ∧ (Ω.map Complex.im).PosDef
 
+/- English proof (translation)
+Unfold both sides. The equivalence is reflexive.
+-/
 theorem isSiegel_iff_mem_siegelH [Fintype ι] {Ω : Matrix ι ι ℂ} :
     IsSiegel Ω ↔ Ω ∈ ReciprocityTheory.PTheta.SiegelH ι := Iff.rfl
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨isSymm, posDef⟩`.
+-/
 theorem IsSiegel.mk {Ω : Matrix ι ι ℂ} (isSymm : Ω.IsSymm) (posDef : (Ω.map Complex.im).PosDef) :
     IsSiegel Ω := ⟨isSymm, posDef⟩
 
+/- English proof (translation)
+The claim follows from `h.1`.
+-/
 theorem IsSiegel.isSymm {Ω : Matrix ι ι ℂ} (h : IsSiegel Ω) : Ω.IsSymm := h.1
 
+/- English proof (translation)
+The claim follows from `h.2`.
+-/
 theorem IsSiegel.posDef {Ω : Matrix ι ι ℂ} (h : IsSiegel Ω) : (Ω.map Complex.im).PosDef := h.2
 
+/- English proof (translation)
+The claim follows from `h`.
+-/
 theorem IsSiegel.mem_siegelH [Fintype ι] {Ω : Matrix ι ι ℂ} (h : IsSiegel Ω) :
     Ω ∈ ReciprocityTheory.PTheta.SiegelH ι := h
 
+/- English proof (translation)
+The claim follows from `h`.
+-/
 theorem IsSiegel.of_mem_siegelH [Fintype ι] {Ω : Matrix ι ι ℂ}
     (h : Ω ∈ ReciprocityTheory.PTheta.SiegelH ι) : IsSiegel Ω := h
 
 def siegelUpperHalfSpace (ι : Type*) : Set (Matrix ι ι ℂ) := {Ω | IsSiegel Ω}
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem siegelUpperHalfSpace_eq_siegelH (ι : Type*) [Fintype ι] :
     siegelUpperHalfSpace ι = ReciprocityTheory.PTheta.SiegelH ι := rfl
 
+/- English proof (translation)
+Unfold both sides. The equivalence is reflexive.
+-/
 @[simp] theorem mem_siegelUpperHalfSpace {Ω : Matrix ι ι ℂ} :
     Ω ∈ siegelUpperHalfSpace ι ↔ IsSiegel Ω := Iff.rfl
 
+/- English proof (translation)
+Use extensionality with `i j`. Simplify using `[conjTranspose_apply, h.apply]`.
+-/
 theorem isHermitian_map_im_of_isSymm {Ω : Matrix ι ι ℂ} (h : Ω.IsSymm) :
     (Ω.map Complex.im).IsHermitian := by
   ext i j
   simp [conjTranspose_apply, h.apply]
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨h, PosDef.of_dotProduct_mulVec_pos (isHermitian_map_im_of_isSymm h) fun x hx => by simpa using hpos x hx⟩`.
+-/
 theorem IsSiegel.of_dotProduct_pos [Fintype ι] {Ω : Matrix ι ι ℂ} (h : Ω.IsSymm)
     (hpos : ∀ x : ι → ℝ, x ≠ 0 → 0 < x ⬝ᵥ (Ω.map Complex.im *ᵥ x)) : IsSiegel Ω :=
   ⟨h, PosDef.of_dotProduct_mulVec_pos (isHermitian_map_im_of_isSymm h)
     fun x hx => by simpa using hpos x hx⟩
 
+/- English proof (translation)
+Simplify using `using h.posDef.dotProduct_mulVec_pos hx`.
+-/
 theorem IsSiegel.dotProduct_pos [Fintype ι] {Ω : Matrix ι ι ℂ} (h : IsSiegel Ω) {x : ι → ℝ}
     (hx : x ≠ 0) : 0 < x ⬝ᵥ (Ω.map Complex.im *ᵥ x) := by
   simpa using h.posDef.dotProduct_mulVec_pos hx
 
+/- English proof (translation)
+Establish `hY' : Y.IsSymm`. Use extensionality with `i j`. Simplify using `using hY.isHermitian.apply i j`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Use extensionality with `i j`.
+
+Simplify using `[hX.apply, hY'.apply]`. Use `hY` and compare the differences between its conclusion and the goal. Use extensionality with `i j`. Simplify using the standard rewrite rules.
+-/
 theorem isSiegel_ofReal_add_I_smul {X Y : Matrix ι ι ℝ} (hX : X.IsSymm) (hY : Y.PosDef) :
     IsSiegel (X.map ofReal + I • Y.map ofReal) := by
   have hY' : Y.IsSymm := by
@@ -62,6 +100,9 @@ theorem isSiegel_ofReal_add_I_smul {X Y : Matrix ι ι ℝ} (hX : X.IsSymm) (hY 
     ext i j
     simp
 
+/- English proof (translation)
+Establish `: (diagonal τ).map Complex.im = diagonal fun i => (τ i).im` using `diagonal_map (by simp)`. Use `⟨fun h => ?_, fun h => ⟨isSymm_diagonal _, ?_⟩⟩` and prove the remaining obligations. Simplify `h.posDef` using `[this]`. Simplify `h` using `[this]`.
+-/
 theorem isSiegel_diagonal_iff [DecidableEq ι] {τ : ι → ℂ} :
     IsSiegel (diagonal τ) ↔ ∀ i, 0 < (τ i).im := by
   have : (diagonal τ).map Complex.im = diagonal fun i => (τ i).im := diagonal_map (by simp)
@@ -69,10 +110,18 @@ theorem isSiegel_diagonal_iff [DecidableEq ι] {τ : ι → ℂ} :
   · simpa [this] using h.posDef
   · simpa [this] using h
 
+/- English proof (translation)
+Rewrite using `[smul_one_eq_diagonal, isSiegel_diagonal_iff]`. Simplify using the standard rewrite rules.
+-/
 theorem isSiegel_I_smul_one [DecidableEq ι] : IsSiegel (I • (1 : Matrix ι ι ℂ)) := by
   rw [smul_one_eq_diagonal, isSiegel_diagonal_iff]
   simp
 
+/- English proof (translation)
+Establish `: Ω = diagonal fun _ => Ω default default`. Use extensionality with `i j`. Take `rfl` from `Subsingleton.elim i default`. Take `rfl` from `Subsingleton.elim j default`. Simplify using the standard rewrite rules.
+
+Rewrite using `[this, isSiegel_diagonal_iff]`. Simplify using the standard rewrite rules.
+-/
 theorem isSiegel_unique_iff [Unique ι] {Ω : Matrix ι ι ℂ} :
     IsSiegel Ω ↔ 0 < (Ω default default).im := by
   classical
@@ -84,6 +133,9 @@ theorem isSiegel_unique_iff [Unique ι] {Ω : Matrix ι ι ℂ} :
   rw [this, isSiegel_diagonal_iff]
   simp
 
+/- English proof (translation)
+Use `⟨h.isSymm.smul _, ?_⟩` and prove the remaining obligations. Use `h.posDef.smul hq using 1` and compare the differences between its conclusion and the goal. Use extensionality with `i j`. Simplify using the standard rewrite rules.
+-/
 theorem IsSiegel.smul {Ω : Matrix ι ι ℂ} (h : IsSiegel Ω) {q : ℝ} (hq : 0 < q) :
     IsSiegel ((q : ℂ) • Ω) := by
   refine ⟨h.isSymm.smul _, ?_⟩
@@ -91,14 +143,29 @@ theorem IsSiegel.smul {Ω : Matrix ι ι ℂ} (h : IsSiegel Ω) {q : ℝ} (hq : 
   ext i j
   simp
 
+/- English proof (translation)
+Simplify using `using h.smul (q := q) (by exact_mod_cast hq)`.
+-/
 theorem IsSiegel.natCast_smul {Ω : Matrix ι ι ℂ} (h : IsSiegel Ω) {q : ℕ} (hq : 0 < q) :
     IsSiegel ((q : ℂ) • Ω) := by
   simpa using h.smul (q := q) (by exact_mod_cast hq)
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨h.isSymm.submatrix e, h.posDef.submatrix he⟩`.
+-/
 theorem IsSiegel.submatrix {Ω : Matrix ι ι ℂ} (h : IsSiegel Ω) {e : κ → ι}
     (he : Function.Injective e) : IsSiegel (Ω.submatrix e e) :=
   ⟨h.isSymm.submatrix e, h.posDef.submatrix he⟩
 
+/- English proof (translation)
+Use `Fintype.ofFinite ι` as an intermediate fact. Use `Fintype.ofFinite κ` as an intermediate fact. Use `⟨fun h => ⟨h.submatrix Sum.inl_injective, h.submatrix Sum.inr_injective⟩, fun ⟨h₁, h₂⟩ => IsSiegel.of_dotProduct_pos ?_ fun x hx => ?_⟩` and prove the remaining obligations. Conclude with `IsSymm.fromBlocks h₁.isSymm (by simp) h₂.isSymm`. Establish `e : x ⬝ᵥ ((fromBlocks Ω₁ 0 0 Ω₂).map Complex.im *ᵥ x) = (x ∘ Sum.inl) ⬝ᵥ (Ω₁.map Complex.im *ᵥ (x ∘ Sum.inl)) + (x ∘ Sum.inr) ⬝ᵥ (Ω₂.map Complex.im *ᵥ (x ∘ Sum.inr))`.
+
+Simplify using `[dotProduct, mulVec, Fintype.sum_sum_type]`. Establish `n₁` using `h₁.posDef.posSemidef.dotProduct_mulVec_nonneg (x ∘ Sum.inl)`. Establish `n₂` using `h₂.posDef.posSemidef.dotProduct_mulVec_nonneg (x ∘ Sum.inr)`. Simplify using `only [star_trivial] at n₁ n₂`. Rewrite using `[e]`.
+
+Distinguish the cases in `hl : x ∘ Sum.inl = 0`. Establish `hr : x ∘ Sum.inr ≠ 0` using `fun hr => hx (by`. Use function extensionality and compare the values at `i`. Break down `i with i | i` into its components or cases. Conclude with `congrFun hl i`.
+
+Conclude with `congrFun hr i)`. Combine the linear relations using `[h₂.dotProduct_pos hr]`. Combine the linear relations using `[h₁.dotProduct_pos hl]`.
+-/
 theorem isSiegel_fromBlocks_iff [Finite ι] [Finite κ] {Ω₁ : Matrix ι ι ℂ} {Ω₂ : Matrix κ κ ℂ} :
     IsSiegel (fromBlocks Ω₁ 0 0 Ω₂) ↔ IsSiegel Ω₁ ∧ IsSiegel Ω₂ := by
   have := Fintype.ofFinite ι
@@ -123,6 +190,11 @@ theorem isSiegel_fromBlocks_iff [Finite ι] [Finite κ] {Ω₁ : Matrix ι ι �
       linarith [h₂.dotProduct_pos hr]
     · linarith [h₁.dotProduct_pos hl]
 
+/- English proof (translation)
+Use `IsSiegel.of_dotProduct_pos ?_ fun x hx => ?_` and prove the remaining obligations. Apply the tactic sequence `ext i j fin_cases i <;> fin_cases j <;> simp`. Establish `: x 0 ≠ 0 ∨ x 1 ≠ 0`. Assume the negation of the conclusion as `h`. Use `push Not at h`.
+
+Apply the tactic sequence `exact hx (by funext i; fin_cases i <;> simp [h.1, h.2])`. Simplify using `[dotProduct, mulVec, Fin.sum_univ_two]`. Apply the tactic sequence `rcases this with h | h <;> nlinarith [sq_pos_of_ne_zero h, sq_nonneg (x 0 + x 1), sq_nonneg (x 0), sq_nonneg (x 1)]`.
+-/
 theorem isSiegel_example : IsSiegel !![1 + 2 * I, 1 / 2 + I; 1 / 2 + I, 2 * I] := by
   refine IsSiegel.of_dotProduct_pos ?_ fun x hx => ?_
   · ext i j
@@ -136,6 +208,19 @@ theorem isSiegel_example : IsSiegel !![1 + 2 * I, 1 / 2 + I; 1 / 2 + I, 2 * I] :
 
 variable [Fintype ι] [Fintype κ]
 
+/- English proof (translation)
+Establish `hc : Continuous fun x : ι → ℝ => x ⬝ᵥ (Y *ᵥ x)`. Simplify using `only [dotProduct, mulVec]`. Use `fun_prop`. Take `⟨c, hc0, hcl⟩` from `(isCompact_sphere (0 : ι → ℝ) 1).exists_forall_le' hc.continuousOn (a := 0) (fun x hx => by`. Establish `hx0 : x ≠ 0`.
+
+Introduce and unpack `rfl`. Simplify using `at hx`. Simplify using `using hY.dotProduct_mulVec_pos hx0)`. Use `⟨c / (Fintype.card ι + 1), by positivity, fun x => ?_⟩` and prove the remaining obligations. Break down `eq_or_ne x 0 with rfl | hx` into its components or cases.
+
+Simplify using the standard rewrite rules. Establish `hn : 0 < ‖x‖` using `norm_pos_iff.mpr hx`. Establish `h1` using `hcl (‖x‖⁻¹ • x) (by simp [norm_smul, hn.ne'])`. Simplify using `only [mulVec_smul, dotProduct_smul, smul_dotProduct, smul_eq_mul] at h1`. Establish `h2 : c * ‖x‖ ^ 2 ≤ x ⬝ᵥ (Y *ᵥ x)`.
+
+Use `mul_le_mul_of_nonneg_right h1 (sq_nonneg ‖x‖)` as an intermediate fact. Use `this.trans_eq ?_` and prove the remaining obligations. Clear the denominators using the available nonvanishing facts. Establish `h3 : x ⬝ᵥ x ≤ (Fintype.card ι + 1) * ‖x‖ ^ 2`. Establish `: x ⬝ᵥ x ≤ ∑ _i : ι, ‖x‖ ^ 2` using `Finset.sum_le_sum fun i _ => by`.
+
+Use `norm_le_pi_norm x i` as an intermediate fact. Rewrite `this` using `[Real.norm_eq_abs]`. Rewrite using `[← sq, ← sq_abs]`. Use `gcongr`. Simplify using `only [Finset.sum_const, Finset.card_univ, nsmul_eq_mul] at this`.
+
+Use polynomial arithmetic with `[sq_nonneg ‖x‖]`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem posDef_exists_mul_dotProduct_le {Y : Matrix ι ι ℝ} (hY : Y.PosDef) :
     ∃ c > 0, ∀ x : ι → ℝ, c * (x ⬝ᵥ x) ≤ x ⬝ᵥ (Y *ᵥ x) := by
   have hc : Continuous fun x : ι → ℝ => x ⬝ᵥ (Y *ᵥ x) := by
@@ -170,6 +255,17 @@ theorem posDef_exists_mul_dotProduct_le {Y : Matrix ι ι ℝ} (hY : Y.PosDef) :
     _ = c * ‖x‖ ^ 2 := by field_simp
     _ ≤ _ := h2
 
+/- English proof (translation)
+Take `⟨c, hc, hY⟩` from `posDef_exists_mul_dotProduct_le h.posDef`. Use `set N : ℝ := Fintype.card ι + 1 with hN`. Establish `hN0 : 0 < N` using `by positivity`. Use `⟨c / 2, by positivity, ?_⟩` and prove the remaining obligations. Establish `hev : ∀ᶠ Ω' in 𝓝 Ω, ∀ i j, |(Ω' i j).im - (Ω i j).im| < c / (2 * N)`.
+
+Simplify using `only [eventually_all]`. Introduce `i j`. Establish `hc' : Continuous fun Ω' : Matrix ι ι ℂ => |(Ω' i j).im - (Ω i j).im|`. Establish `: Continuous fun Ω' : Matrix ι ι ℂ => Ω' i j` using `continuous_id.matrix_elem i j`. Use `fun_prop`.
+
+Conclude with `hc'.continuousAt.eventually_lt continuousAt_const (by simp; positivity)`. Use `filter_upwards [hev] with Ω' hΩ' x`. Establish `h1 : x ⬝ᵥ (Ω.map Complex.im *ᵥ x) - x ⬝ᵥ (Matrix.map Ω' Complex.im *ᵥ x) ≤ ∑ i, ∑ j, c / (2 * N) * ((x i * x i + x j * x j) / 2)`. Simplify using `only [dotProduct, mulVec, map_apply, Finset.mul_sum, ← Finset.sum_sub_distrib]`. Use `Finset.sum_le_sum fun i _ => Finset.sum_le_sum fun j _ => ?_` and prove the remaining obligations.
+
+Take `⟨l, r⟩` from `abs_lt.mp (hΩ' i j)`. Use polynomial arithmetic with `[mul_nonneg (sub_nonneg.mpr l.le) (sq_nonneg (x i - x j)), mul_nonneg (sub_nonneg.mpr r.le) (sq_nonneg (x i + x j))]`. Establish `h2 : ∑ i, ∑ j, c / (2 * N) * ((x i * x i + x j * x j) / 2) = c / (2 * N) * (Fintype.card ι * (x ⬝ᵥ x))`. Simplify using `only [← Finset.mul_sum, ← Finset.sum_div, Finset.sum_add_distrib, Finset.sum_const, Finset.card_univ, nsmul_eq_mul, dotProduct]`. Simplify using `only [mul_left_comm (x _) (Fintype.card ι : ℝ), ← Finset.mul_sum]`.
+
+Expand and normalize the polynomial expressions, which then agree. Establish `h0 : 0 ≤ x ⬝ᵥ x` using `Finset.sum_nonneg fun i _ => mul_self_nonneg _`. Establish `h3 : c / (2 * N) * (Fintype.card ι * (x ⬝ᵥ x)) ≤ c / 2 * (x ⬝ᵥ x)`. Combine the equalities or inequalities in the displayed calculation. Combine the linear relations using `[hY x]`.
+-/
 theorem IsSiegel.exists_eventually_mul_dotProduct_le {Ω : Matrix ι ι ℂ} (h : IsSiegel Ω) :
     ∃ c > 0, ∀ᶠ Ω' in 𝓝 Ω, ∀ x : ι → ℝ, c * (x ⬝ᵥ x) ≤ x ⬝ᵥ (Matrix.map Ω' Complex.im *ᵥ x) := by
   obtain ⟨c, hc, hY⟩ := posDef_exists_mul_dotProduct_le h.posDef
@@ -203,6 +299,9 @@ theorem IsSiegel.exists_eventually_mul_dotProduct_le {Ω : Matrix ι ι ℂ} (h 
       _ = _ := by field_simp
   linarith [hY x]
 
+/- English proof (translation)
+Take `⟨c, hc, hY⟩` from `h.exists_eventually_mul_dotProduct_le`. Use `filter_upwards [hY] with Ω' hΩ' hs`. Use `IsSiegel.of_dotProduct_pos hs fun x hx => lt_of_lt_of_le (mul_pos hc ?_) (hΩ' x)` and prove the remaining obligations. Take `⟨i, hi⟩` from `Function.ne_iff.mp hx`. Conclude with `Finset.sum_pos' (fun j _ => mul_self_nonneg _) ⟨i, Finset.mem_univ _, mul_self_pos.mpr hi⟩`.
+-/
 theorem IsSiegel.eventually_isSiegel {Ω : Matrix ι ι ℂ} (h : IsSiegel Ω) :
     ∀ᶠ Ω' in 𝓝 Ω, Matrix.IsSymm Ω' → IsSiegel Ω' := by
   obtain ⟨c, hc, hY⟩ := h.exists_eventually_mul_dotProduct_le
@@ -214,9 +313,15 @@ theorem IsSiegel.eventually_isSiegel {Ω : Matrix ι ι ℂ} (h : IsSiegel Ω) :
 def riemannThetaTerm (a b : ι → ℝ) (Ω : Matrix ι ι ℂ) (v : ι → ℂ) (n : ι → ℤ) : ℂ :=
   ReciprocityTheory.PTheta.thetaTerm a b v Ω n
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem riemannThetaTerm_eq_thetaTerm (a b : ι → ℝ) (Ω : Matrix ι ι ℂ) (v : ι → ℂ) (n : ι → ℤ) :
     riemannThetaTerm a b Ω v n = ReciprocityTheory.PTheta.thetaTerm a b v Ω n := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem riemannThetaTerm_def (a b : ι → ℝ) (Ω : Matrix ι ι ℂ) (v : ι → ℂ) (n : ι → ℤ) :
     riemannThetaTerm a b Ω v n =
       cexp (2 * π * I * (((fun i => (n i : ℂ) + a i) ⬝ᵥ (Ω *ᵥ fun i => (n i : ℂ) + a i)) / 2 +
@@ -227,14 +332,23 @@ attribute [eqns riemannThetaTerm_def] riemannThetaTerm
 def riemannTheta (a b : ι → ℝ) (Ω : Matrix ι ι ℂ) (v : ι → ℂ) : ℂ :=
   ReciprocityTheory.PTheta.theta a b v Ω
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem riemannTheta_eq_theta (a b : ι → ℝ) (Ω : Matrix ι ι ℂ) (v : ι → ℂ) :
     riemannTheta a b Ω v = ReciprocityTheory.PTheta.theta a b v Ω := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem riemannTheta_def (a b : ι → ℝ) (Ω : Matrix ι ι ℂ) (v : ι → ℂ) :
     riemannTheta a b Ω v = ∑' n : ι → ℤ, riemannThetaTerm a b Ω v n := rfl
 
 attribute [eqns riemannTheta_def] riemannTheta
 
+/- English proof (translation)
+Simplify using `only [riemannThetaTerm_def, dotProduct, mulVec, Finset.mul_sum _ _ ((n _ : ℂ) + a _), ← mul_assoc]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem riemannThetaTerm_eq_sum (a b : ι → ℝ) (Ω : Matrix ι ι ℂ) (v : ι → ℂ) (n : ι → ℤ) :
     riemannThetaTerm a b Ω v n =
       cexp (π * I * (∑ i, ∑ j, ((n i : ℂ) + a i) * Ω i j * ((n j : ℂ) + a j)) +
@@ -244,15 +358,24 @@ theorem riemannThetaTerm_eq_sum (a b : ι → ℝ) (Ω : Matrix ι ι ℂ) (v : 
   congr 1
   ring
 
+/- English proof (translation)
+Simplify using `[riemannThetaTerm_def]`.
+-/
 theorem riemannThetaTerm_zero_zero (Ω : Matrix ι ι ℂ) (v : ι → ℂ) (n : ι → ℤ) :
     riemannThetaTerm 0 0 Ω v n =
       cexp (2 * π * I * (((fun i => (n i : ℂ)) ⬝ᵥ (Ω *ᵥ fun i => (n i : ℂ))) / 2 +
         (fun i => (n i : ℂ)) ⬝ᵥ v)) := by
   simp [riemannThetaTerm_def]
 
+/- English proof (translation)
+The claim follows from `Complex.exp_ne_zero _`.
+-/
 theorem riemannThetaTerm_ne_zero (a b : ι → ℝ) (Ω : Matrix ι ι ℂ) (v : ι → ℂ) (n : ι → ℤ) :
     riemannThetaTerm a b Ω v n ≠ 0 := Complex.exp_ne_zero _
 
+/- English proof (translation)
+Rewrite using `[riemannThetaTerm_def, Complex.norm_exp]`. Use `congr 1`. Simplify using `[dotProduct, mulVec, Finset.mul_sum _ _ ((n _ : ℂ) + a _), Finset.mul_sum _ _ ((n _ : ℝ) + a _)]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem norm_riemannThetaTerm (a b : ι → ℝ) (Ω : Matrix ι ι ℂ) (v : ι → ℂ) (n : ι → ℤ) :
     ‖riemannThetaTerm a b Ω v n‖ =
       Real.exp (-π * ((fun i => (n i : ℝ) + a i) ⬝ᵥ (Ω.map Complex.im *ᵥ fun i => (n i : ℝ) + a i))
@@ -267,9 +390,17 @@ def riemannThetaBound (a : ι → ℝ) (c S : ℝ) (n : ι → ℤ) : ℝ :=
   Real.exp (-π * (c * ((fun i => (n i : ℝ) + a i) ⬝ᵥ fun i => (n i : ℝ) + a i) -
     2 * S * ∑ i, |(n i : ℝ) + a i|))
 
+/- English proof (translation)
+The claim follows from `Real.exp_pos _`.
+-/
 theorem riemannThetaBound_pos (a : ι → ℝ) (c S : ℝ) (n : ι → ℤ) :
     0 < riemannThetaBound a c S n := Real.exp_pos _
 
+/- English proof (translation)
+Rewrite using `[norm_riemannThetaTerm, riemannThetaBound, Real.exp_le_exp]`. Establish `h1` using `hΩ fun i => (n i : ℝ) + a i`. Establish `h2 : -((fun i => (n i : ℝ) + a i) ⬝ᵥ fun i => (v i).im) ≤ S * ∑ i, |(n i : ℝ) + a i|`. Rewrite using `[dotProduct, Finset.mul_sum, ← Finset.sum_neg_distrib]`. Use `Finset.sum_le_sum fun i _ => (neg_le_abs _).trans ?_` and prove the remaining obligations.
+
+Rewrite using `[abs_mul, mul_comm]`. Use `gcongr`. Conclude with `hv i`. Use polynomial arithmetic with `[mul_le_mul_of_nonneg_left h1 Real.pi_pos.le, mul_le_mul_of_nonneg_left h2 Real.pi_pos.le]`.
+-/
 theorem norm_riemannThetaTerm_le (a b : ι → ℝ) {Ω : Matrix ι ι ℂ} {v : ι → ℂ} {c S : ℝ}
     (hΩ : ∀ x : ι → ℝ, c * (x ⬝ᵥ x) ≤ x ⬝ᵥ (Ω.map Complex.im *ᵥ x)) (hv : ∀ i, |(v i).im| ≤ S)
     (n : ι → ℤ) : ‖riemannThetaTerm a b Ω v n‖ ≤ riemannThetaBound a c S n := by
@@ -284,6 +415,9 @@ theorem norm_riemannThetaTerm_le (a b : ι → ℝ) {Ω : Matrix ι ι ℂ} {v :
   nlinarith [mul_le_mul_of_nonneg_left h1 Real.pi_pos.le,
     mul_le_mul_of_nonneg_left h2 Real.pi_pos.le]
 
+/- English proof (translation)
+Use `summable_of_sum_le (c := ∏ i, ∑' x, f i x) (fun n => Finset.prod_nonneg fun i _ => h0 i _) fun s => ?_` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem summable_pi_prod_of_nonneg {α : ι → Type*} {f : ∀ i, α i → ℝ} (h0 : ∀ i x, 0 ≤ f i x)
     (hf : ∀ i, Summable (f i)) : Summable fun n : ∀ i, α i => ∏ i, f i (n i) := by
   classical
@@ -298,6 +432,11 @@ theorem summable_pi_prod_of_nonneg {α : ι → Type*} {f : ∀ i, α i → ℝ}
     _ ≤ _ := Finset.prod_le_prod (fun i _ => Finset.sum_nonneg fun x _ => h0 i x)
         fun i _ => (hf i).sum_le_tsum _ fun x _ => h0 i x
 
+/- English proof (translation)
+Use `(summable_pow_mul_jacobiTheta₂_term_bound (|S| + c * |a|) hc 0).mul_left (Real.exp (2 * π * |S| * |a|))` as an intermediate fact. Use `this.of_nonneg_of_le (fun n => (Real.exp_pos _).le) fun n => ?_` and prove the remaining obligations. Rewrite using `[pow_zero, one_mul, ← Real.exp_add, Real.exp_le_exp, Int.cast_abs]`. Establish `h1 : S * |n + a| ≤ |S| * (|(n : ℝ)| + |a|)` using `mul_le_mul (le_abs_self S) (abs_add_le _ _) (abs_nonneg _) (abs_nonneg _)`. Establish `h2 : -((n : ℝ) * a) ≤ |(n : ℝ)| * |a|`.
+
+Rewrite using `[← abs_mul]`. Conclude with `neg_le_abs _`. Establish `h3 : c * (n ^ 2 - 2 * (|(n : ℝ)| * |a|)) ≤ c * ((n + a) * (n + a))` using `by gcongr`. Use polynomial arithmetic with `[sq_nonneg a]`. Use polynomial arithmetic with `[mul_le_mul_of_nonneg_left h1 Real.pi_pos.le, mul_le_mul_of_nonneg_left h3 Real.pi_pos.le]`.
+-/
 theorem summable_exp_neg_shifted_sq (a S : ℝ) {c : ℝ} (hc : 0 < c) :
     Summable fun n : ℤ => Real.exp (-π * (c * ((n + a) * (n + a)) - 2 * S * |n + a|)) := by
   have := (summable_pow_mul_jacobiTheta₂_term_bound (|S| + c * |a|) hc 0).mul_left
@@ -315,6 +454,9 @@ theorem summable_exp_neg_shifted_sq (a S : ℝ) {c : ℝ} (hc : 0 < c) :
   nlinarith [mul_le_mul_of_nonneg_left h1 Real.pi_pos.le,
     mul_le_mul_of_nonneg_left h3 Real.pi_pos.le]
 
+/- English proof (translation)
+Use `(summable_pi_prod_of_nonneg (fun i x => (Real.exp_pos _).le) fun i => summable_exp_neg_shifted_sq (a i) S hc).congr fun n => ?_` and prove the remaining obligations. Rewrite using `[riemannThetaBound, ← Real.exp_sum]`. Simplify using `only [dotProduct, Finset.mul_sum, ← Finset.sum_sub_distrib]`.
+-/
 theorem summable_riemannThetaBound (a : ι → ℝ) {c : ℝ} (hc : 0 < c) (S : ℝ) :
     Summable (riemannThetaBound a c S) := by
   refine (summable_pi_prod_of_nonneg (fun i x => (Real.exp_pos _).le)
@@ -322,6 +464,13 @@ theorem summable_riemannThetaBound (a : ι → ℝ) {c : ℝ} (hc : 0 < c) (S : 
   rw [riemannThetaBound, ← Real.exp_sum]
   simp only [dotProduct, Finset.mul_sum, ← Finset.sum_sub_distrib]
 
+/- English proof (translation)
+Use `((summable_riemannThetaBound a hc (S + 1 / (2 * π))).mul_left (k.factorial : ℝ)).of_nonneg_of_le (fun n => mul_nonneg (by positivity) (riemannThetaBound_pos ..).le) fun n => ?_` and prove the remaining obligations. Establish `h0 : 0 ≤ ∑ i, |(n i : ℝ) + a i|` using `by positivity`. Establish `h1` using `Real.pow_div_factorial_le_exp _ h0 k`. Rewrite `h1` using `[div_le_iff₀' (by positivity)]`. Establish `h2 : riemannThetaBound a c (S + 1 / (2 * π)) n = Real.exp (∑ i, |(n i : ℝ) + a i|) * riemannThetaBound a c S n`.
+
+Rewrite using `[riemannThetaBound, riemannThetaBound, ← Real.exp_add]`. Use `congr 1`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[h2, ← mul_assoc]`.
+
+Conclude with `mul_le_mul_of_nonneg_right h1 (riemannThetaBound_pos ..).le`.
+-/
 theorem summable_pow_mul_riemannThetaBound (a : ι → ℝ) {c : ℝ} (hc : 0 < c) (S : ℝ) (k : ℕ) :
     Summable fun n : ι → ℤ => (∑ i, |(n i : ℝ) + a i|) ^ k * riemannThetaBound a c S n := by
   refine ((summable_riemannThetaBound a hc (S + 1 / (2 * π))).mul_left
@@ -339,23 +488,38 @@ theorem summable_pow_mul_riemannThetaBound (a : ι → ℝ) {c : ℝ} (hc : 0 < 
   rw [h2, ← mul_assoc]
   exact mul_le_mul_of_nonneg_right h1 (riemannThetaBound_pos ..).le
 
+/- English proof (translation)
+The claim follows from `(Complex.abs_im_le_norm _).trans (norm_le_pi_norm v i)`.
+-/
 theorem abs_im_apply_le_norm (v : ι → ℂ) (i : ι) : |(v i).im| ≤ ‖v‖ :=
   (Complex.abs_im_le_norm _).trans (norm_le_pi_norm v i)
 
+/- English proof (translation)
+Take `⟨c, hc, hY⟩` from `posDef_exists_mul_dotProduct_le h.posDef`. Conclude with `(summable_riemannThetaBound a hc ‖v‖).of_nonneg_of_le (fun _ => norm_nonneg _) (norm_riemannThetaTerm_le a b hY (abs_im_apply_le_norm v))`.
+-/
 theorem IsSiegel.summable_norm_riemannThetaTerm {Ω : Matrix ι ι ℂ} (h : IsSiegel Ω)
     (a b : ι → ℝ) (v : ι → ℂ) : Summable fun n => ‖riemannThetaTerm a b Ω v n‖ := by
   obtain ⟨c, hc, hY⟩ := posDef_exists_mul_dotProduct_le h.posDef
   exact (summable_riemannThetaBound a hc ‖v‖).of_nonneg_of_le (fun _ => norm_nonneg _)
     (norm_riemannThetaTerm_le a b hY (abs_im_apply_le_norm v))
 
+/- English proof (translation)
+The claim follows from `(h.summable_norm_riemannThetaTerm a b v).of_norm`.
+-/
 theorem IsSiegel.summable_riemannThetaTerm {Ω : Matrix ι ι ℂ} (h : IsSiegel Ω)
     (a b : ι → ℝ) (v : ι → ℂ) : Summable (riemannThetaTerm a b Ω v) :=
   (h.summable_norm_riemannThetaTerm a b v).of_norm
 
+/- English proof (translation)
+The claim follows from `(h.summable_riemannThetaTerm a b v).hasSum`.
+-/
 theorem IsSiegel.hasSum_riemannTheta {Ω : Matrix ι ι ℂ} (h : IsSiegel Ω)
     (a b : ι → ℝ) (v : ι → ℂ) : HasSum (riemannThetaTerm a b Ω v) (riemannTheta a b Ω v) :=
   (h.summable_riemannThetaTerm a b v).hasSum
 
+/- English proof (translation)
+Take `⟨c, hc, hY⟩` from `h.exists_eventually_mul_dotProduct_le`. Use `⟨c, hc, ‖v‖ + 1, ?_⟩` and prove the remaining obligations. Establish `h1 : ∀ᶠ w : ι → ℂ in 𝓝 v, ‖w‖ < ‖v‖ + 1` using `continuous_norm.continuousAt.eventually_lt continuousAt_const (by simp)`. Use `filter_upwards [h1.prod_nhds hY] with p hp n`. Conclude with `norm_riemannThetaTerm_le a b hp.2 (fun i => (abs_im_apply_le_norm _ i).trans hp.1.le) n`.
+-/
 theorem IsSiegel.exists_eventually_norm_riemannThetaTerm_le {Ω : Matrix ι ι ℂ} (h : IsSiegel Ω)
     (a b : ι → ℝ) (v : ι → ℂ) : ∃ c > 0, ∃ S, ∀ᶠ p : (ι → ℂ) × Matrix ι ι ℂ in 𝓝 (v, Ω),
       ∀ n, ‖riemannThetaTerm a b p.2 p.1 n‖ ≤ riemannThetaBound a c S n := by
@@ -366,6 +530,9 @@ theorem IsSiegel.exists_eventually_norm_riemannThetaTerm_le {Ω : Matrix ι ι �
   filter_upwards [h1.prod_nhds hY] with p hp n
   exact norm_riemannThetaTerm_le a b hp.2 (fun i => (abs_im_apply_le_norm _ i).trans hp.1.le) n
 
+/- English proof (translation)
+Use `hasSumLocallyUniformlyOn_of_of_forall_exists_nhds fun p hp => ?_` and prove the remaining obligations. Take `⟨c, hc, S, hS⟩` from `IsSiegel.exists_eventually_norm_riemannThetaTerm_le hp.2 a b p.1`. Use `⟨_, mem_nhdsWithin_of_mem_nhds hS, ?_⟩` and prove the remaining obligations. Rewrite using `[hasSumUniformlyOn_iff_tendstoUniformlyOn]`. Conclude with `tendstoUniformlyOn_tsum (summable_riemannThetaBound a hc S) fun n q hq => hq n`.
+-/
 theorem hasSumLocallyUniformlyOn_riemannTheta (a b : ι → ℝ) :
     HasSumLocallyUniformlyOn
       (fun n (p : (ι → ℂ) × Matrix ι ι ℂ) => riemannThetaTerm a b p.2 p.1 n)
@@ -376,6 +543,9 @@ theorem hasSumLocallyUniformlyOn_riemannTheta (a b : ι → ℝ) :
   rw [hasSumUniformlyOn_iff_tendstoUniformlyOn]
   exact tendstoUniformlyOn_tsum (summable_riemannThetaBound a hc S) fun n q hq => hq n
 
+/- English proof (translation)
+Rewrite using `[hasSumLocallyUniformly_iff_tendstoLocallyUniformly, ← tendstoLocallyUniformlyOn_univ]`. Conclude with `(hasSumLocallyUniformlyOn_riemannTheta a b).comp (t := Set.univ) (fun v => (v, Ω)) (fun v _ => ⟨trivial, h⟩) (by fun_prop)`.
+-/
 theorem IsSiegel.hasSumLocallyUniformly_riemannTheta {Ω : Matrix ι ι ℂ} (h : IsSiegel Ω)
     (a b : ι → ℝ) :
     HasSumLocallyUniformly (fun n v => riemannThetaTerm a b Ω v n) (riemannTheta a b Ω) := by
@@ -383,6 +553,9 @@ theorem IsSiegel.hasSumLocallyUniformly_riemannTheta {Ω : Matrix ι ι ℂ} (h 
   exact (hasSumLocallyUniformlyOn_riemannTheta a b).comp (t := Set.univ) (fun v => (v, Ω))
     (fun v _ => ⟨trivial, h⟩) (by fun_prop)
 
+/- English proof (translation)
+Establish `(i j : ι) : Continuous fun p : (ι → ℂ) × Matrix ι ι ℂ => p.2 i j` using `continuous_snd.matrix_elem i j`. Simplify using `only [riemannThetaTerm_eq_sum]`. Use `fun_prop`.
+-/
 theorem continuous_riemannThetaTerm (a b : ι → ℝ) (n : ι → ℤ) :
     Continuous fun p : (ι → ℂ) × Matrix ι ι ℂ => riemannThetaTerm a b p.2 p.1 n := by
   have (i j : ι) : Continuous fun p : (ι → ℂ) × Matrix ι ι ℂ => p.2 i j :=
@@ -390,6 +563,9 @@ theorem continuous_riemannThetaTerm (a b : ι → ℝ) (n : ι → ℤ) :
   simp only [riemannThetaTerm_eq_sum]
   fun_prop
 
+/- English proof (translation)
+The claim follows from `TendstoLocallyUniformlyOn.continuousOn (hasSumLocallyUniformlyOn_riemannTheta a b) (Frequently.of_forall fun s => (continuous_finsetSum s fun n _ => continuous_riemannThetaTerm a b n).continuousOn)`.
+-/
 theorem continuousOn_riemannTheta (a b : ι → ℝ) :
     ContinuousOn (fun p : (ι → ℂ) × Matrix ι ι ℂ => riemannTheta a b p.2 p.1)
       (Set.univ ×ˢ ReciprocityTheory.PTheta.SiegelH ι) :=
@@ -400,10 +576,18 @@ theorem continuousOn_riemannTheta (a b : ι → ℝ) :
 def riemannThetaForm (a : ι → ℝ) (n : ι → ℤ) : (ι → ℂ) →L[ℂ] ℂ :=
   ∑ i, (2 * π * I * ((n i : ℂ) + a i)) • ContinuousLinearMap.proj i
 
+/- English proof (translation)
+Simplify using `[riemannThetaForm, dotProduct, Finset.mul_sum, mul_assoc]`.
+-/
 @[simp] theorem riemannThetaForm_apply (a : ι → ℝ) (n : ι → ℤ) (w : ι → ℂ) :
     riemannThetaForm a n w = 2 * π * I * ((fun i => (n i : ℂ) + a i) ⬝ᵥ w) := by
   simp [riemannThetaForm, dotProduct, Finset.mul_sum, mul_assoc]
 
+/- English proof (translation)
+Use `ContinuousLinearMap.opNorm_le_bound _ (by positivity) fun w => ?_` and prove the remaining obligations. Rewrite using `[riemannThetaForm_apply, norm_mul, mul_assoc (2 * π), Finset.sum_mul]`. Use `mul_le_mul (by simp [abs_of_pos Real.pi_pos]) ((norm_sum_le _ _).trans (Finset.sum_le_sum fun i _ => ?_)) (norm_nonneg _) (by positivity)` and prove the remaining obligations. Rewrite using `[norm_mul, ← Real.norm_eq_abs, ← Complex.norm_real]`. Use `push_cast`.
+
+Use `gcongr`. Conclude with `norm_le_pi_norm w i`.
+-/
 theorem norm_riemannThetaForm_le (a : ι → ℝ) (n : ι → ℤ) :
     ‖riemannThetaForm a n‖ ≤ 2 * π * ∑ i, |(n i : ℝ) + a i| := by
   refine ContinuousLinearMap.opNorm_le_bound _ (by positivity) fun w => ?_
@@ -415,6 +599,11 @@ theorem norm_riemannThetaForm_le (a : ι → ℝ) (n : ι → ℤ) :
   gcongr
   exact norm_le_pi_norm w i
 
+/- English proof (translation)
+Establish `e (w : ι → ℂ) : riemannThetaTerm a b Ω w n = cexp (2 * π * I * (((fun i => (n i : ℂ) + a i) ⬝ᵥ (Ω *ᵥ fun i => (n i : ℂ) + a i)) / 2 + (fun i => (n i : ℂ) + a i) ⬝ᵥ fun i => (b i : ℂ)) + riemannThetaForm a n w)`. Rewrite using `[riemannThetaTerm_def, riemannThetaForm_apply]`. Use `congr 1`. Simplify using `only [dotProduct, mul_add, Finset.sum_add_distrib]`. Expand and normalize the polynomial expressions, which then agree.
+
+Simplify using `only [e]`. Conclude with `((riemannThetaForm a n).hasFDerivAt.const_add _).cexp`.
+-/
 theorem hasFDerivAt_riemannThetaTerm (a b : ι → ℝ) (Ω : Matrix ι ι ℂ) (v : ι → ℂ) (n : ι → ℤ) :
     HasFDerivAt (fun w => riemannThetaTerm a b Ω w n)
       (riemannThetaTerm a b Ω v n • riemannThetaForm a n) v := by
@@ -428,6 +617,9 @@ theorem hasFDerivAt_riemannThetaTerm (a b : ι → ℝ) (Ω : Matrix ι ι ℂ) 
   simp only [e]
   exact ((riemannThetaForm a n).hasFDerivAt.const_add _).cexp
 
+/- English proof (translation)
+Take `⟨c, hc, hY⟩` from `posDef_exists_mul_dotProduct_le h.posDef`. Use `((summable_pow_mul_riemannThetaBound a hc ‖v‖ 1).mul_left (2 * π)).of_nonneg_of_le (fun _ => norm_nonneg _) fun n => ?_` and prove the remaining obligations. Rewrite using `[norm_smul, pow_one, ← mul_assoc, mul_comm]`. Conclude with `mul_le_mul (norm_riemannThetaForm_le a n) (norm_riemannThetaTerm_le a b hY (abs_im_apply_le_norm v) n) (norm_nonneg _) (by positivity)`.
+-/
 theorem IsSiegel.summable_norm_riemannThetaTerm_smul_form {Ω : Matrix ι ι ℂ} (h : IsSiegel Ω)
     (a b : ι → ℝ) (v : ι → ℂ) :
     Summable fun n => ‖riemannThetaTerm a b Ω v n • riemannThetaForm a n‖ := by
@@ -438,6 +630,11 @@ theorem IsSiegel.summable_norm_riemannThetaTerm_smul_form {Ω : Matrix ι ι ℂ
   exact mul_le_mul (norm_riemannThetaForm_le a n)
     (norm_riemannThetaTerm_le a b hY (abs_im_apply_le_norm v) n) (norm_nonneg _) (by positivity)
 
+/- English proof (translation)
+Take `⟨c, hc, hY⟩` from `posDef_exists_mul_dotProduct_le h.posDef`. Establish `hv : v ∈ Metric.ball (0 : ι → ℂ) (‖v‖ + 1)` using `by simp`. Use `hasFDerivAt_tsum_of_isPreconnected (f := fun n w => riemannThetaTerm a b Ω w n) (f' := fun n w => riemannThetaTerm a b Ω w n • riemannThetaForm a n) ((summable_pow_mul_riemannThetaBound a hc (‖v‖ + 1) 1).mul_left (2 * π)) Metric.isOpen_ball (convex_ball _ _).isPreconnected (fun n …` and prove the remaining obligations. Rewrite using `[norm_smul, pow_one, ← mul_assoc, mul_comm]`. Use `mul_le_mul (norm_riemannThetaForm_le a n) (norm_riemannThetaTerm_le a b hY (fun i => (abs_im_apply_le_norm w i).trans ?_) n) (norm_nonneg _) (by positivity)` and prove the remaining obligations.
+
+Conclude with `(mem_ball_zero_iff.mp hw).le`.
+-/
 theorem IsSiegel.hasFDerivAt_riemannTheta {Ω : Matrix ι ι ℂ} (h : IsSiegel Ω)
     (a b : ι → ℝ) (v : ι → ℂ) :
     HasFDerivAt (riemannTheta a b Ω)
@@ -457,32 +654,55 @@ theorem IsSiegel.hasFDerivAt_riemannTheta {Ω : Matrix ι ι ℂ} (h : IsSiegel 
     (norm_nonneg _) (by positivity)
   exact (mem_ball_zero_iff.mp hw).le
 
+/- English proof (translation)
+Introduce `v` and use `(h.hasFDerivAt_riemannTheta a b v).differentiableAt`.
+-/
 theorem IsSiegel.differentiable_riemannTheta {Ω : Matrix ι ι ℂ} (h : IsSiegel Ω)
     (a b : ι → ℝ) : Differentiable ℂ (riemannTheta a b Ω) :=
   fun v => (h.hasFDerivAt_riemannTheta a b v).differentiableAt
 
+/- English proof (translation)
+The claim follows from `(h.differentiable_riemannTheta a b).continuous`.
+-/
 theorem IsSiegel.continuous_riemannTheta {Ω : Matrix ι ι ℂ} (h : IsSiegel Ω)
     (a b : ι → ℝ) : Continuous (riemannTheta a b Ω) :=
   (h.differentiable_riemannTheta a b).continuous
 
+/- English proof (translation)
+Establish `: ((fun i => (n i : ℂ)) ⬝ᵥ fun i => (m i : ℂ)) = ((n ⬝ᵥ m : ℤ) : ℂ)`. Simplify using `[dotProduct]`. Rewrite using `[this, mul_comm, Complex.exp_int_mul_two_pi_mul_I]`.
+-/
 theorem cexp_two_pi_I_dotProduct_intCast (n m : ι → ℤ) :
     cexp (2 * π * I * ((fun i => (n i : ℂ)) ⬝ᵥ fun i => (m i : ℂ))) = 1 := by
   have : ((fun i => (n i : ℂ)) ⬝ᵥ fun i => (m i : ℂ)) = ((n ⬝ᵥ m : ℤ) : ℂ) := by
     simp [dotProduct]
   rw [this, mul_comm, Complex.exp_int_mul_two_pi_mul_I]
 
+/- English proof (translation)
+Rewrite using `[dotProduct_mulVec, ← mulVec_transpose, h.eq, dotProduct_comm]`.
+-/
 theorem dotProduct_mulVec_comm_of_isSymm {Ω : Matrix ι ι ℂ} (h : Ω.IsSymm) (u w : ι → ℂ) :
     u ⬝ᵥ (Ω *ᵥ w) = w ⬝ᵥ (Ω *ᵥ u) := by
   rw [dotProduct_mulVec, ← mulVec_transpose, h.eq, dotProduct_comm]
 
+/- English proof (translation)
+Simplify using `only [riemannThetaTerm_def, Pi.add_apply, ofReal_add, add_assoc, add_comm (x _ : ℂ)]`.
+-/
 theorem riemannThetaTerm_add_ofReal (a b x : ι → ℝ) (Ω : Matrix ι ι ℂ) (v : ι → ℂ) (n : ι → ℤ) :
     riemannThetaTerm a b Ω (v + fun i => (x i : ℂ)) n = riemannThetaTerm a (b + x) Ω v n := by
   simp only [riemannThetaTerm_def, Pi.add_apply, ofReal_add, add_assoc, add_comm (x _ : ℂ)]
 
+/- English proof (translation)
+Simplify using `only [riemannTheta_def, riemannThetaTerm_add_ofReal]`.
+-/
 theorem riemannTheta_add_ofReal (a b x : ι → ℝ) (Ω : Matrix ι ι ℂ) (v : ι → ℂ) :
     riemannTheta a b Ω (v + fun i => (x i : ℂ)) = riemannTheta a (b + x) Ω v := by
   simp only [riemannTheta_def, riemannThetaTerm_add_ofReal]
 
+/- English proof (translation)
+Rewrite using `[riemannThetaTerm_def, riemannThetaTerm_def, ← Complex.exp_add]`. Use `congr 1`. Establish `: (fun i => (v + w) i + (b i : ℂ)) = (fun i => v i + b i) + w`. Use function extensionality and compare the values at `i`. Simplify using `only [Pi.add_apply]`.
+
+Expand and normalize the polynomial expressions, which then agree. Rewrite using `[this, dotProduct_add]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem riemannThetaTerm_add (a b : ι → ℝ) (Ω : Matrix ι ι ℂ) (v w : ι → ℂ) (n : ι → ℤ) :
     riemannThetaTerm a b Ω (v + w) n =
       riemannThetaTerm a b Ω v n * cexp (2 * π * I * ((fun i => (n i : ℂ) + a i) ⬝ᵥ w)) := by
@@ -495,6 +715,9 @@ theorem riemannThetaTerm_add (a b : ι → ℝ) (Ω : Matrix ι ι ℂ) (v w : �
   rw [this, dotProduct_add]
   ring
 
+/- English proof (translation)
+Establish `: (fun i => (n i : ℂ) + a i) = (fun i => (n i : ℂ)) + fun i => (a i : ℂ)` using `rfl`. Rewrite using `[riemannThetaTerm_add, this, add_dotProduct, mul_add, Complex.exp_add, cexp_two_pi_I_dotProduct_intCast, one_mul, mul_comm]`.
+-/
 theorem riemannThetaTerm_add_intCast (a b : ι → ℝ) (Ω : Matrix ι ι ℂ) (v : ι → ℂ) (m n : ι → ℤ) :
     riemannThetaTerm a b Ω (v + fun i => (m i : ℂ)) n =
       cexp (2 * π * I * ((fun i => (a i : ℂ)) ⬝ᵥ fun i => (m i : ℂ))) *
@@ -503,11 +726,19 @@ theorem riemannThetaTerm_add_intCast (a b : ι → ℝ) (Ω : Matrix ι ι ℂ) 
   rw [riemannThetaTerm_add, this, add_dotProduct, mul_add, Complex.exp_add,
     cexp_two_pi_I_dotProduct_intCast, one_mul, mul_comm]
 
+/- English proof (translation)
+Simplify using `only [riemannTheta_def, riemannThetaTerm_add_intCast, tsum_mul_left]`.
+-/
 theorem riemannTheta_add_intCast (a b : ι → ℝ) (Ω : Matrix ι ι ℂ) (v : ι → ℂ) (m : ι → ℤ) :
     riemannTheta a b Ω (v + fun i => (m i : ℂ)) =
       cexp (2 * π * I * ((fun i => (a i : ℂ)) ⬝ᵥ fun i => (m i : ℂ))) * riemannTheta a b Ω v := by
   simp only [riemannTheta_def, riemannThetaTerm_add_intCast, tsum_mul_left]
 
+/- English proof (translation)
+Establish `: (fun i => (n i : ℂ) + ((a + y) i : ℝ)) = (fun i => (n i : ℂ) + a i) + fun i => (y i : ℂ)`. Use function extensionality and compare the values at `i`. Simplify using `[add_assoc]`. Rewrite using `[riemannThetaTerm_add, riemannThetaTerm_def, riemannThetaTerm_def, this, ← Complex.exp_add, ← Complex.exp_add, mulVec_add, add_dotProduct, add_dotProduct, dotProduct_add, dotProduct_add, dotProduct_mulVec_comm_of_isSymm h (fun i => (y i : ℂ)) fun i => (n i : ℂ) + a i]`. Use `congr 1`.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem riemannThetaTerm_add_mulVec_ofReal {Ω : Matrix ι ι ℂ} (h : Ω.IsSymm) (a b y : ι → ℝ)
     (v : ι → ℂ) (n : ι → ℤ) :
     riemannThetaTerm a b Ω (v + Ω *ᵥ fun i => (y i : ℂ)) n =
@@ -523,6 +754,9 @@ theorem riemannThetaTerm_add_mulVec_ofReal {Ω : Matrix ι ι ℂ} (h : Ω.IsSym
   congr 1
   ring
 
+/- English proof (translation)
+Simplify using `only [riemannTheta_def, riemannThetaTerm_add_mulVec_ofReal h, tsum_mul_left]`.
+-/
 theorem riemannTheta_add_mulVec_ofReal {Ω : Matrix ι ι ℂ} (h : Ω.IsSymm) (a b y : ι → ℝ)
     (v : ι → ℂ) :
     riemannTheta a b Ω (v + Ω *ᵥ fun i => (y i : ℂ)) =
@@ -530,6 +764,11 @@ theorem riemannTheta_add_mulVec_ofReal {Ω : Matrix ι ι ℂ} (h : Ω.IsSymm) (
         (fun i => (y i : ℂ)) ⬝ᵥ fun i => v i + b i)) * riemannTheta (a + y) b Ω v := by
   simp only [riemannTheta_def, riemannThetaTerm_add_mulVec_ofReal h, tsum_mul_left]
 
+/- English proof (translation)
+Establish `: (fun i => (n i : ℂ) + ((a + fun i => (k i : ℝ)) i : ℝ)) = fun i => ((n + k) i : ℂ) + a i`. Use function extensionality and compare the values at `i`. Simplify using `only [Pi.add_apply]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+
+Rewrite using `[riemannThetaTerm_def, riemannThetaTerm_def, this]`.
+-/
 theorem riemannThetaTerm_char_add_intCast (a b : ι → ℝ) (Ω : Matrix ι ι ℂ) (v : ι → ℂ)
     (k n : ι → ℤ) :
     riemannThetaTerm (a + fun i => (k i : ℝ)) b Ω v n = riemannThetaTerm a b Ω v (n + k) := by
@@ -541,17 +780,26 @@ theorem riemannThetaTerm_char_add_intCast (a b : ι → ℝ) (Ω : Matrix ι ι 
     ring
   rw [riemannThetaTerm_def, riemannThetaTerm_def, this]
 
+/- English proof (translation)
+Simplify using `only [riemannTheta_def, riemannThetaTerm_char_add_intCast]`. Conclude with `(Equiv.addRight k).tsum_eq (riemannThetaTerm a b Ω v)`.
+-/
 theorem riemannTheta_char_add_intCast_left (a b : ι → ℝ) (Ω : Matrix ι ι ℂ) (v : ι → ℂ)
     (k : ι → ℤ) : riemannTheta (a + fun i => (k i : ℝ)) b Ω v = riemannTheta a b Ω v := by
   simp only [riemannTheta_def, riemannThetaTerm_char_add_intCast]
   exact (Equiv.addRight k).tsum_eq (riemannThetaTerm a b Ω v)
 
+/- English proof (translation)
+Rewrite using `[← riemannTheta_add_ofReal, ← riemannTheta_add_intCast]`. Simplify using the standard rewrite rules.
+-/
 theorem riemannTheta_char_add_intCast_right (a b : ι → ℝ) (Ω : Matrix ι ι ℂ) (v : ι → ℂ)
     (m : ι → ℤ) : riemannTheta a (b + fun i => (m i : ℝ)) Ω v =
       cexp (2 * π * I * ((fun i => (a i : ℂ)) ⬝ᵥ fun i => (m i : ℂ))) * riemannTheta a b Ω v := by
   rw [← riemannTheta_add_ofReal, ← riemannTheta_add_intCast]
   simp
 
+/- English proof (translation)
+Use `riemannTheta_add_mulVec_ofReal h a b (fun i => (k i : ℝ)) v` as an intermediate fact. Rewrite `this` using `[riemannTheta_char_add_intCast_left]`. Simplify `this` using `only [ofReal_intCast]`.
+-/
 theorem riemannTheta_add_mulVec_intCast {Ω : Matrix ι ι ℂ} (h : Ω.IsSymm) (a b : ι → ℝ)
     (v : ι → ℂ) (k : ι → ℤ) :
     riemannTheta a b Ω (v + Ω *ᵥ fun i => (k i : ℂ)) =
@@ -561,6 +809,9 @@ theorem riemannTheta_add_mulVec_intCast {Ω : Matrix ι ι ℂ} (h : Ω.IsSymm) 
   rw [riemannTheta_char_add_intCast_left] at this
   simpa only [ofReal_intCast] using this
 
+/- English proof (translation)
+Establish `: (fun i => v i + (b i : ℂ)) = v + fun i => (b i : ℂ)` using `rfl`. Rewrite using `[add_comm (fun i => (m i : ℂ)), ← add_assoc, riemannTheta_add_intCast, riemannTheta_add_mulVec_intCast h, ← mul_assoc, ← Complex.exp_add, this, dotProduct_add, dotProduct_comm (fun i => (k i : ℂ)) fun i => (b i : ℂ)]`. Use `congr 2`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem riemannTheta_add_lattice {Ω : Matrix ι ι ℂ} (h : Ω.IsSymm) (a b : ι → ℝ)
     (v : ι → ℂ) (m k : ι → ℤ) :
     riemannTheta a b Ω (v + ((fun i => (m i : ℂ)) + Ω *ᵥ fun i => (k i : ℂ))) =
@@ -575,6 +826,9 @@ theorem riemannTheta_add_lattice {Ω : Matrix ι ι ℂ} (h : Ω.IsSymm) (a b : 
   congr 2
   ring
 
+/- English proof (translation)
+Rewrite using `[riemannTheta_add_mulVec_ofReal h, riemannTheta_add_ofReal, ← mul_assoc, ← Complex.exp_add]`. Simplify using the standard rewrite rules.
+-/
 theorem riemannTheta_eq_cexp_mul_zero_zero {Ω : Matrix ι ι ℂ} (h : Ω.IsSymm) (a b : ι → ℝ)
     (v : ι → ℂ) :
     riemannTheta a b Ω v =
@@ -584,6 +838,11 @@ theorem riemannTheta_eq_cexp_mul_zero_zero {Ω : Matrix ι ι ℂ} (h : Ω.IsSym
   rw [riemannTheta_add_mulVec_ofReal h, riemannTheta_add_ofReal, ← mul_assoc, ← Complex.exp_add]
   simp
 
+/- English proof (translation)
+Establish `e₁ : (fun i => ((-n) i : ℂ) + a i) = -fun i => (n i : ℂ) + ((-a) i : ℝ)`. Use function extensionality and compare the values at `i`. Simplify using `[add_comm]`. Establish `e₂ : (fun i => (-v) i + (b i : ℂ)) = -fun i => v i + ((-b) i : ℝ)`. Use function extensionality and compare the values at `i`.
+
+Simplify using `[add_comm]`. Rewrite using `[riemannThetaTerm_def, riemannThetaTerm_def, e₁, e₂, mulVec_neg, neg_dotProduct_neg, neg_dotProduct_neg]`.
+-/
 theorem riemannThetaTerm_neg (a b : ι → ℝ) (Ω : Matrix ι ι ℂ) (v : ι → ℂ) (n : ι → ℤ) :
     riemannThetaTerm a b Ω (-v) (-n) = riemannThetaTerm (-a) (-b) Ω v n := by
   have e₁ : (fun i => ((-n) i : ℂ) + a i) = -fun i => (n i : ℂ) + ((-a) i : ℝ) := by
@@ -595,15 +854,30 @@ theorem riemannThetaTerm_neg (a b : ι → ℝ) (Ω : Matrix ι ι ℂ) (v : ι 
   rw [riemannThetaTerm_def, riemannThetaTerm_def, e₁, e₂, mulVec_neg, neg_dotProduct_neg,
     neg_dotProduct_neg]
 
+/- English proof (translation)
+Simplify using `only [riemannTheta_def, ← riemannThetaTerm_neg]`. Conclude with `((Equiv.neg (ι → ℤ)).tsum_eq (riemannThetaTerm a b Ω (-v))).symm`.
+-/
 theorem riemannTheta_neg (a b : ι → ℝ) (Ω : Matrix ι ι ℂ) (v : ι → ℂ) :
     riemannTheta a b Ω (-v) = riemannTheta (-a) (-b) Ω v := by
   simp only [riemannTheta_def, ← riemannThetaTerm_neg]
   exact ((Equiv.neg (ι → ℤ)).tsum_eq (riemannThetaTerm a b Ω (-v))).symm
 
+/- English proof (translation)
+Rewrite using `[riemannTheta_neg, neg_zero]`.
+-/
 theorem riemannTheta_zero_zero_neg (Ω : Matrix ι ι ℂ) (v : ι → ℂ) :
     riemannTheta 0 0 Ω (-v) = riemannTheta 0 0 Ω v := by
   rw [riemannTheta_neg, neg_zero]
 
+/- English proof (translation)
+Establish `e (γ : ι → ℤ) : (-fun i => (γ i : ℝ) / 2) = (fun i => (γ i : ℝ) / 2) + fun i => (((-γ) i : ℤ) : ℝ)`. Use function extensionality and compare the values at `i`. Simplify using `only [Pi.add_apply, Pi.neg_apply]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+
+Rewrite using `[riemannTheta_neg, e, e, riemannTheta_char_add_intCast_left, riemannTheta_char_add_intCast_right]`. Use `congr 1`. Establish `: ((-1 : ℂ)) ^ (α ⬝ᵥ β) = cexp (((α ⬝ᵥ β : ℤ) : ℂ) * -(π * I))`. Rewrite using `[Complex.exp_int_mul, Complex.exp_neg, Complex.exp_pi_mul_I]`. Simplify using the standard rewrite rules.
+
+Rewrite using `[this]`. Use `congr 1`. Simplify using `only [dotProduct, Finset.mul_sum, Finset.sum_mul, Pi.neg_apply]`. Use `push_cast`. Rewrite using `[Finset.sum_mul]`.
+
+Conclude with `Finset.sum_congr rfl fun i _ => by ring`.
+-/
 theorem riemannTheta_half_neg (α β : ι → ℤ) (Ω : Matrix ι ι ℂ) (v : ι → ℂ) :
     riemannTheta (fun i => (α i : ℝ) / 2) (fun i => (β i : ℝ) / 2) Ω (-v) =
       (-1) ^ (α ⬝ᵥ β) * riemannTheta (fun i => (α i : ℝ) / 2) (fun i => (β i : ℝ) / 2) Ω v := by
@@ -626,6 +900,13 @@ theorem riemannTheta_half_neg (α β : ι → ℤ) (Ω : Matrix ι ι ℂ) (v : 
   rw [Finset.sum_mul]
   exact Finset.sum_congr rfl fun i _ => by ring
 
+/- English proof (translation)
+Use `split_ifs with hm`. Simplify using `[hm, measureReal_def, Real.volume_Icc_pi]`. Take `⟨i, hi⟩` from `Function.ne_iff.mp hm`. Establish `e (x : ι → ℝ) : cexp (2 * π * I * ((fun i => (m i : ℂ)) ⬝ᵥ fun i => (x i : ℂ))) = ∏ j, (fun (j : ι) (t : ℝ) => cexp (2 * π * I * m j * t)) j (x j)`. Simplify using `only [← Complex.exp_sum, dotProduct, Finset.mul_sum, mul_assoc]`.
+
+Simplify using `only [e]`. Rewrite using `[← Set.pi_univ_Icc, volume_pi, Measure.restrict_pi_pi, integral_fintype_prod_eq_prod (fun (j : ι) (t : ℝ) => cexp (2 * π * I * m j * t))]`. Use `Finset.prod_eq_zero (Finset.mem_univ i) ?_` and prove the remaining obligations. Establish `hc : 2 * π * I * m i ≠ 0` using `mul_ne_zero two_pi_I_ne_zero (by exact_mod_cast hi)`. Rewrite using `[Pi.zero_apply, Pi.one_apply, integral_Icc_eq_integral_Ioc, ← intervalIntegral.integral_of_le zero_le_one, integral_exp_mul_complex hc]`.
+
+Simplify using `[mul_comm _ (m i : ℂ), Complex.exp_int_mul_two_pi_mul_I]`.
+-/
 theorem integral_Icc_cexp_dotProduct [DecidableEq ι] (m : ι → ℤ) :
     ∫ x in Set.Icc (0 : ι → ℝ) 1,
       cexp (2 * π * I * ((fun i => (m i : ℂ)) ⬝ᵥ fun i => (x i : ℂ))) = if m = 0 then 1 else 0 := by
@@ -644,6 +925,15 @@ theorem integral_Icc_cexp_dotProduct [DecidableEq ι] (m : ι → ℤ) :
       ← intervalIntegral.integral_of_le zero_le_one, integral_exp_mul_complex hc]
     simp [mul_comm _ (m i : ℂ), Complex.exp_int_mul_two_pi_mul_I]
 
+/- English proof (translation)
+Establish `e (m : ι → ℤ) (x : ι → ℝ) : c m * cexp (2 * π * I * ((fun i => (m i : ℂ)) ⬝ᵥ fun i => (x i : ℂ))) * cexp (-(2 * π * I) * ((fun i => (n i : ℂ)) ⬝ᵥ fun i => (x i : ℂ))) = c m * cexp (2 * π * I * ((fun i => ((m - n) i : ℂ)) ⬝ᵥ fun i => (x i : ℂ)))`. Establish `: (fun i => ((m - n) i : ℂ)) = (fun i => (m i : ℂ)) - fun i => (n i : ℂ)`. Use function extensionality and compare the values at `i`. Simplify using the standard rewrite rules. Rewrite using `[mul_assoc, ← Complex.exp_add, this, sub_dotProduct]`.
+
+Use `congr 2`. Expand and normalize the polynomial expressions, which then agree. Establish `hn (m : ι → ℤ) (x : ι → ℝ) : ‖c m * cexp (2 * π * I * ((fun i => ((m - n) i : ℂ)) ⬝ᵥ fun i => (x i : ℂ)))‖ = ‖c m‖`. Rewrite using `[norm_mul, Complex.norm_exp]`. Simplify using `[dotProduct]`.
+
+Simplify using `only [← tsum_mul_right, e]`. Rewrite using `[← integral_tsum_of_summable_integral_norm]`. Simplify using `only [integral_const_mul, integral_Icc_cexp_dotProduct, sub_eq_zero, mul_ite, mul_one, mul_zero, tsum_ite_eq]`. Introduce `m`. Use `Continuous.integrableOn_Icc ?_` and prove the remaining obligations.
+
+Simplify using `only [dotProduct]`. Use `fun_prop`. Simplify using `only [hn, integral_const, smul_eq_mul]`. Conclude with `hc.mul_left _`.
+-/
 theorem integral_Icc_tsum_mul_cexp {c : (ι → ℤ) → ℂ} (hc : Summable fun m => ‖c m‖) (n : ι → ℤ) :
     ∫ x in Set.Icc (0 : ι → ℝ) 1,
       (∑' m, c m * cexp (2 * π * I * ((fun i => (m i : ℂ)) ⬝ᵥ fun i => (x i : ℂ)))) *
@@ -674,6 +964,9 @@ theorem integral_Icc_tsum_mul_cexp {c : (ι → ℤ) → ℂ} (hc : Summable fun
   · simp only [hn, integral_const, smul_eq_mul]
     exact hc.mul_left _
 
+/- English proof (translation)
+Rewrite using `[riemannTheta_def, ← tsum_mul_left]`. Use `tsum_congr fun m => ?_` and prove the remaining obligations. Establish `: (fun i => (m i : ℂ) + a i) = (fun i => (m i : ℂ)) + fun i => (a i : ℂ)` using `rfl`. Rewrite using `[riemannThetaTerm_add, this, add_dotProduct, mul_add, Complex.exp_add]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem riemannTheta_add_ofReal_eq_tsum (a b : ι → ℝ) (Ω : Matrix ι ι ℂ) (v : ι → ℂ) (x : ι → ℝ) :
     riemannTheta a b Ω (v + fun i => (x i : ℂ)) =
       cexp (2 * π * I * ((fun i => (a i : ℂ)) ⬝ᵥ fun i => (x i : ℂ))) *
@@ -685,6 +978,11 @@ theorem riemannTheta_add_ofReal_eq_tsum (a b : ι → ℝ) (Ω : Matrix ι ι �
   rw [riemannThetaTerm_add, this, add_dotProduct, mul_add, Complex.exp_add]
   ring
 
+/- English proof (translation)
+Rewrite using `[← integral_Icc_tsum_mul_cexp (h.summable_norm_riemannThetaTerm a b v) n]`. Use `integral_congr_ae (Eventually.of_forall fun x => ?_)` and prove the remaining obligations. Establish `: (fun i => (n i : ℂ) + a i) = (fun i => (n i : ℂ)) + fun i => (a i : ℂ)` using `rfl`. Simplify using `only`. Rewrite using `[riemannTheta_add_ofReal_eq_tsum, this, add_dotProduct, mul_add, Complex.exp_add, mul_comm (cexp _) (tsum _), mul_assoc, mul_left_comm (cexp _), ← Complex.exp_add]`.
+
+Simplify using the standard rewrite rules.
+-/
 theorem IsSiegel.integral_riemannTheta_mul_cexp {Ω : Matrix ι ι ℂ} (h : IsSiegel Ω)
     (a b : ι → ℝ) (v : ι → ℂ) (n : ι → ℤ) :
     ∫ x in Set.Icc (0 : ι → ℝ) 1, riemannTheta a b Ω (v + fun i => (x i : ℂ)) *
@@ -698,6 +996,9 @@ theorem IsSiegel.integral_riemannTheta_mul_cexp {Ω : Matrix ι ι ℂ} (h : IsS
     mul_comm (cexp _) (tsum _), mul_assoc, mul_left_comm (cexp _), ← Complex.exp_add]
   simp
 
+/- English proof (translation)
+Use `by_contra! H`. Use `riemannThetaTerm_ne_zero a b Ω v 0 ?_` and prove the remaining obligations. Rewrite using `[← h.integral_riemannTheta_mul_cexp a b v 0]`. Conclude with `setIntegral_eq_zero_of_forall_eq_zero fun x hx => by rw [H x hx, zero_mul]`.
+-/
 theorem IsSiegel.exists_riemannTheta_add_ofReal_ne_zero {Ω : Matrix ι ι ℂ} (h : IsSiegel Ω)
     (a b : ι → ℝ) (v : ι → ℂ) :
     ∃ x ∈ Set.Icc (0 : ι → ℝ) 1, riemannTheta a b Ω (v + fun i => (x i : ℂ)) ≠ 0 := by
@@ -706,11 +1007,17 @@ theorem IsSiegel.exists_riemannTheta_add_ofReal_ne_zero {Ω : Matrix ι ι ℂ} 
   rw [← h.integral_riemannTheta_mul_cexp a b v 0]
   exact setIntegral_eq_zero_of_forall_eq_zero fun x hx => by rw [H x hx, zero_mul]
 
+/- English proof (translation)
+Take `⟨x, -, hx⟩` from `h.exists_riemannTheta_add_ofReal_ne_zero a b 0`. Conclude with `fun H => hx (congrFun H _)`.
+-/
 theorem IsSiegel.riemannTheta_ne_zero {Ω : Matrix ι ι ℂ} (h : IsSiegel Ω) (a b : ι → ℝ) :
     riemannTheta a b Ω ≠ 0 := by
   obtain ⟨x, -, hx⟩ := h.exists_riemannTheta_add_ofReal_ne_zero a b 0
   exact fun H => hx (congrFun H _)
 
+/- English proof (translation)
+Rewrite using `[riemannTheta_def, ← (Equiv.funUnique ι ℤ).symm.tsum_eq]`. Use `tsum_congr fun n => ?_` and prove the remaining obligations. Simplify using `only [riemannThetaTerm_eq_sum, Fintype.sum_unique, Equiv.funUnique_symm_apply, uniqueElim_const]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem riemannTheta_unique_eq_tsum [Unique ι] (a b : ι → ℝ) (Ω : Matrix ι ι ℂ) (v : ι → ℂ) :
     riemannTheta a b Ω v = ∑' n : ℤ, cexp (π * I * (n + a default) ^ 2 * Ω default default +
       2 * π * I * (n + a default) * (v default + b default)) := by
@@ -721,6 +1028,11 @@ theorem riemannTheta_unique_eq_tsum [Unique ι] (a b : ι → ℝ) (Ω : Matrix 
   congr 1
   ring
 
+/- English proof (translation)
+Rewrite using `[riemannTheta_unique_eq_tsum, jacobiTheta₂]`. Use `tsum_congr fun n => ?_` and prove the remaining obligations. Rewrite using `[jacobiTheta₂_term]`. Use `congr 1`. Simplify using `only [Pi.zero_apply, ofReal_zero]`.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem riemannTheta_unique_zero_zero [Unique ι] (Ω : Matrix ι ι ℂ) (v : ι → ℂ) :
     riemannTheta 0 0 Ω v = jacobiTheta₂ (v default) (Ω default default) := by
   rw [riemannTheta_unique_eq_tsum, jacobiTheta₂]
@@ -730,6 +1042,9 @@ theorem riemannTheta_unique_zero_zero [Unique ι] (Ω : Matrix ι ι ℂ) (v : �
   simp only [Pi.zero_apply, ofReal_zero]
   ring
 
+/- English proof (translation)
+Rewrite using `[riemannTheta_unique_eq_tsum, jacobiTheta₂, ← tsum_mul_left]`. Use `tsum_congr fun n => ?_` and prove the remaining obligations. Rewrite using `[jacobiTheta₂_term, ← Complex.exp_add]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem riemannTheta_unique_eq_jacobiTheta₂ [Unique ι] (a b : ι → ℝ) (Ω : Matrix ι ι ℂ)
     (v : ι → ℂ) :
     riemannTheta a b Ω v =
@@ -742,10 +1057,16 @@ theorem riemannTheta_unique_eq_jacobiTheta₂ [Unique ι] (a b : ι → ℝ) (Ω
   congr 1
   ring
 
+/- English proof (translation)
+Rewrite using `[riemannTheta_unique_zero_zero]`. Simplify using the standard rewrite rules.
+-/
 theorem riemannTheta_fin_one (z τ : ℂ) : riemannTheta 0 0 !![τ] ![z] = jacobiTheta₂ z τ := by
   rw [riemannTheta_unique_zero_zero]
   simp
 
+/- English proof (translation)
+Rewrite using `[riemannTheta_def, riemannTheta_def, ← (Equiv.arrowCongr e (Equiv.refl ℤ)).symm.tsum_eq]`. Use `tsum_congr fun n => ?_` and prove the remaining obligations. Simplify using `only [riemannThetaTerm_eq_sum, ← e.sum_comp]`. Simplify using the standard rewrite rules.
+-/
 theorem riemannTheta_submatrix_equiv (e : κ ≃ ι) (a b : ι → ℝ) (Ω : Matrix ι ι ℂ) (v : ι → ℂ) :
     riemannTheta (a ∘ e) (b ∘ e) (Ω.submatrix e e) (v ∘ e) = riemannTheta a b Ω v := by
   rw [riemannTheta_def, riemannTheta_def, ← (Equiv.arrowCongr e (Equiv.refl ℤ)).symm.tsum_eq]
@@ -753,6 +1074,9 @@ theorem riemannTheta_submatrix_equiv (e : κ ≃ ι) (a b : ι → ℝ) (Ω : Ma
   simp only [riemannThetaTerm_eq_sum, ← e.sum_comp]
   simp
 
+/- English proof (translation)
+Simplify using `only [riemannThetaTerm_eq_sum, ← Complex.exp_add, Fintype.sum_sum_type]`. Use `congr 1`. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem riemannThetaTerm_fromBlocks (a₁ b₁ : ι → ℝ) (a₂ b₂ : κ → ℝ) (Ω₁ : Matrix ι ι ℂ)
     (Ω₂ : Matrix κ κ ℂ) (v₁ : ι → ℂ) (v₂ : κ → ℂ) (n₁ : ι → ℤ) (n₂ : κ → ℤ) :
     riemannThetaTerm (Sum.elim a₁ a₂) (Sum.elim b₁ b₂) (fromBlocks Ω₁ 0 0 Ω₂) (Sum.elim v₁ v₂)
@@ -763,6 +1087,9 @@ theorem riemannThetaTerm_fromBlocks (a₁ b₁ : ι → ℝ) (a₂ b₂ : κ →
   simp
   ring
 
+/- English proof (translation)
+Rewrite using `[riemannTheta_def, riemannTheta_def, riemannTheta_def, tsum_mul_tsum_of_summable_norm (h₁.summable_norm_riemannThetaTerm a₁ b₁ v₁) (h₂.summable_norm_riemannThetaTerm a₂ b₂ v₂), ← (Equiv.sumArrowEquivProdArrow ι κ ℤ).symm.tsum_eq]`. Conclude with `tsum_congr fun n => riemannThetaTerm_fromBlocks ..`.
+-/
 theorem riemannTheta_fromBlocks {Ω₁ : Matrix ι ι ℂ} {Ω₂ : Matrix κ κ ℂ} (h₁ : IsSiegel Ω₁)
     (h₂ : IsSiegel Ω₂) (a₁ b₁ : ι → ℝ) (a₂ b₂ : κ → ℝ) (v₁ : ι → ℂ) (v₂ : κ → ℂ) :
     riemannTheta (Sum.elim a₁ a₂) (Sum.elim b₁ b₂) (fromBlocks Ω₁ 0 0 Ω₂) (Sum.elim v₁ v₂) =
@@ -772,6 +1099,9 @@ theorem riemannTheta_fromBlocks {Ω₁ : Matrix ι ι ℂ} {Ω₂ : Matrix κ κ
     ← (Equiv.sumArrowEquivProdArrow ι κ ℤ).symm.tsum_eq]
   exact tsum_congr fun n => riemannThetaTerm_fromBlocks ..
 
+/- English proof (translation)
+Rewrite using `[← riemannTheta_fromBlocks h₁ h₂]`. Simplify using `only [Sum.elim_comp_inl_inr]`.
+-/
 theorem riemannTheta_fromBlocks' {Ω₁ : Matrix ι ι ℂ} {Ω₂ : Matrix κ κ ℂ} (h₁ : IsSiegel Ω₁)
     (h₂ : IsSiegel Ω₂) (a b : ι ⊕ κ → ℝ) (v : ι ⊕ κ → ℂ) :
     riemannTheta a b (fromBlocks Ω₁ 0 0 Ω₂) v =
@@ -784,29 +1114,47 @@ section Theta
 
 open ReciprocityTheory.PTheta
 
+/- English proof (translation)
+The claim follows from `IsSiegel.summable_norm_riemannThetaTerm h a b z`.
+-/
 theorem summable_norm_thetaTerm_of_mem_siegelH {τ : Matrix ι ι ℂ} (h : τ ∈ SiegelH ι)
     (a b : ι → ℝ) (z : ι → ℂ) :
     Summable fun l => ‖thetaTerm a b z τ l‖ :=
   IsSiegel.summable_norm_riemannThetaTerm h a b z
 
+/- English proof (translation)
+The claim follows from `IsSiegel.hasSum_riemannTheta h a b z`.
+-/
 theorem hasSum_theta_of_mem_siegelH {τ : Matrix ι ι ℂ} (h : τ ∈ SiegelH ι)
     (a b : ι → ℝ) (z : ι → ℂ) :
     HasSum (thetaTerm a b z τ) (theta a b z τ) :=
   IsSiegel.hasSum_riemannTheta h a b z
 
+/- English proof (translation)
+The claim follows from `hasSumLocallyUniformlyOn_riemannTheta a b`.
+-/
 theorem hasSumLocallyUniformlyOn_theta_siegelH (a b : ι → ℝ) :
     HasSumLocallyUniformlyOn (fun l (p : (ι → ℂ) × Matrix ι ι ℂ) => thetaTerm a b p.1 p.2 l)
       (fun p => theta a b p.1 p.2) (Set.univ ×ˢ SiegelH ι) :=
   hasSumLocallyUniformlyOn_riemannTheta a b
 
+/- English proof (translation)
+The claim follows from `IsSiegel.differentiable_riemannTheta h a b`.
+-/
 theorem differentiable_theta_of_mem_siegelH {τ : Matrix ι ι ℂ} (h : τ ∈ SiegelH ι) (a b : ι → ℝ) :
     Differentiable ℂ fun z => theta a b z τ :=
   IsSiegel.differentiable_riemannTheta h a b
 
+/- English proof (translation)
+The claim follows from `Function.ne_iff.mp (IsSiegel.riemannTheta_ne_zero h a b)`.
+-/
 theorem exists_theta_ne_zero_of_mem_siegelH {τ : Matrix ι ι ℂ} (h : τ ∈ SiegelH ι) (a b : ι → ℝ) :
     ∃ z, theta a b z τ ≠ 0 :=
   Function.ne_iff.mp (IsSiegel.riemannTheta_ne_zero h a b)
 
+/- English proof (translation)
+Use `IsSiegel.integral_riemannTheta_mul_cexp h a b z l` as an intermediate fact. Simplify using `only [neg_mul] at this`. Simplify using `only [eC, mul_neg]`. Conclude with `this`.
+-/
 theorem integral_theta_mul_eC_of_mem_siegelH {τ : Matrix ι ι ℂ} (h : τ ∈ SiegelH ι)
     (a b : ι → ℝ) (z : ι → ℂ) (l : ι → ℤ) :
     ∫ x in Set.Icc (0 : ι → ℝ) 1, theta a b (z + ofRealVec x) τ *
@@ -816,6 +1164,9 @@ theorem integral_theta_mul_eC_of_mem_siegelH {τ : Matrix ι ι ℂ} (h : τ ∈
   simp only [eC, mul_neg]
   exact this
 
+/- English proof (translation)
+Rewrite using `[add_assoc, add_comm (Ω *ᵥ _), autFactor, eC, eC, ← Complex.exp_add]`. Use `(riemannTheta_add_lattice h a b v m k).trans ?_` and prove the remaining obligations. Use `congr 2`. Unfold `ofRealVec ofIntVec`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem riemannTheta_add_eq_autFactor_mul {Ω : Matrix ι ι ℂ} (h : Ω.IsSymm) (a b : ι → ℝ)
     (v : ι → ℂ) (k m : ι → ℤ) :
     riemannTheta a b Ω (v + Ω *ᵥ ofIntVec k + ofIntVec m) =
@@ -826,6 +1177,9 @@ theorem riemannTheta_add_eq_autFactor_mul {Ω : Matrix ι ι ℂ} (h : Ω.IsSymm
   unfold ofRealVec ofIntVec
   ring
 
+/- English proof (translation)
+The claim follows from `riemannTheta_fromBlocks h₁ h₂ a₁ b₁ a₂ b₂ z₁ z₂`.
+-/
 theorem theta_fromBlocks_zero {τ₁ : Matrix ι ι ℂ} {τ₂ : Matrix κ κ ℂ} (h₁ : τ₁ ∈ SiegelH ι)
     (h₂ : τ₂ ∈ SiegelH κ) (a₁ b₁ : ι → ℝ) (a₂ b₂ : κ → ℝ) (z₁ : ι → ℂ) (z₂ : κ → ℂ) :
     theta (Sum.elim a₁ a₂) (Sum.elim b₁ b₂) (Sum.elim z₁ z₂) (fromBlocks τ₁ 0 0 τ₂) =
@@ -834,19 +1188,33 @@ theorem theta_fromBlocks_zero {τ₁ : Matrix ι ι ℂ} {τ₂ : Matrix κ κ �
 
 end Theta
 
+/- English proof (translation)
+The claim follows from `isSiegel_example.mem_siegelH`.
+-/
 example : !![1 + 2 * I, 1 / 2 + I; 1 / 2 + I, 2 * I] ∈ ReciprocityTheory.PTheta.SiegelH (Fin 2) :=
   isSiegel_example.mem_siegelH
 
+/- English proof (translation)
+Simplify using `[riemannTheta_def, riemannThetaTerm_def, dotProduct]`.
+-/
 example (a b : Fin 0 → ℝ) (Ω : Matrix (Fin 0) (Fin 0) ℂ) (v : Fin 0 → ℂ) :
     riemannTheta a b Ω v = 1 := by
   simp [riemannTheta_def, riemannThetaTerm_def, dotProduct]
 
+/- English proof (translation)
+Use `riemannTheta_half_neg (fun _ : Fin 1 => 1) (fun _ => 1) !![I] 0` as an intermediate fact. Simplify using `only [Int.cast_one, neg_zero, dotProduct, mul_one, Finset.sum_const, Finset.card_univ, Fintype.card_fin, one_smul, zpow_one] at this`. Take the linear combination `this / 2`.
+-/
 example : riemannTheta (fun _ => 1 / 2) (fun _ => 1 / 2) !![I] 0 = 0 := by
   have := riemannTheta_half_neg (fun _ : Fin 1 => 1) (fun _ => 1) !![I] 0
   simp only [Int.cast_one, neg_zero, dotProduct, mul_one, Finset.sum_const, Finset.card_univ,
     Fintype.card_fin, one_smul, zpow_one] at this
   linear_combination this / 2
 
+/- English proof (translation)
+Use `riemannTheta_add_intCast (fun _ : Fin 1 => 1 / 2) b !![I] ![z] (fun _ => 1)` as an intermediate fact. Establish `e : (![z] + fun _ => ((1 : ℤ) : ℂ)) = ![z + 1]`. Use function extensionality and compare the values at `i`. Use `fin_cases i`. Simplify using the standard rewrite rules.
+
+Rewrite using `[← e, this]`. Establish `: 2 * π * I * ((fun _ : Fin 1 => ((1 / 2 : ℝ) : ℂ)) ⬝ᵥ fun _ => ((1 : ℤ) : ℂ)) = π * I`. Simplify using `[dotProduct]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[this, Complex.exp_pi_mul_I, neg_one_mul]`.
+-/
 example (b : Fin 1 → ℝ) (z : ℂ) :
     riemannTheta (fun _ => 1 / 2) b !![I] ![z + 1] = -riemannTheta (fun _ => 1 / 2) b !![I] ![z] := by
   have := riemannTheta_add_intCast (fun _ : Fin 1 => 1 / 2) b !![I] ![z] (fun _ => 1)
@@ -860,6 +1228,13 @@ example (b : Fin 1 → ℝ) (z : ℂ) :
     ring
   rw [this, Complex.exp_pi_mul_I, neg_one_mul]
 
+/- English proof (translation)
+Establish `hs : (!![τ] : Matrix (Fin 1) (Fin 1) ℂ).IsSymm`. Use extensionality with `i j`. Use `fin_cases i`. Use `fin_cases j`. Both sides reduce to the same expression.
+
+Use `riemannTheta_add_mulVec_intCast hs 0 0 ![z] (fun _ => 1)` as an intermediate fact. Rewrite `this` using `[riemannTheta_unique_zero_zero, riemannTheta_fin_one]`. Use `this using 3` and compare the differences between its conclusion and the goal. Simplify using `[mulVec, dotProduct]`. Simplify using the standard rewrite rules.
+
+Simplify using `[mulVec, dotProduct]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 example (z τ : ℂ) : jacobiTheta₂ (z + τ) τ = cexp (-π * I * (τ + 2 * z)) * jacobiTheta₂ z τ := by
   have hs : (!![τ] : Matrix (Fin 1) (Fin 1) ℂ).IsSymm := by
     ext i j
@@ -874,6 +1249,9 @@ example (z τ : ℂ) : jacobiTheta₂ (z + τ) τ = cexp (-π * I * (τ + 2 * z)
   · simp [mulVec, dotProduct]
     ring
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨isSiegel_example.differentiable_riemannTheta 0 0, isSiegel_example.riemannTheta_ne_zero 0 0⟩`.
+-/
 example : Differentiable ℂ (riemannTheta 0 0 !![1 + 2 * I, 1 / 2 + I; 1 / 2 + I, 2 * I]) ∧
     riemannTheta 0 0 !![1 + 2 * I, 1 / 2 + I; 1 / 2 + I, 2 * I] ≠ 0 :=
   ⟨isSiegel_example.differentiable_riemannTheta 0 0, isSiegel_example.riemannTheta_ne_zero 0 0⟩

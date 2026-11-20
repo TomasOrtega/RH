@@ -55,15 +55,27 @@ def CycMatch : Prop :=
 
 def toV {V : Type} (x : TrV e V) : V := x
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem toV_add {V : Type} [AddCommGroup V] [Module (FractionRing O) V] (x y : TrV e V) :
     toV e (x + y) = toV e x + toV e y := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem toV_smul {V : Type} [AddCommGroup V] [Module (FractionRing O) V] (c : LL) (x : TrV e V) :
     toV e (c • x) = e.symm c • toV e x := rfl
 
+/- English proof (translation)
+The claim follows from `smulK (Dat.bT.flip w) k v`.
+-/
 theorem bT_smulK_left (k : FractionRing O) (v : VT) (w : VT') : Dat.bT (k • v) w = k • Dat.bT v w :=
   smulK (Dat.bT.flip w) k v
 
+/- English proof (translation)
+The claim follows from `smulK (Dat.bT v) k w`.
+-/
 theorem bT_smulK_right (k : FractionRing O) (v : VT) (w : VT') : Dat.bT v (k • w) = k • Dat.bT v w :=
   smulK (Dat.bT v) k w
 
@@ -76,6 +88,9 @@ def pairLL : TrV e VT →ₗ[LL] TrV e VT' →ₗ[LL] LL :=
     (fun c x y => by
       rw [toV_smul, bT_smulK_right, smul_eq_mul, map_mul, RingEquiv.apply_symm_apply, smul_eq_mul])
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem pairLL_apply (x : TrV e VT) (y : TrV e VT') :
     pairLL Dat e x y = e (Dat.bT (toV e x) (toV e y)) := rfl
 
@@ -102,6 +117,9 @@ variable {O : Type} [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] [Topol
   [ContinuousSMul O (FractionRing O)]
   {LL : Type} [Field LL] [TopologicalSpace LL] [IsTopologicalRing LL] (e : FractionRing O ≃+* LL)
 
+/- English proof (translation)
+Unfold `TopMatch at h`. Rewrite using `[h]`. Conclude with `Iff.rfl`.
+-/
 theorem cont_iff {V : Type} [AddCommGroup V] [Module (FractionRing O) V] [t : TopologicalSpace V]
     (h : TopMatch e V) {X : Type} [TopologicalSpace X] (f : X → V) :
     @Continuous X (TrV e V) _ (instTop e) f ↔ Continuous f := by
@@ -111,11 +129,21 @@ theorem cont_iff {V : Type} [AddCommGroup V] [Module (FractionRing O) V] [t : To
 
 def ofV {V : Type} (x : V) : TrV e V := x
 
+/- English proof (translation)
+Use `show k • x = e.symm (e k) • x`. Rewrite using `[RingEquiv.symm_apply_apply]`.
+-/
 theorem ofV_smulK {V : Type} [AddCommGroup V] [Module (FractionRing O) V] (k : FractionRing O) (x : V) :
     ofV e (V := V) (k • x) = e k • ofV e x := by
   show k • x = e.symm (e k) • x
   rw [RingEquiv.symm_apply_apply]
 
+/- English proof (translation)
+Take `⟨S, hS⟩` from `hV.fg_top`. Use `⟨⟨S.image (ofV e), ?_⟩⟩` and prove the remaining obligations. Rewrite using `[Finset.coe_image, eq_top_iff]`. Introduce `v _`. Establish `hv : toV e v ∈ Submodule.span (FractionRing O) (S : Set V)` using `by rw [hS]; exact Submodule.mem_top`.
+
+Establish `key : ∀ x ∈ Submodule.span (FractionRing O) (S : Set V), ofV e x ∈ Submodule.span LL (ofV e '' (S : Set V))`. Introduce `x hx`. Use `Submodule.span_induction (p := fun x _ => ofV e x ∈ Submodule.span LL (ofV e '' (S : Set V))) (fun y hy => Submodule.subset_span ⟨y, hy, rfl⟩) (Submodule.zero_mem _) (fun y z _ _ hy hz => Submodule.add_mem _ hy hz) (fun k y _ hy => ?_) hx` and prove the remaining obligations. Rewrite using `[ofV_smulK]`. Conclude with `Submodule.smul_mem _ _ hy`.
+
+Conclude with `key _ hv`.
+-/
 theorem fd_of_finK {V : Type} [AddCommGroup V] [Module (FractionRing O) V]
     [hV : Module.Finite (FractionRing O) V] : FiniteDimensional LL (TrV e V) := by
   obtain ⟨S, hS⟩ := hV.fg_top
@@ -133,6 +161,11 @@ theorem fd_of_finK {V : Type} [AddCommGroup V] [Module (FractionRing O) V]
     exact Submodule.smul_mem _ _ hy
   exact key _ hv
 
+/- English proof (translation)
+Take `⟨S, hS⟩` from `h.1`. Use `⟨⟨S, ?_⟩⟩` and prove the remaining obligations. Rewrite using `[eq_top_iff, ← h.2, Submodule.span_le]`. Introduce `x hx`. Rewrite `hx` using `[← hS]`.
+
+Conclude with `Submodule.span_le_restrictScalars O (FractionRing O) _ hx`.
+-/
 theorem finK_of_lat {V : Type} [AddCommGroup V] [Module O V] [Module (FractionRing O) V]
     [IsScalarTower O (FractionRing O) V] {T : Submodule O V} (h : IsLatticeIn T) :
     Module.Finite (FractionRing O) V := by
@@ -147,6 +180,9 @@ variable {Γ : Type} [Group Γ] [TopologicalSpace Γ]
   {V : Type} [AddCommGroup V] [Module O V] [TopologicalSpace V] [IsTopologicalAddGroup V]
   [ContinuousSMul O V] [Module (FractionRing O) V] [IsScalarTower O (FractionRing O) V]
 
+/- English proof (translation)
+Rewrite `h` using `[Submodule.mkQ_apply, Submodule.mkQ_apply, Submodule.Quotient.eq]`. Take `⟨m, hm⟩` from `h`. Establish `: (c : Γ → V) - c' = d0 ρ m` using `by rw [hm]; rfl`. Rewrite using `[this]`. Conclude with `hB m`.
+-/
 theorem sub_mem_of_mk_eq (ρ : Representation O Γ V) (Z : Submodule (FractionRing O) (Γ → V))
     (hB : ∀ x, d0 ρ x ∈ Z) (c c' : Z1 ρ)
     (h : Submodule.mkQ ((B1 ρ).comap (Z1 ρ).subtype) c = Submodule.mkQ _ c') :
@@ -157,6 +193,13 @@ theorem sub_mem_of_mk_eq (ρ : Representation O Γ V) (Z : Submodule (FractionRi
   rw [this]
   exact hB m
 
+/- English proof (translation)
+Establish `hc : Continuous (c : Γ → V) ∧ ∀ g h, c.1 (g * h) = c.1 g + ρ g (c.1 h)` using `c.2`. Use `⟨⟨k • (c : Γ → V), hc.1.const_smul k, fun g h => ?_⟩, rfl, ?_⟩` and prove the remaining obligations. Use `show k • c.1 (g * h) = k • c.1 g + ρ g (k • c.1 h)`. Rewrite using `[hc.2 g h, smul_add, smulK (ρ g) k]`. Take `⟨⟨x, s⟩, hxs⟩` from `IsLocalization.surj (nonZeroDivisors O) k`.
+
+Establish `hs : algebraMap O (FractionRing O) (s : O) ≠ 0` using `IsFractionRing.to_map_ne_zero_of_mem_nonZeroDivisors s.2`. Simplify using `only at hxs`. Apply `smul_right_injective (H1 ρ) hs` to reduce the goal to its premises. Simplify using `only`. Rewrite using `[smul_smul, mul_comm, hxs, algebraMap_smul, algebraMap_smul, ← map_smul, ← map_smul]`.
+
+Use `congr 1`. Apply `Subtype.ext` to reduce the goal to its premises. Use function extensionality and compare the values at `g`. Use `show (s : O) • (k • c.1 g) = x • c.1 g`. Rewrite using `[← algebraMap_smul (FractionRing O) (s : O) (k • c.1 g), smul_smul, mul_comm, hxs, algebraMap_smul]`.
+-/
 theorem mk_smul (ρ : Representation O Γ V) [ContinuousConstSMul (FractionRing O) V]
     [Module (FractionRing O) (H1 ρ)] [IsScalarTower O (FractionRing O) (H1 ρ)]
     (k : FractionRing O) (c : Z1 ρ) :
@@ -183,6 +226,19 @@ def clsSet (ρ : Representation O Γ V) (Z : Submodule (FractionRing O) (Γ → 
   (((Z.restrictScalars O).comap (LinearMap.compLeft LinearMap.id Γ)).comap (Z1 ρ).subtype).map
     (Submodule.mkQ _)
 
+/- English proof (translation)
+Set `S : Submodule (FractionRing O) (H1 ρ)` to `{ carrier := {a | ∀ c : Z1 ρ, Submodule.mkQ ((B1 ρ).comap (Z1 ρ).subtype) c = a → (c : Γ → V) ∈ Z} zero_mem' := fun c hc => by`. Establish `h` using `sub_mem_of_mk_eq ρ Z hB c 0 (by rw [hc, map_zero])`. Simplify using `using h`. Use the proof step `add_mem' := fun {a b} ha hb c hc => by`. Take `⟨ca, rfl⟩` from `Submodule.mkQ_surjective _ a`.
+
+Take `⟨cb, rfl⟩` from `Submodule.mkQ_surjective _ b`. Establish `h` using `sub_mem_of_mk_eq ρ Z hB c (ca + cb) (by rw [hc, map_add])`. Establish `e1 : (c : Γ → V) = ((c : Γ → V) - ((ca + cb : Z1 ρ) : Γ → V)) + ((ca : Γ → V) + cb)`. Simplify using the standard rewrite rules. Rewrite using `[e1]`.
+
+Conclude with `Z.add_mem h (Z.add_mem (ha ca rfl) (hb cb rfl))`. Use the proof step `smul_mem' := fun k a ha c hc => by`. Take `⟨ca, rfl⟩` from `Submodule.mkQ_surjective _ a`. Take `⟨kc, hkc, hmk⟩` from `mk_smul ρ k ca`. Establish `h` using `sub_mem_of_mk_eq ρ Z hB c kc (by rw [hc, hmk])`.
+
+Establish `e1 : (c : Γ → V) = ((c : Γ → V) - kc) + k • (ca : Γ → V)` using `by rw [← hkc]; abel`. Rewrite using `[e1]`. Conclude with `Z.add_mem h (Z.smul_mem k (ha ca rfl)) }`. Prove the components needed by the constructor for the conclusion. Introduce `h`.
+
+Establish `hle : Submodule.span (FractionRing O) (clsSet ρ Z : Set (H1 ρ)) ≤ S`. Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨c0, hc0, rfl⟩ c hc`. Establish `h1` using `sub_mem_of_mk_eq ρ Z hB c c0 hc`. Establish `e1 : (c : Γ → V) = ((c : Γ → V) - c0) + c0` using `by abel`.
+
+Rewrite using `[e1]`. Conclude with `Z.add_mem h1 hc0`. Conclude with `hle h c rfl`. Introduce `h`. Conclude with `Submodule.subset_span ⟨c, h, rfl⟩`.
+-/
 theorem mem_span_iff (ρ : Representation O Γ V) [ContinuousConstSMul (FractionRing O) V]
     [Module (FractionRing O) (H1 ρ)] [IsScalarTower O (FractionRing O) (H1 ρ)]
     (Z : Submodule (FractionRing O) (Γ → V)) (hB : ∀ x, d0 ρ x ∈ Z) (c : Z1 ρ) :
@@ -254,6 +310,11 @@ def dualMap : VT' →ₗ[FractionRing O] (VT →ₗ[FractionRing O] FractionRing
   map_add' f f' := LinearMap.ext fun x => map_add (Dat.bT x) f f'
   map_smul' k f := LinearMap.ext fun x => bT_smulK_right Dat k x f
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce `f f' h`. Take `⟨g, _, hg⟩` from `hP (dualMap Dat f)`. Establish `h1` using `hg f (fun x => rfl)`. Establish `h2` using `hg f' (fun x => by rw [h]; rfl)`.
+
+Rewrite using `[h1, h2]`. Introduce `ψ`. Take `⟨f, hf, _⟩` from `hP ψ`. Conclude with `⟨f, LinearMap.ext hf⟩`.
+-/
 theorem dualMap_bij (hP : PerfectRight Dat.bT) : Function.Bijective (dualMap Dat) := by
   constructor
   · intro f f' h
@@ -265,10 +326,18 @@ theorem dualMap_bij (hP : PerfectRight Dat.bT) : Function.Bijective (dualMap Dat
     obtain ⟨f, hf, _⟩ := hP ψ
     exact ⟨f, LinearMap.ext hf⟩
 
+/- English proof (translation)
+The claim follows from `Module.Finite.equiv (LinearEquiv.ofBijective (dualMap Dat) (dualMap_bij Dat hP)).symm`.
+-/
 theorem finK' [Module.Finite (FractionRing O) VT] (hP : PerfectRight Dat.bT) :
     Module.Finite (FractionRing O) VT' :=
   Module.Finite.equiv (LinearEquiv.ofBijective (dualMap Dat) (dualMap_bij Dat hP)).symm
 
+/- English proof (translation)
+Assume the negation of the conclusion as `hne`. Choose the witnesses or unpack the hypotheses as in `⟨ψ, hψ⟩ : ∃ ψ : VT →ₗ[FractionRing O] FractionRing O, ψ x ≠ 0 := by`. Assume the negation of the conclusion as `hall`. Use `push_neg at hall`. Conclude with `hne ((Module.forall_dual_apply_eq_zero_iff (FractionRing O) x).1 hall)`.
+
+Take `⟨f, hf, _⟩` from `hP ψ`. Conclude with `hψ ((hf x).symm.trans (hx f))`.
+-/
 theorem nondeg_left (hP : PerfectRight Dat.bT) (x : VT) (hx : ∀ y, Dat.bT x y = 0) : x = 0 := by
   by_contra hne
   obtain ⟨ψ, hψ⟩ : ∃ ψ : VT →ₗ[FractionRing O] FractionRing O, ψ x ≠ 0 := by
@@ -278,10 +347,24 @@ theorem nondeg_left (hP : PerfectRight Dat.bT) (x : VT) (hx : ∀ y, Dat.bT x y 
   obtain ⟨f, hf, _⟩ := hP ψ
   exact hψ ((hf x).symm.trans (hx f))
 
+/- English proof (translation)
+Take `⟨f, _, hu⟩` from `hP 0`. Rewrite using `[hu y (fun x => hy x), hu 0 (fun x => by simp)]`.
+-/
 theorem nondeg_right (hP : PerfectRight Dat.bT) (y : VT') (hy : ∀ x, Dat.bT x y = 0) : y = 0 := by
   obtain ⟨f, _, hu⟩ := hP 0
   rw [hu y (fun x => hy x), hu 0 (fun x => by simp)]
 
+/- English proof (translation)
+Use `haveI : Module.Finite (FractionRing O) VT := finK_of_lat hreal.lat`. Use `haveI : Module.Finite (FractionRing O) VT' := finK' Dat hreal.perf`. Use `haveI := fd_of_finK e (V := VT)`. Use `haveI := fd_of_finK e (V := VT')`. Establish `hl : ∀ x : TrV e VT, (∀ y, pairLL Dat e x y = 0) → x = 0` using `fun x hx => nondeg_left Dat hreal.perf (toV e x) fun y => (map_eq_zero_iff e e.injective).1 (hx y)`.
+
+Establish `hr : ∀ y : TrV e VT', (∀ x, pairLL Dat e x y = 0) → y = 0` using `fun y hy => nondeg_right Dat hreal.perf (toV e y) fun x => (map_eq_zero_iff e e.injective).1 (hy x)`. Use `⟨fun g x y => ?_, hl, hr, ?_⟩` and prove the remaining obligations. Rewrite using `[pairLL_apply, pairLL_apply] show e (Dat.bT (Dat.ρT (ι g) (toV e x)) (Dat.ρT' (ι g) (toV e y))) = _`. Rewrite using `[Dat.eqT, Algebra.smul_def, map_mul, hcyc g]`. Apply `le_antisymm` to reduce the goal to its premises.
+
+Establish `hinj : Function.Injective (pairLL Dat e)` using `fun x x' h => by`. Use `hl (x - x') (fun y => by rw [map_sub, LinearMap.sub_apply, h, sub_self])` as an intermediate fact. Conclude with `sub_eq_zero.1 this`. Conclude with `(LinearMap.finrank_le_finrank_of_injective hinj).trans (Subspace.dual_finrank_eq).le`. Establish `hinj : Function.Injective (pairLL Dat e).flip` using `fun y y' h => by`.
+
+Use `hr (y - y') (fun x => by` as an intermediate fact. Establish `h'` using `congrArg (fun F => F x) h`. Simplify using `only [LinearMap.flip_apply] at h'`. Rewrite using `[map_sub, h', sub_self])`. Conclude with `sub_eq_zero.1 this`.
+
+Conclude with `(LinearMap.finrank_le_finrank_of_injective hinj).trans (Subspace.dual_finrank_eq).le`.
+-/
 theorem isDual1 (hreal : Formalism.RepresentationBoundsCohomology.FIN.RealLat Dat) (hcyc : CycMatch Dat e ι PD) :
     IsDual1 PD (repL e Dat.ρT ι) (repL e Dat.ρT' ι) (pairLL Dat e) := by
   haveI : Module.Finite (FractionRing O) VT := finK_of_lat hreal.lat
@@ -309,6 +392,13 @@ theorem isDual1 (hreal : Formalism.RepresentationBoundsCohomology.FIN.RealLat Da
         exact sub_eq_zero.1 this
       exact (LinearMap.finrank_le_finrank_of_injective hinj).trans (Subspace.dual_finrank_eq).le
 
+/- English proof (translation)
+Rewrite using `[mem_finZ]`. Use `⟨⟨?_, fun g h => ?_⟩, (ofV e x : TrV e V) ⊗ₜ[Qp] (1 : B), fun g => ?_⟩` and prove the remaining obligations. Conclude with `(cont_iff e htop _).2 ((hc.comp ((hι).prodMk continuous_const)).sub continuous_const)`. Use `show ρ (ι (g * h)) x - x = (ρ (ι g) x - x) + ρ (ι g) (ρ (ι h) x - x)`. Rewrite using `[map_mul, map_mul, Module.End.mul_apply, map_sub]`.
+
+Normalize the expressions using the abelian group laws. Use `show (ofV e (ρ (ι g) x - x) : TrV e V) ⊗ₜ[Qp] (1 : B) = actVB PD (repL e ρ ι) g (ofV e x ⊗ₜ[Qp] (1 : B)) - ofV e x ⊗ₜ[Qp] (1 : B)`. Rewrite using `[actVB, TensorProduct.AlgebraTensorModule.map_tmul]`. Simplify using `only [LinearMap.restrictScalars_apply, AlgHom.toLinearMap_apply, AlgEquiv.toAlgHom_eq_coe, AlgEquiv.coe_algHom, map_one]`. Rewrite using `[← TensorProduct.sub_tmul]`.
+
+Both sides reduce to the same expression.
+-/
 theorem coboundary_mem_finite_classes {V : Type} [AddCommGroup V] [Module O V] [t : TopologicalSpace V] [IsTopologicalAddGroup V]
     [ContinuousSMul O V]
     [Module (FractionRing O) V] [IsScalarTower O (FractionRing O) V]
@@ -340,6 +430,9 @@ variable {O : Type} [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] [Topol
   {V : Type} [AddCommGroup V] [Module O V] [TopologicalSpace V] [IsTopologicalAddGroup V]
   [ContinuousSMul O V] [Module (FractionRing O) V] [IsScalarTower O (FractionRing O) V]
 
+/- English proof (translation)
+Establish `hc : Continuous (c : Γ → V) ∧ ∀ g h, c.1 (g * h) = c.1 g + ρ g (c.1 h)` using `c.2`. Use `⟨(cont_iff e htop _).2 (hc.1.comp hι), fun g h => ?_⟩` and prove the remaining obligations. Use `show c.1 (ι (g * h)) = c.1 (ι g) + ρ (ι g) (c.1 (ι h))`. Rewrite using `[map_mul, hc.2]`.
+-/
 theorem continuous_cocycle_transport (ρ : Representation O Γ V) (htop : TopMatch e V) (hι : Continuous ι) (c : Z1 ρ) :
     (fun g => ofV e (c.1 (ι g))) ∈ continuousCocycles (repL e ρ ι) := by
   have hc : Continuous (c : Γ → V) ∧ ∀ g h, c.1 (g * h) = c.1 g + ρ g (c.1 h) := c.2
@@ -347,12 +440,25 @@ theorem continuous_cocycle_transport (ρ : Representation O Γ V) (htop : TopMat
   show c.1 (ι (g * h)) = c.1 (ι g) + ρ (ι g) (c.1 (ι h))
   rw [map_mul, hc.2]
 
+/- English proof (translation)
+Rewrite using `[← hh, h.apply_symm_apply]`.
+-/
 theorem symm_iota (h : G ≃ₜ Γ) (hh : ∀ g, h g = ι g) (γ : Γ) : ι (h.symm γ) = γ := by
   rw [← hh, h.apply_symm_apply]
 
+/- English proof (translation)
+Rewrite using `[← hh, h.symm_apply_apply]`.
+-/
 theorem symm_iota' (h : G ≃ₜ Γ) (hh : ∀ g, h g = ι g) (g : G) : h.symm (ι g) = g := by
   rw [← hh, h.symm_apply_apply]
 
+/- English proof (translation)
+Establish `hb' : Continuous b ∧ ∀ g g', b (g * g') = b g + repL e ρ ι g (b g')` using `hb`. Use `⟨⟨fun γ => toV e (b (h.symm γ)), (cont_iff e htop _).1 (hb'.1.comp h.symm.continuous), fun γ δ => ?_⟩, fun g => ?_⟩` and prove the remaining obligations. Establish `hm : h.symm (γ * δ) = h.symm γ * h.symm δ`. Apply `h.injective` to reduce the goal to its premises. Rewrite using `[h.apply_symm_apply, hh, map_mul, symm_iota ι h hh, symm_iota ι h hh]`.
+
+Use `show toV e (b (h.symm (γ * δ))) = toV e (b (h.symm γ)) + ρ γ (toV e (b (h.symm δ)))`. Rewrite using `[hm, hb'.2]`. Use `show toV e (b (h.symm γ)) + ρ (ι (h.symm γ)) (toV e (b (h.symm δ))) = _`. Rewrite using `[symm_iota ι h hh]`. Use `show b (h.symm (ι g)) = b g`.
+
+Rewrite using `[symm_iota' ι h hh]`.
+-/
 theorem exists_cocycle_of_continuous (ρ : Representation O Γ V) (htop : TopMatch e V) (h : G ≃ₜ Γ)
     (hh : ∀ g, h g = ι g) (b : G → TrV e V) (hb : b ∈ continuousCocycles (repL e ρ ι)) :
     ∃ d : Z1 ρ, ∀ g, ofV e (d.1 (ι g)) = b g := by
@@ -394,6 +500,17 @@ variable {O : Type} [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] [Topol
     [IsScalarTower K₀ Kk BdR] [IsScalarTower Qp K₀ BdR]
     (PD : PeriodData G Qp K₀ Kk B BdR)
 
+/- English proof (translation)
+Use `show Submodule.mkQ _ (cupCocycleZ1Z1 Dat.ρT Dat.ρT' (twist Dat.ε (FractionRing O)) Dat.bT Dat.contbT Dat.eqT Dat.contT' c d) = 0 ↔ _`. Rewrite using `[Submodule.mkQ_apply, Submodule.Quotient.mk_eq_zero, Submodule.mem_comap, Submodule.coe_subtype, separated_dvr_second_cohomology_mem]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨f, hf, hfe⟩`. Use `⟨fun g => e (f (ι g)), hK.1.comp (hf.comp hι), ?_⟩` and prove the remaining obligations.
+
+Use function extensionality and compare the values at `⟨g, g'⟩`. Establish `h1` using `congrFun hfe (ι g, ι g')`. Simplify using `only [d1_apply, cupCocycleZ1Z1_apply, twist_apply, Algebra.smul_def] at h1`. Use `show ((cycLL PD LL g : LLˣ) : LL) * e (f (ι g')) - e (f (ι (g * g'))) + e (f (ι g)) = e (Dat.bT (c.1 (ι g)) (Dat.ρT' (ι g) (d.1 (ι g'))))`. Rewrite using `[← hcyc g, ← map_mul, ← map_sub, ← map_add, map_mul ι]`.
+
+Conclude with `congrArg e h1`. Introduce and unpack `⟨f', hf', hfe'⟩`. Use `⟨fun γ => e.symm (f' (h.symm γ)), hK.2.comp (hf'.comp h.symm.continuous), ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `⟨γ, δ⟩`. Take `⟨g1, rfl⟩ : ∃ g1, ι g1 = γ` from `⟨h.symm γ, symm_iota ι h hh γ⟩`.
+
+Take `⟨g2, rfl⟩ : ∃ g2, ι g2 = δ` from `⟨h.symm δ, symm_iota ι h hh δ⟩`. Establish `h1` using `congrFun hfe' (g1, g2)`. Express the relevant statement in the definitionally equal form `((cycLL PD LL g1 : LLˣ) : LL) * f' g2 - f' (g1 * g2) + f' g1 = e (Dat.bT (c.1 (ι g1)) (Dat.ρT' (ι g1) (d.1 (ι g2)))) at h1`. Use `show ((Dat.ε (ι g1) : Oˣ) : O) • e.symm (f' (h.symm (ι g2))) - e.symm (f' (h.symm (ι g1 * ι g2))) + e.symm (f' (h.symm (ι g1))) = Dat.bT (c.1 (ι g1)) (Dat.ρT' (ι g1) (d.1 (ι g2)))`. Rewrite using `[← map_mul ι, symm_iota' ι h hh, symm_iota' ι h hh, symm_iota' ι h hh]`.
+
+Apply `e.injective` to reduce the goal to its premises. Rewrite using `[map_add, map_sub, Algebra.smul_def, map_mul, hcyc g1, e.apply_symm_apply, e.apply_symm_apply, e.apply_symm_apply]`. Conclude with `h1`.
+-/
 theorem cup_iff (hι : Continuous ι) (hK : HomeoK e) (hcyc : CycMatch Dat e ι PD) (h : G ≃ₜ Γ)
     (hh : ∀ g, h g = ι g) (c : Z1 Dat.ρT) (d : Z1 Dat.ρT') :
     ReciprocityTheory.ChartRestriction.T2.cupFG Dat (Submodule.mkQ _ c) (Submodule.mkQ _ d) = 0 ↔
@@ -429,6 +546,21 @@ theorem cup_iff (hι : Continuous ι) (hK : HomeoK e) (hcyc : CycMatch Dat e ι 
       e.apply_symm_apply]
     exact h1
 
+/- English proof (translation)
+Substitute `hZ hZ'` using the available equality. Take `⟨h, hh⟩` from `hι`. Establish `hιc : Continuous ι`. Rewrite using `[show (ι : G → Γ) = h from funext fun g => (hh g).symm]`. Conclude with `h.continuous`.
+
+Use `haveI : Module.Finite (FractionRing O) VT := finK_of_lat hreal.lat`. Use `haveI : Module.Finite (FractionRing O) VT' := finK' Dat hreal.perf`. Use `haveI : ContinuousConstSMul (FractionRing O) VT := hreal.cs`. Use `haveI : ContinuousConstSMul (FractionRing O) VT' := hreal.cs'`. Establish `fdV` using `fd_of_finK e (V := VT)`.
+
+Establish `fdV'` using `fd_of_finK e (V := VT')`. Establish `hcA : ∀ x, Continuous fun g => repL e Dat.ρT ι g x` using `fun x => (cont_iff e ht _).2 (hreal.contT.comp (hιc.prodMk continuous_const))`. Establish `hcA' : ∀ x, Continuous fun g => repL e Dat.ρT' ι g x` using `fun x => (cont_iff e ht' _).2 (Dat.contT'.comp (hιc.prodMk continuous_const))`. Set `A` to `repA (Qp := Qp) (OL := OL) Dat e ι fdV hcA`. Set `A'` to `repA' (Qp := Qp) (OL := OL) Dat e ι fdV' hcA'`.
+
+Establish `hB : ∀ x, d0 Dat.ρT x ∈ finZ e PD Dat.ρT ι` using `coboundary_mem_finite_classes e ι PD Dat.ρT ht hιc hreal.contT`. Establish `hB' : ∀ x, d0 Dat.ρT' x ∈ finZ e PD Dat.ρT' ι` using `coboundary_mem_finite_classes e ι PD Dat.ρT' ht' hιc Dat.contT'`. Take `⟨c, rfl⟩` from `Submodule.mkQ_surjective _ a`. Rewrite using `[mem_span_iff Dat.ρT _ hB c, mem_finZ]`. Establish `hcZ` using `continuous_cocycle_transport e ι Dat.ρT ht hιc c`.
+
+Establish `hdual` using `isDual1 Dat e ι PD hreal hcyc`. Use `((hbk A A' (pairLL Dat e) hdr hdual).1 _ hcZ).trans ?_` and prove the remaining obligations. Prove the components needed by the constructor for the conclusion. Introduce `H b hb`. Take `⟨d, rfl⟩` from `Submodule.mkQ_surjective _ b`.
+
+Establish `hd` using `(mem_span_iff Dat.ρT' _ hB' d).1 hb`. Conclude with `(cup_iff Dat e ι PD hιc hK hcyc h hh c d).2 (H _ hd)`. Introduce `H b hb`. Take `⟨d, hd⟩` from `exists_cocycle_of_continuous e ι Dat.ρT' ht' h hh b hb.1`. Establish `hbd : b = fun g => ofV e (d.1 (ι g))` using `funext fun g => (hd g).symm`.
+
+Substitute `hbd` using the available equality. Establish `hdZ : d.1 ∈ finZ e PD Dat.ρT' ι` using `hb`. Conclude with `(cup_iff Dat e ι PD hιc hK hcyc h hh c d).1 (H _ ((mem_span_iff Dat.ρT' _ hB' d).2 hdZ))`.
+-/
 theorem bka_gen [Module (FractionRing O) (H1 Dat.ρT)] [IsScalarTower O (FractionRing O) (H1 Dat.ρT)]
     [Module (FractionRing O) (H1 Dat.ρT')] [IsScalarTower O (FractionRing O) (H1 Dat.ρT')]
     (hbk : Formalism.MainNotions.LargeLevelLemmas.bkAAt PD LL OL) (hreal : Formalism.RepresentationBoundsCohomology.FIN.RealLat Dat) (hι : IotaHomeo ι)
@@ -483,12 +615,18 @@ open Formalism.MainNotions Formalism.MainNotions.N NumberField IsDedekindDomain 
 
 variable {D : D7} (i : D.nd.Loc) (dc : TruncatedSeriesCountingIdentities.Decl D i)
 
+/- English proof (translation)
+Take `⟨v, hv, rfl⟩` from `Finset.mem_image.1 hw`. Establish `hp : v ∈ K.plSet i dc` using `Finset.mem_union_left _ (Finset.mem_union_left _ hv)`. Rewrite using `[K.plOf_idx i dc hp]`. Conclude with `(dc.cover v).1 (Or.inl hv)`.
+-/
 theorem over_of_row {w : ℕ} (hw : w ∈ K.rowsN i dc) : K.plOf i dc w ∈ placesOver D.host.E (D.nd.l i) := by
   obtain ⟨v, hv, rfl⟩ := Finset.mem_image.1 hw
   have hp : v ∈ K.plSet i dc := Finset.mem_union_left _ (Finset.mem_union_left _ hv)
   rw [K.plOf_idx i dc hp]
   exact (dc.cover v).1 (Or.inl hv)
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨Br.ιHomeo (D.nbr i _ hn), fun _ => rfl⟩`.
+-/
 theorem iotaHomeo_rec {w : ℕ} (hn : K.plOf i dc w ∈ placesOver D.host.E (D.nd.l i)) :
     IotaHomeo (Br.iota D.nbr i _ hn) :=
   ⟨Br.ιHomeo (D.nbr i _ hn), fun _ => rfl⟩
@@ -515,6 +653,9 @@ def RowIn (w : ℕ) : Prop :=
     CycMatch (Dat w) (eK (D.nbr i _ hn)) (Br.iota D.nbr i _ hn) (Br.PD D.loc D.nbr i _ hn) ∧
     IsDR (Br.PD D.loc D.nbr i _ hn) (repL (eK (D.nbr i _ hn)) (Dat w).ρT (Br.iota D.nbr i _ hn))
 
+/- English proof (translation)
+Establish `hn` using `over_of_row i dc hw`. Take `⟨hK, ht, ht', hcyc, hdr⟩` from `hin hn`. Establish `hbk : LargeLevelLemmas.bkAAt (Br.PD D.loc D.nbr i _ hn) (Br.LLw (D.nbr i _ hn)) ↥(OL (D.nbr i _ hn).LL)` using `hBK _ hn (TruncatedSeriesCountingIdentities.CoefExt.self i _ hn) (hG _ hn)`. Introduce `a`. Conclude with `bka_gen (Dat w) (eK (D.nbr i _ hn)) (Br.iota D.nbr i _ hn) (Br.PD D.loc D.nbr i _ hn) hbk hreal (iotaHomeo_rec i dc hn) hK ht ht' hcyc hdr (fZ i dc w (Dat w).ρT) (fZ i dc w (Dat w).ρT') (fZ_pos i dc (Dat w).ρT hn) (fZ_pos i dc (Dat w).ρT' hn) a`.
+-/
 theorem bk_a_of_admitted_bk_a (hBK : LargeLevelLemmas.BlochKatoAnnihilators i) (hG : K.SelfGood i) {w : ℕ} (hw : w ∈ K.rowsN i dc)
     (hreal : Formalism.RepresentationBoundsCohomology.FIN.RealLat (Dat w)) (hin : RowIn i dc VT VT' Dat w) :
     Formalism.MainNotions.N.KHf.BKa i dc VT VT' Dat w := by

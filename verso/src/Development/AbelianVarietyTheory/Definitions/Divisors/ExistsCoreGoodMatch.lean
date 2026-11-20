@@ -14,6 +14,9 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 variable {D : D7}
 
+/- English proof (translation)
+Take `⟨T, hT, -⟩` from `(GlobalTheory.Member.CoreExist.exists_core D hO hZ hV).1`. Take `⟨s, hs⟩` from `Inhab.exists_root h`. Use `⟨T, hT, fun j hj e => ?_⟩` and prove the remaining obligations. Take `⟨Y, o, h1, h2⟩` from `Inhab.exists_good_match T hT j hj s hs h15 e`. Conclude with `⟨Y, o, h1, h2, by rw [h1.lev.1.2.1, h1.pd, hT.pins.2.1.1], Inhab.not_pull_one_zero Y h1 (Inhab.rank_pos T.toCore hT.pins j hj)⟩`.
+-/
 theorem exists_core_good_match (hO : OFull D) (hZ : OZeta D) (hV : VolTieG D) (h : 5 ≤ D.host.splitBound)
     (h15 : Nat.Coprime 15 (D.host.g 0 * D.host.g 1)) :
     ∃ T : CoreJ D, LawsJ T ∧ ∀ j, InR D j → ∀ e, ∃ (Y : Deep T.toCore j) (o : ℝ), Y.Good e o ∧ Y.Match ∧
@@ -29,27 +32,48 @@ section Cover
 
 variable {T : Core D} {j : ℕ} {Y : Deep T j} {e e' : ℕ} {o o' : ℝ}
 
+/- English proof (translation)
+The claim follows from `GlobalTheory.OneEmbeddingProbe.chi_eq_one _ (h.chiTriv σ hσ) k la γ hγ`.
+-/
 theorem chi_eq_one (h : Y.Good e o) (σ : Y.d.c₂.F →+* ℂ) (hσ : GoodEmb Y.d.c₂ σ) (k) (la) (γ)
     (hγ : γ ∈ ((Y.U σ).X k).Γ) : ((Y.U σ).X k).χ la γ = 1 :=
   GlobalTheory.OneEmbeddingProbe.chi_eq_one _ (h.chiTriv σ hσ) k la γ hγ
 
+/- English proof (translation)
+The claim follows from `Nat.pow_right_injective (by norm_num : 2 ≤ 15) (h.pd.symm.trans h'.pd)`.
+-/
 theorem exp_unique (h : Y.Good e o) (h' : Y.Good e' o') : e = e' :=
   Nat.pow_right_injective (by norm_num : 2 ≤ 15) (h.pd.symm.trans h'.pd)
 
+/- English proof (translation)
+The claim follows from `(Real.log_natCast_nonneg _).trans h.deg`.
+-/
 theorem size_nonneg (h : Y.Good e o) : 0 ≤ o := (Real.log_natCast_nonneg _).trans h.deg
 
+/- English proof (translation)
+The claim follows from `(h.unf Y.d.c₂.F.val.toRingHom rfl).1`.
+-/
 theorem rank_eq (h : Y.Good e o) : D.R.r = (T.Q.Dw j).p + (T.Q.Dw j).q := (h.unf Y.d.c₂.F.val.toRingHom rfl).1
 
+/- English proof (translation)
+Introduce `k _ _ _ _ _ a b y₂ y' y c1 c2 c3 c4`. Conclude with `(evalAt_add _ _ g g' y₂).trans ((congrArg₂ (· + ·) (h k a b y₂ y' y c1 c2 c3 c4) (h' k a b y₂ y' y c1 c2 c3 c4)).trans (evalAt_add _ _ f f' y).symm)`.
+-/
 theorem pull_add {f f' : T.R j} {g g' : Rul Y.d.Xo₂ Y.d.c₂} (h : Y.Pull f g) (h' : Y.Pull f' g') : Y.Pull (f + f') (g + g') := by
   intro k _ _ _ _ _ a b y₂ y' y c1 c2 c3 c4
   exact (evalAt_add _ _ g g' y₂).trans ((congrArg₂ (· + ·) (h k a b y₂ y' y c1 c2 c3 c4) (h' k a b y₂ y' y c1 c2 c3 c4)).trans
     (evalAt_add _ _ f f' y).symm)
 
+/- English proof (translation)
+Introduce `k _ _ _ _ _ a b y₂ y' y c1 c2 c3 c4`. Conclude with `(evalAt_mul _ _ g g' y₂).trans ((congrArg₂ (· * ·) (h k a b y₂ y' y c1 c2 c3 c4) (h' k a b y₂ y' y c1 c2 c3 c4)).trans (evalAt_mul _ _ f f' y).symm)`.
+-/
 theorem pull_mul {f f' : T.R j} {g g' : Rul Y.d.Xo₂ Y.d.c₂} (h : Y.Pull f g) (h' : Y.Pull f' g') : Y.Pull (f * f') (g * g') := by
   intro k _ _ _ _ _ a b y₂ y' y c1 c2 c3 c4
   exact (evalAt_mul _ _ g g' y₂).trans ((congrArg₂ (· * ·) (h k a b y₂ y' y c1 c2 c3 c4) (h' k a b y₂ y' y c1 c2 c3 c4)).trans
     (evalAt_mul _ _ f f' y).symm)
 
+/- English proof (translation)
+Introduce `x hx` and use `by have h2 : (x : Rul Y.d.Xo₂ Y.d.c₂) ∈ Submodule.span Y.d.c₂.F {g | ∃ f ∈ B, Y.Pull f g} := hx.2 have h3 : {g | ∃ f ∈ B, Y.Pull f g} ⊆ {g | ∃ f ∈ B', Y.Pull f g} := by rintro _ ⟨f, hf, hp⟩; exact ⟨f, h hf, hp⟩ exact ⟨hx.1, Submodule.span_mono h3 h2⟩`.
+-/
 theorem latOver_mono (G : WTZ D.host.E) {B B' : Set (T.R j)} (h : B ⊆ B') : Y.latOver G B ≤ Y.latOver G B' :=
   fun x hx => by
     have h2 : (x : Rul Y.d.Xo₂ Y.d.c₂) ∈ Submodule.span Y.d.c₂.F {g | ∃ f ∈ B, Y.Pull f g} := hx.2
@@ -57,6 +81,9 @@ theorem latOver_mono (G : WTZ D.host.E) {B B' : Set (T.R j)} (h : B ⊆ B') : Y.
       rintro _ ⟨f, hf, hp⟩; exact ⟨f, h hf, hp⟩
     exact ⟨hx.1, Submodule.span_mono h3 h2⟩
 
+/- English proof (translation)
+Use `eq_bot_iff.2 fun x hx => ?_` and prove the remaining obligations. Establish `h2 : (x : Rul Y.d.Xo₂ Y.d.c₂) ∈ Submodule.span Y.d.c₂.F {g | ∃ f ∈ (∅ : Set (T.R j)), Y.Pull f g}` using `hx.2`. Establish `e : {g | ∃ f ∈ (∅ : Set (T.R j)), Y.Pull f g} = ∅` using `by simp`. Rewrite `h2` using `[e, Submodule.span_empty, Submodule.mem_bot]`. Conclude with `(Submodule.mem_bot _).2 (Subtype.ext h2)`.
+-/
 theorem latOver_empty (G : WTZ D.host.E) : Y.latOver G ∅ = ⊥ := by
   refine eq_bot_iff.2 fun x hx => ?_
   have h2 : (x : Rul Y.d.Xo₂ Y.d.c₂) ∈ Submodule.span Y.d.c₂.F {g | ∃ f ∈ (∅ : Set (T.R j)), Y.Pull f g} := hx.2
@@ -71,6 +98,11 @@ section Base
 variable {G : Type} [Group G] [Fintype G] {Pl0 T0 : Type} {A : FamIn D.what₂.LL G Pl0 T0 D.R.m}
   {Ks : Type} [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] (R : RealDat D A Ks) (F : Face D A) (i : Fin D.R.m)
 
+/- English proof (translation)
+Establish `h : InfinitePlace.mk (sgAt D.what₂.embLL (InfinitePlace.mk σ)) = InfinitePlace.mk σ`. Unfold `sgAt`. Use `split_ifs with h`. Conclude with `h.symm`. Conclude with `InfinitePlace.mk_embedding _`.
+
+Establish `h2 : ‖sgAt D.what₂.embLL (InfinitePlace.mk σ) a‖ = ‖σ a‖`. Rewrite using `[← InfinitePlace.apply, h, InfinitePlace.apply]`. Rewrite using `[nrmR, map_smulₛₗ, norm_smul, h2, nrmR]`.
+-/
 theorem nrmR_smul (σ : D.what₂.LL →+* ℂ) (a : D.what₂.LL) (f : Fin (R.nW i) → D.what₂.LL) :
     nrmR R i σ (a • f) = ‖σ a‖ * nrmR R i σ f := by
   have h : InfinitePlace.mk (sgAt D.what₂.embLL (InfinitePlace.mk σ)) = InfinitePlace.mk σ := by
@@ -82,8 +114,16 @@ theorem nrmR_smul (σ : D.what₂.LL →+* ℂ) (a : D.what₂.LL) (f : Fin (R.n
     rw [← InfinitePlace.apply, h, InfinitePlace.apply]
   rw [nrmR, map_smulₛₗ, norm_smul, h2, nrmR]
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem latType_eq : latType R F i = latAll R i ⊓ (spType R F i).restrictScalars (𝓞 D.what₂.LL) := rfl
 
+/- English proof (translation)
+Use `eq_bot_iff.2 fun x hx => ?_` and prove the remaining obligations. Take `⟨y, hy⟩ : x ∈ LinearMap.range (eGood R i)` from `hx.1.2`. Establish `h0 : eGood R i x = 0` using `hx.2.2`. Use `LinearMap.congr_fun h y` as an intermediate fact. Rewrite `this` using `[LinearMap.comp_apply, hy, h0]`.
+
+Conclude with `(Submodule.mem_bot _).2 this.symm`.
+-/
 theorem latGood_inf_latBad (h : eGood R i ∘ₗ eGood R i = eGood R i) : latGood R F i ⊓ latBad R F i = ⊥ := by
   refine eq_bot_iff.2 fun x hx => ?_
   obtain ⟨y, hy⟩ : x ∈ LinearMap.range (eGood R i) := hx.1.2
@@ -99,6 +139,11 @@ section Weights
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E} (Dw : Datum H)
   (a : (E →+* ℂ) × ℕ → ℕ) (m : ℕ)
 
+/- English proof (translation)
+Establish `h1` using `exOf_add (laOf Dw a (2 * m)) (s • hodgeWt Dw) (m : ℤ) 0`. Establish `h2` using `exOf_weightOf (Dw := Dw) (fun x => (a x : ℤ)) m`. Establish `h3 : laOf Dw a (2 * m) = weightOf Dw (fun x => (a x : ℤ)) m` using `by simp [laOf]`. Rewrite `h1` using `[add_zero]`. Rewrite using `[h1, h3, h2]`.
+
+Use function extensionality and compare the values at `x`. Rewrite using `[shiftG, exZ_add]`. Simplify using `only [wtZ, exOf, Pi.add_apply]`. Use `push_cast`. Both sides reduce to the same expression.
+-/
 theorem exZ_shiftG (s : ℤ) : exZ Dw (shiftG Dw a (2 * m) s) = exOf Dw (laOf Dw a (2 * m) + s • hodgeWt Dw) m := by
   have h1 := exOf_add (laOf Dw a (2 * m)) (s • hodgeWt Dw) (m : ℤ) 0
   have h2 := exOf_weightOf (Dw := Dw) (fun x => (a x : ℤ)) m
@@ -111,15 +156,24 @@ theorem exZ_shiftG (s : ℤ) : exZ Dw (shiftG Dw a (2 * m) s) = exOf Dw (laOf Dw
   push_cast
   rfl
 
+/- English proof (translation)
+Simplify using `only [uMinus, hodgeWt, barWt, Pi.sub_apply, Pi.smul_apply, smul_eq_mul]`. Apply the tactic sequence `split_ifs <;> ring`.
+-/
 theorem uMinus_apply (n kc : ℕ) (c0 : ℤ) (τ : Psi H) (k : Fin (Dw.p + Dw.q)) :
     uMinus Dw a n kc c0 τ k = if (k : ℕ) < Dw.p then uWt Dw a n kc τ k else uWt Dw a n kc τ k + c0 := by
   simp only [uMinus, hodgeWt, barWt, Pi.sub_apply, Pi.smul_apply, smul_eq_mul]
   split_ifs <;> ring
 
+/- English proof (translation)
+Establish `h' : kc < Dw.p + Dw.q` using `by omega`. Simplify using `[anchor, laOf, weightOf, h, h']`.
+-/
 theorem anchor_big (kc : ℕ) (h : kc < Dw.p) (τ : Psi H) : anchor Dw a (2 * m) (kc + 1) τ = a (τ.1, kc) + m := by
   have h' : kc < Dw.p + Dw.q := by omega
   simp [anchor, laOf, weightOf, h, h']
 
+/- English proof (translation)
+Establish `h3 : laOf Dw a (2 * m) = weightOf Dw (fun x => (a x : ℤ)) m` using `by simp [laOf]`. Rewrite using `[h3, weightOf]`. Use `split_ifs`. Conclude with `abs_of_nonneg (by positivity)`. Rewrite using `[abs_of_nonpos (by omega)]; ring`.
+-/
 theorem abs_laOf (τ : Psi H) (k : Fin (Dw.p + Dw.q)) : |laOf Dw a (2 * m) τ k| =
     (if (k : ℕ) < Dw.p then a (τ.1, k) else a (conjEmb τ.1, Dw.q - 1 - ((k : ℕ) - Dw.p)) : ℕ) + m := by
   have h3 : laOf Dw a (2 * m) = weightOf Dw (fun x => (a x : ℤ)) m := by simp [laOf]
@@ -130,6 +184,9 @@ theorem abs_laOf (τ : Psi H) (k : Fin (Dw.p + Dw.q)) : |laOf Dw a (2 * m) τ k|
 
 end Weights
 
+/- English proof (translation)
+The claim follows from `(le_div_iff₀ (Real.log_pos (by norm_num))).1 (Nat.floor_le (div_nonneg (by positivity) (Real.log_pos (by norm_num)).le))`.
+-/
 theorem expL_le {L : ℝ} (h : 0 ≤ L) : expL L * Real.log 3 ≤ 3 * L :=
   (le_div_iff₀ (Real.log_pos (by norm_num))).1 (Nat.floor_le (div_nonneg (by positivity) (Real.log_pos (by norm_num)).le))
 

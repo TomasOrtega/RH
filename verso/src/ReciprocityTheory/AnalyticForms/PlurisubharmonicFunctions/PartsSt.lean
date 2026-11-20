@@ -49,6 +49,13 @@ end Densities
 
 section MdiscLinear
 
+/- English proof (translation)
+Establish `h1 : (∑ k ∈ S, A k) = fun i => ∑ k ∈ S, A k i`. Use extensionality with `i j`. Simplify using `[Matrix.sum_apply]`. Establish `h2` using `(Matrix.detRowAlternating : (Fin D → ℂ) [⋀^Fin D]→ₗ[ℂ] ℂ).toMultilinearMap.map_sum_finset (fun i k => A k i) (fun _ => S)`. Rewrite using `[h1]`.
+
+Use `h2.trans ?_` and prove the remaining obligations. Rewrite using `[← Finset.sum_filter]`. Apply `Finset.sum_congr` to reduce the goal to its premises. Use extensionality with `r`. Simplify using `[Fintype.mem_piFinset]`.
+
+Introduce `r _`. Both sides reduce to the same expression.
+-/
 theorem det_finsetSum_eq_sum_fun {D : ℕ} (A : Fin D → Matrix (Fin D) (Fin D) ℂ)
     (S : Finset (Fin D)) :
     (∑ k ∈ S, A k).det = ∑ r : Fin D → Fin D,
@@ -68,6 +75,11 @@ theorem det_finsetSum_eq_sum_fun {D : ℕ} (A : Fin D → Matrix (Fin D) (Fin D)
 def polCoef {D : ℕ} (r : Fin D → Fin D) : ℂ :=
   ∑ S : Finset (Fin D), (-1 : ℂ) ^ (D - S.card) * if (∀ i, r i ∈ S) then 1 else 0
 
+/- English proof (translation)
+Unfold `mdisc polCoef`. Use `congr 1`. Repeatedly rewrite using `[det_finsetSum_eq_sum_fun, Finset.mul_sum, Finset.sum_mul]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun r _ => Finset.sum_congr rfl fun S _ => ?_` and prove the remaining obligations.
+
+Apply the tactic sequence `split_ifs <;> ring`.
+-/
 theorem mdisc_eq_sum_polCoef {D : ℕ} (A : Fin D → Matrix (Fin D) (Fin D) ℂ) :
     mdisc A = (1 / (D.factorial : ℂ)) *
       ∑ r : Fin D → Fin D, polCoef r * (Matrix.of fun i => A (r i) i).det := by
@@ -79,6 +91,19 @@ theorem mdisc_eq_sum_polCoef {D : ℕ} (A : Fin D → Matrix (Fin D) (Fin D) ℂ
   refine Finset.sum_congr rfl fun r _ => Finset.sum_congr rfl fun S _ => ?_
   split_ifs <;> ring
 
+/- English proof (translation)
+Choose the witnesses or unpack the hypotheses as in `⟨a, ha⟩ : ∃ a, ∀ i, r i ≠ a := by`. Simplify using `only [Function.Surjective, not_forall, not_exists] at h`. Take `⟨a, ha⟩` from `h`. Conclude with `⟨a, fun i hi => ha i hi⟩`. Set `t : Finset (Fin D) → Finset (Fin D)` to `fun S => if a ∈ S then S.erase a else insert a S`.
+
+Establish `ht : Function.Involutive t`. Apply the tactic sequence `intro S; by_cases hS : a ∈ S <;> simp [t, hS]`. Set `f : Finset (Fin D) → ℂ` to `fun S => (-1 : ℂ) ^ (D - S.card) * if (∀ i, r i ∈ S) then 1 else 0`. Establish `hmem : ∀ S, (∀ i, r i ∈ t S) ↔ ∀ i, r i ∈ S`. Introduce `S`.
+
+Apply the tactic sequence `by_cases hS : a ∈ S <;> simp [t, hS, ha]`. Establish `key : ∀ S, f (t S) = - f S`. Introduce `S`. Simplify using `only [f, hmem]`. Distinguish the cases in `hS : a ∈ S`.
+
+Establish `h1 : 1 ≤ S.card` using `Finset.card_pos.mpr ⟨a, hS⟩`. Establish `h2 : S.card ≤ D` using `by simpa using Finset.card_le_univ S`. Establish `hc : (t S).card = S.card - 1` using `by simp [t, hS, Finset.card_erase_of_mem]`. Rewrite using `[hc, show D - (S.card - 1) = (D - S.card) + 1 by omega, pow_succ]`. Expand and normalize the polynomial expressions, which then agree.
+
+Establish `h2 : (t S).card ≤ D` using `by simpa using Finset.card_le_univ (t S)`. Establish `hc : (t S).card = S.card + 1` using `by simp [t, hS]`. Rewrite `h2` using `[hc]`. Rewrite using `[hc]`. Rewrite using `[show D - S.card = (D - (S.card + 1)) + 1 by omega, pow_succ]`.
+
+Expand and normalize the polynomial expressions, which then agree. Establish `hsum : ∑ S, f S = ∑ S, f (ht.toPerm t S)` using `(Equiv.sum_comp (ht.toPerm t) f).symm`. Simplify using `only [Function.Involutive.coe_toPerm, key, Finset.sum_neg_distrib] at hsum`. Establish `: ∑ S, f S = 0` using `by linear_combination hsum / 2`. Conclude with `this`.
+-/
 theorem polCoef_eq_zero {D : ℕ} (r : Fin D → Fin D) (h : ¬ Function.Surjective r) :
     polCoef r = 0 := by
   classical
@@ -114,6 +139,23 @@ theorem polCoef_eq_zero {D : ℕ} (r : Fin D → Fin D) (h : ¬ Function.Surject
   have : ∑ S, f S = 0 := by linear_combination hsum / 2
   exact this
 
+/- English proof (translation)
+Establish `key : ∀ r : Fin (n + 1) → Fin (n + 1), polCoef r * (Matrix.of fun i => (Fin.cons A B : Fin (n + 1) → Matrix (Fin (n + 1)) (Fin (n + 1)) ℂ) (r i) i).det = ∑ j, ∑ k, A j k * (polCoef r * (Matrix.of fun i => (Fin.cons (Matrix.single j k 1) B : Fin (n + 1) → Matrix (Fin (n + 1)) (Fin …`. Introduce `r`. Distinguish the cases in `hs : Function.Surjective r`. Establish `hinj` using `Finite.injective_iff_surjective.mpr hs`. Take `⟨i0, hi0⟩` from `hs 0`.
+
+Set `M : Fin (n + 1) → Fin (n + 1) → ℂ` to `fun i => (Fin.cons A B : Fin (n + 1) → Matrix (Fin (n + 1)) (Fin (n + 1)) ℂ) (r i) i`. Establish `hg : ∀ X : Matrix (Fin (n + 1)) (Fin (n + 1)) ℂ, (Matrix.of fun i => (Fin.cons X B : Fin (n + 1) → Matrix (Fin (n + 1)) (Fin (n + 1)) ℂ) (r i) i) = Function.update M i0 (X i0)`. Introduce `X`. Use function extensionality and compare the values at `i`. Distinguish the cases in `hi : i = i0`.
+
+Substitute `hi show (Fin.cons X B : Fin (n + 1) → Matrix (Fin (n + 1)) (Fin (n + 1)) ℂ) (r i) i = _` using the available equality. Simplify using `[hi0]`. Establish `hr : r i ≠ 0` using `fun h => hi (hinj (h.trans hi0.symm))`. Take `⟨m, hm⟩` from `Fin.exists_succ_eq.mpr hr`. Use `show (Fin.cons X B : Fin (n + 1) → Matrix (Fin (n + 1)) (Fin (n + 1)) ℂ) (r i) i = _`.
+
+Simplify using `[M, hi, ← hm]`. Set `Lm` to `(Matrix.detRowAlternating : (Fin (n + 1) → ℂ) [⋀^Fin (n + 1)]→ₗ[ℂ] ℂ).toMultilinearMap.toLinearMap M i0`. Establish `hL : ∀ X : Matrix (Fin (n + 1)) (Fin (n + 1)) ℂ, (Matrix.of fun i => (Fin.cons X B : Fin (n + 1) → Matrix (Fin (n + 1)) (Fin (n + 1)) ℂ) (r i) i).det = Lm (X i0)`. Introduce `X`. Rewrite using `[hg]`.
+
+Both sides reduce to the same expression. Establish `hA : A i0 = ∑ j, ∑ k, A j k • (Matrix.single j k (1 : ℂ)) i0`. Use extensionality with `c`. Simplify using `only [Finset.sum_apply, Pi.smul_apply, Matrix.single_apply, smul_eq_mul]`. Rewrite using `[Finset.sum_eq_single i0 (by intro b _ hb; simp [hb]) (by simp), Finset.sum_eq_single c (by intro b _ hb; simp [hb]) (by simp)]`.
+
+Simplify using the standard rewrite rules. Repeatedly rewrite using `[hL]`. Rewrite using `[hA, map_sum]`. Repeatedly rewrite using `[map_sum, map_smul, smul_eq_mul, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun j _ => Finset.sum_congr rfl fun k _ => by ring` and prove the remaining obligations.
+
+Simplify using `[polCoef_eq_zero r hs]`. Rewrite using `[mdisc_eq_sum_polCoef]`. Repeatedly rewrite using `[mdisc_eq_sum_polCoef, key, Finset.mul_sum]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[Finset.sum_comm]`. Conclude with `Finset.sum_congr rfl fun k _ => Finset.sum_congr rfl fun r _ => by ring`.
+-/
 theorem mdisc_cons_eq_sum' {n : ℕ} (A : Matrix (Fin (n + 1)) (Fin (n + 1)) ℂ)
     (B : Fin n → Matrix (Fin (n + 1)) (Fin (n + 1)) ℂ) :
     mdisc (Fin.cons A B) = ∑ j, ∑ k, A j k *
@@ -172,6 +214,11 @@ theorem mdisc_cons_eq_sum' {n : ℕ} (A : Matrix (Fin (n + 1)) (Fin (n + 1)) ℂ
   rw [Finset.sum_comm]
   exact Finset.sum_congr rfl fun k _ => Finset.sum_congr rfl fun r _ => by ring
 
+/- English proof (translation)
+Establish `hu : (Finset.univ : Finset (Fin (n + 1))) = insert 0 (Finset.univ.map (Fin.succEmb n))`. Apply the tactic sequence `ext x; cases x using Fin.cases <;> simp`. Establish `h0 : (0 : Fin (n + 1)) ∉ Finset.univ.map (Fin.succEmb n)`. Simplify using `[Fin.succ_ne_zero]`. Establish `hp : (Finset.univ.map (Fin.succEmb n)).powerset = (Finset.univ : Finset (Finset (Fin n))).map (Finset.mapEmbedding (Fin.succEmb n)).toEmbedding`.
+
+Use extensionality with `t`. Simplify using `[Finset.subset_map_iff, eq_comm]`. Rewrite using `[← Finset.powerset_univ, hu, Finset.sum_powerset_insert h0, hp, Finset.sum_map, Finset.sum_map, ← Finset.sum_add_distrib]`. Both sides reduce to the same expression.
+-/
 theorem sum_finset_fin_succ {β : Type*} [AddCommMonoid β] {n : ℕ} (g : Finset (Fin (n + 1)) → β) :
     ∑ S, g S = ∑ S : Finset (Fin n),
       (g (S.map (Fin.succEmb n)) + g (insert 0 (S.map (Fin.succEmb n)))) := by
@@ -188,6 +235,15 @@ theorem sum_finset_fin_succ {β : Type*} [AddCommMonoid β] {n : ℕ} (g : Finse
     Finset.sum_map, Finset.sum_map, ← Finset.sum_add_distrib]
   rfl
 
+/- English proof (translation)
+Establish `h1 : Matrix.single j j 1 + M = M.updateRow j (Pi.single j 1 + M j)`. Use extensionality with `a b`. Distinguish the cases in `ha : a = j`. Substitute `ha` using the available equality. Distinguish the cases in `hb : b = a`.
+
+Simplify using `[hb]`. Simplify using `[hb, Ne.symm hb]`. Simplify using `[ha, Ne.symm ha]`. Rewrite using `[h1, Matrix.det_updateRow_add, Matrix.updateRow_eq_self, add_comm]`. Use `congr 1`.
+
+Rewrite using `[Matrix.det_succ_row _ j, Finset.sum_eq_single j]`. Establish `hs : ((M.updateRow j (Pi.single j 1)).submatrix j.succAbove j.succAbove) = M.submatrix j.succAbove j.succAbove`. Use extensionality with `a b`. Simplify using the standard rewrite rules. Rewrite using `[hs]`.
+
+Simplify using `[Even.neg_one_pow ⟨(j : ℕ), rfl⟩]`. Introduce `k _ hk`. Simplify using `[hk]`. Simplify using the standard rewrite rules.
+-/
 theorem det_single_add {n : ℕ} (j : Fin (n + 1)) (M : Matrix (Fin (n + 1)) (Fin (n + 1)) ℂ) :
     (Matrix.single j j 1 + M).det = M.det + (M.submatrix j.succAbove j.succAbove).det := by
   classical
@@ -210,11 +266,23 @@ theorem det_single_add {n : ℕ} (j : Fin (n + 1)) (M : Matrix (Fin (n + 1)) (Fi
   · intro k _ hk; simp [hk]
   · simp
 
+/- English proof (translation)
+Use extensionality with `a b`. Simplify using `[Matrix.sum_apply]`.
+-/
 theorem submatrix_finsetSum {ι : Type*} {n m : ℕ} (f : Fin m → Fin n)
     (B : ι → Matrix (Fin n) (Fin n) ℂ) (S : Finset ι) :
     (∑ k ∈ S, B k).submatrix f f = ∑ k ∈ S, (B k).submatrix f f := by
   ext a b; simp [Matrix.sum_apply]
 
+/- English proof (translation)
+Use `set X : Fin (n + 1) → Matrix (Fin (n + 1)) (Fin (n + 1)) ℂ := Fin.cons (Matrix.single j j 1) B with hX`. Establish `hX0 : X 0 = Matrix.single j j 1` using `by simp [X]`. Establish `hXs : ∀ k : Fin n, X k.succ = B k` using `fun k => by simp [X]`. Establish `core : ∑ S : Finset (Fin (n + 1)), (-1 : ℂ) ^ (n + 1 - S.card) * (∑ k ∈ S, X k).det = ∑ S : Finset (Fin n), (-1 : ℂ) ^ (n - S.card) * (∑ k ∈ S, (B k).submatrix j.succAbove j.succAbove).det`. Rewrite using `[sum_finset_fin_succ]`.
+
+Use `Finset.sum_congr rfl fun S _ => ?_` and prove the remaining obligations. Establish `h0 : (0 : Fin (n + 1)) ∉ S.map (Fin.succEmb n)` using `by simp [Fin.succ_ne_zero]`. Establish `hsum : ∑ k ∈ S.map (Fin.succEmb n), X k = ∑ k ∈ S, B k`. Rewrite using `[Finset.sum_map]`. Conclude with `Finset.sum_congr rfl fun k _ => hXs k`.
+
+Establish `hS : S.card ≤ n` using `by simpa using Finset.card_le_univ S`. Establish `hc : (insert 0 (S.map (Fin.succEmb n))).card = S.card + 1`. Rewrite using `[Finset.card_insert_of_notMem h0, Finset.card_map]`. Rewrite using `[Finset.sum_insert h0, hsum, hc, Finset.card_map, hX0, det_single_add, submatrix_finsetSum, show n + 1 - S.card = (n - S.card) + 1 by omega, show n + 1 - (S.card + 1) = n - S.card by omega, pow_succ]`. Expand and normalize the polynomial expressions, which then agree.
+
+Unfold `mdisc`. Rewrite using `[core, Nat.factorial_succ]`. Use `push_cast`. Clear the denominators using the available nonvanishing facts.
+-/
 theorem mixedCof_diag' {n : ℕ} (B : Fin n → Matrix (Fin (n + 1)) (Fin (n + 1)) ℂ) (j : Fin (n + 1)) :
     mdisc (Fin.cons (Matrix.single j j 1) B : Fin (n + 1) → Matrix (Fin (n + 1)) (Fin (n + 1)) ℂ) =
       (1 / ((n + 1 : ℕ) : ℂ)) * mdisc (fun i => (B i).submatrix j.succAbove j.succAbove) := by
@@ -249,6 +317,9 @@ section Statements
 
 variable {n : ℕ}
 
+/- English proof (translation)
+Conclude with `mdisc_cons_eq_sum' A B`.
+-/
 theorem mdisc_cons_eq_sum (A : Matrix (Fin (n + 1)) (Fin (n + 1)) ℂ)
     (B : Fin n → Matrix (Fin (n + 1)) (Fin (n + 1)) ℂ) :
     mdisc (Fin.cons A B) = ∑ j, ∑ k, A j k * mixedCof B j k := by
@@ -317,6 +388,9 @@ def MaDensCofStatement : Prop :=
       maDens (Fin.cons v φ) z = ((n + 1).factorial : ℝ) * (2 / Real.pi) ^ (n + 1) *
         (∑ j, ∑ k, hessCof φ z j k * dz j (dzb k (cplx v)) z).re
 
+/- English proof (translation)
+Conclude with `mixedCof_diag' B j`.
+-/
 theorem mixedCof_diag (B : Fin n → Matrix (Fin (n + 1)) (Fin (n + 1)) ℂ) (j : Fin (n + 1)) :
     mixedCof B j j = (1 / ((n + 1 : ℕ) : ℂ)) *
       mdisc (fun i => (B i).submatrix j.succAbove j.succAbove) := by

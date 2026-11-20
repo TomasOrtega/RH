@@ -10,12 +10,23 @@ attribute [local instance] MvPolynomial.gradedAlgebra
 abbrev D (i : Fin 2) : P1.Opens :=
   Proj.basicOpen (MvPolynomial.homogeneousSubmodule (Fin 2) ℤ) (MvPolynomial.X i)
 
+/- English proof (translation)
+The claim follows from `(MvPolynomial.mem_homogeneousSubmodule _ _).mpr (MvPolynomial.isHomogeneous_X ℤ i)`.
+-/
 lemma X_mem (i : Fin 2) : (MvPolynomial.X i : MvPolynomial (Fin 2) ℤ) ∈ MvPolynomial.homogeneousSubmodule (Fin 2) ℤ 1 :=
   (MvPolynomial.mem_homogeneousSubmodule _ _).mpr (MvPolynomial.isHomogeneous_X ℤ i)
 
+/- English proof (translation)
+The claim follows from `Proj.isAffineOpen_basicOpen _ _ (X_mem i) one_pos`.
+-/
 lemma D_affine (i : Fin 2) : IsAffineOpen (D i) :=
   Proj.isAffineOpen_basicOpen _ _ (X_mem i) one_pos
 
+/- English proof (translation)
+Apply `Proj.iSup_basicOpen_eq_top'` to reduce the goal to its premises. Conclude with `fun i => ⟨1, X_mem i⟩`. Rewrite using `[eq_top_iff]`. Introduce `x _`. Establish `hx : x ∈ Algebra.adjoin ℤ (Set.range (MvPolynomial.X : Fin 2 → MvPolynomial (Fin 2) ℤ))`.
+
+Rewrite using `[MvPolynomial.adjoin_range_X]`. Discharge the goal by the elementary cases of `trivial`. Establish `h : Algebra.adjoin ℤ (Set.range (MvPolynomial.X : Fin 2 → MvPolynomial (Fin 2) ℤ)) ≤ (Algebra.adjoin (MvPolynomial.homogeneousSubmodule (Fin 2) ℤ 0) (Set.range (MvPolynomial.X : Fin 2 → MvPolynomial (Fin 2) ℤ))).restrictScalars ℤ` using `Algebra.adjoin_le Algebra.subset_adjoin`. Conclude with `h hx`.
+-/
 lemma D_cover : ⨆ i, D i = ⊤ := by
   apply Proj.iSup_basicOpen_eq_top'
   · exact fun i => ⟨1, X_mem i⟩

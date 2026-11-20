@@ -8,6 +8,25 @@ import Development.AbelianVarietyTheory.Proofs.TwistedOperators.JordanHolderMult
 
 open GlobalTheory.PRep GlobalTheory.SmGL GlobalTheory.SplitWeil GlobalTheory.LocGL ValuativeRel
 
+/- English proof (translation)
+Introduce `α _ _ Γ _ hcomm Y _ _ τ H hirr hne g hg`. Establish `hfixall : ∀ a (h : H a) (y : Y), τ (Pi.mulSingle a (h : Γ a)) y = y`. Introduce `a`. Establish `hc : ∀ (x : Γ a) (g' : ∀ b, Γ b), Pi.mulSingle a x * g' = g' * Pi.mulSingle a x`. Introduce `x g'`.
+
+Use function extensionality and compare the values at `b`. Simplify using `only [Pi.mul_apply]`. Conclude with `hcomm b _ _`. Set `R : Subrepresentation τ` to `{ toSubmodule := fixed (τ.comp (MonoidHom.mulSingle Γ a) : Representation ℂ (Γ a) Y) (H a) apply_mem_toSubmodule := by`. Introduce `g' y hy h`.
+
+Establish `hy'` using `hy h`. Simplify using `only [MonoidHom.one_apply, Units.val_one, one_smul, MonoidHom.comp_apply, MonoidHom.mulSingle_apply] at hy' ⊢`. Rewrite using `[← Module.End.mul_apply, ← map_mul, hc, map_mul, Module.End.mul_apply, hy'] }`. Establish `hR : R = ⊤`. Break down `IsSimpleOrder.eq_bot_or_eq_top R with h | h` into its components or cases.
+
+It suffices to derive a contradiction. Apply `hne a` to reduce the goal to its premises. Use `congrArg Subrepresentation.toSubmodule h` as an intermediate fact. Conclude with `this`. Conclude with `h`.
+
+Introduce `h y`. Establish `hy : y ∈ R.toSubmodule`. Rewrite using `[hR]`. Conclude with `Submodule.mem_top`. Use `hy h` as an intermediate fact.
+
+Simplify using `using this`. Use `letI : ∀ a, CommGroup (Γ a) := fun a => { (inferInstance : Group (Γ a)) with mul_comm := hcomm a }`. Establish `hs : ∀ (s : Finset α) (y : Y), τ (∏ a ∈ s, Pi.mulSingle a (g a)) y = y`. Introduce `s`. Proceed by induction on `s using Finset.induction_on with`.
+
+Consider the case `empty`. Introduce `y`. Rewrite using `[Finset.prod_empty, map_one, Module.End.one_apply]`. Consider the case `insert a s ha ih`. Introduce `y`.
+
+Rewrite using `[Finset.prod_insert ha, map_mul, Module.End.mul_apply, ih]`. Conclude with `hfixall a ⟨g a, hg a⟩ y`. Establish `hg' : g = ∏ a, Pi.mulSingle a (g a)` using `(Finset.univ_prod_mulSingle g).symm`. Use extensionality with `y`. Rewrite using `[Module.End.one_apply]`.
+
+Use `conv_lhs => rw [hg']`. Conclude with `hs Finset.univ y`.
+-/
 theorem UpperTheory.eq_one_of_irreducible_pi_abelian_fixed_ne_bot :
     ∀ (α : Type) [Fintype α] [DecidableEq α] (Γ : α → Type) [∀ a, Group (Γ a)], (∀ a (x y : Γ a), x * y = y * x) →
     ∀ (Y : Type) [AddCommGroup Y] [Module ℂ Y] (τ : Representation ℂ (∀ a, Γ a) Y) (H : ∀ a, Subgroup (Γ a)), τ.IsIrreducible →

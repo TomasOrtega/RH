@@ -13,10 +13,26 @@ variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algeb
   (σ : E →ₐ[F] E) {n : ℕ} (J : Matrix (Fin n) (Fin n) E) (v : HeightOneSpectrum (𝓞 F))
   (Λ : Set (Fin n → E))
 
+/- English proof (translation)
+The claim follows from `(hSD y).1 hy x hx`.
+-/
 theorem hR_mem_oEv (hSD : IsSDLoc σ J v Λ) {x y : Fin n → Fv F v ⊗[F] E}
     (hx : x ∈ latLoc (E := E) v Λ) (hy : y ∈ latLoc (E := E) v Λ) :
     hR (Fv F v) σ J x y ∈ OEv (E := E) v := (hSD y).1 hy x hx
 
+/- English proof (translation)
+Unfold `latLoc OEv at *`. Simplify using `only [SetLike.mem_coe] at ho hx ⊢`. Proceed by induction on `ho using Submodule.span_induction with`. Consider the case `mem o' ho'`. Take `⟨e, -, rfl⟩` from `ho'`.
+
+Proceed by induction on `hx using Submodule.span_induction with`. Consider the case `mem x' hx'`. Take `⟨l, hl, rfl⟩` from `hx'`. Apply `Submodule.subset_span` to reduce the goal to its premises. Use `⟨e • l, L.smul_mem e hl, ?_⟩` and prove the remaining obligations.
+
+Use function extensionality and compare the values at `i`. Use `show inclR (F := F) (Fv F v) ((e • l) i) = inclR (F := F) (Fv F v) (e : E) * inclR (F := F) (Fv F v) (l i)`. Rewrite using `[← map_mul]`. Use `congr 1`. Consider the case `zero => rw [smul_zero]`.
+
+Conclude with `zero_mem _`. Consider the case `add a b _ _ ha hb => rw [smul_add]`. Conclude with `add_mem ha hb`. Consider the case `smul r a _ ha => rw [smul_comm]`. Conclude with `Submodule.smul_mem _ r ha`.
+
+Consider the case `zero => rw [zero_smul]`. Conclude with `zero_mem _`. Consider the case `add a b _ _ ha hb => rw [add_smul]`. Conclude with `add_mem ha hb`. Consider the case `smul r a _ ha => rw [smul_assoc]`.
+
+Conclude with `Submodule.smul_mem _ r ha`.
+-/
 theorem oEv_smul_mem (L : Submodule (𝓞 E) (Fin n → E)) {o : Fv F v ⊗[F] E} (ho : o ∈ OEv (E := E) v)
     {x : Fin n → Fv F v ⊗[F] E} (hx : x ∈ latLoc (E := E) v (L : Set (Fin n → E))) :
     o • x ∈ latLoc (E := E) v (L : Set (Fin n → E)) := by
@@ -49,6 +65,9 @@ variable {R : Type} [CommRing R] [Algebra F R]
 def crossM {a : ℕ} (x W : Fin a → Fin n → R ⊗[F] E) : Matrix (Fin a) (Fin a) (R ⊗[F] E) :=
   fun i j => hR R σ J (x i) (W j) + hR R σ J (W i) (x j)
 
+/- English proof (translation)
+Unfold `hR`. Simplify using `only [Formalism.UG.hform]`. Simplify using `[Finset.sum_add_distrib, add_mul, mul_add, map_add, Pi.add_apply, Matrix.mulVec_add, Matrix.add_mulVec, dotProduct_add, add_dotProduct]`.
+-/
 theorem hR_add_left (x x' y : Fin n → R ⊗[F] E) :
     hR R σ J (x + x') y = hR R σ J x y + hR R σ J x' y := by
   unfold hR
@@ -56,6 +75,9 @@ theorem hR_add_left (x x' y : Fin n → R ⊗[F] E) :
   simp [Finset.sum_add_distrib, add_mul, mul_add, map_add, Pi.add_apply, Matrix.mulVec_add,
     Matrix.add_mulVec, dotProduct_add, add_dotProduct]
 
+/- English proof (translation)
+Unfold `hR`. Simplify using `only [Formalism.UG.hform]`. Simplify using `[Finset.sum_add_distrib, add_mul, mul_add, map_add, Pi.add_apply, Matrix.mulVec_add, Matrix.add_mulVec, dotProduct_add, add_dotProduct]`.
+-/
 theorem hR_add_right (x y y' : Fin n → R ⊗[F] E) :
     hR R σ J x (y + y') = hR R σ J x y + hR R σ J x y' := by
   unfold hR
@@ -63,6 +85,9 @@ theorem hR_add_right (x y y' : Fin n → R ⊗[F] E) :
   simp [Finset.sum_add_distrib, add_mul, mul_add, map_add, Pi.add_apply, Matrix.mulVec_add,
     Matrix.add_mulVec, dotProduct_add, add_dotProduct]
 
+/- English proof (translation)
+Use extensionality with `i j`. Use `first`. Consider the case `(simp only [gramR, crossM, Matrix.add_apply, Pi.add_apply, Matrix.of_apply, hR_add_left, hR_add_right]; abel)`. Consider the case `(simp [gramR, crossM, hR_add_left, hR_add_right]; abel)`.
+-/
 theorem gramR_add {a : ℕ} (x W : Fin a → Fin n → R ⊗[F] E) :
     gramR R σ J (x + W) = gramR R σ J x + crossM σ J x W + gramR R σ J W := by
   ext i j
@@ -70,12 +95,18 @@ theorem gramR_add {a : ℕ} (x W : Fin a → Fin n → R ⊗[F] E) :
   | (simp only [gramR, crossM, Matrix.add_apply, Pi.add_apply, Matrix.of_apply, hR_add_left, hR_add_right]; abel)
   | (simp [gramR, crossM, hR_add_left, hR_add_right]; abel)
 
+/- English proof (translation)
+Use extensionality with `i j`. Simplify using `only [crossM, Matrix.add_apply, Pi.add_apply, hR_add_left, hR_add_right]`. Normalize the expressions using the abelian group laws.
+-/
 theorem crossM_add_left {a : ℕ} (x x' W : Fin a → Fin n → R ⊗[F] E) :
     crossM σ J (x + x') W = crossM σ J x W + crossM σ J x' W := by
   ext i j
   simp only [crossM, Matrix.add_apply, Pi.add_apply, hR_add_left, hR_add_right]
   abel
 
+/- English proof (translation)
+Rewrite using `[gramR_add σ J (y + Z) W, gramR_add σ J y W, crossM_add_left]`. Normalize the expressions using the abelian group laws.
+-/
 theorem gram_rem {a : ℕ} (y Z W : Fin a → Fin n → R ⊗[F] E) :
     gramR R σ J (y + Z + W) - gramR R σ J (y + Z) -
         (gramR R σ J (y + W) - gramR R σ J y - gramR R σ J W) =
@@ -87,11 +118,19 @@ end Alg
 
 section Rem
 
+/- English proof (translation)
+Use `first`. Consider the case `(simp [sigR, sc]; done)`. Consider the case `(unfold sigR sc; done)`.
+-/
 theorem sigR_sc (r : Fv F v) : sigR (Fv F v) σ (sc (E := E) v r) = sc (E := E) v r := by
   first
   | (simp [sigR, sc]; done)
   | (unfold sigR sc; done)
 
+/- English proof (translation)
+Establish `hs : ∀ u : Fv F v, algebraMap (Fv F v) (Fv F v ⊗[F] E) u = sc (E` using `E) v u := fun u => rfl`. Establish `hm : sc (E` using `E) v (r * t) = sc (E := E) v r * sc (E := E) v t := by`. Rewrite using `[← hs, ← hs, ← hs, map_mul]`. Unfold `hR`. Simplify using `only [Formalism.UG.hform, Pi.smul_apply, Algebra.smul_def, map_mul, hs, sigR_sc, hm, Finset.mul_sum]`.
+
+Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem hR_smul_smul (r t : Fv F v) (x y : Fin n → Fv F v ⊗[F] E) :
     hR (Fv F v) σ J (r • x) (t • y) = sc (E := E) v (r * t) * hR (Fv F v) σ J x y := by
   have hs : ∀ u : Fv F v, algebraMap (Fv F v) (Fv F v ⊗[F] E) u = sc (E := E) v u := fun u => rfl
@@ -102,6 +141,11 @@ theorem hR_smul_smul (r t : Fv F v) (x y : Fin n → Fv F v ⊗[F] E) :
   refine Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => ?_
   ring
 
+/- English proof (translation)
+Unfold `OEv at ho ⊢`. Establish `h : sc (E` using `E) v r * o = (⟨r, hr⟩ : v.adicCompletionIntegers F) • o := by first`. Consider the case `(rw [Algebra.smul_def, IsScalarTower.algebraMap_apply (v.adicCompletionIntegers F) (Fv F v) (Fv F v ⊗[F] E)]; rfl)`. Consider the case `(rw [Algebra.smul_def]; rfl)`. Consider the case `rfl`.
+
+Rewrite using `[h]`. Conclude with `Submodule.smul_mem _ _ ho`.
+-/
 theorem sc_mul_mem_oEv {r : Fv F v} (hr : r ∈ v.adicCompletionIntegers F) {o : Fv F v ⊗[F] E}
     (ho : o ∈ OEv (E := E) v) : sc (E := E) v r * o ∈ OEv (E := E) v := by
   unfold OEv at ho ⊢
@@ -114,6 +158,15 @@ theorem sc_mul_mem_oEv {r : Fv F v} (hr : r ∈ v.adicCompletionIntegers F) {o :
   rw [h]
   exact Submodule.smul_mem _ _ ho
 
+/- English proof (translation)
+Establish `ht : ϖ ^ (k + 1) ≠ 0` using `pow_ne_zero _ h0`. Unfold `hN PI.VolStabSW.smulSub`. Rewrite using `[AddSubgroup.mem_map]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨w, hw, rfl⟩ i j`.
+
+Use `⟨(w : Matrix (Fin a) (Fin a) (Fv F v ⊗[F] E)) i j, hw i j, ?_⟩` and prove the remaining obligations. Use `show ((ϖ ^ (k + 1)) • (w : Matrix (Fin a) (Fin a) (Fv F v ⊗[F] E))) i j = _`. Rewrite using `[Matrix.smul_apply, Algebra.smul_def]`. Both sides reduce to the same expression. Introduce `h choose c hc hzc using h`.
+
+Use `⟨(ϖ ^ (k + 1))⁻¹ • z, ?_, ?_⟩` and prove the remaining obligations. Introduce `i j show ((ϖ ^ (k + 1))⁻¹ • (z : Matrix (Fin a) (Fin a) (Fv F v ⊗[F] E))) i j ∈ OEv (E := E) v`. Rewrite using `[Matrix.smul_apply, hzc i j, Algebra.smul_def, ← mul_assoc]`. Establish `e : algebraMap (Fv F v) (Fv F v ⊗[F] E) (ϖ ^ (k + 1))⁻¹ * sc (E` using `E) v (ϖ ^ (k + 1)) = 1 := by show algebraMap (Fv F v) (Fv F v ⊗[F] E) (ϖ ^ (k + 1))⁻¹ * algebraMap (Fv F v) (Fv F v ⊗[F] E) (ϖ ^ (k + 1)) = 1`. Rewrite using `[← map_mul, inv_mul_cancel₀ ht, map_one]`.
+
+Rewrite using `[e, one_mul]`. Conclude with `hc i j`. Use `show (ϖ ^ (k + 1)) • ((ϖ ^ (k + 1))⁻¹ • z) = z`. Rewrite using `[smul_smul, mul_inv_cancel₀ ht, one_smul]`.
+-/
 theorem mem_hN (ϖ : Fv F v) (h0 : ϖ ≠ 0) (a k : ℕ) (z : HermR (Fv F v) σ a) :
     z ∈ hN σ v ϖ a k ↔ ∀ i j, ∃ c ∈ OEv (E := E) v,
       (z : Matrix (Fin a) (Fin a) (Fv F v ⊗[F] E)) i j = sc (E := E) v (ϖ ^ (k + 1)) * c := by
@@ -141,6 +194,15 @@ theorem mem_hN (ϖ : Fv F v) (h0 : ϖ ≠ 0) (a k : ℕ) (z : HermR (Fv F v) σ 
     · show (ϖ ^ (k + 1)) • ((ϖ ^ (k + 1))⁻¹ • z) = z
       rw [smul_smul, mul_inv_cancel₀ ht, one_smul]
 
+/- English proof (translation)
+Unfold `lamN PI.VolStabSW.smulSub at hZ hW`. Take `⟨Z', hZ', rfl⟩` from `AddSubgroup.mem_map.1 hZ`. Take `⟨W', hW', rfl⟩` from `AddSubgroup.mem_map.1 hW`. Rewrite using `[mem_hN σ v ϖ h0]`. Introduce `i j`.
+
+Establish `hm : ∀ r t : Fv F v, sc (E` using `E) v (r * t) = sc (E := E) v r * sc (E := E) v t := by`. Introduce `r t`. Use `show algebraMap (Fv F v) (Fv F v ⊗[F] E) (r * t) = algebraMap (Fv F v) (Fv F v ⊗[F] E) r * algebraMap (Fv F v) (Fv F v ⊗[F] E) t`. Conclude with `map_mul _ _ _`. Use `⟨hR (Fv F v) σ J (Z' i) (W' j) + hR (Fv F v) σ J (W' i) (Z' j) + sc (E := E) v (ϖ ^ k) * hR (Fv F v) σ J (W' i) (W' j), oEv_add v (oEv_add v (hR_mem_oEv σ J v Λ hSD (hZ' i) (hW' j)) (hR_mem_oEv σ J v Λ hSD (hW' i) (hZ' j))) (sc_mul_mem_oEv v (pow_mem hint k) (hR_mem_oEv σ J v Λ h …` and prove the remaining obligations.
+
+Rewrite using `[hz]`. Use `show hR (Fv F v) σ J ((ϖ ^ (0 + 1)) • Z' i) ((ϖ ^ (k + 1)) • W' j) + hR (Fv F v) σ J ((ϖ ^ (k + 1)) • W' i) ((ϖ ^ (0 + 1)) • Z' j) + hR (Fv F v) σ J ((ϖ ^ (k + 1)) • W' i) ((ϖ ^ (k + 1)) • W' j) = _`. Rewrite using `[hR_smul_smul, hR_smul_smul, hR_smul_smul]`. Establish `e1 : ϖ ^ (0 + 1) * ϖ ^ (k + 1) = ϖ ^ (k + 1 + 1)` using `by ring`. Establish `e2 : ϖ ^ (k + 1) * ϖ ^ (0 + 1) = ϖ ^ (k + 1 + 1)` using `by ring`.
+
+Establish `e3 : ϖ ^ (k + 1) * ϖ ^ (k + 1) = ϖ ^ (k + 1 + 1) * ϖ ^ k` using `by ring`. Rewrite using `[e1, e2, e3, hm]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem rem_mem (hSD : IsSDLoc σ J v Λ) (ϖ : Fv F v) (h0 : ϖ ≠ 0)
     (hint : ϖ ∈ v.adicCompletionIntegers F) {a k : ℕ} {Z W : TupV (E := E) v n a}
     (hZ : Z ∈ lamN v Λ ϖ a 0) (hW : W ∈ lamN v Λ ϖ a k) (z : HermR (Fv F v) σ a)
@@ -175,12 +237,22 @@ end Rem
 
 section D
 
+/- English proof (translation)
+Use extensionality with `i j`. Simplify using `only [crossM, Matrix.add_apply, Pi.add_apply, hR_add_left, hR_add_right]`. Normalize the expressions using the abelian group laws.
+-/
 theorem crossM_add_right {R : Type} [CommRing R] [Algebra F R] {a : ℕ} (x W W' : Fin a → Fin n → R ⊗[F] E) :
     crossM σ J x (W + W') = crossM σ J x W + crossM σ J x W' := by
   ext i j
   simp only [crossM, Matrix.add_apply, Pi.add_apply, hR_add_left, hR_add_right]
   abel
 
+/- English proof (translation)
+Establish `h0 : ∀ u : Fin n → R ⊗[F] E, hR R σ J u 0 = 0`. Introduce `u`. Establish `h` using `hR_add_right σ J u 0 0`. Rewrite `h` using `[add_zero]`. Take the linear combination `-h`.
+
+Establish `h0' : ∀ u : Fin n → R ⊗[F] E, hR R σ J 0 u = 0`. Introduce `u`. Establish `h` using `hR_add_left σ J 0 0 u`. Rewrite `h` using `[add_zero]`. Take the linear combination `-h`.
+
+Use extensionality with `i j`. Simplify using `only [crossM, Pi.zero_apply, Matrix.zero_apply, h0, h0', add_zero]`.
+-/
 theorem crossM_zero_right {R : Type} [CommRing R] [Algebra F R] {a : ℕ} (x : Fin a → Fin n → R ⊗[F] E) :
     crossM σ J x 0 = 0 := by
   have h0 : ∀ u : Fin n → R ⊗[F] E, hR R σ J u 0 = 0 := by
@@ -196,6 +268,11 @@ theorem crossM_zero_right {R : Type} [CommRing R] [Algebra F R] {a : ℕ} (x : F
   ext i j
   simp only [crossM, Pi.zero_apply, Matrix.zero_apply, h0, h0', add_zero]
 
+/- English proof (translation)
+Simplify using `only [crossM, Pi.smul_apply]`. Establish `h1` using `hR_smul_smul σ J v 1 t (x i) (W j)`. Establish `h2` using `hR_smul_smul σ J v t 1 (W i) (x j)`. Rewrite `h1` using `[one_smul, one_mul]`. Rewrite `h2` using `[one_smul, mul_one]`.
+
+Rewrite using `[h1, h2, mul_add]`.
+-/
 theorem crossM_smul_right {a : ℕ} (t : Fv F v) (x W : TupV (E := E) v n a) (i j : Fin a) :
     crossM σ J x (t • W) i j = sc (E := E) v t * crossM σ J x W i j := by
   simp only [crossM, Pi.smul_apply]
@@ -223,6 +300,9 @@ def dH {a : ℕ} (y : TupV (E := E) v n a) : TupV (E := E) v n a →+ HermR (Fv 
     rw [gramR_add σ J y (W + W'), gramR_add σ J y W, gramR_add σ J y W', crossM_add_right]
     abel
 
+/- English proof (translation)
+Use `show gramR (Fv F v) σ J (y + W) - gramR (Fv F v) σ J y - gramR (Fv F v) σ J W = crossM σ J y W`. Rewrite using `[gramR_add]`. Normalize the expressions using the abelian group laws.
+-/
 theorem coe_dH {a : ℕ} (y W : TupV (E := E) v n a) :
     ((dH σ J v hσ hJ y W : HermR (Fv F v) σ a) : Matrix (Fin a) (Fin a) (Fv F v ⊗[F] E)) =
       crossM σ J y W := by
@@ -242,6 +322,27 @@ def HensOnto (a : ℕ) (Y : TupV (E := E) v n a) : Prop :=
     ∀ S : HermR (Fv F v) σ a, S ∈ hermOE σ v a →
       ∃ W0 ∈ LamT v Λ a, crossM σ J y W0 = (S : Matrix (Fin a) (Fin a) (Fv F v ⊗[F] E))
 
+/- English proof (translation)
+Introduce `hG ϖ hϖ hσ hJ y hy hyY`. Establish `hSD : IsSDLoc σ J v Λ` using `hG.2.2.1`. Establish `h0 : ϖ ≠ 0`. Introduce `hz`. Unfold `IsUnif at hϖ`.
+
+Rewrite `hϖ` using `[hz, Valuation.map_zero]`. Conclude with `WithZero.coe_ne_zero hϖ.symm`. Establish `hint : ϖ ∈ v.adicCompletionIntegers F`. Rewrite using `[IsDedekindDomain.HeightOneSpectrum.mem_adicCompletionIntegers]`. Unfold `IsUnif at hϖ`.
+
+Rewrite using `[hϖ]`. Use `first`. Consider the case `(exact WithZero.coe_le_one.2 (by decide))`. Consider the case `decide`. Consider the case `simp`.
+
+Consider the case `(norm_num [← WithZero.coe_one])`. Establish `hPO : ∀ i j, gramR (Fv F v) σ J y i j - gramR (Fv F v) σ J Y i j ∈ PO (E` using `E) v ϖ := by`. Introduce `i j`. Take `⟨c, hc, e⟩` from `(mem_hN σ v ϖ h0 a 0 _).1 hyY i j`. Use `⟨c, hc, ?_⟩` and prove the remaining obligations.
+
+Rewrite `e` using `[zero_add, pow_one]`. Conclude with `e`. Use `⟨dH σ J v hσ hJ y, fun k => ?_, fun k Z hZ W hW => ?_⟩` and prove the remaining obligations. Use extensionality with `S`. Prove the components needed by the constructor for the conclusion.
+
+Introduce and unpack `⟨W, hW, rfl⟩`. Unfold `lamN PI.VolStabSW.smulSub at hW`. Take `⟨W', hW', rfl⟩` from `AddSubgroup.mem_map.1 hW`. Rewrite using `[mem_hN σ v ϖ h0]`. Introduce `i j`.
+
+Use `⟨crossM σ J y W' i j, oEv_add v (hR_mem_oEv σ J v Λ hSD (hy i) (hW' j)) (hR_mem_oEv σ J v Λ hSD (hW' i) (hy j)), ?_⟩` and prove the remaining obligations. Rewrite using `[coe_dH]`. Conclude with `crossM_smul_right σ J v _ y W' i j`. Introduce `hS`. Unfold `hN PI.VolStabSW.smulSub at hS`.
+
+Take `⟨S', hS', rfl⟩` from `AddSubgroup.mem_map.1 hS`. Take `⟨W0, hW0, hW0e⟩` from `h hG ϖ hϖ y hy hPO S' hS'`. Use `AddSubgroup.mem_map.2 ⟨(ϖ ^ (k + 1)) • W0, ?_, ?_⟩` and prove the remaining obligations. Unfold `lamN PI.VolStabSW.smulSub`. Conclude with `AddSubgroup.mem_map.2 ⟨W0, hW0, rfl⟩`.
+
+Apply `Subtype.ext` to reduce the goal to its premises. Use extensionality with `i j`. Rewrite using `[coe_dH]`. Use `show crossM σ J y ((ϖ ^ (k + 1)) • W0) i j = ((ϖ ^ (k + 1)) • (S' : Matrix (Fin a) (Fin a) (Fv F v ⊗[F] E))) i j`. Rewrite using `[crossM_smul_right, hW0e, Matrix.smul_apply, Algebra.smul_def]`.
+
+Both sides reduce to the same expression. Use `rem_mem σ J v Λ hSD ϖ h0 hint hZ hW _ ?_ show gramR (Fv F v) σ J (y + Z + W) - gramR (Fv F v) σ J (y + Z) - ((dH σ J v hσ hJ y W : HermR (Fv F v) σ a) : Matrix (Fin a) (Fin a) (Fv F v ⊗[F] E)) = _` and prove the remaining obligations. Rewrite using `[coe_dH, gramR_add σ J (y + Z) W, crossM_add_left]`. Normalize the expressions using the abelian group laws.
+-/
 theorem fibHens_of (a : ℕ) (Y : TupV (E := E) v n a) (h : HensOnto σ J v Λ ψ a Y) :
     FibHens σ J ψ v Λ a Y := by
   intro hG ϖ hϖ hσ hJ y hy hyY

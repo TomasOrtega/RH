@@ -15,6 +15,11 @@ namespace TeichLift
 variable {p : ℕ} [hp : Fact p.Prime] {L : Type*} [NontriviallyNormedField L] [IsUltrametricDist L]
   [CharP L p] [PerfectRing L p] {Γ : Type*} [CommRing Γ] (T : TeichLift p L Γ)
 
+/- English proof (translation)
+Use `haveI := T.isAdicComplete`. Use `show Perfection.teichmuller₀ p T.I (T.toPerfection p b) = y`. Use `Perfection.teichmuller₀_spec fun n => ?_` and prove the remaining obligations. Take `⟨z, hz, hzy⟩` from `h n`. Use `⟨z, ?_, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[coeff_toPerfection]`. Conclude with `(T.quotEquiv_symm _ z hz).symm`. Rewrite using `[SModEq.sub_mem, T.I_pow, ← neg_sub]`. Conclude with `neg_mem hzy`.
+-/
 theorem teich_eq_of {b : L} {y : Γ}
     (h : ∀ n : ℕ, ∃ z : Γ, T.red z = (((frobeniusEquiv L p).symm : L →+* L))^[n] b ∧
       y - z ^ p ^ n ∈ Ideal.span {T.π ^ (n + 1)}) : T.teich b = y := by
@@ -26,6 +31,11 @@ theorem teich_eq_of {b : L} {y : Γ}
   · rw [coeff_toPerfection]; exact (T.quotEquiv_symm _ z hz).symm
   · rw [SModEq.sub_mem, T.I_pow, ← neg_sub]; exact neg_mem hzy
 
+/- English proof (translation)
+Proceed by induction on `n generalizing c with`. Consider the case `zero => rfl`. Consider the case `succ n ih`. Rewrite using `[Function.iterate_succ_apply, Function.iterate_succ_apply, ih]`. Use `congr 1`.
+
+Use `show g ((frobeniusEquiv L p).symm c) = (frobeniusEquiv L p).symm (g c)`. Apply `(frobeniusEquiv L p).injective` to reduce the goal to its premises. Rewrite using `[RingEquiv.apply_symm_apply, frobeniusEquiv_apply, frobenius_def, ← map_pow, frobeniusEquiv_symm_pow_p]`.
+-/
 theorem ringHom_iterate_frobeniusEquiv_symm (g : L →+* L) (c : L) (n : ℕ) :
     g ((((frobeniusEquiv L p).symm : L →+* L))^[n] c) =
       (((frobeniusEquiv L p).symm : L →+* L))^[n] (g c) := by
@@ -39,6 +49,9 @@ theorem ringHom_iterate_frobeniusEquiv_symm (g : L →+* L) (c : L) (n : ℕ) :
     rw [RingEquiv.apply_symm_apply, frobeniusEquiv_apply, frobenius_def, ← map_pow,
       frobeniusEquiv_symm_pow_p]
 
+/- English proof (translation)
+Use `(T.teich_eq_of fun n => ⟨ψ (T.teich ((((frobeniusEquiv L p).symm : L →+* L))^[n] c)), ?_, ?_⟩).symm` and prove the remaining obligations. Rewrite using `[hψ, red_teich, ringHom_iterate_frobeniusEquiv_symm]`. Rewrite using `[← map_pow, ← T.teich_pow, iterate_frobeniusEquiv_symm_pow, sub_self]`. Conclude with `zero_mem _`.
+-/
 theorem map_teich (ψ : Γ →+* Γ) (g : L →+* L) (hψ : ∀ x, T.red (ψ x) = g (T.red x)) (c : L) :
     ψ (T.teich c) = T.teich (g c) := by
   refine (T.teich_eq_of fun n =>
@@ -46,6 +59,11 @@ theorem map_teich (ψ : Γ →+* Γ) (g : L →+* L) (hψ : ∀ x, T.red (ψ x) 
   · rw [hψ, red_teich, ringHom_iterate_frobeniusEquiv_symm]
   · rw [← map_pow, ← T.teich_pow, iterate_frobeniusEquiv_symm_pow, sub_self]; exact zero_mem _
 
+/- English proof (translation)
+Use `le_antisymm (gaussNorm_le fun n => ?_) ?_` and prove the remaining obligations. Rewrite using `[Pi.single_apply] split_ifs with h`. Substitute `h` using the available equality. Conclude with `le_rfl`. Rewrite using `[norm_zero, zero_mul]`.
+
+Conclude with `mul_nonneg (norm_nonneg _) (zpow_pos hρ _).le`. Use `(convergesAt_pi_single k c ρ).le_gaussNorm k` as an intermediate fact. Simplify using `using this`.
+-/
 theorem gaussNorm_pi_single (k : ℤ) (c : L) {ρ : ℝ} (hρ : 0 < ρ) :
     gaussNorm (Pi.single k c) ρ = ‖c‖ * ρ ^ k := by
   refine le_antisymm (gaussNorm_le fun n => ?_) ?_
@@ -56,6 +74,11 @@ theorem gaussNorm_pi_single (k : ℤ) (c : L) {ρ : ℝ} (hρ : 0 < ρ) :
   · have := (convergesAt_pi_single k c ρ).le_gaussNorm k
     simpa using this
 
+/- English proof (translation)
+Use `convergesAt_of_eventually hρ0 (T.zcoeff_neg_exists x) fun ε hε => ?_` and prove the remaining obligations. Take `⟨K, hK⟩` from `exists_pow_lt_of_lt_one hε hρ1`. Use `⟨K, fun n hn => ?_⟩` and prove the remaining obligations. Use `lift n to ℕ using (by omega)`. Rewrite using `[zcoeff_natCast, zpow_natCast]`.
+
+Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem convergesAt_of_mem_int {x : Γ} (hx : x ∈ T.int) {ρ : ℝ} (hρ0 : 0 < ρ) (hρ1 : ρ < 1) :
     ConvergesAt (T.zcoeff x) ρ := by
   refine convergesAt_of_eventually hρ0 (T.zcoeff_neg_exists x) fun ε hε => ?_
@@ -68,6 +91,11 @@ theorem convergesAt_of_mem_int {x : Γ} (hx : x ∈ T.int) {ρ : ℝ} (hρ0 : 0 
           (pow_le_pow_of_le_one hρ0.le hρ1.le (by exact_mod_cast hn)) (by positivity) zero_le_one
     _ ≤ ε := by rw [one_mul]; exact hK.le
 
+/- English proof (translation)
+Use `gaussNorm_le fun n => ?_` and prove the remaining obligations. Break down `lt_or_ge n 0 with hn | hn` into its components or cases. Rewrite using `[T.zcoeff_of_neg _ hn, norm_zero, zero_mul]`. Conclude with `zero_le_one`. Use `lift n to ℕ using hn`.
+
+Rewrite using `[zcoeff_natCast, zpow_natCast]`. Conclude with `mul_le_one₀ ((T.mem_int_iff.1 hx) n) (by positivity) (pow_le_one₀ hρ0.le hρ1)`.
+-/
 theorem gaussNorm_le_one_of_mem_int {x : Γ} (hx : x ∈ T.int) {ρ : ℝ} (hρ0 : 0 < ρ) (hρ1 : ρ ≤ 1) :
     gaussNorm (T.zcoeff x) ρ ≤ 1 := by
   refine gaussNorm_le fun n => ?_
@@ -77,12 +105,26 @@ theorem gaussNorm_le_one_of_mem_int {x : Γ} (hx : x ∈ T.int) {ρ : ℝ} (hρ0
     rw [zcoeff_natCast, zpow_natCast]
     exact mul_le_one₀ ((T.mem_int_iff.1 hx) n) (by positivity) (pow_le_one₀ hρ0.le hρ1)
 
+/- English proof (translation)
+Use `le_antisymm (T.gaussNorm_le_one_of_mem_int hx hρ0 hρ1.le) ?_` and prove the remaining obligations. Use `T.weight_natCast_le (T.convergesAt_of_mem_int hx hρ0 hρ1) 0` as an intermediate fact. Simplify `this` using `[h1]`.
+-/
 theorem gaussNorm_eq_one_of_mem_int {x : Γ} (hx : x ∈ T.int) (h1 : ‖T.red x‖ = 1) {ρ : ℝ}
     (hρ0 : 0 < ρ) (hρ1 : ρ < 1) : gaussNorm (T.zcoeff x) ρ = 1 := by
   refine le_antisymm (T.gaussNorm_le_one_of_mem_int hx hρ0 hρ1.le) ?_
   have := T.weight_natCast_le (T.convergesAt_of_mem_int hx hρ0 hρ1) 0
   simpa [h1] using this
 
+/- English proof (translation)
+Establish `hu0 : T.red u ≠ 0` using `by intro h; rw [h, norm_zero] at h1; exact zero_ne_one h1`. Establish `hr : ‖(T.red u)⁻¹‖ ≤ 1` using `by rw [norm_inv, h1, inv_one]`. Establish `hw : T.teich (T.red u)⁻¹ * u ∈ T.int` using `mul_mem (T.teich_mem_int hr) hu`. Establish `hw1 : T.red (T.teich (T.red u)⁻¹ * u) = 1`. Rewrite using `[map_mul, red_teich, inv_mul_cancel₀ hu0]`.
+
+Take `⟨s, hs, hws⟩` from `T.exists_eq_π_mul (T.teich (T.red u)⁻¹ * u - 1) (sub_mem hw (one_mem _)) (by rw [map_sub, hw1, map_one, sub_self])`. Take `⟨v, hv⟩` from `(T.isUnit_of_coeff_zero_eq_one (u := T.teich (T.red u)⁻¹ * u) (by rw [coeff_zero]; exact hw1)).exists_right_inv`. Establish `hvint : v ∈ T.int`. Use `T.mem_int_of_approx v fun N => ⟨∑ k ∈ Finset.range N, (-(T.teich (T.red u)⁻¹ * u - 1)) ^ k, Subring.sum_mem _ fun k _ => pow_mem (neg_mem (sub_mem hw (one_mem _))) _, ?_⟩` and prove the remaining obligations. Establish `hgeom` using `geom_sum_mul_neg (-(T.teich (T.red u)⁻¹ * u - 1)) N`.
+
+Rewrite `hgeom` using `[show 1 - -(T.teich (T.red u)⁻¹ * u - 1) = T.teich (T.red u)⁻¹ * u by ring]`. Establish `: v - ∑ k ∈ Finset.range N, (-(T.teich (T.red u)⁻¹ * u - 1)) ^ k = (-(T.teich (T.red u)⁻¹ * u - 1)) ^ N * v`. Establish `h2 : (∑ k ∈ Finset.range N, (-(T.teich (T.red u)⁻¹ * u - 1)) ^ k) * (T.teich (T.red u)⁻¹ * u) * v = (1 - (-(T.teich (T.red u)⁻¹ * u - 1)) ^ N) * v`. Rewrite using `[hgeom]`. Establish `h3 : (∑ k ∈ Finset.range N, (-(T.teich (T.red u)⁻¹ * u - 1)) ^ k) * (T.teich (T.red u)⁻¹ * u) * v = ∑ k ∈ Finset.range N, (-(T.teich (T.red u)⁻¹ * u - 1)) ^ k`.
+
+Rewrite using `[mul_assoc, hv, mul_one]`. Rewrite `h2` using `[h3]`. Rewrite using `[h2]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[this, hws]`.
+
+Conclude with `T.mem_span_pow.2 ⟨(-s) ^ N * v, by ring⟩`. Use `⟨v * T.teich (T.red u)⁻¹, mul_mem hvint (T.teich_mem_int hr), ?_⟩` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem exists_inv_mem_int {u : Γ} (hu : u ∈ T.int) (h1 : ‖T.red u‖ = 1) :
     ∃ v ∈ T.int, u * v = 1 := by
   have hu0 : T.red u ≠ 0 := by intro h; rw [h, norm_zero] at h1; exact zero_ne_one h1
@@ -120,18 +162,31 @@ variable (ψ : Γ →+* Γ) (g : L →+* L) (hψ : ∀ x, T.red (ψ x) = g (T.re
   (hπ : ψ T.π = T.π * u) (hu : u ∈ T.int) (hu1 : ‖T.red u‖ = 1)
 
 include hψ hπ in
+/- English proof (translation)
+Simplify using `only [partialSum, finSum, map_sum, map_mul, map_pow, hπ, T.map_teich ψ g hψ, mul_pow]`.
+-/
 theorem map_partialSum (x : Γ) (N : ℕ) :
     ψ (T.partialSum x N) =
       ∑ m ∈ Finset.range N, T.π ^ m * u ^ m * T.teich (g (T.coeff x m)) := by
   simp only [partialSum, finSum, map_sum, map_mul, map_pow, hπ, T.map_teich ψ g hψ, mul_pow]
 
 include hπ in
+/- English proof (translation)
+Rewrite using `[← map_sub, T.sub_partialSum, map_mul, map_pow, hπ, mul_pow, mul_assoc]`. Conclude with `T.π_pow_mul_mem le_rfl _`.
+-/
 theorem map_sub_map_partialSum_mem (x : Γ) (N : ℕ) :
     ψ x - ψ (T.partialSum x N) ∈ Ideal.span {T.π ^ N} := by
   rw [← map_sub, T.sub_partialSum, map_mul, map_pow, hπ, mul_pow, mul_assoc]
   exact T.π_pow_mul_mem le_rfl _
 
 include hu hu1 in
+/- English proof (translation)
+Establish `hum : u ^ m ∈ T.int` using `pow_mem hu m`. Establish `hum1 : ‖T.red (u ^ m)‖ = 1` using `by rw [map_pow, norm_pow, hu1, one_pow]`. Establish `c1 : ConvergesAt (T.zcoeff (T.π ^ m)) τ`. Rewrite using `[zcoeff_π_pow]`. Conclude with `convergesAt_pi_single _ _ _`.
+
+Establish `c2` using `T.convergesAt_of_mem_int hum hτ0 hτ1`. Establish `c3 : ConvergesAt (T.zcoeff (T.teich c)) τ`. Rewrite using `[zcoeff_teich]`. Conclude with `convergesAt_pi_single _ _ _`. Establish `c12` using `T.convergesAt_zcoeff_mul hτ0 hτ1 c1 c2`.
+
+Use `⟨T.convergesAt_zcoeff_mul hτ0 hτ1 c12 c3, ?_⟩` and prove the remaining obligations. Rewrite using `[T.gaussNorm_zcoeff_mul hτ0 hτ1 c12 c3, T.gaussNorm_zcoeff_mul hτ0 hτ1 c1 c2, T.gaussNorm_eq_one_of_mem_int hum hum1 hτ0 hτ1, zcoeff_π_pow, zcoeff_teich, gaussNorm_pi_single _ _ hτ0, gaussNorm_pi_single _ _ hτ0]`. Simplify using the standard rewrite rules.
+-/
 theorem gaussNorm_term {τ : ℝ} (hτ0 : 0 < τ) (hτ1 : τ < 1) (m : ℕ) (c : L) :
     ConvergesAt (T.zcoeff (T.π ^ m * u ^ m * T.teich c)) τ ∧
       gaussNorm (T.zcoeff (T.π ^ m * u ^ m * T.teich c)) τ = τ ^ m * ‖c‖ := by
@@ -150,6 +205,11 @@ theorem gaussNorm_term {τ : ℝ} (hτ0 : 0 < τ) (hτ1 : τ < 1) (m : ℕ) (c :
   simp
 
 include hu hu1 in
+/- English proof (translation)
+Proceed by induction on `N with`. Consider the case `zero`. Rewrite using `[Finset.sum_range_zero, (T.zcoeff_eq_zero_iff 0).2 rfl]`. Conclude with `⟨convergesAt_zero, by simp [gaussNorm, hB]⟩`. Consider the case `succ N ih`.
+
+Take `⟨ih1, ih2⟩` from `ih fun m hm => h m (by omega)`. Take `⟨t1, t2⟩` from `T.gaussNorm_term hu hu1 hτ0 hτ1 N (a N)`. Rewrite using `[Finset.sum_range_succ]`. Conclude with `⟨T.convergesAt_zcoeff_add hτ0 hτ1 ih1 t1, (T.gaussNorm_zcoeff_add_le hτ0 hτ1.le ih1 t1).trans (max_le ih2 (t2 ▸ h N (by omega)))⟩`.
+-/
 theorem gaussNorm_sum_terms_le {τ : ℝ} (hτ0 : 0 < τ) (hτ1 : τ < 1) (a : ℕ → L) {B : ℝ}
     (hB : 0 ≤ B) (N : ℕ) (h : ∀ m < N, τ ^ m * ‖a m‖ ≤ B) :
     ConvergesAt (T.zcoeff (∑ m ∈ Finset.range N, T.π ^ m * u ^ m * T.teich (a m))) τ ∧
@@ -174,6 +234,11 @@ variable (ψ : Γ →+* Γ) (g : L →+* L) (hψ : ∀ x, T.red (ψ x) = g (T.re
   (hg : ∀ c, ‖g c‖ = ‖c‖ ^ e)
 
 include hg he in
+/- English proof (translation)
+Establish `hpow : (σ ^ e) ^ m = (σ ^ m) ^ e`. Rewrite using `[← Real.rpow_natCast (σ ^ e) m, ← Real.rpow_natCast σ m, ← Real.rpow_mul hσ0.le, ← Real.rpow_mul hσ0.le, mul_comm]`. Rewrite using `[hg, hpow, ← Real.mul_rpow (by positivity) (norm_nonneg _)]`. Use `Real.rpow_le_rpow (by positivity) ?_ he.le` and prove the remaining obligations. Use `T.weight_natCast_le hy m` as an intermediate fact.
+
+Rewrite `this` using `[zpow_natCast, mul_comm]`. Then use the resulting hypothesis.
+-/
 theorem pow_weight_le {σ : ℝ} (hσ0 : 0 < σ) {y : Γ} (hy : ConvergesAt (T.zcoeff y) σ) (m : ℕ) :
     (σ ^ e) ^ m * ‖g (T.coeff y m)‖ ≤ gaussNorm (T.zcoeff y) σ ^ e := by
   have hpow : (σ ^ e) ^ m = (σ ^ m) ^ e := by
@@ -186,6 +251,11 @@ theorem pow_weight_le {σ : ℝ} (hσ0 : 0 < σ) {y : Γ} (hy : ConvergesAt (T.z
 
 include hψ hπ hu hu1 he hg in
 
+/- English proof (translation)
+Establish `hτ0 : 0 < σ ^ e` using `Real.rpow_pos_of_pos hσ0 e`. Establish `hτ1 : σ ^ e < 1` using `Real.rpow_lt_one hσ0.le hσ1 he`. Establish `hG` using `gaussNorm_nonneg (a := T.zcoeff y) hσ0`. Establish `hbound : ∀ m < n + 1, (σ ^ e) ^ m * ‖g (T.coeff y m)‖ ≤ gaussNorm (T.zcoeff y) σ ^ e` using `fun m _ => T.pow_weight_le g he hg hσ0 hy m`. Take `⟨hc, hle⟩` from `T.gaussNorm_sum_terms_le hu hu1 hτ0 hτ1 (fun m => g (T.coeff y m)) (Real.rpow_nonneg hG e) (n + 1) hbound`.
+
+Establish `e1 : T.coeff (ψ y) n = T.coeff (∑ m ∈ Finset.range (n + 1), T.π ^ m * u ^ m * T.teich (g (T.coeff y m))) n`. Rewrite using `[← T.map_partialSum ψ g hψ hπ]`. Conclude with `T.coeff_eq_coeff_of_sub_mem (T.map_sub_map_partialSum_mem ψ hπ y (n + 1)) n le_rfl`. Rewrite using `[e1]`. Conclude with `(T.weight_natCast_le hc n).trans hle`.
+-/
 theorem weight_map_le {σ : ℝ} (hσ0 : 0 < σ) (hσ1 : σ < 1) {y : Γ}
     (hy : ConvergesAt (T.zcoeff y) σ) (n : ℕ) :
     ‖T.coeff (ψ y) n‖ * (σ ^ e) ^ (n : ℤ) ≤ gaussNorm (T.zcoeff y) σ ^ e := by
@@ -203,6 +273,9 @@ theorem weight_map_le {σ : ℝ} (hσ0 : 0 < σ) (hσ1 : σ < 1) {y : Γ}
   rw [e1]
   exact (T.weight_natCast_le hc n).trans hle
 
+/- English proof (translation)
+Use `(T.gaussNorm_sum_terms_le (one_mem _) (by simp) hσ0 hσ1 (T.coeff x) (gaussNorm_nonneg (a := T.zcoeff x) hσ0) M fun m _ => by` as an intermediate fact. Use `T.weight_natCast_le hx m` as an intermediate fact. Rewrite using `[zpow_natCast, mul_comm] at this).1` and apply the resulting hypothesis. Simplify `this` using `[partialSum, finSum]`.
+-/
 theorem convergesAt_partialSum {x : Γ} {σ : ℝ} (hσ0 : 0 < σ) (hσ1 : σ < 1)
     (hx : ConvergesAt (T.zcoeff x) σ) (M : ℕ) : ConvergesAt (T.zcoeff (T.partialSum x M)) σ := by
   have := (T.gaussNorm_sum_terms_le (one_mem _) (by simp) hσ0 hσ1 (T.coeff x)
@@ -212,6 +285,31 @@ theorem convergesAt_partialSum {x : Γ} {σ : ℝ} (hσ0 : 0 < σ) (hσ1 : σ < 
 
 include hψ hπ hu hu1 he hg in
 
+/- English proof (translation)
+Establish `hτ0 : 0 < σ ^ e` using `Real.rpow_pos_of_pos hσ0 e`. Establish `hτ1 : σ ^ e < 1` using `Real.rpow_lt_one hσ0.le hσ1 he`. Use `⟨?_, gaussNorm_le fun n => ?_⟩` and prove the remaining obligations. Use `swap`. Break down `lt_or_ge n 0 with hn | hn` into its components or cases.
+
+Rewrite using `[T.zcoeff_of_neg _ hn, norm_zero, zero_mul]`. Conclude with `Real.rpow_nonneg (gaussNorm_nonneg hσ0) e`. Use `lift n to ℕ using hn`. Rewrite using `[zcoeff_natCast]`. Conclude with `T.weight_map_le ψ g hψ hπ hu hu1 he hg hσ0 hσ1 hx n`.
+
+Use `convergesAt_of_eventually hτ0 (T.zcoeff_neg_exists _) fun ε hε => ?_` and prove the remaining obligations. Establish `hη : 0 < ε ^ (1 / e)` using `Real.rpow_pos_of_pos hε _`. Establish `hηe : (ε ^ (1 / e)) ^ e = ε`. Rewrite using `[← Real.rpow_mul hε.le, one_div_mul_cancel he.ne', Real.rpow_one]`. Choose the witnesses or unpack the hypotheses as in `⟨M, hM⟩ : ∃ M : ℕ, ∀ m : ℕ, M ≤ m → ‖T.coeff x m‖ * σ ^ (m : ℤ) ≤ ε ^ (1 / e) := by`.
+
+Take `⟨B, hB⟩` from `(hx.finite_le hη).bddAbove`. Use `⟨B.toNat + 1, fun m hm => ?_⟩` and prove the remaining obligations. Assume the negation of the conclusion as `hc`. Use `push_neg at hc`. Use `hB (show (m : ℤ) ∈ {n | ε ^ (1 / e) ≤ ‖T.zcoeff x n‖ * σ ^ n} by` as an intermediate fact.
+
+Simplify using `only [Set.mem_setOf_eq, zcoeff_natCast]`. Conclude with `hc.le)`. Use linear arithmetic over natural numbers and integers. Establish `hPc` using `T.convergesAt_partialSum hσ0 hσ1 hx M`. Establish `hyc : ConvergesAt (T.zcoeff (x - T.partialSum x M)) σ`.
+
+Rewrite using `[sub_eq_add_neg]`. Conclude with `T.convergesAt_zcoeff_add hσ0 hσ1 hx (T.convergesAt_zcoeff_neg hσ0 hσ1 hPc)`. Establish `hyG : gaussNorm (T.zcoeff (x - T.partialSum x M)) σ ≤ ε ^ (1 / e)`. Use `gaussNorm_le fun m => ?_` and prove the remaining obligations. Break down `lt_or_ge m 0 with hm | hm` into its components or cases.
+
+Rewrite using `[T.zcoeff_of_neg _ hm, norm_zero, zero_mul]`. Conclude with `hη.le`. Use `lift m to ℕ using hm`. Rewrite using `[zcoeff_natCast, coeff_sub_partialSum]`. Use `split_ifs with h`.
+
+Rewrite using `[norm_zero, zero_mul]`. Conclude with `hη.le`. Conclude with `hM m (not_lt.1 h)`. Establish `hA : ConvergesAt (T.zcoeff (ψ (T.partialSum x M))) (σ ^ e)`. Rewrite using `[T.map_partialSum ψ g hψ hπ]`.
+
+Conclude with `(T.gaussNorm_sum_terms_le hu hu1 hτ0 hτ1 (fun m => g (T.coeff x m)) (Real.rpow_nonneg (gaussNorm_nonneg hσ0) e) M fun m _ => T.pow_weight_le g he hg hσ0 hx m).1`. Take `⟨N1, hN1⟩` from `exists_prefix_small hτ0 hτ1 hA hε`. Use `⟨max N1 0, fun n hn => ?_⟩` and prove the remaining obligations. Establish `hsplit : ψ x = ψ (T.partialSum x M) + ψ (x - T.partialSum x M)` using `by rw [map_sub]; ring`. Establish `hR : ∀ m ≤ n, ‖T.zcoeff (ψ (x - T.partialSum x M)) m‖ ≤ ε / (σ ^ e) ^ n`.
+
+Introduce `m hm`. Rewrite using `[le_div_iff₀ (zpow_pos hτ0 n)]`. Break down `lt_or_ge m 0 with hm0 | hm0` into its components or cases. Rewrite using `[T.zcoeff_of_neg _ hm0, norm_zero, zero_mul]`. Conclude with `hε.le`.
+
+Use `lift m to ℕ using hm0`. Rewrite using `[zcoeff_natCast]`. Combine the equalities or inequalities in the displayed calculation. Use `T.norm_zcoeff_add_le (n := n) (div_nonneg hε.le (zpow_pos hτ0 n).le) (fun m hm => by` as an intermediate fact. Rewrite using `[le_div_iff₀ (zpow_pos hτ0 n)]`.
+
+Conclude with `hN1 n (le_of_max_le_left hn) m hm) hR`. Rewrite using `[hsplit]`. Rewrite `this` using `[le_div_iff₀ (zpow_pos hτ0 n)]`. Then use the resulting hypothesis.
+-/
 theorem gaussNorm_zcoeff_map_le {σ : ℝ} (hσ0 : 0 < σ) (hσ1 : σ < 1) {x : Γ}
     (hx : ConvergesAt (T.zcoeff x) σ) :
     ConvergesAt (T.zcoeff (ψ x)) (σ ^ e) ∧
@@ -298,27 +396,51 @@ namespace TeichFrob
 
 variable {T} (F : T.TeichFrob)
 
+/- English proof (translation)
+Rewrite using `[iterateFrobenius_def]`. Conclude with `F.red_φ x`.
+-/
 theorem red_φ' (x : Γ) : T.red (F.φ.toRingHom x) = iterateFrobenius L p F.a (T.red x) := by
   rw [iterateFrobenius_def]; exact F.red_φ x
 
+/- English proof (translation)
+Use `T.map_teich F.φ.toRingHom (iterateFrobenius L p F.a) F.red_φ' c` as an intermediate fact. Rewrite `this` using `[iterateFrobenius_def]`. Then use the resulting hypothesis.
+-/
 theorem φ_teich (c : L) : F.φ (T.teich c) = T.teich (c ^ p ^ F.a) := by
   have := T.map_teich F.φ.toRingHom (iterateFrobenius L p F.a) F.red_φ' c
   rwa [iterateFrobenius_def] at this
 
+/- English proof (translation)
+Rewrite using `[RingEquiv.eq_symm_apply, iterateFrobeniusEquiv_def, ← F.red_φ, RingEquiv.apply_symm_apply]`.
+-/
 theorem red_symm (x : Γ) :
     T.red (F.φ.symm x) = (iterateFrobeniusEquiv L p F.a).symm (T.red x) := by
   rw [RingEquiv.eq_symm_apply, iterateFrobeniusEquiv_def, ← F.red_φ, RingEquiv.apply_symm_apply]
 
+/- English proof (translation)
+Rewrite using `[iterateFrobenius_def, norm_pow, Real.rpow_natCast]`.
+-/
 theorem norm_iterateFrobenius (c : L) :
     ‖iterateFrobenius L p F.a c‖ = ‖c‖ ^ ((p ^ F.a : ℕ) : ℝ) := by
   rw [iterateFrobenius_def, norm_pow, Real.rpow_natCast]
 
+/- English proof (translation)
+Establish `h` using `congrArg norm ((iterateFrobeniusEquiv L p F.a).apply_symm_apply c)`. Rewrite `h` using `[iterateFrobeniusEquiv_def, norm_pow]`. Rewrite using `[← h, Real.pow_rpow_inv_natCast (norm_nonneg _) (pow_ne_zero _ hp.out.ne_zero)]`.
+-/
 theorem norm_iterateFrobeniusEquiv_symm (c : L) :
     ‖(iterateFrobeniusEquiv L p F.a).symm c‖ = ‖c‖ ^ (((p ^ F.a : ℕ) : ℝ)⁻¹) := by
   have h := congrArg norm ((iterateFrobeniusEquiv L p F.a).apply_symm_apply c)
   rw [iterateFrobeniusEquiv_def, norm_pow] at h
   rw [← h, Real.pow_rpow_inv_natCast (norm_nonneg _) (pow_ne_zero _ hp.out.ne_zero)]
 
+/- English proof (translation)
+Establish `h1 : F.φ.symm T.π ∈ T.int` using `F.symm_map_int _ T.π_mem_int`. Establish `h2 : T.red (F.φ.symm T.π) = 0` using `by rw [F.red_symm, T.red_π, map_zero]`. Take `⟨u', hu', hπu'⟩` from `T.exists_eq_π_mul _ h1 h2`. Use `⟨u', hu', hπu', ?_⟩` and prove the remaining obligations. Establish `h3 : T.π * 1 = T.π * (u' * F.φ.symm F.u)`.
+
+Use `congrArg F.φ.symm F.φ_π` as an intermediate fact. Rewrite `this` using `[RingEquiv.symm_apply_apply, map_mul, hπu']`. Rewrite using `[mul_one]`. Use `conv_lhs => rw [this]`. Expand and normalize the polynomial expressions, which then agree.
+
+Establish `h4` using `T.π_mul_cancel h3`. Establish `h5` using `congrArg T.red h4`. Rewrite `h5` using `[map_mul, map_one]`. Establish `n1` using `T.norm_red_le_one _ hu'`. Establish `n2` using `T.norm_red_le_one _ (F.symm_map_int _ F.u_mem_int)`.
+
+Establish `h6 : ‖T.red u'‖ * ‖T.red (F.φ.symm F.u)‖ = 1` using `by rw [← norm_mul, ← h5, norm_one]`. Use `le_antisymm n1 ?_` and prove the remaining obligations. Use polynomial arithmetic with `[norm_nonneg (T.red u'), norm_nonneg (T.red (F.φ.symm F.u))]`.
+-/
 theorem exists_symm_π :
     ∃ u' ∈ T.int, F.φ.symm T.π = T.π * u' ∧ ‖T.red u'‖ = 1 := by
   have h1 : F.φ.symm T.π ∈ T.int := F.symm_map_int _ T.π_mem_int
@@ -339,8 +461,18 @@ theorem exists_symm_π :
   refine le_antisymm n1 ?_
   nlinarith [norm_nonneg (T.red u'), norm_nonneg (T.red (F.φ.symm F.u))]
 
+/- English proof (translation)
+The claim follows from `pow_pos hp.out.pos _`.
+-/
 theorem q_pos : 0 < p ^ F.a := pow_pos hp.out.pos _
 
+/- English proof (translation)
+Establish `he : (0 : ℝ) < ((p ^ F.a : ℕ) : ℝ)` using `by exact_mod_cast F.q_pos`. Take `⟨h1, h2⟩` from `T.gaussNorm_zcoeff_map_le F.φ.toRingHom (iterateFrobenius L p F.a) F.red_φ' F.φ_π F.u_mem_int F.norm_red_u he F.norm_iterateFrobenius hσ0 hσ1 hx`. Simplify using `only [Real.rpow_natCast, RingEquiv.toRingHom_eq_coe, RingEquiv.coe_toRingHom] at h1 h2`. Use `⟨h1, le_antisymm h2 ?_⟩` and prove the remaining obligations. Take `⟨u', hu', hπ', hu1'⟩` from `F.exists_symm_π`.
+
+Establish `hq0 : 0 < σ ^ p ^ F.a` using `pow_pos hσ0 _`. Establish `hq1 : σ ^ p ^ F.a < 1` using `pow_lt_one₀ hσ0.le hσ1 F.q_pos.ne'`. Use `(T.gaussNorm_zcoeff_map_le F.φ.symm.toRingHom (iterateFrobeniusEquiv L p F.a).symm.toRingHom (fun y => F.red_symm y) hπ' hu' hu1' (inv_pos.2 he) F.norm_iterateFrobeniusEquiv_symm hq0 hq1 h1).2` as an intermediate fact. Simplify using `only [RingEquiv.toRingHom_eq_coe, RingEquiv.coe_toRingHom, RingEquiv.symm_apply_apply] at this`. Rewrite `this` using `[Real.pow_rpow_inv_natCast hσ0.le F.q_pos.ne']`.
+
+Combine the equalities or inequalities in the displayed calculation. Conclude with `Real.rpow_inv_natCast_pow (gaussNorm_nonneg hq0) F.q_pos.ne'`.
+-/
 theorem gaussNorm_zcoeff_map {σ : ℝ} (hσ0 : 0 < σ) (hσ1 : σ < 1) {x : Γ}
     (hx : ConvergesAt (T.zcoeff x) σ) :
     ConvergesAt (T.zcoeff (F.φ x)) (σ ^ p ^ F.a) ∧
@@ -364,6 +496,11 @@ theorem gaussNorm_zcoeff_map {σ : ℝ} (hσ0 : 0 < σ) (hσ1 : σ < 1) {x : Γ}
     _ = gaussNorm (T.zcoeff (F.φ x)) (σ ^ p ^ F.a) := by
         exact Real.rpow_inv_natCast_pow (gaussNorm_nonneg hq0) F.q_pos.ne'
 
+/- English proof (translation)
+Establish `he : (0 : ℝ) < ((p ^ F.a : ℕ) : ℝ)` using `by exact_mod_cast F.q_pos`. Take `⟨u', hu', hπ', hu1'⟩` from `F.exists_symm_π`. Establish `hq0 : 0 < σ ^ p ^ F.a` using `pow_pos hσ0 _`. Establish `hq1 : σ ^ p ^ F.a < 1` using `pow_lt_one₀ hσ0.le hσ1 F.q_pos.ne'`. Use `(T.gaussNorm_zcoeff_map_le F.φ.symm.toRingHom (iterateFrobeniusEquiv L p F.a).symm.toRingHom (fun y => F.red_symm y) hπ' hu' hu1' (inv_pos.2 he) F.norm_iterateFrobeniusEquiv_symm hq0 hq1 h).1` as an intermediate fact.
+
+Simplify using `only [RingEquiv.toRingHom_eq_coe, RingEquiv.coe_toRingHom, RingEquiv.symm_apply_apply] at this`. Rewrite `this` using `[Real.pow_rpow_inv_natCast hσ0.le F.q_pos.ne']`. Then use the resulting hypothesis.
+-/
 theorem convergesAt_of_map {σ : ℝ} (hσ0 : 0 < σ) (hσ1 : σ < 1) {x : Γ}
     (h : ConvergesAt (T.zcoeff (F.φ x)) (σ ^ p ^ F.a)) : ConvergesAt (T.zcoeff x) σ := by
   have he : (0 : ℝ) < ((p ^ F.a : ℕ) : ℝ) := by exact_mod_cast F.q_pos
@@ -376,15 +513,24 @@ theorem convergesAt_of_map {σ : ℝ} (hσ0 : 0 < σ) (hσ1 : σ < 1) {x : Γ}
   simp only [RingEquiv.toRingHom_eq_coe, RingEquiv.coe_toRingHom, RingEquiv.symm_apply_apply] at this
   rwa [Real.pow_rpow_inv_natCast hσ0.le F.q_pos.ne'] at this
 
+/- English proof (translation)
+Take `⟨v, _, hv⟩` from `T.exists_inv_mem_int F.u_mem_int F.norm_red_u`. Conclude with `⟨⟨F.u, v, hv, by rw [mul_comm]; exact hv⟩, rfl⟩`.
+-/
 theorem isUnit_u : IsUnit F.u := by
   obtain ⟨v, _, hv⟩ := T.exists_inv_mem_int F.u_mem_int F.norm_red_u
   exact ⟨⟨F.u, v, hv, by rw [mul_comm]; exact hv⟩, rfl⟩
 
+/- English proof (translation)
+Simplify using `only [RingHom.comp_apply, RingEquiv.toRingHom_eq_coe, RingEquiv.coe_toRingHom, F.φ_π, map_mul]`. Conclude with `(IsLocalization.Away.algebraMap_isUnit T.π).mul (F.isUnit_u.map _)`.
+-/
 theorem isUnit_map_π : IsUnit (((algebraMap Γ T.B).comp F.φ.toRingHom) T.π) := by
   simp only [RingHom.comp_apply, RingEquiv.toRingHom_eq_coe, RingEquiv.coe_toRingHom, F.φ_π,
     map_mul]
   exact (IsLocalization.Away.algebraMap_isUnit T.π).mul (F.isUnit_u.map _)
 
+/- English proof (translation)
+Take `⟨u', hu', hπ', hu1'⟩` from `F.exists_symm_π`. Take `⟨v, _, hv⟩` from `T.exists_inv_mem_int hu' hu1'`. Simplify using `only [RingHom.comp_apply, RingEquiv.toRingHom_eq_coe, RingEquiv.coe_toRingHom, hπ', map_mul]`. Establish `hu'u : IsUnit u'` using `⟨⟨u', v, hv, by rw [mul_comm]; exact hv⟩, rfl⟩`. Conclude with `(IsLocalization.Away.algebraMap_isUnit T.π).mul (hu'u.map _)`.
+-/
 theorem isUnit_map_symm_π : IsUnit (((algebraMap Γ T.B).comp F.φ.symm.toRingHom) T.π) := by
   obtain ⟨u', hu', hπ', hu1'⟩ := F.exists_symm_π
   obtain ⟨v, _, hv⟩ := T.exists_inv_mem_int hu' hu1'
@@ -396,9 +542,15 @@ def toBHom : T.B →+* T.B := IsLocalization.Away.lift T.π F.isUnit_map_π
 
 def toBSymmHom : T.B →+* T.B := IsLocalization.Away.lift T.π F.isUnit_map_symm_π
 
+/- English proof (translation)
+Rewrite using `[toBHom, IsLocalization.Away.lift_eq]`. Both sides reduce to the same expression.
+-/
 theorem toBHom_algebraMap (x : Γ) : F.toBHom (algebraMap Γ T.B x) = algebraMap Γ T.B (F.φ x) := by
   rw [toBHom, IsLocalization.Away.lift_eq]; rfl
 
+/- English proof (translation)
+Rewrite using `[toBSymmHom, IsLocalization.Away.lift_eq]`. Both sides reduce to the same expression.
+-/
 theorem toBSymmHom_algebraMap (x : Γ) :
     F.toBSymmHom (algebraMap Γ T.B x) = algebraMap Γ T.B (F.φ.symm x) := by
   rw [toBSymmHom, IsLocalization.Away.lift_eq]; rfl
@@ -410,13 +562,24 @@ def toB : T.B ≃+* T.B :=
     (IsLocalization.ringHom_ext (Submonoid.powers T.π) (RingHom.ext fun x => by
       simp [toBHom_algebraMap, toBSymmHom_algebraMap]))
 
+/- English proof (translation)
+The claim follows from `F.toBHom_algebraMap x`.
+-/
 theorem toB_algebraMap (x : Γ) : F.toB (algebraMap Γ T.B x) = algebraMap Γ T.B (F.φ x) :=
   F.toBHom_algebraMap x
 
+/- English proof (translation)
+The claim follows from `F.toBSymmHom_algebraMap x`.
+-/
 theorem toB_symm_algebraMap (x : Γ) :
     F.toB.symm (algebraMap Γ T.B x) = algebraMap Γ T.B (F.φ.symm x) :=
   F.toBSymmHom_algebraMap x
 
+/- English proof (translation)
+Establish `h1` using `congrArg F.toB hb`. Rewrite `h1` using `[map_mul, map_pow, F.toB_algebraMap, F.toB_algebraMap, F.φ_π, map_mul]`. Establish `huv : algebraMap Γ T.B F.u * algebraMap Γ T.B v = 1` using `by rw [← map_mul, hv, map_one]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[huv, one_pow, mul_one]`.
+
+Use `_ = (F.toB b * (algebraMap Γ T.B T.π * algebraMap Γ T.B F.u) ^ N) * algebraMap Γ T.B v ^ N := by`. Expand and normalize the polynomial expressions, which then agree. Use `_ = algebraMap Γ T.B (F.φ x * v ^ N) := by rw [h1, map_mul, map_pow]`.
+-/
 theorem toB_mul_pow_eq {b : T.B} {x : Γ} {N : ℕ}
     (hb : b * algebraMap Γ T.B T.π ^ N = algebraMap Γ T.B x) {v : Γ} (hv : F.u * v = 1) :
     F.toB b * algebraMap Γ T.B T.π ^ N = algebraMap Γ T.B (F.φ x * v ^ N) := by
@@ -430,6 +593,9 @@ theorem toB_mul_pow_eq {b : T.B} {x : Γ} {N : ℕ}
         ring
     _ = algebraMap Γ T.B (F.φ x * v ^ N) := by rw [h1, map_mul, map_pow]
 
+/- English proof (translation)
+Take `⟨v, hv, huv⟩` from `T.exists_inv_mem_int F.u_mem_int F.norm_red_u`. Use `⟨v, hv, huv, ?_⟩` and prove the remaining obligations. Establish `h` using `congrArg (fun y => ‖T.red y‖) huv`. Simplify using `only [map_mul, norm_mul, F.norm_red_u, one_mul, map_one, norm_one] at h`. Conclude with `h`.
+-/
 theorem exists_inv_u : ∃ v ∈ T.int, F.u * v = 1 ∧ ‖T.red v‖ = 1 := by
   obtain ⟨v, hv, huv⟩ := T.exists_inv_mem_int F.u_mem_int F.norm_red_u
   refine ⟨v, hv, huv, ?_⟩
@@ -437,6 +603,13 @@ theorem exists_inv_u : ∃ v ∈ T.int, F.u * v = 1 ∧ ‖T.red v‖ = 1 := by
   simp only [map_mul, norm_mul, F.norm_red_u, one_mul, map_one, norm_one] at h
   exact h
 
+/- English proof (translation)
+Take `⟨N, x, hx⟩` from `IsLocalization.Away.surj T.π b`. Take `⟨v, hvint, huv, hv1⟩` from `F.exists_inv_u`. Establish `hq0 : 0 < σ ^ p ^ F.a` using `pow_pos hσ0 _`. Establish `hq1 : σ ^ p ^ F.a < 1` using `pow_lt_one₀ hσ0.le hσ1 F.q_pos.ne'`. Rewrite using `[T.coeffB_eq (F.toB_mul_pow_eq hx huv), T.coeffB_eq hx, convergesAt_shift_iff hq0, convergesAt_shift_iff hσ0]`.
+
+Establish `hvN` using `T.convergesAt_of_mem_int (pow_mem hvint N) hq0 hq1`. Establish `huN` using `T.convergesAt_of_mem_int (pow_mem F.u_mem_int N) hq0 hq1`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Use `F.convergesAt_of_map hσ0 hσ1 ?_` and prove the remaining obligations.
+
+Use `T.convergesAt_zcoeff_mul hq0 hq1 h huN` as an intermediate fact. Rewrite `this` using `[mul_assoc, ← mul_pow, mul_comm v, huv, one_pow, mul_one]`. Then use the resulting hypothesis. Introduce `h`. Conclude with `T.convergesAt_zcoeff_mul hq0 hq1 (F.gaussNorm_zcoeff_map hσ0 hσ1 h).1 hvN`.
+-/
 theorem convergesAt_coeffB_toB_iff {σ : ℝ} (hσ0 : 0 < σ) (hσ1 : σ < 1) (b : T.B) :
     ConvergesAt (T.coeffB (F.toB b)) (σ ^ p ^ F.a) ↔ ConvergesAt (T.coeffB b) σ := by
   obtain ⟨N, x, hx⟩ := IsLocalization.Away.surj T.π b
@@ -455,6 +628,13 @@ theorem convergesAt_coeffB_toB_iff {σ : ℝ} (hσ0 : 0 < σ) (hσ1 : σ < 1) (b
   · intro h
     exact T.convergesAt_zcoeff_mul hq0 hq1 (F.gaussNorm_zcoeff_map hσ0 hσ1 h).1 hvN
 
+/- English proof (translation)
+Take `⟨N, x, hx⟩` from `IsLocalization.Away.surj T.π b`. Take `⟨v, hvint, huv, hv1⟩` from `F.exists_inv_u`. Establish `hq0 : 0 < σ ^ p ^ F.a` using `pow_pos hσ0 _`. Establish `hq1 : σ ^ p ^ F.a < 1` using `pow_lt_one₀ hσ0.le hσ1 F.q_pos.ne'`. Rewrite `hb` using `[T.coeffB_eq hx, convergesAt_shift_iff hσ0]`.
+
+Rewrite using `[T.coeffB_eq (F.toB_mul_pow_eq hx huv), T.coeffB_eq hx, gaussNorm_shift hq0, gaussNorm_shift hσ0]`. Establish `hvN` using `T.convergesAt_of_mem_int (pow_mem hvint N) hq0 hq1`. Take `⟨h1, h2⟩` from `F.gaussNorm_zcoeff_map hσ0 hσ1 hb`. Establish `hv1N : ‖T.red (v ^ N)‖ = 1` using `by rw [map_pow, norm_pow, hv1, one_pow]`. Rewrite using `[T.gaussNorm_zcoeff_mul hq0 hq1 h1 hvN, h2, T.gaussNorm_eq_one_of_mem_int (pow_mem hvint N) hv1N hq0 hq1, mul_one, mul_pow]`.
+
+Use `congr 1`. Rewrite using `[← zpow_natCast (σ ^ (-(N : ℤ))) (p ^ F.a), ← zpow_mul, ← zpow_natCast σ (p ^ F.a), ← zpow_mul, mul_comm]`.
+-/
 theorem gaussNorm_coeffB_toB {σ : ℝ} (hσ0 : 0 < σ) (hσ1 : σ < 1) {b : T.B}
     (hb : ConvergesAt (T.coeffB b) σ) :
     gaussNorm (T.coeffB (F.toB b)) (σ ^ p ^ F.a) = gaussNorm (T.coeffB b) σ ^ p ^ F.a := by
@@ -477,10 +657,18 @@ theorem gaussNorm_coeffB_toB {σ : ℝ} (hσ0 : 0 < σ) (hσ1 : σ < 1) {b : T.B
 def powRadius (σ : Set.Ioo (0 : ℝ) 1) : Set.Ioo (0 : ℝ) 1 :=
   ⟨(σ : ℝ) ^ p ^ F.a, pow_pos σ.2.1 _, pow_lt_one₀ σ.2.1.le σ.2.2 F.q_pos.ne'⟩
 
+/- English proof (translation)
+The claim follows from `F.convergesAt_coeffB_toB_iff σ.2.1 σ.2.2 b`.
+-/
 theorem toB_mem_Econ_iff {σ : Set.Ioo (0 : ℝ) 1} {b : T.B} :
     F.toB b ∈ T.Econ (F.powRadius σ) ↔ b ∈ T.Econ σ :=
   F.convergesAt_coeffB_toB_iff σ.2.1 σ.2.2 b
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨τ, hτ⟩`. Set `σ : Set.Ioo (0 : ℝ) 1` to `⟨(τ : ℝ) ^ (((p ^ F.a : ℕ) : ℝ)⁻¹), Real.rpow_pos_of_pos τ.2.1 _, Real.rpow_lt_one τ.2.1.le τ.2.2 (inv_pos.2 (by exact_mod_cast F.q_pos))⟩`. Establish `hστ : F.powRadius σ = τ` using `Subtype.ext (Real.rpow_inv_natCast_pow τ.2.1.le F.q_pos.ne')`. Conclude with `⟨σ, F.toB_mem_Econ_iff.1 (hστ ▸ hτ)⟩`.
+
+Introduce and unpack `⟨σ, hσ⟩`. Conclude with `⟨F.powRadius σ, F.toB_mem_Econ_iff.2 hσ⟩`.
+-/
 theorem toB_mem_Edag_iff {b : T.B} : F.toB b ∈ T.Edag ↔ b ∈ T.Edag := by
   constructor
   · rintro ⟨τ, hτ⟩
@@ -501,6 +689,9 @@ def edagEquiv : T.Edag ≃+* T.Edag where
   map_mul' b c := Subtype.ext (map_mul F.toB (b : T.B) c)
   map_add' b c := Subtype.ext (map_add F.toB (b : T.B) c)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem edagEquiv_apply (b : T.Edag) : (F.edagEquiv b : T.B) = F.toB (b : T.B) := rfl
 
 end TeichFrob

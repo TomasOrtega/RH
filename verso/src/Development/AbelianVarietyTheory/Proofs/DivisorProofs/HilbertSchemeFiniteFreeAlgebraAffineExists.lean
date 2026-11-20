@@ -17,6 +17,9 @@ noncomputable section
 
 namespace GlobalTheory.HilbAff
 
+/- English proof (translation)
+Distinguish the cases in `hA : Nontrivial A`. Conclude with `⟨_, ⟨Module.finBasis A B⟩⟩`. Rewrite `hA` using `[not_nontrivial_iff_subsingleton]`. Establish `: Subsingleton B` using `Module.subsingleton A B`. Conclude with `⟨0, ⟨Module.Basis.empty B⟩⟩`.
+-/
 theorem exists_basis_fin (A B : Type) [CommRing A] [CommRing B] [Algebra A B] [Module.Free A B]
     [Module.Finite A B] : ∃ N, Nonempty (Module.Basis (Fin N) A B) := by
   by_cases hA : Nontrivial A
@@ -25,6 +28,21 @@ theorem exists_basis_fin (A B : Type) [CommRing A] [CommRing B] [Algebra A B] [M
     have : Subsingleton B := Module.subsingleton A B
     exact ⟨0, ⟨Module.Basis.empty B⟩⟩
 
+/- English proof (translation)
+Introduce `A B _ _ _ _ _ r`. Take `⟨N, ⟨e⟩⟩` from `exists_basis_fin A B`. Set `F` to `GlobalTheory.HilbAff.functor A B r`. Use `choose X x hX hlft hbas huniv using fun σ : Fin r ↪ Fin N => GlobalTheory.T.affineHilbertChart_representable A B N r e σ`. Use `choose W hW _ using fun (σ : Fin r ↪ Fin N) (Z : Scheme.{0}) (y : F.obj (op Z)) => GlobalTheory.T.exists_open_affineHilbertChartBasic_locus A B N r e σ Z y`.
+
+Establish `stab : ∀ σ (Z : Scheme.{0}) (g : Z ⟶ X σ), GlobalTheory.HilbAff.Basic A B e σ (F.map g.op (x σ))`. Introduce `σ Z g`. Establish `htop : Set.range (𝟙 (X σ)) ⊆ (W σ (X σ) (x σ) : Set (X σ))` using `(hW σ _ _ _ (𝟙 _)).2 (by rw [op_id, F.map_id]; exact hbas σ)`. Conclude with `(hW σ _ _ _ g).1 (fun z _ => htop ⟨z, rfl⟩)`. Establish `hrep : F.IsRepresentable`.
+
+Use `GlobalTheory.GeneratorFunctor.isRepresentable_of_charts F (GlobalTheory.T.affineHilbertSchemeFunctor_isSheaf_zariski A B r) X x W ?_ ?_ ?_` and prove the remaining obligations. Introduce `σ Z y Z' a`. Rewrite using `[hW]`. Prove the components needed by the constructor for the conclusion. Introduce `hb`.
+
+Take `⟨g, hg, -⟩` from `huniv σ Z' _ hb`. Conclude with `⟨g, hg⟩`. Introduce and unpack `⟨g, hg⟩`. Rewrite using `[← hg]`. Conclude with `stab σ Z' g`.
+
+Introduce `σ Z g g' h`. Take `⟨g₀, -, hu⟩` from `huniv σ Z _ (stab σ Z g)`. Conclude with `(hu g rfl).trans (hu g' h.symm).symm`. Introduce `Z y z`. Take `⟨σ, U, hz, hb⟩` from `GlobalTheory.T.exists_affineHilbertChartBasic_neighbourhood A B N r e Z y z`.
+
+Use `⟨σ, (hW σ Z y U U.ι).2 hb ?_⟩` and prove the remaining obligations. Simplify using `using hz`. Set `R` to `F.representableBy`. Take `⟨U, u, h1, h2, h3, h4, h5⟩` from `GlobalTheory.T.affineHilbert_representing_universal_subscheme A B r F.reprX R`. Take `⟨q1, q2, q3⟩` from `GlobalTheory.T.affineHilbertScheme_representing_qc_qs_finiteType A B r F.reprX R`.
+
+Use `⟨F.reprX, (R.homEquiv (𝟙 _)).1, U, u, ?_, h1, h2, h3, h4, h5⟩` and prove the remaining obligations. Rewrite using `[IsProper.eq_valuativeCriterion, ValuativeCriterion.eq]`. Conclude with `⟨⟨⟨⟨GlobalTheory.T.affineHilbertScheme_valuativeCriterion_existence A B r F.reprX R, GlobalTheory.T.affineHilbert_valuativeCriterion_uniqueness A B r F.reprX R⟩, q1⟩, q2⟩, q3⟩`.
+-/
 theorem hilbertScheme_exists : ∀ (A B : Type) [CommRing A] [CommRing B] [Algebra A B] [Module.Free A B] [Module.Finite A B] (r : ℕ), ∃ (H : Scheme.{0}) (h : H ⟶ Spec (CommRingCat.of A)) (U : Scheme.{0}) (u : U ⟶ pullback (Spec.map (CommRingCat.ofHom (algebraMap A B))) h), IsProper h ∧ IsClosedImmersion u ∧ IsFinite (u ≫ pullback.snd _ h) ∧ Flat (u ≫ pullback.snd _ h) ∧ (∀ y, (u ≫ pullback.snd _ h).finrank y = r) ∧ ∀ (T : Scheme.{0}) (g : T ⟶ Spec (CommRingCat.of A)) (V : Scheme.{0}) (v : V ⟶ pullback (Spec.map (CommRingCat.ofHom (algebraMap A B))) g), IsClosedImmersion v → IsFinite (v ≫ pullback.snd _ g) → Flat (v ≫ pullback.snd _ g) → (∀ y, (v ≫ pullback.snd _ g).finrank y = r) → ∃! f : T ⟶ H, ∃ hf : f ≫ h = g, ∃ w : V ⟶ U, IsPullback v w (pullback.map _ g _ h (𝟙 _) f (𝟙 _) (by simp) (by rw [Category.comp_id, hf])) u := by
   intro A B _ _ _ _ _ r
   obtain ⟨N, ⟨e⟩⟩ := exists_basis_fin A B

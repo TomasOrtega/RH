@@ -3,6 +3,19 @@ import Mathlib
 open Matrix
 open scoped ComplexOrder
 
+/- English proof (translation)
+Introduce `M _ _ _ q hq S hS`. Use `haveI : NeZero q := ⟨hq⟩`. Use `set r := Module.finrank ℤ M`. Set `bs` to `Module.finBasis ℤ M`. Set `f : M → (Fin r → ZMod q)` to `fun m i => ((bs.equivFun m i : ℤ) : ZMod q)`.
+
+Establish `hinj : Set.InjOn f S`. Introduce `a ha c hc hac`. Establish `hdvd : ∀ i, (q : ℤ) ∣ bs.equivFun (a - c) i`. Introduce `i`. Establish `h` using `congrFun hac i`.
+
+Simplify using `only [f] at h`. Rewrite using `[map_sub, Pi.sub_apply]`. Use `(ZMod.intCast_eq_intCast_iff_dvd_sub _ _ _).mp h.symm` as an intermediate fact. Simplify using `using this`. Use `hS a ha c hc (bs.equivFun.symm fun i => bs.equivFun (a - c) i / q) ?_` and prove the remaining obligations.
+
+Apply `bs.equivFun.injective` to reduce the goal to its premises. Rewrite using `[map_nsmul, LinearEquiv.apply_symm_apply]`. Use function extensionality and compare the values at `i`. Simplify using `only [Pi.smul_apply, nsmul_eq_mul]`. Conclude with `(Int.mul_ediv_cancel' (hdvd i)).symm`.
+
+Establish `himg : (f '' S).Finite` using `Set.toFinite _`. Establish `hfin : S.Finite` using `Set.Finite.of_finite_image himg hinj`. Use `⟨hfin, ?_⟩` and prove the remaining obligations. Rewrite using `[← hinj.ncard_image]`. Combine the equalities or inequalities in the displayed calculation.
+
+Rewrite using `[Set.ncard_univ, Nat.card_eq_fintype_card, Fintype.card_fun, ZMod.card, Fintype.card_fin]`.
+-/
 theorem UpperTheory.V.KT.cardsep :
     ∀ (M : Type) [AddCommGroup M] [Module.Free ℤ M] [Module.Finite ℤ M] (q : ℕ), q ≠ 0 → ∀ S : Set M,
     (∀ a ∈ S, ∀ b ∈ S, ∀ x : M, a - b = q • x → a = b) → S.Finite ∧ S.ncard ≤ q ^ Module.finrank ℤ M := by

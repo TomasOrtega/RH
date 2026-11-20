@@ -69,6 +69,9 @@ set_option maxSynthPendingDepth 1
 
 namespace GroundTheory.Heights₂.Heights.HilbertSamuel
 
+/- English proof (translation)
+The claim follows from `(GroundTheory.Heights₂.Heights.HilbertSamuel.TheoremHSM.proof (GroundTheory.Heights₂.Heights.HilbertSamuel.ReductionToProjective.proof ProjectionBounds.full (GroundTheory.Heights₂.Heights.HilbertSamuel.ChangeOfLattice.proof (GroundTheory.Heights₂.Heights.HilbertSamuel.ChangeOfLat …`.
+-/
 theorem TheoremHSM.of_open
     (h0 : GroundTheory.Heights₂.Heights.HilbertSamuel.TwoBlockPieceIndex.Statement)
     (h1 : GroundTheory.Heights₂.Heights.HilbertSamuel.TwoBlockModuleFinite.Statement)
@@ -121,6 +124,9 @@ theorem TheoremHSM.of_open
   (GroundTheory.Heights₂.Heights.HilbertSamuel.VeroneseTop.proof h11 VeroneseArith.full VeroneseGraphImage.full h12)
   VeroneseGenDeg.full) PointHeightFS.full) ResolutionSupBound.full)
 
+/- English proof (translation)
+The claim follows from `(GroundTheory.Heights₂.Heights.HilbertSamuel.TheoremHSMBlock.proof (GroundTheory.Heights₂.Heights.HilbertSamuel.ReductionToProjectiveBlock.proof (GroundTheory.Heights₂.Heights.HilbertSamuel.ReductionToProjective.proof ProjectionBounds.full (GroundTheory.Heights₂.Heights.HilbertSa …`.
+-/
 theorem TheoremHSMBlock.of_open
     (h0 : GroundTheory.Heights₂.Heights.HilbertSamuel.TwoBlockPieceIndex.Statement)
     (h1 : GroundTheory.Heights₂.Heights.HilbertSamuel.TwoBlockModuleFinite.Statement)
@@ -191,6 +197,9 @@ theorem TheoremHSMBlock.of_open
   (GroundTheory.Heights₂.Heights.HilbertSamuel.VeroneseTop.proof h15 VeroneseArith.full VeroneseGraphImage.full h18)
   VeroneseGenDeg.full) PointHeightFS.full) SupBoundBlock.full)
 
+/- English proof (translation)
+The claim follows from `(GroundTheory.Heights₂.Heights.HilbertSamuel.HilbertSamuelProjective.proof (GroundTheory.Heights₂.Heights.HilbertSamuel.ReductionToProjective.proof ProjectionBounds.full (GroundTheory.Heights₂.Heights.HilbertSamuel.ChangeOfLattice.proof (GroundTheory.Heights₂.Heights.HilbertSamue …`.
+-/
 theorem HilbertSamuelProjective.of_open
     (h0 : GroundTheory.Heights₂.Heights.HilbertSamuel.TwoBlockPieceIndex.Statement)
     (h1 : GroundTheory.Heights₂.Heights.HilbertSamuel.TwoBlockModuleFinite.Statement)
@@ -227,6 +236,9 @@ theorem HilbertSamuelProjective.of_open
   (GroundTheory.Heights₂.Heights.HilbertSamuel.VeroneseTop.proof h11 VeroneseArith.full VeroneseGraphImage.full h12)
   VeroneseGenDeg.full) PointHeightFS.full)
 
+/- English proof (translation)
+The claim follows from `(GroundTheory.Heights₂.Heights.HilbertSamuel.ReductionToProjective.proof ProjectionBounds.full (GroundTheory.Heights₂.Heights.HilbertSamuel.ChangeOfLattice.proof (GroundTheory.Heights₂.Heights.HilbertSamuel.ChangeOfLatticeNested.proof (GroundTheory.Heights₂.Heights.HilbertSamuel. …`.
+-/
 theorem ReductionToProjective.of_open
     (h0 : GroundTheory.Heights₂.Heights.HilbertSamuel.TwoBlockPieceIndex.Statement)
     (h1 : GroundTheory.Heights₂.Heights.HilbertSamuel.TwoBlockModuleFinite.Statement)
@@ -255,6 +267,9 @@ theorem ReductionToProjective.of_open
   PullFSExtension.full ResolutionMetricPair.full ResolutionFormsIndependent.full h8)
   (GroundTheory.Heights₂.Heights.HilbertSamuel.ResolutionMixedIntegral.proof h9 ResolutionInterpIntegral.full))))
 
+/- English proof (translation)
+The claim follows from `(GroundTheory.Heights₂.Heights.HilbertSamuel.SlopeLowerBound.proof (GroundTheory.Heights₂.Heights.HilbertSamuel.TheoremHSM.proof (GroundTheory.Heights₂.Heights.HilbertSamuel.ReductionToProjective.proof ProjectionBounds.full (GroundTheory.Heights₂.Heights.HilbertSamuel.ChangeOfLat …`.
+-/
 theorem SlopeLowerBound.of_open
     (h0 : GroundTheory.Heights₂.Heights.HilbertSamuel.TwoBlockPieceIndex.Statement)
     (h1 : GroundTheory.Heights₂.Heights.HilbertSamuel.TwoBlockModuleFinite.Statement)
@@ -308,6 +323,9 @@ theorem SlopeLowerBound.of_open
   VeroneseGenDeg.full) PointHeightFS.full) ResolutionSupBound.full) RankOfSections.full GenericFibre.full
   SectionsRank.full DegreePositive.full)
 
+/- English proof (translation)
+The claim follows from `(GroundTheory.Heights₂.Heights.HilbertSamuel.SuccessiveMinimaDual.proof G1.full EmbeddingWeight.full (GroundTheory.Heights₂.Heights.HilbertSamuel.TwistIntersection.proof (GroundTheory.Heights₂.Heights.HilbertSamuel.EmbeddingPieces.proof (GroundTheory.Heights₂.Heights.HilbertSamue …`.
+-/
 theorem SuccessiveMinimaDual.of_open
     (h0 : GroundTheory.Heights₂.Heights.Inter.PtsAbsIntegrable.Statement)
     (h1 : GroundTheory.Heights₂.Heights.HilbertSamuel.IrreducibleConnected.Statement)
@@ -329,6 +347,9 @@ theorem SuccessiveMinimaDual.of_open
   (GroundTheory.Heights₂.Heights.IndefiniteRowSideFullHecke.Inter.DegreeGeneric.of_degreesQ h6 h7 (GroundTheory.Heights₂.Heights.Inter.DegreesQ.proof
   (GroundTheory.Heights₂.Heights.IndefiniteRowSideFullHecke.Inter.Degrees.proof h2 h3 Closed.IndefiniteRowSideFullHecke.Inter.ZIntPoint)))))
 
+/- English proof (translation)
+The claim follows from `(GroundTheory.Heights₂.Heights.HilbertSamuel.G2.proof (GroundTheory.Heights₂.Heights.HilbertSamuel.KodairaSection.proof NefOnGenericOfSemipos.full (GroundTheory.Heights₂.Heights.IndefiniteRowSideFullHecke.Inter.DegreeGeneric.of_degreesQ h0 h1 (GroundTheory.Heights₂.Heights.Inter. …`.
+-/
 theorem G2.of_open
     (h0 : GroundTheory.Heights₂.Heights.IndefiniteRowSideFullHecke.Inter.IntBridge.Statement)
     (h1 : GroundTheory.Heights₂.Heights.IndefiniteRowSideFullHecke.Inter.ResComps.Statement)
@@ -358,6 +379,9 @@ theorem G2.of_open
   (GroundTheory.Heights₂.Heights.IndefiniteRowSideFullHecke.Inter.DegreeGeneric.of_degreesQ h0 h1 (GroundTheory.Heights₂.Heights.Inter.DegreesQ.proof
   (GroundTheory.Heights₂.Heights.IndefiniteRowSideFullHecke.Inter.Degrees.proof h2 h3 Closed.IndefiniteRowSideFullHecke.Inter.ZIntPoint)))) h10 ZCombLimit.full)
 
+/- English proof (translation)
+The claim follows from `(GroundTheory.Heights₂.Heights.HilbertSamuel.Lift.proof h0 h1 (GroundTheory.Heights₂.Heights.HilbertSamuel.LiftModel.proof LiftSpread.full (GroundTheory.Heights₂.Heights.HilbertSamuel.LiftAtPrime.proof GeneratedPow.full (GroundTheory.Heights₂.Heights.HilbertSamuel.FibreSectionLif …`.
+-/
 theorem Lift.of_open
     (h0 : ReciprocityTheory.ChartRestriction.G.ArakelovGeometry.KH.KAmpStatement)
     (h1 : GroundTheory.Heights₂.Heights.HilbertSamuel.NefAmpleFibre.Statement)
@@ -370,6 +394,9 @@ theorem Lift.of_open
   (GroundTheory.Heights₂.Heights.HilbertSamuel.FibreSectionLift.proof h2 QuotPartGraded.full h3 h4 ReductionComplex.full
   ZeroCocycleSection.full SecCochReduce.full) FibreRelLift.full) LiftBirationalAmple.full))
 
+/- English proof (translation)
+The claim follows from `(GroundTheory.Heights₂.Heights.HilbertSamuel.LiftPrime.proof (GroundTheory.Heights₂.Heights.HilbertSamuel.Lift.proof h0 h1 (GroundTheory.Heights₂.Heights.HilbertSamuel.LiftModel.proof LiftSpread.full (GroundTheory.Heights₂.Heights.HilbertSamuel.LiftAtPrime.proof GeneratedPow.full …`.
+-/
 theorem LiftPrime.of_open
     (h0 : ReciprocityTheory.ChartRestriction.G.ArakelovGeometry.KH.KAmpStatement)
     (h1 : GroundTheory.Heights₂.Heights.HilbertSamuel.NefAmpleFibre.Statement)
@@ -383,6 +410,9 @@ theorem LiftPrime.of_open
   (GroundTheory.Heights₂.Heights.HilbertSamuel.FibreSectionLift.proof h2 QuotPartGraded.full h3 h4 ReductionComplex.full
   ZeroCocycleSection.full SecCochReduce.full) FibreRelLift.full) LiftBirationalAmple.full)))
 
+/- English proof (translation)
+The claim follows from `(GroundTheory.Heights₂.Heights.HilbertSamuel.Perturb.proof SmallGenTwist.full SemiposTwist.full GenDegTwist.full GenOnFibres.full (GroundTheory.Heights₂.Heights.HilbertSamuel.AmpleOfGenTwist.proof GenTwistGenerated.full (GroundTheory.Heights₂.Heights.HilbertSamuel.GenTwistVanish. …`.
+-/
 theorem Perturb.of_open
     (h0 : ReciprocityTheory.ChartRestriction.G.ArakelovGeometry.KH.TheoremSStatement)
     (h1 : GroundTheory.Heights₂.Heights.HilbertSamuel.KoszulCechComplex.Statement)
@@ -395,6 +425,9 @@ theorem Perturb.of_open
   (GroundTheory.Heights₂.Heights.HilbertSamuel.GenTwistVanish.proof h0 QuotPartGraded.full
   (GroundTheory.Heights₂.Heights.HilbertSamuel.GenKoszulStep.proof h1 h2 DoubleComplexVanish.full h3 h4))))
 
+/- English proof (translation)
+The claim follows from `(GroundTheory.Heights₂.Heights.HilbertSamuel.IntegralClosureFinite.proof (GroundTheory.Heights₂.Heights.HilbertSamuel.NmSectionsRational.proof h0) NmSectionsFinite.full)`.
+-/
 theorem IntegralClosureFinite.of_open
     (h0 : ReciprocityTheory.ChartRestriction.G.ArakelovGeometry.KH.SecEqStatement)
     : GroundTheory.Heights₂.Heights.HilbertSamuel.IntegralClosureFinite.Statement :=

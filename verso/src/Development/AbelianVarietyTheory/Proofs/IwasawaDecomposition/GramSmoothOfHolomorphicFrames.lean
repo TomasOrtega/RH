@@ -23,6 +23,19 @@ section Pull
 
 variable {K : Type} [CommRing K] {Y : Scheme.{0}} {p : Y ⟶ Sp K} {σ : K →+* ℂ} {D : ℕ}
 
+/- English proof (translation)
+Establish `hOU : ∀ U : Y.Opens, IsOpen {b ∈ B | y b ∈ ptsIn p σ U}` using `fun U => (hy U 0).1`. Establish `hdU : ∀ (U : Y.Opens) (f : Γ(Y, U)), DifferentiableOn ℂ (fun b => ev p σ U f (y b)) {b ∈ B | y b ∈ ptsIn p σ U}` using `fun U f => (hy U f).2`. Establish `hcont : ContinuousOn y B`. Rewrite using `[continuousOn_iff_continuous_restrict]`. Use `GlobalTheory.CxPts.continuous_iff.2 fun U => ⟨?_, fun f => ?_⟩` and prove the remaining obligations.
+
+Use `(hOU U).preimage (continuous_subtype_val (p := (· ∈ B)))` as an intermediate fact. Use `this using 1` and compare the differences between its conclusion and the goal. Use extensionality with `v`. Simplify using `only [Set.mem_preimage, Set.restrict_apply, Set.mem_setOf_eq]`. Conclude with `⟨fun h => ⟨v.2, h⟩, fun h => h.2⟩`.
+
+Introduce `v hv`. Establish `hm : (v : Fin n → ℂ) ∈ {b ∈ B | y b ∈ ptsIn p σ U}` using `⟨v.2, hv⟩`. Establish `hca` using `((hdU U f).differentiableAt ((hOU U).mem_nhds hm)).continuousAt`. Conclude with `(hca.comp continuous_subtype_val.continuousAt).continuousWithinAt`. Establish `hOc : ∀ c : AlgChart p σ D, IsOpen {b ∈ B | y b ∈ c.e.source}` using `fun c => hcont.isOpen_inter_preimage hB c.e.open_source`.
+
+Establish `hdiff : ∀ c : AlgChart p σ D, DifferentiableOn ℂ (fun b => c.e (y b)) {b ∈ B | y b ∈ c.e.source}` using `fun c => differentiableOn_euclidean.2 fun a => ((hdU c.U (c.x a)).mono fun v hv => ⟨hv.1, c.source_subset hv.2⟩).congr fun v hv => c.apply_eq _ hv.2 a`. Introduce `b hb`. Take `⟨i, hc⟩` from `R.cover (y b)`. Use `set c := R.chart i with hcdef`. Establish `hb' : b ∈ {b ∈ B | y b ∈ c.e.source}` using `⟨hb.1, hc⟩`.
+
+Establish `h1 : ContDiffOn ℂ ∞ (fun b => c.e (y b)) {b ∈ B | y b ∈ c.e.source}` using `GlobalTheory.SCV.contDiffOn_of_differentiableOn (hOc c) (hdiff c) ∞`. Establish `hF : ContDiffAt ℝ ∞ (fun b => c.e (y b)) b` using `(h1.restrict_scalars ℝ).contDiffAt ((hOc c).mem_nhds hb')`. Establish `hφc : ContDiffAt ℝ ∞ (φ ∘ c.e.symm) (c.e (y b))` using `(hφ.chart (isOpen_ptsIn _) c).contDiffAt ((GlobalTheory.ChartGlue.isOpen_over c.e (isOpen_ptsIn _)).mem_nhds (GlobalTheory.ChartGlue.mem_over c.e hc hb.2))`. Use `((hφc.comp b hF).congr_of_eventuallyEq ?_).contDiffWithinAt` and prove the remaining obligations. Use `filter_upwards [(hOc c).mem_nhds hb'] with w hw`.
+
+Simplify using `only [Function.comp_apply, c.e.left_inv hw.2]`.
+-/
 theorem contDiffOn_comp (R : AnRead p σ D) {n : ℕ} {B : Set (Fin n → ℂ)} (hB : IsOpen B)
     (y : (Fin n → ℂ) → CxPts p σ) (hy : IsHolTo B fun b => (y b).1) (V : Y.Opens) (φ : CxPts p σ → ℝ)
     (hφ : R.SmoothOn (ptsIn p σ V) φ) :
@@ -63,6 +76,11 @@ theorem contDiffOn_comp (R : AnRead p σ D) {n : ℕ} {B : Set (Fin n → ℂ)} 
 
 end Pull
 
+/- English proof (translation)
+Simplify using `only [map_sum, map_smulₛₗ, LinearMap.sum_apply, LinearMap.smul_apply, RingHom.id_apply, smul_eq_mul]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.mul_sum]`. Use `Finset.sum_congr rfl fun a' _ => ?_` and prove the remaining obligations.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem form_sum₂ {M : Type} [AddCommGroup M] [Module ℂ M] (h : M →ₗ[ℂ] M →ₗ⋆[ℂ] ℂ) {J : Type} [Fintype J]
     (u : J → M) (c d : J → ℂ) : h (∑ a, c a • u a) (∑ a, d a • u a) =
       ∑ a, ∑ a', (c a * starRingEnd ℂ (d a')) * h (u a) (u a') := by
@@ -77,6 +95,13 @@ section LocalBasis
 
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E} {X Y : Scheme.{0}}
 
+/- English proof (translation)
+Use `t.semi.smooth` as an intermediate fact. Establish `hs : Smooth ((Over.pullback f).obj t.G).hom` using `show Smooth (pullback.snd _ _) from inferInstance`. Take `⟨U, hU, hy, -, n, v₀, hb⟩` from `exists_affine_lieBasis_baseChange Y ((Over.pullback f).obj t.G) y₀ ⊤ trivial`. Establish `hp` using `isGrpPullback_pullback ((Over.pullback f).obj t.G) (spMap (RingHom.id Γ(Y, U)) ≫ hU.fromSpec)`. Take `⟨v', -, hv'⟩` from `hb Γ(Y, U) (RingHom.id _) _ _ hp`.
+
+Establish `hc` using `IsGrpPullback.comp hp (isGrpPullback_pullback t.G f)`. Establish `key : ∀ x : Sp Γ(Y, U) ⟶ X, x = (spMap (RingHom.id Γ(Y, U)) ≫ hU.fromSpec) ≫ f → ∃ v : Fin n → TanM x t.G, LocM.FrameBC.Full v`. Introduce and unpack `_ rfl`. Establish `ht` using `fun i => (isTangent_iff hc (v' i)).1 (hv'.1 i)`. Conclude with `⟨fun i => mkT _ (ht i), (LocM.FrameBC.full_iff hc fun _ => rfl).1 hv'⟩`.
+
+Take `⟨v, hv⟩` from `key (LogKS.chart ⟨U, hU⟩ ≫ f) (by`. Rewrite using `[show spMap (RingHom.id Γ(Y, U)) = 𝟙 _ from Spec.map_id _, Category.id_comp]`. Use the proof step `rfl)`. Conclude with `⟨⟨U, hU⟩, n, v, hy, hv⟩`.
+-/
 theorem exists_affine_basis (t : SAB H X) (f : Y ⟶ X) (y₀ : Y) :
     ∃ (V : Y.affineOpens) (n : ℕ) (v : Fin n → TanM (LogKS.chart V ≫ f) t.G), y₀ ∈ V.1 ∧ LocM.FrameBC.Full v := by
   have := t.semi.smooth
@@ -97,6 +122,9 @@ theorem exists_affine_basis (t : SAB H X) (f : Y ⟶ X) (y₀ : Y) :
 
 variable {K : Type} [CommRing K] {p : Y ⟶ Sp K} {σ : K →+* ℂ}
 
+/- English proof (translation)
+Establish `key : ∀ (x' : Sp ℂ ⟶ X) (e : spMap (evHom hy) ≫ LogKS.chart V ≫ f = x'), LocM.FrameBC.Full fun i => tanOf (isTan_map (evHom hy) e (isTan_tv (v i)))`. Introduce and unpack `_ rfl`. Conclude with `LocM.FrameBC.full_bc _ hv`. Conclude with `key _ (by rw [← Category.assoc, spMap_evHom])`.
+-/
 theorem full_valAt {t : SAB H X} {f : Y ⟶ X} {V : Y.affineOpens} {n : ℕ} {v : Fin n → TanM (LogKS.chart V ≫ f) t.G}
     (hv : LocM.FrameBC.Full v) {y : CxPts p σ} (hy : y ∈ ptsIn p σ V.1) :
     LocM.FrameBC.Full fun i => valAt f (v i) hy := by
@@ -135,10 +163,18 @@ def frB (y : FrPt Xo c (CAt σ)) :
       exact ha ▸ Submodule.sum_mem _ fun i _ => Submodule.smul_mem _ (show ℂ from a i)
         (Submodule.subset_span ⟨i, rfl⟩))).map (lieC Z y)
 
+/- English proof (translation)
+Conclude with `(Module.Basis.map_apply _ _ _).trans ((congrArg _ (Module.Basis.mk_apply _ _ _)).trans (tan_ext rfl))`.
+-/
 theorem frB_apply (y : FrPt Xo c (CAt σ)) (τ : E →+* ℂ) (i : Fin (Dw.mult τ)) :
     frB Z y ⟨τ, i⟩ = (cxFrame Z y).vec τ i := by
   exact (Module.Basis.map_apply _ _ _).trans ((congrArg _ (Module.Basis.mk_apply _ _ _)).trans (tan_ext rfl))
 
+/- English proof (translation)
+Take `⟨-, -, -, -, -, g, e, F, ik, φ, -, hun⟩` from `hU`. Use `choose P hP hP' hx _ using hun k`. Establish `h1` using `(F.hol (ik k) n B (fun b => P (x b)) hB ⟨fun b _ => hP' _, fun a => differentiableOn_pi.2 fun i => by`. Simplify using `only [hP]`. Conclude with `differentiableOn_perFr _ (fun b _ => (x b).2) hd _ _ _⟩).1`.
+
+Use `isHolTo_comp (isHolTo_of_fst _ _ hB _ (fun b => ptC_snd _) ?_) Z.jQ` and prove the remaining obligations. Simplify using `only [ptC_fst]`. Conclude with `LocLift.isHolTo_congr h1 fun b _ => hx _`.
+-/
 theorem isHolTo_cxPt {U : Formalism.L2.PjFree.Unf Xo c σ r} (hU : Formalism.L2.PjFree.IsUnf U) (k : U.Comp) {n : ℕ} {B : Set (Fin n → ℂ)} (hB : IsOpen B)
     (x : (Fin n → ℂ) → (U.X k).dom) (hd : ∀ τ a c, DifferentiableOn ℂ (fun b => mat (x b).1 τ a c) B) :
     IsHolTo B fun b => (cxPt Z (U.un k (x b))).1 := by
@@ -151,6 +187,25 @@ theorem isHolTo_cxPt {U : Formalism.L2.PjFree.Unf Xo c σ r} (hU : Formalism.L2.
   simp only [ptC_fst]
   exact LocLift.isHolTo_congr h1 fun b _ => hx _
 
+/- English proof (translation)
+Establish `hpt` using `isHolTo_cxPt Z hU k hB x hd`. Take `⟨-, -, -, -, -, g, q, F, ik, φ, -, hun⟩` from `hU`. Use `choose P hP hP' hxu hder _ using hun k`. Establish `h1` using `F.hol (ik k) n B (fun b => P (x b)) hB ⟨fun b _ => hP' _, fun a => differentiableOn_pi.2 fun i => by`. Simplify using `only [hP]`.
+
+Conclude with `differentiableOn_perFr _ (fun b _ => (x b).2) hd _ _ _⟩`. Establish `hc` using `Z.m0.toSABMap.cart.1`. Establish `hw : ∀ b z, (F.ex (ik k) (P (x b)) z).left ≫ Xo.univ.t.G.hom = ptC (U.un k (x b)) ≫ pullback.fst _ _` using `fun b z => by`. Rewrite using `[ptC_fst, xC, hxu]`. Conclude with `Over.w (F.ex (ik k) (P (x b)) z)`.
+
+Establish `hp : IsHolTo B fun b => ptC (U.un k (x b))`. Use `isHolTo_of_fst _ _ hB _ (fun b => ptC_snd _) ?_` and prove the remaining obligations. Simplify using `only [ptC_fst]`. Conclude with `LocLift.isHolTo_congr h1.1 fun b _ => hxu _`. Establish `h2` using `isHolTo_lift hc hB (fun b z => (F.ex (ik k) (P (x b)) z).left) _ h1.2 hp hw`.
+
+Use `⟨g, q, fun b z => hc.lift _ _ (hw b z) ≫ Z.m.φ, isHolTo_comp h2 _, fun b hb cf => ?_⟩` and prove the remaining obligations. Use `set y := U.un k (x b) with hy`. Establish `hne : IsHolTo Set.univ fun z => (F.ex (ik k) (P (x b)) z).left` using `LocLift.isHolTo_comp h1.2 isOpen_univ (β := fun z => (b, z)) (by fun_prop) fun _ _ => ⟨hb, trivial⟩`. Establish `hT : ∀ (u : TanM (xC y) Xo.univ.t.G) (w : Fin g → ℂ), IsDerivAt0 (fun z => (F.ex (ik k) (P (x b)) z).left) w (tv u).left → IsDerivAt0 (fun z => hc.lift _ _ (hw b z) ≫ Z.m.φ) w (tv (lieC Z y u)).left` using `fun u w h => by set u' := (pushE Z.m0.toSABMap (ptC y) (ptC_fst y)).symm u with hu'`. Establish `h3 : (tv u').left ≫ Z.m0.toSABMap.φ = (tv u).left`.
+
+Rewrite using `[← left_pushE Z.m0.toSABMap (ptC y) (ptC_fst y), hu', LinearEquiv.apply_symm_apply]`. Establish `h4` using `isDerivAt0_of_cart hc (ptC y) (e := fun z => hc.lift _ _ (hw b z)) (fun z => hc.lift_snd _ _ _) (by simpa only [IsPullback.lift_fst] using hne) (isTan_tv u').1 (by simpa only [IsPullback.lift_fst, h3] using h)`. Conclude with `isDerivAt0_comp_hom h4 Z.m.φ`. Establish `hsum : ∑ i, cf i • frB Z y (q i) = lieC Z y (∑ i, cf i • frVec y (q i))`. Simplify using `only [map_sum, map_smul, frB, Module.Basis.map_apply, Module.Basis.mk_apply]`.
+
+Rewrite using `[hsum]`. Use `hT _ _ ?_` and prove the remaining obligations. Establish `e0 : (F.ex (ik k) (P (x b)) 0).left = (1 : Over.mk (xC y) ⟶ Xo.univ.t.G).left`. Establish `key : ∀ {a b' : Sp ℂ ⟶ Xo.X} (_ : a = b'), (1 : Over.mk a ⟶ Xo.univ.t.G).left = (1 : Over.mk b' ⟶ Xo.univ.t.G).left`. Introduce and unpack `_ _ rfl`.
+
+Both sides reduce to the same expression. Rewrite using `[(F.ex_ker _ _ (hP' _) 0).2 (zero_mem _)]`. Conclude with `key (hxu _).symm`. Establish `h5` using `ShFam.Hor.ExpDirs.isDerivAt0_of_comb (t := Xo.univ.t) (x := xC y) e0 (v := fun i => (tv (frVec y (q i))).left) (w := fun i => Pi.single i 1) (fun i => isTan_tv _) (fun i => by`. Establish `h` using `hder (x b) (q i).1 (q i).2`.
+
+Rewrite `h` using `[Sigma.eta, Equiv.symm_apply_apply]`. Conclude with `h) (a := cf) (isTan_tv _) ((isComb_iff (fun i => frVec y (q i)) cf _).2 rfl)`. Establish `h6 : ∑ i, cf i • (Pi.single i 1 : Fin g → ℂ) = cf`. Use function extensionality and compare the values at `i`. Simplify using `[Finset.sum_apply, Pi.single_apply]`.
+
+Rewrite `h5` using `[h6]`. Then use the resulting hypothesis.
+-/
 theorem exists_family {U : Formalism.L2.PjFree.Unf Xo c σ r} (hU : Formalism.L2.PjFree.IsUnf U) (k : U.Comp) {n : ℕ} {B : Set (Fin n → ℂ)} (hB : IsOpen B)
     (x : (Fin n → ℂ) → (U.X k).dom) (hd : ∀ τ a c, DifferentiableOn ℂ (fun b => mat (x b).1 τ a c) B) :
     ∃ (g : ℕ) (q : Fin g ≃ (Σ τ : E →+* ℂ, Fin (Dw.mult τ)))
@@ -212,6 +267,23 @@ theorem exists_family {U : Formalism.L2.PjFree.Unf Xo c σ r} (hU : Formalism.L2
     simp [Finset.sum_apply, Pi.single_apply]
   rwa [h6] at h5
 
+/- English proof (translation)
+Take `⟨g, q, Ft, hFt, hD⟩` from `exists_family Z hU k hB x hd`. Establish `hY : IsHolTo B fun b => (cxPt Z (U.un k (x b))).1` using `isHolTo_cxPt Z hU k hB x hd`. Set `W : (Fin n → ℂ) → Fin g → ℂ` to `fun b => if h : cxPt Z (U.un k (x b)) ∈ ptsIn (genStr Z) σ V.1 then fun m => (frB Z (U.un k (x b))).repr (valAt (genι Z) v h) (q m) else 0`. Use `set B' := {b ∈ B | ⊤ ≤ (cxPt Z (U.un k (x b))).1 ⁻¹ᵁ V.1} with hB'def`. Establish `hB' : IsOpen B'` using `(hY V.1 0).1`.
+
+Establish `hsum : ∀ b (hb : cxPt Z (U.un k (x b)) ∈ ptsIn (genStr Z) σ V.1), ∑ m, W b m • frB Z (U.un k (x b)) (q m) = valAt (genι Z) v hb` using `fun b hb => by`. Establish `h1 : W b = fun m => (frB Z (U.un k (x b))).repr (valAt (genι Z) v hb) (q m)` using `dif_pos hb`. Rewrite using `[h1]`. Conclude with `(q.sum_comp fun a => (frB Z (U.un k (x b))).repr (valAt (genι Z) v hb) a • frB Z (U.un k (x b)) a).trans ((frB Z _).sum_repr _)`. Establish `: IsOpenImmersion (LogKS.chart V)` using `IsAffineOpen.isOpenImmersion_fromSpec V.2`.
+
+Establish `hdiff : ∀ b₀ ∈ B', DifferentiableAt ℂ W b₀` using `fun b₀ hb₀ => by`. Establish `h₀ : cxPt Z (U.un k (x b₀)) ∈ ptsIn (genStr Z) σ V.1` using `hb₀.2`. Set `ev : (Fin n → ℂ) → (Γ(gen Z, V.1) →+* ℂ)` to `fun b => if h : cxPt Z (U.un k (x b)) ∈ ptsIn (genStr Z) σ V.1 then evHom h else evHom h₀`. Establish `hevb : ∀ b (h : cxPt Z (U.un k (x b)) ∈ ptsIn (genStr Z) σ V.1), ev b = evHom h` using `fun b h => dif_pos h`. Establish `hev : ∀ cc, DifferentiableAt ℂ (fun b => ev b cc) b₀` using `HolLieFrame.differentiableAt_ev (B := B') (LocLift.isHolTo_mono hY hB' fun b hb => hb.1) (LogKS.chart V) ev (fun b hb => by rw [hevb b hb.2]; exact (spMap_evHom hb.2).symm) hb₀`.
+
+Establish `hder : ∀ b ∈ B', IsDerivAt0 (Ft b) (W b) (spMap (ReciprocityTheory.ChartRestriction.G.Chart.dualMapR (ev b)) ≫ (tv v).left)` using `fun b hb => by`. Establish `h1` using `hD b hb.1 (W b)`. Rewrite `*` using `[hsum b hb.2, hevb b hb.2]`. Conclude with `h1`. Use `HolLieFrame.differentiableAt_of_forms W b₀ fun w hw => ?_` and prove the remaining obligations.
+
+Establish `hw' : ∀ (O : Z.t.G.left.Opens) (f : Γ(Z.t.G.left, O)), ⊤ ≤ Ft b₀ 0 ⁻¹ᵁ O → fderiv ℂ (fun z => valAt' (Ft b₀ z) O f) 0 w = 0`. Introduce `O f hO`. Use `hw (fun b => fderiv ℂ (fun z => valAt' (Ft b z) O f) 0) (HolLieFrame.differentiableAt_fderiv (e := Ft) hFt hb₀.1 O f hO) ?_` and prove the remaining obligations. Take `⟨Fn, hF, hF'⟩` from `HolLieFrame.exists_hol_snd (tv v).left ev b₀ hev O f ((TangentOrigin.top_le_preimage_iff _ O).2 (by rw [(hder b₀ hb₀).1]; exact hO))`. Use `hF.congr_of_eventuallyEq ?_` and prove the remaining obligations.
+
+Use `filter_upwards [hF', hB'.mem_nhds hb₀] with b ⟨h, e'⟩ hb`. Conclude with `((hder b hb).2 O h f).symm.trans e'`. Establish `d₁` using `LocalLift.isDerivAt0_const (Ft b₀) w hw'`. Establish `d₀` using `LocalLift.isDerivAt0_const (Ft b₀) 0 fun _ _ _ => map_zero _`. Establish `e3` using `tan_ext ((isDerivAt0_unique (hD b₀ hb₀.1 w) d₁).trans (isDerivAt0_unique (hD b₀ hb₀.1 0) d₀).symm)`.
+
+Simplify using `only [Pi.zero_apply, zero_smul, Finset.sum_const_zero] at e3`. Conclude with `funext (Fintype.linearIndependent_iff.1 ((frB Z (U.un k (x b₀))).linearIndependent.comp q q.injective) w e3)`. Use `⟨fun b => W b (q.symm i), fun b hb => ((differentiableAt_pi.1 (hdiff b hb) (q.symm i))).differentiableWithinAt, fun b hy => ?_⟩` and prove the remaining obligations. Use `show (dite _ _ _ : Fin g → ℂ) (q.symm i) = _`. Rewrite using `[dif_pos hy]`.
+
+Simplify using the standard rewrite rules.
+-/
 theorem coord_holomorphic {U : Formalism.L2.PjFree.Unf Xo c σ r} (hU : Formalism.L2.PjFree.IsUnf U) (k : U.Comp) {n : ℕ}
     {B : Set (Fin n → ℂ)} (hB : IsOpen B) (x : (Fin n → ℂ) → (U.X k).dom)
     (hd : ∀ τ a c, DifferentiableOn ℂ (fun b => mat (x b).1 τ a c) B) (V : (gen Z).affineOpens)
@@ -269,6 +341,25 @@ theorem coord_holomorphic {U : Formalism.L2.PjFree.Unf Xo c σ r} (hU : Formalis
   rw [dif_pos hy]
   simp
 
+/- English proof (translation)
+Introduce `b₀ hb₀`. Establish `hY` using `isHolTo_cxPt Z hU k hB x hd`. Take `⟨V, n', v, hy₀, hv⟩` from `exists_affine_basis Z.t (genι Z) ((cxPt Z (U.un k (x b₀))).1 (IsLocalRing.closedPoint ℂ))`. Establish `hm₀ : cxPt Z (U.un k (x b₀)) ∈ ptsIn (genStr Z) σ V.1` using `mem_ptsIn.2 hy₀`. Use `set B' := {b ∈ B | cxPt Z (U.un k (x b)) ∈ ptsIn (genStr Z) σ V.1} with hB'def`.
+
+Establish `hB' : IsOpen B'` using `(hY V.1 0).1`. Establish `hb' : b₀ ∈ B'` using `⟨hb₀, hm₀⟩`. Set `bs : ∀ b, cxPt Z (U.un k (x b)) ∈ ptsIn (genStr Z) σ V.1 → Module.Basis (Fin n') ℂ _` to `fun b hb => basisOfFull (full_valAt hv hb)`. Set `e : Fin n' ≃ (Σ τ : E →+* ℂ, Fin (Dw.mult τ))` to `(bs b₀ hm₀).indexEquiv (frB Z (U.un k (x b₀)))`. Use `choose g hg hg' using fun (a : (Σ τ : E →+* ℂ, Fin (Dw.mult τ)) × (Σ τ : E →+* ℂ, Fin (Dw.mult τ))) => coord_holomorphic Z hU k hB x hd V (v (e.symm a.2)) a.1`.
+
+Set `M : (Fin n → ℂ) → Matrix (Σ τ : E →+* ℂ, Fin (Dw.mult τ)) (Σ τ : E →+* ℂ, Fin (Dw.mult τ)) ℂ` to `fun b => Matrix.of fun a a' => g (a, a') b`. Establish `hbs : ∀ b hb a, (bs b hb).reindex e a = valAt (genι Z) (v (e.symm a)) hb` using `fun b hb a => by`. Rewrite using `[Module.Basis.reindex_apply]`. Conclude with `Module.Basis.mk_apply _ _ _`. Establish `hM : ∀ b (hb : cxPt Z (U.un k (x b)) ∈ ptsIn (genStr Z) σ V.1), M b = (frB Z (U.un k (x b))).toMatrix ((bs b hb).reindex e)` using `fun b hb => by`.
+
+Use extensionality with `a a'`. Rewrite using `[Module.Basis.toMatrix_apply, hbs]`. Conclude with `hg' (a, a') b hb`. Establish `hinv : ∀ b (hb : cxPt Z (U.un k (x b)) ∈ ptsIn (genStr Z) σ V.1), (M b)⁻¹ = ((bs b hb).reindex e).toMatrix (frB Z (U.un k (x b)))` using `fun b hb => by`. Rewrite using `[hM b hb]`.
+
+Conclude with `Matrix.inv_eq_right_inv (Module.Basis.toMatrix_mul_toMatrix_flip _ _)`. Establish `hdet : ∀ b ∈ B', (M b).det ≠ 0` using `fun b hb => by`. Establish `h1 : M b * ((bs b hb.2).reindex e).toMatrix (frB Z (U.un k (x b))) = 1`. Rewrite using `[hM b hb.2]`. Conclude with `Module.Basis.toMatrix_mul_toMatrix_flip _ _`.
+
+Conclude with `((Matrix.isUnit_iff_isUnit_det _).1 (IsUnit.of_mul_eq_one _ h1)).ne_zero`. Establish `hCd : ∀ a a', DifferentiableOn ℂ (fun b => (M b)⁻¹ a a') B'` using `GlobalTheory.TorsionHolomorphic.differentiableOn_matrix_inv M B' (fun a a' => hg (a, a')) hdet`. Establish `hCs : ∀ a a', ContDiffOn ℝ ∞ (fun b => (M b)⁻¹ a a') B'` using `fun a a' => (GlobalTheory.SCV.contDiffOn_of_differentiableOn hB' (hCd a a') ∞).restrict_scalars ℝ`. Establish `hCc : ∀ a a', ContDiffOn ℝ ∞ (fun b => starRingEnd ℂ ((M b)⁻¹ a a')) B'` using `fun a a' => Complex.conjCLE.contDiff.comp_contDiffOn (hCs a a')`. Use `choose G hG1 hG2 hG3 using fun (a : (Σ τ : E →+* ℂ, Fin (Dw.mult τ)) × (Σ τ : E →+* ℂ, Fin (Dw.mult τ))) => hh.2 V (v (e.symm a.1)) (v (e.symm a.2))`.
+
+Establish `hGs : ∀ a, ContDiffOn ℝ ∞ (fun b => G a (cxPt Z (U.un k (x b)))) B'` using `fun a => by`. Establish `h1` using `contDiffOn_comp R hB _ hY V.1 _ (hG1 a)`. Establish `h2` using `contDiffOn_comp R hB _ hY V.1 _ (hG2 a)`. Use `((Complex.ofRealCLM.contDiff.comp_contDiffOn h1).add ((Complex.ofRealCLM.contDiff.comp_contDiffOn h2).mul (contDiffOn_const (c := Complex.I)))).congr fun b _ => ?_` and prove the remaining obligations. Simplify using `[Complex.re_add_im]`.
+
+Establish `hsum : ContDiffOn ℝ ∞ (fun b => ∑ a, ∑ a', ((M b)⁻¹ a i * starRingEnd ℂ ((M b)⁻¹ a' i')) * G (a, a') (cxPt Z (U.un k (x b)))) B'` using `ContDiffOn.sum fun a _ => ContDiffOn.sum fun a' _ => ((hCs a i).mul (hCc a' i')).mul (hGs _)`. Establish `heq : ∀ b ∈ B', h (cxPt Z (U.un k (x b))) (frB Z (U.un k (x b)) i) (frB Z (U.un k (x b)) i') = ∑ a, ∑ a', ((M b)⁻¹ a i * starRingEnd ℂ ((M b)⁻¹ a' i')) * G (a, a') (cxPt Z (U.un k (x b)))` using `fun b hb => by`. Establish `hrep : ∀ w, frB Z (U.un k (x b)) w = ∑ a, (M b)⁻¹ a w • valAt (genι Z) (v (e.symm a)) hb.2` using `fun w => by conv_lhs => rw [← ((bs b hb.2).reindex e).sum_repr (frB Z (U.un k (x b)) w)]`. Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Rewrite using `[hinv b hb.2, Module.Basis.toMatrix_apply, hbs]`.
+
+Rewrite using `[hrep i, hrep i', form_sum₂]`. Use `Finset.sum_congr rfl fun a _ => Finset.sum_congr rfl fun a' _ => ?_` and prove the remaining obligations. Rewrite using `[hG3 (a, a') _ hb.2]`. Conclude with `(((hsum.congr heq).contDiffAt (hB'.mem_nhds hb')).contDiffWithinAt)`.
+-/
 theorem met_family {U : Formalism.L2.PjFree.Unf Xo c σ r} (hU : Formalism.L2.PjFree.IsUnf U) (k : U.Comp) {n : ℕ}
     {B : Set (Fin n → ℂ)} (hB : IsOpen B) (x : (Fin n → ℂ) → (U.X k).dom)
     (hd : ∀ τ a c, DifferentiableOn ℂ (fun b => mat (x b).1 τ a c) B) {D : ℕ} (R : AnRead (genStr Z) σ D)
@@ -336,6 +427,9 @@ theorem met_family {U : Formalism.L2.PjFree.Unf Xo c σ r} (hU : Formalism.L2.Pj
     rw [hG3 (a, a') _ hb.2]
   exact (((hsum.congr heq).contDiffAt (hB'.mem_nhds hb')).contDiffWithinAt)
 
+/- English proof (translation)
+Use `(met_family Z hU k hB x hd (manifold Z σ) (A.met σ) (A.met_smooth σ) ⟨τ, b⟩ ⟨τ, a⟩).congr fun v _ => ?_` and prove the remaining obligations. Rewrite using `[frB_apply, frB_apply]`. Both sides reduce to the same expression.
+-/
 theorem gram_family [SmoothOfRelativeDimension Dw.dim (genStr Z)] (A : OddPrimesWithRootsOfUnity Z) {U : Formalism.L2.PjFree.Unf Xo c σ r}
     (hU : Formalism.L2.PjFree.IsUnf U) (k : U.Comp) {n : ℕ} {B : Set (Fin n → ℂ)} (hB : IsOpen B)
     (x : (Fin n → ℂ) → (U.X k).dom) (hd : ∀ τ a c, DifferentiableOn ℂ (fun b => mat (x b).1 τ a c) B)
@@ -347,6 +441,9 @@ theorem gram_family [SmoothOfRelativeDimension Dw.dim (genStr Z)] (A : OddPrimes
 
 end Family
 
+/- English proof (translation)
+Introduce `D A N j S κ s L k x m B f hB hd τ a b`. Conclude with `gram_family s.T.Z x s.isUnf k hB f hd τ a b`.
+-/
 theorem gram_smooth : ∀ (D : D7) (A : Amb D) (N j : ℕ) (S : Sig A N j) (κ : Lv A) (s : FinalTheorems S κ) (L : CmList A) (k : s.Comp) (x : ToroidalCompactificationData s) (m : ℕ) (B : Set (Fin m → ℂ)) (f : (Fin m → ℂ) → (s.fd k).dom), IsOpen B → (∀ τ a b, DifferentiableOn ℂ (fun v => ReciprocityTheory.ChartRestriction.G.FD.mat (f v).1 τ a b) B) → ∀ τ a b, ContDiffOn ℝ ∞ (fun v => x.gram (s.framePt k (f v)) (s.lieFrame k (f v)) τ a b) B := by
   intro D A N j S κ s L k x m B f hB hd τ a b
   exact gram_family s.T.Z x s.isUnf k hB f hd τ a b

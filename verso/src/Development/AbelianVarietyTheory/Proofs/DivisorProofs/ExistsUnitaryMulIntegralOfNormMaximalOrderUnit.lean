@@ -10,6 +10,11 @@ open Polynomial Matrix GlobalTheory.LatOrb
 
 namespace GlobalTheory.UnitAdj
 
+/- English proof (translation)
+Use `haveI := GlobalTheory.FormalIsogeny.isDiscreteValuationRing_integralClosure O K L`. Use `haveI := integralClosure.isFractionRing_of_finite_extension (A := O) K L`. Break down `ValuationRing.isInteger_or_isInteger (integralClosure O L) y with ⟨z, hz⟩ | ⟨z, hz⟩` into its components or cases. Use `left`. Rewrite using `[← hz]`.
+
+Conclude with `z.2`. Use `right`. Rewrite using `[← hz]`. Conclude with `z.2`.
+-/
 theorem isIntegral_or_isIntegral_inv {O K L : Type} [CommRing O] [IsDomain O]
     [IsDiscreteValuationRing O] [IsAdicComplete (IsLocalRing.maximalIdeal O) O] [Field K]
     [Algebra O K] [IsFractionRing O K] [Field L] [Algebra K L] [Algebra O L]
@@ -21,6 +26,9 @@ theorem isIntegral_or_isIntegral_inv {O K L : Type} [CommRing O] [IsDomain O]
   · left; rw [← hz]; exact z.2
   · right; rw [← hz]; exact z.2
 
+/- English proof (translation)
+Use `⟨X ^ 2 - X, monic_X_pow_sub (degree_X_le.trans_lt (by norm_num)), ?_⟩` and prove the remaining obligations. Simplify using `[eval₂_sub, pow_two, he]`.
+-/
 theorem isIntegral_of_mul_self_eq {O A : Type} [CommRing O] [CommRing A] [Algebra O A] {e : A}
     (he : e * e = e) : IsIntegral O e := by
   refine ⟨X ^ 2 - X, monic_X_pow_sub (degree_X_le.trans_lt (by norm_num)), ?_⟩
@@ -30,6 +38,9 @@ section Residues
 
 variable {A : Type} [CommRing A] [IsArtinianRing A] [IsReduced A]
 
+/- English proof (translation)
+Apply `(IsArtinianRing.equivPi A).injective` to reduce the goal to its premises. Rewrite using `[map_zero]`. Use function extensionality and compare the values at `I`. Rewrite using `[IsArtinianRing.equivPi_apply]`. Conclude with `Ideal.Quotient.eq_zero_iff_mem.2 (h I)`.
+-/
 theorem eq_zero_of_forall_mem {y : A} (h : ∀ I : MaximalSpectrum A, y ∈ I.asIdeal) : y = 0 := by
   apply (IsArtinianRing.equivPi A).injective
   rw [map_zero]
@@ -37,6 +48,11 @@ theorem eq_zero_of_forall_mem {y : A} (h : ∀ I : MaximalSpectrum A, y ∈ I.as
   rw [IsArtinianRing.equivPi_apply]
   exact Ideal.Quotient.eq_zero_iff_mem.2 (h I)
 
+/- English proof (translation)
+Set `ψ : A ≃ₐ[O] (∀ I : MaximalSpectrum A, A ⧸ I.asIdeal)` to `(IsArtinianRing.equivPi A).restrictScalars O`. Use `(isIntegral_algHom_iff ψ.toAlgHom ψ.injective).1 ?_` and prove the remaining obligations. Use `GlobalTheory.UnitLemma.PrincipalLat.isIntegral_pi' _ fun I => ?_` and prove the remaining obligations. Establish `: ψ.toAlgHom y I = Ideal.Quotient.mk I.asIdeal y` using `IsArtinianRing.equivPi_apply A y I`. Rewrite using `[this]`.
+
+Conclude with `h I`.
+-/
 theorem isIntegral_of_residues {O : Type} [CommRing O] [Algebra O A] {y : A}
     (h : ∀ I : MaximalSpectrum A, IsIntegral O (Ideal.Quotient.mk I.asIdeal y)) :
     IsIntegral O y := by
@@ -48,6 +64,11 @@ theorem isIntegral_of_residues {O : Type} [CommRing O] [Algebra O A] {y : A}
   rw [this]
   exact h I
 
+/- English proof (translation)
+Set `v : ∀ I : MaximalSpectrum A, A ⧸ I.asIdeal` to `fun I => if P I then 1 else 0`. Use `⟨(IsArtinianRing.equivPi A).symm v, fun I => ⟨fun hP => ?_, fun hP => ?_⟩⟩` and prove the remaining obligations. Establish `h1` using `congrFun ((IsArtinianRing.equivPi A).apply_symm_apply v) I`. Rewrite `h1` using `[IsArtinianRing.equivPi_apply]`. Rewrite using `[← Ideal.Quotient.eq, h1, map_one]`.
+
+Simplify using `[v, hP]`. Establish `h1` using `congrFun ((IsArtinianRing.equivPi A).apply_symm_apply v) I`. Rewrite `h1` using `[IsArtinianRing.equivPi_apply]`. Rewrite using `[← Ideal.Quotient.eq_zero_iff_mem, h1]`. Simplify using `[v, hP]`.
+-/
 theorem exists_residues_indicator (P : MaximalSpectrum A → Prop) :
     ∃ e : A, ∀ I : MaximalSpectrum A, (P I → e - 1 ∈ I.asIdeal) ∧ (¬ P I → e ∈ I.asIdeal) := by
   classical
@@ -64,6 +85,59 @@ theorem exists_residues_indicator (P : MaximalSpectrum A → Prop) :
 
 end Residues
 
+/- English proof (translation)
+Introduce `O K A _ _ _ _ _ _ _ _ _ _ _ _ _ σ hσ τ hτ hτσ x hc hci`. Use `haveI : IsArtinianRing A := IsArtinianRing.of_finite K A`. Establish `hinj` using `IsFractionRing.injective O K`. Use `choose s hs using hσ`. Set `σO : O →+* O` to `{ toFun := s map_one' := hinj (by simp [← hs]) map_mul' := fun a b => hinj (by simp [← hs]) map_zero' := hinj (by simp [← hs]) map_add' := fun a b => hinj (by simp [← hs]) }`.
+
+Establish `hτO : ∀ a : O, τ (algebraMap O A a) = algebraMap O A (σO a)`. Introduce `a`. Rewrite using `[IsScalarTower.algebraMap_apply O K A, hτσ]`. Express the relevant statement in the definitionally equal form `_ = algebraMap O A (s a)`. Rewrite using `[hs, ← IsScalarTower.algebraMap_apply]`.
+
+Establish `hsurj : Function.Surjective τ` using `fun a => ⟨τ a, hτ a⟩`. Choose the witnesses or unpack the hypotheses as in `⟨tI, hmem, htt⟩ : ∃ tI : MaximalSpectrum A → MaximalSpectrum A, (∀ I y, y ∈ (tI I).asIdeal ↔ τ y ∈ I.asIdeal) ∧ ∀ I, tI (tI I) = I := by`. Establish `hmax : ∀ I : MaximalSpectrum A, (I.asIdeal.comap τ).IsMaximal` using `fun I => by haveI := I.isMaximal`. Conclude with `Ideal.comap_isMaximal_of_surjective τ hsurj`. Use `⟨fun I => ⟨I.asIdeal.comap τ, hmax I⟩, fun I y => Iff.rfl, fun I => ?_⟩` and prove the remaining obligations.
+
+Use extensionality with `y`. Express the relevant statement in the definitionally equal form `τ (τ y) ∈ I.asIdeal ↔ y ∈ I.asIdeal`. Rewrite using `[hτ]`. Take `⟨e, he⟩` from `exists_residues_indicator (fun I : MaximalSpectrum A => WellOrderingRel I (tI I))`. Establish `he1 : ∀ I, WellOrderingRel I (tI I) → e - 1 ∈ I.asIdeal` using `fun I => (he I).1`.
+
+Establish `he0 : ∀ I, ¬ WellOrderingRel I (tI I) → e ∈ I.asIdeal` using `fun I => (he I).2`. Establish `hτe1 : ∀ I, WellOrderingRel (tI I) I → τ e - 1 ∈ I.asIdeal`. Introduce `I h`. Use `he1 (tI I) (by rw [htt]; exact h)` as an intermediate fact. Rewrite `this` using `[hmem, map_sub, map_one]`.
+
+Conclude with `this`. Establish `hτe0 : ∀ I, ¬ WellOrderingRel (tI I) I → τ e ∈ I.asIdeal`. Introduce `I h`. Conclude with `(hmem I e).1 (he0 (tI I) (by rw [htt]; exact h))`. Establish `hee : e * e = e`.
+
+Use `sub_eq_zero.1 (eq_zero_of_forall_mem fun I => ?_)` and prove the remaining obligations. Distinguish the cases in `hP : WellOrderingRel I (tI I)`. Use `I.asIdeal.mul_mem_left e (he1 I hP)` as an intermediate fact. Rewrite `this` using `[mul_sub, mul_one]`. Then use the resulting hypothesis. Conclude with `I.asIdeal.sub_mem (I.asIdeal.mul_mem_left e (he0 I hP)) (he0 I hP)`.
+
+Establish `hgg : τ e * τ e = τ e` using `by rw [← map_mul, hee]`. Establish `heg : e * τ e = 0`. Use `eq_zero_of_forall_mem fun I => ?_` and prove the remaining obligations. Distinguish the cases in `hP : WellOrderingRel I (tI I)`. Conclude with `I.asIdeal.mul_mem_left _ (hτe0 I (asymm_of WellOrderingRel hP))`.
+
+Conclude with `I.asIdeal.mul_mem_right _ (he0 I hP)`. Use `set f : A := 1 - e - τ e with hf`. Establish `hfix : ∀ I, tI I = I → f - 1 ∈ I.asIdeal`. Introduce `I hI`. Establish `h0 : ¬ WellOrderingRel I (tI I)` using `by rw [hI]; exact irrefl_of WellOrderingRel I`.
+
+Establish `h0' : ¬ WellOrderingRel (tI I) I` using `by rw [hI]; exact irrefl_of WellOrderingRel I`. Establish `: f - 1 = -(e + τ e)` using `by rw [hf]; ring`. Rewrite using `[this]`. Conclude with `I.asIdeal.neg_mem (I.asIdeal.add_mem (he0 I h0) (hτe0 I h0'))`. Establish `hmov : ∀ I, tI I ≠ I → f ∈ I.asIdeal`.
+
+Introduce `I hI`. Break down `trichotomous_of WellOrderingRel I (tI I) with h | h | h` into its components or cases. Establish `: f = -(e - 1) - τ e` using `by rw [hf]; ring`. Rewrite using `[this]`. Conclude with `I.asIdeal.sub_mem (I.asIdeal.neg_mem (he1 I h)) (hτe0 I (asymm_of WellOrderingRel h))`.
+
+Conclude with `absurd h.symm hI`. Establish `: f = -(τ e - 1) - e` using `by rw [hf]; ring`. Rewrite using `[this]`. Conclude with `I.asIdeal.sub_mem (I.asIdeal.neg_mem (hτe1 I h)) (he0 I (asymm_of WellOrderingRel h))`. Use `set a : A := (x : A) with ha`.
+
+Use `set b : A := ((x⁻¹ : Aˣ) : A) with hb`. Establish `hab : a * b = 1` using `x.mul_inv`. Establish `hpq : τ a * τ b = 1` using `by rw [← map_mul, hab, map_one]`. Establish `hstable : ∀ I : MaximalSpectrum A, tI I = I → IsIntegral O (Ideal.Quotient.mk I.asIdeal a) ∧ IsIntegral O (Ideal.Quotient.mk I.asIdeal b)`. Introduce `I hI`.
+
+Establish `hle : I.asIdeal ≤ I.asIdeal.comap τ` using `fun y hy => by`. Rewrite using `[Ideal.mem_comap, ← hmem, hI]`. Conclude with `hy`. Set `ρ` to `Ideal.quotientMap I.asIdeal τ hle`. Establish `hρ : ∀ y, ρ (Ideal.Quotient.mk I.asIdeal y) = Ideal.Quotient.mk I.asIdeal (τ y)` using `fun y => Ideal.quotientMap_mk`.
+
+Establish `hcomp : (algebraMap O (A ⧸ I.asIdeal)).comp σO = ρ.comp (algebraMap O (A ⧸ I.asIdeal))`. Use extensionality with `r`. Express the relevant statement in the definitionally equal form `Ideal.Quotient.mk _ (algebraMap O A (σO r)) = ρ (Ideal.Quotient.mk _ (algebraMap O A r))`. Rewrite using `[hρ, hτO]`. Establish `hρi : ∀ z, IsIntegral O z → IsIntegral O (ρ z)` using `fun z hz => IsIntegral.map_of_comp_eq σO ρ hcomp hz`.
+
+Establish `hmk : ∀ y : A, IsIntegral O y → IsIntegral O (Ideal.Quotient.mk I.asIdeal y)` using `fun y hy => hy.map (Ideal.Quotient.mkₐ O I.asIdeal)`. Establish `hxa : a = (τ a * a) * τ b` using `by linear_combination -a * hpq`. Establish `hxb : b = (τ b * b) * τ a` using `by linear_combination -b * hpq`. Use `haveI := I.isMaximal`. Use `letI : Field (A ⧸ I.asIdeal) := Ideal.Quotient.field I.asIdeal`.
+
+Use `haveI : FiniteDimensional K (A ⧸ I.asIdeal) := Module.Finite.of_surjective (Ideal.Quotient.mkₐ K I.asIdeal).toLinearMap Ideal.Quotient.mk_surjective`. Establish `hX : Ideal.Quotient.mk I.asIdeal a * Ideal.Quotient.mk I.asIdeal b = 1`. Rewrite using `[← map_mul, hab, map_one]`. Establish `hinv : (Ideal.Quotient.mk I.asIdeal a)⁻¹ = Ideal.Quotient.mk I.asIdeal b` using `inv_eq_of_mul_eq_one_right hX`. Break down `isIntegral_or_isIntegral_inv (O := O) (K := K) (Ideal.Quotient.mk I.asIdeal a) with h | h` into its components or cases.
+
+Use `⟨h, ?_⟩` and prove the remaining obligations. Rewrite using `[hxb, map_mul, ← hρ]`. Conclude with `(hmk _ hci).mul (hρi _ h)`. Rewrite `h` using `[hinv]`. Use `⟨?_, h⟩` and prove the remaining obligations.
+
+Rewrite using `[hxa, map_mul, ← hρ]`. Conclude with `(hmk _ hc).mul (hρi _ h)`. Establish `haf : IsIntegral O (a * f) ∧ IsIntegral O (b * f)`. Apply the tactic sequence `constructor <;>`. Use `isIntegral_of_residues fun I => ?_` and prove the remaining obligations.
+
+Distinguish the cases in `hI : tI I = I`. Establish `h1 : Ideal.Quotient.mk I.asIdeal f = 1`. Rewrite using `[← map_one (Ideal.Quotient.mk I.asIdeal)]`. Conclude with `Ideal.Quotient.eq.2 (hfix I hI)`. Rewrite using `[map_mul, h1, mul_one]`.
+
+Apply the tactic sequence `first | exact (hstable I hI).1 | exact (hstable I hI).2`. Rewrite using `[Ideal.Quotient.eq_zero_iff_mem.2 (I.asIdeal.mul_mem_left _ (hmov I hI))]`. Conclude with `isIntegral_zero`. Use `set T : A := a * e + τ b * τ e + f with hT`. Use `set S : A := b * e + τ a * τ e + f with hS`.
+
+Establish `hTS : T * S = 1`. Rewrite using `[hT, hS, hf]`. Take the linear combination `e ^ 2 * hab + τ e ^ 2 * hpq + (2 - a - b) * hee + (2 - τ a - τ b) * hgg + (a * τ a + b * τ b - a - b - τ a - τ b + 2) * heg`. Establish `hτT : τ T = S`. Rewrite using `[hT, hS, hf]`.
+
+Simplify using `only [map_add, map_sub, map_mul, map_one, hτ]`. Expand and normalize the polynomial expressions, which then agree. Establish `ie : IsIntegral O e` using `isIntegral_of_mul_self_eq hee`. Establish `ig : IsIntegral O (τ e)` using `isIntegral_of_mul_self_eq hgg`. Use `⟨Units.mkOfMulEqOne T S hTS, ?_, ?_, ?_⟩` and prove the remaining obligations.
+
+Express the relevant statement in the definitionally equal form `τ T * T = 1`. Rewrite using `[hτT, mul_comm, hTS]`. Express the relevant statement in the definitionally equal form `IsIntegral O (T * b)`. Establish `: T * b = e + (τ b * b) * τ e + b * f`. Rewrite using `[hT]`.
+
+Take the linear combination `e * hab`. Rewrite using `[this]`. Conclude with `(ie.add (hci.mul ig)).add haf.2`. Express the relevant statement in the definitionally equal form `IsIntegral O (S * a)`. Establish `: S * a = e + (τ a * a) * τ e + a * f`.
+
+Rewrite using `[hS]`. Take the linear combination `e * hab`. Rewrite using `[this]`. Conclude with `(ie.add (hc.mul ig)).add haf.1`.
+-/
 theorem exists_unitary_mul_integral : ∀ {O K A : Type} [CommRing O] [IsDomain O]
     [IsDiscreteValuationRing O]
     [IsAdicComplete (IsLocalRing.maximalIdeal O) O] [Field K] [Algebra O K] [IsFractionRing O K]

@@ -56,6 +56,9 @@ def pendOf (Tf : FormsTied D u) (hL : LowerLevelCompatible Tf)
   beOn_eq := hL.beOn
   interlace := sg_interlace Tf.valP
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨pendOf Tf hL B gP h, archimedeanSignatureMatching_of_trivial_branching Tf _ fun _ => rfl⟩`.
+-/
 theorem brExists_of_tied (Tf : FormsTied D u) (hL : LowerLevelCompatible Tf)
     (B : D.what₂.places.Pl → (D.fm u).clsP → Matrix (Fin (D.R.N D.R.m - 1)) (Fin (D.R.N D.R.m - 1)) D.host.E)
     (gP : D.what₂.places.Pl → (D.fm u).clsP → D.what₂.Tau → GL (Fin (D.R.N D.R.m - 1)) ℂ) (h : PendClauses Tf B gP) :

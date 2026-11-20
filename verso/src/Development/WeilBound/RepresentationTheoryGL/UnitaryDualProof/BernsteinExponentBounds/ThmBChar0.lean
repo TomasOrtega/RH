@@ -8,8 +8,14 @@ namespace PositivityTheory.RgUd
 
 variable (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] [CharZero k]
 
+/- English proof (translation)
+The claim follows from `AB.Final.thmB k (AB.Final.thmA k (T.Final.thmT k))`.
+-/
 theorem thmB_char0 : ThmB k := AB.Final.thmB k (AB.Final.thmA k (T.Final.thmT k))
 
+/- English proof (translation)
+The claim follows from `Prod.Final.bern_of k (Form.U.Final.derivTop k (thmB_char0 k)) (Form.U.Final.derivPos k (thmB_char0 k)) (GlobalTheory.RgGu.Leib.Hand.leibnizOrd k)`.
+-/
 theorem bern : BernAt k :=
   Prod.Final.bern_of k (Form.U.Final.derivTop k (thmB_char0 k)) (Form.U.Final.derivPos k (thmB_char0 k))
     (GlobalTheory.RgGu.Leib.Hand.leibnizOrd k)

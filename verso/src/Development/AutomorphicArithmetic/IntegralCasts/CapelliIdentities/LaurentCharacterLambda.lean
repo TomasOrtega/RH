@@ -4,6 +4,9 @@ import Mathlib
     ℕ → Type :=
     fun (q : ℕ) ↦ LaurentPolynomial (Localization.Away (↑q : ℤ))
 
+/- English proof (translation)
+Introduce `S _ q hq`. Rewrite using `[map_natCast]` and apply the resulting hypothesis.
+-/
 theorem UpperTheory.Reformulated.B.LaurentCharacterLambda.aux3 :
     ∀ {S : Type} [inst : CommRing S] (q : ℕ), IsUnit (↑q : S) → IsUnit ((Int.castRingHom S : ℤ → S) (↑q : ℤ)) := by
   intro S _ q hq
@@ -14,11 +17,17 @@ noncomputable def UpperTheory.Reformulated.B.LaurentCharacterLambda.lam :
     fun {S : Type} [CommRing S] (q : ℕ) (hq : IsUnit (↑q : S)) ↦
       IsLocalization.Away.lift (↑q : ℤ) (UpperTheory.Reformulated.B.LaurentCharacterLambda.aux3 q hq)
 
+/- English proof (translation)
+Introduce `S _`. Rewrite using `[← LaurentPolynomial.T_add, add_neg_cancel, LaurentPolynomial.T_zero]`.
+-/
 theorem UpperTheory.Reformulated.B.LaurentCharacterLambda.aux5 :
     ∀ (S : Type) [inst : CommRing S], LaurentPolynomial.T (1 : ℤ) * LaurentPolynomial.T (-1 : ℤ) = (1 : LaurentPolynomial S) := by
   intro S _
   rw [← LaurentPolynomial.T_add, add_neg_cancel, LaurentPolynomial.T_zero]
 
+/- English proof (translation)
+Introduce `S _`. Rewrite using `[← LaurentPolynomial.T_add, neg_add_cancel, LaurentPolynomial.T_zero]`.
+-/
 theorem UpperTheory.Reformulated.B.LaurentCharacterLambda.aux6 :
     ∀ (S : Type) [inst : CommRing S], LaurentPolynomial.T (-1 : ℤ) * LaurentPolynomial.T (1 : ℤ) = (1 : LaurentPolynomial S) := by
   intro S _
@@ -35,11 +44,17 @@ noncomputable def UpperTheory.Reformulated.B.LaurentCharacterLambda.iot :
     fun {S : Type} [CommRing S] (q : ℕ) (hq : IsUnit (↑q : S)) ↦
       LaurentPolynomial.eval₂ (LaurentPolynomial.C.comp (UpperTheory.Reformulated.B.LaurentCharacterLambda.lam q hq)) (UpperTheory.Reformulated.B.LaurentCharacterLambda.tU S)
 
+/- English proof (translation)
+Introduce `q`. Conclude with `UpperTheory.Reformulated.B.LaurentCharacterLambda.aux5 _`.
+-/
 theorem UpperTheory.Reformulated.B.LaurentCharacterLambda.aux9 :
     ∀ (q : ℕ), LaurentPolynomial.T (1 : ℤ) * LaurentPolynomial.T (-1 : ℤ) = (1 : UpperTheory.Reformulated.B.LaurentCharacterLambda.LqR q) := by
   intro q
   exact UpperTheory.Reformulated.B.LaurentCharacterLambda.aux5 _
 
+/- English proof (translation)
+Introduce `q`. Conclude with `UpperTheory.Reformulated.B.LaurentCharacterLambda.aux6 _`.
+-/
 theorem UpperTheory.Reformulated.B.LaurentCharacterLambda.laurent_T_neg_one_mul_T_one :
     ∀ (q : ℕ), LaurentPolynomial.T (-1 : ℤ) * LaurentPolynomial.T (1 : ℤ) = (1 : UpperTheory.Reformulated.B.LaurentCharacterLambda.LqR q) := by
   intro q
@@ -60,6 +75,9 @@ noncomputable def UpperTheory.Reformulated.B.LaurentCharacterLambda.chi :
       LaurentPolynomial.eval₂ ψ
         ((Units.map (↑φ : UpperTheory.Reformulated.B.LaurentCharacterLambda.LqR q →* R) : (UpperTheory.Reformulated.B.LaurentCharacterLambda.LqR q)ˣ → Rˣ) (UpperTheory.Reformulated.B.LaurentCharacterLambda.tR q))
 
+/- English proof (translation)
+Apply `IsLocalization.ringHom_ext (Submonoid.powers (Polynomial.X : Polynomial S))` to reduce the goal to its premises. Apply `Polynomial.ringHom_ext` to reduce the goal to its premises. Introduce `a`. Simplify `hC a` using `[LaurentPolynomial.algebraMap_eq_toLaurent]`. Simplify `hT` using `[LaurentPolynomial.algebraMap_eq_toLaurent]`.
+-/
 private theorem UpperTheory.Reformulated.B.LaurentCharacterLambda.laurent_hom_ext {S R : Type} [CommRing S] [CommRing R]
     (f g : LaurentPolynomial S →+* R)
     (hC : ∀ a : S, f (LaurentPolynomial.C a) = g (LaurentPolynomial.C a))
@@ -70,6 +88,11 @@ private theorem UpperTheory.Reformulated.B.LaurentCharacterLambda.laurent_hom_ex
     simpa [LaurentPolynomial.algebraMap_eq_toLaurent] using hC a
   · simpa [LaurentPolynomial.algebraMap_eq_toLaurent] using hT
 
+/- English proof (translation)
+Introduce `S _ q hq R _ φ ψ χ h1 h2`. Apply `UpperTheory.Reformulated.B.LaurentCharacterLambda.laurent_hom_ext` to reduce the goal to its premises. Introduce `a`. Rewrite using `[UpperTheory.Reformulated.B.LaurentCharacterLambda.chi, LaurentPolynomial.eval₂_C, ← h2, RingHom.comp_apply]`. Rewrite using `[UpperTheory.Reformulated.B.LaurentCharacterLambda.chi, LaurentPolynomial.eval₂_T, zpow_one, Units.coe_map, ← h1]`.
+
+Express the relevant statement in the definitionally equal form `_ = χ (UpperTheory.Reformulated.B.LaurentCharacterLambda.iot q hq (LaurentPolynomial.T 1))`. Rewrite using `[UpperTheory.Reformulated.B.LaurentCharacterLambda.iot, LaurentPolynomial.eval₂_T, zpow_one]`. Both sides reduce to the same expression.
+-/
 theorem UpperTheory.Reformulated.B.LaurentCharacterLambda.chi_uniq :
     ∀ {S : Type} [inst : CommRing S] (q : ℕ) (hq : IsUnit (↑q : S)) {R : Type} [inst_1 : CommRing R]
       (φ : UpperTheory.Reformulated.B.LaurentCharacterLambda.LqR q →+* R) (ψ : S →+* R) (χ : LaurentPolynomial S →+* R),

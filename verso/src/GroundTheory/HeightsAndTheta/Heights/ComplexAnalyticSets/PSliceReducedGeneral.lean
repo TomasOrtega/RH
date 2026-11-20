@@ -8,6 +8,15 @@ namespace GroundTheory.Heights₂.Heights
 
 open MvPolynomial Matrix ComplexSets
 
+/- English proof (translation)
+Introduce `g hg`. Assume the negation of the conclusion as `hno`. Simplify using `only [not_exists, not_and] at hno`. Establish `: (RingHom.ker (eval q : MvPolynomial (Fin n) ℂ →+* ℂ)).IsPrime` using `RingHom.ker_isPrime _`. Use `set N : Submodule (MvPolynomial (Fin n) ℂ) (MvPolynomial (Fin n) ℂ ⧸ I) := Submodule.span _ {Ideal.Quotient.mk I g}`.
+
+Establish `hK : ∀ s, s ∈ Module.annihilator (MvPolynomial (Fin n) ℂ) N ↔ s * g ∈ I`. Introduce `s`. Express the relevant statement in the definitionally equal form `s ∈ N.annihilator ↔ _`. Rewrite using `[Submodule.mem_annihilator_span_singleton]`. Express the relevant statement in the definitionally equal form `Ideal.Quotient.mk I s * Ideal.Quotient.mk I g = 0 ↔ _`.
+
+Rewrite using `[← map_mul, Ideal.Quotient.eq_zero_iff_mem]`. Establish `hKq : Module.annihilator (MvPolynomial (Fin n) ℂ) N ≤ RingHom.ker (eval q)`. Introduce `s hs`. Assume the negation of the conclusion as `h`. Conclude with `hno s h ((hK s).1 hs)`.
+
+Take `⟨P, hPmin, hPq⟩` from `Ideal.exists_minimalPrimes_le hKq`. Establish `hPass : P ∈ associatedPrimes (MvPolynomial (Fin n) ℂ) (MvPolynomial (Fin n) ℂ ⧸ I)` using `associatedPrimes.subset_of_injective (f := N.subtype) Subtype.val_injective (Module.associatedPrimes.minimalPrimes_annihilator_subset_associatedPrimes _ _ hPmin)`. Take `⟨hPI, hPne⟩` from `hA P hPass hPq`. Take `⟨s, hsP, hsg⟩` from `hB P hPI.1.1 hPI.1.2 hPne g hg`. Conclude with `hsP (hPmin.1.2 ((hK s).2 hsg))`.
+-/
 theorem isRadicalAt_of_associatedPrimes {n : ℕ} {I : Ideal (MvPolynomial (Fin n) ℂ)} {q : Fin n → ℂ}
     (hA : ∀ P ∈ associatedPrimes (MvPolynomial (Fin n) ℂ) (MvPolynomial (Fin n) ℂ ⧸ I),
       P ≤ RingHom.ker (eval q) → P ∈ I.minimalPrimes ∧ P ≠ RingHom.ker (eval q))
@@ -38,6 +47,11 @@ theorem isRadicalAt_of_associatedPrimes {n : ℕ} {I : Ideal (MvPolynomial (Fin 
   obtain ⟨s, hsP, hsg⟩ := hB P hPI.1.1 hPI.1.2 hPne g hg
   exact hsP (hPmin.1.2 ((hK s).2 hsg))
 
+/- English proof (translation)
+Introduce `n d J W u hJ hdim hu hW`. Take `⟨f, hfW, hf⟩` from `hU n d J W u hJ hdim hu hW`. Use `⟨f, hfW, fun q hq hfq => ?_⟩` and prove the remaining obligations. Take `⟨O₁, hO₁o, hO₁d, hO₁⟩` from `hf q hq hfq`. Take `⟨O₂, hO₂o, hO₂d, hO₂⟩` from `hB n d J q hJ.isRadical`.
+
+Conclude with `⟨O₁ ∩ O₂, hO₁o.inter hO₂o, hO₁d.inter_of_isOpen_left hO₂d hO₁o, fun L hL => isRadicalAt_of_associatedPrimes (hO₁ L hL.1) (hO₂ L hL.2)⟩`.
+-/
 theorem SliceReducedGeneral.proof (hU : SliceUnmixedGeneral.Statement)
     (hB : SliceReducedAway.Statement) : SliceReducedGeneral.Statement := by
   intro n d J W u hJ hdim hu hW

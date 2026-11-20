@@ -13,6 +13,9 @@ open PositivityTheory.Rg.Tf.Core PositivityTheory.Rg.Tf.Adel PositivityTheory.Rg
 open scoped ENNReal NumberField.AdeleRing InnerProductSpace ComplexConjugate
 open UpperTheory.V.Z.InvariantSubmoduleMonicPolynomial
 
+/- English proof (translation)
+Use extensionality with `i j`. Apply the tactic sequence `rcases i with i | i <;> rcases j with j | j <;>`. Apply the tactic sequence `simp [unipMatrix, blockEntry_apply, Matrix.one_apply, Matrix.toBlocks₁₂, Fin.ext_iff] <;> omega`.
+-/
 private theorem unip_corner {a b : ℕ} {R : Type} [CommRing R] (X : UPos (a + b) a → R) :
     (unipMatrix X).submatrix finSumFinEquiv finSumFinEquiv =
       Matrix.fromBlocks 1 ((unipMatrix X).submatrix finSumFinEquiv finSumFinEquiv).toBlocks₁₂ 0 (1 : Matrix (Fin b) (Fin b) R) := by
@@ -20,6 +23,11 @@ private theorem unip_corner {a b : ℕ} {R : Type} [CommRing R] (X : UPos (a + b
   rcases i with i | i <;> rcases j with j | j <;>
     simp [unipMatrix, blockEntry_apply, Matrix.one_apply, Matrix.toBlocks₁₂, Fin.ext_iff] <;> omega
 
+/- English proof (translation)
+Use `⟨fun p => Matrix.reindex finSumFinEquiv finSumFinEquiv (Matrix.fromBlocks 0 B 0 0) p.1.1 p.1.2, ?_⟩` and prove the remaining obligations. Rewrite using `[unip_corner]`. Use `congr 1`. Use extensionality with `i j`. Establish `: (Fin.castAdd b i : Fin (a + b)) ≠ Fin.natAdd a j`.
+
+Simplify using `[Fin.ext_iff]`. Use linear arithmetic over natural numbers and integers. Simplify using `[unipMatrix, blockEntry_apply, Matrix.toBlocks₁₂, this]`.
+-/
 private theorem unip_any {a b : ℕ} {R : Type} [CommRing R] (B : Matrix (Fin a) (Fin b) R) : ∃ X : UPos (a + b) a → R,
     (unipMatrix X).submatrix finSumFinEquiv finSumFinEquiv = Matrix.fromBlocks 1 B 0 (1 : Matrix (Fin b) (Fin b) R) := by
   refine ⟨fun p => Matrix.reindex finSumFinEquiv finSumFinEquiv (Matrix.fromBlocks 0 B 0 0) p.1.1 p.1.2, ?_⟩
@@ -30,6 +38,15 @@ private theorem unip_any {a b : ℕ} {R : Type} [CommRing R] (B : Matrix (Fin a)
     simp [Fin.ext_iff]; omega
   simp [unipMatrix, blockEntry_apply, Matrix.toBlocks₁₂, this]
 
+/- English proof (translation)
+Establish `e1 : g.val.submatrix finSumFinEquiv finSumFinEquiv * g⁻¹.val.submatrix finSumFinEquiv finSumFinEquiv = (1 : Matrix (Fin a ⊕ Fin b) (Fin a ⊕ Fin b) R)`. Rewrite using `[Matrix.submatrix_mul_equiv, Units.mul_inv, Matrix.submatrix_one_equiv]`. Establish `hg : ∀ M : Matrix (Fin a ⊕ Fin b) (Fin a ⊕ Fin b) R, g.val.submatrix finSumFinEquiv finSumFinEquiv = M → g.val = M.submatrix finSumFinEquiv.symm finSumFinEquiv.symm`. Introduce and unpack `_ rfl`. Simplify using the standard rewrite rules.
+
+Generalize the expression as in `g.val.submatrix finSumFinEquiv finSumFinEquiv = M at *`. Generalize the expression as in `g⁻¹.val.submatrix finSumFinEquiv finSumFinEquiv = N at *`. Establish `hM` using `(Matrix.fromBlocks_toBlocks M).symm`. Rewrite `e1` using `[← Matrix.fromBlocks_toBlocks M, ← Matrix.fromBlocks_toBlocks N, h, h', Matrix.fromBlocks_multiply, ← Matrix.fromBlocks_one, Matrix.fromBlocks_inj]`. Simplify using `only [Matrix.mul_zero, Matrix.zero_mul, add_zero, zero_add] at e1`.
+
+Take `⟨e1, -, -, e2⟩` from `e1`. Take `⟨X, hX⟩` from `unip_any (M.toBlocks₁₂ * N.toBlocks₂₂)`. Use `⟨⟨_, _, e1, mul_eq_one_comm.1 e1⟩, ⟨_, _, e2, mul_eq_one_comm.1 e2⟩, X, Units.ext ?_⟩` and prove the remaining obligations. Establish `hX' : unipMatrix X = (Matrix.fromBlocks 1 (M.toBlocks₁₂ * N.toBlocks₂₂) 0 1).submatrix finSumFinEquiv.symm finSumFinEquiv.symm`. Rewrite using `[← hX]`.
+
+Simplify using the standard rewrite rules. Rewrite using `[Units.val_mul, coe_unipGL, hX', hg M rfl]`. Simplify using `only [blk, Matrix.reindex_apply, Matrix.submatrix_mul_equiv, Matrix.fromBlocks_multiply, Matrix.mul_zero, Matrix.zero_mul, add_zero, zero_add, Matrix.one_mul, Matrix.mul_assoc, mul_eq_one_comm.1 e2, Matrix.mul_one]`. Rewrite using `[← h, ← hM]`.
+-/
 private theorem split_par {a b : ℕ} {R : Type} [CommRing R] (g : GL (Fin (a + b)) R)
     (h : (g.val.submatrix finSumFinEquiv finSumFinEquiv).toBlocks₂₁ = 0)
     (h' : (g⁻¹.val.submatrix finSumFinEquiv finSumFinEquiv).toBlocks₂₁ = 0) :
@@ -58,6 +75,17 @@ private theorem split_par {a b : ℕ} {R : Type} [CommRing R] (g : GL (Fin (a + 
     Matrix.zero_mul, add_zero, zero_add, Matrix.one_mul, Matrix.mul_assoc, mul_eq_one_comm.1 e2, Matrix.mul_one]
   rw [← h, ← hM]
 
+/- English proof (translation)
+Take `⟨hlv, -, -, -, hdet, -⟩` from `blkLaws (K := K)`. Take `⟨a, d, X, hX⟩` from `split_par (s : AdelicGLn.AdelicGL K (2 + 2)) h h'`. Use `⟨X, retractOne a, retractOne d, Real.log (detModule K 2 a).1, ?_⟩` and prove the remaining obligations. Establish `h1 : detModule K 2 a * detModule K 2 d = 1`. Use `mem_normOneGL_iff_detModule.1 s.2` as an intermediate fact.
+
+Rewrite `this` using `[hX, map_mul, mem_normOneGL_iff_detModule.1 (unipGL_mem_normOneGL _), one_mul, hdet]`. Then use the resulting hypothesis. Establish `z1 : zt K (Real.log (detModule K 2 a).1) = centralSection K 2 (detModule K 2 a)`. Unfold `zt`. Use `congr 1`. Conclude with `Subtype.ext (Real.exp_log (detModule K 2 a).2)`.
+
+Establish `z2 : zt K (-Real.log (detModule K 2 a).1) = centralSection K 2 (detModule K 2 d)`. Unfold `zt`. Use `congr 1`. Use `Subtype.ext ?_` and prove the remaining obligations. Rewrite using `[eq_inv_of_mul_eq_one_right h1]`.
+
+Use `show Real.exp (-Real.log _) = _`. Rewrite using `[Real.exp_neg, Real.exp_log (detModule K 2 a).2]`. Both sides reduce to the same expression. Use `Subtype.ext ?_` and prove the remaining obligations. Rewrite using `[Subgroup.coe_mul, hlv, z1, z2, coe_retractOne, coe_retractOne, inv_mul_cancel_right, inv_mul_cancel_right]`.
+
+Conclude with `hX`.
+-/
 private theorem par_of_low {K : Type} [Field K] [NumberField K] (s : G1 K (2 + 2))
     (h : ((s : AdelicGLn.AdelicGL K (2 + 2)).val.submatrix finSumFinEquiv finSumFinEquiv).toBlocks₂₁ = 0)
     (h' : ((s : AdelicGLn.AdelicGL K (2 + 2))⁻¹.val.submatrix finSumFinEquiv finSumFinEquiv).toBlocks₂₁ = 0) :
@@ -84,6 +112,9 @@ private theorem par_of_low {K : Type} [Field K] [NumberField K] (s : G1 K (2 + 2
   rw [Subgroup.coe_mul, hlv, z1, z2, coe_retractOne, coe_retractOne, inv_mul_cancel_right, inv_mul_cancel_right]
   exact hX
 
+/- English proof (translation)
+Use extensionality with `i j`. Use `mem_adelicBorel.1 hb ?_` and prove the remaining obligations. Use `show finSumFinEquiv (Sum.inl j) < finSumFinEquiv (Sum.inr i)`. Simplify using `only [finSumFinEquiv_apply_left, finSumFinEquiv_apply_right, Fin.lt_def, Fin.val_castAdd, Fin.val_natAdd]`. Use linear arithmetic over natural numbers and integers.
+-/
 private theorem low_of_borel {K : Type} [Field K] [NumberField K] {b : AdelicGLn.AdelicGL K (2 + 2)} (hb : b ∈ adelicBorel) :
     (b.val.submatrix finSumFinEquiv finSumFinEquiv).toBlocks₂₁ = 0 := by
   ext i j
@@ -105,26 +136,43 @@ section
 
 variable {K : Type} [Field K] [NumberField K] {n : ℕ}
 
+/- English proof (translation)
+Establish `h` using `AdelicGLn.prodEquiv_apply_snd K n (finEmb K n x) a b`. Rewrite `h` using `[prodEquiv_finEmb]`. Conclude with `h.symm`.
+-/
 private theorem snd_entry (x : AdelicGLn.FiniteAdelicGL K n) (a b : Fin n) :
     ((finEmb K n x : AdelicGLn.AdelicGL K n) a b).2 = x a b := by
   have h := AdelicGLn.prodEquiv_apply_snd K n (finEmb K n x) a b
   rw [prodEquiv_finEmb] at h
   exact h.symm
 
+/- English proof (translation)
+Use `Units.ext (Matrix.ext fun a b => ?_)` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `((finEmb K n (AdelicGLn.prodEquiv K n x).2 : AdelicGLn.AdelicGL K n) a b).2 v = (x a b).2 v`. Rewrite using `[snd_entry, AdelicGLn.prodEquiv_apply_snd]`.
+-/
 private theorem cf_snd (v : Pl K) (x : AdelicGLn.AdelicGL K n) : GM.cf v (AdelicGLn.prodEquiv K n x).2 = finAt v x := by
   refine Units.ext (Matrix.ext fun a b => ?_)
   change ((finEmb K n (AdelicGLn.prodEquiv K n x).2 : AdelicGLn.AdelicGL K n) a b).2 v = (x a b).2 v
   rw [snd_entry, AdelicGLn.prodEquiv_apply_snd]
 
+/- English proof (translation)
+Unfold `GM.cf`. Rewrite using `[map_mul, finAt_mul]`.
+-/
 private theorem cf_mul (v : Pl K) (x y : AdelicGLn.FiniteAdelicGL K n) : GM.cf v (x * y) = GM.cf v x * GM.cf v y := by
   unfold GM.cf
   rw [map_mul, finAt_mul]
 
+/- English proof (translation)
+Use `mem_adelicBorel.2 ?_` and prove the remaining obligations. Rewrite using `[centralSection, MonoidHom.comp_apply, MonoidHom.comp_apply, scalarUnits_apply, coe_diagUnits]`. Conclude with `Matrix.blockTriangular_diagonal _`.
+-/
 private theorem central_borel (s : {r : ℝ // 0 < r}) : centralSection K n s ∈ adelicBorel := by
   refine mem_adelicBorel.2 ?_
   rw [centralSection, MonoidHom.comp_apply, MonoidHom.comp_apply, scalarUnits_apply, coe_diagUnits]
   exact Matrix.blockTriangular_diagonal _
 
+/- English proof (translation)
+Use `mem_adelicBorel.2 fun i j hij => ?_` and prove the remaining obligations. Establish `hij' : j < i` using `hij`. Use `adele_ext (fun w => ?_) fun v => ?_` and prove the remaining obligations. Establish `e1 : (finEmb K n y i j).1 = (1 : Matrix (Fin n) (Fin n) (InfiniteAdeleRing K)) i j` using `congrArg (fun z => z.1 i j) (prodEquiv_finEmb y)`. Rewrite using `[e1, Matrix.one_apply_ne hij'.ne']`.
+
+Both sides reduce to the same expression. Conclude with `hy v i j hij'`.
+-/
 private theorem fin_borel (y : AdelicGLn.FiniteAdelicGL K n)
     (hy : ∀ v : Pl K, ∀ i j : Fin n, j < i → GM.cf v y i j = 0) : finEmb K n y ∈ adelicBorel := by
   refine mem_adelicBorel.2 fun i j hij => ?_
@@ -136,6 +184,9 @@ private theorem fin_borel (y : AdelicGLn.FiniteAdelicGL K n)
     rfl
   · exact hy v i j hij'
 
+/- English proof (translation)
+Rewrite using `[MultiplicityOne.coe_finProj]`. Conclude with `mul_mem h (inv_mem (central_borel _))`.
+-/
 private theorem proj_borel (y : AdelicGLn.FiniteAdelicGL K n) (h : finEmb K n y ∈ adelicBorel) :
     (MultiplicityOne.finProj K n y : AdelicGLn.AdelicGL K n) ∈ adelicBorel := by
   rw [MultiplicityOne.coe_finProj]
@@ -143,6 +194,27 @@ private theorem proj_borel (y : AdelicGLn.FiniteAdelicGL K n) (h : finEmb K n y 
 
 end
 
+/- English proof (translation)
+Introduce `K _ _ r w ι hw hι h k`. Take `⟨-, -, hoff, hdec, hcomm, -⟩` from `(embEx (K := K) (2 + 2) w hw).2 ι hι`. Take `⟨b, hb, c, hc, e⟩` from `exists_adelicBorel_mul_maxCompact (finEmb K (2 + 2) h)`. Establish `hh : h = (AdelicGLn.prodEquiv K (2 + 2) b).2 * (AdelicGLn.prodEquiv K (2 + 2) c).2`. Use `congrArg (fun x => (AdelicGLn.prodEquiv K (2 + 2) x).2) e` as an intermediate fact.
+
+Simplify `this` using `[prodEquiv_finEmb, map_mul]`. Take `⟨g₁, b', eb, hb'⟩` from `hdec (AdelicGLn.prodEquiv K (2 + 2) b).2`. Take `⟨g₂, u, eu, hu⟩` from `hdec (AdelicGLn.prodEquiv K (2 + 2) c).2`. Establish `hcb : ι g₂ * b' = b' * ι g₂` using `(hcomm g₂ b' hb').eq`. Establish `hh2 : h = ι (g₁ * g₂) * b' * u`.
+
+Rewrite using `[hh, eb, eu, map_mul, mul_assoc (ι g₁), ← mul_assoc b', ← hcb]`. Simplify using `only [mul_assoc]`. Establish `hb1 : ∀ v ∉ im w, GM.cf v b' = finAt v b` using `fun v hv => by`. Rewrite using `[← cf_snd, eb, cf_mul, hoff g₁ v hv, one_mul]`. Establish `hu1 : ∀ v ∉ im w, GM.cf v u = finAt v c` using `fun v hv => by`.
+
+Rewrite using `[← cf_snd, eu, cf_mul, hoff g₂ v hv, one_mul]`. Establish `hup : finEmb K (2 + 2) b' ∈ adelicBorel`. Use `fin_borel b' fun v i j hij => ?_` and prove the remaining obligations. Distinguish the cases in `hv : v ∈ im w`. Take `⟨l, -, rfl⟩` from `Finset.mem_image.1 hv`.
+
+Rewrite using `[hb' l]`. Conclude with `Matrix.one_apply_ne hij.ne'`. Rewrite using `[hb1 v hv]`. Express the relevant statement in the definitionally equal form `(b i j).2 v = 0`. Rewrite using `[mem_adelicBorel.1 hb hij]`.
+
+Both sides reduce to the same expression. Establish `hs` using `proj_borel b' hup`. Take `⟨X, m₁, m₂, t, hX⟩` from `par_of_low (fin1 b') (low_of_borel hs) (low_of_borel (inv_mem hs))`. Use `⟨X, m₁, m₂, t, g₁ * g₂, u, fun U v => ?_, ?_⟩` and prove the remaining obligations. Distinguish the cases in `hv : v ∈ im w`.
+
+Take `⟨l, -, rfl⟩` from `Finset.mem_image.1 hv beta_reduce`. Rewrite using `[if_pos hv]`. Express the relevant statement in the definitionally equal form `GM.cf (w l) u ∈ U (w l)`. Rewrite using `[hu l]`. Conclude with `one_mem _`.
+
+Use `beta_reduce`. Rewrite using `[if_neg hv]`. Express the relevant statement in the definitionally equal form `GM.cf v u ∈ _`. Rewrite using `[hu1 v hv]`. Conclude with `hc.2 v`.
+
+Establish `c1 : Commute (arc1 k) (fin1 b')` using `(levLaws (K := K) (2 + 2) (im w)).2.2.1 k b'`. Establish `c2 : fin1 (ι (g₁ * g₂)) * fin1 b' = fin1 b' * fin1 (ι (g₁ * g₂))`. Rewrite using `[← map_mul, ← map_mul, (hcomm (g₁ * g₂) b' hb').eq]`. Establish `e3 : fin1 (ι (g₁ * g₂) * b' * u) = fin1 (ι (g₁ * g₂)) * fin1 b' * fin1 u` using `(map_mul _ _ _).trans (congrArg (· * fin1 u) (map_mul _ _ _))`. Rewrite using `[← hX, hh2, e3, c2, ← c1.eq]`.
+
+Simplify using `only [mul_assoc]`.
+-/
 theorem UpperTheory.V.Z.InvariantSubmoduleMonicPolynomial.IwahoriBlocks.finIwa :
     ∀ {K : Type} [Field K] [NumberField K] {r : ℕ} (w : Fin r → Pl K) (ι₄ : GS (2 + 2) w →* FA K (2 + 2)), Function.Injective w → IsEmb w ι₄ →
       ∀ (h : FA K (2 + 2)) (k : archCompact K (2 + 2)), ∃ X m₁ m₂ t g u, (∀ U, u ∈ levOn (im w) U) ∧

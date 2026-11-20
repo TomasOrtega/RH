@@ -5,6 +5,11 @@ open CategoryTheory Limits AlgebraicGeometry GlobalTheory.EtC CochainComplex.Hom
 
 namespace LateralTheory.EtaleTrace
 
+/- English proof (translation)
+Establish `h` using `congrArg (fun f => f.hom (ModuleCat.freeMk (ULift.up x : uliftFunctor.{1, 0}.obj (P.obj (op U))))) ((toSheafify Scheme.etaleTopology ((freeP R).obj P)).naturality g.op)`. Simplify using `only [ModuleCat.hom_comp, LinearMap.coe_comp, Function.comp_apply] at h`. Simplify using `only [Sec.res, freeGen]`. Use `h.symm.trans ?_` and prove the remaining obligations. Conclude with `congrArg (ModuleCat.Hom.hom ((toSheafify Scheme.etaleTopology ((freeP R).obj P)).app (op V))) (by simp only [freeP, ModuleCat.freeMk, ModuleCat.free, Functor.comp_obj, Functor.whiskeringRight_obj_obj, Functor.comp_map]`.
+
+Conclude with `Finsupp.mapDomain_single)`.
+-/
 theorem freeGen_nat (R : Type) [CommRing R] (P : PSh) {V U : Scheme.{0}} (g : V ⟶ U) (x : P.obj (op U)) :
     Sec.res g (freeGen R P U x) = freeGen R P V (P.map g.op x) := by
   have h := congrArg (fun f => f.hom (ModuleCat.freeMk (ULift.up x : uliftFunctor.{1, 0}.obj (P.obj (op U)))))
@@ -16,6 +21,11 @@ theorem freeGen_nat (R : Type) [CommRing R] (P : PSh) {V U : Scheme.{0}} (g : V 
     (by simp only [freeP, ModuleCat.freeMk, ModuleCat.free, Functor.comp_obj, Functor.whiskeringRight_obj_obj, Functor.comp_map]
         exact Finsupp.mapDomain_single)
 
+/- English proof (translation)
+Introduce `R _ F X U α x`. Establish `h` using `freeGen_nat R ((sch.obj X).obj (op (SimplexCategory.mk 0))) x (𝟙 X : Sx (sch.obj X) 0 X)`. Establish `hx : ((sch.obj X).obj (op (SimplexCategory.mk 0))).map x.op (𝟙 X : Sx (sch.obj X) 0 X) = (x : Sx (sch.obj X) 0 U)` using `Category.comp_id x`. Rewrite `h` using `[hx]`. Simplify using `only [ev]`.
+
+Rewrite using `[← h]`. Simplify using `only [Sec.res]`. Rewrite using `[← ModuleCat.comp_apply, ← ModuleCat.comp_apply, ← NatTrans.naturality]`.
+-/
 theorem evNat : EvNat := by
   intro R _ F X U α x
   have h := freeGen_nat R ((sch.obj X).obj (op (SimplexCategory.mk 0))) x (𝟙 X : Sx (sch.obj X) 0 X)

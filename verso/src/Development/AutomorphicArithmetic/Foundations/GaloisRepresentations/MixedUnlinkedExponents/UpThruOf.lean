@@ -9,6 +9,11 @@ attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalDat
 attribute [-instance] Formalism.DoubleCosetMeasures.instMeasGL
 open UpperTheory.Gal.GamX
 
+/- English proof (translation)
+Unfold `UpThruOf UpThru`. Introduce `hC K L _ _ _ _ _ v w s`. Rewrite using `[Multiset.filter_eq_self]`. Introduce `ζ hζ`. Take `⟨ξ, hξ, rfl⟩` from `Multiset.mem_map.1 hζ`.
+
+Establish `hs : IsSmoothChar ξ` using `(hC _ s).2.1 ξ hξ`. Use `⟨ξ⁻¹, IsSmoothChar.inv hs, fun x _ => by simp⟩` and prove the remaining obligations.
+-/
 theorem UpperTheory.Gal.GamX.upThruOf :
     UpperTheory.Gal.GamX.UpThruOf := by
   unfold UpThruOf UpThru

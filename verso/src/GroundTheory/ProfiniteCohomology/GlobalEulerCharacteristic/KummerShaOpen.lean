@@ -21,6 +21,11 @@ variable {K L : FiniteSubfield} [Fact (K ≤ L)] {S : Set (HeightOneSpectrum (�
 
 set_option maxHeartbeats 800000 in
 
+/- English proof (translation)
+Establish `hT` using `compactTransport_compactToGlobal (mackeyFamily (gsOpenSubgroup S hL) (gsFinFamily S ιs)) (gsFinFamily (placesOver S) (gsMackeyEmbeddings hL ιs)) (gsBaseChange S hL) (mackeyPlaceEquiv S hL ιs) (fun p => gsMackeyLocalEquiv hL ιs p.1 p.2.out) (gsBaseChange_mackeyFamily_eq hL ιs) (gs …`. Establish `hG : (gsRootsOfUnityCohomologyIso S hL ℓ 2).hom = cohomologyMapAlong (gsBaseChange S hL).toMulEquiv.toMonoidHom (continuous_mulEquiv_toMonoidHom (gsBaseChange S hL)) (gsRootsOfUnityIso S hL ℓ).symm.hom 2` using `cohomologyIsoOfContinuousMulEquiv_hom _ _ 2`. Establish `hC : (gsMackeyCompactIso hL ιs (gsRootsOfUnityIso S hL ℓ).symm 2).hom = compactTransport (mackeyFamily (gsOpenSubgroup S hL) (gsFinFamily S ιs)) (gsFinFamily (placesOver S) (gsMackeyEmbeddings hL ιs)) (gsBaseChange S hL) (mackeyPlaceEquiv S hL ιs) (fun p => gsMackeyLocalEquiv hL …` using `gsMackeyCompactIso_hom hL ιs _ 2`. Establish `s1` using `congrArg (fun ψ => (ptCompactToGlobal (mackeyFamily (gsOpenSubgroup S hL) (gsFinFamily S ιs)) (Rep.res (gsSubtype S hL) (gsRoots S ℓ)) 2).hom (ψ.hom c)) hC`. Establish `s3` using `congrArg (fun ψ => ψ.hom ((ptCompactToGlobal (gsFinFamily (placesOver S) (gsMackeyEmbeddings hL ιs)) (gsRoots (placesOver S : Set (HeightOneSpectrum (𝓞 L.1))) ℓ) 2).hom c)) hG`.
+
+Establish `s2` using `congrArg (fun φ => φ.hom c) hT`. Conclude with `s1.trans (s2.trans s3.symm)`.
+-/
 theorem ptCompactToGlobal_gsMackeyCompactIso (ℓ : ℕ)
     (c : compactCohomologyRes (gsFinFamily (placesOver S) (gsMackeyEmbeddings hL ιs))
       (gsRoots (placesOver S : Set (HeightOneSpectrum (𝓞 L.1))) ℓ) 2) :
@@ -53,6 +58,13 @@ theorem ptCompactToGlobal_gsMackeyCompactIso (ℓ : ℕ)
 
 set_option maxHeartbeats 800000 in
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce `hx`. Take `⟨c, hc⟩` from `exists_ptCompactToGlobal_eq_of_mem_ptSha (mackeyFamily (gsOpenSubgroup S hL) (gsFinFamily S ιs)) (Rep.res (gsSubtype S hL) (gsRoots S ℓ)) hx`. Take `⟨c', hc'⟩` from `(gsMackeyCompactIso hL ιs (gsRootsOfUnityIso S hL ℓ).symm 2).toLinearEquiv.surjective c`. Establish `h1` using `(ptCompactToGlobal_gsMackeyCompactIso hL ιs ℓ c').symm.trans ((congrArg (ptCompactToGlobal (mackeyFamily (gsOpenSubgroup S hL) (gsFinFamily S ιs)) (Rep.res (gsSubtype S hL) (gsRoots S ℓ)) 2).hom hc').trans hc)`.
+
+Establish `h2` using `(gsRootsOfUnityCohomologyIso S hL ℓ 2).toLinearEquiv.injective h1`. Conclude with `(congrArg (· ∈ ptSha (gsFinFamily (placesOver S) (gsMackeyEmbeddings hL ιs)) (gsRoots (placesOver S : Set (HeightOneSpectrum (𝓞 L.1))) ℓ) 2) h2).mp (ptCompactToGlobal_mem_ptSha (gsFinFamily (placesOver S) (gsMackeyEmbeddings hL ιs)) (gsRoots (placesOver S : Set (HeightOneSpectrum …`. Introduce `hx`. Establish `hc` using `exists_ptCompactToGlobal_eq_of_mem_ptSha _ _ hx`. Take `⟨c', hc'⟩` from `hc`.
+
+Establish `h1` using `(ptCompactToGlobal_gsMackeyCompactIso hL ιs ℓ c').trans (congrArg (gsRootsOfUnityCohomologyIso S hL ℓ 2).hom.hom hc')`. Conclude with `(congrArg (· ∈ ptSha (mackeyFamily (gsOpenSubgroup S hL) (gsFinFamily S ιs)) (Rep.res (gsSubtype S hL) (gsRoots S ℓ)) 2) h1).mp (ptCompactToGlobal_mem_ptSha (mackeyFamily (gsOpenSubgroup S hL) (gsFinFamily S ιs)) (Rep.res (gsSubtype S hL) (gsRoots S ℓ)) ((gsMackeyCompactIso hL ιs …`.
+-/
 theorem mem_ptSha_mackey_iff (ℓ : ℕ)
     (x : cohomology (gsRoots (placesOver S : Set (HeightOneSpectrum (𝓞 L.1))) ℓ) 2) :
     (gsRootsOfUnityCohomologyIso S hL ℓ 2).hom.hom x ∈
@@ -84,6 +96,9 @@ theorem mem_ptSha_mackey_iff (ℓ : ℕ)
         (Rep.res (gsSubtype S hL) (gsRoots S ℓ))
         ((gsMackeyCompactIso hL ιs (gsRootsOfUnityIso S hL ℓ).symm 2).hom.hom c'))
 
+/- English proof (translation)
+The claim follows from `Rep.hom_ext (Representation.IntertwiningMap.ext (LinearMap.ext fun _ => rfl))`.
+-/
 theorem gsRootsOfUnityIso_symm_comp_rootsOfUnityToSUnits (ℓ : ℕ) [NeZero ℓ] :
     (gsRootsOfUnityIso S hL ℓ).symm.hom ≫ (Rep.resFunctor (gsSubtype S hL)).map
         (rootsOfUnityToSUnits S (maxUnramifiedOutside K.1 ℚ̄ S) ℓ) =
@@ -94,6 +109,11 @@ theorem gsRootsOfUnityIso_symm_comp_rootsOfUnityToSUnits (ℓ : ℕ) [NeZero ℓ
 
 set_option maxHeartbeats 800000 in
 
+/- English proof (translation)
+Establish `hG : (gsRootsOfUnityCohomologyIso S hL ℓ 2).hom = cohomologyMapAlong (gsBaseChange S hL).toMulEquiv.toMonoidHom (continuous_mulEquiv_toMonoidHom (gsBaseChange S hL)) (gsRootsOfUnityIso S hL ℓ).symm.hom 2` using `cohomologyIsoOfContinuousMulEquiv_hom _ _ 2`. Establish `hO : (gsSUnitsCohomologyIso S hL 2).hom = cohomologyMapAlong (gsBaseChange S hL).toMulEquiv.toMonoidHom (continuous_mulEquiv_toMonoidHom (gsBaseChange S hL)) (gsSUnitsIso S hL).symm.hom 2` using `cohomologyIsoOfContinuousMulEquiv_hom _ _ 2`. Establish `s1` using `congrArg (fun ψ => (cohomologyMap ((Rep.resFunctor (gsSubtype S hL)).map (rootsOfUnityToSUnits S (maxUnramifiedOutside K.1 ℚ̄ S) ℓ)) 2).hom (ψ.hom x)) hG`. Establish `s4` using `congrArg (fun ψ => ψ.hom ((cohomologyMap (rootsOfUnityToSUnits (placesOver S) (maxUnramifiedOutside L.1 ℚ̄ (placesOver S)) ℓ) 2).hom x)) hO`. Establish `s2` using `cohomologyMap_cohomologyMapAlong (gsBaseChange S hL).toMulEquiv.toMonoidHom (continuous_mulEquiv_toMonoidHom (gsBaseChange S hL)) (gsRootsOfUnityIso S hL ℓ).symm.hom ((Rep.resFunctor (gsSubtype S hL)).map (rootsOfUnityToSUnits S (maxUnramifiedOutside K.1 ℚ̄ S) ℓ)) (p := 2) x`.
+
+Establish `s3` using `cohomologyMapAlong_cohomologyMap (gsBaseChange S hL).toMulEquiv.toMonoidHom (continuous_mulEquiv_toMonoidHom (gsBaseChange S hL)) (rootsOfUnityToSUnits (placesOver S) (maxUnramifiedOutside L.1 ℚ̄ (placesOver S)) ℓ) (gsSUnitsIso S hL).symm.hom (p := 2) x`. Establish `s5` using `congrArg (fun m => (cohomologyMapAlong (gsBaseChange S hL).toMulEquiv.toMonoidHom (continuous_mulEquiv_toMonoidHom (gsBaseChange S hL)) m 2).hom x) (gsRootsOfUnityIso_symm_comp_rootsOfUnityToSUnits hL ℓ)`. Conclude with `s1.trans (s2.trans (s5.trans (s3.symm.trans s4.symm)))`.
+-/
 theorem cohomologyMap_rootsOfUnityToSUnits_gsRootsOfUnityCohomologyIso (ℓ : ℕ) [NeZero ℓ]
     (x : cohomology (gsRoots (placesOver S : Set (HeightOneSpectrum (𝓞 L.1))) ℓ) 2) :
     (cohomologyMap ((Rep.resFunctor (gsSubtype S hL)).map
@@ -127,6 +147,9 @@ theorem cohomologyMap_rootsOfUnityToSUnits_gsRootsOfUnityCohomologyIso (ℓ : �
     (gsRootsOfUnityIso_symm_comp_rootsOfUnityToSUnits hL ℓ)
   exact s1.trans (s2.trans (s5.trans (s3.symm.trans s4.symm)))
 
+/- English proof (translation)
+The claim follows from `congrArg (fun φ => φ.hom x) (gsRootsOfUnityCohomologyIso S hL ℓ 2).inv_hom_id`.
+-/
 theorem gsRootsOfUnityCohomologyIso_hom_inv_apply (ℓ : ℕ)
     (x : cohomology (Rep.res (gsSubtype S hL) (gsRoots S ℓ)) 2) :
     (gsRootsOfUnityCohomologyIso S hL ℓ 2).hom.hom ((gsRootsOfUnityCohomologyIso S hL ℓ 2).inv.hom x) = x :=
@@ -134,6 +157,9 @@ theorem gsRootsOfUnityCohomologyIso_hom_inv_apply (ℓ : ℕ)
 
 set_option maxHeartbeats 800000 in
 
+/- English proof (translation)
+Substitute `hx` using the available equality. Conclude with `mem_ptSha_mackey_iff hL ιs ℓ x'`.
+-/
 theorem mem_ptSha_mackey_iff_of_eq (ℓ : ℕ)
     {x' : cohomology (gsRoots (placesOver S : Set (HeightOneSpectrum (𝓞 L.1))) ℓ) 2}
     {x : cohomology (Rep.res (gsSubtype S hL) (gsRoots S ℓ)) 2}
@@ -147,6 +173,11 @@ theorem mem_ptSha_mackey_iff_of_eq (ℓ : ℕ)
 
 set_option maxHeartbeats 800000 in
 
+/- English proof (translation)
+Substitute `hx` using the available equality. Rewrite using `[cohomologyMap_rootsOfUnityToSUnits_gsRootsOfUnityCohomologyIso hL ℓ x']`. Prove the components needed by the constructor for the conclusion. Introduce `h0`. Rewrite using `[h0, map_zero]`.
+
+Introduce `h0`. Conclude with `(gsSUnitsCohomologyIso S hL 2).toLinearEquiv.injective (h0.trans (map_zero _).symm)`.
+-/
 theorem cohomologyMap_rootsOfUnityToSUnits_eq_zero_iff_of_eq (ℓ : ℕ) [NeZero ℓ]
     {x' : cohomology (gsRoots (placesOver S : Set (HeightOneSpectrum (𝓞 L.1))) ℓ) 2}
     {x : cohomology (Rep.res (gsSubtype S hL) (gsRoots S ℓ)) 2}
@@ -165,6 +196,11 @@ theorem cohomologyMap_rootsOfUnityToSUnits_eq_zero_iff_of_eq (ℓ : ℕ) [NeZero
 
 set_option maxHeartbeats 1600000 in
 
+/- English proof (translation)
+Establish `hn : ∀ v : HeightOneSpectrum (𝓞 K.1), ((ℓ : ℕ) : 𝓞 K.1) ∈ v.asIdeal → v ∈ S` using `fun v hv => by`. Assume the negation of the conclusion as `h`. Conclude with `hℓS v h hv`. Establish `hℓS' : ∀ w ∉ (placesOver S : Set (HeightOneSpectrum (𝓞 L.1))), ((ℓ : ℕ) : 𝓞 L.1) ∉ w.asIdeal` using `natCast_not_mem_of_not_mem_placesOver hn`. Establish `hx'` using `gsRootsOfUnityCohomologyIso_hom_inv_apply hL ℓ x`.
+
+Use `(mem_ptSha_mackey_iff_of_eq hL ιs ℓ hx').trans ((mem_ptSha_iff_cohomologyMap_eq_zero (K := L) (placesOver S : Set (HeightOneSpectrum (𝓞 L.1))) (gsMackeyEmbeddings hL ιs) hℓS' hℓ hK ((gsRootsOfUnityCohomologyIso S hL ℓ 2).inv.hom x)).trans ((cohomologyMap_rootsOfUnityToSUnits_eq_z …` and prove the remaining obligations. Conclude with `⟨fun h => Subtype.ext h, fun h => congrArg Subtype.val h⟩`.
+-/
 theorem mem_ptSha_mackey_iff_exists_kummerModN {ℓ : ℕ} [NeZero ℓ] (hℓ : ℓ.Prime)
     (hℓS : ∀ v ∉ S, ((ℓ : ℕ) : 𝓞 K.1) ∉ v.asIdeal) (hK : Odd ℓ ∨ IsTotallyComplex L.1)
     (x : cohomology (Rep.res (gsSubtype S hL) (gsRoots S ℓ)) 2) :

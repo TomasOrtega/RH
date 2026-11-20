@@ -25,6 +25,17 @@ namespace GlobalTheory.ShortCompare
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {Dw : Datum H} {l : Geo.Tor.Level H}
   {Xo : Moduli Dw l} {c : Coeff l}
 
+/- English proof (translation)
+Establish `hx : w.x = spMap ψ.toRingHom ≫ y.x`. Unfold `FrMap at hm`. Conclude with `hm.1`. Set `h : ptO Xo w.x ⟶ ptO Xo y.x` to `Over.homMk (spMap ψ.toRingHom) hx.symm`. Establish `hh : h.left = spMap ψ.toRingHom` using `rfl`.
+
+Establish `hs` using `GlobalTheory.FramedBaseChange.isPullSec ψ hm h hh`. Establish `hpull : ∀ q i b, IsPullSec Xo.univ.t.G Xo.univ.t.PP.L ((N : ℤ) ^ 2) (h ▷ Xo.univ.t.G) (whiskerRight_snd _ _) (F q i b) (GlobalTheory.VVRank.pullS Xo.univ.t.G ((N : ℤ) ^ 2) h (F q i b))` using `fun q i b => GlobalTheory.VVRank.isPullSec_pullS _ _ h _`. Take `⟨hZ, -, hG, -⟩` from `GlobalTheory.T.inZh_geoInj_stable_alt E H Dw l Xo n Λ N`. Use `⟨fun i b => h ≫ z i b, fun q b => h ≫ tp q b, fun q i b => GlobalTheory.VVRank.pullS Xo.univ.t.G ((N : ℤ) ^ 2) h (F q i b), fun i => hZ _ _ h _ (hz i), hG S T y.x w.x ψ.toRingHom h hh _ z hg, fun q b => ⟨?_, ?_⟩, fun q i b => (GlobalTheory.VtBaseChange.isVtOver_isUUOver_baseChang …` and prove the remaining obligations. Simplify using `only`.
+
+Rewrite using `[← MonObj.comp_pow, (ht q b).1]`. Unfold `levPt`. Rewrite using `[← Category.assoc, toUnit_unique (h ≫ toUnit _) (toUnit _)]`. Take `⟨j, hj⟩` from `(ht q b).2`. Use `⟨j, ?_⟩` and prove the remaining obligations.
+
+Unfold `KilledBy at hj ⊢`. Introduce `x hx`. Rewrite using `[Category.assoc, hj x hx, MonObj.comp_one]`. Rewrite using `[map_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations.
+
+Conclude with `GlobalTheory.T.harmonicValue_baseChange_alt hC E H Dw l Xo c nab hnab S T ψ y w hm h hh a n P hP N (F q i) (fun b => GlobalTheory.VVRank.pullS Xo.univ.t.G ((N : ℤ) ^ 2) h (F q i b)) (hpull q i)`.
+-/
 theorem exists_pull (hC : ChartIndepSt2) [StarRing (𝓞 E)] (nab : NabV Xo c) (hnab : IsNab Xo c nab)
     {n : ℕ} (Λ : GenLat E n) (N : ℕ) (a : (E →+* ℂ) × ℕ → ℕ) (P : MvPolynomial (LtN Dw n) c.F)
     (hP : P ∈ HHa Dw.mult n c.F ComplexEmbedding.conjugate (InPsi H) (fun τ i => a (τ, i)))
@@ -77,6 +88,9 @@ theorem exists_pull (hC : ChartIndepSt2) [StarRing (𝓞 E)] (nab : NabV Xo c) (
     exact GlobalTheory.T.harmonicValue_baseChange_alt hC E H Dw l Xo c nab hnab S T ψ y w hm h hh a n P hP N (F q i)
       (fun b => GlobalTheory.VVRank.pullS Xo.univ.t.G ((N : ℤ) ^ 2) h (F q i b)) (hpull q i)
 
+/- English proof (translation)
+Rewrite using `[← sub_eq_zero]`. Use `eq_zero_of_localization (u - v) fun J hJ => ?_` and prove the remaining obligations. Use `hJ.isPrime` as an intermediate fact. Establish `e` using `h (Localization.AtPrime J) (IsScalarTower.toAlgHom K T (Localization.AtPrime J))`. Simplify `e` using `[map_sub, sub_eq_zero]`.
+-/
 theorem eq_of_local {K T : Type} [Field K] [CommRing T] [Algebra K T] (u v : T)
     (h : ∀ (U : Type) [CommRing U] [IsLocalRing U] [Algebra K U] (κ : T →ₐ[K] U), κ u = κ v) : u = v := by
   rw [← sub_eq_zero]
@@ -85,6 +99,13 @@ theorem eq_of_local {K T : Type} [Field K] [CommRing T] [Algebra K T] (u v : T)
   have e := h (Localization.AtPrime J) (IsScalarTower.toAlgHom K T (Localization.AtPrime J))
   simpa [map_sub, sub_eq_zero] using e
 
+/- English proof (translation)
+Introduce `hL hC E _ _ _ H Dw l Xo c _ nab hnab n Λ N hUn hTr hLev a P hP S _ _ y S1 _ _ φ1 y1 z1 tp1 F1 S2 _ _ φ2 y2 z2 tp2 F2 hm1 hm2 hz1 hg1 ht1 hF1 hz2 hg2 ht2 hF2 T _ _ ψ1 ψ2 hψ q`. Use `eq_of_local (K := c.F) _ _ fun U _ _ _ κ => ?_` and prove the remaining obligations. Take `⟨yU, hyU⟩` from `GlobalTheory.T.exists_framedPoint_baseChange_algHom hL E H Dw l Xo c S U ((κ.comp ψ1).comp φ1) y`. Establish `e : (κ.comp ψ1).comp φ1 = (κ.comp ψ2).comp φ2`. Rewrite using `[AlgHom.comp_assoc, AlgHom.comp_assoc, hψ]`.
+
+Establish `hU1 : FrMap (κ.comp ψ1) y1 yU` using `GlobalTheory.FramedBaseChange.cancel φ1 (κ.comp ψ1) hm1 hyU`. Establish `hU2 : FrMap (κ.comp ψ2) y2 yU` using `GlobalTheory.FramedBaseChange.cancel φ2 (κ.comp ψ2) hm2 (e ▸ hyU)`. Take `⟨z1', tp1', F1', hz1', hg1', ht1', hF1', hs1⟩` from `exists_pull hC nab hnab Λ N a P hP (κ.comp ψ1) y1 yU hU1 z1 tp1 F1 hz1 hg1 ht1 hF1`. Take `⟨z2', tp2', F2', hz2', hg2', ht2', hF2', hs2⟩` from `exists_pull hC nab hnab Λ N a P hP (κ.comp ψ2) y2 yU hU2 z2 tp2 F2 hz2 hg2 ht2 hF2`. Establish `key` using `GlobalTheory.T.isotropicSum_independent_of_choices_local hL E H Dw l Xo c nab hnab n Λ N hUn hTr hLev P U yU z1' tp1' F1' z2' tp2' F2' hz1' hg1' ht1' hF1' hz2' hg2' ht2' hF2' q`.
+
+Establish `h1` using `hs1 q`. Establish `h2` using `hs2 q`. Simplify using `only [AlgHom.comp_apply] at h1 h2`. Rewrite using `[h1, h2]`. Conclude with `key`.
+-/
 theorem shortSum_eq_of_witnesses : Laws → ChartIndepSt2 → ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l) [StarRing (𝓞 E)] (nab : NabV Xo c), IsNab Xo c nab → ∀ (n : ℕ) (Λ : GenLat E n) (N : ℕ), Λ.Unimod → Λ.TrivAt l.M → Λ.LevOK N l.M → ∀ (a : (E →+* ℂ) × ℕ → ℕ) (P : MvPolynomial (LtN Dw n) c.F), P ∈ HHa Dw.mult n c.F ComplexEmbedding.conjugate (InPsi H) (fun τ i => a (τ, i)) → ∀ (S : Type) [CommRing S] [Algebra c.F S] (y : FrPt Xo c S) (S1 : Type) [CommRing S1] [Algebra c.F S1] (φ1 : S →ₐ[c.F] S1) (y1 : FrPt Xo c S1) (z1 : Fin (Λ.zCard N (Dw.p + Dw.q)) → Fin n → (ptO Xo y1.x ⟶ Xo.univ.t.G)) (tp1 : (Fin n → LevQ Dw l) → Fin n → (ptO Xo y1.x ⟶ Xo.univ.t.G)) (F1 : (Fin n → LevQ Dw l) → Fin (Λ.zCard N (Dw.p + Dw.q)) → Fin n → LB.Sec (LPow Xo.univ.t.G Xo.univ.t.PP.L ((N : ℤ) ^ 2) (ptO Xo y1.x))) (S2 : Type) [CommRing S2] [Algebra c.F S2] (φ2 : S →ₐ[c.F] S2) (y2 : FrPt Xo c S2) (z2 : Fin (Λ.zCard N (Dw.p + Dw.q)) → Fin n → (ptO Xo y2.x ⟶ Xo.univ.t.G)) (tp2 : (Fin n → LevQ Dw l) → Fin n → (ptO Xo y2.x ⟶ Xo.univ.t.G)) (F2 : (Fin n → LevQ Dw l) → Fin (Λ.zCard N (Dw.p + Dw.q)) → Fin n → LB.Sec (LPow Xo.univ.t.G Xo.univ.t.PP.L ((N : ℤ) ^ 2) (ptO Xo y2.x))), FrMap φ1 y y1 → FrMap φ2 y y2 → (∀ i, InZh Xo Λ N (z1 i)) → GeoInj Xo y1.x z1 → (∀ q b, tp1 q b ^ N = levPt Xo y1.x (levRep (q b)) ∧ ∃ j : ℕ, KilledBy Xo (l.Mb ^ j) (tp1 q b)) → (∀ q i b, IsUUOver Xo.univ.t.G Xo.univ.t.PP N y1.s (z1 i b) (tp1 q b) (F1 q i b)) → (∀ i, InZh Xo Λ N (z2 i)) → GeoInj Xo y2.x z2 → (∀ q b, tp2 q b ^ N = levPt Xo y2.x (levRep (q b)) ∧ ∃ j : ℕ, KilledBy Xo (l.Mb ^ j) (tp2 q b)) → (∀ q i b, IsUUOver Xo.univ.t.G Xo.univ.t.PP N y2.s (z2 i b) (tp2 q b) (F2 q i b)) → ∀ (T : Type) [CommRing T] [Algebra c.F T] (ψ1 : S1 →ₐ[c.F] T) (ψ2 : S2 →ₐ[c.F] T), ψ1.comp φ1 = ψ2.comp φ2 → ∀ q, ψ1 (∑ i, ∑ m ∈ P.support, algebraMap c.F S1 (P.coeff m) * ∏ b, nab y1 ((N : ℤ) ^ 2) (F1 q i b) (colOf m b)) = ψ2 (∑ i, ∑ m ∈ P.support, algebraMap c.F S2 (P.coeff m) * ∏ b, nab y2 ((N : ℤ) ^ 2) (F2 q i b) (colOf m b)) := by
   intro hL hC E _ _ _ H Dw l Xo c _ nab hnab n Λ N hUn hTr hLev a P hP S _ _ y S1 _ _ φ1 y1 z1 tp1 F1
     S2 _ _ φ2 y2 z2 tp2 F2 hm1 hm2 hz1 hg1 ht1 hF1 hz2 hg2 ht2 hF2 T _ _ ψ1 ψ2 hψ q

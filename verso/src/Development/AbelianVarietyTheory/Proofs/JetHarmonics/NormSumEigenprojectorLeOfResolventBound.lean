@@ -6,6 +6,11 @@ namespace GlobalTheory
 
 open Finset Complex in
 open scoped InnerProductSpace in
+/- English proof (translation)
+Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simp [circleIntegral]`. Consider the case `insert a s ha ih`. Establish `ha' : ContinuousOn (f a) (Metric.sphere c R)` using `hf a (Finset.mem_insert_self a s)`. Establish `hs : ∀ i ∈ s, ContinuousOn (f i) (Metric.sphere c R)` using `fun i hi => hf i (Finset.mem_insert_of_mem hi)`.
+
+Establish `hsum : ContinuousOn (fun z => ∑ i ∈ s, f i z) (Metric.sphere c R)` using `continuousOn_finset_sum s hs`. Simplify using `only [Finset.sum_insert ha]`. Rewrite using `[circleIntegral.integral_add (ha'.circleIntegrable hR) (hsum.circleIntegrable hR), ih hs]`.
+-/
 private lemma circleIntegral_finset_sum_of_continuousOn {E ι : Type*} [NormedAddCommGroup E]
     [NormedSpace ℂ E] (s : Finset ι) (f : ι → ℂ → E) (c : ℂ) {R : ℝ} (hR : 0 ≤ R)
     (hf : ∀ i ∈ s, ContinuousOn (f i) (Metric.sphere c R)) :
@@ -25,6 +30,33 @@ private lemma circleIntegral_finset_sum_of_continuousOn {E ι : Type*} [NormedAd
 open Finset Complex in
 open scoped InnerProductSpace in
 
+/- English proof (translation)
+Introduce `H κ _ _ _ _ VV T p lam In c R Mc hfin hR hMc hsum hp hin hout hres x hx`. Use `haveI : FiniteDimensional ℂ VV := hfin`. Use `haveI : CompleteSpace VV := FiniteDimensional.complete ℂ VV`. Establish `hne : ∀ i, ∀ ζ ∈ Metric.sphere c R, ζ - lam i ≠ 0`. Introduce `i ζ hζ h`.
+
+Rewrite `hζ` using `[mem_sphere_iff_norm]`. Rewrite `h` using `[sub_eq_zero]`. Rewrite `hζ` using `[h]`. Distinguish the cases in `hi : i ∈ In`. Conclude with `lt_irrefl _ (hζ ▸ hin i hi)`.
+
+Conclude with `lt_irrefl _ (hζ ▸ hout i hi)`. Set `v : κ → VV` to `fun i => ⟨p i x, (hp i x hx).1⟩`. Set `F : ℂ → VV` to `fun ζ => ∑ i, (ζ - lam i)⁻¹ • v i`. Establish `hF : ∀ ζ ∈ Metric.sphere c R, ‖F ζ‖ ≤ Mc * ‖x‖`. Introduce `ζ hζ`.
+
+Establish `hcoe : ((F ζ : VV) : H) = ∑ i, (ζ - lam i)⁻¹ • p i x`. Simplify using `[F, v]`. Establish `key : ζ • ((F ζ : VV) : H) - T ((F ζ : VV) : H) = x`. Rewrite using `[hcoe, map_sum, Finset.smul_sum, ← Finset.sum_sub_distrib]`. Use `conv_rhs => rw [← hsum x hx]`.
+
+Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[map_smul, (hp i x hx).2, smul_smul, smul_smul, ← sub_smul]`. Establish `h1 : ζ * (ζ - lam i)⁻¹ - (ζ - lam i)⁻¹ * lam i = 1`. Rewrite using `[mul_comm ζ, ← mul_sub, inv_mul_cancel₀ (hne i ζ hζ)]`. Rewrite using `[h1, one_smul]`.
+
+Use `hres ζ (mem_sphere_iff_norm.mp hζ) _ (F ζ).2` as an intermediate fact. Rewrite `this` using `[key]`. Simplify `this` using `[Submodule.coe_norm]`. Establish `hval : ∀ i, (∮ z in C(c, R), (z - lam i)⁻¹) = if i ∈ In then 2 * (Real.pi : ℂ) * I else 0`. Introduce `i`.
+
+Distinguish the cases in `hi : i ∈ In`. Rewrite using `[if_pos hi]`. Conclude with `circleIntegral.integral_sub_inv_of_mem_ball (mem_ball_iff_norm.mpr (hin i hi))`. Rewrite using `[if_neg hi]`. Establish `hoff : ∀ z ∈ Metric.closedBall c R, z - lam i ≠ 0`.
+
+Introduce `z hz h`. Rewrite `h` using `[sub_eq_zero]`. Rewrite `hz` using `[mem_closedBall_iff_norm, h]`. Conclude with `absurd (hout i hi) (not_lt.mpr hz)`. Use `circleIntegral_eq_zero_of_differentiable_on_off_countable hR.le Set.countable_empty ?_ ?_` and prove the remaining obligations.
+
+Conclude with `(continuousOn_id.sub continuousOn_const).inv₀ hoff`. Introduce `z hz`. Conclude with `(differentiableAt_id.sub_const _).inv (hoff z (Metric.ball_subset_closedBall hz.1))`. Establish `hint : (∮ z in C(c, R), F z) = (2 * (Real.pi : ℂ) * I) • ∑ i ∈ In, v i`. Establish `hcont : ∀ i ∈ (Finset.univ : Finset κ), ContinuousOn (fun z : ℂ => (z - lam i)⁻¹ • v i) (Metric.sphere c R)`.
+
+Introduce `i _`. Conclude with `((continuousOn_id.sub continuousOn_const).inv₀ fun z hz => hne i z hz).smul continuousOn_const`. Simplify using `only [F]`. Rewrite using `[circleIntegral_finset_sum_of_continuousOn _ _ c hR.le hcont]`. Simplify using `only [circleIntegral.integral_smul_const, hval, ite_smul, zero_smul]`.
+
+Rewrite using `[Finset.sum_ite_mem, Finset.univ_inter, Finset.smul_sum]`. Establish `hbound` using `circleIntegral.norm_integral_le_of_norm_le_const hR.le hF`. Rewrite `hbound` using `[hint, norm_smul]`. Establish `hnorm : ‖(2 * (Real.pi : ℂ) * I)‖ = 2 * Real.pi`. Simplify using `[Real.pi_pos.le]`.
+
+Rewrite `hbound` using `[hnorm]`. Establish `hS : ‖∑ i ∈ In, p i x‖ = ‖∑ i ∈ In, v i‖`. Establish `hc : ((∑ i ∈ In, v i : VV) : H) = ∑ i ∈ In, p i x` using `by simp [v]`. Rewrite using `[← hc]`. Both sides reduce to the same expression.
+
+Rewrite using `[hS]`. Establish `hpi : 0 < 2 * Real.pi` using `by positivity`. Use polynomial arithmetic with `[hbound]`.
+-/
 theorem _root_.GlobalTheory.norm_sum_eigenprojector_le_of_resolvent_bound :
     ∀ (H κ : Type) [NormedAddCommGroup H] [NormedSpace ℂ H] [Fintype κ] [DecidableEq κ]
     (VV : Submodule ℂ H) (T : H →ₗ[ℂ] H) (p : κ → H →ₗ[ℂ] H) (lam : κ → ℂ) (In : Finset κ)

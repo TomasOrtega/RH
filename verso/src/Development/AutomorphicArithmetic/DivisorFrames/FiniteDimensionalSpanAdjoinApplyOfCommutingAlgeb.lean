@@ -4,6 +4,13 @@ import Development.AutomorphicArithmetic.LocalEmbeddings.ULieDefs
 open NumberField Matrix Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes GlobalTheory.AdelicU GlobalTheory.SiegelSet GlobalTheory.UAut GlobalTheory.ULie
 open scoped TensorProduct
 
+/- English proof (translation)
+Introduce `z hz`. Proceed by induction on `hz using Algebra.adjoin_induction with`. Consider the case `mem x hx => exact hU x hx`. Consider the case `algebraMap r`. Introduce `u hu`.
+
+Rewrite using `[Module.algebraMap_end_apply]`. Conclude with `U.smul_mem r hu`. Consider the case `add x y _ _ hx hy`. Introduce `u hu`. Conclude with `U.add_mem (hx u hu) (hy u hu)`.
+
+Consider the case `mul x y _ _ hx hy`. Introduce `u hu`. Conclude with `hx _ (hy u hu)`.
+-/
 private theorem UpperTheory.adjoin_apply_mem_of_invariant_submodule {V : Type} [AddCommGroup V] [Module ℂ V]
     (g : Set (Module.End ℂ V)) (U : Submodule ℂ V) (hU : ∀ b ∈ g, ∀ u ∈ U, b u ∈ U) :
     ∀ z ∈ Algebra.adjoin ℂ g, ∀ u ∈ U, z u ∈ U := by
@@ -21,6 +28,49 @@ private theorem UpperTheory.adjoin_apply_mem_of_invariant_submodule {V : Type} [
     intro u hu
     exact hx _ (hy u hu)
 
+/- English proof (translation)
+Introduce `V _ _ s v hcomm hfin hpoly`. Set `U : Set (Module.End ℂ V) → Submodule ℂ V` to `fun g => Submodule.span ℂ ((fun z : Module.End ℂ V => z v) '' (Algebra.adjoin ℂ g : Subalgebra ℂ (Module.End ℂ V)))`. Establish `hUinv : ∀ g : Set (Module.End ℂ V), ∀ b ∈ g, ∀ w ∈ U g, b w ∈ U g`. Introduce `g b hb w hw`. Establish `hle : U g ≤ (U g).comap b`.
+
+Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨z, hz, rfl⟩`. Use `show b (z v) ∈ U g`. Conclude with `Submodule.subset_span ⟨b * z, Subalgebra.mul_mem _ (Algebra.subset_adjoin hb) hz, rfl⟩`. Conclude with `hle hw`.
+
+Establish `hvU : ∀ g : Set (Module.End ℂ V), v ∈ U g` using `fun g => Submodule.subset_span ⟨1, Subalgebra.one_mem _, rfl⟩`. Establish `hind : ∀ t : Finset (Module.End ℂ V), (↑t : Set (Module.End ℂ V)) ⊆ s → FiniteDimensional ℂ (U ↑t)`. Introduce `t`. Proceed by induction on `t using Finset.induction_on with`. Consider the case `empty`.
+
+Introduce `_`. Establish `hle : U ↑(∅ : Finset (Module.End ℂ V)) ≤ Submodule.span ℂ {v}`. Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨z, hz, rfl⟩`. Conclude with `UpperTheory.adjoin_apply_mem_of_invariant_submodule _ _ (by simp) z hz v (Submodule.mem_span_singleton_self v)`.
+
+Conclude with `Submodule.finiteDimensional_of_le hle`. Consider the case `insert a t hat ih`. Introduce `hts`. Rewrite `hts` using `[Finset.coe_insert, Set.insert_subset_iff]`. Use `haveI := ih hts.2`.
+
+Take `⟨P, hP0, hPv⟩` from `hpoly a hts.1`. Use `set Q := Polynomial.C (P.leadingCoeff)⁻¹ * P with hQ`. Establish `hQm : Q.Monic` using `Polynomial.monic_C_mul_of_mul_leadingCoeff_eq_one (inv_mul_cancel₀ (Polynomial.leadingCoeff_ne_zero.mpr hP0))`. Establish `hac : ∀ z ∈ Algebra.adjoin ℂ (↑t : Set (Module.End ℂ V)), Commute a z` using `fun z hz => Algebra.commute_of_mem_adjoin_of_forall_mem_commute hz (fun b hb => hcomm a hts.1 b (hts.2 hb))`. Establish `hker : ∀ w ∈ U ↑t, Polynomial.aeval a Q w = 0`.
+
+Introduce `w hw`. Establish `hle : U ↑t ≤ LinearMap.ker (Polynomial.aeval a Q)`. Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨z, hz, rfl⟩`. Establish `hc : Commute z (Polynomial.aeval a Q)` using `Algebra.commute_of_mem_adjoin_singleton_of_commute (Polynomial.aeval_mem_adjoin_singleton ℂ a) (hac z hz).symm`.
+
+Use `show Polynomial.aeval a Q (z v) = 0`. Rewrite using `[← Module.End.mul_apply, ← hc.eq, Module.End.mul_apply, hQ, map_mul, Polynomial.aeval_C, Module.End.mul_apply, hPv, map_zero, map_zero]`. Conclude with `hle hw`. Establish `hred : ∀ w ∈ U ↑t, (a ^ Q.natDegree) w = -∑ j ∈ Finset.range Q.natDegree, Q.coeff j • (a ^ j) w`. Introduce `w hw`.
+
+Establish `h0` using `hker w hw`. Simplify using `only [Polynomial.aeval_eq_sum_range, Finset.sum_range_succ, hQm.coeff_natDegree, one_smul, LinearMap.add_apply, LinearMap.sum_apply, LinearMap.smul_apply] at h0`. Rewrite using `[eq_neg_iff_add_eq_zero, add_comm]`. Simplify using `using h0`. Set `U' : Submodule ℂ V` to `⨆ i : Fin Q.natDegree, (U ↑t).map (a ^ (i : ℕ))`.
+
+Establish `hpow : ∀ j, ∀ w ∈ U ↑t, (a ^ j) w ∈ U'`. Introduce `j`. Proceed by induction on `j using Nat.strong_induction_on with`. Consider the case `_ j ihj`. Introduce `w hw`.
+
+Distinguish the cases in `hj : j < Q.natDegree`. Conclude with `Submodule.mem_iSup_of_mem (⟨j, hj⟩ : Fin Q.natDegree) (Submodule.mem_map_of_mem hw)`. Establish `hsplit : (a ^ j) w = (a ^ (j - Q.natDegree)) ((a ^ Q.natDegree) w)`. Rewrite using `[← Module.End.mul_apply, ← pow_add, Nat.sub_add_cancel (not_lt.mp hj)]`. Rewrite using `[hsplit, hred w hw, map_neg, map_sum]`.
+
+Use `U'.neg_mem (U'.sum_mem (fun i hi => ?_))` and prove the remaining obligations. Rewrite using `[map_smul, ← Module.End.mul_apply, ← pow_add]`. Use `U'.smul_mem _ (ihj _ ?_ w hw)` and prove the remaining obligations. Use `Finset.mem_range.mp hi` as an intermediate fact. Use linear arithmetic over natural numbers and integers.
+
+Establish `hU'a : ∀ u ∈ U', a u ∈ U'`. Introduce `u hu`. Use `Submodule.iSup_induction _ (motive := fun u => a u ∈ U') hu (fun i x hx => ?_) ?_ (fun x y hx hy => ?_)` and prove the remaining obligations. Take `⟨w, hw, rfl⟩` from `hx show a ((a ^ (i : ℕ)) w) ∈ U'`. Rewrite using `[← Module.End.mul_apply, ← pow_succ']`.
+
+Conclude with `hpow _ w hw`. Simplify using the standard rewrite rules. Use `show a (x + y) ∈ U'`. Rewrite using `[map_add]`. Conclude with `U'.add_mem hx hy`.
+
+Establish `hU'b : ∀ b ∈ (↑t : Set (Module.End ℂ V)), ∀ u ∈ U', b u ∈ U'`. Introduce `b hb u hu`. Use `Submodule.iSup_induction _ (motive := fun u => b u ∈ U') hu (fun i x hx => ?_) ?_ (fun x y hx hy => ?_)` and prove the remaining obligations. Take `⟨w, hw, rfl⟩` from `hx show b ((a ^ (i : ℕ)) w) ∈ U'`. Establish `hcb : Commute (a ^ (i : ℕ)) b` using `(hac b (Algebra.subset_adjoin hb)).pow_left _`.
+
+Rewrite using `[← Module.End.mul_apply, ← hcb.eq, Module.End.mul_apply]`. Conclude with `hpow _ _ (hUinv _ b hb w hw)`. Simplify using the standard rewrite rules. Use `show b (x + y) ∈ U'`. Rewrite using `[map_add]`.
+
+Conclude with `U'.add_mem hx hy`. Establish `hle : U ↑(insert a t) ≤ U'`. Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨z, hz, rfl⟩`. Use `UpperTheory.adjoin_apply_mem_of_invariant_submodule _ U' ?_ z hz v ?_` and prove the remaining obligations.
+
+Introduce `b hb`. Rewrite `hb` using `[Finset.coe_insert]`. Break down `hb with rfl | hb` into its components or cases. Conclude with `hU'a`. Conclude with `hU'b b hb`.
+
+Simplify using `using hpow 0 v (hvU _)`. Conclude with `Submodule.finiteDimensional_of_le hle`. Take `⟨t, hts, -, hspan, -⟩` from `Submodule.exists_finset_span_eq_linearIndepOn ℂ s`. Use `haveI := hind t hts`. Use `Submodule.finiteDimensional_of_le (S₂ := U ↑t) ?_` and prove the remaining obligations.
+
+Apply `Submodule.span_mono` to reduce the goal to its premises. Apply `Set.image_mono` to reduce the goal to its premises. Introduce `z hz`. Use `(Algebra.adjoin_le (fun x hx => ?_)) hz` and prove the remaining obligations. Apply `Algebra.span_le_adjoin ℂ` to reduce the goal to its premises.
+
+Rewrite using `[hspan]`. Conclude with `Submodule.subset_span hx`.
+-/
 theorem UpperTheory.finiteDimensional_span_adjoin_apply_of_commuting_algebraic :
     ∀ (V : Type) [AddCommGroup V] [Module ℂ V] (s : Set (Module.End ℂ V)) (v : V), (∀ a ∈ s, ∀ b ∈ s, a * b = b * a) → FiniteDimensional ℂ (Submodule.span ℂ s) → (∀ a ∈ s, ∃ P : Polynomial ℂ, P ≠ 0 ∧ Polynomial.aeval a P v = 0) →
         FiniteDimensional ℂ (Submodule.span ℂ ((fun z : Module.End ℂ V => z v) '' (Algebra.adjoin ℂ s : Subalgebra ℂ (Module.End ℂ V)))) := by

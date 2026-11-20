@@ -5,6 +5,23 @@ open NumberField IsDedekindDomain Formalism.L2.Indef Formalism.L2.Indef.Tree
 
 namespace GlobalTheory.BigOn
 
+/- English proof (translation)
+Use `⟨fun w hw => ?_, fun w _ j => ?_, fun j => ?_⟩` and prove the remaining obligations. Break down `isEmpty_or_nonempty J with hJe | hJn` into its components or cases. Simplify using `using h1 w hw`. Establish `hn : (0 : ℝ) < (Fintype.card J : ℝ)` using `by exact_mod_cast Fintype.card_pos`. Establish `hew` using `he w`.
+
+Establish `hs : ∑ j, e w * err0 w j = max 0 ((∑ j', I w j') / D - ∑ j', 2 * (e w * F w j') - c w)`. Simplify using `only [h0, Finset.sum_const, Finset.card_univ, nsmul_eq_mul]`. Clear the denominators using the available nonvanishing facts. Rewrite using `[Finset.sum_add_distrib, hs, ← div_le_iff₀ hD]`. Use `le_max_right 0 ((∑ j', I w j') / D - ∑ j', 2 * (e w * F w j') - c w)` as an intermediate fact.
+
+Combine the linear equalities and inequalities to obtain the conclusion. Rewrite using `[h0]`. Conclude with `div_nonneg (le_max_left _ _) (mul_nonneg (he w).le (Nat.cast_nonneg _))`. Establish `hn : (0 : ℝ) < (Fintype.card J : ℝ)`. Conclude with `(Fintype.card_pos_iff.mpr ⟨j⟩)` after adjusting the coercions.
+
+Establish `hA : ∀ w ∈ T, (Fintype.card J : ℝ) * (l w * (e w * err0 w j)) ≤ ∑ j', l w * (e w * err w j')`. Introduce `w hw`. Establish `hew` using `he w`. Establish `hs : (Fintype.card J : ℝ) * (l w * (e w * err0 w j)) = l w * max 0 ((∑ j', I w j') / D - ∑ j', 2 * (e w * F w j') - c w)`. Rewrite using `[h0]`.
+
+Clear the denominators using the available nonvanishing facts. Rewrite using `[hs, ← Finset.mul_sum _ _ (l w)]`. Use `mul_le_mul_of_nonneg_left (max_le ?_ ?_) (hl w)` and prove the remaining obligations. Conclude with `Finset.sum_nonneg fun j' _ => mul_nonneg hew.le (h2 w hw j')`. Establish `h` using `h1 w hw`.
+
+Rewrite `h` using `[Finset.sum_add_distrib, ← div_le_iff₀ hD]`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hB : ∀ j', ∑ w ∈ T, l w * (e w * err w j') ≤ E` using `fun j' => le_trans (Finset.sum_le_sum fun w hw => mul_le_mul_of_nonneg_left (le_add_of_nonneg_right (mul_nonneg (he w).le (hJ w hw j'))) (hl w)) (h3 j')`. Establish `hC : ∑ w ∈ T, l w * (e w * J0 w j) ≤ E` using `le_trans (Finset.sum_le_sum fun w hw => mul_le_mul_of_nonneg_left (le_add_of_nonneg_left (mul_nonneg (he w).le (h2 w hw j))) (hl w)) (h3 j)`. Establish `hF : (Fintype.card J : ℝ) * ∑ w ∈ T, l w * (e w * err0 w j) ≤ (Fintype.card J : ℝ) * E`.
+
+Rewrite using `[Finset.mul_sum]`. Use `le_trans (Finset.sum_le_sum hA) ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_comm]`. Use `le_trans (Finset.sum_le_sum fun j' _ => hB j') ?_` and prove the remaining obligations. Simplify using the standard rewrite rules.
+
+Establish `hG` using `le_of_mul_le_mul_left hF hn`. Simplify using `only [mul_add, Finset.sum_add_distrib]`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem canonical_error_real {ι J : Type} [Fintype J] (T : Finset ι) (I F err err0 J0 : ι → J → ℝ)
     (e c l : ι → ℝ) (D E E' : ℝ) (hD : 0 < D) (he : ∀ w, 0 < e w) (hl : ∀ w, 0 ≤ l w) (hE : 2 * E ≤ E')
     (hJ : ∀ w ∈ T, ∀ j, 0 ≤ J0 w j)
@@ -60,6 +77,9 @@ theorem canonical_error_real {ι J : Type} [Fintype J] (T : Finset ι) (I F err 
     simp only [mul_add, Finset.sum_add_distrib]
     linarith
 
+/- English proof (translation)
+Introduce `K _ _ _ Bs Df S Z C C' CH CH' err hD hE hC hJ h0 h`. Rewrite using `[on_iff_with]`. Take `⟨h1, h2, h3⟩` from `h`. Conclude with `canonical_error_real S.Tw (fun w j => (S.Iw j (S.μ w) w : ℝ) + (S.Iw j (S.μ w) (Formalism.DivisionValues.conjPl w) : ℝ)) Z.F0 err S.err0 (fun w j => Z.J0 (S.μ w) w j) (fun w => (Formalism.EigenvalueLevelCeiling.ramw w : ℝ)) (fun w => (Formalism.EigenvalueLevelCeiling.ramw w : ℝ) …`.
+-/
 theorem on_of_onWith_canonical :
     ∀ (K : Type) [Field K] [NumberField K] [StarRing K] (Bs : DefBase K) (Df : DefSide Bs) (S : IndefData Df) (Z : IndefScale Bs) (C C' CH CH' : ℝ) (err : HeightOneSpectrum (𝓞 K) → Bs.J → ℝ), 0 < S.D → 0 ≤ Z.E1u → 2 * C ≤ C' → (∀ w ∈ S.Tw, ∀ j, 0 ≤ Z.J0 (S.μ w) w j) → (∀ w j, S.err0 w j = max 0 ((∑ j', ((S.Iw j' (S.μ w) w : ℝ) + (S.Iw j' (S.μ w) (Formalism.DivisionValues.conjPl w) : ℝ))) / (S.D : ℝ) - ∑ j', 2 * ((Formalism.EigenvalueLevelCeiling.ramw w : ℝ) * Z.F0 w j') - (Formalism.EigenvalueLevelCeiling.ramw w : ℝ) * (2 / (Formalism.EigenvalueLevelCeiling.plc w : ℝ) ^ 2)) / ((Formalism.EigenvalueLevelCeiling.ramw w : ℝ) * (Fintype.card Bs.J : ℝ))) → ONwith S (Z.num C CH) err → S.ON (Z.num C' CH') := by
   intro K _ _ _ Bs Df S Z C C' CH CH' err hD hE hC hJ h0 h

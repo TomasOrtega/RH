@@ -19,6 +19,17 @@ open GroundTheory.Automorphic.Iwasawa (blockUpper)
 
 variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
 
+/- English proof (translation)
+Establish `h : ∃ i j, γ i < γ j`. Take `⟨i, j, hij⟩` from `hγ`. Break down `lt_or_gt_of_ne hij with h | h` into its components or cases. Conclude with `⟨i, j, h⟩`. Conclude with `⟨j, i, h⟩`.
+
+Take `⟨i, j, hij⟩` from `h`. Establish `hne : i ≠ j` using `fun e => hij.ne (congrArg γ e)`. Set `g : GL (Fin n) k` to `Matrix.GeneralLinearGroup.mkOfDetNeZero (Matrix.transvection i j 1) (by rw [Matrix.det_transvection_of_ne _ _ hne]; exact one_ne_zero)`. Establish `hg : ∀ a b, (g : Matrix (Fin n) (Fin n) k) a b = (1 : Matrix (Fin n) (Fin n) k) a b + Matrix.single i j (1 : k) a b` using `fun a b => rfl`. Introduce `hbot`.
+
+Establish `hmem : g ∈ GroundTheory.Automorphic.Parabolic.unipotentRadical k n γ`. Rewrite using `[GroundTheory.Automorphic.Parabolic.mem_unipotentRadical, GroundTheory.Automorphic.Iwasawa.mem_blockUpper]`. Use `⟨fun a b hab => ?_, fun a b hab => ?_⟩` and prove the remaining obligations. Rewrite using `[hg, Matrix.one_apply_ne (fun e => hab.ne (by rw [e])), Matrix.single_apply_of_ne, add_zero]`. Introduce and unpack `⟨rfl, rfl⟩`.
+
+Conclude with `absurd hab hij.not_gt`. Rewrite using `[hg, Matrix.single_apply_of_ne, add_zero]`. Introduce and unpack `⟨rfl, rfl⟩`. Conclude with `hij.ne hab`. Rewrite `hmem` using `[hbot, Subgroup.mem_bot]`.
+
+Establish `h3` using `congrArg (fun g : GL (Fin n) k => (g : Matrix (Fin n) (Fin n) k) i j) hmem`. Simplify using `only [hg, Matrix.one_apply_ne hne, Matrix.single_apply_same, zero_add, Units.val_one] at h3`. Conclude with `one_ne_zero h3`.
+-/
 theorem unipotentRadical_ne_bot {n : ℕ} {γ : Fin n → ℕ} (hγ : ∃ i j, γ i ≠ γ j) :
     GroundTheory.Automorphic.Parabolic.unipotentRadical k n γ ≠ ⊥ := by
   have h : ∃ i j, γ i < γ j := by
@@ -47,6 +58,17 @@ theorem unipotentRadical_ne_bot {n : ℕ} {γ : Fin n → ℕ} (hγ : ∃ i j, �
   simp only [hg, Matrix.one_apply_ne hne, Matrix.single_apply_same, zero_add, Units.val_one] at h3
   exact one_ne_zero h3
 
+/- English proof (translation)
+Introduce `γ hγ`. Set `s : ℕ` to `Finset.univ.sup γ + 1`. Set `r : Fin n → Fin s` to `fun i => ⟨γ i, Nat.lt_succ_of_le (Finset.le_sup (Finset.mem_univ i))⟩`. Set `d : Fin s → ℕ` to `fun a => Fintype.card {i // r i = a}`. Set `e : (Σ a, Fin (d a)) ≃ Fin n` to `(Equiv.sigmaCongrRight fun a => (Fintype.equivFin {i // r i = a}).symm).trans (Equiv.sigmaFiberEquiv r)`.
+
+Establish `hblk : ∀ i, GlobalTheory.SmGL.blk e i = r i` using `fun i => by show (e.symm i).1 = r i`. Both sides reduce to the same expression. Establish `hβ : ∀ i j, γ i < γ j ↔ GlobalTheory.SmGL.blk e i < GlobalTheory.SmGL.blk e j` using `fun i j => by`. Rewrite using `[hblk, hblk]`. Conclude with `Iff.rfl`.
+
+Establish `hN : ∀ g, g ∈ GroundTheory.Automorphic.Parabolic.unipotentRadical k n γ ↔ g ∈ unipRad k e` using `GlobalTheory.CompanionTheory.JacquetBridge.mem_unipotentRadical_iff e hβ`. Establish `hne : unipRad k e ≠ ⊥` using `fun hb => unipotentRadical_ne_bot (k := k) hγ (by rw [eq_bot_iff]; intro g hg; rw [← hb]; exact (hN g).1 hg)`. Establish `htop` using `Submodule.Quotient.subsingleton_iff.1 (h.2 s d e hne)`. Set `ρ'` to `π.comp (GroundTheory.Automorphic.Parabolic.unipotentRadical k n γ).subtype`. Establish `hle : twKer π (unipRad k e) 1 ≤ LinearMap.ker (Representation.Coinvariants.mk ρ')`.
+
+Use `Submodule.span_le.2 ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨u, v, rfl⟩`. Establish `: Representation.Coinvariants.mk ρ' (ρ' ⟨u, (hN _).2 u.2⟩ v) = Representation.Coinvariants.mk ρ' v` using `Representation.Coinvariants.mk_self_apply _ _ _`. Simplify using `only [SetLike.mem_coe, LinearMap.mem_ker, map_sub, MonoidHom.one_apply, Units.val_one, one_smul]`. Conclude with `sub_eq_zero.2 this`.
+
+Establish `hz : ∀ y : Representation.Coinvariants ρ', y = 0` using `fun y => by`. Take `⟨v, rfl⟩` from `Representation.Coinvariants.mk_surjective ρ' y`. Conclude with `hle (htop ▸ Submodule.mem_top)`. Conclude with `⟨fun a b => (hz a).trans (hz b).symm⟩`.
+-/
 theorem isSupercuspidal_of_isCuspidal {n : ℕ} {V : Type} [AddCommGroup V] [Module ℂ V]
     {π : Representation ℂ (GL (Fin n) k) V} (h : IsCuspidal π) :
     GroundTheory.Automorphic.Parabolic.IsSupercuspidal π := by
@@ -80,6 +102,9 @@ theorem isSupercuspidal_of_isCuspidal {n : ℕ} {V : Type} [AddCommGroup V] [Mod
     exact hle (htop ▸ Submodule.mem_top)
   exact ⟨fun a b => (hz a).trans (hz b).symm⟩
 
+/- English proof (translation)
+Substitute `he` using the available equality. Conclude with `h.trans (.of_injective _ (GlobalTheory.CompanionTheory.BZInd.toIndMap_injective ρ))`.
+-/
 theorem isSubquotient_carry {r : ℕ} {d : Fin r → ℕ} {W V : Type} [AddCommGroup W] [Module ℂ W] [AddCommGroup V]
     [Module ℂ V] {π : Representation ℂ (GL (Fin (∑ a, d a)) k) V}
     (ρ : Representation ℂ (Levi k fun a => Fin (d a)) W) (e : (Σ a, Fin (d a)) ≃ Fin (∑ a, d a))
@@ -88,16 +113,25 @@ theorem isSubquotient_carry {r : ℕ} {d : Fin r → ℕ} {W V : Type} [AddCommG
   subst he
   exact h.trans (.of_injective _ (GlobalTheory.CompanionTheory.BZInd.toIndMap_injective ρ))
 
+/- English proof (translation)
+The claim follows from `isIrreducible_twist (GlobalTheory.LocCompSplit.isIrreducible_comp_of_surjective ρ _ GlobalTheory.CompanionTheory.BZInd.leviTo_surjective h) _`.
+-/
 theorem isIrreducible_carry {r : ℕ} {d : Fin r → ℕ} {W : Type} [AddCommGroup W] [Module ℂ W]
     (ρ : Representation ℂ (Levi k fun a => Fin (d a)) W) (h : ρ.IsIrreducible) :
     (GlobalTheory.CompanionTheory.BZInd.carry ρ).IsIrreducible :=
   isIrreducible_twist (GlobalTheory.LocCompSplit.isIrreducible_comp_of_surjective ρ _ GlobalTheory.CompanionTheory.BZInd.leviTo_surjective h) _
 
+/- English proof (translation)
+The claim follows from `isSmooth_twist (isSmooth_comp h _ GlobalTheory.CompanionTheory.BZInd.continuous_leviTo) GlobalTheory.CompanionTheory.BZInd.isSmoothChar_adj`.
+-/
 theorem isSmooth_carry {r : ℕ} {d : Fin r → ℕ} {W : Type} [AddCommGroup W] [Module ℂ W]
     (ρ : Representation ℂ (Levi k fun a => Fin (d a)) W) (h : IsSmooth ρ) :
     IsSmooth (GlobalTheory.CompanionTheory.BZInd.carry ρ) :=
   isSmooth_twist (isSmooth_comp h _ GlobalTheory.CompanionTheory.BZInd.continuous_leviTo) GlobalTheory.CompanionTheory.BZInd.isSmoothChar_adj
 
+/- English proof (translation)
+Set `a : Fin r` to `⟨0, by omega⟩`. Set `b : Fin r` to `⟨1, by omega⟩`. Use `⟨GlobalTheory.CompanionTheory.BZInd.stdE d ⟨a, ⟨0, hd a⟩⟩, GlobalTheory.CompanionTheory.BZInd.stdE d ⟨b, ⟨0, hd b⟩⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[GlobalTheory.CompanionTheory.BZInd.pos_stdE, GlobalTheory.CompanionTheory.BZInd.pos_stdE]`. Simplify using `[a, b]`.
+-/
 theorem exists_pos_ne {r : ℕ} {d : Fin r → ℕ} (h2 : 2 ≤ r) (hd : ∀ a, 0 < d a) :
     ∃ i j, GlobalTheory.CompanionTheory.BZInd.pos d i ≠ GlobalTheory.CompanionTheory.BZInd.pos d j := by
   let a : Fin r := ⟨0, by omega⟩
@@ -106,6 +140,13 @@ theorem exists_pos_ne {r : ℕ} {d : Fin r → ℕ} (h2 : 2 ≤ r) (hd : ∀ a, 
   rw [GlobalTheory.CompanionTheory.BZInd.pos_stdE, GlobalTheory.CompanionTheory.BZInd.pos_stdE]
   simp [a, b]
 
+/- English proof (translation)
+Introduce `k _ _ _ _ hA ρ h x hd hc h2 hpos`. Take `⟨N, c⟩` from `ρ`. Simplify using `only at hd`. Substitute `hd` using the available equality. Assume the negation of the conclusion as `hne`.
+
+Establish `hsub` using `jhMult_ne_zero_iff.1 hne`. Set `ρ₀ : IrrGL k` to `⟨_, c⟩`. Establish `hs2` using `isSubquotient_carry (d := fun a => (x a).1) (piTensor fun a => (x a).rep) _ (Equiv.ext fun y => by simp [stdBlocks, GlobalTheory.CompanionTheory.BZInd.stdE]) hsub`. Take `⟨A, p, hp⟩` from `hs2`. Use `haveI : ρ₀.rep.IsIrreducible := ρ₀.2.rep.irr`.
+
+Use `haveI := isIrreducible_carry (d := fun a => (x a).1) _ (GlobalTheory.CompanionTheory.FrobJm.piTensor_rep_isIrreducible hA x)`. Conclude with `GroundTheory.Automorphic.Parabolic.not_surjective_of_isIrreducible (π := ρ₀.rep) ρ₀.2.rep.smooth (isSupercuspidal_of_isCuspidal hc.2) (exists_pos_ne h2 hpos) (isSmooth_carry _ (isSmooth_piTensor fun a => (x a).2.rep.smooth)) A p hp`.
+-/
 theorem jhMult_eq_zero_of_isCusp : ∀ {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k]
     [IsNonarchimedeanLocalField k], GlobalTheory.Published.IrreducibleAdmissibleGL → ∀ (ρ : IrrGL k) {h : ℕ}
     (x : Fin h → IrrGL k) (hd : ∑ a, (x a).1 = ρ.1), ρ.IsCusp → 2 ≤ h → (∀ a, 0 < (x a).1) →

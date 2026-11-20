@@ -21,6 +21,9 @@ def levi (F : W → ℂ) (x u : W) : ℂ :=
   (fderiv ℝ (antiFn F u) x u - Complex.I * fderiv ℝ (antiFn F u) x (Complex.I • u)) / 2
 
 omit [CompleteSpace W] in
+/- English proof (translation)
+Establish `: antiFn F u =ᶠ[𝓝 x] antiFn G u` using `by filter_upwards [h.fderiv (𝕜 := ℝ)] with w hw`. Simplify using `only [antiFn, hw]`. Simplify using `only [levi, this.fderiv_eq]`.
+-/
 theorem levi_congr {F G : W → ℂ} {x : W} (h : F =ᶠ[𝓝 x] G) (u : W) : levi F x u = levi G x u := by
   have : antiFn F u =ᶠ[𝓝 x] antiFn G u := by
     filter_upwards [h.fderiv (𝕜 := ℝ)] with w hw
@@ -28,6 +31,11 @@ theorem levi_congr {F G : W → ℂ} {x : W} (h : F =ᶠ[𝓝 x] G) (u : W) : le
   simp only [levi, this.fderiv_eq]
 
 omit [CompleteSpace W] in
+/- English proof (translation)
+Use `(((h u).hasFDerivAt.add ((h (Complex.I • u)).hasFDerivAt.const_mul Complex.I)).mul_const (2⁻¹ : ℂ))` as an intermediate fact. Establish `e : antiFn F u = fun w => (fderiv ℝ F w u + Complex.I * fderiv ℝ F w (Complex.I • u)) * 2⁻¹`. Use function extensionality and compare the values at `w`. Simplify using `only [antiFn, div_eq_mul_inv]`. Rewrite using `[e]`.
+
+Use `erw [this.fderiv]`. Simplify using `[div_eq_mul_inv, mul_comm, mul_add]`.
+-/
 theorem fderiv_antiFn {F : W → ℂ} {x : W} (h : ∀ b, DifferentiableAt ℝ (fun w => fderiv ℝ F w b) x) (u a : W) :
     fderiv ℝ (antiFn F u) x a = (fderiv ℝ (fun w => fderiv ℝ F w u) x a +
       Complex.I * fderiv ℝ (fun w => fderiv ℝ F w (Complex.I • u)) x a) / 2 := by
@@ -39,6 +47,9 @@ theorem fderiv_antiFn {F : W → ℂ} {x : W} (h : ∀ b, DifferentiableAt ℝ (
   simp [div_eq_mul_inv, mul_comm, mul_add]
 
 omit [CompleteSpace W] in
+/- English proof (translation)
+Establish `h1 : DifferentiableAt ℝ (fderiv ℝ F) y` using `(hF.fderiv_right (m := 1) (by norm_num)).differentiableAt (by norm_num)`. Use `h1.hasFDerivAt.clm_apply (hasFDerivAt_const b y)` as an intermediate fact. Simplify using `using this`.
+-/
 theorem second_deriv {F : W → ℂ} {y : W} (hF : ContDiffAt ℝ 2 F y) (b : W) :
     HasFDerivAt (fun w => fderiv ℝ F w b) ((fderiv ℝ (fderiv ℝ F) y).flip b) y := by
   have h1 : DifferentiableAt ℝ (fderiv ℝ F) y :=
@@ -46,6 +57,13 @@ theorem second_deriv {F : W → ℂ} {y : W} (hF : ContDiffAt ℝ 2 F y) (b : W)
   have := h1.hasFDerivAt.clm_apply (hasFDerivAt_const b y)
   simpa using this
 
+/- English proof (translation)
+Establish `h1 : DifferentiableAt ℝ (fderiv ℝ F) (φ x)` using `(hF.fderiv_right (m := 1) (by norm_num)).differentiableAt (by norm_num)`. Establish `h2 : HasFDerivAt φ ((fderiv ℂ φ x).restrictScalars ℝ) x` using `hφ.differentiableAt.hasFDerivAt.restrictScalars ℝ`. Establish `h3 : HasFDerivAt (fun w => fderiv ℂ φ w b) (((fderiv ℂ (fderiv ℂ φ) x).flip b).restrictScalars ℝ) x`. Use `hφ.fderiv.differentiableAt.hasFDerivAt.clm_apply (hasFDerivAt_const b x)` as an intermediate fact. Conclude with `HasFDerivAt.restrictScalars ℝ (by simpa using this)`.
+
+Establish `h4` using `(h1.hasFDerivAt.comp x h2).clm_apply h3`. Establish `e : (fun w => fderiv ℝ (F ∘ φ) w b) =ᶠ[𝓝 x] fun w => (fderiv ℝ F ∘ φ) w (fderiv ℂ φ w b)`. Establish `hF' : ∀ᶠ y in 𝓝 (φ x), DifferentiableAt ℝ F y` using `(hF.eventually (by simp)).mono fun y hy => hy.differentiableAt (by norm_num)`. Use `filter_upwards [hφ.continuousAt.eventually hF', hφ.eventually_analyticAt] with w hw1 hw2`. Rewrite using `[(hw1.hasFDerivAt.comp w (hw2.differentiableAt.hasFDerivAt.restrictScalars ℝ)).fderiv]`.
+
+Simplify using the standard rewrite rules. Establish `h5` using `h4.congr_of_eventuallyEq e`. Use `⟨h5.differentiableAt, fun a => ?_⟩` and prove the remaining obligations. Rewrite using `[h5.fderiv]`. Simplify using `[add_comm]`.
+-/
 theorem second_deriv_comp {F : W → ℂ} {φ : W → W} {x : W} (hF : ContDiffAt ℝ 2 F (φ x)) (hφ : AnalyticAt ℂ φ x)
     (b : W) : DifferentiableAt ℝ (fun w => fderiv ℝ (F ∘ φ) w b) x ∧ ∀ a,
       fderiv ℝ (fun w => fderiv ℝ (F ∘ φ) w b) x a =
@@ -70,6 +88,9 @@ theorem second_deriv_comp {F : W → ℂ} {φ : W → W} {x : W} (hF : ContDiffA
   rw [h5.fderiv]
   simp [add_comm]
 
+/- English proof (translation)
+Establish `h1` using `second_deriv_comp hF hφ`. Establish `h2` using `second_deriv hF`. Simplify using `only [levi, fderiv_antiFn fun b => (h1 b).1, fderiv_antiFn fun b => (h2 b).differentiableAt, fun b => (h1 b).2, fun b => (h2 b).fderiv, ContinuousLinearMap.flip_apply, ContinuousLinearMap.map_smul, ContinuousLinearMap.smul_apply, smul_smul, Complex.I_mul_I, neg_smul, one_smul, ma …`. Take the linear combination `(fderiv ℝ F (φ x) (fderiv ℂ (fderiv ℂ φ) x u u) / 4) * Complex.I_mul_I`.
+-/
 theorem levi_comp {F : W → ℂ} {φ : W → W} {x : W} (hF : ContDiffAt ℝ 2 F (φ x)) (hφ : AnalyticAt ℂ φ x) (u : W) :
     levi (F ∘ φ) x u = levi F (φ x) (fderiv ℂ φ x u) := by
   have h1 := second_deriv_comp hF hφ
@@ -83,15 +104,33 @@ end General
 
 variable {ι : Type} [Fintype ι] {p q : ℕ}
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem ddc_eq (f : Pt ι p q → ℝ) (z ξ : Pt ι p q) :
     ddc f z ξ = (levi (fun v => (f (unflat v) : ℂ)) (flat z) (flat ξ)).re / Real.pi := rfl
 
 omit [Fintype ι] in
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem unflat_flat' (z : Pt ι p q) : unflat (flat z) = z := rfl
 
 omit [Fintype ι] in
+/- English proof (translation)
+The claim follows from `hz`.
+-/
 theorem flat_mem {z : Pt ι p q} (hz : z ∈ DomI ι p q) : flat z ∈ DomFlat ι p q := hz
 
+/- English proof (translation)
+Take `⟨ho, H⟩` from `GlobalTheory.HodgeDomain.ActionDeriv.isOpen_and_fderiv_moebI ι p q`. Take `⟨hd, hD⟩` from `H g hg`. Establish `hz' : flat z ∈ DomFlat ι p q` using `hz`. Establish `hw : flat (moebI g z) ∈ DomFlat ι p q` using `flat_mem fun τ => moeb_mem (hg τ (Set.mem_univ _)) (hz τ)`. Establish `han` using `GlobalTheory.SCV.analyticOnNhd_of_differentiableOn ho hd _ hz'`.
+
+Establish `hF : ContDiffAt ℝ 2 (fun v => (f (unflat v) : ℂ)) (flat (moebI g z))` using `(hf.contDiffAt (ho.mem_nhds hw)).of_le (WithTop.coe_le_coe.2 (le_top : (2 : ℕ∞) ≤ ⊤))`. Establish `h2 : ((fun v => (f (unflat v) : ℂ)) ∘ fun v => flat (moebI g (unflat v))) =ᶠ[𝓝 (flat z)] fun v => (f (unflat v) : ℂ)` using `by filter_upwards [ho.mem_nhds hz'] with v hv`. Rewrite using `[Function.comp_apply, unflat_flat', hinv _ hv]`. Establish `h3` using `hD z hz ξ`. Establish `h4 : (fun v => flat (moebI g (unflat v))) (flat z) = flat (moebI g z)`.
+
+Simplify using `only [unflat_flat']`. Rewrite `hF` using `[← h4]`. Establish `h5` using `levi_comp (φ := fun v => flat (moebI g (unflat v))) (x := flat z) hF han (flat ξ)`. Rewrite `h5` using `[h3, levi_congr h2]`. Simplify using `only [unflat_flat'] at h5`.
+
+Rewrite using `[ddc_eq, ddc_eq, h5]`.
+-/
 theorem ddc_inv {f : Pt ι p q → ℝ} (hf : SmoothOn fun z => (f z : ℂ)) {g : ι → GL (Fin p ⊕ Fin q) ℂ}
     (hg : g ∈ UpqI ι p q) (hinv : ∀ z ∈ DomI ι p q, f (moebI g z) = f z) {z : Pt ι p q} (hz : z ∈ DomI ι p q)
     (ξ : Pt ι p q) : ddc f (moebI g z) (fun τ => tanAct (g τ) (z τ) (ξ τ)) = ddc f z ξ := by
@@ -115,6 +154,9 @@ theorem ddc_inv {f : Pt ι p q → ℝ} (hf : SmoothOn fun z => (f z : ℂ)) {g 
   simp only [unflat_flat'] at h5
   rw [ddc_eq, ddc_eq, h5]
 
+/- English proof (translation)
+Establish `h0 : ContDiffOn ℝ ∞ (fun v => B.nrm i (unflat v)) (DomFlat ι p q)` using `Complex.reCLM.contDiff.comp_contDiffOn (B.nrm_smooth i)`. Establish `h1 : ContDiffOn ℝ ∞ (fun v => B.ri i (unflat v)) (DomFlat ι p q)` using `contDiffOn_const.sub ((h0.pow 2).log fun v hv => (pow_pos (B.nrm_pos i _ hv) 2).ne')`. Conclude with `Complex.ofRealCLM.contDiff.comp_contDiffOn (h1.log fun v hv => ((Real.exp_pos 1).trans_le (B.exp_le_ri i hv)).ne')`.
+-/
 theorem smoothOn_log_ri {Γ : Subgroup (ι → GL (Fin p ⊕ Fin q) ℂ)} (B : BdData ι p q Γ) (i : Fin B.m) :
     SmoothOn fun w : Pt ι p q => (Real.log (B.ri i w) : ℂ) := by
   have h0 : ContDiffOn ℝ ∞ (fun v => B.nrm i (unflat v)) (DomFlat ι p q) :=
@@ -124,6 +166,9 @@ theorem smoothOn_log_ri {Γ : Subgroup (ι → GL (Fin p ⊕ Fin q) ℂ)} (B : B
   exact Complex.ofRealCLM.contDiff.comp_contDiffOn
     (h1.log fun v hv => ((Real.exp_pos 1).trans_le (B.exp_le_ri i hv)).ne')
 
+/- English proof (translation)
+Introduce `ι _ p q Γ B hΓ γ hγ z hz ξ`. Rewrite using `[BdData.beta, BdData.beta, B.kae_inv γ hγ z hz]`. Use `congr 2`. Use `Finset.sum_congr rfl fun i _ => ddc_inv (smoothOn_log_ri B i) (hΓ hγ) (fun w hw => ?_) hz ξ` and prove the remaining obligations. Simplify using `only [BdData.ri, B.nrm_inv i γ hγ w hw]`.
+-/
 theorem beta_inv : ∀ (ι : Type) [Fintype ι] (p q : ℕ) (Γ : Subgroup (ι → GL (Fin p ⊕ Fin q) ℂ)) (B : BdData ι p q Γ), Γ ≤ UpqI ι p q → ∀ γ ∈ Γ, ∀ z ∈ DomI ι p q, ∀ ξ : Pt ι p q, B.beta (moebI γ z) (fun τ => tanAct (γ τ) (z τ) (ξ τ)) = B.beta z ξ := by
   intro ι _ p q Γ B hΓ γ hγ z hz ξ
   rw [BdData.beta, BdData.beta, B.kae_inv γ hγ z hz]

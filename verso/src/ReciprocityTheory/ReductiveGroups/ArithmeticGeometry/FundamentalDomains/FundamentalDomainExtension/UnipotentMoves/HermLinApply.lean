@@ -17,6 +17,9 @@ def linF {r : ℕ} (c : Fin r → ℂ) : (Fin r → ℂ) →ₗ[ℂ] ℂ where
   map_add' u v := by simp [add_mul, Finset.sum_add_distrib]
   map_smul' k v := by simp [Finset.mul_sum, mul_assoc]
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 lemma linF_apply {r : ℕ} (c : Fin r → ℂ) (v : Fin r → ℂ) : linF c v = ∑ a, v a * c a := rfl
 
 def hermLin {r : ℕ} (τ : E →+* ℂ) (G : Matrix (Fin r) (Fin r) E) (K : ℂ) (w : Fin r → ℂ) :
@@ -25,9 +28,17 @@ def hermLin {r : ℕ} (τ : E →+* ℂ) (G : Matrix (Fin r) (Fin r) E) (K : ℂ
   map_add' u v := by rw [hermC_add_left]; ring
   map_smul' k v := by rw [hermC_smul_left]; simp only [smul_eq_mul, RingHom.id_apply]; ring
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 lemma hermLin_apply {r : ℕ} (τ : E →+* ℂ) (G : Matrix (Fin r) (Fin r) E) (K : ℂ) (w v : Fin r → ℂ) :
     hermLin τ G K w v = K * hermC τ G v w := rfl
 
+/- English proof (translation)
+Unfold `Data.posPart`. Simplify using `only [hermC_smul_left, map_mul]`. Establish `e : ∀ p q m : ℂ, c * p * m * (conj c * conj q) = (Complex.normSq c : ℂ) * (p * m * conj q)`. Introduce `p q m`. Rewrite using `[Complex.normSq_eq_conj_mul_self]`.
+
+Expand and normalize the polynomial expressions, which then agree. Simplify using `only [e, ← Finset.mul_sum]`. Rewrite using `[Complex.re_ofReal_mul]`.
+-/
 lemma posPart_smul {r : ℕ} (X : Data E r) (x : Frame X.Ψ r) (τ : X.Ψ) (c : ℂ) (v : Fin r → ℂ) :
     X.posPart x τ (c • v) = Complex.normSq c * X.posPart x τ v := by
   unfold Data.posPart
@@ -39,6 +50,11 @@ lemma posPart_smul {r : ℕ} (X : Data E r) (x : Frame X.Ψ r) (τ : X.Ψ) (c : 
   simp only [e, ← Finset.mul_sum]
   rw [Complex.re_ofReal_mul]
 
+/- English proof (translation)
+Unfold `Data.maj`. Rewrite using `[posPart_smul, hermC_smul_left, hermC_smul_right]`. Establish `e : c * (conj c * hermC τ.1 X.Gm v v) = (Complex.normSq c : ℂ) * hermC τ.1 X.Gm v v`. Rewrite using `[Complex.normSq_eq_conj_mul_self]`. Expand and normalize the polynomial expressions, which then agree.
+
+Rewrite using `[e, Complex.re_ofReal_mul]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 lemma maj_smul {r : ℕ} (X : Data E r) (x : Frame X.Ψ r) (τ : X.Ψ) (c : ℂ) (v : Fin r → ℂ) :
     X.maj x τ (c • v) = Complex.normSq c * X.maj x τ v := by
   unfold Data.maj
@@ -49,6 +65,9 @@ lemma maj_smul {r : ℕ} (X : Data E r) (x : Frame X.Ψ r) (τ : X.Ψ) (c : ℂ)
   rw [e, Complex.re_ofReal_mul]
   ring
 
+/- English proof (translation)
+Unfold `herm cc`. Simplify using `only [Pi.smul_apply, smul_eq_mul, map_mul, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun a _ => Finset.sum_congr rfl fun b _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+-/
 lemma herm_smul_right {r : ℕ} (G : Matrix (Fin r) (Fin r) E) (x y : Fin r → E) (c : E) :
     herm G x (c • y) = cc c * herm G x y := by
   unfold herm cc
@@ -56,11 +75,51 @@ lemma herm_smul_right {r : ℕ} (G : Matrix (Fin r) (Fin r) E) (x y : Fin r → 
   refine Finset.sum_congr rfl fun a _ => Finset.sum_congr rfl fun b _ => ?_
   ring
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 lemma O_smul {r : ℕ} (β : 𝓞 E) (v : Fin r → E) : β • v = (β : E) • v := rfl
 
 end DeltaValuation
 
 open DeltaValuation in
+/- English proof (translation)
+Introduce `r X ξ z1 ep n' hiso hep hn' hz1 hsep`. Establish `hΛp : ∀ μ, μ ∈ X.Λp ξ ↔ μ ∈ X.Λ ∧ herm X.Gm μ ξ = 0` using `fun μ => by`. Simplify using `only [Data.Λp, AddSubgroup.mem_inf, Submodule.mem_toAddSubgroup, AddMonoidHom.mem_ker]`. Both sides reduce to the same expression. Establish `hlin : ∀ (b : E) (x y : Fin r → E), herm X.Gm (b • x) y = b * herm X.Gm x y`.
+
+Introduce `b x y`. Simplify using `only [herm, Pi.smul_apply, smul_eq_mul, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree. Take `⟨f, hfΛ, hfadd, hfsmul, hfξ⟩` from `hP5 r X.toData ξ hiso`.
+
+Take `⟨F, hF⟩` from `hext r X.toData ξ f hfadd hfsmul`. Take `⟨cf, hFc⟩ : ∃ cf : Fin r → E, ∀ x, F x = ∑ a, x a * cf a` from `⟨fun a => F (fun j => if a = j then 1 else 0), fun x => by`. Rewrite using `[LinearMap.pi_apply_eq_sum_univ F x]`. Simplify using `only [smul_eq_mul]⟩`. Establish `hFξ : F ξ = 1`.
+
+Establish `h1 : (1 : E) • ξ ∈ X.Λ` using `by rw [one_smul]; exact hiso.1`. Establish `h2 : (1 : E) • ξ ∈ X.Λp ξ` using `(hΛp _).2 ⟨h1, by rw [one_smul]; exact hiso.2.1⟩`. Establish `h3` using `hF _ h2`. Rewrite `h3` using `[hfξ 1 h1, one_smul]`. Conclude with `h3`.
+
+Establish `hn0 : (n' : ℂ) ≠ 0` using `by exact_mod_cast hn'.ne'`. Set `δ₀ : X.Ψ → (Fin r → ℂ) →ₗ[ℂ] ℂ` to `fun τ => (-(n' : ℂ)) • linF (fun a => τ.1 (cf a))`. Take `⟨μ₀, hμ₀, hbound⟩` from `hP6 r X ξ ep hiso hep z1 hz1 hsep δ₀`. Set `δ' : X.Ψ → (Fin r → ℂ) →ₗ[ℂ] ℂ` to `fun τ => δ₀ τ - hermLin τ.1 X.Gm ((dE E : ℂ) * (-τ.1 X.ξ0)) (X.ucomp z1 ξ (X.embV μ₀) τ)`. Use `⟨fun τ => ((n' : ℂ)⁻¹) • δ' τ, ?_, ?_⟩` and prove the remaining obligations.
+
+Introduce `u hu τ`. Establish `hb` using `hbound u hu τ`. Establish `e1 : (((n' : ℂ)⁻¹ • δ' τ) (u τ)) • Data.emb τ.1 ξ = ((n' : ℂ)⁻¹) • ((δ₀ τ (u τ) - (dE E : ℂ) * (-τ.1 X.ξ0) * hermC τ.1 X.Gm (u τ) (X.ucomp z1 ξ (X.embV μ₀) τ)) • Data.emb τ.1 ξ)`. Simplify using `only [δ', LinearMap.smul_apply, LinearMap.sub_apply, hermLin_apply, smul_eq_mul, smul_smul]`. Establish `hinv : ((n' : ℂ)⁻¹) = (((n' : ℝ)⁻¹ : ℝ) : ℂ)` using `by push_cast; rfl`.
+
+Rewrite using `[e1, maj_smul, hinv, Complex.normSq_ofReal, div_pow]`. Establish `hpos : (0 : ℝ) ≤ (n' : ℝ)⁻¹ * (n' : ℝ)⁻¹` using `by positivity`. Combine the equalities or inequalities in the displayed calculation. Introduce `μ hμ`. Take `⟨hμΛ, hμξ⟩` from `(hΛp μ).1 hμ`.
+
+Take `⟨hμ₀Λ, hμ₀ξ⟩` from `(hΛp μ₀).1 hμ₀`. Take `⟨α, hα⟩` from `hdual (-X.ξ0 * herm X.Gm μ μ₀) (by`. Introduce `a`. Establish `ha : (a : E) • μ ∈ X.Λ` using `by rw [← O_smul]; exact X.Λ.smul_mem a hμΛ`. Take `⟨k, hk⟩` from `X.EF_int _ ha μ₀ hμ₀Λ`.
+
+Use `⟨k, ?_⟩` and prove the remaining obligations. Rewrite using `[← hk, EFf, hlin]`. Use `congr 1`. Use the proof step `ring)`. Use `⟨(n' : E) * f μ + α, ?_, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[add_smul, mul_smul]`. Use `X.Λ.add_mem ?_ ?_` and prove the remaining obligations. Rewrite using `[Nat.cast_smul_eq_nsmul]`. Conclude with `nsmul_mem (hfΛ μ hμ) n'`. Rewrite using `[← O_smul]`.
+
+Conclude with `X.Λ.smul_mem α hiso.1`. Use function extensionality and compare the values at `τ`. Establish `hu : ∀ ν : Fin r → E, X.ucomp z1 ξ (X.embV ν) τ = Data.emb τ.1 ν - (X.Hf z1 τ (Data.emb τ.1 ν) (Data.emb τ.1 ξ) / X.Hf z1 τ (Data.emb τ.1 ξ) (Data.emb τ.1 ξ)) • Data.emb τ.1 ξ` using `fun ν => rfl`. Establish `h1 : hermC τ.1 X.Gm (Data.emb τ.1 μ) (Data.emb τ.1 μ₀) = τ.1 (herm X.Gm μ μ₀)` using `hermC_emb _ _ _ _`. Establish `h2 : hermC τ.1 X.Gm (Data.emb τ.1 μ) (Data.emb τ.1 ξ) = 0`.
+
+Rewrite using `[hermC_emb, hμξ, map_zero]`. Establish `h3 : hermC τ.1 X.Gm (Data.emb τ.1 ξ) (Data.emb τ.1 μ₀) = 0`. Rewrite using `[← hermC_conj τ.1 X.Gm_herm, hermC_emb, hμ₀ξ, map_zero, map_zero]`. Establish `h4 : hermC τ.1 X.Gm (Data.emb τ.1 ξ) (Data.emb τ.1 ξ) = 0`. Rewrite using `[hermC_emb, hiso.2.1, map_zero]`.
+
+Establish `hherm : hermC τ.1 X.Gm (X.ucomp z1 ξ (X.embV μ) τ) (X.ucomp z1 ξ (X.embV μ₀) τ) = τ.1 (herm X.Gm μ μ₀)`. Rewrite using `[hu, hu]`. Simplify using `only [hermC_sub_left, hermC_sub_right, hermC_smul_left, hermC_smul_right, h1, h2, h3, h4]`. Expand and normalize the polynomial expressions, which then agree. Establish `hl1 : linF (fun a => τ.1 (cf a)) (Data.emb τ.1 μ) = τ.1 (F μ)`.
+
+Rewrite using `[linF_apply, hFc, map_sum]`. Simplify using `only [Data.emb, map_mul]`. Establish `hl2 : linF (fun a => τ.1 (cf a)) (Data.emb τ.1 ξ) = 1`. Rewrite using `[linF_apply, show (1 : ℂ) = τ.1 (F ξ) by rw [hFξ, map_one], hFc, map_sum]`. Simplify using `only [Data.emb, map_mul]`.
+
+Use `set co := X.Hf z1 τ (Data.emb τ.1 μ) (Data.emb τ.1 ξ) / X.Hf z1 τ (Data.emb τ.1 ξ) (Data.emb τ.1 ξ) with hco`. Establish `hδ' : δ' τ (X.ucomp z1 ξ (X.embV μ) τ) = -(n' : ℂ) * (τ.1 (F μ) - co) - (dE E : ℂ) * (-τ.1 X.ξ0) * τ.1 (herm X.Gm μ μ₀)`. Simplify using `only [δ', δ₀, LinearMap.sub_apply, LinearMap.smul_apply, hermLin_apply, smul_eq_mul]`. Rewrite using `[hherm, hu μ, map_sub, map_smul, hl1, hl2, smul_eq_mul, mul_one]`. Establish `hL : ((n' : ℂ) • (X.aproj z1 ξ (X.embV μ) - X.lineV ξ (fun τ => (((n' : ℂ)⁻¹) • δ' τ) (X.ucomp z1 ξ (X.embV μ) τ)))) τ = ((n' : ℂ) * (co - (n' : ℂ)⁻¹ * δ' τ (X.ucomp z1 ξ (X.embV μ) τ))) • Data.emb τ.1 ξ` using `by show (n' : ℂ) • (co • Data.emb τ.1 ξ - (((n' : ℂ)⁻¹) • δ' τ) (X.ucomp z1 ξ (X.embV μ) τ) • Data.emb τ.1 ξ) = _`.
+
+Rewrite using `[LinearMap.smul_apply, smul_eq_mul, ← sub_smul, smul_smul]`. Establish `hR : X.embV (((n' : E) * f μ + α) • ξ) τ = (τ.1 ((n' : E) * f μ + α)) • Data.emb τ.1 ξ`. Use function extensionality and compare the values at `a`. Simplify using `[Data.embV, Data.emb, map_mul]`. Establish `hdE : ((dE E : ℝ) : ℂ) = (((NumberField.discr E).natAbs : ℕ) : ℂ)`.
+
+Establish `: (((NumberField.discr E).natAbs : ℕ) : ℝ) = |((NumberField.discr E : ℤ) : ℝ)|`. Rewrite using `[Nat.cast_natAbs, Int.cast_abs]`. Rewrite using `[dE, ← this]`. Use `push_cast`. Both sides reduce to the same expression.
+
+Rewrite using `[hL, hR]`. Use `congr 1`. Rewrite using `[hδ', hF μ hμ, map_add, map_mul, map_natCast, hα, map_mul, map_natCast, map_mul, map_neg, hdE]`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem sDelta_of (hemb : SEmb E) (hext : SExt E) (hdual : SDual E)
     (hP5 : IsotropicCoefficientSplitting (E := E)) (hP6 : NoShortVectorLowerBound (E := E)) : SDelta E := by
   intro r X ξ z1 ep n' hiso hep hn' hz1 hsep

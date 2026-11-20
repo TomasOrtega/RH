@@ -19,6 +19,11 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 namespace GlobalTheory.FinPl.MovesEntries
 
+/- English proof (translation)
+Simplify using `only [Matrix.mulVec, dotProduct, map_sum, map_mul]`. Rewrite using `[Finset.sum_eq_single s]`. Rewrite using `[h1, mul_one]`. Introduce `b _ hb`. Rewrite using `[h0 b hb, map_zero, mul_zero]`.
+
+Introduce `hs`. Conclude with `(hs (Finset.mem_univ _)).elim`.
+-/
 theorem map_mulVec_single {A B : Type} [CommRing A] [CommRing B] (f : A →+* B) {n : ℕ}
     (M : Matrix (Fin n) (Fin n) A) (y : Fin n → A) (r s : Fin n) (h1 : f (y s) = 1)
     (h0 : ∀ b, b ≠ s → y b = 0) : f ((M *ᵥ y) r) = f (M r s) := by
@@ -30,16 +35,33 @@ theorem map_mulVec_single {A B : Type} [CommRing A] [CommRing B] (f : A →+* B)
   · intro hs
     exact (hs (Finset.mem_univ _)).elim
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem toEAf_pair (D : D7) (α : Af D.host.F) (e : D.host.E) :
     toEAf D (pairA D.host.F 0 α ⊗ₜ[D.host.F] e) = e ⊗ₜ[D.host.F] α := by
   rfl
 
+/- English proof (translation)
+Establish `: infPart D (pairA D.host.F 0 α ⊗ₜ[D.host.F] e) = (0 : Ainf D.host.F) ⊗ₜ[D.host.F] e` using `rfl`. Rewrite using `[this, TensorProduct.zero_tmul]`.
+-/
 theorem infPart_pair (D : D7) (α : Af D.host.F) (e : D.host.E) :
     infPart D (pairA D.host.F 0 α ⊗ₜ[D.host.F] e) = 0 := by
   have : infPart D (pairA D.host.F 0 α ⊗ₜ[D.host.F] e)
       = (0 : Ainf D.host.F) ⊗ₜ[D.host.F] e := rfl
   rw [this, TensorProduct.zero_tmul]
 
+/- English proof (translation)
+Unfold `GlobalTheory.FinPl.latV GlobalTheory.FinPl.latMul at hy`. Proceed by induction on `hy using AddSubgroup.closure_induction with`. Consider the case `mem y hy`. Take `⟨α, hα, -, a, ha, x, hx, rfl⟩` from `hy`. Rewrite `ha` using `[Set.mem_singleton_iff]`.
+
+Substitute `ha` using the available equality. Establish `hxi : IsIntegral ℤ (x i)` using `(hL x).1 hx i`. Establish `h1 : Formalism.UG.prV (E` using `D.host.E) v (toEAf D (pairA D.host.F 0 α ⊗ₜ[D.host.F] (1 * x i))) = ((x i) ⊗ₜ[D.host.F] (1 : v.adicCompletion D.host.F)) * ((1 : D.host.E) ⊗ₜ[D.host.F] (evalV D.host.F v α : v.adicCompletion D.host.F)) := by`. Rewrite using `[toEAf_pair, Algebra.TensorProduct.tmul_mul_tmul, one_mul, mul_one, one_mul]`. Both sides reduce to the same expression.
+
+Use `show Formalism.UG.prV (E := D.host.E) v (toEAf D (pairA D.host.F 0 α ⊗ₜ[D.host.F] (1 * x i))) ∈ _`. Rewrite using `[h1]`. Use `Subring.mul_mem _ (Subring.subset_closure (Or.inl ⟨⟨x i, ⟨⟨x i, hxi⟩, rfl⟩⟩, rfl⟩)) (Subring.subset_closure (Or.inr ⟨⟨evalV D.host.F v α, hα v⟩, rfl⟩))` and prove the remaining obligations. Consider the case `zero`. Rewrite using `[Pi.zero_apply, (toEAf D).map_zero, (Formalism.UG.prV (E := D.host.E) v).map_zero]`.
+
+Conclude with `Subring.zero_mem _`. Consider the case `add a b _ _ ha hb`. Rewrite using `[Pi.add_apply, (toEAf D).map_add, (Formalism.UG.prV (E := D.host.E) v).map_add]`. Conclude with `Subring.add_mem _ ha hb`. Consider the case `neg a _ ha`.
+
+Rewrite using `[Pi.neg_apply, (toEAf D).map_neg, (Formalism.UG.prV (E := D.host.E) v).map_neg]`. Conclude with `Subring.neg_mem _ ha`.
+-/
 theorem coord_int (D : D7) (S : HSp D) (L : GlobalTheory.FinPl.Lat S)
     (hL : ∀ z, z ∈ L ↔ z ∈ GlobalTheory.AdForm.intVec D S.rank) (v : HeightOneSpectrum (𝓞 D.host.F))
     (y : Fin S.rank → AE D) (hy : y ∈ GlobalTheory.FinPl.latV S L (fun _ => True)) (i : Fin S.rank) :
@@ -72,6 +94,21 @@ theorem coord_int (D : D7) (S : HSp D) (L : GlobalTheory.FinPl.Lat S)
     rw [Pi.neg_apply, (toEAf D).map_neg, (Formalism.UG.prV (E := D.host.E) v).map_neg]
     exact Subring.neg_mem _ ha
 
+/- English proof (translation)
+Introduce `D S n hn L hL κ hκ v r s`. Substitute `hn` using the available equality. Set `x : Fin S.rank → D.host.E` to `Pi.single s 1`. Establish `hx : x ∈ L`. Rewrite using `[hL]`.
+
+Introduce `k`. Distinguish the cases in `hk : k = s`. Substitute `hk` using the available equality. Simplify using `only [x, Pi.single_eq_same]`. Conclude with `isIntegral_one`.
+
+Simplify using `only [x, Pi.single_eq_of_ne hk]`. Conclude with `isIntegral_zero`. Set `y : Fin S.rank → AE D` to `fun i => pairA D.host.F 0 1 ⊗ₜ[D.host.F] (1 * x i)`. Establish `hy : y ∈ GlobalTheory.FinPl.latV S L (fun _ => True)`. Use `AddSubgroup.subset_closure ⟨1, ?_, fun w hw => (hw trivial).elim, 1, rfl, x, hx, rfl⟩` and prove the remaining obligations.
+
+Introduce `w`. Rewrite using `[map_one]`. Conclude with `one_mem _`. Establish `hid : ∀ i, y i ∈ GlobalTheory.FinPl.idAt D (fun _ => True)`. Introduce `i`.
+
+Use `Submodule.mem_inf.2 ⟨infPart_pair D _ _, ?_⟩` and prove the remaining obligations. Rewrite using `[Submodule.mem_iInf]`. Introduce `w`. Conclude with `(w.2 trivial).elim`. Establish `h` using `coord_int D S L hL v _ ((hκ y hid).1 hy) r`.
+
+Establish `h2 : toEAf D ((Formalism.L2.Theta.mt S κ *ᵥ y) r) = toEAf D (Formalism.L2.Theta.mt S κ r s)`. Use `map_mulVec_single (toEAf D) _ y r s ?_ ?_` and prove the remaining obligations. Simplify using `only [y, x, toEAf_pair, Pi.single_eq_same, one_mul]`. Both sides reduce to the same expression. Introduce `b hb`.
+
+Simplify using `only [y, x, Pi.single_eq_of_ne hb, mul_zero, TensorProduct.tmul_zero]`. Rewrite `h` using `[h2]`. Conclude with `h`.
+-/
 theorem finM_entry_int : ∀ (D : D7) (S : HSp D) {n : ℕ} (hn : S.rank = n) (L : GlobalTheory.FinPl.Lat S), (∀ z, z ∈ L ↔ z ∈ GlobalTheory.AdForm.intVec D S.rank) → ∀ κ : GA D S, GlobalTheory.FinPl.Moves S κ L L (fun _ => True) → ∀ (v : HeightOneSpectrum (𝓞 D.host.F)) (r s : Fin n), Formalism.UG.prV (E := D.host.E) v (GlobalTheory.AdForm.finM S hn κ r s) ∈ Formalism.BasicNotions.intV D.host.E v := by
   intro D S n hn L hL κ hκ v r s
   subst hn

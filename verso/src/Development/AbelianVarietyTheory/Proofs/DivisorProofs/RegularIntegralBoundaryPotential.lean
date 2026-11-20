@@ -17,6 +17,23 @@ open scoped ENNReal
 
 namespace GlobalTheory.LogRInt
 
+/- English proof (translation)
+Take `⟨hα, hαp, hσ, -⟩` from `hS`. Take `⟨Om, hO, hOpos⟩` from `GlobalTheory.FubiniStudyPot.exists_posPot n Y B hB`. Establish `hOp` using `TailBoundAlt.isPsh_of_isPosPot B Om hOpos`. Establish `hBd` using `GlobalTheory.isBd_pullback_boundary d X A m Λ σ (fun i => ⟨(hσ i).1, (hσ i).2.1, (hσ i).2.2.2⟩) n Y B μ hμ hint Om hO hOpos`. Use `set Z := μ ⁻¹' boundary σ with hZ`.
+
+Use `set ρ : Y → ℝ := fun y => Real.exp 1 - 2 * ∑ i, logNormSec (Λ i) (σ i) (μ y) with hρ`. Establish `hα'` using `isPotentialPullback A B μ hμ α hα`. Take `⟨K₂, hK₂, ha1, ha2⟩` from `TailBoundAlt.exists_psh_chern_bound B Om _ hO hOpos hα'`. Establish `hKm : 0 ≤ max K 0 * (1 + (m : ℝ))` using `by positivity`. Use `set K' := K₂ + max K 0 * (1 + (m : ℝ)) with hK'`.
+
+Establish `hρe` using `hBd.2.2.2.2.2.1`. Take `⟨C, hC⟩` from `GlobalTheory.Mean4O.LogTail.tail n Y B Z ρ Om hBd K'`. Establish `ha1'` using `psh_mono B hO hOp hα' ha1 (C' := K') (by linarith)`. Establish `ha2'` using `psh_mono B hO hOp (isPotentialRsmul B _ _ hα') ha2 (C' := K') (by linarith)`. Use `⟨C * Real.log (Real.exp 1) ^ (n + 1) / Real.exp 1, fun R => ?_⟩` and prove the remaining obligations.
+
+Establish `hg` using `smooth_comp_holo A B μ hμ _ (hw R)`. Establish `hgb : ∀ y, y ∉ Z → -(K' * Real.log (ρ y)) ≤ w R (μ y) ∧ w R (μ y) ≤ 0` using `fun y hy => by`. Take `⟨h1, h2⟩` from `hwb R (μ y) hy`. Use `⟨le_trans ?_ h1, h2⟩` and prove the remaining obligations. Take `⟨h3, h4⟩` from `sum_log_le (fun i => logNormSec (Λ i) (σ i) (μ y)) fun i => logNormSec_nonpos ((hσ i).2.2.2 _)`.
+
+Establish `h5 : 0 ≤ Real.log (ρ y)` using `Real.log_nonneg ((Real.one_le_exp zero_le_one).trans (hρe y hy))`. Establish `h6` using `mul_le_mul (le_max_left K 0) h4 h3 (le_max_right K 0)`. Establish `h7` using `mul_nonneg hK₂ h5`. Establish `h8 : K' * Real.log (ρ y) = K₂ * Real.log (ρ y) + max K 0 * ((1 + (m : ℝ)) * Real.log (ρ y))` using `by rw [hK']; ring`. Rewrite using `[h8]`.
+
+Conclude with `neg_le_neg (h6.trans (le_add_of_nonneg_left h7))`. Establish `hwR` using `isPotentialAdd A _ _ hα (isPotential_ofFun A _ (hw R))`. Establish `hl : ListForm B Z ρ Om K' ((α + LocPot.ofFun (w R)).pullback μ hμ.1)`. Establish `hp` using `GlobalTheory.PshPull.isPsh_pullback d X A n Y B μ hμ _ hwR (hwp R)`. Rewrite `hp`, the goal using `[pullback_add_ofFun]`.
+
+Conclude with `listForm_add B hα' ha1' ha2' hg hgb hp`. Take `⟨hI, -, htail⟩` from `hC (fun _ => (α + LocPot.ofFun (w R)).pullback μ hμ.1) fun _ => hl`. Establish `h1` using `htail (Real.exp 1) le_rfl`. Establish `hcut : (GlobalTheory.Mean4O.cut Z {x | Real.exp 1 ≤ ρ x} fun x => Real.log (ρ x)) = GlobalTheory.Mean4O.cut Z Set.univ fun x => Real.log (ρ x)`. Unfold `GlobalTheory.Mean4O.cut`.
+
+Use `congr 1`. Use extensionality with `x`. Conclude with `⟨fun h => ⟨trivial, h.2⟩, fun h => ⟨hρe x h.2, h.2⟩⟩`. Rewrite `h1` using `[hcut]`. Conclude with `⟨hI, h1⟩`.
+-/
 theorem uniform_bound (d : ℕ) (X : Type) [TopologicalSpace X] [CompactSpace X] [T2Space X]
     (A : FinHolAtlas d X) (m : ℕ) (α : LocPot X) (Λ : Fin m → LocPot X) (σ : Fin m → X → X → ℂ) (c : ℝ)
     (hS : IsBoundarySetting A α Λ σ c)
@@ -77,6 +94,27 @@ theorem uniform_bound (d : ℕ) (X : Type) [TopologicalSpace X] [CompactSpace X]
   rw [hcut] at h1
   exact ⟨hI, h1⟩
 
+/- English proof (translation)
+Take `⟨w, K, O, hw, hpsh, hbd, hO, hmono, -, hcov, hloc⟩` from `GlobalTheory.PoincareTrunc.smoothTrunc d X A m α Λ σ c hS`. Take `⟨C, hC⟩` from `uniform_bound d X A m α Λ σ c hS n Y B hB μ hμ hint w K hw hpsh hbd`. Establish `hσ` using `hS.2.2.1`. Use `set g : Y → ℝ := GlobalTheory.Mean4O.cut (μ ⁻¹' boundary σ) Set.univ fun y => Real.log (Real.exp 1 - 2 * ∑ i, logNormSec (Λ i) (σ i) (μ y)) with hg`. Establish `hcn : ∀ i, Continuous fun y => normSec (Λ i) (σ i) (μ y)` using `fun i => (GlobalTheory.AbsLogNormMeas.continuous_normSec A (Λ i) (σ i) (hσ i).1 (hσ i).2.1).comp hμ.1`.
+
+Establish `hZc : IsClosed (μ ⁻¹' boundary σ)`. Establish `: μ ⁻¹' boundary σ = ⋃ i, (fun y => normSec (Λ i) (σ i) (μ y)) ⁻¹' {0}`. Use extensionality with `y`. Simplify using `[boundary, normSec]`. Rewrite using `[this]`.
+
+Conclude with `isClosed_iUnion_of_finite fun i => isClosed_singleton.preimage (hcn i)`. Establish `hgm : ∀ [MeasurableSpace Y] [BorelSpace Y], Measurable g`. Introduce `_ _`. Use `Measurable.indicator ?_ (MeasurableSet.univ.inter hZc.measurableSet.compl)` and prove the remaining obligations. Conclude with `(measurable_const.sub (measurable_const.mul (Finset.measurable_sum _ fun i _ => (hcn i).measurable.log))).log`.
+
+Establish `hsl` using `fun y => sum_log_le (fun i => logNormSec (Λ i) (σ i) (μ y)) fun i => logNormSec_nonpos ((hσ i).2.2.2 _)`. Establish `hm1 : (0 : ℝ) < 1 + m` using `by positivity`. Establish `hg0 : ∀ y, 0 ≤ g y` using `fun y => Set.indicator_nonneg (fun y _ => nonneg_of_mul_nonneg_right ((hsl y).1.trans (hsl y).2) hm1) y`. Establish `hpotX : ∀ R, IsPotential A (α + LocPot.ofFun (w R))` using `fun R => isPotentialAdd A _ _ hS.1 (isPotential_ofFun A _ (hw R))`. Use `letI : MeasurableSpace Y := borel Y`.
+
+Use `haveI : BorelSpace Y := ⟨rfl⟩`. Establish `hfin : chartSumInt B ((poincarePot α Λ σ c).pullback μ hμ.1) (μ ⁻¹' boundary σ)ᶜ (fun y => ENNReal.ofReal (1 + m) * ENNReal.ofReal (g y)) < ∞`. Use `GlobalTheory.chartSumInt_lt_top_of_monotone_limit d X A n Y B μ hμ (poincarePot α Λ σ c) (fun R => α + LocPot.ofFun (w R)) O (fun _ => 0) _ _ ((B.n : ℝ≥0∞) * (ENNReal.ofReal (1 + m) * ENNReal.ofReal C)) hpotX hO hmono ?_ ?_ ?_ ?_ ?_` and prove the remaining obligations. Introduce `R x y hy show α.φ x y + w R y = α.φ x y + pFun Λ σ c y / 2 + 0`. Rewrite using `[hloc R y hy, add_zero]`.
+
+Introduce `y hy`. Conclude with `hcov (μ y) hy`. Introduce `_ _`. Conclude with `measurable_const.mul hgm.ennreal_ofReal`. Conclude with `ENNReal.mul_lt_top (ENNReal.natCast_lt_top _) (ENNReal.mul_lt_top ENNReal.ofReal_lt_top ENNReal.ofReal_lt_top)`.
+
+Introduce `R`. Establish `hp` using `isPotentialPullback A B μ hμ _ (hpotX R)`. Establish `hq` using `GlobalTheory.PshPull.isPsh_pullback d X A n Y B μ hμ _ (hpotX R) (hpsh R)`. Use `(GlobalTheory.ChartSumBound.chartSumInt_le_card_mul n Y B _ hp hq _ _ (measurable_const.mul hgm.ennreal_ofReal)).trans ?_` and prove the remaining obligations. Simplify using `only [Pi.mul_apply]`.
+
+Rewrite using `[lintegral_const_mul _ hgm.ennreal_ofReal]`. Take `⟨-, hthm⟩` from `maMeasure_thm B (fun _ => (α + LocPot.ofFun (w R)).pullback μ hμ.1) (fun _ => hp) (fun _ => hq)`. Take `⟨hiff, heq⟩` from `hthm g hgm`. Rewrite using `[← ofReal_integral_eq_lintegral_ofReal (hiff.1 (hC R).1) (Filter.Eventually.of_forall hg0), ← heq (hC R).1]`. Use `gcongr`.
+
+Conclude with `(hC R).2`. Use `lt_of_le_of_lt ?_ hfin` and prove the remaining obligations. Use `Finset.sum_le_sum fun j _ => ?_` and prove the remaining obligations. Use `setLIntegral_mono' ((B.chart j).isOpen_inter_preimage_symm hZc.isOpen_compl).measurableSet fun z hz => ?_` and prove the remaining obligations. Use `mul_le_mul_left ?_ _` and prove the remaining obligations.
+
+Use `beta_reduce`. Rewrite using `[← ENNReal.ofReal_mul hm1.le, hg, GlobalTheory.Mean4O.cut, Set.indicator_of_mem (show (B.chart j).symm z ∈ Set.univ ∩ (μ ⁻¹' boundary σ)ᶜ from ⟨trivial, hz.2⟩)]`. Conclude with `ENNReal.ofReal_le_ofReal (hsl _).2`.
+-/
 theorem onResolution (d : ℕ) (X : Type) [TopologicalSpace X] [CompactSpace X] [T2Space X]
     (A : FinHolAtlas d X) (m : ℕ) (α : LocPot X) (Λ : Fin m → LocPot X) (σ : Fin m → X → X → ℂ) (c : ℝ)
     (hS : IsBoundarySetting A α Λ σ c)
@@ -151,6 +189,19 @@ theorem onResolution (d : ℕ) (X : Type) [TopologicalSpace X] [CompactSpace X] 
     Set.indicator_of_mem (show (B.chart j).symm z ∈ Set.univ ∩ (μ ⁻¹' boundary σ)ᶜ from ⟨trivial, hz.2⟩)]
   exact ENNReal.ofReal_le_ofReal (hsl _).2
 
+/- English proof (translation)
+Establish `ht : ∀ i, IsPotential A (Λ i) ∧ IsSection A (Λ i) (σ i) ∧ ∃ y ∈ Z, σ i y y ≠ 0`. Introduce `i`. Take `⟨y, hyZ, hybd⟩` from `Set.not_subset.1 hZbd`. Conclude with `⟨(hset.2.2.1 i).1, (hset.2.2.1 i).2.1, y, hyZ, fun h => hybd ⟨i, h⟩⟩`. Take `⟨Y, tY, cY, t2Y, B, μ, hμ, S, r, W, e, J, hBproj, hrange, hS, -, hdense, hinj, himm, hSW, hsnc⟩` from `hR d X A hproj Z n hZ hreg m _ _ ht`.
+
+Establish `hhyp : ∀ y, ∃ χ : OpenPartialHomeomorph Y (Fin n → ℂ), IsCompatChart B χ ∧ y ∈ χ.source ∧ ∃ J' : Finset (Fin n), μ ⁻¹' S ∩ χ.source = {w ∈ χ.source | ∃ a ∈ J', χ w a = 0}`. Introduce `y`. Take `⟨χ, hχ, hy, κ, -, hW, -⟩` from `hsnc y`. Use `⟨χ, hχ, hy, Finset.univ.filter (fun a => ∃ k ∈ J, κ k = some a), ?_⟩` and prove the remaining obligations. Use extensionality with `w`.
+
+Simplify using `only [hSW, Set.mem_inter_iff, Set.mem_iUnion, Set.mem_setOf_eq, Finset.mem_filter, Finset.mem_univ, true_and, exists_prop]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨⟨k, hk, hwk⟩, hw⟩`. Use `(hW k).le ⟨hwk, hw⟩` as an intermediate fact. Take `⟨a, ha, hwa⟩` from `this.2`.
+
+Conclude with `⟨hw, a, ⟨k, hk, ha⟩, hwa⟩`. Introduce and unpack `⟨hw, a, ⟨k, hk, ha⟩, hwa⟩`. Establish `: w ∈ W k ∩ χ.source` using `(hW k).ge ⟨hw, a, ha, hwa⟩`. Conclude with `⟨⟨k, hk, this.1⟩, hw⟩`. Establish `hint : ∀ i, interior {y | σ i (μ y) (μ y) = 0} = ∅` using `fun i => by`.
+
+Establish `hsec` using `GlobalTheory.isSection_pullback_holoMap d n X Y A B μ hμ (Λ i) (σ i) (ht i).2.1`. Use `LeviFormBoundaryTopology.interior_bdry_eq_empty (m := e i) (W := W) hsec fun y => ?_` and prove the remaining obligations. Take `⟨χ, h1, h2, κ, h3, h4, h5⟩` from `hsnc y`. Take `⟨h6, u, h7, h8, h9⟩` from `h5 i`. Conclude with `⟨χ, h1, h2, h6, κ, h3, h4, u, h7, h8, h9⟩`.
+
+Conclude with `lt_of_le_of_lt (GlobalTheory.RegToResolution.regIntegral_le_chartSumInt d X A Z n Y B μ hμ S (boundary σ) hrange hS hdense hinj himm hhyp (poincarePot α Λ σ c) (GlobalTheory.PoincSmooth.smoothOn_nhd_off_boundary d X A m α Λ σ c hset.1 (fun i => ⟨(hset.2.2.1 i).1, (hset.2.2.1 i).2 …`.
+-/
 theorem logR_integrable_of_resolution (hR : GlobalTheory.Published.AnalyticLogResolution)
     (d : ℕ) (X : Type) [TopologicalSpace X] [CompactSpace X] [T2Space X] (A : FinHolAtlas d X)
     (hproj : IsProjective A) (m : ℕ) (α : LocPot X) (Λ : Fin m → LocPot X) (σ : Fin m → X → X → ℂ) (c : ℝ)
@@ -193,6 +244,9 @@ theorem logR_integrable_of_resolution (hR : GlobalTheory.Published.AnalyticLogRe
       (fun i => ⟨(hset.2.2.1 i).1, (hset.2.2.1 i).2.1⟩) (fun i => (hset.2.2.1 i).2.2.2)) _)
     (onResolution d X A m α Λ σ c hset n Y B hBproj μ hμ hint)
 
+/- English proof (translation)
+Introduce `hR _ d X _ _ _ A hA m α Λ sg t hS Z n hZ hreg hb` and use `logR_integrable_of_resolution hR d X A hA m α Λ sg t hS Z n hZ hreg hb`.
+-/
 theorem logR_integrable : GlobalTheory.Published.AnalyticLogResolution → GlobalTheory.Published.AnalyticSetDimension →
     ∀ (d : ℕ) (X : Type) [TopologicalSpace X] [CompactSpace X] [T2Space X] (A : FinHolAtlas d X),
     IsProjective A → ∀ (m : ℕ) (α : LocPot X) (Λ : Fin m → LocPot X) (sg : Fin m → X → X → ℂ) (t : ℝ),

@@ -14,6 +14,15 @@ open GlobalTheory GlobalTheory.ArInt GlobalTheory.CxPts GlobalTheory.Cartier Glo
 
 namespace GlobalTheory.NefShift
 
+/- English proof (translation)
+Introduce `_ k _ X _ p D hX M t t' htt h`. Use `⟨fun σ => ?_, h.vertical, ?_⟩` and prove the remaining obligations. Use `(h.semiPos σ).addFn_const (2 * (t' - t))` as an intermediate fact. Establish `e : (((M.shift (fun _ => t) fun _ => rfl).φ σ).addFn fun _ => 2 * (t' - t)) = (M.shift (fun _ => t') fun _ => rfl).φ σ`. Simplify using `only [HermLB.shift, Weight.addFn]`.
+
+Use `congr 1`. Use function extensionality and compare the values at `a b`. Expand and normalize the polynomial expressions, which then agree. Conclude with `e ▸ this`. Introduce `Z i _ _ _ hc hd`.
+
+Take `⟨r, hr, h0⟩` from `h.horizontal Z i hc hd`. Use `⟨r, hr, ?_⟩` and prove the remaining obligations. Establish `e₁` using `HtSelfInter.curveDeg_shift hX M t i hc hd (r := r) hr`. Establish `e₂` using `HtSelfInter.curveDeg_shift hX M t' i hc hd (r := r) hr`. Rewrite using `[e₂]`.
+
+Rewrite `h0` using `[e₁]`. Use polynomial arithmetic with `[(Nat.cast_nonneg _ : (0:ℝ) ≤ Nat.card (X.residueField (i (genericPoint Z)) →+* ℂ))]`.
+-/
 theorem isNef_shift_mono : GlobalTheory.Published.ArCalc → ∀ (k : Type) [CommRing k] (X : Scheme.{0}) [IsIntegral X]
     (p : X ⟶ Sp k) (D : ℕ), IsArithVar p D → ∀ (M : HermLB p) (t t' : ℝ), t ≤ t' →
     (M.shift (fun _ => t) fun _ => rfl).IsNef D → (M.shift (fun _ => t') fun _ => rfl).IsNef D := by

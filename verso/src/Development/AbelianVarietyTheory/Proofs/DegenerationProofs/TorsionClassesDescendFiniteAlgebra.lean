@@ -6,6 +6,13 @@ open scoped BigOperators
 
 namespace GlobalTheory.Ex.TorsDesc
 
+/- English proof (translation)
+Establish `hχ : χ ∈ Submodule.span ℤ (Set.range e)` using `by rw [e.span_eq]; trivial`. Rewrite `hχ` using `[← Submodule.mem_toAddSubgroup, Submodule.span_int_eq_addSubgroupClosure]`. Proceed by induction on `hχ using AddSubgroup.closure_induction with`. Consider the case `mem x hx => obtain ⟨l, rfl⟩ := hx`. Conclude with `he l`.
+
+Consider the case `zero => rw [NumD.Gt.s_zero]`. Conclude with `U.one_mem`. Consider the case `add x y _ _ hx hy`. Rewrite using `[eq_div_iff_mul_eq'.2 (g.mult x y)]`. Conclude with `U.div_mem (U.mul_mem hx hy) (hθ _ _)`.
+
+Consider the case `neg x _ hx`. Use `g.mult x (-x)` as an intermediate fact. Rewrite `this` using `[add_neg_cancel, NumD.Gt.s_zero, one_mul]`. Conclude with `(U.mul_mem_cancel_left hx).1 (this ▸ hθ _ _)`.
+-/
 theorem s_mem_of_basis {F : Type} [CommRing F] (N : NumD F) (U : Subgroup Fˣ) (g : N.Gt) {ι : Type}
     (e : Module.Basis ι ℤ N.X) (hθ : ∀ χ χ', N.θ (N.c χ) (N.c χ') g.b ∈ U) (he : ∀ l, g.s (e l) ∈ U) (χ : N.X) :
     g.s χ ∈ U := by
@@ -22,6 +29,9 @@ theorem s_mem_of_basis {F : Type} [CommRing F] (N : NumD F) (U : Subgroup Fˣ) (
     rw [add_neg_cancel, NumD.Gt.s_zero, one_mul] at this
     exact (U.mul_mem_cancel_left hx).1 (this ▸ hθ _ _)
 
+/- English proof (translation)
+Use `hU _ ?_` and prove the remaining obligations. Rewrite using `[← NumD.Gt.pow_s, N.mem_QT.1 p.2, NumD.io_s]`. Conclude with `U.mul_mem (U.div_mem (U.div_mem (hψ _) (hψ _)) (hψ _)) (U.prod_mem fun _ _ => hθ _ _ _)`.
+-/
 theorem s_mem_of_root {F : Type} [CommRing F] (N : NumD F) (U : Subgroup Fˣ)
     (hθ : ∀ x y u, N.θ x y u ∈ U) (hψ : ∀ χ, N.ψ χ ∈ U) {k : ℕ} (hU : ∀ u : Fˣ, u ^ k ∈ U → u ∈ U) (p : N.QT k)
     (χ : N.X) : p.1.2.s χ ∈ U := by
@@ -29,6 +39,11 @@ theorem s_mem_of_root {F : Type} [CommRing F] (N : NumD F) (U : Subgroup Fˣ)
   rw [← NumD.Gt.pow_s, N.mem_QT.1 p.2, NumD.io_s]
   exact U.mul_mem (U.div_mem (U.div_mem (hψ _) (hψ _)) (hψ _)) (U.prod_mem fun _ _ => hθ _ _ _)
 
+/- English proof (translation)
+Establish `: CharZero (FractionRing O)` using `IsFractionRing.charZero_of_isFractionRing O`. Establish `: Module.Finite O (integralClosure O K)` using `IsIntegralClosure.finite O (FractionRing O) K _`. Set `v : K →ₐ[O] F` to `{ K.val.toRingHom with commutes' := fun _ => rfl }`. Establish `hv : Function.Injective v` using `Subtype.val_injective`. Use `⟨(integralClosure O K).map v, Module.Finite.equiv ((integralClosure O K).equivMapOfInjective v hv).toLinearEquiv, fun x hx hi => ⟨⟨x, hx⟩, ?_, rfl⟩⟩` and prove the remaining obligations.
+
+Conclude with `(isIntegral_algHom_iff v hv).1 hi`.
+-/
 theorem exists_finite_subalgebra (O F : Type) [CommRing O] [IsDomain O] [IsNoetherianRing O] [IsIntegrallyClosed O]
     [CharZero O] [Field F] [Algebra (FractionRing O) F] [Algebra O F] [IsScalarTower O (FractionRing O) F]
     (K : IntermediateField (FractionRing O) F) [FiniteDimensional (FractionRing O) K] :
@@ -41,6 +56,21 @@ theorem exists_finite_subalgebra (O F : Type) [CommRing O] [IsDomain O] [IsNoeth
     fun x hx hi => ⟨⟨x, hx⟩, ?_, rfl⟩⟩
   exact (isIntegral_algHom_iff v hv).1 hi
 
+/- English proof (translation)
+Introduce `O F _ _ _ _ _ _ _ _ _ _ S hS N K₁ A₀ hK hc hθ hσ hth hψ vθ vσ vth vψ Ix _ k p hk hp`. Set `e` to `Module.Free.chooseBasis ℤ N.X`. Set `T : Set F` to `Set.range fun il : Ix × Module.Free.ChooseBasisIndex ℤ N.X => ((p il.1).1.2.s (e il.2) : F)`. Establish `: Finite T` using `(Set.finite_range _).to_subtype`. Establish `: FiniteDimensional (FractionRing O) (IntermediateField.adjoin (FractionRing O) T)` using `IntermediateField.finiteDimensional_adjoin fun x _ => (Algebra.IsAlgebraic.isAlgebraic x).isIntegral`.
+
+Set `K₂` to `K₁ ⊔ IntermediateField.adjoin (FractionRing O) T`. Establish `: FiniteDimensional (FractionRing O) K₂` using `IntermediateField.finiteDimensional_sup _ _`. Establish `h12 : K₁ ≤ K₂` using `le_sup_left`. Take `⟨O₁, hfin, hO⟩` from `exists_finite_subalgebra O F K₂`. Establish `hunit : ∀ u : Fˣ, (u : F) ∈ K₂ → S.valuation (u : F) = 1 → ∃ a : O₁ˣ, O₁.val.toRingHom a = u`.
+
+Introduce `u hu hv`. Establish `h1 : (u : F) ∈ O₁` using `hO _ hu ((hS _).1 ((S.valuation_le_one_iff _).1 hv.le))`. Establish `h2 : ((u⁻¹ : Fˣ) : F) ∈ O₁`. Rewrite using `[Units.val_inv_eq_inv_val]`. Conclude with `hO _ (K₂.inv_mem hu) ((hS _).1 ((S.valuation_le_one_iff _).1 (by rw [map_inv₀, hv, inv_one])))`.
+
+Conclude with `⟨⟨⟨_, h1⟩, ⟨_, h2⟩, Subtype.ext u.mul_inv, Subtype.ext u.inv_mul⟩, rfl⟩`. Set `U : Subgroup Fˣ` to `{ carrier := {u | (u : F) ∈ K₂} mul_mem' := fun ha hb => K₂.mul_mem ha hb one_mem' := K₂.one_mem inv_mem' := fun {u} hu => by`. Express the relevant statement in the definitionally equal form `((u⁻¹ : Fˣ) : F) ∈ K₂`. Rewrite using `[Units.val_inv_eq_inv_val]`. Conclude with `K₂.inv_mem hu }`.
+
+Set `V : Subgroup Fˣ` to `(S.valuation.toMonoidWithZeroHom.toMonoidHom.comp (Units.coeHom F)).ker`. Take `⟨N₀, I, hI, h⟩` from `GlobalTheory.Ex.NumD.exists_descent_subring O₁ F O₁.val.toRingHom Subtype.val_injective N A₀ hc (fun x hx y hy u hu => hunit _ (h12 (hθ x hx y hy u hu)) (vθ _ _ _)) (fun x hx => hunit _ (h12 (hσ x hx)) (vσ _)) (fun x hx => ⟨⟨_, hO _ (h12 (hth x hx)) ((hS _).1 (vth x))⟩, rfl⟩) (fu …`. Use `⟨O₁, hfin, N₀, I, hI, fun i p' ⟨z, _, hz⟩ => h _ p' ?_ fun χ => hunit _ ?_ ?_⟩` and prove the remaining obligations. Rewrite using `[hz]`. Conclude with `A₀.mul_mem (hp i) (hc z)`.
+
+Establish `h1 : (p i).1.2.s χ ∈ U` using `s_mem_of_basis N U _ e (fun χ χ' => h12 (hθ _ (hc _) _ (hc _) _ (hp i))) (fun l => (le_sup_right : _ ≤ K₂) (IntermediateField.subset_adjoin _ _ ⟨(i, l), rfl⟩)) χ`. Establish `hψU : ∀ χ, N.ψ χ ∈ U` using `fun χ => h12 (hψ χ)`. Express the relevant statement in the definitionally equal form `p'.1.2.s χ ∈ U`. Rewrite using `[hz, NumD.Gt.mul_s]`. Conclude with `U.div_mem (U.mul_mem h1 (U.div_mem (U.div_mem (hψU _) (hψU _)) (hψU _))) (h12 (hθ _ (hc _) _ (hp i) _ (hc z)))`.
+
+Use `s_mem_of_root N V vθ vψ (fun u hu => ?_) p' χ` and prove the remaining obligations. Establish `: S.valuation (u : F) ^ k i = 1`. Rewrite using `[← map_pow, ← Units.val_pow_eq_pow_val]`. Conclude with `hu`. Conclude with `(pow_eq_one_iff_of_nonneg zero_le (hk i).ne').1 this`.
+-/
 theorem descend : ∀ (O F : Type) [CommRing O] [IsDomain O] [IsNoetherianRing O] [IsIntegrallyClosed O] [CharZero O] [Field F] [Algebra (FractionRing O) F] [Algebra O F] [IsScalarTower O (FractionRing O) F] [Algebra.IsAlgebraic (FractionRing O) F] (S : ValuationSubring F), (∀ x, x ∈ S ↔ IsIntegral O x) → ∀ (N : NumD F) (K₁ : IntermediateField (FractionRing O) F) (A₀ : Subgroup N.A), FiniteDimensional (FractionRing O) K₁ → (∀ χ, N.c χ ∈ A₀) → (∀ x ∈ A₀, ∀ y ∈ A₀, ∀ u ∈ A₀, (N.θ x y u : F) ∈ K₁) → (∀ x ∈ A₀, (N.σ x : F) ∈ K₁) → (∀ x ∈ A₀, N.th x ∈ K₁) → (∀ χ, (N.ψ χ : F) ∈ K₁) → (∀ x y u, S.valuation (N.θ x y u : F) = 1) → (∀ x, S.valuation (N.σ x : F) = 1) → (∀ x, N.th x ∈ S) → (∀ χ, S.valuation (N.ψ χ : F) = 1) → ∀ (Ix : Type) [Finite Ix] (k : Ix → ℕ) (p : ∀ i, N.QT (k i)), (∀ i, 0 < k i) → (∀ i, (p i).1.2.b ∈ A₀) → ∃ O₁ : Subalgebra O F, Module.Finite O O₁ ∧ ∃ (N₀ : NumD O₁) (I : NumD.Hom O₁.val.toRingHom N₀ N), I.lam = 1 ∧ ∀ i (p' : N.QT (k i)), N.QEq (p i) p' → ∃ p₀ : N₀.QT (k i), p'.1.1.toAdd = I.e p₀.1.1.toAdd ∧ I.Rel p₀.1.2 p'.1.2 := by
   intro O F _ _ _ _ _ _ _ _ _ _ S hS N K₁ A₀ hK hc hθ hσ hth hψ vθ vσ vth vψ Ix _ k p hk hp
   let e := Module.Free.chooseBasis ℤ N.X

@@ -4,6 +4,9 @@ import ReciprocityTheory.SemistableReduction.FinrankRestrictTotalDegree
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Establish `e : {α : Fin D →₀ ℕ // α.degree ≤ T - D - 1} ≃ {α : Fin D → ℕ // ∑ i, α i < T - D}` using `Finsupp.equivFunOnFinite.subtypeEquiv fun α => by`. Rewrite using `[Finsupp.degree_eq_sum]`. Simplify using `only [Finsupp.equivFunOnFinite_apply]`. Use linear arithmetic over natural numbers and integers. Rewrite using `[← Nat.card_congr e, ReciprocityTheory.MultiplicativeHeights.card_degree_le, show T - D - 1 + D = T - 1 by omega]`.
+-/
 theorem card_exponents_sum_lt_sub (D T : ℕ) (hT : D < T) :
     Nat.card {α : Fin D → ℕ // ∑ i, α i < T - D} = (T - 1).choose D := by
   have e : {α : Fin D →₀ ℕ // α.degree ≤ T - D - 1} ≃ {α : Fin D → ℕ // ∑ i, α i < T - D} :=
@@ -13,6 +16,15 @@ theorem card_exponents_sum_lt_sub (D T : ℕ) (hT : D < T) :
       omega
   rw [← Nat.card_congr e, ReciprocityTheory.MultiplicativeHeights.card_degree_le, show T - D - 1 + D = T - 1 by omega]
 
+/- English proof (translation)
+Establish `hT' : D * (2 * D + 7) ≤ T` using `by nlinarith`. Establish `hTpos : (0 : ℝ) < T`. Establish `: 0 < T` using `by nlinarith`. Conclude with `this` after adjusting the coercions. Establish `key` using `ReciprocityTheory.ChartRestriction.G.T0.sub_mul_choose_le_mul_choose T D hT' D le_rfl`.
+
+Establish `hd' : (d : ℝ) ≤ δ * (((T + 2 * D + 6).choose D : ℕ) : ℝ)` using `by exact_mod_cast hd`. Establish `hρ' : (ρ : ℝ) + δ * (((T - 1).choose D : ℕ) : ℝ) ≤ d` using `by exact_mod_cast hρ`. Establish `hTD : (0 : ℝ) ≤ (T : ℝ) - D * (2 * D + 7)`. Establish `: ((D : ℝ) * (2 * D + 7)) ≤ T` using `by exact_mod_cast hT'`. Combine the linear equalities and inequalities to obtain the conclusion.
+
+Establish `hδ : (0 : ℝ) ≤ δ` using `Nat.cast_nonneg _`. Establish `hd0 : (0 : ℝ) ≤ d` using `Nat.cast_nonneg _`. Establish `hD' : (2 : ℝ) ≤ D` using `by exact_mod_cast hD`. Establish `s1` using `mul_le_mul_of_nonneg_left key hδ`. Establish `s2` using `mul_le_mul_of_nonneg_left hd' hTD`.
+
+Establish `s3` using `mul_le_mul_of_nonneg_left hρ' hTpos.le`. Establish `s4 : (D : ℝ) * (2 * D + 7) * d ≤ 22 * (D : ℝ) ^ 2 * d` using `mul_le_mul_of_nonneg_right (by nlinarith) hd0`. Rewrite using `[le_div_iff₀ hTpos]`. Use the polynomial consequences of the given equalities and inequalities.
+-/
 theorem le_of_add_mul_choose_pred_le (D T δ d ρ : ℕ) (hD : 2 ≤ D) (hT : 11 * D ^ 2 ≤ T)
     (hd : d ≤ δ * (T + 2 * D + 6).choose D) (hρ : ρ + δ * (T - 1).choose D ≤ d) :
     (ρ : ℝ) ≤ 22 * (D : ℝ) ^ 2 * d / T := by
@@ -37,6 +49,9 @@ theorem le_of_add_mul_choose_pred_le (D T δ d ρ : ℕ) (hD : 2 ≤ D) (hT : 11
   rw [le_div_iff₀ hTpos]
   nlinarith
 
+/- English proof (translation)
+Introduce `D T`. Use `⟨fun _ h => card_exponents_sum_lt_sub D T h, fun δ d ρ hD hT hd => ⟨le_of_add_mul_choose_pred_le D T δ d ρ hD hT hd, fun h => ?_⟩⟩` and prove the remaining obligations. Use `le_of_add_mul_choose_pred_le D T δ d ρ hD hT hd (le_trans ?_ h)` and prove the remaining obligations. Conclude with `Nat.add_le_add_left (Nat.mul_le_mul_left _ (Nat.choose_le_choose D (by omega))) _`.
+-/
 theorem card_exponents_and_choose_ratio_bounds : ∀ (D T : ℕ), (0 < D → D < T → Nat.card {α : Fin D → ℕ // ∑ i, α i < T - D} = (T - 1).choose D) ∧ ∀ (δ d ρ : ℕ), 2 ≤ D → 11 * D ^ 2 ≤ T → d ≤ δ * (T + 2 * D + 6).choose D → (ρ + δ * (T - 1).choose D ≤ d → (ρ : ℝ) ≤ 22 * (D : ℝ) ^ 2 * d / T) ∧ (ρ + δ * (T + D).choose D ≤ d → (ρ : ℝ) ≤ 22 * (D : ℝ) ^ 2 * d / T) := by
   intro D T
   refine ⟨fun _ h => card_exponents_sum_lt_sub D T h, fun δ d ρ hD hT hd =>

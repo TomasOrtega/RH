@@ -13,5 +13,8 @@ open GlobalTheory.StepData GlobalTheory.SplitWeil
 open ValuativeRel
 
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.PenLev.tuple_free_level_moves | exact GlobalTheory.PenLev.tuple_free_level_moves | (intros; apply GlobalTheory.PenLev.tuple_free_level_moves <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.true_geometry_tuple_free_moves : ∀ {B : GlobalTheory.Mem.Base} {X : PreX B.toPre} {I : TC B X} {l : I.Laws} {Z : TC.Later B (I.cols l)} {L : SizeData₂ (I.rec7 l Z)} {hT : GatTies (I.rec7 l Z)} {Gi : Formalism.MainNotions.G.Inst (I.rec7 l Z) L} {Gl : Formalism.MainNotions.G.LatInst (I.rec7 l Z)} {Kc : Formalism.MainNotions.G.Consts} {Yd : DivX (I.rec7 l Z)} {cX : ExtraC} {ex : Extra (I.rec7 l Z) L hT Gi Gl Kc Yd cX} (W : RealPack ex), AllTrue W → ∀ (u : B.Word) (a : GeoAll W u), a.Is → a.True → ∀ j (hj : j + 1 = B.R.m), ∀ t (J : QJ a t), J.Reads → ∀ g ∈ GlobalTheory.PenLev.U0 a j hj, GlobalTheory.FinPl.Moves _ g (a.g.x j).L (a.g.x j).L (GlobalTheory.PenBridge.plF J) := by
   first | exact @GlobalTheory.PenLev.tuple_free_level_moves | exact GlobalTheory.PenLev.tuple_free_level_moves | (intros; apply GlobalTheory.PenLev.tuple_free_level_moves <;> assumption)

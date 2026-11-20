@@ -17,6 +17,15 @@ variable {G : Type} [Group G] [TopologicalSpace G] {Qp K₀ K : Type} [Field Qp]
     {v : AddValuation LL (WithTop ℚ)} {n : ℕ}
     {PD : PeriodData G Qp K₀ K B BdR}
 
+/- English proof (translation)
+Set `bV` to `Module.Free.chooseBasis Qp V`. Set `E` to `TensorProduct.equivFinsuppOfBasisLeft (N := BdR) bV`. Establish `hco : ∀ (a : ℤ) (w : V ⊗[Qp] BdR), w ∈ FilV PD (LL` using `LL) (V := V) a → ∀ j, E w j ∈ PD.Fil a := by`. Introduce `a w hw`. Take `⟨y, rfl⟩` from `hw`.
+
+Proceed by induction on `y using TensorProduct.induction_on with`. Consider the case `zero => intro j`. Simplify using the standard rewrite rules. Consider the case `tmul x f`. Introduce `j`.
+
+Simplify using `only [TensorProduct.AlgebraTensorModule.map_tmul, LinearMap.id_apply, Submodule.coe_subtype, E, TensorProduct.equivFinsuppOfBasisLeft_apply_tmul, Finsupp.mapRange_apply]`. Conclude with `((PD.Fil a).restrictScalars Qp).smul_mem _ f.2`. Consider the case `add x y hx hy`. Introduce `j`. Rewrite using `[map_add, map_add, Finsupp.add_apply]`.
+
+Conclude with `(PD.Fil a).add_mem (hx j) (hy j)`. Establish `h0 : E z = 0`. Use extensionality with `j`. Conclude with `PD.Fil_sep _ fun a => hco a z (hz a) j`. Simplify using `using congrArg E.symm h0`.
+-/
 theorem filV_sep {V : Type} [AddCommGroup V] [Module LL V] [Module Qp V] [IsScalarTower Qp LL V]
     (z : V ⊗[Qp] BdR) (hz : ∀ a : ℤ, z ∈ FilV PD (LL := LL) (V := V) a) : z = 0 := by
   classical
@@ -43,6 +52,25 @@ theorem filV_sep {V : Type} [AddCommGroup V] [Module LL V] [Module Qp V] [IsScal
     exact PD.Fil_sep _ fun a => hco a z (hz a) j
   simpa using congrArg E.symm h0
 
+/- English proof (translation)
+Rewrite using `[eq_bot_iff]`. Introduce and unpack `y ⟨x, hx, rfl⟩`. Take `⟨hxF, hxL⟩` from `Submodule.mem_inf.mp hx`. It suffices to establish `hx0 : x = 0 by simp [hx0]`. Use `set i : ZMod n := a - (s : ZMod n) with hi`.
+
+Take `⟨hbij, -, -⟩` from `hcase`. Set `e : K₀ ≃ₐ[Qp] K` to `AlgEquiv.ofBijective (IsScalarTower.toAlgHom Qp K₀ K) hbij`. Set `τ : K →ₐ[Qp] LL` to `(W.emb i).comp e.symm.toAlgHom`. Establish `hez : ∀ z : K₀, e z = algebraMap K₀ K z` using `fun z => rfl`. Establish `hover : ∀ z : K₀, τ (algebraMap K₀ K z) = W.emb i z`.
+
+Introduce `z`. Establish `: e.symm (algebraMap K₀ K z) = z`. Rewrite using `[← hez, AlgEquiv.symm_apply_apply]`. Use `show W.emb i (e.symm (algebraMap K₀ K z)) = W.emb i z`. Rewrite using `[this]`.
+
+Establish `hOver : Formalism.MainNotions.LiftingTheory.Over W τ i`. Use extensionality with `z`. Conclude with `hover z`. Establish `hJ` using `hW.2 i τ hOver`. Establish `hE : ιV PD (LL` using `LL) (V := T.V) x ∈ DdRE PD T.ρ τ := Formalism.MainNotions.UnusedSlot80.LevR.ιDi_le W T i τ hover hbij.2 ⟨x, hxL, rfl⟩`.
+
+Establish `hV : ιV PD (LL` using `LL) (V := T.V) x ∈ FilV PD (LL := LL) (V := T.V) u := (Submodule.mem_inf.mp hxF).2`. Establish `hall : ∀ k : ℕ, ιV PD (LL` using `LL) (V := T.V) x ∈ FildR PD T.ρ τ (u + k) := by`. Introduce `k`. Proceed by induction on `k with`. Consider the case `zero`.
+
+Rewrite using `[Nat.cast_zero, add_zero]`. Conclude with `Submodule.mem_inf.mpr ⟨hE, hV⟩`. Consider the case `succ k ih`. Establish `heq : FildR PD T.ρ τ (u + k + 1) = FildR PD T.ρ τ (u + k)`. Assume the negation of the conclusion as `h`.
+
+Use `hu _ (hJ (u + k) h)` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Rewrite using `[Nat.cast_succ, ← add_assoc, heq]`. Conclude with `ih`. Establish `hallV : ∀ b : ℤ, ιV PD (LL` using `LL) (V := T.V) x ∈ FilV PD (LL := LL) (V := T.V) b := by`.
+
+Introduce `b`. Distinguish the cases in `h : b ≤ u`. Conclude with `Formalism.MainNotions.UnusedSlot80.LevR.filV_anti h hV`. Establish `hk` using `(Submodule.mem_inf.mp (hall (b - u).toNat)).2`. Establish `: u + ((b - u).toNat : ℤ) = b` using `by omega`.
+
+Rewrite `hk` using `[this]`. Then use the resulting hypothesis. Establish `h0` using `filV_sep _ hallV`. Conclude with `Formalism.MainNotions.UnusedSlot80.LevR.ιV_inj (h0.trans (map_zero _).symm)`.
+-/
 theorem filS_top (W : LocWach PD LL O v n) (hcase : Formalism.MainNotions.LiftingTheory.CaseA W) (A : ArcP n)
     (T : LocLat G Qp LL O) (hW : Win W A T) (a : ZMod n) (s : ℕ) (u : ℤ)
     (hu : ∀ x ∈ (A.ty (a - (s : ZMod n))).win A.G₀ A.S A.η, x < u) :

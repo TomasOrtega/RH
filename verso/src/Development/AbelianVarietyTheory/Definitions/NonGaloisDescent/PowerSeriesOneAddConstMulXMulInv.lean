@@ -82,6 +82,9 @@ end
 section
 variable (k : Type) [Field k]
 
+/- English proof (translation)
+Establish `h : algebraMap k k⸨X⸩ c = HahnSeries.C c`. Express the relevant statement in the definitionally equal form `HahnSeries.ofPowerSeries ℤ k (PowerSeries.C c) = _`. Simplify using the standard rewrite rules. Rewrite using `[h, HahnSeries.C_mul_eq_smul]`.
+-/
 theorem const_smul_eq (c : k) (x : k⸨X⸩) : c • x = algebraMap k k⸨X⸩ c * x := by
   have h : algebraMap k k⸨X⸩ c = HahnSeries.C c := by
     change HahnSeries.ofPowerSeries ℤ k (PowerSeries.C c) = _
@@ -94,8 +97,14 @@ instance towerLaurent : IsScalarTower k k⸨X⸩ k⸨X⸩ := ⟨fun a b c => by
 instance towerPower : IsScalarTower k k⟦X⟧ k⸨X⸩ := ⟨fun a b c => by
   rw [const_smul_eq, Algebra.smul_def a b, Algebra.smul_def, Algebra.smul_def, map_mul, mul_assoc]; rfl⟩
 
+/- English proof (translation)
+Simplify using `[vv]`.
+-/
 theorem vv_eq_coe_X : vv k = ((PowerSeries.X : k⟦X⟧) : k⸨X⸩) := by simp [vv]
 
+/- English proof (translation)
+Simplify using `[vv]`.
+-/
 theorem vv_ne_zero : vv k ≠ 0 := by simp [vv]
 
 end
@@ -106,9 +115,17 @@ variable {k : Type} [Field k] {V : Type} [AddCommGroup V] [Module k⸨X⸩ V]
 section
 variable [Module k⟦X⟧ V] [IsScalarTower k⟦X⟧ k⸨X⸩ V]
 
+/- English proof (translation)
+Unfold both sides. The equivalence is reflexive.
+-/
 theorem mem_sh_iff_exists {a : ℤ} {N : Submodule k⟦X⟧ V} {x : V} :
     x ∈ sh a N ↔ ∃ y ∈ N, vv k ^ a • y = x := Iff.rfl
 
+/- English proof (translation)
+Establish `hv` using `vv_ne_zero k`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨y, hy, rfl⟩`. Express the relevant statement in the definitionally equal form `vv k ^ (-a) • vv k ^ a • y ∈ N`. Rewrite using `[smul_smul, ← zpow_add₀ hv, neg_add_cancel, zpow_zero, one_smul]` and apply the resulting hypothesis.
+
+Introduce `h`. Use `mem_sh_iff_exists.2 ⟨_, h, ?_⟩` and prove the remaining obligations. Rewrite using `[smul_smul, ← zpow_add₀ hv, add_neg_cancel, zpow_zero, one_smul]`.
+-/
 theorem mem_sh_iff_smul_mem {a : ℤ} {N : Submodule k⟦X⟧ V} {x : V} :
     x ∈ sh a N ↔ vv k ^ (-a) • x ∈ N := by
   have hv := vv_ne_zero k
@@ -120,16 +137,30 @@ theorem mem_sh_iff_smul_mem {a : ℤ} {N : Submodule k⟦X⟧ V} {x : V} :
     refine mem_sh_iff_exists.2 ⟨_, h, ?_⟩
     rw [smul_smul, ← zpow_add₀ hv, add_neg_cancel, zpow_zero, one_smul]
 
+/- English proof (translation)
+Use extensionality with `x`. Simplify using `[mem_sh_iff_smul_mem]`.
+-/
 theorem sh_zero_eq (N : Submodule k⟦X⟧ V) : sh 0 N = N := by
   ext x; simp [mem_sh_iff_smul_mem]
 
+/- English proof (translation)
+Use extensionality with `x`. Simplify using `only [mem_sh_iff_smul_mem, smul_smul, ← zpow_add₀ (vv_ne_zero k), neg_add_rev]`.
+-/
 theorem sh_sh_eq (a b : ℤ) (N : Submodule k⟦X⟧ V) : sh a (sh b N) = sh (a + b) N := by
   ext x
   simp only [mem_sh_iff_smul_mem, smul_smul, ← zpow_add₀ (vv_ne_zero k), neg_add_rev]
 
+/- English proof (translation)
+The claim follows from `Submodule.map_mono h`.
+-/
 theorem sh_le_sh (a : ℤ) {N N' : Submodule k⟦X⟧ V} (h : N ≤ N') : sh a N ≤ sh a N' :=
   Submodule.map_mono h
 
+/- English proof (translation)
+Introduce and unpack `_ ⟨y, hy, rfl⟩`. Take `⟨m, rfl⟩` from `Int.le.dest h`. Use `mem_sh_iff_exists.2 ⟨(PowerSeries.X ^ m : k⟦X⟧) • y, N.smul_mem _ hy, ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `_ = vv k ^ (b + m) • y`. Rewrite using `[← algebraMap_smul k⸨X⸩ (PowerSeries.X ^ m : k⟦X⟧) y, smul_smul, zpow_add₀ (vv_ne_zero k), zpow_natCast, map_pow]`.
+
+Use `congr 3`. Conclude with `(vv_eq_coe_X k).symm`.
+-/
 theorem sh_le_sh_of_le {a b : ℤ} (h : b ≤ a) (N : Submodule k⟦X⟧ V) : sh a N ≤ sh b N := by
   rintro _ ⟨y, hy, rfl⟩
   obtain ⟨m, rfl⟩ := Int.le.dest h
@@ -140,6 +171,9 @@ theorem sh_le_sh_of_le {a b : ℤ} (h : b ≤ a) (N : Submodule k⟦X⟧ V) : sh
   congr 3
   exact (vv_eq_coe_X k).symm
 
+/- English proof (translation)
+Use `⟨h.1.map _, eq_top_iff.2 ?_⟩` and prove the remaining obligations. Rewrite using `[← h.2]`. Use `Submodule.span_le.2 fun y hy => ?_` and prove the remaining obligations. Establish `h1 : vv k ^ a • y ∈ Submodule.span k⸨X⸩ (sh a N : Set V)` using `Submodule.subset_span (mem_sh_iff_exists.2 ⟨y, hy, rfl⟩)`. Conclude with `(Submodule.smul_mem_iff _ (zpow_ne_zero a (vv_ne_zero k))).1 h1`.
+-/
 theorem IsLat.shift {N : Submodule k⟦X⟧ V} (h : IsLat N) (a : ℤ) : IsLat (sh a N) := by
   refine ⟨h.1.map _, eq_top_iff.2 ?_⟩
   rw [← h.2]
@@ -150,21 +184,37 @@ theorem IsLat.shift {N : Submodule k⟦X⟧ V} (h : IsLat N) (a : ℤ) : IsLat (
 
 omit [IsScalarTower k⟦X⟧ k⸨X⸩ V] in
 
+/- English proof (translation)
+The claim follows from `Submodule.span_mono (Set.image_mono h)`.
+-/
 theorem pull_le_pull [Module k V] (f : V →ₗ[k] V) {N N' : Submodule k⟦X⟧ V} (h : N ≤ N') :
     pull f N ≤ pull f N' :=
   Submodule.span_mono (Set.image_mono h)
 
 end
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem nab_apply_eq [Module k V] [IsScalarTower k k⸨X⸩ V] (g : V →ₗ[k] V) (x : V) :
     nab g x = (vv k)⁻¹ • (g x - x) := rfl
 
+/- English proof (translation)
+Simplify using `only [CondC, mem_sh_iff_smul_mem, nab_apply_eq, zpow_neg_one]`.
+-/
 theorem condC_iff_nab_mem [Module k V] [IsScalarTower k k⸨X⸩ V] [Module k⟦X⟧ V] [IsScalarTower k⟦X⟧ k⸨X⸩ V]
     (g : V →ₗ[k] V) (N : Submodule k⟦X⟧ V) : CondC g N ↔ ∀ x ∈ N, nab g x ∈ N := by
   simp only [CondC, mem_sh_iff_smul_mem, nab_apply_eq, zpow_neg_one]
 
 variable [Module k V] {l n : ℕ} {R : RingPG k l}
 
+/- English proof (translation)
+Rewrite using `[eq_top_iff, ← D.etale i]`. Use `Submodule.span_le.2 ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨x, rfl⟩`. Establish `hx : x ∈ Submodule.span k⸨X⸩ (Set.range b)` using `by rw [b.span_eq]; trivial`. Proceed by induction on `hx using Submodule.span_induction with`.
+
+Consider the case `mem y hy => obtain ⟨j, rfl⟩ := hy`. Conclude with `Submodule.subset_span ⟨j, rfl⟩`. Consider the case `zero => rw [map_zero]`. Conclude with `Submodule.zero_mem _`. Consider the case `add y z _ _ hy hz => rw [map_add]`.
+
+Conclude with `Submodule.add_mem _ hy hz`. Consider the case `smul a y _ hy => rw [D.φ_semi i a y]`. Conclude with `Submodule.smul_mem _ _ hy`.
+-/
 theorem ModPG.span_φ (D : ModPG R n V) (i : ZMod n) {ι : Type} (b : Module.Basis ι k⸨X⸩ V) :
     Submodule.span k⸨X⸩ (Set.range fun j => D.φ i (b j)) = ⊤ := by
   rw [eq_top_iff, ← D.etale i]
@@ -177,6 +227,9 @@ theorem ModPG.span_φ (D : ModPG R n V) (i : ZMod n) {ι : Type} (b : Module.Bas
   | add y z _ _ hy hz => rw [map_add]; exact Submodule.add_mem _ hy hz
   | smul a y _ hy => rw [D.φ_semi i a y]; exact Submodule.smul_mem _ _ hy
 
+/- English proof (translation)
+Use `haveI := D.fin`. Use `haveI := FiniteDimensional.fintypeBasisIndex b`. Conclude with `linearIndependent_of_top_le_span_of_card_eq_finrank (D.span_φ i b).ge (Module.finrank_eq_card_basis b).symm`.
+-/
 theorem ModPG.linearIndependent_φ (D : ModPG R n V) (i : ZMod n) {ι : Type} (b : Module.Basis ι k⸨X⸩ V) :
     LinearIndependent k⸨X⸩ fun j => D.φ i (b j) := by
   haveI := D.fin
@@ -186,6 +239,11 @@ theorem ModPG.linearIndependent_φ (D : ModPG R n V) (i : ZMod n) {ι : Type} (b
 
 end
 
+/- English proof (translation)
+Establish `hl' : (2 : ℝ) ≤ l` using `by exact_mod_cast hl`. Establish `hg : Summable fun j : ℕ => ((∑ t, h t : ℕ) : ℝ) * ((l : ℝ)⁻¹) ^ (j + 1)` using `((summable_nat_add_iff 1).2 (summable_geometric_of_lt_one (by positivity) (inv_lt_one_of_one_lt₀ (by linarith)))).mul_left _`. Use `Summable.of_nonneg_of_le (fun j => by positivity) (fun j => ?_) hg` and prove the remaining obligations. Rewrite using `[div_eq_mul_inv, inv_pow]`. Use `gcongr`.
+
+Conclude with `Finset.single_le_sum (f := h) (fun _ _ => Nat.zero_le _) (Finset.mem_univ _)`.
+-/
 theorem summable_sg {l n : ℕ} [NeZero n] (hl : 2 ≤ l) (h : ZMod n → ℕ) (i : ZMod n) :
     Summable fun j : ℕ => (h (i + ((j + 1 : ℕ) : ZMod n)) : ℝ) / (l : ℝ) ^ (j + 1) := by
   have hl' : (2 : ℝ) ≤ l := by exact_mod_cast hl
@@ -197,6 +255,9 @@ theorem summable_sg {l n : ℕ} [NeZero n] (hl : 2 ≤ l) (h : ZMod n → ℕ) (
   gcongr
   exact Finset.single_le_sum (f := h) (fun _ _ => Nat.zero_le _) (Finset.mem_univ _)
 
+/- English proof (translation)
+Establish `h : ∑' j : ℕ, ((9 : ℕ) : ℝ) / ((5 : ℕ) : ℝ) ^ (j + 1) = 9 / 4`. Establish `: ∀ j : ℕ, ((9 : ℕ) : ℝ) / ((5 : ℕ) : ℝ) ^ (j + 1) = 9 / 5 * (1 / 5) ^ j` using `fun j => by push_cast; rw [pow_succ, one_div, inv_pow]; field_simp`. Repeatedly rewrite using `[this]`. Rewrite using `[tsum_mul_left, tsum_geometric_of_lt_one (by norm_num) (by norm_num)]; norm_num`. Rewrite using `[sg, h, Nat.floor_eq_iff (by norm_num)]; norm_num`.
+-/
 example : sg 5 (fun _ : ZMod 1 => 9) 0 = 2 := by
   have h : ∑' j : ℕ, ((9 : ℕ) : ℝ) / ((5 : ℕ) : ℝ) ^ (j + 1) = 9 / 4 := by
     have : ∀ j : ℕ, ((9 : ℕ) : ℝ) / ((5 : ℕ) : ℝ) ^ (j + 1) = 9 / 5 * (1 / 5) ^ j := fun j => by
@@ -223,10 +284,16 @@ def extend (f : k⟦X⟧ →ₐ[k] k⟦X⟧) (hf : f PowerSeries.X ≠ 0) : k⸨
       rw [IsLocalization.lift_eq]
       exact congrArg (algebraMap k⟦X⟧ k⸨X⸩) (f.commutes c) }
 
+/- English proof (translation)
+The claim follows from `IsLocalization.lift_eq (M := Submonoid.powers (PowerSeries.X : k⟦X⟧)) (S := k⸨X⸩) _ a`.
+-/
 theorem extend_coe (f : k⟦X⟧ →ₐ[k] k⟦X⟧) (hf : f PowerSeries.X ≠ 0) (a : k⟦X⟧) :
     extend f hf (a : k⸨X⸩) = ((f a : k⟦X⟧) : k⸨X⸩) :=
   IsLocalization.lift_eq (M := Submonoid.powers (PowerSeries.X : k⟦X⟧)) (S := k⸨X⸩) _ a
 
+/- English proof (translation)
+Establish `: f.toRingHom = g.toRingHom`. Apply `IsLocalization.ringHom_ext (Submonoid.powers (PowerSeries.X : k⟦X⟧))` to reduce the goal to its premises. Conclude with `RingHom.ext h`. Conclude with `RingHom.congr_fun this x`.
+-/
 theorem algHom_ext {f g : k⸨X⸩ →ₐ[k] k⸨X⸩} (h : ∀ a : k⟦X⟧, f (a : k⸨X⸩) = g (a : k⸨X⸩)) (x : k⸨X⸩) :
     f x = g x := by
   have : f.toRingHom = g.toRingHom := by
@@ -236,22 +303,42 @@ theorem algHom_ext {f g : k⸨X⸩ →ₐ[k] k⸨X⸩} (h : ∀ a : k⟦X⟧, f 
 
 def inv1 (c : k) : k⟦X⟧ := PowerSeries.invOfUnit (1 + PowerSeries.C c * PowerSeries.X) 1
 
+/- English proof (translation)
+The claim follows from `PowerSeries.mul_invOfUnit _ _ (by simp)`.
+-/
 theorem powerSeries_oneAddConstMulX_mul_inv (c : k) : (1 + PowerSeries.C c * PowerSeries.X) * inv1 c = 1 :=
   PowerSeries.mul_invOfUnit _ _ (by simp)
 
+/- English proof (translation)
+The claim follows from `PowerSeries.HasSubst.of_constantCoeff_zero' (by simp)`.
+-/
 theorem hasSubst_mob (c : k) : PowerSeries.HasSubst (PowerSeries.X * inv1 c : k⟦X⟧) :=
   PowerSeries.HasSubst.of_constantCoeff_zero' (by simp)
 
 def mob (c : k) : k⟦X⟧ →ₐ[k] k⟦X⟧ := PowerSeries.substAlgHom (hasSubst_mob c)
 
+/- English proof (translation)
+The claim follows from `PowerSeries.substAlgHom_X _`.
+-/
 theorem mob_X (c : k) : mob c PowerSeries.X = PowerSeries.X * inv1 c := PowerSeries.substAlgHom_X _
 
+/- English proof (translation)
+The claim follows from `(mob c).commutes d`.
+-/
 theorem mob_C (c d : k) : mob c (PowerSeries.C d) = PowerSeries.C d := (mob c).commutes d
 
+/- English proof (translation)
+Rewrite using `[mob_X]`. Conclude with `mul_ne_zero PowerSeries.X_ne_zero (right_ne_zero_of_mul_eq_one (powerSeries_oneAddConstMulX_mul_inv c))`.
+-/
 theorem mob_X_ne (c : k) : mob c PowerSeries.X ≠ 0 := by
   rw [mob_X]
   exact mul_ne_zero PowerSeries.X_ne_zero (right_ne_zero_of_mul_eq_one (powerSeries_oneAddConstMulX_mul_inv c))
 
+/- English proof (translation)
+Establish `key : mob c (PowerSeries.X * inv1 (-c)) = PowerSeries.X`. Establish `h1` using `congrArg (mob c) (powerSeries_oneAddConstMulX_mul_inv (-c))`. Rewrite `h1` using `[map_mul, map_add, map_one, map_mul, mob_C, mob_X, map_neg]`. Establish `h2` using `powerSeries_oneAddConstMulX_mul_inv c`. Rewrite using `[map_mul, mob_X]`.
+
+Take the linear combination `PowerSeries.X * h1 + PowerSeries.X * mob c (inv1 (-c)) * h2`. Establish `h` using `PowerSeries.subst_comp_subst_apply (R := k) (hasSubst_mob (-c)) (hasSubst_mob c) f`. Rewrite `key` using `[mob, PowerSeries.coe_substAlgHom]`. Rewrite `h` using `[key, PowerSeries.X_subst]`. Simplify `h` using `only [mob, PowerSeries.coe_substAlgHom]`.
+-/
 theorem mob_mob (c : k) (f : k⟦X⟧) : mob c (mob (-c) f) = f := by
   have key : mob c (PowerSeries.X * inv1 (-c)) = PowerSeries.X := by
     have h1 := congrArg (mob c) (powerSeries_oneAddConstMulX_mul_inv (-c))
@@ -266,26 +353,48 @@ theorem mob_mob (c : k) (f : k⟦X⟧) : mob c (mob (-c) f) = f := by
 
 def gam (k : Type) [Field k] : k⸨X⸩ →ₐ[k] k⸨X⸩ := extend (mob 1) (mob_X_ne 1)
 
+/- English proof (translation)
+The claim follows from `algHom_ext (f := (extend (mob c) (mob_X_ne c)).comp (extend (mob (-c)) (mob_X_ne (-c)))) (g := AlgHom.id _ _) (fun a => by simp only [AlgHom.comp_apply, extend_coe, mob_mob, AlgHom.id_apply]) x`.
+-/
 theorem extend_mob_mob (c : k) (x : k⸨X⸩) :
     extend (mob c) (mob_X_ne c) (extend (mob (-c)) (mob_X_ne (-c)) x) = x :=
   algHom_ext (f := (extend (mob c) (mob_X_ne c)).comp (extend (mob (-c)) (mob_X_ne (-c)))) (g := AlgHom.id _ _)
     (fun a => by simp only [AlgHom.comp_apply, extend_coe, mob_mob, AlgHom.id_apply]) x
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨RingHom.injective (gam k).toRingHom, fun x => ⟨_, extend_mob_mob 1 x⟩⟩`.
+-/
 theorem gam_bijective : Function.Bijective (gam k) :=
   ⟨RingHom.injective (gam k).toRingHom, fun x => ⟨_, extend_mob_mob 1 x⟩⟩
 
+/- English proof (translation)
+The claim follows from `PowerSeries.HasSubst.X_pow (Fact.out : l.Prime).ne_zero`.
+-/
 theorem hasSubst_pow (l : ℕ) [Fact l.Prime] : PowerSeries.HasSubst (PowerSeries.X ^ l : k⟦X⟧) :=
   PowerSeries.HasSubst.X_pow (Fact.out : l.Prime).ne_zero
 
 def frob (k : Type) [Field k] (l : ℕ) [Fact l.Prime] : k⟦X⟧ →ₐ[k] k⟦X⟧ :=
   PowerSeries.substAlgHom (hasSubst_pow l)
 
+/- English proof (translation)
+The claim follows from `PowerSeries.substAlgHom_X _`.
+-/
 theorem frob_X (l : ℕ) [Fact l.Prime] : frob k l PowerSeries.X = PowerSeries.X ^ l :=
   PowerSeries.substAlgHom_X _
 
+/- English proof (translation)
+Rewrite using `[frob_X]`. Conclude with `pow_ne_zero _ PowerSeries.X_ne_zero`.
+-/
 theorem frob_X_ne (l : ℕ) [Fact l.Prime] : frob k l PowerSeries.X ≠ 0 := by
   rw [frob_X]; exact pow_ne_zero _ PowerSeries.X_ne_zero
 
+/- English proof (translation)
+Use `haveI : CharP k⟦X⟧ l := charP_of_injective_algebraMap (algebraMap k k⟦X⟧).injective l`. Establish `key : frob k l (PowerSeries.X * inv1 1) = mob 1 (PowerSeries.X ^ l)`. Establish `h0` using `powerSeries_oneAddConstMulX_mul_inv (1 : k)`. Rewrite `h0` using `[map_one, one_mul]`. Establish `h1` using `congrArg (frob k l) h0`.
+
+Rewrite `h1` using `[map_mul, map_add, map_one, frob_X]`. Establish `h2` using `congrArg (· ^ l) h0`. Simplify using `only [mul_pow, add_pow_char, one_pow] at h2`. Rewrite using `[map_mul, frob_X, map_pow, mob_X, mul_pow]`. Use `congr 1`.
+
+Take the linear combination `(inv1 (1 : k)) ^ l * h1 - frob k l (inv1 1) * h2`. Establish `h` using `PowerSeries.subst_comp_subst_apply (R := k) (hasSubst_mob (1 : k)) (hasSubst_pow (k := k) l) f`. Establish `h'` using `PowerSeries.subst_comp_subst_apply (R := k) (hasSubst_pow (k := k) l) (hasSubst_mob (1 : k)) f`. Simplify using `only [frob, mob, PowerSeries.coe_substAlgHom] at key ⊢`. Rewrite using `[h, h', key]`.
+-/
 theorem frob_mob (l : ℕ) [Fact l.Prime] [CharP k l] (f : k⟦X⟧) :
     frob k l (mob 1 f) = mob 1 (frob k l f) := by
   haveI : CharP k⟦X⟧ l := charP_of_injective_algebraMap (algebraMap k k⟦X⟧).injective l
@@ -327,6 +436,9 @@ def lin (σ : k⸨X⸩ →ₐ[k] k⸨X⸩) : k⸨X⸩ →ₗ[k] k⸨X⸩ where
   map_add' := map_add σ
   map_smul' c x := by simp only [const_smul_eq, map_mul, AlgHom.commutes, RingHom.id_apply]
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem lin_apply (σ : k⸨X⸩ →ₐ[k] k⸨X⸩) (x : k⸨X⸩) : lin σ x = σ x := rfl
 
 def unitMod {l : ℕ} (R : RingPG k l) (hγ : Function.Bijective R.γ) (n : ℕ) : ModPG R n k⸨X⸩ where
@@ -362,15 +474,26 @@ def stdMod (k : Type) [Field k] (l : ℕ) [Fact l.Prime] [CharP k l] (n : ℕ) :
 
 def stdLat (k : Type) [Field k] : Submodule k⟦X⟧ k⸨X⸩ := Submodule.span k⟦X⟧ {1}
 
+/- English proof (translation)
+Simplify using `[stdLat, Submodule.mem_span_singleton, Algebra.smul_def]`.
+-/
 theorem mem_stdLat {x : k⸨X⸩} : x ∈ stdLat k ↔ ∃ a : k⟦X⟧, (a : k⸨X⸩) = x := by
   simp [stdLat, Submodule.mem_span_singleton, Algebra.smul_def]
 
+/- English proof (translation)
+Use `⟨Submodule.fg_span_singleton _, eq_top_iff.2 fun x _ => ?_⟩` and prove the remaining obligations. Establish `h1 : (1 : k⸨X⸩) ∈ Submodule.span k⸨X⸩ (stdLat k : Set k⸨X⸩)` using `Submodule.subset_span (Submodule.mem_span_singleton_self _)`. Simplify using `using Submodule.smul_mem _ x h1`.
+-/
 theorem isLat_stdLat : IsLat (stdLat k) := by
   refine ⟨Submodule.fg_span_singleton _, eq_top_iff.2 fun x _ => ?_⟩
   have h1 : (1 : k⸨X⸩) ∈ Submodule.span k⸨X⸩ (stdLat k : Set k⸨X⸩) :=
     Submodule.subset_span (Submodule.mem_span_singleton_self _)
   simpa using Submodule.smul_mem _ x h1
 
+/- English proof (translation)
+Apply `le_antisymm` to reduce the goal to its premises. Use `Submodule.span_le.2 ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨x, hx, rfl⟩`. Take `⟨a, rfl⟩` from `mem_stdLat.1 hx`. Take `⟨b, hb⟩` from `R.φ_int a`.
+
+Conclude with `mem_stdLat.2 ⟨b, hb.symm⟩`. Use `Submodule.span_le.2 ?_` and prove the remaining obligations. Introduce and unpack `_ rfl`. Conclude with `Submodule.subset_span ⟨1, Submodule.mem_span_singleton_self _, map_one R.φ⟩`.
+-/
 theorem pull_stdLat {l : ℕ} (R : RingPG k l) : pull (lin R.φ) (stdLat k) = stdLat k := by
   apply le_antisymm
   · refine Submodule.span_le.2 ?_
@@ -382,12 +505,20 @@ theorem pull_stdLat {l : ℕ} (R : RingPG k l) : pull (lin R.φ) (stdLat k) = st
     rintro _ rfl
     exact Submodule.subset_span ⟨1, Submodule.mem_span_singleton_self _, map_one R.φ⟩
 
+/- English proof (translation)
+Introduce `i`. Express the relevant statement in the definitionally equal form `pull (lin R.φ) _ ≤ _ ∧ _ ≤ pull (lin R.φ) _`. Simplify using `[pull_stdLat, sh_zero_eq]`.
+-/
 theorem condAB_stdLat {l : ℕ} (R : RingPG k l) (hγ : Function.Bijective R.γ) (n : ℕ) :
     CondAB (unitMod R hγ n).φ (fun _ => 0) (fun _ => 0) (fun _ => stdLat k) := by
   intro i
   change pull (lin R.φ) _ ≤ _ ∧ _ ≤ pull (lin R.φ) _
   simp [pull_stdLat, sh_zero_eq]
 
+/- English proof (translation)
+Introduce `x hx`. Take `⟨a, rfl⟩` from `mem_stdLat.1 hx`. Take `⟨κ, -, hκ⟩` from `R.γ_v`. Use `set s : k⟦X⟧ := PowerSeries.mk fun n => PowerSeries.coeff (n + 1) a`. Take `⟨t, ht⟩` from `R.γ_int s`.
+
+Establish `ha : (a : k⸨X⸩) = vv k * (s : k⸨X⸩) + algebraMap k k⸨X⸩ (PowerSeries.constantCoeff a)` using `by conv_lhs => rw [PowerSeries.eq_X_mul_shift_add_const a, map_add, map_mul, ← vv_eq_coe_X]`. Both sides reduce to the same expression. Use `mem_sh_iff_exists.2 ⟨_, mem_stdLat.2 ⟨(1 - κ * PowerSeries.X) * t - s, rfl⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[lin_apply, ha, map_add R.γ, map_mul R.γ, AlgHom.commutes, hκ, ht, zpow_one, smul_eq_mul, map_sub, map_mul, map_sub, map_mul, map_one, ← vv_eq_coe_X]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem condC_stdLat {l : ℕ} (R : RingPG k l) : CondC (lin R.γ) (stdLat k) := by
   intro x hx
   obtain ⟨a, rfl⟩ := mem_stdLat.1 hx
@@ -402,6 +533,11 @@ theorem condC_stdLat {l : ℕ} (R : RingPG k l) : CondC (lin R.γ) (stdLat k) :=
     map_sub, map_mul, map_one, ← vv_eq_coe_X]
   ring
 
+/- English proof (translation)
+Take `⟨κ, h1, h2⟩` from `R.γ_v`. Use `⟨κ, h1, ?_⟩` and prove the remaining obligations. Establish `hv` using `vv_ne_zero k`. Rewrite using `[nab_apply_eq, lin_apply, h2, smul_eq_mul]`. Clear the denominators using the available nonvanishing facts.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem nab_vv {l : ℕ} (R : RingPG k l) :
     ∃ κ : k⟦X⟧, PowerSeries.constantCoeff κ = 1 ∧ nab (lin R.γ) (vv k) = -((κ : k⸨X⸩) * vv k) := by
   obtain ⟨κ, h1, h2⟩ := R.γ_v
@@ -411,6 +547,13 @@ theorem nab_vv {l : ℕ} (R : RingPG k l) :
   field_simp
   ring
 
+/- English proof (translation)
+Take `⟨a, rfl⟩` from `mem_stdLat.1 hx`. Take `⟨κ, -, hκ⟩` from `R.γ_v`. Use `set s : k⟦X⟧ := PowerSeries.mk fun n => PowerSeries.coeff (n + 1) a`. Take `⟨t, ht⟩` from `R.γ_int s`. Take `⟨y, hy, hy'⟩` from `mem_sh_iff_exists.1 (condC_stdLat R _ (mem_stdLat.2 ⟨s, rfl⟩))`.
+
+Establish `ha : (a : k⸨X⸩) = vv k * (s : k⸨X⸩) + algebraMap k k⸨X⸩ (PowerSeries.constantCoeff a)` using `by conv_lhs => rw [PowerSeries.eq_X_mul_shift_add_const a, map_add, map_mul, ← vv_eq_coe_X]`. Both sides reduce to the same expression. Use `mem_sh_iff_exists.2 ⟨_, Submodule.sub_mem _ hy (mem_stdLat.2 ⟨κ * t, rfl⟩), ?_⟩` and prove the remaining obligations. Establish `hv` using `vv_ne_zero k`. Rewrite `hy'` using `[lin_apply, ht, zpow_one, smul_eq_mul]`.
+
+Rewrite using `[nab_apply_eq, lin_apply, ha, map_add R.γ, map_mul R.γ, AlgHom.commutes, hκ, ht, zpow_one, smul_eq_mul, smul_eq_mul, map_mul, eq_inv_mul_iff_mul_eq₀ hv]`. Take the linear combination `vv k * hy'`.
+-/
 theorem nab_mem_stdLat {l : ℕ} (R : RingPG k l) {x : k⸨X⸩} (hx : x ∈ stdLat k) :
     nab (lin R.γ) x ∈ sh 1 (stdLat k) := by
   obtain ⟨a, rfl⟩ := mem_stdLat.1 hx
@@ -428,6 +571,17 @@ theorem nab_mem_stdLat {l : ℕ} (R : RingPG k l) {x : k⸨X⸩} (hx : x ∈ std
     smul_eq_mul, map_mul, eq_inv_mul_iff_mul_eq₀ hv]
   linear_combination vv k * hy'
 
+/- English proof (translation)
+Rewrite using `[sen, qmult, gmult]`. Establish `hP : (stdLat k).restrictScalars k ⊓ ⨆ m : ℕ, ((sh 1 (stdLat k)).restrictScalars k).comap ((nab (lin R.γ) - algebraMap k (Module.End k k⸨X⸩) 0) ^ m) = (stdLat k).restrictScalars k`. Use `inf_eq_left.2 fun y hy => Submodule.mem_iSup_of_mem 1 ?_` and prove the remaining obligations. Rewrite using `[Submodule.mem_comap, pow_one, map_zero, sub_zero]`. Conclude with `nab_mem_stdLat R hy`.
+
+Rewrite using `[hP]`. Set `f : (stdLat k).restrictScalars k →ₗ[k] k` to `(HahnSeries.coeff.linearMap (0 : ℤ)) ∘ₗ Submodule.subtype _`. Establish `h0 : ∀ a : k⟦X⟧, (a : k⸨X⸩).coeff 0 = PowerSeries.constantCoeff a` using `fun a => by`. Rewrite using `[PowerSeries.coeff_coe]`. Simplify using the standard rewrite rules.
+
+Establish `hk : ((sh 1 (stdLat k)).restrictScalars k).submoduleOf ((stdLat k).restrictScalars k) = f.ker`. Use extensionality with `⟨y, hy⟩`. Take `⟨a, rfl⟩` from `mem_stdLat.1 hy`. Express the relevant statement in the definitionally equal form `(a : k⸨X⸩) ∈ sh 1 (stdLat k) ↔ (a : k⸨X⸩).coeff 0 = 0`. Rewrite using `[h0, mem_sh_iff_exists, ← PowerSeries.X_dvd_iff, zpow_one, vv_eq_coe_X]`.
+
+Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨z, hz, h⟩`. Take `⟨b, rfl⟩` from `mem_stdLat.1 hz`. Conclude with `⟨b, HahnSeries.ofPowerSeries_injective (Γ := ℤ) (by rw [map_mul]; exact h.symm)⟩`. Introduce and unpack `⟨b, rfl⟩`.
+
+Conclude with `⟨b, mem_stdLat.2 ⟨b, rfl⟩, (map_mul _ _ _).symm⟩`. Establish `hs : Function.Surjective f` using `fun c => ⟨⟨_, mem_stdLat.2 ⟨PowerSeries.C c, rfl⟩⟩, (h0 _).trans (PowerSeries.constantCoeff_C c)⟩`. Rewrite using `[hk, (f.quotKerEquivOfSurjective hs).finrank_eq, Module.finrank_self]`.
+-/
 theorem sen_stdLat_zero {l : ℕ} (R : RingPG k l) : sen (lin R.γ) (stdLat k) 0 = 1 := by
   rw [sen, qmult, gmult]
   have hP : (stdLat k).restrictScalars k ⊓ ⨆ m : ℕ, ((sh 1 (stdLat k)).restrictScalars k).comap
@@ -454,6 +608,9 @@ theorem sen_stdLat_zero {l : ℕ} (R : RingPG k l) : sen (lin R.γ) (stdLat k) 0
     ⟨⟨_, mem_stdLat.2 ⟨PowerSeries.C c, rfl⟩⟩, (h0 _).trans (PowerSeries.constantCoeff_C c)⟩
   rw [hk, (f.quotKerEquivOfSurjective hs).finrank_eq, Module.finrank_self]
 
+/- English proof (translation)
+The claim follows from `sen ((powMod (stdRing k l) gam_bijective 3 2).γ 0) N 0`.
+-/
 example (l : ℕ) [Fact l.Prime] [CharP k l] (N : Submodule k⟦X⟧ (Fin 2 → k⸨X⸩)) : ℕ :=
   sen ((powMod (stdRing k l) gam_bijective 3 2).γ 0) N 0
 

@@ -9,6 +9,21 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 namespace GlobalTheory.CompanionTheory.EisUnfold.Lattice
 
+/- English proof (translation)
+Introduce `D m r μr 𝓕r h f hf B hB`. Take `⟨hHaar, hFD, hvol⟩` from `h`. Use `haveI := hHaar`. Use `haveI : BorelSpace (Mx D m r) := ⟨rfl⟩`. Use `haveI : Countable D.host.E := Countable.of_equiv _ (Module.finBasis ℚ D.host.E).equivFun.toEquiv.symm`.
+
+Use `haveI : Countable (Matrix (Fin m) (Fin r) D.host.E) := inferInstanceAs (Countable (Fin m → Fin r → D.host.E))`. Establish `hinc : Function.Injective (Formalism.L2.Theta.incA D)`. Establish `h0 : Function.Injective (algebraMap ↥D.host.F (AF ↥D.host.F))` using `NumberField.AdeleRing.algebraMap_injective _ _`. Conclude with `Algebra.TensorProduct.includeRight_injective h0`. Establish `hmem : ∀ p : Matrix (Fin m) (Fin r) D.host.E, rat p ∈ ratMx D m r` using `fun p => AddMonoidHom.mem_range.mpr ⟨p, rfl⟩`.
+
+Choose the witnesses or unpack the hypotheses as in `⟨e, he⟩ : ∃ e : Matrix (Fin m) (Fin r) D.host.E ≃ ratMx D m r, ∀ p, ((e p : ratMx D m r) : Mx D m r) = rat p := by`. Use `⟨Equiv.ofBijective (fun p => ⟨rat p, hmem p⟩) ⟨fun p q hpq => ?_, fun g => ?_⟩, fun p => rfl⟩` and prove the remaining obligations. Establish `h2 : p.map (Formalism.L2.Theta.incA D) = q.map (Formalism.L2.Theta.incA D)` using `congrArg Subtype.val hpq`. Conclude with `Matrix.map_injective hinc h2`. Take `⟨p, hp⟩` from `AddMonoidHom.mem_range.mp g.2`.
+
+Conclude with `⟨p, Subtype.ext hp⟩`. Use `haveI : Countable (ratMx D m r) := Countable.of_equiv _ e`. Use `haveI : VAddInvariantMeasure (ratMx D m r) (Mx D m r) μr := ⟨fun c s _ => measure_preimage_add μr (c : Mx D m r) s⟩`. Establish `hv : ∀ (p : Matrix (Fin m) (Fin r) D.host.E) (x : Mx D m r), -(e p) +ᵥ x = x - rat p`. Introduce `p x`.
+
+Express the relevant statement in the definitionally equal form `((-(e p) : ratMx D m r) : Mx D m r) + x = x - rat p`. Rewrite using `[AddSubgroup.coe_neg, he]`. Conclude with `neg_add_eq_sub (rat p) x`. Establish `hmeas : ∀ p : Matrix (Fin m) (Fin r) D.host.E, Measurable (fun x => ‖f (x - rat p)‖ₑ)` using `fun p => (hf.comp (continuous_id.sub continuous_const)).measurable.enorm`. Establish `hlin : ∫⁻ x, ‖f x‖ₑ ∂μr ≤ B`.
+
+Rewrite using `[hFD.lintegral_eq_tsum', ← e.tsum_eq]`. Repeatedly rewrite using `[hv]`. Rewrite using `[← lintegral_tsum (fun p => (hmeas p).aemeasurable)]`. Combine the equalities or inequalities in the displayed calculation. Establish `hint : Integrable f μr` using `⟨hf.aestronglyMeasurable, lt_of_le_of_lt hlin ENNReal.coe_lt_top⟩`.
+
+Use `⟨hint, ?_⟩` and prove the remaining obligations. Rewrite using `[hFD.integral_eq_tsum' f hint, ← e.tsum_eq]`. Repeatedly rewrite using `[hv]`.
+-/
 theorem tsum_setIntegral_sub_rat : ∀ (D : D7) (m r : ℕ) (μr : Measure (Mx D m r)) (𝓕r : Set (Mx D m r)), IsCovolOne (ratMx D m r) μr 𝓕r →
     ∀ f : Mx D m r → ℂ, Continuous f → ∀ B : ℝ≥0, (∀ y, ∑' p : Matrix (Fin m) (Fin r) D.host.E, ‖f (y - rat p)‖ₑ ≤ B) →
       Integrable f μr ∧ ∑' p : Matrix (Fin m) (Fin r) D.host.E, ∫ y in 𝓕r, f (y - rat p) ∂μr = ∫ t, f t ∂μr := by

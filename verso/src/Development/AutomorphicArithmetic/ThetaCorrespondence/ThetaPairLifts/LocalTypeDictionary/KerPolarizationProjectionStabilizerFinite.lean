@@ -13,6 +13,13 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 open GlobalTheory.SquareComm GlobalTheory.SquareAgree
 noncomputable section
 namespace GlobalTheory.SquareAgree.KerStabFin
+/- English proof (translation)
+Introduce `_ D ψ θ W W₁ X A A₁ B α β ν 𝓕 ν₁ 𝓕₁ ωA ωB e Bs Γ Xc om om' cA cB _ _ hO hT Pi rf rl p p' hM v h hh Φ hΦ`. Establish `hstd : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.IsStd ψ` using `hO.psi ▸ hT.base.std`. Take `⟨g, hg, rfl⟩` from `GlobalTheory.SquareAgree.KapOnto.kapX_onto D X e Γ.W hO.JX v h hh`. Rewrite `hΦ`, the goal using `[mem_kerPD hstd]`. Take `⟨_, Φ₀, hΦ₀, hDat, hp⟩` from `hΦ`.
+
+Establish `hW` using `hO.weilB Φ Φ₀ hDat 1 g`. Establish `h1 : GlobalTheory.IndefiniteRowSideFullHecke.UnitaryConjugation.conjU W₁ (-1) hO.JW₁ 1 = 1` using `Subtype.ext (by simp [GlobalTheory.IndefiniteRowSideFullHecke.UnitaryConjugation.conjU, map_one])`. Rewrite `hW` using `[h1]`. Establish `hmem : ωB (1, g) Φ₀ ∈ algF ψ θ false A₁ B` using `hM.mapB.stabX.1 g hg Φ₀ hΦ₀`. Take `⟨ΦD, hΦD, hD'⟩` from `hO.algB _ hmem`.
+
+Establish `heq` using `GlobalTheory.ThetaInj.theta_inj Γ.M' ψ hstd cB _ _ _ hW hD'`. Use `⟨heq ▸ hΦD, _, hmem, hW, ?_⟩` and prove the remaining obligations. Rewrite using `[hM.mapB.eqf g hg Φ₀ hΦ₀, hp, map_zero]`.
+-/
 theorem stabilizer_finite_ker_polarization : _root_.GlobalTheory.FunPr.ThetaLocalInputs → ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ) (θ : InfFam D) (W W₁ X : HSp D) (A : Fr W) (A₁ : Fr W₁)
     (B : Fr X) (α β : (AE D)ˣ →* Circle) (ν : Measure (GA D W)) (𝓕 : Set (GA D W)) (ν₁ : Measure (GA D W₁))
     (𝓕₁ : Set (GA D W₁)) (ωA : WRep W X) (ωB : WRep W₁ X) (e : Fin X.rank ≃ Fin (W.rank + W₁.rank))
@@ -51,6 +58,9 @@ open scoped TensorProduct GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorMode
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 open GlobalTheory.SquareComm GlobalTheory.SquareAgree
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @_root_.GlobalTheory.SquareAgree.KerStabFin.stabilizer_finite_ker_polarization | exact _root_.GlobalTheory.SquareAgree.KerStabFin.stabilizer_finite_ker_polarization | (intros; apply _root_.GlobalTheory.SquareAgree.KerStabFin.stabilizer_finite_ker_polarization <;> as …`.
+-/
 theorem _root_.GlobalTheory.T.ker_polarizationProjection_stabilizer_finite : _root_.GlobalTheory.FunPr.ThetaLocalInputs → ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ) (θ : InfFam D) (W W₁ X : HSp D) (A : Fr W) (A₁ : Fr W₁)
     (B : Fr X) (α β : (AE D)ˣ →* Circle) (ν : Measure (GA D W)) (𝓕 : Set (GA D W)) (ν₁ : Measure (GA D W₁))
     (𝓕₁ : Set (GA D W₁)) (ωA : WRep W X) (ωB : WRep W₁ X) (e : Fin X.rank ≃ Fin (W.rank + W₁.rank))

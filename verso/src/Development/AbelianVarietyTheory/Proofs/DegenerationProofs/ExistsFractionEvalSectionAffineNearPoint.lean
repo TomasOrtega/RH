@@ -9,6 +9,9 @@ open GlobalTheory.SS
 
 namespace GlobalTheory.SS.WtRat
 
+/- English proof (translation)
+The claim follows from `(ev_top (spMap e) h u).trans (congrArg (fun q => CommRingCat.Hom.hom q u) (Scheme.ΓSpecIso_naturality (CommRingCat.ofHom e)))`.
+-/
 theorem ev_spMap_top {R F : Type} [CommRing R] [CommRing F] (e : R →+* F)
     (h : ⊤ ≤ spMap e ⁻¹ᵁ ⊤) (u : Γ(Sp R, ⊤)) :
     ev (spMap e) ⊤ h u = e ((Scheme.ΓSpecIso (CommRingCat.of R)).hom.hom u) :=
@@ -16,6 +19,17 @@ theorem ev_spMap_top {R F : Type} [CommRing R] [CommRing F] (e : R →+* F)
     (congrArg (fun q => CommRingCat.Hom.hom q u)
       (Scheme.ΓSpecIso_naturality (CommRingCat.ofHom e)))
 
+/- English proof (translation)
+Establish `hT : IsAffineOpen (⊤ : (Sp R).Opens)` using `isAffineOpen_top (Sp R)`. Take `⟨f, hfW, hxf⟩` from `hT.exists_basicOpen_le (V := W) ⟨x, hx⟩ trivial`. Establish `hb : (Sp R).basicOpen f = PrimeSpectrum.basicOpen ((Scheme.ΓSpecIso (CommRingCat.of R)).hom.hom f)` using `basicOpen_eq_of_affine' f`. Use `haveI := hT.isLocalization_basicOpen f`. Take `⟨⟨a, _, n, rfl⟩, ha⟩` from `IsLocalization.surj (Submonoid.powers f) (((Sp R).presheaf.map (homOfLE hfW).op).hom s)`.
+
+Use `set φ : Γ(Sp R, ⊤) →+* R := (Scheme.ΓSpecIso (CommRingCat.of R)).hom.hom with hφ`. Use `⟨φ a * φ f, φ f ^ (n + 1), ?_, ?_⟩` and prove the remaining obligations. Introduce `hm`. Rewrite `hxf` using `[hb]`. Conclude with `hxf (x.isPrime.mem_of_pow_mem _ hm)`.
+
+Introduce `F _ e h`. Distinguish the cases in `h0 : e (φ f) = 0`. Simplify using `[h0]`. Establish `hD : ⊤ ≤ spMap e ⁻¹ᵁ (Sp R).basicOpen f`. Introduce `y _`.
+
+Rewrite using `[hb]`. Express the relevant statement in the definitionally equal form `e (φ f) ∉ y.asIdeal`. Introduce `hy`. Conclude with `y.isPrime.ne_top (Ideal.eq_top_of_isUnit_mem _ hy (Ne.isUnit h0))`. Establish `key` using `congrArg (ev (spMap e) _ hD) ha`.
+
+Rewrite `key` using `[map_mul, ev_res (spMap e) hfW hD h s]`. Establish `hv : ∀ u : Γ(Sp R, ⊤), ev (spMap e) _ hD (algebraMap Γ(Sp R, ⊤) Γ(Sp R, (Sp R).basicOpen f) u) = e (φ u)` using `fun u => (ev_res (spMap e) ((Sp R).basicOpen_le f) hD le_top u).trans (ev_spMap_top e le_top u)`. Rewrite `key` using `[hv, hv]`. Simplify using `only [map_pow] at key`. Rewrite using `[map_pow, map_mul, pow_succ, ← _root_.mul_assoc, key]`.
+-/
 theorem exists_frac_ev (R : Type) [CommRing R] (W : (Sp R).Opens) (s : Γ(Sp R, W))
     (x : PrimeSpectrum R) (hx : x ∈ W) :
     ∃ α β : R, β ∉ x.asIdeal ∧ ∀ (F : Type) [Field F] (e : R →+* F) (h : ⊤ ≤ spMap e ⁻¹ᵁ W),
